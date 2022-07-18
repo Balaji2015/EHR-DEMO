@@ -697,9 +697,15 @@
     <EmbeddedResource Include="HbmMaps\Client.hbm.xml" />
     <Content Include="bin\Debug\Acurus.Capella.Core.dll" />
     <Content Include="bin\Debug\Acurus.Capella.Core.pdb" />
+    <Content Include="bin\Debug\HbmMaps\Request_Sent_Log.hbm.xml" />
+    <Content Include="bin\Debug\HbmMaps\Response_Received_Log.hbm.xml" />
+    <Content Include="bin\Debug\log4net.dll" />
     <Content Include="bin\log4net.dll" />
     <Content Include="bin\Release\Acurus.Capella.Core.dll" />
     <Content Include="bin\Release\Acurus.Capella.Core.pdb" />
+    <Content Include="bin\Release\HbmMaps\Request_Sent_Log.hbm.xml" />
+    <Content Include="bin\Release\HbmMaps\Response_Received_Log.hbm.xml" />
+    <Content Include="bin\Release\log4net.dll" />
     <Content Include="HbmMaps\ErrorLog.hbm.xml" />
     <EmbeddedResource Include="HbmMaps\ModifierLibrary.hbm.xml" />
     <EmbeddedResource Include="HbmMaps\Human_Token.hbm.xml" />
