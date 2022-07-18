@@ -1,0 +1,15 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<hibernate-mapping xmlns="urn:nhibernate-mapping-2.2" namespace="Acurus.Capella.Core.DomainObjects" assembly="Acurus.Capella">
+  <class name="Acurus.Capella.Core.DomainObjects.Response_Received_Log, Acurus.Capella.Core" table="response_received_log" lazy="true">
+    <id name="Id" column="Response_Received_Log_ID">
+      <generator class="identity" />
+    </id>
+    <version name="Version"/>
+
+    <property name="Response_Sent_Log_ID" column="Response_Sent_Log_ID" />
+    <property name="Created_By" column="Created_By" />
+    <property name="Created_Date_And_Time" column="Created_Date_And_Time" />
+    <property name="Response_Received_Log_Group_ID" column="Response_Received_Log_Group_ID" />
+
+  </class>
+</hibernate-mapping>
