@@ -283,6 +283,7 @@
       <Link>hibernate.cfg.xml</Link>
       <SubType>Designer</SubType>
     </Content>
+    <Content Include="bin\Acurus.Capella.DataAccess.XmlSerializers.dll" />
     <Content Include="bin\Acurus.Capella.Proxy.exe" />
     <Content Include="bin\Acurus.Capella.UI.dll" />
     <Content Include="bin\Acurus.Capella.UI.pdb" />
@@ -296,20 +297,20 @@
     <Content Include="bin\CrystalDecisions.Windows.Forms.dll" />
     <Content Include="bin\DocumentFormat.OpenXml.dll" />
     <Content Include="bin\EMRDirect.dll" />
-    <Content Include="bin\Interop.DYMOPrintingSupportLib.dll" />
+    <Content Include="bin\EnvDTE.dll" />
+    <Content Include="bin\EnvDTE80.dll" />
+    <Content Include="bin\HbmMaps\Request_Sent_Log.hbm.xml" />
+    <Content Include="bin\HbmMaps\Response_Received_Log.hbm.xml" />
     <Content Include="bin\Interop.FAXCOMEXLib.dll" />
     <Content Include="bin\Interop.FAXCOMLib.dll" />
     <Content Include="bin\Interop.Microsoft.Office.Interop.Word.dll" />
-    <Content Include="bin\Interop.StdType.dll" />
     <Content Include="bin\itextsharp.dll" />
     <Content Include="bin\Keyoti.RapidSpellMDict.dll" />
     <Content Include="bin\Keyoti.RapidSpellWeb.ASP.NETv2.dll" />
     <Content Include="bin\Microsoft.Office.Interop.Excel.dll" />
-    <Content Include="bin\Microsoft.Office.Interop.Excel.xml" />
     <Content Include="bin\Microsoft.Vbe.Interop.dll" />
     <Content Include="bin\Newtonsoft.Json.dll" />
     <Content Include="bin\office.dll" />
-    <Content Include="bin\office.xml" />
     <Content Include="bin\OpenPop.dll" />
     <Content Include="bin\OpenXmlSdkTool.ClassExplorer.dll" />
     <Content Include="bin\OpenXmlSdkTool.Core.dll" />
@@ -318,11 +319,12 @@
     <Content Include="bin\OpenXmlSdkTool.OpenXmlValidator.dll" />
     <Content Include="bin\OpenXmlSdkTool.PackageInspector.dll" />
     <Content Include="bin\Open_Xml.dll" />
-    <Content Include="bin\Open_Xml.pdb" />
     <Content Include="bin\phimailcon.dll" />
     <Content Include="bin\RCopiaErrorLog.txt" />
-    <Content Include="bin\Telerik.Web.UI.XML" />
+    <Content Include="bin\stdole.dll" />
     <Content Include="bin\TimePicker.dll" />
+    <Content Include="bin\VSLangProj.dll" />
+    <Content Include="bin\VsWebSite.Interop.dll" />
     <Content Include="bin\X12_Envelope.dll" />
     <Content Include="ConfigXML\CapellaScribeLookupList.xml" />
     <Content Include="CSS\bootstrap.min.css" />
@@ -2134,6 +2136,8 @@
     <Content Include="DemoGraphicsEmpty.Master" />
     <Content Include="bin\Final.label" />
     <Content Include="Documents\KnowledgeCentre\MACRA Knowledge Center.pdf" />
+    <Content Include="bin\Acurus.Capella.DataAccess.dll.config" />
+    <Content Include="bin\Acurus.Capella.UI.dll.config" />
     <None Include="Documents\Physician_Specific_Documents\Patient Education\2011-02-17 %281%29.pdf" />
     <None Include="Documents\Physician_Specific_Documents\Patient Education\2011-02-17 %2810%29.pdf" />
     <None Include="Documents\Physician_Specific_Documents\Patient Education\2011-02-17 %2811%29.pdf" />
