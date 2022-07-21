@@ -24,6 +24,7 @@ namespace Acurus.Capella.UI
         protected void Page_Load(object sender, EventArgs e)
         {
             //It is a test commment
+            //New Enhancement
             DateTime dtStartTime = DateTime.Now;
 
             if (hdnGroupId != null && hdnGroupId.Value == "")
