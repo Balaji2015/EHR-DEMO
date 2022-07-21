@@ -362,6 +362,18 @@
     <Content Include="bin\Debug\Acurus.Capella.Core.pdb" />
     <Content Include="bin\Debug\Acurus.Capella.DataAccess.dll" />
     <Content Include="bin\Debug\Acurus.Capella.DataAccess.pdb" />
+    <Content Include="bin\Debug\Antlr3.Runtime.dll" />
+    <Content Include="bin\Debug\hibernate.cfg.xml" />
+    <Content Include="bin\Debug\Iesi.Collections.dll" />
+    <Content Include="bin\Debug\Iesi.Collections.xml" />
+    <Content Include="bin\Debug\LinFu.DynamicProxy.dll" />
+    <Content Include="bin\Debug\log4net.dll" />
+    <Content Include="bin\Debug\mysql.data.dll" />
+    <Content Include="bin\Debug\NHibernate.ByteCode.LinFu.dll" />
+    <Content Include="bin\Debug\NHibernate.ByteCode.LinFu.xml" />
+    <Content Include="bin\Debug\NHibernate.dll" />
+    <Content Include="bin\Debug\nunit.framework.dll" />
+    <Content Include="bin\Debug\nunit.mocks.dll" />
     <Content Include="bin\Debug\RCopiaErrorLog.txt" />
     <Content Include="bin\Debug\Telerik.WinControls.UI.Design.dll" />
     <Content Include="bin\Debug\Telerik.WinControls.UI.dll" />
@@ -391,6 +403,7 @@
     </Content>
     <Content Include="Web References\AuditLogService\ES_AuditLogging.disco" />
     <Content Include="Web References\AuditLogService_Testing\ES_AuditLogging.disco" />
+    <None Include="bin\Debug\Acurus.Capella.DataAccess.dll.config" />
     <None Include="bin\Release\Acurus.Capella.DataAccess.dll.config" />
     <None Include="ClassDiagram1.cd" />
     <None Include="Web References\AuditLogService\ES_AuditLogging.wsdl" />
