@@ -374,13 +374,16 @@ namespace Acurus.Capella.UI.RCopia
             wSettings.Indent = true;
             xmlWriter = XmlWriter.Create(ms, wSettings);
             xmlWriter.WriteStartDocument();
-            ilstRcopSett = ApplicationObject.RCopiaSettingsList;
-            if (ilstRcopSett == null)
-            {
-                Rcopia_SettingsManager objRCopiaManager = new Rcopia_SettingsManager();
-                ApplicationObject.RCopiaSettingsList = objRCopiaManager.GetRcopia_Settings();
-                ilstRcopSett = ApplicationObject.RCopiaSettingsList;
-            }
+            //ilstRcopSett = ApplicationObject.RCopiaSettingsList;
+            Rcopia_SettingsManager objRCopiaManager = new Rcopia_SettingsManager();
+            ilstRcopSett = objRCopiaManager.GetRcopia_Settings(sLegalOrg);
+
+            //if (ilstRcopSett == null)
+            //{
+            //    Rcopia_SettingsManager objRCopiaManager = new Rcopia_SettingsManager();
+            //    ApplicationObject.RCopiaSettingsList = objRCopiaManager.GetRcopia_Settings();
+            //    ilstRcopSett = ApplicationObject.RCopiaSettingsList;
+            //}
             if (ilstRcopSett!=null && ilstRcopSett.Count > 0)
             {
                 objRcopSettings = (from g in ilstRcopSett where g.Command == "get_url" && g.Legal_Org==sLegalOrg select g).ToList<Rcopia_Settings>()[0];
@@ -423,13 +426,15 @@ namespace Acurus.Capella.UI.RCopia
             xmlWriter = XmlWriter.Create(ms, wSettings);
             xmlWriter.WriteStartDocument();
 
-            ilstRcopSett = ApplicationObject.RCopiaSettingsList;
-            if (ilstRcopSett == null)
-            {
-                Rcopia_SettingsManager objRCopiaManager = new Rcopia_SettingsManager();
-                ApplicationObject.RCopiaSettingsList = objRCopiaManager.GetRcopia_Settings();
-                ilstRcopSett = ApplicationObject.RCopiaSettingsList;
-            }
+            //ilstRcopSett = ApplicationObject.RCopiaSettingsList;
+            Rcopia_SettingsManager objRCopiaManager = new Rcopia_SettingsManager();
+            ilstRcopSett = objRCopiaManager.GetRcopia_Settings(sLegalOrg);
+            //if (ilstRcopSett == null)
+            //{
+            //    Rcopia_SettingsManager objRCopiaManager = new Rcopia_SettingsManager();
+            //    ApplicationObject.RCopiaSettingsList = objRCopiaManager.GetRcopia_Settings();
+            //    ilstRcopSett = ApplicationObject.RCopiaSettingsList;
+            //}
             if (ilstRcopSett!=null && ilstRcopSett.Count > 0)
             {
                 objRcopSettings = (from g in ilstRcopSett where g.Command == sXMLName && g.Legal_Org == sLegalOrg select g).ToList<Rcopia_Settings>()[0];

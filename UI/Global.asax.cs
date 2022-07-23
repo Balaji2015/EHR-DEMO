@@ -64,9 +64,6 @@ namespace Acurus.Capella.UI
             ElementManager objElementManager = new ElementManager();
             ApplicationObject.elementList = objElementManager.GetAllElement(string.Empty);
 
-            Rcopia_SettingsManager objRCopiaManager = new Rcopia_SettingsManager();
-            ApplicationObject.RCopiaSettingsList = objRCopiaManager.GetRcopia_Settings();
-
             //log4net.Config.XmlConfigurator.Configure();
         }
 

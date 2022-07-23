@@ -339,7 +339,8 @@ namespace Acurus.Capella.UI
             }
 
             IList<Rcopia_Settings> rcopiaSettings = new List<Rcopia_Settings>();
-            rcopiaSettings = ApplicationObject.RCopiaSettingsList;
+            Rcopia_SettingsManager objRCopiaManager = new Rcopia_SettingsManager();
+            rcopiaSettings = objRCopiaManager.GetRcopia_Settings(ClientSession.LegalOrg);
 
             if (ulMyHumanID != 0)
             {
@@ -350,9 +351,7 @@ namespace Acurus.Capella.UI
 
             if (rcopiaSettings == null)
             {
-                Rcopia_SettingsManager objRCopiaManager = new Rcopia_SettingsManager();
-                ApplicationObject.RCopiaSettingsList = objRCopiaManager.GetRcopia_Settings();
-                rcopiaSettings = ApplicationObject.RCopiaSettingsList;
+                rcopiaSettings = objRCopiaManager.GetRcopia_Settings(ClientSession.LegalOrg);
             }
             var temp = from g in rcopiaSettings where g.Command == "get_url" select g;
             IList<Rcopia_Settings> TempList = temp.ToList<Rcopia_Settings>();

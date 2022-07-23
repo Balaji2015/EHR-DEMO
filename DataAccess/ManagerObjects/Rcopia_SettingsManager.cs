@@ -13,7 +13,7 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
 
     public partial interface IRcopia_SettingsManager : IManagerBase<Rcopia_Settings, ulong>
     {
-        IList<Rcopia_Settings> GetRcopia_Settings();
+        IList<Rcopia_Settings> GetRcopia_Settings(string sLegalOrg);
     }
     public partial class Rcopia_SettingsManager : ManagerBase<Rcopia_Settings, ulong>, IRcopia_SettingsManager
     {
@@ -36,9 +36,11 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
 
         #region Methods
 
-        public IList<Rcopia_Settings> GetRcopia_Settings()
+        public IList<Rcopia_Settings> GetRcopia_Settings(string sLegalOrg)
         {
-            IList<Rcopia_Settings> ilstRcopSett = GetAll();
+            ICriteria crit;
+            crit = session.GetISession().CreateCriteria(typeof(Rcopia_Settings)).Add(Expression.Eq("Legal_Org", sLegalOrg));
+            IList<Rcopia_Settings> ilstRcopSett = crit.List<Rcopia_Settings>();
             return ilstRcopSett;
         }
 

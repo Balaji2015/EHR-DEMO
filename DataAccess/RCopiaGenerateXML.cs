@@ -910,7 +910,7 @@ namespace Acurus.Capella.DataAccess
             xmlWriter = XmlWriter.Create(ms, wSettings);
             xmlWriter.WriteStartDocument();
             Rcopia_SettingsManager rcopiaSettingMngr = new Rcopia_SettingsManager();
-            ilstRcopSett = rcopiaSettingMngr.GetRcopia_Settings();
+            ilstRcopSett = rcopiaSettingMngr.GetRcopia_Settings(sLegalOrg);
             if (ilstRcopSett.Count > 0)
             {
                 objRcopSettings = (from g in ilstRcopSett where g.Command == "get_url" && g.Legal_Org == sLegalOrg select g).ToList<Rcopia_Settings>()[0];
@@ -1242,7 +1242,7 @@ namespace Acurus.Capella.DataAccess
             xmlWriter.WriteStartDocument();
 
             Rcopia_SettingsManager rcopiaSettingsMngr = new Rcopia_SettingsManager();
-            ilstRcopSett = rcopiaSettingsMngr.GetRcopia_Settings();
+            ilstRcopSett = rcopiaSettingsMngr.GetRcopia_Settings(sLegalOrg);
             if (ilstRcopSett.Count > 0)
             {
 

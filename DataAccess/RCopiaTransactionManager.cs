@@ -887,7 +887,7 @@ namespace Acurus.Capella.DataAccess
             xmlWriter.WriteStartDocument();
 
             Rcopia_SettingsManager rcopiaMngr = new Rcopia_SettingsManager();
-            ilstRcopSett = rcopiaMngr.GetRcopia_Settings();
+            ilstRcopSett = rcopiaMngr.GetRcopia_Settings(sLegalOrg);
             if (ilstRcopSett.Count > 0)
             {
                 objRcopSettings = (from g in ilstRcopSett where g.Command == sXMLName && g.Legal_Org == sLegalOrg select g).ToList<Rcopia_Settings>()[0];
