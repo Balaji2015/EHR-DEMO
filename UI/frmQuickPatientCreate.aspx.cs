@@ -1227,8 +1227,15 @@ namespace Acurus.Capella.UI
                 {
                     if (insuranceplan_id != "")
                     {
-                        ddlchange();
-                        ddlauthinsplan.SelectedValue = insuranceplan_id;
+                        try
+                        {
+                            ddlchange();
+                            ddlauthinsplan.SelectedValue = insuranceplan_id;
+                        }
+                        catch(Exception ex)
+                        {
+
+                        }
                     }
 
                     grdExistingPolicies.SelectedIndex = 0;
