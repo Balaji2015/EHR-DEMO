@@ -1,12 +1,13 @@
-﻿<?xml version="1.0" encoding="UTF-8"?>
+<?xml version="1.0" encoding="utf-8" ?>
 <pqriList>
-  <pqri PQRI_ID="28" Measure_Name="Documentation of Current Medications in the Medical Record" Description="" Numerator="" Denominator="" Exclusion="" Measure_No="CMS 68v6" Sort_Order="28" />
-  <pqri PQRI_ID="29" Measure_Name="Preventive care and Screening : Body Mass Index (BMI) Screening and Follow-up Plan" Description="" Numerator="" Denominator="" Exclusion="" Measure_No="CMS 69v5" Sort_Order="29" />
-  <pqri PQRI_ID="30" Measure_Name="Pneumococcal Vaccination Status for Older Adults" Description="" Numerator="" Denominator="" Exclusion="" Measure_No="CMS 127v5" Sort_Order="30" />
-  <pqri PQRI_ID="31" Measure_Name="Preventive Care and Screening: Tobacco Use: Screening and Cessation Intervention" Description="" Numerator="" Denominator="" Exclusion="" Measure_No="CMS 138v5" Sort_Order="31" />
-  <pqri PQRI_ID="32" Measure_Name="Controlling High Blood Pressure" Description="" Numerator="" Denominator="" Exclusion="" Measure_No="CMS 165v5" Sort_Order="32" />
-  <pqri PQRI_ID="33" Measure_Name="Diabetes: Hemoglobin A1c (HbA1c) Poor Control (> 9%)" Description="" Numerator="" Denominator="" Exclusion="" Measure_No="CMS 122v5" Sort_Order="33" />
-  <pqri PQRI_ID="34" Measure_Name="Preventive Care and Screening: Influenza Immunization" Description="" Numerator="" Denominator="" Exclusion="" Measure_No="CMS 147v6" Sort_Order="34" />
-  <pqri PQRI_ID="35" Measure_Name="Breast Cancer Screening" Description="" Numerator="" Denominator="" Exclusion="" Measure_No="CMS 125v5" Sort_Order="35" />
-  <pqri PQRI_ID="36" Measure_Name="Preventive care and Screening : screening for High Blood Pressure and Follow-up Documented" Description="" Numerator="" Denominator="" Exclusion="" Measure_No="CMS 22v5" Sort_Order="36" />
+<pqri PQRI_ID="28" Measure_Name="Documentation of Current Medications in the Medical Record" Description=" " Numerator=" " Denominator=" " Exclusion=" " Measure_No="CMS 68v6" Sort_Order="28" />
+<pqri PQRI_ID="29" Measure_Name="Preventive care and Screening : Body Mass Index (BMI) Screening and Follow-up Plan" Description=" " Numerator=" " Denominator=" " Exclusion=" " Measure_No="CMS 69v5" Sort_Order="29" />
+<pqri PQRI_ID="30" Measure_Name="Pneumococcal Vaccination Status for Older Adults" Description=" " Numerator=" " Denominator=" " Exclusion=" " Measure_No="CMS 127v5" Sort_Order="30" />
+<pqri PQRI_ID="31" Measure_Name="Preventive Care and Screening: Tobacco Use: Screening and Cessation Intervention" Description=" " Numerator=" " Denominator=" " Exclusion=" " Measure_No="CMS 138v5" Sort_Order="31" />
+<pqri PQRI_ID="32" Measure_Name="Controlling High Blood Pressure" Description=" " Numerator=" " Denominator=" " Exclusion=" " Measure_No="CMS 165v5" Sort_Order="32" />
+<pqri PQRI_ID="33" Measure_Name="Diabetes: Hemoglobin A1c (HbA1c) Poor Control (> 9%)" Description=" " Numerator=" " Denominator=" " Exclusion=" " Measure_No="CMS 122v5" Sort_Order="33" />
+<pqri PQRI_ID="34" Measure_Name="Preventive Care and Screening: Influenza Immunization" Description=" " Numerator=" " Denominator=" " Exclusion=" " Measure_No="CMS 147v6" Sort_Order="34" />
+<pqri PQRI_ID="35" Measure_Name="Breast Cancer Screening" Description=" " Numerator=" " Denominator=" " Exclusion=" " Measure_No="CMS 125v5" Sort_Order="35" />
+<pqri PQRI_ID="36" Measure_Name="Preventive care and Screening : screening for High Blood Pressure and Follow-up Documented" Description=" " Numerator=" " Denominator=" " Exclusion="  " Measure_No="CMS 22v5" Sort_Order="36" />
+
 </pqriList>
