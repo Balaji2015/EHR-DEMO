@@ -8906,6 +8906,8 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
                     }
 
                     IQuery EncounterDen2query68 = iMySession.GetNamedQuery("PQRI.GetDenominatorList2CMS68v6.CurrentMedication");
+                    EncounterDen2query68.SetString(0, "CMS68v6");
+                    EncounterDen2query68.SetString(1, "Denominator");
                     EncounterDen2query68.SetParameterList("EncIds", Enc_Denominator1_lst68);
                     Enc_Denominator2_lst68 = new ArrayList(EncounterDen2query68.List());
 
@@ -9043,6 +9045,10 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
                 EncounterDenominatorquery69.SetString(0, Fromdate.ToString("yyyy-MM-dd"));
                 EncounterDenominatorquery69.SetString(1, Todate.ToString("yyyy-MM-dd"));
                 EncounterDenominatorquery69.SetString(2, Convert.ToString(ulPhysician_id));
+                EncounterDenominatorquery69.SetString(3, "CMS69v5");
+                EncounterDenominatorquery69.SetString(4, "Denominator");
+
+
                 ArrayList Enc_Denominator_lst69 = new ArrayList(EncounterDenominatorquery69.List());
                 ArrayList Enc_Denominator2_lst69 = new ArrayList();
                 ArrayList Enc_Denominator3_lst69 = new ArrayList();
@@ -9056,7 +9062,7 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
                 IList<ulong> ulHumanListDemon69 = new List<ulong>();
                 IList<ulong> ulEncListExclusion69 = new List<ulong>();
                 IList<UInt32> ulEncListDenoFinal = new List<UInt32>();
-
+                IList<UInt32> ulHumanListDenoFinal = new List<UInt32>();
 
                 if (Enc_Denominator_lst69 != null && Enc_Denominator_lst69.Count > 0)
                 {
@@ -9132,27 +9138,35 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
                     string sQuery = @"select distinct(a.Encounter_id),a.human_id,a.icd,ifnull(em.procedure_code,'') from assessment a
 left join patient_results pr on a.encounter_id=pr.encounter_id
 left join e_m_coding as em on a.encounter_id=em.encounter_id
-where a.encounter_id in (:EncIds) and (a.icd ='Z51.5' or (pr.loinc_observation='BMI' and pr.value ='' and pr.Snomed_Code<>'') or a.icd in ('A34','O00.00','O00.01','O00.10','O00.11','O00.20',
-'O00.21','O00.80','O00.81','O00.90','O00.91','O01.9','O02.0','O02.1','O03.0','O03.1','O03.2','O03.30','O03.31','O03.32'
-,'O03.33','O03.34','O03.37','O03.39','O03.4','O03.5','O03.6','O03.7','O03.80','O03.81','O03.82','O03.83','O03.84',
-'O03.85','O03.86','O03.87','O03.88','O03.89','O03.9','O04.5','O04.6','O04.7','O04.80','O04.81','O04.82','O04.83',
-'O04.84','O04.85','O04.86','O04.87','O04.88','O04.89','O07.0','O07.1','O07.2','O07.30','O07.31','O07.32','O07.33','O07.34','O07.35','O07.36','O07.37','O07.38','O07.39','O07.4','O08.0','O08.1','O08.2','O08.3','O08.4','O08.5','O08.6','O08.7','O08.81','O08.82','O08.83','O08.89','O08.9','O09.00','O09.10','O09.211','O09.291','O09.30','O09.40','O09.41','O09.42','O09.43','O09.511','O09.512','O09.513','O09.519','O09.521','O09.522','O09.523','O09.529','O09.611','O09.621','O09.819','O09.821','O09.822','O09.823','O09.829','O09.891','O09.892','O09.893','O09.899','O09.90','O09.91','O09.92','O09.93','O09.A0','O10.011','O10.012','O10.013','O10.019','O10.03','O10.111','O10.112','O10.113','O10.119','O10.12','O10.13','O10.211','O10.212','O10.213','O10.219','O10.22','O10.23','O10.311','O10.312','O10.313','O10.319','O10.32','O10.33','O10.411','O10.412','O10.413','O10.419','O10.42','O10.43','O10.911','O10.912','O10.913','O10.919','O10.92','O10.93','O11.1','O11.2','O11.3','O11.4','O11.5','O11.9','O12.00','O12.01','O12.02','O12.03','O12.04','O12.05','O12.20','O12.21','O12.22','O12.23','O12.24','O12.25','O13.1','O13.2','O13.3','O13.4','O13.5','O13.9','O14.00','O14.02','O14.03','O14.04','O14.05','O14.10','O14.12','O14.13','O14.14','O14.15','O14.20','O14.22','O14.23','O14.24','O14.25','O14.90','O14.92','O14.93','O14.94','O14.95','O15.02','O15.03','O15.1','O15.2','O16.1','O16.2','O16.3','O16.4','O16.5','O16.9','O20.0','O20.8','O20.9','O21.0','O21.2','O21.8','O21.9','O22.00','O22.01','O22.02','O22.03','O22.10','O22.11','O22.12','O22.13','O22.20','O22.21','O22.22','O22.23','O22.30','O22.31','O22.32','O22.33','O22.40','O22.41','O22.42','O22.43','O22.50','O22.51','O22.52','O22.53','O22.90','O22.91','O22.92','O22.93','O23.00','O23.10','O23.20','O23.30','O23.40','O23.41','O23.42','O23.43','O23.519','O23.529','O23.599','O23.90','O23.91','O23.92','O23.93','O24.319','O24.32','O24.415','O24.419','O24.425','O24.429','O24.435','O24.439','O24.911','O24.912','O24.913','O24.92','O24.93','O25.10','O25.11','O25.12','O25.13','O25.2','O25.3','O26.00','O26.01','O26.02','O26.03','O26.11','O26.12','O26.13','O26.20','O26.21','O26.22','O26.23','O26.41','O26.42','O26.43','O26.50','O26.51','O26.52','O26.53','O26.611','O26.612','O26.613','O26.619','O26.62','O26.811','O26.812','O26.813','O26.819','O26.821','O26.822','O26.823','O26.829','O26.831','O26.832','O26.833','O26.839','O26.841','O26.842','O26.843','O26.849','O26.851','O26.852','O26.853','O26.859','O26.872','O26.873','O26.879','O26.891','O26.892','O26.893','O26.899','O26.90','O30.001','O30.002','O30.003','O30.009','O30.021','O30.022','O30.023','O30.029','O30.101','O30.102','O30.103','O30.109','O30.201','O30.202','O30.203','O30.209','O30.801','O30.802','O30.803','O30.809','O30.90','O30.91','O30.92','O30.93','O33.0','O33.1','O33.2','O33.7XX0','O33.7XX1','O33.7XX2','O33.7XX3','O33.7XX4','O33.7XX5','O33.7XX9','O33.8','O33.9','O34.00','O34.01','O34.02','O34.03','O34.10','O34.11','O34.12','O34.13','O34.211','O34.212','O34.219','O34.29','O34.30','O34.31','O34.32','O34.33','O34.40','O34.41','O34.42','O34.43','O34.511','O34.512','O34.513','O34.519','O34.521','O34.522','O34.523','O34.529','O34.531','O34.532','O34.533','O34.539','O34.591','O34.592','O34.593','O34.599','O34.60','O34.61','O34.62','O34.63','O34.70','O34.71','O34.72','O34.73','O34.80','O34.81','O34.82','O34.83','O34.90','O34.91','O34.92','O34.93','O35.7XX0','O35.7XX1','O35.7XX2','O35.7XX3','O35.7XX4','O35.7XX5','O35.7XX9','O35.8XX0','O35.8XX1','O35.8XX2','O35.8XX3','O35.8XX4','O35.8XX5','O35.8XX9','O36.0110','O36.0120','O36.0130','O36.0190','O36.0910','O36.0920','O36.0930','O36.0990','O36.1110','O36.1120','O36.1130','O36.1190','O36.1910','O36.1920','O36.1930','O36.1990','O36.5110','O36.5120','O36.5130','O36.5190','O36.5910','O36.5920','O36.5930','O36.5990','O36.8120','O36.8130','O36.8190','O36.8210','O36.8220','O36.8230','O36.8290','O36.8910','O36.8920','O36.8930','O36.8990','O41.1010','O41.1020','O41.1030','O41.1090','O41.1210','O41.1220','O41.1230','O41.1290','O41.1410','O41.1420','O41.1430','O41.1490','O42.00','O42.011','O42.012','O42.013','O42.02','O42.10','O42.111','O42.112','O42.113','O42.12','O43.011','O43.019','O43.101','O43.102','O43.103','O43.199','O43.211','O43.212','O43.213','O43.221','O43.222','O43.223','O43.231','O43.232','O43.233','O43.239','O43.811','O43.812','O43.813','O43.819','O43.91','O43.92','O43.93','O44.00','O44.01','O44.02','O44.03','O44.10','O44.11','O44.12','O44.13','O44.20','O44.21','O44.22','O44.23','O44.30','O44.31','O44.32','O44.33','O44.40','O44.41','O44.42','O44.43','O44.50','O44.51','O44.52','O44.53','O45.001','O45.002','O45.003','O45.011','O45.012','O45.013','O45.021','O45.022','O45.023','O45.091','O45.092','O45.093','O45.91','O45.92','O45.93','O46.001','O46.002','O46.003','O46.009','O46.011','O46.012','O46.013','O46.019','O46.021','O46.022','O46.023','O46.029','O46.091','O46.092','O46.093','O46.099','O46.90','O46.91','O46.92','O46.93','O47.00','O47.02','O47.03','O47.1','O47.9','O48.0','O48.1','O60.00','O60.02','O60.03','O61.0','O61.1','O61.9','O62.0','O62.1','O62.2','O62.3','O62.4','O62.9','O63.0','O63.1','O63.2','O63.9','O65.4','O65.5','O65.9','O66.0','O66.1','O66.40','O66.5','O66.8','O66.9','O67.0','O67.8','O67.9','O68','O70.0','O70.1','O70.20','O70.21','O70.22','O70.23','O70.3','O70.4','O70.9','O71.00','O71.02','O71.03','O71.1','O71.2','O71.3','O71.4','O71.5','O71.6','O71.7','O71.82','O71.89','O71.9','O72.0','O72.1','O72.2','O72.3','O73.0','O73.1','O74.1','O74.2','O74.3','O74.8','O74.9','O75.0','O75.1','O75.2','O75.3','O75.4','O75.5','O75.81','O75.89','O75.9','O76','O77.0','O80','O82','O85','O86.0','O86.11','O86.12','O86.13','O86.19','O86.20','O86.21','O86.22','O86.29','O86.4','O86.81','O86.89','O87.0','O87.1','O87.2','O87.3','O87.4','O87.8','O87.9','O88.011','O88.012','O88.013','O88.019','O88.02','O88.03','O88.111','O88.112','O88.113','O88.119','O88.12','O88.13','O88.211','O88.212','O88.213','O88.219','O88.22','O88.23','O88.311','O88.312','O88.313','O88.319','O88.32','O88.33','O88.811','O88.812','O88.813','O88.819','O88.82','O88.83','O89.09','O89.1','O89.2','O89.8','O89.9','O90.0','O90.1','O90.2','O90.3','O90.4','O90.5','O90.6','O90.81','O90.89','O90.9','O91.011','O91.012','O91.013','O91.019','O91.02','O91.111','O91.112','O91.113','O91.119','O91.12','O91.211','O91.212','O91.213','O91.219','O91.22','O91.23','O92.011','O92.012','O92.013','O92.019','O92.03','O92.111','O92.112','O92.113','O92.119','O92.13','O92.20','O92.29','O92.3','O92.5','O92.6','O92.70','O92.79','O94','O98.011','O98.012','O98.013','O98.019','O98.02','O98.03','O98.111','O98.112','O98.113','O98.119','O98.12','O98.13','O98.211','O98.212','O98.213','O98.219','O98.22','O98.23','O98.311','O98.312','O98.313','O98.319','O98.32','O98.33','O98.42','O98.43','O98.511','O98.512','O98.513','O98.519','O98.52','O98.53','O98.611','O98.612','O98.613','O98.619','O98.62','O98.63','O98.811','O98.812','O98.813','O98.819','O98.82','O98.83','O98.911','O98.912','O98.913','O98.919','O98.92','O98.93','O99.011','O99.012','O99.013','O99.019','O99.02','O99.03','O99.111','O99.112','O99.113','O99.119','O99.12','O99.13','O99.210','O99.211','O99.212','O99.213','O99.214','O99.215','O99.280','O99.281','O99.282','O99.283','O99.284','O99.285','O99.320','O99.321','O99.322','O99.323','O99.324','O99.325','O99.330','O99.331','O99.332','O99.333','O99.334','O99.335','O99.340','O99.341','O99.342','O99.343','O99.344','O99.345','O99.350','O99.351','O99.352','O99.353','O99.354','O99.355','O99.411','O99.412','O99.413','O99.419','O99.42','O99.43','O99.810','O99.814','O99.815','O99.834','O99.835','O99.840','O99.841','O99.842','O99.843','O99.844','O99.845','O99.89','Z33.1','Z33.2','Z33.3','Z34.00',
-'Z34.80','Z34.90','Z36','646.90'))
+where a.encounter_id in (:EncIds) and (a.icd in (SELECT PQRI_Value FROM pqri_data where nqf_number =?  and PQRI_calculation_Method=? and pqri_type='ICD') or (pr.loinc_observation='BMI' and pr.value ='' and pr.Snomed_Code<>'') 
+or a.icd in (SELECT PQRI_Value FROM pqri_data where nqf_number =?  and PQRI_calculation_Method=? and pqri_type='Diagnosis: Pregnancy Dx' ))
 UNION
 select distinct(a.Encounter_id),a.human_id,a.icd,ifnull(em.procedure_code,'') from problem_list a
 left join patient_results pr on a.human_id=pr.human_id
 left join e_m_coding as em on a.human_id=em.human_id
-where a.human_id in (:HumanIds) and str_to_date(date_diagnosed,'%d-%b-%Y') between '" + Fromdate.ToString("yyyy-MM-dd") + "' "
-                    + "and '" + Todate.ToString("yyyy-MM-dd") + "' " + @"and (a.icd ='Z51.5' or (pr.loinc_observation='BMI' and pr.value ='' and pr.Snomed_Code<>'') or a.icd in ('A34','O00.00','O00.01','O00.10','O00.11','O00.20',
-'O00.21','O00.80','O00.81','O00.90','O00.91','O01.9','O02.0','O02.1','O03.0','O03.1','O03.2','O03.30','O03.31','O03.32'
-,'O03.33','O03.34','O03.37','O03.39','O03.4','O03.5','O03.6','O03.7','O03.80','O03.81','O03.82','O03.83','O03.84',
-'O03.85','O03.86','O03.87','O03.88','O03.89','O03.9','O04.5','O04.6','O04.7','O04.80','O04.81','O04.82','O04.83',
-'O04.84','O04.85','O04.86','O04.87','O04.88','O04.89','O07.0','O07.1','O07.2','O07.30','O07.31','O07.32','O07.33','O07.34','O07.35','O07.36','O07.37','O07.38','O07.39','O07.4','O08.0','O08.1','O08.2','O08.3','O08.4','O08.5','O08.6','O08.7','O08.81','O08.82','O08.83','O08.89','O08.9','O09.00','O09.10','O09.211','O09.291','O09.30','O09.40','O09.41','O09.42','O09.43','O09.511','O09.512','O09.513','O09.519','O09.521','O09.522','O09.523','O09.529','O09.611','O09.621','O09.819','O09.821','O09.822','O09.823','O09.829','O09.891','O09.892','O09.893','O09.899','O09.90','O09.91','O09.92','O09.93','O09.A0','O10.011','O10.012','O10.013','O10.019','O10.03','O10.111','O10.112','O10.113','O10.119','O10.12','O10.13','O10.211','O10.212','O10.213','O10.219','O10.22','O10.23','O10.311','O10.312','O10.313','O10.319','O10.32','O10.33','O10.411','O10.412','O10.413','O10.419','O10.42','O10.43','O10.911','O10.912','O10.913','O10.919','O10.92','O10.93','O11.1','O11.2','O11.3','O11.4','O11.5','O11.9','O12.00','O12.01','O12.02','O12.03','O12.04','O12.05','O12.20','O12.21','O12.22','O12.23','O12.24','O12.25','O13.1','O13.2','O13.3','O13.4','O13.5','O13.9','O14.00','O14.02','O14.03','O14.04','O14.05','O14.10','O14.12','O14.13','O14.14','O14.15','O14.20','O14.22','O14.23','O14.24','O14.25','O14.90','O14.92','O14.93','O14.94','O14.95','O15.02','O15.03','O15.1','O15.2','O16.1','O16.2','O16.3','O16.4','O16.5','O16.9','O20.0','O20.8','O20.9','O21.0','O21.2','O21.8','O21.9','O22.00','O22.01','O22.02','O22.03','O22.10','O22.11','O22.12','O22.13','O22.20','O22.21','O22.22','O22.23','O22.30','O22.31','O22.32','O22.33','O22.40','O22.41','O22.42','O22.43','O22.50','O22.51','O22.52','O22.53','O22.90','O22.91','O22.92','O22.93','O23.00','O23.10','O23.20','O23.30','O23.40','O23.41','O23.42','O23.43','O23.519','O23.529','O23.599','O23.90','O23.91','O23.92','O23.93','O24.319','O24.32','O24.415','O24.419','O24.425','O24.429','O24.435','O24.439','O24.911','O24.912','O24.913','O24.92','O24.93','O25.10','O25.11','O25.12','O25.13','O25.2','O25.3','O26.00','O26.01','O26.02','O26.03','O26.11','O26.12','O26.13','O26.20','O26.21','O26.22','O26.23','O26.41','O26.42','O26.43','O26.50','O26.51','O26.52','O26.53','O26.611','O26.612','O26.613','O26.619','O26.62','O26.811','O26.812','O26.813','O26.819','O26.821','O26.822','O26.823','O26.829','O26.831','O26.832','O26.833','O26.839','O26.841','O26.842','O26.843','O26.849','O26.851','O26.852','O26.853','O26.859','O26.872','O26.873','O26.879','O26.891','O26.892','O26.893','O26.899','O26.90','O30.001','O30.002','O30.003','O30.009','O30.021','O30.022','O30.023','O30.029','O30.101','O30.102','O30.103','O30.109','O30.201','O30.202','O30.203','O30.209','O30.801','O30.802','O30.803','O30.809','O30.90','O30.91','O30.92','O30.93','O33.0','O33.1','O33.2','O33.7XX0','O33.7XX1','O33.7XX2','O33.7XX3','O33.7XX4','O33.7XX5','O33.7XX9','O33.8','O33.9','O34.00','O34.01','O34.02','O34.03','O34.10','O34.11','O34.12','O34.13','O34.211','O34.212','O34.219','O34.29','O34.30','O34.31','O34.32','O34.33','O34.40','O34.41','O34.42','O34.43','O34.511','O34.512','O34.513','O34.519','O34.521','O34.522','O34.523','O34.529','O34.531','O34.532','O34.533','O34.539','O34.591','O34.592','O34.593','O34.599','O34.60','O34.61','O34.62','O34.63','O34.70','O34.71','O34.72','O34.73','O34.80','O34.81','O34.82','O34.83','O34.90','O34.91','O34.92','O34.93','O35.7XX0','O35.7XX1','O35.7XX2','O35.7XX3','O35.7XX4','O35.7XX5','O35.7XX9','O35.8XX0','O35.8XX1','O35.8XX2','O35.8XX3','O35.8XX4','O35.8XX5','O35.8XX9','O36.0110','O36.0120','O36.0130','O36.0190','O36.0910','O36.0920','O36.0930','O36.0990','O36.1110','O36.1120','O36.1130','O36.1190','O36.1910','O36.1920','O36.1930','O36.1990','O36.5110','O36.5120','O36.5130','O36.5190','O36.5910','O36.5920','O36.5930','O36.5990','O36.8120','O36.8130','O36.8190','O36.8210','O36.8220','O36.8230','O36.8290','O36.8910','O36.8920','O36.8930','O36.8990','O41.1010','O41.1020','O41.1030','O41.1090','O41.1210','O41.1220','O41.1230','O41.1290','O41.1410','O41.1420','O41.1430','O41.1490','O42.00','O42.011','O42.012','O42.013','O42.02','O42.10','O42.111','O42.112','O42.113','O42.12','O43.011','O43.019','O43.101','O43.102','O43.103','O43.199','O43.211','O43.212','O43.213','O43.221','O43.222','O43.223','O43.231','O43.232','O43.233','O43.239','O43.811','O43.812','O43.813','O43.819','O43.91','O43.92','O43.93','O44.00','O44.01','O44.02','O44.03','O44.10','O44.11','O44.12','O44.13','O44.20','O44.21','O44.22','O44.23','O44.30','O44.31','O44.32','O44.33','O44.40','O44.41','O44.42','O44.43','O44.50','O44.51','O44.52','O44.53','O45.001','O45.002','O45.003','O45.011','O45.012','O45.013','O45.021','O45.022','O45.023','O45.091','O45.092','O45.093','O45.91','O45.92','O45.93','O46.001','O46.002','O46.003','O46.009','O46.011','O46.012','O46.013','O46.019','O46.021','O46.022','O46.023','O46.029','O46.091','O46.092','O46.093','O46.099','O46.90','O46.91','O46.92','O46.93','O47.00','O47.02','O47.03','O47.1','O47.9','O48.0','O48.1','O60.00','O60.02','O60.03','O61.0','O61.1','O61.9','O62.0','O62.1','O62.2','O62.3','O62.4','O62.9','O63.0','O63.1','O63.2','O63.9','O65.4','O65.5','O65.9','O66.0','O66.1','O66.40','O66.5','O66.8','O66.9','O67.0','O67.8','O67.9','O68','O70.0','O70.1','O70.20','O70.21','O70.22','O70.23','O70.3','O70.4','O70.9','O71.00','O71.02','O71.03','O71.1','O71.2','O71.3','O71.4','O71.5','O71.6','O71.7','O71.82','O71.89','O71.9','O72.0','O72.1','O72.2','O72.3','O73.0','O73.1','O74.1','O74.2','O74.3','O74.8','O74.9','O75.0','O75.1','O75.2','O75.3','O75.4','O75.5','O75.81','O75.89','O75.9','O76','O77.0','O80','O82','O85','O86.0','O86.11','O86.12','O86.13','O86.19','O86.20','O86.21','O86.22','O86.29','O86.4','O86.81','O86.89','O87.0','O87.1','O87.2','O87.3','O87.4','O87.8','O87.9','O88.011','O88.012','O88.013','O88.019','O88.02','O88.03','O88.111','O88.112','O88.113','O88.119','O88.12','O88.13','O88.211','O88.212','O88.213','O88.219','O88.22','O88.23','O88.311','O88.312','O88.313','O88.319','O88.32','O88.33','O88.811','O88.812','O88.813','O88.819','O88.82','O88.83','O89.09','O89.1','O89.2','O89.8','O89.9','O90.0','O90.1','O90.2','O90.3','O90.4','O90.5','O90.6','O90.81','O90.89','O90.9','O91.011','O91.012','O91.013','O91.019','O91.02','O91.111','O91.112','O91.113','O91.119','O91.12','O91.211','O91.212','O91.213','O91.219','O91.22','O91.23','O92.011','O92.012','O92.013','O92.019','O92.03','O92.111','O92.112','O92.113','O92.119','O92.13','O92.20','O92.29','O92.3','O92.5','O92.6','O92.70','O92.79','O94','O98.011','O98.012','O98.013','O98.019','O98.02','O98.03','O98.111','O98.112','O98.113','O98.119','O98.12','O98.13','O98.211','O98.212','O98.213','O98.219','O98.22','O98.23','O98.311','O98.312','O98.313','O98.319','O98.32','O98.33','O98.42','O98.43','O98.511','O98.512','O98.513','O98.519','O98.52','O98.53','O98.611','O98.612','O98.613','O98.619','O98.62','O98.63','O98.811','O98.812','O98.813','O98.819','O98.82','O98.83','O98.911','O98.912','O98.913','O98.919','O98.92','O98.93','O99.011','O99.012','O99.013','O99.019','O99.02','O99.03','O99.111','O99.112','O99.113','O99.119','O99.12','O99.13','O99.210','O99.211','O99.212','O99.213','O99.214','O99.215','O99.280','O99.281','O99.282','O99.283','O99.284','O99.285','O99.320','O99.321','O99.322','O99.323','O99.324','O99.325','O99.330','O99.331','O99.332','O99.333','O99.334','O99.335','O99.340','O99.341','O99.342','O99.343','O99.344','O99.345','O99.350','O99.351','O99.352','O99.353','O99.354','O99.355','O99.411','O99.412','O99.413','O99.419','O99.42','O99.43','O99.810','O99.814','O99.815','O99.834','O99.835','O99.840','O99.841','O99.842','O99.843','O99.844','O99.845','O99.89','Z33.1','Z33.2','Z33.3','Z34.00',
-'Z34.80','Z34.90','Z36','646.90'));";
+where a.human_id in (:HumanIds) and str_to_date(date_diagnosed,'%d-%b-%Y') 
+between '" + Fromdate.ToString("yyyy-MM-dd") + "' "
+                    + "and '" + Todate.ToString("yyyy-MM-dd") + "' " + @"and (a.icd in (SELECT PQRI_Value FROM pqri_data where nqf_number =?  and PQRI_calculation_Method=? and pqri_type='ICD') or (pr.loinc_observation='BMI'
+and pr.value ='' and pr.Snomed_Code<>'') or a.icd in (SELECT PQRI_Value FROM pqri_data where nqf_number =?  and PQRI_calculation_Method=? and pqri_type='Diagnosis: Pregnancy Dx'));";
                     ISQLQuery Encounterexclusionrquery69 = iMySession.CreateSQLQuery(sQuery);
 
                     Encounterexclusionrquery69.SetParameterList("EncIds", ulEncListDemon69.ToArray());
+                    Encounterexclusionrquery69.SetParameter(0, "CMS69v5");
+
+                    Encounterexclusionrquery69.SetParameter(1, "Exclusion");
+                    Encounterexclusionrquery69.SetParameter(2, "CMS69v5");
+
+                    Encounterexclusionrquery69.SetParameter(3, "Exclusion");
+
                     Encounterexclusionrquery69.SetParameterList("HumanIds", ulHumanListDemon69.ToArray());
+
+                    Encounterexclusionrquery69.SetParameter(4, "CMS69v5");
+
+                    Encounterexclusionrquery69.SetParameter(5, "Exclusion");
+
+                    Encounterexclusionrquery69.SetParameter(6, "CMS69v5");
+
+                    Encounterexclusionrquery69.SetParameter(7, "Exclusion");
                     //Encounterexclusionrquery69.SetParameter(0, Fromdate.ToString("yyyy-MM-dd"));
                     //Encounterexclusionrquery69.SetParameter(1, Todate.ToString("yyyy-MM-dd"));
                     //Enc_Exclusion_lst69 = new ArrayList(Encounterexclusionrquery69.List());
@@ -9223,6 +9237,7 @@ where a.human_id in (:HumanIds) and str_to_date(date_diagnosed,'%d-%b-%Y') betwe
                             ulEncListDenoFinal.Add(Convert.ToUInt32(objEnc[0]));
                             objEncList.Encounter_ID = Convert.ToUInt32(objEnc[0]);
                             objEncList.Human_ID = Convert.ToUInt32(objEnc[1]);
+                            ulHumanListDenoFinal.Add(Convert.ToUInt32(objEnc[1]));
                             string[] ary = { objEnc[0].ToString(), objEnc[1].ToString(), objEnc[3].ToString(), objEnc[2].ToString(), "", "", "", "CMS69D", "CMS69v5" };
                             icdcptListDenominator.Add(ary);
                             lstEncList68.Add(objEncList);
@@ -9246,13 +9261,35 @@ where a.human_id in (:HumanIds) and str_to_date(date_diagnosed,'%d-%b-%Y') betwe
 
                     IQuery Encounterumeratorquery69 = iMySession.GetNamedQuery("PQRI.GetNumeratorCMS69.BMI");
                     Encounterumeratorquery69.SetParameterList("EncIds", ulEncListDenoFinal.ToArray());
+                    Encounterumeratorquery69.SetParameterList("HumanIds", ulHumanListDenoFinal.ToArray());
+                    Encounterumeratorquery69.SetParameterList("HumanIds", ulHumanListDenoFinal.ToArray());
+
+
                     //Encounterumeratorquery69.SetString(0, "2017-12-17");
                     //Encounterumeratorquery69.SetString(1, "2017-12-17");
                     //Encounterumeratorquery69.SetString(2, "2017-12-17");
                     // Encounterumeratorquery69.SetString(0, Todate.ToString("yyyy-MM-dd"));
-                    Encounterumeratorquery69.SetParameterList("EncIds", ulEncListDenoFinal.ToArray());
+                    //Encounterumeratorquery69.SetParameterList("EncIds", ulEncListDenoFinal.ToArray())  ;
+                    Encounterumeratorquery69.SetString(0, Fromdate.ToString("yyyy-MM-dd"));
+                    Encounterumeratorquery69.SetString(1, Fromdate.ToString("yyyy-MM-dd"));
+                    Encounterumeratorquery69.SetParameter(2, "CMS69v5");
+                    Encounterumeratorquery69.SetParameter(3, "Numerator");
+                    Encounterumeratorquery69.SetParameter(4, "CMS69v5");
+                    Encounterumeratorquery69.SetParameter(5, "Numerator");
+                    Encounterumeratorquery69.SetParameter(6, "CMS69v5");
+                    Encounterumeratorquery69.SetParameter(7, "Numerator");
+
+                    Encounterumeratorquery69.SetString(8, Fromdate.ToString("yyyy-MM-dd"));
+                    Encounterumeratorquery69.SetString(9, Fromdate.ToString("yyyy-MM-dd"));
+                    Encounterumeratorquery69.SetParameter(10, "CMS69v5");
+                    Encounterumeratorquery69.SetParameter(11, "Numerator");
+                    Encounterumeratorquery69.SetParameter(12, "CMS69v5");
+                    Encounterumeratorquery69.SetParameter(13, "Numerator");
+                    Encounterumeratorquery69.SetParameter(14, "CMS69v5");
+                    Encounterumeratorquery69.SetParameter(15, "Numerator");
+                    
                     // Encounterumeratorquery69.SetString(1, Todate.ToString("yyyy-MM-dd"));
-                    Encounterumeratorquery69.SetParameterList("EncIds", ulEncListDenoFinal.ToArray());
+                    //Encounterumeratorquery69.SetParameterList("EncIds", ulEncListDenoFinal.ToArray());
                     // Encounterumeratorquery69.SetString(2, Todate.ToString("yyyy-MM-dd"));
                     ArrayList Enc_Numerator_lst69 = new ArrayList(Encounterumeratorquery69.List());
                     IList<Encounter> lstEncNumList68 = new List<Encounter>();
@@ -9261,7 +9298,7 @@ where a.human_id in (:HumanIds) and str_to_date(date_diagnosed,'%d-%b-%Y') betwe
                         for (int i = 0; i < Enc_Numerator_lst69.Count; i++)
                         {
                             object[] objEnc = (object[])Enc_Numerator_lst69[i];
-                            if (Convert.ToDateTime(objEnc[4]) >= (Convert.ToDateTime(objEnc[5])).AddMonths(-6) && Convert.ToDateTime(objEnc[4]) <= Todate)
+                            if (objEnc[4] != null && objEnc[5] != null && Convert.ToDateTime(objEnc[4]) >= (Convert.ToDateTime(objEnc[5])).AddMonths(-6) && Convert.ToDateTime(objEnc[4]) <= Todate)
                             {
                                 Encounter objEncList = new Encounter();
                                 objEncList.Encounter_ID = Convert.ToUInt32(objEnc[0]);
@@ -9318,6 +9355,9 @@ where a.human_id in (:HumanIds) and str_to_date(date_diagnosed,'%d-%b-%Y') betwe
                 EncounterDenominatorquery127.SetString(0, Fromdate.ToString("yyyy-MM-dd"));
                 EncounterDenominatorquery127.SetString(1, Todate.ToString("yyyy-MM-dd"));
                 EncounterDenominatorquery127.SetString(2, Convert.ToString(ulPhysician_id));
+
+                EncounterDenominatorquery127.SetString(3, "CMS127v5");
+                EncounterDenominatorquery127.SetString(4, "Denominator");
                 ArrayList Enc_Denominator_lst127 = new ArrayList(EncounterDenominatorquery127.List());
 
                 //Denominator
@@ -9328,7 +9368,8 @@ where a.human_id in (:HumanIds) and str_to_date(date_diagnosed,'%d-%b-%Y') betwe
                 DenominatorExclusion = 0;
 
                 //Numerator
-                IList<ulong> ulEncList127 = new List<ulong>();
+                //IList<ulong> ulEncList127 = new List<ulong>();
+                IList<ulong> ulHumanList127 = new List<ulong>();
                 lstEncList68 = new List<Encounter>();
                 if (Enc_Denominator_lst127 != null && Enc_Denominator_lst127.Count > 0)
                 {
@@ -9341,7 +9382,8 @@ where a.human_id in (:HumanIds) and str_to_date(date_diagnosed,'%d-%b-%Y') betwe
                         Encounter objEncList = new Encounter();
                         objEncList.Encounter_ID = Convert.ToUInt32(objEnc[0]);
                         objEncList.Human_ID = Convert.ToUInt32(objEnc[1]);
-                        ulEncList127.Add(Convert.ToUInt32(objEnc[0]));
+                        //ulEncList127.Add(Convert.ToUInt32(objEnc[0]));
+                        ulHumanList127.Add(Convert.ToUInt32(objEnc[1]));
                         string[] ary = { objEnc[0].ToString(), objEnc[1].ToString(), "", objEnc[2].ToString(), "", "", "", "CMS127D", "CMS127v5" };
                         icdcptListDenominator.Add(ary);
                         lstEncList68.Add(objEncList);
@@ -9358,7 +9400,10 @@ where a.human_id in (:HumanIds) and str_to_date(date_diagnosed,'%d-%b-%Y') betwe
                     if (Enc_Denominator_lst127 != null && Enc_Denominator_lst127.Count > 0)
                     {
                         IQuery Encounterumeratorquery127 = iMySession.GetNamedQuery("PQRI.GetNumeratorCMS127.Pneumococcal");
-                        Encounterumeratorquery127.SetParameterList("EncIds", ulEncList127.ToArray());
+                        //Encounterumeratorquery127.SetParameterList("EncIds", ulEncList127.ToArray());
+                        Encounterumeratorquery127.SetParameterList("HumanIds", ulHumanList127.ToArray());
+                        Encounterumeratorquery127.SetString(0, "CMS127v5");
+                        Encounterumeratorquery127.SetString(1, "Numerator");
                         ArrayList Enc_Numerator_lst127 = new ArrayList(Encounterumeratorquery127.List());
                         if (Enc_Numerator_lst127 != null)
                         {
@@ -9404,6 +9449,11 @@ where a.human_id in (:HumanIds) and str_to_date(date_diagnosed,'%d-%b-%Y') betwe
                 {
                     EncounterDenominatorquery138 = iMySession.GetNamedQuery("PQRI.GetDenominatorList2CMS138.Tobacco");
                     EncounterDenominatorquery138.SetParameterList("EncIds", Enc_Denominator_lst138.ToArray());
+
+                    EncounterDenominatorquery138.SetString(0, "CMS138v5");
+                    EncounterDenominatorquery138.SetString(1, "Denominator");
+                    EncounterDenominatorquery138.SetString(2, "CMS138v5");
+                    EncounterDenominatorquery138.SetString(3, "Denominator");
                     Enc_Denominator_lst138 = new ArrayList(EncounterDenominatorquery138.List());
 
                     if (Enc_Denominator_lst138 != null && Enc_Denominator_lst138.Count > 0)
@@ -9456,6 +9506,12 @@ where a.human_id in (:HumanIds) and str_to_date(date_diagnosed,'%d-%b-%Y') betwe
                 {
                     IQuery Encounterexcpquery138 = iMySession.GetNamedQuery("PQRI.GetExceptionCMS138.Tobacco");
                     Encounterexcpquery138.SetParameterList("EncIds", Enc_Denominator_lst138.ToArray());
+
+                    Encounterexcpquery138.SetString(0, "CMS138v5");
+                    Encounterexcpquery138.SetString(1, "Exception");
+                    Encounterexcpquery138.SetString(2, "CMS138v5");
+                    Encounterexcpquery138.SetString(3, "Exception");
+
                     ArrayList Enc_exceptionr_lst138 = new ArrayList(Encounterexcpquery138.List());
                     lstEncList68 = new List<Encounter>();
                     if (Enc_exceptionr_lst138 != null && Enc_exceptionr_lst138.Count > 0)
@@ -9507,6 +9563,11 @@ where a.human_id in (:HumanIds) and str_to_date(date_diagnosed,'%d-%b-%Y') betwe
 
                     IQuery Encounterumeratorquery138 = iMySession.GetNamedQuery("PQRI.GetNumeratorCMS138.Tobacco");
                     Encounterumeratorquery138.SetParameterList("EncIds", ulEncList138.ToArray());
+                    Encounterumeratorquery138.SetString(0, "CMS138v5");
+                    Encounterumeratorquery138.SetString(1, "Numerator");
+                    Encounterumeratorquery138.SetString(2, "CMS138v5");
+                    Encounterumeratorquery138.SetString(3, "Numerator");
+
                     //Encounterumeratorquery138.SetString(0, Fromdate.ToString("yyyy-MM-dd"));
                     //Encounterumeratorquery138.SetString(1, Todate.ToString("yyyy-MM-dd"));
                     //Encounterumeratorquery138.SetString(2, Fromdate.ToString("yyyy-MM-dd"));
@@ -9582,6 +9643,8 @@ where a.human_id in (:HumanIds) and str_to_date(date_diagnosed,'%d-%b-%Y') betwe
                     EncounterDenominatorquery165 = iMySession.GetNamedQuery("PQRI.GetDenominatorList1CMS165.ControllingHighBP");
 
                     EncounterDenominatorquery165.SetParameterList("EncIds", Enc_Denominator_lst165.ToArray());
+                    EncounterDenominatorquery165.SetString(0, "CMS165v5");
+                    EncounterDenominatorquery165.SetString(1, "Denominator");
                     Enc_Denominator_lst165 = new ArrayList(EncounterDenominatorquery165.List());
 
                     if (Enc_Denominator_lst165 != null && Enc_Denominator_lst165.Count > 0)
@@ -9603,7 +9666,10 @@ where a.human_id in (:HumanIds) and str_to_date(date_diagnosed,'%d-%b-%Y') betwe
                         EncounterDenominatorquery165.SetParameter(0, Todate.ToString("yyyy-MM-dd"));
                         EncounterDenominatorquery165.SetParameterList("EncIds", ulEncList165Deno.ToArray());
                         EncounterDenominatorquery165.SetParameterList("EncIds_Ass", ulEncList165Encounter.ToArray());
-
+                        EncounterDenominatorquery165.SetString(1, "CMS165v5");
+                        EncounterDenominatorquery165.SetString(2, "Denominator");
+                        EncounterDenominatorquery165.SetString(3, "CMS165v5");
+                        EncounterDenominatorquery165.SetString(4, "Denominator");
                         Enc_Denominator_lst165 = new ArrayList(EncounterDenominatorquery165.List());
                     }
 
@@ -9611,6 +9677,13 @@ where a.human_id in (:HumanIds) and str_to_date(date_diagnosed,'%d-%b-%Y') betwe
                     {
                         IQuery EncounterExclusionrquery165 = iMySession.GetNamedQuery("PQRI.GetExclusionCMS165.ControllingHighBP");
                         EncounterExclusionrquery165.SetParameterList("EncIds", Enc_Denominator_lst165.ToArray());
+                        EncounterExclusionrquery165.SetString(0, "CMS165v5");
+                        EncounterExclusionrquery165.SetString(1, "Exclusion");
+                        EncounterExclusionrquery165.SetString(2, "CMS165v5");
+                        EncounterExclusionrquery165.SetString(3, "Exclusion");
+                        EncounterExclusionrquery165.SetString(4, "CMS165v5");
+                        EncounterExclusionrquery165.SetString(5, "Exclusion");
+
                         Enc_exclusion_lst165 = new ArrayList(EncounterExclusionrquery165.List());
                         lstEncList68 = new List<Encounter>();
 
@@ -9812,6 +9885,13 @@ where a.human_id in (:HumanIds) and str_to_date(date_diagnosed,'%d-%b-%Y') betwe
                 EncounterDenominatorquery122.SetString(0, Fromdate.ToString("yyyy-MM-dd"));
                 EncounterDenominatorquery122.SetString(1, Todate.ToString("yyyy-MM-dd"));
                 EncounterDenominatorquery122.SetString(2, Convert.ToString(ulPhysician_id));
+                EncounterDenominatorquery122.SetString(3, "CMS122v5");
+                EncounterDenominatorquery122.SetString(4, "Denominator");
+                EncounterDenominatorquery122.SetString(5, "CMS122v5");
+                EncounterDenominatorquery122.SetString(6, "Denominator");
+                EncounterDenominatorquery122.SetString(7, "CMS122v5");
+                EncounterDenominatorquery122.SetString(8, "Denominator");
+
                 ArrayList Enc_Denominator_lst122 = new ArrayList(EncounterDenominatorquery122.List());
 
                 lstEncList68 = new List<Encounter>();
@@ -9869,6 +9949,9 @@ where a.human_id in (:HumanIds) and str_to_date(date_diagnosed,'%d-%b-%Y') betwe
                     }
                     IQuery Encounterumeratorquery122 = iMySession.GetNamedQuery("PQRI.GetNumeratorCMS122.HBA1c");
                     Encounterumeratorquery122.SetParameterList("EncIds", ulEncList122.ToArray());
+
+
+
                     ArrayList Enc_Numerator_lst122 = new ArrayList(Encounterumeratorquery122.List());
 
                     for (int i = 0; i < Enc_Numerator_lst122.Count; i++)
@@ -9923,6 +10006,16 @@ where a.human_id in (:HumanIds) and str_to_date(date_diagnosed,'%d-%b-%Y') betwe
                     IQuery EncounterDenominator1query147 = iMySession.GetNamedQuery("PQRI.GetDenominatorList1CMS147.Influenza");
 
                     EncounterDenominator1query147.SetParameterList("EncIds", Enc_Denominator_lst147.ToArray());
+                    EncounterDenominator1query147.SetString(0, "CMS147v6");
+                    EncounterDenominator1query147.SetString(1, "Denominator");
+                    EncounterDenominator1query147.SetString(2, "CMS147v6");
+                    EncounterDenominator1query147.SetString(3, "Denominator");
+                    EncounterDenominator1query147.SetString(4, "CMS147v6");
+                    EncounterDenominator1query147.SetString(5, "Denominator");
+                    EncounterDenominator1query147.SetString(6, "CMS147v6");
+                    EncounterDenominator1query147.SetString(7, "Denominator");
+
+
                     Enc_Denominator1_lst147 = new ArrayList(EncounterDenominator1query147.List());
 
 
@@ -9938,6 +10031,11 @@ where a.human_id in (:HumanIds) and str_to_date(date_diagnosed,'%d-%b-%Y') betwe
                 {
                     IQuery EncounterExceptionrquery147 = iMySession.GetNamedQuery("PQRI.GetDenominatorExceptionCMS147.Influenza");
                     EncounterExceptionrquery147.SetParameterList("EncIds", Enc_Denominator1_lst147.ToArray());
+
+                    EncounterExceptionrquery147.SetString(0, "CMS147v6");
+                    EncounterExceptionrquery147.SetString(1, "Exception");
+                    EncounterExceptionrquery147.SetString(2, "CMS147v6");
+                    EncounterExceptionrquery147.SetString(3, "Exception");
                     Enc_exception_lst147 = new ArrayList(EncounterExceptionrquery147.List());
                 }
                 if (Enc_exception_lst147 != null && Enc_exception_lst147.Count > 0)
@@ -10046,11 +10144,16 @@ where a.human_id in (:HumanIds) and str_to_date(date_diagnosed,'%d-%b-%Y') betwe
                 {
 
                     IQuery Encounterumeratorquery147 = iMySession.GetNamedQuery("PQRI.GetNumeratorCMS147.Influenza");
-                    Encounterumeratorquery147.SetString(0, Fromdate.ToString("yyyy-MM-dd"));
-                    Encounterumeratorquery147.SetString(1, Fromdate.ToString("yyyy-MM-dd"));
-                    Encounterumeratorquery147.SetString(2, Fromdate.ToString("yyyy-MM-dd"));
-                    Encounterumeratorquery147.SetString(3, Fromdate.ToString("yyyy-MM-dd"));
+                    Encounterumeratorquery147.SetString(4, Fromdate.ToString("yyyy-MM-dd"));
+                    Encounterumeratorquery147.SetString(5, Fromdate.ToString("yyyy-MM-dd"));
+                    Encounterumeratorquery147.SetString(6, Fromdate.ToString("yyyy-MM-dd"));
+                    Encounterumeratorquery147.SetString(7, Fromdate.ToString("yyyy-MM-dd"));
                     Encounterumeratorquery147.SetParameterList("EncIds", ulEncList147.ToArray());
+
+                    Encounterumeratorquery147.SetString(0, "CMS147v6");
+                    Encounterumeratorquery147.SetString(1, "Numerator");
+                    Encounterumeratorquery147.SetString(2, "CMS147v6");
+                    Encounterumeratorquery147.SetString(3, "Numerator");
                     ArrayList Enc_Numerator_lst147 = new ArrayList(Encounterumeratorquery147.List());
                     for (int i = 0; i < Enc_Numerator_lst147.Count; i++)
                     {
@@ -10093,6 +10196,9 @@ where a.human_id in (:HumanIds) and str_to_date(date_diagnosed,'%d-%b-%Y') betwe
                 EncounterDenominatorquery125.SetString(0, Fromdate.ToString("yyyy-MM-dd"));
                 EncounterDenominatorquery125.SetString(1, Todate.ToString("yyyy-MM-dd"));
                 EncounterDenominatorquery125.SetString(2, Convert.ToString(ulPhysician_id));
+                EncounterDenominatorquery125.SetString(3, "CMS125v5");
+                EncounterDenominatorquery125.SetString(4, "Denominator");
+
                 ArrayList Enc_Denominator_lst125 = new ArrayList(EncounterDenominatorquery125.List());
                 ArrayList Enc_Denominator_lst125_1 = new ArrayList();
                 ArrayList Enc_Exclusion_lst125 = new ArrayList();
@@ -10112,6 +10218,14 @@ where a.human_id in (:HumanIds) and str_to_date(date_diagnosed,'%d-%b-%Y') betwe
                     }
                     IQuery EncounterExlusionquery125 = iMySession.GetNamedQuery("PQRI.GetExceptionCMS125.BreastCancer");
                     EncounterExlusionquery125.SetParameterList("EncIds", ulEncList125_DEnominator.ToArray());
+
+                    EncounterExlusionquery125.SetString(0, "CMS125v5");
+                    EncounterExlusionquery125.SetString(1, "Exception");
+
+                    EncounterExlusionquery125.SetString(2, "CMS125v5");
+                    EncounterExlusionquery125.SetString(3, "Exception");
+
+
                     Enc_Exclusion_lst125 = new ArrayList(EncounterExlusionquery125.List());
                     lstEncList68 = new List<Encounter>();
                     if (Enc_Exclusion_lst125 != null && Enc_Exclusion_lst125.Count > 0)
@@ -10262,6 +10376,9 @@ where a.human_id in (:HumanIds) and str_to_date(date_diagnosed,'%d-%b-%Y') betwe
                 EncounterDenominatorquery22.SetString(0, Fromdate.ToString("yyyy-MM-dd"));
                 EncounterDenominatorquery22.SetString(1, Todate.ToString("yyyy-MM-dd"));
                 EncounterDenominatorquery22.SetString(2, Convert.ToString(ulPhysician_id));
+                EncounterDenominatorquery22.SetString(3, "CMS22v5");
+                EncounterDenominatorquery22.SetString(4, "Denominator");
+
                 ArrayList Enc_Denominator_lst22 = new ArrayList(EncounterDenominatorquery22.List());
                 ArrayList Enc_Exception_lst22 = new ArrayList();
                 ArrayList Enc_Exclusion_lst22 = new ArrayList();
@@ -10335,7 +10452,7 @@ where a.human_id in (:HumanIds) and str_to_date(date_diagnosed,'%d-%b-%Y') betwe
                     string sQuery = @"select c.human_id from assessment B left join encounter c on B.human_id = c.human_id
 left join patient_results pr on pr.human_id=c.human_id
 left join e_m_coding as em on em.Encounter_Id=c.Encounter_Id
-where ICD in ('H35.039','I10','I11.0','I11.9','I12.0','I12.9','I13.0','I13.10','I13.11','I13.2','I15.0','I16.0','I16.1','I16.9','I67.4')
+where ICD in (SELECT PQRI_Value FROM pqri_data where nqf_number =?  and PQRI_calculation_Method=? and PQRI_Type in ('ICD'))
 and date(c.date_of_service)<='" + Todate.ToString("yyyy-MM-dd") + "' "
 + @"and c.human_id in (:EncIds)
 Union
@@ -10343,11 +10460,19 @@ select c.human_id from Problem_List B left join
 encounter c on B.Human_Id = c.Human_Id
 left join patient_results pr on pr.encounter_id=c.encounter_id
 left join e_m_coding as em on em.human_id=c.human_id
-where ICD in ('H35.039','I10','I11.0','I11.9','I12.0','I12.9','I13.0','I13.10','I13.11','I13.2','I15.0','I16.0','I16.1','I16.9','I67.4')
+where ICD in (SELECT PQRI_Value FROM pqri_data where nqf_number =?  and PQRI_calculation_Method=? and PQRI_Type in ('ICD'))
 and date(c.date_of_service)<='" + Todate.ToString("yyyy-MM-dd") + "' and c.human_id in (:EncIds);";
 
                     ISQLQuery SQL = iMySession.CreateSQLQuery(sQuery);
                     SQL.SetParameterList("EncIds", ulEncListException22_human.ToArray());
+
+                    SQL.SetString(0, "CMS22v5");
+                    SQL.SetString(1, "Exclusion");
+
+
+                    SQL.SetString(2, "CMS22v5");
+                    SQL.SetString(3, "Exclusion");
+
                     Enc_Exclusion_lst22 = new ArrayList(SQL.List());
                     ulEncListExclusion22 = new List<ulong>();
                     for (int i = 0; i < Enc_Exclusion_lst22.Count; i++)
@@ -10489,16 +10614,18 @@ and date(c.date_of_service)<='" + Todate.ToString("yyyy-MM-dd") + "' and c.human
 
                     IQuery Encounterumeratorquery22 = iMySession.GetNamedQuery("PQRI.GetNumeratorCMS22.HBpFollowup");
                     Encounterumeratorquery22.SetParameterList("EncIds", ulEncList22.ToArray());
+                    Encounterumeratorquery22.SetString(0,"CMS22v10");
+                    Encounterumeratorquery22.SetString(1, "Numerator");
                     ArrayList Enc_Numerator_lst22 = new ArrayList(Encounterumeratorquery22.List());
-                      lstEncList68 = new List<Encounter>();
-                     lstEncList68 = new List<Encounter>();
+                    lstEncList68 = new List<Encounter>();
+                    lstEncList68 = new List<Encounter>();
                     for (int i = 0; i < Enc_Numerator_lst22.Count; i++)
                     {
                         object[] objEnc = (object[])Enc_Numerator_lst22[i];
 
 
-                         Encounter obj = new Encounter();
-                       
+                        Encounter obj = new Encounter();
+
                         obj.Encounter_ID = Convert.ToUInt32(objEnc[0].ToString());
                         obj.Human_ID = Convert.ToUInt32(objEnc[1].ToString());
 
@@ -10508,7 +10635,7 @@ and date(c.date_of_service)<='" + Todate.ToString("yyyy-MM-dd") + "' and c.human
                             snomed = objEnc[2].ToString();
                         string[] ary = { objEnc[0].ToString(), objEnc[1].ToString(), "", "", "", snomed, "", "CMS22N", "", "", "CMS22v5" };
                         icdcptListNumerator.Add(ary);
-                            lstEncList68.Add(obj);
+                        lstEncList68.Add(obj);
 
                     }
                     if (Enc_Numerator_lst22.Count > 0)
@@ -10531,7 +10658,182 @@ and date(c.date_of_service)<='" + Todate.ToString("yyyy-MM-dd") + "' and c.human
                 icdcptListDenominatorExclusion.Clear();
                 icdcptListDenominatorException.Clear();
                 #endregion
+                //Colorectal Cancer Screening
+                #region CMS130v10
+                //Denominator
+                IQuery EncounterDenominatorquery130 = iMySession.GetNamedQuery("PQRI.GetDenominator1CMS130.ColorectalCancer");
+                EncounterDenominatorquery130.SetString(0, Fromdate.ToString("yyyy-MM-dd"));
+                EncounterDenominatorquery130.SetString(1, Todate.ToString("yyyy-MM-dd"));
+                EncounterDenominatorquery130.SetString(2, Convert.ToString(ulPhysician_id));
 
+                EncounterDenominatorquery130.SetParameter(3, "CMS130v10");
+
+                EncounterDenominatorquery130.SetParameter(4, "Denominator");
+                ArrayList Enc_Denominator_lst130 = new ArrayList(EncounterDenominatorquery130.List());
+                ArrayList Enc_Denominator_lst130_1 = new ArrayList();
+                ArrayList Enc_Exclusion_lst130 = new ArrayList();
+                ArrayList Enc_Exclusion1_lst130 = new ArrayList();
+
+                //Denominator Exception
+                DenominatorException = 0;
+                IList<ulong> ulEncList130_exception = new List<ulong>();
+                IList<ulong> ulEncList130_DEnominator = new List<ulong>();
+                IList<ulong> ulEncList130_DEnominator1 = new List<ulong>();
+                IList<ulong> ulEncList130 = new List<ulong>();
+                if (Enc_Denominator_lst130 != null && Enc_Denominator_lst130.Count > 0)
+                {
+                    for (int i = 0; i < Enc_Denominator_lst130.Count; i++)
+                    {
+                        ulEncList130_DEnominator.Add(Convert.ToUInt32(Enc_Denominator_lst130[i]));
+                    }
+                    IQuery EncounterExlusionquery130 = iMySession.GetNamedQuery("PQRI.GetExceptionCMS130.ColorectalCancer");
+                    EncounterExlusionquery130.SetParameterList("EncIds", ulEncList130_DEnominator.ToArray());
+
+                    EncounterExlusionquery130.SetParameter(0, "CMS130v10");
+
+                    EncounterExlusionquery130.SetParameter(1, "Exclusion");
+                    Enc_Exclusion_lst130 = new ArrayList(EncounterExlusionquery130.List());
+                    lstEncList68 = new List<Encounter>();
+                    if (Enc_Exclusion_lst130 != null && Enc_Exclusion_lst130.Count > 0)
+                    {
+                        for (int i = 0; i < Enc_Exclusion_lst130.Count; i++)
+                        {
+                            Encounter obj = new Encounter();
+                            object[] objEnc = (object[])Enc_Exclusion_lst130[i];
+                            obj.Encounter_ID = Convert.ToUInt32(objEnc[0].ToString());
+                            obj.Human_ID = Convert.ToUInt32(objEnc[1].ToString());
+                            ulEncList130_exception.Add(Convert.ToUInt32(objEnc[1]));
+
+                            lstEncList68.Add(obj);
+
+                        }
+                        if (lstEncList68.Count > 0)
+                        {
+                            var lists = (from m in lstEncList68
+                                         group m by m.Human_ID).ToList();
+
+                            DenominatorExclusion = lists.Count;
+                        }
+                    }
+                }
+                if (Enc_Exclusion_lst130 != null && Enc_Exclusion_lst130.Count > 0)
+                {
+                    //for (int i = 0; i < Enc_Exclusion_lst130.Count; i++)
+                    //{
+                    //    ulEncList130_DEnominator1.Add(Convert.ToUInt32(Enc_Exclusion_lst130[i]));
+                    //}
+                    IQuery EncounterExlusionquery1130 = iMySession.GetNamedQuery("PQRI.GetException1CMS130.ColorectalCancer");
+                    EncounterExlusionquery1130.SetParameterList("EncIds", ulEncList130_exception.ToArray());
+                    Enc_Exclusion1_lst130 = new ArrayList(EncounterExlusionquery1130.List());
+
+                    if (Enc_Exclusion1_lst130 != null && Enc_Exclusion1_lst130.Count > 0)
+                    {
+                        for (int i = 0; i < Enc_Exclusion1_lst130.Count; i++)
+                        {
+
+                            object[] objEnc = (object[])Enc_Exclusion1_lst130[i];
+                            string icd = "";
+                            string cpt = "";
+                            if (objEnc[2] != null)
+                            {
+                                icd = objEnc[2].ToString();
+                            }
+                            if (objEnc[3] != null)
+                            {
+                                cpt = objEnc[3].ToString();
+                            }
+                            string[] ary = { objEnc[0].ToString(), objEnc[1].ToString(), icd, cpt, "", "", "", "CMS130DE", "CMS130v10" };
+                            icdcptListDenominatorException.Add(ary);
+
+
+
+                        }
+
+                    }
+                }
+                if (Enc_Denominator_lst130 != null && Enc_Denominator_lst130.Count > 0)
+                {
+
+                    if (Enc_Exclusion_lst130.Count > 0)
+                    {
+                        IQuery EncounterDenominator2query130 = iMySession.GetNamedQuery("PQRI.GetDenominator2withExceptionCMS130.ColorectalCancer");
+                        EncounterDenominator2query130.SetParameterList("EncIds", ulEncList130_DEnominator.ToArray());
+                        EncounterDenominator2query130.SetParameterList("EncIdExc", ulEncList130_exception.ToArray());
+                        Enc_Denominator_lst130_1 = new ArrayList(EncounterDenominator2query130.List());
+                    }
+                    else
+                    {
+                        IQuery EncounterDenominator2query130 = iMySession.GetNamedQuery("PQRI.GetDenominator2CMS130.ColorectalCancer");
+                        EncounterDenominator2query130.SetParameterList("EncIds", ulEncList130_DEnominator.ToArray());
+
+                        Enc_Denominator_lst130_1 = new ArrayList(EncounterDenominator2query130.List());
+                    }
+                    lstEncList68 = new List<Encounter>();
+                    for (int i = 0; i < Enc_Denominator_lst130_1.Count; i++)
+                    {
+                        Encounter obj = new Encounter();
+                        object[] objEnc = (object[])Enc_Denominator_lst130_1[i];
+                        obj.Encounter_ID = Convert.ToUInt32(objEnc[0].ToString());
+                        obj.Human_ID = Convert.ToUInt32(objEnc[1].ToString());
+                        ulEncList130.Add(Convert.ToUInt32(objEnc[1].ToString()));
+                        string[] ary = { objEnc[0].ToString(), objEnc[1].ToString(), "", objEnc[2].ToString(), "", "", "", "CMS130D", "CMS130v10" };
+                        icdcptListDenominator.Add(ary);
+                        lstEncList68.Add(obj);
+
+                    }
+                    if (lstEncList68.Count > 0)
+                    {
+                        var lists = (from m in lstEncList68
+                                     group m by m.Human_ID).ToList();
+
+                        Denominator = lists.Count;
+                    }
+                }
+
+
+
+
+
+                //Numerator
+
+                if (Enc_Denominator_lst130_1 != null && Enc_Denominator_lst130_1.Count > 0)
+                {
+                    //for (int i = 0; i < Enc_Denominator_lst130_1.Count; i++)
+                    //{
+                    //    ulEncList130.Add(Convert.ToUInt32(Enc_Denominator_lst130_1[i]));
+                    //}
+                    IQuery Encounterumeratorquery130 = iMySession.GetNamedQuery("PQRI.GetNumeratorCMS130.ColorectalCancer");
+                    Encounterumeratorquery130.SetString(0, Fromdate.ToString("yyyy-MM-dd"));
+                    Encounterumeratorquery130.SetString(1, Todate.ToString("yyyy-MM-dd"));
+                    Encounterumeratorquery130.SetParameterList("EncIds", ulEncList130.ToArray());
+                    ArrayList Enc_Numerator_lst130 = new ArrayList(Encounterumeratorquery130.List());
+                    for (int i = 0; i < Enc_Numerator_lst130.Count; i++)
+                    {
+                        object[] objEnc = (object[])Enc_Numerator_lst130[i];
+                        string loinc = "";
+                        if (objEnc[2] != null)
+                        {
+                            loinc = objEnc[2].ToString();
+                        }
+
+                        string[] ary = { objEnc[0].ToString(), objEnc[1].ToString(), "", "", "", loinc, "", "CMS130N", "", "", "CMS130v10" };
+                        icdcptListNumerator.Add(ary);
+
+                    }
+                    if (Enc_Numerator_lst130.Count > 0)
+                        Numerator = Enc_Numerator_lst130.Count;
+
+                }
+                PQRIlst.Add(NumeratorandDenominatorCalculationforCMSStageThree(Denominator, Numerator, DenominatorExclusion, DenominatorException, "130v10", icdcptListNumerator, icdcptListDenominator, icdcptListDenominatorExclusion, icdcptListDenominatorException, PQRIMeasureList));
+                Numerator = 0;
+                Denominator = 0;
+                DenominatorExclusion = 0;
+                DenominatorException = 0;
+                icdcptListNumerator.Clear();
+                icdcptListDenominator.Clear();
+                icdcptListDenominatorExclusion.Clear();
+                icdcptListDenominatorException.Clear();
+                #endregion
 
                 iMySession.Close();
             }

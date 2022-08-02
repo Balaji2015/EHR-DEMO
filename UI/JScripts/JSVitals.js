@@ -2705,20 +2705,35 @@ function setBPStatus(idsys, iddia) {
                                 default_date = "";
 
                             }
-                            if ((parseFloat(sysvalye) >= 120 && parseFloat(sysvalye) < 140)) {
-                                if (parseFloat(diaval) < 90) {
-                                    statusLabel.title = "Pre-Hypertensive"
-                                    statusLabel.value = "Pre-Hypertensive";
+                            //if ((parseFloat(sysvalye) >= 120 && parseFloat(sysvalye) < 140)) {
+                            //    if (parseFloat(diaval) < 90) {
+                            //        statusLabel.title = "Pre-Hypertensive"
+                            //        statusLabel.value = "Pre-Hypertensive";
+                            //        default_date = "";
+
+                            //    }
+                            //}
+                            if ((parseFloat(sysvalye) >= 120 && parseFloat(sysvalye) < 129)) {
+                                if (parseFloat(diaval) < 80) {
+                                    statusLabel.title = "Elevated";
+                                    statusLabel.value = "Elevated";
                                     default_date = "";
 
                                 }
                             }
 
 
-                            if ((parseFloat(diaval) >= 80) && parseFloat(diaval) < 90 && parseFloat(sysvalye) < 140) {
+                            //if ((parseFloat(diaval) >= 80) && parseFloat(diaval) < 90 && parseFloat(sysvalye) < 140) {
 
-                                statusLabel.title = "Pre-Hypertensive"
-                                statusLabel.value = "Pre-Hypertensive";
+                            //    statusLabel.title = "Pre-Hypertensive"
+                            //    statusLabel.value = "Pre-Hypertensive";
+                            //    default_date = "";
+
+                            //}
+                            if (parseFloat(diaval) < 80 && parseFloat(sysvalye) < 129) {
+
+                                statusLabel.title = "Elevated";
+                                statusLabel.value = "Elevated";
                                 default_date = "";
 
                             }
@@ -2739,7 +2754,21 @@ function setBPStatus(idsys, iddia) {
                                     }
                                     if (flag == 0) {
                                         for (var g = 0; g < recentvalues.length; g++) {
-                                            if (recentvalues[g].split(':')[1].split('/')[0] < 140 && recentvalues[g].split(':')[1].split('/')[1] < 90) {
+                                            //if (recentvalues[g].split(':')[1].split('/')[0] < 140 && recentvalues[g].split(':')[1].split('/')[1] < 90) {
+                                            //    statusLabel.title = "First Hypertensive";
+                                            //    statusLabel.value = "First Hypertensive";
+
+                                            //    break;
+                                            //}
+                                            //else {
+                                            //    //  g++;
+                                            //    if (g == recentvalues.length - 1) {
+                                            //        statusLabel.title = "First Hypertensive";
+                                            //        statusLabel.value = "First Hypertensive";
+
+                                            //    }
+                                            //}
+                                            if (recentvalues[g].split(':')[1].split('/')[0] < 130 || recentvalues[g].split(':')[1].split('/')[1] < 80) {
                                                 statusLabel.title = "First Hypertensive";
                                                 statusLabel.value = "First Hypertensive";
 

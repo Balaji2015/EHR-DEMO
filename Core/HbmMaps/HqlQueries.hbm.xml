@@ -13709,41 +13709,18 @@ select * from encounter_arc where human_id=? and  DATE(date_of_service) between 
 
 
   <!--Stage 3 PQRI Measure-->
-  <sql-query name="PQRI.GetDenominatorCMS122.HBA1c">
-    <![CDATA[select distinct a.encounter_id,a.human_id,p.icd,procedure_code,pr.loinc_identifier from encounter a inner join human b on a.human_id = b.human_id
+	<sql-query name="PQRI.GetDenominatorCMS122.HBA1c">
+		<![CDATA[select distinct a.encounter_id,a.human_id,p.icd,procedure_code,pr.loinc_identifier from encounter a inner join human b on a.human_id = b.human_id
 left join problem_list p on a.human_id=p.human_id
 left join assessment d on a.Encounter_id=d.Encounter_ID
 left join e_m_coding c on a.Encounter_id=c.Encounter_id
 left join patient_results pr on a.Encounter_id=pr.Encounter_id
 where date(Date_of_service) between ? and ? and TIMESTAMPDIFF(YEAR,Birth_date, date(Date_of_service))
-between 18 and 75 and a.encounter_Provider_id =? and(d.ICD in('E10.10','E10.11','E10.21','E10.22','E10.29','E10.311','E10.319','E10.321','E10.3211','E10.3212','E10.3213','E10.3219','E10.329','E10.3291','E10.3292','E10.3293',
-'E10.3299','E10.331','E10.3311','E10.3312','E10.3313','E10.3319','E10.339','E10.3391','E10.3392','E10.3393','E10.3399','E10.341','E10.3411','E10.3412','E10.3413','E10.3419','E10.349','E10.3491','E10.3492','E10.3493','E10.3499','E10.351',
-'E10.3511','E10.3512','E10.3513','E10.3519','E10.3521','E10.3522','E10.3523','E10.3529','E10.3531','E10.3532','E10.3533','E10.3539','E10.3541','E10.3542','E10.3543','E10.3549','E10.3551','E10.3552','E10.3553','E10.3559','E10.359','E10.3591',
-'E10.3592','E10.3593','E10.3599','E10.36','E10.37X1','E10.37X2','E10.37X3','E10.37X9','E10.39','E10.40','E10.41','E10.42','E10.43','E10.44','E10.49','E10.51','E10.52','E10.59','E10.610','E10.618','E10.620','E10.621','E10.622','E10.628','E10.630'
-,'E10.638','E10.641','E10.649','E10.65','E10.69','E10.8','E10.9','E11.00','E11.01','E11.21','E11.22','E11.29','E11.311','E11.319','E11.321','E11.3211','E11.3212','E11.3213','E11.3219','E11.329','E11.3291','E11.3292','E11.3293','E11.3299','E11.331','E11.3311',
-'E11.3312','E11.3313','E11.3319','E11.339','E11.3391','E11.3392','E11.3393','E11.3399','E11.341','E11.3411','E11.3412','E11.3413','E11.3419','E11.349','E11.3491','E11.3492','E11.3493','E11.3499','E11.351','E11.3511','E11.3512','E11.3513','E11.3519','E11.3521',
-'E11.3522','E11.3523','E11.3529','E11.3531','E11.3532','E11.3533','E11.3539','E11.3541','E11.3542','E11.3543','E11.3549','E11.3551','E11.3552','E11.3553','E11.3559','E11.359','E11.3591','E11.3592','E11.3593','E11.3599','E11.36','E11.37X1','E11.37X2','E11.37X3','E11.37X9','E11.39','E11.40','E11.41','E11.42','E11.43','E11.44','E11.49','E11.51','E11.52','E11.59','E11.610','E11.618','E11.620','E11.621','E11.622','E11.628','E11.630','E11.638','E11.641','E11.649','E11.65','E11.69','E11.8','E11.9','E13.00','E13.01','E13.10','E13.11','E13.21','E13.22','E13.29','E13.311','E13.319','E13.321','E13.3211','E13.3212','E13.3213','E13.3219','E13.329','E13.3291',
-'E13.3292','E13.3293','E13.3299','E13.331','E13.3311','E13.3312','E13.3313','E13.3319','E13.339','E13.3391','E13.3392','E13.3393','E13.3399','E13.341','E13.3411','E13.3412','E13.3413',
-'E13.3419','E13.349','E13.3491','E13.3492','E13.3493','E13.3499','E13.351','E13.3511','E13.3512','E13.3513','E13.3519','E13.3521','E13.3522','E13.3523','E13.3529','E13.3531','E13.3532',
-'E13.3533','E13.3539','E13.3541','E13.3542','E13.3543','E13.3549','E13.3551','E13.3552','E13.3553','E13.3559','E13.359','E13.3591','E13.3592','E13.3593','E13.3599','E13.36','E13.37X1',
-'E13.37X2','E13.37X3','E13.37X9','E13.39','E13.40','E13.41','E13.42','E13.43','E13.44','E13.49','E13.51','E13.52','E13.59','E13.610','E13.618','E13.620','E13.621','E13.622','E13.628',
-'E13.630','E13.638','E13.641','E13.649','E13.65','E13.69','E13.8','E13.9','O24.011','O24.012','O24.013','O24.019','O24.02','O24.03','O24.111','O24.112','O24.113','O24.119','O24.12',
-'O24.13','O24.311','O24.312','O24.313','O24.319','O24.32','O24.33','O24.811','O24.812','O24.813','O24.819','O24.82','O24.83') or (p.icd in('E10.10','E10.11','E10.21','E10.22','E10.29','E10.311','E10.319','E10.321','E10.3211','E10.3212','E10.3213','E10.3219','E10.329','E10.3291','E10.3292','E10.3293',
-'E10.3299','E10.331','E10.3311','E10.3312','E10.3313','E10.3319','E10.339','E10.3391','E10.3392','E10.3393','E10.3399','E10.341','E10.3411','E10.3412','E10.3413','E10.3419','E10.349','E10.3491','E10.3492','E10.3493','E10.3499','E10.351',
-'E10.3511','E10.3512','E10.3513','E10.3519','E10.3521','E10.3522','E10.3523','E10.3529','E10.3531','E10.3532','E10.3533','E10.3539','E10.3541','E10.3542','E10.3543','E10.3549','E10.3551','E10.3552','E10.3553','E10.3559','E10.359','E10.3591',
-'E10.3592','E10.3593','E10.3599','E10.36','E10.37X1','E10.37X2','E10.37X3','E10.37X9','E10.39','E10.40','E10.41','E10.42','E10.43','E10.44','E10.49','E10.51','E10.52','E10.59','E10.610','E10.618','E10.620','E10.621','E10.622','E10.628','E10.630'
-,'E10.638','E10.641','E10.649','E10.65','E10.69','E10.8','E10.9','E11.00','E11.01','E11.21','E11.22','E11.29','E11.311','E11.319','E11.321','E11.3211','E11.3212','E11.3213','E11.3219','E11.329','E11.3291','E11.3292','E11.3293','E11.3299','E11.331','E11.3311',
-'E11.3312','E11.3313','E11.3319','E11.339','E11.3391','E11.3392','E11.3393','E11.3399','E11.341','E11.3411','E11.3412','E11.3413','E11.3419','E11.349','E11.3491','E11.3492','E11.3493','E11.3499','E11.351','E11.3511','E11.3512','E11.3513','E11.3519','E11.3521',
-'E11.3522','E11.3523','E11.3529','E11.3531','E11.3532','E11.3533','E11.3539','E11.3541','E11.3542','E11.3543','E11.3549','E11.3551','E11.3552','E11.3553','E11.3559','E11.359','E11.3591','E11.3592','E11.3593','E11.3599','E11.36','E11.37X1','E11.37X2','E11.37X3','E11.37X9','E11.39','E11.40','E11.41','E11.42','E11.43','E11.44','E11.49','E11.51','E11.52','E11.59','E11.610','E11.618','E11.620','E11.621','E11.622','E11.628','E11.630','E11.638','E11.641','E11.649','E11.65','E11.69','E11.8','E11.9','E13.00','E13.01','E13.10','E13.11','E13.21','E13.22','E13.29','E13.311','E13.319','E13.321','E13.3211','E13.3212','E13.3213','E13.3219','E13.329','E13.3291',
-'E13.3292','E13.3293','E13.3299','E13.331','E13.3311','E13.3312','E13.3313','E13.3319','E13.339','E13.3391','E13.3392','E13.3393','E13.3399','E13.341','E13.3411','E13.3412','E13.3413',
-'E13.3419','E13.349','E13.3491','E13.3492','E13.3493','E13.3499','E13.351','E13.3511','E13.3512','E13.3513','E13.3519','E13.3521','E13.3522','E13.3523','E13.3529','E13.3531','E13.3532',
-'E13.3533','E13.3539','E13.3541','E13.3542','E13.3543','E13.3549','E13.3551','E13.3552','E13.3553','E13.3559','E13.359','E13.3591','E13.3592','E13.3593','E13.3599','E13.36','E13.37X1',
-'E13.37X2','E13.37X3','E13.37X9','E13.39','E13.40','E13.41','E13.42','E13.43','E13.44','E13.49','E13.51','E13.52','E13.59','E13.610','E13.618','E13.620','E13.621','E13.622','E13.628',
-'E13.630','E13.638','E13.641','E13.649','E13.65','E13.69','E13.8','E13.9','O24.011','O24.012','O24.013','O24.019','O24.02','O24.03','O24.111','O24.112','O24.113','O24.119','O24.12',
-'O24.13','O24.311','O24.312','O24.313','O24.319','O24.32','O24.33','O24.811','O24.812','O24.813','O24.819','O24.82','O24.83') and p.is_active='y' ))
-and c.Procedure_Code in('99201','99202','99203','99204','99205','99212','99213','99214','99215','G0438','G0439','99341','99342','99343','99344','99345','99347','99348','99349','99350',
-'99395','99396','99397','99385','99386','99387') and c.is_delete='n';]]>
-  </sql-query>
+between 18 and 75 and a.encounter_Provider_id =? and(d.ICD in(SELECT PQRI_Value FROM pqri_data where nqf_number =?  and PQRI_calculation_Method=? and PQRI_Type in ('ICD')) 
+
+or (p.icd in(SELECT PQRI_Value FROM pqri_data where nqf_number =?  and PQRI_calculation_Method=? and PQRI_Type in ('ICD')) and p.is_active='y' ))
+and c.Procedure_Code in(SELECT PQRI_Value FROM pqri_data where nqf_number =?  and PQRI_calculation_Method=? and PQRI_Type in ('CPT')) and c.is_delete='n';]]>
+	</sql-query>
 
   <!--<sql-query name="PQRI.GetNumeratorCMS122.HBA1c">
     <![CDATA[
@@ -13774,16 +13751,11 @@ where loinc_observation in ('HBA1C','Hemoglobin A1c/Hemoglobin.total',
 where e.encounter_Provider_id =? and date(e.date_of_service) between ? and ? and (datediff(date(e.date_of_service),h.birth_date)/365.25)>=18;]]>
   </sql-query>
 
-  <sql-query name="PQRI.GetDenominatorList2CMS68v6.CurrentMedication">
-    <![CDATA[select distinct(em.human_id) from  e_m_coding em
-where em.is_delete='N' and em.procedure_code in('90791','90792','90832','90834','90837','90839','92002','92004','92012','92014','92507','92508',
-'92526','92537','92538','92540','92541','92542','92544','92545','92547','92548','92550','92557',
-'92567','92568','92570','92585','92588','92626','96116','96150','96151','96152','97001','97002','97003','97004',
-'97532','97802','97803','97804','98960','98961','98962','99201','99202','99203','99204','99205','99212','99213','99214',
-'99215','99324','99325','99326','99327','99328','99334','99335','99336','99337','99341','99342','99343','99344','99345',
-'99347','99348','99349','99350','99385','99386','99387','99395','99396','99397','99495','99496','G0101','G0108','G0270',
-'G0402','G0438','G0439') and encounter_id in (:EncIds); ]]>
-  </sql-query>
+	<sql-query name="PQRI.GetDenominatorList2CMS68v6.CurrentMedication">
+		<![CDATA[select distinct(em.human_id) from  e_m_coding em
+where em.is_delete='N' and em.procedure_code in(SELECT PQRI_Value FROM 
+pqri_data where nqf_number =?  and PQRI_calculation_Method=? and PQRI_Type in ('CPT','HCPCS')) and encounter_id in (:EncIds); ]]>
+	</sql-query>
 
 
   <sql-query name="PQRI.GetDenominatorCMS68v6.CurrentMedication">
@@ -13800,15 +13772,18 @@ in('Procedure contraindicated','Medical contraindication ','Treatment not tolera
   </sql-query>
 
 
-  <sql-query name="PQRI.GetNumeratorCMS68v6.CurrentMedication">
-    <![CDATA[select encounter_id,human_id from encounter where encounter_provider_signed_date<>'0001-01-01 00:00:00' and
-(Is_Medication_Reviewed ='Y') and encounter_id in (:EncIds)  group by human_id;]]>
-  </sql-query>
+	<sql-query name="PQRI.GetNumeratorCMS68v6.CurrentMedication">
+		<!--<![CDATA[select encounter_id,human_id from encounter where encounter_provider_signed_date<>'0001-01-01 00:00:00' and
+(Is_Medication_Reviewed ='Y') and encounter_id in (:EncIds)  group by human_id;]]>-->
+		<![CDATA[select e.encounter_id,e.human_id from encounter e, rcopia_medication m where e.encounter_provider_signed_date<>'0001-01-01 00:00:00' and
+(e.Is_Medication_Reviewed ='Y') and e.encounter_id in (:EncIds) and m.status='active' and
+e.human_id=m.human_id group by e.human_id;]]>
+	</sql-query>
 
   <sql-query name="PQRI.GetDenominatorList2CMS69.BMI">
     <![CDATA[
     select e.encounter_id,e.human_id,em.procedure_code,ifnull(a.icd,'') from encounter e join e_m_coding em  on e.encounter_id=em.encounter_id
-    left join assessment as a on e.encounter_id=a.encounter_id where e.human_id in (:EncIds) and e.human_id not in (:EncIdEx);
+    left join assessment as a on e.encounter_id=a.encounter_id where e.human_id in (:EncIds) and e.human_id not in (:EncIdEx) group by e.encounter_id;
  ]]>
   </sql-query>
 
@@ -13816,18 +13791,18 @@ in('Procedure contraindicated','Medical contraindication ','Treatment not tolera
   <sql-query name="PQRI.GetDenominatorList1CMS69.BMI">
     <![CDATA[
     select e.encounter_id,e.human_id,em.procedure_code,ifnull(a.icd,'') from encounter e join e_m_coding em on e.encounter_id=em.encounter_id
-    left join assessment as a   on e.encounter_id=a.encounter_id where e.human_id in (:EncIds) ;
+    left join assessment as a   on e.encounter_id=a.encounter_id where e.human_id in (:EncIds) group by e.encounter_id;
  ]]>
   </sql-query>
 
 
-  <sql-query name="PQRI.GetDenominatorCMS69.BMI">
-    <![CDATA[
+	<sql-query name="PQRI.GetDenominatorCMS69.BMI">
+		<![CDATA[
 select e.encounter_id,e.human_id from encounter e left join human h on e.human_id=h.human_id  join e_m_coding  em
 on em.encounter_id=e.encounter_id 
 where date(e.Date_of_service) between ? and ? and e.encounter_provider_id = ? and 
-(datediff(date(e.date_of_service),h.birth_date)/365.25)>=18 and em.procedure_code in('90791','90792','90832','90834','90837','96150','96151','96152','97001','97003','97802','97803','98960','99201','99202','99203','99204','99205','99212','99213','99214','99215','99385','99386','99387','99395','99396','99397','G0101','G0108','G0270','G0271','G0402','G0438','G0439','G0447');]]>
-  </sql-query>
+(datediff(date(e.date_of_service),h.birth_date)/365.25)>=18 and em.procedure_code in(SELECT PQRI_Value FROM pqri_data where nqf_number =?  and PQRI_calculation_Method=? and PQRI_Type in ('CPT','HCPCS'));]]>
+	</sql-query>
 
   <sql-query name="PQRI.GetDenominatorExceptionCMS69.BMI">
     <![CDATA[
@@ -13883,8 +13858,9 @@ where a.human_id in (:HumanIds) and str_to_date(date_diagnosed,'%d-%b-%Y') betwe
 >>>>>>> 1.312.14.64.6.13.8.1.4.1.4.16.2.2.8.2.4.3.2.4.2.1.2.1.2.3.2.9.2.8.2.106.4.1.4.18
   </sql-query>-->
 
-  <sql-query name="PQRI.GetNumeratorCMS69.BMI">
-    <![CDATA[select distinct p.encounter_id,p.human_id,' ' as icd,' ' as cpt,cast(p.Captured_date_and_time as char(100)),cast(e.Date_Of_Service as char(100)),p.value,p.Loinc_identifier  from  patient_results p
+	<sql-query name="PQRI.GetNumeratorCMS69.BMI">
+		<![CDATA[select distinct p.encounter_id,p.human_id,' ' as icd,' ' as cpt,cast(p.Captured_date_and_time as char(100)),cast(e.Date_Of_Service as char(100))
+	,p.value,p.Loinc_identifier  from  patient_results p
 left join encounter e on p.encounter_id= e.encounter_id
 where Loinc_Observation='BMI' and value between '18.5'  and '24.9' and
  p.encounter_id in (:EncIds)
@@ -13893,26 +13869,13 @@ select distinct p.encounter_id,p.human_id,a.icd,em.procedure_code,cast(p.Capture
 left join encounter e on p.encounter_id=e.encounter_id
 left join e_m_coding em on p.encounter_id=em.encounter_id
 left join assessment a on p.encounter_id=a.encounter_id
-where  p.encounter_id in (:EncIds) and Loinc_Observation='BMI' and value >=25 and
-((em.is_delete='N' and em.procedure_code in ('43644','43645','43770','43771','43772','43773','43774','43842','43843','43845','43846','43847','43848',
- '97804','98960','99078','99386','S9449','S9451','S9452','S9470','G8418','G8417'))
+where  p.human_id in (:HumanIds) and e.date_of_service between ? and ? and Loinc_Observation='BMI' and value >=25 and
+((em.is_delete='N' and em.procedure_code in(SELECT PQRI_Value FROM pqri_data where nqf_number =?  and 
+PQRI_calculation_Method=? and PQRI_Type in ('CPT')))
  or
- a.icd='Z71.3'
+ a.icd in (SELECT PQRI_Value FROM pqri_data where nqf_number =?  and PQRI_calculation_Method=? and PQRI_Type ='ICD')
  or
- p.snomed_code in ('304549008',
-'307818003',
-'361231003',
-'370847001',
-'386291006',
-'386292004',
-'386373004',
-'386463000',
-'386464006',
-'410177006',
-'413315001',
-'418995006',
-'424753004',
-'443288003'
+ p.snomed_code in (SELECT PQRI_Value FROM pqri_data where nqf_number =?  and PQRI_calculation_Method=? and PQRI_Type ='SNOMED'
 ))
 
 union
@@ -13921,55 +13884,48 @@ select distinct p.encounter_id,p.human_id,a.icd,em.procedure_code,cast(p.Capture
 left join encounter e on p.encounter_id= e.encounter_id
 left join e_m_coding em on p.encounter_id=em.encounter_id
 left join assessment a on p.encounter_id=a.encounter_id
-where p.encounter_id in (:EncIds) and p.Loinc_Observation='BMI' and p.value <18.5 and
-((em.is_delete='N' and em.procedure_code in ('G8418','S9449','S9452','S9470'))
+where p.human_id in (:HumanIds) and e.date_of_service between ? and ? and p.Loinc_Observation='BMI' and p.value <18.5 and
+((em.is_delete='N' and em.procedure_code in (SELECT PQRI_Value FROM pqri_data where nqf_number =?  and PQRI_calculation_Method=? and PQRI_Type ='HCPCS'))
 or
-a.icd='Z71.3'
+a.icd  in (SELECT PQRI_Value FROM pqri_data where nqf_number =?  and PQRI_calculation_Method=? and PQRI_Type ='ICD')
 or
-p.snomed_code in('386464006',
-'410177006',
-'413315001',
-'418995006',
-'424753004',
-'429095004',
-'443288003'
-));]]>
-  </sql-query>
+p.snomed_code in (SELECT PQRI_Value FROM pqri_data where nqf_number =?  and PQRI_calculation_Method=? and PQRI_Type ='SNOMED')
+);]]>
+	</sql-query>
 
-  <sql-query name="PQRI.GetDenominatorCMS127.Pneumococcal">
-    <![CDATA[select distinct e.encounter_id,e.human_id,em.procedure_code from encounter e left join human h on e.human_id=h.human_id
+	<sql-query name="PQRI.GetDenominatorCMS127.Pneumococcal">
+		<![CDATA[select distinct e.encounter_id,e.human_id,em.procedure_code from encounter e left join human h on e.human_id=h.human_id
 left join e_m_coding em on e.encounter_id=em.encounter_id
-where date(Date_of_service) between ? and ? and e.encounter_Provider_id = ? and (datediff(date(e.date_of_service),h.birth_date)/365.25)>=65 and
-em.Is_Delete='N' and em.procedure_code in('G0438','G0439','99341','99342','99343','99344','99345','99347','99348','99349','99350','99201',
-'99202','99203','99204','99205','99212','99213','99214','99215','99395','99396','99397','99385','99386','99387') ;]]>
-  </sql-query>
-  <!--<sql-query name="PQRI.GetDenominatorCMS127.Pneumococcal">
+where date(Date_of_service) between ? and ? and e.encounter_Provider_id = ? and (datediff(date(e.date_of_service),
+h.birth_date)/365.25)>=66 and
+em.Is_Delete='N' and em.procedure_code in(SELECT PQRI_Value FROM pqri_data where nqf_number =?  and PQRI_calculation_Method=? and PQRI_Type ='CPT') ;]]>
+	</sql-query>
+	<!--<sql-query name="PQRI.GetDenominatorCMS127.Pneumococcal">
     <![CDATA[CALL Vaccination_Measure(:FROMDATE,:TODATE,:PHY_ID);]]>
   </sql-query>-->
 
-  <sql-query name="PQRI.GetNumeratorCMS127.Pneumococcal">
-    <![CDATA[select distinct A.Encounter_id,A.human_id,ih.procedure_code from
-encounter A left join immunization_history ih on A.human_id=ih.human_id where A.encounter_id in (:EncIds) and (ih.procedure_code='90732' or ih.procedure_code='90670') group by A.human_id;]]>
-  </sql-query>
+	<sql-query name="PQRI.GetNumeratorCMS127.Pneumococcal">
+		<![CDATA[select distinct A.Encounter_id,A.human_id,ih.procedure_code from
+encounter A left join immunization_history ih on A.human_id=ih.human_id where A.human_id in (:HumanIds) 
+and (ih.procedure_code in (SELECT PQRI_Value FROM pqri_data where nqf_number =?  and PQRI_calculation_Method=? and PQRI_Type ='CPT') ) group by A.human_id;]]>
+	</sql-query>
 
   <sql-query name="PQRI.GetDenominatorCMS138.Tobacco">
     <![CDATA[select e.human_id from encounter e left join human h on e.human_id=h.human_id
 where date(Date_of_service) between ? and ? and
 (datediff(date(e.date_of_service),h.birth_date)/365.25)>=18 and e.encounter_Provider_id = ?;]]>
   </sql-query>
-  <sql-query name="PQRI.GetDenominatorList2CMS138.Tobacco">
-    <![CDATA[select human_id  from e_m_coding
-where  is_delete='N' and Procedure_code in ('96152','96151','99341','99342','99343','99344','99345','99347','99348','99349','99350',
-'97003','97004','99201','99202','99203','99204','99205','99212','99213','99214','99215','92002','92004','92012',
-'92014','90791','90792','90832','90834','90837','90845'
-) and human_id in (:EncIds) group by human_id  having count( encounter_id)>=2
+	<sql-query name="PQRI.GetDenominatorList2CMS138.Tobacco">
+		<![CDATA[select human_id  from e_m_coding
+where  is_delete='N' and Procedure_code in (SELECT PQRI_Value FROM pqri_data where nqf_number =?  and 
+PQRI_calculation_Method=? and PQRI_Type ='CPT') and human_id in (:EncIds) group by human_id  having count( encounter_id)>=2
 union
 select human_id from  e_m_coding 
-where is_delete='N' and Procedure_code in ('G0438','G0439','99395','99396','99397','99411','99412','99420','99429','99401',
-'99402','99403','99404','99385','99386','99387','92521','92522','92523','92524','92540','92557','92625')
+where is_delete='N' and Procedure_code in (SELECT PQRI_Value FROM pqri_data where nqf_number =?  and 
+PQRI_calculation_Method=? and PQRI_Type ='CPT1')
  and human_id in (:EncIds)
 group by human_id having count(encounter_id)>=1;]]>
-  </sql-query>
+	</sql-query>
 
   <sql-query name="PQRI.GetDenominatorList3CMS138.Tobacco">
     <![CDATA[select sh.encounter_id,sh.human_id,sh.procedure_code from e_m_coding sh
@@ -13977,23 +13933,28 @@ left join social_history em on sh.human_id=em.human_id
 where sh.Is_delete='N' and sh.human_id in (:EncIds) ]]>
   </sql-query>
 
-  <sql-query name="PQRI.GetExceptionCMS138.Tobacco">
-    <!--<![CDATA[select sh.encounter_id ,sh.human_id,a.icd,em.procedure_code from social_history sh
+	<sql-query name="PQRI.GetExceptionCMS138.Tobacco">
+		<!--<![CDATA[select sh.encounter_id ,sh.human_id,a.icd,em.procedure_code from social_history sh
 left join assessment a on sh.encounter_id=a.encounter_id
 left join e_m_coding em on sh.encounter_id=em.encounter_id
 left join problem_list pl on sh.human_Id=pl.human_id where em.Is_delete='N' and sh.human_id in (:EncIds) and (sh.social_info='Tobacco Use and Exposure' and
 sh.Snomed_Reason_Not_Performed<>'' or (a.ICD='R69' or (pl.ICD='R69' and pl.Is_active='Y')));]]>-->
-    <![CDATA[select a.encounter_id ,a.human_id,a.icd,"" as procedure_code from assessment a where human_id in (:EncIds) and a.ICD='R69'
+		<![CDATA[select a.encounter_id ,a.human_id,a.icd,"" as procedure_code from assessment a where human_id in (:EncIds)
+	and a.ICD in (SELECT PQRI_Value FROM pqri_data where nqf_number =?  and 
+PQRI_calculation_Method=? and PQRI_Type ='ICD')
 union
-select a.encounter_id ,a.human_id,a.icd,"" as procedure_code from problem_list a where human_id in (:EncIds) and a.ICD='R69'
+select a.encounter_id ,a.human_id,a.icd,"" as procedure_code from problem_list a where human_id in (:EncIds) 
+and a.ICD in (SELECT PQRI_Value FROM pqri_data where nqf_number =?  and 
+PQRI_calculation_Method=? and PQRI_Type ='ICD')
 union
 select sh.encounter_id ,sh.human_id,"","" as procedure_code from social_history sh
 where
 (sh.human_id in (:EncIds) and sh.social_info='Tobacco Use and Exposure'  and sh.Snomed_Reason_Not_Performed<>'')]]>
-  </sql-query>
+	</sql-query>
 
-  <sql-query name="PQRI.GetNumeratorCMS138.Tobacco">
-    <![CDATA[select a.encounter_id,a.human_id,cast(a.created_date_and_time as char(100)),cast(a.modified_date_and_time as char(100)),cast(r.stop_date as char(100)),r.rxnorm_id from  social_history a
+	<sql-query name="PQRI.GetNumeratorCMS138.Tobacco">
+		<![CDATA[select a.encounter_id,a.human_id,cast(a.created_date_and_time as char(100)),
+	cast(a.modified_date_and_time as char(100)),cast(r.stop_date as char(100)),r.rxnorm_id from  social_history a
 left join care_plan cp on a.encounter_id=cp.encounter_id
 left join rcopia_medication r on A.human_id=r.human_id
 left join e_m_coding em on A.encounter_id=em.encounter_id
@@ -14002,14 +13963,13 @@ or
 (a.Is_Present='Y' and a.Social_info like '%Tobacco Use and Exposure%' and a.recodes<>''
 and ((cp.care_name_value like '%Tobacco%' and  cp.Snomed_Code!='')
 and
-em.procedure_code in ('99406','99407')
+em.procedure_code in (SELECT PQRI_Value FROM pqri_data where nqf_number =?  and 
+PQRI_calculation_Method=? and PQRI_Type ='CPTPQRI.GetDenominatorCMS122.HBA1c')
 or
 (r.deleted='N' and
-r.rxnorm_id in('1232585','151226','1551468','198029','198030','198031','198045','198046',
-'198047','199888','199889','199890','205315','205316','250983','311975','312036','314119','317136','359817','359818',
-'636671','636676','749289','749788','892244','896100','966531','993503','993518','993536','993541','993550','993557',
-'993567','993681','998671','998675','998679'))))) group by human_id;]]>
-  </sql-query>
+r.rxnorm_id in(SELECT PQRI_Value FROM pqri_data where nqf_number =?  and 
+PQRI_calculation_Method=? and PQRI_Type ='RxNorm') )))) group by human_id;]]>
+	</sql-query>
 
 
 
@@ -14018,23 +13978,23 @@ r.rxnorm_id in('1232585','151226','1551468','198029','198030','198031','198045',
 where date(Date_of_service) between ? and ? and
 (datediff(date(Date_of_service),h.birth_date)/365.25)>=18 and (datediff(date(Date_of_service),h.birth_date)/365.25)<85 and e.Encounter_Provider_id = ?;]]>
   </sql-query>
-  <sql-query name="PQRI.GetDenominatorList1CMS165.ControllingHighBP">
-    <![CDATA[select distinct(Encounter_id),human_id from  e_m_coding em
-where em.Is_delete='N' and em.procedure_code in('G0438','G0439','99341','99342','99343','99344','99345','99347','99348','99349','99350','99201',
-'99202','99203','99204','99205','99212','99213','99214','99215','99395','99396','99397','99385','99386','99387') and encounter_id in (:EncIds);]]>
-  </sql-query>
+	<sql-query name="PQRI.GetDenominatorList1CMS165.ControllingHighBP">
+		<![CDATA[select distinct(Encounter_id),human_id from  e_m_coding em
+where em.Is_delete='N' and em.procedure_code in(SELECT PQRI_Value FROM pqri_data 
+where nqf_number =?  and PQRI_calculation_Method=? and PQRI_Type in ('CPT','HCPCS')) and encounter_id in (:EncIds);]]>
+	</sql-query>
 
-  <sql-query name="PQRI.GetDenominatorList2CMS165.ControllingHighBP">
-    <![CDATA[select distinct(pl.human_id) from  problem_list pl 
+	<sql-query name="PQRI.GetDenominatorList2CMS165.ControllingHighBP">
+		<![CDATA[select distinct(pl.human_id) from  problem_list pl 
 where STR_TO_DATE(date_diagnosed, '%d-%b-%Y') <=? and pl.human_id in (:EncIds)   
-and ( (pl.icd in ('I10','401.0','401.1','401.9') and pl.is_active ='Y'))
+and ( (pl.icd in (SELECT PQRI_Value FROM pqri_data where nqf_number =?  and PQRI_calculation_Method=? and PQRI_Type in ('ICD')) and pl.is_active ='Y'))
 union
 select distinct(pl.human_id) from  assessment pl 
 where  pl.encounter_id in (:EncIds_Ass)   
-and (pl.ICD in ('I10','401.0','401.1','401.9') ) 
+and (pl.ICD in (SELECT PQRI_Value FROM pqri_data where nqf_number =?  and PQRI_calculation_Method=? and PQRI_Type in ('ICD')) ) 
 
 ;]]>
-  </sql-query>
+	</sql-query>
 
   <sql-query name="PQRI.GetDenominatorList3CMS165.ControllingHighBP">
     <![CDATA[select distinct(em.Encounter_id),em.human_id,a.ICd,em.procedure_code,pr.Loinc_identifier from e_m_coding em
@@ -14062,23 +14022,19 @@ left  join patient_results pr on pr.human_id=em.human_id
     
     ;]]>
   </sql-query>
-  <sql-query name="PQRI.GetExclusionCMS165.ControllingHighBP">
-    <![CDATA[select distinct(em.Encounter_id) ,em.human_id,a.icd,em.encounter_id from e_m_coding em
+	<sql-query name="PQRI.GetExclusionCMS165.ControllingHighBP">
+		<![CDATA[select distinct(em.Encounter_id) ,em.human_id,a.icd,em.encounter_id from e_m_coding em
 
 left join problem_list pl on em.human_id=pl.human_id
 left join assessment a on em.encounter_id=a.encounter_id
-where  em.human_id in (:EncIds) and (em.procedure_code  in('90920','90921','90924','90925','90935','90937','90940','90945','90947','G0257','90957','90958',
-'90959','90960','90961','90962','90965','90966','90969','90970','90989','90993','90997','90999','99512','50340','50360',
-'50365','50370','50380','S2065','36147','36148','36800','36810','36815','36818','36819','36820','36821','36831','36832',
-'36833')
+where  em.human_id in (:EncIds) and (em.procedure_code  in(SELECT PQRI_Value FROM pqri_data where nqf_number =?  and PQRI_calculation_Method=? and PQRI_Type in ('CPT','HCPCS'))
 or(
-a.icd  in('N18.5','N18.6','O00.1','O00.10','O00.11','O00.2','O00.20','O00.21','O00.8','O00.80','O00.81','O00.9','O00.90','O00.91','O09.00','O09.01','O09.02','O09.03','O09.10','O09.11','O09.12','O09.13','O09.211','O09.212','O09.213','O09.219','O09.291','O09.292','O09.293','O09.299','O09.30','O09.31','O09.32','O09.33','O09.40','O09.41','O09.42','O09.43','O09.511','O09.512','O09.513','O09.519','O09.521','O09.522','O09.523','O09.529','O09.611','O09.612','O09.613','O09.619','O09.621','O09.622','O09.623','O09.629','O09.70','O09.71','O09.72','O09.73','O09.811','O09.812','O09.813','O09.819','O09.821','O09.822','O09.823','O09.829','O09.891','O09.892','O09.893','O09.899','O09.90','O09.91','O09.92','O09.93','O09.A0','O09.A1','O09.A2','O09.A3','O10.011','O10.012','O10.013','O10.019','O10.111','O10.112','O10.113','O10.119','O10.211','O10.212','O10.213','O10.219','O10.311','O10.312','O10.313','O10.319','O10.411','O10.412','O10.413','O10.419','O10.911','O10.912','O10.913','O10.919','O11.1','O11.2','O11.3','O11.9','O12.00','O12.01','O12.02','O12.03','O12.10','O12.11','O12.12','O12.13','O12.20','O12.21','O12.22','O12.23','O13.1','O13.2','O13.3','O13.9','O14.00','O14.02','O14.03','O14.10','O14.12','O14.13','O14.20','O14.22','O14.23','O14.90','O14.92','O14.93','O15.00','O15.02','O15.03','O16.1','O16.2','O16.3','O16.9','O20.0','O20.8','O20.9','O21.0','O21.1','O21.2','O21.8','O21.9','O22.00','O22.01','O22.02','O22.03','O22.10','O22.11','O22.12','O22.13','O22.20','O22.21','O22.22','O22.23','O22.30','O22.31','O22.32','O22.33','O22.40','O22.41','O22.42','O22.43','O22.50','O22.51','O22.52','O22.53','O22.8X1','O22.8X2','O22.8X3','O22.8X9','O22.90','O22.91','O22.92','O22.93','O23.00','O23.01','O23.02','O23.03','O23.10','O23.11','O23.12','O23.13','O23.20','O23.21','O23.22','O23.23','O23.30','O23.31','O23.32','O23.33','O23.40','O23.41','O23.42','O23.43','O23.511','O23.512','O23.513','O23.519','O23.521','O23.522','O23.523','O23.529','O23.591','O23.592','O23.593','O23.599','O23.90','O23.91','O23.92','O23.93','O24.011','O24.012','O24.013','O24.019','O24.111','O24.112','O24.113','O24.119','O24.311','O24.312','O24.313','O24.319','O24.410','O24.414','O24.415','O24.419','O24.811','O24.812','O24.813','O24.819','O24.911','O24.912','O24.913','O24.919','O25.10','O25.11','O25.12','O25.13','O26.00','O26.01','O26.02','O26.03','O26.10','O26.11','O26.12','O26.13','O26.20','O26.21','O26.22','O26.23','O26.30','O26.31','O26.32','O26.33','O26.40','O26.41','O26.42','O26.43','O26.50','O26.51','O26.52','O26.53','O26.611','O26.612','O26.613','O26.619','O26.711','O26.712','O26.713','O26.719','O26.811','O26.812','O26.813','O26.819','O26.821','O26.822','O26.823','O26.829','O26.831','O26.832','O26.833','O26.839','O26.841','O26.842','O26.843','O26.849','O26.851','O26.852','O26.853','O26.859','O26.86','O26.872','O26.873','O26.879','O26.891','O26.892','O26.893','O26.899','O26.90','O26.91','O26.92','O26.93','O28.0','O28.1','O28.2','O28.3','O28.4','O28.5','O28.8','O28.9','O29.011','O29.012','O29.013','O29.019','O29.021','O29.022','O29.023','O29.029','O29.091','O29.092','O29.093','O29.099','O29.111','O29.112','O29.113','O29.119','O29.121','O29.122','O29.123','O29.129','O29.191','O29.192','O29.193','O29.199','O29.211','O29.212','O29.213','O29.219','O29.291','O29.292','O29.293','O29.299','O29.3X1','O29.3X2','O29.3X3','O29.3X9','O29.40','O29.41','O29.42','O29.43','O29.5X1','O29.5X2','O29.5X3','O29.5X9','O29.60','O29.61','O29.62','O29.63','O29.8X1','O29.8X2','O29.8X3','O29.8X9','O29.90','O29.91','O29.92','O29.93','O30.001','O30.002','O30.003','O30.009','O30.011','O30.012','O30.013','O30.019','O30.021','O30.022','O30.023','O30.029','O30.031','O30.032','O30.033','O30.039','O30.041','O30.042','O30.043','O30.049','O30.091','O30.092','O30.093','O30.099','O30.101','O30.102','O30.103','O30.109','O30.111','O30.112','O30.113','O30.119','O30.121','O30.122','O30.123','O30.129','O30.191','O30.192','O30.193','O30.199','O30.201','O30.202','O30.203','O30.209','O30.211','O30.212','O30.213','O30.219','O30.221','O30.222','O30.223','O30.229','O30.291','O30.292','O30.293','O30.299','O30.801','O30.802','O30.803','O30.809','O30.811','O30.812','O30.813','O30.819','O30.821','O30.822','O30.823','O30.829','O30.891','O30.892','O30.893','O30.899','O30.90','O30.91','O30.92','O30.93','O31.00X0','O31.00X1','O31.00X2','O31.00X3','O31.00X4','O31.00X5','O31.00X9','O31.01X0','O31.01X1','O31.01X2','O31.01X3','O31.01X4','O31.01X5','O31.01X9','O31.02X0','O31.02X1','O31.02X2','O31.02X3','O31.02X4','O31.02X5','O31.02X9','O31.03X0','O31.03X1','O31.03X2','O31.03X3','O31.03X4','O31.03X5','O31.03X9','O31.10X0','O31.10X1','O31.10X2','O31.10X3','O31.10X4','O31.10X5','O31.10X9','O31.11X0','O31.11X1','O31.11X2','O31.11X3','O31.11X4','O31.11X5','O31.11X9','O31.12X0','O31.12X1','O31.12X2','O31.12X3','O31.12X4','O31.12X5','O31.12X9','O31.13X0','O31.13X1','O31.13X2','O31.13X3','O31.13X4','O31.13X5','O31.13X9','O31.20X0','O31.20X1','O31.20X2','O31.20X3','O31.20X4','O31.20X5','O31.20X9','O31.21X0','O31.21X1','O31.21X2','O31.21X3','O31.21X4','O31.21X5','O31.21X9','O31.22X0','O31.22X1','O31.22X2','O31.22X3','O31.22X4','O31.22X5','O31.22X9','O31.23X0','O31.23X1','O31.23X2','O31.23X3','O31.23X4','O31.23X5','O31.23X9','O31.30X0','O31.30X1','O31.30X2','O31.30X3','O31.30X4','O31.30X5','O31.30X9','O31.31X0','O31.31X1','O31.31X2','O31.31X3','O31.31X4','O31.31X5','O31.31X9','O31.32X0','O31.32X1','O31.32X2','O31.32X3','O31.32X4','O31.32X5','O31.32X9','O31.33X0','O31.33X1','O31.33X2','O31.33X3','O31.33X4','O31.33X5','O31.33X9','O31.8X10','O31.8X11','O31.8X12','O31.8X13','O31.8X14','O31.8X15','O31.8X19','O31.8X20','O31.8X21','O31.8X22','O31.8X23','O31.8X24','O31.8X25','O31.8X29','O31.8X30','O31.8X31','O31.8X32','O31.8X33','O31.8X34','O31.8X35','O31.8X39','O31.8X90','O31.8X91','O31.8X92','O31.8X93','O31.8X94','O31.8X95','O31.8X99','O32.0XX0','O32.0XX1','O32.0XX2','O32.0XX3','O32.0XX4','O32.0XX5','O32.0XX9','O32.1XX0','O32.1XX1','O32.1XX2','O32.1XX3','O32.1XX4','O32.1XX5','O32.1XX9','O32.2XX0','O32.2XX1','O32.2XX2','O32.2XX3','O32.2XX4','O32.2XX5','O32.2XX9','O32.3XX0','O32.3XX1','O32.3XX2','O32.3XX3','O32.3XX4','O32.3XX5','O32.3XX9','O32.4XX0','O32.4XX1','O32.4XX2','O32.4XX3','O32.4XX4','O32.4XX5','O32.4XX9','O32.6XX0','O32.6XX1','O32.6XX2','O32.6XX3','O32.6XX4','O32.6XX5','O32.6XX9','O32.8XX0','O32.8XX1','O32.8XX2','O32.8XX3','O32.8XX4','O32.8XX5','O32.8XX9','O32.9XX0','O32.9XX1','O32.9XX2','O32.9XX3','O32.9XX4','O32.9XX5','O32.9XX9','O33.0','O33.1','O33.2','O33.3XX0','O33.3XX1','O33.3XX2','O33.3XX3','O33.3XX4','O33.3XX5','O33.3XX9','O33.4XX0','O33.4XX1','O33.4XX2','O33.4XX3','O33.4XX4','O33.4XX5','O33.4XX9','O33.5XX0','O33.5XX1','O33.5XX2','O33.5XX3','O33.5XX4','O33.5XX5','O33.5XX9','O33.6XX0','O33.6XX1','O33.6XX2','O33.6XX3','O33.6XX4','O33.6XX5','O33.6XX9','O33.7','O33.7XX0','O33.7XX1','O33.7XX2','O33.7XX3','O33.7XX4','O33.7XX5','O33.7XX9','O33.8','O33.9','O34.00','O34.01','O34.02','O34.03','O34.10','O34.11','O34.12','O34.13','O34.21','O34.211','O34.212','O34.219','O34.29','O34.30','O34.31','O34.32','O34.33','O34.40','O34.41','O34.42','O34.43','O34.511','O34.512','O34.513','O34.519','O34.521','O34.522','O34.523','O34.529','O34.531','O34.532','O34.533','O34.539','O34.591','O34.592','O34.593','O34.599','O34.60','O34.61','O34.62','O34.63','O34.70','O34.71','O34.72','O34.73','O34.80','O34.81','O34.82','O34.83','O34.90','O34.91','O34.92','O34.93','O35.0XX0','O35.0XX1','O35.0XX2','O35.0XX3','O35.0XX4','O35.0XX5','O35.0XX9','O35.1XX0','O35.1XX1','O35.1XX2','O35.1XX3','O35.1XX4','O35.1XX5','O35.1XX9','O35.2XX0','O35.2XX1','O35.2XX2','O35.2XX3','O35.2XX4','O35.2XX5','O35.2XX9','O35.3XX0','O35.3XX1','O35.3XX2','O35.3XX3','O35.3XX4','O35.3XX5','O35.3XX9','O35.4XX0','O35.4XX1','O35.4XX2','O35.4XX3','O35.4XX4','O35.4XX5','O35.4XX9','O35.5XX0','O35.5XX1','O35.5XX2','O35.5XX3','O35.5XX4','O35.5XX5','O35.5XX9','O35.6XX0','O35.6XX1','O35.6XX2','O35.6XX3','O35.6XX4','O35.6XX5','O35.6XX9','O35.7XX0','O35.7XX1','O35.7XX2','O35.7XX3','O35.7XX4','O35.7XX5','O35.7XX9','O35.8XX0','O35.8XX1','O35.8XX2','O35.8XX3','O35.8XX4','O35.8XX5','O35.8XX9','O35.9XX0','O35.9XX1','O35.9XX2','O35.9XX3','O35.9XX4','O35.9XX5','O35.9XX9','O36.0110','O36.0111','O36.0112','O36.0113','O36.0114','O36.0115','O36.0119','O36.0120','O36.0121','O36.0122','O36.0123','O36.0124','O36.0125','O36.0129','O36.0130','O36.0131','O36.0132','O36.0133','O36.0134','O36.0135','O36.0139','O36.0190','O36.0191','O36.0192','O36.0193','O36.0194','O36.0195','O36.0199','O36.0910','O36.0911','O36.0912','O36.0913','O36.0914','O36.0915','O36.0919','O36.0920','O36.0921','O36.0922','O36.0923','O36.0924','O36.0925','O36.0929','O36.0930','O36.0931','O36.0932','O36.0933','O36.0934','O36.0935','O36.0939','O36.0990','O36.0991','O36.0992','O36.0993','O36.0994','O36.0995','O36.0999','O36.1110','O36.1111','O36.1112','O36.1113','O36.1114','O36.1115','O36.1119','O36.1120','O36.1121','O36.1122','O36.1123','O36.1124','O36.1125','O36.1129','O36.1130','O36.1131','O36.1132','O36.1133','O36.1134','O36.1135','O36.1139','O36.1190','O36.1191','O36.1192','O36.1193','O36.1194','O36.1195','O36.1199','O36.1910','O36.1911','O36.1912','O36.1913','O36.1914','O36.1915','O36.1919','O36.1920','O36.1921','O36.1922','O36.1923','O36.1924','O36.1925','O36.1929','O36.1930','O36.1931','O36.1932','O36.1933','O36.1934','O36.1935','O36.1939','O36.1990','O36.1991','O36.1992','O36.1993','O36.1994','O36.1995','O36.1999','O36.20X0','O36.20X1','O36.20X2','O36.20X3','O36.20X4','O36.20X5','O36.20X9','O36.21X0','O36.21X1','O36.21X2','O36.21X3','O36.21X4','O36.21X5','O36.21X9','O36.22X0','O36.22X1','O36.22X2','O36.22X3','O36.22X4','O36.22X5','O36.22X9','O36.23X0','O36.23X1','O36.23X2','O36.23X3','O36.23X4','O36.23X5','O36.23X9','O36.4XX0','O36.4XX1','O36.4XX2','O36.4XX3','O36.4XX4','O36.4XX5','O36.4XX9','O36.5110','O36.5111','O36.5112','O36.5113','O36.5114','O36.5115','O36.5119','O36.5120','O36.5121','O36.5122','O36.5123','O36.5124','O36.5125','O36.5129','O36.5130','O36.5131','O36.5132','O36.5133','O36.5134','O36.5135','O36.5139','O36.5190','O36.5191','O36.5192','O36.5193','O36.5194','O36.5195','O36.5199','O36.5910','O36.5911','O36.5912','O36.5913','O36.5914','O36.5915','O36.5919','O36.5920','O36.5921','O36.5922','O36.5923','O36.5924','O36.5925','O36.5929','O36.5930','O36.5931','O36.5932','O36.5933','O36.5934','O36.5935','O36.5939','O36.5990','O36.5991','O36.5992','O36.5993','O36.5994','O36.5995','O36.5999','O36.60X0','O36.60X1','O36.60X2','O36.60X3','O36.60X4','O36.60X5','O36.60X9','O36.61X0','O36.61X1','O36.61X2','O36.61X3','O36.61X4','O36.61X5','O36.61X9','O36.62X0','O36.62X1','O36.62X2','O36.62X3','O36.62X4','O36.62X5','O36.62X9','O36.63X0','O36.63X1','O36.63X2','O36.63X3','O36.63X4','O36.63X5','O36.63X9','O36.70X0','O36.70X1','O36.70X2','O36.70X3','O36.70X4','O36.70X5','O36.70X9','O36.71X0','O36.71X1','O36.71X2','O36.71X3','O36.71X4','O36.71X5','O36.71X9','O36.72X0','O36.72X1','O36.72X2','O36.72X3','O36.72X4','O36.72X5','O36.72X9','O36.73X0','O36.73X1','O36.73X2','O36.73X3','O36.73X4','O36.73X5','O36.73X9','O36.8120','O36.8121','O36.8122','O36.8123','O36.8124','O36.8125','O36.8129','O36.8130','O36.8131','O36.8132','O36.8133','O36.8134','O36.8135','O36.8139','O36.8190','O36.8191','O36.8192','O36.8193','O36.8194','O36.8195','O36.8199','O36.8210','O36.8211','O36.8212','O36.8213','O36.8214','O36.8215','O36.8219','O36.8220','O36.8221','O36.8222','O36.8223','O36.8224','O36.8225','O36.8229','O36.8230','O36.8231','O36.8232','O36.8233','O36.8234','O36.8235','O36.8239','O36.8290','O36.8291','O36.8292','O36.8293','O36.8294','O36.8295','O36.8299','O36.8910','O36.8911','O36.8912','O36.8913','O36.8914','O36.8915','O36.8919','O36.8920','O36.8921','O36.8922','O36.8923','O36.8924','O36.8925','O36.8929','O36.8930','O36.8931','O36.8932','O36.8933','O36.8934','O36.8935','O36.8939','O36.8990','O36.8991','O36.8992','O36.8993','O36.8994','O36.8995','O36.8999','O36.90X0','O36.90X1','O36.90X2','O36.90X3','O36.90X4','O36.90X5','O36.90X9','O36.91X0','O36.91X1','O36.91X2','O36.91X3','O36.91X4','O36.91X5','O36.91X9','O36.92X0','O36.92X1','O36.92X2','O36.92X3','O36.92X4','O36.92X5','O36.92X9','O36.93X0','O36.93X1','O36.93X2','O36.93X3','O36.93X4','O36.93X5','O36.93X9','O40.1XX0','O40.1XX1','O40.1XX2','O40.1XX3','O40.1XX4','O40.1XX5','O40.1XX9','O40.2XX0','O40.2XX1','O40.2XX2','O40.2XX3','O40.2XX4','O40.2XX5','O40.2XX9','O40.3XX0','O40.3XX1','O40.3XX2','O40.3XX3','O40.3XX4','O40.3XX5','O40.3XX9','O40.9XX0','O40.9XX1','O40.9XX2','O40.9XX3','O40.9XX4','O40.9XX5','O40.9XX9','O41.00X0','O41.00X1','O41.00X2','O41.00X3','O41.00X4','O41.00X5','O41.00X9','O41.01X0','O41.01X1','O41.01X2','O41.01X3','O41.01X4','O41.01X5','O41.01X9','O41.02X0','O41.02X1','O41.02X2','O41.02X3','O41.02X4','O41.02X5','O41.02X9','O41.03X0','O41.03X1','O41.03X2','O41.03X3','O41.03X4','O41.03X5','O41.03X9','O41.1010','O41.1011','O41.1012','O41.1013','O41.1014','O41.1015','O41.1019','O41.1020','O41.1021','O41.1022','O41.1023','O41.1024','O41.1025','O41.1029','O41.1030','O41.1031','O41.1032','O41.1033','O41.1034','O41.1035','O41.1039','O41.1090','O41.1091','O41.1092','O41.1093','O41.1094','O41.1095','O41.1099','O41.1210','O41.1211','O41.1212','O41.1213','O41.1214','O41.1215','O41.1219','O41.1220','O41.1221','O41.1222','O41.1223','O41.1224','O41.1225','O41.1229','O41.1230','O41.1231','O41.1232','O41.1233','O41.1234','O41.1235','O41.1239','O41.1290','O41.1291','O41.1292','O41.1293','O41.1294','O41.1295','O41.1299','O41.1410','O41.1411','O41.1412','O41.1413','O41.1414','O41.1415','O41.1419','O41.1420','O41.1421','O41.1422','O41.1423','O41.1424','O41.1425','O41.1429','O41.1430','O41.1431','O41.1432','O41.1433','O41.1434','O41.1435','O41.1439','O41.1490','O41.1491','O41.1492','O41.1493','O41.1494','O41.1495','O41.1499','O41.8X10','O41.8X11','O41.8X12','O41.8X13','O41.8X14','O41.8X15','O41.8X19','O41.8X20','O41.8X21','O41.8X22','O41.8X23','O41.8X24','O41.8X25','O41.8X29','O41.8X30','O41.8X31','O41.8X32','O41.8X33','O41.8X34','O41.8X35','O41.8X39','O41.8X90','O41.8X91','O41.8X92','O41.8X93','O41.8X94','O41.8X95','O41.8X99','O41.90X0','O41.90X1','O41.90X2','O41.90X3','O41.90X4','O41.90X5','O41.90X9','O41.91X0','O41.91X1','O41.91X2','O41.91X3','O41.91X4','O41.91X5','O41.91X9','O41.92X0','O41.92X1','O41.92X2','O41.92X3','O41.92X4','O41.92X5','O41.92X9','O41.93X0','O41.93X1','O41.93X2','O41.93X3','O41.93X4','O41.93X5','O41.93X9','O42.00','O42.011','O42.012','O42.013','O42.019','O42.02','O42.10','O42.111','O42.112','O42.113','O42.119','O42.12','O42.90','O42.911','O42.912','O42.913','O42.919','O42.92','O43.011','O43.012','O43.013','O43.019','O43.021','O43.022','O43.023','O43.029','O43.101','O43.102','O43.103','O43.109','O43.111','O43.112','O43.113','O43.119','O43.121','O43.122','O43.123','O43.129','O43.191','O43.192','O43.193','O43.199','O43.211','O43.212','O43.213','O43.219','O43.221','O43.222','O43.223','O43.229','O43.231','O43.232','O43.233','O43.239','O43.811','O43.812','O43.813','O43.819','O43.891','O43.892','O43.893','O43.899','O43.90','O43.91','O43.92','O43.93','O44.00','O44.01','O44.02','O44.03','O44.10','O44.11','O44.12','O44.13','O44.20','O44.21','O44.22','O44.23','O44.30','O44.31','O44.32','O44.33','O44.40','O44.41','O44.42','O44.43','O44.50','O44.51','O44.52','O44.53','O45.001','O45.002','O45.003','O45.009','O45.011','O45.012','O45.013','O45.019','O45.021','O45.022','O45.023','O45.029','O45.091','O45.092','O45.093','O45.099','O45.8X1','O45.8X2','O45.8X3','O45.8X9','O45.90','O45.91','O45.92','O45.93','O46.001','O46.002','O46.003','O46.009','O46.011','O46.012','O46.013','O46.019','O46.021','O46.022','O46.023','O46.029','O46.091','O46.092','O46.093','O46.099','O46.8X1','O46.8X2','O46.8X3','O46.8X9','O46.90','O46.91','O46.92','O46.93','O47.00','O47.02','O47.03','O47.1','O47.9','O48.0','O48.1','O60.00','O60.02','O60.03','O71.00','O71.02','O71.03','O88.011','O88.012','O88.013','O88.019','O88.111','O88.112','O88.113','O88.119','O88.211','O88.212','O88.213','O88.219','O88.311','O88.312','O88.313','O88.319','O88.811','O88.812','O88.813','O88.819','O90.3','O91.011','O91.012','O91.013','O91.019','O91.111','O91.112','O91.113','O91.119','O91.211','O91.212','O91.213','O91.219','O92.011','O92.012','O92.013','O92.019','O92.111','O92.112','O92.113','O92.119','O92.20','O92.29','O98.011','O98.012','O98.013','O98.019','O98.111','O98.112','O98.113','O98.119','O98.211','O98.212','O98.213','O98.219','O98.311','O98.312','O98.313','O98.319','O98.411','O98.412','O98.413','O98.419','O98.511','O98.512','O98.513','O98.519','O98.611','O98.612','O98.613','O98.619','O98.711','O98.712','O98.713','O98.719','O98.811','O98.812','O98.813','O98.819','O98.911','O98.912','O98.913','O98.919','O99.011','O99.012','O99.013','O99.019','O99.111','O99.112','O99.113','O99.119','O99.210','O99.211','O99.212','O99.213','O99.280','O99.281','O99.282','O99.283','O99.310','O99.311','O99.312','O99.313','O99.320','O99.321','O99.322','O99.323','O99.330','O99.331','O99.332','O99.333','O99.340','O99.341','O99.342','O99.343','O99.350','O99.351','O99.352','O99.353','O99.411','O99.412','O99.413','O99.419','O99.511','O99.512','O99.513','O99.519','O99.611','O99.612','O99.613','O99.619','O99.711','O99.712','O99.713','O99.719','O99.810','O99.820','O99.830','O99.840','O99.841','O99.842','O99.843','O99.89','O9A.111','O9A.112','O9A.113','O9A.119','O9A.211','O9A.212','O9A.213','O9A.219','O9A.311','O9A.312','O9A.313','O9A.319','O9A.411','O9A.412','O9A.413','O9A.419','O9A.511','O9A.512','O9A.513','O9A.519','Z33.1','Z33.3','Z34.00','Z34.01','Z34.02','Z34.03','Z34.80','Z34.81','Z34.82','Z34.83','Z34.90','Z34.91'
-,'Z34.92','Z34.93','Z36')
+a.icd  in(SELECT PQRI_Value FROM pqri_data where nqf_number =? 
+and PQRI_calculation_Method=? and PQRI_Type in ('ICD'))
 or  (pl.is_active='Y' and
-pl.icd  in ('N18.5','N18.6','O00.1','O00.10','O00.11','O00.2','O00.20','O00.21','O00.8','O00.80','O00.81','O00.9','O00.90','O00.91','O09.00','O09.01','O09.02','O09.03','O09.10','O09.11','O09.12','O09.13','O09.211','O09.212','O09.213','O09.219','O09.291','O09.292','O09.293','O09.299','O09.30','O09.31','O09.32','O09.33','O09.40','O09.41','O09.42','O09.43','O09.511','O09.512','O09.513','O09.519','O09.521','O09.522','O09.523','O09.529','O09.611','O09.612','O09.613','O09.619','O09.621','O09.622','O09.623','O09.629','O09.70','O09.71','O09.72','O09.73','O09.811','O09.812','O09.813','O09.819','O09.821','O09.822','O09.823','O09.829','O09.891','O09.892','O09.893','O09.899','O09.90','O09.91','O09.92','O09.93','O09.A0','O09.A1','O09.A2','O09.A3','O10.011','O10.012','O10.013','O10.019','O10.111','O10.112','O10.113','O10.119','O10.211','O10.212','O10.213','O10.219','O10.311','O10.312','O10.313','O10.319','O10.411','O10.412','O10.413','O10.419','O10.911','O10.912','O10.913','O10.919','O11.1','O11.2','O11.3','O11.9','O12.00','O12.01','O12.02','O12.03','O12.10','O12.11','O12.12','O12.13','O12.20','O12.21','O12.22','O12.23','O13.1','O13.2','O13.3','O13.9','O14.00','O14.02','O14.03','O14.10','O14.12','O14.13','O14.20','O14.22','O14.23','O14.90','O14.92','O14.93','O15.00','O15.02','O15.03','O16.1','O16.2','O16.3','O16.9','O20.0','O20.8','O20.9','O21.0','O21.1','O21.2','O21.8','O21.9','O22.00','O22.01','O22.02','O22.03','O22.10','O22.11','O22.12','O22.13','O22.20','O22.21','O22.22','O22.23','O22.30','O22.31','O22.32','O22.33','O22.40','O22.41','O22.42','O22.43','O22.50','O22.51','O22.52','O22.53','O22.8X1','O22.8X2','O22.8X3','O22.8X9','O22.90','O22.91','O22.92','O22.93','O23.00','O23.01','O23.02','O23.03','O23.10','O23.11','O23.12','O23.13','O23.20','O23.21','O23.22','O23.23','O23.30','O23.31','O23.32','O23.33','O23.40','O23.41','O23.42','O23.43','O23.511','O23.512','O23.513','O23.519','O23.521','O23.522','O23.523','O23.529','O23.591','O23.592','O23.593','O23.599','O23.90','O23.91','O23.92','O23.93','O24.011','O24.012','O24.013','O24.019','O24.111','O24.112','O24.113','O24.119','O24.311','O24.312','O24.313','O24.319','O24.410','O24.414','O24.415','O24.419','O24.811','O24.812','O24.813','O24.819','O24.911','O24.912','O24.913','O24.919','O25.10','O25.11','O25.12','O25.13','O26.00','O26.01','O26.02','O26.03','O26.10','O26.11','O26.12','O26.13','O26.20','O26.21','O26.22','O26.23','O26.30','O26.31','O26.32','O26.33','O26.40','O26.41','O26.42','O26.43','O26.50','O26.51','O26.52','O26.53','O26.611','O26.612','O26.613','O26.619','O26.711','O26.712','O26.713','O26.719','O26.811','O26.812','O26.813','O26.819','O26.821','O26.822','O26.823','O26.829','O26.831','O26.832','O26.833','O26.839','O26.841','O26.842','O26.843','O26.849','O26.851','O26.852','O26.853','O26.859','O26.86','O26.872','O26.873','O26.879','O26.891','O26.892','O26.893','O26.899','O26.90','O26.91','O26.92','O26.93','O28.0','O28.1','O28.2','O28.3','O28.4','O28.5','O28.8','O28.9','O29.011','O29.012','O29.013','O29.019','O29.021','O29.022','O29.023','O29.029','O29.091','O29.092','O29.093','O29.099','O29.111','O29.112','O29.113','O29.119','O29.121','O29.122','O29.123','O29.129','O29.191','O29.192','O29.193','O29.199','O29.211','O29.212','O29.213','O29.219','O29.291','O29.292','O29.293','O29.299','O29.3X1','O29.3X2','O29.3X3','O29.3X9','O29.40','O29.41','O29.42','O29.43','O29.5X1','O29.5X2','O29.5X3','O29.5X9','O29.60','O29.61','O29.62','O29.63','O29.8X1','O29.8X2','O29.8X3','O29.8X9','O29.90','O29.91','O29.92','O29.93','O30.001','O30.002','O30.003','O30.009','O30.011','O30.012','O30.013','O30.019','O30.021','O30.022','O30.023','O30.029','O30.031','O30.032','O30.033','O30.039','O30.041','O30.042','O30.043','O30.049','O30.091','O30.092','O30.093','O30.099','O30.101','O30.102','O30.103','O30.109','O30.111','O30.112','O30.113','O30.119','O30.121','O30.122','O30.123','O30.129','O30.191','O30.192','O30.193','O30.199','O30.201','O30.202','O30.203','O30.209','O30.211','O30.212','O30.213','O30.219','O30.221','O30.222','O30.223','O30.229','O30.291','O30.292','O30.293','O30.299','O30.801','O30.802','O30.803','O30.809','O30.811','O30.812','O30.813','O30.819','O30.821','O30.822','O30.823','O30.829','O30.891','O30.892','O30.893','O30.899','O30.90','O30.91','O30.92','O30.93','O31.00X0','O31.00X1','O31.00X2','O31.00X3','O31.00X4','O31.00X5','O31.00X9','O31.01X0','O31.01X1','O31.01X2','O31.01X3','O31.01X4','O31.01X5','O31.01X9','O31.02X0','O31.02X1','O31.02X2','O31.02X3','O31.02X4','O31.02X5','O31.02X9','O31.03X0','O31.03X1','O31.03X2','O31.03X3','O31.03X4','O31.03X5','O31.03X9','O31.10X0','O31.10X1','O31.10X2','O31.10X3','O31.10X4','O31.10X5','O31.10X9','O31.11X0','O31.11X1','O31.11X2','O31.11X3','O31.11X4','O31.11X5','O31.11X9','O31.12X0','O31.12X1','O31.12X2','O31.12X3','O31.12X4','O31.12X5','O31.12X9','O31.13X0','O31.13X1','O31.13X2','O31.13X3','O31.13X4','O31.13X5','O31.13X9','O31.20X0','O31.20X1','O31.20X2','O31.20X3','O31.20X4','O31.20X5','O31.20X9','O31.21X0','O31.21X1','O31.21X2','O31.21X3','O31.21X4','O31.21X5','O31.21X9','O31.22X0','O31.22X1','O31.22X2','O31.22X3','O31.22X4','O31.22X5','O31.22X9','O31.23X0','O31.23X1','O31.23X2','O31.23X3','O31.23X4','O31.23X5','O31.23X9','O31.30X0','O31.30X1','O31.30X2','O31.30X3','O31.30X4','O31.30X5','O31.30X9','O31.31X0','O31.31X1','O31.31X2','O31.31X3','O31.31X4','O31.31X5','O31.31X9','O31.32X0','O31.32X1','O31.32X2','O31.32X3','O31.32X4','O31.32X5','O31.32X9','O31.33X0','O31.33X1','O31.33X2','O31.33X3','O31.33X4','O31.33X5','O31.33X9','O31.8X10','O31.8X11','O31.8X12','O31.8X13','O31.8X14','O31.8X15','O31.8X19','O31.8X20','O31.8X21','O31.8X22','O31.8X23','O31.8X24','O31.8X25','O31.8X29','O31.8X30','O31.8X31','O31.8X32','O31.8X33','O31.8X34','O31.8X35','O31.8X39','O31.8X90','O31.8X91','O31.8X92','O31.8X93','O31.8X94','O31.8X95','O31.8X99','O32.0XX0','O32.0XX1','O32.0XX2','O32.0XX3','O32.0XX4','O32.0XX5','O32.0XX9','O32.1XX0','O32.1XX1','O32.1XX2','O32.1XX3','O32.1XX4','O32.1XX5','O32.1XX9','O32.2XX0','O32.2XX1','O32.2XX2','O32.2XX3','O32.2XX4','O32.2XX5','O32.2XX9','O32.3XX0','O32.3XX1','O32.3XX2','O32.3XX3','O32.3XX4','O32.3XX5','O32.3XX9','O32.4XX0','O32.4XX1','O32.4XX2','O32.4XX3','O32.4XX4','O32.4XX5','O32.4XX9','O32.6XX0','O32.6XX1','O32.6XX2','O32.6XX3','O32.6XX4','O32.6XX5','O32.6XX9','O32.8XX0','O32.8XX1','O32.8XX2','O32.8XX3','O32.8XX4','O32.8XX5','O32.8XX9','O32.9XX0','O32.9XX1','O32.9XX2','O32.9XX3','O32.9XX4','O32.9XX5','O32.9XX9','O33.0','O33.1','O33.2','O33.3XX0','O33.3XX1','O33.3XX2','O33.3XX3','O33.3XX4','O33.3XX5','O33.3XX9','O33.4XX0','O33.4XX1','O33.4XX2','O33.4XX3','O33.4XX4','O33.4XX5','O33.4XX9','O33.5XX0','O33.5XX1','O33.5XX2','O33.5XX3','O33.5XX4','O33.5XX5','O33.5XX9','O33.6XX0','O33.6XX1','O33.6XX2','O33.6XX3','O33.6XX4','O33.6XX5','O33.6XX9','O33.7','O33.7XX0','O33.7XX1','O33.7XX2','O33.7XX3','O33.7XX4','O33.7XX5','O33.7XX9','O33.8','O33.9','O34.00','O34.01','O34.02','O34.03','O34.10','O34.11','O34.12','O34.13','O34.21','O34.211','O34.212','O34.219','O34.29','O34.30','O34.31','O34.32','O34.33','O34.40','O34.41','O34.42','O34.43','O34.511','O34.512','O34.513','O34.519','O34.521','O34.522','O34.523','O34.529','O34.531','O34.532','O34.533','O34.539','O34.591','O34.592','O34.593','O34.599','O34.60','O34.61','O34.62','O34.63','O34.70','O34.71','O34.72','O34.73','O34.80','O34.81','O34.82','O34.83','O34.90','O34.91','O34.92','O34.93','O35.0XX0','O35.0XX1','O35.0XX2','O35.0XX3','O35.0XX4','O35.0XX5','O35.0XX9','O35.1XX0','O35.1XX1','O35.1XX2','O35.1XX3','O35.1XX4','O35.1XX5','O35.1XX9','O35.2XX0','O35.2XX1','O35.2XX2','O35.2XX3','O35.2XX4','O35.2XX5','O35.2XX9','O35.3XX0','O35.3XX1','O35.3XX2','O35.3XX3','O35.3XX4','O35.3XX5','O35.3XX9','O35.4XX0','O35.4XX1','O35.4XX2','O35.4XX3','O35.4XX4','O35.4XX5','O35.4XX9','O35.5XX0','O35.5XX1','O35.5XX2','O35.5XX3','O35.5XX4','O35.5XX5','O35.5XX9','O35.6XX0','O35.6XX1','O35.6XX2','O35.6XX3','O35.6XX4','O35.6XX5','O35.6XX9','O35.7XX0','O35.7XX1','O35.7XX2','O35.7XX3','O35.7XX4','O35.7XX5','O35.7XX9','O35.8XX0','O35.8XX1','O35.8XX2','O35.8XX3','O35.8XX4','O35.8XX5','O35.8XX9','O35.9XX0','O35.9XX1','O35.9XX2','O35.9XX3','O35.9XX4','O35.9XX5','O35.9XX9','O36.0110','O36.0111','O36.0112','O36.0113','O36.0114','O36.0115','O36.0119','O36.0120','O36.0121','O36.0122','O36.0123','O36.0124','O36.0125','O36.0129','O36.0130','O36.0131','O36.0132','O36.0133','O36.0134','O36.0135','O36.0139','O36.0190','O36.0191','O36.0192','O36.0193','O36.0194','O36.0195','O36.0199','O36.0910','O36.0911','O36.0912','O36.0913','O36.0914','O36.0915','O36.0919','O36.0920','O36.0921','O36.0922','O36.0923','O36.0924','O36.0925','O36.0929','O36.0930','O36.0931','O36.0932','O36.0933','O36.0934','O36.0935','O36.0939','O36.0990','O36.0991','O36.0992','O36.0993','O36.0994','O36.0995','O36.0999','O36.1110','O36.1111','O36.1112','O36.1113','O36.1114','O36.1115','O36.1119','O36.1120','O36.1121','O36.1122','O36.1123','O36.1124','O36.1125','O36.1129','O36.1130','O36.1131','O36.1132','O36.1133','O36.1134','O36.1135','O36.1139','O36.1190','O36.1191','O36.1192','O36.1193','O36.1194','O36.1195','O36.1199','O36.1910','O36.1911','O36.1912','O36.1913','O36.1914','O36.1915','O36.1919','O36.1920','O36.1921','O36.1922','O36.1923','O36.1924','O36.1925','O36.1929','O36.1930','O36.1931','O36.1932','O36.1933','O36.1934','O36.1935','O36.1939','O36.1990','O36.1991','O36.1992','O36.1993','O36.1994','O36.1995','O36.1999','O36.20X0','O36.20X1','O36.20X2','O36.20X3','O36.20X4','O36.20X5','O36.20X9','O36.21X0','O36.21X1','O36.21X2','O36.21X3','O36.21X4','O36.21X5','O36.21X9','O36.22X0','O36.22X1','O36.22X2','O36.22X3','O36.22X4','O36.22X5','O36.22X9','O36.23X0','O36.23X1','O36.23X2','O36.23X3','O36.23X4','O36.23X5','O36.23X9','O36.4XX0','O36.4XX1','O36.4XX2','O36.4XX3','O36.4XX4','O36.4XX5','O36.4XX9','O36.5110','O36.5111','O36.5112','O36.5113','O36.5114','O36.5115','O36.5119','O36.5120','O36.5121','O36.5122','O36.5123','O36.5124','O36.5125','O36.5129','O36.5130','O36.5131','O36.5132','O36.5133','O36.5134','O36.5135','O36.5139','O36.5190','O36.5191','O36.5192','O36.5193','O36.5194','O36.5195','O36.5199','O36.5910','O36.5911','O36.5912','O36.5913','O36.5914','O36.5915','O36.5919','O36.5920','O36.5921','O36.5922','O36.5923','O36.5924','O36.5925','O36.5929','O36.5930','O36.5931','O36.5932','O36.5933','O36.5934','O36.5935','O36.5939','O36.5990','O36.5991','O36.5992','O36.5993','O36.5994','O36.5995','O36.5999','O36.60X0','O36.60X1','O36.60X2','O36.60X3','O36.60X4','O36.60X5','O36.60X9','O36.61X0','O36.61X1','O36.61X2','O36.61X3','O36.61X4','O36.61X5','O36.61X9','O36.62X0','O36.62X1','O36.62X2','O36.62X3','O36.62X4','O36.62X5','O36.62X9','O36.63X0','O36.63X1','O36.63X2','O36.63X3','O36.63X4','O36.63X5','O36.63X9','O36.70X0','O36.70X1','O36.70X2','O36.70X3','O36.70X4','O36.70X5','O36.70X9','O36.71X0','O36.71X1','O36.71X2','O36.71X3','O36.71X4','O36.71X5','O36.71X9','O36.72X0','O36.72X1','O36.72X2','O36.72X3','O36.72X4','O36.72X5','O36.72X9','O36.73X0','O36.73X1','O36.73X2','O36.73X3','O36.73X4','O36.73X5','O36.73X9','O36.8120','O36.8121','O36.8122','O36.8123','O36.8124','O36.8125','O36.8129','O36.8130','O36.8131','O36.8132','O36.8133','O36.8134','O36.8135','O36.8139','O36.8190','O36.8191','O36.8192','O36.8193','O36.8194','O36.8195','O36.8199','O36.8210','O36.8211','O36.8212','O36.8213','O36.8214','O36.8215','O36.8219','O36.8220','O36.8221','O36.8222','O36.8223','O36.8224','O36.8225','O36.8229','O36.8230','O36.8231','O36.8232','O36.8233','O36.8234','O36.8235','O36.8239','O36.8290','O36.8291','O36.8292','O36.8293','O36.8294','O36.8295','O36.8299','O36.8910','O36.8911','O36.8912','O36.8913','O36.8914','O36.8915','O36.8919','O36.8920','O36.8921','O36.8922','O36.8923','O36.8924','O36.8925','O36.8929','O36.8930','O36.8931','O36.8932','O36.8933','O36.8934','O36.8935','O36.8939','O36.8990','O36.8991','O36.8992','O36.8993','O36.8994','O36.8995','O36.8999','O36.90X0','O36.90X1','O36.90X2','O36.90X3','O36.90X4','O36.90X5','O36.90X9','O36.91X0','O36.91X1','O36.91X2','O36.91X3','O36.91X4','O36.91X5','O36.91X9','O36.92X0','O36.92X1','O36.92X2','O36.92X3','O36.92X4','O36.92X5','O36.92X9','O36.93X0','O36.93X1','O36.93X2','O36.93X3','O36.93X4','O36.93X5','O36.93X9','O40.1XX0','O40.1XX1','O40.1XX2','O40.1XX3','O40.1XX4','O40.1XX5','O40.1XX9','O40.2XX0','O40.2XX1','O40.2XX2','O40.2XX3','O40.2XX4','O40.2XX5','O40.2XX9','O40.3XX0','O40.3XX1','O40.3XX2','O40.3XX3','O40.3XX4','O40.3XX5','O40.3XX9','O40.9XX0','O40.9XX1','O40.9XX2','O40.9XX3','O40.9XX4','O40.9XX5','O40.9XX9','O41.00X0','O41.00X1','O41.00X2','O41.00X3','O41.00X4','O41.00X5','O41.00X9','O41.01X0','O41.01X1','O41.01X2','O41.01X3','O41.01X4','O41.01X5','O41.01X9','O41.02X0','O41.02X1','O41.02X2','O41.02X3','O41.02X4','O41.02X5','O41.02X9','O41.03X0','O41.03X1','O41.03X2','O41.03X3','O41.03X4','O41.03X5','O41.03X9','O41.1010','O41.1011','O41.1012','O41.1013','O41.1014','O41.1015','O41.1019','O41.1020','O41.1021','O41.1022','O41.1023','O41.1024','O41.1025','O41.1029','O41.1030','O41.1031','O41.1032','O41.1033','O41.1034','O41.1035','O41.1039','O41.1090','O41.1091','O41.1092','O41.1093','O41.1094','O41.1095','O41.1099','O41.1210','O41.1211','O41.1212','O41.1213','O41.1214','O41.1215','O41.1219','O41.1220','O41.1221','O41.1222','O41.1223','O41.1224','O41.1225','O41.1229','O41.1230','O41.1231','O41.1232','O41.1233','O41.1234','O41.1235','O41.1239','O41.1290','O41.1291','O41.1292','O41.1293','O41.1294','O41.1295','O41.1299','O41.1410','O41.1411','O41.1412','O41.1413','O41.1414','O41.1415','O41.1419','O41.1420','O41.1421','O41.1422','O41.1423','O41.1424','O41.1425','O41.1429','O41.1430','O41.1431','O41.1432','O41.1433','O41.1434','O41.1435','O41.1439','O41.1490','O41.1491','O41.1492','O41.1493','O41.1494','O41.1495','O41.1499','O41.8X10','O41.8X11','O41.8X12','O41.8X13','O41.8X14','O41.8X15','O41.8X19','O41.8X20','O41.8X21','O41.8X22','O41.8X23','O41.8X24','O41.8X25','O41.8X29','O41.8X30','O41.8X31','O41.8X32','O41.8X33','O41.8X34','O41.8X35','O41.8X39','O41.8X90','O41.8X91','O41.8X92','O41.8X93','O41.8X94','O41.8X95','O41.8X99','O41.90X0','O41.90X1','O41.90X2','O41.90X3','O41.90X4','O41.90X5','O41.90X9','O41.91X0','O41.91X1','O41.91X2','O41.91X3','O41.91X4','O41.91X5','O41.91X9','O41.92X0','O41.92X1','O41.92X2','O41.92X3','O41.92X4','O41.92X5','O41.92X9','O41.93X0','O41.93X1','O41.93X2','O41.93X3','O41.93X4','O41.93X5','O41.93X9','O42.00','O42.011','O42.012','O42.013','O42.019','O42.02','O42.10','O42.111','O42.112','O42.113','O42.119','O42.12','O42.90','O42.911','O42.912','O42.913','O42.919','O42.92','O43.011','O43.012','O43.013','O43.019','O43.021','O43.022','O43.023','O43.029','O43.101','O43.102','O43.103','O43.109','O43.111','O43.112','O43.113','O43.119','O43.121','O43.122','O43.123','O43.129','O43.191','O43.192','O43.193','O43.199','O43.211','O43.212','O43.213','O43.219','O43.221','O43.222','O43.223','O43.229','O43.231','O43.232','O43.233','O43.239','O43.811','O43.812','O43.813','O43.819','O43.891','O43.892','O43.893','O43.899','O43.90','O43.91','O43.92','O43.93','O44.00','O44.01','O44.02','O44.03','O44.10','O44.11','O44.12','O44.13','O44.20','O44.21','O44.22','O44.23','O44.30','O44.31','O44.32','O44.33','O44.40','O44.41','O44.42','O44.43','O44.50','O44.51','O44.52','O44.53','O45.001','O45.002','O45.003','O45.009','O45.011','O45.012','O45.013','O45.019','O45.021','O45.022','O45.023','O45.029','O45.091','O45.092','O45.093','O45.099','O45.8X1','O45.8X2','O45.8X3','O45.8X9','O45.90','O45.91','O45.92','O45.93','O46.001','O46.002','O46.003','O46.009','O46.011','O46.012','O46.013','O46.019','O46.021','O46.022','O46.023','O46.029','O46.091','O46.092','O46.093','O46.099','O46.8X1','O46.8X2','O46.8X3','O46.8X9','O46.90','O46.91','O46.92','O46.93','O47.00','O47.02','O47.03','O47.1','O47.9','O48.0','O48.1','O60.00','O60.02','O60.03','O71.00','O71.02','O71.03','O88.011','O88.012','O88.013','O88.019','O88.111','O88.112','O88.113','O88.119','O88.211','O88.212','O88.213','O88.219','O88.311','O88.312','O88.313','O88.319','O88.811','O88.812','O88.813','O88.819','O90.3','O91.011','O91.012','O91.013','O91.019','O91.111','O91.112','O91.113','O91.119','O91.211','O91.212','O91.213','O91.219','O92.011','O92.012','O92.013','O92.019','O92.111','O92.112','O92.113','O92.119','O92.20','O92.29','O98.011','O98.012','O98.013','O98.019','O98.111','O98.112','O98.113','O98.119','O98.211','O98.212','O98.213','O98.219','O98.311','O98.312','O98.313','O98.319','O98.411','O98.412','O98.413','O98.419','O98.511','O98.512','O98.513','O98.519','O98.611','O98.612','O98.613','O98.619','O98.711','O98.712','O98.713','O98.719','O98.811','O98.812','O98.813','O98.819','O98.911','O98.912','O98.913','O98.919','O99.011','O99.012','O99.013','O99.019','O99.111','O99.112','O99.113','O99.119','O99.210','O99.211','O99.212','O99.213','O99.280','O99.281','O99.282','O99.283','O99.310','O99.311','O99.312','O99.313','O99.320','O99.321','O99.322','O99.323','O99.330','O99.331','O99.332','O99.333','O99.340','O99.341','O99.342','O99.343','O99.350','O99.351','O99.352','O99.353','O99.411','O99.412','O99.413','O99.419','O99.511','O99.512','O99.513','O99.519','O99.611','O99.612','O99.613','O99.619','O99.711','O99.712','O99.713','O99.719','O99.810','O99.820','O99.830','O99.840','O99.841','O99.842','O99.843','O99.89','O9A.111','O9A.112','O9A.113','O9A.119','O9A.211','O9A.212','O9A.213','O9A.219','O9A.311','O9A.312','O9A.313','O9A.319','O9A.411','O9A.412','O9A.413','O9A.419','O9A.511','O9A.512','O9A.513','O9A.519','Z33.1','Z33.3','Z34.00','Z34.01','Z34.02','Z34.03','Z34.80','Z34.81','Z34.82','Z34.83','Z34.90','Z34.91'
-,'Z34.92','Z34.93','Z36'))
+pl.icd  in (SELECT PQRI_Value FROM pqri_data where nqf_number =?  and PQRI_calculation_Method=? and PQRI_Type in ('ICD')))
 ) );]]>
-  </sql-query>
+	</sql-query>
 
 
   <sql-query name="PQRI.GetExclusion1CMS165.ControllingHighBP">
@@ -14091,62 +14047,30 @@ left join assessment a on em.human_id=a.human_id
 left join patient_results pl on em.human_id=pl.human_id where em.human_id in (:EncIds) and pl.loinc_identifier= '8480-6'
 ;]]>
   </sql-query>
-  <sql-query name="PQRI.GetNumeratorCMS165.ControllingHighBP">
-    <![CDATA[select encounter_id,human_id,Loinc_identifier from (select encounter_id,human_id,Loinc_identifier from  patient_results pr
+	<sql-query name="PQRI.GetNumeratorCMS165.ControllingHighBP">
+		<![CDATA[select encounter_id,human_id,Loinc_identifier from (select encounter_id,human_id,Loinc_identifier from  patient_results pr
 where pr.Loinc_identifier='8480-6' and  encounter_id in (:EncIds) and
-(SUBSTRING_INDEX(pr.`value`,'/',1)<140 or SUBSTRING_INDEX(SUBSTRING_INDEX(pr.`value`,'/',2),'/',-1)<90)
+(SUBSTRING_INDEX(pr.`value`,'/',1)<140 and SUBSTRING_INDEX(SUBSTRING_INDEX(pr.`value`,'/',2),'/',-1)<90)
 group by captured_date_and_time,human_id order by captured_date_and_time desc ) as a group by  human_id; ]]>
-  </sql-query>
+	</sql-query>
 
-  <sql-query name="PQRI.GetDenominatorCMS147.Influenza">
-    <![CDATA[select a.human_id from encounter a  inner join human b on a.human_id = b.human_id where TIMESTAMPDIFF(YEAR,Birth_date, date(date_of_Service)) >0.6
-and a.date_of_service between (date_format(date_sub(DATE_FORMAT(? ,'%Y-01-01'),interval 1 year),'%Y-10-01')) and (date_format(DATE_FORMAT(?,'%Y-01-01'),'%Y-03-31')) and a.encounter_provider_id = ?
+	<sql-query name="PQRI.GetDenominatorCMS147.Influenza">
+		<![CDATA[select a.human_id from encounter a  inner join human b on a.human_id = b.human_id
+	where TIMESTAMPDIFF(YEAR,Birth_date, date(date_of_Service)) >0.6
+and a.date_of_service between (date_format(date_sub(DATE_FORMAT(? ,'%Y-01-01'),interval 1 year),'%Y-10-01'))
+and (date_format(DATE_FORMAT(?,'%Y-01-01'),'%Y-03-31')) and a.encounter_provider_id = ?
 union
 select a.human_id from encounter_arc a inner join human b on a.human_id = b.human_id where TIMESTAMPDIFF(YEAR,Birth_date, date(date_of_Service)) >0.6
 and a.date_of_service between (date_format(date_sub(DATE_FORMAT(? ,'%Y-01-01'),interval 1 year),'%Y-10-01')) and (date_format(DATE_FORMAT(?,'%Y-01-01'),'%Y-03-31')) and a.encounter_provider_id = ?
 ;]]>
-  </sql-query>
-  <sql-query name="PQRI.GetDenominatorList1CMS147.Influenza">
-    <![CDATA[select c.human_id
+	</sql-query>
+	<sql-query name="PQRI.GetDenominatorList1CMS147.Influenza">
+		<![CDATA[select c.human_id
 from e_m_coding c
 left join immunization E on C.Encounter_Id=E.Encounter_Id
 left join human h on c.human_id = h.human_id
-where c.human_id in (:EncIds) and c.is_delete='N' and (c.Procedure_Code in ('99324',
-'99325',
-'99326',
-'99327',
-'99328',
-'99334',
-'99335',
-'99336',
-'99337',
-'99341',
-'99342',
-'99343',
-'99344',
-'99345',
-'99347',
-'99348',
-'99349',
-'99350',
-'99201',
-'99202',
-'99203',
-'99204',
-'99205',
-'99212',
-'99213',
-'99214',
-'99215',
-'99241',
-'99242',
-'99243',
-'99244',
-'99245',
-'99202',
-'99284',
-'99211',
-'99381')
+where c.human_id in (:EncIds) and c.is_delete='N' and (c.Procedure_Code in 
+(SELECT PQRI_Value FROM pqri_data where nqf_number =?  and PQRI_calculation_Method=? and PQRI_Type in ('CPT','HCPCS'))
 or Refused_Administration='') group by C.human_id having count(C.encounter_id)>=2
 
 union
@@ -14154,191 +14078,26 @@ union
 select c.human_id
 from e_m_coding_arc c left join immunization E on c.Encounter_Id=E.Encounter_Id
 left join human h on c.human_id = h.human_id
-where c.human_id in (:EncIds) and c.is_delete='N' and (c.Procedure_Code in ('99324',
-'99325',
-'99326',
-'99327',
-'99328',
-'99334',
-'99335',
-'99336',
-'99337',
-'99341',
-'99342',
-'99343',
-'99344',
-'99345',
-'99347',
-'99348',
-'99349',
-'99350',
-'99201',
-'99202',
-'99203',
-'99204',
-'99205',
-'99212',
-'99213',
-'99214',
-'99215',
-'99241',
-'99242',
-'99243',
-'99244',
-'99245',
-'99202',
-'99284',
-'99211',
-'99381')
+where c.human_id in (:EncIds) and c.is_delete='N' and (c.Procedure_Code in (SELECT PQRI_Value FROM pqri_data where nqf_number =?  and PQRI_calculation_Method=? 
+and PQRI_Type in ('CPT','HCPCS'))
 or Refused_Administration='') group by c.Human_Id having count(c.encounter_id)>=2
 union
 select c.human_id
 from e_m_coding c left join assessment B on c.Encounter_id=B.Encounter_ID
 left join human h on c.human_id = h.human_id
 left join immunization E on c.Encounter_Id=E.Encounter_Id
-where c.human_id in (:EncIds) and c.is_delete='N' and (c.Procedure_Code in ('G0438',
-'G0439',
-'90951',
-'90952',
-'90953',
-'90954',
-'90955',
-'90956',
-'90957',
-'90958',
-'90959',
-'90960',
-'90961',
-'90962',
-'90963',
-'90964',
-'90965',
-'90966',
-'90967',
-'90968',
-'90969',
-'90970',
-'99512',
-'99304',
-'99305',
-'99306',
-'99307',
-'99308',
-'99309',
-'99310',
-'90945',
-'90947',
-'90951',
-'90952',
-'90953',
-'90954',
-'90955',
-'90956',
-'90957',
-'90958',
-'90959',
-'90960',
-'90961',
-'90962',
-'90963',
-'90964',
-'90965',
-'90966',
-'90967',
-'90968',
-'90969',
-'90970',
-'99391',
-'99392',
-'99393',
-'99394',
-'99395',
-'99396',
-'99397',
-'99411',
-'99412',
-'99420',
-'99429',
-'99401',
-'99402',
-'99403',
-'99404',
-'99385',
-'99386',
-'99387',
-'99381',
-'99382',
-'99383',
-'99384',
-'99205',		
-'90935') or Refused_Administration='')  group by c.Human_Id having count(c.encounter_id)>=1
+where c.human_id in (:EncIds) and c.is_delete='N' and (c.Procedure_Code in
+(SELECT PQRI_Value FROM pqri_data where nqf_number =?  and PQRI_calculation_Method=? and PQRI_Type in ('CPT1')) or Refused_Administration='')  group by c.Human_Id having count(c.encounter_id)>=1
 union
 select c.human_id
 from e_m_coding_arc c
 left join assessment_arc B on c.Encounter_id=B.Encounter_ID
 left join human h on c.human_id = h.human_id
 left join immunization E on c.Encounter_Id=E.Encounter_Id
-where c.human_id in (:EncIds) and c.is_delete='N' and (c.Procedure_Code in ('G0438','G0439','90951',
-'90952',
-'90953',
-'90954',
-'90955',
-'90956',
-'90957',
-'90958',
-'90959',
-'90960',
-'90961',
-'90962',
-'90963',
-'90964',
-'90965',
-'90966',
-'90967',
-'90968',
-'90969',
-'90970',
-'99512',
-'90945',
-'90947',
-'90951',
-'90952',
-'90953',
-'90954',
-'90955',
-'90956',
-'90957',
-'90958',
-'90959',
-'90960',
-'90961',
-'90962',
-'90963',
-'90964',
-'90965',
-'90966',
-'90967',
-'90968',
-'90969',
-'90970',
-'99395',
-'99396',
-'99397',
-'99411',
-'99412',
-'99420',
-'99429',
-'99401',
-'99402',
-'99403',
-'99404',
-'99385',
-'99386',
-'99387','99381','99382','99383','99384',
-'99205',
-'90935') or Refused_Administration='')  group by c.Human_Id having count(c.encounter_id)>=1;
+where c.human_id in (:EncIds) and c.is_delete='N' and (c.Procedure_Code in
+(SELECT PQRI_Value FROM pqri_data where nqf_number =?  and PQRI_calculation_Method=? and PQRI_Type in ('CPT1')) or Refused_Administration='')  group by c.Human_Id having count(c.encounter_id)>=1;
 ]]>
-  </sql-query>
+	</sql-query>
 
 
 
@@ -14354,219 +14113,48 @@ where c.human_id in (:EncIds) and c.is_delete='N' and (c.Procedure_Code in ('G04
 
 
 
-  <sql-query name="PQRI.GetDenominatorExceptionCMS147.Influenza">
-    <![CDATA[select a.human_id from encounter a
+	<sql-query name="PQRI.GetDenominatorExceptionCMS147.Influenza">
+		<![CDATA[select a.human_id from encounter a
 left join assessment b on A.Encounter_id=b.Encounter_ID
 left join immunization e on a.Encounter_Id=e.Encounter_Id
 where a.human_id in(:EncIds)  and 
-(b.ICD  in('T78.08XA',
-'T78.08XD',
-'T78.08XS',
-'Z91.012',
-'995.68',
-'V15.03',
-'T50.B95A',
-'T50.B95D',
-'T50.B95',
-'Z28.29',
-'Z88.7',
-'Z28.21') or e.snomed_code in ('183932001',
-'183964008',
-'183966005',
-'216952002',
-'266721009',
-'269191009',
-'274512008',
-'31438003',
-'35688006',
-'371133007',
-'397745006',
-'407563006',
-'410534003',
-'410536001',
-'416098002',
-'416406003',
-'428119001',
-'445528004',
-'59037007',
-'62014003',
-'79899007',
-'105480006',
-'160932005',
-'160934006',
-'182890002',
-'182895007',
-'182897004',
-'182900006',
-'182902003',
-'183944003',
-'183945002',
-'184081006',
-'185479006',
-'185481008',
-'224187001',
-'225928004',
-'258147002',
-'266710000',
-'266966009',
-'275694009',
-'275936005',
-'281399006',
-'310343007',
-'373787003',
-'385648002',
-'406149000',
-'408367005',
-'413310006',
-'413311005',
-'413312003',
-'416432009',
-'423656007',
-'424739004',
-'443390004',
-'107724000',
-'182856006',
-'182857002',
-'185335007',
-'224194003',
-'224198000',
-'224199008',
-'242990004',
-'266756008',
-'270459005',
-'309017000',
-'309846006',
-'419808006',
-'424553001'
+(b.ICD  in(SELECT PQRI_Value FROM pqri_data where nqf_number =?  and PQRI_calculation_Method=? and PQRI_Type in ('ICD')) or
+e.snomed_code in (SELECT PQRI_Value FROM pqri_data where nqf_number =?  and PQRI_calculation_Method=? and PQRI_Type in ('SNOMED')
 ));]]>
-  </sql-query>
-  <sql-query name="PQRI.GetDenominatorExceptionCMS147_list.Influenza">
-    <![CDATA[select encounter_id,human_id,'',procedure_code,'' from e_m_coding where human_id in (:EncIds) and is_delete='N'
+	</sql-query>
+	<sql-query name="PQRI.GetDenominatorExceptionCMS147_list.Influenza">
+		<![CDATA[select encounter_id,human_id,'',procedure_code,'' from e_m_coding where human_id in (:EncIds) and is_delete='N'
 union all
 select encounter_id,human_id,icd,'','' from assessment where human_id in (:EncIds)
 UNION ALL
 select encounter_id,human_id,'','',snomed_code from immunization where human_id in (:EncIds);
 ]]>
-  </sql-query>
-
-
-
-  <!--<sql-query name="PQRI.GetNumeratorCMS147.Influenza">
-
-    <![CDATA[select distinct(B.Encounter_Id),B.Human_Id,B.procedure_code,ifnull(CVX_Code,'') from immunization_history B
-
-
-where( B.procedure_code in('90630',
-'90653',
-'90654',
-'90655',
-'90656',
-'90657',
-'90658',
-'90660',
-'90661',
-'90662',
-'90664',
-'90666',
-'90667',
-'90668',
-'90672',
-'90673',
-'90685',
-'90686',
-'90687',
-'90688','G0008',
-'Q2034',
-'Q2035',
-'Q2036',
-'Q2037',
-'Q2038',
-'Q2039'
-
-) or CVX_Code in ('135',
-'140',
-'141',
-'144',
-'149',
-'150',
-'151',
-'153',
-'155',
-'158',
-'161',
-'166',
-'168',
-'88'))  and
-(if(Administered_Date<>'',str_to_date(Administered_Date,'%Y-%m-%d'),'0001-01-01') between date_format(date_sub(DATE_FORMAT(?,'%Y-01-01'),interval 1 year),'%Y-08-01') and
- date_format(date_sub(DATE_FORMAT(?,'%Y-01-01'),interval 1 year),'%Y-12-31')
- or
- if(Administered_Date<>'',str_to_date(Administered_Date,'%Y-%m-%d'),'0001-01-01') between date_format(DATE_FORMAT(?,'%Y-01-01'),'%Y-01-01') and
- date_format(DATE_FORMAT(?,'%Y-01-01'),'%Y-03-31') and human_id in (:EncIds));]]>
-
-  </sql-query>-->
+	</sql-query>
 
 	<sql-query name="PQRI.GetNumeratorCMS147.Influenza">
 
 		<![CDATA[select distinct(B.Encounter_Id),B.Human_Id,B.procedure_code,ifnull(CVX_Code,'') from immunization_history B
 
 
-where( B.procedure_code in('90630',
-'90653',
-'90654',
-'90655',
-'90656',
-'90657',
-'90658',
-'90660',
-'90661',
-'90662',
-'90664',
-'90666',
-'90667',
-'90668',
-'90672',
-'90673',
-'90685',
-'90686',
-'90687',
-'90688','G0008',
-'Q2034',
-'Q2035',
-'Q2036',
-'Q2037',
-'Q2038',
-'Q2039'
+where( B.procedure_code in(SELECT PQRI_Value FROM pqri_data where nqf_number =?  and PQRI_calculation_Method=? and PQRI_Type ='CPT'
 
-) or CVX_Code in ('135',
-'140',
-'141',
-'144',
-'149',
-'150',
-'151',
-'153',
-'155',
-'158',
-'161',
-'166',
-'168',
-'88'))  and
-(if(Administered_Date<>'',str_to_date(Administered_Date,'%d-%b-%Y'),'0001-01-01') between date_format(date_sub(DATE_FORMAT(?,'%Y-01-01'),interval 1 year),'%Y-08-01') and
+) or CVX_Code in (SELECT PQRI_Value FROM pqri_data where nqf_number =?  and PQRI_calculation_Method=? and PQRI_Type = 'CVX'))  and
+(if(Administered_Date<>'',str_to_date(Administered_Date,'%Y-%b-%d'),'0001-01-01') 
+between date_format(date_sub(DATE_FORMAT(?,'%Y-01-01'),interval 1 year),'%Y-08-01') and
  date_format(date_sub(DATE_FORMAT(?,'%Y-01-01'),interval 1 year),'%Y-12-31')
  or
- if(Administered_Date<>'',str_to_date(Administered_Date,'%d-%b-%Y'),'0001-01-01') between date_format(DATE_FORMAT(?,'%Y-01-01'),'%Y-01-01') and
- date_format(DATE_FORMAT(?,'%Y-01-01'),'%Y-03-31') and human_id in (:EncIds));]]>
+ if(Administered_Date<>'',str_to_date(Administered_Date,'%Y-%b-%d'),'0001-01-01') between date_format(DATE_FORMAT(?,'%Y-01-01'),'%Y-01-01') and
+ date_format(DATE_FORMAT(?,'%Y-01-01'),'%Y-03-31')) and human_id in (:EncIds);]]>
 
-	</sql-query>
+  </sql-query>
 
   <sql-query name="PQRI.GetDenominator1CMS125.BreastCancer">
     <![CDATA[select e.human_id from encounter e left join human h on e.human_id=h.human_id left join e_m_coding em on e.encounter_id=em.encounter_id
 where date(Date_of_service) between ? and ? and
 (datediff(date(e.date_of_service),h.birth_date)/365.25)>=51 and (datediff(date(e.date_of_service),h.birth_date)/365.25)<74
 and h.sex="FEMALE" and e.encounter_provider_id =? and
-em.procedure_code in('G0438','G0439','99341','99342','99343','99344','99345','99347','99348','99349','99350',
-'99201','99202','99203','99204','99205','99212','99213','99214','99215','99395','99396','99397','99385','99386','99387');]]>
-  </sql-query>
+em.procedure_code in (SELECT PQRI_Value FROM pqri_data where nqf_number =?  and PQRI_calculation_Method=? and PQRI_Type in ('CPT','HCPCS'));]]>
+	</sql-query>
 
   <sql-query name="PQRI.GetDenominator2CMS125.BreastCancer">
     <![CDATA[select e.encounter_id ,e.human_id,em.procedure_code from encounter e join e_m_coding em on e.encounter_id=em.encounter_id
@@ -14577,22 +14165,19 @@ where e.human_id in (:EncIds); ]]>
     <![CDATA[select e.encounter_id ,e.human_id,em.procedure_code from encounter e join e_m_coding em on e.encounter_id=em.encounter_id where e.human_id in (:EncIds) and e.human_id not in (:EncIdExc); ]]>
   </sql-query>
 
-  <sql-query name="PQRI.GetExceptionCMS125.BreastCancer">
-    <![CDATA[select distinct em.encounter_id ,em.human_id from e_m_coding em
-inner join assessment b on em.encounter_id=b.encounter_id
-left join assessment c on b.encounter_id=c.encounter_id
-left join problem_list pl on em.human_id=pl.human_id
+	<sql-query name="PQRI.GetExceptionCMS125.BreastCancer">
+		<![CDATA[select distinct em.encounter_id ,em.human_id from assessment em
 where em.human_id in (:EncIds) and
-(c.ICD ='Z90.13' or (b.ICD='Z90.12' and c.ICD='Z90.11') or
-(pl.icd='z90.13' and pl.is_active ='Y')or
-((pl.ICD='Z90.12' and pl.is_active ='Y') and (pl.ICD='Z90.11' and pl.is_active ='Y' )))
+em.ICD  in (SELECT PQRI_Value FROM pqri_data where nqf_number =?  and PQRI_calculation_Method=? and PQRI_Type
+in ('ICD'))
 
 union
 
 select distinct em.encounter_id ,em.human_id from e_m_coding em where em.human_id in (:EncIds) and
-(em.procedure_code in('19180','19200','19220','19240','19303','19304','19305','19306','19307') and em.Is_Delete='N')
+(em.procedure_code in(SELECT PQRI_Value FROM pqri_data where nqf_number =?  and PQRI_calculation_Method=? and PQRI_Type
+in ('CPT','HCPCS')) and em.Is_Delete='N')
 group by em.procedure_code,em.human_id having count(em.procedure_code)>=2;]]>
-  </sql-query>
+	</sql-query>
   <sql-query name="PQRI.GetException1CMS125.BreastCancer">
     <![CDATA[select distinct em.encounter_id,em.human_id,c.ICD,em.procedure_code from e_m_coding em
 left join assessment c on em.encounter_id=c.encounter_id where em.human_id in (:EncIds); ]]>
@@ -14604,31 +14189,29 @@ left join assessment c on em.encounter_id=c.encounter_id where em.human_id in (:
     between date_sub(DATE_FORMAT(?,'%Y-01-01'),interval 15 month) and DATE_FORMAT(?,'%Y-12-31') and human_id in (:EncIds);]]>
   </sql-query>
 
-  <sql-query name="PQRI.GetDenominatorCMS22.HBpFollowup">
-    <![CDATA[select distinct e.encounter_id,e.human_id from encounter e inner join human h on e.human_id=h.human_id
+	<sql-query name="PQRI.GetDenominatorCMS22.HBpFollowup">
+		<![CDATA[select e.encounter_id,e.human_id from encounter e inner join human h on e.human_id=h.human_id
 left join e_m_coding B on e.Encounter_Id=B.Encounter_Id
-where date(Date_of_service) between ? and ? and e.encounter_Provider_id = ? and (datediff(date(e.date_of_service),h.birth_date)/365.25)>=18
-and Procedure_Code in ('90791','90792','90832','90834','90837','90839','90845','90880','92002','92004','92012','92014','96118','99201','99202','99203','99204','99205',
-'99325','99326','99327','99328','99334','99335','99336','99337','99341','99342','99343','99344','99345','99347','99348','99349','99350','99385',
-'99212','99213','99214','99215','99281','99282','99283','99284','99285','99304','99305','99306','99307','99308','99309','99310','99318','99324',
-'99386','99387','99395','99396','99397','G0101','G0402','G0438','G0439') ;]]>
-  </sql-query>
+where date(Date_of_service) between ? and ? and e.encounter_Provider_id = ? and 
+(datediff(date(e.date_of_service),h.birth_date)/365.25)>=18
+and Procedure_Code in (SELECT PQRI_Value FROM pqri_data where nqf_number =?  and PQRI_calculation_Method=? and PQRI_Type in ('CPT','HCPCS')) ;]]>
+	</sql-query>
 
   <sql-query name="PQRI.GetExclusionCMS22.HBpFollowup">
-    <![CDATA[select distinct c.encounter_id,c.human_id,B.ICD,pr.Loinc_identifier,em.procedure_code,cast(B.created_date_and_time as char(50)) from assessment B left join encounter c on B.ENcounter_id = c.Encounter_Id
+    <![CDATA[select c.encounter_id,c.human_id,B.ICD,pr.Loinc_identifier,em.procedure_code,cast(B.created_date_and_time as char(50)) from assessment B left join encounter c on B.ENcounter_id = c.Encounter_Id
 left join patient_results pr on pr.encounter_id=c.encounter_id
 left join e_m_coding as em on em.Encounter_Id=c.Encounter_Id
 where ICD in ('H35.039','I10','I11.0','I11.9','I12.0','I12.9','I13.0','I13.10','I13.11','I13.2','I15.0','I16.0','I16.1','I16.9','I67.4')
 and date(c.date_of_service) between '0001-01-01' and ? 
-and c.human_id in (:EncIds) and pr.Loinc_identifier='8480-6'
-Union
+and c.human_id in (:EncIds) and pr.Loinc_identifier='8480-6';]]>
+<!--Union
 select distinct c.encounter_id,c.human_id,B.ICD,pr.Loinc_identifier,em.procedure_code,cast(B.created_date_and_time as char(50)) from Problem_List B left join 
 encounter c on B.Human_Id = c.Human_Id
 left join patient_results pr on pr.encounter_id=c.encounter_id
 left join e_m_coding as em on em.Encounter_Id=c.Encounter_Id
 where ICD in ('H35.039','I10','I11.0','I11.9','I12.0','I12.9','I13.0','I13.10','I13.11','I13.2','I15.0','I16.0','I16.1','I16.9','I67.4')
 and date(c.date_of_service) between '0001-01-01' and ?
-and c.human_id in (:EncIds) and pr.Loinc_identifier='8480-6';]]>
+and c.human_id in (:EncIds) and pr.Loinc_identifier='8480-6';]]>-->
   </sql-query>
   <!--<sql-query name="PQRI.GetExceptionCMS22.HBpFollowup">
     <![CDATA[select distinct e.encounter_id,e.human_id, pr.Loinc_identifier from encounter e
@@ -14637,7 +14220,7 @@ where e.encounter_id in (:EncIds) and pr.Loinc_Observation like "%bp%" and pr.sn
   </sql-query>-->
 
   <sql-query name="PQRI.GetExceptionCMS22.HBpFollowup">
-    <![CDATA[select distinct e.encounter_id,e.human_id, pr.Loinc_identifier,ifnull(B.procedure_code,'') from encounter e
+    <![CDATA[select e.encounter_id,e.human_id, pr.Loinc_identifier,ifnull(B.procedure_code,'') from encounter e
 left join patient_results pr   on e.encounter_id=pr.encounter_id left join e_m_coding B on e.Encounter_Id=B.Encounter_Id
 where e.encounter_id in (:EncIds) and pr.Loinc_Observation like "%bp%" and pr.snomed_code<>'';]]>
   </sql-query>
@@ -14674,7 +14257,7 @@ Left join patient_results pr on pr.encounter_id=e.encounter_id where e.encounter
 Left join patient_results pr on pr.encounter_id=e.encounter_id where e.encounter_id in (:EncIds) ;]]>
   </sql-query>
   <sql-query name="PQRI.GetNumeratorCMS22.HBpFollowup">
-    <![CDATA[select distinct B.encounter_id,B.human_id,'' from  patient_results B
+    <![CDATA[select B.encounter_id,B.human_id,'' from  patient_results B
 where loinc_observation like "%bp%" and `Value` = 'Normal'
 and B.encounter_id in (:EncIds)
 union
@@ -14682,12 +14265,12 @@ select distinct B.encounter_id,B.human_id,'' from patient_results B
 left join care_plan cp on B.encounter_id=cp.encounter_id
 left join encounter e on B.encounter_id=e.encounter_id
 where B.encounter_id in (:EncIds)
-and (loinc_observation like "%bp%" and value='pre-hypertensive' and cp.care_name_value ='BP Sys/Dia' and cp.care_plan_notes!='' and cp.status= 'pre-hypertensive'
+and (loinc_observation like "%bp%" and value='pre-hypertensive' and cp.care_name_value ='BP Sys/Dia' and cp.care_plan_notes!='' and cp.status= 'Elevated'
  and
 ((e.due_on between date_add(date(e.date_of_service) , interval 1 day) and DATE_add(date_add(date(e.date_of_service),interval 1 day),
  INTERVAL 12 MONTH))
 or
-e.Return_In_Months<='12' or e.Return_In_Weeks<='52' or e.Return_In_Days<='365'))
+(e.Return_In_Months>='2' and e.Return_In_Months<='6') or (e.Return_In_Weeks>='8' and e.Return_In_Weeks<='24') or (e.Return_In_Days>='60' and e.Return_In_Days<='180')))
 union
 select distinct B.encounter_id,B.human_id,'' from  patient_results B
 left join care_plan cp on B.encounter_id=cp.encounter_id
@@ -14704,13 +14287,18 @@ e.Return_In_Weeks<='4' or e.Return_In_Days<='28'))
 union
 select distinct B.encounter_id,B.human_id ,cp.snomed_code from patient_results B
 left join care_plan cp on B.encounter_id=cp.encounter_id
+left join encounter e on B.encounter_id=e.encounter_id
+left join orders o on e.encounter_id=o.encounter_id 
 where B.encounter_id in (:EncIds) and
 
 (loinc_observation like "%bp%" and value='Second Hypertensive' and
 cp.care_name_value ='BP Sys/Dia' and cp.care_plan_notes!='' and cp.status = 'Second Hypertensive' and
 
 (cp.snomed_code like "%134403003%" or cp.snomed_code like "%183516009%" or cp.snomed_code like "%183561008%" or cp.snomed_code like "%18385600%"
-or cp.snomed_code like "%306206005%" or cp.snomed_code like "%306253008%" or cp.snomed_code like "%308470006%"));]]>
+or cp.snomed_code like "%306206005%" or cp.snomed_code like "%306253008%" or cp.snomed_code like "%308470006%")
+and (e.Return_In_Weeks<='4' or e.Return_In_Days<='28')
+and o.Lab_Procedure in(SELECT PQRI_Value FROM 
+pqri_data where nqf_number =?  and PQRI_calculation_Method=? and PQRI_Type in ('CPT')));]]>
   </sql-query>
   <sql-query name="Get.HumanCountbyCarrierName">
     <![CDATA[ select distinct a.human_id from pat_insured_plan  as a join insurance_plan as b
@@ -14981,7 +14569,49 @@ where e.human_id= ? and e.date_of_service<>'0001-01-01 00:00:00' and e.Is_Phone_
 date(date_of_service) >= date(NOW()) - INTERVAL ? MONTH group by e.encounter_id order by DOS desc) order by DOS desc;
   ]]>
   </sql-query>
+	<sql-query name="PQRI.GetDenominator1CMS130.ColorectalCancer">
+		<![CDATA[select e.human_id from encounter e left join human h on e.human_id=h.human_id left join e_m_coding em on e.encounter_id=em.encounter_id
+where date(Date_of_service) between ? and ? and
+(datediff(date(e.date_of_service),h.birth_date)/365.25)>=46 and (datediff(date(e.date_of_service),h.birth_date)/365.25)<76
+ and e.encounter_provider_id =? and
+em.procedure_code in(SELECT PQRI_Value FROM 
+pqri_data where nqf_number =?  and PQRI_calculation_Method=? and PQRI_Type in ('CPT','HCPCS'));]]>
 
+
+	</sql-query>
+
+	<sql-query name="PQRI.GetExceptionCMS130.ColorectalCancer">
+		<![CDATA[select distinct b.encounter_id ,b.human_id from  
+ assessment b 
+
+left join problem_list pl on b.human_id=pl.human_id
+where b.human_id in (:EncIds) and
+ (b.ICD in (SELECT PQRI_Value FROM 
+pqri_data where nqf_number =?  and PQRI_calculation_Method=? and PQRI_Type in ('ICD')) or
+(pl.icd in (SELECT PQRI_Value FROM 
+pqri_data where nqf_number =?  and PQRI_calculation_Method=? and PQRI_Type in ('ICD')) and pl.is_active ='Y');
+]]>
+	</sql-query>
+
+	<sql-query name="PQRI.GetException1CMS130.ColorectalCancer">
+		<![CDATA[select distinct em.encounter_id,em.human_id,c.ICD,em.procedure_code from e_m_coding em
+left join assessment c on em.encounter_id=c.encounter_id where em.human_id in (:EncIds); ]]>
+	</sql-query>
+	<sql-query name="PQRI.GetDenominator2CMS130.ColorectalCancer">
+		<![CDATA[select e.encounter_id ,e.human_id,em.procedure_code from encounter e join e_m_coding em on e.encounter_id=em.encounter_id
+where e.human_id in (:EncIds); ]]>
+	</sql-query>
+
+	<sql-query name="PQRI.GetDenominator2withExceptionCMS130.ColorectalCancer">
+		<![CDATA[select e.encounter_id ,e.human_id,em.procedure_code from encounter e join e_m_coding em on e.encounter_id=em.encounter_id where e.human_id in (:EncIds) and e.human_id not in (:EncIdExc); ]]>
+	</sql-query>
+	<sql-query name="PQRI.GetNumeratorCMS130.ColorectalCancer">
+		<![CDATA[select encounter_id,human_id,loinc_identifier from patient_results pr where pr.loinc_observation like "%CDPLast Colonoscopy%"  and if(length(`value`)=8,date_format(str_to_date(`value`,'%Y-%b-%d'),'%Y-%m-01'),str_to_date(`value`,'%Y-%b-%d')) 
+    between date_sub(DATE_FORMAT(?,'%Y-01-01'),interval 120 month) and DATE_FORMAT(?,'%Y-12-31') and human_id in (:EncIds)
+    union
+    select distinct em.encounter_id,em.human_id,'' from e_m_coding em where em.human_id in (:EncIds) and procedure_code in ('44393',	'44397',	'45355',	'45383',	'45387',	'44388',	'44389',	'44390',	'44391',	'44392',	'44394',	'44401',	'44402',	'44403',	'44404',	'44405',	'44406',	'44407',	'44408',	'45378',	'45379',	'45380',	'45381',	'45382',	'45384',	'45385',	'45386',	'45388',	'45389',	'45390',	'45391',	'45392',	'45393',	'45398',	'G0105',	'G0121')
+    ]]>
+	</sql-query>
 
 </hibernate-mapping>
 
