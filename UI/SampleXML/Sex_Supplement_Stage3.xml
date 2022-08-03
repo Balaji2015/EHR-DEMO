@@ -5,30 +5,29 @@
   <!--Acurus- This section would be multiple if multiple Sex groups are identified-->
   <!-- Sex Supplemental Data Element (CMS EP) -->
   <entryRelationship typeCode="COMP">
-    <observation classCode="OBS" moodCode="EVN">
-      <!-- Sex Supplemental Data Element (CMS EP) template ID -->
-      <templateId root="2.16.840.1.113883.10.20.27.3.6" extension="2016-09-01"/>
-      <templateId root="2.16.840.1.113883.10.20.27.3.21" extension="2016-11-01" />
-      <code code="76689-9" displayName="Sex assigned at birth" codeSystem="2.16.840.1.113883.6.1" codeSystemName="LOINC"/>
-      <!--<code code="184100006" displayName="patient sex" codeSystem="2.16.840.1.113883.6.96" codeSystemName="SNOMED-CT"/>-->
-      <statusCode code="completed"/>
-      <!--Acurus- Bring in the Sex Code of the Sex that is received as a unique. If MALE, it is M and if FEMALE, it is F-->
-      <value xsi:type="CD" code="" codeSystem="2.16.840.1.113883.5.1" codeSystemName="AdministrativeGenderCode" />
-      <entryRelationship typeCode="SUBJ" inversionInd="true">
-        <!-- Aggregate Count (CMS EP) -->
-        <observation classCode="OBS" moodCode="EVN">
-          <!-- Aggregate Count template ID -->
-          <templateId root="2.16.840.1.113883.10.20.27.3.3"/>
-          <!-- Aggregate Count (CMS EP) template ID -->
-          <templateId root="2.16.840.1.113883.10.20.27.3.24"/>
-          <code code="MSRAGG" displayName="rate aggregation" codeSystem="2.16.840.1.113883.5.4" codeSystemName="ActCode"/>
-          <statusCode code="completed"/>
-          <!--Acurus-Total Count for the Chosen Sex-->
-          <value xsi:type="INT" value=""/>
-          <methodCode code="COUNT" displayName="Count" codeSystem="2.16.840.1.113883.5.84" codeSystemName="ObservationMethod"/>
-        </observation>
-      </entryRelationship>
-    </observation>
-  </entryRelationship>
-
+		<observation classCode="OBS" moodCode="EVN">
+		  <!-- Sex Supplemental Data Element (CMS EP) template ID -->
+		  <templateId root="2.16.840.1.113883.10.20.27.3.6" extension="2016-09-01" />
+		  <code code="76689-9" displayName="Sex assigned at birth" codeSystem="2.16.840.1.113883.6.1" codeSystemName="LOINC" />
+		  <!--<code code="184100006" displayName="patient sex" codeSystem="2.16.840.1.113883.6.96" codeSystemName="SNOMED-CT"/>-->
+		  <statusCode code="completed" />
+		  <!--Acurus- Bring in the Sex Code of the Sex that is received as a unique. If MALE, it is M and if FEMALE, it is F-->
+		  <!--<value xsi:type="CD" code="" codeSystem="2.16.840.1.113883.5.1" codeSystemName="AdministrativeGender"/>-->
+		  <value xsi:type="CD" code="" codeSystem="2.16.840.1.113883.5.1" codeSystemName="AdministrativeSex" displayName="" />
+		  <entryRelationship typeCode="SUBJ" inversionInd="true">
+			<!-- Aggregate Count (CMS EP) -->
+			<observation classCode="OBS" moodCode="EVN">
+			  <!-- Aggregate Count template ID -->
+			  <templateId root="2.16.840.1.113883.10.20.27.3.3" />
+			  <!-- Aggregate Count (CMS EP) template ID -->
+			  <!--<templateId root="2.16.840.1.113883.10.20.27.3.24"/>-->
+			  <code code="MSRAGG" displayName="rate aggregation" codeSystem="2.16.840.1.113883.5.4" codeSystemName="ActCode" />
+			  <statusCode code="completed" />
+			  <!--Acurus-Total Count for the Chosen Sex-->
+			  <value xsi:type="INT" value="" />
+			  <methodCode code="COUNT" displayName="Count" codeSystem="2.16.840.1.113883.5.84" codeSystemName="ObservationMethod" />
+			</observation>
+		  </entryRelationship>
+		</observation>
+	</entryRelationship>
 </ClinicalDocument>

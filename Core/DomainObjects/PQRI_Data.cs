@@ -18,11 +18,11 @@ namespace Acurus.Capella.Core.DomainObjects
         private string _PQRI_Type = string.Empty;
         private string _PQRI_Value = string.Empty;
         private string _PQRI_Description = string.Empty;
-         private string _PQRI_Selection_XML = string.Empty;
+        private string _PQRI_Selection_XML = string.Empty;
         private int _Sort_Order = 0;
         private string _NQF_Number = string.Empty;
         private string _Value_Set = string.Empty;
-        
+        private string _PQRI_Calculation_Method = string.Empty;
         #endregion
 
         #region Methods
@@ -42,6 +42,7 @@ namespace Acurus.Capella.Core.DomainObjects
             sb.Append(_Sort_Order);
             sb.Append(_NQF_Number);
             sb.Append(_Value_Set);
+            sb.Append(_PQRI_Calculation_Method);
             return sb.ToString().GetHashCode();
         }
 
@@ -114,6 +115,13 @@ namespace Acurus.Capella.Core.DomainObjects
         {
             get { return _Value_Set; }
             set { _Value_Set = value; }
+        }
+
+        [DataMember]
+        public virtual string PQRI_Calculation_Method
+        {
+            get { return _PQRI_Calculation_Method; }
+            set { _PQRI_Calculation_Method = value; }
         }
         #endregion
 

@@ -6,7 +6,13 @@
   <reference typeCode="REFR">
     <externalObservation classCode="OBS" moodCode="EVN">
       <id root=""/>
-      <!--This is the population ID in the eMeasure.In this case, the IPP-->
+      <!--This is the population ID in the eMeasure.In this case, the IPP/NUMER/DENOM/DENEX/DENEXCEP-->
+	  <!--CMS130v10 Population ID
+	  IPOP: 17503C2D-5201-451F-8B59-6E8D0C1F06E2
+	  DENOM: C0BA27DB-723D-4ACE-8E57-0DEA54FC8CCF
+	  DENEX: B45075B5-CCF8-45B3-89B6-71305F8023AE
+	  NUMER: 43D4D31D-4FCC-445B-9A78-AB4756149E65
+	  -->
     </externalObservation>
   </reference>
 </ClinicalDocument>

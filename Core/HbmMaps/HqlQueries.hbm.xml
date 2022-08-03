@@ -14589,7 +14589,7 @@ where b.human_id in (:EncIds) and
  (b.ICD in (SELECT PQRI_Value FROM 
 pqri_data where nqf_number =?  and PQRI_calculation_Method=? and PQRI_Type in ('ICD')) or
 (pl.icd in (SELECT PQRI_Value FROM 
-pqri_data where nqf_number =?  and PQRI_calculation_Method=? and PQRI_Type in ('ICD')) and pl.is_active ='Y');
+pqri_data where nqf_number =?  and PQRI_calculation_Method=? and PQRI_Type in ('ICD')) and pl.is_active ='Y'));
 ]]>
 	</sql-query>
 
@@ -14609,7 +14609,9 @@ where e.human_id in (:EncIds); ]]>
 		<![CDATA[select encounter_id,human_id,loinc_identifier from patient_results pr where pr.loinc_observation like "%CDPLast Colonoscopy%"  and if(length(`value`)=8,date_format(str_to_date(`value`,'%Y-%b-%d'),'%Y-%m-01'),str_to_date(`value`,'%Y-%b-%d')) 
     between date_sub(DATE_FORMAT(?,'%Y-01-01'),interval 120 month) and DATE_FORMAT(?,'%Y-12-31') and human_id in (:EncIds)
     union
-    select distinct em.encounter_id,em.human_id,'' from e_m_coding em where em.human_id in (:EncIds) and procedure_code in ('44393',	'44397',	'45355',	'45383',	'45387',	'44388',	'44389',	'44390',	'44391',	'44392',	'44394',	'44401',	'44402',	'44403',	'44404',	'44405',	'44406',	'44407',	'44408',	'45378',	'45379',	'45380',	'45381',	'45382',	'45384',	'45385',	'45386',	'45388',	'45389',	'45390',	'45391',	'45392',	'45393',	'45398',	'G0105',	'G0121')
+    select distinct em.encounter_id,em.human_id,'' from e_m_coding em where em.human_id in (:EncIds) and
+	procedure_code in (SELECT PQRI_Value FROM 
+pqri_data where nqf_number =?  and PQRI_calculation_Method=? and PQRI_Type in ('CPT'))
     ]]>
 	</sql-query>
 

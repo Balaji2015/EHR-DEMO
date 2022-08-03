@@ -2187,7 +2187,7 @@ namespace Acurus.Capella.UI
             {
                 string xmlValue = elements.Attribute("name").Value;
                 // if (xmlValue != string.Empty && xmlValue.ToUpper() == ClientSession.FacilityName.ToUpper())
-                if (xmlValue != string.Empty && sFacility_Name != "" && xmlValue.ToUpper() == sFacility_Name.ToUpper() && elements.Attribute("Legal_Org").Value == ClientSession.LegalOrg)
+                if (elements.Attribute("Legal_Org") != null && xmlValue != string.Empty && sFacility_Name != "" && xmlValue.ToUpper() == sFacility_Name.ToUpper() && elements.Attribute("Legal_Org").Value == ClientSession.LegalOrg)
                 {
                     foreach (XElement phyItems in elements.Elements())
                     {
@@ -2254,7 +2254,7 @@ namespace Acurus.Capella.UI
                     }
 
                 }
-                else if (elements.Attribute("Legal_Org").Value == ClientSession.LegalOrg)
+                else if (elements.Attribute("Legal_Org") != null && elements.Attribute("Legal_Org").Value == ClientSession.LegalOrg)
                 {
                     foreach (XElement phyItems in elements.Elements())
                     {

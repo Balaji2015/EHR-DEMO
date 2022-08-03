@@ -1,18 +1,19 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <hibernate-mapping xmlns="urn:nhibernate-mapping-2.2" namespace="Acurus.Capella.Core.DomainObjects" assembly="Acurus.Capella">
-  <class name="Acurus.Capella.Core.DomainObjects.PQRI_Data, Acurus.Capella.Core" table="pqri_data" lazy="true">
-    <id name="Id" column="PQRI_Lookup_ID">
-      <generator class="assigned" />
-    </id>
-    <!--<property name="Measure_No" column="Measure_No" />
+	<class name="Acurus.Capella.Core.DomainObjects.PQRI_Data, Acurus.Capella.Core" table="pqri_data" lazy="true">
+		<id name="Id" column="PQRI_Lookup_ID">
+			<generator class="assigned" />
+		</id>
+		<!--<property name="Measure_No" column="Measure_No" />
     <property name="Measure_Name" column="Measure_Name" />-->
-    <property name="Standard_concept" column="Standard_concept" />
-    <property name="PQRI_Type" column="PQRI_Type" />
-    <property name="PQRI_Value" column="PQRI_Value" />
-    <property name="Sort_Order" column="Sort_Order" />
-    <property name="PQRI_Description" column="Description" />
-    <property name="PQRI_Selection_XML" column="Section_XML" />
-    <property name="NQF_Number" column="NQF_Number" />
-    <property name="Value_Set" column="Value_Set" />
-   </class>
+		<property name="Standard_concept" column="Standard_concept" />
+		<property name="PQRI_Type" column="PQRI_Type" />
+		<property name="PQRI_Value" column="PQRI_Value" />
+		<property name="Sort_Order" column="Sort_Order" />
+		<property name="PQRI_Description" column="Description" />
+		<property name="PQRI_Selection_XML" column="Section_XML" />
+		<property name="NQF_Number" column="NQF_Number" />
+		<property name="Value_Set" column="Value_Set" />
+		<property name="PQRI_Calculation_Method" column="PQRI_Calculation_Method" />
+	</class>
 </hibernate-mapping>

@@ -8,25 +8,24 @@
       <!-- Measure Data template ID -->
       <templateId root="2.16.840.1.113883.10.20.27.3.5" extension="2016-09-01"/>
       <!-- Measure Data (CMS EP) template ID -->
-      <templateId root="2.16.840.1.113883.10.20.27.3.16" extension="2016-11-01"/>
+      <templateId root="2.16.840.1.113883.10.20.27.3.16" extension="2019-05-01"/>
       <code code="ASSERTION" codeSystem="2.16.840.1.113883.5.4" displayName="Assertion" codeSystemName="ActCode"/>
       <statusCode code="completed"/>
       <value xsi:type="CD" code="IPOP" codeSystem="2.16.840.1.113883.5.4" displayName="initial patient population" codeSystemName="ObservationValue"/>
       <!-- Aggregate Count (CMS EP) -->
       <entryRelationship typeCode="SUBJ" inversionInd="true">
-        <observation classCode="OBS" moodCode="EVN">
-          <!-- Aggregate Count template ID -->
-          <templateId root="2.16.840.1.113883.10.20.27.3.3"/>
-          <!-- Aggregate Count (CMS EP) template ID -->
-          <templateId root="2.16.840.1.113883.10.20.27.3.24"/>
-          <code code="MSRAGG" displayName="rate aggregation" codeSystem="2.16.840.1.113883.5.4" codeSystemName="ActCode"/>
-          <statusCode code="completed"/>
-          <!--Acurus-Total Count for the  IPP of the measure-->
-          <value xsi:type="INT" value=""/>
-          <methodCode code="COUNT" displayName="Count" codeSystem="2.16.840.1.113883.5.84" codeSystemName="ObservationMethod"/>
-        </observation>
-      </entryRelationship>
-    
+						<observation classCode="OBS" moodCode="EVN">
+						  <!-- Aggregate Count template ID -->
+						  <templateId root="2.16.840.1.113883.10.20.27.3.3" />
+						  <!-- Aggregate Count (CMS EP) template ID -->
+						  <!--<templateId root="2.16.840.1.113883.10.20.27.3.24"/>-->
+						  <code code="MSRAGG" displayName="rate aggregation" codeSystem="2.16.840.1.113883.5.4" codeSystemName="ActCode" />
+						  <statusCode code="completed" />
+						  <!--Acurus-Total Count for the  IPP of the measure-->
+						  <value xsi:type="INT" value="" />
+						  <methodCode code="COUNT" displayName="Count" codeSystem="2.16.840.1.113883.5.84" codeSystemName="ObservationMethod" />
+						</observation>
+					  </entryRelationship>    
       <TextIPP>
         
       </TextIPP>

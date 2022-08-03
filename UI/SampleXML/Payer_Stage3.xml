@@ -5,37 +5,32 @@
   <!--Acurus- This section would be multiple if multiple Payer groups are identified-->
   <!--Payer Supplemental Data Element (CMS EP)-->
   <entryRelationship typeCode="COMP">
-    <observation classCode="OBS" moodCode="EVN">
-      <!--Payer Supplemental Data Element (CMS EP) template ID-->
-      <templateId root="2.16.840.1.113883.10.20.27.3.9" extension="2016-02-01" />
-      <templateId root="2.16.840.1.113883.10.20.27.3.18" extension="2016-11-01"/>
-      <id nullFlavor="NA"/>
-      <code code="48768-6" displayName="Payment source" codeSystem="2.16.840.1.113883.6.1" codeSystemName="SNOMED-CT"/>
-      <statusCode code="completed"/>
-      <value xsi:type="CD" nullFlavor="OTH">
-        <translation code="D" codeSystem="2.16.840.1.113883.3.249.12" codeSystemName="CMS Clinical Codes" displayName="Other"/>
-      </value>
-      <!--Acurus- Bring in the Payer Code of the Primary payer group identified that is received as a unique-->
-      <!--translation code="" displayName="" codeSystem="2.16.840.1.113883.3.249.12" codeSystemName="CMS Clinical Codes"/-->
-      <!--/value-->
-      <!--<value xsi:type="CD" code="" displayName="" codeSystem="2.16.840.1.113883.3.221.5" codeSystemName="Source of Payment Typology" />-->
-
-      <entryRelationship typeCode="SUBJ" inversionInd="true">
-        <!--Aggregate Count (CMS EP)-->
-        <observation classCode="OBS" moodCode="EVN">
-          <!--Aggregate Count template ID-->
-          <templateId root="2.16.840.1.113883.10.20.27.3.3"/>
-          <!--Aggregate Count (CMS EP) template ID-->
-          <templateId root="2.16.840.1.113883.10.20.27.3.24"/>
-          <code code="MSRAGG" displayName="rate aggregation" codeSystem="2.16.840.1.113883.5.4" codeSystemName="ActCode"/>
-          <statusCode code="completed"/>
-          <!--Acurus-Total Count for the Chosen Payer code-->
-          <value xsi:type="INT" value=""/>
-          <methodCode code="COUNT" displayName="Count"
-          codeSystem="2.16.840.1.113883.5.84"
-          codeSystemName="ObservationMethod"/>
-        </observation>
-      </entryRelationship>
-    </observation>
-  </entryRelationship>
+		<observation classCode="OBS" moodCode="EVN">
+		  <!--Payer Supplemental Data Element (CMS EP) template ID-->
+		  <templateId root="2.16.840.1.113883.10.20.27.3.9" extension="2016-02-01" />
+		  <templateId root="2.16.840.1.113883.10.20.27.3.18" extension="2018-05-01" />
+		  <id nullFlavor="NA" />
+		  <code code="48768-6" displayName="Payment source" codeSystem="2.16.840.1.113883.6.1" codeSystemName="SNOMED-CT" />
+		  <statusCode code="completed" />
+		  <!--value xsi:type="CD" nullFlavor="OTH"-->
+		  <!--Acurus- Bring in the Payer Code of the Primary payer group identified that is received as a unique-->
+		  <!--translation code="" displayName="" codeSystem="2.16.840.1.113883.3.249.12" codeSystemName="CMS Clinical Codes"/-->
+		  <!--/value-->
+		  <value xsi:type="CD" code="" displayName="" codeSystem="2.16.840.1.113883.3.221.5" codeSystemName="Source of Payment Typology" />
+		  <entryRelationship typeCode="SUBJ" inversionInd="true">
+			<!--Aggregate Count (CMS EP)-->
+			<observation classCode="OBS" moodCode="EVN">
+			  <!--Aggregate Count template ID-->
+			  <templateId root="2.16.840.1.113883.10.20.27.3.3" />
+			  <!--Aggregate Count (CMS EP) template ID-->
+			  <!--<templateId root="2.16.840.1.113883.10.20.27.3.24"/>-->
+			  <code code="MSRAGG" displayName="rate aggregation" codeSystem="2.16.840.1.113883.5.4" codeSystemName="ActCode" />
+			  <statusCode code="completed" />
+			  <!--Acurus-Total Count for the Chosen Payer code-->
+			  <value xsi:type="INT" value="" />
+			  <methodCode code="COUNT" displayName="Count" codeSystem="2.16.840.1.113883.5.84" codeSystemName="ObservationMethod" />
+			</observation>
+		  </entryRelationship>
+		</observation>
+	</entryRelationship>
 </ClinicalDocument>

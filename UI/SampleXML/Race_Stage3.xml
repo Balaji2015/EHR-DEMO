@@ -5,31 +5,28 @@
   <!--Acurus- This section would be multiple if multiple Race groups are identified-->
   <!--Race Supplemental Data Element (CMS EP)-->
   <entryRelationship typeCode="COMP">
-    <observation classCode="OBS" moodCode="EVN">
-      <!--Race Supplemental Data Element (CMS EP) template ID-->
-      <templateId root="2.16.840.1.113883.10.20.27.3.8" extension="2016-09-01"/>
-      <templateId root="2.16.840.1.113883.10.20.27.3.19" extension="2016-11-01" />
-      <code code="72826-1" displayName="Race" codeSystem="2.16.840.1.113883.6.1" codeSystemName="LOINC"/>
-      <!--<code code="103579009" displayName="Race" codeSystem="2.16.840.1.113883.6.96" codeSystemName="SNOMED-CT"/>-->
-      <statusCode code="completed"/>
-      <!--Acurus- Bring in the LOINC Code of the RAce that is received as a unique-->
-      <value xsi:type="CD" code="" displayName="" codeSystem="2.16.840.1.113883.6.238" codeSystemName="Race &amp; Ethnicity - CDC"/>
-      <entryRelationship typeCode="SUBJ" inversionInd="true">
-        <!--Aggregate Count (CMS EP)-->
-        <observation classCode="OBS" moodCode="EVN">
-          <!--Aggregate Count template ID-->
-          <templateId root="2.16.840.1.113883.10.20.27.3.3"/>
-          <!--Aggregate Count (CMS EP) template ID-->
-          <templateId root="2.16.840.1.113883.10.20.27.3.24"/>
-          <code code="MSRAGG" displayName="rate aggregation" codeSystem="2.16.840.1.113883.5.4" codeSystemName="ActCode"/>
-          <statusCode code="completed"/>
-          <!--Acurus-Total Count for the Chosen RAce-->
-          <value xsi:type="INT" value=""/>
-          <methodCode code="COUNT" displayName="Count"
-          codeSystem="2.16.840.1.113883.5.84"
-          codeSystemName="ObservationMethod"/>
-        </observation>
-      </entryRelationship>
-    </observation>
-  </entryRelationship>
+		<observation classCode="OBS" moodCode="EVN">
+		  <!--Race Supplemental Data Element (CMS EP) template ID-->
+		  <templateId root="2.16.840.1.113883.10.20.27.3.8" extension="2016-09-01" />
+		  <code code="72826-1" displayName="Race" codeSystem="2.16.840.1.113883.6.1" codeSystemName="LOINC" />
+		  <!--<code code="103579009" displayName="Race" codeSystem="2.16.840.1.113883.6.96" codeSystemName="SNOMED-CT"/>-->
+		  <statusCode code="completed" />
+		  <!--Acurus- Bring in the LOINC Code of the RAce that is received as a unique-->
+		  <value xsi:type="CD" code="" displayName="" codeSystem="2.16.840.1.113883.6.238" codeSystemName="Race &amp; Ethnicity - CDC" />
+		  <entryRelationship typeCode="SUBJ" inversionInd="true">
+			<!--Aggregate Count (CMS EP)-->
+			<observation classCode="OBS" moodCode="EVN">
+			  <!--Aggregate Count template ID-->
+			  <templateId root="2.16.840.1.113883.10.20.27.3.3" />
+			  <!--Aggregate Count (CMS EP) template ID-->
+			  <!--<templateId root="2.16.840.1.113883.10.20.27.3.24"/>-->
+			  <code code="MSRAGG" displayName="rate aggregation" codeSystem="2.16.840.1.113883.5.4" codeSystemName="ActCode" />
+			  <statusCode code="completed" />
+			  <!--Acurus-Total Count for the Chosen RAce-->
+			  <value xsi:type="INT" value="" />
+			  <methodCode code="COUNT" displayName="Count" codeSystem="2.16.840.1.113883.5.84" codeSystemName="ObservationMethod" />
+			</observation>
+		  </entryRelationship>
+		</observation>
+	</entryRelationship>
 </ClinicalDocument>

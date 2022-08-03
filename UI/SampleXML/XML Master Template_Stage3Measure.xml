@@ -214,7 +214,7 @@
         <city></city>
         <!--Acurus-State of the provider from Physician library for the Provider chosen in the Measure Calculator screen-->
         <state></state>
-        <!--Acurus-Zip code of the provider from Physician library for the Provider chosen in the Measure Calculator screen-->
+        <!--Acurus-Zip code ofxmlReqNode the provider from Physician library for the Provider chosen in the Measure Calculator screen-->
         <postalCode></postalCode>
         <country>US</country>
       </addr>

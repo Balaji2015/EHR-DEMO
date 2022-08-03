@@ -10659,6 +10659,7 @@ and date(c.date_of_service)<='" + Todate.ToString("yyyy-MM-dd") + "' and c.human
                 icdcptListDenominatorException.Clear();
                 #endregion
                 //Colorectal Cancer Screening
+
                 #region CMS130v10
                 //Denominator
                 IQuery EncounterDenominatorquery130 = iMySession.GetNamedQuery("PQRI.GetDenominator1CMS130.ColorectalCancer");
@@ -10692,6 +10693,9 @@ and date(c.date_of_service)<='" + Todate.ToString("yyyy-MM-dd") + "' and c.human
                     EncounterExlusionquery130.SetParameter(0, "CMS130v10");
 
                     EncounterExlusionquery130.SetParameter(1, "Exclusion");
+                    EncounterExlusionquery130.SetParameter(2, "CMS130v10");
+
+                    EncounterExlusionquery130.SetParameter(3, "Exclusion");
                     Enc_Exclusion_lst130 = new ArrayList(EncounterExlusionquery130.List());
                     lstEncList68 = new List<Encounter>();
                     if (Enc_Exclusion_lst130 != null && Enc_Exclusion_lst130.Count > 0)
@@ -10805,6 +10809,10 @@ and date(c.date_of_service)<='" + Todate.ToString("yyyy-MM-dd") + "' and c.human
                     IQuery Encounterumeratorquery130 = iMySession.GetNamedQuery("PQRI.GetNumeratorCMS130.ColorectalCancer");
                     Encounterumeratorquery130.SetString(0, Fromdate.ToString("yyyy-MM-dd"));
                     Encounterumeratorquery130.SetString(1, Todate.ToString("yyyy-MM-dd"));
+
+                    EncounterDenominatorquery130.SetParameter(2, "CMS130v10");
+
+                    EncounterDenominatorquery130.SetParameter(3, "Numerator");
                     Encounterumeratorquery130.SetParameterList("EncIds", ulEncList130.ToArray());
                     ArrayList Enc_Numerator_lst130 = new ArrayList(Encounterumeratorquery130.List());
                     for (int i = 0; i < Enc_Numerator_lst130.Count; i++)
@@ -10834,7 +10842,6 @@ and date(c.date_of_service)<='" + Todate.ToString("yyyy-MM-dd") + "' and c.human
                 icdcptListDenominatorExclusion.Clear();
                 icdcptListDenominatorException.Clear();
                 #endregion
-
                 iMySession.Close();
             }
             return PQRIlst;

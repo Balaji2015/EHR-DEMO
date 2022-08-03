@@ -101,14 +101,14 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
 
         public IList<PQRI_Data> GetPQRIListByStandardConceptAndPQRIType(string StandardConcept, string PQRI_Type)
         {
-             IList<PQRI_Data> listGetPQRI_Lookup = new List<PQRI_Data>();
-             using (ISession iMySession = NHibernateSessionManager.Instance.CreateISession())
-             {
-                 ICriteria crit = iMySession.CreateCriteria(typeof(PQRI_Data)).Add(Expression.Eq("Standard_concept", StandardConcept)).Add(Expression.Eq("PQRI_Type", PQRI_Type));
-                 listGetPQRI_Lookup = crit.List<PQRI_Data>();
-                 iMySession.Close();
-             }
-             return listGetPQRI_Lookup;
+            IList<PQRI_Data> listGetPQRI_Lookup = new List<PQRI_Data>();
+            using (ISession iMySession = NHibernateSessionManager.Instance.CreateISession())
+            {
+                ICriteria crit = iMySession.CreateCriteria(typeof(PQRI_Data)).Add(Expression.Eq("Standard_concept", StandardConcept)).Add(Expression.Eq("NQF_Number", PQRI_Type));
+                listGetPQRI_Lookup = crit.List<PQRI_Data>();
+                iMySession.Close();
+            }
+            return listGetPQRI_Lookup;
         }
 
         public IList<PQRI_Data> GetPQRIListByStandardConceptList(IList<string> Standard_concept)

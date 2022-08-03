@@ -6,7 +6,7 @@
   <!-- US Realm Header Template Id -->
   <templateId root="2.16.840.1.113883.10.20.27.1.1" extension="2017-06-01"/>
   <!-- QRDA templateId -->
-  <templateId root="2.16.840.1.113883.10.20.27.1.2" extension="2017-07-01"/>
+  <templateId root="2.16.840.1.113883.10.20.27.1.2" extension="2021-07-01"/>
   <!-- This is the globally unique identifier for this QRDA document -->
   <id root="2dcaebf2-96ef-4987-9d13-1b3565e2c5d9"/>
   <!-- QRDA document type code -->
@@ -74,10 +74,10 @@
         <telecom use="WP" value="111-111-1111"/>
         <addr>
           <!--Acurus-Address Line 1 of the CMG for testing purpose:-->
-          <streetAddressLine>1904 N ORANGE GROVE AVE CHAPARRAL MEDICAL GROUP</streetAddressLine>
-          <city>POMONA</city>
+          <streetAddressLine></streetAddressLine>
+          <city></city>
           <!--Acurus-City of the CMG for testing purpose:-->
-          <state>CA</state>
+          <state></state>
           <!--Acurus-State of the Provider for testing purpose:-->
           <postalCode></postalCode>
           <!--Acurus-Zip Code of the Provider for testing purpose:-->
@@ -162,7 +162,7 @@
           <id root="2.16.840.1.113883.4.6" extension="111111111" assigningAuthorityName="NPI" />
 
           <!-- MAY: The email address of the provider's data submitted -->
-          <telecom value="mailto:user@hostname"/>
+          <telecom value=""/>
           <representedOrganization>
             <!-- This is the organization TIN -->
             <id root="2.16.840.1.113883.4.2" extension="954292715" />
@@ -189,69 +189,39 @@
       <component>
     <structuredBody>
       <component>
-        <section>
-          <!--Reporting Parameters Section template ID-->
-          <templateId root="2.16.840.1.113883.10.20.17.2.1" />
-          <!-- QRDA Category III Reporting Parameters Section template ID -->
-          <!-- <templateId root="2.16.840.1.113883.10.20.27.2.2" />-->
-          <!--Category III Reporting Parameters (CMS EP) template ID-->
-          <!--<templateId root="2.16.840.1.113883.10.20.27.2.6" />-->
-          <code code="55187-9" codeSystem="2.16.840.1.113883.6.1" />
-          <title>Reporting Parameters</title>
-          <text>
-            <list>
-              <!--Acurus- IN THE FORMAT Reporting Parameter From dATE and To Date CHOSEN IN MEAsURE CALCULATOR-->
-              <item></item>
-              <item></item>
-              <item></item>
-            </list>
-          </text>
-          <entry typeCode="DRIV">
-            <!-- Reporting Parameters Act (CMS EP) -->
-            <act classCode="ACT" moodCode="EVN">
-              <!-- Reporting Parameters Act template ID -->
-              <templateId root="2.16.840.1.113883.10.20.17.3.8"/>
-              <!--Reporting Parameters Act (CMS EP) template ID-->
-              <!--<templateId root="2.16.840.1.113883.10.20.27.3.23"/>-->
-              <id root="55a43e20-6463-46eb-81c3-9a3a1ad41225"/>
-              <code code="252116004" codeSystem="2.16.840.1.113883.6.96" displayName="Observation Parameters" />
-              <effectiveTime>
-                <!--Acurus- The low value is the start date of the reporting period -->
-                <low value="20180101"/>
-                <!-- Acurus-The high value is the end date of the reporting period -->
-                <high value="20181231"/>
-              </effectiveTime>
-            </act>
-          </entry>
-          <entry>
-            <encounter classCode="ENC" moodCode="EVN">
-              <!-- Optional encounter dates in the reporting period -->
-              <!-- Service Encounter -->
-              <templateId root="2.16.840.1.113883.10.20.27.3.11"/>
-              <!-- Optional id of the first encounter of the reporting period-->
-              <id root="4fd7e43d-e21d-45b3-a0ed-fe122efb96a9"/>
-              <effectiveTime>
-                <!-- The month, day and year of the first service encounter of the reporting period (From date) -->
-                <low value=""/> 
-              </effectiveTime>
-            </encounter>
-          </entry>
-          <entry>
-            <encounter classCode="ENC" moodCode="EVN">
-              <!-- Optional encounter dates in the reporting period -->
-              <!-- Service Encounter -->
-              <templateId root="2.16.840.1.113883.10.20.27.3.11"/>
-              <!-- Optional id of the last encounter of the reporting period-->
-              <id root="3e2b00b6-f846-4941-adb6-53eb88876a30"/>
-              <effectiveTime>
-                <!-- The month, day and year of the last service encounter of the reporting period (To date) -->
-                <high value=""/> 
-              </effectiveTime>
-            </encounter>
-          </entry>
-        </section>
-      </component>
-      <component>
+			<section>
+			  <!-- This is the templateId for Reporting Parameters section -->
+			  <templateId root="2.16.840.1.113883.10.20.17.2.1"/>
+			  <templateId root="2.16.840.1.113883.10.20.27.2.2"/>
+			  <!--templateId root="2.16.840.1.113883.10.20.17.2.1.1" extension="2016-03-01"/ -->
+			  <code code="55187-9" codeSystem="2.16.840.1.113883.6.1"/>
+			  <title>Reporting Parameters</title>
+			  <text>
+				<list>
+				  <item>Reporting period: 01 Jan 2022 - 31 Dec 2022</item>
+				  <!--Acurus- IN THE FORMAT Reporting Parameter From dATE and To Date CHOSEN IN MEAsURE CALCULATOR-->
+				</list>
+			  </text>
+			  <entry typeCode="DRIV">
+				<act classCode="ACT" moodCode="EVN">
+				  <!-- This is the templateId for Reporting Parameteres Act -->
+				  <templateId root="2.16.840.1.113883.10.20.17.3.8"/>
+				  <id root="95944FB8-241B-11E5-1027-09173F13E4C5"/> 
+				  <!--templateId root="2.16.840.1.113883.10.20.17.3.8.1" extension="2016-03-01"/-->
+				   <!--<id root="3d7c11cf-b01b-4527-a704-c098c162779d" />-->
+				  <!--id root="1.3.6.1.4.1.115" extension="8E5BF77ECB9AD0C49AA8520FF7AF877D"/-->
+				  <code code="252116004" codeSystem="2.16.840.1.113883.6.96" displayName="Observation Parameters"/>
+				  <effectiveTime>
+					<!--Acurus-Reporting Parameter: from Date Chosen in measure caculator-->
+					<low value="20200101000000"/>
+					<!--Acurus-Reporting Parameter: To Date chosen in measure caculator-->
+					<high value="20201231235900"/>
+				  </effectiveTime>
+				</act>
+			  </entry>
+			</section>
+		</component>
+	  <component>
         <!-- QRDA Category III Measure Section (CMS EP) -->
         <section>
           <!-- Measure Section template ID -->
@@ -259,7 +229,7 @@
           <!-- QRDA Category III Measure Section template ID -->
           <templateId root="2.16.840.1.113883.10.20.27.2.1"  extension="2017-06-01"/>
           <!-- QRDA Category III Measure Section (CMS EP) template ID -->
-          <templateId root="2.16.840.1.113883.10.20.27.2.3"  extension="2017-07-01"/>
+          <templateId root="2.16.840.1.113883.10.20.27.2.3"  extension="2019-05-01"/>
           <code code="55186-1" displayName="measure section" codeSystem="2.16.840.1.113883.6.1"/>
           <title>Measure Section</title>
           <text>
@@ -278,9 +248,10 @@
                 <tr>
                   <td>Preventive Care and Screening: Body Mass Index (BMI) Screening and Follow-Up Plan</td>
                   <td>9A031BB8-3D9B-11E1-8634-00237D5BF174</td>
-                  <td>5</td>
-                  <td></td>
-                  <td>40280381-5118-2F4E-0151-20A31A780368</td>
+                  <td>10</td>
+                  <td>NA</td>
+				  <td></td>
+                  <td>2c928083-786e-690d-0178-7090965f028d</td>
                 </tr>
                 </tbody>
               </table>
@@ -303,9 +274,10 @@
                 <tr>
                   <td>Preventive Care and Screening: Screening for High Blood Pressure and Follow-Up Documented</td>
                   <td>9A033A94-3D9B-11E1-8634-00237D5BF174</td>
-                  <td>5</td>
-                  <td></td>
-                  <td>40280382-5971-4EED-015A-4E17610E4BA1</td>
+                  <td>10</td>
+                  <td>NA</td>
+				  <td></td>
+                  <td>2c928084-774e-e0a5-0177-7375e19813dc</td>
                 </tr>
               </tbody>
             </table>
@@ -326,12 +298,11 @@
               <tbody>
                 <tr>
                   <td>Documentation of Current Medications in the Medical Record</td>
-                  <td>
-                    9A032D9C-3D9B-11E1-8634-00237D5BF174
-                  </td>
-                  <td>6</td>
-                  <td></td>
-                  <td>40280381-52FC-3A32-0153-3D64AF97147B</td>
+                  <td>9A032D9C-3D9B-11E1-8634-00237D5BF174</td>
+                  <td>10</td>
+                  <td>0419e</td>
+				  <td></td>
+                  <td>2c928085-7198-38ee-0171-999107e803fd</td>
                 </tr>
                 </tbody>
               </table>
@@ -353,12 +324,11 @@
               <tbody>
                 <tr>
                   <td>Diabetes: Hemoglobin A1c (HbA1c) Poor Control</td>
-                  <td>
-                    A244AA29-7D11-4616-888A-86E376BFCC6F
-                  </td>
-                  <td>5</td>
-                  <td></td>
-                  <td>40280382-5ABD-FA46-015B-4981E40B37E6</td>
+                  <td>f2986519-5a4e-4149-a8f2-af0a1dc7f6bc</td>
+                  <td>10</td>
+                  <td>NA</td>
+				  <td></td>
+                  <td>2c928082-74c2-3313-0174-c60bd07b02a6</td>
                 </tr>
               </tbody>
             </table>
@@ -380,12 +350,11 @@
               <tbody>
                 <tr>
                   <td>Breast Cancer Screening</td>
-                  <td>
-                    19783C1B-4FD1-46C1-8A96-A2F192B97EE0
-                  </td>
-                  <td>5</td>
-                  <td></td>
-                  <td>40280381-51F0-825B-0152-229C4EA3170C</td>
+                  <td>19783C1B-4FD1-46C1-8A96-A2F192B97EE0</td>
+                  <td>10</td>
+                  <td>NA</td>
+				  <td></td>
+                  <td>2c928082-74c2-3313-0174-c6dc4b850390</td>
                 </tr>
               </tbody>
             </table>
@@ -408,12 +377,11 @@
 
                 <tr>
                   <td>Pneumococcal Vaccination Status for Older Adults</td>
-                  <td>
-                    59657B9B-01BF-4979-A090-8534DA1D0516
-                  </td>
-                  <td>5</td>
-                  <td></td>
-                  <td>40280381-52FC-3A32-0153-1A646A2A0BFA</td>
+                  <td>59657B9B-01BF-4979-A090-8534DA1D0516</td>
+                  <td>10</td>
+                  <td>NA</td>
+				  <td></td>
+                  <td>2c928082-7505-caf9-0175-31a156030df1</td>
                 </tr>
 
               </tbody>
@@ -436,12 +404,11 @@
               <tbody>
                 <tr>
                   <td>Preventive Care and Screening: Tobacco Use: Screening and Cessation Intervention</td>
-                  <td>
-                    E35791DF-5B25-41BB-B260-673337BC44A8
-                  </td>
-                  <td>5</td>
-                  <td></td>
-                  <td>40280381-503F-A1FC-0150-D33F5B0A1B8C</td>
+                  <td>E35791DF-5B25-41BB-B260-673337BC44A8</td>
+                  <td>10</td>
+                  <td>0028e</td>
+				  <td></td>
+                  <td>2c928085-74e6-3120-0174-fa1e7b930317</td>
                 </tr>
               </tbody>
             </table>
@@ -463,12 +430,11 @@
 
                 <tr>
                   <td>Preventive Care and Screening: Influenza Immunization</td>
-                  <td>
-                    A244AA29-7D11-4616-888A-86E376BFCC6F
-                  </td>
-                  <td>6</td>
-                  <td></td>
-                  <td>40280381-52FC-3A32-0153-395CE63513AF</td>
+                  <td>A244AA29-7D11-4616-888A-86E376BFCC6F</td>
+                  <td>10</td>
+                  <td>0041e</td>
+				  <td></td>
+                  <td>2c928085-7198-38ee-0171-98a8ea4d0169</td>
                 </tr>
               </tbody>
             </table>
@@ -489,36 +455,64 @@
               <tbody>
                 <tr>
                   <td>Controlling High Blood Pressure</td>
-                  <td>
-                    ABDC37CC-BAC6-4156-9B91-D1BE2C8B7268
-                  </td>
-                  <td>5</td>
-                  <td></td>
-                  <td>40280381-51F0-825B-0152-22B98CFF181A</td>
+                  <td>ABDC37CC-BAC6-4156-9B91-D1BE2C8B7268</td>
+                  <td>10</td>
+                  <td>NA</td>
+				  <td></td>
+                  <td>2c928082-7505-caf9-0175-2382d1bd06b1</td>
                 </tr>
               </tbody>
             </table>
             <textcountBP>
               
             </textcountBP>
+			
+			<table border="1" width="100%">
+              <thead>
+                <tr>
+                  <th>eMeasure Title</th>
+                  <th>Version neutral identifier</th>
+                  <th>eMeasure Version Number</th>
+                  <th>NQF eMeasure Number</th>
+                  <th>eMeasure Identifier (MAT)</th>
+                  <th>Version specific identifier</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>Colorectal Cancer Screening</td>
+				  <!--From HTML GUID - Used in setID-->
+                  <td>aa2a4bbc-864f-45ee-b17a-7ebcc62e6aac</td>
+                  <td>10</td>
+                  <td>NA</td>
+				  <td></td>
+				  <!--From Tabular Column in eCQM Specification - Used in id/@extension-->
+                  <td>2c928082-74c2-3313-0174-daf39f2c0658</td>
+                </tr>
+              </tbody>
+            </table>
+
+            <textcountBreast>
+              
+            </textcountBreast>
           </text>
           <!--acurus- Need to insert the measures-->
           <CATIIILOAD>            
           </CATIIILOAD>
           <entry typeCode="DRIV">
-                    <!-- Reporting Parameters Act (CMS EP) -->
-                      <act classCode="ACT" moodCode="EVN">
-             	              <!-- Reporting Parameters Act template ID -->
-           	              <templateId root="2.16.840.1.113883.10.20.17.3.8"/>
-                         <id root="55a43e20-6463-46eb-81c3-9a3a1ad41225" />
-           	              <code code="252116004" codeSystem="2.16.840.1.113883.6.96" displayName="Observation Parameters" />
-                          <effectiveTime>
-                              <!--Acurus- The low value is the start date of the reporting period -->
-                             <low value="20160101" />
-                               <!-- Acurus-The high value is the end date of the reporting period -->
-                            <high value="20161231" />
+			<!-- Reporting Parameters Act (CMS EP) -->
+			<act classCode="ACT" moodCode="EVN">
+					  <!-- Reporting Parameters Act template ID -->
+				  <templateId root="2.16.840.1.113883.10.20.17.3.8"/>
+				  <id extension="55a43e20-6463-46eb-81c3-9a3a1ad41225" root="1.3.6.1.4.1.115" />
+				  <code code="252116004" codeSystem="2.16.840.1.113883.6.96" displayName="Observation Parameters" />
+				  <effectiveTime>
+					  <!--Acurus- The low value is the start date of the reporting period -->
+					 <low value="20200101" />
+					   <!-- Acurus-The high value is the end date of the reporting period -->
+					<high value="20201231" />
                      
-              </effectiveTime>
+				  </effectiveTime>
              
             </act>
            
