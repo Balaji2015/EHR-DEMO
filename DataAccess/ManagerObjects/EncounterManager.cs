@@ -41,7 +41,7 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
         //FillAppointment GetAppointmentByDateandPhy(DateTime DOS, ulong[] PhyID, string[] FacName);
         IList<FillWillingonCancel> GetAppointmentsforPatientwithStatus(ulong ulHumanID, Boolean bShowPastAlso, int PageNumber, int MaxResultSet);
         AppointmentPreChecks CheckDuplicateAppointment(ulong PatientId, ulong PhysicianId, DateTime DOS, string FacilityName, DateTime Blockdate, string Time, int Duration, ulong EncID);
-        FillPatientSummaryBarDTO LoadPatientSummaryBar(ulong EncounterId, ulong HumanId, DateTime LocalDate, string UserName);
+        FillPatientSummaryBarDTO LoadPatientSummaryBar(ulong EncounterId, ulong HumanId, DateTime LocalDate, string UserName,string sLegalorg);
         //ChargePostingDTO CreateEncounterforCoding(IList<Encounter> EncList, IList<WFObjectBilling> WfList, string MacAddress);
         //IList<AppointmentReport> GetAppointmentReport(DateTime AppointmentDateFrom, DateTime AppointmentDateTo);
         DataSet dsPendingHccReport(string sAnnualProcedure, string strCarrierName);
@@ -3418,7 +3418,7 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
         //}
         //vinoth branch 3_0_43
 
-        public FillPatientSummaryBarDTO LoadPatientSummaryBar(ulong EncounterId, ulong HumanId, DateTime LocalDate, string UserName)
+        public FillPatientSummaryBarDTO LoadPatientSummaryBar(ulong EncounterId, ulong HumanId, DateTime LocalDate, string UserName,string sLegalorg)
         {
             FillPatientSummaryBarDTO objPatientSummary = new FillPatientSummaryBarDTO();
             //  ISession iMySession = NHibernateSessionManager.Instance.CreateISession();
@@ -3541,7 +3541,7 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
                     double humanAgeInMonths = 0;
                     humanAgeInMonths = ((DateTime.Now.Date - lstHuman[0].Birth_Date.Date).TotalDays) / 30.4375;
 
-                    IList<object> objList = objVitalsManger.GetLocalData(lstUser[0].Physician_Library_ID, Convert.ToInt16(humanAgeInMonths.ToString().Split('.')[0]), lstHuman[0].Sex, "'BMI-AGE','HC-AGE'", 2000);
+                    IList<object> objList = objVitalsManger.GetLocalData(lstUser[0].Physician_Library_ID, Convert.ToInt16(humanAgeInMonths.ToString().Split('.')[0]), lstHuman[0].Sex, "'BMI-AGE','HC-AGE'", 2000, sLegalorg);
                     IList<DynamicScreen> dynamicScreenList = new List<DynamicScreen>();
                     if (objList != null && objList.Count > 0)
                     {
@@ -3684,7 +3684,7 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
         }
 
         //Saravanan Loadpatientsummary
-        public FillPatientSummaryBarDTO LoadPatientSummaryBarUsingList(ulong EncounterId, ulong HumanId, DateTime LocalDate, string UserName, IList<int> ilstChangeSummaryBar)
+        public FillPatientSummaryBarDTO LoadPatientSummaryBarUsingList(ulong EncounterId, ulong HumanId, DateTime LocalDate, string UserName, IList<int> ilstChangeSummaryBar,string sLegalorg)
         {
             FillPatientSummaryBarDTO objPatientSummary = new FillPatientSummaryBarDTO();
             using (ISession iMySession = NHibernateSessionManager.Instance.CreateISession())
@@ -3773,7 +3773,7 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
                                 IList<User> lstUser = sqlqueryUser.List<User>();
                                 double humanAgeInMonths = 0;
                                 humanAgeInMonths = ((DateTime.Now.Date - lstHuman[0].Birth_Date.Date).TotalDays) / 30.4375;
-                                IList<object> objList = objVitalsManger.GetLocalData(lstUser[0].Physician_Library_ID, Convert.ToInt16(humanAgeInMonths.ToString().Split('.')[0]), lstHuman[0].Sex, "'BMI-AGE','HC-AGE'", 2000);
+                                IList<object> objList = objVitalsManger.GetLocalData(lstUser[0].Physician_Library_ID, Convert.ToInt16(humanAgeInMonths.ToString().Split('.')[0]), lstHuman[0].Sex, "'BMI-AGE','HC-AGE'", 2000,sLegalorg);
                                 IList<DynamicScreen> dynamicScreenList = new List<DynamicScreen>();
                                 if (objList != null && objList.Count > 0)
                                 {

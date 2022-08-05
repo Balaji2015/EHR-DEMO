@@ -52,7 +52,7 @@ namespace Acurus.Capella.UI
 
         void LoadVitalsResults()
         {
-            IList<DynamicScreen> dynamicScreenList = vitalMngr.GetAcurusCodesListforFlowsheet(ClientSession.PhysicianId);
+            IList<DynamicScreen> dynamicScreenList = vitalMngr.GetAcurusCodesListforFlowsheet(ClientSession.PhysicianId,ClientSession.LegalOrg);
 
             foreach (DynamicScreen item in dynamicScreenList)
             {

@@ -178,6 +178,7 @@ namespace Acurus.Capella.UI
             }
             btnSaveVitals.Attributes.Add("onclick", "return btnSave_Clicked();");
             Session["VitalTakenDateValue"] = VitalTakenDateValue;
+
             if (!IsPostBack)
             {
 
@@ -186,7 +187,7 @@ namespace Acurus.Capella.UI
 
                     if (ClientSession.HumanId == 0)
                         ClientSession.HumanId = Convert.ToUInt64(Request["HumanID"].ToString());
-                    objVitalDTO = vitalmngr.GetPastVitalDetailsByPatient(ClientSession.HumanId, 1, 25, ClientSession.PhysicianId, Convert.ToInt16(humanAgeInMonths.ToString().Split('.')[0]), humanSex, "'BMI-AGE','HC-AGE'", ScreenID);
+                    objVitalDTO = vitalmngr.GetPastVitalDetailsByPatient(ClientSession.HumanId, 1, 25, ClientSession.PhysicianId, Convert.ToInt16(humanAgeInMonths.ToString().Split('.')[0]), humanSex, "'BMI-AGE','HC-AGE'", ScreenID,ClientSession.LegalOrg);
                     objList = objVitalDTO.ObjList;
                     vitalList = objVitalDTO.VitalsList;
                     Session["objVitalDTO"] = objVitalDTO;
@@ -197,7 +198,7 @@ namespace Acurus.Capella.UI
                 }
                 else if (openingfrom == "ChildScreen")
                 {
-                    objVitalDTO = vitalmngr.GetPastVitalDetailsByEncounterID(ClientSession.EncounterId, ClientSession.PhysicianId, Convert.ToInt16(humanAgeInMonths.ToString().Split('.')[0]), humanSex, "'BMI-AGE','HC-AGE'", ScreenID, ClientSession.HumanId);
+                    objVitalDTO = vitalmngr.GetPastVitalDetailsByEncounterID(ClientSession.EncounterId, ClientSession.PhysicianId, Convert.ToInt16(humanAgeInMonths.ToString().Split('.')[0]), humanSex, "'BMI-AGE','HC-AGE'", ScreenID, ClientSession.HumanId,ClientSession.LegalOrg);
                     objList = objVitalDTO.ObjList;
                     vitalList = objVitalDTO.VitalsList;
                     Session["objVitalDTO"] = objVitalDTO;
@@ -208,7 +209,7 @@ namespace Acurus.Capella.UI
                 {
 
                     //objVitalDTO = vitalmngr.GetPastVitalDetailsByEncounterID(ClientSession.EncounterId, ClientSession.PhysicianId, Convert.ToInt16(humanAgeInMonths.ToString().Split('.')[0]), humanSex, "'BMI-AGE','HC-AGE'", ScreenID, ClientSession.HumanId);
-                    objVitalDTO = vitalmngr.GetPastVitalDetailsByEncounterID(ClientSession.EncounterId, ClientSession.PhysicianId, Convert.ToInt16(humanAgeInMonths.ToString().Split('.')[0]), humanSex, "'BMI-AGE','HC-AGE'", ScreenID, HumanID);
+                    objVitalDTO = vitalmngr.GetPastVitalDetailsByEncounterID(ClientSession.EncounterId, ClientSession.PhysicianId, Convert.ToInt16(humanAgeInMonths.ToString().Split('.')[0]), humanSex, "'BMI-AGE','HC-AGE'", ScreenID, HumanID,ClientSession.LegalOrg);
                     objList = objVitalDTO.ObjList;
                     vitalList = objVitalDTO.VitalsList;
                     Session["objVitalDTO"] = objVitalDTO;
@@ -4670,7 +4671,7 @@ namespace Acurus.Capella.UI
             {
                 if (saveList.Count > 0)
                 {
-                    objVitalDTO = vitalmngr.AddVitalDetails(saveList.ToArray<PatientResults>(), saveList[0].Human_ID, 1, 20, string.Empty, saveList[0].Encounter_ID, ClientSession.PhysicianId, Convert.ToInt16(humanAgeInMonths.ToString().Split('.')[0]), humanSex, "'BMI-AGE','HC-AGE'", ScreenID, ClientSession.UserName);//BugID:53796
+                    objVitalDTO = vitalmngr.AddVitalDetails(saveList.ToArray<PatientResults>(), saveList[0].Human_ID, 1, 20, string.Empty, saveList[0].Encounter_ID, ClientSession.PhysicianId, Convert.ToInt16(humanAgeInMonths.ToString().Split('.')[0]), humanSex, "'BMI-AGE','HC-AGE'", ScreenID, ClientSession.UserName,ClientSession.LegalOrg);//BugID:53796
                     EnableDisbaleSave(false);
                     // if (objVitalDTO != null && objVitalDTO.sNotification.Trim() != string.Empty)
                     //   {
@@ -5211,7 +5212,7 @@ namespace Acurus.Capella.UI
             {
                 if (saveList.Count > 0)
                 {
-                    objVitalDTO = vitalmngr.AddVitalDetails(saveList.ToArray<PatientResults>(), saveList[0].Human_ID, 1, 20, string.Empty, 0, ClientSession.PhysicianId, Convert.ToInt16(humanAgeInMonths.ToString().Split('.')[0]), humanSex, "'BMI-AGE','HC-AGE'", ScreenID, ClientSession.UserName);
+                    objVitalDTO = vitalmngr.AddVitalDetails(saveList.ToArray<PatientResults>(), saveList[0].Human_ID, 1, 20, string.Empty, 0, ClientSession.PhysicianId, Convert.ToInt16(humanAgeInMonths.ToString().Split('.')[0]), humanSex, "'BMI-AGE','HC-AGE'", ScreenID, ClientSession.UserName,ClientSession.LegalOrg);
 
                     //SetVitalsToolTip(string.Empty);
 
@@ -6344,7 +6345,7 @@ namespace Acurus.Capella.UI
                         human_id = saveList[0].Human_ID;
                         encounter_id = saveList[0].Encounter_ID;
                     }
-                    objVitalDTO = vitalmngr.UpdateVitalDetails(updateList.ToArray<PatientResults>(), saveList.ToArray<PatientResults>(), delList.ToArray<PatientResults>(), human_id, 1, 20, string.Empty, encounter_id, ClientSession.PhysicianId, Convert.ToInt16(humanAgeInMonths.ToString().Split('.')[0]), humanSex, "'BMI-AGE','HC-AGE'", ScreenID, ClientSession.UserName);
+                    objVitalDTO = vitalmngr.UpdateVitalDetails(updateList.ToArray<PatientResults>(), saveList.ToArray<PatientResults>(), delList.ToArray<PatientResults>(), human_id, 1, 20, string.Empty, encounter_id, ClientSession.PhysicianId, Convert.ToInt16(humanAgeInMonths.ToString().Split('.')[0]), humanSex, "'BMI-AGE','HC-AGE'", ScreenID, ClientSession.UserName,ClientSession.LegalOrg);
                     EnableDisbaleSave(false);
 
 
@@ -7499,7 +7500,7 @@ namespace Acurus.Capella.UI
                         human_id = updateList[0].Human_ID;
                     else
                         human_id = saveList[0].Human_ID;
-                    objVitalDTO = vitalmngr.UpdateVitalDetails(updateList.ToArray<PatientResults>(), saveList.ToArray<PatientResults>(), delList.ToArray<PatientResults>(), human_id, 1, 20, string.Empty, 0, ClientSession.PhysicianId, Convert.ToInt16(humanAgeInMonths.ToString().Split('.')[0]), humanSex, "'BMI-AGE','HC-AGE'", ScreenID, ClientSession.UserName);
+                    objVitalDTO = vitalmngr.UpdateVitalDetails(updateList.ToArray<PatientResults>(), saveList.ToArray<PatientResults>(), delList.ToArray<PatientResults>(), human_id, 1, 20, string.Empty, 0, ClientSession.PhysicianId, Convert.ToInt16(humanAgeInMonths.ToString().Split('.')[0]), humanSex, "'BMI-AGE','HC-AGE'", ScreenID, ClientSession.UserName,ClientSession.LegalOrg);
                     Session["vitalList"] = vitalList;
                     //SetVitalsToolTip(string.Empty);
                     //  SetVitalsToolTip(objVitalDTO.VitalsList);
@@ -9236,7 +9237,7 @@ namespace Acurus.Capella.UI
                 obj.Modified_Date_And_Time = UtilityManager.ConvertToUniversal();
             }
             if (updateVitalList != null && updateVitalList.Count > 0)
-                objVitalDTO = vitalmngr.DeleteVitalDetails(updateVitalList.ToArray<PatientResults>(), updateVitalList[0].Human_ID, 1, 25, string.Empty, ClientSession.PhysicianId, Convert.ToInt16(humanAgeInMonths.ToString().Split('.')[0]), humanSex, "'BMI-AGE','HC-AGE'", ScreenID);
+                objVitalDTO = vitalmngr.DeleteVitalDetails(updateVitalList.ToArray<PatientResults>(), updateVitalList[0].Human_ID, 1, 25, string.Empty, ClientSession.PhysicianId, Convert.ToInt16(humanAgeInMonths.ToString().Split('.')[0]), humanSex, "'BMI-AGE','HC-AGE'", ScreenID,ClientSession.LegalOrg);
             Session["objVitalDTO"] = objVitalDTO;
             Session["vitalList"] = objVitalDTO.VitalsList;
             PastVitals(objVitalDTO.VitalsList);

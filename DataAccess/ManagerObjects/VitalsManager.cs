@@ -22,18 +22,18 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
     public partial interface IVitalsManager : IManagerBase<PatientResults, ulong>
     {
         PatientResultsDTO GetPastVitalDetailsByPatientforRcopia(ulong HumanId, int PgNumber, int MaxResult);
-        PatientResultsDTO GetPastVitalDetailsByPatient(ulong HumanId, int PgNumber, int MaxResult, ulong PhyID, int age, string Sex, string Category, ulong ScreenId);
+        PatientResultsDTO GetPastVitalDetailsByPatient(ulong HumanId, int PgNumber, int MaxResult, ulong PhyID, int age, string Sex, string Category, ulong ScreenId,string sLegalorg);
         PatientResultsDTO GetPastVitalDetailsByPatientforGrowthChart(ulong HumanId, int PgNumber, int MaxResult);
-        PatientResultsDTO GetPastVitalDetailsByEncounterID(ulong EncounterID, ulong PhyID, int age, string Sex, string Category, ulong ScreenId, ulong HumanID);
-        PatientResultsDTO AddVitalDetails(IList<PatientResults> obList, ulong HumanId, int PgNumber, int MaxResult, string sMacAddress, ulong EncounterID, ulong PhyID, int age, string Sex, string Category, ulong ScreenId, string UserName);
+        PatientResultsDTO GetPastVitalDetailsByEncounterID(ulong EncounterID, ulong PhyID, int age, string Sex, string Category, ulong ScreenId, ulong HumanID,string sLegaorg);
+        PatientResultsDTO AddVitalDetails(IList<PatientResults> obList, ulong HumanId, int PgNumber, int MaxResult, string sMacAddress, ulong EncounterID, ulong PhyID, int age, string Sex, string Category, ulong ScreenId, string UserName,string sLegalorg);
         IList<DynamicScreen> LoadVitalsBasedOnPhysician(IList<ulong> MasterIDList, ulong ScreenId);
-        PatientResultsDTO UpdateVitalDetails(IList<PatientResults> updtList, IList<PatientResults> saveList, IList<PatientResults> delList, ulong HumanId, int PgNumber, int MaxResult, string sMacAddress, ulong EncounterID, ulong PhyID, int age, string Sex, string Category, ulong ScreenId, string UserName);
-        PatientResultsDTO DeleteVitalDetails(IList<PatientResults> delList, ulong HumanId, int PgNumber, int MaxResult, string sMacAddress, ulong PhyID, int age, string Sex, string Category, ulong ScreenId);
-        IList<object> GetLocalData(ulong PhyID, int age, string Sex, string Category, ulong ScreenId);
+        PatientResultsDTO UpdateVitalDetails(IList<PatientResults> updtList, IList<PatientResults> saveList, IList<PatientResults> delList, ulong HumanId, int PgNumber, int MaxResult, string sMacAddress, ulong EncounterID, ulong PhyID, int age, string Sex, string Category, ulong ScreenId, string UserNam,string sLegalorge);
+        PatientResultsDTO DeleteVitalDetails(IList<PatientResults> delList, ulong HumanId, int PgNumber, int MaxResult, string sMacAddress, ulong PhyID, int age, string Sex, string Category, ulong ScreenId,string sLegalorg);
+        IList<object> GetLocalData(ulong PhyID, int age, string Sex, string Category, ulong ScreenId,string sLegalorg);
         DataSet GetRowCount(string strConfiguration);
         DataSet GetRowCountforLocalDB(string strLocal, string strLocalDB);
         DataSet GetLatestResults(IList<PatientResults> lstVitalHuman);
-        IList<DynamicScreen> GetAcurusCodesListforFlowsheet(ulong physicianId);
+        IList<DynamicScreen> GetAcurusCodesListforFlowsheet(ulong physicianId,string sLegalorg);
         IList<PatientResults> GetPatientListByResultMasterID(ulong ResultMasterID);
         PatientResults GetResultByLoincObservationAndEncounterId(string Loinc_Identifier, ulong Human_Id, ulong Encounter_Id);
         void SaveVitalsforSummary(IList<PatientResults> lstvitals);
@@ -130,7 +130,7 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
             iMySession.Close();
             return objDTO;
         }
-        public PatientResultsDTO GetPastVitalDetailsByPatient(ulong HumanId, int PgNumber, int MaxResult, ulong PhyID, int age, string Sex, string Category, ulong ScreenId)
+        public PatientResultsDTO GetPastVitalDetailsByPatient(ulong HumanId, int PgNumber, int MaxResult, ulong PhyID, int age, string Sex, string Category, ulong ScreenId,string sLegalorg)
         {
             PatientResultsDTO objDTO = new PatientResultsDTO();
             IList<PatientResults> VitalList = new List<PatientResults>();
@@ -199,7 +199,7 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
                 }
             }
             objDTO.VitalsList = VitalList;
-            objDTO.ObjList = GetLocalData(PhyID, age, Sex, Category, ScreenId);
+            objDTO.ObjList = GetLocalData(PhyID, age, Sex, Category, ScreenId, sLegalorg);
             mySessionObj.Close();
             return objDTO;
         }
@@ -281,7 +281,7 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
             return objDTO;
 
         }
-        public PatientResultsDTO GetPastVitalDetailsByEncounterID(ulong EncounterID, ulong PhyID, int age, string Sex, string Category, ulong ScreenId, ulong HumanID)
+        public PatientResultsDTO GetPastVitalDetailsByEncounterID(ulong EncounterID, ulong PhyID, int age, string Sex, string Category, ulong ScreenId, ulong HumanID,string sLegalorg)
         {
             PatientResultsDTO objDTO = new PatientResultsDTO();
             IList<PatientResults> VitalList = new List<PatientResults>();
@@ -313,12 +313,12 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
             }
             if (HumanID != 0)
                 objDTO.dsLatestResults = GetLatestResults(VitalListHuman);
-            objDTO.ObjList = GetLocalData(PhyID, age, Sex, Category, ScreenId);
+            objDTO.ObjList = GetLocalData(PhyID, age, Sex, Category, ScreenId,sLegalorg);
             iMySession.Close();
             return objDTO;
         }
 
-        public PatientResultsDTO UpdateVitalDetails(IList<PatientResults> updtList, IList<PatientResults> saveList, IList<PatientResults> delList, ulong HumanId, int PgNumber, int MaxResult, string sMacAddress, ulong EncounterID, ulong PhyID, int age, string Sex, string Category, ulong ScreenId, string UserName)
+        public PatientResultsDTO UpdateVitalDetails(IList<PatientResults> updtList, IList<PatientResults> saveList, IList<PatientResults> delList, ulong HumanId, int PgNumber, int MaxResult, string sMacAddress, ulong EncounterID, ulong PhyID, int age, string Sex, string Category, ulong ScreenId, string UserName,string sLegalorg)
         {
             PatientResultsDTO objPatientResultsDTO = new PatientResultsDTO();
             if (updtList != null && updtList.Count > 0)
@@ -425,11 +425,11 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
             #endregion
             if (EncounterID == 0)
             {
-                objPatientResultsDTO = GetPastVitalDetailsByPatient(HumanId, PgNumber, MaxResult, PhyID, age, Sex, Category, ScreenId);
+                objPatientResultsDTO = GetPastVitalDetailsByPatient(HumanId, PgNumber, MaxResult, PhyID, age, Sex, Category, ScreenId, sLegalorg);
             }
             else
             {
-                objPatientResultsDTO = GetPastVitalDetailsByEncounterID(EncounterID, PhyID, age, Sex, Category, ScreenId, HumanId);
+                objPatientResultsDTO = GetPastVitalDetailsByEncounterID(EncounterID, PhyID, age, Sex, Category, ScreenId, HumanId,sLegalorg);
             }
             //GenerateXml XMLObj = new GenerateXml();
             //if (saveList != null && saveList.Count > 0)
@@ -483,7 +483,7 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
 
         }
 
-        public PatientResultsDTO AddVitalDetails(IList<PatientResults> obList, ulong HumanId, int PgNumber, int MaxResult, string sMacAddress, ulong EncounterID, ulong PhyID, int age, string Sex, string Category, ulong ScreenId, string UserName)
+        public PatientResultsDTO AddVitalDetails(IList<PatientResults> obList, ulong HumanId, int PgNumber, int MaxResult, string sMacAddress, ulong EncounterID, ulong PhyID, int age, string Sex, string Category, ulong ScreenId, string UserName,string sLegalorg)
         {
             PatientResultsDTO objPatientResultsDTO = new PatientResultsDTO();
             IList<PatientResults> UpdatePatientResult = null;
@@ -572,11 +572,11 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
             #endregion
             if (EncounterID == 0)
             {
-                objPatientResultsDTO = GetPastVitalDetailsByPatient(HumanId, PgNumber, MaxResult, PhyID, age, Sex, Category, ScreenId);
+                objPatientResultsDTO = GetPastVitalDetailsByPatient(HumanId, PgNumber, MaxResult, PhyID, age, Sex, Category, ScreenId, sLegalorg);
             }
             else
             {
-                objPatientResultsDTO = GetPastVitalDetailsByEncounterID(EncounterID, PhyID, age, Sex, Category, ScreenId, HumanId);
+                objPatientResultsDTO = GetPastVitalDetailsByEncounterID(EncounterID, PhyID, age, Sex, Category, ScreenId, HumanId, sLegalorg);
             }
             //GenerateXml XMLObj = new GenerateXml();
             //if (obList.Count > 0)
@@ -589,12 +589,12 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
             return objPatientResultsDTO;
         }
 
-        public PatientResultsDTO DeleteVitalDetails(IList<PatientResults> delList, ulong HumanId, int PgNumber, int MaxResult, string sMacAddress, ulong PhyID, int age, string Sex, string Category, ulong ScreenId)
+        public PatientResultsDTO DeleteVitalDetails(IList<PatientResults> delList, ulong HumanId, int PgNumber, int MaxResult, string sMacAddress, ulong PhyID, int age, string Sex, string Category, ulong ScreenId,string sLegalorg)
         {
             IList<PatientResults> SavePatientResult = null;
             IList<PatientResults> UpdatePatientResult = null;
             SaveUpdateDelete_DBAndXML_WithTransaction(ref SavePatientResult, ref UpdatePatientResult, delList, sMacAddress, false, false, 0, string.Empty);
-            return GetPastVitalDetailsByPatient(HumanId, PgNumber, MaxResult, PhyID, age, Sex, Category, ScreenId);
+            return GetPastVitalDetailsByPatient(HumanId, PgNumber, MaxResult, PhyID, age, Sex, Category, ScreenId, sLegalorg);
         }
         //LoadVitalsBasedOnPhysician method was declared but never used.
         public IList<DynamicScreen> LoadVitalsBasedOnPhysician(IList<ulong> MasterVitalIDList, ulong ScreenId)
@@ -913,7 +913,7 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
             return lstMasterVitals;
         }
 
-        public IList<object> GetLocalData(ulong PhyID, int age, string Sex, string Category, ulong ScreenId)
+        public IList<object> GetLocalData(ulong PhyID, int age, string Sex, string Category, ulong ScreenId,string sLegalorg)
         {
             IList<object> objList = new List<object>();
             ulong[] MasterVitalIDList;
@@ -922,7 +922,7 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
             using (ISession SessionObj = NHibernateSessionManager.Instance.CreateISession())
             {
                 MapVitalsPhysicianManager objMapMngr = new MapVitalsPhysicianManager();
-                IList<MapVitalsPhysician> mapVitalList = objMapMngr.GetVitalsForPhysician(PhyID);
+                IList<MapVitalsPhysician> mapVitalList = objMapMngr.GetVitalsForPhysician(PhyID,sLegalorg);
                 objList.Add(mapVitalList);
                 if (mapVitalList != null && mapVitalList.Count > 0)
                 {
@@ -947,12 +947,12 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
             objList.Add(perlisct);
             return objList;
         }
-        public IList<DynamicScreen> GetAcurusCodesListforFlowsheet(ulong physicianId)
+        public IList<DynamicScreen> GetAcurusCodesListforFlowsheet(ulong physicianId,string sLegalOrg)
         {
             IList<DynamicScreen> DynamicList = new List<DynamicScreen>();
             using (ISession iMySession = NHibernateSessionManager.Instance.CreateISession())
             {
-                var lstVital = new MapVitalsPhysicianManager().GetVitalsForPhysician(physicianId);
+                var lstVital = new MapVitalsPhysicianManager().GetVitalsForPhysician(physicianId, sLegalOrg);
                 var lstControlNames = lstVital.Select(a => a.Vital_Text).ToList();
 
                 var queryStr = @"SELECT L.* 

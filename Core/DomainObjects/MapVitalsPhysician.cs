@@ -16,6 +16,7 @@ namespace Acurus.Capella.Core.DomainObjects
         private string _Sex = string.Empty;
         private int _Sort_Order=0;
         private string _BP_Status = string.Empty;
+        private string _Legal_Org = string.Empty;
 
         #endregion
 
@@ -38,6 +39,7 @@ namespace Acurus.Capella.Core.DomainObjects
             sb.Append(_Sex);
             sb.Append(_Sort_Order);
             sb.Append(_BP_Status);
+            sb.Append(_Legal_Org);
             return sb.ToString().GetHashCode();
         }
 
@@ -90,6 +92,15 @@ namespace Acurus.Capella.Core.DomainObjects
         {
             get { return _BP_Status; }
             set { _BP_Status = value; }
+        }
+        [DataMember]
+        public virtual string Legal_Org
+        {
+            get { return _Legal_Org; }
+            set
+            {
+                _Legal_Org = value;
+            }
         }
         #endregion
     }

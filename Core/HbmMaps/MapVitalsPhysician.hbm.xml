@@ -11,6 +11,7 @@
     <property name="Sex" column="Sex" />
     <property name="Sort_Order" column="Sort_Order" />
     <property name="BP_Status" column="BP_Status" />
+	  <property name="Legal_Org" column="Legal_Org" />
   </class>
 </hibernate-mapping>
 

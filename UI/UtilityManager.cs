@@ -1468,7 +1468,7 @@ namespace Acurus.Capella.UI
 
             IList<MasterVitals> masterlist = new List<MasterVitals>();
             MapVitalsPhysicianManager objMapMngr = new MapVitalsPhysicianManager();
-            IList<MapVitalsPhysician> mapVitalList = objMapMngr.GetVitalsForPhysician(ClientSession.PhysicianId);
+            IList<MapVitalsPhysician> mapVitalList = objMapMngr.GetVitalsForPhysician(ClientSession.PhysicianId,ClientSession.LegalOrg);
             mapVitalList = mapVitalList.OrderBy(a => a.Sort_Order).ToList<MapVitalsPhysician>();
 
             VitalsManager objVMngr = new VitalsManager();
