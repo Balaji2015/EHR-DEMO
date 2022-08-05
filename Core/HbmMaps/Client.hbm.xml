@@ -6,6 +6,7 @@
     </id>
     <property name="Client_Name" column="Client_Name" />
     <property name="Legal_Org" column="Legal_Org" />
+	<property name="Client_Full_Name" column="Client_Full_Name" />
   </class>
 </hibernate-mapping>
 

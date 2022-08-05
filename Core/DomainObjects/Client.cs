@@ -11,6 +11,7 @@ namespace Acurus.Capella.Core.DomainObjects
         private ulong _Client_ID = 0;
         private string _Client_Name = string.Empty;
         private string _Legal_Org = string.Empty;
+        private string _Client_Full_Name = string.Empty;
         #endregion
 
         #region constuctors
@@ -28,6 +29,7 @@ namespace Acurus.Capella.Core.DomainObjects
             sb.Append(_Client_ID);
             sb.Append(_Client_Name);
             sb.Append(_Legal_Org);
+            sb.Append(_Client_Full_Name);
             return sb.ToString().GetHashCode();
         }
 
@@ -59,6 +61,15 @@ namespace Acurus.Capella.Core.DomainObjects
             set
             {
                 _Legal_Org = value;
+            }
+        }
+        [DataMember]
+        public virtual string Client_Full_Name
+        {
+            get { return _Client_Full_Name; }
+            set
+            {
+                _Client_Full_Name = value;
             }
         }
         #endregion

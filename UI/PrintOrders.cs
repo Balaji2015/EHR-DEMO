@@ -1241,7 +1241,18 @@ namespace Acurus.Capella.UI
                 cb.SetFontAndSize(BaseFont.CreateFont(BaseFont.TIMES_BOLD, BaseFont.CP1252, BaseFont.NOT_EMBEDDED), 10);
                 int i = 380;
                 cb.SetTextMatrix(pageSize.GetRight(i), pageSize.GetTop(40));
-                cb.ShowText(ConfigurationManager.AppSettings["ClientName"].ToString());
+                
+                string sFaceSheet = string.Empty;
+                var client = from c in ApplicationObject.ClientList where c.Legal_Org == ClientSession.LegalOrg select c;
+                IList<Client> currentClientList = client.ToList<Client>();
+
+                if (currentClientList.Count > 0)
+                {
+                    sFaceSheet = currentClientList[0].Client_Full_Name;
+                }
+
+                //cb.ShowText(ConfigurationManager.AppSettings["ClientName"].ToString());
+                 cb.ShowText(sFaceSheet);
                 cb.EndText();
             }
 
@@ -5756,7 +5767,17 @@ namespace Acurus.Capella.UI
                 BaseFont bfTimes = BaseFont.CreateFont(BaseFont.TIMES_ROMAN, BaseFont.CP1252, false);
                 PdfPTable pdfTable = new PdfPTable(new float[] { 20, 20, 1700, 50 });
 
-                PdfPCell pdfCell = new PdfPCell(new Phrase(System.Configuration.ConfigurationSettings.AppSettings["ClientName"], onlyBoldFont));
+                string sClientFullName = string.Empty;
+                var client = from c in ApplicationObject.ClientList where c.Legal_Org == ClientSession.LegalOrg select c;
+                IList<Client> currentClientList = client.ToList<Client>();
+
+                if (currentClientList.Count > 0)
+                {
+                    sClientFullName = currentClientList[0].Client_Full_Name;
+                }
+
+
+                PdfPCell pdfCell = new PdfPCell(new Phrase(sClientFullName, onlyBoldFont));
                 pdfCell.HorizontalAlignment = iTextSharp.text.Element.ALIGN_CENTER;
                 pdfCell.BorderWidthLeft = 1;
                 pdfCell.BorderWidthRight = 1;
