@@ -1438,7 +1438,7 @@ namespace Acurus.Capella.UI
             StringBuilder cms68 = MeasureHeaderCount(NumeratorList68, DenmoniatorList68, DE68List, DEX68List, "b6ac13e2-beb8-4e4f-94ed-fcc397406cd2");
 
 
-            sbLoad.Append(SubXMLLoadForCQMIIIstage3("CMS68v6Stage3_Header.xml", DenmoniatorList68, NumeratorList68, new List<ulong>(), DEX68List, DCQM["CMS 68v6"], "CMS68v6", null).ToString());
+            sbLoad.Append(SubXMLLoadForCQMIIIstage3("CMS68_v11_CAT_III_Header.xml", DenmoniatorList68, NumeratorList68, new List<ulong>(), DEX68List, DCQM["CMS 68v11"], "CMS68v11", null).ToString());
 
 
 
@@ -1451,7 +1451,7 @@ namespace Acurus.Capella.UI
             IList<ulong> DE69List = PQRIDTO.Where(a => a.MeasureNo == "CMS69DE").Select(a => a.HumanID).Distinct().ToList<ulong>();
             IList<ulong> DEX69List = PQRIDTO.Where(a => a.MeasureNo == "CMS69DEX").Select(a => a.HumanID).ToList<ulong>();
 
-            sbLoad.Append(SubXMLLoadForCQMIIIstage3("CMS69Stage3_Header.xml", DenmoniatorList69, NumeratorList69, DE69List, DEX69List, DCQM["CMS 69v5"], "CMS69v5", null).ToString());
+            sbLoad.Append(SubXMLLoadForCQMIIIstage3("CMS69_v10_CAT_III_Header.xml", DenmoniatorList69, NumeratorList69, DE69List, DEX69List, DCQM["CMS 69v10"], "CMS69v10", null).ToString());
 
             StringBuilder cms69 = MeasureHeaderCount(NumeratorList69, DenmoniatorList69, DE69List, DEX69List, "b6ac13e2-beb8-4e4f-94ed-fcc397406cd1");
 
@@ -1460,7 +1460,7 @@ namespace Acurus.Capella.UI
             IList<ulong> DenmoniatorList138 = PQRIDTO.Where(a => a.MeasureNo == "CMS138D").Select(a => a.HumanID).Distinct().ToList<ulong>();
             IList<ulong> DE138List = PQRIDTO.Where(a => a.MeasureNo == "CMS69.1DE").Select(a => a.HumanID).ToList<ulong>();
             IList<ulong> DEX138List = PQRIDTO.Where(a => a.MeasureNo == "CMS138DEX").Select(a => a.HumanID).ToList<ulong>();
-            sbLoad.Append(SubXMLLoadForCQMIIIstage3("CMS138Stage3_Header.xml", DenmoniatorList138, NumeratorList138, DE138List, DEX138List, DCQM["CMS 138v5"], "CMS138v5", null).ToString());
+            sbLoad.Append(SubXMLLoadForCQMIIIstage3("CMS138_v10_CAT_III_Header.xml", DenmoniatorList138, NumeratorList138, DE138List, DEX138List, DCQM["CMS 138v10"], "CMS138v10", null).ToString());
             StringBuilder cms138 = MeasureHeaderCount(NumeratorList138, DenmoniatorList138, DE138List, DEX138List, "E35791DF-5B25-41BB-B260-673337BC44A6");
 
             IList<ulong> NumeratorList127 = PQRIDTO.Where(a => a.MeasureNo == "CMS127N").Select(a => a.HumanID).Distinct().ToList<ulong>();
@@ -1468,7 +1468,7 @@ namespace Acurus.Capella.UI
             IList<ulong> DE127List = PQRIDTO.Where(a => a.MeasureNo == "CMS127DE").Select(a => a.HumanID).ToList<ulong>();
             IList<ulong> DEX127List = PQRIDTO.Where(a => a.MeasureNo == "CMS127DEX").Select(a => a.HumanID).ToList<ulong>();
 
-            sbLoad.Append(SubXMLLoadForCQMIIIstage3("CMS127stage3_Header.xml", DenmoniatorList127, NumeratorList127, DE127List, DEX127List, DCQM["CMS 127v5"], "CMS127v5", null).ToString());
+            sbLoad.Append(SubXMLLoadForCQMIIIstage3("CMS127_v10_CAT_III_Header.xml", DenmoniatorList127, NumeratorList127, DE127List, DEX127List, DCQM["CMS 127v10"], "CMS127v10", null).ToString());
             StringBuilder cms127 = MeasureHeaderCount(NumeratorList127, DenmoniatorList127, DE127List, DEX127List, "b6ac13e2-beb8-4e4f-94ed-fcc397406cd7");
 
 
@@ -1478,7 +1478,7 @@ namespace Acurus.Capella.UI
             IList<ulong> DenmoniatorList165 = PQRIDTO.Where(a => a.MeasureNo == "CMS165D").Select(a => a.HumanID).Distinct().ToList<ulong>();
             IList<ulong> DE165List = PQRIDTO.Where(a => a.MeasureNo == "CMS165DE").Select(a => a.HumanID).Distinct().ToList<ulong>();
             IList<ulong> DEX165List = PQRIDTO.Where(a => a.MeasureNo == "CMS165DEX").Select(a => a.HumanID).ToList<ulong>();
-            sbLoad.Append(SubXMLLoadForCQMIIIstage3("CMS165stage3_Header.xml", DenmoniatorList165, NumeratorList165, DE165List, DEX165List, DCQM["CMS 165v5"], "CMS165v5", null).ToString());
+            sbLoad.Append(SubXMLLoadForCQMIIIstage3("CMS165_v10_CAT_III_Header.xml", DenmoniatorList165, NumeratorList165, DE165List, DEX165List, DCQM["CMS 165v10"], "CMS165v10", null).ToString());
             StringBuilder cms165 = MeasureHeaderCount(NumeratorList165, DenmoniatorList165, DE165List, DEX165List, "b6ac13e2-beb8-4e4f-94ed-fcc397406cd4");
 
 
@@ -1487,14 +1487,14 @@ namespace Acurus.Capella.UI
             IList<ulong> DenmoniatorList22 = PQRIDTO.Where(a => a.MeasureNo == "CMS22D").Select(a => a.HumanID).Distinct().ToList<ulong>();
             IList<ulong> DE22List = PQRIDTO.Where(a => a.MeasureNo == "CMS22DE").Select(a => a.HumanID).Distinct().ToList<ulong>();
             IList<ulong> DEX22List = PQRIDTO.Where(a => a.MeasureNo == "CMS22DEX").Select(a => a.HumanID).ToList<ulong>();
-            sbLoad.Append(SubXMLLoadForCQMIIIstage3("CMS22stage3_Header.xml", DenmoniatorList22, NumeratorList22, DE22List, DEX22List, DCQM["CMS 22v5"], "CMS22v5", null).ToString());
+            sbLoad.Append(SubXMLLoadForCQMIIIstage3("CMS22_v10_CAT_III_Header.xml", DenmoniatorList22, NumeratorList22, DE22List, DEX22List, DCQM["CMS 22v10"], "CMS22v10", null).ToString());
             StringBuilder cms22 = MeasureHeaderCount(NumeratorList22, DenmoniatorList22, DE22List, DEX22List, "b6ac13e2-beb8-4e4f-94ed-fcc397406cd3");
 
             IList<ulong> NumeratorList125 = PQRIDTO.Where(a => a.MeasureNo == "CMS125N").Select(a => a.HumanID).Distinct().ToList<ulong>();
             IList<ulong> DenmoniatorList125 = PQRIDTO.Where(a => a.MeasureNo == "CMS125D").Select(a => a.HumanID).Distinct().ToList<ulong>();
             IList<ulong> DE125List = PQRIDTO.Where(a => a.MeasureNo == "CMS125DE").Select(a => a.HumanID).Distinct().ToList<ulong>();
             IList<ulong> DEX125List = PQRIDTO.Where(a => a.MeasureNo == "CMS125DEX").Select(a => a.HumanID).ToList<ulong>();
-            sbLoad.Append(SubXMLLoadForCQMIIIstage3("CMS125stage3_Header.xml", DenmoniatorList125, NumeratorList125, DE125List, DEX125List, DCQM["CMS 125v5"], "CMS125v5", null).ToString());
+            sbLoad.Append(SubXMLLoadForCQMIIIstage3("CMS125_v10_CAT_III_Header.xml", DenmoniatorList125, NumeratorList125, DE125List, DEX125List, DCQM["CMS 125v10"], "CMS125v10", null).ToString());
             StringBuilder cms125 = MeasureHeaderCount(NumeratorList125, DenmoniatorList125, DE125List, DEX125List, "E35791DF-5B25-41BB-B260-673337BC44A8");
 
 
@@ -1502,7 +1502,7 @@ namespace Acurus.Capella.UI
             IList<ulong> DenmoniatorList147 = PQRIDTO.Where(a => a.MeasureNo == "CMS147D").Select(a => a.HumanID).Distinct().ToList<ulong>();
             IList<ulong> DE147List = PQRIDTO.Where(a => a.MeasureNo == "CMS147DE").Select(a => a.HumanID).Distinct().ToList<ulong>();
             IList<ulong> DEX147List = PQRIDTO.Where(a => a.MeasureNo == "CMS147DEX").Select(a => a.HumanID).ToList<ulong>();
-            sbLoad.Append(SubXMLLoadForCQMIIIstage3("CMS147stage3_Header.xml", DenmoniatorList147, NumeratorList147, DE147List, DEX147List, DCQM["CMS 147v6"], "CMS147v6", null).ToString());
+            sbLoad.Append(SubXMLLoadForCQMIIIstage3("CMS125_v10_CAT_III_Header.xml", DenmoniatorList147, NumeratorList147, DE147List, DEX147List, DCQM["CMS 147v11"], "CMS147v11", null).ToString());
             StringBuilder cms147 = MeasureHeaderCount(NumeratorList147, DenmoniatorList147, DE147List, DEX147List, "E35791DF-5B25-41BB-B260-673337BC44A5");
 
 
@@ -1510,7 +1510,7 @@ namespace Acurus.Capella.UI
             IList<ulong> DenmoniatorList122 = PQRIDTO.Where(a => a.MeasureNo == "CMS122D").Select(a => a.HumanID).Distinct().ToList<ulong>();
             IList<ulong> DE122List = PQRIDTO.Where(a => a.MeasureNo == "CMS122DE").Select(a => a.HumanID).Distinct().ToList<ulong>();
             IList<ulong> DEX122List = PQRIDTO.Where(a => a.MeasureNo == "CMS122DEX").Select(a => a.HumanID).ToList<ulong>();
-            sbLoad.Append(SubXMLLoadForCQMIIIstage3("CMS122stage3_Header.xml", DenmoniatorList122, NumeratorList122, DE122List, DEX122List, DCQM["CMS 122v5"], "CMS122v5", null).ToString());
+            sbLoad.Append(SubXMLLoadForCQMIIIstage3("CMS122_v10_CAT_III_Header.xml", DenmoniatorList122, NumeratorList122, DE122List, DEX122List, DCQM["CMS 122v10"], "CMS122v10", null).ToString());
             StringBuilder cms122 = MeasureHeaderCount(NumeratorList122, DenmoniatorList122, DE122List, DEX122List, "b6ac13e2-beb8-4e4f-94ed-fcc397406cd9");
 
 
@@ -1521,7 +1521,7 @@ namespace Acurus.Capella.UI
             StringBuilder cms130 = MeasureHeaderCount(NumeratorList68, DenmoniatorList68, DE68List, DEX68List, "b6ac13e2-beb8-4e4f-94ed-fcc397406cd2");
 
 
-            sbLoad.Append(SubXMLLoadForCQMIIIstage3("CMS130v10w2QStage3_Header.xml", DenmoniatorList138, NumeratorList130, new List<ulong>(), DEX130List, DCQM["CMS 130v10"], "CMS130v6", null).ToString());
+            sbLoad.Append(SubXMLLoadForCQMIIIstage3("CMS130v10Stage3_Header.xml", DenmoniatorList138, NumeratorList130, new List<ulong>(), DEX130List, DCQM["CMS 130v10"], "CMS130v10", null).ToString());
 
             XmlDocument xmlDoc = new XmlDocument();
             xmlDoc.Load(HttpContext.Current.Server.MapPath("SampleXML" + "\\QRDAStage3_CAT_III_Header.xml"));
@@ -2136,7 +2136,7 @@ namespace Acurus.Capella.UI
             objIPPsb = new StringBuilder(xDox.ToString());
             objIPPsb.Remove(0, 157);
             objIPPsb.Remove(objIPPsb.Length - 20, 20);
-            RootID = resultlst.Where(a => a.PQRI_Calculation_Method.Trim() == "IPP").ToList<PQRI_Data>()[0].PQRI_Value;
+            RootID = resultlst.Where(a => a.PQRI_Calculation_Method.Trim() == "IPOP").ToList<PQRI_Data>()[0].PQRI_Value;
             if (DLst.Union(DEXLst).Union(DELst).ToList<ulong>().Count != 0)
             {
 

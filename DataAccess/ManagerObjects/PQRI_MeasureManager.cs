@@ -8886,7 +8886,7 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
 
 
                 //Documentation of Current Medications in the Medical Record.
-                #region CMS 68v6
+                #region CMS 68v11
                 IQuery EncounterDenominator1query68 = iMySession.GetNamedQuery("PQRI.GetDenominatorList1CMS68v6.CurrentMedication");
                 EncounterDenominator1query68.SetString(0, Convert.ToString(ulPhysician_id));
                 EncounterDenominator1query68.SetString(1, Fromdate.ToString("yyyy-MM-dd"));
@@ -8906,7 +8906,7 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
                     }
 
                     IQuery EncounterDen2query68 = iMySession.GetNamedQuery("PQRI.GetDenominatorList2CMS68v6.CurrentMedication");
-                    EncounterDen2query68.SetString(0, "CMS68v6");
+                    EncounterDen2query68.SetString(0, "CMS68v11");
                     EncounterDen2query68.SetString(1, "Denominator");
                     EncounterDen2query68.SetParameterList("EncIds", Enc_Denominator1_lst68);
                     Enc_Denominator2_lst68 = new ArrayList(EncounterDen2query68.List());
@@ -8949,7 +8949,7 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
                             {
                                 cpt = objEnc[2].ToString();
                             }
-                            string[] ary = { objEnc[0].ToString(), objEnc[1].ToString(), "", cpt, "", "", "", "CMS68DEX", "CMS68v6" };
+                            string[] ary = { objEnc[0].ToString(), objEnc[1].ToString(), "", cpt, "", "", "", "CMS68DEX", "CMS68v11" };
                             icdcptListDenominatorException.Add(ary);
                             lstEncList68.Add(objEncList);
 
@@ -8996,7 +8996,7 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
                         Encounter objEncList = new Encounter();
                         objEncList.Encounter_ID = Convert.ToUInt32(objEnc[0]);
                         objEncList.Human_ID = Convert.ToUInt32(objEnc[1]);
-                        string[] ary = { objEnc[0].ToString(), objEnc[1].ToString(), "", objEnc[2].ToString(), "", "", "", "CMS68D", "CMS68v6" };
+                        string[] ary = { objEnc[0].ToString(), objEnc[1].ToString(), "", objEnc[2].ToString(), "", "", "", "CMS68D", "CMS68v11" };
                         icdcptListDenominator.Add(ary);
                         ulEncDenFinal68.Add(Convert.ToUInt32(objEnc[0]));
                         lstEncList68.Add(objEncList);
@@ -9019,7 +9019,7 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
                     for (int i = 0; i < Enc_Numerator_lst68.Count; i++)
                     {
                         object[] objEnc = (object[])Enc_Numerator_lst68[i];
-                        string[] ary = { objEnc[0].ToString(), objEnc[1].ToString(), "", "", "", "", "", "CMS68N", "", "", "CMS68v6" };
+                        string[] ary = { objEnc[0].ToString(), objEnc[1].ToString(), "", "", "", "", "", "CMS68N", "", "", "CMS68v11" };
                         icdcptListNumerator.Add(ary);
                         ulEncDenFinal68.Add(Convert.ToUInt32(objEnc[1]));
 
@@ -9028,7 +9028,7 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
                         Numerator = Enc_Numerator_lst68.Count;
                 }
 
-                PQRIlst.Add(NumeratorandDenominatorCalculationforCMSStageThree(Denominator, Numerator, DenominatorExclusion, DenominatorException, "68v6", icdcptListNumerator, icdcptListDenominator, icdcptListDenominatorExclusion, icdcptListDenominatorException, PQRIMeasureList));
+                PQRIlst.Add(NumeratorandDenominatorCalculationforCMSStageThree(Denominator, Numerator, DenominatorExclusion, DenominatorException, "68v11", icdcptListNumerator, icdcptListDenominator, icdcptListDenominatorExclusion, icdcptListDenominatorException, PQRIMeasureList));
                 Numerator = 0;
                 Denominator = 0;
                 DenominatorExclusion = 0;
@@ -9045,7 +9045,7 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
                 EncounterDenominatorquery69.SetString(0, Fromdate.ToString("yyyy-MM-dd"));
                 EncounterDenominatorquery69.SetString(1, Todate.ToString("yyyy-MM-dd"));
                 EncounterDenominatorquery69.SetString(2, Convert.ToString(ulPhysician_id));
-                EncounterDenominatorquery69.SetString(3, "CMS69v5");
+                EncounterDenominatorquery69.SetString(3, "CMS69v10");
                 EncounterDenominatorquery69.SetString(4, "Denominator");
 
 
@@ -9088,7 +9088,7 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
                         object[] objEnc = (object[])Enc_DenominatorException_lst69[i];
 
                         ulEncExceptionList69.Add(Convert.ToUInt32(objEnc[1]));
-                        string[] ary = { objEnc[0].ToString(), objEnc[1].ToString(), "", "", "", "", "", "CMS69DEX", "CMS69v5" };
+                        string[] ary = { objEnc[0].ToString(), objEnc[1].ToString(), "", "", "", "", "", "CMS69DEX", "69v10" };
                         icdcptListDenominatorException.Add(ary);
 
                     }
@@ -9151,20 +9151,20 @@ and pr.value ='' and pr.Snomed_Code<>'') or a.icd in (SELECT PQRI_Value FROM pqr
                     ISQLQuery Encounterexclusionrquery69 = iMySession.CreateSQLQuery(sQuery);
 
                     Encounterexclusionrquery69.SetParameterList("EncIds", ulEncListDemon69.ToArray());
-                    Encounterexclusionrquery69.SetParameter(0, "CMS69v5");
+                    Encounterexclusionrquery69.SetParameter(0, "CMS69v10");
 
                     Encounterexclusionrquery69.SetParameter(1, "Exclusion");
-                    Encounterexclusionrquery69.SetParameter(2, "CMS69v5");
+                    Encounterexclusionrquery69.SetParameter(2, "CMS69v10");
 
                     Encounterexclusionrquery69.SetParameter(3, "Exclusion");
 
                     Encounterexclusionrquery69.SetParameterList("HumanIds", ulHumanListDemon69.ToArray());
 
-                    Encounterexclusionrquery69.SetParameter(4, "CMS69v5");
+                    Encounterexclusionrquery69.SetParameter(4, "CMS69v10");
 
                     Encounterexclusionrquery69.SetParameter(5, "Exclusion");
 
-                    Encounterexclusionrquery69.SetParameter(6, "CMS69v5");
+                    Encounterexclusionrquery69.SetParameter(6, "CMS69v10");
 
                     Encounterexclusionrquery69.SetParameter(7, "Exclusion");
                     //Encounterexclusionrquery69.SetParameter(0, Fromdate.ToString("yyyy-MM-dd"));
@@ -9188,7 +9188,7 @@ and pr.value ='' and pr.Snomed_Code<>'') or a.icd in (SELECT PQRI_Value FROM pqr
                                 icd = objEnc[2].ToString();
                             }
 
-                            string[] ary = { objEnc[0].ToString(), objEnc[1].ToString(), icd, objEnc[3].ToString(), "", "", "", "CMS69DE", "CMS69v5" };
+                            string[] ary = { objEnc[0].ToString(), objEnc[1].ToString(), icd, objEnc[3].ToString(), "", "", "", "CMS69DE", "68v10" };
                             icdcptListDenominatorExclusion.Add(ary);
                             lstEncList68.Add(obj);
 
@@ -9238,7 +9238,7 @@ and pr.value ='' and pr.Snomed_Code<>'') or a.icd in (SELECT PQRI_Value FROM pqr
                             objEncList.Encounter_ID = Convert.ToUInt32(objEnc[0]);
                             objEncList.Human_ID = Convert.ToUInt32(objEnc[1]);
                             ulHumanListDenoFinal.Add(Convert.ToUInt32(objEnc[1]));
-                            string[] ary = { objEnc[0].ToString(), objEnc[1].ToString(), objEnc[3].ToString(), objEnc[2].ToString(), "", "", "", "CMS69D", "CMS69v5" };
+                            string[] ary = { objEnc[0].ToString(), objEnc[1].ToString(), objEnc[3].ToString(), objEnc[2].ToString(), "", "", "", "CMS69D", "69v10" };
                             icdcptListDenominator.Add(ary);
                             lstEncList68.Add(objEncList);
                         }
@@ -9272,20 +9272,20 @@ and pr.value ='' and pr.Snomed_Code<>'') or a.icd in (SELECT PQRI_Value FROM pqr
                     //Encounterumeratorquery69.SetParameterList("EncIds", ulEncListDenoFinal.ToArray())  ;
                     Encounterumeratorquery69.SetString(0, Fromdate.ToString("yyyy-MM-dd"));
                     Encounterumeratorquery69.SetString(1, Fromdate.ToString("yyyy-MM-dd"));
-                    Encounterumeratorquery69.SetParameter(2, "CMS69v5");
+                    Encounterumeratorquery69.SetParameter(2, "CMS69v10");
                     Encounterumeratorquery69.SetParameter(3, "Numerator");
-                    Encounterumeratorquery69.SetParameter(4, "CMS69v5");
+                    Encounterumeratorquery69.SetParameter(4, "CMS69v10");
                     Encounterumeratorquery69.SetParameter(5, "Numerator");
-                    Encounterumeratorquery69.SetParameter(6, "CMS69v5");
+                    Encounterumeratorquery69.SetParameter(6, "CMS69v10");
                     Encounterumeratorquery69.SetParameter(7, "Numerator");
 
                     Encounterumeratorquery69.SetString(8, Fromdate.ToString("yyyy-MM-dd"));
                     Encounterumeratorquery69.SetString(9, Fromdate.ToString("yyyy-MM-dd"));
-                    Encounterumeratorquery69.SetParameter(10, "CMS69v5");
+                    Encounterumeratorquery69.SetParameter(10, "CMS69v10");
                     Encounterumeratorquery69.SetParameter(11, "Numerator");
-                    Encounterumeratorquery69.SetParameter(12, "CMS69v5");
+                    Encounterumeratorquery69.SetParameter(12, "CMS69v10");
                     Encounterumeratorquery69.SetParameter(13, "Numerator");
-                    Encounterumeratorquery69.SetParameter(14, "CMS69v5");
+                    Encounterumeratorquery69.SetParameter(14, "CMS69v10");
                     Encounterumeratorquery69.SetParameter(15, "Numerator");
                     
                     // Encounterumeratorquery69.SetString(1, Todate.ToString("yyyy-MM-dd"));
@@ -9323,7 +9323,7 @@ and pr.value ='' and pr.Snomed_Code<>'') or a.icd in (SELECT PQRI_Value FROM pqr
                                 {
                                     Loinc_Identifier = objEnc[7].ToString();
                                 }
-                                string[] ary = { objEnc[0].ToString(), objEnc[1].ToString(), icd, cpt, Loinc_value, Loinc_Identifier, "", "CMS69N", "", "", "CMS69v5" };
+                                string[] ary = { objEnc[0].ToString(), objEnc[1].ToString(), icd, cpt, Loinc_value, Loinc_Identifier, "", "CMS69N", "", "", "69v10" };
                                 icdcptListNumerator.Add(ary);
                                 lstEncNumList68.Add(objEncList);
                             }
@@ -9338,7 +9338,7 @@ and pr.value ='' and pr.Snomed_Code<>'') or a.icd in (SELECT PQRI_Value FROM pqr
                     }
 
                 }
-                PQRIlst.Add(NumeratorandDenominatorCalculationforCMSStageThree(Denominator, Numerator, DenominatorExclusion, DenominatorException, "69v5", icdcptListNumerator, icdcptListDenominator, icdcptListDenominatorExclusion, icdcptListDenominatorException, PQRIMeasureList));
+                PQRIlst.Add(NumeratorandDenominatorCalculationforCMSStageThree(Denominator, Numerator, DenominatorExclusion, DenominatorException, "69v10", icdcptListNumerator, icdcptListDenominator, icdcptListDenominatorExclusion, icdcptListDenominatorException, PQRIMeasureList));
                 Numerator = 0;
                 Denominator = 0;
                 DenominatorExclusion = 0;
@@ -9356,7 +9356,7 @@ and pr.value ='' and pr.Snomed_Code<>'') or a.icd in (SELECT PQRI_Value FROM pqr
                 EncounterDenominatorquery127.SetString(1, Todate.ToString("yyyy-MM-dd"));
                 EncounterDenominatorquery127.SetString(2, Convert.ToString(ulPhysician_id));
 
-                EncounterDenominatorquery127.SetString(3, "CMS127v5");
+                EncounterDenominatorquery127.SetString(3, "CMS127v10");
                 EncounterDenominatorquery127.SetString(4, "Denominator");
                 ArrayList Enc_Denominator_lst127 = new ArrayList(EncounterDenominatorquery127.List());
 
@@ -9384,7 +9384,7 @@ and pr.value ='' and pr.Snomed_Code<>'') or a.icd in (SELECT PQRI_Value FROM pqr
                         objEncList.Human_ID = Convert.ToUInt32(objEnc[1]);
                         //ulEncList127.Add(Convert.ToUInt32(objEnc[0]));
                         ulHumanList127.Add(Convert.ToUInt32(objEnc[1]));
-                        string[] ary = { objEnc[0].ToString(), objEnc[1].ToString(), "", objEnc[2].ToString(), "", "", "", "CMS127D", "CMS127v5" };
+                        string[] ary = { objEnc[0].ToString(), objEnc[1].ToString(), "", objEnc[2].ToString(), "", "", "", "CMS127D", "CMS127v10" };
                         icdcptListDenominator.Add(ary);
                         lstEncList68.Add(objEncList);
                     }
@@ -9402,7 +9402,7 @@ and pr.value ='' and pr.Snomed_Code<>'') or a.icd in (SELECT PQRI_Value FROM pqr
                         IQuery Encounterumeratorquery127 = iMySession.GetNamedQuery("PQRI.GetNumeratorCMS127.Pneumococcal");
                         //Encounterumeratorquery127.SetParameterList("EncIds", ulEncList127.ToArray());
                         Encounterumeratorquery127.SetParameterList("HumanIds", ulHumanList127.ToArray());
-                        Encounterumeratorquery127.SetString(0, "CMS127v5");
+                        Encounterumeratorquery127.SetString(0, "CMS127v10");
                         Encounterumeratorquery127.SetString(1, "Numerator");
                         ArrayList Enc_Numerator_lst127 = new ArrayList(Encounterumeratorquery127.List());
                         if (Enc_Numerator_lst127 != null)
@@ -9411,7 +9411,7 @@ and pr.value ='' and pr.Snomed_Code<>'') or a.icd in (SELECT PQRI_Value FROM pqr
                             {
                                 object[] objEnc = (object[])Enc_Numerator_lst127[i];
 
-                                string[] ary = { objEnc[0].ToString(), objEnc[1].ToString(), "", objEnc[2].ToString(), "", "", "", "CMS127N", "", "", "CMS127v5" };
+                                string[] ary = { objEnc[0].ToString(), objEnc[1].ToString(), "", objEnc[2].ToString(), "", "", "", "CMS127N", "", "", "CMS127v10" };
                                 icdcptListNumerator.Add(ary);
 
                             }
@@ -9421,7 +9421,7 @@ and pr.value ='' and pr.Snomed_Code<>'') or a.icd in (SELECT PQRI_Value FROM pqr
                     }
 
                 }
-                PQRIlst.Add(NumeratorandDenominatorCalculationforCMSStageThree(Denominator, Numerator, DenominatorExclusion, 0, "127v5", icdcptListNumerator, icdcptListDenominator, icdcptListDenominatorExclusion, icdcptListDenominatorException, PQRIMeasureList));
+                PQRIlst.Add(NumeratorandDenominatorCalculationforCMSStageThree(Denominator, Numerator, DenominatorExclusion, 0, "127v10", icdcptListNumerator, icdcptListDenominator, icdcptListDenominatorExclusion, icdcptListDenominatorException, PQRIMeasureList));
                 Numerator = 0;
                 Denominator = 0;
                 DenominatorExclusion = 0;
@@ -9450,9 +9450,9 @@ and pr.value ='' and pr.Snomed_Code<>'') or a.icd in (SELECT PQRI_Value FROM pqr
                     EncounterDenominatorquery138 = iMySession.GetNamedQuery("PQRI.GetDenominatorList2CMS138.Tobacco");
                     EncounterDenominatorquery138.SetParameterList("EncIds", Enc_Denominator_lst138.ToArray());
 
-                    EncounterDenominatorquery138.SetString(0, "CMS138v5");
+                    EncounterDenominatorquery138.SetString(0, "CMS138v10");
                     EncounterDenominatorquery138.SetString(1, "Denominator");
-                    EncounterDenominatorquery138.SetString(2, "CMS138v5");
+                    EncounterDenominatorquery138.SetString(2, "CMS138v10");
                     EncounterDenominatorquery138.SetString(3, "Denominator");
                     Enc_Denominator_lst138 = new ArrayList(EncounterDenominatorquery138.List());
 
@@ -9480,7 +9480,7 @@ and pr.value ='' and pr.Snomed_Code<>'') or a.icd in (SELECT PQRI_Value FROM pqr
 
 
 
-                            string[] ary = { objEnc[0].ToString(), objEnc[1].ToString(), "", objEnc[2].ToString(), "", "", "", "CMS138D", "CMS138v5" };
+                            string[] ary = { objEnc[0].ToString(), objEnc[1].ToString(), "", objEnc[2].ToString(), "", "", "", "CMS138D", "CMS138v10" };
                             icdcptListDenominator.Add(ary);
 
 
@@ -9507,9 +9507,9 @@ and pr.value ='' and pr.Snomed_Code<>'') or a.icd in (SELECT PQRI_Value FROM pqr
                     IQuery Encounterexcpquery138 = iMySession.GetNamedQuery("PQRI.GetExceptionCMS138.Tobacco");
                     Encounterexcpquery138.SetParameterList("EncIds", Enc_Denominator_lst138.ToArray());
 
-                    Encounterexcpquery138.SetString(0, "CMS138v5");
+                    Encounterexcpquery138.SetString(0, "CMS138v10");
                     Encounterexcpquery138.SetString(1, "Exception");
-                    Encounterexcpquery138.SetString(2, "CMS138v5");
+                    Encounterexcpquery138.SetString(2, "CMS138v10");
                     Encounterexcpquery138.SetString(3, "Exception");
 
                     ArrayList Enc_exceptionr_lst138 = new ArrayList(Encounterexcpquery138.List());
@@ -9534,7 +9534,7 @@ and pr.value ='' and pr.Snomed_Code<>'') or a.icd in (SELECT PQRI_Value FROM pqr
                                 cpt = objEnc[3].ToString();
                             }
 
-                            string[] ary = { objEnc[0].ToString(), objEnc[1].ToString(), icd, cpt, "", "", "", "CMS138DEX", "CMS138v5" };
+                            string[] ary = { objEnc[0].ToString(), objEnc[1].ToString(), icd, cpt, "", "", "", "CMS138DEX", "CMS138v10" };
                             icdcptListDenominatorException.Add(ary);
                             lstEncList68.Add(objEncList);
 
@@ -9563,9 +9563,9 @@ and pr.value ='' and pr.Snomed_Code<>'') or a.icd in (SELECT PQRI_Value FROM pqr
 
                     IQuery Encounterumeratorquery138 = iMySession.GetNamedQuery("PQRI.GetNumeratorCMS138.Tobacco");
                     Encounterumeratorquery138.SetParameterList("EncIds", ulEncList138.ToArray());
-                    Encounterumeratorquery138.SetString(0, "CMS138v5");
+                    Encounterumeratorquery138.SetString(0, "CMS138v10");
                     Encounterumeratorquery138.SetString(1, "Numerator");
-                    Encounterumeratorquery138.SetString(2, "CMS138v5");
+                    Encounterumeratorquery138.SetString(2, "CMS138v10");
                     Encounterumeratorquery138.SetString(3, "Numerator");
 
                     //Encounterumeratorquery138.SetString(0, Fromdate.ToString("yyyy-MM-dd"));
@@ -9594,13 +9594,13 @@ and pr.value ='' and pr.Snomed_Code<>'') or a.icd in (SELECT PQRI_Value FROM pqr
                             {
                                 if (objEnc[5] != null && Convert.ToDateTime(objEnc[4]) >= Fromdate1 && Convert.ToDateTime(objEnc[4]) <= Todate1)
                                 {
-                                    string[] ary = { objEnc[0].ToString(), objEnc[1].ToString(), "", objEnc[2].ToString(), "", "", "", "CMS138N", "", "", "CMS138v5" };
+                                    string[] ary = { objEnc[0].ToString(), objEnc[1].ToString(), "", objEnc[2].ToString(), "", "", "", "CMS138N", "", "", "CMS138v10" };
                                     icdcptListNumerator.Add(ary);
                                     Enc_Numerator_lst138_Count++;
                                 }
                                 else
                                 {
-                                    string[] ary = { objEnc[0].ToString(), objEnc[1].ToString(), "", objEnc[2].ToString(), "", "", "", "CMS138N", "", "", "CMS138v5" };
+                                    string[] ary = { objEnc[0].ToString(), objEnc[1].ToString(), "", objEnc[2].ToString(), "", "", "", "CMS138N", "", "", "CMS138v10" };
                                     icdcptListNumerator.Add(ary);
                                     Enc_Numerator_lst138_Count++;
                                 }
@@ -9613,7 +9613,7 @@ and pr.value ='' and pr.Snomed_Code<>'') or a.icd in (SELECT PQRI_Value FROM pqr
                     }
                 }
 
-                PQRIlst.Add(NumeratorandDenominatorCalculationforCMSStageThree(Denominator, Numerator, DenominatorExclusion, DenominatorException, "138v5", icdcptListNumerator, icdcptListDenominator, icdcptListDenominatorExclusion, icdcptListDenominatorException, PQRIMeasureList));
+                PQRIlst.Add(NumeratorandDenominatorCalculationforCMSStageThree(Denominator, Numerator, DenominatorExclusion, DenominatorException, "138v10", icdcptListNumerator, icdcptListDenominator, icdcptListDenominatorExclusion, icdcptListDenominatorException, PQRIMeasureList));
                 Numerator = 0;
                 Denominator = 0;
                 DenominatorExclusion = 0;
@@ -9643,7 +9643,7 @@ and pr.value ='' and pr.Snomed_Code<>'') or a.icd in (SELECT PQRI_Value FROM pqr
                     EncounterDenominatorquery165 = iMySession.GetNamedQuery("PQRI.GetDenominatorList1CMS165.ControllingHighBP");
 
                     EncounterDenominatorquery165.SetParameterList("EncIds", Enc_Denominator_lst165.ToArray());
-                    EncounterDenominatorquery165.SetString(0, "CMS165v5");
+                    EncounterDenominatorquery165.SetString(0, "CMS165v10");
                     EncounterDenominatorquery165.SetString(1, "Denominator");
                     Enc_Denominator_lst165 = new ArrayList(EncounterDenominatorquery165.List());
 
@@ -9666,9 +9666,9 @@ and pr.value ='' and pr.Snomed_Code<>'') or a.icd in (SELECT PQRI_Value FROM pqr
                         EncounterDenominatorquery165.SetParameter(0, Todate.ToString("yyyy-MM-dd"));
                         EncounterDenominatorquery165.SetParameterList("EncIds", ulEncList165Deno.ToArray());
                         EncounterDenominatorquery165.SetParameterList("EncIds_Ass", ulEncList165Encounter.ToArray());
-                        EncounterDenominatorquery165.SetString(1, "CMS165v5");
+                        EncounterDenominatorquery165.SetString(1, "CMS165v10");
                         EncounterDenominatorquery165.SetString(2, "Denominator");
-                        EncounterDenominatorquery165.SetString(3, "CMS165v5");
+                        EncounterDenominatorquery165.SetString(3, "CMS165v10");
                         EncounterDenominatorquery165.SetString(4, "Denominator");
                         Enc_Denominator_lst165 = new ArrayList(EncounterDenominatorquery165.List());
                     }
@@ -9677,11 +9677,11 @@ and pr.value ='' and pr.Snomed_Code<>'') or a.icd in (SELECT PQRI_Value FROM pqr
                     {
                         IQuery EncounterExclusionrquery165 = iMySession.GetNamedQuery("PQRI.GetExclusionCMS165.ControllingHighBP");
                         EncounterExclusionrquery165.SetParameterList("EncIds", Enc_Denominator_lst165.ToArray());
-                        EncounterExclusionrquery165.SetString(0, "CMS165v5");
+                        EncounterExclusionrquery165.SetString(0, "CMS165v10");
                         EncounterExclusionrquery165.SetString(1, "Exclusion");
-                        EncounterExclusionrquery165.SetString(2, "CMS165v5");
+                        EncounterExclusionrquery165.SetString(2, "CMS165v10");
                         EncounterExclusionrquery165.SetString(3, "Exclusion");
-                        EncounterExclusionrquery165.SetString(4, "CMS165v5");
+                        EncounterExclusionrquery165.SetString(4, "CMS165v10");
                         EncounterExclusionrquery165.SetString(5, "Exclusion");
 
                         Enc_exclusion_lst165 = new ArrayList(EncounterExclusionrquery165.List());
@@ -9737,7 +9737,7 @@ and pr.value ='' and pr.Snomed_Code<>'') or a.icd in (SELECT PQRI_Value FROM pqr
                                 {
                                     Loinc = objEnc[4].ToString();
                                 }
-                                string[] ary = { objEnc[0].ToString(), objEnc[1].ToString(), icd, cpt, "", Loinc, "", "CMS165DE", "CMS165v5" };
+                                string[] ary = { objEnc[0].ToString(), objEnc[1].ToString(), icd, cpt, "", Loinc, "", "CMS165DE", "CMS165v10" };
                                 //ulEncList165new.Add(Convert.ToUInt32(objEnc[1].ToString()));
                                 icdcptListDenominatorExclusion.Add(ary);
 
@@ -9793,7 +9793,7 @@ and pr.value ='' and pr.Snomed_Code<>'') or a.icd in (SELECT PQRI_Value FROM pqr
                             {
                                 loinc = objEnc[4].ToString();
                             }
-                            string[] ary = { objEnc[0].ToString(), objEnc[1].ToString(), icd, cpt, "", loinc, "", "CMS165D", "CMS165v5" };
+                            string[] ary = { objEnc[0].ToString(), objEnc[1].ToString(), icd, cpt, "", loinc, "", "CMS165D", "CMS165v10" };
                             icdcptListDenominator.Add(ary);
 
 
@@ -9860,7 +9860,7 @@ and pr.value ='' and pr.Snomed_Code<>'') or a.icd in (SELECT PQRI_Value FROM pqr
                     {
                         object[] objEnc = (object[])Enc_Numerator_lst165[i];
 
-                        string[] ary = { objEnc[0].ToString(), objEnc[1].ToString(), "", "", "", objEnc[2].ToString(), "", "CMS165N", "", "", "CMS165v5" };
+                        string[] ary = { objEnc[0].ToString(), objEnc[1].ToString(), "", "", "", objEnc[2].ToString(), "", "CMS165N", "", "", "CMS165v10" };
                         icdcptListNumerator.Add(ary);
 
                     }
@@ -9868,7 +9868,7 @@ and pr.value ='' and pr.Snomed_Code<>'') or a.icd in (SELECT PQRI_Value FROM pqr
                         Numerator = Enc_Numerator_lst165.Count;
 
                 }
-                PQRIlst.Add(NumeratorandDenominatorCalculationforCMSStageThree(Denominator, Numerator, DenominatorExclusion, DenominatorException, "165v5", icdcptListNumerator, icdcptListDenominator, icdcptListDenominatorExclusion, icdcptListDenominatorException, PQRIMeasureList));
+                PQRIlst.Add(NumeratorandDenominatorCalculationforCMSStageThree(Denominator, Numerator, DenominatorExclusion, DenominatorException, "165v10", icdcptListNumerator, icdcptListDenominator, icdcptListDenominatorExclusion, icdcptListDenominatorException, PQRIMeasureList));
                 Numerator = 0;
                 Denominator = 0;
                 DenominatorExclusion = 0;
@@ -9885,11 +9885,11 @@ and pr.value ='' and pr.Snomed_Code<>'') or a.icd in (SELECT PQRI_Value FROM pqr
                 EncounterDenominatorquery122.SetString(0, Fromdate.ToString("yyyy-MM-dd"));
                 EncounterDenominatorquery122.SetString(1, Todate.ToString("yyyy-MM-dd"));
                 EncounterDenominatorquery122.SetString(2, Convert.ToString(ulPhysician_id));
-                EncounterDenominatorquery122.SetString(3, "CMS122v5");
+                EncounterDenominatorquery122.SetString(3, "CMS122v10");
                 EncounterDenominatorquery122.SetString(4, "Denominator");
-                EncounterDenominatorquery122.SetString(5, "CMS122v5");
+                EncounterDenominatorquery122.SetString(5, "CMS122v10");
                 EncounterDenominatorquery122.SetString(6, "Denominator");
-                EncounterDenominatorquery122.SetString(7, "CMS122v5");
+                EncounterDenominatorquery122.SetString(7, "CMS122v10");
                 EncounterDenominatorquery122.SetString(8, "Denominator");
 
                 ArrayList Enc_Denominator_lst122 = new ArrayList(EncounterDenominatorquery122.List());
@@ -9914,7 +9914,7 @@ and pr.value ='' and pr.Snomed_Code<>'') or a.icd in (SELECT PQRI_Value FROM pqr
                     {
                         sLoinc = objEnc[4].ToString();
                     }
-                    string[] ary = { objEnc[0].ToString(), objEnc[1].ToString(), sICD, objEnc[3].ToString(), "", sLoinc, "", "CMS122D", "CMS122v5" };
+                    string[] ary = { objEnc[0].ToString(), objEnc[1].ToString(), sICD, objEnc[3].ToString(), "", sLoinc, "", "CMS122D", "CMS122v10" };
                     icdcptListDenominator.Add(ary);
                     lstEncList68.Add(obj);
                 }
@@ -9962,7 +9962,7 @@ and pr.value ='' and pr.Snomed_Code<>'') or a.icd in (SELECT PQRI_Value FROM pqr
                         {
                             Loinc = objEnc[2].ToString();
                         }
-                        string[] ary = { objEnc[0].ToString(), objEnc[1].ToString(), "", "", "", Loinc, "", "CMS122N", "", "", "CMS122v5" };
+                        string[] ary = { objEnc[0].ToString(), objEnc[1].ToString(), "", "", "", Loinc, "", "CMS122N", "", "", "CMS122v10" };
                         icdcptListNumerator.Add(ary);
 
                     }
@@ -9970,7 +9970,7 @@ and pr.value ='' and pr.Snomed_Code<>'') or a.icd in (SELECT PQRI_Value FROM pqr
                         Numerator = Enc_Numerator_lst122.Count;
 
                 }
-                PQRIlst.Add(NumeratorandDenominatorCalculationforCMSStageThree(Denominator, Numerator, DenominatorExclusion, DenominatorException, "122v5", icdcptListNumerator, icdcptListDenominator, icdcptListDenominatorExclusion, icdcptListDenominatorException, PQRIMeasureList));
+                PQRIlst.Add(NumeratorandDenominatorCalculationforCMSStageThree(Denominator, Numerator, DenominatorExclusion, DenominatorException, "122v10", icdcptListNumerator, icdcptListDenominator, icdcptListDenominatorExclusion, icdcptListDenominatorException, PQRIMeasureList));
                 Numerator = 0;
                 Denominator = 0;
                 DenominatorExclusion = 0;
@@ -10006,17 +10006,14 @@ and pr.value ='' and pr.Snomed_Code<>'') or a.icd in (SELECT PQRI_Value FROM pqr
                     IQuery EncounterDenominator1query147 = iMySession.GetNamedQuery("PQRI.GetDenominatorList1CMS147.Influenza");
 
                     EncounterDenominator1query147.SetParameterList("EncIds", Enc_Denominator_lst147.ToArray());
-                    EncounterDenominator1query147.SetString(0, "CMS147v6");
+                    EncounterDenominator1query147.SetString(0, "CMS147v11");
                     EncounterDenominator1query147.SetString(1, "Denominator");
-                    EncounterDenominator1query147.SetString(2, "CMS147v6");
+                    EncounterDenominator1query147.SetString(2, "CMS147v11");
                     EncounterDenominator1query147.SetString(3, "Denominator");
-                    EncounterDenominator1query147.SetString(4, "CMS147v6");
-                    EncounterDenominator1query147.SetString(5, "Denominator");
-                    EncounterDenominator1query147.SetString(6, "CMS147v6");
-                    EncounterDenominator1query147.SetString(7, "Denominator");
+                  
 
 
-                    Enc_Denominator1_lst147 = new ArrayList(EncounterDenominator1query147.List());
+              Enc_Denominator1_lst147 = new ArrayList(EncounterDenominator1query147.List());
 
 
 
@@ -10032,9 +10029,9 @@ and pr.value ='' and pr.Snomed_Code<>'') or a.icd in (SELECT PQRI_Value FROM pqr
                     IQuery EncounterExceptionrquery147 = iMySession.GetNamedQuery("PQRI.GetDenominatorExceptionCMS147.Influenza");
                     EncounterExceptionrquery147.SetParameterList("EncIds", Enc_Denominator1_lst147.ToArray());
 
-                    EncounterExceptionrquery147.SetString(0, "CMS147v6");
+                    EncounterExceptionrquery147.SetString(0, "CMS147v11");
                     EncounterExceptionrquery147.SetString(1, "Exception");
-                    EncounterExceptionrquery147.SetString(2, "CMS147v6");
+                    EncounterExceptionrquery147.SetString(2, "CMS147v11");
                     EncounterExceptionrquery147.SetString(3, "Exception");
                     Enc_exception_lst147 = new ArrayList(EncounterExceptionrquery147.List());
                 }
@@ -10071,7 +10068,7 @@ and pr.value ='' and pr.Snomed_Code<>'') or a.icd in (SELECT PQRI_Value FROM pqr
                                 snomed = objEnc[4].ToString();
                             }
 
-                            string[] ary = { objEnc[0].ToString(), objEnc[1].ToString(), icd, objEnc[3].ToString(), "", snomed, "", "CMS147DEX", "CMS147v6" };
+                            string[] ary = { objEnc[0].ToString(), objEnc[1].ToString(), icd, objEnc[3].ToString(), "", snomed, "", "CMS147DEX", "CMS147v11" };
                             ulEncList147.Add(Convert.ToUInt32(objEnc[1].ToString()));
                             icdcptListDenominatorException.Add(ary);
                             lstEncList68.Add(obj);
@@ -10118,7 +10115,7 @@ and pr.value ='' and pr.Snomed_Code<>'') or a.icd in (SELECT PQRI_Value FROM pqr
                             obj.Human_ID = Convert.ToUInt32(objEnc[1].ToString());
 
 
-                            string[] ary = { objEnc[0].ToString(), objEnc[1].ToString(), "", objEnc[2].ToString(), "", "", "", "CMS147D", "CMS147v6" };
+                            string[] ary = { objEnc[0].ToString(), objEnc[1].ToString(), "", objEnc[2].ToString(), "", "", "", "CMS147D", "CMS147v11" };
 
                             ulEncList147.Add(Convert.ToUInt32(objEnc[1].ToString()));
                             icdcptListDenominator.Add(ary);
@@ -10150,9 +10147,9 @@ and pr.value ='' and pr.Snomed_Code<>'') or a.icd in (SELECT PQRI_Value FROM pqr
                     Encounterumeratorquery147.SetString(7, Fromdate.ToString("yyyy-MM-dd"));
                     Encounterumeratorquery147.SetParameterList("EncIds", ulEncList147.ToArray());
 
-                    Encounterumeratorquery147.SetString(0, "CMS147v6");
+                    Encounterumeratorquery147.SetString(0, "CMS147v11");
                     Encounterumeratorquery147.SetString(1, "Numerator");
-                    Encounterumeratorquery147.SetString(2, "CMS147v6");
+                    Encounterumeratorquery147.SetString(2, "CMS147v11");
                     Encounterumeratorquery147.SetString(3, "Numerator");
                     ArrayList Enc_Numerator_lst147 = new ArrayList(Encounterumeratorquery147.List());
                     for (int i = 0; i < Enc_Numerator_lst147.Count; i++)
@@ -10162,7 +10159,7 @@ and pr.value ='' and pr.Snomed_Code<>'') or a.icd in (SELECT PQRI_Value FROM pqr
                         obj.Encounter_ID = Convert.ToUInt32(objEnc[0].ToString());
                         obj.Human_ID = Convert.ToUInt32(objEnc[1].ToString());
 
-                        string[] ary = { objEnc[0].ToString(), objEnc[1].ToString(), "", objEnc[2].ToString(), "", objEnc[3].ToString(), "", "CMS147N", "", "", "CMS147v6" };
+                        string[] ary = { objEnc[0].ToString(), objEnc[1].ToString(), "", objEnc[2].ToString(), "", objEnc[3].ToString(), "", "CMS147N", "", "", "CMS147v11" };
                         icdcptListNumerator.Add(ary);
                         lstEncList147.Add(obj);
 
@@ -10196,7 +10193,7 @@ and pr.value ='' and pr.Snomed_Code<>'') or a.icd in (SELECT PQRI_Value FROM pqr
                 EncounterDenominatorquery125.SetString(0, Fromdate.ToString("yyyy-MM-dd"));
                 EncounterDenominatorquery125.SetString(1, Todate.ToString("yyyy-MM-dd"));
                 EncounterDenominatorquery125.SetString(2, Convert.ToString(ulPhysician_id));
-                EncounterDenominatorquery125.SetString(3, "CMS125v5");
+                EncounterDenominatorquery125.SetString(3, "CMS125v10");
                 EncounterDenominatorquery125.SetString(4, "Denominator");
 
                 ArrayList Enc_Denominator_lst125 = new ArrayList(EncounterDenominatorquery125.List());
@@ -10219,10 +10216,10 @@ and pr.value ='' and pr.Snomed_Code<>'') or a.icd in (SELECT PQRI_Value FROM pqr
                     IQuery EncounterExlusionquery125 = iMySession.GetNamedQuery("PQRI.GetExceptionCMS125.BreastCancer");
                     EncounterExlusionquery125.SetParameterList("EncIds", ulEncList125_DEnominator.ToArray());
 
-                    EncounterExlusionquery125.SetString(0, "CMS125v5");
+                    EncounterExlusionquery125.SetString(0, "CMS125v10");
                     EncounterExlusionquery125.SetString(1, "Exception");
 
-                    EncounterExlusionquery125.SetString(2, "CMS125v5");
+                    EncounterExlusionquery125.SetString(2, "CMS125v10");
                     EncounterExlusionquery125.SetString(3, "Exception");
 
 
@@ -10276,7 +10273,7 @@ and pr.value ='' and pr.Snomed_Code<>'') or a.icd in (SELECT PQRI_Value FROM pqr
                             {
                                 cpt = objEnc[3].ToString();
                             }
-                            string[] ary = { objEnc[0].ToString(), objEnc[1].ToString(), icd, cpt, "", "", "", "CMS125DEX", "CMS125v5" };
+                            string[] ary = { objEnc[0].ToString(), objEnc[1].ToString(), icd, cpt, "", "", "", "CMS125DEX", "CMS125v10" };
                             icdcptListDenominatorException.Add(ary);
 
 
@@ -10310,7 +10307,7 @@ and pr.value ='' and pr.Snomed_Code<>'') or a.icd in (SELECT PQRI_Value FROM pqr
                         obj.Encounter_ID = Convert.ToUInt32(objEnc[0].ToString());
                         obj.Human_ID = Convert.ToUInt32(objEnc[1].ToString());
                         ulEncList125.Add(Convert.ToUInt32(objEnc[1].ToString()));
-                        string[] ary = { objEnc[0].ToString(), objEnc[1].ToString(), "", objEnc[2].ToString(), "", "", "", "CMS125D", "CMS125v5" };
+                        string[] ary = { objEnc[0].ToString(), objEnc[1].ToString(), "", objEnc[2].ToString(), "", "", "", "CMS125D", "CMS125v10" };
                         icdcptListDenominator.Add(ary);
                         lstEncList68.Add(obj);
 
@@ -10350,7 +10347,7 @@ and pr.value ='' and pr.Snomed_Code<>'') or a.icd in (SELECT PQRI_Value FROM pqr
                             loinc = objEnc[2].ToString();
                         }
 
-                        string[] ary = { objEnc[0].ToString(), objEnc[1].ToString(), "", "", "", loinc, "", "CMS125N", "", "", "CMS125v5" };
+                        string[] ary = { objEnc[0].ToString(), objEnc[1].ToString(), "", "", "", loinc, "", "CMS125N", "", "", "CMS125v10" };
                         icdcptListNumerator.Add(ary);
 
                     }
@@ -10358,7 +10355,7 @@ and pr.value ='' and pr.Snomed_Code<>'') or a.icd in (SELECT PQRI_Value FROM pqr
                         Numerator = Enc_Numerator_lst125.Count;
 
                 }
-                PQRIlst.Add(NumeratorandDenominatorCalculationforCMSStageThree(Denominator, Numerator, DenominatorExclusion, DenominatorException, "125v5", icdcptListNumerator, icdcptListDenominator, icdcptListDenominatorExclusion, icdcptListDenominatorException, PQRIMeasureList));
+                PQRIlst.Add(NumeratorandDenominatorCalculationforCMSStageThree(Denominator, Numerator, DenominatorExclusion, DenominatorException, "125v10", icdcptListNumerator, icdcptListDenominator, icdcptListDenominatorExclusion, icdcptListDenominatorException, PQRIMeasureList));
                 Numerator = 0;
                 Denominator = 0;
                 DenominatorExclusion = 0;
@@ -10376,7 +10373,7 @@ and pr.value ='' and pr.Snomed_Code<>'') or a.icd in (SELECT PQRI_Value FROM pqr
                 EncounterDenominatorquery22.SetString(0, Fromdate.ToString("yyyy-MM-dd"));
                 EncounterDenominatorquery22.SetString(1, Todate.ToString("yyyy-MM-dd"));
                 EncounterDenominatorquery22.SetString(2, Convert.ToString(ulPhysician_id));
-                EncounterDenominatorquery22.SetString(3, "CMS22v5");
+                EncounterDenominatorquery22.SetString(3, "CMS22v10");
                 EncounterDenominatorquery22.SetString(4, "Denominator");
 
                 ArrayList Enc_Denominator_lst22 = new ArrayList(EncounterDenominatorquery22.List());
@@ -10413,7 +10410,7 @@ and pr.value ='' and pr.Snomed_Code<>'') or a.icd in (SELECT PQRI_Value FROM pqr
                             obj.Encounter_ID = Convert.ToUInt32(objEnc[0].ToString());
                             obj.Human_ID = Convert.ToUInt32(objEnc[1].ToString());
 
-                            string[] ary = { objEnc[0].ToString(), objEnc[1].ToString(), "", objEnc[3].ToString(), "", objEnc[2].ToString(), "", "CMS22DEX", "CMS22v5" };
+                            string[] ary = { objEnc[0].ToString(), objEnc[1].ToString(), "", objEnc[3].ToString(), "", objEnc[2].ToString(), "", "CMS22DEX", "CMS22v10" };
                             ulEncListException22.Add(Convert.ToUInt32(objEnc[1].ToString()));
                             icdcptListDenominatorException.Add(ary);
                             lstEncList68.Add(obj);
@@ -10466,11 +10463,11 @@ and date(c.date_of_service)<='" + Todate.ToString("yyyy-MM-dd") + "' and c.human
                     ISQLQuery SQL = iMySession.CreateSQLQuery(sQuery);
                     SQL.SetParameterList("EncIds", ulEncListException22_human.ToArray());
 
-                    SQL.SetString(0, "CMS22v5");
+                    SQL.SetString(0, "CMS22v10");
                     SQL.SetString(1, "Exclusion");
 
 
-                    SQL.SetString(2, "CMS22v5");
+                    SQL.SetString(2, "CMS22v10");
                     SQL.SetString(3, "Exclusion");
 
                     Enc_Exclusion_lst22 = new ArrayList(SQL.List());
@@ -10511,7 +10508,7 @@ and date(c.date_of_service)<='" + Todate.ToString("yyyy-MM-dd") + "' and c.human
                         if (objEnc[5] != null)
                             creteddate = objEnc[5].ToString();
 
-                        string[] ary = { objEnc[0].ToString(), objEnc[1].ToString(), icd, cpt, "", loinc, creteddate, "CMS22DE", "CMS22v5" };
+                        string[] ary = { objEnc[0].ToString(), objEnc[1].ToString(), icd, cpt, "", loinc, creteddate, "CMS22DE", "CMS22v10" };
                         //ulEncListExclusion22.Add(Convert.ToUInt32(objEnc[1].ToString()));
                         icdcptListDenominatorExclusion.Add(ary);
 
@@ -10591,7 +10588,7 @@ and date(c.date_of_service)<='" + Todate.ToString("yyyy-MM-dd") + "' and c.human
                         string loinc = "";
                         if (objEnc[3].ToString() != "")
                             loinc = "8480-6";
-                        string[] ary = { objEnc[0].ToString(), objEnc[1].ToString(), "", objEnc[2].ToString(), "", loinc, "", "CMS22D", "CMS22v5" };
+                        string[] ary = { objEnc[0].ToString(), objEnc[1].ToString(), "", objEnc[2].ToString(), "", loinc, "", "CMS22D", "CMS22v10" };
                         icdcptListDenominator.Add(ary);
                         lstEncList68.Add(obj);
 
@@ -10633,7 +10630,7 @@ and date(c.date_of_service)<='" + Todate.ToString("yyyy-MM-dd") + "' and c.human
                         string snomed = "";
                         if (objEnc[2] != null)
                             snomed = objEnc[2].ToString();
-                        string[] ary = { objEnc[0].ToString(), objEnc[1].ToString(), "", "", "", snomed, "", "CMS22N", "", "", "CMS22v5" };
+                        string[] ary = { objEnc[0].ToString(), objEnc[1].ToString(), "", "", "", snomed, "", "CMS22N", "", "", "CMS22v10" };
                         icdcptListNumerator.Add(ary);
                         lstEncList68.Add(obj);
 
@@ -10648,7 +10645,7 @@ and date(c.date_of_service)<='" + Todate.ToString("yyyy-MM-dd") + "' and c.human
                     }
 
                 }
-                PQRIlst.Add(NumeratorandDenominatorCalculationforCMSStageThree(Denominator, Numerator, DenominatorExclusion, DenominatorException, "22v5", icdcptListNumerator, icdcptListDenominator, icdcptListDenominatorExclusion, icdcptListDenominatorException, PQRIMeasureList));
+                PQRIlst.Add(NumeratorandDenominatorCalculationforCMSStageThree(Denominator, Numerator, DenominatorExclusion, DenominatorException, "22v10", icdcptListNumerator, icdcptListDenominator, icdcptListDenominatorExclusion, icdcptListDenominatorException, PQRIMeasureList));
                 Numerator = 0;
                 Denominator = 0;
                 DenominatorExclusion = 0;
