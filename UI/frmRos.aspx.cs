@@ -456,7 +456,7 @@ namespace Acurus.Capella.UI
 
                 }
             }
-            symptomNamesLookUp = objUserLookupManager.GetFieldLookupListforPartialField(ClientSession.PhysicianUserName, "ROS SYMPTOM FOR", sex).ToArray();
+            symptomNamesLookUp = objUserLookupManager.GetFieldLookupListforPartialField(ClientSession.PhysicianId, "ROS SYMPTOM FOR", sex).ToArray();
             if (symptomNamesLookUp.Count > 0)
             {
                 SystemNames = symptomNamesLookUp.OrderBy(a => a.Sort_Order).Select(a => a.Doc_Type).Distinct().ToList<string>();
@@ -1263,7 +1263,7 @@ namespace Acurus.Capella.UI
 
                 }
             }
-            symptomNamesLookUp = objUserLookupManager.GetFieldLookupListforPartialField(ClientSession.PhysicianUserName, "ROS SYMPTOM FOR", sex).ToArray();
+            symptomNamesLookUp = objUserLookupManager.GetFieldLookupListforPartialField(ClientSession.PhysicianId, "ROS SYMPTOM FOR", sex).ToArray();
             SystemNames = symptomNamesLookUp.OrderBy(a => a.Sort_Order).Select(a => a.Doc_Type).Distinct().ToList<string>();
 
 
@@ -1996,7 +1996,7 @@ namespace Acurus.Capella.UI
 
                             }
                         }
-                        symptomNamesLookUp = objUserLookupManager.GetFieldLookupListforPartialField(ClientSession.PhysicianUserName, "ROS SYMPTOM FOR", sex).ToArray();
+                        symptomNamesLookUp = objUserLookupManager.GetFieldLookupListforPartialField(ClientSession.PhysicianId, "ROS SYMPTOM FOR", sex).ToArray();
                         SystemNames = symptomNamesLookUp.OrderBy(a => a.Sort_Order).Select(a => a.Doc_Type).Distinct().ToList<string>();
 
                         Panel grSystemAndSymptom = new Panel();

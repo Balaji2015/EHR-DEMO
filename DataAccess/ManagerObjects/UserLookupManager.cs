@@ -32,7 +32,7 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
         IList<UserLookup> GetUserLookupById(ulong Id);
         IList<UserLookup> GetFieldLookupListRCM(string UserName, string Field_Name, string IsActive);
         string GetMaxValue(string FieldName, string UserName);
-        IList<UserLookup> GetFieldLookupListforPartialField(string sUserName, string PartialField_Name, string sex);
+        IList<UserLookup> GetFieldLookupListforPartialField(ulong Physician_ID, string PartialField_Name, string sex);
         IList<UserLookup> GetFieldLookupListByFieldNameandDescription(string userName, string Field_Name, string Description);
     }
     public partial class UserLookupManager : ManagerBase<UserLookup, uint>, IUserLookupManager
@@ -219,14 +219,13 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
             return userList;
         }
         //BugID:54702
-        public IList<UserLookup> GetFieldLookupListforPartialField(string sUserName, string PartialField_Name, string sex)
+        public IList<UserLookup> GetFieldLookupListforPartialField(ulong Physician_ID, string PartialField_Name, string sex)
         {
             //ISession iMySession = NHibernateSessionManager.Instance.CreateISession();
             IList<UserLookup> userList = new List<UserLookup>();
             using (ISession iMySession = NHibernateSessionManager.Instance.CreateISession())
             {
-                //ICriteria criteria = iMySession.CreateCriteria(typeof(UserLookup)).Add(Restrictions.Eq("Physician_ID", Physician_ID)).Add(Restrictions.Like("Field_Name", PartialField_Name.ToUpper(), MatchMode.Start)).Add(!Restrictions.Eq("Description", sex.ToUpper())).AddOrder(Order.Asc("Sort_Order"));
-                ICriteria criteria = iMySession.CreateCriteria(typeof(UserLookup)).Add(Restrictions.Eq("User_Name", sUserName)).Add(Restrictions.Like("Field_Name", PartialField_Name.ToUpper(), MatchMode.Start)).Add(!Restrictions.Eq("Description", sex.ToUpper())).AddOrder(Order.Asc("Sort_Order"));
+                ICriteria criteria = iMySession.CreateCriteria(typeof(UserLookup)).Add(Restrictions.Eq("Physician_ID", Physician_ID)).Add(Restrictions.Like("Field_Name", PartialField_Name.ToUpper(), MatchMode.Start)).Add(!Restrictions.Eq("Description", sex.ToUpper())).AddOrder(Order.Asc("Sort_Order"));
                 userList = criteria.List<UserLookup>();
                 iMySession.Close();
             }
