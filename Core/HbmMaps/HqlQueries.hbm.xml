@@ -848,7 +848,7 @@ P.First_Name,P.Birth_Date, P.Human_ID ]]>
     left join carrier c on (i.Carrier_ID=c.Carrier_ID)
     where    
     w.facility_name= ? and  w.Is_Default_MyQ_LineItem=1 and w.current_owner = ? and  u.user_name=? and
-    (w.Obj_Type in (:ObjList)) and u1.legal_org=h.Legal_Org
+    (w.Obj_Type in (:ObjList))
    ]]>
   </sql-query>
   <sql-query name="FillMyEncounterObjectDetails.WithFacility.WithoutAllAppointments.WithCarrier">
@@ -867,7 +867,7 @@ P.First_Name,P.Birth_Date, P.Human_ID ]]>
     left join carrier c on (i.Carrier_ID=c.Carrier_ID)
     where    
     w.Is_Default_MyQ_LineItem=1 and w.current_owner = ? and  u.user_name=? and
-    (w.facility_name in (:FacList) and h.Primary_Carrier_ID in (:CarrierList) and w.Obj_Type in (:ObjList)) and u1.legal_org=h.Legal_Org
+    (w.facility_name in (:FacList) and h.Primary_Carrier_ID in (:CarrierList) and w.Obj_Type in (:ObjList))
    ]]>
   </sql-query>
   <sql-query name="FillMyEncounterObjectDetails.WithFacility.WithoutAllAppointments.Count">
