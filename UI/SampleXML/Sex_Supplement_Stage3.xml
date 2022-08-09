@@ -12,7 +12,7 @@
 		  <!--<code code="184100006" displayName="patient sex" codeSystem="2.16.840.1.113883.6.96" codeSystemName="SNOMED-CT"/>-->
 		  <statusCode code="completed" />
 		  <!--Acurus- Bring in the Sex Code of the Sex that is received as a unique. If MALE, it is M and if FEMALE, it is F-->
-		  <!--<value xsi:type="CD" code="" codeSystem="2.16.840.1.113883.5.1" codeSystemName="AdministrativeGender"/>-->
+		
 		  <value xsi:type="CD" code="" codeSystem="2.16.840.1.113883.5.1" codeSystemName="AdministrativeSex" displayName="" />
 		  <entryRelationship typeCode="SUBJ" inversionInd="true">
 			<!-- Aggregate Count (CMS EP) -->

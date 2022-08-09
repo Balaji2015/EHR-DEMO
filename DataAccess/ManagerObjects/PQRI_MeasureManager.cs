@@ -9135,38 +9135,50 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
                 if (Enc_Denominator2_lst69 != null && Enc_Denominator2_lst69.Count > 0)
                 {
                     //IQuery Encounterexclusionrquery69 = iMySession.GetNamedQuery("PQRI.GetDemoninatorExclusionCMS69.BMI");
+                    //                    string sQuery = @"select distinct(a.Encounter_id),a.human_id,a.icd,ifnull(em.procedure_code,'') from assessment a
+                    //left join patient_results pr on a.encounter_id=pr.encounter_id
+                    //left join e_m_coding as em on a.encounter_id=em.encounter_id
+                    //where a.encounter_id in (:EncIds) and (a.icd in (SELECT PQRI_Value FROM pqri_data where nqf_number =?  and PQRI_calculation_Method=? and pqri_type='ICD') or (pr.loinc_observation='BMI' and pr.value ='' and pr.Snomed_Code<>'') 
+                    //or a.icd in (SELECT PQRI_Value FROM pqri_data where nqf_number =?  and PQRI_calculation_Method=? and pqri_type='Diagnosis: Pregnancy Dx' ))
+                    //UNION
+                    //select distinct(a.Encounter_id),a.human_id,a.icd,ifnull(em.procedure_code,'') from problem_list a
+                    //left join patient_results pr on a.human_id=pr.human_id
+                    //left join e_m_coding as em on a.human_id=em.human_id
+                    //where a.human_id in (:HumanIds) and str_to_date(date_diagnosed,'%d-%b-%Y') 
+                    //between '" + Fromdate.ToString("yyyy-MM-dd") + "' "
+                    //                    + "and '" + Todate.ToString("yyyy-MM-dd") + "' " + @"and (a.icd in (SELECT PQRI_Value FROM pqri_data where nqf_number =?  and PQRI_calculation_Method=? and pqri_type='ICD') or (pr.loinc_observation='BMI'
+                    //and pr.value ='' and pr.Snomed_Code<>'') or a.icd in (SELECT PQRI_Value FROM pqri_data where nqf_number =?  and PQRI_calculation_Method=? and pqri_type='Diagnosis: Pregnancy Dx'));";
+
                     string sQuery = @"select distinct(a.Encounter_id),a.human_id,a.icd,ifnull(em.procedure_code,'') from assessment a
-left join patient_results pr on a.encounter_id=pr.encounter_id
 left join e_m_coding as em on a.encounter_id=em.encounter_id
-where a.encounter_id in (:EncIds) and (a.icd in (SELECT PQRI_Value FROM pqri_data where nqf_number =?  and PQRI_calculation_Method=? and pqri_type='ICD') or (pr.loinc_observation='BMI' and pr.value ='' and pr.Snomed_Code<>'') 
-or a.icd in (SELECT PQRI_Value FROM pqri_data where nqf_number =?  and PQRI_calculation_Method=? and pqri_type='Diagnosis: Pregnancy Dx' ))
-UNION
-select distinct(a.Encounter_id),a.human_id,a.icd,ifnull(em.procedure_code,'') from problem_list a
-left join patient_results pr on a.human_id=pr.human_id
-left join e_m_coding as em on a.human_id=em.human_id
-where a.human_id in (:HumanIds) and str_to_date(date_diagnosed,'%d-%b-%Y') 
-between '" + Fromdate.ToString("yyyy-MM-dd") + "' "
-                    + "and '" + Todate.ToString("yyyy-MM-dd") + "' " + @"and (a.icd in (SELECT PQRI_Value FROM pqri_data where nqf_number =?  and PQRI_calculation_Method=? and pqri_type='ICD') or (pr.loinc_observation='BMI'
-and pr.value ='' and pr.Snomed_Code<>'') or a.icd in (SELECT PQRI_Value FROM pqri_data where nqf_number =?  and PQRI_calculation_Method=? and pqri_type='Diagnosis: Pregnancy Dx'));";
+where a.encounter_id in (:EncIds) and (a.icd in (SELECT PQRI_Value FROM pqri_data where nqf_number =? 
+and PQRI_calculation_Method=? and pqri_type='ICD'))
+
+union
+
+select distinct(em.Encounter_id),em.human_id,'',ifnull(em.procedure_code,'') from
+patient_results pr 
+left join e_m_coding as em on pr.encounter_id=em.encounter_id
+where pr.encounter_id in (:EncIds) and (pr.loinc_observation='BMI' and pr.value ='' and pr.Snomed_Code<>'')";
                     ISQLQuery Encounterexclusionrquery69 = iMySession.CreateSQLQuery(sQuery);
 
                     Encounterexclusionrquery69.SetParameterList("EncIds", ulEncListDemon69.ToArray());
                     Encounterexclusionrquery69.SetParameter(0, "CMS69v10");
 
                     Encounterexclusionrquery69.SetParameter(1, "Exclusion");
-                    Encounterexclusionrquery69.SetParameter(2, "CMS69v10");
+                  // Encounterexclusionrquery69.SetParameter(2, "CMS69v10");
 
-                    Encounterexclusionrquery69.SetParameter(3, "Exclusion");
+                   // Encounterexclusionrquery69.SetParameter(3, "Exclusion");
 
-                    Encounterexclusionrquery69.SetParameterList("HumanIds", ulHumanListDemon69.ToArray());
+                    //Encounterexclusionrquery69.SetParameterList("HumanIds", ulHumanListDemon69.ToArray());
 
-                    Encounterexclusionrquery69.SetParameter(4, "CMS69v10");
+                    //Encounterexclusionrquery69.SetParameter(4, "CMS69v10");
 
-                    Encounterexclusionrquery69.SetParameter(5, "Exclusion");
+                    //Encounterexclusionrquery69.SetParameter(5, "Exclusion");
 
-                    Encounterexclusionrquery69.SetParameter(6, "CMS69v10");
+                    //Encounterexclusionrquery69.SetParameter(6, "CMS69v10");
 
-                    Encounterexclusionrquery69.SetParameter(7, "Exclusion");
+                    //Encounterexclusionrquery69.SetParameter(7, "Exclusion");
                     //Encounterexclusionrquery69.SetParameter(0, Fromdate.ToString("yyyy-MM-dd"));
                     //Encounterexclusionrquery69.SetParameter(1, Todate.ToString("yyyy-MM-dd"));
                     //Enc_Exclusion_lst69 = new ArrayList(Encounterexclusionrquery69.List());

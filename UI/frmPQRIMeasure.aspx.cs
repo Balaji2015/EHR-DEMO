@@ -1506,10 +1506,10 @@ namespace Acurus.Capella.UI
             IList<ulong> DenmoniatorList130 = PQRIDTO.Where(a => a.MeasureNo == "CMS130D").Select(a => a.HumanID).Distinct().ToList<ulong>();
             IList<ulong> DE130List = PQRIDTO.Where(a => a.MeasureNo == "CMS130DE").Select(a => a.HumanID).ToList<ulong>();
             IList<ulong> DEX130List = PQRIDTO.Where(a => a.MeasureNo == "CMS130DEX").Select(a => a.HumanID).ToList<ulong>();
-            StringBuilder cms130 = MeasureHeaderCount(NumeratorList68, DenmoniatorList68, DE68List, DEX68List, "b6ac13e2-beb8-4e4f-94ed-fcc397406cd2");
+            
 
-
-            sbLoad.Append(SubXMLLoadForCQMIIIstage3("CMS130v10Stage3_Header.xml", DenmoniatorList138, NumeratorList130, new List<ulong>(), DEX130List, DCQM["CMS 130v10"], "CMS130v10", null).ToString());
+           sbLoad.Append(SubXMLLoadForCQMIIIstage3("CMS130v10Stage3_Header.xml", DenmoniatorList130, NumeratorList130, DE130List, DEX130List, DCQM["CMS 130v10"], "CMS130v10", null).ToString());
+            StringBuilder cms130 = MeasureHeaderCount(NumeratorList130, DenmoniatorList130, DE130List, DEX130List, "b6ac13e2-beb8-4e4f-94ed-fcc397406cd2");
 
             XmlDocument xmlDoc = new XmlDocument();
             xmlDoc.Load(HttpContext.Current.Server.MapPath("SampleXML" + "\\QRDAStage3_CAT_III_Header.xml"));
@@ -2983,6 +2983,7 @@ namespace Acurus.Capella.UI
                     objSexMalesb.Append(objSexsb.ToString());
                     objSexMalesb.Insert(objSexMalesb.ToString().IndexOf("2.16.840.1.113883.5.1") - 14, "M");
                     objSexMalesb.Insert(objSexMalesb.ToString().IndexOf("value=") + 7, Malelst.Count.ToString());
+                    objSexMalesb.Insert(objSexMalesb.ToString().IndexOf("displayName=") + 13, "MALE");
                     objFinalSexsb.Append(objSexMalesb.ToString());
                 }
                 StringBuilder objSexFemalesb = new StringBuilder();
@@ -2991,6 +2992,7 @@ namespace Acurus.Capella.UI
 
                     objSexFemalesb.Append(objSexsb.ToString());
                     objSexFemalesb.Insert(objSexFemalesb.ToString().IndexOf("2.16.840.1.113883.5.1") - 14, "F");
+                    objSexMalesb.Insert(objSexMalesb.ToString().IndexOf("displayName=") + 13, "FE3MALE");
                     objSexFemalesb.Insert(objSexFemalesb.ToString().IndexOf("value=") + 7, Femalelst.Count.ToString());
                     objFinalSexsb.Append(objSexFemalesb.ToString());
                 }
@@ -3055,6 +3057,7 @@ namespace Acurus.Capella.UI
                     objRCsb.Insert(objRCsb.ToString().IndexOf("2.16.840.1.113883.6.238") - 29, lsdstLookUp.Where(a => a.Value.Trim() == items.Trim()).ToList<StaticLookup>().Count > 0 ? lsdstLookUp.Where(a => a.Value.Trim() == items.Trim()).ToList<StaticLookup>()[0].Default_Value : string.Empty);
                     objRCsb.Insert(objRCsb.ToString().IndexOf("2.16.840.1.113883.6.238") - 14, items);
                     objRCsb.Insert(objRCsb.ToString().LastIndexOf("value=") + 7, lstHuman.Count(a => a.Race.Trim() == items.Trim()));
+                    
                     objFinalRacesb.Append(objRCsb.ToString());
 
                 }
@@ -3489,6 +3492,7 @@ namespace Acurus.Capella.UI
                         Response.ContentType = "application/zip";
                         Response.AddHeader("content-disposition", "attachment; filename=" + zipName);
                         zip.Save(Response.OutputStream);
+                        Response.Flush();
                         Response.End();
                         //zip.Save(folder_Name + ".zip");
                         //Directory.Delete(folder_Name, true);
@@ -3514,6 +3518,7 @@ namespace Acurus.Capella.UI
                 Response.ContentType = "application/zip";
                 Response.AddHeader("content-disposition", "attachment; filename=" + zipName);
                 zip.Save(Response.OutputStream);
+                Response.Flush();
                 Response.End();
             }
         }
