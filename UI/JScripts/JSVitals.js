@@ -2713,14 +2713,16 @@ function setBPStatus(idsys, iddia) {
 
                             //    }
                             //}
-                            if ((parseFloat(sysvalye) >= 120 && parseFloat(sysvalye) < 129)) {
-                                if (parseFloat(diaval) < 80) {
+                            if ((parseFloat(sysvalye) >= 120 && parseFloat(sysvalye) <= 129) && parseFloat(diaval) < 80) {
+                               // if (parseFloat(diaval) < 80) {
                                     statusLabel.title = "Elevated";
                                     statusLabel.value = "Elevated";
                                     default_date = "";
 
-                                }
+                                //}
                             }
+
+
 
 
                             //if ((parseFloat(diaval) >= 80) && parseFloat(diaval) < 90 && parseFloat(sysvalye) < 140) {
@@ -2738,7 +2740,7 @@ function setBPStatus(idsys, iddia) {
 
                             //}
                             //else if (parseFloat(sysvalye) >= 140 || parseFloat(diaval) >= 90) {
-                            if (parseFloat(sysvalye) >= 140 || parseFloat(diaval) >= 90) {
+                            if (parseFloat(sysvalye) >= 130 || parseFloat(diaval) >= 80) {
 
 
                                 if (document.getElementById('hdnBPValue').value != "" && flagdatecheck == 0) {
@@ -2746,7 +2748,7 @@ function setBPStatus(idsys, iddia) {
 
                                     for (var g = 0; g < recentvalues.length; g++) {
                                         var stat = recentvalues[g].split(':')[0].replace('/', '').replace('-', '').replace(' ', '')
-                                        if (recentvalues[g].split(':')[1].split('/')[0] >= 140 || recentvalues[g].split(':')[1].split('/')[1] >= 90) {
+                                        if (recentvalues[g].split(':')[1].split('/')[0] >= 130 || recentvalues[g].split(':')[1].split('/')[1] >= 80) {
                                             statusLabel.title = "Second Hypertensive";
                                             statusLabel.value = "Second Hypertensive";
                                             flag = 1;
@@ -2832,7 +2834,7 @@ function setBPStatus(idsys, iddia) {
                                     for (var g = 0; g < recentvalues.length; g++) {
                                         var stat = recentvalues[g].split(':')[0].replace('/', '').replace('-', '').replace(' ', '')
 
-                                        if (recentvalues[g].split(':')[1].split('/')[0] >= 140 || recentvalues[g].split(':')[1].split('/')[1] >= 90) {
+                                        if (recentvalues[g].split(':')[1].split('/')[0] >= 130 || recentvalues[g].split(':')[1].split('/')[1] >= 80) {
                                             statusLabel.title = "Second Hypertensive";
                                             statusLabel.value = "Second Hypertensive";
                                             flag = 1;
