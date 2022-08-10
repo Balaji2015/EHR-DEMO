@@ -2992,7 +2992,7 @@ namespace Acurus.Capella.UI
 
                     objSexFemalesb.Append(objSexsb.ToString());
                     objSexFemalesb.Insert(objSexFemalesb.ToString().IndexOf("2.16.840.1.113883.5.1") - 14, "F");
-                    objSexMalesb.Insert(objSexMalesb.ToString().IndexOf("displayName=") + 13, "FE3MALE");
+                    objSexFemalesb.Insert(objSexFemalesb.ToString().IndexOf("displayName=") + 13, "FE3MALE");
                     objSexFemalesb.Insert(objSexFemalesb.ToString().IndexOf("value=") + 7, Femalelst.Count.ToString());
                     objFinalSexsb.Append(objSexFemalesb.ToString());
                 }

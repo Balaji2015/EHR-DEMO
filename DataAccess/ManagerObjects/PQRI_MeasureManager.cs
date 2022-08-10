@@ -9166,9 +9166,9 @@ where pr.encounter_id in (:EncIds) and (pr.loinc_observation='BMI' and pr.value 
                     Encounterexclusionrquery69.SetParameter(0, "CMS69v10");
 
                     Encounterexclusionrquery69.SetParameter(1, "Exclusion");
-                  // Encounterexclusionrquery69.SetParameter(2, "CMS69v10");
+                    // Encounterexclusionrquery69.SetParameter(2, "CMS69v10");
 
-                   // Encounterexclusionrquery69.SetParameter(3, "Exclusion");
+                    // Encounterexclusionrquery69.SetParameter(3, "Exclusion");
 
                     //Encounterexclusionrquery69.SetParameterList("HumanIds", ulHumanListDemon69.ToArray());
 
@@ -9299,7 +9299,7 @@ where pr.encounter_id in (:EncIds) and (pr.loinc_observation='BMI' and pr.value 
                     Encounterumeratorquery69.SetParameter(13, "Numerator");
                     Encounterumeratorquery69.SetParameter(14, "CMS69v10");
                     Encounterumeratorquery69.SetParameter(15, "Numerator");
-                    
+
                     // Encounterumeratorquery69.SetString(1, Todate.ToString("yyyy-MM-dd"));
                     //Encounterumeratorquery69.SetParameterList("EncIds", ulEncListDenoFinal.ToArray());
                     // Encounterumeratorquery69.SetString(2, Todate.ToString("yyyy-MM-dd"));
@@ -9462,17 +9462,17 @@ where pr.encounter_id in (:EncIds) and (pr.loinc_observation='BMI' and pr.value 
                     IQuery EncounterDenominatorquery138_List2 = iMySession.GetNamedQuery("PQRI.GetDenominatorList2CMS138.Tobacco");
                     EncounterDenominatorquery138_List2.SetParameterList("EncIds", Enc_Denominator_lst138.ToArray());
 
-                    EncounterDenominatorquery138_List2.SetString(0, "CMS138v10");
-                    EncounterDenominatorquery138_List2.SetString(1, "Denominator");
-                    EncounterDenominatorquery138_List2.SetString(2, "CMS138v10");
-                    EncounterDenominatorquery138_List2.SetString(3, "Denominator");
+                    EncounterDenominatorquery138_List2.SetParameter(0, "CMS138v10");
+                    EncounterDenominatorquery138_List2.SetParameter(1, "Denominator");
+                    //EncounterDenominatorquery138_List2.SetParameter(2, "CMS138v10");
+                    //EncounterDenominatorquery138_List2.SetParameter(3, "Denominator");
                     ArrayList Enc_Denominator_lst138_List2 = new ArrayList(EncounterDenominatorquery138_List2.List());
 
                     if (Enc_Denominator_lst138_List2 != null && Enc_Denominator_lst138_List2.Count > 0)
                     {
                         if (Enc_Denominator_lst138_List2.Count == 1 && Enc_Denominator_lst138_List2[0].ToString() == "0")
                         {
-                            
+
                         }
                         else
                         {
@@ -10007,7 +10007,7 @@ where pr.encounter_id in (:EncIds) and (pr.loinc_observation='BMI' and pr.value 
                 EncounterDenominatorquery147.SetString(0, Fromdate.ToString("yyyy-MM-dd"));
                 EncounterDenominatorquery147.SetString(1, Fromdate.ToString("yyyy-MM-dd"));
                 EncounterDenominatorquery147.SetString(2, Convert.ToString(ulPhysician_id));
-               
+
                 ArrayList Enc_Denominator_lst147 = new ArrayList(EncounterDenominatorquery147.List());
 
 
@@ -10023,11 +10023,11 @@ where pr.encounter_id in (:EncIds) and (pr.loinc_observation='BMI' and pr.value 
                     IQuery EncounterDenominator1query147 = iMySession.GetNamedQuery("PQRI.GetDenominatorList1CMS147.Influenza");
 
                     EncounterDenominator1query147.SetParameterList("EncIds", Enc_Denominator_lst147.ToArray());
-                    EncounterDenominator1query147.SetString(0, "CMS147v11");
-                    EncounterDenominator1query147.SetString(1, "Denominator");
+                    EncounterDenominator1query147.SetParameter(0, "CMS147v11");
+                    EncounterDenominator1query147.SetParameter(1, "Denominator");
 
 
-              Enc_Denominator1_lst147 = new ArrayList(EncounterDenominator1query147.List());
+                    Enc_Denominator1_lst147 = new ArrayList(EncounterDenominator1query147.List());
 
 
 
@@ -10400,14 +10400,14 @@ where pr.encounter_id in (:EncIds) and (pr.loinc_observation='BMI' and pr.value 
                 DenominatorException = 0;
                 IList<ulong> ulEncListException22 = new List<ulong>();
                 IList<ulong> ulEncListException22_Encounter = new List<ulong>();
-                IList<ulong> ulEncListException22_human = new List<ulong>();
+                //IList<ulong> ulEncListException22_human = new List<ulong>();
                 if (Enc_Denominator_lst22 != null && Enc_Denominator_lst22.Count > 0)
                 {
 
                     for (int i = 0; i < Enc_Denominator_lst22.Count; i++)
                     {
                         object[] objEnc = (object[])Enc_Denominator_lst22[i];
-                        ulEncListException22_human.Add(Convert.ToUInt32(objEnc[1]));
+                        //ulEncListException22_human.Add(Convert.ToUInt32(objEnc[1]));
                         ulEncListException22_Encounter.Add(Convert.ToUInt32(objEnc[0]));
                     }
                     IQuery EncounterExceptionquery22 = iMySession.GetNamedQuery("PQRI.GetExceptionCMS22.HBpFollowup");
@@ -10460,35 +10460,43 @@ where pr.encounter_id in (:EncIds) and (pr.loinc_observation='BMI' and pr.value 
                     //EncounterExclusionquery22.SetParameter(1, Todate.ToString("yyyy-MM-dd"));
                     //EncounterExclusionquery22.SetParameterList("EncIds", ulEncListException22_human.ToArray());
 
+                    //                    string sQuery = @"select c.human_id from assessment B left join encounter c on B.human_id = c.human_id
+                    //left join patient_results pr on pr.human_id=c.human_id
+                    //left join e_m_coding as em on em.Encounter_Id=c.Encounter_Id
+                    //where ICD in (SELECT PQRI_Value FROM pqri_data where nqf_number =?  and PQRI_calculation_Method=? and PQRI_Type in ('ICD'))
+                    //and c.human_id in (:EncIds)
+                    //Union
+                    //select c.human_id from Problem_List B left join 
+                    //encounter c on B.Human_Id = c.Human_Id
+                    //left join patient_results pr on pr.encounter_id=c.encounter_id
+                    //left join e_m_coding as em on em.human_id=c.human_id
+                    //where ICD in (SELECT PQRI_Value FROM pqri_data where nqf_number =?  and PQRI_calculation_Method=? and PQRI_Type in ('ICD'))
+                    //and c.human_id in (:EncIds);";
+
                     string sQuery = @"select c.human_id from assessment B left join encounter c on B.human_id = c.human_id
 left join patient_results pr on pr.human_id=c.human_id
 left join e_m_coding as em on em.Encounter_Id=c.Encounter_Id
 where ICD in (SELECT PQRI_Value FROM pqri_data where nqf_number =?  and PQRI_calculation_Method=? and PQRI_Type in ('ICD'))
-and date(c.date_of_service)<='" + Todate.ToString("yyyy-MM-dd") + "' "
-+ @"and c.human_id in (:EncIds)
-Union
-select c.human_id from Problem_List B left join 
-encounter c on B.Human_Id = c.Human_Id
-left join patient_results pr on pr.encounter_id=c.encounter_id
-left join e_m_coding as em on em.human_id=c.human_id
-where ICD in (SELECT PQRI_Value FROM pqri_data where nqf_number =?  and PQRI_calculation_Method=? and PQRI_Type in ('ICD'))
-and date(c.date_of_service)<='" + Todate.ToString("yyyy-MM-dd") + "' and c.human_id in (:EncIds);";
+and b.Encounter_ID in (:EncIds)";
 
                     ISQLQuery SQL = iMySession.CreateSQLQuery(sQuery);
-                    SQL.SetParameterList("EncIds", ulEncListException22_human.ToArray());
+                    SQL.SetParameterList("EncIds", ulEncListException22_Encounter.ToArray());
 
                     SQL.SetString(0, "CMS22v10");
                     SQL.SetString(1, "Exclusion");
 
 
-                    SQL.SetString(2, "CMS22v10");
-                    SQL.SetString(3, "Exclusion");
+                    //SQL.SetString(2, "CMS22v10");
+                    //SQL.SetString(3, "Exclusion");
 
                     Enc_Exclusion_lst22 = new ArrayList(SQL.List());
                     ulEncListExclusion22 = new List<ulong>();
                     for (int i = 0; i < Enc_Exclusion_lst22.Count; i++)
                     {
-                        ulEncListExclusion22.Add(Convert.ToUInt32(Enc_Exclusion_lst22[i]));
+                        if (Enc_Exclusion_lst22[i].ToString() != "0")
+                        {
+                            ulEncListExclusion22.Add(Convert.ToUInt32(Enc_Exclusion_lst22[i]));
+                        }
                     }
                     DenominatorExclusion = Enc_Exclusion_lst22.Count;
                 }
@@ -10625,7 +10633,7 @@ and date(c.date_of_service)<='" + Todate.ToString("yyyy-MM-dd") + "' and c.human
 
                     IQuery Encounterumeratorquery22 = iMySession.GetNamedQuery("PQRI.GetNumeratorCMS22.HBpFollowup");
                     Encounterumeratorquery22.SetParameterList("EncIds", ulEncList22.ToArray());
-                    Encounterumeratorquery22.SetString(0,"CMS22v10");
+                    Encounterumeratorquery22.SetString(0, "CMS22v10");
                     Encounterumeratorquery22.SetString(1, "Numerator");
                     ArrayList Enc_Numerator_lst22 = new ArrayList(Encounterumeratorquery22.List());
                     lstEncList68 = new List<Encounter>();
@@ -10635,7 +10643,7 @@ and date(c.date_of_service)<='" + Todate.ToString("yyyy-MM-dd") + "' and c.human
                         object[] objEnc = (object[])Enc_Numerator_lst22[i];
 
                         Encounter obj = new Encounter();
-                        
+
                         if (objEnc[0].ToString() == "0")
                             continue;
 
@@ -10827,7 +10835,7 @@ and date(c.date_of_service)<='" + Todate.ToString("yyyy-MM-dd") + "' and c.human
 
                     Encounterumeratorquery130.SetParameter(3, "Numerator");
                     Encounterumeratorquery130.SetParameterList("EncIds", ulEncList130.ToArray());
-                   
+
                     ArrayList Enc_Numerator_lst130 = new ArrayList(Encounterumeratorquery130.List());
                     for (int i = 0; i < Enc_Numerator_lst130.Count; i++)
                     {

@@ -13915,7 +13915,7 @@ and (ih.procedure_code in (SELECT PQRI_Value FROM pqri_data where nqf_number =? 
 where date(Date_of_service) between ? and ? and
 (datediff(date(e.date_of_service),h.birth_date)/365.25)>=18 and e.encounter_Provider_id = ?;]]>
   </sql-query>
-	<sql-query name="PQRI.GetDenominatorList2CMS138.Tobacco">
+	<!--<sql-query name="PQRI.GetDenominatorList2CMS138.Tobacco">
 		<![CDATA[select human_id  from e_m_coding
 where  is_delete='N' and Procedure_code in (SELECT PQRI_Value FROM pqri_data where nqf_number =?  and 
 PQRI_calculation_Method=? and PQRI_Type ='CPT') and human_id in (:EncIds) group by human_id  having count( encounter_id)>=2
@@ -13925,6 +13925,12 @@ where is_delete='N' and Procedure_code in (SELECT PQRI_Value FROM pqri_data wher
 PQRI_calculation_Method=? and PQRI_Type ='CPT1')
  and human_id in (:EncIds)
 group by human_id having count(encounter_id)>=1;]]>
+	</sql-query>-->
+
+	<sql-query name="PQRI.GetDenominatorList2CMS138.Tobacco">
+		<![CDATA[select human_id  from e_m_coding
+where  is_delete='N' and Procedure_code in (SELECT PQRI_Value FROM pqri_data where nqf_number =?  and 
+PQRI_calculation_Method=? and PQRI_Type ='CPT') and human_id in (:EncIds) group by human_id  having count( encounter_id)>=1;]]>
 	</sql-query>
 
   <sql-query name="PQRI.GetDenominatorList3CMS138.Tobacco">
@@ -14100,8 +14106,8 @@ where c.human_id in (:EncIds) and c.is_delete='N' and (c.Procedure_Code in
 		<![CDATA[
 select c.encounter_id
 from e_m_coding c 
-where c.encounter_id in (:EncIds) and c.is_delete='N' and (c.Procedure_Code in
-(SELECT PQRI_Value FROM pqri_data where nqf_number =?  and PQRI_calculation_Method=? and PQRI_Type in ('CPT')));
+where c.is_delete='N' and (c.Procedure_Code in
+(SELECT PQRI_Value FROM pqri_data where nqf_number =?  and PQRI_calculation_Method=? and PQRI_Type in ('CPT'))) and c.encounter_id in (:EncIds);
 ]]>
 	</sql-query>
 
@@ -14109,12 +14115,12 @@ where c.encounter_id in (:EncIds) and c.is_delete='N' and (c.Procedure_Code in
 
   <sql-query name="PQRI.GetDenominatorList5CMS147.Influenza">
     <![CDATA[select e.Encounter_Id,e.Human_Id,em.procedure_code from encounter e join e_m_coding em on e.encounter_id=em.encounter_id
-    where em.is_delete='N'  and e.human_id not in (:EncIds) and e.human_id in (:EncIdslist);]]>
+    where em.is_delete='N'  and e.encounter_id not in (:EncIds) and e.human_id in (:EncIdslist);]]>
   </sql-query>
 
   <sql-query name="PQRI.GetDenominatorList6CMS147.Influenza">
     <![CDATA[select e.Encounter_Id,e.Human_Id ,em.procedure_code from encounter e join e_m_coding em on e.encounter_id=em.encounter_id
-    where  em.is_delete='N'  and  e.human_Id  in (:EncIds) ;]]>
+    where  em.is_delete='N'  and  e.encounter_id  in (:EncIds) ;]]>
   </sql-query>
 
 
@@ -14589,13 +14595,12 @@ pqri_data where nqf_number =?  and PQRI_calculation_Method=? and PQRI_Type in ('
 	<sql-query name="PQRI.GetExceptionCMS130.ColorectalCancer">
 		<![CDATA[select distinct b.encounter_id ,b.human_id from  
  assessment b 
-
 left join problem_list pl on b.human_id=pl.human_id
-where b.human_id in (:EncIds) and
+where 
  (b.ICD in (SELECT PQRI_Value FROM 
 pqri_data where nqf_number =?  and PQRI_calculation_Method=? and PQRI_Type in ('ICD')) or
 (pl.icd in (SELECT PQRI_Value FROM 
-pqri_data where nqf_number =?  and PQRI_calculation_Method=? and PQRI_Type in ('ICD')) and pl.is_active ='Y'));
+pqri_data where nqf_number =?  and PQRI_calculation_Method=? and PQRI_Type in ('ICD')) and pl.is_active ='Y')) and b.human_id in (:EncIds);
 ]]>
 	</sql-query>
 
