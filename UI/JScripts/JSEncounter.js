@@ -926,6 +926,7 @@ function btnCopyPrevious_ClientClick(sender, args) {
     }
 }
 
+
 function OpenNotification_Before_MovetoNextProcess() {
     Notification_Popup('MovetoNextProcess');
 }
@@ -946,7 +947,7 @@ function IsSaveEnabled(sender) {
                 disableAutoSave();//to prevent repeated enabling of autosave functionality - from Notification screen 
                 { sessionStorage.setItem('StartLoading', 'true'); StartLoadFromPatChart(); }
                 return true;
-            }
+                 }
         }
         else
             tabAutoSave(CurrentTab, sender);
@@ -956,6 +957,7 @@ function IsSaveEnabled(sender) {
         disableAutoSave();//to prevent repeated enabling of autosave functionality - from Notification screen 
         { sessionStorage.setItem('StartLoading', 'true'); StartLoadFromPatChart(); }
         return true;
+       
     }
 }
 
@@ -2131,3 +2133,34 @@ function OpenProviderValidation(appointmentProviderId, appointmentProviderName, 
     });
 }
 
+
+
+
+function QRCodeClick() {
+
+        if (window.top.document.getElementById("notificationpopup").innerText != "NOTIFICATION : Loading...") {
+            if ($(top.window.document).find("#QRCodeInfo") != undefined) {
+                var locatn = "frmQRCodeGenerator.aspx";
+                $(top.window.document).find('#QRCode_Modal')[0].contentDocument.location.href = locatn;
+                //if (triggeredBy != undefined && triggeredBy != '' && triggeredBy == "MovetoNextProcess") {
+                //    $(top.window.document).find("#AlertHeader")[0].innerHTML = "Warning";
+                //    $(top.window.document).find("#btnCloseAlert").css("display", "none");
+                //    $('#btnCloseAlert').removeClass('aspresizedredbutton');
+                //    localStorage.setItem('trigerredBy', triggeredBy);
+                //}
+                //else {
+                $(top.window.document).find("#QRCodeHeader")[0].innerHTML = "Scan QR code with your mobile device to dictate";
+                $(top.window.document).find("#btnCloseQRCode").css("display", "block");
+                $('#btnCloseQRCode').removeClass('btn btn-danger');
+                $('#btnCloseQRCode').addClass('aspresizedredbutton');
+                //}
+                $(top.window.document).find("#QRCodeInfo")[0].style.display = "block";
+            }
+        }
+    }
+    
+
+
+function CloseQRCodeModal() {
+    $("#QRCodeInfo")[0].style.display = "none";
+}

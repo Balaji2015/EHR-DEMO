@@ -3210,6 +3210,9 @@ namespace Acurus.Capella.UI
             }
         }
 
+        protected void btnQRCode_ServerClick(object sender, EventArgs e)
+        {
 
+        }
     }
 }

@@ -157,6 +157,7 @@
         
 
     </script>
+    <link href="CSS/fontawesomenew.css" rel="stylesheet" />
     <link href="CSS/bootstrap.min.css" rel="Stylesheet" />
     <link href="CSS/jquery-ui.css" rel="Stylesheet" />
 </head>
@@ -268,6 +269,11 @@
                             <td style="margin: 0px; padding: 0px;">
                                 <input type="button" id="btnmovetoscribe" style="margin-right: 2px; display:none" class="btn btn-primary btncolor" 
                                     value="Move To Scribe" runat="server" onclick=" if (!IsSaveEnabled(this)) return; " onserverclick="btnmovetoscribe_click" />
+
+                            </td>
+                             <td style="margin: 0px; padding: 0px;">
+                                <button id="btnQRCode" style="margin-right: 2px; " class="btn btn-primary btncolor" 
+                                value="" runat="server" onclick="if (!IsSaveEnabled(this)) return;else  QRCodeClick(); " onserverclick="btnQRCode_ServerClick" >Dictate (Mobile) <i class="fa fa-qrcode" aria-hidden="true"></i></button>
 
                             </td>
                         </tr>

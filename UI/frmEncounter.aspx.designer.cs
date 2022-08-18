@@ -7,11 +7,13 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace Acurus.Capella.UI {
-    
-    
-    public partial class frmEncounter {
-        
+namespace Acurus.Capella.UI
+{
+
+
+    public partial class frmEncounter
+    {
+
         /// <summary>
         /// form1 control.
         /// </summary>
@@ -20,7 +22,7 @@ namespace Acurus.Capella.UI {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.HtmlControls.HtmlForm form1;
-        
+
         /// <summary>
         /// RadAjaxManager1 control.
         /// </summary>
@@ -29,7 +31,7 @@ namespace Acurus.Capella.UI {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::Telerik.Web.UI.RadAjaxManager RadAjaxManager1;
-        
+
         /// <summary>
         /// WindowMngr control.
         /// </summary>
@@ -38,7 +40,7 @@ namespace Acurus.Capella.UI {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::Telerik.Web.UI.RadWindowManager WindowMngr;
-        
+
         /// <summary>
         /// MessageWindow control.
         /// </summary>
@@ -47,7 +49,7 @@ namespace Acurus.Capella.UI {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::Telerik.Web.UI.RadWindow MessageWindow;
-        
+
         /// <summary>
         /// RadWindow1 control.
         /// </summary>
@@ -56,7 +58,7 @@ namespace Acurus.Capella.UI {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::Telerik.Web.UI.RadWindow RadWindow1;
-        
+
         /// <summary>
         /// RadWindowManager1 control.
         /// </summary>
@@ -65,7 +67,7 @@ namespace Acurus.Capella.UI {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::Telerik.Web.UI.RadWindowManager RadWindowManager1;
-        
+
         /// <summary>
         /// RadFollowUpEncounter control.
         /// </summary>
@@ -74,7 +76,7 @@ namespace Acurus.Capella.UI {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::Telerik.Web.UI.RadWindow RadFollowUpEncounter;
-        
+
         /// <summary>
         /// RadWindowManager2 control.
         /// </summary>
@@ -83,7 +85,7 @@ namespace Acurus.Capella.UI {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::Telerik.Web.UI.RadWindowManager RadWindowManager2;
-        
+
         /// <summary>
         /// RadWindow2 control.
         /// </summary>
@@ -92,7 +94,7 @@ namespace Acurus.Capella.UI {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::Telerik.Web.UI.RadWindow RadWindow2;
-        
+
         /// <summary>
         /// RadScriptManager1 control.
         /// </summary>
@@ -101,7 +103,7 @@ namespace Acurus.Capella.UI {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::Telerik.Web.UI.RadScriptManager RadScriptManager1;
-        
+
         /// <summary>
         /// SummaryAlert control.
         /// </summary>
@@ -110,7 +112,7 @@ namespace Acurus.Capella.UI {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.HtmlControls.HtmlGenericControl SummaryAlert;
-        
+
         /// <summary>
         /// divEncounter control.
         /// </summary>
@@ -119,7 +121,7 @@ namespace Acurus.Capella.UI {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.HtmlControls.HtmlGenericControl divEncounter;
-        
+
         /// <summary>
         /// Wrapper control.
         /// </summary>
@@ -128,7 +130,7 @@ namespace Acurus.Capella.UI {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.HtmlControls.HtmlGenericControl Wrapper;
-        
+
         /// <summary>
         /// pnlBarGroupTabs control.
         /// </summary>
@@ -137,7 +139,7 @@ namespace Acurus.Capella.UI {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.HtmlControls.HtmlGenericControl pnlBarGroupTabs;
-        
+
         /// <summary>
         /// RadAjaxPanel1 control.
         /// </summary>
@@ -146,7 +148,7 @@ namespace Acurus.Capella.UI {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::Telerik.Web.UI.RadAjaxPanel RadAjaxPanel1;
-        
+
         /// <summary>
         /// cboPhysicianName control.
         /// </summary>
@@ -155,7 +157,7 @@ namespace Acurus.Capella.UI {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.DropDownList cboPhysicianName;
-        
+
         /// <summary>
         /// chkShowAllPhysicians control.
         /// </summary>
@@ -164,7 +166,7 @@ namespace Acurus.Capella.UI {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.CheckBox chkShowAllPhysicians;
-        
+
         /// <summary>
         /// chkACOValidation control.
         /// </summary>
@@ -173,7 +175,7 @@ namespace Acurus.Capella.UI {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.CheckBox chkACOValidation;
-        
+
         /// <summary>
         /// chkProviderReview control.
         /// </summary>
@@ -182,7 +184,7 @@ namespace Acurus.Capella.UI {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.CheckBox chkProviderReview;
-        
+
         /// <summary>
         /// chkcorrectionreview control.
         /// </summary>
@@ -191,7 +193,7 @@ namespace Acurus.Capella.UI {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.CheckBox chkcorrectionreview;
-        
+
         /// <summary>
         /// RadAjaxPanel2 control.
         /// </summary>
@@ -200,7 +202,7 @@ namespace Acurus.Capella.UI {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::Telerik.Web.UI.RadAjaxPanel RadAjaxPanel2;
-        
+
         /// <summary>
         /// btnCopyPreviousEncounter control.
         /// </summary>
@@ -209,7 +211,7 @@ namespace Acurus.Capella.UI {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.HtmlControls.HtmlInputButton btnCopyPreviousEncounter;
-        
+
         /// <summary>
         /// btnMoveToMA control.
         /// </summary>
@@ -218,7 +220,7 @@ namespace Acurus.Capella.UI {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.HtmlControls.HtmlInputButton btnMoveToMA;
-        
+
         /// <summary>
         /// btnCorrections control.
         /// </summary>
@@ -227,7 +229,7 @@ namespace Acurus.Capella.UI {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.HtmlControls.HtmlInputButton btnCorrections;
-        
+
         /// <summary>
         /// btnPhysiciancorrection control.
         /// </summary>
@@ -236,7 +238,7 @@ namespace Acurus.Capella.UI {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.HtmlControls.HtmlInputButton btnPhysiciancorrection;
-        
+
         /// <summary>
         /// btnMoveToDictation control.
         /// </summary>
@@ -245,7 +247,7 @@ namespace Acurus.Capella.UI {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.HtmlControls.HtmlInputButton btnMoveToDictation;
-        
+
         /// <summary>
         /// btnMove control.
         /// </summary>
@@ -254,7 +256,7 @@ namespace Acurus.Capella.UI {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.HtmlControls.HtmlInputButton btnMove;
-        
+
         /// <summary>
         /// btnmovetoscribe control.
         /// </summary>
@@ -263,7 +265,16 @@ namespace Acurus.Capella.UI {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.HtmlControls.HtmlInputButton btnmovetoscribe;
-        
+
+        /// <summary>
+        /// btnQRCode control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlButton btnQRCode;
+
         /// <summary>
         /// pnlEncScroll control.
         /// </summary>
@@ -272,7 +283,7 @@ namespace Acurus.Capella.UI {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Panel pnlEncScroll;
-        
+
         /// <summary>
         /// tabStripEncounter_tbCCHPI control.
         /// </summary>
@@ -281,7 +292,7 @@ namespace Acurus.Capella.UI {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.HtmlControls.HtmlGenericControl tabStripEncounter_tbCCHPI;
-        
+
         /// <summary>
         /// tabStripEncounter_tbQuestion control.
         /// </summary>
@@ -290,7 +301,7 @@ namespace Acurus.Capella.UI {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.HtmlControls.HtmlGenericControl tabStripEncounter_tbQuestion;
-        
+
         /// <summary>
         /// tabStripEncounter_tbPFSH control.
         /// </summary>
@@ -299,7 +310,7 @@ namespace Acurus.Capella.UI {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.HtmlControls.HtmlGenericControl tabStripEncounter_tbPFSH;
-        
+
         /// <summary>
         /// tabStripEncounter_tbROS control.
         /// </summary>
@@ -308,7 +319,7 @@ namespace Acurus.Capella.UI {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.HtmlControls.HtmlGenericControl tabStripEncounter_tbROS;
-        
+
         /// <summary>
         /// tabStripEncounter_tbVitals control.
         /// </summary>
@@ -317,7 +328,7 @@ namespace Acurus.Capella.UI {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.HtmlControls.HtmlGenericControl tabStripEncounter_tbVitals;
-        
+
         /// <summary>
         /// tabStripEncounter_tbExam control.
         /// </summary>
@@ -326,7 +337,7 @@ namespace Acurus.Capella.UI {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.HtmlControls.HtmlGenericControl tabStripEncounter_tbExam;
-        
+
         /// <summary>
         /// tabStripEncounter_tabTest control.
         /// </summary>
@@ -335,7 +346,7 @@ namespace Acurus.Capella.UI {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.HtmlControls.HtmlGenericControl tabStripEncounter_tabTest;
-        
+
         /// <summary>
         /// tabStripEncounter_tbAssessment control.
         /// </summary>
@@ -344,7 +355,7 @@ namespace Acurus.Capella.UI {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.HtmlControls.HtmlGenericControl tabStripEncounter_tbAssessment;
-        
+
         /// <summary>
         /// tabStripEncounter_tbOrders control.
         /// </summary>
@@ -353,7 +364,7 @@ namespace Acurus.Capella.UI {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.HtmlControls.HtmlGenericControl tabStripEncounter_tbOrders;
-        
+
         /// <summary>
         /// tabStripEncounter_tbEPrescription control.
         /// </summary>
@@ -362,7 +373,7 @@ namespace Acurus.Capella.UI {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.HtmlControls.HtmlGenericControl tabStripEncounter_tbEPrescription;
-        
+
         /// <summary>
         /// tabStripEncounter_tbPlan control.
         /// </summary>
@@ -371,7 +382,7 @@ namespace Acurus.Capella.UI {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.HtmlControls.HtmlGenericControl tabStripEncounter_tbPlan;
-        
+
         /// <summary>
         /// tabStripEncounter_tbEandM control.
         /// </summary>
@@ -380,7 +391,7 @@ namespace Acurus.Capella.UI {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.HtmlControls.HtmlGenericControl tabStripEncounter_tbEandM;
-        
+
         /// <summary>
         /// tabStripEncounter_tbSummary control.
         /// </summary>
@@ -389,7 +400,7 @@ namespace Acurus.Capella.UI {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.HtmlControls.HtmlGenericControl tabStripEncounter_tbSummary;
-        
+
         /// <summary>
         /// hdnLocalTime control.
         /// </summary>
@@ -398,7 +409,7 @@ namespace Acurus.Capella.UI {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.HiddenField hdnLocalTime;
-        
+
         /// <summary>
         /// sMyPreviousTab control.
         /// </summary>
@@ -407,7 +418,7 @@ namespace Acurus.Capella.UI {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.HiddenField sMyPreviousTab;
-        
+
         /// <summary>
         /// sMyNextTab control.
         /// </summary>
@@ -416,7 +427,7 @@ namespace Acurus.Capella.UI {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.HiddenField sMyNextTab;
-        
+
         /// <summary>
         /// IsSaveEnable control.
         /// </summary>
@@ -425,7 +436,7 @@ namespace Acurus.Capella.UI {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.HiddenField IsSaveEnable;
-        
+
         /// <summary>
         /// hdnPurposeOfVisit_SaveRejected control.
         /// </summary>
@@ -434,7 +445,7 @@ namespace Acurus.Capella.UI {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.HiddenField hdnPurposeOfVisit_SaveRejected;
-        
+
         /// <summary>
         /// hdnTab control.
         /// </summary>
@@ -443,7 +454,7 @@ namespace Acurus.Capella.UI {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.HiddenField hdnTab;
-        
+
         /// <summary>
         /// hdnChkOut control.
         /// </summary>
@@ -452,7 +463,7 @@ namespace Acurus.Capella.UI {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.HiddenField hdnChkOut;
-        
+
         /// <summary>
         /// MysignID control.
         /// </summary>
@@ -461,7 +472,7 @@ namespace Acurus.Capella.UI {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.HiddenField MysignID;
-        
+
         /// <summary>
         /// SignedDateAndTime control.
         /// </summary>
@@ -470,7 +481,7 @@ namespace Acurus.Capella.UI {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.HiddenField SignedDateAndTime;
-        
+
         /// <summary>
         /// hdnIsACOValid control.
         /// </summary>
@@ -479,7 +490,7 @@ namespace Acurus.Capella.UI {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.HiddenField hdnIsACOValid;
-        
+
         /// <summary>
         /// hdnACOValidated control.
         /// </summary>
@@ -488,7 +499,7 @@ namespace Acurus.Capella.UI {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.HiddenField hdnACOValidated;
-        
+
         /// <summary>
         /// hdnPFSHInfoBy control.
         /// </summary>
@@ -497,7 +508,7 @@ namespace Acurus.Capella.UI {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.HiddenField hdnPFSHInfoBy;
-        
+
         /// <summary>
         /// hdnindex control.
         /// </summary>
@@ -506,7 +517,7 @@ namespace Acurus.Capella.UI {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.HiddenField hdnindex;
-        
+
         /// <summary>
         /// hdnPFSHVerifiedEnable control.
         /// </summary>
@@ -515,7 +526,7 @@ namespace Acurus.Capella.UI {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.HiddenField hdnPFSHVerifiedEnable;
-        
+
         /// <summary>
         /// hdnSaveButtonID control.
         /// </summary>
@@ -524,7 +535,7 @@ namespace Acurus.Capella.UI {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.HiddenField hdnSaveButtonID;
-        
+
         /// <summary>
         /// hdnTabClick control.
         /// </summary>
@@ -533,7 +544,7 @@ namespace Acurus.Capella.UI {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.HiddenField hdnTabClick;
-        
+
         /// <summary>
         /// hdnCopyToProviderForReview control.
         /// </summary>
@@ -542,7 +553,7 @@ namespace Acurus.Capella.UI {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.HiddenField hdnCopyToProviderForReview;
-        
+
         /// <summary>
         /// hdnAddendumID control.
         /// </summary>
@@ -551,7 +562,7 @@ namespace Acurus.Capella.UI {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.HiddenField hdnAddendumID;
-        
+
         /// <summary>
         /// hdnLocalPhy control.
         /// </summary>
@@ -560,7 +571,7 @@ namespace Acurus.Capella.UI {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.HiddenField hdnLocalPhy;
-        
+
         /// <summary>
         /// hdnUserRole control.
         /// </summary>
@@ -569,7 +580,7 @@ namespace Acurus.Capella.UI {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.HiddenField hdnUserRole;
-        
+
         /// <summary>
         /// hdnReviewStatus control.
         /// </summary>
@@ -578,7 +589,7 @@ namespace Acurus.Capella.UI {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.HiddenField hdnReviewStatus;
-        
+
         /// <summary>
         /// hdnCloseFS control.
         /// </summary>
@@ -587,7 +598,7 @@ namespace Acurus.Capella.UI {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.HiddenField hdnCloseFS;
-        
+
         /// <summary>
         /// hdnPreviousEncounterId control.
         /// </summary>
@@ -596,7 +607,7 @@ namespace Acurus.Capella.UI {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.HiddenField hdnPreviousEncounterId;
-        
+
         /// <summary>
         /// hdnAppointmentProviderId control.
         /// </summary>
@@ -605,7 +616,7 @@ namespace Acurus.Capella.UI {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.HiddenField hdnAppointmentProviderId;
-        
+
         /// <summary>
         /// hdnAppointmentProviderName control.
         /// </summary>
@@ -614,7 +625,7 @@ namespace Acurus.Capella.UI {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.HiddenField hdnAppointmentProviderName;
-        
+
         /// <summary>
         /// hdnEncounterProviderName control.
         /// </summary>
@@ -623,7 +634,7 @@ namespace Acurus.Capella.UI {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.HiddenField hdnEncounterProviderName;
-        
+
         /// <summary>
         /// hdnEncounterProviderId control.
         /// </summary>
@@ -632,7 +643,7 @@ namespace Acurus.Capella.UI {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.HiddenField hdnEncounterProviderId;
-        
+
         /// <summary>
         /// hdnSelectPhysicianId control.
         /// </summary>
@@ -641,7 +652,7 @@ namespace Acurus.Capella.UI {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.HiddenField hdnSelectPhysicianId;
-        
+
         /// <summary>
         /// hdnProvRev control.
         /// </summary>
@@ -650,7 +661,7 @@ namespace Acurus.Capella.UI {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.HiddenField hdnProvRev;
-        
+
         /// <summary>
         /// hdnEncounterIDSummary control.
         /// </summary>
@@ -659,7 +670,7 @@ namespace Acurus.Capella.UI {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.HiddenField hdnEncounterIDSummary;
-        
+
         /// <summary>
         /// upPanle control.
         /// </summary>
@@ -668,7 +679,7 @@ namespace Acurus.Capella.UI {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.UpdatePanel upPanle;
-        
+
         /// <summary>
         /// hdnCopyPreviousClick control.
         /// </summary>
@@ -677,7 +688,7 @@ namespace Acurus.Capella.UI {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.HiddenField hdnCopyPreviousClick;
-        
+
         /// <summary>
         /// hiddenButton control.
         /// </summary>
@@ -686,7 +697,7 @@ namespace Acurus.Capella.UI {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Button hiddenButton;
-        
+
         /// <summary>
         /// btnhdncbofill control.
         /// </summary>
@@ -695,7 +706,7 @@ namespace Acurus.Capella.UI {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Button btnhdncbofill;
-        
+
         /// <summary>
         /// hdnButtonEnable control.
         /// </summary>
@@ -704,7 +715,7 @@ namespace Acurus.Capella.UI {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Button hdnButtonEnable;
-        
+
         /// <summary>
         /// btnhiddenConfirmOk control.
         /// </summary>
@@ -713,7 +724,7 @@ namespace Acurus.Capella.UI {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Button btnhiddenConfirmOk;
-        
+
         /// <summary>
         /// btnHiddenDuplicateCheck control.
         /// </summary>
@@ -722,7 +733,7 @@ namespace Acurus.Capella.UI {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Button btnHiddenDuplicateCheck;
-        
+
         /// <summary>
         /// btnHiddenCopyPreviousEncounter control.
         /// </summary>
@@ -731,7 +742,7 @@ namespace Acurus.Capella.UI {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Button btnHiddenCopyPreviousEncounter;
-        
+
         /// <summary>
         /// hdnbtngeneratexmlEncounter control.
         /// </summary>
@@ -740,7 +751,7 @@ namespace Acurus.Capella.UI {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Button hdnbtngeneratexmlEncounter;
-        
+
         /// <summary>
         /// divLoading control.
         /// </summary>
@@ -749,7 +760,7 @@ namespace Acurus.Capella.UI {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.HtmlControls.HtmlGenericControl divLoading;
-        
+
         /// <summary>
         /// Panel2 control.
         /// </summary>
@@ -758,7 +769,7 @@ namespace Acurus.Capella.UI {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Panel Panel2;
-        
+
         /// <summary>
         /// Label1 control.
         /// </summary>
