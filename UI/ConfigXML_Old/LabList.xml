@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<LabList>
+  <Lab id="1" name="LabCorp" type="LAB" sort_order="1"  />
+  <Lab id="2" name="Quest Diagnostics" type="LAB" sort_order="2"  />
+  <Lab id="4" name="CentreLake Imaging &amp;amp; Oncology" type="IMAGE" sort_order="8"  />
+  <Lab id="5" name="Grove Diagnostic Imaging" type="IMAGE" sort_order="13"  />
+  <Lab id="6" name="WestCliff Medical Laboratories Inc" type="LAB" sort_order="33"  />
+  <Lab id="7" name="CMG Lab Centre" type="LAB" sort_order="10"  />
+  <Lab id="8" name="AMA Laboratory" type="LAB" sort_order="4"  />
+  <Lab id="9" name="Casa Colina" type="LAB" sort_order="7"  />
+  <Lab id="10" name="Palm Imaging" type="IMAGE" sort_order="19"  />
+  <Lab id="11" name="Whitefield Medical Lab" type="LAB" sort_order="34"  />
+  <Lab id="12" name="PVHMC-Image" type="IMAGE" sort_order="24"  />
+  <Lab id="13" name="SACH-Lab" type="LAB" sort_order="29"  />
+  <Lab id="14" name="Queen Of The Valley Medical Centre" type="LAB" sort_order="26"  />
+  <Lab id="15" name="Millennium Imaging Medical Center" type="IMAGE" sort_order="16"  />
+  <Lab id="16" name="CMG Anc.-1866 #101" type="LAB" sort_order="3"  />
+  <Lab id="17" name="Quest Diagnostics-Image" type="IMAGE" sort_order="27"  />
+  <Lab id="18" name="Foundation Laboratory" type="LAB" sort_order="12"  />
+  <Lab id="19" name="PVHMC-Lab" type="LAB" sort_order="25"  />
+  <Lab id="20" name="SACH-Image" type="IMAGE" sort_order="28"  />
+  <Lab id="21" name="Haven Urgent Care" type="LAB" sort_order="14"  />
+  <Lab id="22" name="PVHMC SteadHeart and Vascular Center - Non-Invasive Cardiology Request Form" type="LAB" sort_order="22"  />
+  <Lab id="23" name="PVHMC SteadHeart and Vascular Center - Vascular laboratory order form" type="LAB" sort_order="23"  />
+  <Lab id="24" name="PVHMC - Cardiac Rehabilitation Initial Out-Patient Orders" type="LAB" sort_order="20"  />
+  <Lab id="25" name="Valley Imaging Partners" type="IMAGE" sort_order="32"  />
+  <Lab id="26" name="Foot Hill Hospital" type="LAB" sort_order="11"  />
+  <Lab id="27" name="Atherotech Diagnostics Lab" type="LAB" sort_order="5"  />
+  <Lab id="28" name="PVHMC - Pulmonology" type="LAB" sort_order="21"  />
+  <Lab id="29" name="Loma Linda University Medical Center" type="LAB" sort_order="15"  />
+  <Lab id="30" name="Others" type="LAB" sort_order="17"  />
+  <Lab id="32" name="CMG Anc.-In House" type="LAB" sort_order="9"  />
+  <Lab id="33" name="Berkeley Heart Lab" type="LAB" sort_order="6"  />
+  <Lab id="34" name="Southern California Center for Neuroscience and Spine-Lab" type="LAB" sort_order="31"  />
+  <Lab id="35" name="Southern California Center for Neuroscience and Spine-Image" type="IMAGE" sort_order="30"  />
+  <Lab id="36" name="Outpatient Order" type="LAB" sort_order="18"  />
+  <Lab id="37" name="CMG Anc.-8330 #101" type="LAB" sort_order="3"  />
+
+</LabList>

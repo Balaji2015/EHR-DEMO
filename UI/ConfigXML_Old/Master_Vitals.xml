@@ -1,0 +1,128 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<MasterVitalsList>
+<MasterVitals Id="1" Vital_Name="Height" Vital_Unit="Ft Inch" Vital_Type="Standard" Sort_Order="2"/>
+<MasterVitals Id="2" Vital_Name="Height" Vital_Unit="CM" Vital_Type="Optional" Sort_Order="3"/>
+<MasterVitals Id="3" Vital_Name="Weight" Vital_Unit="Lbs" Vital_Type="Standard" Sort_Order="4"/>
+<MasterVitals Id="4" Vital_Name="Weight" Vital_Unit="Kg" Vital_Type="Optional" Sort_Order="5"/>
+<MasterVitals Id="5" Vital_Name="BMI" Vital_Unit="" Vital_Type="Standard" Sort_Order="6"/>
+<MasterVitals Id="6" Vital_Name="Body Temperature" Vital_Unit="Fahrenheit" Vital_Type="Standard" Sort_Order="8"/>
+<MasterVitals Id="7" Vital_Name="Body Temperature" Vital_Unit="Celsius" Vital_Type="Optional" Sort_Order="10"/>
+<MasterVitals Id="8" Vital_Name="BP-Sitting Sys/Dia" Vital_Unit="mm/Hg" Vital_Type="Standard" Sort_Order="12"/>
+<MasterVitals Id="9" Vital_Name="BP-Standing Sys/Dia" Vital_Unit="mm/Hg" Vital_Type="Standard" Sort_Order="14"/>
+<MasterVitals Id="10" Vital_Name="BP-Lying Sys/Dia" Vital_Unit="mm/Hg" Vital_Type="Standard" Sort_Order="16"/>
+<MasterVitals Id="11" Vital_Name="Respiratory Rate" Vital_Unit="Breaths/min" Vital_Type="Standard" Sort_Order="18"/>
+<MasterVitals Id="12" Vital_Name="Pulse Rate" Vital_Unit="Beats/min" Vital_Type="Standard" Sort_Order="19"/>
+<MasterVitals Id="13" Vital_Name="HbA1C" Vital_Unit="%" Vital_Type="Standard" Sort_Order="24"/>
+<MasterVitals Id="14" Vital_Name="eGFR" Vital_Unit="ml/min/1.73m2" Vital_Type="Standard" Sort_Order="30"/>
+<MasterVitals Id="15" Vital_Name="Pulse Oximetry" Vital_Unit="%" Vital_Type="Standard" Sort_Order="32"/>
+<MasterVitals Id="16" Vital_Name="Blood Sugar-Fasting" Vital_Unit="mg/dl" Vital_Type="Standard" Sort_Order="26"/>
+<MasterVitals Id="17" Vital_Name="Blood Sugar-Post Prandial" Vital_Unit="mg/dl" Vital_Type="Standard" Sort_Order="28"/>
+<MasterVitals Id="18" Vital_Name="ICR" Vital_Unit="mg/dl" Vital_Type="Standard" Sort_Order="38"/>
+<MasterVitals Id="19" Vital_Name="ISF" Vital_Unit="mg/dl/U" Vital_Type="Standard" Sort_Order="37"/>
+<MasterVitals Id="20" Vital_Name="BASAL" Vital_Unit="units/ hr" Vital_Type="Standard" Sort_Order="39"/>
+<MasterVitals Id="21" Vital_Name="Head Circumference" Vital_Unit="Inches" Vital_Type="Standard" Sort_Order="21"/>
+<MasterVitals Id="22" Vital_Name="Head Circumference" Vital_Unit="CM" Vital_Type="Optional" Sort_Order="22"/>
+<MasterVitals Id="23" Vital_Name="Oxygen Intake" Vital_Unit="LPM" Vital_Type="Standard" Sort_Order="35"/>
+<MasterVitals Id="24" Vital_Name="LMP" Vital_Unit="" Vital_Type="Standard" Sort_Order="40"/>
+<MasterVitals Id="25" Vital_Name="Last PAP Smear" Vital_Unit="" Vital_Type="Standard" Sort_Order="48"/>
+<MasterVitals Id="26" Vital_Name="Last Mammogram" Vital_Unit="" Vital_Type="Standard" Sort_Order="49"/>
+<MasterVitals Id="27" Vital_Name="Last Colonoscopy" Vital_Unit="" Vital_Type="Standard" Sort_Order="50"/>
+<MasterVitals Id="28" Vital_Name="BMI Status" Vital_Unit="" Vital_Type="Standard" Sort_Order="7"/>
+<MasterVitals Id="29" Vital_Name="Age Period Started" Vital_Unit="" Vital_Type="Optional" Sort_Order="41"/>
+<MasterVitals Id="30" Vital_Name="How long do periods last" Vital_Unit="" Vital_Type="Optional" Sort_Order="42"/>
+<MasterVitals Id="31" Vital_Name="Number of pregnancies" Vital_Unit="" Vital_Type="Optional" Sort_Order="45"/>
+<MasterVitals Id="32" Vital_Name="Number of miscarriages" Vital_Unit="" Vital_Type="Optional" Sort_Order="46"/>
+<MasterVitals Id="33" Vital_Name="Frequency of periods,every" Vital_Unit="" Vital_Type="Optional" Sort_Order="43"/>
+<MasterVitals Id="34" Vital_Name="Any pain with your periods" Vital_Unit="" Vital_Type="Optional" Sort_Order="44"/>
+<MasterVitals Id="35" Vital_Name="Number of children" Vital_Unit="" Vital_Type="Optional" Sort_Order="47"/>
+<MasterVitals Id="36" Vital_Name="Oxygen Saturation" Vital_Unit="%" Vital_Type="Standard" Sort_Order="34"/>
+<MasterVitals Id="37" Vital_Name="Neck Size" Vital_Unit="Inches" Vital_Type="Standard" Sort_Order="20"/>
+<MasterVitals Id="38" Vital_Name="Visit Related Vitals" Vital_Unit="" Vital_Type="Standard" Sort_Order="1"/>
+<MasterVitals Id="39" Vital_Name="Last Test Results" Vital_Unit="" Vital_Type="Standard" Sort_Order="23"/>
+<MasterVitals Id="40" Vital_Name="Last known tests/procedures" Vital_Unit="" Vital_Type="Standard" Sort_Order="36"/>
+<MasterVitals Id="41" Vital_Name="Body Temperature" Vital_Unit="Fahrenheit" Vital_Type="Standard" Sort_Order="9"/>
+<MasterVitals Id="42" Vital_Name="Body Temperature" Vital_Unit="Celsius" Vital_Type="Optional" Sort_Order="11"/>
+<MasterVitals Id="43" Vital_Name="BP-Sitting Sys/Dia" Vital_Unit="mm/Hg" Vital_Type="Standard" Sort_Order="13"/>
+<MasterVitals Id="44" Vital_Name="BP-Standing Sys/Dia" Vital_Unit="mm/Hg" Vital_Type="Standard" Sort_Order="15"/>
+<MasterVitals Id="45" Vital_Name="BP-Lying Sys/Dia" Vital_Unit="mm/Hg" Vital_Type="Standard" Sort_Order="17"/>
+<MasterVitals Id="46" Vital_Name="Hgb" Vital_Unit="g/dl" Vital_Type="Standard" Sort_Order="25"/>
+<MasterVitals Id="47" Vital_Name="eGFR" Vital_Unit="ml/min/1.73m2" Vital_Type="Standard" Sort_Order="31"/>
+<MasterVitals Id="48" Vital_Name="Pulse Oximetry" Vital_Unit="%" Vital_Type="Standard" Sort_Order="33"/>
+<MasterVitals Id="49" Vital_Name="Blood Sugar-Fasting" Vital_Unit="mg/dl" Vital_Type="Standard" Sort_Order="27"/>
+<MasterVitals Id="50" Vital_Name="Blood Sugar-Post Prandial" Vital_Unit="mg/dl" Vital_Type="Standard" Sort_Order="29"/>
+<MasterVitals Id="51" Vital_Name="Latest Lab Results" Vital_Unit="" Vital_Type="Standard" Sort_Order="100"/>
+<MasterVitals Id="52" Vital_Name="Holter/Event" Vital_Unit="" Vital_Type="Standard" Sort_Order="51"/>
+<MasterVitals Id="53" Vital_Name="Stress Test" Vital_Unit="" Vital_Type="Standard" Sort_Order="52"/>
+<MasterVitals Id="54" Vital_Name="Coronary Angiogram" Vital_Unit="" Vital_Type="Standard" Sort_Order="53"/>
+<MasterVitals Id="55" Vital_Name="Carotid Doppler" Vital_Unit="" Vital_Type="Standard" Sort_Order="54"/>
+<MasterVitals Id="56" Vital_Name="Vascular Study" Vital_Unit="" Vital_Type="Standard" Sort_Order="55"/>
+<MasterVitals Id="57" Vital_Name="ABI Tests" Vital_Unit="" Vital_Type="Standard" Sort_Order="56"/>
+<MasterVitals Id="58" Vital_Name="Waist Circumference" Vital_Unit="cm" Vital_Type="Standard" Sort_Order="6"/>
+<MasterVitals Id="59" Vital_Name="PT" Vital_Unit="sec." Vital_Type="Standard" Sort_Order="57"/>
+<MasterVitals Id="60" Vital_Name="ECG" Vital_Unit="" Vital_Type="Standard" Sort_Order="59"/>
+<MasterVitals Id="61" Vital_Name="LDL" Vital_Unit="mg/dl" Vital_Type="Standard" Sort_Order="60"/>
+<MasterVitals Id="62" Vital_Name="HDL" Vital_Unit="mg/dl" Vital_Type="Standard" Sort_Order="61"/>
+<MasterVitals Id="63" Vital_Name="Total Cholesterol" Vital_Unit="mg/dl" Vital_Type="Standard" Sort_Order="62"/>
+<MasterVitals Id="64" Vital_Name="Triglycerides" Vital_Unit="mg/dl" Vital_Type="Standard" Sort_Order="63"/>
+<MasterVitals Id="65" Vital_Name="Creatinine" Vital_Unit="mg/dl" Vital_Type="Standard" Sort_Order="64"/>
+<MasterVitals Id="66" Vital_Name="TSH" Vital_Unit="mIU/L" Vital_Type="Standard" Sort_Order="65"/>
+<MasterVitals Id="67" Vital_Name="Hgb" Vital_Unit="g/dL" Vital_Type="Standard" Sort_Order="66"/>
+<MasterVitals Id="68" Vital_Name="Calcium Score" Vital_Unit="mg/dL" Vital_Type="Standard" Sort_Order="67"/>
+<MasterVitals Id="69" Vital_Name="Myocardial Perfusion Imaging" Vital_Unit="" Vital_Type="Standard" Sort_Order="68"/>
+<MasterVitals Id="70" Vital_Name="Cardiac Catheterization" Vital_Unit="" Vital_Type="Standard" Sort_Order="69"/>
+<MasterVitals Id="71" Vital_Name="Ultrasound - Abdominal" Vital_Unit="" Vital_Type="Standard" Sort_Order="70"/>
+<MasterVitals Id="72" Vital_Name="Ultrasound - Renal" Vital_Unit="" Vital_Type="Standard" Sort_Order="71"/>
+<MasterVitals Id="73" Vital_Name="Ultrasound - Aortic" Vital_Unit="" Vital_Type="Standard" Sort_Order="72"/>
+<MasterVitals Id="74" Vital_Name="CT aorta" Vital_Unit="" Vital_Type="Standard" Sort_Order="73"/>
+<MasterVitals Id="75" Vital_Name="Nuclear Stress Test" Vital_Unit="" Vital_Type="Standard" Sort_Order="74"/>
+<MasterVitals Id="76" Vital_Name="ECHO Stress Test" Vital_Unit="" Vital_Type="Standard" Sort_Order="75"/>
+<MasterVitals Id="77" Vital_Name="Treadmill Stress Test" Vital_Unit="" Vital_Type="Standard" Sort_Order="76"/>
+<MasterVitals Id="78" Vital_Name="Echocardiogram" Vital_Unit="" Vital_Type="Standard" Sort_Order="77"/>
+<MasterVitals Id="79" Vital_Name="Lp(a)" Vital_Unit="mg/dL" Vital_Type="Standard" Sort_Order="78"/>
+<MasterVitals Id="80" Vital_Name="Chest Xray" Vital_Unit="" Vital_Type="Standard" Sort_Order="79"/>
+<MasterVitals Id="81" Vital_Name="INR" Vital_Unit="" Vital_Type="Standard" Sort_Order="58"/>
+<MasterVitals Id="82" Vital_Name="PFT" Vital_Unit="" Vital_Type="Standard" Sort_Order="80"/>
+<MasterVitals Id="83" Vital_Name="Chest CT" Vital_Unit="" Vital_Type="Standard" Sort_Order="81"/>
+<MasterVitals Id="100" Vital_Name="Urine Microalbumin" Vital_Unit="mg/L" Vital_Type="Standard" Sort_Order="89"/>
+<MasterVitals Id="103" Vital_Name="Diabetic Eye Exam" Vital_Unit="" Vital_Type="Standard" Sort_Order="92"/>
+<MasterVitals Id="106" Vital_Name="Fecal Occult Blood Test" Vital_Unit="" Vital_Type="Standard" Sort_Order="95"/>
+<MasterVitals Id="107" Vital_Name="Vision- Left" Vital_Unit="" Vital_Type="Standard" Sort_Order="96"/>
+<MasterVitals Id="108" Vital_Name="Vision- Right" Vital_Unit="" Vital_Type="Standard" Sort_Order="97"/>
+<MasterVitals Id="109" Vital_Name="Vision- Both" Vital_Unit="" Vital_Type="Standard" Sort_Order="98"/>
+<MasterVitals Id="110" Vital_Name="Last Physical" Vital_Unit="" Vital_Type="Standard" Sort_Order="99"/>
+<MasterVitals Id="111" Vital_Name="Last DEXA" Vital_Unit="" Vital_Type="Standard" Sort_Order="100"/>
+<MasterVitals Id="112" Vital_Name="Last Tetanus" Vital_Unit="" Vital_Type="Standard" Sort_Order="101"/>
+<MasterVitals Id="113" Vital_Name="Last Pneumovac" Vital_Unit="" Vital_Type="Standard" Sort_Order="102"/>
+<MasterVitals Id="114" Vital_Name="Last Zostavax" Vital_Unit="" Vital_Type="Standard" Sort_Order="103"/>
+<MasterVitals Id="115" Vital_Name="Last Flu" Vital_Unit="" Vital_Type="Standard" Sort_Order="104"/>
+<MasterVitals Id="116" Vital_Name="Last  Tdap" Vital_Unit="" Vital_Type="Standard" Sort_Order="105"/>
+<MasterVitals Id="117" Vital_Name="Last eye exam" Vital_Unit="" Vital_Type="Standard" Sort_Order="106"/>
+<MasterVitals Id="118" Vital_Name="Last FOB" Vital_Unit="" Vital_Type="Standard" Sort_Order="107"/>
+<MasterVitals Id="119" Vital_Name="Urinalysis" Vital_Unit="" Vital_Type="Standard" Sort_Order="108"/>
+<MasterVitals Id="120" Vital_Name="Color" Vital_Unit="" Vital_Type="Standard" Sort_Order="109"/>
+<MasterVitals Id="121" Vital_Name="Appearance" Vital_Unit="" Vital_Type="Standard" Sort_Order="110"/>
+<MasterVitals Id="122" Vital_Name="Blood (60 sec)" Vital_Unit="" Vital_Type="Standard" Sort_Order="111"/>
+<MasterVitals Id="123" Vital_Name="Bilirubin (30 sec)" Vital_Unit="" Vital_Type="Standard" Sort_Order="112"/>
+<MasterVitals Id="124" Vital_Name="Urobilinogen" Vital_Unit="" Vital_Type="Standard" Sort_Order="113"/>
+<MasterVitals Id="125" Vital_Name="Ketones (40 sec)" Vital_Unit="" Vital_Type="Standard" Sort_Order="114"/>
+<MasterVitals Id="126" Vital_Name="Protein (60 sec)" Vital_Unit="" Vital_Type="Standard" Sort_Order="115"/>
+<MasterVitals Id="127" Vital_Name="Nitrate (60 sec)" Vital_Unit="" Vital_Type="Standard" Sort_Order="116"/>
+<MasterVitals Id="128" Vital_Name="Glucose (30 sec)" Vital_Unit="" Vital_Type="Standard" Sort_Order="117"/>
+<MasterVitals Id="129" Vital_Name="pH" Vital_Unit="" Vital_Type="Standard" Sort_Order="118"/>
+<MasterVitals Id="130" Vital_Name="Specific Gravity (45 Sec)" Vital_Unit="" Vital_Type="Standard" Sort_Order="119"/>
+<MasterVitals Id="131" Vital_Name="Leukocytes" Vital_Unit="" Vital_Type="Standard" Sort_Order="120"/>
+<MasterVitals Id="132" Vital_Name="Last Prevnar13" Vital_Unit="" Vital_Type="Standard" Sort_Order="121"/>
+<MasterVitals Id="133" Vital_Name="Potassium" Vital_Unit="mmol/L" Vital_Type="Standard" Sort_Order="122"/>
+<MasterVitals Id="134" Vital_Name="Platelets" Vital_Unit="x10E3/uL" Vital_Type="Standard" Sort_Order="123"/>
+<MasterVitals Id="135" Vital_Name="BUN" Vital_Unit="" Vital_Type="Standard" Sort_Order="124"/>
+<MasterVitals Id="136" Vital_Name="Sodium" Vital_Unit="" Vital_Type="Standard" Sort_Order="125"/>
+<MasterVitals Id="137" Vital_Name="AST" Vital_Unit="" Vital_Type="Standard" Sort_Order="126"/>
+<MasterVitals Id="138" Vital_Name="ALT" Vital_Unit="" Vital_Type="Standard" Sort_Order="127"/>
+<MasterVitals Id="139" Vital_Name="Magnesium" Vital_Unit="" Vital_Type="Standard" Sort_Order="128"/>
+<MasterVitals Id="140" Vital_Name="CHEM" Vital_Unit="" Vital_Type="Standard" Sort_Order="129"/>
+<MasterVitals Id="141" Vital_Name="Hematocrit" Vital_Unit="" Vital_Type="Standard" Sort_Order="130"/>
+<MasterVitals Id="142" Vital_Name="Vitamin" Vital_Unit="" Vital_Type="Standard" Sort_Order="131"/>
+<MasterVitals Id="143" Vital_Name="COPD Classification" Vital_Unit="" Vital_Type="Standard" Sort_Order="132"/>
+<MasterVitals Id="144" Vital_Name="Inhaled Oxygen Concentration" Vital_Unit="%" Vital_Type="Standard" Sort_Order="34"/>
+
+</MasterVitalsList>

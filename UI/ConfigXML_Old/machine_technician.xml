@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<MachineTechnician>
+<MachineTechnician1 machine_technician_library_id="1" machine_name="Philips - Ultrasound / Vascular studies" Physician_Library_ID="2871" status="A" />
+<MachineTechnician2 machine_technician_library_id="2" machine_name="Philips - Ultrasound / Vascular studies" Physician_Library_ID="4510" status="A" />
+<MachineTechnician3 machine_technician_library_id="3" machine_name="GE Healthcare - Cardiology" Physician_Library_ID="4509" status="A" />
+<MachineTechnician4 machine_technician_library_id="4" machine_name="GE Healthcare - Cardiology" Physician_Library_ID="4510" status="A" />
+<MachineTechnician5 machine_technician_library_id="5" machine_name="GE Healthcare - Cardiology" Physician_Library_ID="4511" status="A" />
+<MachineTechnician6 machine_technician_library_id="6" machine_name="Lunar - Bone Density" Physician_Library_ID="2869" status="A" />
+<MachineTechnician7 machine_technician_library_id="7" machine_name="Lunar - Bone Density" Physician_Library_ID="2877" status="A" />
+<MachineTechnician8 machine_technician_library_id="8" machine_name="Burdick - Holter monitor" Physician_Library_ID="2869" status="A" />
+<MachineTechnician9 machine_technician_library_id="9" machine_name="Gamma - Nuclear" Physician_Library_ID="4512" status="A" />
+<MachineTechnician10 machine_technician_library_id="10" machine_name="Quinton - Nuclear (Treadmill)" Physician_Library_ID="4512" status="A" />
+<MachineTechnician11 machine_technician_library_id="11" machine_name="Philips - Ultrasound / Vascular studies" Physician_Library_ID="4521" status="A" />
+<MachineTechnician12 machine_technician_library_id="12" machine_name="GE Healthcare - Cardiology" Physician_Library_ID="2878" status="A" />
+<MachineTechnician13 machine_technician_library_id="13" machine_name="Lunar - Bone Density" Physician_Library_ID="4705" status="A" />
+<MachineTechnician14 machine_technician_library_id="14" machine_name="Burdick - Holter monitor" Physician_Library_ID="4732" status="A" />
+<MachineTechnician15 machine_technician_library_id="15" machine_name="Burdick - Holter monitor" Physician_Library_ID="4762" status="A" />
+<MachineTechnician16 machine_technician_library_id="16" machine_name="Lunar - Bone Density" Physician_Library_ID="4773" status="A" />
+<MachineTechnician17 machine_technician_library_id="17" machine_name="Burdick - Holter monitor" Physician_Library_ID="4774" status="A" />
+<MachineTechnician18 machine_technician_library_id="18" machine_name="GE Healthcare - Cardiology" Physician_Library_ID="4920" status="A" />
+<MachineTechnician19 machine_technician_library_id="19" machine_name="Monitors - Mtech" Physician_Library_ID="4933" status="A" />
+<MachineTechnician21 machine_technician_library_id="21" machine_name="Nuclear Mobile Tech - Nuclear MTech" Physician_Library_ID="4972" status="A" />
+
+</MachineTechnician>

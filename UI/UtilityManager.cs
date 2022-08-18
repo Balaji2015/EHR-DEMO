@@ -2932,7 +2932,7 @@ namespace Acurus.Capella.UI
 
             IList<StaticLookup> iFieldLookupList = new List<StaticLookup>();
             IList<string> ilstItem = sEnteredItem.Split(',').Select(i => i.TrimStart().ToString()).ToList<string>();
-
+                
 
             string strXmlFilePath = Path.Combine(System.Web.Hosting.HostingEnvironment.ApplicationPhysicalPath, "ConfigXML\\staticlookup.xml");
             if (File.Exists(strXmlFilePath) == true)

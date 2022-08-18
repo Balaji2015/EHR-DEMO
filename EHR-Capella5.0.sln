@@ -11,6 +11,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Core", "Core\Core.csproj", 
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Lab_Agent", "Lab_Agent\Lab_Agent.csproj", "{1B5FEF6C-F3F4-4317-98E0-08CBFD5481A6}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MeasureCalculator", "MeasureCalculator\MeasureCalculator.csproj", "{92CFC9B3-E616-43E1-9B65-915551793B94}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -33,6 +35,10 @@ Global
 		{1B5FEF6C-F3F4-4317-98E0-08CBFD5481A6}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{1B5FEF6C-F3F4-4317-98E0-08CBFD5481A6}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{1B5FEF6C-F3F4-4317-98E0-08CBFD5481A6}.Release|Any CPU.Build.0 = Release|Any CPU
+		{92CFC9B3-E616-43E1-9B65-915551793B94}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{92CFC9B3-E616-43E1-9B65-915551793B94}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{92CFC9B3-E616-43E1-9B65-915551793B94}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{92CFC9B3-E616-43E1-9B65-915551793B94}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

@@ -14068,6 +14068,7 @@ and (date_format(DATE_FORMAT(?,'%Y-01-01'),'%Y-03-31')) and a.encounter_provider
 
 ;]]>
 	</sql-query>
+
 	<!--<sql-query name="PQRI.GetDenominatorList1CMS147.Influenza">
 		<![CDATA[select c.human_id
 from e_m_coding c

@@ -1,34 +1,44 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <Login>
   <KeyFeaturesList>
-    <KeyFeatures Name="Meaningful Use Certified EHR by InfoGuard " link=""></KeyFeatures>
-    <KeyFeatures Name="WorkFlow Friendly "  link=""></KeyFeatures>
-    <KeyFeatures Name="Audit Compliant "  link=""></KeyFeatures>
-    <KeyFeatures Name="Easy Assessment"  link=""></KeyFeatures>
-    <KeyFeatures Name="Integrated with Labs and Pharmacies "  link=""></KeyFeatures>
+    <KeyFeatures Name="ONC Certified - CEHRT 2015 Edition by SLI" link=""></KeyFeatures>
+    <KeyFeatures Name="WorkFlow Friendly " link=""></KeyFeatures>
+    <KeyFeatures Name="Audit Compliant " link=""></KeyFeatures>
+    <KeyFeatures Name="Easy Assessment" link=""></KeyFeatures>
+    <KeyFeatures Name="Integrated with Labs and Pharmacies " link=""></KeyFeatures>
   </KeyFeaturesList>
   <SystemMessagesList>
-    <SystemMessage Name="Release 6.0.0.0.0.0 / 1 Feb 18"  link=""></SystemMessage>
-    <SystemMessage Name="Dermatology speciality related PSDs updated"  link=""></SystemMessage>
-    <SystemMessage Name="Provision to compare two photos"  link=""></SystemMessage>
-    <SystemMessage Name="2015 HIT Certification Measure related updates"  link=""></SystemMessage>
-    <SystemMessage Name="Release note can be downloaded through Knowledge Center"  link=""></SystemMessage>
-  </SystemMessagesList>
+    <SystemMessage Name="Release of new version of Capella EHR on Friday, 29th July'22." link="https://cmg.capellaehr.com/documents/User_Manual/DeltaDocument_29thJuly.pdf"></SystemMessage>  
+    <SystemMessage Name="Issue Resolutions include display of My Q count, exception error &quot;input string not found&quot; etc" link=""></SystemMessage>   
+	
+</SystemMessagesList>
   <KnowledgeCentreList>
-    <KnowledgeCentre Name="Release 6.0.0.0.0.0 / 1 Feb 18" link="https://cmg.capellaehr.com/documents/User_Manual/DeltaDocument.pdf"></KnowledgeCentre>
-    <KnowledgeCentre Name="ICD10-Basics" link="http://www.roadto10.org/icd-10-basics"></KnowledgeCentre>
-    <KnowledgeCentre Name="ICD10-Provider Resources" link="https://www.cms.gov/Medicare/Coding/ICD10/ProviderResources.html"></KnowledgeCentre>
+    <KnowledgeCentre Name="Delta document for release dated Friday, 29th July'22." link="https://cmg.capellaehr.com/documents/User_Manual/DeltaDocument_29thJuly.pdf"></KnowledgeCentre>
+    <KnowledgeCentre Name="Steps for Ancillary Orders - Front Office User" link="https://cmg.capellaehr.com/documents/User_Manual/Capella  EHR_FO_Anc_Detailed_VR20211223.pdf"></KnowledgeCentre>
+    <KnowledgeCentre Name="Steps for Ancillary Orders - Cert.Tech User" link="https://cmg.capellaehr.com/documents/User_Manual/Capella  EHR_CT_Anc_Detailed_VR20211223.pdf"></KnowledgeCentre>
+    <KnowledgeCentre Name="COVID-19 vaccination record -steps to update in Capella EHR." link="https://cmg.capellaehr.com/Documents/KnowledgeBank/Job_Aid/JA_80_Covid19.pdf"></KnowledgeCentre>
+    <KnowledgeCentre Name="2021 Changes to Evaluation and Management Video Tutorial." link="https://cmg.capellaehr.com/documents/KnowledgeCentre/Videos/2021_Changes_to_Evaluation_and_Management_Video_Tutorial.mp4"></KnowledgeCentre>
+    <KnowledgeCentre Name="Capella Workflow Process Document." link="https://cmg.capellaehr.com/documents/User_Manual/WorkFlow_Process_Definitions_CMG_2021112.pdf"></KnowledgeCentre>
+    <KnowledgeCentre Name="Telemedicine Solution Video Tutorial" link="https://cmg.capellaehr.com/documents/KnowledgeCentre/Videos/Telemedicine_Tutorial_V1.1_20200407.mp4"></KnowledgeCentre>
+    <KnowledgeCentre Name="Telemedicine Solution Help Doc" link="https://cmg.capellaehr.com/documents/KnowledgeCentre/Videos/Telemedicine_QuickGuide_20210201.pdf"></KnowledgeCentre>
+    <KnowledgeCentre Name="Capella System Requirements" link="https://cmg.capellaehr.com/documents/User_Manual/System_Requirements.pdf"></KnowledgeCentre>            
+    <KnowledgeCentre Name="Capella-EHR User Manual - Provider_01" link="https://cmg.capellaehr.com/documents/User_Manual/Capella_EHR_Provider_01_User_manual.pdf"></KnowledgeCentre>
+    <KnowledgeCentre Name="Capella-EHR User Manual - Provider_02" link="https://cmg.capellaehr.com/documents/User_Manual/Capella_EHR_Provider_02_User_manual.pdf"></KnowledgeCentre>
+    <KnowledgeCentre Name="Capella-EHR User Manual - MA" link="https://cmg.capellaehr.com/documents/User_Manual/Capella_EHR_Medical_Assistant_User_Manual.pdf"></KnowledgeCentre>
+    <KnowledgeCentre Name="Capella-EHR User Manual - FO" link="https://cmg.capellaehr.com/documents/User_Manual/Capella_EHR_Front_Office_User_Manual.pdf"></KnowledgeCentre>
+    <KnowledgeCentre Name="Capella-EHR User Manual - OM" link="https://cmg.capellaehr.com/documents/User_Manual/Capella_EHR_Office_Manager_User_Manual.pdf"></KnowledgeCentre>
+    <KnowledgeCentre Name="Capella-EHR User Manual - Coder" link="https://cmg.capellaehr.com/documents/User_Manual/Capella_EHR_Coder_UserManual.pdf"></KnowledgeCentre>
   </KnowledgeCentreList>
   <ContactDeatilsList>
-    <Address>
+     <Address>
       <b>Address :</b><br/>
-      160 South Old Springs Road<br/>
-      Suite# 280<br/>
-      Anaheim Hills<br/>
-      CA 92808<br/>
+      1131 W Sixth St<br/>    
+      Suite# 300<br/>
+      Ontario<br/>
+      CA 91762<br/>
       USA. <br/> <br/>
-      <b> Support Phone#: </b>714-221-6311 (Mon-Fri 8:00 AM - 4:30 PM - US Pacific Time)<br/><br/>
-      <b> Email to:</b> capellasupport@acurussolutions.com (including any after-hours support)<br/><br/>
+      <b> Support Phone#: </b>909-281-9856 (Mon-Fri 8:00 AM - 12:00 AM - US Pacific Time)<br/><br/>
+      <b> Email to:</b> capella-support@akidolabs.com (including any after-hours support)<br/><br/>
       <b>Fax:</b> 909-348-8194
     </Address>
   </ContactDeatilsList>

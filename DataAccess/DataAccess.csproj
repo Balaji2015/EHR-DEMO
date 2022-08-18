@@ -155,6 +155,8 @@
     <Compile Include="ManagerObjects\ClientManager.cs" />
     <Compile Include="ManagerObjects\ContextManager.cs" />
     <Compile Include="ManagerObjects\CorrectedDBEntriesManager.cs" />
+    <Compile Include="ManagerObjects\CQMDetailManager.cs" />
+    <Compile Include="ManagerObjects\CQMSummaryManager.cs" />
     <Compile Include="ManagerObjects\CreateExceptionManager.cs" />
     <Compile Include="ManagerObjects\DictationExceptionManager.cs" />
     <Compile Include="ManagerObjects\DocumentManager.cs" />

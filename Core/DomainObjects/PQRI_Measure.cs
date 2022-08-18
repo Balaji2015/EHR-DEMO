@@ -11,13 +11,13 @@ namespace Acurus.Capella.Core.DomainObjects
     {
         #region Decleration
 
-        private int _PQRI_ID = 0;
-        private string _Measure_Name = string.Empty;
+        private int _CQM_Measure_ID = 0;
+        private string _Measurement_Name = string.Empty;
         private string _Description = string.Empty;
         private string _Numerator = string.Empty;
         private string _Denominator = string.Empty;
         private string _Exclusion = string.Empty;
-        private string _Measure_No = string.Empty;
+        private string _Measurement_No = string.Empty;
         private int _Sort_Order = 0;
         //added by vince 2013-06-03//
         private string _Percentage = string.Empty;
@@ -30,6 +30,9 @@ namespace Acurus.Capella.Core.DomainObjects
         private IList<string[]> _ICDCPTDenominatorList = null;
         private IList<string[]> _ICDCPTDenominatorExceptionList = null;
         private IList<string[]> _ICDCPTDenominatorExclusionList = null;
+        private int _Measurement_Year = 0;
+        private int _CQM_Summary_ID = 0;
+
         #endregion
 
         #region Methods
@@ -38,13 +41,13 @@ namespace Acurus.Capella.Core.DomainObjects
         {
             System.Text.StringBuilder sb = new System.Text.StringBuilder();
             sb.Append(this.GetType().FullName);
-            sb.Append(_PQRI_ID);
-            sb.Append(_Measure_Name);
+            sb.Append(_CQM_Measure_ID);
+            sb.Append(_Measurement_Name);
             sb.Append(_Description);
             sb.Append(_Numerator);
             sb.Append(_Denominator);
             sb.Append(_Exclusion);
-            sb.Append(_Measure_No);
+            sb.Append(_Measurement_No);
             sb.Append(_Sort_Order);
             sb.Append(_InitialPatientPopulation);
             sb.Append(_DenominatorExclusion);
@@ -53,23 +56,27 @@ namespace Acurus.Capella.Core.DomainObjects
             sb.Append(_ICDCPTDenominatorList);
             sb.Append(_ICDCPTDenominatorExceptionList);
             sb.Append(_ICDCPTDenominatorExclusionList);
+            sb.Append(_CQM_Summary_ID);
+
+            sb.Append(_Measurement_Year);
+
             return sb.ToString().GetHashCode();
         }
         #endregion
 
         #region Implementation
         [DataMember]
-        public virtual int PQRI_ID
+        public virtual int CQM_Measure_ID
         {
-            get { return _PQRI_ID; }
-            set { _PQRI_ID = value; }
+            get { return _CQM_Measure_ID; }
+            set { _CQM_Measure_ID = value; }
         }
 
         [DataMember]
-        public virtual string Measure_Name
+        public virtual string Measurement_Name
         {
-            get { return _Measure_Name; }
-            set { _Measure_Name = value; }
+            get { return _Measurement_Name; }
+            set { _Measurement_Name = value; }
         }
         [DataMember]
         public virtual string Description
@@ -96,10 +103,10 @@ namespace Acurus.Capella.Core.DomainObjects
             set { _Exclusion = value; }
         }
         [DataMember]
-        public virtual string Measure_No
+        public virtual string Measurement_No
         {
-            get { return _Measure_No; }
-            set { _Measure_No = value; }
+            get { return _Measurement_No; }
+            set { _Measurement_No = value; }
         }
         [DataMember]
         public virtual int Sort_Order
@@ -171,9 +178,19 @@ namespace Acurus.Capella.Core.DomainObjects
             get { return _ICDCPTDenominatorExclusionList; }
             set { _ICDCPTDenominatorExclusionList = value; }
         }
+        [DataMember]
+        public virtual int Measurement_Year
+        {
+            get { return _Measurement_Year; }
+            set { _Measurement_Year = value; }
+        }
 
-
-
+        [DataMember]
+        public virtual int CQM_Summary_ID
+        {
+            get { return _CQM_Summary_ID; }
+            set { _CQM_Summary_ID = value; }
+        }
 
         #endregion
     }

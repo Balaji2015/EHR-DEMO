@@ -190,7 +190,7 @@
                                         <telerik:RadComboBox ID="cboStage" runat="server" Height="100px" Width="125px" CssClass="Editabletxtbox">
                                             <Items>
                                                 <telerik:RadComboBoxItem runat="server" Text="Stage 3" Selected="true" />
-                                                <telerik:RadComboBoxItem runat="server" Text="Stage 2" />
+                                                <%--<telerik:RadComboBoxItem runat="server" Text="Stage 2" />--%>
                                                 <%-- Selected="true" --%>
                                                 <%--<telerik:RadComboBoxItem runat="server" Text="Stage 1" />--%>
                                             </Items>

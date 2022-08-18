@@ -45,7 +45,7 @@
 <MasterVitals Id="43" Vital_Name="BP-Sitting Sys/Dia" Vital_Unit="mm/Hg" Vital_Type="Standard" Sort_Order="13"/>
 <MasterVitals Id="44" Vital_Name="BP-Standing Sys/Dia" Vital_Unit="mm/Hg" Vital_Type="Standard" Sort_Order="15"/>
 <MasterVitals Id="45" Vital_Name="BP-Lying Sys/Dia" Vital_Unit="mm/Hg" Vital_Type="Standard" Sort_Order="17"/>
-<MasterVitals Id="46" Vital_Name="Hgb" Vital_Unit="g/dl" Vital_Type="Standard" Sort_Order="25"/>
+<MasterVitals Id="46" Vital_Name="Hgb" Vital_Unit="g/dL" Vital_Type="Standard" Sort_Order="66"/>
 <MasterVitals Id="47" Vital_Name="eGFR" Vital_Unit="ml/min/1.73m2" Vital_Type="Standard" Sort_Order="31"/>
 <MasterVitals Id="48" Vital_Name="Pulse Oximetry" Vital_Unit="%" Vital_Type="Standard" Sort_Order="33"/>
 <MasterVitals Id="49" Vital_Name="Blood Sugar-Fasting" Vital_Unit="mg/dl" Vital_Type="Standard" Sort_Order="27"/>
@@ -66,7 +66,6 @@
 <MasterVitals Id="64" Vital_Name="Triglycerides" Vital_Unit="mg/dl" Vital_Type="Standard" Sort_Order="63"/>
 <MasterVitals Id="65" Vital_Name="Creatinine" Vital_Unit="mg/dl" Vital_Type="Standard" Sort_Order="64"/>
 <MasterVitals Id="66" Vital_Name="TSH" Vital_Unit="mIU/L" Vital_Type="Standard" Sort_Order="65"/>
-<MasterVitals Id="67" Vital_Name="Hgb" Vital_Unit="g/dL" Vital_Type="Standard" Sort_Order="66"/>
 <MasterVitals Id="68" Vital_Name="Calcium Score" Vital_Unit="mg/dL" Vital_Type="Standard" Sort_Order="67"/>
 <MasterVitals Id="69" Vital_Name="Myocardial Perfusion Imaging" Vital_Unit="" Vital_Type="Standard" Sort_Order="68"/>
 <MasterVitals Id="70" Vital_Name="Cardiac Catheterization" Vital_Unit="" Vital_Type="Standard" Sort_Order="69"/>
@@ -124,5 +123,25 @@
 <MasterVitals Id="142" Vital_Name="Vitamin" Vital_Unit="" Vital_Type="Standard" Sort_Order="131"/>
 <MasterVitals Id="143" Vital_Name="COPD Classification" Vital_Unit="" Vital_Type="Standard" Sort_Order="132"/>
 <MasterVitals Id="144" Vital_Name="Inhaled Oxygen Concentration" Vital_Unit="%" Vital_Type="Standard" Sort_Order="34"/>
+<MasterVitals Id="145" Vital_Name="Last Shingrix1" Vital_Unit="" Vital_Type="Standard" Sort_Order="133"/>
+<MasterVitals Id="146" Vital_Name="Last Shingrix2" Vital_Unit="" Vital_Type="Standard" Sort_Order="134"/>
+<MasterVitals Id="147" Vital_Name="Thyroid Cancer" Vital_Unit="" Vital_Type="Standard" Sort_Order="135"/>
+<MasterVitals Id="148" Vital_Name="Tg" Vital_Unit="" Vital_Type="Standard" Sort_Order="136"/>
+<MasterVitals Id="149" Vital_Name="TgAb" Vital_Unit="" Vital_Type="Standard" Sort_Order="137"/>
+<MasterVitals Id="150" Vital_Name="Free T4" Vital_Unit="" Vital_Type="Standard" Sort_Order="138"/>
+<MasterVitals Id="151" Vital_Name="TSH" Vital_Unit="" Vital_Type="Standard" Sort_Order="139"/>
+<MasterVitals Id="152" Vital_Name="Special Test" Vital_Unit="" Vital_Type="Standard" Sort_Order="140"/>
+<MasterVitals Id="153" Vital_Name="Treatment" Vital_Unit="" Vital_Type="Standard" Sort_Order="141"/>
+<MasterVitals Id="154" Vital_Name="SCS" Vital_Unit="" Vital_Type="Standard" Sort_Order="142"/>
+<MasterVitals Id="155" Vital_Name="Stress Echocardiogram" Vital_Unit="" Vital_Type="Standard" Sort_Order="143"/>
+<MasterVitals Id="156" Vital_Name="Lower Extremity Arterial Ultrasound" Vital_Unit="" Vital_Type="Standard" Sort_Order="144"/>
+<MasterVitals Id="157" Vital_Name="Other 1" Vital_Unit="" Vital_Type="Standard" Sort_Order="145"/>
+<MasterVitals Id="158" Vital_Name="Other 2" Vital_Unit="" Vital_Type="Standard" Sort_Order="146"/>
+<MasterVitals Id="159" Vital_Name="Test Results" Vital_Unit="" Vital_Type="Standard" Sort_Order="147"/>
+<MasterVitals Id="160" Vital_Name="Tests/Procedures" Vital_Unit="" Vital_Type="Standard" Sort_Order="148"/>
+<MasterVitals Id="164" Vital_Name="General Results" Vital_Unit="" Vital_Type="Standard" Sort_Order="152"/>
+<MasterVitals Id="165" Vital_Name="Last Colonoscopy" Vital_Unit="" Vital_Type="Standard" Sort_Order="50"/>
+<MasterVitals Id="166" Vital_Name="CT colonography" Vital_Unit="" Vital_Type="Standard" Sort_Order="153"/>
+<MasterVitals Id="167" Vital_Name="FIT-DNA" Vital_Unit="" Vital_Type="Standard" Sort_Order="154"/>
 
 </MasterVitalsList>

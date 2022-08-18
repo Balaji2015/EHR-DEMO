@@ -542,6 +542,12 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
         IClientManager GetClientManager();
         IClientManager GetClientManager(INHibernateSession session);
 
+        ICQMSummaryManager GetCQMSummaryManager();
+        ICQMSummaryManager GetCQMSummaryManager(INHibernateSession session);
+
+        ICQMDetailManager GetCQMDetailManager();
+        ICQMDetailManager GetCQMDetailManager(INHibernateSession session);
+
     }
 
     public class ManagerFactory : IManagerFactory
@@ -2210,6 +2216,24 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
         public IClientManager GetClientManager(INHibernateSession session)
         {
             return new ClientManager(session);
+        }
+
+        public ICQMSummaryManager GetCQMSummaryManager()
+        {
+            return new CQMSummaryManager();
+        }
+        public ICQMSummaryManager GetCQMSummaryManager(INHibernateSession session)
+        {
+            return new CQMSummaryManager(session);
+        }
+
+        public ICQMDetailManager GetCQMDetailManager()
+        {
+            return new CQMDetailManager();
+        }
+        public ICQMDetailManager GetCQMDetailManager(INHibernateSession session)
+        {
+            return new CQMDetailManager(session);
         }
         #endregion
     }

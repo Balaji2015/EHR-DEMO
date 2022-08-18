@@ -1,5 +1,21 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <CapellaScribeLookupList>
-<CapellaScribeLookup ProviderUserName="DROBLES" ProviderID="252" ScribeUserName="AUCHE_SCRIBE" ScribeID="4486" Legal_Org="CMG"/>
+<CapellaScribeLookup ProviderUserName="EKONCA" ProviderID="102" ScribeUserName="SCRIBE_1" ScribeID="4664" Legal_Org="CMG"/>
+<CapellaScribeLookup ProviderUserName="HALLA" ProviderID="179" ScribeUserName="SCRIBE1_ALLA" ScribeID="4928" Legal_Org="CMG"/>
+<CapellaScribeLookup ProviderUserName="DROBLES" ProviderID="252" ScribeUserName="SCRIBE_1" ScribeID="4664" Legal_Org="CMG"/>
+<CapellaScribeLookup ProviderUserName="SREDDY" ProviderID="2377" ScribeUserName="SCRIBE_1" ScribeID="4664" Legal_Org="CMG"/>
+<CapellaScribeLookup ProviderUserName="PA_1" ProviderID="2853" ScribeUserName="SCRIBE_1" ScribeID="4664" Legal_Org="CMG"/>
+<CapellaScribeLookup ProviderUserName="PHY_1" ProviderID="2854" ScribeUserName="SCRIBE_1" ScribeID="4664" Legal_Org="CMG"/>
+<CapellaScribeLookup ProviderUserName="HMAKWANA" ProviderID="4251" ScribeUserName="SCRIBE_1" ScribeID="4664" Legal_Org="CMG"/>
+<CapellaScribeLookup ProviderUserName="GPARIKH" ProviderID="4296" ScribeUserName="SCRIBE1_PARIKH" ScribeID="4932" Legal_Org="CMG"/>
+<CapellaScribeLookup ProviderUserName="PHY_7" ProviderID="4328" ScribeUserName="SCRIBE_1" ScribeID="4664" Legal_Org="CMG"/>
+<CapellaScribeLookup ProviderUserName="SRASANIA" ProviderID="4516" ScribeUserName="SCRIBE_1" ScribeID="4664" Legal_Org="CMG"/>
+<CapellaScribeLookup ProviderUserName="UVB_DROBLES" ProviderID="4649" ScribeUserName="SCRIBE_1" ScribeID="4664" Legal_Org="CMG"/>
+<CapellaScribeLookup ProviderUserName="ZMARINA" ProviderID="4738" ScribeUserName="SCRIBE_1" ScribeID="4664" Legal_Org="CMG"/>
+<CapellaScribeLookup ProviderUserName="CMONTESA" ProviderID="4792" ScribeUserName="SCRIBE_1" ScribeID="4664" Legal_Org="CMG"/>
+<CapellaScribeLookup ProviderUserName="HCOHEN" ProviderID="4814" ScribeUserName="SCRIBE_1" ScribeID="4664" Legal_Org="CMG"/>
+<CapellaScribeLookup ProviderUserName="PHY_5" ProviderID="4844" ScribeUserName="SCRIBE_1" ScribeID="4664" Legal_Org="CMG"/>
+<CapellaScribeLookup ProviderUserName="PA_5" ProviderID="4845" ScribeUserName="SCRIBE_1" ScribeID="4664" Legal_Org="CMG"/>
+<CapellaScribeLookup ProviderUserName="JWOODSON" ProviderID="5005" ScribeUserName="SCRIBE_1" ScribeID="4664" Legal_Org="CMG"/>
 
 </CapellaScribeLookupList>

@@ -1,8 +1,273 @@
-﻿<?xml version="1.0" encoding="utf-8" ?>
+<?xml version="1.0" encoding="UTF-8"?>
 <PhyAsstSpecificProtocolsList>
-  <PhyAsstSpecificProtocol id="3077" value="VELMA D YEP">
-    <PhysicianList>
-      <Physician id="102" value="Dr. Ewa H Konca" rule="CA Regulatory Rule"></Physician>
-    </PhysicianList>
-  </PhyAsstSpecificProtocol>
+<PhyAsstSpecificProtocol id="3103" value="ANTHONY ANTENORCRUZ PA-C" >
+<PhysicianList>
+<Physician id="237" value="Dr. Peter J Niciforos M.D." rule="CMG Rule - 100% of the charts" />
+</PhysicianList>
+</PhyAsstSpecificProtocol>
+<PhyAsstSpecificProtocol id="680" value="Annette Hollenbeck PA" >
+<PhysicianList>
+<Physician id="227" value="Dr. Rishu Marwaha M.D." rule="CMG Rule - 100% of the charts" />
+</PhysicianList>
+</PhyAsstSpecificProtocol>
+<PhyAsstSpecificProtocol id="2781" value="Alejandra Nieto PAC" >
+<PhysicianList>
+<Physician id="205" value="Dr.Roger Hall DO" rule="CMG Rule - 100% of the charts" />
+</PhysicianList>
+</PhyAsstSpecificProtocol>
+<PhyAsstSpecificProtocol id="4485" value="Aime Rodriguez" >
+<PhysicianList>
+<Physician id="4251" value="Dr. Hetalben G Makwana M.D." rule="CMG Rule - 100% of the charts" />
+</PhysicianList>
+</PhyAsstSpecificProtocol>
+<PhyAsstSpecificProtocol id="4154" value="Brian Hughes PA-C" >
+<PhysicianList>
+<Physician id="4199" value="Dr. Christopher Harper M.D." rule="CMG Rule - 100% of the charts" />
+</PhysicianList>
+</PhyAsstSpecificProtocol>
+<PhyAsstSpecificProtocol id="2862" value="Britney Kaufman PA" >
+<PhysicianList>
+<Physician id="252" value="Dr. David Robles M.D, PhD." rule="CMG Rule - 100% of the charts" />
+</PhysicianList>
+</PhyAsstSpecificProtocol>
+<PhyAsstSpecificProtocol id="4412" value="Christina Turner" >
+<PhysicianList>
+<Physician id="102" value="Dr. Ewa H Konca M.D." rule="CMG Rule - 100% of the charts" />
+</PhysicianList>
+</PhyAsstSpecificProtocol>
+<PhyAsstSpecificProtocol id="4191" value="Heather Heck PA-C" >
+<PhysicianList>
+<Physician id="102" value="Dr. Ewa H Konca M.D." rule="CMG Rule - 100% of the charts" />
+</PhysicianList>
+</PhyAsstSpecificProtocol>
+<PhyAsstSpecificProtocol id="2010" value="John Hoang PA-C" >
+<PhysicianList>
+<Physician id="4198" value="Dr. Harish Yalamanchili M.D." rule="CMG Rule - 100% of the charts" />
+</PhysicianList>
+</PhyAsstSpecificProtocol>
+<PhyAsstSpecificProtocol id="1921" value="John Medina, PA" >
+<PhysicianList>
+<Physician id="237" value="Dr. Peter J Niciforos M.D." rule="CMG Rule - 100% of the charts" />
+</PhysicianList>
+</PhyAsstSpecificProtocol>
+<PhyAsstSpecificProtocol id="254" value="Jane E Rodgers PA" >
+<PhysicianList>
+<Physician id="4199" value="Dr. Christopher Harper M.D." rule="CMG Rule - 100% of the charts" />
+</PhysicianList>
+</PhyAsstSpecificProtocol>
+<PhyAsstSpecificProtocol id="3053" value="James Seto, PA" >
+<PhysicianList>
+<Physician id="237" value="Dr. Peter J Niciforos M.D." rule="CMG Rule - 100% of the charts" />
+</PhysicianList>
+</PhyAsstSpecificProtocol>
+<PhyAsstSpecificProtocol id="4200" value="KRISTIN MICKELSON PA" >
+<PhysicianList>
+<Physician id="252" value="Dr. David Robles M.D, PhD." rule="CMG Rule - 100% of the charts" />
+</PhysicianList>
+</PhyAsstSpecificProtocol>
+<PhyAsstSpecificProtocol id="2826" value="Lyda Del Toro" >
+<PhysicianList>
+<Physician id="205" value="Dr.Roger Hall DO" rule="CMG Rule - 100% of the charts" />
+</PhysicianList>
+</PhyAsstSpecificProtocol>
+<PhyAsstSpecificProtocol id="4064" value="Leslie Vanessa Theroith FNP" >
+<PhysicianList>
+<Physician id="237" value="Dr. Peter J Niciforos M.D." rule="CMG Rule - 100% of the charts" />
+</PhysicianList>
+</PhyAsstSpecificProtocol>
+<PhyAsstSpecificProtocol id="4204" value="Meredith Dettmar PA" >
+<PhysicianList>
+<Physician id="102" value="Dr. Ewa H Konca M.D." rule="CMG Rule - 100% of the charts" />
+</PhysicianList>
+</PhyAsstSpecificProtocol>
+<PhyAsstSpecificProtocol id="3113" value="Roxanne Smiley PAC" >
+<PhysicianList>
+<Physician id="237" value="Dr. Peter J Niciforos M.D." rule="CMG Rule - 100% of the charts" />
+</PhysicianList>
+</PhyAsstSpecificProtocol>
+<PhyAsstSpecificProtocol id="3104" value="Stephanie Clark-Poveda, PA-C" >
+<PhysicianList>
+<Physician id="237" value="Dr. Peter J Niciforos M.D." rule="CMG Rule - 100% of the charts" />
+</PhysicianList>
+</PhyAsstSpecificProtocol>
+<PhyAsstSpecificProtocol id="2860" value="Charlaine S Williamson N.P." >
+<PhysicianList>
+<Physician id="102" value="Dr. Ewa H Konca M.D." rule="CMG Rule - 100% of the charts" />
+</PhysicianList>
+</PhyAsstSpecificProtocol>
+<PhyAsstSpecificProtocol id="109" value="Vanessa Pedrego PA-C" >
+<PhysicianList>
+<Physician id="102" value="Dr. Ewa H Konca M.D." rule="CMG Rule - 100% of the charts" />
+</PhysicianList>
+</PhyAsstSpecificProtocol>
+<PhyAsstSpecificProtocol id="3077" value="Velma D Yep NP-C" >
+<PhysicianList>
+<Physician id="237" value="Dr. Peter J Niciforos M.D." rule="CMG Rule - 100% of the charts" />
+</PhysicianList>
+</PhyAsstSpecificProtocol>
+<PhyAsstSpecificProtocol id="4548" value="Michelle Lancaster PA-C" >
+<PhysicianList>
+<Physician id="230" value="Dr. Ali H. Mesiwala, M.D." rule="CMG Rule - 100% of the charts" />
+</PhysicianList>
+</PhyAsstSpecificProtocol>
+<PhyAsstSpecificProtocol id="4579" value="Alexandra Interiano NP" >
+<PhysicianList>
+<Physician id="2782" value="Dr. Lisa C Butler M.D." rule="CMG Rule - 100% of the charts" />
+</PhysicianList>
+</PhyAsstSpecificProtocol>
+<PhyAsstSpecificProtocol id="4610" value="Sean Flynn, PA-C" >
+<PhysicianList>
+<Physician id="102" value="Dr. Ewa H Konca M.D." rule="CMG Rule - 100% of the charts" />
+</PhysicianList>
+</PhyAsstSpecificProtocol>
+<PhyAsstSpecificProtocol id="4625" value="Erica Faylor, FNP" >
+<PhysicianList>
+<Physician id="2841" value="Dr. Khader K Abounasr M.D." rule="CMG Rule - 100% of the charts" />
+</PhysicianList>
+</PhyAsstSpecificProtocol>
+<PhyAsstSpecificProtocol id="" value="" >
+<PhysicianList>
+<Physician id="230" value="Dr. Ali H. Mesiwala, M.D." rule="CMG Rule - 100% of the charts" />
+</PhysicianList>
+</PhyAsstSpecificProtocol>
+<PhyAsstSpecificProtocol id="4721" value="Chase Atckison, DO" >
+<PhysicianList>
+<Physician id="2815" value="Dr. Mary Kasem MD" rule="CMG Rule - 100% of the charts" />
+</PhysicianList>
+</PhyAsstSpecificProtocol>
+<PhyAsstSpecificProtocol id="4722" value="Jenaya Calderilla, DO" >
+<PhysicianList>
+<Physician id="2815" value="Dr. Mary Kasem MD" rule="CMG Rule - 100% of the charts" />
+</PhysicianList>
+</PhyAsstSpecificProtocol>
+<PhyAsstSpecificProtocol id="4723" value="Shruti Katbamna, MD" >
+<PhysicianList>
+<Physician id="2815" value="Dr. Mary Kasem MD" rule="CMG Rule - 100% of the charts" />
+</PhysicianList>
+</PhyAsstSpecificProtocol>
+<PhyAsstSpecificProtocol id="4724" value="Edward Lin, DO" >
+<PhysicianList>
+<Physician id="2815" value="Dr. Mary Kasem MD" rule="CMG Rule - 100% of the charts" />
+</PhysicianList>
+</PhyAsstSpecificProtocol>
+<PhyAsstSpecificProtocol id="4725" value="Anika Muthaiah, MD" >
+<PhysicianList>
+<Physician id="2815" value="Dr. Mary Kasem MD" rule="CMG Rule - 100% of the charts" />
+</PhysicianList>
+</PhyAsstSpecificProtocol>
+<PhyAsstSpecificProtocol id="4726" value="Swapna Upparlapalli, MD" >
+<PhysicianList>
+<Physician id="2815" value="Dr. Mary Kasem MD" rule="CMG Rule - 100% of the charts" />
+</PhysicianList>
+</PhyAsstSpecificProtocol>
+<PhyAsstSpecificProtocol id="4727" value="Nageena Potluri, MD" >
+<PhysicianList>
+<Physician id="2815" value="Dr. Mary Kasem MD" rule="CMG Rule - 100% of the charts" />
+</PhysicianList>
+</PhyAsstSpecificProtocol>
+<PhyAsstSpecificProtocol id="4728" value="Crystal Rhea, DO" >
+<PhysicianList>
+<Physician id="2815" value="Dr. Mary Kasem MD" rule="CMG Rule - 100% of the charts" />
+</PhysicianList>
+</PhyAsstSpecificProtocol>
+<PhyAsstSpecificProtocol id="4729" value="Edward Speltie, DO" >
+<PhysicianList>
+<Physician id="2815" value="Dr. Mary Kasem MD" rule="CMG Rule - 100% of the charts" />
+</PhysicianList>
+</PhyAsstSpecificProtocol>
+<PhyAsstSpecificProtocol id="4730" value="Erik Wiele, DO" >
+<PhysicianList>
+<Physician id="2815" value="Dr. Mary Kasem MD" rule="CMG Rule - 100% of the charts" />
+</PhysicianList>
+</PhyAsstSpecificProtocol>
+<PhyAsstSpecificProtocol id="4731" value="Anastasia Collins, DO" >
+<PhysicianList>
+<Physician id="2815" value="Dr. Mary Kasem MD" rule="CMG Rule - 100% of the charts" />
+</PhysicianList>
+</PhyAsstSpecificProtocol>
+<PhyAsstSpecificProtocol id="4738" value="Marina Zanzarini PA-C" >
+<PhysicianList>
+<Physician id="102" value="Dr. Ewa H Konca M.D." rule="CMG Rule - 100% of the charts" />
+</PhysicianList>
+</PhyAsstSpecificProtocol>
+<PhyAsstSpecificProtocol id="4772" value="Daniel Kim, PA" >
+<PhysicianList>
+<Physician id="204" value="Dr. Neeraj Gupta M.D." rule="CMG Rule - 100% of the charts" />
+</PhysicianList>
+</PhyAsstSpecificProtocol>
+<PhyAsstSpecificProtocol id="4777" value="Arzoo Sadiqi" >
+<PhysicianList>
+<Physician id="2815" value="Dr. Mary Kasem MD" rule="CMG Rule - 100% of the charts" />
+</PhysicianList>
+</PhyAsstSpecificProtocol>
+<PhyAsstSpecificProtocol id="4821" value="Rohan Bassi, NP-C" >
+<PhysicianList>
+<Physician id="248" value="Dr. Jayapal A Reddy M.D." rule="CMG Rule - 100% of the charts" />
+</PhysicianList>
+</PhyAsstSpecificProtocol>
+<PhyAsstSpecificProtocol id="4828" value="Jalpa Chaudhari, NP" >
+<PhysicianList>
+<Physician id="4782" value="Dr.Maher Tama, MD" rule="CMG Rule - 100% of the charts" />
+</PhysicianList>
+</PhyAsstSpecificProtocol>
+<PhyAsstSpecificProtocol id="4840" value="Louis Sithu, FNP" >
+<PhysicianList>
+<Physician id="237" value="Dr. Peter J Niciforos M.D." rule="CMG Rule - 100% of the charts" />
+</PhysicianList>
+</PhyAsstSpecificProtocol>
+<PhyAsstSpecificProtocol id="4841" value="Peter Carreon, FNP" >
+<PhysicianList>
+<Physician id="237" value="Dr. Peter J Niciforos M.D." rule="CMG Rule - 100% of the charts" />
+</PhysicianList>
+</PhyAsstSpecificProtocol>
+<PhyAsstSpecificProtocol id="2853" value="PA_1" >
+<PhysicianList>
+<Physician id="4844" value="Dr. PHY_5 TEST M.D" rule="CMG Rule - 100% of the charts" />
+</PhysicianList>
+</PhyAsstSpecificProtocol>
+<PhyAsstSpecificProtocol id="4845" value="PA_5" >
+<PhysicianList>
+<Physician id="4328" value="PHY_7" rule="CMG Rule - 100% of the charts" />
+</PhysicianList>
+</PhyAsstSpecificProtocol>
+<PhyAsstSpecificProtocol id="4904" value="Brianda Ulloa, PA-C" >
+<PhysicianList>
+<Physician id="102" value="Dr. Ewa H Konca M.D." rule="CMG Rule - 100% of the charts" />
+</PhysicianList>
+</PhyAsstSpecificProtocol>
+<PhyAsstSpecificProtocol id="4905" value="David Cao, PA-C" >
+<PhysicianList>
+<Physician id="102" value="Dr. Ewa H Konca M.D." rule="CMG Rule - 100% of the charts" />
+</PhysicianList>
+</PhyAsstSpecificProtocol>
+<PhyAsstSpecificProtocol id="4906" value="Jessica Garner, FNP-C" >
+<PhysicianList>
+<Physician id="2841" value="Dr. Khader K Abounasr M.D." rule="CMG Rule - 100% of the charts" />
+</PhysicianList>
+</PhyAsstSpecificProtocol>
+<PhyAsstSpecificProtocol id="4929" value="Jane Ellen Dietzel, NP" >
+<PhysicianList>
+<Physician id="4814" value="Dr. Harvey D Cohen M.D." rule="CMG Rule - 100% of the charts" />
+</PhysicianList>
+</PhyAsstSpecificProtocol>
+<PhyAsstSpecificProtocol id="4952" value="Aman Sircar, DNP, FNP-C" >
+<PhysicianList>
+<Physician id="237" value="Dr. Peter J Niciforos M.D." rule="CMG Rule - 100% of the charts" />
+</PhysicianList>
+</PhyAsstSpecificProtocol>
+<PhyAsstSpecificProtocol id="4962" value="Brooke Heying, PA" >
+<PhysicianList>
+<Physician id="179" value="Dr. Haritha R Alla M.D.,F.A.C.C.,R.P.V.I." rule="CMG Rule - 100% of the charts" />
+</PhysicianList>
+</PhyAsstSpecificProtocol>
+<PhyAsstSpecificProtocol id="4963" value="Carolyn Marie Dreyer, NP" >
+<PhysicianList>
+<Physician id="4814" value="Dr. Harvey D Cohen M.D." rule="CMG Rule - 100% of the charts" />
+</PhysicianList>
+</PhyAsstSpecificProtocol>
+<PhyAsstSpecificProtocol id="5024" value="Nancy Si Jia Meng, NP" >
+<PhysicianList>
+<Physician id="102" value="Dr. Ewa H Konca M.D." rule="CMG Rule - 100% of the charts" />
+</PhysicianList>
+</PhyAsstSpecificProtocol>
 </PhyAsstSpecificProtocolsList>

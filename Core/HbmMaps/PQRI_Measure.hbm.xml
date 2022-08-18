@@ -1,15 +1,13 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?> 
 <hibernate-mapping xmlns="urn:nhibernate-mapping-2.2" namespace="Acurus.Capella.Core.DomainObjects" assembly="Acurus.Capella">
-  <class name="Acurus.Capella.Core.DomainObjects.PQRI_Measure, Acurus.Capella.Core" table="pqri_measure" lazy="true">
-    <id name="Id" column="PQRI_ID">
+  <class name="Acurus.Capella.Core.DomainObjects.PQRI_Measure, Acurus.Capella.Core" table="cqm_measure" lazy="true">
+    <id name="Id" column="CQM_Measure_ID">
       <generator class="assigned" />
     </id>
-    <property name="Measure_Name" column="Measure_Name" />
-    <property name="Description" column="Description" />
-    <property name="Numerator" column="Numerator" />
-    <property name="Denominator" column="Denominator" />
-    <property name="Exclusion" column="Exclusion" />
-    <property name="Measure_No" column="Measure_No" />
+	  <property name="Measurement_No" column="Measurement_No" />
+    <property name="Measurement_Name" column="Measurement_Name" />
     <property name="Sort_Order" column="Sort_Order" />
-   </class>
+	  <property name="Measurement_Year" column="Measurement_Year" />
+
+  </class>
 </hibernate-mapping>

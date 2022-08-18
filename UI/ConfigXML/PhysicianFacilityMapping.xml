@@ -1,256 +1,241 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <ROOT>
 <PhyList>
-<Facility name="1196 N PARK AVE" default-physician-id="4420">
-</Facility>
-<Facility name="1330 SAN BERNARDINO RD #G" default-physician-id="4779">
-<Physician prefix="Dr." firstname="Ani" middlename="" lastname="Berberyan" suffix="MD" username="ABERBERYAN" ID="4779" status="Y" npi="1700230224" machine_technician_id="0" Legal_Org="CMG"/>
+<Facility name="1330 SAN BERNARDINO RD #G" default-physician-id="4779" Legal_Org="CMG">
 <Physician prefix="" firstname="TECH VISIT" middlename="" lastname="" suffix="" username="TECH_VISIT" ID="4420" status="Y" npi="" machine_technician_id="0" Legal_Org="CMG"/>
 </Facility>
-<Facility name="138 HARVARD AVE" default-physician-id="261">
+<Facility name="138 HARVARD AVE" default-physician-id="261" Legal_Org="CMG">
 <Physician prefix="Dr." firstname="Ashok" middlename="V" lastname="Sharma" suffix="M.D." username="ASHARMA" ID="261" status="Y" npi="1205804580" machine_technician_id="0" Legal_Org="CMG"/>
 <Physician prefix="Dr." firstname="Hla Myint Maung" middlename="S" lastname="Hwang" suffix="M.D." username="HHMAUNG" ID="3257" status="Y" npi="1356357560" machine_technician_id="0" Legal_Org="CMG"/>
 <Physician prefix="Dr." firstname="Krishi" middlename="" lastname="Chanduri" suffix="MD" username="KCHANDURI" ID="4294" status="Y" npi="1598957540" machine_technician_id="0" Legal_Org="CMG"/>
 </Facility>
-<Facility name="1382 E FOOTHILL BLVD" default-physician-id="4779">
+<Facility name="1382 E FOOTHILL BLVD" default-physician-id="4779" Legal_Org="CMG">
 <Physician prefix="Dr." firstname="Ani" middlename="" lastname="Berberyan" suffix="MD" username="ABERBERYAN" ID="4779" status="Y" npi="1700230224" machine_technician_id="0" Legal_Org="CMG"/>
 </Facility>
-<Facility name="160 E ARTESIA #220" default-physician-id="4289">
-<Physician prefix="Dr." firstname="Jerry Jin-Hyoung" middlename="" lastname="Kim" suffix="M.D." username="JKIM" ID="4783" status="Y" npi="1912295510" machine_technician_id="0" Legal_Org="CMG"/>
-<Physician prefix="Dr." firstname="Sana Ahmad" middlename="" lastname="Qureshi" suffix="" username="SAQURESHI" ID="4945" status="Y" npi="1427476894" machine_technician_id="0" Legal_Org="CMG"/>
-<Physician prefix="Dr." firstname="Sharyn" middlename="D" lastname="Brekhus" suffix="M.D" username="SBREKHUS" ID="3066" status="Y" npi="1003995093" machine_technician_id="0" Legal_Org="CMG"/>
-<Physician prefix="Dr." firstname="Kavoos" middlename="C" lastname="Nazeri" suffix="M.D." username="SNAZERI" ID="2857" status="Y" npi="1477731644" machine_technician_id="0" Legal_Org="CMG"/>
+<Facility name="160 E ARTESIA #220" default-physician-id="4289" Legal_Org="CMG">
 <Physician prefix="Dr." firstname="Samudrala" middlename="" lastname="Srinath" suffix="M.D." username="SSRINATH" ID="4289" status="Y" npi=" 155830294" machine_technician_id="0" Legal_Org="CMG"/>
 <Physician prefix="" firstname="TECH VISIT" middlename="" lastname="" suffix="" username="TECH_VISIT" ID="4420" status="Y" npi="" machine_technician_id="0" Legal_Org="CMG"/>
-<Physician prefix="Dr." firstname="Yvette" middlename="" lastname="Marquez" suffix="M.D" username="YMARQUEZ" ID="4151" status="Y" npi="1255640892" machine_technician_id="0" Legal_Org="CMG"/>
+<Physician prefix="Dr." firstname="Jerry Jin-Hyoung" middlename="" lastname="Kim" suffix="M.D." username="JKIM" ID="4783" status="Y" npi="1912295510" machine_technician_id="0" Legal_Org="CMG"/>
+<Physician prefix="Dr." firstname="Kavoos" middlename="C" lastname="Nazeri" suffix="M.D." username="SNAZERI" ID="2857" status="Y" npi="1477731644" machine_technician_id="0" Legal_Org="CMG"/>
+<Physician prefix="Dr." firstname="Sana Ahmad" middlename="" lastname="Qureshi" suffix="" username="SAQURESHI" ID="4945" status="Y" npi="1427476894" machine_technician_id="0" Legal_Org="CMG"/>
 </Facility>
-<Facility name="160 E. ARTESIA STREET, STE #360" default-physician-id="204">
-<Physician prefix="Dr." firstname="Daniel" middlename="" lastname="Lee" suffix="M.D." username="DLEE" ID="1897" status="Y" npi="1659533115" machine_technician_id="0" Legal_Org="CMG"/>
-<Physician prefix="Dr." firstname="Gregory" middlename="R" lastname="Lercel" suffix="M.D." username="GLERCEL" ID="222" status="Y" npi="1942232723" machine_technician_id="0" Legal_Org="CMG"/>
+<Facility name="160 E. ARTESIA STREET, STE #360" default-physician-id="204" Legal_Org="CMG">
 <Physician prefix="Dr." firstname="Neeraj" middlename="" lastname="Gupta" suffix="M.D." username="NGUPTA" ID="204" status="Y" npi="1457329732" machine_technician_id="0" Legal_Org="CMG"/>
+<Physician prefix="Dr." firstname="Gregory" middlename="R" lastname="Lercel" suffix="M.D." username="GLERCEL" ID="222" status="Y" npi="1942232723" machine_technician_id="0" Legal_Org="CMG"/>
 <Physician prefix="" firstname="TECH VISIT" middlename="" lastname="" suffix="" username="TECH_VISIT" ID="4420" status="Y" npi="" machine_technician_id="0" Legal_Org="CMG"/>
 </Facility>
-<Facility name="16465 S LAKES PRKWY # 250" default-physician-id="4420">
+<Facility name="16465 S LAKES PRKWY # 250" default-physician-id="4420" Legal_Org="CMG">
 <Physician prefix="" firstname="TECH VISIT" middlename="" lastname="" suffix="" username="TECH_VISIT" ID="4420" status="Y" npi="" machine_technician_id="0" Legal_Org="CMG"/>
 </Facility>
-<Facility name="1866 N OG AVE # 101" default-physician-id="4420">
-</Facility>
-<Facility name="1866 N OG AVE # 102" default-physician-id="268">
-</Facility>
-<Facility name="1866 N OG AVE # 102-A" default-physician-id="107">
+<Facility name="1866 N OG AVE # 102-A" default-physician-id="107" Legal_Org="CMG">
 <Physician prefix="Dr." firstname="Daryoosh" middlename="" lastname="Valamanesh" suffix="M.D." username="DVALAMANESH" ID="107" status="Y" npi="1205804671" machine_technician_id="0" Legal_Org="CMG"/>
 <Physician prefix="" firstname="TECH VISIT" middlename="" lastname="" suffix="" username="TECH_VISIT" ID="4420" status="Y" npi="" machine_technician_id="0" Legal_Org="CMG"/>
 </Facility>
-<Facility name="1866 N OG AVE # 102-B" default-physician-id="227">
+<Facility name="1866 N OG AVE # 102-B" default-physician-id="227" Legal_Org="CMG">
 <Physician prefix="Dr." firstname="Rishu" middlename="" lastname="Marwaha" suffix="M.D." username="RMARWAHA" ID="227" status="Y" npi="1457490294" machine_technician_id="0" Legal_Org="CMG"/>
 <Physician prefix="" firstname="TECH VISIT" middlename="" lastname="" suffix="" username="TECH_VISIT" ID="4420" status="Y" npi="" machine_technician_id="0" Legal_Org="CMG"/>
 </Facility>
-<Facility name="1866 N OG AVE # 102-C" default-physician-id="213">
+<Facility name="1866 N OG AVE # 102-C" default-physician-id="213" Legal_Org="CMG">
 <Physician prefix="" firstname="TECH VISIT" middlename="" lastname="" suffix="" username="TECH_VISIT" ID="4420" status="Y" npi="" machine_technician_id="0" Legal_Org="CMG"/>
 </Facility>
-<Facility name="1866 N OG AVE # 104" default-physician-id="2377">
-<Physician prefix="Dr." firstname="Sudhir" middlename="K" lastname="Reddy" suffix="M.D." username="SREDDY" ID="2377" status="Y" npi="1720015282" machine_technician_id="0" Legal_Org="CMG"/>
+<Facility name="1866 N OG AVE # 104" default-physician-id="2377" Legal_Org="CMG">
 <Physician prefix="" firstname="TECH VISIT" middlename="" lastname="" suffix="" username="TECH_VISIT" ID="4420" status="Y" npi="" machine_technician_id="0" Legal_Org="CMG"/>
+<Physician prefix="Dr." firstname="Sudhir" middlename="K" lastname="Reddy" suffix="M.D." username="SREDDY" ID="2377" status="Y" npi="1720015282" machine_technician_id="0" Legal_Org="CMG"/>
+<Physician prefix="" firstname="Leslie Vanessa" middlename="" lastname="Theroith" suffix="FNP" username="LTHEROITH" ID="4064" status="Y" npi="1841473097" machine_technician_id="0" Legal_Org="CMG"/>
+<Physician prefix="Dr." firstname="Mysore" middlename="" lastname="Nagaraja" suffix="MD" username="MNAGARAJA" ID="4799" status="Y" npi="1760451298" machine_technician_id="0" Legal_Org="CMG"/>
 <Physician prefix="Dr." firstname="Yeong" middlename="" lastname="Sheu" suffix="M.D." username="YSHEU" ID="4868" status="Y" npi="1700865177" machine_technician_id="0" Legal_Org="CMG"/>
 </Facility>
-<Facility name="1866 N OG AVE # 201" default-physician-id="3122">
-<Physician prefix="Dr." firstname="Ramanna" middlename="" lastname="Merla" suffix="M.D." username="RMERLA" ID="3075" status="Y" npi="1336343912" machine_technician_id="0" Legal_Org="CMG"/>
-<Physician prefix="" firstname="TECH VISIT" middlename="" lastname="" suffix="" username="TECH_VISIT" ID="4420" status="Y" npi="" machine_technician_id="0" Legal_Org="CMG"/>
+<Facility name="1866 N OG AVE # 201" default-physician-id="3122" Legal_Org="CMG">
 <Physician prefix="Dr." firstname="William" middlename="L" lastname="Discepolo" suffix="M.D." username="WDISCEPOLO" ID="3122" status="Y" npi="1932308137" machine_technician_id="0" Legal_Org="CMG"/>
+<Physician prefix="" firstname="TECH VISIT" middlename="" lastname="" suffix="" username="TECH_VISIT" ID="4420" status="Y" npi="" machine_technician_id="0" Legal_Org="CMG"/>
+<Physician prefix="Dr." firstname="Ramanna" middlename="" lastname="Merla" suffix="M.D." username="RMERLA" ID="3075" status="Y" npi="1336343912" machine_technician_id="0" Legal_Org="CMG"/>
 </Facility>
-<Facility name="1866 N OG AVE # 202" default-physician-id="3111">
+<Facility name="1866 N OG AVE # 202" default-physician-id="3111" Legal_Org="CMG">
+<Physician prefix="Dr." firstname="Muthusamy" middlename="" lastname="Muthiah" suffix="MD,FACC,MHA" username="MMUTHIAH" ID="234" status="Y" npi="1679541148" machine_technician_id="0" Legal_Org="CMG"/>
+<Physician prefix="Dr." firstname="Rama" middlename="" lastname="Thumati" suffix="MD,FACC" username="RTHUMATI" ID="268" status="Y" npi="1841268240" machine_technician_id="0" Legal_Org="CMG"/>
+<Physician prefix="Dr." firstname="Jayapal" middlename="A" lastname="Reddy" suffix="M.D." username="JREDDY" ID="248" status="Y" npi="1073573903" machine_technician_id="0" Legal_Org="CMG"/>
+<Physician prefix="Dr." firstname="Nitanth" middlename="" lastname="Vangala" suffix="M.D." username="NVANGALA" ID="3111" status="Y" npi="1861690141" machine_technician_id="0" Legal_Org="CMG"/>
 <Physician prefix="Dr." firstname="Gaurav" middlename="" lastname="Parikh" suffix="M.D." username="GPARIKH" ID="4296" status="Y" npi="1144494550" machine_technician_id="0" Legal_Org="CMG"/>
 <Physician prefix="Dr." firstname="Haritha" middlename="R" lastname="Alla" suffix="M.D.,F.A.C.C.,R.P.V.I." username="HALLA" ID="179" status="Y" npi="1487739835" machine_technician_id="0" Legal_Org="CMG"/>
-<Physician prefix="Dr." firstname="Jayapal" middlename="A" lastname="Reddy" suffix="M.D." username="JREDDY" ID="248" status="Y" npi="1073573903" machine_technician_id="0" Legal_Org="CMG"/>
-<Physician prefix="Dr." firstname="Muthusamy" middlename="" lastname="Muthiah" suffix="MD,FACC,MHA" username="MMUTHIAH" ID="234" status="Y" npi="1679541148" machine_technician_id="0" Legal_Org="CMG"/>
-<Physician prefix="Dr." firstname="Nitanth" middlename="" lastname="Vangala" suffix="M.D." username="NVANGALA" ID="3111" status="Y" npi="1861690141" machine_technician_id="0" Legal_Org="CMG"/>
+<Physician prefix="" firstname="TECH VISIT" middlename="" lastname="" suffix="" username="TECH_VISIT" ID="4420" status="Y" npi="" machine_technician_id="0" Legal_Org="CMG"/>
 <Physician prefix="" firstname="Rohan" middlename="" lastname="Bassi" suffix="NP-C" username="RBASSI" ID="4821" status="Y" npi="1023655560" machine_technician_id="0" Legal_Org="CMG"/>
-<Physician prefix="Dr." firstname="Rama" middlename="" lastname="Thumati" suffix="MD,FACC" username="RTHUMATI" ID="268" status="Y" npi="1841268240" machine_technician_id="0" Legal_Org="CMG"/>
-<Physician prefix="" firstname="Scribe1" middlename="" lastname="Parikh" suffix="" username="SCRIBE1_PARIKH" ID="4932" status="Y" npi="" machine_technician_id="0" Legal_Org="CMG"/>
 <Physician prefix="Dr." firstname="Suneel" middlename="" lastname="Kumar" suffix="M.D." username="SKUMAR" ID="4857" status="Y" npi="1275816654" machine_technician_id="0" Legal_Org="CMG"/>
+<Physician prefix="Dr." firstname="Krishna Anurag" middlename="" lastname="Pulumati" suffix="M.D." username="KPULUMATI" ID="4951" status="Y" npi="1982044244" machine_technician_id="0" Legal_Org="CMG"/>
+<Physician prefix="Dr." firstname="Bhavi" middlename="" lastname="Pandya" suffix="M.D." username="BPANDYA" ID="5038" status="Y" npi="1467892059" machine_technician_id="0" Legal_Org="CMG"/>
+</Facility>
+<Facility name="1880 N. ORANGE GROVE AVENUE" default-physician-id="204" Legal_Org="CMG">
 <Physician prefix="" firstname="TECH VISIT" middlename="" lastname="" suffix="" username="TECH_VISIT" ID="4420" status="Y" npi="" machine_technician_id="0" Legal_Org="CMG"/>
 </Facility>
-<Facility name="1880 N. ORANGE GROVE AVENUE" default-physician-id="204">
-<Physician prefix="Dr." firstname="Daniel" middlename="" lastname="Lee" suffix="M.D." username="DLEE" ID="1897" status="Y" npi="1659533115" machine_technician_id="0" Legal_Org="CMG"/>
-<Physician prefix="Dr." firstname="Gregory" middlename="R" lastname="Lercel" suffix="M.D." username="GLERCEL" ID="222" status="Y" npi="1942232723" machine_technician_id="0" Legal_Org="CMG"/>
-<Physician prefix="Dr." firstname="Neeraj" middlename="" lastname="Gupta" suffix="M.D." username="NGUPTA" ID="204" status="Y" npi="1457329732" machine_technician_id="0" Legal_Org="CMG"/>
-<Physician prefix="Dr." firstname="Kavoos" middlename="C" lastname="Nazeri" suffix="M.D." username="SNAZERI" ID="2857" status="Y" npi="1477731644" machine_technician_id="0" Legal_Org="CMG"/>
-<Physician prefix="" firstname="TECH VISIT" middlename="" lastname="" suffix="" username="TECH_VISIT" ID="4420" status="Y" npi="" machine_technician_id="0" Legal_Org="CMG"/>
-</Facility>
-<Facility name="1900 ROYALTY STE 205" default-physician-id="4420">
-</Facility>
-<Facility name="1904 N OG AVE" default-physician-id="100">
-<Physician prefix="" firstname="Adrian" middlename="" lastname="Belonia" suffix="RN" username="ABELONIA" ID="4181" status="Y" npi="" machine_technician_id="0" Legal_Org="CMG"/>
-<Physician prefix="" firstname="AUTO_PHY" middlename="" lastname="" suffix="" username="AUTO_PHY" ID="4324" status="Y" npi="" machine_technician_id="0" Legal_Org="CMG"/>
+<Facility name="1904 N OG AVE" default-physician-id="100" Legal_Org="CMG">
+<Physician prefix="Dr." firstname="Rita" middlename="K" lastname="Pradhan" suffix="M.D.,F.A.C.E." username="RPRADHAN" ID="105" status="Y" npi="1336117738" machine_technician_id="0" Legal_Org="CMG"/>
+<Physician prefix="Dr." firstname="Jaffar" middlename="A" lastname="Tremazi" suffix="M.D." username="JTREMAZI" ID="106" status="Y" npi="1649248782" machine_technician_id="0" Legal_Org="CMG"/>
 <Physician prefix="" firstname="Betty" middlename="" lastname="Licciardo" suffix="R.D.,M.P.H.,C.D.E." username="BLICCIARDO" ID="103" status="Y" npi="1043265622" machine_technician_id="0" Legal_Org="CMG"/>
 <Physician prefix="Dr." firstname="Daryoosh" middlename="" lastname="Valamanesh" suffix="M.D." username="DVALAMANESH" ID="107" status="Y" npi="1205804671" machine_technician_id="0" Legal_Org="CMG"/>
 <Physician prefix="Dr." firstname="Jeereddi" middlename="A" lastname="Prasad" suffix="M.D., F.A.C.E., F.A.C.P.,E.C.N.U." username="JPRASAD" ID="100" status="Y" npi="1821058470" machine_technician_id="0" Legal_Org="CMG"/>
-<Physician prefix="Dr." firstname="Jaffar" middlename="A" lastname="Tremazi" suffix="M.D." username="JTREMAZI" ID="106" status="Y" npi="1649248782" machine_technician_id="0" Legal_Org="CMG"/>
-<Physician prefix="Dr." firstname="Rita" middlename="K" lastname="Pradhan" suffix="M.D.,F.A.C.E." username="RPRADHAN" ID="105" status="Y" npi="1336117738" machine_technician_id="0" Legal_Org="CMG"/>
 <Physician prefix="Dr." firstname="Sapna" middlename="Sangani" lastname="Rasania" suffix="M.D. , M.P.H." username="SRASANIA" ID="4516" status="Y" npi="1427336759" machine_technician_id="0" Legal_Org="CMG"/>
 <Physician prefix="" firstname="TECH VISIT" middlename="" lastname="" suffix="" username="TECH_VISIT" ID="4420" status="Y" npi="" machine_technician_id="0" Legal_Org="CMG"/>
+<Physician prefix="" firstname="Peter" middlename="" lastname="Carreon" suffix="FNP" username="PCARREON" ID="4841" status="Y" npi="1578023917" machine_technician_id="0" Legal_Org="CMG"/>
 </Facility>
-<Facility name="1940 N ORANGE GROVE" default-physician-id="2855">
-<Physician prefix="Dr." firstname="Anthony" middlename="" lastname="Gan" suffix="DO" username="AGAN" ID="4858" status="Y" npi="1902223092" machine_technician_id="0" Legal_Org="CMG"/>
-<Physician prefix="Dr." firstname="Christine" middlename="" lastname="Montesa" suffix="M.D." username="CMONTESA" ID="4792" status="Y" npi="1467616581" machine_technician_id="0" Legal_Org="CMG"/>
-<Physician prefix="Dr." firstname="Derrick" middlename="" lastname="Raptis" suffix="M.D." username="DRAPTIS" ID="2855" status="Y" npi="1679749683" machine_technician_id="0" Legal_Org="CMG"/>
-<Physician prefix="Dr." firstname="Guangqiang" middlename="" lastname="Gao" suffix="M.D." username="GGAO" ID="4152" status="Y" npi="1124322086" machine_technician_id="0" Legal_Org="CMG"/>
+<Facility name="1940 N ORANGE GROVE" default-physician-id="2855" Legal_Org="CMG">
 <Physician prefix="Dr." firstname="Gurbinder" middlename="S" lastname="Sadana" suffix="MD,FCCP" username="GSADANA" ID="256" status="Y" npi="1205898327" machine_technician_id="0" Legal_Org="CMG"/>
 <Physician prefix="Dr." firstname="Heather" middlename="" lastname="Davis" suffix="M.D." username="HDAVIS" ID="191" status="Y" npi="1154390391" machine_technician_id="0" Legal_Org="CMG"/>
-<Physician prefix="Dr." firstname="Joseph" middlename="" lastname="Gordon" suffix="M.D." username="JGORDON" ID="4781" status="Y" npi="1811243652" machine_technician_id="0" Legal_Org="CMG"/>
 <Physician prefix="Dr." firstname="Nadir" middlename="A" lastname="Eltahir" suffix="M.D.,F.C.C.P." username="NELTAHIR" ID="2693" status="Y" npi="1053389338" machine_technician_id="0" Legal_Org="CMG"/>
-<Physician prefix="Dr." firstname="Nathaniel" middlename="" lastname="Soriano" suffix="M.D." username="NSORIANO" ID="4384" status="Y" npi="1679890271" machine_technician_id="0" Legal_Org="CMG"/>
 <Physician prefix="Dr." firstname="Rakesh" middlename="" lastname="Sinha" suffix="MD,FCCP" username="RSINHA" ID="265" status="Y" npi="1306006358" machine_technician_id="0" Legal_Org="CMG"/>
+<Physician prefix="Dr." firstname="Nathaniel" middlename="" lastname="Soriano" suffix="M.D." username="NSORIANO" ID="4384" status="Y" npi="1679890271" machine_technician_id="0" Legal_Org="CMG"/>
+<Physician prefix="Dr." firstname="Derrick" middlename="" lastname="Raptis" suffix="M.D." username="DRAPTIS" ID="2855" status="Y" npi="1679749683" machine_technician_id="0" Legal_Org="CMG"/>
 <Physician prefix="" firstname="TECH VISIT" middlename="" lastname="" suffix="" username="TECH_VISIT" ID="4420" status="Y" npi="" machine_technician_id="0" Legal_Org="CMG"/>
+<Physician prefix="Dr." firstname="Joseph" middlename="" lastname="Gordon" suffix="M.D." username="JGORDON" ID="4781" status="Y" npi="1811243652" machine_technician_id="0" Legal_Org="CMG"/>
+<Physician prefix="Dr." firstname="Anthony" middlename="" lastname="Gan" suffix="DO" username="AGAN" ID="4858" status="Y" npi="1902223092" machine_technician_id="0" Legal_Org="CMG"/>
+<Physician prefix="" firstname="Montesa" middlename="" lastname="Scribe" suffix="" username="CMONTESA_SCRIBE" ID="4983" status="Y" npi="" machine_technician_id="0" Legal_Org="CMG"/>
+<Physician prefix="Dr." firstname="Guangqiang" middlename="" lastname="Gao" suffix="M.D." username="GGAO" ID="4152" status="Y" npi="1124322086" machine_technician_id="0" Legal_Org="CMG"/>
+<Physician prefix="Dr." firstname="Christine" middlename="" lastname="Montesa" suffix="M.D." username="CMONTESA" ID="4792" status="Y" npi="1467616581" machine_technician_id="0" Legal_Org="CMG"/>
 </Facility>
-<Facility name="297 WEST ARTESIA STREET, SUITE A" default-physician-id="4199">
-<Physician prefix="" firstname="Brian" middlename="" lastname="Hughes" suffix="PA-C" username="BHUGHES" ID="4154" status="Y" npi="" machine_technician_id="0" Legal_Org="CMG"/>
+<Facility name="297 WEST ARTESIA STREET, SUITE A" default-physician-id="4903" Legal_Org="CMG">
 <Physician prefix="Dr." firstname="Christopher" middlename="" lastname="Harper" suffix="M.D." username="CHARPER" ID="4199" status="Y" npi="1013150630" machine_technician_id="0" Legal_Org="CMG"/>
-<Physician prefix="" firstname="Sami" middlename="" lastname="Ali" suffix="PA-C" username="SALI" ID="4903" status="Y" npi="1306491121" machine_technician_id="0" Legal_Org="CMG"/>
+<Physician prefix="" firstname="Brian" middlename="" lastname="Hughes" suffix="PA-C" username="BHUGHES" ID="4154" status="Y" npi="" machine_technician_id="0" Legal_Org="CMG"/>
+<Physician prefix="" firstname="TECH VISIT" middlename="" lastname="" suffix="" username="TECH_VISIT" ID="4420" status="Y" npi="" machine_technician_id="0" Legal_Org="CMG"/>
 <Physician prefix="Dr." firstname="Sam" middlename="" lastname="Arasoghli" suffix="M.D" username="SARASOGHLI" ID="2140" status="Y" npi="1770685935" machine_technician_id="0" Legal_Org="CMG"/>
+<Physician prefix="" firstname="Sami" middlename="" lastname="Ali" suffix="PA-C" username="SALI" ID="4903" status="Y" npi="1306491121" machine_technician_id="0" Legal_Org="CMG"/>
+</Facility>
+<Facility name="430 W BASELINE AVE" default-physician-id="2815" Legal_Org="CMG">
 <Physician prefix="" firstname="TECH VISIT" middlename="" lastname="" suffix="" username="TECH_VISIT" ID="4420" status="Y" npi="" machine_technician_id="0" Legal_Org="CMG"/>
-</Facility>
-<Facility name="3110 CHINO AVE.. SUITE 270" default-physician-id="221">
-</Facility>
-<Facility name="401 E. HIGHLAND AVE SUITE 252" default-physician-id="4151">
-<Physician prefix="Dr." firstname="Sharyn" middlename="D" lastname="Brekhus" suffix="M.D" username="SBREKHUS" ID="3066" status="Y" npi="1003995093" machine_technician_id="0" Legal_Org="CMG"/>
-<Physician prefix="" firstname="TECH VISIT" middlename="" lastname="" suffix="" username="TECH_VISIT" ID="4420" status="Y" npi="" machine_technician_id="0" Legal_Org="CMG"/>
-<Physician prefix="Dr." firstname="Yvette" middlename="" lastname="Marquez" suffix="M.D" username="YMARQUEZ" ID="4151" status="Y" npi="1255640892" machine_technician_id="0" Legal_Org="CMG"/>
-</Facility>
-<Facility name="430 W BASELINE AVE" default-physician-id="2815">
 <Physician prefix="Dr." firstname="Mary" middlename="N" lastname="Kasem" suffix="M.D." username="KMARY" ID="2815" status="Y" npi="1982639993" machine_technician_id="0" Legal_Org="CMG"/>
 <Physician prefix="Dr." firstname="Robyn" middlename="D" lastname="Jacoby" suffix="D.O." username="RJACOBY" ID="2839" status="Y" npi="1487623575" machine_technician_id="0" Legal_Org="CMG"/>
-<Physician prefix="" firstname="TECH VISIT" middlename="" lastname="" suffix="" username="TECH_VISIT" ID="4420" status="Y" npi="" machine_technician_id="0" Legal_Org="CMG"/>
 </Facility>
-<Facility name="520 E FOOTHILL BLVD #A" default-physician-id="102">
-<Physician prefix="" firstname="David" middlename="" lastname="Cao" suffix="PA-C" username="DCAO" ID="4905" status="Y" npi="1437758653" machine_technician_id="0" Legal_Org="CMG"/>
+<Facility name="520 E FOOTHILL BLVD #A" default-physician-id="102" Legal_Org="CMG">
 <Physician prefix="Dr." firstname="Ewa" middlename="H" lastname="Konca" suffix="M.D." username="EKONCA" ID="102" status="Y" npi="1134197528" machine_technician_id="0" Legal_Org="CMG"/>
-<Physician prefix="" firstname="TECH VISIT" middlename="" lastname="" suffix="" username="TECH_VISIT" ID="4420" status="Y" npi="" machine_technician_id="0" Legal_Org="CMG"/>
 <Physician prefix="" firstname="Vanessa" middlename="" lastname="Pedrego" suffix="PA-C" username="VPEDREGO" ID="109" status="Y" npi="1467763755" machine_technician_id="0" Legal_Org="CMG"/>
-</Facility>
-<Facility name="520 E FOOTHILL BLVD #C" default-physician-id="3122">
 <Physician prefix="" firstname="TECH VISIT" middlename="" lastname="" suffix="" username="TECH_VISIT" ID="4420" status="Y" npi="" machine_technician_id="0" Legal_Org="CMG"/>
-<Physician prefix="Dr." firstname="William" middlename="L" lastname="Discepolo" suffix="M.D." username="WDISCEPOLO" ID="3122" status="Y" npi="1932308137" machine_technician_id="0" Legal_Org="CMG"/>
+<Physician prefix="" firstname="David" middlename="" lastname="Cao" suffix="PA-C" username="DCAO" ID="4905" status="Y" npi="1437758653" machine_technician_id="0" Legal_Org="CMG"/>
+<Physician prefix="" firstname="Nancy Si Jia" middlename="" lastname="Meng" suffix="NP" username="NMENG" ID="5024" status="Y" npi="1760134852" machine_technician_id="0" Legal_Org="CMG"/>
 </Facility>
-<Facility name="5385 WALNUT AVE" default-physician-id="3111">
-<Physician prefix="Dr." firstname="Ewa" middlename="H" lastname="Konca" suffix="M.D." username="EKONCA" ID="102" status="Y" npi="1134197528" machine_technician_id="0" Legal_Org="CMG"/>
+<Facility name="520 E FOOTHILL BLVD #C" default-physician-id="3122" Legal_Org="CMG">
+<Physician prefix="" firstname="TECH VISIT" middlename="" lastname="" suffix="" username="TECH_VISIT" ID="4420" status="Y" npi="" machine_technician_id="0" Legal_Org="CMG"/>
+</Facility>
+<Facility name="5385 WALNUT AVE" default-physician-id="3111" Legal_Org="CMG">
 <Physician prefix="Dr." firstname="Gaurav" middlename="" lastname="Parikh" suffix="M.D." username="GPARIKH" ID="4296" status="Y" npi="1144494550" machine_technician_id="0" Legal_Org="CMG"/>
 <Physician prefix="Dr." firstname="Jeereddi" middlename="A" lastname="Prasad" suffix="M.D., F.A.C.E., F.A.C.P.,E.C.N.U." username="JPRASAD" ID="100" status="Y" npi="1821058470" machine_technician_id="0" Legal_Org="CMG"/>
 <Physician prefix="Dr." firstname="Nitanth" middlename="" lastname="Vangala" suffix="M.D." username="NVANGALA" ID="3111" status="Y" npi="1861690141" machine_technician_id="0" Legal_Org="CMG"/>
-<Physician prefix="Dr." firstname="Ramanna" middlename="" lastname="Merla" suffix="M.D." username="RMERLA" ID="3075" status="Y" npi="1336343912" machine_technician_id="0" Legal_Org="CMG"/>
 <Physician prefix="" firstname="TECH VISIT" middlename="" lastname="" suffix="" username="TECH_VISIT" ID="4420" status="Y" npi="" machine_technician_id="0" Legal_Org="CMG"/>
-<Physician prefix="Dr." firstname="Urvi" middlename="" lastname="Vyas" suffix="MD" username="UVYAS" ID="4842" status="Y" npi="1730477142" machine_technician_id="0" Legal_Org="CMG"/>
+<Physician prefix="Dr." firstname="Ramanna" middlename="" lastname="Merla" suffix="M.D." username="RMERLA" ID="3075" status="Y" npi="1336343912" machine_technician_id="0" Legal_Org="CMG"/>
+<Physician prefix="Dr." firstname="Ewa" middlename="H" lastname="Konca" suffix="M.D." username="EKONCA" ID="102" status="Y" npi="1134197528" machine_technician_id="0" Legal_Org="CMG"/>
 <Physician prefix="" firstname="Vanessa" middlename="" lastname="Pedrego" suffix="PA-C" username="VPEDREGO" ID="109" status="Y" npi="1467763755" machine_technician_id="0" Legal_Org="CMG"/>
+<Physician prefix="Dr." firstname="Urvi" middlename="" lastname="Vyas" suffix="MD" username="UVYAS" ID="4842" status="Y" npi="1730477142" machine_technician_id="0" Legal_Org="CMG"/>
+<Physician prefix="Dr." firstname="Krishna Anurag" middlename="" lastname="Pulumati" suffix="M.D." username="KPULUMATI" ID="4951" status="Y" npi="1982044244" machine_technician_id="0" Legal_Org="CMG"/>
 </Facility>
-<Facility name="585 N MTN AVE STE A" default-physician-id="254">
-<Physician prefix="Dr." firstname="David" middlename="" lastname="Robles" suffix="M.D, PhD." username="DROBLES" ID="252" status="Y" npi="1326156233" machine_technician_id="0" Legal_Org="CMG"/>
-<Physician prefix="" firstname="Jane" middlename="E" lastname="Rodgers" suffix="PA" username="JRODGERS" ID="254" status="Y" npi="1235372145" machine_technician_id="0" Legal_Org="CMG"/>
+<Facility name="585 N MTN AVE STE A" default-physician-id="254" Legal_Org="CMG">
 <Physician prefix="" firstname="TECH VISIT" middlename="" lastname="" suffix="" username="TECH_VISIT" ID="4420" status="Y" npi="" machine_technician_id="0" Legal_Org="CMG"/>
 </Facility>
-<Facility name="585 N MTN AVE STE C" default-physician-id="4420">
+<Facility name="585 N MTN AVE STE C" default-physician-id="4420" Legal_Org="CMG">
 <Physician prefix="" firstname="TECH VISIT" middlename="" lastname="" suffix="" username="TECH_VISIT" ID="4420" status="Y" npi="" machine_technician_id="0" Legal_Org="CMG"/>
 </Facility>
-<Facility name="591 N 13TH AVE" default-physician-id="3075">
-<Physician prefix="Dr." firstname="Ramanna" middlename="" lastname="Merla" suffix="M.D." username="RMERLA" ID="3075" status="Y" npi="1336343912" machine_technician_id="0" Legal_Org="CMG"/>
+<Facility name="591 N 13TH AVE" default-physician-id="3075" Legal_Org="CMG">
 <Physician prefix="" firstname="TECH VISIT" middlename="" lastname="" suffix="" username="TECH_VISIT" ID="4420" status="Y" npi="" machine_technician_id="0" Legal_Org="CMG"/>
 </Facility>
-<Facility name="790 E BONITA AVE" default-physician-id="203">
-<Physician prefix="Dr." firstname="Ani" middlename="" lastname="Berberyan" suffix="MD" username="ABERBERYAN" ID="4779" status="Y" npi="1700230224" machine_technician_id="0" Legal_Org="CMG"/>
-<Physician prefix="Dr." firstname="Christopher" middlename="" lastname="Harper" suffix="M.D." username="CHARPER" ID="4199" status="Y" npi="1013150630" machine_technician_id="0" Legal_Org="CMG"/>
-<Physician prefix="" firstname="Jalpa" middlename="" lastname="Chaudhari" suffix="NP" username="JCHAUDHARI" ID="4828" status="Y" npi="1962032706" machine_technician_id="0" Legal_Org="CMG"/>
+<Facility name="790 E BONITA AVE" default-physician-id="203" Legal_Org="CMG">
+<Physician prefix="Dr." firstname="Miriam" middlename="L" lastname="Schmidt-Villanueva" suffix="M.D." username="MSCHMIDT" ID="260" status="Y" npi="1689642092" machine_technician_id="0" Legal_Org="CMG"/>
+<Physician prefix="Dr." firstname="Redemption" middlename="G" lastname="Geronimo" suffix="M.D." username="RGERONIMO" ID="203" status="Y" npi="1497723803" machine_technician_id="0" Legal_Org="CMG"/>
 <Physician prefix="" firstname="Jehan" middlename="" lastname="Goubran" suffix="PA-C" username="JGOUBRAN" ID="1903" status="Y" npi="1942413356" machine_technician_id="0" Legal_Org="CMG"/>
 <Physician prefix="" firstname="Jane" middlename="E" lastname="Rodgers" suffix="PA" username="JRODGERS" ID="254" status="Y" npi="1235372145" machine_technician_id="0" Legal_Org="CMG"/>
-<Physician prefix="Dr." firstname="Mohammad" middlename="" lastname="Elbatta" suffix="M.D." username="MELBATTA" ID="4793" status="Y" npi="1316204894" machine_technician_id="0" Legal_Org="CMG"/>
-<Physician prefix="Dr." firstname="Mysore" middlename="" lastname="Nagaraja" suffix="MD" username="MNAGARAJA" ID="4799" status="Y" npi="1760451298" machine_technician_id="0" Legal_Org="CMG"/>
-<Physician prefix="Dr." firstname="Miriam" middlename="L" lastname="Schmidt-Villanueva" suffix="M.D." username="MSCHMIDT" ID="260" status="Y" npi="1689642092" machine_technician_id="0" Legal_Org="CMG"/>
-<Physician prefix="Dr." firstname="Maher" middlename="" lastname="Tama" suffix="MD" username="MTAMA" ID="4782" status="Y" npi="1326393737" machine_technician_id="0" Legal_Org="CMG"/>
 <Physician prefix="Dr." firstname="Nallely" middlename="" lastname="Flores Lazcano" suffix="M.D." username="NFLAZCANO" ID="4279" status="Y" npi="1831327030" machine_technician_id="0" Legal_Org="CMG"/>
-<Physician prefix="Dr." firstname="Nazia" middlename="" lastname="Siddiqi" suffix="M.D." username="NSIDDIQI" ID="4563" status="Y" npi="1578879755" machine_technician_id="0" Legal_Org="CMG"/>
-<Physician prefix="Dr." firstname="Redemption" middlename="G" lastname="Geronimo" suffix="M.D." username="RGERONIMO" ID="203" status="Y" npi="1497723803" machine_technician_id="0" Legal_Org="CMG"/>
+<Physician prefix="Dr." firstname="Christopher" middlename="" lastname="Harper" suffix="M.D." username="CHARPER" ID="4199" status="Y" npi="1013150630" machine_technician_id="0" Legal_Org="CMG"/>
 <Physician prefix="" firstname="TECH VISIT" middlename="" lastname="" suffix="" username="TECH_VISIT" ID="4420" status="Y" npi="" machine_technician_id="0" Legal_Org="CMG"/>
-<Physician prefix="Dr." firstname="Urvi" middlename="" lastname="Vyas" suffix="MD" username="UVYAS" ID="4842" status="Y" npi="1730477142" machine_technician_id="0" Legal_Org="CMG"/>
 <Physician prefix="Dr." firstname="Uzma" middlename="" lastname="Waraich" suffix="M.D." username="UWARAICH" ID="3035" status="Y" npi="1528221843" machine_technician_id="0" Legal_Org="CMG"/>
+<Physician prefix="Dr." firstname="Maher" middlename="" lastname="Tama" suffix="MD" username="MTAMA" ID="4782" status="Y" npi="1326393737" machine_technician_id="0" Legal_Org="CMG"/>
+<Physician prefix="Dr." firstname="Ani" middlename="" lastname="Berberyan" suffix="MD" username="ABERBERYAN" ID="4779" status="Y" npi="1700230224" machine_technician_id="0" Legal_Org="CMG"/>
+<Physician prefix="Dr." firstname="Mohammad" middlename="" lastname="Elbatta" suffix="M.D." username="MELBATTA" ID="4793" status="Y" npi="1316204894" machine_technician_id="0" Legal_Org="CMG"/>
+<Physician prefix="" firstname="Jalpa" middlename="" lastname="Chaudhari" suffix="NP" username="JCHAUDHARI" ID="4828" status="Y" npi="1962032706" machine_technician_id="0" Legal_Org="CMG"/>
+<Physician prefix="Dr." firstname="Nazia" middlename="" lastname="Siddiqi" suffix="M.D." username="NSIDDIQI" ID="4563" status="Y" npi="1578879755" machine_technician_id="0" Legal_Org="CMG"/>
+<Physician prefix="Dr." firstname="Urvi" middlename="" lastname="Vyas" suffix="MD" username="UVYAS" ID="4842" status="Y" npi="1730477142" machine_technician_id="0" Legal_Org="CMG"/>
+<Physician prefix=" Dr." firstname="Weera" middlename="" lastname="Sukhumthammarat" suffix="M.D." username="WEERA" ID="4982" status="Y" npi="1619407806" machine_technician_id="0" Legal_Org="CMG"/>
 </Facility>
-<Facility name="811 E 11TH St #207" default-physician-id="4289">
-<Physician prefix="Dr." firstname="Samudrala" middlename="" lastname="Srinath" suffix="M.D." username="SSRINATH" ID="4289" status="Y" npi=" 155830294" machine_technician_id="0" Legal_Org="CMG"/>
+<Facility name="811 E 11TH ST, SUITE# 208" default-physician-id="4799" Legal_Org="CMG">
 <Physician prefix="" firstname="TECH VISIT" middlename="" lastname="" suffix="" username="TECH_VISIT" ID="4420" status="Y" npi="" machine_technician_id="0" Legal_Org="CMG"/>
-</Facility>
-<Facility name="811 E 11TH ST, SUITE# 208" default-physician-id="4799">
+<Physician prefix="Dr." firstname="Maher" middlename="" lastname="Tama" suffix="MD" username="MTAMA" ID="4782" status="Y" npi="1326393737" machine_technician_id="0" Legal_Org="CMG"/>
 <Physician prefix="Dr." firstname="Mohammad" middlename="" lastname="Elbatta" suffix="M.D." username="MELBATTA" ID="4793" status="Y" npi="1316204894" machine_technician_id="0" Legal_Org="CMG"/>
 <Physician prefix="Dr." firstname="Mysore" middlename="" lastname="Nagaraja" suffix="MD" username="MNAGARAJA" ID="4799" status="Y" npi="1760451298" machine_technician_id="0" Legal_Org="CMG"/>
-<Physician prefix="Dr." firstname="Maher" middlename="" lastname="Tama" suffix="MD" username="MTAMA" ID="4782" status="Y" npi="1326393737" machine_technician_id="0" Legal_Org="CMG"/>
 <Physician prefix="Dr." firstname="Sudhir" middlename="K" lastname="Reddy" suffix="M.D." username="SREDDY" ID="2377" status="Y" npi="1720015282" machine_technician_id="0" Legal_Org="CMG"/>
-<Physician prefix="" firstname="TECH VISIT" middlename="" lastname="" suffix="" username="TECH_VISIT" ID="4420" status="Y" npi="" machine_technician_id="0" Legal_Org="CMG"/>
 <Physician prefix="Dr." firstname="Yeong" middlename="" lastname="Sheu" suffix="M.D." username="YSHEU" ID="4868" status="Y" npi="1700865177" machine_technician_id="0" Legal_Org="CMG"/>
+<Physician prefix="" firstname="Jalpa" middlename="" lastname="Chaudhari" suffix="NP" username="JCHAUDHARI" ID="4828" status="Y" npi="1962032706" machine_technician_id="0" Legal_Org="CMG"/>
 </Facility>
-<Facility name="8330 RED OAK SUITE #101" default-physician-id="179">
-<Physician prefix="Dr." firstname="Daryoosh" middlename="" lastname="Valamanesh" suffix="M.D." username="DVALAMANESH" ID="107" status="Y" npi="1205804671" machine_technician_id="0" Legal_Org="CMG"/>
+<Facility name="8330 RED OAK SUITE #101" default-physician-id="179" Legal_Org="CMG">
 <Physician prefix="Dr." firstname="Haritha" middlename="R" lastname="Alla" suffix="M.D.,F.A.C.C.,R.P.V.I." username="HALLA" ID="179" status="Y" npi="1487739835" machine_technician_id="0" Legal_Org="CMG"/>
-<Physician prefix="Dr." firstname="Hla Myint Maung" middlename="S" lastname="Hwang" suffix="M.D." username="HHMAUNG" ID="3257" status="Y" npi="1356357560" machine_technician_id="0" Legal_Org="CMG"/>
-<Physician prefix="Dr." firstname="Jayapal" middlename="A" lastname="Reddy" suffix="M.D." username="JREDDY" ID="248" status="Y" npi="1073573903" machine_technician_id="0" Legal_Org="CMG"/>
-<Physician prefix="Dr." firstname="Krishi" middlename="" lastname="Chanduri" suffix="MD" username="KCHANDURI" ID="4294" status="Y" npi="1598957540" machine_technician_id="0" Legal_Org="CMG"/>
-<Physician prefix="Dr." firstname="Nitanth" middlename="" lastname="Vangala" suffix="M.D." username="NVANGALA" ID="3111" status="Y" npi="1861690141" machine_technician_id="0" Legal_Org="CMG"/>
-<Physician prefix="" firstname="Rohan" middlename="" lastname="Bassi" suffix="NP-C" username="RBASSI" ID="4821" status="Y" npi="1023655560" machine_technician_id="0" Legal_Org="CMG"/>
 <Physician prefix="Dr." firstname="Ramanna" middlename="" lastname="Merla" suffix="M.D." username="RMERLA" ID="3075" status="Y" npi="1336343912" machine_technician_id="0" Legal_Org="CMG"/>
 <Physician prefix="" firstname="TECH VISIT" middlename="" lastname="" suffix="" username="TECH_VISIT" ID="4420" status="Y" npi="" machine_technician_id="0" Legal_Org="CMG"/>
+<Physician prefix="Dr." firstname="Jayapal" middlename="A" lastname="Reddy" suffix="M.D." username="JREDDY" ID="248" status="Y" npi="1073573903" machine_technician_id="0" Legal_Org="CMG"/>
+<Physician prefix="Dr." firstname="Nitanth" middlename="" lastname="Vangala" suffix="M.D." username="NVANGALA" ID="3111" status="Y" npi="1861690141" machine_technician_id="0" Legal_Org="CMG"/>
+<Physician prefix="" firstname="Rohan" middlename="" lastname="Bassi" suffix="NP-C" username="RBASSI" ID="4821" status="Y" npi="1023655560" machine_technician_id="0" Legal_Org="CMG"/>
+<Physician prefix="Dr." firstname="Krishna Anurag" middlename="" lastname="Pulumati" suffix="M.D." username="KPULUMATI" ID="4951" status="Y" npi="1982044244" machine_technician_id="0" Legal_Org="CMG"/>
+<Physician prefix="" firstname="Brooke" middlename="" lastname="Heying" suffix="PA" username="BHEYING" ID="4962" status="Y" npi="1508529561" machine_technician_id="0" Legal_Org="CMG"/>
+<Physician prefix="Dr." firstname="Gaurav" middlename="" lastname="Parikh" suffix="M.D." username="GPARIKH" ID="4296" status="Y" npi="1144494550" machine_technician_id="0" Legal_Org="CMG"/>
+<Physician prefix="Dr." firstname="Bhavi" middlename="" lastname="Pandya" suffix="M.D." username="BPANDYA" ID="5038" status="Y" npi="1467892059" machine_technician_id="0" Legal_Org="CMG"/>
 </Facility>
-<Facility name="8330 RED OAK SUITE #201" default-physician-id="2841">
-<Physician prefix="Dr." firstname="Harvey" middlename="D" lastname="Cohen" suffix="MD" username="HCOHEN" ID="4814" status="Y" npi="1972517423" machine_technician_id="0" Legal_Org="CMG"/>
-<Physician prefix="" firstname="Jessica" middlename="" lastname="Garner" suffix="FNP-C" username="JGARNER" ID="4906" status="Y" npi="1427633205" machine_technician_id="0" Legal_Org="CMG"/>
+<Facility name="8330 RED OAK SUITE #201" default-physician-id="2841" Legal_Org="CMG">
 <Physician prefix="Dr." firstname="Khader" middlename="K" lastname="Abounasr" suffix="M.D." username="KABOUNASR" ID="2841" status="Y" npi="1780884015" machine_technician_id="0" Legal_Org="CMG"/>
 <Physician prefix="Dr." firstname="Nyein Aye" middlename="" lastname="Tint" suffix="M.D." username="NATINT" ID="4323" status="Y" npi="1336533447" machine_technician_id="0" Legal_Org="CMG"/>
-<Physician prefix="Dr." firstname="Redemption" middlename="G" lastname="Geronimo" suffix="M.D." username="RGERONIMO" ID="203" status="Y" npi="1497723803" machine_technician_id="0" Legal_Org="CMG"/>
+<Physician prefix="" firstname="TECH VISIT" middlename="" lastname="" suffix="" username="TECH_VISIT" ID="4420" status="Y" npi="" machine_technician_id="0" Legal_Org="CMG"/>
+<Physician prefix="Dr." firstname="Harvey" middlename="D" lastname="Cohen" suffix="MD" username="HCOHEN" ID="4814" status="Y" npi="1972517423" machine_technician_id="0" Legal_Org="CMG"/>
+<Physician prefix="" firstname="Jessica" middlename="" lastname="Garner" suffix="FNP-C" username="JGARNER" ID="4906" status="Y" npi="1427633205" machine_technician_id="0" Legal_Org="CMG"/>
+<Physician prefix="" firstname="Carolyn Marie" middlename="" lastname="Dreyer" suffix="NP" username="CDREYER" ID="4963" status="Y" npi="1386213734" machine_technician_id="0" Legal_Org="CMG"/>
+<Physician prefix="" firstname="Velma" middlename="D" lastname="Yep" suffix="NP" username="VYEP" ID="3077" status="Y" npi="1316090103" machine_technician_id="0" Legal_Org="CMG"/>
+<Physician prefix=" Dr." firstname="Weera" middlename="" lastname="Sukhumthammarat" suffix="M.D." username="WEERA" ID="4982" status="Y" npi="1619407806" machine_technician_id="0" Legal_Org="CMG"/>
+<Physician prefix="Dr." firstname="Daryoosh" middlename="" lastname="Valamanesh" suffix="M.D." username="DVALAMANESH" ID="107" status="Y" npi="1205804671" machine_technician_id="0" Legal_Org="CMG"/>
+</Facility>
+<Facility name="9170 HAVEN AVENUE, SUITE 108" default-physician-id="230" Legal_Org="CMG">
 <Physician prefix="" firstname="TECH VISIT" middlename="" lastname="" suffix="" username="TECH_VISIT" ID="4420" status="Y" npi="" machine_technician_id="0" Legal_Org="CMG"/>
 </Facility>
-<Facility name="9170 HAVEN AVENUE, SUITE 108" default-physician-id="230">
-<Physician prefix="" firstname="TECH VISIT" middlename="" lastname="" suffix="" username="TECH_VISIT" ID="4420" status="Y" npi="" machine_technician_id="0" Legal_Org="CMG"/>
-</Facility>
-<Facility name="9170 HAVEN AVENUE, SUITE 120" default-physician-id="102,2857">
-<Physician prefix="" firstname="Brianda" middlename="" lastname="Ulloa" suffix="PA-C" username="BULLOA" ID="4904" status="Y" npi="1770188468" machine_technician_id="0" Legal_Org="CMG"/>
-<Physician prefix="Dr." firstname="Ewa" middlename="H" lastname="Konca" suffix="M.D." username="EKONCA" ID="102" status="Y" npi="1134197528" machine_technician_id="0" Legal_Org="CMG"/>
+<Facility name="9170 HAVEN AVENUE, SUITE 120" default-physician-id="102,2857" Legal_Org="CMG">
 <Physician prefix="Dr." firstname="Jeereddi" middlename="A" lastname="Prasad" suffix="M.D., F.A.C.E., F.A.C.P.,E.C.N.U." username="JPRASAD" ID="100" status="Y" npi="1821058470" machine_technician_id="0" Legal_Org="CMG"/>
+<Physician prefix="Dr." firstname="Ewa" middlename="H" lastname="Konca" suffix="M.D." username="EKONCA" ID="102" status="Y" npi="1134197528" machine_technician_id="0" Legal_Org="CMG"/>
 <Physician prefix="Dr." firstname="Kavoos" middlename="C" lastname="Nazeri" suffix="M.D." username="SNAZERI" ID="2857" status="Y" npi="1477731644" machine_technician_id="0" Legal_Org="CMG"/>
 <Physician prefix="" firstname="TECH VISIT" middlename="" lastname="" suffix="" username="TECH_VISIT" ID="4420" status="Y" npi="" machine_technician_id="0" Legal_Org="CMG"/>
+<Physician prefix="" firstname="Brianda" middlename="" lastname="Ulloa" suffix="PA-C" username="BULLOA" ID="4904" status="Y" npi="1770188468" machine_technician_id="0" Legal_Org="CMG"/>
+<Physician prefix="" firstname="David" middlename="" lastname="Cao" suffix="PA-C" username="DCAO" ID="4905" status="Y" npi="1437758653" machine_technician_id="0" Legal_Org="CMG"/>
+<Physician prefix="" firstname="Nancy Si Jia" middlename="" lastname="Meng" suffix="NP" username="NMENG" ID="5024" status="Y" npi="1760134852" machine_technician_id="0" Legal_Org="CMG"/>
 </Facility>
-<Facility name="9190 HAVEN AVE 1ST FLR" default-physician-id="237,4251">
-<Physician prefix="Dr." firstname="Ani" middlename="" lastname="Berberyan" suffix="MD" username="ABERBERYAN" ID="4779" status="Y" npi="1700230224" machine_technician_id="0" Legal_Org="CMG"/>
-<Physician prefix="Dr." firstname="Daniel" middlename="" lastname="Lee" suffix="M.D." username="DLEE" ID="1897" status="Y" npi="1659533115" machine_technician_id="0" Legal_Org="CMG"/>
-<Physician prefix="Dr." firstname="Gregory" middlename="R" lastname="Lercel" suffix="M.D." username="GLERCEL" ID="222" status="Y" npi="1942232723" machine_technician_id="0" Legal_Org="CMG"/>
+<Facility name="9190 HAVEN AVE 1ST FLR" default-physician-id="237,4251" Legal_Org="CMG">
 <Physician prefix="Dr." firstname="Hetalben" middlename="G" lastname="Makwana" suffix="M.D." username="HMAKWANA" ID="4251" status="Y" npi="1093028078" machine_technician_id="0" Legal_Org="CMG"/>
 <Physician prefix="Dr." firstname="Peter" middlename="J" lastname="Niciforos" suffix="M.D." username="PNICIFOROS" ID="237" status="Y" npi="1356359277" machine_technician_id="0" Legal_Org="CMG"/>
 <Physician prefix="" firstname="TECH VISIT" middlename="" lastname="" suffix="" username="TECH_VISIT" ID="4420" status="Y" npi="" machine_technician_id="0" Legal_Org="CMG"/>
-</Facility>
-<Facility name="9190 HAVEN AVE II FLOOR SUITE# 200" default-physician-id="3122">
-<Physician prefix="" firstname="TECH VISIT" middlename="" lastname="" suffix="" username="TECH_VISIT" ID="4420" status="Y" npi="" machine_technician_id="0" Legal_Org="CMG"/>
-<Physician prefix="Dr." firstname="William" middlename="L" lastname="Discepolo" suffix="M.D." username="WDISCEPOLO" ID="3122" status="Y" npi="1932308137" machine_technician_id="0" Legal_Org="CMG"/>
-</Facility>
-<Facility name="9190 HAVEN AVE II FLOOR SUITE# 210" default-physician-id="252">
-<Physician prefix="Dr." firstname="David" middlename="" lastname="Robles" suffix="M.D, PhD." username="DROBLES" ID="252" status="Y" npi="1326156233" machine_technician_id="0" Legal_Org="CMG"/>
-<Physician prefix="" firstname="TECH VISIT" middlename="" lastname="" suffix="" username="TECH_VISIT" ID="4420" status="Y" npi="" machine_technician_id="0" Legal_Org="CMG"/>
-</Facility>
-<Facility name="9190 HAVEN AVENUE (Haven Urgent Care)" default-physician-id="237">
 <Physician prefix="Dr." firstname="Ani" middlename="" lastname="Berberyan" suffix="MD" username="ABERBERYAN" ID="4779" status="Y" npi="1700230224" machine_technician_id="0" Legal_Org="CMG"/>
-<Physician prefix="Dr." firstname="Donald" middlename="" lastname="Underwood" suffix="DO MD" username="DUNDERWOOD" ID="1682" status="Y" npi="1598861817" machine_technician_id="0" Legal_Org="CMG"/>
+<Physician prefix="" firstname="Aman" middlename="" lastname="Sircar" suffix="DNP, FNP-C" username="ASIRCAR" ID="4952" status="Y" npi="1386182087" machine_technician_id="0" Legal_Org="CMG"/>
 <Physician prefix="Dr." firstname="Daryoosh" middlename="" lastname="Valamanesh" suffix="M.D." username="DVALAMANESH" ID="107" status="Y" npi="1205804671" machine_technician_id="0" Legal_Org="CMG"/>
-<Physician prefix="" firstname="Louis" middlename="" lastname="Sithu" suffix="FNP" username="LSITHU" ID="4840" status="Y" npi="1306318225" machine_technician_id="0" Legal_Org="CMG"/>
-<Physician prefix="" firstname="Leslie Vanessa" middlename="" lastname="Theroith" suffix="FNP" username="LTHEROITH" ID="4064" status="Y" npi="1841473097" machine_technician_id="0" Legal_Org="CMG"/>
-<Physician prefix="" firstname="Melissa" middlename="C" lastname="Williams" suffix="NP" username="MWILLIAMS" ID="3108" status="Y" npi="1710021456" machine_technician_id="0" Legal_Org="CMG"/>
-<Physician prefix="" firstname="Peter" middlename="" lastname="Carreon" suffix="FNP" username="PCARREON" ID="4841" status="Y" npi="1578023917" machine_technician_id="0" Legal_Org="CMG"/>
-<Physician prefix="Dr." firstname="Peter" middlename="J" lastname="Niciforos" suffix="M.D." username="PNICIFOROS" ID="237" status="Y" npi="1356359277" machine_technician_id="0" Legal_Org="CMG"/>
-<Physician prefix="Dr." firstname="Redemption" middlename="G" lastname="Geronimo" suffix="M.D." username="RGERONIMO" ID="203" status="Y" npi="1497723803" machine_technician_id="0" Legal_Org="CMG"/>
+<Physician prefix=" Dr." firstname="Weera" middlename="" lastname="Sukhumthammarat" suffix="M.D." username="WEERA" ID="4982" status="Y" npi="1619407806" machine_technician_id="0" Legal_Org="CMG"/>
+</Facility>
+<Facility name="9190 HAVEN AVE II FLOOR SUITE# 200" default-physician-id="3257,4294" Legal_Org="CMG">
 <Physician prefix="" firstname="TECH VISIT" middlename="" lastname="" suffix="" username="TECH_VISIT" ID="4420" status="Y" npi="" machine_technician_id="0" Legal_Org="CMG"/>
+<Physician prefix="Dr." firstname="Hla Myint Maung" middlename="S" lastname="Hwang" suffix="M.D." username="HHMAUNG" ID="3257" status="Y" npi="1356357560" machine_technician_id="0" Legal_Org="CMG"/>
+<Physician prefix="Dr." firstname="Krishi" middlename="" lastname="Chanduri" suffix="MD" username="KCHANDURI" ID="4294" status="Y" npi="1598957540" machine_technician_id="0" Legal_Org="CMG"/>
+</Facility>
+<Facility name="9190 HAVEN AVE II FLOOR SUITE# 210" default-physician-id="5005" Legal_Org="CMG">
+<Physician prefix="" firstname="TECH VISIT" middlename="" lastname="" suffix="" username="TECH_VISIT" ID="4420" status="Y" npi="" machine_technician_id="0" Legal_Org="CMG"/>
+<Physician prefix="Dr." firstname="Johnnie" middlename="M" lastname="Woodson Jr" suffix="MD" username="JWOODSON" ID="5005" status="Y" npi="1780727750" machine_technician_id="0" Legal_Org="CMG"/>
+</Facility>
+<Facility name="9190 HAVEN AVENUE (Haven Urgent Care)" default-physician-id="237" Legal_Org="CMG">
+<Physician prefix="Dr." firstname="Daryoosh" middlename="" lastname="Valamanesh" suffix="M.D." username="DVALAMANESH" ID="107" status="Y" npi="1205804671" machine_technician_id="0" Legal_Org="CMG"/>
+<Physician prefix="Dr." firstname="Peter" middlename="J" lastname="Niciforos" suffix="M.D." username="PNICIFOROS" ID="237" status="Y" npi="1356359277" machine_technician_id="0" Legal_Org="CMG"/>
 <Physician prefix="" firstname="Velma" middlename="D" lastname="Yep" suffix="NP" username="VYEP" ID="3077" status="Y" npi="1316090103" machine_technician_id="0" Legal_Org="CMG"/>
+<Physician prefix="" firstname="Melissa" middlename="C" lastname="Williams" suffix="NP" username="MWILLIAMS" ID="3108" status="Y" npi="1710021456" machine_technician_id="0" Legal_Org="CMG"/>
+<Physician prefix="" firstname="Leslie Vanessa" middlename="" lastname="Theroith" suffix="FNP" username="LTHEROITH" ID="4064" status="Y" npi="1841473097" machine_technician_id="0" Legal_Org="CMG"/>
+<Physician prefix="Dr." firstname="Redemption" middlename="G" lastname="Geronimo" suffix="M.D." username="RGERONIMO" ID="203" status="Y" npi="1497723803" machine_technician_id="0" Legal_Org="CMG"/>
+<Physician prefix="Dr." firstname="Donald" middlename="" lastname="Underwood" suffix="DO MD" username="DUNDERWOOD" ID="1682" status="Y" npi="1598861817" machine_technician_id="0" Legal_Org="CMG"/>
+<Physician prefix="" firstname="TECH VISIT" middlename="" lastname="" suffix="" username="TECH_VISIT" ID="4420" status="Y" npi="" machine_technician_id="0" Legal_Org="CMG"/>
+<Physician prefix="Dr." firstname="Ani" middlename="" lastname="Berberyan" suffix="MD" username="ABERBERYAN" ID="4779" status="Y" npi="1700230224" machine_technician_id="0" Legal_Org="CMG"/>
+<Physician prefix="" firstname="Louis" middlename="" lastname="Sithu" suffix="FNP" username="LSITHU" ID="4840" status="Y" npi="1306318225" machine_technician_id="0" Legal_Org="CMG"/>
+<Physician prefix="" firstname="Peter" middlename="" lastname="Carreon" suffix="FNP" username="PCARREON" ID="4841" status="Y" npi="1578023917" machine_technician_id="0" Legal_Org="CMG"/>
+<Physician prefix=" Dr." firstname="Weera" middlename="" lastname="Sukhumthammarat" suffix="M.D." username="WEERA" ID="4982" status="Y" npi="1619407806" machine_technician_id="0" Legal_Org="CMG"/>
 </Facility>
-<Facility name="ANCILLARY 8330#101" default-physician-id="4972">
+<Facility name="ANCILLARY 8330 REDOAK 1ST FLR" default-physician-id="4972" Legal_Org="CMG">
+<Physician prefix="" firstname="Nuclear" middlename="" lastname="Modern Mobile" suffix="" username="NMTECH" ID="4972" status="Y" npi="" machine_technician_id="21" Legal_Org="CMG"/>
+<Physician prefix="" firstname="Said" middlename="" lastname="Abdul" suffix="" username="ASAID" ID="4510" status="Y" npi="" machine_technician_id="23" Legal_Org="CMG"/>
+<Physician prefix="" firstname="Lucas" middlename="" lastname="Cheryl" suffix="" username="LCHERYL" ID="4521" status="Y" npi="" machine_technician_id="25" Legal_Org="CMG"/>
+<Physician prefix="" firstname="Mcot" middlename="" lastname="" suffix="" username="MTECH" ID="4933" status="Y" npi="" machine_technician_id="26" Legal_Org="CMG"/>
+<Physician prefix="" firstname="Gabriela" middlename="" lastname="Clemente" suffix="" username="GCLEMENTE" ID="4949" status="Y" npi="" machine_technician_id="31" Legal_Org="CMG"/>
+<Physician prefix="" firstname="Jessica" middlename="" lastname="Sepulveda" suffix="" username="JSEPULVEDA" ID="4920" status="Y" npi="" machine_technician_id="32" Legal_Org="CMG"/>
 </Facility>
-<Facility name="ANCILLARY 9190 # 102" default-physician-id="4509">
-<Physician prefix="" firstname="Said" middlename="" lastname="Abdul" suffix="" username="ASAID" ID="4510" status="Y" npi="" machine_technician_id="0" Legal_Org="CMG"/>
-<Physician prefix="" firstname="Julie" middlename="" lastname="Diaz" suffix="" username="DJULIE" ID="4509" status="Y" npi="" machine_technician_id="0" Legal_Org="CMG"/>
-</Facility>
-<Facility name="CMG LAB AND ANCILLARY 1866 #101" default-physician-id="2871">
+<Facility name="CMG LAB AND ANCILLARY 1866 #101" default-physician-id="2871" Legal_Org="CMG">
 <Physician prefix="" firstname="Karen" middlename="" lastname="Eckl" suffix="" username="EKAREN" ID="2871" status="Y" npi="" machine_technician_id="1" Legal_Org="CMG"/>
 <Physician prefix="" firstname="Said" middlename="" lastname="Abdul" suffix="" username="ASAID" ID="4510" status="Y" npi="" machine_technician_id="2" Legal_Org="CMG"/>
-<Physician prefix="" firstname="Julie" middlename="" lastname="Diaz" suffix="" username="DJULIE" ID="4509" status="Y" npi="" machine_technician_id="3" Legal_Org="CMG"/>
 <Physician prefix="" firstname="Said" middlename="" lastname="Abdul" suffix="" username="ASAID" ID="4510" status="Y" npi="" machine_technician_id="4" Legal_Org="CMG"/>
 <Physician prefix="" firstname="Karima" middlename="" lastname="Sbih" suffix="" username="SKARIMA" ID="4511" status="Y" npi="" machine_technician_id="5" Legal_Org="CMG"/>
 <Physician prefix="" firstname="Yasmeen" middlename="" lastname="Akram" suffix="" username="YAAKRAM" ID="4512" status="Y" npi="" machine_technician_id="9" Legal_Org="CMG"/>
@@ -260,35 +245,32 @@
 <Physician prefix="" firstname="Daisy" middlename="" lastname="Real" suffix="" username="DREAL" ID="4762" status="Y" npi="" machine_technician_id="15" Legal_Org="CMG"/>
 <Physician prefix="" firstname="Deirdre" middlename="" lastname="Aguilera" suffix="" username="DAGUILERA_CT" ID="4773" status="Y" npi="" machine_technician_id="16" Legal_Org="CMG"/>
 <Physician prefix="" firstname="Jessica" middlename="" lastname="Sepulveda" suffix="" username="JSEPULVEDA" ID="4920" status="Y" npi="" machine_technician_id="18" Legal_Org="CMG"/>
-<Physician prefix="" firstname="Monitor" middlename="" lastname="Tech" suffix="" username="MTECH" ID="4933" status="Y" npi="" machine_technician_id="19" Legal_Org="CMG"/>
+<Physician prefix="" firstname="Mcot" middlename="" lastname="" suffix="" username="MTECH" ID="4933" status="Y" npi="" machine_technician_id="19" Legal_Org="CMG"/>
+<Physician prefix="" firstname="Gabriela" middlename="" lastname="Clemente" suffix="" username="GCLEMENTE" ID="4949" status="Y" npi="" machine_technician_id="20" Legal_Org="CMG"/>
+<Physician prefix="" firstname="Nuclear" middlename="" lastname="Modern Mobile" suffix="" username="NMTECH" ID="4972" status="Y" npi="" machine_technician_id="33" Legal_Org="CMG"/>
 </Facility>
-<Facility name="COUNTRY OAKS" default-physician-id="4420">
+<Facility name="CYPRESS TEST FACILITY" default-physician-id="5063" Legal_Org="CMG">
+<Physician prefix="Dr." firstname="Aaron" middlename="" lastname="Jimenez
+" suffix="M.D." username="AAJIMENEZ" ID="5063" status="Y" npi="1538010962" machine_technician_id="0" Legal_Org="CMG"/>
 </Facility>
-<Facility name="DEVICE FACILITY" default-physician-id="4795">
+<Facility name="DEVICE FACILITY" default-physician-id="4795" Legal_Org="CMG">
 <Physician prefix="" firstname="Device" middlename="" lastname="Tech_Phy" suffix="" username="PHY_DEVICE_TECH" ID="4795" status="Y" npi="" machine_technician_id="0" Legal_Org="CMG"/>
 </Facility>
-<Facility name="HAVEN EYE INST. 9190, II FLOOR" default-physician-id="4739">
-<Physician prefix="" firstname="Saranya" middlename="" lastname="Balasubramaniam" suffix="M.D." username="SBALAS" ID="4739" status="Y" npi="1528321767" machine_technician_id="0" Legal_Org="CMG"/>
+<Facility name="HAVEN EYE INST. 9190, II FLOOR" default-physician-id="4966" Legal_Org="CMG">
+<Physician prefix="Dr." firstname="Michael Dang" middlename="" lastname="Pham" suffix="DO" username="MDPHAM" ID="4966" status="y" npi="1922462845" machine_technician_id="0" Legal_Org="CMG"/>
 </Facility>
-<Facility name="TEST FACILITY" default-physician-id="2854">
-<Physician prefix="Dr." firstname="David" middlename="" lastname="Chang" suffix="M.D." username="DCHANG" ID="4931" status="Y" npi="" machine_technician_id="0" Legal_Org="CMG"/>
-<Physician prefix="" firstname="GUS_1" middlename="" lastname="TRANSCRIPTION" suffix="" username="GUS_1" ID="4802" status="Y" npi="" machine_technician_id="0" Legal_Org="CMG"/>
-<Physician prefix="" firstname="GUS_2" middlename="" lastname="TRANSCRIPTION" suffix="" username="GUS_2" ID="4803" status="Y" npi="" machine_technician_id="0" Legal_Org="CMG"/>
-<Physician prefix="" firstname="GUS_3" middlename="" lastname="TRANSCRIPTION" suffix="" username="GUS_3" ID="4804" status="Y" npi="" machine_technician_id="0" Legal_Org="CMG"/>
-<Physician prefix="" firstname="HAT_1" middlename="" lastname="TRANSCRIPTION" suffix="" username="HAT_1" ID="4230" status="Y" npi="" machine_technician_id="0" Legal_Org="CMG"/>
-<Physician prefix="" firstname="HAT_2" middlename="" lastname="TRANSCRIPTION" suffix="" username="HAT_2" ID="4233" status="Y" npi="" machine_technician_id="0" Legal_Org="CMG"/>
-<Physician prefix="" firstname="MUT_1" middlename="" lastname="TRANSCRIPTION" suffix="" username="MUT_1" ID="4240" status="Y" npi="" machine_technician_id="0" Legal_Org="CMG"/>
-<Physician prefix="" firstname="MUT_2" middlename="" lastname="TRANSCRIPTION" suffix="" username="MUT_2" ID="4241" status="Y" npi="" machine_technician_id="0" Legal_Org="CMG"/>
-<Physician prefix="" firstname="MUT_3" middlename="" lastname="TRANSCRIPTION" suffix="" username="MUT_3" ID="4281" status="Y" npi="" machine_technician_id="0" Legal_Org="CMG"/>
-<Physician prefix="" firstname="MUT_4" middlename="" lastname="TRANSCRIPTION" suffix="" username="MUT_4" ID="4282" status="Y" npi="" machine_technician_id="0" Legal_Org="CMG"/>
-<Physician prefix="" firstname="N.C" middlename="" lastname="Krishnan" suffix="" username="NCKRISHNAN" ID="4940" status="Y" npi="" machine_technician_id="0" Legal_Org="CMG"/>
-<Physician prefix="" firstname="PHY_LAB" middlename="" lastname="NON_CAPELLA" suffix="" username="NON_CAPELLA" ID="4387" status="Y" npi="1324567890" machine_technician_id="0" Legal_Org="CMG"/>
+<Facility name="RJ 1866 N OG AVE # 102" default-physician-id="213" Legal_Org="RJ">
+<Physician prefix="Dr." firstname="Robert" middlename="C" lastname="Jones" suffix="M.D." username="RJONES" ID="213" status="Y" npi="1275501629" machine_technician_id="0" Legal_Org="RJ"/>
+</Facility>
+<Facility name="RJ TEST FACILITY" default-physician-id="5046" Legal_Org="RJ">
+<Physician prefix="Dr." firstname="PHY_1_RJ" middlename="" lastname="TEST" suffix="M.D" username="PHY_1_RJ" ID="5046" status="Y" npi="" machine_technician_id="0" Legal_Org="RJ"/>
+<Physician prefix="Dr." firstname="PHY_7_RJ" middlename="" lastname="TEST" suffix="M.D" username="PHY_7_RJ" ID="5047" status="Y" npi="" machine_technician_id="0" Legal_Org="RJ"/>
+</Facility>
+<Facility name="TEST FACILITY" default-physician-id="2854" Legal_Org="CMG">
 <Physician prefix="" firstname="PA_1" middlename="" lastname="" suffix="" username="PA_1" ID="2853" status="Y" npi="" machine_technician_id="0" Legal_Org="CMG"/>
-<Physician prefix="" firstname="PA_5" middlename="" lastname="" suffix="" username="PA_5" ID="4845" status="Y" npi="" machine_technician_id="0" Legal_Org="CMG"/>
-<Physician prefix="Dr." firstname="PHY_2" middlename="" lastname="TEST" suffix="M.D" username="PHY_2" ID="4909" status="Y" npi="" machine_technician_id="0" Legal_Org="CMG"/>
-<Physician prefix="Dr." firstname="PHY_3" middlename="" lastname="TEST" suffix="M.D" username="PHY_3" ID="4910" status="Y" npi="" machine_technician_id="0" Legal_Org="CMG"/>
-<Physician prefix="Dr." firstname="PHY_5" middlename="" lastname="TEST" suffix="M.D" username="PHY_5" ID="4844" status="Y" npi="" machine_technician_id="0" Legal_Org="CMG"/>
 <Physician prefix="" firstname="PHY_7" middlename="" lastname="" suffix="" username="PHY_7" ID="4328" status="Y" npi="" machine_technician_id="0" Legal_Org="CMG"/>
+<Physician prefix="Dr." firstname="PHY_1" middlename="" lastname="TEST" suffix="M.D" username="PHY_1" ID="2854" status="Y" npi="1234567890" machine_technician_id="0" Legal_Org="CMG"/>
+<Physician prefix="" firstname="PHY_LAB" middlename="" lastname="NON_CAPELLA" suffix="" username="NON_CAPELLA" ID="4387" status="Y" npi="1324567890" machine_technician_id="0" Legal_Org="CMG"/>
 <Physician prefix="" firstname="RAT_1" middlename="" lastname="TRANSCRIPTION" suffix="" username="RAT_1" ID="4238" status="Y" npi="" machine_technician_id="0" Legal_Org="CMG"/>
 <Physician prefix="" firstname="RAT_2" middlename="" lastname="TRANSCRIPTION" suffix="" username="RAT_2" ID="4239" status="Y" npi="" machine_technician_id="0" Legal_Org="CMG"/>
 <Physician prefix="" firstname="RAT_3" middlename="" lastname="TRANSCRIPTION" suffix="" username="RAT_3" ID="4283" status="Y" npi="" machine_technician_id="0" Legal_Org="CMG"/>
@@ -296,157 +278,32 @@
 <Physician prefix="" firstname="RGT_1" middlename="" lastname="TRANSCRIPTION" suffix="" username="RGT_1" ID="4285" status="Y" npi="" machine_technician_id="0" Legal_Org="CMG"/>
 <Physician prefix="" firstname="RGT_2" middlename="" lastname="TRANSCRIPTION" suffix="" username="RGT_2" ID="4286" status="Y" npi="" machine_technician_id="0" Legal_Org="CMG"/>
 <Physician prefix="" firstname="RGT_3" middlename="" lastname="TRANSCRIPTION" suffix="" username="RGT_3" ID="4287" status="Y" npi="" machine_technician_id="0" Legal_Org="CMG"/>
+<Physician prefix="" firstname="MUT_1" middlename="" lastname="TRANSCRIPTION" suffix="" username="MUT_1" ID="4240" status="Y" npi="" machine_technician_id="0" Legal_Org="CMG"/>
+<Physician prefix="" firstname="MUT_2" middlename="" lastname="TRANSCRIPTION" suffix="" username="MUT_2" ID="4241" status="Y" npi="" machine_technician_id="0" Legal_Org="CMG"/>
+<Physician prefix="" firstname="MUT_3" middlename="" lastname="TRANSCRIPTION" suffix="" username="MUT_3" ID="4281" status="Y" npi="" machine_technician_id="0" Legal_Org="CMG"/>
+<Physician prefix="" firstname="MUT_4" middlename="" lastname="TRANSCRIPTION" suffix="" username="MUT_4" ID="4282" status="Y" npi="" machine_technician_id="0" Legal_Org="CMG"/>
+<Physician prefix="" firstname="GUS_1" middlename="" lastname="TRANSCRIPTION" suffix="" username="GUS_1" ID="4802" status="Y" npi="" machine_technician_id="0" Legal_Org="CMG"/>
+<Physician prefix="" firstname="GUS_2" middlename="" lastname="TRANSCRIPTION" suffix="" username="GUS_2" ID="4803" status="Y" npi="" machine_technician_id="0" Legal_Org="CMG"/>
+<Physician prefix="" firstname="GUS_3" middlename="" lastname="TRANSCRIPTION" suffix="" username="GUS_3" ID="4804" status="Y" npi="" machine_technician_id="0" Legal_Org="CMG"/>
+<Physician prefix="Dr." firstname="PHY_5" middlename="" lastname="TEST" suffix="M.D" username="PHY_5" ID="4844" status="Y" npi="" machine_technician_id="0" Legal_Org="CMG"/>
+<Physician prefix="" firstname="PA_5" middlename="" lastname="" suffix="" username="PA_5" ID="4845" status="Y" npi="" machine_technician_id="0" Legal_Org="CMG"/>
+<Physician prefix="Dr." firstname="PHY_2" middlename="" lastname="TEST" suffix="M.D" username="PHY_2" ID="4909" status="Y" npi="" machine_technician_id="0" Legal_Org="CMG"/>
+<Physician prefix="Dr." firstname="PHY_3" middlename="" lastname="TEST" suffix="M.D" username="PHY_3" ID="4910" status="Y" npi="" machine_technician_id="0" Legal_Org="CMG"/>
+<Physician prefix="" firstname="HAT_1" middlename="" lastname="TRANSCRIPTION" suffix="" username="HAT_1" ID="4230" status="Y" npi="" machine_technician_id="0" Legal_Org="CMG"/>
+<Physician prefix="" firstname="HAT_2" middlename="" lastname="TRANSCRIPTION" suffix="" username="HAT_2" ID="4233" status="Y" npi="" machine_technician_id="0" Legal_Org="CMG"/>
+<Physician prefix="Dr." firstname="David" middlename="" lastname="Chang" suffix="M.D." username="DCHANG" ID="4931" status="Y" npi="" machine_technician_id="0" Legal_Org="CMG"/>
+<Physician prefix="" firstname="N.C" middlename="" lastname="Krishnan" suffix="" username="NCKRISHNAN" ID="4940" status="Y" npi="" machine_technician_id="0" Legal_Org="CMG"/>
 </Facility>
-<Facility name="UVB" default-physician-id="4649">
+<Facility name="UVB" default-physician-id="5005" Legal_Org="CMG">
 <Physician prefix="" firstname="TECH VISIT" middlename="" lastname="" suffix="" username="TECH_VISIT" ID="4420" status="Y" npi="" machine_technician_id="0" Legal_Org="CMG"/>
-<Physician prefix="Dr." firstname="David" middlename="" lastname="Robles" suffix="M.D, PhD." username="UVB_DROBLES" ID="4649" status="Y" npi="" machine_technician_id="0" Legal_Org="CMG"/>
+<Physician prefix="Dr." firstname="Johnnie" middlename="M" lastname="Woodson Jr" suffix="MD" username="JWOODSON" ID="5005" status="Y" npi="1780727750" machine_technician_id="0" Legal_Org="CMG"/>
 </Facility>
 </PhyList>
 <UnMappedPhyList>
-<Physician prefix="" firstname="Anthony" middlename="" lastname="Antenorcruz" suffix="PA-C" username="AANTENORCRUZ" ID="3103" status="Y" npi="1376722884"/>
-<Physician prefix="Dr." firstname="ABBAS" middlename="" lastname="BAHARI" suffix="M.D." username="ABAHARI" ID="3114" status="Y" npi="1447469176"/>
-<Physician prefix="" firstname="Arthur" middlename="" lastname="Chang" suffix="" username="ACHANG_SCRIBE" ID="4761" status="Y" npi=""/>
-<Physician prefix="Dr." firstname="Albert" middlename="K" lastname="Chong" suffix="M.D." username="ACHONG" ID="188" status="Y" npi="1700819653"/>
-<Physician prefix="" firstname="Anastasia" middlename="" lastname="Collins" suffix="DO" username="ACOLLINS" ID="4731" status="Y" npi=""/>
-<Physician prefix="Dr." firstname="Anh-Dao" middlename="V" lastname="Le" suffix="M.D." username="ADAOLE" ID="221" status="Y" npi="1619946779"/>
-<Physician prefix="" firstname="Annette" middlename="" lastname="Hollenbeck" suffix="NP" username="AHOLLENBECK" ID="680" status="Y" npi="1831366236"/>
-<Physician prefix="" firstname="Alexandra" middlename="" lastname="Interiano" suffix="NP" username="AINTERIANO" ID="4579" status="Y" npi=""/>
-<Physician prefix="Dr." firstname="Ali" middlename="H" lastname="Mesiwala" suffix="M.D." username="AMESIWALA" ID="230" status="Y" npi="1306814868"/>
-<Physician prefix="" firstname="Anika" middlename="" lastname="Muthaiah" suffix="MD" username="AMUTHAIAH" ID="4725" status="Y" npi=""/>
-<Physician prefix="" firstname="Alejandra" middlename="" lastname="Nieto" suffix="PA-C" username="ANIETO" ID="2781" status="Y" npi="1528360724"/>
-<Physician prefix="" firstname="Aime" middlename="" lastname="Rodriguez" suffix="" username="ARODRIGUEZ_SCRIBE" ID="4485" status="Y" npi=""/>
-<Physician prefix="" firstname="Arzoo" middlename="" lastname="Sadiqi" suffix="" username="ASADIQI" ID="4777" status="Y" npi=""/>
-<Physician prefix="Dr." firstname="Alya" middlename="D" lastname="Torna" suffix="M.D." username="ATORNA" ID="2858" status="Y" npi="1306051024"/>
-<Physician prefix="" firstname="Atziri" middlename="" lastname="Torres" suffix="" username="ATTORRES_SCRIBE" ID="4483" status="Y" npi=""/>
-<Physician prefix="" firstname="Alexander" middlename="" lastname="Uche" suffix="" username="AUCHE_SCRIBE" ID="4486" status="Y" npi=""/>
-<Physician prefix="" firstname="Brenda" middlename="" lastname="Flores" suffix="" username="BFLORES_CT" ID="4774" status="Y" npi=""/>
-<Physician prefix="" firstname="BRETT" middlename="" lastname="HESLOP" suffix="PA" username="BHESLOP" ID="4203" status="Y" npi="1942601018"/>
-<Physician prefix="" firstname="Bequeath" middlename="" lastname="Juanita" suffix="" username="BJUANITA" ID="2872" status="Y" npi=""/>
-<Physician prefix="" firstname="Britney" middlename="" lastname="Kaufman" suffix="PA-C" username="BKAUFMAN" ID="2862" status="Y" npi="1255500724"/>
-<Physician prefix="Dr." firstname="Cardio" middlename="" lastname="" suffix="" username="CARDIO" ID="2873" status="Y" npi=""/>
-<Physician prefix="" firstname="Chase" middlename="" lastname="Atckison" suffix="DO" username="CATCKISON" ID="4721" status="Y" npi=""/>
-<Physician prefix="Dr." firstname="Charlaine" middlename="S" lastname="Clonts" suffix="" username="CCLONTS" ID="3061" status="Y" npi=""/>
-<Physician prefix="" firstname="Carol" middlename="Gee" lastname="" suffix="" username="CGEE" ID="2879" status="Y" npi=""/>
-<Physician prefix="Dr." firstname="Chan Myat" middlename="" lastname="Aung" suffix="M.D." username="CMAUNG" ID="4308" status="Y" npi="1376949230"/>
-<Physician prefix="" firstname="Crystal" middlename="" lastname="Rhea" suffix="DO" username="CRHEA" ID="4728" status="Y" npi=""/>
-<Physician prefix="" firstname="Christina" middlename="" lastname="Turner" suffix="PA-C" username="CTURNER" ID="4412" status="Y" npi="1083149306"/>
-<Physician prefix="Dr." firstname="Dexa" middlename="" lastname="" suffix="" username="DEXA" ID="2864" status="Y" npi=""/>
-<Physician prefix="" firstname="Daniel" middlename="" lastname="Kim" suffix="PA" username="DKIM" ID="4772" status="Y" npi=""/>
-<Physician prefix="Dr." firstname="Dwaraknath" middlename="P" lastname="Reddy" suffix="M.D." username="DREDDY" ID="163" status="Y" npi="1417964917"/>
-<Physician prefix="" firstname="Erica" middlename="" lastname="Faylor" suffix="FNP" username="EFAYLOR" ID="4625" status="Y" npi="1386155299"/>
-<Physician prefix="" firstname="Edward" middlename="" lastname="Lin" suffix="DO" username="ELIN" ID="4724" status="Y" npi=""/>
-<Physician prefix="Dr." firstname="Emergency" middlename="" lastname="" suffix="" username="EMERGENCY" ID="2833" status="Y" npi=""/>
-<Physician prefix="Dr." firstname="Erin" middlename="" lastname="Sackett" suffix="NP" username="ESACKETT" ID="110" status="Y" npi="1629381827"/>
-<Physician prefix="" firstname="Edward" middlename="" lastname="Speltie" suffix="DO" username="ESPELTIE" ID="4729" status="Y" npi=""/>
-<Physician prefix="" firstname="Erik" middlename="" lastname="Wiele" suffix="DO" username="EWIELE" ID="4730" status="Y" npi=""/>
-<Physician prefix="Dr." firstname="Generica" middlename="" lastname="" suffix="" username="GENERICA" ID="2859" status="Y" npi=""/>
-<Physician prefix="Dr." firstname="Glenn" middlename="Y" lastname="Miya" suffix="M.D." username="GMIYA" ID="231" status="Y" npi="1912967894"/>
-<Physician prefix="Dr." firstname="Geeta" middlename="J" lastname="Patwa" suffix="M.D." username="GPATWA" ID="244" status="Y" npi="1881662278"/>
-<Physician prefix="Dr." firstname="Gerald" middlename="D" lastname="Rude" suffix="M.D." username="GRUDE" ID="255" status="Y" npi="1174583090"/>
-<Physician prefix="Dr." firstname="Haritha" middlename="R" lastname="Alla" suffix="M.D.,F.A.C.C.,R.P.V.I." username="HAT_3" ID="4234" status="Y" npi=""/>
-<Physician prefix="Dr." firstname="Hetalben" middlename="G" lastname="Makwana" suffix="M.D." username="HESANGHA" ID="4359" status="Y" npi=""/>
-<Physician prefix="" firstname="Heather" middlename="" lastname="Heck" suffix="PA-C" username="HHECK" ID="4191" status="Y" npi="1407223944"/>
-<Physician prefix="Dr." firstname="Holter" middlename="" lastname="" suffix="" username="HOLTER" ID="2875" status="Y" npi=""/>
-<Physician prefix="Dr." firstname="Harish" middlename="" lastname="Yalamanchili" suffix="M.D." username="HYALAMANCHILI" ID="4198" status="Y" npi="1578874186"/>
-<Physician prefix="" firstname="Jade" middlename="" lastname="Anderson" suffix="" username="JANDERSON_SCRIBE" ID="4413" status="Y" npi=""/>
-<Physician prefix="Dr." firstname="Johanna" middlename="V" lastname="Basa" suffix="M.D." username="JBASA" ID="4197" status="Y" npi="1821326380"/>
-<Physician prefix="" firstname="Jenaya" middlename="" lastname="Calderilla" suffix="DO" username="JCALDERILLA" ID="4722" status="Y" npi=""/>
-<Physician prefix="" firstname="John" middlename="" lastname="Devere" suffix="PA-C" username="JDEVERE" ID="120" status="Y" npi="1811921380"/>
-<Physician prefix="" firstname="Jane Ellen" middlename="" lastname="Dietzel" suffix="NP" username="JDIETZEL" ID="4929" status="Y" npi="1093303240"/>
-<Physician prefix="" firstname="John" middlename="" lastname="Hoang" suffix="PA-C" username="JHOANG" ID="2010" status="Y" npi="1477924132"/>
-<Physician prefix="" firstname="JASWINDER" middlename="" lastname="KANG" suffix="" username="JKANG" ID="4330" status="Y" npi=""/>
-<Physician prefix="Dr." firstname="Joanne" middlename="" lastname="Lister" suffix="F.N.P." username="JLISTER" ID="108" status="Y" npi="1467407767"/>
-<Physician prefix="" firstname="John" middlename="" lastname="Medina" suffix="PA" username="JMEDINA" ID="1921" status="Y" npi="1528166014"/>
-<Physician prefix="Dr." firstname="Jhonatan Teodoro" middlename="" lastname="Munoz Espinoza" suffix="M.D." username="JMUNOZ" ID="4195" status="Y" npi="1174881510"/>
-<Physician prefix="" firstname="Jodie" middlename="" lastname="Altamirano" suffix="" username="JOALTAMIRANO" ID="4732" status="Y" npi=""/>
-<Physician prefix="" firstname="Scribe" middlename="" lastname="Jesus Pineda" suffix="" username="JPINEDA_SCRIBE" ID="4815" status="Y" npi=""/>
-<Physician prefix="Dr." firstname="Jprasad_e" middlename="A" lastname="" suffix="M.D." username="JPRASAD_E" ID="2834" status="Y" npi="1821058470"/>
-<Physician prefix="Dr." firstname="Jill" middlename="E" lastname="Reiss" suffix="M.D.,F.A.C.S." username="JREISS" ID="251" status="Y" npi="1831159888"/>
-<Physician prefix="" firstname="James  pac" middlename="K" lastname="Seto" suffix="" username="JSETO" ID="3053" status="Y" npi="1871771873"/>
-<Physician prefix="Dr." firstname="KAUSHA" middlename="" lastname="BHATT" suffix="" username="KBHATT" ID="4304" status="Y" npi=""/>
-<Physician prefix="Dr." firstname="Karen" middlename="D" lastname="French" suffix="R.N." username="KFRENCH" ID="2861" status="Y" npi="1376766543"/>
-<Physician prefix="" firstname="Kristin" middlename="" lastname="Mickelson" suffix="PA-C" username="KMICKELSON" ID="4200" status="Y" npi="1982072682"/>
-<Physician prefix="" firstname="Konca" middlename="" lastname="Scribe" suffix="" username="KONCA_SCRIBE" ID="4805" status="Y" npi=""/>
-<Physician prefix="Dr." firstname="Kleisli" middlename="" lastname="Thomas" suffix="M.D." username="KTHOMAS" ID="4414" status="Y" npi="1518195627"/>
-<Physician prefix="Dr." firstname="Lisa" middlename="C" lastname="Butler" suffix="M.D." username="LBUTLER" ID="2782" status="Y" npi="1003885302"/>
-<Physician prefix="" firstname="Lyda" middlename="" lastname="Deltoro" suffix="PA-C" username="LDELTORO" ID="2826" status="Y" npi="1598075509"/>
-<Physician prefix="Dr." firstname="Laurie" middlename="L" lastname="Diem" suffix="D.O." username="LDIEM" ID="195" status="Y" npi="1881662161"/>
-<Physician prefix="" firstname="Liliana" middlename="" lastname="Mendoza" suffix="" username="LMENDOZA_SCRIBE" ID="4482" status="Y" npi=""/>
-<Physician prefix="Dr." firstname="Lisa" middlename="" lastname="Raptis" suffix="M.D." username="LRAPTIS" ID="3101" status="Y" npi="1902073802"/>
-<Physician prefix="" firstname="LYDIA" middlename="A" lastname="REYES" suffix="" username="LREYES" ID="3559" status="Y" npi=""/>
-<Physician prefix="Dr." firstname="Lori" middlename="L" lastname="Vanyo" suffix="M.D., F.A.C.S." username="LVANYO" ID="270" status="Y" npi="1528036910"/>
-<Physician prefix="" firstname="Meredith" middlename="" lastname="Dettmar" suffix="PA-C" username="MDETTMAR" ID="4204" status="Y" npi="1902275993"/>
-<Physician prefix="Dr." firstname="Manjusha" middlename="" lastname="Gupta" suffix="M.D." username="MGUPTA" ID="2856" status="Y" npi="1609077197"/>
-<Physician prefix="Dr." firstname="Molly" middlename="S" lastname="Hanson" suffix="M.D." username="MHANSON" ID="206" status="Y" npi="1942278312"/>
-<Physician prefix="" firstname="MATTHEW" middlename="" lastname="KIDDLE" suffix="PA" username="MKIDDLE" ID="3142" status="Y" npi="1033528591"/>
-<Physician prefix="" firstname="Michelle" middlename="" lastname="Lancaster" suffix="PA-C" username="MLANCASTER" ID="4548" status="Y" npi="1427351212"/>
-<Physician prefix="" firstname="Michelle" middlename="" lastname="Ledesma" suffix="RN, CDE" username="MLEDESMA" ID="3076" status="Y" npi="1467817981"/>
-<Physician prefix="" firstname="MARK" middlename="" lastname="VALENCIA" suffix="" username="MVALENCIA" ID="4332" status="Y" npi=""/>
-<Physician prefix="" firstname="Nina" middlename="" lastname="Kar" suffix="" username="NKAR_SCRIBE" ID="4662" status="Y" npi=""/>
-<Physician prefix="Dr." firstname="Nischita" middlename="" lastname="Merla" suffix="M.D." username="NMERLA" ID="3074" status="Y" npi="1629272208"/>
-<Physician prefix="" firstname="Neha" middlename="" lastname="Mohindroo" suffix="" username="NMOHINDROO_SCRIBE" ID="4760" status="Y" npi=""/>
-<Physician prefix="Dr." firstname="Nilem" middlename="" lastname="Patel" suffix="M.D." username="NPATEL" ID="104" status="Y" npi="1689837171"/>
-<Physician prefix="" firstname="Nageena" middlename="" lastname="Potluri" suffix="MD" username="NPOTLURI" ID="4727" status="Y" npi=""/>
-<Physician prefix="Dr." firstname="Nuclear" middlename="" lastname="" suffix="" username="NUCLEAR" ID="2876" status="Y" npi=""/>
-<Physician prefix="Dr." firstname="OWER" middlename="C" lastname="CASTRO" suffix="M.D." username="OCASTRO" ID="3110" status="Y" npi="1588950216"/>
-<Physician prefix="" firstname="Pererras" middlename="" lastname="Ernie" suffix="" username="PERNIE" ID="2869" status="Y" npi=""/>
-<Physician prefix="Dr." firstname="PFT" middlename="" lastname="" suffix="" username="PFT" ID="4190" status="Y" npi=""/>
-<Physician prefix="Dr." firstname="Puneet" middlename="" lastname="Ghayal" suffix="M.D." username="PGHAYAL" ID="4196" status="Y" npi="1336443100"/>
-<Physician prefix="" firstname="John" middlename="" lastname="Parton" suffix="" username="PJOHN" ID="2877" status="Y" npi=""/>
-<Physician prefix="Dr." firstname="Paul" middlename="D" lastname="Orr" suffix="M.D., INC." username="PORR" ID="2323" status="Y" npi="1417950221"/>
-<Physician prefix="Dr." firstname="Pulmonary" middlename="" lastname="" suffix="" username="PULMONARY" ID="2874" status="Y" npi=""/>
-<Physician prefix="" firstname="Scribe" middlename="" lastname="Raul Granados" suffix="" username="RGRANADOS_SCRIBE" ID="4816" status="Y" npi=""/>
-<Physician prefix="Dr." firstname="Roger" middlename="D" lastname="Hall" suffix="D.O." username="RHALL" ID="205" status="Y" npi="1336118579"/>
-<Physician prefix="Dr." firstname="Robert" middlename="C" lastname="Jones" suffix="M.D." username="RJONES" ID="213" status="Y" npi="1275501629"/>
-<Physician prefix="Dr." firstname="Rpradhan_e" middlename="K" lastname="" suffix="M.D." username="RPRADHAN_E" ID="2835" status="Y" npi="1336117738"/>
-<Physician prefix="Dr." firstname="Radha" middlename="T" lastname="Reddy" suffix="M.D., F.A.C.E." username="RREDDY" ID="247" status="Y" npi="1780652073"/>
-<Physician prefix="" firstname="ROXANNE" middlename="" lastname="SMILEY" suffix="PAC" username="RSMILEY" ID="3113" status="Y" npi="1821362781"/>
-<Physician prefix="" firstname="RAYMOND" middlename="N" lastname="SMITH" suffix="FNP" username="RSMITH" ID="2938" status="Y" npi="1609941632"/>
-<Physician prefix="" firstname="Riddle" middlename="" lastname="Valerie" suffix="" username="RVALERIE" ID="2870" status="Y" npi=""/>
-<Physician prefix="Dr." firstname="Rajeev" middlename="K" lastname="Walia" suffix="" username="RWALIA" ID="912" status="Y" npi="1104924679"/>
-<Physician prefix="" firstname="SUNDEEP" middlename="" lastname="ADUSUMALLI" suffix="M.D., F.A.C.C" username="SADUSUMALLI" ID="4290" status="Y" npi="1639305295"/>
-<Physician prefix="Dr." firstname="Sophia" middlename="" lastname="Beyene" suffix="D.O." username="SBEYENE" ID="183" status="Y" npi="1861454993"/>
-<Physician prefix="" firstname="STEPHANIE" middlename="" lastname="CLARK-POVEDA" suffix="PA-C" username="SCLARK" ID="3104" status="Y" npi="1881761120"/>
-<Physician prefix="" firstname="Charlaine" middlename="S" lastname="Williamson" suffix="FNP" username="SCLONTS" ID="2860" status="Y" npi="1932408960"/>
-<Physician prefix="" firstname="Scribe1" middlename="" lastname="Alla" suffix="" username="SCRIBE1_ALLA" ID="4928" status="Y" npi=""/>
-<Physician prefix="" firstname="Robles" middlename="" lastname="Scribe1" suffix="" username="SCRIBE1_DROBLES" ID="4810" status="Y" npi=""/>
-<Physician prefix="" firstname="Konca" middlename="" lastname="Scribe1" suffix="" username="SCRIBE1_EKONCA" ID="4807" status="Y" npi=""/>
-<Physician prefix="" firstname="Cohen" middlename="" lastname="Scribe1" suffix="" username="SCRIBE1_HCOHEN" ID="4817" status="Y" npi=""/>
-<Physician prefix="" firstname="Scribe1" middlename="" lastname="Nazeri" suffix="" username="SCRIBE1_NAZERI" ID="4926" status="Y" npi=""/>
-<Physician prefix="" firstname="Rasania" middlename="" lastname="Scribe1" suffix="" username="SCRIBE1_RASANIA" ID="4875" status="Y" npi=""/>
-<Physician prefix="" firstname="SReddy" middlename="" lastname="Scribe1" suffix="" username="SCRIBE1_SREDDY" ID="4872" status="Y" npi=""/>
-<Physician prefix="" firstname="Robles" middlename="" lastname="Scribe2" suffix="" username="SCRIBE2_DROBLES" ID="4811" status="Y" npi=""/>
-<Physician prefix="" firstname="Konca" middlename="" lastname="Scribe2" suffix="" username="SCRIBE2_EKONCA" ID="4808" status="Y" npi=""/>
-<Physician prefix="" firstname="Cohen" middlename="" lastname="Scribe2" suffix="" username="SCRIBE2_HCOHEN" ID="4818" status="Y" npi=""/>
-<Physician prefix="" firstname="Robles" middlename="" lastname="Scribe3" suffix="" username="SCRIBE3_DROBLES" ID="4812" status="Y" npi=""/>
-<Physician prefix="" firstname="Konca" middlename="" lastname="Scribe3" suffix="" username="SCRIBE3_EKONCA" ID="4809" status="Y" npi=""/>
-<Physician prefix="" firstname="Cohen" middlename="" lastname="Scribe3" suffix="" username="SCRIBE3_HCOHEN" ID="4819" status="Y" npi=""/>
-<Physician prefix="" firstname="Robles" middlename="" lastname="Scribe4" suffix="" username="SCRIBE4_DROBLES" ID="4813" status="Y" npi=""/>
-<Physician prefix="" firstname="Cohen" middlename="" lastname="Scribe4" suffix="" username="SCRIBE4_HCOHEN" ID="4820" status="Y" npi=""/>
-<Physician prefix="" firstname="SCRIBE_1" middlename="" lastname="" suffix="" username="SCRIBE_1" ID="4664" status="Y" npi=""/>
-<Physician prefix="" firstname="SCRIBE_2" middlename="" lastname="" suffix="" username="SCRIBE_2" ID="4665" status="Y" npi=""/>
-<Physician prefix="" firstname="Sean" middlename="" lastname="Flynn" suffix="PA-C" username="SFLYNN" ID="4610" status="Y" npi="1245718980"/>
-<Physician prefix="Dr." firstname="Sarika" middlename="" lastname="Jain" suffix="M.D." username="SJAIN" ID="713" status="Y" npi="1205846250"/>
-<Physician prefix="Dr." firstname="Sudathi" middlename="" lastname="Jeereddi" suffix="M.D.,F.A.A.F.P." username="SJEEREDDI" ID="211" status="Y" npi="1609844984"/>
-<Physician prefix="" firstname="Shruti" middlename="" lastname="Katbamna" suffix="MD" username="SKATBAMNA" ID="4723" status="Y" npi=""/>
 <Physician prefix="Dr." firstname="Sudhakar" middlename="R" lastname="Kona" suffix="M.D." username="SKONA" ID="101" status="Y" npi="1619080215"/>
-<Physician prefix="Dr." firstname="Sivaprasad" middlename="" lastname="Mullangi" suffix="M.D., F.A.C.S." username="SMULLANGI" ID="233" status="Y" npi="1750592242"/>
-<Physician prefix="Dr." firstname="Shyam" middlename="" lastname="Rao" suffix="M.D." username="SRAO" ID="4784" status="Y" npi="1568729580"/>
-<Physician prefix="" firstname="Stephanie" middlename="" lastname="Raymundo" suffix="" username="SRAYMUNDO_SCRIBE" ID="4759" status="Y" npi=""/>
-<Physician prefix="Dr." firstname="Sujatha" middlename="" lastname="Srikanth" suffix="MD" username="SSRIKANTH" ID="4584" status="Y" npi="1124085287"/>
-<Physician prefix="Dr." firstname="Sundararajan" middlename="" lastname="Srikanth" suffix="M.D." username="SSRIKANTHMD" ID="4595" status="Y" npi="1104934082"/>
-<Physician prefix="" firstname="Swapna" middlename="" lastname="Upparlapalli" suffix="MD" username="SUPPARLAPALLI" ID="4726" status="Y" npi=""/>
-<Physician prefix="Dr." firstname="Tom" middlename="Y" lastname="Moy" suffix="M.D." username="TMOY" ID="232" status="Y" npi="1821064007"/>
-<Physician prefix="" firstname="Tania" middlename="" lastname="Munoz" suffix="" username="TMUNOZ" ID="4705" status="Y" npi=""/>
-<Physician prefix="" firstname="Trang doan" middlename="" lastname="Phan" suffix="" username="TPHAN" ID="2984" status="Y" npi="1891094611"/>
-<Physician prefix="Dr." firstname="TATIANA" middlename="" lastname="SAMS" suffix="MD" username="TSAMS" ID="4331" status="Y" npi="1174815427"/>
-<Physician prefix="Dr." firstname="Ultrasound" middlename="" lastname="" suffix="" username="ULTRASOUND" ID="2865" status="Y" npi=""/>
-<Physician prefix="" firstname="VANESSA" middlename="" lastname="PEDREGO" suffix="PA-C" username="VCASTRO" ID="3102" status="Y" npi=""/>
-<Physician prefix="" firstname="Vcastro_e" middlename="" lastname="" suffix="PA" username="VCASTRO_E" ID="2836" status="Y" npi="1467763755"/>
-<Physician prefix="" firstname="Victoria" middlename="" lastname="Cha" suffix="" username="VCHA_SCRIBE" ID="4765" status="Y" npi=""/>
-<Physician prefix="Dr." firstname="Venkata" middlename="" lastname="Pulakanti" suffix="M.D." username="VSPULAKANTI" ID="2802" status="Y" npi="1356521843"/>
-<Physician prefix="Dr." firstname="X-Ray" middlename="" lastname="" suffix="" username="X-RAY" ID="2863" status="Y" npi=""/>
-<Physician prefix="" firstname="Marina" middlename="" lastname="Zanzarini" suffix="PA-C" username="ZMARINA" ID="4738" status="Y" npi="1649759895"/>
+<Physician prefix="Dr." firstname="Nilem" middlename="" lastname="Patel" suffix="M.D." username="NPATEL" ID="104" status="Y" npi="1689837171"/>
+<Physician prefix="Dr." firstname="Joanne" middlename="" lastname="Lister" suffix="F.N.P." username="JLISTER" ID="108" status="Y" npi="1467407767"/>
+<Physician prefix="Dr." firstname="Erin" middlename="" lastname="Sackett" suffix="NP" username="ESACKETT" ID="110" status="Y" npi="1629381827"/>
 <Physician prefix="Dr." firstname="Jalal" middlename="" lastname="Badday" suffix="M.D." username="" ID="111" status="Y" npi="1013951870"/>
 <Physician prefix="Dr." firstname="Jessica" middlename="" lastname="Basa" suffix="M.D." username="" ID="112" status="Y" npi="1952360539"/>
 <Physician prefix="Dr." firstname="Bryan" middlename="" lastname="Chan" suffix="M.D." username="" ID="113" status="Y" npi="1417059957"/>
@@ -456,6 +313,7 @@
 <Physician prefix="Dr." firstname="Gregory" middlename="E" lastname="Dahlquist" suffix="M.D." username="" ID="117" status="Y" npi="1558362467"/>
 <Physician prefix="Dr." firstname="Ignacio" middlename="" lastname="De artola" suffix="M.D." username="" ID="118" status="Y" npi="1508887761"/>
 <Physician prefix="Dr." firstname="Joel" middlename="" lastname="De la merced" suffix="M.D." username="" ID="119" status="Y" npi="1306810031"/>
+<Physician prefix="" firstname="John" middlename="" lastname="Devere" suffix="PA-C" username="JDEVERE" ID="120" status="Y" npi="1811921380"/>
 <Physician prefix="Dr." firstname="Venkat" middlename="" lastname="Devineni" suffix="M.D." username="" ID="121" status="Y" npi="1588650675"/>
 <Physician prefix="Dr." firstname="Ricardo" middlename="" lastname="Di sarli" suffix="M.D." username="" ID="122" status="Y" npi="1487605721"/>
 <Physician prefix="Dr." firstname="Richard" middlename="" lastname="Dithomas" suffix="M.D." username="" ID="123" status="Y" npi="1992840854"/>
@@ -497,6 +355,7 @@
 <Physician prefix="Dr." firstname="Sonia" middlename="" lastname="Panjwani" suffix="M.D." username="" ID="160" status="Y" npi="1316978075"/>
 <Physician prefix="Dr." firstname="Burn" middlename="" lastname="Park" suffix="M.D." username="" ID="161" status="Y" npi="1912196056"/>
 <Physician prefix="Dr." firstname="Gurpal" middlename="S" lastname="Phaguda" suffix="M.D." username="" ID="162" status="Y" npi="1467586537"/>
+<Physician prefix="Dr." firstname="Dwaraknath" middlename="P" lastname="Reddy" suffix="M.D." username="DREDDY" ID="163" status="Y" npi="1417964917"/>
 <Physician prefix="Dr." firstname="Mallu" middlename="C" lastname="Reddy" suffix="M.D." username="" ID="164" status="Y" npi="1942278221"/>
 <Physician prefix="Dr." firstname="Venkamma" middlename="" lastname="Reddy" suffix="M.D." username="" ID="165" status="Y" npi="1124077698"/>
 <Physician prefix="Dr." firstname="Arnold" middlename="I" lastname="Roth" suffix="M.D." username="" ID="166" status="Y" npi="1225241276"/>
@@ -515,23 +374,29 @@
 <Physician prefix="Dr." firstname="Cmg lab" middlename="" lastname="Ancillary serv" suffix="" username="" ID="180" status="Y" npi=""/>
 <Physician prefix="Dr." firstname="Rubina" middlename="" lastname="Aqeel" suffix="M.D." username="" ID="181" status="Y" npi="1407972490"/>
 <Physician prefix="Dr." firstname="Michael" middlename="" lastname="Benavidez" suffix="DO" username="" ID="182" status="Y" npi="1205987914"/>
+<Physician prefix="Dr." firstname="Sophia" middlename="" lastname="Beyene" suffix="D.O." username="SBEYENE" ID="183" status="Y" npi="1861454993"/>
 <Physician prefix="Dr." firstname="Devin" middlename="" lastname="Binder" suffix="M.D." username="" ID="184" status="Y" npi="1992804819"/>
 <Physician prefix="Dr." firstname="Susan" middlename="" lastname="Botnick" suffix="M.D." username="" ID="185" status="Y" npi="1790754455"/>
 <Physician prefix="Dr." firstname="Daryl" middlename="" lastname="Caringi" suffix="DO" username="" ID="187" status="Y" npi="1447228903"/>
+<Physician prefix="Dr." firstname="Albert" middlename="K" lastname="Chong" suffix="M.D." username="ACHONG" ID="188" status="Y" npi="1700819653"/>
 <Physician prefix="Dr." firstname="Marcus" middlename="" lastname="Connelly" suffix="M.D." username="" ID="189" status="Y" npi="1295703577"/>
 <Physician prefix="Dr." firstname="Kourosh" middlename="A" lastname="Dastgheib" suffix="M.D." username="" ID="190" status="Y" npi="1578523593"/>
 <Physician prefix="Dr." firstname="Lynn" middlename="" lastname="Detwiler" suffix="" username="" ID="192" status="Y" npi=""/>
 <Physician prefix="Dr." firstname="Jagtar" middlename="" lastname="Dhadwal" suffix="M.D." username="" ID="193" status="Y" npi="1801865563"/>
 <Physician prefix="Dr." firstname="Raja" middlename="" lastname="Dhalla" suffix="M.D." username="" ID="194" status="Y" npi="1730157876"/>
+<Physician prefix="Dr." firstname="Laurie" middlename="L" lastname="Diem" suffix="D.O." username="LDIEM" ID="195" status="Y" npi="1881662161"/>
 <Physician prefix="Dr." firstname="Inlandvalley" middlename="" lastname="Disease mang.clin" suffix="" username="" ID="196" status="Y" npi=""/>
 <Physician prefix="Dr." firstname="Albert" middlename="A" lastname="Dixon" suffix="M.D." username="" ID="197" status="Y" npi="1528024924"/>
 <Physician prefix="Dr." firstname="Donna" middlename="" lastname="Dudziak" suffix="" username="" ID="198" status="Y" npi="1275630568"/>
 <Physician prefix="Dr." firstname="Ron" middlename="" lastname="Dunchok" suffix="M.D." username="" ID="199" status="Y" npi="1356331730"/>
 <Physician prefix="Dr." firstname="Steven" middlename="" lastname="Floum" suffix="M.D." username="" ID="201" status="Y" npi="1194755660"/>
 <Physician prefix="Dr." firstname="April" middlename="" lastname="Ford" suffix="M.D." username="" ID="202" status="Y" npi="1023045283"/>
+<Physician prefix="Dr." firstname="Roger" middlename="D" lastname="Hall" suffix="D.O." username="RHALL" ID="205" status="Y" npi="1336118579"/>
+<Physician prefix="Dr." firstname="Molly" middlename="S" lastname="Hanson" suffix="M.D." username="MHANSON" ID="206" status="Y" npi="1942278312"/>
 <Physician prefix="Dr." firstname="Jerry" middlename="" lastname="Huang" suffix="" username="" ID="207" status="Y" npi=""/>
 <Physician prefix="Dr." firstname="Mgt. clinic" middlename="" lastname="Inland valley dis" suffix="" username="" ID="209" status="Y" npi=""/>
 <Physician prefix="Dr." firstname="Robyn" middlename="D" lastname="Holl" suffix="DO" username="" ID="210" status="Y" npi="1487623575"/>
+<Physician prefix="Dr." firstname="Sudathi" middlename="" lastname="Jeereddi" suffix="M.D.,F.A.A.F.P." username="SJEEREDDI" ID="211" status="Y" npi="1609844984"/>
 <Physician prefix="Dr." firstname="Praveena" middlename="" lastname="Jeereddi" suffix="M.D." username="" ID="212" status="Y" npi="1346218740"/>
 <Physician prefix="Dr." firstname="Randy" middlename="" lastname="Karu" suffix="M.D." username="" ID="214" status="Y" npi="1386645760"/>
 <Physician prefix="Dr." firstname="Emmanu" middlename="" lastname="Katsaros" suffix="" username="" ID="215" status="Y" npi=""/>
@@ -540,12 +405,17 @@
 <Physician prefix="Dr." firstname="Bryan" middlename="X" lastname="Lee" suffix="M.D." username="" ID="218" status="Y" npi="1467512624"/>
 <Physician prefix="Dr." firstname="Daniel" middlename="" lastname="Lee" suffix="M.D." username="" ID="219" status="Y" npi="1659533115"/>
 <Physician prefix="Dr." firstname="Thomas" middlename="T" lastname="Lee" suffix="" username="" ID="220" status="Y" npi="1942304373"/>
+<Physician prefix="Dr." firstname="Anh-Dao" middlename="V" lastname="Le" suffix="M.D." username="ADAOLE" ID="221" status="Y" npi="1619946779"/>
 <Physician prefix="Dr." firstname="Samuel" middlename="" lastname="Lim" suffix="" username="" ID="223" status="Y" npi=""/>
 <Physician prefix="Dr." firstname="Tracy" middlename="" lastname="Lui pa" suffix="" username="" ID="224" status="Y" npi=""/>
 <Physician prefix="Dr." firstname="David" middlename="" lastname="Lundin" suffix="M.D." username="" ID="225" status="Y" npi="1790722692"/>
 <Physician prefix="Dr." firstname="Usha" middlename="" lastname="Mantha" suffix="M.D." username="" ID="226" status="Y" npi="1306806948"/>
 <Physician prefix="Dr." firstname="Dharmesh" middlename="S" lastname="Mehta" suffix="M.D." username="" ID="228" status="Y" npi="1114980760"/>
 <Physician prefix="Dr." firstname="Jame" middlename="" lastname="Meriwether" suffix="" username="" ID="229" status="Y" npi=""/>
+<Physician prefix="Dr." firstname="Ali" middlename="H" lastname="Mesiwala" suffix="M.D." username="AMESIWALA" ID="230" status="Y" npi="1306814868"/>
+<Physician prefix="Dr." firstname="Glenn" middlename="Y" lastname="Miya" suffix="M.D." username="GMIYA" ID="231" status="Y" npi="1912967894"/>
+<Physician prefix="Dr." firstname="Tom" middlename="Y" lastname="Moy" suffix="M.D." username="TMOY" ID="232" status="Y" npi="1821064007"/>
+<Physician prefix="Dr." firstname="Sivaprasad" middlename="" lastname="Mullangi" suffix="M.D., F.A.C.S." username="SMULLANGI" ID="233" status="Y" npi="1750592242"/>
 <Physician prefix="Dr." firstname="Tamuyen" middlename="" lastname="Nguyen" suffix="M.D." username="" ID="235" status="Y" npi="1710041686"/>
 <Physician prefix="Dr." firstname="Tan" middlename="" lastname="Nguyen" suffix="M.D." username="" ID="236" status="Y" npi="1144273491"/>
 <Physician prefix="Dr." firstname="Pavan" middlename="K" lastname="Nootheti" suffix="MD,FAAD" username="" ID="238" status="Y" npi="1912130287"/>
@@ -554,11 +424,16 @@
 <Physician prefix="Dr." firstname="Takahiro" middlename="" lastname="Ostuka" suffix="" username="" ID="241" status="Y" npi=""/>
 <Physician prefix="Dr." firstname="Milan" middlename="" lastname="Patel" suffix="" username="" ID="242" status="Y" npi=""/>
 <Physician prefix="Dr." firstname="Mukeshchan" middlename="" lastname="Patel" suffix="M.D." username="" ID="243" status="Y" npi="1639106198"/>
+<Physician prefix="Dr." firstname="Geeta" middlename="J" lastname="Patwa" suffix="M.D." username="GPATWA" ID="244" status="Y" npi="1881662278"/>
 <Physician prefix="Dr." firstname="Baidyanath" middlename="" lastname="Prasad" suffix="" username="" ID="245" status="Y" npi="1932264850"/>
 <Physician prefix="Dr." firstname="Stephen" middlename="" lastname="Rathbun" suffix="" username="" ID="246" status="Y" npi=""/>
+<Physician prefix="Dr." firstname="Radha" middlename="T" lastname="Reddy" suffix="M.D., F.A.C.E." username="RREDDY" ID="247" status="Y" npi="1780652073"/>
 <Physician prefix="Dr." firstname="Krishna" middlename="G" lastname="Reddy" suffix="M.D." username="" ID="249" status="Y" npi="1063417624"/>
 <Physician prefix="Dr." firstname="Viswanantha" middlename="" lastname="Reddy" suffix="M.D." username="" ID="250" status="Y" npi="1497804777"/>
+<Physician prefix="Dr." firstname="Jill" middlename="E" lastname="Reiss" suffix="M.D.,F.A.C.S." username="JREISS" ID="251" status="Y" npi="1831159888"/>
+<Physician prefix="Dr." firstname="David" middlename="" lastname="Robles" suffix="M.D, PhD." username="DROBLES" ID="252" status="Y" npi="1326156233"/>
 <Physician prefix="Dr." firstname="Robert" middlename="" lastname="Rocco" suffix="M.D." username="" ID="253" status="Y" npi="1982826236"/>
+<Physician prefix="Dr." firstname="Gerald" middlename="D" lastname="Rude" suffix="M.D." username="GRUDE" ID="255" status="Y" npi="1174583090"/>
 <Physician prefix="Dr." firstname="Gary Gursharan" middlename="" lastname="Sandhu" suffix="M.D" username="" ID="257" status="Y" npi="1871513002"/>
 <Physician prefix="Dr." firstname="Rohinder" middlename="" lastname="Sandhu" suffix="M.D." username="" ID="258" status="Y" npi="1902997174"/>
 <Physician prefix="Dr." firstname="Julie" middlename="" lastname="Schmaderer" suffix="" username="" ID="259" status="Y" npi=""/>
@@ -568,6 +443,7 @@
 <Physician prefix="Dr." firstname="Irving" middlename="L" lastname="Spratt" suffix="M.D." username="" ID="266" status="Y" npi="1508898024"/>
 <Physician prefix="Dr." firstname="Gowriharan" middlename="" lastname="Thaiyananthan" suffix="M.D." username="" ID="267" status="Y" npi="1518164110"/>
 <Physician prefix="Dr." firstname="Charles" middlename="" lastname="Tran" suffix="DO" username="" ID="269" status="Y" npi="1922051739"/>
+<Physician prefix="Dr." firstname="Lori" middlename="L" lastname="Vanyo" suffix="M.D., F.A.C.S." username="LVANYO" ID="270" status="Y" npi="1528036910"/>
 <Physician prefix="Dr." firstname="Subhash" middlename="" lastname="Varshney" suffix="M.D." username="" ID="271" status="Y" npi="1346359049"/>
 <Physician prefix="Dr." firstname="Seymour" middlename="" lastname="Weaver" suffix="M.D." username="" ID="272" status="Y" npi="1225126956"/>
 <Physician prefix="Dr." firstname="Cmg" middlename="" lastname="Zcmg" suffix="" username="" ID="273" status="Y" npi=""/>
@@ -974,6 +850,7 @@
 <Physician prefix="Dr." firstname="Juan" middlename="A" lastname="Almaguer" suffix="M.D." username="" ID="677" status="Y" npi="1992802672"/>
 <Physician prefix="Dr." firstname="Jamshid" middlename="C" lastname="Maleki" suffix="M.D." username="" ID="678" status="Y" npi="1407879646"/>
 <Physician prefix="Dr." firstname="Ricardo" middlename="" lastname="Costa" suffix="" username="" ID="679" status="Y" npi=""/>
+<Physician prefix="" firstname="Annette" middlename="" lastname="Hollenbeck" suffix="NP" username="AHOLLENBECK" ID="680" status="Y" npi="1831366236"/>
 <Physician prefix="Dr." firstname="Emil" middlename="T" lastname="Martinez" suffix="M.D." username="" ID="681" status="Y" npi="6269175281"/>
 <Physician prefix="Dr." firstname="George" middlename="T" lastname="Yang" suffix="M.D." username="" ID="682" status="Y" npi="1558304949"/>
 <Physician prefix="Dr." firstname="S" middlename="" lastname="Rieux" suffix="" username="" ID="683" status="Y" npi=""/>
@@ -1006,6 +883,7 @@
 <Physician prefix="Dr." firstname="Henry" middlename="T" lastname="Co" suffix="M.D." username="" ID="710" status="Y" npi=""/>
 <Physician prefix="Dr." firstname="Wilson" middlename="D" lastname="Lao" suffix="M.D." username="" ID="711" status="Y" npi=""/>
 <Physician prefix="Dr." firstname="Linhkieu" middlename="" lastname="Nguyen" suffix="M.D." username="" ID="712" status="Y" npi=""/>
+<Physician prefix="Dr." firstname="Sarika" middlename="" lastname="Jain" suffix="M.D." username="SJAIN" ID="713" status="Y" npi="1205846250"/>
 <Physician prefix="Dr." firstname="Jacqueline" middlename="" lastname="Berry" suffix="M.D." username="" ID="714" status="Y" npi=""/>
 <Physician prefix="Dr." firstname="Maria" middlename="E" lastname="Marino" suffix="M.D." username="" ID="715" status="Y" npi="1245398700"/>
 <Physician prefix="Dr." firstname="Byron" middlename="L" lastname="Beddo" suffix="" username="" ID="716" status="Y" npi=""/>
@@ -1203,6 +1081,7 @@
 <Physician prefix="Dr." firstname="David" middlename="C" lastname="Huang" suffix="" username="" ID="909" status="Y" npi=""/>
 <Physician prefix="Dr." firstname="Altaf" middlename="" lastname="Ali" suffix="" username="" ID="910" status="Y" npi="1376722736"/>
 <Physician prefix="Dr." firstname="Steven" middlename="B" lastname="Ernst" suffix="" username="" ID="911" status="Y" npi="1568485324"/>
+<Physician prefix="Dr." firstname="Rajeev" middlename="K" lastname="Walia" suffix="" username="RWALIA" ID="912" status="Y" npi="1104924679"/>
 <Physician prefix="Dr." firstname="Ginger" middlename="L" lastname="Leon" suffix="" username="" ID="913" status="Y" npi="1245234780"/>
 <Physician prefix="Dr." firstname="Kantilal" middlename="C" lastname="Patel" suffix="" username="" ID="914" status="Y" npi="1932244183"/>
 <Physician prefix="Dr." firstname="Harold" middlename="W" lastname="Jackson" suffix="" username="" ID="915" status="Y" npi="1235126475"/>
@@ -2182,6 +2061,7 @@
 <Physician prefix="Dr." firstname="Sara" middlename="" lastname="Khan" suffix="M.D." username="" ID="1894" status="Y" npi="1033253414"/>
 <Physician prefix="Dr." firstname="Paul" middlename="D" lastname="Heiderscheidt" suffix="M.D." username="" ID="1895" status="Y" npi="1548351927"/>
 <Physician prefix="Dr." firstname="Carina" middlename="D" lastname="Buhay" suffix="M.D." username="" ID="1896" status="Y" npi="1639143530"/>
+<Physician prefix="Dr." firstname="Daniel" middlename="" lastname="Lee" suffix="M.D." username="DLEE" ID="1897" status="Y" npi="1659533115"/>
 <Physician prefix="Dr." firstname="Mira" middlename="B" lastname="Joshi" suffix="M.D." username="" ID="1898" status="Y" npi="1588739379"/>
 <Physician prefix="Dr." firstname="Mohamed" middlename="A" lastname="Hafez" suffix="M.D." username="" ID="1899" status="Y" npi="1780636167"/>
 <Physician prefix="Dr." firstname="Thomas" middlename="" lastname="Tran" suffix="M.D." username="" ID="1900" status="Y" npi="1710972997"/>
@@ -2204,6 +2084,7 @@
 <Physician prefix="Dr." firstname="Gregory" middlename="K" lastname="Eirich" suffix="DPM,FAFAS" username="" ID="1918" status="Y" npi="1245220649"/>
 <Physician prefix="Dr." firstname="Gurvinder" middlename="S" lastname="Uppal" suffix="" username="" ID="1919" status="Y" npi="1285639922"/>
 <Physician prefix="Dr." firstname="David" middlename="A" lastname="Bolivar" suffix="M.D." username="" ID="1920" status="Y" npi="1801830609"/>
+<Physician prefix="" firstname="John" middlename="" lastname="Medina" suffix="PA" username="JMEDINA" ID="1921" status="Y" npi="1528166014"/>
 <Physician prefix="Dr." firstname="Patrick" middlename="" lastname="Dowling" suffix="M.D." username="" ID="1922" status="Y" npi="1386655066"/>
 <Physician prefix="Dr." firstname="Ryan" middlename="" lastname="Makar" suffix="M.D." username="" ID="1923" status="Y" npi="1881758886"/>
 <Physician prefix="Dr." firstname="Dung" middlename="" lastname="Trinh" suffix="M.D." username="" ID="1924" status="Y" npi="1306827670"/>
@@ -2292,6 +2173,7 @@
 <Physician prefix="Dr." firstname="Terry" middlename="" lastname="Fowler" suffix="" username="" ID="2007" status="Y" npi="1770584989"/>
 <Physician prefix="Dr." firstname="I" middlename="" lastname="Hakimeh" suffix="" username="" ID="2008" status="Y" npi=""/>
 <Physician prefix="Dr." firstname="Edwin.md" middlename="" lastname="Edillon" suffix="" username="" ID="2009" status="Y" npi="1982602298"/>
+<Physician prefix="" firstname="John" middlename="" lastname="Hoang" suffix="PA-C" username="JHOANG" ID="2010" status="Y" npi="1477924132"/>
 <Physician prefix="Dr." firstname="Jocelyn" middlename="A" lastname="Mcgrath" suffix="" username="" ID="2011" status="Y" npi="1467411058"/>
 <Physician prefix="Dr." firstname="Emmanuel" middlename="" lastname="Guerrero" suffix="" username="" ID="2012" status="Y" npi="1578759585"/>
 <Physician prefix="Dr." firstname="Mary" middlename="" lastname="Chen" suffix="" username="" ID="2013" status="Y" npi="1568445229"/>
@@ -2590,6 +2472,7 @@
 <Physician prefix="Dr." firstname="A" middlename="" lastname="Nghiem" suffix="" username="" ID="2320" status="Y" npi=""/>
 <Physician prefix="Dr." firstname="Andre" middlename="M" lastname="Noe" suffix="" username="" ID="2321" status="Y" npi=""/>
 <Physician prefix="Dr." firstname="Olufemi" middlename="" lastname="Ogundipe" suffix="M.D." username="" ID="2322" status="Y" npi=""/>
+<Physician prefix="Dr." firstname="Paul" middlename="D" lastname="Orr" suffix="M.D., INC." username="PORR" ID="2323" status="Y" npi="1417950221"/>
 <Physician prefix="Dr." firstname="Mostafa" middlename="" lastname="Barzi" suffix="" username="" ID="2324" status="Y" npi=""/>
 <Physician prefix="Dr." firstname="Mark" middlename="" lastname="H-k ou" suffix="" username="" ID="2325" status="Y" npi=""/>
 <Physician prefix="Dr." firstname="Padmanabha" middlename="" lastname="Vankatappa" suffix="" username="" ID="2326" status="Y" npi=""/>
@@ -3028,6 +2911,8 @@
 <Physician prefix="Dr." firstname="Harvard" middlename="" lastname="Ultrasound" suffix="" username="" ID="2773" status="Y" npi=""/>
 <Physician prefix="Dr." firstname="Tracy" middlename="" lastname="Liu pa" suffix="" username="" ID="2779" status="Y" npi=""/>
 <Physician prefix="Dr." firstname="Rachel" middlename="" lastname="Pinto" suffix="" username="" ID="2780" status="Y" npi=""/>
+<Physician prefix="" firstname="Alejandra" middlename="" lastname="Nieto" suffix="PA-C" username="ANIETO" ID="2781" status="Y" npi="1528360724"/>
+<Physician prefix="Dr." firstname="Lisa" middlename="C" lastname="Butler" suffix="M.D." username="LBUTLER" ID="2782" status="Y" npi="1003885302"/>
 <Physician prefix="Dr." firstname="Med Grp (jv)" middlename="" lastname="Chaparral" suffix="" username="" ID="2784" status="Y" npi=""/>
 <Physician prefix="Dr." firstname="Deepa" middlename="" lastname="Tom" suffix="M.D." username="" ID="2785" status="Y" npi="1104067420"/>
 <Physician prefix="Dr." firstname="Sarah" middlename="" lastname="Cadman" suffix="M.D." username="" ID="2786" status="Y" npi="1427003490"/>
@@ -3045,6 +2930,7 @@
 <Physician prefix="Dr." firstname="Pulmonary" middlename="" lastname="Pulmonary" suffix="" username="" ID="2798" status="Y" npi=""/>
 <Physician prefix="Dr." firstname="Nuclear Body" middlename="" lastname="Nuclear bodyscan" suffix="" username="" ID="2799" status="Y" npi=""/>
 <Physician prefix="Dr." firstname="Holter Monit" middlename="" lastname="Holter monitor" suffix="" username="" ID="2800" status="Y" npi=""/>
+<Physician prefix="Dr." firstname="Venkata" middlename="" lastname="Pulakanti" suffix="M.D." username="VSPULAKANTI" ID="2802" status="Y" npi="1356521843"/>
 <Physician prefix="Dr." firstname="Gregorius" middlename="" lastname="Theodore" suffix="" username="" ID="2803" status="Y" npi="1184703886"/>
 <Physician prefix="Dr." firstname="Adamson" middlename="" lastname="Gregory" suffix="" username="" ID="2804" status="Y" npi="1184703886"/>
 <Physician prefix="Dr." firstname="Rodriguez" middlename="" lastname="Joseph" suffix="" username="" ID="2805" status="Y" npi="1841228236"/>
@@ -3067,12 +2953,17 @@
 <Physician prefix="Dr." firstname="Berkowitz" middlename="" lastname="Maurice" suffix="" username="" ID="2823" status="Y" npi=""/>
 <Physician prefix="Dr." firstname="Watson" middlename="" lastname="Timothy" suffix="" username="" ID="2824" status="Y" npi=""/>
 <Physician prefix="Dr." firstname="Cornell" middlename="" lastname="James" suffix="" username="" ID="2825" status="Y" npi="1447202171"/>
+<Physician prefix="" firstname="Lyda" middlename="" lastname="Deltoro" suffix="PA-C" username="LDELTORO" ID="2826" status="Y" npi="1598075509"/>
 <Physician prefix="Dr." firstname="James" middlename="A" lastname="Sharkoff" suffix="" username="" ID="2827" status="Y" npi="1891893061"/>
 <Physician prefix="Dr." firstname="Adam" middlename="D" lastname="Hickerson" suffix="" username="" ID="2828" status="Y" npi=""/>
 <Physician prefix="Dr." firstname="Daisy" middlename="I" lastname="Bautista" suffix="" username="" ID="2829" status="Y" npi=""/>
 <Physician prefix="Dr." firstname="Narakanti" middlename="" lastname="Rao" suffix="" username="" ID="2830" status="Y" npi="1003919655"/>
 <Physician prefix="Dr." firstname="Peter" middlename="S" lastname="De silva" suffix="" username="" ID="2831" status="Y" npi="1316045636"/>
 <Physician prefix="Dr." firstname="Daniel" middlename="L" lastname="Fortmann" suffix="" username="" ID="2832" status="Y" npi="1114197142"/>
+<Physician prefix="Dr." firstname="Emergency" middlename="" lastname="" suffix="" username="EMERGENCY" ID="2833" status="Y" npi=""/>
+<Physician prefix="Dr." firstname="Jprasad_e" middlename="A" lastname="" suffix="M.D." username="JPRASAD_E" ID="2834" status="Y" npi="1821058470"/>
+<Physician prefix="Dr." firstname="Rpradhan_e" middlename="K" lastname="" suffix="M.D." username="RPRADHAN_E" ID="2835" status="Y" npi="1336117738"/>
+<Physician prefix="" firstname="Vcastro_e" middlename="" lastname="" suffix="PA" username="VCASTRO_E" ID="2836" status="Y" npi="1467763755"/>
 <Physician prefix="Dr." firstname="Dano" middlename="L" lastname="Delfin" suffix="" username="" ID="2837" status="Y" npi="1164505020"/>
 <Physician prefix="Dr." firstname="Vincent" middlename="R" lastname="Guerena" suffix="" username="" ID="2838" status="Y" npi="1295856409"/>
 <Physician prefix="Dr." firstname="John" middlename="Benny" lastname="Madina" suffix="PA" username="" ID="2840" status="Y" npi="1528166014"/>
@@ -3086,9 +2977,27 @@
 <Physician prefix="Dr." firstname="Eric" middlename="R" lastname="Fox" suffix="" username="" ID="2849" status="Y" npi=""/>
 <Physician prefix="Dr." firstname="Reshmi" middlename="" lastname="Basu" suffix="" username="" ID="2850" status="Y" npi=""/>
 <Physician prefix="Dr." firstname="Shirley" middlename="" lastname="Rude  RN, CS, MS" suffix="" username="" ID="2852" status="Y" npi=""/>
+<Physician prefix="Dr." firstname="Manjusha" middlename="" lastname="Gupta" suffix="M.D." username="MGUPTA" ID="2856" status="Y" npi="1609077197"/>
+<Physician prefix="Dr." firstname="Alya" middlename="D" lastname="Torna" suffix="M.D." username="ATORNA" ID="2858" status="Y" npi="1306051024"/>
+<Physician prefix="Dr." firstname="Generica" middlename="" lastname="" suffix="" username="GENERICA" ID="2859" status="Y" npi=""/>
+<Physician prefix="" firstname="Charlaine" middlename="S" lastname="Williamson" suffix="FNP" username="SCLONTS" ID="2860" status="Y" npi="1932408960"/>
+<Physician prefix="Dr." firstname="Karen" middlename="D" lastname="French" suffix="R.N." username="KFRENCH" ID="2861" status="Y" npi="1376766543"/>
+<Physician prefix="" firstname="Britney" middlename="" lastname="Kaufman" suffix="PA-C" username="BKAUFMAN" ID="2862" status="Y" npi="1255500724"/>
+<Physician prefix="Dr." firstname="X-Ray" middlename="" lastname="" suffix="" username="X-RAY" ID="2863" status="Y" npi=""/>
+<Physician prefix="Dr." firstname="Dexa" middlename="" lastname="" suffix="" username="DEXA" ID="2864" status="Y" npi=""/>
+<Physician prefix="Dr." firstname="Ultrasound" middlename="" lastname="" suffix="" username="ULTRASOUND" ID="2865" status="Y" npi=""/>
 <Physician prefix="Dr." firstname="Provider 1" middlename="" lastname="" suffix="" username="" ID="2866" status="Y" npi=""/>
 <Physician prefix="Dr." firstname="Provider 2" middlename="" lastname="" suffix="" username="" ID="2867" status="Y" npi=""/>
 <Physician prefix="Dr." firstname="Provider 3" middlename="" lastname="" suffix="" username="" ID="2868" status="Y" npi=""/>
+<Physician prefix="" firstname="Pererras" middlename="" lastname="Ernie" suffix="" username="PERNIE" ID="2869" status="Y" npi=""/>
+<Physician prefix="" firstname="Riddle" middlename="" lastname="Valerie" suffix="" username="RVALERIE" ID="2870" status="Y" npi=""/>
+<Physician prefix="" firstname="Bequeath" middlename="" lastname="Juanita" suffix="" username="BJUANITA" ID="2872" status="Y" npi=""/>
+<Physician prefix="Dr." firstname="Cardio" middlename="" lastname="" suffix="" username="CARDIO" ID="2873" status="Y" npi=""/>
+<Physician prefix="Dr." firstname="Pulmonary" middlename="" lastname="" suffix="" username="PULMONARY" ID="2874" status="Y" npi=""/>
+<Physician prefix="Dr." firstname="Holter" middlename="" lastname="" suffix="" username="HOLTER" ID="2875" status="Y" npi=""/>
+<Physician prefix="Dr." firstname="Nuclear" middlename="" lastname="" suffix="" username="NUCLEAR" ID="2876" status="Y" npi=""/>
+<Physician prefix="" firstname="John" middlename="" lastname="Parton" suffix="" username="PJOHN" ID="2877" status="Y" npi=""/>
+<Physician prefix="" firstname="Carol" middlename="Gee" lastname="" suffix="" username="CGEE" ID="2879" status="Y" npi=""/>
 <Physician prefix="Dr." firstname="Chen," middlename="" lastname="Henry" suffix="" username="" ID="2880" status="Y" npi=""/>
 <Physician prefix="Dr." firstname="Bernice" middlename="R" lastname="Deline" suffix="" username="" ID="2881" status="Y" npi=""/>
 <Physician prefix="Dr." firstname="David" middlename="" lastname="G. dixon" suffix="" username="" ID="2882" status="Y" npi=""/>
@@ -3147,6 +3056,7 @@
 <Physician prefix="Dr." firstname="Edward" middlename="S" lastname="Drake" suffix="" username="" ID="2935" status="Y" npi=""/>
 <Physician prefix="Dr." firstname="Stephanie" middlename="L" lastname="White" suffix="" username="" ID="2936" status="Y" npi=""/>
 <Physician prefix="Dr." firstname="Mino" middlename="T" lastname="Pham" suffix="" username="" ID="2937" status="Y" npi=""/>
+<Physician prefix="" firstname="RAYMOND" middlename="N" lastname="SMITH" suffix="FNP" username="RSMITH" ID="2938" status="Y" npi="1609941632"/>
 <Physician prefix="Dr." firstname="Chao-ming" middlename="C" lastname="Lin" suffix="" username="" ID="2939" status="Y" npi=""/>
 <Physician prefix="Dr." firstname="Alice" middlename="" lastname="Kim" suffix="" username="" ID="2940" status="Y" npi=""/>
 <Physician prefix="Dr." firstname="Wasef" middlename="Y" lastname="Atiya" suffix="" username="" ID="2941" status="Y" npi=""/>
@@ -3192,6 +3102,7 @@
 <Physician prefix="Dr." firstname="Pablo" middlename="J" lastname="Bassuk" suffix="" username="" ID="2981" status="Y" npi=""/>
 <Physician prefix="Dr." firstname="Jennifer" middlename="" lastname="Kim" suffix="" username="" ID="2982" status="Y" npi=""/>
 <Physician prefix="Dr." firstname="Adrian" middlename="" lastname="Ostrzega" suffix="" username="" ID="2983" status="Y" npi=""/>
+<Physician prefix="" firstname="Trang doan" middlename="" lastname="Phan" suffix="" username="TPHAN" ID="2984" status="Y" npi="1891094611"/>
 <Physician prefix="Dr." firstname="Jennifer" middlename="J" lastname="Piehl" suffix="" username="" ID="2985" status="Y" npi=""/>
 <Physician prefix="Dr." firstname="Natalie" middlename="K" lastname="Shemonsky" suffix="" username="" ID="2986" status="Y" npi=""/>
 <Physician prefix="Dr." firstname="Hani" middlename="H" lastname="Hashem" suffix="" username="" ID="2987" status="Y" npi=""/>
@@ -3259,6 +3170,7 @@
 <Physician prefix="Dr." firstname="Noaman" middlename="" lastname="Hanif" suffix="" username="" ID="3050" status="Y" npi=""/>
 <Physician prefix="Dr." firstname="Anuradha" middlename="" lastname="Sathya" suffix="" username="" ID="3051" status="Y" npi=""/>
 <Physician prefix="Dr." firstname="Maria" middlename="" lastname="Aguilar" suffix="" username="" ID="3052" status="Y" npi=""/>
+<Physician prefix="" firstname="James  pac" middlename="K" lastname="Seto" suffix="" username="JSETO" ID="3053" status="Y" npi="1871771873"/>
 <Physician prefix="Dr." firstname="Lorpu  pa" middlename="" lastname="Beyan" suffix="" username="" ID="3054" status="Y" npi=""/>
 <Physician prefix="Dr." firstname="Jennifer" middlename="K" lastname="Ngo" suffix="" username="" ID="3055" status="Y" npi=""/>
 <Physician prefix="Dr." firstname="Gow-nan" middlename="" lastname="Ling" suffix="" username="" ID="3056" status="Y" npi=""/>
@@ -3266,10 +3178,12 @@
 <Physician prefix="Dr." firstname="Florante" middlename="A" lastname="Alejo" suffix="" username="" ID="3058" status="Y" npi=""/>
 <Physician prefix="Dr." firstname="Falgooni" middlename="" lastname="Patel" suffix="" username="" ID="3059" status="Y" npi=""/>
 <Physician prefix="Dr." firstname="Carmencita" middlename="" lastname="Llado" suffix="" username="" ID="3060" status="Y" npi=""/>
+<Physician prefix="Dr." firstname="Charlaine" middlename="S" lastname="Clonts" suffix="" username="CCLONTS" ID="3061" status="Y" npi=""/>
 <Physician prefix="Dr." firstname="Carol" middlename="" lastname="Renke" suffix="" username="" ID="3062" status="Y" npi=""/>
 <Physician prefix="Dr." firstname="Rene" middlename="" lastname="Salhab" suffix="" username="" ID="3063" status="Y" npi=""/>
 <Physician prefix="Dr." firstname="Azita" middlename="R" lastname="Hassas" suffix="" username="" ID="3064" status="Y" npi=""/>
 <Physician prefix="Dr." firstname="Nadim" middlename="" lastname="Dagher" suffix="" username="" ID="3065" status="Y" npi=""/>
+<Physician prefix="Dr." firstname="Sharyn" middlename="D" lastname="Brekhus" suffix="M.D" username="SBREKHUS" ID="3066" status="Y" npi="1003995093"/>
 <Physician prefix="Dr." firstname="Nischita" middlename="K" lastname="Reddy" suffix="" username="" ID="3067" status="Y" npi="1629272208"/>
 <Physician prefix="Dr." firstname="Renato" middlename="V" lastname="Mungcal" suffix="" username="" ID="3068" status="Y" npi=""/>
 <Physician prefix="Dr." firstname="Thomas" middlename="" lastname="Blush md" suffix="" username="" ID="3069" status="Y" npi=""/>
@@ -3277,6 +3191,8 @@
 <Physician prefix="Dr." firstname="Giri" middlename="" lastname="Tummuru md" suffix="" username="" ID="3071" status="Y" npi="1467625277"/>
 <Physician prefix="Dr." firstname="David" middlename="C" lastname="Ward" suffix="" username="" ID="3072" status="Y" npi=""/>
 <Physician prefix="Dr." firstname="David" middlename="M" lastname="Reyes" suffix="" username="" ID="3073" status="Y" npi=""/>
+<Physician prefix="Dr." firstname="Nischita" middlename="" lastname="Merla" suffix="M.D." username="NMERLA" ID="3074" status="Y" npi="1629272208"/>
+<Physician prefix="" firstname="Michelle" middlename="" lastname="Ledesma" suffix="RN, CDE" username="MLEDESMA" ID="3076" status="Y" npi="1467817981"/>
 <Physician prefix="Dr." firstname="VANESSA" middlename="R" lastname="REYNOLDS" suffix="" username="" ID="3078" status="Y" npi="1386792331"/>
 <Physician prefix="Dr." firstname="VICENTE" middlename="J" lastname="ARANO" suffix="" username="" ID="3079" status="Y" npi="1790885259"/>
 <Physician prefix="Dr." firstname="PAUL" middlename="N" lastname="GAILIUNAS" suffix="" username="" ID="3080" status="Y" npi="1831174184"/>
@@ -3300,11 +3216,18 @@
 <Physician prefix="Dr." firstname="HAJERA" middlename="" lastname="SULTANA" suffix="" username="" ID="3098" status="Y" npi="1063537306"/>
 <Physician prefix="Dr." firstname="SAMUEL,MD" middlename="S" lastname="HO" suffix="" username="" ID="3099" status="Y" npi="1194927491"/>
 <Physician prefix="Dr." firstname="ANOUSHEH" middlename="" lastname="ASHOURI MD" suffix="" username="" ID="3100" status="Y" npi="1336305036"/>
+<Physician prefix="Dr." firstname="Lisa" middlename="" lastname="Raptis" suffix="M.D." username="LRAPTIS" ID="3101" status="Y" npi="1902073802"/>
+<Physician prefix="" firstname="VANESSA" middlename="" lastname="PEDREGO" suffix="PA-C" username="VCASTRO" ID="3102" status="Y" npi=""/>
+<Physician prefix="" firstname="Anthony" middlename="" lastname="Antenorcruz" suffix="PA-C" username="AANTENORCRUZ" ID="3103" status="Y" npi="1376722884"/>
+<Physician prefix="" firstname="STEPHANIE" middlename="" lastname="CLARK-POVEDA" suffix="PA-C" username="SCLARK" ID="3104" status="Y" npi="1881761120"/>
 <Physician prefix="Dr." firstname="Loi" middlename="" lastname="Luu" suffix="M.D." username="" ID="3105" status="Y" npi="1780815001"/>
 <Physician prefix="Dr." firstname="MIKEL" middlename="" lastname="ALWIS" suffix="M.D." username="" ID="3106" status="Y" npi="1790705671"/>
 <Physician prefix="Dr." firstname="SHAHRZAD" middlename="" lastname="SODAGAR-MARVASTI" suffix="" username="" ID="3107" status="Y" npi="1275748733"/>
 <Physician prefix="Dr." firstname="ALMA" middlename="M" lastname="PALISOC" suffix="M.D." username="" ID="3109" status="Y" npi="1144277526"/>
+<Physician prefix="Dr." firstname="OWER" middlename="C" lastname="CASTRO" suffix="M.D." username="OCASTRO" ID="3110" status="Y" npi="1588950216"/>
 <Physician prefix="Dr." firstname="HANNA" middlename="" lastname="SUZAN" suffix="" username="" ID="3112" status="Y" npi=""/>
+<Physician prefix="" firstname="ROXANNE" middlename="" lastname="SMILEY" suffix="PAC" username="RSMILEY" ID="3113" status="Y" npi="1821362781"/>
+<Physician prefix="Dr." firstname="ABBAS" middlename="" lastname="BAHARI" suffix="M.D." username="ABAHARI" ID="3114" status="Y" npi="1447469176"/>
 <Physician prefix="Dr." firstname="MARCUS" middlename="" lastname="LUM" suffix="" username="" ID="3115" status="Y" npi="1003839242"/>
 <Physician prefix="Dr." firstname="RAVINDRANA" middlename="V" lastname="SHAHANE" suffix="" username="" ID="3116" status="Y" npi="1457420903"/>
 <Physician prefix="Dr." firstname="MARY" middlename="G" lastname="ABSOOD" suffix="" username="" ID="3117" status="Y" npi="1497735906"/>
@@ -3331,6 +3254,7 @@
 <Physician prefix="Dr." firstname="NEIVEEN" middlename="" lastname="PETER" suffix="" username="" ID="3139" status="Y" npi="1295013951"/>
 <Physician prefix="Dr." firstname="UMAIR" middlename="" lastname="GHANI" suffix="" username="" ID="3140" status="Y" npi="1619266228"/>
 <Physician prefix="Dr." firstname="ANA" middlename="" lastname="IVANOVA" suffix="" username="" ID="3141" status="Y" npi="1104812833"/>
+<Physician prefix="" firstname="MATTHEW" middlename="" lastname="KIDDLE" suffix="PA" username="MKIDDLE" ID="3142" status="Y" npi="1033528591"/>
 <Physician prefix="Dr." firstname="Soni" middlename="R" lastname="Neil" suffix="MD" username="" ID="3143" status="Y" npi="1306054150"/>
 <Physician prefix="Dr." firstname="GREENISH" middlename="S" lastname="ABDALLA" suffix="F.N.P" username="" ID="3144" status="Y" npi=""/>
 <Physician prefix="Dr." firstname="DALIA IBRAHIM" middlename="" lastname="ABDELAZIZ" suffix="M.D" username="" ID="3145" status="Y" npi=""/>
@@ -3746,6 +3670,7 @@
 <Physician prefix="Dr." firstname="PAUL" middlename="A" lastname="REISCH" suffix="MD" username="" ID="3556" status="Y" npi=""/>
 <Physician prefix="Dr." firstname="PIERANGELO" middlename="" lastname="RENELLA" suffix="MD" username="" ID="3557" status="Y" npi=""/>
 <Physician prefix="Dr." firstname="MARK" middlename="A" lastname="RETTENMAIER" suffix="" username="" ID="3558" status="Y" npi=""/>
+<Physician prefix="" firstname="LYDIA" middlename="A" lastname="REYES" suffix="" username="LREYES" ID="3559" status="Y" npi=""/>
 <Physician prefix="Dr." firstname="FARHAD" middlename="" lastname="REZVANI" suffix="" username="" ID="3560" status="Y" npi=""/>
 <Physician prefix="Dr." firstname="TERENCE" middlename="P" lastname="RHONE" suffix="" username="" ID="3561" status="Y" npi=""/>
 <Physician prefix="Dr." firstname="WINSTON" middlename="H" lastname="RICHARDS" suffix="" username="" ID="3562" status="Y" npi=""/>
@@ -4335,6 +4260,7 @@
 <Physician prefix="Dr." firstname="ALICE" middlename="W" lastname="WANG" suffix="M.D." username="" ID="4148" status="Y" npi=""/>
 <Physician prefix="Dr." firstname="VAL" middlename="M" lastname="WARHAFT" suffix="M.D." username="" ID="4149" status="Y" npi=""/>
 <Physician prefix="Dr." firstname="LORNA" middlename="P" lastname="WOOD" suffix="M.D." username="" ID="4150" status="Y" npi=""/>
+<Physician prefix="Dr." firstname="Yvette" middlename="" lastname="Marquez" suffix="M.D" username="YMARQUEZ" ID="4151" status="Y" npi="1255640892"/>
 <Physician prefix="Dr." firstname="Alexander" middlename="D" lastname="Stein" suffix="M.D." username="" ID="4153" status="Y" npi=""/>
 <Physician prefix="Dr." firstname="Pratibha" middlename="" lastname="Kayastha" suffix="" username="" ID="4155" status="Y" npi="1942601281"/>
 <Physician prefix="Dr." firstname="MA" middlename="" lastname="VISIT" suffix="" username="" ID="4156" status="Y" npi=""/>
@@ -4362,6 +4288,7 @@
 <Physician prefix="Dr." firstname="INFUSION" middlename="" lastname="" suffix="" username="" ID="4178" status="Y" npi=""/>
 <Physician prefix="Dr." firstname="MA" middlename="" lastname="8330" suffix="" username="" ID="4179" status="Y" npi=""/>
 <Physician prefix="Dr." firstname="MA" middlename="" lastname="HAV_120" suffix="" username="" ID="4180" status="Y" npi=""/>
+<Physician prefix="" firstname="Adrian" middlename="" lastname="Belonia" suffix="RN" username="ABELONIA" ID="4181" status="Y" npi=""/>
 <Physician prefix="Dr." firstname="Chanly" middlename="" lastname="Nginn" suffix="" username="" ID="4182" status="Y" npi=""/>
 <Physician prefix="Dr." firstname="MA_ART_360" middlename="" lastname="" suffix="" username="" ID="4183" status="Y" npi=""/>
 <Physician prefix="Dr." firstname="MA_OG_1880" middlename="" lastname="" suffix="" username="" ID="4184" status="Y" npi=""/>
@@ -4370,11 +4297,20 @@
 <Physician prefix="Dr." firstname="MA_1940" middlename="" lastname="" suffix="" username="" ID="4187" status="Y" npi=""/>
 <Physician prefix="Dr." firstname="MA_9190_HAV" middlename="" lastname="" suffix="" username="" ID="4188" status="Y" npi=""/>
 <Physician prefix="Dr." firstname="MA_591_13" middlename="" lastname="" suffix="" username="" ID="4189" status="Y" npi=""/>
+<Physician prefix="Dr." firstname="PFT" middlename="" lastname="" suffix="" username="PFT" ID="4190" status="Y" npi=""/>
+<Physician prefix="" firstname="Heather" middlename="" lastname="Heck" suffix="PA-C" username="HHECK" ID="4191" status="Y" npi="1407223944"/>
 <Physician prefix="Dr." firstname="PAYMENT ON ACCOUNT" middlename="" lastname="" suffix="" username="" ID="4192" status="Y" npi=""/>
 <Physician prefix="Dr." firstname="EAST VALLLEY" middlename="" lastname="W COVINA" suffix="" username="" ID="4193" status="Y" npi="1831243625"/>
 <Physician prefix="Dr." firstname="MA_1866_102" middlename="" lastname="" suffix="" username="" ID="4194" status="Y" npi=""/>
+<Physician prefix="Dr." firstname="Jhonatan Teodoro" middlename="" lastname="Munoz Espinoza" suffix="M.D." username="JMUNOZ" ID="4195" status="Y" npi="1174881510"/>
+<Physician prefix="Dr." firstname="Puneet" middlename="" lastname="Ghayal" suffix="M.D." username="PGHAYAL" ID="4196" status="Y" npi="1336443100"/>
+<Physician prefix="Dr." firstname="Johanna" middlename="V" lastname="Basa" suffix="M.D." username="JBASA" ID="4197" status="Y" npi="1821326380"/>
+<Physician prefix="Dr." firstname="Harish" middlename="" lastname="Yalamanchili" suffix="M.D." username="HYALAMANCHILI" ID="4198" status="Y" npi="1578874186"/>
+<Physician prefix="" firstname="Kristin" middlename="" lastname="Mickelson" suffix="PA-C" username="KMICKELSON" ID="4200" status="Y" npi="1982072682"/>
 <Physician prefix="Dr." firstname="MEDICAL" middlename="" lastname="WESTERN" suffix="" username="" ID="4201" status="Y" npi=""/>
 <Physician prefix="" firstname="Preethi" middlename="" lastname="Chaudhary" suffix="" username="" ID="4202" status="Y" npi=""/>
+<Physician prefix="" firstname="BRETT" middlename="" lastname="HESLOP" suffix="PA" username="BHESLOP" ID="4203" status="Y" npi="1942601018"/>
+<Physician prefix="" firstname="Meredith" middlename="" lastname="Dettmar" suffix="PA-C" username="MDETTMAR" ID="4204" status="Y" npi="1902275993"/>
 <Physician prefix="" firstname="MARK" middlename="" lastname="DR. SHIU" suffix="" username="" ID="4205" status="Y" npi=""/>
 <Physician prefix="" firstname="KEN" middlename="" lastname="WONG" suffix="" username="" ID="4206" status="Y" npi=""/>
 <Physician prefix="" firstname="EDWIN" middlename="" lastname="FUENTES" suffix="" username="" ID="4207" status="Y" npi=""/>
@@ -4401,6 +4337,7 @@
 <Physician prefix="" firstname="SARINA" middlename="" lastname="KULAR" suffix="" username="" ID="4228" status="Y" npi=""/>
 <Physician prefix="" firstname="CHE-CHERNG" middlename="" lastname="LEE" suffix="" username="" ID="4229" status="Y" npi=""/>
 <Physician prefix="" firstname="USHA" middlename="" lastname="MANTHA" suffix="" username="" ID="4232" status="Y" npi=""/>
+<Physician prefix="Dr." firstname="Haritha" middlename="R" lastname="Alla" suffix="M.D.,F.A.C.C.,R.P.V.I." username="HAT_3" ID="4234" status="Y" npi=""/>
 <Physician prefix="" firstname="ROBERTA" middlename="" lastname="PICKETT" suffix="" username="" ID="4235" status="Y" npi=""/>
 <Physician prefix="" firstname="arnold" middlename="" lastname="roth" suffix="" username="" ID="4236" status="Y" npi=""/>
 <Physician prefix="" firstname="SAMUEL K" middlename="" lastname="CHUNG" suffix="" username="" ID="4237" status="Y" npi=""/>
@@ -4442,6 +4379,7 @@
 <Physician prefix="" firstname="James" middlename="" lastname="Meyers" suffix="" username="" ID="4278" status="Y" npi=""/>
 <Physician prefix="" firstname="enrique" middlename="" lastname="vallota" suffix="" username="" ID="4280" status="Y" npi=""/>
 <Physician prefix="" firstname="Pei" middlename="" lastname="Kuo" suffix="FNP-C" username="" ID="4288" status="Y" npi="1265822076"/>
+<Physician prefix="" firstname="SUNDEEP" middlename="" lastname="ADUSUMALLI" suffix="M.D., F.A.C.C" username="SADUSUMALLI" ID="4290" status="Y" npi="1639305295"/>
 <Physician prefix="" firstname="PAUL" middlename="" lastname="NIU" suffix="" username="" ID="4291" status="Y" npi=""/>
 <Physician prefix="" firstname="FRANK" middlename="" lastname="GLAVAN" suffix="" username="" ID="4292" status="Y" npi=""/>
 <Physician prefix="" firstname="KHIN" middlename="" lastname="HTUN" suffix="" username="" ID="4293" status="Y" npi=""/>
@@ -4453,9 +4391,11 @@
 <Physician prefix="" firstname="CYNTHIA" middlename="" lastname="MORENO" suffix="" username="" ID="4301" status="Y" npi=""/>
 <Physician prefix="" firstname="?" middlename="" lastname="RUIZ" suffix="" username="" ID="4302" status="Y" npi=""/>
 <Physician prefix="" firstname="SAMUEL" middlename="" lastname="OH" suffix="" username="" ID="4303" status="Y" npi=""/>
+<Physician prefix="Dr." firstname="KAUSHA" middlename="" lastname="BHATT" suffix="" username="KBHATT" ID="4304" status="Y" npi=""/>
 <Physician prefix="" firstname="MICHAEL" middlename="" lastname="MOLINARI" suffix="" username="" ID="4305" status="Y" npi=""/>
 <Physician prefix="" firstname="TONY" middlename="" lastname="KASTOON" suffix="" username="" ID="4306" status="Y" npi=""/>
 <Physician prefix="" firstname="PREETI" middlename="" lastname="CHAUDHARY" suffix="M.D" username="" ID="4307" status="Y" npi="1255597456"/>
+<Physician prefix="Dr." firstname="Chan Myat" middlename="" lastname="Aung" suffix="M.D." username="CMAUNG" ID="4308" status="Y" npi="1376949230"/>
 <Physician prefix="" firstname="HEATHER" middlename="" lastname="MCDONALD" suffix="" username="" ID="4309" status="Y" npi=""/>
 <Physician prefix="" firstname="GITA" middlename="" lastname="TAVASSOLI" suffix="" username="" ID="4310" status="Y" npi=""/>
 <Physician prefix="" firstname="EDWIN" middlename="" lastname="CHOI" suffix="" username="" ID="4311" status="Y" npi=""/>
@@ -4470,10 +4410,14 @@
 <Physician prefix="" firstname="Ower" middlename="" lastname="Castro" suffix="" username="" ID="4320" status="Y" npi=""/>
 <Physician prefix="" firstname="Ower" middlename="" lastname="Castro" suffix="" username="" ID="4321" status="Y" npi=""/>
 <Physician prefix="" firstname="Daniel" middlename="" lastname="Sanchez" suffix="" username="" ID="4322" status="Y" npi=""/>
+<Physician prefix="" firstname="AUTO_PHY" middlename="" lastname="" suffix="" username="AUTO_PHY" ID="4324" status="Y" npi=""/>
 <Physician prefix="" firstname="William" middlename="" lastname="Casas" suffix="" username="" ID="4325" status="Y" npi=""/>
 <Physician prefix="" firstname="Notes" middlename="" lastname="prasad" suffix="" username="" ID="4326" status="Y" npi=""/>
 <Physician prefix="" firstname="rita" middlename="" lastname="pradhan" suffix="" username="" ID="4327" status="Y" npi=""/>
 <Physician prefix="" firstname="HARVEY" middlename="" lastname="COHEN" suffix="M.D." username="" ID="4329" status="Y" npi="1972517423"/>
+<Physician prefix="" firstname="JASWINDER" middlename="" lastname="KANG" suffix="" username="JKANG" ID="4330" status="Y" npi=""/>
+<Physician prefix="Dr." firstname="TATIANA" middlename="" lastname="SAMS" suffix="MD" username="TSAMS" ID="4331" status="Y" npi="1174815427"/>
+<Physician prefix="" firstname="MARK" middlename="" lastname="VALENCIA" suffix="" username="MVALENCIA" ID="4332" status="Y" npi=""/>
 <Physician prefix="" firstname="MARC" middlename="" lastname="DEBAY" suffix="" username="" ID="4333" status="Y" npi=""/>
 <Physician prefix="" firstname="DANESE" middlename="" lastname="HAYES" suffix="" username="" ID="4334" status="Y" npi=""/>
 <Physician prefix="" firstname="AGUSTIN" middlename="" lastname="DIAZ-GOMEZ" suffix="" username="" ID="4335" status="Y" npi=""/>
@@ -4500,6 +4444,7 @@
 <Physician prefix="" firstname="AYLA" middlename="" lastname="TORNA" suffix="M.D." username="" ID="4356" status="Y" npi="1306051024"/>
 <Physician prefix="" firstname="ASHOK" middlename="" lastname="SHARMA" suffix="" username="" ID="4357" status="Y" npi=""/>
 <Physician prefix="" firstname="TIFFANY" middlename="" lastname="ENDO" suffix="" username="" ID="4358" status="Y" npi=""/>
+<Physician prefix="Dr." firstname="Hetalben" middlename="G" lastname="Makwana" suffix="M.D." username="HESANGHA" ID="4359" status="Y" npi=""/>
 <Physician prefix="" firstname="DENISE" middlename="" lastname="HAYES" suffix="" username="" ID="4360" status="Y" npi=""/>
 <Physician prefix="" firstname="Uzma" middlename="" lastname="waraich" suffix="" username="" ID="4361" status="Y" npi=""/>
 <Physician prefix="" firstname="REDEMPTION" middlename="" lastname="GERONIMO" suffix="" username="" ID="4362" status="Y" npi=""/>
@@ -4531,6 +4476,9 @@
 <Physician prefix="" firstname="dd" middlename="" lastname="smith" suffix="" username="" ID="4391" status="Y" npi=""/>
 <Physician prefix="" firstname="SANDAR" middlename="" lastname="WINN" suffix="" username="" ID="4392" status="Y" npi=""/>
 <Physician prefix="" firstname="test_phy_0109" middlename="" lastname="test_phy_0109" suffix="" username="" ID="4393" status="Y" npi=""/>
+<Physician prefix="" firstname="Christina" middlename="" lastname="Turner" suffix="PA-C" username="CTURNER" ID="4412" status="Y" npi="1083149306"/>
+<Physician prefix="" firstname="Jade" middlename="" lastname="Anderson" suffix="" username="JANDERSON_SCRIBE" ID="4413" status="Y" npi=""/>
+<Physician prefix="Dr." firstname="Kleisli" middlename="" lastname="Thomas" suffix="M.D." username="KTHOMAS" ID="4414" status="Y" npi="1518195627"/>
 <Physician prefix="" firstname="Henry" middlename="" lastname="Seven" suffix="" username="" ID="4415" status="Y" npi=""/>
 <Physician prefix="" firstname="sunil" middlename="" lastname="shivram" suffix="" username="" ID="4416" status="Y" npi=""/>
 <Physician prefix="" firstname="Jorge" middlename="" lastname="Galindo" suffix="" username="" ID="4417" status="Y" npi=""/>
@@ -4597,7 +4545,11 @@
 <Physician prefix="" firstname="NAYAN" middlename="" lastname="SHAH" suffix="" username="" ID="4479" status="Y" npi=""/>
 <Physician prefix="" firstname="HEALTH CENTER" middlename="" lastname="PCHC PARKTREE COMMUNITY" suffix="" username="" ID="4480" status="Y" npi=""/>
 <Physician prefix="" firstname="MARIO" middlename="" lastname="DIAZ-GOMEZ" suffix="" username="" ID="4481" status="Y" npi="142700330"/>
+<Physician prefix="" firstname="Liliana" middlename="" lastname="Mendoza" suffix="" username="LMENDOZA_SCRIBE" ID="4482" status="Y" npi=""/>
+<Physician prefix="" firstname="Atziri" middlename="" lastname="Torres" suffix="" username="ATTORRES_SCRIBE" ID="4483" status="Y" npi=""/>
 <Physician prefix="" firstname="RICK" middlename="" lastname="HIRSH" suffix="" username="" ID="4484" status="Y" npi=""/>
+<Physician prefix="" firstname="Aime" middlename="" lastname="Rodriguez" suffix="" username="ARODRIGUEZ_SCRIBE" ID="4485" status="Y" npi=""/>
+<Physician prefix="" firstname="Alexander" middlename="" lastname="Uche" suffix="" username="AUCHE_SCRIBE" ID="4486" status="Y" npi=""/>
 <Physician prefix="" firstname="Ornelas" middlename="" lastname="Francisco" suffix="" username="" ID="4487" status="Y" npi=""/>
 <Physician prefix="" firstname="BROOKE" middlename="" lastname="ALEXANDER" suffix="" username="" ID="4488" status="Y" npi=""/>
 <Physician prefix="" firstname="VINCENT" middlename="" lastname="FOWLER" suffix="" username="" ID="4489" status="Y" npi=""/>
@@ -4620,6 +4572,7 @@
 <Physician prefix="" firstname="WILBERT" middlename="" lastname="TSAI" suffix="" username="" ID="4506" status="Y" npi=""/>
 <Physician prefix="" firstname="DEMITRI" middlename="" lastname="GEN" suffix="" username="" ID="4507" status="Y" npi=""/>
 <Physician prefix="" firstname="Raghbir" middlename="" lastname="Bir" suffix="" username="" ID="4508" status="Y" npi=""/>
+<Physician prefix="" firstname="Julie" middlename="" lastname="Diaz" suffix="" username="DJULIE" ID="4509" status="Y" npi=""/>
 <Physician prefix="" firstname="MASOOMA" middlename="" lastname="MUJEEB" suffix="" username="" ID="4513" status="Y" npi=""/>
 <Physician prefix="" firstname="MASOOMA" middlename="" lastname="MUJEEB" suffix="" username="" ID="4514" status="Y" npi=""/>
 <Physician prefix="" firstname="DIANE" middlename="" lastname="QUINTANA" suffix="" username="" ID="4515" status="Y" npi=""/>
@@ -4653,6 +4606,7 @@
 <Physician prefix="" firstname="Steven" middlename="" lastname="Lake" suffix="" username="" ID="4545" status="Y" npi="1669494001"/>
 <Physician prefix="" firstname="FARAH" middlename="" lastname="AMEERI" suffix="" username="" ID="4546" status="Y" npi=""/>
 <Physician prefix="" firstname="WILLIAM" middlename="" lastname="CASAS" suffix="" username="" ID="4547" status="Y" npi=""/>
+<Physician prefix="" firstname="Michelle" middlename="" lastname="Lancaster" suffix="PA-C" username="MLANCASTER" ID="4548" status="Y" npi="1427351212"/>
 <Physician prefix="" firstname="jeff" middlename="" lastname="ijadi" suffix="" username="" ID="4549" status="Y" npi=""/>
 <Physician prefix="" firstname="jeff" middlename="" lastname="ijadi" suffix="" username="" ID="4550" status="Y" npi=""/>
 <Physician prefix="" firstname="Ronald" middlename="" lastname="Chang" suffix="M.D." username="" ID="4551" status="Y" npi="1861810863"/>
@@ -4682,10 +4636,12 @@
 <Physician prefix="Dr." firstname="Stephen" middlename="" lastname="Nesnidal" suffix="" username="" ID="4576" status="Y" npi=""/>
 <Physician prefix="" firstname="ROSA" middlename="" lastname="GIDOWSKI" suffix="" username="" ID="4577" status="Y" npi=""/>
 <Physician prefix="" firstname="ROSA" middlename="" lastname="GIDOWSKI" suffix="" username="" ID="4578" status="Y" npi=""/>
+<Physician prefix="" firstname="Alexandra" middlename="" lastname="Interiano" suffix="NP" username="AINTERIANO" ID="4579" status="Y" npi=""/>
 <Physician prefix="" firstname="Robyn" middlename="" lastname="Jacoby" suffix="" username="" ID="4580" status="Y" npi="1487623575"/>
 <Physician prefix="" firstname="ALBERT" middlename="" lastname="CHUNG" suffix="" username="" ID="4581" status="Y" npi=""/>
 <Physician prefix="" firstname="RYAN" middlename="" lastname="AGENA" suffix="" username="" ID="4582" status="Y" npi=""/>
 <Physician prefix="" firstname="RYAN" middlename="" lastname="AGENA" suffix="" username="" ID="4583" status="Y" npi=""/>
+<Physician prefix="Dr." firstname="Sujatha" middlename="" lastname="Srikanth" suffix="MD" username="SSRIKANTH" ID="4584" status="Y" npi="1124085287"/>
 <Physician prefix="" firstname="SKAKFEH" middlename="" lastname="MOHAMMED" suffix="" username="" ID="4585" status="Y" npi=""/>
 <Physician prefix="" firstname="Mike" middlename="" lastname="Deande" suffix="" username="" ID="4586" status="Y" npi=""/>
 <Physician prefix="" firstname="MICHAEL" middlename="" lastname="DEANDA" suffix="" username="" ID="4587" status="Y" npi=""/>
@@ -4696,6 +4652,7 @@
 <Physician prefix="" firstname="Victor" middlename="" lastname="Garcia" suffix="" username="" ID="4592" status="Y" npi=""/>
 <Physician prefix="" firstname="SAPNA" middlename="" lastname="RASANIA" suffix="" username="" ID="4593" status="Y" npi=""/>
 <Physician prefix="" firstname="SAPNA" middlename="" lastname="RASANIA" suffix="" username="" ID="4594" status="Y" npi=""/>
+<Physician prefix="Dr." firstname="Sundararajan" middlename="" lastname="Srikanth" suffix="M.D." username="SSRIKANTHMD" ID="4595" status="Y" npi="1104934082"/>
 <Physician prefix="" firstname="NYEIN AYE" middlename="" lastname="TINT" suffix="" username="" ID="4596" status="Y" npi="1336500447"/>
 <Physician prefix="" firstname="PHILIP" middlename="" lastname="DELGADO" suffix="" username="" ID="4597" status="Y" npi=""/>
 <Physician prefix="" firstname="Brian" middlename="" lastname="LeBerthon" suffix="" username="" ID="4598" status="Y" npi=""/>
@@ -4710,6 +4667,7 @@
 <Physician prefix="" firstname="Dr. Sadana, Gurbinder" middlename="" lastname="Adult and Children's Sleep Center" suffix="" username="" ID="4607" status="Y" npi=""/>
 <Physician prefix="" firstname="SEPIDEH" middlename="" lastname="ZAHEDY-KAPUSTA" suffix="" username="" ID="4608" status="Y" npi=""/>
 <Physician prefix="" firstname="NYEIN AYE" middlename="" lastname="TINT" suffix="" username="" ID="4609" status="Y" npi="1336533447"/>
+<Physician prefix="" firstname="Sean" middlename="" lastname="Flynn" suffix="PA-C" username="SFLYNN" ID="4610" status="Y" npi="1245718980"/>
 <Physician prefix="" firstname="IDA" middlename="" lastname="WANG" suffix="" username="" ID="4611" status="Y" npi=""/>
 <Physician prefix="" firstname="ROMEO" middlename="" lastname="SAMOUH" suffix="" username="" ID="4612" status="Y" npi="1316225436"/>
 <Physician prefix="" firstname="GUSTAVO JAVIER" middlename="" lastname="GUSTAVO" suffix="" username="" ID="4613" status="Y" npi=""/>
@@ -4724,6 +4682,7 @@
 <Physician prefix="" firstname="RANJIT" middlename="" lastname="SHENOY" suffix="" username="" ID="4622" status="Y" npi="1407828585"/>
 <Physician prefix="" firstname="RANJIT" middlename="" lastname="SHENOY" suffix="" username="" ID="4623" status="Y" npi="1407828585"/>
 <Physician prefix="" firstname="Srinivas" middlename="" lastname="Dwadasi" suffix="" username="" ID="4624" status="Y" npi=""/>
+<Physician prefix="" firstname="Erica" middlename="" lastname="Faylor" suffix="FNP" username="EFAYLOR" ID="4625" status="Y" npi="1386155299"/>
 <Physician prefix="" firstname="JENNIFER" middlename="" lastname="PYON" suffix="" username="" ID="4626" status="Y" npi="1992870323"/>
 <Physician prefix="" firstname="CARLOS" middlename="" lastname="BAEZ" suffix="" username="" ID="4627" status="Y" npi=""/>
 <Physician prefix="" firstname="LIBIA" middlename="" lastname="WOHLERT" suffix="" username="" ID="4628" status="Y" npi=""/>
@@ -4747,6 +4706,7 @@
 <Physician prefix="" firstname="STEPHEN" middlename="" lastname="CALVERT" suffix="" username="" ID="4646" status="Y" npi=""/>
 <Physician prefix="" firstname="ALPHONSO" middlename="" lastname="BENSON" suffix="" username="" ID="4647" status="Y" npi=""/>
 <Physician prefix="" firstname="HEATHER" middlename="" lastname="HELMING" suffix="" username="" ID="4648" status="Y" npi=""/>
+<Physician prefix="Dr." firstname="David" middlename="" lastname="Robles" suffix="M.D, PhD." username="UVB_DROBLES" ID="4649" status="Y" npi=""/>
 <Physician prefix="" firstname="IRA" middlename="" lastname="GROVE" suffix="" username="" ID="4650" status="Y" npi=""/>
 <Physician prefix="" firstname="MARGARET" middlename="" lastname="GALILEO" suffix="" username="" ID="4651" status="Y" npi=""/>
 <Physician prefix="" firstname="AGENA" middlename="" lastname="RYAN" suffix="" username="" ID="4652" status="Y" npi=""/>
@@ -4759,7 +4719,10 @@
 <Physician prefix="" firstname="Brandon" middlename="" lastname="Jamison" suffix="" username="" ID="4659" status="Y" npi=""/>
 <Physician prefix="" firstname="RAY" middlename="" lastname="YUTANI DO" suffix="" username="" ID="4660" status="Y" npi=""/>
 <Physician prefix="" firstname="PATRICIA" middlename="" lastname="AVILAR" suffix="" username="" ID="4661" status="Y" npi=""/>
+<Physician prefix="" firstname="Nina" middlename="" lastname="Kar" suffix="" username="NKAR_SCRIBE" ID="4662" status="Y" npi=""/>
 <Physician prefix="" firstname="ANUSHREE" middlename="" lastname="GUPTA" suffix="" username="" ID="4663" status="Y" npi="1043574403"/>
+<Physician prefix="" firstname="SCRIBE_1" middlename="" lastname="" suffix="" username="SCRIBE_1" ID="4664" status="Y" npi=""/>
+<Physician prefix="" firstname="SCRIBE_2" middlename="" lastname="" suffix="" username="SCRIBE_2" ID="4665" status="Y" npi=""/>
 <Physician prefix="" firstname="FIORELLA" middlename="" lastname="ZAMBRANO" suffix="" username="" ID="4666" status="Y" npi=""/>
 <Physician prefix="" firstname="ABDUL" middlename="" lastname="KUBLAN" suffix="" username="" ID="4667" status="Y" npi=""/>
 <Physician prefix="" firstname="SIVAPRASAD" middlename="" lastname="MULLANGI" suffix="" username="" ID="4668" status="Y" npi=""/>
@@ -4798,6 +4761,7 @@
 <Physician prefix="" firstname="Duck" middlename="" lastname="Lim" suffix="" username="" ID="4702" status="Y" npi=""/>
 <Physician prefix="" firstname="AILEEN K" middlename="" lastname="LO" suffix="" username="" ID="4703" status="Y" npi=""/>
 <Physician prefix="" firstname="AILEEN K" middlename="" lastname="LO" suffix="" username="" ID="4704" status="Y" npi=""/>
+<Physician prefix="" firstname="Tania" middlename="" lastname="Munoz" suffix="" username="TMUNOZ" ID="4705" status="Y" npi=""/>
 <Physician prefix="" firstname="MICHAEL" middlename="" lastname="DEANDA" suffix="" username="" ID="4706" status="Y" npi=""/>
 <Physician prefix="" firstname="jeereddy" middlename="" lastname="prasad" suffix="" username="" ID="4707" status="Y" npi=""/>
 <Physician prefix="" firstname="jeereddy" middlename="" lastname="prasad" suffix="" username="" ID="4710" status="Y" npi="5464565"/>
@@ -4811,11 +4775,25 @@
 <Physician prefix="" firstname="Ivone" middlename="" lastname="Alfaro" suffix="" username="" ID="4718" status="Y" npi=""/>
 <Physician prefix="" firstname="SARAH" middlename="" lastname="EVANS" suffix="" username="" ID="4719" status="Y" npi=""/>
 <Physician prefix="" firstname="JIANGNAN" middlename="" lastname="WANG" suffix="" username="" ID="4720" status="Y" npi=""/>
+<Physician prefix="" firstname="Chase" middlename="" lastname="Atckison" suffix="DO" username="CATCKISON" ID="4721" status="Y" npi=""/>
+<Physician prefix="" firstname="Jenaya" middlename="" lastname="Calderilla" suffix="DO" username="JCALDERILLA" ID="4722" status="Y" npi=""/>
+<Physician prefix="" firstname="Shruti" middlename="" lastname="Katbamna" suffix="MD" username="SKATBAMNA" ID="4723" status="Y" npi=""/>
+<Physician prefix="" firstname="Edward" middlename="" lastname="Lin" suffix="DO" username="ELIN" ID="4724" status="Y" npi=""/>
+<Physician prefix="" firstname="Anika" middlename="" lastname="Muthaiah" suffix="MD" username="AMUTHAIAH" ID="4725" status="Y" npi=""/>
+<Physician prefix="" firstname="Swapna" middlename="" lastname="Upparlapalli" suffix="MD" username="SUPPARLAPALLI" ID="4726" status="Y" npi=""/>
+<Physician prefix="" firstname="Nageena" middlename="" lastname="Potluri" suffix="MD" username="NPOTLURI" ID="4727" status="Y" npi=""/>
+<Physician prefix="" firstname="Crystal" middlename="" lastname="Rhea" suffix="DO" username="CRHEA" ID="4728" status="Y" npi=""/>
+<Physician prefix="" firstname="Edward" middlename="" lastname="Speltie" suffix="DO" username="ESPELTIE" ID="4729" status="Y" npi=""/>
+<Physician prefix="" firstname="Erik" middlename="" lastname="Wiele" suffix="DO" username="EWIELE" ID="4730" status="Y" npi=""/>
+<Physician prefix="" firstname="Anastasia" middlename="" lastname="Collins" suffix="DO" username="ACOLLINS" ID="4731" status="Y" npi=""/>
+<Physician prefix="" firstname="Jodie" middlename="" lastname="Altamirano" suffix="" username="JOALTAMIRANO" ID="4732" status="Y" npi=""/>
 <Physician prefix="" firstname="Mareen" middlename="" lastname="Barsoum" suffix="" username="" ID="4733" status="Y" npi=""/>
 <Physician prefix="" firstname="Onnig" middlename="" lastname="Panosian" suffix="" username="" ID="4734" status="Y" npi=""/>
 <Physician prefix="" firstname="LUIS" middlename="" lastname="LEON" suffix="" username="" ID="4735" status="Y" npi=""/>
 <Physician prefix="" firstname="Lan" middlename="" lastname="Lam" suffix="" username="" ID="4736" status="Y" npi=""/>
 <Physician prefix="" firstname="CALVIN" middlename="" lastname="LAMBERT" suffix="" username="" ID="4737" status="Y" npi="1427483254"/>
+<Physician prefix="" firstname="Marina" middlename="" lastname="Zanzarini" suffix="PA-C" username="ZMARINA" ID="4738" status="Y" npi="1649759895"/>
+<Physician prefix="" firstname="Saranya" middlename="" lastname="Balasubramaniam" suffix="M.D." username="SBALAS" ID="4739" status="Y" npi="1528321767"/>
 <Physician prefix="" firstname="JEFFREY" middlename="" lastname="GIN" suffix="" username="" ID="4740" status="Y" npi=""/>
 <Physician prefix="" firstname="JEFFREY" middlename="" lastname="GIN" suffix="" username="" ID="4741" status="Y" npi=""/>
 <Physician prefix="" firstname="JIM Y" middlename="" lastname="WU" suffix="" username="" ID="4742" status="Y" npi="1285605014"/>
@@ -4835,18 +4813,26 @@
 <Physician prefix="" firstname="spy" middlename="" lastname="test" suffix=" '" username="" ID="4756" status="Y" npi="985642130"/>
 <Physician prefix="" firstname="twee" middlename="" lastname="test" suffix="" username="" ID="4757" status="Y" npi=""/>
 <Physician prefix="" firstname="george" middlename="" lastname="test" suffix="" username="" ID="4758" status="Y" npi=""/>
+<Physician prefix="" firstname="Stephanie" middlename="" lastname="Raymundo" suffix="" username="SRAYMUNDO_SCRIBE" ID="4759" status="Y" npi=""/>
+<Physician prefix="" firstname="Neha" middlename="" lastname="Mohindroo" suffix="" username="NMOHINDROO_SCRIBE" ID="4760" status="Y" npi=""/>
+<Physician prefix="" firstname="Arthur" middlename="" lastname="Chang" suffix="" username="ACHANG_SCRIBE" ID="4761" status="Y" npi=""/>
 <Physician prefix="" firstname="IRMA" middlename="" lastname="LOPEZ" suffix="" username="" ID="4763" status="Y" npi=""/>
 <Physician prefix="" firstname="Christopher" middlename="" lastname="Harper" suffix="" username="" ID="4764" status="Y" npi=""/>
+<Physician prefix="" firstname="Victoria" middlename="" lastname="Cha" suffix="" username="VCHA_SCRIBE" ID="4765" status="Y" npi=""/>
 <Physician prefix="" firstname="Albert" middlename="" lastname="Kim" suffix="" username="" ID="4766" status="Y" npi=""/>
 <Physician prefix="" firstname="Albert" middlename="" lastname="Kim" suffix="" username="" ID="4767" status="Y" npi=""/>
 <Physician prefix="Dr" firstname="ALBERT" middlename="" lastname="KIM" suffix="" username="" ID="4768" status="Y" npi="1730475732"/>
-<Physician prefix="" firstname="Aileen" middlename="K" lastname="Lo" suffix="" username="" ID="4769" status="Y" npi=""/>
+<Physician prefix="Dr." firstname="Aileen" middlename="" lastname="Lo" suffix="M.D." username="" ID="4769" status="Y" npi="1487972261"/>
 <Physician prefix="Mr" firstname="KARIM" middlename="" lastname="SOLIMAN" suffix="" username="" ID="4770" status="Y" npi="1669506226"/>
 <Physician prefix="Dr" firstname="KARIM" middlename="" lastname="SOLIMAN" suffix="" username="" ID="4771" status="Y" npi=""/>
+<Physician prefix="" firstname="Daniel" middlename="" lastname="Kim" suffix="PA" username="DKIM" ID="4772" status="Y" npi=""/>
+<Physician prefix="" firstname="Brenda" middlename="" lastname="Flores" suffix="" username="BFLORES_CT" ID="4774" status="Y" npi=""/>
 <Physician prefix="" firstname="ANNETTE" middlename="" lastname="ANDERSON" suffix="" username="" ID="4775" status="Y" npi="1881607166"/>
 <Physician prefix="" firstname="new" middlename="data" lastname="test" suffix="" username="" ID="4776" status="Y" npi=""/>
+<Physician prefix="" firstname="Arzoo" middlename="" lastname="Sadiqi" suffix="" username="ASADIQI" ID="4777" status="Y" npi=""/>
 <Physician prefix="" firstname="SHAH" middlename="" lastname="DAMPA" suffix="" username="" ID="4778" status="Y" npi=""/>
 <Physician prefix="" firstname="RYAN" middlename="" lastname="AGENA" suffix="" username="" ID="4780" status="Y" npi=""/>
+<Physician prefix="Dr." firstname="Shyam" middlename="" lastname="Rao" suffix="M.D." username="SRAO" ID="4784" status="Y" npi="1568729580"/>
 <Physician prefix="" firstname="Anil" middlename="" lastname="Shirvaram" suffix="" username="" ID="4785" status="Y" npi=""/>
 <Physician prefix="Dr" firstname="Phuc" middlename="" lastname="Huynh" suffix="" username="" ID="4786" status="Y" npi=""/>
 <Physician prefix="" firstname="Admin" middlename="" lastname="Admin" suffix="" username="" ID="4787" status="Y" npi=""/>
@@ -4860,7 +4846,21 @@
 <Physician prefix="" firstname="GEORGE" middlename="" lastname="CHIDI" suffix="" username="" ID="4798" status="Y" npi="1396168944"/>
 <Physician prefix="" firstname="VARIN" middlename="" lastname="VONGVARAVIPATR" suffix="" username="" ID="4800" status="Y" npi="1669986501"/>
 <Physician prefix="" firstname="Varin" middlename="" lastname="Vongvaravipatr" suffix="" username="" ID="4801" status="Y" npi="1669986501"/>
+<Physician prefix="" firstname="Konca" middlename="" lastname="Scribe" suffix="" username="KONCA_SCRIBE" ID="4805" status="Y" npi=""/>
 <Physician prefix="Dr" firstname="GERMAINE" middlename="D" lastname="STROTHER" suffix="" username="" ID="4806" status="Y" npi="1427040922"/>
+<Physician prefix="" firstname="Konca" middlename="" lastname="Scribe1" suffix="" username="SCRIBE1_EKONCA" ID="4807" status="Y" npi=""/>
+<Physician prefix="" firstname="Konca" middlename="" lastname="Scribe2" suffix="" username="SCRIBE2_EKONCA" ID="4808" status="Y" npi=""/>
+<Physician prefix="" firstname="Konca" middlename="" lastname="Scribe3" suffix="" username="SCRIBE3_EKONCA" ID="4809" status="Y" npi=""/>
+<Physician prefix="" firstname="Robles" middlename="" lastname="Scribe1" suffix="" username="SCRIBE1_DROBLES" ID="4810" status="Y" npi=""/>
+<Physician prefix="" firstname="Robles" middlename="" lastname="Scribe2" suffix="" username="SCRIBE2_DROBLES" ID="4811" status="Y" npi=""/>
+<Physician prefix="" firstname="Robles" middlename="" lastname="Scribe3" suffix="" username="SCRIBE3_DROBLES" ID="4812" status="Y" npi=""/>
+<Physician prefix="" firstname="Robles" middlename="" lastname="Scribe4" suffix="" username="SCRIBE4_DROBLES" ID="4813" status="Y" npi=""/>
+<Physician prefix="" firstname="Scribe" middlename="" lastname="Jesus Pineda" suffix="" username="JPINEDA_SCRIBE" ID="4815" status="Y" npi=""/>
+<Physician prefix="" firstname="Scribe" middlename="" lastname="Raul Granados" suffix="" username="RGRANADOS_SCRIBE" ID="4816" status="Y" npi=""/>
+<Physician prefix="" firstname="Cohen" middlename="" lastname="Scribe1" suffix="" username="SCRIBE1_HCOHEN" ID="4817" status="Y" npi=""/>
+<Physician prefix="" firstname="Cohen" middlename="" lastname="Scribe2" suffix="" username="SCRIBE2_HCOHEN" ID="4818" status="Y" npi=""/>
+<Physician prefix="" firstname="Cohen" middlename="" lastname="Scribe3" suffix="" username="SCRIBE3_HCOHEN" ID="4819" status="Y" npi=""/>
+<Physician prefix="" firstname="Cohen" middlename="" lastname="Scribe4" suffix="" username="SCRIBE4_HCOHEN" ID="4820" status="Y" npi=""/>
 <Physician prefix="" firstname="JOSE" middlename="A" lastname="SANTIAGO" suffix="" username="" ID="4822" status="Y" npi="1790763191"/>
 <Physician prefix="" firstname="MARY" middlename="" lastname="CANDERS" suffix="" username="" ID="4823" status="Y" npi=""/>
 <Physician prefix="" firstname="MARY" middlename="" lastname="CANDERS" suffix="" username="" ID="4824" status="Y" npi="1235626428"/>
@@ -4902,8 +4902,10 @@
 <Physician prefix="Dr" firstname="JAVIER" middlename="R" lastname="RIOS" suffix="" username="" ID="4869" status="Y" npi="1639246175"/>
 <Physician prefix="Dr" firstname="SANTIAGO DAYOAN" middlename="" lastname="CORPUZ" suffix="" username="" ID="4870" status="Y" npi="1013035609"/>
 <Physician prefix="" firstname="JOHN" middlename="L" lastname="LEE" suffix="" username="" ID="4871" status="Y" npi="1568648608"/>
+<Physician prefix="" firstname="SReddy" middlename="" lastname="Scribe1" suffix="" username="SCRIBE1_SREDDY" ID="4872" status="Y" npi=""/>
 <Physician prefix="" firstname="VIJAY" middlename="" lastname="MOHAN" suffix="K" username="" ID="4873" status="Y" npi="1326084682"/>
 <Physician prefix="" firstname="CYNTHIA" middlename="" lastname="CHESY" suffix="" username="" ID="4874" status="Y" npi="1598024234"/>
+<Physician prefix="" firstname="Rasania" middlename="" lastname="Scribe1" suffix="" username="SCRIBE1_RASANIA" ID="4875" status="Y" npi=""/>
 <Physician prefix="" firstname="AARON" middlename="" lastname="TOOLE" suffix="" username="" ID="4876" status="Y" npi="1780951947"/>
 <Physician prefix="Dr" firstname="EDWIN" middlename="" lastname="CHAN" suffix="" username="" ID="4877" status="Y" npi="1922141217"/>
 <Physician prefix="Dr" firstname="EDWIN" middlename="" lastname="CHAN" suffix="" username="" ID="4878" status="Y" npi="1922141217"/>
@@ -4947,8 +4949,12 @@
 <Physician prefix="" firstname="FERRIN" middlename="" lastname="RUIZ" suffix="" username="" ID="4923" status="Y" npi="1477998870"/>
 <Physician prefix="" firstname="ALLIANCE" middlename="" lastname="HEALTH SERVICE" suffix="" username="" ID="4924" status="Y" npi="1801307368"/>
 <Physician prefix="" firstname="Prasad" middlename="" lastname="Jeereddi" suffix="" username="" ID="4925" status="Y" npi=""/>
+<Physician prefix="" firstname="Scribe1" middlename="" lastname="Nazeri" suffix="" username="SCRIBE1_NAZERI" ID="4926" status="Y" npi=""/>
 <Physician prefix="Dr" firstname="MINA" middlename="" lastname="SOLIMAN" suffix="" username="" ID="4927" status="Y" npi="1457730392"/>
+<Physician prefix="" firstname="Scribe1" middlename="" lastname="Alla" suffix="" username="SCRIBE1_ALLA" ID="4928" status="Y" npi=""/>
+<Physician prefix="" firstname="Jane Ellen" middlename="" lastname="Dietzel" suffix="NP" username="JDIETZEL" ID="4929" status="Y" npi="1093303240"/>
 <Physician prefix="" firstname="JANET" middlename="" lastname="URSUA" suffix="" username="" ID="4930" status="Y" npi="1114093101"/>
+<Physician prefix="" firstname="Scribe1" middlename="" lastname="Parikh" suffix="" username="SCRIBE1_PARIKH" ID="4932" status="Y" npi=""/>
 <Physician prefix="" firstname="JIAN" middlename="" lastname="CHEN" suffix="" username="" ID="4934" status="Y" npi="1841633617"/>
 <Physician prefix="" firstname="CASEY" middlename="" lastname="CORSINO" suffix="" username="" ID="4935" status="Y" npi="1952755803"/>
 <Physician prefix="Dr" firstname="OMAR" middlename="" lastname="BASHIR" suffix="" username="" ID="4936" status="Y" npi="1891730479"/>
@@ -4962,43 +4968,116 @@
 <Physician prefix="" firstname="NICOLE" middlename="" lastname="VACCARELLO" suffix="" username="" ID="4946" status="Y" npi="1457895476"/>
 <Physician prefix="" firstname="SUBHA" middlename="" lastname="AMATYA" suffix="" username="" ID="4947" status="Y" npi="1111111111"/>
 <Physician prefix="" firstname="KIM" middlename="" lastname="DINK" suffix="" username="" ID="4948" status="Y" npi="0000000200"/>
-<Physician prefix="" firstname="Dwadasi" middlename="" lastname="Sri" suffix="" username="" ID="4973" status="Y" npi=""/>
-<Physician prefix="" firstname="Jack" middlename="" lastname="David" suffix="" username="" ID="4974" status="Y" npi="1234567892"/>
+<Physician prefix="" firstname="ENRIQUE" middlename="" lastname="CHAP VALLOTA" suffix="" username="" ID="4950" status="Y" npi="1689862575"/>
+<Physician prefix="" firstname="" middlename="" lastname="" suffix="" username="" ID="4953" status="Y" npi="1053437509"/>
+<Physician prefix="" firstname="" middlename="" lastname="" suffix="" username="" ID="4954" status="Y" npi="1053437509"/>
+<Physician prefix="" firstname="" middlename="" lastname="" suffix="" username="" ID="4955" status="Y" npi="1053437509"/>
+<Physician prefix="" firstname="" middlename="" lastname="" suffix="" username="" ID="4956" status="Y" npi="1053437509"/>
+<Physician prefix="" firstname="" middlename="" lastname="" suffix="" username="" ID="4957" status="Y" npi=""/>
+<Physician prefix="" firstname="" middlename="" lastname="" suffix="" username="" ID="4958" status="Y" npi="1093226243"/>
+<Physician prefix="" firstname="CHAONAN" middlename="" lastname="DING" suffix="" username="" ID="4959" status="Y" npi="1285078105"/>
+<Physician prefix="" firstname="CHAONAN" middlename="" lastname="DING" suffix="" username="" ID="4960" status="Y" npi="1285078105"/>
+<Physician prefix="" firstname="SURYA" middlename="" lastname="LAKHANPAL" suffix="" username="" ID="4961" status="Y" npi="0000000010"/>
+<Physician prefix="" firstname="Arsalan" middlename="" lastname="Geula" suffix="" username="" ID="4964" status="Y" npi="8232845000"/>
+<Physician prefix="" firstname="MARIA LOURDES" middlename="" lastname="CATANOS DE LEON" suffix="" username="" ID="4965" status="Y" npi=""/>
+<Physician prefix="" firstname="THOMAS" middlename="" lastname="OCHA" suffix="" username="" ID="4967" status="Y" npi="1912484148"/>
+<Physician prefix="Dr" firstname="RAHIL RASHID" middlename="" lastname="KHAN" suffix="" username="" ID="4968" status="Y" npi="1124092549"/>
+<Physician prefix="" firstname="patric" middlename="" lastname="schine" suffix="" username="" ID="4969" status="Y" npi="1427091628"/>
+<Physician prefix="" firstname="ANA" middlename="" lastname="ELIAS" suffix="" username="" ID="4970" status="Y" npi="1124370846"/>
+<Physician prefix="" firstname="RAVNEET" middlename="" lastname="SINGH" suffix="" username="" ID="4971" status="Y" npi="3333333333"/>
+<Physician prefix="" firstname="ASHISH" middlename="" lastname="MALHOTRA" suffix="" username="" ID="4973" status="Y" npi="1679583744"/>
+<Physician prefix="" firstname="DAVID" middlename="" lastname="BERNSTEIN" suffix="" username="" ID="4974" status="Y" npi="1982960704"/>
+<Physician prefix="" firstname="Hazel" middlename="" lastname="Mckillop" suffix="" username="" ID="4975" status="Y" npi="1396766994"/>
+<Physician prefix="" firstname="DON" middlename="Q" lastname="PHAM" suffix="" username="" ID="4976" status="Y" npi="1992184998"/>
+<Physician prefix="" firstname="MAGGIE" middlename="" lastname="PHAM" suffix="" username="" ID="4977" status="Y" npi=""/>
+<Physician prefix="" firstname="MYLA" middlename="" lastname="PINEDA" suffix="" username="" ID="4978" status="Y" npi="1134533318"/>
+<Physician prefix="" firstname="EKTA" middlename="" lastname="SHARMA" suffix="" username="" ID="4979" status="Y" npi="1932527082"/>
+<Physician prefix="" firstname="DEVADAS S" middlename="" lastname=" MOSES" suffix="" username="" ID="4980" status="Y" npi="1023177607"/>
+<Physician prefix="" firstname="STEVEN" middlename="" lastname="CHONG" suffix="" username="" ID="4981" status="Y" npi="1033223946"/>
+<Physician prefix="" firstname="Ramon" middlename="F" lastname="Fakhoury" suffix="MD" username="" ID="4984" status="Y" npi="1427266691"/>
+<Physician prefix="" firstname="VINAYA" middlename="" lastname="KONDURI" suffix="" username="" ID="4985" status="Y" npi="1164451282"/>
+<Physician prefix="" firstname="Sara" middlename="" lastname="Mahmood" suffix="FNPC" username="" ID="4986" status="Y" npi="1790372829"/>
+<Physician prefix="Dr" firstname="SHWE" middlename="" lastname="PHYO" suffix="" username="" ID="4987" status="Y" npi="1841763240"/>
+<Physician prefix="" firstname="JULIE" middlename="" lastname="ALCID" suffix="" username="" ID="4988" status="Y" npi="1740695519"/>
+<Physician prefix="" firstname="KENNETH" middlename="" lastname="OYADOMARI" suffix="" username="" ID="4989" status="Y" npi="1477001832"/>
+<Physician prefix="Dr" firstname="Syeda" middlename="" lastname="Ameena" suffix="" username="" ID="4990" status="Y" npi="1972998706"/>
+<Physician prefix="" firstname="Brandon" middlename="" lastname="Tong" suffix="" username="" ID="4991" status="Y" npi="1508151036"/>
+<Physician prefix="" firstname="CHIU" middlename="" lastname="CHINGYI" suffix="" username="" ID="4992" status="Y" npi="1003289299"/>
+<Physician prefix="" firstname="" middlename="" lastname="" suffix="" username="" ID="4993" status="Y" npi=""/>
+<Physician prefix="" firstname="KIMBERLY" middlename="" lastname="FUNG" suffix="NP" username="" ID="4994" status="Y" npi="1780225391"/>
+<Physician prefix="" firstname="Acuity Eye Group and Retina Institute" middlename="" lastname="Acuity Eye Group and Retina Institu" suffix="" username="" ID="4995" status="Y" npi="1194185694"/>
+<Physician prefix="Dr" firstname="VICTOR" middlename="" lastname="Alvarez Casillas" suffix="" username="" ID="4996" status="Y" npi="1104111566"/>
+<Physician prefix="" firstname="VERONICA" middlename="" lastname="SPENCER" suffix="" username="" ID="4997" status="Y" npi="1093196578"/>
+<Physician prefix="" firstname="AKASH" middlename="" lastname="SHAH" suffix="" username="" ID="4998" status="Y" npi="9999999999"/>
+<Physician prefix="" firstname="SURAJ" middlename="" lastname="RASANIA" suffix="" username="" ID="4999" status="Y" npi="1245501899"/>
+<Physician prefix="" firstname="Sotara" middlename="" lastname="Manalo" suffix="" username="" ID="5000" status="Y" npi="1962654392"/>
+<Physician prefix="Dr" firstname="ROBERTO" middlename="" lastname="LUARCA" suffix="" username="" ID="5001" status="Y" npi="1740527944"/>
+<Physician prefix="Dr" firstname="CHAO MING" middlename="" lastname="LIN" suffix="MD" username="" ID="5002" status="Y" npi="1457428351"/>
+<Physician prefix="Dr" firstname="CHAO MING" middlename="" lastname="LIN" suffix="MD" username="" ID="5003" status="Y" npi="1457428351"/>
+<Physician prefix="Dr" firstname="CHAO MING" middlename="" lastname="LIN" suffix="MD" username="" ID="5004" status="Y" npi="1457428351"/>
+<Physician prefix="" firstname="HUYNH NGOC" middlename="TU" lastname="NGUYEN" suffix="" username="" ID="5006" status="Y" npi=""/>
+<Physician prefix="Dr" firstname="ANTONIO" middlename="" lastname="RODRIGUEZ" suffix="MD" username="" ID="5007" status="Y" npi="1255587820"/>
+<Physician prefix="" firstname="Jay" middlename="" lastname="Agarwal" suffix="" username="" ID="5008" status="Y" npi="1326091737"/>
+<Physician prefix="Dr" firstname="Marco" middlename="" lastname="Zahedi" suffix="MD" username="" ID="5009" status="Y" npi="1063779163"/>
+<Physician prefix="" firstname="Toni" middlename="" lastname="Sanders" suffix="PA" username="" ID="5010" status="Y" npi="1396809752"/>
+<Physician prefix="" firstname="ELISSA" middlename="E" lastname="KIM" suffix="" username="" ID="5011" status="Y" npi=""/>
+<Physician prefix="" firstname="Scribe" middlename="" lastname="Jwoodson" suffix="" username="SCRIBE_JWOODSON" ID="5012" status="Y" npi=""/>
+<Physician prefix="" firstname="BECK" middlename="" lastname="BECK" suffix="FNP" username="" ID="5013" status="Y" npi="1861918104"/>
+<Physician prefix="" firstname="LILIANA" middlename="P" lastname="PRAKASAM" suffix="FNPC" username="" ID="5014" status="Y" npi="1053493734"/>
+<Physician prefix="" firstname="LINA" middlename="" lastname="C DELA CRUZ" suffix="" username="" ID="5015" status="Y" npi="1952489858"/>
+<Physician prefix="" firstname="CUONG ROBERT" middlename="" lastname="NGUYEN" suffix="" username="" ID="5016" status="Y" npi="1437141660"/>
+<Physician prefix="Dr" firstname="COURTNEY" middlename="" lastname="O'BRYAN" suffix="DO" username="" ID="5017" status="Y" npi="1629414990"/>
+<Physician prefix="" firstname="JAMBUR ERIAH" middlename="" lastname="CHANDRASHEKAR" suffix="" username="" ID="5018" status="Y" npi="1013098557"/>
+<Physician prefix="" firstname="MARTIN" middlename="" lastname="AHN" suffix="" username="" ID="5019" status="Y" npi="1649342171"/>
+<Physician prefix="Dr" firstname="VANESSA" middlename="" lastname="OLTON" suffix="MD" username="" ID="5020" status="Y" npi="1811375702"/>
+<Physician prefix="" firstname=" Michael A" middlename="" lastname="Silao" suffix="" username="" ID="5021" status="Y" npi="1497706147"/>
+<Physician prefix="" firstname="JOSE" middlename="" lastname="RAMOS" suffix="" username="" ID="5022" status="Y" npi="1740667401"/>
+<Physician prefix="" firstname="JOSE" middlename="" lastname="RAMOS" suffix="" username="" ID="5023" status="Y" npi="1740667401"/>
+<Physician prefix="" firstname="Rick" middlename="" lastname="Siriratsivawong" suffix="" username="" ID="5025" status="Y" npi="1669615902"/>
+<Physician prefix="" firstname="Bassam" middlename="" lastname="Mouazzen" suffix="" username="" ID="5026" status="Y" npi="1730348830"/>
+<Physician prefix="" firstname="JAMES" middlename="" lastname="KALKANIS" suffix="" username="" ID="5027" status="Y" npi="1376709352"/>
+<Physician prefix="" firstname="Philip" middlename="" lastname="Delgado" suffix="" username="" ID="5028" status="Y" npi="1235355942"/>
+<Physician prefix="" firstname="DALIA" middlename="" lastname="CORLEONE" suffix="" username="" ID="5029" status="Y" npi="1649443599"/>
+<Physician prefix="" firstname="MOHAMMAD" middlename="" lastname="ARSHAD ABID" suffix="" username="" ID="5030" status="Y" npi="1699857706"/>
+<Physician prefix="Dr" firstname="CORNELIA" middlename="" lastname="HOLMES" suffix="MD" username="" ID="5031" status="Y" npi="1679961387"/>
+<Physician prefix="Dr" firstname="Brittany" middlename="" lastname="Wertz" suffix="" username="" ID="5032" status="Y" npi="1396273785"/>
+<Physician prefix="Dr" firstname="MICHAEL" middlename="" lastname="MAGUIRE" suffix="DO" username="" ID="5033" status="Y" npi="1881633063"/>
+<Physician prefix="" firstname="MARY GRACE" middlename="" lastname="SANTOS" suffix="" username="" ID="5034" status="Y" npi="1538445945"/>
+<Physician prefix="" firstname="TINA" middlename="" lastname="YUN" suffix="" username="" ID="5035" status="Y" npi="1073047270"/>
+<Physician prefix="Dr" firstname="TINA" middlename="" lastname="YUN" suffix="" username="" ID="5036" status="Y" npi="1073047270"/>
+<Physician prefix="Dr" firstname="Jeremy" middlename="" lastname="Gomer" suffix="" username="" ID="5037" status="Y" npi="1841789229"/>
+<Physician prefix="" firstname="Michelle" middlename="" lastname="Ramos" suffix="FNP" username="" ID="5039" status="Y" npi="1629582465"/>
+<Physician prefix="" firstname="" middlename="" lastname="" suffix="" username="" ID="5040" status="Y" npi=""/>
+<Physician prefix="" firstname="" middlename="" lastname="" suffix="" username="" ID="5041" status="Y" npi="1235245457"/>
+<Physician prefix="" firstname="" middlename="" lastname="" suffix="" username="" ID="5042" status="Y" npi=""/>
+<Physician prefix="" firstname="Katrina" middlename="A" lastname="Duarte" suffix="PA" username="" ID="5043" status="Y" npi="1578156881"/>
+<Physician prefix="Dr" firstname="JAY ATUL" middlename="" lastname="SHAH" suffix="DO" username="" ID="5044" status="Y" npi="1023464336"/>
+<Physician prefix="" firstname="GREG" middlename="" lastname="MALER" suffix="" username="" ID="5045" status="Y" npi="1033613104"/>
+<Physician prefix="" firstname="KANDIN" middlename="" lastname="MARAQUIN" suffix="" username="" ID="5051" status="Y" npi="1760033278"/>
+<Physician prefix="" firstname="THERESA" middlename="" lastname="DAVIS BATES" suffix="FNP" username="" ID="5052" status="Y" npi="1104367135"/>
+<Physician prefix="" firstname="SAMIR" middlename="" lastname="SAMARANY" suffix="" username="" ID="5053" status="Y" npi="1134379126"/>
+<Physician prefix="" firstname="KANDIN" middlename="" lastname="MARAQUIN" suffix="" username="" ID="5054" status="Y" npi=""/>
+<Physician prefix="" firstname="KANDIN" middlename="" lastname="MARAQUIN" suffix="" username="" ID="5055" status="Y" npi="1760033278"/>
+<Physician prefix="" firstname="Vincente" middlename="" lastname="Arias" suffix="FNP-C" username="" ID="5056" status="Y" npi="1831771955"/>
+<Physician prefix="" firstname="LEWIT" middlename="" lastname="WORRELL" suffix="" username="" ID="5057" status="Y" npi="1821167933"/>
+<Physician prefix="Dr" firstname="GERALD" middlename="" lastname="HO" suffix="" username="" ID="5058" status="Y" npi="1205833662"/>
+<Physician prefix="" firstname="GOSPHA" middlename="" lastname="CAMPBELL" suffix="" username="" ID="5059" status="Y" npi="1306012935"/>
+<Physician prefix="" firstname="Nirav" middlename="" lastname="Amin" suffix="" username="" ID="5060" status="Y" npi="1477714665"/>
+<Physician prefix="" firstname="CRAIG" middlename="B" lastname="CARTIER" suffix="" username="" ID="5061" status="Y" npi="1497721344"/>
 </UnMappedPhyList>
 <PhyAsstList>
 <PhysicianAssistant ID="109" Default_Physician="102"/>
-<PhysicianAssistant ID="2781" Default_Physician="205"/>
-<PhysicianAssistant ID="2826" Default_Physician="205"/>
-<PhysicianAssistant ID="680" Default_Physician="227"/>
-<PhysicianAssistant ID="254" Default_Physician="252"/>
-<PhysicianAssistant ID="2862" Default_Physician="252"/>
+<PhysicianAssistant ID="254" Default_Physician="4199"/>
 <PhysicianAssistant ID="2860" Default_Physician="102"/>
 <PhysicianAssistant ID="3103" Default_Physician="237"/>
-<PhysicianAssistant ID="1921" Default_Physician="237"/>
-<PhysicianAssistant ID="3053" Default_Physician="237"/>
-<PhysicianAssistant ID="3104" Default_Physician="237"/>
-<PhysicianAssistant ID="3113" Default_Physician="237"/>
-<PhysicianAssistant ID="4330" Default_Physician="100"/>
 <PhysicianAssistant ID="4191" Default_Physician="102"/>
 <PhysicianAssistant ID="4064" Default_Physician="237"/>
 <PhysicianAssistant ID="4204" Default_Physician="102"/>
 <PhysicianAssistant ID="3077" Default_Physician="237"/>
 <PhysicianAssistant ID="4412" Default_Physician="102"/>
-<PhysicianAssistant ID="4483" Default_Physician="3122"/>
 <PhysicianAssistant ID="4154" Default_Physician="4199"/>
 <PhysicianAssistant ID="2010" Default_Physician="4198"/>
-<PhysicianAssistant ID="4200" Default_Physician="252"/>
-<PhysicianAssistant ID="4482" Default_Physician="3122"/>
 <PhysicianAssistant ID="4485" Default_Physician="4251"/>
-<PhysicianAssistant ID="4548" Default_Physician="230"/>
-<PhysicianAssistant ID="4579" Default_Physician="2782"/>
-<PhysicianAssistant ID="4579" Default_Physician="4308"/>
-<PhysicianAssistant ID="4579" Default_Physician="244"/>
-<PhysicianAssistant ID="4579" Default_Physician="206"/>
-<PhysicianAssistant ID="4579" Default_Physician="4279"/>
-<PhysicianAssistant ID="4610" Default_Physician="102"/>
-<PhysicianAssistant ID="4625" Default_Physician="2841"/>
-<PhysicianAssistant ID="4659" Default_Physician="230"/>
 <PhysicianAssistant ID="4721" Default_Physician="2815"/>
 <PhysicianAssistant ID="4722" Default_Physician="2815"/>
 <PhysicianAssistant ID="4723" Default_Physician="2815"/>
@@ -5010,7 +5089,26 @@
 <PhysicianAssistant ID="4729" Default_Physician="2815"/>
 <PhysicianAssistant ID="4730" Default_Physician="2815"/>
 <PhysicianAssistant ID="4731" Default_Physician="2815"/>
-<PhysicianAssistant ID="4785" Default_Physician="102"/>
+<PhysicianAssistant ID="4738" Default_Physician="102"/>
+<PhysicianAssistant ID="4777" Default_Physician="2815"/>
+<PhysicianAssistant ID="4821" Default_Physician="248"/>
+<PhysicianAssistant ID="4828" Default_Physician="4782"/>
+<PhysicianAssistant ID="4840" Default_Physician="237"/>
+<PhysicianAssistant ID="4841" Default_Physician="237"/>
+<PhysicianAssistant ID="4845" Default_Physician="4328"/>
+<PhysicianAssistant ID="4821" Default_Physician="4296"/>
+<PhysicianAssistant ID="2853" Default_Physician="4844"/>
+<PhysicianAssistant ID="4904" Default_Physician="102"/>
+<PhysicianAssistant ID="4905" Default_Physician="102"/>
+<PhysicianAssistant ID="4906" Default_Physician="2841"/>
+<PhysicianAssistant ID="4929" Default_Physician="4814"/>
+<PhysicianAssistant ID="4952" Default_Physician="237"/>
+<PhysicianAssistant ID="4962" Default_Physician="179"/>
+<PhysicianAssistant ID="4963" Default_Physician="4814"/>
+<PhysicianAssistant ID="3077" Default_Physician="107"/>
+<PhysicianAssistant ID="3077" Default_Physician="4323"/>
+<PhysicianAssistant ID="5024" Default_Physician="102"/>
+<PhysicianAssistant ID="4828" Default_Physician="2377"/>
 </PhyAsstList>
 
 </ROOT>

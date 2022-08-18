@@ -1,0 +1,166 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<VitalsOrderList>
+  <vitalslst>
+    <vitalone>
+      <vital id="1"></vital>
+    </vitalone>
+  </vitalslst>
+<VitalsOrder Id="1" Vitals_Name="Height" Sort_Order="1"></VitalsOrder>
+<VitalsOrder Id="2" Vitals_Name="Weight" Sort_Order="2"></VitalsOrder>
+<VitalsOrder Id="3" Vitals_Name="BMI" Sort_Order="3"></VitalsOrder>
+<VitalsOrder Id="4" Vitals_Name="BMI Status" Sort_Order="4"></VitalsOrder>
+<VitalsOrder Id="5" Vitals_Name="Body Temperature" Sort_Order="5"></VitalsOrder>
+<VitalsOrder Id="6" Vitals_Name="Body TemperatureSecond" Sort_Order="6"></VitalsOrder>
+<VitalsOrder Id="7" Vitals_Name="Waist Circumference" Sort_Order="7"></VitalsOrder>
+<VitalsOrder Id="8" Vitals_Name="Pulse Rate" Sort_Order="8"></VitalsOrder>
+<VitalsOrder Id="9" Vitals_Name="Pulse Rate Status" Sort_Order="9"></VitalsOrder>
+<VitalsOrder Id="10" Vitals_Name="BP-Sitting Location" Sort_Order="10"></VitalsOrder>
+<VitalsOrder Id="11" Vitals_Name="BP-Sitting Sys/Dia" Sort_Order="11"></VitalsOrder>
+<VitalsOrder Id="12" Vitals_Name="BP-SittingSecond Location" Sort_Order="12"></VitalsOrder>
+<VitalsOrder Id="13" Vitals_Name="BP-SittingSecond Sys/Dia" Sort_Order="13"></VitalsOrder>
+<VitalsOrder Id="14" Vitals_Name="BP-Standing Location" Sort_Order="14"></VitalsOrder>
+<VitalsOrder Id="15" Vitals_Name="BP-Standing Sys/Dia" Sort_Order="15"></VitalsOrder>
+<VitalsOrder Id="16" Vitals_Name="BP-StandingSecond Location" Sort_Order="16"></VitalsOrder>
+<VitalsOrder Id="17" Vitals_Name="BP-StandingSecond Sys/Dia" Sort_Order="17"></VitalsOrder>
+<VitalsOrder Id="18" Vitals_Name="BP-Lying Location" Sort_Order="18"></VitalsOrder>
+<VitalsOrder Id="19" Vitals_Name="BP-Lying Sys/Dia" Sort_Order="19"></VitalsOrder>
+<VitalsOrder Id="20" Vitals_Name="BP-LyingSecond Location" Sort_Order="20"></VitalsOrder>
+<VitalsOrder Id="21" Vitals_Name="BP-LyingSecond Sys/Dia" Sort_Order="21"></VitalsOrder>
+<VitalsOrder Id="22" Vitals_Name="Respiratory Rate" Sort_Order="22"></VitalsOrder>
+<VitalsOrder Id="23" Vitals_Name="HbA1C" Sort_Order="23"></VitalsOrder>
+<VitalsOrder Id="24" Vitals_Name="HbA1C Status" Sort_Order="24"></VitalsOrder>
+<VitalsOrder Id="25" Vitals_Name="eGFR" Sort_Order="25"></VitalsOrder>
+<VitalsOrder Id="26" Vitals_Name="eGFR Status" Sort_Order="26"></VitalsOrder>
+<VitalsOrder Id="27" Vitals_Name="eGFRSecond" Sort_Order="27"></VitalsOrder>                                          
+<VitalsOrder Id="28" Vitals_Name="eGFR StatusSecond" Sort_Order="28"></VitalsOrder>
+<VitalsOrder Id="29" Vitals_Name="Pulse Oximetry" Sort_Order="29"></VitalsOrder>
+<VitalsOrder Id="30" Vitals_Name="Pulse OximetrySecond" Sort_Order="30"></VitalsOrder>
+<VitalsOrder Id="31" Vitals_Name="Blood Sugar-Fasting" Sort_Order="31"></VitalsOrder>
+<VitalsOrder Id="32" Vitals_Name="Blood Sugar-Fasting Status" Sort_Order="32"></VitalsOrder>
+<VitalsOrder Id="33" Vitals_Name="Blood Sugar-FastingSecond" Sort_Order="33"></VitalsOrder>
+<VitalsOrder Id="34" Vitals_Name="Blood Sugar-Fasting StatusSecond" Sort_Order="34"></VitalsOrder>
+<VitalsOrder Id="35" Vitals_Name="Blood Sugar-Post Prandial" Sort_Order="35"></VitalsOrder>
+<VitalsOrder Id="36" Vitals_Name="Blood Sugar-Post Prandial Status"     Sort_Order="36"></VitalsOrder>
+<VitalsOrder Id="37" Vitals_Name="Blood Sugar-Post PrandialSecond" Sort_Order="37"></VitalsOrder>
+<VitalsOrder Id="38" Vitals_Name="Blood Sugar-Post Prandial StatusSecond" Sort_Order="38"></VitalsOrder>
+<VitalsOrder Id="39" Vitals_Name="ICR" Sort_Order="39"></VitalsOrder>
+<VitalsOrder Id="40" Vitals_Name="ISF" Sort_Order="40"></VitalsOrder>
+<VitalsOrder Id="41" Vitals_Name="BASAL" Sort_Order="41"></VitalsOrder>
+<VitalsOrder Id="42" Vitals_Name="Basal Rate" Sort_Order="42"></VitalsOrder>
+<VitalsOrder Id="43" Vitals_Name="Head Circumference" Sort_Order="43"></VitalsOrder>
+<VitalsOrder Id="44" Vitals_Name="Oxygen Intake" Sort_Order="44"></VitalsOrder>
+<VitalsOrder Id="45" Vitals_Name="LMP" Sort_Order="45"></VitalsOrder>
+<VitalsOrder Id="46" Vitals_Name="LMPSatus" Sort_Order="46"></VitalsOrder>
+<VitalsOrder Id="47" Vitals_Name="Last PAP Smear" Sort_Order="47"></VitalsOrder>
+<VitalsOrder Id="48" Vitals_Name="Last Mammogram" Sort_Order="48"></VitalsOrder>
+<VitalsOrder Id="49" Vitals_Name="Last Colonoscopy" Sort_Order="49"></VitalsOrder>
+<VitalsOrder Id="50" Vitals_Name="Age Period Started" Sort_Order="50"></VitalsOrder>
+<VitalsOrder Id="51" Vitals_Name="How long do periods last" Sort_Order="51"></VitalsOrder>
+<VitalsOrder Id="52" Vitals_Name="Number of pregnancies" Sort_Order="52"></VitalsOrder>
+<VitalsOrder Id="53" Vitals_Name="Number of miscarriages" Sort_Order="53"></VitalsOrder>
+<VitalsOrder Id="54" Vitals_Name="Frequency of periods every"  Sort_Order="54"></VitalsOrder>                               
+<VitalsOrder Id="55" Vitals_Name="Any pain with your periods" Sort_Order="55"></VitalsOrder>
+<VitalsOrder Id="56" Vitals_Name="Number of children" Sort_Order="56"></VitalsOrder>
+<VitalsOrder Id="57" Vitals_Name="Oxygen Saturation" Sort_Order="57"></VitalsOrder>
+<VitalsOrder Id="58" Vitals_Name="Neck Size" Sort_Order="58"></VitalsOrder>
+<VitalsOrder Id="59" Vitals_Name="Visit Related Vitals" Sort_Order="59"></VitalsOrder>
+<VitalsOrder Id="60" Vitals_Name="Last Test Results" Sort_Order="60"></VitalsOrder>
+<VitalsOrder Id="61" Vitals_Name="Last known tests/procedures" Sort_Order="61"></VitalsOrder>
+<VitalsOrder Id="62" Vitals_Name="Latest Lab Results" Sort_Order="62"></VitalsOrder>
+<VitalsOrder Id="63" Vitals_Name="HolterEvent" Sort_Order="63"></VitalsOrder>
+<VitalsOrder Id="64" Vitals_Name="Stress Test" Sort_Order="64"></VitalsOrder>
+<VitalsOrder Id="65" Vitals_Name="Coronary Angiogram" Sort_Order="65"></VitalsOrder>
+<VitalsOrder Id="66" Vitals_Name="Carotid Doppler" Sort_Order="66"></VitalsOrder>
+<VitalsOrder Id="67" Vitals_Name="Vascular Study" Sort_Order="67"></VitalsOrder>
+<VitalsOrder Id="68" Vitals_Name="ABI Tests" Sort_Order="68"></VitalsOrder>
+<VitalsOrder Id="69" Vitals_Name="Waist" Sort_Order="69"></VitalsOrder>
+<VitalsOrder Id="70" Vitals_Name="ECG" Sort_Order="70"></VitalsOrder>
+<VitalsOrder Id="71" Vitals_Name="PT/INR" Sort_Order="71"></VitalsOrder>
+<VitalsOrder Id="72" Vitals_Name="PT Status" Sort_Order="72"></VitalsOrder>
+<VitalsOrder Id="73" Vitals_Name="LDL" Sort_Order="73"></VitalsOrder>
+<VitalsOrder Id="74" Vitals_Name="LDL Status" Sort_Order="74"></VitalsOrder>
+<VitalsOrder Id="75" Vitals_Name="HDL" Sort_Order="75"></VitalsOrder>
+<VitalsOrder Id="76" Vitals_Name="HDL Status" Sort_Order="76"></VitalsOrder>
+<VitalsOrder Id="77" Vitals_Name="Total Cholesterol" Sort_Order="77"></VitalsOrder>
+<VitalsOrder Id="78" Vitals_Name="Total Cholesterol Status" Sort_Order="78"></VitalsOrder>
+<VitalsOrder Id="79" Vitals_Name="Triglycerides" Sort_Order="79"></VitalsOrder>
+<VitalsOrder Id="80" Vitals_Name="Triglycerides Status" Sort_Order="80"></VitalsOrder>
+<VitalsOrder Id="81" Vitals_Name="Creatinine" Sort_Order="81"></VitalsOrder>
+<VitalsOrder Id="82" Vitals_Name="Creatinine Status" Sort_Order="82"></VitalsOrder>
+<VitalsOrder Id="83" Vitals_Name="TSH" Sort_Order="83"></VitalsOrder>
+<VitalsOrder Id="84" Vitals_Name="TSH Status" Sort_Order="84"></VitalsOrder>
+<VitalsOrder Id="85" Vitals_Name="Hgb" Sort_Order="85"></VitalsOrder>
+<VitalsOrder Id="86" Vitals_Name="Hgb Status" Sort_Order="86"></VitalsOrder>
+<VitalsOrder Id="87" Vitals_Name="Calcium Score" Sort_Order="87"></VitalsOrder>
+<VitalsOrder Id="88" Vitals_Name="Calcium Score Status" Sort_Order="88"></VitalsOrder>
+<VitalsOrder Id="89" Vitals_Name="Myocardial Perfusion Imaging" Sort_Order="89"></VitalsOrder>                  
+<VitalsOrder Id="90" Vitals_Name="Cardiac Catheterization" Sort_Order="90"></VitalsOrder>
+<VitalsOrder Id="91" Vitals_Name="Ultrasound - Abdominal" Sort_Order="91"></VitalsOrder>
+<VitalsOrder Id="92" Vitals_Name="Ultrasound - Renal" Sort_Order="92"></VitalsOrder>
+<VitalsOrder Id="93" Vitals_Name="Ultrasound - Aortic" Sort_Order="93"></VitalsOrder>
+<VitalsOrder Id="94" Vitals_Name="CT aorta" Sort_Order="94"></VitalsOrder>
+<VitalsOrder Id="95" Vitals_Name="Nuclear Stress Test" Sort_Order="95"></VitalsOrder>
+<VitalsOrder Id="96" Vitals_Name="ECHO Stress Test" Sort_Order="96"></VitalsOrder>
+<VitalsOrder Id="97" Vitals_Name="Treadmill Stress Test" Sort_Order="97"></VitalsOrder>
+<VitalsOrder Id="98" Vitals_Name="Echocardiogram" Sort_Order="98"></VitalsOrder>
+<VitalsOrder Id="99" Vitals_Name="Lp(a)" Sort_Order="99"></VitalsOrder>
+<VitalsOrder Id="100" Vitals_Name="Lp(a) Status" Sort_Order="100"></VitalsOrder>                           
+<VitalsOrder Id="101" Vitals_Name="Chest CT" Sort_Order="101"></VitalsOrder>
+<VitalsOrder Id="102" Vitals_Name="Urine Microalbumin" Sort_Order="102"></VitalsOrder>
+<VitalsOrder Id="103" Vitals_Name="Eye Check" Sort_Order="103"></VitalsOrder>
+<VitalsOrder Id="104" Vitals_Name="Chest Xray" Sort_Order="104"></VitalsOrder>
+<VitalsOrder Id="105" Vitals_Name="PFT" Sort_Order="105"></VitalsOrder>
+<VitalsOrder Id="106" Vitals_Name="INR" Sort_Order="106"></VitalsOrder>
+<VitalsOrder Id="107" Vitals_Name="INR Status" Sort_Order="107"></VitalsOrder>
+<VitalsOrder Id="108" Vitals_Name="Blindness" Sort_Order="108"></VitalsOrder>                                 
+<VitalsOrder Id="109" Vitals_Name="Blindness Status" Sort_Order="109"></VitalsOrder>
+<VitalsOrder Id="110" Vitals_Name="Cataract" Sort_Order="110"></VitalsOrder>
+<VitalsOrder Id="111" Vitals_Name="Cataract Status" Sort_Order="111"></VitalsOrder>
+<VitalsOrder Id="112" Vitals_Name="Glaucoma" Sort_Order="112"></VitalsOrder>
+<VitalsOrder Id="113" Vitals_Name="Glaucoma Status" Sort_Order="113"></VitalsOrder>
+<VitalsOrder Id="114" Vitals_Name="Macularedema" Sort_Order="114"></VitalsOrder>
+<VitalsOrder Id="115" Vitals_Name="Macularedema Status" Sort_Order="115"></VitalsOrder>
+<VitalsOrder Id="116" Vitals_Name="Retinal edema" Sort_Order="116"></VitalsOrder>
+<VitalsOrder Id="117" Vitals_Name="Retinal edema Status" Sort_Order="117"></VitalsOrder>
+<VitalsOrder Id="118" Vitals_Name="Retinopathy" Sort_Order="118"></VitalsOrder>
+<VitalsOrder Id="119" Vitals_Name="Retinopathy Status"  Sort_Order="119"></VitalsOrder>                       
+<VitalsOrder Id="120" Vitals_Name="Urine for Microalbumin" Sort_Order="120"></VitalsOrder>
+<VitalsOrder Id="121" Vitals_Name="Urine for Microalbumin Status" Sort_Order="121"></VitalsOrder>
+<VitalsOrder Id="122" Vitals_Name="ABI Test" Sort_Order="122"></VitalsOrder>
+<VitalsOrder Id="123" Vitals_Name="ABI Test Status" Sort_Order="123"></VitalsOrder>
+<VitalsOrder Id="124" Vitals_Name="Foot Exam" Sort_Order="124"></VitalsOrder>       
+<VitalsOrder Id="125" Vitals_Name="Foot Exam Status" Sort_Order="125"></VitalsOrder>
+<VitalsOrder Id="126" Vitals_Name="Diabetic Eye Exam" Sort_Order="126"></VitalsOrder>
+<VitalsOrder Id="127" Vitals_Name="Diabetic Eye Exam Status" Sort_Order="127"></VitalsOrder>
+<VitalsOrder Id="128" Vitals_Name="ABI/Flochec" Sort_Order="128"></VitalsOrder>
+<VitalsOrder Id="129" Vitals_Name="ABI/Flochec Status" Sort_Order="129"></VitalsOrder>
+<VitalsOrder Id="130" Vitals_Name="Aorta Scan" Sort_Order="130"></VitalsOrder>
+<VitalsOrder Id="131" Vitals_Name="Aorta Scan Status" Sort_Order="131"></VitalsOrder>
+<VitalsOrder Id="132" Vitals_Name="Fecal Occult Blood Test" Sort_Order="132"></VitalsOrder>
+<VitalsOrder Id="133" Vitals_Name="Fecal Occult Blood TestSatus" Sort_Order="133"></VitalsOrder>
+<VitalsOrder Id="134" Vitals_Name="Vision- Left" Sort_Order="134"></VitalsOrder>
+<VitalsOrder Id="135" Vitals_Name="Vision- Right" Sort_Order="135"></VitalsOrder>
+<VitalsOrder Id="136" Vitals_Name="Vision- Both" Sort_Order="136"></VitalsOrder>
+<VitalsOrder Id="137" Vitals_Name="Last Physical" Sort_Order="137"></VitalsOrder>
+<VitalsOrder Id="138" Vitals_Name="Last DEXA" Sort_Order="138"></VitalsOrder>
+<VitalsOrder Id="139" Vitals_Name="Last Tetanus" Sort_Order="139"></VitalsOrder>
+<VitalsOrder Id="140" Vitals_Name="Last Pneumovac" Sort_Order="140"></VitalsOrder>
+<VitalsOrder Id="141" Vitals_Name="Last Zostavax" Sort_Order="141"></VitalsOrder>
+<VitalsOrder Id="142" Vitals_Name="Last Flu" Sort_Order="142"></VitalsOrder>
+<VitalsOrder Id="143" Vitals_Name="Last  Tdap" Sort_Order="143"></VitalsOrder>
+<VitalsOrder Id="144" Vitals_Name="Last eye exam" Sort_Order="144"></VitalsOrder>
+<VitalsOrder Id="145" Vitals_Name="Last FOB" Sort_Order="145"></VitalsOrder>
+<VitalsOrder Id="146" Vitals_Name="Urinalysis" Sort_Order="146"></VitalsOrder>
+<VitalsOrder Id="147" Vitals_Name="Color" Sort_Order="147"></VitalsOrder>
+<VitalsOrder Id="148" Vitals_Name="Appearance" Sort_Order="148"></VitalsOrder>
+<VitalsOrder Id="149" Vitals_Name="Blood (60 sec)" Sort_Order="149"></VitalsOrder>
+<VitalsOrder Id="150" Vitals_Name="Bilirubin (30 sec)" Sort_Order="150"></VitalsOrder>
+<VitalsOrder Id="151" Vitals_Name="Urobilinogen" Sort_Order="151"></VitalsOrder>
+<VitalsOrder Id="152" Vitals_Name="Ketones (40 sec)" Sort_Order="152"></VitalsOrder>
+<VitalsOrder Id="153" Vitals_Name="Protein (60 sec)" Sort_Order="153"></VitalsOrder>
+<VitalsOrder Id="154" Vitals_Name="Nitrate (60 sec)" Sort_Order="154"></VitalsOrder>
+<VitalsOrder Id="155" Vitals_Name="Glucose (30 sec)" Sort_Order="155"></VitalsOrder>
+<VitalsOrder Id="156" Vitals_Name="pH" Sort_Order="156"></VitalsOrder>
+<VitalsOrder Id="157" Vitals_Name="Specific Gravity (45 Sec)" Sort_Order="157"></VitalsOrder>
+<VitalsOrder Id="158" Vitals_Name="Leukocytes" Sort_Order="158"></VitalsOrder>
+</VitalsOrderList>

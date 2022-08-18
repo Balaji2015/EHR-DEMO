@@ -1,0 +1,27 @@
+<ClinicalDocument xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+ xmlns="urn:hl7-org:v3"
+ xmlns:voc="urn:hl7-org:v3/voc"
+ xmlns:sdtc="urn:hl7-org:sdtc">
+<entry>
+	<observation classCode="OBS" moodCode="EVN" negationInd="true">
+		 <!-- Laboratory Test Performed (V5) -->
+		 <templateId root="2.16.840.1.113883.10.20.24.3.38" extension="2019-12-01" />
+		 <id root="1fad091f-7b4e-4661-b61c-53f9a82515b6" />
+		 <!-- Laboratory Test -->
+		 <code code="" displayName="" codeSystem="2.16.840.1.113883.6.1" codeSystemName="LOINC" />
+		 <text></text>
+		<statusCode code="completed" />
+		<!-- QDM Attribute: Relevant dateTime -->
+		 <effectiveTime value="" />		
+		 <!-- QDM Attribute: Reason -->
+		  <entryRelationship typeCode="RSON">
+			<observation classCode="OBS" moodCode="EVN">
+			<!-- Reason (V3) -->
+			<templateId root="2.16.840.1.113883.10.20.24.3.88" extension="2017-08-01" /> 
+			<code code="77301-0" codeSystem="2.16.840.1.113883.6.1" displayName="Reason care action performed or not" codeSystemName="LOINC" />
+			<value xsi:type="CD" code="" codeSystem="2.16.840.1.113883.6.96" codeSystemName="SNOMED CT" displayName="" />
+			</observation>
+		</entryRelationship>
+	</observation>
+</entry>
+</ClinicalDocument>
