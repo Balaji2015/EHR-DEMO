@@ -159,6 +159,17 @@ namespace Acurus.Capella.UI
                     tabStripEncounter_tbEPrescription.Disabled = true;
                 }
 
+                //To visible\envisible QR Code Generator button
+                var userQRCode = from u in ClientSession.UserPermissionDTO.Userscntab where u.scn_id == 101131 && u.user_name == ClientSession.UserName select u;
+                if (userQRCode.ToList().Count>0)
+                {
+                    btnQRCode.Visible = true;
+                }
+                else
+                {
+                    btnQRCode.Visible = false;
+                }
+
                 ClientSession.CurrentObjectType = sMyObjType;
                 if (PatientPaneDetails != null && PatientPaneDetails.Count > 0 && PatientPaneDetails.Any(item => item.Encounter_ID == ClientSession.EncounterId))
                     iMySelectedNode = PatientPaneDetails.ToList().FindIndex(item => item.Encounter_ID == ClientSession.EncounterId);
