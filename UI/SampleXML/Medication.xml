@@ -1,29 +1,43 @@
-﻿<ClinicalDocument xmlns="urn:hl7-org:v3" xmlns:sdtc="urn:hl7-org:sdtc" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xhtml="http://www.w3.org/1999/xhtml" xsi:schemaLocation="urn:hl7-org:v3 http://xreg2.nist.gov:8080/hitspValidation/schema/cdar2c32/infrastructure/cda/C32_CDA.xsd">
-  <entry typeCode="DRIV">
-    <substanceAdministration classCode="SBADM" moodCode="EVN">
-      <templateId root="2.16.840.1.113883.10.20.22.4.16"/>
-      <templateId root="2.16.840.1.113883.10.20.22.4.16" extension="2014-06-09"/>
-      <id root="cdbd33f0-6cde-11db-9fe1-0800200c9a66"/>
-      <text></text>
-      <statusCode code="completed"/>
-      <effectiveTime xsi:type="IVL_TS">
-        <low value=""/>
-        <high value=""/>
-      </effectiveTime>
-      <routeCode code="C38229" codeSystem="2.16.840.1.113883.3.26.1.1" codeSystemName="NCI Thesaurus" displayName="INTRACAUDAL"/>
-      <doseQuantity value="" unit=""/>
-      <consumable>
-        <manufacturedProduct classCode="MANU">
-          <templateId root="2.16.840.1.113883.10.20.22.4.23"/>
-          <templateId root="2.16.840.1.113883.10.20.22.4.23" extension="2014-06-09" />
-          <id root="2a620155-9d11-439e-92b3-5d9815ff4ee8"/>          
-          <manufacturedMaterial>
-            <code code="" codeSystem="2.16.840.1.113883.6.88" displayName="">
-              <originalText></originalText>
-            </code>
-          </manufacturedMaterial>
-        </manufacturedProduct>
-      </consumable>
-    </substanceAdministration>
-  </entry>
-</ClinicalDocument>
+			
+			<ClinicalDocument xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+ xmlns="urn:hl7-org:v3"
+ xmlns:voc="urn:hl7-org:v3/voc"
+ xmlns:sdtc="urn:hl7-org:sdtc">
+			<entry>
+              <!--Medication Order -->
+              <substanceAdministration classCode="SBADM" moodCode="RQO" >
+                <templateId root="2.16.840.1.113883.10.20.22.4.42" extension="2014-06-09"/>
+                <!-- Medication, Order template -->
+                <templateId root="2.16.840.1.113883.10.20.24.3.47" extension="2019-12-01"/>
+                <id root="1.3.6.1.4.1.115" extension="62e21b14dfe4bd7825c3e974"/>
+                <text></text>
+                <statusCode code="active"/>
+                  <!-- QDM Attribute: Relevant Period -->
+                  <effectiveTime xsi:type="IVL_TS"><low value="{}"/><high value="{}"/></effectiveTime>
+                <!--  QDM Attribute: Frequency -->
+                <effectiveTime xsi:type='PIVL_TS' operator='A'><period value='24' unit='h'/></effectiveTime>
+                <!--  QDM Attribute: Dosage -->
+                <doseQuantity nullFlavor="UNK"/>
+                <consumable>
+                  <manufacturedProduct classCode="MANU">
+                    <!-- Medication Information (consolidation) template -->
+                    <templateId root="2.16.840.1.113883.10.20.22.4.23" extension="2014-06-09"/>
+                    <id root="05a02810-f062-013a-3761-0eca209bc306"/>
+                    <manufacturedMaterial>
+                      <!--  QDM Attribute: Code -->
+                        <code code="{}" codeSystem="2.16.840.1.113883.6.88" codeSystemName="RXNORM"/>
+                    </manufacturedMaterial>
+                  </manufacturedProduct>
+                </consumable>
+                  <!-- QDM Attribute: Author dateTime -->
+                  <author>
+                    <templateId root="2.16.840.1.113883.10.20.24.3.155" extension="2019-12-01"/>
+                    <time value="{}"/>
+                    <assignedAuthor>
+                            <id nullFlavor="NA"/>
+                    </assignedAuthor>
+                  </author>
+			  </substanceAdministration>
+            </entry>
+			</ClinicalDocument>
+			

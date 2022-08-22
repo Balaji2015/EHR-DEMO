@@ -7481,7 +7481,7 @@ namespace Acurus.Capella.UI
             StringBuilder Loopsb;
             var xDox = new XDocument();
 
-            xDox = XDocument.Load(HttpContext.Current.Server.MapPath("SampleXML" + "\\V10XML\\" + PQRI_Data_value.PQRI_Selection_XML));
+            xDox = XDocument.Load(HttpContext.Current.Server.MapPath("SampleXML" + "\\" + PQRI_Data_value.PQRI_Selection_XML));
             objEncMainsb = new StringBuilder(xDox.ToString());
             objEncMainsb.Remove(0, 157);
             objEncMainsb.Remove(objEncMainsb.Length - 20, 20);

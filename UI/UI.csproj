@@ -413,6 +413,7 @@
     <Content Include="Resources\PrintReq_Disabled.png" />
     <Content Include="Resources\Show_Image_Disable.jpg" />
     <Content Include="Resources\wait.ico" />
+    <Content Include="SampleXML\Acute_Inpatient_CMS130_CATI.xml" />
     <Content Include="SampleXML\Allergies_Nullflavor.xml" />
     <Content Include="SampleXML\AllergytoEggs.xml" />
     <Content Include="SampleXML\Bilateral_Mastectomy.xml" />
@@ -421,8 +422,12 @@
     <Content Include="SampleXML\CatIII_Stage3_Measeure_Header_count.xml" />
     <Content Include="SampleXML\CDA_original.xsl" />
     <Content Include="SampleXML\CMS122Stage3_Header.xml" />
+    <Content Include="SampleXML\CMS122_v10_CAT_III_Header.xml" />
     <Content Include="SampleXML\CMS125Stage3_Header.xml" />
+    <Content Include="SampleXML\CMS125_v10_CAT_III_Header.xml" />
     <Content Include="SampleXML\CMS127Stage3_Header.xml" />
+    <Content Include="SampleXML\CMS127_v10_CAT_III_Header.xml" />
+    <Content Include="SampleXML\CMS130v10Stage3_Header.xml" />
     <Content Include="SampleXML\CMS138Stage3_Header.xml" />
     <Content Include="SampleXML\CMS138v5_stage3_Assertion.xml" />
     <Content Include="SampleXML\CMS138v5_stage3_I.xml" />
@@ -433,11 +438,16 @@
     <Content Include="SampleXML\CMS138v5_stage3_patientDead.xml" />
     <Content Include="SampleXML\CMS138v5_stage3_ProblemConcern.xml" />
     <Content Include="SampleXML\CMS138v5_stage3_procActivity.xml" />
+    <Content Include="SampleXML\CMS138_v10_CAT_III_Header.xml" />
     <Content Include="SampleXML\CMS147Stage3_Header.xml" />
+    <Content Include="SampleXML\CMS147_v11_CAT_III_Header.xml" />
     <Content Include="SampleXML\CMS165stage3_Header.xml" />
+    <Content Include="SampleXML\CMS165_v10_CAT_III_Header.xml" />
     <Content Include="SampleXML\CMS22Stage3_Header.xml" />
     <Content Include="SampleXML\CMS22_Medication_cat1_Stage3.xml" />
+    <Content Include="SampleXML\CMS22_v10_CAT_III_Header.xml" />
     <Content Include="SampleXML\CMS68v6Stage3_Header.xml" />
+    <Content Include="SampleXML\CMS68_v11_CAT_III_Header.xml" />
     <Content Include="SampleXML\CMS69Stage3_Header.xml" />
     <Content Include="SampleXML\CMS69v5_stage3_I.xml" />
     <Content Include="SampleXML\CMS69v5_stage3_LoincBMI.xml" />
@@ -448,6 +458,7 @@
     <Content Include="SampleXML\CMS69v5_stage3_ProblemConcern.xml" />
     <Content Include="SampleXML\CMS69v5_stage3_ProcActivityNA.xml" />
     <Content Include="SampleXML\CMS69v5_stage3_Snomed.xml" />
+    <Content Include="SampleXML\CMS69_v10_CAT_III_Header.xml" />
     <Content Include="SampleXML\Communication147.xml" />
     <Content Include="SampleXML\ControllingBP_Gcode_Cat1_Stage3.xml" />
     <Content Include="SampleXML\ControllingBP_Kidney_Edu_Cat1_Stage3.xml" />
@@ -464,11 +475,13 @@
     <Content Include="SampleXML\DenominatorStage3.xml" />
     <Content Include="SampleXML\Denominator_ExceptionStage3.xml" />
     <Content Include="SampleXML\Denominator_ExclusionStage3.xml" />
+    <Content Include="SampleXML\Device_CMS130_CATI.xml" />
     <Content Include="SampleXML\DiabetesHba1c.xml" />
     <Content Include="SampleXML\EhinicityStage3.xml" />
     <Content Include="SampleXML\Encounter147.xml" />
     <Content Include="SampleXML\Encounter22.xml" />
     <Content Include="SampleXML\Encounter_69.xml" />
+    <Content Include="SampleXML\Encounter_CMS130_CAT1.xml" />
     <Content Include="SampleXML\Encounter_Section_CAT_I_Stage3.xml" />
     <Content Include="SampleXML\Encounter_Section_Mammogram.xml" />
     <Content Include="SampleXML\Encounter_Section_Mammogram.xml.xml" />
@@ -504,11 +517,13 @@
     <Content Include="SampleXML\Influenza_encounter.xml" />
     <Content Include="SampleXML\Intervention.xml" />
     <Content Include="SampleXML\IPPStage3.xml" />
+    <Content Include="SampleXML\Laboratory_Test_CMS130_CATI.xml" />
     <Content Include="SampleXML\LeftMastectomy.xml" />
     <Content Include="SampleXML\MammogramLoinc.xml" />
     <Content Include="SampleXML\MammogramLoinc1.xml" />
     <Content Include="SampleXML\MammogramLoinc2.xml" />
     <Content Include="SampleXML\Medication_Admin_Pneu_Vac_Stage3.xml" />
+    <Content Include="SampleXML\Medication_CMS130_CATI.xml" />
     <Content Include="SampleXML\MentalStatus.xml" />
     <Content Include="SampleXML\NumeratorStage3.xml" />
     <Content Include="SampleXML\OBS_BMI_Cat1_Stag3.xml" />
@@ -526,6 +541,8 @@
     <Content Include="SampleXML\Plan.xml" />
     <Content Include="SampleXML\PreviousRec.xml" />
     <Content Include="SampleXML\ProblemlistNullflavor.xml" />
+    <Content Include="SampleXML\Procedure_Activity_Act_CMS130_CATI.xml" />
+    <Content Include="SampleXML\Procedure_cms130_CATI.xml" />
     <Content Include="SampleXML\QRDAStage3_CAT_III_Header.xml" />
     <Content Include="SampleXML\Race_Stage3.xml" />
     <Content Include="SampleXML\Refusednegation.xml" />
@@ -545,6 +562,7 @@
     <Content Include="SampleXML\Unilateral_Mastectomy.xml" />
     <Content Include="SampleXML\UnspecifiedLateralityMas.xml" />
     <Content Include="SampleXML\XML Master Template_Stage3Measure.xml" />
+    <Content Include="SampleXML\XML Master Template_Stage3Measure_v10.xml" />
     <Content Include="SuperBill_Template\100.jpg" />
     <Content Include="Web.config">
       <SubType>Designer</SubType>

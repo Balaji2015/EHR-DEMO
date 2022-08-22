@@ -16,15 +16,15 @@
 				<templateId extension="2019-12-01" root="2.16.840.1.113883.10.20.24.3.23"/>
 				<id extension="62d91e1adfe4bd7825bd387a" root="1.3.6.1.4.1.115"/>
 				<!-- QDM Attribute: Code -->
-				<code code="" codeSystem="2.16.840.1.113883.6.12" codeSystemName="CPT" displayName=""/>
-					<translation code="" codeSystem="2.16.840.1.113883.6.285" codeSystemName="HCPCS" displayName=""/>
-					<translation code="" codeSystem="2.16.840.1.113883.6.96" codeSystemName="SNOMED" displayName=""/>
+				<code code="{}" codeSystem="2.16.840.1.113883.6.12" codeSystemName="CPT" displayName="{}"/>
+					<translation code="{}" codeSystem="2.16.840.1.113883.6.285" codeSystemName="HCPCS" displayName="{}"/>
+					<translation code="{}" codeSystem="2.16.840.1.113883.6.96" codeSystemName="SNOMED" displayName="{}"/>
 				<text> </text>
 				<statusCode code="completed"/>
 				<!-- QDM Attribute: Relevant Period -->
 				<effectiveTime>
-					<low value=""/>
-					<high value=""/>
+					<low value="{}"/>
+					<high value="{}"/>
 				</effectiveTime>
 					<!-- Encounter Diagnosis -->
 					<entryRelationship>
@@ -33,7 +33,7 @@
 						 <code code="29308-4" codeSystem="2.16.840.1.113883.6.1" codeSystemName="LOINC"	displayName="DIAGNOSIS" />
 						 <statusCode code="active" />
 						 <effectiveTime>
-							<low value="" />
+							<low value="{}" />
 						 </effectiveTime>
 						 <!-- Problem Observation -->
 						 <entryRelationship typeCode="SUBJ">
@@ -49,14 +49,14 @@
 							 <effectiveTime>
 							 <!-- The low value reflects the date of onset -->
 							 <!-- Based on patient symptoms, presumed onset is July 3, 2013 -->
-								<low value="" />
+								<low value="{}" />
 							 <!-- The high value reflects when the problem was known to be resolved -->
 							 <!-- Based on signs and symptoms, appears to be resolved on Aug 14, 2013 -->
-								<high value="" />
+								<high value="{}" />
 							 </effectiveTime>
 							 <!-- Problem -->
-							 <value xsi:type="CD" code="" codeSystemName="SNOMED" codeSystem="2.16.840.1.113883.6.96" displayName="" >								
-								<translation code="" codeSystem="2.16.840.1.113883.6.90" codeSystemName="ICD10CM" displayName=""/>
+							 <value xsi:type="CD" code="{}" codeSystemName="SNOMED" codeSystem="2.16.840.1.113883.6.96" displayName="{}" >								
+								<translation code="{}" codeSystem="2.16.840.1.113883.6.90" codeSystemName="ICD10CM" displayName="{}"/>
 							 </value>
 							</observation>
 						 </entryRelationship>
