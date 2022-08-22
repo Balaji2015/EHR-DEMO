@@ -546,6 +546,7 @@ namespace Acurus.Capella.UI
             dt.Columns.Add("Denominator Exception", typeof(string));
             dt.Columns.Add("Numerator Human Id", typeof(string));
             dt.Columns.Add("Denominator Human Id", typeof(string));
+            dt.Columns.Add("Numerator Exclusion", typeof(string));
             for (int i = 0; i < PQRI_lst.Count; i++)
             {
                 DataRow dr = dt.NewRow();
@@ -571,6 +572,7 @@ namespace Acurus.Capella.UI
                     dr["Denominator Human Id"] = String.Join(",", PQRI_lst[i].ICDCPTDenominatorList.Select(a => a[1]).Distinct().ToArray());
                 else
                     dr["Denominator Human Id"] = 0;
+                dr["Numerator Exclusion"] = PQRI_lst[i].NumeratorExclusion;
                 dt.Rows.Add(dr);
 
                 string temp = "";

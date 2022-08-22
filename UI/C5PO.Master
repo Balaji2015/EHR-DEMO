@@ -1001,7 +1001,7 @@ filter:progid:DXImageTransform.Microsoft.Blur(PixelRadius='4');
                                                <%-- <li runat="server" id="mnuReports_smnuEHRMeasureCalculation"><a href="#" onclick="OpenModal('EHR Measure Calculation');">EHR Measure Calculation</a></li>--%>
                                                 <li runat="server" id="mnuReports_smnuReportGenerator"><a href="#" onclick="OpenModal('Report Generator');">Report Generator</a></li>
                                                 <li runat="server" id="mnuReports_smnuPatientList"><a href="#" onclick="OpenModal('Patient List');">Patient List</a></li>
-                                                <li runat="server" id="mnuReports_smnuPQRIMeasureCalculation"><a href="#" onclick="OpenModal('PQRI Measure');">PQRI Measure</a></li>
+                                                <li runat="server" id="mnuReports_smnuPQRIMeasureCalculation"><a href="#" onclick="OpenModal('PQRI Measure');">Clinical Quality Measure</a></li>
                                                 <li runat="server" id="mnuReports_smnuConfidentialMorbidityReport"><a href="#" onclick="OpenModal('Confidential Morbidity Report');">Confidential Morbidity Report</a></li>
                                                 <li runat="server" id="mnuReports_smnuPatientReminderReport"><a href="#" onclick="OpenModal('Patient Reminder Report');">Patient Reminder Report</a></li>
                                             </ul>

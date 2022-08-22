@@ -315,6 +315,13 @@
                                             <HeaderStyle Width="80px" />
                                             <ItemStyle Width="80px" HorizontalAlign="Center" />
                                         </telerik:GridBoundColumn>
+
+                                        <telerik:GridBoundColumn DataField="Numerator Exclusion" FilterControlAltText="Filter NumeratorExclusion column"
+                                            HeaderText="Numerator Exclusion" UniqueName="NumeratorExclusion">
+                                            <HeaderStyle Width="80px" />
+                                            <ItemStyle Width="80px" HorizontalAlign="Center" />
+                                        </telerik:GridBoundColumn>
+
                                         <telerik:GridBoundColumn DataField="Rate" FilterControlAltText="Filter Rate column"
                                             HeaderText="Rate" UniqueName="Rate">
                                             <HeaderStyle Width="80px" />

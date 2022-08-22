@@ -32,6 +32,7 @@ namespace Acurus.Capella.Core.DomainObjects
         private IList<string[]> _ICDCPTDenominatorExclusionList = null;
         private int _Measurement_Year = 0;
         private int _CQM_Summary_ID = 0;
+        private string _NumeratorExclusion = string.Empty;
 
         #endregion
 
@@ -59,6 +60,7 @@ namespace Acurus.Capella.Core.DomainObjects
             sb.Append(_CQM_Summary_ID);
 
             sb.Append(_Measurement_Year);
+            sb.Append(_NumeratorExclusion);
 
             return sb.ToString().GetHashCode();
         }
@@ -190,6 +192,13 @@ namespace Acurus.Capella.Core.DomainObjects
         {
             get { return _CQM_Summary_ID; }
             set { _CQM_Summary_ID = value; }
+        }
+
+        [DataMember]
+        public virtual string NumeratorExclusion
+        {
+            get { return _NumeratorExclusion; }
+            set { _NumeratorExclusion = value; }
         }
 
         #endregion
