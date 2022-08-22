@@ -860,6 +860,14 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
             //ToProcess = wfList.Where(a => a.Fac_Name == WFobj.Fac_Name && a.Obj_Type == WFobj.Obj_Type && a.Obj_Sub_Type == WFobj.Obj_Sub_Type && a.From_Process == WFobj.Current_Process && a.Close_Type == iCloseType && a.Doc_Type == WFobj.Doc_Type && a.Doc_Sub_Type == WFobj.Doc_Sub_Type).ToList()[0].To_Process;
             //Commented for Performance Tuning - To Reduce Memmory Usage --//BugID:53695 
             // var objWorkflow = wfList.Where(a => a.Fac_Name == WFobj.Fac_Name && a.Obj_Type == WFobj.Obj_Type && a.Obj_Sub_Type == WFobj.Obj_Sub_Type && a.From_Process == WFobj.Current_Process && a.Close_Type == iCloseType && a.Doc_Type == WFobj.Doc_Type && a.Doc_Sub_Type == WFobj.Doc_Sub_Type).ToList();
+            
+            //To move the DIAGNOSTIC_RESULT with Facility_Name as ALL
+            if (WFobj.Fac_Name == "ALL")
+            {
+                var objWorkflowType = NHibernateSessionUtility.Instance.MyWorkFlowTypeMasterList.ToList();
+
+                WorkFlowType = objWorkflowType[0].Workflow_Type;
+            }
             IList<FacilityLibrary> FacList = NHibernateSessionUtility.Instance.MyFacilityList.Where(a => a.Fac_Name == WFobj.Fac_Name).ToList();
 
             if (FacList.Count > 0)
@@ -883,7 +891,7 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
                     WorkFlowType = objWorkflowType[0].Workflow_Type;
                 }
             }
-            
+
             //var objWorkflow = NHibernateSessionUtility.Instance.MyWorkFlowList.Where(a => a.Fac_Name == WFobj.Fac_Name && a.Obj_Type == WFobj.Obj_Type && a.Obj_Sub_Type == WFobj.Obj_Sub_Type && a.From_Process == WFobj.Current_Process && a.Close_Type == iCloseType && a.Doc_Type == WFobj.Doc_Type && a.Doc_Sub_Type == WFobj.Doc_Sub_Type).ToList();
             //if (objWorkflow.Count() > 0)m 
             //    ToProcess = ((WorkFlow)objWorkflow[0]).To_Process;
@@ -897,7 +905,7 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
             {
                 //throw new Exception("To Process is not found from the Workflow Table");
                 if (WFobj.Id != 0)
-                    throw new Exception("To Process is not found -" + WFobj.Fac_Name + " -" + WFobj.Id.ToString() + " _" + iCloseType.ToString() + " -" + WFobj.Obj_Type + " -" + WFobj.Obj_Sub_Type + " -" + WFobj.Current_Process);
+                    throw new Exception("To Process is not found -" + WorkFlowType + " -" + WFobj.Id.ToString() + " _" + iCloseType.ToString() + " -" + WFobj.Obj_Type + " -" + WFobj.Obj_Sub_Type + " -" + WFobj.Current_Process);
                 else
                 {
                     throw new Exception("Please report this to the support team and process the next file [No Record found for ObjectSystemID:" + uObjSystemId.ToString() + " and ObjType:" + ObjType + "with current process:" + WFobj.Current_Process + " and close type:" + iCloseType.ToString() + "]");//BugID:54697
