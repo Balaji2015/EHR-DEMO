@@ -868,6 +868,7 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
 
                 WorkFlowType = objWorkflowType[0].Workflow_Type;
             }
+
             IList<FacilityLibrary> FacList = NHibernateSessionUtility.Instance.MyFacilityList.Where(a => a.Fac_Name == WFobj.Fac_Name).ToList();
 
             if (FacList.Count > 0)
