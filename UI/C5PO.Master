@@ -573,6 +573,14 @@
             cursor: pointer;
         }
 
+        .fixed-div {
+       position: fixed;
+    overflow: hidden;
+        width: 950px;
+        height: 650px;
+}
+
+
         body.modal-open .container{
     -webkit-filter: blur(4px);
     -moz-filter: blur(4px);
@@ -1801,9 +1809,10 @@ filter:progid:DXImageTransform.Microsoft.Blur(PixelRadius='4');
             </div>
         </div>
 
-        
-        <div id="QRCodeInfo" class="modal" style="vertical-align: middle;padding-left: 40%;padding-top: 7%;">
-            <div class="modal-content" id="QRCodeContent" style="width: 33%; height: 67%;vertical-align:middle;">
+       
+       <div id="QRCodeInfo" class="modal" aria-hidden="true" style="vertical-align: middle;padding-left: 40%;padding-top: 7%;">
+           <div class="fixed-div">
+                 <div class="modal-content" id="QRCodeContent" style="width: 33%; height: 67%;vertical-align:middle;">
                 <div class="modal-header" style="padding-top: 5px;">
                    <h4></h4>
                      <h4 class="modal-title" id="QRCodeHeader" style="font-size: 14px!important;font-weight: bold;"></h4>
@@ -1813,11 +1822,10 @@ filter:progid:DXImageTransform.Microsoft.Blur(PixelRadius='4');
                      <input type="button" class="btn btn-danger" id="btnCloseQRCode" value="Close" onclick="CloseQRCodeModal();" style="float: right!important; padding: 4px 7px 4px 7px!important;" />
                     <h4></h4>
                 </div>
-             
-           </div>
-               
+                    
+               </div>
+               </div>
         </div>
-
 
         <div id="divNotifyPullUp" onclick="PullUpNotification();" data-toggle="tooltip" title="Notification Summary" style="display: none;">
             <%--<span class="glyphicon glyphicon-bell" style="font-size: 30px;top: 21%;left: 18%;"></span>--%>

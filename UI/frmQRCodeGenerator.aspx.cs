@@ -21,7 +21,7 @@ namespace Acurus.Capella.UI
             Human objFillHuman = new Human();
             XmlTextReader XmlText = null;
             XmlDocument itemDoc = new XmlDocument();
-             XmlNodeList xmlTagName = null;
+            XmlNodeList xmlTagName = null;
 
             if (ClientSession.HumanId != 0)
             {
@@ -90,7 +90,7 @@ namespace Acurus.Capella.UI
 
             var lstPatient = new
             {
-                id = ClientSession.HumanId,
+                id = "" + ClientSession.HumanId.ToString() + "",
                 dob = objFillHuman.Birth_Date,
                 firstName = objFillHuman.First_Name,
                 lastName = objFillHuman.Last_Name,
@@ -99,14 +99,14 @@ namespace Acurus.Capella.UI
 
             var lstPhysician = new
             {
-                id = ClientSession.PhysicianId,
+                id = "" + ClientSession.PhysicianId + "",
                 firstName = sPhyFirstName,
                 lastName = sPhyLastName,
             };
 
             var lstEncounter = new
             {
-                id = ClientSession.EncounterId,
+                id = "" + ClientSession.EncounterId + "",
                 dateOfService = UtilityManager.ConvertToLocal(ClientSession.FillEncounterandWFObject.EncRecord.Date_of_Service).ToString("MM/dd/yyyy"),
             };
 
@@ -119,12 +119,12 @@ namespace Acurus.Capella.UI
             };
 
             string code = JsonConvert.SerializeObject(lstFinalResult, Newtonsoft.Json.Formatting.Indented);
-           
+
             QRCoder.QRCodeGenerator qrGenerator = new QRCoder.QRCodeGenerator();
             QRCodeData qrCodeData = null;
-           
+
             qrCodeData = qrGenerator.CreateQrCode(code, QRCoder.QRCodeGenerator.ECCLevel.Q);
-            
+
             QRCode qrCode = new QRCode(qrCodeData);
             System.Web.UI.WebControls.Image imgBarCode = new System.Web.UI.WebControls.Image();
             imgBarCode.Height = 250;
