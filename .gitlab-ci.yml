@@ -61,6 +61,9 @@ Deploy Test Job:
   - echo "Deployee WC..Start.."
   - xcopy /y /s "E:\Deployee\builds\Capella_publish\*.*" "E:\Acurus_Web\capella_hca_project\capella_wc\"
   - echo "Deployee WC..Completed.."
+  - echo "Deployee CQM..Start.."
+  - xcopy /y /s "E:\Deployee\builds\Capella_publish\*.*" "E:\Acurus_Web\capella_cmg_project\capella_cmg_ehr_cqm\"
+  - echo "Deployee CQM..Completed.."
 
 
 build Production Job:   
