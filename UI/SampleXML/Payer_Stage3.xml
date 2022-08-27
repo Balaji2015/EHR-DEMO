@@ -12,11 +12,11 @@
 		  <id nullFlavor="NA" />
 		  <code code="48768-6" displayName="Payment source" codeSystem="2.16.840.1.113883.6.1" codeSystemName="SNOMED-CT" />
 		  <statusCode code="completed" />
-		  <!--value xsi:type="CD" nullFlavor="OTH"-->
+		  <value xsi:type="CD" nullFlavor="OTH">
 		  <!--Acurus- Bring in the Payer Code of the Primary payer group identified that is received as a unique-->
-		  <!--translation code="" displayName="" codeSystem="2.16.840.1.113883.3.249.12" codeSystemName="CMS Clinical Codes"/-->
-		  <!--/value-->
-		  <value xsi:type="CD" code="" displayName="" codeSystem="2.16.840.1.113883.3.221.5" codeSystemName="Source of Payment Typology" />
+			<translation code="" displayName="" codeSystem="2.16.840.1.113883.3.249.12" codeSystemName="CMS Clinical Codes"/>
+		  </value>
+		  <!--<value xsi:type="CD" code="" displayName="" codeSystem="2.16.840.1.113883.3.221.5" codeSystemName="Source of Payment Typology" />-->
 		  <entryRelationship typeCode="SUBJ" inversionInd="true">
 			<!--Aggregate Count (CMS EP)-->
 			<observation classCode="OBS" moodCode="EVN">

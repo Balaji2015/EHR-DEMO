@@ -23,7 +23,14 @@
           <id root="2.16.840.1.113883.3.560.101.2" extension="138"/>
           <code code="57024-2" displayName="Health Quality Measure Document" codeSystemName="LOINC" codeSystem="2.16.840.1.113883.6.1" />
           <!-- This is the title of the eMeasure -->
-          <text>Preventive Care and Screening: Tobacco Use: Screening and Cessation Intervention</text>
+          <text>
+			  Percentage of patients aged 18 years and older who were screened for tobacco use one or more times during the measurement period AND who received tobacco cessation intervention if identified as a tobacco user
+
+			  Three rates are reported:
+			  a. Percentage of patients aged 18 years and older who were screened for tobacco use one or more times during the measurement period
+			  b. Percentage of patients aged 18 years and older who were identified as a tobacco user who received tobacco cessation intervention
+			  c. Percentage of patients aged 18 years and older who were screened for tobacco use one or more times during the measurement period AND who received tobacco cessation intervention if identified as a tobacco user
+		  </text>
           <!-- SHOULD: setId is the eMeasure version neutral id  -->
           <setId root="E35791DF-5B25-41BB-B260-673337BC44A8"/>
           <!-- This is the sequential eMeasure Version number -->
@@ -59,7 +66,7 @@
               <!-- The externalObservationID contains the ID of the
 numerator in the referenced eMeasure. -->
               <id root="9D92F4D0-8B7D-480C-BAF0-4B2774BEC1EE"/>
-              <code code="NUMER1" displayName="Numerator1"
+              <code code="NUMER" displayName="Numerator"
               codeSystem="2.16.840.1.113883.5.4"
               codeSystemName="ObservationValue"/>
             </externalObservation>

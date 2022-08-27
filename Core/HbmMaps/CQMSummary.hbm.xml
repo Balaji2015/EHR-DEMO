@@ -1,0 +1,21 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<hibernate-mapping xmlns="urn:nhibernate-mapping-2.2" namespace="Acurus.Capella.Core.DomainObjects" assembly="Acurus.Capella">
+	<class name="Acurus.Capella.Core.DomainObjects.CQMSummary, Acurus.Capella.Core" table="cqm_summary" lazy="true">
+		<id name="Id" column="CQM_Summary_ID">
+			<generator class="identity" />
+		</id>
+		<property name="Measurement_Year" column="Measurement_Year" />
+		<property name="Measurement_No" column="Measurement_No" />
+		<property name="Measurement_Name" column="Measurement_Name" />
+		<property name="Initial_Population" column="Initial_Population" />
+		<property name="Denominator" column="Denominator" />
+		<property name="Denominator_Exclusion" column="Denominator_Exclusion" />
+		<property name="Denominator_Exception" column="Denominator_Exception" />
+		<property name="Numerator" column="Numerator" />
+		<property name="Numerator_Exclusion" column="Numerator_Exclusion" />
+		<property name="Rate" column="Rate" />
+		<property name="Legal_Org" column="Legal_Org" />
+		<property name="Physician_ID" column="Physician_ID" />
+
+	</class>
+</hibernate-mapping>

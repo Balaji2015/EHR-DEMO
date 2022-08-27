@@ -1,0 +1,54 @@
+			
+			<ClinicalDocument xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+ xmlns="urn:hl7-org:v3"
+ xmlns:voc="urn:hl7-org:v3/voc"
+ xmlns:sdtc="urn:hl7-org:sdtc">
+			<entry>
+              <!--Medication Order -->
+              <substanceAdministration classCode="SBADM" moodCode="RQO" negationInd="true">
+                <templateId root="2.16.840.1.113883.10.20.22.4.42" extension="2014-06-09"/>
+                <!-- Medication, Order template -->
+                <templateId root="2.16.840.1.113883.10.20.24.3.47" extension="2019-12-01"/>
+                <id root="1.3.6.1.4.1.115" extension="62c58be4dfe4bd1c44f59987"/>
+                <text></text>
+                <statusCode code="active"/>
+                  <!-- QDM Attribute: Relevant Period -->
+                  <effectiveTime xsi:type="IVL_TS"><low value='20200407083000'/><high nullFlavor='UNK'/></effectiveTime>
+                <!--  QDM Attribute: Frequency -->
+                <effectiveTime xsi:type="PIVL_TS" institutionSpecified="true" operator="A">
+                  <period nullFlavor="NA"/>
+                </effectiveTime>
+                <!--  QDM Attribute: Refills -->
+                <repeatNumber nullFlavor="NA"/>
+                <!--  QDM Attribute: Dosage -->
+                <doseQuantity nullFlavor="NA"/>
+                <consumable>
+                  <manufacturedProduct classCode="MANU">
+                    <!-- Medication Information (consolidation) template -->
+                    <templateId root="2.16.840.1.113883.10.20.22.4.23" extension="2014-06-09"/>
+                    <id root="894816b0-df61-013a-2493-0eca209bc306"/>
+                    <manufacturedMaterial>
+                      <!--  QDM Attribute: Code -->
+                        <code code="854228" codeSystem="2.16.840.1.113883.6.88" codeSystemName="RXNORM"/>
+                    </manufacturedMaterial>
+                  </manufacturedProduct>
+                </consumable>
+                  <!-- QDM Attribute: Author dateTime -->
+                  <author>
+                    <templateId root="2.16.840.1.113883.10.20.24.3.155" extension="2019-12-01"/>
+                    <time value=""/>
+                    <assignedAuthor>
+                            <id nullFlavor="NA"/>
+                    </assignedAuthor>
+                  </author>                  <!-- QDM Attribute: Negation Rationale -->
+                  <entryRelationship typeCode="RSON">
+                    <observation classCode="OBS" moodCode="EVN">
+                      <templateId root="2.16.840.1.113883.10.20.24.3.88" extension="2017-08-01"/>
+                      <code code="77301-0" codeSystem="2.16.840.1.113883.6.1" displayName="reason" codeSystemName="LOINC"/>
+                      <effectiveTime><low value="{}"/><high nullFlavor='UNK'/></effectiveTime>
+                      <value code="{}" codeSystem="2.16.840.1.113883.6.96" codeSystemName="SNOMEDCT" xsi:type="CD"/>
+                    </observation>
+                  </entryRelationship>
+			  </substanceAdministration>
+            </entry>
+			</ClinicalDocument>

@@ -178,6 +178,7 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
                     objPQRI.ICDCPTDenominatorList = icdcptListDenominator;
                     objPQRI.ICDCPTDenominatorExclusionList = icdcptListDenominatorExclusion;
                     objPQRI.ICDCPTDenominatorExceptionList = icdcptListDenominatorException;
+
                     ilstPQRI.Add(objPQRI);
 
                    

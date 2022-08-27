@@ -134,7 +134,7 @@
           <id root="2.16.840.1.113883.4.6" extension="" />
           <representedOrganization>
             <!-- This is the organization TIN -->
-            <id root="2.16.840.1.113883.4.2" extension="954292715" />
+            <id root="2.16.840.1.113883.4.2" extension="954292617" />
             <!--Acurus - TIN of Chapparal MEdical Group-->
             <!-- This is the organization CCN -->
             <!--This is available only for hospitals

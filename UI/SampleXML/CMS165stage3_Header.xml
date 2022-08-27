@@ -45,7 +45,7 @@
         <observation classCode="OBS" moodCode="EVN">
           <!-- Performance Rate for Proportion Measure (CMS EP) template ID -->
           <templateId root="2.16.840.1.113883.10.20.27.3.14" extension="2016-09-01" />
-          <templateId root="2.16.840.1.113883.10.20.27.3.25" extension="2016-11-01"/>
+          <templateId root="2.16.840.1.113883.10.20.27.3.25" extension="2019-05-01"/>
           <templateId root="2.16.840.1.113883.10.20.27.3.30" extension="2016-09-01" />
           <code code="72510-1" codeSystem="2.16.840.1.113883.6.1"
           displayName="Performance Rate"

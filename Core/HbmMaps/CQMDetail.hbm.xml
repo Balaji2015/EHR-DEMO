@@ -1,0 +1,18 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<hibernate-mapping xmlns="urn:nhibernate-mapping-2.2" namespace="Acurus.Capella.Core.DomainObjects" assembly="Acurus.Capella">
+	<class name="Acurus.Capella.Core.DomainObjects.CQMDetail, Acurus.Capella.Core" table="cqm_detail" lazy="true">
+		<id name="Id" column="CQM_Detail_ID">
+			<generator class="identity" />
+		</id>
+		<property name="CQM_Summary_ID" column="CQM_Summary_ID" />
+		<property name="Population_Set" column="Population_Set" />
+		<property name="Human_ID" column="Human_ID" />
+		<property name="Encounter_ID" column="Encounter_ID" />
+		<property name="ICD" column="ICD" />
+		<property name="Procedure_Code" column="Procedure_Code" />
+		<property name="Snomed_Code" column="Snomed_Code" />
+		<property name="Loinc_Code" column="Loinc_Code" />
+		<property name="Loinc_Identifier" column="Loinc_Identifier" />
+		<property name="Documented_Date_Time" column="Documented_Date_Time" />
+	</class>
+</hibernate-mapping>

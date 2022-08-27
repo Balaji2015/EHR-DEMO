@@ -1,3 +1,8 @@
+
+<ClinicalDocument xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+ xmlns="urn:hl7-org:v3"
+ xmlns:voc="urn:hl7-org:v3/voc"
+ xmlns:sdtc="urn:hl7-org:sdtc">
 <ClinicalDocument xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
  xmlns="urn:hl7-org:v3"
  xmlns:voc="urn:hl7-org:v3/voc"
@@ -12,13 +17,13 @@
 		<text> </text>
 		<statusCode code="completed"/>
 		<effectiveTime>
-			<low value=""/>
-			<high value=""/>
+			<low value="{}"/>
+			<high value="{}"/>
 		</effectiveTime>
 		<!-- QDM Attribute: Author dateTime -->
 		<author>
 			<templateId root="2.16.840.1.113883.10.20.24.3.155" extension="2019-12-01"/>
-			<time value=""/>
+			<time value="{}"/>
 			<assignedAuthor>
 				<id nullFlavor="NA"/>
 			</assignedAuthor>
@@ -26,3 +31,4 @@
 	</act>
 </entry>
 </ClinicalDocument>
+

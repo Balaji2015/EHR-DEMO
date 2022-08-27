@@ -193,7 +193,7 @@ namespace Acurus.Capella.UI
                     chkProviderName.Visible = true;
                     cboProviderName.Enabled = true;
                 }
-                dtpToDate.SelectedDate = DateTime.Now;
+                dtpToDate.SelectedDate = Convert.ToDateTime(DateTime.Now.Year.ToString() + "-12-31");
                 dtpFromDate.SelectedDate = Convert.ToDateTime(DateTime.Now.Year.ToString() + "-01-01");
             }
         }
@@ -445,8 +445,8 @@ namespace Acurus.Capella.UI
                     resultNumeratorDto.ProcedureCode = NumeratorList[k][3].ToString();
                     resultNumeratorDto.Value = NumeratorList[k][6].ToString();
                     resultNumeratorDto.LoincIdentifier = NumeratorList[k][5].ToString();
-                   // if (NumeratorList[k][4] != "")
-                      //  resultNumeratorDto.ResultDateandTime = Convert.ToDateTime(NumeratorList[k][4].ToString());
+                    // if (NumeratorList[k][4] != "")
+                    //  resultNumeratorDto.ResultDateandTime = Convert.ToDateTime(NumeratorList[k][4].ToString());
                     resultNumeratorDto.MeasureNo = NumeratorList[k][7].ToString();
                     resultNumeratorDto.NDCID = NumeratorList[k][8].ToString();
                     resultNumeratorDto.Recodes = NumeratorList[k][9].ToString();
@@ -547,10 +547,12 @@ namespace Acurus.Capella.UI
             dt.Columns.Add("Numerator Human Id", typeof(string));
             dt.Columns.Add("Denominator Human Id", typeof(string));
             dt.Columns.Add("Numerator Exclusion", typeof(string));
+
+            //int iCMS138Count = 1;
             for (int i = 0; i < PQRI_lst.Count; i++)
             {
                 DataRow dr = dt.NewRow();
-                dr["Measure Name"] = PQRI_lst[i].Measurement_No;
+                dr["Measure Name"] = PQRI_lst[i].Measurement_No.Replace("_Population1", "").Replace("_Population2", "").Replace("_Population3", "");
                 dr["Measure in Detail"] = PQRI_lst[i].Measurement_Name;
                 dr["Numerator"] = PQRI_lst[i].Numerator;
                 dr["Denominator"] = PQRI_lst[i].Denominator;
@@ -558,7 +560,17 @@ namespace Acurus.Capella.UI
                 dr["Rate Required"] = PQRI_lst[i].RequiredPercentage;
                 dr["Cleared"] = PQRI_lst[i].Cleared;
                 if (!PQRI_lst[i].Measurement_No.Contains("("))
+                {
+                    //if (PQRI_lst[i].Measurement_No.Contains("CMS138"))
+                    //{
+                    //    DCQM.Add(PQRI_lst[i].Measurement_No.Trim()+"_"+ iCMS138Count.ToString(), (PQRI_lst[i].Percentage.Trim() == string.Empty) ? "0" : PQRI_lst[i].Percentage.Trim());
+                    //    iCMS138Count = iCMS138Count + 1;
+                    //}
+                    //else
+                    //{
                     DCQM.Add(PQRI_lst[i].Measurement_No.Trim(), (PQRI_lst[i].Percentage.Trim() == string.Empty) ? "0" : PQRI_lst[i].Percentage.Trim());
+                    //}
+                }
                 //if (DCQM.Any(a => a.Key.Contains(PQRI_lst[i].Measure_No.Trim())&&a.Key.Contains(".")))
                 //    DsubCQM.Add(PQRI_lst[i].Measure_No.Trim(), PQRI_lst[i].Measure_No.Trim());//PQRI_lst[i].Measure_No.Trim().Contains(".") ? PQRI_lst[i].Measure_No.Trim().Substring(0, PQRI_lst[i].Measure_No.Trim().Length - PQRI_lst[i].Measure_No.Trim().IndexOf(".")) : PQRI_lst[i].Measure_No.Trim());
                 dr["Initial Patient Population"] = PQRI_lst[i].InitialPatientPopulation;
@@ -1585,12 +1597,39 @@ namespace Acurus.Capella.UI
             StringBuilder cms69 = MeasureHeaderCount(NumeratorList69, DenmoniatorList69, DE69List, DEX69List, "b6ac13e2-beb8-4e4f-94ed-fcc397406cd1");
 
 
-            IList<ulong> NumeratorList138 = PQRIDTO.Where(a => a.MeasureNo == "CMS138N").Select(a => a.HumanID).Distinct().ToList<ulong>();
-            IList<ulong> DenmoniatorList138 = PQRIDTO.Where(a => a.MeasureNo == "CMS138D").Select(a => a.HumanID).Distinct().ToList<ulong>();
-            IList<ulong> DE138List = PQRIDTO.Where(a => a.MeasureNo == "CMS69.1DE").Select(a => a.HumanID).ToList<ulong>();
-            IList<ulong> DEX138List = PQRIDTO.Where(a => a.MeasureNo == "CMS138DEX").Select(a => a.HumanID).ToList<ulong>();
-            sbLoad.Append(SubXMLLoadForCQMIIIstage3("CMS138_v10_CAT_III_Header.xml", DenmoniatorList138, NumeratorList138, DE138List, DEX138List, DCQM["CMS138v10"], "CMS138v10", null).ToString());
-            StringBuilder cms138 = MeasureHeaderCount(NumeratorList138, DenmoniatorList138, DE138List, DEX138List, "E35791DF-5B25-41BB-B260-673337BC44A6");
+            IList<ulong> NumeratorList138_Population1 = PQRIDTO.Where(a => a.MeasureNo == "CMS138_Population1N").Select(a => a.HumanID).Distinct().ToList<ulong>();
+            IList<ulong> DenmoniatorList138_Population1 = PQRIDTO.Where(a => a.MeasureNo == "CMS138_Population1D").Select(a => a.HumanID).Distinct().ToList<ulong>();
+            //IList<ulong> DE138List = PQRIDTO.Where(a => a.MeasureNo == "CMS69.1DE").Select(a => a.HumanID).ToList<ulong>();
+            IList<ulong> DE138List_Population1 = PQRIDTO.Where(a => a.MeasureNo == "CMS138_Population1DE").Select(a => a.HumanID).ToList<ulong>();
+            IList<ulong> DEX138List_Population1 = PQRIDTO.Where(a => a.MeasureNo == "CMS138_Population1DEX").Select(a => a.HumanID).ToList<ulong>();
+             StringBuilder cms138_Population1 = MeasureHeaderCount(NumeratorList138_Population1, DenmoniatorList138_Population1, DE138List_Population1, DEX138List_Population1, "E35791DF-5B25-41BB-B260-673337BC44A6");
+
+            IList<ulong> NumeratorList138_Population2 = PQRIDTO.Where(a => a.MeasureNo == "CMS138_Population2N").Select(a => a.HumanID).Distinct().ToList<ulong>();
+            IList<ulong> DenmoniatorList138_Population2 = PQRIDTO.Where(a => a.MeasureNo == "CMS138_Population2D").Select(a => a.HumanID).Distinct().ToList<ulong>();
+            //IList<ulong> DE138List = PQRIDTO.Where(a => a.MeasureNo == "CMS69.1DE").Select(a => a.HumanID).ToList<ulong>();
+            IList<ulong> DE138List_Population2 = PQRIDTO.Where(a => a.MeasureNo == "CMS138_Population2DE").Select(a => a.HumanID).ToList<ulong>();
+            IList<ulong> DEX138List_Population2 = PQRIDTO.Where(a => a.MeasureNo == "CMS138_Population2DEX").Select(a => a.HumanID).ToList<ulong>();
+           // sbLoad.Append(SubXMLLoadForCQMIIIstage3("CMS138_v10_CAT_III_Header.xml", DenmoniatorList138_Population2, NumeratorList138_Population2, DE138List_Population2, DEX138List_Population2, DCQM["CMS138v10_Population2"], "CMS138v10_Population2", null).ToString());
+          //  StringBuilder cms138_Population2 = MeasureHeaderCount(NumeratorList138_Population2, DenmoniatorList138_Population2, DE138List_Population2, DEX138List_Population2, "E35791DF-5B25-41BB-B260-673337BC44A6");
+
+            IList<ulong> NumeratorList138_Population3 = PQRIDTO.Where(a => a.MeasureNo == "CMS138_Population3N").Select(a => a.HumanID).Distinct().ToList<ulong>();
+            IList<ulong> DenmoniatorList138_Population3 = PQRIDTO.Where(a => a.MeasureNo == "CMS138_Population3D").Select(a => a.HumanID).Distinct().ToList<ulong>();
+            //IList<ulong> DE138List = PQRIDTO.Where(a => a.MeasureNo == "CMS69.1DE").Select(a => a.HumanID).ToList<ulong>();
+            IList<ulong> DE138List_Population3 = PQRIDTO.Where(a => a.MeasureNo == "CMS138_Population3DE").Select(a => a.HumanID).ToList<ulong>();
+            IList<ulong> DEX138List_Population3 = PQRIDTO.Where(a => a.MeasureNo == "CMS138_Population3DEX").Select(a => a.HumanID).ToList<ulong>();
+
+
+
+            sbLoad.Append(SubXMLLoadForCQMIIItobaccostage3("CMS138_v10_CAT_III_Header.xml", DenmoniatorList138_Population1,
+                NumeratorList138_Population1, DE138List_Population1, DEX138List_Population1,
+                DCQM["CMS138v10_Population1"], "CMS138v10_Population1",
+                DenmoniatorList138_Population2, NumeratorList138_Population2, DE138List_Population2, DEX138List_Population2, DCQM["CMS138v10_Population2"], 
+                "CMS138v10_Population2", DenmoniatorList138_Population3, NumeratorList138_Population3, DE138List_Population3, DEX138List_Population3,
+                DCQM["CMS138v10_Population3"], "CMS138v10_Population3", null).ToString());
+
+
+            // sbLoad.Append(SubXMLLoadForCQMIIIstage3("CMS138_v10_CAT_III_Header.xml", DenmoniatorList138_Population3, NumeratorList138_Population3, DE138List_Population3, DEX138List_Population3, DCQM["CMS138v10_Population3"], "CMS138v10_Population3", null).ToString());
+            // StringBuilder cms138_Population3 = MeasureHeaderCount(NumeratorList138_Population3, DenmoniatorList138_Population3, DE138List_Population3, DEX138List_Population3, "E35791DF-5B25-41BB-B260-673337BC44A6");
 
             IList<ulong> NumeratorList127 = PQRIDTO.Where(a => a.MeasureNo == "CMS127N").Select(a => a.HumanID).Distinct().ToList<ulong>();
             IList<ulong> DenmoniatorList127 = PQRIDTO.Where(a => a.MeasureNo == "CMS127D").Select(a => a.HumanID).Distinct().ToList<ulong>();
@@ -1775,8 +1814,8 @@ namespace Acurus.Capella.UI
             xmlReqNode = xmlDoc.GetElementsByTagName("textcountVaccine");
             xmlReqNode[0].InnerXml = cms127.ToString();
 
-            xmlReqNode = xmlDoc.GetElementsByTagName("textcountobacco");
-            xmlReqNode[0].InnerXml = cms138.ToString();
+            //xmlReqNode = xmlDoc.GetElementsByTagName("textcountobacco");
+            //xmlReqNode[0].InnerXml = cms138_Population1.ToString();
 
             xmlReqNode = xmlDoc.GetElementsByTagName("textcountBP");
             xmlReqNode[0].InnerXml = cms165.ToString();
@@ -2243,6 +2282,711 @@ namespace Acurus.Capella.UI
         }
 
 
+        public StringBuilder SubXMLLoadForCQMIIItobaccostage3(string MeasureName, IList<ulong> DLst, IList<ulong> NLst,
+            IList<ulong> DELst, IList<ulong> DEXLst, string CQMPercentage, string CMSName, IList<ulong> DLst1, IList<ulong> NLst1,
+            IList<ulong> DELst1, IList<ulong> DEXLst1, string CQMPercentage1, string CMSName1, IList<ulong> DLst2, IList<ulong> NLst2,
+            IList<ulong> DELst2, IList<ulong> DEXLst2, string CQMPercentage2, string CMSName2,
+            Dictionary<string, int[]> DLst155)
+        {
+            XmlDocument xmlDoc = new XmlDocument();
+            XmlNodeList xmlReqNode = null;
+            xmlDoc.Load(HttpContext.Current.Server.MapPath("SampleXML" + "\\" + MeasureName));
+
+            //DirectoryInfo objdirect = new DirectoryInfo(Server.MapPath("Documents/" + Session.SessionID));
+            //if (!objdirect.Exists)
+            //    objdirect.Create();
+
+            PQRI_DataManager objPQRI_DataManager = new PQRI_DataManager();
+
+            IList<PQRI_Data> resultlst = objPQRI_DataManager.GetPQRIListByStandardConceptAndPQRIType("REFERENCE OBS ROOT ID_STAGE3", CMSName.Replace("_Population1", "").Replace("_Population2", "").Replace("_Population3", ""));
+            string RootID = string.Empty;
+
+
+            StringBuilder objMeasuresb = new StringBuilder();
+            var xDox = new XDocument();
+
+
+            //IntialPopulation
+
+            StringBuilder objIPPsb = new StringBuilder();
+            xDox = XDocument.Load(HttpContext.Current.Server.MapPath("SampleXML" + "\\IPPStage3.xml"));
+            objIPPsb = new StringBuilder(xDox.ToString());
+            objIPPsb.Remove(0, 157);
+            objIPPsb.Remove(objIPPsb.Length - 20, 20);
+            RootID = resultlst.Where(a => a.PQRI_Calculation_Method.Trim() == "IPOP").ToList<PQRI_Data>()[0].PQRI_Value;
+            if (DLst.Union(DEXLst).Union(DELst).ToList<ulong>().Count != 0)
+            {
+
+                objIPPsb.Insert(objIPPsb.ToString().IndexOf("value=") + 7, DLst.Union(DEXLst).Union(DELst).ToList<ulong>().Count);
+
+
+                // objIPPsb.Insert(objIPPsb.ToString().IndexOf("extension=") + 11, System.DateTime.Now.ToString("yyyy-MM-dd"));
+                //  objIPPsb.Insert(objIPPsb.ToString().IndexOf("root=") + 6, RootID);
+                //objIPPsb.Insert(objIPPsb.ToString().IndexOf("<TextIPP>") + 9, "Method Returns");
+                objIPPsb.Insert(objIPPsb.ToString().IndexOf("<TextIPP>") + 9, IPPAndDenametorLoadStage3(DLst.Union(DEXLst).Union(DELst).ToList<ulong>(), RootID, CMSName).ToString());
+
+                //if (CMSName.StartsWith("CMS155"))
+                //{
+                //    objIPPsb.Insert(objIPPsb.ToString().IndexOf("</TextIPP>") + 10, Load155SubXml(DLst155["CMS155(12-17)"][1], DLst155["CMS155(3-11)"][1], RootID).ToString());
+                //}
+
+                objMeasuresb.Append(objIPPsb.ToString().Replace("<TextIPP>", "").Replace("</TextIPP>", ""));
+
+
+
+            }
+            else
+            {
+
+                //RootID = resultlst.Where(a => a.NQF_Number.Trim() == "IPP").ToList<PQRI_Data>()[0].PQRI_Value;
+                objIPPsb.Insert(objIPPsb.ToString().IndexOf("value=") + 7, "0");
+                // objIPPsb.Replace(@"value=""", @"nullFlavor=""NA""");
+                // objIPPsb.Insert(objIPPsb.ToString().IndexOf("extension=") + 11, System.DateTime.Now.ToString("yyyy-MM-dd"));
+                //objIPPsb.Insert(objIPPsb.ToString().IndexOf("root=") + 6, RootID);
+                objIPPsb.Insert(objIPPsb.ToString().IndexOf("<TextIPP>") + 9, CATIIILoadForEmptyXMLStage3(RootID, CMSName).ToString());
+                //if (CMSName.StartsWith("CMS155"))
+                //{
+                //    objIPPsb.Insert(objIPPsb.ToString().IndexOf("</TextIPP>") + 10, Load155SubXml(DLst155["CMS155(12-17)"][1], DLst155["CMS155(3-11)"][1], RootID).ToString());
+                //}
+
+                objMeasuresb.Append(objIPPsb.ToString().Replace("<TextIPP>", "").Replace("</TextIPP>", ""));
+            }
+
+
+            // Denominator
+
+            StringBuilder objDenominatorsb = new StringBuilder();
+            xDox = XDocument.Load(HttpContext.Current.Server.MapPath("SampleXML" + "\\DenominatorStage3.xml"));
+            objDenominatorsb = new StringBuilder(xDox.ToString());
+            objDenominatorsb.Remove(0, 157);
+            objDenominatorsb.Remove(objDenominatorsb.Length - 20, 20);
+            RootID = resultlst.Where(a => a.PQRI_Calculation_Method.Trim() == "DENOM").ToList<PQRI_Data>()[0].PQRI_Value;
+            if (DLst.Count != 0)
+            {
+
+                objDenominatorsb.Insert(objDenominatorsb.ToString().IndexOf("value=") + 7, DLst.Count);
+                // objDenominatorsb.Insert(objDenominatorsb.ToString().IndexOf("extension=") + 11, System.DateTime.Now.ToString("yyyy-MM-dd"));
+                //   objDenominatorsb.Insert(objIPPsb.ToString().IndexOf("root=") + 6, RootID);
+                objDenominatorsb.Insert(objDenominatorsb.ToString().IndexOf("<TextDenominator>") + 17, IPPAndDenametorLoadStage3(DLst, RootID, CMSName).ToString());
+                //if (CMSName.StartsWith("CMS155"))
+                //    objDenominatorsb.Insert(objDenominatorsb.ToString().IndexOf("</TextDenominator>") + 18, Load155SubXml(DLst155["CMS155(12-17)"][1], DLst155["CMS155(3-11)"][1], RootID).ToString());
+
+                objMeasuresb.Append(objDenominatorsb.ToString().Replace("<TextDenominator>", "").Replace("</TextDenominator>", ""));
+            }
+            else
+            {
+                //objDenominatorsb.Replace(@"value=""", @"nullFlavor=""NA""");
+                objDenominatorsb.Insert(objDenominatorsb.ToString().IndexOf("value=") + 7, "0");
+                //objDenominatorsb.Insert(objDenominatorsb.ToString().IndexOf("extension=") + 11, System.DateTime.Now.ToString("yyyy-MM-dd"));
+                //  objDenominatorsb.Insert(objIPPsb.ToString().IndexOf("root=") + 6, RootID);
+                objDenominatorsb.Insert(objDenominatorsb.ToString().IndexOf("<TextDenominator>") + 17, CATIIILoadForEmptyXMLStage3(RootID, CMSName).ToString());
+                //if (CMSName.StartsWith("CMS155"))
+                //    objDenominatorsb.Insert(objDenominatorsb.ToString().IndexOf("</TextDenominator>") + 18, Load155SubXml(DLst155["CMS155(12-17)"][1], DLst155["CMS155(3-11)"][1], RootID).ToString());
+
+                objMeasuresb.Append(objDenominatorsb.ToString().Replace("<TextDenominator>", "").Replace("</TextDenominator>", ""));
+            }
+
+
+            //Numerator
+
+            StringBuilder objNumeratorsb = new StringBuilder();
+            xDox = XDocument.Load(HttpContext.Current.Server.MapPath("SampleXML" + "\\NumeratorStage3.xml"));
+            objNumeratorsb = new StringBuilder(xDox.ToString());
+            objNumeratorsb.Remove(0, 157);
+            objNumeratorsb.Remove(objNumeratorsb.Length - 20, 20);
+
+            RootID = resultlst.Where(a => a.PQRI_Calculation_Method.Trim() == "NUMER").ToList<PQRI_Data>()[0].PQRI_Value;
+            if (NLst.Count != 0)
+            {
+                objNumeratorsb.Insert(objNumeratorsb.ToString().IndexOf("value=") + 7, NLst.Count);
+                //  objNumeratorsb.Insert(objNumeratorsb.ToString().IndexOf("extension=") + 11, System.DateTime.Now.ToString("yyyy-MM-dd"));
+                //  objNumeratorsb.Insert(objIPPsb.ToString().IndexOf("root=") + 6, RootID);
+                objNumeratorsb.Insert(objNumeratorsb.ToString().IndexOf("<TextNumerator>") + 15, IPPAndDenametorLoadStage3(NLst, RootID, CMSName).ToString());
+                //if (CMSName.StartsWith("CMS155"))
+                //    objNumeratorsb.Insert(objNumeratorsb.ToString().IndexOf("</TextNumerator>") + 16, Load155SubXml(DLst155["CMS155(12-17)"][0], DLst155["CMS155(3-11)"][0], RootID).ToString());
+
+                objMeasuresb.Append(objNumeratorsb.ToString().Replace("<TextNumerator>", "").Replace("</TextNumerator>", ""));
+            }
+            else
+            {
+                // objNumeratorsb.Replace(@"value=""", @"nullFlavor=""NA""");
+                objNumeratorsb.Insert(objNumeratorsb.ToString().IndexOf("value=") + 7, "0");
+                // objNumeratorsb.Insert(objNumeratorsb.ToString().IndexOf("extension=") + 11, System.DateTime.Now.ToString("yyyy-MM-dd"));
+                // objNumeratorsb.Insert(objIPPsb.ToString().IndexOf("root=") + 6, RootID);
+                objNumeratorsb.Insert(objNumeratorsb.ToString().IndexOf("<TextNumerator>") + 15, CATIIILoadForEmptyXMLStage3(RootID, CMSName).ToString());
+                //if (CMSName.StartsWith("CMS155"))
+                //    objNumeratorsb.Insert(objNumeratorsb.ToString().IndexOf("</TextNumerator>") + 16, Load155SubXml(DLst155["CMS155(12-17)"][0], DLst155["CMS155(3-11)"][0], RootID).ToString());
+
+                objMeasuresb.Append(objNumeratorsb.ToString().Replace("<TextNumerator>", "").Replace("</TextNumerator>", ""));
+            }
+
+
+            //Exclusion
+            if (resultlst.Where(a => a.PQRI_Calculation_Method.Trim() == "DENEX").ToList<PQRI_Data>().Count > 0)
+            {
+                RootID = resultlst.Where(a => a.PQRI_Calculation_Method.Trim() == "DENEX").ToList<PQRI_Data>()[0].PQRI_Value;
+
+                StringBuilder objDEsb = new StringBuilder();
+                xDox = XDocument.Load(HttpContext.Current.Server.MapPath("SampleXML" + "\\Denominator_ExclusionStage3.xml"));
+                objDEsb = new StringBuilder(xDox.ToString());
+                objDEsb.Remove(0, 157);
+                objDEsb.Remove(objDEsb.Length - 20, 20);
+
+
+                if (DELst.Count != 0)
+                {
+                    objDEsb.Insert(objDEsb.ToString().IndexOf("value=") + 7, DELst.Count);
+                    //   objDEsb.Insert(objDEsb.ToString().IndexOf("extension=") + 11, System.DateTime.Now.ToString("yyyy-MM-dd"));
+                    //objDEsb.Insert(objIPPsb.ToString().IndexOf("root=") + 6, RootID);
+                    objDEsb.Insert(objDEsb.ToString().IndexOf("<TextDenominatorExclusion>") + 26, IPPAndDenametorLoadStage3(DELst, RootID, CMSName).ToString());
+                    //if (CMSName.StartsWith("CMS155"))
+                    //    objDEsb.Insert(objDEsb.ToString().IndexOf("</TextDenominatorExclusion>") + 27, Load155SubXml(DLst155["CMS155(12-17)"][2], DLst155["CMS155(3-11)"][2], RootID).ToString());
+
+                    objMeasuresb.Append(objDEsb.ToString().Replace("<TextDenominatorExclusion>", "").Replace("</TextDenominatorExclusion>", ""));
+                }
+                else
+                {
+                    if (RootID.Trim() != string.Empty)
+                    {
+                        //objDEsb.Replace(@"value=""", @"nullFlavor=""NA""");
+                        objDEsb.Insert(objDEsb.ToString().IndexOf("value=") + 7, "0");
+                        // objDEsb.Insert(objDEsb.ToString().IndexOf("extension=") + 11, System.DateTime.Now.ToString("yyyy-MM-dd"));
+                        //  objDEsb.Insert(objIPPsb.ToString().IndexOf("root=") + 6, RootID);
+                        objDEsb.Insert(objDEsb.ToString().IndexOf("<TextDenominatorExclusion>") + 26, CATIIILoadForEmptyXMLStage3(RootID, CMSName).ToString());
+                        //if (CMSName.StartsWith("CMS155"))
+                        //    objDEsb.Insert(objDEsb.ToString().IndexOf("</TextDenominatorExclusion>") + 27, Load155SubXml(DLst155["CMS155(12-17)"][2], DLst155["CMS155(3-11)"][2], RootID).ToString());
+
+                        objMeasuresb.Append(objDEsb.ToString().Replace("<TextDenominatorExclusion>", "").Replace("</TextDenominatorExclusion>", ""));
+                    }
+                }
+            }
+
+            //Exception
+            if (resultlst.Where(a => a.PQRI_Calculation_Method.Trim() == "DENEXCEP").ToList<PQRI_Data>().Count > 0)
+            {
+                RootID = resultlst.Where(a => a.PQRI_Calculation_Method.Trim() == "DENEXCEP").ToList<PQRI_Data>()[0].PQRI_Value;
+
+                StringBuilder objDEXsb = new StringBuilder();
+                xDox = XDocument.Load(HttpContext.Current.Server.MapPath("SampleXML" + "\\Denominator_ExceptionStage3.xml"));
+                objDEXsb = new StringBuilder(xDox.ToString());
+                objDEXsb.Remove(0, 157);
+                objDEXsb.Remove(objDEXsb.Length - 20, 20);
+
+                if (DEXLst.Count != 0)
+                {
+                    objDEXsb.Insert(objDEXsb.ToString().IndexOf("value=") + 7, DEXLst.Count);
+                    // objDEXsb.Insert(objDEXsb.ToString().IndexOf("extension=") + 11, System.DateTime.Now.ToString("yyyy-MM-dd"));
+                    //objDEsb.Insert(objIPPsb.ToString().IndexOf("root=") + 6, RootID);
+                    objDEXsb.Insert(objDEXsb.ToString().IndexOf("<TextDenominatorException>") + 26, IPPAndDenametorLoadStage3(DEXLst, RootID, CMSName).ToString());
+                    //if (CMSName.StartsWith("CMS155"))
+                    //    objDEsb.Insert(objDEsb.ToString().IndexOf("</TextDenominatorExclusion>") + 27, Load155SubXml(DLst155["CMS155(12-17)"][2], DLst155["CMS155(3-11)"][2], RootID).ToString());
+
+                    objMeasuresb.Append(objDEXsb.ToString().Replace("<TextDenominatorException>", "").Replace("</TextDenominatorException>", ""));
+                }
+                else
+                {
+
+
+
+
+
+                    if (RootID.Trim() != string.Empty)
+                    {
+                        // objDEXsb.Replace(@"value=""", @"nullFlavor=""NA""");
+                        objDEXsb.Insert(objDEXsb.ToString().IndexOf("value=") + 7, "0");
+                        // objDEXsb.Insert(objDEXsb.ToString().IndexOf("extension=") + 11, System.DateTime.Now.ToString("yyyy-MM-dd"));
+                        //  objDEsb.Insert(objIPPsb.ToString().IndexOf("root=") + 6, RootID);
+                        objDEXsb.Insert(objDEXsb.ToString().IndexOf("<TextDenominatorException>") + 26, CATIIILoadForEmptyXMLStage3(RootID, CMSName).ToString());
+                        //if (CMSName.StartsWith("CMS155"))
+                        //    objDEsb.Insert(objDEsb.ToString().IndexOf("</TextDenominatorExclusion>") + 27, Load155SubXml(DLst155["CMS155(12-17)"][2], DLst155["CMS155(3-11)"][2], RootID).ToString());
+
+                        objMeasuresb.Append(objDEXsb.ToString().Replace("<TextDenominatorException>", "").Replace("</TextDenominatorException>", ""));
+                    }
+                }
+            }
+
+
+
+
+            xmlReqNode = xmlDoc.GetElementsByTagName("value");
+
+            if (DLst.Union(DEXLst).Union(DELst).ToList<ulong>().Count != 0)
+                xmlReqNode[0].Attributes[1].Value = CQMPercentage;
+            else
+            {
+                xmlReqNode[0].Attributes.RemoveAll();
+                XmlAttribute xAttribute = xmlReqNode[0].OwnerDocument.CreateAttribute("xsi", "type", "http://www.w3.org/2001/XMLSchema-instance");
+                xAttribute.Value = "REAL";
+                xmlReqNode[0].Attributes.Append(xAttribute);
+                XmlAttribute xAttributenull = xmlReqNode[0].OwnerDocument.CreateAttribute("nullFlavor");
+                xAttributenull.Value = "NA";
+                xmlReqNode[0].Attributes.Append(xAttributenull);
+            }
+            
+
+
+
+
+
+
+
+
+
+            //IntialPopulation
+
+            objIPPsb = new StringBuilder();
+            xDox = XDocument.Load(HttpContext.Current.Server.MapPath("SampleXML" + "\\IPPStage3.xml"));
+            objIPPsb = new StringBuilder(xDox.ToString());
+            objIPPsb.Remove(0, 157);
+            objIPPsb.Remove(objIPPsb.Length - 20, 20);
+            RootID = resultlst.Where(a => a.PQRI_Calculation_Method.Trim() == "IPOP").ToList<PQRI_Data>()[0].PQRI_Value;
+            if (DLst1.Union(DEXLst1).Union(DELst1).ToList<ulong>().Count != 0)
+            {
+
+                objIPPsb.Insert(objIPPsb.ToString().IndexOf("value=") + 7, DLst1.Union(DEXLst1).Union(DELst1).ToList<ulong>().Count);
+
+
+                // objIPPsb.Insert(objIPPsb.ToString().IndexOf("extension=") + 11, System.DateTime.Now.ToString("yyyy-MM-dd"));
+                //  objIPPsb.Insert(objIPPsb.ToString().IndexOf("root=") + 6, RootID);
+                //objIPPsb.Insert(objIPPsb.ToString().IndexOf("<TextIPP>") + 9, "Method Returns");
+                objIPPsb.Insert(objIPPsb.ToString().IndexOf("<TextIPP>") + 9, IPPAndDenametorLoadStage3(DLst1.Union(DEXLst1).Union(DELst1).ToList<ulong>(), RootID, CMSName1).ToString());
+
+                //if (CMSName.StartsWith("CMS155"))
+                //{
+                //    objIPPsb.Insert(objIPPsb.ToString().IndexOf("</TextIPP>") + 10, Load155SubXml(DLst155["CMS155(12-17)"][1], DLst155["CMS155(3-11)"][1], RootID).ToString());
+                //}
+
+                objMeasuresb.Append(objIPPsb.ToString().Replace("<TextIPP>", "").Replace("</TextIPP>", ""));
+
+
+
+            }
+            else
+            {
+
+                //RootID = resultlst.Where(a => a.NQF_Number.Trim() == "IPP").ToList<PQRI_Data>()[0].PQRI_Value;
+                objIPPsb.Insert(objIPPsb.ToString().IndexOf("value=") + 7, "0");
+                // objIPPsb.Replace(@"value=""", @"nullFlavor=""NA""");
+                // objIPPsb.Insert(objIPPsb.ToString().IndexOf("extension=") + 11, System.DateTime.Now.ToString("yyyy-MM-dd"));
+                //objIPPsb.Insert(objIPPsb.ToString().IndexOf("root=") + 6, RootID);
+                objIPPsb.Insert(objIPPsb.ToString().IndexOf("<TextIPP>") + 9, CATIIILoadForEmptyXMLStage3(RootID, CMSName1).ToString());
+                //if (CMSName.StartsWith("CMS155"))
+                //{
+                //    objIPPsb.Insert(objIPPsb.ToString().IndexOf("</TextIPP>") + 10, Load155SubXml(DLst155["CMS155(12-17)"][1], DLst155["CMS155(3-11)"][1], RootID).ToString());
+                //}
+
+                objMeasuresb.Append(objIPPsb.ToString().Replace("<TextIPP>", "").Replace("</TextIPP>", ""));
+            }
+
+
+            // Denominator
+
+            objDenominatorsb = new StringBuilder();
+            xDox = XDocument.Load(HttpContext.Current.Server.MapPath("SampleXML" + "\\DenominatorStage3.xml"));
+            objDenominatorsb = new StringBuilder(xDox.ToString());
+            objDenominatorsb.Remove(0, 157);
+            objDenominatorsb.Remove(objDenominatorsb.Length - 20, 20);
+            RootID = resultlst.Where(a => a.PQRI_Calculation_Method.Trim() == "DENOM").ToList<PQRI_Data>()[0].PQRI_Value;
+            if (DLst1.Count != 0)
+            {
+
+                objDenominatorsb.Insert(objDenominatorsb.ToString().IndexOf("value=") + 7, DLst1.Count);
+                // objDenominatorsb.Insert(objDenominatorsb.ToString().IndexOf("extension=") + 11, System.DateTime.Now.ToString("yyyy-MM-dd"));
+                //   objDenominatorsb.Insert(objIPPsb.ToString().IndexOf("root=") + 6, RootID);
+                objDenominatorsb.Insert(objDenominatorsb.ToString().IndexOf("<TextDenominator>") + 17, IPPAndDenametorLoadStage3(DLst, RootID, CMSName).ToString());
+                //if (CMSName.StartsWith("CMS155"))
+                //    objDenominatorsb.Insert(objDenominatorsb.ToString().IndexOf("</TextDenominator>") + 18, Load155SubXml(DLst155["CMS155(12-17)"][1], DLst155["CMS155(3-11)"][1], RootID).ToString());
+
+                objMeasuresb.Append(objDenominatorsb.ToString().Replace("<TextDenominator>", "").Replace("</TextDenominator>", ""));
+            }
+            else
+            {
+                //objDenominatorsb.Replace(@"value=""", @"nullFlavor=""NA""");
+                objDenominatorsb.Insert(objDenominatorsb.ToString().IndexOf("value=") + 7, "0");
+                //objDenominatorsb.Insert(objDenominatorsb.ToString().IndexOf("extension=") + 11, System.DateTime.Now.ToString("yyyy-MM-dd"));
+                //  objDenominatorsb.Insert(objIPPsb.ToString().IndexOf("root=") + 6, RootID);
+                objDenominatorsb.Insert(objDenominatorsb.ToString().IndexOf("<TextDenominator>") + 17, CATIIILoadForEmptyXMLStage3(RootID, CMSName).ToString());
+                //if (CMSName.StartsWith("CMS155"))
+                //    objDenominatorsb.Insert(objDenominatorsb.ToString().IndexOf("</TextDenominator>") + 18, Load155SubXml(DLst155["CMS155(12-17)"][1], DLst155["CMS155(3-11)"][1], RootID).ToString());
+
+                objMeasuresb.Append(objDenominatorsb.ToString().Replace("<TextDenominator>", "").Replace("</TextDenominator>", ""));
+            }
+
+
+            //Numerator
+
+            objNumeratorsb = new StringBuilder();
+            xDox = XDocument.Load(HttpContext.Current.Server.MapPath("SampleXML" + "\\NumeratorStage3.xml"));
+            objNumeratorsb = new StringBuilder(xDox.ToString());
+            objNumeratorsb.Remove(0, 157);
+            objNumeratorsb.Remove(objNumeratorsb.Length - 20, 20);
+
+            RootID = resultlst.Where(a => a.PQRI_Calculation_Method.Trim() == "NUMER").ToList<PQRI_Data>()[0].PQRI_Value;
+            if (NLst1.Count != 0)
+            {
+                objNumeratorsb.Insert(objNumeratorsb.ToString().IndexOf("value=") + 7, NLst1.Count);
+                //  objNumeratorsb.Insert(objNumeratorsb.ToString().IndexOf("extension=") + 11, System.DateTime.Now.ToString("yyyy-MM-dd"));
+                //  objNumeratorsb.Insert(objIPPsb.ToString().IndexOf("root=") + 6, RootID);
+                objNumeratorsb.Insert(objNumeratorsb.ToString().IndexOf("<TextNumerator>") + 15, IPPAndDenametorLoadStage3(NLst, RootID, CMSName).ToString());
+                //if (CMSName.StartsWith("CMS155"))
+                //    objNumeratorsb.Insert(objNumeratorsb.ToString().IndexOf("</TextNumerator>") + 16, Load155SubXml(DLst155["CMS155(12-17)"][0], DLst155["CMS155(3-11)"][0], RootID).ToString());
+
+                objMeasuresb.Append(objNumeratorsb.ToString().Replace("<TextNumerator>", "").Replace("</TextNumerator>", ""));
+            }
+            else
+            {
+                // objNumeratorsb.Replace(@"value=""", @"nullFlavor=""NA""");
+                objNumeratorsb.Insert(objNumeratorsb.ToString().IndexOf("value=") + 7, "0");
+                // objNumeratorsb.Insert(objNumeratorsb.ToString().IndexOf("extension=") + 11, System.DateTime.Now.ToString("yyyy-MM-dd"));
+                // objNumeratorsb.Insert(objIPPsb.ToString().IndexOf("root=") + 6, RootID);
+                objNumeratorsb.Insert(objNumeratorsb.ToString().IndexOf("<TextNumerator>") + 15, CATIIILoadForEmptyXMLStage3(RootID, CMSName).ToString());
+                //if (CMSName.StartsWith("CMS155"))
+                //    objNumeratorsb.Insert(objNumeratorsb.ToString().IndexOf("</TextNumerator>") + 16, Load155SubXml(DLst155["CMS155(12-17)"][0], DLst155["CMS155(3-11)"][0], RootID).ToString());
+
+                objMeasuresb.Append(objNumeratorsb.ToString().Replace("<TextNumerator>", "").Replace("</TextNumerator>", ""));
+            }
+
+
+            //Exclusion
+            if (resultlst.Where(a => a.PQRI_Calculation_Method.Trim() == "DENEX").ToList<PQRI_Data>().Count > 0)
+            {
+                RootID = resultlst.Where(a => a.PQRI_Calculation_Method.Trim() == "DENEX").ToList<PQRI_Data>()[0].PQRI_Value;
+
+                StringBuilder objDEsb = new StringBuilder();
+                xDox = XDocument.Load(HttpContext.Current.Server.MapPath("SampleXML" + "\\Denominator_ExclusionStage3.xml"));
+                objDEsb = new StringBuilder(xDox.ToString());
+                objDEsb.Remove(0, 157);
+                objDEsb.Remove(objDEsb.Length - 20, 20);
+
+
+                if (DELst1.Count != 0)
+                {
+                    objDEsb.Insert(objDEsb.ToString().IndexOf("value=") + 7, DELst1.Count);
+                    //   objDEsb.Insert(objDEsb.ToString().IndexOf("extension=") + 11, System.DateTime.Now.ToString("yyyy-MM-dd"));
+                    //objDEsb.Insert(objIPPsb.ToString().IndexOf("root=") + 6, RootID);
+                    objDEsb.Insert(objDEsb.ToString().IndexOf("<TextDenominatorExclusion>") + 26, IPPAndDenametorLoadStage3(DELst, RootID, CMSName).ToString());
+                    //if (CMSName.StartsWith("CMS155"))
+                    //    objDEsb.Insert(objDEsb.ToString().IndexOf("</TextDenominatorExclusion>") + 27, Load155SubXml(DLst155["CMS155(12-17)"][2], DLst155["CMS155(3-11)"][2], RootID).ToString());
+
+                    objMeasuresb.Append(objDEsb.ToString().Replace("<TextDenominatorExclusion>", "").Replace("</TextDenominatorExclusion>", ""));
+                }
+                else
+                {
+                    if (RootID.Trim() != string.Empty)
+                    {
+                        //objDEsb.Replace(@"value=""", @"nullFlavor=""NA""");
+                        objDEsb.Insert(objDEsb.ToString().IndexOf("value=") + 7, "0");
+                        // objDEsb.Insert(objDEsb.ToString().IndexOf("extension=") + 11, System.DateTime.Now.ToString("yyyy-MM-dd"));
+                        //  objDEsb.Insert(objIPPsb.ToString().IndexOf("root=") + 6, RootID);
+                        objDEsb.Insert(objDEsb.ToString().IndexOf("<TextDenominatorExclusion>") + 26, CATIIILoadForEmptyXMLStage3(RootID, CMSName).ToString());
+                        //if (CMSName.StartsWith("CMS155"))
+                        //    objDEsb.Insert(objDEsb.ToString().IndexOf("</TextDenominatorExclusion>") + 27, Load155SubXml(DLst155["CMS155(12-17)"][2], DLst155["CMS155(3-11)"][2], RootID).ToString());
+
+                        objMeasuresb.Append(objDEsb.ToString().Replace("<TextDenominatorExclusion>", "").Replace("</TextDenominatorExclusion>", ""));
+                    }
+                }
+            }
+
+            //Exception
+            if (resultlst.Where(a => a.PQRI_Calculation_Method.Trim() == "DENEXCEP").ToList<PQRI_Data>().Count > 0)
+            {
+                RootID = resultlst.Where(a => a.PQRI_Calculation_Method.Trim() == "DENEXCEP").ToList<PQRI_Data>()[0].PQRI_Value;
+
+                StringBuilder objDEXsb = new StringBuilder();
+                xDox = XDocument.Load(HttpContext.Current.Server.MapPath("SampleXML" + "\\Denominator_ExceptionStage3.xml"));
+                objDEXsb = new StringBuilder(xDox.ToString());
+                objDEXsb.Remove(0, 157);
+                objDEXsb.Remove(objDEXsb.Length - 20, 20);
+
+                if (DEXLst1.Count != 0)
+                {
+                    objDEXsb.Insert(objDEXsb.ToString().IndexOf("value=") + 7, DEXLst1.Count);
+                    // objDEXsb.Insert(objDEXsb.ToString().IndexOf("extension=") + 11, System.DateTime.Now.ToString("yyyy-MM-dd"));
+                    //objDEsb.Insert(objIPPsb.ToString().IndexOf("root=") + 6, RootID);
+                    objDEXsb.Insert(objDEXsb.ToString().IndexOf("<TextDenominatorException>") + 26, IPPAndDenametorLoadStage3(DEXLst, RootID, CMSName).ToString());
+                    //if (CMSName.StartsWith("CMS155"))
+                    //    objDEsb.Insert(objDEsb.ToString().IndexOf("</TextDenominatorExclusion>") + 27, Load155SubXml(DLst155["CMS155(12-17)"][2], DLst155["CMS155(3-11)"][2], RootID).ToString());
+
+                    objMeasuresb.Append(objDEXsb.ToString().Replace("<TextDenominatorException>", "").Replace("</TextDenominatorException>", ""));
+                }
+                else
+                {
+
+
+
+
+
+                    if (RootID.Trim() != string.Empty)
+                    {
+                        // objDEXsb.Replace(@"value=""", @"nullFlavor=""NA""");
+                        objDEXsb.Insert(objDEXsb.ToString().IndexOf("value=") + 7, "0");
+                        // objDEXsb.Insert(objDEXsb.ToString().IndexOf("extension=") + 11, System.DateTime.Now.ToString("yyyy-MM-dd"));
+                        //  objDEsb.Insert(objIPPsb.ToString().IndexOf("root=") + 6, RootID);
+                        objDEXsb.Insert(objDEXsb.ToString().IndexOf("<TextDenominatorException>") + 26, CATIIILoadForEmptyXMLStage3(RootID, CMSName).ToString());
+                        //if (CMSName.StartsWith("CMS155"))
+                        //    objDEsb.Insert(objDEsb.ToString().IndexOf("</TextDenominatorExclusion>") + 27, Load155SubXml(DLst155["CMS155(12-17)"][2], DLst155["CMS155(3-11)"][2], RootID).ToString());
+
+                        objMeasuresb.Append(objDEXsb.ToString().Replace("<TextDenominatorException>", "").Replace("</TextDenominatorException>", ""));
+                    }
+                }
+            }
+
+
+
+
+            xmlReqNode = xmlDoc.GetElementsByTagName("value");
+
+            if (DLst1.Union(DEXLst1).Union(DELst1).ToList<ulong>().Count != 0)
+                xmlReqNode[0].Attributes[1].Value = CQMPercentage1;
+            else
+            {
+                xmlReqNode[0].Attributes.RemoveAll();
+                XmlAttribute xAttribute = xmlReqNode[0].OwnerDocument.CreateAttribute("xsi", "type", "http://www.w3.org/2001/XMLSchema-instance");
+                xAttribute.Value = "REAL";
+                xmlReqNode[0].Attributes.Append(xAttribute);
+                XmlAttribute xAttributenull = xmlReqNode[0].OwnerDocument.CreateAttribute("nullFlavor");
+                xAttributenull.Value = "NA";
+                xmlReqNode[0].Attributes.Append(xAttributenull);
+            }
+            //xmlReqNode[0].Attributes[1].re
+
+
+
+
+            //IntialPopulation
+
+            objIPPsb = new StringBuilder();
+            xDox = XDocument.Load(HttpContext.Current.Server.MapPath("SampleXML" + "\\IPPStage3.xml"));
+            objIPPsb = new StringBuilder(xDox.ToString());
+            objIPPsb.Remove(0, 157);
+            objIPPsb.Remove(objIPPsb.Length - 20, 20);
+            RootID = resultlst.Where(a => a.PQRI_Calculation_Method.Trim() == "IPOP").ToList<PQRI_Data>()[0].PQRI_Value;
+            if (DLst2.Union(DEXLst2).Union(DELst2).ToList<ulong>().Count != 0)
+            {
+
+                objIPPsb.Insert(objIPPsb.ToString().IndexOf("value=") + 7, DLst2.Union(DEXLst2).Union(DELst2).ToList<ulong>().Count);
+
+
+                // objIPPsb.Insert(objIPPsb.ToString().IndexOf("extension=") + 11, System.DateTime.Now.ToString("yyyy-MM-dd"));
+                //  objIPPsb.Insert(objIPPsb.ToString().IndexOf("root=") + 6, RootID);
+                //objIPPsb.Insert(objIPPsb.ToString().IndexOf("<TextIPP>") + 9, "Method Returns");
+                objIPPsb.Insert(objIPPsb.ToString().IndexOf("<TextIPP>") + 9, IPPAndDenametorLoadStage3(DLst1.Union(DEXLst1).Union(DELst1).ToList<ulong>(), RootID, CMSName1).ToString());
+
+                //if (CMSName.StartsWith("CMS155"))
+                //{
+                //    objIPPsb.Insert(objIPPsb.ToString().IndexOf("</TextIPP>") + 10, Load155SubXml(DLst155["CMS155(12-17)"][1], DLst155["CMS155(3-11)"][1], RootID).ToString());
+                //}
+
+                objMeasuresb.Append(objIPPsb.ToString().Replace("<TextIPP>", "").Replace("</TextIPP>", ""));
+
+
+
+            }
+            else
+            {
+
+                //RootID = resultlst.Where(a => a.NQF_Number.Trim() == "IPP").ToList<PQRI_Data>()[0].PQRI_Value;
+                objIPPsb.Insert(objIPPsb.ToString().IndexOf("value=") + 7, "0");
+                // objIPPsb.Replace(@"value=""", @"nullFlavor=""NA""");
+                // objIPPsb.Insert(objIPPsb.ToString().IndexOf("extension=") + 11, System.DateTime.Now.ToString("yyyy-MM-dd"));
+                //objIPPsb.Insert(objIPPsb.ToString().IndexOf("root=") + 6, RootID);
+                objIPPsb.Insert(objIPPsb.ToString().IndexOf("<TextIPP>") + 9, CATIIILoadForEmptyXMLStage3(RootID, CMSName1).ToString());
+                //if (CMSName.StartsWith("CMS155"))
+                //{
+                //    objIPPsb.Insert(objIPPsb.ToString().IndexOf("</TextIPP>") + 10, Load155SubXml(DLst155["CMS155(12-17)"][1], DLst155["CMS155(3-11)"][1], RootID).ToString());
+                //}
+
+                objMeasuresb.Append(objIPPsb.ToString().Replace("<TextIPP>", "").Replace("</TextIPP>", ""));
+            }
+
+
+            // Denominator
+
+            objDenominatorsb = new StringBuilder();
+            xDox = XDocument.Load(HttpContext.Current.Server.MapPath("SampleXML" + "\\DenominatorStage3.xml"));
+            objDenominatorsb = new StringBuilder(xDox.ToString());
+            objDenominatorsb.Remove(0, 157);
+            objDenominatorsb.Remove(objDenominatorsb.Length - 20, 20);
+            RootID = resultlst.Where(a => a.PQRI_Calculation_Method.Trim() == "DENOM").ToList<PQRI_Data>()[0].PQRI_Value;
+            if (DLst2.Count != 0)
+            {
+
+                objDenominatorsb.Insert(objDenominatorsb.ToString().IndexOf("value=") + 7, DLst2.Count);
+                // objDenominatorsb.Insert(objDenominatorsb.ToString().IndexOf("extension=") + 11, System.DateTime.Now.ToString("yyyy-MM-dd"));
+                //   objDenominatorsb.Insert(objIPPsb.ToString().IndexOf("root=") + 6, RootID);
+                objDenominatorsb.Insert(objDenominatorsb.ToString().IndexOf("<TextDenominator>") + 17, IPPAndDenametorLoadStage3(DLst, RootID, CMSName).ToString());
+                //if (CMSName.StartsWith("CMS155"))
+                //    objDenominatorsb.Insert(objDenominatorsb.ToString().IndexOf("</TextDenominator>") + 18, Load155SubXml(DLst155["CMS155(12-17)"][1], DLst155["CMS155(3-11)"][1], RootID).ToString());
+
+                objMeasuresb.Append(objDenominatorsb.ToString().Replace("<TextDenominator>", "").Replace("</TextDenominator>", ""));
+            }
+            else
+            {
+                //objDenominatorsb.Replace(@"value=""", @"nullFlavor=""NA""");
+                objDenominatorsb.Insert(objDenominatorsb.ToString().IndexOf("value=") + 7, "0");
+                //objDenominatorsb.Insert(objDenominatorsb.ToString().IndexOf("extension=") + 11, System.DateTime.Now.ToString("yyyy-MM-dd"));
+                //  objDenominatorsb.Insert(objIPPsb.ToString().IndexOf("root=") + 6, RootID);
+                objDenominatorsb.Insert(objDenominatorsb.ToString().IndexOf("<TextDenominator>") + 17, CATIIILoadForEmptyXMLStage3(RootID, CMSName).ToString());
+                //if (CMSName.StartsWith("CMS155"))
+                //    objDenominatorsb.Insert(objDenominatorsb.ToString().IndexOf("</TextDenominator>") + 18, Load155SubXml(DLst155["CMS155(12-17)"][1], DLst155["CMS155(3-11)"][1], RootID).ToString());
+
+                objMeasuresb.Append(objDenominatorsb.ToString().Replace("<TextDenominator>", "").Replace("</TextDenominator>", ""));
+            }
+
+
+            //Numerator
+
+            objNumeratorsb = new StringBuilder();
+            xDox = XDocument.Load(HttpContext.Current.Server.MapPath("SampleXML" + "\\NumeratorStage3.xml"));
+            objNumeratorsb = new StringBuilder(xDox.ToString());
+            objNumeratorsb.Remove(0, 157);
+            objNumeratorsb.Remove(objNumeratorsb.Length - 20, 20);
+
+            RootID = resultlst.Where(a => a.PQRI_Calculation_Method.Trim() == "NUMER").ToList<PQRI_Data>()[0].PQRI_Value;
+            if (NLst2.Count != 0)
+            {
+                objNumeratorsb.Insert(objNumeratorsb.ToString().IndexOf("value=") + 7, NLst2.Count);
+                //  objNumeratorsb.Insert(objNumeratorsb.ToString().IndexOf("extension=") + 11, System.DateTime.Now.ToString("yyyy-MM-dd"));
+                //  objNumeratorsb.Insert(objIPPsb.ToString().IndexOf("root=") + 6, RootID);
+                objNumeratorsb.Insert(objNumeratorsb.ToString().IndexOf("<TextNumerator>") + 15, IPPAndDenametorLoadStage3(NLst, RootID, CMSName).ToString());
+                //if (CMSName.StartsWith("CMS155"))
+                //    objNumeratorsb.Insert(objNumeratorsb.ToString().IndexOf("</TextNumerator>") + 16, Load155SubXml(DLst155["CMS155(12-17)"][0], DLst155["CMS155(3-11)"][0], RootID).ToString());
+
+                objMeasuresb.Append(objNumeratorsb.ToString().Replace("<TextNumerator>", "").Replace("</TextNumerator>", ""));
+            }
+            else
+            {
+                // objNumeratorsb.Replace(@"value=""", @"nullFlavor=""NA""");
+                objNumeratorsb.Insert(objNumeratorsb.ToString().IndexOf("value=") + 7, "0");
+                // objNumeratorsb.Insert(objNumeratorsb.ToString().IndexOf("extension=") + 11, System.DateTime.Now.ToString("yyyy-MM-dd"));
+                // objNumeratorsb.Insert(objIPPsb.ToString().IndexOf("root=") + 6, RootID);
+                objNumeratorsb.Insert(objNumeratorsb.ToString().IndexOf("<TextNumerator>") + 15, CATIIILoadForEmptyXMLStage3(RootID, CMSName).ToString());
+                //if (CMSName.StartsWith("CMS155"))
+                //    objNumeratorsb.Insert(objNumeratorsb.ToString().IndexOf("</TextNumerator>") + 16, Load155SubXml(DLst155["CMS155(12-17)"][0], DLst155["CMS155(3-11)"][0], RootID).ToString());
+
+                objMeasuresb.Append(objNumeratorsb.ToString().Replace("<TextNumerator>", "").Replace("</TextNumerator>", ""));
+            }
+
+
+            //Exclusion
+            if (resultlst.Where(a => a.PQRI_Calculation_Method.Trim() == "DENEX").ToList<PQRI_Data>().Count > 0)
+            {
+                RootID = resultlst.Where(a => a.PQRI_Calculation_Method.Trim() == "DENEX").ToList<PQRI_Data>()[0].PQRI_Value;
+
+                StringBuilder objDEsb = new StringBuilder();
+                xDox = XDocument.Load(HttpContext.Current.Server.MapPath("SampleXML" + "\\Denominator_ExclusionStage3.xml"));
+                objDEsb = new StringBuilder(xDox.ToString());
+                objDEsb.Remove(0, 157);
+                objDEsb.Remove(objDEsb.Length - 20, 20);
+
+
+                if (DELst2.Count != 0)
+                {
+                    objDEsb.Insert(objDEsb.ToString().IndexOf("value=") + 7, DELst2.Count);
+                    //   objDEsb.Insert(objDEsb.ToString().IndexOf("extension=") + 11, System.DateTime.Now.ToString("yyyy-MM-dd"));
+                    //objDEsb.Insert(objIPPsb.ToString().IndexOf("root=") + 6, RootID);
+                    objDEsb.Insert(objDEsb.ToString().IndexOf("<TextDenominatorExclusion>") + 26, IPPAndDenametorLoadStage3(DELst, RootID, CMSName).ToString());
+                    //if (CMSName.StartsWith("CMS155"))
+                    //    objDEsb.Insert(objDEsb.ToString().IndexOf("</TextDenominatorExclusion>") + 27, Load155SubXml(DLst155["CMS155(12-17)"][2], DLst155["CMS155(3-11)"][2], RootID).ToString());
+
+                    objMeasuresb.Append(objDEsb.ToString().Replace("<TextDenominatorExclusion>", "").Replace("</TextDenominatorExclusion>", ""));
+                }
+                else
+                {
+                    if (RootID.Trim() != string.Empty)
+                    {
+                        //objDEsb.Replace(@"value=""", @"nullFlavor=""NA""");
+                        objDEsb.Insert(objDEsb.ToString().IndexOf("value=") + 7, "0");
+                        // objDEsb.Insert(objDEsb.ToString().IndexOf("extension=") + 11, System.DateTime.Now.ToString("yyyy-MM-dd"));
+                        //  objDEsb.Insert(objIPPsb.ToString().IndexOf("root=") + 6, RootID);
+                        objDEsb.Insert(objDEsb.ToString().IndexOf("<TextDenominatorExclusion>") + 26, CATIIILoadForEmptyXMLStage3(RootID, CMSName).ToString());
+                        //if (CMSName.StartsWith("CMS155"))
+                        //    objDEsb.Insert(objDEsb.ToString().IndexOf("</TextDenominatorExclusion>") + 27, Load155SubXml(DLst155["CMS155(12-17)"][2], DLst155["CMS155(3-11)"][2], RootID).ToString());
+
+                        objMeasuresb.Append(objDEsb.ToString().Replace("<TextDenominatorExclusion>", "").Replace("</TextDenominatorExclusion>", ""));
+                    }
+                }
+            }
+
+            //Exception
+            if (resultlst.Where(a => a.PQRI_Calculation_Method.Trim() == "DENEXCEP").ToList<PQRI_Data>().Count > 0)
+            {
+                RootID = resultlst.Where(a => a.PQRI_Calculation_Method.Trim() == "DENEXCEP").ToList<PQRI_Data>()[0].PQRI_Value;
+
+                StringBuilder objDEXsb = new StringBuilder();
+                xDox = XDocument.Load(HttpContext.Current.Server.MapPath("SampleXML" + "\\Denominator_ExceptionStage3.xml"));
+                objDEXsb = new StringBuilder(xDox.ToString());
+                objDEXsb.Remove(0, 157);
+                objDEXsb.Remove(objDEXsb.Length - 20, 20);
+
+                if (DEXLst2.Count != 0)
+                {
+                    objDEXsb.Insert(objDEXsb.ToString().IndexOf("value=") + 7, DEXLst2.Count);
+                    // objDEXsb.Insert(objDEXsb.ToString().IndexOf("extension=") + 11, System.DateTime.Now.ToString("yyyy-MM-dd"));
+                    //objDEsb.Insert(objIPPsb.ToString().IndexOf("root=") + 6, RootID);
+                    objDEXsb.Insert(objDEXsb.ToString().IndexOf("<TextDenominatorException>") + 26, IPPAndDenametorLoadStage3(DEXLst, RootID, CMSName).ToString());
+                    //if (CMSName.StartsWith("CMS155"))
+                    //    objDEsb.Insert(objDEsb.ToString().IndexOf("</TextDenominatorExclusion>") + 27, Load155SubXml(DLst155["CMS155(12-17)"][2], DLst155["CMS155(3-11)"][2], RootID).ToString());
+
+                    objMeasuresb.Append(objDEXsb.ToString().Replace("<TextDenominatorException>", "").Replace("</TextDenominatorException>", ""));
+                }
+                else
+                {
+
+
+
+
+
+                    if (RootID.Trim() != string.Empty)
+                    {
+                        // objDEXsb.Replace(@"value=""", @"nullFlavor=""NA""");
+                        objDEXsb.Insert(objDEXsb.ToString().IndexOf("value=") + 7, "0");
+                        // objDEXsb.Insert(objDEXsb.ToString().IndexOf("extension=") + 11, System.DateTime.Now.ToString("yyyy-MM-dd"));
+                        //  objDEsb.Insert(objIPPsb.ToString().IndexOf("root=") + 6, RootID);
+                        objDEXsb.Insert(objDEXsb.ToString().IndexOf("<TextDenominatorException>") + 26, CATIIILoadForEmptyXMLStage3(RootID, CMSName).ToString());
+                        //if (CMSName.StartsWith("CMS155"))
+                        //    objDEsb.Insert(objDEsb.ToString().IndexOf("</TextDenominatorExclusion>") + 27, Load155SubXml(DLst155["CMS155(12-17)"][2], DLst155["CMS155(3-11)"][2], RootID).ToString());
+
+                        objMeasuresb.Append(objDEXsb.ToString().Replace("<TextDenominatorException>", "").Replace("</TextDenominatorException>", ""));
+                    }
+                }
+            }
+
+
+
+
+            xmlReqNode = xmlDoc.GetElementsByTagName("value");
+
+            if (DLst2.Union(DEXLst2).Union(DELst2).ToList<ulong>().Count != 0)
+                xmlReqNode[0].Attributes[1].Value = CQMPercentage2;
+            else
+            {
+                xmlReqNode[0].Attributes.RemoveAll();
+                XmlAttribute xAttribute = xmlReqNode[0].OwnerDocument.CreateAttribute("xsi", "type", "http://www.w3.org/2001/XMLSchema-instance");
+                xAttribute.Value = "REAL";
+                xmlReqNode[0].Attributes.Append(xAttribute);
+                XmlAttribute xAttributenull = xmlReqNode[0].OwnerDocument.CreateAttribute("nullFlavor");
+                xAttributenull.Value = "NA";
+                xmlReqNode[0].Attributes.Append(xAttributenull);
+            }
+
+
+            xmlReqNode = xmlDoc.GetElementsByTagName("Text");
+            xmlReqNode[0].InnerXml = objMeasuresb.ToString();
+            xmlDoc.InnerXml = xmlDoc.InnerXml.Replace("<Text>", "").Replace("</Text>", "");
+
+            StringBuilder sb1 = new StringBuilder();
+            sb1.Append(xmlDoc.InnerXml);
+            //xmlDoc.Save(Server.MapPath("Documents/" + Session.SessionID) + "\\" +MeasureName.Split('.')[0]+ ".xml");
+            StringBuilder sb = new StringBuilder();
+            sb1.Remove(0, 156);
+            sb1.Remove(sb1.Length - 19, 19);
+
+            return sb.Append(sb1.ToString());
+        }
+
+
+
         public StringBuilder SubXMLLoadForCQMIIIstage3(string MeasureName, IList<ulong> DLst, IList<ulong> NLst, IList<ulong> DELst, IList<ulong> DEXLst, string CQMPercentage, string CMSName, Dictionary<string, int[]> DLst155)
         {
             XmlDocument xmlDoc = new XmlDocument();
@@ -2255,7 +2999,7 @@ namespace Acurus.Capella.UI
 
             PQRI_DataManager objPQRI_DataManager = new PQRI_DataManager();
 
-            IList<PQRI_Data> resultlst = objPQRI_DataManager.GetPQRIListByStandardConceptAndPQRIType("REFERENCE OBS ROOT ID_STAGE3", CMSName);
+            IList<PQRI_Data> resultlst = objPQRI_DataManager.GetPQRIListByStandardConceptAndPQRIType("REFERENCE OBS ROOT ID_STAGE3", CMSName.Replace("_Population1", "").Replace("_Population2", "").Replace("_Population3", ""));
             string RootID = string.Empty;
 
 
@@ -2493,6 +3237,7 @@ namespace Acurus.Capella.UI
 
             return sb.Append(sb1.ToString());
         }
+
 
         public StringBuilder IPPAndDenametorLoad(IList<ulong> HumanLst, string RootId, string CMSName)
         {

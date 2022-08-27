@@ -8749,7 +8749,7 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
                     ToDate138 = Todate.AddYears(-2);
                     if (ulHumanlstNumerator138.Count > 0)
                     {
-                        ISQLQuery sql = iMySession.CreateSQLQuery("SELECT s.human_id,s.social_info,s.Recodes,cast(s.Created_Date_And_Time as char(100)) FROM `social_history` s where human_id in (" + string.Join(",", ulHumanlstNumerator138.Select(x => x.ToString()).ToArray()) + ") and social_info='Tobacco Use and Exposure' and Is_present='N' and Created_Date_And_Time between '" + ToDate138.ToString("yyyy-MM-dd") + "' and '" + Todate.AddDays(1).ToString("yyyy-MM-dd") + "' and Recodes in (select pqri_value from pqri_data where standard_concept='Tobacco non user');");
+                        ISQLQuery sql = iMySession.CreateSQLQuery("SELECT s.human_id,s.social_info,s.Recodes,cast(s.Created_Date_And_Time as char(100)) FROM `social_history` s where human_id in (" + string.Join(",", ulHumanlstNumerator138.Select(x => x.ToString()).ToArray()) + ") and social_info='Tobacco Use and Exposure' and Is_present='N' and Created_Date_And_Time between '" + ToDate138.ToString("yyyy-MM-dd") + "' and '" + Todate.AddDays(1).ToString("yyyy-MM-dd") + "' and Recodes in (select pqri_value from cqm_data where standard_concept='Tobacco non user');");
                         //IQuery socialHistoryNumerator138 = iMySession.GetNamedQuery("PQRI.CMS138V1.Nuemerator1");
                         //socialHistoryNumerator138.SetString(0, ToDate138.ToString("yyyy-MM-dd"));
                         ////socialHistoryNumerator138.SetString(1, Todate.ToString("yyyy-MM-dd"));
@@ -8773,7 +8773,7 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
                         IList<ulong> ulHuman_IDNum138 = new List<ulong>();
                         IList<EAndMCoding> eandmCodingListNum138 = new List<EAndMCoding>();
                         IList<Rcopia_Prescription_List> RcopiaPrescriptionNum138 = new List<Rcopia_Prescription_List>();
-                        ISQLQuery sql1 = iMySession.CreateSQLQuery("SELECT s.human_id,s.social_info,s.Recodes,cast(s.Created_Date_And_Time as char(100)) FROM `social_history` s where human_id in (" + string.Join(",", ulHumanlstNumerator138.Select(x => x.ToString()).ToArray()) + ") and social_info='Tobacco Use and Exposure' and Is_present='Y' and Recodes in (select pqri_value from pqri_data where standard_concept='Tobacco  user') and Created_Date_And_Time between '" + ToDate138.ToString("yyyy-MM-dd") + "' and '" + Todate.AddDays(1).ToString("yyyy-MM-dd") + "';");
+                        ISQLQuery sql1 = iMySession.CreateSQLQuery("SELECT s.human_id,s.social_info,s.Recodes,cast(s.Created_Date_And_Time as char(100)) FROM `social_history` s where human_id in (" + string.Join(",", ulHumanlstNumerator138.Select(x => x.ToString()).ToArray()) + ") and social_info='Tobacco Use and Exposure' and Is_present='Y' and Recodes in (select pqri_value from cqm_data where standard_concept='Tobacco  user') and Created_Date_And_Time between '" + ToDate138.ToString("yyyy-MM-dd") + "' and '" + Todate.AddDays(1).ToString("yyyy-MM-dd") + "';");
                         //IQuery socialHistoryNumeratorNew138 = iMySession.GetNamedQuery("PQRI.CMS138V1.Nuemerator2");
                         //socialHistoryNumeratorNew138.SetString(0, ToDate138.ToString("yyyy-MM-dd"));
                         ////socialHistoryNumeratorNew138.SetString(1, Todate.ToString("yyyy-MM-dd"));
@@ -9139,20 +9139,20 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
                     //                    string sQuery = @"select distinct(a.Encounter_id),a.human_id,a.icd,ifnull(em.procedure_code,'') from assessment a
                     //left join patient_results pr on a.encounter_id=pr.encounter_id
                     //left join e_m_coding as em on a.encounter_id=em.encounter_id
-                    //where a.encounter_id in (:EncIds) and (a.icd in (SELECT PQRI_Value FROM pqri_data where nqf_number =?  and PQRI_calculation_Method=? and pqri_type='ICD') or (pr.loinc_observation='BMI' and pr.value ='' and pr.Snomed_Code<>'') 
-                    //or a.icd in (SELECT PQRI_Value FROM pqri_data where nqf_number =?  and PQRI_calculation_Method=? and pqri_type='Diagnosis: Pregnancy Dx' ))
+                    //where a.encounter_id in (:EncIds) and (a.icd in (SELECT PQRI_Value from cqm_data where nqf_number =?  and PQRI_calculation_Method=? and pqri_type='ICD') or (pr.loinc_observation='BMI' and pr.value ='' and pr.Snomed_Code<>'') 
+                    //or a.icd in (SELECT PQRI_Value from cqm_data where nqf_number =?  and PQRI_calculation_Method=? and pqri_type='Diagnosis: Pregnancy Dx' ))
                     //UNION
                     //select distinct(a.Encounter_id),a.human_id,a.icd,ifnull(em.procedure_code,'') from problem_list a
                     //left join patient_results pr on a.human_id=pr.human_id
                     //left join e_m_coding as em on a.human_id=em.human_id
                     //where a.human_id in (:HumanIds) and str_to_date(date_diagnosed,'%d-%b-%Y') 
                     //between '" + Fromdate.ToString("yyyy-MM-dd") + "' "
-                    //                    + "and '" + Todate.ToString("yyyy-MM-dd") + "' " + @"and (a.icd in (SELECT PQRI_Value FROM pqri_data where nqf_number =?  and PQRI_calculation_Method=? and pqri_type='ICD') or (pr.loinc_observation='BMI'
-                    //and pr.value ='' and pr.Snomed_Code<>'') or a.icd in (SELECT PQRI_Value FROM pqri_data where nqf_number =?  and PQRI_calculation_Method=? and pqri_type='Diagnosis: Pregnancy Dx'));";
+                    //                    + "and '" + Todate.ToString("yyyy-MM-dd") + "' " + @"and (a.icd in (SELECT PQRI_Value from cqm_data where nqf_number =?  and PQRI_calculation_Method=? and pqri_type='ICD') or (pr.loinc_observation='BMI'
+                    //and pr.value ='' and pr.Snomed_Code<>'') or a.icd in (SELECT PQRI_Value from cqm_data where nqf_number =?  and PQRI_calculation_Method=? and pqri_type='Diagnosis: Pregnancy Dx'));";
 
                     string sQuery = @"select distinct(a.Encounter_id),a.human_id,a.icd,ifnull(em.procedure_code,'') from assessment a
 left join e_m_coding as em on a.encounter_id=em.encounter_id
-where a.encounter_id in (:EncIds) and (a.icd in (SELECT PQRI_Value FROM pqri_data where nqf_number =? 
+where a.encounter_id in (:EncIds) and (a.icd in (SELECT PQRI_Value from cqm_data where nqf_number =? 
 and PQRI_calculation_Method=? and pqri_type='ICD'))
 
 union
@@ -10464,20 +10464,20 @@ where pr.encounter_id in (:EncIds) and (pr.loinc_observation='BMI' and pr.value 
                     //                    string sQuery = @"select c.human_id from assessment B left join encounter c on B.human_id = c.human_id
                     //left join patient_results pr on pr.human_id=c.human_id
                     //left join e_m_coding as em on em.Encounter_Id=c.Encounter_Id
-                    //where ICD in (SELECT PQRI_Value FROM pqri_data where nqf_number =?  and PQRI_calculation_Method=? and PQRI_Type in ('ICD'))
+                    //where ICD in (SELECT PQRI_Value from cqm_data where nqf_number =?  and PQRI_calculation_Method=? and PQRI_Type in ('ICD'))
                     //and c.human_id in (:EncIds)
                     //Union
                     //select c.human_id from Problem_List B left join 
                     //encounter c on B.Human_Id = c.Human_Id
                     //left join patient_results pr on pr.encounter_id=c.encounter_id
                     //left join e_m_coding as em on em.human_id=c.human_id
-                    //where ICD in (SELECT PQRI_Value FROM pqri_data where nqf_number =?  and PQRI_calculation_Method=? and PQRI_Type in ('ICD'))
+                    //where ICD in (SELECT PQRI_Value from cqm_data where nqf_number =?  and PQRI_calculation_Method=? and PQRI_Type in ('ICD'))
                     //and c.human_id in (:EncIds);";
 
                     string sQuery = @"select c.human_id from assessment B left join encounter c on B.human_id = c.human_id
 left join patient_results pr on pr.human_id=c.human_id
 left join e_m_coding as em on em.Encounter_Id=c.Encounter_Id
-where ICD in (SELECT PQRI_Value FROM pqri_data where nqf_number =?  and PQRI_calculation_Method=? and PQRI_Type in ('ICD'))
+where ICD in (SELECT PQRI_Value from cqm_data where nqf_number =?  and PQRI_calculation_Method=? and PQRI_Type in ('ICD'))
 and b.Encounter_ID in (:EncIds)";
 
                     ISQLQuery SQL = iMySession.CreateSQLQuery(sQuery);
@@ -11138,12 +11138,12 @@ and b.Encounter_ID in (:EncIds)";
 
 
             IList<string> Measure_name = (from doc in PQRIMeasureList
-                                          where doc.Measurement_No == "CMS " + MeasureNo
+                                          where doc.Measurement_No == "CMS" + MeasureNo
                                           select doc.Measurement_Name).ToList<string>();
 
             //To add datas to Ilist//
             PQRI_Measure objpqri = new PQRI_Measure();
-            if (Measure_name.Count > 0)
+            if (Measure_name.Count == 1)
             {
                 objpqri = new PQRI_Measure();
                 objpqri.Denominator = Denominator.ToString();
@@ -11161,10 +11161,30 @@ and b.Encounter_ID in (:EncIds)";
                 objpqri.ICDCPTDenominatorExceptionList = DenominatorExceptionList;
                 objpqri.Percentage = Percentage;
             }
+            //else if (Measure_name.Count > 1)
+            //{
+            //    objpqri = new PQRI_Measure();
+            //    objpqri.Denominator = Denominator.ToString();
+            //    objpqri.Numerator = Numerator.ToString();
+            //    objpqri.Measurement_No = "CMS " + MeasureNo;
+            //    objpqri.Measurement_Name = Measure_name[ilstCMS138Completed.Count];
+            //    objpqri.Cleared = cleared;
+            //    //objpqri.RequiredPercentage = "80%";
+            //    objpqri.InitialPatientPopulation = (Convert.ToUInt32(Denominator) + Convert.ToUInt32(DenominatorException) + Convert.ToUInt32(DenominatorExclusion)).ToString();
+            //    objpqri.DenominatorException = DenominatorException.ToString();
+            //    objpqri.DenominatorExclusion = DenominatorExclusion.ToString();
+            //    objpqri.ICDCPTNumeratorList = NumeratorList;
+            //    objpqri.ICDCPTDenominatorList = DenominatorList;
+            //    objpqri.ICDCPTDenominatorExclusionList = DenominatorExclusionList;
+            //    objpqri.ICDCPTDenominatorExceptionList = DenominatorExceptionList;
+            //    objpqri.Percentage = Percentage;
+            //}
+
 
             return objpqri;
         }
 
+        //IList<string> ilstCMS138Completed = new List<string>();
         public IList<PQRI_Measure> FillPQRIMeasureCalculator(string sLegalOrg, ulong ulPhysicianID, DateTime Fromdate, DateTime Todate, IList<PQRI_Measure> PQRIMeasureList)
         {
             IList<PQRI_Measure> PQRIlst = new List<PQRI_Measure>();
@@ -11173,6 +11193,7 @@ and b.Encounter_ID in (:EncIds)";
             IList<string[]> icdcptListDenominatorExclusion = new List<string[]>();
             IList<string[]> icdcptListDenominatorException = new List<string[]>();
             IList<string[]> icdcptListNumerator = new List<string[]>();
+            //ilstCMS138Completed = new List<string>();
             int Denominator = 0;
             int DenominatorExclusion = 0;
             int DenominatorException = 0;
@@ -11440,20 +11461,20 @@ and b.Encounter_ID in (:EncIds)";
                     //                    string sQuery = @"select distinct(a.Encounter_id),a.human_id,a.icd,ifnull(em.procedure_code,'') from assessment a
                     //left join patient_results pr on a.encounter_id=pr.encounter_id
                     //left join e_m_coding as em on a.encounter_id=em.encounter_id
-                    //where a.encounter_id in (:EncIds) and (a.icd in (SELECT PQRI_Value FROM pqri_data where nqf_number =?  and PQRI_calculation_Method=? and pqri_type='ICD') or (pr.loinc_observation='BMI' and pr.value ='' and pr.Snomed_Code<>'') 
-                    //or a.icd in (SELECT PQRI_Value FROM pqri_data where nqf_number =?  and PQRI_calculation_Method=? and pqri_type='Diagnosis: Pregnancy Dx' ))
+                    //where a.encounter_id in (:EncIds) and (a.icd in (SELECT PQRI_Value from cqm_data where nqf_number =?  and PQRI_calculation_Method=? and pqri_type='ICD') or (pr.loinc_observation='BMI' and pr.value ='' and pr.Snomed_Code<>'') 
+                    //or a.icd in (SELECT PQRI_Value from cqm_data where nqf_number =?  and PQRI_calculation_Method=? and pqri_type='Diagnosis: Pregnancy Dx' ))
                     //UNION
                     //select distinct(a.Encounter_id),a.human_id,a.icd,ifnull(em.procedure_code,'') from problem_list a
                     //left join patient_results pr on a.human_id=pr.human_id
                     //left join e_m_coding as em on a.human_id=em.human_id
                     //where a.human_id in (:HumanIds) and str_to_date(date_diagnosed,'%d-%b-%Y') 
                     //between '" + Fromdate.ToString("yyyy-MM-dd") + "' "
-                    //                    + "and '" + Todate.ToString("yyyy-MM-dd") + "' " + @"and (a.icd in (SELECT PQRI_Value FROM pqri_data where nqf_number =?  and PQRI_calculation_Method=? and pqri_type='ICD') or (pr.loinc_observation='BMI'
-                    //and pr.value ='' and pr.Snomed_Code<>'') or a.icd in (SELECT PQRI_Value FROM pqri_data where nqf_number =?  and PQRI_calculation_Method=? and pqri_type='Diagnosis: Pregnancy Dx'));";
+                    //                    + "and '" + Todate.ToString("yyyy-MM-dd") + "' " + @"and (a.icd in (SELECT PQRI_Value from cqm_data where nqf_number =?  and PQRI_calculation_Method=? and pqri_type='ICD') or (pr.loinc_observation='BMI'
+                    //and pr.value ='' and pr.Snomed_Code<>'') or a.icd in (SELECT PQRI_Value from cqm_data where nqf_number =?  and PQRI_calculation_Method=? and pqri_type='Diagnosis: Pregnancy Dx'));";
 
                     string sQuery = @"select distinct(a.Encounter_id),a.human_id,a.icd,ifnull(em.procedure_code,'') from assessment a
 left join e_m_coding as em on a.encounter_id=em.encounter_id
-where a.encounter_id in (:EncIds) and (a.icd in (SELECT PQRI_Value FROM pqri_data where nqf_number =? 
+where a.encounter_id in (:EncIds) and (a.icd in (SELECT PQRI_Value from cqm_data where nqf_number =? 
 and PQRI_calculation_Method=? and pqri_type='ICD'))
 
 union
@@ -11753,7 +11774,7 @@ where pr.encounter_id in (:EncIds) and (pr.loinc_observation='BMI' and pr.value 
 
 
                 //Preventive Care and Screening: Tobacco Use: Screening and Cessation Intervention
-                #region CMS 138
+                #region CMS 138 - Population 1
                 IQuery EncounterDenominatorquery138 = iMySession.GetNamedQuery("PQRI.GetDenominatorCMS138.Tobacco");
                 EncounterDenominatorquery138.SetString(0, Fromdate.ToString("yyyy-MM-dd"));
                 EncounterDenominatorquery138.SetString(1, Todate.ToString("yyyy-MM-dd"));
@@ -11774,29 +11795,64 @@ where pr.encounter_id in (:EncIds) and (pr.loinc_observation='BMI' and pr.value 
                     //EncounterDenominatorquery138_List2.SetParameter(3, "Denominator");
                     ArrayList Enc_Denominator_lst138_List2 = new ArrayList(EncounterDenominatorquery138_List2.List());
 
-                    if (Enc_Denominator_lst138_List2 != null && Enc_Denominator_lst138_List2.Count > 0)
-                    {
-                        if (Enc_Denominator_lst138_List2.Count == 1 && Enc_Denominator_lst138_List2[0].ToString() == "0")
-                        {
+                    //if (Enc_Denominator_lst138_List2 != null && Enc_Denominator_lst138_List2.Count > 0)
+                    //{
+                    //    if (Enc_Denominator_lst138_List2.Count == 1 && Enc_Denominator_lst138_List2[0].ToString() == "0")
+                    //    {
 
-                        }
-                        else
-                        {
-                            IQuery EncounterDenominatorquery138_List3 = iMySession.GetNamedQuery("PQRI.GetDenominatorList3CMS138.Tobacco");
-                            EncounterDenominatorquery138_List3.SetParameterList("EncIds", Enc_Denominator_lst138_List2.ToArray());
-                            Enc_Denominator_lst138Denoninator = new ArrayList(EncounterDenominatorquery138_List3.List());
-                        }
-                    }
+                    //    }
+                    //    else
+                    //    {
+                    //        IQuery EncounterDenominatorquery138_List3 = iMySession.GetNamedQuery("PQRI.GetDenominatorList3CMS138.Tobacco");
+                    //        EncounterDenominatorquery138_List3.SetParameterList("EncIds", Enc_Denominator_lst138_List2.ToArray());
+                    //        Enc_Denominator_lst138Denoninator = new ArrayList(EncounterDenominatorquery138_List3.List());
+                    //    }
+                    //}
+
+
+                    //lstEncList68 = new List<Encounter>();
+                    //if (Enc_Denominator_lst138Denoninator != null && Enc_Denominator_lst138Denoninator.Count > 0)
+                    //{
+
+
+                    //    for (int i = 0; i < Enc_Denominator_lst138Denoninator.Count; i++)
+                    //    {
+                    //        object[] objEnc = (object[])Enc_Denominator_lst138Denoninator[i];
+                    //        //ulEnc2List68.Add(Convert.ToUInt32(objEnc[0]));
+                    //        Encounter objEncList = new Encounter();
+                    //        objEncList.Encounter_ID = Convert.ToUInt32(objEnc[0]);
+                    //        objEncList.Human_ID = Convert.ToUInt32(objEnc[1]);
+                    //        ulEncList138.Add(Convert.ToUInt32(objEnc[1]));
+
+
+
+                    //        string[] ary = { objEnc[0].ToString(), objEnc[1].ToString(), "", objEnc[2].ToString(), "", "", "", "CMS138D", "CMS138v10" };
+                    //        icdcptListDenominator.Add(ary);
+
+
+                    //        lstEncList68.Add(objEncList);
+                    //    }
+
+                    //    if (lstEncList68.Count > 0)
+                    //    {
+                    //        var lists = (from m in lstEncList68
+                    //                     group m by m.Human_ID).ToList();
+
+                    //        Denominator = lists.Count;
+                    //    }
+
+
+                    //}
 
 
                     lstEncList68 = new List<Encounter>();
-                    if (Enc_Denominator_lst138Denoninator != null && Enc_Denominator_lst138Denoninator.Count > 0)
+                    if (Enc_Denominator_lst138_List2 != null && Enc_Denominator_lst138_List2.Count > 0)
                     {
 
 
-                        for (int i = 0; i < Enc_Denominator_lst138Denoninator.Count; i++)
+                        for (int i = 0; i < Enc_Denominator_lst138_List2.Count; i++)
                         {
-                            object[] objEnc = (object[])Enc_Denominator_lst138Denoninator[i];
+                            object[] objEnc = (object[])Enc_Denominator_lst138_List2[i];
                             //ulEnc2List68.Add(Convert.ToUInt32(objEnc[0]));
                             Encounter objEncList = new Encounter();
                             objEncList.Encounter_ID = Convert.ToUInt32(objEnc[0]);
@@ -11886,7 +11942,7 @@ where pr.encounter_id in (:EncIds) and (pr.loinc_observation='BMI' and pr.value 
                 if (Enc_Denominator_lst138Denoninator != null && Enc_Denominator_lst138Denoninator.Count > 0)
                 {
 
-                    IQuery Encounterumeratorquery138 = iMySession.GetNamedQuery("PQRI.GetNumeratorCMS138.Tobacco");
+                    IQuery Encounterumeratorquery138 = iMySession.GetNamedQuery("PQRI.GetNumeratorCMS138_Population1.Tobacco");
                     Encounterumeratorquery138.SetParameterList("EncIds", ulEncList138.ToArray());
                     Encounterumeratorquery138.SetString(0, "CMS138v10");
                     Encounterumeratorquery138.SetString(1, "Numerator");
@@ -11937,10 +11993,9 @@ where pr.encounter_id in (:EncIds) and (pr.loinc_observation='BMI' and pr.value 
 
                     }
                 }
+                PQRIlst.Add(NumeratorandDenominatorCalculationforCMSStageThree(Denominator, Numerator, DenominatorExclusion, DenominatorException, "138v10_Population1", icdcptListNumerator, icdcptListDenominator, icdcptListDenominatorExclusion, icdcptListDenominatorException, PQRIMeasureList));
 
-                PQRIlst.Add(NumeratorandDenominatorCalculationforCMSStageThree(Denominator, Numerator, DenominatorExclusion, DenominatorException, "138v10", icdcptListNumerator, icdcptListDenominator, icdcptListDenominatorExclusion, icdcptListDenominatorException, PQRIMeasureList));
-
-                LoadCQMList(Fromdate.Year.ToString(), sLegalOrg, "138v10", ulPhysicianID, icdcptListDenominator, icdcptListDenominatorExclusion, icdcptListDenominatorException, icdcptListNumerator, PQRIMeasureList, Numerator, Denominator, DenominatorExclusion, DenominatorException);
+                LoadCQMList(Fromdate.Year.ToString(), sLegalOrg, "138v10_Population1", ulPhysicianID, icdcptListDenominator, icdcptListDenominatorExclusion, icdcptListDenominatorException, icdcptListNumerator, PQRIMeasureList, Numerator, Denominator, DenominatorExclusion, DenominatorException);
                 Numerator = 0;
                 Denominator = 0;
                 DenominatorExclusion = 0;
@@ -11949,8 +12004,442 @@ where pr.encounter_id in (:EncIds) and (pr.loinc_observation='BMI' and pr.value 
                 icdcptListDenominator.Clear();
                 icdcptListDenominatorException.Clear();
                 icdcptListDenominatorExclusion.Clear();
+                //ilstCMS138Completed.Add("Population1");
                 #endregion
 
+                //Preventive Care and Screening: Tobacco Use: Screening and Cessation Intervention
+                #region CMS 138 - Population 2
+                IQuery EncounterDenominatorquery138_Population2 = iMySession.GetNamedQuery("PQRI.GetDenominatorCMS138.Tobacco");
+                EncounterDenominatorquery138_Population2.SetString(0, Fromdate.ToString("yyyy-MM-dd"));
+                EncounterDenominatorquery138_Population2.SetString(1, Todate.ToString("yyyy-MM-dd"));
+                EncounterDenominatorquery138_Population2.SetString(2, Convert.ToString(ulPhysicianID));
+                ArrayList Enc_Denominator_lst138_Population2 = new ArrayList(EncounterDenominatorquery138.List());
+                ArrayList Enc_Denominator_lst138Denoninator_Population2 = null;
+                IList<ulong> ulEncList138_Population2 = new List<ulong>();
+
+                //Denominator
+                if (Enc_Denominator_lst138_Population2 != null && Enc_Denominator_lst138_Population2.Count > 0)
+                {
+                    IQuery EncounterDenominatorquery138_List2_Population2 = iMySession.GetNamedQuery("PQRI.GetDenominatorList2CMS138_Population2.Tobacco");
+                    EncounterDenominatorquery138_List2_Population2.SetParameterList("EncIds", Enc_Denominator_lst138_Population2.ToArray());
+
+                    EncounterDenominatorquery138_List2_Population2.SetParameter(0, "CMS138v10");
+                    EncounterDenominatorquery138_List2_Population2.SetParameter(1, "Denominator");
+                    //EncounterDenominatorquery138_List2.SetParameter(2, "CMS138v10");
+                    //EncounterDenominatorquery138_List2.SetParameter(3, "Denominator");
+                    ArrayList Enc_Denominator_lst138_List2_Population2 = new ArrayList(EncounterDenominatorquery138_List2_Population2.List());
+
+                    if (Enc_Denominator_lst138_List2_Population2 != null && Enc_Denominator_lst138_List2_Population2.Count > 0)
+                    {
+                        if (Enc_Denominator_lst138_List2_Population2.Count == 1 && Enc_Denominator_lst138_List2_Population2[0].ToString() == "0")
+                        {
+
+                        }
+                        else
+                        {
+                            IQuery EncounterDenominatorquery138_List3_Population2 = iMySession.GetNamedQuery("PQRI.GetDenominatorList3CMS138.Tobacco");
+                            EncounterDenominatorquery138_List3_Population2.SetParameterList("EncIds", Enc_Denominator_lst138_List2_Population2.ToArray());
+                            Enc_Denominator_lst138Denoninator_Population2 = new ArrayList(EncounterDenominatorquery138_List3_Population2.List());
+                        }
+                    }
+
+
+                    lstEncList68 = new List<Encounter>();
+                    if (Enc_Denominator_lst138Denoninator_Population2 != null && Enc_Denominator_lst138Denoninator_Population2.Count > 0)
+                    {
+
+
+                        for (int i = 0; i < Enc_Denominator_lst138Denoninator_Population2.Count; i++)
+                        {
+                            object[] objEnc = (object[])Enc_Denominator_lst138Denoninator_Population2[i];
+                            //ulEnc2List68.Add(Convert.ToUInt32(objEnc[0]));
+                            Encounter objEncList = new Encounter();
+                            objEncList.Encounter_ID = Convert.ToUInt32(objEnc[0]);
+                            objEncList.Human_ID = Convert.ToUInt32(objEnc[1]);
+                            ulEncList138_Population2.Add(Convert.ToUInt32(objEnc[1]));
+
+
+
+                            string[] ary = { objEnc[0].ToString(), objEnc[1].ToString(), "", objEnc[2].ToString(), "", "", "", "CMS138D", "CMS138v10" };
+                            icdcptListDenominator.Add(ary);
+
+
+                            lstEncList68.Add(objEncList);
+                        }
+
+                        if (lstEncList68.Count > 0)
+                        {
+                            var lists = (from m in lstEncList68
+                                         group m by m.Human_ID).ToList();
+
+                            Denominator = lists.Count;
+                        }
+
+
+                    }
+                }
+
+                //Denominator Exclusion
+                DenominatorExclusion = 0;
+                //Denominator Exception
+                if (Enc_Denominator_lst138_Population2 != null && Enc_Denominator_lst138_Population2.Count > 0)
+                {
+                    IQuery Encounterexcpquery138_Population2 = iMySession.GetNamedQuery("PQRI.GetExceptionCMS138.Tobacco");
+                    Encounterexcpquery138_Population2.SetParameterList("EncIds", Enc_Denominator_lst138_Population2.ToArray());
+
+                    Encounterexcpquery138_Population2.SetString(0, "CMS138v10");
+                    Encounterexcpquery138_Population2.SetString(1, "Exception");
+                    Encounterexcpquery138_Population2.SetString(2, "CMS138v10");
+                    Encounterexcpquery138_Population2.SetString(3, "Exception");
+
+                    ArrayList Enc_exceptionr_lst138_Population2 = new ArrayList(Encounterexcpquery138_Population2.List());
+                    lstEncList68 = new List<Encounter>();
+                    if (Enc_exceptionr_lst138_Population2 != null && Enc_exceptionr_lst138_Population2.Count > 0)
+                    {
+                        for (int i = 0; i < Enc_exceptionr_lst138_Population2.Count; i++)
+                        {
+                            object[] objEnc = (object[])Enc_exceptionr_lst138_Population2[i];
+                            string icd = "";
+                            string cpt = "";
+                            Encounter objEncList = new Encounter();
+                            objEncList.Encounter_ID = Convert.ToUInt32(objEnc[0]);
+                            objEncList.Human_ID = Convert.ToUInt32(objEnc[1]);
+                            if (objEnc[2] != null)
+                            {
+                                icd = objEnc[2].ToString();
+                            }
+
+                            if (objEnc[3] != null)
+                            {
+                                cpt = objEnc[3].ToString();
+                            }
+
+                            string[] ary = { objEnc[0].ToString(), objEnc[1].ToString(), icd, cpt, "", "", "", "CMS138DEX", "CMS138v10" };
+                            icdcptListDenominatorException.Add(ary);
+                            lstEncList68.Add(objEncList);
+
+                        }
+                    }
+                    if (Enc_exceptionr_lst138_Population2 != null && Enc_exceptionr_lst138_Population2.Count > 0)
+                    {
+                        var lists = (from m in lstEncList68
+                                     group m by m.Human_ID).ToList();
+
+                        DenominatorException = lists.Count;
+                        //DenominatorException = Enc_exceptionr_lst138.Count;
+                        foreach (Encounter s in lstEncList68)
+                        {
+                            while (ulEncList138_Population2.IndexOf(s.Human_ID) != -1)
+                                ulEncList138_Population2.Remove(s.Human_ID);
+                        }
+
+                    }
+                }
+                //Numerator
+                Denominator = Denominator - DenominatorException;
+
+                if (Enc_Denominator_lst138Denoninator_Population2 != null && Enc_Denominator_lst138Denoninator_Population2.Count > 0)
+                {
+
+                    IQuery Encounterumeratorquery138_Population2 = iMySession.GetNamedQuery("PQRI.GetNumeratorCMS138.Tobacco");
+                    Encounterumeratorquery138_Population2.SetParameterList("EncIds", ulEncList138_Population2.ToArray());
+                    Encounterumeratorquery138_Population2.SetString(0, "CMS138v10");
+                    Encounterumeratorquery138_Population2.SetString(1, "Numerator");
+                    Encounterumeratorquery138_Population2.SetString(2, "CMS138v10");
+                    Encounterumeratorquery138_Population2.SetString(3, "Numerator");
+
+                    //Encounterumeratorquery138.SetString(0, Fromdate.ToString("yyyy-MM-dd"));
+                    //Encounterumeratorquery138.SetString(1, Todate.ToString("yyyy-MM-dd"));
+                    //Encounterumeratorquery138.SetString(2, Fromdate.ToString("yyyy-MM-dd"));
+                    //Encounterumeratorquery138.SetString(3, Todate.ToString("yyyy-MM-dd"));
+                    //Encounterumeratorquery138.SetString(4, Fromdate.ToString("yyyy-MM-dd"));
+                    //Encounterumeratorquery138.SetString(5, Todate.ToString("yyyy-MM-dd"));
+                    //Encounterumeratorquery138.SetString(6, Fromdate.ToString("yyyy-MM-dd"));
+                    //Encounterumeratorquery138.SetString(7, Todate.ToString("yyyy-MM-dd"));
+                    //Encounterumeratorquery138.SetString(8, Fromdate.ToString("yyyy-MM-dd"));
+                    //Encounterumeratorquery138.SetString(9, Todate.ToString("yyyy-MM-dd"));
+
+
+                    ArrayList Enc_Numerator_lst138_Population2 = new ArrayList(Encounterumeratorquery138_Population2.List());
+                    int Enc_Numerator_lst138_Population2_Count = 0;
+                    if (Enc_Numerator_lst138_Population2.Count > 0)
+                    {
+
+                        for (int i = 0; i < Enc_Numerator_lst138_Population2.Count; i++)
+                        {
+                            object[] objEnc = (object[])Enc_Numerator_lst138_Population2[i];
+                            DateTime Fromdate1 = new DateTime(Fromdate.Year, 01, 01).AddYears(-1);
+                            DateTime Todate1 = new DateTime(Todate.Year, 12, 31);
+                            if ((Convert.ToDateTime(objEnc[2]) >= Fromdate1 && Convert.ToDateTime(objEnc[2]) <= Todate1) || (Convert.ToDateTime(objEnc[3]) >= Fromdate1 && Convert.ToDateTime(objEnc[3]) <= Todate1))
+                            {
+                                if (objEnc[5] != null && Convert.ToDateTime(objEnc[4]) >= Fromdate1 && Convert.ToDateTime(objEnc[4]) <= Todate1)
+                                {
+                                    string[] ary = { objEnc[0].ToString(), objEnc[1].ToString(), "", objEnc[2].ToString(), "", "", "", "CMS138N", "", "", "CMS138v10" };
+                                    icdcptListNumerator.Add(ary);
+                                    Enc_Numerator_lst138_Population2_Count++;
+                                }
+                                else
+                                {
+                                    string[] ary = { objEnc[0].ToString(), objEnc[1].ToString(), "", objEnc[2].ToString(), "", "", "", "CMS138N", "", "", "CMS138v10" };
+                                    icdcptListNumerator.Add(ary);
+                                    Enc_Numerator_lst138_Population2_Count++;
+                                }
+                            }
+
+                        }
+
+                        Numerator = Enc_Numerator_lst138_Population2_Count;
+
+                    }
+                }
+
+                PQRIlst.Add(NumeratorandDenominatorCalculationforCMSStageThree(Denominator, Numerator, DenominatorExclusion, DenominatorException, "138v10_Population2", icdcptListNumerator, icdcptListDenominator, icdcptListDenominatorExclusion, icdcptListDenominatorException, PQRIMeasureList));
+
+                LoadCQMList(Fromdate.Year.ToString(), sLegalOrg, "138v10_Population2", ulPhysicianID, icdcptListDenominator, icdcptListDenominatorExclusion, icdcptListDenominatorException, icdcptListNumerator, PQRIMeasureList, Numerator, Denominator, DenominatorExclusion, DenominatorException);
+                Numerator = 0;
+                Denominator = 0;
+                DenominatorExclusion = 0;
+                DenominatorException = 0;
+                icdcptListNumerator.Clear();
+                icdcptListDenominator.Clear();
+                icdcptListDenominatorException.Clear();
+                icdcptListDenominatorExclusion.Clear();
+                //ilstCMS138Completed.Add("Population2");
+                #endregion
+
+                //Preventive Care and Screening: Tobacco Use: Screening and Cessation Intervention
+                #region CMS 138 - Population 3
+                IQuery EncounterDenominatorquery138_Population3 = iMySession.GetNamedQuery("PQRI.GetDenominatorCMS138.Tobacco");
+                EncounterDenominatorquery138.SetString(0, Fromdate.ToString("yyyy-MM-dd"));
+                EncounterDenominatorquery138.SetString(1, Todate.ToString("yyyy-MM-dd"));
+                EncounterDenominatorquery138.SetString(2, Convert.ToString(ulPhysicianID));
+                ArrayList Enc_Denominator_lst138_Population3 = new ArrayList(EncounterDenominatorquery138.List());
+                ArrayList Enc_Denominator_lst138Denoninator_Population3 = null;
+                IList<ulong> ulEncList138_Population3 = new List<ulong>();
+
+                //Denominator
+                if (Enc_Denominator_lst138_Population3 != null && Enc_Denominator_lst138_Population3.Count > 0)
+                {
+                    IQuery EncounterDenominatorquery138_List2_Population3 = iMySession.GetNamedQuery("PQRI.GetDenominatorList2CMS138.Tobacco");
+                    EncounterDenominatorquery138_List2_Population3.SetParameterList("EncIds", Enc_Denominator_lst138_Population3.ToArray());
+
+                    EncounterDenominatorquery138_List2_Population3.SetParameter(0, "CMS138v10");
+                    EncounterDenominatorquery138_List2_Population3.SetParameter(1, "Denominator");
+                    //EncounterDenominatorquery138_List2.SetParameter(2, "CMS138v10");
+                    //EncounterDenominatorquery138_List2.SetParameter(3, "Denominator");
+                    ArrayList Enc_Denominator_lst138_List2_Population3 = new ArrayList(EncounterDenominatorquery138_List2_Population3.List());
+
+                    //if (Enc_Denominator_lst138_List2_Population3 != null && Enc_Denominator_lst138_List2_Population3.Count > 0)
+                    //{
+                    //    if (Enc_Denominator_lst138_List2_Population3.Count == 1 && Enc_Denominator_lst138_List2_Population3[0].ToString() == "0")
+                    //    {
+
+                    //    }
+                    //    else
+                    //    {
+                    //        IQuery EncounterDenominatorquery138_List3_Population3 = iMySession.GetNamedQuery("PQRI.GetDenominatorList3CMS138.Tobacco");
+                    //        EncounterDenominatorquery138_List3_Population3.SetParameterList("EncIds", Enc_Denominator_lst138_List2_Population3.ToArray());
+                    //        Enc_Denominator_lst138Denoninator_Population3 = new ArrayList(EncounterDenominatorquery138_List3_Population3.List());
+                    //    }
+                    //}
+
+
+                    //lstEncList68 = new List<Encounter>();
+                    //if (Enc_Denominator_lst138Denoninator_Population3 != null && Enc_Denominator_lst138Denoninator_Population3.Count > 0)
+                    //{
+
+
+                    //    for (int i = 0; i < Enc_Denominator_lst138Denoninator_Population3.Count; i++)
+                    //    {
+                    //        object[] objEnc = (object[])Enc_Denominator_lst138Denoninator_Population3[i];
+                    //        //ulEnc2List68.Add(Convert.ToUInt32(objEnc[0]));
+                    //        Encounter objEncList = new Encounter();
+                    //        objEncList.Encounter_ID = Convert.ToUInt32(objEnc[0]);
+                    //        objEncList.Human_ID = Convert.ToUInt32(objEnc[1]);
+                    //        ulEncList138_Population3.Add(Convert.ToUInt32(objEnc[1]));
+
+
+
+                    //        string[] ary = { objEnc[0].ToString(), objEnc[1].ToString(), "", objEnc[2].ToString(), "", "", "", "CMS138D", "CMS138v10" };
+                    //        icdcptListDenominator.Add(ary);
+
+
+                    //        lstEncList68.Add(objEncList);
+                    //    }
+
+                    //    if (lstEncList68.Count > 0)
+                    //    {
+                    //        var lists = (from m in lstEncList68
+                    //                     group m by m.Human_ID).ToList();
+
+                    //        Denominator = lists.Count;
+                    //    }
+
+
+                    //}
+
+                    lstEncList68 = new List<Encounter>();
+                    if (Enc_Denominator_lst138_List2_Population3 != null && Enc_Denominator_lst138_List2_Population3.Count > 0)
+                    {
+
+
+                        for (int i = 0; i < Enc_Denominator_lst138_List2_Population3.Count; i++)
+                        {
+                            object[] objEnc = (object[])Enc_Denominator_lst138_List2_Population3[i];
+                            //ulEnc2List68.Add(Convert.ToUInt32(objEnc[0]));
+                            Encounter objEncList = new Encounter();
+                            objEncList.Encounter_ID = Convert.ToUInt32(objEnc[0]);
+                            objEncList.Human_ID = Convert.ToUInt32(objEnc[1]);
+                            ulEncList138_Population3.Add(Convert.ToUInt32(objEnc[1]));
+
+
+
+                            string[] ary = { objEnc[0].ToString(), objEnc[1].ToString(), "", objEnc[2].ToString(), "", "", "", "CMS138D", "CMS138v10" };
+                            icdcptListDenominator.Add(ary);
+
+
+                            lstEncList68.Add(objEncList);
+                        }
+
+                        if (lstEncList68.Count > 0)
+                        {
+                            var lists = (from m in lstEncList68
+                                         group m by m.Human_ID).ToList();
+
+                            Denominator = lists.Count;
+                        }
+
+
+                    }
+                }
+
+                //Denominator Exclusion
+                DenominatorExclusion = 0;
+                //Denominator Exception
+                if (Enc_Denominator_lst138_Population3 != null && Enc_Denominator_lst138_Population3.Count > 0)
+                {
+                    IQuery Encounterexcpquery138_Population3 = iMySession.GetNamedQuery("PQRI.GetExceptionCMS138.Tobacco");
+                    Encounterexcpquery138_Population3.SetParameterList("EncIds", Enc_Denominator_lst138_Population3.ToArray());
+
+                    Encounterexcpquery138_Population3.SetString(0, "CMS138v10");
+                    Encounterexcpquery138_Population3.SetString(1, "Exception");
+                    Encounterexcpquery138_Population3.SetString(2, "CMS138v10");
+                    Encounterexcpquery138_Population3.SetString(3, "Exception");
+
+                    ArrayList Enc_exceptionr_lst138_Population3 = new ArrayList(Encounterexcpquery138_Population3.List());
+                    lstEncList68 = new List<Encounter>();
+                    if (Enc_exceptionr_lst138_Population3 != null && Enc_exceptionr_lst138_Population3.Count > 0)
+                    {
+                        for (int i = 0; i < Enc_exceptionr_lst138_Population3.Count; i++)
+                        {
+                            object[] objEnc = (object[])Enc_exceptionr_lst138_Population3[i];
+                            string icd = "";
+                            string cpt = "";
+                            Encounter objEncList = new Encounter();
+                            objEncList.Encounter_ID = Convert.ToUInt32(objEnc[0]);
+                            objEncList.Human_ID = Convert.ToUInt32(objEnc[1]);
+                            if (objEnc[2] != null)
+                            {
+                                icd = objEnc[2].ToString();
+                            }
+
+                            if (objEnc[3] != null)
+                            {
+                                cpt = objEnc[3].ToString();
+                            }
+
+                            string[] ary = { objEnc[0].ToString(), objEnc[1].ToString(), icd, cpt, "", "", "", "CMS138DEX", "CMS138v10" };
+                            icdcptListDenominatorException.Add(ary);
+                            lstEncList68.Add(objEncList);
+
+                        }
+                    }
+                    if (Enc_exceptionr_lst138_Population3 != null && Enc_exceptionr_lst138_Population3.Count > 0)
+                    {
+                        var lists = (from m in lstEncList68
+                                     group m by m.Human_ID).ToList();
+
+                        DenominatorException = lists.Count;
+                        //DenominatorException = Enc_exceptionr_lst138.Count;
+                        foreach (Encounter s in lstEncList68)
+                        {
+                            while (ulEncList138_Population3.IndexOf(s.Human_ID) != -1)
+                                ulEncList138_Population3.Remove(s.Human_ID);
+                        }
+
+                    }
+                }
+                //Numerator
+                Denominator = Denominator - DenominatorException;
+
+                if (Enc_Denominator_lst138Denoninator_Population3 != null && Enc_Denominator_lst138Denoninator_Population3.Count > 0)
+                {
+
+                    IQuery Encounterumeratorquery138_Population3 = iMySession.GetNamedQuery("PQRI.GetNumeratorCMS138.Tobacco");
+                    Encounterumeratorquery138_Population3.SetParameterList("EncIds", ulEncList138.ToArray());
+                    Encounterumeratorquery138_Population3.SetString(0, "CMS138v10");
+                    Encounterumeratorquery138_Population3.SetString(1, "Numerator");
+                    Encounterumeratorquery138_Population3.SetString(2, "CMS138v10");
+                    Encounterumeratorquery138_Population3.SetString(3, "Numerator");
+
+                    //Encounterumeratorquery138.SetString(0, Fromdate.ToString("yyyy-MM-dd"));
+                    //Encounterumeratorquery138.SetString(1, Todate.ToString("yyyy-MM-dd"));
+                    //Encounterumeratorquery138.SetString(2, Fromdate.ToString("yyyy-MM-dd"));
+                    //Encounterumeratorquery138.SetString(3, Todate.ToString("yyyy-MM-dd"));
+                    //Encounterumeratorquery138.SetString(4, Fromdate.ToString("yyyy-MM-dd"));
+                    //Encounterumeratorquery138.SetString(5, Todate.ToString("yyyy-MM-dd"));
+                    //Encounterumeratorquery138.SetString(6, Fromdate.ToString("yyyy-MM-dd"));
+                    //Encounterumeratorquery138.SetString(7, Todate.ToString("yyyy-MM-dd"));
+                    //Encounterumeratorquery138.SetString(8, Fromdate.ToString("yyyy-MM-dd"));
+                    //Encounterumeratorquery138.SetString(9, Todate.ToString("yyyy-MM-dd"));
+
+
+                    ArrayList Enc_Numerator_lst138_Population3 = new ArrayList(Encounterumeratorquery138_Population3.List());
+                    int Enc_Numerator_lst138_Population3_Count = 0;
+                    if (Enc_Numerator_lst138_Population3.Count > 0)
+                    {
+
+                        for (int i = 0; i < Enc_Numerator_lst138_Population3.Count; i++)
+                        {
+                            object[] objEnc = (object[])Enc_Numerator_lst138_Population3[i];
+                            DateTime Fromdate1 = new DateTime(Fromdate.Year, 01, 01).AddYears(-1);
+                            DateTime Todate1 = new DateTime(Todate.Year, 12, 31);
+                            if ((Convert.ToDateTime(objEnc[2]) >= Fromdate1 && Convert.ToDateTime(objEnc[2]) <= Todate1) || (Convert.ToDateTime(objEnc[3]) >= Fromdate1 && Convert.ToDateTime(objEnc[3]) <= Todate1))
+                            {
+                                if (objEnc[5] != null && Convert.ToDateTime(objEnc[4]) >= Fromdate1 && Convert.ToDateTime(objEnc[4]) <= Todate1)
+                                {
+                                    string[] ary = { objEnc[0].ToString(), objEnc[1].ToString(), "", objEnc[2].ToString(), "", "", "", "CMS138N", "", "", "CMS138v10" };
+                                    icdcptListNumerator.Add(ary);
+                                    Enc_Numerator_lst138_Population3_Count++;
+                                }
+                                else
+                                {
+                                    string[] ary = { objEnc[0].ToString(), objEnc[1].ToString(), "", objEnc[2].ToString(), "", "", "", "CMS138N", "", "", "CMS138v10" };
+                                    icdcptListNumerator.Add(ary);
+                                    Enc_Numerator_lst138_Population3_Count++;
+                                }
+                            }
+
+                        }
+
+                        Numerator = Enc_Numerator_lst138_Population3_Count;
+
+                    }
+                }
+
+                PQRIlst.Add(NumeratorandDenominatorCalculationforCMSStageThree(Denominator, Numerator, DenominatorExclusion, DenominatorException, "138v10_Population3", icdcptListNumerator, icdcptListDenominator, icdcptListDenominatorExclusion, icdcptListDenominatorException, PQRIMeasureList));
+
+                LoadCQMList(Fromdate.Year.ToString(), sLegalOrg, "138v10_Population3", ulPhysicianID, icdcptListDenominator, icdcptListDenominatorExclusion, icdcptListDenominatorException, icdcptListNumerator, PQRIMeasureList, Numerator, Denominator, DenominatorExclusion, DenominatorException);
+                Numerator = 0;
+                Denominator = 0;
+                DenominatorExclusion = 0;
+                DenominatorException = 0;
+                icdcptListNumerator.Clear();
+                icdcptListDenominator.Clear();
+                icdcptListDenominatorException.Clear();
+                icdcptListDenominatorExclusion.Clear();
+                //ilstCMS138Completed.Add("Population3");
+                #endregion
 
                 //Controlling High Blood Pressure
                 #region CMS 165
@@ -12779,20 +13268,20 @@ where pr.encounter_id in (:EncIds) and (pr.loinc_observation='BMI' and pr.value 
                     //                    string sQuery = @"select c.human_id from assessment B left join encounter c on B.human_id = c.human_id
                     //left join patient_results pr on pr.human_id=c.human_id
                     //left join e_m_coding as em on em.Encounter_Id=c.Encounter_Id
-                    //where ICD in (SELECT PQRI_Value FROM pqri_data where nqf_number =?  and PQRI_calculation_Method=? and PQRI_Type in ('ICD'))
+                    //where ICD in (SELECT PQRI_Value from cqm_data where nqf_number =?  and PQRI_calculation_Method=? and PQRI_Type in ('ICD'))
                     //and c.human_id in (:EncIds)
                     //Union
                     //select c.human_id from Problem_List B left join 
                     //encounter c on B.Human_Id = c.Human_Id
                     //left join patient_results pr on pr.encounter_id=c.encounter_id
                     //left join e_m_coding as em on em.human_id=c.human_id
-                    //where ICD in (SELECT PQRI_Value FROM pqri_data where nqf_number =?  and PQRI_calculation_Method=? and PQRI_Type in ('ICD'))
+                    //where ICD in (SELECT PQRI_Value from cqm_data where nqf_number =?  and PQRI_calculation_Method=? and PQRI_Type in ('ICD'))
                     //and c.human_id in (:EncIds);";
 
                     string sQuery = @"select c.human_id from assessment B left join encounter c on B.human_id = c.human_id
 left join patient_results pr on pr.human_id=c.human_id
 left join e_m_coding as em on em.Encounter_Id=c.Encounter_Id
-where ICD in (SELECT PQRI_Value FROM pqri_data where nqf_number =?  and PQRI_calculation_Method=? and PQRI_Type in ('ICD'))
+where ICD in (SELECT PQRI_Value from cqm_data where nqf_number =?  and PQRI_calculation_Method=? and PQRI_Type in ('ICD'))
 and b.Encounter_ID in (:EncIds)";
 
                     ISQLQuery SQL = iMySession.CreateSQLQuery(sQuery);
@@ -13291,6 +13780,23 @@ and b.Encounter_ID in (:EncIds)";
                     ArrayList Enc_Numerato3_lst130 = new ArrayList(Encounterumerator3query130.List());
 
 
+                    IQuery Encounterumerator6query130 = iMySession.GetNamedQuery("PQRI.GetNumerator6CMS130.ColorectalCancer");
+                    //Encounterumerator6query130.SetString(0, Fromdate.ToString("yyyy-MM-dd"));
+                    //Encounterumerator6query130.SetString(1, Todate.ToString("yyyy-MM-dd"));
+
+
+
+                    //  Encounterumeratorquery130.SetParameter(12, "CMS130v10");
+
+                    // Encounterumeratorquery130.SetParameter(13, "Numerator");
+
+                    Encounterumerator6query130.SetParameterList("EncIds", ulEncList130.ToArray());
+
+                    ArrayList Enc_Numerato6_lst130 = new ArrayList(Encounterumerator6query130.List());
+
+
+
+
                     IQuery Encounterumerator4query130 = iMySession.GetNamedQuery("PQRI.GetNumerator4CMS130.ColorectalCancer");
                     Encounterumerator4query130.SetString(0, Fromdate.ToString("yyyy-MM-dd"));
                     Encounterumerator4query130.SetString(1, Todate.ToString("yyyy-MM-dd"));
@@ -13326,13 +13832,13 @@ and b.Encounter_ID in (:EncIds)";
                     Enc_Numerator_lst130.AddRange(Enc_Numerato3_lst130);
                     Enc_Numerator_lst130.AddRange(Enc_Numerato4_lst130);
                     Enc_Numerator_lst130.AddRange(Enc_Numerato5_lst130);
-
-
+                    Enc_Numerator_lst130.AddRange(Enc_Numerato6_lst130);
+                    
 
                     lstEncList68 = new List<Encounter>();
 
 
-
+                    string sSnomed = string.Empty;
                     for (int i = 0; i < Enc_Numerator_lst130.Count; i++)
                     {
                         Encounter obj = new Encounter();
@@ -13346,8 +13852,13 @@ and b.Encounter_ID in (:EncIds)";
                         {
                             loinc = objEnc[2].ToString();
                         }
-                        lstEncList68.Add(obj);
-                        string[] ary = { objEnc[0].ToString(), objEnc[1].ToString(), "", "", "", loinc, "", "CMS130N", "", "", "CMS130v10" };
+                        sSnomed = string.Empty;
+                        if (objEnc[3] != null)
+                        {
+                            sSnomed = objEnc[3].ToString();
+                        }
+                            lstEncList68.Add(obj);
+                        string[] ary = { objEnc[0].ToString(), objEnc[1].ToString(), "", "", "", loinc, sSnomed, "CMS130N", "", "", "CMS130v10" };
                         icdcptListNumerator.Add(ary);
 
                     }
@@ -13402,7 +13913,17 @@ and b.Encounter_ID in (:EncIds)";
 
             objCQMSummary.Measurement_Year = Convert.ToInt32(sYear);
             objCQMSummary.Measurement_No = Measure_name[0].Measurement_No;
-            objCQMSummary.Measurement_Name = Measure_name[0].Measurement_Name;
+
+            if (Measure_name.Count == 1)
+            {
+                objCQMSummary.Measurement_Name = Measure_name[0].Measurement_Name;
+            }
+            //else
+            //{
+            //    objCQMSummary.Measurement_Name = Measure_name[ilstCMS138Completed.Count].Measurement_Name;
+
+            //}
+
             objCQMSummary.Denominator = Denominator;
             objCQMSummary.Denominator_Exclusion = Exclusion;
             objCQMSummary.Denominator_Exception = Exception;

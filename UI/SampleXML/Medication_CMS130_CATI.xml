@@ -14,7 +14,7 @@
 			
 		<!-- QDM Attribute: Relevant Period -->
 		<effectiveTime xsi:type="IVL_TS">
-			<low value=""/>
+			<low value="{}"/>
 			<high nullFlavor=""/>
 		</effectiveTime>
 		<!--  QDM Attribute: Dosage -->
@@ -25,13 +25,14 @@
 				<templateId root="2.16.840.1.113883.10.20.22.4.23" extension="2014-06-09"/>
 				<id root="99916270-eb06-013a-3761-0eca209bc306"/>
 				<manufacturedMaterial>
-					<code code="" codeSystem="2.16.840.1.113883.6.88" codeSystemName="RXNORM"/>
+					<code code="{}" codeSystem="2.16.840.1.113883.6.88" codeSystemName="RXNORM"/>
 				</manufacturedMaterial>
 				<manufacturerOrganization>
-					<name>""</name>
+					<name></name>
 				</manufacturerOrganization>
 			</manufacturedProduct>
 		</consumable>
 	</substanceAdministration>
 </entry>
 </ClinicalDocument>
+
