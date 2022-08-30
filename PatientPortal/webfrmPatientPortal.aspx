@@ -627,7 +627,7 @@
                         <td>
                             <asp:TextBox ID="txtActivityLog" Wrap="true" TextMode="MultiLine"
                                 Style="font-family: Microsoft Sans Serif; font-size: 8.5pt;" Height="270px" Width="620px"
-                                runat="server" />
+                                runat="server" ReadOnly="true"/>
                         </td>
                     </tr>
                     <tr style="width: 100%;">
