@@ -1938,7 +1938,7 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
 
 
                 myRequest.BeginGetRequestStream(new AsyncCallback(GetRequestStreamCallback), myRequest);
-                using (StreamWriter requestWriter = new StreamWriter(request.GetRequestStream()))
+                using (StreamWriter requestWriter = new StreamWriter(myRequest.GetRequestStream()))
                 {
 
                     requestWriter.Write("&{0}={1}", HttpUtility.UrlEncode("ProjectName"), HttpUtility.UrlEncode(ProjectName.ToString()));
