@@ -167,27 +167,27 @@ namespace PatientPortal
 
         private void ReadDocFile()
         {
-            Microsoft.Office.Interop.Word.ApplicationClass wordApp = new Microsoft.Office.Interop.Word.ApplicationClass();
+            //Microsoft.Office.Interop.Word.ApplicationClass wordApp = new Microsoft.Office.Interop.Word.ApplicationClass();
 
-            string filePath = @"D:\\abc.doc";
+            //string filePath = @"D:\\abc.doc";
 
-            object file = filePath;
+            //object file = filePath;
 
-            object nullobj = System.Reflection.Missing.Value;
-
-
-            Microsoft.Office.Interop.Word.Document doc = wordApp.Documents.Open(ref file,
-            ref nullobj, ref nullobj, ref nullobj, ref nullobj, ref nullobj,
-            ref nullobj, ref nullobj, ref nullobj, ref nullobj, ref nullobj,
-            ref nullobj, ref nullobj, ref nullobj, ref nullobj, ref nullobj);
+            //object nullobj = System.Reflection.Missing.Value;
 
 
-            Microsoft.Office.Interop.Word.Document doc1 = wordApp.ActiveDocument;
+            //Microsoft.Office.Interop.Word.Document doc = wordApp.Documents.Open(ref file,
+            //ref nullobj, ref nullobj, ref nullobj, ref nullobj, ref nullobj,
+            //ref nullobj, ref nullobj, ref nullobj, ref nullobj, ref nullobj,
+            //ref nullobj, ref nullobj, ref nullobj, ref nullobj, ref nullobj);
 
-            string m_Content = doc1.Content.Text;
+
+            //Microsoft.Office.Interop.Word.Document doc1 = wordApp.ActiveDocument;
+
+            //string m_Content = doc1.Content.Text;
 
 
-            doc.Close(ref nullobj, ref nullobj, ref nullobj);
+            //doc.Close(ref nullobj, ref nullobj, ref nullobj);
         }
 
         protected void lnkForgotPassword_Click(object sender, EventArgs e)

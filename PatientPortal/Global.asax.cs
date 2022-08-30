@@ -44,7 +44,7 @@ namespace Acurus.Capella.PatientPortal
             ApplicationObject.elementList = objElementManager.GetAllElement(string.Empty);
 
             Rcopia_SettingsManager objRCopiaManager = new Rcopia_SettingsManager();
-            ApplicationObject.RCopiaSettingsList = objRCopiaManager.GetRcopia_Settings();
+            ApplicationObject.RCopiaSettingsList = objRCopiaManager.GetRcopia_Settings(ClientSession.LegalOrg);
 
             log4net.Config.XmlConfigurator.Configure();
         }

@@ -9831,7 +9831,7 @@ namespace Acurus.Capella.PatientPortal
 
             EncounterManager objencounter = new EncounterManager();
 
-            Session["sReturn"] = objencounter.SaveSummaryOfCare(objsummarydto, ClientSession.UserName, ClientSession.FacilityName, ClientSession.EncounterId);
+            Session["sReturn"] = objencounter.SaveSummaryOfCare(objsummarydto, ClientSession.UserName, ClientSession.FacilityName, ClientSession.EncounterId, ClientSession.LegalOrg);
             IList<ActivityLog> ActivityLogList = new List<ActivityLog>();
             ActivityLogManager ActivitylogMngr = new ActivityLogManager();
             ActivityLog activity = new ActivityLog();

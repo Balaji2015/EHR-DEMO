@@ -139,7 +139,7 @@ namespace Acurus.Capella.UI
                     EncounterManager encMngr = new EncounterManager();
                     encList = encMngr.GetById(EncounterID);
                     cboProvider.Items.Clear();
-                    PhyUserList = objPhysicianManager.GetPhysicianandUser(false, "");
+                    PhyUserList = objPhysicianManager.GetPhysicianandUser(false, "",ClientSession.LegalOrg);
                     int j = 1;
                     cboProvider.Items.Add(new RadComboBoxItem(""));
 
@@ -206,7 +206,7 @@ namespace Acurus.Capella.UI
                 {
                     IList<string> ilstPhyMailId = new List<string>();
                     cboProvider.Items.Clear();
-                    PhyUserList = objPhysicianManager.GetPhysicianandUser(false, "");
+                    PhyUserList = objPhysicianManager.GetPhysicianandUser(false, "", ClientSession.LegalOrg);
                     cboProvider.Items.Add(new RadComboBoxItem(""));
                     int j = 1;
                     for (int i = 0; i < PhyUserList.PhyList.Count; i++)

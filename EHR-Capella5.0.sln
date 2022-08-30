@@ -13,6 +13,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Lab_Agent", "Lab_Agent\Lab_
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MeasureCalculator", "MeasureCalculator\MeasureCalculator.csproj", "{92CFC9B3-E616-43E1-9B65-915551793B94}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PatientPortal", "PatientPortal\PatientPortal.csproj", "{DE93AA8C-D885-4202-A83F-3CECB2B2A0DF}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -39,6 +41,10 @@ Global
 		{92CFC9B3-E616-43E1-9B65-915551793B94}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{92CFC9B3-E616-43E1-9B65-915551793B94}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{92CFC9B3-E616-43E1-9B65-915551793B94}.Release|Any CPU.Build.0 = Release|Any CPU
+		{DE93AA8C-D885-4202-A83F-3CECB2B2A0DF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{DE93AA8C-D885-4202-A83F-3CECB2B2A0DF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{DE93AA8C-D885-4202-A83F-3CECB2B2A0DF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{DE93AA8C-D885-4202-A83F-3CECB2B2A0DF}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

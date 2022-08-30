@@ -68,11 +68,14 @@ namespace Acurus.Capella.PatientPortal
         private const string _SavedSession = "ClientSavedSession";
         private const string _CDSNotificationRule = "ClientCDSNotificationRule";
         private const string _NotificationUserLookup = "ClientNotificationUserLookup";
-       // private const string _NotificationCount = "ClientNotificationCount";//BugID:47780
-       // public static bool bIsMandatoryNotifPresent = false;
-        # endregion
+        // private const string _NotificationCount = "ClientNotificationCount";//BugID:47780
+        // public static bool bIsMandatoryNotifPresent = false;
 
-       
+        private const string _LegalOrg = "ClientLegalOrg";
+
+        #endregion
+
+
         #region Public Methods
         public static void FlushSession()
         {
@@ -696,7 +699,19 @@ namespace Acurus.Capella.PatientPortal
             }
         }
 
+        public static string LegalOrg
+        {
+            get
+            {
+                return HttpContext.Current != null ? (HttpContext.Current.Session[_LegalOrg] != null ? (string)HttpContext.Current.Session[_LegalOrg] : string.Empty) : string.Empty;
 
+            }
+
+            set
+            {
+                HttpContext.Current.Session[_LegalOrg] = value;
+            }
+        }
         # endregion
     }
 }

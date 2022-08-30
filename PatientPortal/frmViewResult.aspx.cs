@@ -4189,7 +4189,7 @@ namespace Acurus.Capella.PatientPortal
             if (btnMoveToMa.Text == "Save & Move To Provider")
             {
                 PhysicianManager objphymanager = new PhysicianManager();
-                PhyUserList = objphymanager.GetPhysicianandUser(false, string.Empty);
+                PhyUserList = objphymanager.GetPhysicianandUser(false, string.Empty, ClientSession.LegalOrg);
                 string sPhysicianName = string.Empty;
                 string[] current_process = new string[] { "MA_RESULTS" };
                 if (PhyUserList != null && PhyUserList.UserList != null && PhyUserList.UserList.Count > 0)
