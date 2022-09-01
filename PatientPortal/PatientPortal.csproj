@@ -140,14 +140,22 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Content Include="atala-capture-download\mz5zm3drzbgplxqlsrd4bzdp\MAILINBOX\CheckAAA_Acurus__1904 N OG AVE_582783_878005_20220830041343.xml" />
+    <Content Include="atala-capture-download\mz5zm3drzbgplxqlsrd4bzdp\MAILINBOX\CheckAAA_Acurus__1904 N OG AVE_582783_878005_20220830042622.xml" />
+    <Content Include="atala-capture-download\mz5zm3drzbgplxqlsrd4bzdp\MAILINBOX\CheckAAA_Acurus__1904 N OG AVE_582783_878005_20220830043158.xml" />
     <Content Include="bin\Acurus.Capella.Core.dll" />
     <Content Include="bin\Acurus.Capella.Core.pdb" />
     <Content Include="bin\Acurus.Capella.DataAccess.dll" />
     <Content Include="bin\Acurus.Capella.DataAccess.pdb" />
+    <Content Include="bin\Acurus.Capella.DataAccess.XmlSerializers.dll" />
     <Content Include="bin\Acurus.Capella.PatientPortal.dll" />
     <Content Include="bin\Acurus.Capella.PatientPortal.pdb" />
+    <Content Include="bin\AjaxControlToolkit.dll" />
     <Content Include="bin\Antlr3.Runtime.dll" />
     <Content Include="bin\EMRDirect.dll" />
+    <Content Include="bin\EnvDTE.dll" />
+    <Content Include="bin\HbmMaps\Request_Sent_Log.hbm.xml" />
+    <Content Include="bin\HbmMaps\Response_Received_Log.hbm.xml" />
     <Content Include="bin\hibernate.cfg.xml" />
     <Content Include="bin\Iesi.Collections.dll" />
     <Content Include="bin\Ionic.Zip.Reduced.dll" />
@@ -186,6 +194,10 @@
     <Content Include="CSS\moment.js" />
     <Content Include="CSS\ScanningAndIndexing.css" />
     <Content Include="CSS\style.css" />
+    <Content Include="Documents\mz5zm3drzbgplxqlsrd4bzdp\Clinical Summary\20220830\CheckAAA_Acurus__1904 N OG AVE_582783_878005_20220830041012.xml" />
+    <Content Include="Documents\mz5zm3drzbgplxqlsrd4bzdp\Clinical Summary\20220830\CheckAAA_Acurus__1904 N OG AVE_582783_878005_20220830041343.xml" />
+    <Content Include="Documents\mz5zm3drzbgplxqlsrd4bzdp\Clinical Summary\20220830\CheckAAA_Acurus__1904 N OG AVE_582783_878005_20220830042622.xml" />
+    <Content Include="Documents\mz5zm3drzbgplxqlsrd4bzdp\Clinical Summary\20220830\CheckAAA_Acurus__1904 N OG AVE_582783_878005_20220830043158.xml" />
     <Content Include="ErrorMessage.xml" />
     <Content Include="ErrorPage.aspx" />
     <Content Include="frmChangePassword.aspx" />
@@ -227,6 +239,7 @@
     <Content Include="JScripts\Lazyload.js" />
     <Content Include="JScripts\metro.js" />
     <Content Include="JScripts\tooltip.min.js" />
+    <Content Include="Properties\PublishProfiles\FolderProfile.pubxml.user" />
     <Content Include="Resources\16_16.ico" />
     <Content Include="Resources\articleicon.png" />
     <Content Include="Resources\Email.png" />
@@ -662,6 +675,14 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <Content Include="atala-capture-download\mz5zm3drzbgplxqlsrd4bzdp\MAILINBOX\CheckAAA_Acurus__1904 N OG AVE_582783_878005_20220830041343_SummaryOfCare.pdf" />
+    <Content Include="atala-capture-download\mz5zm3drzbgplxqlsrd4bzdp\MAILINBOX\CheckAAA_Acurus__1904 N OG AVE_582783_878005_20220830042622_SummaryOfCare.pdf" />
+    <Content Include="atala-capture-download\mz5zm3drzbgplxqlsrd4bzdp\MAILINBOX\CheckAAA_Acurus__1904 N OG AVE_582783_878005_20220830043158_SummaryOfCare.pdf" />
+    <Content Include="Documents\mz5zm3drzbgplxqlsrd4bzdp\Summary Of Care\20220830\CheckAAA_Acurus__1904 N OG AVE_582783_878005_20220830041012_SummaryOfCare.pdf" />
+    <Content Include="Documents\mz5zm3drzbgplxqlsrd4bzdp\Summary Of Care\20220830\CheckAAA_Acurus__1904 N OG AVE_582783_878005_20220830041343_SummaryOfCare.pdf" />
+    <Content Include="Documents\mz5zm3drzbgplxqlsrd4bzdp\Summary Of Care\20220830\CheckAAA_Acurus__1904 N OG AVE_582783_878005_20220830042622_SummaryOfCare.pdf" />
+    <Content Include="Documents\mz5zm3drzbgplxqlsrd4bzdp\Summary Of Care\20220830\CheckAAA_Acurus__1904 N OG AVE_582783_878005_20220830043158_SummaryOfCare.pdf" />
+    <None Include="Properties\PublishProfiles\FolderProfile.pubxml" />
     <None Include="Service References\PatientPortalServiceReference\PatientPortalWebService.wsdl" />
   </ItemGroup>
   <ItemGroup>
