@@ -6,7 +6,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head id="Head1" runat="server">
       <link href="CSS/CommonStyle.css" rel="stylesheet" type="text/css" />
-    <title>CQM Measure Calculator</title>
+    <title>eCQM Calculator</title>
     <%--<script src="https://logrocket.acurussolutions.io/LogRocket.js"; crossorigin="anonymous"></script> <script>window.LogRocket && window.LogRocket.init('akido/akido-test', { mergeIframes: true }, { enableVerboseLogging: true });</script>--%>
     <style type="text/css">
         .style2 {
