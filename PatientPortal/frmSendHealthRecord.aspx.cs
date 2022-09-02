@@ -302,6 +302,11 @@ namespace Acurus.Capella.UI
 
         protected void btnSend_Click(object sender, EventArgs e)
         {
+            
+            if (hdnHumanID.Value == "")
+            {
+                hdnHumanID.Value = ClientSession.HumanId.ToString();
+            }
             Attachment attach = null;
             string sForCancel = hdnType.Value;
             string sForCancelInsend = hdnMessageType.Value;
