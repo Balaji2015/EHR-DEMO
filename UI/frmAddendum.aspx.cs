@@ -76,17 +76,17 @@ namespace Acurus.Capella.UI
                     return;*/
                 #endregion
 
-                EncounterManager objEncounterManager = new EncounterManager();
-                FillPatientChart objFillPatientChart = objEncounterManager.LoadPatientChart(ClientSession.HumanId, ClientSession.EncounterId, UtilityManager.ConvertToLocal(DateTime.UtcNow), string.Empty, ClientSession.UserName, true, 0, "ADDENDUM", true);//0);
-                FillEncounterandWFObject objFillEncounterandWFObject = objFillPatientChart.Fill_Encounter_and_WFObject;
-                Session["objFillEncounterandWFObject"] = objFillEncounterandWFObject;
-                ClientSession.PatientPaneList = objFillPatientChart.PatChartList;
-
                 if (Request["currentAddendumId"] != null && Request["currentAddendumId"].ToString() != string.Empty)
                     curr_AddendumObjID = Convert.ToUInt32(Request["currentAddendumId"].ToString());
                 else
                     curr_AddendumObjID = 0;
                 txtAddendumNotes.DName = "pbDropList";
+
+                EncounterManager objEncounterManager = new EncounterManager();
+                FillPatientChart objFillPatientChart = objEncounterManager.LoadPatientChart(ClientSession.HumanId, ClientSession.EncounterId, UtilityManager.ConvertToLocal(DateTime.UtcNow), string.Empty, ClientSession.UserName, true, curr_AddendumObjID, "ADDENDUM", true);//0);
+                FillEncounterandWFObject objFillEncounterandWFObject = objFillPatientChart.Fill_Encounter_and_WFObject;
+                Session["objFillEncounterandWFObject"] = objFillEncounterandWFObject;
+                ClientSession.PatientPaneList = objFillPatientChart.PatChartList;
 
                 Title = "Amendment - " + ClientSession.UserName.ToUpper();
                 pnlAttestation.Visible = lblAddendumSignedBy.Visible = txtAddendumSignedByText.Visible = lblAddendumSignedDateAndTime.Visible = txtAddendumSignedDateAndTimeText.Visible = btnMoveToProviderReview.Enabled = btnSaveAndClose.Enabled = false;
