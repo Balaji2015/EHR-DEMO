@@ -106,6 +106,7 @@
     <Compile Include="DomainObjects\AllProcedure.cs" />
     <Compile Include="DomainObjects\All_Drug.cs" />
     <Compile Include="DomainObjects\AOELookUp.cs" />
+    <Compile Include="DomainObjects\ApplicationAccessLog.cs" />
     <Compile Include="DomainObjects\AppointmentLookup.cs" />
     <Compile Include="DomainObjects\Assessment.cs" />
     <Compile Include="DomainObjects\AssessmentVitalsLookup.cs" />
@@ -710,6 +711,7 @@
     <Content Include="bin\Release\log4net.dll" />
     <EmbeddedResource Include="HbmMaps\CQMDetail.hbm.xml" />
     <EmbeddedResource Include="HbmMaps\CQMSummary.hbm.xml" />
+    <EmbeddedResource Include="HbmMaps\ApplicationAccessLog.hbm.xml" />
     <Content Include="HbmMaps\ErrorLog.hbm.xml" />
     <EmbeddedResource Include="HbmMaps\ModifierLibrary.hbm.xml" />
     <EmbeddedResource Include="HbmMaps\Human_Token.hbm.xml" />

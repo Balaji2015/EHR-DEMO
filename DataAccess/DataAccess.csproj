@@ -130,6 +130,7 @@
     <Compile Include="ManagerObjects\AllICD_9Manager.cs" />
     <Compile Include="ManagerObjects\All_DrugManager.cs" />
     <Compile Include="ManagerObjects\AOELookUpManager.cs" />
+    <Compile Include="ManagerObjects\ApplicationAccessLogManager.cs" />
     <Compile Include="ManagerObjects\AppointmentLookupManager.cs" />
     <Compile Include="ManagerObjects\AssessmentManager.cs" />
     <Compile Include="ManagerObjects\AssessmentVitalsLookupManager.cs" />

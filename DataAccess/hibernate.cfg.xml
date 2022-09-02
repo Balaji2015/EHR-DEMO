@@ -287,7 +287,6 @@
       <mapping resource="Acurus.Capella.Core.HbmMaps.Rcopia_Allergy_Temp.hbm.xml" assembly="Acurus.Capella.Core" />-->
       <mapping resource="Acurus.Capella.Core.HbmMaps.Context.hbm.xml" assembly="Acurus.Capella.Core" />
       <mapping resource="Acurus.Capella.Core.HbmMaps.VaccineAdminProcedureMapping.hbm.xml" assembly="Acurus.Capella.Core" />
-
       <mapping resource="Acurus.Capella.Core.HbmMaps.AccountTransactionArc.hbm.xml" assembly="Acurus.Capella.Core" />
       <mapping resource="Acurus.Capella.Core.HbmMaps.PPHeaderArc.hbm.xml" assembly="Acurus.Capella.Core" />
       <mapping resource="Acurus.Capella.Core.HbmMaps.PPLineItemArc.hbm.xml" assembly="Acurus.Capella.Core" />
@@ -298,7 +297,7 @@
       <mapping resource="Acurus.Capella.Core.HbmMaps.ImmunizationSubmissionLog.hbm.xml" assembly="Acurus.Capella.Core" />
 		<mapping resource="Acurus.Capella.Core.HbmMaps.CQMSummary.hbm.xml" assembly="Acurus.Capella.Core" />
 		<mapping resource="Acurus.Capella.Core.HbmMaps.CQMDetail.hbm.xml" assembly="Acurus.Capella.Core" />
-
+		<mapping resource="Acurus.Capella.Core.HbmMaps.ApplicationAccessLog.hbm.xml" assembly="Acurus.Capella.Core" />
 	</session-factory>
   </hibernate-configuration>
 

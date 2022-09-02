@@ -1,0 +1,20 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<hibernate-mapping xmlns="urn:nhibernate-mapping-2.2" namespace="Acurus.Capella.Core.DomainObjects" assembly="Acurus.Capella.Core">
+  <class name="Acurus.Capella.Core.DomainObjects.ApplicationAccessLog,Acurus.Capella.Core" table="application_access_log" lazy="true">
+    <id name="Id" column="Application_Access_Log_ID">
+      <generator class="identity" />
+    </id>
+    <property name="Token_ID" column="Token_ID" />
+    <property name="Patient_ID" column="Patient_ID" />
+    <property name="Access_Type" column="Access_Type" />
+    <property name="Last_Name" column="Last_Name" />
+    <property name="Birth_Date" column="Birth_Date" />
+    <property name="Start_Date" column="Start_Date" />
+    <property name="Stop_Date" column="Stop_Date" />
+    <property name="Category" column="Category" />
+    <property name="Created_By" column="Created_By" />
+    <property name="Modified_By" column="Modified_By" />
+    <property name="Created_Date_And_Time" column="Created_Date_And_Time" />
+    <property name="Modified_Date_And_Time" column="Modified_Date_And_Time" />
+  </class>
+</hibernate-mapping>
