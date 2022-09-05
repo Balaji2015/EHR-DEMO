@@ -5861,10 +5861,11 @@ namespace Acurus.Capella.UI
                     IList<string[]> ICD = new List<string[]>();
                     //Dictionary<string, string> DICD = new Dictionary<string, string>();
 
-
+                    Session["PrimaryICD"] = "";
 
                     foreach (PQRIResultDTO item in objICDlst)
                     {
+                        Session["PrimaryICD"] = "";
 
                         if (lst_Pqri_Data.Any(a => a.PQRI_Value.Trim() == item.ICD.Trim() && item.MeasureName == a.NQF_Number) && !ICD.Any(a => a[0].Trim() == item.ICD.Trim()))// && a[1].Trim() == item.EncounterID.ToString().Trim()))
                         {
@@ -5892,7 +5893,7 @@ namespace Acurus.Capella.UI
                     string sValueSetLoinc = string.Empty;
                     if (objLoinclst.Count > 0 && objsnomedlsttemp.Count > 0)
                     {
-
+                        Session["PrimaryICD"] = "";
                         foreach (PQRIResultDTO item in objLoinclst)
                         {
                             if (lst_Pqri_Data.Any(a => a.PQRI_Value.Trim() == item.LoincIdentifier.Trim()) &&
@@ -5936,7 +5937,7 @@ namespace Acurus.Capella.UI
                                 Loinc.Add(new string[] { item.LoincIdentifier.Trim(), item.EncounterID.ToString().Trim() });
                                 PQRI_Data Loinc_Item_lst = lst_Pqri_Data.Where(a => a.PQRI_Value.Trim() == item.LoincIdentifier.Trim() && a.NQF_Number == item.MeasureName).ToList<PQRI_Data>()[0];
                                 Encounter objLoinc_Enc = EncList.Where(a => a.Id == item.EncounterID).ToList<Encounter>()[0];
-
+                                Session["PrimaryICD"] = "";
                                 sValueSetLoinc = lst_Pqri_Data.Where(a => a.PQRI_Value.Trim() == item.LoincIdentifier.Trim() && a.NQF_Number == Name).ToList<PQRI_Data>().Count > 0 ? lst_Pqri_Data.Where(a => a.PQRI_Value.Trim() == item.LoincIdentifier.Trim() && a.NQF_Number == Name).ToList<PQRI_Data>()[0].Value_Set : string.Empty;
                                 XMLInsertsb.Append(SubXMLLoadCATIStageThree(Loinc_Item_lst, item, objLoinc_Enc, sValueSetLoinc, HumanLst).ToString());
                                 //}
@@ -5972,6 +5973,18 @@ namespace Acurus.Capella.UI
                             PQRI_Data Proc_Item_lst = lst_Pqri_Data.Where(a => a.PQRI_Value.Trim() == item.ProcedureCode.Trim() && item.MeasureName == a.NQF_Number).ToList<PQRI_Data>()[0];
                             Encounter objProc_Enc = EncList.Where(a => a.Id == item.EncounterID).ToList<Encounter>()[0];
                             string sValueSet = string.Empty;
+                            AssessmentManager objas = new AssessmentManager();
+                            IList<Assessment> lstass = new List<Assessment>();
+                            lstass = objas.GetAssessmentUsingEncounterID(Convert.ToUInt64(item.EncounterID));
+                           if(lstass.Count>0)
+                            {
+                                lstass = (from a in lstass where a.Primary_Diagnosis == "Y" select a).ToList<Assessment>();
+                               Session["PrimaryICD"] = lstass[0].ICD;
+                            }
+                            else 
+                            {
+                                Session["PrimaryICD"] = "Nullflavor";
+                            }
 
                             XMLInsertsb.Append(SubXMLLoadCATIStageThree(Proc_Item_lst, item, objProc_Enc, sValueSet, HumanLst).ToString());
 
@@ -8423,6 +8436,45 @@ namespace Acurus.Capella.UI
             Loopsb = new StringBuilder();
             Loopsb.Append(objEncMainsb.ToString());
 
+
+
+            if (Session["PrimaryICD"].ToString() != "")
+            {
+                //<value xsi:type="CD" code="{}"
+
+                if (Session["PrimaryICD"].ToString() != "Nullflavor")
+                {
+                    if (Loopsb.ToString().IndexOf(@"<value xsi:type=""CD"" code=""{}""") > -1)
+
+                        Loopsb.Insert(Loopsb.ToString().IndexOf(@"<value xsi:type=""CD"" code=""{}""") + 29, Session["PrimaryICD"].ToString());
+                }
+                else
+                {
+                    if (Loopsb.ToString().IndexOf(@"<value xsi:type=""CD"" code=""{}""") > -1)
+                    {
+                        Loopsb.Insert(Loopsb.ToString().IndexOf(@"<value xsi:type=""CD"" code=""{}""") + 21,
+                            @"nullFlavor=""NA""");
+                        int startindex = Loopsb.ToString().IndexOf(@"code=""{}"" codeSystem=""2.16.840.1.113883.6.90"" codeSystemName=""ICD10CM""");
+                        int endindex = Loopsb.ToString().IndexOf("ICD10CM")+8;
+                        Loopsb.Replace(Loopsb.ToString().Substring(startindex, endindex - startindex), "");
+                        // Loopsb.ToString().Replace(@"code=""{}"" codeSystem=""2.16.840.1.113883.6.90"" codeSystemName=""ICD10CM""", "");
+                       // Loopsb.ToString().Replace(, "");
+                    }
+                    //    xmlReqNode = xDox.GetElementsByTagName("value");
+                    //    xmlReqNode[0].Attributes.RemoveAll();
+                    //    XmlAttribute xAttribute = xmlReqNode[0].OwnerDocument.CreateAttribute("xsi", "type", "http://www.w3.org/2001/XMLSchema-instance");
+                    //    xAttribute.Value = "REAL";
+                    //    xmlReqNode[0].Attributes.Append(xAttribute);
+                    //    XmlAttribute xAttributenull = xmlReqNode[0].OwnerDocument.CreateAttribute("nullFlavor");
+                    //    xAttributenull.Value = "NA";
+                    //    xmlReqNode[0].Attributes.Append(xAttributenull);
+                }
+
+
+                //= "Nullflavor";
+            }
+
+
             if (Loopsb.ToString().IndexOf(@"<time value=""{}""") > -1)
                 Loopsb.Insert(Loopsb.ToString().IndexOf(@"<time value=""{}""") + 13, ConvertToLocal(EncLst.Date_of_Service).ToString("yyyyMMddhhmmss"));
 
@@ -8443,6 +8495,9 @@ namespace Acurus.Capella.UI
 
             if (Loopsb.ToString().IndexOf(@"high value=""{}""") > -1)
                 Loopsb.Insert(Loopsb.ToString().IndexOf(@"high value=""{}""") + 12, ConvertToLocal(EncLst.Date_of_Service).AddHours(1).ToString("yyyyMMddhhmmss"));
+
+            if (Loopsb.ToString().IndexOf(@"high value=""{}""") > -1)
+                Loopsb.Insert(Loopsb.ToString().IndexOf(@"high value=""{}""") + 12, ConvertToLocal(EncLst.Date_of_Service).AddHours(1).ToString("yyyyMMddhhmmss"));
             if (Loopsb.ToString().IndexOf(@"<value code=""{}""") > -1)
                 Loopsb.Insert(Loopsb.ToString().IndexOf(@"<value code=""{}""") + 13, PQRI_Data_value.PQRI_Value);
             if (Loopsb.ToString().LastIndexOf(@"code=""{}""") > -1)
@@ -8454,6 +8509,7 @@ namespace Acurus.Capella.UI
 
             if (Loopsb.ToString().IndexOf("<originalText>") > -1)
                 Loopsb.Insert(Loopsb.ToString().IndexOf("<originalText>") + 14, PQRI_Data_value.PQRI_Description);
+
 
             AddEncountersb.AppendFormat(Loopsb.ToString().Replace("{}", ""));
             SubXMLsb.Append(AddEncountersb.ToString());

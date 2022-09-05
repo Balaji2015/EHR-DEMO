@@ -14618,7 +14618,7 @@ and PQRI_calculation_Method=? and PQRI_Type in ('ICD'))
 union
 
 select distinct encounter_id,human_id from care_plan where care_name_value in ('Hospice Care',
-'Palliative Care') and status='Yes' and snomed_Code!='' and human_id in (:EncIds);
+'Palliative Care','Frailty Device') and status='Yes' and snomed_Code!='' and human_id in (:EncIds);
 ]]>
 
 

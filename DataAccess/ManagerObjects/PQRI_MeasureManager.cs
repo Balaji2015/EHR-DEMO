@@ -13670,7 +13670,7 @@ and b.Encounter_ID in (:EncIds)";
                     }
 
                 }
-                if (Enc_Exclusion_lst130 != null && Enc_Exclusion_lst130.Count > 0)
+                if (ulEncList130_exception != null && ulEncList130_exception.Count > 0)
                 {
                     //for (int i = 0; i < Enc_Exclusion_lst130.Count; i++)
                     //{
