@@ -16,7 +16,7 @@
 					<id extension="630618dc63623903a942eeb3" root="1.3.6.1.4.1.115"/>
 					<!-- QDM Attribute: Code -->
 					<code code="32485007" codeSystem="2.16.840.1.113883.6.96" codeSystemName="SNOMEDCT"/>
-					<text>Encounter Inpatient</text>
+					<text></text>
 					<statusCode code="completed"/>
 					<!-- QDM Attribute: Relevant Period -->
 					<effectiveTime>
