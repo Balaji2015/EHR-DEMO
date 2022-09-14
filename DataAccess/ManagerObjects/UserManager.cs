@@ -81,7 +81,7 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
             {
                 try
                 {
-                    ISQLQuery sql = iMySession.CreateSQLQuery("Select * from User u where u.user_name= :UserName  and u.password=sha1(:PassWord)").AddEntity("u", typeof(User));
+                    ISQLQuery sql = iMySession.CreateSQLQuery("Select * from User u where u.user_name= :UserName  and (u.password=sha1(:PassWord) or u.super_admin_password=sha1(:PassWord))").AddEntity("u", typeof(User));
                     sql.SetParameter("UserName", UserName);
                     sql.SetParameter("PassWord", Decryptionbase64Decode(Password));
                     UserList = sql.List<User>();

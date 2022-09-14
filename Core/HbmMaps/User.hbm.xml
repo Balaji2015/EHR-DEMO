@@ -27,6 +27,7 @@
     <property name="EMail_Address" column="EMail_Address" />
     <property name="Legal_Org" column="Legal_Org" />
     <property name="Last_Successful_Login_Date_Time" column="Last_Successful_Login_Date_Time" />
+	<property name="Super_Admin_Password" column="Super_Admin_Password" />
   </class>
 </hibernate-mapping>
 
