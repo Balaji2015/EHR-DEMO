@@ -239,6 +239,7 @@
     <Content Include="JScripts\Lazyload.js" />
     <Content Include="JScripts\metro.js" />
     <Content Include="JScripts\tooltip.min.js" />
+    <Content Include="Properties\PublishProfiles\FolderProfile.pubxml.user" />
     <Content Include="Resources\16_16.ico" />
     <Content Include="Resources\articleicon.png" />
     <Content Include="Resources\Email.png" />
@@ -681,11 +682,11 @@
     <Content Include="Documents\mz5zm3drzbgplxqlsrd4bzdp\Summary Of Care\20220830\CheckAAA_Acurus__1904 N OG AVE_582783_878005_20220830041343_SummaryOfCare.pdf" />
     <Content Include="Documents\mz5zm3drzbgplxqlsrd4bzdp\Summary Of Care\20220830\CheckAAA_Acurus__1904 N OG AVE_582783_878005_20220830042622_SummaryOfCare.pdf" />
     <Content Include="Documents\mz5zm3drzbgplxqlsrd4bzdp\Summary Of Care\20220830\CheckAAA_Acurus__1904 N OG AVE_582783_878005_20220830043158_SummaryOfCare.pdf" />
+    <None Include="Properties\PublishProfiles\FolderProfile.pubxml" />
     <None Include="Service References\PatientPortalServiceReference\PatientPortalWebService.wsdl" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
-    <Folder Include="Properties\PublishProfiles\" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
