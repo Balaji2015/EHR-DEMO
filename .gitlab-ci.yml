@@ -34,7 +34,7 @@ build Test Job:
     /p:ExcludeFoldersFromDeployment=PatientPortal
     /p:PublishProfile=FolderProfile.pubxml
     /p:publishUrl=E:\Deployee\builds\Capella_publish\ 
-   
+    /p:IgnoreDeployManagedRuntimeVersion=True 
     #/p:publishUrl=.\EHR_REPORTS2.0\bin\Publish\ '
    
 
