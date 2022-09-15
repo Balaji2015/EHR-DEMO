@@ -32,7 +32,7 @@ build Test Job:
     /p:DeleteExistingFiles=True 
     /p:Platform="Any CPU" 
     /p:ExcludeFoldersFromDeployment=PatientPortal
-    /p:PublishProfile=UI/Properties/PublishProfiles/FolderProfile.pubxml
+    /p:PublishProfile=FolderProfile.pubxml
     /p:publishUrl=E:\Deployee\builds\Capella_publish\ 
    
     #/p:publishUrl=.\EHR_REPORTS2.0\bin\Publish\ '
