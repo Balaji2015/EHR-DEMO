@@ -30,10 +30,10 @@ build Test Job:
     /p:DeployOnBuild=true 
     /p:Configuration=Release
     /p:DeleteExistingFiles=True 
-    /p:Platform="Any CPU" 
-    /p:ExcludeFoldersFromDeployment=PatientPortal
+    /p:Platform="Any CPU"     
     /p:PublishProfile=FolderProfile.pubxml
     /p:publishUrl=E:\Deployee\builds\Capella_publish\ 
+    /p:ExcludeFoldersFromDeployment=ehr-capella5.0\PatientPortal
     /p:IgnoreDeployManagedRuntimeVersion=True 
     #/p:publishUrl=.\EHR_REPORTS2.0\bin\Publish\ '
    
