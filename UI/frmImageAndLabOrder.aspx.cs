@@ -3803,7 +3803,37 @@ namespace Acurus.Capella.UI
                     objOrderSubmit.Physician_ID = PhysicianID;
                 //}
                     
-                objOrderSubmit.Facility_Name = ClientSession.FacilityName;
+                //objOrderSubmit.Facility_Name = ClientSession.FacilityName;
+                if (Request["ScreenMode"].ToString().ToUpper() == "MENU")
+                {
+                    string strXmlFilePath1 = Path.Combine(System.Web.Hosting.HostingEnvironment.ApplicationPhysicalPath, "ConfigXML\\User.xml");
+                    if (File.Exists(strXmlFilePath1) == true)
+                    {
+                        XmlDocument xmldocUser = new XmlDocument();
+                        xmldocUser.Load(System.Web.Hosting.HostingEnvironment.ApplicationPhysicalPath + "ConfigXML\\" + "User" + ".xml");
+
+                        XmlNodeList xmlUserList = xmldocUser.GetElementsByTagName("User");
+
+
+                        if (xmlUserList.Count > 0)
+                        {
+                            foreach (XmlNode item in xmlUserList)
+                            {
+                                if (PhysicianID.ToString() == item.Attributes["Physician_Library_ID"].Value)
+                                {
+                                    objOrderSubmit.Facility_Name = item.Attributes["Default_Facility"].Value;
+                                    break;
+                                }
+                            }
+                        }
+                    }
+                }
+                else
+                {
+                    objOrderSubmit.Facility_Name = ClientSession.FacilityName;
+                }
+
+
                 objOrderSubmit.Height = string.Empty;
                 objOrderSubmit.Weight = string.Empty;
                 objOrderSubmit.Temperature = ilstTemp.Where(a => a.Value == str).Select(a => a.Key).SingleOrDefault();
