@@ -216,6 +216,7 @@ namespace Acurus.Capella.UI
                 objPhy.Category = itemNode.Attributes["username"].Value.ToString();//Temporarily Used to Store UserName
                 objPhy.PhySuffix = itemNode.Attributes["suffix"].Value.ToString();
                 objPhy.Id = ulong.Parse(itemNode.Attributes["ID"].Value.ToString());
+                //GitLab # 2364 - Enabled Menu level Order for Ancillary FO
                 if (objPhy.Category != string.Empty && itemNode.Attributes["machine_technician_id"].Value.ToString() == "0")
                 {
                     lstPhysician.Add(objPhy);
@@ -241,9 +242,10 @@ namespace Acurus.Capella.UI
             if (NotInList)
             {
                 chkShowAll.Checked = true;
+                //GitLab # 2364 - Enabled Menu level Order for Ancillary FO
                 //if (ClientSession.UserRole == "Physician" || ClientSession.UserRole == "Physician Assistant" )
                 //{
-                    cboPhysician.Items.Clear();
+                   cboPhysician.Items.Clear();
                     //PhyUserList = objPhysicianManager.GetPhysicianandUser(false, string.Empty);
                     PhyList = GetPhysicianList(string.Empty);
                     NotInList = FillComboBox(PhyList);
@@ -278,6 +280,7 @@ namespace Acurus.Capella.UI
                     cboPhysician.Items[i + 1].Selected = true;
                     OpenOrdersScreen();
                 }
+                //GitLab # 2364 - Enabled Menu level Order for Ancillary FO
                 NotInList = false;
             }
             return NotInList;

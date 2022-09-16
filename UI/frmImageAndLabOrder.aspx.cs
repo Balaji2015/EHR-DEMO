@@ -3804,6 +3804,7 @@ namespace Acurus.Capella.UI
                 //}
                     
                 //objOrderSubmit.Facility_Name = ClientSession.FacilityName;
+                //GitLab # 2364 - Enabled Menu level Order for Ancillary FO 
                 if (Request["ScreenMode"] != null && Request["ScreenMode"].ToString().ToUpper() == "MENU")
                 {
                     string strXmlFilePath1 = Path.Combine(System.Web.Hosting.HostingEnvironment.ApplicationPhysicalPath, "ConfigXML\\User.xml");
