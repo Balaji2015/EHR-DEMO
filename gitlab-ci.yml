@@ -1,0 +1,98 @@
+# You can override the included template(s) by including variable overrides
+# SAST customization: https://docs.gitlab.com/ee/user/application_security/sast/#customizing-the-sast-settings
+# Secret Detection customization: https://docs.gitlab.com/ee/user/application_security/secret_detection/#customizing-settings
+# Dependency Scanning customization: https://docs.gitlab.com/ee/user/application_security/dependency_scanning/#customizing-the-dependency-scanning-settings
+# Container Scanning customization: https://docs.gitlab.com/ee/user/application_security/container_scanning/#customizing-the-container-scanning-settings
+# Note that environment variables can be set in several places
+# See https://docs.gitlab.com/ee/ci/variables/#cicd-variable-precedence
+variables:
+  NUGET_PATH: C:\Program Files\Nuget\nuget.exe
+  MSBUILD_PATH: C:\Program Files\Microsoft Visual Studio\2022\Professional\MSBuild\Current\Bin\MSBuild.exe
+
+stages:
+ - Testing build
+ - Production build
+ - Deploy TESTING
+ - Deploy Production
+
+before_script:
+   - echo "Nuget script..start"
+   - '& "$env:NUGET_PATH" restore EHR-Capella5.0.sln'
+   - echo "Nuget script..Completed"
+ 
+build Test Job:
+  rules:
+    - if: '$SERVER_TESTING =="10.0.0.11"'
+  stage: Testing build
+  script:
+  - echo "UI Building..start"
+  - '& "$env:MSBUILD_PATH" EHR-Capella5.0.sln 
+    /p:DeployOnBuild=true 
+    /p:Configuration=Release
+    /p:DeleteExistingFiles=True 
+    /p:Platform="Any CPU"     
+    /p:PublishProfile=FolderProfile.pubxml
+    #/p:publishUrl=E:\Deployee\builds\Capella_publish\ 
+    #/p:ExcludeFoldersFromDeployment=.\ehr-capella5.0\PatientPortal
+    #/p:IgnoreDeployManagedRuntimeVersion=True 
+    #/p:publishUrl=.\EHR_REPORTS2.0\bin\Publish\ '
+   
+
+  - echo "Building..Completed"
+  artifacts:
+    expire_in: 365 days
+    paths:
+    - EHR-Capella5.0\
+
+Deploy Test Job:
+  rules:
+    - if: '$SERVER_TESTING =="10.0.0.11"'
+  environment:
+    name: Capella_Test
+    url: https://cmgtest10.capellaehr.com:8081/frmlogin.aspx
+  stage: Deploy TESTING
+  script:
+  
+  - echo "Backup CMG..Start.."
+  - xcopy /y /s "E:\Acurus_Web\capella_cmg_project\capella_cmg_ehr_4_8\*.*" "E:\Deployee\Backup-do not delete\Git\CMG"
+  - echo "Backup CMG..Completed.."
+  - echo "Backup WC..Start.."
+  - xcopy /y /s "E:\Acurus_Web\capella_hca_project\capella_wc\*.*" "E:\Deployee\Backup-do not delete\Git\WC"
+  - echo "Backup WC..Completed.."
+  - echo "Deployee CMG..Start.."
+  #- xcopy /y /s "E:\Deployee\builds\Capella_publish\*.*" "E:\Acurus_Web\capella_cmg_project\capella_cmg_cicd\"
+  - xcopy /y /s "E:\Deployee\builds\Capella_publish\*.*" "E:\Acurus_Web\capella_cmg_project\capella_cmg_ehr_4_8\"
+  - echo "Deployee CMG..Completed.."
+  - echo "Deployee WC..Start.."
+  - xcopy /y /s "E:\Deployee\builds\Capella_publish\*.*" "E:\Acurus_Web\capella_hca_project\capella_wc\"
+  - echo "Deployee WC..Completed.."
+  #- echo "Deployee CQM..Start.."
+  #- xcopy /y /s "E:\Deployee\builds\Capella_publish\*.*" "E:\Acurus_Web\capella_cmg_project\capella_cmg_ehr_cqm\"
+  #- echo "Deployee CQM..Completed.."
+
+
+build Production Job:   
+   rules:
+    - if: '$SERVER_PRODUCTION =="PRODUCTION"'
+   stage: Production build
+   script:
+   - echo "UI Building..start"
+   - '& "$env:MSBUILD_PATH" EHR-Capella5.0.sln /p:DeployOnBuild=true /p:Configuration=Release
+    /p:DeleteExistingFiles=True /p:Platform="Any CPU" /p:PublishProfile=FolderProfile.pubxml
+    /p:publishUrl=E:\Deployee\builds\Capella_publish\ #/p:publishUrl=.\EHR_REPORTS2.0\bin\Publish\ '
+   - echo "Building..Completed"
+   artifacts:
+    expire_in: 365 days
+    paths:
+    - EHR-Capella5.0\
+
+#include:
+#- template: Security/SAST.gitlab-ci.yml
+
+Deploy Production Job:
+  rules:
+    - if: '$SERVER_PRODUCTION =="PRODUCTION"'
+  stage: Deploy Production
+  script:
+  - xcopy /y /s "E:\Deployee\builds\Capella_publish\*.*" "E:\Deployee\Capella_production"
+
