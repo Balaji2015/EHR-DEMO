@@ -75,8 +75,7 @@ Deploy Test Job 10.0.0.11:
   - xcopy /y /s "E:\Acurus_Web\capella_cmg_project\capella_cmg_ehr_4_8\*.*" "E:\Deployee\Backup-do not delete\Git\CMG"
   - echo "Backup CMG..Completed.."
 
-  - echo "Backup WC..Start.."   
-   # if [ "$SERVER_TESTING" == "10.0.0.11" ]; then 
+  - echo "Backup WC..Start.."      
   - xcopy /y /s "E:\Acurus_Web\capella_hca_project\capella_wc\*.*" "E:\Deployee\Backup-do not delete\Git\WC"
   - echo "Backup WC..Completed.."
 
