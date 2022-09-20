@@ -322,6 +322,7 @@ namespace Acurus.Capella.UI
                         else
                         {
                             //goto l;
+                            //Gitlab #1590 - Removed goto and added the below line
                             bSuggestIcds = true;
                         }
                     }
