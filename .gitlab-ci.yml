@@ -12,7 +12,8 @@ variables:
 stages:
  - Testing build
  - Production build
- - Deploy TESTING
+ - Deploy TESTING 10.0.0.4
+ - Deploy TESTING 10.0.0.11
  - Deploy Production
 
 before_script:
@@ -37,39 +38,57 @@ build Test Job:
     #/p:IgnoreDeployManagedRuntimeVersion=True 
     #/p:publishUrl=.\EHR_REPORTS2.0\bin\Publish\ '
    
-
   - echo "Building..Completed"
   artifacts:
     expire_in: 365 days
     paths:
     - EHR-Capella5.0\
 
-Deploy Test Job:
+Deploy Test Job 10.0.0.4 :
   rules:
-    - if: '$SERVER_TESTING =="10.0.0.11" || $SERVER_TESTING =="10.0.0.4"'
+    - if: '$SERVER_TESTING =="10.0.0.4"'
   environment:
     name: Capella_Test
     url: https://cmgtest10.capellaehr.com:8081/frmlogin.aspx
-  stage: Deploy TESTING
+  stage: Deploy TESTING 10.0.0.4
   script:
   
   - echo "Backup CMG..Start.."
   - xcopy /y /s "E:\Acurus_Web\capella_cmg_project\capella_cmg_ehr_4_8\*.*" "E:\Deployee\Backup-do not delete\Git\CMG"
   - echo "Backup CMG..Completed.."
+  
+  - echo "Deployee CMG..Start.."  
+  - xcopy /y /s "E:\Deployee\builds\Capella_publish\*.*" "E:\Acurus_Web\capella_cmg_project\capella_cmg_ehr_4_8\"
+  - echo "Deployee CMG..Completed.."
+  
+ 
+Deploy Test Job 10.0.0.11:
+  rules:
+    - if: '$SERVER_TESTING =="10.0.0.11"'
+  environment:
+    name: Capella_Test
+    url: https://cmgtest10.capellaehr.com:8081/frmlogin.aspx
+  stage: Deploy TESTING 10.0.0.11
+  script:
+  
+  - echo "Backup CMG..Start.."
+  - xcopy /y /s "E:\Acurus_Web\capella_cmg_project\capella_cmg_ehr_4_8\*.*" "E:\Deployee\Backup-do not delete\Git\CMG"
+  - echo "Backup CMG..Completed.."
+
   - echo "Backup WC..Start.."   
    # if [ "$SERVER_TESTING" == "10.0.0.11" ]; then 
   - xcopy /y /s "E:\Acurus_Web\capella_hca_project\capella_wc\*.*" "E:\Deployee\Backup-do not delete\Git\WC"
   - echo "Backup WC..Completed.."
+
   - echo "Deployee CMG..Start.."
-  #- xcopy /y /s "E:\Deployee\builds\Capella_publish\*.*" "E:\Acurus_Web\capella_cmg_project\capella_cmg_cicd\"
   - xcopy /y /s "E:\Deployee\builds\Capella_publish\*.*" "E:\Acurus_Web\capella_cmg_project\capella_cmg_ehr_4_8\"
   - echo "Deployee CMG..Completed.."
+
   - echo "Deployee WC..Start.."
   - xcopy /y /s "E:\Deployee\builds\Capella_publish\*.*" "E:\Acurus_Web\capella_hca_project\capella_wc\"
   - echo "Deployee WC..Completed.."
-  #- echo "Deployee CQM..Start.."
-  #- xcopy /y /s "E:\Deployee\builds\Capella_publish\*.*" "E:\Acurus_Web\capella_cmg_project\capella_cmg_ehr_cqm\"
-  #- echo "Deployee CQM..Completed.."
+
+
 
 
 build Production Job:   
