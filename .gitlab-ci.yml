@@ -22,7 +22,7 @@ before_script:
  
 build Test Job:
   rules:
-    - if: '$SERVER_TESTING =="10.0.0.11"'
+    - if: '$SERVER_TESTING =="10.0.0.11" || $SERVER_TESTING =="10.0.0.4"'
   stage: Testing build
   script:
   - echo "UI Building..start"
@@ -46,7 +46,7 @@ build Test Job:
 
 Deploy Test Job:
   rules:
-    - if: '$SERVER_TESTING =="10.0.0.11"'
+    - if: '$SERVER_TESTING =="10.0.0.11" || $SERVER_TESTING =="10.0.0.4"'
   environment:
     name: Capella_Test
     url: https://cmgtest10.capellaehr.com:8081/frmlogin.aspx
@@ -61,10 +61,10 @@ Deploy Test Job:
   - echo "Backup WC..Completed.."
   - echo "Deployee CMG..Start.."
   #- xcopy /y /s "E:\Deployee\builds\Capella_publish\*.*" "E:\Acurus_Web\capella_cmg_project\capella_cmg_cicd\"
-  - xcopy /y /s "E:\Deployee\builds\Capella_publish\*.*" "E:\Acurus_Web\capella_cmg_project\capella_cmg_ehr_4_8\"
+  #- xcopy /y /s "E:\Deployee\builds\Capella_publish\*.*" "E:\Acurus_Web\capella_cmg_project\capella_cmg_ehr_4_8\"
   - echo "Deployee CMG..Completed.."
   - echo "Deployee WC..Start.."
-  - xcopy /y /s "E:\Deployee\builds\Capella_publish\*.*" "E:\Acurus_Web\capella_hca_project\capella_wc\"
+  #- xcopy /y /s "E:\Deployee\builds\Capella_publish\*.*" "E:\Acurus_Web\capella_hca_project\capella_wc\"
   - echo "Deployee WC..Completed.."
   #- echo "Deployee CQM..Start.."
   #- xcopy /y /s "E:\Deployee\builds\Capella_publish\*.*" "E:\Acurus_Web\capella_cmg_project\capella_cmg_ehr_cqm\"
