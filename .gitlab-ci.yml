@@ -22,7 +22,7 @@ before_script:
  
 build Test Job:
   rules:
-    - if: '$SERVER_TESTING =="10.0.0.11" || $SERVER_TESTING =="10.0.0.4"'
+    - if: '$SERVER_TESTING =="10.0.0.11"'
   stage: Testing build
   script:
   - echo "UI Building..start"
@@ -46,7 +46,7 @@ build Test Job:
 
 Deploy Test Job:
   rules:
-    - if: '$SERVER_TESTING =="10.0.0.11" || $SERVER_TESTING =="10.0.0.4"'
+    - if: '$SERVER_TESTING =="10.0.0.11"'
   environment:
     name: Capella_Test
     url: https://cmgtest10.capellaehr.com:8081/frmlogin.aspx
