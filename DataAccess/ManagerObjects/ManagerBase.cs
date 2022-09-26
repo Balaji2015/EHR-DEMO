@@ -1957,7 +1957,7 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
 
                 request.BeginGetResponse(new AsyncCallback(GetResponseCallback), request);
             }
-            catch
+            catch (Exception ex)
             {
                 trycount++;
                 if (trycount < 3)

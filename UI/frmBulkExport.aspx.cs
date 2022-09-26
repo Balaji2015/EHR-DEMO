@@ -139,23 +139,23 @@ namespace Acurus.Capella.UI
         {
 
 
-           IList<Encounter> lstEncounter = new List<Encounter>();
-            Encounter objEncounter=new Encounter();
+            IList<Encounter> lstEncounter = new List<Encounter>();
+            Encounter objEncounter = new Encounter();
             for (int i = 0; i < grdGetPatient.MasterTableView.Items.Count; i++)
             {
                 objEncounter = new Encounter();
                 if (((System.Web.UI.HtmlControls.HtmlInputCheckBox)grdGetPatient.MasterTableView.Items[i].FindControl("chkselect")).Checked == true)
                 {
-                    objEncounter.Id =Convert.ToUInt32(grdGetPatient.Items[i].Cells[8].Text);
+                    objEncounter.Id = Convert.ToUInt32(grdGetPatient.Items[i].Cells[8].Text);
                     objEncounter.Human_ID = Convert.ToUInt32(grdGetPatient.Items[i].Cells[3].Text);
                     lstEncounter.Add(objEncounter);
                 }
-                
+
             }
-            
+
             hdnSelectedPath.Value = string.Empty;
 
-           // IList<Encounter> lstEncounter = new List<Encounter>();
+            // IList<Encounter> lstEncounter = new List<Encounter>();
             //EncounterManager encMngr = new EncounterManager();
             //string sFromDate = UtilityManager.ConvertToUniversal(Convert.ToDateTime(dtpFromDate.SelectedDate)).ToString("yyyy-MM-dd HH:mm:ss");
             //string sToDate = UtilityManager.ConvertToUniversal(Convert.ToDateTime(dtpToDate.SelectedDate).AddDays(1).AddMilliseconds(-1)).ToString("yyyy-MM-dd HH:mm:ss");
@@ -166,18 +166,103 @@ namespace Acurus.Capella.UI
             frmClinicalSummary frmClin = new frmClinicalSummary();
             ArrayList aryPrintNew = new ArrayList();
 
+            //Bulk Export - Old Code - Start
+            //if (lstEncounter.Count > 0)
+            //{
+            //    for (int i = 0; i < lstEncounter.Count; i++)
+            //    {
+            //        //aryPrint = frmClin.PrintClinicalSummary(lstEncounter[i], lsthuman[i], false, ref sMyPath, string.Empty, true, false);
+            //        aryPrint = frmClin.PrintClinicalSummary(lstEncounter[i].Id, lstEncounter[i].Human_ID, false, ref sMyPath, string.Empty, true, false);
+
+            //        if (aryPrint != null && aryPrint.Count > 0)
+            //        {
+            //            for (int j = 0; j < aryPrint.Count; j++)
+            //            {
+            //                aryPrintNew.Add(aryPrint[j]);
+            //            }
+            //        }
+            //    }
+            //}
+            //else
+            //{
+            //    ScriptManager.RegisterStartupScript(this, this.Page.GetType(), "", "DisplayErrorMessage('1007011');", true);
+            //    return;
+            //}
+            //string PDFPath = string.Empty;
+            //string XMlPath = string.Empty;
+            //if (aryPrintNew.Count > 0)
+            //{
+            //    XMlPath = aryPrintNew[0].ToString();
+            //}
+            //string listallfiles = string.Empty;
+            //for (int i = 0; i < aryPrintNew.Count; i++)
+            //{
+            //    string[] Split = new string[] { Server.MapPath("Documents\\" + Session.SessionID) };
+
+            //    if (aryPrintNew[i].ToString().EndsWith(".xml") == true)
+            //    {
+            //        string sPrintPathName = aryPrintNew[i].ToString();
+            //        string[] FileName = sPrintPathName.Split(Split, StringSplitOptions.RemoveEmptyEntries);
+
+            //        string Filenm = "Documents\\" + Session.SessionID.ToString() + FileName[0].ToString();
+            //        aryAttachmentList.Add(Filenm);
+            //        if (i == 0)
+            //        {
+            //            listallfiles = Filenm;
+            //        }
+            //        else
+            //        {
+            //            listallfiles = "~" + Filenm;
+            //        }
+
+            //        Session["aryAttachmentList"] = aryAttachmentList;
+            //    }
+            //}
+            ////ScriptManager.RegisterStartupScript(this, this.Page.GetType(), string.Empty, "ShowFile();", true);
+            //ScriptManager.RegisterStartupScript(this, this.Page.GetType(), string.Empty, "Downloadfile();", true);
+            //AuditLogManager alManager = new AuditLogManager();
+            //string TransactionType = "GENERATE";
+            //alManager.InsertIntoAuditLog("BULK EXPORT", TransactionType, Convert.ToInt32(ClientSession.HumanId), ClientSession.UserName);//BugID:49685
+            //Bulk Export - Old Code - End
+
+
+            string sCheckedItems = "Reason Of Visit,Vitals,Clinical Instruction,Immunizations,Mental Status,Care Plan,Laboratory Test(s),Smoking Status,Allergy,Functional Status,Procedure(s),Laboratory Values/Results,Encounter,Goals,Assessment,Medication,Medications Administered During visit,Treatment Plan,Problem List,Reason for Referral,Implants,Future Appointment,Health Concern,Lab Test,Laboratory Information,Diagnostics Tests Pending,Future Scheduled Tests,Patient Decision Aids";
             if (lstEncounter.Count > 0)
             {
+                string TargetFileDirectory = Server.MapPath("Documents/" + Session.SessionID);
+                string sFolderPathName = TargetFileDirectory + "\\" + System.Configuration.ConfigurationSettings.AppSettings["ClinicalSummaryPathName"] + "\\" + DateTime.Now.ToString("yyyyMMdd");
+                Directory.CreateDirectory(sFolderPathName);
+
+                string sPrintPathName = string.Empty;
+
                 for (int i = 0; i < lstEncounter.Count; i++)
                 {
-                    //aryPrint = frmClin.PrintClinicalSummary(lstEncounter[i], lsthuman[i], false, ref sMyPath, string.Empty, true, false);
-                    aryPrint = frmClin.PrintClinicalSummary(lstEncounter[i].Id, lstEncounter[i].Human_ID, false, ref sMyPath, string.Empty, true, false);
+                    sPrintPathName = sFolderPathName + "\\" + "Clinical_Summary_" + lstEncounter[i].Human_ID.ToString() + "_" + DateTime.Now.ToString("yyyyMMddhhmmss") + ".xml";
 
-                    if (aryPrint != null && aryPrint.Count > 0)
+                    string sStatus = UtilityManager.GenerateCCD(lstEncounter[i].Human_ID, lstEncounter[i].Id, sCheckedItems, sPrintPathName, string.Empty);
+
+                    if (sStatus == "Success")
                     {
-                        for (int j = 0; j < aryPrint.Count; j++)
+                        string[] Split = new string[] { Server.MapPath("Documents\\" + Session.SessionID) };
+                        string[] XMLFileName = sPrintPathName.Split(Split, StringSplitOptions.RemoveEmptyEntries);
+                        if (hdnSelectedPath.Value == string.Empty)
                         {
-                            aryPrintNew.Add(aryPrint[j]);
+                            hdnSelectedPath.Value = "Documents\\" + Session.SessionID.ToString() + XMLFileName[0].ToString();
+                        }
+                        if (hdnSelectedPath.Value != null && hdnSelectedPath.Value != string.Empty)
+                        {
+                            DirectoryInfo ObjSearchDir = new DirectoryInfo(Server.MapPath(hdnSelectedPath.Value));
+                            if (!Directory.CreateDirectory(ObjSearchDir.Parent.Parent.FullName + "\\stylesheet").Exists)
+                            {
+                                Directory.CreateDirectory(ObjSearchDir.Parent.Parent.FullName + "\\stylesheet");
+                            }
+                            System.IO.File.Copy(Server.MapPath("SampleXML/CDA.xsl"), Server.MapPath("Documents/" + Session.SessionID.ToString() + "/" + ObjSearchDir.Parent.Parent + "/stylesheet/CDA.xsl"), true);
+                            aryPrintNew.Add(sPrintPathName);
+
+                        }
+                        else
+                        {
+                            ScriptManager.RegisterStartupScript(this, this.GetType(), string.Empty, "OpenErrorAltova();", true);
                         }
                     }
                 }
@@ -187,6 +272,7 @@ namespace Acurus.Capella.UI
                 ScriptManager.RegisterStartupScript(this, this.Page.GetType(), "", "DisplayErrorMessage('1007011');", true);
                 return;
             }
+
             string PDFPath = string.Empty;
             string XMlPath = string.Empty;
             if (aryPrintNew.Count > 0)
@@ -222,6 +308,8 @@ namespace Acurus.Capella.UI
             AuditLogManager alManager = new AuditLogManager();
             string TransactionType = "GENERATE";
             alManager.InsertIntoAuditLog("BULK EXPORT", TransactionType, Convert.ToInt32(ClientSession.HumanId), ClientSession.UserName);//BugID:49685
+
+
 
             //ShowFiles(listallfiles);
         }
