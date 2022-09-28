@@ -265,6 +265,10 @@ namespace Acurus.Capella.UI
                             ScriptManager.RegisterStartupScript(this, this.GetType(), string.Empty, "OpenErrorAltova();", true);
                         }
                     }
+                    else if (sStatus == "1011192")
+                    {
+                        ScriptManager.RegisterStartupScript(this, this.GetType(), string.Empty, "OpenWarningAltova();", true);
+                    }
                 }
             }
             else
