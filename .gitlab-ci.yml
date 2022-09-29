@@ -58,7 +58,7 @@ Deploy Test Job 10.0.0.4 :
   - echo "Backup CMG..Completed.."
   
   - echo "Deployee CMG..Start.."  
-  - xcopy /y /s "E:\Deployee\builds\Capella_publish\*.*" "E:\Acurus_Web\capella_cmg_project\capella_cmg_ehr_4_8\"
+  - xcopy /y /s "E:\Acurus_Web\Deployee\builds\Capella_publish\*.*" "E:\Acurus_Web\capella_cmg_project\capella_cmg_ehr_4_8\"
   - echo "Deployee CMG..Completed.."
   
  
@@ -84,7 +84,7 @@ Deploy Test Job 10.0.0.11:
   - echo "Deployee CMG..Completed.."
 
   - echo "Deployee WC..Start.."
-  - xcopy /y /s "E:\Deployee\builds\Capella_publish\*.*" "E:\Acurus_Web\capella_hca_project\capella_wc\"
+  - xcopy /y /s "E:\Acurus_Web\Deployee\builds\Capella_publish\*.*" "E:\Acurus_Web\capella_hca_project\capella_wc\"
   - echo "Deployee WC..Completed.."
 
 
