@@ -1407,7 +1407,7 @@ namespace Acurus.Capella.UI
                 XmlAttribute xAttribute = xelemSection.OwnerDocument.CreateAttribute("nullFlavor");
                 xAttribute.Value = "NI";
                 xelemSection.Attributes.Append(xAttribute);
-                XmlElement elemOld = (XmlElement)xmlDoc.GetElementsByTagName("structuredBody")[0].ChildNodes[5].ChildNodes[0].ChildNodes[4];
+                XmlElement elemOld = (XmlElement)xmlDoc.GetElementsByTagName("structuredBody")[0].ChildNodes[5].ChildNodes[0].ChildNodes[5];
 
                 XmlDocumentFragment xfrag = xmlDoc.CreateDocumentFragment();
                 string sInnerXML = string.Empty;
