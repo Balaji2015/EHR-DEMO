@@ -769,7 +769,7 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
                 //Gitlab# 2485 - Physician Name Display Change
                 using (ISession iMySession = NHibernateSessionManager.Instance.CreateISession())
                 {
-                    IList<object> objLst = iMySession.CreateSQLQuery("select u.user_name,'',u.person_name,'','' from user u where status = 'a' and u.physician_library_id = 0 union all select u.user_name,p.Physician_Last_Name, Physician_First_Name, Physician_Middle_Name,Physician_Suffix from user u, physician_library p where status = 'a' and u.physician_library_id <> 0 and u.Physician_Library_ID = p.Physician_Library_ID").List<object>();
+                    IList<object> objLst = iMySession.CreateSQLQuery("select * from (select u.user_name as UserName,u.person_name as LastName,'' as FirstName,'' as MI,'' as Suffix from user u where status = 'a' and u.physician_library_id = 0 union all select u.user_name as UserName,p.Physician_Last_Name as LastName, Physician_First_Name as FirstName, Physician_Middle_Name as MI,Physician_Suffix as Suffix from user u, physician_library p where status = 'a' and u.physician_library_id <> 0 and u.Physician_Library_ID = p.Physician_Library_ID) as a order by LastName,FirstName").List<object>();
 
                     for (int i = 0; i < objLst.Count; i++)
                     {

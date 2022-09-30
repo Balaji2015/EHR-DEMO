@@ -545,7 +545,31 @@ function getDropdownListSelectedText() {
     var DropdownList = document.getElementById("cboPhysicianName");
     var SelectedIndex = DropdownList.selectedIndex;
     document.getElementById("hdnindex").value = SelectedIndex;
-    document.getElementById("hdnLocalPhy").value = DropdownList.value + '~' + DropdownList.selectedOptions[0].textContent.split('-')[0];
+    //Old Code
+    //document.getElementById("hdnLocalPhy").value = DropdownList.value + '~' + DropdownList.selectedOptions[0].textContent.split('-')[0];
+    //Gitlab# 2485 - Physician Name Display Change
+    $.ajax({
+        type: "GET",
+        url: "ConfigXML/User.xml",
+        dataType: "xml",
+        async: false,
+        cache: false,
+        success: function (xml) {
+            $(xml).find('User').each(function () {
+                var cookies = document.cookie.split(';');
+                var CLegalOrg = "";
+                for (var l = 0; l < cookies.length; l++) {
+                    if (cookies[l].indexOf("CLegalOrg") > -1)
+                        CLegalOrg = cookies[l].split("=")[1];
+                }
+                if ($(this)[0].getAttribute("Physician_Library_ID") == DropdownList.value.toString() && $(this)[0].getAttribute("Legal_Org") == CLegalOrg) {
+                    document.getElementById("hdnLocalPhy").value = DropdownList.value + '~' + $(this)[0].getAttribute("User_Name");
+
+                }
+            })
+        }
+    });
+        
     if (document.getElementById("hdnEncounterProviderId").value == DropdownList.selectedOptions[0].value.toString()) {
 
         if (document.getElementById("chkProviderReview") != null && document.getElementById("chkProviderReview") != undefined)
@@ -819,7 +843,30 @@ function FillData(UserRole, facility, EncProID) {
                     if (cboPhysician.options[l].value == setID)
                         cboPhysician.selectedIndex = cboPhysician.options[l].index;
                 }
-                document.getElementById("hdnLocalPhy").value = setID;
+                //Old Code
+                //document.getElementById("hdnLocalPhy").value = setID;
+                //Gitlab# 2485 - Physician Name Display Change
+                $.ajax({
+                    type: "GET",
+                    url: "ConfigXML/User.xml",
+                    dataType: "xml",
+                    async: false,
+                    cache: false,
+                    success: function (xml) {
+                        $(xml).find('User').each(function () {
+                            var cookies = document.cookie.split(';');
+                            var CLegalOrg = "";
+                            for (var l = 0; l < cookies.length; l++) {
+                                if (cookies[l].indexOf("CLegalOrg") > -1)
+                                    CLegalOrg = cookies[l].split("=")[1];
+                            }
+                            if ($(this)[0].getAttribute("Physician_Library_ID") == setID && $(this)[0].getAttribute("Legal_Org") == CLegalOrg) {
+                                document.getElementById("hdnLocalPhy").value = setID + '~' + $(this)[0].getAttribute("User_Name");
+
+                            }
+                        })
+                    }
+                });
             }
             else {
                 for (var i = 0; i < options.length; i++) {
@@ -837,7 +884,30 @@ function FillData(UserRole, facility, EncProID) {
                     if (cboPhysician.options[l].value == setID)
                         cboPhysician.selectedIndex = cboPhysician.options[l].index;
                 }
-                document.getElementById("hdnLocalPhy").value = setID;
+                //Old Code
+                //document.getElementById("hdnLocalPhy").value = setID;
+                //Gitlab# 2485 - Physician Name Display Change
+                $.ajax({
+                    type: "GET",
+                    url: "ConfigXML/User.xml",
+                    dataType: "xml",
+                    async: false,
+                    cache: false,
+                    success: function (xml) {
+                        $(xml).find('User').each(function () {
+                            var cookies = document.cookie.split(';');
+                            var CLegalOrg = "";
+                            for (var l = 0; l < cookies.length; l++) {
+                                if (cookies[l].indexOf("CLegalOrg") > -1)
+                                    CLegalOrg = cookies[l].split("=")[1];
+                            }
+                            if ($(this)[0].getAttribute("Physician_Library_ID") == setID && $(this)[0].getAttribute("Legal_Org") == CLegalOrg) {
+                                document.getElementById("hdnLocalPhy").value = setID + '~' + $(this)[0].getAttribute("User_Name");
+
+                            }
+                        })
+                    }
+                });
             }
         }
     }

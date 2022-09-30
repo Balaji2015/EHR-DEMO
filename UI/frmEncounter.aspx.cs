@@ -2185,6 +2185,8 @@ namespace Acurus.Capella.UI
             //StaticLookup objStatics = null;
             ListItem liDropdown = null;
             IList<string> PhyASStIDlist = new List<string>();
+            Dictionary<string,string> hashUser = new Dictionary<string, string>();
+
             int i = 0;
 
             foreach (XElement elements in xmlDocumentType.Elements("ROOT").Elements("PhyAsstList").Elements())
@@ -2267,11 +2269,12 @@ namespace Acurus.Capella.UI
                         }
                         else
                         {
-                            if (username != string.Empty)
+                            if (username != string.Empty && hashUser.ContainsKey(phyID) == false)
                             {
                                 //Old Code
                                 //liDropdown = new ListItem(username + " - " + phyName, phyID);
                                 //Gitlab# 2485 - Physician Name Display Change
+                                hashUser.Add(phyID.ToString(), username);
                                 liDropdown = new ListItem(phyName, phyID);
                                 liDropdown.Attributes.Add("FacilityName", xmlValue);
                                 liDropdown.Attributes.Add("default", "true");
@@ -2352,11 +2355,12 @@ namespace Acurus.Capella.UI
                         }
                         else
                         {
-                            if (username != string.Empty)
+                            if (username != string.Empty && hashUser.ContainsKey(phyID)==false)
                             {
                                 //Old Code
                                 //liDropdown = new ListItem(username + " - " + phyName, phyID);
                                 //Gitlab# 2485 - Physician Name Display Change
+                                hashUser.Add(phyID.ToString(), username);
                                 liDropdown = new ListItem(phyName, phyID);
                                 liDropdown.Attributes.Add("default", "false");
                                 liDropdown.Attributes.Add("FacilityName", xmlValue);
@@ -2372,7 +2376,7 @@ namespace Acurus.Capella.UI
             //Old Code
             //IList<ListItem> sortlst = liComboItems.OrderBy(x => x.Text.Split('-')[1].Split(new string[] { "Dr." }, StringSplitOptions.None).Length > 1 ? x.Text.Split('-')[1].Split(new string[] { "Dr." }, StringSplitOptions.None)[1] : x.Text.Split('-')[1]).ToList().OrderBy(x => x.Text).ToList();
             //Gitlab# 2485 - Physician Name Display Change
-            IList<ListItem> sortlst = liComboItems;
+            IList<ListItem> sortlst = liComboItems.OrderBy(x => x.Text).ToList();
             //cboPhysicianName.Items.AddRange(sortlst.Distinct().ToArray());bugId:38683   
 
             cboPhysicianName.Items.AddRange(sortlst.ToArray());
@@ -2402,7 +2406,10 @@ namespace Acurus.Capella.UI
                         {
                             hdnindex.Value = cboPhysicianName.Items.IndexOf(SelectedPhysician).ToString();
                             cboPhysicianName.SelectedIndex = Convert.ToInt32(hdnindex.Value);
-                            hdnLocalPhy.Value = cboPhysicianName.SelectedValue + '~' + cboPhysicianName.SelectedItem.Text.Split('-')[0];
+                            //Old Code
+                            //hdnLocalPhy.Value = cboPhysicianName.SelectedValue + '~' + cboPhysicianName.SelectedItem.Text.Split('-')[0];
+                            //Gitlab# 2485 - Physician Name Display Change
+                            hdnLocalPhy.Value = cboPhysicianName.SelectedValue + '~' + hashUser[cboPhysicianName.SelectedValue].ToString();
                         }
                     }
                 }
@@ -2423,7 +2430,10 @@ namespace Acurus.Capella.UI
                     {
                         hdnindex.Value = cboPhysicianName.Items.IndexOf(SelectedPhysician).ToString();
                         cboPhysicianName.SelectedIndex = Convert.ToInt32(hdnindex.Value);
-                        hdnLocalPhy.Value = cboPhysicianName.SelectedValue + '~' + cboPhysicianName.SelectedItem.Text.Split('-')[0];
+                        //Old Code
+                        //hdnLocalPhy.Value = cboPhysicianName.SelectedValue + '~' + cboPhysicianName.SelectedItem.Text.Split('-')[0];
+                        //Gitlab# 2485 - Physician Name Display Change
+                        hdnLocalPhy.Value = cboPhysicianName.SelectedValue + '~' + hashUser[cboPhysicianName.SelectedValue].ToString();
                     }
                 }
                 //for (int i = 0; i < cboPhysicianName.Items.Count; i++)
@@ -2443,7 +2453,10 @@ namespace Acurus.Capella.UI
                 if (ulong.TryParse(hdnindex.Value, out iIndex) && iIndex != 0)
                 {
                     cboPhysicianName.SelectedIndex = Convert.ToInt32(hdnindex.Value);
-                    hdnLocalPhy.Value = cboPhysicianName.SelectedValue + '~' + cboPhysicianName.SelectedItem.Text.Split('-')[0];
+                    //Old Code
+                    //hdnLocalPhy.Value = cboPhysicianName.SelectedValue + '~' + cboPhysicianName.SelectedItem.Text.Split('-')[0];
+                    //Gitlab# 2485 - Physician Name Display Change
+                    hdnLocalPhy.Value = cboPhysicianName.SelectedValue + '~' + hashUser[cboPhysicianName.SelectedValue].ToString();
                 }
                 else
                 {
