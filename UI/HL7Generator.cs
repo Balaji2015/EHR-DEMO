@@ -430,11 +430,21 @@ namespace Acurus.Capella.UI
 
 
             xmlReqNode = xmlDoc.GetElementsByTagName("maritalStatusCode");
-            if (ClinicalSummary.MaritalStatus != null && ClinicalSummary.MaritalStatus != string.Empty)
+            if (ClinicalSummary.MaritalStatus != null && ClinicalSummary.MaritalStatus != string.Empty && ClinicalSummary.MaritalStatus!= "Other")
             {
                 xmlReqNode[0].Attributes[0].Value = ClinicalSummary.MaritalStatus.Substring(0, 1).ToUpper(); ;
                 xmlReqNode[0].Attributes[3].Value = ClinicalSummary.MaritalStatus;
             }
+            else
+            {
+                xmlReqNode[0].RemoveAll();
+                XmlAttribute xmlNullsdtc = null;
+                xmlNullsdtc = xmlDoc.CreateAttribute("nullFlavor");
+                xmlNullsdtc.Value = "UNK";
+                xmlReqNode[0].Attributes.Append(xmlNullsdtc);
+
+            }
+
             if (ClinicalSummary.lookupList != null)
             {
                 for (int Race = 0; Race < ClinicalSummary.lookupList.Count; Race++)
