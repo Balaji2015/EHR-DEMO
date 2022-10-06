@@ -17,7 +17,7 @@ using Acurus.Capella.Core.DomainObjects;
 using System.Collections.Generic;
 using Acurus.Capella.Core.DTO;
 using Telerik.Web.UI;
-
+using System.IO;
 
 namespace Acurus.Capella.UI
 {
@@ -507,16 +507,51 @@ namespace Acurus.Capella.UI
                     addendumNotes.Addendum_Notes = txtAddendumNotes.txtDLC.Text;
                     addendumList.Add(addendumNotes);
 
+                    string sOwner = string.Empty;
+
                     if (loadAddendumNotesForPhysicianObj.Count > 0)
                     {
                         //dtLocalTime = UtilityManager.ConvertToLocal(addendumList[0].Created_Date_And_Time);
                         addendumList[0].Local_Time = UtilityManager.ConvertToLocal(addendumList[0].Created_Date_And_Time).ToString("yyyy-MM-dd hh:mm:ss tt");
-                        objAddendumNotesManager.saveUpdateAddendum(tempList, addendumList, objFillEncounterandWFObject.EncRecord.Facility_Name, cboShowAllPhysicians.Text.Split('-')[0].Trim(), string.Empty, false, true, 1, isDirectMoveToProvider, string.Empty, false);//, dtLocalTime);
+                        //Old Code
+                        //objAddendumNotesManager.saveUpdateAddendum(tempList, addendumList, objFillEncounterandWFObject.EncRecord.Facility_Name, cboShowAllPhysicians.Text.Split('-')[0].Trim(), string.Empty, false, true, 1, isDirectMoveToProvider, string.Empty, false);//, dtLocalTime);
+                        //Gitlab# 2485 - Physician Name Display Change
+                        XDocument xmlUser = null;
+                        if (File.Exists(Server.MapPath(@"ConfigXML\User.xml")))
+                            xmlUser = XDocument.Load(Server.MapPath(@"ConfigXML\User.xml"));
+                        foreach (XElement elements in xmlUser.Descendants("UserList"))
+                        {
+                            foreach (XElement UserElement in elements.Elements())
+                            {
+                                if (UserElement.Attribute("Physician_Library_ID").Value.ToUpper() == cboShowAllPhysicians.SelectedValue && UserElement.Attribute("Legal_Org").Value.ToUpper() == ClientSession.LegalOrg)
+                                {
+                                    sOwner = UserElement.Attribute("User_Name").Value.ToUpper();
+                                }
+                            }
+                        }
+                        objAddendumNotesManager.saveUpdateAddendum(tempList, addendumList, objFillEncounterandWFObject.EncRecord.Facility_Name, sOwner, string.Empty, false, true, 1, isDirectMoveToProvider, string.Empty, false);//, dtLocalTime);
+
 
                     }
                     else
                     {
-                        objAddendumNotesManager.saveUpdateAddendum(addendumList, tempList, objFillEncounterandWFObject.EncRecord.Facility_Name, cboShowAllPhysicians.Text.Split('-')[0].Trim(), string.Empty, true, true, 1, isDirectMoveToProvider, string.Empty, false);//, dtLocalTime);
+                        //Old Code
+                        //objAddendumNotesManager.saveUpdateAddendum(addendumList, tempList, objFillEncounterandWFObject.EncRecord.Facility_Name, cboShowAllPhysicians.Text.Split('-')[0].Trim(), string.Empty, true, true, 1, isDirectMoveToProvider, string.Empty, false);//, dtLocalTime);
+                        //Gitlab# 2485 - Physician Name Display Change
+                        XDocument xmlUser = null;
+                        if (File.Exists(Server.MapPath(@"ConfigXML\User.xml")))
+                            xmlUser = XDocument.Load(Server.MapPath(@"ConfigXML\User.xml"));
+                        foreach (XElement elements in xmlUser.Descendants("UserList"))
+                        {
+                            foreach (XElement UserElement in elements.Elements())
+                            {
+                                if (UserElement.Attribute("Physician_Library_ID").Value.ToUpper() == cboShowAllPhysicians.SelectedValue && UserElement.Attribute("Legal_Org").Value.ToUpper() == ClientSession.LegalOrg)
+                                {
+                                    sOwner = UserElement.Attribute("User_Name").Value.ToUpper();
+                                }
+                            }
+                        }
+                        objAddendumNotesManager.saveUpdateAddendum(addendumList, tempList, objFillEncounterandWFObject.EncRecord.Facility_Name, sOwner, string.Empty, true, true, 1, isDirectMoveToProvider, string.Empty, false);//, dtLocalTime);
                     }
                 }
                 else if (ClientSession.UserRole != null && ClientSession.UserRole.ToUpper() == GetEnumDescription(UserType.eUserType_PhysicanAssistant) || ClientSession.UserRole.ToUpper() == GetEnumDescription(UserType.eUserType_Physician))
@@ -610,14 +645,51 @@ namespace Acurus.Capella.UI
                     addendumNotes.Addendum_Notes = txtAddendumNotes.txtDLC.Text;
                     addendumList.Add(addendumNotes);
 
+                    string sOwner = string.Empty;
+
                     if (loadAddendumNotesForPhysicianObj.Count > 0)
                     {
                         //dtLocalTime = UtilityManager.ConvertToLocal(addendumList[0].Created_Date_And_Time);
                         addendumList[0].Local_Time = UtilityManager.ConvertToLocal(addendumList[0].Created_Date_And_Time).ToString("yyyy-MM-dd hh:mm:ss tt");
-                        objAddendumNotesManager.saveUpdateAddendum(tempList, addendumList, objFillEncounterandWFObject.EncRecord.Facility_Name, objFillEncounterandWFObject.AddendumWFRecord.Current_Process.ToUpper() == "ADDENDUM_CORRECTION" || (ClientSession.UserRole.ToUpper() == "PHYSICIAN ASSISTANT" && !isReview) || ClientSession.UserRole.ToUpper() == "PHYSICIAN" ? "UNKNOWN" : cboShowAllPhysicians.Text.Split('-')[0].Trim(), string.Empty, false, isReview, ClientSession.UserRole == "Physician Assistant" ? !isReview ? 1 : objFillEncounterandWFObject.AddendumWFRecord.Current_Process.ToUpper() == "ADDENDUM_CORRECTION" ? 1 : 2 : 1, isDirectMoveToProvider, string.Empty, true);//, dtLocalTime);
+                        //Old Code
+                        //objAddendumNotesManager.saveUpdateAddendum(tempList, addendumList, objFillEncounterandWFObject.EncRecord.Facility_Name, objFillEncounterandWFObject.AddendumWFRecord.Current_Process.ToUpper() == "ADDENDUM_CORRECTION" || (ClientSession.UserRole.ToUpper() == "PHYSICIAN ASSISTANT" && !isReview) || ClientSession.UserRole.ToUpper() == "PHYSICIAN" ? "UNKNOWN" : cboShowAllPhysicians.Text.Split('-')[0].Trim(), string.Empty, false, isReview, ClientSession.UserRole == "Physician Assistant" ? !isReview ? 1 : objFillEncounterandWFObject.AddendumWFRecord.Current_Process.ToUpper() == "ADDENDUM_CORRECTION" ? 1 : 2 : 1, isDirectMoveToProvider, string.Empty, true);//, dtLocalTime);
+                        //Gitlab# 2485 - Physician Name Display Change
+                        XDocument xmlUser = null;
+                        if (File.Exists(Server.MapPath(@"ConfigXML\User.xml")))
+                            xmlUser = XDocument.Load(Server.MapPath(@"ConfigXML\User.xml"));
+                        foreach (XElement elements in xmlUser.Descendants("UserList"))
+                        {
+                            foreach (XElement UserElement in elements.Elements())
+                            {
+                                if (UserElement.Attribute("Physician_Library_ID").Value.ToUpper() == cboShowAllPhysicians.SelectedValue && UserElement.Attribute("Legal_Org").Value.ToUpper() == ClientSession.LegalOrg)
+                                {
+                                    sOwner = UserElement.Attribute("User_Name").Value.ToUpper();
+                                }
+                            }
+                        }
+                        objAddendumNotesManager.saveUpdateAddendum(tempList, addendumList, objFillEncounterandWFObject.EncRecord.Facility_Name, objFillEncounterandWFObject.AddendumWFRecord.Current_Process.ToUpper() == "ADDENDUM_CORRECTION" || (ClientSession.UserRole.ToUpper() == "PHYSICIAN ASSISTANT" && !isReview) || ClientSession.UserRole.ToUpper() == "PHYSICIAN" ? "UNKNOWN" : sOwner, string.Empty, false, isReview, ClientSession.UserRole == "Physician Assistant" ? !isReview ? 1 : objFillEncounterandWFObject.AddendumWFRecord.Current_Process.ToUpper() == "ADDENDUM_CORRECTION" ? 1 : 2 : 1, isDirectMoveToProvider, string.Empty, true);//, dtLocalTime);
                     }
                     else
-                        objAddendumNotesManager.saveUpdateAddendum(addendumList, tempList, objFillEncounterandWFObject.EncRecord.Facility_Name, isDirectMoveToProvider && !isReview ? "UNKNOWN" : cboShowAllPhysicians.Text.Split('-')[0].Trim(), ClientSession.UserRole, true, isReview, ClientSession.UserRole.ToUpper() == "PHYSICIAN ASSISTANT" && isReview ? 3 : 2, isDirectMoveToProvider, string.Empty, true);//, dtLocalTime);
+                    {
+                        //Old Code
+                        //objAddendumNotesManager.saveUpdateAddendum(addendumList, tempList, objFillEncounterandWFObject.EncRecord.Facility_Name, isDirectMoveToProvider && !isReview ? "UNKNOWN" : cboShowAllPhysicians.Text.Split('-')[0].Trim(), ClientSession.UserRole, true, isReview, ClientSession.UserRole.ToUpper() == "PHYSICIAN ASSISTANT" && isReview ? 3 : 2, isDirectMoveToProvider, string.Empty, true);//, dtLocalTime);
+                        //Gitlab# 2485 - Physician Name Display Change
+                        XDocument xmlUser = null;
+                        if (File.Exists(Server.MapPath(@"ConfigXML\User.xml")))
+                            xmlUser = XDocument.Load(Server.MapPath(@"ConfigXML\User.xml"));
+                        foreach (XElement elements in xmlUser.Descendants("UserList"))
+                        {
+                            foreach (XElement UserElement in elements.Elements())
+                            {
+                                if (UserElement.Attribute("Physician_Library_ID").Value.ToUpper() == cboShowAllPhysicians.SelectedValue && UserElement.Attribute("Legal_Org").Value.ToUpper() == ClientSession.LegalOrg)
+                                {
+                                    sOwner = UserElement.Attribute("User_Name").Value.ToUpper();
+                                }
+                            }
+                        }
+                        objAddendumNotesManager.saveUpdateAddendum(addendumList, tempList, objFillEncounterandWFObject.EncRecord.Facility_Name, isDirectMoveToProvider && !isReview ? "UNKNOWN" : sOwner, ClientSession.UserRole, true, isReview, ClientSession.UserRole.ToUpper() == "PHYSICIAN ASSISTANT" && isReview ? 3 : 2, isDirectMoveToProvider, string.Empty, true);//, dtLocalTime);
+                    }
+
                 }
                 else if (ClientSession.UserRole.ToUpper() == GetEnumDescription(UserType.eUserType_Coder))
                 {
@@ -1000,14 +1072,50 @@ namespace Acurus.Capella.UI
             AddendumNotesManager objAddendumNotesManager = new AddendumNotesManager();
             FillEncounterandWFObject objFillEncounterandWFObject = (FillEncounterandWFObject)Session["objFillEncounterandWFObject"];
 
+            string sOwner = string.Empty;
             if (loadAddendumNotesForPhysicianObj.Count > 0)
             {
                 //dtLocalTime = UtilityManager.ConvertToLocal(addendumList[0].Created_Date_And_Time);
                 addendumList[0].Local_Time = UtilityManager.ConvertToLocal(addendumList[0].Created_Date_And_Time).ToString("yyyy-MM-dd hh:mm:ss tt");
-                objAddendumNotesManager.saveUpdateAddendum(tempList, addendumList, objFillEncounterandWFObject.EncRecord.Facility_Name, objFillEncounterandWFObject.AddendumWFRecord.Current_Process.ToUpper() == "ADDENDUM_CORRECTION" || (ClientSession.UserRole.ToUpper() == "PHYSICIAN ASSISTANT" && !isReview) || ClientSession.UserRole.ToUpper() == "PHYSICIAN" ? "UNKNOWN" : cboShowAllPhysicians.Text.Split('-')[0].Trim(), string.Empty, false, isReview, ClientSession.UserRole == "Physician Assistant" ? !isReview ? 1 : objFillEncounterandWFObject.AddendumWFRecord.Current_Process.ToUpper() == "ADDENDUM_CORRECTION" ? 1 : 2 : 1, isDirectMoveToProvider, string.Empty, true);//, dtLocalTime);
+                //Old Code
+                //objAddendumNotesManager.saveUpdateAddendum(tempList, addendumList, objFillEncounterandWFObject.EncRecord.Facility_Name, objFillEncounterandWFObject.AddendumWFRecord.Current_Process.ToUpper() == "ADDENDUM_CORRECTION" || (ClientSession.UserRole.ToUpper() == "PHYSICIAN ASSISTANT" && !isReview) || ClientSession.UserRole.ToUpper() == "PHYSICIAN" ? "UNKNOWN" : cboShowAllPhysicians.Text.Split('-')[0].Trim(), string.Empty, false, isReview, ClientSession.UserRole == "Physician Assistant" ? !isReview ? 1 : objFillEncounterandWFObject.AddendumWFRecord.Current_Process.ToUpper() == "ADDENDUM_CORRECTION" ? 1 : 2 : 1, isDirectMoveToProvider, string.Empty, true);//, dtLocalTime);
+                //Gitlab# 2485 - Physician Name Display Change
+                XDocument xmlUser = null;
+                if (File.Exists(Server.MapPath(@"ConfigXML\User.xml")))
+                    xmlUser = XDocument.Load(Server.MapPath(@"ConfigXML\User.xml"));
+                foreach (XElement elements in xmlUser.Descendants("UserList"))
+                {
+                    foreach (XElement UserElement in elements.Elements())
+                    {
+                        if (UserElement.Attribute("Physician_Library_ID").Value.ToUpper() == cboShowAllPhysicians.SelectedValue && UserElement.Attribute("Legal_Org").Value.ToUpper() == ClientSession.LegalOrg)
+                        {
+                            sOwner = UserElement.Attribute("User_Name").Value.ToUpper();
+                        }
+                    }
+                }
+                objAddendumNotesManager.saveUpdateAddendum(tempList, addendumList, objFillEncounterandWFObject.EncRecord.Facility_Name, objFillEncounterandWFObject.AddendumWFRecord.Current_Process.ToUpper() == "ADDENDUM_CORRECTION" || (ClientSession.UserRole.ToUpper() == "PHYSICIAN ASSISTANT" && !isReview) || ClientSession.UserRole.ToUpper() == "PHYSICIAN" ? "UNKNOWN" : sOwner, string.Empty, false, isReview, ClientSession.UserRole == "Physician Assistant" ? !isReview ? 1 : objFillEncounterandWFObject.AddendumWFRecord.Current_Process.ToUpper() == "ADDENDUM_CORRECTION" ? 1 : 2 : 1, isDirectMoveToProvider, string.Empty, true);//, dtLocalTime);
             }
             else
-                objAddendumNotesManager.saveUpdateAddendum(addendumList, tempList, objFillEncounterandWFObject.EncRecord.Facility_Name, isDirectMoveToProvider && !isReview ? "UNKNOWN" : cboShowAllPhysicians.Text.Split('-')[0].Trim(), ClientSession.UserRole, true, isReview, ClientSession.UserRole.ToUpper() == "PHYSICIAN ASSISTANT" && isReview ? 3 : 2, isDirectMoveToProvider, string.Empty, true);//, dtLocalTime);
+            {
+                //Old Code
+                //objAddendumNotesManager.saveUpdateAddendum(addendumList, tempList, objFillEncounterandWFObject.EncRecord.Facility_Name, isDirectMoveToProvider && !isReview ? "UNKNOWN" : cboShowAllPhysicians.Text.Split('-')[0].Trim(), ClientSession.UserRole, true, isReview, ClientSession.UserRole.ToUpper() == "PHYSICIAN ASSISTANT" && isReview ? 3 : 2, isDirectMoveToProvider, string.Empty, true);//, dtLocalTime);
+                //Gitlab# 2485 - Physician Name Display Change
+                XDocument xmlUser = null;
+                if (File.Exists(Server.MapPath(@"ConfigXML\User.xml")))
+                    xmlUser = XDocument.Load(Server.MapPath(@"ConfigXML\User.xml"));
+                foreach (XElement elements in xmlUser.Descendants("UserList"))
+                {
+                    foreach (XElement UserElement in elements.Elements())
+                    {
+                        if (UserElement.Attribute("Physician_Library_ID").Value.ToUpper() == cboShowAllPhysicians.SelectedValue && UserElement.Attribute("Legal_Org").Value.ToUpper() == ClientSession.LegalOrg)
+                        {
+                            sOwner = UserElement.Attribute("User_Name").Value.ToUpper();
+                        }
+                    }
+                }
+                objAddendumNotesManager.saveUpdateAddendum(addendumList, tempList, objFillEncounterandWFObject.EncRecord.Facility_Name, isDirectMoveToProvider && !isReview ? "UNKNOWN" : sOwner, ClientSession.UserRole, true, isReview, ClientSession.UserRole.ToUpper() == "PHYSICIAN ASSISTANT" && isReview ? 3 : 2, isDirectMoveToProvider, string.Empty, true);//, dtLocalTime);
+            }
+                
 
             ScriptManager.RegisterStartupScript(this, this.GetType(), string.Empty, "Saved();DisplayErrorMessage('7490002');", true);
             // frmMyQueue.currentAddendumId = 0;
