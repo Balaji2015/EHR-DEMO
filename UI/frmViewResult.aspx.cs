@@ -1344,7 +1344,7 @@ namespace Acurus.Capella.UI
                         if (lstScanFiles[0].Scan_Index_Conversion_ID != 0 && lstScanFiles[0].Source.ToUpper() == "SCAN")
                         {
                             Session["Scan_Index"] = "INDEX_SCREEN";
-                            if (ConfigurationSettings.AppSettings["VisibleDeleteIndexingViewResult"] != null && ConfigurationSettings.AppSettings["VisibleDeleteIndexingViewResult"].ToString().ToUpper() == ClientSession.UserRole.ToUpper())//&& lstScanFiles[0].Document_Type.ToUpper() != "RESULTS")
+                            if (ConfigurationSettings.AppSettings["VisibleDeleteIndexingViewResult"] != null && ConfigurationSettings.AppSettings["VisibleDeleteIndexingViewResult"].ToString().ToUpper().Contains(ClientSession.UserRole.ToUpper()) == true)//&& lstScanFiles[0].Document_Type.ToUpper() != "RESULTS")
                             {
                                 btnDeleteIndexing.Visible = true;
                                 hdnfileindexid.Value = lstScanFiles[0].Scan_Index_Conversion_ID.ToString();
