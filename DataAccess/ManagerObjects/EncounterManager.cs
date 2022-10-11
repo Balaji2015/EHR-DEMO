@@ -14792,7 +14792,10 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
             if (sCategory == "Patient Task")
             {
                 ArrayList lst = new ArrayList();
-                ISQLQuery sq = iMySessiondesc.CreateSQLQuery("SELECT p.Message_ID,cast(p.Modified_Date_And_Time as char(50)) FROM patient_notes p where p.Human_Id='" + ulHuman_ID + "' and p.Is_PatientChart='Y' order by p.Modified_Date_And_Time Desc");
+                //Old Code
+                //ISQLQuery sq = iMySessiondesc.CreateSQLQuery("SELECT p.Message_ID,cast(p.Modified_Date_And_Time as char(50)) FROM patient_notes p where p.Human_Id='" + ulHuman_ID + "' and p.Is_PatientChart='Y' order by p.Modified_Date_And_Time Desc");
+                //Gitlab# 2685 - Visible “add to patient chart” checkbox
+                ISQLQuery sq = iMySessiondesc.CreateSQLQuery("SELECT p.Message_ID,cast(if(p.Modified_Date_And_Time='0001-01-01 00:00:00',p.created_date_and_time,p.Modified_Date_And_Time) as char(50)) FROM patient_notes p where p.Human_Id='" + ulHuman_ID + "' and p.Is_PatientChart='Y' order by p.Modified_Date_And_Time Desc");
                 arrList = new ArrayList(sq.List());
                 for (int i = 0; i < arrList.Count; i++)
                 {

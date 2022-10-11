@@ -280,7 +280,9 @@ namespace Acurus.Capella.UI
                     txtCallerName.ReadOnly = true;
                     txtCreatedBy.ReadOnly = true;
                     chkshowall.Enabled = false;
-                    ChkPatientChart.Enabled = false;
+                    //Gitlab# 2685 - Visible “add to patient chart” checkbox
+                    // ChkPatientChart.Enabled = false;
+                    ChkPatientChart.Visible = true;
                     DLC.txtDLC.ReadOnly = true;
                     DLC.txtDLC.Enabled = false;
                     pnlMessageInfo.Visible = false;
@@ -296,7 +298,9 @@ namespace Acurus.Capella.UI
             }
             else
             {
-                ChkPatientChart.Visible = false;
+                //Gitlab# 2685 - Visible “add to patient chart” checkbox
+                // ChkPatientChart.Visible = false;
+                ChkPatientChart.Visible = true;
                 //FillMessageGrid();
                 RowForHide.Style.Add("display", "none");
             }
