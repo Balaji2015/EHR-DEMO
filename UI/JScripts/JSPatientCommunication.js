@@ -1269,6 +1269,7 @@ function AfterSaveClear() {
     document.getElementById("ddlRelationship").disabled = false;
     document.getElementById("ddlMessageOrigin").disabled = false;
     document.getElementById("ddlAssignedTo").disabled = false;
+    document.getElementById("ChkPatientChart").checked = false;
     $('#btnSaveMenu').val('Add');
     $('#btnClearAll').val('Clear All');
     $('#btnSaveMenu').attr("disabled", true);
