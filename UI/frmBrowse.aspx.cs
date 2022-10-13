@@ -645,7 +645,7 @@ namespace Acurus.Capella.UI
         }
         public void Activity_Log_Entry(string sRec, string FileName)
         {
-
+            //Comment
             activity.Human_ID = 0;
             activity.Encounter_ID = 0;
             activity.Sent_To = sRec;
