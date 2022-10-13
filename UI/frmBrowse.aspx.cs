@@ -392,7 +392,7 @@ namespace Acurus.Capella.UI
                                         try
                                         {
                                             File.WriteAllBytes(Server.MapPath(System.Configuration.ConfigurationSettings.AppSettings["phiMailDownloadDirectory"].ToString()) + "\\" + dt.Rows[0].Field<UInt32>("Physician_Library_ID") + "\\" + DateTime.Now.ToString("yyyyMMdd_HH_mm_ss") + "_" + showRes.Filename, showRes.Data);
-                                            Activity_Log_Entry(sender, showRes.Filename);
+                                            Activity_Log_Entry(sender, showRes.Filename, Server.MapPath(System.Configuration.ConfigurationSettings.AppSettings["phiMailDownloadDirectory"].ToString()) + "\\" + dt.Rows[0].Field<UInt32>("Physician_Library_ID") + "\\" + DateTime.Now.ToString("yyyyMMdd_HH_mm_ss") + "_" + showRes.Filename);
                                             CreateAuditentry(showRes.Filename);
                                         }
                                         catch (Exception ex)
@@ -643,9 +643,41 @@ namespace Acurus.Capella.UI
                 grdVerifiedNegativeFiles.DataBind();
             }
         }
-        public void Activity_Log_Entry(string sRec, string FileName)
+        public void Activity_Log_Entry(string sRec, string FileName, string sFullPathFileName)
         {
-            //Comment
+            string sActivityType = "CCD Import";
+            if (Path.GetExtension(FileName).ToUpper() == ".XML")
+            {
+                string xmlString = System.IO.File.ReadAllText(PhiMailDirectory + "\\" + ClientSession.PhysicianId + "\\" + FileName);
+                if (xmlString.ToUpper().Contains("CCR:"))
+                {
+
+                }
+                else if (xmlString.ToUpper().Contains("C32_CDA"))
+                {
+
+                }
+                else
+                {
+                    //dr["Type"] = "CCDA";
+                    XmlDocument xmldoc1 = new XmlDocument();
+                    string strXmlFilePath1 = Path.Combine(sFullPathFileName);
+                    if (File.Exists(strXmlFilePath1) == true)
+                    {
+                        xmldoc1.Load(strXmlFilePath1);
+                        XmlNode nodeMatchingPhysicianAddress = xmldoc1.SelectSingleNode("/ClinicalDocument/code");
+                        if (nodeMatchingPhysicianAddress != null)
+                        {
+                            if (nodeMatchingPhysicianAddress.Attributes["code"].Value.ToString() == "18776-5")
+                            {
+                                sActivityType = "Care Plan Import";
+                            }
+                        }
+                    }
+
+                }
+            }
+
             activity.Human_ID = 0;
             activity.Encounter_ID = 0;
             activity.Sent_To = sRec;
@@ -655,7 +687,7 @@ namespace Acurus.Capella.UI
             activity.Subject = FileName;
             activity.Message = "";
             activity.Activity_By = ClientSession.UserName;
-            activity.Activity_Type = "CCD Import";
+            activity.Activity_Type = sActivityType;
             ActivityLogList.Add(activity);
             ActivitylogMngr.SaveActivityLogManager(ActivityLogList, string.Empty);
 
@@ -908,7 +940,7 @@ namespace Acurus.Capella.UI
                                         {
                                             File.WriteAllBytes(PhiMailDirectory + "\\" + dt.Rows[0].Field<UInt32>("Physician_Library_ID") + "\\" + DateTime.Now.ToString("yyyyMMdd_HH_mm_ss") + "_" + showRes.Filename, showRes.Data);
                                             IsMail = true;
-                                            Activity_Log_Entry(sender, showRes.Filename);
+                                            Activity_Log_Entry(sender, showRes.Filename, PhiMailDirectory + "\\" + dt.Rows[0].Field<UInt32>("Physician_Library_ID") + "\\" + DateTime.Now.ToString("yyyyMMdd_HH_mm_ss") + "_" + showRes.Filename);
                                             CreateAuditentry(showRes.Filename);
                                         }
                                         catch (Exception ex)
