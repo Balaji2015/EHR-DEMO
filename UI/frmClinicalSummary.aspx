@@ -191,9 +191,13 @@
                             </td>
                               <td>
                                 &nbsp;</td>
+                            <td class ="style5">
+                                <asp:Button ID="btnLaunchInferno" runat ="server" Visible="true" OnClientClick="return btnLaunch_Inferno();"
+                                    Text="Launch Inferno" CssClass="aspbluebutton" />
+                            </td>
                             <td class="style5">
                                 <asp:Button ID="btnSendCerner" runat="server" Visible="false" OnClick="btnSendCerner_Click"
-                                    Text="Send to Cerner" CssClass="aspgreenbutton" OnClientClick="return SendCerner();" />
+                                    Text="Send to Cerner" CssClass="aspbluebutton" OnClientClick="return SendCerner();" />
                             </td>                          
                             <td class="style5">
                                  <asp:Button ID="btnCaregenerate" runat="server" OnClick="btnCaregenerate_Click" OnClientClick="return GenerateXML();"
@@ -306,6 +310,7 @@
     </telerik:RadScriptManager>
         <asp:HiddenField ID="hdnPrintFilePath" runat="server" />
          <asp:HiddenField ID="hdnXmlPath" runat="server" />
+        <asp:HiddenField ID="hdnHuman" runat="server" />
         <asp:Button ID="btnDownloadXML" runat="server" CssClass="Displaynone" 
             onclick="btnDownloadXML_Click" Text="Button" />
     </div>

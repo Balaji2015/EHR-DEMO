@@ -46,6 +46,8 @@ namespace Acurus.Capella.UI
         iTextSharp.text.Font onlyBoldFont = iTextSharp.text.FontFactory.GetFont("Arial", 9, iTextSharp.text.Font.BOLD, iTextSharp.text.BaseColor.BLACK);
         protected void Page_Load(object sender, EventArgs e)
         {
+            hdnHuman.Value = String.Empty;
+            hdnHuman.Value = ClientSession.HumanId.ToString();
             //DLCRecAdd.DName = "pbDropdown";
             if (!IsPostBack)
             {
@@ -72,7 +74,7 @@ namespace Acurus.Capella.UI
             {
                 btnSendCerner.Visible = false;
             }
-            
+
         }
 
         protected void btnGenerate_Click(object sender, EventArgs e)

@@ -120,3 +120,42 @@ function SendCerner() {
     }
     
 }
+
+
+function btnLaunch_Inferno() {
+    var obj = new Array();
+    var Result;
+    var vHumanId = document.getElementById("hdnHuman").value;
+    Result = openNonModal("https://inferno.healthit.gov/suites/custom/smart/launch?iss=https://sandbox-r4.interopengine.com/fhir/r4/acurus&launch=xyz" + vHumanId + "&", 780, 1250, obj);
+    $('#resultLoading').css("display", "none");
+    if (Result == null)
+        return false;
+
+    return false;
+}
+
+function openNonModal(fromname, height, width, inputargument) {
+    var Argument = "";
+    var PageName = fromname;
+    if (inputargument != undefined) {
+        for (var i = 0; i < inputargument.length; i++) {
+            if (i != 0) {
+                Argument = Argument + "&" + inputargument[i];
+            }
+            else {
+                Argument = inputargument[i];
+            }
+        }
+        if (inputargument.lenght != 0) {
+            PageName = PageName + "?";
+        }
+    }
+
+
+    var windowop = window.open(PageName + Argument, '', "Height=" + height + ",Width=" + width + ",resizable=yes,scrollbars=yes,titlebar=no,toolbar=no");
+    if (windowop != null)
+        windowop.moveTo(30, 150);
+
+    if (windowop == undefined) { windowop = window.returnValue; }
+    return windowop;
+}
