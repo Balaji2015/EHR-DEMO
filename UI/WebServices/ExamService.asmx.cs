@@ -78,72 +78,8 @@ namespace Acurus.Capella.UI.WebServices
                 return "Session Expired";
             }
             IList<Examination> examScreenList = new List<Examination>();
-            string FileName = "Encounter" + "_" + ClientSession.EncounterId + ".xml";
-            string strXmlFilePath = Path.Combine(System.Configuration.ConfigurationSettings.AppSettings["XMLPath"], FileName);
-            if (File.Exists(strXmlFilePath) == true)
-            {
-                XmlDocument itemDoc = new XmlDocument();
-                XmlTextReader XmlText = new XmlTextReader(strXmlFilePath);
-                XmlNodeList xmlTagName = null;
-                // itemDoc.Load(XmlText);
-                using (FileStream fs = new FileStream(strXmlFilePath, FileMode.Open, FileAccess.Read, FileShare.Read))
-                {
-                    itemDoc.Load(fs);
-
-                    XmlText.Close();
-
-                    if (data == "General With Specialty")
-                    {
-                        if (itemDoc.GetElementsByTagName("ExaminationGeneralList")[0] != null)
-                            xmlTagName = itemDoc.GetElementsByTagName("ExaminationGeneralList")[0].ChildNodes;
-                    }
-                    else if (data == "Focused")
-                    {
-                        if (itemDoc.GetElementsByTagName("ExaminationFocusedList")[0] != null)
-                            xmlTagName = itemDoc.GetElementsByTagName("ExaminationFocusedList")[0].ChildNodes;
-                    }
-                    if (xmlTagName != null)
-                    {
-                            for (int j = 0; j < xmlTagName.Count; j++)
-                            {
-                                string TagName = xmlTagName[j].Name;
-                                XmlSerializer xmlserializer = new XmlSerializer(typeof(Examination));
-                                Examination examination = xmlserializer.Deserialize(new XmlNodeReader(xmlTagName[j])) as Examination;
-                                IEnumerable<PropertyInfo> propInfo = null;
-                                propInfo = from obji in ((Examination)examination).GetType().GetProperties() select obji;
-                                for (int i = 0; i < xmlTagName[j].Attributes.Count; i++)
-                                {
-                                    XmlNode nodevalue = xmlTagName[j].Attributes[i];
-                                    {
-                                        if (propInfo != null)
-                                        {
-                                            foreach (PropertyInfo property in propInfo)
-                                            {
-                                                if (property.Name == nodevalue.Name)
-                                                {
-                                                    if (property.PropertyType.Name.ToUpper() == "UINT64")
-                                                        property.SetValue(examination, Convert.ToUInt64(nodevalue.Value), null);
-                                                    else if (property.PropertyType.Name.ToUpper() == "STRING")
-                                                        property.SetValue(examination, Convert.ToString(nodevalue.Value), null);
-                                                    else if (property.PropertyType.Name.ToUpper() == "DATETIME")
-                                                        property.SetValue(examination, Convert.ToDateTime(nodevalue.Value), null);
-                                                    else if (property.PropertyType.Name.ToUpper() == "INT32")
-                                                        property.SetValue(examination, Convert.ToInt32(nodevalue.Value), null);
-                                                    else
-                                                        property.SetValue(examination, nodevalue.Value, null);
-                                                }
-                                            }
-                                        }
-                                    }
-                                }
-                                examScreenList.Add(examination);
-
-                            }
-                    }
-                    fs.Close();
-                    fs.Dispose();
-                }
-            }
+            ExaminationManager examMngr = new ExaminationManager();
+            examScreenList = examMngr.GetExamList(ClientSession.EncounterId, data, false);
 
             HttpContext.Current.Session["ExamGeneral"] = examScreenList;
 
