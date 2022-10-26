@@ -2234,3 +2234,21 @@ function QRCodeClick() {
 function CloseQRCodeModal() {
     $("#QRCodeInfo")[0].style.display = "none";
 }
+
+function AkidoNoteClick() {
+    var CLegalOrg = "";
+    var cookies = document.cookie.split(';');
+    for (var l = 0; l < cookies.length; l++) {
+        if (cookies[l].indexOf("CLegalOrg") > -1)
+            CLegalOrg = cookies[l].split("=")[1].replace("?","");
+    }
+    var AkidoNoteURL = document.getElementById('hdnAkidoNote').value.replace("[CapellaEncounterID]", document.getElementById('hdnEncounterID').value).replace("[ClientName]", CLegalOrg);
+    alert(AkidoNoteURL);
+    Result = openNonModal(AkidoNoteURL, 780, 1250, obj);
+
+    $('#resultLoading').css("display", "none");
+    if (Result == null)
+        return false;
+
+    return false;
+}

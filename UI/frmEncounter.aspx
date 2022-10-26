@@ -8,6 +8,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head runat="server">
     <title>Untitled Page</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.7.2/font/bootstrap-icons.css">
     <%--<script src="https://logrocket.acurussolutions.io/LogRocket.js"; crossorigin="anonymous"></script> <script>window.LogRocket && window.LogRocket.init('akido/akido-test', { mergeIframes: true }, { enableVerboseLogging: true });</script>--%>
     <style type="text/css">
         label {
@@ -276,6 +277,11 @@
                                 value="" runat="server" onclick="if (!IsSaveEnabled(this)) return;else  QRCodeClick(); " onserverclick="btnQRCode_ServerClick" >Dictate (Mobile) <i class="fa fa-qrcode" aria-hidden="true"></i></button>
 
                             </td>
+                            <td style="margin: 0px; padding: 0px;">
+                                <button id="btnAkidoNote" style="margin-right: 2px; height: 34px; " class="aspAkidoBluebutton" 
+                                value="" runat="server" onclick="if (!IsSaveEnabled(this)) return;else  AkidoNoteClick(); " onserverclick="btnAkidoNote_ServerClick" >Akido Note <i class="bi bi-box-arrow-up-right" aria-hidden="true"></i></button>
+
+                            </td>
                         </tr>
                     </table>
                 </asp:Panel>
@@ -418,6 +424,8 @@
         <asp:HiddenField ID="hdnUserRole" runat="server" EnableViewState="true" />
         <asp:HiddenField ID="hdnReviewStatus" runat="server" EnableViewState="false" />
         <asp:HiddenField ID="hdnCloseFS" runat="server" />
+        <asp:HiddenField ID="hdnAkidoNote" runat="server" />
+        <asp:HiddenField ID="hdnEncounterID" runat="server" />
 
         <asp:HiddenField ID="hdnPreviousEncounterId" runat="server" />
         <asp:HiddenField ID="hdnAppointmentProviderId" runat="server" />
@@ -469,7 +477,7 @@
 
             <script src="JScripts/JSAvoidRightClick.js?version=<%=ConfigurationManager.AppSettings["VersionConfiguration"].ToString().Replace("Capella - ","") %>"
                 type="text/javascript"></script>
-            <script src="JScripts/jquery-1.11.3.min.js" type="text/javascript"></script>
+            <script src="JScripts/jquery-2.1.3.js"></script>
             <script src="JScripts/jquery-ui.min1.10.2.js" type="text/javascript"></script>
             <script src="JScripts/bootstrap.min.js" type="text/javascript"></script>
         </asp:PlaceHolder>

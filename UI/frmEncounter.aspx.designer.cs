@@ -276,6 +276,15 @@ namespace Acurus.Capella.UI
         protected global::System.Web.UI.HtmlControls.HtmlButton btnQRCode;
 
         /// <summary>
+        /// btnAkidoNote control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlButton btnAkidoNote;
+
+        /// <summary>
         /// pnlEncScroll control.
         /// </summary>
         /// <remarks>
@@ -598,6 +607,24 @@ namespace Acurus.Capella.UI
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.HiddenField hdnCloseFS;
+
+        /// <summary>
+        /// hdnAkidoNote control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.HiddenField hdnAkidoNote;
+
+        /// <summary>
+        /// hdnEncounterID control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.HiddenField hdnEncounterID;
 
         /// <summary>
         /// hdnPreviousEncounterId control.

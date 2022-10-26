@@ -160,14 +160,29 @@ namespace Acurus.Capella.UI
                 }
 
                 //To visible\envisible QR Code Generator button
-                var userQRCode = from u in ClientSession.UserPermissionDTO.Userscntab where u.scn_id == 101131 && u.user_name == ClientSession.UserName select u;
-                if (userQRCode.ToList().Count>0)
+                if (ClientSession.UserPermissionDTO != null && ClientSession.UserPermissionDTO.Userscntab != null)
                 {
-                    btnQRCode.Visible = true;
-                }
-                else
-                {
-                    btnQRCode.Visible = false;
+                    var userQRCode = from u in ClientSession.UserPermissionDTO.Userscntab where u.scn_id == 101131 && u.user_name == ClientSession.UserName select u;
+                    if (userQRCode.ToList().Count > 0)
+                    {
+                        btnQRCode.Visible = true;
+                    }
+                    else
+                    {
+                        btnQRCode.Visible = false;
+                    }
+
+                    var userAkidoNote = from u in ClientSession.UserPermissionDTO.Userscntab where u.scn_id == 101132 && u.user_name == ClientSession.UserName select u;
+                    if (userAkidoNote.ToList().Count > 0)
+                    {
+                        btnAkidoNote.Visible = true;
+                        hdnAkidoNote.Value = System.Configuration.ConfigurationSettings.AppSettings["AkidoNoteURL"];
+                        hdnEncounterID.Value = ClientSession.EncounterId.ToString();
+                    }
+                    else
+                    {
+                        btnAkidoNote.Visible = false;
+                    }
                 }
 
                 ClientSession.CurrentObjectType = sMyObjType;
@@ -3274,6 +3289,11 @@ namespace Acurus.Capella.UI
         }
 
         protected void btnQRCode_ServerClick(object sender, EventArgs e)
+        {
+
+        }
+
+        protected void btnAkidoNote_ServerClick(object sender, EventArgs e)
         {
 
         }

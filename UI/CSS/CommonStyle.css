@@ -896,6 +896,27 @@ input[disabled].aspresizedgreenbutton {
     height: 25px !important;
 }
 
+.aspAkidoBluebutton {
+    color: #fff !important;
+    background-color: #0078D8 !important;
+    border-color: #357ebd !important;
+    display: inline-block !important;
+    margin-bottom: 0 !important;
+    font-weight: 400 !important;
+    text-align: center !important;
+    vertical-align: middle !important;
+    cursor: pointer !important;
+    background-image: none !important;
+    border: 1px solid transparent !important;
+    white-space: nowrap !important;
+    padding: 6px 12px !important;
+    font-size: 14px !important;
+    line-height: 1.42857143 !important;
+    border-radius: 4px !important;
+    font-size: 15px !important;
+    font-family: "Helvetica Neue",Helvetica,Arial,sans-serif !important;
+}
+
 /* Chief Complaints Start*/
 
 .CCmandLabel {
