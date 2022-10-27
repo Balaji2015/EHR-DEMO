@@ -54,7 +54,7 @@ Deploy Test Job 10.0.0.4 :
   script:
   
   - echo "Backup CMG..Start.."
-  - xcopy /y /s "E:\Acurus_Web\capella_cmg_project\capella_cmg_ehr_4_8\*.*" "E:\Deployee\Backup-do not delete\Git\CMG"
+  - xcopy /y /s "E:\Acurus_Web\capella_cmg_project\capella_cmg_ehr_4_8\*.*" "E:\Acurus_Web\Deployee\Backup-do not delete\Git\CMG"
   - echo "Backup CMG..Completed.."
   
   - echo "Deployee CMG..Start.."  
