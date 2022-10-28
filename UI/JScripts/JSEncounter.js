@@ -2243,7 +2243,6 @@ function AkidoNoteClick() {
             CLegalOrg = cookies[l].split("=")[1].toLowerCase();
     }
     var AkidoNoteURL = document.getElementById('hdnAkidoNote').value.replace("[CapellaEncounterID]", document.getElementById('hdnEncounterID').value).replace("[ClientName]", CLegalOrg);
-    alert(AkidoNoteURL);
     Result = openNonModal(AkidoNoteURL, 780, 1250, obj);
 
     $('#resultLoading').css("display", "none");
