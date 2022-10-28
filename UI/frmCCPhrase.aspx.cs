@@ -367,6 +367,7 @@ namespace Acurus.Capella.UI
                     objEncounter.Add(ClientSession.FillEncounterandWFObject.EncRecord);
                     if (objEncounter.Count > 0)
                     {
+                        //Gitlab# 2716 - Load transaction data from the Transaction Table instead of XML
                         if (txtcount.Value != null && txtcount.Value.Trim() != "" && System.Text.RegularExpressions.Regex.IsMatch(txtcount.Value, "^[0-9]*$")==true)
                         {
                             objEncounter[0].No_of_Med_Orders_In_Paper = Convert.ToUInt16(txtcount.Value);

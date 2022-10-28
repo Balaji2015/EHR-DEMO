@@ -265,6 +265,7 @@ namespace Acurus.Capella.UI
 
             if (ClientSession.PatientPaneList != null)
             {
+                //Gitlab# 2725 - Load transaction data from the Transaction Table instead of XML
                 if (ClientSession.PatientPaneList.Count > 0)
                     sex = ClientSession.PatientPaneList[0].Sex.ToUpper() == "MALE" ? "FEMALE" : "MALE";
             }
@@ -868,6 +869,7 @@ namespace Acurus.Capella.UI
 
             if (Session["fillRos"] != null)
             {
+                //Gitlab# 2725 - Load transaction data from the Transaction Table instead of XML
                 fillRos = (FillROS)Session["fillRos"];
                 if (fillRos.Ros_List != null && fillRos.Ros_List.Count > 0)
                 {
