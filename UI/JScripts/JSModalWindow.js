@@ -54,7 +54,7 @@ function openNonModal(fromname, height, width, inputargument) {
                 Argument = inputargument[i];
             }
         }
-        if (inputargument.lenght != 0) {
+        if (inputargument.length != 0) {
             PageName = PageName + "?";
         }
     }
