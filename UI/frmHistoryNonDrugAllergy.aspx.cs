@@ -208,21 +208,22 @@ namespace Acurus.Capella.UI
 
 
             // if (Session["NonDrugAllergyFieldLookupList"] != null && (chkShowAll.Checked||!chkShowAll.Enabled))is_FieldLookUp
-            if (Session["NonDrugAllergyFieldLookupList"] != null && is_FieldLookUp)
-            {
-                NonDrugAllergyFieldLookupList = (IList<FieldLookup>)Session["NonDrugAllergyFieldLookupList"];
+            //Gitlab #2821 - When Show All is unchecked, it should bring only the saved data
+            //if (Session["NonDrugAllergyFieldLookupList"] != null && is_FieldLookUp)
+            //{
+            //    NonDrugAllergyFieldLookupList = (IList<FieldLookup>)Session["NonDrugAllergyFieldLookupList"];
 
-                foreach (FieldLookup item1 in NonDrugAllergyFieldLookupList)
-                {
-                    if (!dictionary.ContainsKey(item1.Value))
-                    {
-                        createControls(item1.Value, string.Empty, string.Empty, null);
-                        dictionary.Add(item1.Value, item1.Description);
-                    }
-                }
-                if (!ctrl)
-                    createHeaderControls(ref ctrl);
-            }
+            //    foreach (FieldLookup item1 in NonDrugAllergyFieldLookupList)
+            //    {
+            //        if (!dictionary.ContainsKey(item1.Value))
+            //        {
+            //            createControls(item1.Value, string.Empty, string.Empty, null);
+            //            dictionary.Add(item1.Value, item1.Description);
+            //        }
+            //    }
+            //    if (!ctrl)
+            //        createHeaderControls(ref ctrl);
+            //}
             if (!IsPostBack)
             {
                 ClientSession.processCheck = true;
@@ -829,6 +830,7 @@ namespace Acurus.Capella.UI
                     }
                 }
             }
+
             ScriptManager.RegisterStartupScript(this, this.Page.GetType(), "StopLoading", " {sessionStorage.setItem('StartLoading', 'false');StopLoadFromPatChart();}", true);
 
         }

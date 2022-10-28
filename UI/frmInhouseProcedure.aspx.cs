@@ -147,9 +147,10 @@ namespace Acurus.Capella.UI
                         objOtherProc.Created_By = ClientSession.UserName;
                         string strtime = hdnLocalTime.Value.ToString().Split('G').ElementAt(0).ToString();
                         objOtherProc.Created_Date_And_Time = UtilityManager.ConvertToUniversal();
-                        objOtherProc.Modified_By = ClientSession.UserName;
-                        objOtherProc.Modified_Date_And_Time = UtilityManager.ConvertToUniversal();
-                   
+                        //Gitlab #2844 - Fill the Created_Date_and_Time and Modified_Date_and_Time properly
+                        //objOtherProc.Modified_By = ClientSession.UserName;
+                        //objOtherProc.Modified_Date_And_Time = UtilityManager.ConvertToUniversal();
+
                         objOtherProc.Procedure_Code_Description = lstChecked[x].Text.ToString().Substring(lstChecked[x].Text.ToString().IndexOf('-') + 1).Trim();
                         objOtherProc.Procedure_Code = lstChecked[x].Value.ToString().Split('-')[0].Trim();
 
@@ -210,8 +211,9 @@ namespace Acurus.Capella.UI
                             objUpdate.Internal_Property_File_Name = FileName;
                             objUpdate.Created_By = ClientSession.UserName;
                             objUpdate.Created_Date_And_Time = UtilityManager.ConvertToUniversal();
-                            objUpdate.Modified_By = ClientSession.UserName;
-                            objUpdate.Modified_Date_And_Time = UtilityManager.ConvertToUniversal();
+                            //Gitlab #2844 - Fill the Created_Date_and_Time and Modified_Date_and_Time properly
+                            //objUpdate.Modified_By = ClientSession.UserName;
+                            //objUpdate.Modified_Date_And_Time = UtilityManager.ConvertToUniversal();
                             objUpdate.Procedure_Code_Description = lstChecked[x].Text.ToString().Trim().Substring(lstChecked[x].Text.ToString().Trim().IndexOf('-') + 1);
                             objUpdate.Procedure_Code = lstChecked[x].Text.ToString().Split('-')[0].Trim();
 
