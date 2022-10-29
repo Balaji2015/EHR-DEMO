@@ -152,7 +152,7 @@
               margin: 0px; padding: 0px;
          }
     </style>
-      <link href="CSS/CommonStyle.css" rel="stylesheet" type="text/css" />
+      <link href="CSS/CommonStyle.css?version=<%=ConfigurationManager.AppSettings["VersionConfiguration"].ToString().Replace("Capella - ","") %>" rel="stylesheet" type="text/css" />
     <script type="text/javascript" id="telerikClientEvents1">
         
         
