@@ -1064,7 +1064,7 @@ namespace Acurus.Capella.UI
                 XmlElement elemOld = (XmlElement)xmlDoc.GetElementsByTagName("structuredBody")[0].ChildNodes[1].ChildNodes[0].ChildNodes[4];
                 XmlDocumentFragment xfrag = xmlDoc.CreateDocumentFragment();
                 string sInnerXML = string.Empty;
-                sInnerXML = "<tbody xmlns=" + '"' + "urn:hl7-org:v3" + '"' + ">" + "<tr><td></td></tr></tbody>";
+                sInnerXML = "<tbody xmlns=" + '"' + "urn:hl7-org:v3" + '"' + ">" + "<tr><td>No Information</td></tr></tbody>";
                 xfrag.InnerXml = sInnerXML;
                 elemOld.LastChild.AppendChild(xfrag);
                 xmlDoc.Save(sPrintFileName);
@@ -1180,7 +1180,7 @@ namespace Acurus.Capella.UI
 
                 XmlDocumentFragment xfrag = xmlDoc.CreateDocumentFragment();
                 string sInnerXML = string.Empty;
-                sInnerXML = "<tbody xmlns=" + '"' + "urn:hl7-org:v3" + '"' + ">" + "<tr><td></td></tr></tbody>";
+                sInnerXML = "<tbody xmlns=" + '"' + "urn:hl7-org:v3" + '"' + ">" + "<tr><td>No Information</td></tr></tbody>";
                 xfrag.InnerXml = sInnerXML;
                 elemOld.LastChild.AppendChild(xfrag);
                 xmlDoc.Save(sPrintFileName);

@@ -6104,14 +6104,14 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
                         {
                             fillProblemList.Snomed_Code = ccObject[5].ToString();
 
-                            ilstProblemList.Add(fillProblemList);
+                            //ilstProblemList.Add(fillProblemList);
                         }
                         if (ccObject[6] != null)
                         {
                             fillProblemList.Snomed_Code_Description = ccObject[6].ToString();
-
-                            ilstProblemList.Add(fillProblemList);
+                            //ilstProblemList.Add(fillProblemList);
                         }
+                        ilstProblemList.Add(fillProblemList);
                     }
 
 
