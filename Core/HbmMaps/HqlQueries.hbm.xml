@@ -14721,7 +14721,7 @@ cqm_data where nqf_number =?  and PQRI_calculation_Method=? and standard_Concept
 where date_of_service between date_sub(DATE_FORMAT(?,'%Y-01-01'),interval 24 month) and DATE_FORMAT(?,'%Y-12-31')   and
 r.rxnorm_id in(SELECT PQRI_Value FROM cqm_data where nqf_number =?  and 
 PQRI_calculation_Method=? and standard_Concept ='Dementia Medications')  and r.deleted='N' and
-  h.human_id in (:EncIds);;]]>
+  e.human_id in (:EncIds);;]]>
 
 
 	</sql-query>
