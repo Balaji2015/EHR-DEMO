@@ -105,7 +105,7 @@
                         <!--<td style="width: 15%; padding-bottom: 0.5%"><label>Specialty*</label></td>
                         <td style="width: 35%; padding-bottom: 0.5%"><select name="Specialty" id="ddlSpecialty" style="width: 96%" class="input-xlarge"><option value=""></option><option value="Diagnosis">Diagnosis</option></select></td>-->
                         <td style="width: 15%; padding-bottom: 0.5%">
-                            <span id="lblNPI"  class="MandLabelstyle">NPI*</span></td>
+                            <span id="lblNPI"  class="Editabletxtbox">NPI</span></td>
                         <td style="width: 35%; padding-bottom: 0.5%">
                             <input type="text" id="txtNPI" onkeypress="if(!isNumberKey(event)) return false;" maxlength="10" style="width: 96%" value="" class="Editabletxtbox"/></td>
                         <td style="width: 15%; padding-bottom: 0.5%">

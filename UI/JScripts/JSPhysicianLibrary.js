@@ -308,12 +308,13 @@ function Add(sCheckDuplicatefax) {
             { sessionStorage.setItem('StartLoading', 'false'); StopLoadFromPatChart(); }
             return false;
         }
-        if ($("#txtNPI")[0].value == "") {
-            DisplayErrorMessage('1011179');
-            document.getElementById(GetClientId("txtNPI")).focus();
-            { sessionStorage.setItem('StartLoading', 'false'); StopLoadFromPatChart(); }
-            return false;
-        }
+        //Gitlab #2862
+        //if ($("#txtNPI")[0].value == "") {
+        //    DisplayErrorMessage('1011179');
+        //    document.getElementById(GetClientId("txtNPI")).focus();
+        //    { sessionStorage.setItem('StartLoading', 'false'); StopLoadFromPatChart(); }
+        //    return false;
+        //}
         if (Specialtylist == "") {
             DisplayErrorMessage('1011168');
             { sessionStorage.setItem('StartLoading', 'false'); StopLoadFromPatChart(); }
@@ -336,12 +337,12 @@ function Add(sCheckDuplicatefax) {
             { sessionStorage.setItem('StartLoading', 'false'); StopLoadFromPatChart(); }
             return false;
         }
-        if ($("#txtNPI")[0].value == "") {
-            DisplayErrorMessage('1011179');
-            document.getElementById(GetClientId("txtNPI")).focus();
-            { sessionStorage.setItem('StartLoading', 'false'); StopLoadFromPatChart(); }
-            return false;
-        }
+        //if ($("#txtNPI")[0].value == "") {
+        //    DisplayErrorMessage('1011179');
+        //    document.getElementById(GetClientId("txtNPI")).focus();
+        //    { sessionStorage.setItem('StartLoading', 'false'); StopLoadFromPatChart(); }
+        //    return false;
+        //}
     }
     if ($("#ddlCategory")[0].value.toUpperCase() == "ORGANIZATION") {
         if ($("#txtCompany")[0].value == "") {
@@ -574,11 +575,11 @@ function AddProvider() {
             DisplayErrorMessage('1011165');
             return false;
         }
-        if ($("#txtNPI")[0].value == "") {
-            DisplayErrorMessage('1011179');
-            document.getElementById(GetClientId("txtNPI")).focus();
-            return false;
-        }
+        //if ($("#txtNPI")[0].value == "") {
+        //    DisplayErrorMessage('1011179');
+        //    document.getElementById(GetClientId("txtNPI")).focus();
+        //    return false;
+        //}
         if (Specialtylist == "") {
             DisplayErrorMessage('1011168');
             return false;
@@ -597,11 +598,11 @@ function AddProvider() {
             DisplayErrorMessage('1011165');
             return false;
         }
-        if ($("#txtNPI")[0].value == "") {
-            DisplayErrorMessage('1011179');
-            document.getElementById(GetClientId("txtNPI")).focus();
-            return false;
-        }
+        //if ($("#txtNPI")[0].value == "") {
+        //    DisplayErrorMessage('1011179');
+        //    document.getElementById(GetClientId("txtNPI")).focus();
+        //    return false;
+        //}
     }
     if ($("#ddlCategory")[0].value.toUpperCase() == "ORGANIZATION") {
         if ($("#txtCompany")[0].value == "") {
@@ -960,12 +961,12 @@ function ddlCategory_Change() {
         $('#lblLastName').addClass('MandLabelstyle');
         $(lblLastName).html($(lblLastName).html().replace("*", "<span class='manredforstar'>*</span>"));
 
-        if (lblNPI.innerText != "NPI*") {
-            lblNPI.innerText += "*";
-            lblNPI.innerHTML = lblNPI.innerText;
-        }
-        $('#lblNPI').addClass('MandLabelstyle');
-        $(lblNPI).html($(lblNPI).html().replace("*", "<span class='manredforstar'>*</span>"));
+        //if (lblNPI.innerText != "NPI*") {
+        //    lblNPI.innerText += "*";
+        //    lblNPI.innerHTML = lblNPI.innerText;
+        //}
+        //$('#lblNPI').addClass('MandLabelstyle');
+        //$(lblNPI).html($(lblNPI).html().replace("*", "<span class='manredforstar'>*</span>"));
         lblCompany.innerText = lblCompany.innerText.replace('*', ' ').trim();
         lblCompany.style.color = "black";
         $('#lblCompany').removeClass('MandLabelstyle');
@@ -991,12 +992,12 @@ function ddlCategory_Change() {
         $('#lblLastName').addClass('MandLabelstyle');
         $(lblLastName).html($(lblLastName).html().replace("*", "<span class='manredforstar'>*</span>"));
 
-        if (lblNPI.innerText != "NPI*") {
-            lblNPI.innerText += "*";
-            lblNPI.innerHTML = lblNPI.innerText;
-        }
-        $('#lblNPI').addClass('MandLabelstyle');
-        $(lblNPI).html($(lblNPI).html().replace("*", "<span class='manredforstar'>*</span>"));
+        //if (lblNPI.innerText != "NPI*") {
+        //    lblNPI.innerText += "*";
+        //    lblNPI.innerHTML = lblNPI.innerText;
+        //}
+        //$('#lblNPI').addClass('MandLabelstyle');
+        //$(lblNPI).html($(lblNPI).html().replace("*", "<span class='manredforstar'>*</span>"));
         lblCompany.innerText = lblCompany.innerText.replace('*', ' ').trim();
         lblCompany.style.color = "black";
         $('#lblCompany').removeClass('MandLabelstyle');
@@ -1015,9 +1016,9 @@ function ddlCategory_Change() {
         lblLastName.innerText = lblLastName.innerText.replace('*', ' ').trim();
         lblLastName.style.color = "black";
         $('#lblLastName').removeClass('MandLabelstyle');
-        lblNPI.innerText = lblNPI.innerText.replace('*', ' ').trim();
-        lblNPI.style.color = "black";
-        $('#lblNPI').removeClass('MandLabelstyle');
+        //lblNPI.innerText = lblNPI.innerText.replace('*', ' ').trim();
+        //lblNPI.style.color = "black";
+        //$('#lblNPI').removeClass('MandLabelstyle');
         if (lblCompany.innerText != "Company*") {
             lblCompany.innerText += "*";
             lblCompany.innerHTML = lblCompany.innerText;
@@ -1036,9 +1037,9 @@ function ddlCategory_Change() {
         lblCompany.innerText = lblCompany.innerText.replace('*', ' ').trim();
         lblCompany.style.color = "black";
         $('#lblCompany').removeClass('MandLabelstyle');
-        lblNPI.innerText = lblNPI.innerText.replace('*', ' ').trim();
-        lblNPI.style.color = "black";
-        $('#lblNPI').removeClass('MandLabelstyle');
+        //lblNPI.innerText = lblNPI.innerText.replace('*', ' ').trim();
+        //lblNPI.style.color = "black";
+        //$('#lblNPI').removeClass('MandLabelstyle');
         if (lblFirstName.innerText != "First Name*") {
             lblFirstName.innerText += "*";
             lblFirstName.innerHTML = lblFirstName.innerText;
