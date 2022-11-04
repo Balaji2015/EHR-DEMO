@@ -7,6 +7,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <base target="_self" />
 <head runat="server">
+    <link href="CSS/font-awesome.css" rel="stylesheet" type="text/css" />
     <title>E-Fax</title>
     <%--<script src="https://logrocket.acurussolutions.io/LogRocket.js"; crossorigin="anonymous"></script> <script>window.LogRocket && window.LogRocket.init('akido/akido-test', { mergeIframes: true }, { enableVerboseLogging: true });</script>--%>
     <style type="text/css">
@@ -237,109 +238,110 @@
                        
                           <div class="paddingtop">
                             <div class="panelborderbox">
-                                <div class="panel-head Editabletxtbox">Sender's Information</div>
-                                <div class="panel-body">
+                               <div class="panel-head Editabletxtbox">Sender's Information</div>
+                                <div class="panel-body">                                
                                     <table width="100%" class="Editabletxtbox">
 
-                                        <tr>
-                                            <td style="width: 30%; padding-bottom: 0.5%">
+                                        <tr >
+                                            <td style="width: 1%; position: absolute; left: 10px !important; padding-bottom: 0.5%">
                                                 <span mand="Yes">Name*</span>
                                             </td>
-                                            <td style="width: 65%; padding-bottom: 0.5%">
-                                                <input name="txtSenderName" type="text" id="txtSenderName" runat="server" class="form-control ui-autocomplete-input Editabletxtbox" maxlength="1000" onchange="EnableSend();" onkeypress="EnableSend();" style="width: 100%;" />
+                                            <td style="width: 40%; position: absolute; left: 110px !important; padding-bottom: 0.5% padding-bottom: 0.5%">
+                                                <input name="txtSenderName" type="text" id="txtSenderName" runat="server" class="riSingle ui-autocomplete-input Editabletxtbox" maxlength="1000" onchange="EnableSend();" onkeypress="EnableSend();" style="width: 70%;" />
 
                                             </td>
-                                            <td rowspan="4" style="width: 5%; text-align: center" valign="top"></td>
-                                        </tr>
-
-                                        <tr>
-                                            <td style="width: 30%; padding-bottom: 0.5%">
+                                            
+                                             <td style="width: 1%; position: absolute; right: 500px !important; padding-bottom: 0.5%">
                                                 <span id="lblCompany" class="Editabletxtbox">Company</span>
                                             </td>
-                                            <td style="width: 65%; padding-bottom: 0.5%">
-                                                <input name="txtSenderCompany" type="text" runat="server" id="txtSenderCompany" class="form-control ui-autocomplete-input Editabletxtbox" onchange="EnableSend();" onkeypress="EnableSend();" style="width: 100%;" />
+                                            <td style="width: 40%;  text-align:left;  padding-bottom: 0.5%">
+                                                <input name="txtSenderCompany" type="text" runat="server" id="txtSenderCompany" class="riSingle ui-autocomplete-input Editabletxtbox" onchange="EnableSend();" onkeypress="EnableSend();" style="width: 70%;" />
                                             </td>
                                         </tr>
-                                        <tr>
-                                            <td style="width: 30%; padding-bottom: 0.5%">
+                                        
+                                        <tr >
+                                            <td style="width: 1%; position: absolute; left: 10px !important; padding-bottom: 0.5%">
                                                 <span id="lblFax" class="Editabletxtbox">Fax</span>
                                             </td>
-                                            <td style="width: 65%; padding-bottom: 0.5%">
-                                                <input type="text" id="txtSenderMaskFax" runat="server" class="form-control Editabletxtbox" maxlength="10" style="width: 100%;" />
-                                               
+                                            <td style="width: 40%; position: absolute; left: 110px !important; padding-bottom: 0.5%  padding-bottom: 0.5%">
+                                                <input type="text" id="txtSenderMaskFax" runat="server" class="riSingle Editabletxtbox" maxlength="10" style="width: 70%;" />
                                             </td>
-                                        </tr>
-                                        <tr>
-                                            <td style="width: 30%; padding-bottom: 0.5%">
+                                             <td style="width: 1%; position: absolute; right: 500px !important; padding-bottom: 0.5%">
                                                 <span id="lblEmail" class="Editabletxtbox">Email</span>
                                             </td>
-                                            <td style="width: 65%; padding-bottom: 0.5%">
-                                                <input name="txtSenderEmail" type="text" runat="server" id="txtSenderEmail" class="form-control ui-autocomplete-input Editabletxtbox" onchange="EnableSend();" maxlength="100" onkeypress="EnableSend();" style="width: 100%;" />
+                                            <td style="width: 40%;  text-align:left;  padding-bottom: 0.5%">
+                                                <input name="txtSenderEmail" type="text" runat="server" id="txtSenderEmail" class="riSingle ui-autocomplete-input Editabletxtbox" onchange="EnableSend();" maxlength="100" onkeypress="EnableSend();" style="width: 70%;" />
                                             </td>
                                         </tr>
+                                       
                                     </table>
-                                </div>
+                               
+                              </div>
                             </div>
                             <div class="panelborderbox">
                                 <div class="panel-head Editabletxtbox">Recipient's Information</div>
                                 <div class="panel-body">
-                                    <table width="100%" class="Editabletxtbox">
-                                        <tr>
-                                            <td style="width: 30%; padding-bottom: 0.5%">
+                                    <table width="80%" class="Editabletxtbox">
+                                        <tr >
+                                            <td style="width: 10%;position: absolute; left: 10px !important; padding-bottom: 0.5%">
                                                 <span mand="Yes">Category*</span>
                                             </td>
-                                            <td style="width: 70%; padding-bottom: 0.5%" colspan="2">
+                                            <td style="width: 88%; padding-bottom: 0.5%" colspan="2">
                                                 <input type="radio" name="chkProvider1" id="chkProvider" runat="server" checked value="Provider" /><label for="Provider">Provider/Organization/User/Non-User</label>
                                                 <input type="radio" name="chkProvider1" id="chkpatient" runat="server" value="Patient" /><label for="Patient">Patient</label>
                                             </td>
 
                                         </tr>
                                         <tr>
-                                            <td style="width: 30%; padding-bottom: 0.5%">
+                                            <td style="width: 10%; position: absolute; left: 10px !important;padding-bottom: 0.5%">
                                                 <span mand="Yes">Name*</span>
                                             </td>
                                             <td style="width: 65%; padding-bottom: 0.5%!important; height: 90px">
-                                                <textarea name="txtProviderSearch" rows="3" cols="15" id="txtRecName" runat="server" onchange="EnableSend();" maxlength="1000" onkeypress="EnableSend();" class="form-control Editabletxtbox ui-autocomplete-input" data-phy-id="0" data-category="" data-phy-details="" style="width: 96%; resize: none;" autocomplete="off"></textarea>
-                                                <img id="imgProviderSearch" runat="server" src="Resources/Delete-Blue.png" alt="X" title="Click to clear the text field." onclick="return ProviderSearchclear();" style="position: absolute; right: 73px !important; top: 385px !important; cursor: pointer; width: 10px; height: 10px;" />
+                                                <textarea name="txtProviderSearch" rows="3" cols="15" id="txtRecName" runat="server" onchange="EnableSend();" maxlength="1000" onkeypress="EnableSend();" class="form-control Editabletxtbox ui-autocomplete-input" data-phy-id="0" data-category="" data-phy-details="" style="width: 155%; resize: none;" autocomplete="off"></textarea>
+                                                <img id="imgProviderSearch" runat="server" src="Resources/Delete-Blue.png" alt="X" title="Click to clear the text field." onclick="return ProviderSearchclear();" style="position: absolute; right: 95px !important; top: 280px !important; cursor: pointer; width: 10px; height: 10px;" />
                                             
                                             </td>
-                                            <td style="width: 5%; text-align: left" valign="middle">
+                                            <td style="width: 5%;position: absolute; right: 40px !important; top: 270px !important; ">
                                                 <button id="btnprov" title="Address book" onclick="OpenProvider();return false;" class="btn"><i class="glyphicon glyphicon-book"></i></button>
                                             </td>
                                         </tr>
-                                        <tr>
-                                            <td style="width: 30%; padding-bottom: 0.5%">
+                                      <%-- <tr>
+                                            <td style="width: 30%;position: absolute; left: 50px !important; padding-bottom: 0.5%">
                                                 <span id="lblRecipientcompany" class="Editabletxtbox">Company</span>
                                             </td>
                                             <td style="width: 65%; padding-bottom: 0.5%">
-                                                <input name="txtRecipientcompany" type="text" runat="server" id="txtRecipientcompany" class="form-control ui-autocomplete-input Editabletxtbox" onchange="EnableSend();" onkeypress="EnableSend();" style="width: 96%;" />
+                                                <input name="txtRecipientcompany" type="text" runat="server" id="txtRecipientcompany" class="riSingle ui-autocomplete-input Editabletxtbox" onchange="EnableSend();" onkeypress="EnableSend();" style="width: 115%;" />
                                             </td>
                                             <td style="width: 5%; text-align: left" rowspan="3" valign="middle"></td>
-                                        </tr>
-                                        <tr>
-                                            <td style="width: 30%; padding-bottom: 0.5%">
+                                      </tr>  --%> 
+                                        </table>
+                                         <table width="100%" class="Editabletxtbox">
+                                        <tr style="text-align:left">
+                                            <td style="width: 1%; position: absolute; left: 10px !important; padding-bottom: 0.5%">
                                                 <span mand="Yes">Fax*</span>
                                             </td>
-                                            <td style="width: 65%; padding-bottom: 0.5%">
-                                                <input type="text" id="msktxtRecipientFax" runat="server" class="form-control Editabletxtbox" maxlength="10" style="width: 96%;" />
+                                            <td style="width: 40%; position: absolute; left: 110px !important; padding-bottom: 0.5% padding-bottom: 0.5%">
+                                                <input type="text" id="msktxtRecipientFax" runat="server" class="riSingle Editabletxtbox" maxlength="10" style="width: 70%;" />
                                                
                                             </td>
-                                        </tr>
-                                        <tr>
-                                            <td style="width: 30%; padding-bottom: 0.5%">
+
+                                             <td style="width: 1%; position: absolute; right: 500px !important; padding-bottom: 0.5%">
                                                 <span id="lblRecipientemail" class="Editabletxtbox">Email</span>
                                             </td>
-                                            <td style="width: 65%; padding-bottom: 0.5%">
-                                                <input name="txtRecipientmail" type="text" id="txtRecipientmail" runat="server" class="form-control Editabletxtbox" maxlength="100" onchange="EnableSend();" onkeypress="EnableSend();" style="width: 96%;" />
+                                            <td style="width: 40%;  text-align:left;  padding-bottom: 0.5%">
+                                                <input name="txtRecipientmail" type="text" id="txtRecipientmail" runat="server" class="riSingle Editabletxtbox" maxlength="100" onchange="EnableSend();" onkeypress="EnableSend();" style="width: 70%;" />
                                               
                                             </td>
                                              <td style="width: 5%; padding-bottom: 0.5%;">
-                                                   <button id="btnNew" runat="server" style="margin-left:-67px;" class="btn aspresizedbluebutton" onclick="if(!btnNewAddGrid()){return false;};" onserverclick="btnNew_Click">New</button>
+                                                   <button id="btnNew" runat="server" style="margin-left:-30px;" class="btn aspresizedbluebutton" onclick="if(!btnNewAddGrid()){return false;};" onserverclick="btnNew_Click">New</button>
                                              </td>
+
                                         </tr>
+                                        </table>
+                                         <table width="100%" class="Editabletxtbox">
                                         <tr>
                                             <td style="width: 100%; height: 100%; padding-bottom: 0.5%" colspan="3">
-                                                <div id="divgrd" style="overflow-y: auto; height:163px;">
+                                                <div id="divgrd" style="overflow-y: auto; height:130px;">
                                                     <table id="tblFaxDetails" class='table table-bordered' style="width: 97%;">
                                                         <thead class="Gridheaderstyle" style="table-layout:fixed;">
                                                             <tr>
@@ -357,10 +359,9 @@
                                             </td>
                                         </tr>
                                     </table>
-
-                                </div>
+                                  </div>
                             </div>
-                        </div>
+                       </div>
                         <div style="padding-left: 2%; padding-right: 2%;">
                             <table width="100%">
                                 <tr>
@@ -368,22 +369,21 @@
                                         <span class="LabelStyle Editabletxtbox">Priority</span>
                                     </td>
                                     <td style="padding-right: 10px">
-                                        <select class=" form-control Editabletxtbox" name="DropDwnpriority" runat="server" id="DropDwnpriority">
+                                        <select style="width: 250px;" class=" riSingle Editabletxtbox" name="DropDwnpriority" runat="server" id="DropDwnpriority">
                                         </select>
                                     </td>
                                     <td>
                                         <span class="LabelStyle Editabletxtbox">Cover page</span>
                                     </td>
                                     <td>
-                                        <select class=" form-control Editabletxtbox" runat="server" id="DropDwncoverpage">
+                                        <select style="width: 250px;" class=" riSingle Editabletxtbox" runat="server" id="DropDwncoverpage">
                                         </select>
-                                    </td>
-                                    <td style="padding-left: 10px"><a href="#" onclick="ImageTempalteClick()" style="margin-right: -22%">View Template</a></td>
+                                   <a href="#" onclick="ImageTempalteClick()" style="margin-right: -22%">View Template</a></td>
                                 </tr>
                                 <tr>
                                     <td><span class="LabelStyle">Subject</span></td>
                                     <td colspan="4" style="padding-top: 8px;">
-                                        <input type="text" id="txtSubject" maxlength="115" runat="server" style="width: 95%;" class="form-control Editabletxtbox" />
+                                        <input type="text" id="txtSubject" maxlength="115" runat="server" style="width: 95%;" class="riSingle Editabletxtbox" />
                                     </td>
                                 </tr>
 
@@ -391,8 +391,9 @@
                         </div>
                         <div style="padding-left: 2%; padding-right: 2%; padding-bottom: 1%">
                             <span class="lblcover Editabletxtbox">Cover page Message</span>
-                            <DLC:DLC ID="txtCoverpage" runat="server" TextboxHeight="100px" TextboxWidth="913px" Value="EFAX_COVER_PAGE_MESSAGE" TextboxMaxLength="3000"></DLC:DLC>
-                        </div>
+                            <%--<DLC:DLC ID="txtCoverpage" runat="server" TextboxHeight="360px" TextboxWidth="913px" Value="EFAX_COVER_PAGE_MESSAGE" TextboxMaxLength="3000"></DLC:DLC>--%>
+                        <textarea id="txtareaCoverpage" maxlength="3000" runat="server" style="height:360px;width:913px; resize: none; " class="Editabletxtbox" cols="100" rows="100" ></textarea>
+                            </div>
 
 
                     </td>
@@ -421,7 +422,7 @@
                                 </tr>
                                  <tr>
                                     <td>
-                                        <div id="divFileUpload" style="height: 80px; overflow-y: auto; width: 930px;"> 
+                                        <div id="divFileUpload" style="height: 70px; overflow-y: auto; width: 930px;"> 
                                             <telerik:RadAsyncUpload ID="UploadImage" runat="server" Width="775px"
                                                 MultipleFileSelection="Automatic" InitialFileInputsCount="0"
                                                 UploadedFilesRendering="BelowFileInput" OnClientValidationFailed="fileUploadValidationFailed" 

@@ -15,13 +15,12 @@
         return false;
     }
 });
-
+$(top.window.document).find("#TabEFaxFrame")[0].style.height = "630px";
 var intProviderlen = -1;
 var arrProvider = []; 
 var MAX_TOTAL_BYTES = "10485760";
 var filelimit = bytesToSize(MAX_TOTAL_BYTES);
 var uploadsInProgress = 0;
-
 var filesSize = new Array();
 var OVERSIZE_MESSAGE = "You are only allowed to add up to 20mb of files total";
 var isDuplicateFile = false;
@@ -572,7 +571,7 @@ function LoadEfax()
                             ddlDropDwncoverpage.add(option);
                         }
                         else if (FaxLoadList.LookUpList[i].Field_Name == "SIGNATURE") {
-                            $("#txtCoverpage_txtDLC").val(FaxLoadList.LookUpList[i].Value.replace("<Name of the user>", FaxLoadList.Nameoftheuser).replace("<ClientName>", FaxLoadList.FaciltyName).replace("<Facility Address>", FaxLoadList.FacilityAddress).replace("<Facility Phone Number>", FaxLoadList.FacilityPhoneNumber).replace("<Facility Fax Number>", FaxLoadList.FacilityFaxNumber));
+                            $("#txtareaCoverpage").val(FaxLoadList.LookUpList[i].Value.replace("<Name of the user>", FaxLoadList.Nameoftheuser).replace("<ClientName>", FaxLoadList.FaciltyName).replace("<Facility Address>", FaxLoadList.FacilityAddress).replace("<Facility Phone Number>", FaxLoadList.FacilityPhoneNumber).replace("<Facility Fax Number>", FaxLoadList.FacilityFaxNumber));
                         }
                     }
                     for (var x = 0; x < ddlDropDwnpriority.length - 1 ; x++) {

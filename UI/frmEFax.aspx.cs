@@ -556,7 +556,7 @@ namespace Acurus.Capella.UI
                     objactivitylog.Fax_Recipient_Number = dt.Rows[r].ItemArray[3].ToString(); //grdEFax.Rows[r].Cells[4].Text.ToString();//"+1" + msktxtRecipientFax.Value.Replace("-", "").Replace("(", "").Replace(")", "");
                     objactivitylog.From_Address = dt.Rows[r].ItemArray[4].ToString();//grdEFax.Rows[r].Cells[5].Text.ToString();//txtRecipientmail.Value;
 
-                    objactivitylog.Message = txtCoverpage.txtDLC.Text;
+                    objactivitylog.Message = txtareaCoverpage.Value;
                     objactivitylog.Fax_Status = "READY TO SEND";
                     objactivitylog.Fax_File_Path = sAttachFileName.Replace(@"\", @"/");
                     //if (chkProvider.Checked)
@@ -598,7 +598,7 @@ namespace Acurus.Capella.UI
             //txtSenderMaskFax.Text;
             msktxtRecipientFax.Value = "";
             //txtSenderEmail.Value = string.Empty;
-            txtRecipientcompany.Value = string.Empty;
+            //txtRecipientcompany.Value = string.Empty;
             txtRecName.Value = string.Empty;
             //balaji
             //msktxtRecipientFax.Text = string.Empty;
@@ -784,7 +784,7 @@ namespace Acurus.Capella.UI
                     sCategory = chkpatient.Value;
                 dr["Category"] = sCategory;
                 dr["Name"] = txtRecName.Value;
-                dr["Company"] = txtRecipientcompany.Value;
+               // dr["Company"] = txtRecipientcompany.Value;
                 dr["Fax"] = sFax;
                 dr["EMail"] = txtRecipientmail.Value;
                 dt.Rows.Add(dr);
