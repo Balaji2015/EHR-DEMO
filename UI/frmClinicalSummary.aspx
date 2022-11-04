@@ -193,7 +193,7 @@
                                 &nbsp;</td>
                             <td class ="style5">
                                 <asp:Button ID="btnLaunchInferno" runat ="server" Visible="true" OnClientClick="return btnLaunch_Inferno();"
-                                    Text="Launch Inferno" CssClass="aspbluebutton" />
+                                    Text="Launch API" CssClass="aspbluebutton" />
                             </td>
                             <td class="style5">
                                 <asp:Button ID="btnSendCerner" runat="server" Visible="false" OnClick="btnSendCerner_Click"
