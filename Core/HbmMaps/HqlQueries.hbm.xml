@@ -14600,7 +14600,7 @@ date(date_of_service) >= date(NOW()) - INTERVAL ? MONTH group by e.encounter_id 
 	<sql-query name="PQRI.GetDenominator1CMS130.ColorectalCancer">
 		<![CDATA[select e.human_id from encounter e left join human h on e.human_id=h.human_id left join e_m_coding em on e.encounter_id=em.encounter_id
 where date(Date_of_service) between ? and ? and
-(datediff(date(?),h.birth_date)/365.25)>=46 and (datediff(date(?),h.birth_date)/365.25)<76
+(datediff(date(?),h.birth_date)/365.25)>=50 and (datediff(date(?),h.birth_date)/365.25)<76
  and e.encounter_provider_id =? and
 em.procedure_code in(SELECT PQRI_Value FROM 
 cqm_data where nqf_number =?  and PQRI_calculation_Method=? and PQRI_Type in ('CPT','HCPCS'));]]>
