@@ -16,5 +16,6 @@
     <property name="Modified_By" column="Modified_By" />
     <property name="Created_Date_And_Time" column="Created_Date_And_Time" />
     <property name="Modified_Date_And_Time" column="Modified_Date_And_Time" />
+	  <property name="Result_ID" column="Result_ID" />
   </class>
 </hibernate-mapping>
