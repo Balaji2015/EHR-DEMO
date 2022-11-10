@@ -17,5 +17,7 @@
     <property name="Created_Date_And_Time" column="Created_Date_And_Time" />
     <property name="Modified_Date_And_Time" column="Modified_Date_And_Time" />
 	  <property name="Result_ID" column="Result_ID" />
+	  <property name="Client_ID" column="Client_ID" />
+	  <property name="Search_Info" column="Search_Info" />
   </class>
 </hibernate-mapping>
