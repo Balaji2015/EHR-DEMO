@@ -1858,7 +1858,7 @@ namespace Acurus.Capella.UI
                 string json = new JavaScriptSerializer().Serialize(ListQuestionaire);
 
                 var NoRecord1 = (from b in sFormviewICD.Split('|').ToArray() where !AssociaPrimaryList.Any(a => a.ICD_9 == b.Split('~')[0]) select b).ToList();
-                var NoResultRecord1 = NoRecord1.Select(a => new { ICDCode = a.Split('~')[0], ICDDescription = a.Split('~')[1], AssessmentID = 0, iVersion = 0, iProblemListVersion = 0, ProblemListID = 0, Notes = "", Created_by = "", Created_date = "", Updated = "Y", StatusSelected = Ass_Status });
+                var NoResultRecord1 = NoRecord1.Select(a => new { ICDCode = a.Split('~')[0], ICDDescription = a.Split('~')[1], AssessmentID = 0, iVersion = 0, iProblemListVersion = 0, ProblemListID = 0, Notes = "", Created_by = "", Created_date = "", Updated = "Y", StatusSelected = Ass_Status, ICDid= 0, Sequence= "0", EidVersion= 0});
                 string jsonNoQuestionnaire = new JavaScriptSerializer().Serialize(NoResultRecord1);
                 IList<string> sMainQuestion = new List<string>();
                 for (int i = 0; i < Record1.Count; i++)
@@ -1876,7 +1876,7 @@ namespace Acurus.Capella.UI
             else
             {
                 var Record1 = (from b in sFormviewICD.Split('|').ToArray() where !AssociaPrimaryList.Any(a => a.ICD_9 == b.Split('~')[0]) select b).ToList();
-                var ResultRecord1 = Record1.Select(a => new { ICDCode = a.Split('~')[0], ICDDescription = a.Split('~')[1], AssessmentID = 0, iVersion = 0, iProblemListVersion = 0, ProblemListID = 0, Notes = "", Created_by = "", Created_date = "", Updated = "Y", StatusSelected = Ass_Status });
+                var ResultRecord1 = Record1.Select(a => new { ICDCode = a.Split('~')[0], ICDDescription = a.Split('~')[1], AssessmentID = 0, iVersion = 0, iProblemListVersion = 0, ProblemListID = 0, Notes = "", Created_by = "", Created_date = "", Updated = "Y", StatusSelected = Ass_Status, ICDid = 0, Sequence = "0", EidVersion = 0 });
                 string json = new JavaScriptSerializer().Serialize(ResultRecord1);
 
                 sAsscoiateICDS = "{\"NoQuestionnaire\" :" + json + "}";
