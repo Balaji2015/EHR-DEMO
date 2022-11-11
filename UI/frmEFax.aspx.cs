@@ -598,7 +598,7 @@ namespace Acurus.Capella.UI
             //txtSenderMaskFax.Text;
             msktxtRecipientFax.Value = "";
             //txtSenderEmail.Value = string.Empty;
-            //txtRecipientcompany.Value = string.Empty;
+            txtRecipientcompany.Value = string.Empty;
             txtRecName.Value = string.Empty;
             //balaji
             //msktxtRecipientFax.Text = string.Empty;
@@ -784,7 +784,7 @@ namespace Acurus.Capella.UI
                     sCategory = chkpatient.Value;
                 dr["Category"] = sCategory;
                 dr["Name"] = txtRecName.Value;
-               // dr["Company"] = txtRecipientcompany.Value;
+                dr["Company"] = txtRecipientcompany.Value;
                 dr["Fax"] = sFax;
                 dr["EMail"] = txtRecipientmail.Value;
                 dt.Rows.Add(dr);

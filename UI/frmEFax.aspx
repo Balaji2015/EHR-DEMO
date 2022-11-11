@@ -318,17 +318,26 @@
                                          <table width="100%" class="Editabletxtbox">
                                         <tr style="text-align:left">
                                             <td style="width: 1%; position: absolute; left: 10px !important; padding-bottom: 0.5%">
-                                                <span mand="Yes">Fax*</span>
+                                                <span id="lblRecipientcompany" class="Editabletxtbox">Company</span>
                                             </td>
-                                            <td style="width: 40%; position: absolute; left: 110px !important; padding-bottom: 0.5% padding-bottom: 0.5%">
-                                                <input type="text" id="msktxtRecipientFax" runat="server" class="riSingle Editabletxtbox" maxlength="10" style="width: 70%;" />
+                                            <td style="width: 30%; position: absolute; left: 110px !important; padding-bottom: 0.5%">
+                                                <input name="txtRecipientcompany" type="text" runat="server" id="txtRecipientcompany" class="riSingle Editabletxtbox" onchange="EnableSend();" onkeypress="EnableSend();" style="width: 70%;" />
                                                
                                             </td>
-
-                                             <td style="width: 1%; position: absolute; right: 500px !important; padding-bottom: 0.5%">
+                                             
+                                            <td style="width: 1%; position: absolute; left: 350px !important; padding-bottom: 0.5%">
+                                                <span mand="Yes">Fax*</span>
+                                             </td>
+                                            <td style="width: 30%;  position: absolute; right: 300px !important; padding-bottom: 0.5%">
+                                                 <input type="text" id="msktxtRecipientFax" runat="server" class="riSingle Editabletxtbox" maxlength="10" style="width: 70%;" />
+                                               
+                                            </td>
+                                            <td style="width: 5%; text-align: left" rowspan="3" valign="middle"></td>
+                                        
+                                             <td style="width: 1%; position: absolute; right: 350px !important; padding-bottom: 0.5%">
                                                 <span id="lblRecipientemail" class="Editabletxtbox">Email</span>
                                             </td>
-                                            <td style="width: 40%;  text-align:left;  padding-bottom: 0.5%">
+                                            <td style="width: 30%;  text-align:center;  padding-bottom: 0.5%">
                                                 <input name="txtRecipientmail" type="text" id="txtRecipientmail" runat="server" class="riSingle Editabletxtbox" maxlength="100" onchange="EnableSend();" onkeypress="EnableSend();" style="width: 70%;" />
                                               
                                             </td>

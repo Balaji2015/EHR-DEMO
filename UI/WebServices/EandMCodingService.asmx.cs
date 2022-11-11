@@ -120,7 +120,7 @@ namespace Acurus.Capella.UI.WebServices
         }
 
         [WebMethod(EnableSession = true)]
-        public string LoadEandMCodingCPTTable(string strEandMCodingCPT)
+        public string LoadEandMCodingCPTTable(string strEandMCodingCPT,string sEnableScreen)
         {
             if (ClientSession.UserName == string.Empty)
             {
@@ -195,6 +195,15 @@ namespace Acurus.Capella.UI.WebServices
                     btnDeleteAdditionalICD = "Resources/Delete-Grey.png";
                 }
             }
+
+            if(sEnableScreen== "EnableScreen=False")
+            {
+                EnableScreen = "disabled";
+                btnDelete = "Resources/Delete-Grey.png";
+                btnDeleteAdditionalICD = "Resources/Delete-Grey.png";
+                
+            }
+          
 
             //BugID:51570
             #region Modifiers

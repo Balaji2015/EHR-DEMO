@@ -175,7 +175,7 @@ function OpenServiceProcedureCode() {
                 $(top.window.document).find("#TabmdldlgEandM")[0].style.height = "85%";
                 $(top.window.document).find("#TabModalTitleEandM")[0].textContent = "Service Procedure Code";
                 $(top.window.document).find("#TabFrameEandM")[0].style.height = "100%";
-                $(top.window.document).find("#TabFrameEandM")[0].contentDocument.location.href = "htmlEandMCoding.html";
+                $(top.window.document).find("#TabFrameEandM")[0].contentDocument.location.href = "htmlEandMCoding.html?EnableScreen=True";
                 $(top.window.document).find("#TabModalEandM").one("hidden.bs.modal", function () {
                     location.reload();
                 });
@@ -192,6 +192,17 @@ function OpenServiceProcedureCode() {
             }
             else {
                 DisplayErrorMessage(Output);
+                var obj = new Array();
+                $(top.window.document).find("#TabModalEandM").modal({ backdrop: 'static', keyboard: false });
+                $(top.window.document).find("#TabmdldlgEandM")[0].style.width = "90%";
+                $(top.window.document).find("#TabmdldlgEandM")[0].style.height = "85%";
+                $(top.window.document).find("#TabModalTitleEandM")[0].textContent = "Service Procedure Code";
+                $(top.window.document).find("#TabFrameEandM")[0].style.height = "100%";
+                $(top.window.document).find("#TabFrameEandM")[0].contentDocument.location.href = "htmlEandMCoding.html?EnableScreen=False";
+                $(top.window.document).find("#TabModalEandM").one("hidden.bs.modal", function () {
+                    location.reload();
+                });
+
             }
         },
         error: function OnError(xhr) {

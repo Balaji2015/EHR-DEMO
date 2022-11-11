@@ -19,13 +19,13 @@ var arrICD10Codes = [];
 var cptlist;
 var isclosemodal = 0;
 var Esuperbillclicked = "N";
-
 $(document).ready(function () {
 
     $('#txtUnits').val("6");
     localStorage.setItem("CCAndEandMAutosave", "false");
     EnableSaveButton();
-
+    
+   
     $(top.window.document).find("#btnMinimizeViewResultCPT").css({ "display": "block" });
     $(top.window.document).find("#btnMinimizeViewResultICD").css({ "display": "block" });
 });
@@ -62,16 +62,16 @@ document.oncontextmenu = function () {
     return !1
 },
     document.onmousedown = mouseDown;
-
+var ValEnableScreen = ""; // window.location.search.toString().split('?')[1];
 var myapp = angular.module('EandMCodingapp', []);
 myapp.controller('EandMCodingCtrl', function ($scope, $http) {
-
+     ValEnableScreen =  window.location.search.toString().split('?')[1];
     // $scope.sortColumn = 'Order';
     $http({
         url: "WebServices/EandMCodingService.asmx/LoadEandMCodingCPTTable",
         dataType: 'json',
         method: 'POST',
-        data: '{strEandMCodingCPT: "Load" }',
+        data: '{strEandMCodingCPT: "Load", sEnableScreen:"'+ ValEnableScreen +'"}',
         headers: {
             "Content-Type": "application/json; charset=utf-8",
             "X-Requested-With": "XMLHttpRequest"
@@ -113,7 +113,8 @@ myapp.controller('EandMCodingCtrl', function ($scope, $http) {
         var saveEnable = test.SaveEnable;
         if (EnableScreen != "") {
             $('#AngularDiv').find('input').attr("disabled", "disabled");
-            $('#AngularDiv').find('button').attr("disabled", "disabled");
+           // $('#AngularDiv').find('button').attr("disabled", "disabled");
+            $('#AngularDiv').find('button').not('[id*="btnClose"]').attr("disabled", "disabled");
             $('#AngularDiv').find('textarea').attr("disabled", "disabled");
             $('#AngularDiv').find('select').attr("disabled", "disabled");
             $("#btnSubAllForSuperbill").attr("disabled", "disabled");
@@ -145,7 +146,8 @@ myapp.controller('EandMCodingCtrl', function ($scope, $http) {
             document.getElementById('btnClose').style.display = "none";
             document.getElementById('btnClose').removeAttribute("class");
         }
-        { sessionStorage.setItem('StartLoading', 'false'); StopLoadFromPatChart(); }
+
+       { sessionStorage.setItem('StartLoading', 'false'); StopLoadFromPatChart(); }
     })
         .error(function (error, status, headers, config) {
 
@@ -2171,6 +2173,9 @@ myapp.controller('EandMCodingCtrl', function ($scope, $http) {
 
     var iIndex = -1;
     $scope.CPTDelete = function (index) {
+        if (queryString.includes("True"))  {
+            return false;
+        }
         DeleteArray = new Array();
         { sessionStorage.setItem('StartLoading', 'true'); StartLoadFromPatChart(); }
         if (index != undefined) {
