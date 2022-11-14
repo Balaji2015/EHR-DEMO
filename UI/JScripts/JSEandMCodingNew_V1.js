@@ -2173,9 +2173,7 @@ myapp.controller('EandMCodingCtrl', function ($scope, $http) {
 
     var iIndex = -1;
     $scope.CPTDelete = function (index) {
-        if (queryString.includes("True"))  {
-            return false;
-        }
+       
         DeleteArray = new Array();
         { sessionStorage.setItem('StartLoading', 'true'); StartLoadFromPatChart(); }
         if (index != undefined) {
@@ -2405,7 +2403,8 @@ myapp.controller('EandMCodingCtrl', function ($scope, $http) {
             return;
         }
         else if (($('#tblEandMCodingICD tr td').length == 0 && $('#tblAssEandMCodingICD tr td').length == 0)) { //save service procedure code without icd.
-            if (UserRole.toUpperCase() != 'MEDICAL ASSISTANT' && UserRole.toUpperCase() != 'CODER') {
+
+            if (UserRole.toUpperCase() != 'MEDICAL ASSISTANT' && UserRole.toUpperCase() != 'CODER' && ValEnableScreen.indexOf('EnableScreen')<0) {
                 //{ sessionStorage.setItem('StartLoading', 'false'); StopLoadFromPatChart(); }
 
                 icdcount = true;
@@ -2415,6 +2414,7 @@ myapp.controller('EandMCodingCtrl', function ($scope, $http) {
 
 
             }
+            
             else {
 
                 { sessionStorage.setItem('StartLoading', 'false'); StopLoadFromPatChart(); }
@@ -2503,7 +2503,7 @@ myapp.controller('EandMCodingCtrl', function ($scope, $http) {
 
            
             if (!(bIsPrimary || bIsAssPrimary)) {
-                if (UserRole.toUpperCase() == 'CODER' ) {
+                if (UserRole.toUpperCase() == 'CODER' && ValEnableScreen.indexOf('EnableScreen') >= 0) {
                     { sessionStorage.setItem('StartLoading', 'false'); StopLoadFromPatChart(); }
                     DisplayErrorMessage('530005');
                     bSaveCheck = true;
@@ -2511,6 +2511,8 @@ myapp.controller('EandMCodingCtrl', function ($scope, $http) {
                     return;
                 }
             }
+           
+            
             else {
                 isprimary = true;
             }
@@ -2834,12 +2836,13 @@ myapp.controller('EandMCodingCtrl', function ($scope, $http) {
             // if (chkICD1 != "" || chkICD2 != "" || chkICD3 != "" || chkICD4 != "" || chkICD5 != "" || chkICD6 != "")
             aryICDList.push(sICDCode + "~" + sICDDesc + "~" + IsPrimary + "~" + chkICD1 + "~" + chkICD2 + "~" + chkICD3 + "~" + chkICD4 + "~" + chkICD5 + "~" + chkICD6 + "~" + chkICDContainer.cells[5].innerText.trim() + "~" + chkICDContainer.cells[6].innerText.trim() + "~" + "EMICD" + "~" + sSequence);
 
-            if (arrlstAssICD.indexOf(sICDCode) != -1 && (UserRole == "MEDICAL ASSISTANT" || UserRole == "CODER")) {
+            if (arrlstAssICD.indexOf(sICDCode) != -1 && (UserRole == "MEDICAL ASSISTANT" || UserRole == "CODER" || ValEnableScreen.indexOf('EnableScreen') >= 0)) { 
                 DisplayErrorMessage('530021', "", "'" + sICDCode + "'");
                 bSaveCheck = true;
                 AutoSaveUnsuccessful();
                 return;
             }
+
            else  if (arrlstAssICD.indexOf(sICDCode) != -1) {
                 bSaveCheck = true;
                 AutoSaveUnsuccessful();
@@ -2903,7 +2906,7 @@ myapp.controller('EandMCodingCtrl', function ($scope, $http) {
           
             //GitLab #3038
             if (test.IsBillableNo == "180045") {
-                if (UserRole.toUpperCase() == 'PHYSICIAN') {
+                if (UserRole.toUpperCase() == 'PHYSICIAN' && ValEnableScreen.indexOf('EnableScreen') < 0) {
 
                     if (!alert('Please select the ICD Z00.00 or Z00.01 for Gcodes G0438 or G0439'))   {
                         $($(window.top.document).find('iframe[id=ctl00_C5POBody_EncounterContainer]')[0].contentDocument).find("ul li a")[0].click();
