@@ -1,11 +1,12 @@
-﻿$('body').on('keydown', 'input, select, textarea', function (e) {
+﻿$('body').on('keydown', 'input, select', function (e) {
     var self = $(this)
-      , form = self.parents('form:eq(0)')
-      , focusable
-      , next
-    ;
+        , form = self.parents('form:eq(0)')
+        , focusable
+        , next
+        ;
+
     if (e.keyCode == 13) {
-        focusable = form.find('input,a,select,button,textarea').filter(':visible');
+        focusable = form.find('input,a,select,button').filter(':visible');
         next = focusable.eq(focusable.index(this));
         if (next.length) {
             next.focus();
@@ -15,6 +16,16 @@
         return false;
     }
 });
+
+$('#txtRecName').keydown(
+    function (event) {
+        if (event.which == '13') {
+            event.preventDefault();
+        }
+    });
+
+
+
 $(top.window.document).find("#TabEFaxFrame")[0].style.height = "630px";
 var intProviderlen = -1;
 var arrProvider = []; 
