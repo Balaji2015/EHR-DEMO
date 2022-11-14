@@ -32,21 +32,28 @@ namespace MeasureCalculator
 
             Console.WriteLine("Getting CQM Measures List");
 
-            ilstPQRIMeasure = pqriMeasureMngr.GetPQRIMeasureDetails();
+            ilstPQRIMeasure = pqriMeasureMngr.GetPQRIMeasureDetailsByYear(dtFromDate.Year.ToString());
 
             Console.WriteLine("Deleting existing CQM data");
 
             CQMSummaryManager cqmSummaryMngr = new CQMSummaryManager();
-            cqmSummaryMngr.DeleteCQMData();
+            cqmSummaryMngr.DeleteCQMData(dtFromDate.Year.ToString());
 
             ulong ulPhyID = 0;
             XmlNodeList xmlphy = itemPhysiciandoc.GetElementsByTagName("Physician");
             Console.WriteLine("Total Physician Count: " + xmlphy.Count.ToString());
-            for (int iCount=0;iCount< xmlphy.Count;iCount++)
+            for (int iCount = 0; iCount < xmlphy.Count; iCount++)
             {
                 Console.Write("Filling the CQM Data for Physician ID : " + xmlphy[iCount].Attributes[0].Value.ToString());
                 ulPhyID = Convert.ToUInt64(xmlphy[iCount].Attributes[0].Value);
-                pqriMeasureMngr.FillPQRIMeasureCalculator(sLegalOrg, ulPhyID, dtFromDate, dtToDate, ilstPQRIMeasure);
+
+                string version = System.Configuration.ConfigurationSettings.AppSettings["Version"];
+                if (version == "V10")
+                    pqriMeasureMngr.FillPQRIMeasureCalculator(sLegalOrg, ulPhyID, dtFromDate, dtToDate, ilstPQRIMeasure);
+                else if (version == "V11")
+                    pqriMeasureMngr.FillPQRIMeasureCalculatorversion11(sLegalOrg, ulPhyID, dtFromDate, dtToDate, ilstPQRIMeasure);
+
+
             }
         }
     }

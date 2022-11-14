@@ -12,9 +12,9 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
     public partial interface ICQMSummaryManager : IManagerBase<CQMSummary, ulong>
     {
         IList<CQMSummary> AppendCQMSummary(IList<CQMSummary> CQMSummaryList, string MACAddress);
-        IList<PQRI_Measure> GetCQMSummary(string sLegalOrg,string sMeaurementYear,ulong ulPhysicianId);
-        void DeleteCQMData();
-       
+        IList<PQRI_Measure> GetCQMSummary(string sLegalOrg, string sMeaurementYear, ulong ulPhysicianId);
+        void DeleteCQMData(string year);
+
     }
     public partial class CQMSummaryManager : ManagerBase<CQMSummary, ulong>, ICQMSummaryManager
     {
@@ -55,16 +55,16 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
             return CQMSummaryList;
         }
 
-        public void DeleteCQMData()
+        public void DeleteCQMData(string year)
         {
             using (ISession iMySession = NHibernateSessionManager.Instance.CreateISession())
             {
                 IList<CQMDetail> ilstCQMDetail = new List<CQMDetail>();
-                ISQLQuery sql = iMySession.CreateSQLQuery("truncate cqm_detail");
+                ISQLQuery sql = iMySession.CreateSQLQuery("delete from  cqm_detail where CQM_Summary_ID in (select   CQM_Summary_ID from  cqm_summary where Measurement_Year='" + year + "')");
                 ilstCQMDetail = sql.List<CQMDetail>();
 
                 IList<CQMSummary> ilstCQMSummary = new List<CQMSummary>();
-                ISQLQuery sqlSummary = iMySession.CreateSQLQuery("truncate cqm_summary");
+                ISQLQuery sqlSummary = iMySession.CreateSQLQuery("delete from  cqm_summary where Measurement_Year='" + year + "'");
                 ilstCQMSummary = sqlSummary.List<CQMSummary>();
             }
         }
@@ -87,9 +87,9 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
 
             using (ISession iMySession = NHibernateSessionManager.Instance.CreateISession())
             {
-                ICriteria criteria = iMySession.CreateCriteria(typeof(CQMSummary)).Add(Expression.Eq("Legal_Org", sLegalOrg)).Add(Expression.Eq("Measurement_Year",Convert.ToInt32(sMeaurementYear))).Add(Expression.Eq("Physician_ID", ulPhysicianId));
+                ICriteria criteria = iMySession.CreateCriteria(typeof(CQMSummary)).Add(Expression.Eq("Legal_Org", sLegalOrg)).Add(Expression.Eq("Measurement_Year", Convert.ToInt32(sMeaurementYear))).Add(Expression.Eq("Physician_ID", ulPhysicianId));
                 ilstCQMSummary = criteria.List<CQMSummary>();
-           
+
                 for (int iCount = 0; iCount < ilstCQMSummary.Count; iCount++)
                 {
                     objPQRI = new PQRI_Measure();
@@ -99,7 +99,7 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
                     icdcptListDenominatorExclusion = new List<string[]>();
                     icdcptListDenominatorException = new List<string[]>();
 
-                    objPQRI.CQM_Summary_ID =Convert.ToInt32(ilstCQMSummary[iCount].Id);
+                    objPQRI.CQM_Summary_ID = Convert.ToInt32(ilstCQMSummary[iCount].Id);
                     objPQRI.Measurement_No = ilstCQMSummary[iCount].Measurement_No;
                     objPQRI.Measurement_Name = ilstCQMSummary[iCount].Measurement_Name;
                     objPQRI.InitialPatientPopulation = ilstCQMSummary[iCount].Initial_Population.ToString();
@@ -150,7 +150,7 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
                         if (ilstCQMDetail[iDetailcount].Population_Set == "Denominator")
                         {
 
-                            string[] ary = { ilstCQMDetail[iDetailcount].Encounter_ID.ToString(), ilstCQMDetail[iDetailcount].Human_ID.ToString(), ilstCQMDetail[iDetailcount].ICD, ilstCQMDetail[iDetailcount].Procedure_Code, ilstCQMDetail[iDetailcount].Snomed_Code, ilstCQMDetail[iDetailcount].Loinc_Identifier, ilstCQMDetail[iDetailcount].Documented_Date_Time.ToString(), objPQRI.Measurement_No.Split('v')[0]+"D", objPQRI.Measurement_No.ToString() };
+                            string[] ary = { ilstCQMDetail[iDetailcount].Encounter_ID.ToString(), ilstCQMDetail[iDetailcount].Human_ID.ToString(), ilstCQMDetail[iDetailcount].ICD, ilstCQMDetail[iDetailcount].Procedure_Code, ilstCQMDetail[iDetailcount].Snomed_Code, ilstCQMDetail[iDetailcount].Loinc_Identifier, ilstCQMDetail[iDetailcount].Documented_Date_Time.ToString(), objPQRI.Measurement_No.Split('v')[0] + "D", objPQRI.Measurement_No.ToString() };
                             icdcptListDenominator.Add(ary);
                         }
                         if (ilstCQMDetail[iDetailcount].Population_Set == "Denominator Exclusion")
@@ -162,13 +162,13 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
                         if (ilstCQMDetail[iDetailcount].Population_Set == "Denominator Exception")
                         {
 
-                            string[] ary = { ilstCQMDetail[iDetailcount].Encounter_ID.ToString(), ilstCQMDetail[iDetailcount].Human_ID.ToString(), ilstCQMDetail[iDetailcount].ICD, ilstCQMDetail[iDetailcount].Procedure_Code, ilstCQMDetail[iDetailcount].Snomed_Code, ilstCQMDetail[iDetailcount].Loinc_Identifier, ilstCQMDetail[iDetailcount].Documented_Date_Time.ToString(), objPQRI.Measurement_No.Split('v')[0] + "DEX", objPQRI.Measurement_No .ToString() };
+                            string[] ary = { ilstCQMDetail[iDetailcount].Encounter_ID.ToString(), ilstCQMDetail[iDetailcount].Human_ID.ToString(), ilstCQMDetail[iDetailcount].ICD, ilstCQMDetail[iDetailcount].Procedure_Code, ilstCQMDetail[iDetailcount].Snomed_Code, ilstCQMDetail[iDetailcount].Loinc_Identifier, ilstCQMDetail[iDetailcount].Documented_Date_Time.ToString(), objPQRI.Measurement_No.Split('v')[0] + "DEX", objPQRI.Measurement_No.ToString() };
                             icdcptListDenominatorException.Add(ary);
                         }
                         if (ilstCQMDetail[iDetailcount].Population_Set == "Numerator")
                         {
 
-                            string[] ary = { ilstCQMDetail[iDetailcount].Encounter_ID.ToString(), ilstCQMDetail[iDetailcount].Human_ID.ToString(), ilstCQMDetail[iDetailcount].ICD, ilstCQMDetail[iDetailcount].Procedure_Code, ilstCQMDetail[iDetailcount].Loinc_Code, ilstCQMDetail[iDetailcount].Loinc_Identifier, ilstCQMDetail[iDetailcount].Snomed_Code, objPQRI.Measurement_No .Split('v')[0] + "N","","", objPQRI.Measurement_No .ToString() };
+                            string[] ary = { ilstCQMDetail[iDetailcount].Encounter_ID.ToString(), ilstCQMDetail[iDetailcount].Human_ID.ToString(), ilstCQMDetail[iDetailcount].ICD, ilstCQMDetail[iDetailcount].Procedure_Code, ilstCQMDetail[iDetailcount].Loinc_Code, ilstCQMDetail[iDetailcount].Loinc_Identifier, ilstCQMDetail[iDetailcount].Snomed_Code, objPQRI.Measurement_No.Split('v')[0] + "N", "", "", objPQRI.Measurement_No.ToString() };
                             icdcptListNumerator.Add(ary);
                         }
 
@@ -181,7 +181,7 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
 
                     ilstPQRI.Add(objPQRI);
 
-                   
+
                 }
 
                 iMySession.Close();
