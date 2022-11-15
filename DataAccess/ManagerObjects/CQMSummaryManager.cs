@@ -13,7 +13,7 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
     {
         IList<CQMSummary> AppendCQMSummary(IList<CQMSummary> CQMSummaryList, string MACAddress);
         IList<PQRI_Measure> GetCQMSummary(string sLegalOrg, string sMeaurementYear, ulong ulPhysicianId);
-        void DeleteCQMData(string year);
+        void DeleteCQMData(string year, ulong Phyid);
 
     }
     public partial class CQMSummaryManager : ManagerBase<CQMSummary, ulong>, ICQMSummaryManager
@@ -32,7 +32,7 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
         }
         #endregion
 
-        #region Get Methods
+        #region Get Methodss
 
         public IList<CQMSummary> AppendCQMSummary(IList<CQMSummary> CQMSummaryList, string MACAddress)
         {
@@ -55,16 +55,16 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
             return CQMSummaryList;
         }
 
-        public void DeleteCQMData(string year)
+        public void DeleteCQMData(string year,ulong Phyid)
         {
             using (ISession iMySession = NHibernateSessionManager.Instance.CreateISession())
             {
                 IList<CQMDetail> ilstCQMDetail = new List<CQMDetail>();
-                ISQLQuery sql = iMySession.CreateSQLQuery("delete from  cqm_detail where CQM_Summary_ID in (select   CQM_Summary_ID from  cqm_summary where Measurement_Year='" + year + "')");
+                ISQLQuery sql = iMySession.CreateSQLQuery("delete from  cqm_detail where CQM_Summary_ID in (select   CQM_Summary_ID from  cqm_summary where Measurement_Year='" + year + "' and Physician_Id='"+Phyid+"')");
                 ilstCQMDetail = sql.List<CQMDetail>();
 
                 IList<CQMSummary> ilstCQMSummary = new List<CQMSummary>();
-                ISQLQuery sqlSummary = iMySession.CreateSQLQuery("delete from  cqm_summary where Measurement_Year='" + year + "'");
+                ISQLQuery sqlSummary = iMySession.CreateSQLQuery("delete from  cqm_summary where Measurement_Year='" + year + "' and Physician_Id='"+ Phyid + "'");
                 ilstCQMSummary = sqlSummary.List<CQMSummary>();
             }
         }

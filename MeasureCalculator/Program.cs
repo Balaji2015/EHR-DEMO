@@ -34,10 +34,6 @@ namespace MeasureCalculator
 
             ilstPQRIMeasure = pqriMeasureMngr.GetPQRIMeasureDetailsByYear(dtFromDate.Year.ToString());
 
-            Console.WriteLine("Deleting existing CQM data");
-
-            CQMSummaryManager cqmSummaryMngr = new CQMSummaryManager();
-            cqmSummaryMngr.DeleteCQMData(dtFromDate.Year.ToString());
 
             ulong ulPhyID = 0;
             XmlNodeList xmlphy = itemPhysiciandoc.GetElementsByTagName("Physician");
@@ -46,6 +42,11 @@ namespace MeasureCalculator
             {
                 Console.Write("Filling the CQM Data for Physician ID : " + xmlphy[iCount].Attributes[0].Value.ToString());
                 ulPhyID = Convert.ToUInt64(xmlphy[iCount].Attributes[0].Value);
+
+                Console.WriteLine("Deleting existing CQM data");
+
+                CQMSummaryManager cqmSummaryMngr = new CQMSummaryManager();
+                cqmSummaryMngr.DeleteCQMData(dtFromDate.Year.ToString(), ulPhyID);
 
                 string version = System.Configuration.ConfigurationSettings.AppSettings["Version"];
                 if (version == "V10")
