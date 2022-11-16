@@ -10567,7 +10567,7 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
                         if (objEncounter != null)
                         {
                             IList<object> query1 = new List<object>();
-                            query1 = iMySession.CreateSQLQuery("Update encounter set Encounter_Provider_ID='" + objEncounter.Encounter_Provider_ID + "',Encounter_Provider_Signed_Date='" + objEncounter.Encounter_Provider_Signed_Date.ToString("yyyy-MM-dd hh:mm:ss") + "',Is_EandM_Submitted = 'Y'" + " where Encounter_ID='" + ulEncounterID + "'").List<object>();
+                            query1 = iMySession.CreateSQLQuery("Update encounter set Encounter_Provider_ID='" + objEncounter.Encounter_Provider_ID + "',Encounter_Provider_Signed_Date='" + objEncounter.Encounter_Provider_Signed_Date.ToString("yyyy-MM-dd hh:mm:ss") + "',Is_EandM_Submitted = 'Y', E_M_Submitted_Date_And_Time='" + DateTime.Now.ToString("yyyy-MM-dd hh:mm:ss") + "' " + " where Encounter_ID='" + ulEncounterID + "'").List<object>();
                             // UpdateEncounter(objEncounter, sMacAddress, new object[] { "false" });
                             SubmitOrdersAndPrescriptions(ulEncounterID, ulHumanID, Convert.ToUInt64(objEncounter.Encounter_Provider_ID), sUserName, sMacAddress, sFacilityName, dtCurrentDateTime);
                             wfObjMngr.MoveToNextProcess(DocumentationWfObject.Obj_System_Id, DocumentationWfObject.Obj_Type, CloseType, "UNKNOWN", dtCurrentDateTime, sMacAddress, null, null);
