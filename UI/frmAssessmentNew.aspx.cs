@@ -1067,7 +1067,9 @@ namespace Acurus.Capella.UI
 
                         eandmicdadd.Modified_By = ClientSession.UserName;
                         eandmicdadd.Modified_Date_And_Time = UtilityManager.ConvertToUniversal();
-                        eandmicdadd.Sequence = oj[23].ToString();
+                        if (oj[23]!=null)
+                            eandmicdadd.Sequence = oj[23].ToString();
+              
                         eandmicdupdate.Add(eandmicdadd);
 
 
