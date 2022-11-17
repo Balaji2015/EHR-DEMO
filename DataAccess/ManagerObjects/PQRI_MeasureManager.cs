@@ -12588,15 +12588,15 @@ where pr.encounter_id in (:EncIds) and (pr.loinc_observation='BMI' and pr.value 
                 IList<ulong> ulEncList165Encounter = new List<ulong>();
                 ArrayList Enc_exclusion_lst165 = null;
                 IList<ulong> ulEncList165_exception = new List<ulong>();
+                    IList<ulong> ulEncList165_Denom_Final = new List<ulong>();
 
                 //Denominator
                 if (Enc_Denominator_lst165 != null && Enc_Denominator_lst165.Count > 0)
                 {
                     EncounterDenominatorquery165 = iMySession.GetNamedQuery("PQRI.GetDenominatorList1CMS165.ControllingHighBP");
-
-                    EncounterDenominatorquery165.SetParameterList("EncIds", Enc_Denominator_lst165.ToArray());
                     EncounterDenominatorquery165.SetString(0, "CMS165v10");
                     EncounterDenominatorquery165.SetString(1, "Denominator");
+                    EncounterDenominatorquery165.SetParameterList("EncIds", Enc_Denominator_lst165.ToArray());
                     Enc_Denominator_lst165 = new ArrayList(EncounterDenominatorquery165.List());
 
                     if (Enc_Denominator_lst165 != null && Enc_Denominator_lst165.Count > 0)
@@ -12613,30 +12613,50 @@ where pr.encounter_id in (:EncIds) and (pr.loinc_observation='BMI' and pr.value 
 
 
                         }
+                    }
 
                         EncounterDenominatorquery165 = iMySession.GetNamedQuery("PQRI.GetDenominatorList2CMS165.ControllingHighBP");
                         EncounterDenominatorquery165.SetParameter(0, Todate.ToString("yyyy-MM-dd"));
-                        EncounterDenominatorquery165.SetParameterList("EncIds", ulEncList165Deno.ToArray());
-                        EncounterDenominatorquery165.SetParameterList("EncIds_Ass", ulEncList165Encounter.ToArray());
+                    
+                     
                         EncounterDenominatorquery165.SetString(1, "CMS165v10");
                         EncounterDenominatorquery165.SetString(2, "Denominator");
-                        EncounterDenominatorquery165.SetString(3, "CMS165v10");
-                        EncounterDenominatorquery165.SetString(4, "Denominator");
+                        EncounterDenominatorquery165.SetParameterList("EncIds", ulEncList165Deno.ToArray());
+                       
                         Enc_Denominator_lst165 = new ArrayList(EncounterDenominatorquery165.List());
-                    }
 
-                    if (Enc_Denominator_lst165 != null && Enc_Denominator_lst165.Count > 0)
+
+                        for (int i = 0; i < Enc_Denominator_lst165.Count; i++)
+                        {
+                            ulEncList165_Denom_Final.Add(Convert.ToUInt32(Enc_Denominator_lst165[i]));
+                        }
+
+
+
+                        EncounterDenominatorquery165 = iMySession.GetNamedQuery("PQRI.GetDenominatorListICDCMS165.ControllingHighBP");
+                            EncounterDenominatorquery165.SetString(0, "CMS165v10");
+                        EncounterDenominatorquery165.SetString(1, "Denominator");
+                        EncounterDenominatorquery165.SetParameterList("EncIds_Ass", ulEncList165Encounter.ToArray());
+                        Enc_Denominator_lst165 = new ArrayList(EncounterDenominatorquery165.List());
+
+                            for (int i = 0; i < Enc_Denominator_lst165.Count; i++)
+                            {
+                                ulEncList165_Denom_Final.Add(Convert.ToUInt32(Enc_Denominator_lst165[i]));
+                            }
+                           
+
+                    if (ulEncList165_Denom_Final != null && ulEncList165_Denom_Final.Count > 0)
                     {
                         IQuery EncounterExclusionrquery165 = iMySession.GetNamedQuery("PQRI.GetExclusionCMS165.ControllingHighBP");
-                        EncounterExclusionrquery165.SetParameterList("EncIds", Enc_Denominator_lst165.ToArray());
+                      
                         EncounterExclusionrquery165.SetString(0, "CMS165v10");
                         EncounterExclusionrquery165.SetString(1, "Exclusion");
                         EncounterExclusionrquery165.SetString(2, "CMS165v10");
                         EncounterExclusionrquery165.SetString(3, "Exclusion");
-                        EncounterExclusionrquery165.SetString(4, "CMS165v10");
-                        EncounterExclusionrquery165.SetString(5, "Exclusion");
-
-                        Enc_exclusion_lst165 = new ArrayList(EncounterExclusionrquery165.List());
+                        //EncounterExclusionrquery165.SetString(4, "CMS165v10");
+                        //EncounterExclusionrquery165.SetString(5, "Exclusion");
+                            EncounterExclusionrquery165.SetParameterList("EncIds", ulEncList165_Denom_Final.ToArray());
+                            Enc_exclusion_lst165 = new ArrayList(EncounterExclusionrquery165.List());
                         lstEncList68 = new List<Encounter>();
 
                         if (Enc_exclusion_lst165 != null && Enc_exclusion_lst165.Count > 0)
@@ -12669,19 +12689,16 @@ where pr.encounter_id in (:EncIds) and (pr.loinc_observation='BMI' and pr.value 
                         IList<string> ulHosEncList165 = new List<string>();
                         IList<string> ulFAICTEncList165 = new List<string>();
                         IList<ulong> ulEncList165_fraility = new List<ulong>();
-                        if (Enc_Denominator_lst165 != null && Enc_Denominator_lst165.Count > 0)
+                        if (ulEncList165_Denom_Final != null && ulEncList165_Denom_Final.Count > 0)
                         {
-                            for (int i = 0; i < Enc_Denominator_lst165.Count; i++)
-                            {
-                                ulEncList165_DEnominator.Add(Convert.ToUInt32(Enc_Denominator_lst165[i]));
-                            }
+                           
                             IQuery EncounterExlusionquery165 = iMySession.GetNamedQuery("PQRI.GetExceptionCMS165.ControllingHighBloodPressure");
 
 
                             EncounterExlusionquery165.SetParameter(0, "CMS165v10");
 
                             EncounterExlusionquery165.SetParameter(1, "Exclusion");
-                            EncounterExlusionquery165.SetParameterList("EncIds", ulEncList165_DEnominator.ToArray());
+                            EncounterExlusionquery165.SetParameterList("EncIds", ulEncList165_Denom_Final.ToArray());
                             //EncounterExlusionquery130.SetParameter(2, "CMS130v10");
 
                             //EncounterExlusionquery130.SetParameter(3, "Exclusion");
@@ -12711,7 +12728,7 @@ where pr.encounter_id in (:EncIds) and (pr.loinc_observation='BMI' and pr.value 
 
                             EncounterExlusionhosquery165.SetParameter(2, Fromdate.ToString("yyyy-MM-dd"));
                             EncounterExlusionhosquery165.SetParameter(3, Todate.ToString("yyyy-MM-dd"));
-                            EncounterExlusionhosquery165.SetParameterList("EncIds", ulEncList165_DEnominator.ToArray());
+                            EncounterExlusionhosquery165.SetParameterList("EncIds", ulEncList165_Denom_Final.ToArray());
                             //EncounterExlusionquery130.SetParameter(2, "CMS130v10");
 
                             //EncounterExlusionquery130.SetParameter(3, "Exclusion");
@@ -12736,17 +12753,17 @@ where pr.encounter_id in (:EncIds) and (pr.loinc_observation='BMI' and pr.value 
                             }
 
                             IQuery EncounterExlusionFAICTquery165 = iMySession.GetNamedQuery("PQRI.GetExceptionFACITCMS165.ControllingHighBloodPressure");
-                            EncounterExlusionFAICTquery165.SetParameterList("EncIds", ulEncList165_DEnominator.ToArray());
+                           
 
                             EncounterExlusionFAICTquery165.SetParameter(0, Fromdate.ToString("yyyy-MM-dd"));
                             EncounterExlusionFAICTquery165.SetParameter(1, Fromdate.ToString("yyyy-MM-dd"));
 
+                                EncounterExlusionFAICTquery165.SetParameterList("EncIds", ulEncList165_Denom_Final.ToArray());
 
+                                //EncounterExlusionquery130.SetParameter(2, "CMS130v10");
 
-                            //EncounterExlusionquery130.SetParameter(2, "CMS130v10");
-
-                            //EncounterExlusionquery130.SetParameter(3, "Exclusion");
-                            Enc_Exclusion_lst165 = new ArrayList(EncounterExlusionFAICTquery165.List());
+                                //EncounterExlusionquery130.SetParameter(3, "Exclusion");
+                                Enc_Exclusion_lst165 = new ArrayList(EncounterExlusionFAICTquery165.List());
                             // lstEncList68 = new List<Encounter>();
 
 
@@ -12771,7 +12788,7 @@ where pr.encounter_id in (:EncIds) and (pr.loinc_observation='BMI' and pr.value 
                             EncounterExlusioncareseerviceeCMS165.SetParameter(1, "CMS165v10");
 
                             EncounterExlusioncareseerviceeCMS165.SetParameter(2, "Exclusion");
-                            EncounterExlusioncareseerviceeCMS165.SetParameterList("EncIds", ulEncList165_DEnominator.ToArray());
+                            EncounterExlusioncareseerviceeCMS165.SetParameterList("EncIds", ulEncList165_Denom_Final.ToArray());
 
                             Enc_Exclusion_lst165 = new ArrayList(EncounterExlusioncareseerviceeCMS165.List());
 
@@ -12793,8 +12810,7 @@ where pr.encounter_id in (:EncIds) and (pr.loinc_observation='BMI' and pr.value 
                             ArrayList Enc_Exclusion_lstrxnormCMS165 = new ArrayList();
                             ArrayList Enc_Exclusion_lstadvdiaCMS165 = new ArrayList();
                             IQuery EncounterExlusionqueryFrailtyCMS165 = iMySession.GetNamedQuery("PQRI.GetExceptionListFrailtyCMS165.ControllingHighBloodPressure");
-                            EncounterExlusionqueryFrailtyCMS165.SetParameterList("EncIds", ulEncList165_DEnominator.ToArray());
-
+                           
 
                             EncounterExlusionqueryFrailtyCMS165.SetParameter(0, Fromdate.ToString("yyyy-MM-dd"));
                             EncounterExlusionqueryFrailtyCMS165.SetParameter(1, Todate.ToString("yyyy-MM-dd"));
@@ -12802,7 +12818,9 @@ where pr.encounter_id in (:EncIds) and (pr.loinc_observation='BMI' and pr.value 
                             EncounterExlusionqueryFrailtyCMS165.SetParameter(3, "CMS165v10");
 
                             EncounterExlusionqueryFrailtyCMS165.SetParameter(4, "Exclusion");
-                            Enc_Exclusion_lstFrailtyCMS165 = new ArrayList(EncounterExlusionqueryFrailtyCMS165.List());
+                                EncounterExlusionqueryFrailtyCMS165.SetParameterList("EncIds", ulEncList165_Denom_Final.ToArray());
+
+                                Enc_Exclusion_lstFrailtyCMS165 = new ArrayList(EncounterExlusionqueryFrailtyCMS165.List());
 
 
 
@@ -12828,7 +12846,7 @@ where pr.encounter_id in (:EncIds) and (pr.loinc_observation='BMI' and pr.value 
 
 
                             EncounterExlusionqueryFrailtyCMS165 = iMySession.GetNamedQuery("PQRI.GetExceptionListFrailtyICDCMS165.ControllingHighBloodPressure");
-                            EncounterExlusionqueryFrailtyCMS165.SetParameterList("EncIds", ulEncList165_DEnominator.ToArray());
+                         
                             EncounterExlusionqueryFrailtyCMS165.SetParameter(0, Fromdate.ToString("yyyy-MM-dd"));
                             EncounterExlusionqueryFrailtyCMS165.SetParameter(1, Todate.ToString("yyyy-MM-dd"));
                             EncounterExlusionqueryFrailtyCMS165.SetParameter(2, Convert.ToDateTime(AgeCalculationDate).ToString("yyyy-MM-dd"));
@@ -12836,7 +12854,8 @@ where pr.encounter_id in (:EncIds) and (pr.loinc_observation='BMI' and pr.value 
                             EncounterExlusionqueryFrailtyCMS165.SetParameter(3, "CMS165v10");
 
                             EncounterExlusionqueryFrailtyCMS165.SetParameter(4, "Exclusion");
-                            Enc_Exclusion_lstFrailtyCMS165 = new ArrayList(EncounterExlusionqueryFrailtyCMS165.List());
+                                EncounterExlusionqueryFrailtyCMS165.SetParameterList("EncIds", ulEncList165_Denom_Final.ToArray());
+                                Enc_Exclusion_lstFrailtyCMS165 = new ArrayList(EncounterExlusionqueryFrailtyCMS165.List());
 
 
 
@@ -12864,7 +12883,7 @@ where pr.encounter_id in (:EncIds) and (pr.loinc_observation='BMI' and pr.value 
                             EncounterExlusionqueryFrailtyCMS165.SetParameter(1, Todate.ToString("yyyy-MM-dd"));
                             EncounterExlusionqueryFrailtyCMS165.SetParameter(2, Convert.ToDateTime(AgeCalculationDate).ToString("yyyy-MM-dd"));
 
-                            EncounterExlusionqueryFrailtyCMS165.SetParameterList("EncIds", ulEncList165_DEnominator.ToArray());
+                            EncounterExlusionqueryFrailtyCMS165.SetParameterList("EncIds", ulEncList165_Denom_Final.ToArray());
 
 
                             Enc_Exclusion_lstFrailtyCMS165 = new ArrayList(EncounterExlusionqueryFrailtyCMS165.List());
@@ -12930,7 +12949,7 @@ where pr.encounter_id in (:EncIds) and (pr.loinc_observation='BMI' and pr.value 
                                 EncounterExlusionqueryrxnormCMS165.SetParameter(2, "CMS165v10");
 
                                 EncounterExlusionqueryrxnormCMS165.SetParameter(3, "Exclusion");
-                                EncounterExlusionqueryrxnormCMS165.SetParameterList("EncIds", Enc_Exclusion_lstFrailtyCMS165.ToArray());
+                                EncounterExlusionqueryrxnormCMS165.SetParameterList("EncIds", ulEncList165_fraility.ToArray());
                                 Enc_Exclusion_lstadvdiaCMS165 = new ArrayList(EncounterExlusionqueryrxnormCMS165.List());
 
 
@@ -12953,7 +12972,7 @@ where pr.encounter_id in (:EncIds) and (pr.loinc_observation='BMI' and pr.value 
                                 EncounterExlusionqueryAdvanceCMS165.SetParameter(2, "CMS165v10");
 
                                 EncounterExlusionqueryAdvanceCMS165.SetParameter(3, "Exclusion");
-                                EncounterExlusionqueryAdvanceCMS165.SetParameterList("EncIds", Enc_Exclusion_lstFrailtyCMS165.ToArray());
+                                EncounterExlusionqueryAdvanceCMS165.SetParameterList("EncIds", ulEncList165_fraility.ToArray());
                                 Enc_Exclusion_lstFrailtyCMS165 = new ArrayList(EncounterExlusionqueryAdvanceCMS165.List());
 
 
@@ -13041,7 +13060,7 @@ where pr.encounter_id in (:EncIds) and (pr.loinc_observation='BMI' and pr.value 
                                 EncounterExlusionAdvanceCMS165.SetParameter(1, Todate.ToString("yyyy-MM-dd"));
                                 EncounterExlusionAdvanceCMS165.SetParameter(2, "CMS165v10");
                                 EncounterExlusionAdvanceCMS165.SetParameter(3, "Exclusion");
-                                EncounterExlusionAdvanceCMS165.SetParameterList("EncIds", Enc_Exclusion_lstFrailtyCMS165.ToArray());
+                                EncounterExlusionAdvanceCMS165.SetParameterList("EncIds", ulEncList165_fraility.ToArray());
                                 Enc_Exclusion_lstFrailtyCMS165 = new ArrayList(EncounterExlusionAdvanceCMS165.List());
 
 
@@ -13149,13 +13168,13 @@ where pr.encounter_id in (:EncIds) and (pr.loinc_observation='BMI' and pr.value 
                         }
                         //End
 
-                        if (Enc_Denominator_lst165 != null && Enc_Denominator_lst165.Count > 0)
+                        if (ulEncList165_Denom_Final != null && ulEncList165_Denom_Final.Count > 0)
                         {
                             if (ulEncList165_exception != null && ulEncList165_exception.Count > 0)
                             {
                                 EncounterDenominatorquery165 = iMySession.GetNamedQuery("PQRI.GetDenominatorList3CMS165.withexclusion.ControllingHighBP");
 
-                                EncounterDenominatorquery165.SetParameterList("EncIds", Enc_Denominator_lst165.ToArray());
+                                EncounterDenominatorquery165.SetParameterList("EncIds", ulEncList165_Denom_Final.ToArray());
                                 EncounterDenominatorquery165.SetParameterList("EncIdEx", ulEncList165_exception.ToArray());
                                 Enc_Denominator_lst165 = new ArrayList(EncounterDenominatorquery165.List());
                             }
@@ -13163,7 +13182,7 @@ where pr.encounter_id in (:EncIds) and (pr.loinc_observation='BMI' and pr.value 
                             {
                                 EncounterDenominatorquery165 = iMySession.GetNamedQuery("PQRI.GetDenominatorList3CMS165.ControllingHighBP");
 
-                                EncounterDenominatorquery165.SetParameterList("EncIds", Enc_Denominator_lst165.ToArray());
+                                EncounterDenominatorquery165.SetParameterList("EncIds", ulEncList165_Denom_Final.ToArray());
                                 Enc_Denominator_lst165 = new ArrayList(EncounterDenominatorquery165.List());
                             }
                         }
@@ -13192,10 +13211,10 @@ where pr.encounter_id in (:EncIds) and (pr.loinc_observation='BMI' and pr.value 
                                 {
                                     cpt = objEnc[3].ToString();
                                 }
-                                if (objEnc[4] != null)
-                                {
-                                    loinc = objEnc[4].ToString();
-                                }
+                                //if (objEnc[4] != null)
+                                //{
+                                //    loinc = objEnc[4].ToString();
+                                //}
                                 string[] ary = { objEnc[0].ToString(), objEnc[1].ToString(), icd, cpt, "", loinc, "", "CMS165D", "CMS165v10" };
                                 icdcptListDenominator.Add(ary);
 
@@ -13926,18 +13945,39 @@ where pr.encounter_id in (:EncIds) and (pr.loinc_observation='BMI' and pr.value 
                         uHumanListNumexe122.Add(Convert.ToUInt32(objEnc[1].ToString()));
 
                     }
-                    if (uHumanListNumexe122.Count > 0)
-                    { 
-                    Encounterumeratorquery122 = iMySession.GetNamedQuery("PQRI.GetNumerator1CMS122.HBA1c");
-                    Encounterumeratorquery122.SetParameterList("EncIds", uHumanList122.ToArray());
-                        Encounterumeratorquery122.SetParameterList("EncExp", uHumanListNumexe122.ToArray());
+                    if (ulEncList122_exception.Count > 0)
+                    {
+                        if (uHumanListNumexe122.Count > 0)
+                        {
+                            Encounterumeratorquery122 = iMySession.GetNamedQuery("PQRI.GetNumeratorwithExclusionvitalsCMS122.HBA1c");
+                            Encounterumeratorquery122.SetParameterList("EncIds", uHumanList122.ToArray());
+                            Encounterumeratorquery122.SetParameterList("EncExp", uHumanListNumexe122.ToArray());
+                            Encounterumeratorquery122.SetParameterList("EncExclusion", ulEncList122_exception.ToArray());
 
+                        }
+                        else
+                        {
+                            Encounterumeratorquery122 = iMySession.GetNamedQuery("PQRI.GetNumeratorwithExclusionCMS122.HBA1c");
+                            Encounterumeratorquery122.SetParameterList("EncIds", uHumanList122.ToArray());
+                            Encounterumeratorquery122.SetParameterList("EncExclusion", ulEncList122_exception.ToArray());
+
+                        }
                     }
                     else
                     {
-                        Encounterumeratorquery122 = iMySession.GetNamedQuery("PQRI.GetNumerator2CMS122.HBA1c");
-                        Encounterumeratorquery122.SetParameterList("EncIds", uHumanList122.ToArray());
-                      
+                        if (uHumanListNumexe122.Count > 0)
+                        {
+                            Encounterumeratorquery122 = iMySession.GetNamedQuery("PQRI.GetNumerator1CMS122.HBA1c");
+                            Encounterumeratorquery122.SetParameterList("EncIds", uHumanList122.ToArray());
+                            Encounterumeratorquery122.SetParameterList("EncExp", uHumanListNumexe122.ToArray());
+
+                        }
+                        else
+                        {
+                            Encounterumeratorquery122 = iMySession.GetNamedQuery("PQRI.GetNumerator2CMS122.HBA1c");
+                            Encounterumeratorquery122.SetParameterList("EncIds", uHumanList122.ToArray());
+
+                        }
                     }
                
                     Enc_Numerator_lst122 = new ArrayList(Encounterumeratorquery122.List());

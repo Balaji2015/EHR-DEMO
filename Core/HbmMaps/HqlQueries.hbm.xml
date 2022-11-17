@@ -13764,6 +13764,24 @@ where loinc_observation in ('HBA1C','Hemoglobin A1c/Hemoglobin.total',
  group by e.human_id;]]>
 	</sql-query>
 
+
+
+	<sql-query name="PQRI.GetNumeratorwithExclusionvitalsCMS122.HBA1c">
+		<![CDATA[
+ select e.encounter_id as Encounter_Id,e.human_id ,pr.loinc_identifier from encounter e  left join
+ patient_results pr on e.encounter_id=pr.encounter_id where e.human_id in (:EncIds) and e.human_id not in (:EncExp) and e.human_id not in (:EncExclusion)
+ group by e.human_id;]]>
+	</sql-query>
+
+
+
+	<sql-query name="PQRI.GetNumeratorwithExclusionCMS122.HBA1c">
+		<![CDATA[
+ select e.encounter_id as Encounter_Id,e.human_id ,pr.loinc_identifier from encounter e  left join
+ patient_results pr on e.encounter_id=pr.encounter_id where e.human_id in (:EncIds) and e.human_id not in (:EncExclusion)
+ group by e.human_id;]]>
+	</sql-query>
+
 	<sql-query name="PQRI.GetNumerator2CMS122.HBA1c">
 		<![CDATA[
  select e.encounter_id as Encounter_Id,e.human_id ,pr.loinc_identifier from encounter e  left join
@@ -14055,35 +14073,39 @@ where nqf_number =?  and PQRI_calculation_Method=? and PQRI_Type in ('CPT','HCPC
 
 	<sql-query name="PQRI.GetDenominatorList2CMS165.ControllingHighBP">
 		<![CDATA[select distinct(pl.human_id) from  problem_list pl 
-where STR_TO_DATE(date_diagnosed, '%d-%b-%Y') <=? and pl.human_id in (:EncIds)   
-and ( (pl.icd in (SELECT PQRI_Value FROM cqm_data where nqf_number =?  and PQRI_calculation_Method=? and PQRI_Type in ('ICD')) and pl.is_active ='Y'))
-union
+where STR_TO_DATE(date_diagnosed, '%d-%b-%Y') <=?   
+and ( (pl.icd in (SELECT PQRI_Value FROM cqm_data where nqf_number =?  and PQRI_calculation_Method=? and PQRI_Type in ('ICD')) and pl.is_active ='Y')) and  pl.human_id in (:EncIds) 
+;]]>
+	</sql-query>
+
+
+	<sql-query name="PQRI.GetDenominatorListICDCMS165.ControllingHighBP">
+		<![CDATA[
 select distinct(pl.human_id) from  assessment pl 
-where  pl.encounter_id in (:EncIds_Ass)   
-and (pl.ICD in (SELECT PQRI_Value FROM cqm_data where nqf_number =?  and PQRI_calculation_Method=? and PQRI_Type in ('ICD')) ) 
+where   
+ (pl.ICD in (SELECT PQRI_Value FROM cqm_data where nqf_number =?  and PQRI_calculation_Method=? and PQRI_Type in ('ICD')) ) and  pl.encounter_id in (:EncIds_Ass)  
 
 ;]]>
 	</sql-query>
 
-	<sql-query name="PQRI.GetDenominatorList3CMS165.ControllingHighBP">
+	<sql-query name="PQRI.GetDenominatorList3CMS165copy.ControllingHighBP">
 		<![CDATA[select distinct(em.Encounter_id),em.human_id,a.ICd,em.procedure_code,pr.Loinc_identifier from e_m_coding em
-    left join problem_list a on em.human_id=a.human_id
-left  join patient_results pr on pr.human_id=em.human_id
-    where em.human_id in (:EncIds) and pr.Loinc_identifier='8480-6'
-    union
-    select distinct(em.Encounter_id),em.human_id,a.ICd,em.procedure_code,pr.Loinc_identifier from e_m_coding em
     left join assessment a on em.human_id=a.human_id
 left  join patient_results pr on pr.human_id=em.human_id
     where em.human_id in (:EncIds) and pr.Loinc_identifier='8480-6';
     ]]>
 	</sql-query>
+	
+	<sql-query name="PQRI.GetDenominatorList3CMS165.ControllingHighBP">
+		<![CDATA[select distinct(em.Encounter_id),em.human_id,a.ICd,em.procedure_code from e_m_coding em
+    left join assessment a on em.human_id=a.human_id
 
-	<sql-query name="PQRI.GetDenominatorList3CMS165.withexclusion.ControllingHighBP">
-		<![CDATA[select distinct(em.Encounter_id),em.human_id,a.ICd,em.procedure_code,pr.Loinc_identifier from e_m_coding em
-    left join problem_list a on em.human_id=a.human_id
-left  join patient_results pr on pr.human_id=em.human_id
-    where em.human_id in (:EncIds) and pr.Loinc_identifier='8480-6' and  em.human_id not in (:EncIdEx)
-    union 
+    where em.human_id in (:EncIds) ;
+    ]]>
+	</sql-query>
+
+	<sql-query name="PQRI.GetDenominatorList3CMS165copy.withexclusion.ControllingHighBP">
+		<![CDATA[ 
     select distinct(em.Encounter_id),em.human_id,a.ICd,em.procedure_code,pr.Loinc_identifier from e_m_coding em
     left join assessment a on em.human_id=a.human_id
 left  join patient_results pr on pr.human_id=em.human_id
@@ -14091,18 +14113,39 @@ left  join patient_results pr on pr.human_id=em.human_id
     
     ;]]>
 	</sql-query>
+	
+		<sql-query name="PQRI.GetDenominatorList3CMS165.withexclusion.ControllingHighBP">
+		<![CDATA[ 
+    select distinct(em.Encounter_id),em.human_id,a.ICd,em.procedure_code from e_m_coding em
+    left join assessment a on em.human_id=a.human_id
+    where em.human_id in (:EncIds)  and  em.human_id not in (:EncIdEx)
+    ;]]>
+	</sql-query>
+	
+		
 	<sql-query name="PQRI.GetExclusionCMS165.ControllingHighBP">
-		<![CDATA[select distinct(em.Encounter_id) ,em.human_id,a.icd,em.encounter_id from e_m_coding em
 
-left join problem_list pl on em.human_id=pl.human_id
-left join assessment a on em.encounter_id=a.encounter_id
-where  em.human_id in (:EncIds) and (em.procedure_code  in(SELECT PQRI_Value FROM cqm_data where nqf_number =?  and PQRI_calculation_Method=? and PQRI_Type in ('CPT','HCPCS'))
-or(
-a.icd  in(SELECT PQRI_Value FROM cqm_data where nqf_number =? 
-and PQRI_calculation_Method=? and PQRI_Type in ('ICD'))
-or  (pl.is_active='Y' and
-pl.icd  in (SELECT PQRI_Value FROM cqm_data where nqf_number =?  and PQRI_calculation_Method=? and PQRI_Type in ('ICD')))
-) );]]>
+
+		<![CDATA[select distinct(em.Encounter_id) ,em.human_id,a.icd,em.encounter_id from e_m_coding em
+		left join assessment a on em.encounter_id=a.encounter_id
+		where   (em.procedure_code  in (SELECT PQRI_Value FROM cqm_data where nqf_number =?  and PQRI_calculation_Method=?
+		and PQRI_Type in ('CPT','HCPCS') and Standard_Concept in ('Chronic Kidney Disease, Stage 5',
+'Dialysis Services',
+'ESRD Monthly Outpatient Services',
+'End Stage Renal Disease',
+'Kidney Transplant',
+'Kidney Transplant Recipient',
+'Pregnancy'))
+		or
+		a.icd  in(SELECT PQRI_Value FROM cqm_data where nqf_number =?
+		and PQRI_calculation_Method=? and PQRI_Type in ('ICD') and Standard_Concept in ('Chronic Kidney Disease, Stage 5',
+'Dialysis Services',
+'ESRD Monthly Outpatient Services',
+'End Stage Renal Disease',
+'Kidney Transplant',
+'Kidney Transplant Recipient',
+'Pregnancy'))  )and em.human_id in (:EncIds);]]>
+		
 	</sql-query>
 
 
