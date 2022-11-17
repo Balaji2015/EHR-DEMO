@@ -92,7 +92,7 @@ Deploy Test Job 10.0.0.11:
   - echo "Deployee WC..Completed.."
 
   - echo "Deployee CQM..Start.."
-  - xcopy /y /s "E:\Acurus_Web\Deployee\builds\Capella_publish\*.*" "E:\Acurus_Web\capella_cmg_project\capella_cmg_ehr_cqm_talend\"
+  #- xcopy /y /s "E:\Acurus_Web\Deployee\builds\Capella_publish\*.*" "E:\Acurus_Web\capella_cmg_project\capella_cmg_ehr_cqm_talend\"
   - echo "Deployee CQM..Completed.."
 
 Deploy PRODUCTION Job 10.1.0.6 :
