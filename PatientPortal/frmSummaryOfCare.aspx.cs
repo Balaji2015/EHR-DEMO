@@ -11,10 +11,8 @@ using System.Web.UI.WebControls;
 using System.Web.UI.WebControls.WebParts;
 using System.Collections.Generic;
 using System.Drawing;
-using System.Linq;
 using Acurus.Capella.Core.DomainObjects;
 using Acurus.Capella.DataAccess.ManagerObjects;
-using log4net;
 using System.Xml.Linq;
 using iTextSharp.text;
 using iTextSharp.text.pdf;
@@ -24,8 +22,6 @@ using System.Net;
 using System.Threading;
 using Acurus.Capella.Core.DTO;
 using Telerik.Web.UI;
-using System.Collections.Generic;
-using System.Collections;
 using System.Text.RegularExpressions;
 using System.Web.Script.Services;
 
@@ -35,10 +31,11 @@ namespace Acurus.Capella.PatientPortal
 {
     public partial class frmSummaryOfCare : System.Web.UI.Page
     {
-        iTextSharp.text.Font normalFont = iTextSharp.text.FontFactory.GetFont("Arial", 9, iTextSharp.text.Font.NORMAL, iTextSharp.text.BaseColor.BLACK);
-        iTextSharp.text.Font reducedFont = iTextSharp.text.FontFactory.GetFont("Arial", 9, iTextSharp.text.Font.BOLD, iTextSharp.text.BaseColor.BLUE);
-        iTextSharp.text.Font HeadFont = iTextSharp.text.FontFactory.GetFont("Arial", 11, iTextSharp.text.Font.BOLD, iTextSharp.text.BaseColor.WHITE);
-        iTextSharp.text.Font onlyBoldFont = iTextSharp.text.FontFactory.GetFont("Arial", 9, iTextSharp.text.Font.BOLD, iTextSharp.text.BaseColor.BLACK);
+        iTextSharp.text.Font normalFont = iTextSharp.text.FontFactory.GetFont("Calibri", 9, iTextSharp.text.Font.NORMAL, iTextSharp.text.BaseColor.BLACK);
+        iTextSharp.text.Font reducedFont = iTextSharp.text.FontFactory.GetFont("Calibri", 9, iTextSharp.text.Font.BOLD, new BaseColor(60, 141, 188)); // iTextSharp.text.BaseColor.BLUE);
+        iTextSharp.text.Font HeadFont = iTextSharp.text.FontFactory.GetFont("Calibri", 11, iTextSharp.text.Font.BOLD, iTextSharp.text.BaseColor.WHITE);
+        iTextSharp.text.Font onlyBoldFont = iTextSharp.text.FontFactory.GetFont("Calibri", 9, iTextSharp.text.Font.BOLD, iTextSharp.text.BaseColor.BLACK);
+        BaseColor MyColor = new BaseColor(8, 128, 170); //60, 141, 188);
 
         IList<FileManagementIndex> file_exam_lst = new List<FileManagementIndex>();
         IList<StaticLookup> lstStatic = new List<StaticLookup>();
@@ -92,53 +89,11 @@ namespace Acurus.Capella.PatientPortal
         {
             if (!IsPostBack)
             {
-                if (Request["FileName"] != null)
-                {
-                    if (Request["FileName"] != null && (Request["Type"] == "CCD" || Request["Type"] == "C32"))
-                    {
-                        Session["sFileNameBind"] = Path.GetFileName(Request["FileName"]);
-                        FileName = Request["FileName"];
-                        FilePath = Server.MapPath(Request["FileName"]);
-                        Type = Request["Type"];
-                        UniverTime = Request["UniversalTime"].ToString();
-                        if (Request["Type"] == "CCD" || Request["Type"] == "C32")
-                        {
-                            universalTime = Convert.ToDateTime(Request["UniversalTime"]);
-                            btnOK.Visible = true;
-                        }
-                        else
-                            universalTime = DateTime.MinValue;
-
-                        path = PrintPDF(Server.MapPath(Request["FileName"]), Request["Type"], universalTime);
-                        
-                        hdnHumanID.Value = ((IList<Human>)Session["HumanList"])[0].Id.ToString();
-                        //if (ClientSession.Load_Summary_PDF == false)
-                        //{
-                        //    Match(hdnHumanID.Value);
-                        //    ClientSession.Load_Summary_PDF = true;
-                        //}
-                        if (ViewState["Load_Summary_PDF"] ==null)
-                        {
-                            Match(hdnHumanID.Value);
-                            ViewState["Load_Summary_PDF"] = "True";
-                        }
-                        PDFLOAD.Attributes.Add("src", "frmSummaryOfCare.aspx?FileName=" + Request["FileName"].ToString() + "&pdf=" + (string)Session["PDF_Path"] + "&Type=" + Request["Type"].ToString() + "&UniversalTime=" + Request["UniversalTime"].ToString());
-                    }
-                    else if (Request["FileName"] != null && Request["Type"] == "CCR")
-                    {
-                        PrintPDF_CCR(Server.MapPath(Request["FileName"]));
-                        
-                        PDFLOAD.Attributes.Add("src", "frmSummaryOfCare.aspx?FileName=" + Request["FileName"].ToString() + "&pdf=" + (string)Session["PDF_Path"] + "&Type=" + Request["Type"].ToString() + "&UniversalTime=" + Request["UniversalTime"].ToString());
-                    }
-
-                }
-
-                
-
                 StaticLookupManager objlookupmanager = new StaticLookupManager();
                 if (Request["FileName"] != null && (Request["Type"] == "CCD" || Request["Type"] == "C32"))
                 {
-                    string[] StaticValues = { "All", "Allergy", "Immunization", "Medication", "Care Plan", "Reason for Referral", "Procedures", "Results", "Social History", "Vitals", "Instructions", "Chief Complaint", "Problems", "Provider", "Custodian", "Documentation Details", "Visit Details", "Author", "Medication Administered", "Functional Status", "Hospital Discharge Instructions", "Implant", "Mental Status", "Goals Section", "Health Concern", "Treatment Plan", "Laboratory Information" ,"Interventions","Health Status Evaluations/Outcomes"};
+                    //string[] StaticValues = { "All", "Provider", "Custodian", "Documentation Details", "Visit Details", "Author" };
+                    string[] StaticValues = { "All" };
                     foreach (string values in StaticValues)
                     {
                         //cboSelection.Items.Add(new RadComboBoxItem(values));
@@ -162,15 +117,53 @@ namespace Acurus.Capella.PatientPortal
                     // lstStatic = objlookupmanager.getStaticLookupByFieldName("SUMMARY OF CARE CCR");
                     // lstStatic = lstStatic.OrderBy(a => a.Value).ToList();
                 }
-                //cboSelection.FindItemByText("All").Selected = true;
-                //if (lstStatic.Count > 0)
-                //{
-                //    for (int i = 0; i < lstStatic.Count; i++)
-                //    {
-                //        cboSelection.Items.Add(new RadComboBoxItem(lstStatic[i].Value));
-                //    }
-                //    cboSelection.FindItemByText("All").Selected = true;
-                //}
+
+                if (Request["FileName"] != null)
+                {
+                    if (Request["FileName"] != null && (Request["Type"] == "CCD" || Request["Type"] == "C32"))
+                    {
+                        Session["sFileNameBind"] = Path.GetFileName(Request["FileName"]);
+                        FileName = Request["FileName"];
+                        FilePath = Server.MapPath(Request["FileName"]);
+                        Type = Request["Type"];
+                        UniverTime = Request["UniversalTime"].ToString();
+                        if (Request["Type"] == "CCD" || Request["Type"] == "C32")
+                        {
+                            universalTime = Convert.ToDateTime(Request["UniversalTime"]);
+                            btnOK.Visible = true;
+                        }
+                        else
+                            universalTime = DateTime.MinValue;
+
+                        path = PrintPDF(Server.MapPath(Request["FileName"]), Request["Type"], universalTime);
+
+                        if (((IList<Human>)Session["HumanList"]).Count > 0)
+                            hdnHumanID.Value = ((IList<Human>)Session["HumanList"])[0].Id.ToString();
+                        //if (ClientSession.Load_Summary_PDF == false)
+                        //{
+                        //    Match(hdnHumanID.Value);
+                        //    ClientSession.Load_Summary_PDF = true;
+                        //}
+                        if (ViewState["Load_Summary_PDF"] == null && Request["IsFMIEntry"] == null && Request["IsFMIEntry"] != "Y")
+                        {
+                            Match(hdnHumanID.Value);
+                            ViewState["Load_Summary_PDF"] = "True";
+                        }
+                        PDFLOAD.Attributes.Add("src", "frmSummaryOfCare.aspx?FileName=" + Request["FileName"].ToString() + "&pdf=" + (string)Session["PDF_Path"] + "&Type=" + Request["Type"].ToString() + "&UniversalTime=" + Request["UniversalTime"].ToString() + "&IsFMIEntry=Y");
+                    }
+                    else if (Request["FileName"] != null && Request["Type"] == "CCR")
+                    {
+                        PrintPDF_CCR(Server.MapPath(Request["FileName"]));
+
+                        PDFLOAD.Attributes.Add("src", "frmSummaryOfCare.aspx?FileName=" + Request["FileName"].ToString() + "&pdf=" + (string)Session["PDF_Path"] + "&Type=" + Request["Type"].ToString() + "&UniversalTime=" + Request["UniversalTime"].ToString());
+                    }
+
+                }
+
+
+
+
+
                 if (SummaryCheckList.Items.Count > 0)
                 {
                     SummaryCheckList.Items[0].Selected = true;
@@ -212,6 +205,9 @@ namespace Acurus.Capella.PatientPortal
 
             if (Request["UniversalTime"] != null)
                 universalTime = Convert.ToDateTime(Request["UniversalTime"].ToString());
+
+            SummaryCheckList.Attributes.Add("onclick", "onchangeCheckBox();");
+            //SummaryCheckList.SelectedIndexChanged += new EventHandler(SummaryCheckList_SelectedIndexChanged);
         }
 
         public string PrintPDF(string XmlPath, string sClinicalSummaryPath, DateTime universaltime)
@@ -222,7 +218,7 @@ namespace Acurus.Capella.PatientPortal
             xmldoc.Load(xmltext);
             string path = Path.GetFileNameWithoutExtension(XmlPath);
             string TargetFileDirectory = Server.MapPath("Documents/" + Session.SessionID);
-            Document doc = new Document(iTextSharp.text.PageSize.LETTER, 50, 50, 100, 70);
+            Document doc = new Document(iTextSharp.text.PageSize.LETTER, 50, 50, 70, 70);
             string sPrintPathName = string.Empty;
 
             if (sClinicalSummaryPath == "ClinicalSummary")
@@ -235,7 +231,7 @@ namespace Acurus.Capella.PatientPortal
             {
                 string sFolderPathName = TargetFileDirectory + "\\" + System.Configuration.ConfigurationSettings.AppSettings["SummaryCarePathName"] + "\\" + DateTime.Now.ToString("yyyyMMdd");
                 Directory.CreateDirectory(sFolderPathName);
-                sPrintPathName = sFolderPathName + "\\" + path + "_SummaryOfCare.pdf";
+                sPrintPathName = sFolderPathName + "\\SummaryOfCare_" + path + ".pdf";
             }
             Session["PDF_Path"] = sPrintPathName;
             string sMyPathName = sPrintPathName;
@@ -265,6 +261,8 @@ namespace Acurus.Capella.PatientPortal
                 using (FileStream ms = new FileStream(sPrintPathName, FileMode.Create))
                 {
                     wr = PdfWriter.GetInstance(doc, ms);
+                    ms.Close();
+                    ms.Dispose();
                 }
                 // wr = PdfWriter.GetInstance(doc, new FileStream(sPrintPathName, FileMode.Create));
             }
@@ -272,7 +270,7 @@ namespace Acurus.Capella.PatientPortal
 
             doc.Open();
             BaseFont bfTimes = BaseFont.CreateFont(BaseFont.TIMES_ROMAN, BaseFont.CP1252, false);
-            float X = 20f, Y = 20f;
+            //float X = 20f, Y = 20f;
 
             if (sClinicalSummaryPath == "PatientPortal")
                 ViewState["PatientPortal"] = "PatientPortal";
@@ -289,61 +287,20 @@ namespace Acurus.Capella.PatientPortal
 
             PrintDocumentDetail(doc, xmldoc);
 
-            PrintVisitDetail(doc, xmldoc);
+            XmlNodeList Doc_Section_Node = xmldoc.GetElementsByTagName("section");
+            System.Web.UI.WebControls.ListItem chkbx = new System.Web.UI.WebControls.ListItem();
+            string sTitle = string.Empty;
+            foreach (XmlElement elemParent in Doc_Section_Node)
+            {
+                sTitle = PrintSection(doc, elemParent, string.Empty);
 
-            PrintTreatmentPlan(doc, xmldoc);
-
-            PrintAllergy(doc, xmldoc);
-
-            //  PrintEncounter(doc, xmldoc);
-
-            PrintImmunization(doc, xmldoc);
-
-            PrintMedication(doc, xmldoc);
-
-            PrintCarePlan(doc, xmldoc);
-
-            //PrintHospitalMedications(doc, xmldoc);
-
-            PrintReasonForReferal(doc, xmldoc);
-            if (sClinicalSummaryPath == "PatientPortal")
-                PrintProblemsPatientPortal(doc, xmldoc);
-            else
-                PrintProblems(doc, xmldoc);
-
-            PrintProcedures(doc, xmldoc);
-
-            PrintFunctionalStatus(doc, xmldoc);
-
-            PrintLaboratoryInformation(doc, xmldoc);
-
-            if (sClinicalSummaryPath == "PatientPortal")
-                PrintResultsforPatientPortal(doc, xmldoc);
-            else
-                PrintResults(doc, xmldoc);
-
-            PrintLabTests(doc, xmldoc);
-
-            PrintSocialHistory(doc, xmldoc);
-
-            PrintVitals(doc, xmldoc);
-
-            PrintHospitalInstructions(doc, xmldoc);
-
-            PrintInstructions(doc, xmldoc);
-
-            PrintChiefComplaint(doc, xmldoc);
-
-            PrintMedicationAdministered(doc, xmldoc);
-
-            PrintImplant(doc, xmldoc);
-
-            PrintMentalStatus(doc, xmldoc);
-            PrintGoalsSection(doc, xmldoc);
-            PrintHealthConcernSection(doc, xmldoc);
-
-            PrintInterventions(doc, xmldoc);
-            PrintHealthStatusEvaluations(doc, xmldoc);
+                //if (sTitle != string.Empty)
+                //{
+                //    chkbx = new System.Web.UI.WebControls.ListItem();
+                //    chkbx.Text = sTitle;
+                //    SummaryCheckList.Items.Add(chkbx);
+                //}
+            }
 
             doc.Close();
             xmltext.Close();
@@ -359,7 +316,8 @@ namespace Acurus.Capella.PatientPortal
 
             return sPrintPathName;
         }
-        public string PrintPDF(string XmlPath, string sClinicalSummaryPath, DateTime universaltime,string FileName,string Type)
+
+        public string PrintPDF(string XmlPath, string sClinicalSummaryPath, DateTime universaltime, string FileName, string Type)
         {
             universalTime = universaltime;
             XmlDocument xmldoc = new XmlDocument();
@@ -380,7 +338,7 @@ namespace Acurus.Capella.PatientPortal
             {
                 string sFolderPathName = TargetFileDirectory + "\\" + System.Configuration.ConfigurationSettings.AppSettings["SummaryCarePathName"] + "\\" + DateTime.Now.ToString("yyyyMMdd");
                 Directory.CreateDirectory(sFolderPathName);
-                sPrintPathName = sFolderPathName + "\\" + path + "_SummaryOfCare.pdf";
+                sPrintPathName = sFolderPathName + "\\SummaryOfCare_" + path + ".pdf";
             }
             Session["PDF_Path"] = sPrintPathName;
             string sMyPathName = sPrintPathName;
@@ -410,6 +368,8 @@ namespace Acurus.Capella.PatientPortal
                 using (FileStream ms = new FileStream(sPrintPathName, FileMode.Create))
                 {
                     wr = PdfWriter.GetInstance(doc, ms);
+                    ms.Close();
+                    ms.Dispose();
                 }
                 // wr = PdfWriter.GetInstance(doc, new FileStream(sPrintPathName, FileMode.Create));
             }
@@ -417,7 +377,7 @@ namespace Acurus.Capella.PatientPortal
 
             doc.Open();
             BaseFont bfTimes = BaseFont.CreateFont(BaseFont.TIMES_ROMAN, BaseFont.CP1252, false);
-            float X = 20f, Y = 20f;
+            //float X = 20f, Y = 20f;
 
             if (sClinicalSummaryPath == "PatientPortal")
                 ViewState["PatientPortal"] = "PatientPortal";
@@ -434,61 +394,21 @@ namespace Acurus.Capella.PatientPortal
 
             PrintDocumentDetail(doc, xmldoc);
 
-            PrintVisitDetail(doc, xmldoc);
+            XmlNodeList Doc_Section_Node = xmldoc.GetElementsByTagName("section");
+            System.Web.UI.WebControls.ListItem chkbx = new System.Web.UI.WebControls.ListItem();
+            string sTitle = string.Empty;
+            foreach (XmlElement elemParent in Doc_Section_Node)
+            {
+                sTitle = PrintSection(doc, elemParent, string.Empty);
 
-            PrintTreatmentPlan(doc, xmldoc);
-
-            PrintAllergy(doc, xmldoc);
-
-            //  PrintEncounter(doc, xmldoc);
-
-            PrintImmunization(doc, xmldoc);
-
-            PrintMedication(doc, xmldoc);
-
-            PrintCarePlan(doc, xmldoc);
-
-            //PrintHospitalMedications(doc, xmldoc);
-
-            PrintReasonForReferal(doc, xmldoc);
-            if (sClinicalSummaryPath == "PatientPortal")
-                PrintProblemsPatientPortal(doc, xmldoc);
-            else
-                PrintProblems(doc, xmldoc, FileName, Type);
-
-            PrintProcedures(doc, xmldoc);
-
-            PrintFunctionalStatus(doc, xmldoc);
-
-            PrintLaboratoryInformation(doc, xmldoc);
-
-            if (sClinicalSummaryPath == "PatientPortal")
-                PrintResultsforPatientPortal(doc, xmldoc);
-            else
-                PrintResults(doc, xmldoc, FileName, Type);
-
-            PrintLabTests(doc, xmldoc);
-
-            PrintSocialHistory(doc, xmldoc);
-
-            PrintVitals(doc, xmldoc);
-
-            PrintHospitalInstructions(doc, xmldoc);
-
-            PrintInstructions(doc, xmldoc);
-
-            PrintChiefComplaint(doc, xmldoc);
-
-            PrintMedicationAdministered(doc, xmldoc);
-
-            PrintImplant(doc, xmldoc);
-
-            PrintMentalStatus(doc, xmldoc);
-            PrintGoalsSection(doc, xmldoc);
-            PrintHealthConcernSection(doc, xmldoc);
-
-            PrintInterventions(doc, xmldoc);
-            PrintHealthStatusEvaluations(doc, xmldoc);
+                //if (sTitle != string.Empty)
+                //{
+                //    chkbx = new System.Web.UI.WebControls.ListItem();
+                //    chkbx.Text = sTitle;
+                //    if (SummaryCheckList != null)
+                //        SummaryCheckList.Items.Add(chkbx);
+                //}
+            }
 
             doc.Close();
             xmltext.Close();
@@ -516,7 +436,7 @@ namespace Acurus.Capella.PatientPortal
             string sFolderPathName = TargetFileDirectory + "\\" + System.Configuration.ConfigurationSettings.AppSettings["SummaryCarePathName"] + "\\" + DateTime.Now.ToString("yyyyMMdd");
             Directory.CreateDirectory(sFolderPathName);
             string sPrintPathName = string.Empty;
-            sPrintPathName = sFolderPathName + "\\" + path + "_SummaryOfCare.pdf";
+            sPrintPathName = sFolderPathName + "\\SummaryOfCare_" + path + ".pdf";
             Session["PDF_Path"] = sPrintPathName;
             string sMyPathName = sPrintPathName;
             PdfWriter wr;
@@ -536,7 +456,7 @@ namespace Acurus.Capella.PatientPortal
 
             doc.Open();
             BaseFont bfTimes = BaseFont.CreateFont(BaseFont.TIMES_ROMAN, BaseFont.CP1252, false);
-            float X = 20f, Y = 20f;
+            //float X = 20f, Y = 20f;
 
             Print_CCR_ContinuityOfCare(doc, xmldoc);
 
@@ -563,17 +483,40 @@ namespace Acurus.Capella.PatientPortal
             if (source == null)
                 return string.Empty;
             else
-                return Regex.Replace(source, "<.*?>", string.Empty);
+            //return Regex.Replace(source, "<.*?>", string.Empty);
+            {
+                if (source.Contains("<br></br>") == true)
+                {
+                    string str = "\"urn:hl7-org:v3\"";
+                    source = source.Replace("<paragraph xmlns=" + str + ">", Environment.NewLine + Environment.NewLine + Environment.NewLine);
+                    return Regex.Replace(source.Replace("</br", Environment.NewLine + "</"), "<.*?>", string.Empty).Replace(Environment.NewLine + Environment.NewLine, Environment.NewLine);
+                }
+                else
+                {
+                    return Regex.Replace(source.Replace("</", Environment.NewLine + "</"), "<.*?>", string.Empty).Replace(Environment.NewLine + Environment.NewLine, Environment.NewLine);
+                }
+            }
         }
 
         private PdfPCell CreateCell(string HeaderText, string ValueText, string ModuleText)
         {
             PdfPCell cell = new PdfPCell();
+            cell.UseVariableBorders = true;
+            cell.BorderColorLeft = BaseColor.WHITE;
+            cell.BorderColorTop = BaseColor.WHITE;
+            cell.BorderColorRight = BaseColor.WHITE;
+            cell.BorderColorBottom = new BaseColor(193, 238, 254);
+            //cell.HorizontalAlignment = iTextSharp.text.Element.ALIGN_CENTER;
+            //cell.VerticalAlignment = iTextSharp.text.Element.ALIGN_MIDDLE;
+            //cell.ExtraParagraphSpace = 2;
             Paragraph par = new Paragraph(HeaderText, reducedFont);
+            //par.Alignment = iTextSharp.text.Element.ALIGN_MIDDLE;
             cell.AddElement(par);
             par = new Paragraph(ValueText, normalFont);
+            //par.Alignment = iTextSharp.text.Element.ALIGN_MIDDLE;
             cell.AddElement(par);
             par = new Paragraph(ModuleText, HeadFont);
+            //par.Alignment = iTextSharp.text.Element.ALIGN_MIDDLE;
             cell.AddElement(par);
             return cell;
         }
@@ -584,7 +527,7 @@ namespace Acurus.Capella.PatientPortal
             DataSet ds = new DataSet();
             DataTable dt = null;
             DataRow dr = null;
-            DataColumn dc = null;
+            //DataColumn dc = null;
             string TableExpression = "<table[^>]*>(.*?)</table>";
             string HeaderExpression = "<th[^>]*>(.*?)</th>";
             string RowExpression = "<tr[^>]*>(.*?)</tr>";
@@ -618,7 +561,7 @@ namespace Acurus.Capella.PatientPortal
                     // Loop through each header element 
                     foreach (Match Header in Headers)
                     {
-                        dt.Columns.Add(Header.Groups[1].ToString());
+                        dt.Columns.Add(Header.Groups[1].ToString().Replace("<tr>", "").Replace("<th>", ""));
                     }
                 }
                 else
@@ -696,13 +639,14 @@ namespace Acurus.Capella.PatientPortal
             return ds;
 
         }
-        private DataSet ConvertHTMLTablesToDataSet(string HTML,string Type)
+
+        private DataSet ConvertHTMLTablesToDataSet(string HTML, string Type)
         {
             // Declarations 
             DataSet ds = new DataSet();
             DataTable dt = null;
             DataRow dr = null;
-            DataColumn dc = null;
+            //DataColumn dc = null;
             string TableExpression = "<table[^>]*>(.*?)</table>";
             string HeaderExpression = "<th[^>]*>(.*?)</th>";
             string RowExpression = "<tr[^>]*>(.*?)</tr>";
@@ -814,25 +758,14 @@ namespace Acurus.Capella.PatientPortal
             return ds;
 
         }
-        //private void setThePatientDetails(ulong humanID)
-        //{
-        //    if (humanID != 0)
-        //    {
-        //        HumanManager objhumanmanager = new HumanManager();
-        //        IList<Human> humanList = null;
-        //        humanList = objhumanmanager.GetPatientDetailsUsingPatientInformattion(humanID);
-        //        if (humanList.Count > 0)
-        //        {
-        //            txtPatientName.Text = humanList[0].First_Name + " " + humanList[0].MI + " " + humanList[0].Last_Name;
-        //            txtSex.Text = humanList[0].Sex;
-        //            txtDOB.Text = humanList[0].Birth_Date.ToString("dd-MMM-yyyy");
-        //            txtAccountNo.Text = humanList[0].Id.ToString();
-        //        }
-        //    }
-        //}
 
         protected void Match(string sAccountNo)
         {
+            Boolean bAlreadyImport = (Boolean)Session["SummaryCareAlreadyImported"];
+
+            if (bAlreadyImport == true)
+                return;
+
             if (sAccountNo != string.Empty)
             {
 
@@ -865,7 +798,7 @@ namespace Acurus.Capella.PatientPortal
                         objfileIndex.Human_ID = Convert.ToUInt64(sAccountNo);
                         objfileIndex.Source = "SUMMARY OF CARE";
                         fileList.Add(objfileIndex);
-                        IList<FileManagementIndex> fileIndex = objfilemanager.SaveUpdateDeleteFileManagementIndexforExamPhotos(fileList.ToArray(), null, null, ApplicationObject.macAddress, "SUMMARY OF CARE");
+                        IList<FileManagementIndex> fileIndex = objfilemanager.SaveUpdateDeleteFileManagementIndexforExamPhotos(fileList.ToArray(), null, null, string.Empty, "SUMMARY OF CARE");
                     }
                 }
                 activity.Human_ID = Convert.ToUInt64(sAccountNo);
@@ -908,3886 +841,7 @@ namespace Acurus.Capella.PatientPortal
             Session["NumberCount"] = prevNum;
         }
 
-        //protected void btnIVfindpatient_Click(object sender, EventArgs e)
-        //{
-        //    if (hdnHumanID.Value != null && hdnHumanID.Value != string.Empty)
-        //    {
-        //        ulong human_id = Convert.ToUInt32(hdnHumanID.Value.ToString());
-        //        setThePatientDetails(human_id);
-        //    }
-        //    divLoading.Style.Add("display", "none");
-
-        //}
-
-        protected void cboSelection_SelectedIndexChanged(object sender, RadComboBoxSelectedIndexChangedEventArgs e)
-        {
-            System.IO.File.Delete((string)Session["PDF_Path"]);
-            string XmlPath = Server.MapPath(Request["FileName"]);
-
-            #region CCD
-
-            if (Request["FileName"] != null && (Request["Type"] == "CCD" || Request["Type"] == "C32"))
-            {
-                if (cboSelection.Text == "All")
-                {
-                    path = PrintPDF(Server.MapPath(Request["FileName"]), "CCD", DateTime.MinValue);
-                    PDFLOAD.Attributes.Add("src", "frmSummaryOfCare.aspx?FileName=" + Request["FileName"].ToString() + "&pdf=" + (string)Session["PDF_Path"] + "&Type=" + Request["Type"].ToString() + "&UniversalTime=" + Request["UniversalTime"].ToString());
-                }
-                else if (cboSelection.Text == "Allergy")
-                {
-
-                    XmlDocument xmldoc = new XmlDocument();
-                    XmlTextReader xmltext = new XmlTextReader(XmlPath);
-                    xmldoc.Load(xmltext);
-                    string path = Path.GetFileNameWithoutExtension(XmlPath);
-                    string TargetFileDirectory = Server.MapPath("Documents/" + Session.SessionID);
-                    Document doc = new Document(iTextSharp.text.PageSize.LETTER, 50, 50, 100, 70);
-                    string sFolderPathName = TargetFileDirectory + "\\" + System.Configuration.ConfigurationSettings.AppSettings["SummaryCarePathName"] + "\\" + DateTime.Now.ToString("yyyyMMdd");
-                    Directory.CreateDirectory(sFolderPathName);
-                    string sPrintPathName = string.Empty;
-                    sPrintPathName = sFolderPathName + "\\" + path + "_Allergy.pdf";
-                    Session["PDF_Path"] = sPrintPathName;
-                    string sMyPathName = sPrintPathName;
-                    PdfWriter wr;
-                    string[] sFileName = sMyPathName.Split('\\');
-                    try
-                    {
-                        wr = PdfWriter.GetInstance(doc, new FileStream(sPrintPathName, FileMode.Create));
-                    }
-                    catch
-                    {
-                        var process = System.Diagnostics.Process.GetProcesses().Where(p => !string.IsNullOrEmpty(p.MainWindowTitle) && p.MainWindowTitle.Contains(sFileName[3])).ToList();
-                        process[0].Kill();
-                        Thread.Sleep(500);
-                        wr = PdfWriter.GetInstance(doc, new FileStream(sPrintPathName, FileMode.Create));
-                    }
-                    iTextSharp.text.Rectangle pageSize = doc.PageSize;
-
-                    doc.Open();
-                    BaseFont bfTimes = BaseFont.CreateFont(BaseFont.TIMES_ROMAN, BaseFont.CP1252, false);
-                    float X = 20f, Y = 20f;
-                    PrintPatient(doc, xmldoc);
-                    PrintAllergy(doc, xmldoc);
-                    doc.Close();
-                    xmltext.Close();
-                    PDFLOAD.Attributes.Add("src", "frmSummaryOfCare.aspx?FileName=" + Request["FileName"].ToString() + "&pdf=" + (string)Session["PDF_Path"] + "&Type=" + Request["Type"].ToString() + "&UniversalTime=" + Request["UniversalTime"].ToString());
-                }
-                //else if (cboSelection.Text == "Encounter")
-                //{
-
-                //    XmlDocument xmldoc = new XmlDocument();
-                //    XmlTextReader xmltext = new XmlTextReader(XmlPath);
-                //    xmldoc.Load(xmltext);
-                //    string path = Path.GetFileNameWithoutExtension(XmlPath);
-                //    string TargetFileDirectory = Server.MapPath("Documents/" + Session.SessionID);
-                //    Document doc = new Document(iTextSharp.text.PageSize.LETTER, 50, 50, 100, 70);
-                //    string sFolderPathName = TargetFileDirectory + "\\" + System.Configuration.ConfigurationSettings.AppSettings["SummaryCarePathName"] + "\\" + DateTime.Now.ToString("yyyyMMdd");
-                //    Directory.CreateDirectory(sFolderPathName);
-                //    string sPrintPathName = string.Empty;
-                //    sPrintPathName = sFolderPathName + "\\" + path + "_Encounter.pdf";
-                //    Session["PDF_Path"] = sPrintPathName;
-                //    string sMyPathName = sPrintPathName;
-                //    PdfWriter wr;
-                //    string[] sFileName = sMyPathName.Split('\\');
-                //    try
-                //    {
-                //        wr = PdfWriter.GetInstance(doc, new FileStream(sPrintPathName, FileMode.Create));
-                //    }
-                //    catch
-                //    {
-                //        var process = System.Diagnostics.Process.GetProcesses().Where(p => !string.IsNullOrEmpty(p.MainWindowTitle) && p.MainWindowTitle.Contains(sFileName[3])).ToList();
-                //        process[0].Kill();
-                //        Thread.Sleep(500);
-                //        wr = PdfWriter.GetInstance(doc, new FileStream(sPrintPathName, FileMode.Create));
-                //    }
-                //    iTextSharp.text.Rectangle pageSize = doc.PageSize;
-
-                //    doc.Open();
-                //    BaseFont bfTimes = BaseFont.CreateFont(BaseFont.TIMES_ROMAN, BaseFont.CP1252, false);
-                //    float X = 20f, Y = 20f;
-                //    PrintPatient(doc, xmldoc);
-                //    PrintEncounter(doc, xmldoc);
-                //    doc.Close();
-                //    xmltext.Close();
-                //    PDFLOAD.Attributes.Add("src", "frmSummaryOfCare.aspx?FileName=" + Request["FileName"].ToString() + "&pdf=" + (string)Session["PDF_Path"] + "&Type=" + Request["Type"].ToString() + "&UniversalTime=" + Request["UniversalTime"].ToString());
-                //}
-
-                else if (cboSelection.Text == "Immunization")
-                {
-                    XmlDocument xmldoc = new XmlDocument();
-                    XmlTextReader xmltext = new XmlTextReader(XmlPath);
-                    xmldoc.Load(xmltext);
-                    string path = Path.GetFileNameWithoutExtension(XmlPath);
-                    string TargetFileDirectory = Server.MapPath("Documents/" + Session.SessionID);
-                    Document doc = new Document(iTextSharp.text.PageSize.LETTER, 50, 50, 100, 70);
-                    string sFolderPathName = TargetFileDirectory + "\\" + System.Configuration.ConfigurationSettings.AppSettings["SummaryCarePathName"] + "\\" + DateTime.Now.ToString("yyyyMMdd");
-                    Directory.CreateDirectory(sFolderPathName);
-                    string sPrintPathName = string.Empty;
-                    sPrintPathName = sFolderPathName + "\\" + path + "_Immunization.pdf";
-                    Session["PDF_Path"] = sPrintPathName;
-                    string sMyPathName = sPrintPathName;
-                    PdfWriter wr;
-                    string[] sFileName = sMyPathName.Split('\\');
-                    try
-                    {
-                        wr = PdfWriter.GetInstance(doc, new FileStream(sPrintPathName, FileMode.Create));
-                    }
-                    catch
-                    {
-                        var process = System.Diagnostics.Process.GetProcesses().Where(p => !string.IsNullOrEmpty(p.MainWindowTitle) && p.MainWindowTitle.Contains(sFileName[3])).ToList();
-                        process[0].Kill();
-                        Thread.Sleep(500);
-                        wr = PdfWriter.GetInstance(doc, new FileStream(sPrintPathName, FileMode.Create));
-                    }
-                    iTextSharp.text.Rectangle pageSize = doc.PageSize;
-
-                    doc.Open();
-                    BaseFont bfTimes = BaseFont.CreateFont(BaseFont.TIMES_ROMAN, BaseFont.CP1252, false);
-                    float X = 20f, Y = 20f;
-                    PrintPatient(doc, xmldoc);
-                    PrintImmunization(doc, xmldoc);
-                    doc.Close();
-                    xmltext.Close();
-                    PDFLOAD.Attributes.Add("src", "frmSummaryOfCare.aspx?FileName=" + Request["FileName"].ToString() + "&pdf=" + (string)Session["PDF_Path"] + "&Type=" + Request["Type"].ToString() + "&UniversalTime=" + Request["UniversalTime"].ToString());
-                }
-
-                else if (cboSelection.Text == "Medication")
-                {
-                    XmlDocument xmldoc = new XmlDocument();
-                    XmlTextReader xmltext = new XmlTextReader(XmlPath);
-                    xmldoc.Load(xmltext);
-                    string path = Path.GetFileNameWithoutExtension(XmlPath);
-                    string TargetFileDirectory = Server.MapPath("Documents/" + Session.SessionID);
-                    Document doc = new Document(iTextSharp.text.PageSize.LETTER, 50, 50, 100, 70);
-                    string sFolderPathName = TargetFileDirectory + "\\" + System.Configuration.ConfigurationSettings.AppSettings["SummaryCarePathName"] + "\\" + DateTime.Now.ToString("yyyyMMdd");
-                    Directory.CreateDirectory(sFolderPathName);
-                    string sPrintPathName = string.Empty;
-                    sPrintPathName = sFolderPathName + "\\" + path + "_Medication.pdf";
-                    Session["PDF_Path"] = sPrintPathName;
-                    string sMyPathName = sPrintPathName;
-                    PdfWriter wr;
-                    string[] sFileName = sMyPathName.Split('\\');
-                    try
-                    {
-                        wr = PdfWriter.GetInstance(doc, new FileStream(sPrintPathName, FileMode.Create));
-                    }
-                    catch
-                    {
-                        var process = System.Diagnostics.Process.GetProcesses().Where(p => !string.IsNullOrEmpty(p.MainWindowTitle) && p.MainWindowTitle.Contains(sFileName[3])).ToList();
-                        process[0].Kill();
-                        Thread.Sleep(500);
-                        wr = PdfWriter.GetInstance(doc, new FileStream(sPrintPathName, FileMode.Create));
-                    }
-                    iTextSharp.text.Rectangle pageSize = doc.PageSize;
-
-                    doc.Open();
-                    BaseFont bfTimes = BaseFont.CreateFont(BaseFont.TIMES_ROMAN, BaseFont.CP1252, false);
-                    float X = 20f, Y = 20f;
-                    PrintPatient(doc, xmldoc);
-                    PrintMedication(doc, xmldoc);
-                    doc.Close();
-                    xmltext.Close();
-                    PDFLOAD.Attributes.Add("src", "frmSummaryOfCare.aspx?FileName=" + Request["FileName"].ToString() + "&pdf=" + (string)Session["PDF_Path"] + "&Type=" + Request["Type"].ToString() + "&UniversalTime=" + Request["UniversalTime"].ToString());
-                }
-
-                else if (cboSelection.Text == "Care Plan")
-                {
-                    XmlDocument xmldoc = new XmlDocument();
-                    XmlTextReader xmltext = new XmlTextReader(XmlPath);
-                    xmldoc.Load(xmltext);
-                    string path = Path.GetFileNameWithoutExtension(XmlPath);
-                    string TargetFileDirectory = Server.MapPath("Documents/" + Session.SessionID);
-                    Document doc = new Document(iTextSharp.text.PageSize.LETTER, 50, 50, 100, 70);
-                    string sFolderPathName = TargetFileDirectory + "\\" + System.Configuration.ConfigurationSettings.AppSettings["SummaryCarePathName"] + "\\" + DateTime.Now.ToString("yyyyMMdd");
-                    Directory.CreateDirectory(sFolderPathName);
-                    string sPrintPathName = string.Empty;
-                    sPrintPathName = sFolderPathName + "\\" + path + "_CarePlan.pdf";
-                    Session["PDF_Path"] = sPrintPathName;
-                    string sMyPathName = sPrintPathName;
-                    PdfWriter wr;
-                    string[] sFileName = sMyPathName.Split('\\');
-                    try
-                    {
-                        wr = PdfWriter.GetInstance(doc, new FileStream(sPrintPathName, FileMode.Create));
-                    }
-                    catch
-                    {
-                        var process = System.Diagnostics.Process.GetProcesses().Where(p => !string.IsNullOrEmpty(p.MainWindowTitle) && p.MainWindowTitle.Contains(sFileName[3])).ToList();
-                        process[0].Kill();
-                        Thread.Sleep(500);
-                        wr = PdfWriter.GetInstance(doc, new FileStream(sPrintPathName, FileMode.Create));
-                    }
-                    iTextSharp.text.Rectangle pageSize = doc.PageSize;
-
-                    doc.Open();
-                    BaseFont bfTimes = BaseFont.CreateFont(BaseFont.TIMES_ROMAN, BaseFont.CP1252, false);
-                    float X = 20f, Y = 20f;
-                    PrintPatient(doc, xmldoc);
-                    PrintCarePlan(doc, xmldoc);
-                    doc.Close();
-                    xmltext.Close();
-                    PDFLOAD.Attributes.Add("src", "frmSummaryOfCare.aspx?FileName=" + Request["FileName"].ToString() + "&pdf=" + (string)Session["PDF_Path"] + "&Type=" + Request["Type"].ToString() + "&UniversalTime=" + Request["UniversalTime"].ToString());
-                }
-
-                else if (cboSelection.Text == "Hospital Discharge Medications")
-                {
-                    XmlDocument xmldoc = new XmlDocument();
-                    XmlTextReader xmltext = new XmlTextReader(XmlPath);
-                    xmldoc.Load(xmltext);
-                    string path = Path.GetFileNameWithoutExtension(XmlPath);
-                    string TargetFileDirectory = Server.MapPath("Documents/" + Session.SessionID);
-                    Document doc = new Document(iTextSharp.text.PageSize.LETTER, 50, 50, 100, 70);
-                    string sFolderPathName = TargetFileDirectory + "\\" + System.Configuration.ConfigurationSettings.AppSettings["SummaryCarePathName"] + "\\" + DateTime.Now.ToString("yyyyMMdd");
-                    Directory.CreateDirectory(sFolderPathName);
-                    string sPrintPathName = string.Empty;
-                    sPrintPathName = sFolderPathName + "\\" + path + "_HospitalMedications.pdf";
-                    Session["PDF_Path"] = sPrintPathName;
-                    string sMyPathName = sPrintPathName;
-                    PdfWriter wr;
-                    string[] sFileName = sMyPathName.Split('\\');
-                    try
-                    {
-                        wr = PdfWriter.GetInstance(doc, new FileStream(sPrintPathName, FileMode.Create));
-                    }
-                    catch
-                    {
-                        var process = System.Diagnostics.Process.GetProcesses().Where(p => !string.IsNullOrEmpty(p.MainWindowTitle) && p.MainWindowTitle.Contains(sFileName[3])).ToList();
-                        process[0].Kill();
-                        Thread.Sleep(500);
-                        wr = PdfWriter.GetInstance(doc, new FileStream(sPrintPathName, FileMode.Create));
-                    }
-                    iTextSharp.text.Rectangle pageSize = doc.PageSize;
-
-                    doc.Open();
-                    BaseFont bfTimes = BaseFont.CreateFont(BaseFont.TIMES_ROMAN, BaseFont.CP1252, false);
-                    float X = 20f, Y = 20f;
-                    PrintPatient(doc, xmldoc);
-                    PrintHospitalMedications(doc, xmldoc);
-                    doc.Close();
-                    xmltext.Close();
-                    PDFLOAD.Attributes.Add("src", "frmSummaryOfCare.aspx?FileName=" + Request["FileName"].ToString() + "&pdf=" + (string)Session["PDF_Path"] + "&Type=" + Request["Type"].ToString() + "&UniversalTime=" + Request["UniversalTime"].ToString());
-                }
-
-                else if (cboSelection.Text == "Reason for Referral")
-                {
-                    XmlDocument xmldoc = new XmlDocument();
-                    XmlTextReader xmltext = new XmlTextReader(XmlPath);
-                    xmldoc.Load(xmltext);
-                    string path = Path.GetFileNameWithoutExtension(XmlPath);
-                    string TargetFileDirectory = Server.MapPath("Documents/" + Session.SessionID);
-                    Document doc = new Document(iTextSharp.text.PageSize.LETTER, 50, 50, 100, 70);
-                    string sFolderPathName = TargetFileDirectory + "\\" + System.Configuration.ConfigurationSettings.AppSettings["SummaryCarePathName"] + "\\" + DateTime.Now.ToString("yyyyMMdd");
-                    Directory.CreateDirectory(sFolderPathName);
-                    string sPrintPathName = string.Empty;
-                    sPrintPathName = sFolderPathName + "\\" + path + "_ReasonForReferal.pdf";
-                    Session["PDF_Path"] = sPrintPathName;
-                    string sMyPathName = sPrintPathName;
-                    PdfWriter wr;
-                    string[] sFileName = sMyPathName.Split('\\');
-                    try
-                    {
-                        wr = PdfWriter.GetInstance(doc, new FileStream(sPrintPathName, FileMode.Create));
-                    }
-                    catch
-                    {
-                        var process = System.Diagnostics.Process.GetProcesses().Where(p => !string.IsNullOrEmpty(p.MainWindowTitle) && p.MainWindowTitle.Contains(sFileName[3])).ToList();
-                        process[0].Kill();
-                        Thread.Sleep(500);
-                        wr = PdfWriter.GetInstance(doc, new FileStream(sPrintPathName, FileMode.Create));
-                    }
-                    iTextSharp.text.Rectangle pageSize = doc.PageSize;
-
-                    doc.Open();
-                    BaseFont bfTimes = BaseFont.CreateFont(BaseFont.TIMES_ROMAN, BaseFont.CP1252, false);
-                    float X = 20f, Y = 20f;
-                    PrintPatient(doc, xmldoc);
-                    PrintReasonForReferal(doc, xmldoc);
-                    doc.Close();
-                    xmltext.Close();
-                    PDFLOAD.Attributes.Add("src", "frmSummaryOfCare.aspx?FileName=" + Request["FileName"].ToString() + "&pdf=" + (string)Session["PDF_Path"] + "&Type=" + Request["Type"].ToString() + "&UniversalTime=" + Request["UniversalTime"].ToString());
-                }
-
-                else if (cboSelection.Text == "Procedures")
-                {
-                    XmlDocument xmldoc = new XmlDocument();
-                    XmlTextReader xmltext = new XmlTextReader(XmlPath);
-                    xmldoc.Load(xmltext);
-
-                    string TargetFileDirectory = Server.MapPath("Documents/" + Session.SessionID);
-                    Document doc = new Document(iTextSharp.text.PageSize.LETTER, 50, 50, 100, 70);
-                    string sFolderPathName = TargetFileDirectory + "\\" + System.Configuration.ConfigurationSettings.AppSettings["SummaryCarePathName"] + "\\" + DateTime.Now.ToString("yyyyMMdd");
-                    Directory.CreateDirectory(sFolderPathName);
-                    string sPrintPathName = string.Empty;
-                    sPrintPathName = sFolderPathName + "\\" + path + "_Procedures.pdf";
-                    Session["PDF_Path"] = sPrintPathName;
-                    string sMyPathName = sPrintPathName;
-                    PdfWriter wr;
-                    string[] sFileName = sMyPathName.Split('\\');
-                    try
-                    {
-                        wr = PdfWriter.GetInstance(doc, new FileStream(sPrintPathName, FileMode.Create));
-                    }
-                    catch
-                    {
-                        var process = System.Diagnostics.Process.GetProcesses().Where(p => !string.IsNullOrEmpty(p.MainWindowTitle) && p.MainWindowTitle.Contains(sFileName[3])).ToList();
-                        process[0].Kill();
-                        Thread.Sleep(500);
-                        wr = PdfWriter.GetInstance(doc, new FileStream(sPrintPathName, FileMode.Create));
-                    }
-                    iTextSharp.text.Rectangle pageSize = doc.PageSize;
-
-                    doc.Open();
-                    BaseFont bfTimes = BaseFont.CreateFont(BaseFont.TIMES_ROMAN, BaseFont.CP1252, false);
-                    float X = 20f, Y = 20f;
-                    PrintPatient(doc, xmldoc);
-                    PrintProcedures(doc, xmldoc);
-                    doc.Close();
-                    xmltext.Close();
-                    PDFLOAD.Attributes.Add("src", "frmSummaryOfCare.aspx?FileName=" + Request["FileName"].ToString() + "&pdf=" + (string)Session["PDF_Path"] + "&Type=" + Request["Type"].ToString() + "&UniversalTime=" + Request["UniversalTime"].ToString());
-                }
-
-                else if (cboSelection.Text == "Functional Status")
-                {
-                    XmlDocument xmldoc = new XmlDocument();
-                    XmlTextReader xmltext = new XmlTextReader(XmlPath);
-                    xmldoc.Load(xmltext);
-                    string path = Path.GetFileNameWithoutExtension(XmlPath);
-                    string TargetFileDirectory = Server.MapPath("Documents/" + Session.SessionID);
-                    Document doc = new Document(iTextSharp.text.PageSize.LETTER, 50, 50, 100, 70);
-                    string sFolderPathName = TargetFileDirectory + "\\" + System.Configuration.ConfigurationSettings.AppSettings["SummaryCarePathName"] + "\\" + DateTime.Now.ToString("yyyyMMdd");
-                    Directory.CreateDirectory(sFolderPathName);
-                    string sPrintPathName = string.Empty;
-                    sPrintPathName = sFolderPathName + "\\" + path + "_FunctionalStatus.pdf";
-                    Session["PDF_Path"] = sPrintPathName;
-                    string sMyPathName = sPrintPathName;
-                    PdfWriter wr;
-                    string[] sFileName = sMyPathName.Split('\\');
-                    try
-                    {
-                        wr = PdfWriter.GetInstance(doc, new FileStream(sPrintPathName, FileMode.Create));
-                    }
-                    catch
-                    {
-                        var process = System.Diagnostics.Process.GetProcesses().Where(p => !string.IsNullOrEmpty(p.MainWindowTitle) && p.MainWindowTitle.Contains(sFileName[3])).ToList();
-                        process[0].Kill();
-                        Thread.Sleep(500);
-                        wr = PdfWriter.GetInstance(doc, new FileStream(sPrintPathName, FileMode.Create));
-                    }
-                    iTextSharp.text.Rectangle pageSize = doc.PageSize;
-
-                    doc.Open();
-                    BaseFont bfTimes = BaseFont.CreateFont(BaseFont.TIMES_ROMAN, BaseFont.CP1252, false);
-                    float X = 20f, Y = 20f;
-                    PrintPatient(doc, xmldoc);
-                    PrintFunctionalStatus(doc, xmldoc);
-                    doc.Close();
-                    xmltext.Close();
-                    PDFLOAD.Attributes.Add("src", "frmSummaryOfCare.aspx?FileName=" + Request["FileName"].ToString() + "&pdf=" + (string)Session["PDF_Path"] + "&Type=" + Request["Type"].ToString() + "&UniversalTime=" + Request["UniversalTime"].ToString());
-                }
-
-                else if (cboSelection.Text == "Results")
-                {
-                    XmlDocument xmldoc = new XmlDocument();
-                    XmlTextReader xmltext = new XmlTextReader(XmlPath);
-                    xmldoc.Load(xmltext);
-                    string path = Path.GetFileNameWithoutExtension(XmlPath);
-                    string TargetFileDirectory = Server.MapPath("Documents/" + Session.SessionID);
-                    Document doc = new Document(iTextSharp.text.PageSize.LETTER, 50, 50, 100, 70);
-                    string sFolderPathName = TargetFileDirectory + "\\" + System.Configuration.ConfigurationSettings.AppSettings["SummaryCarePathName"] + "\\" + DateTime.Now.ToString("yyyyMMdd");
-                    Directory.CreateDirectory(sFolderPathName);
-                    string sPrintPathName = string.Empty;
-                    sPrintPathName = sFolderPathName + "\\" + path + "_Results.pdf";
-                    Session["PDF_Path"] = sPrintPathName;
-                    string sMyPathName = sPrintPathName;
-                    PdfWriter wr;
-                    string[] sFileName = sMyPathName.Split('\\');
-                    try
-                    {
-                        wr = PdfWriter.GetInstance(doc, new FileStream(sPrintPathName, FileMode.Create));
-                    }
-                    catch
-                    {
-                        var process = System.Diagnostics.Process.GetProcesses().Where(p => !string.IsNullOrEmpty(p.MainWindowTitle) && p.MainWindowTitle.Contains(sFileName[3])).ToList();
-                        process[0].Kill();
-                        Thread.Sleep(500);
-                        wr = PdfWriter.GetInstance(doc, new FileStream(sPrintPathName, FileMode.Create));
-                    }
-                    iTextSharp.text.Rectangle pageSize = doc.PageSize;
-
-                    doc.Open();
-                    BaseFont bfTimes = BaseFont.CreateFont(BaseFont.TIMES_ROMAN, BaseFont.CP1252, false);
-                    PrintPatient(doc, xmldoc);
-                    PrintResults(doc, xmldoc);
-                    doc.Close();
-                    xmltext.Close();
-                    PDFLOAD.Attributes.Add("src", "frmSummaryOfCare.aspx?FileName=" + Request["FileName"].ToString() + "&pdf=" + (string)Session["PDF_Path"] + "&Type=" + Request["Type"].ToString() + "&UniversalTime=" + Request["UniversalTime"].ToString());
-                }
-
-                else if (cboSelection.Text == "Social History")
-                {
-                    XmlDocument xmldoc = new XmlDocument();
-                    XmlTextReader xmltext = new XmlTextReader(XmlPath);
-                    xmldoc.Load(xmltext);
-                    string path = Path.GetFileNameWithoutExtension(XmlPath);
-                    string TargetFileDirectory = Server.MapPath("Documents/" + Session.SessionID);
-                    Document doc = new Document(iTextSharp.text.PageSize.LETTER, 50, 50, 100, 70);
-                    string sFolderPathName = TargetFileDirectory + "\\" + System.Configuration.ConfigurationSettings.AppSettings["SummaryCarePathName"] + "\\" + DateTime.Now.ToString("yyyyMMdd");
-                    Directory.CreateDirectory(sFolderPathName);
-                    string sPrintPathName = string.Empty;
-                    sPrintPathName = sFolderPathName + "\\" + path + "_SocialHistory.pdf";
-                    Session["PDF_Path"] = sPrintPathName;
-                    string sMyPathName = sPrintPathName;
-                    PdfWriter wr;
-                    string[] sFileName = sMyPathName.Split('\\');
-                    try
-                    {
-                        wr = PdfWriter.GetInstance(doc, new FileStream(sPrintPathName, FileMode.Create));
-                    }
-                    catch
-                    {
-                        var process = System.Diagnostics.Process.GetProcesses().Where(p => !string.IsNullOrEmpty(p.MainWindowTitle) && p.MainWindowTitle.Contains(sFileName[3])).ToList();
-                        process[0].Kill();
-                        Thread.Sleep(500);
-                        wr = PdfWriter.GetInstance(doc, new FileStream(sPrintPathName, FileMode.Create));
-                    }
-                    iTextSharp.text.Rectangle pageSize = doc.PageSize;
-
-                    doc.Open();
-                    BaseFont bfTimes = BaseFont.CreateFont(BaseFont.TIMES_ROMAN, BaseFont.CP1252, false);
-                    float X = 20f, Y = 20f;
-                    PrintPatient(doc, xmldoc);
-                    PrintSocialHistory(doc, xmldoc);
-                    doc.Close();
-                    xmltext.Close();
-                    PDFLOAD.Attributes.Add("src", "frmSummaryOfCare.aspx?FileName=" + Request["FileName"].ToString() + "&pdf=" + (string)Session["PDF_Path"] + "&Type=" + Request["Type"].ToString() + "&UniversalTime=" + Request["UniversalTime"].ToString());
-                }
-
-                else if (cboSelection.Text == "Vitals")
-                {
-                    XmlDocument xmldoc = new XmlDocument();
-                    XmlTextReader xmltext = new XmlTextReader(XmlPath);
-                    xmldoc.Load(xmltext);
-                    string path = Path.GetFileNameWithoutExtension(XmlPath);
-                    string TargetFileDirectory = Server.MapPath("Documents/" + Session.SessionID);
-                    Document doc = new Document(iTextSharp.text.PageSize.LETTER, 50, 50, 100, 70);
-                    string sFolderPathName = TargetFileDirectory + "\\" + System.Configuration.ConfigurationSettings.AppSettings["SummaryCarePathName"] + "\\" + DateTime.Now.ToString("yyyyMMdd");
-                    Directory.CreateDirectory(sFolderPathName);
-                    string sPrintPathName = string.Empty;
-                    sPrintPathName = sFolderPathName + "\\" + path + "_Vitals.pdf";
-                    Session["PDF_Path"] = sPrintPathName;
-                    string sMyPathName = sPrintPathName;
-                    PdfWriter wr;
-                    string[] sFileName = sMyPathName.Split('\\');
-                    try
-                    {
-                        wr = PdfWriter.GetInstance(doc, new FileStream(sPrintPathName, FileMode.Create));
-                    }
-                    catch
-                    {
-                        var process = System.Diagnostics.Process.GetProcesses().Where(p => !string.IsNullOrEmpty(p.MainWindowTitle) && p.MainWindowTitle.Contains(sFileName[3])).ToList();
-                        process[0].Kill();
-                        Thread.Sleep(500);
-                        wr = PdfWriter.GetInstance(doc, new FileStream(sPrintPathName, FileMode.Create));
-                    }
-                    iTextSharp.text.Rectangle pageSize = doc.PageSize;
-
-                    doc.Open();
-                    BaseFont bfTimes = BaseFont.CreateFont(BaseFont.TIMES_ROMAN, BaseFont.CP1252, false);
-                    float X = 20f, Y = 20f;
-                    PrintPatient(doc, xmldoc);
-                    PrintVitals(doc, xmldoc);
-                    doc.Close();
-                    xmltext.Close();
-                    PDFLOAD.Attributes.Add("src", "frmSummaryOfCare.aspx?FileName=" + Request["FileName"].ToString() + "&pdf=" + (string)Session["PDF_Path"] + "&Type=" + Request["Type"].ToString() + "&UniversalTime=" + Request["UniversalTime"].ToString());
-                }
-
-                else if (cboSelection.Text == "Hospital Discharge Instructions")
-                {
-                    XmlDocument xmldoc = new XmlDocument();
-                    XmlTextReader xmltext = new XmlTextReader(XmlPath);
-                    xmldoc.Load(xmltext);
-                    string path = Path.GetFileNameWithoutExtension(XmlPath);
-                    string TargetFileDirectory = Server.MapPath("Documents/" + Session.SessionID);
-                    Document doc = new Document(iTextSharp.text.PageSize.LETTER, 50, 50, 100, 70);
-                    string sFolderPathName = TargetFileDirectory + "\\" + System.Configuration.ConfigurationSettings.AppSettings["SummaryCarePathName"] + "\\" + DateTime.Now.ToString("yyyyMMdd");
-                    Directory.CreateDirectory(sFolderPathName);
-                    string sPrintPathName = string.Empty;
-                    sPrintPathName = sFolderPathName + "\\" + path + "_HospitalInstructions.pdf";
-                    Session["PDF_Path"] = sPrintPathName;
-                    string sMyPathName = sPrintPathName;
-                    PdfWriter wr;
-                    string[] sFileName = sMyPathName.Split('\\');
-                    try
-                    {
-                        wr = PdfWriter.GetInstance(doc, new FileStream(sPrintPathName, FileMode.Create));
-                    }
-                    catch
-                    {
-                        var process = System.Diagnostics.Process.GetProcesses().Where(p => !string.IsNullOrEmpty(p.MainWindowTitle) && p.MainWindowTitle.Contains(sFileName[3])).ToList();
-                        process[0].Kill();
-                        Thread.Sleep(500);
-                        wr = PdfWriter.GetInstance(doc, new FileStream(sPrintPathName, FileMode.Create));
-                    }
-                    iTextSharp.text.Rectangle pageSize = doc.PageSize;
-
-                    doc.Open();
-                    BaseFont bfTimes = BaseFont.CreateFont(BaseFont.TIMES_ROMAN, BaseFont.CP1252, false);
-                    float X = 20f, Y = 20f;
-                    PrintPatient(doc, xmldoc);
-                    PrintHospitalInstructions(doc, xmldoc);
-                    doc.Close();
-                    xmltext.Close();
-                    PDFLOAD.Attributes.Add("src", "frmSummaryOfCare.aspx?FileName=" + Request["FileName"].ToString() + "&pdf=" + (string)Session["PDF_Path"] + "&Type=" + Request["Type"].ToString() + "&UniversalTime=" + Request["UniversalTime"].ToString());
-                }
-
-                else if (cboSelection.Text == "Instructions")
-                {
-                    XmlDocument xmldoc = new XmlDocument();
-                    XmlTextReader xmltext = new XmlTextReader(XmlPath);
-                    xmldoc.Load(xmltext);
-                    string path = Path.GetFileNameWithoutExtension(XmlPath);
-                    string TargetFileDirectory = Server.MapPath("Documents/" + Session.SessionID);
-                    Document doc = new Document(iTextSharp.text.PageSize.LETTER, 50, 50, 100, 70);
-                    string sFolderPathName = TargetFileDirectory + "\\" + System.Configuration.ConfigurationSettings.AppSettings["SummaryCarePathName"] + "\\" + DateTime.Now.ToString("yyyyMMdd");
-                    Directory.CreateDirectory(sFolderPathName);
-                    string sPrintPathName = string.Empty;
-                    sPrintPathName = sFolderPathName + "\\" + path + "_Instructions.pdf";
-                    Session["PDF_Path"] = sPrintPathName;
-                    string sMyPathName = sPrintPathName;
-                    PdfWriter wr;
-                    string[] sFileName = sMyPathName.Split('\\');
-                    try
-                    {
-                        wr = PdfWriter.GetInstance(doc, new FileStream(sPrintPathName, FileMode.Create));
-                    }
-                    catch
-                    {
-                        var process = System.Diagnostics.Process.GetProcesses().Where(p => !string.IsNullOrEmpty(p.MainWindowTitle) && p.MainWindowTitle.Contains(sFileName[3])).ToList();
-                        process[0].Kill();
-                        Thread.Sleep(500);
-                        wr = PdfWriter.GetInstance(doc, new FileStream(sPrintPathName, FileMode.Create));
-                    }
-                    iTextSharp.text.Rectangle pageSize = doc.PageSize;
-
-                    doc.Open();
-                    BaseFont bfTimes = BaseFont.CreateFont(BaseFont.TIMES_ROMAN, BaseFont.CP1252, false);
-                    float X = 20f, Y = 20f;
-                    PrintPatient(doc, xmldoc);
-                    PrintInstructions(doc, xmldoc);
-                    doc.Close();
-                    xmltext.Close();
-                    PDFLOAD.Attributes.Add("src", "frmSummaryOfCare.aspx?FileName=" + Request["FileName"].ToString() + "&pdf=" + (string)Session["PDF_Path"] + "&Type=" + Request["Type"].ToString() + "&UniversalTime=" + Request["UniversalTime"].ToString());
-                }
-
-                else if (cboSelection.Text == "Chief Complaint")
-                {
-                    XmlDocument xmldoc = new XmlDocument();
-                    XmlTextReader xmltext = new XmlTextReader(XmlPath);
-                    xmldoc.Load(xmltext);
-                    string path = Path.GetFileNameWithoutExtension(XmlPath);
-                    string TargetFileDirectory = Server.MapPath("Documents/" + Session.SessionID);
-                    Document doc = new Document(iTextSharp.text.PageSize.LETTER, 50, 50, 100, 70);
-                    string sFolderPathName = TargetFileDirectory + "\\" + System.Configuration.ConfigurationSettings.AppSettings["SummaryCarePathName"] + "\\" + DateTime.Now.ToString("yyyyMMdd");
-                    Directory.CreateDirectory(sFolderPathName);
-                    string sPrintPathName = string.Empty;
-                    sPrintPathName = sFolderPathName + "\\" + path + "_ChiefComplaint.pdf";
-                    Session["PDF_Path"] = sPrintPathName;
-                    string sMyPathName = sPrintPathName;
-                    PdfWriter wr;
-                    string[] sFileName = sMyPathName.Split('\\');
-                    try
-                    {
-                        wr = PdfWriter.GetInstance(doc, new FileStream(sPrintPathName, FileMode.Create));
-                    }
-                    catch
-                    {
-                        var process = System.Diagnostics.Process.GetProcesses().Where(p => !string.IsNullOrEmpty(p.MainWindowTitle) && p.MainWindowTitle.Contains(sFileName[3])).ToList();
-                        process[0].Kill();
-                        Thread.Sleep(500);
-                        wr = PdfWriter.GetInstance(doc, new FileStream(sPrintPathName, FileMode.Create));
-                    }
-                    iTextSharp.text.Rectangle pageSize = doc.PageSize;
-
-                    doc.Open();
-                    BaseFont bfTimes = BaseFont.CreateFont(BaseFont.TIMES_ROMAN, BaseFont.CP1252, false);
-                    float X = 20f, Y = 20f;
-                    PrintPatient(doc, xmldoc);
-                    PrintChiefComplaint(doc, xmldoc);
-                    doc.Close();
-                    xmltext.Close();
-                    PDFLOAD.Attributes.Add("src", "frmSummaryOfCare.aspx?FileName=" + Request["FileName"].ToString() + "&pdf=" + (string)Session["PDF_Path"] + "&Type=" + Request["Type"].ToString() + "&UniversalTime=" + Request["UniversalTime"].ToString());
-                }
-
-                else if (cboSelection.Text == "Problems")
-                {
-                    XmlDocument xmldoc = new XmlDocument();
-                    XmlTextReader xmltext = new XmlTextReader(XmlPath);
-                    xmldoc.Load(xmltext);
-                    string path = Path.GetFileNameWithoutExtension(XmlPath);
-                    string TargetFileDirectory = Server.MapPath("Documents/" + Session.SessionID);
-                    Document doc = new Document(iTextSharp.text.PageSize.LETTER, 50, 50, 100, 70);
-                    string sFolderPathName = TargetFileDirectory + "\\" + System.Configuration.ConfigurationSettings.AppSettings["SummaryCarePathName"] + "\\" + DateTime.Now.ToString("yyyyMMdd");
-                    Directory.CreateDirectory(sFolderPathName);
-                    string sPrintPathName = string.Empty;
-                    sPrintPathName = sFolderPathName + "\\" + path + "_Problems.pdf";
-                    Session["PDF_Path"] = sPrintPathName;
-                    string sMyPathName = sPrintPathName;
-                    PdfWriter wr;
-                    string[] sFileName = sMyPathName.Split('\\');
-                    try
-                    {
-                        wr = PdfWriter.GetInstance(doc, new FileStream(sPrintPathName, FileMode.Create));
-                    }
-                    catch
-                    {
-                        var process = System.Diagnostics.Process.GetProcesses().Where(p => !string.IsNullOrEmpty(p.MainWindowTitle) && p.MainWindowTitle.Contains(sFileName[3])).ToList();
-                        process[0].Kill();
-                        Thread.Sleep(500);
-                        wr = PdfWriter.GetInstance(doc, new FileStream(sPrintPathName, FileMode.Create));
-                    }
-                    iTextSharp.text.Rectangle pageSize = doc.PageSize;
-
-                    doc.Open();
-                    BaseFont bfTimes = BaseFont.CreateFont(BaseFont.TIMES_ROMAN, BaseFont.CP1252, false);
-                    float X = 20f, Y = 20f;
-                    PrintPatient(doc, xmldoc);
-                    PrintProblems(doc, xmldoc);
-                    doc.Close();
-                    xmltext.Close();
-                    PDFLOAD.Attributes.Add("src", "frmSummaryOfCare.aspx?FileName=" + Request["FileName"].ToString() + "&pdf=" + (string)Session["PDF_Path"] + "&Type=" + Request["Type"].ToString() + "&UniversalTime=" + Request["UniversalTime"].ToString());
-                }
-
-                else if (cboSelection.Text == "Custodian")
-                {
-                    XmlDocument xmldoc = new XmlDocument();
-                    XmlTextReader xmltext = new XmlTextReader(XmlPath);
-                    xmldoc.Load(xmltext);
-                    string path = Path.GetFileNameWithoutExtension(XmlPath);
-                    string TargetFileDirectory = Server.MapPath("Documents/" + Session.SessionID);
-                    Document doc = new Document(iTextSharp.text.PageSize.LETTER, 50, 50, 100, 70);
-                    string sFolderPathName = TargetFileDirectory + "\\" + System.Configuration.ConfigurationSettings.AppSettings["SummaryCarePathName"] + "\\" + DateTime.Now.ToString("yyyyMMdd");
-                    Directory.CreateDirectory(sFolderPathName);
-                    string sPrintPathName = string.Empty;
-                    sPrintPathName = sFolderPathName + "\\" + path + "_Custodian.pdf";
-                    Session["PDF_Path"] = sPrintPathName;
-                    string sMyPathName = sPrintPathName;
-                    PdfWriter wr;
-                    string[] sFileName = sMyPathName.Split('\\');
-                    try
-                    {
-                        wr = PdfWriter.GetInstance(doc, new FileStream(sPrintPathName, FileMode.Create));
-                    }
-                    catch
-                    {
-                        var process = System.Diagnostics.Process.GetProcesses().Where(p => !string.IsNullOrEmpty(p.MainWindowTitle) && p.MainWindowTitle.Contains(sFileName[3])).ToList();
-                        process[0].Kill();
-                        Thread.Sleep(500);
-                        wr = PdfWriter.GetInstance(doc, new FileStream(sPrintPathName, FileMode.Create));
-                    }
-                    iTextSharp.text.Rectangle pageSize = doc.PageSize;
-
-                    doc.Open();
-                    BaseFont bfTimes = BaseFont.CreateFont(BaseFont.TIMES_ROMAN, BaseFont.CP1252, false);
-                    float X = 20f, Y = 20f;
-                    PrintPatient(doc, xmldoc);
-                    PrintCustodian(doc, xmldoc);
-                    doc.Close();
-                    xmltext.Close();
-                    PDFLOAD.Attributes.Add("src", "frmSummaryOfCare.aspx?FileName=" + Request["FileName"].ToString() + "&pdf=" + (string)Session["PDF_Path"] + "&Type=" + Request["Type"].ToString() + "&UniversalTime=" + Request["UniversalTime"].ToString());
-                }
-
-                else if (cboSelection.Text == "Provider")
-                {
-                    XmlDocument xmldoc = new XmlDocument();
-                    XmlTextReader xmltext = new XmlTextReader(XmlPath);
-                    xmldoc.Load(xmltext);
-                    string path = Path.GetFileNameWithoutExtension(XmlPath);
-                    string TargetFileDirectory = Server.MapPath("Documents/" + Session.SessionID);
-                    Document doc = new Document(iTextSharp.text.PageSize.LETTER, 50, 50, 100, 70);
-                    string sFolderPathName = TargetFileDirectory + "\\" + System.Configuration.ConfigurationSettings.AppSettings["SummaryCarePathName"] + "\\" + DateTime.Now.ToString("yyyyMMdd");
-                    Directory.CreateDirectory(sFolderPathName);
-                    string sPrintPathName = string.Empty;
-                    sPrintPathName = sFolderPathName + "\\" + path + "_Provider.pdf";
-                    Session["PDF_Path"] = sPrintPathName;
-                    string sMyPathName = sPrintPathName;
-                    PdfWriter wr;
-                    string[] sFileName = sMyPathName.Split('\\');
-                    try
-                    {
-                        wr = PdfWriter.GetInstance(doc, new FileStream(sPrintPathName, FileMode.Create));
-                    }
-                    catch
-                    {
-                        var process = System.Diagnostics.Process.GetProcesses().Where(p => !string.IsNullOrEmpty(p.MainWindowTitle) && p.MainWindowTitle.Contains(sFileName[3])).ToList();
-                        process[0].Kill();
-                        Thread.Sleep(500);
-                        wr = PdfWriter.GetInstance(doc, new FileStream(sPrintPathName, FileMode.Create));
-                    }
-                    iTextSharp.text.Rectangle pageSize = doc.PageSize;
-
-                    doc.Open();
-                    BaseFont bfTimes = BaseFont.CreateFont(BaseFont.TIMES_ROMAN, BaseFont.CP1252, false);
-                    float X = 20f, Y = 20f;
-                    PrintPatient(doc, xmldoc);
-                    PrintProvider(doc, xmldoc);
-                    doc.Close();
-                    xmltext.Close();
-                    PDFLOAD.Attributes.Add("src", "frmSummaryOfCare.aspx?FileName=" + Request["FileName"].ToString() + "&pdf=" + (string)Session["PDF_Path"] + "&Type=" + Request["Type"].ToString() + "&UniversalTime=" + Request["UniversalTime"].ToString());
-                }
-
-                else if (cboSelection.Text == "Documentation Details")
-                {
-                    XmlDocument xmldoc = new XmlDocument();
-                    XmlTextReader xmltext = new XmlTextReader(XmlPath);
-                    xmldoc.Load(xmltext);
-                    string path = Path.GetFileNameWithoutExtension(XmlPath);
-                    string TargetFileDirectory = Server.MapPath("Documents/" + Session.SessionID);
-                    Document doc = new Document(iTextSharp.text.PageSize.LETTER, 50, 50, 100, 70);
-                    string sFolderPathName = TargetFileDirectory + "\\" + System.Configuration.ConfigurationSettings.AppSettings["SummaryCarePathName"] + "\\" + DateTime.Now.ToString("yyyyMMdd");
-                    Directory.CreateDirectory(sFolderPathName);
-                    string sPrintPathName = string.Empty;
-                    sPrintPathName = sFolderPathName + "\\" + path + "_DocumentationDetails.pdf";
-                    Session["PDF_Path"] = sPrintPathName;
-                    string sMyPathName = sPrintPathName;
-                    PdfWriter wr;
-                    string[] sFileName = sMyPathName.Split('\\');
-                    try
-                    {
-                        wr = PdfWriter.GetInstance(doc, new FileStream(sPrintPathName, FileMode.Create));
-                    }
-                    catch
-                    {
-                        var process = System.Diagnostics.Process.GetProcesses().Where(p => !string.IsNullOrEmpty(p.MainWindowTitle) && p.MainWindowTitle.Contains(sFileName[3])).ToList();
-                        process[0].Kill();
-                        Thread.Sleep(500);
-                        wr = PdfWriter.GetInstance(doc, new FileStream(sPrintPathName, FileMode.Create));
-                    }
-                    iTextSharp.text.Rectangle pageSize = doc.PageSize;
-
-                    doc.Open();
-                    BaseFont bfTimes = BaseFont.CreateFont(BaseFont.TIMES_ROMAN, BaseFont.CP1252, false);
-                    float X = 20f, Y = 20f;
-                    PrintPatient(doc, xmldoc);
-                    PrintDocumentDetail(doc, xmldoc);
-                    doc.Close();
-                    xmltext.Close();
-                    PDFLOAD.Attributes.Add("src", "frmSummaryOfCare.aspx?FileName=" + Request["FileName"].ToString() + "&pdf=" + (string)Session["PDF_Path"] + "&Type=" + Request["Type"].ToString() + "&UniversalTime=" + Request["UniversalTime"].ToString());
-                }
-
-                else if (cboSelection.Text == "Visit Details")
-                {
-                    XmlDocument xmldoc = new XmlDocument();
-                    XmlTextReader xmltext = new XmlTextReader(XmlPath);
-                    xmldoc.Load(xmltext);
-                    string path = Path.GetFileNameWithoutExtension(XmlPath);
-                    string TargetFileDirectory = Server.MapPath("Documents/" + Session.SessionID);
-                    Document doc = new Document(iTextSharp.text.PageSize.LETTER, 50, 50, 100, 70);
-                    string sFolderPathName = TargetFileDirectory + "\\" + System.Configuration.ConfigurationSettings.AppSettings["SummaryCarePathName"] + "\\" + DateTime.Now.ToString("yyyyMMdd");
-                    Directory.CreateDirectory(sFolderPathName);
-                    string sPrintPathName = string.Empty;
-                    sPrintPathName = sFolderPathName + "\\" + path + "_VisitDetails.pdf";
-                    Session["PDF_Path"] = sPrintPathName;
-                    string sMyPathName = sPrintPathName;
-                    PdfWriter wr;
-                    string[] sFileName = sMyPathName.Split('\\');
-                    try
-                    {
-                        wr = PdfWriter.GetInstance(doc, new FileStream(sPrintPathName, FileMode.Create));
-                    }
-                    catch
-                    {
-                        var process = System.Diagnostics.Process.GetProcesses().Where(p => !string.IsNullOrEmpty(p.MainWindowTitle) && p.MainWindowTitle.Contains(sFileName[3])).ToList();
-                        process[0].Kill();
-                        Thread.Sleep(500);
-                        wr = PdfWriter.GetInstance(doc, new FileStream(sPrintPathName, FileMode.Create));
-                    }
-                    iTextSharp.text.Rectangle pageSize = doc.PageSize;
-
-                    doc.Open();
-                    BaseFont bfTimes = BaseFont.CreateFont(BaseFont.TIMES_ROMAN, BaseFont.CP1252, false);
-                    float X = 20f, Y = 20f;
-                    PrintPatient(doc, xmldoc);
-                    PrintVisitDetail(doc, xmldoc);
-                    doc.Close();
-                    xmltext.Close();
-                    PDFLOAD.Attributes.Add("src", "frmSummaryOfCare.aspx?FileName=" + Request["FileName"].ToString() + "&pdf=" + (string)Session["PDF_Path"] + "&Type=" + Request["Type"].ToString() + "&UniversalTime=" + Request["UniversalTime"].ToString());
-                }
-
-                else if (cboSelection.Text == "Author")
-                {
-                    XmlDocument xmldoc = new XmlDocument();
-                    XmlTextReader xmltext = new XmlTextReader(XmlPath);
-                    xmldoc.Load(xmltext);
-                    string path = Path.GetFileNameWithoutExtension(XmlPath);
-                    string TargetFileDirectory = Server.MapPath("Documents/" + Session.SessionID);
-                    Document doc = new Document(iTextSharp.text.PageSize.LETTER, 50, 50, 100, 70);
-                    string sFolderPathName = TargetFileDirectory + "\\" + System.Configuration.ConfigurationSettings.AppSettings["SummaryCarePathName"] + "\\" + DateTime.Now.ToString("yyyyMMdd");
-                    Directory.CreateDirectory(sFolderPathName);
-                    string sPrintPathName = string.Empty;
-                    sPrintPathName = sFolderPathName + "\\" + path + "_Author.pdf";
-                    Session["PDF_Path"] = sPrintPathName;
-                    string sMyPathName = sPrintPathName;
-                    PdfWriter wr;
-                    string[] sFileName = sMyPathName.Split('\\');
-                    try
-                    {
-                        wr = PdfWriter.GetInstance(doc, new FileStream(sPrintPathName, FileMode.Create));
-                    }
-                    catch
-                    {
-                        var process = System.Diagnostics.Process.GetProcesses().Where(p => !string.IsNullOrEmpty(p.MainWindowTitle) && p.MainWindowTitle.Contains(sFileName[3])).ToList();
-                        process[0].Kill();
-                        Thread.Sleep(500);
-                        wr = PdfWriter.GetInstance(doc, new FileStream(sPrintPathName, FileMode.Create));
-                    }
-                    iTextSharp.text.Rectangle pageSize = doc.PageSize;
-                    doc.Open();
-                    BaseFont bfTimes = BaseFont.CreateFont(BaseFont.TIMES_ROMAN, BaseFont.CP1252, false);
-                    float X = 20f, Y = 20f;
-                    PrintPatient(doc, xmldoc);
-                    PrintAuthor(doc, xmldoc);
-                    doc.Close();
-                    xmltext.Close();
-                    PDFLOAD.Attributes.Add("src", "frmSummaryOfCare.aspx?FileName=" + Request["FileName"].ToString() + "&pdf=" + (string)Session["PDF_Path"] + "&Type=" + Request["Type"].ToString() + "&UniversalTime=" + Request["UniversalTime"].ToString());
-                }
-
-                else if (cboSelection.Text == "Medication Administered")
-                {
-                    XmlDocument xmldoc = new XmlDocument();
-                    XmlTextReader xmltext = new XmlTextReader(XmlPath);
-                    xmldoc.Load(xmltext);
-                    string path = Path.GetFileNameWithoutExtension(XmlPath);
-                    string TargetFileDirectory = Server.MapPath("Documents/" + Session.SessionID);
-                    Document doc = new Document(iTextSharp.text.PageSize.LETTER, 50, 50, 100, 70);
-                    string sFolderPathName = TargetFileDirectory + "\\" + System.Configuration.ConfigurationSettings.AppSettings["SummaryCarePathName"] + "\\" + DateTime.Now.ToString("yyyyMMdd");
-                    Directory.CreateDirectory(sFolderPathName);
-                    string sPrintPathName = string.Empty;
-                    sPrintPathName = sFolderPathName + "\\" + path + "_MedicationAdministered.pdf";
-                    Session["PDF_Path"] = sPrintPathName;
-                    string sMyPathName = sPrintPathName;
-                    PdfWriter wr;
-                    string[] sFileName = sMyPathName.Split('\\');
-                    try
-                    {
-                        wr = PdfWriter.GetInstance(doc, new FileStream(sPrintPathName, FileMode.Create));
-                    }
-                    catch
-                    {
-                        var process = System.Diagnostics.Process.GetProcesses().Where(p => !string.IsNullOrEmpty(p.MainWindowTitle) && p.MainWindowTitle.Contains(sFileName[3])).ToList();
-                        process[0].Kill();
-                        Thread.Sleep(500);
-                        wr = PdfWriter.GetInstance(doc, new FileStream(sPrintPathName, FileMode.Create));
-                    }
-                    iTextSharp.text.Rectangle pageSize = doc.PageSize;
-                    doc.Open();
-                    BaseFont bfTimes = BaseFont.CreateFont(BaseFont.TIMES_ROMAN, BaseFont.CP1252, false);
-                    float X = 20f, Y = 20f;
-                    PrintPatient(doc, xmldoc);
-                    PrintMedicationAdministered(doc, xmldoc);
-                    doc.Close();
-                    xmltext.Close();
-                    PDFLOAD.Attributes.Add("src", "frmSummaryOfCare.aspx?FileName=" + Request["FileName"].ToString() + "&pdf=" + (string)Session["PDF_Path"] + "&Type=" + Request["Type"].ToString() + "&UniversalTime=" + Request["UniversalTime"].ToString());
-                }
-                else if (cboSelection.Text == "Implant")
-                {
-
-                    XmlDocument xmldoc = new XmlDocument();
-                    XmlTextReader xmltext = new XmlTextReader(XmlPath);
-                    xmldoc.Load(xmltext);
-                    string path = Path.GetFileNameWithoutExtension(XmlPath);
-                    string TargetFileDirectory = Server.MapPath("Documents/" + Session.SessionID);
-                    Document doc = new Document(iTextSharp.text.PageSize.LETTER, 50, 50, 100, 70);
-                    string sFolderPathName = TargetFileDirectory + "\\" + System.Configuration.ConfigurationSettings.AppSettings["SummaryCarePathName"] + "\\" + DateTime.Now.ToString("yyyyMMdd");
-                    Directory.CreateDirectory(sFolderPathName);
-                    string sPrintPathName = string.Empty;
-                    sPrintPathName = sFolderPathName + "\\" + path + "_Implant.pdf";
-                    Session["PDF_Path"] = sPrintPathName;
-                    string sMyPathName = sPrintPathName;
-                    PdfWriter wr;
-                    string[] sFileName = sMyPathName.Split('\\');
-                    try
-                    {
-                        wr = PdfWriter.GetInstance(doc, new FileStream(sPrintPathName, FileMode.Create));
-                    }
-                    catch
-                    {
-                        var process = System.Diagnostics.Process.GetProcesses().Where(p => !string.IsNullOrEmpty(p.MainWindowTitle) && p.MainWindowTitle.Contains(sFileName[3])).ToList();
-                        process[0].Kill();
-                        Thread.Sleep(500);
-                        wr = PdfWriter.GetInstance(doc, new FileStream(sPrintPathName, FileMode.Create));
-                    }
-                    iTextSharp.text.Rectangle pageSize = doc.PageSize;
-
-                    doc.Open();
-                    BaseFont bfTimes = BaseFont.CreateFont(BaseFont.TIMES_ROMAN, BaseFont.CP1252, false);
-                    float X = 20f, Y = 20f;
-                    PrintPatient(doc, xmldoc);
-                    PrintImplant(doc, xmldoc);
-                    doc.Close();
-                    xmltext.Close();
-                    PDFLOAD.Attributes.Add("src", "frmSummaryOfCare.aspx?FileName=" + Request["FileName"].ToString() + "&pdf=" + (string)Session["PDF_Path"] + "&Type=" + Request["Type"].ToString() + "&UniversalTime=" + Request["UniversalTime"].ToString());
-                }
-                else if (cboSelection.Text == "Mental Status")
-                {
-
-                    XmlDocument xmldoc = new XmlDocument();
-                    XmlTextReader xmltext = new XmlTextReader(XmlPath);
-                    xmldoc.Load(xmltext);
-                    string path = Path.GetFileNameWithoutExtension(XmlPath);
-                    string TargetFileDirectory = Server.MapPath("Documents/" + Session.SessionID);
-                    Document doc = new Document(iTextSharp.text.PageSize.LETTER, 50, 50, 100, 70);
-                    string sFolderPathName = TargetFileDirectory + "\\" + System.Configuration.ConfigurationSettings.AppSettings["SummaryCarePathName"] + "\\" + DateTime.Now.ToString("yyyyMMdd");
-                    Directory.CreateDirectory(sFolderPathName);
-                    string sPrintPathName = string.Empty;
-                    sPrintPathName = sFolderPathName + "\\" + path + "_MentalStatus.pdf";
-                    Session["PDF_Path"] = sPrintPathName;
-                    string sMyPathName = sPrintPathName;
-                    PdfWriter wr;
-                    string[] sFileName = sMyPathName.Split('\\');
-                    try
-                    {
-                        wr = PdfWriter.GetInstance(doc, new FileStream(sPrintPathName, FileMode.Create));
-                    }
-                    catch
-                    {
-                        var process = System.Diagnostics.Process.GetProcesses().Where(p => !string.IsNullOrEmpty(p.MainWindowTitle) && p.MainWindowTitle.Contains(sFileName[3])).ToList();
-                        process[0].Kill();
-                        Thread.Sleep(500);
-                        wr = PdfWriter.GetInstance(doc, new FileStream(sPrintPathName, FileMode.Create));
-                    }
-                    iTextSharp.text.Rectangle pageSize = doc.PageSize;
-
-                    doc.Open();
-                    BaseFont bfTimes = BaseFont.CreateFont(BaseFont.TIMES_ROMAN, BaseFont.CP1252, false);
-                    float X = 20f, Y = 20f;
-                    PrintPatient(doc, xmldoc);
-                    PrintMentalStatus(doc, xmldoc);
-                    doc.Close();
-                    xmltext.Close();
-                    PDFLOAD.Attributes.Add("src", "frmSummaryOfCare.aspx?FileName=" + Request["FileName"].ToString() + "&pdf=" + (string)Session["PDF_Path"] + "&Type=" + Request["Type"].ToString() + "&UniversalTime=" + Request["UniversalTime"].ToString());
-                }
-                else if (cboSelection.Text == "Health Concern")
-                {
-
-                    XmlDocument xmldoc = new XmlDocument();
-                    XmlTextReader xmltext = new XmlTextReader(XmlPath);
-                    xmldoc.Load(xmltext);
-                    string path = Path.GetFileNameWithoutExtension(XmlPath);
-                    string TargetFileDirectory = Server.MapPath("Documents/" + Session.SessionID);
-                    Document doc = new Document(iTextSharp.text.PageSize.LETTER, 50, 50, 100, 70);
-                    string sFolderPathName = TargetFileDirectory + "\\" + System.Configuration.ConfigurationSettings.AppSettings["SummaryCarePathName"] + "\\" + DateTime.Now.ToString("yyyyMMdd");
-                    Directory.CreateDirectory(sFolderPathName);
-                    string sPrintPathName = string.Empty;
-                    sPrintPathName = sFolderPathName + "\\" + path + "_HealthConcern.pdf";
-                    Session["PDF_Path"] = sPrintPathName;
-                    string sMyPathName = sPrintPathName;
-                    PdfWriter wr;
-                    string[] sFileName = sMyPathName.Split('\\');
-                    try
-                    {
-                        wr = PdfWriter.GetInstance(doc, new FileStream(sPrintPathName, FileMode.Create));
-                    }
-                    catch
-                    {
-                        var process = System.Diagnostics.Process.GetProcesses().Where(p => !string.IsNullOrEmpty(p.MainWindowTitle) && p.MainWindowTitle.Contains(sFileName[3])).ToList();
-                        process[0].Kill();
-                        Thread.Sleep(500);
-                        wr = PdfWriter.GetInstance(doc, new FileStream(sPrintPathName, FileMode.Create));
-                    }
-                    iTextSharp.text.Rectangle pageSize = doc.PageSize;
-
-                    doc.Open();
-                    BaseFont bfTimes = BaseFont.CreateFont(BaseFont.TIMES_ROMAN, BaseFont.CP1252, false);
-                    float X = 20f, Y = 20f;
-                    PrintPatient(doc, xmldoc);
-                    PrintHealthConcernSection(doc, xmldoc);
-
-                    doc.Close();
-                    xmltext.Close();
-                    PDFLOAD.Attributes.Add("src", "frmSummaryOfCare.aspx?FileName=" + Request["FileName"].ToString() + "&pdf=" + (string)Session["PDF_Path"] + "&Type=" + Request["Type"].ToString() + "&UniversalTime=" + Request["UniversalTime"].ToString());
-                }
-                else if (cboSelection.Text == "Goals Section")
-                {
-
-                    XmlDocument xmldoc = new XmlDocument();
-                    XmlTextReader xmltext = new XmlTextReader(XmlPath);
-                    xmldoc.Load(xmltext);
-                    string path = Path.GetFileNameWithoutExtension(XmlPath);
-                    string TargetFileDirectory = Server.MapPath("Documents/" + Session.SessionID);
-                    Document doc = new Document(iTextSharp.text.PageSize.LETTER, 50, 50, 100, 70);
-                    string sFolderPathName = TargetFileDirectory + "\\" + System.Configuration.ConfigurationSettings.AppSettings["SummaryCarePathName"] + "\\" + DateTime.Now.ToString("yyyyMMdd");
-                    Directory.CreateDirectory(sFolderPathName);
-                    string sPrintPathName = string.Empty;
-                    sPrintPathName = sFolderPathName + "\\" + path + "_Goal.pdf";
-                    Session["PDF_Path"] = sPrintPathName;
-                    string sMyPathName = sPrintPathName;
-                    PdfWriter wr;
-                    string[] sFileName = sMyPathName.Split('\\');
-                    try
-                    {
-                        wr = PdfWriter.GetInstance(doc, new FileStream(sPrintPathName, FileMode.Create));
-                    }
-                    catch
-                    {
-                        var process = System.Diagnostics.Process.GetProcesses().Where(p => !string.IsNullOrEmpty(p.MainWindowTitle) && p.MainWindowTitle.Contains(sFileName[3])).ToList();
-                        process[0].Kill();
-                        Thread.Sleep(500);
-                        wr = PdfWriter.GetInstance(doc, new FileStream(sPrintPathName, FileMode.Create));
-                    }
-                    iTextSharp.text.Rectangle pageSize = doc.PageSize;
-
-                    doc.Open();
-                    BaseFont bfTimes = BaseFont.CreateFont(BaseFont.TIMES_ROMAN, BaseFont.CP1252, false);
-                    float X = 20f, Y = 20f;
-                    PrintPatient(doc, xmldoc);
-                    PrintGoalsSection(doc, xmldoc);
-
-                    doc.Close();
-                    xmltext.Close();
-                    PDFLOAD.Attributes.Add("src", "frmSummaryOfCare.aspx?FileName=" + Request["FileName"].ToString() + "&pdf=" + (string)Session["PDF_Path"] + "&Type=" + Request["Type"].ToString() + "&UniversalTime=" + Request["UniversalTime"].ToString());
-                }
-                else if (cboSelection.Text == "Treatment Plan")
-                {
-
-                    XmlDocument xmldoc = new XmlDocument();
-                    XmlTextReader xmltext = new XmlTextReader(XmlPath);
-                    xmldoc.Load(xmltext);
-                    string path = Path.GetFileNameWithoutExtension(XmlPath);
-                    string TargetFileDirectory = Server.MapPath("Documents/" + Session.SessionID);
-                    Document doc = new Document(iTextSharp.text.PageSize.LETTER, 50, 50, 100, 70);
-                    string sFolderPathName = TargetFileDirectory + "\\" + System.Configuration.ConfigurationSettings.AppSettings["SummaryCarePathName"] + "\\" + DateTime.Now.ToString("yyyyMMdd");
-                    Directory.CreateDirectory(sFolderPathName);
-                    string sPrintPathName = string.Empty;
-                    sPrintPathName = sFolderPathName + "\\" + path + "_TreatmentPlan.pdf";
-                    Session["PDF_Path"] = sPrintPathName;
-                    string sMyPathName = sPrintPathName;
-                    PdfWriter wr;
-                    string[] sFileName = sMyPathName.Split('\\');
-                    try
-                    {
-                        wr = PdfWriter.GetInstance(doc, new FileStream(sPrintPathName, FileMode.Create));
-                    }
-                    catch
-                    {
-                        var process = System.Diagnostics.Process.GetProcesses().Where(p => !string.IsNullOrEmpty(p.MainWindowTitle) && p.MainWindowTitle.Contains(sFileName[3])).ToList();
-                        process[0].Kill();
-                        Thread.Sleep(500);
-                        wr = PdfWriter.GetInstance(doc, new FileStream(sPrintPathName, FileMode.Create));
-                    }
-                    iTextSharp.text.Rectangle pageSize = doc.PageSize;
-
-                    doc.Open();
-                    BaseFont bfTimes = BaseFont.CreateFont(BaseFont.TIMES_ROMAN, BaseFont.CP1252, false);
-                    float X = 20f, Y = 20f;
-                    PrintPatient(doc, xmldoc);
-                    PrintTreatmentPlan(doc, xmldoc);
-
-                    doc.Close();
-                    xmltext.Close();
-                    PDFLOAD.Attributes.Add("src", "frmSummaryOfCare.aspx?FileName=" + Request["FileName"].ToString() + "&pdf=" + (string)Session["PDF_Path"] + "&Type=" + Request["Type"].ToString() + "&UniversalTime=" + Request["UniversalTime"].ToString());
-                }
-                else if (cboSelection.Text == "Laboratory Information")
-                {
-
-                    XmlDocument xmldoc = new XmlDocument();
-                    XmlTextReader xmltext = new XmlTextReader(XmlPath);
-                    xmldoc.Load(xmltext);
-                    string path = Path.GetFileNameWithoutExtension(XmlPath);
-                    string TargetFileDirectory = Server.MapPath("Documents/" + Session.SessionID);
-                    Document doc = new Document(iTextSharp.text.PageSize.LETTER, 50, 50, 100, 70);
-                    string sFolderPathName = TargetFileDirectory + "\\" + System.Configuration.ConfigurationSettings.AppSettings["SummaryCarePathName"] + "\\" + DateTime.Now.ToString("yyyyMMdd");
-                    Directory.CreateDirectory(sFolderPathName);
-                    string sPrintPathName = string.Empty;
-                    sPrintPathName = sFolderPathName + "\\" + path + "_LabInformation.pdf";
-                    Session["PDF_Path"] = sPrintPathName;
-                    string sMyPathName = sPrintPathName;
-                    PdfWriter wr;
-                    string[] sFileName = sMyPathName.Split('\\');
-                    try
-                    {
-                        wr = PdfWriter.GetInstance(doc, new FileStream(sPrintPathName, FileMode.Create));
-                    }
-                    catch
-                    {
-                        var process = System.Diagnostics.Process.GetProcesses().Where(p => !string.IsNullOrEmpty(p.MainWindowTitle) && p.MainWindowTitle.Contains(sFileName[3])).ToList();
-                        process[0].Kill();
-                        Thread.Sleep(500);
-                        wr = PdfWriter.GetInstance(doc, new FileStream(sPrintPathName, FileMode.Create));
-                    }
-                    iTextSharp.text.Rectangle pageSize = doc.PageSize;
-
-                    doc.Open();
-                    BaseFont bfTimes = BaseFont.CreateFont(BaseFont.TIMES_ROMAN, BaseFont.CP1252, false);
-                    float X = 20f, Y = 20f;
-                    PrintPatient(doc, xmldoc);
-                    PrintLaboratoryInformation(doc, xmldoc);
-
-                    doc.Close();
-                    xmltext.Close();
-                    PDFLOAD.Attributes.Add("src", "frmSummaryOfCare.aspx?FileName=" + Request["FileName"].ToString() + "&pdf=" + (string)Session["PDF_Path"] + "&Type=" + Request["Type"].ToString() + "&UniversalTime=" + Request["UniversalTime"].ToString());
-                }
-                else if (cboSelection.Text == "Interventions")
-                {
-
-                    XmlDocument xmldoc = new XmlDocument();
-                    XmlTextReader xmltext = new XmlTextReader(XmlPath);
-                    xmldoc.Load(xmltext);
-                    string path = Path.GetFileNameWithoutExtension(XmlPath);
-                    string TargetFileDirectory = Server.MapPath("Documents/" + Session.SessionID);
-                    Document doc = new Document(iTextSharp.text.PageSize.LETTER, 50, 50, 100, 70);
-                    string sFolderPathName = TargetFileDirectory + "\\" + System.Configuration.ConfigurationSettings.AppSettings["SummaryCarePathName"] + "\\" + DateTime.Now.ToString("yyyyMMdd");
-                    Directory.CreateDirectory(sFolderPathName);
-                    string sPrintPathName = string.Empty;
-                    sPrintPathName = sFolderPathName + "\\" + path + "_Interventions.pdf";
-                    Session["PDF_Path"] = sPrintPathName;
-                    string sMyPathName = sPrintPathName;
-                    PdfWriter wr;
-                    string[] sFileName = sMyPathName.Split('\\');
-                    try
-                    {
-                        wr = PdfWriter.GetInstance(doc, new FileStream(sPrintPathName, FileMode.Create));
-                    }
-                    catch
-                    {
-                        var process = System.Diagnostics.Process.GetProcesses().Where(p => !string.IsNullOrEmpty(p.MainWindowTitle) && p.MainWindowTitle.Contains(sFileName[3])).ToList();
-                        process[0].Kill();
-                        Thread.Sleep(500);
-                        wr = PdfWriter.GetInstance(doc, new FileStream(sPrintPathName, FileMode.Create));
-                    }
-                    iTextSharp.text.Rectangle pageSize = doc.PageSize;
-
-                    doc.Open();
-                    BaseFont bfTimes = BaseFont.CreateFont(BaseFont.TIMES_ROMAN, BaseFont.CP1252, false);
-                    float X = 20f, Y = 20f;
-                    PrintPatient(doc, xmldoc);
-                    PrintInterventions(doc, xmldoc);
-
-                    doc.Close();
-                    xmltext.Close();
-                    PDFLOAD.Attributes.Add("src", "frmSummaryOfCare.aspx?FileName=" + Request["FileName"].ToString() + "&pdf=" + (string)Session["PDF_Path"] + "&Type=" + Request["Type"].ToString() + "&UniversalTime=" + Request["UniversalTime"].ToString());
-                }
-                else if (cboSelection.Text == "Health Status Evaluations/Outcomes")
-                {
-
-                    XmlDocument xmldoc = new XmlDocument();
-                    XmlTextReader xmltext = new XmlTextReader(XmlPath);
-                    xmldoc.Load(xmltext);
-                    string path = Path.GetFileNameWithoutExtension(XmlPath);
-                    string TargetFileDirectory = Server.MapPath("Documents/" + Session.SessionID);
-                    Document doc = new Document(iTextSharp.text.PageSize.LETTER, 50, 50, 100, 70);
-                    string sFolderPathName = TargetFileDirectory + "\\" + System.Configuration.ConfigurationSettings.AppSettings["SummaryCarePathName"] + "\\" + DateTime.Now.ToString("yyyyMMdd");
-                    Directory.CreateDirectory(sFolderPathName);
-                    string sPrintPathName = string.Empty;
-                    sPrintPathName = sFolderPathName + "\\" + path + "_HealthStatus.pdf";
-                    Session["PDF_Path"] = sPrintPathName;
-                    string sMyPathName = sPrintPathName;
-                    PdfWriter wr;
-                    string[] sFileName = sMyPathName.Split('\\');
-                    try
-                    {
-                        wr = PdfWriter.GetInstance(doc, new FileStream(sPrintPathName, FileMode.Create));
-                    }
-                    catch
-                    {
-                        var process = System.Diagnostics.Process.GetProcesses().Where(p => !string.IsNullOrEmpty(p.MainWindowTitle) && p.MainWindowTitle.Contains(sFileName[3])).ToList();
-                        process[0].Kill();
-                        Thread.Sleep(500);
-                        wr = PdfWriter.GetInstance(doc, new FileStream(sPrintPathName, FileMode.Create));
-                    }
-                    iTextSharp.text.Rectangle pageSize = doc.PageSize;
-
-                    doc.Open();
-                    BaseFont bfTimes = BaseFont.CreateFont(BaseFont.TIMES_ROMAN, BaseFont.CP1252, false);
-                    float X = 20f, Y = 20f;
-                    PrintPatient(doc, xmldoc);
-                    PrintHealthStatusEvaluations(doc, xmldoc);
-
-                    doc.Close();
-                    xmltext.Close();
-                    PDFLOAD.Attributes.Add("src", "frmSummaryOfCare.aspx?FileName=" + Request["FileName"].ToString() + "&pdf=" + (string)Session["PDF_Path"] + "&Type=" + Request["Type"].ToString() + "&UniversalTime=" + Request["UniversalTime"].ToString());
-                }
-
-            }
-
-            #endregion
-
-            #region CCR
-
-            else
-            {
-                if (cboSelection.Text == "Alerts")
-                {
-                    XmlDocument xmldoc = new XmlDocument();
-                    XmlTextReader xmltext = new XmlTextReader(XmlPath);
-                    xmldoc.Load(xmltext);
-                    string path = Path.GetFileNameWithoutExtension(XmlPath);
-                    string TargetFileDirectory = Server.MapPath("Documents/" + Session.SessionID);
-                    Document doc = new Document(iTextSharp.text.PageSize.LETTER, 50, 50, 100, 70);
-                    string sFolderPathName = TargetFileDirectory + "\\" + System.Configuration.ConfigurationSettings.AppSettings["SummaryCarePathName"] + "\\" + DateTime.Now.ToString("yyyyMMdd");
-                    Directory.CreateDirectory(sFolderPathName);
-                    string sPrintPathName = string.Empty;
-                    sPrintPathName = sFolderPathName + "\\" + path + "_Alerts.pdf";
-                    Session["PDF_Path"] = sPrintPathName;
-                    string sMyPathName = sPrintPathName;
-                    PdfWriter wr;
-                    string[] sFileName = sMyPathName.Split('\\');
-                    try
-                    {
-                        wr = PdfWriter.GetInstance(doc, new FileStream(sPrintPathName, FileMode.Create));
-                    }
-                    catch
-                    {
-                        var process = System.Diagnostics.Process.GetProcesses().Where(p => !string.IsNullOrEmpty(p.MainWindowTitle) && p.MainWindowTitle.Contains(sFileName[3])).ToList();
-                        process[0].Kill();
-                        Thread.Sleep(500);
-                        wr = PdfWriter.GetInstance(doc, new FileStream(sPrintPathName, FileMode.Create));
-                    }
-                    iTextSharp.text.Rectangle pageSize = doc.PageSize;
-                    doc.Open();
-                    BaseFont bfTimes = BaseFont.CreateFont(BaseFont.TIMES_ROMAN, BaseFont.CP1252, false);
-                    float X = 20f, Y = 20f;
-                    Print_CCR_ContinuityOfCare(doc, xmldoc);
-                    Print_CCR_PatientDemographics(doc, xmldoc);
-                    Print_CCR_Alerts(doc, xmldoc);
-                    doc.Close();
-                    xmltext.Close();
-                    PDFLOAD.Attributes.Add("src", "frmSummaryOfCare.aspx?FileName=" + Request["FileName"].ToString() + "&pdf=" + (string)Session["PDF_Path"] + "&Type=" + Request["Type"].ToString() + "&UniversalTime=" + Request["UniversalTime"].ToString());
-                }
-                else if (cboSelection.Text == "All")
-                {
-                    PrintPDF_CCR(Server.MapPath(Request["FileName"]));
-                    PDFLOAD.Attributes.Add("src", "frmSummaryOfCare.aspx?FileName=" + Request["FileName"].ToString() + "&pdf=" + (string)Session["PDF_Path"] + "&Type=" + Request["Type"].ToString() + "&UniversalTime=" + Request["UniversalTime"].ToString());
-                }
-                else if (cboSelection.Text == "Problems")
-                {
-                    XmlDocument xmldoc = new XmlDocument();
-                    XmlTextReader xmltext = new XmlTextReader(XmlPath);
-                    xmldoc.Load(xmltext);
-                    string path = Path.GetFileNameWithoutExtension(XmlPath);
-                    string TargetFileDirectory = Server.MapPath("Documents/" + Session.SessionID);
-                    Document doc = new Document(iTextSharp.text.PageSize.LETTER, 50, 50, 100, 70);
-                    string sFolderPathName = TargetFileDirectory + "\\" + System.Configuration.ConfigurationSettings.AppSettings["SummaryCarePathName"] + "\\" + DateTime.Now.ToString("yyyyMMdd");
-                    Directory.CreateDirectory(sFolderPathName);
-                    string sPrintPathName = string.Empty;
-                    sPrintPathName = sFolderPathName + "\\" + path + "_Problems.pdf";
-                    Session["PDF_Path"] = sPrintPathName;
-                    string sMyPathName = sPrintPathName;
-                    PdfWriter wr;
-                    string[] sFileName = sMyPathName.Split('\\');
-                    try
-                    {
-                        wr = PdfWriter.GetInstance(doc, new FileStream(sPrintPathName, FileMode.Create));
-                    }
-                    catch
-                    {
-                        var process = System.Diagnostics.Process.GetProcesses().Where(p => !string.IsNullOrEmpty(p.MainWindowTitle) && p.MainWindowTitle.Contains(sFileName[3])).ToList();
-                        process[0].Kill();
-                        Thread.Sleep(500);
-                        wr = PdfWriter.GetInstance(doc, new FileStream(sPrintPathName, FileMode.Create));
-                    }
-                    iTextSharp.text.Rectangle pageSize = doc.PageSize;
-                    doc.Open();
-                    BaseFont bfTimes = BaseFont.CreateFont(BaseFont.TIMES_ROMAN, BaseFont.CP1252, false);
-                    float X = 20f, Y = 20f;
-                    Print_CCR_ContinuityOfCare(doc, xmldoc);
-                    Print_CCR_PatientDemographics(doc, xmldoc);
-                    Print_CCR_Problems(doc, xmldoc);
-                    doc.Close();
-                    xmltext.Close();
-                    PDFLOAD.Attributes.Add("src", "frmSummaryOfCare.aspx?FileName=" + Request["FileName"].ToString() + "&pdf=" + (string)Session["PDF_Path"] + "&Type=" + Request["Type"].ToString() + "&UniversalTime=" + Request["UniversalTime"].ToString());
-                }
-
-                else if (cboSelection.Text == "Medications")
-                {
-                    XmlDocument xmldoc = new XmlDocument();
-                    XmlTextReader xmltext = new XmlTextReader(XmlPath);
-                    xmldoc.Load(xmltext);
-                    string path = Path.GetFileNameWithoutExtension(XmlPath);
-                    string TargetFileDirectory = Server.MapPath("Documents/" + Session.SessionID);
-                    Document doc = new Document(iTextSharp.text.PageSize.LETTER, 50, 50, 100, 70);
-                    string sFolderPathName = TargetFileDirectory + "\\" + System.Configuration.ConfigurationSettings.AppSettings["SummaryCarePathName"] + "\\" + DateTime.Now.ToString("yyyyMMdd");
-                    Directory.CreateDirectory(sFolderPathName);
-                    string sPrintPathName = string.Empty;
-                    sPrintPathName = sFolderPathName + "\\" + path + "_Medications.pdf";
-                    Session["PDF_Path"] = sPrintPathName;
-                    string sMyPathName = sPrintPathName;
-                    PdfWriter wr;
-                    string[] sFileName = sMyPathName.Split('\\');
-                    try
-                    {
-                        wr = PdfWriter.GetInstance(doc, new FileStream(sPrintPathName, FileMode.Create));
-                    }
-                    catch
-                    {
-                        var process = System.Diagnostics.Process.GetProcesses().Where(p => !string.IsNullOrEmpty(p.MainWindowTitle) && p.MainWindowTitle.Contains(sFileName[3])).ToList();
-                        process[0].Kill();
-                        Thread.Sleep(500);
-                        wr = PdfWriter.GetInstance(doc, new FileStream(sPrintPathName, FileMode.Create));
-                    }
-                    iTextSharp.text.Rectangle pageSize = doc.PageSize;
-                    doc.Open();
-                    BaseFont bfTimes = BaseFont.CreateFont(BaseFont.TIMES_ROMAN, BaseFont.CP1252, false);
-                    float X = 20f, Y = 20f;
-                    Print_CCR_ContinuityOfCare(doc, xmldoc);
-                    Print_CCR_PatientDemographics(doc, xmldoc);
-                    Print_CCR_Medications(doc, xmldoc);
-                    doc.Close();
-                    xmltext.Close();
-                    PDFLOAD.Attributes.Add("src", "frmSummaryOfCare.aspx?FileName=" + Request["FileName"].ToString() + "&pdf=" + (string)Session["PDF_Path"] + "&Type=" + Request["Type"].ToString() + "&UniversalTime=" + Request["UniversalTime"].ToString());
-                }
-
-                else if (cboSelection.Text == "Results")
-                {
-                    XmlDocument xmldoc = new XmlDocument();
-                    XmlTextReader xmltext = new XmlTextReader(XmlPath);
-                    xmldoc.Load(xmltext);
-                    string path = Path.GetFileNameWithoutExtension(XmlPath);
-                    string TargetFileDirectory = Server.MapPath("Documents/" + Session.SessionID);
-                    Document doc = new Document(iTextSharp.text.PageSize.LETTER, 50, 50, 100, 70);
-                    string sFolderPathName = TargetFileDirectory + "\\" + System.Configuration.ConfigurationSettings.AppSettings["SummaryCarePathName"] + "\\" + DateTime.Now.ToString("yyyyMMdd");
-                    Directory.CreateDirectory(sFolderPathName);
-                    string sPrintPathName = string.Empty;
-                    sPrintPathName = sFolderPathName + "\\" + path + "_Results.pdf";
-                    Session["PDF_Path"] = sPrintPathName;
-                    string sMyPathName = sPrintPathName;
-                    PdfWriter wr;
-                    string[] sFileName = sMyPathName.Split('\\');
-                    try
-                    {
-                        wr = PdfWriter.GetInstance(doc, new FileStream(sPrintPathName, FileMode.Create));
-                    }
-                    catch
-                    {
-                        var process = System.Diagnostics.Process.GetProcesses().Where(p => !string.IsNullOrEmpty(p.MainWindowTitle) && p.MainWindowTitle.Contains(sFileName[3])).ToList();
-                        process[0].Kill();
-                        Thread.Sleep(500);
-                        wr = PdfWriter.GetInstance(doc, new FileStream(sPrintPathName, FileMode.Create));
-                    }
-                    iTextSharp.text.Rectangle pageSize = doc.PageSize;
-                    doc.Open();
-                    BaseFont bfTimes = BaseFont.CreateFont(BaseFont.TIMES_ROMAN, BaseFont.CP1252, false);
-                    float X = 20f, Y = 20f;
-                    Print_CCR_ContinuityOfCare(doc, xmldoc);
-                    Print_CCR_PatientDemographics(doc, xmldoc);
-                    Prinit_CCR_Results(doc, xmldoc);
-                    doc.Close();
-                    xmltext.Close();
-                    PDFLOAD.Attributes.Add("src", "frmSummaryOfCare.aspx?FileName=" + Request["FileName"].ToString() + "&pdf=" + (string)Session["PDF_Path"] + "&Type=" + Request["Type"].ToString() + "&UniversalTime=" + Request["UniversalTime"].ToString());
-                }
-
-                else if (cboSelection.Text == "People")
-                {
-                    XmlDocument xmldoc = new XmlDocument();
-                    XmlTextReader xmltext = new XmlTextReader(XmlPath);
-                    xmldoc.Load(xmltext);
-                    string path = Path.GetFileNameWithoutExtension(XmlPath);
-                    string TargetFileDirectory = Server.MapPath("Documents/" + Session.SessionID);
-                    Document doc = new Document(iTextSharp.text.PageSize.LETTER, 50, 50, 100, 70);
-                    string sFolderPathName = TargetFileDirectory + "\\" + System.Configuration.ConfigurationSettings.AppSettings["SummaryCarePathName"] + "\\" + DateTime.Now.ToString("yyyyMMdd");
-                    Directory.CreateDirectory(sFolderPathName);
-                    string sPrintPathName = string.Empty;
-                    sPrintPathName = sFolderPathName + "\\" + path + "_People.pdf";
-                    Session["PDF_Path"] = sPrintPathName;
-                    string sMyPathName = sPrintPathName;
-                    PdfWriter wr;
-                    string[] sFileName = sMyPathName.Split('\\');
-                    try
-                    {
-                        wr = PdfWriter.GetInstance(doc, new FileStream(sPrintPathName, FileMode.Create));
-                    }
-                    catch
-                    {
-                        var process = System.Diagnostics.Process.GetProcesses().Where(p => !string.IsNullOrEmpty(p.MainWindowTitle) && p.MainWindowTitle.Contains(sFileName[3])).ToList();
-                        process[0].Kill();
-                        Thread.Sleep(500);
-                        wr = PdfWriter.GetInstance(doc, new FileStream(sPrintPathName, FileMode.Create));
-                    }
-                    iTextSharp.text.Rectangle pageSize = doc.PageSize;
-                    doc.Open();
-                    BaseFont bfTimes = BaseFont.CreateFont(BaseFont.TIMES_ROMAN, BaseFont.CP1252, false);
-                    float X = 20f, Y = 20f;
-                    Print_CCR_ContinuityOfCare(doc, xmldoc);
-                    Print_CCR_PatientDemographics(doc, xmldoc);
-                    Prinit_CCR_People(doc, xmldoc);
-                    doc.Close();
-                    xmltext.Close();
-                    PDFLOAD.Attributes.Add("src", "frmSummaryOfCare.aspx?FileName=" + Request["FileName"].ToString() + "&pdf=" + (string)Session["PDF_Path"] + "&Type=" + Request["Type"].ToString() + "&UniversalTime=" + Request["UniversalTime"].ToString());
-                }
-
-                else if (cboSelection.Text == "Organizations")
-                {
-                    XmlDocument xmldoc = new XmlDocument();
-                    XmlTextReader xmltext = new XmlTextReader(XmlPath);
-                    xmldoc.Load(xmltext);
-                    string path = Path.GetFileNameWithoutExtension(XmlPath);
-                    string TargetFileDirectory = Server.MapPath("Documents/" + Session.SessionID);
-                    Document doc = new Document(iTextSharp.text.PageSize.LETTER, 50, 50, 100, 70);
-                    string sFolderPathName = TargetFileDirectory + "\\" + System.Configuration.ConfigurationSettings.AppSettings["SummaryCarePathName"] + "\\" + DateTime.Now.ToString("yyyyMMdd");
-                    Directory.CreateDirectory(sFolderPathName);
-                    string sPrintPathName = string.Empty;
-                    sPrintPathName = sFolderPathName + "\\" + path + "_Organizations.pdf";
-                    Session["PDF_Path"] = sPrintPathName;
-                    string sMyPathName = sPrintPathName;
-                    PdfWriter wr;
-                    string[] sFileName = sMyPathName.Split('\\');
-                    try
-                    {
-                        wr = PdfWriter.GetInstance(doc, new FileStream(sPrintPathName, FileMode.Create));
-                    }
-                    catch
-                    {
-                        var process = System.Diagnostics.Process.GetProcesses().Where(p => !string.IsNullOrEmpty(p.MainWindowTitle) && p.MainWindowTitle.Contains(sFileName[3])).ToList();
-                        process[0].Kill();
-                        Thread.Sleep(500);
-                        wr = PdfWriter.GetInstance(doc, new FileStream(sPrintPathName, FileMode.Create));
-                    }
-                    iTextSharp.text.Rectangle pageSize = doc.PageSize;
-                    doc.Open();
-                    BaseFont bfTimes = BaseFont.CreateFont(BaseFont.TIMES_ROMAN, BaseFont.CP1252, false);
-                    float X = 20f, Y = 20f;
-                    Print_CCR_ContinuityOfCare(doc, xmldoc);
-                    Print_CCR_PatientDemographics(doc, xmldoc);
-                    Prinit_CCR_Organization(doc, xmldoc);
-                    doc.Close();
-                    xmltext.Close();
-                    PDFLOAD.Attributes.Add("src", "frmSummaryOfCare.aspx?FileName=" + Request["FileName"].ToString() + "&pdf=" + (string)Session["PDF_Path"] + "&Type=" + Request["Type"].ToString() + "&UniversalTime=" + Request["UniversalTime"].ToString());
-                }
-            }
-
-
-            #endregion
-        }
-        public void PrintImplant(Document doc, XmlDocument xmldoc)
-        {
-            #region Implant
-            sNoInformationInTable = string.Empty;
-            DataSet dsImplant = null;
-            XmlNodeList Doc_ImplantNode = xmldoc.GetElementsByTagName("section");
-            foreach (XmlElement elemParent in Doc_ImplantNode)
-            {
-                bool is_break = false;
-                for (int i = 0; i < elemParent.ChildNodes.Count; i++)
-                {
-                    if (elemParent.ChildNodes[i].Name == "title" && elemParent.ChildNodes[i].InnerText.ToUpper() == "IMPLANTS")
-                    {
-                        //dsImplant = ConvertHTMLTablesToDataSet(elemParent.ChildNodes[i + 1].InnerXml);
-                        if (elemParent.ChildNodes[i + 1].InnerXml.Trim(' ').StartsWith("<table") == true)
-                            dsImplant = ConvertHTMLTablesToDataSet(elemParent.ChildNodes[i + 1].InnerXml);
-                        else
-                        {
-                            dsImplant = null;
-                            sNoInformationInTable = string.Empty;
-                            sNoInformationInTable = elemParent.ChildNodes[i + 1].InnerXml;
-                        }
-
-                        is_break = true;
-                        break;
-                    }
-                }
-                if (is_break == true)
-                    break;
-            }
-
-            if (dsImplant != null)
-            {
-                PdfPTable patImplant = new PdfPTable(dsImplant.Tables[0].Columns.Count);
-                patImplant.WidthPercentage = 100;
-                HeadCell = new PdfPCell(new Phrase("Implants", HeadFont));
-                HeadCell.Colspan = dsImplant.Tables[0].Columns.Count;
-                HeadCell.HorizontalAlignment = 1;
-                HeadCell.BackgroundColor = BaseColor.DARK_GRAY;
-                patImplant.AddCell(HeadCell);
-
-                for (int j = 0; j < dsImplant.Tables[0].Columns.Count; j++)
-                {
-                    string ColumnName = StripTagsRegex(dsImplant.Tables[0].Columns[j].ColumnName);
-                    //if (ColumnName.ToUpper() != "NDCID")
-                    //{
-                    cell = CreateCell(ColumnName, "", "");
-                    patImplant.AddCell(cell);
-                    // }
-                }
-
-                foreach (DataRow row in dsImplant.Tables[0].Rows)
-                {
-                    foreach (DataColumn column in dsImplant.Tables[0].Columns)
-                    {
-                        //if (!row[column].ToString().Contains("NDCID"))
-                        //{
-                        string ColumnData = StripTagsRegex(row[column].ToString());
-                        if ((ColumnData.EndsWith(",")) && (ColumnData.Length > 0))
-                        {
-                            ColumnData = ColumnData.Substring(0, ColumnData.Length - 1);
-                        }
-
-                        cell = CreateCell("", ColumnData, "");
-                        patImplant.AddCell(cell);
-                        //   }
-
-                    }
-                }
-
-                doc.Add(patImplant);
-                doc.Add(new Paragraph("   "));
-                doc.Add(new Paragraph("   "));
-
-                try
-                {
-                    for (int i = 0; i < dsImplant.Tables[0].Rows.Count; i++)
-                    {
-                        InHouseProcedure objInHouseProcedure = new InHouseProcedure();
-                        objInHouseProcedure.GMDN_PT_Name = StripTagsRegex(dsImplant.Tables[0].Rows[i].Field<string>("<tr><th>Implanted"));
-                        //objInHouseProcedure.Reaction = StripTagsRegex(dsImplant.Tables[0].Rows[i].Field<string>("Area"));
-                        objInHouseProcedure.Device_Identifier_UDI = StripTagsRegex(dsImplant.Tables[0].Rows[i].Field<string>("UDI"));
-                        lstImplant.Add(objInHouseProcedure);
-                    }
-                }
-                catch
-                {
-                    //do nothing
-                }
-            }
-            else
-            {
-                PdfPTable emptyPDF = new PdfPTable(1);
-                emptyPDF.WidthPercentage = 100;
-                HeadCell = new PdfPCell(new Phrase("Implants", HeadFont));
-                HeadCell.HorizontalAlignment = 1;
-                HeadCell.BackgroundColor = BaseColor.DARK_GRAY;
-                emptyPDF.AddCell(HeadCell);
-                if (sNoInformationInTable == string.Empty)
-                {
-                    cell = CreateCell("", "     " + StripTagsRegex("No known data found"), "");
-                }
-                else
-                {
-                    cell = CreateCell("", "     " + StripTagsRegex(sNoInformationInTable), "");
-                }
-                emptyPDF.AddCell(cell);
-                doc.Add(emptyPDF);
-                doc.Add(new Paragraph("   "));
-                doc.Add(new Paragraph("   "));
-            }
-
-            Session["ImplantList"] = lstImplant;
-            #endregion
-        }
-
-        public void PrintMentalStatus(Document doc, XmlDocument xmldoc)
-        {
-            #region MENTAL
-            sNoInformationInTable = string.Empty;
-            DataSet dsMentalStatus = null;
-            XmlNodeList Doc_MentalStatusNode = xmldoc.GetElementsByTagName("section");
-            foreach (XmlElement elemParent in Doc_MentalStatusNode)
-            {
-                bool is_break = false;
-                for (int i = 0; i < elemParent.ChildNodes.Count; i++)
-                {
-                    if (elemParent.ChildNodes[i].Name == "title" && elemParent.ChildNodes[i].InnerText.ToUpper() == "MENTAL STATUS")
-                    {
-                        //dsMentalStatus = ConvertHTMLTablesToDataSet(elemParent.ChildNodes[i + 1].InnerXml);
-                        if (elemParent.ChildNodes[i + 1].InnerXml.Trim(' ').StartsWith("<table") == true)
-                            dsMentalStatus = ConvertHTMLTablesToDataSet(elemParent.ChildNodes[i + 1].InnerXml);
-                        else
-                        {
-                            dsMentalStatus = null;
-                            sNoInformationInTable = string.Empty;
-                            sNoInformationInTable = elemParent.ChildNodes[i + 1].InnerXml;
-                        }
-                        is_break = true;
-                        break;
-                    }
-                }
-                if (is_break == true)
-                    break;
-            }
-
-            if (dsMentalStatus != null && dsMentalStatus.Tables.Count > 0)
-            {
-                PdfPTable patMentalStatus = new PdfPTable(dsMentalStatus.Tables[0].Columns.Count);
-                patMentalStatus.WidthPercentage = 100;
-                HeadCell = new PdfPCell(new Phrase("Mental Status", HeadFont));
-                HeadCell.Colspan = dsMentalStatus.Tables[0].Columns.Count;
-                HeadCell.HorizontalAlignment = 1;
-                HeadCell.BackgroundColor = BaseColor.DARK_GRAY;
-                patMentalStatus.AddCell(HeadCell);
-
-                for (int j = 0; j < dsMentalStatus.Tables[0].Columns.Count; j++)
-                {
-                    string ColumnName = StripTagsRegex(dsMentalStatus.Tables[0].Columns[j].ColumnName);
-                    //if (ColumnName.ToUpper() != "NDCID")
-                    //{
-                    cell = CreateCell(ColumnName, "", "");
-                    patMentalStatus.AddCell(cell);
-                    // }
-                }
-
-                foreach (DataRow row in dsMentalStatus.Tables[0].Rows)
-                {
-                    foreach (DataColumn column in dsMentalStatus.Tables[0].Columns)
-                    {
-                        //if (!row[column].ToString().Contains("NDCID"))
-                        //{
-                        string ColumnData = StripTagsRegex(row[column].ToString());
-                        if ((ColumnData.EndsWith(",")) && (ColumnData.Length > 0))
-                        {
-                            ColumnData = ColumnData.Substring(0, ColumnData.Length - 1);
-                        }
-
-                        cell = CreateCell("", ColumnData, "");
-                        patMentalStatus.AddCell(cell);
-                        //   }
-
-                    }
-                }
-
-                doc.Add(patMentalStatus);
-                doc.Add(new Paragraph("   "));
-                doc.Add(new Paragraph("   "));
-
-                try
-                {
-                    for (int i = 0; i < dsMentalStatus.Tables[0].Rows.Count; i++)
-                    {
-                        CarePlan objCarePlan = new CarePlan();
-                        objCarePlan.Care_Name_Value = StripTagsRegex(dsMentalStatus.Tables[0].Rows[i].Field<string>("<tr><th>Status"));
-                        //objInHouseProcedure.Reaction = StripTagsRegex(dsImplant.Tables[0].Rows[i].Field<string>("Area"));
-                        objCarePlan.Plan_Date = StripTagsRegex(dsMentalStatus.Tables[0].Rows[i].Field<string>("Date"));
-                        lstMentalStatus.Add(objCarePlan);
-                    }
-                }
-                catch
-                {
-                    //do nothing
-                }
-            }
-            else
-            {
-                PdfPTable emptyPDF = new PdfPTable(1);
-                emptyPDF.WidthPercentage = 100;
-                HeadCell = new PdfPCell(new Phrase("Mental Status", HeadFont));
-                HeadCell.HorizontalAlignment = 1;
-                HeadCell.BackgroundColor = BaseColor.DARK_GRAY;
-                emptyPDF.AddCell(HeadCell);
-                if (sNoInformationInTable == string.Empty)
-                {
-                    cell = CreateCell("", "     " + StripTagsRegex("No known data found"), "");
-                }
-                else
-                {
-                    cell = CreateCell("", "     " + StripTagsRegex(sNoInformationInTable), "");
-                }
-                emptyPDF.AddCell(cell);
-                doc.Add(emptyPDF);
-                doc.Add(new Paragraph("   "));
-                doc.Add(new Paragraph("   "));
-            }
-
-            Session["MentalStatusList"] = lstMentalStatus;
-            #endregion
-        }
-
-
-        public void PrintGoalsSection(Document doc, XmlDocument xmldoc)
-        {
-            #region Goals Section
-            sNoInformationInTable = string.Empty;
-            DataSet dsGoalsSection = null;
-            XmlNodeList Doc_GoalsSectionNode = xmldoc.GetElementsByTagName("section");
-            foreach (XmlElement elemParent in Doc_GoalsSectionNode)
-            {
-                bool is_break = false;
-                for (int i = 0; i < elemParent.ChildNodes.Count; i++)
-                {
-                    if (elemParent.ChildNodes[i].Name == "title" && elemParent.ChildNodes[i].InnerText.ToUpper() == "GOALS SECTION")
-                    {
-                        //dsGoalsSection = ConvertHTMLTablesToDataSet(elemParent.ChildNodes[i + 1].InnerXml);
-                        if (elemParent.ChildNodes[i + 1].InnerXml.Trim(' ').StartsWith("<table") == true)
-                            dsGoalsSection = ConvertHTMLTablesToDataSet(elemParent.ChildNodes[i + 1].InnerXml);
-                        else
-                        {
-                            dsGoalsSection = null;
-                            sNoInformationInTable = string.Empty;
-                            sNoInformationInTable = elemParent.ChildNodes[i + 1].InnerXml;
-                        }
-                        is_break = true;
-                        break;
-                    }
-                }
-                if (is_break == true)
-                    break;
-            }
-
-            if (dsGoalsSection != null && dsGoalsSection.Tables.Count > 0)
-            {
-                PdfPTable patImplant = new PdfPTable(dsGoalsSection.Tables[0].Columns.Count);
-                patImplant.WidthPercentage = 100;
-                HeadCell = new PdfPCell(new Phrase("Goals Section", HeadFont));
-                HeadCell.Colspan = dsGoalsSection.Tables[0].Columns.Count;
-                HeadCell.HorizontalAlignment = 1;
-                HeadCell.BackgroundColor = BaseColor.DARK_GRAY;
-                patImplant.AddCell(HeadCell);
-
-                for (int j = 0; j < dsGoalsSection.Tables[0].Columns.Count; j++)
-                {
-                    string ColumnName = StripTagsRegex(dsGoalsSection.Tables[0].Columns[j].ColumnName);
-                    //if (ColumnName.ToUpper() != "NDCID")
-                    //{
-                    cell = CreateCell(ColumnName, "", "");
-                    patImplant.AddCell(cell);
-                    // }
-                }
-
-                foreach (DataRow row in dsGoalsSection.Tables[0].Rows)
-                {
-                    foreach (DataColumn column in dsGoalsSection.Tables[0].Columns)
-                    {
-                        //if (!row[column].ToString().Contains("NDCID"))
-                        //{
-                        string ColumnData = StripTagsRegex(row[column].ToString());
-                        if ((ColumnData.EndsWith(",")) && (ColumnData.Length > 0))
-                        {
-                            ColumnData = ColumnData.Substring(0, ColumnData.Length - 1);
-                        }
-
-                        cell = CreateCell("", ColumnData, "");
-                        patImplant.AddCell(cell);
-                        //   }
-
-                    }
-                }
-
-                doc.Add(patImplant);
-                doc.Add(new Paragraph("   "));
-                doc.Add(new Paragraph("   "));
-
-                try
-                {
-                    for (int i = 0; i < dsGoalsSection.Tables[0].Rows.Count; i++)
-                    {
-                        TreatmentPlan objTreatmentPlan = new TreatmentPlan();
-                        objTreatmentPlan.Plan = StripTagsRegex(dsGoalsSection.Tables[0].Rows[i].Field<string>("<tr><th>Goal"));
-                        //objInHouseProcedure.Reaction = StripTagsRegex(dsImplant.Tables[0].Rows[i].Field<string>("Area"));
-                        //objTreatmentPlan.Plan_Date = StripTagsRegex(dsGoalsSection.Tables[0].Rows[i].Field<string>("Date"));
-                        lstGoalsSection.Add(objTreatmentPlan);
-                    }
-                }
-                catch
-                {
-                    //do nothing
-                }
-            }
-            else
-            {
-                PdfPTable emptyPDF = new PdfPTable(1);
-                emptyPDF.WidthPercentage = 100;
-                HeadCell = new PdfPCell(new Phrase("Goals Section", HeadFont));
-                HeadCell.HorizontalAlignment = 1;
-                HeadCell.BackgroundColor = BaseColor.DARK_GRAY;
-                emptyPDF.AddCell(HeadCell);
-                if (sNoInformationInTable == string.Empty)
-                {
-                    cell = CreateCell("", "     " + StripTagsRegex("No known data found"), "");
-                }
-                else
-                {
-                    cell = CreateCell("", "     " + StripTagsRegex(sNoInformationInTable), "");
-                }
-                emptyPDF.AddCell(cell);
-                doc.Add(emptyPDF);
-                doc.Add(new Paragraph("   "));
-                doc.Add(new Paragraph("   "));
-            }
-
-            Session["GoalsSectionList"] = lstGoalsSection;
-            #endregion
-        }
-        public void PrintImplantsection(Document doc, XmlDocument xmldoc)
-        {
-            #region implant  Section
-            sNoInformationInTable = string.Empty;
-            DataSet dsImplantSection = null;
-            XmlNodeList Doc_GoalsSectionNode = xmldoc.GetElementsByTagName("section");
-            foreach (XmlElement elemParent in Doc_GoalsSectionNode)
-            {
-                bool is_break = false;
-                for (int i = 0; i < elemParent.ChildNodes.Count; i++)
-                {
-                    if (elemParent.ChildNodes[i].Name == "title" && elemParent.ChildNodes[i].InnerText.ToUpper() == "IMPLANTS")
-                    {
-                        dsImplantSection = ConvertHTMLTablesToDataSet(elemParent.ChildNodes[i + 1].InnerXml);
-
-                        is_break = true;
-                        break;
-                    }
-                }
-                if (is_break == true)
-                    break;
-            }
-
-            if (dsImplantSection != null && dsImplantSection.Tables.Count > 0)
-            {
-                PdfPTable patImplant = new PdfPTable(dsImplantSection.Tables[0].Columns.Count);
-                patImplant.WidthPercentage = 100;
-                HeadCell = new PdfPCell(new Phrase("Implants", HeadFont));
-                HeadCell.Colspan = dsImplantSection.Tables[0].Columns.Count;
-                HeadCell.HorizontalAlignment = 1;
-                HeadCell.BackgroundColor = BaseColor.DARK_GRAY;
-                patImplant.AddCell(HeadCell);
-
-                for (int j = 0; j < dsImplantSection.Tables[0].Columns.Count; j++)
-                {
-                    string ColumnName = StripTagsRegex(dsImplantSection.Tables[0].Columns[j].ColumnName);
-                    //if (ColumnName.ToUpper() != "NDCID")
-                    //{
-                    cell = CreateCell(ColumnName, "", "");
-                    patImplant.AddCell(cell);
-                    // }
-                }
-
-                foreach (DataRow row in dsImplantSection.Tables[0].Rows)
-                {
-                    foreach (DataColumn column in dsImplantSection.Tables[0].Columns)
-                    {
-                        //if (!row[column].ToString().Contains("NDCID"))
-                        //{
-                        string ColumnData = StripTagsRegex(row[column].ToString());
-                        if ((ColumnData.EndsWith(",")) && (ColumnData.Length > 0))
-                        {
-                            ColumnData = ColumnData.Substring(0, ColumnData.Length - 1);
-                        }
-
-                        cell = CreateCell("", ColumnData, "");
-                        patImplant.AddCell(cell);
-                        //   }
-
-                    }
-                }
-
-                doc.Add(patImplant);
-                doc.Add(new Paragraph("   "));
-                doc.Add(new Paragraph("   "));
-
-                try
-                {
-                    for (int i = 0; i < dsImplantSection.Tables[0].Rows.Count; i++)
-                    {
-                        InHouseProcedure objInHouseProcedure = new InHouseProcedure();
-
-                        objInHouseProcedure.GMDN_PT_Name = StripTagsRegex(dsImplantSection.Tables[0].Rows[i].Field<string>("<tr><th>Implanted"));
-                        objInHouseProcedure.Device_Identifier_UDI = StripTagsRegex(dsImplantSection.Tables[0].Rows[i].Field<string>("<tr><th>UDI"));
-
-
-
-                        lstImplant.Add(objInHouseProcedure);
-
-                    }
-                }
-                catch
-                {
-                    //do nothing
-                }
-            }
-
-            Session["ImplantList"] = lstImplant;
-            #endregion
-        }
-
-        public void PrintHealthConcernSection(Document doc, XmlDocument xmldoc)
-        {
-            #region HealthConcern  Section
-            sNoInformationInTable = string.Empty;
-            DataSet dsHealthConcernSection = null;
-            XmlNodeList Doc_GoalsSectionNode = xmldoc.GetElementsByTagName("section");
-            foreach (XmlElement elemParent in Doc_GoalsSectionNode)
-            {
-                bool is_break = false;
-                for (int i = 0; i < elemParent.ChildNodes.Count; i++)
-                {
-                    if (elemParent.ChildNodes[i].Name == "title" && elemParent.ChildNodes[i].InnerText.ToUpper() == "HEALTH CONCERNS SECTION")
-                    {
-                        //dsHealthConcernSection = ConvertHTMLTablesToDataSet(elemParent.ChildNodes[i + 1].InnerXml);
-                        if (elemParent.ChildNodes[i + 1].InnerXml.Trim(' ').StartsWith("<table") == true)
-                            dsHealthConcernSection = ConvertHTMLTablesToDataSet(elemParent.ChildNodes[i + 1].InnerXml);
-                        else
-                        {
-                            dsHealthConcernSection = null;
-                            sNoInformationInTable = string.Empty;
-                            sNoInformationInTable = elemParent.ChildNodes[i + 1].InnerXml;
-                        }
-                        is_break = true;
-                        break;
-                    }
-                }
-                if (is_break == true)
-                    break;
-            }
-
-            if (dsHealthConcernSection != null && dsHealthConcernSection.Tables.Count > 0)
-            {
-                for (int k = 0; k < dsHealthConcernSection.Tables.Count; k++)
-                {
-                    PdfPTable patImplant = new PdfPTable(dsHealthConcernSection.Tables[k].Columns.Count);
-                    patImplant.WidthPercentage = 100;
-                    if (k == 0)
-                    {
-                      
-                        HeadCell = new PdfPCell(new Phrase("Health Concerns Section", HeadFont));
-                        HeadCell.Colspan = dsHealthConcernSection.Tables[k].Columns.Count;
-                        HeadCell.HorizontalAlignment = 1;
-                        HeadCell.BackgroundColor = BaseColor.DARK_GRAY;
-                        patImplant.AddCell(HeadCell);
-                    }
-                    for (int j = 0; j < dsHealthConcernSection.Tables[k].Columns.Count; j++)
-                    {
-                        string ColumnName = StripTagsRegex(dsHealthConcernSection.Tables[k].Columns[j].ColumnName);
-                        //if (ColumnName.ToUpper() != "NDCID")
-                        //{
-                        cell = CreateCell(ColumnName, "", "");
-                        patImplant.AddCell(cell);
-                        // }
-                    }
-
-                    foreach (DataRow row in dsHealthConcernSection.Tables[k].Rows)
-                    {
-                        foreach (DataColumn column in dsHealthConcernSection.Tables[k].Columns)
-                        {
-                            //if (!row[column].ToString().Contains("NDCID"))
-                            //{
-                            string ColumnData = StripTagsRegex(row[column].ToString());
-                            if ((ColumnData.EndsWith(",")) && (ColumnData.Length > 0))
-                            {
-                                ColumnData = ColumnData.Substring(0, ColumnData.Length - 1);
-                            }
-
-                            cell = CreateCell("", ColumnData, "");
-                            patImplant.AddCell(cell);
-                            //   }
-
-                        }
-                    }
-
-                    doc.Add(patImplant);
-                    doc.Add(new Paragraph("   "));
-                    doc.Add(new Paragraph("   "));
-
-                    try
-                    {
-                        for (int i = 0; i < dsHealthConcernSection.Tables[k].Rows.Count; i++)
-                        {
-                            ProblemList objProblemList = new ProblemList();
-                            //objProblemList.Problem_Description = StripTagsRegex(dsHealthConcernSection.Tables[k].Rows[i].Field<string>("<tr><th>Observations"));
-                            if (k == 0)
-                            {
-                                objProblemList.Problem_Description = StripTagsRegex(dsHealthConcernSection.Tables[k].Rows[i].Field<string>("<tr><th>Observations"));
-                            }
-                            else
-                            {
-                                objProblemList.Problem_Description = StripTagsRegex(dsHealthConcernSection.Tables[k].Rows[i].Field<string>("<tr><th>Concern"));
-                            }
-                            objProblemList.Status = "Active";
-                            string diagdate = StripTagsRegex(dsHealthConcernSection.Tables[k].Rows[i].Field<string>("Date"));
-                            if (diagdate.Length == 4)
-                                objProblemList.Date_Diagnosed = diagdate;
-                            else if (diagdate.Length == 9)
-                                objProblemList.Date_Diagnosed = Convert.ToDateTime("01-" + diagdate.Split(',')[0].Trim() + "-" + diagdate.Split(',')[1].Trim()).ToString("dd-MM-yyyy");
-                            else
-                                objProblemList.Date_Diagnosed = Convert.ToDateTime(diagdate).ToString("dd-MM-yyyy");
-                            //objInHouseProcedure.Reaction = StripTagsRegex(dsImplant.Tables[0].Rows[i].Field<string>("Area"));
-                            //objTreatmentPlan.Plan_Date = StripTagsRegex(dsGoalsSection.Tables[0].Rows[i].Field<string>("Date"));
-
-                            lsthealthconcern.Add(objProblemList);
-
-                        }
-                    }
-                    catch
-                    {
-                        //do nothing
-                    }
-                }
-            }
-            else
-            {
-                PdfPTable emptyPDF = new PdfPTable(1);
-                emptyPDF.WidthPercentage = 100;
-                HeadCell = new PdfPCell(new Phrase("Health Concerns Section", HeadFont));
-                HeadCell.HorizontalAlignment = 1;
-                HeadCell.BackgroundColor = BaseColor.DARK_GRAY;
-                emptyPDF.AddCell(HeadCell);
-                if (sNoInformationInTable == string.Empty)
-                {
-                    cell = CreateCell("", "     " + StripTagsRegex("No known data found"), "");
-                }
-                else
-                {
-                    cell = CreateCell("", "     " + StripTagsRegex(sNoInformationInTable), "");
-                }
-                emptyPDF.AddCell(cell);
-                doc.Add(emptyPDF);
-                doc.Add(new Paragraph("   "));
-                doc.Add(new Paragraph("   "));
-            }
-
-            Session["HealthConcernList"] = lsthealthconcern;
-            #endregion
-        }
-
-
-        public void PrintInterventions(Document doc, XmlDocument xmldoc)
-        {
-            #region Interventions  Section
-            sNoInformationInTable = string.Empty;
-            DataSet dsInterventions = null;
-            XmlNodeList Doc_GoalsSectionNode = xmldoc.GetElementsByTagName("section");
-            foreach (XmlElement elemParent in Doc_GoalsSectionNode)
-            {
-                bool is_break = false;
-                for (int i = 0; i < elemParent.ChildNodes.Count; i++)
-                {
-                    if (elemParent.ChildNodes[i].Name == "title" && elemParent.ChildNodes[i].InnerText.ToUpper() == "INTERVENTIONS SECTION")
-                    {
-                        //dsHealthConcernSection = ConvertHTMLTablesToDataSet(elemParent.ChildNodes[i + 1].InnerXml);
-                        if (elemParent.ChildNodes[i + 1].InnerXml.Trim(' ').StartsWith("<table") == true)
-                            dsInterventions = ConvertHTMLTablesToDataSet(elemParent.ChildNodes[i + 1].InnerXml);
-                        else
-                        {
-                            dsInterventions = null;
-                            sNoInformationInTable = string.Empty;
-                            sNoInformationInTable = elemParent.ChildNodes[i + 1].InnerXml;
-                        }
-                        is_break = true;
-                        break;
-                    }
-                }
-                if (is_break == true)
-                    break;
-            }
-
-            if (dsInterventions != null && dsInterventions.Tables.Count > 0)
-            {
-                for (int k = 0; k < dsInterventions.Tables.Count; k++)
-                {
-                    PdfPTable patImplant = new PdfPTable(dsInterventions.Tables[k].Columns.Count);
-                    patImplant.WidthPercentage = 100;
-                    if (k == 0)
-                    {
-
-                        HeadCell = new PdfPCell(new Phrase("Interventions Section", HeadFont));
-                        HeadCell.Colspan = dsInterventions.Tables[k].Columns.Count;
-                        HeadCell.HorizontalAlignment = 1;
-                        HeadCell.BackgroundColor = BaseColor.DARK_GRAY;
-                        patImplant.AddCell(HeadCell);
-                    }
-                    for (int j = 0; j < dsInterventions.Tables[k].Columns.Count; j++)
-                    {
-                        string ColumnName = StripTagsRegex(dsInterventions.Tables[k].Columns[j].ColumnName);
-                        //if (ColumnName.ToUpper() != "NDCID")
-                        //{
-                        cell = CreateCell(ColumnName, "", "");
-                        patImplant.AddCell(cell);
-                        // }
-                    }
-
-                    foreach (DataRow row in dsInterventions.Tables[k].Rows)
-                    {
-                        foreach (DataColumn column in dsInterventions.Tables[k].Columns)
-                        {
-                            //if (!row[column].ToString().Contains("NDCID"))
-                            //{
-                            string ColumnData = StripTagsRegex(row[column].ToString());
-                            if ((ColumnData.EndsWith(",")) && (ColumnData.Length > 0))
-                            {
-                                ColumnData = ColumnData.Substring(0, ColumnData.Length - 1);
-                            }
-
-                            cell = CreateCell("", ColumnData, "");
-                            patImplant.AddCell(cell);
-                            //   }
-
-                        }
-                    }
-
-                    doc.Add(patImplant);
-                    doc.Add(new Paragraph("   "));
-                    doc.Add(new Paragraph("   "));
-
-                    try
-                    {
-                        for (int i = 0; i < dsInterventions.Tables[k].Rows.Count; i++)
-                        {
-                            PatientResults objVitals = new PatientResults();
-
-                            if ((StripTagsRegex(dsInterventions.Tables[k].Rows[i].Field<string>("<tr><th>Planned Intervention"))).ToString() == "pulse oximetry monitoring")
-                                objVitals.Loinc_Observation = "Pulse Oximetry";
-                            else if (StripTagsRegex(dsInterventions.Tables[k].Rows[i].Field<string>("<tr><th>Planned Intervention")) == "Oxygen administration by nasal cannula")
-                                objVitals.Loinc_Observation = "Inhaled O2 Concentration";
-                            else if (StripTagsRegex(dsInterventions.Tables[k].Rows[i].Field<string>("<tr><th>Planned Intervention")) == "Elevate head of bed")
-                                objVitals.Loinc_Observation = "Respiratory Rate";
-                            else
-                                objVitals.Loinc_Observation = StripTagsRegex((StripTagsRegex(dsInterventions.Tables[k].Rows[i].Field<string>("<tr><th>Planned Intervention"))).ToString());
-                            //string[] value_units = StripTagsRegex(Row_Value[c]).Split(' ');
-                            //if (value_units[0].Contains("Ft"))
-                            //{
-                            //    string sFeet = ConvertFeetInchToInch(value_units[0].Remove(1), value_units[1].Remove(1));
-                            //    objVitals.Value = sFeet;
-                            //    objVitals.Units = "Ft Inch";
-
-                            //}
-                            //else
-                            //{
-                            //    objVitals.Value = value_units[0];
-                            //    objVitals.Units = value_units[1];
-                            //}
-                            objVitals.Captured_date_and_time = Convert.ToDateTime((StripTagsRegex(dsInterventions.Tables[k].Rows[i].Field<string>("Date"))).ToString());
-                            objVitals.Created_Date_And_Time = universalTime;
-                            objVitals.Created_By = ClientSession.UserName;
-                            objVitals.Results_Type = "Vitals";
-
-                            lstvitals.Add(objVitals);
-
-                        }
-                    }
-                    catch
-                    {
-                        //do nothing
-                    }
-                }
-            }
-            else
-            {
-                PdfPTable emptyPDF = new PdfPTable(1);
-                emptyPDF.WidthPercentage = 100;
-                HeadCell = new PdfPCell(new Phrase("Interventions Section", HeadFont));
-                HeadCell.HorizontalAlignment = 1;
-                HeadCell.BackgroundColor = BaseColor.DARK_GRAY;
-                emptyPDF.AddCell(HeadCell);
-                cell = CreateCell("", "     " + StripTagsRegex("No known data found"), "");
-                emptyPDF.AddCell(cell);
-                doc.Add(emptyPDF);
-                doc.Add(new Paragraph("   "));
-                doc.Add(new Paragraph("   "));
-            }
-
-            Session["Vitals"] = lstvitals;
-            #endregion
-        }
-
-        public void PrintHealthStatusEvaluations(Document doc, XmlDocument xmldoc)
-        {
-            #region Health Status Section
-            sNoInformationInTable = string.Empty;
-            DataSet dsHealthStatus = null;
-            XmlNodeList Doc_GoalsSectionNode = xmldoc.GetElementsByTagName("section");
-            foreach (XmlElement elemParent in Doc_GoalsSectionNode)
-            {
-                bool is_break = false;
-                for (int i = 0; i < elemParent.ChildNodes.Count; i++)
-                {
-                    if (elemParent.ChildNodes[i].Name == "title" && elemParent.ChildNodes[i].InnerText.ToUpper() == "HEALTH STATUS EVALUATIONS/OUTCOMES SECTION")
-                    {
-                        //dsHealthConcernSection = ConvertHTMLTablesToDataSet(elemParent.ChildNodes[i + 1].InnerXml);
-                        if (elemParent.ChildNodes[i + 1].InnerXml.Trim(' ').StartsWith("<table") == true)
-                            dsHealthStatus = ConvertHTMLTablesToDataSet(elemParent.ChildNodes[i + 1].InnerXml);
-                        else
-                        {
-                            dsHealthStatus = null;
-                            sNoInformationInTable = string.Empty;
-                            sNoInformationInTable = elemParent.ChildNodes[i + 1].InnerXml;
-                        }
-                        is_break = true;
-                        break;
-                    }
-                }
-                if (is_break == true)
-                    break;
-            }
-
-            if (dsHealthStatus != null && dsHealthStatus.Tables.Count > 0)
-            {
-                for (int k = 0; k < dsHealthStatus.Tables.Count; k++)
-                {
-                    PdfPTable patImplant = new PdfPTable(dsHealthStatus.Tables[k].Columns.Count);
-                    patImplant.WidthPercentage = 100;
-                    if (k == 0)
-                    {
-
-                        HeadCell = new PdfPCell(new Phrase("Health Status Evaluations/Outcomes Section", HeadFont));
-                        HeadCell.Colspan = dsHealthStatus.Tables[k].Columns.Count;
-                        HeadCell.HorizontalAlignment = 1;
-                        HeadCell.BackgroundColor = BaseColor.DARK_GRAY;
-                        patImplant.AddCell(HeadCell);
-                    }
-                    for (int j = 0; j < dsHealthStatus.Tables[k].Columns.Count; j++)
-                    {
-                        string ColumnName = StripTagsRegex(dsHealthStatus.Tables[k].Columns[j].ColumnName);
-                        //if (ColumnName.ToUpper() != "NDCID")
-                        //{
-                        cell = CreateCell(ColumnName, "", "");
-                        patImplant.AddCell(cell);
-                        // }
-                    }
-
-                    foreach (DataRow row in dsHealthStatus.Tables[k].Rows)
-                    {
-                        foreach (DataColumn column in dsHealthStatus.Tables[k].Columns)
-                        {
-                            //if (!row[column].ToString().Contains("NDCID"))
-                            //{
-                            string ColumnData = StripTagsRegex(row[column].ToString());
-                            if ((ColumnData.EndsWith(",")) && (ColumnData.Length > 0))
-                            {
-                                ColumnData = ColumnData.Substring(0, ColumnData.Length - 1);
-                            }
-
-                            cell = CreateCell("", ColumnData, "");
-                            patImplant.AddCell(cell);
-                            //   }
-
-                        }
-                    }
-
-                    doc.Add(patImplant);
-                    doc.Add(new Paragraph("   "));
-                    doc.Add(new Paragraph("   "));
-
-                    try
-                    {
-                        for (int i = 0; i < dsHealthStatus.Tables[k].Rows.Count; i++)
-                        {
-                            PatientResults objVitals = new PatientResults();
-
-                            if ((StripTagsRegex(dsHealthStatus.Tables[k].Rows[i].Field<string>("<tr><th>Item"))).ToString() == "Pulse oximetry")
-                                objVitals.Loinc_Observation = "Pulse Oximetry";
-                            else if (StripTagsRegex(dsHealthStatus.Tables[k].Rows[i].Field<string>("<tr><th>Item")) == "Oxygen administration by nasal cannula")
-                                objVitals.Loinc_Observation = "Inhaled O2 Concentration";
-                            else if (StripTagsRegex(dsHealthStatus.Tables[k].Rows[i].Field<string>("<tr><th>Item")) == "Elvate head of bed")
-                                objVitals.Loinc_Observation = "Respiratory Rate";
-                            else
-                                objVitals.Loinc_Observation = StripTagsRegex((StripTagsRegex(dsHealthStatus.Tables[k].Rows[i].Field<string>("<tr><th>Item"))).ToString());
-
-                            objVitals.Value = StripTagsRegex((StripTagsRegex(dsHealthStatus.Tables[k].Rows[i].Field<string>("Outcome"))).ToString());
-                            //string[] value_units = StripTagsRegex(Row_Value[c]).Split(' ');
-                            //if (value_units[0].Contains("Ft"))
-                            //{
-                            //    string sFeet = ConvertFeetInchToInch(value_units[0].Remove(1), value_units[1].Remove(1));
-                            //    objVitals.Value = sFeet;
-                            //    objVitals.Units = "Ft Inch";
-
-                            //}
-                            //else
-                            //{
-                            //    objVitals.Value = value_units[0];
-                            //    objVitals.Units = value_units[1];
-                            //}
-                            objVitals.Captured_date_and_time = Convert.ToDateTime((StripTagsRegex(dsHealthStatus.Tables[k].Rows[i].Field<string>("Date"))).ToString());
-                            objVitals.Created_Date_And_Time = universalTime;
-                            objVitals.Created_By = ClientSession.UserName;
-                            objVitals.Results_Type = "Vitals";
-
-                            lstvitals.Add(objVitals);
-                        }
-                    }
-                    catch
-                    {
-                        //do nothing
-                    }
-                }
-            }
-            else
-            {
-                PdfPTable emptyPDF = new PdfPTable(1);
-                emptyPDF.WidthPercentage = 100;
-                HeadCell = new PdfPCell(new Phrase("Health Status Evaluations/Outcomes Section", HeadFont));
-                HeadCell.HorizontalAlignment = 1;
-                HeadCell.BackgroundColor = BaseColor.DARK_GRAY;
-                emptyPDF.AddCell(HeadCell);
-                cell = CreateCell("", "     " + StripTagsRegex("No known data found"), "");
-                emptyPDF.AddCell(cell);
-                doc.Add(emptyPDF);
-                doc.Add(new Paragraph("   "));
-                doc.Add(new Paragraph("   "));
-            }
-
-            Session["Vitals"] = lstvitals;
-            #endregion
-        }
-
-        public void PrintAllergy(Document doc, XmlDocument xmldoc)
-        {
-            #region Allergy
-            sNoInformationInTable = string.Empty;
-            DataSet dsAllergy = null;
-            XmlNodeList Doc_AllergyNode = xmldoc.GetElementsByTagName("section");
-            foreach (XmlElement elemParent in Doc_AllergyNode)
-            {
-                bool is_break = false;
-                for (int i = 0; i < elemParent.ChildNodes.Count; i++)
-                {
-                    if (elemParent.ChildNodes[i].Name == "title" && (elemParent.ChildNodes[i].InnerText.ToUpper() == "ALLERGIES, ADVERSE REACTIONS, ALERTS" || elemParent.ChildNodes[i].InnerText.ToUpper() == "ALLERGIES AND ADVERSE REACTIONS" || elemParent.ChildNodes[i].InnerText.ToUpper() == "ALLERGIES"))
-                    {
-                        //dsAllergy = ConvertHTMLTablesToDataSet(elemParent.ChildNodes[i + 1].InnerXml);
-                        if (elemParent.ChildNodes[i + 1].InnerXml.Trim(' ').StartsWith("<table") == true)
-                            dsAllergy = ConvertHTMLTablesToDataSet(elemParent.ChildNodes[i + 1].InnerXml);
-                        else
-                        {
-                            dsAllergy = null;
-                            sNoInformationInTable = string.Empty;
-                            sNoInformationInTable = elemParent.ChildNodes[i + 1].InnerXml;
-                        }
-
-                        is_break = true;
-                        break;
-                    }
-                }
-                if (is_break == true)
-                    break;
-            }
-
-            if (dsAllergy != null && dsAllergy.Tables.Count > 0)
-            {
-                PdfPTable patAllergy = new PdfPTable(dsAllergy.Tables[0].Columns.Count);
-                patAllergy.WidthPercentage = 100;
-                HeadCell = new PdfPCell(new Phrase("ALLERGY", HeadFont));
-                HeadCell.Colspan = dsAllergy.Tables[0].Columns.Count;
-                HeadCell.HorizontalAlignment = 1;
-                HeadCell.BackgroundColor = BaseColor.DARK_GRAY;
-                patAllergy.AddCell(HeadCell);
-
-                for (int j = 0; j < dsAllergy.Tables[0].Columns.Count; j++)
-                {
-                    string ColumnName = StripTagsRegex(dsAllergy.Tables[0].Columns[j].ColumnName);
-                    //if (ColumnName.ToUpper() != "NDCID")
-                    //{
-                    cell = CreateCell(ColumnName, "", "");
-                    patAllergy.AddCell(cell);
-                    // }
-                }
-
-                foreach (DataRow row in dsAllergy.Tables[0].Rows)
-                {
-                    foreach (DataColumn column in dsAllergy.Tables[0].Columns)
-                    {
-                        //if (!row[column].ToString().Contains("NDCID"))
-                        //{
-                        string ColumnData = StripTagsRegex(row[column].ToString());
-                        if ((ColumnData.EndsWith(",")) && (ColumnData.Length > 0))
-                        {
-                            ColumnData = ColumnData.Substring(0, ColumnData.Length - 1);
-                        }
-
-                        cell = CreateCell("", ColumnData, "");
-                        patAllergy.AddCell(cell);
-                        //   }
-
-                    }
-                }
-
-                doc.Add(patAllergy);
-                doc.Add(new Paragraph("   "));
-                doc.Add(new Paragraph("   "));
-
-                try
-                {
-                    for (int i = 0; i < dsAllergy.Tables[0].Rows.Count; i++)
-                    {
-                        Rcopia_Allergy objallergy = new Rcopia_Allergy();
-                        objallergy.Allergy_Name = StripTagsRegex(dsAllergy.Tables[0].Rows[i].Field<string>("<tr><th>Substance"));
-                        objallergy.Reaction = StripTagsRegex(dsAllergy.Tables[0].Rows[i].Field<string>("Reaction"));
-                        // objallergy.NDC_ID = StripTagsRegex(dsAllergy.Tables[0].Rows[i].Field<string>("NDCID"));
-                        objallergy.Created_Date_And_Time = universalTime;
-                        objallergy.Created_By = ClientSession.UserName;
-                        lstallergy.Add(objallergy);
-                    }
-                }
-                catch
-                {
-                    //do nothing
-                }
-            }
-            else
-            {
-                PdfPTable emptyPDF = new PdfPTable(1);
-                emptyPDF.WidthPercentage = 100;
-                HeadCell = new PdfPCell(new Phrase("ALLERGY", HeadFont));
-                HeadCell.HorizontalAlignment = 1;
-                HeadCell.BackgroundColor = BaseColor.DARK_GRAY;
-                emptyPDF.AddCell(HeadCell);
-                if (sNoInformationInTable == string.Empty)
-                {
-                    cell = CreateCell("", "     " + StripTagsRegex("No known data found"), "");
-                }
-                else
-                {
-                    cell = CreateCell("", "     " + StripTagsRegex(sNoInformationInTable), "");
-                }
-                emptyPDF.AddCell(cell);
-                doc.Add(emptyPDF);
-                doc.Add(new Paragraph("   "));
-                doc.Add(new Paragraph("   "));
-            }
-
-            Session["AllergyList"] = lstallergy;
-            #endregion
-        }
-
-        public void PrintEncounter(Document doc, XmlDocument xmldoc)
-        {
-
-            #region Encounter
-            sNoInformationInTable = string.Empty;
-            DataSet dsEncounter = null;
-            XmlNodeList Doc_Encounter_Node = xmldoc.GetElementsByTagName("section");
-            foreach (XmlElement elemParent in Doc_Encounter_Node)
-            {
-                bool is_break = false;
-                for (int i = 0; i < elemParent.ChildNodes.Count; i++)
-                {
-                    if (elemParent.ChildNodes[i].Name == "title" && elemParent.ChildNodes[i].InnerText.ToUpper() == "ENCOUNTERS")
-                    {
-                        //dsEncounter = ConvertHTMLTablesToDataSet(elemParent.ChildNodes[i + 1].InnerXml);
-                        if (elemParent.ChildNodes[i + 1].InnerXml.Trim(' ').StartsWith("<table") == true)
-                            dsEncounter = ConvertHTMLTablesToDataSet(elemParent.ChildNodes[i + 1].InnerXml);
-                        else
-                        {
-                            dsEncounter = null;
-                            sNoInformationInTable = string.Empty;
-                            sNoInformationInTable = elemParent.ChildNodes[i + 1].InnerXml;
-                        }
-                        is_break = true;
-                        break;
-                    }
-                }
-                if (is_break == true)
-                    break;
-            }
-
-            if (dsEncounter != null)
-            {
-                PdfPTable patEncounter = new PdfPTable(dsEncounter.Tables[0].Columns.Count);
-                patEncounter.WidthPercentage = 100;
-                HeadCell = new PdfPCell(new Phrase("ENCOUNTER", HeadFont));
-                HeadCell.Colspan = dsEncounter.Tables[0].Columns.Count;
-                HeadCell.HorizontalAlignment = 1;
-                HeadCell.BackgroundColor = BaseColor.DARK_GRAY;
-                patEncounter.AddCell(HeadCell);
-
-
-                for (int j = 0; j < dsEncounter.Tables[0].Columns.Count; j++)
-                {
-                    string ColumnName = StripTagsRegex(dsEncounter.Tables[0].Columns[j].ColumnName);
-                    cell = CreateCell(ColumnName, "", "");
-                    patEncounter.AddCell(cell);
-                }
-
-                foreach (DataRow row in dsEncounter.Tables[0].Rows)
-                {
-                    foreach (DataColumn column in dsEncounter.Tables[0].Columns)
-                    {
-                        string ColumnData = StripTagsRegex(row[column].ToString());
-                        //if (column.ColumnName == "Date" && ColumnData != string.Empty)
-                        //{
-                        //string year = ColumnData.Substring(0, 4);
-                        //string month = ColumnData.Substring(4, 2);
-                        //string date = ColumnData.Substring(6, 2);
-                        //ColumnData = year + "-" + month + "-" + date;
-                        //}
-                        cell = CreateCell("", ColumnData, "");
-                        patEncounter.AddCell(cell);
-                    }
-                }
-                doc.Add(patEncounter);
-                doc.Add(new Paragraph("   "));
-                doc.Add(new Paragraph("   "));
-            }
-            else
-            {
-                PdfPTable emptyPDF = new PdfPTable(1);
-                emptyPDF.WidthPercentage = 100;
-                HeadCell = new PdfPCell(new Phrase("ENCOUNTER", HeadFont));
-                HeadCell.HorizontalAlignment = 1;
-                HeadCell.BackgroundColor = BaseColor.DARK_GRAY;
-                emptyPDF.AddCell(HeadCell);
-                if (sNoInformationInTable == string.Empty)
-                {
-                    cell = CreateCell("", "     " + StripTagsRegex("No known data found"), "");
-                }
-                else
-                {
-                    cell = CreateCell("", "     " + StripTagsRegex(sNoInformationInTable), "");
-                }
-                emptyPDF.AddCell(cell);
-                doc.Add(emptyPDF);
-                doc.Add(new Paragraph("   "));
-                doc.Add(new Paragraph("   "));
-            }
-            #endregion
-        }
-
-        public void PrintImmunization(Document doc, XmlDocument xmldoc)
-        {
-
-            #region Immunization
-            sNoInformationInTable = string.Empty;
-            DataSet dsImmunization = null;
-            XmlNodeList Doc_Immunization_Node = xmldoc.GetElementsByTagName("section");
-            foreach (XmlElement elemParent in Doc_Immunization_Node)
-            {
-                bool is_break = false;
-                for (int i = 0; i < elemParent.ChildNodes.Count; i++)
-                {
-                    if (elemParent.ChildNodes[i].Name == "title" && elemParent.ChildNodes[i].InnerText.ToUpper() == "IMMUNIZATIONS")
-                    {
-                        if (elemParent.ChildNodes[i + 1].InnerXml.Trim(' ').StartsWith("<table") == true)
-                        {
-                            dsImmunization = ConvertHTMLTablesToDataSet(elemParent.ChildNodes[i + 1].InnerXml);
-                        }
-                        else if (elemParent.ChildNodes[i + 1].InnerXml.IndexOf("<table") > -1)
-                        {
-                            int start = elemParent.ChildNodes[i + 1].InnerXml.IndexOf("<table");
-                            int end = elemParent.ChildNodes[i + 1].InnerXml.IndexOf("</table>");
-
-                            dsImmunization = ConvertHTMLTablesToDataSet(elemParent.ChildNodes[i + 1].InnerXml.Substring(start));
-                        }
-                        else
-                        {
-                            dsImmunization = null;
-                            sNoInformationInTable = string.Empty;
-                            sNoInformationInTable = elemParent.ChildNodes[i + 1].InnerXml;
-                        }
-
-
-                        is_break = true;
-                        break;
-
-                    }
-                }
-                if (is_break == true)
-                    break;
-            }
-
-            try
-            {
-                if (dsImmunization != null && dsImmunization.Tables.Count > 0)
-                {
-                    PdfPTable patImmunization = new PdfPTable(dsImmunization.Tables[0].Columns.Count);
-                    patImmunization.WidthPercentage = 100;
-                    HeadCell = new PdfPCell(new Phrase("IMMUNIZATION", HeadFont));
-                    HeadCell.Colspan = dsImmunization.Tables[0].Columns.Count;
-                    HeadCell.HorizontalAlignment = 1;
-                    HeadCell.BackgroundColor = BaseColor.DARK_GRAY;
-                    patImmunization.AddCell(HeadCell);
-
-
-                    for (int j = 0; j < dsImmunization.Tables[0].Columns.Count; j++)
-                    {
-                        string ColumnName = StripTagsRegex(dsImmunization.Tables[0].Columns[j].ColumnName);
-                        cell = CreateCell(ColumnName, "", "");
-                        patImmunization.AddCell(cell);
-                    }
-
-                    foreach (DataRow row in dsImmunization.Tables[0].Rows)
-                    {
-                        foreach (DataColumn column in dsImmunization.Tables[0].Columns)
-                        {
-                            string ColumnData = StripTagsRegex(row[column].ToString());
-                            //Added By Vaishali for Bug Id:28529
-                            if ((ColumnData.EndsWith(",")) && (ColumnData.Length > 0))
-                            {
-                                ColumnData = ColumnData.Substring(0, ColumnData.Length - 1);
-                            }
-                            if (ColumnData != "00010101")
-                            {
-                                ColumnData.TrimEnd(',');
-                                cell = CreateCell("", ColumnData, "");
-                                patImmunization.AddCell(cell);
-                            }
-                            else
-                            {
-                                cell = CreateCell("", string.Empty, "");
-                                patImmunization.AddCell(cell);
-                            }
-                        }
-                    }
-                    doc.Add(patImmunization);
-                    doc.Add(new Paragraph("   "));
-                    doc.Add(new Paragraph("   "));
-
-                    try
-                    {
-                        for (int i = 0; i < dsImmunization.Tables[0].Rows.Count; i++)
-                        {
-                            Immunization objimmunization = new Immunization();
-                            objimmunization.Immunization_Description = StripTagsRegex(dsImmunization.Tables[0].Rows[i].Field<string>("<tr><th>Vaccine"));
-                            objimmunization.Created_Date_And_Time = universalTime;
-                            objimmunization.Created_By = ClientSession.UserName;
-                            string date = StripTagsRegex(dsImmunization.Tables[0].Rows[i].Field<string>("Date"));
-                            string year = string.Empty;
-                            string month = string.Empty;
-                            string date_1 = string.Empty;
-                            try
-                            {
-                                if (date != "Unknown" && date != string.Empty && (!date.Contains("-") || !date.Contains("/")))
-                                {
-                                    year = date.Substring(0, 4);
-                                    month = date.Substring(4, 2);
-                                    date_1 = date.Substring(6, 2);
-                                    objimmunization.Given_Date = Convert.ToDateTime(year + "-" + month + "-" + date_1);
-                                }
-                            }
-                            catch
-                            {
-                                if (date != "Unknown" && date != string.Empty && (!date.Contains("-") || !date.Contains("/")))
-                                {
-                                    if (date.Contains(' '))
-                                    {
-                                        string[] strDate = date.Split(' ');
-                                        if (strDate.Length == 3)
-                                        {
-                                            date_1 = strDate[0];
-                                            month = strDate[1];
-                                            year = strDate[2];
-                                            objimmunization.Given_Date = Convert.ToDateTime(year + "-" + month + "-" + date_1);
-                                        }
-                                        else if (strDate.Length == 2)
-                                        {
-                                            month = strDate[0];
-                                            year = strDate[1];
-                                            objimmunization.Given_Date = Convert.ToDateTime(year + "-" + month + "-" + "01");
-                                        }
-                                        else
-                                        {
-                                            year = strDate[0];
-                                            objimmunization.Given_Date = Convert.ToDateTime(year + "-" + "01" + "-" + "01");
-                                        }
-                                    }
-                                }
-
-                            }
-                            lstimmunization.Add(objimmunization);
-                        }
-                    }
-                    catch
-                    {
-                        //do nothing
-                    }
-
-                }
-                else
-                {
-                    PdfPTable emptyPDF = new PdfPTable(1);
-                    emptyPDF.WidthPercentage = 100;
-                    HeadCell = new PdfPCell(new Phrase("IMMUNIZATION", HeadFont));
-                    HeadCell.HorizontalAlignment = 1;
-                    HeadCell.BackgroundColor = BaseColor.DARK_GRAY;
-                    emptyPDF.AddCell(HeadCell);
-                    if (sNoInformationInTable == string.Empty)
-                    {
-                        cell = CreateCell("", "     " + StripTagsRegex("No known data found"), "");
-                    }
-                    else
-                    {
-                        cell = CreateCell("", "     " + StripTagsRegex(sNoInformationInTable), "");
-                    }
-                    emptyPDF.AddCell(cell);
-                    doc.Add(emptyPDF);
-                    doc.Add(new Paragraph("   "));
-                    doc.Add(new Paragraph("   "));
-                }
-
-                Session["ImmunizationList"] = lstimmunization;
-            #endregion
-
-            }
-            catch
-            {
-
-            }
-
-        }
-
-        public void PrintMedication(Document doc, XmlDocument xmldoc)
-        {
-
-            #region Medication
-            sNoInformationInTable = string.Empty;
-            DataSet dsMedication = null;
-            XmlNodeList Doc_Medication_Node = xmldoc.GetElementsByTagName("section");
-            XmlElement medItemDoc = null;
-            foreach (XmlElement elemParent in Doc_Medication_Node)
-            {
-                bool is_break = false;
-                for (int i = 0; i < elemParent.ChildNodes.Count; i++)
-                {
-                    if (elemParent.ChildNodes[i].Name == "title" && elemParent.ChildNodes[i].InnerText.ToUpper() == "MEDICATIONS")
-                    {
-
-                        medItemDoc = elemParent;
-                        //dsMedication = ConvertHTMLTablesToDataSet(elemParent.ChildNodes[i + 1].InnerXml);
-                        if (elemParent.ChildNodes[i + 1].InnerXml.Trim(' ').StartsWith("<table") == true)
-                        {
-                            dsMedication = ConvertHTMLTablesToDataSet(elemParent.ChildNodes[i + 1].InnerXml);
-
-                        }
-                        else
-                        {
-                            dsMedication = null;
-                            sNoInformationInTable = string.Empty;
-                            sNoInformationInTable = elemParent.ChildNodes[i + 1].InnerXml;
-                        }
-                        is_break = true;
-                        break;
-                    }
-                }
-                if (is_break == true)
-                    break;
-            }
-
-            if (dsMedication != null && dsMedication.Tables.Count > 0)
-            {
-                PdfPTable patMedication = new PdfPTable(dsMedication.Tables[0].Columns.Count);
-                patMedication.WidthPercentage = 100;
-                HeadCell = new PdfPCell(new Phrase("MEDICATIONS", HeadFont));
-                HeadCell.Colspan = dsMedication.Tables[0].Columns.Count;
-                HeadCell.HorizontalAlignment = 1;
-                HeadCell.BackgroundColor = BaseColor.DARK_GRAY;
-                patMedication.AddCell(HeadCell);
-
-
-                for (int j = 0; j < dsMedication.Tables[0].Columns.Count; j++)
-                {
-                    string ColumnName = StripTagsRegex(dsMedication.Tables[0].Columns[j].ColumnName);
-                    cell = CreateCell(ColumnName, "", "");
-                    patMedication.AddCell(cell);
-                }
-
-                foreach (DataRow row in dsMedication.Tables[0].Rows)
-                {
-                    foreach (DataColumn column in dsMedication.Tables[0].Columns)
-                    {
-                        string ColumnData = StripTagsRegex(row[column].ToString());
-                        //added by vaishali for bug ID 28530
-                        if ((ColumnData.EndsWith("()")) && ColumnData.Length > 0)
-                        {
-                            ColumnData = ColumnData.Substring(0, ColumnData.Length - 2);
-                        }
-                        if (ColumnData != "00010101" && ColumnData != "January 01,0001")
-                        {
-                            cell = CreateCell("", ColumnData, "");
-                            patMedication.AddCell(cell);
-                        }
-                        else
-                        {
-                            cell = CreateCell("", string.Empty, "");
-                            patMedication.AddCell(cell);
-                        }
-                        //if (column.ColumnName == "Start Date" && ColumnData != string.Empty && ColumnData.ToUpper() != "UNKNOWN")
-                        //{
-                        //    string year = ColumnData.Substring(0, 4);
-                        //    string month = ColumnData.Substring(4, 2);
-                        //    string date = ColumnData.Substring(6, 2);
-                        //    ColumnData = year + "-" + month + "-" + date;
-                        //}
-
-                    }
-                }
-                doc.Add(patMedication);
-                doc.Add(new Paragraph("   "));
-                doc.Add(new Paragraph("   "));
-
-
-                try
-                {
-                    for (int i = 0; i < dsMedication.Tables[0].Rows.Count; i++)
-                    {
-                        Rcopia_Medication objmedication = new Rcopia_Medication();
-                        objmedication.Generic_Name = StripTagsRegex(dsMedication.Tables[0].Rows[i].Field<string>("<tr><th>Medication"));
-                        string[] split = objmedication.Generic_Name.Split('[');
-                        if (split.Length > 1)
-                            objmedication.Brand_Name = split[1].Replace("]", "");
-                        string date = StripTagsRegex(dsMedication.Tables[0].Rows[i].Field<string>("Start Date"));
-                        if (date != "Unknown" && date != string.Empty && (!date.Contains("-") || !date.Contains("/")))
-                        {
-                            string year = date.Substring(0, 4);
-                            string month = date.Substring(4, 2);
-                            string date_1 = date.Substring(6, 2);
-                            objmedication.Start_Date = Convert.ToDateTime(year + "-" + month + "-" + date_1);
-                        }
-                        //date = StripTagsRegex(dsMedication.Tables[0].Rows[i].Field<string>("End Date"));
-                        //if (date != "unknown" && date != string.Empty && (!date.Contains("-") || !date.Contains("/")))
-                        //{
-                        //    string year = date.Substring(0, 4);
-                        //    string month = date.Substring(4, 2);
-                        //    string date_1 = date.Substring(6, 2);
-                        //    objmedication.Stop_Date = Convert.ToDateTime(year + "-" + month + "-" + date_1);
-                        //}
-                        if (StripTagsRegex(dsMedication.Tables[0].Rows[i].Field<string>("Directions")).ToUpper() == "AS NEEDED" ||
-                            StripTagsRegex(dsMedication.Tables[0].Rows[i].Field<string>("Directions")).ToUpper() == "AS NEEDED FOR PAIN" ||
-                            StripTagsRegex(dsMedication.Tables[0].Rows[i].Field<string>("Directions")).ToUpper() == "WITH MEALS" ||
-                            StripTagsRegex(dsMedication.Tables[0].Rows[i].Field<string>("Directions")).ToUpper() == "AS DIRECTED" ||
-                            StripTagsRegex(dsMedication.Tables[0].Rows[i].Field<string>("Directions")).ToUpper() == "BETWEEN MEALS" ||
-                            StripTagsRegex(dsMedication.Tables[0].Rows[i].Field<string>("Directions")).ToUpper() == "ONE HOUR BEFORE MEALS" ||
-                            StripTagsRegex(dsMedication.Tables[0].Rows[i].Field<string>("Directions")).ToUpper() == "BEFORE EXERCISE" ||
-                            StripTagsRegex(dsMedication.Tables[0].Rows[i].Field<string>("Directions")).ToUpper() == "WITH A GLASS OF WATER" ||
-                            StripTagsRegex(dsMedication.Tables[0].Rows[i].Field<string>("Directions")).ToUpper() == "AFTER MEALS")
-                        {
-
-                            objmedication.Dose_Other = StripTagsRegex(dsMedication.Tables[0].Rows[i].Field<string>("Directions"));
-                        }
-                        else
-                        {
-                            objmedication.Dose_Timing = StripTagsRegex(dsMedication.Tables[0].Rows[i].Field<string>("Directions"));
-                        }
-
-                        //dosevalue
-                        try
-                        {
-                            objmedication.Dose = medItemDoc.GetElementsByTagName("doseQuantity")[i].Attributes.GetNamedItem("value").Value;
-                        }
-                        catch
-                        {
-                        }
-                        objmedication.Deleted = "N";
-                        objmedication.Created_Date_And_Time = universalTime;
-                        objmedication.Created_By = ClientSession.UserName;
-                        lstmedication.Add(objmedication);
-                    }
-                }
-                catch
-                {
-                    //do nothing
-                }
-
-            }
-            else
-            {
-                PdfPTable emptyPDF = new PdfPTable(1);
-                emptyPDF.WidthPercentage = 100;
-                HeadCell = new PdfPCell(new Phrase("MEDICATIONS", HeadFont));
-                HeadCell.HorizontalAlignment = 1;
-                HeadCell.BackgroundColor = BaseColor.DARK_GRAY;
-                emptyPDF.AddCell(HeadCell);
-                if (sNoInformationInTable == string.Empty)
-                {
-                    cell = CreateCell("", "     " + StripTagsRegex("No known data found"), "");
-                }
-                else
-                {
-                    cell = CreateCell("", "     " + StripTagsRegex(sNoInformationInTable), "");
-                }
-                emptyPDF.AddCell(cell);
-                doc.Add(emptyPDF);
-                doc.Add(new Paragraph("   "));
-                doc.Add(new Paragraph("   "));
-            }
-            Session["MedicationList"] = lstmedication;
-            #endregion
-        }
-
-        public void PrintCarePlan(Document doc, XmlDocument xmldoc)
-        {
-
-            #region Care Plan
-            sNoInformationInTable = string.Empty;
-            DataSet dsCarePlan = null;
-            XmlNodeList Doc_CarePlan_Node = xmldoc.GetElementsByTagName("section");
-            foreach (XmlElement elemParent in Doc_CarePlan_Node)
-            {
-                bool is_break = false;
-                for (int i = 0; i < elemParent.ChildNodes.Count; i++)
-                {
-                    if (elemParent.ChildNodes[i].Name == "title" && (elemParent.ChildNodes[i].InnerText.ToUpper() == "CARE PLAN" || elemParent.ChildNodes[i].InnerText.ToUpper() == "PLAN OF CARE"))
-                    {
-                        // dsCarePlan = ConvertHTMLTablesToDataSet(elemParent.ChildNodes[i + 1].InnerXml);
-                        if (elemParent.ChildNodes[i + 1].InnerXml.Trim(' ').StartsWith("<table") == true)
-                            dsCarePlan = ConvertHTMLTablesToDataSet(elemParent.ChildNodes[i + 1].InnerXml);
-                        else
-                        {
-                            dsCarePlan = null;
-                            sNoInformationInTable = string.Empty;
-                            sNoInformationInTable = elemParent.ChildNodes[i + 1].InnerXml;
-                        }
-                        is_break = true;
-                        break;
-                    }
-                }
-                if (is_break == true)
-                    break;
-            }
-
-            if (dsCarePlan != null && dsCarePlan.Tables.Count > 0)
-            {
-                PdfPTable patCarePlan = new PdfPTable(dsCarePlan.Tables[0].Columns.Count);
-                patCarePlan.WidthPercentage = 100;
-                HeadCell = new PdfPCell(new Phrase("CARE PLAN", HeadFont));
-                HeadCell.Colspan = dsCarePlan.Tables[0].Columns.Count;
-                HeadCell.HorizontalAlignment = 1;
-                HeadCell.BackgroundColor = BaseColor.DARK_GRAY;
-                patCarePlan.AddCell(HeadCell);
-
-
-                for (int j = 0; j < dsCarePlan.Tables[0].Columns.Count; j++)
-                {
-                    string ColumnName = StripTagsRegex(dsCarePlan.Tables[0].Columns[j].ColumnName);
-                    cell = CreateCell(ColumnName, "", "");
-                    patCarePlan.AddCell(cell);
-                }
-
-                foreach (DataRow row in dsCarePlan.Tables[0].Rows)
-                {
-                    foreach (DataColumn column in dsCarePlan.Tables[0].Columns)
-                    {
-                        string ColumnData = StripTagsRegex(row[column].ToString());
-                        //if (column.ColumnName == "Planned Date" && ColumnData != string.Empty)
-                        //{
-                        //    string year = ColumnData.Substring(0, 4);
-                        //    string month = ColumnData.Substring(4, 2);
-                        //    string date = ColumnData.Substring(6, 2);
-                        //    ColumnData = year + "-" + month + "-" + date;
-                        //}
-                        cell = CreateCell("", ColumnData, "");
-                        patCarePlan.AddCell(cell);
-                    }
-                }
-                doc.Add(patCarePlan);
-                doc.Add(new Paragraph("   "));
-                doc.Add(new Paragraph("   "));
-
-
-                string plan = string.Empty;
-                for (int i = 0; i < dsCarePlan.Tables[0].Rows.Count; i++)
-                {
-                    try
-                    {
-                        if (plan == string.Empty)
-                            plan = StripTagsRegex(dsCarePlan.Tables[0].Rows[i].Field<string>("<tr><th>Planned Activity")); // + " " + dsCarePlan.Tables[0].Rows[i].Field<string>("Planned Date"));
-                        else
-                            plan = StripTagsRegex(plan + "*" + dsCarePlan.Tables[0].Rows[i].Field<string>("<tr><th>Planned Activity")); //+ " " + dsCarePlan.Tables[0].Rows[i].Field<string>("Planned Date"));
-                    }
-                    catch
-                    {
-                        //do nothing
-                    }
-                }
-                if (plan != string.Empty)
-                {
-                    try
-                    {
-                        TreatmentPlan objTreatmentPlan = new TreatmentPlan();
-                        objTreatmentPlan.Plan = plan;
-                        objTreatmentPlan.Plan_Type = "PLAN";
-                        objTreatmentPlan.Created_Date_And_Time = universalTime;
-                        objTreatmentPlan.Created_By = ClientSession.UserName;
-                        lsttreatmentplan.Add(objTreatmentPlan);
-                    }
-                    catch
-                    {
-                        //do nothing
-                    }
-                }
-            }
-            else
-            {
-                PdfPTable emptyPDF = new PdfPTable(1);
-                emptyPDF.WidthPercentage = 100;
-                HeadCell = new PdfPCell(new Phrase("CARE PLAN", HeadFont));
-                HeadCell.HorizontalAlignment = 1;
-                HeadCell.BackgroundColor = BaseColor.DARK_GRAY;
-                emptyPDF.AddCell(HeadCell);
-                if (sNoInformationInTable == string.Empty)
-                {
-                    cell = CreateCell("", "     " + StripTagsRegex("No known data found"), "");
-                }
-                else
-                {
-                    cell = CreateCell("", "     " + StripTagsRegex(sNoInformationInTable), "");
-                }
-                emptyPDF.AddCell(cell);
-                doc.Add(emptyPDF);
-                doc.Add(new Paragraph("   "));
-                doc.Add(new Paragraph("   "));
-            }
-
-            Session["TreatmentPlanList"] = lsttreatmentplan;
-            #endregion
-        }
-
-        public void PrintHospitalMedications(Document doc, XmlDocument xmldoc)
-        {
-
-            #region Hospital Medications
-            sNoInformationInTable = string.Empty;
-            DataSet dsHospitalMedications = null;
-            XmlNodeList Doc_HospitalMedications_Node = xmldoc.GetElementsByTagName("section");
-            foreach (XmlElement elemParent in Doc_HospitalMedications_Node)
-            {
-                bool is_break = false;
-                for (int i = 0; i < elemParent.ChildNodes.Count; i++)
-                {
-                    if (elemParent.ChildNodes[i].Name == "title" && elemParent.ChildNodes[i].InnerText.ToUpper() == "HOSPITAL DISCHARGE MEDICATIONS")
-                    {
-                        dsHospitalMedications = ConvertHTMLTablesToDataSet(elemParent.ChildNodes[i + 1].InnerXml);
-                        is_break = true;
-                        break;
-                    }
-                }
-                if (is_break == true)
-                    break;
-            }
-
-            if (dsHospitalMedications != null && dsHospitalMedications.Tables.Count > 0)
-            {
-                PdfPTable patHospitalMedications = new PdfPTable(dsHospitalMedications.Tables[0].Columns.Count);
-                patHospitalMedications.WidthPercentage = 100;
-                HeadCell = new PdfPCell(new Phrase("HOSPITAL DISCHARGE MEDICATIONS", HeadFont));
-                HeadCell.Colspan = dsHospitalMedications.Tables[0].Columns.Count;
-                HeadCell.HorizontalAlignment = 1;
-                HeadCell.BackgroundColor = BaseColor.DARK_GRAY;
-                patHospitalMedications.AddCell(HeadCell);
-
-
-                for (int j = 0; j < dsHospitalMedications.Tables[0].Columns.Count; j++)
-                {
-                    string ColumnName = StripTagsRegex(dsHospitalMedications.Tables[0].Columns[j].ColumnName);
-                    cell = CreateCell(ColumnName, "", "");
-                    patHospitalMedications.AddCell(cell);
-                }
-
-                foreach (DataRow row in dsHospitalMedications.Tables[0].Rows)
-                {
-                    foreach (DataColumn column in dsHospitalMedications.Tables[0].Columns)
-                    {
-                        string ColumnData = StripTagsRegex(row[column].ToString());
-                        //if (column.ColumnName == "Start Date" && ColumnData != string.Empty)
-                        //{
-                        //    string year = ColumnData.Substring(0, 4);
-                        //    string month = ColumnData.Substring(4, 2);
-                        //    string date = ColumnData.Substring(6, 2);
-                        //    ColumnData = year + "-" + month + "-" + date;
-                        //}
-                        cell = CreateCell("", ColumnData, "");
-                        patHospitalMedications.AddCell(cell);
-                    }
-                }
-                doc.Add(patHospitalMedications);
-                doc.Add(new Paragraph("   "));
-                doc.Add(new Paragraph("   "));
-            }
-            #endregion
-        }
-
-        public void PrintReasonForReferal(Document doc, XmlDocument xmldoc)
-        {
-
-            #region Reason for Referal
-            sNoInformationInTable = string.Empty;
-            PdfPTable patReferal = new PdfPTable(new float[] { 900 });
-            patReferal.WidthPercentage = 100;
-            HeadCell = new PdfPCell(new Phrase("REASON FOR REFERRAL", HeadFont));
-            HeadCell.Colspan = 1;
-            HeadCell.HorizontalAlignment = 1;
-            HeadCell.BackgroundColor = BaseColor.DARK_GRAY;
-            patReferal.AddCell(HeadCell);
-
-
-            XmlNodeList Doc_ReferalReason_Node = xmldoc.GetElementsByTagName("section");
-            foreach (XmlElement elemParent in Doc_ReferalReason_Node)
-            {
-                bool is_break = false;
-                bool is_Reason = false;
-                for (int i = 0; i < elemParent.ChildNodes.Count; i++)
-                {
-                    if (elemParent.ChildNodes[i].Name == "title" && elemParent.ChildNodes[i].InnerText.ToUpper() == "REASON FOR REFERRAL")
-                    {
-                        is_Reason = true;
-                    }
-                    if (elemParent.ChildNodes[i].Name == "text" && is_Reason == true)
-                    {
-                        string reason = string.Empty;
-                        if (elemParent.ChildNodes[i].ChildNodes != null && elemParent.ChildNodes[i].ChildNodes.Count == 0)
-                        {
-                            reason = elemParent.ChildNodes[i].InnerXml;
-                        }
-                        else
-                        {
-                            for (int j = 0; j < elemParent.ChildNodes[i].ChildNodes.Count; j++)
-                            {
-                                if (elemParent.ChildNodes[i].ChildNodes[j].Name == "paragraph")
-                                {
-                                    reason = elemParent.ChildNodes[i].ChildNodes[j].InnerXml;
-                                    break;
-                                }
-                            }
-                        }
-                        if (reason.Trim() == string.Empty && elemParent.ChildNodes[i].ChildNodes != null && elemParent.ChildNodes[i].ChildNodes.Count == 1)
-                        {
-                            reason = elemParent.ChildNodes[i].InnerXml;
-                        }
-
-                        if (reason != string.Empty)
-                        {
-                            cell = CreateCell("", "     " + StripTagsRegex(reason), "");
-                            patReferal.AddCell(cell);
-                            doc.Add(patReferal);
-                            doc.Add(new Paragraph("   "));
-                            doc.Add(new Paragraph("   "));
-
-                            try
-                            {
-                                ReferralOrder objmanager = new ReferralOrder();
-                                string reasontext = StripTagsRegex(reason);
-                                objmanager.Reason_For_Referral = reasontext.Replace("\n", " ");
-                                objmanager.Referral_Date = UtilityManager.ConvertToUniversal();
-                                objmanager.Created_Date_And_Time = universalTime;
-                                objmanager.Created_By = ClientSession.UserName;
-                                lstreferalorder.Add(objmanager);
-                            }
-                            catch
-                            {
-                                //do nothing
-                            }
-
-                        }
-                        else
-                        {
-                            sNoInformationInTable = elemParent.ChildNodes[i].InnerXml;
-                            if (sNoInformationInTable == string.Empty)
-                            {
-                                cell = CreateCell("", "     " + StripTagsRegex("No known data found"), "");
-                            }
-                            else
-                            {
-                                cell = CreateCell("", "     " + StripTagsRegex(sNoInformationInTable), "");
-                            }
-                            patReferal.AddCell(cell);
-                            doc.Add(patReferal);
-                            doc.Add(new Paragraph("   "));
-                            doc.Add(new Paragraph("   "));
-                        }
-                        is_break = true;
-                        break;
-                    }
-                }
-                if (is_break == true)
-                    break;
-            }
-
-            Session["ReferalOrderList"] = lstreferalorder;
-
-            #endregion
-
-        }
-
-        public void PrintProcedures(Document doc, XmlDocument xmldoc)
-        {
-            #region Procedure
-            sNoInformationInTable = string.Empty;
-            string[] sstatuscode1 = new string[] { };
-            DataSet dsProcedure = null;
-            XmlNodeList Doc_Procedure_Node = xmldoc.GetElementsByTagName("section");
-            foreach (XmlElement elemParent in Doc_Procedure_Node)
-            {
-                bool is_break = false;
-                for (int i = 0; i < elemParent.ChildNodes.Count; i++)
-                {
-                    if (elemParent.ChildNodes[i].Name == "title" && elemParent.ChildNodes[i].InnerText.ToUpper() == "PROCEDURES")
-                    {
-                        if (elemParent.ChildNodes[i + 1].InnerXml.Trim(' ').StartsWith("<table") == true)
-                            dsProcedure = ConvertHTMLTablesToDataSet(elemParent.ChildNodes[i + 1].InnerXml);
-                        else
-                        {
-                            dsProcedure = null;
-                            sNoInformationInTable = string.Empty;
-                            sNoInformationInTable = elemParent.ChildNodes[i + 1].InnerXml;
-                        }
-                        //Dictionary<string, string> dictStatus = new Dictionary<string, string>();
-                        try
-                        {
-                            int tsr = ConvertHTMLTablesToDataSet(elemParent.ChildNodes[i + 1].InnerXml).Tables[0].Rows.Count;
-                            string[] sstatuscode = new string[tsr];
-                            for (int k = 1; k <= ConvertHTMLTablesToDataSet(elemParent.ChildNodes[i + 1].InnerXml).Tables[0].Rows.Count; k++)
-                            {
-                                string svalue = elemParent.ChildNodes[i + 1 + k].LastChild.ChildNodes[3].Attributes[0].Value;
-                                string sname = elemParent.ChildNodes[i + 1 + k].LastChild.ChildNodes[3].Attributes[0].OwnerElement.Name;
-                                if (sname == "statusCode")
-                                {
-                                    sstatuscode[k - 1] = svalue;
-                                    //dictStatus.Add(sname+k, svalue);
-                                }
-                            }
-                            sstatuscode1 = new string[] { };
-                            sstatuscode1 = sstatuscode;
-                        }
-                        catch
-                        {
-                            dsProcedure = null;
-                            sNoInformationInTable = string.Empty;
-                            sNoInformationInTable = elemParent.ChildNodes[i + 1].InnerXml;
-                        }
-                        is_break = true;
-                        break;
-                    }
-                }
-                if (is_break == true)
-                    break;
-            }
-            if (dsProcedure != null && dsProcedure.Tables.Count > 0)
-            {
-                PdfPTable patProcedure = new PdfPTable((dsProcedure.Tables[0].Columns.Count + 1));
-                patProcedure.WidthPercentage = 100;
-                HeadCell = new PdfPCell(new Phrase("PROCEDURES", HeadFont));
-                HeadCell.Colspan = dsProcedure.Tables[0].Columns.Count + 1;
-                HeadCell.HorizontalAlignment = 1;
-                HeadCell.BackgroundColor = BaseColor.DARK_GRAY;
-                patProcedure.AddCell(HeadCell);
-
-
-                for (int j = 0; j < dsProcedure.Tables[0].Columns.Count; j++)
-                {
-                    string ColumnName = StripTagsRegex(dsProcedure.Tables[0].Columns[j].ColumnName);
-                    cell = CreateCell(ColumnName, "", "");
-                    patProcedure.AddCell(cell);
-                }
-                if (sstatuscode1.Length > 0)
-                {
-                    cell = CreateCell("Status", "", "");
-                    patProcedure.AddCell(cell);
-                }
-
-                int y = 0;
-                foreach (DataRow row in dsProcedure.Tables[0].Rows)
-                {
-                    foreach (DataColumn column in dsProcedure.Tables[0].Columns)
-                    {
-                        string ColumnData = StripTagsRegex(row[column].ToString());
-                        cell = CreateCell("", ColumnData, "");
-                        patProcedure.AddCell(cell);
-                    }
-                    if (sstatuscode1.Length > 0)
-                    {
-                        cell = CreateCell("", sstatuscode1[y], "");
-                        patProcedure.AddCell(cell);
-                    }
-                    y++;
-                }
-                doc.Add(patProcedure);
-                doc.Add(new Paragraph("   "));
-                doc.Add(new Paragraph("   "));
-
-                for (int i = 0; i < dsProcedure.Tables[0].Rows.Count; i++)
-                {
-                    try
-                    {
-                        InHouseProcedure objprocedure = new InHouseProcedure();
-                        objprocedure.Procedure_Code_Description = StripTagsRegex(dsProcedure.Tables[0].Rows[i].Field<string>("<tr><th>Procedure"));
-                        objprocedure.Created_By = ClientSession.UserName;
-                        string date = StripTagsRegex(dsProcedure.Tables[0].Rows[i].Field<string>("Date"));//added for 30254
-                        if (date != "unknown" && date != string.Empty && (!date.Contains("-") || !date.Contains("/")))
-                        {
-
-                            if (date.Length > 8)
-                            {
-                                string year = date.Substring(0, 4);
-                                string month = date.Substring(4, 2);
-                                string date_1 = date.Substring(6, 2);
-                                objprocedure.Created_Date_And_Time = Convert.ToDateTime(year + "-" + month + "-" + date_1);
-                            }
-                            else if (date.Length < 8 && date.Length == 6)
-                            {
-                                string year = date.Substring(0, 4);
-                                string month = date.Substring(4, 2);
-                                objprocedure.Created_Date_And_Time = Convert.ToDateTime(year + "-" + month + "-" + "01");
-                            }
-                            else if (date.Length < 8 && date.Length == 4)
-                            {
-                                string year = date.Substring(0, 4);
-                                objprocedure.Created_Date_And_Time = Convert.ToDateTime(year + "-" + "01" + "-" + "01");
-                            }
-                        } //*
-                        lstprocedures.Add(objprocedure);
-                    }
-                    catch
-                    {
-
-                    }
-                }
-            }
-            else
-            {
-                PdfPTable emptyPDF = new PdfPTable(1);
-                emptyPDF.WidthPercentage = 100;
-                HeadCell = new PdfPCell(new Phrase("PROCEDURES", HeadFont));
-                HeadCell.HorizontalAlignment = 1;
-                HeadCell.BackgroundColor = BaseColor.DARK_GRAY;
-                emptyPDF.AddCell(HeadCell);
-                if (sNoInformationInTable == string.Empty)
-                {
-                    cell = CreateCell("", "     " + StripTagsRegex("No known data found"), "");
-                }
-                else
-                {
-                    cell = CreateCell("", "     " + StripTagsRegex(sNoInformationInTable), "");
-                }
-                emptyPDF.AddCell(cell);
-                doc.Add(emptyPDF);
-                doc.Add(new Paragraph("   "));
-                doc.Add(new Paragraph("   "));
-            }
-
-
-            Session["ProcedureList"] = lstprocedures;
-            #endregion
-
-        }
-
-        public void PrintFunctionalStatus(Document doc, XmlDocument xmldoc)
-        {
-
-            #region Functional And Congnitive Status
-            sNoInformationInTable = string.Empty;
-            DataSet dsfunctional = null;
-            XmlNodeList Doc_Functional_Node = xmldoc.GetElementsByTagName("section");
-            foreach (XmlElement elemParent in Doc_Functional_Node)
-            {
-                bool is_break = false;
-                for (int i = 0; i < elemParent.ChildNodes.Count; i++)
-                {
-                    if (elemParent.ChildNodes[i].Name == "title" && elemParent.ChildNodes[i].InnerText.ToUpper() == "FUNCTIONAL STATUS")
-                    {
-                        // dsfunctional = ConvertHTMLTablesToDataSet(elemParent.ChildNodes[i + 1].InnerXml);
-
-                        if (elemParent.ChildNodes[i + 1].InnerXml.Trim(' ').StartsWith("<table") == true)
-                            dsfunctional = ConvertHTMLTablesToDataSet(elemParent.ChildNodes[i + 1].InnerXml);
-                        else
-                        {
-                            dsfunctional = null;
-                            sNoInformationInTable = string.Empty;
-                            sNoInformationInTable = elemParent.ChildNodes[i + 1].InnerXml;
-                        }
-                        is_break = true;
-                        break;
-                    }
-                }
-                if (is_break == true)
-                    break;
-            }
-
-            if (dsfunctional != null && dsfunctional.Tables.Count > 0)
-            {
-                PdfPTable patFunction = new PdfPTable(dsfunctional.Tables[0].Columns.Count);
-                patFunction.WidthPercentage = 100;
-                HeadCell = new PdfPCell(new Phrase("FUNCTIONAL STATUS", HeadFont));
-                HeadCell.Colspan = dsfunctional.Tables[0].Columns.Count;
-                HeadCell.HorizontalAlignment = 1;
-                HeadCell.BackgroundColor = BaseColor.DARK_GRAY;
-                patFunction.AddCell(HeadCell);
-
-
-                for (int j = 0; j < dsfunctional.Tables[0].Columns.Count; j++)
-                {
-                    string ColumnName = StripTagsRegex(dsfunctional.Tables[0].Columns[j].ColumnName);
-                    cell = CreateCell(ColumnName, "", "");
-                    patFunction.AddCell(cell);
-                }
-
-                foreach (DataRow row in dsfunctional.Tables[0].Rows)
-                {
-                    foreach (DataColumn column in dsfunctional.Tables[0].Columns)
-                    {
-                        string ColumnData = StripTagsRegex(row[column].ToString());
-                        cell = CreateCell("", ColumnData, "");
-                        patFunction.AddCell(cell);
-                    }
-                }
-                doc.Add(patFunction);
-                doc.Add(new Paragraph("   "));
-                doc.Add(new Paragraph("   "));
-
-
-
-                for (int i = 0; i < dsfunctional.Tables[0].Rows.Count; i++)
-                {
-                    try
-                    {
-                        CarePlan objCarePlan = new CarePlan();
-                        objCarePlan.Care_Name = "Functional Condition";
-                        objCarePlan.Care_Name_Value = StripTagsRegex(dsfunctional.Tables[0].Rows[i].Field<string>("<tr><th>Functional Condition"));
-                        objCarePlan.Status = StripTagsRegex(dsfunctional.Tables[0].Rows[i].Field<string>("Condition Status"));
-                        string date = StripTagsRegex(dsfunctional.Tables[0].Rows[i].Field<string>("Effective Dates"));//added for 30257
-                        if (date != "unknown" && date != string.Empty && (!date.Contains("-") || !date.Contains("/")))
-                        {
-
-                            if (date.Length > 8)
-                            {
-                                string year = date.Substring(0, 4);
-                                string month = date.Substring(4, 2);
-                                string date_1 = date.Substring(6, 2);
-                                objCarePlan.Plan_Date = year + "-" + month + "-" + date_1;
-                            }
-                            else if (date.Length < 8 && date.Length == 6)
-                            {
-                                string year = date.Substring(0, 4);
-                                string month = date.Substring(4, 2);
-
-                                objCarePlan.Plan_Date = year + "-" + month;
-                            }
-                            else if (date.Length < 8 && date.Length == 4)
-                            {
-                                string year = date.Substring(0, 4);
-                                objCarePlan.Plan_Date = year;
-                            }
-                        }
-                        objCarePlan.Created_Date_And_Time = universalTime;
-                        objCarePlan.Created_By = ClientSession.UserName;
-                        lstcareplan.Add(objCarePlan);
-                    }
-                    catch
-                    {
-                        //do nothing
-                    }
-                }
-
-            }
-            else
-            {
-                PdfPTable emptyPDF = new PdfPTable(1);
-                emptyPDF.WidthPercentage = 100;
-                HeadCell = new PdfPCell(new Phrase("FUNCTIONAL STATUS", HeadFont));
-                HeadCell.HorizontalAlignment = 1;
-                HeadCell.BackgroundColor = BaseColor.DARK_GRAY;
-                emptyPDF.AddCell(HeadCell);
-                if (sNoInformationInTable == string.Empty)
-                {
-                    cell = CreateCell("", "     " + StripTagsRegex("No known data found"), "");
-                }
-                else
-                {
-                    cell = CreateCell("", "     " + StripTagsRegex(sNoInformationInTable), "");
-                }
-                emptyPDF.AddCell(cell);
-                doc.Add(emptyPDF);
-                doc.Add(new Paragraph("   "));
-                doc.Add(new Paragraph("   "));
-            }
-
-
-            #endregion
-            Session["CarePlanList"] = lstcareplan;
-        }
-
-        public void PrintResults(Document doc, XmlDocument xmldoc)
-        {
-            try
-            {
-                #region CCD_Results
-
-                sNoInformationInTable = string.Empty;
-                if (Request["FileName"] != null && (Request["Type"] == "CCD" || Request["Type"] == "C32"))
-                {
-                    DataSet dsResults = null;
-                    XmlNodeList Doc_Results_Node = xmldoc.GetElementsByTagName("section");
-                    foreach (XmlElement elemParent in Doc_Results_Node)
-                    {
-                        bool is_break = false;
-                        for (int i = 0; i < elemParent.ChildNodes.Count; i++)
-                        {
-                            if (elemParent.ChildNodes[i].Name == "title" && elemParent.ChildNodes[i].InnerText.ToUpper() == "RESULTS")
-                            {
-                                if (elemParent.ChildNodes[i + 1].InnerXml.Trim(' ').StartsWith("<table") == true)
-                                {
-                                    dsResults = ConvertHTMLTablesToDataSet(elemParent.ChildNodes[i + 1].InnerXml);
-                                }
-                                else
-                                {
-                                    dsResults = null;
-                                    sNoInformationInTable = string.Empty;
-                                    sNoInformationInTable = elemParent.ChildNodes[i + 1].InnerXml;
-                                }
-                                is_break = true;
-                                break;
-
-                            }
-                        }
-                        if (is_break == true)
-                            break;
-                    }
-
-                    if (dsResults != null && dsResults.Tables.Count > 0)
-                    {
-                        PdfPTable patResults = new PdfPTable(dsResults.Tables[0].Columns.Count);
-                        patResults.WidthPercentage = 100;
-                        HeadCell = new PdfPCell(new Phrase("RESULTS", HeadFont));
-                        HeadCell.Colspan = dsResults.Tables[0].Columns.Count;
-                        HeadCell.HorizontalAlignment = 1;
-                        HeadCell.BackgroundColor = BaseColor.DARK_GRAY;
-                        patResults.AddCell(HeadCell);
-
-
-                        for (int j = 0; j < dsResults.Tables[0].Columns.Count; j++)
-                        {
-                            string ColumnName = StripTagsRegex(dsResults.Tables[0].Columns[j].ColumnName);
-                            cell = CreateCell(ColumnName, "", "");
-                            patResults.AddCell(cell);
-                        }
-
-                        foreach (DataRow row in dsResults.Tables[0].Rows)
-                        {
-                            foreach (DataColumn column in dsResults.Tables[0].Columns)
-                            {
-                                string ColumnData = StripTagsRegex(row[column].ToString());
-                                if (ColumnData.Contains("&lt;"))
-                                    ColumnData = ColumnData.Replace("&lt;", "<");
-                                else if (ColumnData.Contains("&gt;"))
-                                    ColumnData = ColumnData.Replace("&gt;", ">");
-                                cell = CreateCell("", ColumnData, "");
-                                patResults.AddCell(cell);
-                            }
-                        }
-                        doc.Add(patResults);
-                        doc.Add(new Paragraph("   "));
-                        doc.Add(new Paragraph("   "));
-
-                        ResultMaster objmaster = new ResultMaster();
-                        objmaster.Is_Electronic_Mode = "N";
-                        objmaster.Created_Date_And_Time = universalTime;
-                        objmaster.Created_By = ClientSession.UserName;
-                        lstresultmaster.Add(objmaster);
-
-
-                        ResultOBR objobr = new ResultOBR();
-                        objobr.OBR_Observation_Battery_Text = "Blood chemistry";
-                        objobr.Created_Date_And_Time = universalTime;
-                        objobr.Created_By = ClientSession.UserName;
-                        objobr.OBR_Specimen_Collection_Date_And_Time = universalTime.ToString("yyyyMMddhhmmss");
-                        lstresultobr.Add(objobr);
-
-
-                        ResultORC objorc = new ResultORC();
-                        objorc.Created_Date_And_Time = universalTime;
-                        objorc.Created_By = ClientSession.UserName;
-                        lstresultorc.Add(objorc);
-
-                        for (int i = 0; i < dsResults.Tables[0].Rows.Count; i++)
-                        {
-
-                            ResultOBX objresult = new ResultOBX();
-                            string order = StripTagsRegex(dsResults.Tables[0].Rows[i][0].ToString());
-                            if (order != string.Empty)
-                            {
-                                try
-                                {
-                                    string[] orders = order.Split(' ');
-                                    objresult.OBX_Loinc_Observation_Text = orders[0];
-                                    if (order.Contains('(') == true)
-                                    {
-                                        string strOrder = order.Substring(order.IndexOf('('), order.Length - order.IndexOf('('));
-
-                                        objresult.OBX_Reference_Range = strOrder;
-
-                                    }
-                                    //if (orders.Length >= 4)//for bug id 30256
-                                    //{
-                                    //    objresult.OBX_Reference_Range = orders[1] + " " + orders[2]+" "+orders[3];
-                                    //}
-                                    //else if (orders.Length >= 3)
-                                    //{
-                                    //    objresult.OBX_Reference_Range = orders[1] +" "+ orders[2];
-                                    //} 
-                                    else
-                                    {
-                                        objresult.OBX_Reference_Range = orders[1];
-                                    }
-                                    order = StripTagsRegex(dsResults.Tables[0].Rows[i].Field<string>("Blood chemistry"));
-                                    orders = order.Split(' ');
-                                    objresult.OBX_Observation_Value = orders[0];
-                                    objresult.Created_Date_And_Time = universalTime;
-                                    objresult.Created_By = ClientSession.UserName;
-                                    lstresultobx.Add(objresult);
-                                }
-                                catch
-                                {
-                                    //do nothing
-                                }
-                            }
-                        }
-
-                    }
-                    else
-                    {
-                        PdfPTable emptyPDF = new PdfPTable(1);
-                        emptyPDF.WidthPercentage = 100;
-                        HeadCell = new PdfPCell(new Phrase("RESULTS", HeadFont));
-                        HeadCell.HorizontalAlignment = 1;
-                        HeadCell.BackgroundColor = BaseColor.DARK_GRAY;
-                        emptyPDF.AddCell(HeadCell);
-                        if (sNoInformationInTable == string.Empty)
-                        {
-                            cell = CreateCell("", "     " + StripTagsRegex("No known data found"), "");
-                        }
-                        else
-                        {
-                            cell = CreateCell("", "     " + StripTagsRegex(sNoInformationInTable), "");
-                        }
-                        emptyPDF.AddCell(cell);
-                        doc.Add(emptyPDF);
-                        doc.Add(new Paragraph("   "));
-                        doc.Add(new Paragraph("   "));
-                    }
-
-                    Session["ResultMasterList"] = lstresultmaster;
-                    Session["ResultObrList"] = lstresultobr;
-                    Session["ResultObxList"] = lstresultobx;
-                    Session["ResultOrcList"] = lstresultorc;
-                }
-
-                #endregion
-
-                #region Print C32 Results
-                else
-                {
-                    XmlNodeList Doc_Results_Node = xmldoc.GetElementsByTagName("section");
-                    foreach (XmlElement elemParent in Doc_Results_Node)
-                    {
-                        bool is_break = false;
-                        for (int i = 0; i < elemParent.ChildNodes.Count; i++)
-                        {
-                            if (elemParent.ChildNodes[i].Name == "title" && elemParent.ChildNodes[i].InnerText.ToUpper() == "TEST RESULTS")
-                            {
-                                int count = elemParent.ChildNodes[i + 1].ChildNodes.Count;
-                                for (int j = 0; j < count; j++)
-                                {
-                                    if (elemParent.ChildNodes[i + 1].ChildNodes[j].Name == "paragraph" && elemParent.ChildNodes[i + 1].ChildNodes[j].InnerXml == "Lab Results")
-                                    {
-                                        IList<string> ColumnHead = new List<string>();
-                                        IList<string> RowValue = new List<string>();
-                                        int temp_count = elemParent.ChildNodes[i + 1].ChildNodes[j + 1].ChildNodes.Count;
-                                        for (int k = 0; k < temp_count; k++)
-                                        {
-                                            if (elemParent.ChildNodes[i + 1].ChildNodes[j + 1].ChildNodes[k].Name == "thead")
-                                            {
-                                                int head_count = elemParent.ChildNodes[i + 1].ChildNodes[j + 1].ChildNodes[k].ChildNodes.Count;
-                                                for (int l = 0; l < head_count; l++)
-                                                {
-                                                    if (elemParent.ChildNodes[i + 1].ChildNodes[j + 1].ChildNodes[k].ChildNodes[l].Name == "tr")
-                                                    {
-                                                        int item_count = elemParent.ChildNodes[i + 1].ChildNodes[j + 1].ChildNodes[k].ChildNodes[l].ChildNodes.Count;
-                                                        for (int m = 0; m < item_count; m++)
-                                                        {
-                                                            if (elemParent.ChildNodes[i + 1].ChildNodes[j + 1].ChildNodes[k].ChildNodes[l].ChildNodes[m].Name == "th")
-                                                            {
-                                                                ColumnHead.Add(elemParent.ChildNodes[i + 1].ChildNodes[j + 1].ChildNodes[k].ChildNodes[l].ChildNodes[m].InnerXml);
-                                                            }
-                                                        }
-                                                    }
-                                                }
-                                            }
-
-                                            else if (elemParent.ChildNodes[i + 1].ChildNodes[j + 1].ChildNodes[k].Name == "tbody")
-                                            {
-                                                int head_count = elemParent.ChildNodes[i + 1].ChildNodes[j + 1].ChildNodes[k].ChildNodes.Count;
-                                                for (int l = 0; l < head_count; l++)
-                                                {
-                                                    if (elemParent.ChildNodes[i + 1].ChildNodes[j + 1].ChildNodes[k].ChildNodes[l].Name == "tr")
-                                                    {
-                                                        int item_count = elemParent.ChildNodes[i + 1].ChildNodes[j + 1].ChildNodes[k].ChildNodes[l].ChildNodes.Count;
-                                                        for (int m = 0; m < item_count; m++)
-                                                        {
-                                                            if (elemParent.ChildNodes[i + 1].ChildNodes[j + 1].ChildNodes[k].ChildNodes[l].ChildNodes[m].Name == "td")
-                                                            {
-                                                                RowValue.Add(elemParent.ChildNodes[i + 1].ChildNodes[j + 1].ChildNodes[k].ChildNodes[l].ChildNodes[m].InnerXml);
-                                                            }
-                                                        }
-                                                    }
-                                                }
-                                            }
-                                        }
-                                        if (ColumnHead.Count > 0)
-                                        {
-                                            PdfPTable patResults = new PdfPTable(ColumnHead.Count);
-                                            patResults.WidthPercentage = 100;
-                                            HeadCell = new PdfPCell(new Phrase("LAB RESULTS", HeadFont));
-                                            HeadCell.Colspan = ColumnHead.Count;
-                                            HeadCell.HorizontalAlignment = 1;
-                                            HeadCell.BackgroundColor = BaseColor.DARK_GRAY;
-                                            patResults.AddCell(HeadCell);
-
-
-                                            for (int x = 0; x < ColumnHead.Count; x++)
-                                            {
-                                                string ColumnName = StripTagsRegex(ColumnHead[x]);
-                                                cell = CreateCell(ColumnName, "", "");
-                                                patResults.AddCell(cell);
-                                            }
-
-                                            for (int k = 0; k < RowValue.Count; k++)
-                                            {
-                                                string ColumnName = StripTagsRegex(RowValue[k]);
-                                                if (ColumnName.Contains("&lt;"))
-                                                    ColumnName = ColumnName.Replace("&lt;", "<");
-                                                else if (ColumnName.Contains("&gt;"))
-                                                    ColumnName = ColumnName.Replace("&gt;", ">");
-                                                cell = CreateCell("", ColumnName, "");
-                                                patResults.AddCell(cell);
-                                            }
-
-                                            doc.Add(patResults);
-                                            doc.Add(new Paragraph("   "));
-                                            doc.Add(new Paragraph("   "));
-
-                                        }
-
-
-                                    }
-                                    else if (elemParent.ChildNodes[i + 1].ChildNodes[j].Name == "paragraph" && elemParent.ChildNodes[i + 1].ChildNodes[j].InnerXml == "Diagnostic Results")
-                                    {
-                                        IList<string> ColumnHead = new List<string>();
-                                        IList<string> RowValue = new List<string>();
-                                        int temp_count = elemParent.ChildNodes[i + 1].ChildNodes[j + 1].ChildNodes.Count;
-                                        for (int k = 0; k < temp_count; k++)
-                                        {
-                                            if (elemParent.ChildNodes[i + 1].ChildNodes[j + 1].ChildNodes[k].Name == "thead")
-                                            {
-                                                int head_count = elemParent.ChildNodes[i + 1].ChildNodes[j + 1].ChildNodes[k].ChildNodes.Count;
-                                                for (int l = 0; l < head_count; l++)
-                                                {
-                                                    if (elemParent.ChildNodes[i + 1].ChildNodes[j + 1].ChildNodes[k].ChildNodes[l].Name == "tr")
-                                                    {
-                                                        int item_count = elemParent.ChildNodes[i + 1].ChildNodes[j + 1].ChildNodes[k].ChildNodes[l].ChildNodes.Count;
-                                                        for (int m = 0; m < item_count; m++)
-                                                        {
-                                                            if (elemParent.ChildNodes[i + 1].ChildNodes[j + 1].ChildNodes[k].ChildNodes[l].ChildNodes[m].Name == "th")
-                                                            {
-                                                                ColumnHead.Add(elemParent.ChildNodes[i + 1].ChildNodes[j + 1].ChildNodes[k].ChildNodes[l].ChildNodes[m].InnerXml);
-                                                            }
-                                                        }
-                                                    }
-                                                }
-                                            }
-
-                                            else if (elemParent.ChildNodes[i + 1].ChildNodes[j + 1].ChildNodes[k].Name == "tbody")
-                                            {
-                                                int head_count = elemParent.ChildNodes[i + 1].ChildNodes[j + 1].ChildNodes[k].ChildNodes.Count;
-                                                for (int l = 0; l < head_count; l++)
-                                                {
-                                                    if (elemParent.ChildNodes[i + 1].ChildNodes[j + 1].ChildNodes[k].ChildNodes[l].Name == "tr")
-                                                    {
-                                                        int item_count = elemParent.ChildNodes[i + 1].ChildNodes[j + 1].ChildNodes[k].ChildNodes[l].ChildNodes.Count;
-                                                        for (int m = 0; m < item_count; m++)
-                                                        {
-                                                            if (elemParent.ChildNodes[i + 1].ChildNodes[j + 1].ChildNodes[k].ChildNodes[l].ChildNodes[m].Name == "td")
-                                                            {
-                                                                RowValue.Add(elemParent.ChildNodes[i + 1].ChildNodes[j + 1].ChildNodes[k].ChildNodes[l].ChildNodes[m].InnerXml);
-                                                            }
-                                                        }
-                                                    }
-                                                }
-                                            }
-                                        }
-
-                                        if (ColumnHead.Count > 0)
-                                        {
-                                            PdfPTable patResults = new PdfPTable(ColumnHead.Count);
-                                            patResults.WidthPercentage = 100;
-                                            HeadCell = new PdfPCell(new Phrase("DIAGNOSTIC RESULTS", HeadFont));
-                                            HeadCell.Colspan = ColumnHead.Count;
-                                            HeadCell.HorizontalAlignment = 1;
-                                            HeadCell.BackgroundColor = BaseColor.DARK_GRAY;
-                                            patResults.AddCell(HeadCell);
-
-
-                                            for (int x = 0; x < ColumnHead.Count; x++)
-                                            {
-                                                string ColumnName = StripTagsRegex(ColumnHead[x]);
-                                                cell = CreateCell(ColumnName, "", "");
-                                                patResults.AddCell(cell);
-                                            }
-
-                                            for (int k = 0; k < RowValue.Count; k++)
-                                            {
-                                                string ColumnName = StripTagsRegex(RowValue[k]);
-                                                cell = CreateCell("", ColumnName, "");
-                                                patResults.AddCell(cell);
-                                            }
-
-                                            doc.Add(patResults);
-                                            doc.Add(new Paragraph("   "));
-                                            doc.Add(new Paragraph("   "));
-
-                                        }
-                                    }
-                                }
-                                is_break = true;
-                                break;
-                            }
-                        }
-                        if (is_break == true)
-                            break;
-                    }
-                }
-
-                #endregion
-
-            }
-            catch
-            {
-                DataSet dsResults = null;
-                XmlNodeList Doc_Results_Node = xmldoc.GetElementsByTagName("section");
-                foreach (XmlElement elemParent in Doc_Results_Node)
-                {
-                    bool is_break = false;
-                    for (int i = 0; i < elemParent.ChildNodes.Count; i++)
-                    {
-                        if (elemParent.ChildNodes[i].Name == "title" && elemParent.ChildNodes[i].InnerText.ToUpper() == "RESULTS")
-                        {
-                            dsResults = ConvertHTMLTablesToDataSet(elemParent.ChildNodes[i + 1].InnerXml);
-                            is_break = true;
-                            break;
-                        }
-                    }
-                    if (is_break == true)
-                        break;
-                }
-
-                if (dsResults != null && dsResults.Tables.Count > 0)
-                {
-                    PdfPTable patResults = new PdfPTable(dsResults.Tables[0].Columns.Count);
-                    patResults.WidthPercentage = 100;
-                    HeadCell = new PdfPCell(new Phrase("RESULTS", HeadFont));
-                    HeadCell.Colspan = dsResults.Tables[0].Columns.Count;
-                    HeadCell.HorizontalAlignment = 1;
-                    HeadCell.BackgroundColor = BaseColor.DARK_GRAY;
-                    patResults.AddCell(HeadCell);
-
-
-                    for (int j = 0; j < dsResults.Tables[0].Columns.Count; j++)
-                    {
-                        string ColumnName = StripTagsRegex(dsResults.Tables[0].Columns[j].ColumnName);
-                        cell = CreateCell(ColumnName, "", "");
-                        patResults.AddCell(cell);
-                    }
-
-                    foreach (DataRow row in dsResults.Tables[0].Rows)
-                    {
-                        foreach (DataColumn column in dsResults.Tables[0].Columns)
-                        {
-                            string ColumnData = StripTagsRegex(row[column].ToString());
-                            if (ColumnData.Contains("&lt;"))
-                                ColumnData = ColumnData.Replace("&lt;", "<");
-                            else if (ColumnData.Contains("&gt;"))
-                                ColumnData = ColumnData.Replace("&gt;", ">");
-                            cell = CreateCell("", ColumnData, "");
-                            patResults.AddCell(cell);
-                        }
-                    }
-                    doc.Add(patResults);
-                    doc.Add(new Paragraph("   "));
-                    doc.Add(new Paragraph("   "));
-
-                }
-            }
-
-        }
-        public void PrintResults(Document doc, XmlDocument xmldoc,string fileName,string Type)
+        public void PrintResults(Document doc, XmlDocument xmldoc, string fileName, string Type)
         {
             try
             {
@@ -4807,7 +861,7 @@ namespace Acurus.Capella.PatientPortal
                             {
                                 if (elemParent.ChildNodes[i + 1].InnerXml.Trim(' ').StartsWith("<table") == true)
                                 {
-                                    dsResults = ConvertHTMLTablesToDataSet(elemParent.ChildNodes[i + 1].InnerXml,Type);
+                                    dsResults = ConvertHTMLTablesToDataSet(elemParent.ChildNodes[i + 1].InnerXml, Type);
                                 }
                                 else
                                 {
@@ -4831,7 +885,8 @@ namespace Acurus.Capella.PatientPortal
                         HeadCell = new PdfPCell(new Phrase("RESULTS", HeadFont));
                         HeadCell.Colspan = dsResults.Tables[0].Columns.Count;
                         HeadCell.HorizontalAlignment = 1;
-                        HeadCell.BackgroundColor = BaseColor.DARK_GRAY;
+                        HeadCell.Border = iTextSharp.text.Rectangle.NO_BORDER;
+                        HeadCell.BackgroundColor = MyColor; // BaseColor.DARK_GRAY;
                         patResults.AddCell(HeadCell);
 
 
@@ -4930,7 +985,8 @@ namespace Acurus.Capella.PatientPortal
                         emptyPDF.WidthPercentage = 100;
                         HeadCell = new PdfPCell(new Phrase("RESULTS", HeadFont));
                         HeadCell.HorizontalAlignment = 1;
-                        HeadCell.BackgroundColor = BaseColor.DARK_GRAY;
+                        HeadCell.Border = iTextSharp.text.Rectangle.NO_BORDER;
+                        HeadCell.BackgroundColor = MyColor; // BaseColor.DARK_GRAY;
                         emptyPDF.AddCell(HeadCell);
                         if (sNoInformationInTable == string.Empty)
                         {
@@ -5020,7 +1076,8 @@ namespace Acurus.Capella.PatientPortal
                                             HeadCell = new PdfPCell(new Phrase("LAB RESULTS", HeadFont));
                                             HeadCell.Colspan = ColumnHead.Count;
                                             HeadCell.HorizontalAlignment = 1;
-                                            HeadCell.BackgroundColor = BaseColor.DARK_GRAY;
+                                            HeadCell.Border = iTextSharp.text.Rectangle.NO_BORDER;
+                                            HeadCell.BackgroundColor = MyColor; // BaseColor.DARK_GRAY;
                                             patResults.AddCell(HeadCell);
 
 
@@ -5102,8 +1159,9 @@ namespace Acurus.Capella.PatientPortal
                                             patResults.WidthPercentage = 100;
                                             HeadCell = new PdfPCell(new Phrase("DIAGNOSTIC RESULTS", HeadFont));
                                             HeadCell.Colspan = ColumnHead.Count;
+                                            HeadCell.Border = iTextSharp.text.Rectangle.NO_BORDER;
                                             HeadCell.HorizontalAlignment = 1;
-                                            HeadCell.BackgroundColor = BaseColor.DARK_GRAY;
+                                            HeadCell.BackgroundColor = MyColor; // BaseColor.DARK_GRAY;
                                             patResults.AddCell(HeadCell);
 
 
@@ -5166,8 +1224,9 @@ namespace Acurus.Capella.PatientPortal
                     patResults.WidthPercentage = 100;
                     HeadCell = new PdfPCell(new Phrase("RESULTS", HeadFont));
                     HeadCell.Colspan = dsResults.Tables[0].Columns.Count;
+                    HeadCell.Border = iTextSharp.text.Rectangle.NO_BORDER;
                     HeadCell.HorizontalAlignment = 1;
-                    HeadCell.BackgroundColor = BaseColor.DARK_GRAY;
+                    HeadCell.BackgroundColor = MyColor;// BaseColor.DARK_GRAY;
                     patResults.AddCell(HeadCell);
 
 
@@ -5200,602 +1259,6 @@ namespace Acurus.Capella.PatientPortal
 
         }
 
-        //Added for Lab Tests
-        public void PrintLabTests(Document doc, XmlDocument xmldoc)
-        {
-            #region Lab Tests
-            sNoInformationInTable = string.Empty;
-            XmlNodeList Doc_ChiefComplaint_Node = xmldoc.GetElementsByTagName("section");
-
-            DataSet dsOrder = null;
-            XmlNodeList Doc_History_Node = xmldoc.GetElementsByTagName("section");
-            foreach (XmlElement elemParent in Doc_History_Node)
-            {
-                bool is_break = false;
-                for (int i = 0; i < elemParent.ChildNodes.Count; i++)
-                {
-                    if (elemParent.ChildNodes[i].Name == "title" && elemParent.ChildNodes[i].InnerText.ToUpper() == "LABORATORY TESTS")
-                    {
-                        // dsHistory = ConvertHTMLTablesToDataSet(elemParent.ChildNodes[i + 1].InnerXml);
-                        if (elemParent.ChildNodes[i + 1].InnerXml.Trim(' ').StartsWith("<table") == true)
-                            dsOrder = ConvertHTMLTablesToDataSet(elemParent.ChildNodes[i + 1].InnerXml);
-                        else
-                        {
-                            dsOrder = null;
-                            sNoInformationInTable = string.Empty;
-                            sNoInformationInTable = elemParent.ChildNodes[i + 1].InnerXml;
-                        }
-                        is_break = true;
-                        break;
-                    }
-                }
-                if (is_break == true)
-                    break;
-            }
-
-            if (dsOrder != null && dsOrder.Tables.Count > 0)
-            {
-                PdfPTable patChiefComplaint = new PdfPTable(dsOrder.Tables[0].Columns.Count);
-                patChiefComplaint.WidthPercentage = 100;
-                HeadCell = new PdfPCell(new Phrase("LABORATORY TESTS", HeadFont));
-                HeadCell.Colspan = dsOrder.Tables[0].Columns.Count;
-                HeadCell.HorizontalAlignment = 1;
-                HeadCell.BackgroundColor = BaseColor.DARK_GRAY;
-                patChiefComplaint.AddCell(HeadCell);
-
-
-
-                for (int j = 0; j < dsOrder.Tables[0].Columns.Count; j++)
-                {
-                    string ColumnName = StripTagsRegex(dsOrder.Tables[0].Columns[j].ColumnName);
-                    //if (ColumnName.ToUpper() != "NDCID")
-                    //{
-                    cell = CreateCell(ColumnName, "", "");
-                    patChiefComplaint.AddCell(cell);
-                    // }
-                }
-
-                foreach (DataRow row in dsOrder.Tables[0].Rows)
-                {
-                    foreach (DataColumn column in dsOrder.Tables[0].Columns)
-                    {
-                        //if (!row[column].ToString().Contains("NDCID"))
-                        //{
-                        string ColumnData = StripTagsRegex(row[column].ToString());
-                        if ((ColumnData.EndsWith(",")) && (ColumnData.Length > 0))
-                        {
-                            ColumnData = ColumnData.Substring(0, ColumnData.Length - 1);
-                        }
-
-                        cell = CreateCell("", ColumnData, "");
-                        patChiefComplaint.AddCell(cell);
-
-                    }
-                }
-
-                doc.Add(patChiefComplaint);
-                doc.Add(new Paragraph("   "));
-                doc.Add(new Paragraph("   "));
-            }
-            else
-            {
-                PdfPTable emptyPDF = new PdfPTable(1);
-                emptyPDF.WidthPercentage = 100;
-                HeadCell = new PdfPCell(new Phrase("LABORATORY TESTS", HeadFont));
-                HeadCell.HorizontalAlignment = 1;
-                HeadCell.BackgroundColor = BaseColor.DARK_GRAY;
-                emptyPDF.AddCell(HeadCell);
-                if (sNoInformationInTable == string.Empty)
-                {
-                    cell = CreateCell("", "     " + StripTagsRegex("No known data found"), "");
-                }
-                else
-                {
-                    cell = CreateCell("", "     " + StripTagsRegex(sNoInformationInTable), "");
-                }
-                emptyPDF.AddCell(cell);
-                doc.Add(emptyPDF);
-                doc.Add(new Paragraph("   "));
-                doc.Add(new Paragraph("   "));
-            }
-
-            //foreach (XmlElement elemParent in Doc_ChiefComplaint_Node)
-            //{
-            //    bool is_break = false;
-            //    for (int i = 0; i < elemParent.ChildNodes.Count; i++)
-            //    {
-            //        if (elemParent.ChildNodes[i].Name == "title" && elemParent.ChildNodes[i].InnerText.ToUpper() == "LABORATORY TESTS")
-            //        {
-            //             string TestCode = elemParent.ChildNodes[i + 1].InnerXml;
-            //             string CodeSystem = elemParent.ChildNodes[i + 1].InnerXml;
-            //             string Name = elemParent.ChildNodes[i + 1].InnerXml;
-            //             string Date = elemParent.ChildNodes[i + 1].InnerXml;
-
-
-            //                cell = CreateCell("Test Code", "", "");
-            //                patChiefComplaint.AddCell(cell);
-            //                cell = CreateCell("", TestCode, "");
-            //                patChiefComplaint.AddCell(cell);
-            //                cell = CreateCell("Code System", "", "");
-            //                patChiefComplaint.AddCell(cell);
-            //                cell = CreateCell("", CodeSystem, "");
-            //                patChiefComplaint.AddCell(cell);
-            //                cell = CreateCell("Name", "", "");
-            //                patChiefComplaint.AddCell(cell);
-            //                cell = CreateCell("", Name, "");
-            //                patChiefComplaint.AddCell(cell);
-            //                cell = CreateCell("Date", "", "");
-            //                patChiefComplaint.AddCell(cell);
-            //                cell = CreateCell("", Date, "");
-            //                patChiefComplaint.AddCell(cell);
-
-            //                doc.Add(patChiefComplaint);
-            //                doc.Add(new Paragraph("   "));
-            //                doc.Add(new Paragraph("   "));
-            //            }
-            //            is_break = true;
-            //            break;
-            //        }
-            //    }
-
-            #endregion
-
-        }
-
-        public void PrintLaboratoryInformation(Document doc, XmlDocument xmldoc)
-        {
-            #region LaboratoryInformation
-            sNoInformationInTable = string.Empty;
-            DataSet dsLab = null;
-            XmlNodeList Doc_History_Node = xmldoc.GetElementsByTagName("section");
-            foreach (XmlElement elemParent in Doc_History_Node)
-            {
-                bool is_break = false;
-                for (int i = 0; i < elemParent.ChildNodes.Count; i++)
-                {
-                    if (elemParent.ChildNodes[i].Name == "title" && elemParent.ChildNodes[i].InnerText.ToUpper() == "LABORATORY INFORMATION")
-                    {
-                        if (elemParent.ChildNodes[i + 1].InnerXml.Trim(' ').StartsWith("<table") == true)
-                            dsLab = ConvertHTMLTablesToDataSet(elemParent.ChildNodes[i + 1].InnerXml);
-                        else
-                        {
-                            dsLab = null;
-                            sNoInformationInTable = string.Empty;
-                            sNoInformationInTable = elemParent.ChildNodes[i + 1].InnerXml;
-                        }
-                        is_break = true;
-                        break;
-                    }
-                }
-                if (is_break == true)
-                    break;
-            }
-
-            if (dsLab != null && dsLab.Tables.Count > 0)
-            {
-                PdfPTable patHistory = new PdfPTable(dsLab.Tables[0].Columns.Count);
-                patHistory.WidthPercentage = 100;
-                HeadCell = new PdfPCell(new Phrase("LABORATORY INFORMATION", HeadFont));
-                HeadCell.Colspan = dsLab.Tables[0].Columns.Count;
-                HeadCell.HorizontalAlignment = 1;
-                HeadCell.BackgroundColor = BaseColor.DARK_GRAY;
-                patHistory.AddCell(HeadCell);
-
-
-                for (int j = 0; j < dsLab.Tables[0].Columns.Count; j++)
-                {
-                    string ColumnName = StripTagsRegex(dsLab.Tables[0].Columns[j].ColumnName);
-                    cell = CreateCell(ColumnName, "", "");
-                    patHistory.AddCell(cell);
-                }
-
-                foreach (DataRow row in dsLab.Tables[0].Rows)
-                {
-                    foreach (DataColumn column in dsLab.Tables[0].Columns)
-                    {
-                        string ColumnData = StripTagsRegex(row[column].ToString());
-                        cell = CreateCell("", ColumnData, "");
-                        patHistory.AddCell(cell);
-                    }
-                }
-                doc.Add(patHistory);
-                doc.Add(new Paragraph("   "));
-                doc.Add(new Paragraph("   "));
-
-                //for (int i = 0; i < dsLab.Tables[0].Rows.Count; i++)
-                //{
-                //    try
-                //    {
-                //        SocialHistory objhistory = new SocialHistory();
-                //        objhistory.Social_Info = StripTagsRegex(dsLab.Tables[0].Rows[i].Field<string>("<tr><th>Social History Element"));
-                //        objhistory.Description = StripTagsRegex(dsLab.Tables[0].Rows[i].Field<string>("Description"));
-                //        objhistory.Created_Date_And_Time = universalTime;
-                //        objhistory.Created_By = ClientSession.UserName;
-                //        lstsocilahistory.Add(objhistory);
-                //    }
-                //    catch
-                //    {
-                //        //do nothing
-                //    }
-                //}
-
-            }
-            else
-            {
-                PdfPTable emptyPDF = new PdfPTable(1);
-                emptyPDF.WidthPercentage = 100;
-                HeadCell = new PdfPCell(new Phrase("LABORATORY INFORMATION", HeadFont));
-                HeadCell.HorizontalAlignment = 1;
-                HeadCell.BackgroundColor = BaseColor.DARK_GRAY;
-                emptyPDF.AddCell(HeadCell);
-                if (sNoInformationInTable == string.Empty)
-                {
-                    cell = CreateCell("", "     " + StripTagsRegex("No known data found"), "");
-                }
-                else
-                {
-                    cell = CreateCell("", "     " + StripTagsRegex(sNoInformationInTable), "");
-                }
-                emptyPDF.AddCell(cell);
-                doc.Add(emptyPDF);
-                doc.Add(new Paragraph("   "));
-                doc.Add(new Paragraph("   "));
-            }
-            #endregion
-
-        }
-
-        public void PrintSocialHistory(Document doc, XmlDocument xmldoc)
-        {
-            #region Social History
-            sNoInformationInTable = string.Empty;
-            DataSet dsHistory = null;
-            XmlNodeList Doc_History_Node = xmldoc.GetElementsByTagName("section");
-            foreach (XmlElement elemParent in Doc_History_Node)
-            {
-                bool is_break = false;
-                for (int i = 0; i < elemParent.ChildNodes.Count; i++)
-                {
-                    if (elemParent.ChildNodes[i].Name == "title" && elemParent.ChildNodes[i].InnerText.ToUpper() == "SOCIAL HISTORY")
-                    {
-                        // dsHistory = ConvertHTMLTablesToDataSet(elemParent.ChildNodes[i + 1].InnerXml);
-                        if (elemParent.ChildNodes[i + 1].InnerXml.Trim(' ').StartsWith("<table") == true)
-                            dsHistory = ConvertHTMLTablesToDataSet(elemParent.ChildNodes[i + 1].InnerXml);
-                        else
-                        {
-                            dsHistory = null;
-                            sNoInformationInTable = string.Empty;
-                            sNoInformationInTable = elemParent.ChildNodes[i + 1].InnerXml;
-                        }
-                        is_break = true;
-                        break;
-                    }
-                }
-                if (is_break == true)
-                    break;
-            }
-
-            if (dsHistory != null && dsHistory.Tables.Count > 0)
-            {
-                PdfPTable patHistory = new PdfPTable(dsHistory.Tables[0].Columns.Count);
-                patHistory.WidthPercentage = 100;
-                HeadCell = new PdfPCell(new Phrase("SOCIAL HISTORY", HeadFont));
-                HeadCell.Colspan = dsHistory.Tables[0].Columns.Count;
-                HeadCell.HorizontalAlignment = 1;
-                HeadCell.BackgroundColor = BaseColor.DARK_GRAY;
-                patHistory.AddCell(HeadCell);
-
-
-                for (int j = 0; j < dsHistory.Tables[0].Columns.Count; j++)
-                {
-                    string ColumnName = StripTagsRegex(dsHistory.Tables[0].Columns[j].ColumnName);
-                    cell = CreateCell(ColumnName, "", "");
-                    patHistory.AddCell(cell);
-                }
-
-                foreach (DataRow row in dsHistory.Tables[0].Rows)
-                {
-                    foreach (DataColumn column in dsHistory.Tables[0].Columns)
-                    {
-                        string ColumnData = StripTagsRegex(row[column].ToString());
-                        cell = CreateCell("", ColumnData, "");
-                        patHistory.AddCell(cell);
-                    }
-                }
-                doc.Add(patHistory);
-                doc.Add(new Paragraph("   "));
-                doc.Add(new Paragraph("   "));
-
-                for (int i = 0; i < dsHistory.Tables[0].Rows.Count; i++)
-                {
-                    try
-                    {
-                        SocialHistory objhistory = new SocialHistory();
-                        objhistory.Social_Info = StripTagsRegex(dsHistory.Tables[0].Rows[i].Field<string>("<tr><th>Social History Element"));
-                        objhistory.Description = StripTagsRegex(dsHistory.Tables[0].Rows[i].Field<string>("Description"));
-                        objhistory.Created_Date_And_Time = universalTime;
-                        objhistory.Created_By = ClientSession.UserName;
-                        lstsocilahistory.Add(objhistory);
-                    }
-                    catch
-                    {
-                        //do nothing
-                    }
-                }
-
-            }
-            else
-            {
-                PdfPTable emptyPDF = new PdfPTable(1);
-                emptyPDF.WidthPercentage = 100;
-                HeadCell = new PdfPCell(new Phrase("SOCIAL HISTORY", HeadFont));
-                HeadCell.HorizontalAlignment = 1;
-                HeadCell.BackgroundColor = BaseColor.DARK_GRAY;
-                emptyPDF.AddCell(HeadCell);
-                if (sNoInformationInTable == string.Empty)
-                {
-                    cell = CreateCell("", "     " + StripTagsRegex("No known data found"), "");
-                }
-                else
-                {
-                    cell = CreateCell("", "     " + StripTagsRegex(sNoInformationInTable), "");
-                }
-                emptyPDF.AddCell(cell);
-                doc.Add(emptyPDF);
-                doc.Add(new Paragraph("   "));
-                doc.Add(new Paragraph("   "));
-            }
-
-            Session["SocialHistoryList"] = lstsocilahistory;
-            #endregion
-
-        }
-
-        public void PrintVitals(Document doc, XmlDocument xmldoc)
-        {
-
-            #region Vitals
-            sNoInformationInTable = string.Empty;
-            DataSet dsVitals = null;
-            XmlNodeList Doc_Vitals_Node = xmldoc.GetElementsByTagName("section");
-            foreach (XmlElement elemParent in Doc_Vitals_Node)
-            {
-                bool is_break = false;
-                for (int i = 0; i < elemParent.ChildNodes.Count; i++)
-                {
-                    if (elemParent.ChildNodes[i].Name == "title" && elemParent.ChildNodes[i].InnerText.ToUpper() == "VITAL SIGNS")
-                    {
-                        try
-                        {
-                            // dsVitals = ConvertHTMLTablesToDataSet(elemParent.ChildNodes[i + 1].InnerXml);
-                            if (elemParent.ChildNodes[i + 1].InnerXml.Trim(' ').StartsWith("<table") == true)
-                                dsVitals = ConvertHTMLTablesToDataSet(elemParent.ChildNodes[i + 1].InnerXml);
-                            else
-                            {
-                                dsVitals = null;
-                                sNoInformationInTable = string.Empty;
-                                sNoInformationInTable = elemParent.ChildNodes[i + 1].InnerXml;
-                            }
-                        }
-                        catch
-                        {
-
-                        }
-
-                        is_break = true;
-                        break;
-                    }
-                }
-                if (is_break == true)
-                    break;
-            }
-
-            if (dsVitals != null)
-            {
-                IList<string> Column_Header = new List<string>();
-                IList<string> Row_Header = new List<string>();
-                IList<string> Row_Value = new List<string>();
-
-                foreach (XmlElement elem_Parent in Doc_Vitals_Node)
-                {
-                    bool is_break = false;
-                    for (int i = 0; i < elem_Parent.ChildNodes.Count; i++)
-                    {
-                        if (elem_Parent.ChildNodes[i].Name == "title" && elem_Parent.ChildNodes[i].InnerText.ToUpper() == "VITAL SIGNS")
-                        {
-                            PatientResults objvitals = new PatientResults();
-
-                            int count = elem_Parent.ChildNodes[i + 1].ChildNodes[0].ChildNodes[0].ChildNodes[0].ChildNodes.Count;
-                            for (int j = 0; j < count; j++)
-                            {
-
-                                Column_Header.Add(elem_Parent.ChildNodes[i + 1].ChildNodes[0].ChildNodes[0].ChildNodes[0].ChildNodes[j].InnerXml);
-                            }
-
-                            try
-                            {
-                                count = elem_Parent.ChildNodes[i + 1].ChildNodes[0].ChildNodes[1].ChildNodes.Count;
-                                for (int j = 0; j < count; j++)
-                                {
-                                    Row_Header.Add(elem_Parent.ChildNodes[i + 1].ChildNodes[0].ChildNodes[1].ChildNodes[j].ChildNodes[0].InnerXml);
-                                }
-
-                                if (count > 0)
-                                {
-                                    int temp_count = elem_Parent.ChildNodes[i + 1].ChildNodes[0].ChildNodes[1].ChildNodes[0].ChildNodes.Count;
-                                    for (int k = 1; k < temp_count; k++)
-                                    {
-                                        for (int j = 0; j < count; j++)
-                                        {
-                                            Row_Value.Add(elem_Parent.ChildNodes[i + 1].ChildNodes[0].ChildNodes[1].ChildNodes[j].ChildNodes[k].InnerXml);
-                                        }
-                                    }
-                                }
-                            }
-                            catch
-                            {
-                                //do nothing
-                            }
-                            is_break = true;
-                            break;
-                        }
-                    }
-                    if (is_break == true)
-                        break;
-                }
-
-
-                //for Saving Summary Of Care
-
-                try
-                {
-                    int index = 0;
-                    if (Row_Value.Count > Row_Header.Count)
-                    {
-                        index = Row_Value.Count / 2;
-                    }
-                    else
-                    {
-                        index = Row_Value.Count;
-                    }
-                    int c = 0;
-                    for (int a = 1; a <= Column_Header.Count - 1; a++)
-                    {
-                        for (int b = 0; b < index; b++)
-                        {
-                            try
-                            {
-                                PatientResults objvitals = new PatientResults();
-                                string header = StripTagsRegex(Row_Header[b]);
-                                if (header == "Blood Pressure")
-                                    objvitals.Loinc_Observation = "BP-Sitting Sys/Dia";
-                                else
-                                    objvitals.Loinc_Observation = StripTagsRegex(Row_Header[b]);
-                                string[] value_units = StripTagsRegex(Row_Value[c]).Split(' ');
-                                if (value_units[0].Contains("Ft"))
-                                {
-                                    string sFeet = ConvertFeetInchToInch(value_units[0].Remove(1), value_units[1].Remove(1));
-                                    objvitals.Value = sFeet;
-                                    objvitals.Units = "Ft Inch";
-
-                                }
-                                else
-                                {
-                                    objvitals.Value = value_units[0];
-                                    objvitals.Units = value_units[1];
-                                }
-                                objvitals.Captured_date_and_time = Convert.ToDateTime(StripTagsRegex(Column_Header[a].ToString()));
-                                objvitals.Created_Date_And_Time = universalTime;
-                                objvitals.Created_By = ClientSession.UserName;
-                                objvitals.Results_Type = "Vitals";
-                                lstvitals.Add(objvitals);
-                                c++;
-                            }
-                            catch
-                            {
-                                //do nothing
-                            }
-                        }
-                    }
-                }
-                catch
-                {
-                    //do nothing
-                }
-
-
-                //
-
-                PdfPTable patVitals = new PdfPTable(Column_Header.Count);
-                patVitals.WidthPercentage = 100;
-                HeadCell = new PdfPCell(new Phrase("VITALS", HeadFont));
-                HeadCell.Colspan = Column_Header.Count;
-                HeadCell.HorizontalAlignment = 1;
-                HeadCell.BackgroundColor = BaseColor.DARK_GRAY;
-                patVitals.AddCell(HeadCell);
-
-                for (int i = 0; i < Column_Header.Count; i++)
-                {
-                    cell = CreateCell(StripTagsRegex(Column_Header[i]), "", "");
-                    patVitals.AddCell(cell);
-                }
-
-                try
-                {
-                    int index = Row_Value.Count / Row_Header.Count;
-                    int z = 0;
-                    int row_index = 0;
-                    int x = 1;
-                    for (int i = 0; i < Row_Value.Count; i++)
-                    {
-                        bool header = false;
-                        if (i == 0 || i % index == 0)
-                        {
-                            cell = CreateCell(StripTagsRegex(Row_Header[z]), "", "");
-                            patVitals.AddCell(cell);
-                            row_index = z;
-                            z++;
-                            header = true;
-                        }
-                        if (i == 0 || header == true)
-                        {
-                            cell = CreateCell("", StripTagsRegex(Row_Value[row_index]), "");
-                            patVitals.AddCell(cell);
-                        }
-                        else
-                        {
-                            int count = x + index;
-                            if (count < Row_Value.Count)
-                            {
-                                cell = CreateCell("", StripTagsRegex(Row_Value[count]), "");
-                                patVitals.AddCell(cell);
-                            }
-                            else
-                            {
-                                cell = CreateCell("", StripTagsRegex(Row_Value[i]), "");
-                                patVitals.AddCell(cell);
-                            }
-                            x++;
-                        }
-                    }
-                }
-                catch
-                {
-                    //do nothing
-                }
-
-                doc.Add(patVitals);
-                doc.Add(new Paragraph("   "));
-                doc.Add(new Paragraph("   "));
-            }
-            else
-            {
-                PdfPTable emptyPDF = new PdfPTable(1);
-                emptyPDF.WidthPercentage = 100;
-                HeadCell = new PdfPCell(new Phrase("VITALS", HeadFont));
-                HeadCell.HorizontalAlignment = 1;
-                HeadCell.BackgroundColor = BaseColor.DARK_GRAY;
-                emptyPDF.AddCell(HeadCell);
-                if (sNoInformationInTable == string.Empty)
-                {
-                    cell = CreateCell("", "     " + StripTagsRegex("No known data found"), "");
-                }
-                else
-                {
-                    cell = CreateCell("", "     " + StripTagsRegex(sNoInformationInTable), "");
-                }
-                emptyPDF.AddCell(cell);
-                doc.Add(emptyPDF);
-                doc.Add(new Paragraph("   "));
-                doc.Add(new Paragraph("   "));
-            }
-
-            #endregion
-
-            Session["Vitals"] = lstvitals;
-        }
-
-
         public string ConvertFeetInchToInch(string s1, string s2)
         {
             if (s1 == string.Empty)
@@ -5814,151 +1277,1061 @@ namespace Acurus.Capella.PatientPortal
 
         }
 
-        public void PrintHospitalInstructions(Document doc, XmlDocument xmldoc)
+        public string PrintSection(Document doc, XmlElement elemParent, string selectedItem)
         {
 
-
-            #region Hospital Discharge Instruction
-
+            #region Section
             sNoInformationInTable = string.Empty;
-            PdfPTable patHospital = new PdfPTable(new float[] { 900 });
-            patHospital.WidthPercentage = 100;
-            HeadCell = new PdfPCell(new Phrase("HOSPITAL DISCHARGE INSTRUCTIONS", HeadFont));
-            HeadCell.Colspan = 1;
-            HeadCell.HorizontalAlignment = 1;
-            HeadCell.BackgroundColor = BaseColor.DARK_GRAY;
-            patHospital.AddCell(HeadCell);
 
-            //Paragraph Hospitalparagraph = new Paragraph();
-            //Hospitalparagraph.Add("HOSPITAL DISCHARGE INSTRUCTIONS:");
-            //doc.Add(Hospitalparagraph);
-            XmlNodeList Doc_Hospital_Node = xmldoc.GetElementsByTagName("section");
-            foreach (XmlElement elemParent in Doc_Hospital_Node)
+            DataSet dsSection = null;
+            string sContent = string.Empty;
+
+            string sTitle = string.Empty;
+
+            XmlNodeList Doc_title_Node = xmldoc.GetElementsByTagName("title");
+            sTitle = elemParent.GetElementsByTagName("title")[0].InnerText;
+
+            if (selectedItem != string.Empty && selectedItem.ToUpper() != sTitle.ToUpper())
+                return string.Empty;
+
+            if (elemParent.InnerXml.Contains("<table") == true && elemParent.InnerXml.Contains("<thead") == true)
             {
-                bool is_break = false;
-                for (int i = 0; i < elemParent.ChildNodes.Count; i++)
+                dsSection = ConvertHTMLTablesToDataSet(elemParent.GetElementsByTagName("text")[0].InnerXml);
+            }
+            else if (elemParent.InnerXml.Contains("<paragraph") == true || elemParent.InnerXml.Contains("<text") == true)
+            {
+                sContent = elemParent.GetElementsByTagName("text")[0].InnerXml;
+            }
+            else if (elemParent.InnerXml.Contains("<list") == true)
+            {
+                sContent = elemParent.GetElementsByTagName("list")[0].InnerXml;
+            }
+            //else if (elemParent.InnerXml.Contains("<table")==true)
+            //{
+            //    dsSection = ConvertHTMLTablesToDataSet(elemParent.GetElementsByTagName("text")[0].InnerXml);
+            //}
+
+            if (dsSection != null && dsSection.Tables.Count > 0)
+            {
+                PdfPTable patSection = new PdfPTable(dsSection.Tables[0].Columns.Count);
+                patSection.WidthPercentage = 100;
+                HeadCell = new PdfPCell(new Phrase(sTitle, HeadFont));
+                HeadCell.Border = iTextSharp.text.Rectangle.NO_BORDER;
+                HeadCell.MinimumHeight = 18;
+                HeadCell.Colspan = dsSection.Tables[0].Columns.Count;
+                //HeadCell.HorizontalAlignment = 1;
+                HeadCell.BackgroundColor = MyColor;  //BaseColor.DARK_GRAY;
+                patSection.AddCell(HeadCell);
+
+                for (int j = 0; j < dsSection.Tables[0].Columns.Count; j++)
                 {
-                    if (elemParent.ChildNodes[i].Name == "title" && elemParent.ChildNodes[i].InnerText.ToUpper() == "HOSPITAL DISCHARGE INSTRUCTIONS")
+                    string ColumnName = StripTagsRegex(dsSection.Tables[0].Columns[j].ColumnName);
+                    cell = CreateCell(ColumnName, "", "");
+                    patSection.AddCell(cell);
+                }
+
+                foreach (DataRow row in dsSection.Tables[0].Rows)
+                {
+                    foreach (DataColumn column in dsSection.Tables[0].Columns)
+                    {
+                        string ColumnData = StripTagsRegex(row[column].ToString());
+                        if ((ColumnData.EndsWith(",")) && (ColumnData.Length > 0))
+                        {
+                            ColumnData = ColumnData.Substring(0, ColumnData.Length - 1);
+                        }
+
+                        cell = CreateCell("", ColumnData, "");
+                        patSection.AddCell(cell);
+                    }
+                }
+
+                doc.Add(patSection);
+                doc.Add(new Paragraph("   "));
+                //doc.Add(new Paragraph("   "));
+
+                XmlElement medItemDoc = null;
+                string reason = string.Empty;
+
+                if (elemParent.InnerXml.ToUpper().Contains("<TITLE>MEDICATIONS<") == true || elemParent.InnerXml.ToUpper().Contains("<TITLE>VITAL SIGNS<") == true || elemParent.InnerXml.ToUpper().Contains("<TITLE>PROBLEMS<") == true)
+                {
+                    XmlNodeList Doc_Medication_Node = xmldoc.GetElementsByTagName("section");
+
+                    foreach (XmlElement elemParent1 in Doc_Medication_Node)
+                    {
+                        bool is_break = false;
+                        for (int i = 0; i < elemParent.ChildNodes.Count; i++)
+                        {
+                            if (elemParent.ChildNodes[i].Name == "title" && (elemParent.ChildNodes[i].InnerText.ToUpper() == "MEDICATIONS" || elemParent.ChildNodes[i].InnerText.ToUpper() == "PROBLEMS"))
+                            {
+                                medItemDoc = elemParent;
+                                break;
+                            }
+                        }
+                        if (is_break == true)
+                            break;
+                    }
+
+                }
+                if (elemParent.InnerXml.ToUpper().Contains("<TITLE>REASON FOR REFERRAL<") == true)
+                {
+                    XmlNodeList Doc_ReferalReason_Node = xmldoc.GetElementsByTagName("section");
+                    foreach (XmlElement elemParent1 in Doc_ReferalReason_Node)
+                    {
+                        // bool is_break = false;
+                        bool is_Reason = false;
+                        for (int i = 0; i < elemParent.ChildNodes.Count; i++)
+                        {
+                            if (elemParent.ChildNodes[i].Name == "title" && elemParent.ChildNodes[i].InnerText.ToUpper() == "REASON FOR REFERRAL")
+                            {
+                                is_Reason = true;
+                            }
+                            if (elemParent.ChildNodes[i].Name == "text" && is_Reason == true)
+                            {
+
+                                if (elemParent.ChildNodes[i].ChildNodes != null && elemParent.ChildNodes[i].ChildNodes.Count == 0)
+                                {
+                                    reason = elemParent.ChildNodes[i].InnerXml;
+                                }
+                                else
+                                {
+                                    for (int j = 0; j < elemParent.ChildNodes[i].ChildNodes.Count; j++)
+                                    {
+                                        if (elemParent.ChildNodes[i].ChildNodes[j].Name == "paragraph")
+                                        {
+                                            reason = elemParent.ChildNodes[i].ChildNodes[j].InnerXml;
+                                            break;
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+
+                if (selectedItem == string.Empty)
+                    ImportSection(dsSection, sTitle, medItemDoc, reason);
+            }
+            else if (sContent != string.Empty)
+            {
+                PdfPTable emptyPDF = new PdfPTable(1);
+                emptyPDF.WidthPercentage = 100;
+                HeadCell = new PdfPCell(new Phrase(sTitle, HeadFont));
+                HeadCell.Border = iTextSharp.text.Rectangle.NO_BORDER;
+                //HeadCell.HorizontalAlignment = 1;
+                HeadCell.BackgroundColor = MyColor;// BaseColor.DARK_GRAY;
+                emptyPDF.AddCell(HeadCell);
+                if (sContent == string.Empty)
+                {
+                    cell = CreateCell("", "     " + StripTagsRegex("No known data found"), "");
+                }
+                else
+                {
+                    cell = CreateCell("", StripTagsRegex(sContent), "");
+                }
+                emptyPDF.AddCell(cell);
+                doc.Add(emptyPDF);
+                doc.Add(new Paragraph("   "));
+                //doc.Add(new Paragraph("   "));
+            }
+            else
+            {
+                sTitle = string.Empty;
+            }
+
+            return sTitle;
+
+            #endregion
+
+        }
+
+        public void ImportSection(DataSet dsSection, string sTitle, XmlElement elemParent, string reason)
+        {
+            switch (sTitle.ToUpper())
+            {
+                case "IMPLANTS":
                     {
                         try
                         {
-                            //iTextSharp.text.List list = new iTextSharp.text.List();
-                            //iTextSharp.text.ListItem listItem;
-                            //list.SetListSymbol("\u2022");
-                            //list.IndentationLeft = 30f;
-                            string content = elemParent.ChildNodes[i + 1].ChildNodes[0].InnerXml;
-                            cell = CreateCell("", StripTagsRegex(content), "");
-                            patHospital.AddCell(cell);
-                            int list_count = elemParent.ChildNodes[i + 1].ChildNodes[1].ChildNodes.Count;
-                            for (int j = 0; j < list_count; j++)
+                            for (int i = 0; i < dsSection.Tables[0].Rows.Count; i++)
                             {
-                                // listItem = new iTextSharp.text.ListItem(elemParent.ChildNodes[i + 1].ChildNodes[1].ChildNodes[2].ChildNodes[1].ChildNodes[j].InnerXml);
-                                //list.Add(listItem);
-                                string test = elemParent.ChildNodes[i + 1].ChildNodes[1].ChildNodes[j].InnerXml;
-                                cell = CreateCell("", StripTagsRegex(test), "");
-                                patHospital.AddCell(cell);
+                                InHouseProcedure objInHouseProcedure = new InHouseProcedure();
+                                objInHouseProcedure.GMDN_PT_Name = StripTagsRegex(dsSection.Tables[0].Rows[i].Field<string>("<tr><th>Implanted"));
+                                //objInHouseProcedure.Reaction = StripTagsRegex(dsImplant.Tables[0].Rows[i].Field<string>("Area"));
+                                objInHouseProcedure.Device_Identifier_UDI = StripTagsRegex(dsSection.Tables[0].Rows[i].Field<string>("UDI"));
+                                lstImplant.Add(objInHouseProcedure);
                             }
-                            doc.Add(patHospital);
-                            doc.Add(new Paragraph("   "));
-                            doc.Add(new Paragraph("   "));
                         }
                         catch
                         {
                             //do nothing
                         }
-                        is_break = true;
+                        Session["ImplantList"] = lstImplant;
                         break;
                     }
-                }
-                if (is_break == true)
-                    break;
-            }
-
-
-            #endregion
-
-        }
-
-        public void PrintInstructions(Document doc, XmlDocument xmldoc)
-        {
-
-            #region Instruction
-            sNoInformationInTable = string.Empty;
-            PdfPTable patInstruction = new PdfPTable(new float[] { 900 });
-            patInstruction.WidthPercentage = 100;
-            HeadCell = new PdfPCell(new Phrase("INSTRUCTIONS", HeadFont));
-            HeadCell.Colspan = 1;
-            HeadCell.HorizontalAlignment = 1;
-            HeadCell.BackgroundColor = BaseColor.DARK_GRAY;
-            patInstruction.AddCell(HeadCell);
-
-            XmlNodeList Doc_Instruction_Node = xmldoc.GetElementsByTagName("section");
-            foreach (XmlElement elemParent in Doc_Instruction_Node)
-            {
-                bool is_break = false;
-                for (int i = 0; i < elemParent.ChildNodes.Count; i++)
-                {
-                    if (elemParent.ChildNodes[i].Name == "title" && elemParent.ChildNodes[i].InnerText.ToUpper() == "INSTRUCTIONS")
+                case "MENTAL STATUS":
                     {
-                        string instruction = elemParent.ChildNodes[i + 1].InnerXml;
-                        if (instruction != string.Empty)
+                        try
                         {
-                            cell = CreateCell("", "       " + instruction, "");
-                            patInstruction.AddCell(cell);
-                            doc.Add(patInstruction);
-                            doc.Add(new Paragraph("   "));
-                            doc.Add(new Paragraph("   "));
+                            for (int i = 0; i < dsSection.Tables[0].Rows.Count; i++)
+                            {
+                                CarePlan objCarePlan = new CarePlan();
+                                objCarePlan.Care_Name_Value = StripTagsRegex(dsSection.Tables[0].Rows[i].Field<string>("<tr><th>Status"));
+                                //objInHouseProcedure.Reaction = StripTagsRegex(dsImplant.Tables[0].Rows[i].Field<string>("Area"));
+                                objCarePlan.Plan_Date = StripTagsRegex(dsSection.Tables[0].Rows[i].Field<string>("Date"));
+                                lstMentalStatus.Add(objCarePlan);
+                            }
                         }
-                        is_break = true;
+                        catch
+                        {
+                            //do nothing
+                        }
+                        Session["MentalStatusList"] = lstMentalStatus;
                         break;
                     }
-                }
-                if (is_break == true)
-                    break;
-            }
-            #endregion
-
-        }
-
-        public void PrintChiefComplaint(Document doc, XmlDocument xmldoc)
-        {
-            #region Chief Complaints
-            sNoInformationInTable = string.Empty;
-            PdfPTable patChiefComplaint = new PdfPTable(new float[] { 900 });
-            patChiefComplaint.WidthPercentage = 100;
-            HeadCell = new PdfPCell(new Phrase("ASSESSMENT", HeadFont));
-            HeadCell.Colspan = 1;
-            HeadCell.HorizontalAlignment = 1;
-            HeadCell.BackgroundColor = BaseColor.DARK_GRAY;
-            patChiefComplaint.AddCell(HeadCell);
-
-            XmlNodeList Doc_ChiefComplaint_Node = xmldoc.GetElementsByTagName("section");
-            foreach (XmlElement elemParent in Doc_ChiefComplaint_Node)
-            {
-                bool is_break = false;
-                for (int i = 0; i < elemParent.ChildNodes.Count; i++)
-                {
-                    if (elemParent.ChildNodes[i].Name == "title" && elemParent.ChildNodes[i].InnerText.ToUpper() == "ASSESSMENTS")
+                case "GOALS SECTION":
                     {
-                        string instruction = elemParent.ChildNodes[i + 1].InnerXml;
-                        if (instruction != string.Empty)
+                        try
                         {
-                            cell = CreateCell("", "       " + instruction, "");
-                            patChiefComplaint.AddCell(cell);
-                            doc.Add(patChiefComplaint);
-                            doc.Add(new Paragraph("   "));
-                            doc.Add(new Paragraph("   "));
+                            for (int i = 0; i < dsSection.Tables[0].Rows.Count; i++)
+                            {
+                                TreatmentPlan objTreatmentPlan = new TreatmentPlan();
+                                objTreatmentPlan.Plan = StripTagsRegex(dsSection.Tables[0].Rows[i].Field<string>("<tr><th>Goal"));
+                                //objInHouseProcedure.Reaction = StripTagsRegex(dsImplant.Tables[0].Rows[i].Field<string>("Area"));
+                                //objTreatmentPlan.Plan_Date = StripTagsRegex(dsGoalsSection.Tables[0].Rows[i].Field<string>("Date"));
+                                lstGoalsSection.Add(objTreatmentPlan);
+                            }
                         }
-                        is_break = true;
+                        catch
+                        {
+                            //do nothing
+                        }
+                        Session["GoalsSectionList"] = lstGoalsSection;
                         break;
                     }
-                }
-                if (is_break == true)
-                    break;
-            }
-            #endregion
+                case "HEALTH CONCERNS SECTION":
+                    {
+                        try
+                        {
+                            for (int k = 0; k < dsSection.Tables.Count; k++)
+                            {
+                                for (int i = 0; i < dsSection.Tables[k].Rows.Count; i++)
+                                {
+                                    ProblemList objProblemList = new ProblemList();
+                                    //objProblemList.Problem_Description = StripTagsRegex(dsHealthConcernSection.Tables[k].Rows[i].Field<string>("<tr><th>Observations"));
+                                    if (k == 0)
+                                    {
+                                        objProblemList.Problem_Description = StripTagsRegex(dsSection.Tables[k].Rows[i].Field<string>("<tr><th>Observations"));
+                                    }
+                                    else
+                                    {
+                                        objProblemList.Problem_Description = StripTagsRegex(dsSection.Tables[k].Rows[i].Field<string>("<tr><th>Concern"));
+                                    }
+                                    objProblemList.Status = "Active";
+                                    string diagdate = StripTagsRegex(dsSection.Tables[k].Rows[i].Field<string>("Date"));
+                                    if (diagdate.Length == 4)
+                                        objProblemList.Date_Diagnosed = diagdate;
+                                    else if (diagdate.Length == 9)
+                                        objProblemList.Date_Diagnosed = Convert.ToDateTime("01-" + diagdate.Split(',')[0].Trim() + "-" + diagdate.Split(',')[1].Trim()).ToString("dd-MM-yyyy");
+                                    else
+                                        objProblemList.Date_Diagnosed = Convert.ToDateTime(diagdate).ToString("dd-MM-yyyy");
+                                    //objInHouseProcedure.Reaction = StripTagsRegex(dsImplant.Tables[0].Rows[i].Field<string>("Area"));
+                                    //objTreatmentPlan.Plan_Date = StripTagsRegex(dsGoalsSection.Tables[0].Rows[i].Field<string>("Date"));
 
+                                    lsthealthconcern.Add(objProblemList);
+
+                                }
+                            }
+                        }
+                        catch
+                        {
+                            //do nothing
+                        }
+                        Session["HealthConcernList"] = lsthealthconcern;
+                        break;
+                    }
+                case "INTERVENTIONS":
+                case "INTERVENTIONS SECTION":
+                    {
+                        try
+                        {
+                            for (int k = 0; k < dsSection.Tables.Count; k++)
+                            {
+                                for (int i = 0; i < dsSection.Tables[k].Rows.Count; i++)
+                                {
+                                    PatientResults objVitals = new PatientResults();
+
+                                    if ((StripTagsRegex(dsSection.Tables[k].Rows[i].Field<string>("<tr><th>Planned Intervention"))).ToString() == "pulse oximetry monitoring")
+                                        objVitals.Loinc_Observation = "Pulse Oximetry";
+                                    else if (StripTagsRegex(dsSection.Tables[k].Rows[i].Field<string>("<tr><th>Planned Intervention")) == "Oxygen administration by nasal cannula")
+                                        objVitals.Loinc_Observation = "Inhaled O2 Concentration";
+                                    else if (StripTagsRegex(dsSection.Tables[k].Rows[i].Field<string>("<tr><th>Planned Intervention")) == "Elevate head of bed")
+                                        objVitals.Loinc_Observation = "Respiratory Rate";
+                                    else
+                                        objVitals.Loinc_Observation = StripTagsRegex((StripTagsRegex(dsSection.Tables[k].Rows[i].Field<string>("<tr><th>Planned Intervention"))).ToString());
+                                    objVitals.Captured_date_and_time = Convert.ToDateTime((StripTagsRegex(dsSection.Tables[k].Rows[i].Field<string>("Date"))).ToString());
+                                    objVitals.Created_Date_And_Time = universalTime;
+                                    objVitals.Created_By = ClientSession.UserName;
+                                    objVitals.Results_Type = "Vitals";
+
+                                    lstvitals.Add(objVitals);
+
+                                }
+                            }
+                        }
+                        catch
+                        {
+                            //do nothing
+                        }
+                        Session["Vitals"] = lstvitals;
+                        break;
+                    }
+                case "HEALTH STATUS EVALUATIONS/OUTCOMES SECTION":
+                    {
+                        try
+                        {
+                            for (int k = 0; k < dsSection.Tables.Count; k++)
+                            {
+                                for (int i = 0; i < dsSection.Tables[k].Rows.Count; i++)
+                                {
+                                    PatientResults objVitals = new PatientResults();
+
+                                    if ((StripTagsRegex(dsSection.Tables[k].Rows[i].Field<string>("<tr><th>Item"))).ToString() == "Pulse oximetry")
+                                        objVitals.Loinc_Observation = "Pulse Oximetry";
+                                    else if (StripTagsRegex(dsSection.Tables[k].Rows[i].Field<string>("<tr><th>Item")) == "Oxygen administration by nasal cannula")
+                                        objVitals.Loinc_Observation = "Inhaled O2 Concentration";
+                                    else if (StripTagsRegex(dsSection.Tables[k].Rows[i].Field<string>("<tr><th>Item")) == "Elvate head of bed")
+                                        objVitals.Loinc_Observation = "Respiratory Rate";
+                                    else
+                                        objVitals.Loinc_Observation = StripTagsRegex((StripTagsRegex(dsSection.Tables[k].Rows[i].Field<string>("<tr><th>Item"))).ToString());
+
+                                    objVitals.Value = StripTagsRegex((StripTagsRegex(dsSection.Tables[k].Rows[i].Field<string>("Outcome"))).ToString());
+                                    objVitals.Captured_date_and_time = Convert.ToDateTime((StripTagsRegex(dsSection.Tables[k].Rows[i].Field<string>("Date"))).ToString());
+                                    objVitals.Created_Date_And_Time = universalTime;
+                                    objVitals.Created_By = ClientSession.UserName;
+                                    objVitals.Results_Type = "Vitals";
+
+                                    lstvitals.Add(objVitals);
+                                }
+                            }
+                        }
+                        catch
+                        {
+                            //do nothing
+                        }
+                        Session["Vitals"] = lstvitals;
+                        break;
+                    }
+                case "ALLERGY":
+                case "ALLERGIES, ADVERSE REACTIONS, ALERTS":
+                case "ALLERGIES AND ADVERSE REACTIONS":
+                case "ALLERGIES":
+                    {
+                        try
+                        {
+                            for (int i = 0; i < dsSection.Tables[0].Rows.Count; i++)
+                            {
+                                Rcopia_Allergy objallergy = new Rcopia_Allergy();
+                                objallergy.Allergy_Name = StripTagsRegex(dsSection.Tables[0].Rows[i].Field<string>("<tr><th>Substance"));
+                                objallergy.Reaction = StripTagsRegex(dsSection.Tables[0].Rows[i].Field<string>("Reaction"));
+                                // objallergy.NDC_ID = StripTagsRegex(dsAllergy.Tables[0].Rows[i].Field<string>("NDCID"));
+                                objallergy.Created_Date_And_Time = universalTime;
+                                objallergy.Created_By = ClientSession.UserName;
+                                lstallergy.Add(objallergy);
+                            }
+                        }
+                        catch
+                        {
+                            //do nothing
+                        }
+                        Session["AllergyList"] = lstallergy;
+                        break;
+                    }
+                case "IMMUNIZATION":
+                case "IMMUNIZATIONS":
+                    {
+                        try
+                        {
+                            for (int i = 0; i < dsSection.Tables[0].Rows.Count; i++)
+                            {
+                                Immunization objimmunization = new Immunization();
+                                objimmunization.Immunization_Description = StripTagsRegex(dsSection.Tables[0].Rows[i].Field<string>("<tr><th>Vaccine"));
+                                objimmunization.Created_Date_And_Time = universalTime;
+                                objimmunization.Created_By = ClientSession.UserName;
+                                string date = StripTagsRegex(dsSection.Tables[0].Rows[i].Field<string>("Date"));
+                                string year = string.Empty;
+                                string month = string.Empty;
+                                string date_1 = string.Empty;
+                                try
+                                {
+                                    if (date != "Unknown" && date != string.Empty && (!date.Contains("-") || !date.Contains("/")))
+                                    {
+                                        year = date.Substring(0, 4);
+                                        month = date.Substring(4, 2);
+                                        date_1 = date.Substring(6, 2);
+                                        objimmunization.Given_Date = Convert.ToDateTime(year + "-" + month + "-" + date_1);
+                                    }
+                                }
+                                catch
+                                {
+                                    if (date != "Unknown" && date != string.Empty && (!date.Contains("-") || !date.Contains("/")))
+                                    {
+                                        if (date.Contains(' '))
+                                        {
+                                            string[] strDate = date.Split(' ');
+                                            if (strDate.Length == 3)
+                                            {
+                                                date_1 = strDate[0];
+                                                month = strDate[1];
+                                                year = strDate[2];
+                                                objimmunization.Given_Date = Convert.ToDateTime(year + "-" + month + "-" + date_1);
+                                            }
+                                            else if (strDate.Length == 2)
+                                            {
+                                                month = strDate[0];
+                                                year = strDate[1];
+                                                objimmunization.Given_Date = Convert.ToDateTime(year + "-" + month + "-" + "01");
+                                            }
+                                            else
+                                            {
+                                                year = strDate[0];
+                                                objimmunization.Given_Date = Convert.ToDateTime(year + "-" + "01" + "-" + "01");
+                                            }
+                                        }
+                                    }
+
+                                }
+                                lstimmunization.Add(objimmunization);
+                            }
+                        }
+                        catch
+                        {
+                            //do nothing
+                        }
+                        Session["ImmunizationList"] = lstimmunization;
+                        break;
+                    }
+                case "MEDICATIONS":
+                    {
+                        try
+                        {
+                            for (int i = 0; i < dsSection.Tables[0].Rows.Count; i++)
+                            {
+                                Rcopia_Medication objmedication = new Rcopia_Medication();
+                                objmedication.Generic_Name = StripTagsRegex(dsSection.Tables[0].Rows[i].Field<string>("<tr><th>Medication"));
+                                string[] split = objmedication.Generic_Name.Split('[');
+                                if (split.Length > 1)
+                                    objmedication.Brand_Name = split[1].Replace("]", "");
+                                string date = StripTagsRegex(dsSection.Tables[0].Rows[i].Field<string>("Start Date"));
+                                if (date != "Unknown" && date != string.Empty && (!date.Contains("-") || !date.Contains("/")))
+                                {
+                                    string year = date.Substring(0, 4);
+                                    string month = date.Substring(4, 2);
+                                    string date_1 = date.Substring(6, 2);
+                                    objmedication.Start_Date = Convert.ToDateTime(year + "-" + month + "-" + date_1);
+                                }
+                                if (StripTagsRegex(dsSection.Tables[0].Rows[i].Field<string>("Directions")).ToUpper() == "AS NEEDED" ||
+                                    StripTagsRegex(dsSection.Tables[0].Rows[i].Field<string>("Directions")).ToUpper() == "AS NEEDED FOR PAIN" ||
+                                    StripTagsRegex(dsSection.Tables[0].Rows[i].Field<string>("Directions")).ToUpper() == "WITH MEALS" ||
+                                    StripTagsRegex(dsSection.Tables[0].Rows[i].Field<string>("Directions")).ToUpper() == "AS DIRECTED" ||
+                                    StripTagsRegex(dsSection.Tables[0].Rows[i].Field<string>("Directions")).ToUpper() == "BETWEEN MEALS" ||
+                                    StripTagsRegex(dsSection.Tables[0].Rows[i].Field<string>("Directions")).ToUpper() == "ONE HOUR BEFORE MEALS" ||
+                                    StripTagsRegex(dsSection.Tables[0].Rows[i].Field<string>("Directions")).ToUpper() == "BEFORE EXERCISE" ||
+                                    StripTagsRegex(dsSection.Tables[0].Rows[i].Field<string>("Directions")).ToUpper() == "WITH A GLASS OF WATER" ||
+                                    StripTagsRegex(dsSection.Tables[0].Rows[i].Field<string>("Directions")).ToUpper() == "AFTER MEALS")
+                                {
+
+                                    objmedication.Dose_Other = StripTagsRegex(dsSection.Tables[0].Rows[i].Field<string>("Directions"));
+                                }
+                                else
+                                {
+                                    objmedication.Dose_Timing = StripTagsRegex(dsSection.Tables[0].Rows[i].Field<string>("Directions"));
+                                }
+
+                                //dosevalue
+                                try
+                                {
+                                    objmedication.Dose = elemParent.GetElementsByTagName("doseQuantity")[i].Attributes.GetNamedItem("value").Value;
+                                }
+                                catch
+                                {
+                                }
+                                objmedication.Deleted = "N";
+                                objmedication.Created_Date_And_Time = universalTime;
+                                objmedication.Created_By = ClientSession.UserName;
+                                lstmedication.Add(objmedication);
+                            }
+                        }
+                        catch
+                        {
+                            //do nothing
+                        }
+                        Session["MedicationList"] = lstmedication;
+                        break;
+                    }
+                case "CARE PLAN":
+                case "PLAN OF CARE":
+                    {
+                        try
+                        {
+                            string plan = string.Empty;
+                            for (int i = 0; i < dsSection.Tables[0].Rows.Count; i++)
+                            {
+                                try
+                                {
+                                    if (plan == string.Empty)
+                                        plan = StripTagsRegex(dsSection.Tables[0].Rows[i].Field<string>("<tr><th>Planned Activity")); // + " " + dsCarePlan.Tables[0].Rows[i].Field<string>("Planned Date"));
+                                    else
+                                        plan = StripTagsRegex(plan + "*" + dsSection.Tables[0].Rows[i].Field<string>("<tr><th>Planned Activity")); //+ " " + dsCarePlan.Tables[0].Rows[i].Field<string>("Planned Date"));
+                                }
+                                catch
+                                {
+                                    //do nothing
+                                }
+                            }
+                            if (plan != string.Empty)
+                            {
+                                try
+                                {
+                                    TreatmentPlan objTreatmentPlan = new TreatmentPlan();
+                                    objTreatmentPlan.Plan = plan;
+                                    objTreatmentPlan.Plan_Type = "PLAN";
+                                    objTreatmentPlan.Created_Date_And_Time = universalTime;
+                                    objTreatmentPlan.Local_Time = UtilityManager.ConvertToLocal(objTreatmentPlan.Created_Date_And_Time).ToString("yyyy-MM-dd hh:mm:ss tt");
+                                    objTreatmentPlan.Created_By = ClientSession.UserName;
+                                    lsttreatmentplan.Add(objTreatmentPlan);
+                                }
+                                catch
+                                {
+                                    //do nothing
+                                }
+                            }
+                        }
+                        catch
+                        {
+                            //do nothing
+                        }
+                        Session["TreatmentPlanList"] = lsttreatmentplan;
+                        break;
+                    }
+                case "REASON FOR REFERRAL":
+                    {
+                        try
+                        {
+                            if (reason != string.Empty && dsSection == null)
+                            {
+                                try
+                                {
+                                    ReferralOrder objmanager = new ReferralOrder();
+                                    string reasontext = StripTagsRegex(reason);
+                                    objmanager.Reason_For_Referral = reasontext.Replace("\n", " ");
+                                    objmanager.Referral_Date = UtilityManager.ConvertToUniversal();
+                                    objmanager.Created_Date_And_Time = universalTime;
+                                    objmanager.Created_By = ClientSession.UserName;
+                                    lstreferalorder.Add(objmanager);
+                                }
+                                catch
+                                {
+                                    //do nothing
+                                }
+
+                            }
+                        }
+                        catch
+                        {
+                            //do nothing
+                        }
+                        Session["ReferalOrderList"] = lstreferalorder;
+                        break;
+                    }
+                case "ENCOUNTERS":
+                case "ENCOUNTERS DIAGNOSIS":
+                    {
+                        try
+                        {
+                            //if (reason != string.Empty && dsSection == null)
+                            //{
+                            try
+                            {
+                                if (dsSection != null && dsSection.Tables.Count > 0)
+                                {
+                                    for (int i = 0; i < dsSection.Tables[0].Rows.Count; i++)
+                                    {
+                                        Encounter objencounter = new Encounter();
+                                        objencounter.Facility_Name = StripTagsRegex(dsSection.Tables[0].Rows[i].Field<string>("Location")); ;
+                                        string pat_DOV = StripTagsRegex(dsSection.Tables[0].Rows[i].Field<string>("Date"));
+                                        string pat_ROV = StripTagsRegex(dsSection.Tables[0].Rows[i].Field<string>("<tr><th>Encounter"));
+                                        string year = pat_DOV.Substring(0, 4);
+                                        string month = pat_DOV.Substring(4, 2);
+                                        string date = pat_DOV.Substring(6, 2);
+
+                                        if (pat_DOV.Length == 8)
+                                        {
+                                            hdnDateOfService.Value = year + "-" + month + "-" + date;
+                                            objencounter.Date_of_Service = UtilityManager.ConvertToUniversal(Convert.ToDateTime(year + "-" + month + "-" + date));
+                                            objencounter.Appointment_Date = UtilityManager.ConvertToUniversal(Convert.ToDateTime(year + "-" + month + "-" + date));
+
+                                        }
+
+                                        else
+                                        {
+                                            string datestring = string.Empty;
+                                            if (pat_DOV.Split(',')[1].Contains(' ') == true)
+                                                datestring = pat_DOV.Split(',')[0].Split(' ')[1] + "-" + pat_DOV.Split(',')[0].Split(' ')[0] + pat_DOV.Split(',')[1].Split(' ')[1];
+                                            else
+                                                datestring = pat_DOV.Split(',')[1] + "-" + pat_DOV.Split(',')[0].Split(' ')[0] + "-" + pat_DOV.Split(',')[0].Split(' ')[1];
+
+                                            objencounter.Date_of_Service = UtilityManager.ConvertToUniversal(Convert.ToDateTime(datestring));
+                                            objencounter.Appointment_Date = UtilityManager.ConvertToUniversal(Convert.ToDateTime(datestring));
+
+                                            hdnDateOfService.Value = Convert.ToDateTime(datestring).ToString("yyyy-MM-dd");
+                                        }
+
+                                        objencounter.Local_Time = UtilityManager.ConvertToLocal(objencounter.Date_of_Service).ToString("yyyy-MM-dd hh:mm:ss tt"); ;
+                                        objencounter.Purpose_of_Visit = pat_ROV;
+                                        objencounter.Created_Date_and_Time = universalTime;
+                                        objencounter.Created_By = ClientSession.UserName;
+                                        lstencounter.Add(objencounter);
+                                    }
+                                }
+                            }
+                            catch
+                            {
+                                //do nothing
+                            }
+
+                            //}
+                        }
+                        catch
+                        {
+                            //do nothing
+                        }
+                        Session["Encounter"] = lstencounter;
+                        break;
+                    }
+                case "PROCEDURES":
+                    {
+                        try
+                        {
+                            for (int i = 0; i < dsSection.Tables[0].Rows.Count; i++)
+                            {
+                                try
+                                {
+                                    InHouseProcedure objprocedure = new InHouseProcedure();
+                                    objprocedure.Procedure_Code_Description = StripTagsRegex(dsSection.Tables[0].Rows[i].Field<string>("<tr><th>Procedure"));
+                                    objprocedure.Created_By = ClientSession.UserName;
+                                    string date = StripTagsRegex(dsSection.Tables[0].Rows[i].Field<string>("Date"));//added for 30254
+                                    if (date != "unknown" && date != string.Empty && (!date.Contains("-") || !date.Contains("/")))
+                                    {
+
+                                        if (date.Length > 8)
+                                        {
+                                            string year = date.Substring(0, 4);
+                                            string month = date.Substring(4, 2);
+                                            string date_1 = date.Substring(6, 2);
+                                            objprocedure.Created_Date_And_Time = Convert.ToDateTime(year + "-" + month + "-" + date_1);
+                                        }
+                                        else if (date.Length < 8 && date.Length == 6)
+                                        {
+                                            string year = date.Substring(0, 4);
+                                            string month = date.Substring(4, 2);
+                                            objprocedure.Created_Date_And_Time = Convert.ToDateTime(year + "-" + month + "-" + "01");
+                                        }
+                                        else if (date.Length < 8 && date.Length == 4)
+                                        {
+                                            string year = date.Substring(0, 4);
+                                            objprocedure.Created_Date_And_Time = Convert.ToDateTime(year + "-" + "01" + "-" + "01");
+                                        }
+                                    } //*
+                                    lstprocedures.Add(objprocedure);
+                                }
+                                catch
+                                {
+
+                                }
+                            }
+                        }
+                        catch
+                        {
+                            //do nothing
+                        }
+                        Session["ProcedureList"] = lstprocedures;
+                        break;
+                    }
+                case "FUNCTIONAL STATUS":
+                    {
+                        try
+                        {
+                            for (int i = 0; i < dsSection.Tables[0].Rows.Count; i++)
+                            {
+                                try
+                                {
+                                    CarePlan objCarePlan = new CarePlan();
+                                    objCarePlan.Care_Name = "Functional Condition";
+                                    objCarePlan.Care_Name_Value = StripTagsRegex(dsSection.Tables[0].Rows[i].Field<string>("<tr><th>Functional Condition"));
+                                    objCarePlan.Status = StripTagsRegex(dsSection.Tables[0].Rows[i].Field<string>("Condition Status"));
+                                    string date = StripTagsRegex(dsSection.Tables[0].Rows[i].Field<string>("Effective Dates"));//added for 30257
+                                    if (date != "unknown" && date != string.Empty && (!date.Contains("-") || !date.Contains("/")))
+                                    {
+
+                                        if (date.Length > 8)
+                                        {
+                                            string year = date.Substring(0, 4);
+                                            string month = date.Substring(4, 2);
+                                            string date_1 = date.Substring(6, 2);
+                                            objCarePlan.Plan_Date = year + "-" + month + "-" + date_1;
+                                        }
+                                        else if (date.Length < 8 && date.Length == 6)
+                                        {
+                                            string year = date.Substring(0, 4);
+                                            string month = date.Substring(4, 2);
+
+                                            objCarePlan.Plan_Date = year + "-" + month;
+                                        }
+                                        else if (date.Length < 8 && date.Length == 4)
+                                        {
+                                            string year = date.Substring(0, 4);
+                                            objCarePlan.Plan_Date = year;
+                                        }
+                                    }
+                                    objCarePlan.Created_Date_And_Time = universalTime;
+                                    objCarePlan.Created_By = ClientSession.UserName;
+                                    lstcareplan.Add(objCarePlan);
+                                }
+                                catch
+                                {
+                                    //do nothing
+                                }
+                            }
+                        }
+                        catch
+                        {
+                            //do nothing
+                        }
+                        Session["CarePlanList"] = lstcareplan;
+                        break;
+                    }
+                case "RESULTS":
+                    {
+                        try
+                        {
+                            ResultMaster objmaster = new ResultMaster();
+                            objmaster.Is_Electronic_Mode = "N";
+                            objmaster.Created_Date_And_Time = universalTime;
+                            objmaster.Created_By = ClientSession.UserName;
+                            lstresultmaster.Add(objmaster);
+
+
+                            ResultOBR objobr = new ResultOBR();
+                            objobr.OBR_Observation_Battery_Text = "Blood chemistry";
+                            objobr.Created_Date_And_Time = universalTime;
+                            objobr.Created_By = ClientSession.UserName;
+                            objobr.OBR_Specimen_Collection_Date_And_Time = universalTime.ToString("yyyyMMddhhmmss");
+                            lstresultobr.Add(objobr);
+
+
+                            ResultORC objorc = new ResultORC();
+                            objorc.Created_Date_And_Time = universalTime;
+                            objorc.Created_By = ClientSession.UserName;
+                            lstresultorc.Add(objorc);
+
+                            for (int i = 0; i < dsSection.Tables[0].Rows.Count; i++)
+                            {
+
+                                ResultOBX objresult = new ResultOBX();
+                                string order = StripTagsRegex(dsSection.Tables[0].Rows[i][0].ToString());
+                                if (order != string.Empty)
+                                {
+                                    try
+                                    {
+                                        string[] orders = order.Split(' ');
+                                        objresult.OBX_Loinc_Observation_Text = orders[0];
+                                        if (order.Contains('(') == true)
+                                        {
+                                            string strOrder = order.Substring(order.IndexOf('('), order.Length - order.IndexOf('('));
+
+                                            objresult.OBX_Reference_Range = strOrder;
+
+                                        }
+                                        else
+                                        {
+                                            objresult.OBX_Reference_Range = orders[1];
+                                        }
+                                        order = StripTagsRegex(dsSection.Tables[0].Rows[i].Field<string>("Blood chemistry"));
+                                        orders = order.Split(' ');
+                                        objresult.OBX_Observation_Value = orders[0];
+                                        objresult.Created_Date_And_Time = universalTime;
+                                        objresult.Created_By = ClientSession.UserName;
+                                        lstresultobx.Add(objresult);
+                                    }
+                                    catch
+                                    {
+                                        //do nothing
+                                    }
+                                }
+                            }
+                        }
+                        catch
+                        {
+                            //do nothing
+                        }
+                        Session["ResultMasterList"] = lstresultmaster;
+                        Session["ResultObrList"] = lstresultobr;
+                        Session["ResultObxList"] = lstresultobx;
+                        Session["ResultOrcList"] = lstresultorc;
+                        break;
+                    }
+                case "SOCIAL HISTORY":
+                    {
+                        try
+                        {
+                            for (int i = 0; i < dsSection.Tables[0].Rows.Count; i++)
+                            {
+                                try
+                                {
+                                    SocialHistory objhistory = new SocialHistory();
+                                    objhistory.Social_Info = StripTagsRegex(dsSection.Tables[0].Rows[i].Field<string>("<tr><th>Social History Element"));
+                                    objhistory.Description = StripTagsRegex(dsSection.Tables[0].Rows[i].Field<string>("Description"));
+                                    objhistory.Created_Date_And_Time = universalTime;
+                                    objhistory.Created_By = ClientSession.UserName;
+                                    lstsocilahistory.Add(objhistory);
+                                }
+                                catch
+                                {
+                                    //do nothing
+                                }
+                            }
+
+                        }
+                        catch
+                        {
+                            //do nothing
+                        }
+                        Session["SocialHistoryList"] = lstsocilahistory;
+                        break;
+                    }
+                case "VITAL SIGNS":
+                    {
+                        try
+                        {
+                            IList<string> Column_Header = new List<string>();
+                            IList<string> Row_Header = new List<string>();
+                            IList<string> Row_Value = new List<string>();
+
+                            if (elemParent != null)
+                            {
+                                foreach (XmlElement elem_Parent in elemParent)
+                                {
+                                    bool is_break = false;
+                                    for (int i = 0; i < elem_Parent.ChildNodes.Count; i++)
+                                    {
+                                        if (elem_Parent.ChildNodes[i].Name == "title" && elem_Parent.ChildNodes[i].InnerText.ToUpper() == "VITAL SIGNS")
+                                        {
+                                            PatientResults objvitals = new PatientResults();
+
+                                            int count = elem_Parent.ChildNodes[i + 1].ChildNodes[0].ChildNodes[0].ChildNodes[0].ChildNodes.Count;
+                                            for (int j = 0; j < count; j++)
+                                            {
+
+                                                Column_Header.Add(elem_Parent.ChildNodes[i + 1].ChildNodes[0].ChildNodes[0].ChildNodes[0].ChildNodes[j].InnerXml);
+                                            }
+
+                                            try
+                                            {
+                                                count = elem_Parent.ChildNodes[i + 1].ChildNodes[0].ChildNodes[1].ChildNodes.Count;
+                                                for (int j = 0; j < count; j++)
+                                                {
+                                                    Row_Header.Add(elem_Parent.ChildNodes[i + 1].ChildNodes[0].ChildNodes[1].ChildNodes[j].ChildNodes[0].InnerXml);
+                                                }
+
+                                                if (count > 0)
+                                                {
+                                                    int temp_count = elem_Parent.ChildNodes[i + 1].ChildNodes[0].ChildNodes[1].ChildNodes[0].ChildNodes.Count;
+                                                    for (int k = 1; k < temp_count; k++)
+                                                    {
+                                                        for (int j = 0; j < count; j++)
+                                                        {
+                                                            Row_Value.Add(elem_Parent.ChildNodes[i + 1].ChildNodes[0].ChildNodes[1].ChildNodes[j].ChildNodes[k].InnerXml);
+                                                        }
+                                                    }
+                                                }
+                                            }
+                                            catch
+                                            {
+                                                //do nothing
+                                            }
+                                            is_break = true;
+                                            break;
+                                        }
+                                    }
+                                    if (is_break == true)
+                                        break;
+                                }
+                            }
+
+
+                            //for Saving Summary Of Care
+
+                            try
+                            {
+                                int index = 0;
+                                if (Row_Value.Count > Row_Header.Count)
+                                {
+                                    index = Row_Value.Count / 2;
+                                }
+                                else
+                                {
+                                    index = Row_Value.Count;
+                                }
+                                int c = 0;
+                                for (int a = 1; a <= Column_Header.Count - 1; a++)
+                                {
+                                    for (int b = 0; b < index; b++)
+                                    {
+                                        try
+                                        {
+                                            PatientResults objvitals = new PatientResults();
+                                            string header = StripTagsRegex(Row_Header[b]);
+                                            if (header == "Blood Pressure")
+                                                objvitals.Loinc_Observation = "BP-Sitting Sys/Dia";
+                                            else
+                                                objvitals.Loinc_Observation = StripTagsRegex(Row_Header[b]);
+                                            string[] value_units = StripTagsRegex(Row_Value[c]).Split(' ');
+                                            if (value_units[0].Contains("Ft"))
+                                            {
+                                                string sFeet = ConvertFeetInchToInch(value_units[0].Remove(1), value_units[1].Remove(1));
+                                                objvitals.Value = sFeet;
+                                                objvitals.Units = "Ft Inch";
+
+                                            }
+                                            else
+                                            {
+                                                objvitals.Value = value_units[0];
+                                                objvitals.Units = value_units[1];
+                                            }
+                                            objvitals.Captured_date_and_time = Convert.ToDateTime(StripTagsRegex(Column_Header[a].ToString()));
+                                            objvitals.Created_Date_And_Time = universalTime;
+                                            objvitals.Created_By = ClientSession.UserName;
+                                            objvitals.Results_Type = "Vitals";
+                                            lstvitals.Add(objvitals);
+                                            c++;
+                                        }
+                                        catch
+                                        {
+                                            //do nothing
+                                        }
+                                    }
+                                }
+                            }
+                            catch
+                            {
+                                //do nothing
+                            }
+                        }
+                        catch
+                        {
+                            //do nothing
+                        }
+                        Session["Vitals"] = lstvitals;
+                        break;
+                    }
+
+                case "PROBLEMS":
+                    {
+                        if (elemParent != null)
+                        {
+                            foreach (XmlElement elemParent1 in elemParent)
+                            {
+                                bool is_break = false;
+                                for (int i = 0; i < elemParent1.ChildNodes.Count; i++)
+                                {
+                                    if (elemParent1.ChildNodes[i].Name == "title" && elemParent1.ChildNodes[i].InnerText.ToUpper() == "PROBLEMS")
+                                    {
+
+                                        if (elemParent1.ChildNodes[i + 1].ChildNodes[1] != null)
+                                        {
+                                            int list_count = elemParent1.ChildNodes[i + 1].ChildNodes.Count;
+                                            int iCount = 0;
+                                            for (int j = 0; j < list_count; j++)
+                                            {
+                                                try
+                                                {
+                                                    if (elemParent1.ChildNodes[i + 1].ChildNodes[j].Name == "list")
+                                                    {
+                                                        for (int x = 0; x < elemParent1.ChildNodes[i + 1].ChildNodes[j].ChildNodes.Count; x++)
+                                                        {
+                                                            string columnvalue = elemParent1.ChildNodes[i + 1].ChildNodes[j].ChildNodes[x].InnerText;
+
+                                                            iCount = iCount + 1;
+
+                                                            try
+                                                            {
+                                                                Assessment objassesment = new Assessment();
+                                                                reason = StripTagsRegex(columnvalue);
+                                                                objassesment.ICD_Description = reason.Replace("\n", " ");
+                                                                if (objassesment.ICD_Description.Contains("Acute tonsillitis"))
+                                                                    objassesment.ICD_9 = "463";
+                                                                else if (objassesment.ICD_Description.Contains("Acute pharyngitis"))
+                                                                    objassesment.ICD_9 = "462";
+                                                                else if (objassesment.ICD_Description.Contains("Streptococcal sore throat"))
+                                                                    objassesment.ICD_9 = "034.0";
+                                                                objassesment.Created_Date_And_Time = universalTime;
+                                                                objassesment.Created_By = ClientSession.UserName;
+                                                                lstassesment.Add(objassesment);
+                                                            }
+                                                            catch
+                                                            {
+                                                                //do nothing
+                                                            }
+                                                        }
+                                                    }
+                                                }
+                                                catch
+                                                {
+                                                    try
+                                                    {
+                                                        string columnvalue = elemParent1.ChildNodes[i + 1].ChildNodes[1].ChildNodes[j].InnerXml;
+
+                                                        try
+                                                        {
+                                                            Assessment objassesment = new Assessment();
+                                                            reason = StripTagsRegex(columnvalue);
+                                                            objassesment.ICD_Description = reason.Replace("\n", " ");
+                                                            if (objassesment.ICD_Description.Contains("Acute tonsillitis"))
+                                                                objassesment.ICD_9 = "463";
+                                                            else if (objassesment.ICD_Description.Contains("Acute pharyngitis"))
+                                                                objassesment.ICD_9 = "462";
+                                                            else if (objassesment.ICD_Description.Contains("Streptococcal sore throat"))
+                                                                objassesment.ICD_9 = "034.0";
+                                                            objassesment.Created_Date_And_Time = universalTime;
+                                                            objassesment.Created_By = ClientSession.UserName;
+                                                            lstassesment.Add(objassesment);
+                                                        }
+                                                        catch
+                                                        {
+                                                            //do nothing
+                                                        }
+                                                    }
+                                                    catch
+                                                    {
+                                                        //do nothing
+                                                    }
+                                                }
+                                            }
+                                            is_break = true;
+                                            break;
+                                        }
+                                    }
+                                }
+                                if (is_break == true)
+                                    break;
+                            }
+                        }
+                        Session["AssesmentList"] = lstassesment;
+                        break;
+                    }
+            }
         }
+
         public void PrintProblemsPatientPortal(Document doc, XmlDocument xmldoc)
         {
 
@@ -5979,8 +2352,9 @@ namespace Acurus.Capella.PatientPortal
                             patProblemList.WidthPercentage = 100;
                             HeadCell = new PdfPCell(new Phrase("PROBLEM LIST", HeadFont));
                             HeadCell.Colspan = 2;
+                            HeadCell.Border = iTextSharp.text.Rectangle.NO_BORDER;
                             HeadCell.HorizontalAlignment = 1;
-                            HeadCell.BackgroundColor = BaseColor.DARK_GRAY;
+                            HeadCell.BackgroundColor = MyColor;// BaseColor.DARK_GRAY;
                             patProblemList.AddCell(HeadCell);
                             cell = CreateCell("Problems", "", "");
                             patProblemList.AddCell(cell);
@@ -6099,8 +2473,9 @@ namespace Acurus.Capella.PatientPortal
                                 patProblemList.WidthPercentage = 100;
                                 HeadCell = new PdfPCell(new Phrase("PROBLEM LIST", HeadFont));
                                 HeadCell.Colspan = dsProblem.Tables[0].Columns.Count;
+                                HeadCell.Border = iTextSharp.text.Rectangle.NO_BORDER;
                                 HeadCell.HorizontalAlignment = 1;
-                                HeadCell.BackgroundColor = BaseColor.DARK_GRAY;
+                                HeadCell.BackgroundColor = MyColor;// BaseColor.DARK_GRAY;
                                 patProblemList.AddCell(HeadCell);
 
                                 for (int j = 0; j < dsProblem.Tables[0].Columns.Count; j++)
@@ -6129,8 +2504,9 @@ namespace Acurus.Capella.PatientPortal
                                 PdfPTable emptyPDF = new PdfPTable(1);
                                 emptyPDF.WidthPercentage = 100;
                                 HeadCell = new PdfPCell(new Phrase("PROBLEM LIST", HeadFont));
+                                HeadCell.Border = iTextSharp.text.Rectangle.NO_BORDER;
                                 HeadCell.HorizontalAlignment = 1;
-                                HeadCell.BackgroundColor = BaseColor.DARK_GRAY;
+                                HeadCell.BackgroundColor = MyColor;// BaseColor.DARK_GRAY;
                                 emptyPDF.AddCell(HeadCell);
                                 if (sNoInformationInTable == string.Empty)
                                 {
@@ -6159,7 +2535,7 @@ namespace Acurus.Capella.PatientPortal
             #endregion
         }
 
-        public void PrintProblems(Document doc, XmlDocument xmldoc,string FileName,string Type)
+        public void PrintProblems(Document doc, XmlDocument xmldoc, string FileName, string Type)
         {
 
             #region ProblemList
@@ -6180,7 +2556,8 @@ namespace Acurus.Capella.PatientPortal
                             HeadCell = new PdfPCell(new Phrase("PROBLEM LIST", HeadFont));
                             HeadCell.Colspan = 2;
                             HeadCell.HorizontalAlignment = 1;
-                            HeadCell.BackgroundColor = BaseColor.DARK_GRAY;
+                            HeadCell.Border = iTextSharp.text.Rectangle.NO_BORDER;
+                            HeadCell.BackgroundColor = MyColor;// BaseColor.DARK_GRAY;
                             patProblemList.AddCell(HeadCell);
                             cell = CreateCell("Problems", "", "");
                             patProblemList.AddCell(cell);
@@ -6336,8 +2713,9 @@ namespace Acurus.Capella.PatientPortal
                                 patProblemList.WidthPercentage = 100;
                                 HeadCell = new PdfPCell(new Phrase("PROBLEM LIST", HeadFont));
                                 HeadCell.Colspan = dsProblem.Tables[0].Columns.Count;
+                                HeadCell.Border = iTextSharp.text.Rectangle.NO_BORDER;
                                 HeadCell.HorizontalAlignment = 1;
-                                HeadCell.BackgroundColor = BaseColor.DARK_GRAY;
+                                HeadCell.BackgroundColor = MyColor; // BaseColor.DARK_GRAY;
                                 patProblemList.AddCell(HeadCell);
 
                                 for (int j = 0; j < dsProblem.Tables[0].Columns.Count; j++)
@@ -6360,218 +2738,18 @@ namespace Acurus.Capella.PatientPortal
                                 doc.Add(new Paragraph("   "));
                                 doc.Add(new Paragraph("   "));
                             }
-
-                            is_break = true;
-                            break;
-                        }
-                    }
-                }
-                if (is_break == true)
-                    break;
-            }
-
-            Session["AssesmentList"] = lstassesment;
-            #endregion
-        }
-
-        public void PrintProblems(Document doc, XmlDocument xmldoc)
-        {
-
-            #region ProblemList
-            sNoInformationInTable = string.Empty;
-            XmlNodeList Doc_Problem_Node = xmldoc.GetElementsByTagName("section");
-            foreach (XmlElement elemParent in Doc_Problem_Node)
-            {
-                bool is_break = false;
-                for (int i = 0; i < elemParent.ChildNodes.Count; i++)
-                {
-                    if (elemParent.ChildNodes[i].Name == "title" && elemParent.ChildNodes[i].InnerText.ToUpper() == "PROBLEMS")
-                    {
-
-                        if (elemParent.ChildNodes[i + 1].ChildNodes[1] != null)
-                        {
-                            PdfPTable patProblemList = new PdfPTable(new float[] { 900, 900 });
-                            patProblemList.WidthPercentage = 100;
-                            HeadCell = new PdfPCell(new Phrase("PROBLEM LIST", HeadFont));
-                            HeadCell.Colspan = 2;
-                            HeadCell.HorizontalAlignment = 1;
-                            HeadCell.BackgroundColor = BaseColor.DARK_GRAY;
-                            patProblemList.AddCell(HeadCell);
-                            cell = CreateCell("Problems", "", "");
-                            patProblemList.AddCell(cell);
-                            cell = CreateCell("Problem Details", "", "");
-                            patProblemList.AddCell(cell);
-                            int list_count = elemParent.ChildNodes[i + 1].ChildNodes.Count;
-                            int iCount = 0;
-                            for (int j = 0; j < list_count; j++)
+                            else
                             {
-                                try
-                                {
-                                    if (elemParent.ChildNodes[i + 1].ChildNodes[j].Name == "list")
-                                    {
-                                        for (int x = 0; x < elemParent.ChildNodes[i + 1].ChildNodes[j].ChildNodes.Count; x++)
-                                        {
-                                            //string columnvalue = elemParent.ChildNodes[i + 1].ChildNodes[1].ChildNodes[j].ChildNodes[0].Attributes[0].Value;
-                                            //string columnvalue = elemParent.ChildNodes[i + 1].ChildNodes[j].ChildNodes[0].ChildNodes[1].InnerText;
-                                            string columnvalue = elemParent.ChildNodes[i + 1].ChildNodes[j].ChildNodes[x].InnerText;
-
-                                            //for bug id: 28517
-                                            iCount = iCount + 1;
-                                            if (columnvalue != string.Empty)
-                                            {
-                                                cell = CreateCell("", iCount.ToString(), "");
-                                                patProblemList.AddCell(cell);
-                                            }
-                                            else
-                                            {
-                                                cell = CreateCell("", string.Empty, "");
-                                                patProblemList.AddCell(cell);
-                                            }
-                                            //columnvalue = elemParent.ChildNodes[i + 1].ChildNodes[j].ChildNodes[0].InnerXml;
-                                            cell = CreateCell("", StripTagsRegex(columnvalue), "");
-                                            patProblemList.AddCell(cell);
-
-                                            try
-                                            {
-                                                Assessment objassesment = new Assessment();
-                                                string reason = StripTagsRegex(columnvalue);
-                                                objassesment.ICD_Description = reason.Replace("\n", " ");
-                                                if (objassesment.ICD_Description.Contains("Acute tonsillitis"))
-                                                    objassesment.ICD_9 = "463";
-                                                else if (objassesment.ICD_Description.Contains("Acute pharyngitis"))
-                                                    objassesment.ICD_9 = "462";
-                                                else if (objassesment.ICD_Description.Contains("Streptococcal sore throat"))
-                                                    objassesment.ICD_9 = "034.0";
-                                                objassesment.Created_Date_And_Time = universalTime;
-                                                objassesment.Created_By = ClientSession.UserName;
-                                                lstassesment.Add(objassesment);
-                                            }
-                                            catch
-                                            {
-                                                //do nothing
-                                            }
-                                        }
-                                    }
-
-                                    else if (Request["FileName"] != null && Request["Type"] == "C32")
-                                    {
-                                        if (j < list_count - 1)
-                                            j = j + 1;
-                                        if (elemParent.ChildNodes[i + 1].ChildNodes[j].Name == "list")
-                                        {
-                                            //string columnvalue = elemParent.ChildNodes[i + 1].ChildNodes[1].ChildNodes[j].ChildNodes[0].Attributes[0].Value;
-                                            try
-                                            {
-                                                string columnvalue = elemParent.ChildNodes[i + 1].ChildNodes[j].InnerText;
-                                                //for bug id: 28517
-                                                iCount = iCount + 1;
-                                                if (columnvalue != string.Empty)
-                                                {
-                                                    cell = CreateCell("", iCount.ToString(), "");
-                                                    patProblemList.AddCell(cell);
-                                                }
-                                                else
-                                                {
-                                                    cell = CreateCell("", string.Empty, "");
-                                                    patProblemList.AddCell(cell);
-                                                }
-                                                //columnvalue = elemParent.ChildNodes[i + 1].ChildNodes[j].ChildNodes[0].InnerXml;
-                                                string[] problrm = columnvalue.Split(':');
-
-                                                cell = CreateCell("", problrm[0], "");
-                                                patProblemList.AddCell(cell);
-                                            }
-                                            catch
-                                            {
-                                                cell = CreateCell("", "", "");
-                                            }
-
-                                        }
-                                    }
-                                }
-                                catch
-                                {
-                                    try
-                                    {
-                                        string columnvalue = elemParent.ChildNodes[i + 1].ChildNodes[1].ChildNodes[j].InnerXml;
-                                        //for bug id: 28517
-                                        if (columnvalue != string.Empty)
-                                        {
-                                            cell = CreateCell("", (j + 1).ToString(), "");
-                                            patProblemList.AddCell(cell);
-                                        }
-                                        else
-                                        {
-                                            cell = CreateCell("", string.Empty, "");
-                                            patProblemList.AddCell(cell);
-                                        }
-                                        cell = CreateCell("", StripTagsRegex(columnvalue), "");
-                                        patProblemList.AddCell(cell);
-
-                                        try
-                                        {
-                                            Assessment objassesment = new Assessment();
-                                            string reason = StripTagsRegex(columnvalue);
-                                            objassesment.ICD_Description = reason.Replace("\n", " ");
-                                            if (objassesment.ICD_Description.Contains("Acute tonsillitis"))
-                                                objassesment.ICD_9 = "463";
-                                            else if (objassesment.ICD_Description.Contains("Acute pharyngitis"))
-                                                objassesment.ICD_9 = "462";
-                                            else if (objassesment.ICD_Description.Contains("Streptococcal sore throat"))
-                                                objassesment.ICD_9 = "034.0";
-                                            objassesment.Created_Date_And_Time = universalTime;
-                                            objassesment.Created_By = ClientSession.UserName;
-                                            lstassesment.Add(objassesment);
-                                        }
-                                        catch
-                                        {
-                                            //do nothing
-                                        }
-                                    }
-                                    catch
-                                    {
-                                        //do nothing
-                                    }
-                                }
-                            }
-                            doc.Add(patProblemList);
-                            doc.Add(new Paragraph("   "));
-                            doc.Add(new Paragraph("   "));
-                            is_break = true;
-                            break;
-                        }
-
-                        else
-                        {
-                            DataSet dsProblem = null;
-                            dsProblem = ConvertHTMLTablesToDataSet(elemParent.ChildNodes[i + 1].InnerXml);
-                            if (dsProblem != null && dsProblem.Tables.Count > 0)
-                            {
-                                PdfPTable patProblemList = new PdfPTable(dsProblem.Tables[0].Columns.Count);
-                                patProblemList.WidthPercentage = 100;
+                                PdfPTable emptyPDF = new PdfPTable(1);
+                                emptyPDF.WidthPercentage = 100;
                                 HeadCell = new PdfPCell(new Phrase("PROBLEM LIST", HeadFont));
-                                HeadCell.Colspan = dsProblem.Tables[0].Columns.Count;
+                                HeadCell.Border = iTextSharp.text.Rectangle.NO_BORDER;
                                 HeadCell.HorizontalAlignment = 1;
-                                HeadCell.BackgroundColor = BaseColor.DARK_GRAY;
-                                patProblemList.AddCell(HeadCell);
-
-                                for (int j = 0; j < dsProblem.Tables[0].Columns.Count; j++)
-                                {
-                                    string ColumnName = StripTagsRegex(dsProblem.Tables[0].Columns[j].ColumnName);
-                                    cell = CreateCell(ColumnName, "", "");
-                                    patProblemList.AddCell(cell);
-                                }
-
-                                foreach (DataRow row in dsProblem.Tables[0].Rows)
-                                {
-                                    foreach (DataColumn column in dsProblem.Tables[0].Columns)
-                                    {
-                                        string ColumnData = StripTagsRegex(row[column].ToString());
-                                        cell = CreateCell("", ColumnData, "");
-                                        patProblemList.AddCell(cell);
-                                    }
-                                }
-                                doc.Add(patProblemList);
+                                HeadCell.BackgroundColor = MyColor;// BaseColor.DARK_GRAY;
+                                emptyPDF.AddCell(HeadCell);
+                                cell = CreateCell("", "     " + StripTagsRegex("No known data found"), "");
+                                emptyPDF.AddCell(cell);
+                                doc.Add(emptyPDF);
                                 doc.Add(new Paragraph("   "));
                                 doc.Add(new Paragraph("   "));
                             }
@@ -6613,6 +2791,9 @@ namespace Acurus.Capella.PatientPortal
             string Previous_Name = string.Empty;
 
 
+            XmlNodeList Doc_Node = xmldoc.GetElementsByTagName("title");
+            string sTitle = Doc_Node[0].InnerXml;
+
             XmlNodeList Doc_parentNode = xmldoc.GetElementsByTagName("patientRole");
             foreach (XmlElement elemParent in Doc_parentNode)
             {
@@ -6643,12 +2824,21 @@ namespace Acurus.Capella.PatientPortal
                     {
                         try
                         {
-                            if (elemParent.ChildNodes[i].Attributes[1].Value == "MC")
-                                pat_Cellphone = elemParent.ChildNodes[i].Attributes[0].Value;
-                            else if (elemParent.ChildNodes[i].Attributes[1].Value == "HP")
-                                pat_Telephone = elemParent.ChildNodes[i].Attributes[0].Value;
-                            else if (elemParent.ChildNodes[i].Attributes[1].Value == "WP")
-                                pat_Workphone = elemParent.ChildNodes[i].Attributes[0].Value;
+                            if (elemParent.ChildNodes[i].Attributes["use"].Value == "MC")
+                            {
+                                pat_Cellphone = elemParent.ChildNodes[i].Attributes["value"].Value;
+                            }
+                            else if (elemParent.ChildNodes[i].Attributes["use"].Value == "HP")
+                            {
+                                if (pat_Telephone == string.Empty)
+                                    pat_Telephone = elemParent.ChildNodes[i].Attributes["value"].Value;
+                                else
+                                    pat_Telephone = pat_Telephone + ", " + elemParent.ChildNodes[i].Attributes["value"].Value;
+                            }
+                            else if (elemParent.ChildNodes[i].Attributes["use"].Value == "WP")
+                            {
+                                pat_Workphone = elemParent.ChildNodes[i].Attributes["value"].Value;
+                            }
                         }
                         catch
                         {
@@ -6660,43 +2850,44 @@ namespace Acurus.Capella.PatientPortal
                         int count = elemParent.ChildNodes[i].ChildNodes.Count;
                         for (int j = 0; j < count; j++)
                         {
-                            if (elemParent.ChildNodes[i].ChildNodes[j].Name == "name" )
+                            if (elemParent.ChildNodes[i].ChildNodes[j].Name == "name")
                             {
-                                if (elemParent.ChildNodes[i].ChildNodes[j].Attributes.Count > 0)
+                                //if (elemParent.ChildNodes[i].ChildNodes[j].Attributes.Count > 0)
+                                //{
+                                if (pat_Name.Trim() == string.Empty)//BugID:51216
                                 {
-                                    if (pat_Name.Trim() == string.Empty)//BugID:51216
-                                    {
-                                        int name_count = elemParent.ChildNodes[i].ChildNodes[j].ChildNodes.Count;
-                                        string firstname = string.Empty;
-                                        string lastName = string.Empty;
-                                        string suffix = string.Empty;
+                                    int name_count = elemParent.ChildNodes[i].ChildNodes[j].ChildNodes.Count;
+                                    string firstname = string.Empty;
+                                    string lastName = string.Empty;
+                                    string suffix = string.Empty;
 
-                                        for (int k = 0; k < name_count; k++)
+                                    for (int k = 0; k < name_count; k++)
+                                    {
+                                        if (elemParent.ChildNodes[i].ChildNodes[j].ChildNodes[k].Name == "given")
                                         {
-                                            if (elemParent.ChildNodes[i].ChildNodes[j].ChildNodes[k].Name == "given")
+                                            if (firstname == string.Empty)
+                                                firstname = elemParent.ChildNodes[i].ChildNodes[j].ChildNodes[k].InnerXml;
+                                            else
                                             {
-                                                if (firstname == string.Empty)
-                                                    firstname = elemParent.ChildNodes[i].ChildNodes[j].ChildNodes[k].InnerXml;
-                                                else
-                                                {
-                                                    if (middlename == string.Empty)
-                                                        middlename = elemParent.ChildNodes[i].ChildNodes[j].ChildNodes[k].InnerXml;
-                                                }
-                                            }
-                                            else if (elemParent.ChildNodes[i].ChildNodes[j].ChildNodes[k].Name == "family")
-                                            {
-                                                if (lastName == string.Empty)
-                                                    lastName = elemParent.ChildNodes[i].ChildNodes[j].ChildNodes[k].InnerXml;
-                                            }
-                                            else if (elemParent.ChildNodes[i].ChildNodes[j].ChildNodes[k].Name == "suffix")//BugID:51052
-                                            {
-                                                if (suffix == string.Empty)
-                                                    suffix = elemParent.ChildNodes[i].ChildNodes[j].ChildNodes[k].InnerXml;
+                                                if (middlename == string.Empty)
+                                                    middlename = elemParent.ChildNodes[i].ChildNodes[j].ChildNodes[k].InnerXml;
                                             }
                                         }
-                                        pat_Name = lastName + ", " + firstname + " " + middlename + " " + suffix;
+                                        else if (elemParent.ChildNodes[i].ChildNodes[j].ChildNodes[k].Name == "family")
+                                        {
+                                            if (lastName == string.Empty)
+                                                lastName = elemParent.ChildNodes[i].ChildNodes[j].ChildNodes[k].InnerXml;
+                                        }
+                                        else if (elemParent.ChildNodes[i].ChildNodes[j].ChildNodes[k].Name == "suffix")//BugID:51052
+                                        {
+                                            if (suffix == string.Empty)
+                                                suffix = elemParent.ChildNodes[i].ChildNodes[j].ChildNodes[k].InnerXml;
+                                        }
                                     }
-                                    
+                                    //pat_Name = lastName + ", " + firstname + " " + middlename + " " + suffix;
+                                    pat_Name = firstname + ", " + lastName + " " + middlename + " " + suffix;
+                                    //}
+
                                 }
                                 else
                                 {
@@ -6823,12 +3014,24 @@ namespace Acurus.Capella.PatientPortal
                 pat_Ethnicity = "UNKNOWN";
             if (Granulary_Race == "")
                 Granulary_Race = "UNKNOWN";
+
+            //var FontColour = new BaseColor(5, 128, 170);
+            var FontColour = MyColor;
+            Paragraph para = new Paragraph();
+            para.Font = iTextSharp.text.FontFactory.GetFont("Calibri", 16, iTextSharp.text.Font.BOLD, MyColor);
+            para.Alignment = iTextSharp.text.Element.ALIGN_CENTER;
+            para.Add(sTitle);
+            doc.Add(para);
+            doc.Add(new Paragraph("   "));
+
             PdfPTable patPatient = new PdfPTable(new float[] { 900, 900, 900, 900 });
             patPatient.WidthPercentage = 100;
-            HeadCell = new PdfPCell(new Phrase("PATIENT DETAIL", HeadFont));
+            HeadCell = new PdfPCell(new Phrase("Patient Detail", HeadFont));
+            HeadCell.Border = iTextSharp.text.Rectangle.NO_BORDER;
+            HeadCell.MinimumHeight = 18;
             HeadCell.Colspan = 8;
-            HeadCell.HorizontalAlignment = 1;
-            HeadCell.BackgroundColor = BaseColor.DARK_GRAY;
+            //HeadCell.HorizontalAlignment = 1;
+            HeadCell.BackgroundColor = MyColor; ; // BaseColor.DARK_GRAY;
             patPatient.AddCell(HeadCell);
             cell = CreateCell("Patient Name", "", "");
             patPatient.AddCell(cell);
@@ -6918,8 +3121,8 @@ namespace Acurus.Capella.PatientPortal
             patPatient.HorizontalAlignment = iTextSharp.text.Element.ALIGN_RIGHT;
 
             doc.Add(patPatient);
-            doc.Add(new Paragraph("   "));
-            doc.Add(new Paragraph("   "));
+            //doc.Add(new Paragraph("   "));
+            //doc.Add(new Paragraph("   "));
 
             try
             {
@@ -6981,12 +3184,14 @@ namespace Acurus.Capella.PatientPortal
             string state = string.Empty;
             string Zip = string.Empty;
 
-            PdfPTable patAuthor = new PdfPTable(new float[] { 900, 900 });
+            PdfPTable patAuthor = new PdfPTable(new float[] { 900, 900, 900, 900 });
             patAuthor.WidthPercentage = 100;
-            HeadCell = new PdfPCell(new Phrase("AUTHOR", HeadFont));
-            HeadCell.Colspan = 2;
-            HeadCell.HorizontalAlignment = 1;
-            HeadCell.BackgroundColor = BaseColor.DARK_GRAY;
+            HeadCell = new PdfPCell(new Phrase("Author", HeadFont));
+            HeadCell.Border = iTextSharp.text.Rectangle.NO_BORDER;
+            HeadCell.MinimumHeight = 18;
+            HeadCell.Colspan = 4;
+            //HeadCell.HorizontalAlignment = 1;
+            HeadCell.BackgroundColor = MyColor;// BaseColor.DARK_GRAY;
             patAuthor.AddCell(HeadCell);
 
             XmlNodeList Doc_authorNode = xmldoc.GetElementsByTagName("author");
@@ -7015,11 +3220,28 @@ namespace Acurus.Capella.PatientPortal
                                         for (int x = 0; x < child_count; x++)
                                         {
                                             if (elemParent.ChildNodes[i].ChildNodes[j].ChildNodes[k].ChildNodes[x].Name == "given")
-                                                firstname = elemParent.ChildNodes[i].ChildNodes[j].ChildNodes[k].ChildNodes[x].InnerXml;
+                                            {
+                                                if (firstname == string.Empty)
+                                                {
+                                                    firstname = elemParent.ChildNodes[i].ChildNodes[j].ChildNodes[k].ChildNodes[x].InnerXml;
+                                                }
+                                                else
+                                                {
+                                                    firstname = firstname + " " + elemParent.ChildNodes[i].ChildNodes[j].ChildNodes[k].ChildNodes[x].InnerXml;
+                                                }
+                                            }
                                             else if (elemParent.ChildNodes[i].ChildNodes[j].ChildNodes[k].ChildNodes[x].Name == "family")
+                                            {
                                                 lastName = elemParent.ChildNodes[i].ChildNodes[j].ChildNodes[k].ChildNodes[x].InnerXml;
+                                            }
                                             else if (elemParent.ChildNodes[i].ChildNodes[j].ChildNodes[k].ChildNodes[x].Name == "prefix")
+                                            {
                                                 Prefix = elemParent.ChildNodes[i].ChildNodes[j].ChildNodes[k].ChildNodes[x].InnerXml;
+                                            }
+                                            else if (elemParent.ChildNodes[i].ChildNodes[j].ChildNodes[k].ChildNodes[x].Name == "suffix")
+                                            {
+                                                lastName = lastName + ", " + elemParent.ChildNodes[i].ChildNodes[j].ChildNodes[k].ChildNodes[x].InnerXml;
+                                            }
                                         }
                                         break;
                                     }
@@ -7041,7 +3263,16 @@ namespace Acurus.Capella.PatientPortal
                                     else if (elemParent.ChildNodes[i].ChildNodes[j].ChildNodes[k].Name == "postalCode")
                                         Zip = elemParent.ChildNodes[i].ChildNodes[j].ChildNodes[k].InnerXml;
                                 }
-                                pat_AuthorAddres = street + ", " + city + ", " + state + ", " + Zip;
+                                if (street != string.Empty)
+                                    pat_AuthorAddres = street;
+                                if (city != string.Empty)
+                                    pat_AuthorAddres = pat_AuthorAddres + ", " + city;
+                                if (state != string.Empty)
+                                    pat_AuthorAddres = pat_AuthorAddres + ", " + state;
+                                if (Zip != string.Empty)
+                                    pat_AuthorAddres = pat_AuthorAddres + ", " + Zip;
+
+                                //pat_AuthorAddres = street + ", " + city + ", " + state + ", " + Zip;
                             }
                             else if (elemParent.ChildNodes[i].ChildNodes[j].Name == "telecom")
                             {
@@ -7066,67 +3297,70 @@ namespace Acurus.Capella.PatientPortal
 
 
             //Start
-            XmlNodeList Doc_ProviderNode = xmldoc.GetElementsByTagName("documentationOf");
-            foreach (XmlElement elemParent in Doc_ProviderNode)
+            if (pat_AuthorName == string.Empty)
             {
-                bool is_break = false;
-                for (int i = 0; i < elemParent.ChildNodes.Count; i++)
+                XmlNodeList Doc_ProviderNode = xmldoc.GetElementsByTagName("documentationOf");
+                foreach (XmlElement elemParent in Doc_ProviderNode)
                 {
-                    if (elemParent.ChildNodes[i].Name == "serviceEvent")
+                    bool is_break = false;
+                    for (int i = 0; i < elemParent.ChildNodes.Count; i++)
                     {
-                        int count = elemParent.ChildNodes[i].ChildNodes.Count;
-                        for (int j = 0; j < count; j++)
+                        if (elemParent.ChildNodes[i].Name == "serviceEvent")
                         {
-                            if (elemParent.ChildNodes[i].ChildNodes[j].Name == "performer")
+                            int count = elemParent.ChildNodes[i].ChildNodes.Count;
+                            for (int j = 0; j < count; j++)
                             {
-                                int per_count = elemParent.ChildNodes[i].ChildNodes[j].ChildNodes.Count;
-
-                                for (int k = 0; k < per_count; k++)
+                                if (elemParent.ChildNodes[i].ChildNodes[j].Name == "performer")
                                 {
-                                    if (elemParent.ChildNodes[i].ChildNodes[j].ChildNodes[k].Name == "assignedEntity")
+                                    int per_count = elemParent.ChildNodes[i].ChildNodes[j].ChildNodes.Count;
+
+                                    for (int k = 0; k < per_count; k++)
                                     {
-                                        int ent_count = elemParent.ChildNodes[i].ChildNodes[j].ChildNodes[k].ChildNodes.Count;
-                                        for (int l = 0; l < ent_count; l++)
+                                        if (elemParent.ChildNodes[i].ChildNodes[j].ChildNodes[k].Name == "assignedEntity")
                                         {
-                                            if (elemParent.ChildNodes[i].ChildNodes[j].ChildNodes[k].ChildNodes[l].Name == "assignedPerson")
+                                            int ent_count = elemParent.ChildNodes[i].ChildNodes[j].ChildNodes[k].ChildNodes.Count;
+                                            for (int l = 0; l < ent_count; l++)
                                             {
-                                                int name_count = elemParent.ChildNodes[i].ChildNodes[j].ChildNodes[k].ChildNodes[l].ChildNodes.Count;
-                                                string LastName = string.Empty;
-                                                string FirstName = string.Empty;
-                                                string prefix = string.Empty;
-                                                string suffix = string.Empty;
-
-                                                for (int y = 0; y < name_count; y++)
+                                                if (elemParent.ChildNodes[i].ChildNodes[j].ChildNodes[k].ChildNodes[l].Name == "assignedPerson")
                                                 {
-                                                    int name_count1 = elemParent.ChildNodes[i].ChildNodes[j].ChildNodes[k].ChildNodes[l].ChildNodes[y].ChildNodes.Count;
-                                                    for (int x = 0; x < name_count1; x++)
-                                                    {
-                                                        if (elemParent.ChildNodes[i].ChildNodes[j].ChildNodes[k].ChildNodes[l].ChildNodes[y].ChildNodes[x].Name == "given" && FirstName=="")
-                                                            FirstName = elemParent.ChildNodes[i].ChildNodes[j].ChildNodes[k].ChildNodes[l].ChildNodes[y].ChildNodes[x].InnerXml;
-                                                        else if (elemParent.ChildNodes[i].ChildNodes[j].ChildNodes[k].ChildNodes[l].ChildNodes[y].ChildNodes[x].Name == "family")
-                                                            LastName = elemParent.ChildNodes[i].ChildNodes[j].ChildNodes[k].ChildNodes[l].ChildNodes[y].ChildNodes[x].InnerXml;
-                                                        else if (elemParent.ChildNodes[i].ChildNodes[j].ChildNodes[k].ChildNodes[l].ChildNodes[y].ChildNodes[x].Name == "prefix")
-                                                            prefix = elemParent.ChildNodes[i].ChildNodes[j].ChildNodes[k].ChildNodes[l].ChildNodes[y].ChildNodes[x].InnerXml;
-                                                        else if (elemParent.ChildNodes[i].ChildNodes[j].ChildNodes[k].ChildNodes[l].ChildNodes[y].ChildNodes[x].Name == "suffix")
-                                                            suffix = elemParent.ChildNodes[i].ChildNodes[j].ChildNodes[k].ChildNodes[l].ChildNodes[y].ChildNodes[x].InnerXml;
-                                                    }
+                                                    int name_count = elemParent.ChildNodes[i].ChildNodes[j].ChildNodes[k].ChildNodes[l].ChildNodes.Count;
+                                                    string LastName = string.Empty;
+                                                    string FirstName = string.Empty;
+                                                    string prefix = string.Empty;
+                                                    string suffix = string.Empty;
 
+                                                    for (int y = 0; y < name_count; y++)
+                                                    {
+                                                        int name_count1 = elemParent.ChildNodes[i].ChildNodes[j].ChildNodes[k].ChildNodes[l].ChildNodes[y].ChildNodes.Count;
+                                                        for (int x = 0; x < name_count1; x++)
+                                                        {
+                                                            if (elemParent.ChildNodes[i].ChildNodes[j].ChildNodes[k].ChildNodes[l].ChildNodes[y].ChildNodes[x].Name == "given" && FirstName == "")
+                                                                FirstName = elemParent.ChildNodes[i].ChildNodes[j].ChildNodes[k].ChildNodes[l].ChildNodes[y].ChildNodes[x].InnerXml;
+                                                            else if (elemParent.ChildNodes[i].ChildNodes[j].ChildNodes[k].ChildNodes[l].ChildNodes[y].ChildNodes[x].Name == "family")
+                                                                LastName = elemParent.ChildNodes[i].ChildNodes[j].ChildNodes[k].ChildNodes[l].ChildNodes[y].ChildNodes[x].InnerXml;
+                                                            else if (elemParent.ChildNodes[i].ChildNodes[j].ChildNodes[k].ChildNodes[l].ChildNodes[y].ChildNodes[x].Name == "prefix")
+                                                                prefix = elemParent.ChildNodes[i].ChildNodes[j].ChildNodes[k].ChildNodes[l].ChildNodes[y].ChildNodes[x].InnerXml;
+                                                            else if (elemParent.ChildNodes[i].ChildNodes[j].ChildNodes[k].ChildNodes[l].ChildNodes[y].ChildNodes[x].Name == "suffix")
+                                                                suffix = elemParent.ChildNodes[i].ChildNodes[j].ChildNodes[k].ChildNodes[l].ChildNodes[y].ChildNodes[x].InnerXml;
+                                                        }
+
+                                                    }
+                                                    pat_AuthorName = prefix + " " + FirstName + " " + LastName + " " + suffix;
                                                 }
-                                                pat_AuthorName = prefix + " " + FirstName + " " + LastName + " " + suffix;
                                             }
+                                            break;
                                         }
-                                        break;
                                     }
+                                    break;
                                 }
-                                break;
                             }
+                            is_break = true;
+                            break;
                         }
-                        is_break = true;
-                        break;
                     }
+                    if (is_break == true)
+                        break;
                 }
-                if (is_break == true)
-                    break;
             }
             //End
 
@@ -7145,10 +3379,14 @@ namespace Acurus.Capella.PatientPortal
                 patAuthor.AddCell(cell);
                 cell = CreateCell("", pat_AuthorTel, "");
                 patAuthor.AddCell(cell);
+                cell = CreateCell("", "", "");
+                patAuthor.AddCell(cell);
+                cell = CreateCell("", "", "");
+                patAuthor.AddCell(cell);
 
                 doc.Add(patAuthor);
-                doc.Add(new Paragraph("   "));
-                doc.Add(new Paragraph("   "));
+                //doc.Add(new Paragraph("   "));
+                //doc.Add(new Paragraph("   "));
 
                 try
                 {
@@ -7185,12 +3423,14 @@ namespace Acurus.Capella.PatientPortal
             string state = string.Empty;
             string Zip = string.Empty;
 
-            PdfPTable patCustodian = new PdfPTable(new float[] { 900, 900 });
+            PdfPTable patCustodian = new PdfPTable(new float[] { 900, 900, 900, 900 });
             patCustodian.WidthPercentage = 100;
-            HeadCell = new PdfPCell(new Phrase("CUSTODIAN", HeadFont));
-            HeadCell.Colspan = 2;
-            HeadCell.HorizontalAlignment = 1;
-            HeadCell.BackgroundColor = BaseColor.DARK_GRAY;
+            HeadCell = new PdfPCell(new Phrase("Custodian", HeadFont));
+            HeadCell.Border = iTextSharp.text.Rectangle.NO_BORDER;
+            HeadCell.MinimumHeight = 18;
+            HeadCell.Colspan = 4;
+            //HeadCell.HorizontalAlignment = 1;
+            HeadCell.BackgroundColor = MyColor;// BaseColor.DARK_GRAY;
             patCustodian.AddCell(HeadCell);
 
             XmlNodeList Doc_CustodianNode = xmldoc.GetElementsByTagName("custodian");
@@ -7235,10 +3475,10 @@ namespace Acurus.Capella.PatientPortal
                                     {
                                         try
                                         {
-                                            if(elemParent.ChildNodes[i].ChildNodes[j].ChildNodes[k].Attributes[0].Name.ToUpper()=="VALUE")
-                                            pat_CustodianTelephone = elemParent.ChildNodes[i].ChildNodes[j].ChildNodes[k].Attributes[0].Value;
-                                            else if(elemParent.ChildNodes[i].ChildNodes[j].ChildNodes[k].Attributes[1].Name.ToUpper()=="VALUE")
-                                                    pat_CustodianTelephone = elemParent.ChildNodes[i].ChildNodes[j].ChildNodes[k].Attributes[1].Value;
+                                            if (elemParent.ChildNodes[i].ChildNodes[j].ChildNodes[k].Attributes[0].Name.ToUpper() == "VALUE")
+                                                pat_CustodianTelephone = elemParent.ChildNodes[i].ChildNodes[j].ChildNodes[k].Attributes[0].Value;
+                                            else if (elemParent.ChildNodes[i].ChildNodes[j].ChildNodes[k].Attributes[1].Name.ToUpper() == "VALUE")
+                                                pat_CustodianTelephone = elemParent.ChildNodes[i].ChildNodes[j].ChildNodes[k].Attributes[1].Value;
 
                                         }
                                         catch
@@ -7309,10 +3549,12 @@ namespace Acurus.Capella.PatientPortal
 
             PdfPTable patProvider = new PdfPTable(new float[] { 900, 900 });
             patProvider.WidthPercentage = 100;
-            HeadCell = new PdfPCell(new Phrase("PROVIDER", HeadFont));
+            HeadCell = new PdfPCell(new Phrase("Provider", HeadFont));
+            HeadCell.Border = iTextSharp.text.Rectangle.NO_BORDER;
+            HeadCell.MinimumHeight = 18;
             HeadCell.Colspan = 2;
-            HeadCell.HorizontalAlignment = 1;
-            HeadCell.BackgroundColor = BaseColor.DARK_GRAY;
+            //HeadCell.HorizontalAlignment = 1;
+            HeadCell.BackgroundColor = MyColor; //BaseColor.DARK_GRAY;
             patProvider.AddCell(HeadCell);
             string suffix = string.Empty;
             XmlNodeList Doc_ProviderNode = xmldoc.GetElementsByTagName("documentationOf");
@@ -7352,7 +3594,7 @@ namespace Acurus.Capella.PatientPortal
                                                         string Prefix = string.Empty;
                                                         for (int n = 0; n < child_count; n++)
                                                         {
-                                                            if (elemParent.ChildNodes[i].ChildNodes[j].ChildNodes[k].ChildNodes[l].ChildNodes[m].ChildNodes[n].Name == "given" && firstname=="")
+                                                            if (elemParent.ChildNodes[i].ChildNodes[j].ChildNodes[k].ChildNodes[l].ChildNodes[m].ChildNodes[n].Name == "given" && firstname == "")
                                                                 firstname = elemParent.ChildNodes[i].ChildNodes[j].ChildNodes[k].ChildNodes[l].ChildNodes[m].ChildNodes[n].InnerXml;
                                                             else if (elemParent.ChildNodes[i].ChildNodes[j].ChildNodes[k].ChildNodes[l].ChildNodes[m].ChildNodes[n].Name == "family")
                                                                 lastName = elemParent.ChildNodes[i].ChildNodes[j].ChildNodes[k].ChildNodes[l].ChildNodes[m].ChildNodes[n].InnerXml;
@@ -7390,8 +3632,8 @@ namespace Acurus.Capella.PatientPortal
                 patProvider.AddCell(cell);
 
                 doc.Add(patProvider);
-                doc.Add(new Paragraph("   "));
-                doc.Add(new Paragraph("   "));
+                //doc.Add(new Paragraph("   "));
+                //doc.Add(new Paragraph("   "));
             }
             #endregion
 
@@ -7407,12 +3649,14 @@ namespace Acurus.Capella.PatientPortal
             string ProviderName = string.Empty;
             string CareTeamMembers = string.Empty;
 
-            PdfPTable patDocument = new PdfPTable(new float[] { 900, 900 });
+            PdfPTable patDocument = new PdfPTable(new float[] { 900, 900, 900, 900 });
             patDocument.WidthPercentage = 100;
-            HeadCell = new PdfPCell(new Phrase("REFERRING PROVIDER", HeadFont));
-            HeadCell.Colspan = 2;
-            HeadCell.HorizontalAlignment = 1;
-            HeadCell.BackgroundColor = BaseColor.DARK_GRAY;
+            HeadCell = new PdfPCell(new Phrase("Referring Provider", HeadFont));
+            HeadCell.Border = iTextSharp.text.Rectangle.NO_BORDER;
+            HeadCell.MinimumHeight = 18;
+            HeadCell.Colspan = 4;
+            //HeadCell.HorizontalAlignment = 1;
+            HeadCell.BackgroundColor = MyColor;// BaseColor.DARK_GRAY;
             patDocument.AddCell(HeadCell);
 
 
@@ -7438,10 +3682,10 @@ namespace Acurus.Capella.PatientPortal
                                     {
                                         if (elemParent.ChildNodes[i].ChildNodes[j].ChildNodes[k].Attributes.Count > 0)
                                         {
-                                            if (elemParent.ChildNodes[i].ChildNodes[j].ChildNodes[k].Attributes[3].Value == "Primary Care Provider")
-                                            {
-                                                bCheckProvider = true;
-                                            }
+                                            //if (elemParent.ChildNodes[i].ChildNodes[j].ChildNodes[k].Attributes[3].Value == "Primary Care Provider")
+                                            //{
+                                            bCheckProvider = true;
+                                            //}
                                         }
                                     }
                                     if (bCheckProvider)
@@ -7470,7 +3714,16 @@ namespace Acurus.Capella.PatientPortal
                                                         else if (elemParent.ChildNodes[i].ChildNodes[j].ChildNodes[k].ChildNodes[l].ChildNodes[x].Name == "postalCode")
                                                             zip = elemParent.ChildNodes[i].ChildNodes[j].ChildNodes[k].ChildNodes[l].ChildNodes[x].InnerXml;
                                                     }
-                                                    pat_DocumentAddress = street + ", " + city + ", " + state + ", " + zip;
+
+                                                    if (street != string.Empty)
+                                                        pat_DocumentAddress = street;
+                                                    if (city != string.Empty)
+                                                        pat_DocumentAddress = pat_DocumentAddress + ", " + city;
+                                                    if (state != string.Empty)
+                                                        pat_DocumentAddress = pat_DocumentAddress + ", " + state;
+                                                    if (zip != string.Empty)
+                                                        pat_DocumentAddress = pat_DocumentAddress + ", " + zip;
+                                                    //pat_DocumentAddress = street + ", " + city + ", " + state + ", " + zip;
                                                 }
                                                 else if (elemParent.ChildNodes[i].ChildNodes[j].ChildNodes[k].ChildNodes[l].Name == "telecom")
                                                 {
@@ -7536,9 +3789,9 @@ namespace Acurus.Capella.PatientPortal
                                                     }
                                                     if (LastName != string.Empty && FirstName != string.Empty)//BugID:51050
                                                         CareTeamMembers = ProviderName + "\n" + FirstName + " " + LastName;
-                                                    else if (FirstName!=string.Empty)
-                                                       CareTeamMembers = ProviderName + "\n" + FirstName;
-                                                    else if(LastName!=string.Empty)
+                                                    else if (FirstName != string.Empty)
+                                                        CareTeamMembers = ProviderName + "\n" + FirstName;
+                                                    else if (LastName != string.Empty)
                                                         CareTeamMembers = ProviderName + "\n" + LastName;
                                                     bCheckProvider = false;
                                                 }
@@ -7560,7 +3813,7 @@ namespace Acurus.Capella.PatientPortal
 
             if (pat_DocumentAddress != string.Empty || pat_DocumentTel != string.Empty)
             {
-                cell = CreateCell("Provider Name", "", "");
+                cell = CreateCell("Referring Provider Name", "", "");
                 patDocument.AddCell(cell);
                 cell = CreateCell("", ProviderName, "");
                 patDocument.AddCell(cell);
@@ -7578,8 +3831,8 @@ namespace Acurus.Capella.PatientPortal
                 patDocument.AddCell(cell);
 
                 doc.Add(patDocument);
-                doc.Add(new Paragraph("   "));
-                doc.Add(new Paragraph("   "));
+                //doc.Add(new Paragraph("   "));
+                //doc.Add(new Paragraph("   "));
             }
 
             #endregion
@@ -7594,10 +3847,12 @@ namespace Acurus.Capella.PatientPortal
 
             PdfPTable patDocument = new PdfPTable(new float[] { 900, 900 });
             patDocument.WidthPercentage = 100;
-            HeadCell = new PdfPCell(new Phrase("DOCUMENTATION DETAIL", HeadFont));
+            HeadCell = new PdfPCell(new Phrase("Documentation Detail", HeadFont));
+            HeadCell.Border = iTextSharp.text.Rectangle.NO_BORDER;
+            HeadCell.MinimumHeight = 18;
             HeadCell.Colspan = 2;
-            HeadCell.HorizontalAlignment = 1;
-            HeadCell.BackgroundColor = BaseColor.DARK_GRAY;
+            //HeadCell.HorizontalAlignment = 1;
+            HeadCell.BackgroundColor = MyColor; //BaseColor.DARK_GRAY;
             patDocument.AddCell(HeadCell);
 
             XmlNodeList Doc_ProviderNode = xmldoc.GetElementsByTagName("documentationOf");
@@ -7641,18 +3896,26 @@ namespace Acurus.Capella.PatientPortal
                                                     else if (elemParent.ChildNodes[i].ChildNodes[j].ChildNodes[k].ChildNodes[l].ChildNodes[x].Name == "postalCode")
                                                         zip = elemParent.ChildNodes[i].ChildNodes[j].ChildNodes[k].ChildNodes[l].ChildNodes[x].InnerXml;
                                                 }
-                                                pat_DocumentAddress = street + ", " + city + ", " + state + ", " + zip;
+                                                if (street != string.Empty)
+                                                    pat_DocumentAddress = street;
+                                                if (city != string.Empty)
+                                                    pat_DocumentAddress = pat_DocumentAddress + ", " + city;
+                                                if (state != string.Empty)
+                                                    pat_DocumentAddress = pat_DocumentAddress + ", " + state;
+                                                if (zip != string.Empty)
+                                                    pat_DocumentAddress = pat_DocumentAddress + ", " + zip;
+                                                //pat_DocumentAddress = street + ", " + city + ", " + state + ", " + zip;
                                             }
                                             else if (elemParent.ChildNodes[i].ChildNodes[j].ChildNodes[k].ChildNodes[l].Name == "telecom")
                                             {
                                                 try
                                                 {
-                                                     if( elemParent.ChildNodes[i].ChildNodes[j].ChildNodes[k].ChildNodes[l].Attributes[0].Name.ToUpper()=="VALUE")
-                                                         pat_DocumentTel = elemParent.ChildNodes[i].ChildNodes[j].ChildNodes[k].ChildNodes[l].Attributes[0].Value;
-                                            else if ( elemParent.ChildNodes[i].ChildNodes[j].ChildNodes[k].ChildNodes[l].Attributes[1].Name.ToUpper()=="VALUE")
-                                                         pat_DocumentTel = elemParent.ChildNodes[i].ChildNodes[j].ChildNodes[k].ChildNodes[l].Attributes[1].Value;
+                                                    if (elemParent.ChildNodes[i].ChildNodes[j].ChildNodes[k].ChildNodes[l].Attributes[0].Name.ToUpper() == "VALUE")
+                                                        pat_DocumentTel = elemParent.ChildNodes[i].ChildNodes[j].ChildNodes[k].ChildNodes[l].Attributes[0].Value;
+                                                    else if (elemParent.ChildNodes[i].ChildNodes[j].ChildNodes[k].ChildNodes[l].Attributes[1].Name.ToUpper() == "VALUE")
+                                                        pat_DocumentTel = elemParent.ChildNodes[i].ChildNodes[j].ChildNodes[k].ChildNodes[l].Attributes[1].Value;
 
-                                                 
+
                                                 }
                                                 catch
                                                 {
@@ -7674,309 +3937,23 @@ namespace Acurus.Capella.PatientPortal
                     break;
             }
 
-            if (pat_DocumentAddress != string.Empty || pat_DocumentTel != string.Empty)
-            {
-                cell = CreateCell("Documentation of Address", "", "");
-                patDocument.AddCell(cell);
-                cell = CreateCell("", pat_DocumentAddress, "");
-                patDocument.AddCell(cell);
-                cell = CreateCell("Documentation of Telephone", "", "");
-                patDocument.AddCell(cell);
-                cell = CreateCell("", pat_DocumentTel, "");
-                patDocument.AddCell(cell);
+            //if (pat_DocumentAddress != string.Empty || pat_DocumentTel != string.Empty)
+            //{
+            cell = CreateCell("Documentation of Address", "", "");
+            patDocument.AddCell(cell);
+            cell = CreateCell("", pat_DocumentAddress, "");
+            patDocument.AddCell(cell);
+            cell = CreateCell("Documentation of Telephone", "", "");
+            patDocument.AddCell(cell);
+            cell = CreateCell("", pat_DocumentTel, "");
+            patDocument.AddCell(cell);
 
-                doc.Add(patDocument);
-                doc.Add(new Paragraph("   "));
-                doc.Add(new Paragraph("   "));
-            }
-
-            #endregion
-        }
-
-        public void PrintVisitDetail(Document doc, XmlDocument xmldoc)
-        {
-            #region VisitDetails
-            sNoInformationInTable = string.Empty;
-            string pat_DOV = string.Empty;
-            string pat_LOV = string.Empty;
-            string pat_ROV = string.Empty;
-
-            PdfPTable patVisit = new PdfPTable(new float[] { 900, 900 });
-            patVisit.WidthPercentage = 100;
-            HeadCell = new PdfPCell(new Phrase("ENCOUNTER DETAIL", HeadFont));
-            HeadCell.Colspan = 2;
-            HeadCell.HorizontalAlignment = 1;
-            HeadCell.BackgroundColor = BaseColor.DARK_GRAY;
-            patVisit.AddCell(HeadCell);
-
-
-            DataSet dsEncounter = null;
-            XmlNodeList Doc_EncounterNode = xmldoc.GetElementsByTagName("section");
-            foreach (XmlElement elemParent in Doc_EncounterNode)
-            {
-                bool is_break = false;
-                for (int i = 0; i < elemParent.ChildNodes.Count; i++)
-                {
-                    if (elemParent.ChildNodes[i].Name == "title" && (elemParent.ChildNodes[i].InnerText.ToUpper() == "ENCOUNTERS" || elemParent.ChildNodes[i].InnerText.ToUpper() == "ENCOUNTERS DIAGNOSIS"))
-                    {
-                        dsEncounter = ConvertHTMLTablesToDataSet(elemParent.ChildNodes[i + 1].InnerXml);
-                        break;
-                    }
-                }
-
-                if (dsEncounter != null)
-                {
-                    for (int i = 0; i < dsEncounter.Tables[0].Rows.Count; i++)
-                    {
-                        string Visit_Date = StripTagsRegex(dsEncounter.Tables[0].Rows[i].Field<string>("Date"));
-                        if (Visit_Date != string.Empty)
-                        {
-                            //string year = Visit_Date.Substring(0, 4);
-                            //string month = Visit_Date.Substring(4, 2);
-                            //string date = Visit_Date.Substring(6, 2);
-                            //pat_DOV = year + "-" + month + "-" + date;
-                            pat_DOV = Visit_Date;
-                        }
-                        try
-                        {
-                            pat_LOV = StripTagsRegex(dsEncounter.Tables[0].Rows[i].Field<string>("Location"));
-                        }
-                        catch
-                        {
-                            pat_LOV = StripTagsRegex(dsEncounter.Tables[0].Rows[i].Field<string>("Location"));
-                        }
-                        try
-                        {
-                            pat_ROV = StripTagsRegex(dsEncounter.Tables[0].Rows[i].Field<string>("<tr><th>Encounter"));
-                        }
-                        catch
-                        {
-                            pat_ROV = StripTagsRegex(dsEncounter.Tables[0].Rows[i].Field<string>("<tr><th>Encounter Diagnosis"));
-                        }
-
-                        is_break = true;
-                        break;
-                    }
-                }
-                if (is_break == true)
-                    break;
-            }
-
-            if (pat_DOV != string.Empty || pat_LOV != string.Empty || pat_ROV != string.Empty)
-            {
-                cell = CreateCell("Date of Visit", "", "");
-                patVisit.AddCell(cell);
-                cell = CreateCell("", pat_DOV, "");
-                patVisit.AddCell(cell);
-                cell = CreateCell("Location of Visit", "", "");
-                patVisit.AddCell(cell);
-                cell = CreateCell("", pat_LOV, "");
-                patVisit.AddCell(cell);
-                cell = CreateCell("Encounter Diagnosis", "", "");//BugId:51017
-                patVisit.AddCell(cell);
-                cell = CreateCell("", pat_ROV, "");
-                patVisit.AddCell(cell);
-
-                doc.Add(patVisit);
-                doc.Add(new Paragraph("   "));
-                doc.Add(new Paragraph("   "));
-
-                try
-                {
-                    Encounter objencounter = new Encounter();
-                    objencounter.Facility_Name = pat_LOV;
-                    string year = pat_DOV.Substring(0, 4);
-                    string month = pat_DOV.Substring(4, 2);
-                    string date = pat_DOV.Substring(6, 2);
-                    try
-                    {
-                        if (pat_DOV.Length == 8)
-                        {
-                            hdnDateOfService.Value = year + "-" + month + "-" + date;
-                            objencounter.Date_of_Service = UtilityManager.ConvertToUniversal(Convert.ToDateTime(year + "-" + month + "-" + date));
-
-                        }
-
-                        else
-                        {
-                            string datestring = pat_DOV.Split(',')[0].Split(' ')[1] + "-" + pat_DOV.Split(',')[0].Split(' ')[0] + pat_DOV.Split(',')[1].Split(' ')[1];
-                            objencounter.Date_of_Service = UtilityManager.ConvertToUniversal(Convert.ToDateTime(datestring));
-                            hdnDateOfService.Value = Convert.ToDateTime(datestring).ToString("yyyy-MM-dd");
-                        }
-                    }
-                    catch
-                    {
-
-
-
-                    }
-
-                    // hdnDateOfService.Value = year + "-" + month + "-" + date;
-                    objencounter.Local_Time = UtilityManager.ConvertToLocal(objencounter.Date_of_Service).ToString("yyyy-MM-dd hh:mm:ss tt"); ;
-                    objencounter.Purpose_of_Visit = pat_ROV;
-                    objencounter.Created_Date_and_Time = universalTime;
-                    objencounter.Created_By = ClientSession.UserName;
-                    lstencounter.Add(objencounter);
-                }
-                catch
-                {
-                    //do nothing
-                }
-            }
-
-            Session["Encounter"] = lstencounter;
+            doc.Add(patDocument);
+            doc.Add(new Paragraph("   "));
+            //doc.Add(new Paragraph("   "));
+            //}
 
             #endregion
-        }
-
-        public void PrintTreatmentPlan(Document doc, XmlDocument xmldoc)
-        {
-            #region Lab Tests
-            sNoInformationInTable = string.Empty;
-            XmlNodeList Doc_ChiefComplaint_Node = xmldoc.GetElementsByTagName("section");
-
-            DataSet dsTreatementPlan = null;
-            XmlNodeList Doc_History_Node = xmldoc.GetElementsByTagName("section");
-            foreach (XmlElement elemParent in Doc_History_Node)
-            {
-                bool is_break = false;
-                for (int i = 0; i < elemParent.ChildNodes.Count; i++)
-                {
-                    if (elemParent.ChildNodes[i].Name == "title" && elemParent.ChildNodes[i].InnerText.ToUpper() == "TREATMENT PLAN")
-                    {
-                        // dsHistory = ConvertHTMLTablesToDataSet(elemParent.ChildNodes[i + 1].InnerXml);
-                        if (elemParent.ChildNodes[i + 1].InnerXml.Trim(' ').StartsWith("<table") == true)
-                            dsTreatementPlan = ConvertHTMLTablesToDataSet(elemParent.ChildNodes[i + 1].InnerXml);
-                        else if (elemParent.ChildNodes[i + 1].InnerXml.Trim(' ').StartsWith("<content") == true)
-                        {
-                            foreach (XmlNode xnode in elemParent.ChildNodes[i + 1].ChildNodes)
-                            {
-                                if (xnode.OuterXml.StartsWith("<table"))
-                                {
-                                    dsTreatementPlan = ConvertHTMLTablesToDataSet(xnode.OuterXml);
-                                    break;
-                                }
-
-                            }
-                        }
-                        else
-                        {
-                            dsTreatementPlan = null;
-                            sNoInformationInTable = string.Empty;
-                            sNoInformationInTable = elemParent.ChildNodes[i + 1].InnerXml;
-                        }
-                        is_break = true;
-                        break;
-                    }
-                }
-                if (is_break == true)
-                    break;
-            }
-
-            if (dsTreatementPlan != null && dsTreatementPlan.Tables.Count > 0)
-            {
-                PdfPTable patChiefComplaint = new PdfPTable(dsTreatementPlan.Tables[0].Columns.Count);
-                patChiefComplaint.WidthPercentage = 100;
-                HeadCell = new PdfPCell(new Phrase("TREATMENT PLAN", HeadFont));
-                HeadCell.Colspan = dsTreatementPlan.Tables[0].Columns.Count;
-                HeadCell.HorizontalAlignment = 1;
-                HeadCell.BackgroundColor = BaseColor.DARK_GRAY;
-                patChiefComplaint.AddCell(HeadCell);
-
-
-
-                for (int j = 0; j < dsTreatementPlan.Tables[0].Columns.Count; j++)
-                {
-                    string ColumnName = StripTagsRegex(dsTreatementPlan.Tables[0].Columns[j].ColumnName);
-                    //if (ColumnName.ToUpper() != "NDCID")
-                    //{
-                    cell = CreateCell(ColumnName, "", "");
-                    patChiefComplaint.AddCell(cell);
-                    // }
-                }
-
-                foreach (DataRow row in dsTreatementPlan.Tables[0].Rows)
-                {
-                    foreach (DataColumn column in dsTreatementPlan.Tables[0].Columns)
-                    {
-                        //if (!row[column].ToString().Contains("NDCID"))
-                        //{
-                        string ColumnData = StripTagsRegex(row[column].ToString());
-                        if ((ColumnData.EndsWith(",")) && (ColumnData.Length > 0))
-                        {
-                            ColumnData = ColumnData.Substring(0, ColumnData.Length - 1);
-                        }
-
-                        cell = CreateCell("", ColumnData, "");
-                        patChiefComplaint.AddCell(cell);
-
-                    }
-                }
-
-                doc.Add(patChiefComplaint);
-                doc.Add(new Paragraph("   "));
-                doc.Add(new Paragraph("   "));
-            }
-            else
-            {
-                PdfPTable emptyPDF = new PdfPTable(1);
-                emptyPDF.WidthPercentage = 100;
-                HeadCell = new PdfPCell(new Phrase("TREATMENT PLAN", HeadFont));
-                HeadCell.HorizontalAlignment = 1;
-                HeadCell.BackgroundColor = BaseColor.DARK_GRAY;
-                emptyPDF.AddCell(HeadCell);
-                if (sNoInformationInTable == string.Empty)
-                {
-                    cell = CreateCell("", "     " + StripTagsRegex("No known data found"), "");
-                }
-                else
-                {
-                    cell = CreateCell("", "     " + StripTagsRegex(sNoInformationInTable), "");
-                }
-                emptyPDF.AddCell(cell);
-                doc.Add(emptyPDF);
-                doc.Add(new Paragraph("   "));
-                doc.Add(new Paragraph("   "));
-            }
-
-
-            #endregion
-
-        }
-
-        public void PrintMedicationAdministered(Document doc, XmlDocument xmldoc)
-        {
-            sNoInformationInTable = string.Empty;
-            PdfPTable patVisit = new PdfPTable(new float[] { 900 });
-            patVisit.WidthPercentage = 100;
-            HeadCell = new PdfPCell(new Phrase("MEDICATION ADMINISTERED", HeadFont));
-            HeadCell.Colspan = 1;
-            HeadCell.HorizontalAlignment = 1;
-            HeadCell.BackgroundColor = BaseColor.DARK_GRAY;
-            patVisit.AddCell(HeadCell);
-
-            DataSet dsEncounter = null;
-            XmlNodeList Doc_EncounterNode = xmldoc.GetElementsByTagName("section");
-            foreach (XmlElement elemParent in Doc_EncounterNode)
-            {
-                bool is_break = false;
-                for (int i = 0; i < elemParent.ChildNodes.Count; i++)
-                {
-                    if (elemParent.ChildNodes[i].Name == "title" && elemParent.ChildNodes[i].InnerText.ToUpper() == "MEDICATIONS ADMINISTERED")
-                    {
-                        string medication = elemParent.ChildNodes[i + 1].InnerXml;
-                        cell = CreateCell("", medication, "");
-                        patVisit.AddCell(cell);
-                        doc.Add(patVisit);
-                        doc.Add(new Paragraph("   "));
-                        doc.Add(new Paragraph("   "));
-                        is_break = true;
-                        break;
-                    }
-                }
-                if (is_break == true)
-                    break;
-            }
         }
 
         public void Print_CCR_ContinuityOfCare(Document doc, XmlDocument xmldoc)
@@ -8073,7 +4050,7 @@ namespace Acurus.Capella.PatientPortal
             XmlNodeList Doc_Type = xmldoc.GetElementsByTagName("ccr:From");
             foreach (XmlElement elemParent in Doc_Type)
             {
-                bool is_break = false;
+                //bool is_break = false;
                 int count = elemParent.ChildNodes.Count;
                 for (int i = 0; i < count; i++)
                 {
@@ -8159,7 +4136,7 @@ namespace Acurus.Capella.PatientPortal
             XmlNodeList Doc_To_Type = xmldoc.GetElementsByTagName("ccr:To");
             foreach (XmlElement elemParent in Doc_To_Type)
             {
-                bool is_break = false;
+                //bool is_break = false;
                 int count = elemParent.ChildNodes.Count;
                 for (int i = 0; i < count; i++)
                 {
@@ -8188,7 +4165,7 @@ namespace Acurus.Capella.PatientPortal
             XmlNodeList Doc_Purpose = xmldoc.GetElementsByTagName("ccr:Purpose");
             foreach (XmlElement elemParent in Doc_Purpose)
             {
-                bool is_break = false;
+                //bool is_break = false;
                 int count = elemParent.ChildNodes.Count;
                 for (int i = 0; i < count; i++)
                 {
@@ -8214,7 +4191,8 @@ namespace Acurus.Capella.PatientPortal
             HeadCell = new PdfPCell(new Phrase("CONTINUITY OF CARE RECORD", HeadFont));
             HeadCell.Colspan = 2;
             HeadCell.HorizontalAlignment = 1;
-            HeadCell.BackgroundColor = BaseColor.DARK_GRAY;
+            HeadCell.Border = iTextSharp.text.Rectangle.NO_BORDER;
+            HeadCell.BackgroundColor = MyColor;// BaseColor.DARK_GRAY;
             patPatient.AddCell(HeadCell);
             cell = CreateCell("Date Created", "", "");
             patPatient.AddCell(cell);
@@ -8251,7 +4229,7 @@ namespace Acurus.Capella.PatientPortal
             XmlNodeList Doc_Name = xmldoc.GetElementsByTagName("ccr:Actor");
             foreach (XmlElement elemParent in Doc_Name)
             {
-                bool is_break = false;
+                // bool is_break = false;
                 int count = elemParent.ChildNodes.Count;
                 {
                     bool is_author = false;
@@ -8377,7 +4355,8 @@ namespace Acurus.Capella.PatientPortal
             HeadCell = new PdfPCell(new Phrase("PATIENT DEMOGRAPHICS", HeadFont));
             HeadCell.Colspan = 5;
             HeadCell.HorizontalAlignment = 1;
-            HeadCell.BackgroundColor = BaseColor.DARK_GRAY;
+            HeadCell.Border = iTextSharp.text.Rectangle.NO_BORDER;
+            HeadCell.BackgroundColor = MyColor;// BaseColor.DARK_GRAY;
             patPatient.AddCell(HeadCell);
             cell = CreateCell("Name", "", "");
             patPatient.AddCell(cell);
@@ -8413,7 +4392,8 @@ namespace Acurus.Capella.PatientPortal
             HeadCell = new PdfPCell(new Phrase("ALERTS", HeadFont));
             HeadCell.Colspan = 6;
             HeadCell.HorizontalAlignment = 1;
-            HeadCell.BackgroundColor = BaseColor.DARK_GRAY;
+            HeadCell.Border = iTextSharp.text.Rectangle.NO_BORDER;
+            HeadCell.BackgroundColor = MyColor;// BaseColor.DARK_GRAY;
             patPatient.AddCell(HeadCell);
             cell = CreateCell("Type", "", "");
             patPatient.AddCell(cell);
@@ -8441,7 +4421,7 @@ namespace Acurus.Capella.PatientPortal
             {
                 int count = elemParent.ChildNodes.Count;
                 {
-                    bool is_author = false;
+                    //bool is_author = false;
                     for (int i = 0; i < count; i++)
                     {
                         if (elemParent.ChildNodes[i].Name == "ccr:Alerts")
@@ -8570,7 +4550,8 @@ namespace Acurus.Capella.PatientPortal
             HeadCell = new PdfPCell(new Phrase("PROBLEMS", HeadFont));
             HeadCell.Colspan = 6;
             HeadCell.HorizontalAlignment = 1;
-            HeadCell.BackgroundColor = BaseColor.DARK_GRAY;
+            HeadCell.Border = iTextSharp.text.Rectangle.NO_BORDER;
+            HeadCell.BackgroundColor = MyColor;// BaseColor.DARK_GRAY;
             patPatient.AddCell(HeadCell);
             cell = CreateCell("Type", "", "");
             patPatient.AddCell(cell);
@@ -8723,7 +4704,8 @@ namespace Acurus.Capella.PatientPortal
             HeadCell = new PdfPCell(new Phrase("MEDICATIONS", HeadFont));
             HeadCell.Colspan = 12;
             HeadCell.HorizontalAlignment = 1;
-            HeadCell.BackgroundColor = BaseColor.DARK_GRAY;
+            HeadCell.Border = iTextSharp.text.Rectangle.NO_BORDER;
+            HeadCell.BackgroundColor = MyColor;// BaseColor.DARK_GRAY;
             patPatient.AddCell(HeadCell);
             cell = CreateCell("Medication", "", "");
             patPatient.AddCell(cell);
@@ -9033,7 +5015,8 @@ namespace Acurus.Capella.PatientPortal
             HeadCell = new PdfPCell(new Phrase("RESULTS (DISCRETE)", HeadFont));
             HeadCell.Colspan = 4;
             HeadCell.HorizontalAlignment = 1;
-            HeadCell.BackgroundColor = BaseColor.DARK_GRAY;
+            HeadCell.Border = iTextSharp.text.Rectangle.NO_BORDER;
+            HeadCell.BackgroundColor = MyColor;// BaseColor.DARK_GRAY;
             patPatient.AddCell(HeadCell);
             cell = CreateCell("Test", "", "");
             patPatient.AddCell(cell);
@@ -9181,7 +5164,8 @@ namespace Acurus.Capella.PatientPortal
             HeadCell = new PdfPCell(new Phrase("RESULTS (REPORT)", HeadFont));
             HeadCell.Colspan = 4;
             HeadCell.HorizontalAlignment = 1;
-            HeadCell.BackgroundColor = BaseColor.DARK_GRAY;
+            HeadCell.Border = iTextSharp.text.Rectangle.NO_BORDER;
+            HeadCell.BackgroundColor = MyColor;// BaseColor.DARK_GRAY;
             patReport.AddCell(HeadCell);
             cell = CreateCell("Test", "", "");
             patReport.AddCell(cell);
@@ -9324,7 +5308,8 @@ namespace Acurus.Capella.PatientPortal
             HeadCell = new PdfPCell(new Phrase("PEOPLE", HeadFont));
             HeadCell.Colspan = 6;
             HeadCell.HorizontalAlignment = 1;
-            HeadCell.BackgroundColor = BaseColor.DARK_GRAY;
+            HeadCell.Border = iTextSharp.text.Rectangle.NO_BORDER;
+            HeadCell.BackgroundColor = MyColor;// BaseColor.DARK_GRAY;
             patPatient.AddCell(HeadCell);
             cell = CreateCell("Name", "", "");
             patPatient.AddCell(cell);
@@ -9456,7 +5441,8 @@ namespace Acurus.Capella.PatientPortal
             HeadCell = new PdfPCell(new Phrase("ORGANIZATIONS", HeadFont));
             HeadCell.Colspan = 6;
             HeadCell.HorizontalAlignment = 1;
-            HeadCell.BackgroundColor = BaseColor.DARK_GRAY;
+            HeadCell.Border = iTextSharp.text.Rectangle.NO_BORDER;
+            HeadCell.BackgroundColor = MyColor;// BaseColor.DARK_GRAY;
             patPatient.AddCell(HeadCell);
             cell = CreateCell("Name", "", "");
             patPatient.AddCell(cell);
@@ -9567,7 +5553,6 @@ namespace Acurus.Capella.PatientPortal
             doc.Add(patPatient);
         }
 
-
         public void PrintResultsforPatientPortal(Document doc, XmlDocument xmldoc)
         {
             try
@@ -9599,7 +5584,8 @@ namespace Acurus.Capella.PatientPortal
                     HeadCell = new PdfPCell(new Phrase("RESULTS", HeadFont));
                     HeadCell.Colspan = dsResults.Tables[0].Columns.Count;
                     HeadCell.HorizontalAlignment = 1;
-                    HeadCell.BackgroundColor = BaseColor.DARK_GRAY;
+                    HeadCell.Border = iTextSharp.text.Rectangle.NO_BORDER;
+                    HeadCell.BackgroundColor = MyColor;// BaseColor.DARK_GRAY;
                     patResults.AddCell(HeadCell);
 
 
@@ -9694,12 +5680,13 @@ namespace Acurus.Capella.PatientPortal
                 }
                 else
                 {
-                    
+
                     PdfPTable emptyPDF = new PdfPTable(1);
                     emptyPDF.WidthPercentage = 100;
                     HeadCell = new PdfPCell(new Phrase("RESULTS", HeadFont));
                     HeadCell.HorizontalAlignment = 1;
-                    HeadCell.BackgroundColor = BaseColor.DARK_GRAY;
+                    HeadCell.Border = iTextSharp.text.Rectangle.NO_BORDER;
+                    HeadCell.BackgroundColor = MyColor;// BaseColor.DARK_GRAY;
                     emptyPDF.AddCell(HeadCell);
                     if (sNoInformationInTable == string.Empty)
                     {
@@ -9783,7 +5770,8 @@ namespace Acurus.Capella.PatientPortal
                     emptyPDF.WidthPercentage = 100;
                     HeadCell = new PdfPCell(new Phrase("RESULTS", HeadFont));
                     HeadCell.HorizontalAlignment = 1;
-                    HeadCell.BackgroundColor = BaseColor.DARK_GRAY;
+                    HeadCell.Border = iTextSharp.text.Rectangle.NO_BORDER;
+                    HeadCell.BackgroundColor = MyColor;// BaseColor.DARK_GRAY;
                     emptyPDF.AddCell(HeadCell);
                     if (sNoInformationInTable == string.Empty)
                     {
@@ -9803,6 +5791,20 @@ namespace Acurus.Capella.PatientPortal
 
         public void SaveSummaryOfCareInDatabase()
         {
+            IList<ActivityLog> checkActivityLogList = new List<ActivityLog>();
+            ActivityLogManager ActivitylogMngr = new ActivityLogManager();
+            checkActivityLogList = ActivitylogMngr.GetActivityByActivityTypeandSubject("CCD Import", Session["sFileNameBind"].ToString());
+
+            if (checkActivityLogList.Count > 0)
+            {
+                Session["SummaryCareAlreadyImported"] = true;
+                return;
+            }
+            else
+            {
+                Session["SummaryCareAlreadyImported"] = false;
+            }
+
             SummaryOfCareDTO objsummarydto = new SummaryOfCareDTO();
             objsummarydto.HumanList = (IList<Human>)Session["HumanList"];
             objsummarydto.PhysicianList = (IList<PhysicianLibrary>)Session["PhysicianLibrary"];
@@ -9833,16 +5835,17 @@ namespace Acurus.Capella.PatientPortal
 
             Session["sReturn"] = objencounter.SaveSummaryOfCare(objsummarydto, ClientSession.UserName, ClientSession.FacilityName, ClientSession.EncounterId, ClientSession.LegalOrg);
             IList<ActivityLog> ActivityLogList = new List<ActivityLog>();
-            ActivityLogManager ActivitylogMngr = new ActivityLogManager();
             ActivityLog activity = new ActivityLog();
             activity.Activity_Type = "CCD Import";
             activity.Activity_Date_And_Time = DateTime.UtcNow;
             activity.Encounter_ID = (objsummarydto.EncounterList != null && objsummarydto.EncounterList.Count > 0 && objsummarydto.EncounterList[0].Id != 0) ? objsummarydto.EncounterList[0].Id : ClientSession.EncounterId;
-            activity.Human_ID = (objsummarydto.HumanList!=null && objsummarydto.HumanList.Count>0 && objsummarydto.HumanList[0].Id!=0)?objsummarydto.HumanList[0].Id:ClientSession.HumanId;
+            activity.Human_ID = (objsummarydto.HumanList != null && objsummarydto.HumanList.Count > 0 && objsummarydto.HumanList[0].Id != 0) ? objsummarydto.HumanList[0].Id : ClientSession.HumanId;
             activity.Subject = Session["sFileNameBind"].ToString();
             activity.Activity_By = ClientSession.UserName;
             Session["ReconciledEncID"] = activity.Encounter_ID;//BugID:51164,to be used for ActivityLog entry - type : CCD RECONCILE
             ActivityLogList.Add(activity);
+
+
             ActivitylogMngr.SaveActivityLogManager(ActivityLogList, string.Empty);
         }
 
@@ -9870,7 +5873,7 @@ namespace Acurus.Capella.PatientPortal
             string PhiMailDirectory = System.Configuration.ConfigurationManager.AppSettings["phiMailDownloadDirectory"].ToString();
 
             string filrnsmrnew = Path.GetFileName(filename);
-           
+
             if (!Directory.Exists(PhiMailDirectory + "\\" + ClientSession.PhysicianId + "\\ImportedFiles"))
                 Directory.CreateDirectory(PhiMailDirectory + "\\" + ClientSession.PhysicianId + "\\ImportedFiles");
             if (File.Exists(PhiMailDirectory + "\\" + ClientSession.PhysicianId + "\\ImportedFiles\\" + filrnsmrnew))
@@ -9886,7 +5889,7 @@ namespace Acurus.Capella.PatientPortal
         //        if (SummaryCheckList.Items[i].Selected == true)
         //            SelectedSummaryItems.Add(SummaryCheckList.Items[i].Value);
         //    }
-           
+
         //    if (SelectedSummaryItems != null && SelectedSummaryItems.Count > 0)
         //    {
         //        if (SelectedSummaryItems.Count == 1 && SelectedSummaryItems[0] == "All")
@@ -9896,7 +5899,7 @@ namespace Acurus.Capella.PatientPortal
         //    }
         //}
 
-        [System.Web.Services.WebMethod]
+        [System.Web.Services.WebMethod(EnableSession = true)]
         [ScriptMethod(ResponseFormat = ResponseFormat.Json)]
         public static string GeneratePDFforSummary(string[] data)
         {
@@ -9913,19 +5916,19 @@ namespace Acurus.Capella.PatientPortal
             if (SelectedSummaryItems != null && SelectedSummaryItems.Count > 0)
             {
                 if (SelectedSummaryItems.Count == 1 && SelectedSummaryItems[0] == "All")
-                    retVal=objsumm.GenerateEntireSummary();
+                    retVal = objsumm.GenerateEntireSummary();
                 else
-                   retVal= objsumm.GeneratePDFforSummary(SelectedSummaryItems);
+                    retVal = objsumm.GeneratePDFforSummary(SelectedSummaryItems);
             }
             return retVal;
         }
-        
-        public  string GeneratePDFforSummary(IList<string> SelectedSummaryItems)
+
+        public string GeneratePDFforSummary(IList<string> SelectedSummaryItems)
         {
             System.IO.File.Delete((string)HttpContext.Current.Session["PDF_Path"]);
             string XmlPath = FilePath;
 
-            
+
             XmlDocument xmldoc = new XmlDocument();
             XmlTextReader xmltext = new XmlTextReader(XmlPath);
             xmldoc.Load(xmltext);
@@ -9935,7 +5938,7 @@ namespace Acurus.Capella.PatientPortal
             string sFolderPathName = TargetFileDirectory + "\\" + System.Configuration.ConfigurationSettings.AppSettings["SummaryCarePathName"] + "\\" + DateTime.Now.ToString("yyyyMMdd");
             Directory.CreateDirectory(sFolderPathName);
             string sPrintPathName = string.Empty;
-            sPrintPathName = sFolderPathName + "\\" + path ;
+            sPrintPathName = sFolderPathName + "\\SummaryOfCare_" + path + ".pdf";
             HttpContext.Current.Session["PDF_Path"] = sPrintPathName;
             string sMyPathName = sPrintPathName;
             PdfWriter wr;
@@ -9955,67 +5958,128 @@ namespace Acurus.Capella.PatientPortal
 
             doc.Open();
             BaseFont bfTimes = BaseFont.CreateFont(BaseFont.TIMES_ROMAN, BaseFont.CP1252, false);
-            float X = 20f, Y = 20f;
+            //float X = 20f, Y = 20f;
             PrintPatient(doc, xmldoc);
-            for(int i=0;i<SelectedSummaryItems.Count;i++){
-               
-                switch (SelectedSummaryItems[i])
+
+            XmlNodeList Doc_Section_Node = xmldoc.GetElementsByTagName("section");
+            System.Web.UI.WebControls.ListItem chkbx = new System.Web.UI.WebControls.ListItem();
+            string sTitle = string.Empty;
+            for (int i = 0; i < SelectedSummaryItems.Count; i++)
+            {
+                foreach (XmlElement elemParent in Doc_Section_Node)
                 {
-                    case "Allergy":
-                        {
-                            PrintAllergy(doc, xmldoc);
-                        } break;
-                    case "Immunization": PrintImmunization(doc, xmldoc); break;
-                    case "Medication": PrintMedication(doc, xmldoc); break;
-                    case "Care Plan": PrintCarePlan(doc, xmldoc); break;
-                    case "Reason for Referral": PrintReasonForReferal(doc, xmldoc); break;
-                    case "Procedures": PrintProcedures(doc, xmldoc); break;
-                    case "Results": PrintResults(doc, xmldoc, FileName, Type); break;
-                    case "Social History": PrintSocialHistory(doc, xmldoc); break;
-                    case "Vitals": PrintVitals(doc, xmldoc); break;
-                    case "Instructions": PrintInstructions(doc, xmldoc); break;
-                    case "Chief Complaint": PrintChiefComplaint(doc, xmldoc); break;
-                    case "Problems": PrintProblems(doc, xmldoc, FileName, Type); break;
-                    case "Provider": PrintProvider(doc, xmldoc); break;
-                    case "Custodian": PrintCustodian(doc, xmldoc); break;
-                    case "Documentation Details": PrintDocumentDetail(doc, xmldoc); break;
-                    case "Visit Details": PrintVisitDetail(doc, xmldoc); break;
-                    case "Author": PrintAuthor(doc, xmldoc); break;
-                    case "Medication Administered": PrintMedicationAdministered(doc, xmldoc); break;
-                    case "Functional Status": PrintFunctionalStatus(doc, xmldoc); break;
-                    case "Hospital Discharge Instructions": PrintHospitalInstructions(doc, xmldoc); break;
-                    case "Implant": PrintImplant(doc, xmldoc); break;
-                    case "Mental Status": PrintMentalStatus(doc, xmldoc); break;
-                    case "Goals Section": PrintGoalsSection(doc, xmldoc);break;
-                    case "Health Concern": PrintHealthConcernSection(doc, xmldoc); break;
-                    case "Treatment Plan": PrintTreatmentPlan(doc, xmldoc); break;
-                    case "Laboratory Information": PrintLaboratoryInformation(doc, xmldoc); break;
-                    case "Interventions": PrintInterventions(doc, xmldoc); break;
-                    case "Health Status Evaluations/Outcomes": PrintHealthStatusEvaluations(doc, xmldoc); break;
-                    default:break;
+                    sTitle = PrintSection(doc, elemParent, SelectedSummaryItems[i]);
+
+                    //if (sTitle != string.Empty)
+                    //{
+                    //    chkbx = new System.Web.UI.WebControls.ListItem();
+                    //    chkbx.Text = sTitle;
+                    //    if (SummaryCheckList != null)
+                    //        SummaryCheckList.Items.Add(chkbx);
+                    //}
                 }
-               
             }
+            //for (int i = 0; i < SelectedSummaryItems.Count; i++)
+            //{
+
+            //    switch (SelectedSummaryItems[i])
+            //    {
+            //        case "Allergy":
+            //            {
+            //                PrintAllergy(doc, xmldoc);
+            //            } break;
+            //        case "Immunization": PrintImmunization(doc, xmldoc); break;
+            //        case "Medication": PrintMedication(doc, xmldoc); break;
+            //        case "Care Plan": PrintCarePlan(doc, xmldoc); break;
+            //        case "Reason for Referral": PrintReasonForReferal(doc, xmldoc); break;
+            //        case "Procedures": PrintProcedures(doc, xmldoc); break;
+            //        case "Results": PrintResults(doc, xmldoc, FileName, Type); break;
+            //        case "Social History": PrintSocialHistory(doc, xmldoc); break;
+            //        case "Vitals": PrintVitals(doc, xmldoc); break;
+            //        case "Instructions": PrintInstructions(doc, xmldoc); break;
+            //        case "Chief Complaint": PrintChiefComplaint(doc, xmldoc); break;
+            //        case "Problems": PrintProblems(doc, xmldoc, FileName, Type); break;
+            //        case "Provider": PrintProvider(doc, xmldoc); break;
+            //        case "Custodian": PrintCustodian(doc, xmldoc); break;
+            //        case "Documentation Details": PrintDocumentDetail(doc, xmldoc); break;
+            //        case "Visit Details": PrintVisitDetail(doc, xmldoc); break;
+            //        case "Author": PrintAuthor(doc, xmldoc); break;
+            //        case "Medication Administered": PrintMedicationAdministered(doc, xmldoc); break;
+            //        case "Functional Status": PrintFunctionalStatus(doc, xmldoc); break;
+            //        case "Hospital Discharge Instructions": PrintHospitalInstructions(doc, xmldoc); break;
+            //        case "Implant": PrintImplant(doc, xmldoc); break;
+            //        case "Mental Status": PrintMentalStatus(doc, xmldoc); break;
+            //        case "Goals Section": PrintGoalsSection(doc, xmldoc); break;
+            //        case "Health Concern": PrintHealthConcernSection(doc, xmldoc); break;
+            //        case "Treatment Plan": PrintTreatmentPlan(doc, xmldoc); break;
+            //        case "Laboratory Information": PrintLaboratoryInformation(doc, xmldoc); break;
+            //        case "Interventions": PrintInterventions(doc, xmldoc); break;
+            //        case "Health Status Evaluations/Outcomes": PrintHealthStatusEvaluations(doc, xmldoc); break;
+            //        case "Reason for Visit": PrintReasonForVisit(doc, xmldoc); break;
+            //        case "Hospital Course": PrintHospitalCourse(doc, xmldoc); break;
+            //        case "Advance Directives": PrintAdvanceDirectives(doc, xmldoc); break;
+            //        case "Family History": PrintFamilyHistory(doc, xmldoc); break;
+            //        case "Chief Complaint And Reason For Visit": PrintChiefComplaintAndReasonForVisit(doc, xmldoc); break;
+            //        case "History Of Present Illness": PrintHistoryOfPresentIllness(doc, xmldoc); break;
+            //        case "Encounters": PrintEncounter(doc, xmldoc); break;
+            //        default: break;
+            //    }
+
+            //}
             doc.Close();
             xmltext.Close();
-            string retVal="frmSummaryOfCare.aspx?FileName=" + FileName.ToString() + "&pdf=" + (string)HttpContext.Current.Session["PDF_Path"] + "&Type=" + Type.ToString() + "&UniversalTime=" + UniverTime;
-            return retVal;
-            //PDFLOAD.Attributes.Add("src", );
-           
+            //string retVal = "frmSummaryOfCare.aspx?FileName=" + FileName.ToString() + "&pdf=" + (string)HttpContext.Current.Session["PDF_Path"] + "&Type=" + Type.ToString() + "&UniversalTime=" + UniverTime;
+            //return retVal;
+            Uri CurrentURL = new Uri(Request.Url.ToString());
+            PDFLOAD.Attributes.Add("src", CurrentURL.Scheme + Uri.SchemeDelimiter + Request.Url.Authority + "//Documents//" + Session.SessionID + "//" + System.Configuration.ConfigurationSettings.AppSettings["SummaryCarePathName"] + "//" + DateTime.Now.ToString("yyyyMMdd") + "//" + "SummaryOfCare_" + path + ".pdf");
+            return string.Empty;
         }
 
-        public  string GenerateEntireSummary()
+        public string GenerateEntireSummary()
         {
             System.IO.File.Delete((string)Session["PDF_Path"]);
-            string retVal=string.Empty;
+            string retVal = string.Empty;
             if (FileName != null && (Type == "CCD" || Type == "C32"))
             {
-               
-                    path = PrintPDF(FilePath, "CCD", DateTime.MinValue,FileName,Type);
-                    retVal = "frmSummaryOfCare.aspx?FileName=" + FileName.ToString() + "&pdf=" + (string)HttpContext.Current.Session["PDF_Path"] + "&Type=" + Type.ToString() + "&UniversalTime=" + UniverTime;
-              
+
+                path = PrintPDF(FilePath, "CCD", DateTime.MinValue, FileName, Type);
+                retVal = "frmSummaryOfCare.aspx?FileName=" + FileName.ToString() + "&pdf=" + (string)HttpContext.Current.Session["PDF_Path"] + "&Type=" + Type.ToString() + "&UniversalTime=" + UniverTime + "\\" + path + ".pdf";
+
             }
             return retVal;
+        }
+
+        protected void SummaryCheckList_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            var isChkboxSelected = SummaryCheckList.Items.OfType<System.Web.UI.WebControls.ListItem>().Where(a => a.Selected == true);
+            if (isChkboxSelected.Count() > 0)
+            {
+                IList<string> sChkTextList = new List<string>();
+                foreach (var item in isChkboxSelected)
+                {
+                    sChkTextList.Add(item.Text);
+
+                }
+                //for (int i = 0; i < sChkTextList.Count; i++)
+                //{
+                //    if (sChkTextList.Contains("All") == true && sChkTextList[i].ToString() != "All")
+                //    {
+                //        SummaryCheckList.Items.FindByText(sChkTextList[i].ToString()).Selected = false;
+                //        sChkTextList.RemoveAt(i);
+                //    }
+                //}
+
+
+                if (sChkTextList.Count == 1 && sChkTextList[0] == "All")
+                    GenerateEntireSummary();
+                else
+                    GeneratePDFforSummary(sChkTextList);
+            }
+            else
+            {
+                SummaryCheckList.Items.FindByText("All").Selected = true;
+                GenerateEntireSummary();
+            }
         }
     }
 }

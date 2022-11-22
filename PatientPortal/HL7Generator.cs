@@ -5170,7 +5170,8 @@ namespace Acurus.Capella.PatientPortal
             #region ChiefComplaints
             if (ClinicalSummary.ChiefComplaints != null && ClinicalSummary.ChiefComplaints.Count != 0 && hashCheckedList["chkChiefComplaints"] != null && hashCheckedList["chkChiefComplaints"].ToString().ToUpper() == "TRUE")
             {
-                if (xmlDoc.GetElementsByTagName("structuredBody")[0].ChildNodes[31].ChildNodes[0].ChildNodes[2].InnerText.ToUpper() == "ASSESSMENTS")
+                //if (xmlDoc.GetElementsByTagName("structuredBody")[0].ChildNodes[31].ChildNodes[0].ChildNodes[2].InnerText.ToUpper() == "ASSESSMENTS")
+                if (xmlDoc.GetElementsByTagName("structuredBody")[0].ChildNodes[31].ChildNodes[0].ChildNodes[2].InnerText.ToUpper() == "CHIEF COMPLAINTS")
                 {
 
                     XmlElement elemChiefText = null;
