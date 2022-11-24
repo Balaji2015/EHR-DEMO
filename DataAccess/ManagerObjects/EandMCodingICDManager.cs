@@ -151,6 +151,17 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
             }
             return EandMCodingdto;
         }
+        public IList<EandMCodingICD> GetEandMcodingICDListbyEncounterID(ulong EncID)
+        {
+            IList<EandMCodingICD> EandMCodingdto = new List<EandMCodingICD>();
+            using (ISession iMySession = NHibernateSessionManager.Instance.CreateISession())
+            {
+                ICriteria crit2 = iMySession.CreateCriteria(typeof(EandMCodingICD)).Add(Expression.Eq("Encounter_ID", EncID)).Add(Expression.Eq("Is_Delete", "N")).Add(Expression.Eq("Source","ASSESSMENT"));
+                EandMCodingdto = crit2.List<EandMCodingICD>();
+                iMySession.Close();
+            }
+            return EandMCodingdto;
+        }
 
         public int GetEMICDCount(ulong ulEncID)
         {

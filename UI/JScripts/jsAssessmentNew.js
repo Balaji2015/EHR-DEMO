@@ -709,8 +709,7 @@ myapp.controller('assessmentCtrl', function ($scope, $http) {
                         'Created_date': $(Selected[i]).parent().parent()[0].cells[13].innerText,
                         'Updated': "Y",
                         'StatusSelected': Ass_status,
-                        'Orig_Status': Ass_status,
-                        'ICDid': 0, 'Sequence': "0", 'EidVersion': 0
+                        'Orig_Status': Ass_status
                     });
                     $("textarea").unbind();
                     iRightClickMenuCheck = false;
@@ -1210,7 +1209,7 @@ myapp.controller('assessmentCtrl', function ($scope, $http) {
             }
             for (var i = 0; i < AddSelectedICD.length; i++) {
                 if (JSON.stringify($scope.AssessmentTable).indexOf(AddSelectedICD[i].split('~')[0]) == -1) {
-                    $scope.AssessmentTable.push({ 'ICDCode': AddSelectedICD[i].split('~')[0], 'ICDDescription': AddSelectedICD[i].split('~')[1].split('|')[0], 'AssessmentID': 0, 'iVersion': 0, 'iProblemListVersion': 0, 'ProblemListID': 0, 'Notes': '', 'IncompleteICDCode': AddSelectedICD[i].split('|')[2], 'Created_by': "", 'Created_date': "", 'Updated': "Y", 'StatusSelected': Ass_status, 'Orig_Status': Ass_status, 'ICDid': 0, 'Sequence': "0", 'EidVersion': 0 });
+                    $scope.AssessmentTable.push({ 'ICDCode': AddSelectedICD[i].split('~')[0], 'ICDDescription': AddSelectedICD[i].split('~')[1].split('|')[0], 'AssessmentID': 0, 'iVersion': 0, 'iProblemListVersion': 0, 'ProblemListID': 0, 'Notes': '', 'IncompleteICDCode': AddSelectedICD[i].split('|')[2], 'Created_by': "", 'Created_date': "", 'Updated': "Y", 'StatusSelected': Ass_status, 'Orig_Status': Ass_status });
                     iCheckColor++;
                     $("textarea").unbind();
                     iRightClickMenuCheck = false;
@@ -1379,7 +1378,7 @@ myapp.controller('assessmentCtrl', function ($scope, $http) {
                             }
                             if (JSON.stringify($scope.AssessmentTable).indexOf(ui.item.label.split('~')[0].trim()) == -1) {
 
-                                $scope.AssessmentTable.push({ 'ICDCode': ui.item.label.split('~')[0], 'ICDDescription': ui.item.label.split('~')[1], 'AssessmentID': 0, 'iVersion': 0, 'iProblemListVersion': 0, 'ProblemListID': 0, 'Notes': '', 'Created_by': "", 'Created_date': "", 'Updated': "Y", 'StatusSelected': Ass_status, 'Orig_Status': Ass_status, 'ICDid': 0, 'Sequence': "0", 'EidVersion': 0 });
+                                $scope.AssessmentTable.push({ 'ICDCode': ui.item.label.split('~')[0], 'ICDDescription': ui.item.label.split('~')[1], 'AssessmentID': 0, 'iVersion': 0, 'iProblemListVersion': 0, 'ProblemListID': 0, 'Notes': '', 'Created_by': "", 'Created_date': "", 'Updated': "Y", 'StatusSelected': Ass_status, 'Orig_Status': Ass_status });
                                 $("textarea").unbind();
                                 iRightClickMenuCheck = false;
                                 $scope.SaveEnableDisable(false);
@@ -1574,7 +1573,7 @@ myapp.controller('assessmentCtrl', function ($scope, $http) {
                             }
                             if (JSON.stringify($scope.AssessmentTable).indexOf(ui.item.label.split('~')[0].trim()) == -1) {
 
-                                $scope.AssessmentTable.push({ 'ICDCode': ui.item.label.split('~')[0], 'ICDDescription': ui.item.label.split('~')[1], 'AssessmentID': 0, 'iVersion': 0, 'iProblemListVersion': 0, 'ProblemListID': 0, 'Notes': '', 'Created_by': "", 'Created_date': "", 'Updated': "Y", 'StatusSelected': Ass_status, 'Orig_Status': Ass_status, 'ICDid': 0, 'Sequence': "0", 'EidVersion': 0 });
+                                $scope.AssessmentTable.push({ 'ICDCode': ui.item.label.split('~')[0], 'ICDDescription': ui.item.label.split('~')[1], 'AssessmentID': 0, 'iVersion': 0, 'iProblemListVersion': 0, 'ProblemListID': 0, 'Notes': '', 'Created_by': "", 'Created_date': "", 'Updated': "Y", 'StatusSelected': Ass_status, 'Orig_Status': Ass_status });
                                 $("textarea").unbind();
                                 iRightClickMenuCheck = false;
                                 $scope.SaveEnableDisable(false);
@@ -1965,7 +1964,7 @@ myapp.controller('assessmentCtrl', function ($scope, $http) {
             var AddSelectedICD = sSelectedICD.split('^');
             for (var i = 0; i < AddSelectedICD.length; i++) {
                 if (JSON.stringify($scope.AssessmentTable).indexOf(AddSelectedICD[i].split('~')[0]) == -1) {
-                    $scope.AssessmentTable.push({ 'ICDCode': AddSelectedICD[i].split('~')[0], 'ICDDescription': AddSelectedICD[i].split('~')[1].split('|')[0], 'AssessmentID': 0, 'iVersion': 0, 'iProblemListVersion': 0, 'ProblemListID': 0, 'Notes': '', 'Created_by': "", 'Created_date': "", 'Updated': "Y", 'StatusSelected': Ass_status, 'Orig_Status': Ass_status, 'ICDid': 0, 'Sequence': "0", 'EidVersion': 0 });
+                    $scope.AssessmentTable.push({ 'ICDCode': AddSelectedICD[i].split('~')[0], 'ICDDescription': AddSelectedICD[i].split('~')[1].split('|')[0], 'AssessmentID': 0, 'iVersion': 0, 'iProblemListVersion': 0, 'ProblemListID': 0, 'Notes': '', 'Created_by': "", 'Created_date': "", 'Updated': "Y", 'StatusSelected': Ass_status, 'Orig_Status': Ass_status });
                     $("textarea").unbind();
                     iRightClickMenuCheck = false;
                 }
@@ -2242,9 +2241,9 @@ myapp.controller('assessmentCtrl', function ($scope, $http) {
                 for (var i = 0; i < AddSelectedICD.length; i++) {
                     if (JSON.stringify($scope.AssessmentTable).indexOf(AddSelectedICD[i].split('~')[0].trim()) == -1) {
                         if (bSetICD9Code || bProblmCheck)
-                            $scope.AssessmentTable.push({ 'ICDCode': AddSelectedICD[i].split('~')[0], 'ICDDescription': AddSelectedICD[i].split('~')[1].split('|')[0], 'ParentICD': AddSelectedICD[i].split('~')[0], 'AssessmentID': 0, 'iVersion': 0, 'iProblemListVersion': 0, 'ProblemListID': 0, 'Notes': '', 'IncompleteICDCode': ' ', 'Created_by': "", 'Created_date': "", 'Updated': "Y", 'StatusSelected': Ass_status, 'Orig_Status': Ass_status, 'ICDid': 0, 'Sequence': "0", 'EidVersion': 0 });
+                            $scope.AssessmentTable.push({ 'ICDCode': AddSelectedICD[i].split('~')[0], 'ICDDescription': AddSelectedICD[i].split('~')[1].split('|')[0], 'ParentICD': AddSelectedICD[i].split('~')[0], 'AssessmentID': 0, 'iVersion': 0, 'iProblemListVersion': 0, 'ProblemListID': 0, 'Notes': '', 'IncompleteICDCode': ' ', 'Created_by': "", 'Created_date': "", 'Updated': "Y", 'StatusSelected': Ass_status, 'Orig_Status': Ass_status });
                         else
-                            $scope.AssessmentTable.push({ 'ICDCode': AddSelectedICD[i].split('~')[0], 'ICDDescription': AddSelectedICD[i].split('~')[1].split('|')[0], 'ParentICD': AddSelectedICD[i].split('~')[0], 'AssessmentID': 0, 'iVersion': 0, 'iProblemListVersion': 0, 'ProblemListID': 0, 'Notes': '', 'IncompleteICDCode': AddSelectedICD[i].split('|')[2], 'CheckBoxCheck': 'PROBLEM', 'Created_by': "", 'Created_date': "", 'Updated': "Y", 'StatusSelected': Ass_status, 'Orig_Status': Ass_status, 'ICDid': 0, 'Sequence': "0", 'EidVersion': 0 });
+                            $scope.AssessmentTable.push({ 'ICDCode': AddSelectedICD[i].split('~')[0], 'ICDDescription': AddSelectedICD[i].split('~')[1].split('|')[0], 'ParentICD': AddSelectedICD[i].split('~')[0], 'AssessmentID': 0, 'iVersion': 0, 'iProblemListVersion': 0, 'ProblemListID': 0, 'Notes': '', 'IncompleteICDCode': AddSelectedICD[i].split('|')[2], 'CheckBoxCheck': 'PROBLEM', 'Created_by': "", 'Created_date': "", 'Updated': "Y", 'StatusSelected': Ass_status, 'Orig_Status': Ass_status });
 
                         $("textarea").unbind();
                         iRightClickMenuCheck = false;
@@ -2294,131 +2293,46 @@ myapp.controller('assessmentCtrl', function ($scope, $http) {
         var bCheck = false, bprimary = false, bpriSuspected = false;
         var table = $('#tblCurrICDs');
         var data = [];
-        var maxvalue = 0;
+
         table.find('tr').each(function (rowIndex, r) {
-        
+            var cols = [];
 
             $(this).find('td').each(function (colIndex, c) {
-             
-                if (colIndex == "24") {
-                   
-                    if ( parseInt(c.textContent.replace('A','')) > maxvalue) {
-                        maxvalue = parseInt(c.textContent.replace('A', ''));
-                    }
 
+                if (c.textContent == "" && colIndex <= "3") {
+                    if (c.childNodes[0].checked && colIndex == "1") {
+                        bCheck = true;
+                        bprimary = true;
+                    }
+                    else if (!c.childNodes[0].checked && colIndex == "1") {
+                        bprimary = false
+                    }
+                    cols.push(c.childNodes[0].checked);
                 }
-        });
 
-        });
-        var seqno=1;
-        if (maxvalue > 0) {
-            seqno = maxvalue+1;
+                else if (colIndex == "6") {
 
-        }
+                    var select = c.childNodes;
 
-        table.find('tr').each(function (rowIndex, r) {
-            var cols = [];
-            if ($(this)[0].className != "Gridheaderstyle" && $(this)[0].childNodes[3].childNodes[0].checked) {
-                $(this).find('td').each(function (colIndex, c) {
-
-                    if (c.textContent == "" && colIndex <= "3") {
-                        if (c.childNodes[0].checked && colIndex == "1") {
-                            bCheck = true;
-                            bprimary = true;
-                        }
-                        else if (!c.childNodes[0].checked && colIndex == "1") {
-                            bprimary = false
-                        }
-                        cols.push(c.childNodes[0].checked);
-                    }
-
-                    else if (colIndex == "6") {
-
-                        var select = c.childNodes;
-
-                        for (var i = 0; i < select.length; i++) {
-                            if ($(select)[i].value != undefined)
-                                cols.push($(select)[i].value);
-                            if ($(select)[i].value != undefined && $(select)[i].value.toLowerCase() == "suspected" && bprimary) {
-                                bpriSuspected = true;
-                            }
+                    for (var i = 0; i < select.length; i++) {
+                        if ($(select)[i].value != undefined)
+                            cols.push($(select)[i].value);
+                        if ($(select)[i].value != undefined && $(select)[i].value.toLowerCase() == "suspected" && bprimary) {
+                            bpriSuspected = true;
                         }
                     }
-                    else if (colIndex == "7") {
-                        cols.push(c.childNodes[0].nextElementSibling.value);
-                    }
-                    else if (colIndex == "8") {
-                    }
-                    else if (colIndex == "24") {
-
-                        if (c.textContent == 0) {
-                            cols.push("A" + seqno.toString());
-                            seqno = seqno + 1;
-                        }
-                        else {
-                            cols.push(c.textContent);
-                        }
-                       
-                    }
-                    else {
-                        cols.push(c.textContent);
-                    }
-                });
-                //modified for integrum
-                data.push(cols);
-            }
-        });
-        table.find('tr').each(function (rowIndex, r) {
-            var cols = [];
-            if ($(this)[0].className != "Gridheaderstyle" && !($(this)[0].childNodes[3].childNodes[0].checked)) {
-                $(this).find('td').each(function (colIndex, c) {
-
-                    if (c.textContent == "" && colIndex <= "3") {
-                        if (c.childNodes[0].checked && colIndex == "1") {
-                            bCheck = true;
-                            bprimary = true;
-                        }
-                        else if (!c.childNodes[0].checked && colIndex == "1") {
-                            bprimary = false
-                        }
-                        cols.push(c.childNodes[0].checked);
-                    }
-
-                    else if (colIndex == "6") {
-
-                        var select = c.childNodes;
-
-                        for (var i = 0; i < select.length; i++) {
-                            if ($(select)[i].value != undefined)
-                                cols.push($(select)[i].value);
-                            if ($(select)[i].value != undefined && $(select)[i].value.toLowerCase() == "suspected" && bprimary) {
-                                bpriSuspected = true;
-                            }
-                        }
-                    }
-                    else if (colIndex == "7") {
-                        cols.push(c.childNodes[0].nextElementSibling.value);
-                    }
-                    else if (colIndex == "8") {
-                    }
-                   else if (colIndex == "24") {
-
-                        if (c.textContent == 0) {
-                            cols.push("A" + seqno.toString());
-                            seqno = seqno + 1;
-                        }
-                        else {
-                            cols.push(c.textContent);
-                        }
-                       
-                    }
-                    else {
-                        cols.push(c.textContent);
-                    }
-                });
-                //modified for integrum
-                data.push(cols);
-            }
+                }
+                else if (colIndex == "7") {
+                    cols.push(c.childNodes[0].nextElementSibling.value);
+                }
+                else if (colIndex == "8") {
+                }
+                else {
+                    cols.push(c.textContent);
+                }
+            });
+            //modified for integrum
+            data.push(cols);
         });
 
         if (bpriSuspected) {//BugID:49118

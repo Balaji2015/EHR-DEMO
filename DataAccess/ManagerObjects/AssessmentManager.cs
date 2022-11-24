@@ -25,7 +25,7 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
             IList<Assessment> ListToDelete, IList<ProblemList> ListToInsertProblemList, IList<ProblemList> ListToUpdateProblemList,
             IList<ProblemList> ListToDeleteProblemList, string sMacAddress, GeneralNotes generalNotes,
             TreatmentPlan SavePlan, string UserName, ulong ulEncounterID, ulong ulHumanID, ulong PhysicianID,
-            IList<string> sMacraICDChkList, string sIs_Assessment_CopyPrevious, string sLocalTime, string sLegalOrg, IList<EandMCodingICD> ListICDToInsert, IList<EandMCodingICD> ListICDToUpdate);
+            IList<string> sMacraICDChkList, string sIs_Assessment_CopyPrevious, string sLocalTime, string sLegalOrg, IList<EandMCodingICD> lstEandMICDInsert);
         //FillAssessment BatchOperationsToAssessment(IList<Assessment> ListToInsert, IList<Assessment> ListToUpdate, IList<Assessment> ListToDelete, IList<ProblemList> ListToInsertProblemList, IList<ProblemList> ListToUpdateProblemList, IList<ProblemList> ListToDeleteProblemList, string sMacAddress, GeneralNotes generalNotes, TreatmentPlan SavePlan, string UserName, ulong ulEncounterID, ulong ulHumanID, string Is_Sent_To_RCopia, ulong PhysicianID, IList<string> sMacraICDChkList, string sIs_Assessment_CopyPrevious);
         //FillAssessmentRuledOut GetAssessmentUsingEncounterIDForRuledOut(ulong encounterId, ulong physicianId);
         //FillAssessmentRuledOut BatchOperationsToAssessmentFromRuledOut(IList<Assessment> ListToInsert, IList<Assessment> ListToUpdate, IList<Assessment> ListToDelete, ulong encounterId, string sMacAddress, GeneralNotes generalNotes);
@@ -110,11 +110,9 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
         // For Reference: Original Function commented and copied below this function.\\Changes made For Bug Id :55981  \\Rcopia section commented and assessmentvitals lookup get from Config xml and remove the Rule out Function call
         // public FillAssessment BatchOperationsToAssessment(IList<Assessment> ListToInsert, IList<Assessment> ListToUpdate, IList<Assessment> ListToDelete, IList<ProblemList> ListToInsertProblemList, IList<ProblemList> ListToUpdateProblemList, IList<ProblemList> ListToDeleteProblemList, string sMacAddress, GeneralNotes generalNotes, TreatmentPlan SavePlan, string UserName, ulong ulEncounterID, ulong ulHumanID, string Is_Sent_To_RCopia, ulong PhysicianID, IList<string> sMacraICDChkList, string sIs_Assessment_CopyPrevious)
         public FillAssessment BatchOperationsToAssessment(IList<Assessment> ListToInsert, IList<Assessment> ListToUpdate, IList<Assessment> ListToDelete,
-            IList<ProblemList> ListToInsertProblemList, IList<ProblemList> ListToUpdateProblemList,
-            IList<ProblemList> ListToDeleteProblemList, string sMacAddress, GeneralNotes generalNotes,
-            TreatmentPlan SavePlan, string UserName, ulong ulEncounterID, ulong ulHumanID, ulong PhysicianID,
-            IList<string> sMacraICDChkList, string sIs_Assessment_CopyPrevious, string sLocalTime, string sLegalOrg, IList<EandMCodingICD> ListToInsertEandMICD,
-            IList<EandMCodingICD> ListToUpdateEandMICd)
+            IList<ProblemList> ListToInsertProblemList, IList<ProblemList> ListToUpdateProblemList, IList<ProblemList> ListToDeleteProblemList,
+            string sMacAddress, GeneralNotes generalNotes, TreatmentPlan SavePlan, string UserName, ulong ulEncounterID, ulong ulHumanID, ulong PhysicianID,
+            IList<string> sMacraICDChkList, string sIs_Assessment_CopyPrevious, string sLocalTime, string sLegalOrg, IList<EandMCodingICD> lstEandMICDInsert)
         {
             iTryCount = 0;
             if (sIs_Assessment_CopyPrevious != null && sIs_Assessment_CopyPrevious != string.Empty && sIs_Assessment_CopyPrevious != "Yes")
@@ -315,7 +313,7 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
             GenerateXml xmlobjEncounter = new GenerateXml();
             GenerateXml xmlobjHuman = new GenerateXml();
             String GeneralNotesText = string.Empty;
-            bool objAssessmentConsistent = true, objProblemlistConsistent = true, objGeneralNotesConsistent = true, bEandMCodingICDConsistent = true;
+            bool objAssessmentConsistent = true, objProblemlistConsistent = true, objGeneralNotesConsistent = true;
             using (ISession MySession = Session.GetISession())
             {
                 try
@@ -782,49 +780,58 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
                             #endregion
                             #region EandmICd
                             EandMCodingICDManager eandmicdMngr = new EandMCodingICDManager();
-                            if (ListToInsertEandMICD.Count > 0 || ListToUpdateEandMICd.Count > 0)
+                            IList<EandMCodingICD> lstupdateicd = new List<EandMCodingICD>();
+                            WFObjectManager objwf = new WFObjectManager();
+                            WFObject lstobj = new WFObject();
+                            lstobj = objwf.GetByObjectSystemId(ulEncounterID, "BILLING");
+                            if (lstobj != null)
                             {
-                                iResult = eandmicdMngr.SaveUpdateDelete_DBAndXML_WithoutTransaction(ref ListToInsertEandMICD, ref ListToUpdateEandMICd, null, MySession, string.Empty, true, true, ulEncounterID, string.Empty, ref xmlobjEncounter);
-                                //iResult = eandmicdMngr.SaveUpdateDeleteWithoutTransaction(ref SaveEMICDList, UpdateEMICDList, null, MySession, string.Empty);
+                                if (lstobj.Current_Process.ToString().ToUpper() != "BATCHING_COMPLETE")
+                                {
 
-                                if (iResult == 2)
-                                {
-                                    if (iTryCount < 5)
+                                    if (lstEandMICDInsert.Count > 0 )
                                     {
-                                        iTryCount++;
-                                    }
-                                    else
-                                    {
-                                        trans.Rollback();
-                                        throw new Exception("Deadlock is occured. Transaction failed");
-                                    }
-                                }
-                                else if (iResult == 1)
-                                {
-                                    trans.Rollback();
-                                    throw new Exception("Exception is occured. Transaction failed");
-                                }
-                                IList<EandMCodingICD> CombICDConsischk = new List<EandMCodingICD>();
-                                if (ListToInsertEandMICD != null)
-                                {
-                                    foreach (EandMCodingICD obj in ListToInsertEandMICD)
-                                    {
-                                        CombICDConsischk.Add(obj);
-                                    }
-                                }
-                                if (ListToUpdateEandMICd != null)
-                                {
-                                    foreach (EandMCodingICD objUpd in ListToUpdateEandMICd)
-                                    {
-                                        CombICDConsischk.Add(objUpd);
-                                    }
-                                }
+                                        ISQLQuery uqery = MySession.CreateSQLQuery("DELETE r.* FROM e_m_coding_icd" +
+                                            " as r Where r.Encounter_ID=" + ulEncounterID +" and source='ASSESSMENT'").AddEntity("r", typeof(EandMCodingICD));
+                                        int uqery_result = uqery.ExecuteUpdate();
+                                        iResult = eandmicdMngr.SaveUpdateDelete_DBAndXML_WithoutTransaction(ref lstEandMICDInsert, ref lstupdateicd, null, MySession, string.Empty, true, true, ulEncounterID, string.Empty, ref xmlobjEncounter);
+                                        //iResult = eandmicdMngr.SaveUpdateDeleteWithoutTransaction(ref SaveEMICDList, UpdateEMICDList, null, MySession, string.Empty);
 
-                                //  bEandMCodingICDConsistent = XMLObj.CheckDataConsistency(CombICDConsischk.Cast<object>().ToList(), true, string.Empty);
+                                        if (iResult == 2)
+                                        {
+                                            if (iTryCount < 5)
+                                            {
+                                                iTryCount++;
+                                            }
+                                            else
+                                            {
+                                                trans.Rollback();
+                                                throw new Exception("Deadlock is occured. Transaction failed");
+                                            }
+                                        }
+                                        else if (iResult == 1)
+                                        {
+                                            trans.Rollback();
+                                            throw new Exception("Exception is occured. Transaction failed");
+                                        }
+                                        IList<EandMCodingICD> CombICDConsischk = new List<EandMCodingICD>();
+                                        if (lstEandMICDInsert != null)
+                                        {
+                                            foreach (EandMCodingICD obj in lstEandMICDInsert)
+                                            {
+                                                CombICDConsischk.Add(obj);
+                                            }
+                                        }
+
+
+                                        //  bEandMCodingICDConsistent = XMLObj.CheckDataConsistency(CombICDConsischk.Cast<object>().ToList(), true, string.Empty);
+                                    }
+                                }
                             }
                             #endregion
+
                             trans.Commit();
-                            if (objAssessmentConsistent && objProblemlistConsistent && objGeneralNotesConsistent && bEandMCodingICDConsistent)
+                            if (objAssessmentConsistent && objProblemlistConsistent && objGeneralNotesConsistent)
                             {
 
                                 if (xmlobjEncounter.strXmlFilePath != null && xmlobjEncounter.strXmlFilePath != "")

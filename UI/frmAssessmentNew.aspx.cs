@@ -288,26 +288,9 @@ namespace Acurus.Capella.UI
                     Version = a.Version
 
                 }).ToList();
-                IList<EandMCodingICD> _ListICD = assessmentLoadList.EandMICD.Select(a => new EandMCodingICD()
-                {
-                    Id = 0,
-                    Encounter_ID = ClientSession.EncounterId,
-                    Created_By = a.Created_By,
-                    Created_Date_And_Time = a.Created_Date_And_Time,
-                    ICD_Description = a.ICD_Description,
-                    Human_ID = a.Human_ID,
-                    ICD = a.ICD,
-                    Modified_By = a.Modified_By,
-                    Modified_Date_And_Time = a.Modified_Date_And_Time,
-                    Is_Delete = a.Is_Delete,
-                    Version = a.Version,
-                    Source = a.Source,
-                    Sequence = a.Sequence
 
-                }).ToList();
                 assessmentLoadList.Assessment = _Assessment;
                 assessmentLoadList.General_Notes = _General_Notes;
-                assessmentLoadList.EandMICD = _ListICD;
             }
 
             if (assessmentLoadList.Assessment != null && assessmentLoadList.Assessment.Count > 0)//BugID:53007 
@@ -746,7 +729,6 @@ namespace Acurus.Capella.UI
 
                             vitalsproblemList = (from b in vitalsproblemList
                                                  where !templstProblemListICD9.Any(a => a == b.ICD9Code)
-
                                                  select b).ToList();
                         }
 
@@ -754,62 +736,8 @@ namespace Acurus.Capella.UI
                     }
                 }
 
-
-                var ListAssessment =
-    from assessment in assessmentLoadList.Assessment
-    join EandM in assessmentLoadList.EandMICD on assessment.ICD.Trim() equals EandM.ICD.Trim() into gj
-    from subICD in gj.DefaultIfEmpty()
-    select new
-    {
-        ICDCode = assessment.ICD,
-        ICDDescription = assessment.ICD_Description,
-        IsPrimary = assessment.Primary_Diagnosis,
-        ProblemListID = assessment.Internal_Property_ProblemListID,
-        Notes = assessment.Assessment_Notes,
-        AssessmentID = assessment.Id,
-        iVersion = assessment.Version,
-        iProblemListVersion = assessment.Internal_Property_ProblemListVersion,
-        CheckBoxCheck = assessment.Chronic_Problem,
-        StatusSelected = assessment.Assessment_Status,
-        IncompleteICDCode = "",
-        ICD9Code = assessment.ICD_9,
-        ICD9Desc = assessment.ICD_9_Description,
-        ParentICD = assessment.Parent_ICD,
-        Created_by = assessment.Created_By,
-        Created_date = assessment.Created_Date_And_Time.ToString(),
-        Updated = "N",
-        Orig_Status = assessment.Assessment_Status,
-        ICDid = subICD?.Id ?? Convert.ToUInt64(0),
-        Sequence = subICD?.Sequence.ToString() ??"0",
-        EidVersion = subICD?.Version ?? Convert.ToInt32(0)
-    };
-
-
-                // var ListAssessment = assessmentLoadList.Assessment.Select(a => new { ICDCode = a.ICD, ICDDescription = a.ICD_Description, IsPrimary = a.Primary_Diagnosis, ProblemListID = a.Internal_Property_ProblemListID, Notes = a.Assessment_Notes, AssessmentID = a.Id, iVersion = a.Version, iProblemListVersion = a.Internal_Property_ProblemListVersion, CheckBoxCheck = a.Chronic_Problem, StatusSelected = a.Assessment_Status, IncompleteICDCode = "", ICD9Code = a.ICD_9, ICD9Desc = a.ICD_9_Description, ParentICD = a.Parent_ICD, Created_by = a.Created_By, Created_date = a.Created_Date_And_Time.ToString(), Updated = "N", Orig_Status = a.Assessment_Status });
-                var ListVitalsProblemList = vitalsproblemList.Select(a =>
-                new {
-                    ICDCode = a.ICD_9,
-                    ICDDescription = a.Description,
-                    IsPrimary = a.Primary_Diagnosis,
-                    ProblemListID = a.ProblemListId,
-                    Notes = a.Notes,
-                    AssessmentID = a.AssessmentID,
-                    iVersion = a.iVersion,
-                    iProblemListVersion = a.iVersion,
-                    CheckBoxCheck = a.CheckBoxCheck,
-                    StatusSelected = a.StatusSelected,
-                    IncompleteICDCode = "",
-                    ICD9Code = a.ICD9Code,
-                    ICD9Desc = a.ICD9Desc,
-                    ParentICD = "",
-                    Created_by = a.sCreatedBy,
-                    Created_date = a.sCreatedDateTime,
-                    Updated = "Y",
-                    Orig_Status = a.StatusSelected,
-                    ICDid = Convert.ToUInt64(0),
-                    Sequence = "0",
-                    EidVersion = Convert.ToInt32(0)
-                });
+                var ListAssessment = assessmentLoadList.Assessment.Select(a => new { ICDCode = a.ICD, ICDDescription = a.ICD_Description, IsPrimary = a.Primary_Diagnosis, ProblemListID = a.Internal_Property_ProblemListID, Notes = a.Assessment_Notes, AssessmentID = a.Id, iVersion = a.Version, iProblemListVersion = a.Internal_Property_ProblemListVersion, CheckBoxCheck = a.Chronic_Problem, StatusSelected = a.Assessment_Status, IncompleteICDCode = "", ICD9Code = a.ICD_9, ICD9Desc = a.ICD_9_Description, ParentICD = a.Parent_ICD, Created_by = a.Created_By, Created_date = a.Created_Date_And_Time.ToString(), Updated = "N", Orig_Status = a.Assessment_Status });
+                var ListVitalsProblemList = vitalsproblemList.Select(a => new { ICDCode = a.ICD_9, ICDDescription = a.Description, IsPrimary = a.Primary_Diagnosis, ProblemListID = a.ProblemListId, Notes = a.Notes, AssessmentID = a.AssessmentID, iVersion = a.iVersion, iProblemListVersion = a.iVersion, CheckBoxCheck = a.CheckBoxCheck, StatusSelected = a.StatusSelected, IncompleteICDCode = "", ICD9Code = a.ICD9Code, ICD9Desc = a.ICD9Desc, ParentICD = "", Created_by = a.sCreatedBy, Created_date = a.sCreatedDateTime, Updated = "Y", Orig_Status = a.StatusSelected });
 
                 bool bPotentialEnable = false;
                 if (assessmentLoadList.Potential_Diagnosis != null && assessmentLoadList.Potential_Diagnosis.Count > 0)
@@ -894,6 +822,7 @@ namespace Acurus.Capella.UI
         }
 
 
+
         [WebMethod(EnableSession = true)]
         public static string SaveAssessmentTable(object[] name, string sGeneralNotes)
         {
@@ -937,8 +866,6 @@ namespace Acurus.Capella.UI
             IList<ProblemList> probListToAdd = new List<ProblemList>();
             IList<ProblemList> probListToUpdate = new List<ProblemList>();
             IList<ProblemList> probListIdToDelete = new List<ProblemList>();
-            IList<EandMCodingICD> eandmicdinsert = new List<EandMCodingICD>();
-            IList<EandMCodingICD> eandmicdupdate = new List<EandMCodingICD>();
             GeneralNotes objGeneralNotes = null;
             TreatmentPlan SaveTreatmentPlan = new TreatmentPlan();
             IList<ulong> ulProbIDList = new List<ulong>();
@@ -954,34 +881,6 @@ namespace Acurus.Capella.UI
             IList<string> sessionMultiMappingProblemList = (IList<string>)HttpContext.Current.Session["MultiMappingProblemList"];
 
             string sLocalTime = string.Empty;
-            int seq = 1;
-            //foreach (object[] oj in name)
-            //{
-            //    if (oj.Count() == 0)
-            //    {
-            //        continue;
-            //    }
-            //    if (Convert.ToBoolean(oj[1]) && oj[0].ToString().Trim() != "Del")
-            //    {
-            //        oj[23] = "A" + seq.ToString();
-            //        seq++;
-            //        break;
-
-            //    }
-            //}
-            //foreach (object[] oj in name)
-            //{
-            //    if (oj.Count() == 0)
-            //    {
-            //        continue;
-            //    }
-            //    if (!Convert.ToBoolean(oj[1]) && oj[0].ToString().Trim() != "Del")
-            //    {
-            //        oj[23] = "A" + seq.ToString();
-            //        seq++;
-            
-            //    }
-            //}
             foreach (object[] oj in name)
             {
                 if (oj.Count() == 0)
@@ -1042,35 +941,6 @@ namespace Acurus.Capella.UI
                             assementInsertList.Add(assessmentAdd);
 
                         }
-
-
-                    }
-                    if (Convert.ToInt32(oj[22]) != 0)
-                    {
-                        EandMCodingICD eandmicdadd = new EandMCodingICD();
-                        eandmicdadd.Encounter_ID = ClientSession.EncounterId;
-                        eandmicdadd.Human_ID = ClientSession.HumanId;
-
-                        eandmicdadd.ICD = oj[4].ToString();
-                        eandmicdadd.ICD_Description = oj[5].ToString();
-                        eandmicdadd.ICD_Category = Convert.ToBoolean(oj[1]) == true ? "Primary" : "None";
-                        eandmicdadd.Source = "ASSESSMENT";
-                        eandmicdadd.Id = Convert.ToUInt32(oj[22]);
-                        eandmicdadd.Version = Convert.ToInt32(oj[24].ToString());
-
-                        eandmicdadd.Created_By = ClientSession.UserName;
-                        eandmicdadd.Created_Date_And_Time = UtilityManager.ConvertToUniversal();
-                        if (oj[0].ToString().Trim() == "Del")
-                            eandmicdadd.Is_Delete = "Y";
-                        else
-                            eandmicdadd.Is_Delete = "N";
-
-                        eandmicdadd.Modified_By = ClientSession.UserName;
-                        eandmicdadd.Modified_Date_And_Time = UtilityManager.ConvertToUniversal();
-                        if (oj[23]!=null)
-                            eandmicdadd.Sequence = oj[23].ToString();
-              
-                        eandmicdupdate.Add(eandmicdadd);
 
 
                     }
@@ -1185,54 +1055,6 @@ namespace Acurus.Capella.UI
                     }
                     assessmentListToUpdate.Add(assessmentUpdate);
                 }
-                if (Convert.ToInt32(oj[22]) == 0 && oj[0].ToString().Trim() != "Del")
-                {
-                    EandMCodingICD eandmicdadd = new EandMCodingICD();
-                    eandmicdadd.Encounter_ID = ClientSession.EncounterId;
-                    eandmicdadd.Human_ID = ClientSession.HumanId;
-
-                    eandmicdadd.ICD = oj[4].ToString();
-                    eandmicdadd.ICD_Description = oj[5].ToString();
-                    eandmicdadd.ICD_Category = Convert.ToBoolean(oj[1]) == true ? "Primary" : "None";
-                    eandmicdadd.Source = "ASSESSMENT";
-
-
-
-                    eandmicdadd.Created_By = ClientSession.UserName;
-                    eandmicdadd.Created_Date_And_Time = UtilityManager.ConvertToUniversal();
-                    eandmicdadd.Sequence = oj[23].ToString();
-                    eandmicdadd.Is_Delete = "N";
-                    eandmicdinsert.Add(eandmicdadd);
-
-
-                }
-                else if (Convert.ToInt32(oj[22]) != 0 && oj[0].ToString().Trim() != "Del")
-                {
-                    EandMCodingICD eandmicdadd = new EandMCodingICD();
-                    eandmicdadd.Encounter_ID = ClientSession.EncounterId;
-                    eandmicdadd.Human_ID = ClientSession.HumanId;
-                    eandmicdadd.Id = Convert.ToUInt32(oj[22]);
-                    eandmicdadd.ICD = oj[4].ToString();
-                    eandmicdadd.ICD_Description = oj[5].ToString();
-                    eandmicdadd.ICD_Category = Convert.ToBoolean(oj[1]) == true ? "Primary" : "None";
-                    eandmicdadd.Source = "ASSESSMENT";
-
-                    eandmicdadd.Sequence = oj[23].ToString();
-                    eandmicdadd.Version = Convert.ToInt32(oj[24].ToString());
-                    eandmicdadd.Created_By = ClientSession.UserName;
-                    eandmicdadd.Created_Date_And_Time = UtilityManager.ConvertToUniversal();
-                    if (oj[0].ToString().Trim() == "Del")
-                        eandmicdadd.Is_Delete = "Y";
-                    else
-                        eandmicdadd.Is_Delete = "N";
-
-                    eandmicdadd.Modified_By = ClientSession.UserName;
-                    eandmicdadd.Modified_Date_And_Time = UtilityManager.ConvertToUniversal();
-                    eandmicdupdate.Add(eandmicdadd);
-
-
-                }
-
                 if (oj[12] != null)
                 {
                     if (oj[12].ToString() != "")
@@ -1511,29 +1333,118 @@ namespace Acurus.Capella.UI
             //    SaveTreatmentPlan.Human_ID = ClientSession.HumanId;
             //    SaveTreatmentPlan.Physician_Id = ClientSession.PhysicianId;
             //    SaveTreatmentPlan.Plan = sPrimaryIcd + strIcd;
-            //    SaveTreatmentPlan.Created_By = ClientSession.UserName;
+            //    SaveTreatmentPlan.Created_By = ClientSession.EandMCodingICD;
             //    SaveTreatmentPlan.Created_Date_And_Time = UtilityManager.ConvertToUniversal(DateTime.Now);
             //}
 
             AssessmentManager objAssessmentManager = new AssessmentManager();
-            WFObjectManager objwf = new WFObjectManager();
-            WFObject lstobj = new WFObject();
-            lstobj = objwf.GetByObjectSystemId(ClientSession.EncounterId, "BILLING");
-            if (lstobj != null)
-            {
-                if (lstobj.Current_Process.ToString().ToUpper() == "BATCHING_COMPLETE")
+        
+          
+            IList<EandMCodingICD> eandmicdinsert = new List<EandMCodingICD>();
+            IList<EandMCodingICD> eandmicd = new List<EandMCodingICD>();
+            IList<EandMCodingICD> eandmicddelete = new List<EandMCodingICD>();
+           
+            EandMCodingICDManager objeandm = new EandMCodingICDManager();
+            eandmicd= objeandm.GetEandMcodingICDListbyEncounterID(ClientSession.EncounterId);
+
+            IList<Assessment> lstass = new List<Assessment>();
+            lstass = assementInsertList.Concat(assessmentListToUpdate).ToList<Assessment>();
+
+            if (eandmicd.Count > 0)
+             {
+                eandmicd = eandmicd.OrderBy(a => Convert.ToUInt32(a.Sequence.Replace("A", ""))).ToList<EandMCodingICD>();
+                int seqence = Convert.ToInt32(eandmicd[eandmicd.Count - 1].Sequence.Replace("A",""))+1;
+                for (int k=0;k< lstass.Count;k++)
                 {
-                    eandmicdinsert = new List<EandMCodingICD>();
-                    eandmicdupdate = new List<EandMCodingICD>();
+                    EandMCodingICD obj = new EandMCodingICD();
+                    obj.ICD = lstass[k].ICD;
+                    obj.ICD_Description = lstass[k].ICD_Description;
+                    obj.Is_Delete = "N";
+                    obj.Human_ID = lstass[k].Human_ID;
+                    obj.Encounter_ID = lstass[k].Encounter_ID;
+                    obj.Source = "ASSESSMENT";
+                    if (lstass[k].Primary_Diagnosis.ToUpper() == "Y")
+                        obj.ICD_Category = "Primary";
+                    else
+                        obj.ICD_Category = "None";
+
+                    IList<EandMCodingICD> eandmicdtemp = (from m in eandmicd where m.ICD.Trim() == lstass[k].ICD.Trim() select m).ToList<EandMCodingICD>();
+                    if(eandmicdtemp.Count>0)
+                    {
+                        obj.Sequence = eandmicdtemp[0].Sequence;
+
+                    }
+                    else
+                    {
+                        obj.Sequence = "A" + seqence.ToString();
+                        seqence++;
+                    }
+                 
+                    obj.Created_By = ClientSession.UserName;
+                    obj.Created_Date_And_Time = UtilityManager.ConvertToUniversal();
+                    eandmicdinsert.Add(obj);
+             
+
+
+                }
+                eandmicddelete = eandmicd;
+
+            }
+            else
+            {
+                for (int k = 0; k < lstass.Count; k++)
+                {
+                    if (lstass[k].Primary_Diagnosis.ToUpper()=="Y")
+                    {
+                        EandMCodingICD obj = new EandMCodingICD();
+                        obj.ICD = lstass[k].ICD;
+                        obj.ICD_Description = lstass[k].ICD_Description;
+                        obj.Is_Delete = "N";
+                        obj.Human_ID = lstass[k].Human_ID;
+                        obj.Encounter_ID = lstass[k].Encounter_ID;
+                        obj.Source = "ASSESSMENT";
+                        obj.ICD_Category = "Primary";
+                        obj.Sequence = "A1";
+                        obj.Created_By = ClientSession.UserName;
+                        obj.Created_Date_And_Time = UtilityManager.ConvertToUniversal();
+                        eandmicdinsert.Add(obj);
+                        break;
+
+                    }
+
+                }
+                int SEQ = 2;
+                for (int k = 0; k < lstass.Count; k++)
+                {
+                    if (lstass[k].Primary_Diagnosis.ToUpper() != "Y")
+                    {
+                        EandMCodingICD obj = new EandMCodingICD();
+                        obj.ICD = lstass[k].ICD;
+                        obj.ICD_Description = lstass[k].ICD_Description;
+                        obj.Is_Delete = "N";
+                        obj.Human_ID = lstass[k].Human_ID;
+                        obj.Encounter_ID = lstass[k].Encounter_ID;
+                        obj.Source = "ASSESSMENT";
+                        obj.ICD_Category = "None";
+                        obj.Sequence = "A" + SEQ.ToString();
+                        obj.Created_By = ClientSession.UserName;
+                        obj.Created_Date_And_Time = UtilityManager.ConvertToUniversal();
+                        eandmicdinsert.Add(obj);
+                        SEQ++;
+                      
+
+                    }
+
                 }
             }
+          
+
             FillAssessment assessmentLoadList = objAssessmentManager.BatchOperationsToAssessment(assementInsertList.ToArray<Assessment>(),
                        assessmentListToUpdate.ToArray<Assessment>(), assessmentListToDelete.ToArray<Assessment>(),
                         probListToAdd.ToArray<ProblemList>(), probListToUpdate.ToArray<ProblemList>(),
                        probListIdToDelete.ToArray<ProblemList>(), string.Empty,
-                       objGeneralNotes, SaveTreatmentPlan, ClientSession.UserName, ClientSession.EncounterId,
-                       ClientSession.HumanId, ClientSession.PhysicianId, sMacraICDChkList, sIs_Assessment_CopyPrevious,
-                       sLocalTime, ClientSession.LegalOrg, eandmicdinsert, eandmicdupdate);
+                       objGeneralNotes, SaveTreatmentPlan, ClientSession.UserName, ClientSession.EncounterId, ClientSession.HumanId, 
+                       ClientSession.PhysicianId, sMacraICDChkList, sIs_Assessment_CopyPrevious, sLocalTime, ClientSession.LegalOrg, eandmicdinsert);
 
 
             //FillAssessment assessmentLoadList = objAssessmentManager.BatchOperationsToAssessment(assementInsertList.ToArray<Assessment>(),
@@ -1652,41 +1563,7 @@ namespace Acurus.Capella.UI
             HttpContext.Current.Session["VitalsList"] = assessmentLoadList.VitalsBasedICD_List;
             HttpContext.Current.Session["GeneralNotes"] = assessmentLoadList.General_NotesCurrentList;
 
-
-            var ListAssessment =
-   from assessment in assessmentLoadList.Assessment
-   join EandM in assessmentLoadList.EandMICD on assessment.ICD.Trim() equals EandM.ICD.Trim() into gj
-   from subICD in gj.DefaultIfEmpty()
-   select new
-   {
-       ICDCode = assessment.ICD,
-       ICDDescription = assessment.ICD_Description,
-       IsPrimary = assessment.Primary_Diagnosis,
-       ProblemListID = assessment.Internal_Property_ProblemListID,
-       Notes = assessment.Assessment_Notes,
-       AssessmentID = assessment.Id,
-       iVersion = assessment.Version,
-       iProblemListVersion = assessment.Internal_Property_ProblemListVersion,
-       CheckBoxCheck = assessment.Chronic_Problem,
-       StatusSelected = assessment.Assessment_Status,
-       IncompleteICDCode = "",
-       ICD9Code = assessment.ICD_9,
-       ICD9Desc = assessment.ICD_9_Description,
-       ParentICD = assessment.Parent_ICD,
-       Created_by = assessment.Created_By,
-       Created_date = assessment.Created_Date_And_Time.ToString(),
-       Updated = "N",
-       Orig_Status = assessment.Assessment_Status,
-       ICDid = subICD?.Id ?? Convert.ToUInt64(0),
-       Sequence = subICD?.Sequence.ToString() ??"0",
-       EidVersion = subICD?.Version ?? Convert.ToInt32(0)
-   };
-            //var ListAssessment = assessmentLoadList.Assessment.Select(a => new { ICDCode = a.ICD, ICDDescription = a.ICD_Description, IsPrimary = a.Primary_Diagnosis, ProblemListID = a.Internal_Property_ProblemListID, Notes = a.Assessment_Notes, AssessmentID = a.Id, iVersion = a.Version, iProblemListVersion = a.Internal_Property_ProblemListVersion,
-            //    CheckBoxCheck = a.Chronic_Problem, StatusSelected = a.Assessment_Status, ICD9Code = a.ICD_9, ICD9Desc = a.ICD_9_Description,
-            //    ParentICD = a.Parent_ICD, Created_by = a.Created_By, Created_date = a.Created_Date_And_Time.ToString(), Updated = "N",
-            //    Orig_Status = a.Assessment_Status });
-
-
+            var ListAssessment = assessmentLoadList.Assessment.Select(a => new { ICDCode = a.ICD, ICDDescription = a.ICD_Description, IsPrimary = a.Primary_Diagnosis, ProblemListID = a.Internal_Property_ProblemListID, Notes = a.Assessment_Notes, AssessmentID = a.Id, iVersion = a.Version, iProblemListVersion = a.Internal_Property_ProblemListVersion, CheckBoxCheck = a.Chronic_Problem, StatusSelected = a.Assessment_Status, ICD9Code = a.ICD_9, ICD9Desc = a.ICD_9_Description, ParentICD = a.Parent_ICD, Created_by = a.Created_By, Created_date = a.Created_Date_And_Time.ToString(), Updated = "N", Orig_Status = a.Assessment_Status });
             string json = new JavaScriptSerializer().Serialize(ListAssessment);
 
             string jsonArray = new JavaScriptSerializer().Serialize(strarray);
@@ -1860,7 +1737,7 @@ namespace Acurus.Capella.UI
                 string json = new JavaScriptSerializer().Serialize(ListQuestionaire);
 
                 var NoRecord1 = (from b in sFormviewICD.Split('|').ToArray() where !AssociaPrimaryList.Any(a => a.ICD_9 == b.Split('~')[0]) select b).ToList();
-                var NoResultRecord1 = NoRecord1.Select(a => new { ICDCode = a.Split('~')[0], ICDDescription = a.Split('~')[1], AssessmentID = 0, iVersion = 0, iProblemListVersion = 0, ProblemListID = 0, Notes = "", Created_by = "", Created_date = "", Updated = "Y", StatusSelected = Ass_Status, ICDid= 0, Sequence= "0", EidVersion= 0});
+                var NoResultRecord1 = NoRecord1.Select(a => new { ICDCode = a.Split('~')[0], ICDDescription = a.Split('~')[1], AssessmentID = 0, iVersion = 0, iProblemListVersion = 0, ProblemListID = 0, Notes = "", Created_by = "", Created_date = "", Updated = "Y", StatusSelected = Ass_Status });
                 string jsonNoQuestionnaire = new JavaScriptSerializer().Serialize(NoResultRecord1);
                 IList<string> sMainQuestion = new List<string>();
                 for (int i = 0; i < Record1.Count; i++)
@@ -1878,7 +1755,7 @@ namespace Acurus.Capella.UI
             else
             {
                 var Record1 = (from b in sFormviewICD.Split('|').ToArray() where !AssociaPrimaryList.Any(a => a.ICD_9 == b.Split('~')[0]) select b).ToList();
-                var ResultRecord1 = Record1.Select(a => new { ICDCode = a.Split('~')[0], ICDDescription = a.Split('~')[1], AssessmentID = 0, iVersion = 0, iProblemListVersion = 0, ProblemListID = 0, Notes = "", Created_by = "", Created_date = "", Updated = "Y", StatusSelected = Ass_Status, ICDid = 0, Sequence = "0", EidVersion = 0 });
+                var ResultRecord1 = Record1.Select(a => new { ICDCode = a.Split('~')[0], ICDDescription = a.Split('~')[1], AssessmentID = 0, iVersion = 0, iProblemListVersion = 0, ProblemListID = 0, Notes = "", Created_by = "", Created_date = "", Updated = "Y", StatusSelected = Ass_Status });
                 string json = new JavaScriptSerializer().Serialize(ResultRecord1);
 
                 sAsscoiateICDS = "{\"NoQuestionnaire\" :" + json + "}";
@@ -1887,6 +1764,7 @@ namespace Acurus.Capella.UI
 
             return sAsscoiateICDS;
         }
+
 
 
         [WebMethod(EnableSession = true)]
