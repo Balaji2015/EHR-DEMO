@@ -23,7 +23,9 @@ using System.Xml.Serialization;
 using System.Xml;
 using System.Xml.Linq;
 using System.Text.RegularExpressions;
-
+using MySql.Data.MySqlClient;
+using System.Threading;
+using System.Diagnostics;
 
 namespace Acurus.Capella.PatientPortal
 {
@@ -3029,6 +3031,318 @@ namespace Acurus.Capella.PatientPortal
             int len = iEnd - iStart;
 
             return text.Substring(iStart, len);
+        }
+
+        public static bool GetListCCD()
+        {
+            string sConnectionString = string.Empty;
+            sConnectionString = System.Configuration.ConfigurationManager.ConnectionStrings["con"].ConnectionString;
+            var builder = new MySqlConnectionStringBuilder(sConnectionString);
+            bool bExists = false;
+            try
+            {
+                using (MySqlConnection DBConnection = new MySqlConnection(builder.ConnectionString))
+                {
+                    DBConnection.Open();
+                    using (MySqlTransaction DBTransaction = DBConnection.BeginTransaction())
+                    {
+                        string sQuery = "Select *  from list_ccd ; ";
+                        using (MySqlCommand cmdCheck = new MySqlCommand(sQuery, DBConnection))
+                        {
+                            cmdCheck.CommandText = sQuery;
+                            cmdCheck.CommandType = System.Data.CommandType.Text;
+                            try
+                            {
+                                int iRows = 0;
+                                string sResult = string.Empty;
+                                iRows = Convert.ToInt32(cmdCheck.ExecuteScalar());
+                                if (iRows > 0)
+                                    bExists = true;
+
+                            }
+                            catch (Exception e)
+                            {
+                                throw new Exception(e.Message);
+                            }
+                            finally { }
+                        }
+                    }
+                }
+            }
+            catch (Exception e)
+            {
+                throw new Exception(e.Message);
+            }
+            return bExists;
+        }
+
+        public static string GenerateCCD(ulong ulHumanID, ulong ulEncounterID, string sCheckedItems, string sOutputLocation, string sDSN)
+        {
+            string sResult = string.Empty;
+
+            try
+            {
+            ln:
+                bool ishumancount = GetListCCD();
+                if (ishumancount)
+                {
+                    //Thread.Sleep(3000);
+                    //goto ln;
+                    return "1011192";
+                }
+                bool isHumanDone = InsertIntoListCCD(ulHumanID, ulEncounterID, sCheckedItems, sOutputLocation, sDSN);
+
+                if (isHumanDone)
+                {
+                    // CreateXMLByBackupProcess("Human", Application, XML_ID.ToString());
+                    string status = CreateCCDXMLByBatchProcess(sOutputLocation);
+                    if (status == string.Empty)
+
+                        sResult = "Success";
+
+                    else
+                        sResult = status;
+
+                    string sConnectionString = string.Empty;
+                    sConnectionString = System.Configuration.ConfigurationManager.ConnectionStrings["con"].ConnectionString;
+                    var builder = new MySqlConnectionStringBuilder(sConnectionString);
+                    try
+                    {
+                        using (MySqlConnection DBConnection = new MySqlConnection(builder.ConnectionString))
+                        {
+                            DBConnection.Open();
+                            using (MySqlTransaction DBTransaction = DBConnection.BeginTransaction())
+                            {
+                                string sQuery = "delete from list_ccd where encounter_id=" + ulEncounterID.ToString() + ";";
+                                using (MySqlCommand cmdInsert = new MySqlCommand(sQuery, DBConnection, DBTransaction))
+                                {
+                                    cmdInsert.CommandText = sQuery;
+                                    cmdInsert.CommandType = System.Data.CommandType.Text;
+                                    try
+                                    {
+                                        cmdInsert.ExecuteNonQuery();
+                                        DBTransaction.Commit();
+                                    }
+                                    catch (Exception e)
+                                    {
+                                        DBTransaction.Rollback();
+                                        throw;
+                                    }
+                                    finally { }
+                                }
+                            }
+                        }
+                    }
+                    catch (Exception e)
+                    {
+                        sResult = e.Message;
+                    }
+                }
+            }
+
+            catch (Exception ex)
+            {
+                sResult = "ERROR: " + ex.Message + " STACKTRACE: " + ex.StackTrace;
+            }
+            return sResult;
+        }
+        public static string ImportC2ByBatchProcess()
+        {
+            string status = "";
+
+            try
+            {
+                status = "First Block";
+                status = "Third Block Block";
+                string batchfile = System.Configuration.ConfigurationManager.AppSettings["XmlBatchFileForC2"].ToString();
+                if (File.Exists(batchfile))
+                {
+                    try
+                    {
+                        status = "Third Block - Sub 1";
+                        var proc1 = new Process();
+                        proc1.StartInfo.WorkingDirectory = Path.GetDirectoryName(System.Configuration.ConfigurationManager.AppSettings["XmlBatchFileForC2"].ToString());
+                        proc1.StartInfo.FileName = System.Configuration.ConfigurationManager.AppSettings["XmlBatchFileForC2"].ToString();
+                        proc1.StartInfo.Arguments = "-v -s -a";
+                        status = "Third Block - Sub 2";
+                        bool bStart = proc1.Start();
+                        status = bStart + " Third Block - Sub 3 ";
+                        proc1.WaitForExit();
+                        status = bStart + " Third Block - Sub 4 ";
+                        var exitCode = proc1.ExitCode;
+                        proc1.Close();
+
+                        //File.Copy(System.Configuration.ConfigurationManager.AppSettings["CCDOutputLocation"].ToString(), sOutputLocation);
+                    }
+                    catch (Exception ex)
+                    {
+                        throw new Exception(status + " " + ex.Message + "  " + ex.InnerException);
+                    }
+
+                    //using (System.Diagnostics.Process proc = new System.Diagnostics.Process())
+                    //{
+                    //    status = "Third Block - Sub 1";
+                    //    proc.StartInfo.WorkingDirectory = Path.GetDirectoryName(System.Configuration.ConfigurationManager.AppSettings["XmlBatchFileForCCD"].ToString());
+                    //    proc.StartInfo.FileName = "@" + System.Configuration.ConfigurationManager.AppSettings["XmlBatchFileForCCD"].ToString();
+                    //    status = "Third Block - Sub 2" +" " + proc.StartInfo.WorkingDirectory + " " + proc.StartInfo.FileName;
+                    //    UtilityManager.inserttologgingtable(ClientSession.EncounterId.ToString(), ClientSession.HumanId.ToString(), ClientSession.UserName, ClientSession.PhysicianId.ToString(), "UtilityManager - 4522 - CreateCCDXMLByBatchProcess: status  - " + status + " : Start", DateTime.Now, "0", "frmimageviewer");
+                    //    bool bStart = proc.Start();
+                    //    status = bStart + " Third Block - Sub 3 " + System.Configuration.ConfigurationManager.AppSettings["XmlBatchFileForCCD"].ToString();
+                    //    proc.WaitForExit();
+                    //    status = bStart + " Third Block - Sub 4 " + System.Configuration.ConfigurationManager.AppSettings["XmlBatchFileForCCD"].ToString();
+                    //    UtilityManager.inserttologgingtable(ClientSession.EncounterId.ToString(), ClientSession.HumanId.ToString(), ClientSession.UserName, ClientSession.PhysicianId.ToString(), "UtilityManager - 4527 - CreateCCDXMLByBatchProcess: status  - " + status + " : End", DateTime.Now, "0", "frmimageviewer");
+                    //}
+
+                    status = "Eighth Block Block";
+                    batchfile = System.Configuration.ConfigurationManager.AppSettings["CQMCalculatorExe"].ToString();
+                    if (File.Exists(batchfile))
+                    {
+                        try
+                        {
+                            status = "Eighth Block - Sub 1";
+                            var proc1 = new Process();
+                            proc1.StartInfo.WorkingDirectory = Path.GetDirectoryName(System.Configuration.ConfigurationManager.AppSettings["CQMCalculatorExe"].ToString());
+                            proc1.StartInfo.FileName = System.Configuration.ConfigurationManager.AppSettings["CQMCalculatorExe"].ToString();
+                            proc1.StartInfo.Arguments = "-v -s -a";
+                            status = "Eighth Block - Sub 2";
+                            bool bStart = proc1.Start();
+                            status = bStart + " Eighth Block - Sub 3 ";
+                            proc1.WaitForExit();
+                            status = bStart + " Eighth Block - Sub 4 ";
+                            var exitCode = proc1.ExitCode;
+                            proc1.Close();
+
+                            //File.Copy(System.Configuration.ConfigurationManager.AppSettings["CCDOutputLocation"].ToString(), sOutputLocation);
+                        }
+                        catch (Exception ex)
+                        {
+                            throw new Exception(status + " " + ex.Message + "  " + ex.InnerException);
+                        }
+                    }
+                    else
+                    {
+                        status = "Batch File Not found-FileName:" + batchfile;
+                    }
+                    status = "Success";
+                }
+                else
+                {
+                    status = "Batch File Not found-FileName:" + batchfile;
+                }
+                return status;
+
+            }
+            catch (Exception Ex)
+            {
+                throw new Exception(status + " " + Ex.Message + "  " + Ex.InnerException);
+            }
+
+        }
+
+        public static bool InsertIntoListCCD(ulong humanID, ulong encounterID, string sInput, string sOutputLocation, string sDSN)
+        {
+            bool isInserted = false;
+            string sConnectionString = string.Empty;
+            sConnectionString = System.Configuration.ConfigurationManager.ConnectionStrings["con"].ConnectionString;
+            var builder = new MySqlConnectionStringBuilder(sConnectionString);
+
+            try
+            {
+                using (MySqlConnection DBConnection = new MySqlConnection(builder.ConnectionString))
+                {
+                    DBConnection.Open();
+                    using (MySqlTransaction DBTransaction = DBConnection.BeginTransaction())
+                    {
+                        string sQuery = "insert into list_ccd values(" + humanID.ToString() + ", " + encounterID.ToString() + ", '" + sInput + "', '" + sOutputLocation.ToString() + "', '" + sDSN.ToString() + "');";
+                        using (MySqlCommand cmdInsert = new MySqlCommand(sQuery, DBConnection, DBTransaction))
+                        {
+                            cmdInsert.CommandText = sQuery;
+                            cmdInsert.CommandType = System.Data.CommandType.Text;
+                            try
+                            {
+                                cmdInsert.ExecuteNonQuery();
+                                DBTransaction.Commit();
+                                isInserted = true;
+                            }
+                            catch (Exception e)
+                            {
+                                DBTransaction.Rollback();
+                                isInserted = false;
+                                throw new Exception(e.Message);
+                            }
+                            finally { }
+                        }
+                    }
+                }
+            }
+            catch (Exception e)
+            {
+                throw new Exception(e.Message);
+            }
+
+            return isInserted;
+        }
+
+        public static string CreateCCDXMLByBatchProcess(string sOutputLocation)
+        {
+            string status = "";
+
+            try
+            {
+                status = "First Block";
+                status = "Third Block Block";
+                string batchfile = System.Configuration.ConfigurationManager.AppSettings["XmlBatchFileForCCD"].ToString();
+                if (File.Exists(batchfile))
+                {
+                    try
+                    {
+                        status = "Third Block - Sub 1";
+                        var proc1 = new Process();
+                        proc1.StartInfo.WorkingDirectory = Path.GetDirectoryName(System.Configuration.ConfigurationManager.AppSettings["XmlBatchFileForCCD"].ToString());
+                        proc1.StartInfo.FileName = System.Configuration.ConfigurationManager.AppSettings["XmlBatchFileForCCD"].ToString();
+                        proc1.StartInfo.Arguments = "-v -s -a";
+                        status = "Third Block - Sub 2";
+                        bool bStart = proc1.Start();
+                        status = bStart + " Third Block - Sub 3 ";
+                        proc1.WaitForExit();
+                        status = bStart + " Third Block - Sub 4 ";
+                        var exitCode = proc1.ExitCode;
+                        proc1.Close();
+
+                        File.Copy(System.Configuration.ConfigurationManager.AppSettings["CCDOutputLocation"].ToString(), sOutputLocation);
+                    }
+                    catch (Exception ex)
+                    {
+                        throw new Exception(status + " " + ex.Message + "  " + ex.InnerException);
+                    }
+
+                    //using (System.Diagnostics.Process proc = new System.Diagnostics.Process())
+                    //{
+                    //    status = "Third Block - Sub 1";
+                    //    proc.StartInfo.WorkingDirectory = Path.GetDirectoryName(System.Configuration.ConfigurationManager.AppSettings["XmlBatchFileForCCD"].ToString());
+                    //    proc.StartInfo.FileName = "@" + System.Configuration.ConfigurationManager.AppSettings["XmlBatchFileForCCD"].ToString();
+                    //    status = "Third Block - Sub 2" +" " + proc.StartInfo.WorkingDirectory + " " + proc.StartInfo.FileName;
+                    //    UtilityManager.inserttologgingtable(ClientSession.EncounterId.ToString(), ClientSession.HumanId.ToString(), ClientSession.UserName, ClientSession.PhysicianId.ToString(), "UtilityManager - 4522 - CreateCCDXMLByBatchProcess: status  - " + status + " : Start", DateTime.Now, "0", "frmimageviewer");
+                    //    bool bStart = proc.Start();
+                    //    status = bStart + " Third Block - Sub 3 " + System.Configuration.ConfigurationManager.AppSettings["XmlBatchFileForCCD"].ToString();
+                    //    proc.WaitForExit();
+                    //    status = bStart + " Third Block - Sub 4 " + System.Configuration.ConfigurationManager.AppSettings["XmlBatchFileForCCD"].ToString();
+                    //    UtilityManager.inserttologgingtable(ClientSession.EncounterId.ToString(), ClientSession.HumanId.ToString(), ClientSession.UserName, ClientSession.PhysicianId.ToString(), "UtilityManager - 4527 - CreateCCDXMLByBatchProcess: status  - " + status + " : End", DateTime.Now, "0", "frmimageviewer");
+                    //}
+                    status = string.Empty;
+                }
+                else
+                {
+                    status = "Batch File Not found-FileName:" + batchfile;
+                }
+                return status;
+
+            }
+            catch (Exception Ex)
+            {
+                throw new Exception(status + " " + Ex.Message + "  " + Ex.InnerException);
+            }
+
         }
 
     }

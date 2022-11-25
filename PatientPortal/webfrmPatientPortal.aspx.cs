@@ -126,7 +126,56 @@ namespace Acurus.Capella.PatientPortal
             //path = objWellnessNotes.PrintWellnessNotes(Convert.ToUInt32(cboEncounter.SelectedValue), Convert.ToUInt64(Request.QueryString["PatientID"]), true, ref sMyPath, "", false, fileManageExistList1);
             if ((cboEncounter.SelectedValue != null && cboEncounter.SelectedValue != "") && (Request.QueryString["PatientID"] != null && Request.QueryString["PatientID"].ToString() != ""))
             {
-                FilePath = objClinicalSummary.PrintClinicalSummary(Convert.ToUInt32(cboEncounter.SelectedValue), Convert.ToUInt64(Request.QueryString["PatientID"]), false, ref sMyPath, "", true, true);
+                //FilePath = objClinicalSummary.PrintClinicalSummary(Convert.ToUInt32(cboEncounter.SelectedValue), Convert.ToUInt64(Request.QueryString["PatientID"]), false, ref sMyPath, "", true, true);
+
+                string TargetFileDirectory = Server.MapPath("Documents/" + Session.SessionID);
+                string sFolderPathName = TargetFileDirectory + "\\" + System.Configuration.ConfigurationSettings.AppSettings["ClinicalSummaryPathName"] + "\\" + DateTime.Now.ToString("yyyyMMdd");
+                Directory.CreateDirectory(sFolderPathName);
+
+                string sPrintPathName = string.Empty;
+
+                sPrintPathName = sFolderPathName + "\\" + "Clinical_Summary_" + ClientSession.HumanId.ToString() + "_" + DateTime.Now.ToString("yyyyMMddhhmmss") + ".xml";
+
+                string sCheckedItems = "Reason Of Visit,Vitals,Clinical Instruction,Immunizations,Mental Status,Care Plan,Laboratory Test(s),Smoking Status,Allergy,Functional Status,Procedure(s),Laboratory Values/Results,Encounter,Goals,Assessment,Medication,Medications Administered During visit,Treatment Plan,Problem List,Reason for Referral,Implants,Future Appointment,Health Concern,Lab Test,Laboratory Information,Diagnostics Tests Pending,Future Scheduled Tests,Patient Decision Aids, Social History";
+
+                string sStatus = UtilityManager.GenerateCCD(ClientSession.HumanId, ClientSession.EncounterId, sCheckedItems, sPrintPathName, string.Empty);
+                if (sStatus == "Success")
+                {
+                    string[] Split = new string[] { Server.MapPath("Documents\\" + Session.SessionID) };
+                    string[] XMLFileName = sPrintPathName.Split(Split, StringSplitOptions.RemoveEmptyEntries);
+                    if (hdnXmlPath.Value == string.Empty)
+                    {
+                        hdnXmlPath.Value = "Documents\\" + Session.SessionID.ToString() + XMLFileName[0].ToString();
+                    }
+                    if (hdnXmlPath.Value != null && hdnXmlPath.Value != string.Empty)
+                    {
+                        DirectoryInfo ObjSearchDir = new DirectoryInfo(Server.MapPath(hdnXmlPath.Value));
+                        if (!Directory.CreateDirectory(ObjSearchDir.Parent.Parent.FullName + "\\stylesheet").Exists)
+                        {
+                            Directory.CreateDirectory(ObjSearchDir.Parent.Parent.FullName + "\\stylesheet");
+                        }
+                        System.IO.File.Copy(Server.MapPath("SampleXML/CDA.xsl"), Server.MapPath("Documents/" + Session.SessionID.ToString() + "/" + ObjSearchDir.Parent.Parent + "/stylesheet/CDA.xsl"), true);
+                        ScriptManager.RegisterStartupScript(this, this.GetType(), string.Empty, "OpenAltovaPDF();", true);
+
+                        //AuditLogManager alManager = new AuditLogManager();
+                        //string TransactionType = "GENERATE - CCD";
+                        //alManager.InsertIntoAuditLog("EXPORT", TransactionType, Convert.ToInt32(ClientSession.HumanId), ClientSession.UserName);//BugID:49685
+                    }
+                    else
+                    {
+                        ScriptManager.RegisterStartupScript(this, this.GetType(), string.Empty, "OpenErrorAltova();", true);
+                    }
+
+                }
+                else if (sStatus == "1011192")
+                {
+                    ScriptManager.RegisterStartupScript(this, this.GetType(), string.Empty, "OpenWarningAltova();", true);
+                }
+                else
+                {
+                    ScriptManager.RegisterStartupScript(this, this.GetType(), string.Empty, "OpenErrorAltova();", true);
+                }
+
                 sFilePathPDF = objSummaryofCare.PrintPDF(FilePath[0].ToString(), "PatientPortal", DateTime.MinValue);
                 // FilePath = objClinicalSummary.ImportCCD(XOX, FilePath[0].ToString(), false, Convert.ToUInt64(Request.QueryString["PatientID"]), true);
                 //string[] Split = new string[] { Server.MapPath("") };

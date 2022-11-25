@@ -654,6 +654,7 @@
         <%--BugID:49297--%>
         <asp:HiddenField ID="hdnbulkaccess" runat="server" EnableViewState="false" />
         <asp:HiddenField ID="hdnPatientPortal" runat="server" EnableViewState="false" />
+        <asp:HiddenField ID="hdnXmlPath" runat="server" />
         <telerik:RadScriptManager ID="RadScriptManager1" runat="server" EnableViewState="false">
             <Scripts>
                 <asp:ScriptReference Assembly="Telerik.Web.UI" Name="Telerik.Web.UI.Common.Core.js"></asp:ScriptReference>
