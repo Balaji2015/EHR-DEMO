@@ -112,7 +112,8 @@ namespace Acurus.Capella.PatientPortal
         }
 
         protected void btnShowReport_Click(object sender, EventArgs e)
-        {
+        {     
+
             string path = string.Empty;
             string sMyPath = string.Empty;
             string PDFPath = string.Empty;
