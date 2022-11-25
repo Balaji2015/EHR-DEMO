@@ -18,8 +18,9 @@ using System.Web.UI.WebControls;
 using System.Xml;
 using System.Xml.Linq;
 using System.Xml.Serialization;
-
-
+using MySql.Data.MySqlClient;
+using System.Threading;
+using System.Configuration;
 
 namespace Acurus.Capella.UI
 {
@@ -1346,52 +1347,52 @@ namespace Acurus.Capella.UI
            
             EandMCodingICDManager objeandm = new EandMCodingICDManager();
             eandmicd= objeandm.GetEandMcodingICDListbyEncounterID(ClientSession.EncounterId);
-
+            eandmicddelete = eandmicd;
             IList<Assessment> lstass = new List<Assessment>();
             lstass = assementInsertList.Concat(assessmentListToUpdate).ToList<Assessment>();
 
-            if (eandmicd.Count > 0)
-             {
-                eandmicd = eandmicd.OrderBy(a => Convert.ToUInt32(a.Sequence.Replace("A", ""))).ToList<EandMCodingICD>();
-                int seqence = Convert.ToInt32(eandmicd[eandmicd.Count - 1].Sequence.Replace("A",""))+1;
-                for (int k=0;k< lstass.Count;k++)
-                {
-                    EandMCodingICD obj = new EandMCodingICD();
-                    obj.ICD = lstass[k].ICD;
-                    obj.ICD_Description = lstass[k].ICD_Description;
-                    obj.Is_Delete = "N";
-                    obj.Human_ID = lstass[k].Human_ID;
-                    obj.Encounter_ID = lstass[k].Encounter_ID;
-                    obj.Source = "ASSESSMENT";
-                    if (lstass[k].Primary_Diagnosis.ToUpper() == "Y")
-                        obj.ICD_Category = "Primary";
-                    else
-                        obj.ICD_Category = "None";
+            //if (eandmicd.Count > 0)
+            // {
+            //    eandmicd = eandmicd.OrderBy(a => Convert.ToUInt32(a.Sequence.Replace("A", ""))).ToList<EandMCodingICD>();
+            //    int seqence = Convert.ToInt32(eandmicd[eandmicd.Count - 1].Sequence.Replace("A",""))+1;
+            //    for (int k=0;k< lstass.Count;k++)
+            //    {
+            //        EandMCodingICD obj = new EandMCodingICD();
+            //        obj.ICD = lstass[k].ICD;
+            //        obj.ICD_Description = lstass[k].ICD_Description;
+            //        obj.Is_Delete = "N";
+            //        obj.Human_ID = lstass[k].Human_ID;
+            //        obj.Encounter_ID = lstass[k].Encounter_ID;
+            //        obj.Source = "ASSESSMENT";
+            //        if (lstass[k].Primary_Diagnosis.ToUpper() == "Y")
+            //            obj.ICD_Category = "Primary";
+            //        else
+            //            obj.ICD_Category = "None";
 
-                    IList<EandMCodingICD> eandmicdtemp = (from m in eandmicd where m.ICD.Trim() == lstass[k].ICD.Trim() select m).ToList<EandMCodingICD>();
-                    if(eandmicdtemp.Count>0)
-                    {
-                        obj.Sequence = eandmicdtemp[0].Sequence;
+            //        IList<EandMCodingICD> eandmicdtemp = (from m in eandmicd where m.ICD.Trim() == lstass[k].ICD.Trim() select m).ToList<EandMCodingICD>();
+            //        if(eandmicdtemp.Count>0)
+            //        {
+            //            obj.Sequence = eandmicdtemp[0].Sequence;
 
-                    }
-                    else
-                    {
-                        obj.Sequence = "A" + seqence.ToString();
-                        seqence++;
-                    }
+            //        }
+            //        else
+            //        {
+            //            obj.Sequence = "A" + seqence.ToString();
+            //            seqence++;
+            //        }
                  
-                    obj.Created_By = ClientSession.UserName;
-                    obj.Created_Date_And_Time = UtilityManager.ConvertToUniversal();
-                    eandmicdinsert.Add(obj);
+            //        obj.Created_By = ClientSession.UserName;
+            //        obj.Created_Date_And_Time = UtilityManager.ConvertToUniversal();
+            //        eandmicdinsert.Add(obj);
              
 
 
-                }
-                eandmicddelete = eandmicd;
+            //    }
+            //    eandmicddelete = eandmicd;
 
-            }
-            else
-            {
+            //}
+            //else
+           // {
                 for (int k = 0; k < lstass.Count; k++)
                 {
                     if (lstass[k].Primary_Diagnosis.ToUpper()=="Y")
@@ -1436,15 +1437,19 @@ namespace Acurus.Capella.UI
                     }
 
                 }
-            }
-          
+           // }
+
+
+           
+
+
 
             FillAssessment assessmentLoadList = objAssessmentManager.BatchOperationsToAssessment(assementInsertList.ToArray<Assessment>(),
                        assessmentListToUpdate.ToArray<Assessment>(), assessmentListToDelete.ToArray<Assessment>(),
                         probListToAdd.ToArray<ProblemList>(), probListToUpdate.ToArray<ProblemList>(),
                        probListIdToDelete.ToArray<ProblemList>(), string.Empty,
                        objGeneralNotes, SaveTreatmentPlan, ClientSession.UserName, ClientSession.EncounterId, ClientSession.HumanId, 
-                       ClientSession.PhysicianId, sMacraICDChkList, sIs_Assessment_CopyPrevious, sLocalTime, ClientSession.LegalOrg, eandmicdinsert);
+                       ClientSession.PhysicianId, sMacraICDChkList, sIs_Assessment_CopyPrevious, sLocalTime, ClientSession.LegalOrg, eandmicdinsert,eandmicddelete);
 
 
             //FillAssessment assessmentLoadList = objAssessmentManager.BatchOperationsToAssessment(assementInsertList.ToArray<Assessment>(),
