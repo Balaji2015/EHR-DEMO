@@ -891,7 +891,7 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
                                         //}
 
 
-                                        iResult = eandmicdMngr.SaveUpdateDelete_DBAndXML_WithoutTransaction(ref lstEandMICDInsert, ref lstupdateicd, lstEandMICDDelete, MySession, string.Empty, true, false, ulEncounterID, string.Empty, ref xmlobjEncounter);
+                                        iResult = eandmicdMngr.SaveUpdateDelete_DBAndXML_WithoutTransaction(ref lstEandMICDInsert, ref lstupdateicd, lstEandMICDDelete, MySession, string.Empty, true, true, ulEncounterID, string.Empty, ref xmlobjEncounter);
                                         //iResult = eandmicdMngr.SaveUpdateDeleteWithoutTransaction(ref SaveEMICDList, UpdateEMICDList, null, MySession, string.Empty);
 
                                         if (iResult == 2)
