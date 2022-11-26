@@ -414,7 +414,7 @@
                                     <table style="width: 100%;">
                                         <tr>
                                             <td>
-                                                <asp:Label ID="Label" CssClass="spanstyle" runat="server" Text="Payer Name "></asp:Label>
+                                                <asp:Label ID="Label" CssClass="spanstyle" runat="server" Text="Carrier Name "></asp:Label>
                                             </td>
                                             <td>
                                                 <asp:DropDownList ID="ddlauthPayer" CssClass="Editabletxtbox" runat="server" AutoPostBack="True" onchange="AutoSave(this);"
@@ -540,7 +540,7 @@
 
                                         <tr>
                                              <td>
-                                                <span class="spanstyle" runat="server" id="spanPayername">Payer Name </span><span class="manredforstar" runat="server" id="spanPayerstar" visible="false">*</span>
+                                                <span class="spanstyle" runat="server" id="spanPayername">Carrier Name </span><span class="manredforstar" runat="server" id="spanPayerstar" visible="false">*</span>
                                             </td>
                                             <td>
                                                 <asp:DropDownList ID="ddlPayerName" runat="server" AutoPostBack="True" onchange="Payer(this);" OnSelectedIndexChanged="ddlPayerName_SelectedIndexChanged"
