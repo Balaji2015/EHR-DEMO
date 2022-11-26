@@ -2950,4 +2950,6 @@
   <Message number="1011160" Type="OK" Text="Please Enter Valid To Date."/>
   <Message number="1011161" Type="OK" Text="Please select the patient first."/>
   <Message number="1011162" Type="OK" Text="Please select the services from same authorization number.."/>
+	<Message number="1011191" Type="CCDGenerate" Text="The CCD Generate is in progress. Please wait as it takes few minutes."></Message>
+	<Message number="1011192" Type="OK" Text="There is an existing CCD Generate request found in the Queue. Please try after some time."></Message>
 </ErrorMessage>

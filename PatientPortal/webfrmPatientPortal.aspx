@@ -388,11 +388,32 @@
         li p {
             line-height: 0.9rem !important;
         }
+
+        #CheckAlertxml {
+            display: none;
+            background: #fdfeff;
+            box-shadow: 0 0 10px rgba(0,0,0,0.4);
+            box-sizing: border-box;
+            color: #101010;
+            left: 50%;
+            min-width: 645px;
+            max-width: 700px;
+            padding: 1.875em;
+            position: absolute;
+            top: 7%;
+            transform: translate(-50%, -50%);
+            z-index: 2000000000;
+            border-radius: 10px;
+            opacity: 0.8;
+        }
     </style>
 
 </head>
 <body bgcolor="#bfdbff" text="#000000" link="#0000ee" vlink="#0000ee" alink="#0000ee">
     <form id="form1" runat="server">
+        <div id="CheckAlertxml"  class="dvxmlalert">
+          <div id="innerMsgTextxml" style="font-family: Verdana,Arial,sans-serif !important;font-size: 18px;color: #000000;"></div>
+       </div> 
         <telerik:RadWindowManager ID="WindowMngrSendMail" runat="server">
             <Windows>
                 <telerik:RadWindow ID="SendMailWindow" ShowContentDuringLoad="true" runat="server"
@@ -672,6 +693,7 @@
             <script src="JScripts/JSModalWindow.js?version=<%=ConfigurationManager.AppSettings["VersionConfiguration"].ToString().Replace("Capella - ","") %>" type="text/javascript"></script>
 
         </asp:PlaceHolder>
+              
     </form>
 </body>
 </html>
