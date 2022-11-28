@@ -158,7 +158,10 @@ function DisplayErrorMessage(ErrorNo, NotificationName, Messagelist) {
                 //        warning_message_label.style.display = "none";
                 //    }, 5000);
                 //}
-                ToolStripAlert(Message);break;
+                ToolStripAlert(Message); break;
+            case "CCDGenerate":
+                xmlregenerateToolStripAlert(Message);
+                break;
             case "YesNoCancel":
                 var obj = new Array();
                 FromScreen = NotificationName;
@@ -2103,4 +2106,15 @@ function ToolStripAlert(message) {
 function ToolStripAlertHide() {
     if ($(top.window.document).find("#CheckAlert") != undefined && $(top.window.document).find("#CheckAlert")[0] != undefined)
         $(top.window.document).find("#CheckAlert")[0].style.display = "none";
+}
+function ToolStripAlertHidexml() {
+    { sessionStorage.setItem('StartLoading', 'false'); StopLoadFromPatChart(); }
+    if ($(top.window.document).find("#CheckAlertxml") != undefined)
+        $(top.window.document).find("#CheckAlertxml")[0].style.display = "none";
+}
+function xmlregenerateToolStripAlert(message) {
+    $(top.window.document).find("#CheckAlertxml")[0].style.display = "block";
+    $(top.window.document).find("#innerMsgTextxml")[0].innerText = message;
+
+    //setTimeout(function () { ToolStripAlertHide(); }, 5000);
 }
