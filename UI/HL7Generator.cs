@@ -70,26 +70,26 @@ namespace Acurus.Capella.UI
 
 
             if (sTelephoneno != string.Empty)
-                xmlReqNode[0].Attributes[0].Value = "tel:" + sTelephoneno;
+                xmlReqNode[0].Attributes[0].Value = "tel:+1" + sTelephoneno;
             else
                 //For BugID : 28462
-                //xmlReqNode[0].Attributes[0].Value = "tel:" + "(909) 621-4949";
-                xmlReqNode[0].Attributes[0].Value = "tel:" + "(111) 111-1111";
+                //xmlReqNode[0].Attributes[0].Value = "tel:+1" + "(909) 621-4949";
+                xmlReqNode[0].Attributes[0].Value = "tel:+1" + "(111) 111-1111";
 
 
             if (ClinicalSummary.HumanList[0].Work_Phone_No != string.Empty)
-                xmlReqNode[1].Attributes[0].Value = "tel:" + ClinicalSummary.HumanList[0].Work_Phone_No;
+                xmlReqNode[1].Attributes[0].Value = "tel:+1" + ClinicalSummary.HumanList[0].Work_Phone_No;
             else
                 //For BugID : 28462
-                //xmlReqNode[0].Attributes[0].Value = "tel:" + "(909) 621-4949";
-                xmlReqNode[1].Attributes[0].Value = "tel:" + "(111) 111-1111";
+                //xmlReqNode[0].Attributes[0].Value = "tel:+1" + "(909) 621-4949";
+                xmlReqNode[1].Attributes[0].Value = "tel:+1" + "(111) 111-1111";
 
             if (ClinicalSummary.HumanList[0].Cell_Phone_Number != string.Empty)
-                xmlReqNode[2].Attributes[0].Value = "tel:" + ClinicalSummary.HumanList[0].Cell_Phone_Number;
+                xmlReqNode[2].Attributes[0].Value = "tel:+1" + ClinicalSummary.HumanList[0].Cell_Phone_Number;
             else
                 //For BugID : 28462
-                //xmlReqNode[0].Attributes[0].Value = "tel:" + "(909) 621-4949";
-                xmlReqNode[2].Attributes[0].Value = "tel:" + "(111) 111-1111";
+                //xmlReqNode[0].Attributes[0].Value = "tel:+1" + "(909) 621-4949";
+                xmlReqNode[2].Attributes[0].Value = "tel:+1" + "(111) 111-1111";
 
             #endregion
 
@@ -184,9 +184,9 @@ namespace Acurus.Capella.UI
             xmlReqNode = xmlDoc.GetElementsByTagName("telecom");
             string sphyTelephoneno = Phy.PhyTelephone;
             if (sphyTelephoneno != string.Empty)
-                xmlDoc.GetElementsByTagName("author")[0].ChildNodes[1].ChildNodes[2].Attributes[1].Value = "tel:" + sphyTelephoneno;
+                xmlDoc.GetElementsByTagName("author")[0].ChildNodes[1].ChildNodes[2].Attributes[1].Value = "tel:+1" + sphyTelephoneno;
             else
-                xmlDoc.GetElementsByTagName("author")[0].ChildNodes[1].ChildNodes[2].Attributes[1].Value = "tel:" + "(909) 621-4949";
+                xmlDoc.GetElementsByTagName("author")[0].ChildNodes[1].ChildNodes[2].Attributes[1].Value = "tel:+1" + "(909) 621-4949";
 
             xmlReqNode = xmlDoc.GetElementsByTagName("prefix");
             xmlReqNode[0].InnerText = Phy.PhyPrefix;
@@ -211,9 +211,9 @@ namespace Acurus.Capella.UI
             xmlReqNode = xmlDoc.GetElementsByTagName("telecom");
             //string sgurantorphoneno = ClinicalSummary.Guarantor_Home_Phone_No;
             //if (sgurantorphoneno != string.Empty)
-            //    xmlDoc.GetElementsByTagName("custodian")[0].ChildNodes[0].ChildNodes[0].ChildNodes[2].Attributes[0].Value = "tel:" + sgurantorphoneno;
+            //    xmlDoc.GetElementsByTagName("custodian")[0].ChildNodes[0].ChildNodes[0].ChildNodes[2].Attributes[0].Value = "tel:+1" + sgurantorphoneno;
             //else
-            //    xmlDoc.GetElementsByTagName("custodian")[0].ChildNodes[0].ChildNodes[0].ChildNodes[2].Attributes[0].Value = "tel:" + "(909) 621-4949";
+            //    xmlDoc.GetElementsByTagName("custodian")[0].ChildNodes[0].ChildNodes[0].ChildNodes[2].Attributes[0].Value = "tel:+1" + "(909) 621-4949";
 
             if (ClinicalSummary.facilityLibraryCustodian != null && ClinicalSummary.facilityLibraryCustodian.Count > 0)
             {
@@ -232,7 +232,7 @@ namespace Acurus.Capella.UI
 
                     xmlDoc.GetElementsByTagName("custodian")[0].ChildNodes[0].ChildNodes[0].ChildNodes[1].InnerText = ClinicalSummary.facilityLibraryCustodian[i].Fac_Name;
 
-                    xmlDoc.GetElementsByTagName("custodian")[0].ChildNodes[0].ChildNodes[0].ChildNodes[2].Attributes[0].Value = "tel:" + ClinicalSummary.facilityLibraryCustodian[i].Fac_Telephone;
+                    xmlDoc.GetElementsByTagName("custodian")[0].ChildNodes[0].ChildNodes[0].ChildNodes[2].Attributes[0].Value = "tel:+1" + ClinicalSummary.facilityLibraryCustodian[i].Fac_Telephone;
                 }
             }
 
@@ -285,9 +285,9 @@ namespace Acurus.Capella.UI
                     xmlDoc.GetElementsByTagName("documentationOf")[0].ChildNodes[0].ChildNodes[2].ChildNodes[0].ChildNodes[2].ChildNodes[3].InnerText = Phy.PhyZip;
 
                     if (sphyTelephoneno != string.Empty)
-                        xmlDoc.GetElementsByTagName("documentationOf")[0].ChildNodes[0].ChildNodes[2].ChildNodes[0].ChildNodes[3].Attributes[0].Value = "tel:" + sphyTelephoneno;
+                        xmlDoc.GetElementsByTagName("documentationOf")[0].ChildNodes[0].ChildNodes[2].ChildNodes[0].ChildNodes[3].Attributes[0].Value = "tel:+1" + sphyTelephoneno;
                     else
-                        xmlDoc.GetElementsByTagName("documentationOf")[0].ChildNodes[0].ChildNodes[2].ChildNodes[0].ChildNodes[3].Attributes[0].Value = "tel:" + "(909) 621-4949";
+                        xmlDoc.GetElementsByTagName("documentationOf")[0].ChildNodes[0].ChildNodes[2].ChildNodes[0].ChildNodes[3].Attributes[0].Value = "tel:+1" + "(909) 621-4949";
 
                     if (ClinicalSummary.PhysicianLibraryDocumentation.Count == 1)
                     {
@@ -295,7 +295,7 @@ namespace Acurus.Capella.UI
                         xmlDoc.GetElementsByTagName("documentationOf")[0].ChildNodes[0].ChildNodes[3].ChildNodes[0].ChildNodes[2].ChildNodes[1].InnerText = ClinicalSummary.PhysicianLibraryDocumentation[i].PhyCity;
                         xmlDoc.GetElementsByTagName("documentationOf")[0].ChildNodes[0].ChildNodes[3].ChildNodes[0].ChildNodes[2].ChildNodes[2].InnerText = ClinicalSummary.PhysicianLibraryDocumentation[i].PhyState;
                         xmlDoc.GetElementsByTagName("documentationOf")[0].ChildNodes[0].ChildNodes[3].ChildNodes[0].ChildNodes[2].ChildNodes[3].InnerText = ClinicalSummary.PhysicianLibraryDocumentation[i].PhyZip;
-                        xmlDoc.GetElementsByTagName("documentationOf")[0].ChildNodes[0].ChildNodes[3].ChildNodes[0].ChildNodes[3].Attributes[0].Value = "tel:" + ClinicalSummary.PhysicianLibraryDocumentation[i].PhyTelephone;
+                        xmlDoc.GetElementsByTagName("documentationOf")[0].ChildNodes[0].ChildNodes[3].ChildNodes[0].ChildNodes[3].Attributes[0].Value = "tel:+1" + ClinicalSummary.PhysicianLibraryDocumentation[i].PhyTelephone;
                         string sMedicalAssistant = string.Empty;
                         if (ClinicalSummary.PhysicianLibraryDocumentation[i].Med_Phy_Assistant == string.Empty)
                             sMedicalAssistant = "_";
@@ -310,7 +310,7 @@ namespace Acurus.Capella.UI
                         xmlDoc.GetElementsByTagName("documentationOf")[0].ChildNodes[0].ChildNodes[3].ChildNodes[0].ChildNodes[2].ChildNodes[1].InnerText = ClinicalSummary.PhysicianLibraryDocumentation[i].PhyCity;
                         xmlDoc.GetElementsByTagName("documentationOf")[0].ChildNodes[0].ChildNodes[3].ChildNodes[0].ChildNodes[2].ChildNodes[2].InnerText = ClinicalSummary.PhysicianLibraryDocumentation[i].PhyState;
                         xmlDoc.GetElementsByTagName("documentationOf")[0].ChildNodes[0].ChildNodes[3].ChildNodes[0].ChildNodes[2].ChildNodes[3].InnerText = ClinicalSummary.PhysicianLibraryDocumentation[i].PhyZip;
-                        xmlDoc.GetElementsByTagName("documentationOf")[0].ChildNodes[0].ChildNodes[3].ChildNodes[0].ChildNodes[3].Attributes[0].Value = "tel:" + ClinicalSummary.PhysicianLibraryDocumentation[i].PhyTelephone;
+                        xmlDoc.GetElementsByTagName("documentationOf")[0].ChildNodes[0].ChildNodes[3].ChildNodes[0].ChildNodes[3].Attributes[0].Value = "tel:+1" + ClinicalSummary.PhysicianLibraryDocumentation[i].PhyTelephone;
                         xmlDoc.GetElementsByTagName("documentationOf")[0].ChildNodes[0].ChildNodes[3].ChildNodes[0].ChildNodes[4].ChildNodes[0].ChildNodes[0].InnerText = ClinicalSummary.PhysicianLibraryDocumentation[i].PhyPrefix + " " + ClinicalSummary.PhysicianLibraryDocumentation[i].PhyFirstName + " " + ClinicalSummary.PhysicianLibraryDocumentation[i].PhyLastName;
                     }
 
@@ -359,26 +359,26 @@ namespace Acurus.Capella.UI
 
 
             if (sTelephoneno != string.Empty)
-                xmlReqNode[0].Attributes[0].Value = "tel:" + sTelephoneno;
+                xmlReqNode[0].Attributes[0].Value = "tel:+1" + sTelephoneno;
             else
                 //For BugID : 28462
                 //xmlReqNode[0].Attributes[0].Value = "tel:" + "(909) 621-4949";
-                xmlReqNode[0].Attributes[0].Value = "tel:" + "(111) 111-1111";
+                xmlReqNode[0].Attributes[0].Value = "tel:+1" + "(111) 111-1111";
 
 
             if (ClinicalSummary.HumanList[0].Work_Phone_No != string.Empty)
-                xmlReqNode[1].Attributes[0].Value = "tel:" + ClinicalSummary.HumanList[0].Work_Phone_No;
+                xmlReqNode[1].Attributes[0].Value = "tel:+1" + ClinicalSummary.HumanList[0].Work_Phone_No;
             else
                 //For BugID : 28462
                 //xmlReqNode[0].Attributes[0].Value = "tel:" + "(909) 621-4949";
-                xmlReqNode[1].Attributes[0].Value = "tel:" + "(111) 111-1111";
+                xmlReqNode[1].Attributes[0].Value = "tel:+1" + "(111) 111-1111";
 
             if (ClinicalSummary.HumanList[0].Cell_Phone_Number != string.Empty)
-                xmlReqNode[2].Attributes[0].Value = "tel:" + ClinicalSummary.HumanList[0].Cell_Phone_Number;
+                xmlReqNode[2].Attributes[0].Value = "tel:+1" + ClinicalSummary.HumanList[0].Cell_Phone_Number;
             else
                 //For BugID : 28462
-                //xmlReqNode[0].Attributes[0].Value = "tel:" + "(909) 621-4949";
-                xmlReqNode[2].Attributes[0].Value = "tel:" + "(111) 111-1111";
+                //xmlReqNode[0].Attributes[0].Value = "tel:+1" + "(909) 621-4949";
+                xmlReqNode[2].Attributes[0].Value = "tel:+1" + "(111) 111-1111";
             #endregion
 
             #region Patient
@@ -578,9 +578,9 @@ namespace Acurus.Capella.UI
             xmlReqNode = xmlDoc.GetElementsByTagName("telecom");
             string sphyTelephoneno = Phy.PhyTelephone;
             if (sphyTelephoneno != string.Empty)
-                xmlDoc.GetElementsByTagName("author")[0].ChildNodes[1].ChildNodes[2].Attributes[1].Value = "tel:" + sphyTelephoneno;
+                xmlDoc.GetElementsByTagName("author")[0].ChildNodes[1].ChildNodes[2].Attributes[1].Value = "tel:+1" + sphyTelephoneno;
             else
-                xmlDoc.GetElementsByTagName("author")[0].ChildNodes[1].ChildNodes[2].Attributes[1].Value = "tel:" + "(909) 621-4949";
+                xmlDoc.GetElementsByTagName("author")[0].ChildNodes[1].ChildNodes[2].Attributes[1].Value = "tel:+1" + "(909) 621-4949";
 
             xmlReqNode = xmlDoc.GetElementsByTagName("prefix");
             xmlReqNode[0].InnerText = Phy.PhyPrefix;
@@ -601,9 +601,9 @@ namespace Acurus.Capella.UI
                 xmlReqNode[0].ChildNodes[0].ChildNodes[1].ChildNodes[2].InnerText = ClinicalSummary.facilityLibraryCustodian[0].Fac_State;
                 xmlReqNode[0].ChildNodes[0].ChildNodes[1].ChildNodes[3].InnerText = ClinicalSummary.facilityLibraryCustodian[0].Fac_Zip;
                 if (ClinicalSummary.facilityLibraryCustodian[0].Fac_Telephone.Trim() != "")
-                    xmlReqNode[0].ChildNodes[0].ChildNodes[2].Attributes[1].Value = "tel:" + ClinicalSummary.facilityLibraryCustodian[0].Fac_Telephone;
+                    xmlReqNode[0].ChildNodes[0].ChildNodes[2].Attributes[1].Value = "tel:+1" + ClinicalSummary.facilityLibraryCustodian[0].Fac_Telephone;
                 else
-                    xmlReqNode[0].ChildNodes[0].ChildNodes[2].Attributes[1].Value = "tel:" + "(111) 111-1111";
+                    xmlReqNode[0].ChildNodes[0].ChildNodes[2].Attributes[1].Value = "tel:+1" + "(111) 111-1111";
 
             }
             xmlReqNode[0].ChildNodes[0].ChildNodes[1].ChildNodes[4].InnerText = "US";
@@ -637,9 +637,9 @@ namespace Acurus.Capella.UI
             xmlReqNode = xmlDoc.GetElementsByTagName("telecom");
             //string sgurantorphoneno = ClinicalSummary.Guarantor_Home_Phone_No;
             //if (sgurantorphoneno != string.Empty)
-            //    xmlDoc.GetElementsByTagName("custodian")[0].ChildNodes[0].ChildNodes[0].ChildNodes[2].Attributes[0].Value = "tel:" + sgurantorphoneno;
+            //    xmlDoc.GetElementsByTagName("custodian")[0].ChildNodes[0].ChildNodes[0].ChildNodes[2].Attributes[0].Value = "tel:+1" + sgurantorphoneno;
             //else
-            //    xmlDoc.GetElementsByTagName("custodian")[0].ChildNodes[0].ChildNodes[0].ChildNodes[2].Attributes[0].Value = "tel:" + "(909) 621-4949";
+            //    xmlDoc.GetElementsByTagName("custodian")[0].ChildNodes[0].ChildNodes[0].ChildNodes[2].Attributes[0].Value = "tel:+1" + "(909) 621-4949";
 
             if (ClinicalSummary.facilityLibraryCustodian != null && ClinicalSummary.facilityLibraryCustodian.Count > 0)
             {
@@ -658,9 +658,9 @@ namespace Acurus.Capella.UI
 
                     xmlDoc.GetElementsByTagName("custodian")[0].ChildNodes[0].ChildNodes[0].ChildNodes[1].InnerText = ClinicalSummary.facilityLibraryCustodian[i].Fac_Name;
                     if (ClinicalSummary.facilityLibraryCustodian[0].Fac_Telephone.Trim() != "")
-                        xmlDoc.GetElementsByTagName("custodian")[0].ChildNodes[0].ChildNodes[0].ChildNodes[2].Attributes[0].Value = "tel:" + ClinicalSummary.facilityLibraryCustodian[0].Fac_Telephone;
+                        xmlDoc.GetElementsByTagName("custodian")[0].ChildNodes[0].ChildNodes[0].ChildNodes[2].Attributes[0].Value = "tel:+1" + ClinicalSummary.facilityLibraryCustodian[0].Fac_Telephone;
                     else
-                        xmlDoc.GetElementsByTagName("custodian")[0].ChildNodes[0].ChildNodes[0].ChildNodes[2].Attributes[0].Value = "tel:" + "(111) 111-1111";
+                        xmlDoc.GetElementsByTagName("custodian")[0].ChildNodes[0].ChildNodes[0].ChildNodes[2].Attributes[0].Value = "tel:+1" + "(111) 111-1111";
 
 
                 }
@@ -727,9 +727,9 @@ namespace Acurus.Capella.UI
                     //xmlDoc.GetElementsByTagName("documentationOf")[0].ChildNodes[0].ChildNodes[2].ChildNodes[0].ChildNodes[2].ChildNodes[3].InnerText = Phy.PhyZip;
 
                     //if (sphyTelephoneno != string.Empty)
-                    //    xmlDoc.GetElementsByTagName("documentationOf")[0].ChildNodes[0].ChildNodes[2].ChildNodes[0].ChildNodes[3].Attributes[0].Value = "tel:" + sphyTelephoneno;
+                    //    xmlDoc.GetElementsByTagName("documentationOf")[0].ChildNodes[0].ChildNodes[2].ChildNodes[0].ChildNodes[3].Attributes[0].Value = "tel:+1" + sphyTelephoneno;
                     //else
-                    //    xmlDoc.GetElementsByTagName("documentationOf")[0].ChildNodes[0].ChildNodes[2].ChildNodes[0].ChildNodes[3].Attributes[0].Value = "tel:" + "(909) 621-4949";
+                    //    xmlDoc.GetElementsByTagName("documentationOf")[0].ChildNodes[0].ChildNodes[2].ChildNodes[0].ChildNodes[3].Attributes[0].Value = "tel:+1" + "(909) 621-4949";
 
                     //if (ClinicalSummary.PhysicianLibraryDocumentation.Count == 1)
                     //{
@@ -737,7 +737,7 @@ namespace Acurus.Capella.UI
                     //    xmlDoc.GetElementsByTagName("documentationOf")[0].ChildNodes[0].ChildNodes[3].ChildNodes[0].ChildNodes[2].ChildNodes[1].InnerText = ClinicalSummary.PhysicianLibraryDocumentation[i].PhyCity;
                     //    xmlDoc.GetElementsByTagName("documentationOf")[0].ChildNodes[0].ChildNodes[3].ChildNodes[0].ChildNodes[2].ChildNodes[2].InnerText = ClinicalSummary.PhysicianLibraryDocumentation[i].PhyState;
                     //    xmlDoc.GetElementsByTagName("documentationOf")[0].ChildNodes[0].ChildNodes[3].ChildNodes[0].ChildNodes[2].ChildNodes[3].InnerText = ClinicalSummary.PhysicianLibraryDocumentation[i].PhyZip;
-                    //    xmlDoc.GetElementsByTagName("documentationOf")[0].ChildNodes[0].ChildNodes[3].ChildNodes[0].ChildNodes[3].Attributes[0].Value = "tel:" + ClinicalSummary.PhysicianLibraryDocumentation[i].PhyTelephone;
+                    //    xmlDoc.GetElementsByTagName("documentationOf")[0].ChildNodes[0].ChildNodes[3].ChildNodes[0].ChildNodes[3].Attributes[0].Value = "tel:+1" + ClinicalSummary.PhysicianLibraryDocumentation[i].PhyTelephone;
                     //    string sMedicalAssistant = string.Empty;
                     //    if (ClinicalSummary.PhysicianLibraryDocumentation[i].Med_Phy_Assistant == string.Empty)
                     //        sMedicalAssistant = "_";
@@ -752,7 +752,7 @@ namespace Acurus.Capella.UI
                     //    xmlDoc.GetElementsByTagName("documentationOf")[0].ChildNodes[0].ChildNodes[3].ChildNodes[0].ChildNodes[2].ChildNodes[1].InnerText = ClinicalSummary.PhysicianLibraryDocumentation[i].PhyCity;
                     //    xmlDoc.GetElementsByTagName("documentationOf")[0].ChildNodes[0].ChildNodes[3].ChildNodes[0].ChildNodes[2].ChildNodes[2].InnerText = ClinicalSummary.PhysicianLibraryDocumentation[i].PhyState;
                     //    xmlDoc.GetElementsByTagName("documentationOf")[0].ChildNodes[0].ChildNodes[3].ChildNodes[0].ChildNodes[2].ChildNodes[3].InnerText = ClinicalSummary.PhysicianLibraryDocumentation[i].PhyZip;
-                    //    xmlDoc.GetElementsByTagName("documentationOf")[0].ChildNodes[0].ChildNodes[3].ChildNodes[0].ChildNodes[3].Attributes[0].Value = "tel:" + ClinicalSummary.PhysicianLibraryDocumentation[i].PhyTelephone;
+                    //    xmlDoc.GetElementsByTagName("documentationOf")[0].ChildNodes[0].ChildNodes[3].ChildNodes[0].ChildNodes[3].Attributes[0].Value = "tel:+1" + ClinicalSummary.PhysicianLibraryDocumentation[i].PhyTelephone;
                     //    xmlDoc.GetElementsByTagName("documentationOf")[0].ChildNodes[0].ChildNodes[3].ChildNodes[0].ChildNodes[4].ChildNodes[0].ChildNodes[0].InnerText = ClinicalSummary.PhysicianLibraryDocumentation[i].PhyPrefix + " " + ClinicalSummary.PhysicianLibraryDocumentation[i].PhyFirstName + " " + ClinicalSummary.PhysicianLibraryDocumentation[i].PhyLastName;
                     //}
 
@@ -770,9 +770,9 @@ namespace Acurus.Capella.UI
                     xmlReqNode[0].ChildNodes[1].ChildNodes[2].ChildNodes[3].InnerText = ClinicalSummary.PhysicianLibraryDocumentation[i].PhyZip;
                     xmlReqNode[0].ChildNodes[1].ChildNodes[2].ChildNodes[4].InnerText = "US";
                     if (ClinicalSummary.PhysicianLibraryDocumentation[i].PhyTelephone.Trim() != "")
-                        xmlReqNode[0].ChildNodes[1].ChildNodes[3].Attributes[1].Value = "tel:" + ClinicalSummary.PhysicianLibraryDocumentation[i].PhyTelephone;
+                        xmlReqNode[0].ChildNodes[1].ChildNodes[3].Attributes[1].Value = "tel:+1" + ClinicalSummary.PhysicianLibraryDocumentation[i].PhyTelephone;
                     else
-                        xmlReqNode[0].ChildNodes[1].ChildNodes[3].Attributes[1].Value = "tel:" + "(111) 111-1111";
+                        xmlReqNode[0].ChildNodes[1].ChildNodes[3].Attributes[1].Value = "tel:+1" + "(111) 111-1111";
 
                     xmlReqNode[0].ChildNodes[1].ChildNodes[4].ChildNodes[0].ChildNodes[0].InnerText = ClinicalSummary.PhysicianLibraryDocumentation[i].PhyPrefix;
                     xmlReqNode[0].ChildNodes[1].ChildNodes[4].ChildNodes[0].ChildNodes[1].InnerText = ClinicalSummary.PhysicianLibraryDocumentation[i].PhyFirstName;
@@ -788,9 +788,9 @@ namespace Acurus.Capella.UI
                     xmlReqNode[1].ChildNodes[1].ChildNodes[2].ChildNodes[3].InnerText = ClinicalSummary.facilityLibraryCustodian[0].Fac_Zip;
                     xmlReqNode[1].ChildNodes[1].ChildNodes[2].ChildNodes[4].InnerText = "US";
                     if (ClinicalSummary.facilityLibraryCustodian[0].Fac_Telephone.Trim() != "")
-                        xmlReqNode[1].ChildNodes[1].ChildNodes[3].Attributes[1].Value = "tel:" + ClinicalSummary.facilityLibraryCustodian[0].Fac_Telephone;
+                        xmlReqNode[1].ChildNodes[1].ChildNodes[3].Attributes[1].Value = "tel:+1" + ClinicalSummary.facilityLibraryCustodian[0].Fac_Telephone;
                     else
-                        xmlReqNode[1].ChildNodes[1].ChildNodes[3].Attributes[1].Value = "tel:" + "(111) 111-1111";
+                        xmlReqNode[1].ChildNodes[1].ChildNodes[3].Attributes[1].Value = "tel:+1" + "(111) 111-1111";
 
                     if (ClinicalSummary.Encounter != null && ClinicalSummary.Encounter.Count > 0)
                     {
@@ -849,9 +849,9 @@ namespace Acurus.Capella.UI
             //xmlDoc.GetElementsByTagName("documentationOf")[0].ChildNodes[0].ChildNodes[2].ChildNodes[0].ChildNodes[2].ChildNodes[3].InnerText = Phy.PhyZip;
 
             //if (sphyTelephoneno != string.Empty)
-            //    xmlDoc.GetElementsByTagName("documentationOf")[0].ChildNodes[0].ChildNodes[2].ChildNodes[0].ChildNodes[3].Attributes[0].Value = "tel:" + sphyTelephoneno;
+            //    xmlDoc.GetElementsByTagName("documentationOf")[0].ChildNodes[0].ChildNodes[2].ChildNodes[0].ChildNodes[3].Attributes[0].Value = "tel:+1" + sphyTelephoneno;
             //else
-            //    xmlDoc.GetElementsByTagName("documentationOf")[0].ChildNodes[0].ChildNodes[2].ChildNodes[0].ChildNodes[3].Attributes[0].Value = "tel:" + "(909) 621-4949";
+            //    xmlDoc.GetElementsByTagName("documentationOf")[0].ChildNodes[0].ChildNodes[2].ChildNodes[0].ChildNodes[3].Attributes[0].Value = "tel:+1" + "(909) 621-4949";
 
             ////PhyAssistant
             //for (int i = 0; i < ClinicalSummary.PhysicianLibraryDocumentation.Count; i++)
@@ -860,7 +860,7 @@ namespace Acurus.Capella.UI
             //    xmlDoc.GetElementsByTagName("documentationOf")[0].ChildNodes[0].ChildNodes[3].ChildNodes[0].ChildNodes[2].ChildNodes[1].InnerText = ClinicalSummary.PhysicianLibraryDocumentation[i].PhyCity;
             //    xmlDoc.GetElementsByTagName("documentationOf")[0].ChildNodes[0].ChildNodes[3].ChildNodes[0].ChildNodes[2].ChildNodes[2].InnerText = ClinicalSummary.PhysicianLibraryDocumentation[i].PhyState;
             //    xmlDoc.GetElementsByTagName("documentationOf")[0].ChildNodes[0].ChildNodes[3].ChildNodes[0].ChildNodes[2].ChildNodes[3].InnerText = ClinicalSummary.PhysicianLibraryDocumentation[i].PhyZip;
-            //    xmlDoc.GetElementsByTagName("documentationOf")[0].ChildNodes[0].ChildNodes[3].ChildNodes[0].ChildNodes[3].Attributes[0].Value = "tel:" + ClinicalSummary.PhysicianLibraryDocumentation[i].PhyTelephone;
+            //    xmlDoc.GetElementsByTagName("documentationOf")[0].ChildNodes[0].ChildNodes[3].ChildNodes[0].ChildNodes[3].Attributes[0].Value = "tel:+1" + ClinicalSummary.PhysicianLibraryDocumentation[i].PhyTelephone;
             //    //name
             //    //xmlDoc.GetElementsByTagName("documentationOf")[0].ChildNodes[0].ChildNodes[3].ChildNodes[0].ChildNodes[4].ChildNodes[0].ChildNodes[0].InnerText = "Dr.";
             //    //if (ClinicalSummary.PhysicianLibraryDocumentation[i].Med_Phy_Assistant != string.Empty)
@@ -1615,26 +1615,26 @@ namespace Acurus.Capella.UI
 
 
             if (sTelephoneno != string.Empty)
-                xmlReqNode[0].Attributes[0].Value = "tel:" + sTelephoneno;
+                xmlReqNode[0].Attributes[0].Value = "tel:+1" + sTelephoneno;
             else
                 //For BugID : 28462
-                //xmlReqNode[0].Attributes[0].Value = "tel:" + "(909) 621-4949";
-                xmlReqNode[0].Attributes[0].Value = "tel:" + "(111) 111-1111";
+                //xmlReqNode[0].Attributes[0].Value = "tel:+1" + "(909) 621-4949";
+                xmlReqNode[0].Attributes[0].Value = "tel:+1" + "(111) 111-1111";
 
 
             if (ClinicalSummary.HumanList[0].Work_Phone_No != string.Empty)
-                xmlReqNode[1].Attributes[0].Value = "tel:" + ClinicalSummary.HumanList[0].Work_Phone_No;
+                xmlReqNode[1].Attributes[0].Value = "tel:+1" + ClinicalSummary.HumanList[0].Work_Phone_No;
             else
                 //For BugID : 28462
-                //xmlReqNode[0].Attributes[0].Value = "tel:" + "(909) 621-4949";
-                xmlReqNode[1].Attributes[0].Value = "tel:" + "(111) 111-1111";
+                //xmlReqNode[0].Attributes[0].Value = "tel:+1" + "(909) 621-4949";
+                xmlReqNode[1].Attributes[0].Value = "tel:+1" + "(111) 111-1111";
 
             if (ClinicalSummary.HumanList[0].Cell_Phone_Number != string.Empty)
-                xmlReqNode[2].Attributes[0].Value = "tel:" + ClinicalSummary.HumanList[0].Cell_Phone_Number;
+                xmlReqNode[2].Attributes[0].Value = "tel:+1" + ClinicalSummary.HumanList[0].Cell_Phone_Number;
             else
                 //For BugID : 28462
-                //xmlReqNode[0].Attributes[0].Value = "tel:" + "(909) 621-4949";
-                xmlReqNode[2].Attributes[0].Value = "tel:" + "(111) 111-1111";
+                //xmlReqNode[0].Attributes[0].Value = "tel:+1" + "(909) 621-4949";
+                xmlReqNode[2].Attributes[0].Value = "tel:+1" + "(111) 111-1111";
             #endregion
 
             #region Patient
@@ -1823,9 +1823,9 @@ namespace Acurus.Capella.UI
             xmlReqNode = xmlDoc.GetElementsByTagName("telecom");
             string sphyTelephoneno = Phy.PhyTelephone;
             if (sphyTelephoneno != string.Empty)
-                xmlDoc.GetElementsByTagName("author")[0].ChildNodes[1].ChildNodes[2].Attributes[1].Value = "tel:" + sphyTelephoneno;
+                xmlDoc.GetElementsByTagName("author")[0].ChildNodes[1].ChildNodes[2].Attributes[1].Value = "tel:+1" + sphyTelephoneno;
             else
-                xmlDoc.GetElementsByTagName("author")[0].ChildNodes[1].ChildNodes[2].Attributes[1].Value = "tel:" + "(909) 621-4949";
+                xmlDoc.GetElementsByTagName("author")[0].ChildNodes[1].ChildNodes[2].Attributes[1].Value = "tel:+1" + "(909) 621-4949";
 
             xmlReqNode = xmlDoc.GetElementsByTagName("prefix");
             xmlReqNode[0].InnerText = Phy.PhyPrefix;
@@ -1851,9 +1851,9 @@ namespace Acurus.Capella.UI
                 xmlReqNode[1].ChildNodes[1].ChildNodes[1].ChildNodes[3].InnerText = ClinicalSummary.LabLocationList[0].ZipCode;
                 xmlReqNode[1].ChildNodes[1].ChildNodes[1].ChildNodes[4].InnerText = "US";
                 if (ClinicalSummary.LabLocationList[0].Phone_No.Trim() != "")
-                    xmlReqNode[1].ChildNodes[1].ChildNodes[2].Attributes[1].Value = "tel:" + ClinicalSummary.LabLocationList[0].Phone_No;
+                    xmlReqNode[1].ChildNodes[1].ChildNodes[2].Attributes[1].Value = "tel:+1" + ClinicalSummary.LabLocationList[0].Phone_No;
                 else
-                    xmlReqNode[1].ChildNodes[1].ChildNodes[2].Attributes[1].Value = "tel:" + "(111) 111-1111";
+                    xmlReqNode[1].ChildNodes[1].ChildNodes[2].Attributes[1].Value = "tel:+1" + "(111) 111-1111";
 
             }
             #endregion
@@ -1868,9 +1868,9 @@ namespace Acurus.Capella.UI
                 xmlReqNode[0].ChildNodes[0].ChildNodes[1].ChildNodes[2].InnerText = ClinicalSummary.facilityLibraryCustodian[0].Fac_State;
                 xmlReqNode[0].ChildNodes[0].ChildNodes[1].ChildNodes[3].InnerText = ClinicalSummary.facilityLibraryCustodian[0].Fac_Zip;
                 if (ClinicalSummary.facilityLibraryCustodian[0].Fac_Telephone.Trim() != "")
-                    xmlReqNode[0].ChildNodes[0].ChildNodes[2].Attributes[1].Value = "tel:" + ClinicalSummary.facilityLibraryCustodian[0].Fac_Telephone;
+                    xmlReqNode[0].ChildNodes[0].ChildNodes[2].Attributes[1].Value = "tel:+1" + ClinicalSummary.facilityLibraryCustodian[0].Fac_Telephone;
                 else
-                    xmlReqNode[0].ChildNodes[0].ChildNodes[2].Attributes[1].Value = "tel:" + "(111) 111-1111";
+                    xmlReqNode[0].ChildNodes[0].ChildNodes[2].Attributes[1].Value = "tel:+1" + "(111) 111-1111";
 
             }
             xmlReqNode[0].ChildNodes[0].ChildNodes[1].ChildNodes[4].InnerText = "US";
@@ -1904,9 +1904,9 @@ namespace Acurus.Capella.UI
             xmlReqNode = xmlDoc.GetElementsByTagName("telecom");
             //string sgurantorphoneno = ClinicalSummary.Guarantor_Home_Phone_No;
             //if (sgurantorphoneno != string.Empty)
-            //    xmlDoc.GetElementsByTagName("custodian")[0].ChildNodes[0].ChildNodes[0].ChildNodes[2].Attributes[0].Value = "tel:" + sgurantorphoneno;
+            //    xmlDoc.GetElementsByTagName("custodian")[0].ChildNodes[0].ChildNodes[0].ChildNodes[2].Attributes[0].Value = "tel:+1" + sgurantorphoneno;
             //else
-            //    xmlDoc.GetElementsByTagName("custodian")[0].ChildNodes[0].ChildNodes[0].ChildNodes[2].Attributes[0].Value = "tel:" + "(909) 621-4949";
+            //    xmlDoc.GetElementsByTagName("custodian")[0].ChildNodes[0].ChildNodes[0].ChildNodes[2].Attributes[0].Value = "tel:+1" + "(909) 621-4949";
 
             if (ClinicalSummary.facilityLibraryCustodian != null && ClinicalSummary.facilityLibraryCustodian.Count > 0)
             {
@@ -1925,9 +1925,9 @@ namespace Acurus.Capella.UI
 
                     xmlDoc.GetElementsByTagName("custodian")[0].ChildNodes[0].ChildNodes[0].ChildNodes[1].InnerText = ClinicalSummary.facilityLibraryCustodian[i].Fac_Name;
                     if (ClinicalSummary.facilityLibraryCustodian[0].Fac_Telephone.Trim() != "")
-                        xmlDoc.GetElementsByTagName("custodian")[0].ChildNodes[0].ChildNodes[0].ChildNodes[2].Attributes[0].Value = "tel:" + ClinicalSummary.facilityLibraryCustodian[0].Fac_Telephone;
+                        xmlDoc.GetElementsByTagName("custodian")[0].ChildNodes[0].ChildNodes[0].ChildNodes[2].Attributes[0].Value = "tel:+1" + ClinicalSummary.facilityLibraryCustodian[0].Fac_Telephone;
                     else
-                        xmlDoc.GetElementsByTagName("custodian")[0].ChildNodes[0].ChildNodes[0].ChildNodes[2].Attributes[0].Value = "tel:" + "(111) 111-1111";
+                        xmlDoc.GetElementsByTagName("custodian")[0].ChildNodes[0].ChildNodes[0].ChildNodes[2].Attributes[0].Value = "tel:+1" + "(111) 111-1111";
 
 
                 }
@@ -2001,9 +2001,9 @@ namespace Acurus.Capella.UI
                     //xmlDoc.GetElementsByTagName("documentationOf")[0].ChildNodes[0].ChildNodes[2].ChildNodes[0].ChildNodes[2].ChildNodes[3].InnerText = Phy.PhyZip;
 
                     //if (sphyTelephoneno != string.Empty)
-                    //    xmlDoc.GetElementsByTagName("documentationOf")[0].ChildNodes[0].ChildNodes[2].ChildNodes[0].ChildNodes[3].Attributes[0].Value = "tel:" + sphyTelephoneno;
+                    //    xmlDoc.GetElementsByTagName("documentationOf")[0].ChildNodes[0].ChildNodes[2].ChildNodes[0].ChildNodes[3].Attributes[0].Value = "tel:+1" + sphyTelephoneno;
                     //else
-                    //    xmlDoc.GetElementsByTagName("documentationOf")[0].ChildNodes[0].ChildNodes[2].ChildNodes[0].ChildNodes[3].Attributes[0].Value = "tel:" + "(909) 621-4949";
+                    //    xmlDoc.GetElementsByTagName("documentationOf")[0].ChildNodes[0].ChildNodes[2].ChildNodes[0].ChildNodes[3].Attributes[0].Value = "tel:+1" + "(909) 621-4949";
 
                     //if (ClinicalSummary.PhysicianLibraryDocumentation.Count == 1)
                     //{
@@ -2011,7 +2011,7 @@ namespace Acurus.Capella.UI
                     //    xmlDoc.GetElementsByTagName("documentationOf")[0].ChildNodes[0].ChildNodes[3].ChildNodes[0].ChildNodes[2].ChildNodes[1].InnerText = ClinicalSummary.PhysicianLibraryDocumentation[i].PhyCity;
                     //    xmlDoc.GetElementsByTagName("documentationOf")[0].ChildNodes[0].ChildNodes[3].ChildNodes[0].ChildNodes[2].ChildNodes[2].InnerText = ClinicalSummary.PhysicianLibraryDocumentation[i].PhyState;
                     //    xmlDoc.GetElementsByTagName("documentationOf")[0].ChildNodes[0].ChildNodes[3].ChildNodes[0].ChildNodes[2].ChildNodes[3].InnerText = ClinicalSummary.PhysicianLibraryDocumentation[i].PhyZip;
-                    //    xmlDoc.GetElementsByTagName("documentationOf")[0].ChildNodes[0].ChildNodes[3].ChildNodes[0].ChildNodes[3].Attributes[0].Value = "tel:" + ClinicalSummary.PhysicianLibraryDocumentation[i].PhyTelephone;
+                    //    xmlDoc.GetElementsByTagName("documentationOf")[0].ChildNodes[0].ChildNodes[3].ChildNodes[0].ChildNodes[3].Attributes[0].Value = "tel:+1" + ClinicalSummary.PhysicianLibraryDocumentation[i].PhyTelephone;
                     //    string sMedicalAssistant = string.Empty;
                     //    if (ClinicalSummary.PhysicianLibraryDocumentation[i].Med_Phy_Assistant == string.Empty)
                     //        sMedicalAssistant = "_";
@@ -2026,7 +2026,7 @@ namespace Acurus.Capella.UI
                     //    xmlDoc.GetElementsByTagName("documentationOf")[0].ChildNodes[0].ChildNodes[3].ChildNodes[0].ChildNodes[2].ChildNodes[1].InnerText = ClinicalSummary.PhysicianLibraryDocumentation[i].PhyCity;
                     //    xmlDoc.GetElementsByTagName("documentationOf")[0].ChildNodes[0].ChildNodes[3].ChildNodes[0].ChildNodes[2].ChildNodes[2].InnerText = ClinicalSummary.PhysicianLibraryDocumentation[i].PhyState;
                     //    xmlDoc.GetElementsByTagName("documentationOf")[0].ChildNodes[0].ChildNodes[3].ChildNodes[0].ChildNodes[2].ChildNodes[3].InnerText = ClinicalSummary.PhysicianLibraryDocumentation[i].PhyZip;
-                    //    xmlDoc.GetElementsByTagName("documentationOf")[0].ChildNodes[0].ChildNodes[3].ChildNodes[0].ChildNodes[3].Attributes[0].Value = "tel:" + ClinicalSummary.PhysicianLibraryDocumentation[i].PhyTelephone;
+                    //    xmlDoc.GetElementsByTagName("documentationOf")[0].ChildNodes[0].ChildNodes[3].ChildNodes[0].ChildNodes[3].Attributes[0].Value = "tel:+1" + ClinicalSummary.PhysicianLibraryDocumentation[i].PhyTelephone;
                     //    xmlDoc.GetElementsByTagName("documentationOf")[0].ChildNodes[0].ChildNodes[3].ChildNodes[0].ChildNodes[4].ChildNodes[0].ChildNodes[0].InnerText = ClinicalSummary.PhysicianLibraryDocumentation[i].PhyPrefix + " " + ClinicalSummary.PhysicianLibraryDocumentation[i].PhyFirstName + " " + ClinicalSummary.PhysicianLibraryDocumentation[i].PhyLastName;
                     //}
 
@@ -2044,9 +2044,9 @@ namespace Acurus.Capella.UI
                     xmlReqNode[0].ChildNodes[1].ChildNodes[2].ChildNodes[3].InnerText = ClinicalSummary.PhysicianLibraryDocumentation[i].PhyZip;
                     xmlReqNode[0].ChildNodes[1].ChildNodes[2].ChildNodes[4].InnerText = "US";
                     if (ClinicalSummary.PhysicianLibraryDocumentation[i].PhyTelephone.Trim() != "")
-                        xmlReqNode[0].ChildNodes[1].ChildNodes[3].Attributes[1].Value = "tel:" + ClinicalSummary.PhysicianLibraryDocumentation[i].PhyTelephone;
+                        xmlReqNode[0].ChildNodes[1].ChildNodes[3].Attributes[1].Value = "tel:+1" + ClinicalSummary.PhysicianLibraryDocumentation[i].PhyTelephone;
                     else
-                        xmlReqNode[0].ChildNodes[1].ChildNodes[3].Attributes[1].Value = "tel:" + "(111) 111-1111";
+                        xmlReqNode[0].ChildNodes[1].ChildNodes[3].Attributes[1].Value = "tel:+1" + "(111) 111-1111";
 
                     xmlReqNode[0].ChildNodes[1].ChildNodes[4].ChildNodes[0].ChildNodes[0].InnerText = ClinicalSummary.PhysicianLibraryDocumentation[i].PhyPrefix;
                     xmlReqNode[0].ChildNodes[1].ChildNodes[4].ChildNodes[0].ChildNodes[1].InnerText = ClinicalSummary.PhysicianLibraryDocumentation[i].PhyFirstName;
@@ -2062,9 +2062,9 @@ namespace Acurus.Capella.UI
                     xmlReqNode[1].ChildNodes[1].ChildNodes[2].ChildNodes[3].InnerText = ClinicalSummary.facilityLibraryCustodian[0].Fac_Zip;
                     xmlReqNode[1].ChildNodes[1].ChildNodes[2].ChildNodes[4].InnerText = "US";
                     if (ClinicalSummary.facilityLibraryCustodian[0].Fac_Telephone.Trim() != "")
-                        xmlReqNode[1].ChildNodes[1].ChildNodes[3].Attributes[1].Value = "tel:" + ClinicalSummary.facilityLibraryCustodian[0].Fac_Telephone;
+                        xmlReqNode[1].ChildNodes[1].ChildNodes[3].Attributes[1].Value = "tel:+1" + ClinicalSummary.facilityLibraryCustodian[0].Fac_Telephone;
                     else
-                        xmlReqNode[1].ChildNodes[1].ChildNodes[3].Attributes[1].Value = "tel:" + "(111) 111-1111";
+                        xmlReqNode[1].ChildNodes[1].ChildNodes[3].Attributes[1].Value = "tel:+1" + "(111) 111-1111";
 
                     if (ClinicalSummary.Encounter != null && ClinicalSummary.Encounter.Count > 0)
                     {
@@ -2121,9 +2121,9 @@ namespace Acurus.Capella.UI
             //xmlDoc.GetElementsByTagName("documentationOf")[0].ChildNodes[0].ChildNodes[2].ChildNodes[0].ChildNodes[2].ChildNodes[3].InnerText = Phy.PhyZip;
 
             //if (sphyTelephoneno != string.Empty)
-            //    xmlDoc.GetElementsByTagName("documentationOf")[0].ChildNodes[0].ChildNodes[2].ChildNodes[0].ChildNodes[3].Attributes[0].Value = "tel:" + sphyTelephoneno;
+            //    xmlDoc.GetElementsByTagName("documentationOf")[0].ChildNodes[0].ChildNodes[2].ChildNodes[0].ChildNodes[3].Attributes[0].Value = "tel:+1" + sphyTelephoneno;
             //else
-            //    xmlDoc.GetElementsByTagName("documentationOf")[0].ChildNodes[0].ChildNodes[2].ChildNodes[0].ChildNodes[3].Attributes[0].Value = "tel:" + "(909) 621-4949";
+            //    xmlDoc.GetElementsByTagName("documentationOf")[0].ChildNodes[0].ChildNodes[2].ChildNodes[0].ChildNodes[3].Attributes[0].Value = "tel:+1" + "(909) 621-4949";
 
             ////PhyAssistant
             //for (int i = 0; i < ClinicalSummary.PhysicianLibraryDocumentation.Count; i++)
@@ -2132,7 +2132,7 @@ namespace Acurus.Capella.UI
             //    xmlDoc.GetElementsByTagName("documentationOf")[0].ChildNodes[0].ChildNodes[3].ChildNodes[0].ChildNodes[2].ChildNodes[1].InnerText = ClinicalSummary.PhysicianLibraryDocumentation[i].PhyCity;
             //    xmlDoc.GetElementsByTagName("documentationOf")[0].ChildNodes[0].ChildNodes[3].ChildNodes[0].ChildNodes[2].ChildNodes[2].InnerText = ClinicalSummary.PhysicianLibraryDocumentation[i].PhyState;
             //    xmlDoc.GetElementsByTagName("documentationOf")[0].ChildNodes[0].ChildNodes[3].ChildNodes[0].ChildNodes[2].ChildNodes[3].InnerText = ClinicalSummary.PhysicianLibraryDocumentation[i].PhyZip;
-            //    xmlDoc.GetElementsByTagName("documentationOf")[0].ChildNodes[0].ChildNodes[3].ChildNodes[0].ChildNodes[3].Attributes[0].Value = "tel:" + ClinicalSummary.PhysicianLibraryDocumentation[i].PhyTelephone;
+            //    xmlDoc.GetElementsByTagName("documentationOf")[0].ChildNodes[0].ChildNodes[3].ChildNodes[0].ChildNodes[3].Attributes[0].Value = "tel:+1" + ClinicalSummary.PhysicianLibraryDocumentation[i].PhyTelephone;
             //    //name
             //    //xmlDoc.GetElementsByTagName("documentationOf")[0].ChildNodes[0].ChildNodes[3].ChildNodes[0].ChildNodes[4].ChildNodes[0].ChildNodes[0].InnerText = "Dr.";
             //    //if (ClinicalSummary.PhysicianLibraryDocumentation[i].Med_Phy_Assistant != string.Empty)
@@ -2636,7 +2636,7 @@ namespace Acurus.Capella.UI
                             elemPostalCode.InnerText = ilstFacility[0].Fac_Zip;
                             elemName.InnerText = ilstFacility[0].Fac_Name;
 
-                            elemPhone.Attributes[0].Value = "tel:" + ilstFacility[0].Fac_Telephone;
+                            elemPhone.Attributes[0].Value = "tel:+1" + ilstFacility[0].Fac_Telephone;
                         }
                         elemReasonDOS.Attributes[0].Value = ClinicalSummary.Encounter[i].Date_of_Service.ToString("yyyyMMdd");
                         //elemReasonTypeVisit.Attributes[2].Value = ClinicalSummary.Encounter[i].Purpose_of_Visit;

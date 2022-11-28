@@ -3,4 +3,882 @@
 https://go.microsoft.com/fwlink/?LinkID=208121.
 -->
 <Project>
+  <PropertyGroup>
+    <_PublishTargetUrl>E:\Acurus_Web\Deployee\builds\Capella_publish_PatientPortal\</_PublishTargetUrl>
+  </PropertyGroup>
+  <ItemGroup>
+    <File Include="atala-capture-download/mz5zm3drzbgplxqlsrd4bzdp/MAILINBOX/CheckAAA_Acurus__1904 N OG AVE_582783_878005_20220830041343.xml">
+      <publishTime>11/25/2022 18:37:37</publishTime>
+    </File>
+    <File Include="atala-capture-download/mz5zm3drzbgplxqlsrd4bzdp/MAILINBOX/CheckAAA_Acurus__1904 N OG AVE_582783_878005_20220830041343_SummaryOfCare.pdf">
+      <publishTime>11/25/2022 18:37:37</publishTime>
+    </File>
+    <File Include="atala-capture-download/mz5zm3drzbgplxqlsrd4bzdp/MAILINBOX/CheckAAA_Acurus__1904 N OG AVE_582783_878005_20220830042622.xml">
+      <publishTime>11/25/2022 18:37:37</publishTime>
+    </File>
+    <File Include="atala-capture-download/mz5zm3drzbgplxqlsrd4bzdp/MAILINBOX/CheckAAA_Acurus__1904 N OG AVE_582783_878005_20220830042622_SummaryOfCare.pdf">
+      <publishTime>11/25/2022 18:37:37</publishTime>
+    </File>
+    <File Include="atala-capture-download/mz5zm3drzbgplxqlsrd4bzdp/MAILINBOX/CheckAAA_Acurus__1904 N OG AVE_582783_878005_20220830043158.xml">
+      <publishTime>11/25/2022 18:37:37</publishTime>
+    </File>
+    <File Include="atala-capture-download/mz5zm3drzbgplxqlsrd4bzdp/MAILINBOX/CheckAAA_Acurus__1904 N OG AVE_582783_878005_20220830043158_SummaryOfCare.pdf">
+      <publishTime>11/25/2022 18:37:37</publishTime>
+    </File>
+    <File Include="bin/Acurus.Capella.Core.dll">
+      <publishTime>11/25/2022 18:39:23</publishTime>
+    </File>
+    <File Include="bin/Acurus.Capella.Core.pdb">
+      <publishTime>11/25/2022 18:39:23</publishTime>
+    </File>
+    <File Include="bin/Acurus.Capella.DataAccess.dll">
+      <publishTime>11/25/2022 18:39:27</publishTime>
+    </File>
+    <File Include="bin/Acurus.Capella.DataAccess.dll.config">
+      <publishTime>11/25/2022 18:35:30</publishTime>
+    </File>
+    <File Include="bin/Acurus.Capella.DataAccess.pdb">
+      <publishTime>11/25/2022 18:39:27</publishTime>
+    </File>
+    <File Include="bin/Acurus.Capella.DataAccess.XmlSerializers.dll">
+      <publishTime>11/25/2022 18:39:29</publishTime>
+    </File>
+    <File Include="bin/Acurus.Capella.PatientPortal.dll">
+      <publishTime>11/25/2022 18:39:31</publishTime>
+    </File>
+    <File Include="bin/Acurus.Capella.PatientPortal.pdb">
+      <publishTime>11/25/2022 18:39:31</publishTime>
+    </File>
+    <File Include="bin/AjaxControlToolkit.dll">
+      <publishTime>11/25/2022 18:37:37</publishTime>
+    </File>
+    <File Include="bin/Antlr3.Runtime.dll">
+      <publishTime>11/25/2022 18:37:37</publishTime>
+    </File>
+    <File Include="bin/EMRDirect.dll">
+      <publishTime>11/25/2022 18:37:37</publishTime>
+    </File>
+    <File Include="bin/EnvDTE.dll">
+      <publishTime>11/25/2022 18:37:38</publishTime>
+    </File>
+    <File Include="bin/HbmMaps/Request_Sent_Log.hbm.xml">
+      <publishTime>11/25/2022 18:37:38</publishTime>
+    </File>
+    <File Include="bin/HbmMaps/Response_Received_Log.hbm.xml">
+      <publishTime>11/25/2022 18:37:38</publishTime>
+    </File>
+    <File Include="bin/Iesi.Collections.dll">
+      <publishTime>11/25/2022 18:37:38</publishTime>
+    </File>
+    <File Include="bin/Ionic.Zip.Reduced.dll">
+      <publishTime>11/25/2022 18:37:38</publishTime>
+    </File>
+    <File Include="bin/itextsharp.dll">
+      <publishTime>11/25/2022 18:37:38</publishTime>
+    </File>
+    <File Include="bin/LinFu.DynamicProxy.dll">
+      <publishTime>11/25/2022 18:37:38</publishTime>
+    </File>
+    <File Include="bin/log4net.dll">
+      <publishTime>11/25/2022 18:37:38</publishTime>
+    </File>
+    <File Include="bin/Microsoft.Office.Interop.Excel.dll">
+      <publishTime>11/25/2022 18:37:38</publishTime>
+    </File>
+    <File Include="bin/Microsoft.Vbe.Interop.dll">
+      <publishTime>11/25/2022 18:37:38</publishTime>
+    </File>
+    <File Include="bin/mysql.data.dll">
+      <publishTime>11/25/2022 18:37:39</publishTime>
+    </File>
+    <File Include="bin/Newtonsoft.Json.dll">
+      <publishTime>11/25/2022 18:37:38</publishTime>
+    </File>
+    <File Include="bin/NHibernate.ByteCode.LinFu.dll">
+      <publishTime>11/25/2022 18:37:38</publishTime>
+    </File>
+    <File Include="bin/NHibernate.dll">
+      <publishTime>11/25/2022 18:37:38</publishTime>
+    </File>
+    <File Include="bin/office.dll">
+      <publishTime>11/25/2022 18:37:39</publishTime>
+    </File>
+    <File Include="bin/stdole.dll">
+      <publishTime>04/08/2022 21:38:20</publishTime>
+    </File>
+    <File Include="bin/TimePicker.dll">
+      <publishTime>11/25/2022 18:35:35</publishTime>
+    </File>
+    <File Include="ErrorMessage.xml">
+      <publishTime>11/25/2022 18:35:31</publishTime>
+    </File>
+    <File Include="ErrorPage.aspx">
+      <publishTime>11/25/2022 18:35:31</publishTime>
+    </File>
+    <File Include="frmChangePassword.aspx">
+      <publishTime>11/25/2022 18:35:31</publishTime>
+    </File>
+    <File Include="frmClinicalSummary.aspx">
+      <publishTime>11/25/2022 18:35:31</publishTime>
+    </File>
+    <File Include="frmDLC.aspx">
+      <publishTime>11/25/2022 18:35:31</publishTime>
+    </File>
+    <File Include="frmForgotPassword.aspx">
+      <publishTime>11/25/2022 18:35:31</publishTime>
+    </File>
+    <File Include="frmGenerateLink.aspx">
+      <publishTime>11/25/2022 18:35:31</publishTime>
+    </File>
+    <File Include="frmImageViewer.aspx">
+      <publishTime>11/25/2022 18:35:31</publishTime>
+    </File>
+    <File Include="frmMailBox.aspx">
+      <publishTime>11/25/2022 18:35:31</publishTime>
+    </File>
+    <File Include="frmMailMessage.aspx">
+      <publishTime>11/25/2022 18:35:31</publishTime>
+    </File>
+    <File Include="frmOnlineDocuments.aspx">
+      <publishTime>11/25/2022 18:35:31</publishTime>
+    </File>
+    <File Include="frmPrintPDF.aspx">
+      <publishTime>11/25/2022 18:35:31</publishTime>
+    </File>
+    <File Include="frmSendHealthRecord.aspx">
+      <publishTime>11/25/2022 18:35:31</publishTime>
+    </File>
+    <File Include="frmSessionExpired.aspx">
+      <publishTime>11/25/2022 18:35:31</publishTime>
+    </File>
+    <File Include="frmSummaryOfCare.aspx">
+      <publishTime>11/25/2022 18:35:31</publishTime>
+    </File>
+    <File Include="frmValidationArea.aspx">
+      <publishTime>11/25/2022 18:35:31</publishTime>
+    </File>
+    <File Include="frmViewResult.aspx">
+      <publishTime>11/25/2022 18:35:31</publishTime>
+    </File>
+    <File Include="Global.asax">
+      <publishTime>11/25/2022 18:35:31</publishTime>
+    </File>
+    <File Include="JScripts/bootstrap.min.js">
+      <publishTime>11/25/2022 18:35:31</publishTime>
+    </File>
+    <File Include="JScripts/jquery-1.11.3.min.js">
+      <publishTime>11/25/2022 18:35:31</publishTime>
+    </File>
+    <File Include="JScripts/jquery-2.1.3.js">
+      <publishTime>11/25/2022 18:35:31</publishTime>
+    </File>
+    <File Include="JScripts/jquery-2.2.3.js">
+      <publishTime>11/25/2022 18:35:31</publishTime>
+    </File>
+    <File Include="JScripts/jquery-ui.js">
+      <publishTime>11/25/2022 18:35:31</publishTime>
+    </File>
+    <File Include="JScripts/jquery-ui.min1.10.2.js">
+      <publishTime>11/25/2022 18:35:31</publishTime>
+    </File>
+    <File Include="JScripts/jquery.datetimepicker.js">
+      <publishTime>11/25/2022 18:35:31</publishTime>
+    </File>
+    <File Include="JScripts/JSAvoidRightClick.js">
+      <publishTime>11/25/2022 18:35:31</publishTime>
+    </File>
+    <File Include="JScripts/jsBulkAccess.js">
+      <publishTime>11/25/2022 18:35:31</publishTime>
+    </File>
+    <File Include="JScripts/JSClinicalSummary.js">
+      <publishTime>11/25/2022 18:35:31</publishTime>
+    </File>
+    <File Include="JScripts/JSCustomDLC.js">
+      <publishTime>11/25/2022 18:35:31</publishTime>
+    </File>
+    <File Include="JScripts/JSErrorMessage.js">
+      <publishTime>11/25/2022 18:35:31</publishTime>
+    </File>
+    <File Include="JScripts/JSImageViewer.js">
+      <publishTime>11/25/2022 18:35:31</publishTime>
+    </File>
+    <File Include="JScripts/JSMailBox.js">
+      <publishTime>11/25/2022 18:35:31</publishTime>
+    </File>
+    <File Include="JScripts/JSMessage.js">
+      <publishTime>11/25/2022 18:35:31</publishTime>
+    </File>
+    <File Include="JScripts/JSModalWindow.js">
+      <publishTime>11/25/2022 18:35:31</publishTime>
+    </File>
+    <File Include="JScripts/JSOnlineDocuments.js">
+      <publishTime>11/25/2022 18:35:31</publishTime>
+    </File>
+    <File Include="JScripts/JSPatientPortal.js">
+      <publishTime>11/25/2022 18:35:31</publishTime>
+    </File>
+    <File Include="JScripts/JSPrintPDF.js">
+      <publishTime>11/25/2022 18:35:31</publishTime>
+    </File>
+    <File Include="JScripts/JSValidationArea.js">
+      <publishTime>11/25/2022 18:35:31</publishTime>
+    </File>
+    <File Include="JScripts/Lazyload.js">
+      <publishTime>11/25/2022 18:35:31</publishTime>
+    </File>
+    <File Include="JScripts/metro.js">
+      <publishTime>11/25/2022 18:35:31</publishTime>
+    </File>
+    <File Include="JScripts/tooltip.min.js">
+      <publishTime>11/25/2022 18:35:31</publishTime>
+    </File>
+    <File Include="Properties/PublishProfiles/FolderProfile.pubxml.user">
+      <publishTime>11/25/2022 18:37:37</publishTime>
+    </File>
+    <File Include="SampleXML/Allergies_Nullflavor.xml">
+      <publishTime>11/25/2022 18:35:31</publishTime>
+    </File>
+    <File Include="SampleXML/AllergyEntry.txt">
+      <publishTime>11/25/2022 18:35:31</publishTime>
+    </File>
+    <File Include="SampleXML/AllergytoEggs.xml">
+      <publishTime>11/25/2022 18:35:31</publishTime>
+    </File>
+    <File Include="SampleXML/Allergy_Entry.xml">
+      <publishTime>11/25/2022 18:35:31</publishTime>
+    </File>
+    <File Include="SampleXML/Bilateral_Mastectomy.xml">
+      <publishTime>11/25/2022 18:35:31</publishTime>
+    </File>
+    <File Include="SampleXML/BMI_CDT_Stage3_CAT1.xml">
+      <publishTime>11/25/2022 18:35:31</publishTime>
+    </File>
+    <File Include="SampleXML/CarePlan.xml">
+      <publishTime>11/25/2022 18:35:31</publishTime>
+    </File>
+    <File Include="SampleXML/Care_Plan_Sample.xml">
+      <publishTime>11/25/2022 18:37:37</publishTime>
+    </File>
+    <File Include="SampleXML/CatIII_Stage3_Measeure_Header_count.xml">
+      <publishTime>11/25/2022 18:35:31</publishTime>
+    </File>
+    <File Include="SampleXML/CCD_Sample.xml">
+      <publishTime>11/25/2022 18:37:37</publishTime>
+    </File>
+    <File Include="SampleXML/CCR.xsl">
+      <publishTime>11/25/2022 18:35:31</publishTime>
+    </File>
+    <File Include="SampleXML/CDA.xsl">
+      <publishTime>11/25/2022 18:35:31</publishTime>
+    </File>
+    <File Include="SampleXML/CDA_original.xsl">
+      <publishTime>11/25/2022 18:35:31</publishTime>
+    </File>
+    <File Include="SampleXML/ClinicalInstruction.txt">
+      <publishTime>11/25/2022 18:35:31</publishTime>
+    </File>
+    <File Include="SampleXML/CMS122Stage3_Header.xml">
+      <publishTime>11/25/2022 18:35:31</publishTime>
+    </File>
+    <File Include="SampleXML/CMS125Stage3_Header.xml">
+      <publishTime>11/25/2022 18:35:31</publishTime>
+    </File>
+    <File Include="SampleXML/CMS127Stage3_Header.xml">
+      <publishTime>11/25/2022 18:35:31</publishTime>
+    </File>
+    <File Include="SampleXML/CMS127v1_Header.xml">
+      <publishTime>11/25/2022 18:35:31</publishTime>
+    </File>
+    <File Include="SampleXML/CMS138Stage3_Header.xml">
+      <publishTime>11/25/2022 18:35:31</publishTime>
+    </File>
+    <File Include="SampleXML/CMS138v1_Header.xml">
+      <publishTime>11/25/2022 18:35:31</publishTime>
+    </File>
+    <File Include="SampleXML/CMS138v5_stage3_Assertion.xml">
+      <publishTime>11/25/2022 18:35:31</publishTime>
+    </File>
+    <File Include="SampleXML/CMS138v5_stage3_I.xml">
+      <publishTime>11/25/2022 18:35:31</publishTime>
+    </File>
+    <File Include="SampleXML/CMS138v5_stage3_Loinc.xml">
+      <publishTime>11/25/2022 18:35:31</publishTime>
+    </File>
+    <File Include="SampleXML/CMS138v5_stage3_MedicationOrder.xml">
+      <publishTime>11/25/2022 18:35:31</publishTime>
+    </File>
+    <File Include="SampleXML/CMS138v5_stage3_MedicationOrder_I.xml">
+      <publishTime>11/25/2022 18:35:31</publishTime>
+    </File>
+    <File Include="SampleXML/CMS138v5_stage3_Nullflavor.xml">
+      <publishTime>11/25/2022 18:35:31</publishTime>
+    </File>
+    <File Include="SampleXML/CMS138v5_stage3_patientDead.xml">
+      <publishTime>11/25/2022 18:35:31</publishTime>
+    </File>
+    <File Include="SampleXML/CMS138v5_stage3_ProblemConcern.xml">
+      <publishTime>11/25/2022 18:35:31</publishTime>
+    </File>
+    <File Include="SampleXML/CMS138v5_stage3_procActivity.xml">
+      <publishTime>11/25/2022 18:35:31</publishTime>
+    </File>
+    <File Include="SampleXML/CMS147Stage3_Header.xml">
+      <publishTime>11/25/2022 18:35:31</publishTime>
+    </File>
+    <File Include="SampleXML/CMS148v1_Header.xml">
+      <publishTime>11/25/2022 18:35:31</publishTime>
+    </File>
+    <File Include="SampleXML/CMS155v1_Header.xml">
+      <publishTime>11/25/2022 18:35:31</publishTime>
+    </File>
+    <File Include="SampleXML/CMS165stage3_Header.xml">
+      <publishTime>11/25/2022 18:35:31</publishTime>
+    </File>
+    <File Include="SampleXML/CMS165v1_Header.xml">
+      <publishTime>11/25/2022 18:35:31</publishTime>
+    </File>
+    <File Include="SampleXML/CMS22Stage3_Header.xml">
+      <publishTime>11/25/2022 18:35:31</publishTime>
+    </File>
+    <File Include="SampleXML/CMS22_Medication_cat1_Stage3.xml">
+      <publishTime>11/25/2022 18:35:31</publishTime>
+    </File>
+    <File Include="SampleXML/CMS65v2_Header.xml">
+      <publishTime>11/25/2022 18:35:31</publishTime>
+    </File>
+    <File Include="SampleXML/CMS68v2_Header.xml">
+      <publishTime>11/25/2022 18:35:31</publishTime>
+    </File>
+    <File Include="SampleXML/CMS68v6Stage3_Header.xml">
+      <publishTime>11/25/2022 18:35:31</publishTime>
+    </File>
+    <File Include="SampleXML/CMS69Stage3_Header.xml">
+      <publishTime>11/25/2022 18:35:31</publishTime>
+    </File>
+    <File Include="SampleXML/CMS69v1_Header.xml">
+      <publishTime>11/25/2022 18:35:31</publishTime>
+    </File>
+    <File Include="SampleXML/CMS69v5_stage3_I.xml">
+      <publishTime>11/25/2022 18:35:31</publishTime>
+    </File>
+    <File Include="SampleXML/CMS69v5_stage3_LoincBMI.xml">
+      <publishTime>11/25/2022 18:35:31</publishTime>
+    </File>
+    <File Include="SampleXML/CMS69v5_stage3_MedOrder.xml">
+      <publishTime>11/25/2022 18:35:31</publishTime>
+    </File>
+    <File Include="SampleXML/CMS69v5_stage3_MedOrderNA.xml">
+      <publishTime>11/25/2022 18:35:31</publishTime>
+    </File>
+    <File Include="SampleXML/CMS69v5_stage3_NullFlvr.xml">
+      <publishTime>11/25/2022 18:35:31</publishTime>
+    </File>
+    <File Include="SampleXML/CMS69v5_stage3_PlanfCareNA.xml">
+      <publishTime>11/25/2022 18:35:31</publishTime>
+    </File>
+    <File Include="SampleXML/CMS69v5_stage3_ProblemConcern.xml">
+      <publishTime>11/25/2022 18:35:31</publishTime>
+    </File>
+    <File Include="SampleXML/CMS69v5_stage3_ProcActivityNA.xml">
+      <publishTime>11/25/2022 18:35:31</publishTime>
+    </File>
+    <File Include="SampleXML/CMS69v5_stage3_Snomed.xml">
+      <publishTime>11/25/2022 18:35:31</publishTime>
+    </File>
+    <File Include="SampleXML/CMS75v1_Header.xml">
+      <publishTime>11/25/2022 18:35:31</publishTime>
+    </File>
+    <File Include="SampleXML/CognitiveFunction.xml">
+      <publishTime>11/25/2022 18:35:31</publishTime>
+    </File>
+    <File Include="SampleXML/CognitiveFunction_DP.xml">
+      <publishTime>11/25/2022 18:35:31</publishTime>
+    </File>
+    <File Include="SampleXML/Communication147.xml">
+      <publishTime>11/25/2022 18:35:31</publishTime>
+    </File>
+    <File Include="SampleXML/ControllingBP_Gcode_Cat1_Stage3.xml">
+      <publishTime>11/25/2022 18:35:31</publishTime>
+    </File>
+    <File Include="SampleXML/ControllingBP_Kidney_Edu_Cat1_Stage3.xml">
+      <publishTime>11/25/2022 18:35:31</publishTime>
+    </File>
+    <File Include="SampleXML/Controlling_BP_Snomed_CAT_I_Stage3.xml">
+      <publishTime>11/25/2022 18:35:31</publishTime>
+    </File>
+    <File Include="SampleXML/Controlling_BP_Snomed_Visit_CAT1_Stage3.xml">
+      <publishTime>11/25/2022 18:35:31</publishTime>
+    </File>
+    <File Include="SampleXML/Controlling_HP_Kidney_Cat1_Stage3.xml">
+      <publishTime>11/25/2022 18:35:31</publishTime>
+    </File>
+    <File Include="SampleXML/CurrentMedication_Reviewed_Cat1_Stage3.xml">
+      <publishTime>11/25/2022 18:35:31</publishTime>
+    </File>
+    <File Include="SampleXML/CurrentMedication_VisitCode_Cat1_Stage3.xml">
+      <publishTime>11/25/2022 18:35:31</publishTime>
+    </File>
+    <File Include="SampleXML/CurrentMedication_Visit_Cat1_Stage3.xml">
+      <publishTime>11/25/2022 18:35:31</publishTime>
+    </File>
+    <File Include="SampleXML/Current_Medications_CAT_I_Stage3.xml">
+      <publishTime>11/25/2022 18:35:31</publishTime>
+    </File>
+    <File Include="SampleXML/Current_Medications_CAT_I_Stage3_I.xml">
+      <publishTime>11/25/2022 18:35:31</publishTime>
+    </File>
+    <File Include="SampleXML/Current_Medications_CAT_I_Stage3_II_NullFlvr.xml">
+      <publishTime>11/25/2022 18:35:31</publishTime>
+    </File>
+    <File Include="SampleXML/Current_Smoker.xml">
+      <publishTime>11/25/2022 18:35:31</publishTime>
+    </File>
+    <File Include="SampleXML/Denominator.xml">
+      <publishTime>11/25/2022 18:35:31</publishTime>
+    </File>
+    <File Include="SampleXML/DenominatorStage3.xml">
+      <publishTime>11/25/2022 18:35:31</publishTime>
+    </File>
+    <File Include="SampleXML/Denominator_Exception.xml">
+      <publishTime>11/25/2022 18:35:31</publishTime>
+    </File>
+    <File Include="SampleXML/Denominator_ExceptionStage3.xml">
+      <publishTime>11/25/2022 18:35:31</publishTime>
+    </File>
+    <File Include="SampleXML/Denominator_Exclusion.xml">
+      <publishTime>11/25/2022 18:35:31</publishTime>
+    </File>
+    <File Include="SampleXML/Denominator_ExclusionStage3.xml">
+      <publishTime>11/25/2022 18:35:31</publishTime>
+    </File>
+    <File Include="SampleXML/DiabetesHba1c.xml">
+      <publishTime>11/25/2022 18:35:31</publishTime>
+    </File>
+    <File Include="SampleXML/EhinicityStage3.xml">
+      <publishTime>11/25/2022 18:35:31</publishTime>
+    </File>
+    <File Include="SampleXML/Encounter.xml">
+      <publishTime>11/25/2022 18:35:31</publishTime>
+    </File>
+    <File Include="SampleXML/Encounter147.xml">
+      <publishTime>11/25/2022 18:35:31</publishTime>
+    </File>
+    <File Include="SampleXML/Encounter22.xml">
+      <publishTime>11/25/2022 18:35:31</publishTime>
+    </File>
+    <File Include="SampleXML/EncounterDiagnosis.xml">
+      <publishTime>11/25/2022 18:35:31</publishTime>
+    </File>
+    <File Include="SampleXML/Encounter_69.xml">
+      <publishTime>11/25/2022 18:35:31</publishTime>
+    </File>
+    <File Include="SampleXML/Encounter_Section_CAT_I.xml">
+      <publishTime>11/25/2022 18:35:31</publishTime>
+    </File>
+    <File Include="SampleXML/Encounter_Section_CAT_I_Stage3.xml">
+      <publishTime>11/25/2022 18:35:31</publishTime>
+    </File>
+    <File Include="SampleXML/Encounter_Section_Mammogram.xml">
+      <publishTime>11/25/2022 18:35:31</publishTime>
+    </File>
+    <File Include="SampleXML/Encounter_Section_Mammogram.xml.xml">
+      <publishTime>11/25/2022 18:35:31</publishTime>
+    </File>
+    <File Include="SampleXML/Ethinicity_Supplement.xml">
+      <publishTime>11/25/2022 18:35:31</publishTime>
+    </File>
+    <File Include="SampleXML/FacetoFace.xml">
+      <publishTime>11/25/2022 18:35:31</publishTime>
+    </File>
+    <File Include="SampleXML/FindAndReplace.ascx">
+      <publishTime>11/25/2022 18:35:31</publishTime>
+    </File>
+    <File Include="SampleXML/FunctionalStatus.xml">
+      <publishTime>11/25/2022 18:35:31</publishTime>
+    </File>
+    <File Include="SampleXML/Goals.xml">
+      <publishTime>11/25/2022 18:35:31</publishTime>
+    </File>
+    <File Include="SampleXML/Goal_Section.xml">
+      <publishTime>11/25/2022 18:35:31</publishTime>
+    </File>
+    <File Include="SampleXML/Hba1cSnomed.xml">
+      <publishTime>11/25/2022 18:35:31</publishTime>
+    </File>
+    <File Include="SampleXML/hbalcwithoutnegnation.xml">
+      <publishTime>11/25/2022 18:35:31</publishTime>
+    </File>
+    <File Include="SampleXML/HealthConcern.xml">
+      <publishTime>11/25/2022 18:35:31</publishTime>
+    </File>
+    <File Include="SampleXML/HealthConcern_Careplan.xml">
+      <publishTime>11/25/2022 18:35:31</publishTime>
+    </File>
+    <File Include="SampleXML/Health_Status_Evaluation.xml">
+      <publishTime>11/25/2022 18:37:37</publishTime>
+    </File>
+    <File Include="SampleXML/Health_Status_Evaluation_Last_Entry_Section.xml">
+      <publishTime>11/25/2022 18:35:31</publishTime>
+    </File>
+    <File Include="SampleXML/Hemodialysis.xml">
+      <publishTime>11/25/2022 18:35:31</publishTime>
+    </File>
+    <File Include="SampleXML/Hemodialysis2.xml">
+      <publishTime>11/25/2022 18:35:31</publishTime>
+    </File>
+    <File Include="SampleXML/HighBPI10.xml">
+      <publishTime>11/25/2022 18:35:31</publishTime>
+    </File>
+    <File Include="SampleXML/Historyofbilateralmastectomy.xml">
+      <publishTime>11/25/2022 18:35:31</publishTime>
+    </File>
+    <File Include="SampleXML/HP_BP_NotPerformed_Cat1_Stage3.xml">
+      <publishTime>11/25/2022 18:35:31</publishTime>
+    </File>
+    <File Include="SampleXML/HP_Exception_Cat1_Stage3.xml">
+      <publishTime>11/25/2022 18:35:31</publishTime>
+    </File>
+    <File Include="SampleXML/HP_Exception_Snomed_Cat1_Stage3.xml">
+      <publishTime>11/25/2022 18:35:31</publishTime>
+    </File>
+    <File Include="SampleXML/HP_FollowpSnomed_Cat1_Stage3.xml">
+      <publishTime>11/25/2022 18:35:31</publishTime>
+    </File>
+    <File Include="SampleXML/HP_Reason_Cat1_Stage3.xml">
+      <publishTime>11/25/2022 18:35:31</publishTime>
+    </File>
+    <File Include="SampleXML/HP_SnomedCodeVisit_Cat1_Stage3.xml">
+      <publishTime>11/25/2022 18:35:31</publishTime>
+    </File>
+    <File Include="SampleXML/HP_SnomedCode_Cat1_Stage3.xml">
+      <publishTime>11/25/2022 18:35:31</publishTime>
+    </File>
+    <File Include="SampleXML/ICD_influenza.xml">
+      <publishTime>11/25/2022 18:35:31</publishTime>
+    </File>
+    <File Include="SampleXML/Immunization.txt">
+      <publishTime>11/25/2022 18:35:31</publishTime>
+    </File>
+    <File Include="SampleXML/Immunization.xml">
+      <publishTime>11/25/2022 18:35:31</publishTime>
+    </File>
+    <File Include="SampleXML/Implant.xml">
+      <publishTime>11/25/2022 18:35:31</publishTime>
+    </File>
+    <File Include="SampleXML/Influenza.xml">
+      <publishTime>11/25/2022 18:35:31</publishTime>
+    </File>
+    <File Include="SampleXML/InfluenzaAllergy.xml">
+      <publishTime>11/25/2022 18:35:31</publishTime>
+    </File>
+    <File Include="SampleXML/Influenzafavour.xml">
+      <publishTime>11/25/2022 18:35:31</publishTime>
+    </File>
+    <File Include="SampleXML/InfluenzaNotNull.xml">
+      <publishTime>11/25/2022 18:35:31</publishTime>
+    </File>
+    <File Include="SampleXML/InfluenzaSnomedCAT1.xml">
+      <publishTime>11/25/2022 18:35:31</publishTime>
+    </File>
+    <File Include="SampleXML/Influenza_CVX_Cat1_Stage3.xml">
+      <publishTime>11/25/2022 18:35:31</publishTime>
+    </File>
+    <File Include="SampleXML/Influenza_encounter.xml">
+      <publishTime>11/25/2022 18:35:31</publishTime>
+    </File>
+    <File Include="SampleXML/Instructions.xml">
+      <publishTime>11/25/2022 18:35:31</publishTime>
+    </File>
+    <File Include="SampleXML/Intervention.xml">
+      <publishTime>11/25/2022 18:35:31</publishTime>
+    </File>
+    <File Include="SampleXML/IPP.xml">
+      <publishTime>11/25/2022 18:35:31</publishTime>
+    </File>
+    <File Include="SampleXML/IPPStage3.xml">
+      <publishTime>11/25/2022 18:35:31</publishTime>
+    </File>
+    <File Include="SampleXML/LeftMastectomy.xml">
+      <publishTime>11/25/2022 18:35:31</publishTime>
+    </File>
+    <File Include="SampleXML/MammogramLoinc.xml">
+      <publishTime>11/25/2022 18:35:31</publishTime>
+    </File>
+    <File Include="SampleXML/MammogramLoinc1.xml">
+      <publishTime>11/25/2022 18:35:31</publishTime>
+    </File>
+    <File Include="SampleXML/MammogramLoinc2.xml">
+      <publishTime>11/25/2022 18:35:31</publishTime>
+    </File>
+    <File Include="SampleXML/Medication.xml">
+      <publishTime>11/25/2022 18:35:31</publishTime>
+    </File>
+    <File Include="SampleXML/MedicationAdministration.xml">
+      <publishTime>11/25/2022 18:35:31</publishTime>
+    </File>
+    <File Include="SampleXML/MedicationEntry.txt">
+      <publishTime>11/25/2022 18:35:31</publishTime>
+    </File>
+    <File Include="SampleXML/Medication_Admin_Pneu_Vac.xml">
+      <publishTime>11/25/2022 18:35:31</publishTime>
+    </File>
+    <File Include="SampleXML/Medication_Admin_Pneu_Vac_Stage3.xml">
+      <publishTime>11/25/2022 18:35:31</publishTime>
+    </File>
+    <File Include="SampleXML/MentalStatus.xml">
+      <publishTime>11/25/2022 18:35:31</publishTime>
+    </File>
+    <File Include="SampleXML/Numerator.xml">
+      <publishTime>11/25/2022 18:35:31</publishTime>
+    </File>
+    <File Include="SampleXML/NumeratorStage3.xml">
+      <publishTime>11/25/2022 18:35:31</publishTime>
+    </File>
+    <File Include="SampleXML/OBS_BMI_Cat1_Stag3.xml">
+      <publishTime>11/25/2022 18:35:31</publishTime>
+    </File>
+    <File Include="SampleXML/OBS_BMI_Diet_CatI_Stage3.xml">
+      <publishTime>11/25/2022 18:35:31</publishTime>
+    </File>
+    <File Include="SampleXML/OBS_BMI_ICD_CATI_Stage3.xml">
+      <publishTime>11/25/2022 18:35:31</publishTime>
+    </File>
+    <File Include="SampleXML/OBS_Contoll_HBP_Exclusion_Stage3.xml">
+      <publishTime>11/25/2022 18:35:31</publishTime>
+    </File>
+    <File Include="SampleXML/OBS_controlling_BP_Stage3.xml">
+      <publishTime>11/25/2022 18:35:31</publishTime>
+    </File>
+    <File Include="SampleXML/OBS_Dental Carries.xml">
+      <publishTime>11/25/2022 18:35:31</publishTime>
+    </File>
+    <File Include="SampleXML/OBS_Diabetes.xml">
+      <publishTime>11/25/2022 18:35:31</publishTime>
+    </File>
+    <File Include="SampleXML/OBS_Diagnosis Active.xml">
+      <publishTime>11/25/2022 18:35:31</publishTime>
+    </File>
+    <File Include="SampleXML/OBS_HB1AC_CMS_122_Stage3.xml">
+      <publishTime>11/25/2022 18:35:31</publishTime>
+    </File>
+    <File Include="SampleXML/OBS_HB1AC_LOINC_STAGE3.xml">
+      <publishTime>11/25/2022 18:35:31</publishTime>
+    </File>
+    <File Include="SampleXML/OBS_HBP_Followup_CMS22_Stage3.xml">
+      <publishTime>11/25/2022 18:35:31</publishTime>
+    </File>
+    <File Include="SampleXML/OBS_High_BP_Followup_Snomed_Stage3.xml">
+      <publishTime>11/25/2022 18:35:31</publishTime>
+    </File>
+    <File Include="SampleXML/OBS_Influenza_CatI_Stage3.xml">
+      <publishTime>11/25/2022 18:35:31</publishTime>
+    </File>
+    <File Include="SampleXML/OBS_Lab result.xml">
+      <publishTime>11/25/2022 18:35:31</publishTime>
+    </File>
+    <File Include="SampleXML/OBS_Phy Exam_Finding_BMI.xml">
+      <publishTime>11/25/2022 18:35:31</publishTime>
+    </File>
+    <File Include="SampleXML/OBS_Physical Exam_Finding_BP_Diastolic.xml">
+      <publishTime>11/25/2022 18:35:31</publishTime>
+    </File>
+    <File Include="SampleXML/OBS_Physical Exam_Finding_BP_Systolic.xml">
+      <publishTime>11/25/2022 18:35:31</publishTime>
+    </File>
+    <File Include="SampleXML/OBS_PREGNANCY.xml">
+      <publishTime>11/25/2022 18:35:31</publishTime>
+    </File>
+    <File Include="SampleXML/OBS_PREGNANCY_DX.xml">
+      <publishTime>11/25/2022 18:35:31</publishTime>
+    </File>
+    <File Include="SampleXML/OBS_Tobacco use.xml">
+      <publishTime>11/25/2022 18:35:31</publishTime>
+    </File>
+    <File Include="SampleXML/PatientTransfer.xml">
+      <publishTime>11/25/2022 18:35:31</publishTime>
+    </File>
+    <File Include="SampleXML/Payer_Stage3.xml">
+      <publishTime>11/25/2022 18:35:31</publishTime>
+    </File>
+    <File Include="SampleXML/Payer_Supplement.xml">
+      <publishTime>11/25/2022 18:35:31</publishTime>
+    </File>
+    <File Include="SampleXML/Plan.xml">
+      <publishTime>11/25/2022 18:35:31</publishTime>
+    </File>
+    <File Include="SampleXML/PreviousRec.xml">
+      <publishTime>11/25/2022 18:35:31</publishTime>
+    </File>
+    <File Include="SampleXML/Problem.xml">
+      <publishTime>11/25/2022 18:35:31</publishTime>
+    </File>
+    <File Include="SampleXML/ProblemEntry.txt">
+      <publishTime>11/25/2022 18:35:31</publishTime>
+    </File>
+    <File Include="SampleXML/ProblemlistNullflavor.xml">
+      <publishTime>11/25/2022 18:35:31</publishTime>
+    </File>
+    <File Include="SampleXML/Procedure Performed _current med_documented.xml">
+      <publishTime>11/25/2022 18:35:31</publishTime>
+    </File>
+    <File Include="SampleXML/ProcedureEntry.txt">
+      <publishTime>11/25/2022 18:35:31</publishTime>
+    </File>
+    <File Include="SampleXML/ProcedurePerformed.xml">
+      <publishTime>11/25/2022 18:35:31</publishTime>
+    </File>
+    <File Include="SampleXML/Procedures.xml">
+      <publishTime>11/25/2022 18:35:31</publishTime>
+    </File>
+    <File Include="SampleXML/Procedure_Activity_Act.xml">
+      <publishTime>11/25/2022 18:35:31</publishTime>
+    </File>
+    <File Include="SampleXML/QRDAStage3_CAT_III_Header.xml">
+      <publishTime>11/25/2022 18:35:31</publishTime>
+    </File>
+    <File Include="SampleXML/QRDA_CAT_III_Header.xml">
+      <publishTime>11/25/2022 18:35:31</publishTime>
+    </File>
+    <File Include="SampleXML/QRDA_CAT_III_Header_Old.xml">
+      <publishTime>11/25/2022 18:35:31</publishTime>
+    </File>
+    <File Include="SampleXML/Race_Stage3.xml">
+      <publishTime>11/25/2022 18:35:31</publishTime>
+    </File>
+    <File Include="SampleXML/Race_Supplement.xml">
+      <publishTime>11/25/2022 18:35:31</publishTime>
+    </File>
+    <File Include="SampleXML/ReasonforReferral.xml">
+      <publishTime>11/25/2022 18:35:31</publishTime>
+    </File>
+    <File Include="SampleXML/ReasonForVisit.txt">
+      <publishTime>11/25/2022 18:35:31</publishTime>
+    </File>
+    <File Include="SampleXML/Reference_Obs.xml">
+      <publishTime>11/25/2022 18:35:31</publishTime>
+    </File>
+    <File Include="SampleXML/Refusednegation.xml">
+      <publishTime>11/25/2022 18:35:31</publishTime>
+    </File>
+    <File Include="SampleXML/Refused_Influenza.xml">
+      <publishTime>11/25/2022 18:35:31</publishTime>
+    </File>
+    <File Include="SampleXML/Refused_medical_reason.xml">
+      <publishTime>11/25/2022 18:35:31</publishTime>
+    </File>
+    <File Include="SampleXML/Reporting Stratum.xml">
+      <publishTime>11/25/2022 18:35:31</publishTime>
+    </File>
+    <File Include="SampleXML/Reporting Stratum1.xml">
+      <publishTime>11/25/2022 18:35:31</publishTime>
+    </File>
+    <File Include="SampleXML/Result.xml">
+      <publishTime>11/25/2022 18:35:31</publishTime>
+    </File>
+    <File Include="SampleXML/ResultEntry.txt">
+      <publishTime>11/25/2022 18:35:31</publishTime>
+    </File>
+    <File Include="SampleXML/RightMastectomy.xml">
+      <publishTime>11/25/2022 18:35:31</publishTime>
+    </File>
+    <File Include="SampleXML/RiskCategory.xml">
+      <publishTime>11/25/2022 18:35:31</publishTime>
+    </File>
+    <File Include="SampleXML/Sex_Supplement.xml">
+      <publishTime>11/25/2022 18:35:31</publishTime>
+    </File>
+    <File Include="SampleXML/Sex_Supplement_Stage3.xml">
+      <publishTime>11/25/2022 18:35:31</publishTime>
+    </File>
+    <File Include="SampleXML/SocialHistory.txt">
+      <publishTime>11/25/2022 18:35:31</publishTime>
+    </File>
+    <File Include="SampleXML/SocialHistory.xml">
+      <publishTime>11/25/2022 18:35:31</publishTime>
+    </File>
+    <File Include="SampleXML/SocialHistoryTobacco.xml">
+      <publishTime>11/25/2022 18:35:31</publishTime>
+    </File>
+    <File Include="SampleXML/staticlookup.xml">
+      <publishTime>11/25/2022 18:35:31</publishTime>
+    </File>
+    <File Include="SampleXML/Substance administration.xml">
+      <publishTime>11/25/2022 18:35:31</publishTime>
+    </File>
+    <File Include="SampleXML/Surgery.xml">
+      <publishTime>11/25/2022 18:35:31</publishTime>
+    </File>
+    <File Include="SampleXML/Test.txt">
+      <publishTime>11/25/2022 18:35:31</publishTime>
+    </File>
+    <File Include="SampleXML/Test1.txt">
+      <publishTime>11/25/2022 18:35:31</publishTime>
+    </File>
+    <File Include="SampleXML/Tobbacco.xml">
+      <publishTime>11/25/2022 18:35:31</publishTime>
+    </File>
+    <File Include="SampleXML/TreatmentPlan.xml">
+      <publishTime>11/25/2022 18:35:31</publishTime>
+    </File>
+    <File Include="SampleXML/Unilateral_Mastectomy.xml">
+      <publishTime>11/25/2022 18:35:31</publishTime>
+    </File>
+    <File Include="SampleXML/UnspecifiedLateralityMas.xml">
+      <publishTime>11/25/2022 18:35:31</publishTime>
+    </File>
+    <File Include="SampleXML/Vitals.txt">
+      <publishTime>11/25/2022 18:35:31</publishTime>
+    </File>
+    <File Include="SampleXML/VitalSign.xml">
+      <publishTime>11/25/2022 18:35:31</publishTime>
+    </File>
+    <File Include="SampleXML/XML Master Template.xml">
+      <publishTime>11/25/2022 18:35:31</publishTime>
+    </File>
+    <File Include="SampleXML/XML Master Template_Stage3Measure.xml">
+      <publishTime>11/25/2022 18:35:31</publishTime>
+    </File>
+    <File Include="Service References/PatientPortalServiceReference/configuration.svcinfo">
+      <publishTime>11/25/2022 18:35:31</publishTime>
+    </File>
+    <File Include="Service References/PatientPortalServiceReference/configuration91.svcinfo">
+      <publishTime>11/25/2022 18:35:31</publishTime>
+    </File>
+    <File Include="Service References/PatientPortalServiceReference/PatientPortalWebService.disco">
+      <publishTime>11/25/2022 18:35:31</publishTime>
+    </File>
+    <File Include="Service References/PatientPortalServiceReference/Reference.svcmap">
+      <publishTime>11/25/2022 18:35:31</publishTime>
+    </File>
+    <File Include="UserControls/CustomDLC.ascx">
+      <publishTime>11/25/2022 18:35:31</publishTime>
+    </File>
+    <File Include="UserControls/CustomDLCNew.ascx">
+      <publishTime>11/25/2022 18:35:31</publishTime>
+    </File>
+    <File Include="UserControls/CustomPhrases.ascx">
+      <publishTime>11/25/2022 18:35:31</publishTime>
+    </File>
+    <File Include="Viewimg.aspx">
+      <publishTime>11/25/2022 18:35:31</publishTime>
+    </File>
+    <File Include="webfrmBulkAccess.aspx">
+      <publishTime>11/25/2022 18:35:31</publishTime>
+    </File>
+    <File Include="webfrmLogin.aspx">
+      <publishTime>11/25/2022 18:35:31</publishTime>
+    </File>
+    <File Include="webfrmLogout.aspx">
+      <publishTime>11/25/2022 18:35:31</publishTime>
+    </File>
+    <File Include="webfrmPatientPortal.aspx">
+      <publishTime>11/25/2022 18:37:39</publishTime>
+    </File>
+    <File Include="webfrmRegistration.aspx">
+      <publishTime>11/25/2022 18:35:31</publishTime>
+    </File>
+    <File Include="WebServices/PatientPortalWebService.asmx">
+      <publishTime>11/25/2022 18:35:31</publishTime>
+    </File>
+  </ItemGroup>
 </Project>

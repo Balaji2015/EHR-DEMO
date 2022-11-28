@@ -63,11 +63,6 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>bin\Iesi.Collections.dll</HintPath>
     </Reference>
-    <Reference Include="Interop.Microsoft.Office.Interop.Word, Version=8.4.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <EmbedInteropTypes>True</EmbedInteropTypes>
-      <HintPath>bin\Interop.Microsoft.Office.Interop.Word.dll</HintPath>
-    </Reference>
     <Reference Include="Ionic.Zip.Reduced, Version=1.9.1.8, Culture=neutral, PublicKeyToken=edbe51ad942a3f5c, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>bin\Ionic.Zip.Reduced.dll</HintPath>
@@ -88,6 +83,10 @@
       <SpecificVersion>False</SpecificVersion>
       <EmbedInteropTypes>True</EmbedInteropTypes>
       <HintPath>bin\Microsoft.Office.Interop.Excel.dll</HintPath>
+    </Reference>
+    <Reference Include="mysql.data, Version=8.0.24.0, Culture=neutral, PublicKeyToken=c5687fc88969c44d, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\Application Access - Sample\Application Access - Sample\bin\Debug\mysql.data.dll</HintPath>
     </Reference>
     <Reference Include="Newtonsoft.Json, Version=6.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>

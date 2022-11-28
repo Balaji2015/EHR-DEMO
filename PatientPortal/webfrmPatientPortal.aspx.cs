@@ -48,7 +48,10 @@ namespace Acurus.Capella.PatientPortal
             string PDFPath = string.Empty;
             string XMlPath = string.Empty;
             string sFilePathPDF = string.Empty;
+            string sCCDPath = string.Empty;
             var filepath = string.Empty;
+            string SplitPath = string.Empty;
+            string sSPlitStatus = string.Empty;
             ArrayList FilePath = new ArrayList();
             //   hdnEncounterId.Value = cboEncounter.SelectedValue;
             //var xDox = new XDocument();
@@ -57,62 +60,79 @@ namespace Acurus.Capella.PatientPortal
             //path = objWellnessNotes.PrintWellnessNotes(Convert.ToUInt32(cboEncounter.SelectedValue), Convert.ToUInt64(Request.QueryString["PatientID"]), true, ref sMyPath, "", false, fileManageExistList1);
             if ((encounter_id != null && encounter_id != ""))
             {
-                FilePath = objClinicalSummary.PrintClinicalSummary(Convert.ToUInt32(encounter_id), ClientSession.HumanId, false, ref sMyPath, "", true, true);
-                sFilePathPDF = objSummaryofCare.PrintPDF(FilePath[0].ToString(), "PatientPortal", DateTime.MinValue);
-                // FilePath = objClinicalSummary.ImportCCD(XOX, FilePath[0].ToString(), false, Convert.ToUInt64(Request.QueryString["PatientID"]), true);
-                //string[] Split = new string[] { Server.MapPath("") };
-                //string[] FileName = path.Split(Split, StringSplitOptions.RemoveEmptyEntries);
-                for (int i = 0; i < FilePath.Count; i++)
+                // FilePath = objClinicalSummary.PrintClinicalSummary(Convert.ToUInt32(encounter_id), ClientSession.HumanId, false, ref sMyPath, "", true, true);
+                sCCDPath = objClinicalSummary.GenerateCCD(Convert.ToUInt32(encounter_id), ClientSession.HumanId);
+                if (sCCDPath.Contains('$'))
                 {
-                    string[] Split = new string[] { System.Web.Hosting.HostingEnvironment.ApplicationPhysicalPath };
-                    string[] fileName = FilePath[i].ToString().Split(Split, StringSplitOptions.RemoveEmptyEntries);
-
-                    if (fileName[0].ToUpper().Contains(".XML"))
-                    {
-                        XMlPath = fileName[0].ToString();
-                    }
-
-                    if (fileName[0].ToUpper().Contains(".PDF"))
-                    {
-                        PDFPath = fileName[0].ToString();
-                    }
+                    SplitPath = sCCDPath.Split('$')[0];
+                    sSPlitStatus = sCCDPath.Split('$')[1].ToString();
                 }
-                if (sFilePathPDF != string.Empty)
+                FilePath.Add(SplitPath);
+                if (sSPlitStatus == "Success")
                 {
+                    sFilePathPDF = objSummaryofCare.PrintPDF(FilePath[0].ToString(), "PatientPortal", DateTime.MinValue);
+                    // FilePath = objClinicalSummary.ImportCCD(XOX, FilePath[0].ToString(), false, Convert.ToUInt64(Request.QueryString["PatientID"]), true);
+                    //string[] Split = new string[] { Server.MapPath("") };
+                    //string[] FileName = path.Split(Split, StringSplitOptions.RemoveEmptyEntries);
+                    for (int i = 0; i < FilePath.Count; i++)
+                    {
+                        string[] Split = new string[] { System.Web.Hosting.HostingEnvironment.ApplicationPhysicalPath };
+                        string[] fileName = FilePath[i].ToString().Split(Split, StringSplitOptions.RemoveEmptyEntries);
+
+                        if (fileName[0].ToUpper().Contains(".XML"))
+                        {
+                            XMlPath = fileName[0].ToString();
+                        }
+
+                        if (fileName[0].ToUpper().Contains(".PDF"))
+                        {
+                            PDFPath = fileName[0].ToString();
+                        }
+                    }
+                    if (sFilePathPDF != string.Empty)
+                    {
 
 
-                    string[] SplitPdf = new string[] { System.Web.Hosting.HostingEnvironment.ApplicationPhysicalPath };
-                    string[] FileName = sFilePathPDF.Split(SplitPdf, StringSplitOptions.RemoveEmptyEntries);
+                        string[] SplitPdf = new string[] { System.Web.Hosting.HostingEnvironment.ApplicationPhysicalPath };
+                        string[] FileName = sFilePathPDF.Split(SplitPdf, StringSplitOptions.RemoveEmptyEntries);
 
-                    PDFPath = FileName[0].ToString();
-                    // path = PDFPath;
+                        PDFPath = FileName[0].ToString();
+                        // path = PDFPath;
+                    }
+                    //  frmWord.Attributes.Add("src", "frmPrintPDF.aspx?SI=" + PDFPath + "&Location=DYNAMIC");
+                    HttpContext.Current.Session["Path"] = PDFPath;
+                    HttpContext.Current.Session["xmlPath"] = XMlPath;
+                    // Session["Path"] = PDFPath;
+                    //  Session["xmlPath"] = XMlPath;
+                    IList<ActivityLog> ActivityLogList = new List<ActivityLog>();
+                    ActivityLogManager ActivitylogMngr = new ActivityLogManager();
+                    ActivityLog activity = new ActivityLog();
+                    activity.Human_ID = Convert.ToUInt64(ClientSession.HumanId);
+                    activity.Encounter_ID = Convert.ToUInt32(encounter_id);
+                    activity.Activity_Type = "View";
+                    activity.Role = "";
+
+                    activity.Activity_Date_And_Time = System.DateTime.UtcNow;
+                    ActivityLogList.Add(activity);
+                    ActivitylogMngr.SaveActivityLogManager(ActivityLogList, string.Empty);
                 }
-                //  frmWord.Attributes.Add("src", "frmPrintPDF.aspx?SI=" + PDFPath + "&Location=DYNAMIC");
-                HttpContext.Current.Session["Path"] = PDFPath;
-                HttpContext.Current.Session["xmlPath"] = XMlPath;
-                // Session["Path"] = PDFPath;
-                //  Session["xmlPath"] = XMlPath;
-                IList<ActivityLog> ActivityLogList = new List<ActivityLog>();
-                ActivityLogManager ActivitylogMngr = new ActivityLogManager();
-                ActivityLog activity = new ActivityLog();
-                activity.Human_ID = Convert.ToUInt64(ClientSession.HumanId);
-                activity.Encounter_ID = Convert.ToUInt32(encounter_id);
-                activity.Activity_Type = "View";
-                activity.Role = "";
-
-                activity.Activity_Date_And_Time = System.DateTime.UtcNow;
-                ActivityLogList.Add(activity);
-                ActivitylogMngr.SaveActivityLogManager(ActivityLogList, string.Empty);
+                else
+                {
+                    return sSPlitStatus + "$";
+                }
+            
                 // btnSend.Attributes.Add("onclick", "return SendDocument('" + PDFPath.Replace("\\", "$$").ToString() + "," + cboEncounter.SelectedValue + "," + hdnPatientName.Value + "," + lblEmailIDActual.Text + "');");
                 //  btnSend.Enabled = true;
                 //  btnDownload.Enabled = true;
                 //imgmessage.Disabled = false;
             }
-            return PDFPath;
+
+            return "Success$"+PDFPath;
         }
 
         protected void btnShowReport_Click(object sender, EventArgs e)
-        {
+        {     
+
             string path = string.Empty;
             string sMyPath = string.Empty;
             string PDFPath = string.Empty;
@@ -126,7 +146,56 @@ namespace Acurus.Capella.PatientPortal
             //path = objWellnessNotes.PrintWellnessNotes(Convert.ToUInt32(cboEncounter.SelectedValue), Convert.ToUInt64(Request.QueryString["PatientID"]), true, ref sMyPath, "", false, fileManageExistList1);
             if ((cboEncounter.SelectedValue != null && cboEncounter.SelectedValue != "") && (Request.QueryString["PatientID"] != null && Request.QueryString["PatientID"].ToString() != ""))
             {
-                FilePath = objClinicalSummary.PrintClinicalSummary(Convert.ToUInt32(cboEncounter.SelectedValue), Convert.ToUInt64(Request.QueryString["PatientID"]), false, ref sMyPath, "", true, true);
+                //FilePath = objClinicalSummary.PrintClinicalSummary(Convert.ToUInt32(cboEncounter.SelectedValue), Convert.ToUInt64(Request.QueryString["PatientID"]), false, ref sMyPath, "", true, true);
+
+                string TargetFileDirectory = Server.MapPath("Documents/" + Session.SessionID);
+                string sFolderPathName = TargetFileDirectory + "\\" + System.Configuration.ConfigurationSettings.AppSettings["ClinicalSummaryPathName"] + "\\" + DateTime.Now.ToString("yyyyMMdd");
+                Directory.CreateDirectory(sFolderPathName);
+
+                string sPrintPathName = string.Empty;
+
+                sPrintPathName = sFolderPathName + "\\" + "Clinical_Summary_" + ClientSession.HumanId.ToString() + "_" + DateTime.Now.ToString("yyyyMMddhhmmss") + ".xml";
+
+                string sCheckedItems = "Reason Of Visit,Vitals,Clinical Instruction,Immunizations,Mental Status,Care Plan,Laboratory Test(s),Smoking Status,Allergy,Functional Status,Procedure(s),Laboratory Values/Results,Encounter,Goals,Assessment,Medication,Medications Administered During visit,Treatment Plan,Problem List,Reason for Referral,Implants,Future Appointment,Health Concern,Lab Test,Laboratory Information,Diagnostics Tests Pending,Future Scheduled Tests,Patient Decision Aids, Social History";
+
+                string sStatus = UtilityManager.GenerateCCD(ClientSession.HumanId, ClientSession.EncounterId, sCheckedItems, sPrintPathName, string.Empty);
+                if (sStatus == "Success")
+                {
+                    string[] Split = new string[] { Server.MapPath("Documents\\" + Session.SessionID) };
+                    string[] XMLFileName = sPrintPathName.Split(Split, StringSplitOptions.RemoveEmptyEntries);
+                    if (hdnXmlPath.Value == string.Empty)
+                    {
+                        hdnXmlPath.Value = "Documents\\" + Session.SessionID.ToString() + XMLFileName[0].ToString();
+                    }
+                    if (hdnXmlPath.Value != null && hdnXmlPath.Value != string.Empty)
+                    {
+                        DirectoryInfo ObjSearchDir = new DirectoryInfo(Server.MapPath(hdnXmlPath.Value));
+                        if (!Directory.CreateDirectory(ObjSearchDir.Parent.Parent.FullName + "\\stylesheet").Exists)
+                        {
+                            Directory.CreateDirectory(ObjSearchDir.Parent.Parent.FullName + "\\stylesheet");
+                        }
+                        System.IO.File.Copy(Server.MapPath("SampleXML/CDA.xsl"), Server.MapPath("Documents/" + Session.SessionID.ToString() + "/" + ObjSearchDir.Parent.Parent + "/stylesheet/CDA.xsl"), true);
+                        ScriptManager.RegisterStartupScript(this, this.GetType(), string.Empty, "OpenAltovaPDF();", true);
+
+                        //AuditLogManager alManager = new AuditLogManager();
+                        //string TransactionType = "GENERATE - CCD";
+                        //alManager.InsertIntoAuditLog("EXPORT", TransactionType, Convert.ToInt32(ClientSession.HumanId), ClientSession.UserName);//BugID:49685
+                    }
+                    else
+                    {
+                        ScriptManager.RegisterStartupScript(this, this.GetType(), string.Empty, "OpenErrorAltova();", true);
+                    }
+
+                }
+                else if (sStatus == "1011192")
+                {
+                    ScriptManager.RegisterStartupScript(this, this.GetType(), string.Empty, "OpenWarningAltova();", true);
+                }
+                else
+                {
+                    ScriptManager.RegisterStartupScript(this, this.GetType(), string.Empty, "OpenErrorAltova();", true);
+                }
+
                 sFilePathPDF = objSummaryofCare.PrintPDF(FilePath[0].ToString(), "PatientPortal", DateTime.MinValue);
                 // FilePath = objClinicalSummary.ImportCCD(XOX, FilePath[0].ToString(), false, Convert.ToUInt64(Request.QueryString["PatientID"]), true);
                 //string[] Split = new string[] { Server.MapPath("") };

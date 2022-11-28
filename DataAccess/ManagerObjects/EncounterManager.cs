@@ -9019,7 +9019,12 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
                     //Move to check out
                     wfObjMngr.MoveToNextProcess(EncounterWfObject.Obj_System_Id, EncounterWfObject.Obj_Type, 1, "UNKNOWN", dtCurrentDateTime, sMacAddress, null, null);
 
-                    encounterRecord.Is_EandM_Submitted = "Y";
+                    // Move to Checkout from physician GITLAB #3084
+                   if(UserRole.ToUpper()!= "MEDICAL ASSISTANT")
+                    encounterRecord.Is_EandM_Submitted = "N";
+                    else
+                        encounterRecord.Is_EandM_Submitted = "Y";
+
                     encounterRecord.E_M_Submitted_Date_And_Time = DateTime.Now;
                     //Added by Janani to update Follow up details in encounter
                     lstencountertemp = UpdateEncounter(encounterRecord, sMacAddress, new object[] { "false" });
@@ -9029,9 +9034,8 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
                     if (DocumentationWfObject.Current_Process == "MA_PROCESS")
                     {
                         wfObjMngr.MoveToNextProcess(DocumentationWfObject.Obj_System_Id, DocumentationWfObject.Obj_Type, 2, "UNKNOWN", dtCurrentDateTime, sMacAddress, null, null);
-
                         if (BillingWfObject.Current_Process == "BATCHING_WAIT")
-                            wfObjMngr.MoveToNextProcess(BillingWfObject.Obj_System_Id, BillingWfObject.Obj_Type, 1, "UNKNOWN", dtCurrentDateTime, sMacAddress, null, null);
+                        wfObjMngr.MoveToNextProcess(BillingWfObject.Obj_System_Id, BillingWfObject.Obj_Type, 1, "UNKNOWN", dtCurrentDateTime, sMacAddress, null, null);
                     }
                 }
             }
@@ -9114,6 +9118,10 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
                     }
                     if (encounterRecord != null)
                     {
+                        //Provider review Move to next process  GITLAB #3084
+                        if(sButtonName.ToUpper() != "MOVE TO PHYSICIAN ASSISTANT")
+                        encounterRecord.Is_EandM_Submitted = "Y";
+
                         if (DocumentationWfObject.Current_Process.ToUpper() == "PROVIDER_REVIEW_2" && DocumentationWfObject.Process_Allocation.IndexOf("REVIEW_CODING") > -1)
                         {
                             if (sButtonName.ToUpper() == "MOVE TO PHYSICIAN ASSISTANT")
@@ -9152,7 +9160,7 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
                         }
                     }
                 }
-
+               
                 /*else if (DocumentReviewWfObject != null && DocumentReviewWfObject.Current_Process.ToUpper() == "PROVIDER_REVIEW")
                 {
                     //if (sRoleLoginUser.ToUpper() == "PHYSICIAN")
@@ -10472,8 +10480,12 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
                         if (objEncounter != null)
                         {
                             //Commented out as Is_EandM_Submitted should always be "Y" whenever PhyAssistant moves the encounter to next Process
-                            //if (!bMovetoReview)//if the encounter is moved to PROVIDER for PROVIDER_REVIEW -- do not set e_m_submitted to "Y", to prevent batch creation when Documentation object is in correction/review cycle.
+                            
+                            //uncommented for GITLAB #3084
+                            if (!bMovetoReview)//if the encounter is moved to PROVIDER for PROVIDER_REVIEW -- do not set e_m_submitted to "Y", to prevent batch creation when Documentation object is in correction/review cycle.
                             objEncounter.Is_EandM_Submitted = "Y";
+                            else
+                                objEncounter.Is_EandM_Submitted = "N";
                             objEncounter.E_M_Submitted_Date_And_Time = DateTime.Now;
                             if (bMovetoReview == true)
                                 objEncounter.Encounter_Provider_Review_ID = Convert.ToInt32(ulSelectedPhyID);

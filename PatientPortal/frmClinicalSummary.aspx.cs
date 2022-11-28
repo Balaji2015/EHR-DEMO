@@ -163,6 +163,61 @@ namespace Acurus.Capella.PatientPortal
                 //  HttpContext.Current.Response.Write(ex.Message);
             }
         }
+
+        public string GenerateCCD(uint EncID, ulong HumanID)
+        {
+            string TargetFileDirectory = Server.MapPath("Documents/" + Session.SessionID);
+            string sFolderPathName = TargetFileDirectory + "\\" + System.Configuration.ConfigurationSettings.AppSettings["ClinicalSummaryPathName"] + "\\" + DateTime.Now.ToString("yyyyMMdd");
+            Directory.CreateDirectory(sFolderPathName);
+
+            string sPrintPathName = string.Empty;
+
+            sPrintPathName = sFolderPathName + "\\" + "Clinical_Summary_" + HumanID.ToString() + "_" + DateTime.Now.ToString("yyyyMMddhhmmss") + ".xml";
+
+            string sCheckedItems = "Reason Of Visit,Vitals,Clinical Instruction,Immunizations,Mental Status,Care Plan,Laboratory Test(s),Smoking Status,Allergy,Functional Status,Procedure(s),Laboratory Values/Results,Encounter,Goals,Assessment,Medication,Medications Administered During visit,Treatment Plan,Problem List,Reason for Referral,Implants,Future Appointment,Health Concern,Lab Test,Laboratory Information,Diagnostics Tests Pending,Future Scheduled Tests,Patient Decision Aids, Social History";
+
+            string sStatus = UtilityManager.GenerateCCD(HumanID, EncID, sCheckedItems, sPrintPathName, string.Empty);
+            //if (sStatus == "Success")
+            //{
+            //    //string[] Split = new string[] { Server.MapPath("Documents\\" + Session.SessionID) };
+            //    //string[] XMLFileName = sPrintPathName.Split(Split, StringSplitOptions.RemoveEmptyEntries);
+            //    //if (hdnXmlPath.Value == string.Empty || hdnXmlPath.Value == null )
+            //    //{
+            //    //    hdnXmlPath.Value = "Documents\\" + Session.SessionID.ToString() + XMLFileName[0].ToString();
+            //    //}
+            //    //if (hdnXmlPath.Value != null && hdnXmlPath.Value != string.Empty)
+            //    //{
+            //    //    DirectoryInfo ObjSearchDir = new DirectoryInfo(Server.MapPath(hdnXmlPath.Value));
+            //    //    if (!Directory.CreateDirectory(ObjSearchDir.Parent.Parent.FullName + "\\stylesheet").Exists)
+            //    //    {
+            //    //        Directory.CreateDirectory(ObjSearchDir.Parent.Parent.FullName + "\\stylesheet");
+            //    //    }
+            //    //    System.IO.File.Copy(Server.MapPath("SampleXML/CDA.xsl"), Server.MapPath("Documents/" + Session.SessionID.ToString() + "/" + ObjSearchDir.Parent.Parent + "/stylesheet/CDA.xsl"), true);
+            //    //    //ScriptManager.RegisterStartupScript(this, this.GetType(), string.Empty, "OpenAltovaPDF();", true);
+
+            //    //    //AuditLogManager alManager = new AuditLogManager();
+            //    //    //string TransactionType = "GENERATE - CCD";
+            //    //    //alManager.InsertIntoAuditLog("EXPORT", TransactionType, Convert.ToInt32(ClientSession.HumanId), ClientSession.UserName);//BugID:49685
+            //    //}
+            //    //else
+            //    //{
+            //    //    //ScriptManager.RegisterStartupScript(this, this.GetType(), string.Empty, "OpenErrorAltova();", true);
+            //    //    return sStatus;
+            //    //}
+            //    sPrintPathName = sPrintPathName + "$" + sStatus;
+            //}
+            //else if (sStatus == "1011192")
+            //{
+            //    //ScriptManager.RegisterStartupScript(this, this.GetType(), string.Empty, "OpenWarningAltova();", true);
+            //    return sPrintPathName + "$" + sStatus;
+            //}
+            //else
+            //{
+            //   // ScriptManager.RegisterStartupScript(this, this.GetType(), string.Empty, "OpenErrorAltova();", true);
+            //    return sPrintPathName + "$" + sStatus;
+            //}
+            return sPrintPathName + "$" + sStatus;
+        }
         public ArrayList PrintClinicalSummary(ulong ulEncounterId, ulong ulHumanId, Boolean bOpen, ref string sMyPathName, string sFolderPathName, bool isExport, bool isPatientPortal)
         {
             ArrayList result = new ArrayList();

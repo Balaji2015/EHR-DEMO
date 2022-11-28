@@ -58,6 +58,8 @@ function hidePatChart() {
     }
 }
 function tree_add_leaf_example_click(leaf, node, pnode, tree) {
+   
+
     /* var count = $("#dvCheck li .colored").length;
      for (var k = 0; k < count; k++) {
          $($("#dvCheck li .colored")[k]).removeClass("colored");
@@ -103,9 +105,12 @@ function tree_add_leaf_example_click(leaf, node, pnode, tree) {
         //    $('#EncounterContainer')[0].src = "frmEncounter.aspx?Date=" + document.getElementById(GetClientId("hdnLocalTime")).value + "&EncounterID=" + leaf[0].id.split('^')[1];
         //    sessionStorage.setItem("EncId_PatSummaryBar", leaf[0].id.split('^')[1]);
         //    sessionStorage.setItem("Enc_DOS", leaf[0].innerText.split(' - ')[0]);
-           
+
         //}
         //else {
+        { sessionStorage.setItem('StartLoading', 'true'); StartLoadFromPatChart(); }
+        DisplayErrorMessage('1011191');
+
             var role = document.getElementById('hdnRole').Value;
             var WSData = "{\"encounter_id\":\"" + leaf[0].id.split('^')[1] + "\"}";
             document.getElementById('hdnEncounterId').value = leaf[0].id.split('^')[1];
@@ -116,7 +121,20 @@ function tree_add_leaf_example_click(leaf, node, pnode, tree) {
                 contentType: "application/json; charset=utf-8",
                 dataType: "json",
                 success: function (data) {
-                    $('#EncounterContainer')[0].src = "frmPrintPDF.aspx?SI=" + data.d + "&Location=DYNAMIC";
+                    var Status = data.d.split("$")[0];
+                    var Path = data.d.split("$")[1];
+                    if (Status == "1011192") {
+                        OpenWarningAltova();
+                    }
+                    else if(Status != "Success")
+                    {
+                        OpenErrorAltova();
+                    }
+                    else if (Status == "Success")
+                    {
+                        ToolStripAlertHidexml();
+                        $('#EncounterContainer')[0].src = "frmPrintPDF.aspx?SI=" + Path + "&Location=DYNAMIC";
+                    }
                 },
                 error: function OnError(xhr) {
                     if (xhr.status == 999)
@@ -1836,4 +1854,13 @@ function CloseAll(oWindow, args) {
     //document.getElementById("btnDownload").disabled = true;
     //document.getElementById("btnSend").disabled = true;
     //document.getElementById("btndelete").disabled = true;
+}
+function OpenWarningAltova() {
+    ToolStripAlertHidexml();
+    { sessionStorage.setItem('StartLoading', 'false'); StopLoadFromPatChart(); }
+    DisplayErrorMessage('1011192');
+}
+function OpenErrorAltova() {
+    ToolStripAlertHidexml();
+    { sessionStorage.setItem('StartLoading', 'false'); StopLoadFromPatChart(); }
 }
