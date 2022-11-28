@@ -52,7 +52,6 @@ namespace Acurus.Capella.UI
             {
                 try
                 {
-                    ClientSession.EncounterId = 2604839;
                     var myUri = new Uri(System.Configuration.ConfigurationSettings.AppSettings["AkidoNoteStatusURL"].ToString().Replace("[CapellaEncounterID]",ClientSession.EncounterId.ToString()));
                     string AccessToken = System.Configuration.ConfigurationSettings.AppSettings["AkidoNoteStatusURLToken"].ToString();
                     var myWebRequest = WebRequest.Create(myUri);
