@@ -66,7 +66,7 @@ namespace Acurus.Capella.UI
                     var myStreamReader = new StreamReader(responseStream, Encoding.Default);
                     var json = myStreamReader.ReadToEnd();
 
-                    if (json.ToString()!= string.Empty)
+                    if (json.ToString()!= "[]")
                     {
                         xslFrame.Visible = false;
                         AkidoFrame.Visible = true;
