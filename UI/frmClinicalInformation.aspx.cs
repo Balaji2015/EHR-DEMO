@@ -822,7 +822,17 @@ namespace Acurus.Capella.UI
                                 {
                                     if (elemParent.ChildNodes[i + 1].ChildNodes[j].Name == "list")
                                     {
-                                        string columnvalue = elemParent.ChildNodes[i + 1].ChildNodes[j].ChildNodes[0].ChildNodes[1].InnerText;
+                                        string columnvalue = string.Empty;
+                                        if (elemParent.ChildNodes[i + 1].ChildNodes[j].ChildNodes[0].ChildNodes.Count > 1)
+                                        {
+                                            columnvalue = elemParent.ChildNodes[i + 1].ChildNodes[j].ChildNodes[0].ChildNodes[1].InnerText;
+                                        }
+                                        else if (elemParent.ChildNodes[i + 1].ChildNodes[j].ChildNodes[0].ChildNodes.Count == 1)
+                                        {
+                                            columnvalue = elemParent.ChildNodes[i + 1].ChildNodes[j].ChildNodes[0].ChildNodes[0].InnerText;
+                                        }
+                                          
+                                                                           
                                         //for bug id: 28517
                                         // columnvalue = elemParent.ChildNodes[i + 1].ChildNodes[1].ChildNodes[j].ChildNodes[0].InnerXml;
 
