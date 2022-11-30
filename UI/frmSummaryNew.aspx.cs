@@ -48,11 +48,31 @@ namespace Acurus.Capella.UI
 
         public void Loadsummary()
         {
+            Stopwatch objTimer = new Stopwatch();
+            objTimer.Start();
+            string transformtime = "";
+            // DownloadFrame.TransformSource = Path.Combine(System.Configuration.ConfigurationSettings.AppSettings["XMLPath"], "EHR.xsl");
+
+            ulong Human_ID = 0;
+
+            if (Request.QueryString["EncounterId"] != null)
+            {
+                Encounter_Id = Convert.ToUInt32(Request.QueryString["EncounterId"].ToString());
+                hdnEncounterId.Value = Request.QueryString["EncounterId"].ToString();
+                // ClientSession.Selectedencounterid = Encounter_Id;
+            }
+
+            if (Request.QueryString["HumanID"] != null)
+            {
+                Human_ID = Convert.ToUInt32(Request.QueryString["HumanID"].ToString());
+                // ClientSession.Selectedencounterid = Encounter_Id;
+            }
+
             if (System.Configuration.ConfigurationSettings.AppSettings["IsAkidoNoteSummary"] == "Y" && Request["AkidoSummary"]==null)
             {
                 try
                 {
-                    var myUri = new Uri(System.Configuration.ConfigurationSettings.AppSettings["AkidoNoteStatusURL"].ToString().Replace("[CapellaEncounterID]",ClientSession.EncounterId.ToString()));
+                    var myUri = new Uri(System.Configuration.ConfigurationSettings.AppSettings["AkidoNoteStatusURL"].ToString().Replace("[CapellaEncounterID]", Encounter_Id.ToString()));
                     string AccessToken = System.Configuration.ConfigurationSettings.AppSettings["AkidoNoteStatusURLToken"].ToString();
                     var myWebRequest = WebRequest.Create(myUri);
                     var myHttpWebRequest = (HttpWebRequest)myWebRequest;
@@ -84,7 +104,7 @@ namespace Acurus.Capella.UI
                         responseStream.Close();
                         myWebResponse.Close();
 
-                        string sAkidoURL = System.Configuration.ConfigurationSettings.AppSettings["AkidoNoteURL"].ToString().Replace("[CapellaEncounterID]", ClientSession.EncounterId.ToString()).Replace("[ClientName]", ClientSession.LegalOrg);
+                        string sAkidoURL = System.Configuration.ConfigurationSettings.AppSettings["AkidoNoteURL"].ToString().Replace("[CapellaEncounterID]", Encounter_Id.ToString()).Replace("[ClientName]", ClientSession.LegalOrg);
 
                         ScriptManager.RegisterStartupScript(this, typeof(frmEncounter), "Summary", "AkidoNoteClickSum('"+sAkidoURL+"');", true);
                         return;
@@ -99,25 +119,7 @@ namespace Acurus.Capella.UI
                 }
             }
 
-            Stopwatch objTimer = new Stopwatch();
-            objTimer.Start();
-            string transformtime = "";
-            // DownloadFrame.TransformSource = Path.Combine(System.Configuration.ConfigurationSettings.AppSettings["XMLPath"], "EHR.xsl");
-
-            ulong Human_ID = 0;
-
-            if (Request.QueryString["EncounterId"] != null)
-            {
-                Encounter_Id = Convert.ToUInt32(Request.QueryString["EncounterId"].ToString());
-                hdnEncounterId.Value = Request.QueryString["EncounterId"].ToString();
-                // ClientSession.Selectedencounterid = Encounter_Id;
-            }
-
-            if (Request.QueryString["HumanID"] != null)
-            {
-                Human_ID = Convert.ToUInt32(Request.QueryString["HumanID"].ToString());
-                // ClientSession.Selectedencounterid = Encounter_Id;
-            }
+            
             string sGroup_ID_Log = ClientSession.EncounterId.ToString() + "-" + ClientSession.HumanId.ToString() + "-" + ClientSession.PhysicianId.ToString() + "-" + DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss:FFF");
             UtilityManager.inserttologgingtable(ClientSession.EncounterId.ToString(), ClientSession.HumanId.ToString(), ClientSession.UserName, ClientSession.PhysicianId.ToString(), "Summary : Start", DateTime.Now, sGroup_ID_Log, "frmSummaryNew");
             UtilityManager.inserttologgingtable(ClientSession.EncounterId.ToString(), ClientSession.HumanId.ToString(), ClientSession.UserName, ClientSession.PhysicianId.ToString(), "Summary Page Load : Start", DateTime.Now, sGroup_ID_Log, "frmSummaryNew");
