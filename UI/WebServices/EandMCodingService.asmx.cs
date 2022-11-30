@@ -968,7 +968,7 @@ namespace Acurus.Capella.UI.WebServices
                 EandMCodingICD objEandMCodingICD = null;
                 IList<EandMCodingICD> eandmICDList = null;
 
-                var eandmList = from eandmicd in EAndMICDTempList where Convert.ToString(eandmicd.ICD) == objICD.ToString().Split('~')[0] select eandmicd;
+                var eandmList = from eandmicd in EAndMICDTempList where Convert.ToString(eandmicd.ICD).Trim() == objICD.ToString().Split('~')[0].Trim() select eandmicd;
                 eandmICDList = eandmList.ToList<EandMCodingICD>();
 
                 if (eandmICDList.Count > 0)
