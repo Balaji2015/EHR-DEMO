@@ -13719,8 +13719,32 @@ between 18 and 75 and a.encounter_Provider_id =? and
  c.Procedure_Code in(SELECT PQRI_Value FROM cqm_data where nqf_number =?  and 
  PQRI_calculation_Method=? and PQRI_Type in ('CPT')) and c.is_delete='n';]]>
 	</sql-query>
+	
+	<sql-query name="PQRI.GetDenominatorCMS122v11.HBA1c">
+		<![CDATA[select a.encounter_id,a.human_id from encounter a inner join human b on a.human_id = b.human_id
+
+left join e_m_coding c on a.Encounter_id=c.Encounter_id
+left join patient_results pr on a.Encounter_id=pr.Encounter_id
+where date(Date_of_service) between ? and ? and TIMESTAMPDIFF(YEAR,Birth_date, date(?))
+between 18 and 75 and a.encounter_Provider_id =? and
+ c.Procedure_Code in(SELECT PQRI_Value FROM cqm_data where nqf_number =?  and 
+ PQRI_calculation_Method=? and PQRI_Type in ('CPT')) and c.is_delete='n';]]>
+	</sql-query>
 
 	<sql-query name="PQRI.GetDenominator1CMS122.HBA1c">
+		<![CDATA[select a.encounter_id,a.human_id from encounter a inner join human b on a.human_id = b.human_id
+left join problem_list p on a.human_id=p.human_id
+left join assessment d on a.Encounter_id=d.Encounter_ID
+
+left join patient_results pr on a.Encounter_id=pr.Encounter_id
+where date(Date_of_service) between ? and ? and TIMESTAMPDIFF(YEAR,Birth_date, date(?))
+between 18 and 75 and a.encounter_Provider_id =? and(d.ICD in(SELECT PQRI_Value FROM cqm_data where nqf_number =?  and PQRI_calculation_Method=? and PQRI_Type in ('ICD')) 
+
+or (p.icd in(SELECT PQRI_Value FROM cqm_data where nqf_number =?  and PQRI_calculation_Method=? and PQRI_Type in ('ICD'))
+and p.is_active='y' ))
+;]]>
+	</sql-query>
+	<sql-query name="PQRI.GetDenominator1CMS122v11.HBA1c">
 		<![CDATA[select a.encounter_id,a.human_id from encounter a inner join human b on a.human_id = b.human_id
 left join problem_list p on a.human_id=p.human_id
 left join assessment d on a.Encounter_id=d.Encounter_ID
@@ -13756,6 +13780,17 @@ where loinc_observation in ('HBA1C','Hemoglobin A1c/Hemoglobin.total',
 'Hemoglobin C/Hemoglobin.total',
 'Hemoglobin A2/Hemoglobin.total') and `value`<=9 group by e.human_id;]]>
 	</sql-query>
+	
+	<sql-query name="PQRI.GetNumeratorCMS122v11.HBA1c">
+		<![CDATA[
+ select distinct max(e.encounter_id) as Encounter_Id,e.human_id  from encounter e  join
+ patient_results pr on e.encounter_id=pr.encounter_id where e.encounter_id in (:EncIds) and loinc_observation in ('HBA1C','Hemoglobin A1c/Hemoglobin.total',
+'Hemoglobin F/Hemoglobin.total',
+'Hemoglobin A/Hemoglobin.total',
+'Hemoglobin S/Hemoglobin.total',
+'Hemoglobin C/Hemoglobin.total',
+'Hemoglobin A2/Hemoglobin.total') and `value`<=9 group by e.human_id;]]>
+	</sql-query>
 
 	<sql-query name="PQRI.GetNumerator1CMS122.HBA1c">
 		<![CDATA[
@@ -13764,7 +13799,12 @@ where loinc_observation in ('HBA1C','Hemoglobin A1c/Hemoglobin.total',
  group by e.human_id;]]>
 	</sql-query>
 
-
+<sql-query name="PQRI.GetNumerator1CMS122v11.HBA1c">
+		<![CDATA[
+ select e.encounter_id as Encounter_Id,e.human_id ,pr.loinc_identifier from encounter e  left join
+ patient_results pr on e.encounter_id=pr.encounter_id where e.human_id in (:EncIds) and e.human_id not in (:EncExp)
+ group by e.human_id;]]>
+	</sql-query>
 
 	<sql-query name="PQRI.GetNumeratorwithExclusionvitalsCMS122.HBA1c">
 		<![CDATA[
@@ -13773,7 +13813,12 @@ where loinc_observation in ('HBA1C','Hemoglobin A1c/Hemoglobin.total',
  group by e.human_id;]]>
 	</sql-query>
 
-
+<sql-query name="PQRI.GetNumeratorwithExclusionvitalsCMS122v11.HBA1c">
+		<![CDATA[
+ select e.encounter_id as Encounter_Id,e.human_id ,pr.loinc_identifier from encounter e  left join
+ patient_results pr on e.encounter_id=pr.encounter_id where e.human_id in (:EncIds) and e.human_id not in (:EncExp) and e.human_id not in (:EncExclusion)
+ group by e.human_id;]]>
+	</sql-query>
 
 	<sql-query name="PQRI.GetNumeratorwithExclusionCMS122.HBA1c">
 		<![CDATA[
@@ -13782,6 +13827,14 @@ where loinc_observation in ('HBA1C','Hemoglobin A1c/Hemoglobin.total',
  group by e.human_id;]]>
 	</sql-query>
 
+	<sql-query name="PQRI.GetNumeratorwithExclusionCMS122v11.HBA1c">
+		<![CDATA[
+ select e.encounter_id as Encounter_Id,e.human_id ,pr.loinc_identifier from encounter e  left join
+ patient_results pr on e.encounter_id=pr.encounter_id where e.human_id in (:EncIds) and e.human_id not in (:EncExclusion)
+ group by e.human_id;]]>
+	</sql-query>
+		
+		
 	<sql-query name="PQRI.GetNumerator2CMS122.HBA1c">
 		<![CDATA[
  select e.encounter_id as Encounter_Id,e.human_id ,pr.loinc_identifier from encounter e  left join
@@ -13789,10 +13842,25 @@ where loinc_observation in ('HBA1C','Hemoglobin A1c/Hemoglobin.total',
  group by e.human_id;]]>
 	</sql-query>
 	
+	<sql-query name="PQRI.GetNumerator2CMS122v11.HBA1c">
+		<![CDATA[
+ select e.encounter_id as Encounter_Id,e.human_id ,pr.loinc_identifier from encounter e  left join
+ patient_results pr on e.encounter_id=pr.encounter_id where e.human_id in (:EncIds) 
+ group by e.human_id;]]>
+	</sql-query>
+		
+		
 	<sql-query name="PQRI.GetDenominatorList1CMS68v6.CurrentMedication">
 		<![CDATA[select e.encounter_id from encounter e left join human h on e.human_id=h.human_id
 where e.encounter_Provider_id =? and date(e.date_of_service) between ? and ? and (datediff(date(?),h.birth_date)/365.25)>=18;]]>
 	</sql-query>
+
+
+	<sql-query name="PQRI.GetDenominatorList1CMS68v6V11.CurrentMedication">
+		<![CDATA[select e.encounter_id from encounter e left join human h on e.human_id=h.human_id
+where e.encounter_Provider_id =? and date(e.date_of_service) between ? and ? and (datediff(date(?),h.birth_date)/365.25)>=18;]]>
+	</sql-query>
+	
 
 	<sql-query name="PQRI.GetDenominatorList2CMS68v6.CurrentMedication">
 		<![CDATA[select distinct(em.human_id) from  e_m_coding em
@@ -13801,13 +13869,32 @@ cqm_data where nqf_number =?  and PQRI_calculation_Method=? and PQRI_Type in ('C
 	</sql-query>
 
 
+	<sql-query name="PQRI.GetDenominatorList2CMS68v6V11.CurrentMedication">
+		<![CDATA[select distinct(em.human_id) from  e_m_coding em
+where em.is_delete='N' and em.procedure_code in(SELECT PQRI_Value FROM 
+cqm_data where nqf_number =?  and PQRI_calculation_Method=? and PQRI_Type in ('CPT','HCPCS')) and encounter_id in (:EncIds); ]]>
+	</sql-query>
+	
+	
 	<sql-query name="PQRI.GetDenominatorCMS68v6.CurrentMedication">
 		<![CDATA[select e.Encounter_id ,e.human_id,em.procedure_code from encounter e join e_m_coding em on e.encounter_id =em.encounter_id  where e.human_id in (:EncIds) and e.human_id not in (:EncIdsExc) and em.is_delete='N';]]>
 	</sql-query>
+
+
+	<sql-query name="PQRI.GetDenominatorCMS68v11.CurrentMedication">
+		<![CDATA[select e.Encounter_id ,e.human_id,em.procedure_code from encounter e join e_m_coding em on e.encounter_id =em.encounter_id  where e.human_id in (:EncIds) and e.human_id not in (:EncIdsExc) and em.is_delete='N';]]>
+	</sql-query>
+	
 	<sql-query name="PQRI.GetDenominator_listCMS68v6.CurrentMedication">
 		<![CDATA[select e.Encounter_id ,e.human_id,em.procedure_code from encounter e join e_m_coding em on e.encounter_id =em.encounter_id  where e.human_id in (:EncIds) and em.is_delete='N';]]>
 	</sql-query>
 
+
+	<sql-query name="PQRI.GetDenominator_listCMS68v11.CurrentMedication">
+		<![CDATA[select e.Encounter_id ,e.human_id,em.procedure_code from encounter e join e_m_coding em on e.encounter_id =em.encounter_id  where e.human_id in (:EncIds) and em.is_delete='N';]]>
+	</sql-query>
+	
+	
 	<sql-query name="PQRI.GetDenominatorExceptionCMS68v6.CurrentMedication">
 		<![CDATA[select e.encounter_id,e.human_id,em.procedure_code from encounter e join e_m_coding em on e.human_id =em.human_id  where e.reason_not_performed_medication_reviewed
 in('Procedure contraindicated','Medical contraindication ','Treatment not tolerated','Procedure not indicated')
@@ -13815,7 +13902,23 @@ in('Procedure contraindicated','Medical contraindication ','Treatment not tolera
 	</sql-query>
 
 
+	<sql-query name="PQRI.GetDenominatorExceptionCMS68V11.CurrentMedication">
+		<![CDATA[select e.encounter_id,e.human_id,em.procedure_code from encounter e join e_m_coding em on e.human_id =em.human_id  where e.reason_not_performed_medication_reviewed
+in('Procedure contraindicated','Medical contraindication ','Treatment not tolerated','Procedure not indicated')
+ and e.human_id in (:EncIds);]]>
+	</sql-query>
+	
+
 	<sql-query name="PQRI.GetNumeratorCMS68v6.CurrentMedication">
+		<!--<![CDATA[select encounter_id,human_id from encounter where encounter_provider_signed_date<>'0001-01-01 00:00:00' and
+(Is_Medication_Reviewed ='Y') and encounter_id in (:EncIds)  group by human_id;]]>-->
+		<![CDATA[select e.encounter_id,e.human_id from encounter e, rcopia_medication m where e.encounter_provider_signed_date<>'0001-01-01 00:00:00' and
+(e.Is_Medication_Reviewed ='Y') and e.encounter_id in (:EncIds) and m.status='active' and
+e.human_id=m.human_id group by e.human_id;]]>
+	</sql-query>
+
+
+	<sql-query name="PQRI.GetNumeratorCMS68v11.CurrentMedication">
 		<!--<![CDATA[select encounter_id,human_id from encounter where encounter_provider_signed_date<>'0001-01-01 00:00:00' and
 (Is_Medication_Reviewed ='Y') and encounter_id in (:EncIds)  group by human_id;]]>-->
 		<![CDATA[select e.encounter_id,e.human_id from encounter e, rcopia_medication m where e.encounter_provider_signed_date<>'0001-01-01 00:00:00' and
@@ -13831,6 +13934,16 @@ e.human_id=m.human_id group by e.human_id;]]>
 	</sql-query>
 
 
+	
+
+	<sql-query name="PQRI.GetDenominatorList2CMS69v11.BMI">
+		<![CDATA[
+    select e.encounter_id,e.human_id,em.procedure_code,ifnull(a.icd,'') from encounter e join e_m_coding em  on e.encounter_id=em.encounter_id
+    left join assessment as a on e.encounter_id=a.encounter_id where e.human_id in (:EncIds) and e.human_id not in (:EncIdEx) group by e.encounter_id;
+ ]]>
+	</sql-query>
+
+
 	<sql-query name="PQRI.GetDenominatorList1CMS69.BMI">
 		<![CDATA[
     select e.encounter_id,e.human_id,em.procedure_code,ifnull(a.icd,'') from encounter e join e_m_coding em on e.encounter_id=em.encounter_id
@@ -13838,6 +13951,16 @@ e.human_id=m.human_id group by e.human_id;]]>
  ]]>
 	</sql-query>
 
+
+	
+
+	<sql-query name="PQRI.GetDenominatorList1CMS69v11.BMI">
+		<![CDATA[
+    select e.encounter_id,e.human_id,em.procedure_code,ifnull(a.icd,'') from encounter e join e_m_coding em on e.encounter_id=em.encounter_id
+    left join assessment as a   on e.encounter_id=a.encounter_id where e.human_id in (:EncIds) group by e.encounter_id;
+ ]]>
+	</sql-query>
+	
 
 	<sql-query name="PQRI.GetDenominatorCMS69.BMI">
 		<![CDATA[
@@ -13848,7 +13971,24 @@ where date(e.Date_of_service) between ? and ? and e.encounter_provider_id = ? an
 in(SELECT PQRI_Value FROM cqm_data where nqf_number =?  and PQRI_calculation_Method=? and PQRI_Type in ('CPT','HCPCS'));]]>
 	</sql-query>
 
+	<sql-query name="PQRI.GetDenominatorCMS69v11.BMI">
+		<![CDATA[
+select e.encounter_id,e.human_id from encounter e left join human h on e.human_id=h.human_id  join e_m_coding  em
+on em.encounter_id=e.encounter_id 
+where date(e.Date_of_service) between ? and ? and e.encounter_provider_id = ? and 
+(datediff(date(?),h.birth_date)/365.25)>=18 and em.procedure_code
+in(SELECT PQRI_Value FROM cqm_data where nqf_number =?  and PQRI_calculation_Method=? and PQRI_Type in ('CPT','HCPCS'));]]>
+	</sql-query>
+
 	<sql-query name="PQRI.GetDenominatorExceptionCMS69.BMI">
+		<![CDATA[
+select encounter_id,human_id  from  treatment_plan
+  where encounter_id in (:EncIds) and Addendum_Plan<>'N'  and (Followup_Plan_Snomed like '%183932001%'
+  or Followup_Plan_Snomed like '%397745006%' or Followup_Plan_Snomed like
+  '%407563006%'or Followup_Plan_Snomed like '%428119001%' or Followup_Plan_Snomed like '%304549008%') group by human_id;]]>
+	</sql-query>
+
+	<sql-query name="PQRI.GetDenominatorExceptionCMS69v11.BMI">
 		<![CDATA[
 select encounter_id,human_id  from  treatment_plan
   where encounter_id in (:EncIds) and Addendum_Plan<>'N'  and (Followup_Plan_Snomed like '%183932001%'
@@ -13937,6 +14077,43 @@ p.snomed_code in (SELECT PQRI_Value FROM cqm_data where nqf_number =?  and PQRI_
 );]]>
 	</sql-query>
 
+
+	<sql-query name="PQRI.GetNumeratorCMS69v11.BMI">
+		<![CDATA[select distinct p.encounter_id,p.human_id,' ' as icd,' ' as cpt,cast(p.Captured_date_and_time as char(100)),cast(e.Date_Of_Service as char(100))
+	,p.value,p.Loinc_identifier  from  patient_results p
+left join encounter e on p.encounter_id= e.encounter_id
+where Loinc_Observation='BMI' and value between '18.5'  and '24.9' and
+ p.encounter_id in (:EncIds)
+union
+select distinct p.encounter_id,p.human_id,a.icd,em.procedure_code,cast(p.Captured_date_and_time as char(100)),cast(e.Date_Of_Service as char(100)),p.value,p.Loinc_identifier from patient_results p
+left join encounter e on p.encounter_id=e.encounter_id
+left join e_m_coding em on p.encounter_id=em.encounter_id
+left join assessment a on p.encounter_id=a.encounter_id
+where  p.human_id in (:HumanIds) and e.date_of_service between ? and ? and Loinc_Observation='BMI' and value >=25 and
+((em.is_delete='N' and em.procedure_code in(SELECT PQRI_Value FROM cqm_data where nqf_number =?  and 
+PQRI_calculation_Method=? and PQRI_Type in ('CPT')))
+ or
+ a.icd in (SELECT PQRI_Value FROM cqm_data where nqf_number =?  and PQRI_calculation_Method=? and PQRI_Type ='ICD')
+ or
+ p.snomed_code in (SELECT PQRI_Value FROM cqm_data where nqf_number =?  and PQRI_calculation_Method=? and PQRI_Type ='SNOMED'
+))
+
+union
+
+select distinct p.encounter_id,p.human_id,a.icd,em.procedure_code,cast(p.Captured_date_and_time as char(100)),cast(e.Date_Of_Service as char(100)),p.value,p.Loinc_identifier from patient_results p
+left join encounter e on p.encounter_id= e.encounter_id
+left join e_m_coding em on p.encounter_id=em.encounter_id
+left join assessment a on p.encounter_id=a.encounter_id
+where p.human_id in (:HumanIds) and e.date_of_service between ? and ? and p.Loinc_Observation='BMI' and p.value <18.5 and
+((em.is_delete='N' and em.procedure_code in (SELECT PQRI_Value FROM cqm_data where nqf_number =?  and PQRI_calculation_Method=? and PQRI_Type ='HCPCS'))
+or
+a.icd  in (SELECT PQRI_Value FROM cqm_data where nqf_number =?  and PQRI_calculation_Method=? and PQRI_Type ='ICD')
+or
+p.snomed_code in (SELECT PQRI_Value FROM cqm_data where nqf_number =?  and PQRI_calculation_Method=? and PQRI_Type ='SNOMED')
+);]]>
+	</sql-query>
+	
+
 	<sql-query name="PQRI.GetDenominatorCMS127.Pneumococcal">
 		<![CDATA[select distinct e.encounter_id,e.human_id,em.procedure_code from encounter e left join human h on e.human_id=h.human_id
 left join e_m_coding em on e.encounter_id=em.encounter_id
@@ -13944,11 +14121,28 @@ where date(Date_of_service) between ? and ? and e.encounter_Provider_id = ? and 
 h.birth_date)/365.25)>=66 and
 em.Is_Delete='N' and em.procedure_code in(SELECT PQRI_Value FROM cqm_data where nqf_number =?  and PQRI_calculation_Method=? and PQRI_Type ='CPT') ;]]>
 	</sql-query>
+
+	<sql-query name="PQRI.GetDenominatorCMS127v11.Pneumococcal">
+		<![CDATA[select distinct e.encounter_id,e.human_id,em.procedure_code from encounter e left join human h on e.human_id=h.human_id
+left join e_m_coding em on e.encounter_id=em.encounter_id
+where date(Date_of_service) between ? and ? and e.encounter_Provider_id = ? and (datediff(date(?),
+h.birth_date)/365.25)>=66 and
+em.Is_Delete='N' and em.procedure_code in(SELECT PQRI_Value FROM cqm_data where nqf_number =?  and PQRI_calculation_Method=? and PQRI_Type ='CPT') ;]]>
+	</sql-query>
+	
 	<!--<sql-query name="PQRI.GetDenominatorCMS127.Pneumococcal">
     <![CDATA[CALL Vaccination_Measure(:FROMDATE,:TODATE,:PHY_ID);]]>
   </sql-query>-->
 
 	<sql-query name="PQRI.GetExlusionCMS127.Pneumococcal">
+		<![CDATA[select distinct em.encounter_id ,em.human_id,em.Procedure_code from e_m_coding em where  
+em.procedure_code in(SELECT PQRI_Value FROM cqm_data where nqf_number =?  and PQRI_calculation_Method=? 
+and PQRI_Type
+in ('CPT','HCPCS')) and em.human_id in (:HumanId) and em.Is_Delete='N';]]>
+	</sql-query>
+
+
+	<sql-query name="PQRI.GetExlusionCMS127v11.Pneumococcal">
 		<![CDATA[select distinct em.encounter_id ,em.human_id,em.Procedure_code from e_m_coding em where  
 em.procedure_code in(SELECT PQRI_Value FROM cqm_data where nqf_number =?  and PQRI_calculation_Method=? 
 and PQRI_Type
@@ -13963,6 +14157,14 @@ in ('CPT','HCPCS')) and em.human_id in (:HumanId) and em.Is_Delete='N';]]>
 	</sql-query>
 
 
+	<sql-query name="PQRI.GetDenominatorList2CMS127v11.Pneumococcal">
+		<![CDATA[
+    select e.encounter_id,e.human_id,em.procedure_code,ifnull(a.icd,'') from encounter e join e_m_coding em  on e.encounter_id=em.encounter_id
+    left join assessment as a on e.encounter_id=a.encounter_id where e.human_id in (:EncIds) and e.human_id not in (:EncIdEx) group by e.encounter_id;
+ ]]>
+	</sql-query>
+	
+
 	<sql-query name="PQRI.GetDenominatorList1CMS127.Pneumococcal">
 		<![CDATA[
     select e.encounter_id,e.human_id,em.procedure_code,ifnull(a.icd,'') from encounter e join e_m_coding em on e.encounter_id=em.encounter_id
@@ -13970,6 +14172,15 @@ in ('CPT','HCPCS')) and em.human_id in (:HumanId) and em.Is_Delete='N';]]>
  ]]>
 	</sql-query>
 
+
+	<sql-query name="PQRI.GetDenominatorList1CMS127v11.Pneumococcal">
+		<![CDATA[
+    select e.encounter_id,e.human_id,em.procedure_code,ifnull(a.icd,'') from encounter e join e_m_coding em on e.encounter_id=em.encounter_id
+    left join assessment as a   on e.encounter_id=a.encounter_id where e.human_id in (:EncIds) group by e.encounter_id;
+ ]]>
+	</sql-query>
+	
+	
 	<sql-query name="PQRI.GetNumeratorCMS127.Pneumococcal">
 		<![CDATA[select distinct A.Encounter_id,A.human_id,ih.procedure_code from
 encounter A left join immunization_history ih on A.human_id=ih.human_id where 
@@ -13977,11 +14188,33 @@ encounter A left join immunization_history ih on A.human_id=ih.human_id where
  and PQRI_Type ='CPT')  and A.human_id in (:HumanIds)  group by A.human_id;]]>
 	</sql-query>
 
+
+	<sql-query name="PQRI.GetNumeratorCMS127v11.Pneumococcal">
+		<![CDATA[select distinct A.Encounter_id,A.human_id,ih.procedure_code from
+encounter A left join immunization_history ih on A.human_id=ih.human_id where 
+ ih.procedure_code in (SELECT PQRI_Value FROM cqm_data where nqf_number =?  and PQRI_calculation_Method=?
+ and PQRI_Type ='CPT')  and A.human_id in (:HumanIds)  group by A.human_id;]]>
+	</sql-query>
+	
+	
+
 	<sql-query name="PQRI.GetDenominatorCMS138.Tobacco">
 		<![CDATA[select e.human_id from encounter e left join human h on e.human_id=h.human_id
 where date(Date_of_service) between ? and ? and
 (datediff(date(?),h.birth_date)/365.25)>=18 and e.encounter_Provider_id = ?;]]>
 	</sql-query>
+
+
+	
+	
+
+	<sql-query name="PQRI.GetDenominatorCMS138v11.Tobacco">
+		<![CDATA[select e.human_id from encounter e left join human h on e.human_id=h.human_id
+where date(Date_of_service) between ? and ? and
+(datediff(date(?),h.birth_date)/365.25)>=18 and e.encounter_Provider_id = ?;]]>
+	</sql-query>
+	
+	
 	<!--<sql-query name="PQRI.GetDenominatorList2CMS138.Tobacco">
 		<![CDATA[select human_id  from e_m_coding
 where  is_delete='N' and Procedure_code in (SELECT PQRI_Value FROM cqm_data where nqf_number =?  and 
@@ -14000,13 +14233,34 @@ where  is_delete='N' and Procedure_code in (SELECT PQRI_Value FROM cqm_data wher
 PQRI_calculation_Method=? and PQRI_Type ='CPT') and human_id in (:EncIds) group by human_id  having count( encounter_id)>=1;]]>
 	</sql-query>
 
+
+	<sql-query name="PQRI.GetDenominatorList2CMS138v11.Tobacco">
+		<![CDATA[select encounter_id,human_id,procedure_code  from e_m_coding
+where  is_delete='N' and Procedure_code in (SELECT PQRI_Value FROM cqm_data where nqf_number =?  and 
+PQRI_calculation_Method=? and PQRI_Type ='CPT') and human_id in (:EncIds) group by human_id  having count( encounter_id)>=1;]]>
+	</sql-query>
+	
+
 	<sql-query name="PQRI.GetDenominatorList2CMS138_Population2.Tobacco">
 		<![CDATA[select human_id  from e_m_coding
 where  is_delete='N' and Procedure_code in (SELECT PQRI_Value FROM cqm_data where nqf_number =?  and 
 PQRI_calculation_Method=? and PQRI_Type ='CPT') and human_id in (:EncIds) group by human_id  having count( encounter_id)>=1;]]>
 	</sql-query>
 
+	<sql-query name="PQRI.GetDenominatorList2CMS138v11_Population2.Tobacco">
+		<![CDATA[select human_id  from e_m_coding
+where  is_delete='N' and Procedure_code in (SELECT PQRI_Value FROM cqm_data where nqf_number =?  and 
+PQRI_calculation_Method=? and PQRI_Type ='CPT') and human_id in (:EncIds) group by human_id  having count( encounter_id)>=1;]]>
+	</sql-query>
+
 	<sql-query name="PQRI.GetDenominatorList3CMS138.Tobacco">
+		<![CDATA[select em.encounter_id,em.human_id,em.procedure_code from e_m_coding em
+left join social_history sh on sh.human_id=em.human_id
+where em.Is_delete='N' and sh.human_id in (:EncIds) and sh.Is_Present='Y' and sh.Social_info like '%Tobacco Use and Exposure%' and sh.recodes<>'' ]]>
+	</sql-query>
+	
+	
+		<sql-query name="PQRI.GetDenominatorList3CMS138v11.Tobacco">
 		<![CDATA[select em.encounter_id,em.human_id,em.procedure_code from e_m_coding em
 left join social_history sh on sh.human_id=em.human_id
 where em.Is_delete='N' and sh.human_id in (:EncIds) and sh.Is_Present='Y' and sh.Social_info like '%Tobacco Use and Exposure%' and sh.recodes<>'' ]]>
@@ -14031,7 +14285,50 @@ where
 (sh.human_id in (:EncIds) and sh.social_info='Tobacco Use and Exposure'  and sh.Snomed_Reason_Not_Performed<>'')]]>
 	</sql-query>
 
+
+	<sql-query name="PQRI.GetExceptionCMS138v11.Tobacco">
+		<!--<![CDATA[select sh.encounter_id ,sh.human_id,a.icd,em.procedure_code from social_history sh
+left join assessment a on sh.encounter_id=a.encounter_id
+left join e_m_coding em on sh.encounter_id=em.encounter_id
+left join problem_list pl on sh.human_Id=pl.human_id where em.Is_delete='N' and sh.human_id in (:EncIds) and (sh.social_info='Tobacco Use and Exposure' and
+sh.Snomed_Reason_Not_Performed<>'' or (a.ICD='R69' or (pl.ICD='R69' and pl.Is_active='Y')));]]>-->
+		<![CDATA[select a.encounter_id ,a.human_id,a.icd,"" as procedure_code from assessment a where human_id in (:EncIds)
+	and a.ICD in (SELECT PQRI_Value FROM cqm_data where nqf_number =?  and 
+PQRI_calculation_Method=? and PQRI_Type ='ICD')
+union
+select a.encounter_id ,a.human_id,a.icd,"" as procedure_code from problem_list a where human_id in (:EncIds) 
+and a.ICD in (SELECT PQRI_Value FROM cqm_data where nqf_number =?  and 
+PQRI_calculation_Method=? and PQRI_Type ='ICD')
+union
+select sh.encounter_id ,sh.human_id,"","" as procedure_code from social_history sh
+where
+(sh.human_id in (:EncIds) and sh.social_info='Tobacco Use and Exposure'  and sh.Snomed_Reason_Not_Performed<>'')]]>
+	</sql-query>
+	
+	
+	
+	
 	<sql-query name="PQRI.GetNumeratorCMS138.Tobacco">
+		<![CDATA[select a.encounter_id,a.human_id,cast(a.created_date_and_time as char(100)),
+	cast(a.modified_date_and_time as char(100)),cast(r.stop_date as char(100)),r.rxnorm_id from  social_history a
+left join care_plan cp on a.encounter_id=cp.encounter_id
+left join rcopia_medication r on A.human_id=r.human_id
+left join e_m_coding em on A.encounter_id=em.encounter_id
+where a.human_id in (:EncIds) and ((a.Is_Present='N' and a.Social_info like '%Tobacco Use and Exposure%' and a.recodes<>'')
+or
+(a.Is_Present='Y' and a.Social_info like '%Tobacco Use and Exposure%' and a.recodes<>''
+and ((cp.care_name_value like '%Tobacco%' and  cp.Snomed_Code!='')
+and
+em.procedure_code in (SELECT PQRI_Value FROM cqm_data where nqf_number =?  and 
+PQRI_calculation_Method=? and PQRI_Type ='CPTPQRI.GetDenominatorCMS122.HBA1c')
+or
+(r.deleted='N' and
+r.rxnorm_id in(SELECT PQRI_Value FROM cqm_data where nqf_number =?  and 
+PQRI_calculation_Method=? and PQRI_Type ='RxNorm') )))) group by human_id;]]>
+	</sql-query>
+	
+	
+		<sql-query name="PQRI.GetNumeratorCMS138v11.Tobacco">
 		<![CDATA[select a.encounter_id,a.human_id,cast(a.created_date_and_time as char(100)),
 	cast(a.modified_date_and_time as char(100)),cast(r.stop_date as char(100)),r.rxnorm_id from  social_history a
 left join care_plan cp on a.encounter_id=cp.encounter_id
@@ -14060,12 +14357,33 @@ or
 
 
 
+	<sql-query name="PQRI.GetNumeratorCMS138_Population1v11.Tobacco">
+		<![CDATA[select a.encounter_id,a.human_id,cast(a.created_date_and_time as char(100)),
+	cast(a.modified_date_and_time as char(100)),cast(r.stop_date as char(100)),r.rxnorm_id from  social_history a
+where a.human_id in (:EncIds) and ((a.Is_Present='N' and a.Social_info like '%Tobacco Use and Exposure%' and a.recodes<>'')
+or
+(a.Is_Present='Y' and a.Social_info like '%Tobacco Use and Exposure%' and a.recodes<>'')) group by human_id;]]>
+	</sql-query>
+
 	<sql-query name="PQRI.GetDenominatorCMS165.ControllingHighBP">
 		<![CDATA[select e.Encounter_ID from encounter e left join human h on e.human_id=h.human_id
 where date(Date_of_service) between ? and ? and
 (datediff(date(?),h.birth_date)/365.25)>=18 and (datediff(date(?),h.birth_date)/365.25)<85 and e.Encounter_Provider_id = ?;]]>
 	</sql-query>
+	
+	<sql-query name="PQRI.GetDenominatorCMS165v11.ControllingHighBP">
+		<![CDATA[select e.Encounter_ID from encounter e left join human h on e.human_id=h.human_id
+where date(Date_of_service) between ? and ? and
+(datediff(date(?),h.birth_date)/365.25)>=18 and (datediff(date(?),h.birth_date)/365.25)<85 and e.Encounter_Provider_id = ?;]]>
+	</sql-query>
+		
 	<sql-query name="PQRI.GetDenominatorList1CMS165.ControllingHighBP">
+		<![CDATA[select distinct(Encounter_id),human_id from  e_m_coding em
+where em.Is_delete='N' and em.procedure_code in(SELECT PQRI_Value FROM cqm_data 
+where nqf_number =?  and PQRI_calculation_Method=? and PQRI_Type in ('CPT','HCPCS')) and encounter_id in (:EncIds);]]>
+	</sql-query>
+	
+	<sql-query name="PQRI.GetDenominatorList1CMS165v11.ControllingHighBP">
 		<![CDATA[select distinct(Encounter_id),human_id from  e_m_coding em
 where em.Is_delete='N' and em.procedure_code in(SELECT PQRI_Value FROM cqm_data 
 where nqf_number =?  and PQRI_calculation_Method=? and PQRI_Type in ('CPT','HCPCS')) and encounter_id in (:EncIds);]]>
@@ -14078,8 +14396,26 @@ and ( (pl.icd in (SELECT PQRI_Value FROM cqm_data where nqf_number =?  and PQRI_
 ;]]>
 	</sql-query>
 
+	
+	<sql-query name="PQRI.GetDenominatorList2CMS165v11.ControllingHighBP">
+		<![CDATA[select distinct(pl.human_id) from  problem_list pl 
+where STR_TO_DATE(date_diagnosed, '%d-%b-%Y') <=?   
+and ( (pl.icd in (SELECT PQRI_Value FROM cqm_data where nqf_number =?  and PQRI_calculation_Method=? and PQRI_Type in ('ICD')) and pl.is_active ='Y')) and  pl.human_id in (:EncIds) 
+;]]>
+	</sql-query>
 
 	<sql-query name="PQRI.GetDenominatorListICDCMS165.ControllingHighBP">
+		<![CDATA[
+select distinct(pl.human_id) from  assessment pl  join encounter e on pl.encounter_id=e.encounter_id
+where   
+ (pl.ICD in (SELECT PQRI_Value FROM cqm_data where nqf_number =?  and PQRI_calculation_Method=? and PQRI_Type in ('ICD')) ) and 
+ date(Date_of_service) between ? and ? and 
+ pl.human_id in (:EncIds_Ass)  
+
+;]]>
+	</sql-query>
+	
+	<sql-query name="PQRI.GetDenominatorListICDCMS165v11.ControllingHighBP">
 		<![CDATA[
 select distinct(pl.human_id) from  assessment pl  join encounter e on pl.encounter_id=e.encounter_id
 where   
@@ -14105,6 +14441,15 @@ left  join patient_results pr on pr.human_id=em.human_id
     where em.human_id in (:EncIds) ;
     ]]>
 	</sql-query>
+	
+	
+		<sql-query name="PQRI.GetDenominatorList3CMS165v11.ControllingHighBP">
+		<![CDATA[select distinct(em.Encounter_id),em.human_id,a.ICd,em.procedure_code from e_m_coding em
+    left join assessment a on em.human_id=a.human_id
+
+    where em.human_id in (:EncIds) ;
+    ]]>
+	</sql-query>
 
 	<sql-query name="PQRI.GetDenominatorList3CMS165copy.withexclusion.ControllingHighBP">
 		<![CDATA[ 
@@ -14124,6 +14469,14 @@ left  join patient_results pr on pr.human_id=em.human_id
     ;]]>
 	</sql-query>
 	
+	
+	<sql-query name="PQRI.GetDenominatorList3CMS165v11.withexclusion.ControllingHighBP">
+		<![CDATA[ 
+    select distinct(em.Encounter_id),em.human_id,a.ICd,em.procedure_code from e_m_coding em
+    left join assessment a on em.human_id=a.human_id
+    where em.human_id in (:EncIds)  and  em.human_id not in (:EncIdEx)
+    ;]]>
+	</sql-query>
 		
 	<sql-query name="PQRI.GetExclusionCMS165.ControllingHighBP">
 
@@ -14150,6 +14503,32 @@ left  join patient_results pr on pr.human_id=em.human_id
 		
 	</sql-query>
 
+	
+	<sql-query name="PQRI.GetExclusionCMS165v11.ControllingHighBP">
+
+
+		<![CDATA[select distinct(em.Encounter_id) ,em.human_id,a.icd,em.encounter_id from e_m_coding em
+		left join assessment a on em.encounter_id=a.encounter_id
+		where   (em.procedure_code  in (SELECT PQRI_Value FROM cqm_data where nqf_number =?  and PQRI_calculation_Method=?
+		and PQRI_Type in ('CPT','HCPCS') and Standard_Concept in ('Chronic Kidney Disease, Stage 5',
+'Dialysis Services',
+'ESRD Monthly Outpatient Services',
+'End Stage Renal Disease',
+'Kidney Transplant',
+'Kidney Transplant Recipient',
+'Pregnancy'))
+		or
+		a.icd  in(SELECT PQRI_Value FROM cqm_data where nqf_number =?
+		and PQRI_calculation_Method=? and PQRI_Type in ('ICD') and Standard_Concept in ('Chronic Kidney Disease, Stage 5',
+'Dialysis Services',
+'ESRD Monthly Outpatient Services',
+'End Stage Renal Disease',
+'Kidney Transplant',
+'Kidney Transplant Recipient',
+'Pregnancy'))  )and em.human_id in (:EncIds);]]>
+		
+	</sql-query>
+		
 
 	<sql-query name="PQRI.GetExclusion1CMS165.ControllingHighBP">
 		<![CDATA[select em.encounter_id,em.human_id,a.ICD,em.procedure_code,pl.loinc_identifier from e_m_coding em
@@ -14168,7 +14547,21 @@ where   Captured_date_and_time between ? and ? and em.procedure_code not in (SEL
 cqm_data where nqf_number =?  and standard_Concept in ('Emergency Department Visit')) and pr.encounter_id in (:EncIds)
   and (Loinc_identifier='8480-6' and value <140) group by human_id; ]]>
 	</sql-query>
+	<sql-query name="PQRI.GetNumeratorCMS165v11.ControllingHighBP">
+		<![CDATA[select pr.encounter_id,pr.human_id,Loinc_identifier,max(Captured_date_and_time),Value from 
+ patient_results pr join e_m_coding as em on pr.encounter_id=em.encounter_id
+where   Captured_date_and_time between ? and ? and em.procedure_code not in (SELECT PQRI_Value FROM 
+cqm_data where nqf_number =?  and standard_Concept in ('Emergency Department Visit')) and pr.encounter_id in (:EncIds)
+  and (Loinc_identifier='8480-6' and value <140) group by human_id; ]]>
+	</sql-query>
 <sql-query name="PQRI.GetNumerator2CMS165.ControllingHighBP">
+		<![CDATA[select pr.encounter_id,pr.human_id,Loinc_identifier,max(Captured_date_and_time),Value from 
+ patient_results pr join e_m_coding as em on pr.encounter_id=em.encounter_id
+where   Captured_date_and_time between ? and ? and em.procedure_code not in (SELECT PQRI_Value FROM 
+cqm_data where nqf_number =?  and standard_Concept in ('Emergency Department Visit'))and  pr.encounter_id in (:EncIds)
+and (Loinc_identifier='8462-4' and value <90) group by human_id; ]]>
+	</sql-query>
+	<sql-query name="PQRI.GetNumerator2CMS165v11.ControllingHighBP">
 		<![CDATA[select pr.encounter_id,pr.human_id,Loinc_identifier,max(Captured_date_and_time),Value from 
  patient_results pr join e_m_coding as em on pr.encounter_id=em.encounter_id
 where   Captured_date_and_time between ? and ? and em.procedure_code not in (SELECT PQRI_Value FROM 
@@ -14181,8 +14574,24 @@ and (Loinc_identifier='8462-4' and value <90) group by human_id; ]]>
 where    encounter_id in (:EncIds) group by human_id
 ; ]]>
 	</sql-query>
+	<sql-query name="PQRI.GetNumerator3CMS165v11.ControllingHighBP">
+		<![CDATA[select encounter_id,human_id,Loinc_identifier,max(Captured_date_and_time),Value from 
+ patient_results pr
+where    encounter_id in (:EncIds) group by human_id
+; ]]>
+	</sql-query>
 		
 	<sql-query name="PQRI.GetDenominatorCMS147.Influenza">
+		<![CDATA[select a.encounter_id from encounter a  inner join human b on a.human_id = b.human_id
+	where TIMESTAMPDIFF(YEAR,Birth_date, date(?)) >0.6
+and a.date_of_service between (date_format(date_sub(DATE_FORMAT(? ,'%Y-01-01'),interval 1 year),'%Y-10-01'))
+and (date_format(DATE_FORMAT(?,'%Y-01-01'),'%Y-03-31')) and a.encounter_provider_id = ?
+
+;]]>
+	</sql-query>
+	
+	
+	<sql-query name="PQRI.GetDenominatorCMS147v11.Influenza">
 		<![CDATA[select a.encounter_id from encounter a  inner join human b on a.human_id = b.human_id
 	where TIMESTAMPDIFF(YEAR,Birth_date, date(?)) >0.6
 and a.date_of_service between (date_format(date_sub(DATE_FORMAT(? ,'%Y-01-01'),interval 1 year),'%Y-10-01'))
@@ -14234,9 +14643,21 @@ where c.is_delete='N' and (c.Procedure_Code in
 ]]>
 	</sql-query>
 
+<sql-query name="PQRI.GetDenominatorList1CMS147v11.Influenza">
+		<![CDATA[
+select c.encounter_id
+from e_m_coding c 
+where c.is_delete='N' and (c.Procedure_Code in
+(SELECT PQRI_Value FROM cqm_data where nqf_number =?  and PQRI_calculation_Method=? and PQRI_Type in ('CPT'))) and c.encounter_id in (:EncIds);
+]]>
+	</sql-query>
 
 
 	<sql-query name="PQRI.GetDenominatorList5CMS147.Influenza">
+		<![CDATA[select e.Encounter_Id,e.Human_Id,em.procedure_code from encounter e join e_m_coding em on e.encounter_id=em.encounter_id
+    where em.is_delete='N'  and e.encounter_id not in (:EncIds) and e.human_id in (:EncIdslist);]]>
+	</sql-query>
+<sql-query name="PQRI.GetDenominatorList5CMS147v11.Influenza">
 		<![CDATA[select e.Encounter_Id,e.Human_Id,em.procedure_code from encounter e join e_m_coding em on e.encounter_id=em.encounter_id
     where em.is_delete='N'  and e.encounter_id not in (:EncIds) and e.human_id in (:EncIdslist);]]>
 	</sql-query>
@@ -14246,6 +14667,10 @@ where c.is_delete='N' and (c.Procedure_Code in
     where  em.is_delete='N'  and  e.encounter_id  in (:EncIds) ;]]>
 	</sql-query>
 
+<sql-query name="PQRI.GetDenominatorList6CMS147v11.Influenza">
+		<![CDATA[select e.Encounter_Id,e.Human_Id ,em.procedure_code from encounter e join e_m_coding em on e.encounter_id=em.encounter_id
+    where  em.is_delete='N'  and  e.encounter_id  in (:EncIds) ;]]>
+	</sql-query>
 
 
 	<sql-query name="PQRI.GetDenominatorExceptionCMS147.Influenza">
@@ -14257,7 +14682,27 @@ where a.encounter_id in(:EncIds)  and
 e.snomed_code in (SELECT PQRI_Value FROM cqm_data where nqf_number =?  and PQRI_calculation_Method=? and PQRI_Type in ('SNOMED')
 ));]]>
 	</sql-query>
+	
+		<sql-query name="PQRI.GetDenominatorExceptionCMS147v11.Influenza">
+		<![CDATA[select a.encounter_id from encounter a
+left join assessment b on A.Encounter_id=b.Encounter_ID
+left join immunization e on a.Encounter_Id=e.Encounter_Id
+where a.encounter_id in(:EncIds)  and 
+(b.ICD  in(SELECT PQRI_Value FROM cqm_data where nqf_number =?  and PQRI_calculation_Method=? and PQRI_Type in ('ICD')) or
+e.snomed_code in (SELECT PQRI_Value FROM cqm_data where nqf_number =?  and PQRI_calculation_Method=? and PQRI_Type in ('SNOMED')
+));]]>
+	</sql-query>
+		
 	<sql-query name="PQRI.GetDenominatorExceptionCMS147_list.Influenza">
+		<![CDATA[select encounter_id,human_id,'',procedure_code,'' from e_m_coding where encounter_id in (:EncIds) and is_delete='N'
+union all
+select encounter_id,human_id,icd,'','' from assessment where encounter_id in (:EncIds)
+UNION ALL
+select encounter_id,human_id,'','',snomed_code from immunization where encounter_id in (:EncIds);
+]]>
+	</sql-query>
+	
+	<sql-query name="PQRI.GetDenominatorExceptionCMS147_listv11.Influenza">
 		<![CDATA[select encounter_id,human_id,'',procedure_code,'' from e_m_coding where encounter_id in (:EncIds) and is_delete='N'
 union all
 select encounter_id,human_id,icd,'','' from assessment where encounter_id in (:EncIds)
@@ -14282,6 +14727,23 @@ between date_format(date_sub(DATE_FORMAT(?,'%Y-01-01'),interval 1 year),'%Y-08-0
  date_format(DATE_FORMAT(?,'%Y-01-01'),'%Y-03-31')) and human_id in (:EncIds);]]>
 
 	</sql-query>
+	
+	<sql-query name="PQRI.GetNumeratorCMS147v11.Influenza">
+
+		<![CDATA[select distinct(B.Encounter_Id),B.Human_Id,B.procedure_code,ifnull(CVX_Code,'') from immunization_history B
+
+
+where( B.procedure_code in(SELECT PQRI_Value FROM cqm_data where nqf_number =?  and PQRI_calculation_Method=? and PQRI_Type ='CPT'
+
+) or CVX_Code in (SELECT PQRI_Value FROM cqm_data where nqf_number =?  and PQRI_calculation_Method=? and PQRI_Type = 'CVX'))  and
+(if(Administered_Date<>'',str_to_date(Administered_Date,'%Y-%b-%d'),'0001-01-01') 
+between date_format(date_sub(DATE_FORMAT(?,'%Y-01-01'),interval 1 year),'%Y-08-01') and
+ date_format(date_sub(DATE_FORMAT(?,'%Y-01-01'),interval 1 year),'%Y-12-31')
+ or
+ if(Administered_Date<>'',str_to_date(Administered_Date,'%Y-%b-%d'),'0001-01-01') between date_format(DATE_FORMAT(?,'%Y-01-01'),'%Y-01-01') and
+ date_format(DATE_FORMAT(?,'%Y-01-01'),'%Y-03-31')) and human_id in (:EncIds);]]>
+
+	</sql-query>
 
 	<sql-query name="PQRI.GetDenominator1CMS125.BreastCancer">
 		<![CDATA[select e.human_id from encounter e left join human h on e.human_id=h.human_id left join e_m_coding em on e.encounter_id=em.encounter_id
@@ -14291,12 +14753,23 @@ and h.sex="FEMALE" and e.encounter_provider_id =? and
 em.procedure_code in (SELECT PQRI_Value FROM cqm_data where nqf_number =?  and PQRI_calculation_Method=? and PQRI_Type in ('CPT','HCPCS'));]]>
 	</sql-query>
 
+	<sql-query name="PQRI.GetDenominator1CMS125v11.BreastCancer">
+		<![CDATA[select e.human_id from encounter e left join human h on e.human_id=h.human_id left join e_m_coding em on e.encounter_id=em.encounter_id
+where date(Date_of_service) between ? and ? and
+(datediff(date(e.date_of_service),h.birth_date)/365.25)>=51 and (datediff(date(?),h.birth_date)/365.25)<74
+and h.sex="FEMALE" and e.encounter_provider_id =? and
+em.procedure_code in (SELECT PQRI_Value FROM cqm_data where nqf_number =?  and PQRI_calculation_Method=? and PQRI_Type in ('CPT','HCPCS'));]]>
+	</sql-query>
+		
 	<sql-query name="PQRI.GetDenominator2CMS125.BreastCancer">
 		<![CDATA[select e.encounter_id ,e.human_id,em.procedure_code from encounter e join e_m_coding em on e.encounter_id=em.encounter_id
 where e.human_id in (:EncIds); ]]>
 	</sql-query>
-
-	<sql-query name="PQRI.GetDenominator2withExceptionCMS125.BreastCancer">
+<sql-query name="PQRI.GetDenominator2CMS125v11.BreastCancer">
+		<![CDATA[select e.encounter_id ,e.human_id,em.procedure_code from encounter e join e_m_coding em on e.encounter_id=em.encounter_id
+where e.human_id in (:EncIds); ]]>
+	</sql-query>
+	<sql-query name="PQRI.GetDenominator2withExceptionCMS125v11.BreastCancer">
 		<![CDATA[select e.encounter_id ,e.human_id,em.procedure_code from encounter e join e_m_coding em on e.encounter_id=em.encounter_id where e.human_id in (:EncIds) and e.human_id not in (:EncIdExc); ]]>
 	</sql-query>
 
@@ -14313,18 +14786,50 @@ select distinct em.encounter_id ,em.human_id from e_m_coding em where em.human_i
 in ('CPT','HCPCS')) and em.Is_Delete='N')
 group by em.procedure_code,em.human_id having count(em.procedure_code)>=2;]]>
 	</sql-query>
+	
+	<sql-query name="PQRI.GetExceptionCMS125v11.BreastCancer">
+		<![CDATA[select distinct em.encounter_id ,em.human_id from assessment em
+where em.human_id in (:EncIds) and
+em.ICD  in (SELECT PQRI_Value FROM cqm_data where nqf_number =?  and PQRI_calculation_Method=? and PQRI_Type
+in ('ICD'))
+
+union
+
+select distinct em.encounter_id ,em.human_id from e_m_coding em where em.human_id in (:EncIds) and
+(em.procedure_code in(SELECT PQRI_Value FROM cqm_data where nqf_number =?  and PQRI_calculation_Method=? and PQRI_Type
+in ('CPT','HCPCS')) and em.Is_Delete='N')
+group by em.procedure_code,em.human_id having count(em.procedure_code)>=2;]]>
+	</sql-query>
+		
 	<sql-query name="PQRI.GetException1CMS125.BreastCancer">
 		<![CDATA[select distinct em.encounter_id,em.human_id,c.ICD,em.procedure_code from e_m_coding em
 left join assessment c on em.encounter_id=c.encounter_id where em.human_id in (:EncIds); ]]>
 	</sql-query>
 
+	
+	<sql-query name="PQRI.GetException1CMS125v11.BreastCancer">
+		<![CDATA[select distinct em.encounter_id,em.human_id,c.ICD,em.procedure_code from e_m_coding em
+left join assessment c on em.encounter_id=c.encounter_id where em.human_id in (:EncIds); ]]>
+	</sql-query>
 
 	<sql-query name="PQRI.GetNumeratorCMS125.BreastCancer">
 		<![CDATA[select encounter_id,human_id,loinc_identifier from patient_results pr where pr.loinc_observation like "%CDPLast Mammogram%"  and if(length(`value`)=8,date_format(str_to_date(`value`,'%Y-%b-%d'),'%Y-%m-01'),str_to_date(`value`,'%Y-%b-%d')) 
     between date_sub(DATE_FORMAT(?,'%Y-01-01'),interval 15 month) and DATE_FORMAT(?,'%Y-12-31') and human_id in (:EncIds);]]>
 	</sql-query>
 
+	<sql-query name="PQRI.GetNumeratorCMS125v11.BreastCancer">
+		<![CDATA[select encounter_id,human_id,loinc_identifier from patient_results pr where pr.loinc_observation like "%CDPLast Mammogram%"  and if(length(`value`)=8,date_format(str_to_date(`value`,'%Y-%b-%d'),'%Y-%m-01'),str_to_date(`value`,'%Y-%b-%d')) 
+    between date_sub(DATE_FORMAT(?,'%Y-01-01'),interval 15 month) and DATE_FORMAT(?,'%Y-12-31') and human_id in (:EncIds);]]>
+	</sql-query>
+		
 	<sql-query name="PQRI.GetDenominatorCMS22.HBpFollowup">
+		<![CDATA[select e.encounter_id,e.human_id from encounter e inner join human h on e.human_id=h.human_id
+left join e_m_coding B on e.Encounter_Id=B.Encounter_Id
+where date(Date_of_service) between ? and ? and e.encounter_Provider_id = ? and 
+(datediff(date(?),h.birth_date)/365.25)>=18
+and Procedure_Code in (SELECT PQRI_Value FROM cqm_data where nqf_number =?  and PQRI_calculation_Method=? and PQRI_Type in ('CPT','HCPCS')) ;]]>
+	</sql-query>
+	<sql-query name="PQRI.GetDenominatorCMS22v11.HBpFollowup">
 		<![CDATA[select e.encounter_id,e.human_id from encounter e inner join human h on e.human_id=h.human_id
 left join e_m_coding B on e.Encounter_Id=B.Encounter_Id
 where date(Date_of_service) between ? and ? and e.encounter_Provider_id = ? and 
@@ -14359,6 +14864,12 @@ where e.encounter_id in (:EncIds) and pr.Loinc_Observation like "%bp%" and pr.sn
 left join patient_results pr   on e.encounter_id=pr.encounter_id left join e_m_coding B on e.Encounter_Id=B.Encounter_Id
 where e.encounter_id in (:EncIds) and pr.Loinc_Observation like "%bp%" and pr.snomed_code<>'';]]>
 	</sql-query>
+	
+		<sql-query name="PQRI.GetExceptionCMS22v11.HBpFollowup">
+		<![CDATA[select e.encounter_id,e.human_id, pr.Loinc_identifier,ifnull(B.procedure_code,'') from encounter e
+left join patient_results pr   on e.encounter_id=pr.encounter_id left join e_m_coding B on e.Encounter_Id=B.Encounter_Id
+where e.encounter_id in (:EncIds) and pr.Loinc_Observation like "%bp%" and pr.snomed_code<>'';]]>
+	</sql-query>
 	<sql-query name="PQRI.GetExclusionCMS22_list.HBpFollowup">
 		<![CDATA[select em.encounter_id,a.human_id,a.ICD,'' as loinc,em.procedure_code,cast(a.created_date_and_time as char(50)) from assessment a
     left join e_m_coding em on a.human_id=em.human_id where a.human_id in (:humIds)
@@ -14370,14 +14881,33 @@ select pr.encounter_id,pr.human_id,'',pr.Loinc_identifier as loinc,'','' from pa
     
   ]]>
 	</sql-query>
-
+<sql-query name="PQRI.GetExclusionCMS22_listv11.HBpFollowup">
+		<![CDATA[select em.encounter_id,a.human_id,a.ICD,'' as loinc,em.procedure_code,cast(a.created_date_and_time as char(50)) from assessment a
+    left join e_m_coding em on a.human_id=em.human_id where a.human_id in (:humIds)
+    union
+    select em.encounter_id,a.human_id,a.ICD,'' as loinc,em.procedure_code,cast(a.created_date_and_time as char(50)) from problem_list a
+    left join e_m_coding em on a.human_id=em.human_id where a.human_id in (:humIds)
+union
+select pr.encounter_id,pr.human_id,'',pr.Loinc_identifier as loinc,'','' from patient_results pr where human_id in (:humIds)
+    
+  ]]>
+	</sql-query>
 
 	<sql-query name="PQRI.GetEDenominatorListCMS22.HBpFollowup">
 		<![CDATA[select e.encounter_id,e.human_id,em.procedure_code, ifnull(pr.Loinc_identifier,'') from encounter e join e_m_coding em on e.encounter_id=em.encounter_id
 Left join patient_results pr on pr.encounter_id=e.encounter_id where e.encounter_id in (:EncIds) and e.human_id not in(:EncouExp) and e.human_id not in(:HumId) ;]]>
 	</sql-query>
 
+	<sql-query name="PQRI.GetEDenominatorListCMS22v11.HBpFollowup">
+		<![CDATA[select e.encounter_id,e.human_id,em.procedure_code, ifnull(pr.Loinc_identifier,'') from encounter e join e_m_coding em on e.encounter_id=em.encounter_id
+Left join patient_results pr on pr.encounter_id=e.encounter_id where e.encounter_id in (:EncIds) and e.human_id not in(:EncouExp) and e.human_id not in(:HumId) ;]]>
+	</sql-query>
+		
 	<sql-query name="PQRI.GetEDenominatorList_EncounterCMS22.HBpFollowup">
+		<![CDATA[select e.encounter_id,e.human_id,em.procedure_code, ifnull(pr.Loinc_identifier,'') from encounter e join e_m_coding em on e.encounter_id=em.encounter_id
+Left join patient_results pr on pr.encounter_id=e.encounter_id where e.encounter_id in (:EncIds) and e.human_id not in(:EncouExp);]]>
+	</sql-query>
+	<sql-query name="PQRI.GetEDenominatorList_EncounterCMS22v11.HBpFollowup">
 		<![CDATA[select e.encounter_id,e.human_id,em.procedure_code, ifnull(pr.Loinc_identifier,'') from encounter e join e_m_coding em on e.encounter_id=em.encounter_id
 Left join patient_results pr on pr.encounter_id=e.encounter_id where e.encounter_id in (:EncIds) and e.human_id not in(:EncouExp);]]>
 	</sql-query>
@@ -14387,7 +14917,16 @@ Left join patient_results pr on pr.encounter_id=e.encounter_id where e.encounter
 Left join patient_results pr on pr.encounter_id=e.encounter_id where e.encounter_id in (:EncIds) and e.human_id not in(:HumId) ;]]>
 	</sql-query>
 
+	<sql-query name="PQRI.GetEDenominatorList_HumanCMS22v11.HBpFollowup">
+		<![CDATA[select e.encounter_id,e.human_id,em.procedure_code, ifnull(pr.Loinc_identifier,'') from encounter e join e_m_coding em on e.encounter_id=em.encounter_id
+Left join patient_results pr on pr.encounter_id=e.encounter_id where e.encounter_id in (:EncIds) and e.human_id not in(:HumId) ;]]>
+	</sql-query>
+		
 	<sql-query name="PQRI.GetEDenominatorList2CMS22.HBpFollowup">
+		<![CDATA[select e.encounter_id,e.human_id,em.procedure_code,ifnull(pr.Loinc_identifier,'') from encounter e join e_m_coding em on e.encounter_id=em.encounter_id
+Left join patient_results pr on pr.encounter_id=e.encounter_id where e.encounter_id in (:EncIds) ;]]>
+	</sql-query>
+	<sql-query name="PQRI.GetEDenominatorList2CMS22v11.HBpFollowup">
 		<![CDATA[select e.encounter_id,e.human_id,em.procedure_code,ifnull(pr.Loinc_identifier,'') from encounter e join e_m_coding em on e.encounter_id=em.encounter_id
 Left join patient_results pr on pr.encounter_id=e.encounter_id where e.encounter_id in (:EncIds) ;]]>
 	</sql-query>
@@ -14435,6 +14974,52 @@ and (e.Return_In_Weeks<='4' or e.Return_In_Days<='28')
 and o.Lab_Procedure in(SELECT PQRI_Value FROM 
 cqm_data where nqf_number =?  and PQRI_calculation_Method=? and PQRI_Type in ('CPT')));]]>
 	</sql-query>
+	
+	<sql-query name="PQRI.GetNumeratorCMS22v11.HBpFollowup">
+		<![CDATA[select B.encounter_id,B.human_id,'' from  patient_results B
+where loinc_observation like "%bp%" and `Value` = 'Normal'
+and B.encounter_id in (:EncIds)
+union
+select distinct B.encounter_id,B.human_id,'' from patient_results B
+left join care_plan cp on B.encounter_id=cp.encounter_id
+left join encounter e on B.encounter_id=e.encounter_id
+where B.encounter_id in (:EncIds)
+and (loinc_observation like "%bp%" and value='Elevated' and cp.care_name_value ='BP Sys/Dia' and cp.care_plan_notes!='' and cp.status= 'Elevated'
+ and
+((e.due_on between date_add(date(e.date_of_service) , interval 1 day) and DATE_add(date_add(date(e.date_of_service),interval 1 day),
+ INTERVAL 12 MONTH))
+or
+(e.Return_In_Months>='2' and e.Return_In_Months<='6') or (e.Return_In_Weeks>='8' and e.Return_In_Weeks<='24') or (e.Return_In_Days>='60' and e.Return_In_Days<='180')))
+union
+select distinct B.encounter_id,B.human_id,'' from  patient_results B
+left join care_plan cp on B.encounter_id=cp.encounter_id
+left join encounter e on B.encounter_id=e.encounter_id
+where e.encounter_id in (:EncIds)
+and (loinc_observation like "%bp%"
+and value='first hypertensive'
+and cp.care_name_value ='BP Sys/Dia' and cp.care_plan_notes!=''
+and status='first hypertensive' and
+(e.due_on between date_add(date(e.date_of_service) , interval 1 day)
+and DATE_add(date_add(date(e.date_of_service),interval 1 day), INTERVAL 4 week)
+or
+e.Return_In_Weeks<='4' or e.Return_In_Days<='28'))
+union
+select distinct B.encounter_id,B.human_id ,cp.snomed_code from patient_results B
+left join care_plan cp on B.encounter_id=cp.encounter_id
+left join encounter e on B.encounter_id=e.encounter_id
+left join orders o on e.encounter_id=o.encounter_id 
+where B.encounter_id in (:EncIds) and
+
+(loinc_observation like "%bp%" and value='Second Hypertensive' and
+cp.care_name_value ='BP Sys/Dia' and cp.care_plan_notes!='' and cp.status = 'Second Hypertensive' and
+
+(cp.snomed_code like "%134403003%" or cp.snomed_code like "%183516009%" or cp.snomed_code like "%183561008%" or cp.snomed_code like "%18385600%"
+or cp.snomed_code like "%306206005%" or cp.snomed_code like "%306253008%" or cp.snomed_code like "%308470006%")
+and (e.Return_In_Weeks<='4' or e.Return_In_Days<='28')
+and o.Lab_Procedure in(SELECT PQRI_Value FROM 
+cqm_data where nqf_number =?  and PQRI_calculation_Method=? and PQRI_Type in ('CPT')));]]>
+	</sql-query>
+		
 	<sql-query name="Get.HumanCountbyCarrierName">
 		<![CDATA[ select distinct a.human_id from pat_insured_plan  as a join insurance_plan as b
    on a.insurance_plan_id=a.insurance_plan_id
@@ -14714,6 +15299,17 @@ cqm_data where nqf_number =?  and PQRI_calculation_Method=? and PQRI_Type in ('C
 
 
 	</sql-query>
+	
+	<sql-query name="PQRI.GetDenominator1CMS130v11.ColorectalCancer">
+		<![CDATA[select e.human_id from encounter e left join human h on e.human_id=h.human_id left join e_m_coding em on e.encounter_id=em.encounter_id
+where date(Date_of_service) between ? and ? and
+(datediff(date(?),h.birth_date)/365.25)>=50 and (datediff(date(?),h.birth_date)/365.25)<76
+ and e.encounter_provider_id =? and
+em.procedure_code in(SELECT PQRI_Value FROM 
+cqm_data where nqf_number =?  and PQRI_calculation_Method=? and PQRI_Type in ('CPT','HCPCS'));]]>
+
+
+	</sql-query>
 
 	<sql-query name="PQRI.GetExceptionCMS130.ColorectalCancer">
 		<![CDATA[select distinct b.encounter_id ,b.human_id from  
@@ -14731,8 +15327,42 @@ select distinct encounter_id,human_id from care_plan where care_name_value in ('
 
 
 	</sql-query>
+	
+	<sql-query name="PQRI.GetExceptionCMS130v11.ColorectalCancer">
+		<![CDATA[select distinct b.encounter_id ,b.human_id from  
+ assessment b 
+where 
+ b.ICD in (SELECT PQRI_Value FROM 
+cqm_data where  Standard_concept in ('Malignant Neoplasm of Colon','Total Colectomy') and nqf_number =? 
+and PQRI_calculation_Method=? and PQRI_Type in ('ICD'))
+ and b.human_id in (:EncIds) 
+union
+
+select distinct encounter_id,human_id from care_plan where care_name_value in ('Hospice Care',
+'Palliative Care','Frailty Device') and status='Yes' and snomed_Code!='' and human_id in (:EncIds);
+]]>
+
+
+	</sql-query>
 
 	<sql-query name="PQRI.GetExceptionCMS122.HbA1c">
+		<![CDATA[select distinct b.encounter_id ,b.human_id from  
+ assessment b 
+where 
+ b.ICD in (SELECT PQRI_Value FROM 
+cqm_data where  Standard_concept in ('Malignant Neoplasm of Colon','Total Colectomy') and nqf_number =? 
+and PQRI_calculation_Method=? and PQRI_Type in ('ICD'))
+ and b.human_id in (:EncIds) 
+union
+
+select distinct encounter_id,human_id from care_plan where care_name_value in ('Hospice Care',
+'Palliative Care','Frailty Device') and status='Yes' and snomed_Code!='' and human_id in (:EncIds);
+]]>
+
+
+	</sql-query>
+	
+	<sql-query name="PQRI.GetExceptionCMS122v11.HbA1c">
 		<![CDATA[select distinct b.encounter_id ,b.human_id from  
  assessment b 
 where 
@@ -14766,8 +15396,38 @@ select distinct encounter_id,human_id from care_plan where care_name_value in ('
 
 
 	</sql-query>
+	
+	
+		<sql-query name="PQRI.GetExceptionCMS165v11.ControllingHighBloodPressure">
+		<![CDATA[select distinct b.encounter_id ,b.human_id from  
+ assessment b 
+where 
+ b.ICD in (SELECT PQRI_Value FROM 
+cqm_data where  Standard_concept in ('Malignant Neoplasm of Colon','Total Colectomy') and nqf_number =? 
+and PQRI_calculation_Method=? and PQRI_Type in ('ICD'))
+ and b.human_id in (:EncIds) 
+union
+
+select distinct encounter_id,human_id from care_plan where care_name_value in ('Hospice Care',
+'Palliative Care','Frailty Device') and status='Yes' and snomed_Code!='' and human_id in (:EncIds);
+]]>
+
+
+	</sql-query>
 
 	<sql-query name="PQRI.GetExceptionHosCMS130.ColorectalCancer">
+		<![CDATA[select distinct b.encounter_id ,b.human_id,ifnull(s.description,'') from  
+ hospitalization b left join static_lookup  as s on s.value=b.Reason_for_hospitalization
+where s.field_name='REASON FOR HOSPITALIZATION' and   if(length(`from_date`)=8,date_format(str_to_date(`from_date`,'%d-%b-%Y'),'%Y-%m-01'),str_to_date(`from_date`,'%d-%b-%Y'))
+		between (DATE_FORMAT(?,'%Y-01-01')) and DATE_FORMAT(?,'%Y-12-31') and 
+		 if(length(`to_date`)=8,date_format(str_to_date(`to_date`,'%d-%b-%Y'),'%Y-%m-01'),str_to_date(`to_date`,'%d-%b-%Y'))
+		between (DATE_FORMAT(?,'%Y-01-01')) and DATE_FORMAT(?,'%Y-12-31')  and human_id in (:EncIds);
+ 
+
+ 
+]]>
+	</sql-query>
+	<sql-query name="PQRI.GetExceptionHosCMS130v11.ColorectalCancer">
 		<![CDATA[select distinct b.encounter_id ,b.human_id,ifnull(s.description,'') from  
  hospitalization b left join static_lookup  as s on s.value=b.Reason_for_hospitalization
 where s.field_name='REASON FOR HOSPITALIZATION' and   if(length(`from_date`)=8,date_format(str_to_date(`from_date`,'%d-%b-%Y'),'%Y-%m-01'),str_to_date(`from_date`,'%d-%b-%Y'))
@@ -14793,8 +15453,35 @@ where s.field_name='REASON FOR HOSPITALIZATION' and   if(length(`from_date`)=8,d
 ]]>
 	</sql-query>
 
+	
+	<sql-query name="PQRI.GetExceptionHosCMS122v11.HbA1c">
+		<![CDATA[select distinct b.encounter_id ,b.human_id,ifnull(s.description,'') from  
+ hospitalization b left join static_lookup  as s on s.value=b.Reason_for_hospitalization
+where s.field_name='REASON FOR HOSPITALIZATION' and   if(length(`from_date`)=8,date_format(str_to_date(`from_date`,'%d-%b-%Y'),'%Y-%m-01'),str_to_date(`from_date`,'%d-%b-%Y'))
+		between (DATE_FORMAT(?,'%Y-01-01')) and DATE_FORMAT(?,'%Y-12-31') and 
+		 if(length(`to_date`)=8,date_format(str_to_date(`to_date`,'%d-%b-%Y'),'%Y-%m-01'),str_to_date(`to_date`,'%d-%b-%Y'))
+		between (DATE_FORMAT(?,'%Y-01-01')) and DATE_FORMAT(?,'%Y-12-31')  and human_id in (:EncIds);
+ 
+
+ 
+]]>
+	</sql-query>
 
 	<sql-query name="PQRI.GetExceptionHosCMS165.ControllingHighBloodPressure">
+		<![CDATA[select distinct b.encounter_id ,b.human_id,ifnull(s.description,'') from  
+ hospitalization b left join static_lookup  as s on s.value=b.Reason_for_hospitalization
+where s.field_name='REASON FOR HOSPITALIZATION' and description not in ('183452005') and   if(length(`from_date`)=8,date_format(str_to_date(`from_date`,'%d-%b-%Y'),'%Y-%m-01'),str_to_date(`from_date`,'%d-%b-%Y'))
+		between (DATE_FORMAT(?,'%Y-01-01')) and DATE_FORMAT(?,'%Y-12-31') and 
+		 if(length(`to_date`)=8,date_format(str_to_date(`to_date`,'%d-%b-%Y'),'%Y-%m-01'),str_to_date(`to_date`,'%d-%b-%Y'))
+		between (DATE_FORMAT(?,'%Y-01-01')) and DATE_FORMAT(?,'%Y-12-31')  and human_id in (:EncIds);
+ 
+
+ 
+]]>
+	</sql-query>
+	
+	
+		<sql-query name="PQRI.GetExceptionHosCMS165v11.ControllingHighBloodPressure">
 		<![CDATA[select distinct b.encounter_id ,b.human_id,ifnull(s.description,'') from  
  hospitalization b left join static_lookup  as s on s.value=b.Reason_for_hospitalization
 where s.field_name='REASON FOR HOSPITALIZATION' and description not in ('183452005') and   if(length(`from_date`)=8,date_format(str_to_date(`from_date`,'%d-%b-%Y'),'%Y-%m-01'),str_to_date(`from_date`,'%d-%b-%Y'))
@@ -14811,9 +15498,18 @@ where s.field_name='REASON FOR HOSPITALIZATION' and description not in ('1834520
 		<![CDATA[select distinct em.encounter_id,em.human_id,c.ICD,em.procedure_code,cp.snomed_code from e_m_coding em
 left join assessment c on em.encounter_id=c.encounter_id left join care_plan cp on em.encounter_id=cp.encounter_id where em.human_id in (:EncIds); ]]>
 	</sql-query>
-
+<sql-query name="PQRI.GetException1CMS130v11.ColorectalCancer">
+		<![CDATA[select distinct em.encounter_id,em.human_id,c.ICD,em.procedure_code,cp.snomed_code from e_m_coding em
+left join assessment c on em.encounter_id=c.encounter_id left join care_plan cp on em.encounter_id=cp.encounter_id where em.human_id in (:EncIds); ]]>
+	</sql-query>
 
 	<sql-query name="PQRI.GetException1CMS122.HbA1c">
+		<![CDATA[select distinct em.encounter_id,em.human_id,c.ICD,em.procedure_code,cp.snomed_code from e_m_coding em
+left join assessment c on em.encounter_id=c.encounter_id left join care_plan cp on em.encounter_id=cp.encounter_id where em.human_id in (:EncIds); ]]>
+	</sql-query>
+
+	
+	<sql-query name="PQRI.GetException1CMS122v11.HbA1c">
 		<![CDATA[select distinct em.encounter_id,em.human_id,c.ICD,em.procedure_code,cp.snomed_code from e_m_coding em
 left join assessment c on em.encounter_id=c.encounter_id left join care_plan cp on em.encounter_id=cp.encounter_id where em.human_id in (:EncIds); ]]>
 	</sql-query>
@@ -14824,7 +15520,23 @@ left join assessment c on em.encounter_id=c.encounter_id left join care_plan cp 
 left join assessment c on em.encounter_id=c.encounter_id left join care_plan cp on em.encounter_id=cp.encounter_id where em.human_id in (:EncIds); ]]>
 	</sql-query>
 
+	
+	<sql-query name="PQRI.GetException1CMS165v11.ControllingHighBloodPressure">
+		<![CDATA[select distinct em.encounter_id,em.human_id,c.ICD,em.procedure_code,cp.snomed_code from e_m_coding em
+left join assessment c on em.encounter_id=c.encounter_id left join care_plan cp on em.encounter_id=cp.encounter_id where em.human_id in (:EncIds); ]]>
+	</sql-query>
+
+		
+		
 	<sql-query name="PQRI.GetExceptionFACITCMS130.ColorectalCancer">
+		<![CDATA[select encounter_id,human_id,loinc_identifier,'' from patient_results pr   where 
+pr.loinc_observation like "%CDPFACIT-Pal%"  
+	and if(length(pr.value)=8,date_format(str_to_date(pr.value,'%Y-%b-%d'),'%Y-%m-01'),str_to_date(pr.value,'%Y-%b-%d')) 
+    between DATE_FORMAT(?,'%Y-01-01') and DATE_FORMAT(?,'%Y-12-31') and human_id in (:EncIds) ]]>
+
+	</sql-query>
+	
+	<sql-query name="PQRI.GetExceptionFACITCMS130v11.ColorectalCancer">
 		<![CDATA[select encounter_id,human_id,loinc_identifier,'' from patient_results pr   where 
 pr.loinc_observation like "%CDPFACIT-Pal%"  
 	and if(length(pr.value)=8,date_format(str_to_date(pr.value,'%Y-%b-%d'),'%Y-%m-01'),str_to_date(pr.value,'%Y-%b-%d')) 
@@ -14840,8 +15552,25 @@ pr.loinc_observation like "%CDPFACIT-Pal%"
 
 	</sql-query>
 
+	
+	<sql-query name="PQRI.GetExceptionFACITCMS122v11.HbA1c">
+		<![CDATA[select encounter_id,human_id,loinc_identifier,'' from patient_results pr   where 
+pr.loinc_observation like "%CDPFACIT-Pal%"  
+	and if(length(pr.value)=8,date_format(str_to_date(pr.value,'%Y-%b-%d'),'%Y-%m-01'),str_to_date(pr.value,'%Y-%b-%d')) 
+    between DATE_FORMAT(?,'%Y-01-01') and DATE_FORMAT(?,'%Y-12-31') and human_id in (:EncIds) ]]>
+
+	</sql-query>
 
 	<sql-query name="PQRI.GetExceptionFACITCMS165.ControllingHighBloodPressure">
+		<![CDATA[select encounter_id,human_id,loinc_identifier,'' from patient_results pr   where 
+pr.loinc_observation like "%CDPFACIT-Pal%"  
+	and if(length(pr.value)=8,date_format(str_to_date(pr.value,'%Y-%b-%d'),'%Y-%m-01'),str_to_date(pr.value,'%Y-%b-%d')) 
+    between DATE_FORMAT(?,'%Y-01-01') and DATE_FORMAT(?,'%Y-12-31') and human_id in (:EncIds) ]]>
+
+	</sql-query>
+	
+	
+		<sql-query name="PQRI.GetExceptionFACITCMS165v11.ControllingHighBloodPressure">
 		<![CDATA[select encounter_id,human_id,loinc_identifier,'' from patient_results pr   where 
 pr.loinc_observation like "%CDPFACIT-Pal%"  
 	and if(length(pr.value)=8,date_format(str_to_date(pr.value,'%Y-%b-%d'),'%Y-%m-01'),str_to_date(pr.value,'%Y-%b-%d')) 
@@ -14855,7 +15584,19 @@ pr.loinc_observation like "%CDPFACIT-Pal%"
 where e.human_id in (:EncIds); ]]>
 	</sql-query>
 
+	<sql-query name="PQRI.GetDenominator2CMS130v11.ColorectalCancer">
+		<![CDATA[select e.encounter_id ,e.human_id,em.procedure_code,a.icd from encounter e join e_m_coding em on 
+		e.encounter_id=em.encounter_id left join assessment as a on a.encounter_id=e.encounter_id
+where e.human_id in (:EncIds); ]]>
+	</sql-query>
+
+		
 	<sql-query name="PQRI.GetDenominator2CMS122.HbA1c">
+		<![CDATA[select e.encounter_id ,e.human_id,em.procedure_code,a.icd from encounter e join e_m_coding em on 
+		e.encounter_id=em.encounter_id left join assessment as a on a.encounter_id=e.encounter_id
+where e.human_id in (:EncIds); ]]>
+	</sql-query>
+	<sql-query name="PQRI.GetDenominator2CMS122v11.HbA1c">
 		<![CDATA[select e.encounter_id ,e.human_id,em.procedure_code,a.icd from encounter e join e_m_coding em on 
 		e.encounter_id=em.encounter_id left join assessment as a on a.encounter_id=e.encounter_id
 where e.human_id in (:EncIds); ]]>
@@ -14866,13 +15607,29 @@ where e.human_id in (:EncIds); ]]>
 		e_m_coding em on e.encounter_id=em.encounter_id left join assessment as a on a.encounter_id=e.encounter_id where e.human_id in (:EncIds) and e.human_id not in (:EncIdExc); ]]>
 	</sql-query>
 
+	<sql-query name="PQRI.GetDenominator2withExceptionCMS130v11.ColorectalCancer">
+		<![CDATA[select e.encounter_id ,e.human_id,em.procedure_code,a.icd  from encounter e join 
+		e_m_coding em on e.encounter_id=em.encounter_id left join assessment as a on a.encounter_id=e.encounter_id where e.human_id in (:EncIds) and e.human_id not in (:EncIdExc); ]]>
+	</sql-query>
 
 	<sql-query name="PQRI.GetDenominator2withExceptionCMS122.HbA1c">
 		<![CDATA[select e.encounter_id ,e.human_id,em.procedure_code,a.icd  from encounter e join 
 		e_m_coding em on e.encounter_id=em.encounter_id left join assessment as a on a.encounter_id=e.encounter_id where e.human_id in (:EncIds) and e.human_id not in (:EncIdExc); ]]>
 	</sql-query>
+	
+	<sql-query name="PQRI.GetDenominator2withExceptionCMS122v11.HbA1c">
+		<![CDATA[select e.encounter_id ,e.human_id,em.procedure_code,a.icd  from encounter e join 
+		e_m_coding em on e.encounter_id=em.encounter_id left join assessment as a on a.encounter_id=e.encounter_id where e.human_id in (:EncIds) and e.human_id not in (:EncIdExc); ]]>
+	</sql-query>
 
 	<sql-query name="PQRI.GetNumerator1CMS130.ColorectalCancer">
+		<![CDATA[select encounter_id,human_id,loinc_identifier,'' from patient_results pr where pr.loinc_observation
+		like "%CT colonography%"  and if(length(`value`)=8,date_format(str_to_date(`value`,'%Y-%b-%d'),'%Y-%m-01'),str_to_date(`value`,'%Y-%b-%d'))
+		between date_sub(DATE_FORMAT(?,'%Y-01-01'),interval 60 month) and DATE_FORMAT(?,'%Y-12-31') and human_id in (:EncIds) ]]>
+
+
+	</sql-query>
+	<sql-query name="PQRI.GetNumerator1CMS130v11.ColorectalCancer">
 		<![CDATA[select encounter_id,human_id,loinc_identifier,'' from patient_results pr where pr.loinc_observation
 		like "%CT colonography%"  and if(length(`value`)=8,date_format(str_to_date(`value`,'%Y-%b-%d'),'%Y-%m-01'),str_to_date(`value`,'%Y-%b-%d'))
 		between date_sub(DATE_FORMAT(?,'%Y-01-01'),interval 60 month) and DATE_FORMAT(?,'%Y-12-31') and human_id in (:EncIds) ]]>
@@ -14887,6 +15644,13 @@ where e.human_id in (:EncIds); ]]>
     between date_sub(DATE_FORMAT(?,'%Y-01-01'),interval 36 month) and DATE_FORMAT(?,'%Y-12-31') and human_id in (:EncIds) ]]>
 
 	</sql-query>
+	<sql-query name="PQRI.GetNumerator2CMS130v11.ColorectalCancer">
+		<![CDATA[
+	select encounter_id,human_id,loinc_identifier,'' from patient_results pr where pr.loinc_observation like "%FIT-DNA%" 
+	and if(length(`value`)=8,date_format(str_to_date(`value`,'%Y-%b-%d'),'%Y-%m-01'),str_to_date(`value`,'%Y-%b-%d')) 
+    between date_sub(DATE_FORMAT(?,'%Y-01-01'),interval 36 month) and DATE_FORMAT(?,'%Y-12-31') and human_id in (:EncIds) ]]>
+
+	</sql-query>
 
 	<sql-query name="PQRI.GetNumerator3CMS130.ColorectalCancer">
 		<![CDATA[select encounter_id,human_id,loinc_identifier,'' from patient_results pr   where 
@@ -14894,13 +15658,39 @@ pr.loinc_observation like "%Fecal Occult Blood Test%"
 	and if(length(pr.value)=8,date_format(str_to_date(pr.value,'%Y-%b-%d'),'%Y-%m-01'),str_to_date(pr.value,'%Y-%b-%d')) 
     between date_sub(DATE_FORMAT(?,'%Y-01-01'),interval 12 month) and DATE_FORMAT(?,'%Y-12-31') and human_id in (:EncIds) ]]>
 
-	</sql-query><sql-query name="PQRI.GetNumerator6CMS130.ColorectalCancer">
+	</sql-query>
+		
+	<sql-query name="PQRI.GetNumerator3CMS130v11.ColorectalCancer">
+		<![CDATA[select encounter_id,human_id,loinc_identifier,'' from patient_results pr   where 
+pr.loinc_observation like "%Fecal Occult Blood Test%"  
+	and if(length(pr.value)=8,date_format(str_to_date(pr.value,'%Y-%b-%d'),'%Y-%m-01'),str_to_date(pr.value,'%Y-%b-%d')) 
+    between date_sub(DATE_FORMAT(?,'%Y-01-01'),interval 12 month) and DATE_FORMAT(?,'%Y-12-31') and human_id in (:EncIds) ]]>
+
+	</sql-query>	
+	
+			<sql-query name="PQRI.GetNumerator6CMS130.ColorectalCancer">
 		<![CDATA[select encounter_id,human_id,loinc_identifier,s.value from patient_results pr , static_lookup s  where 
  (pr.Value=s.Description and s.field_name='fobtsnomed') and (  pr.loinc_observation like "%Fecal Occult Blood Test%"  
 	and human_id in (:EncIds) )]]>
 
 	</sql-query>
+	
+	<sql-query name="PQRI.GetNumerator6CMS130v11.ColorectalCancer">
+		<![CDATA[select encounter_id,human_id,loinc_identifier,s.value from patient_results pr , static_lookup s  where 
+ (pr.Value=s.Description and s.field_name='fobtsnomed') and (  pr.loinc_observation like "%Fecal Occult Blood Test%"  
+	and human_id in (:EncIds) )]]>
+
+	</sql-query>
+		
 	<sql-query name="PQRI.GetNumerator4CMS130.ColorectalCancer">
+		<![CDATA[
+    select distinct em.encounter_id,em.human_id,'','' from     encounter as b  left join e_m_coding em on em.human_id=b.human_id
+	where  date_of_service between date_sub(DATE_FORMAT(?,'%Y-01-01'),interval 60 month) and DATE_FORMAT(?,'%Y-12-31')
+	and procedure_code in (SELECT PQRI_Value FROM 
+cqm_data where nqf_number =?  and PQRI_calculation_Method=? and PQRI_Type in ('CPT') AND Standard_Concept = 'Flexible Sigmoidoscopy')  and  em.human_id in (:EncIds)]]>
+
+	</sql-query>
+	<sql-query name="PQRI.GetNumerator4CMS130v11.ColorectalCancer">
 		<![CDATA[
     select distinct em.encounter_id,em.human_id,'','' from     encounter as b  left join e_m_coding em on em.human_id=b.human_id
 	where  date_of_service between date_sub(DATE_FORMAT(?,'%Y-01-01'),interval 60 month) and DATE_FORMAT(?,'%Y-12-31')
@@ -14918,8 +15708,26 @@ select distinct em.encounter_id,em.human_id,'','' from     encounter as b  left 
 cqm_data where nqf_number =?  and PQRI_calculation_Method=? and PQRI_Type in ('CPT') AND Standard_Concept = 'Colonoscopy')  and  em.human_id in (:EncIds)]]>
 
 	</sql-query>
+	
+	<sql-query name="PQRI.GetNumerator5CMS130v11.ColorectalCancer">
+		<![CDATA[
+    
+select distinct em.encounter_id,em.human_id,'','' from     encounter as b  left join e_m_coding em on em.human_id=b.human_id
+	where  date_of_service between date_sub(DATE_FORMAT(?,'%Y-01-01'),interval 120 month) and DATE_FORMAT(?,'%Y-12-31')
+	and em.procedure_code in (SELECT PQRI_Value FROM 
+cqm_data where nqf_number =?  and PQRI_calculation_Method=? and PQRI_Type in ('CPT') AND Standard_Concept = 'Colonoscopy')  and  em.human_id in (:EncIds)]]>
+
+	</sql-query>
 
 	<sql-query name="PQRI.GetNumeratorCMS130.ColorectalCancer">
+		<![CDATA[select encounter_id,human_id,loinc_identifier,'' from patient_results pr where pr.loinc_observation like "%CDPLast Colonoscopy%"  and if(length(`value`)=8,date_format(str_to_date(`value`,'%Y-%b-%d'),'%Y-%m-01'),str_to_date(`value`,'%Y-%b-%d')) 
+    between date_sub(DATE_FORMAT(?,'%Y-01-01'),interval 120 month) and DATE_FORMAT(?,'%Y-12-31') and human_id in (:EncIds)
+    
+
+    ]]>
+	</sql-query>
+	
+		<sql-query name="PQRI.GetNumeratorCMS130v11.ColorectalCancer">
 		<![CDATA[select encounter_id,human_id,loinc_identifier,'' from patient_results pr where pr.loinc_observation like "%CDPLast Colonoscopy%"  and if(length(`value`)=8,date_format(str_to_date(`value`,'%Y-%b-%d'),'%Y-%m-01'),str_to_date(`value`,'%Y-%b-%d')) 
     between date_sub(DATE_FORMAT(?,'%Y-01-01'),interval 120 month) and DATE_FORMAT(?,'%Y-12-31') and human_id in (:EncIds)
     
@@ -14936,7 +15744,31 @@ cqm_data where nqf_number =?  and PQRI_calculation_Method=? and standard_Concept
 
 
 	</sql-query>
+	
+		<sql-query name="PQRI.GetExceptionListFrailtyCMS130v11.ColorectalCancer">
+		<![CDATA[select e.encounter_id,e.human_id from encounter e left join human h on e.human_id=h.human_id left join e_m_coding em 
+		on e.human_id=em.human_id
+where date_of_service between (DATE_FORMAT(?,'%Y-01-01')) and DATE_FORMAT(?,'%Y-12-31')   and
+(datediff(?,h.birth_date)/365.25)>=66 and 
+em.procedure_code in(SELECT PQRI_Value FROM 
+cqm_data where nqf_number =?  and PQRI_calculation_Method=? and standard_Concept in ('Frailty Encounter')) and  h.human_id in (:EncIds);;]]>
+
+
+	</sql-query>
+	
 	<sql-query name="PQRI.GetExceptionListFrailtyICDCMS130.ColorectalCancer">
+	<![CDATA[select e.encounter_id,e.human_id from encounter e left join human h on e.human_id=h.human_id left join assessment em 
+		on e.human_id=em.human_id
+where date_of_service between (DATE_FORMAT(?,'%Y-01-01')) and DATE_FORMAT(?,'%Y-12-31')   and
+(datediff(?,h.birth_date)/365.25)>=66   and 
+em.ICD in(SELECT PQRI_Value FROM 
+cqm_data where nqf_number =?  and PQRI_calculation_Method=? and standard_Concept in ('Frailty Diagnosis','Frailty Symptom'))
+and  h.human_id in (:EncIds);]]>
+
+</sql-query>
+
+	
+	<sql-query name="PQRI.GetExceptionListFrailtyICDCMS130v11.ColorectalCancer">
 	<![CDATA[select e.encounter_id,e.human_id from encounter e left join human h on e.human_id=h.human_id left join assessment em 
 		on e.human_id=em.human_id
 where date_of_service between (DATE_FORMAT(?,'%Y-01-01')) and DATE_FORMAT(?,'%Y-12-31')   and
@@ -14949,6 +15781,18 @@ and  h.human_id in (:EncIds);]]>
 
 
 	<sql-query name="PQRI.GetExceptionListFrailtyICDCMS165.ControllingHighBloodPressure">
+		<![CDATA[select e.encounter_id,e.human_id from encounter e left join human h on e.human_id=h.human_id left join assessment em 
+		on e.human_id=em.human_id
+where date_of_service between (DATE_FORMAT(?,'%Y-01-01')) and DATE_FORMAT(?,'%Y-12-31')   and
+(datediff(?,h.birth_date)/365.25)>=66   and 
+em.ICD in(SELECT PQRI_Value FROM 
+cqm_data where nqf_number =?  and PQRI_calculation_Method=? and standard_Concept in ('Frailty Diagnosis','Frailty Symptom'))
+and  h.human_id in (:EncIds);]]>
+
+	</sql-query>
+	
+	
+		<sql-query name="PQRI.GetExceptionListFrailtyICDCMS165v11.ControllingHighBloodPressure">
 		<![CDATA[select e.encounter_id,e.human_id from encounter e left join human h on e.human_id=h.human_id left join assessment em 
 		on e.human_id=em.human_id
 where date_of_service between (DATE_FORMAT(?,'%Y-01-01')) and DATE_FORMAT(?,'%Y-12-31')   and
@@ -14971,6 +15815,19 @@ and  h.human_id in (:EncIds);]]>
 	</sql-query>
 	
 	
+	<sql-query name="PQRI.GetExceptionListFrailtyICDCMS122v11.HbA1c">
+		<![CDATA[select e.encounter_id,e.human_id from encounter e left join human h on e.human_id=h.human_id left join assessment em 
+		on e.human_id=em.human_id
+where date_of_service between (DATE_FORMAT(?,'%Y-01-01')) and DATE_FORMAT(?,'%Y-12-31')   and
+(datediff(?,h.birth_date)/365.25)>=66   and 
+em.ICD in(SELECT PQRI_Value FROM 
+cqm_data where nqf_number =?  and PQRI_calculation_Method=? and standard_Concept in ('Frailty Diagnosis','Frailty Symptom'))
+and  h.human_id in (:EncIds);]]>
+
+	</sql-query>
+		
+		
+		
 	<sql-query name="PQRI.GetExceptionListFrailtyCareplanCMS130.ColorectalCancer">
 		<![CDATA[select  e.encounter_id,e.human_id from care_plan as c join human as h on (h.human_id=c.human_id) join encounter as e on (e.encounter_id=c.encounter_id) 
 		where 
@@ -14979,6 +15836,14 @@ and  h.human_id in (:EncIds);]]>
 	
 	</sql-query>
 
+	
+	<sql-query name="PQRI.GetExceptionListFrailtyCareplanCMS130v11.ColorectalCancer">
+		<![CDATA[select  e.encounter_id,e.human_id from care_plan as c join human as h on (h.human_id=c.human_id) join encounter as e on (e.encounter_id=c.encounter_id) 
+		where 
+		 date_of_service between (DATE_FORMAT(?,'%Y-01-01')) and DATE_FORMAT(?,'%Y-12-31')  and (datediff(date(?),h.birth_date)/365.25)>=66  and  care_name_value in ('Frailty Device') and status='Yes'
+		and snomed_Code!='' and h.human_id in (:EncIds);]]>
+	
+	</sql-query>
 
 	<sql-query name="PQRI.GetExceptionListFrailtyCareplanCMS165.ControllingHighBloodPressure">
 		<![CDATA[select  e.encounter_id,e.human_id from care_plan as c join human as h on (h.human_id=c.human_id) join encounter as e on (e.encounter_id=c.encounter_id) 
@@ -14987,8 +15852,25 @@ and  h.human_id in (:EncIds);]]>
 		and snomed_Code!='' and h.human_id in (:EncIds);]]>
 
 	</sql-query>
+	
+	
+		<sql-query name="PQRI.GetExceptionListFrailtyCareplanCMS165v11.ControllingHighBloodPressure">
+		<![CDATA[select  e.encounter_id,e.human_id from care_plan as c join human as h on (h.human_id=c.human_id) join encounter as e on (e.encounter_id=c.encounter_id) 
+		where 
+		 date_of_service between (DATE_FORMAT(?,'%Y-01-01')) and DATE_FORMAT(?,'%Y-12-31')  and (datediff(date(?),h.birth_date)/365.25)>=66  and  care_name_value in ('Frailty Device') and status='Yes'
+		and snomed_Code!='' and h.human_id in (:EncIds);]]>
+
+	</sql-query>
 
 	<sql-query name="PQRI.GetExceptionListFrailtyCareplanCMS122.HbA1c">
+		<![CDATA[select  e.encounter_id,e.human_id from care_plan as c join human as h on (h.human_id=c.human_id) join encounter as e on (e.encounter_id=c.encounter_id) 
+		where 
+		 date_of_service between (DATE_FORMAT(?,'%Y-01-01')) and DATE_FORMAT(?,'%Y-12-31')  and (datediff(date(?),h.birth_date)/365.25)>=66  and  care_name_value in ('Frailty Device') and status='Yes'
+		and snomed_Code!='' and h.human_id in (:EncIds);]]>
+
+	</sql-query>
+	
+	<sql-query name="PQRI.GetExceptionListFrailtyCareplanCMS122v11.HbA1c">
 		<![CDATA[select  e.encounter_id,e.human_id from care_plan as c join human as h on (h.human_id=c.human_id) join encounter as e on (e.encounter_id=c.encounter_id) 
 		where 
 		 date_of_service between (DATE_FORMAT(?,'%Y-01-01')) and DATE_FORMAT(?,'%Y-12-31')  and (datediff(date(?),h.birth_date)/365.25)>=66  and  care_name_value in ('Frailty Device') and status='Yes'
@@ -15006,9 +15888,32 @@ cqm_data where nqf_number =?  and PQRI_calculation_Method=? and standard_Concept
 
 
 	</sql-query>
+	
+	<sql-query name="PQRI.GetExceptionListFrailtyCMS122v11.HbA1c">
+		<![CDATA[select e.encounter_id,e.human_id from encounter e left join human h on e.human_id=h.human_id left join e_m_coding em 
+		on e.human_id=em.human_id
+where date_of_service between (DATE_FORMAT(?,'%Y-01-01')) and DATE_FORMAT(?,'%Y-12-31')   and
+(datediff(date(?),h.birth_date)/365.25)>=66 and 
+em.procedure_code in(SELECT PQRI_Value FROM 
+cqm_data where nqf_number =?  and PQRI_calculation_Method=? and standard_Concept in ('Frailty Encounter')) and  h.human_id in (:EncIds);;]]>
+
+
+	</sql-query>
 
 
 	<sql-query name="PQRI.GetExceptionListFrailtyCMS165.ControllingHighBloodPressure">
+		<![CDATA[select e.encounter_id,e.human_id from encounter e left join human h on e.human_id=h.human_id left join e_m_coding em 
+		on e.human_id=em.human_id
+where date_of_service between (DATE_FORMAT(?,'%Y-01-01')) and DATE_FORMAT(?,'%Y-12-31')   and
+(datediff(date(?),h.birth_date)/365.25)>=66 and 
+em.procedure_code in(SELECT PQRI_Value FROM 
+cqm_data where nqf_number =?  and PQRI_calculation_Method=? and standard_Concept in ('Frailty Encounter')) and  h.human_id in (:EncIds);;]]>
+
+
+	</sql-query>
+	
+	
+	<sql-query name="PQRI.GetExceptionListFrailtyCMS165v11.ControllingHighBloodPressure">
 		<![CDATA[select e.encounter_id,e.human_id from encounter e left join human h on e.human_id=h.human_id left join e_m_coding em 
 		on e.human_id=em.human_id
 where date_of_service between (DATE_FORMAT(?,'%Y-01-01')) and DATE_FORMAT(?,'%Y-12-31')   and
@@ -15034,6 +15939,19 @@ em.human_id in (:EncIds);;]]>
 
 	</sql-query>
 
+	
+	<sql-query name="PQRI.GetExceptionCMS130advancedillnessinpatientv11.ColorectalCancer">
+		<![CDATA[select em.encounter_id ,em.human_id from care_plan as cp  join e_m_coding em  
+		on cp.human_id=em.human_id join encounter e on e.encounter_id=cp.encounter_id
+where  date_of_service between DATE_FORMAT(?,'%Y-01-01') and DATE_FORMAT(?,'%Y-12-31') and 
+em.procedure_code in(SELECT PQRI_Value FROM 
+cqm_data where nqf_number =?  and PQRI_calculation_Method=? and standard_Concept in ('Emergency Department Visit')) and
+
+ care_name_value in ('Advanced Illness') and status='Yes' and snomed_Code!='' and 
+em.human_id in (:EncIds);;]]>
+
+
+	</sql-query>
 
 	<sql-query name="PQRI.GetExceptionCMS122advancedillnessinpatient.HbA1c">
 		<![CDATA[select em.encounter_id ,em.human_id from care_plan as cp  join e_m_coding em  
@@ -15049,7 +15967,33 @@ em.human_id in (:EncIds);;]]>
 	</sql-query>
 	
 	
+	<sql-query name="PQRI.GetExceptionCMS122advancedillnessinpatientv11.HbA1c">
+		<![CDATA[select em.encounter_id ,em.human_id from care_plan as cp  join e_m_coding em  
+		on cp.human_id=em.human_id join encounter e on e.encounter_id=cp.encounter_id
+where  date_of_service between DATE_FORMAT(?,'%Y-01-01') and DATE_FORMAT(?,'%Y-12-31') and 
+em.procedure_code in(SELECT PQRI_Value FROM 
+cqm_data where nqf_number =?  and PQRI_calculation_Method=? and standard_Concept in ('Emergency Department Visit')) and
+
+ care_name_value in ('Advanced Illness') and status='Yes' and snomed_Code!='' and 
+em.human_id in (:EncIds);;]]>
+
+
+	</sql-query>
+	
 	<sql-query name="PQRI.GetExceptionCMS165advancedillnessinpatient.ControllingHighBloodPressure">
+		<![CDATA[select em.encounter_id ,em.human_id from care_plan as cp  join e_m_coding em  
+		on cp.human_id=em.human_id join encounter e on e.encounter_id=cp.encounter_id
+where  date_of_service between DATE_FORMAT(?,'%Y-01-01') and DATE_FORMAT(?,'%Y-12-31') and 
+em.procedure_code in(SELECT PQRI_Value FROM 
+cqm_data where nqf_number =?  and PQRI_calculation_Method=? and standard_Concept in ('Emergency Department Visit')) and
+
+ care_name_value in ('Advanced Illness') and status='Yes' and snomed_Code!='' and 
+em.human_id in (:EncIds);;]]>
+
+
+	</sql-query>
+	
+	<sql-query name="PQRI.GetExceptionCMS165advancedillnessinpatientv11.ControllingHighBloodPressure">
 		<![CDATA[select em.encounter_id ,em.human_id from care_plan as cp  join e_m_coding em  
 		on cp.human_id=em.human_id join encounter e on e.encounter_id=cp.encounter_id
 where  date_of_service between DATE_FORMAT(?,'%Y-01-01') and DATE_FORMAT(?,'%Y-12-31') and 
@@ -15076,7 +16020,18 @@ em.human_id in (:EncIds) group by procedure_code,human_id  having a>1;]]>
 
 	</sql-query>
 	
-	
+	<sql-query name="PQRI.GetExceptionCMS130advancedillnessoutpatientv11.ColorectalCancer">
+		<![CDATA[select em.encounter_id ,em.human_id,count(em.procedure_code) as a  from care_plan as cp  join e_m_coding em  
+		on cp.human_id=em.human_id join encounter e on e.encounter_id=cp.encounter_id
+where  date_of_service between DATE_FORMAT(?,'%Y-01-01') and DATE_FORMAT(?,'%Y-12-31') and 
+em.procedure_code in(SELECT PQRI_Value FROM 
+cqm_data where nqf_number =?  and PQRI_calculation_Method=? and standard_Concept in ('Outpatient')) and
+
+ care_name_value in ('Advanced Illness') and status='Yes' and snomed_Code!='' and 
+em.human_id in (:EncIds) group by procedure_code,human_id  having a>1;]]>
+
+
+	</sql-query>
 
 	<sql-query name="PQRI.GetExceptionCMS122advancedillnessoutpatient.HbA1c">
 		<![CDATA[select em.encounter_id ,em.human_id, count(em.procedure_code) as a  from care_plan as cp  join e_m_coding em  
@@ -15091,9 +16046,36 @@ em.human_id in (:EncIds) group by procedure_code,human_id  having a>1;]]>
 
 	</sql-query>
 
+	
+	<sql-query name="PQRI.GetExceptionCMS122advancedillnessoutpatientv11.HbA1c">
+		<![CDATA[select em.encounter_id ,em.human_id, count(em.procedure_code) as a  from care_plan as cp  join e_m_coding em  
+		on cp.human_id=em.human_id join encounter e on e.encounter_id=cp.encounter_id
+where  date_of_service between DATE_FORMAT(?,'%Y-01-01') and DATE_FORMAT(?,'%Y-12-31') and 
+em.procedure_code in(SELECT PQRI_Value FROM 
+cqm_data where nqf_number =?  and PQRI_calculation_Method=? and standard_Concept in ('Outpatient')) and
+
+ care_name_value in ('Advanced Illness') and status='Yes' and snomed_Code!='' and 
+em.human_id in (:EncIds) group by procedure_code,human_id  having a>1;]]>
+
+
+	</sql-query>
 
 
 	<sql-query name="PQRI.GetExceptionCMS165advancedillnessoutpatient.ControllingHighBloodPressure">
+		<![CDATA[select em.encounter_id ,em.human_id,count(em.procedure_code) as a  from care_plan as cp  join e_m_coding em  
+		on cp.human_id=em.human_id join encounter e on e.encounter_id=cp.encounter_id
+where  date_of_service between DATE_FORMAT(?,'%Y-01-01') and DATE_FORMAT(?,'%Y-12-31') and 
+em.procedure_code in(SELECT PQRI_Value FROM 
+cqm_data where nqf_number =?  and PQRI_calculation_Method=? and standard_Concept in ('Outpatient')) and
+
+ care_name_value in ('Advanced Illness') and status='Yes' and snomed_Code!='' and 
+em.human_id in (:EncIds) group by procedure_code,human_id  having a>1;]]>
+
+
+	</sql-query>
+	
+	
+	<sql-query name="PQRI.GetExceptionCMS165advancedillnessoutpatientv11.ControllingHighBloodPressure">
 		<![CDATA[select em.encounter_id ,em.human_id,count(em.procedure_code) as a  from care_plan as cp  join e_m_coding em  
 		on cp.human_id=em.human_id join encounter e on e.encounter_id=cp.encounter_id
 where  date_of_service between DATE_FORMAT(?,'%Y-01-01') and DATE_FORMAT(?,'%Y-12-31') and 
@@ -15117,8 +16099,30 @@ PQRI_calculation_Method=? and standard_Concept ='Dementia Medications')  and r.d
 
 
 	</sql-query>
+	
+	<sql-query name="PQRI.GetExceptionListRxnormCMS130v11.ColorectalCancer">
+		<![CDATA[select e.encounter_id,e.human_id from encounter e  left join rcopia_Medication r 
+		on e.encounter_id=r.encounter_id
+where date_of_service between date_sub(DATE_FORMAT(?,'%Y-01-01'),interval 24 month) and DATE_FORMAT(?,'%Y-12-31')   and
+r.rxnorm_id in(SELECT PQRI_Value FROM cqm_data where nqf_number =?  and 
+PQRI_calculation_Method=? and standard_Concept ='Dementia Medications')  and r.deleted='N' and
+  e.human_id in (:EncIds);;]]>
+
+
+	</sql-query>
 
 	<sql-query name="PQRI.GetExceptionListRxnormCMS122.HbA1c">
+		<![CDATA[select e.encounter_id,e.human_id from encounter e  left join rcopia_Medication r 
+		on e.encounter_id=r.encounter_id
+where date_of_service between date_sub(DATE_FORMAT(?,'%Y-01-01'),interval 24 month) and DATE_FORMAT(?,'%Y-12-31')   and
+r.rxnorm_id in(SELECT PQRI_Value FROM cqm_data where nqf_number =?  and 
+PQRI_calculation_Method=? and standard_Concept ='Dementia Medications')  and r.deleted='N' and
+  e.human_id in (:EncIds);;]]>
+
+
+	</sql-query>
+	
+	<sql-query name="PQRI.GetExceptionListRxnormCMS122v11.HbA1c">
 		<![CDATA[select e.encounter_id,e.human_id from encounter e  left join rcopia_Medication r 
 		on e.encounter_id=r.encounter_id
 where date_of_service between date_sub(DATE_FORMAT(?,'%Y-01-01'),interval 24 month) and DATE_FORMAT(?,'%Y-12-31')   and
@@ -15142,8 +16146,29 @@ PQRI_calculation_Method=? and standard_Concept ='Dementia Medications')  and r.d
 
 	</sql-query>
 	
+	<sql-query name="PQRI.GetExceptionListRxnormCMS165v11.ControllingHighBloodPressure">
+		<![CDATA[select e.encounter_id,e.human_id from encounter e  left join rcopia_Medication r 
+		on e.encounter_id=r.encounter_id
+where date_of_service between date_sub(DATE_FORMAT(?,'%Y-01-01'),interval 24 month) and DATE_FORMAT(?,'%Y-12-31')   and
+r.rxnorm_id in(SELECT PQRI_Value FROM cqm_data where nqf_number =?  and 
+PQRI_calculation_Method=? and standard_Concept ='Dementia Medications')  and r.deleted='N' and
+  e.human_id in (:EncIds);;]]>
+
+
+	</sql-query>
+	
 
 	<sql-query name="PQRI.GetExceptionCMS130ServiceCare.ColorectalCancer">
+		<![CDATA[select em.encounter_id ,em.human_id from  e_m_coding em join human h on em.human_id=h.human_id
+	
+where  
+(datediff(?,h.birth_date)/365.25)>=66 and 
+em.procedure_code in(SELECT PQRI_Value FROM 
+cqm_data where nqf_number =?  and PQRI_calculation_Method=? and standard_Concept in ('Care Services in Long-Term Residential Facility','Nursing Facility Visit')) and 
+em.human_id in (:EncIds);;]]>
+	</sql-query>
+	
+	<sql-query name="PQRI.GetExceptionCMS130ServiceCarev11.ColorectalCancer">
 		<![CDATA[select em.encounter_id ,em.human_id from  e_m_coding em join human h on em.human_id=h.human_id
 	
 where  
@@ -15164,8 +16189,28 @@ em.human_id in (:EncIds);;]]>
 	</sql-query>
 
 
+	<sql-query name="PQRI.GetExceptionCMS122ServiceCarev11.HbA1c">
+		<![CDATA[select em.encounter_id ,em.human_id from  e_m_coding em join human h on em.human_id=h.human_id
+	
+where  
+(datediff(?,h.birth_date)/365.25)>=66 and 
+em.procedure_code in(SELECT PQRI_Value FROM 
+cqm_data where nqf_number =?  and PQRI_calculation_Method=? and standard_Concept in ('Care Services in Long-Term Residential Facility','Nursing Facility Visit')) and 
+em.human_id in (:EncIds);;]]>
+	</sql-query>
 
 	<sql-query name="PQRI.GetExceptionCMS165ServiceCare.ControllingHighBloodPressure">
+		<![CDATA[select em.encounter_id ,em.human_id from  e_m_coding em join human h on em.human_id=h.human_id
+	
+where  
+(datediff(?,h.birth_date)/365.25)>=66 and 
+em.procedure_code in(SELECT PQRI_Value FROM 
+cqm_data where nqf_number =?  and PQRI_calculation_Method=? and standard_Concept in ('Care Services in Long-Term Residential Facility','Nursing Facility Visit')) and 
+em.human_id in (:EncIds);;]]>
+	</sql-query>
+	
+	
+	<sql-query name="PQRI.GetExceptionCMS165ServiceCarev11.ControllingHighBloodPressure">
 		<![CDATA[select em.encounter_id ,em.human_id from  e_m_coding em join human h on em.human_id=h.human_id
 	
 where  
@@ -15190,9 +16235,35 @@ and  e.human_id in (:EncIds);;]]>
 
 	</sql-query>
 
+<sql-query name="PQRI.GetExceptionListAdvdiaInpatientCMS130v11.ColorectalCancer">
+		<![CDATA[select e.encounter_id ,e.human_id from encounter e  left join assessment a 
+		on e.encounter_id=a.encounter_id  join e_m_coding as em on a.encounter_id=em.encounter_id
+where date_of_service between date_sub(DATE_FORMAT(?,'%Y-01-01'),interval 24 month) and DATE_FORMAT(?,'%Y-12-31')   and
+a.icd in(SELECT PQRI_Value FROM cqm_data where nqf_number =?  and 
+PQRI_calculation_Method=? and standard_Concept ='Advanced Illness')  and 
+em.procedure_code in(SELECT PQRI_Value FROM 
+cqm_data where nqf_number =?  and PQRI_calculation_Method=? and standard_Concept in ('Emergency Department Visit','Observation'))
 
+and  e.human_id in (:EncIds);;]]>
+
+
+	</sql-query>
 
 	<sql-query name="PQRI.GetExceptionListAdvdiaInpatientCMS165.ControllingHighBloodPressure">
+		<![CDATA[select e.encounter_id ,e.human_id from encounter e  left join assessment a 
+		on e.encounter_id=a.encounter_id  join e_m_coding as em on a.encounter_id=em.encounter_id
+where date_of_service between date_sub(DATE_FORMAT(?,'%Y-01-01'),interval 24 month) and DATE_FORMAT(?,'%Y-12-31')   and
+a.icd in(SELECT PQRI_Value FROM cqm_data where nqf_number =?  and 
+PQRI_calculation_Method=? and standard_Concept ='Advanced Illness')  and 
+em.procedure_code in(SELECT PQRI_Value FROM 
+cqm_data where nqf_number =?  and PQRI_calculation_Method=? and standard_Concept in ('Emergency Department Visit','Observation'))
+
+and  e.human_id in (:EncIds);;]]>
+
+
+	</sql-query>
+	
+	<sql-query name="PQRI.GetExceptionListAdvdiaInpatientCMS165v11.ControllingHighBloodPressure">
 		<![CDATA[select e.encounter_id ,e.human_id from encounter e  left join assessment a 
 		on e.encounter_id=a.encounter_id  join e_m_coding as em on a.encounter_id=em.encounter_id
 where date_of_service between date_sub(DATE_FORMAT(?,'%Y-01-01'),interval 24 month) and DATE_FORMAT(?,'%Y-12-31')   and
@@ -15220,6 +16291,21 @@ and  e.human_id in (:EncIds);;]]>
 
 
 	</sql-query>
+	
+		<sql-query name="PQRI.GetExceptionListAdvdiaInpatientCMS122v11.HbA1c">
+		<![CDATA[select e.encounter_id ,e.human_id from encounter e  left join assessment a 
+		on e.encounter_id=a.encounter_id  join e_m_coding as em on a.encounter_id=em.encounter_id
+where date_of_service between date_sub(DATE_FORMAT(?,'%Y-01-01'),interval 24 month) and DATE_FORMAT(?,'%Y-12-31')   and
+a.icd in(SELECT PQRI_Value FROM cqm_data where nqf_number =?  and 
+PQRI_calculation_Method=? and standard_Concept ='Advanced Illness')  and 
+em.procedure_code in(SELECT PQRI_Value FROM 
+cqm_data where nqf_number =?  and PQRI_calculation_Method=? and standard_Concept in ('Emergency Department Visit','Observation'))
+
+and  e.human_id in (:EncIds);;]]>
+
+
+	</sql-query>
+		
 	<sql-query name="PQRI.GetExceptionListAdvdiaOutpatientCMS130.ColorectalCancer">
 		<![CDATA[select e.encounter_id ,e.human_id,count(procedure_code) as a  from encounter e  left join assessment a 
 		on e.encounter_id=a.encounter_id  join e_m_coding as em on a.encounter_id=em.encounter_id
@@ -15234,9 +16320,36 @@ cqm_data where nqf_number =?  and PQRI_calculation_Method=? and standard_Concept
 
 	</sql-query>
 
+<sql-query name="PQRI.GetExceptionListAdvdiaOutpatientCMS130v11.ColorectalCancer">
+		<![CDATA[select e.encounter_id ,e.human_id,count(procedure_code) as a  from encounter e  left join assessment a 
+		on e.encounter_id=a.encounter_id  join e_m_coding as em on a.encounter_id=em.encounter_id
+where date_of_service between date_sub(DATE_FORMAT(?,'%Y-01-01'),interval 24 month) and DATE_FORMAT(?,'%Y-12-31')   and
+a.icd in(SELECT PQRI_Value FROM cqm_data where nqf_number =?  and 
+PQRI_calculation_Method=? and standard_Concept ='Advanced Illness')  and 
+em.procedure_code in(SELECT PQRI_Value FROM 
+cqm_data where nqf_number =?  and PQRI_calculation_Method=? and standard_Concept in ('Outpatient'))
 
+ and e.human_id in (:EncIds) group by procedure_code,human_id  having a>1;]]>
+
+
+	</sql-query>
 
 	<sql-query name="PQRI.GetExceptionListAdvdiaOutpatientCMS165.ControllingHighBloodPressure">
+		<![CDATA[select e.encounter_id ,e.human_id,count(procedure_code) as a  from encounter e  left join assessment a 
+		on e.encounter_id=a.encounter_id  join e_m_coding as em on a.encounter_id=em.encounter_id
+where date_of_service between date_sub(DATE_FORMAT(?,'%Y-01-01'),interval 24 month) and DATE_FORMAT(?,'%Y-12-31')   and
+a.icd in(SELECT PQRI_Value FROM cqm_data where nqf_number =?  and 
+PQRI_calculation_Method=? and standard_Concept ='Advanced Illness')  and 
+em.procedure_code in(SELECT PQRI_Value FROM 
+cqm_data where nqf_number =?  and PQRI_calculation_Method=? and standard_Concept in ('Outpatient'))
+
+ and e.human_id in (:EncIds) group by procedure_code,human_id  having a>1;]]>
+
+
+	</sql-query>
+	
+	
+	<sql-query name="PQRI.GetExceptionListAdvdiaOutpatientCMS165v11.ControllingHighBloodPressure">
 		<![CDATA[select e.encounter_id ,e.human_id,count(procedure_code) as a  from encounter e  left join assessment a 
 		on e.encounter_id=a.encounter_id  join e_m_coding as em on a.encounter_id=em.encounter_id
 where date_of_service between date_sub(DATE_FORMAT(?,'%Y-01-01'),interval 24 month) and DATE_FORMAT(?,'%Y-12-31')   and
@@ -15266,7 +16379,19 @@ cqm_data where nqf_number =?  and PQRI_calculation_Method=? and standard_Concept
 	</sql-query>
 	
 
+<sql-query name="PQRI.GetExceptionListAdvdiaOutpatientCMS122v11.HbA1c">
+		<![CDATA[select e.encounter_id ,e.human_id,count(procedure_code) as a  from encounter e  left join assessment a 
+		on e.encounter_id=a.encounter_id  join e_m_coding as em on a.encounter_id=em.encounter_id
+where date_of_service between date_sub(DATE_FORMAT(?,'%Y-01-01'),interval 24 month) and DATE_FORMAT(?,'%Y-12-31')   and
+a.icd in(SELECT PQRI_Value FROM cqm_data where nqf_number =?  and 
+PQRI_calculation_Method=? and standard_Concept ='Advanced Illness')  and 
+em.procedure_code in(SELECT PQRI_Value FROM 
+cqm_data where nqf_number =?  and PQRI_calculation_Method=? and standard_Concept in ('Outpatient'))
 
+ and e.human_id in (:EncIds) group by procedure_code,human_id  having a>1;]]>
+
+
+	</sql-query>
 
 
 	<sql-query name="PQRI.GetExceptionListAdvdiaCMS122.HbA1c">
@@ -15280,6 +16405,17 @@ PQRI_calculation_Method=? and standard_Concept ='Advanced Illness')  and
 
 	</sql-query>
 	<sql-query name="PQRI.GetExceptionListAdvdiaCMS165.ControllingHighBloodPressure">
+		<![CDATA[select e.encounter_id ,e.human_id from encounter e  left join assessment a 
+		on e.encounter_id=a.encounter_id
+where date_of_service between date_sub(DATE_FORMAT(?,'%Y-01-01'),interval 24 month) and DATE_FORMAT(?,'%Y-12-31')   and
+a.icd in(SELECT PQRI_Value FROM cqm_data where nqf_number =?  and 
+PQRI_calculation_Method=? and standard_Concept ='Advanced Illness')  and 
+  e.human_id in (:EncIds);;]]>
+
+
+	</sql-query>
+	
+<sql-query name="PQRI.GetExceptionListAdvdiaCMS165v11.ControllingHighBloodPressure">
 		<![CDATA[select e.encounter_id ,e.human_id from encounter e  left join assessment a 
 		on e.encounter_id=a.encounter_id
 where date_of_service between date_sub(DATE_FORMAT(?,'%Y-01-01'),interval 24 month) and DATE_FORMAT(?,'%Y-12-31')   and
