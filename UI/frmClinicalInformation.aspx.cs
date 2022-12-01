@@ -753,12 +753,16 @@ namespace Acurus.Capella.UI
                             objallergy.Allergy_Name = StripTagsRegex(dsAllergy.Tables[0].Rows[i].Field<string>("Substance"));
                         if (bReaction == true)
                             objallergy.Reaction = StripTagsRegex(dsAllergy.Tables[0].Rows[i].Field<string>("Reaction"));
+                        //if (bSeverity == true)
+                        //{
+                        //    if (bReaction == true)
+                        //        objallergy.Reaction = objallergy.Reaction + ": " + StripTagsRegex(dsAllergy.Tables[0].Rows[i].Field<string>("Severity"));
+                        //    else
+                        //        objallergy.Reaction = " : " + StripTagsRegex(dsAllergy.Tables[0].Rows[i].Field<string>("Severity"));
+                        //}
                         if (bSeverity == true)
                         {
-                            if (bReaction == true)
-                                objallergy.Reaction = objallergy.Reaction + ": " + StripTagsRegex(dsAllergy.Tables[0].Rows[i].Field<string>("Severity"));
-                            else
-                                objallergy.Reaction = " : " + StripTagsRegex(dsAllergy.Tables[0].Rows[i].Field<string>("Severity"));
+                            objallergy.Severity = StripTagsRegex(dsAllergy.Tables[0].Rows[i].Field<string>("Severity"));
                         }
                         if (bNDCID == true)
                             objallergy.NDC_ID = StripTagsRegex(dsAllergy.Tables[0].Rows[i].Field<string>("NDCID"));
