@@ -104,7 +104,7 @@ namespace Acurus.Capella.UI
                         responseStream.Close();
                         myWebResponse.Close();
 
-                        string sAkidoURL = System.Configuration.ConfigurationSettings.AppSettings["AkidoNoteURL"].ToString().Replace("[CapellaEncounterID]", Encounter_Id.ToString()).Replace("[ClientName]", ClientSession.LegalOrg);
+                        string sAkidoURL = System.Configuration.ConfigurationSettings.AppSettings["AkidoNoteURL"].ToString().Replace("[CapellaEncounterID]", Encounter_Id.ToString()).Replace("[ClientName]", ClientSession.LegalOrg.ToLower());
 
                         ScriptManager.RegisterStartupScript(this, typeof(frmEncounter), "Summary", "AkidoNoteClickSum('"+sAkidoURL+"');", true);
                         return;
