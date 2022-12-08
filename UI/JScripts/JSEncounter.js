@@ -519,26 +519,26 @@ function FollowUpWindowClientClosePageLoad(oWindow, args) {
     document.getElementById("hdnCloseFS").value = "false";
 }
 
-function chkShowAllPhysicians_CheckedChanged(checkStatus) {
+//function chkShowAllPhysicians_CheckedChanged(checkStatus) {
 
-    if (checkStatus.firstChild.checked) {
-        var usedNames = {};
-        $("#cboPhysicianName > option").each(function () {
-            if (usedNames[this.text]) {
-                $(this).css('display', 'none');
-            } else {
-                usedNames[this.text] = this.value;
-                $(this).css('display', 'block');
-            }
-        });
-    }
-    else {
-        $("#cboPhysicianName > option").each(function () {
-            var option = $(this);
-            if (option.attr('default') == 'true' || option.attr('default') == '') { option.css('display', 'block'); } else { option.css('display', 'none'); }
-        });
-    }
-}
+//    if (checkStatus.firstChild.checked) {
+//        var usedNames = {};
+//        $("#cboPhysicianName > option").each(function () {
+//            if (usedNames[this.text]) {
+//                $(this).css('display', 'none');
+//            } else {
+//                usedNames[this.text] = this.value;
+//                $(this).css('display', 'block');
+//            }
+//        });
+//    }
+//    else {
+//        $("#cboPhysicianName > option").each(function () {
+//            var option = $(this);
+//            if (option.attr('default') == 'true' || option.attr('default') == '') { option.css('display', 'block'); } else { option.css('display', 'none'); }
+//        });
+//    }
+//}
 
 function getDropdownListSelectedText() {
     document.getElementById('btnmovetoscribe').style.display = "none";
