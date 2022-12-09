@@ -3413,31 +3413,35 @@ namespace Acurus.Capella.UI
 
             if (EncRecord != null)
             {
-                 sFacility_Name = EncRecord.Facility_Name;
+                sFacility_Name = EncRecord.Facility_Name;
             }
 
             cboPhysicianName.Items.Clear();
 
             XDocument xmlDocumentType = null;
             Dictionary<string, string> hashUser = new Dictionary<string, string>();
-            
-                if (File.Exists(Server.MapPath(@"ConfigXML\PhysicianFacilityMapping.xml")))
-                    xmlDocumentType = XDocument.Load(Server.MapPath(@"ConfigXML\PhysicianFacilityMapping.xml"));
-                //StaticLookup objStatics = null;
-                ListItem liDropdown = null;
+
+            if (File.Exists(Server.MapPath(@"ConfigXML\PhysicianFacilityMapping.xml")))
+                xmlDocumentType = XDocument.Load(Server.MapPath(@"ConfigXML\PhysicianFacilityMapping.xml"));
+            //StaticLookup objStatics = null;
+            ListItem liDropdown = null;
             IList<string> PhyASStIDlist = new List<string>();
             IList<string> PhyIDlist = new List<string>();
-                int i = 0;
-                foreach (XElement elements in xmlDocumentType.Elements("ROOT").Elements("PhyAsstList").Elements())
-                {
+            int i = 0;
+            foreach (XElement elements in xmlDocumentType.Elements("ROOT").Elements("PhyAsstList").Elements())
+            {
                 PhyASStIDlist.Add(elements.Attribute("ID").Value);
                 if (elements.Attribute("ID").Value.ToString() == ClientSession.PhysicianId.ToString())
+                {
+                    if (chkShowAllPhysicians.Checked == false && elements.Attribute("Facility_Name").Value.ToString().ToUpper() != EncRecord.Facility_Name.ToString().ToUpper())
                     {
-                        PhyIDlist.Add(elements.Attribute("Physician_ID").Value);
-                        i++;
+                        continue;
                     }
+                    PhyIDlist.Add(elements.Attribute("Physician_ID").Value);
+                    i++;
                 }
-                IList<ListItem> liComboItems = new List<ListItem>();
+            }
+            IList<ListItem> liComboItems = new List<ListItem>();
             foreach (XElement elements in xmlDocumentType.Elements("ROOT").Elements("PhyList").Elements())
             {
                 string xmlValue = elements.Attribute("name").Value;
@@ -3449,7 +3453,6 @@ namespace Acurus.Capella.UI
                         {
                             continue;
                         }
-
                     }
                     foreach (XElement phyItems in elements.Elements())
                     {
@@ -3461,7 +3464,6 @@ namespace Acurus.Capella.UI
                         string lastname = string.Empty;
                         string suffix = string.Empty;
                         string phyID = string.Empty;
-
                         if (phyItems.Attribute("username").Value != null)
                             username = phyItems.Attribute("username").Value;
                         if (phyItems.Attribute("prefix").Value != null)
@@ -3476,7 +3478,6 @@ namespace Acurus.Capella.UI
                             suffix = phyItems.Attribute("suffix").Value;
                         if (phyItems.Attribute("ID").Value != null)
                             phyID = phyItems.Attribute("ID").Value;
-
 
                         if (lastname != String.Empty)
                             phyName += lastname;
@@ -3506,22 +3507,22 @@ namespace Acurus.Capella.UI
                             //}
                             //else
                             //{
-                                if (PhyIDlist.Contains(phyID) && username != string.Empty)
+                            if (PhyIDlist.Contains(phyID) && username != string.Empty)
+                            {
+                                if (liComboItems.Contains(new ListItem(phyName, phyID)) == false)
                                 {
-                                    if (liComboItems.Contains(new ListItem(phyName, phyID)) == false)
-                                    {
-                                        hashUser.Add(phyID.ToString(), username);
-                                        liDropdown = new ListItem(phyName, phyID);
-                                        liComboItems.Add(liDropdown);
-                                    }
+                                    hashUser.Add(phyID.ToString(), username);
+                                    liDropdown = new ListItem(phyName, phyID);
+                                    liComboItems.Add(liDropdown);
                                 }
+                            }
                             //}
                         }
                         else if (username != string.Empty)
                         {
                             if (liComboItems.Contains(new ListItem(phyName, phyID)) == false)
                             {
-                                if (PhyASStIDlist.Contains(EncRecord.Appointment_Provider_ID.ToString()) == true && (PhyASStIDlist.Contains(phyID)==false))
+                                if (PhyASStIDlist.Contains(EncRecord.Appointment_Provider_ID.ToString()) == true && (PhyASStIDlist.Contains(phyID) == false) && chkShowAllPhysicians.Checked==false)
                                 {
                                     continue;
                                 }
@@ -3538,85 +3539,86 @@ namespace Acurus.Capella.UI
             }
 
 
-                //Bind Physician List
-                IList<ListItem> sortlst = liComboItems.OrderBy(x => x.Text).ToList();
-                cboPhysicianName.Items.AddRange(sortlst.ToArray());
-                ListItem phyEmptyItem = new ListItem("", "0");
-                cboPhysicianName.Items.Insert(0, phyEmptyItem);
-                liComboItems.OrderBy(x => x.Value).ToList();
+            //Bind Physician List
+            IList<ListItem> sortlst = liComboItems.OrderBy(x => x.Text).ToList();
+            cboPhysicianName.Items.AddRange(sortlst.ToArray());
+            ListItem phyEmptyItem = new ListItem("", "0");
+            cboPhysicianName.Items.Insert(0, phyEmptyItem);
+            liComboItems.OrderBy(x => x.Value).ToList();
 
 
 
 
-                //if (!IsPostBack || Convert.ToBoolean(ViewState["IsRegenerateXML"]) == true)
-                //{
-                    //ViewState["IsRegenerateXML"] = false;
-                    if (ClientSession.UserRole.ToUpper() == "PHYSICIAN ASSISTANT" && ClientSession.UserCurrentProcess == "PROVIDER_PROCESS")
+            //if (!IsPostBack || Convert.ToBoolean(ViewState["IsRegenerateXML"]) == true)
+            //{
+            //ViewState["IsRegenerateXML"] = false;
+            if (ClientSession.UserRole.ToUpper() == "PHYSICIAN ASSISTANT" && ClientSession.UserCurrentProcess == "PROVIDER_PROCESS")
+            {
+                IEnumerable<XElement> MapFacilityPhysician = (from x in xmlDocumentType.Elements("ROOT").Elements("PhyAsstList")
+                                                           .Elements("PhysicianAssistant")
+                                                              where x.Attribute("ID").Value == ClientSession.PhysicianId.ToString()
+                                                              && x.Attribute("Facility_Name").Value.ToString().ToUpper() == EncRecord.Facility_Name.ToString().ToUpper()
+                                                              select x);
+                if (MapFacilityPhysician != null && MapFacilityPhysician.Count() > 0)
+                {
+                    ulong uDefaultPhysicianID = 0;
+                    foreach (XElement phyItems in MapFacilityPhysician)
                     {
-                        IEnumerable<XElement> MapFacilityPhysician = (from x in xmlDocumentType.Elements("ROOT").Elements("PhyAsstList")
-                                                                   .Elements("PhysicianAssistant")
-                                                                      where x.Attribute("ID").Value == ClientSession.PhysicianId.ToString()
-                                                                      select x);
-                        if (MapFacilityPhysician != null && MapFacilityPhysician.Count() > 0)
-                        {
-                            ulong uDefaultPhysicianID = 0;
-                            foreach (XElement phyItems in MapFacilityPhysician)
-                            {
-                                uDefaultPhysicianID = phyItems.Attribute("Default_Physician").Value != "" ? (Convert.ToUInt32(phyItems.Attribute("Default_Physician").Value)) : (0);
-                                break;
-                            }
-                            ListItem SelectedPhysician = (cboPhysicianName.Items.FindByValue(uDefaultPhysicianID.ToString()));
-                            if (SelectedPhysician != null)
-                            {
-                                hdnindex.Value = cboPhysicianName.Items.IndexOf(SelectedPhysician).ToString();
-                                cboPhysicianName.SelectedIndex = Convert.ToInt32(hdnindex.Value);
-
-                                hdnLocalPhy.Value = cboPhysicianName.SelectedValue + '~' + hashUser[cboPhysicianName.SelectedValue].ToString();
-                            }
-                        }
+                        uDefaultPhysicianID = phyItems.Attribute("Default_Physician").Value != "" ? (Convert.ToUInt32(phyItems.Attribute("Default_Physician").Value)) : (0);
+                        break;
                     }
-                    else
+                    ListItem SelectedPhysician = (cboPhysicianName.Items.FindByValue(uDefaultPhysicianID.ToString()));
+                    if (SelectedPhysician != null)
                     {
-                        ListItem SelectedPhysician;
-                        if (EncRecord.Encounter_Provider_ID != 0)
-                        {
-                            SelectedPhysician = (cboPhysicianName.Items.FindByValue(EncRecord.Encounter_Provider_ID.ToString()));
+                        hdnindex.Value = cboPhysicianName.Items.IndexOf(SelectedPhysician).ToString();
+                        cboPhysicianName.SelectedIndex = Convert.ToInt32(hdnindex.Value);
 
-                        }
-                        else
-                        {
-                            SelectedPhysician = (cboPhysicianName.Items.FindByValue(EncRecord.Appointment_Provider_ID.ToString()));
-                        }
-
-                        if (SelectedPhysician != null)
-                        {
-                            hdnindex.Value = cboPhysicianName.Items.IndexOf(SelectedPhysician).ToString();
-                            cboPhysicianName.SelectedIndex = Convert.ToInt32(hdnindex.Value);
-
-                            hdnLocalPhy.Value = cboPhysicianName.SelectedValue + '~' + hashUser[cboPhysicianName.SelectedValue].ToString();
-                        }
+                        hdnLocalPhy.Value = cboPhysicianName.SelectedValue + '~' + hashUser[cboPhysicianName.SelectedValue].ToString();
                     }
+                }
+            }
+            else
+            {
+                ListItem SelectedPhysician;
+                if (EncRecord.Encounter_Provider_ID != 0)
+                {
+                    SelectedPhysician = (cboPhysicianName.Items.FindByValue(EncRecord.Encounter_Provider_ID.ToString()));
 
-                    Session["EncounterProvID"] = cboPhysicianName.SelectedValue.ToString();
-                //}
-                //else
-                //{
-                //    ulong iIndex = 0;
-                //    if (ulong.TryParse(hdnindex.Value, out iIndex) && iIndex != 0)
-                //    {
-                //        cboPhysicianName.SelectedIndex = Convert.ToInt32(hdnindex.Value);
+                }
+                else
+                {
+                    SelectedPhysician = (cboPhysicianName.Items.FindByValue(EncRecord.Appointment_Provider_ID.ToString()));
+                }
 
-                //        hdnLocalPhy.Value = cboPhysicianName.SelectedValue + '~' + hashUser[cboPhysicianName.SelectedValue].ToString();
-                //    }
-                //    else
-                //    {
-                //        hdnLocalPhy.Value = string.Empty;
-                //    }
-                //}
-                Session["PhysicianList"] = PhyUserList;
-                Session["DefaultSelectedPhysician"] = cboPhysicianName.SelectedIndex;
-                ScriptManager.RegisterStartupScript(this, this.Page.GetType(), "ShowAllProvidersClicked", " {sessionStorage.setItem('StartLoading', 'false');StopLoadFromPatChart();}", true);
-            
+                if (SelectedPhysician != null)
+                {
+                    hdnindex.Value = cboPhysicianName.Items.IndexOf(SelectedPhysician).ToString();
+                    cboPhysicianName.SelectedIndex = Convert.ToInt32(hdnindex.Value);
+
+                    hdnLocalPhy.Value = cboPhysicianName.SelectedValue + '~' + hashUser[cboPhysicianName.SelectedValue].ToString();
+                }
+            }
+
+            Session["EncounterProvID"] = cboPhysicianName.SelectedValue.ToString();
+            //}
+            //else
+            //{
+            //    ulong iIndex = 0;
+            //    if (ulong.TryParse(hdnindex.Value, out iIndex) && iIndex != 0)
+            //    {
+            //        cboPhysicianName.SelectedIndex = Convert.ToInt32(hdnindex.Value);
+
+            //        hdnLocalPhy.Value = cboPhysicianName.SelectedValue + '~' + hashUser[cboPhysicianName.SelectedValue].ToString();
+            //    }
+            //    else
+            //    {
+            //        hdnLocalPhy.Value = string.Empty;
+            //    }
+            //}
+            Session["PhysicianList"] = PhyUserList;
+            Session["DefaultSelectedPhysician"] = cboPhysicianName.SelectedIndex;
+            ScriptManager.RegisterStartupScript(this, this.Page.GetType(), "ShowAllProvidersClicked", " {sessionStorage.setItem('StartLoading', 'false');StopLoadFromPatChart();}", true);
+
         }
     }
 }
