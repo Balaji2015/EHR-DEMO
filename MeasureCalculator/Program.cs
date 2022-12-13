@@ -38,6 +38,8 @@ namespace MeasureCalculator
             ulong ulPhyID = 0;
             XmlNodeList xmlphy = itemPhysiciandoc.GetElementsByTagName("Physician");
             Console.WriteLine("Total Physician Count: " + xmlphy.Count.ToString());
+            string version = System.Configuration.ConfigurationSettings.AppSettings["Version"];
+            string sMeasureList= System.Configuration.ConfigurationSettings.AppSettings["MeasureList"];
             for (int iCount = 0; iCount < xmlphy.Count; iCount++)
             {
                 Console.Write("Filling the CQM Data for Physician ID : " + xmlphy[iCount].Attributes[0].Value.ToString());
@@ -48,9 +50,9 @@ namespace MeasureCalculator
                 CQMSummaryManager cqmSummaryMngr = new CQMSummaryManager();
                 cqmSummaryMngr.DeleteCQMData(dtFromDate.Year.ToString(), ulPhyID);
 
-                string version = System.Configuration.ConfigurationSettings.AppSettings["Version"];
+                
                 if (version == "V10")
-                    pqriMeasureMngr.FillPQRIMeasureCalculator(sLegalOrg, ulPhyID, dtFromDate, dtToDate, ilstPQRIMeasure);
+                    pqriMeasureMngr.FillPQRIMeasureCalculator(sLegalOrg, ulPhyID, dtFromDate, dtToDate, ilstPQRIMeasure, sMeasureList);
                 else if (version == "V11")
                     pqriMeasureMngr.FillPQRIMeasureCalculatorversion11(sLegalOrg, ulPhyID, dtFromDate, dtToDate, ilstPQRIMeasure);
 
