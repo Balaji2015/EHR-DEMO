@@ -947,12 +947,12 @@ filter:progid:DXImageTransform.Microsoft.Blur(PixelRadius='4');
                                                                 <div>
                                                                     <ul>
                                                                         <li runat="server" id="mnuUtilities_smnuOfficeManagement_smnuLibrary_smnuCarrierLibrary"><a href="#" onclick="OpenModal('Carrier Library');">Carrier Library</a></li>
-                                                                        <li runat="server" id="mnuUtilities_smnuOfficeManagement_smnuLibrary_smnuFacilityLibrary" disabled="disabled" style="background-color: rgb(109, 119, 119);"><a href="#">Facility Library</a></li>
+                                                                        <%--<li runat="server" id="mnuUtilities_smnuOfficeManagement_smnuLibrary_smnuFacilityLibrary" disabled="disabled" style="background-color: rgb(109, 119, 119);"><a href="#">Facility Library</a></li>--%>
                                                                         <li runat="server" id="mnuUtilities_smnuOfficeManagement_smnuLibrary_smnuPayerLibrary"><a href="#" onclick="OpenModal('PLAN LIBRARY');">Plan Library</a></li>
                                                                         <li runat="server" id="mnuUtilities_smnuOfficeManagement_smnuLibrary_smnuPhysicianLibrary"><a href="#" onclick="OpenModal('PROVIDER LIBRARY');">Provider Library</a></li>
-                                                                        <li runat="server" id="mnuUtilities_smnuOfficeManagement_smnuLibrary_smnuProcedureCodeLibrary" disabled="disabled" style="background-color: rgb(109, 119, 119);"><a href="#">Procedure Code Library</a></li>
-                                                                        <li runat="server" id="mnuUtilities_smnuOfficeManagement_smnuLibrary_smnuProcessUserLibrary" disabled="disabled" style="background-color: rgb(109, 119, 119);"><a href="#">Process User Library</a></li>
-                                                                        <li runat="server" id="mnuUtilities_smnuOfficeManagement_smnuLibrary_smnuRosSymptomLibrary" disabled="disabled" style="background-color: rgb(109, 119, 119);"><a href="#">ROS Symptom Library</a></li>
+                                                                       <%-- <li runat="server" id="mnuUtilities_smnuOfficeManagement_smnuLibrary_smnuProcedureCodeLibrary" disabled="disabled" style="background-color: rgb(109, 119, 119);"><a href="#">Procedure Code Library</a></li>--%>
+                                                                       <%-- <li runat="server" id="mnuUtilities_smnuOfficeManagement_smnuLibrary_smnuProcessUserLibrary" disabled="disabled" style="background-color: rgb(109, 119, 119);"><a href="#">Process User Library</a></li>
+                                                                        <li runat="server" id="mnuUtilities_smnuOfficeManagement_smnuLibrary_smnuRosSymptomLibrary" disabled="disabled" style="background-color: rgb(109, 119, 119);"><a href="#">ROS Symptom Library</a></li>--%>
                                                                     </ul>
                                                                 </div>
                                                             </li>

@@ -208,7 +208,7 @@
                                 </td>
                                 <td>
                                     <asp:Button ID="btnPlanLibrary" runat="server" Class="aspbluebutton" Text="Plan Library" OnClientClick="return OpenPlanWindow();"
-                                        AccessKey="P" EnableViewState="false" />
+                                        AccessKey="P" EnableViewState="false" Enabled ="false"/>
                                 </td>
                                 <td>
                                     <asp:Button ID="btnOk" Class="aspbluebutton" runat="server" OnClick="btnOk_Click" OnClientClick="return closeWindow();"

@@ -87,7 +87,21 @@ namespace Acurus.Capella.UI
                 }
 
             }
-        }
+
+            if (ClientSession.UserPermissionDTO != null && ClientSession.UserPermissionDTO.Userscntab != null)
+            {
+                var userQRCode = from u in ClientSession.UserPermissionDTO.Userscntab where u.scn_id == 6600 && u.user_name == ClientSession.UserName select u;
+                if (userQRCode.ToList().Count > 0)
+                {
+                    btnPlanLibrary.Enabled = true;
+                }
+                else
+                {
+                    btnPlanLibrary.Enabled = false;
+                }
+            }
+
+            }
 
         protected void btnOk_Click(object sender, EventArgs e)
         {
