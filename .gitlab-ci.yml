@@ -95,6 +95,10 @@ Deploy Test Job 10.0.0.11:
  # - xcopy /y /s "F:\Acurus_Web\Deployee\builds\Capella_publish\*.*" "F:\Acurus_Web\capella_cmg_project\capella_cmg_ehr_cqm_talend\"
   - echo "Deployee CQM..Completed.."
 
+  - echo "Deployee PATIENT PORTAL..Start.."
+  #- xcopy /y /s "F:\Acurus_Web\Deployee\builds\Capella_publish_PatientPortal\*.*" "F:\Acurus_Web\capella_cmg_project\capella_patient_portal_test\"
+  - echo "Deployee PATIENT PORTAL..Completed.."
+
 Deploy PRODUCTION Job 10.1.0.6 :
   rules:
     - if: '$SERVER_PRODUCTION_6 =="10.1.0.6"'
