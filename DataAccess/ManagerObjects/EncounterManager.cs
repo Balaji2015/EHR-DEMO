@@ -10479,14 +10479,20 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
                     {
                         if (objEncounter != null)
                         {
-                            //Commented out as Is_EandM_Submitted should always be "Y" whenever PhyAssistant moves the encounter to next Process
-                            
-                            //uncommented for GITLAB #3084
-                            if (!bMovetoReview)//if the encounter is moved to PROVIDER for PROVIDER_REVIEW -- do not set e_m_submitted to "Y", to prevent batch creation when Documentation object is in correction/review cycle.
-                            objEncounter.Is_EandM_Submitted = "Y";
-                            else
-                                objEncounter.Is_EandM_Submitted = "N";
-                            objEncounter.E_M_Submitted_Date_And_Time = DateTime.Now;
+                            ////Commented out as Is_EandM_Submitted should always be "Y" whenever PhyAssistant moves the encounter to next Process
+
+                            ////uncommented for GITLAB #3084
+                            //if (!bMovetoReview)//if the encounter is moved to PROVIDER for PROVIDER_REVIEW -- do not set e_m_submitted to "Y", to prevent batch creation when Documentation object is in correction/review cycle.
+                            //objEncounter.Is_EandM_Submitted = "Y";
+                            //else
+                            //    objEncounter.Is_EandM_Submitted = "N";
+
+                            //GitLab #3240
+                            if (!bMovetoReview)
+                            {
+                                objEncounter.Is_EandM_Submitted = "Y";
+                                objEncounter.E_M_Submitted_Date_And_Time = DateTime.Now;
+                            }
                             if (bMovetoReview == true)
                                 objEncounter.Encounter_Provider_Review_ID = Convert.ToInt32(ulSelectedPhyID);
                             else
