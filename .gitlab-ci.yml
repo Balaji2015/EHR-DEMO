@@ -126,7 +126,7 @@ Deploy PRODUCTION Job 10.1.0.10 :
   script:
   
   - echo "Backup CMG..Start.."
-  - xcopy /y /s "F:\Acurus_Web\capella_cmg_project\capella_cmg_ehr\*.*" "F:\Acurus_Web\Deployee\Backup-do not delete\Git\CMG"
+  #- xcopy /y /s "F:\Acurus_Web\capella_cmg_project\capella_cmg_ehr\*.*" "F:\Acurus_Web\Deployee\Backup-do not delete\Git\CMG"
   - echo "Backup CMG..Completed.."
 
   - echo "Backup Wish..Start.."
