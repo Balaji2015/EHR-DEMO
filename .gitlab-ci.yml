@@ -13,8 +13,7 @@ stages:
  - Solution build
  - Deploy TESTING 10.0.0.4
  - Deploy TESTING 10.0.0.11
- - Deploy PRODUCTION 10.1.0.6 
- - Deploy PRODUCTION 10.1.0.10
+
 
 before_script:
    - echo "Nuget script..start"
@@ -23,7 +22,7 @@ before_script:
  
 build Job:
   rules:
-    - if: '$SERVER_TESTING_11 =="10.0.0.11" || $SERVER_TESTING_4 =="10.0.0.4" || $SERVER_PRODUCTION_6 =="10.1.0.6" || $SERVER_PRODUCTION_10 =="10.1.0.10"'
+    - if: '$SERVER_TESTING_11 =="10.0.0.11" || $SERVER_TESTING_4 =="10.0.0.4" '
   stage: Solution build
   script:
   - echo "UI Building..start"
@@ -45,6 +44,8 @@ build Job:
     - EHR-Capella5.0\
 
 Deploy Test Job 10.0.0.4 :
+  tags:
+    - azure-test4
   rules:
     - if: '$SERVER_TESTING_4 =="10.0.0.4"'
   environment:
@@ -53,16 +54,14 @@ Deploy Test Job 10.0.0.4 :
   stage: Deploy TESTING 10.0.0.4
   script:
   
-  - echo "Backup CMG..Start.."
-  - xcopy /y /s "F:\Acurus_Web\capella_cmg_project\capella_cmg_ehr_4_8\*.*" "F:\Acurus_Web\Deployee\Backup-do not delete\Git\CMG"
-  - echo "Backup CMG..Completed.."
-  
   - echo "Deployee CMG..Start.."  
-  - xcopy /y /s "F:\Acurus_Web\Deployee\builds\Capella_publish\*.*" "F:\Acurus_Web\capella_cmg_project\capella_cmg_ehr_4_8\"
+  - xcopy /y /s "F:\Acurus_Web\Deployee\builds\Capella_publish\*.*" "F:\Acurus_Web\EHR_RELEASE\RELEASE_CMG\"
   - echo "Deployee CMG..Completed.."
   
  
 Deploy Test Job 10.0.0.11:
+  tags:
+    - test azure
   rules:
     - if: '$SERVER_TESTING_11 =="10.0.0.11"'
   environment:
@@ -71,78 +70,13 @@ Deploy Test Job 10.0.0.11:
   stage: Deploy TESTING 10.0.0.11
   script:
   
-  - echo "Backup CMG..Start.."
-  - xcopy /y /s "F:\Acurus_Web\capella_cmg_project\capella_cmg_ehr_4_8\*.*" "F:\Acurus_Web\Deployee\Backup-do not delete\Git\CMG"
-  - echo "Backup CMG..Completed.."
-
-  - echo "Backup WC..Start.."      
-  - xcopy /y /s "F:\Acurus_Web\capella_hca_project\capella_wc\*.*" "F:\Acurus_Web\Deployee\Backup-do not delete\Git\WC"
-  - echo "Backup WC..Completed.."
-
-  - echo "Backup CQM..Start.."      
-  #- xcopy /y /s "F:\Acurus_Web\capella_cmg_project\capella_cmg_ehr_cqm_talend\*.*" "F:\Acurus_Web\Deployee\Backup-do not delete\Git\CQM"
-  - echo "Backup CQM..Completed.."
-
   - echo "Deployee CMG..Start.."
-  - xcopy /y /s "F:\Acurus_Web\Deployee\builds\Capella_publish\*.*" "F:\Acurus_Web\capella_cmg_project\capella_cmg_ehr_4_8\"
+  - xcopy /y /s "F:\Acurus_Web\Deployee\builds\Capella_publish\*.*" "F:\Acurus_Web\EHR_RELEASE\RELEASE_CMG\"
   - echo "Deployee CMG..Completed.."
 
   - echo "Deployee WC..Start.."
-  - xcopy /y /s "F:\Acurus_Web\Deployee\builds\Capella_publish\*.*" "F:\Acurus_Web\capella_hca_project\capella_wc\"
+  - xcopy /y /s "F:\Acurus_Web\Deployee\builds\Capella_publish\*.*" "F:\Acurus_Web\EHR_RELEASE\RELEASE_WC\"
   - echo "Deployee WC..Completed.."
-
-  - echo "Deployee CQM..Start.."
- # - xcopy /y /s "F:\Acurus_Web\Deployee\builds\Capella_publish\*.*" "F:\Acurus_Web\capella_cmg_project\capella_cmg_ehr_cqm_talend\"
-  - echo "Deployee CQM..Completed.."
-
-  - echo "Deployee PATIENT PORTAL..Start.."
-  #- xcopy /y /s "F:\Acurus_Web\Deployee\builds\Capella_publish_PatientPortal\*.*" "F:\Acurus_Web\capella_cmg_project\capella_patient_portal_test\"
-  - echo "Deployee PATIENT PORTAL..Completed.."
-
-Deploy PRODUCTION Job 10.1.0.6 :
-  rules:
-    - if: '$SERVER_PRODUCTION_6 =="10.1.0.6"'
-  environment:
-    name: Capella_Test
-    url: https://cmg.capellaehr.com/frmlogin.aspx
-  stage: Deploy PRODUCTION 10.1.0.6
-  script:
-  
-  - echo "Backup CMG..Start.."
-  #- xcopy /y /s "F:\Acurus_Web\capella_cmg_project\capella_cmg_ehr\*.*" "F:\Acurus_Web\Deployee\Backup-do not delete\Git\CMG"
-  - echo "Backup CMG..Completed.."
-  
-  - echo "Deployee CMG..Start.."  
-  - xcopy /y /s "F:\Acurus_Web\Deployee\builds\Capella_publish\*.*" "F:\Acurus_Web\capella_cmg_project\capella_cmg_ehr\"
-  - echo "Deployee CMG..Completed.."
-
-Deploy PRODUCTION Job 10.1.0.10 :
-  rules:
-    - if: '$SERVER_PRODUCTION_10 =="10.1.0.10"'
-  environment:
-    name: Capella_Test
-    url: https://cmg.capellaehr.com/frmlogin.aspx
-  stage: Deploy PRODUCTION 10.1.0.10
-  script:
-  
-  - echo "Backup CMG..Start.."
-  - xcopy /y /s "F:\Acurus_Web\capella_cmg_project\capella_cmg_ehr\*.*" "F:\Acurus_Web\Deployee\Backup-do not delete\Git\CMG"
-  - echo "Backup CMG..Completed.."
-
-  - echo "Backup Wish..Start.."
-  - xcopy /y /s "F:\Acurus_Web\capella_wc_project\capella_wc_ehr\*.*" "F:\Acurus_Web\Deployee\Backup-do not delete\Git\WC"
-  - echo "Backup Wish..Completed.."
-  
-  - echo "Deployee CMG..Start.."  
-  - xcopy /y /s "F:\Acurus_Web\Deployee\builds\Capella_publish\*.*" "F:\Acurus_Web\capella_cmg_project\capella_cmg_ehr\"
-  - echo "Deployee CMG..Completed.."
-
-  - echo "Deployee Wish..Start.."  
-  - xcopy /y /s "F:\Acurus_Web\Deployee\builds\Capella_publish\*.*" "F:\Acurus_Web\capella_wc_project\capella_wc_ehr\"
-  - echo "Deployee Wish..Completed.."
-
-
-
 
 
 
