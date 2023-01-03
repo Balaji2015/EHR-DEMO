@@ -116,7 +116,7 @@ namespace Acurus.Capella.UI
                                       
 
                     IList<object> ilstROSBlobFinal = new List<object>();
-                    ilstROSBlobFinal = UtilityManager.ReadBlob("Encounter", ClientSession.EncounterId, ilstROSTagList);
+                    ilstROSBlobFinal = UtilityManager.ReadBlob( ClientSession.EncounterId, ilstROSTagList);
 
                     if (ilstROSBlobFinal != null && ilstROSBlobFinal.Count > 0)
                     {

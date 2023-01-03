@@ -29,5 +29,7 @@ namespace Acurus.Capella.UI
         public static IList<Client> ClientList = null;
 
         public static IList<ScnTab> scntab = null;
+
+        public static IList<MapXMLBlob> ilstMapXMLBlob = null;
     }
 }

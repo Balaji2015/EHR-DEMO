@@ -548,6 +548,9 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
         IEncounterBlobManager GetEncounterBlobManager();
         IEncounterBlobManager GetEncounterBlobManager(INHibernateSession session);
 
+        IMapXMLBlobManager GetMapXMLBlobManager();
+        IMapXMLBlobManager GetMapXMLBlobManager(INHibernateSession session);
+
     }
 
     public class ManagerFactory : IManagerFactory
@@ -2234,6 +2237,15 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
         public IEncounterBlobManager GetEncounterBlobManager(INHibernateSession session)
         {
             return new EncounterBlobManager(session);
+        }
+
+        public IMapXMLBlobManager GetMapXMLBlobManager()
+        {
+            return new MapXMLBlobManager();
+        }
+        public IMapXMLBlobManager GetMapXMLBlobManager(INHibernateSession session)
+        {
+            return new MapXMLBlobManager(session);
         }
         #endregion
     }

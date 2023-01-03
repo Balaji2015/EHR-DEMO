@@ -48,6 +48,9 @@ namespace Acurus.Capella.UI
             ClientManager clientMngr = new ClientManager();
             ApplicationObject.ClientList = clientMngr.GetClientList();
 
+            MapXMLBlobManager mapXMLBlobManager = new MapXMLBlobManager();
+            ApplicationObject.ilstMapXMLBlob = mapXMLBlobManager.GetMapXMLBlobList();
+
             try
             {
                 ProcessMasterManager objProcessMngr = new ProcessMasterManager();

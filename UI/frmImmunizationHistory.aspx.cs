@@ -1387,7 +1387,7 @@ namespace Acurus.Capella.UI
 
                 //ilstImmBlob = (IList<ImmunizationHistory>)UtilityManager.ReadBlob("Human", ClientSession.HumanId, sTagName);
 
-                ilstImmBlobFinal = UtilityManager.ReadBlob("Human", ClientSession.HumanId, sTagName);
+                ilstImmBlobFinal = UtilityManager.ReadBlob( ClientSession.HumanId, sTagName);
                 for (int iCount =0; iCount< ilstImmBlobFinal.Count; iCount++)
                 {
                     ilstImmBlob.Add((ImmunizationHistory)ilstImmBlobFinal[iCount]);
@@ -1613,7 +1613,7 @@ namespace Acurus.Capella.UI
             IList<string> sTagName = new List<string>();
             sTagName.Add("ImmunizationMasterHistoryList");
 
-            ilstImmMasterHisBlob = (IList<ImmunizationMasterHistory>)UtilityManager.ReadBlob("Human", ClientSession.HumanId, sTagName);
+            ilstImmMasterHisBlob = (IList<ImmunizationMasterHistory>)UtilityManager.ReadBlob( ClientSession.HumanId, sTagName);
 
             var imm = from immRecord in ilstImmMasterHisBlob where immRecord.Is_Deleted != "Y" select immRecord;
             ImmMasterHislst = imm.ToList<ImmunizationMasterHistory>();

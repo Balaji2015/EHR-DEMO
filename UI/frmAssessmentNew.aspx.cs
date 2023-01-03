@@ -206,7 +206,7 @@ namespace Acurus.Capella.UI
 
                     IList<object> ilstAsEncounterBlobFinal = new List<object>();
 
-                    ilstAsEncounterBlobFinal = UtilityManager.ReadBlob("Encounter", ClientSession.EncounterId, ilsAssessmentEncounterTagList);
+                    ilstAsEncounterBlobFinal = UtilityManager.ReadBlob( ClientSession.EncounterId, ilsAssessmentEncounterTagList);
 
                     if (ilstAsEncounterBlobFinal != null && ilstAsEncounterBlobFinal.Count > 0)
                     {
@@ -1506,7 +1506,7 @@ namespace Acurus.Capella.UI
 
             IList<object> ilstAsshumanBlobFinal = new List<object>();
 
-            ilstAsshumanBlobFinal = UtilityManager.ReadBlob("Human", ClientSession.HumanId, ilsAssessmentTagList);
+            ilstAsshumanBlobFinal = UtilityManager.ReadBlob( ClientSession.HumanId, ilsAssessmentTagList);
 
             if (ilstAsshumanBlobFinal != null && ilstAsshumanBlobFinal.Count > 0)
             {

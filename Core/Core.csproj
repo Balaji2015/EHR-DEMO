@@ -186,6 +186,7 @@
     <Compile Include="DomainObjects\LabInsurancePlan.cs" />
     <Compile Include="DomainObjects\LabLocationProcedure.cs" />
     <Compile Include="DomainObjects\MapPhysicianPhysicianAssistant.cs" />
+    <Compile Include="DomainObjects\MapXMLBlob.cs" />
     <Compile Include="DomainObjects\MasterTableList.cs" />
     <Compile Include="DomainObjects\MasterVitals.cs" />
     <Compile Include="DomainObjects\MeasuresRuleMaster.cs" />
@@ -744,6 +745,7 @@
     <EmbeddedResource Include="HbmMaps\NonDrugAllergyMaster.hbm.xml" />
     <EmbeddedResource Include="HbmMaps\MapUserCarrierFacility.hbm.xml" />
     <EmbeddedResource Include="HbmMaps\Human_Blob.hbm.xml" />
+    <EmbeddedResource Include="HbmMaps\MapXMLBlob.hbm.xml" />
     <Content Include="HbmMaps\PatientMessage.hbm.xml" />
     <EmbeddedResource Include="HbmMaps\PhysicianPatientMaster.hbm.xml" />
     <EmbeddedResource Include="HbmMaps\SocialHistoryMaster.hbm.xml" />

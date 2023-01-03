@@ -231,7 +231,7 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
 
 
             IList<object> ilstGeneralPlanBlobFinal = new List<object>();
-            ilstGeneralPlanBlobFinal = ReadBlob("Encounter", ulEncounterID, ilstGeneralPlanTagList);
+            ilstGeneralPlanBlobFinal = ReadBlob( ulEncounterID, ilstGeneralPlanTagList);
 
             if (ilstGeneralPlanBlobFinal != null && ilstGeneralPlanBlobFinal.Count > 0)
             {
@@ -963,7 +963,7 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
                                         //}
                                         //if  (FileName.Contains("Encounter"))
                                         //{
-                                            WriteBlob("Encounter", ulEncounterID, xmlobjEncounter.itemDoc, MySession, ListToInsert, ListToUpdate, ListToDelete, xmlobjEncounter,false);
+                                            WriteBlob(ulEncounterID, xmlobjEncounter.itemDoc, MySession, ListToInsert, ListToUpdate, ListToDelete, xmlobjEncounter,false);
                                         //}
 
                                         // xmlobjEncounter.itemDoc.Save(xmlobjEncounter.strXmlFilePath);
@@ -1033,7 +1033,7 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
                                         //  xmlobjHuman.itemDoc.Save(xmlobjHuman.strXmlFilePath);
                                         //if (FileName.Contains("Human"))
                                         //{
-                                            WriteBlob("Human", ulHumanID, xmlobjHuman.itemDoc, MySession, ListToInsert, ListToUpdate, ListToDelete, xmlobjHuman, false);
+                                            WriteBlob( ulHumanID, xmlobjHuman.itemDoc, MySession, ListToInsert, ListToUpdate, ListToDelete, xmlobjHuman, false);
                                        // }
                                         //else if (FileName.Contains("Encounter"))
                                         //{
@@ -1125,7 +1125,7 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
                                     EncounterORHumanId = ListToDelete[0].Encounter_ID;
                                     List<object> lstObj = ListToDelete.Cast<object>().ToList();
                                     objGenXml.GenerateXmlDelete(lstObj, EncounterORHumanId, string.Empty, true);
-                                    WriteBlob("Encounter", ulEncounterID, objGenXml.itemDoc, MySession, ListToInsert, ListToUpdate, ListToDelete, objGenXml, false);
+                                    WriteBlob( ulEncounterID, objGenXml.itemDoc, MySession, ListToInsert, ListToUpdate, ListToDelete, objGenXml, false);
 
                                 }
                                 trans.Commit();
@@ -2667,7 +2667,7 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
 
                 IList<object> ilstAsshumanBlobFinal = new List<object>();
 
-                ilstAsshumanBlobFinal = ReadBlob("Human", humanID, ilsAssessmentTagList);
+                ilstAsshumanBlobFinal = ReadBlob( humanID, ilsAssessmentTagList);
 
                 if (ilstAsshumanBlobFinal != null && ilstAsshumanBlobFinal.Count > 0)
                 {
@@ -2921,7 +2921,7 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
 
                     IList<object> ilstAsEncounterBlobFinal = new List<object>();
 
-                ilstAsEncounterBlobFinal = ReadBlob("Encounter", encounterID, ilsAssessmentEncounterTagList);
+                ilstAsEncounterBlobFinal = ReadBlob( encounterID, ilsAssessmentEncounterTagList);
 
                 if (ilstAsEncounterBlobFinal != null && ilstAsEncounterBlobFinal.Count > 0)
                 {

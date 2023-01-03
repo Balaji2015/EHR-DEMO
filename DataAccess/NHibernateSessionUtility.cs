@@ -23,6 +23,7 @@ namespace Acurus.Capella.DataAccess
         public IList<ProcessMaster> MyProcessmasterList = new List<ProcessMaster>();
         public IList<FacilityLibrary> MyAncillaryFacilityList = new List<FacilityLibrary>();
         public IList<FacilityLibrary> MyFacilityList = new List<FacilityLibrary>();
+        public IList<MapXMLBlob> MyMapXMLBlobList = new List<MapXMLBlob>();
 
         private NHibernateSessionUtility()
         {
@@ -112,6 +113,19 @@ namespace Acurus.Capella.DataAccess
                 {
                     FacilityManager facMngr = new FacilityManager();
                     MyFacilityList = facMngr.GetAll();
+                }
+
+            }
+            catch
+            {
+
+            }
+            try
+            {
+                if (MyMapXMLBlobList.Count == 0)
+                {
+                    MapXMLBlobManager mapxmlblobMngr = new MapXMLBlobManager();
+                    MyMapXMLBlobList = mapxmlblobMngr.GetAll();
                 }
 
             }

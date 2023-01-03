@@ -204,6 +204,7 @@
     <Compile Include="ManagerObjects\MapFacilityPhysicianManager.cs" />
     <Compile Include="ManagerObjects\MapPhysicianPhysicianAssitantManager.cs" />
     <Compile Include="ManagerObjects\MapVitalsPhysicianManager.cs" />
+    <Compile Include="ManagerObjects\MapXMLBlobManager.cs" />
     <Compile Include="ManagerObjects\MasterTableListManager.cs" />
     <Compile Include="ManagerObjects\MasterVitalsMananger.cs" />
     <Compile Include="ManagerObjects\MeasuresRuleMasterManager.cs" />

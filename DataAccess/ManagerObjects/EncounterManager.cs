@@ -1344,7 +1344,7 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
                                     {
                                         using (ITransaction trans = session.BeginTransaction(IsolationLevel.ReadUncommitted))
                                         {
-                                            WriteBlob("Human", Humanid, xmlDoc, session, null, null, null, null, true);
+                                            WriteBlob(Humanid, xmlDoc, session, null, null, null, null, true);
 
                                             trans.Commit();
                                         }
@@ -10136,7 +10136,7 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
             IList<object> ilstEncBlob = new List<object>();
             IList<string> ilstEncounterTagList = new List<string>();
             ilstEncounterTagList.Add("EncounterList");
-            ilstEncBlob = ReadBlob("Encounter", ulEncID, ilstEncounterTagList);
+            ilstEncBlob = ReadBlob( ulEncID, ilstEncounterTagList);
             
             //if (File.Exists(strXmlEncounterFilePath) == false)
             //{
@@ -10157,7 +10157,7 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
             {
                 using (ITransaction trans = session.BeginTransaction(IsolationLevel.ReadUncommitted))
                 {
-                    WriteBlob("Encounter", ulEncID, itemDoc, session, null, null, null, null, true);
+                    WriteBlob( ulEncID, itemDoc, session, null, null, null, null, true);
 
                     trans.Commit();
                 }
@@ -15636,10 +15636,10 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
             //if (File.Exists(strXmlEncounterFilePath) == false || (File.Exists(strXmlEncounterFilePath)==true && File.ReadAllBytes(strXmlEncounterFilePath).Length ==0))
             //{
 
-            IList<object> ilstEncBlob = new List<object>();
-            IList<string> ilstEncounterTagList = new List<string>();
-            ilstEncounterTagList.Add("EncounterList");
-            ilstEncBlob = ReadBlob("Encounter", ulEncID, ilstEncounterTagList);
+            //IList<object> ilstEncBlob = new List<object>();
+            //IList<string> ilstEncounterTagList = new List<string>();
+            //ilstEncounterTagList.Add("EncounterList");
+            //ilstEncBlob = ReadBlob("Encounter", ulEncID, ilstEncounterTagList);
 
             //if (File.Exists(strXmlEncounterFilePath) == false)
             //{
@@ -15682,7 +15682,7 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
                 {
                     using (ITransaction trans = session.BeginTransaction(IsolationLevel.ReadUncommitted))
                     {
-                        WriteBlob("Encounter", ulEncID, itemDoc, session, null, updateEncounterList, null, null, true);
+                        WriteBlob( ulEncID, itemDoc, session, null, updateEncounterList, null, null, true);
 
                         trans.Commit();
                     }
