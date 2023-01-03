@@ -1560,128 +1560,184 @@ namespace Acurus.Capella.UI
                  {
                      bool _is_from_current_encounter_data = false;
                      IList<HospitalizationHistory> HospHislst = new List<HospitalizationHistory>();
-                     string FileName = "Human" + "_" + ClientSession.HumanId + ".xml";
-                     string strXmlFilePath = Path.Combine(System.Configuration.ConfigurationSettings.AppSettings["XMLPath"], FileName);
-                     if (File.Exists(strXmlFilePath) == true)
-                     {
-                         XmlDocument itemDoc = new XmlDocument();
-                         XmlTextReader XmlText = new XmlTextReader(strXmlFilePath);
-                         XmlNodeList xmlTagName = null;
-                         using (FileStream fs = new FileStream(strXmlFilePath, FileMode.Open, FileAccess.Read, FileShare.Read))
-                         {
-                             itemDoc.Load(fs);
-                             XmlText.Close();
-                             if (itemDoc.GetElementsByTagName("HospitalizationHistoryList") != null && itemDoc.GetElementsByTagName("HospitalizationHistoryList").Count > 0)
-                             {
-                                 xmlTagName = itemDoc.GetElementsByTagName("HospitalizationHistoryList")[0].ChildNodes;
-                                 if (xmlTagName != null && xmlTagName.Count > 0)
-                                 {
-                                     for (int j = 0; j < xmlTagName.Count; j++)
-                                     {
-                                         string TagName = xmlTagName[j].Name;
-                                         XmlSerializer xmlserializer = new XmlSerializer(typeof(HospitalizationHistory));
-                                         HospitalizationHistory HospitalizationHistory = xmlserializer.Deserialize(new XmlNodeReader(xmlTagName[j])) as HospitalizationHistory;
-                                         IEnumerable<PropertyInfo> propInfo = null;
-                                         propInfo = from obji in ((HospitalizationHistory)HospitalizationHistory).GetType().GetProperties() select obji;
-                                         for (int i = 0; i < xmlTagName[j].Attributes.Count; i++)
-                                         {
-                                             XmlNode nodevalue = xmlTagName[j].Attributes[i];
-                                             {
-                                                 if (propInfo != null)
-                                                 {
-                                                     foreach (PropertyInfo property in propInfo)
-                                                     {
-                                                         if (property.Name == nodevalue.Name)
-                                                         {
-                                                             if (property.PropertyType.Name.ToUpper() == "UINT64")
-                                                                 property.SetValue(HospitalizationHistory, Convert.ToUInt64(nodevalue.Value), null);
-                                                             else if (property.PropertyType.Name.ToUpper() == "STRING")
-                                                                 property.SetValue(HospitalizationHistory, Convert.ToString(nodevalue.Value), null);
-                                                             else if (property.PropertyType.Name.ToUpper() == "DATETIME")
-                                                                 property.SetValue(HospitalizationHistory, Convert.ToDateTime(nodevalue.Value), null);
-                                                             else if (property.PropertyType.Name.ToUpper() == "INT32")
-                                                                 property.SetValue(HospitalizationHistory, Convert.ToInt32(nodevalue.Value), null);
-                                                             else
-                                                                 property.SetValue(HospitalizationHistory, nodevalue.Value, null);
-                                                         }
-                                                     }
-                                                 }
-                                             }
-                                         }
+                    IList<object> ilstInHospitalizationHistoryBlobFinal = new List<object>();
+                    IList<string> ilstHospitalizationHistoryTagList = new List<string>();
+                    #region Commented By Deepak
 
-                                         HospHislst.Add(HospitalizationHistory);
-                                         if (HospitalizationHistory.Encounter_Id == ClientSession.EncounterId)
-                                             _is_from_current_encounter_data = true;
-                                     }
-                                     if (!_is_from_current_encounter_data)
-                                     {
-                                         HospHislst.Clear();
-                                         LoadFromMaster(Is_Load, HospHistDTO, is_Delete);
-                                         if (Session["HospitalDTO"] != null)
-                                             HospHistDTO = (HospitalizationDTO)Session["HospitalDTO"];
-                                    }
-                                 }
-                             }
-                             else
-                             {
-                                 LoadFromMaster(Is_Load, HospHistDTO, is_Delete);
-                             }
-                             if (itemDoc.GetElementsByTagName("EncounterList") != null && itemDoc.GetElementsByTagName("EncounterList").Count > 0)
-                             {
-                                 xmlTagName = itemDoc.GetElementsByTagName("EncounterList")[0].ChildNodes;
+                    //string FileName = "Human" + "_" + ClientSession.HumanId + ".xml";
+                    //string strXmlFilePath = Path.Combine(System.Configuration.ConfigurationSettings.AppSettings["XMLPath"], FileName);
+                    //if (File.Exists(strXmlFilePath) == true)
+                    //{
+                    //    XmlDocument itemDoc = new XmlDocument();
+                    //    XmlTextReader XmlText = new XmlTextReader(strXmlFilePath);
+                    //    XmlNodeList xmlTagName = null;
+                    //    using (FileStream fs = new FileStream(strXmlFilePath, FileMode.Open, FileAccess.Read, FileShare.Read))
+                    //    {
+                    //        itemDoc.Load(fs);
+                    //        XmlText.Close();
+                    //        if (itemDoc.GetElementsByTagName("HospitalizationHistoryList") != null && itemDoc.GetElementsByTagName("HospitalizationHistoryList").Count > 0)
+                    //        {
+                    //            xmlTagName = itemDoc.GetElementsByTagName("HospitalizationHistoryList")[0].ChildNodes;
+                    //            if (xmlTagName != null && xmlTagName.Count > 0)
+                    //            {
+                    //                for (int j = 0; j < xmlTagName.Count; j++)
+                    //                {
+                    //                    string TagName = xmlTagName[j].Name;
+                    //                    XmlSerializer xmlserializer = new XmlSerializer(typeof(HospitalizationHistory));
+                    //                    HospitalizationHistory HospitalizationHistory = xmlserializer.Deserialize(new XmlNodeReader(xmlTagName[j])) as HospitalizationHistory;
+                    //                    IEnumerable<PropertyInfo> propInfo = null;
+                    //                    propInfo = from obji in ((HospitalizationHistory)HospitalizationHistory).GetType().GetProperties() select obji;
+                    //                    for (int i = 0; i < xmlTagName[j].Attributes.Count; i++)
+                    //                    {
+                    //                        XmlNode nodevalue = xmlTagName[j].Attributes[i];
+                    //                        {
+                    //                            if (propInfo != null)
+                    //                            {
+                    //                                foreach (PropertyInfo property in propInfo)
+                    //                                {
+                    //                                    if (property.Name == nodevalue.Name)
+                    //                                    {
+                    //                                        if (property.PropertyType.Name.ToUpper() == "UINT64")
+                    //                                            property.SetValue(HospitalizationHistory, Convert.ToUInt64(nodevalue.Value), null);
+                    //                                        else if (property.PropertyType.Name.ToUpper() == "STRING")
+                    //                                            property.SetValue(HospitalizationHistory, Convert.ToString(nodevalue.Value), null);
+                    //                                        else if (property.PropertyType.Name.ToUpper() == "DATETIME")
+                    //                                            property.SetValue(HospitalizationHistory, Convert.ToDateTime(nodevalue.Value), null);
+                    //                                        else if (property.PropertyType.Name.ToUpper() == "INT32")
+                    //                                            property.SetValue(HospitalizationHistory, Convert.ToInt32(nodevalue.Value), null);
+                    //                                        else
+                    //                                            property.SetValue(HospitalizationHistory, nodevalue.Value, null);
+                    //                                    }
+                    //                                }
+                    //                            }
+                    //                        }
+                    //                    }
 
-                                 if (xmlTagName != null && xmlTagName.Count > 0)
-                                 {
-                                     for (int j = 0; j < xmlTagName.Count; j++)
-                                     {
-                                         if (xmlTagName[j].Attributes[73].Value == ClientSession.EncounterId.ToString())
-                                         {
-                                             string TagName = xmlTagName[j].Name;
-                                             XmlSerializer xmlserializer = new XmlSerializer(typeof(Encounter));
-                                             Encounter Encounter = xmlserializer.Deserialize(new XmlNodeReader(xmlTagName[j])) as Encounter;
-                                             IEnumerable<PropertyInfo> propInfo = null;
-                                             propInfo = from obji in ((Encounter)Encounter).GetType().GetProperties() select obji;
+                    //                    HospHislst.Add(HospitalizationHistory);
+                    //                    if (HospitalizationHistory.Encounter_Id == ClientSession.EncounterId)
+                    //                        _is_from_current_encounter_data = true;
+                    //                }
+                    //                if (!_is_from_current_encounter_data)
+                    //                {
+                    //                    HospHislst.Clear();
+                    //                    LoadFromMaster(Is_Load, HospHistDTO, is_Delete);
+                    //                    if (Session["HospitalDTO"] != null)
+                    //                        HospHistDTO = (HospitalizationDTO)Session["HospitalDTO"];
+                    //                }
+                    //            }
+                    //        }
+                    //        else
+                    //        {
+                    //            LoadFromMaster(Is_Load, HospHistDTO, is_Delete);
+                    //        }
+                    //        if (itemDoc.GetElementsByTagName("EncounterList") != null && itemDoc.GetElementsByTagName("EncounterList").Count > 0)
+                    //        {
+                    //            xmlTagName = itemDoc.GetElementsByTagName("EncounterList")[0].ChildNodes;
 
-                                             for (int i = 0; i < xmlTagName[j].Attributes.Count; i++)
-                                             {
-                                                 XmlNode nodevalue = xmlTagName[j].Attributes[i];
-                                                 {
-                                                     if (propInfo != null)
-                                                     {
-                                                         foreach (PropertyInfo property in propInfo)
-                                                         {
-                                                             if (property.Name == nodevalue.Name)
-                                                             {
-                                                                 if (property.PropertyType.Name.ToUpper() == "UINT64")
-                                                                     property.SetValue(Encounter, Convert.ToUInt64(nodevalue.Value), null);
-                                                                 else if (property.PropertyType.Name.ToUpper() == "STRING")
-                                                                     property.SetValue(Encounter, Convert.ToString(nodevalue.Value), null);
-                                                                 else if (property.PropertyType.Name.ToUpper() == "DATETIME")
-                                                                     property.SetValue(Encounter, Convert.ToDateTime(nodevalue.Value), null);
-                                                                 else if (property.PropertyType.Name.ToUpper() == "INT32")
-                                                                     property.SetValue(Encounter, Convert.ToInt32(nodevalue.Value), null);
-                                                                 else
-                                                                     property.SetValue(Encounter, nodevalue.Value, null);
-                                                             }
-                                                         }
-                                                     }
-                                                 }
-                                             }
-                                             HospHistDTO.Encount = Encounter;
-                                         }
-                                     }
-                                 }
+                    //            if (xmlTagName != null && xmlTagName.Count > 0)
+                    //            {
+                    //                for (int j = 0; j < xmlTagName.Count; j++)
+                    //                {
+                    //                    if (xmlTagName[j].Attributes[73].Value == ClientSession.EncounterId.ToString())
+                    //                    {
+                    //                        string TagName = xmlTagName[j].Name;
+                    //                        XmlSerializer xmlserializer = new XmlSerializer(typeof(Encounter));
+                    //                        Encounter Encounter = xmlserializer.Deserialize(new XmlNodeReader(xmlTagName[j])) as Encounter;
+                    //                        IEnumerable<PropertyInfo> propInfo = null;
+                    //                        propInfo = from obji in ((Encounter)Encounter).GetType().GetProperties() select obji;
 
-                             }
-                             if (itemDoc.GetElementsByTagName("dob") != null && itemDoc.GetElementsByTagName("dob").Count > 0)
-                             {
-                                 HospHistDTO.DateofBirth = Convert.ToDateTime(itemDoc.GetElementsByTagName("dob")[0].InnerText);
-                             }
-                             fs.Close();
-                             fs.Dispose();
-                         }
-                     }
-                     if (HospHislst != null && HospHislst.Count > 0)
+                    //                        for (int i = 0; i < xmlTagName[j].Attributes.Count; i++)
+                    //                        {
+                    //                            XmlNode nodevalue = xmlTagName[j].Attributes[i];
+                    //                            {
+                    //                                if (propInfo != null)
+                    //                                {
+                    //                                    foreach (PropertyInfo property in propInfo)
+                    //                                    {
+                    //                                        if (property.Name == nodevalue.Name)
+                    //                                        {
+                    //                                            if (property.PropertyType.Name.ToUpper() == "UINT64")
+                    //                                                property.SetValue(Encounter, Convert.ToUInt64(nodevalue.Value), null);
+                    //                                            else if (property.PropertyType.Name.ToUpper() == "STRING")
+                    //                                                property.SetValue(Encounter, Convert.ToString(nodevalue.Value), null);
+                    //                                            else if (property.PropertyType.Name.ToUpper() == "DATETIME")
+                    //                                                property.SetValue(Encounter, Convert.ToDateTime(nodevalue.Value), null);
+                    //                                            else if (property.PropertyType.Name.ToUpper() == "INT32")
+                    //                                                property.SetValue(Encounter, Convert.ToInt32(nodevalue.Value), null);
+                    //                                            else
+                    //                                                property.SetValue(Encounter, nodevalue.Value, null);
+                    //                                        }
+                    //                                    }
+                    //                                }
+                    //                            }
+                    //                        }
+                    //                        HospHistDTO.Encount = Encounter;
+                    //                    }
+                    //                }
+                    //            }
+
+                    //        }
+                    //        if (itemDoc.GetElementsByTagName("dob") != null && itemDoc.GetElementsByTagName("dob").Count > 0)
+                    //        {
+                    //            HospHistDTO.DateofBirth = Convert.ToDateTime(itemDoc.GetElementsByTagName("dob")[0].InnerText);
+                    //        }
+                    //        fs.Close();
+                    //        fs.Dispose();
+                    //    }
+                    //}
+                    #endregion
+
+                    ilstHospitalizationHistoryTagList.Add("HospitalizationHistoryList");
+                    ilstHospitalizationHistoryTagList.Add("EncounterList");
+
+                   
+
+                    ilstInHospitalizationHistoryBlobFinal = UtilityManager.ReadBlob(ClientSession.HumanId, ilstHospitalizationHistoryTagList);
+
+                    if (ilstInHospitalizationHistoryBlobFinal != null && ilstInHospitalizationHistoryBlobFinal.Count > 0)
+                    {
+                        if (ilstInHospitalizationHistoryBlobFinal[0] != null)
+                        {
+                            for (int iCount = 0; iCount < ((IList<object>)ilstInHospitalizationHistoryBlobFinal[0]).Count; iCount++)
+                            {
+                                HospHislst.Add((HospitalizationHistory)((IList<object>)ilstInHospitalizationHistoryBlobFinal[0])[iCount]);
+                                if (((HospitalizationHistory)((IList<object>)ilstInHospitalizationHistoryBlobFinal[0])[iCount]).Encounter_Id == ClientSession.EncounterId)
+                                    _is_from_current_encounter_data = true;
+                            }
+                            if (!_is_from_current_encounter_data)
+                            {
+                                HospHislst.Clear();
+                                LoadFromMaster(Is_Load, HospHistDTO, is_Delete);
+                                if (Session["HospitalDTO"] != null)
+                                    HospHistDTO = (HospitalizationDTO)Session["HospitalDTO"];
+                            }
+                        }
+                        else
+                        {
+                            LoadFromMaster(Is_Load, HospHistDTO, is_Delete);
+                        }
+
+                        if (ilstInHospitalizationHistoryBlobFinal[1] != null)
+                        {
+                            for (int iCount = 0; iCount < ((IList<object>)ilstInHospitalizationHistoryBlobFinal[1]).Count; iCount++)
+                            {
+                                if (((Encounter)((IList<object>)ilstInHospitalizationHistoryBlobFinal[1])[iCount]).Encounter_ID == ClientSession.EncounterId)
+                                {
+                                    HospHistDTO.Encount = (Encounter)((IList<object>)ilstInHospitalizationHistoryBlobFinal[1]);
+                                }
+                            }
+                        }
+
+                    }
+                    if ((ClientSession.PatientPaneList[0]).Birth_Date != null)
+                    {
+                        HospHistDTO.DateofBirth = (ClientSession.PatientPaneList[0]).Birth_Date;
+                    }
+                   
+
+
+
+                    if (HospHislst != null && HospHislst.Count > 0)
                      {
                          IList<HospitalizationHistory> lstHospCurrEnc = new List<HospitalizationHistory>();
                          lstHospCurrEnc = (from item in HospHislst where item.Encounter_Id == ClientSession.EncounterId select item).ToList<HospitalizationHistory>();
@@ -1734,114 +1790,157 @@ namespace Acurus.Capella.UI
             if (Is_Load)
             {
                 IList<HospitalizationHistoryMaster> HospLoadMasterLst = new List<HospitalizationHistoryMaster>();
-                string FileName = "Human" + "_" + ClientSession.HumanId + ".xml";
-                string strXmlFilePath = Path.Combine(System.Configuration.ConfigurationSettings.AppSettings["XMLPath"], FileName);
-                if (File.Exists(strXmlFilePath) == true)
+                IList<object> ilstInHospitalizationHistoryBlobFinal = new List<object>();
+                IList<string> ilstHospitalizationHistoryTagList = new List<string>();
+
+                #region Commented By Deepak
+                
+                //string FileName = "Human" + "_" + ClientSession.HumanId + ".xml";
+                //string strXmlFilePath = Path.Combine(System.Configuration.ConfigurationSettings.AppSettings["XMLPath"], FileName);
+                //if (File.Exists(strXmlFilePath) == true)
+                //{
+                //    XmlDocument itemDoc = new XmlDocument();
+                //    XmlTextReader XmlText = new XmlTextReader(strXmlFilePath);
+                //    XmlNodeList xmlTagName = null;
+                //    using (FileStream fs = new FileStream(strXmlFilePath, FileMode.Open, FileAccess.Read, FileShare.Read))
+                //    {
+                //        itemDoc.Load(fs);
+                //        XmlText.Close();
+                //        if (itemDoc.GetElementsByTagName("HospitalizationHistoryMasterList") != null && itemDoc.GetElementsByTagName("HospitalizationHistoryMasterList").Count > 0)
+                //        {
+                //            xmlTagName = itemDoc.GetElementsByTagName("HospitalizationHistoryMasterList")[0].ChildNodes;
+                //            if (xmlTagName != null && xmlTagName.Count > 0)
+                //            {
+                //                for (int j = 0; j < xmlTagName.Count; j++)
+                //                {
+                //                    string TagName = xmlTagName[j].Name;
+                //                    XmlSerializer xmlserializer = new XmlSerializer(typeof(HospitalizationHistoryMaster));
+                //                    HospitalizationHistoryMaster HospitalizationHistoryMaster = xmlserializer.Deserialize(new XmlNodeReader(xmlTagName[j])) as HospitalizationHistoryMaster;
+                //                    IEnumerable<PropertyInfo> propInfo = null;
+                //                    propInfo = from obji in ((HospitalizationHistoryMaster)HospitalizationHistoryMaster).GetType().GetProperties() select obji;
+                //                    for (int i = 0; i < xmlTagName[j].Attributes.Count; i++)
+                //                    {
+                //                        XmlNode nodevalue = xmlTagName[j].Attributes[i];
+                //                        {
+                //                            if (propInfo != null)
+                //                            {
+                //                                foreach (PropertyInfo property in propInfo)
+                //                                {
+                //                                    if (property.Name == nodevalue.Name)
+                //                                    {
+                //                                        if (property.PropertyType.Name.ToUpper() == "UINT64")
+                //                                            property.SetValue(HospitalizationHistoryMaster, Convert.ToUInt64(nodevalue.Value), null);
+                //                                        else if (property.PropertyType.Name.ToUpper() == "STRING")
+                //                                            property.SetValue(HospitalizationHistoryMaster, Convert.ToString(nodevalue.Value), null);
+                //                                        else if (property.PropertyType.Name.ToUpper() == "DATETIME")
+                //                                            property.SetValue(HospitalizationHistoryMaster, Convert.ToDateTime(nodevalue.Value), null);
+                //                                        else if (property.PropertyType.Name.ToUpper() == "INT32")
+                //                                            property.SetValue(HospitalizationHistoryMaster, Convert.ToInt32(nodevalue.Value), null);
+                //                                        else
+                //                                            property.SetValue(HospitalizationHistoryMaster, nodevalue.Value, null);
+                //                                    }
+                //                                }
+                //                            }
+                //                        }
+                //                    }
+                //                    if (HospitalizationHistoryMaster.Is_Deleted != "Y")
+                //                    HospLoadMasterLst.Add(HospitalizationHistoryMaster);
+                //                }
+                //            }
+                //        }
+                //        if (itemDoc.GetElementsByTagName("EncounterList") != null && itemDoc.GetElementsByTagName("EncounterList").Count > 0)
+                //        {
+                //            xmlTagName = itemDoc.GetElementsByTagName("EncounterList")[0].ChildNodes;
+
+                //            if (xmlTagName != null && xmlTagName.Count > 0)
+                //            {
+                //                for (int j = 0; j < xmlTagName.Count; j++)
+                //                {
+                //                    if (xmlTagName[j].Attributes[73].Value == ClientSession.EncounterId.ToString())
+                //                    {
+                //                        string TagName = xmlTagName[j].Name;
+                //                        XmlSerializer xmlserializer = new XmlSerializer(typeof(Encounter));
+                //                        Encounter Encounter = xmlserializer.Deserialize(new XmlNodeReader(xmlTagName[j])) as Encounter;
+                //                        IEnumerable<PropertyInfo> propInfo = null;
+                //                        propInfo = from obji in ((Encounter)Encounter).GetType().GetProperties() select obji;
+
+                //                        for (int i = 0; i < xmlTagName[j].Attributes.Count; i++)
+                //                        {
+                //                            XmlNode nodevalue = xmlTagName[j].Attributes[i];
+                //                            {
+                //                                if (propInfo != null)
+                //                                {
+                //                                    foreach (PropertyInfo property in propInfo)
+                //                                    {
+                //                                        if (property.Name == nodevalue.Name)
+                //                                        {
+                //                                            if (property.PropertyType.Name.ToUpper() == "UINT64")
+                //                                                property.SetValue(Encounter, Convert.ToUInt64(nodevalue.Value), null);
+                //                                            else if (property.PropertyType.Name.ToUpper() == "STRING")
+                //                                                property.SetValue(Encounter, Convert.ToString(nodevalue.Value), null);
+                //                                            else if (property.PropertyType.Name.ToUpper() == "DATETIME")
+                //                                                property.SetValue(Encounter, Convert.ToDateTime(nodevalue.Value), null);
+                //                                            else if (property.PropertyType.Name.ToUpper() == "INT32")
+                //                                                property.SetValue(Encounter, Convert.ToInt32(nodevalue.Value), null);
+                //                                            else
+                //                                                property.SetValue(Encounter, nodevalue.Value, null);
+                //                                        }
+                //                                    }
+                //                                }
+                //                            }
+                //                        }
+                //                        HospitalDTO.Encount = Encounter;
+                //                    }
+                //                }
+                //            }
+
+                //        }
+                //        if (itemDoc.GetElementsByTagName("dob") != null && itemDoc.GetElementsByTagName("dob").Count > 0)
+                //        {
+                //            HospitalDTO.DateofBirth = Convert.ToDateTime(itemDoc.GetElementsByTagName("dob")[0].InnerText);
+                //        }
+                //        fs.Close();
+                //        fs.Dispose();
+                //    }
+                //}
+
+                #endregion
+
+                ilstHospitalizationHistoryTagList.Add("HospitalizationHistoryMasterList");
+                ilstHospitalizationHistoryTagList.Add("EncounterList");
+
+                ilstInHospitalizationHistoryBlobFinal = UtilityManager.ReadBlob(ClientSession.HumanId, ilstHospitalizationHistoryTagList);
+
+                if (ilstInHospitalizationHistoryBlobFinal != null && ilstInHospitalizationHistoryBlobFinal.Count > 0)
                 {
-                    XmlDocument itemDoc = new XmlDocument();
-                    XmlTextReader XmlText = new XmlTextReader(strXmlFilePath);
-                    XmlNodeList xmlTagName = null;
-                    using (FileStream fs = new FileStream(strXmlFilePath, FileMode.Open, FileAccess.Read, FileShare.Read))
+                    if (ilstInHospitalizationHistoryBlobFinal[0] != null)
                     {
-                        itemDoc.Load(fs);
-                        XmlText.Close();
-                        if (itemDoc.GetElementsByTagName("HospitalizationHistoryMasterList") != null && itemDoc.GetElementsByTagName("HospitalizationHistoryMasterList").Count > 0)
+                        for (int iCount = 0; iCount < ((IList<object>)ilstInHospitalizationHistoryBlobFinal[0]).Count; iCount++)
                         {
-                            xmlTagName = itemDoc.GetElementsByTagName("HospitalizationHistoryMasterList")[0].ChildNodes;
-                            if (xmlTagName != null && xmlTagName.Count > 0)
+                            if (((HospitalizationHistoryMaster)((IList<object>)ilstInHospitalizationHistoryBlobFinal[0])[iCount]).Is_Deleted != "Y")
                             {
-                                for (int j = 0; j < xmlTagName.Count; j++)
-                                {
-                                    string TagName = xmlTagName[j].Name;
-                                    XmlSerializer xmlserializer = new XmlSerializer(typeof(HospitalizationHistoryMaster));
-                                    HospitalizationHistoryMaster HospitalizationHistoryMaster = xmlserializer.Deserialize(new XmlNodeReader(xmlTagName[j])) as HospitalizationHistoryMaster;
-                                    IEnumerable<PropertyInfo> propInfo = null;
-                                    propInfo = from obji in ((HospitalizationHistoryMaster)HospitalizationHistoryMaster).GetType().GetProperties() select obji;
-                                    for (int i = 0; i < xmlTagName[j].Attributes.Count; i++)
-                                    {
-                                        XmlNode nodevalue = xmlTagName[j].Attributes[i];
-                                        {
-                                            if (propInfo != null)
-                                            {
-                                                foreach (PropertyInfo property in propInfo)
-                                                {
-                                                    if (property.Name == nodevalue.Name)
-                                                    {
-                                                        if (property.PropertyType.Name.ToUpper() == "UINT64")
-                                                            property.SetValue(HospitalizationHistoryMaster, Convert.ToUInt64(nodevalue.Value), null);
-                                                        else if (property.PropertyType.Name.ToUpper() == "STRING")
-                                                            property.SetValue(HospitalizationHistoryMaster, Convert.ToString(nodevalue.Value), null);
-                                                        else if (property.PropertyType.Name.ToUpper() == "DATETIME")
-                                                            property.SetValue(HospitalizationHistoryMaster, Convert.ToDateTime(nodevalue.Value), null);
-                                                        else if (property.PropertyType.Name.ToUpper() == "INT32")
-                                                            property.SetValue(HospitalizationHistoryMaster, Convert.ToInt32(nodevalue.Value), null);
-                                                        else
-                                                            property.SetValue(HospitalizationHistoryMaster, nodevalue.Value, null);
-                                                    }
-                                                }
-                                            }
-                                        }
-                                    }
-                                    if (HospitalizationHistoryMaster.Is_Deleted != "Y")
-                                    HospLoadMasterLst.Add(HospitalizationHistoryMaster);
-                                }
+                                HospLoadMasterLst.Add((HospitalizationHistoryMaster)((IList<object>)ilstInHospitalizationHistoryBlobFinal[0])[iCount]);
                             }
                         }
-                        if (itemDoc.GetElementsByTagName("EncounterList") != null && itemDoc.GetElementsByTagName("EncounterList").Count > 0)
-                        {
-                            xmlTagName = itemDoc.GetElementsByTagName("EncounterList")[0].ChildNodes;
+                    }
 
-                            if (xmlTagName != null && xmlTagName.Count > 0)
+                    if (ilstInHospitalizationHistoryBlobFinal[1] != null)
+                    {
+                        for (int iCount = 0; iCount < ((IList<object>)ilstInHospitalizationHistoryBlobFinal[1]).Count; iCount++)
+                        {
+                            if (((Encounter)((IList<object>)ilstInHospitalizationHistoryBlobFinal[1])[iCount]).Encounter_ID == ClientSession.EncounterId)
                             {
-                                for (int j = 0; j < xmlTagName.Count; j++)
-                                {
-                                    if (xmlTagName[j].Attributes[73].Value == ClientSession.EncounterId.ToString())
-                                    {
-                                        string TagName = xmlTagName[j].Name;
-                                        XmlSerializer xmlserializer = new XmlSerializer(typeof(Encounter));
-                                        Encounter Encounter = xmlserializer.Deserialize(new XmlNodeReader(xmlTagName[j])) as Encounter;
-                                        IEnumerable<PropertyInfo> propInfo = null;
-                                        propInfo = from obji in ((Encounter)Encounter).GetType().GetProperties() select obji;
-
-                                        for (int i = 0; i < xmlTagName[j].Attributes.Count; i++)
-                                        {
-                                            XmlNode nodevalue = xmlTagName[j].Attributes[i];
-                                            {
-                                                if (propInfo != null)
-                                                {
-                                                    foreach (PropertyInfo property in propInfo)
-                                                    {
-                                                        if (property.Name == nodevalue.Name)
-                                                        {
-                                                            if (property.PropertyType.Name.ToUpper() == "UINT64")
-                                                                property.SetValue(Encounter, Convert.ToUInt64(nodevalue.Value), null);
-                                                            else if (property.PropertyType.Name.ToUpper() == "STRING")
-                                                                property.SetValue(Encounter, Convert.ToString(nodevalue.Value), null);
-                                                            else if (property.PropertyType.Name.ToUpper() == "DATETIME")
-                                                                property.SetValue(Encounter, Convert.ToDateTime(nodevalue.Value), null);
-                                                            else if (property.PropertyType.Name.ToUpper() == "INT32")
-                                                                property.SetValue(Encounter, Convert.ToInt32(nodevalue.Value), null);
-                                                            else
-                                                                property.SetValue(Encounter, nodevalue.Value, null);
-                                                        }
-                                                    }
-                                                }
-                                            }
-                                        }
-                                        HospitalDTO.Encount = Encounter;
-                                    }
-                                }
+                                HospitalDTO.Encount = (Encounter)((IList<object>)ilstInHospitalizationHistoryBlobFinal[1]);
                             }
-
                         }
-                        if (itemDoc.GetElementsByTagName("dob") != null && itemDoc.GetElementsByTagName("dob").Count > 0)
-                        {
-                            HospitalDTO.DateofBirth = Convert.ToDateTime(itemDoc.GetElementsByTagName("dob")[0].InnerText);
-                        }
-                        fs.Close();
-                        fs.Dispose();
                     }
                 }
+
+                if (ClientSession.PatientPaneList != null && ClientSession.PatientPaneList.Count > 0 && (ClientSession.PatientPaneList[0]).Birth_Date != null)
+                {
+                    HospitalDTO.DateofBirth = (ClientSession.PatientPaneList[0]).Birth_Date;
+                }
+
                 if (HospLoadMasterLst != null && HospLoadMasterLst.Count > 0)
                 {
                     if ((ScreenMode == "Queue") || (ScreenMode == "Portal"))

@@ -973,66 +973,89 @@ namespace Acurus.Capella.UI
 
         IList<InHouseProcedure> GetFromXML(ulong EncounterID)
         {
-            string FileName = "Human" + "_" + ClientSession.HumanId + ".xml";
-            string strXmlFilePath = Path.Combine(System.Configuration.ConfigurationSettings.AppSettings["XMLPath"], FileName);
 
-            var _IsAvailable = File.Exists(strXmlFilePath);
+            //string FileName = "Human" + "_" + ClientSession.HumanId + ".xml";
+            //string strXmlFilePath = Path.Combine(System.Configuration.ConfigurationSettings.AppSettings["XMLPath"], FileName);
 
+            //var _IsAvailable = File.Exists(strXmlFilePath);
+
+
+
+            //if (_IsAvailable)
+            //{
+            //    XmlDocument itemDoc = new XmlDocument();
+            //    XmlTextReader XmlText = new XmlTextReader(strXmlFilePath);
+            //    XmlNodeList xmlTagName = null;
+            //    itemDoc.Load(XmlText);
+            //    XmlText.Close();
+            //    if (itemDoc.GetElementsByTagName("InHouseProcedureList")[0] != null)
+            //    {
+            //        xmlTagName = itemDoc.GetElementsByTagName("InHouseProcedureList")[0].ChildNodes;
+            //        IList<InHouseProcedure> ilst = new List<InHouseProcedure>();
+            //        if (xmlTagName.Count > 0)
+            //        {
+            //            for (int j = 0; j < xmlTagName.Count; j++)
+            //            {
+            //                XmlSerializer xmlserializer = new XmlSerializer(typeof(InHouseProcedure));
+            //                InHouseProcedure objInHouseProcedure = xmlserializer.Deserialize(new XmlNodeReader(xmlTagName[j])) as InHouseProcedure;
+
+            //                IEnumerable<PropertyInfo> propInfo = null;
+
+            //                propInfo = from obji in ((InHouseProcedure)objInHouseProcedure).GetType().GetProperties() select obji;
+            //                if (xmlTagName[j].Attributes.GetNamedItem("Encounter_ID").Value == Convert.ToString(EncounterID))
+            //                {
+            //                    for (int i = 0; i < xmlTagName[j].Attributes.Count; i++)
+            //                    {
+            //                        XmlNode nodevalue = xmlTagName[j].Attributes[i];
+            //                        {
+            //                            foreach (PropertyInfo property in propInfo)
+            //                            {
+            //                                if (property.Name == nodevalue.Name)
+            //                                {
+            //                                    if (property.PropertyType.Name.ToUpper() == "UINT64")
+            //                                        property.SetValue(objInHouseProcedure, Convert.ToUInt64(nodevalue.Value), null);
+            //                                    else if (property.PropertyType.Name.ToUpper() == "STRING")
+            //                                        property.SetValue(objInHouseProcedure, Convert.ToString(nodevalue.Value), null);
+            //                                    else if (property.PropertyType.Name.ToUpper() == "DATETIME")
+            //                                        property.SetValue(objInHouseProcedure, Convert.ToDateTime(nodevalue.Value), null);
+            //                                    else if (property.PropertyType.Name.ToUpper() == "INT32")
+            //                                        property.SetValue(objInHouseProcedure, Convert.ToInt32(nodevalue.Value), null);
+            //                                    else
+            //                                        property.SetValue(objInHouseProcedure, nodevalue.Value, null);
+            //                                }
+            //                            }
+            //                        }
+            //                    }
+            //                    ilst.Add(objInHouseProcedure);
+            //                }
+            //            }
+            //        }
+            //        ilstInHouseProcedure = ilst.OrderByDescending(a => a.Modified_Date_And_Time).ToList();
+            //    }
+            //}
             IList<InHouseProcedure> ilstInHouseProcedure = new List<InHouseProcedure>();
+            IList<InHouseProcedure> ilst = new List<InHouseProcedure>();
 
-            if (_IsAvailable)
+            IList<string> ilstInHouseProcedureTagList = new List<string>();
+            ilstInHouseProcedureTagList.Add("InHouseProcedureList");
+
+            IList<object> ilstInHouseProcedureBlobFinal = new List<object>();
+            ilstInHouseProcedureBlobFinal = UtilityManager.ReadBlob(ClientSession.HumanId, ilstInHouseProcedureTagList);
+
+            if (ilstInHouseProcedureBlobFinal != null && ilstInHouseProcedureBlobFinal.Count > 0)
             {
-                XmlDocument itemDoc = new XmlDocument();
-                XmlTextReader XmlText = new XmlTextReader(strXmlFilePath);
-                XmlNodeList xmlTagName = null;
-                itemDoc.Load(XmlText);
-                XmlText.Close();
-                if (itemDoc.GetElementsByTagName("InHouseProcedureList")[0] != null)
+                if (ilstInHouseProcedureBlobFinal[0] != null)
                 {
-                    xmlTagName = itemDoc.GetElementsByTagName("InHouseProcedureList")[0].ChildNodes;
-                    IList<InHouseProcedure> ilst = new List<InHouseProcedure>();
-                    if (xmlTagName.Count > 0)
+                    for (int iCount = 0; iCount < ((IList<object>)ilstInHouseProcedureBlobFinal[0]).Count; iCount++)
                     {
-                        for (int j = 0; j < xmlTagName.Count; j++)
-                        {
-                            XmlSerializer xmlserializer = new XmlSerializer(typeof(InHouseProcedure));
-                            InHouseProcedure objInHouseProcedure = xmlserializer.Deserialize(new XmlNodeReader(xmlTagName[j])) as InHouseProcedure;
-
-                            IEnumerable<PropertyInfo> propInfo = null;
-
-                            propInfo = from obji in ((InHouseProcedure)objInHouseProcedure).GetType().GetProperties() select obji;
-                            if (xmlTagName[j].Attributes.GetNamedItem("Encounter_ID").Value == Convert.ToString(EncounterID))
-                            {
-                                for (int i = 0; i < xmlTagName[j].Attributes.Count; i++)
-                                {
-                                    XmlNode nodevalue = xmlTagName[j].Attributes[i];
-                                    {
-                                        foreach (PropertyInfo property in propInfo)
-                                        {
-                                            if (property.Name == nodevalue.Name)
-                                            {
-                                                if (property.PropertyType.Name.ToUpper() == "UINT64")
-                                                    property.SetValue(objInHouseProcedure, Convert.ToUInt64(nodevalue.Value), null);
-                                                else if (property.PropertyType.Name.ToUpper() == "STRING")
-                                                    property.SetValue(objInHouseProcedure, Convert.ToString(nodevalue.Value), null);
-                                                else if (property.PropertyType.Name.ToUpper() == "DATETIME")
-                                                    property.SetValue(objInHouseProcedure, Convert.ToDateTime(nodevalue.Value), null);
-                                                else if (property.PropertyType.Name.ToUpper() == "INT32")
-                                                    property.SetValue(objInHouseProcedure, Convert.ToInt32(nodevalue.Value), null);
-                                                else
-                                                    property.SetValue(objInHouseProcedure, nodevalue.Value, null);
-                                            }
-                                        }
-                                    }
-                                }
-                                ilst.Add(objInHouseProcedure);
-                            }
-                        }
+                        ilst.Add((InHouseProcedure)((IList<object>)ilstInHouseProcedureBlobFinal[0])[iCount]);
                     }
                     ilstInHouseProcedure = ilst.OrderByDescending(a => a.Modified_Date_And_Time).ToList();
                 }
             }
-            return ilstInHouseProcedure;
+
+            
+          return ilstInHouseProcedure;
         }
     }
 }

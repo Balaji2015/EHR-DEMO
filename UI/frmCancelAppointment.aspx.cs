@@ -121,17 +121,17 @@ namespace Acurus.Capella.UI
                 }
                 EncRecord.Modified_By = ClientSession.UserName;
 
-                string FileName = "Encounter" + "_" + EncRecord.Id.ToString() + ".xml";
-                string strXmlFilePath = Path.Combine(System.Configuration.ConfigurationSettings.AppSettings["XMLPath"], FileName);
+                //string FileName = "Encounter" + "_" + EncRecord.Id.ToString() + ".xml";
+                //string strXmlFilePath = Path.Combine(System.Configuration.ConfigurationSettings.AppSettings["XMLPath"], FileName);
 
-                if (File.Exists(strXmlFilePath) == false)
-                {
+                //if (File.Exists(strXmlFilePath) == false)
+                //{
                     EncounterMngr.UpdateEncounterForRCM(EncRecord, null, false, string.Empty, string.Empty, new object[] { "false" });
-                }
-                else
-                {
-                    EncounterMngr.UpdateEncounterList(EncRecord, string.Empty);
-                }
+                //}
+                //else
+                //{
+                //    EncounterMngr.UpdateEncounterList(EncRecord, string.Empty);
+                //}
 
                 // EncounterMngr.UpdateEncounterForRCM(EncRecord, string.Empty, string.Empty, new object[] { "false" });
 

@@ -52,79 +52,104 @@ namespace Acurus.Capella.UI.WebServices
                 sColumnHide = "disabled";
 
 
-            string FileName = "Human" + "_" + ClientSession.HumanId + ".xml";
-            string strXmlFilePath = Path.Combine(System.Configuration.ConfigurationSettings.AppSettings["XMLPath"], FileName);
-            if (File.Exists(strXmlFilePath) == true)
+            //string FileName = "Human" + "_" + ClientSession.HumanId + ".xml";
+            //string strXmlFilePath = Path.Combine(System.Configuration.ConfigurationSettings.AppSettings["XMLPath"], FileName);
+            //if (File.Exists(strXmlFilePath) == true)
+            //{
+            //    XmlDocument itemDoc = new XmlDocument();
+            //    XmlTextReader XmlText = new XmlTextReader(strXmlFilePath);
+            //    XmlNodeList xmlTagName = null;
+            //    //  itemDoc.Load(XmlText);
+            //    using (FileStream fs = new FileStream(strXmlFilePath, FileMode.Open, FileAccess.Read, FileShare.Read))
+            //    {
+            //        itemDoc.Load(fs);
+
+            //        XmlText.Close();
+            //        if (itemDoc.GetElementsByTagName("PotentialDiagnosisList")[0] != null)
+            //        {
+            //            if (itemDoc.GetElementsByTagName("PotentialDiagnosisList").Count > 0)
+            //            {
+            //                xmlTagName = itemDoc.GetElementsByTagName("PotentialDiagnosisList")[0].ChildNodes;
+
+            //                if (xmlTagName.Count > 0)
+            //                {
+            //                    for (int j = 0; j < xmlTagName.Count; j++)
+            //                    {
+
+            //                        string TagName = xmlTagName[j].Name;
+            //                        XmlSerializer xmlserializer = new XmlSerializer(typeof(PotentialDiagnosis));
+            //                        PotentialDiagnosis objPotential = xmlserializer.Deserialize(new XmlNodeReader(xmlTagName[j])) as PotentialDiagnosis;
+            //                        IEnumerable<PropertyInfo> propInfo = null;
+            //                        if (objPotential != null)
+            //                        {
+            //                            propInfo = from obji in ((PotentialDiagnosis)objPotential).GetType().GetProperties() select obji;
+
+            //                            for (int i = 0; i < xmlTagName[j].Attributes.Count; i++)
+            //                            {
+            //                                XmlNode nodevalue = xmlTagName[j].Attributes[i];
+            //                                {
+            //                                    foreach (PropertyInfo property in propInfo)
+            //                                    {
+            //                                        if (property.Name == nodevalue.Name)
+            //                                        {
+            //                                            if (property.PropertyType.Name.ToUpper() == "UINT64")
+            //                                                property.SetValue(objPotential, Convert.ToUInt64(nodevalue.Value), null);
+            //                                            else if (property.PropertyType.Name.ToUpper() == "STRING")
+            //                                                property.SetValue(objPotential, Convert.ToString(nodevalue.Value), null);
+            //                                            else if (property.PropertyType.Name.ToUpper() == "DATETIME")
+            //                                                property.SetValue(objPotential, Convert.ToDateTime(nodevalue.Value), null);
+            //                                            else if (property.PropertyType.Name.ToUpper() == "INT32")
+            //                                                property.SetValue(objPotential, Convert.ToInt32(nodevalue.Value), null);
+            //                                            else
+            //                                                property.SetValue(objPotential, nodevalue.Value, null);
+            //                                        }
+            //                                    }
+            //                                }
+            //                            }
+            //                            if ((data == "true" || data == "ShowAllFalse") && objPotential.Move_To_Assessment != "Y")
+            //                            {
+            //                                LoadPotentialGrid.Add(objPotential);
+            //                            }
+            //                            if (data == "" || data == "ShowAllTrue")
+            //                            {
+            //                                LoadPotentialGrid.Add(objPotential);
+            //                            }
+            //                        }
+            //                    }
+            //                }
+            //            }
+            //        }
+            //        fs.Close();
+            //        fs.Dispose();
+            //    }
+            //}
+            
+            IList<string> ilstPotentialDiagnosisTagList = new List<string>();
+            ilstPotentialDiagnosisTagList.Add("PotentialDiagnosisList");
+
+            IList<object> ilstPotentialDiagnosisBlobFinal = new List<object>();
+            ilstPotentialDiagnosisBlobFinal = UtilityManager.ReadBlob(ClientSession.HumanId, ilstPotentialDiagnosisTagList);
+
+            if (ilstPotentialDiagnosisBlobFinal != null && ilstPotentialDiagnosisBlobFinal.Count > 0)
             {
-                XmlDocument itemDoc = new XmlDocument();
-                XmlTextReader XmlText = new XmlTextReader(strXmlFilePath);
-                XmlNodeList xmlTagName = null;
-                //  itemDoc.Load(XmlText);
-                using (FileStream fs = new FileStream(strXmlFilePath, FileMode.Open, FileAccess.Read, FileShare.Read))
+                if (ilstPotentialDiagnosisBlobFinal[0] != null)
                 {
-                    itemDoc.Load(fs);
-
-                    XmlText.Close();
-                    if (itemDoc.GetElementsByTagName("PotentialDiagnosisList")[0] != null)
+                    for (int iCount = 0; iCount < ((IList<object>)ilstPotentialDiagnosisBlobFinal[0]).Count; iCount++)
                     {
-                        if (itemDoc.GetElementsByTagName("PotentialDiagnosisList").Count > 0)
+                        if ((data == "true" || data == "ShowAllFalse") && ((PotentialDiagnosis)((IList<object>)ilstPotentialDiagnosisBlobFinal[0])[iCount]).Move_To_Assessment != "Y")
                         {
-                            xmlTagName = itemDoc.GetElementsByTagName("PotentialDiagnosisList")[0].ChildNodes;
-
-                            if (xmlTagName.Count > 0)
-                            {
-                                for (int j = 0; j < xmlTagName.Count; j++)
-                                {
-
-                                    string TagName = xmlTagName[j].Name;
-                                    XmlSerializer xmlserializer = new XmlSerializer(typeof(PotentialDiagnosis));
-                                    PotentialDiagnosis objPotential = xmlserializer.Deserialize(new XmlNodeReader(xmlTagName[j])) as PotentialDiagnosis;
-                                    IEnumerable<PropertyInfo> propInfo = null;
-                                    if (objPotential != null)
-                                    {
-                                        propInfo = from obji in ((PotentialDiagnosis)objPotential).GetType().GetProperties() select obji;
-
-                                        for (int i = 0; i < xmlTagName[j].Attributes.Count; i++)
-                                        {
-                                            XmlNode nodevalue = xmlTagName[j].Attributes[i];
-                                            {
-                                                foreach (PropertyInfo property in propInfo)
-                                                {
-                                                    if (property.Name == nodevalue.Name)
-                                                    {
-                                                        if (property.PropertyType.Name.ToUpper() == "UINT64")
-                                                            property.SetValue(objPotential, Convert.ToUInt64(nodevalue.Value), null);
-                                                        else if (property.PropertyType.Name.ToUpper() == "STRING")
-                                                            property.SetValue(objPotential, Convert.ToString(nodevalue.Value), null);
-                                                        else if (property.PropertyType.Name.ToUpper() == "DATETIME")
-                                                            property.SetValue(objPotential, Convert.ToDateTime(nodevalue.Value), null);
-                                                        else if (property.PropertyType.Name.ToUpper() == "INT32")
-                                                            property.SetValue(objPotential, Convert.ToInt32(nodevalue.Value), null);
-                                                        else
-                                                            property.SetValue(objPotential, nodevalue.Value, null);
-                                                    }
-                                                }
-                                            }
-                                        }
-                                        if ((data == "true" || data == "ShowAllFalse") && objPotential.Move_To_Assessment != "Y")
-                                        {
-                                            LoadPotentialGrid.Add(objPotential);
-                                        }
-                                        if (data == "" || data == "ShowAllTrue")
-                                        {
-                                            LoadPotentialGrid.Add(objPotential);
-                                        }
-                                    }
-                                }
-                            }
+                            LoadPotentialGrid.Add((PotentialDiagnosis)((IList<object>)ilstPotentialDiagnosisBlobFinal[0])[iCount]);
+                        }
+                        if (data == "" || data == "ShowAllTrue")
+                        {
+                            LoadPotentialGrid.Add((PotentialDiagnosis)((IList<object>)ilstPotentialDiagnosisBlobFinal[0])[iCount]);
                         }
                     }
-                    fs.Close();
-                    fs.Dispose();
                 }
             }
-            //LoadPotentialGrid = obj_problemMgr.GetFromPotentialDiagnosisList(ClientSession.HumanId, sMacAddress);
-            string jsons = "";
+
+                    //LoadPotentialGrid = obj_problemMgr.GetFromPotentialDiagnosisList(ClientSession.HumanId, sMacAddress);
+                    string jsons = "";
             string json = new JavaScriptSerializer().Serialize(LoadPotentialGrid);
             string jsonHideColumn = new JavaScriptSerializer().Serialize(sColumnHide);
             jsons = "{\"ICD10List\" :" + json + "," + "\"EnableColumn\" :" + jsonHideColumn + "}";
