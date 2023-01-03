@@ -216,7 +216,8 @@ namespace Acurus.Capella.UI
 
                     else
                     {
-                        using (StreamWriter outputFile = new StreamWriter(Path.Combine(ConfigurationManager.AppSettings["UsageLogPath"], "UsageLog_" + HttpContext.Current.Session.SessionID + ".txt"), true))
+                        using (
+                            StreamWriter outputFile = new StreamWriter(Path.Combine(ConfigurationManager.AppSettings["UsageLogPath"], "UsageLog_" + HttpContext.Current.Session.SessionID + ".txt"), true))
                         {
 
                             outputFile.WriteLine(Environment.NewLine);
@@ -4951,7 +4952,7 @@ namespace Acurus.Capella.UI
         {
             string sXMLType = "";
 
-          IList<object> ilstResult = new List<object>();
+            IList<object> ilstResult = new List<object>();
             IList<object> ilstEntity = new List<object>();
             XmlDocument xmlDoc = new XmlDocument();
             string sXMLContent = String.Empty;
@@ -5013,9 +5014,20 @@ namespace Acurus.Capella.UI
                                 for (int iXMLTagCount = 0; iXMLTagCount < xmlTagName.Count; iXMLTagCount++)
                                 {
                                     string TagName = xmlTagName[iXMLTagCount].Name;
-                                    XmlSerializer xmlserializer = FillSerializer(TagName);//new XmlSerializer(typeof(ImmunizationHistory));
-                                    object objEntity = xmlserializer.Deserialize(new XmlNodeReader(xmlTagName[iXMLTagCount])) as object;
                                     IEnumerable<PropertyInfo> propInfo = null;
+                                    object objEntity = null;
+
+                                    if (TagName == "Human")
+                                    {
+                                        Human objHuman = new Human();
+                                        objEntity = (object)objHuman;
+                                    }
+                                    else
+                                    {
+                                        XmlSerializer xmlserializer = FillSerializer(TagName);//new XmlSerializer(typeof(ImmunizationHistory));
+                                        objEntity = xmlserializer.Deserialize(new XmlNodeReader(xmlTagName[iXMLTagCount])) as object;
+                                    }
+
                                     if (objEntity != null)
                                     {
                                         propInfo = from obji in ((object)objEntity).GetType().GetProperties() select obji;
@@ -5038,6 +5050,8 @@ namespace Acurus.Capella.UI
                                                             property.SetValue(objEntity, Convert.ToInt32(nodevalue.Value), null);
                                                         else if (property.PropertyType.Name.ToUpper() == "DECIMAL")
                                                             property.SetValue(objEntity, Convert.ToDecimal(nodevalue.Value), null);
+                                                        else if (property.PropertyType.Name.ToUpper() == "DOUBLE")
+                                                            property.SetValue(objEntity, Convert.ToDouble(nodevalue.Value), null);
                                                         else
                                                             property.SetValue(objEntity, nodevalue.Value, null);
                                                     }
@@ -5353,6 +5367,96 @@ namespace Acurus.Capella.UI
             }
             return xmlserializer;
         }
+
+        public static string FillPatientStrip(ulong humanID)
+        {
+            // Assign PatientStrip Values
+
+            string sPatientStrip = string.Empty;
+
+            IList<string> ilstHumanTag = new List<string>();
+            ilstHumanTag.Add("HumanList");
+
+            IList<object> ilstHumanBlobList = new List<object>();
+            ilstHumanBlobList = UtilityManager.ReadBlob(humanID, ilstHumanTag);
+
+            Human objFillHuman = new Human();
+
+            if (ilstHumanBlobList != null && ilstHumanBlobList.Count > 0)
+            {
+                if (ilstHumanBlobList[0] != null)
+                {
+                    for (int iCount = 0; iCount < ((IList<object>)ilstHumanBlobList[0]).Count; iCount++)
+                    {
+                        objFillHuman = ((Human)((IList<object>)ilstHumanBlobList[0])[iCount]);
+                    }
+                }
+            }
+            else
+            {
+                return null;
+            }
+
+            string phoneno = "";
+
+            if (objFillHuman != null)
+            {
+
+                if (objFillHuman.Home_Phone_No.Length == 14)
+                {
+                    phoneno = objFillHuman.Home_Phone_No;
+                }
+                else
+                {
+                    phoneno = objFillHuman.Cell_Phone_Number;
+                }
+
+            }
+
+            string sPatientSex = string.Empty;
+
+            if (objFillHuman != null && objFillHuman.Sex != string.Empty)
+            {
+                if (objFillHuman.Sex.Substring(0, 1).ToUpper() == "U")
+                {
+                    sPatientSex = "UNK";
+                }
+                else
+                {
+                    sPatientSex = objFillHuman.Sex.Substring(0, 1);
+                }
+            }
+            else
+            {
+                sPatientSex = "";
+            }
+
+            string sAcoEligiblePatient = string.Empty;
+            sAcoEligiblePatient = objFillHuman.ACO_Is_Eligible_Patient;
+
+            if (objFillHuman != null)
+            {
+                sPatientStrip = objFillHuman.Last_Name + "," + objFillHuman.First_Name +
+            "  " + objFillHuman.MI + "  " + objFillHuman.Suffix + "   |   " +
+             objFillHuman.Birth_Date.ToString("dd-MMM-yyyy") + "   |   " +
+            (CalculateAge(objFillHuman.Birth_Date)).ToString() +
+            "  year(s)    |   " + sPatientSex + "   |   Acc #:" + humanID +
+            "   |   " + "Med Rec #:" + objFillHuman.Medical_Record_Number + "   |   " +
+            "Phone #:" + phoneno + "   |   Patient Type:" + objFillHuman.Human_Type + "   |   ";
+            }
+            else
+            {
+                sPatientStrip = " " + "   |" + "|" + "|" + "|" + "|";
+            }
+
+            if (sAcoEligiblePatient != null && sAcoEligiblePatient != string.Empty && sAcoEligiblePatient != "N")
+            {
+                sPatientStrip += sAcoEligiblePatient + "   |   ";
+            }
+           
+            return sPatientStrip;
+        }
+
 
     }
 }

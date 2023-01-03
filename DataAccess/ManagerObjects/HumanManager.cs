@@ -4890,69 +4890,79 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
                 //MySession.Flush();
                 if (bHumanConsistent)
                 {
-                    trans.Commit();
-                    if (XMLObj.itemDoc.BaseURI != "")
+                    
+                    if (XMLObj.itemDoc.InnerXml != "")
                     {
                        // XMLObj.itemDoc.Save(XMLObj.strXmlFilePath);
-                        int trycount = 0;
-                    trytosaveagain:
+                        //int trycount = 0;
+                    //trytosaveagain:
                         try
                         {
-                            XMLObj.itemDoc.Save(XMLObj.strXmlFilePath);
+                            // XMLObj.itemDoc.Save(XMLObj.strXmlFilePath);
+                            if (ListToInsertHuman.Count>0)
+                            {
+                                WriteBlob(ListToInsertHuman[0].Id, XMLObj.itemDoc, MySession, ListToInsertHuman, null, null, XMLObj, true);
+                            }
+                            else if (ListToUpdateHuman.Count > 0)
+                            {
+                                WriteBlob(ListToUpdateHuman[0].Id, XMLObj.itemDoc, MySession, null, ListToUpdateHuman, null, XMLObj, true);
+                            }
                         }
                         catch (Exception xmlexcep)
                         {
-                            trycount++;
-                            if (trycount <= 3)
-                            {
-                                int TimeMilliseconds = 0;
-                                if (System.Configuration.ConfigurationSettings.AppSettings["ThreadSleepTime"] != null)
-                                    TimeMilliseconds = Convert.ToInt32(System.Configuration.ConfigurationSettings.AppSettings["ThreadSleepTime"]);
+                            throw new Exception(xmlexcep.Message);
+                            //trycount++;
+                            //if (trycount <= 3)
+                            //{
+                            //    int TimeMilliseconds = 0;
+                            //    if (System.Configuration.ConfigurationSettings.AppSettings["ThreadSleepTime"] != null)
+                            //        TimeMilliseconds = Convert.ToInt32(System.Configuration.ConfigurationSettings.AppSettings["ThreadSleepTime"]);
 
-                                Thread.Sleep(TimeMilliseconds);
-                                string sMsg = string.Empty;
-                                string sExStackTrace = string.Empty;
+                            //    Thread.Sleep(TimeMilliseconds);
+                            //    string sMsg = string.Empty;
+                            //    string sExStackTrace = string.Empty;
 
-                                string version = "";
-                                if (System.Configuration.ConfigurationSettings.AppSettings["VersionConfiguration"] != null)
-                                    version = System.Configuration.ConfigurationSettings.AppSettings["VersionConfiguration"].ToString();
+                            //    string version = "";
+                            //    if (System.Configuration.ConfigurationSettings.AppSettings["VersionConfiguration"] != null)
+                            //        version = System.Configuration.ConfigurationSettings.AppSettings["VersionConfiguration"].ToString();
 
-                                string[] server = version.Split('|');
-                                string serverno = "";
-                                if (server.Length > 1)
-                                    serverno = server[1].Trim();
+                            //    string[] server = version.Split('|');
+                            //    string serverno = "";
+                            //    if (server.Length > 1)
+                            //        serverno = server[1].Trim();
 
-                                if (xmlexcep.InnerException != null && xmlexcep.InnerException.Message != null)
-                                    sMsg = xmlexcep.InnerException.Message;
-                                else
-                                    sMsg = xmlexcep.Message;
+                            //    if (xmlexcep.InnerException != null && xmlexcep.InnerException.Message != null)
+                            //        sMsg = xmlexcep.InnerException.Message;
+                            //    else
+                            //        sMsg = xmlexcep.Message;
 
-                                if (xmlexcep != null && xmlexcep.StackTrace != null)
-                                    sExStackTrace = xmlexcep.StackTrace;
+                            //    if (xmlexcep != null && xmlexcep.StackTrace != null)
+                            //        sExStackTrace = xmlexcep.StackTrace;
 
-                                string insertQuery = "insert into  stats_apperrorlog values(0,'" + sMsg.Replace(@"\\", @"\\\\").Replace(@"\", @"\\").Replace(@"\\\\\\\\", @"\\\\").Replace("'", "") + Environment.NewLine + " Retry: " + trycount + "', '" + serverno + "','" + DateTime.Now + "','','0','0','0','" + sExStackTrace.Replace("'", "") + "','" + DateTime.Now.ToString("yyyy-MM-dd hh:mm:ss") + "')";
-                                string ConnectionData;
-                                ConnectionData = ConfigurationManager.ConnectionStrings["con"].ConnectionString;
-                                using (MySqlConnection con = new MySqlConnection(ConnectionData))
-                                {
-                                    using (MySqlCommand cmd = new MySqlCommand(insertQuery))
-                                    {
-                                        cmd.Connection = con;
-                                        try
-                                        {
-                                            con.Open();
-                                            cmd.ExecuteNonQuery();
-                                            con.Close();
-                                        }
-                                        catch
-                                        {
-                                        }
-                                    }
-                                }
-                                goto trytosaveagain;
-                            }
+                            //    string insertQuery = "insert into  stats_apperrorlog values(0,'" + sMsg.Replace(@"\\", @"\\\\").Replace(@"\", @"\\").Replace(@"\\\\\\\\", @"\\\\").Replace("'", "") + Environment.NewLine + " Retry: " + trycount + "', '" + serverno + "','" + DateTime.Now + "','','0','0','0','" + sExStackTrace.Replace("'", "") + "','" + DateTime.Now.ToString("yyyy-MM-dd hh:mm:ss") + "')";
+                            //    string ConnectionData;
+                            //    ConnectionData = ConfigurationManager.ConnectionStrings["con"].ConnectionString;
+                            //    using (MySqlConnection con = new MySqlConnection(ConnectionData))
+                            //    {
+                            //        using (MySqlCommand cmd = new MySqlCommand(insertQuery))
+                            //        {
+                            //            cmd.Connection = con;
+                            //            try
+                            //            {
+                            //                con.Open();
+                            //                cmd.ExecuteNonQuery();
+                            //                con.Close();
+                            //            }
+                            //            catch
+                            //            {
+                            //            }
+                            //        }
+                            //    }
+                            //    goto trytosaveagain;
+                            //}
                         }
                     }
+                    trans.Commit();
                 }
                 else
                     throw new Exception("Data inconsistency detected while saving. Please try again or notify support.");

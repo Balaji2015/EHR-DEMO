@@ -2043,7 +2043,9 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
                     trytosaveagain:
                         try
                         {
-                            itemDoc.Save(strXmlHumanFilePath);
+                            //itemDoc.Save(strXmlHumanFilePath);
+
+                            //WriteBlob(EncounterOrHumanId, itemDoc, MySession, saveList, updateList, deleteList, null, true);
                         }
                         catch (Exception xmlexcep)
                         {
@@ -2395,7 +2397,8 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
                     HumanBlobManager HumanBlobMngr = new HumanBlobManager();
                     objhumanblob.Human_ID = EntityID;
                     objhumanblob.Id = EntityID;
-                    objhumanblob.Version = objGenerateXml.iHumanBlobVersion;
+                    if (objGenerateXml != null)
+                        objhumanblob.Version = objGenerateXml.iHumanBlobVersion;
                     byte[] bytes = null;
                     try
                     {
@@ -2520,7 +2523,8 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
 
             }
         }
-        public static IList<object> ReadBlob(ulong EntityID, IList<string> ilstTagName)
+
+       public static IList<object> ReadBlob(ulong EntityID, IList<string> ilstTagName)
         {
             string sXMLType = "";
 

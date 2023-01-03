@@ -1681,7 +1681,33 @@ namespace Acurus.Capella.Core.DTO
                     itemDoc = ReadBlob("Encounter", EncounterOrHumanId);
                 }
               //  if (File.Exists(strXmlFilePath) == true)
-              if(itemDoc != null && itemDoc.OuterXml != string.Empty)
+              if (FileName.Contains("Human"))
+                {
+                    if (itemDoc.OuterXml == string.Empty)
+                    {
+                        string HumanFileName = "Human" + "_" + EncounterOrHumanId + ".xml";
+                        string strXmlHumanFilePath = Path.Combine(System.Configuration.ConfigurationSettings.AppSettings["XMLPath"], HumanFileName);
+
+                        string sDirectoryPath = System.Web.HttpContext.Current.Server.MapPath("Template_XML");
+                        string sXmlPath = Path.Combine(sDirectoryPath, "Base_XML.xml");
+                        //XmlDocument itemDoc = new XmlDocument();
+                        XmlTextReader XmlTextTemp = new XmlTextReader(sXmlPath);
+                        itemDoc.Load(XmlTextTemp);
+                        XmlNodeList xmlnode = itemDoc.GetElementsByTagName("EncounterDetails");
+                        xmlnode[0].ParentNode.RemoveChild(xmlnode[0]);
+                        XmlTextTemp.Close();
+
+                        //itemDoc = new XmlDocument();
+                        //XmlText = new XmlTextReader(strXmlFilePath);
+                        //itemDoc.Load(XmlText);
+                        //XmlText.Close();
+                        //using (FileStream fs = new FileStream(strXmlFilePath, FileMode.Open, FileAccess.Read, FileShare.Read))
+                        //{
+                        //    itemDoc.Load(fs);
+                        //}
+                    }
+                }
+                if (itemDoc != null && itemDoc.OuterXml != string.Empty)
                 {
                     //string itemDoc_URI = itemDoc.BaseURI;
                     //if (itemDoc_URI == string.Empty || (Path.GetFileName(strXmlFilePath) != Path.GetFileName(itemDoc_URI)))
