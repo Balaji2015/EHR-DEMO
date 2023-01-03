@@ -696,11 +696,13 @@ namespace Acurus.Capella.UI
 
             if (sXMLEncounterDoc != string.Empty)
             {
+                
                 StringBuilder sb = new StringBuilder();
-                sb.Append(sXMLHumanDoc.ToString().Replace("</notes>", "").Replace("</Modules>", ""));
-                string SUB = sXMLEncounterDoc.ToString().Substring(0, 72);
-                sb.Append(sXMLEncounterDoc.ToString().Replace(SUB, "").Replace("<notes>", "").Replace("<Modules>", ""));
+                sb.Append(sXMLEncounterDoc.ToString().Replace("</notes>", "").Replace("</Modules>", ""));
 
+                string SUB = sXMLHumanDoc.ToString().Substring(0, sXMLHumanDoc.LastIndexOf("?>")+2);
+
+                sb.Append(sXMLHumanDoc.ToString().Replace(SUB, "").Replace("<notes>", "").Replace("<Modules>", ""));
                 StringBuilder htmlOutput = new StringBuilder();
                 TextWriter htmlWriter = new StringWriter(htmlOutput);
 
@@ -1130,7 +1132,7 @@ namespace Acurus.Capella.UI
             // ds.ReadXml(new XmlTextReader(new StringReader(sXMLEncounterDoc)));
             StringBuilder sb = new StringBuilder();
             sb.Append(sXMLHumanDoc.ToString().Replace("</notes>", "").Replace("</Modules>", ""));
-            string SUB = sXMLEncounterDoc.ToString().Substring(0, 72);
+            string SUB = sXMLHumanDoc.ToString().Substring(0, sXMLHumanDoc.LastIndexOf("?>") + 2);
             sb.Append(sXMLEncounterDoc.ToString().Replace(SUB, "").Replace("<notes>", "").Replace("<Modules>", ""));
             ds.ReadXml(new XmlTextReader(new StringReader(sb.ToString())));
             xmlDoc = new XmlDataDocument(ds);
@@ -1753,7 +1755,7 @@ margin:0in 0in 0in 9in;
 
             StringBuilder sb = new StringBuilder();
             sb.Append(sXMLHumanDoc.ToString().Replace("</notes>", "").Replace("</Modules>", ""));
-            string SUB = sXMLEncounterDoc.ToString().Substring(0, 72);
+            string SUB = sXMLHumanDoc.ToString().Substring(0, sXMLHumanDoc.LastIndexOf("?>") + 2);
             sb.Append(sXMLEncounterDoc.ToString().Replace(SUB, "").Replace("<notes>", "").Replace("<Modules>", ""));
             ds.ReadXml(new XmlTextReader(new StringReader(sb.ToString())));
             xmlDoc = new XmlDataDocument(ds);
@@ -2716,7 +2718,7 @@ margin:0in 0in 0in 9in;
             // ds.ReadXml(new XmlTextReader(new StringReader(sXMLEncounterDoc)));
             StringBuilder sb = new StringBuilder();
             sb.Append(sXMLHumanDoc.ToString().Replace("</notes>", "").Replace("</Modules>", ""));
-            string SUB = sXMLEncounterDoc.ToString().Substring(0, 72);
+            string SUB = sXMLHumanDoc.ToString().Substring(0, sXMLHumanDoc.LastIndexOf("?>") + 2);
             sb.Append(sXMLEncounterDoc.ToString().Replace(SUB, "").Replace("<notes>", "").Replace("<Modules>", ""));
             ds.ReadXml(new XmlTextReader(new StringReader(sb.ToString())));
 
@@ -3758,7 +3760,7 @@ margin:0in 0in 0in 9in;
             // ds.ReadXml(new XmlTextReader(new StringReader(sXMLEncounterDoc)));
             StringBuilder sb = new StringBuilder();
             sb.Append(sXMLHumanDoc.ToString().Replace("</notes>", "").Replace("</Modules>", ""));
-            string SUB = sXMLEncounterDoc.ToString().Substring(0, 72);
+            string SUB = sXMLHumanDoc.ToString().Substring(0, sXMLHumanDoc.LastIndexOf("?>") + 2);
             sb.Append(sXMLEncounterDoc.ToString().Replace(SUB, "").Replace("<notes>", "").Replace("<Modules>", ""));
             ds.ReadXml(new XmlTextReader(new StringReader(sb.ToString())));
 
@@ -4401,7 +4403,7 @@ margin:0in 0in 0in 9in;
             //ds.ReadXml(new XmlTextReader(new StringReader(sXMLEncounterDoc)));
             StringBuilder sb = new StringBuilder();
             sb.Append(sXMLHumanDoc.ToString().Replace("</notes>", "").Replace("</Modules>", ""));
-            string SUB = sXMLEncounterDoc.ToString().Substring(0, 72);
+            string SUB = sXMLHumanDoc.ToString().Substring(0, sXMLHumanDoc.LastIndexOf("?>") + 2);
             sb.Append(sXMLEncounterDoc.ToString().Replace(SUB, "").Replace("<notes>", "").Replace("<Modules>", ""));
             ds.ReadXml(new XmlTextReader(new StringReader(sb.ToString())));
 
@@ -5158,7 +5160,7 @@ margin:0in 0in 0in 9in;
             //ds.ReadXml(new XmlTextReader(new StringReader(sXMLEncounterDoc)));
             StringBuilder sb = new StringBuilder();
             sb.Append(sXMLHumanDoc.ToString().Replace("</notes>", "").Replace("</Modules>", ""));
-            string SUB = sXMLEncounterDoc.ToString().Substring(0, 72);
+            string SUB = sXMLHumanDoc.ToString().Substring(0, sXMLHumanDoc.LastIndexOf("?>") + 2);
             sb.Append(sXMLEncounterDoc.ToString().Replace(SUB, "").Replace("<notes>", "").Replace("<Modules>", ""));
             ds.ReadXml(new XmlTextReader(new StringReader(sb.ToString())));
 

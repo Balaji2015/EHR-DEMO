@@ -303,7 +303,7 @@ namespace Acurus.Capella.UI
             //ds.ReadXml(xmlDataFile);
             StringBuilder sb = new StringBuilder();
             sb.Append(sXMLHumanDoc.ToString().Replace("</notes>", "").Replace("</Modules>", ""));
-            string SUB = sXMLEncounterDoc.ToString().Substring(0, 72);
+            string SUB = sXMLHumanDoc.ToString().Substring(0, sXMLHumanDoc.LastIndexOf("?>") + 2);
             sb.Append(sXMLEncounterDoc.ToString().Replace(SUB, "").Replace("<notes>", "").Replace("<Modules>", ""));
             ds.ReadXml(new XmlTextReader(new StringReader(sb.ToString())));
 
