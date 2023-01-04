@@ -10,7 +10,8 @@ variables:
   MSBUILD_PATH: C:\Program Files\Microsoft Visual Studio\2022\Professional\MSBuild\Current\Bin\MSBuild.exe
 
 stages:
- - Solution build
+ - Solution build 4
+ - Solution build 11
  - Deploy TESTING 10.0.0.4
  - Deploy TESTING 10.0.0.11
 
@@ -20,10 +21,33 @@ before_script:
    - '& "$env:NUGET_PATH" restore EHR-Capella5.0.sln'
    - echo "Nuget script..Completed"
  
-build Job:
+build Job 1:
   rules:
-    - if: '$SERVER_TESTING_11 =="10.0.0.11" && $SERVER_TESTING_4 =="10.0.0.4" '
-  stage: Solution build
+    - if: '$SERVER_TESTING_4 =="10.0.0.4" '
+  stage: Solution build 4
+  script:
+  - echo "UI Building..start"
+  - '& "$env:MSBUILD_PATH" EHR-Capella5.0.sln 
+    /p:DeployOnBuild=true 
+    /p:Configuration=Release
+    /p:DeleteExistingFiles=True 
+    /p:Platform="Any CPU"     
+    /p:PublishProfile=FolderProfile.pubxml
+    #/p:publishUrl=E:\Deployee\builds\Capella_publish\ 
+    #/p:ExcludeFoldersFromDeployment=.\ehr-capella5.0\PatientPortal
+    #/p:IgnoreDeployManagedRuntimeVersion=True 
+    #/p:publishUrl=.\EHR_REPORTS2.0\bin\Publish\ '
+   
+  - echo "Building..Completed"
+  artifacts:
+    expire_in: 365 days
+    paths:
+    - EHR-Capella5.0\
+
+build Job 2:
+  rules:
+    - if: '$SERVER_TESTING_11 =="10.0.0.11" '
+  stage: Solution build 11
   script:
   - echo "UI Building..start"
   - '& "$env:MSBUILD_PATH" EHR-Capella5.0.sln 
