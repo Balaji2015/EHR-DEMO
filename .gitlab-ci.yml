@@ -22,6 +22,8 @@ before_script:
    - echo "Nuget script..Completed"
  
 build Job 1:
+  tags:
+    - azure test4 tag
   rules:
     - if: '$SERVER_TESTING_4 =="10.0.0.4" '
   stage: Solution build 4
@@ -45,6 +47,8 @@ build Job 1:
     - EHR-Capella5.0\
 
 build Job 2:
+  tags:
+    - azure-test11
   rules:
     - if: '$SERVER_TESTING_11 =="10.0.0.11" '
   stage: Solution build 11
