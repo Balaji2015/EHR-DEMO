@@ -118,204 +118,204 @@ namespace Acurus.Capella.UI
             }
             //
             //
-            string FileName = "Encounter" + "_" + ClientSession.EncounterId + ".xml";
-            string strXmlFilePath = Path.Combine(System.Configuration.ConfigurationSettings.AppSettings["XMLPath"], FileName);
+            //string FileName = "Encounter" + "_" + ClientSession.EncounterId + ".xml";
+            //string strXmlFilePath = Path.Combine(System.Configuration.ConfigurationSettings.AppSettings["XMLPath"], FileName);
 
-            if (File.Exists(strXmlFilePath) == false && ClientSession.EncounterId > 0)
-            {
-                string sDirectoryPath = string.Empty;
-                if (Directory.Exists(HttpContext.Current.Server.MapPath("Template_XML")))
-                    sDirectoryPath = HttpContext.Current.Server.MapPath("Template_XML");
-                string sXmlPath = string.Empty;
-                if (File.Exists(Path.Combine(sDirectoryPath, "Base_XML.xml")))
-                    sXmlPath = Path.Combine(sDirectoryPath, "Base_XML.xml");
-            loop:
-                XmlDocument itemDoc = new XmlDocument();
-                XmlTextReader XmlText = new XmlTextReader(sXmlPath);
-                try
-                {
-                    itemDoc.Load(XmlText);
-                }
-                //catch
-                //{
-                //    ScriptManager.RegisterStartupScript(this, typeof(frmPatientChart), "ErrorMessage", "alert('The XML file is corrupted. Kindly contact support team to regenerate the XML.');", true);
-                //    return;
-                //}
-                catch (Exception ex)
-                {
-                    // if (ex.Message.ToLower().Contains("input string was not") == true || ex.Message.ToLower().Contains("element") == true||ex.Message.ToLower().Contains("unexpected end of file") == true || ex.Message.ToLower().Contains("is an unexpected token") == true)
-                    {
-                        //ScriptManager.RegisterStartupScript(this, typeof(frmEncounter), "ErrorMessage", "DisplayErrorMessage('1011190');", true);
+            //if (File.Exists(strXmlFilePath) == false && ClientSession.EncounterId > 0)
+            //{
+            //    string sDirectoryPath = string.Empty;
+            //    if (Directory.Exists(HttpContext.Current.Server.MapPath("Template_XML")))
+            //        sDirectoryPath = HttpContext.Current.Server.MapPath("Template_XML");
+            //    string sXmlPath = string.Empty;
+            //    if (File.Exists(Path.Combine(sDirectoryPath, "Base_XML.xml")))
+            //        sXmlPath = Path.Combine(sDirectoryPath, "Base_XML.xml");
+            //loop:
+            //    XmlDocument itemDoc = new XmlDocument();
+            //    XmlTextReader XmlText = new XmlTextReader(sXmlPath);
+            //    try
+            //    {
+            //        itemDoc.Load(XmlText);
+            //    }
+            //    //catch
+            //    //{
+            //    //    ScriptManager.RegisterStartupScript(this, typeof(frmPatientChart), "ErrorMessage", "alert('The XML file is corrupted. Kindly contact support team to regenerate the XML.');", true);
+            //    //    return;
+            //    //}
+            //    catch (Exception ex)
+            //    {
+            //        // if (ex.Message.ToLower().Contains("input string was not") == true || ex.Message.ToLower().Contains("element") == true||ex.Message.ToLower().Contains("unexpected end of file") == true || ex.Message.ToLower().Contains("is an unexpected token") == true)
+            //        {
+            //            //ScriptManager.RegisterStartupScript(this, typeof(frmEncounter), "ErrorMessage", "DisplayErrorMessage('1011190');", true);
 
-                        XmlText.Close();
-                        ///UtilityManager.GenerateXML(ClientSession.EncounterId.ToString(), "Encounter");
-                        //goto loop;
-                        ScriptManager.RegisterStartupScript(this, typeof(frmEncounter), "ErrorMessage", "RegenerateXML('" + ClientSession.EncounterId.ToString() + "','Encounter','patientchart');", true);
-
-
-                        //UtilityManager.GenerateXML(ClientSession.HumanId.ToString(), "Human");
-                        return;
-                    }
-
-                }
-                XmlText.Close();
-
-                XmlNodeList xmlAgenode = itemDoc.GetElementsByTagName("Age");
-                if (xmlAgenode != null && xmlAgenode.Count > 0)
-                    xmlAgenode[0].ParentNode.RemoveChild(xmlAgenode[0]);
-
-                //itemDoc.Save(strXmlFilePath);
-                int trycount = 0;
-            trytosaveagain:
-                try
-                {
-                    itemDoc.Save(strXmlFilePath);
-                }
-                catch (Exception xmlexcep)
-                {
-                    trycount++;
-                    if (trycount <= 3)
-                    {
-                        int TimeMilliseconds = 0;
-                        if (System.Configuration.ConfigurationSettings.AppSettings["ThreadSleepTime"] != null)
-                            TimeMilliseconds = Convert.ToInt32(System.Configuration.ConfigurationSettings.AppSettings["ThreadSleepTime"]);
-
-                        Thread.Sleep(TimeMilliseconds);
-                        string sMsg = string.Empty;
-                        string sExStackTrace = string.Empty;
-
-                        string version = "";
-                        if (System.Configuration.ConfigurationSettings.AppSettings["VersionConfiguration"] != null)
-                            version = System.Configuration.ConfigurationSettings.AppSettings["VersionConfiguration"].ToString();
-
-                        string[] server = version.Split('|');
-                        string serverno = "";
-                        if (server.Length > 1)
-                            serverno = server[1].Trim();
-
-                        if (xmlexcep.InnerException != null && xmlexcep.InnerException.Message != null)
-                            sMsg = xmlexcep.InnerException.Message;
-                        else
-                            sMsg = xmlexcep.Message;
-
-                        if (xmlexcep != null && xmlexcep.StackTrace != null)
-                            sExStackTrace = xmlexcep.StackTrace;
-
-                        string insertQuery = "insert into  stats_apperrorlog values(0,'" + sMsg.Replace(@"\\", @"\\\\").Replace(@"\", @"\\").Replace(@"\\\\\\\\", @"\\\\").Replace("'", "") + Environment.NewLine + " Retry: " + trycount + "', '" + serverno + "','" + DateTime.Now + "','','0','0','0','" + sExStackTrace.Replace("'", "") + "','" + DateTime.Now.ToString("yyyy-MM-dd hh:mm:ss") + "')";
-                        string ConnectionData;
-                        ConnectionData = ConfigurationManager.ConnectionStrings["con"].ConnectionString;
-                        using (MySqlConnection con = new MySqlConnection(ConnectionData))
-                        {
-                            using (MySqlCommand cmd = new MySqlCommand(insertQuery))
-                            {
-                                cmd.Connection = con;
-                                try
-                                {
-                                    con.Open();
-                                    cmd.ExecuteNonQuery();
-                                    con.Close();
-                                }
-                                catch
-                                {
-                                }
-                            }
-                        }
-                        goto trytosaveagain;
-                    }
-                }
-            }
-
-            string FileName1 = "Human" + "_" + ClientSession.HumanId + ".xml";
-            string strXmlFilePath1 = Path.Combine(System.Configuration.ConfigurationSettings.AppSettings["XMLPath"], FileName1);
-
-            if (File.Exists(strXmlFilePath1) == false && ClientSession.HumanId > 0)
-            {
-                string sDirectoryPath = string.Empty;
-                if (Directory.Exists(HttpContext.Current.Server.MapPath("Template_XML")))
-                    sDirectoryPath = HttpContext.Current.Server.MapPath("Template_XML");
-                string sXmlPath = string.Empty;
-                if (File.Exists(Path.Combine(sDirectoryPath, "Base_XML.xml")))
-                    sXmlPath = Path.Combine(sDirectoryPath, "Base_XML.xml");
-
-                XmlDocument itemDoc = new XmlDocument();
-                XmlTextReader XmlText = new XmlTextReader(sXmlPath);
-                try
-                {
-                    itemDoc.Load(XmlText);
-                }
-                catch
-                {
-                    XmlText.Close();
-
-                    //ScriptManager.RegisterStartupScript(this, typeof(frmPatientChart), "ErrorMessage", "alert('The XML file is corrupted. Kindly contact support team to regenerate the XML.');", true);
-                    ScriptManager.RegisterStartupScript(this, typeof(frmEncounter), "ErrorMessage", "RegenerateXML('" + ClientSession.HumanId.ToString() + "','Human','patientchart');", true);
+            //            XmlText.Close();
+            //            ///UtilityManager.GenerateXML(ClientSession.EncounterId.ToString(), "Encounter");
+            //            //goto loop;
+            //            ScriptManager.RegisterStartupScript(this, typeof(frmEncounter), "ErrorMessage", "RegenerateXML('" + ClientSession.EncounterId.ToString() + "','Encounter','patientchart');", true);
 
 
-                    //UtilityManager.GenerateXML(ClientSession.HumanId.ToString(), "Human");
-                    return;
-                    return;
-                }
-                XmlText.Close();
-                //itemDoc.Save(strXmlFilePath1);
-                int trycount = 0;
-            trytosaveagain:
-                try
-                {
-                    itemDoc.Save(strXmlFilePath1);
-                }
-                catch (Exception xmlexcep)
-                {
-                    trycount++;
-                    if (trycount <= 3)
-                    {
-                        int TimeMilliseconds = 0;
-                        if (System.Configuration.ConfigurationSettings.AppSettings["ThreadSleepTime"] != null)
-                            TimeMilliseconds = Convert.ToInt32(System.Configuration.ConfigurationSettings.AppSettings["ThreadSleepTime"]);
+            //            //UtilityManager.GenerateXML(ClientSession.HumanId.ToString(), "Human");
+            //            return;
+            //        }
 
-                        Thread.Sleep(TimeMilliseconds);
-                        string sMsg = string.Empty;
-                        string sExStackTrace = string.Empty;
+            //    }
+            //    XmlText.Close();
 
-                        string version = "";
-                        if (System.Configuration.ConfigurationSettings.AppSettings["VersionConfiguration"] != null)
-                            version = System.Configuration.ConfigurationSettings.AppSettings["VersionConfiguration"].ToString();
+            //    XmlNodeList xmlAgenode = itemDoc.GetElementsByTagName("Age");
+            //    if (xmlAgenode != null && xmlAgenode.Count > 0)
+            //        xmlAgenode[0].ParentNode.RemoveChild(xmlAgenode[0]);
 
-                        string[] server = version.Split('|');
-                        string serverno = "";
-                        if (server.Length > 1)
-                            serverno = server[1].Trim();
+            //    //itemDoc.Save(strXmlFilePath);
+            //    int trycount = 0;
+            //trytosaveagain:
+            //    try
+            //    {
+            //        itemDoc.Save(strXmlFilePath);
+            //    }
+            //    catch (Exception xmlexcep)
+            //    {
+            //        trycount++;
+            //        if (trycount <= 3)
+            //        {
+            //            int TimeMilliseconds = 0;
+            //            if (System.Configuration.ConfigurationSettings.AppSettings["ThreadSleepTime"] != null)
+            //                TimeMilliseconds = Convert.ToInt32(System.Configuration.ConfigurationSettings.AppSettings["ThreadSleepTime"]);
 
-                        if (xmlexcep.InnerException != null && xmlexcep.InnerException.Message != null)
-                            sMsg = xmlexcep.InnerException.Message;
-                        else
-                            sMsg = xmlexcep.Message;
+            //            Thread.Sleep(TimeMilliseconds);
+            //            string sMsg = string.Empty;
+            //            string sExStackTrace = string.Empty;
 
-                        if (xmlexcep != null && xmlexcep.StackTrace != null)
-                            sExStackTrace = xmlexcep.StackTrace;
+            //            string version = "";
+            //            if (System.Configuration.ConfigurationSettings.AppSettings["VersionConfiguration"] != null)
+            //                version = System.Configuration.ConfigurationSettings.AppSettings["VersionConfiguration"].ToString();
 
-                        string insertQuery = "insert into  stats_apperrorlog values(0,'" + sMsg.Replace(@"\\", @"\\\\").Replace(@"\", @"\\").Replace(@"\\\\\\\\", @"\\\\").Replace("'", "") + Environment.NewLine + " Retry: " + trycount + "', '" + serverno + "','" + DateTime.Now + "','','0','0','0','" + sExStackTrace.Replace("'", "") + "','" + DateTime.Now.ToString("yyyy-MM-dd hh:mm:ss") + "')";
-                        string ConnectionData;
-                        ConnectionData = ConfigurationManager.ConnectionStrings["con"].ConnectionString;
-                        using (MySqlConnection con = new MySqlConnection(ConnectionData))
-                        {
-                            using (MySqlCommand cmd = new MySqlCommand(insertQuery))
-                            {
-                                cmd.Connection = con;
-                                try
-                                {
-                                    con.Open();
-                                    cmd.ExecuteNonQuery();
-                                    con.Close();
-                                }
-                                catch
-                                {
-                                }
-                            }
-                        }
-                        goto trytosaveagain;
-                    }
-                }
-            }
+            //            string[] server = version.Split('|');
+            //            string serverno = "";
+            //            if (server.Length > 1)
+            //                serverno = server[1].Trim();
+
+            //            if (xmlexcep.InnerException != null && xmlexcep.InnerException.Message != null)
+            //                sMsg = xmlexcep.InnerException.Message;
+            //            else
+            //                sMsg = xmlexcep.Message;
+
+            //            if (xmlexcep != null && xmlexcep.StackTrace != null)
+            //                sExStackTrace = xmlexcep.StackTrace;
+
+            //            string insertQuery = "insert into  stats_apperrorlog values(0,'" + sMsg.Replace(@"\\", @"\\\\").Replace(@"\", @"\\").Replace(@"\\\\\\\\", @"\\\\").Replace("'", "") + Environment.NewLine + " Retry: " + trycount + "', '" + serverno + "','" + DateTime.Now + "','','0','0','0','" + sExStackTrace.Replace("'", "") + "','" + DateTime.Now.ToString("yyyy-MM-dd hh:mm:ss") + "')";
+            //            string ConnectionData;
+            //            ConnectionData = ConfigurationManager.ConnectionStrings["con"].ConnectionString;
+            //            using (MySqlConnection con = new MySqlConnection(ConnectionData))
+            //            {
+            //                using (MySqlCommand cmd = new MySqlCommand(insertQuery))
+            //                {
+            //                    cmd.Connection = con;
+            //                    try
+            //                    {
+            //                        con.Open();
+            //                        cmd.ExecuteNonQuery();
+            //                        con.Close();
+            //                    }
+            //                    catch
+            //                    {
+            //                    }
+            //                }
+            //            }
+            //            goto trytosaveagain;
+            //        }
+            //    }
+            //}
+
+            //string FileName1 = "Human" + "_" + ClientSession.HumanId + ".xml";
+            //string strXmlFilePath1 = Path.Combine(System.Configuration.ConfigurationSettings.AppSettings["XMLPath"], FileName1);
+
+            //if (File.Exists(strXmlFilePath1) == false && ClientSession.HumanId > 0)
+            //{
+            //    string sDirectoryPath = string.Empty;
+            //    if (Directory.Exists(HttpContext.Current.Server.MapPath("Template_XML")))
+            //        sDirectoryPath = HttpContext.Current.Server.MapPath("Template_XML");
+            //    string sXmlPath = string.Empty;
+            //    if (File.Exists(Path.Combine(sDirectoryPath, "Base_XML.xml")))
+            //        sXmlPath = Path.Combine(sDirectoryPath, "Base_XML.xml");
+
+            //    XmlDocument itemDoc = new XmlDocument();
+            //    XmlTextReader XmlText = new XmlTextReader(sXmlPath);
+            //    try
+            //    {
+            //        itemDoc.Load(XmlText);
+            //    }
+            //    catch
+            //    {
+            //        XmlText.Close();
+
+            //        //ScriptManager.RegisterStartupScript(this, typeof(frmPatientChart), "ErrorMessage", "alert('The XML file is corrupted. Kindly contact support team to regenerate the XML.');", true);
+            //        ScriptManager.RegisterStartupScript(this, typeof(frmEncounter), "ErrorMessage", "RegenerateXML('" + ClientSession.HumanId.ToString() + "','Human','patientchart');", true);
+
+
+            //        //UtilityManager.GenerateXML(ClientSession.HumanId.ToString(), "Human");
+            //        return;
+            //        return;
+            //    }
+            //    XmlText.Close();
+            //    //itemDoc.Save(strXmlFilePath1);
+            //    int trycount = 0;
+            //trytosaveagain:
+            //    try
+            //    {
+            //        itemDoc.Save(strXmlFilePath1);
+            //    }
+            //    catch (Exception xmlexcep)
+            //    {
+            //        trycount++;
+            //        if (trycount <= 3)
+            //        {
+            //            int TimeMilliseconds = 0;
+            //            if (System.Configuration.ConfigurationSettings.AppSettings["ThreadSleepTime"] != null)
+            //                TimeMilliseconds = Convert.ToInt32(System.Configuration.ConfigurationSettings.AppSettings["ThreadSleepTime"]);
+
+            //            Thread.Sleep(TimeMilliseconds);
+            //            string sMsg = string.Empty;
+            //            string sExStackTrace = string.Empty;
+
+            //            string version = "";
+            //            if (System.Configuration.ConfigurationSettings.AppSettings["VersionConfiguration"] != null)
+            //                version = System.Configuration.ConfigurationSettings.AppSettings["VersionConfiguration"].ToString();
+
+            //            string[] server = version.Split('|');
+            //            string serverno = "";
+            //            if (server.Length > 1)
+            //                serverno = server[1].Trim();
+
+            //            if (xmlexcep.InnerException != null && xmlexcep.InnerException.Message != null)
+            //                sMsg = xmlexcep.InnerException.Message;
+            //            else
+            //                sMsg = xmlexcep.Message;
+
+            //            if (xmlexcep != null && xmlexcep.StackTrace != null)
+            //                sExStackTrace = xmlexcep.StackTrace;
+
+            //            string insertQuery = "insert into  stats_apperrorlog values(0,'" + sMsg.Replace(@"\\", @"\\\\").Replace(@"\", @"\\").Replace(@"\\\\\\\\", @"\\\\").Replace("'", "") + Environment.NewLine + " Retry: " + trycount + "', '" + serverno + "','" + DateTime.Now + "','','0','0','0','" + sExStackTrace.Replace("'", "") + "','" + DateTime.Now.ToString("yyyy-MM-dd hh:mm:ss") + "')";
+            //            string ConnectionData;
+            //            ConnectionData = ConfigurationManager.ConnectionStrings["con"].ConnectionString;
+            //            using (MySqlConnection con = new MySqlConnection(ConnectionData))
+            //            {
+            //                using (MySqlCommand cmd = new MySqlCommand(insertQuery))
+            //                {
+            //                    cmd.Connection = con;
+            //                    try
+            //                    {
+            //                        con.Open();
+            //                        cmd.ExecuteNonQuery();
+            //                        con.Close();
+            //                    }
+            //                    catch
+            //                    {
+            //                    }
+            //                }
+            //            }
+            //            goto trytosaveagain;
+            //        }
+            //    }
+            //}
 
 
             //
@@ -1913,204 +1913,204 @@ namespace Acurus.Capella.UI
                 }
                 //
                 //
-                string FileName = "Encounter" + "_" + ClientSession.EncounterId + ".xml";
-                string strXmlFilePath = Path.Combine(System.Configuration.ConfigurationSettings.AppSettings["XMLPath"], FileName);
+                //string FileName = "Encounter" + "_" + ClientSession.EncounterId + ".xml";
+                //string strXmlFilePath = Path.Combine(System.Configuration.ConfigurationSettings.AppSettings["XMLPath"], FileName);
 
-                if (File.Exists(strXmlFilePath) == false && ClientSession.EncounterId > 0)
-                {
-                    string sDirectoryPath = string.Empty;
-                    if (Directory.Exists(HttpContext.Current.Server.MapPath("Template_XML")))
-                        sDirectoryPath = HttpContext.Current.Server.MapPath("Template_XML");
-                    string sXmlPath = string.Empty;
-                    if (File.Exists(Path.Combine(sDirectoryPath, "Base_XML.xml")))
-                        sXmlPath = Path.Combine(sDirectoryPath, "Base_XML.xml");
-                loop:
-                    XmlDocument itemDoc = new XmlDocument();
-                    XmlTextReader XmlText = new XmlTextReader(sXmlPath);
-                    try
-                    {
-                        itemDoc.Load(XmlText);
-                    }
-                    //catch
-                    //{
-                    //    ScriptManager.RegisterStartupScript(this, typeof(frmPatientChart), "ErrorMessage", "alert('The XML file is corrupted. Kindly contact support team to regenerate the XML.');", true);
-                    //    return;
-                    //}
-                    catch (Exception ex)
-                    {
-                        // if (ex.Message.ToLower().Contains("input string was not") == true || ex.Message.ToLower().Contains("element") == true||ex.Message.ToLower().Contains("unexpected end of file") == true || ex.Message.ToLower().Contains("is an unexpected token") == true)
-                        {
-                            //ScriptManager.RegisterStartupScript(this, typeof(frmEncounter), "ErrorMessage", "DisplayErrorMessage('1011190');", true);
-                            XmlText.Close();
+                //if (File.Exists(strXmlFilePath) == false && ClientSession.EncounterId > 0)
+                //{
+                //    string sDirectoryPath = string.Empty;
+                //    if (Directory.Exists(HttpContext.Current.Server.MapPath("Template_XML")))
+                //        sDirectoryPath = HttpContext.Current.Server.MapPath("Template_XML");
+                //    string sXmlPath = string.Empty;
+                //    if (File.Exists(Path.Combine(sDirectoryPath, "Base_XML.xml")))
+                //        sXmlPath = Path.Combine(sDirectoryPath, "Base_XML.xml");
+                //loop:
+                //    XmlDocument itemDoc = new XmlDocument();
+                //    XmlTextReader XmlText = new XmlTextReader(sXmlPath);
+                //    try
+                //    {
+                //        itemDoc.Load(XmlText);
+                //    }
+                //    //catch
+                //    //{
+                //    //    ScriptManager.RegisterStartupScript(this, typeof(frmPatientChart), "ErrorMessage", "alert('The XML file is corrupted. Kindly contact support team to regenerate the XML.');", true);
+                //    //    return;
+                //    //}
+                //    catch (Exception ex)
+                //    {
+                //        // if (ex.Message.ToLower().Contains("input string was not") == true || ex.Message.ToLower().Contains("element") == true||ex.Message.ToLower().Contains("unexpected end of file") == true || ex.Message.ToLower().Contains("is an unexpected token") == true)
+                //        {
+                //            //ScriptManager.RegisterStartupScript(this, typeof(frmEncounter), "ErrorMessage", "DisplayErrorMessage('1011190');", true);
+                //            XmlText.Close();
 
-                            //UtilityManager.GenerateXML(ClientSession.EncounterId.ToString(), "Encounter");
-                            //goto loop;
-                            ScriptManager.RegisterStartupScript(this, typeof(frmEncounter), "ErrorMessage", "RegenerateXML('" + ClientSession.EncounterId.ToString() + "','Encounter','patientchart');", true);
-
-
-                            //UtilityManager.GenerateXML(ClientSession.HumanId.ToString(), "Human");
-                            return;
-                        }
-
-                    }
-                    XmlText.Close();
-
-                    XmlNodeList xmlAgenode = itemDoc.GetElementsByTagName("Age");
-                    if (xmlAgenode != null && xmlAgenode.Count > 0)
-                        xmlAgenode[0].ParentNode.RemoveChild(xmlAgenode[0]);
-
-                   // itemDoc.Save(strXmlFilePath);
-
-                    int trycount = 0;
-                trytosaveagain:
-                    try
-                    {
-                        itemDoc.Save(strXmlFilePath);
-                    }
-                    catch (Exception xmlexcep)
-                    {
-                        trycount++;
-                        if (trycount <= 3)
-                        {
-                            int TimeMilliseconds = 0;
-                            if (System.Configuration.ConfigurationSettings.AppSettings["ThreadSleepTime"] != null)
-                                TimeMilliseconds = Convert.ToInt32(System.Configuration.ConfigurationSettings.AppSettings["ThreadSleepTime"]);
-
-                            Thread.Sleep(TimeMilliseconds);
-                            string sMsg = string.Empty;
-                            string sExStackTrace = string.Empty;
-
-                            string version = "";
-                            if (System.Configuration.ConfigurationSettings.AppSettings["VersionConfiguration"] != null)
-                                version = System.Configuration.ConfigurationSettings.AppSettings["VersionConfiguration"].ToString();
-
-                            string[] server = version.Split('|');
-                            string serverno = "";
-                            if (server.Length > 1)
-                                serverno = server[1].Trim();
-
-                            if (xmlexcep.InnerException != null && xmlexcep.InnerException.Message != null)
-                                sMsg = xmlexcep.InnerException.Message;
-                            else
-                                sMsg = xmlexcep.Message;
-
-                            if (xmlexcep != null && xmlexcep.StackTrace != null)
-                                sExStackTrace = xmlexcep.StackTrace;
-
-                            string insertQuery = "insert into  stats_apperrorlog values(0,'" + sMsg.Replace(@"\\", @"\\\\").Replace(@"\", @"\\").Replace(@"\\\\\\\\", @"\\\\").Replace("'", "") + Environment.NewLine + " Retry: " + trycount + "', '" + serverno + "','" + DateTime.Now + "','','0','0','0','" + sExStackTrace.Replace("'", "") + "','" + DateTime.Now.ToString("yyyy-MM-dd hh:mm:ss") + "')";
-                            string ConnectionData;
-                            ConnectionData = ConfigurationManager.ConnectionStrings["con"].ConnectionString;
-                            using (MySqlConnection con = new MySqlConnection(ConnectionData))
-                            {
-                                using (MySqlCommand cmd = new MySqlCommand(insertQuery))
-                                {
-                                    cmd.Connection = con;
-                                    try
-                                    {
-                                        con.Open();
-                                        cmd.ExecuteNonQuery();
-                                        con.Close();
-                                    }
-                                    catch
-                                    {
-                                    }
-                                }
-                            }
-                            goto trytosaveagain;
-                        }
-                    }
-                }
-
-                string FileName1 = "Human" + "_" + ClientSession.HumanId + ".xml";
-                string strXmlFilePath1 = Path.Combine(System.Configuration.ConfigurationSettings.AppSettings["XMLPath"], FileName1);
-
-                if (File.Exists(strXmlFilePath1) == false && ClientSession.HumanId > 0)
-                {
-                    string sDirectoryPath = string.Empty;
-                    if (Directory.Exists(HttpContext.Current.Server.MapPath("Template_XML")))
-                        sDirectoryPath = HttpContext.Current.Server.MapPath("Template_XML");
-                    string sXmlPath = string.Empty;
-                    if (File.Exists(Path.Combine(sDirectoryPath, "Base_XML.xml")))
-                        sXmlPath = Path.Combine(sDirectoryPath, "Base_XML.xml");
-
-                    XmlDocument itemDoc = new XmlDocument();
-                    XmlTextReader XmlText = new XmlTextReader(sXmlPath);
-                    try
-                    {
-                        itemDoc.Load(XmlText);
-                    }
-                    catch
-                    {
-                        XmlText.Close();
-                        // ScriptManager.RegisterStartupScript(this, typeof(frmPatientChart), "ErrorMessage", "alert('The XML file is corrupted. Kindly contact support team to regenerate the XML.');", true);
-                        ScriptManager.RegisterStartupScript(this, typeof(frmEncounter), "ErrorMessage", "RegenerateXML('" + ClientSession.HumanId.ToString() + "','Human','patientchart');", true);
+                //            //UtilityManager.GenerateXML(ClientSession.EncounterId.ToString(), "Encounter");
+                //            //goto loop;
+                //            ScriptManager.RegisterStartupScript(this, typeof(frmEncounter), "ErrorMessage", "RegenerateXML('" + ClientSession.EncounterId.ToString() + "','Encounter','patientchart');", true);
 
 
-                        //UtilityManager.GenerateXML(ClientSession.HumanId.ToString(), "Human");
+                //            //UtilityManager.GenerateXML(ClientSession.HumanId.ToString(), "Human");
+                //            return;
+                //        }
 
-                        return;
-                    }
-                    XmlText.Close();
-                   // itemDoc.Save(strXmlFilePath1);
-                    int trycount = 0;
-                trytosaveagain:
-                    try
-                    {
-                        itemDoc.Save(strXmlFilePath1);
-                    }
-                    catch (Exception xmlexcep)
-                    {
-                        trycount++;
-                        if (trycount <= 3)
-                        {
-                            int TimeMilliseconds = 0;
-                            if (System.Configuration.ConfigurationSettings.AppSettings["ThreadSleepTime"] != null)
-                                TimeMilliseconds = Convert.ToInt32(System.Configuration.ConfigurationSettings.AppSettings["ThreadSleepTime"]);
+                //    }
+                //    XmlText.Close();
 
-                            Thread.Sleep(TimeMilliseconds);
-                            string sMsg = string.Empty;
-                            string sExStackTrace = string.Empty;
+                //    XmlNodeList xmlAgenode = itemDoc.GetElementsByTagName("Age");
+                //    if (xmlAgenode != null && xmlAgenode.Count > 0)
+                //        xmlAgenode[0].ParentNode.RemoveChild(xmlAgenode[0]);
 
-                            string version = "";
-                            if (System.Configuration.ConfigurationSettings.AppSettings["VersionConfiguration"] != null)
-                                version = System.Configuration.ConfigurationSettings.AppSettings["VersionConfiguration"].ToString();
+                //   // itemDoc.Save(strXmlFilePath);
 
-                            string[] server = version.Split('|');
-                            string serverno = "";
-                            if (server.Length > 1)
-                                serverno = server[1].Trim();
+                //    int trycount = 0;
+                //trytosaveagain:
+                //    try
+                //    {
+                //        itemDoc.Save(strXmlFilePath);
+                //    }
+                //    catch (Exception xmlexcep)
+                //    {
+                //        trycount++;
+                //        if (trycount <= 3)
+                //        {
+                //            int TimeMilliseconds = 0;
+                //            if (System.Configuration.ConfigurationSettings.AppSettings["ThreadSleepTime"] != null)
+                //                TimeMilliseconds = Convert.ToInt32(System.Configuration.ConfigurationSettings.AppSettings["ThreadSleepTime"]);
 
-                            if (xmlexcep.InnerException != null && xmlexcep.InnerException.Message != null)
-                                sMsg = xmlexcep.InnerException.Message;
-                            else
-                                sMsg = xmlexcep.Message;
+                //            Thread.Sleep(TimeMilliseconds);
+                //            string sMsg = string.Empty;
+                //            string sExStackTrace = string.Empty;
 
-                            if (xmlexcep != null && xmlexcep.StackTrace != null)
-                                sExStackTrace = xmlexcep.StackTrace;
+                //            string version = "";
+                //            if (System.Configuration.ConfigurationSettings.AppSettings["VersionConfiguration"] != null)
+                //                version = System.Configuration.ConfigurationSettings.AppSettings["VersionConfiguration"].ToString();
 
-                            string insertQuery = "insert into  stats_apperrorlog values(0,'" + sMsg.Replace(@"\\", @"\\\\").Replace(@"\", @"\\").Replace(@"\\\\\\\\", @"\\\\").Replace("'", "") + Environment.NewLine + " Retry: " + trycount + "', '" + serverno + "','" + DateTime.Now + "','','0','0','0','" + sExStackTrace.Replace("'", "") + "','" + DateTime.Now.ToString("yyyy-MM-dd hh:mm:ss") + "')";
-                            string ConnectionData;
-                            ConnectionData = ConfigurationManager.ConnectionStrings["con"].ConnectionString;
-                            using (MySqlConnection con = new MySqlConnection(ConnectionData))
-                            {
-                                using (MySqlCommand cmd = new MySqlCommand(insertQuery))
-                                {
-                                    cmd.Connection = con;
-                                    try
-                                    {
-                                        con.Open();
-                                        cmd.ExecuteNonQuery();
-                                        con.Close();
-                                    }
-                                    catch
-                                    {
-                                    }
-                                }
-                            }
-                            goto trytosaveagain;
-                        }
-                    }
-                }
+                //            string[] server = version.Split('|');
+                //            string serverno = "";
+                //            if (server.Length > 1)
+                //                serverno = server[1].Trim();
+
+                //            if (xmlexcep.InnerException != null && xmlexcep.InnerException.Message != null)
+                //                sMsg = xmlexcep.InnerException.Message;
+                //            else
+                //                sMsg = xmlexcep.Message;
+
+                //            if (xmlexcep != null && xmlexcep.StackTrace != null)
+                //                sExStackTrace = xmlexcep.StackTrace;
+
+                //            string insertQuery = "insert into  stats_apperrorlog values(0,'" + sMsg.Replace(@"\\", @"\\\\").Replace(@"\", @"\\").Replace(@"\\\\\\\\", @"\\\\").Replace("'", "") + Environment.NewLine + " Retry: " + trycount + "', '" + serverno + "','" + DateTime.Now + "','','0','0','0','" + sExStackTrace.Replace("'", "") + "','" + DateTime.Now.ToString("yyyy-MM-dd hh:mm:ss") + "')";
+                //            string ConnectionData;
+                //            ConnectionData = ConfigurationManager.ConnectionStrings["con"].ConnectionString;
+                //            using (MySqlConnection con = new MySqlConnection(ConnectionData))
+                //            {
+                //                using (MySqlCommand cmd = new MySqlCommand(insertQuery))
+                //                {
+                //                    cmd.Connection = con;
+                //                    try
+                //                    {
+                //                        con.Open();
+                //                        cmd.ExecuteNonQuery();
+                //                        con.Close();
+                //                    }
+                //                    catch
+                //                    {
+                //                    }
+                //                }
+                //            }
+                //            goto trytosaveagain;
+                //        }
+                //    }
+                //}
+
+                //string FileName1 = "Human" + "_" + ClientSession.HumanId + ".xml";
+                //string strXmlFilePath1 = Path.Combine(System.Configuration.ConfigurationSettings.AppSettings["XMLPath"], FileName1);
+
+                //if (File.Exists(strXmlFilePath1) == false && ClientSession.HumanId > 0)
+                //{
+                //    string sDirectoryPath = string.Empty;
+                //    if (Directory.Exists(HttpContext.Current.Server.MapPath("Template_XML")))
+                //        sDirectoryPath = HttpContext.Current.Server.MapPath("Template_XML");
+                //    string sXmlPath = string.Empty;
+                //    if (File.Exists(Path.Combine(sDirectoryPath, "Base_XML.xml")))
+                //        sXmlPath = Path.Combine(sDirectoryPath, "Base_XML.xml");
+
+                //    XmlDocument itemDoc = new XmlDocument();
+                //    XmlTextReader XmlText = new XmlTextReader(sXmlPath);
+                //    try
+                //    {
+                //        itemDoc.Load(XmlText);
+                //    }
+                //    catch
+                //    {
+                //        XmlText.Close();
+                //        // ScriptManager.RegisterStartupScript(this, typeof(frmPatientChart), "ErrorMessage", "alert('The XML file is corrupted. Kindly contact support team to regenerate the XML.');", true);
+                //        ScriptManager.RegisterStartupScript(this, typeof(frmEncounter), "ErrorMessage", "RegenerateXML('" + ClientSession.HumanId.ToString() + "','Human','patientchart');", true);
+
+
+                //        //UtilityManager.GenerateXML(ClientSession.HumanId.ToString(), "Human");
+
+                //        return;
+                //    }
+                //    XmlText.Close();
+                //   // itemDoc.Save(strXmlFilePath1);
+                //    int trycount = 0;
+                //trytosaveagain:
+                //    try
+                //    {
+                //        itemDoc.Save(strXmlFilePath1);
+                //    }
+                //    catch (Exception xmlexcep)
+                //    {
+                //        trycount++;
+                //        if (trycount <= 3)
+                //        {
+                //            int TimeMilliseconds = 0;
+                //            if (System.Configuration.ConfigurationSettings.AppSettings["ThreadSleepTime"] != null)
+                //                TimeMilliseconds = Convert.ToInt32(System.Configuration.ConfigurationSettings.AppSettings["ThreadSleepTime"]);
+
+                //            Thread.Sleep(TimeMilliseconds);
+                //            string sMsg = string.Empty;
+                //            string sExStackTrace = string.Empty;
+
+                //            string version = "";
+                //            if (System.Configuration.ConfigurationSettings.AppSettings["VersionConfiguration"] != null)
+                //                version = System.Configuration.ConfigurationSettings.AppSettings["VersionConfiguration"].ToString();
+
+                //            string[] server = version.Split('|');
+                //            string serverno = "";
+                //            if (server.Length > 1)
+                //                serverno = server[1].Trim();
+
+                //            if (xmlexcep.InnerException != null && xmlexcep.InnerException.Message != null)
+                //                sMsg = xmlexcep.InnerException.Message;
+                //            else
+                //                sMsg = xmlexcep.Message;
+
+                //            if (xmlexcep != null && xmlexcep.StackTrace != null)
+                //                sExStackTrace = xmlexcep.StackTrace;
+
+                //            string insertQuery = "insert into  stats_apperrorlog values(0,'" + sMsg.Replace(@"\\", @"\\\\").Replace(@"\", @"\\").Replace(@"\\\\\\\\", @"\\\\").Replace("'", "") + Environment.NewLine + " Retry: " + trycount + "', '" + serverno + "','" + DateTime.Now + "','','0','0','0','" + sExStackTrace.Replace("'", "") + "','" + DateTime.Now.ToString("yyyy-MM-dd hh:mm:ss") + "')";
+                //            string ConnectionData;
+                //            ConnectionData = ConfigurationManager.ConnectionStrings["con"].ConnectionString;
+                //            using (MySqlConnection con = new MySqlConnection(ConnectionData))
+                //            {
+                //                using (MySqlCommand cmd = new MySqlCommand(insertQuery))
+                //                {
+                //                    cmd.Connection = con;
+                //                    try
+                //                    {
+                //                        con.Open();
+                //                        cmd.ExecuteNonQuery();
+                //                        con.Close();
+                //                    }
+                //                    catch
+                //                    {
+                //                    }
+                //                }
+                //            }
+                //            goto trytosaveagain;
+                //        }
+                //    }
+                //}
 
 
                 //

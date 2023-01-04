@@ -82,7 +82,7 @@ namespace Acurus.Capella.Core.DTO
 
         /*Added a bool bSave_In_Human in GenerateXml-Save,SaveStatic,Update and Copy_Previous_ to indicate that the list(Encounterlist) needs to be saved/updated in HUmanXML too.
          bSave_In_Human is set to "true" when EncounterTag is saved in HumanXML.*/
-        public void GenerateXmlSaveStatic(IList<object> obj, ulong EncounterOrHumanId, string sGeneralNotesText, bool bSave_In_Human)
+        public void GenerateXmlSaveStatic(IList<object> obj, ulong EncounterOrHumanId, string sGeneralNotesText, bool bSave_In_Human, GenerateXml XMLObj)
         {
             string sLocalTime = string.Empty;
             string FileName = "Encounter" + "_" + EncounterOrHumanId + ".xml";
@@ -113,13 +113,21 @@ namespace Acurus.Capella.Core.DTO
             //strXmlFilePath = Path.Combine(System.Configuration.ConfigurationSettings.AppSettings["XMLPath"], FileName);
             try
             {
-                if (FileName.Contains("Human"))
+               
+                if (XMLObj.itemDoc != null && XMLObj.itemDoc.InnerXml != "")
                 {
-                    itemDoc = ReadBlob("Human", EncounterOrHumanId);
+                    itemDoc = XMLObj.itemDoc;
                 }
-                else if (FileName.Contains("Encounter"))
+                else
                 {
-                    itemDoc = ReadBlob("Encounter", EncounterOrHumanId);
+                    if (FileName.Contains("Human"))
+                    {
+                        itemDoc = ReadBlob("Human", EncounterOrHumanId);
+                    }
+                    else if (FileName.Contains("Encounter"))
+                    {
+                        itemDoc = ReadBlob("Encounter", EncounterOrHumanId);
+                    }
                 }
                 //  if (File.Exists(strXmlFilePath) == true)
                 if (itemDoc != null && itemDoc.OuterXml != string.Empty)
@@ -127,26 +135,26 @@ namespace Acurus.Capella.Core.DTO
                     //string itemDoc_URI = itemDoc.BaseURI;
                     //if (itemDoc_URI == string.Empty || (Path.GetFileName(strXmlFilePath) != Path.GetFileName(itemDoc_URI)))
                     //{
-                        //itemDoc = new XmlDocument();
-                        //XmlText = new XmlTextReader(strXmlFilePath);
-                        //itemDoc.Load(XmlText);
-                        //XmlText.Close();
-                        //using (FileStream fs = new FileStream(strXmlFilePath, FileMode.Open, FileAccess.Read, FileShare.Read))
-                        //{
-                        //    itemDoc.Load(fs);
-                        //}
-                        if (obj[0].GetType().Name == "Encounter")
+                    //itemDoc = new XmlDocument();
+                    //XmlText = new XmlTextReader(strXmlFilePath);
+                    //itemDoc.Load(XmlText);
+                    //XmlText.Close();
+                    //using (FileStream fs = new FileStream(strXmlFilePath, FileMode.Open, FileAccess.Read, FileShare.Read))
+                    //{
+                    //    itemDoc.Load(fs);
+                    //}
+                    if (obj[0].GetType().Name == "Encounter")
+                    {
+                        GetXmlNodeID(obj[0]);
+                        XmlNodeList EncounterLocalTime = itemDoc.GetElementsByTagName(obj[0].GetType().Name);
+                        for (int i = 0; i < EncounterLocalTime.Count; i++)
                         {
-                            GetXmlNodeID(obj[0]);
-                            XmlNodeList EncounterLocalTime = itemDoc.GetElementsByTagName(obj[0].GetType().Name);
-                            for (int i = 0; i < EncounterLocalTime.Count; i++)
+                            if (EncounterLocalTime[i].Attributes.GetNamedItem("Id").Value == id)
                             {
-                                if (EncounterLocalTime[i].Attributes.GetNamedItem("Id").Value == id)
-                                {
-                                    sLocalTime = EncounterLocalTime[i].Attributes.GetNamedItem("Local_Time").Value;
-                                }
+                                sLocalTime = EncounterLocalTime[i].Attributes.GetNamedItem("Local_Time").Value;
                             }
                         }
+                    }
                     //}
 
                     XmlAttribute attlabel = null;
@@ -828,7 +836,7 @@ namespace Acurus.Capella.Core.DTO
                     }
                 }
             }
-            catch(Exception Ex)
+            catch (Exception Ex)
             {
                 //if (XmlText != null)
                 //    XmlText.Close();
@@ -1629,7 +1637,7 @@ namespace Acurus.Capella.Core.DTO
                     }
                 }
             }
-            catch(Exception Ex)
+            catch (Exception Ex)
             {
                 //if (XmlText != null)
                 //    XmlText.Close();
@@ -1641,7 +1649,7 @@ namespace Acurus.Capella.Core.DTO
             }
         }
 
-        public void GenerateXmlSave(IList<object> obj, ulong EncounterOrHumanId, string sGeneralNotesText, bool bSave_In_Human, bool IsPhoneEncounter, bool IsAssessment,bool IsRcopiaMedication)
+        public void GenerateXmlSave(IList<object> obj, ulong EncounterOrHumanId, string sGeneralNotesText, bool bSave_In_Human, bool IsPhoneEncounter, bool IsAssessment, bool IsRcopiaMedication)
         {
             string sLocalTime = string.Empty;
             string FileName = "Encounter" + "_" + EncounterOrHumanId + ".xml";
@@ -1669,19 +1677,19 @@ namespace Acurus.Capella.Core.DTO
                     ulHumanID = EncounterOrHumanId;
                 }
             }
-           // strXmlFilePath = Path.Combine(System.Configuration.ConfigurationSettings.AppSettings["XMLPath"], FileName);
+            // strXmlFilePath = Path.Combine(System.Configuration.ConfigurationSettings.AppSettings["XMLPath"], FileName);
             try
             {
                 if (FileName.Contains("Human"))
                 {
                     itemDoc = ReadBlob("Human", EncounterOrHumanId);
                 }
-                else if(FileName.Contains("Encounter"))
+                else if (FileName.Contains("Encounter"))
                 {
                     itemDoc = ReadBlob("Encounter", EncounterOrHumanId);
                 }
-              //  if (File.Exists(strXmlFilePath) == true)
-              if (FileName.Contains("Human"))
+                //  if (File.Exists(strXmlFilePath) == true)
+                if (FileName.Contains("Human"))
                 {
                     if (itemDoc.OuterXml == string.Empty)
                     {
@@ -2458,14 +2466,14 @@ namespace Acurus.Capella.Core.DTO
                     }
                 }
             }
-            catch(Exception Ex)
+            catch (Exception Ex)
             {
                 if (XmlText != null)
                     XmlText.Close();
 
                 throw Ex;
             }
-            if (IsPhoneEncounter == true || IsAssessment == true || IsRcopiaMedication==true)
+            if (IsPhoneEncounter == true || IsAssessment == true || IsRcopiaMedication == true)
             {
 
                 //itemDoc.Save(strXmlFilePath);
@@ -2473,9 +2481,10 @@ namespace Acurus.Capella.Core.DTO
         }
 
 
-        public void GenerateXmlUpdate(IList<object> obj, ulong EncounterOrHumanId, string sGeneralNotesText, bool bSave_In_Human)
+        public void GenerateXmlUpdate(IList<object> obj, ulong EncounterOrHumanId, string sGeneralNotesText, bool bSave_In_Human, GenerateXml XMLObj)
         {
-            string sLocalTime = string.Empty;
+            
+                string sLocalTime = string.Empty;
             string FileName = "Encounter" + "_" + EncounterOrHumanId + ".xml";
             XmlTextReader XmlText = null;
             if (obj.Count > 0)
@@ -2498,13 +2507,21 @@ namespace Acurus.Capella.Core.DTO
             //strXmlFilePath = Path.Combine(System.Configuration.ConfigurationSettings.AppSettings["XMLPath"], FileName);
             try
             {
-                if (FileName.Contains("Human"))
+
+                if (XMLObj.itemDoc != null && XMLObj.itemDoc.InnerXml != "")
                 {
-                    itemDoc = ReadBlob("Human", EncounterOrHumanId);
+                    itemDoc = XMLObj.itemDoc;
                 }
-                else if (FileName.Contains("Encounter"))
+                else
                 {
-                    itemDoc = ReadBlob("Encounter", EncounterOrHumanId);
+                    if (FileName.Contains("Human"))
+                    {
+                        itemDoc = ReadBlob("Human", EncounterOrHumanId);
+                    }
+                    else if (FileName.Contains("Encounter"))
+                    {
+                        itemDoc = ReadBlob("Encounter", EncounterOrHumanId);
+                    }
                 }
                 //  if (File.Exists(strXmlFilePath) == true)
                 if (itemDoc != null && itemDoc.OuterXml != string.Empty)
@@ -2512,26 +2529,26 @@ namespace Acurus.Capella.Core.DTO
                     //string itemDoc_URI = itemDoc.BaseURI;
                     //if (itemDoc_URI == string.Empty || (Path.GetFileName(strXmlFilePath) != Path.GetFileName(itemDoc_URI)))
                     //{
-                        //itemDoc = new XmlDocument();
-                        //XmlText = new XmlTextReader(strXmlFilePath);
-                        //itemDoc.Load(XmlText);
-                        //XmlText.Close();
-                        //using (FileStream fs = new FileStream(strXmlFilePath, FileMode.Open, FileAccess.Read, FileShare.Read))
-                        //{
-                        //    itemDoc.Load(fs);
-                        //}
-                        if (obj[0].GetType().Name == "Encounter")
+                    //itemDoc = new XmlDocument();
+                    //XmlText = new XmlTextReader(strXmlFilePath);
+                    //itemDoc.Load(XmlText);
+                    //XmlText.Close();
+                    //using (FileStream fs = new FileStream(strXmlFilePath, FileMode.Open, FileAccess.Read, FileShare.Read))
+                    //{
+                    //    itemDoc.Load(fs);
+                    //}
+                    if (obj[0].GetType().Name == "Encounter")
+                    {
+                        GetXmlNodeID(obj[0]);
+                        XmlNodeList EncounterLocalTime = itemDoc.GetElementsByTagName(obj[0].GetType().Name);
+                        for (int i = 0; i < EncounterLocalTime.Count; i++)
                         {
-                            GetXmlNodeID(obj[0]);
-                            XmlNodeList EncounterLocalTime = itemDoc.GetElementsByTagName(obj[0].GetType().Name);
-                            for (int i = 0; i < EncounterLocalTime.Count; i++)
+                            if (EncounterLocalTime[i].Attributes.GetNamedItem("Id").Value == id)
                             {
-                                if (EncounterLocalTime[i].Attributes.GetNamedItem("Id").Value == id)
-                                {
-                                    sLocalTime = EncounterLocalTime[i].Attributes.GetNamedItem("Local_Time").Value;
-                                }
+                                sLocalTime = EncounterLocalTime[i].Attributes.GetNamedItem("Local_Time").Value;
                             }
                         }
+                    }
                     //}
                     for (int k = 0; k < obj.Count; k++)
                     {
@@ -3839,7 +3856,7 @@ namespace Acurus.Capella.Core.DTO
                     }
                 }
             }
-            catch(Exception Ex)
+            catch (Exception Ex)
             {
                 if (XmlText != null)
                     XmlText.Close();
@@ -3964,7 +3981,7 @@ namespace Acurus.Capella.Core.DTO
                     }
                 }
             }
-            catch(Exception Ex)
+            catch (Exception Ex)
             {
                 //if (XmlText != null)
                 //    XmlText.Close();
@@ -4581,7 +4598,7 @@ namespace Acurus.Capella.Core.DTO
                 //return bExistingNodeCountMatch && bExistingNodesDataMatch;
                 return bResult;
             }
-            catch 
+            catch
             {
                 //string class_name = "";
                 //if (lstExistingNodes.Count > 0)
@@ -4600,7 +4617,7 @@ namespace Acurus.Capella.Core.DTO
                 //return true;
                 return bResult;
             }
-           // return true;
+            // return true;
             return bResult;
         }
 
@@ -5428,10 +5445,10 @@ namespace Acurus.Capella.Core.DTO
         {
             XmlDocument xmlDoc = new XmlDocument();
             string sXMLContent = String.Empty;
-            
+
             if (sXMLType == "Human")
             {
-                string query = @"select * from blob_human where human_id="+ EntityID;
+                string query = @"select * from blob_human where human_id=" + EntityID;
                 DataSet dsReturn = DBConnector.ReadData(query);
                 DataTable dt = dsReturn.Tables[0];
                 if (dt.Rows.Count > 0)
@@ -5458,7 +5475,7 @@ namespace Acurus.Capella.Core.DTO
             return xmlDoc;
         }
 
-       
+
 
 
     }

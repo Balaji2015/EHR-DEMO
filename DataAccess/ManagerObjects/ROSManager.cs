@@ -8,14 +8,14 @@ using System.Linq;
 using System.Threading;
 using MySql.Data.MySqlClient;
 using System.Configuration;
-
+using System.Xml;
 
 namespace Acurus.Capella.DataAccess.ManagerObjects
 {
     public partial interface IROSManager : IManagerBase<ROS, uint>
     {
         IList<ROS> ROSByEncounterId(ulong encounterId);
-        FillROS BatchOperationsToRosAndGeneralNotes(IList<ROS> ListToInsertRos, IList<ROS> ListToUpdateRos, IList<ROS> ListToDeleteRos, IList<GeneralNotes> ListToInsertGeneralNotes, IList<GeneralNotes> ListToUpdateGeneralNotes, GeneralNotes rosGeneralNotes, ulong EncounterId, string sMacAddress);
+        FillROS BatchOperationsToRosAndGeneralNotes(IList<ROS> ListToInsertRos, IList<ROS> ListToUpdateRos, IList<ROS> ListToDeleteRos, IList<GeneralNotes> ListToInsertGeneralNotes, IList<GeneralNotes> ListToUpdateGeneralNotes, GeneralNotes rosGeneralNotes, ulong EncounterId, string sMacAddress, List<string> ilstSystemName);
         FillROS GetROSAndGeneralNotesByEncounterId(ulong encounter_ID, ulong human_ID, bool isFromArchive);
         FillROS GetRosAndGeneralNotesForPastEncounter(ulong encounter_ID, ulong human_ID, ulong physician_ID);
     }
@@ -65,6 +65,9 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
                 var SQLQuery = iMySession.CreateSQLQuery(querySQL)
                        .AddEntity("E", typeof(ROS));
 
+
+
+
                 SQLQuery.SetParameter("ENCOUNTER_ID", encounterId);
 
                 lstROS = SQLQuery.List<ROS>();
@@ -76,7 +79,10 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
 
         //BugID:54702
         int iTryCount = 0;
-        public FillROS BatchOperationsToRosAndGeneralNotes(IList<ROS> ListToInsertRos, IList<ROS> ListToUpdateRos, IList<ROS> ListToDeleteRos, IList<GeneralNotes> ListToInsertGeneralNotes, IList<GeneralNotes> ListToUpdateGeneralNotes, GeneralNotes rosGeneralNotes, ulong EncounterId, string sMacAddress)
+        
+
+
+        public FillROS BatchOperationsToRosAndGeneralNotes(IList<ROS> ListToInsertRos, IList<ROS> ListToUpdateRos, IList<ROS> ListToDeleteRos, IList<GeneralNotes> ListToInsertGeneralNotes, IList<GeneralNotes> ListToUpdateGeneralNotes, GeneralNotes rosGeneralNotes, ulong EncounterId, string sMacAddress,   List<string> ilstSystemName)
         {
             GeneralNotesManager generalNotesMngr = new GeneralNotesManager();
             GeneralNotesManager generalNotesManager = new GeneralNotesManager();
@@ -297,67 +303,74 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
                         //trans.Commit();
                         if (bDataROS && bDataROSNotes && bDataGeneralNotes)
                         {
-                            trans.Commit();
+
                             //XMLObj.itemDoc.Save(XMLObj.strXmlFilePath);
-                            int trycount = 0;
-                        trytosaveagain:
-                            try
+
+
+                            // XMLObj.itemDoc.Save(XMLObj.strXmlFilePath);
+                            // XmlDocument itemDoc = new XmlDocument();
+
+                            //XmlTextReader itemReader = new XmlTextReader(strXmlFilePath);
+                            // itemDoc= XMLObj.itemDoc;
+                            //itemReader.Close();
+                            if (ilstSystemName.Count > 0)
                             {
-                                XMLObj.itemDoc.Save(XMLObj.strXmlFilePath);
-                            }
-                            catch (Exception xmlexcep)
-                            {
-                                trycount++;
-                                if (trycount <= 3)
+                                XmlNodeList xmlsysCheck = XMLObj.itemDoc.GetElementsByTagName("ROSSystemList");
+                                if (xmlsysCheck[0] != null)
                                 {
-                                    int TimeMilliseconds = 0;
-                                    if (System.Configuration.ConfigurationSettings.AppSettings["ThreadSleepTime"] != null)
-                                        TimeMilliseconds = Convert.ToInt32(System.Configuration.ConfigurationSettings.AppSettings["ThreadSleepTime"]);
+                                    XmlNodeList ParentNodeList = XMLObj.itemDoc.GetElementsByTagName("ROSSystemList");
+                                    XmlNodeList xmlModules = XMLObj.itemDoc.GetElementsByTagName("Modules");
+                                    xmlModules[0].RemoveChild(ParentNodeList[0]);
+                                }
+                                if (xmlsysCheck[0] == null && ilstSystemName.Count > 0)
+                                {
+                                    XmlNode xmlSystemNodeParent = XMLObj.itemDoc.CreateNode(XmlNodeType.Element, "ROSSystemList", "");
+                                    XmlNodeList xmlModule = XMLObj.itemDoc.GetElementsByTagName("Modules");
+                                    xmlModule[0].AppendChild(xmlSystemNodeParent);
+                                }
+                                XmlNode xmlSystemNode = null;
+                                XmlAttribute attSysName = null;
+                                XmlAttribute attEncounterid = null;
+                                XmlAttribute atthuman_id = null;
 
-                                    Thread.Sleep(TimeMilliseconds);
-                                    string sMsg = string.Empty;
-                                    string sExStackTrace = string.Empty;
+                                for (int i = 0; i < ilstSystemName.Count; i++)
+                                {
+                                    xmlSystemNode = XMLObj.itemDoc.CreateNode(XmlNodeType.Element, "SystemName", "");
 
-                                    string version = "";
-                                    if (System.Configuration.ConfigurationSettings.AppSettings["VersionConfiguration"] != null)
-                                        version = System.Configuration.ConfigurationSettings.AppSettings["VersionConfiguration"].ToString();
+                                    attSysName = XMLObj.itemDoc.CreateAttribute("System_Name");
+                                    attSysName.Value = ilstSystemName[i];
+                                    xmlSystemNode.Attributes.Append(attSysName);
 
-                                    string[] server = version.Split('|');
-                                    string serverno = "";
-                                    if (server.Length > 1)
-                                        serverno = server[1].Trim();
+                                    attEncounterid = XMLObj.itemDoc.CreateAttribute("Encounter_ID");
+                                    attEncounterid.Value = EncounterId.ToString();
+                                    xmlSystemNode.Attributes.Append(attEncounterid);
 
-                                    if (xmlexcep.InnerException != null && xmlexcep.InnerException.Message != null)
-                                        sMsg = xmlexcep.InnerException.Message;
-                                    else
-                                        sMsg = xmlexcep.Message;
+                                    atthuman_id = XMLObj.itemDoc.CreateAttribute("Human_ID");
+                                    if(ListToInsertROS!=null && ListToInsertROS.Count>0)
+                                    atthuman_id.Value = ListToInsertROS[0].Human_ID.ToString();
+                                    else if (ListToUpdateRos.Count > 0)
+                                        atthuman_id.Value = ListToUpdateRos[0].Human_ID.ToString();
+                                    xmlSystemNode.Attributes.Append(atthuman_id);
 
-                                    if (xmlexcep != null && xmlexcep.StackTrace != null)
-                                        sExStackTrace = xmlexcep.StackTrace;
-
-                                    string insertQuery = "insert into  stats_apperrorlog values(0,'" + sMsg.Replace(@"\\", @"\\\\").Replace(@"\", @"\\").Replace(@"\\\\\\\\", @"\\\\").Replace("'", "") + Environment.NewLine + " Retry: " + trycount + "', '" + serverno + "','" + DateTime.Now + "','','0','0','0','" + sExStackTrace.Replace("'", "") + "','" + DateTime.Now.ToString("yyyy-MM-dd hh:mm:ss") + "')";
-                                    string ConnectionData;
-                                    ConnectionData = ConfigurationManager.ConnectionStrings["con"].ConnectionString;
-                                    using (MySqlConnection con = new MySqlConnection(ConnectionData))
-                                    {
-                                        using (MySqlCommand cmd = new MySqlCommand(insertQuery))
-                                        {
-                                            cmd.Connection = con;
-                                            try
-                                            {
-                                                con.Open();
-                                                cmd.ExecuteNonQuery();
-                                                con.Close();
-                                            }
-                                            catch
-                                            {
-                                            }
-                                        }
-                                    }
-                                    goto trytosaveagain;
+                                    XmlNodeList xmlsysList = XMLObj.itemDoc.GetElementsByTagName("ROSSystemList");
+                                    xmlsysList[0].AppendChild(xmlSystemNode);
                                 }
                             }
-                        }
+                            else
+                            {
+                                XmlNodeList xmlsysCheck = XMLObj.itemDoc.GetElementsByTagName("ROSSystemList");
+                                if (xmlsysCheck[0] != null)
+                                {
+                                    XmlNodeList ParentNodeList = XMLObj.itemDoc.GetElementsByTagName("ROSSystemList");
+                                    XmlNodeList xmlModules = XMLObj.itemDoc.GetElementsByTagName("Modules");
+                                    xmlModules[0].RemoveChild(ParentNodeList[0]);
+                                }
+                            }
+                                WriteBlob(EncounterId, XMLObj.itemDoc, MySession, ListToInsertROS, ListToUpdateRos, ListToDeleteRos, XMLObj, false);
+                                trans.Commit();
+                            }
+                           
+                        
                         else
                             throw new Exception("Data inconsistency detected while saving. Please try again or notify support.");
                         fillros.Ros_List = lstSaveUpdateROS;

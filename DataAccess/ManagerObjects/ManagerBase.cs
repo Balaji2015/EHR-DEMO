@@ -1332,7 +1332,7 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
             if (System.Configuration.ConfigurationManager.AppSettings["IsRxHistory"] != null)
                 IsRxHistory = System.Configuration.ConfigurationManager.AppSettings["IsRxHistory"].Trim().ToUpper();
 
-        TryAgain:
+            TryAgain:
             ISession session = Session.GetISession();
 
             NHibernateSessionUtility.Instance.MySession = session;
@@ -1476,19 +1476,24 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
                                     {
                                         IList<object> lstObj = saveList.Cast<object>().ToList();
                                         lstobjxml = lstObj;
-                                        XMLObj.GenerateXmlSaveStatic(lstObj, EncounterOrHumanId, sGeneralNotesText, false);
+                                        GenerateXml xmlobjtemp = new GenerateXml();
+                                        xmlobjtemp.itemDoc = null;
+
+                                        XMLObj.GenerateXmlSaveStatic(lstObj, EncounterOrHumanId, sGeneralNotesText, false, xmlobjtemp);
                                         if (XmlObjHuman != null)
-                                            XmlObjHuman.GenerateXmlSaveStatic(lstObj, HumanID_EncSave, sGeneralNotesText, true);
+                                            XmlObjHuman.GenerateXmlSaveStatic(lstObj, HumanID_EncSave, sGeneralNotesText, true, xmlobjtemp);
                                         bsavehit = true;
                                         lstCheckDataConsistency = lstObj;
                                     }
                                     if (updateList != null && updateList.Count > 0)
                                     {
+                                        GenerateXml xmlobjtemp = new GenerateXml();
+                                        xmlobjtemp.itemDoc = null;
                                         IList<object> lstObj = updateList.Cast<object>().ToList();
                                         lstobjxml = lstObj;
-                                        XMLObj.GenerateXmlUpdate(lstObj, EncounterOrHumanId, sGeneralNotesText, false);
+                                        XMLObj.GenerateXmlUpdate(lstObj, EncounterOrHumanId, sGeneralNotesText, false, xmlobjtemp);
                                         if (XmlObjHuman != null)
-                                            XmlObjHuman.GenerateXmlUpdate(lstObj, HumanID_EncSave, sGeneralNotesText, true);
+                                            XmlObjHuman.GenerateXmlUpdate(lstObj, HumanID_EncSave, sGeneralNotesText, true, xmlobjtemp);
                                         bsavehit = true;
                                         lstCheckDataConsistency = lstCheckDataConsistency.Concat(lstObj).ToList<object>();
                                     }
@@ -1513,7 +1518,9 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
                                         {
                                             tempXMLObj = new GenerateXml();
                                             lstobjxml = lstObj;
-                                            tempXMLObj.GenerateXmlSaveStatic(lstObj, uHuman_id, string.Empty, false);
+                                            GenerateXml xmlobjtemp = new GenerateXml();
+                                            xmlobjtemp.itemDoc = null;
+                                            tempXMLObj.GenerateXmlSaveStatic(lstObj, uHuman_id, string.Empty, false, xmlobjtemp);
                                             bsavehit = true;
                                             XMLObjList.Add(tempXMLObj);
                                             lstPrevHumanIDs.Add(uHuman_id);
@@ -1530,7 +1537,9 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
                                             }
                                             else
                                             {
-                                                tempXMLObj.GenerateXmlSaveStatic(lstObj, uHuman_id, string.Empty, false);
+                                                GenerateXml xmlobjtemp = new GenerateXml();
+                                                xmlobjtemp.itemDoc = null;
+                                                tempXMLObj.GenerateXmlSaveStatic(lstObj, uHuman_id, string.Empty, false, xmlobjtemp);
                                             }
                                             bsavehit = true;
 
@@ -1557,8 +1566,10 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
                                         ulong uHuman_id = Convert.ToUInt32(lstObj[0].GetType().GetProperty("Human_ID").GetValue(lstObj[0], null).ToString());
                                         if (!lstPrevHumanIDs.Any(item => item == uHuman_id))
                                         {
+                                            GenerateXml xmlobjtemp = new GenerateXml();
+                                            xmlobjtemp.itemDoc = null;
                                             tempXMLObj = new GenerateXml();
-                                            tempXMLObj.GenerateXmlUpdate(lstObj, uHuman_id, string.Empty, false);
+                                            tempXMLObj.GenerateXmlUpdate(lstObj, uHuman_id, string.Empty, false, xmlobjtemp);
                                             bsavehit = true;
                                             lstobjxml = lstObj;
                                             XMLObjList.Add(tempXMLObj);
@@ -1569,13 +1580,15 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
                                             tempXMLObj = new GenerateXml();
                                             tempXMLObj = XMLObjList.Where(item => item.itemDoc.BaseURI.Contains("_" + uHuman_id + ".xml")).FirstOrDefault();
                                             lstobjxml = lstObj;
+                                            GenerateXml XMLObjtemp = new GenerateXml();
+                                            XMLObjtemp.itemDoc = null;
                                             if (tempXMLObj == null)
                                             {
                                                 EncounterOrHumanId = uHuman_id;
                                                 goto ln;
                                             }
                                             else
-                                                tempXMLObj.GenerateXmlUpdate(lstObj, uHuman_id, string.Empty, false);
+                                                tempXMLObj.GenerateXmlUpdate(lstObj, uHuman_id, string.Empty, false, XMLObjtemp);
                                             bsavehit = true;
                                         }
                                         lstCheckDataConsistency = lstCheckDataConsistency.Concat(lstObj).ToList<object>();
@@ -1597,7 +1610,7 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
                                 XMLObj.GenerateXmlDelete(lstObj, EncounterOrHumanId, sGeneralNotesText, false);
                                 bsavehit = true;
                             }
-                            #region XML type
+                        #region XML type
                         ln: string FileName = "Encounter" + "_" + EncounterOrHumanId + ".xml";
                             if (lstobjxml.Count > 0)
                             {
@@ -1626,7 +1639,7 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
                                         if (XMLObjList[i].itemDoc.BaseURI == "")
                                         {
                                             bXmlFound = false;
-                                            throw new Exception("$Transaction XML: '"  + "' not found. Please contact support team to generate the XML. ");
+                                            throw new Exception("$Transaction XML: '" + "' not found. Please contact support team to generate the XML. ");
                                         }
 
                                     }
@@ -1648,11 +1661,11 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
 
                                                 if (FileName.Contains("Human"))
                                                 {
-                                                    WriteBlob( EncounterOrHumanId, XMLObjList[i].itemDoc, session, saveList, updateList, deleteList, XMLObjList[i], false);
+                                                    WriteBlob(EncounterOrHumanId, XMLObjList[i].itemDoc, session, saveList, updateList, deleteList, XMLObjList[i], false);
                                                 }
                                                 else if (FileName.Contains("Encounter"))
                                                 {
-                                                    WriteBlob( EncounterOrHumanId, XMLObjList[i].itemDoc, session, saveList, updateList, deleteList, XMLObjList[i], false);
+                                                    WriteBlob(EncounterOrHumanId, XMLObjList[i].itemDoc, session, saveList, updateList, deleteList, XMLObjList[i], false);
                                                 }
                                             }
                                             catch (Exception xmlexcep)
@@ -1740,16 +1753,16 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
                             else
 
                                 if (bsavehit)
+                            {
+                                if (XMLObj.itemDoc.InnerXml != "")
                                 {
-                                    if (XMLObj.itemDoc.InnerXml != "")
+                                    if (bIsDataConsistent)
                                     {
-                                        if (bIsDataConsistent)
+
+                                        if (!bIsRCopia)
                                         {
-                                            
-                                            if (!bIsRCopia)
-                                            {
-                                                // XMLObj.itemDoc.Save(XMLObj.strXmlFilePath);
-                                                int trycount = 0;
+                                            // XMLObj.itemDoc.Save(XMLObj.strXmlFilePath);
+                                            int trycount = 0;
                                         trytosaveagain:
                                             try
                                             {
@@ -1757,11 +1770,11 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
 
                                                 if (FileName.Contains("Human"))
                                                 {
-                                                    WriteBlob( EncounterOrHumanId, XMLObj.itemDoc, session, saveList, updateList, deleteList, XMLObj, false);
+                                                    WriteBlob(EncounterOrHumanId, XMLObj.itemDoc, session, saveList, updateList, deleteList, XMLObj, false);
                                                 }
                                                 else if (FileName.Contains("Encounter"))
                                                 {
-                                                    WriteBlob( EncounterOrHumanId, XMLObj.itemDoc, session, saveList, updateList, deleteList, XMLObj, false);
+                                                    WriteBlob(EncounterOrHumanId, XMLObj.itemDoc, session, saveList, updateList, deleteList, XMLObj, false);
                                                 }
                                             }
                                             catch (Exception xmlexcep)
@@ -1816,95 +1829,95 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
                                                     goto trytosaveagain;
                                                 }
                                             }
-                                            }
-                                            if (Is_EncRecord && XmlObjHuman != null && XmlObjHuman.itemDoc.InnerXml != "")
-                                            {
-                                                // XmlObjHuman.itemDoc.Save(XmlObjHuman.strXmlFilePath);
+                                        }
+                                        if (Is_EncRecord && XmlObjHuman != null && XmlObjHuman.itemDoc.InnerXml != "")
+                                        {
+                                            // XmlObjHuman.itemDoc.Save(XmlObjHuman.strXmlFilePath);
 
-                                                int trycount = 0;
-                                            trytosaveagain:
-                                                try
-                                                {
+                                            int trycount = 0;
+                                        trytosaveagain:
+                                            try
+                                            {
                                                 //XmlObjHuman.itemDoc.Save(XmlObjHuman.strXmlFilePath);
 
                                                 //if (FileName.Contains("Human"))
                                                 //{
-                                                    WriteBlob( XmlObjHuman.ulHumanID, XmlObjHuman.itemDoc, session, saveList, updateList, deleteList, XmlObjHuman, false);
+                                                WriteBlob(XmlObjHuman.ulHumanID, XmlObjHuman.itemDoc, session, saveList, updateList, deleteList, XmlObjHuman, false);
                                                 //}
                                                 //else if (FileName.Contains("Encounter"))
                                                 //{
                                                 //    WriteBlob("Encounter", EncounterOrHumanId, XMLObjList[i].itemDoc, session, saveList, updateList, deleteList);
                                                 //}
                                             }
-                                                catch (Exception xmlexcep)
+                                            catch (Exception xmlexcep)
+                                            {
+                                                trycount++;
+                                                if (trycount <= 3)
                                                 {
-                                                    trycount++;
-                                                    if (trycount <= 3)
+                                                    int TimeMilliseconds = 0;
+                                                    if (System.Configuration.ConfigurationSettings.AppSettings["ThreadSleepTime"] != null)
+                                                        TimeMilliseconds = Convert.ToInt32(System.Configuration.ConfigurationSettings.AppSettings["ThreadSleepTime"]);
+
+                                                    Thread.Sleep(TimeMilliseconds);
+                                                    string sMsg = string.Empty;
+                                                    string sExStackTrace = string.Empty;
+
+                                                    string version = "";
+                                                    if (System.Configuration.ConfigurationSettings.AppSettings["VersionConfiguration"] != null)
+                                                        version = System.Configuration.ConfigurationSettings.AppSettings["VersionConfiguration"].ToString();
+
+                                                    string[] server = version.Split('|');
+                                                    string serverno = "";
+                                                    if (server.Length > 1)
+                                                        serverno = server[1].Trim();
+
+                                                    if (xmlexcep.InnerException != null && xmlexcep.InnerException.Message != null)
+                                                        sMsg = xmlexcep.InnerException.Message;
+                                                    else
+                                                        sMsg = xmlexcep.Message;
+
+                                                    if (xmlexcep != null && xmlexcep.StackTrace != null)
+                                                        sExStackTrace = xmlexcep.StackTrace;
+
+                                                    string insertQuery = "insert into  stats_apperrorlog values(0,'" + sMsg.Replace(@"\\", @"\\\\").Replace(@"\", @"\\").Replace(@"\\\\\\\\", @"\\\\").Replace("'", "") + Environment.NewLine + " Retry: " + trycount + "', '" + serverno + "','" + DateTime.Now + "','','','','','" + sExStackTrace.Replace("'", "") + "','" + DateTime.Now.ToString("yyyy-MM-dd hh:mm:ss") + "')";
+                                                    string ConnectionData;
+                                                    ConnectionData = ConfigurationManager.ConnectionStrings["con"].ConnectionString;
+                                                    using (MySqlConnection con = new MySqlConnection(ConnectionData))
                                                     {
-                                                        int TimeMilliseconds = 0;
-                                                        if (System.Configuration.ConfigurationSettings.AppSettings["ThreadSleepTime"] != null)
-                                                            TimeMilliseconds = Convert.ToInt32(System.Configuration.ConfigurationSettings.AppSettings["ThreadSleepTime"]);
-
-                                                        Thread.Sleep(TimeMilliseconds);
-                                                        string sMsg = string.Empty;
-                                                        string sExStackTrace = string.Empty;
-
-                                                        string version = "";
-                                                        if (System.Configuration.ConfigurationSettings.AppSettings["VersionConfiguration"] != null)
-                                                            version = System.Configuration.ConfigurationSettings.AppSettings["VersionConfiguration"].ToString();
-
-                                                        string[] server = version.Split('|');
-                                                        string serverno = "";
-                                                        if (server.Length > 1)
-                                                            serverno = server[1].Trim();
-
-                                                        if (xmlexcep.InnerException != null && xmlexcep.InnerException.Message != null)
-                                                            sMsg = xmlexcep.InnerException.Message;
-                                                        else
-                                                            sMsg = xmlexcep.Message;
-
-                                                        if (xmlexcep != null && xmlexcep.StackTrace != null)
-                                                            sExStackTrace = xmlexcep.StackTrace;
-
-                                                        string insertQuery = "insert into  stats_apperrorlog values(0,'" + sMsg.Replace(@"\\", @"\\\\").Replace(@"\", @"\\").Replace(@"\\\\\\\\", @"\\\\").Replace("'", "") + Environment.NewLine + " Retry: " + trycount + "', '" + serverno + "','" + DateTime.Now + "','','','','','" + sExStackTrace.Replace("'", "") + "','" + DateTime.Now.ToString("yyyy-MM-dd hh:mm:ss") + "')";
-                                                        string ConnectionData;
-                                                        ConnectionData = ConfigurationManager.ConnectionStrings["con"].ConnectionString;
-                                                        using (MySqlConnection con = new MySqlConnection(ConnectionData))
+                                                        using (MySqlCommand cmd = new MySqlCommand(insertQuery))
                                                         {
-                                                            using (MySqlCommand cmd = new MySqlCommand(insertQuery))
+                                                            cmd.Connection = con;
+                                                            try
                                                             {
-                                                                cmd.Connection = con;
-                                                                try
-                                                                {
-                                                                    con.Open();
-                                                                    cmd.ExecuteNonQuery();
-                                                                    con.Close();
-                                                                }
-                                                                catch
-                                                                {
-                                                                }
+                                                                con.Open();
+                                                                cmd.ExecuteNonQuery();
+                                                                con.Close();
+                                                            }
+                                                            catch
+                                                            {
                                                             }
                                                         }
-                                                        goto trytosaveagain;
                                                     }
+                                                    goto trytosaveagain;
                                                 }
-
                                             }
-                                        trans.Commit();
-                                    }
-                                        else
-                                        {
-                                            throw new Exception("Data inconsistency detected while saving. Please try again or notify support.");
-
-
 
                                         }
+                                        trans.Commit();
                                     }
                                     else
                                     {
-                                        throw new Exception("$Transaction XML: '" + FileName + "' not found. Please contact support team to generate the XML. ");
+                                        throw new Exception("Data inconsistency detected while saving. Please try again or notify support.");
+
+
+
                                     }
                                 }
+                                else
+                                {
+                                    throw new Exception("$Transaction XML: '" + FileName + "' not found. Please contact support team to generate the XML. ");
+                                }
+                            }
                         }
                         else
                             trans.Commit();
@@ -2044,8 +2057,6 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
                         try
                         {
                             //itemDoc.Save(strXmlHumanFilePath);
-
-                            //WriteBlob(EncounterOrHumanId, itemDoc, MySession, saveList, updateList, deleteList, null, true);
                         }
                         catch (Exception xmlexcep)
                         {
@@ -2157,18 +2168,18 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
                         {
                             IList<object> lstObj = saveList.Cast<object>().ToList();
                             lstobjxml = lstObj;
-                            XMLObj.GenerateXmlSaveStatic(lstObj, EncounterOrHumanId, sGeneralNotesText, false);
+                            XMLObj.GenerateXmlSaveStatic(lstObj, EncounterOrHumanId, sGeneralNotesText, false, XMLObj);
                             if (XmlObjHuman != null)
-                                XmlObjHuman.GenerateXmlSaveStatic(lstObj, HumanID_EncSave, sGeneralNotesText, true);
+                                XmlObjHuman.GenerateXmlSaveStatic(lstObj, HumanID_EncSave, sGeneralNotesText, true, XMLObj);
                             bsavehit = true;
                         }
                         if (updateList != null && updateList.Count > 0)
                         {
                             IList<object> lstObj = updateList.Cast<object>().ToList();
                             lstobjxml = lstObj;
-                            XMLObj.GenerateXmlUpdate(lstObj, EncounterOrHumanId, sGeneralNotesText, false);
+                            XMLObj.GenerateXmlUpdate(lstObj, EncounterOrHumanId, sGeneralNotesText, false, XMLObj);
                             if (XmlObjHuman != null)
-                                XmlObjHuman.GenerateXmlUpdate(lstObj, HumanID_EncSave, sGeneralNotesText, true);
+                                XmlObjHuman.GenerateXmlUpdate(lstObj, HumanID_EncSave, sGeneralNotesText, true, XMLObj);
                             bsavehit = true;
                         }
                     }
@@ -2196,7 +2207,7 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
                             {
                                 //XmlObjHuman.itemDoc.Save(XmlObjHuman.strXmlFilePath);
 
-                                WriteBlob( EncounterOrHumanId, XmlObjHuman.itemDoc, MySession, saveList, updateList, deleteList, XmlObjHuman, false);
+                                WriteBlob(EncounterOrHumanId, XmlObjHuman.itemDoc, MySession, saveList, updateList, deleteList, XmlObjHuman, false);
                             }
                             catch (Exception xmlexcep)
                             {
@@ -2365,7 +2376,7 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
             #endregion
         }
 
-        public void WriteBlob( ulong EntityID,XmlDocument xmlDoc, ISession MySession, IList<T> saveList, IList<T> updateList, IList<T> deleteList, GenerateXml objGenerateXml,Boolean bIsEncounterXMLCreate)
+        public void WriteBlob(ulong EntityID, XmlDocument xmlDoc, ISession MySession, IList<T> saveList, IList<T> updateList, IList<T> deleteList, GenerateXml objGenerateXml, Boolean bIsEncounterXMLCreate)
         {
             string sXMLType = "";
             string tagname = "";
@@ -2377,7 +2388,7 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
             {
                 tagname = updateList[0].GetType().Name;
             }
-            else if(deleteList != null && deleteList.Count>0)
+            else if (deleteList != null && deleteList.Count > 0)
             {
                 tagname = deleteList[0].GetType().Name;
 
@@ -2388,7 +2399,25 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
             ilstXMLBlob = NHibernateSessionUtility.Instance.MyMapXMLBlobList.Where(a => a.XML_Tag_Name == tagname).ToList();
             if (ilstXMLBlob.Count > 0)
             {
-                sXMLType = ilstXMLBlob[0].Table_Name;
+                if (ilstXMLBlob.Count == 2)
+                {
+                    if (objGenerateXml != null && EntityID == objGenerateXml.ulEncounterID)
+                    {
+                        sXMLType = "Blob_Encounter";
+                    }
+                    else if (objGenerateXml != null && EntityID == objGenerateXml.ulHumanID)
+                    {
+                        sXMLType = "Blob_Human";
+                    }
+                    else
+                    {
+                        sXMLType = ilstXMLBlob[0].Table_Name;
+                    }
+                }
+                else
+                {
+                    sXMLType = ilstXMLBlob[0].Table_Name;
+                }
                 string sXMLContent = String.Empty;
                 if (sXMLType == "Blob_Human")
                 {
@@ -2523,8 +2552,7 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
 
             }
         }
-
-       public static IList<object> ReadBlob(ulong EntityID, IList<string> ilstTagName)
+        public static IList<object> ReadBlob(ulong EntityID, IList<string> ilstTagName)
         {
             string sXMLType = "";
 
@@ -2536,7 +2564,7 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
             ilstXMLBlob = NHibernateSessionUtility.Instance.MyMapXMLBlobList.Where(a => a.XML_Tag_Name == ilstTagName[0].ToString()).ToList();
             if (ilstXMLBlob.Count > 0)
             {
-                sXMLType = ilstXMLBlob[0].Condition;
+                sXMLType = ilstXMLBlob[0].Table_Name;
                 if (sXMLType == "Blob_Human")
                 {
                     HumanBlobManager HumanBlobMngr = new HumanBlobManager();
@@ -2932,7 +2960,7 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
                         xmlserializer = new XmlSerializer(typeof(GeneralNotes));
                         break;
                     }
-                    
+
             }
             return xmlserializer;
         }
@@ -3315,7 +3343,7 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
 
         #endregion
 
-        
+
     }
 }
 

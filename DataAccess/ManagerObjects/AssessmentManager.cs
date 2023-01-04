@@ -1032,9 +1032,16 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
                                     {
                                         //  xmlobjHuman.itemDoc.Save(xmlobjHuman.strXmlFilePath);
                                         //if (FileName.Contains("Human"))
+
+                                       
                                         //{
-                                            WriteBlob( ulHumanID, xmlobjHuman.itemDoc, MySession, ListToInsert, ListToUpdate, ListToDelete, xmlobjHuman, false);
-                                       // }
+                                        if (updatedList.Count > 0)
+
+                                            problemMngr.WriteBlob( ulHumanID, xmlobjHuman.itemDoc, MySession, ListToInsertProblemList, updatedList, ListToDeleteProblemList, xmlobjHuman, false);
+                                        else
+                                            problemMngr.WriteBlob(ulHumanID, xmlobjHuman.itemDoc, MySession, ListToInsertProblemList, ListToUpdateProblemList, ListToDeleteProblemList, xmlobjHuman, false);
+                                        
+                                        // }
                                         //else if (FileName.Contains("Encounter"))
                                         //{
                                         //    WriteBlob("Encounter", ulEncounterID, xmlobjHuman.itemDoc, MySession, ListToInsert, ListToUpdate, ListToDelete, xmlobjHuman);
