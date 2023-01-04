@@ -22,7 +22,7 @@ before_script:
  
 build Job:
   rules:
-    - if: '$SERVER_TESTING_11 =="10.0.0.11" || $SERVER_TESTING_4 =="10.0.0.4" '
+    - if: '$SERVER_TESTING_11 =="10.0.0.11" && $SERVER_TESTING_4 =="10.0.0.4" '
   stage: Solution build
   script:
   - echo "UI Building..start"
