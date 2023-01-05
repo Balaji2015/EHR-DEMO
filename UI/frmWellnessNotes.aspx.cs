@@ -149,15 +149,30 @@ namespace Acurus.Capella.UI
                         string sLastName = string.Empty;
                         string sFirstName = string.Empty;
                         string sDOB = string.Empty;
-                        string human_id = "Human" + "_" + ClientSession.HumanId.ToString() + ".xml";
+                        XmlDocument itemDoc = new XmlDocument();
+                        string sXMLContent = string.Empty;
 
-                        string strXmlHumanPath = Path.Combine(System.Configuration.ConfigurationSettings.AppSettings["XMLPath"], human_id);
-                        if (File.Exists(strXmlHumanPath) == true)
+                        HumanBlobManager HumanBlobMngr = new HumanBlobManager();
+                        IList<Human_Blob> ilstHumanBlob = HumanBlobMngr.GetHumanBlob(ClientSession.HumanId);
+                        if (ilstHumanBlob.Count > 0)
                         {
-                            XmlDocument itemDoc = new XmlDocument();
-                            XmlTextReader XmlText = new XmlTextReader(strXmlHumanPath);
-                            itemDoc.Load(XmlText);
-                            XmlText.Close();
+                            sXMLContent = System.Text.Encoding.UTF8.GetString(ilstHumanBlob[0].Human_XML);
+                            itemDoc.LoadXml(sXMLContent);
+                        }
+                        else
+                        {
+                            throw new Exception("Human XML is not found");
+                        }
+
+                        //string human_id = "Human" + "_" + ClientSession.HumanId.ToString() + ".xml";
+
+                        //string strXmlHumanPath = Path.Combine(System.Configuration.ConfigurationSettings.AppSettings["XMLPath"], human_id);
+                        //if (File.Exists(strXmlHumanPath) == true)
+                        //{
+                            
+                            //XmlTextReader XmlText = new XmlTextReader(strXmlHumanPath);
+                            //itemDoc.Load(XmlText);
+                            //XmlText.Close();
                             if (itemDoc.GetElementsByTagName("HumanList")[0] != null)
                             {
                                 //if (result.ToUpper().Contains("MEMBER"))
@@ -185,8 +200,10 @@ namespace Acurus.Capella.UI
                             {
                                 if (itemDoc.GetElementsByTagName("PatientInsuredPlanList")[0] != null)
                                 {
+                                TextReader HumanXMLContent = new StringReader(sXMLContent);
+                                XDocument xmlInsurance = XDocument.Load(HumanXMLContent);
 
-                                    XDocument xmlInsurance = XDocument.Load(strXmlHumanPath);
+                                //XDocument xmlInsurance = XDocument.Load(strXmlHumanPath);
                                     var xmlPatientInsuredPlanList = xmlInsurance.Descendants("PatientInsuredPlanList")
                                         .Elements("PatientInsuredPlan").Where(aa => aa.Attribute("Insurance_Type").Value.ToString() == "PRIMARY");
                                     if (xmlPatientInsuredPlanList != null && xmlPatientInsuredPlanList.Count() > 0)
@@ -196,7 +213,7 @@ namespace Acurus.Capella.UI
                                 }
                                 NotesName = NotesName.Replace("[" + result + "]", sExternalAccNo);
                             }
-                        }
+                        //}
 
                     }
                     if ((result.ToUpper().Contains("DOS")) || (OutputName[i].ToUpper().Contains("DATE")))

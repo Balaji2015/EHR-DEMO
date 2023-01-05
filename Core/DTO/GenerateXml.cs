@@ -5472,7 +5472,7 @@ namespace Acurus.Capella.Core.DTO
                 {
                     sXMLContent = System.Text.Encoding.UTF8.GetString((byte[])dt.Rows[0]["Human_XML"]);
                     xmlDoc.LoadXml(sXMLContent);
-                    iHumanBlobVersion = (int)dt.Rows[0]["Version"];
+                    iHumanBlobVersion = Convert.ToInt32(dt.Rows[0]["Version"]);
                     sCreatedBy = (string)dt.Rows[0]["Created_By"];
                     dtCreatedDateandTime = Convert.ToDateTime(dt.Rows[0]["Created_Date_And_Time"].ToString());
                 }
@@ -5487,7 +5487,7 @@ namespace Acurus.Capella.Core.DTO
                 {
                     sXMLContent = System.Text.Encoding.UTF8.GetString((byte[])dt.Rows[0]["Encounter_XML"]);
                     xmlDoc.LoadXml(sXMLContent);
-                    iEncounterBlobVersion = (int)dt.Rows[0]["Version"];
+                    iEncounterBlobVersion = Convert.ToInt32(dt.Rows[0]["Version"]);
                     sCreatedBy = (string)dt.Rows[0]["Created_By"];
                     dtCreatedDateandTime = Convert.ToDateTime(dt.Rows[0]["Created_Date_And_Time"].ToString());
                 }

@@ -218,6 +218,7 @@ namespace Acurus.Capella.UI
                     {
                         using (
                             
+                            
                             StreamWriter outputFile = new StreamWriter(Path.Combine(ConfigurationManager.AppSettings["UsageLogPath"], "UsageLog_" + HttpContext.Current.Session.SessionID + ".txt"), true))
                         {
 
@@ -4292,6 +4293,8 @@ namespace Acurus.Capella.UI
         }
         public static string GenerateXML(string sXMLID, string sXMLType)
         {
+            return "Success";
+
             string sResult = string.Empty;
 
 
