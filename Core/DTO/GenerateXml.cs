@@ -2496,6 +2496,7 @@ namespace Acurus.Capella.Core.DTO
 
             string sLocalTime = string.Empty;
             string FileName = "Encounter" + "_" + EncounterOrHumanId + ".xml";
+            ulEncounterID = EncounterOrHumanId;
             XmlTextReader XmlText = null;
             if (obj.Count > 0)
             {
@@ -2508,10 +2509,14 @@ namespace Acurus.Capella.Core.DTO
                 if (ilstHumanXml.Contains(GeneralNotesList) || ilstHumanXml.Contains(SourceName))
                 {
                     FileName = FileName.Replace("Encounter", "Human");
+                    ulEncounterID = 0;
+                    ulHumanID = EncounterOrHumanId;
                 }
                 if (bSave_In_Human)
                 {
                     FileName = FileName.Replace("Encounter", "Human");
+                    ulEncounterID = 0;
+                    ulHumanID = EncounterOrHumanId;
                 }
             }
             //strXmlFilePath = Path.Combine(System.Configuration.ConfigurationSettings.AppSettings["XMLPath"], FileName);
@@ -4701,6 +4706,7 @@ namespace Acurus.Capella.Core.DTO
                 return;
             string sLocalTime = string.Empty;
             string FileName = "Encounter" + "_" + EncounterOrHumanId + ".xml";
+            ulEncounterID = EncounterOrHumanId;
 
             if (ilstHumanXml == null)
             {
@@ -4712,10 +4718,14 @@ namespace Acurus.Capella.Core.DTO
             if (ilstHumanXml.Contains(GeneralNotesList) || ilstHumanXml.Contains(SourceName))
             {
                 FileName = FileName.Replace("Encounter", "Human");
+                ulEncounterID = 0;
+                ulHumanID = EncounterOrHumanId;
             }
             if (bSave_In_Human)
             {
                 FileName = FileName.Replace("Encounter", "Human");
+                ulEncounterID = 0;
+                ulHumanID = EncounterOrHumanId;
             }
             string strXmlFilePath = Path.Combine(System.Configuration.ConfigurationSettings.AppSettings["XMLPath"], FileName);
             if (File.Exists(strXmlFilePath) == true)
