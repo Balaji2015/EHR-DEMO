@@ -5083,7 +5083,7 @@ namespace Acurus.Capella.UI
             XmlDocument xmlDoc = new XmlDocument();
             string sXMLContent = String.Empty;
             IList<MapXMLBlob> ilstXMLBlob = new List<MapXMLBlob>();
-            ilstXMLBlob = NHibernateSessionUtility.Instance.MyMapXMLBlobList.Where(a => a.XML_Tag_Name == ilstTagName[0].ToString()).ToList();
+            ilstXMLBlob = ApplicationObject.ilstMapXMLBlob.Where(a => a.XML_Tag_Name == ilstTagName[0].ToString()).ToList();
             if (ilstXMLBlob.Count > 0)
             {
                 if (sMyXMLType != string.Empty)
