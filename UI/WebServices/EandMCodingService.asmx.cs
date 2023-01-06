@@ -120,7 +120,7 @@ namespace Acurus.Capella.UI.WebServices
         }
 
         [WebMethod(EnableSession = true)]
-        public string LoadEandMCodingCPTTable(string strEandMCodingCPT,string sEnableScreen)
+        public string LoadEandMCodingCPTTable(string strEandMCodingCPT, string sEnableScreen)
         {
             if (ClientSession.UserName == string.Empty)
             {
@@ -196,14 +196,14 @@ namespace Acurus.Capella.UI.WebServices
                 }
             }
 
-            if(sEnableScreen== "EnableScreen=False")
+            if (sEnableScreen == "EnableScreen=False")
             {
                 EnableScreen = "disabled";
                 btnDelete = "Resources/Delete-Grey.png";
                 btnDeleteAdditionalICD = "Resources/Delete-Grey.png";
-                
+
             }
-          
+
 
             //BugID:51570
             #region Modifiers
@@ -631,7 +631,7 @@ namespace Acurus.Capella.UI.WebServices
             IList<EAndMCoding> TempEAndMCoding = new List<EAndMCoding>();
             IList<EandMCodingICD> TempEAndMICD = new List<EandMCodingICD>();
             IList<EandMCodingICD> EAndMICDTempList = new List<EandMCodingICD>();
-            
+
             IList<EandMCodingICD> EAndMICDSaveList = new List<EandMCodingICD>();
             IList<EandMCodingICD> EAndMICDUpdateList = new List<EandMCodingICD>();
             ImmunizationDTO ImmDelDTO = new ImmunizationDTO();
@@ -649,141 +649,196 @@ namespace Acurus.Capella.UI.WebServices
             }
             else
             {
-                string FileNames = "Encounter" + "_" + ClientSession.EncounterId + ".xml";
-                string strXmlFilePaths = Path.Combine(System.Configuration.ConfigurationSettings.AppSettings["XMLPath"], FileNames);
-                if (File.Exists(strXmlFilePaths) == true)
+                //string FileNames = "Encounter" + "_" + ClientSession.EncounterId + ".xml";
+                //string strXmlFilePaths = Path.Combine(System.Configuration.ConfigurationSettings.AppSettings["XMLPath"], FileNames);
+
+                IList<string> ilstEandMTagList = new List<string>();
+                ilstEandMTagList.Add("EAndMCodingList");
+                ilstEandMTagList.Add("EandMCodingICDList");
+
+
+
+                IList<object> ilstEandMBlobFinal = new List<object>();
+                ilstEandMBlobFinal = UtilityManager.ReadBlob(ClientSession.EncounterId, ilstEandMTagList);
+                IList<EAndMCoding> lsteandmtemp = new List<EAndMCoding>();
+                IList<EandMCodingICD> lsteandmICDblobtemp = new List<EandMCodingICD>();
+                IList<string> EandMCPTs = new List<string>();
+                EAndMCPTTempList = new List<EAndMCoding>();
+                if (ilstEandMBlobFinal != null && ilstEandMBlobFinal.Count > 0)
                 {
-                    XmlDocument itemDoc = new XmlDocument();
-                    XmlNodeList xmlTagName = null;
-
-                    using (FileStream fs = new FileStream(strXmlFilePaths
-                       , FileMode.Open, FileAccess.Read, FileShare.Read))
+                    if (ilstEandMBlobFinal[0] != null)
                     {
-                        itemDoc.Load(fs);
-
-                        IList<string> EandMCPTs = new List<string>();
-
-                        EAndMCPTTempList = new List<EAndMCoding>();
-                        if (itemDoc.GetElementsByTagName("EAndMCodingList") != null)
+                        for (int iCount = 0; iCount < ((IList<object>)ilstEandMBlobFinal[0]).Count; iCount++)
                         {
-                            if (itemDoc.GetElementsByTagName("EAndMCodingList").Count > 0)
+                            lsteandmtemp.Add((EAndMCoding)((IList<object>)ilstEandMBlobFinal[0])[iCount]);
+                        }
+                        for (int i = 0; i < lsteandmtemp.Count; i++)
+                        {
+                            if (lsteandmtemp[0].Encounter_ID == ClientSession.EncounterId)
                             {
-                                xmlTagName = itemDoc.GetElementsByTagName("EAndMCodingList")[0].ChildNodes;
-                                if (xmlTagName.Count > 0)
+                                if (EandMCPTs.IndexOf(lsteandmtemp[0].Procedure_Code) == -1)
+                                    EandMCPTs.Add(lsteandmtemp[0].Procedure_Code);//BugID:49118
+                                if (lsteandmtemp[0].Is_Delete == "N" || lsteandmtemp[0].Is_Delete == "")
                                 {
-                                    for (int j = 0; j < xmlTagName.Count; j++)
-                                    {
-                                        string TagName = xmlTagName[j].Name;
-                                        XmlSerializer xmlserializer = new XmlSerializer(typeof(EAndMCoding));
-                                        EAndMCoding EAndMCoding = xmlserializer.Deserialize(new XmlNodeReader(xmlTagName[j])) as EAndMCoding;
-                                        IEnumerable<PropertyInfo> propInfo = null;
-                                        if (EAndMCoding != null)
-                                        {
-                                            propInfo = from obji in ((EAndMCoding)EAndMCoding).GetType().GetProperties() select obji;
-
-                                            for (int i = 0; i < xmlTagName[j].Attributes.Count; i++)
-                                            {
-                                                XmlNode nodevalue = xmlTagName[j].Attributes[i];
-                                                {
-                                                    foreach (PropertyInfo property in propInfo)
-                                                    {
-                                                        if (property.Name == nodevalue.Name)
-                                                        {
-                                                            if (property.PropertyType.Name.ToUpper() == "UINT64")
-                                                                property.SetValue(EAndMCoding, Convert.ToUInt64(nodevalue.Value), null);
-                                                            else if (property.PropertyType.Name.ToUpper() == "STRING")
-                                                                property.SetValue(EAndMCoding, Convert.ToString(nodevalue.Value), null);
-                                                            else if (property.PropertyType.Name.ToUpper() == "DATETIME")
-                                                                property.SetValue(EAndMCoding, Convert.ToDateTime(nodevalue.Value), null);
-                                                            else if (property.PropertyType.Name.ToUpper() == "INT32")
-                                                                property.SetValue(EAndMCoding, Convert.ToInt32(nodevalue.Value), null);
-                                                            else if (property.PropertyType.Name.ToUpper() == "DECIMAL")
-                                                                property.SetValue(EAndMCoding, Convert.ToDecimal(nodevalue.Value), null);
-                                                            else
-                                                                property.SetValue(EAndMCoding, nodevalue.Value, null);
-                                                        }
-                                                    }
-                                                }
-                                            }
-                                            if (EAndMCoding.Encounter_ID == ClientSession.EncounterId)
-                                            {
-                                                if (EandMCPTs.IndexOf(EAndMCoding.Procedure_Code) == -1)
-                                                    EandMCPTs.Add(EAndMCoding.Procedure_Code);//BugID:49118
-                                                if (EAndMCoding.Is_Delete == "N" || EAndMCoding.Is_Delete == "")
-                                                {
-                                                    //if (aryAccessCPT.Contains(EAndMCoding.Procedure_Code) == false)
-                                                    //{
-                                                    EAndMCPTTempList.Add(EAndMCoding);
-                                                    //ProcList.Add(EAndMCoding.Procedure_Code + "~" + EAndMCoding.Procedure_Code_Description + "~" + EAndMCoding.Id + "~" + EAndMCoding.Units + "~" + EAndMCoding.Modifier1 + "~" + EAndMCoding.Modifier2 + "~" + EAndMCoding.Modifier3 + "~" + EAndMCoding.Modifier4 + "~" + EAndMCoding.Sequence + "~" + EAndMCoding.Version);
-                                                    //    aryAccessCPT.Add(EAndMCoding.Procedure_Code);
-                                                    //}
-                                                }
-                                            }
-                                        }
-                                    }
+                                    //if (aryAccessCPT.Contains(EAndMCoding.Procedure_Code) == false)
+                                    //{
+                                    EAndMCPTTempList.Add(lsteandmtemp[0]);
+                                    //ProcList.Add(EAndMCoding.Procedure_Code + "~" + EAndMCoding.Procedure_Code_Description + "~" + EAndMCoding.Id + "~" + EAndMCoding.Units + "~" + EAndMCoding.Modifier1 + "~" + EAndMCoding.Modifier2 + "~" + EAndMCoding.Modifier3 + "~" + EAndMCoding.Modifier4 + "~" + EAndMCoding.Sequence + "~" + EAndMCoding.Version);
+                                    //    aryAccessCPT.Add(EAndMCoding.Procedure_Code);
+                                    //}
                                 }
                             }
                         }
-
                         HttpContext.Current.Session["EandMList"] = EAndMCPTTempList;
 
-                        EAndMICDTempList = new List<EandMCodingICD>();
-                        if (itemDoc.GetElementsByTagName("EandMCodingICDList") != null)
-                        {
-                            if (itemDoc.GetElementsByTagName("EandMCodingICDList").Count > 0)
-                            {
-                                xmlTagName = itemDoc.GetElementsByTagName("EandMCodingICDList")[0].ChildNodes;
-                                if (xmlTagName.Count > 0)
-                                {
-                                    for (int j = 0; j < xmlTagName.Count; j++)
-                                    {
-                                        string TagName = xmlTagName[j].Name;
-                                        XmlSerializer xmlserializer = new XmlSerializer(typeof(EandMCodingICD));
-                                        EandMCodingICD EandMCodingICD = xmlserializer.Deserialize(new XmlNodeReader(xmlTagName[j])) as EandMCodingICD;
-                                        IEnumerable<PropertyInfo> propInfo = null;
-                                        if (EandMCodingICD != null)
-                                        {
-                                            propInfo = from obji in ((EandMCodingICD)EandMCodingICD).GetType().GetProperties() select obji;
 
-                                            for (int i = 0; i < xmlTagName[j].Attributes.Count; i++)
-                                            {
-                                                XmlNode nodevalue = xmlTagName[j].Attributes[i];
-                                                {
-                                                    foreach (PropertyInfo property in propInfo)
-                                                    {
-                                                        if (property.Name == nodevalue.Name)
-                                                        {
-                                                            if (property.PropertyType.Name.ToUpper() == "UINT64")
-                                                                property.SetValue(EandMCodingICD, Convert.ToUInt64(nodevalue.Value), null);
-                                                            else if (property.PropertyType.Name.ToUpper() == "STRING")
-                                                                property.SetValue(EandMCodingICD, Convert.ToString(nodevalue.Value), null);
-                                                            else if (property.PropertyType.Name.ToUpper() == "DATETIME")
-                                                                property.SetValue(EandMCodingICD, Convert.ToDateTime(nodevalue.Value), null);
-                                                            else if (property.PropertyType.Name.ToUpper() == "INT32")
-                                                                property.SetValue(EandMCodingICD, Convert.ToInt32(nodevalue.Value), null);
-                                                            else if (property.PropertyType.Name.ToUpper() == "DECIMAL")
-                                                                property.SetValue(EandMCodingICD, Convert.ToDecimal(nodevalue.Value), null);
-                                                            else
-                                                                property.SetValue(EandMCodingICD, nodevalue.Value, null);
-                                                        }
-                                                    }
-                                                }
-                                            }
-                                            if (EandMCodingICD.Encounter_ID == ClientSession.EncounterId  &&(EandMCodingICD.Is_Delete == "N" || EandMCodingICD.Is_Delete == ""))
-                                            {
-                                                EAndMICDTempList.Add(EandMCodingICD);
-                                            }
-                                           
-                                        }
-                                    }
-                                }
-                            }
-                        }
-                        //HttpContext.Current.Session["EandMICDList"] = EAndMICDTempList;
-                        fs.Close();
-                        fs.Dispose();
                     }
+                    EAndMICDTempList = new List<EandMCodingICD>();
+                    if (ilstEandMBlobFinal[1] != null)
+                    {
+                        for (int iCount = 0; iCount < ((IList<object>)ilstEandMBlobFinal[1]).Count; iCount++)
+                        {
+                            lsteandmICDblobtemp.Add((EandMCodingICD)((IList<object>)ilstEandMBlobFinal[1])[iCount]);
+
+
+                        }
+                        EAndMICDTempList = (from m in lsteandmICDblobtemp where m.Encounter_ID == ClientSession.EncounterId && (m.Is_Delete == "N" || m.Is_Delete == "" )select m).ToList<EandMCodingICD>();
+
+                    }
+
                 }
+
+                //if (File.Exists(strXmlFilePaths) == true)
+                //{
+                //    XmlDocument itemDoc = new XmlDocument();
+                //    XmlNodeList xmlTagName = null;
+
+                //    using (FileStream fs = new FileStream(strXmlFilePaths
+                //       , FileMode.Open, FileAccess.Read, FileShare.Read))
+                //    {
+                //        itemDoc.Load(fs);
+
+
+
+
+                //if (itemDoc.GetElementsByTagName("EAndMCodingList") != null)
+                //{
+                //    if (itemDoc.GetElementsByTagName("EAndMCodingList").Count > 0)
+                //    {
+                //        xmlTagName = itemDoc.GetElementsByTagName("EAndMCodingList")[0].ChildNodes;
+                //        if (xmlTagName.Count > 0)
+                //        {
+                //            for (int j = 0; j < xmlTagName.Count; j++)
+                //            {
+                //                string TagName = xmlTagName[j].Name;
+                //                XmlSerializer xmlserializer = new XmlSerializer(typeof(EAndMCoding));
+                //                EAndMCoding EAndMCoding = xmlserializer.Deserialize(new XmlNodeReader(xmlTagName[j])) as EAndMCoding;
+                //                IEnumerable<PropertyInfo> propInfo = null;
+                //                if (EAndMCoding != null)
+                //                {
+                //                    propInfo = from obji in ((EAndMCoding)EAndMCoding).GetType().GetProperties() select obji;
+
+                //                    for (int i = 0; i < xmlTagName[j].Attributes.Count; i++)
+                //                    {
+                //                        XmlNode nodevalue = xmlTagName[j].Attributes[i];
+                //                        {
+                //                            foreach (PropertyInfo property in propInfo)
+                //                            {
+                //                                if (property.Name == nodevalue.Name)
+                //                                {
+                //                                    if (property.PropertyType.Name.ToUpper() == "UINT64")
+                //                                        property.SetValue(EAndMCoding, Convert.ToUInt64(nodevalue.Value), null);
+                //                                    else if (property.PropertyType.Name.ToUpper() == "STRING")
+                //                                        property.SetValue(EAndMCoding, Convert.ToString(nodevalue.Value), null);
+                //                                    else if (property.PropertyType.Name.ToUpper() == "DATETIME")
+                //                                        property.SetValue(EAndMCoding, Convert.ToDateTime(nodevalue.Value), null);
+                //                                    else if (property.PropertyType.Name.ToUpper() == "INT32")
+                //                                        property.SetValue(EAndMCoding, Convert.ToInt32(nodevalue.Value), null);
+                //                                    else if (property.PropertyType.Name.ToUpper() == "DECIMAL")
+                //                                        property.SetValue(EAndMCoding, Convert.ToDecimal(nodevalue.Value), null);
+                //                                    else
+                //                                        property.SetValue(EAndMCoding, nodevalue.Value, null);
+                //                                }
+                //                            }
+                //                        }
+                //                    }
+                //                    if (EAndMCoding.Encounter_ID == ClientSession.EncounterId)
+                //                    {
+                //                        if (EandMCPTs.IndexOf(EAndMCoding.Procedure_Code) == -1)
+                //                            EandMCPTs.Add(EAndMCoding.Procedure_Code);//BugID:49118
+                //                        if (EAndMCoding.Is_Delete == "N" || EAndMCoding.Is_Delete == "")
+                //                        {
+                //                            //if (aryAccessCPT.Contains(EAndMCoding.Procedure_Code) == false)
+                //                            //{
+                //                            EAndMCPTTempList.Add(EAndMCoding);
+                //                            //ProcList.Add(EAndMCoding.Procedure_Code + "~" + EAndMCoding.Procedure_Code_Description + "~" + EAndMCoding.Id + "~" + EAndMCoding.Units + "~" + EAndMCoding.Modifier1 + "~" + EAndMCoding.Modifier2 + "~" + EAndMCoding.Modifier3 + "~" + EAndMCoding.Modifier4 + "~" + EAndMCoding.Sequence + "~" + EAndMCoding.Version);
+                //                            //    aryAccessCPT.Add(EAndMCoding.Procedure_Code);
+                //                            //}
+                //                        }
+                //                    }
+                //                }
+                //            }
+                //        }
+                //    }
+                //}
+
+
+                //if (itemDoc.GetElementsByTagName("EandMCodingICDList") != null)
+                //{
+                //    if (itemDoc.GetElementsByTagName("EandMCodingICDList").Count > 0)
+                //    {
+                //        xmlTagName = itemDoc.GetElementsByTagName("EandMCodingICDList")[0].ChildNodes;
+                //        if (xmlTagName.Count > 0)
+                //        {
+                //            for (int j = 0; j < xmlTagName.Count; j++)
+                //            {
+                //                string TagName = xmlTagName[j].Name;
+                //                XmlSerializer xmlserializer = new XmlSerializer(typeof(EandMCodingICD));
+                //                EandMCodingICD EandMCodingICD = xmlserializer.Deserialize(new XmlNodeReader(xmlTagName[j])) as EandMCodingICD;
+                //                IEnumerable<PropertyInfo> propInfo = null;
+                //                if (EandMCodingICD != null)
+                //                {
+                //                    propInfo = from obji in ((EandMCodingICD)EandMCodingICD).GetType().GetProperties() select obji;
+
+                //                    for (int i = 0; i < xmlTagName[j].Attributes.Count; i++)
+                //                    {
+                //                        XmlNode nodevalue = xmlTagName[j].Attributes[i];
+                //                        {
+                //                            foreach (PropertyInfo property in propInfo)
+                //                            {
+                //                                if (property.Name == nodevalue.Name)
+                //                                {
+                //                                    if (property.PropertyType.Name.ToUpper() == "UINT64")
+                //                                        property.SetValue(EandMCodingICD, Convert.ToUInt64(nodevalue.Value), null);
+                //                                    else if (property.PropertyType.Name.ToUpper() == "STRING")
+                //                                        property.SetValue(EandMCodingICD, Convert.ToString(nodevalue.Value), null);
+                //                                    else if (property.PropertyType.Name.ToUpper() == "DATETIME")
+                //                                        property.SetValue(EandMCodingICD, Convert.ToDateTime(nodevalue.Value), null);
+                //                                    else if (property.PropertyType.Name.ToUpper() == "INT32")
+                //                                        property.SetValue(EandMCodingICD, Convert.ToInt32(nodevalue.Value), null);
+                //                                    else if (property.PropertyType.Name.ToUpper() == "DECIMAL")
+                //                                        property.SetValue(EandMCodingICD, Convert.ToDecimal(nodevalue.Value), null);
+                //                                    else
+                //                                        property.SetValue(EandMCodingICD, nodevalue.Value, null);
+                //                                }
+                //                            }
+                //                        }
+                //                    }
+                //                    if (EandMCodingICD.Encounter_ID == ClientSession.EncounterId && (EandMCodingICD.Is_Delete == "N" || EandMCodingICD.Is_Delete == ""))
+                //                    {
+                //                        EAndMICDTempList.Add(EandMCodingICD);
+                //                    }
+
+                //                }
+                //            }
+                //        }
+                //    }
+                //}
+                //HttpContext.Current.Session["EandMICDList"] = EAndMICDTempList;
+                //        fs.Close();
+                //        fs.Dispose();
+                //    }
+                //}
             }
 
             bool Is_CMG_Ancillary = false;
@@ -1098,7 +1153,7 @@ namespace Acurus.Capella.UI.WebServices
             IList<EandMCodingICD> lstInsertUpdateICD = new List<EandMCodingICD>();
 
             lstInsertUpdateICD = EAndMICDSaveList.Where(a => a.Is_Delete.Trim().ToUpper() != "Y").ToList().
-                Concat(EAndMICDUpdateList.Where(a => a.Is_Delete.Trim().ToUpper() != "Y").ToList()).ToList().Concat(EAndMICDTempList.Where(a => a.Source=="ASSESSMENT" && a.Is_Delete.Trim().ToUpper()!="Y")).ToList();
+                Concat(EAndMICDUpdateList.Where(a => a.Is_Delete.Trim().ToUpper() != "Y").ToList()).ToList().Concat(EAndMICDTempList.Where(a => a.Source == "ASSESSMENT" && a.Is_Delete.Trim().ToUpper() != "Y")).ToList();
 
             //CPT
             IList<EAndMCoding> lstInsertUpdateCpt = new List<EAndMCoding>();
@@ -1321,7 +1376,7 @@ namespace Acurus.Capella.UI.WebServices
                 {
                     EnablePriRbtn = "disabled";
                 }
-                    if (AssPriCount != null && AssPriCount.Count > 0)
+                if (AssPriCount != null && AssPriCount.Count > 0)
                 {
                     EnablePriRbtn = "disabled";
                 }
@@ -1354,7 +1409,7 @@ namespace Acurus.Capella.UI.WebServices
 
 
             //SubmitESuperBill /* Start For Git Lab Id: 1666 */
-            if (sESuperbillSubmitted == "Y" && arylstICD.Count()>0)
+            if (sESuperbillSubmitted == "Y" && arylstICD.Count() > 0)
             {
                 Encounter EncRecordEsuperBill = new Encounter();
                 EncounterManager ObjEncManager = new EncounterManager();
@@ -1551,129 +1606,169 @@ namespace Acurus.Capella.UI.WebServices
             #region Immunization
             if (CPT_ImmDelcode != null && CPT_ImmDelcode.Count > 0)
             {
-                string FileName = "Human" + "_" + ClientSession.HumanId + ".xml";
-                string strXmlFilePath = Path.Combine(System.Configuration.ConfigurationSettings.AppSettings["XMLPath"], FileName);
-                if (File.Exists(strXmlFilePath) == true)
+
+                IList<string> ilstEandMTagList = new List<string>();
+                ilstEandMTagList.Add("ImmunizationList");
+                ilstEandMTagList.Add("ImmunizationHistoryList");
+
+
+
+                IList<object> ilstEandMBlobFinal = new List<object>();
+                ilstEandMBlobFinal = UtilityManager.ReadBlob(ClientSession.HumanId, ilstEandMTagList);
+                IList<Immunization> lstimm = new List<Immunization>();
+                IList<ImmunizationHistory> lstimmhis = new List<ImmunizationHistory>();
+                if (ilstEandMBlobFinal != null && ilstEandMBlobFinal.Count > 0)
                 {
-                    XmlDocument itemDoc = new XmlDocument();
-                    XmlTextReader XmlText = new XmlTextReader(strXmlFilePath);
-                    XmlNodeList xmlTagName = null;
-                    // itemDoc.Load(XmlText);
-                    using (FileStream fs = new FileStream(strXmlFilePath, FileMode.Open, FileAccess.Read, FileShare.Read))
+                    if (ilstEandMBlobFinal[0] != null)
                     {
-                        itemDoc.Load(fs);
-
-                        XmlText.Close();
-                        if (itemDoc.GetElementsByTagName("ImmunizationList") != null)
+                        for (int iCount = 0; iCount < ((IList<object>)ilstEandMBlobFinal[0]).Count; iCount++)
                         {
-                            if (itemDoc.GetElementsByTagName("ImmunizationList").Count > 0)
-                            {
-                                xmlTagName = itemDoc.GetElementsByTagName("ImmunizationList")[0].ChildNodes;
+                            lstimm.Add((Immunization)((IList<object>)ilstEandMBlobFinal[0])[iCount]);
 
-                                if (xmlTagName.Count > 0)
-                                {
-                                    for (int j = 0; j < xmlTagName.Count; j++)
-                                    {
-                                        if (Convert.ToUInt64(xmlTagName[j].Attributes.GetNamedItem("Encounter_Id").Value) == ClientSession.EncounterId)
-                                        {
 
-                                            string TagName = xmlTagName[j].Name;
-                                            XmlSerializer xmlserializer = new XmlSerializer(typeof(Immunization));
-                                            Immunization Immunization = xmlserializer.Deserialize(new XmlNodeReader(xmlTagName[j])) as Immunization;
-                                            IEnumerable<PropertyInfo> propInfo = null;
-                                            if (Immunization != null)
-                                            {
-                                                propInfo = from obji in ((Immunization)Immunization).GetType().GetProperties() select obji;
-
-                                                for (int i = 0; i < xmlTagName[j].Attributes.Count; i++)
-                                                {
-                                                    XmlNode nodevalue = xmlTagName[j].Attributes[i];
-                                                    {
-                                                        foreach (PropertyInfo property in propInfo)
-                                                        {
-                                                            if (property.Name == nodevalue.Name)
-                                                            {
-                                                                if (property.PropertyType.Name.ToUpper() == "UINT64")
-                                                                    property.SetValue(Immunization, Convert.ToUInt64(nodevalue.Value), null);
-                                                                else if (property.PropertyType.Name.ToUpper() == "STRING")
-                                                                    property.SetValue(Immunization, Convert.ToString(nodevalue.Value), null);
-                                                                else if (property.PropertyType.Name.ToUpper() == "DATETIME")
-                                                                    property.SetValue(Immunization, Convert.ToDateTime(nodevalue.Value), null);
-                                                                else if (property.PropertyType.Name.ToUpper() == "INT32")
-                                                                    property.SetValue(Immunization, Convert.ToInt32(nodevalue.Value), null);
-                                                                else if (property.PropertyType.Name.ToUpper() == "DECIMAL")
-                                                                    property.SetValue(Immunization, Convert.ToDecimal(nodevalue.Value), null);
-                                                                else
-                                                                    property.SetValue(Immunization, nodevalue.Value, null);
-                                                            }
-                                                        }
-                                                    }
-                                                }
-                                                if (CPT_ImmDelcode.IndexOf(Immunization.Procedure_Code.Trim()) != -1)
-                                                {
-                                                    ImmDTO.Immunization.Add(Immunization);
-                                                }
-                                            }
-                                        }
-                                    }
-                                }
-                            }
                         }
+                        ImmDTO.Immunization = lstimm.Where(a => !CPT_ImmDelcode.Contains(a.Procedure_Code)).ToList<Immunization>();
 
-                        if (itemDoc.GetElementsByTagName("ImmunizationHistoryList")[0] != null)
+                    }
+                    if (ilstEandMBlobFinal[1] != null)
+                    {
+                        for (int iCount = 0; iCount < ((IList<object>)ilstEandMBlobFinal[1]).Count; iCount++)
                         {
-                            xmlTagName = itemDoc.GetElementsByTagName("ImmunizationHistoryList")[0].ChildNodes;
+                            lstimmhis.Add((ImmunizationHistory)((IList<object>)ilstEandMBlobFinal[1])[iCount]);
 
-                            if (xmlTagName.Count > 0)
-                            {
-                                for (int j = 0; j < xmlTagName.Count; j++)
-                                {
-                                    if (Convert.ToUInt64(xmlTagName[j].Attributes.GetNamedItem("Encounter_ID").Value) == ClientSession.EncounterId)
-                                    {
 
-                                        string TagName = xmlTagName[j].Name;
-                                        XmlSerializer xmlserializer = new XmlSerializer(typeof(ImmunizationHistory));
-                                        ImmunizationHistory ImmunizationHistory = xmlserializer.Deserialize(new XmlNodeReader(xmlTagName[j])) as ImmunizationHistory;
-                                        IEnumerable<PropertyInfo> propInfo = null;
-                                        propInfo = from obji in ((ImmunizationHistory)ImmunizationHistory).GetType().GetProperties() select obji;
-
-                                        for (int i = 0; i < xmlTagName[j].Attributes.Count; i++)
-                                        {
-                                            XmlNode nodevalue = xmlTagName[j].Attributes[i];
-                                            {
-                                                foreach (PropertyInfo property in propInfo)
-                                                {
-                                                    if (property.Name == nodevalue.Name)
-                                                    {
-                                                        if (property.PropertyType.Name.ToUpper() == "UINT64")
-                                                            property.SetValue(ImmunizationHistory, Convert.ToUInt64(nodevalue.Value), null);
-                                                        else if (property.PropertyType.Name.ToUpper() == "STRING")
-                                                            property.SetValue(ImmunizationHistory, Convert.ToString(nodevalue.Value), null);
-                                                        else if (property.PropertyType.Name.ToUpper() == "DATETIME")
-                                                            property.SetValue(ImmunizationHistory, Convert.ToDateTime(nodevalue.Value), null);
-                                                        else if (property.PropertyType.Name.ToUpper() == "INT32")
-                                                            property.SetValue(ImmunizationHistory, Convert.ToInt32(nodevalue.Value), null);
-                                                        else if (property.PropertyType.Name.ToUpper() == "DECIMAL")
-                                                            property.SetValue(ImmunizationHistory, Convert.ToDecimal(nodevalue.Value), null);
-                                                        else
-                                                            property.SetValue(ImmunizationHistory, nodevalue.Value, null);
-                                                    }
-                                                }
-                                            }
-                                        }
-                                        if (CPT_ImmDelcode.IndexOf(ImmunizationHistory.Procedure_Code.Trim()) != -1)
-                                        {
-                                            ImmDTO.ImmunizationHistoryList.Add(ImmunizationHistory);
-                                        }
-                                    }
-
-                                }
-                            }
                         }
-                        fs.Close();
-                        fs.Dispose();
+                        //if (CPT_ImmDelcode.IndexOf(ImmunizationHistory.Procedure_Code.Trim()) != -1)
+                        //{
+                        //    ImmDTO.ImmunizationHistoryList.Add(ImmunizationHistory);
+                        //}
+                        ImmDTO.ImmunizationHistoryList = lstimmhis.Where(a => !CPT_ImmDelcode.Contains(a.Procedure_Code)).ToList<ImmunizationHistory>();
+
                     }
                 }
+                //        string FileName = "Human" + "_" + ClientSession.HumanId + ".xml";
+                //string strXmlFilePath = Path.Combine(System.Configuration.ConfigurationSettings.AppSettings["XMLPath"], FileName);
+                //if (File.Exists(strXmlFilePath) == true)
+                //{
+                //    XmlDocument itemDoc = new XmlDocument();
+                //    XmlTextReader XmlText = new XmlTextReader(strXmlFilePath);
+                //    XmlNodeList xmlTagName = null;
+                //    // itemDoc.Load(XmlText);
+                //    using (FileStream fs = new FileStream(strXmlFilePath, FileMode.Open, FileAccess.Read, FileShare.Read))
+                //    {
+                //        itemDoc.Load(fs);
+
+                //        XmlText.Close();
+                //if (itemDoc.GetElementsByTagName("ImmunizationList") != null)
+                //{
+                //    if (itemDoc.GetElementsByTagName("ImmunizationList").Count > 0)
+                //    {
+                //        xmlTagName = itemDoc.GetElementsByTagName("ImmunizationList")[0].ChildNodes;
+
+                //        if (xmlTagName.Count > 0)
+                //        {
+                //            for (int j = 0; j < xmlTagName.Count; j++)
+                //            {
+                //                if (Convert.ToUInt64(xmlTagName[j].Attributes.GetNamedItem("Encounter_Id").Value) == ClientSession.EncounterId)
+                //                {
+
+                //                    string TagName = xmlTagName[j].Name;
+                //                    XmlSerializer xmlserializer = new XmlSerializer(typeof(Immunization));
+                //                    Immunization Immunization = xmlserializer.Deserialize(new XmlNodeReader(xmlTagName[j])) as Immunization;
+                //                    IEnumerable<PropertyInfo> propInfo = null;
+                //                    if (Immunization != null)
+                //                    {
+                //                        propInfo = from obji in ((Immunization)Immunization).GetType().GetProperties() select obji;
+
+                //                        for (int i = 0; i < xmlTagName[j].Attributes.Count; i++)
+                //                        {
+                //                            XmlNode nodevalue = xmlTagName[j].Attributes[i];
+                //                            {
+                //                                foreach (PropertyInfo property in propInfo)
+                //                                {
+                //                                    if (property.Name == nodevalue.Name)
+                //                                    {
+                //                                        if (property.PropertyType.Name.ToUpper() == "UINT64")
+                //                                            property.SetValue(Immunization, Convert.ToUInt64(nodevalue.Value), null);
+                //                                        else if (property.PropertyType.Name.ToUpper() == "STRING")
+                //                                            property.SetValue(Immunization, Convert.ToString(nodevalue.Value), null);
+                //                                        else if (property.PropertyType.Name.ToUpper() == "DATETIME")
+                //                                            property.SetValue(Immunization, Convert.ToDateTime(nodevalue.Value), null);
+                //                                        else if (property.PropertyType.Name.ToUpper() == "INT32")
+                //                                            property.SetValue(Immunization, Convert.ToInt32(nodevalue.Value), null);
+                //                                        else if (property.PropertyType.Name.ToUpper() == "DECIMAL")
+                //                                            property.SetValue(Immunization, Convert.ToDecimal(nodevalue.Value), null);
+                //                                        else
+                //                                            property.SetValue(Immunization, nodevalue.Value, null);
+                //                                    }
+                //                                }
+                //                            }
+                //                        }
+                //                        if (CPT_ImmDelcode.IndexOf(Immunization.Procedure_Code.Trim()) != -1)
+                //                        {
+                //                            ImmDTO.Immunization.Add(Immunization);
+                //                        }
+                //                    }
+                //                }
+                //            }
+                //        }
+                //    }
+                //}
+
+                //if (itemDoc.GetElementsByTagName("ImmunizationHistoryList")[0] != null)
+                //{
+                //    xmlTagName = itemDoc.GetElementsByTagName("ImmunizationHistoryList")[0].ChildNodes;
+
+                //    if (xmlTagName.Count > 0)
+                //    {
+                //        for (int j = 0; j < xmlTagName.Count; j++)
+                //        {
+                //            if (Convert.ToUInt64(xmlTagName[j].Attributes.GetNamedItem("Encounter_ID").Value) == ClientSession.EncounterId)
+                //            {
+
+                //                string TagName = xmlTagName[j].Name;
+                //                XmlSerializer xmlserializer = new XmlSerializer(typeof(ImmunizationHistory));
+                //                ImmunizationHistory ImmunizationHistory = xmlserializer.Deserialize(new XmlNodeReader(xmlTagName[j])) as ImmunizationHistory;
+                //                IEnumerable<PropertyInfo> propInfo = null;
+                //                propInfo = from obji in ((ImmunizationHistory)ImmunizationHistory).GetType().GetProperties() select obji;
+
+                //                for (int i = 0; i < xmlTagName[j].Attributes.Count; i++)
+                //                {
+                //                    XmlNode nodevalue = xmlTagName[j].Attributes[i];
+                //                    {
+                //                        foreach (PropertyInfo property in propInfo)
+                //                        {
+                //                            if (property.Name == nodevalue.Name)
+                //                            {
+                //                                if (property.PropertyType.Name.ToUpper() == "UINT64")
+                //                                    property.SetValue(ImmunizationHistory, Convert.ToUInt64(nodevalue.Value), null);
+                //                                else if (property.PropertyType.Name.ToUpper() == "STRING")
+                //                                    property.SetValue(ImmunizationHistory, Convert.ToString(nodevalue.Value), null);
+                //                                else if (property.PropertyType.Name.ToUpper() == "DATETIME")
+                //                                    property.SetValue(ImmunizationHistory, Convert.ToDateTime(nodevalue.Value), null);
+                //                                else if (property.PropertyType.Name.ToUpper() == "INT32")
+                //                                    property.SetValue(ImmunizationHistory, Convert.ToInt32(nodevalue.Value), null);
+                //                                else if (property.PropertyType.Name.ToUpper() == "DECIMAL")
+                //                                    property.SetValue(ImmunizationHistory, Convert.ToDecimal(nodevalue.Value), null);
+                //                                else
+                //                                    property.SetValue(ImmunizationHistory, nodevalue.Value, null);
+                //                            }
+                //                        }
+                //                    }
+                //                }
+                //                if (CPT_ImmDelcode.IndexOf(ImmunizationHistory.Procedure_Code.Trim()) != -1)
+                //                {
+                //                    ImmDTO.ImmunizationHistoryList.Add(ImmunizationHistory);
+                //                }
+                //            }
+
+                //        }
+                //    }
+                //}
+                //        fs.Close();
+                //        fs.Dispose();
+                //    }
+                //}
             }
 
             #endregion
@@ -1681,81 +1776,123 @@ namespace Acurus.Capella.UI.WebServices
             #region ICP
             if (CPT_ICPDelcode != null && CPT_ICPDelcode.Count > 0)
             {
-                string FileName_Enc = "Encounter" + "_" + ClientSession.EncounterId + ".xml";
-                string strXmlFilePath_Enc = Path.Combine(System.Configuration.ConfigurationSettings.AppSettings["XMLPath"], FileName_Enc);
-                if (File.Exists(strXmlFilePath_Enc) == true)
+
+                IList<string> ilstcareTagList = new List<string>();
+                ilstcareTagList.Add("CarePlanList");
+
+
+
+                IList<object> ilstcareplanBlobFinal = new List<object>();
+                ilstcareplanBlobFinal = UtilityManager.ReadBlob(ClientSession.EncounterId, ilstcareTagList);
+                IList<CarePlan> lstcareplan = new List<CarePlan>();
+
+                if (ilstcareplanBlobFinal != null && ilstcareplanBlobFinal.Count > 0)
                 {
-                    XmlDocument itemDoc = new XmlDocument();
-                    XmlTextReader XmlText = new XmlTextReader(strXmlFilePath_Enc);
-                    XmlNodeList xmlTagName = null;
-                    //itemDoc.Load(XmlText);
-                    using (FileStream fs = new FileStream(strXmlFilePath_Enc, FileMode.Open, FileAccess.Read, FileShare.Read))
+                    if (ilstcareplanBlobFinal[0] != null)
                     {
-                        itemDoc.Load(fs);
-
-                        XmlText.Close();
-                        if (itemDoc.GetElementsByTagName("CarePlanList") != null)
+                        for (int iCount = 0; iCount < ((IList<object>)ilstcareplanBlobFinal[0]).Count; iCount++)
                         {
-                            if (itemDoc.GetElementsByTagName("CarePlanList").Count > 0)
+                            lstcareplan.Add((CarePlan)((IList<object>)ilstcareplanBlobFinal[0])[iCount]);
+
+
+                        }
+                        lstcareplan = (from m in lstcareplan
+                                       where m.Encounter_ID == ClientSession.EncounterId &&
+                                      m.Care_Name == "Screening Tests" && m.Care_Name_Value == "Preventive Care and Screening: Tobacco Use: Screening and Cessation Intervention" && m.Snomed_Code != ""
+                                       select m).ToList<CarePlan>();
+
+
+
+                        if (lstcareplan.Count > 0)
+                        {
+                            ICPtobacco_CodesList = lstcareplan[0].Snomed_Code.ToString().Split(',');
+                            foreach (string s in CPT_ICPDelcode)
                             {
-                                xmlTagName = itemDoc.GetElementsByTagName("CarePlanList")[0].ChildNodes;
-
-                                if (xmlTagName.Count > 0)
+                                if (ICPtobacco_CodesList.IndexOf(s) > -1)
                                 {
-                                    for (int j = 0; j < xmlTagName.Count; j++)
-                                    {
-                                        if (Convert.ToUInt64(xmlTagName[j].Attributes.GetNamedItem("Encounter_ID").Value) == ClientSession.EncounterId && xmlTagName[j].Attributes.GetNamedItem("Care_Name").Value == "Screening Tests" && xmlTagName[j].Attributes.GetNamedItem("Care_Name_Value").Value == "Preventive Care and Screening: Tobacco Use: Screening and Cessation Intervention" && xmlTagName[j].Attributes.GetNamedItem("Snomed_Code").Value.Trim() != "")
-                                        {
-                                            string TagName = xmlTagName[j].Name;
-                                            XmlSerializer xmlserializer = new XmlSerializer(typeof(CarePlan));
-                                            CarePlan care_plan = xmlserializer.Deserialize(new XmlNodeReader(xmlTagName[j])) as CarePlan;
-                                            IEnumerable<PropertyInfo> propInfo = null;
-                                            if (care_plan != null)
-                                            {
-                                                propInfo = from obji in ((CarePlan)care_plan).GetType().GetProperties() select obji;
-
-                                                for (int i = 0; i < xmlTagName[j].Attributes.Count; i++)
-                                                {
-                                                    XmlNode nodevalue = xmlTagName[j].Attributes[i];
-                                                    {
-                                                        foreach (PropertyInfo property in propInfo)
-                                                        {
-                                                            if (property.Name == nodevalue.Name)
-                                                            {
-                                                                if (property.PropertyType.Name.ToUpper() == "UINT64")
-                                                                    property.SetValue(care_plan, Convert.ToUInt64(nodevalue.Value), null);
-                                                                else if (property.PropertyType.Name.ToUpper() == "STRING")
-                                                                    property.SetValue(care_plan, Convert.ToString(nodevalue.Value), null);
-                                                                else if (property.PropertyType.Name.ToUpper() == "DATETIME")
-                                                                    property.SetValue(care_plan, Convert.ToDateTime(nodevalue.Value), null);
-                                                                else if (property.PropertyType.Name.ToUpper() == "INT32")
-                                                                    property.SetValue(care_plan, Convert.ToInt32(nodevalue.Value), null);
-                                                                else if (property.PropertyType.Name.ToUpper() == "DECIMAL")
-                                                                    property.SetValue(care_plan, Convert.ToDecimal(nodevalue.Value), null);
-                                                                else
-                                                                    property.SetValue(care_plan, nodevalue.Value, null);
-                                                            }
-                                                        }
-                                                    }
-                                                }
-                                                ICPtobacco_CodesList = care_plan.Snomed_Code.ToString().Split(',');
-                                                foreach (string s in CPT_ICPDelcode)
-                                                {
-                                                    if (ICPtobacco_CodesList.IndexOf(s) > -1)
-                                                    {
-                                                        tobacco_CarePlan = care_plan;
-                                                    }
-                                                }
-                                            }
-                                        }
-                                    }
+                                    tobacco_CarePlan = lstcareplan[0];
                                 }
                             }
                         }
-                        fs.Close();
-                        fs.Dispose();
+                        // ImmDTO.Immunization = lstimm.Where(a => !CPT_ImmDelcode.Contains(a.Procedure_Code)).ToList<Immunization>();
+
                     }
                 }
+                //string FileName_Enc = "Encounter" + "_" + ClientSession.EncounterId + ".xml";
+                // string strXmlFilePath_Enc = Path.Combine(System.Configuration.ConfigurationSettings.AppSettings["XMLPath"], FileName_Enc);
+                //if (File.Exists(strXmlFilePath_Enc) == true)
+                //{
+                //    XmlDocument itemDoc = new XmlDocument();
+                //    XmlTextReader XmlText = new XmlTextReader(strXmlFilePath_Enc);
+                //    XmlNodeList xmlTagName = null;
+                //    //itemDoc.Load(XmlText);
+                //    using (FileStream fs = new FileStream(strXmlFilePath_Enc, FileMode.Open, FileAccess.Read, FileShare.Read))
+                //    {
+                //        itemDoc.Load(fs);
+
+                //        XmlText.Close();
+                //        if (itemDoc.GetElementsByTagName("CarePlanList") != null)
+                //        {
+                //            if (itemDoc.GetElementsByTagName("CarePlanList").Count > 0)
+                //            {
+                //                xmlTagName = itemDoc.GetElementsByTagName("CarePlanList")[0].ChildNodes;
+
+                //                if (xmlTagName.Count > 0)
+                //                {
+                //                    for (int j = 0; j < xmlTagName.Count; j++)
+                //                    {
+                //                        if (Convert.ToUInt64(xmlTagName[j].Attributes.GetNamedItem("Encounter_ID").Value) == ClientSession.EncounterId && xmlTagName[j].Attributes.GetNamedItem("Care_Name").Value == "Screening Tests" && xmlTagName[j].Attributes.GetNamedItem("Care_Name_Value").Value == "Preventive Care and Screening: Tobacco Use: Screening and Cessation Intervention" && xmlTagName[j].Attributes.GetNamedItem("Snomed_Code").Value.Trim() != "")
+                //                        {
+                //                            string TagName = xmlTagName[j].Name;
+                //                            XmlSerializer xmlserializer = new XmlSerializer(typeof(CarePlan));
+                //                            CarePlan care_plan = xmlserializer.Deserialize(new XmlNodeReader(xmlTagName[j])) as CarePlan;
+                //                            IEnumerable<PropertyInfo> propInfo = null;
+                //                            if (care_plan != null)
+                //                            {
+                //                                propInfo = from obji in ((CarePlan)care_plan).GetType().GetProperties() select obji;
+
+                //                                for (int i = 0; i < xmlTagName[j].Attributes.Count; i++)
+                //                                {
+                //                                    XmlNode nodevalue = xmlTagName[j].Attributes[i];
+                //                                    {
+                //                                        foreach (PropertyInfo property in propInfo)
+                //                                        {
+                //                                            if (property.Name == nodevalue.Name)
+                //                                            {
+                //                                                if (property.PropertyType.Name.ToUpper() == "UINT64")
+                //                                                    property.SetValue(care_plan, Convert.ToUInt64(nodevalue.Value), null);
+                //                                                else if (property.PropertyType.Name.ToUpper() == "STRING")
+                //                                                    property.SetValue(care_plan, Convert.ToString(nodevalue.Value), null);
+                //                                                else if (property.PropertyType.Name.ToUpper() == "DATETIME")
+                //                                                    property.SetValue(care_plan, Convert.ToDateTime(nodevalue.Value), null);
+                //                                                else if (property.PropertyType.Name.ToUpper() == "INT32")
+                //                                                    property.SetValue(care_plan, Convert.ToInt32(nodevalue.Value), null);
+                //                                                else if (property.PropertyType.Name.ToUpper() == "DECIMAL")
+                //                                                    property.SetValue(care_plan, Convert.ToDecimal(nodevalue.Value), null);
+                //                                                else
+                //                                                    property.SetValue(care_plan, nodevalue.Value, null);
+                //                                            }
+                //                                        }
+                //                                    }
+                //                                }
+                //                                ICPtobacco_CodesList = care_plan.Snomed_Code.ToString().Split(',');
+                //                                foreach (string s in CPT_ICPDelcode)
+                //                                {
+                //                                    if (ICPtobacco_CodesList.IndexOf(s) > -1)
+                //                                    {
+                //                                        tobacco_CarePlan = care_plan;
+                //                                    }
+                //                                }
+                //                            }
+                //                        }
+                //                    }
+                //                }
+                //            }
+                //        }
+                //        fs.Close();
+                //        fs.Dispose();
+                //    }
+                //}
 
                 if (tobacco_CarePlan != null && Convert.ToString(tobacco_CarePlan.Id) != "0")
                 {
@@ -1796,148 +1933,148 @@ namespace Acurus.Capella.UI.WebServices
                     }
                 }
             }
+        }
+        #endregion
+    
 
-            #endregion
+    [WebMethod(EnableSession = true)]
+    [ScriptMethod(ResponseFormat = ResponseFormat.Json)]
+    public string SearchICDDescrptionAuthText(string text)
+    {
+        if (ClientSession.UserName == string.Empty)
+        {
+            HttpContext.Current.Response.StatusCode = 999;
+            HttpContext.Current.Response.Status = "999 Session Expired";
+            HttpContext.Current.Response.StatusDescription = "frmSessionExpired.aspx";
+            return "Session Expired";
+        }
+        ProcedureCodeLibraryManager objProcedureCodeLibraryMngr = new ProcedureCodeLibraryManager();
+        string data = string.Empty;
+        string type = string.Empty;
+        string CPTType = string.Empty;
+        if (text != string.Empty)
+        {
+            data = text.Split('|')[0];
+            type = text.Split('|')[1];
+        }
+        string sTodate = ClientSession.FillEncounterandWFObject.EncRecord.Date_of_Service.ToString("yyyy-MM-dd");
+
+        if (sTodate == "0001-01-01")
+            sTodate = DateTime.Now.ToString("yyyy-MM-dd");
+
+        string[] ResultDescpList = objProcedureCodeLibraryMngr.GetCPTDescriptionList(data, type, sTodate).ToArray();
+        var jsonString = JsonConvert.SerializeObject(ResultDescpList);
+        return jsonString;
+    }
+
+    [WebMethod(EnableSession = true)]
+    public string GetFormviewCPT(string sFormviewCPT)
+    {
+        if (ClientSession.UserName == string.Empty)
+        {
+            HttpContext.Current.Response.StatusCode = 999;
+            HttpContext.Current.Response.Status = "999 Session Expired";
+            HttpContext.Current.Response.StatusDescription = "frmSessionExpired.aspx";
+            return "Session Expired";
+        }
+        IList<ProcedureCodeLibrary> ProcedureList = new List<ProcedureCodeLibrary>();
+        string sProcedureList = string.Empty;
+        string json = string.Empty;
+        if (sFormviewCPT != string.Empty)
+        {
+            var Record1 = (from b in sFormviewCPT.Split('|').ToArray() where !ProcedureList.Any(a => a.Procedure_Code == b.Split('~')[0]) select b).ToList();
+            if (Record1.Count > 0)
+            {
+                var ResultRecord1 = Record1.Select(a => new { CPTCode = a.Split('~')[0], CPTDesc = a.Split('~')[1].Replace('$', '\"'), btnDelete = "Resources/Delete-Blue.png", Units = "1", CPTCheck = "6", Order = a.Split('~')[2] });
+                json = new JavaScriptSerializer().Serialize(ResultRecord1);
+            }
         }
 
-        [WebMethod(EnableSession = true)]
-        [ScriptMethod(ResponseFormat = ResponseFormat.Json)]
-        public string SearchICDDescrptionAuthText(string text)
+        return "{\"ListofCPTs\" :" + json + "}";
+    }
+
+    public Boolean CheckGcodes(IList<EandMCodingICD> eandmICDList, IList<EAndMCoding> EandMCodingList)
+
+    {
+        bool IsGcodePresent = false; ;
+        bool bGCodeCheck = true; ;
+        bool IsICDPresent = false;
+        IDictionary<string, IList<string>> CPTICD = new Dictionary<string, IList<string>>();
+        string sE_And_M_CPT_And_ICD = System.Configuration.ConfigurationSettings.AppSettings["E_And_M_CPT_And_ICD"].ToString();
+        string sPlan = "";// System.Configuration.ConfigurationSettings.AppSettings["Primary_Plan"].ToString();
+        if (sE_And_M_CPT_And_ICD != "")
         {
-            if (ClientSession.UserName == string.Empty)
+            string[] sVal = sE_And_M_CPT_And_ICD.Split('$');
+            if (sVal.Count() > 0)
             {
-                HttpContext.Current.Response.StatusCode = 999;
-                HttpContext.Current.Response.Status = "999 Session Expired";
-                HttpContext.Current.Response.StatusDescription = "frmSessionExpired.aspx";
-                return "Session Expired";
-            }
-            ProcedureCodeLibraryManager objProcedureCodeLibraryMngr = new ProcedureCodeLibraryManager();
-            string data = string.Empty;
-            string type = string.Empty;
-            string CPTType = string.Empty;
-            if (text != string.Empty)
-            {
-                data = text.Split('|')[0];
-                type = text.Split('|')[1];
-            }
-            string sTodate = ClientSession.FillEncounterandWFObject.EncRecord.Date_of_Service.ToString("yyyy-MM-dd");
-
-            if (sTodate == "0001-01-01")
-                sTodate = DateTime.Now.ToString("yyyy-MM-dd");
-
-            string[] ResultDescpList = objProcedureCodeLibraryMngr.GetCPTDescriptionList(data, type, sTodate).ToArray();
-            var jsonString = JsonConvert.SerializeObject(ResultDescpList);
-            return jsonString;
-        }
-
-        [WebMethod(EnableSession = true)]
-        public string GetFormviewCPT(string sFormviewCPT)
-        {
-            if (ClientSession.UserName == string.Empty)
-            {
-                HttpContext.Current.Response.StatusCode = 999;
-                HttpContext.Current.Response.Status = "999 Session Expired";
-                HttpContext.Current.Response.StatusDescription = "frmSessionExpired.aspx";
-                return "Session Expired";
-            }
-            IList<ProcedureCodeLibrary> ProcedureList = new List<ProcedureCodeLibrary>();
-            string sProcedureList = string.Empty;
-            string json = string.Empty;
-            if (sFormviewCPT != string.Empty)
-            {
-                var Record1 = (from b in sFormviewCPT.Split('|').ToArray() where !ProcedureList.Any(a => a.Procedure_Code == b.Split('~')[0]) select b).ToList();
-                if (Record1.Count > 0)
+                for (int i = 0; i < sVal.Count(); i++)
                 {
-                    var ResultRecord1 = Record1.Select(a => new { CPTCode = a.Split('~')[0], CPTDesc = a.Split('~')[1].Replace('$', '\"'), btnDelete = "Resources/Delete-Blue.png", Units = "1", CPTCheck = "6", Order = a.Split('~')[2] });
-                    json = new JavaScriptSerializer().Serialize(ResultRecord1);
+                    CPTICD.Add(sVal[i].Split('|')[0].ToString(), sVal[i].Split('|').Skip(1).ToList());
                 }
             }
-
-            return "{\"ListofCPTs\" :" + json + "}";
         }
+        var GcodeList = from g in EandMCodingList where (CPTICD.Any(c => g.Procedure_Code.Contains(c.Key))) select new { ID = g.Id, Procedure_Code = g.Procedure_Code };
 
-        public Boolean CheckGcodes(IList<EandMCodingICD> eandmICDList, IList<EAndMCoding> EandMCodingList)
+        var GcodeList_New = from g in EandMCodingList where (CPTICD.Any(c => g.Procedure_Code.Contains(c.Key))) select g.Procedure_Code;
 
+        var Procedure_code = CPTICD.Where(a => GcodeList_New.Any(b => b.ToString() == a.Key)).Select(r => r);
+        //End
+
+        //var GcodeList = from g in objMoveVerifyDTO.EandMCodingList where (g.Procedure_Code == "G0438" || g.Procedure_Code == "G0439") select g.Id;
+        //if (GcodeList_New.Count()==0)
+        //{
+        //    objMoveVerifyDTO.CPT = CPTICD.Select(p => p.Key).ToList<string>();
+        //}
+        IList<string> ilstICD = new List<string>();
+        IList<string> GcodeCheckList = new List<string>();
+
+        if (GcodeList.Count() > 0)
         {
-            bool IsGcodePresent = false; ;
-            bool bGCodeCheck = true; ;
-            bool IsICDPresent = false;
-            IDictionary<string, IList<string>> CPTICD = new Dictionary<string, IList<string>>();
-            string sE_And_M_CPT_And_ICD = System.Configuration.ConfigurationSettings.AppSettings["E_And_M_CPT_And_ICD"].ToString();
-            string sPlan = "";// System.Configuration.ConfigurationSettings.AppSettings["Primary_Plan"].ToString();
-            if (sE_And_M_CPT_And_ICD != "")
+            IsGcodePresent = true;
+            for (int i = 0; i < GcodeList.Count(); i++)
             {
-                string[] sVal = sE_And_M_CPT_And_ICD.Split('$');
-                if (sVal.Count() > 0)
+                //eandmICDList = emICDMngr.EandMcodingList(Convert.ToUInt32(GcodeList.ElementAt(i)));
+
+                if (eandmICDList.Count > 0)
                 {
-                    for (int i = 0; i < sVal.Count(); i++)
+                    // GcodeCheckList.Add(eandmICDList.Any(a => a.ICD == "V70.0").ToString());
+                    //GcodeCheckList.Add(eandmICDList.Any(a => a.ICD == "Z00.00").ToString());
+                    //GcodeCheckList.Add(eandmICDList.Any(a => CPTICD.Any(z => z.Value.Contains(a.ICD))).ToString());
+                    GcodeCheckList.Add(eandmICDList.Any(a => Procedure_code.Any(z => z.Key == (GcodeList.ElementAt(i).Procedure_Code) && z.Value.Contains(a.ICD.Trim()))).ToString());
+                    if (GcodeCheckList[i].ToString().ToUpper() == "FALSE")
                     {
-                        CPTICD.Add(sVal[i].Split('|')[0].ToString(), sVal[i].Split('|').Skip(1).ToList());
-                    }
-                }
-            }
-            var GcodeList = from g in EandMCodingList where (CPTICD.Any(c => g.Procedure_Code.Contains(c.Key))) select new { ID = g.Id, Procedure_Code = g.Procedure_Code };
+                        //var icd = string.Join(" or ", (Procedure_code.ElementAt(i).Value).Select(g => g.ToString()).ToArray());
+                        var test = (from r in Procedure_code
+                                    where r.Key == GcodeList.ElementAt(i).Procedure_Code
 
-            var GcodeList_New = from g in EandMCodingList where (CPTICD.Any(c => g.Procedure_Code.Contains(c.Key))) select g.Procedure_Code;
+                                    select r.Value).ToArray();
 
-            var Procedure_code = CPTICD.Where(a => GcodeList_New.Any(b => b.ToString() == a.Key)).Select(r => r);
-            //End
 
-            //var GcodeList = from g in objMoveVerifyDTO.EandMCodingList where (g.Procedure_Code == "G0438" || g.Procedure_Code == "G0439") select g.Id;
-            //if (GcodeList_New.Count()==0)
-            //{
-            //    objMoveVerifyDTO.CPT = CPTICD.Select(p => p.Key).ToList<string>();
-            //}
-            IList<string> ilstICD = new List<string>();
-            IList<string> GcodeCheckList = new List<string>();
-
-            if (GcodeList.Count() > 0)
-            {
-                IsGcodePresent = true;
-                for (int i = 0; i < GcodeList.Count(); i++)
-                {
-                    //eandmICDList = emICDMngr.EandMcodingList(Convert.ToUInt32(GcodeList.ElementAt(i)));
-
-                    if (eandmICDList.Count > 0)
-                    {
-                        // GcodeCheckList.Add(eandmICDList.Any(a => a.ICD == "V70.0").ToString());
-                        //GcodeCheckList.Add(eandmICDList.Any(a => a.ICD == "Z00.00").ToString());
-                        //GcodeCheckList.Add(eandmICDList.Any(a => CPTICD.Any(z => z.Value.Contains(a.ICD))).ToString());
-                        GcodeCheckList.Add(eandmICDList.Any(a => Procedure_code.Any(z => z.Key == (GcodeList.ElementAt(i).Procedure_Code) && z.Value.Contains(a.ICD.Trim()))).ToString());
-                        if (GcodeCheckList[i].ToString().ToUpper() == "FALSE")
+                        if (test.Count() > 0)
                         {
-                            //var icd = string.Join(" or ", (Procedure_code.ElementAt(i).Value).Select(g => g.ToString()).ToArray());
-                            var test = (from r in Procedure_code
-                                        where r.Key == GcodeList.ElementAt(i).Procedure_Code
-
-                                        select r.Value).ToArray();
-
-
-                            if (test.Count() > 0)
-                            {
-                                var icd = string.Join(" or ", test[0].Select(g => g.ToString()).ToArray());
-                                ilstICD.Add(icd.ToString() + '$' + GcodeList.ElementAt(i).Procedure_Code);
-                            }
+                            var icd = string.Join(" or ", test[0].Select(g => g.ToString()).ToArray());
+                            ilstICD.Add(icd.ToString() + '$' + GcodeList.ElementAt(i).Procedure_Code);
                         }
                     }
-
                 }
 
-                if (GcodeCheckList.Count > 0)
-                {
-                    IsICDPresent = GcodeCheckList.Contains("False") == true ? false : true;
-                }
-
-                if (Convert.ToBoolean(IsGcodePresent) == true && Convert.ToBoolean(IsICDPresent) == false)
-                {
-                    bGCodeCheck = false;
-                }
-                else
-                {
-                    bGCodeCheck = true;
-                }
             }
-            return bGCodeCheck;
+
+            if (GcodeCheckList.Count > 0)
+            {
+                IsICDPresent = GcodeCheckList.Contains("False") == true ? false : true;
+            }
+
+            if (Convert.ToBoolean(IsGcodePresent) == true && Convert.ToBoolean(IsICDPresent) == false)
+            {
+                bGCodeCheck = false;
+            }
+            else
+            {
+                bGCodeCheck = true;
+            }
         }
+        return bGCodeCheck;
     }
+}
 }
