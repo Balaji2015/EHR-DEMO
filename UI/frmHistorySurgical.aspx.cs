@@ -806,7 +806,7 @@ namespace Acurus.Capella.UI
                                 objSurgicalHistoryDTO = (SurgicalHistoryDTO)Session["SurgicalHistoryDTO"];
                         }
                     }
-                        if (ClientSession.PatientPaneList != null && ClientSession.PatientPaneList.Count > 0 && (ClientSession.PatientPaneList[0]).Birth_Date != null)
+                        if (objSurgicalHistoryDTO != null && ClientSession.PatientPaneList != null && ClientSession.PatientPaneList.Count > 0 && (ClientSession.PatientPaneList[0]).Birth_Date != null)
                         {
                             objSurgicalHistoryDTO.PatientDOB = ClientSession.PatientPaneList[0].Birth_Date;
                         }
