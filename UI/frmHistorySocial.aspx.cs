@@ -105,14 +105,16 @@ namespace Acurus.Capella.UI
                                 {
                                     for (int i = 0; i < ((List<object>)ilstHSBlobFinal[0]).Count; i++)
                                     {
-                                        SocialHistory objSocHis = new SocialHistory();
-                                        objSocHis.Social_Info = "Marital Status";
-                                        objSocHis.Value = ((Human)((List<object>)ilstHSBlobFinal[0])[i]).Marital_Status;//itemDoc.GetElementsByTagName("Human")[0].Attributes["Marital_Status"].Value;
-                                        objSocHis.Is_Present = "Y";
-                                        SocialHistoryDetails.Add(objSocHis);                                                                               
+                                        if (((Human)((List<object>)ilstHSBlobFinal[0])[i]).Marital_Status != "")
+                                        {
+                                            SocialHistory objSocHis = new SocialHistory();
+                                            objSocHis.Social_Info = "Marital Status";
+                                            objSocHis.Value = ((Human)((List<object>)ilstHSBlobFinal[0])[i]).Marital_Status;//itemDoc.GetElementsByTagName("Human")[0].Attributes["Marital_Status"].Value;
+                                            objSocHis.Is_Present = "Y";
+                                            SocialHistoryDetails.Add(objSocHis);
+                                        }                                        
                                     }
                                 }
-
                             }
 
                             #endregion
@@ -169,14 +171,16 @@ namespace Acurus.Capella.UI
                             {
                                 for (int i = 0; i < ((List<object>)ilstHSBlobFinal[0]).Count; i++)
                                 {
-                                    
-                                    SocialHistory objSocHis = new SocialHistory();
-                                    objSocHis.Social_Info = "Marital Status";
-                                    objSocHis.Value = ((Human)((List<object>)ilstHSBlobFinal[0])[i]).Marital_Status;//itemDoc.GetElementsByTagName("Human")[0].Attributes["Marital_Status"].Value;
-                                    objSocHis.Is_Present = "Y";
-                                    SocialHistoryDetails.Add(objSocHis);
-                                    chkShowAll.Checked = true;
-                                    bCheckUnsaved = true;
+                                    if (((Human)((List<object>)ilstHSBlobFinal[0])[i]).Marital_Status != "")
+                                    {
+                                        SocialHistory objSocHis = new SocialHistory();
+                                        objSocHis.Social_Info = "Marital Status";
+                                        objSocHis.Value = ((Human)((List<object>)ilstHSBlobFinal[0])[i]).Marital_Status;//itemDoc.GetElementsByTagName("Human")[0].Attributes["Marital_Status"].Value;
+                                        objSocHis.Is_Present = "Y";
+                                        SocialHistoryDetails.Add(objSocHis);
+                                        chkShowAll.Checked = true;
+                                        bCheckUnsaved = true;
+                                    }
 
                                     //SocialHistoryDetails.Add((SocialHistory)((List<object>)ilstHSBlobFinal[0])[i]);
                                 }

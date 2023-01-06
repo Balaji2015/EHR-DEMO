@@ -891,13 +891,20 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
                         }
                         if (IsPastMedicalHistory && IsProblemList && IsGeneralNotes)
                         {
-                            trans.Commit();
+                            //trans.Commit();
                            // XMLObj.itemDoc.Save(XMLObj.strXmlFilePath);
                             int trycount = 0;
                         trytosaveagain:
                             try
                             {
-                                XMLObj.itemDoc.Save(XMLObj.strXmlFilePath);
+                                #region "Code comitted by balaji.TJ 2023-01-06"
+                                // XMLObj.itemDoc.Save(XMLObj.strXmlFilePath);
+                                #endregion
+                                #region "Code Modified by balaji.TJ 2023-01-06"
+                                WriteBlob(HumanId, XMLObj.itemDoc, MySession, SavePastMedicalList, UpdatePastMedicalList, DeletePastMedicalList, XMLObj, false);
+                                #endregion
+
+
                             }
                             catch (Exception xmlexcep)
                             {
@@ -951,6 +958,7 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
                                     goto trytosaveagain;
                                 }
                             }
+                            trans.Commit();
                         }
                         else
                         {

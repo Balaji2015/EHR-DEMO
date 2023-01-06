@@ -89,78 +89,107 @@ namespace Acurus.Capella.UI.WebServices
             string PFSHvalue = string.Empty;
             IList<Encounter> enclst = new List<Encounter>();
             SecurityServiceUtility SecurityService = new SecurityServiceUtility();
-            IList<string> PFSH_tab_to_disable = SecurityService.GetListTabtoDisable("frmPFSH");
+            IList<string> PFSH_tab_to_disable = SecurityService.GetListTabtoDisable("frmPFSH");            
             string Source_of_info = string.Empty;
             string PFSHVerified = string.Empty;
             string OthersVAl = string.Empty;
             if (OpeningFrom == "Queue")
-            {
-                string FileName = "Encounter" + "_" + ClientSession.EncounterId + ".xml";
-                string strXmlFilePath = Path.Combine(System.Configuration.ConfigurationSettings.AppSettings["XMLPath"], FileName);
-                string FileNamenew = string.Empty;
-                string strXmlFilePathmew = string.Empty;
-
-                if (File.Exists(strXmlFilePath) == true)
+            {                
+                #region "Modified by balaji.TJ  - 2023-01-05" 
+                IList<string> ilstPastMHisList = new List<string>();
+                ilstPastMHisList.Add("EncounterList");
+                
+                IList<object> ilstPastMHBlobFinal = new List<object>();
+                ilstPastMHBlobFinal = UtilityManager.ReadBlob(ClientSession.EncounterId, ilstPastMHisList);
+                if (ilstPastMHBlobFinal != null && ilstPastMHBlobFinal.Count > 0)
                 {
-                    XmlDocument itemDoc = new XmlDocument();
-                    XmlTextReader XmlText = new XmlTextReader(strXmlFilePath);
-                    //itemDoc.Load(XmlText);
-                    using (FileStream fs = new FileStream(strXmlFilePath, FileMode.Open, FileAccess.Read, FileShare.Read))
+                    if (ilstPastMHBlobFinal[0] != null && ((IList<object>)ilstPastMHBlobFinal[0]).Count > 0)
                     {
-                        itemDoc.Load(fs);
-
-                        XmlText.Close();
-                        if (itemDoc.GetElementsByTagName("EncounterList")[0] != null)
+                        for (int i = 0; i < ((IList<object>)ilstPastMHBlobFinal[0]).Count; i++)
                         {
-                           
-                            XmlNodeList xmlTagName = itemDoc.GetElementsByTagName("EncounterList")[0].ChildNodes;
-                            if (xmlTagName.Count > 0)
-                            {
-                                Source_of_info = itemDoc.GetElementsByTagName("EncounterList")[0].ChildNodes[0].Attributes["Source_Of_Information"].Value.Trim();
-                                if (itemDoc.GetElementsByTagName("EncounterList")[0].ChildNodes[0].Attributes["Is_PFSH_Verified"].Value.Trim() == "Y" && ClientSession.bPFSHVerified)
-                                    PFSHVerified = "Y";
-                                else
-                                    PFSHVerified = "N";
-                                OthersVAl = itemDoc.GetElementsByTagName("EncounterList")[0].ChildNodes[0].Attributes["If_Source_Of_Information_Others"].Value;
-                                //string TagName = xmlTagName[0].Name;
-                                //XmlSerializer xmlserializer = new XmlSerializer(typeof(Encounter));
-                                //Encounter Encounter = xmlserializer.Deserialize(new XmlNodeReader(xmlTagName[0])) as Encounter;
-                                //IEnumerable<PropertyInfo> propInfo = null;
-                                //propInfo = from obji in ((Encounter)Encounter).GetType().GetProperties() select obji;
-                                //for (int i = 0; i < xmlTagName[0].Attributes.Count; i++)
-                                //{
-                                //    XmlNode nodevalue = xmlTagName[0].Attributes[i];
-                                //    {
-                                //        if (propInfo != null)
-                                //        {
-                                //            foreach (PropertyInfo property in propInfo)
-                                //            {
-                                //                if (property.Name == nodevalue.Name)
-                                //                {
-                                //                    if (property.PropertyType.Name.ToUpper() == "UINT64")
-                                //                        property.SetValue(Encounter, Convert.ToUInt64(nodevalue.Value), null);
-                                //                    else if (property.PropertyType.Name.ToUpper() == "STRING")
-                                //                        property.SetValue(Encounter, Convert.ToString(nodevalue.Value), null);
-                                //                    else if (property.PropertyType.Name.ToUpper() == "DATETIME")
-                                //                        property.SetValue(Encounter, Convert.ToDateTime(nodevalue.Value), null);
-                                //                    else if (property.PropertyType.Name.ToUpper() == "INT32")
-                                //                        property.SetValue(Encounter, Convert.ToInt32(nodevalue.Value), null);
-                                //                    else
-                                //                        property.SetValue(Encounter, nodevalue.Value, null);
-                                //                }
-                                //            }
-                                //        }
-                                //    }
+                            Source_of_info =((Encounter)((List<object>)ilstPastMHBlobFinal[0])[i]).Source_Of_Information.Trim();
+                            if(((Encounter)((List<object>)ilstPastMHBlobFinal[0])[i]).Is_PFSH_Verified.Trim() == "Y" && ClientSession.bPFSHVerified)
+                                PFSHVerified = "Y";
+                            else
+                                PFSHVerified = "N";
+                            OthersVAl = ((Encounter)((List<object>)ilstPastMHBlobFinal[0])[i]).If_Source_Of_Information_Others.Trim();
 
-                                //}
-                                //enclst.Add(Encounter);
-                            }
                         }
-                        fs.Close();
-                        fs.Dispose();
                     }
                 }
-              //  HttpContext.Current.Session["Encnter"] = enclst;
+
+                #endregion
+
+                #region "Comment by balaji.TJ  - 2023-01-05"
+              
+                //string FileName = "Encounter" + "_" + ClientSession.EncounterId + ".xml";
+                //string strXmlFilePath = Path.Combine(System.Configuration.ConfigurationSettings.AppSettings["XMLPath"], FileName);
+                //string FileNamenew = string.Empty;
+                //string strXmlFilePathmew = string.Empty;
+
+                //if (File.Exists(strXmlFilePath) == true)
+                //{
+                //    XmlDocument itemDoc = new XmlDocument();
+                //    XmlTextReader XmlText = new XmlTextReader(strXmlFilePath);
+                //    //itemDoc.Load(XmlText);
+                //    using (FileStream fs = new FileStream(strXmlFilePath, FileMode.Open, FileAccess.Read, FileShare.Read))
+                //    {
+                //        itemDoc.Load(fs);
+
+                //        XmlText.Close();
+                //        if (itemDoc.GetElementsByTagName("EncounterList")[0] != null)
+                //        {
+                           
+                //            XmlNodeList xmlTagName = itemDoc.GetElementsByTagName("EncounterList")[0].ChildNodes;
+                //            if (xmlTagName.Count > 0)
+                //            {
+                //                Source_of_info = itemDoc.GetElementsByTagName("EncounterList")[0].ChildNodes[0].Attributes["Source_Of_Information"].Value.Trim();
+                //                if (itemDoc.GetElementsByTagName("EncounterList")[0].ChildNodes[0].Attributes["Is_PFSH_Verified"].Value.Trim() == "Y" && ClientSession.bPFSHVerified)
+                //                    PFSHVerified = "Y";
+                //                else
+                //                    PFSHVerified = "N";
+                //                OthersVAl = itemDoc.GetElementsByTagName("EncounterList")[0].ChildNodes[0].Attributes["If_Source_Of_Information_Others"].Value;
+                //                //string TagName = xmlTagName[0].Name;
+                //                //XmlSerializer xmlserializer = new XmlSerializer(typeof(Encounter));
+                //                //Encounter Encounter = xmlserializer.Deserialize(new XmlNodeReader(xmlTagName[0])) as Encounter;
+                //                //IEnumerable<PropertyInfo> propInfo = null;
+                //                //propInfo = from obji in ((Encounter)Encounter).GetType().GetProperties() select obji;
+                //                //for (int i = 0; i < xmlTagName[0].Attributes.Count; i++)
+                //                //{
+                //                //    XmlNode nodevalue = xmlTagName[0].Attributes[i];
+                //                //    {
+                //                //        if (propInfo != null)
+                //                //        {
+                //                //            foreach (PropertyInfo property in propInfo)
+                //                //            {
+                //                //                if (property.Name == nodevalue.Name)
+                //                //                {
+                //                //                    if (property.PropertyType.Name.ToUpper() == "UINT64")
+                //                //                        property.SetValue(Encounter, Convert.ToUInt64(nodevalue.Value), null);
+                //                //                    else if (property.PropertyType.Name.ToUpper() == "STRING")
+                //                //                        property.SetValue(Encounter, Convert.ToString(nodevalue.Value), null);
+                //                //                    else if (property.PropertyType.Name.ToUpper() == "DATETIME")
+                //                //                        property.SetValue(Encounter, Convert.ToDateTime(nodevalue.Value), null);
+                //                //                    else if (property.PropertyType.Name.ToUpper() == "INT32")
+                //                //                        property.SetValue(Encounter, Convert.ToInt32(nodevalue.Value), null);
+                //                //                    else
+                //                //                        property.SetValue(Encounter, nodevalue.Value, null);
+                //                //                }
+                //                //            }
+                //                //        }
+                //                //    }
+
+                //                //}
+                //                //enclst.Add(Encounter);
+                //            }
+                //        }
+                //        fs.Close();
+                //        fs.Dispose();
+                //    }
+                //}
+
+                #endregion
+                //  HttpContext.Current.Session["Encnter"] = enclst;
                 //string Source_of_info = string.Empty;
                 //string PFSHVerified = string.Empty;
                 //string OthersVAl = string.Empty;
@@ -193,10 +222,10 @@ namespace Acurus.Capella.UI.WebServices
             }
             if (OpeningFrom == "Menu")
             {
-                string FileName = "Human" + "_" + HumanID + ".xml";
-                string strXmlFilePath = Path.Combine(System.Configuration.ConfigurationManager.AppSettings["XMLPath"], FileName);
-                string FileNamenew = string.Empty;
-                string strXmlFilePathmew = string.Empty;
+                //string FileName = "Human" + "_" + HumanID + ".xml";
+                //string strXmlFilePath = Path.Combine(System.Configuration.ConfigurationManager.AppSettings["XMLPath"], FileName);
+                //string FileNamenew = string.Empty;
+                //string strXmlFilePathmew = string.Empty;
                 /*
                 if (File.Exists(strXmlFilePath) == true)
                 {
@@ -297,10 +326,10 @@ namespace Acurus.Capella.UI.WebServices
             IList<Encounter> enclst = new List<Encounter>();
             SecurityServiceUtility SecurityService = new SecurityServiceUtility();
             IList<string> PFSH_tab_to_disable = SecurityService.GetListTabtoDisable("frmPFSH");
-            string FileName = "Human" + "_" + HumanID + ".xml";
-            string strXmlFilePath = Path.Combine(System.Configuration.ConfigurationManager.AppSettings["XMLPath"], FileName);
-            string FileNamenew = string.Empty;
-            string strXmlFilePathmew = string.Empty;
+            //string FileName = "Human" + "_" + HumanID + ".xml";
+            //string strXmlFilePath = Path.Combine(System.Configuration.ConfigurationManager.AppSettings["XMLPath"], FileName);
+            //string FileNamenew = string.Empty;
+            //string strXmlFilePathmew = string.Empty;
 
             if (PhysicianID != string.Empty)
                 ClientSession.PhysicianId = Convert.ToUInt32(PhysicianID);
@@ -413,164 +442,246 @@ namespace Acurus.Capella.UI.WebServices
             }
             IList<PastMedicalHistory> PastMedicalHistorylst = new List<PastMedicalHistory>();
             GeneralNotes GeneralNoteslst = new GeneralNotes();
-            // string FileName = "Base_XML" + "_" + "Encounter" + "_" + ClientSession.EncounterId + ".xml";
-            string FileName = "Human" + "_" + ClientSession.HumanId + ".xml";
-            string strXmlFilePath = Path.Combine(System.Configuration.ConfigurationSettings.AppSettings["XMLPath"], FileName);
-            string FileNamenew = string.Empty;
-            string strXmlFilePathmew = string.Empty;
+
+            #region "Modified by balaji.TJ  - 2023-01-05" 
             if (savedLst != null && savedLst.Count > 0 && savedLst[0].Encounter_Id != ClientSession.EncounterId)//&& savedLst[0].Human_ID!=ClientSession.HumanId
             {
                 savedLst.Clear();
                 savedNotesLst.Clear();
             }
-            if (File.Exists(strXmlFilePath) == true)
+
+            IList<string> ilstPastMHisList = new List<string>();
+            ilstPastMHisList.Add("PastMedicalHistoryList");
+            ilstPastMHisList.Add("GeneralNotesPastMedicalHistoryList");
+            IList<PastMedicalHistory> lstPMHAllEnc = new List<PastMedicalHistory>();
+            IList<GeneralNotes> lstGenNotesAllEnc = new List<GeneralNotes>();
+            IList<object> ilstPastMHBlobFinal = new List<object>();
+            ilstPastMHBlobFinal = UtilityManager.ReadBlob(ClientSession.HumanId, ilstPastMHisList);
+            if (ilstPastMHBlobFinal != null && ilstPastMHBlobFinal.Count > 0)
             {
-                XmlDocument itemDoc = new XmlDocument();
-                XmlTextReader XmlText = new XmlTextReader(strXmlFilePath);
-                // itemDoc.Load(XmlText);
-                using (FileStream fs = new FileStream(strXmlFilePath, FileMode.Open, FileAccess.Read, FileShare.Read))
+                if (ilstPastMHBlobFinal[0] != null && ((IList<object>)ilstPastMHBlobFinal[0]).Count > 0)
                 {
-                    itemDoc.Load(fs);
-                    XmlText.Close();
-                    IList<PastMedicalHistory> lstPMHAllEnc = new List<PastMedicalHistory>();
-                    if (itemDoc.GetElementsByTagName("PastMedicalHistoryList")[0] != null)
+                    for (int i = 0; i < ((IList<object>)ilstPastMHBlobFinal[0]).Count; i++)
                     {
-
-                        XmlNodeList xmlTagName = itemDoc.GetElementsByTagName("PastMedicalHistoryList")[0].ChildNodes;
-                        if (xmlTagName.Count > 0)
-                        {
-                            for (int j = 0; j < xmlTagName.Count; j++)
-                            {
-                                string TagName = xmlTagName[j].Name;
-                                XmlSerializer xmlserializer = new XmlSerializer(typeof(PastMedicalHistory));
-                                PastMedicalHistory PastMedicalHistory = xmlserializer.Deserialize(new XmlNodeReader(xmlTagName[j])) as PastMedicalHistory;
-                                IEnumerable<PropertyInfo> propInfo = null;
-                                propInfo = from obji in ((PastMedicalHistory)PastMedicalHistory).GetType().GetProperties() select obji;
-
-                                for (int i = 0; i < xmlTagName[j].Attributes.Count; i++)
-                                {
-                                    XmlNode nodevalue = xmlTagName[j].Attributes[i];
-                                    {
-                                        foreach (PropertyInfo property in propInfo)
-                                        {
-                                            if (propInfo != null)
-                                            {
-                                                if (property.Name == nodevalue.Name)
-                                                {
-                                                    if (property.PropertyType.Name.ToUpper() == "UINT64")
-                                                        property.SetValue(PastMedicalHistory, Convert.ToUInt64(nodevalue.Value), null);
-                                                    else if (property.PropertyType.Name.ToUpper() == "STRING")
-                                                        property.SetValue(PastMedicalHistory, Convert.ToString(nodevalue.Value), null);
-                                                    else if (property.PropertyType.Name.ToUpper() == "DATETIME")
-                                                        property.SetValue(PastMedicalHistory, Convert.ToDateTime(nodevalue.Value), null);
-                                                    else if (property.PropertyType.Name.ToUpper() == "INT32")
-                                                        property.SetValue(PastMedicalHistory, Convert.ToInt32(nodevalue.Value), null);
-                                                    else
-                                                        property.SetValue(PastMedicalHistory, nodevalue.Value, null);
-                                                }
-                                            }
-                                        }
-                                    }
-
-                                }
-                                lstPMHAllEnc.Add(PastMedicalHistory);
-                            }
-                        }
+                        lstPMHAllEnc.Add((PastMedicalHistory)((IList<object>)ilstPastMHBlobFinal[0])[i]);
                     }
-                    if (lstPMHAllEnc != null && lstPMHAllEnc.Count > 0)
+                }
+                if (ilstPastMHBlobFinal[1] != null && ((IList<object>)ilstPastMHBlobFinal[1]).Count > 0)
+                {
+                    for (int i = 0; i < ((IList<object>)ilstPastMHBlobFinal[1]).Count; i++)
                     {
-                        IList<PastMedicalHistory> lstPMHCurrEnc = new List<PastMedicalHistory>();
-                        lstPMHCurrEnc = (from item in lstPMHAllEnc where item.Encounter_Id == ClientSession.EncounterId select item).ToList<PastMedicalHistory>();
-                        if (lstPMHCurrEnc != null && lstPMHCurrEnc.Count > 0)
-                        {
-                            PastMedicalHistorylst = lstPMHCurrEnc;
-                        }
-                        else
-                        {
-                            ulong maxEncId = 0;
-                            IList<ulong> lstEncId = (from item in lstPMHAllEnc select item.Encounter_Id).Distinct().ToList<ulong>();
-                            if (lstEncId.Count > 0)
-                                maxEncId = (lstEncId.Min() < ClientSession.EncounterId) ? lstEncId.Min() : 0;
-                            foreach (ulong item in lstEncId)
-                                if (item > maxEncId && item < ClientSession.EncounterId)
-                                    maxEncId = item;
-                            lstPMHCurrEnc = (from item in lstPMHAllEnc where item.Encounter_Id == maxEncId select item).ToList<PastMedicalHistory>();
-                            PastMedicalHistorylst = lstPMHCurrEnc;
-                        }
+                        lstGenNotesAllEnc.Add((GeneralNotes)((IList<object>)ilstPastMHBlobFinal[1])[i]); 
                     }
-                    else
-                        PastMedicalHistorylst = lstPMHAllEnc;
-                    IList<GeneralNotes> lstGenNotesAllEnc = new List<GeneralNotes>();
-                    if (itemDoc.GetElementsByTagName("GeneralNotesPastMedicalHistoryList")[0] != null)
-                    {
-                        XmlNodeList xmlTagNameGnrl = itemDoc.GetElementsByTagName("GeneralNotesPastMedicalHistoryList")[0].ChildNodes;
-
-                        if (xmlTagNameGnrl.Count > 0)
-                        {
-                            for (int j = 0; j < xmlTagNameGnrl.Count; j++)
-                            {
-                                string TagName = xmlTagNameGnrl[j].Name;
-                                XmlSerializer xmlserializer = new XmlSerializer(typeof(GeneralNotes));
-                                GeneralNotes generalnotes = xmlserializer.Deserialize(new XmlNodeReader(xmlTagNameGnrl[j])) as GeneralNotes;
-                                IEnumerable<PropertyInfo> propInfo = null;
-                                propInfo = from obji in ((GeneralNotes)generalnotes).GetType().GetProperties() select obji;
-
-                                for (int i = 0; i < xmlTagNameGnrl[j].Attributes.Count; i++)
-                                {
-                                    XmlNode nodevalue = xmlTagNameGnrl[j].Attributes[i];
-                                    {
-                                        foreach (PropertyInfo property in propInfo)
-                                        {
-                                            if (propInfo != null)
-                                            {
-                                                if (property.Name == nodevalue.Name)
-                                                {
-                                                    if (property.PropertyType.Name.ToUpper() == "UINT64")
-                                                        property.SetValue(generalnotes, Convert.ToUInt64(nodevalue.Value), null);
-                                                    else if (property.PropertyType.Name.ToUpper() == "STRING")
-                                                        property.SetValue(generalnotes, Convert.ToString(nodevalue.Value), null);
-                                                    else if (property.PropertyType.Name.ToUpper() == "DATETIME")
-                                                        property.SetValue(generalnotes, Convert.ToDateTime(nodevalue.Value), null);
-                                                    else if (property.PropertyType.Name.ToUpper() == "INT32")
-                                                        property.SetValue(generalnotes, Convert.ToInt32(nodevalue.Value), null);
-                                                    else
-                                                        property.SetValue(generalnotes, nodevalue.Value, null);
-                                                }
-                                            }
-                                        }
-                                    }
-
-                                }
-                                //GeneralNoteslst = generalnotes;
-                                lstGenNotesAllEnc.Add(generalnotes);
-                            }
-                        }
-                    }
-
-                    if (lstGenNotesAllEnc != null && lstGenNotesAllEnc.Count > 0)
-                    {
-                        IList<GeneralNotes> lstGenCurrEnc = new List<GeneralNotes>();
-                        lstGenCurrEnc = (from item in lstGenNotesAllEnc where item.Encounter_ID == ClientSession.EncounterId select item).ToList<GeneralNotes>();
-                        if (lstGenCurrEnc != null && lstGenCurrEnc.Count > 0)
-                            GeneralNoteslst = lstGenCurrEnc[0];
-                        else
-                        {
-                            ulong maxEncId = 0;
-                            IList<ulong> lstEncId = (from item in lstGenNotesAllEnc select item.Encounter_ID).Distinct().ToList<ulong>();
-                            if (lstEncId.Count > 0)
-                                maxEncId = (lstEncId.Min() < ClientSession.EncounterId) ? lstEncId.Min() : 0;
-                            foreach (ulong item in lstEncId)
-                                if (item > maxEncId && item < ClientSession.EncounterId)
-                                    maxEncId = item;
-                            lstGenCurrEnc = (from item in lstGenNotesAllEnc where item.Encounter_ID == maxEncId select item).ToList<GeneralNotes>();
-                            if (lstGenCurrEnc != null && lstGenCurrEnc.Count > 0)
-                                GeneralNoteslst = lstGenCurrEnc[0];
-                        }
-                    }
-                    fs.Close();
-                    fs.Dispose();
                 }
             }
+            if (lstPMHAllEnc != null && lstPMHAllEnc.Count > 0)
+            {
+                IList<PastMedicalHistory> lstPMHCurrEnc = new List<PastMedicalHistory>();
+                lstPMHCurrEnc = (from item in lstPMHAllEnc where item.Encounter_Id == ClientSession.EncounterId select item).ToList<PastMedicalHistory>();
+                if (lstPMHCurrEnc != null && lstPMHCurrEnc.Count > 0)
+                {
+                    PastMedicalHistorylst = lstPMHCurrEnc;
+                }
+                else
+                {
+                    ulong maxEncId = 0;
+                    IList<ulong> lstEncId = (from item in lstPMHAllEnc select item.Encounter_Id).Distinct().ToList<ulong>();
+                    if (lstEncId.Count > 0)
+                        maxEncId = (lstEncId.Min() < ClientSession.EncounterId) ? lstEncId.Min() : 0;
+                    foreach (ulong item in lstEncId)
+                        if (item > maxEncId && item < ClientSession.EncounterId)
+                            maxEncId = item;
+                    lstPMHCurrEnc = (from item in lstPMHAllEnc where item.Encounter_Id == maxEncId select item).ToList<PastMedicalHistory>();
+                    PastMedicalHistorylst = lstPMHCurrEnc;
+                }
+            }
+            else
+                PastMedicalHistorylst = lstPMHAllEnc;
+
+            if (lstGenNotesAllEnc != null && lstGenNotesAllEnc.Count > 0)
+            {
+                IList<GeneralNotes> lstGenCurrEnc = new List<GeneralNotes>();
+                lstGenCurrEnc = (from item in lstGenNotesAllEnc where item.Encounter_ID == ClientSession.EncounterId select item).ToList<GeneralNotes>();
+                if (lstGenCurrEnc != null && lstGenCurrEnc.Count > 0)
+                    GeneralNoteslst = lstGenCurrEnc[0];
+                else
+                {
+                    ulong maxEncId = 0;
+                    IList<ulong> lstEncId = (from item in lstGenNotesAllEnc select item.Encounter_ID).Distinct().ToList<ulong>();
+                    if (lstEncId.Count > 0)
+                        maxEncId = (lstEncId.Min() < ClientSession.EncounterId) ? lstEncId.Min() : 0;
+                    foreach (ulong item in lstEncId)
+                        if (item > maxEncId && item < ClientSession.EncounterId)
+                            maxEncId = item;
+                    lstGenCurrEnc = (from item in lstGenNotesAllEnc where item.Encounter_ID == maxEncId select item).ToList<GeneralNotes>();
+                    if (lstGenCurrEnc != null && lstGenCurrEnc.Count > 0)
+                        GeneralNoteslst = lstGenCurrEnc[0];
+                }
+            }
+
+            #endregion
+
+            #region "Comment by balaji.TJ  - 2023-01-05"
+
+            //// string FileName = "Base_XML" + "_" + "Encounter" + "_" + ClientSession.EncounterId + ".xml";
+            //string FileName = "Human" + "_" + ClientSession.HumanId + ".xml";
+            //string strXmlFilePath = Path.Combine(System.Configuration.ConfigurationSettings.AppSettings["XMLPath"], FileName);
+            //string FileNamenew = string.Empty;
+            //string strXmlFilePathmew = string.Empty;
+            //if (savedLst != null && savedLst.Count > 0 && savedLst[0].Encounter_Id != ClientSession.EncounterId)//&& savedLst[0].Human_ID!=ClientSession.HumanId
+            //{
+            //    savedLst.Clear();
+            //    savedNotesLst.Clear();
+            //}
+            //if (File.Exists(strXmlFilePath) == true)
+            //{
+            //    XmlDocument itemDoc = new XmlDocument();
+            //    XmlTextReader XmlText = new XmlTextReader(strXmlFilePath);
+            //    // itemDoc.Load(XmlText);
+            //    using (FileStream fs = new FileStream(strXmlFilePath, FileMode.Open, FileAccess.Read, FileShare.Read))
+            //    {
+            //        itemDoc.Load(fs);
+            //        XmlText.Close();
+            //        IList<PastMedicalHistory> lstPMHAllEnc = new List<PastMedicalHistory>();
+            //        if (itemDoc.GetElementsByTagName("PastMedicalHistoryList")[0] != null)
+            //        {
+
+            //            XmlNodeList xmlTagName = itemDoc.GetElementsByTagName("PastMedicalHistoryList")[0].ChildNodes;
+            //            if (xmlTagName.Count > 0)
+            //            {
+            //                for (int j = 0; j < xmlTagName.Count; j++)
+            //                {
+            //                    string TagName = xmlTagName[j].Name;
+            //                    XmlSerializer xmlserializer = new XmlSerializer(typeof(PastMedicalHistory));
+            //                    PastMedicalHistory PastMedicalHistory = xmlserializer.Deserialize(new XmlNodeReader(xmlTagName[j])) as PastMedicalHistory;
+            //                    IEnumerable<PropertyInfo> propInfo = null;
+            //                    propInfo = from obji in ((PastMedicalHistory)PastMedicalHistory).GetType().GetProperties() select obji;
+
+            //                    for (int i = 0; i < xmlTagName[j].Attributes.Count; i++)
+            //                    {
+            //                        XmlNode nodevalue = xmlTagName[j].Attributes[i];
+            //                        {
+            //                            foreach (PropertyInfo property in propInfo)
+            //                            {
+            //                                if (propInfo != null)
+            //                                {
+            //                                    if (property.Name == nodevalue.Name)
+            //                                    {
+            //                                        if (property.PropertyType.Name.ToUpper() == "UINT64")
+            //                                            property.SetValue(PastMedicalHistory, Convert.ToUInt64(nodevalue.Value), null);
+            //                                        else if (property.PropertyType.Name.ToUpper() == "STRING")
+            //                                            property.SetValue(PastMedicalHistory, Convert.ToString(nodevalue.Value), null);
+            //                                        else if (property.PropertyType.Name.ToUpper() == "DATETIME")
+            //                                            property.SetValue(PastMedicalHistory, Convert.ToDateTime(nodevalue.Value), null);
+            //                                        else if (property.PropertyType.Name.ToUpper() == "INT32")
+            //                                            property.SetValue(PastMedicalHistory, Convert.ToInt32(nodevalue.Value), null);
+            //                                        else
+            //                                            property.SetValue(PastMedicalHistory, nodevalue.Value, null);
+            //                                    }
+            //                                }
+            //                            }
+            //                        }
+
+            //                    }
+            //                    lstPMHAllEnc.Add(PastMedicalHistory);
+            //                }
+            //            }
+            //        }
+            //        if (lstPMHAllEnc != null && lstPMHAllEnc.Count > 0)
+            //        {
+            //            IList<PastMedicalHistory> lstPMHCurrEnc = new List<PastMedicalHistory>();
+            //            lstPMHCurrEnc = (from item in lstPMHAllEnc where item.Encounter_Id == ClientSession.EncounterId select item).ToList<PastMedicalHistory>();
+            //            if (lstPMHCurrEnc != null && lstPMHCurrEnc.Count > 0)
+            //            {
+            //                PastMedicalHistorylst = lstPMHCurrEnc;
+            //            }
+            //            else
+            //            {
+            //                ulong maxEncId = 0;
+            //                IList<ulong> lstEncId = (from item in lstPMHAllEnc select item.Encounter_Id).Distinct().ToList<ulong>();
+            //                if (lstEncId.Count > 0)
+            //                    maxEncId = (lstEncId.Min() < ClientSession.EncounterId) ? lstEncId.Min() : 0;
+            //                foreach (ulong item in lstEncId)
+            //                    if (item > maxEncId && item < ClientSession.EncounterId)
+            //                        maxEncId = item;
+            //                lstPMHCurrEnc = (from item in lstPMHAllEnc where item.Encounter_Id == maxEncId select item).ToList<PastMedicalHistory>();
+            //                PastMedicalHistorylst = lstPMHCurrEnc;
+            //            }
+            //        }
+            //        else
+            //            PastMedicalHistorylst = lstPMHAllEnc;
+            //        IList<GeneralNotes> lstGenNotesAllEnc = new List<GeneralNotes>();
+            //        if (itemDoc.GetElementsByTagName("GeneralNotesPastMedicalHistoryList")[0] != null)
+            //        {
+            //            XmlNodeList xmlTagNameGnrl = itemDoc.GetElementsByTagName("GeneralNotesPastMedicalHistoryList")[0].ChildNodes;
+
+            //            if (xmlTagNameGnrl.Count > 0)
+            //            {
+            //                for (int j = 0; j < xmlTagNameGnrl.Count; j++)
+            //                {
+            //                    string TagName = xmlTagNameGnrl[j].Name;
+            //                    XmlSerializer xmlserializer = new XmlSerializer(typeof(GeneralNotes));
+            //                    GeneralNotes generalnotes = xmlserializer.Deserialize(new XmlNodeReader(xmlTagNameGnrl[j])) as GeneralNotes;
+            //                    IEnumerable<PropertyInfo> propInfo = null;
+            //                    propInfo = from obji in ((GeneralNotes)generalnotes).GetType().GetProperties() select obji;
+
+            //                    for (int i = 0; i < xmlTagNameGnrl[j].Attributes.Count; i++)
+            //                    {
+            //                        XmlNode nodevalue = xmlTagNameGnrl[j].Attributes[i];
+            //                        {
+            //                            foreach (PropertyInfo property in propInfo)
+            //                            {
+            //                                if (propInfo != null)
+            //                                {
+            //                                    if (property.Name == nodevalue.Name)
+            //                                    {
+            //                                        if (property.PropertyType.Name.ToUpper() == "UINT64")
+            //                                            property.SetValue(generalnotes, Convert.ToUInt64(nodevalue.Value), null);
+            //                                        else if (property.PropertyType.Name.ToUpper() == "STRING")
+            //                                            property.SetValue(generalnotes, Convert.ToString(nodevalue.Value), null);
+            //                                        else if (property.PropertyType.Name.ToUpper() == "DATETIME")
+            //                                            property.SetValue(generalnotes, Convert.ToDateTime(nodevalue.Value), null);
+            //                                        else if (property.PropertyType.Name.ToUpper() == "INT32")
+            //                                            property.SetValue(generalnotes, Convert.ToInt32(nodevalue.Value), null);
+            //                                        else
+            //                                            property.SetValue(generalnotes, nodevalue.Value, null);
+            //                                    }
+            //                                }
+            //                            }
+            //                        }
+
+            //                    }
+            //                    //GeneralNoteslst = generalnotes;
+            //                    lstGenNotesAllEnc.Add(generalnotes);
+            //                }
+            //            }
+            //        }
+
+            //        if (lstGenNotesAllEnc != null && lstGenNotesAllEnc.Count > 0)
+            //        {
+            //            IList<GeneralNotes> lstGenCurrEnc = new List<GeneralNotes>();
+            //            lstGenCurrEnc = (from item in lstGenNotesAllEnc where item.Encounter_ID == ClientSession.EncounterId select item).ToList<GeneralNotes>();
+            //            if (lstGenCurrEnc != null && lstGenCurrEnc.Count > 0)
+            //                GeneralNoteslst = lstGenCurrEnc[0];
+            //            else
+            //            {
+            //                ulong maxEncId = 0;
+            //                IList<ulong> lstEncId = (from item in lstGenNotesAllEnc select item.Encounter_ID).Distinct().ToList<ulong>();
+            //                if (lstEncId.Count > 0)
+            //                    maxEncId = (lstEncId.Min() < ClientSession.EncounterId) ? lstEncId.Min() : 0;
+            //                foreach (ulong item in lstEncId)
+            //                    if (item > maxEncId && item < ClientSession.EncounterId)
+            //                        maxEncId = item;
+            //                lstGenCurrEnc = (from item in lstGenNotesAllEnc where item.Encounter_ID == maxEncId select item).ToList<GeneralNotes>();
+            //                if (lstGenCurrEnc != null && lstGenCurrEnc.Count > 0)
+            //                    GeneralNoteslst = lstGenCurrEnc[0];
+            //            }
+            //        }
+            //        fs.Close();
+            //        fs.Dispose();
+            //    }
+            //}
+            #endregion
             if ((PastMedicalHistorylst != null && PastMedicalHistorylst.Count != 0) || (GeneralNoteslst != null))
             {
                 var objResult = new object[2];
@@ -939,310 +1050,409 @@ namespace Acurus.Capella.UI.WebServices
             IList<PastMedicalHistoryMaster> lstPastHisMaster = new List<PastMedicalHistoryMaster>();
             IList<PastMedicalHistoryMaster> lstPastHisMasterTemp = new List<PastMedicalHistoryMaster>();
             GeneralNotes GeneralNoteslst = new GeneralNotes();
-            string FileName = "Human" + "_" + ClientSession.HumanId + ".xml";
-            string strXmlFilePath = Path.Combine(System.Configuration.ConfigurationManager.AppSettings["XMLPath"], FileName);
 
-            if (File.Exists(strXmlFilePath) == true)
+            #region "Modified by balaji.TJ  - 2023-01-05" 
+            
+            IList<string> ilstPastMHisList = new List<string>();
+            ilstPastMHisList.Add("PastMedicalHistoryList");
+            ilstPastMHisList.Add("ProblemListList");
+            ilstPastMHisList.Add("GeneralNotesPastMedicalHistoryList"); 
+            ilstPastMHisList.Add("PastMedicalHistoryMasterList");
+
+            IList<PastMedicalHistory> lstPMHAllEnc = new List<PastMedicalHistory>();
+            IList<ProblemList> lstAllProblemList = new List<ProblemList>();
+            IList<GeneralNotes> lstGenNotesAllEnc = new List<GeneralNotes>();
+            IList<object> ilstPastMHBlobFinal = new List<object>();
+            ilstPastMHBlobFinal = UtilityManager.ReadBlob(ClientSession.HumanId, ilstPastMHisList);
+
+            if (ilstPastMHBlobFinal != null && ilstPastMHBlobFinal.Count > 0)
             {
-                XmlDocument itemDoc = new XmlDocument();
-                XmlTextReader XmlText = new XmlTextReader(strXmlFilePath);
-                // itemDoc.Load(XmlText);
-                using (FileStream fs = new FileStream(strXmlFilePath, FileMode.Open, FileAccess.Read, FileShare.Read))
+                if (ilstPastMHBlobFinal[0] != null && ((IList<object>)ilstPastMHBlobFinal[0]).Count > 0)
                 {
-                    itemDoc.Load(fs);
-
-                    XmlText.Close();
-                    IList<PastMedicalHistory> lstPMHAllEnc = new List<PastMedicalHistory>();
-                    if (itemDoc.GetElementsByTagName("PastMedicalHistoryList")[0] != null)
+                    for (int i = 0; i < ((IList<object>)ilstPastMHBlobFinal[0]).Count; i++)
                     {
-                        PastMedicalHistory objPastMedicalHistory = new PastMedicalHistory();
-                        XmlNodeList xmlTagName = itemDoc.GetElementsByTagName("PastMedicalHistoryList")[0].ChildNodes;
-                        if (xmlTagName.Count > 0)
-                        {
-                            for (int j = 0; j < xmlTagName.Count; j++)
-                            {
-                                string TagName = xmlTagName[j].Name;
-                                XmlSerializer xmlserializer = new XmlSerializer(typeof(PastMedicalHistory));
-                                objPastMedicalHistory = xmlserializer.Deserialize(new XmlNodeReader(xmlTagName[j])) as PastMedicalHistory;
-                                IEnumerable<PropertyInfo> propInfo = null;
-                                propInfo = from obji in ((PastMedicalHistory)objPastMedicalHistory).GetType().GetProperties() select obji;
+                        lstPMHAllEnc.Add((PastMedicalHistory)((IList<object>)ilstPastMHBlobFinal[0])[i]);
+                    }
+                }
+                if (ilstPastMHBlobFinal[1] != null && ((IList<object>)ilstPastMHBlobFinal[1]).Count > 0)
+                {
+                    for (int i = 0; i < ((IList<object>)ilstPastMHBlobFinal[1]).Count; i++)
+                    {
+                        lstAllProblemList.Add((ProblemList)((IList<object>)ilstPastMHBlobFinal[1])[i]);
+                    }
+                }
+                HttpContext.Current.Session["ProblemList"] = lstAllProblemList;
 
-                                for (int i = 0; i < xmlTagName[j].Attributes.Count; i++)
-                                {
-                                    XmlNode nodevalue = xmlTagName[j].Attributes[i];
-                                    {
-                                        foreach (PropertyInfo property in propInfo)
-                                        {
-                                            if (propInfo != null)
-                                            {
-                                                if (property.Name == nodevalue.Name)
-                                                {
-                                                    if (property.PropertyType.Name.ToUpper() == "UINT64")
-                                                        property.SetValue(objPastMedicalHistory, Convert.ToUInt64(nodevalue.Value), null);
-                                                    else if (property.PropertyType.Name.ToUpper() == "STRING")
-                                                        property.SetValue(objPastMedicalHistory, Convert.ToString(nodevalue.Value), null);
-                                                    else if (property.PropertyType.Name.ToUpper() == "DATETIME")
-                                                        property.SetValue(objPastMedicalHistory, Convert.ToDateTime(nodevalue.Value), null);
-                                                    else if (property.PropertyType.Name.ToUpper() == "INT32")
-                                                        property.SetValue(objPastMedicalHistory, Convert.ToInt32(nodevalue.Value), null);
-                                                    else
-                                                        property.SetValue(objPastMedicalHistory, nodevalue.Value, null);
-                                                }
-                                            }
-                                        }
-                                    }
+                if (ilstPastMHBlobFinal[2] != null && ((IList<object>)ilstPastMHBlobFinal[2]).Count > 0)
+                {
+                    for (int i = 0; i < ((IList<object>)ilstPastMHBlobFinal[2]).Count; i++)
+                    {
+                        lstGenNotesAllEnc.Add((GeneralNotes)((IList<object>)ilstPastMHBlobFinal[2])[i]);
+                    }
+                }
 
-                                }
-                                lstPMHAllEnc.Add(objPastMedicalHistory);
-                            }
-
-                        }
+                if (ilstPastMHBlobFinal[3] != null && ((IList<object>)ilstPastMHBlobFinal[3]).Count > 0)
+                {
+                    for (int i = 0; i < ((IList<object>)ilstPastMHBlobFinal[3]).Count; i++)
+                    {
+                        lstPastHisMasterTemp.Add((PastMedicalHistoryMaster)((IList<object>)ilstPastMHBlobFinal[3])[i]);
                     }
 
-                    if (lstPMHAllEnc != null && lstPMHAllEnc.Count > 0)
+                    if (lstPastHisMasterTemp.Count > 0)
                     {
-                        IList<PastMedicalHistory> lstPMHCurrEnc = new List<PastMedicalHistory>();
-                        lstPMHCurrEnc = (from item in lstPMHAllEnc where item.Encounter_Id == ClientSession.EncounterId select item).ToList<PastMedicalHistory>();
-                        if (lstPMHCurrEnc != null && lstPMHCurrEnc.Count > 0)
-                            PastMedicalHistorylst = lstPMHCurrEnc;
-                        //Now its load from Master Table.V dont look the previous encounter from past medical history table
-                        //else
-                        //{
-                        //    ulong maxEncId = 0;
-                        //    IList<ulong> lstEncId = (from item in lstPMHAllEnc select item.Encounter_Id).Distinct().ToList<ulong>();
-                        //    if (lstEncId.Count > 0)
-                        //        maxEncId = (lstEncId.Min() < ClientSession.EncounterId) ? lstEncId.Min() : 0;
-                        //    foreach (ulong item in lstEncId)
-                        //        if (item > maxEncId && item < ClientSession.EncounterId)
-                        //            maxEncId = item;
-                        //    lstPMHCurrEnc = (from item in lstPMHAllEnc where item.Encounter_Id == maxEncId select item).ToList<PastMedicalHistory>();
-                        //    PastMedicalHistorylst = lstPMHCurrEnc;
-                        //}
+                        lstPastHisMaster = lstPastHisMasterTemp.Where(p => p.Is_Deleted == "N").ToList();
+                    }
+                    HttpContext.Current.Session["PastMedicalMaster"] = lstPastHisMaster;
+                }
+
+            }
+
+            if (lstPMHAllEnc != null && lstPMHAllEnc.Count > 0)
+            {
+                IList<PastMedicalHistory> lstPMHCurrEnc = new List<PastMedicalHistory>();
+                lstPMHCurrEnc = (from item in lstPMHAllEnc where item.Encounter_Id == ClientSession.EncounterId select item).ToList<PastMedicalHistory>();
+                if (lstPMHCurrEnc != null && lstPMHCurrEnc.Count > 0)
+                    PastMedicalHistorylst = lstPMHCurrEnc;                
+            }
+            else
+                PastMedicalHistorylst = lstPMHAllEnc;
+
+            if (lstGenNotesAllEnc != null && lstGenNotesAllEnc.Count > 0)
+            {
+                IList<GeneralNotes> lstGenCurrEnc = new List<GeneralNotes>();
+                if (ClientSession.EncounterId != 0)
+                {
+                    lstGenCurrEnc = (from item in lstGenNotesAllEnc where item.Encounter_ID == ClientSession.EncounterId select item).ToList<GeneralNotes>();
+                    if (lstGenCurrEnc != null && lstGenCurrEnc.Count > 0)
+                    {
+                        GeneralNoteslst = lstGenCurrEnc[0];
                     }
                     else
-                        PastMedicalHistorylst = lstPMHAllEnc;
-                    IList<ProblemList> lstAllProblemList = new List<ProblemList>();
-                    if (itemDoc.GetElementsByTagName("ProblemListList")[0] != null)
-                    {
-                        XmlNodeList xmlTagName = itemDoc.GetElementsByTagName("ProblemListList")[0].ChildNodes;
-                        if (xmlTagName.Count > 0)
+                    {   //For Git Id : 1162
+                        ulong maxEncId = 0;
+                        IList<ulong> lstEncId = (from item in lstGenNotesAllEnc select item.Encounter_ID).Distinct().ToList<ulong>();
+                        if (lstEncId.Count > 0)
+                            maxEncId = (lstEncId.Min() < ClientSession.EncounterId) ? lstEncId.Min() : 0;
+                        foreach (ulong item in lstEncId)
+                            if (item > maxEncId && item < ClientSession.EncounterId)
+                                maxEncId = item;
+                        lstGenCurrEnc = (from item in lstGenNotesAllEnc where item.Encounter_ID == maxEncId select item).ToList<GeneralNotes>();
+                        if (lstGenCurrEnc != null && lstGenCurrEnc.Count > 0)
                         {
-                            for (int j = 0; j < xmlTagName.Count; j++)
-                            {
-                                string TagName = xmlTagName[j].Name;
-                                XmlSerializer xmlserializer = new XmlSerializer(typeof(ProblemList));
-                                ProblemList PbList = xmlserializer.Deserialize(new XmlNodeReader(xmlTagName[j])) as ProblemList;
-                                IEnumerable<PropertyInfo> propInfo = null;
-                                propInfo = from obji in ((ProblemList)PbList).GetType().GetProperties() select obji;
-
-                                for (int i = 0; i < xmlTagName[j].Attributes.Count; i++)
-                                {
-                                    XmlNode nodevalue = xmlTagName[j].Attributes[i];
-                                    {
-                                        foreach (PropertyInfo property in propInfo)
-                                        {
-                                            if (propInfo != null)
-                                            {
-                                                if (property.Name == nodevalue.Name)
-                                                {
-                                                    if (property.PropertyType.Name.ToUpper() == "UINT64")
-                                                        property.SetValue(PbList, Convert.ToUInt64(nodevalue.Value), null);
-                                                    else if (property.PropertyType.Name.ToUpper() == "STRING")
-                                                        property.SetValue(PbList, Convert.ToString(nodevalue.Value), null);
-                                                    else if (property.PropertyType.Name.ToUpper() == "DATETIME")
-                                                        property.SetValue(PbList, Convert.ToDateTime(nodevalue.Value), null);
-                                                    else if (property.PropertyType.Name.ToUpper() == "INT32")
-                                                        property.SetValue(PbList, Convert.ToInt32(nodevalue.Value), null);
-                                                    else
-                                                        property.SetValue(PbList, nodevalue.Value, null);
-                                                }
-                                            }
-                                        }
-                                    }
-
-                                }
-                                //SavedProblemListlstAllProblemList.Add(PbList);
-                                lstAllProblemList.Add(PbList);
-                            }
+                            GeneralNoteslst = lstGenCurrEnc[0];
                         }
                     }
-
-                    //if (lstAllProblemList.Count > 0)
-                    //{
-                    HttpContext.Current.Session["ProblemList"] = lstAllProblemList;
-                    //}
-
-
-
-                    IList<GeneralNotes> lstGenNotesAllEnc = new List<GeneralNotes>();
-                    if (itemDoc.GetElementsByTagName("GeneralNotesPastMedicalHistoryList")[0] != null)
-                    {
-                        XmlNodeList xmlTagNameGnrl = itemDoc.GetElementsByTagName("GeneralNotesPastMedicalHistoryList")[0].ChildNodes;
-
-                        if (xmlTagNameGnrl.Count > 0)
-                        {
-                            for (int j = 0; j < xmlTagNameGnrl.Count; j++)
-                            {
-                                string TagName = xmlTagNameGnrl[j].Name;
-                                XmlSerializer xmlserializer = new XmlSerializer(typeof(GeneralNotes));
-                                GeneralNotes generalnotes = xmlserializer.Deserialize(new XmlNodeReader(xmlTagNameGnrl[j])) as GeneralNotes;
-                                IEnumerable<PropertyInfo> propInfo = null;
-                                propInfo = from obji in ((GeneralNotes)generalnotes).GetType().GetProperties() select obji;
-
-                                for (int i = 0; i < xmlTagNameGnrl[j].Attributes.Count; i++)
-                                {
-                                    XmlNode nodevalue = xmlTagNameGnrl[j].Attributes[i];
-                                    {
-                                        foreach (PropertyInfo property in propInfo)
-                                        {
-                                            if (propInfo != null)
-                                            {
-                                                if (property.Name == nodevalue.Name)
-                                                {
-                                                    if (property.PropertyType.Name.ToUpper() == "UINT64")
-                                                        property.SetValue(generalnotes, Convert.ToUInt64(nodevalue.Value), null);
-                                                    else if (property.PropertyType.Name.ToUpper() == "STRING")
-                                                        property.SetValue(generalnotes, Convert.ToString(nodevalue.Value), null);
-                                                    else if (property.PropertyType.Name.ToUpper() == "DATETIME")
-                                                        property.SetValue(generalnotes, Convert.ToDateTime(nodevalue.Value), null);
-                                                    else if (property.PropertyType.Name.ToUpper() == "INT32")
-                                                        property.SetValue(generalnotes, Convert.ToInt32(nodevalue.Value), null);
-                                                    else
-                                                        property.SetValue(generalnotes, nodevalue.Value, null);
-                                                }
-                                            }
-                                        }
-                                    }
-
-                                }
-                                lstGenNotesAllEnc.Add(generalnotes);
-                            }
-                        }
-                    }
-                    if (lstGenNotesAllEnc != null && lstGenNotesAllEnc.Count > 0)
-                    {
-                        IList<GeneralNotes> lstGenCurrEnc = new List<GeneralNotes>();
-                        if (ClientSession.EncounterId != 0)
-                        {
-                            lstGenCurrEnc = (from item in lstGenNotesAllEnc where item.Encounter_ID == ClientSession.EncounterId select item).ToList<GeneralNotes>();
-                            if (lstGenCurrEnc != null && lstGenCurrEnc.Count > 0)
-                            {
-                                GeneralNoteslst = lstGenCurrEnc[0];
-                            }
-                            else
-                            {   //For Git Id : 1162
-                                ulong maxEncId = 0;
-                                IList<ulong> lstEncId = (from item in lstGenNotesAllEnc select item.Encounter_ID).Distinct().ToList<ulong>();
-                                if (lstEncId.Count > 0)
-                                    maxEncId = (lstEncId.Min() < ClientSession.EncounterId) ? lstEncId.Min() : 0;
-                                foreach (ulong item in lstEncId)
-                                    if (item > maxEncId && item < ClientSession.EncounterId)
-                                        maxEncId = item;
-                                lstGenCurrEnc = (from item in lstGenNotesAllEnc where item.Encounter_ID == maxEncId select item).ToList<GeneralNotes>();
-                                if (lstGenCurrEnc != null && lstGenCurrEnc.Count > 0)
-                                {
-                                    GeneralNoteslst = lstGenCurrEnc[0];
-                                }
-                            }
-                        }
-                        //else
-                        //{
-                        //ulong maxEncId = 0;
-                        //IList<ulong> lstEncId = (from item in lstGenNotesAllEnc select item.Encounter_ID).Distinct().ToList<ulong>();
-                        //if (lstEncId.Count > 0)
-                        //    maxEncId = (lstEncId.Min() < ClientSession.EncounterId) ? lstEncId.Min() : 0;
-                        //foreach (ulong item in lstEncId)
-                        //    if (item > maxEncId && item < ClientSession.EncounterId)
-                        //        maxEncId = item;
-                        //lstGenCurrEnc = (from item in lstGenNotesAllEnc where item.Encounter_ID == maxEncId select item).ToList<GeneralNotes>();
-                        //if (lstGenCurrEnc != null && lstGenCurrEnc.Count > 0)
-                        //{
-                        //    GeneralNoteslst = lstGenCurrEnc[0];
-                        //}
-                        // }
-                    }
-
-                    //Master Table load
-                    if (itemDoc.GetElementsByTagName("PastMedicalHistoryMasterList")[0] != null)
-                    {
-                        XmlNodeList xmlTagName = itemDoc.GetElementsByTagName("PastMedicalHistoryMasterList")[0].ChildNodes;
-
-                        if (xmlTagName.Count > 0)
-                        {
-                            for (int j = 0; j < xmlTagName.Count; j++)
-                            {
-                                XmlSerializer xmlserializer = new XmlSerializer(typeof(PastMedicalHistoryMaster));
-                                PastMedicalHistoryMaster objHistory = xmlserializer.Deserialize(new XmlNodeReader(xmlTagName[j])) as PastMedicalHistoryMaster;
-
-                                IEnumerable<PropertyInfo> propInfo = null;
-                                propInfo = from obji in ((PastMedicalHistoryMaster)objHistory).GetType().GetProperties() select obji;
-
-                                for (int i = 0; i < xmlTagName[j].Attributes.Count; i++)
-                                {
-                                    XmlNode nodevalue = xmlTagName[j].Attributes[i];
-                                    {
-                                        if (propInfo != null && propInfo.Count() > 0)
-                                        {
-                                            foreach (PropertyInfo property in propInfo)
-                                            {
-                                                if (property.Name == nodevalue.Name)
-                                                {
-
-                                                    if (property.PropertyType.Name.ToUpper() == "UINT64")
-                                                        property.SetValue(objHistory, Convert.ToUInt64(nodevalue.Value), null);
-                                                    else if (property.PropertyType.Name.ToUpper() == "STRING")
-                                                        property.SetValue(objHistory, Convert.ToString(nodevalue.Value), null);
-                                                    else if (property.PropertyType.Name.ToUpper() == "DATETIME")
-                                                        property.SetValue(objHistory, Convert.ToDateTime(nodevalue.Value), null);
-                                                    else if (property.PropertyType.Name.ToUpper() == "INT32")
-                                                        property.SetValue(objHistory, Convert.ToInt32(nodevalue.Value), null);
-                                                    else
-                                                        property.SetValue(objHistory, nodevalue.Value, null);
-                                                }
-                                            }
-                                        }
-                                    }
-                                }
-                                lstPastHisMasterTemp.Add(objHistory);
-                            }
-                        }
-                        if (lstPastHisMasterTemp.Count > 0)
-                        {
-                            lstPastHisMaster = lstPastHisMasterTemp.Where(p => p.Is_Deleted == "N").ToList();
-
-
-                            //IList<PastMedicalHistory> PastMedicalHistorylstTemp = new List<PastMedicalHistory>();
-
-                            //if (lstPastHisMaster != null && lstPastHisMaster.Count() > 0)
-                            //{
-                            //    foreach (PastMedicalHistoryMaster objMaster in lstPastHisMaster)
-                            //    {
-                            //        PastMedicalHistory objtempFH = new PastMedicalHistory();
-                            //        objtempFH.Human_ID = objMaster.Human_ID;
-                            //        objtempFH.Past_Medical_Info = objMaster.Past_Medical_Info;
-                            //        objtempFH.From_Date = objMaster.From_Date;
-                            //        objtempFH.To_Date = objMaster.To_Date;
-                            //        objtempFH.Is_present = objMaster.Is_present;
-                            //        objtempFH.AHA_Question_ICD = objMaster.AHA_Question_ICD;
-                            //        objtempFH.Is_Mandatory = objMaster.Is_Mandatory;
-                            //        objtempFH.Notes = objMaster.Notes;
-                            //        objtempFH.Created_By = ClientSession.UserName;
-                            //        objtempFH.Created_Date_And_Time = UtilityManager.ConvertToUniversal(); ;
-                            //        objtempFH.Encounter_Id = ClientSession.EncounterId;
-                            //        PastMedicalHistorylstTemp.Add(objtempFH);
-                            //    }
-                            //    HttpContext.Current.Session["PastMedicalMaster"] = PastMedicalHistorylstTemp;
-
-                            //}
-
-                        }
-                        HttpContext.Current.Session["PastMedicalMaster"] = lstPastHisMaster;
-                    }
-                    fs.Close();
-                    fs.Dispose();
-
-                }
+                }               
             }
+            
+            #endregion
+
+            #region "code comment by balaji.TJ  - 2023-01-05" 
+            //string FileName = "Human" + "_" + ClientSession.HumanId + ".xml";
+            //string strXmlFilePath = Path.Combine(System.Configuration.ConfigurationManager.AppSettings["XMLPath"], FileName);
+
+            //if (File.Exists(strXmlFilePath) == true)
+            //{
+            //    XmlDocument itemDoc = new XmlDocument();
+            //    XmlTextReader XmlText = new XmlTextReader(strXmlFilePath);
+            //    // itemDoc.Load(XmlText);
+            //    using (FileStream fs = new FileStream(strXmlFilePath, FileMode.Open, FileAccess.Read, FileShare.Read))
+            //    {
+            //        itemDoc.Load(fs);
+
+            //        XmlText.Close();
+            //        IList<PastMedicalHistory> lstPMHAllEnc = new List<PastMedicalHistory>();
+            //        if (itemDoc.GetElementsByTagName("PastMedicalHistoryList")[0] != null)
+            //        {
+            //            PastMedicalHistory objPastMedicalHistory = new PastMedicalHistory();
+            //            XmlNodeList xmlTagName = itemDoc.GetElementsByTagName("PastMedicalHistoryList")[0].ChildNodes;
+            //            if (xmlTagName.Count > 0)
+            //            {
+            //                for (int j = 0; j < xmlTagName.Count; j++)
+            //                {
+            //                    string TagName = xmlTagName[j].Name;
+            //                    XmlSerializer xmlserializer = new XmlSerializer(typeof(PastMedicalHistory));
+            //                    objPastMedicalHistory = xmlserializer.Deserialize(new XmlNodeReader(xmlTagName[j])) as PastMedicalHistory;
+            //                    IEnumerable<PropertyInfo> propInfo = null;
+            //                    propInfo = from obji in ((PastMedicalHistory)objPastMedicalHistory).GetType().GetProperties() select obji;
+
+            //                    for (int i = 0; i < xmlTagName[j].Attributes.Count; i++)
+            //                    {
+            //                        XmlNode nodevalue = xmlTagName[j].Attributes[i];
+            //                        {
+            //                            foreach (PropertyInfo property in propInfo)
+            //                            {
+            //                                if (propInfo != null)
+            //                                {
+            //                                    if (property.Name == nodevalue.Name)
+            //                                    {
+            //                                        if (property.PropertyType.Name.ToUpper() == "UINT64")
+            //                                            property.SetValue(objPastMedicalHistory, Convert.ToUInt64(nodevalue.Value), null);
+            //                                        else if (property.PropertyType.Name.ToUpper() == "STRING")
+            //                                            property.SetValue(objPastMedicalHistory, Convert.ToString(nodevalue.Value), null);
+            //                                        else if (property.PropertyType.Name.ToUpper() == "DATETIME")
+            //                                            property.SetValue(objPastMedicalHistory, Convert.ToDateTime(nodevalue.Value), null);
+            //                                        else if (property.PropertyType.Name.ToUpper() == "INT32")
+            //                                            property.SetValue(objPastMedicalHistory, Convert.ToInt32(nodevalue.Value), null);
+            //                                        else
+            //                                            property.SetValue(objPastMedicalHistory, nodevalue.Value, null);
+            //                                    }
+            //                                }
+            //                            }
+            //                        }
+
+            //                    }
+            //                    lstPMHAllEnc.Add(objPastMedicalHistory);
+            //                }
+
+            //            }
+            //        }
+
+            //        if (lstPMHAllEnc != null && lstPMHAllEnc.Count > 0)
+            //        {
+            //            IList<PastMedicalHistory> lstPMHCurrEnc = new List<PastMedicalHistory>();
+            //            lstPMHCurrEnc = (from item in lstPMHAllEnc where item.Encounter_Id == ClientSession.EncounterId select item).ToList<PastMedicalHistory>();
+            //            if (lstPMHCurrEnc != null && lstPMHCurrEnc.Count > 0)
+            //                PastMedicalHistorylst = lstPMHCurrEnc;
+            //            //Now its load from Master Table.V dont look the previous encounter from past medical history table
+            //            //else
+            //            //{
+            //            //    ulong maxEncId = 0;
+            //            //    IList<ulong> lstEncId = (from item in lstPMHAllEnc select item.Encounter_Id).Distinct().ToList<ulong>();
+            //            //    if (lstEncId.Count > 0)
+            //            //        maxEncId = (lstEncId.Min() < ClientSession.EncounterId) ? lstEncId.Min() : 0;
+            //            //    foreach (ulong item in lstEncId)
+            //            //        if (item > maxEncId && item < ClientSession.EncounterId)
+            //            //            maxEncId = item;
+            //            //    lstPMHCurrEnc = (from item in lstPMHAllEnc where item.Encounter_Id == maxEncId select item).ToList<PastMedicalHistory>();
+            //            //    PastMedicalHistorylst = lstPMHCurrEnc;
+            //            //}
+            //        }
+            //        else
+            //            PastMedicalHistorylst = lstPMHAllEnc;
+            //        IList<ProblemList> lstAllProblemList = new List<ProblemList>();
+            //        if (itemDoc.GetElementsByTagName("ProblemListList")[0] != null)
+            //        {
+            //            XmlNodeList xmlTagName = itemDoc.GetElementsByTagName("ProblemListList")[0].ChildNodes;
+            //            if (xmlTagName.Count > 0)
+            //            {
+            //                for (int j = 0; j < xmlTagName.Count; j++)
+            //                {
+            //                    string TagName = xmlTagName[j].Name;
+            //                    XmlSerializer xmlserializer = new XmlSerializer(typeof(ProblemList));
+            //                    ProblemList PbList = xmlserializer.Deserialize(new XmlNodeReader(xmlTagName[j])) as ProblemList;
+            //                    IEnumerable<PropertyInfo> propInfo = null;
+            //                    propInfo = from obji in ((ProblemList)PbList).GetType().GetProperties() select obji;
+
+            //                    for (int i = 0; i < xmlTagName[j].Attributes.Count; i++)
+            //                    {
+            //                        XmlNode nodevalue = xmlTagName[j].Attributes[i];
+            //                        {
+            //                            foreach (PropertyInfo property in propInfo)
+            //                            {
+            //                                if (propInfo != null)
+            //                                {
+            //                                    if (property.Name == nodevalue.Name)
+            //                                    {
+            //                                        if (property.PropertyType.Name.ToUpper() == "UINT64")
+            //                                            property.SetValue(PbList, Convert.ToUInt64(nodevalue.Value), null);
+            //                                        else if (property.PropertyType.Name.ToUpper() == "STRING")
+            //                                            property.SetValue(PbList, Convert.ToString(nodevalue.Value), null);
+            //                                        else if (property.PropertyType.Name.ToUpper() == "DATETIME")
+            //                                            property.SetValue(PbList, Convert.ToDateTime(nodevalue.Value), null);
+            //                                        else if (property.PropertyType.Name.ToUpper() == "INT32")
+            //                                            property.SetValue(PbList, Convert.ToInt32(nodevalue.Value), null);
+            //                                        else
+            //                                            property.SetValue(PbList, nodevalue.Value, null);
+            //                                    }
+            //                                }
+            //                            }
+            //                        }
+
+            //                    }
+            //                    //SavedProblemListlstAllProblemList.Add(PbList);
+            //                    lstAllProblemList.Add(PbList);
+            //                }
+            //            }
+            //        }
+
+            //        //if (lstAllProblemList.Count > 0)
+            //        //{
+            //        HttpContext.Current.Session["ProblemList"] = lstAllProblemList;
+            //        //}
+
+
+
+            //        IList<GeneralNotes> lstGenNotesAllEnc = new List<GeneralNotes>();
+            //        if (itemDoc.GetElementsByTagName("GeneralNotesPastMedicalHistoryList")[0] != null)
+            //        {
+            //            XmlNodeList xmlTagNameGnrl = itemDoc.GetElementsByTagName("GeneralNotesPastMedicalHistoryList")[0].ChildNodes;
+
+            //            if (xmlTagNameGnrl.Count > 0)
+            //            {
+            //                for (int j = 0; j < xmlTagNameGnrl.Count; j++)
+            //                {
+            //                    string TagName = xmlTagNameGnrl[j].Name;
+            //                    XmlSerializer xmlserializer = new XmlSerializer(typeof(GeneralNotes));
+            //                    GeneralNotes generalnotes = xmlserializer.Deserialize(new XmlNodeReader(xmlTagNameGnrl[j])) as GeneralNotes;
+            //                    IEnumerable<PropertyInfo> propInfo = null;
+            //                    propInfo = from obji in ((GeneralNotes)generalnotes).GetType().GetProperties() select obji;
+
+            //                    for (int i = 0; i < xmlTagNameGnrl[j].Attributes.Count; i++)
+            //                    {
+            //                        XmlNode nodevalue = xmlTagNameGnrl[j].Attributes[i];
+            //                        {
+            //                            foreach (PropertyInfo property in propInfo)
+            //                            {
+            //                                if (propInfo != null)
+            //                                {
+            //                                    if (property.Name == nodevalue.Name)
+            //                                    {
+            //                                        if (property.PropertyType.Name.ToUpper() == "UINT64")
+            //                                            property.SetValue(generalnotes, Convert.ToUInt64(nodevalue.Value), null);
+            //                                        else if (property.PropertyType.Name.ToUpper() == "STRING")
+            //                                            property.SetValue(generalnotes, Convert.ToString(nodevalue.Value), null);
+            //                                        else if (property.PropertyType.Name.ToUpper() == "DATETIME")
+            //                                            property.SetValue(generalnotes, Convert.ToDateTime(nodevalue.Value), null);
+            //                                        else if (property.PropertyType.Name.ToUpper() == "INT32")
+            //                                            property.SetValue(generalnotes, Convert.ToInt32(nodevalue.Value), null);
+            //                                        else
+            //                                            property.SetValue(generalnotes, nodevalue.Value, null);
+            //                                    }
+            //                                }
+            //                            }
+            //                        }
+
+            //                    }
+            //                    lstGenNotesAllEnc.Add(generalnotes);
+            //                }
+            //            }
+            //        }
+            //        if (lstGenNotesAllEnc != null && lstGenNotesAllEnc.Count > 0)
+            //        {
+            //            IList<GeneralNotes> lstGenCurrEnc = new List<GeneralNotes>();
+            //            if (ClientSession.EncounterId != 0)
+            //            {
+            //                lstGenCurrEnc = (from item in lstGenNotesAllEnc where item.Encounter_ID == ClientSession.EncounterId select item).ToList<GeneralNotes>();
+            //                if (lstGenCurrEnc != null && lstGenCurrEnc.Count > 0)
+            //                {
+            //                    GeneralNoteslst = lstGenCurrEnc[0];
+            //                }
+            //                else
+            //                {   //For Git Id : 1162
+            //                    ulong maxEncId = 0;
+            //                    IList<ulong> lstEncId = (from item in lstGenNotesAllEnc select item.Encounter_ID).Distinct().ToList<ulong>();
+            //                    if (lstEncId.Count > 0)
+            //                        maxEncId = (lstEncId.Min() < ClientSession.EncounterId) ? lstEncId.Min() : 0;
+            //                    foreach (ulong item in lstEncId)
+            //                        if (item > maxEncId && item < ClientSession.EncounterId)
+            //                            maxEncId = item;
+            //                    lstGenCurrEnc = (from item in lstGenNotesAllEnc where item.Encounter_ID == maxEncId select item).ToList<GeneralNotes>();
+            //                    if (lstGenCurrEnc != null && lstGenCurrEnc.Count > 0)
+            //                    {
+            //                        GeneralNoteslst = lstGenCurrEnc[0];
+            //                    }
+            //                }
+            //            }
+            //            //else
+            //            //{
+            //            //ulong maxEncId = 0;
+            //            //IList<ulong> lstEncId = (from item in lstGenNotesAllEnc select item.Encounter_ID).Distinct().ToList<ulong>();
+            //            //if (lstEncId.Count > 0)
+            //            //    maxEncId = (lstEncId.Min() < ClientSession.EncounterId) ? lstEncId.Min() : 0;
+            //            //foreach (ulong item in lstEncId)
+            //            //    if (item > maxEncId && item < ClientSession.EncounterId)
+            //            //        maxEncId = item;
+            //            //lstGenCurrEnc = (from item in lstGenNotesAllEnc where item.Encounter_ID == maxEncId select item).ToList<GeneralNotes>();
+            //            //if (lstGenCurrEnc != null && lstGenCurrEnc.Count > 0)
+            //            //{
+            //            //    GeneralNoteslst = lstGenCurrEnc[0];
+            //            //}
+            //            // }
+            //        }
+
+            //        //Master Table load
+            //        if (itemDoc.GetElementsByTagName("PastMedicalHistoryMasterList")[0] != null)
+            //        {
+            //            XmlNodeList xmlTagName = itemDoc.GetElementsByTagName("PastMedicalHistoryMasterList")[0].ChildNodes;
+
+            //            if (xmlTagName.Count > 0)
+            //            {
+            //                for (int j = 0; j < xmlTagName.Count; j++)
+            //                {
+            //                    XmlSerializer xmlserializer = new XmlSerializer(typeof(PastMedicalHistoryMaster));
+            //                    PastMedicalHistoryMaster objHistory = xmlserializer.Deserialize(new XmlNodeReader(xmlTagName[j])) as PastMedicalHistoryMaster;
+
+            //                    IEnumerable<PropertyInfo> propInfo = null;
+            //                    propInfo = from obji in ((PastMedicalHistoryMaster)objHistory).GetType().GetProperties() select obji;
+
+            //                    for (int i = 0; i < xmlTagName[j].Attributes.Count; i++)
+            //                    {
+            //                        XmlNode nodevalue = xmlTagName[j].Attributes[i];
+            //                        {
+            //                            if (propInfo != null && propInfo.Count() > 0)
+            //                            {
+            //                                foreach (PropertyInfo property in propInfo)
+            //                                {
+            //                                    if (property.Name == nodevalue.Name)
+            //                                    {
+
+            //                                        if (property.PropertyType.Name.ToUpper() == "UINT64")
+            //                                            property.SetValue(objHistory, Convert.ToUInt64(nodevalue.Value), null);
+            //                                        else if (property.PropertyType.Name.ToUpper() == "STRING")
+            //                                            property.SetValue(objHistory, Convert.ToString(nodevalue.Value), null);
+            //                                        else if (property.PropertyType.Name.ToUpper() == "DATETIME")
+            //                                            property.SetValue(objHistory, Convert.ToDateTime(nodevalue.Value), null);
+            //                                        else if (property.PropertyType.Name.ToUpper() == "INT32")
+            //                                            property.SetValue(objHistory, Convert.ToInt32(nodevalue.Value), null);
+            //                                        else
+            //                                            property.SetValue(objHistory, nodevalue.Value, null);
+            //                                    }
+            //                                }
+            //                            }
+            //                        }
+            //                    }
+            //                    lstPastHisMasterTemp.Add(objHistory);
+            //                }
+            //            }
+            //            if (lstPastHisMasterTemp.Count > 0)
+            //            {
+            //                lstPastHisMaster = lstPastHisMasterTemp.Where(p => p.Is_Deleted == "N").ToList();
+
+
+            //                //IList<PastMedicalHistory> PastMedicalHistorylstTemp = new List<PastMedicalHistory>();
+
+            //                //if (lstPastHisMaster != null && lstPastHisMaster.Count() > 0)
+            //                //{
+            //                //    foreach (PastMedicalHistoryMaster objMaster in lstPastHisMaster)
+            //                //    {
+            //                //        PastMedicalHistory objtempFH = new PastMedicalHistory();
+            //                //        objtempFH.Human_ID = objMaster.Human_ID;
+            //                //        objtempFH.Past_Medical_Info = objMaster.Past_Medical_Info;
+            //                //        objtempFH.From_Date = objMaster.From_Date;
+            //                //        objtempFH.To_Date = objMaster.To_Date;
+            //                //        objtempFH.Is_present = objMaster.Is_present;
+            //                //        objtempFH.AHA_Question_ICD = objMaster.AHA_Question_ICD;
+            //                //        objtempFH.Is_Mandatory = objMaster.Is_Mandatory;
+            //                //        objtempFH.Notes = objMaster.Notes;
+            //                //        objtempFH.Created_By = ClientSession.UserName;
+            //                //        objtempFH.Created_Date_And_Time = UtilityManager.ConvertToUniversal(); ;
+            //                //        objtempFH.Encounter_Id = ClientSession.EncounterId;
+            //                //        PastMedicalHistorylstTemp.Add(objtempFH);
+            //                //    }
+            //                //    HttpContext.Current.Session["PastMedicalMaster"] = PastMedicalHistorylstTemp;
+
+            //                //}
+
+            //            }
+            //            HttpContext.Current.Session["PastMedicalMaster"] = lstPastHisMaster;
+            //        }
+            //        fs.Close();
+            //        fs.Dispose();
+
+            //    }
+            //}
+            #endregion
             //Load Data for Menu level and fresh encounter from master table 
             if ((sScreenMode != "" && sScreenMode.ToUpper() == "MENU") || (PastMedicalHistorylst != null && PastMedicalHistorylst.Count == 0))
             {
@@ -1440,91 +1650,119 @@ namespace Acurus.Capella.UI.WebServices
             //}
             //else
             //{
-            string FileName = "Human" + "_" + ClientSession.HumanId + ".xml";
-            string strXmlFilePath = Path.Combine(System.Configuration.ConfigurationSettings.AppSettings["XMLPath"], FileName);
-            XmlDocument itemDoc = new XmlDocument();
-            XmlTextReader XmlText = new XmlTextReader(strXmlFilePath);
-            XmlNodeList xmlTagName = null;
-            using (FileStream fs = new FileStream(strXmlFilePath, FileMode.Open, FileAccess.Read, FileShare.Read))
+            #region "Modified by balaji.TJ  - 2023-01-05" 
+
+            IList<string> ilstPastMHisList = new List<string>();            
+            ilstPastMHisList.Add("PastMedicalHistoryMasterList");
+           
+            IList<object> ilstPastMHBlobFinal = new List<object>();
+            ilstPastMHBlobFinal = UtilityManager.ReadBlob(ClientSession.HumanId, ilstPastMHisList);
+
+            if (ilstPastMHBlobFinal != null && ilstPastMHBlobFinal.Count > 0)
             {
-                itemDoc.Load(fs);
-                XmlText.Close();
-                if (itemDoc.GetElementsByTagName("PastMedicalHistoryMasterList")[0] != null)
+                if (ilstPastMHBlobFinal[0] != null && ((IList<object>)ilstPastMHBlobFinal[0]).Count > 0)
                 {
-                    xmlTagName = itemDoc.GetElementsByTagName("PastMedicalHistoryMasterList")[0].ChildNodes;
-
-                    if (xmlTagName.Count > 0)
+                    for (int i = 0; i < ((IList<object>)ilstPastMHBlobFinal[0]).Count; i++)
                     {
-                        for (int j = 0; j < xmlTagName.Count; j++)
-                        {
-                            XmlSerializer xmlserializer = new XmlSerializer(typeof(PastMedicalHistoryMaster));
-                            PastMedicalHistoryMaster objHistory = xmlserializer.Deserialize(new XmlNodeReader(xmlTagName[j])) as PastMedicalHistoryMaster;
-
-                            IEnumerable<PropertyInfo> propInfo = null;
-                            propInfo = from obji in ((PastMedicalHistoryMaster)objHistory).GetType().GetProperties() select obji;
-
-                            for (int i = 0; i < xmlTagName[j].Attributes.Count; i++)
-                            {
-                                XmlNode nodevalue = xmlTagName[j].Attributes[i];
-                                {
-                                    if (propInfo != null && propInfo.Count() > 0)
-                                    {
-                                        foreach (PropertyInfo property in propInfo)
-                                        {
-                                            if (property.Name == nodevalue.Name)
-                                            {
-
-                                                if (property.PropertyType.Name.ToUpper() == "UINT64")
-                                                    property.SetValue(objHistory, Convert.ToUInt64(nodevalue.Value), null);
-                                                else if (property.PropertyType.Name.ToUpper() == "STRING")
-                                                    property.SetValue(objHistory, Convert.ToString(nodevalue.Value), null);
-                                                else if (property.PropertyType.Name.ToUpper() == "DATETIME")
-                                                    property.SetValue(objHistory, Convert.ToDateTime(nodevalue.Value), null);
-                                                else if (property.PropertyType.Name.ToUpper() == "INT32")
-                                                    property.SetValue(objHistory, Convert.ToInt32(nodevalue.Value), null);
-                                                else
-                                                    property.SetValue(objHistory, nodevalue.Value, null);
-                                            }
-                                        }
-                                    }
-                                }
-                            }
-                            lstPastHisMasterTemp.Add(objHistory);
-                        }
+                        lstPastHisMasterTemp.Add((PastMedicalHistoryMaster)((IList<object>)ilstPastMHBlobFinal[0])[i]);
                     }
                 }
-                fs.Close();
-                fs.Dispose();
             }
-            if (lstPastHisMasterTemp.Count > 0)
+            if (lstPastHisMasterTemp !=null && lstPastHisMasterTemp.Count > 0)
             {
                 lstPastHisMaster = lstPastHisMasterTemp.Where(p => p.Is_Deleted == "N").ToList();
-                HttpContext.Current.Session["PastMedicalMaster"] = lstPastHisMaster;
-                //IList<PastMedicalHistory> PastMedicalHistorylstTemp = new List<PastMedicalHistory>();
-
-                //if (lstPastHisMaster != null && lstPastHisMaster.Count() > 0)
-                //{
-                //    foreach (PastMedicalHistoryMaster objMaster in lstPastHisMaster)
-                //    {
-                //        PastMedicalHistory objtempFH = new PastMedicalHistory();
-                //        objtempFH.Human_ID = objMaster.Human_ID;
-                //        objtempFH.Past_Medical_Info = objMaster.Past_Medical_Info;
-                //        objtempFH.From_Date = objMaster.From_Date;
-                //        objtempFH.To_Date = objMaster.To_Date;
-                //        objtempFH.Is_present = objMaster.Is_present;
-                //        objtempFH.AHA_Question_ICD = objMaster.AHA_Question_ICD;
-                //        objtempFH.Is_Mandatory = objMaster.Is_Mandatory;
-                //        objtempFH.Notes = objMaster.Notes;
-                //        objtempFH.Created_By = ClientSession.UserName;
-                //        objtempFH.Created_Date_And_Time = UtilityManager.ConvertToUniversal(); ;
-                //        objtempFH.Encounter_Id = ClientSession.EncounterId;
-                //        PastMedicalHistorylstTemp.Add(objtempFH);
-                //    }
-                //    HttpContext.Current.Session["PastMedicalMaster"] = PastMedicalHistorylstTemp;
-
-                //}
+                HttpContext.Current.Session["PastMedicalMaster"] = lstPastHisMaster;                
             }
-            // }
+            #endregion
+
+            #region "Code comment by balaji.TJ  - 2023-01-05" 
+            //string FileName = "Human" + "_" + ClientSession.HumanId + ".xml";
+            //string strXmlFilePath = Path.Combine(System.Configuration.ConfigurationSettings.AppSettings["XMLPath"], FileName);
+            //XmlDocument itemDoc = new XmlDocument();
+            //XmlTextReader XmlText = new XmlTextReader(strXmlFilePath);
+            //XmlNodeList xmlTagName = null;
+            //using (FileStream fs = new FileStream(strXmlFilePath, FileMode.Open, FileAccess.Read, FileShare.Read))
+            //{
+            //    itemDoc.Load(fs);
+            //    XmlText.Close();
+            //    if (itemDoc.GetElementsByTagName("PastMedicalHistoryMasterList")[0] != null)
+            //    {
+            //        xmlTagName = itemDoc.GetElementsByTagName("PastMedicalHistoryMasterList")[0].ChildNodes;
+
+            //        if (xmlTagName.Count > 0)
+            //        {
+            //            for (int j = 0; j < xmlTagName.Count; j++)
+            //            {
+            //                XmlSerializer xmlserializer = new XmlSerializer(typeof(PastMedicalHistoryMaster));
+            //                PastMedicalHistoryMaster objHistory = xmlserializer.Deserialize(new XmlNodeReader(xmlTagName[j])) as PastMedicalHistoryMaster;
+
+            //                IEnumerable<PropertyInfo> propInfo = null;
+            //                propInfo = from obji in ((PastMedicalHistoryMaster)objHistory).GetType().GetProperties() select obji;
+
+            //                for (int i = 0; i < xmlTagName[j].Attributes.Count; i++)
+            //                {
+            //                    XmlNode nodevalue = xmlTagName[j].Attributes[i];
+            //                    {
+            //                        if (propInfo != null && propInfo.Count() > 0)
+            //                        {
+            //                            foreach (PropertyInfo property in propInfo)
+            //                            {
+            //                                if (property.Name == nodevalue.Name)
+            //                                {
+
+            //                                    if (property.PropertyType.Name.ToUpper() == "UINT64")
+            //                                        property.SetValue(objHistory, Convert.ToUInt64(nodevalue.Value), null);
+            //                                    else if (property.PropertyType.Name.ToUpper() == "STRING")
+            //                                        property.SetValue(objHistory, Convert.ToString(nodevalue.Value), null);
+            //                                    else if (property.PropertyType.Name.ToUpper() == "DATETIME")
+            //                                        property.SetValue(objHistory, Convert.ToDateTime(nodevalue.Value), null);
+            //                                    else if (property.PropertyType.Name.ToUpper() == "INT32")
+            //                                        property.SetValue(objHistory, Convert.ToInt32(nodevalue.Value), null);
+            //                                    else
+            //                                        property.SetValue(objHistory, nodevalue.Value, null);
+            //                                }
+            //                            }
+            //                        }
+            //                    }
+            //                }
+            //                lstPastHisMasterTemp.Add(objHistory);
+            //            }
+            //        }
+            //    }
+            //    fs.Close();
+            //    fs.Dispose();
+            //}
+
+            //if (lstPastHisMasterTemp.Count > 0)
+            //{
+            //    lstPastHisMaster = lstPastHisMasterTemp.Where(p => p.Is_Deleted == "N").ToList();
+            //    HttpContext.Current.Session["PastMedicalMaster"] = lstPastHisMaster;
+            //    //IList<PastMedicalHistory> PastMedicalHistorylstTemp = new List<PastMedicalHistory>();
+
+            //    //if (lstPastHisMaster != null && lstPastHisMaster.Count() > 0)
+            //    //{
+            //    //    foreach (PastMedicalHistoryMaster objMaster in lstPastHisMaster)
+            //    //    {
+            //    //        PastMedicalHistory objtempFH = new PastMedicalHistory();
+            //    //        objtempFH.Human_ID = objMaster.Human_ID;
+            //    //        objtempFH.Past_Medical_Info = objMaster.Past_Medical_Info;
+            //    //        objtempFH.From_Date = objMaster.From_Date;
+            //    //        objtempFH.To_Date = objMaster.To_Date;
+            //    //        objtempFH.Is_present = objMaster.Is_present;
+            //    //        objtempFH.AHA_Question_ICD = objMaster.AHA_Question_ICD;
+            //    //        objtempFH.Is_Mandatory = objMaster.Is_Mandatory;
+            //    //        objtempFH.Notes = objMaster.Notes;
+            //    //        objtempFH.Created_By = ClientSession.UserName;
+            //    //        objtempFH.Created_Date_And_Time = UtilityManager.ConvertToUniversal(); ;
+            //    //        objtempFH.Encounter_Id = ClientSession.EncounterId;
+            //    //        PastMedicalHistorylstTemp.Add(objtempFH);
+            //    //    }
+            //    //    HttpContext.Current.Session["PastMedicalMaster"] = PastMedicalHistorylstTemp;
+
+            //    //}
+            //}
+            //// }
+            #endregion
             #endregion
             if (UIManager.PFSH_OpeingFrom == "Menu" || (HttpContext.Current.Session["PastMedicalList"] == null && HttpContext.Current.Session["PastMedicalMaster"] != null))
             {
