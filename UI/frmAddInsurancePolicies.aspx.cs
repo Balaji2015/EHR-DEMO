@@ -543,7 +543,7 @@ namespace Acurus.Capella.UI
                 //    }
                 //}
                 #endregion
-                UpdateAgeinBlob(ClientSession.HumanId, ClientSession.PatientPaneList[0].Birth_Date);
+                //UpdateAgeinBlob(ClientSession.HumanId, ClientSession.PatientPaneList[0].Birth_Date);
 
                 // save in pat_insured table through the object.
                 PatinsMngr.addPatInsured(patInsured, string.Empty);

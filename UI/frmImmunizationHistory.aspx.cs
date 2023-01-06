@@ -36,12 +36,17 @@ namespace Acurus.Capella.UI
 
         protected void Page_Load(object sender, EventArgs e)
         {
+          
+
             frmImmunizationHistory _source = (frmImmunizationHistory)sender;
             ScreenMode = _source.Page.Request.Params[0];
             try
             {
                 if (!IsPostBack)
                 {
+                    grdImmunization.DataSource = new string[] { };
+                    grdImmunization.DataBind();
+
                     ClientSession.FlushSession();
                     Hiddenupdate.Value = "ADD";
                     DLC.DName = "pbDropdown";
@@ -1387,10 +1392,20 @@ namespace Acurus.Capella.UI
 
                 //ilstImmBlob = (IList<ImmunizationHistory>)UtilityManager.ReadBlob("Human", ClientSession.HumanId, sTagName);
 
-                ilstImmBlobFinal = UtilityManager.ReadBlob( ClientSession.HumanId, sTagName);
-                for (int iCount =0; iCount< ilstImmBlobFinal.Count; iCount++)
+                ilstImmBlobFinal = UtilityManager.ReadBlob(ClientSession.HumanId, sTagName);
+                //for (int iCount =0; iCount< ilstImmBlobFinal.Count; iCount++)
+                //{
+                //    ilstImmBlob.Add((ImmunizationHistory)ilstImmBlobFinal[iCount]);
+                //}
+                if (ilstImmBlobFinal != null && ilstImmBlobFinal.Count > 0)
                 {
-                    ilstImmBlob.Add((ImmunizationHistory)ilstImmBlobFinal[iCount]);
+                    if (ilstImmBlobFinal[0] != null)
+                    {
+                        for (int iCount = 0; iCount < ((IList<object>)ilstImmBlobFinal[0]).Count; iCount++)
+                        {
+                            ilstImmBlob.Add((ImmunizationHistory)((IList<object>)ilstImmBlobFinal[0])[iCount]);
+                        }
+                    }
                 }
 
                 var imm = from immRecord in ilstImmBlob where immRecord.Is_Deleted != "Y" select immRecord;
@@ -1400,7 +1415,7 @@ namespace Acurus.Capella.UI
                 //bool _is_entries_deleted = true;
 
                 var immEnc = from immEncRecord in ilstImmBlob where immEncRecord.Encounter_ID == ClientSession.EncounterId select immEncRecord;
-                IList<ImmunizationHistory> ilstTempimmEncRecord = imm.ToList<ImmunizationHistory>();
+                IList<ImmunizationHistory> ilstTempimmEncRecord = immEnc.ToList<ImmunizationHistory>();
 
                 if (ilstTempimmEncRecord.Count > 0)
                 {
@@ -1409,175 +1424,176 @@ namespace Acurus.Capella.UI
 
                 //if (File.Exists(strXmlFilePath) == true)
                 //{
-                    //XmlDocument itemDoc = new XmlDocument();
-                    //XmlTextReader XmlText = new XmlTextReader(strXmlFilePath);
-                    //XmlNodeList xmlTagName = null;
-                    //using (FileStream fs = new FileStream(strXmlFilePath, FileMode.Open, FileAccess.Read, FileShare.Read))
+                //XmlDocument itemDoc = new XmlDocument();
+                //XmlTextReader XmlText = new XmlTextReader(strXmlFilePath);
+                //XmlNodeList xmlTagName = null;
+                //using (FileStream fs = new FileStream(strXmlFilePath, FileMode.Open, FileAccess.Read, FileShare.Read))
+                //{
+                //    itemDoc.Load(fs);
+
+                //    XmlText.Close();
+                ////BugId:61234
+                //if (itemDoc.GetElementsByTagName("ImmunizationHistoryList") != null && itemDoc.GetElementsByTagName("ImmunizationHistoryList").Count>0)
+                //{
+                //    XmlNodeList xmlDeleteCheckTagName = itemDoc.GetElementsByTagName("ImmunizationHistoryList")[0].ChildNodes;
+                //   _is_entries_deleted = true;
+
+                //    for (int j = 0; j < xmlDeleteCheckTagName.Count; j++)
+                //    {
+                //        for (int i = 0; i < xmlDeleteCheckTagName[j].Attributes.Count; i++)
+                //        {
+                //            if (xmlDeleteCheckTagName[j].Attributes[i].Name == "Is_Deleted")
+                //            {
+                //                if (xmlDeleteCheckTagName[j].Attributes[i].InnerText == "N")
+                //                {
+                //                    _is_entries_deleted = false;
+                //                    break;
+                //                }
+                //            }
+
+                //        }
+                //    }
+
+                //}
+                //if (!_is_entries_deleted && itemDoc.GetElementsByTagName("ImmunizationHistoryList") != null && itemDoc.GetElementsByTagName("ImmunizationHistoryList").Count > 0)
+                if (ImmHislst.Count > 0)
+                {
+                    //xmlTagName = itemDoc.GetElementsByTagName("ImmunizationHistoryList")[0].ChildNodes;
+
+                    //if (xmlTagName != null && xmlTagName.Count > 0)
                     //{
-                    //    itemDoc.Load(fs);
+                    //    for (int j = 0; j < xmlTagName.Count; j++)
+                    //    {
+                    //        string TagName = xmlTagName[j].Name;
+                    //        XmlSerializer xmlserializer = new XmlSerializer(typeof(ImmunizationHistory));
+                    //        ImmunizationHistory ImmunizationHistory = xmlserializer.Deserialize(new XmlNodeReader(xmlTagName[j])) as ImmunizationHistory;
+                    //        IEnumerable<PropertyInfo> propInfo = null;
+                    //        propInfo = from obji in ((ImmunizationHistory)ImmunizationHistory).GetType().GetProperties() select obji;
 
-                    //    XmlText.Close();
-                        ////BugId:61234
-                        //if (itemDoc.GetElementsByTagName("ImmunizationHistoryList") != null && itemDoc.GetElementsByTagName("ImmunizationHistoryList").Count>0)
-                        //{
-                        //    XmlNodeList xmlDeleteCheckTagName = itemDoc.GetElementsByTagName("ImmunizationHistoryList")[0].ChildNodes;
-                        //   _is_entries_deleted = true;
+                    //        for (int i = 0; i < xmlTagName[j].Attributes.Count; i++)
+                    //        {
+                    //            XmlNode nodevalue = xmlTagName[j].Attributes[i];
+                    //            {
+                    //                if (propInfo != null)
+                    //                {
+                    //                    foreach (PropertyInfo property in propInfo)
+                    //                    {
+                    //                        if (property.Name.ToUpper() == nodevalue.Name.ToUpper())
+                    //                        {
+                    //                            if (property.PropertyType.Name.ToUpper() == "UINT64")
+                    //                                property.SetValue(ImmunizationHistory, Convert.ToUInt64(nodevalue.Value), null);
+                    //                            else if (property.PropertyType.Name.ToUpper() == "STRING")
+                    //                                property.SetValue(ImmunizationHistory, Convert.ToString(nodevalue.Value), null);
+                    //                            else if (property.PropertyType.Name.ToUpper() == "DATETIME")
+                    //                                property.SetValue(ImmunizationHistory, Convert.ToDateTime(nodevalue.Value), null);
+                    //                            else if (property.PropertyType.Name.ToUpper() == "INT32")
+                    //                                property.SetValue(ImmunizationHistory, Convert.ToInt32(nodevalue.Value), null);
+                    //                            else if (property.PropertyType.Name.ToUpper() == "DECIMAL")
+                    //                                property.SetValue(ImmunizationHistory, Convert.ToDecimal(nodevalue.Value), null);
+                    //                            else
+                    //                                property.SetValue(ImmunizationHistory, nodevalue.Value, null);
+                    //                        }
+                    //                    }
+                    //                }
+                    //            }
+                    //        }
 
-                        //    for (int j = 0; j < xmlDeleteCheckTagName.Count; j++)
-                        //    {
-                        //        for (int i = 0; i < xmlDeleteCheckTagName[j].Attributes.Count; i++)
-                        //        {
-                        //            if (xmlDeleteCheckTagName[j].Attributes[i].Name == "Is_Deleted")
-                        //            {
-                        //                if (xmlDeleteCheckTagName[j].Attributes[i].InnerText == "N")
-                        //                {
-                        //                    _is_entries_deleted = false;
-                        //                    break;
-                        //                }
-                        //            }
-
-                        //        }
-                        //    }
-
-                        //}
-                        //if (!_is_entries_deleted && itemDoc.GetElementsByTagName("ImmunizationHistoryList") != null && itemDoc.GetElementsByTagName("ImmunizationHistoryList").Count > 0)
-                        if (ImmHislst.Count>0)
+                    //        ImmHislst.Add(ImmunizationHistory);
+                    //        if (ImmunizationHistory.Encounter_ID == ClientSession.EncounterId)
+                    //            _is_from_current_encounter_data = true;
+                    //    }
+                    if (_is_from_current_encounter_data)
+                    {
+                        if (ImmHislst != null && ImmHislst.Count > 0)
                         {
-                            //xmlTagName = itemDoc.GetElementsByTagName("ImmunizationHistoryList")[0].ChildNodes;
-
-                            //if (xmlTagName != null && xmlTagName.Count > 0)
-                            //{
-                            //    for (int j = 0; j < xmlTagName.Count; j++)
-                            //    {
-                            //        string TagName = xmlTagName[j].Name;
-                            //        XmlSerializer xmlserializer = new XmlSerializer(typeof(ImmunizationHistory));
-                            //        ImmunizationHistory ImmunizationHistory = xmlserializer.Deserialize(new XmlNodeReader(xmlTagName[j])) as ImmunizationHistory;
-                            //        IEnumerable<PropertyInfo> propInfo = null;
-                            //        propInfo = from obji in ((ImmunizationHistory)ImmunizationHistory).GetType().GetProperties() select obji;
-
-                            //        for (int i = 0; i < xmlTagName[j].Attributes.Count; i++)
-                            //        {
-                            //            XmlNode nodevalue = xmlTagName[j].Attributes[i];
-                            //            {
-                            //                if (propInfo != null)
-                            //                {
-                            //                    foreach (PropertyInfo property in propInfo)
-                            //                    {
-                            //                        if (property.Name.ToUpper() == nodevalue.Name.ToUpper())
-                            //                        {
-                            //                            if (property.PropertyType.Name.ToUpper() == "UINT64")
-                            //                                property.SetValue(ImmunizationHistory, Convert.ToUInt64(nodevalue.Value), null);
-                            //                            else if (property.PropertyType.Name.ToUpper() == "STRING")
-                            //                                property.SetValue(ImmunizationHistory, Convert.ToString(nodevalue.Value), null);
-                            //                            else if (property.PropertyType.Name.ToUpper() == "DATETIME")
-                            //                                property.SetValue(ImmunizationHistory, Convert.ToDateTime(nodevalue.Value), null);
-                            //                            else if (property.PropertyType.Name.ToUpper() == "INT32")
-                            //                                property.SetValue(ImmunizationHistory, Convert.ToInt32(nodevalue.Value), null);
-                            //                            else if (property.PropertyType.Name.ToUpper() == "DECIMAL")
-                            //                                property.SetValue(ImmunizationHistory, Convert.ToDecimal(nodevalue.Value), null);
-                            //                            else
-                            //                                property.SetValue(ImmunizationHistory, nodevalue.Value, null);
-                            //                        }
-                            //                    }
-                            //                }
-                            //            }
-                            //        }
-
-                            //        ImmHislst.Add(ImmunizationHistory);
-                            //        if (ImmunizationHistory.Encounter_ID == ClientSession.EncounterId)
-                            //            _is_from_current_encounter_data = true;
-                            //    }
-                                if (_is_from_current_encounter_data)
-                                {
-                                    if (ImmHislst != null && ImmHislst.Count > 0)
-                                    {
-                                        IList<ImmunizationHistory> lstImmuHisCurrEnc = new List<ImmunizationHistory>();
-                                        lstImmuHisCurrEnc = (from item in ImmHislst where item.Encounter_ID == ClientSession.EncounterId select item).ToList<ImmunizationHistory>();
-                                        if (lstImmuHisCurrEnc != null && lstImmuHisCurrEnc.Count > 0)
-                                        {
-                                            ResultList.Immunization = lstImmuHisCurrEnc;
-                                        }
-                                        else if (!Is_Delete)
-                                        {
-                                            ulong maxEncId = 0;
-                                            IList<ulong> lstEncId = (from item in ImmHislst select item.Encounter_ID).Distinct().ToList<ulong>();
-                                            if (lstEncId != null && lstEncId.Count > 0)
-                                                maxEncId = (lstEncId.Min() < ClientSession.EncounterId) ? lstEncId.Min() : 0;
-                                            foreach (ulong item in lstEncId)
-                                                if (item > maxEncId && item < ClientSession.EncounterId)
-                                                    maxEncId = item;
-                                            lstImmuHisCurrEnc = (from item in ImmHislst where item.Encounter_ID == maxEncId select item).ToList<ImmunizationHistory>();
-                                            ResultList.Immunization = lstImmuHisCurrEnc;
-                                        }
-                                    }
-                                    else
-                                    {
-                                        ResultList.Immunization = ImmHislst;
-                                    } Session["ImmunizationHistory"] = ResultList.Immunization;
-                                    if (ResultList.Immunization != null && ResultList.Immunization.Count > 0)
-                                    {
-                                        IList<ImmunizationHistory> ilstImmuGrid = new List<ImmunizationHistory>();
-                                        ilstImmuGrid = ResultList.Immunization;
-                                        grdImmunization.DataSource = null;
-                                        DataTable dt = new DataTable();
-                                        dt.Columns.Add("Immunization Procedure", typeof(string));
-                                        dt.Columns.Add("Administered Date", typeof(string));
-                                        dt.Columns.Add("Dose", typeof(string));
-                                        dt.Columns.Add("Route of Administration", typeof(string));
-                                        dt.Columns.Add("Immunization Source", typeof(string));
-                                        dt.Columns.Add("Id", typeof(ulong));
-                                        dt.Columns.Add("Immunization_Order_ID", typeof(string));
-
-                                        for (int i = 0; i < ilstImmuGrid.Count; i++)
-                                        {
-                                            if (ilstImmuGrid[i].Is_Deleted != "Y")
-                                            {
-                                                DataRow dr = dt.NewRow();
-                                                dr["Immunization Procedure"] = ilstImmuGrid[i].Procedure_Code + "-" + ilstImmuGrid[i].Immunization_Description;
-                                                dr["Administered Date"] = ilstImmuGrid[i].Administered_Date;
-                                                if (ilstImmuGrid[i].Dose != 0)
-                                                    dr["Dose"] = ilstImmuGrid[i].Dose;
-                                                dr["Route of Administration"] = ilstImmuGrid[i].Route_Of_Administration;
-                                                dr["Immunization Source"] = ilstImmuGrid[i].Immunization_Source;
-                                                dr["Id"] = ilstImmuGrid[i].Id;
-                                                dr["Immunization_Order_ID"] = ilstImmuGrid[i].Immunization_Order_ID;
-                                                
-                                                dt.Rows.Add(dr);
-                                            }
-                                        }
-                                        grdImmunization.DataSource = dt;
-                                        grdImmunization.DataBind();
-
-                                        foreach (GridDataItem item in grdImmunization.Items)
-                                        {
-                                            TableCell selectCell = item["EditRows"];
-                                            ImageButton gd = (ImageButton)selectCell.Controls[0];
-                                            gd.ToolTip = "Edit";
-                                            TableCell selectCell1 = item["DeleteRows"];
-                                            ImageButton gdDel = (ImageButton)selectCell1.Controls[0];
-                                            gdDel.ToolTip = "Delete";
-                                        }
-                                    }
-                                    else
-                                    {
-                                        grdImmunization.DataSource = new string[] { };
-                                        grdImmunization.DataBind();
-
-                                    }
-                                }
-                                if (!_is_from_current_encounter_data)
-                                {
-                                    ImmHislst.Clear();
-                                    LoadFromMaster(ResultList, FileName, strXmlFilePath);
-                                }
+                            IList<ImmunizationHistory> lstImmuHisCurrEnc = new List<ImmunizationHistory>();
+                            lstImmuHisCurrEnc = (from item in ImmHislst where item.Encounter_ID == ClientSession.EncounterId select item).ToList<ImmunizationHistory>();
+                            if (lstImmuHisCurrEnc != null && lstImmuHisCurrEnc.Count > 0)
+                            {
+                                ResultList.Immunization = lstImmuHisCurrEnc;
                             }
-
-
+                            else if (!Is_Delete)
+                            {
+                                ulong maxEncId = 0;
+                                IList<ulong> lstEncId = (from item in ImmHislst select item.Encounter_ID).Distinct().ToList<ulong>();
+                                if (lstEncId != null && lstEncId.Count > 0)
+                                    maxEncId = (lstEncId.Min() < ClientSession.EncounterId) ? lstEncId.Min() : 0;
+                                foreach (ulong item in lstEncId)
+                                    if (item > maxEncId && item < ClientSession.EncounterId)
+                                        maxEncId = item;
+                                lstImmuHisCurrEnc = (from item in ImmHislst where item.Encounter_ID == maxEncId select item).ToList<ImmunizationHistory>();
+                                ResultList.Immunization = lstImmuHisCurrEnc;
+                            }
                         }
                         else
                         {
-                            LoadFromMaster(ResultList, FileName, strXmlFilePath);
+                            ResultList.Immunization = ImmHislst;
                         }
+                        Session["ImmunizationHistory"] = ResultList.Immunization;
+                        if (ResultList.Immunization != null && ResultList.Immunization.Count > 0)
+                        {
+                            IList<ImmunizationHistory> ilstImmuGrid = new List<ImmunizationHistory>();
+                            ilstImmuGrid = ResultList.Immunization;
+                            grdImmunization.DataSource = null;
+                            DataTable dt = new DataTable();
+                            dt.Columns.Add("Immunization Procedure", typeof(string));
+                            dt.Columns.Add("Administered Date", typeof(string));
+                            dt.Columns.Add("Dose", typeof(string));
+                            dt.Columns.Add("Route of Administration", typeof(string));
+                            dt.Columns.Add("Immunization Source", typeof(string));
+                            dt.Columns.Add("Id", typeof(ulong));
+                            dt.Columns.Add("Immunization_Order_ID", typeof(string));
+
+                            for (int i = 0; i < ilstImmuGrid.Count; i++)
+                            {
+                                if (ilstImmuGrid[i].Is_Deleted != "Y")
+                                {
+                                    DataRow dr = dt.NewRow();
+                                    dr["Immunization Procedure"] = ilstImmuGrid[i].Procedure_Code + "-" + ilstImmuGrid[i].Immunization_Description;
+                                    dr["Administered Date"] = ilstImmuGrid[i].Administered_Date;
+                                    if (ilstImmuGrid[i].Dose != 0)
+                                        dr["Dose"] = ilstImmuGrid[i].Dose;
+                                    dr["Route of Administration"] = ilstImmuGrid[i].Route_Of_Administration;
+                                    dr["Immunization Source"] = ilstImmuGrid[i].Immunization_Source;
+                                    dr["Id"] = ilstImmuGrid[i].Id;
+                                    dr["Immunization_Order_ID"] = ilstImmuGrid[i].Immunization_Order_ID;
+
+                                    dt.Rows.Add(dr);
+                                }
+                            }
+                            grdImmunization.DataSource = dt;
+                            grdImmunization.DataBind();
+
+                            foreach (GridDataItem item in grdImmunization.Items)
+                            {
+                                TableCell selectCell = item["EditRows"];
+                                ImageButton gd = (ImageButton)selectCell.Controls[0];
+                                gd.ToolTip = "Edit";
+                                TableCell selectCell1 = item["DeleteRows"];
+                                ImageButton gdDel = (ImageButton)selectCell1.Controls[0];
+                                gdDel.ToolTip = "Delete";
+                            }
+                        }
+                        else
+                        {
+                            grdImmunization.DataSource = new string[] { };
+                            grdImmunization.DataBind();
+
+                        }
+                    }
+                    if (!_is_from_current_encounter_data)
+                    {
+                        ImmHislst.Clear();
+                        LoadFromMaster(ResultList, FileName, strXmlFilePath);
+                    }
+                }
+
+
+            }
+            else
+            {
+                LoadFromMaster(ResultList, FileName, strXmlFilePath);
+            }
                         //fs.Close();
                         //fs.Dispose();
                     //}
@@ -1609,11 +1625,23 @@ namespace Acurus.Capella.UI
             ImmunizationMasterHistoryManager immunizationMasterMngr = new ImmunizationMasterHistoryManager();
             IList<ImmunizationMasterHistory> ImmMasterHislst = new List<ImmunizationMasterHistory>();
             IList<ImmunizationMasterHistory> ilstImmMasterHisBlob = new List<ImmunizationMasterHistory>();
+            IList<object> ilstImmMasterHisBlobFinal = new List<object>();
 
             IList<string> sTagName = new List<string>();
             sTagName.Add("ImmunizationMasterHistoryList");
 
-            ilstImmMasterHisBlob = (IList<ImmunizationMasterHistory>)UtilityManager.ReadBlob( ClientSession.HumanId, sTagName);
+            //ilstImmMasterHisBlob = (IList<ImmunizationMasterHistory>)UtilityManager.ReadBlob( ClientSession.HumanId, sTagName);
+            ilstImmMasterHisBlobFinal = UtilityManager.ReadBlob(ClientSession.HumanId, sTagName);
+            if (ilstImmMasterHisBlobFinal != null && ilstImmMasterHisBlobFinal.Count > 0)
+            {
+                if (ilstImmMasterHisBlobFinal[0] != null)
+                {
+                    for (int iCount = 0; iCount < ((IList<object>)ilstImmMasterHisBlobFinal[0]).Count; iCount++)
+                    {
+                        ilstImmMasterHisBlob.Add((ImmunizationMasterHistory)((IList<object>)ilstImmMasterHisBlobFinal[0])[iCount]);
+                    }
+                }
+            }
 
             var imm = from immRecord in ilstImmMasterHisBlob where immRecord.Is_Deleted != "Y" select immRecord;
             ImmMasterHislst = imm.ToList<ImmunizationMasterHistory>();
