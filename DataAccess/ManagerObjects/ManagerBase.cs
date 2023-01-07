@@ -2655,9 +2655,26 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
                                 for (int iXMLTagCount = 0; iXMLTagCount < xmlTagName.Count; iXMLTagCount++)
                                 {
                                     string TagName = xmlTagName[iXMLTagCount].Name;
-                                    XmlSerializer xmlserializer = FillSerializer(TagName);//new XmlSerializer(typeof(ImmunizationHistory));
-                                    object objEntity = xmlserializer.Deserialize(new XmlNodeReader(xmlTagName[iXMLTagCount])) as object;
                                     IEnumerable<PropertyInfo> propInfo = null;
+                                    object objEntity = null;
+
+                                    if (TagName == "Human")
+                                    {
+                                        Human objHuman = new Human();
+                                        objEntity = (object)objHuman;
+                                    }
+                                    else if (TagName == "Orders")
+                                    {
+                                        Orders objOrders = new Orders();
+                                        objEntity = (object)objOrders;
+                                    }
+                                    else
+                                    {
+                                        XmlSerializer xmlserializer = FillSerializer(TagName);//new XmlSerializer(typeof(ImmunizationHistory));
+                                        objEntity = xmlserializer.Deserialize(new XmlNodeReader(xmlTagName[iXMLTagCount])) as object;
+                                    }
+
+
                                     if (objEntity != null)
                                     {
                                         propInfo = from obji in ((object)objEntity).GetType().GetProperties() select obji;

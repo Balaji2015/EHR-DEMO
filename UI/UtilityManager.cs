@@ -5159,6 +5159,11 @@ namespace Acurus.Capella.UI
                                         Human objHuman = new Human();
                                         objEntity = (object)objHuman;
                                     }
+                                    else if (TagName == "Orders")
+                                    {
+                                        Orders objOrders = new Orders();
+                                        objEntity = (object)objOrders;
+                                    }
                                     else
                                     {
                                         XmlSerializer xmlserializer = FillSerializer(TagName);//new XmlSerializer(typeof(ImmunizationHistory));

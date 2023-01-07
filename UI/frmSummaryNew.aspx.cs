@@ -57,6 +57,7 @@ namespace Acurus.Capella.UI
             // DownloadFrame.TransformSource = Path.Combine(System.Configuration.ConfigurationSettings.AppSettings["XMLPath"], "EHR.xsl");
 
             ulong Human_ID = 0;
+            string HumanID = "";
 
             if (Request.QueryString["EncounterId"] != null)
             {
@@ -195,9 +196,27 @@ namespace Acurus.Capella.UI
                 //XmlTextReader xmltxtReader = null;
 
                 int flag = 0;
-                string HumanID = "";
+            
+                IList<string> ilstSummaryTag_List = new List<string>();
+                ilstSummaryTag_List.Add("EncounterList");
 
-               // try 
+
+
+                IList<object> ilstSummaryBlob_Final = new List<object>();
+                ilstSummaryBlob_Final = UtilityManager.ReadBlob(ClientSession.EncounterId, ilstSummaryTag_List);
+
+                if (ilstSummaryBlob_Final != null && ilstSummaryBlob_Final.Count > 0)
+                {
+                    if (ilstSummaryBlob_Final[0] != null)
+                    {
+                        for (int iCount = 0; iCount < ((IList<object>)ilstSummaryBlob_Final[0]).Count; iCount++)
+                        {
+                            HumanID = ((Encounter)((IList<object>)ilstSummaryBlob_Final[0])[iCount]).Human_ID.ToString();
+                        }
+                    }
+                }
+
+                // try 
                 //{
                 //    if (File.Exists(strXmlEncounterPath) == true)
                 //    {
@@ -488,7 +507,7 @@ namespace Acurus.Capella.UI
             }
 
             IList<Human_Blob> ilstHumanBlob = new List<Human_Blob>();
-            ilstHumanBlob = HumanBlobMngr.GetHumanBlob(Human_ID);
+            ilstHumanBlob = HumanBlobMngr.GetHumanBlob(Convert.ToUInt64(HumanID));
             if (ilstHumanBlob.Count>0)
             {
                 sXMLHumanDoc = System.Text.Encoding.UTF8.GetString(ilstHumanBlob[0].Human_XML);

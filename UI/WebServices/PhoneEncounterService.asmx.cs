@@ -47,122 +47,144 @@ namespace Acurus.Capella.UI.WebServices
             IList<Human> lstHuman = new List<Human>();
             string sBirth_Date = string.Empty;
             string sPatientstrip = string.Empty;
-            XmlTextReader XmlText=null;
+            XmlTextReader XmlText = null;
             if (ulHumanID != 0)
             {
-            ln:
-              
-                string FileName = "Human" + "_" + ulHumanID + ".xml";
-                string strXmlFilePath = Path.Combine(System.Configuration.ConfigurationSettings.AppSettings["XMLPath"], FileName);
-                try
+                // ln:
+
+                IList<String> ilstPhoneEncounterTaglist = new List<String>();
+                ilstPhoneEncounterTaglist.Add("HumanList");
+
+                IList<object> ilstPhoneEncounterFinal = new List<object>();
+                ilstPhoneEncounterFinal = UtilityManager.ReadBlob(ulHumanID, ilstPhoneEncounterTaglist);
+
+                if (ilstPhoneEncounterFinal != null && ilstPhoneEncounterFinal.Count > 0)
                 {
-                    if (File.Exists(strXmlFilePath) == true)
+                    if (ilstPhoneEncounterFinal[0] != null)
                     {
-                        XmlDocument itemDoc = new XmlDocument();
-                         XmlText = new XmlTextReader(strXmlFilePath);
-                        XmlNodeList xmlTagName = null;
-                        using (FileStream fs = new FileStream(strXmlFilePath, FileMode.Open, FileAccess.Read, FileShare.Read))
+                        for (int iCount = 0; iCount < ((IList<object>)ilstPhoneEncounterFinal[0]).Count; iCount++)
                         {
-                            itemDoc.Load(fs);
-                            XmlText.Close();
+                            objFillHuman = ((Human)((IList<object>)ilstPhoneEncounterFinal[0])[iCount]);
+                            lstHuman.Add(objFillHuman);
 
-                            if (itemDoc.GetElementsByTagName("HumanList") != null && itemDoc.GetElementsByTagName("HumanList").Count > 0)
-                            {
-                                xmlTagName = itemDoc.GetElementsByTagName("HumanList")[0].ChildNodes;
-
-                                if (xmlTagName != null)
-                                {
-                                    for (int j = 0; j < xmlTagName.Count; j++)
-                                    {
-                                        if (xmlTagName[j].Attributes["Id"].Value == ulHumanID.ToString())
-                                        {
-                                            objFillHuman.Birth_Date = Convert.ToDateTime(xmlTagName[j].Attributes["Birth_Date"].Value);
-                                            sBirth_Date = Convert.ToDateTime(xmlTagName[j].Attributes["Birth_Date"].Value).ToString("dd-MMM-yyyy");
-                                            objFillHuman.Id = Convert.ToUInt32(xmlTagName[j].Attributes["Id"].Value);
-                                            objFillHuman.Last_Name = xmlTagName[j].Attributes["Last_Name"].Value;
-                                            objFillHuman.First_Name = xmlTagName[j].Attributes["First_Name"].Value;
-                                            objFillHuman.MI = xmlTagName[j].Attributes["MI"].Value;
-                                            objFillHuman.Suffix = xmlTagName[j].Attributes["Suffix"].Value;
-                                            objFillHuman.Sex = xmlTagName[j].Attributes["Sex"].Value;
-                                            objFillHuman.Work_Phone_No = xmlTagName[j].Attributes["Work_Phone_No"].Value;
-                                            objFillHuman.Work_Phone_Ext = xmlTagName[j].Attributes["Work_Phone_Ext"].Value;
-                                            objFillHuman.Home_Phone_No = xmlTagName[j].Attributes["Home_Phone_No"].Value;
-                                            objFillHuman.Cell_Phone_Number = xmlTagName[j].Attributes["Cell_Phone_Number"].Value;
-                                            if (xmlTagName[j].Attributes.GetNamedItem("ACO_Is_Eligible_Patient").Value != null && xmlTagName[j].Attributes.GetNamedItem("ACO_Is_Eligible_Patient").Value != string.Empty)
-                                                objFillHuman.ACO_Is_Eligible_Patient = xmlTagName[j].Attributes.GetNamedItem("ACO_Is_Eligible_Patient").Value.ToString();
-                                            else
-                                                objFillHuman.ACO_Is_Eligible_Patient = "";
-                                            objFillHuman.Human_Type = xmlTagName[j].Attributes["Human_Type"].Value;
-
-                                            lstHuman.Add(objFillHuman);
-                                        }
-                                    }
-
-                                    string phoneno = "";
-
-                                    if (lstHuman != null && lstHuman.Count > 0)
-                                    {
-
-                                        if (objFillHuman.Home_Phone_No.Length == 14)
-                                        {
-                                            phoneno = objFillHuman.Home_Phone_No;
-                                        }
-                                        else
-                                        {
-                                            phoneno = objFillHuman.Cell_Phone_Number;
-                                        }
-
-                                    }
-
-                                    string sPatientSex = string.Empty;
-
-
-                                    if (objFillHuman.Sex != string.Empty)
-                                    {
-                                        if (objFillHuman.Sex.Substring(0, 1).ToUpper() == "U")
-                                        {
-                                            sPatientSex = "UNK";
-                                        }
-                                        else
-                                        {
-                                            sPatientSex = objFillHuman.Sex.Substring(0, 1);
-                                        }
-                                    }
-                                    else
-                                    {
-                                        sPatientSex = "";
-                                    }
-
-                                    string sAcoEligiblePatient = string.Empty;
-                                    sAcoEligiblePatient = objFillHuman.ACO_Is_Eligible_Patient;
-
-                                    sPatientstrip = " " + objFillHuman.Last_Name + "," + objFillHuman.First_Name
-                                        + "  " + objFillHuman.MI + "  " + objFillHuman.Suffix + " | " +
-                objFillHuman.Birth_Date.ToString("dd-MMM-yyyy") + " | " +
-               (CalculateAge(objFillHuman.Birth_Date)).ToString() +
-               "  year(s) | " + sPatientSex + " | Acc #:" + ulHumanID.ToString() +
-               " | " + "Med Rec #:" + objFillHuman.Medical_Record_Number + " | " +
-               "Phone #:" + phoneno + " | Patient Type:" + objFillHuman.Human_Type + " | ";
-
-                                    if (sAcoEligiblePatient != null && sAcoEligiblePatient != string.Empty && sAcoEligiblePatient != "N")
-                                    {
-                                        sPatientstrip += sAcoEligiblePatient + "   |   ";
-                                    }
-                                }
-                            }
-                            fs.Close();
-                            fs.Dispose();
                         }
                     }
+
                 }
-                catch(Exception ex)
+
+
+
+                //string FileName = "Human" + "_" + ulHumanID + ".xml";
+                //string strXmlFilePath = Path.Combine(System.Configuration.ConfigurationSettings.AppSettings["XMLPath"], FileName);
+                //try
+                //{
+                //    if (File.Exists(strXmlFilePath) == true)
+                //    {
+                //        XmlDocument itemDoc = new XmlDocument();
+                //         XmlText = new XmlTextReader(strXmlFilePath);
+                //        XmlNodeList xmlTagName = null;
+                //        using (FileStream fs = new FileStream(strXmlFilePath, FileMode.Open, FileAccess.Read, FileShare.Read))
+                //        {
+                //            itemDoc.Load(fs);
+                //            XmlText.Close();
+
+                //            if (itemDoc.GetElementsByTagName("HumanList") != null && itemDoc.GetElementsByTagName("HumanList").Count > 0)
+                //            {
+                //                xmlTagName = itemDoc.GetElementsByTagName("HumanList")[0].ChildNodes;
+
+                //                if (xmlTagName != null)
+                //                {
+                //                    for (int j = 0; j < xmlTagName.Count; j++)
+                //                    {
+                //                        if (xmlTagName[j].Attributes["Id"].Value == ulHumanID.ToString())
+                //                        {
+                //                            objFillHuman.Birth_Date = Convert.ToDateTime(xmlTagName[j].Attributes["Birth_Date"].Value);
+                //                            sBirth_Date = Convert.ToDateTime(xmlTagName[j].Attributes["Birth_Date"].Value).ToString("dd-MMM-yyyy");
+                //                            objFillHuman.Id = Convert.ToUInt32(xmlTagName[j].Attributes["Id"].Value);
+                //                            objFillHuman.Last_Name = xmlTagName[j].Attributes["Last_Name"].Value;
+                //                            objFillHuman.First_Name = xmlTagName[j].Attributes["First_Name"].Value;
+                //                            objFillHuman.MI = xmlTagName[j].Attributes["MI"].Value;
+                //                            objFillHuman.Suffix = xmlTagName[j].Attributes["Suffix"].Value;
+                //                            objFillHuman.Sex = xmlTagName[j].Attributes["Sex"].Value;
+                //                            objFillHuman.Work_Phone_No = xmlTagName[j].Attributes["Work_Phone_No"].Value;
+                //                            objFillHuman.Work_Phone_Ext = xmlTagName[j].Attributes["Work_Phone_Ext"].Value;
+                //                            objFillHuman.Home_Phone_No = xmlTagName[j].Attributes["Home_Phone_No"].Value;
+                //                            objFillHuman.Cell_Phone_Number = xmlTagName[j].Attributes["Cell_Phone_Number"].Value;
+                //                            if (xmlTagName[j].Attributes.GetNamedItem("ACO_Is_Eligible_Patient").Value != null && xmlTagName[j].Attributes.GetNamedItem("ACO_Is_Eligible_Patient").Value != string.Empty)
+                //                                objFillHuman.ACO_Is_Eligible_Patient = xmlTagName[j].Attributes.GetNamedItem("ACO_Is_Eligible_Patient").Value.ToString();
+                //                            else
+                //                                objFillHuman.ACO_Is_Eligible_Patient = "";
+                //                            objFillHuman.Human_Type = xmlTagName[j].Attributes["Human_Type"].Value;
+
+                //                            lstHuman.Add(objFillHuman);
+                //                        }
+                //                    }
+
+                string phoneno = "";
+
+                if (lstHuman != null && lstHuman.Count > 0)
                 {
-                    XmlText.Close();
-                    //Thread.Sleep(5000);
-                   UtilityManager.GenerateXML(ulHumanID.ToString(), "Human");
-                    
-                    goto ln;
+
+                    if (objFillHuman.Home_Phone_No.Length == 14)
+                    {
+                        phoneno = objFillHuman.Home_Phone_No;
+                    }
+                    else
+                    {
+                        phoneno = objFillHuman.Cell_Phone_Number;
+                    }
+
                 }
+
+                string sPatientSex = string.Empty;
+
+
+                if (objFillHuman.Sex != string.Empty)
+                {
+                    if (objFillHuman.Sex.Substring(0, 1).ToUpper() == "U")
+                    {
+                        sPatientSex = "UNK";
+                    }
+                    else
+                    {
+                        sPatientSex = objFillHuman.Sex.Substring(0, 1);
+                    }
+                }
+                else
+                {
+                    sPatientSex = "";
+                }
+
+                string sAcoEligiblePatient = string.Empty;
+                sAcoEligiblePatient = objFillHuman.ACO_Is_Eligible_Patient;
+
+                sPatientstrip = " " + objFillHuman.Last_Name + "," + objFillHuman.First_Name
+                    + "  " + objFillHuman.MI + "  " + objFillHuman.Suffix + " | " +
+objFillHuman.Birth_Date.ToString("dd-MMM-yyyy") + " | " +
+(CalculateAge(objFillHuman.Birth_Date)).ToString() +
+"  year(s) | " + sPatientSex + " | Acc #:" + ulHumanID.ToString() +
+" | " + "Med Rec #:" + objFillHuman.Medical_Record_Number + " | " +
+"Phone #:" + phoneno + " | Patient Type:" + objFillHuman.Human_Type + " | ";
+
+                if (sAcoEligiblePatient != null && sAcoEligiblePatient != string.Empty && sAcoEligiblePatient != "N")
+                {
+                    sPatientstrip += sAcoEligiblePatient + "   |   ";
+                }
+                //                    }
+                //                }
+                //                fs.Close();
+                //                fs.Dispose();
+                //            }
+                //        }
+                //    }
+                //    catch(Exception ex)
+                //    {
+                //        XmlText.Close();
+                //        //Thread.Sleep(5000);
+                //       UtilityManager.GenerateXML(ulHumanID.ToString(), "Human");
+
+                //        goto ln;
+                //    }
             }
             IList<StaticLookup> lstStaticCallDuration = new List<StaticLookup>();
             StaticLookupManager objStaticLookup = new StaticLookupManager();
@@ -657,7 +679,7 @@ namespace Acurus.Capella.UI.WebServices
 
                 objEandMCoding.Encounter_ID = uEncounterid;
                 objEandMCoding.Human_ID = ulHumanID;
-                objEandMCoding.Physician_ID = Convert.ToUInt32(sPhyID);                               
+                objEandMCoding.Physician_ID = Convert.ToUInt32(sPhyID);
                 objEandMCoding.Procedure_Code = objCPT.ToString().Split('~')[0];
                 objEandMCoding.Procedure_Code_Description = objCPT.ToString().Split('~')[1];
                 if (objCPT.ToString().Split('~')[2] != "")
@@ -756,8 +778,8 @@ namespace Acurus.Capella.UI.WebServices
                     objEandMCodingICD.ICD_Type = "";
                     objEandMCodingICD.Is_Delete = "N";
                     objEandMCodingICD.Sequence = item.ToString().Split('~')[6];
-                    if (item.ToString().Split('~')[4] !="")
-                    objEandMCodingICD.Version =Convert.ToInt32(item.ToString().Split('~')[4]);
+                    if (item.ToString().Split('~')[4] != "")
+                        objEandMCodingICD.Version = Convert.ToInt32(item.ToString().Split('~')[4]);
                     EAndMICDSaveList.Add(objEandMCodingICD);
                 }
             }
@@ -765,7 +787,7 @@ namespace Acurus.Capella.UI.WebServices
 
             //foreach (var item in arylstDelICD)
             //{
-                
+
             //}
 
             // objEandMManager.SaveUpdateEandMCodingForPhoneEncounter(EncounterLst, PlanLst, EAndMCPTSaveList, EAndMCPTUpdateList, arylstICD, (IList<EandMCodingICD>)HttpContext.Current.Session["EandMICDList"], ClientSession.UserName, UtilityManager.ConvertToUniversal(), EAndMICDUpdateList, string.Empty);
@@ -784,70 +806,88 @@ namespace Acurus.Capella.UI.WebServices
         {
             IList<Encounter> lstencounterFinal = new List<Encounter>();
 
-            string sDOCFacility = string.Empty;
-            string FileName = "Human" + "_" + ulHumanID + ".xml";
-            string strXmlFilePath = Path.Combine(System.Configuration.ConfigurationSettings.AppSettings["XMLPath"], FileName);
+            IList<String> ilstDOCTaglist = new List<String>();
+            ilstDOCTaglist.Add("EncounterList");
             IList<Encounter> lstEncounter = new List<Encounter>();
-            if (File.Exists(strXmlFilePath) == true)
-            {
-                XmlDocument itemDoc = new XmlDocument();
-                XmlTextReader XmlText = new XmlTextReader(strXmlFilePath);
-                XmlNodeList xmlTagName = null;
-                using (FileStream fs = new FileStream(strXmlFilePath, FileMode.Open, FileAccess.Read, FileShare.Read))
-                {
-                    itemDoc.Load(fs);
-                    XmlText.Close();
-                    if (itemDoc.GetElementsByTagName("EncounterList") != null && itemDoc.GetElementsByTagName("EncounterList").Count > 0)
-                    {
-                        xmlTagName = itemDoc.GetElementsByTagName("EncounterList")[0].ChildNodes;
-                        if (xmlTagName != null && xmlTagName.Count > 0)
-                        {
-                            for (int j = 0; j < xmlTagName.Count; j++)
-                            {
-                                string TagName = xmlTagName[j].Name;
-                                XmlSerializer xmlserializer = new XmlSerializer(typeof(Encounter));
-                                Encounter Encounter = xmlserializer.Deserialize(new XmlNodeReader(xmlTagName[j])) as Encounter;
-                                IEnumerable<PropertyInfo> propInfo = null;
-                                propInfo = from obji in ((Encounter)Encounter).GetType().GetProperties() select obji;
-                                for (int i = 0; i < xmlTagName[j].Attributes.Count; i++)
-                                {
-                                    XmlNode nodevalue = xmlTagName[j].Attributes[i];
-                                    {
-                                        if (propInfo != null)
-                                        {
-                                            foreach (PropertyInfo property in propInfo)
-                                            {
-                                                if (property.Name == nodevalue.Name)
-                                                {
-                                                    try
-                                                    {
-                                                        if (property.PropertyType.Name.ToUpper() == "UINT64")
-                                                            property.SetValue(Encounter, Convert.ToUInt64(nodevalue.Value), null);
-                                                        else if (property.PropertyType.Name.ToUpper() == "STRING")
-                                                            property.SetValue(Encounter, Convert.ToString(nodevalue.Value), null);
-                                                        else if (property.PropertyType.Name.ToUpper() == "DATETIME")
-                                                            property.SetValue(Encounter, Convert.ToDateTime(nodevalue.Value), null);
-                                                        else if (property.PropertyType.Name.ToUpper() == "INT32")
-                                                            property.SetValue(Encounter, Convert.ToInt32(nodevalue.Value), null);
-                                                        else
-                                                            property.SetValue(Encounter, nodevalue.Value, null);
-                                                    }
-                                                    catch (Exception ex)
-                                                    { }
+            IList<object> ilstDOCFinal = new List<object>();
+            ilstDOCFinal = UtilityManager.ReadBlob(Convert.ToUInt64(ulHumanID), ilstDOCTaglist, "Blob_Human");
 
-                                                }
-                                            }
-                                        }
-                                    }
-                                }
-                                lstEncounter.Add(Encounter);
-                            }
-                        }
+            if (ilstDOCFinal != null && ilstDOCFinal.Count > 0)
+            {
+                if (ilstDOCFinal[0] != null)
+                {
+                    for (int iCount = 0; iCount < ((IList<object>)ilstDOCFinal[0]).Count; iCount++)
+                    {
+                        lstEncounter.Add((Encounter)((IList<object>)ilstDOCFinal[0])[iCount]);
                     }
-                    fs.Close();
-                    fs.Dispose();
                 }
             }
+
+
+            //string sDOCFacility = string.Empty;
+            //string FileName = "Human" + "_" + ulHumanID + ".xml";
+            //string strXmlFilePath = Path.Combine(System.Configuration.ConfigurationSettings.AppSettings["XMLPath"], FileName);
+            //IList<Encounter> lstEncounter = new List<Encounter>();
+            //if (File.Exists(strXmlFilePath) == true)
+            //{
+            //    XmlDocument itemDoc = new XmlDocument();
+            //    XmlTextReader XmlText = new XmlTextReader(strXmlFilePath);
+            //    XmlNodeList xmlTagName = null;
+            //    using (FileStream fs = new FileStream(strXmlFilePath, FileMode.Open, FileAccess.Read, FileShare.Read))
+            //    {
+            //        itemDoc.Load(fs);
+            //        XmlText.Close();
+            //        if (itemDoc.GetElementsByTagName("EncounterList") != null && itemDoc.GetElementsByTagName("EncounterList").Count > 0)
+            //        {
+            //            xmlTagName = itemDoc.GetElementsByTagName("EncounterList")[0].ChildNodes;
+            //            if (xmlTagName != null && xmlTagName.Count > 0)
+            //            {
+            //                for (int j = 0; j < xmlTagName.Count; j++)
+            //                {
+            //                    string TagName = xmlTagName[j].Name;
+            //                    XmlSerializer xmlserializer = new XmlSerializer(typeof(Encounter));
+            //                    Encounter Encounter = xmlserializer.Deserialize(new XmlNodeReader(xmlTagName[j])) as Encounter;
+            //                    IEnumerable<PropertyInfo> propInfo = null;
+            //                    propInfo = from obji in ((Encounter)Encounter).GetType().GetProperties() select obji;
+            //                    for (int i = 0; i < xmlTagName[j].Attributes.Count; i++)
+            //                    {
+            //                        XmlNode nodevalue = xmlTagName[j].Attributes[i];
+            //                        {
+            //                            if (propInfo != null)
+            //                            {
+            //                                foreach (PropertyInfo property in propInfo)
+            //                                {
+            //                                    if (property.Name == nodevalue.Name)
+            //                                    {
+            //                                        try
+            //                                        {
+            //                                            if (property.PropertyType.Name.ToUpper() == "UINT64")
+            //                                                property.SetValue(Encounter, Convert.ToUInt64(nodevalue.Value), null);
+            //                                            else if (property.PropertyType.Name.ToUpper() == "STRING")
+            //                                                property.SetValue(Encounter, Convert.ToString(nodevalue.Value), null);
+            //                                            else if (property.PropertyType.Name.ToUpper() == "DATETIME")
+            //                                                property.SetValue(Encounter, Convert.ToDateTime(nodevalue.Value), null);
+            //                                            else if (property.PropertyType.Name.ToUpper() == "INT32")
+            //                                                property.SetValue(Encounter, Convert.ToInt32(nodevalue.Value), null);
+            //                                            else
+            //                                                property.SetValue(Encounter, nodevalue.Value, null);
+            //                                        }
+            //                                        catch (Exception ex)
+            //                                        { }
+
+            //                                    }
+            //                                }
+            //                            }
+            //                        }
+            //                    }
+            //                    lstEncounter.Add(Encounter);
+            //                }
+            //            }
+            //        }
+            //        fs.Close();
+            //        fs.Dispose();
+            //    }
+            //}
 
             IList<string> FinalLst = new List<string>();
             if (lstEncounter != null && lstEncounter.Count > 0)
@@ -1015,68 +1055,88 @@ namespace Acurus.Capella.UI.WebServices
             IList<string> lstAssessmentFinal = new List<string>();
             if (uEncounterID != "" && uEncounterID != "0")
             {
-                string FileEncName = "Encounter" + "_" + uEncounterID + ".xml";
-                string strXmlEncFilePath = Path.Combine(System.Configuration.ConfigurationSettings.AppSettings["XMLPath"], FileEncName);
+
                 IList<Assessment> lstAssessment = new List<Assessment>();
-                if (File.Exists(strXmlEncFilePath) == true)
+
+                IList<string> ilstPhoneAssessnebtTagList = new List<string>();
+                ilstPhoneAssessnebtTagList.Add("AssessmentList");
+                IList<object> ilstAssessnebtFinal = new List<object>();
+                ilstAssessnebtFinal = UtilityManager.ReadBlob(Convert.ToUInt64(uEncounterID), ilstPhoneAssessnebtTagList);
+
+                if (ilstAssessnebtFinal != null && ilstAssessnebtFinal.Count > 0)
                 {
-                    XmlDocument itemDoc = new XmlDocument();
-                    XmlTextReader XmlText = new XmlTextReader(strXmlEncFilePath);
-                    XmlNodeList xmlTagName = null;
-                    using (FileStream fs = new FileStream(strXmlEncFilePath, FileMode.Open, FileAccess.Read, FileShare.Read))
+                    if (ilstAssessnebtFinal[0] != null)
                     {
-                        itemDoc.Load(fs);
-                        XmlText.Close();
-                        if (itemDoc.GetElementsByTagName("AssessmentList") != null && itemDoc.GetElementsByTagName("AssessmentList").Count > 0)
+                        for (int iCount = 0; iCount < ((IList<object>)ilstAssessnebtFinal[0]).Count; iCount++)
                         {
-                            xmlTagName = itemDoc.GetElementsByTagName("AssessmentList")[0].ChildNodes;
-                            if (xmlTagName != null && xmlTagName.Count > 0)
-                            {
-                                for (int j = 0; j < xmlTagName.Count; j++)
-                                {
-                                    string TagName = xmlTagName[j].Name;
-                                    XmlSerializer xmlserializer = new XmlSerializer(typeof(Assessment));
-                                    Assessment Aassessment = xmlserializer.Deserialize(new XmlNodeReader(xmlTagName[j])) as Assessment;
-                                    IEnumerable<PropertyInfo> propInfo = null;
-                                    propInfo = from obji in ((Assessment)Aassessment).GetType().GetProperties() select obji;
-                                    for (int i = 0; i < xmlTagName[j].Attributes.Count; i++)
-                                    {
-                                        XmlNode nodevalue = xmlTagName[j].Attributes[i];
-                                        {
-                                            if (propInfo != null)
-                                            {
-                                                foreach (PropertyInfo property in propInfo)
-                                                {
-                                                    if (property.Name == nodevalue.Name)
-                                                    {
-                                                        try
-                                                        {
-                                                            if (property.PropertyType.Name.ToUpper() == "UINT64")
-                                                                property.SetValue(Aassessment, Convert.ToUInt64(nodevalue.Value), null);
-                                                            else if (property.PropertyType.Name.ToUpper() == "STRING")
-                                                                property.SetValue(Aassessment, Convert.ToString(nodevalue.Value), null);
-                                                            else if (property.PropertyType.Name.ToUpper() == "DATETIME")
-                                                                property.SetValue(Aassessment, Convert.ToDateTime(nodevalue.Value), null);
-                                                            else if (property.PropertyType.Name.ToUpper() == "INT32")
-                                                                property.SetValue(Aassessment, Convert.ToInt32(nodevalue.Value), null);
-                                                            else
-                                                                property.SetValue(Aassessment, nodevalue.Value, null);
-                                                        }
-                                                        catch (Exception ex)
-                                                        { }
-                                                    }
-                                                }
-                                            }
-                                        }
-                                    }
-                                    lstAssessment.Add(Aassessment);
-                                }
-                            }
+                            lstAssessment.Add((Assessment)((IList<object>)ilstAssessnebtFinal[0])[iCount]);
                         }
-                        fs.Close();
-                        fs.Dispose();
                     }
                 }
+
+
+                //string FileEncName = "Encounter" + "_" + uEncounterID + ".xml";
+                //string strXmlEncFilePath = Path.Combine(System.Configuration.ConfigurationSettings.AppSettings["XMLPath"], FileEncName);
+                //IList<Assessment> lstAssessment = new List<Assessment>();
+                //if (File.Exists(strXmlEncFilePath) == true)
+                //{
+                //    XmlDocument itemDoc = new XmlDocument();
+                //    XmlTextReader XmlText = new XmlTextReader(strXmlEncFilePath);
+                //    XmlNodeList xmlTagName = null;
+                //    using (FileStream fs = new FileStream(strXmlEncFilePath, FileMode.Open, FileAccess.Read, FileShare.Read))
+                //    {
+                //        itemDoc.Load(fs);
+                //        XmlText.Close();
+                //        if (itemDoc.GetElementsByTagName("AssessmentList") != null && itemDoc.GetElementsByTagName("AssessmentList").Count > 0)
+                //        {
+                //            xmlTagName = itemDoc.GetElementsByTagName("AssessmentList")[0].ChildNodes;
+                //            if (xmlTagName != null && xmlTagName.Count > 0)
+                //            {
+                //                for (int j = 0; j < xmlTagName.Count; j++)
+                //                {
+                //                    string TagName = xmlTagName[j].Name;
+                //                    XmlSerializer xmlserializer = new XmlSerializer(typeof(Assessment));
+                //                    Assessment Aassessment = xmlserializer.Deserialize(new XmlNodeReader(xmlTagName[j])) as Assessment;
+                //                    IEnumerable<PropertyInfo> propInfo = null;
+                //                    propInfo = from obji in ((Assessment)Aassessment).GetType().GetProperties() select obji;
+                //                    for (int i = 0; i < xmlTagName[j].Attributes.Count; i++)
+                //                    {
+                //                        XmlNode nodevalue = xmlTagName[j].Attributes[i];
+                //                        {
+                //                            if (propInfo != null)
+                //                            {
+                //                                foreach (PropertyInfo property in propInfo)
+                //                                {
+                //                                    if (property.Name == nodevalue.Name)
+                //                                    {
+                //                                        try
+                //                                        {
+                //                                            if (property.PropertyType.Name.ToUpper() == "UINT64")
+                //                                                property.SetValue(Aassessment, Convert.ToUInt64(nodevalue.Value), null);
+                //                                            else if (property.PropertyType.Name.ToUpper() == "STRING")
+                //                                                property.SetValue(Aassessment, Convert.ToString(nodevalue.Value), null);
+                //                                            else if (property.PropertyType.Name.ToUpper() == "DATETIME")
+                //                                                property.SetValue(Aassessment, Convert.ToDateTime(nodevalue.Value), null);
+                //                                            else if (property.PropertyType.Name.ToUpper() == "INT32")
+                //                                                property.SetValue(Aassessment, Convert.ToInt32(nodevalue.Value), null);
+                //                                            else
+                //                                                property.SetValue(Aassessment, nodevalue.Value, null);
+                //                                        }
+                //                                        catch (Exception ex)
+                //                                        { }
+                //                                    }
+                //                                }
+                //                            }
+                //                        }
+                //                    }
+                //                    lstAssessment.Add(Aassessment);
+                //                }
+                //            }
+                //        }
+                //        fs.Close();
+                //        fs.Dispose();
+                //    }
+                //}
                 if (lstAssessment != null && lstAssessment.Count > 0)
                 {
                     if (lstAssessment != null && lstAssessment.Count > 0)
@@ -1128,7 +1188,7 @@ namespace Acurus.Capella.UI.WebServices
             {
                 uPhyID = ClientSession.PhysicianId;
             }
-            IList<PhysicianICD_9> phyICD9List = phyICd9Mngr.GetPhyLeafICDsandCategory(uPhyID,ClientSession.LegalOrg);
+            IList<PhysicianICD_9> phyICD9List = phyICd9Mngr.GetPhyLeafICDsandCategory(uPhyID, ClientSession.LegalOrg);
             if (phyICD9List != null && phyICD9List.Count > 0)
             {
                 var lstphyICDsResult = phyICD9List.Select(a => new
