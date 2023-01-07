@@ -1652,7 +1652,7 @@ namespace Acurus.Capella.Core.DTO
             }
         }
 
-        public void GenerateXmlSave(IList<object> obj, ulong EncounterOrHumanId, string sGeneralNotesText, bool bSave_In_Human, bool IsPhoneEncounter, bool IsAssessment, bool IsRcopiaMedication,GenerateXml XMLObj)
+        public void GenerateXmlSave(IList<object> obj, ulong EncounterOrHumanId, string sGeneralNotesText, bool bSave_In_Human, bool IsPhoneEncounter, bool IsAssessment, bool IsRcopiaMedication, GenerateXml XMLObj)
         {
             string sLocalTime = string.Empty;
             string FileName = "Encounter" + "_" + EncounterOrHumanId + ".xml";
@@ -5481,10 +5481,21 @@ namespace Acurus.Capella.Core.DTO
                 if (dt.Rows.Count > 0)
                 {
                     sXMLContent = System.Text.Encoding.UTF8.GetString((byte[])dt.Rows[0]["Human_XML"]);
+                    if (sXMLContent.Substring(0, 1) != "<")
+                        sXMLContent = sXMLContent.Substring(1, sXMLContent.Length - 1);
                     xmlDoc.LoadXml(sXMLContent);
-                    iHumanBlobVersion = Convert.ToInt32(dt.Rows[0]["Version"]);
-                    sCreatedBy = (string)dt.Rows[0]["Created_By"];
-                    dtCreatedDateandTime = Convert.ToDateTime(dt.Rows[0]["Created_Date_And_Time"].ToString());
+                    if (dt.Rows[0]["Version"] != null && dt.Rows[0]["Version"].ToString() != string.Empty)
+                        iHumanBlobVersion = Convert.ToInt32(dt.Rows[0]["Version"]);
+                    else
+                        iHumanBlobVersion = 0;
+                    if (dt.Rows[0]["Created_By"] != null)
+                        sCreatedBy = Convert.ToString(dt.Rows[0]["Created_By"]);
+                    else
+                        sCreatedBy = string.Empty;
+                    if (dt.Rows[0]["Created_Date_And_Time"] != null && dt.Rows[0]["Created_Date_And_Time"].ToString() != string.Empty)
+                        dtCreatedDateandTime = Convert.ToDateTime(dt.Rows[0]["Created_Date_And_Time"].ToString());
+                    else
+                        dtCreatedDateandTime = DateTime.MinValue;
                 }
             }
             else if (sXMLType == "Encounter")
@@ -5496,10 +5507,24 @@ namespace Acurus.Capella.Core.DTO
                 if (dt.Rows.Count > 0)
                 {
                     sXMLContent = System.Text.Encoding.UTF8.GetString((byte[])dt.Rows[0]["Encounter_XML"]);
+                    if (sXMLContent.Substring(0, 1) != "<")
+                        sXMLContent = sXMLContent.Substring(1, sXMLContent.Length - 1);
                     xmlDoc.LoadXml(sXMLContent);
-                    iEncounterBlobVersion = Convert.ToInt32(dt.Rows[0]["Version"]);
-                    sCreatedBy = (string)dt.Rows[0]["Created_By"];
-                    dtCreatedDateandTime = Convert.ToDateTime(dt.Rows[0]["Created_Date_And_Time"].ToString());
+                    //iEncounterBlobVersion = Convert.ToInt32(dt.Rows[0]["Version"]);
+                    //sCreatedBy = (string)dt.Rows[0]["Created_By"];
+                    //dtCreatedDateandTime = Convert.ToDateTime(dt.Rows[0]["Created_Date_And_Time"].ToString());
+                    if (dt.Rows[0]["Version"] != null && dt.Rows[0]["Version"].ToString() != string.Empty)
+                        iEncounterBlobVersion = Convert.ToInt32(dt.Rows[0]["Version"]);
+                    else
+                        iEncounterBlobVersion = 0;
+                    if (dt.Rows[0]["Created_By"] != null)
+                        sCreatedBy = Convert.ToString(dt.Rows[0]["Created_By"]);
+                    else
+                        sCreatedBy = string.Empty;
+                    if (dt.Rows[0]["Created_Date_And_Time"] != null && dt.Rows[0]["Created_Date_And_Time"].ToString() != string.Empty)
+                        dtCreatedDateandTime = Convert.ToDateTime(dt.Rows[0]["Created_Date_And_Time"].ToString());
+                    else
+                        dtCreatedDateandTime = DateTime.MinValue;
                 }
             }
 
