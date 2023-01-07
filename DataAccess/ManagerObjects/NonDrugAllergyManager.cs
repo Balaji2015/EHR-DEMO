@@ -553,7 +553,10 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
                                 #endregion
 
                                 #region "Modified by Balaji.TJ - 2023-01-04"
-                                WriteBlob(HumanID, XMLObj.itemDoc, MySession, insertList, updateList, deleteList, XMLObj, false);
+                                if (insertList != null || updateList != null || deleteList != null)
+                                    WriteBlob(HumanID, XMLObj.itemDoc, MySession, insertList, updateList, deleteList, XMLObj, false);
+                                else if (ExisList != null)
+                                    WriteBlob(HumanID, XMLObj.itemDoc, MySession, null, ExisList, null, XMLObj, false);
                                 #endregion
                             }
                             catch (Exception xmlexcep)
