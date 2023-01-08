@@ -1358,7 +1358,7 @@ namespace Acurus.Capella.UI
                     {
                         if (((PhysicianPatientMaster)((IList<object>)ilstAdvanceDirectiveMasterBlobFinal[1])[iCount]).Is_Deleted != "Y")
                         {
-                            PhyPatMasterlst.Add((PhysicianPatientMaster)((IList<object>)ilstAdvanceDirectiveMasterBlobFinal[0])[iCount]);
+                            PhyPatMasterlst.Add((PhysicianPatientMaster)((IList<object>)ilstAdvanceDirectiveMasterBlobFinal[1])[iCount]);
                         }
                     }
                 }
