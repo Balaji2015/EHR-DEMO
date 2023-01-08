@@ -395,300 +395,309 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
 
             string FileMgnt_ID = string.Empty;
             Session.GetISession().Clear();
-            ISession MySession = Session.GetISession();
-            try
+            //ISession MySession = Session.GetISession();
+            using (ISession MySession = Session.GetISession())
             {
-                bool IsImmunization = true, IsImmunizationHistory = true, IsTreatmentPlanConsistent = true;
-                using (ITransaction trans = MySession.BeginTransaction(System.Data.IsolationLevel.ReadUncommitted))
+                try
                 {
-                    try
+                    bool IsImmunization = true, IsImmunizationHistory = true, IsTreatmentPlanConsistent = true;
+                    using (ITransaction trans = MySession.BeginTransaction(System.Data.IsolationLevel.ReadUncommitted))
                     {
-                        if (immulist != null && immulist.Count > 0)
+                        try
                         {
-                            IList<Immunization> UpdateImmunization = new List<Immunization>();
-                            iResult = SaveUpdateDelete_DBAndXML_WithoutTransaction(ref immulist, ref UpdateImmunization, null, MySession, MACAddress, true, true, immulist[0].Human_ID, string.Empty, ref XMLObj);
-                            if (iResult == 2)
-                            {
-                                if (iTryCount < 5)
-                                {
-                                    iTryCount++;
-                                    goto TryAgain;
-                                }
-                                else
-                                {
-                                    trans.Rollback();
-                                    throw new Exception("Deadlock is occured. Transaction failed");
-                                }
-                            }
-                            else if (iResult == 1)
-                            {
-                                trans.Rollback();
-                                throw new Exception("Exception is occured. Transaction failed");
-                            }
-                            IsImmunization = XMLObj.CheckDataConsistency(immulist.Concat(UpdateImmunization).Cast<object>().ToList(), true, string.Empty);
-                        }
-                        if (immunHist != null && immunHist.Count>0 && immun.Is_Administration_Refused != "Y")//if Administration Refused Do not save in ImmHis Table
-                        {
-                            IList<ImmunizationHistory> UpdateImmunizationHistory = new List<ImmunizationHistory>();
-                            ImmunizationHistoryManager ImmunizationHistoryMngr = new ImmunizationHistoryManager();
                             if (immulist != null && immulist.Count > 0)
                             {
-                                immunHist[0].Immunization_Order_ID = immulist[0].Id;
-                                immunHist[0].Created_By = immulist[0].Created_By;
-                                immunHist[0].Created_Date_And_Time = immulist[0].Created_Date_And_Time;
-                                if (immunHist[0].Procedure_Code.Trim() == "90732" || immunHist[0].Procedure_Code.Trim() == "90670")
+                                IList<Immunization> UpdateImmunization = new List<Immunization>();
+                                iResult = SaveUpdateDelete_DBAndXML_WithoutTransaction(ref immulist, ref UpdateImmunization, null, MySession, MACAddress, true, true, immulist[0].Human_ID, string.Empty, ref XMLObj);
+                                if (iResult == 2)
                                 {
-                                    immunHist[0].Snomed_Code = "310578008";
+                                    if (iTryCount < 5)
+                                    {
+                                        iTryCount++;
+                                        goto TryAgain;
+                                    }
+                                    else
+                                    {
+                                        trans.Rollback();
+                                        throw new Exception("Deadlock is occured. Transaction failed");
+                                    }
                                 }
-                                else
-                                {
-                                    immunHist[0].Snomed_Code = "";
-                                }
-                            }
-
-                            for (int i = 0; i < immunHist.Count; i++)
-                            {
-                                ImnuHistorysaveList.Add(immunHist[i]);
-                            }
-
-                            // iResult = ImmunizationHistoryMngr.SaveUpdateDelete_DBAndXML_WithoutTransaction(ref ImnuHistorysaveList, ref UpdateImmunizationHistory, null, MySession, MACAddress, true, true, immunHist.Human_ID, string.Empty, ref XMLObj);
-                            ImmunizationHistoryMngr.InsertIntoImmunizationHistoryFromOrders(null, ImnuHistorysaveList, ImnuHistorysaveList[0].Human_ID, 0, 0, string.Empty, 0, false, MySession, ref XMLObj);
-                            if (iResult == 2)
-                            {
-                                if (iTryCount < 5)
-                                {
-                                    iTryCount++;
-                                    goto TryAgain;
-                                }
-                                else
+                                else if (iResult == 1)
                                 {
                                     trans.Rollback();
-                                    throw new Exception("Deadlock is occured. Transaction failed");
+                                    throw new Exception("Exception is occured. Transaction failed");
                                 }
+                                IsImmunization = XMLObj.CheckDataConsistency(immulist.Concat(UpdateImmunization).Cast<object>().ToList(), true, string.Empty);
                             }
-                            else if (iResult == 1)
+                            if (immunHist != null && immunHist.Count > 0 && immun.Is_Administration_Refused != "Y")//if Administration Refused Do not save in ImmHis Table
                             {
-                                trans.Rollback();
-                                throw new Exception("Exception is occured. Transaction failed");
-                            }
-                            IsImmunizationHistory = XMLObj.CheckDataConsistency(ImnuHistorysaveList.Concat(UpdateImmunizationHistory).Cast<object>().ToList(), true, string.Empty);
-                        }
-                        #region Treatment plan
-                        if (ulMyEncounterID != 0 && immun.Is_Administration_Refused != "Y")//if Administration Refused Do not save in GeneralPlan Table
-                        {
-                            TreatmentPlan item = new TreatmentPlan();
-                            item.Human_ID = immun.Human_ID;
-                            item.Encounter_Id = EncounterID;
-                            item.Physician_Id = immun.Physician_Id;
-                            item.Created_By = immun.Created_By;
-                            item.Created_Date_And_Time = immun.Created_Date_And_Time;
-                            item.Plan_Type = "IMMUNIZATION/INJECTION";
-                            string plan_txt = string.Empty;
-                            plan_txt = "* " + sImmunization;
-                            item.Plan = plan_txt;
-                            item.Version = 0;
-                            item.Source_ID = immun.Id;
-                            item.Local_Time = sLocalTime;
-                            Insert_Tplan.Add(item);
-                        }
-                        if (Insert_Tplan != null && Insert_Tplan.Count > 0)
-                        {
-
-                            iResult = objTreatmentPlanMgr.SaveUpdateDelete_DBAndXML_WithoutTransaction(ref Insert_Tplan, ref Update_Tplan, null, session.GetISession(), MACAddress, true, true, ulMyEncounterID, string.Empty, ref XMLObjEncounter);
-                            if (iResult == 2)
-                            {
-                                if (iTryCount < 5)
+                                IList<ImmunizationHistory> UpdateImmunizationHistory = new List<ImmunizationHistory>();
+                                ImmunizationHistoryManager ImmunizationHistoryMngr = new ImmunizationHistoryManager();
+                                if (immulist != null && immulist.Count > 0)
                                 {
-                                    iTryCount++;
-                                    goto TryAgain;
+                                    immunHist[0].Immunization_Order_ID = immulist[0].Id;
+                                    immunHist[0].Created_By = immulist[0].Created_By;
+                                    immunHist[0].Created_Date_And_Time = immulist[0].Created_Date_And_Time;
+                                    if (immunHist[0].Procedure_Code.Trim() == "90732" || immunHist[0].Procedure_Code.Trim() == "90670")
+                                    {
+                                        immunHist[0].Snomed_Code = "310578008";
+                                    }
+                                    else
+                                    {
+                                        immunHist[0].Snomed_Code = "";
+                                    }
                                 }
-                                else
+
+                                for (int i = 0; i < immunHist.Count; i++)
+                                {
+                                    ImnuHistorysaveList.Add(immunHist[i]);
+                                }
+
+                                // iResult = ImmunizationHistoryMngr.SaveUpdateDelete_DBAndXML_WithoutTransaction(ref ImnuHistorysaveList, ref UpdateImmunizationHistory, null, MySession, MACAddress, true, true, immunHist.Human_ID, string.Empty, ref XMLObj);
+                                ImmunizationHistoryMngr.InsertIntoImmunizationHistoryFromOrders(null, ImnuHistorysaveList, ImnuHistorysaveList[0].Human_ID, 0, 0, string.Empty, 0, false, MySession, ref XMLObj);
+                                if (iResult == 2)
+                                {
+                                    if (iTryCount < 5)
+                                    {
+                                        iTryCount++;
+                                        goto TryAgain;
+                                    }
+                                    else
+                                    {
+                                        trans.Rollback();
+                                        throw new Exception("Deadlock is occured. Transaction failed");
+                                    }
+                                }
+                                else if (iResult == 1)
+                                {
+                                    trans.Rollback();
+                                    throw new Exception("Exception is occured. Transaction failed");
+                                }
+                                IsImmunizationHistory = XMLObj.CheckDataConsistency(ImnuHistorysaveList.Concat(UpdateImmunizationHistory).Cast<object>().ToList(), true, string.Empty);
+                            }
+                            #region Treatment plan
+                            if (ulMyEncounterID != 0 && immun.Is_Administration_Refused != "Y")//if Administration Refused Do not save in GeneralPlan Table
+                            {
+                                TreatmentPlan item = new TreatmentPlan();
+                                item.Human_ID = immun.Human_ID;
+                                item.Encounter_Id = EncounterID;
+                                item.Physician_Id = immun.Physician_Id;
+                                item.Created_By = immun.Created_By;
+                                item.Created_Date_And_Time = immun.Created_Date_And_Time;
+                                item.Plan_Type = "IMMUNIZATION/INJECTION";
+                                string plan_txt = string.Empty;
+                                plan_txt = "* " + sImmunization;
+                                item.Plan = plan_txt;
+                                item.Version = 0;
+                                item.Source_ID = immun.Id;
+                                item.Local_Time = sLocalTime;
+                                Insert_Tplan.Add(item);
+                            }
+                            if (Insert_Tplan != null && Insert_Tplan.Count > 0)
+                            {
+
+                                iResult = objTreatmentPlanMgr.SaveUpdateDelete_DBAndXML_WithoutTransaction(ref Insert_Tplan, ref Update_Tplan, null, session.GetISession(), MACAddress, true, true, ulMyEncounterID, string.Empty, ref XMLObjEncounter);
+                                if (iResult == 2)
+                                {
+                                    if (iTryCount < 5)
+                                    {
+                                        iTryCount++;
+                                        goto TryAgain;
+                                    }
+                                    else
+                                    {
+                                        trans.Rollback();
+                                        MySession.Close();
+                                        throw new Exception("Deadlock occurred. Transaction failed.");
+                                    }
+                                }
+                                else if (iResult == 1)
                                 {
                                     trans.Rollback();
                                     MySession.Close();
-                                    throw new Exception("Deadlock occurred. Transaction failed.");
+                                    throw new Exception("Exception occurred. Transaction failed.");
+                                }
+
+                                IsTreatmentPlanConsistent = XMLObjEncounter.CheckDataConsistency(Insert_Tplan.Cast<object>().ToList(), true, string.Empty);
+                            }
+                            #endregion
+
+                            if (IsImmunization && IsImmunizationHistory && IsTreatmentPlanConsistent)
+                            {
+                                try
+                                {
+                                    //  if (XMLObj.strXmlFilePath != null && XMLObj.strXmlFilePath != "")
+                                    if (XMLObj.itemDoc.InnerXml != null && XMLObj.itemDoc.InnerXml != "")
+                                    {
+                                        //  XMLObj.itemDoc.Save(XMLObj.strXmlFilePath);
+
+                                        int trycount = 0;
+                                    trytosaveagain:
+                                        try
+                                        {
+                                            // XMLObj.itemDoc.Save(XMLObj.strXmlFilePath);
+                                            WriteBlob(ImnuHistorysaveList[0].Human_ID, XMLObj.itemDoc, MySession, null, immulist, null, XMLObj, false);
+
+                                        }
+                                        catch (Exception xmlexcep)
+                                        {
+                                            trycount++;
+                                            if (trycount <= 3)
+                                            {
+                                                int TimeMilliseconds = 0;
+                                                if (System.Configuration.ConfigurationSettings.AppSettings["ThreadSleepTime"] != null)
+                                                    TimeMilliseconds = Convert.ToInt32(System.Configuration.ConfigurationSettings.AppSettings["ThreadSleepTime"]);
+
+                                                Thread.Sleep(TimeMilliseconds);
+                                                string sMsg = string.Empty;
+                                                string sExStackTrace = string.Empty;
+
+                                                string version = "";
+                                                if (System.Configuration.ConfigurationSettings.AppSettings["VersionConfiguration"] != null)
+                                                    version = System.Configuration.ConfigurationSettings.AppSettings["VersionConfiguration"].ToString();
+
+                                                string[] server = version.Split('|');
+                                                string serverno = "";
+                                                if (server.Length > 1)
+                                                    serverno = server[1].Trim();
+
+                                                if (xmlexcep.InnerException != null && xmlexcep.InnerException.Message != null)
+                                                    sMsg = xmlexcep.InnerException.Message;
+                                                else
+                                                    sMsg = xmlexcep.Message;
+
+                                                if (xmlexcep != null && xmlexcep.StackTrace != null)
+                                                    sExStackTrace = xmlexcep.StackTrace;
+
+                                                string insertQuery = "insert into  stats_apperrorlog values(0,'" + sMsg.Replace(@"\\", @"\\\\").Replace(@"\", @"\\").Replace(@"\\\\\\\\", @"\\\\").Replace("'", "") + Environment.NewLine + " Retry: " + trycount + "', '" + serverno + "','" + DateTime.Now + "','','0','0','0','" + sExStackTrace.Replace("'", "") + "','" + DateTime.Now.ToString("yyyy-MM-dd hh:mm:ss") + "')";
+                                                string ConnectionData;
+                                                ConnectionData = ConfigurationManager.ConnectionStrings["con"].ConnectionString;
+                                                using (MySqlConnection con = new MySqlConnection(ConnectionData))
+                                                {
+                                                    using (MySqlCommand cmd = new MySqlCommand(insertQuery))
+                                                    {
+                                                        cmd.Connection = con;
+                                                        try
+                                                        {
+                                                            con.Open();
+                                                            cmd.ExecuteNonQuery();
+                                                            con.Close();
+                                                        }
+                                                        catch
+                                                        {
+                                                        }
+                                                    }
+                                                }
+                                                goto trytosaveagain;
+                                            }
+                                        }
+                                    }
+                                    // if (XMLObjEncounter.strXmlFilePath != null && XMLObjEncounter.strXmlFilePath != "")
+                                    if (XMLObjEncounter.itemDoc.InnerXml != null && XMLObjEncounter.itemDoc.InnerXml != "")
+                                    {
+                                        //   XMLObjEncounter.itemDoc.Save(XMLObjEncounter.strXmlFilePath);
+
+                                        int trycount = 0;
+                                    trytosaveagain:
+                                        try
+                                        {
+                                            // XMLObjEncounter.itemDoc.Save(XMLObjEncounter.strXmlFilePath);
+
+                                            objTreatmentPlanMgr.WriteBlob(EncounterID, XMLObjEncounter.itemDoc, MySession, Insert_Tplan, Update_Tplan, Delete_Tplan, XMLObjEncounter, false);
+                                        }
+                                        catch (Exception xmlexcep)
+                                        {
+                                            trycount++;
+                                            if (trycount <= 3)
+                                            {
+                                                int TimeMilliseconds = 0;
+                                                if (System.Configuration.ConfigurationSettings.AppSettings["ThreadSleepTime"] != null)
+                                                    TimeMilliseconds = Convert.ToInt32(System.Configuration.ConfigurationSettings.AppSettings["ThreadSleepTime"]);
+
+                                                Thread.Sleep(TimeMilliseconds);
+                                                string sMsg = string.Empty;
+                                                string sExStackTrace = string.Empty;
+
+                                                string version = "";
+                                                if (System.Configuration.ConfigurationSettings.AppSettings["VersionConfiguration"] != null)
+                                                    version = System.Configuration.ConfigurationSettings.AppSettings["VersionConfiguration"].ToString();
+
+                                                string[] server = version.Split('|');
+                                                string serverno = "";
+                                                if (server.Length > 1)
+                                                    serverno = server[1].Trim();
+
+                                                if (xmlexcep.InnerException != null && xmlexcep.InnerException.Message != null)
+                                                    sMsg = xmlexcep.InnerException.Message;
+                                                else
+                                                    sMsg = xmlexcep.Message;
+
+                                                if (xmlexcep != null && xmlexcep.StackTrace != null)
+                                                    sExStackTrace = xmlexcep.StackTrace;
+
+                                                string insertQuery = "insert into  stats_apperrorlog values(0,'" + sMsg.Replace(@"\\", @"\\\\").Replace(@"\", @"\\").Replace(@"\\\\\\\\", @"\\\\").Replace("'", "") + Environment.NewLine + " Retry: " + trycount + "', '" + serverno + "','" + DateTime.Now + "','','0','0','0','" + sExStackTrace.Replace("'", "") + "','" + DateTime.Now.ToString("yyyy-MM-dd hh:mm:ss") + "')";
+                                                string ConnectionData;
+                                                ConnectionData = ConfigurationManager.ConnectionStrings["con"].ConnectionString;
+                                                using (MySqlConnection con = new MySqlConnection(ConnectionData))
+                                                {
+                                                    using (MySqlCommand cmd = new MySqlCommand(insertQuery))
+                                                    {
+                                                        cmd.Connection = con;
+                                                        try
+                                                        {
+                                                            con.Open();
+                                                            cmd.ExecuteNonQuery();
+                                                            con.Close();
+                                                        }
+                                                        catch
+                                                        {
+                                                        }
+                                                    }
+                                                }
+                                                goto trytosaveagain;
+                                            }
+                                        }
+                                    }
+                                    trans.Commit();
+                                    //session.GetISession().BeginTransaction(System.Data.IsolationLevel.ReadUncommitted).Commit();
+                                }
+                                catch (XmlException xmlexcep)
+                                {
+                                    throw new Exception(xmlexcep.Message);
+                                }
+                                catch (IOException ex)
+                                {
+                                    throw new Exception(ex.Message);
                                 }
                             }
-                            else if (iResult == 1)
+                            else
                             {
-                                trans.Rollback();
+                                throw new Exception("Data inconsistency detected while saving. Please try again or notify support.");
+                            }
+                        }
+                        catch (NHibernate.Exceptions.GenericADOException ex)
+                        {
+                            trans.Rollback();
+                            throw new Exception(ex.Message);
+                        }
+                        catch (Exception e)
+                        {
+                            trans.Rollback();
+                            throw new Exception(e.Message);
+                        }
+                        finally
+                        {
+                            if (MySession.IsOpen)
                                 MySession.Close();
-                                throw new Exception("Exception occurred. Transaction failed.");
-                            }
-
-                            IsTreatmentPlanConsistent = XMLObjEncounter.CheckDataConsistency(Insert_Tplan.Cast<object>().ToList(), true, string.Empty);
+                            else
+                                session.GetISession().Close();
                         }
-                        #endregion
-
-                        if (IsImmunization && IsImmunizationHistory && IsTreatmentPlanConsistent)
-                        {
-                            try
-                            {
-                                if (XMLObj.strXmlFilePath != null && XMLObj.strXmlFilePath != "")
-                                {
-                                  //  XMLObj.itemDoc.Save(XMLObj.strXmlFilePath);
-
-                                    int trycount = 0;
-                                trytosaveagain:
-                                    try
-                                    {
-                                        XMLObj.itemDoc.Save(XMLObj.strXmlFilePath);
-                                    }
-                                    catch (Exception xmlexcep)
-                                    {
-                                        trycount++;
-                                        if (trycount <= 3)
-                                        {
-                                            int TimeMilliseconds = 0;
-                                            if (System.Configuration.ConfigurationSettings.AppSettings["ThreadSleepTime"] != null)
-                                                TimeMilliseconds = Convert.ToInt32(System.Configuration.ConfigurationSettings.AppSettings["ThreadSleepTime"]);
-
-                                            Thread.Sleep(TimeMilliseconds);
-                                            string sMsg = string.Empty;
-                                            string sExStackTrace = string.Empty;
-
-                                            string version = "";
-                                            if (System.Configuration.ConfigurationSettings.AppSettings["VersionConfiguration"] != null)
-                                                version = System.Configuration.ConfigurationSettings.AppSettings["VersionConfiguration"].ToString();
-
-                                            string[] server = version.Split('|');
-                                            string serverno = "";
-                                            if (server.Length > 1)
-                                                serverno = server[1].Trim();
-
-                                            if (xmlexcep.InnerException != null && xmlexcep.InnerException.Message != null)
-                                                sMsg = xmlexcep.InnerException.Message;
-                                            else
-                                                sMsg = xmlexcep.Message;
-
-                                            if (xmlexcep != null && xmlexcep.StackTrace != null)
-                                                sExStackTrace = xmlexcep.StackTrace;
-
-                                            string insertQuery = "insert into  stats_apperrorlog values(0,'" + sMsg.Replace(@"\\", @"\\\\").Replace(@"\", @"\\").Replace(@"\\\\\\\\", @"\\\\").Replace("'", "") + Environment.NewLine + " Retry: " + trycount + "', '" + serverno + "','" + DateTime.Now + "','','0','0','0','" + sExStackTrace.Replace("'", "") + "','" + DateTime.Now.ToString("yyyy-MM-dd hh:mm:ss") + "')";
-                                            string ConnectionData;
-                                            ConnectionData = ConfigurationManager.ConnectionStrings["con"].ConnectionString;
-                                            using (MySqlConnection con = new MySqlConnection(ConnectionData))
-                                            {
-                                                using (MySqlCommand cmd = new MySqlCommand(insertQuery))
-                                                {
-                                                    cmd.Connection = con;
-                                                    try
-                                                    {
-                                                        con.Open();
-                                                        cmd.ExecuteNonQuery();
-                                                        con.Close();
-                                                    }
-                                                    catch
-                                                    {
-                                                    }
-                                                }
-                                            }
-                                            goto trytosaveagain;
-                                        }
-                                    }
-                                }
-                                if (XMLObjEncounter.strXmlFilePath != null && XMLObjEncounter.strXmlFilePath != "")
-                                {
-                                 //   XMLObjEncounter.itemDoc.Save(XMLObjEncounter.strXmlFilePath);
-
-                                    int trycount = 0;
-                                trytosaveagain:
-                                    try
-                                    {
-                                        XMLObjEncounter.itemDoc.Save(XMLObjEncounter.strXmlFilePath);
-                                    }
-                                    catch (Exception xmlexcep)
-                                    {
-                                        trycount++;
-                                        if (trycount <= 3)
-                                        {
-                                            int TimeMilliseconds = 0;
-                                            if (System.Configuration.ConfigurationSettings.AppSettings["ThreadSleepTime"] != null)
-                                                TimeMilliseconds = Convert.ToInt32(System.Configuration.ConfigurationSettings.AppSettings["ThreadSleepTime"]);
-
-                                            Thread.Sleep(TimeMilliseconds);
-                                            string sMsg = string.Empty;
-                                            string sExStackTrace = string.Empty;
-
-                                            string version = "";
-                                            if (System.Configuration.ConfigurationSettings.AppSettings["VersionConfiguration"] != null)
-                                                version = System.Configuration.ConfigurationSettings.AppSettings["VersionConfiguration"].ToString();
-
-                                            string[] server = version.Split('|');
-                                            string serverno = "";
-                                            if (server.Length > 1)
-                                                serverno = server[1].Trim();
-
-                                            if (xmlexcep.InnerException != null && xmlexcep.InnerException.Message != null)
-                                                sMsg = xmlexcep.InnerException.Message;
-                                            else
-                                                sMsg = xmlexcep.Message;
-
-                                            if (xmlexcep != null && xmlexcep.StackTrace != null)
-                                                sExStackTrace = xmlexcep.StackTrace;
-
-                                            string insertQuery = "insert into  stats_apperrorlog values(0,'" + sMsg.Replace(@"\\", @"\\\\").Replace(@"\", @"\\").Replace(@"\\\\\\\\", @"\\\\").Replace("'", "") + Environment.NewLine + " Retry: " + trycount + "', '" + serverno + "','" + DateTime.Now + "','','0','0','0','" + sExStackTrace.Replace("'", "") + "','" + DateTime.Now.ToString("yyyy-MM-dd hh:mm:ss") + "')";
-                                            string ConnectionData;
-                                            ConnectionData = ConfigurationManager.ConnectionStrings["con"].ConnectionString;
-                                            using (MySqlConnection con = new MySqlConnection(ConnectionData))
-                                            {
-                                                using (MySqlCommand cmd = new MySqlCommand(insertQuery))
-                                                {
-                                                    cmd.Connection = con;
-                                                    try
-                                                    {
-                                                        con.Open();
-                                                        cmd.ExecuteNonQuery();
-                                                        con.Close();
-                                                    }
-                                                    catch
-                                                    {
-                                                    }
-                                                }
-                                            }
-                                            goto trytosaveagain;
-                                        }
-                                    }
-                                }
-                                trans.Commit();
-                                //session.GetISession().BeginTransaction(System.Data.IsolationLevel.ReadUncommitted).Commit();
-                            }
-                            catch (XmlException xmlexcep)
-                            {
-                                throw new Exception(xmlexcep.Message);
-                            }
-                            catch (IOException ex)
-                            {
-                                throw new Exception(ex.Message);
-                            }
-                        }
-                        else
-                        {
-                            throw new Exception("Data inconsistency detected while saving. Please try again or notify support.");
-                        }
-                    }
-                    catch (NHibernate.Exceptions.GenericADOException ex)
-                    {
-                        trans.Rollback();
-                        throw new Exception(ex.Message);
-                    }
-                    catch (Exception e)
-                    {
-                        trans.Rollback();
-                        throw new Exception(e.Message);
-                    }
-                    finally
-                    {
-                        if (MySession.IsOpen)
-                            MySession.Close();
-                        else
-                            session.GetISession().Close();
                     }
                 }
-            }
-            catch (Exception ex)
-            {
-                throw new Exception(ex.Message);
+                catch (Exception ex)
+                {
+                    throw new Exception(ex.Message);
+                }
             }
 
             if (EncounterID != 0)
@@ -707,6 +716,9 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
             IList<ImmunizationHistory> updtImmunHisList = new List<ImmunizationHistory>();
             IList<ImmunizationHistory> deleteImmunHisList = new List<ImmunizationHistory>();
             IList<TreatmentPlan> objTreatmentPlan = new List<TreatmentPlan>();
+            IList<TreatmentPlan> SaveTreatementPlanList = new List<TreatmentPlan>();
+            IList<TreatmentPlan> UpdateTreatmentPlanList = new List<TreatmentPlan>();
+            IList<TreatmentPlan> DeleteTreatmentPlanList = new List<TreatmentPlan>();
 
             immulist.Add(immun);
             IList<Immunization> addList = null;
@@ -1009,9 +1021,7 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
                         }
                         if (UpdateTreatmentPlan != null || InsertTreatmentPlan != null)
                         {
-                            IList<TreatmentPlan> SaveTreatementPlanList = new List<TreatmentPlan>();
-                            IList<TreatmentPlan> UpdateTreatmentPlanList = new List<TreatmentPlan>();
-                            IList<TreatmentPlan> DeleteTreatmentPlanList = new List<TreatmentPlan>();
+                            
                             if (InsertTreatmentPlan != null)
                             {
                                 SaveTreatementPlanList.Add(InsertTreatmentPlan);
@@ -1054,14 +1064,17 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
                         {
                             try
                             {
-                                if (XMLObj.strXmlFilePath != null && XMLObj.strXmlFilePath != "")
+                                //if (XMLObj.strXmlFilePath != null && XMLObj.strXmlFilePath != "")
+                                if (XMLObj.itemDoc.InnerXml != null && XMLObj.itemDoc.InnerXml != "")
                                 {
                                     //XMLObj.itemDoc.Save(XMLObj.strXmlFilePath);
                                     int trycount = 0;
                                 trytosaveagain:
                                     try
                                     {
-                                        XMLObj.itemDoc.Save(XMLObj.strXmlFilePath);
+                                        // XMLObj.itemDoc.Save(XMLObj.strXmlFilePath);
+                                        WriteBlob(immunHist.Human_ID, XMLObj.itemDoc, MySession, null, immulist, null, XMLObj, false);
+
                                     }
                                     catch (Exception xmlexcep)
                                     {
@@ -1116,14 +1129,17 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
                                         }
                                     }
                                 }
-                                if (XMLObjEncounter.strXmlFilePath != null && XMLObjEncounter.strXmlFilePath != "")
+                                //if (XMLObjEncounter.strXmlFilePath != null && XMLObjEncounter.strXmlFilePath != "")
+                                if (XMLObjEncounter.itemDoc.InnerXml != null && XMLObjEncounter.itemDoc.InnerXml != "")
                                 {
-                                   // XMLObjEncounter.itemDoc.Save(XMLObjEncounter.strXmlFilePath);
+                                    // XMLObjEncounter.itemDoc.Save(XMLObjEncounter.strXmlFilePath);
                                     int trycount = 0;
                                 trytosaveagain:
                                     try
                                     {
-                                        XMLObjEncounter.itemDoc.Save(XMLObjEncounter.strXmlFilePath);
+                                        //   XMLObjEncounter.itemDoc.Save(XMLObjEncounter.strXmlFilePath);
+                                        objTreatmentPlanMgr.WriteBlob(EncounterID, XMLObjEncounter.itemDoc, MySession, SaveTreatementPlanList, UpdateTreatmentPlanList, DeleteTreatmentPlanList, XMLObjEncounter, false);
+
                                     }
                                     catch (Exception xmlexcep)
                                     {
@@ -1232,6 +1248,10 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
             WFObjectManager wfMngr = new WFObjectManager();
             IList<ImmunizationHistory> delImmunHisList = new List<ImmunizationHistory>();
             IList<TreatmentPlan> objTreatmentPlan = new List<TreatmentPlan>();
+            IList<TreatmentPlan> SaveTreatmentPlanList = null;
+            IList<TreatmentPlan> UpdateTreatmentPlanList = new List<TreatmentPlan>();
+            IList<TreatmentPlan> DeleteTreatmentPlanList = new List<TreatmentPlan>();
+
             WFObject TempWF = wfMngr.GetByObjectSystemId(immun.Immunization_Group_ID, "IMMUNIZATION ORDER");
             bool deleteFlag = false;
             using (ISession iMySession = NHibernateSessionManager.Instance.CreateISession())
@@ -1457,9 +1477,7 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
 
                         if (DeleteTreatmentPlan != null)
                         {
-                            IList<TreatmentPlan> SaveTreatmentPlanList = null;
-                            IList<TreatmentPlan> UpdateTreatmentPlanList = new List<TreatmentPlan>();
-                            IList<TreatmentPlan> DeleteTreatmentPlanList = new List<TreatmentPlan>();
+                           
                             if (DeleteTreatmentPlan != null)
                                 DeleteTreatmentPlanList.Add(DeleteTreatmentPlan);
 
@@ -1504,14 +1522,16 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
                         {
                             try
                             {
-                                if (XMLObj.strXmlFilePath != null && XMLObj.strXmlFilePath != "")
-                                {
+                               // if (XMLObj.strXmlFilePath != null && XMLObj.strXmlFilePath != "")
+                                    if (XMLObj.itemDoc.InnerXml != null && XMLObj.itemDoc.InnerXml != "")
+                                    {
                                    // XMLObj.itemDoc.Save(XMLObj.strXmlFilePath);
                                     int trycount = 0;
                                 trytosaveagain:
                                     try
                                     {
-                                        XMLObj.itemDoc.Save(XMLObj.strXmlFilePath);
+                                        //XMLObj.itemDoc.Save(XMLObj.strXmlFilePath);
+                                        WriteBlob(immunHist.Human_ID, XMLObj.itemDoc, MySession, null, null, immulist, XMLObj, false);
                                     }
                                     catch (Exception xmlexcep)
                                     {
@@ -1566,14 +1586,17 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
                                         }
                                     }
                                 }
-                                if (XMLObjEncounter.strXmlFilePath != null && XMLObjEncounter.strXmlFilePath != "")
+                                //if (XMLObjEncounter.strXmlFilePath != null && XMLObjEncounter.strXmlFilePath != "")
+                                if (XMLObjEncounter.itemDoc.InnerXml != null && XMLObjEncounter.itemDoc.InnerXml != "")
                                 {
                                    // XMLObjEncounter.itemDoc.Save(XMLObjEncounter.strXmlFilePath);
                                     int trycount = 0;
                                 trytosaveagain:
                                     try
                                     {
-                                        XMLObjEncounter.itemDoc.Save(XMLObjEncounter.strXmlFilePath);
+                                       // XMLObjEncounter.itemDoc.Save(XMLObjEncounter.strXmlFilePath);
+                                       objTreatmentPlanMgr.WriteBlob(EncounterID, XMLObjEncounter.itemDoc, MySession, SaveTreatmentPlanList, UpdateTreatmentPlanList, DeleteTreatmentPlanList, XMLObjEncounter, false);
+
                                     }
                                     catch (Exception xmlexcep)
                                     {
