@@ -1643,7 +1643,9 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
                                 {
                                     if (bsavehit)
                                     {
-                                        if (XMLObjList[i].itemDoc.BaseURI == "")
+                                        //Commented By Deepak
+                                        //if (XMLObjList[i].itemDoc.BaseURI == "")
+                                        if (XMLObjList[i].itemDoc.InnerXml == "")
                                         {
                                             bXmlFound = false;
                                             throw new Exception("$Transaction XML: '" + "' not found. Please contact support team to generate the XML. ");

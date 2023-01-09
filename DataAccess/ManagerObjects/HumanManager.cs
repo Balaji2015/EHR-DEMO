@@ -5992,9 +5992,9 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
 
                                 IList<Human> ilstHuman = new List<Human>();
                                 ilstHuman.Add(objHuman);
-
+                                objXML.itemDoc = null;
                                 List<object> lsthumanObj = ilstHuman.Cast<object>().ToList();
-                                objXML.Copy_Previous_GenerateXmlSave(lsthumanObj, objHuman.Id, string.Empty, false);
+                                objXML.Copy_Previous_GenerateXmlSave(lsthumanObj, objHuman.Id, string.Empty, false, ref objXML);
                             }
                         }
 

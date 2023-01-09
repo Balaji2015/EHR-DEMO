@@ -18,7 +18,7 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
         void saveAddendum(IList<AddendumNotes> saveList, string facilityName, String ownerName, String userRole, bool isReview, string macAddress);
         void updateAddendum(IList<AddendumNotes> saveList, string facilityName, String ownerName, int closeType, string macAddress);
         IList<AddendumNotes> getAddendumNotesForPhysician(ulong addendumID, ulong encounterID);
-        void moveToAddendum(IList<AddendumNotes> loadList, string facilityName, String ownerName, String userRole, bool isSave, bool isReview, int closeType, string macAddress, bool bAddendumSaved);
+        void moveToAddendum(IList<AddendumNotes> loadList, string facilityName, String ownerName, String userRole, bool isSave, bool isReview, int closeType, string macAddress, bool bAddendumSaved, GenerateXml objGenerateXML);
         void saveUpdateAddendum(IList<AddendumNotes> saveList, IList<AddendumNotes> updateList, string facilityName, String ownerName, String userRole, bool isSave, bool isReview, int closeType, bool isDirectMoveToProvider, string macAddress, bool bSaveXML);
     }
 
@@ -224,289 +224,294 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
                 }
         }
 
-        public void saveUpdateAddendum(IList<AddendumNotes> saveList, IList<AddendumNotes> updateList, string facilityName, String ownerName, String userRole, bool isSave, bool isReview, int closeType, bool isDirectMoveToProvider, string macAddress,bool bSaveXML)
+        public void saveUpdateAddendum(IList<AddendumNotes> saveList, IList<AddendumNotes> updateList, string facilityName, String ownerName, String userRole, bool isSave, bool isReview, int closeType, bool isDirectMoveToProvider, string macAddress, bool bSaveXML)
         {
             iTryCount = 0;
         TryAgain:
             int iResult = 0;
-            
-                ISession MySession = Session.GetISession();
-                ITransaction trans = null;
-                try
-                {
-                    trans = MySession.BeginTransaction();
 
-                    if ((saveList != null && saveList.Count > 0) || (updateList != null && updateList.Count > 0))
+            ISession MySession = Session.GetISession();
+            ITransaction trans = null;
+            try
+            {
+                trans = MySession.BeginTransaction();
+
+                if ((saveList != null && saveList.Count > 0) || (updateList != null && updateList.Count > 0))
+                {
+                    ulong encID = 0;
+                    EncounterManager encounterMngr = new EncounterManager();
+                    if (saveList != null && saveList.Count > 0)
+                        encID = saveList[0].Encounter_ID;
+                    else
+                        if (updateList != null && updateList.Count > 0)
+                        encID = updateList[0].Encounter_ID;
+                    GenerateXml XMLObj = new GenerateXml();
+                    //iResult = SaveUpdateDeleteWithoutTransaction(ref saveList, updateList, null, MySession, macAddress);
+                    iResult = SaveUpdateDelete_DBAndXML_WithoutTransaction(ref saveList, ref updateList, null, MySession, macAddress, true, true, encID, string.Empty, ref XMLObj);
+                    bool bAddendumSaved = false;
+                    if (saveList != null && saveList.Count > 0)
+                        bAddendumSaved = XMLObj.CheckDataConsistency(saveList.Cast<object>().ToList(), true, string.Empty);
+                    else
+                        bAddendumSaved = XMLObj.CheckDataConsistency(updateList.Cast<object>().ToList(), true, string.Empty);
+                    if (iResult == 2)
                     {
-                        ulong encID = 0;
-                        EncounterManager encounterMngr = new EncounterManager();
-                        if (saveList != null && saveList.Count > 0)
-                            encID = saveList[0].Encounter_ID;
-                        else
-                            if (updateList != null && updateList.Count > 0)
-                                encID = updateList[0].Encounter_ID;
-                        GenerateXml XMLObj = new GenerateXml();
-                        //iResult = SaveUpdateDeleteWithoutTransaction(ref saveList, updateList, null, MySession, macAddress);
-                        iResult = SaveUpdateDelete_DBAndXML_WithoutTransaction(ref saveList, ref updateList, null, MySession, macAddress, true, true, encID, string.Empty, ref XMLObj);
-                        bool bAddendumSaved = false;
-                        if(saveList != null && saveList.Count > 0)
-                            bAddendumSaved = XMLObj.CheckDataConsistency(saveList.Cast<object>().ToList(), true, string.Empty);
-                        else
-                            bAddendumSaved = XMLObj.CheckDataConsistency(updateList.Cast<object>().ToList(), true, string.Empty);
-                        if (iResult == 2)
+                        if (iTryCount < 5)
                         {
-                            if (iTryCount < 5)
-                            {
-                                iTryCount++;
-                                goto TryAgain;
-                            }
-                            else
-                            {
-                                trans.Rollback();
-                                throw new Exception("Deadlock occurred. Transaction failed.");
-                            }
+                            iTryCount++;
+                            goto TryAgain;
                         }
-                        else if (iResult == 1)
+                        else
                         {
                             trans.Rollback();
-                            throw new Exception("Exception occurred. Transaction failed.");
+                            throw new Exception("Deadlock occurred. Transaction failed.");
                         }
-                        
-                        if (encID != 0)
+                    }
+                    else if (iResult == 1)
+                    {
+                        trans.Rollback();
+                        throw new Exception("Exception occurred. Transaction failed.");
+                    }
+
+                    if (encID != 0)
+                    {
+                        //IList<Encounter> encRecord = encounterMngr.GetEncounterByEncounterID(encID);
+                        //encRecord[0].Is_Progressnote_Generated = "N";
+                        //IList<Encounter> emptySave=null;
+                        //encounterMngr.SaveUpdateDeleteWithTransaction(ref emptySave, encRecord, null, string.Empty);
+                    }
+                    if (saveList != null && saveList.Count > 0)
+                    {
+                        closeType = isDirectMoveToProvider ? closeType : userRole.ToUpper() == "MEDICAL ASSISTANT" ? 4 : 1;
+                        moveToAddendum(saveList, facilityName, ownerName, userRole, isSave, isReview, closeType, macAddress, bAddendumSaved, XMLObj);
+                        if (bAddendumSaved)
                         {
-                            //IList<Encounter> encRecord = encounterMngr.GetEncounterByEncounterID(encID);
-                            //encRecord[0].Is_Progressnote_Generated = "N";
-                            //IList<Encounter> emptySave=null;
-                            //encounterMngr.SaveUpdateDeleteWithTransaction(ref emptySave, encRecord, null, string.Empty);
+                            // XMLObj.itemDoc.Save(XMLObj.strXmlFilePath);
+                            //    int trycount = 0;
+                            //trytosaveagain:
+                            try
+                            {
+                                //XMLObj.itemDoc.Save(XMLObj.strXmlFilePath);
+                                WriteBlob(encID, XMLObj.itemDoc, MySession, null, saveList, updateList, XMLObj, false);
+
+                            }
+                            catch (Exception xmlexcep)
+                            {
+                                //trycount++;
+                                //if (trycount <= 3)
+                                //{
+                                //    int TimeMilliseconds = 0;
+                                //    if (System.Configuration.ConfigurationSettings.AppSettings["ThreadSleepTime"] != null)
+                                //        TimeMilliseconds = Convert.ToInt32(System.Configuration.ConfigurationSettings.AppSettings["ThreadSleepTime"]);
+
+                                //    Thread.Sleep(TimeMilliseconds);
+                                //    string sMsg = string.Empty;
+                                //    string sExStackTrace = string.Empty;
+
+                                //    string version = "";
+                                //    if (System.Configuration.ConfigurationSettings.AppSettings["VersionConfiguration"] != null)
+                                //        version = System.Configuration.ConfigurationSettings.AppSettings["VersionConfiguration"].ToString();
+
+                                //    string[] server = version.Split('|');
+                                //    string serverno = "";
+                                //    if (server.Length > 1)
+                                //        serverno = server[1].Trim();
+
+                                //    if (xmlexcep.InnerException != null && xmlexcep.InnerException.Message != null)
+                                //        sMsg = xmlexcep.InnerException.Message;
+                                //    else
+                                //        sMsg = xmlexcep.Message;
+
+                                //    if (xmlexcep != null && xmlexcep.StackTrace != null)
+                                //        sExStackTrace = xmlexcep.StackTrace;
+
+                                //    string insertQuery = "insert into  stats_apperrorlog values(0,'" + sMsg.Replace(@"\\", @"\\\\").Replace(@"\", @"\\").Replace(@"\\\\\\\\", @"\\\\").Replace("'", "") + Environment.NewLine + " Retry: " + trycount + "', '" + serverno + "','" + DateTime.Now + "','','0','0','0','" + sExStackTrace.Replace("'", "") + "','" + DateTime.Now.ToString("yyyy-MM-dd hh:mm:ss") + "')";
+                                //    string ConnectionData;
+                                //    ConnectionData = ConfigurationManager.ConnectionStrings["con"].ConnectionString;
+                                //    using (MySqlConnection con = new MySqlConnection(ConnectionData))
+                                //    {
+                                //        using (MySqlCommand cmd = new MySqlCommand(insertQuery))
+                                //        {
+                                //            cmd.Connection = con;
+                                //            try
+                                //            {
+                                //                con.Open();
+                                //                cmd.ExecuteNonQuery();
+                                //                con.Close();
+                                //            }
+                                //            catch
+                                //            {
+                                //            }
+                                //        }
+                                //    }
+                                //    goto trytosaveagain;
+                                //}
+                            }
+
                         }
-                        if (saveList != null && saveList.Count > 0)
+                        else
+                            throw new Exception("Data inconsistent on Save in DB and XML. Please contact support");
+                    }
+                    else
+                    {
+                        if (!isSave && (updateList != null && updateList.Count > 0))
                         {
-                            closeType = isDirectMoveToProvider ? closeType : userRole.ToUpper() == "MEDICAL ASSISTANT" ? 4 : 1;
-                            moveToAddendum(saveList, facilityName, ownerName, userRole, isSave, isReview, closeType, macAddress,bAddendumSaved);
+                            moveToAddendum(updateList, facilityName, ownerName, userRole, isSave, isReview, closeType, macAddress, bAddendumSaved, XMLObj);
                             if (bAddendumSaved)
                             {
-                               // XMLObj.itemDoc.Save(XMLObj.strXmlFilePath);
-                                int trycount = 0;
-                            trytosaveagain:
+                                // XMLObj.itemDoc.Save(XMLObj.strXmlFilePath);
+
+                                //    int trycount = 0;
+                                //trytosaveagain:
                                 try
                                 {
-                                    //XMLObj.itemDoc.Save(XMLObj.strXmlFilePath);
+                                    // XMLObj.itemDoc.Save(XMLObj.strXmlFilePath);
+                                    WriteBlob(encID, XMLObj.itemDoc, MySession, null, saveList, updateList, XMLObj, false);
                                 }
                                 catch (Exception xmlexcep)
                                 {
-                                    trycount++;
-                                    if (trycount <= 3)
-                                    {
-                                        int TimeMilliseconds = 0;
-                                        if (System.Configuration.ConfigurationSettings.AppSettings["ThreadSleepTime"] != null)
-                                            TimeMilliseconds = Convert.ToInt32(System.Configuration.ConfigurationSettings.AppSettings["ThreadSleepTime"]);
+                                    //trycount++;
+                                    //if (trycount <= 3)
+                                    //{
+                                    //    int TimeMilliseconds = 0;
+                                    //    if (System.Configuration.ConfigurationSettings.AppSettings["ThreadSleepTime"] != null)
+                                    //        TimeMilliseconds = Convert.ToInt32(System.Configuration.ConfigurationSettings.AppSettings["ThreadSleepTime"]);
 
-                                        Thread.Sleep(TimeMilliseconds);
-                                        string sMsg = string.Empty;
-                                        string sExStackTrace = string.Empty;
+                                    //    Thread.Sleep(TimeMilliseconds);
+                                    //    string sMsg = string.Empty;
+                                    //    string sExStackTrace = string.Empty;
 
-                                        string version = "";
-                                        if (System.Configuration.ConfigurationSettings.AppSettings["VersionConfiguration"] != null)
-                                            version = System.Configuration.ConfigurationSettings.AppSettings["VersionConfiguration"].ToString();
+                                    //    string version = "";
+                                    //    if (System.Configuration.ConfigurationSettings.AppSettings["VersionConfiguration"] != null)
+                                    //        version = System.Configuration.ConfigurationSettings.AppSettings["VersionConfiguration"].ToString();
 
-                                        string[] server = version.Split('|');
-                                        string serverno = "";
-                                        if (server.Length > 1)
-                                            serverno = server[1].Trim();
+                                    //    string[] server = version.Split('|');
+                                    //    string serverno = "";
+                                    //    if (server.Length > 1)
+                                    //        serverno = server[1].Trim();
 
-                                        if (xmlexcep.InnerException != null && xmlexcep.InnerException.Message != null)
-                                            sMsg = xmlexcep.InnerException.Message;
-                                        else
-                                            sMsg = xmlexcep.Message;
+                                    //    if (xmlexcep.InnerException != null && xmlexcep.InnerException.Message != null)
+                                    //        sMsg = xmlexcep.InnerException.Message;
+                                    //    else
+                                    //        sMsg = xmlexcep.Message;
 
-                                        if (xmlexcep != null && xmlexcep.StackTrace != null)
-                                            sExStackTrace = xmlexcep.StackTrace;
+                                    //    if (xmlexcep != null && xmlexcep.StackTrace != null)
+                                    //        sExStackTrace = xmlexcep.StackTrace;
 
-                                        string insertQuery = "insert into  stats_apperrorlog values(0,'" + sMsg.Replace(@"\\", @"\\\\").Replace(@"\", @"\\").Replace(@"\\\\\\\\", @"\\\\").Replace("'", "") + Environment.NewLine + " Retry: " + trycount + "', '" + serverno + "','" + DateTime.Now + "','','0','0','0','" + sExStackTrace.Replace("'", "") + "','" + DateTime.Now.ToString("yyyy-MM-dd hh:mm:ss") + "')";
-                                        string ConnectionData;
-                                        ConnectionData = ConfigurationManager.ConnectionStrings["con"].ConnectionString;
-                                        using (MySqlConnection con = new MySqlConnection(ConnectionData))
-                                        {
-                                            using (MySqlCommand cmd = new MySqlCommand(insertQuery))
-                                            {
-                                                cmd.Connection = con;
-                                                try
-                                                {
-                                                    con.Open();
-                                                    cmd.ExecuteNonQuery();
-                                                    con.Close();
-                                                }
-                                                catch
-                                                {
-                                                }
-                                            }
-                                        }
-                                        goto trytosaveagain;
-                                    }
+                                    //    string insertQuery = "insert into  stats_apperrorlog values(0,'" + sMsg.Replace(@"\\", @"\\\\").Replace(@"\", @"\\").Replace(@"\\\\\\\\", @"\\\\").Replace("'", "") + Environment.NewLine + " Retry: " + trycount + "', '" + serverno + "','" + DateTime.Now + "','','0','0','0','" + sExStackTrace.Replace("'", "") + "','" + DateTime.Now.ToString("yyyy-MM-dd hh:mm:ss") + "')";
+                                    //    string ConnectionData;
+                                    //    ConnectionData = ConfigurationManager.ConnectionStrings["con"].ConnectionString;
+                                    //    using (MySqlConnection con = new MySqlConnection(ConnectionData))
+                                    //    {
+                                    //        using (MySqlCommand cmd = new MySqlCommand(insertQuery))
+                                    //        {
+                                    //            cmd.Connection = con;
+                                    //            try
+                                    //            {
+                                    //                con.Open();
+                                    //                cmd.ExecuteNonQuery();
+                                    //                con.Close();
+                                    //            }
+                                    //            catch
+                                    //            {
+                                    //            }
+                                    //        }
+                                    //    }
+                                    //    goto trytosaveagain;
+                                    //}
                                 }
-
                             }
                             else
                                 throw new Exception("Data inconsistent on Save in DB and XML. Please contact support");
                         }
                         else
                         {
-                            if (!isSave && (updateList != null && updateList.Count > 0))
+                            //MySession.Flush();
+                            if (bAddendumSaved)
                             {
-                                moveToAddendum(updateList, facilityName, ownerName, userRole, isSave, isReview, closeType, macAddress,bAddendumSaved);
-                                if (bAddendumSaved)
+                                //trans.Commit();
+                                // XMLObj.itemDoc.Save(XMLObj.strXmlFilePath);
+                                //    int trycount = 0;
+                                //trytosaveagain:
+                                try
                                 {
-                                   // XMLObj.itemDoc.Save(XMLObj.strXmlFilePath);
-
-                                    int trycount = 0;
-                                trytosaveagain:
-                                    try
-                                    {
-                                        XMLObj.itemDoc.Save(XMLObj.strXmlFilePath);
-                                    }
-                                    catch (Exception xmlexcep)
-                                    {
-                                        trycount++;
-                                        if (trycount <= 3)
-                                        {
-                                            int TimeMilliseconds = 0;
-                                            if (System.Configuration.ConfigurationSettings.AppSettings["ThreadSleepTime"] != null)
-                                                TimeMilliseconds = Convert.ToInt32(System.Configuration.ConfigurationSettings.AppSettings["ThreadSleepTime"]);
-
-                                            Thread.Sleep(TimeMilliseconds);
-                                            string sMsg = string.Empty;
-                                            string sExStackTrace = string.Empty;
-
-                                            string version = "";
-                                            if (System.Configuration.ConfigurationSettings.AppSettings["VersionConfiguration"] != null)
-                                                version = System.Configuration.ConfigurationSettings.AppSettings["VersionConfiguration"].ToString();
-
-                                            string[] server = version.Split('|');
-                                            string serverno = "";
-                                            if (server.Length > 1)
-                                                serverno = server[1].Trim();
-
-                                            if (xmlexcep.InnerException != null && xmlexcep.InnerException.Message != null)
-                                                sMsg = xmlexcep.InnerException.Message;
-                                            else
-                                                sMsg = xmlexcep.Message;
-
-                                            if (xmlexcep != null && xmlexcep.StackTrace != null)
-                                                sExStackTrace = xmlexcep.StackTrace;
-
-                                            string insertQuery = "insert into  stats_apperrorlog values(0,'" + sMsg.Replace(@"\\", @"\\\\").Replace(@"\", @"\\").Replace(@"\\\\\\\\", @"\\\\").Replace("'", "") + Environment.NewLine + " Retry: " + trycount + "', '" + serverno + "','" + DateTime.Now + "','','0','0','0','" + sExStackTrace.Replace("'", "") + "','" + DateTime.Now.ToString("yyyy-MM-dd hh:mm:ss") + "')";
-                                            string ConnectionData;
-                                            ConnectionData = ConfigurationManager.ConnectionStrings["con"].ConnectionString;
-                                            using (MySqlConnection con = new MySqlConnection(ConnectionData))
-                                            {
-                                                using (MySqlCommand cmd = new MySqlCommand(insertQuery))
-                                                {
-                                                    cmd.Connection = con;
-                                                    try
-                                                    {
-                                                        con.Open();
-                                                        cmd.ExecuteNonQuery();
-                                                        con.Close();
-                                                    }
-                                                    catch
-                                                    {
-                                                    }
-                                                }
-                                            }
-                                            goto trytosaveagain;
-                                        }
-                                    }
+                                    //XMLObj.itemDoc.Save(XMLObj.strXmlFilePath);
+                                    WriteBlob(encID, XMLObj.itemDoc, MySession, null, saveList, updateList, XMLObj, false);
                                 }
-                                else
-                                    throw new Exception("Data inconsistent on Save in DB and XML. Please contact support");
+                                catch (Exception xmlexcep)
+                                {
+                                    //trycount++;
+                                    //if (trycount <= 3)
+                                    //{
+                                    //    int TimeMilliseconds = 0;
+                                    //    if (System.Configuration.ConfigurationSettings.AppSettings["ThreadSleepTime"] != null)
+                                    //        TimeMilliseconds = Convert.ToInt32(System.Configuration.ConfigurationSettings.AppSettings["ThreadSleepTime"]);
+
+                                    //    Thread.Sleep(TimeMilliseconds);
+                                    //    string sMsg = string.Empty;
+                                    //    string sExStackTrace = string.Empty;
+
+                                    //    string version = "";
+                                    //    if (System.Configuration.ConfigurationSettings.AppSettings["VersionConfiguration"] != null)
+                                    //        version = System.Configuration.ConfigurationSettings.AppSettings["VersionConfiguration"].ToString();
+
+                                    //    string[] server = version.Split('|');
+                                    //    string serverno = "";
+                                    //    if (server.Length > 1)
+                                    //        serverno = server[1].Trim();
+
+                                    //    if (xmlexcep.InnerException != null && xmlexcep.InnerException.Message != null)
+                                    //        sMsg = xmlexcep.InnerException.Message;
+                                    //    else
+                                    //        sMsg = xmlexcep.Message;
+
+                                    //    if (xmlexcep != null && xmlexcep.StackTrace != null)
+                                    //        sExStackTrace = xmlexcep.StackTrace;
+
+                                    //    string insertQuery = "insert into  stats_apperrorlog values(0,'" + sMsg.Replace(@"\\", @"\\\\").Replace(@"\", @"\\").Replace(@"\\\\\\\\", @"\\\\").Replace("'", "") + Environment.NewLine + " Retry: " + trycount + "', '" + serverno + "','" + DateTime.Now + "','','0','0','0','" + sExStackTrace.Replace("'", "") + "','" + DateTime.Now.ToString("yyyy-MM-dd hh:mm:ss") + "')";
+                                    //    string ConnectionData;
+                                    //    ConnectionData = ConfigurationManager.ConnectionStrings["con"].ConnectionString;
+                                    //    using (MySqlConnection con = new MySqlConnection(ConnectionData))
+                                    //    {
+                                    //        using (MySqlCommand cmd = new MySqlCommand(insertQuery))
+                                    //        {
+                                    //            cmd.Connection = con;
+                                    //            try
+                                    //            {
+                                    //                con.Open();
+                                    //                cmd.ExecuteNonQuery();
+                                    //                con.Close();
+                                    //            }
+                                    //            catch
+                                    //            {
+                                    //            }
+                                    //        }
+                                    //    }
+                                    //    goto trytosaveagain;
+                                    //}
+                                }
+                                trans.Commit();
                             }
                             else
-                            {
-                                //MySession.Flush();
-                                if (bAddendumSaved)
-                                {
-                                    trans.Commit();
-                                   // XMLObj.itemDoc.Save(XMLObj.strXmlFilePath);
-                                    int trycount = 0;
-                                trytosaveagain:
-                                    try
-                                    {
-                                        //XMLObj.itemDoc.Save(XMLObj.strXmlFilePath);
-                                    }
-                                    catch (Exception xmlexcep)
-                                    {
-                                        trycount++;
-                                        if (trycount <= 3)
-                                        {
-                                            int TimeMilliseconds = 0;
-                                            if (System.Configuration.ConfigurationSettings.AppSettings["ThreadSleepTime"] != null)
-                                                TimeMilliseconds = Convert.ToInt32(System.Configuration.ConfigurationSettings.AppSettings["ThreadSleepTime"]);
-
-                                            Thread.Sleep(TimeMilliseconds);
-                                            string sMsg = string.Empty;
-                                            string sExStackTrace = string.Empty;
-
-                                            string version = "";
-                                            if (System.Configuration.ConfigurationSettings.AppSettings["VersionConfiguration"] != null)
-                                                version = System.Configuration.ConfigurationSettings.AppSettings["VersionConfiguration"].ToString();
-
-                                            string[] server = version.Split('|');
-                                            string serverno = "";
-                                            if (server.Length > 1)
-                                                serverno = server[1].Trim();
-
-                                            if (xmlexcep.InnerException != null && xmlexcep.InnerException.Message != null)
-                                                sMsg = xmlexcep.InnerException.Message;
-                                            else
-                                                sMsg = xmlexcep.Message;
-
-                                            if (xmlexcep != null && xmlexcep.StackTrace != null)
-                                                sExStackTrace = xmlexcep.StackTrace;
-
-                                            string insertQuery = "insert into  stats_apperrorlog values(0,'" + sMsg.Replace(@"\\", @"\\\\").Replace(@"\", @"\\").Replace(@"\\\\\\\\", @"\\\\").Replace("'", "") + Environment.NewLine + " Retry: " + trycount + "', '" + serverno + "','" + DateTime.Now + "','','0','0','0','" + sExStackTrace.Replace("'", "") + "','" + DateTime.Now.ToString("yyyy-MM-dd hh:mm:ss") + "')";
-                                            string ConnectionData;
-                                            ConnectionData = ConfigurationManager.ConnectionStrings["con"].ConnectionString;
-                                            using (MySqlConnection con = new MySqlConnection(ConnectionData))
-                                            {
-                                                using (MySqlCommand cmd = new MySqlCommand(insertQuery))
-                                                {
-                                                    cmd.Connection = con;
-                                                    try
-                                                    {
-                                                        con.Open();
-                                                        cmd.ExecuteNonQuery();
-                                                        con.Close();
-                                                    }
-                                                    catch
-                                                    {
-                                                    }
-                                                }
-                                            }
-                                            goto trytosaveagain;
-                                        }
-                                    }
-                                }
-                                else
-                                    throw new Exception("Data inconsistent on Save in DB and XML. Please contact support");
-                            }
+                                throw new Exception("Data inconsistent on Save in DB and XML. Please contact support");
                         }
                     }
                 }
-                catch (NHibernate.Exceptions.GenericADOException ex)
-                {
-                    trans.Rollback();
-                    throw new Exception(ex.Message);
-                }
-                catch (Exception e)
-                {
-                    trans.Rollback();
-                    throw new Exception(e.Message);
-                }
-                finally
-                {
-                    if (isSave && (updateList != null && updateList.Count > 0))
-                        MySession.Close();
-                }
+            }
+            catch (NHibernate.Exceptions.GenericADOException ex)
+            {
+                trans.Rollback();
+                throw new Exception(ex.Message);
+            }
+            catch (Exception e)
+            {
+                trans.Rollback();
+                throw new Exception(e.Message);
+            }
+            finally
+            {
+                if (isSave && (updateList != null && updateList.Count > 0))
+                    MySession.Close();
+            }
 
             //GenerateXml XMLObj = new GenerateXml();
             //if (bSaveXML == true)
@@ -527,7 +532,7 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
             //        }
             //}
         }
-      
+
         public IList<AddendumNotes> getAddendumNotesForPhysician(ulong addendumID, ulong encounterID)
         {
             IList<AddendumNotes> ilstAddendumNotes = new List<AddendumNotes>();
@@ -540,99 +545,106 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
             return ilstAddendumNotes;
         }
 
-        public void moveToAddendum(IList<AddendumNotes> loadList, string facilityName, String ownerName, String userRole, bool isSave, bool isReview, int closeType, string macAddress,bool bAddendumSaved)
+        public void moveToAddendum(IList<AddendumNotes> loadList, string facilityName, String ownerName, String userRole, bool isSave, bool isReview, int closeType, string macAddress, bool bAddendumSaved, GenerateXml objGenerateXML)
         {
             iTryCount = 0;
         TryAgain:
             int iResult = 0;
-           
-                ISession MySession = Session.GetISession();
-                ITransaction trans = null;
-                try
-                {
-                    trans = MySession.BeginTransaction();
 
-                    if (isSave)
+            ISession MySession = Session.GetISession();
+            ITransaction trans = null;
+            try
+            {
+                trans = MySession.BeginTransaction();
+
+                if (isSave)
+                {
+                    string userName = string.Empty;
+                    WFObject WFObj = new WFObject();
+                    WFObj.Obj_Type = "ADDENDUM";
+                    WFObj.Current_Arrival_Time = loadList[0].Created_Date_And_Time;
+                    //UserManager userManager = new UserManager();//Commented for Bug ID:37104
+                    //IList<User> userList = userManager.GetUserList();
+                    //userName = userList.Any(a => a.person_name.ToUpper() == loadList[0].Created_By.ToUpper()) ? userList.Where(d => d.person_name.ToUpper() == loadList[0].Created_By.ToUpper()).Select(u => u.user_name).ToList()[0] : string.Empty;
+                    //WFObj.Current_Owner = userName == string.Empty ? ownerName == string.Empty && userRole.ToUpper() == "PHYSICIAN" ? "UNKNOWN" : ownerName : ownerName == string.Empty ? userName : ownerName;
+                    WFObj.Current_Owner = ownerName;
+                    WFObj.Fac_Name = facilityName;
+                    WFObj.Parent_Obj_Type = string.Empty;
+                    WFObj.Obj_System_Id = loadList[0].Id;
+                    WFObj.Parent_Obj_System_Id = loadList[0].Encounter_ID;
+                    WFObj.Current_Process = "START";
+                    WFObjectManager objWfMnger = new WFObjectManager();
+                    iResult = objWfMnger.InsertToWorkFlowObject(WFObj, closeType, macAddress, MySession);
+                    //iResult = objWfMnger.InsertToWorkFlowObject(WFObj, (userRole == string.Empty || userRole.ToUpper() == "PHYSICIAN ASSISTANT") ? 1 : userRole.ToUpper() == "PHYSICIAN" ? 2 : userRole.ToUpper() == "MEDICAL ASSISTANT" ? 4 : 3, macAddress, MySession);
+                    //iResult = objWfMnger.InsertToWorkFlowObject(WFObj, userRole == string.Empty ? 1 : userRole.ToUpper() == "PHYSICIAN" ? 2 : userRole.ToUpper() == "MEDICAL ASSISTANT" ? 4 : !isReview ? 2 : 3, macAddress, MySession);
+
+                    WriteBlob(loadList[0].Encounter_ID, objGenerateXML.itemDoc, MySession, loadList, null, null, objGenerateXML, false);
+
+                }
+                else
+                {
+
+                    if (ownerName == "UNKNOWN")
                     {
-                        string userName = string.Empty;
-                        WFObject WFObj = new WFObject();
-                        WFObj.Obj_Type = "ADDENDUM";
-                        WFObj.Current_Arrival_Time = loadList[0].Created_Date_And_Time;
-                        //UserManager userManager = new UserManager();//Commented for Bug ID:37104
-                        //IList<User> userList = userManager.GetUserList();
-                        //userName = userList.Any(a => a.person_name.ToUpper() == loadList[0].Created_By.ToUpper()) ? userList.Where(d => d.person_name.ToUpper() == loadList[0].Created_By.ToUpper()).Select(u => u.user_name).ToList()[0] : string.Empty;
-                        //WFObj.Current_Owner = userName == string.Empty ? ownerName == string.Empty && userRole.ToUpper() == "PHYSICIAN" ? "UNKNOWN" : ownerName : ownerName == string.Empty ? userName : ownerName;
-                        WFObj.Current_Owner = ownerName;
-                        WFObj.Fac_Name = facilityName;
-                        WFObj.Parent_Obj_Type = string.Empty;
-                        WFObj.Obj_System_Id = loadList[0].Id;
-                        WFObj.Parent_Obj_System_Id = loadList[0].Encounter_ID;
-                        WFObj.Current_Process = "START";
-                        WFObjectManager objWfMnger = new WFObjectManager();
-                        iResult = objWfMnger.InsertToWorkFlowObject(WFObj, closeType, macAddress, MySession);
-                        //iResult = objWfMnger.InsertToWorkFlowObject(WFObj, (userRole == string.Empty || userRole.ToUpper() == "PHYSICIAN ASSISTANT") ? 1 : userRole.ToUpper() == "PHYSICIAN" ? 2 : userRole.ToUpper() == "MEDICAL ASSISTANT" ? 4 : 3, macAddress, MySession);
-                        //iResult = objWfMnger.InsertToWorkFlowObject(WFObj, userRole == string.Empty ? 1 : userRole.ToUpper() == "PHYSICIAN" ? 2 : userRole.ToUpper() == "MEDICAL ASSISTANT" ? 4 : !isReview ? 2 : 3, macAddress, MySession);
+                        ICriteria criteria = Session.GetISession().CreateCriteria(typeof(WFObject)).Add(Expression.Eq("Obj_System_Id", loadList[0].Id)).Add(Expression.Eq("Obj_Type", "ADDENDUM"));
+                        IList<WFObject> lstWFObj = new List<WFObject>();
+                        lstWFObj = criteria.List<WFObject>();
+                        if (lstWFObj.Count > 0 && lstWFObj.Any(a => a.Process_Allocation.Contains("ADDENDUM_CODING")))
+                            ownerName = lstWFObj[0].Process_Allocation.Split('|').FirstOrDefault(s => s.StartsWith("ADDENDUM_CODING")).Split('-')[1];
                     }
                     else
-                    {
-                        if (ownerName == "UNKNOWN")
-                        {
-                            ICriteria criteria = Session.GetISession().CreateCriteria(typeof(WFObject)).Add(Expression.Eq("Obj_System_Id", loadList[0].Id)).Add(Expression.Eq("Obj_Type", "ADDENDUM"));
-                            IList<WFObject> lstWFObj = new List<WFObject>();
-                            lstWFObj = criteria.List<WFObject>();
-                            if (lstWFObj.Count > 0 && lstWFObj.Any(a => a.Process_Allocation.Contains("ADDENDUM_CODING")))
-                                ownerName = lstWFObj[0].Process_Allocation.Split('|').FirstOrDefault(s => s.StartsWith("ADDENDUM_CODING")).Split('-')[1];
-                        }
-                        else
-                            ownerName = closeType == 1 && (ownerName == "UNKNOWN") ? "UNKNOWN" : ownerName;
+                        ownerName = closeType == 1 && (ownerName == "UNKNOWN") ? "UNKNOWN" : ownerName;
 
-                        WFObjectManager objWfMnger = new WFObjectManager();
-                        iResult = objWfMnger.MoveToNextProcess(loadList[0].Id, "ADDENDUM", closeType, ownerName, loadList[0].Provider_Review_Signed_Date_And_Time, macAddress, null, MySession);
-                    }
+                    WFObjectManager objWfMnger = new WFObjectManager();
+                    iResult = objWfMnger.MoveToNextProcess(loadList[0].Id, "ADDENDUM", closeType, ownerName, loadList[0].Provider_Review_Signed_Date_And_Time, macAddress, null, MySession);
 
-                    if (iResult == 2)
+                    WriteBlob(loadList[0].Encounter_ID, objGenerateXML.itemDoc, MySession, null, loadList, null, objGenerateXML, false);
+
+                }
+
+
+                if (iResult == 2)
+                {
+                    if (iTryCount < 5)
                     {
-                        if (iTryCount < 5)
-                        {
-                            iTryCount++;
-                            goto TryAgain;
-                        }
-                        else
-                        {
-                            trans.Rollback();
-                            throw new Exception("Deadlock occurred. Transaction failed.");
-                        }
+                        iTryCount++;
+                        goto TryAgain;
                     }
-                    else if (iResult == 1)
+                    else
                     {
                         trans.Rollback();
-                        throw new Exception("Exception occurred. Transaction failed.");
-
+                        throw new Exception("Deadlock occurred. Transaction failed.");
                     }
-
-                    MySession.Flush();
-                    if (bAddendumSaved)
-                        trans.Commit();
-                    else
-                        throw new Exception("Data inconsistent on Save in DB and XML. Please contact support");
                 }
-
-                catch (NHibernate.Exceptions.GenericADOException ex)
+                else if (iResult == 1)
                 {
                     trans.Rollback();
-                    throw new Exception(ex.Message);
+                    throw new Exception("Exception occurred. Transaction failed.");
+
                 }
-                catch (Exception e)
-                {
-                    trans.Rollback();
-                    throw new Exception(e.Message);
-                }
-                finally
-                {
-                    MySession.Close();
-                }
+
+                MySession.Flush();
+                if (bAddendumSaved)
+                    trans.Commit();
+                else
+                    throw new Exception("Data inconsistent on Save in DB and XML. Please contact support");
+            }
+
+            catch (NHibernate.Exceptions.GenericADOException ex)
+            {
+                trans.Rollback();
+                throw new Exception(ex.Message);
+            }
+            catch (Exception e)
+            {
+                trans.Rollback();
+                throw new Exception(e.Message);
+            }
+            finally
+            {
+                MySession.Close();
+            }
         }
-
         #endregion
     }
 }

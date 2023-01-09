@@ -17405,6 +17405,44 @@ AND E.ENCOUNTER_PROVIDER_SIGNED_DATE<>'0001-01-01 00:00:00'
 
             return sDescList;
         }
+        public void writeCopypreviousencounterblobtable(ulong encounterid, GenerateXml objxml, IList<Encounter> lst)
+        {
+            ISession MySession = Session.GetISession();
+            // ITransaction trans = null;
+
+
+            using (ITransaction trans = MySession.BeginTransaction(System.Data.IsolationLevel.ReadUncommitted))
+            {
+                if (lst.Count > 0)
+                {
+                    WriteBlob(encounterid, objxml.itemDoc, MySession, null, lst, null, objxml, false);
+
+
+                    trans.Commit();
+                }
+            }
+
+
+        }
+        public void writeCopyprevioushumanblobtable(ulong humanid, IList<Encounter> lst, GenerateXml objhumanxml)
+        {
+            ISession MySession = Session.GetISession();
+            // ITransaction trans = null;
+
+
+            using (ITransaction trans = MySession.BeginTransaction(System.Data.IsolationLevel.ReadUncommitted))
+            {
+
+
+
+                WriteBlob(humanid, objhumanxml.itemDoc, MySession, null, lst, null, objhumanxml, false);
+                trans.Commit();
+
+            }
+
+
+        }
+
 
     }
 }

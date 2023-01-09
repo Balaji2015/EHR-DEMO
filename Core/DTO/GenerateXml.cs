@@ -4700,7 +4700,7 @@ namespace Acurus.Capella.Core.DTO
             }
             return @"/" + xPath;
         }
-        public void Copy_Previous_GenerateXmlSave(IList<object> obj, ulong EncounterOrHumanId, string sGeneralNotesText, bool bSave_In_Human)
+        public void Copy_Previous_GenerateXmlSave(IList<object> obj, ulong EncounterOrHumanId, string sGeneralNotesText, bool bSave_In_Human, ref GenerateXml XMLObj)
         {
             if (obj == null || obj.Count == 0)//BugID:4779
                 return;
@@ -4727,13 +4727,28 @@ namespace Acurus.Capella.Core.DTO
                 ulEncounterID = 0;
                 ulHumanID = EncounterOrHumanId;
             }
-            string strXmlFilePath = Path.Combine(System.Configuration.ConfigurationSettings.AppSettings["XMLPath"], FileName);
-            if (File.Exists(strXmlFilePath) == true)
+            if (XMLObj.itemDoc != null && XMLObj.itemDoc.InnerXml != "")
             {
-                XmlDocument itemDoc = new XmlDocument();
-                XmlTextReader XmlText = new XmlTextReader(strXmlFilePath);
-                itemDoc.Load(XmlText);
-                XmlText.Close();
+                itemDoc = XMLObj.itemDoc;
+            }
+            else
+            {
+                if (FileName.Contains("Human"))
+                {
+                    itemDoc = ReadBlob("Human", EncounterOrHumanId);
+                }
+                else if (FileName.Contains("Encounter"))
+                {
+                    itemDoc = ReadBlob("Encounter", EncounterOrHumanId);
+                }
+            }
+            //string strXmlFilePath = Path.Combine(System.Configuration.ConfigurationSettings.AppSettings["XMLPath"], FileName);
+            // if (File.Exists(strXmlFilePath) == true)
+            {
+                //XmlDocument itemDoc = new XmlDocument();
+                //XmlTextReader XmlText = new XmlTextReader(strXmlFilePath);
+                //itemDoc.Load(XmlText);
+                //XmlText.Close();
                 //using (FileStream fs = new FileStream(strXmlFilePath, FileMode.Open, FileAccess.Read, FileShare.Read))
                 //{
                 //    itemDoc.Load(fs);
@@ -5463,7 +5478,7 @@ namespace Acurus.Capella.Core.DTO
                     }
                     xmlSectionList[0].AppendChild(Newnode);
                 }
-                itemDoc.Save(strXmlFilePath);
+                //itemDoc.Save(strXmlFilePath);
             }
         }
 

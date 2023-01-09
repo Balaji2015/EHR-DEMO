@@ -2861,8 +2861,15 @@ namespace Acurus.Capella.UI
         }
 
         // Method to write xml for Seleted Tabs ~Ponmozhi Vendan T.
+        GenerateXml obj = new GenerateXml();
+        GenerateXml objhuman = new GenerateXml();
+        Encounter objenc = new Encounter();
+        List<Encounter> ilstenc = new List<Encounter>();
+        IList<ROS> ilstROS = new List<ROS>();
+        // Method to write xml for Seleted Tabs ~Ponmozhi Vendan T.
         void WriteUpdatedXML(List<string> lstSavedUpdated)
         {
+            obj.itemDoc = obj.ReadBlob("Encounter", ClientSession.EncounterId);
 
             for (int i = 0; i < lstSavedUpdated.Count; i++)
             {
@@ -2922,6 +2929,108 @@ namespace Acurus.Capella.UI
 
             if (lstSavedUpdated.Count > 0)
             {
+                try
+                {
+                    EncounterManager objencountermanager = new EncounterManager();
+                    objencountermanager.writeCopypreviousencounterblobtable(ClientSession.EncounterId, obj, ilstenc);
+                    //itemDoc.Save(strXmlFilePath);
+                    if (ilstROS.Count > 0)
+                    {
+
+                        GeneralNotesManager objGeneralNotesManager = new GeneralNotesManager();
+                        var ROSGenSysList = objGeneralNotesManager.GetGeneralNotes(ClientSession.EncounterId, "SYSTEM");
+                        obj = new GenerateXml();
+                        List<string> ilstSystemName = new List<string>();
+                        ulong encounterid = 0;
+                        ulong humanid = 0;
+
+                        encounterid = ilstROS[0].Encounter_Id;
+
+                        humanid = ilstROS[0].Human_ID;
+                        for (int i = 0; i < ilstROS.Count; i++)
+                        {
+                            if (ilstROS[i].Status.TrimEnd(' ') != "")
+                            {
+                                ilstSystemName.Add(ilstROS[i].System_Name);
+                            }
+                        }
+                        for (int i = 0; i < ROSGenSysList.Count; i++)
+                        {
+                            if (ROSGenSysList[i].Notes.TrimEnd(' ') != "")
+                            {
+                                ilstSystemName.Add(ROSGenSysList[i].Name_Of_The_Field);
+                            }
+                        }
+                        ilstSystemName = ilstSystemName.Distinct().ToList();
+
+                        // GenerateXml objxml = new GenerateXml();
+
+
+                        //   if (File.Exists(strXmlFilePath) == true && encounterid > 0)
+                        {
+                            // XmlDocument itemDoc = new XmlDocument();
+
+
+                            //  objxml.itemDoc = objxml.ReadBlob("Encounter", encounterId);
+
+                            obj.itemDoc = obj.ReadBlob("Encounter", ClientSession.EncounterId);
+
+                            XmlNodeList xmlsysCheck = obj.itemDoc.GetElementsByTagName("ROSSystemList");
+                            if (xmlsysCheck[0] != null)
+                            {
+
+
+                                XmlNodeList ParentNodeList = obj.itemDoc.GetElementsByTagName("ROSSystemList");
+                                XmlNodeList xmlModules = obj.itemDoc.GetElementsByTagName("Modules");
+                                xmlModules[0].RemoveChild(ParentNodeList[0]);
+
+                            }
+                            if (xmlsysCheck[0] == null && ilstSystemName.Count > 0)
+                            {
+                                XmlNode xmlSystemNodeParent = obj.itemDoc.CreateNode(XmlNodeType.Element, "ROSSystemList", "");
+                                XmlNodeList xmlModule = obj.itemDoc.GetElementsByTagName("Modules");
+                                xmlModule[0].AppendChild(xmlSystemNodeParent);
+
+                            }
+
+                            XmlNode xmlSystemNode = null;
+                            XmlAttribute attSysName = null;
+                            XmlAttribute attEncounterid = null;
+                            XmlAttribute atthuman_id = null;
+
+                            if (ilstSystemName != null)
+                            {
+                                for (int i = 0; i < ilstSystemName.Count; i++)
+                                {
+                                    xmlSystemNode = obj.itemDoc.CreateNode(XmlNodeType.Element, "SystemName", "");
+
+                                    attSysName = obj.itemDoc.CreateAttribute("System_Name");
+                                    attSysName.Value = ilstSystemName[i];
+                                    xmlSystemNode.Attributes.Append(attSysName);
+
+                                    attEncounterid = obj.itemDoc.CreateAttribute("Encounter_ID");
+                                    attEncounterid.Value = encounterid.ToString();
+                                    xmlSystemNode.Attributes.Append(attEncounterid);
+
+                                    atthuman_id = obj.itemDoc.CreateAttribute("Human_ID");
+                                    atthuman_id.Value = humanid.ToString();
+                                    xmlSystemNode.Attributes.Append(atthuman_id);
+
+                                    XmlNodeList xmlsysList = obj.itemDoc.GetElementsByTagName("ROSSystemList");
+                                    xmlsysList[0].AppendChild(xmlSystemNode);
+                                }
+                            }
+                        }
+
+                        objencountermanager.writeCopypreviousencounterblobtable(ClientSession.EncounterId, obj, ilstenc);
+
+                    }
+                }
+                catch (Exception xmlexcep)
+                {
+                    throw xmlexcep;
+                }
+
                 ScriptManager.RegisterStartupScript(this, this.Page.GetType(), "SavedSuccessfully"
                               , "DisplayErrorMessage('160001');", true);
             }
@@ -2929,25 +3038,31 @@ namespace Acurus.Capella.UI
         }
 
         /*Added to Update Encountertag on Copy_Prev_Enc Click in both EncounterXML and HUmanXML*/
+
         void UpdateEncounterTagXML()
         {
             var encounterId = ClientSession.EncounterId;
 
             EncounterManager objEncounterManager = new EncounterManager();
-            Encounter objenc = objEncounterManager.GetById(encounterId);
-            List<Encounter> ilstenc = new List<Encounter>();
+            objenc = objEncounterManager.GetById(encounterId);
+            ilstenc = new List<Encounter>();
             if (objenc != null && objenc.Id != 0)
             {
                 objenc.Local_Time = UtilityManager.ConvertToLocal(objenc.Date_of_Service).ToString("yyyy-MM-dd hh:mm:ss tt");
                 ilstenc.Add(objenc);
                 List<object> lstobj = ilstenc.Cast<object>().ToList();
+
                 if (lstobj != null)
-                    new GenerateXml().Copy_Previous_GenerateXmlSave(lstobj, encounterId, string.Empty, false);
+                    obj.Copy_Previous_GenerateXmlSave(lstobj, encounterId, string.Empty, false, ref obj);
                 //to update the EncounterTag in HumanXML
 
                 var humanId = objenc.Human_ID;
                 if (lstobj != null)
-                    new GenerateXml().Copy_Previous_GenerateXmlSave(lstobj, humanId, string.Empty, true);
+                {
+                    objhuman.Copy_Previous_GenerateXmlSave(lstobj, humanId, string.Empty, true, ref objhuman);
+                    EncounterManager objencountermanager = new EncounterManager();
+                    objencountermanager.writeCopyprevioushumanblobtable(humanId, ilstenc, objhuman);
+                }
             }
 
         }
@@ -2962,7 +3077,7 @@ namespace Acurus.Capella.UI
             if (ilstCC.Count() > 0)
                 lstObj = ilstCC.Cast<object>().ToList();
             if (lstObj != null)
-                new GenerateXml().Copy_Previous_GenerateXmlSave(lstObj, encounterId, string.Empty, false);
+                new GenerateXml().Copy_Previous_GenerateXmlSave(lstObj, encounterId, string.Empty, false, ref obj);
         }
 
         void WriteROSXML()
@@ -2970,123 +3085,39 @@ namespace Acurus.Capella.UI
             var encounterId = ClientSession.EncounterId;
 
             ROSManager objROSManager = new ROSManager();
-            var ilstROS = objROSManager.ROSByEncounterId(encounterId, false);
+            ilstROS = objROSManager.ROSByEncounterId(encounterId, false);
 
             List<object> lstObj = null;
             if (ilstROS.Count() > 0)
                 lstObj = ilstROS.Cast<object>().ToList();
             if (lstObj != null)
-                new GenerateXml().Copy_Previous_GenerateXmlSave(lstObj, encounterId, string.Empty, false);
+                new GenerateXml().Copy_Previous_GenerateXmlSave(lstObj, encounterId, string.Empty, false, ref obj);
 
 
             //For ROS system list while doing the overall copy previous
 
-            GeneralNotesManager objGeneralNotesManager = new GeneralNotesManager();
-            var ROSGenSysList = objGeneralNotesManager.GetGeneralNotes(encounterId, "SYSTEM");
-
-            
-
-                   // string FileName = "Encounter" + "_" + encounterId + ".xml";
-           // string strXmlFilePath = string.Empty;
-           // if (File.Exists(Path.Combine(System.Configuration.ConfigurationSettings.AppSettings["XMLPath"], FileName)))
-               // strXmlFilePath = Path.Combine(System.Configuration.ConfigurationSettings.AppSettings["XMLPath"], FileName);
-            if (ilstROS.Count > 0)
-            {
-                List<string> ilstSystemName = new List<string>();
-                ulong encounterid = 0;
-                ulong humanid = 0;
-                if (ilstROS[0].Encounter_Id != null)
-                    encounterid = ilstROS[0].Encounter_Id;
-                if (ilstROS[0].Human_ID != null)
-                    humanid = ilstROS[0].Human_ID;
-                for (int i = 0; i < ilstROS.Count; i++)
-                {
-                    if (ilstROS[i].Status.TrimEnd(' ') != "")
-                    {
-                        ilstSystemName.Add(ilstROS[i].System_Name);
-                    }
-                }
-                for (int i = 0; i < ROSGenSysList.Count; i++)
-                {
-                    if (ROSGenSysList[i].Notes.TrimEnd(' ') != "")
-                    {
-                        ilstSystemName.Add(ROSGenSysList[i].Name_Of_The_Field);
-                    }
-                }
-                ilstSystemName = ilstSystemName.Distinct().ToList();
-
-                GenerateXml objxml = new GenerateXml();
-
-                
-                //   if (File.Exists(strXmlFilePath) == true && encounterid > 0)
-                {
-                    XmlDocument itemDoc = new XmlDocument();
-                    
-
-                    objxml.itemDoc = objxml.ReadBlob("Encounter", encounterId);
-                      
 
 
-                     XmlNodeList xmlsysCheck = objxml.itemDoc.GetElementsByTagName("ROSSystemList");
-                    if (xmlsysCheck[0] != null)
-                    {
+
+            // string FileName = "Encounter" + "_" + encounterId + ".xml";
+            // string strXmlFilePath = string.Empty;
+            // if (File.Exists(Path.Combine(System.Configuration.ConfigurationSettings.AppSettings["XMLPath"], FileName)))
+            // strXmlFilePath = Path.Combine(System.Configuration.ConfigurationSettings.AppSettings["XMLPath"], FileName);
+
+            //itemDoc.Save(strXmlFilePath);
 
 
-                        XmlNodeList ParentNodeList = objxml.itemDoc.GetElementsByTagName("ROSSystemList");
-                        XmlNodeList xmlModules = objxml.itemDoc.GetElementsByTagName("Modules");
-                        xmlModules[0].RemoveChild(ParentNodeList[0]);
+            //try
+            //{
+            //    ROSManager objros = new ROSManager();
+            //    objros.writesystem(encounterId, objxml);
+            //    //itemDoc.Save(strXmlFilePath);
+            //}
+            //catch (Exception xmlexcep)
+            //{
+            //    throw xmlexcep;
+            //}
 
-                    }
-                    if (xmlsysCheck[0] == null && ilstSystemName.Count > 0)
-                    {
-                        XmlNode xmlSystemNodeParent = objxml.itemDoc.CreateNode(XmlNodeType.Element, "ROSSystemList", "");
-                        XmlNodeList xmlModule = objxml.itemDoc.GetElementsByTagName("Modules");
-                        xmlModule[0].AppendChild(xmlSystemNodeParent);
-
-                    }
-
-                    XmlNode xmlSystemNode = null;
-                    XmlAttribute attSysName = null;
-                    XmlAttribute attEncounterid = null;
-                    XmlAttribute atthuman_id = null;
-
-                    if (ilstSystemName != null)
-                    {
-                        for (int i = 0; i < ilstSystemName.Count; i++)
-                        {
-                            xmlSystemNode = objxml.itemDoc.CreateNode(XmlNodeType.Element, "SystemName", "");
-
-                            attSysName = objxml.itemDoc.CreateAttribute("System_Name");
-                            attSysName.Value = ilstSystemName[i];
-                            xmlSystemNode.Attributes.Append(attSysName);
-
-                            attEncounterid = objxml.itemDoc.CreateAttribute("Encounter_ID");
-                            attEncounterid.Value = encounterid.ToString();
-                            xmlSystemNode.Attributes.Append(attEncounterid);
-
-                            atthuman_id = objxml.itemDoc.CreateAttribute("Human_ID");
-                            atthuman_id.Value = humanid.ToString();
-                            xmlSystemNode.Attributes.Append(atthuman_id);
-
-                            XmlNodeList xmlsysList = objxml.itemDoc.GetElementsByTagName("ROSSystemList");
-                            xmlsysList[0].AppendChild(xmlSystemNode);
-                        }
-                    }
-                    //itemDoc.Save(strXmlFilePath);
-                  
-           
-                    try
-                    {
-                        ROSManager objros = new ROSManager();
-                        objros.writesystem(encounterId, objxml);
-                        //itemDoc.Save(strXmlFilePath);
-                    }
-                    catch (Exception xmlexcep)
-                    {
-                        throw xmlexcep;
-                    }
-                }
-            }
 
 
         }
@@ -3102,7 +3133,7 @@ namespace Acurus.Capella.UI
 
                 lstObj = ilstAssesmentGeneralNotes.Cast<object>().ToList();
             if (lstObj != null)
-                new GenerateXml().Copy_Previous_GenerateXmlSave(lstObj, encounterId, "ROS", false);
+                new GenerateXml().Copy_Previous_GenerateXmlSave(lstObj, encounterId, "ROS", false, ref obj);
         }
 
         void WriteGeneralNotesROSXML()
@@ -3115,7 +3146,7 @@ namespace Acurus.Capella.UI
             if (ilstAssesmentGeneralNotes.Count() > 0)
                 lstObj = ilstAssesmentGeneralNotes.Cast<object>().ToList();
             if (lstObj != null)
-                new GenerateXml().Copy_Previous_GenerateXmlSave(lstObj, encounterId, "ROSGeneralNotes", false);
+                new GenerateXml().Copy_Previous_GenerateXmlSave(lstObj, encounterId, "ROSGeneralNotes", false, ref obj);
         }
 
         void WriteExamGeneralWithSpecialityXML()
@@ -3128,7 +3159,7 @@ namespace Acurus.Capella.UI
             if (ilstEXAM.Count > 0)
                 lstObj = ilstEXAM.Cast<object>().ToList();
             if (lstObj != null)
-                new GenerateXml().Copy_Previous_GenerateXmlSave(lstObj, encounterId, "General", false);
+                new GenerateXml().Copy_Previous_GenerateXmlSave(lstObj, encounterId, "General", false, ref obj);
         }
 
         void WriteFocusedExamXML()
@@ -3141,7 +3172,7 @@ namespace Acurus.Capella.UI
             if (ilstEXAM.Count > 0)
                 lstObj = ilstEXAM.Cast<object>().ToList();
             if (lstObj != null)
-                new GenerateXml().Copy_Previous_GenerateXmlSave(lstObj, encounterId, "Focused", false);
+                new GenerateXml().Copy_Previous_GenerateXmlSave(lstObj, encounterId, "Focused", false, ref obj);
         }
 
         void WriteGeneralPlanXML()
@@ -3155,7 +3186,7 @@ namespace Acurus.Capella.UI
             if (ilstGeneralPlan.Count > 0)
                 lstObj = ilstGeneralPlan.Cast<object>().ToList();
             if (lstObj != null)
-                new GenerateXml().Copy_Previous_GenerateXmlSave(lstObj, encounterId, "", false);
+                new GenerateXml().Copy_Previous_GenerateXmlSave(lstObj, encounterId, "", false, ref obj);
         }
 
         void WriteIndividualCarePlanXML()
@@ -3170,7 +3201,7 @@ namespace Acurus.Capella.UI
             if (ilstCarePlan.Count > 0)
                 lstObj = ilstCarePlan.Cast<object>().ToList();
             if (lstObj != null)
-                new GenerateXml().Copy_Previous_GenerateXmlSave(lstObj, encounterId, string.Empty, false);
+                new GenerateXml().Copy_Previous_GenerateXmlSave(lstObj, encounterId, string.Empty, false, ref obj);
         }
 
         void WritePreventiveScreenCarePlanXML()
@@ -3185,7 +3216,7 @@ namespace Acurus.Capella.UI
             if (ilstPreventiveScreenPlan.Count() > 0)
                 lstObj = ilstPreventiveScreenPlan.Cast<object>().ToList();
             if (lstObj != null)
-                new GenerateXml().Copy_Previous_GenerateXmlSave(lstObj, encounterId, string.Empty, false);
+                new GenerateXml().Copy_Previous_GenerateXmlSave(lstObj, encounterId, string.Empty, false, ref obj);
 
         }
 
@@ -3202,7 +3233,7 @@ namespace Acurus.Capella.UI
             if (ilstAssesment.Count() != null)
                 lstObj = ilstAssesment.Cast<object>().ToList();
             if (lstObj != null)
-                new GenerateXml().Copy_Previous_GenerateXmlSave(lstObj, encounterId, string.Empty, false);
+                new GenerateXml().Copy_Previous_GenerateXmlSave(lstObj, encounterId, string.Empty, false, ref obj);
         }
 
         void WriteAssesmentGeneralNotes()
@@ -3216,7 +3247,7 @@ namespace Acurus.Capella.UI
             if (ilstAssesmentGeneralNotes.Count() != null)
                 lstObj = ilstAssesmentGeneralNotes.Cast<object>().ToList();
             if (lstObj != null)
-                new GenerateXml().Copy_Previous_GenerateXmlSave(lstObj, encounterId, "Assessment", false);
+                new GenerateXml().Copy_Previous_GenerateXmlSave(lstObj, encounterId, "Assessment", false, ref obj);
 
         }
 
@@ -3230,7 +3261,7 @@ namespace Acurus.Capella.UI
             if (ilstProblemList.Count() != null)
                 lstObj = ilstProblemList.Cast<object>().ToList();
             if (lstObj != null)
-                new GenerateXml().Copy_Previous_GenerateXmlSave(lstObj, encounterId, string.Empty, false);
+                new GenerateXml().Copy_Previous_GenerateXmlSave(lstObj, encounterId, string.Empty, false, ref obj);
         }
 
         void WriteAssesmentTreatmentPlan()
@@ -3245,7 +3276,7 @@ namespace Acurus.Capella.UI
             if (ilstGeneralPlan.Count > 0)
                 lstObj = ilstGeneralPlan.Cast<object>().ToList();
             if (lstObj != null)
-                new GenerateXml().Copy_Previous_GenerateXmlSave(lstObj, encounterId, "", false);
+                new GenerateXml().Copy_Previous_GenerateXmlSave(lstObj, encounterId, "", false, ref obj);
         }
         //Added CopyPrev for Questionnaire for BugID:44324 - COPD Screening Feature
         void WriteHealthcareQuestionnaireXML()
@@ -3264,7 +3295,7 @@ namespace Acurus.Capella.UI
                     var ilstQuestionnaire = prevEnclist.Where(a => a.Questionnaire_Category == category).ToList<Healthcare_Questionnaire>();
                     sQuestionnaireTabName = category.Replace(" ", "").Replace("/", "");
                     List<object> lstObj = ilstQuestionnaire.Cast<object>().ToList();
-                    new GenerateXml().Copy_Previous_GenerateXmlSave(lstObj, encounterId, sQuestionnaireTabName, false);
+                    new GenerateXml().Copy_Previous_GenerateXmlSave(lstObj, encounterId, sQuestionnaireTabName, false, ref obj);
                 }
             }
         }
