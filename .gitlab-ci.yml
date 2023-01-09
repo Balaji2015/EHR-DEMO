@@ -86,9 +86,9 @@ Deploy Test Job 10.0.0.11:
   #- xcopy /y /s "F:\Acurus_Web\capella_cmg_project\capella_cmg_ehr_cqm_talend\*.*" "F:\Acurus_Web\Deployee\Backup-do not delete\Git\CQM"
   #- echo "Backup CQM..Completed.."
 
-  #- echo "Backup CMG blob..Start.."
-  #- xcopy /y /s "F:\Acurus_Web\capella_cmg_project\capella_cmg_blob\*.*" "F:\Acurus_Web\Deployee\Backup-do not delete\Git\capella_cmg_blob"
-  #- echo "Backup CMG blob..Completed.."
+  - echo "Backup CMG blob..Start.."
+  - xcopy /y /s "F:\Acurus_Web\capella_cmg_project\capella_cmg_blob\*.*" "F:\Acurus_Web\Deployee\Backup-do not delete\Git\capella_cmg_blob"
+  - echo "Backup CMG blob..Completed.."
 
   #- echo "Deployee CMG..Start.."
   #- xcopy /y /s "F:\Acurus_Web\Deployee\builds\Capella_publish\*.*" "F:\Acurus_Web\capella_cmg_project\capella_cmg_ehr_4_8\"
@@ -103,7 +103,7 @@ Deploy Test Job 10.0.0.11:
   #- echo "Deployee CQM..Completed.."
 
   - echo "Deployee CMG BLOB..Start.."
-  - xcopy /y /s "F:\Acurus_Web\Deployee\builds\Capella_publish\*.*" "F:\Acurus_Web\capella_cmg_project\capella_cmg_blobimp\"
+  - xcopy /y /s "F:\Acurus_Web\Deployee\builds\Capella_publish\*.*" "F:\Acurus_Web\capella_cmg_project\capella_cmg_blob\"
   - echo "Deployee CMG BLOB..Completed.."
 
   #- echo "Deployee PATIENT PORTAL..Start.."
