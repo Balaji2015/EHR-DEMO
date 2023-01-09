@@ -1526,23 +1526,25 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
 
             IList<object> ilstEncounterBlobList = new List<object>();
 
-            ilstEncounterBlobList = ReadBlob(uEncounterID, ilstEncounterTag);
-
-            if (ilstEncounterBlobList != null && ilstEncounterBlobList.Count > 0)
+            if (uEncounterID != null && uEncounterID != 0)
             {
-                if (ilstEncounterBlobList[0] != null)
+                ilstEncounterBlobList = ReadBlob(uEncounterID, ilstEncounterTag);
+
+                if (ilstEncounterBlobList != null && ilstEncounterBlobList.Count > 0)
                 {
-                    for (int iCount = 0; iCount < ((IList<object>)ilstEncounterBlobList[0]).Count; iCount++)
+                    if (ilstEncounterBlobList[0] != null)
                     {
-                        if (((TreatmentPlan)((IList<object>)ilstEncounterBlobList[0])[iCount]).Encounter_Id == EncounterID && ((TreatmentPlan)((IList<object>)ilstEncounterBlobList[0])[iCount]).Plan_Type == "DIAGNOSTIC ORDER")
+                        for (int iCount = 0; iCount < ((IList<object>)ilstEncounterBlobList[0]).Count; iCount++)
                         {
-                            objTreatmentPlan.Add((TreatmentPlan)((IList<object>)ilstEncounterBlobList[0])[iCount]);
+                            if (((TreatmentPlan)((IList<object>)ilstEncounterBlobList[0])[iCount]).Encounter_Id == EncounterID && ((TreatmentPlan)((IList<object>)ilstEncounterBlobList[0])[iCount]).Plan_Type == "DIAGNOSTIC ORDER")
+                            {
+                                objTreatmentPlan.Add((TreatmentPlan)((IList<object>)ilstEncounterBlobList[0])[iCount]);
+                            }
                         }
                     }
                 }
+
             }
-
-
             //string FileName = "Encounter" + "_" + EncounterID + ".xml";
             //string strXmlFilePath = Path.Combine(System.Configuration.ConfigurationSettings.AppSettings["XMLPath"], FileName);
             //if (File.Exists(strXmlFilePath) == true)
