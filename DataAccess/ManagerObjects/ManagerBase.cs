@@ -2701,6 +2701,8 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
                                                             property.SetValue(objEntity, Convert.ToInt32(nodevalue.Value), null);
                                                         else if (property.PropertyType.Name.ToUpper() == "DECIMAL")
                                                             property.SetValue(objEntity, Convert.ToDecimal(nodevalue.Value), null);
+                                                        else if (property.PropertyType.Name.ToUpper() == "DOUBLE")
+                                                            property.SetValue(objEntity, Convert.ToDouble(nodevalue.Value), null);
                                                         else
                                                             property.SetValue(objEntity, nodevalue.Value, null);
                                                     }

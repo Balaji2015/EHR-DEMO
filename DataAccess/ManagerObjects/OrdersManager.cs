@@ -7216,56 +7216,114 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
         public FillHumanDTO GetHumanByIdForCheckout(ulong HumanId)
         {
             FillHumanDTO objFillHuman = new FillHumanDTO();
-            string FileName = "Human" + "_" + HumanId + ".xml";
-            string strXmlFilePath = Path.Combine(System.Configuration.ConfigurationSettings.AppSettings["XMLPath"], FileName);
-            if (File.Exists(strXmlFilePath) == true)
-            {
-                XmlDocument itemDoc = new XmlDocument();
-                // itemDoc.Load(strXmlFilePath);
-                using (FileStream fs = new FileStream(strXmlFilePath, FileMode.Open, FileAccess.Read, FileShare.Read))
-                {
-                    itemDoc.Load(fs);
 
-                    XmlNodeList xmlhumanList = itemDoc.GetElementsByTagName("Human");
-                    if (xmlhumanList != null && xmlhumanList.Count > 0)
+            #region "Code Modified by Balaji.TJ 2023-01-10"
+            IList<string> ilstHuman = new List<string>();
+            ilstHuman.Add("HumanList");
+
+            IList<object> ilstHumanBlobFinal = new List<object>();
+            ilstHumanBlobFinal = ReadBlob(HumanId, ilstHuman);
+            if (ilstHumanBlobFinal != null && ilstHumanBlobFinal.Count > 0)
+            {
+                if (ilstHumanBlobFinal[0] != null)
+                {
+                    for (int i = 0; i < ((List<object>)ilstHumanBlobFinal[0]).Count; i++)
                     {
-                        objFillHuman.Human_ID = Convert.ToUInt64(xmlhumanList[0].Attributes.GetNamedItem("Id").Value);
-                        objFillHuman.Birth_Date = Convert.ToDateTime(xmlhumanList[0].Attributes.GetNamedItem("Birth_Date").Value);
-                        objFillHuman.City = xmlhumanList[0].Attributes.GetNamedItem("City").Value;
-                        objFillHuman.First_Name = xmlhumanList[0].Attributes.GetNamedItem("First_Name").Value;
-                        objFillHuman.Last_Name = xmlhumanList[0].Attributes.GetNamedItem("Last_Name").Value;
-                        objFillHuman.MI = xmlhumanList[0].Attributes.GetNamedItem("MI").Value;
-                        objFillHuman.Prefix = xmlhumanList[0].Attributes.GetNamedItem("Prefix").Value;
-                        objFillHuman.Sex = xmlhumanList[0].Attributes.GetNamedItem("Sex").Value;
-                        objFillHuman.SSN = xmlhumanList[0].Attributes.GetNamedItem("SSN").Value;
-                        objFillHuman.State = xmlhumanList[0].Attributes.GetNamedItem("State").Value;
-                        objFillHuman.Street_Address1 = xmlhumanList[0].Attributes.GetNamedItem("Street_Address1").Value;
-                        objFillHuman.Suffix = xmlhumanList[0].Attributes.GetNamedItem("Suffix").Value;
-                        objFillHuman.ZipCode = xmlhumanList[0].Attributes.GetNamedItem("ZipCode").Value;
-                        objFillHuman.Street_Address2 = xmlhumanList[0].Attributes.GetNamedItem("Street_Address2").Value;
-                        objFillHuman.Medical_Record_Number = xmlhumanList[0].Attributes.GetNamedItem("Medical_Record_Number").Value;
-                        objFillHuman.Home_Phone_No = xmlhumanList[0].Attributes.GetNamedItem("Home_Phone_No").Value;
-                        objFillHuman.Guarantor_First_Name = xmlhumanList[0].Attributes.GetNamedItem("Guarantor_First_Name").Value;
-                        objFillHuman.Guarantor_Last_Name = xmlhumanList[0].Attributes.GetNamedItem("Guarantor_Last_Name").Value;
-                        objFillHuman.Guarantor_MI = xmlhumanList[0].Attributes.GetNamedItem("Guarantor_MI").Value;
-                        objFillHuman.Guarantor_State = xmlhumanList[0].Attributes.GetNamedItem("Guarantor_State").Value;
-                        objFillHuman.Guarantor_Street_Address1 = xmlhumanList[0].Attributes.GetNamedItem("Guarantor_Street_Address1").Value;
-                        objFillHuman.Guarantor_Street_Address2 = xmlhumanList[0].Attributes.GetNamedItem("Guarantor_Street_Address2").Value;
-                        objFillHuman.Guarantor_Zip_Code = xmlhumanList[0].Attributes.GetNamedItem("Guarantor_Zip_Code").Value;
-                        objFillHuman.Guarantor_City = xmlhumanList[0].Attributes.GetNamedItem("Guarantor_City").Value;
-                        objFillHuman.Race = xmlhumanList[0].Attributes.GetNamedItem("Race").Value;
-                        objFillHuman.Ethnicity = xmlhumanList[0].Attributes.GetNamedItem("Ethnicity").Value;
-                        objFillHuman.Ethnicity_No = Convert.ToInt16(xmlhumanList[0].Attributes.GetNamedItem("Ethnicity_No").Value);
-                        objFillHuman.Guarantor_Home_Phone_Number = xmlhumanList[0].Attributes.GetNamedItem("Guarantor_Home_Phone_Number").Value;
-                        objFillHuman.Guarantor_Relationship_No = Convert.ToInt16(xmlhumanList[0].Attributes.GetNamedItem("Guarantor_Relationship_No").Value);
-                        objFillHuman.Guarantor_Relationship = xmlhumanList[0].Attributes.GetNamedItem("Guarantor_Relationship").Value;
-                        objFillHuman.Employer_Name = xmlhumanList[0].Attributes.GetNamedItem("Employer_Name").Value;
-                        objFillHuman.cell_phone_no = xmlhumanList[0].Attributes.GetNamedItem("Cell_Phone_Number").Value;
+                        objFillHuman.Human_ID = Convert.ToUInt64(((Human)((List<object>)ilstHumanBlobFinal[0])[i]).Id);
+                        objFillHuman.Birth_Date = Convert.ToDateTime(((Human)((List<object>)ilstHumanBlobFinal[0])[i]).Birth_Date);
+                        objFillHuman.City = Convert.ToString(((Human)((List<object>)ilstHumanBlobFinal[0])[i]).City);
+                        objFillHuman.First_Name = Convert.ToString(((Human)((List<object>)ilstHumanBlobFinal[0])[i]).First_Name);
+                        objFillHuman.Last_Name = Convert.ToString(((Human)((List<object>)ilstHumanBlobFinal[0])[i]).Last_Name);
+                        objFillHuman.MI = Convert.ToString(((Human)((List<object>)ilstHumanBlobFinal[0])[i]).MI);
+                        objFillHuman.Prefix = Convert.ToString(((Human)((List<object>)ilstHumanBlobFinal[0])[i]).Prefix);
+                        objFillHuman.Sex = Convert.ToString(((Human)((List<object>)ilstHumanBlobFinal[0])[i]).Sex);
+                        objFillHuman.SSN = Convert.ToString(((Human)((List<object>)ilstHumanBlobFinal[0])[i]).SSN);
+                        objFillHuman.State = Convert.ToString(((Human)((List<object>)ilstHumanBlobFinal[0])[i]).State);
+                        objFillHuman.Street_Address1 = Convert.ToString(((Human)((List<object>)ilstHumanBlobFinal[0])[i]).Street_Address1);
+                        objFillHuman.Suffix = Convert.ToString(((Human)((List<object>)ilstHumanBlobFinal[0])[i]).Suffix);
+                        objFillHuman.ZipCode = Convert.ToString(((Human)((List<object>)ilstHumanBlobFinal[0])[i]).ZipCode);
+                        objFillHuman.Street_Address2 = Convert.ToString(((Human)((List<object>)ilstHumanBlobFinal[0])[i]).Street_Address2);
+                        objFillHuman.Medical_Record_Number = Convert.ToString(((Human)((List<object>)ilstHumanBlobFinal[0])[i]).Medical_Record_Number);
+                        objFillHuman.Home_Phone_No = Convert.ToString(((Human)((List<object>)ilstHumanBlobFinal[0])[i]).Home_Phone_No);
+                        objFillHuman.Guarantor_First_Name = Convert.ToString(((Human)((List<object>)ilstHumanBlobFinal[0])[i]).Guarantor_First_Name);
+                        objFillHuman.Guarantor_Last_Name = Convert.ToString(((Human)((List<object>)ilstHumanBlobFinal[0])[i]).Guarantor_Last_Name);
+                        objFillHuman.Guarantor_MI = Convert.ToString(((Human)((List<object>)ilstHumanBlobFinal[0])[i]).Guarantor_MI);
+                        objFillHuman.Guarantor_State = Convert.ToString(((Human)((List<object>)ilstHumanBlobFinal[0])[i]).Guarantor_State);
+                        objFillHuman.Guarantor_Street_Address1 = Convert.ToString(((Human)((List<object>)ilstHumanBlobFinal[0])[i]).Guarantor_Street_Address1);
+                        objFillHuman.Guarantor_Street_Address2 = Convert.ToString(((Human)((List<object>)ilstHumanBlobFinal[0])[i]).Guarantor_Street_Address2);
+                        objFillHuman.Guarantor_Zip_Code = Convert.ToString(((Human)((List<object>)ilstHumanBlobFinal[0])[i]).Guarantor_Zip_Code);
+                        objFillHuman.Guarantor_City = Convert.ToString(((Human)((List<object>)ilstHumanBlobFinal[0])[i]).Guarantor_City);
+                        objFillHuman.Race = Convert.ToString(((Human)((List<object>)ilstHumanBlobFinal[0])[i]).Race);
+                        objFillHuman.Ethnicity = Convert.ToString(((Human)((List<object>)ilstHumanBlobFinal[0])[i]).Ethnicity);
+                        objFillHuman.Ethnicity_No = Convert.ToInt16(((Human)((List<object>)ilstHumanBlobFinal[0])[i]).Ethnicity_No);
+                        objFillHuman.Guarantor_Home_Phone_Number = Convert.ToString(((Human)((List<object>)ilstHumanBlobFinal[0])[i]).Guarantor_Home_Phone_Number);
+                        objFillHuman.Guarantor_Relationship_No = Convert.ToInt16(((Human)((List<object>)ilstHumanBlobFinal[0])[i]).Guarantor_Relationship_No);
+                        objFillHuman.Guarantor_Relationship = Convert.ToString(((Human)((List<object>)ilstHumanBlobFinal[0])[i]).Guarantor_Relationship);
+                        objFillHuman.Employer_Name = Convert.ToString(((Human)((List<object>)ilstHumanBlobFinal[0])[i]).Employer_Name);
+                        objFillHuman.cell_phone_no = Convert.ToString(((Human)((List<object>)ilstHumanBlobFinal[0])[i]).Cell_Phone_Number);
+
                     }
-                    fs.Close();
-                    fs.Dispose();
                 }
             }
+
+            #endregion
+
+            #region "Code comment by Balaji.TJ 2023-01-10"
+
+
+            //string FileName = "Human" + "_" + HumanId + ".xml";
+            //string strXmlFilePath = Path.Combine(System.Configuration.ConfigurationSettings.AppSettings["XMLPath"], FileName);
+            //if (File.Exists(strXmlFilePath) == true)
+            //{
+            //    XmlDocument itemDoc = new XmlDocument();
+            //    // itemDoc.Load(strXmlFilePath);
+            //    using (FileStream fs = new FileStream(strXmlFilePath, FileMode.Open, FileAccess.Read, FileShare.Read))
+            //    {
+            //        itemDoc.Load(fs);
+
+            //        XmlNodeList xmlhumanList = itemDoc.GetElementsByTagName("Human");
+            //        if (xmlhumanList != null && xmlhumanList.Count > 0)
+            //        {
+            //            objFillHuman.Human_ID = Convert.ToUInt64(xmlhumanList[0].Attributes.GetNamedItem("Id").Value);
+            //            objFillHuman.Birth_Date = Convert.ToDateTime(xmlhumanList[0].Attributes.GetNamedItem("Birth_Date").Value);
+            //            objFillHuman.City = xmlhumanList[0].Attributes.GetNamedItem("City").Value;
+            //            objFillHuman.First_Name = xmlhumanList[0].Attributes.GetNamedItem("First_Name").Value;
+            //            objFillHuman.Last_Name = xmlhumanList[0].Attributes.GetNamedItem("Last_Name").Value;
+            //            objFillHuman.MI = xmlhumanList[0].Attributes.GetNamedItem("MI").Value;
+            //            objFillHuman.Prefix = xmlhumanList[0].Attributes.GetNamedItem("Prefix").Value;
+            //            objFillHuman.Sex = xmlhumanList[0].Attributes.GetNamedItem("Sex").Value;
+            //            objFillHuman.SSN = xmlhumanList[0].Attributes.GetNamedItem("SSN").Value;
+            //            objFillHuman.State = xmlhumanList[0].Attributes.GetNamedItem("State").Value;
+            //            objFillHuman.Street_Address1 = xmlhumanList[0].Attributes.GetNamedItem("Street_Address1").Value;
+            //            objFillHuman.Suffix = xmlhumanList[0].Attributes.GetNamedItem("Suffix").Value;
+            //            objFillHuman.ZipCode = xmlhumanList[0].Attributes.GetNamedItem("ZipCode").Value;
+            //            objFillHuman.Street_Address2 = xmlhumanList[0].Attributes.GetNamedItem("Street_Address2").Value;
+            //            objFillHuman.Medical_Record_Number = xmlhumanList[0].Attributes.GetNamedItem("Medical_Record_Number").Value;
+            //            objFillHuman.Home_Phone_No = xmlhumanList[0].Attributes.GetNamedItem("Home_Phone_No").Value;
+            //            objFillHuman.Guarantor_First_Name = xmlhumanList[0].Attributes.GetNamedItem("Guarantor_First_Name").Value;
+            //            objFillHuman.Guarantor_Last_Name = xmlhumanList[0].Attributes.GetNamedItem("Guarantor_Last_Name").Value;
+            //            objFillHuman.Guarantor_MI = xmlhumanList[0].Attributes.GetNamedItem("Guarantor_MI").Value;
+            //            objFillHuman.Guarantor_State = xmlhumanList[0].Attributes.GetNamedItem("Guarantor_State").Value;
+            //            objFillHuman.Guarantor_Street_Address1 = xmlhumanList[0].Attributes.GetNamedItem("Guarantor_Street_Address1").Value;
+            //            objFillHuman.Guarantor_Street_Address2 = xmlhumanList[0].Attributes.GetNamedItem("Guarantor_Street_Address2").Value;
+            //            objFillHuman.Guarantor_Zip_Code = xmlhumanList[0].Attributes.GetNamedItem("Guarantor_Zip_Code").Value;
+            //            objFillHuman.Guarantor_City = xmlhumanList[0].Attributes.GetNamedItem("Guarantor_City").Value;
+            //            objFillHuman.Race = xmlhumanList[0].Attributes.GetNamedItem("Race").Value;
+            //            objFillHuman.Ethnicity = xmlhumanList[0].Attributes.GetNamedItem("Ethnicity").Value;
+            //            objFillHuman.Ethnicity_No = Convert.ToInt16(xmlhumanList[0].Attributes.GetNamedItem("Ethnicity_No").Value);
+            //            objFillHuman.Guarantor_Home_Phone_Number = xmlhumanList[0].Attributes.GetNamedItem("Guarantor_Home_Phone_Number").Value;
+            //            objFillHuman.Guarantor_Relationship_No = Convert.ToInt16(xmlhumanList[0].Attributes.GetNamedItem("Guarantor_Relationship_No").Value);
+            //            objFillHuman.Guarantor_Relationship = xmlhumanList[0].Attributes.GetNamedItem("Guarantor_Relationship").Value;
+            //            objFillHuman.Employer_Name = xmlhumanList[0].Attributes.GetNamedItem("Employer_Name").Value;
+            //            objFillHuman.cell_phone_no = xmlhumanList[0].Attributes.GetNamedItem("Cell_Phone_Number").Value;
+            //        }
+            //        fs.Close();
+            //        fs.Dispose();
+            //    }
+            //}
+
+            #endregion
+
             ISession iMySession = NHibernateSessionManager.Instance.CreateISession();
             IQuery query1 = iMySession.GetNamedQuery("Get.Checkout.PatientPane");
             query1.SetString(0, HumanId.ToString());

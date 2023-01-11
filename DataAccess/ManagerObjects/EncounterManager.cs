@@ -9431,11 +9431,12 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
                                 throw new Exception("Exception occurred. Transaction failed.");
                             }
                         }
-
+                        IList<Encounter> saveList = new List<Encounter>();
+                        IList<Encounter> encList = new List<Encounter>();
                         if (objEncounter != null)
                         {
-                            IList<Encounter> saveList = new List<Encounter>();
-                            IList<Encounter> encList = new List<Encounter>();
+                            //IList<Encounter> saveList = new List<Encounter>();
+                            //IList<Encounter> encList = new List<Encounter>();
                             encList.Add(objEncounter);
 
                             // iResult = SaveUpdateDeleteWithoutTransaction(ref saveList, encList, null, MySession, sMacAddress);
@@ -9537,12 +9538,22 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
 
                         iMySession.Close();
                         MySession.Flush();
-                        trans.Commit();
+                        //trans.Commit();
                         if (XMLObj.itemDoc.InnerXml != null && XMLObj.itemDoc.InnerXml != "")
                         {
+                            try
+                            {
+                                #region "code Modified by Balaji.TJ 2023-01-08"
+                                WriteBlob(EncounterID, XMLObj.itemDoc, MySession, saveList, encList, null, XMLObj, false);
+                                #endregion
+                            }
+                            catch (Exception xmlexcep)
+                            {
 
+                            }
                         }
-                            //XMLObj.itemDoc.Save(XMLObj.strXmlFilePath);
+                        trans.Commit();
+                        //XMLObj.itemDoc.Save(XMLObj.strXmlFilePath);
 
 
                     }
