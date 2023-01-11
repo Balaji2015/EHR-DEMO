@@ -2168,7 +2168,7 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
                             XMLObj.GenerateXmlSave(lstObj, EncounterOrHumanId, sGeneralNotesText, false, false, false, false,ref XMLObj);
                             if (XmlObjHuman != null)
                             {
-                                XmlObjHuman.GenerateXmlSave(lstObj, HumanID_EncSave, sGeneralNotesText, true, false, false, false,ref XMLObj);
+                                XmlObjHuman.GenerateXmlSave(lstObj, HumanID_EncSave, sGeneralNotesText, true, false, false, false,ref XmlObjHuman);
                             }
                             bsavehit = true;
                         }
@@ -2181,7 +2181,7 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
                             lstobjxml = lstObj;
                             XMLObj.GenerateXmlSaveStatic(lstObj, EncounterOrHumanId, sGeneralNotesText, false, XMLObj);
                             if (XmlObjHuman != null)
-                                XmlObjHuman.GenerateXmlSaveStatic(lstObj, HumanID_EncSave, sGeneralNotesText, true, XMLObj);
+                                XmlObjHuman.GenerateXmlSaveStatic(lstObj, HumanID_EncSave, sGeneralNotesText, true, XmlObjHuman);
                             bsavehit = true;
                         }
                         if (updateList != null && updateList.Count > 0)
@@ -2190,7 +2190,7 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
                             lstobjxml = lstObj;
                             XMLObj.GenerateXmlUpdate(lstObj, EncounterOrHumanId, sGeneralNotesText, false, XMLObj);
                             if (XmlObjHuman != null)
-                                XmlObjHuman.GenerateXmlUpdate(lstObj, HumanID_EncSave, sGeneralNotesText, true, XMLObj);
+                                XmlObjHuman.GenerateXmlUpdate(lstObj, HumanID_EncSave, sGeneralNotesText, true, XmlObjHuman);
                             bsavehit = true;
                         }
                     }
@@ -2218,7 +2218,7 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
                             {
                                 //XmlObjHuman.itemDoc.Save(XmlObjHuman.strXmlFilePath);
 
-                                WriteBlob(EncounterOrHumanId, XmlObjHuman.itemDoc, MySession, saveList, updateList, deleteList, XmlObjHuman, false);
+                                WriteBlob(HumanID_EncSave, XmlObjHuman.itemDoc, MySession, saveList, updateList, deleteList, XmlObjHuman, false);
                             }
                             catch (Exception xmlexcep)
                             {
