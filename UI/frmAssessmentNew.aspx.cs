@@ -2245,20 +2245,20 @@ namespace Acurus.Capella.UI
             string sInsurance_Plan_ID = string.Empty;
             IList<string> ilstInsurancePlan = new List<string>();
             string sOutPut = string.Empty;
-            string FileName = "Human" + "_" + Human_Id + ".xml";
-            string strXmlFilePathHuman = Path.Combine(System.Configuration.ConfigurationSettings.AppSettings["XMLPath"], FileName);
-            if (File.Exists(strXmlFilePathHuman) == true)
+           // string FileName = "Human" + "_" + Human_Id + ".xml";
+           // string strXmlFilePathHuman = Path.Combine(System.Configuration.ConfigurationSettings.AppSettings["XMLPath"], FileName);
+           // if (File.Exists(strXmlFilePathHuman) == true)
             {
                 XmlDocument itemDocHuman = new XmlDocument();
-                XmlTextReader XmlText = new XmlTextReader(strXmlFilePathHuman);
-                // itemDocHuman.Load(XmlText);
-                using (FileStream fs = new FileStream(strXmlFilePathHuman, FileMode.Open, FileAccess.Read, FileShare.Read))
+                // XmlTextReader XmlText = new XmlTextReader(strXmlFilePathHuman);
+                itemDocHuman = new GenerateXml().ReadBlob("Human", Human_Id);
+               // using (FileStream fs = new FileStream(strXmlFilePathHuman, FileMode.Open, FileAccess.Read, FileShare.Read))
                 {
-                    itemDocHuman.Load(fs);
+                    //itemDocHuman.Load(fs);
 
-                    XmlText.Close();
+                   // XmlText.Close();
                     string xmlContent = null;
-                    XDocument documentnodeHuman = XDocument.Load(strXmlFilePathHuman);
+                   // XDocument documentnodeHuman = XDocument.Load(strXmlFilePathHuman);
 
                     if (itemDocHuman != null && itemDocHuman.GetElementsByTagName("Modules").Count > 0)
                     {
@@ -2332,8 +2332,8 @@ namespace Acurus.Capella.UI
                             }
                         }
                     }
-                    fs.Close();
-                    fs.Dispose();
+                   // fs.Close();
+                   // fs.Dispose();
                 }
             }
             if (ilstInsurancePlan.Count > 0)

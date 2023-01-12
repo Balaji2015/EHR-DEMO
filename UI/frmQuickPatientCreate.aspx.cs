@@ -4557,63 +4557,63 @@ namespace Acurus.Capella.UI
         }
 
         //physician
-        protected void btnSaveandMove_Click(object sender, EventArgs e)
-        {
-            if (ClientSession.UserName == string.Empty)
-            {
-                HttpContext.Current.Response.StatusCode = 999;
-                HttpContext.Current.Response.Status = "999 Session Expired";
-                HttpContext.Current.Response.StatusDescription = "frmSessionExpired.aspx";
-                Response.Redirect("~/frmSessionExpired.aspx");
+        //protected void btnSaveandMove_Click(object sender, EventArgs e)
+        //{
+        //    if (ClientSession.UserName == string.Empty)
+        //    {
+        //        HttpContext.Current.Response.StatusCode = 999;
+        //        HttpContext.Current.Response.Status = "999 Session Expired";
+        //        HttpContext.Current.Response.StatusDescription = "frmSessionExpired.aspx";
+        //        Response.Redirect("~/frmSessionExpired.aspx");
 
-            }
-            checkin();
-            // EncounterManager obj = new EncounterManager();
-            EncounterManager objEncounterManager = new EncounterManager();
-            IList<Encounter> savelst = new List<Encounter>();
-            //  savelst = obj.GetEncounterByEncounterID(Convert.ToUInt64(hdnEncounterID.Value));
-            ulong EncProviderID = 0;
-            string FacilityName = ClientSession.FacilityName;
-            WFObject lstwfobject = new WFObject();
-            //For bug id 56836
-            string sCurrentTime = DateTime.Now.ToString("yyyy-MM-dd hh:mm:ss tt");
-            string sLocal_Time = DateTime.Now.ToString("yyyy-MM-dd hh:mm:ss tt");
-            DateTime dtDateofservice = new DateTime();
-            DateTime dtApptdate = new DateTime();
+        //    }
+        //    checkin();
+        //    // EncounterManager obj = new EncounterManager();
+        //    EncounterManager objEncounterManager = new EncounterManager();
+        //    IList<Encounter> savelst = new List<Encounter>();
+        //    //  savelst = obj.GetEncounterByEncounterID(Convert.ToUInt64(hdnEncounterID.Value));
+        //    ulong EncProviderID = 0;
+        //    string FacilityName = ClientSession.FacilityName;
+        //    WFObject lstwfobject = new WFObject();
+        //    //For bug id 56836
+        //    string sCurrentTime = DateTime.Now.ToString("yyyy-MM-dd hh:mm:ss tt");
+        //    string sLocal_Time = DateTime.Now.ToString("yyyy-MM-dd hh:mm:ss tt");
+        //    DateTime dtDateofservice = new DateTime();
+        //    DateTime dtApptdate = new DateTime();
 
-            if (ViewState["apptdatetime"] != null)
-                dtApptdate = Convert.ToDateTime(ViewState["apptdatetime"]);
+        //    if (ViewState["apptdatetime"] != null)
+        //        dtApptdate = Convert.ToDateTime(ViewState["apptdatetime"]);
 
-            if (sCurrentTime != string.Empty && Convert.ToDateTime(sCurrentTime.Split(' ')[0]) == Convert.ToDateTime(dtApptdate.ToString().Split(' ')[0]))
-            {
-                dtDateofservice = UtilityManager.ConvertToUniversal(DateTime.Now);
-                sLocal_Time = UtilityManager.ConvertToLocal(dtDateofservice).ToString("yyyy-MM-dd hh:mm:ss tt");
-            }
-            else
-            {
-                dtDateofservice = dtApptdate;
-                sLocal_Time = UtilityManager.ConvertToLocal(dtApptdate).ToString("yyyy-MM-dd hh:mm:ss tt");
-            }
-            lstwfobject = objEncounterManager.UpdateEncounterforCheckin(Convert.ToUInt64(hdnEncounterID.Value), ClientSession.UserName, ClientSession.UserName, UtilityManager.ConvertToUniversal(DateTime.Now),
-          dtDateofservice, ClientSession.CurrentObjectType, "", string.Empty, sLocal_Time, ref  EncProviderID, ref FacilityName);
+        //    if (sCurrentTime != string.Empty && Convert.ToDateTime(sCurrentTime.Split(' ')[0]) == Convert.ToDateTime(dtApptdate.ToString().Split(' ')[0]))
+        //    {
+        //        dtDateofservice = UtilityManager.ConvertToUniversal(DateTime.Now);
+        //        sLocal_Time = UtilityManager.ConvertToLocal(dtDateofservice).ToString("yyyy-MM-dd hh:mm:ss tt");
+        //    }
+        //    else
+        //    {
+        //        dtDateofservice = dtApptdate;
+        //        sLocal_Time = UtilityManager.ConvertToLocal(dtApptdate).ToString("yyyy-MM-dd hh:mm:ss tt");
+        //    }
+        //    lstwfobject = objEncounterManager.UpdateEncounterforCheckin(Convert.ToUInt64(hdnEncounterID.Value), ClientSession.UserName, ClientSession.UserName, UtilityManager.ConvertToUniversal(DateTime.Now),
+        //  dtDateofservice, ClientSession.CurrentObjectType, "", string.Empty, sLocal_Time, ref  EncProviderID, ref FacilityName);
 
-            if (txtPatientAccountNo.Text != "")
-                ClientSession.HumanId = Convert.ToUInt64(txtPatientAccountNo.Text);
-            else
-                ClientSession.HumanId = Convert.ToUInt64(hdnHumanID.Value);
+        //    if (txtPatientAccountNo.Text != "")
+        //        ClientSession.HumanId = Convert.ToUInt64(txtPatientAccountNo.Text);
+        //    else
+        //        ClientSession.HumanId = Convert.ToUInt64(hdnHumanID.Value);
 
-            ClientSession.EncounterId = Convert.ToUInt64(hdnEncounterID.Value);
-            ClientSession.UserCurrentProcess = lstwfobject.Current_Process;
+        //    ClientSession.EncounterId = Convert.ToUInt64(hdnEncounterID.Value);
+        //    ClientSession.UserCurrentProcess = lstwfobject.Current_Process;
 
-            frmRCopiaToolbar.LoadNotification("All");
+        //    frmRCopiaToolbar.LoadNotification("All");
 
-            ClientSession.EncounterId = 0;
-            ClientSession.HumanId = 0;
-            ClientSession.FillEncounterandWFObject = null;
-            ClientSession.UserCurrentProcess = "";
-            ScriptManager.RegisterStartupScript(this, this.Page.GetType(), "SaveAuth", "SaveAuthEncounter();", true);
+        //    ClientSession.EncounterId = 0;
+        //    ClientSession.HumanId = 0;
+        //    ClientSession.FillEncounterandWFObject = null;
+        //    ClientSession.UserCurrentProcess = "";
+        //    ScriptManager.RegisterStartupScript(this, this.Page.GetType(), "SaveAuth", "SaveAuthEncounter();", true);
 
-        }
+        //}
 
         public Boolean AmountValidation(string Amount)
         {

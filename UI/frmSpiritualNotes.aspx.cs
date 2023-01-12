@@ -23,11 +23,11 @@ namespace Acurus.Capella.UI
         protected void Page_Load(object sender, EventArgs e)
         {
             string FileName = "Encounter" + "_" + ClientSession.EncounterId + ".xml";
-            string human_id = "Human" + "_" + ClientSession.HumanId.ToString() + ".xml"; ;
-            string strXmlFilePath = Path.Combine(System.Configuration.ConfigurationSettings.AppSettings["XMLPath"], FileName);
-            string strXmlHumanPath = Path.Combine(System.Configuration.ConfigurationSettings.AppSettings["XMLPath"], human_id);
+            string human_id = "Human" + "_" + ClientSession.HumanId.ToString() + ".xml"; 
+         //  string strXmlFilePath = Path.Combine(System.Configuration.ConfigurationSettings.AppSettings["XMLPath"], FileName);
+          //  string strXmlHumanPath = Path.Combine(System.Configuration.ConfigurationSettings.AppSettings["XMLPath"], human_id);
 
-            string xmlDataFile = strXmlFilePath;
+          //  string xmlDataFile = strXmlFilePath;
             string xsltFile = Path.Combine(System.Configuration.ConfigurationSettings.AppSettings["XMLPath"], "EHR_Spiritual_Notes.xsl");
             string WordOutputName = ClientSession.FacilityName.Replace(",", "") + "_Spiritual_Notes_" + ClientSession.HumanId + "_" + DateTime.Now.ToString("yyyyMMdd hhmmsstt") +".html";
             string outputDocument = Path.Combine(System.Configuration.ConfigurationSettings.AppSettings["XMLPath"], WordOutputName);
@@ -41,7 +41,19 @@ namespace Acurus.Capella.UI
             XsltSettings settings = new XsltSettings(true, false);
 
             ds = new DataSet();
-            ds.ReadXml(xmlDataFile);
+            IList<Encounter_Blob> ilstEncounterBlob = new List<Encounter_Blob>();
+            EncounterBlobManager EncounterBlobMngr = new EncounterBlobManager();
+            string sXMLEncounterDoc = "";
+            ilstEncounterBlob = EncounterBlobMngr.GetEncounterBlob(ClientSession.EncounterId);
+            if (ilstEncounterBlob.Count > 0)
+            {
+                sXMLEncounterDoc = System.Text.Encoding.UTF8.GetString(ilstEncounterBlob[0].Encounter_XML);
+                if (sXMLEncounterDoc.Substring(0, 1) != "<")
+                    sXMLEncounterDoc = sXMLEncounterDoc.Substring(1, sXMLEncounterDoc.Length - 1);
+            }
+            TextReader EncXMLContent = new StringReader(sXMLEncounterDoc);
+            //XDocument xmlDocumentType = XDocument.Load(EncXMLContent);
+            ds.ReadXml(EncXMLContent);
 
             xmlDoc = new XmlDataDocument(ds);
             xslTran = new XslCompiledTransform();
@@ -68,7 +80,9 @@ namespace Acurus.Capella.UI
             string Encounter_Provider_Name = "";
             string Provider_Speciality = "";
             XDocument xmlDocumentType = XDocument.Load(strXmlFilePath);
-            XDocument xmlDocument = XDocument.Load(strXmlHumanPath);
+            GenerateXml objxml = new GenerateXml();
+
+            XDocument xmlDocument =XDocument.Load(objxml.ReadBlob("Human", ClientSession.HumanId).InnerXml);
             string Encounter_Provider_id = "";
 
             foreach (XElement elements in xmlDocument.Descendants("HumanList"))

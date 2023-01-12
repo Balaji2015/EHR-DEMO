@@ -47,14 +47,34 @@ namespace Acurus.Capella.UI
             string FileName = string.Empty;
             if (Encounter_Id != 0)
             {
+                IList<Encounter_Blob> ilstEncounterBlob = new List<Encounter_Blob>();
+                EncounterBlobManager EncounterBlobMngr = new EncounterBlobManager();
+               
+                ilstEncounterBlob = EncounterBlobMngr.GetEncounterBlob(Encounter_Id);
+                if (ilstEncounterBlob.Count > 0)
+                {
+                    sXMLEncounterDoc = System.Text.Encoding.UTF8.GetString(ilstEncounterBlob[0].Encounter_XML);
+                    if (sXMLEncounterDoc.Substring(0, 1) != "<")
+                        sXMLEncounterDoc = sXMLEncounterDoc.Substring(1, sXMLEncounterDoc.Length - 1);
+                }
                 FileName = "Encounter" + "_" + Encounter_Id + ".xml";
             }
             else
             {
+                IList<Encounter_Blob> ilstEncounterBlob = new List<Encounter_Blob>();
+                EncounterBlobManager EncounterBlobMngr = new EncounterBlobManager();
+              
+                ilstEncounterBlob = EncounterBlobMngr.GetEncounterBlob(ClientSession.EncounterId);
+                if (ilstEncounterBlob.Count > 0)
+                {
+                    sXMLEncounterDoc = System.Text.Encoding.UTF8.GetString(ilstEncounterBlob[0].Encounter_XML);
+                    if (sXMLEncounterDoc.Substring(0, 1) != "<")
+                        sXMLEncounterDoc = sXMLEncounterDoc.Substring(1, sXMLEncounterDoc.Length - 1);
+                }
                 FileName = "Encounter" + "_" + ClientSession.EncounterId + ".xml";
             }
 
-            strXmlEncounterPath1 = Path.Combine(System.Configuration.ConfigurationSettings.AppSettings["XMLPath"], FileName);
+           // strXmlEncounterPath1 = Path.Combine(System.Configuration.ConfigurationSettings.AppSettings["XMLPath"], FileName);
 
             if ((Request.QueryString["Menu"] != null && Request.QueryString["Menu"].Contains("True")) || (sNotesName != null))
             {
@@ -220,10 +240,11 @@ namespace Acurus.Capella.UI
                     }
                     if ((result.ToUpper().Contains("DOS")) || (OutputName[i].ToUpper().Contains("DATE")))
                     {
-                        if (File.Exists(strXmlEncounterPath1) == true)
-                        {
+                       // if (File.Exists(strXmlEncounterPath1) == true)
+                        //{
                             XmlDocument itemDoc = new XmlDocument();
-                            XmlTextReader XmlText = new XmlTextReader(strXmlEncounterPath1);
+                        TextReader EncXMLContent = new StringReader(sXMLEncounterDoc);
+                        XmlTextReader XmlText = new XmlTextReader(EncXMLContent);
                             itemDoc.Load(XmlText);
                             XmlText.Close();
                             if (itemDoc.GetElementsByTagName("EncounterList")[0] != null)
@@ -235,14 +256,15 @@ namespace Acurus.Capella.UI
                                 }
                                 NotesName = NotesName.Replace("[" + result + "]", sDOS);
                             }
-                        }
+                      //  }
                     }
                     if (result.ToUpper().Contains("RENDERING"))
                     {
-                        if (File.Exists(strXmlEncounterPath1) == true)
+                       // if (File.Exists(strXmlEncounterPath1) == true)
                         {
                             XmlDocument itemDoc = new XmlDocument();
-                            XmlTextReader XmlText = new XmlTextReader(strXmlEncounterPath1);
+                            TextReader EncXMLContent = new StringReader(sXMLEncounterDoc);
+                            XmlTextReader XmlText = new XmlTextReader(EncXMLContent);
                             itemDoc.Load(XmlText);
                             XmlText.Close();
                             if (itemDoc.GetElementsByTagName("EncounterList")[0] != null)
@@ -294,7 +316,7 @@ namespace Acurus.Capella.UI
         }
         public void DownloadNotes(string xsltFile, string NotesName, string sNotesName)
         {
-            string xmlDataFile = strXmlEncounterPath1;
+           // string xmlDataFile = strXmlEncounterPath1;
             string WordOutputName = NotesName + ".html";
             string outputDocument = Path.Combine(System.Configuration.ConfigurationSettings.AppSettings["XMLPath"], WordOutputName);
             IList<Human_Blob> ilstHumanBlob = new List<Human_Blob>();
@@ -366,7 +388,8 @@ namespace Acurus.Capella.UI
             IList<PhysicianLibrary> lstphysicianReview = new List<PhysicianLibrary>();
             IList<PhysicianLibrary> lstphysician = new List<PhysicianLibrary>();
             PhysicianManager objPhysician = new PhysicianManager();
-            XDocument xmlDocumentType = XDocument.Load(strXmlEncounterPath1);
+            TextReader EncXMLContent = new StringReader(sXMLEncounterDoc);
+            XDocument xmlDocumentType = XDocument.Load(EncXMLContent);
 
             foreach (XElement elements in xmlDocumentType.Descendants("EncounterList"))
             {

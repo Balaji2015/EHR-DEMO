@@ -342,7 +342,7 @@ namespace Acurus.Capella.UI
 
 
 
-                string humanFileName = Path.Combine(System.Configuration.ConfigurationSettings.AppSettings["XMLPath"], "Human_" + HumanID + ".xml");
+                //string humanFileName = Path.Combine(System.Configuration.ConfigurationSettings.AppSettings["XMLPath"], "Human_" + HumanID + ".xml");
                 flag = 0;
                 //try
                 //{

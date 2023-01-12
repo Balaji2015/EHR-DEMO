@@ -488,150 +488,150 @@ namespace Acurus.Capella.UI
             return years;
         }
 
+        //method not in use
+        //public string FillPatientSummaryBarforPatientChart(string LastName, string FirstName, string MI, string Suffix, DateTime DOB, ulong ulhumanID, string MedRecNo, string HomePhoneNo, string Sex, string PatientStatus, string SSN, string PatientType, string sPriPlan, string sPriCarrier, string sSecPlan, string sSecCarrier)
+        //{
+        //    string sMySummary;
+        //    string sPatientSex = string.Empty;
+        //    if (Sex != string.Empty) //For Bug Id 48937 
+        //    {
+        //        if (Sex.Substring(0, 1).ToUpper() == "U")
+        //        {
+        //            sPatientSex = "UNK";
+        //        }
+        //        else
+        //        {
+        //            sPatientSex = Sex.Substring(0, 1);
+        //        }
 
-        public string FillPatientSummaryBarforPatientChart(string LastName, string FirstName, string MI, string Suffix, DateTime DOB, ulong ulhumanID, string MedRecNo, string HomePhoneNo, string Sex, string PatientStatus, string SSN, string PatientType, string sPriPlan, string sPriCarrier, string sSecPlan, string sSecCarrier)
-        {
-            string sMySummary;
-            string sPatientSex = string.Empty;
-            if (Sex != string.Empty) //For Bug Id 48937 
-            {
-                if (Sex.Substring(0, 1).ToUpper() == "U")
-                {
-                    sPatientSex = "UNK";
-                }
-                else
-                {
-                    sPatientSex = Sex.Substring(0, 1);
-                }
+        //    }
+        //    else
+        //    {
+        //        sPatientSex = " ";
+        //    }
+        //    if (PatientStatus == "DECEASED")
+        //    {
+        //        sMySummary = LastName + "," + FirstName +
+        //           "  " + MI + "  " + Suffix + "   |   " +
+        //           DOB.ToString("dd-MMM-yyyy") + "   |   " +
+        //           (CalculateAge(DOB)).ToString() +
+        //           "  year(s)    |   " + sPatientSex + "   |   " + PatientStatus + "   |   Acct #:" + ulhumanID +
+        //           "   |   " + "Med Rec #:" + MedRecNo + "   |   " +
+        //           "Phone #:" + HomePhoneNo + "   |   ";
+        //    }
+        //    else
+        //    {
+        //        sMySummary = LastName + "," + FirstName +
+        //       "  " + MI + "  " + Suffix + "   |   " +
+        //       DOB.ToString("dd-MMM-yyyy") + "   |   " +
+        //       (CalculateAge(DOB)).ToString() +
+        //       "  year(s)    |   " + sPatientSex + "   |   Acct #:" + ulhumanID +
+        //       "   |   " + "Med Rec #:" + MedRecNo + "   |   " +
+        //       "Phone #:" + HomePhoneNo + "   |   ";
 
-            }
-            else
-            {
-                sPatientSex = " ";
-            }
-            if (PatientStatus == "DECEASED")
-            {
-                sMySummary = LastName + "," + FirstName +
-                   "  " + MI + "  " + Suffix + "   |   " +
-                   DOB.ToString("dd-MMM-yyyy") + "   |   " +
-                   (CalculateAge(DOB)).ToString() +
-                   "  year(s)    |   " + sPatientSex + "   |   " + PatientStatus + "   |   Acct #:" + ulhumanID +
-                   "   |   " + "Med Rec #:" + MedRecNo + "   |   " +
-                   "Phone #:" + HomePhoneNo + "   |   ";
-            }
-            else
-            {
-                sMySummary = LastName + "," + FirstName +
-               "  " + MI + "  " + Suffix + "   |   " +
-               DOB.ToString("dd-MMM-yyyy") + "   |   " +
-               (CalculateAge(DOB)).ToString() +
-               "  year(s)    |   " + sPatientSex + "   |   Acct #:" + ulhumanID +
-               "   |   " + "Med Rec #:" + MedRecNo + "   |   " +
-               "Phone #:" + HomePhoneNo + "   |   ";
+        //    }
 
-            }
+        //    ClientSession.SummaryList = "Name: " + LastName + " " + FirstName + " " + MI + " " + Suffix + " | DOB:  " + DOB.ToString("dd-MMM-yyyy") + " | Acc #:" + ulhumanID;
+        //    if (PatientType != string.Empty)
+        //    {
+        //        sMySummary += "Patient Type:" + PatientType + "   |   ";
+        //    }
+        //    if (sPriPlan != string.Empty)
+        //    {
+        //        sMySummary += "$" + "Pri Plan:" + sPriCarrier + " - " + sPriPlan + "   |   ";
+        //    }
+        //    if (sSecPlan != string.Empty)
+        //    {
+        //        sMySummary += "$" + "Sec Plan:" + sSecCarrier + " - " + sSecPlan + "   |   ";
+        //    }
+        //    if (SSN != string.Empty)
+        //    {
+        //        sMySummary += "$" + "SSN:" + SSN + "   |   ";
+        //    }
 
-            ClientSession.SummaryList = "Name: " + LastName + " " + FirstName + " " + MI + " " + Suffix + " | DOB:  " + DOB.ToString("dd-MMM-yyyy") + " | Acc #:" + ulhumanID;
-            if (PatientType != string.Empty)
-            {
-                sMySummary += "Patient Type:" + PatientType + "   |   ";
-            }
-            if (sPriPlan != string.Empty)
-            {
-                sMySummary += "$" + "Pri Plan:" + sPriCarrier + " - " + sPriPlan + "   |   ";
-            }
-            if (sSecPlan != string.Empty)
-            {
-                sMySummary += "$" + "Sec Plan:" + sSecCarrier + " - " + sSecPlan + "   |   ";
-            }
-            if (SSN != string.Empty)
-            {
-                sMySummary += "$" + "SSN:" + SSN + "   |   ";
-            }
+        //    string HumanFile = string.Empty;
+        //    if (ClientSession.HumanId != null)
+        //        HumanFile = "Human" + "_" + ClientSession.HumanId + ".xml";
+        //    string sHumanFilePath = Path.Combine(System.Configuration.ConfigurationSettings.AppSettings["XMLPath"], HumanFile);
 
-            string HumanFile = string.Empty;
-            if (ClientSession.HumanId != null)
-                HumanFile = "Human" + "_" + ClientSession.HumanId + ".xml";
-            string sHumanFilePath = Path.Combine(System.Configuration.ConfigurationSettings.AppSettings["XMLPath"], HumanFile);
+        //    if (File.Exists(sHumanFilePath) == true)
+        //    {
+        //        XmlDocument itemDoc = new XmlDocument();
+        //        XmlTextReader XmlText = new XmlTextReader(sHumanFilePath);
+        //        itemDoc.Load(XmlText);
+        //        XmlText.Close();
+        //        XmlNodeList xmlAgenode = itemDoc.GetElementsByTagName("Age");
+        //        if (xmlAgenode != null && xmlAgenode.Count > 0)
+        //            xmlAgenode[0].Attributes[0].Value = CalculateAge(DOB).ToString();
+        //        else
+        //        {
+        //            ScriptManager.RegisterStartupScript(this, this.GetType(), "Age Tag Missing", "DisplayErrorMessage('000039');", true);//Throw error when Age is missing
+        //        }
+        //        //itemDoc.Save(sHumanFilePath);
 
-            if (File.Exists(sHumanFilePath) == true)
-            {
-                XmlDocument itemDoc = new XmlDocument();
-                XmlTextReader XmlText = new XmlTextReader(sHumanFilePath);
-                itemDoc.Load(XmlText);
-                XmlText.Close();
-                XmlNodeList xmlAgenode = itemDoc.GetElementsByTagName("Age");
-                if (xmlAgenode != null && xmlAgenode.Count > 0)
-                    xmlAgenode[0].Attributes[0].Value = CalculateAge(DOB).ToString();
-                else
-                {
-                    ScriptManager.RegisterStartupScript(this, this.GetType(), "Age Tag Missing", "DisplayErrorMessage('000039');", true);//Throw error when Age is missing
-                }
-                //itemDoc.Save(sHumanFilePath);
+        //        int trycount = 0;
+        //    trytosaveagain:
+        //        try
+        //        {
+        //            itemDoc.Save(sHumanFilePath);
+        //        }
+        //        catch (Exception xmlexcep)
+        //        {
+        //            trycount++;
+        //            if (trycount <= 3)
+        //            {
+        //                int TimeMilliseconds = 0;
+        //                if (System.Configuration.ConfigurationSettings.AppSettings["ThreadSleepTime"] != null)
+        //                    TimeMilliseconds = Convert.ToInt32(System.Configuration.ConfigurationSettings.AppSettings["ThreadSleepTime"]);
 
-                int trycount = 0;
-            trytosaveagain:
-                try
-                {
-                    itemDoc.Save(sHumanFilePath);
-                }
-                catch (Exception xmlexcep)
-                {
-                    trycount++;
-                    if (trycount <= 3)
-                    {
-                        int TimeMilliseconds = 0;
-                        if (System.Configuration.ConfigurationSettings.AppSettings["ThreadSleepTime"] != null)
-                            TimeMilliseconds = Convert.ToInt32(System.Configuration.ConfigurationSettings.AppSettings["ThreadSleepTime"]);
+        //                Thread.Sleep(TimeMilliseconds);
+        //                string sMsg = string.Empty;
+        //                string sExStackTrace = string.Empty;
 
-                        Thread.Sleep(TimeMilliseconds);
-                        string sMsg = string.Empty;
-                        string sExStackTrace = string.Empty;
+        //                string version = "";
+        //                if (System.Configuration.ConfigurationSettings.AppSettings["VersionConfiguration"] != null)
+        //                    version = System.Configuration.ConfigurationSettings.AppSettings["VersionConfiguration"].ToString();
 
-                        string version = "";
-                        if (System.Configuration.ConfigurationSettings.AppSettings["VersionConfiguration"] != null)
-                            version = System.Configuration.ConfigurationSettings.AppSettings["VersionConfiguration"].ToString();
+        //                string[] server = version.Split('|');
+        //                string serverno = "";
+        //                if (server.Length > 1)
+        //                    serverno = server[1].Trim();
 
-                        string[] server = version.Split('|');
-                        string serverno = "";
-                        if (server.Length > 1)
-                            serverno = server[1].Trim();
+        //                if (xmlexcep.InnerException != null && xmlexcep.InnerException.Message != null)
+        //                    sMsg = xmlexcep.InnerException.Message;
+        //                else
+        //                    sMsg = xmlexcep.Message;
 
-                        if (xmlexcep.InnerException != null && xmlexcep.InnerException.Message != null)
-                            sMsg = xmlexcep.InnerException.Message;
-                        else
-                            sMsg = xmlexcep.Message;
+        //                if (xmlexcep != null && xmlexcep.StackTrace != null)
+        //                    sExStackTrace = xmlexcep.StackTrace;
 
-                        if (xmlexcep != null && xmlexcep.StackTrace != null)
-                            sExStackTrace = xmlexcep.StackTrace;
+        //                string insertQuery = "insert into  stats_apperrorlog values(0,'" + sMsg.Replace(@"\\", @"\\\\").Replace(@"\", @"\\").Replace(@"\\\\\\\\", @"\\\\").Replace("'", "") + Environment.NewLine + " Retry: " + trycount + "', '" + serverno + "','" + DateTime.Now + "','','0','0','0','" + sExStackTrace.Replace("'", "") + "','" + DateTime.Now.ToString("yyyy-MM-dd hh:mm:ss") + "')";
+        //                string ConnectionData;
+        //                ConnectionData = ConfigurationManager.ConnectionStrings["con"].ConnectionString;
+        //                using (MySqlConnection con = new MySqlConnection(ConnectionData))
+        //                {
+        //                    using (MySqlCommand cmd = new MySqlCommand(insertQuery))
+        //                    {
+        //                        cmd.Connection = con;
+        //                        try
+        //                        {
+        //                            con.Open();
+        //                            cmd.ExecuteNonQuery();
+        //                            con.Close();
+        //                        }
+        //                        catch
+        //                        {
+        //                        }
+        //                    }
+        //                }
+        //                goto trytosaveagain;
+        //            }
+        //        }
+        //    }
 
-                        string insertQuery = "insert into  stats_apperrorlog values(0,'" + sMsg.Replace(@"\\", @"\\\\").Replace(@"\", @"\\").Replace(@"\\\\\\\\", @"\\\\").Replace("'", "") + Environment.NewLine + " Retry: " + trycount + "', '" + serverno + "','" + DateTime.Now + "','','0','0','0','" + sExStackTrace.Replace("'", "") + "','" + DateTime.Now.ToString("yyyy-MM-dd hh:mm:ss") + "')";
-                        string ConnectionData;
-                        ConnectionData = ConfigurationManager.ConnectionStrings["con"].ConnectionString;
-                        using (MySqlConnection con = new MySqlConnection(ConnectionData))
-                        {
-                            using (MySqlCommand cmd = new MySqlCommand(insertQuery))
-                            {
-                                cmd.Connection = con;
-                                try
-                                {
-                                    con.Open();
-                                    cmd.ExecuteNonQuery();
-                                    con.Close();
-                                }
-                                catch
-                                {
-                                }
-                            }
-                        }
-                        goto trytosaveagain;
-                    }
-                }
-            }
-
-            ClientSession.PatientPane = sMySummary;
-            return sMySummary;
-        }
+        //    ClientSession.PatientPane = sMySummary;
+        //    return sMySummary;
+        //}
         //End
 
 

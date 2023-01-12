@@ -875,32 +875,52 @@ namespace Acurus.Capella.UI.WebServices
             
             string sFaxFirstname = string.Empty;
             string sFaxLastName = string.Empty;
-            string human_id = "Human" + "_" + ClientSession.HumanId.ToString() + ".xml";
-            string strXmlHumanPath = Path.Combine(System.Configuration.ConfigurationSettings.AppSettings["XMLPath"], human_id);
-            if (File.Exists(strXmlHumanPath) == true)
+            IList<Human> lsthuman = new List<Human>();
+            IList<string> ilstGeneralPlanTagList = new List<string>();
+            ilstGeneralPlanTagList.Add("HumanList");
+            IList<object> ilstGeneralPlanBlobFinal = new List<object>();
+            ilstGeneralPlanBlobFinal = UtilityManager.ReadBlob(ClientSession.HumanId, ilstGeneralPlanTagList);
+            if (ilstGeneralPlanBlobFinal != null && ilstGeneralPlanBlobFinal.Count > 0)
             {
-                XmlDocument itemDoc = new XmlDocument();
-                XmlTextReader XmlText = new XmlTextReader(strXmlHumanPath);
-                using (FileStream fs = new FileStream(strXmlHumanPath, FileMode.Open, FileAccess.Read, FileShare.Read))
+                if (ilstGeneralPlanBlobFinal[0] != null)
                 {
-                    itemDoc.Load(fs);
-
-                    XmlText.Close();
-                    if (itemDoc.GetElementsByTagName("HumanList")[0] != null)
+                    for (int iCount = 0; iCount < ((IList<object>)ilstGeneralPlanBlobFinal[0]).Count; iCount++)
                     {
-                        if (itemDoc.GetElementsByTagName("HumanList")[0].ChildNodes.Count > 0)
-                        {
-                            if (itemDoc.GetElementsByTagName("HumanList")[0].ChildNodes[0].Attributes.GetNamedItem("First_Name").Value != null)
-                                sFaxFirstname = "_" + itemDoc.GetElementsByTagName("HumanList")[0].ChildNodes[0].Attributes.GetNamedItem("First_Name").Value.ToString();
-                            if (itemDoc.GetElementsByTagName("HumanList")[0].ChildNodes[0].Attributes.GetNamedItem("Last_Name").Value != null)
-                                sFaxLastName = "_" + itemDoc.GetElementsByTagName("HumanList")[0].ChildNodes[0].Attributes.GetNamedItem("Last_Name").Value.ToString();
-
-                        }
+                        //objFillHuman = (Human)((IList<object>)ilstGeneralPlanBlobFinal[0])[iCount];
+                        lsthuman.Add((Human)((IList<object>)ilstGeneralPlanBlobFinal[0])[iCount]);
                     }
-                    fs.Close();
-                    fs.Dispose();
+                    sFaxFirstname = "_" + lsthuman[0].First_Name;
+                    sFaxLastName = "_" + lsthuman[0].Last_Name;
+
+
                 }
             }
+            //string human_id = "Human" + "_" + ClientSession.HumanId.ToString() + ".xml";
+            //string strXmlHumanPath = Path.Combine(System.Configuration.ConfigurationSettings.AppSettings["XMLPath"], human_id);
+            //if (File.Exists(strXmlHumanPath) == true)
+            //{
+            //    XmlDocument itemDoc = new XmlDocument();
+            //    XmlTextReader XmlText = new XmlTextReader(strXmlHumanPath);
+            //    using (FileStream fs = new FileStream(strXmlHumanPath, FileMode.Open, FileAccess.Read, FileShare.Read))
+            //    {
+            //        itemDoc.Load(fs);
+
+            //        XmlText.Close();
+            //        if (itemDoc.GetElementsByTagName("HumanList")[0] != null)
+            //        {
+            //            if (itemDoc.GetElementsByTagName("HumanList")[0].ChildNodes.Count > 0)
+            //            {
+            //                if (itemDoc.GetElementsByTagName("HumanList")[0].ChildNodes[0].Attributes.GetNamedItem("First_Name").Value != null)
+            //                    sFaxFirstname = "_" + itemDoc.GetElementsByTagName("HumanList")[0].ChildNodes[0].Attributes.GetNamedItem("First_Name").Value.ToString();
+            //                if (itemDoc.GetElementsByTagName("HumanList")[0].ChildNodes[0].Attributes.GetNamedItem("Last_Name").Value != null)
+            //                    sFaxLastName = "_" + itemDoc.GetElementsByTagName("HumanList")[0].ChildNodes[0].Attributes.GetNamedItem("Last_Name").Value.ToString();
+
+            //            }
+            //        }
+            //        fs.Close();
+            //        fs.Dispose();
+            //    }
+            //}
 
             string sFaxSubject = sFaxLastName + sFaxFirstname +"_"+DateTime.Now.ToString("dd-MMM-yyyy");
 
@@ -2033,77 +2053,109 @@ namespace Acurus.Capella.UI.WebServices
         private bool IsTobaccoCPTPresent_In_EandMCode(ulong EncounterID)
         {
             bool IsTobaccoCPTPresent = false, IsTobaccoCPTNotDeleted = false;
-            string filename = "Encounter" + "_" + EncounterID + ".xml";
-            string XmlFilePath = Path.Combine(System.Configuration.ConfigurationSettings.AppSettings["XMLPath"], filename);
-            if (File.Exists(XmlFilePath))
+
+            IList<EAndMCoding> lsteandm = new List<EAndMCoding>();
+            IList<string> ilstGeneralPlanTagList = new List<string>();
+            ilstGeneralPlanTagList.Add("EAndMCodingList");
+            IList<object> ilstGeneralPlanBlobFinal = new List<object>();
+            ilstGeneralPlanBlobFinal = UtilityManager.ReadBlob(EncounterID, ilstGeneralPlanTagList);
+            if (ilstGeneralPlanBlobFinal != null && ilstGeneralPlanBlobFinal.Count > 0)
             {
-                XmlDocument itemDoc = new XmlDocument();
-                XmlTextReader XmlText = new XmlTextReader(XmlFilePath);
-                XmlNodeList xmlTagName = null;
-                //  itemDoc.Load(XmlText);
-                using (FileStream fs = new FileStream(XmlFilePath, FileMode.Open, FileAccess.Read, FileShare.Read))
+                if (ilstGeneralPlanBlobFinal[0] != null)
                 {
-                    itemDoc.Load(fs);
-
-                    XmlText.Close();
-                    #region EAndMCodingList
-                    if (itemDoc.GetElementsByTagName("EAndMCodingList") != null && itemDoc.GetElementsByTagName("EAndMCodingList").Count > 0)
+                    for (int iCount = 0; iCount < ((IList<object>)ilstGeneralPlanBlobFinal[0]).Count; iCount++)
                     {
-                            xmlTagName = itemDoc.GetElementsByTagName("EAndMCodingList")[0].ChildNodes;
-                            if (xmlTagName.Count > 0)
-                            {
-                                for (int j = 0; j < xmlTagName.Count; j++)
-                                {
-                                    string TagName = xmlTagName[j].Name;
-                                    XmlSerializer xmlserializer = new XmlSerializer(typeof(EAndMCoding));
-                                    EAndMCoding EAndMCoding = xmlserializer.Deserialize(new XmlNodeReader(xmlTagName[j])) as EAndMCoding;
-                                    IEnumerable<PropertyInfo> propInfo = null;
-                                    if (EAndMCoding != null)
-                                    {
-                                        propInfo = from obji in ((EAndMCoding)EAndMCoding).GetType().GetProperties() select obji;
-
-                                        for (int i = 0; i < xmlTagName[j].Attributes.Count; i++)
-                                        {
-                                            XmlNode nodevalue = xmlTagName[j].Attributes[i];
-                                            {
-                                                foreach (PropertyInfo property in propInfo)
-                                                {
-                                                    if (property.Name == nodevalue.Name)
-                                                    {
-                                                        if (property.PropertyType.Name.ToUpper() == "UINT64")
-                                                            property.SetValue(EAndMCoding, Convert.ToUInt64(nodevalue.Value), null);
-                                                        else if (property.PropertyType.Name.ToUpper() == "STRING")
-                                                            property.SetValue(EAndMCoding, Convert.ToString(nodevalue.Value), null);
-                                                        else if (property.PropertyType.Name.ToUpper() == "DATETIME")
-                                                            property.SetValue(EAndMCoding, Convert.ToDateTime(nodevalue.Value), null);
-                                                        else if (property.PropertyType.Name.ToUpper() == "INT32")
-                                                            property.SetValue(EAndMCoding, Convert.ToInt32(nodevalue.Value), null);
-                                                        else if (property.PropertyType.Name.ToUpper() == "DECIMAL")
-                                                            property.SetValue(EAndMCoding, Convert.ToDecimal(nodevalue.Value), null);
-                                                        else
-                                                            property.SetValue(EAndMCoding, nodevalue.Value, null);
-                                                    }
-                                                }
-                                            }
-                                        }
-                                        if ((EAndMCoding.Procedure_Code == "99406" || EAndMCoding.Procedure_Code == "99407") && EAndMCoding.Encounter_ID == EncounterID)
-                                        {
-                                            IsTobaccoCPTPresent = true;
-                                            if (EAndMCoding.Is_Delete == "N")
-                                            {
-                                                IsTobaccoCPTNotDeleted = true;
-                                                break;
-                                            }
-                                        }
-                                    }
-                                }
-                            }
+                        //objFillHuman = (Human)((IList<object>)ilstGeneralPlanBlobFinal[0])[iCount];
+                        lsteandm.Add((EAndMCoding)((IList<object>)ilstGeneralPlanBlobFinal[0])[iCount]);
                     }
-                    #endregion
-                    fs.Close();
-                    fs.Dispose();
+                  
+
+
+                }
+                for (int i = 0; i < lsteandm.Count; i++)
+                {
+                    if ((lsteandm[i].Procedure_Code == "99406" || lsteandm[i].Procedure_Code == "99407") && lsteandm[i].Encounter_ID == EncounterID)
+                    {
+                        IsTobaccoCPTPresent = true;
+                        if (lsteandm[i].Is_Delete == "N")
+                        {
+                            IsTobaccoCPTNotDeleted = true;
+                            break;
+                        }
+                    }
                 }
             }
+            //string filename = "Encounter" + "_" + EncounterID + ".xml";
+            //string XmlFilePath = Path.Combine(System.Configuration.ConfigurationSettings.AppSettings["XMLPath"], filename);
+            //if (File.Exists(XmlFilePath))
+            //{
+            //    XmlDocument itemDoc = new XmlDocument();
+            //    XmlTextReader XmlText = new XmlTextReader(XmlFilePath);
+            //    XmlNodeList xmlTagName = null;
+            //    //  itemDoc.Load(XmlText);
+            //    using (FileStream fs = new FileStream(XmlFilePath, FileMode.Open, FileAccess.Read, FileShare.Read))
+            //    {
+            //        itemDoc.Load(fs);
+
+            //        XmlText.Close();
+            //        #region EAndMCodingList
+            //        if (itemDoc.GetElementsByTagName("EAndMCodingList") != null && itemDoc.GetElementsByTagName("EAndMCodingList").Count > 0)
+            //        {
+            //                xmlTagName = itemDoc.GetElementsByTagName("EAndMCodingList")[0].ChildNodes;
+            //                if (xmlTagName.Count > 0)
+            //                {
+            //                    for (int j = 0; j < xmlTagName.Count; j++)
+            //                    {
+            //                        string TagName = xmlTagName[j].Name;
+            //                        XmlSerializer xmlserializer = new XmlSerializer(typeof(EAndMCoding));
+            //                        EAndMCoding EAndMCoding = xmlserializer.Deserialize(new XmlNodeReader(xmlTagName[j])) as EAndMCoding;
+            //                        IEnumerable<PropertyInfo> propInfo = null;
+            //                        if (EAndMCoding != null)
+            //                        {
+            //                            propInfo = from obji in ((EAndMCoding)EAndMCoding).GetType().GetProperties() select obji;
+
+            //                            for (int i = 0; i < xmlTagName[j].Attributes.Count; i++)
+            //                            {
+            //                                XmlNode nodevalue = xmlTagName[j].Attributes[i];
+            //                                {
+            //                                    foreach (PropertyInfo property in propInfo)
+            //                                    {
+            //                                        if (property.Name == nodevalue.Name)
+            //                                        {
+            //                                            if (property.PropertyType.Name.ToUpper() == "UINT64")
+            //                                                property.SetValue(EAndMCoding, Convert.ToUInt64(nodevalue.Value), null);
+            //                                            else if (property.PropertyType.Name.ToUpper() == "STRING")
+            //                                                property.SetValue(EAndMCoding, Convert.ToString(nodevalue.Value), null);
+            //                                            else if (property.PropertyType.Name.ToUpper() == "DATETIME")
+            //                                                property.SetValue(EAndMCoding, Convert.ToDateTime(nodevalue.Value), null);
+            //                                            else if (property.PropertyType.Name.ToUpper() == "INT32")
+            //                                                property.SetValue(EAndMCoding, Convert.ToInt32(nodevalue.Value), null);
+            //                                            else if (property.PropertyType.Name.ToUpper() == "DECIMAL")
+            //                                                property.SetValue(EAndMCoding, Convert.ToDecimal(nodevalue.Value), null);
+            //                                            else
+            //                                                property.SetValue(EAndMCoding, nodevalue.Value, null);
+            //                                        }
+            //                                    }
+            //                                }
+            //                            }
+            //                            if ((EAndMCoding.Procedure_Code == "99406" || EAndMCoding.Procedure_Code == "99407") && EAndMCoding.Encounter_ID == EncounterID)
+            //                            {
+            //                                IsTobaccoCPTPresent = true;
+            //                                if (EAndMCoding.Is_Delete == "N")
+            //                                {
+            //                                    IsTobaccoCPTNotDeleted = true;
+            //                                    break;
+            //                                }
+            //                            }
+            //                        }
+            //                    }
+            //                }
+            //        }
+            //        #endregion
+            //        fs.Close();
+            //        fs.Dispose();
+            //    }
+            // }
             if ((!IsTobaccoCPTPresent) || (IsTobaccoCPTPresent && IsTobaccoCPTNotDeleted))
             {
                 return true;

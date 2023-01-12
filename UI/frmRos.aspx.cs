@@ -466,28 +466,52 @@ namespace Acurus.Capella.UI
                     sex = ClientSession.PatientPaneList[0].Sex.ToUpper() == "MALE" ? "FEMALE" : "MALE";
                 else
                 {
-                    string strXmlEncounterPath = Path.Combine(System.Configuration.ConfigurationSettings.AppSettings["XMLPath"], "Human_" + ClientSession.HumanId.ToString() + ".xml");
-                    if (File.Exists(strXmlEncounterPath) == true)
-                    {
-                        using (FileStream fs = new FileStream(strXmlEncounterPath, FileMode.Open, FileAccess.Read, FileShare.Read))
-                        {
-                            XmlDocument itemDoc = new XmlDocument();
-                            XmlTextReader xmltxtReader = new XmlTextReader(fs);
-                            itemDoc.Load(xmltxtReader);
-                            xmltxtReader.Close();
-                            XmlNodeList xmlNodeList = itemDoc.GetElementsByTagName("HumanList");
-                            if (xmlNodeList.Count > 0)
-                            {
-                                if (xmlNodeList[0].ChildNodes.Count > 0)
-                                {
-                                    sex = xmlNodeList[0].ChildNodes[0].Attributes["Sex"].Value.ToUpper() == "MALE" ? "FEMALE" : "MALE";
-                                }
+                    IList<string> ilsHumanTagList = new List<string>();
+                    ilsHumanTagList.Add("HumanList");
 
+
+                    IList<Human> lsthuman = new List<Human>();
+
+                    // if (Is_copy_previous == true)
+                    IList<object> humanBlobFinal = new List<object>();
+                    humanBlobFinal = UtilityManager.ReadBlob(ClientSession.HumanId, ilsHumanTagList);
+
+                    if (humanBlobFinal != null && humanBlobFinal.Count > 0)
+                    {
+                        if (humanBlobFinal[0] != null)
+                        {
+                            for (int iCount = 0; iCount < ((IList<object>)humanBlobFinal[0]).Count; iCount++)
+                            {
+                                lsthuman.Add((Human)((IList<object>)humanBlobFinal[0])[iCount]);
                             }
-                            fs.Close();
-                            fs.Dispose();
+
                         }
+
                     }
+                    if (lsthuman.Count > 0)
+                        sex = lsthuman[0].Sex.ToUpper() == "MALE" ? "FEMALE" : "MALE";
+                    //string strXmlEncounterPath = Path.Combine(System.Configuration.ConfigurationSettings.AppSettings["XMLPath"], "Human_" + ClientSession.HumanId.ToString() + ".xml");
+                    //if (File.Exists(strXmlEncounterPath) == true)
+                    //{
+                    //    using (FileStream fs = new FileStream(strXmlEncounterPath, FileMode.Open, FileAccess.Read, FileShare.Read))
+                    //    {
+                    //        XmlDocument itemDoc = new XmlDocument();
+                    //        XmlTextReader xmltxtReader = new XmlTextReader(fs);
+                    //        itemDoc.Load(xmltxtReader);
+                    //        xmltxtReader.Close();
+                    //        XmlNodeList xmlNodeList = itemDoc.GetElementsByTagName("HumanList");
+                    //        if (xmlNodeList.Count > 0)
+                    //        {
+                    //            if (xmlNodeList[0].ChildNodes.Count > 0)
+                    //            {
+                    //                sex = xmlNodeList[0].ChildNodes[0].Attributes["Sex"].Value.ToUpper() == "MALE" ? "FEMALE" : "MALE";
+                    //            }
+
+                    //        }
+                    //        fs.Close();
+                    //        fs.Dispose();
+                    //    }
+                    //}
 
                 }
             }

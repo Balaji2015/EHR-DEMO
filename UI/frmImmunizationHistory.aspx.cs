@@ -1374,8 +1374,8 @@ namespace Acurus.Capella.UI
         public void LoadGridPageNavigator(bool Is_Delete)
         {
             ImmunizationHistoryDTO ResultList = new ImmunizationHistoryDTO();
-            string FileName = "Human" + "_" + ClientSession.HumanId + ".xml";
-            string strXmlFilePath = Path.Combine(System.Configuration.ConfigurationSettings.AppSettings["XMLPath"], FileName);
+            string FileName = String.Empty;// "Human" + "_" + ClientSession.HumanId + ".xml";
+            string strXmlFilePath = String.Empty;// Path.Combine(System.Configuration.ConfigurationSettings.AppSettings["XMLPath"], FileName);
             if (ScreenMode == "Menu")
             {
                 LoadFromMaster(ResultList, FileName, strXmlFilePath);

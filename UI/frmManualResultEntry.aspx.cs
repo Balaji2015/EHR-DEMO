@@ -127,43 +127,77 @@ namespace Acurus.Capella.UI
             HumanManager humanMngr = new HumanManager();
           //  Human HumanRecord = humanMngr.GetPatientDetailsUsingPatientInformattion(Convert.ToUInt64(Request["MyHumanID"]))[0];
             Human HumanRecord = new Human();
-            string FileName = "Human" + "_" + ClientSession.HumanId + ".xml";
-            string strXmlFilePath = Path.Combine(System.Configuration.ConfigurationSettings.AppSettings["XMLPath"], FileName);
 
-            if (File.Exists(strXmlFilePath) == true)
+            IList<string> ilstGeneralPlanTagList = new List<string>();
+            ilstGeneralPlanTagList.Add("HumanList");
+            IList<Human> lsthuman = new List<Human>();
+
+            IList<object> ilstGeneralPlanBlobFinal = new List<object>();
+            ilstGeneralPlanBlobFinal = UtilityManager.ReadBlob(ClientSession.HumanId , ilstGeneralPlanTagList);
+            if (ilstGeneralPlanBlobFinal != null && ilstGeneralPlanBlobFinal.Count > 0)
             {
-                XmlDocument itemDoc = new XmlDocument();
-                XmlTextReader XmlText = new XmlTextReader(strXmlFilePath);
-                XmlNodeList xmlTagName = null;
-                itemDoc.Load(XmlText);
-                XmlText.Close();
-
-                if (itemDoc.GetElementsByTagName("HumanList")[0] != null)
+                if (ilstGeneralPlanBlobFinal[0] != null)
                 {
-                    xmlTagName = itemDoc.GetElementsByTagName("HumanList")[0].ChildNodes;
-
-                    if (xmlTagName.Count > 0)
+                    for (int iCount = 0; iCount < ((IList<object>)ilstGeneralPlanBlobFinal[0]).Count; iCount++)
                     {
-                        foreach (XmlNode node in xmlTagName)
-                        {
-                            HumanRecord.Id = Convert.ToUInt32(node.Attributes["Id"].Value);
-                            HumanRecord.First_Name = node.Attributes["First_Name"].Value;
-                            HumanRecord.Last_Name = node.Attributes["Last_Name"].Value;
-                            HumanRecord.MI = node.Attributes["MI"].Value;
-                            HumanRecord.Birth_Date = Convert.ToDateTime(node.Attributes["Birth_Date"].Value);
-                            HumanRecord.Sex = node.Attributes["Sex"].Value;
-                            HumanRecord.Street_Address1 = node.Attributes["Street_Address1"].Value;
-                            HumanRecord.Street_Address2 = node.Attributes["Street_Address2"].Value;
-                            HumanRecord.City = node.Attributes["City"].Value;
-                            HumanRecord.State = node.Attributes["State"].Value;
-                            HumanRecord.ZipCode = node.Attributes["ZipCode"].Value;
-                            HumanRecord.Home_Phone_No = node.Attributes["Home_Phone_No"].Value;
-                            HumanRecord.SSN = node.Attributes["SSN"].Value;
-                        }
+                        lsthuman.Add((Human)((IList<object>)ilstGeneralPlanBlobFinal[0])[iCount]);
                     }
                 }
-
             }
+            if(lsthuman.Count>0)
+            {
+                HumanRecord.Id = Convert.ToUInt32(lsthuman[0].Id);
+                HumanRecord.First_Name = lsthuman[0].First_Name;
+                HumanRecord.Last_Name = lsthuman[0].Last_Name;
+                HumanRecord.MI = lsthuman[0].MI;
+                HumanRecord.Birth_Date = Convert.ToDateTime(lsthuman[0].Birth_Date);
+                HumanRecord.Sex = lsthuman[0].Sex;
+                HumanRecord.Street_Address1 = lsthuman[0].Street_Address1;
+                HumanRecord.Street_Address2 = lsthuman[0].Street_Address2;
+                HumanRecord.City = lsthuman[0].City;
+                HumanRecord.State = lsthuman[0].State;
+                HumanRecord.ZipCode = lsthuman[0].ZipCode;
+                HumanRecord.Home_Phone_No = lsthuman[0].Home_Phone_No;
+                HumanRecord.SSN = lsthuman[0].SSN;
+            }
+
+            //string FileName = "Human" + "_" + ClientSession.HumanId + ".xml";
+            //string strXmlFilePath = Path.Combine(System.Configuration.ConfigurationSettings.AppSettings["XMLPath"], FileName);
+
+            //if (File.Exists(strXmlFilePath) == true)
+            //{
+            //    XmlDocument itemDoc = new XmlDocument();
+            //    XmlTextReader XmlText = new XmlTextReader(strXmlFilePath);
+            //    XmlNodeList xmlTagName = null;
+            //    itemDoc.Load(XmlText);
+            //    XmlText.Close();
+
+            //    if (itemDoc.GetElementsByTagName("HumanList")[0] != null)
+            //    {
+            //        xmlTagName = itemDoc.GetElementsByTagName("HumanList")[0].ChildNodes;
+
+            //        if (xmlTagName.Count > 0)
+            //        {
+            //            foreach (XmlNode node in xmlTagName)
+            //            {
+            //                HumanRecord.Id = Convert.ToUInt32(node.Attributes["Id"].Value);
+            //                HumanRecord.First_Name = node.Attributes["First_Name"].Value;
+            //                HumanRecord.Last_Name = node.Attributes["Last_Name"].Value;
+            //                HumanRecord.MI = node.Attributes["MI"].Value;
+            //                HumanRecord.Birth_Date = Convert.ToDateTime(node.Attributes["Birth_Date"].Value);
+            //                HumanRecord.Sex = node.Attributes["Sex"].Value;
+            //                HumanRecord.Street_Address1 = node.Attributes["Street_Address1"].Value;
+            //                HumanRecord.Street_Address2 = node.Attributes["Street_Address2"].Value;
+            //                HumanRecord.City = node.Attributes["City"].Value;
+            //                HumanRecord.State = node.Attributes["State"].Value;
+            //                HumanRecord.ZipCode = node.Attributes["ZipCode"].Value;
+            //                HumanRecord.Home_Phone_No = node.Attributes["Home_Phone_No"].Value;
+            //                HumanRecord.SSN = node.Attributes["SSN"].Value;
+            //            }
+            //        }
+            //    }
+
+            //}
            
             //Human HumanRecord = EncounterManager.Instance.GetHumanByHumanID(Convert.ToUInt64(Request["MyHumanID"]));
             IList<ResultOBR> lstResultOBR = new List<ResultOBR>();

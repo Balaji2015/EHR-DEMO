@@ -4235,435 +4235,437 @@ namespace Acurus.Capella.UI
 
         protected void btnBulkEncTemplate_Click(object sender, EventArgs e)
         {
-            if (ClientSession.UserRole != null && hdnSourceScreen.Value == "AppointmentFacility" || ClientSession.UserRole.ToUpper() == "PHYSICIAN" || ClientSession.UserRole.ToUpper() == "PHYSICIAN ASSISTANT")
-            {
-                //Physican,PhysicanAssistant
-                BulkTemplateForMultipleFacilitySameProvider();
-            }
-            else
-            {
-                //MA,FO
-                BulkTemplateForMultipleProviderSameFacility();
-            }
+            //if (ClientSession.UserRole != null && hdnSourceScreen.Value == "AppointmentFacility" || ClientSession.UserRole.ToUpper() == "PHYSICIAN" || ClientSession.UserRole.ToUpper() == "PHYSICIAN ASSISTANT")
+            //{
+            //    //Physican,PhysicanAssistant
+            //    BulkTemplateForMultipleFacilitySameProvider();
+            //}
+            //else
+            //{
+            //    //MA,FO
+            //    BulkTemplateForMultipleProviderSameFacility();
+            //}
 
         }
-        void BulkTemplateForMultipleFacilitySameProvider()
-        {
+        
+        // Method not in use
+        //void BulkTemplateForMultipleFacilitySameProvider()
+        //{
 
-            hdnPhysisicanChecked.Value = string.Empty;
-            string sFacility = string.Empty;
-            for (int k = 0; k < chklstProviders.Items.Count; k++)
-            {
-                if (chklstProviders.Items[k].Selected == true)
-                {
-                    if (hdnPhysisicanChecked.Value != null && hdnPhysisicanChecked.Value == string.Empty && sFacility == string.Empty)
-                    {
-                        hdnPhysisicanChecked.Value = chklstProviders.Items[k].Text;
-                        sFacility = chklstProviders.Items[k].Value;
-                    }
-                    else
-                    {
-                        hdnPhysisicanChecked.Value += "|" + chklstProviders.Items[k].Text;
-                        sFacility += "|" + chklstProviders.Items[k].Value;
-                    }
-                }
-            }
-            if (sFacility != string.Empty)
-            {
-                string sPhyID = cboFacilityName.Text;
-                string sPhysicianNameSelected = hdnPhysisicanChecked.Value;
-                DateTime sSelectedDate = DateTime.MinValue;
-                sSelectedDate = Convert.ToDateTime(hdnSelectedDate.Value);
+        //    hdnPhysisicanChecked.Value = string.Empty;
+        //    string sFacility = string.Empty;
+        //    for (int k = 0; k < chklstProviders.Items.Count; k++)
+        //    {
+        //        if (chklstProviders.Items[k].Selected == true)
+        //        {
+        //            if (hdnPhysisicanChecked.Value != null && hdnPhysisicanChecked.Value == string.Empty && sFacility == string.Empty)
+        //            {
+        //                hdnPhysisicanChecked.Value = chklstProviders.Items[k].Text;
+        //                sFacility = chklstProviders.Items[k].Value;
+        //            }
+        //            else
+        //            {
+        //                hdnPhysisicanChecked.Value += "|" + chklstProviders.Items[k].Text;
+        //                sFacility += "|" + chklstProviders.Items[k].Value;
+        //            }
+        //        }
+        //    }
+        //    if (sFacility != string.Empty)
+        //    {
+        //        string sPhyID = cboFacilityName.Text;
+        //        string sPhysicianNameSelected = hdnPhysisicanChecked.Value;
+        //        DateTime sSelectedDate = DateTime.MinValue;
+        //        sSelectedDate = Convert.ToDateTime(hdnSelectedDate.Value);
 
-                IList<Encounter> lstEnc = new List<Encounter>();
-                EncounterManager objEnc = new EncounterManager();
-                string xsltFile = Path.Combine(System.Configuration.ConfigurationSettings.AppSettings["XMLPath"], "EHR_Encounter_Template.xsl");
-                string sProjectName = System.Configuration.ConfigurationSettings.AppSettings["ProjectName"];
-                UtilityManager umanger = new UtilityManager();
+        //        IList<Encounter> lstEnc = new List<Encounter>();
+        //        EncounterManager objEnc = new EncounterManager();
+        //        string xsltFile = Path.Combine(System.Configuration.ConfigurationSettings.AppSettings["XMLPath"], "EHR_Encounter_Template.xsl");
+        //        string sProjectName = System.Configuration.ConfigurationSettings.AppSettings["ProjectName"];
+        //        UtilityManager umanger = new UtilityManager();
 
-                lstEnc = objEnc.GetAppointmentForBulkEncounterTemplateFacility(sFacility, sSelectedDate, sPhyID);
-                if (lstEnc.Count > 0)
-                {
-                    string NotesNameConvention = System.Configuration.ConfigurationSettings.AppSettings["EncounterTempelateNamingConvention"];
-                    string NotesName = string.Empty;
-                    string sFolderWithFacility = Server.MapPath("atala-capture-download/" + Session.SessionID + "/" + System.Configuration.ConfigurationSettings.AppSettings["ProjectName"]);
+        //        lstEnc = objEnc.GetAppointmentForBulkEncounterTemplateFacility(sFacility, sSelectedDate, sPhyID);
+        //        if (lstEnc.Count > 0)
+        //        {
+        //            string NotesNameConvention = System.Configuration.ConfigurationSettings.AppSettings["EncounterTempelateNamingConvention"];
+        //            string NotesName = string.Empty;
+        //            string sFolderWithFacility = Server.MapPath("atala-capture-download/" + Session.SessionID + "/" + System.Configuration.ConfigurationSettings.AppSettings["ProjectName"]);
 
-                    string[] Facilityarry = sFacility.Split('|');
-                    //foreach (string s in Facilityarry)
-                    //{
-                    //    string sFolderFac= sFolderWithFacility + "/" + s;
-                    //    DirectoryInfo objdirect = new DirectoryInfo(sFolderFac);
-                    //    if (!objdirect.Exists)
-                    //        objdirect.Create();
-                    //}
+        //            string[] Facilityarry = sFacility.Split('|');
+        //            //foreach (string s in Facilityarry)
+        //            //{
+        //            //    string sFolderFac= sFolderWithFacility + "/" + s;
+        //            //    DirectoryInfo objdirect = new DirectoryInfo(sFolderFac);
+        //            //    if (!objdirect.Exists)
+        //            //        objdirect.Create();
+        //            //}
 
-                    foreach (string s in Facilityarry)
-                    {
-                        IList<Encounter> lstTempEnc = new List<Encounter>();
-                        lstTempEnc = lstEnc.Where(a => a.Facility_Name == s).ToList<Encounter>();
-                        if (lstTempEnc.Count > 0)
-                        {
-                            string sPhysicianName = Path.Combine(sFolderWithFacility, s + "/" + cboFacilityName.SelectedItem.Text);
-                            DirectoryInfo obj = new DirectoryInfo(sPhysicianName);
-                            if (!obj.Exists)
-                            {
-                                obj.Create();
-                            }
-                            foreach (FileInfo file in obj.GetFiles())
-                            {
-                                file.Delete();
-                            }
-                            foreach (Encounter enc in lstTempEnc)
-                            {
-                                umanger = new UtilityManager();
-                                string sHumanId = enc.Human_ID.ToString();
-                                string Encounter_Id = enc.Encounter_ID.ToString();
+        //            foreach (string s in Facilityarry)
+        //            {
+        //                IList<Encounter> lstTempEnc = new List<Encounter>();
+        //                lstTempEnc = lstEnc.Where(a => a.Facility_Name == s).ToList<Encounter>();
+        //                if (lstTempEnc.Count > 0)
+        //                {
+        //                    string sPhysicianName = Path.Combine(sFolderWithFacility, s + "/" + cboFacilityName.SelectedItem.Text);
+        //                    DirectoryInfo obj = new DirectoryInfo(sPhysicianName);
+        //                    if (!obj.Exists)
+        //                    {
+        //                        obj.Create();
+        //                    }
+        //                    foreach (FileInfo file in obj.GetFiles())
+        //                    {
+        //                        file.Delete();
+        //                    }
+        //                    foreach (Encounter enc in lstTempEnc)
+        //                    {
+        //                        umanger = new UtilityManager();
+        //                        string sHumanId = enc.Human_ID.ToString();
+        //                        string Encounter_Id = enc.Encounter_ID.ToString();
 
-                                string sHumanXmlPath = Path.Combine(System.Configuration.ConfigurationSettings.AppSettings["XMLPath"], "Human_" + sHumanId + ".xml");
-
-
-                                //Update TargetEncounter Tag in Human Xml.,For XSLT to find the current encounter id
-                                if (File.Exists(sHumanXmlPath) == true)
-                                {
-                                    XmlDocument itemDoc = new XmlDocument();
-                                    XmlTextReader XmlText = new XmlTextReader(sHumanXmlPath);
-                                    itemDoc.Load(XmlText);
-                                    XmlNodeList xmlTargetEncounterId = itemDoc.GetElementsByTagName("TargetEncounterId");
-                                    if (xmlTargetEncounterId != null && xmlTargetEncounterId.Count > 0)
-                                        xmlTargetEncounterId[0].InnerXml = Encounter_Id + "_" + UtilityManager.ConvertToLocal(enc.Appointment_Date).ToString("yyyy-MM-dd hh:mm:ss tt");
-                                    else
-                                    {
-                                        //If TargetEncounter Node Not exists in human Xml we Need to create the traget tag.
-                                        XmlNodeList xmlSectionList = itemDoc.GetElementsByTagName("Modules");
-                                        XmlNode Newnode = null;
-                                        Newnode = itemDoc.CreateNode(XmlNodeType.Element, "TargetEncounterId", "");
-                                        Newnode.InnerText = Encounter_Id.ToString() + "_" + UtilityManager.ConvertToLocal(enc.Appointment_Date).ToString("yyyy-MM-dd hh:mm:ss tt");
-                                        xmlSectionList[0].AppendChild(Newnode);
-                                    }
-                                    XmlText.Close();
-                                   // itemDoc.Save(sHumanXmlPath);
-                                    int trycount = 0;
-                                trytosaveagain:
-                                    try
-                                    {
-                                        itemDoc.Save(sHumanXmlPath);
-                                    }
-                                    catch (Exception xmlexcep)
-                                    {
-                                        trycount++;
-                                        if (trycount <= 3)
-                                        {
-                                            int TimeMilliseconds = 0;
-                                            if (System.Configuration.ConfigurationSettings.AppSettings["ThreadSleepTime"] != null)
-                                                TimeMilliseconds = Convert.ToInt32(System.Configuration.ConfigurationSettings.AppSettings["ThreadSleepTime"]);
-
-                                            Thread.Sleep(TimeMilliseconds);
-                                            string sMsg = string.Empty;
-                                            string sExStackTrace = string.Empty;
-
-                                            string version = "";
-                                            if (System.Configuration.ConfigurationSettings.AppSettings["VersionConfiguration"] != null)
-                                                version = System.Configuration.ConfigurationSettings.AppSettings["VersionConfiguration"].ToString();
-
-                                            string[] server = version.Split('|');
-                                            string serverno = "";
-                                            if (server.Length > 1)
-                                                serverno = server[1].Trim();
-
-                                            if (xmlexcep.InnerException != null && xmlexcep.InnerException.Message != null)
-                                                sMsg = xmlexcep.InnerException.Message;
-                                            else
-                                                sMsg = xmlexcep.Message;
-
-                                            if (xmlexcep != null && xmlexcep.StackTrace != null)
-                                                sExStackTrace = xmlexcep.StackTrace;
-
-                                            string insertQuery = "insert into  stats_apperrorlog values(0,'" + sMsg.Replace(@"\\", @"\\\\").Replace(@"\", @"\\").Replace(@"\\\\\\\\", @"\\\\").Replace("'", "") + Environment.NewLine + " Retry: " + trycount + "', '" + serverno + "','" + DateTime.Now + "','','0','0','0','" + sExStackTrace.Replace("'", "") + "','" + DateTime.Now.ToString("yyyy-MM-dd hh:mm:ss") + "')";
-                                            string ConnectionData;
-                                            ConnectionData = ConfigurationManager.ConnectionStrings["con"].ConnectionString;
-                                            using (MySqlConnection con = new MySqlConnection(ConnectionData))
-                                            {
-                                                using (MySqlCommand cmd = new MySqlCommand(insertQuery))
-                                                {
-                                                    cmd.Connection = con;
-                                                    try
-                                                    {
-                                                        con.Open();
-                                                        cmd.ExecuteNonQuery();
-                                                        con.Close();
-                                                    }
-                                                    catch
-                                                    {
-                                                    }
-                                                }
-                                            }
-                                            goto trytosaveagain;
-                                        }
-                                    }
+        //                        string sHumanXmlPath = Path.Combine(System.Configuration.ConfigurationSettings.AppSettings["XMLPath"], "Human_" + sHumanId + ".xml");
 
 
-                                    Encounter_Id = "Encounter_" + Convert.ToDateTime(enc.Appointment_Date).ToString("yyyyMMdd");
+        //                        //Update TargetEncounter Tag in Human Xml.,For XSLT to find the current encounter id
+        //                        if (File.Exists(sHumanXmlPath) == true)
+        //                        {
+        //                            XmlDocument itemDoc = new XmlDocument();
+        //                            XmlTextReader XmlText = new XmlTextReader(sHumanXmlPath);
+        //                            itemDoc.Load(XmlText);
+        //                            XmlNodeList xmlTargetEncounterId = itemDoc.GetElementsByTagName("TargetEncounterId");
+        //                            if (xmlTargetEncounterId != null && xmlTargetEncounterId.Count > 0)
+        //                                xmlTargetEncounterId[0].InnerXml = Encounter_Id + "_" + UtilityManager.ConvertToLocal(enc.Appointment_Date).ToString("yyyy-MM-dd hh:mm:ss tt");
+        //                            else
+        //                            {
+        //                                //If TargetEncounter Node Not exists in human Xml we Need to create the traget tag.
+        //                                XmlNodeList xmlSectionList = itemDoc.GetElementsByTagName("Modules");
+        //                                XmlNode Newnode = null;
+        //                                Newnode = itemDoc.CreateNode(XmlNodeType.Element, "TargetEncounterId", "");
+        //                                Newnode.InnerText = Encounter_Id.ToString() + "_" + UtilityManager.ConvertToLocal(enc.Appointment_Date).ToString("yyyy-MM-dd hh:mm:ss tt");
+        //                                xmlSectionList[0].AppendChild(Newnode);
+        //                            }
+        //                            XmlText.Close();
+        //                           // itemDoc.Save(sHumanXmlPath);
+        //                            int trycount = 0;
+        //                        trytosaveagain:
+        //                            try
+        //                            {
+        //                                itemDoc.Save(sHumanXmlPath);
+        //                            }
+        //                            catch (Exception xmlexcep)
+        //                            {
+        //                                trycount++;
+        //                                if (trycount <= 3)
+        //                                {
+        //                                    int TimeMilliseconds = 0;
+        //                                    if (System.Configuration.ConfigurationSettings.AppSettings["ThreadSleepTime"] != null)
+        //                                        TimeMilliseconds = Convert.ToInt32(System.Configuration.ConfigurationSettings.AppSettings["ThreadSleepTime"]);
 
-                                    NotesName = umanger.NamingConventionGeneration(NotesNameConvention, sHumanId, Encounter_Id, s, cboFacilityName.SelectedItem.Text);
-                                    string WordOutputName = NotesName + ".doc";
-                                    string outputDocument = Path.Combine(sPhysicianName, WordOutputName);
-                                    DataSet ds;
-                                    XmlDataDocument xmlDoc;
-                                    XslCompiledTransform xslTran;
-                                    XmlElement root;
-                                    XPathNavigator nav;
-                                    XmlTextWriter writer;
-                                    XsltSettings settings = new XsltSettings(true, false);
-                                    ds = new DataSet();
-                                    ds.ReadXml(sHumanXmlPath);
-                                    xmlDoc = new XmlDataDocument(ds);
-                                    xslTran = new XslCompiledTransform();
-                                    using (var stream = File.Open(xsltFile, FileMode.Open, FileAccess.Read, FileShare.Read))
-                                    {
-                                        xslTran.Load(xsltFile, settings, new XmlUrlResolver());
-                                    }
-                                    root = xmlDoc.DocumentElement;
-                                    nav = root.CreateNavigator();
-                                    if (File.Exists(outputDocument))
-                                    {
-                                        File.Delete(outputDocument);
-                                    }
-                                    writer = new XmlTextWriter(outputDocument, System.Text.Encoding.UTF8);
-                                    xslTran.Transform(nav, writer);
-                                    writer.Close();
-                                    writer = null;
-                                    nav = null;
-                                    root = null;
-                                    xmlDoc = null;
-                                    ds = null;
-                                }
-                            }
-                        }
-                    }
-                    Response.Clear();
-                    Response.ContentType = "application/zip";
-                    Response.AddHeader("Content-Disposition", String.Format("attachment; filename={0}", sProjectName + ".zip"));
-                    using (ZipFile zip = new ZipFile())
-                    {
-                        zip.AddSelectedFiles("*", sFolderWithFacility, string.Empty, true);
-                        zip.Save(Response.OutputStream);
-                    }
-                    Response.End();
-                }
-                else
-                {
-                    this.Page.ClientScript.RegisterStartupScript(this.Page.GetType(), "StopLoading", "DisplayErrorMessage('110089');{sessionStorage.setItem('StartLoading', 'false');StopLoadFromPatChart();}", true);
-                }
-            }
-            else
-            {
-                this.Page.ClientScript.RegisterStartupScript(this.Page.GetType(), "StopLoading", "DisplayErrorMessage('110091');{sessionStorage.setItem('StartLoading', 'false');StopLoadFromPatChart();}", true);
-            }
-        }
+        //                                    Thread.Sleep(TimeMilliseconds);
+        //                                    string sMsg = string.Empty;
+        //                                    string sExStackTrace = string.Empty;
 
-        void BulkTemplateForMultipleProviderSameFacility()
-        {
-            hdnPhysisicanChecked.Value = string.Empty;
-            string sPhysicianID = string.Empty;
-            for (int k = 0; k < chklstProviders.Items.Count; k++)
-            {
-                if (chklstProviders.Items[k].Selected == true)
-                {
-                    if (hdnPhysisicanChecked.Value == string.Empty && sPhysicianID == string.Empty)
-                    {
-                        hdnPhysisicanChecked.Value = chklstProviders.Items[k].Text;
-                        sPhysicianID = chklstProviders.Items[k].Value;
-                    }
-                    else
-                    {
-                        hdnPhysisicanChecked.Value += "|" + chklstProviders.Items[k].Text;
-                        sPhysicianID += "," + chklstProviders.Items[k].Value;
-                    }
-                }
-            }
-            if (sPhysicianID != string.Empty)
-            {
-                string sFaciltyName = cboFacilityName.Text;
-                string sPhysicianNameSelected = hdnPhysisicanChecked.Value;
-                DateTime sSelectedDate = DateTime.MinValue;
-                sSelectedDate = Convert.ToDateTime(hdnSelectedDate.Value);
+        //                                    string version = "";
+        //                                    if (System.Configuration.ConfigurationSettings.AppSettings["VersionConfiguration"] != null)
+        //                                        version = System.Configuration.ConfigurationSettings.AppSettings["VersionConfiguration"].ToString();
 
-                IList<Encounter> lstEnc = new List<Encounter>();
-                EncounterManager objEnc = new EncounterManager();
-                string xsltFile = Path.Combine(System.Configuration.ConfigurationSettings.AppSettings["XMLPath"], "EHR_Encounter_Template.xsl");
-                string sProjectName = System.Configuration.ConfigurationSettings.AppSettings["ProjectName"];
-                UtilityManager umanger = new UtilityManager();
+        //                                    string[] server = version.Split('|');
+        //                                    string serverno = "";
+        //                                    if (server.Length > 1)
+        //                                        serverno = server[1].Trim();
 
-                lstEnc = objEnc.GetAppointmentForBulkEncounterTemplate(sPhysicianID, sSelectedDate, sFaciltyName);
-                if (lstEnc.Count > 0)
-                {
-                    string NotesNameConvention = System.Configuration.ConfigurationSettings.AppSettings["EncounterTempelateNamingConvention"];
-                    string NotesName = string.Empty;
-                    string sFolderWithFacility = Server.MapPath("atala-capture-download/" + Session.SessionID + "/" + System.Configuration.ConfigurationSettings.AppSettings["ProjectName"]);
-                    DirectoryInfo objdirect = new DirectoryInfo(sFolderWithFacility);
-                    if (!objdirect.Exists)
-                        objdirect.Create();
+        //                                    if (xmlexcep.InnerException != null && xmlexcep.InnerException.Message != null)
+        //                                        sMsg = xmlexcep.InnerException.Message;
+        //                                    else
+        //                                        sMsg = xmlexcep.Message;
 
-                    string[] PhysicianID = sPhysicianID.Split(',');
+        //                                    if (xmlexcep != null && xmlexcep.StackTrace != null)
+        //                                        sExStackTrace = xmlexcep.StackTrace;
 
-                    foreach (string s in PhysicianID)
-                    {
-                        IList<Encounter> lstTempEnc = new List<Encounter>();
-                        lstTempEnc = lstEnc.Where(a => a.Encounter_Provider_ID == Convert.ToInt32(s)).ToList<Encounter>();
-                        if (lstTempEnc.Count > 0)
-                        {
-                            string sPhysicianName = Path.Combine(sFolderWithFacility, sFaciltyName + "/" + chklstProviders.Items.FindByValue(s).Text);
-                            DirectoryInfo obj = new DirectoryInfo(sPhysicianName);
-                            if (!obj.Exists)
-                            {
-                                obj.Create();
-                            }
-                            foreach (FileInfo file in obj.GetFiles())
-                            {
-                                file.Delete();
-                            }
-                            foreach (Encounter enc in lstTempEnc)
-                            {
-                                umanger = new UtilityManager();
-                                string sHumanId = enc.Human_ID.ToString();
-                                string Encounter_Id = enc.Encounter_ID.ToString();
-                                string sHumanXmlPath = Path.Combine(System.Configuration.ConfigurationSettings.AppSettings["XMLPath"], "Human_" + sHumanId + ".xml");
+        //                                    string insertQuery = "insert into  stats_apperrorlog values(0,'" + sMsg.Replace(@"\\", @"\\\\").Replace(@"\", @"\\").Replace(@"\\\\\\\\", @"\\\\").Replace("'", "") + Environment.NewLine + " Retry: " + trycount + "', '" + serverno + "','" + DateTime.Now + "','','0','0','0','" + sExStackTrace.Replace("'", "") + "','" + DateTime.Now.ToString("yyyy-MM-dd hh:mm:ss") + "')";
+        //                                    string ConnectionData;
+        //                                    ConnectionData = ConfigurationManager.ConnectionStrings["con"].ConnectionString;
+        //                                    using (MySqlConnection con = new MySqlConnection(ConnectionData))
+        //                                    {
+        //                                        using (MySqlCommand cmd = new MySqlCommand(insertQuery))
+        //                                        {
+        //                                            cmd.Connection = con;
+        //                                            try
+        //                                            {
+        //                                                con.Open();
+        //                                                cmd.ExecuteNonQuery();
+        //                                                con.Close();
+        //                                            }
+        //                                            catch
+        //                                            {
+        //                                            }
+        //                                        }
+        //                                    }
+        //                                    goto trytosaveagain;
+        //                                }
+        //                            }
 
-                                //Update TargetEncounter Tag in Human Xml.,For XSLT to find the current encounter id
-                                if (File.Exists(sHumanXmlPath) == true)
-                                {
-                                    XmlDocument itemDoc = new XmlDocument();
-                                    XmlTextReader XmlText = new XmlTextReader(sHumanXmlPath);
-                                    itemDoc.Load(XmlText);
-                                    XmlNodeList xmlTargetEncounterId = itemDoc.GetElementsByTagName("TargetEncounterId");
-                                    if (xmlTargetEncounterId != null && xmlTargetEncounterId.Count > 0)
-                                        xmlTargetEncounterId[0].InnerXml = Encounter_Id + "_" + UtilityManager.ConvertToLocal(enc.Appointment_Date).ToString("yyyy-MM-dd hh:mm:ss tt");
-                                    else
-                                    {
-                                        //If TargetEncounter Node Not exists in human Xml we Need to create the traget tag.
-                                        XmlNodeList xmlSectionList = itemDoc.GetElementsByTagName("Modules");
-                                        XmlNode Newnode = null;
-                                        Newnode = itemDoc.CreateNode(XmlNodeType.Element, "TargetEncounterId", "");
-                                        Newnode.InnerText = Encounter_Id.ToString() + "_" + UtilityManager.ConvertToLocal(enc.Appointment_Date).ToString("yyyy-MM-dd hh:mm:ss tt");
-                                        xmlSectionList[0].AppendChild(Newnode);
-                                    }
-                                    XmlText.Close();
-                                    //itemDoc.Save(sHumanXmlPath);
-                                    int trycount = 0;
-                                trytosaveagain:
-                                    try
-                                    {
-                                        itemDoc.Save(sHumanXmlPath);
-                                    }
-                                    catch (Exception xmlexcep)
-                                    {
-                                        trycount++;
-                                        if (trycount <= 3)
-                                        {
-                                            int TimeMilliseconds = 0;
-                                            if (System.Configuration.ConfigurationSettings.AppSettings["ThreadSleepTime"] != null)
-                                                TimeMilliseconds = Convert.ToInt32(System.Configuration.ConfigurationSettings.AppSettings["ThreadSleepTime"]);
 
-                                            Thread.Sleep(TimeMilliseconds);
-                                            string sMsg = string.Empty;
-                                            string sExStackTrace = string.Empty;
+        //                            Encounter_Id = "Encounter_" + Convert.ToDateTime(enc.Appointment_Date).ToString("yyyyMMdd");
 
-                                            string version = "";
-                                            if (System.Configuration.ConfigurationSettings.AppSettings["VersionConfiguration"] != null)
-                                                version = System.Configuration.ConfigurationSettings.AppSettings["VersionConfiguration"].ToString();
+        //                            NotesName = umanger.NamingConventionGeneration(NotesNameConvention, sHumanId, Encounter_Id, s, cboFacilityName.SelectedItem.Text);
+        //                            string WordOutputName = NotesName + ".doc";
+        //                            string outputDocument = Path.Combine(sPhysicianName, WordOutputName);
+        //                            DataSet ds;
+        //                            XmlDataDocument xmlDoc;
+        //                            XslCompiledTransform xslTran;
+        //                            XmlElement root;
+        //                            XPathNavigator nav;
+        //                            XmlTextWriter writer;
+        //                            XsltSettings settings = new XsltSettings(true, false);
+        //                            ds = new DataSet();
+        //                            ds.ReadXml(sHumanXmlPath);
+        //                            xmlDoc = new XmlDataDocument(ds);
+        //                            xslTran = new XslCompiledTransform();
+        //                            using (var stream = File.Open(xsltFile, FileMode.Open, FileAccess.Read, FileShare.Read))
+        //                            {
+        //                                xslTran.Load(xsltFile, settings, new XmlUrlResolver());
+        //                            }
+        //                            root = xmlDoc.DocumentElement;
+        //                            nav = root.CreateNavigator();
+        //                            if (File.Exists(outputDocument))
+        //                            {
+        //                                File.Delete(outputDocument);
+        //                            }
+        //                            writer = new XmlTextWriter(outputDocument, System.Text.Encoding.UTF8);
+        //                            xslTran.Transform(nav, writer);
+        //                            writer.Close();
+        //                            writer = null;
+        //                            nav = null;
+        //                            root = null;
+        //                            xmlDoc = null;
+        //                            ds = null;
+        //                        }
+        //                    }
+        //                }
+        //            }
+        //            Response.Clear();
+        //            Response.ContentType = "application/zip";
+        //            Response.AddHeader("Content-Disposition", String.Format("attachment; filename={0}", sProjectName + ".zip"));
+        //            using (ZipFile zip = new ZipFile())
+        //            {
+        //                zip.AddSelectedFiles("*", sFolderWithFacility, string.Empty, true);
+        //                zip.Save(Response.OutputStream);
+        //            }
+        //            Response.End();
+        //        }
+        //        else
+        //        {
+        //            this.Page.ClientScript.RegisterStartupScript(this.Page.GetType(), "StopLoading", "DisplayErrorMessage('110089');{sessionStorage.setItem('StartLoading', 'false');StopLoadFromPatChart();}", true);
+        //        }
+        //    }
+        //    else
+        //    {
+        //        this.Page.ClientScript.RegisterStartupScript(this.Page.GetType(), "StopLoading", "DisplayErrorMessage('110091');{sessionStorage.setItem('StartLoading', 'false');StopLoadFromPatChart();}", true);
+        //    }
+        //}
+        //method not in use
+        //void BulkTemplateForMultipleProviderSameFacility()
+        //{
+        //    hdnPhysisicanChecked.Value = string.Empty;
+        //    string sPhysicianID = string.Empty;
+        //    for (int k = 0; k < chklstProviders.Items.Count; k++)
+        //    {
+        //        if (chklstProviders.Items[k].Selected == true)
+        //        {
+        //            if (hdnPhysisicanChecked.Value == string.Empty && sPhysicianID == string.Empty)
+        //            {
+        //                hdnPhysisicanChecked.Value = chklstProviders.Items[k].Text;
+        //                sPhysicianID = chklstProviders.Items[k].Value;
+        //            }
+        //            else
+        //            {
+        //                hdnPhysisicanChecked.Value += "|" + chklstProviders.Items[k].Text;
+        //                sPhysicianID += "," + chklstProviders.Items[k].Value;
+        //            }
+        //        }
+        //    }
+        //    if (sPhysicianID != string.Empty)
+        //    {
+        //        string sFaciltyName = cboFacilityName.Text;
+        //        string sPhysicianNameSelected = hdnPhysisicanChecked.Value;
+        //        DateTime sSelectedDate = DateTime.MinValue;
+        //        sSelectedDate = Convert.ToDateTime(hdnSelectedDate.Value);
 
-                                            string[] server = version.Split('|');
-                                            string serverno = "";
-                                            if (server.Length > 1)
-                                                serverno = server[1].Trim();
+        //        IList<Encounter> lstEnc = new List<Encounter>();
+        //        EncounterManager objEnc = new EncounterManager();
+        //        string xsltFile = Path.Combine(System.Configuration.ConfigurationSettings.AppSettings["XMLPath"], "EHR_Encounter_Template.xsl");
+        //        string sProjectName = System.Configuration.ConfigurationSettings.AppSettings["ProjectName"];
+        //        UtilityManager umanger = new UtilityManager();
 
-                                            if (xmlexcep.InnerException != null && xmlexcep.InnerException.Message != null)
-                                                sMsg = xmlexcep.InnerException.Message;
-                                            else
-                                                sMsg = xmlexcep.Message;
+        //        lstEnc = objEnc.GetAppointmentForBulkEncounterTemplate(sPhysicianID, sSelectedDate, sFaciltyName);
+        //        if (lstEnc.Count > 0)
+        //        {
+        //            string NotesNameConvention = System.Configuration.ConfigurationSettings.AppSettings["EncounterTempelateNamingConvention"];
+        //            string NotesName = string.Empty;
+        //            string sFolderWithFacility = Server.MapPath("atala-capture-download/" + Session.SessionID + "/" + System.Configuration.ConfigurationSettings.AppSettings["ProjectName"]);
+        //            DirectoryInfo objdirect = new DirectoryInfo(sFolderWithFacility);
+        //            if (!objdirect.Exists)
+        //                objdirect.Create();
 
-                                            if (xmlexcep != null && xmlexcep.StackTrace != null)
-                                                sExStackTrace = xmlexcep.StackTrace;
+        //            string[] PhysicianID = sPhysicianID.Split(',');
 
-                                            string insertQuery = "insert into  stats_apperrorlog values(0,'" + sMsg.Replace(@"\\", @"\\\\").Replace(@"\", @"\\").Replace(@"\\\\\\\\", @"\\\\").Replace("'", "") + Environment.NewLine + " Retry: " + trycount + "', '" + serverno + "','" + DateTime.Now + "','','0','0','0','" + sExStackTrace.Replace("'", "") + "','" + DateTime.Now.ToString("yyyy-MM-dd hh:mm:ss") + "')";
-                                            string ConnectionData;
-                                            ConnectionData = ConfigurationManager.ConnectionStrings["con"].ConnectionString;
-                                            using (MySqlConnection con = new MySqlConnection(ConnectionData))
-                                            {
-                                                using (MySqlCommand cmd = new MySqlCommand(insertQuery))
-                                                {
-                                                    cmd.Connection = con;
-                                                    try
-                                                    {
-                                                        con.Open();
-                                                        cmd.ExecuteNonQuery();
-                                                        con.Close();
-                                                    }
-                                                    catch
-                                                    {
-                                                    }
-                                                }
-                                            }
-                                            goto trytosaveagain;
-                                        }
-                                    }
-                                    Encounter_Id = "Encounter_" + Convert.ToDateTime(enc.Appointment_Date).ToString("yyyyMMdd");
-                                    NotesName = umanger.NamingConventionGeneration(NotesNameConvention, sHumanId, Encounter_Id, sFaciltyName, chklstProviders.Items.FindByValue(s).Text);
-                                    string WordOutputName = NotesName + ".doc";
-                                    string outputDocument = Path.Combine(sPhysicianName, WordOutputName);
-                                    DataSet ds;
-                                    XmlDataDocument xmlDoc;
-                                    XslCompiledTransform xslTran;
-                                    XmlElement root;
-                                    XPathNavigator nav;
-                                    XmlTextWriter writer;
-                                    XsltSettings settings = new XsltSettings(true, false);
-                                    ds = new DataSet();
-                                    ds.ReadXml(sHumanXmlPath);
-                                    xmlDoc = new XmlDataDocument(ds);
-                                    xslTran = new XslCompiledTransform();
-                                    using (var stream = File.Open(xsltFile, FileMode.Open, FileAccess.Read, FileShare.Read))
-                                    {
-                                        xslTran.Load(xsltFile, settings, new XmlUrlResolver());
-                                    }
-                                    root = xmlDoc.DocumentElement;
-                                    nav = root.CreateNavigator();
-                                    if (File.Exists(outputDocument))
-                                    {
-                                        File.Delete(outputDocument);
-                                    }
-                                    writer = new XmlTextWriter(outputDocument, System.Text.Encoding.UTF8);
-                                    xslTran.Transform(nav, writer);
-                                    writer.Close();
-                                    writer = null;
-                                    nav = null;
-                                    root = null;
-                                    xmlDoc = null;
-                                    ds = null;
-                                }
-                            }
-                        }
-                    }
-                    Response.Clear();
-                    Response.ContentType = "application/zip";
-                    Response.AddHeader("Content-Disposition", String.Format("attachment; filename={0}", sProjectName + ".zip"));
-                    using (ZipFile zip = new ZipFile())
-                    {
-                        zip.AddSelectedFiles("*", sFolderWithFacility, string.Empty, true);
-                        zip.Save(Response.OutputStream);
-                    }
-                    Response.End();
-                }
-                else
-                {
-                    this.Page.ClientScript.RegisterStartupScript(this.Page.GetType(), "StopLoading", "DisplayErrorMessage('110089');{sessionStorage.setItem('StartLoading', 'false');StopLoadFromPatChart();}", true);
-                }
-            }
-            else
-            {
-                this.Page.ClientScript.RegisterStartupScript(this.Page.GetType(), "StopLoading", "DisplayErrorMessage('110088');{sessionStorage.setItem('StartLoading', 'false');StopLoadFromPatChart();}", true);
-            }
-        }
+        //            foreach (string s in PhysicianID)
+        //            {
+        //                IList<Encounter> lstTempEnc = new List<Encounter>();
+        //                lstTempEnc = lstEnc.Where(a => a.Encounter_Provider_ID == Convert.ToInt32(s)).ToList<Encounter>();
+        //                if (lstTempEnc.Count > 0)
+        //                {
+        //                    string sPhysicianName = Path.Combine(sFolderWithFacility, sFaciltyName + "/" + chklstProviders.Items.FindByValue(s).Text);
+        //                    DirectoryInfo obj = new DirectoryInfo(sPhysicianName);
+        //                    if (!obj.Exists)
+        //                    {
+        //                        obj.Create();
+        //                    }
+        //                    foreach (FileInfo file in obj.GetFiles())
+        //                    {
+        //                        file.Delete();
+        //                    }
+        //                    foreach (Encounter enc in lstTempEnc)
+        //                    {
+        //                        umanger = new UtilityManager();
+        //                        string sHumanId = enc.Human_ID.ToString();
+        //                        string Encounter_Id = enc.Encounter_ID.ToString();
+        //                        string sHumanXmlPath = Path.Combine(System.Configuration.ConfigurationSettings.AppSettings["XMLPath"], "Human_" + sHumanId + ".xml");
+
+        //                        //Update TargetEncounter Tag in Human Xml.,For XSLT to find the current encounter id
+        //                        if (File.Exists(sHumanXmlPath) == true)
+        //                        {
+        //                            XmlDocument itemDoc = new XmlDocument();
+        //                            XmlTextReader XmlText = new XmlTextReader(sHumanXmlPath);
+        //                            itemDoc.Load(XmlText);
+        //                            XmlNodeList xmlTargetEncounterId = itemDoc.GetElementsByTagName("TargetEncounterId");
+        //                            if (xmlTargetEncounterId != null && xmlTargetEncounterId.Count > 0)
+        //                                xmlTargetEncounterId[0].InnerXml = Encounter_Id + "_" + UtilityManager.ConvertToLocal(enc.Appointment_Date).ToString("yyyy-MM-dd hh:mm:ss tt");
+        //                            else
+        //                            {
+        //                                //If TargetEncounter Node Not exists in human Xml we Need to create the traget tag.
+        //                                XmlNodeList xmlSectionList = itemDoc.GetElementsByTagName("Modules");
+        //                                XmlNode Newnode = null;
+        //                                Newnode = itemDoc.CreateNode(XmlNodeType.Element, "TargetEncounterId", "");
+        //                                Newnode.InnerText = Encounter_Id.ToString() + "_" + UtilityManager.ConvertToLocal(enc.Appointment_Date).ToString("yyyy-MM-dd hh:mm:ss tt");
+        //                                xmlSectionList[0].AppendChild(Newnode);
+        //                            }
+        //                            XmlText.Close();
+        //                            //itemDoc.Save(sHumanXmlPath);
+        //                            int trycount = 0;
+        //                        trytosaveagain:
+        //                            try
+        //                            {
+        //                                itemDoc.Save(sHumanXmlPath);
+        //                            }
+        //                            catch (Exception xmlexcep)
+        //                            {
+        //                                trycount++;
+        //                                if (trycount <= 3)
+        //                                {
+        //                                    int TimeMilliseconds = 0;
+        //                                    if (System.Configuration.ConfigurationSettings.AppSettings["ThreadSleepTime"] != null)
+        //                                        TimeMilliseconds = Convert.ToInt32(System.Configuration.ConfigurationSettings.AppSettings["ThreadSleepTime"]);
+
+        //                                    Thread.Sleep(TimeMilliseconds);
+        //                                    string sMsg = string.Empty;
+        //                                    string sExStackTrace = string.Empty;
+
+        //                                    string version = "";
+        //                                    if (System.Configuration.ConfigurationSettings.AppSettings["VersionConfiguration"] != null)
+        //                                        version = System.Configuration.ConfigurationSettings.AppSettings["VersionConfiguration"].ToString();
+
+        //                                    string[] server = version.Split('|');
+        //                                    string serverno = "";
+        //                                    if (server.Length > 1)
+        //                                        serverno = server[1].Trim();
+
+        //                                    if (xmlexcep.InnerException != null && xmlexcep.InnerException.Message != null)
+        //                                        sMsg = xmlexcep.InnerException.Message;
+        //                                    else
+        //                                        sMsg = xmlexcep.Message;
+
+        //                                    if (xmlexcep != null && xmlexcep.StackTrace != null)
+        //                                        sExStackTrace = xmlexcep.StackTrace;
+
+        //                                    string insertQuery = "insert into  stats_apperrorlog values(0,'" + sMsg.Replace(@"\\", @"\\\\").Replace(@"\", @"\\").Replace(@"\\\\\\\\", @"\\\\").Replace("'", "") + Environment.NewLine + " Retry: " + trycount + "', '" + serverno + "','" + DateTime.Now + "','','0','0','0','" + sExStackTrace.Replace("'", "") + "','" + DateTime.Now.ToString("yyyy-MM-dd hh:mm:ss") + "')";
+        //                                    string ConnectionData;
+        //                                    ConnectionData = ConfigurationManager.ConnectionStrings["con"].ConnectionString;
+        //                                    using (MySqlConnection con = new MySqlConnection(ConnectionData))
+        //                                    {
+        //                                        using (MySqlCommand cmd = new MySqlCommand(insertQuery))
+        //                                        {
+        //                                            cmd.Connection = con;
+        //                                            try
+        //                                            {
+        //                                                con.Open();
+        //                                                cmd.ExecuteNonQuery();
+        //                                                con.Close();
+        //                                            }
+        //                                            catch
+        //                                            {
+        //                                            }
+        //                                        }
+        //                                    }
+        //                                    goto trytosaveagain;
+        //                                }
+        //                            }
+        //                            Encounter_Id = "Encounter_" + Convert.ToDateTime(enc.Appointment_Date).ToString("yyyyMMdd");
+        //                            NotesName = umanger.NamingConventionGeneration(NotesNameConvention, sHumanId, Encounter_Id, sFaciltyName, chklstProviders.Items.FindByValue(s).Text);
+        //                            string WordOutputName = NotesName + ".doc";
+        //                            string outputDocument = Path.Combine(sPhysicianName, WordOutputName);
+        //                            DataSet ds;
+        //                            XmlDataDocument xmlDoc;
+        //                            XslCompiledTransform xslTran;
+        //                            XmlElement root;
+        //                            XPathNavigator nav;
+        //                            XmlTextWriter writer;
+        //                            XsltSettings settings = new XsltSettings(true, false);
+        //                            ds = new DataSet();
+        //                            ds.ReadXml(sHumanXmlPath);
+        //                            xmlDoc = new XmlDataDocument(ds);
+        //                            xslTran = new XslCompiledTransform();
+        //                            using (var stream = File.Open(xsltFile, FileMode.Open, FileAccess.Read, FileShare.Read))
+        //                            {
+        //                                xslTran.Load(xsltFile, settings, new XmlUrlResolver());
+        //                            }
+        //                            root = xmlDoc.DocumentElement;
+        //                            nav = root.CreateNavigator();
+        //                            if (File.Exists(outputDocument))
+        //                            {
+        //                                File.Delete(outputDocument);
+        //                            }
+        //                            writer = new XmlTextWriter(outputDocument, System.Text.Encoding.UTF8);
+        //                            xslTran.Transform(nav, writer);
+        //                            writer.Close();
+        //                            writer = null;
+        //                            nav = null;
+        //                            root = null;
+        //                            xmlDoc = null;
+        //                            ds = null;
+        //                        }
+        //                    }
+        //                }
+        //            }
+        //            Response.Clear();
+        //            Response.ContentType = "application/zip";
+        //            Response.AddHeader("Content-Disposition", String.Format("attachment; filename={0}", sProjectName + ".zip"));
+        //            using (ZipFile zip = new ZipFile())
+        //            {
+        //                zip.AddSelectedFiles("*", sFolderWithFacility, string.Empty, true);
+        //                zip.Save(Response.OutputStream);
+        //            }
+        //            Response.End();
+        //        }
+        //        else
+        //        {
+        //            this.Page.ClientScript.RegisterStartupScript(this.Page.GetType(), "StopLoading", "DisplayErrorMessage('110089');{sessionStorage.setItem('StartLoading', 'false');StopLoadFromPatChart();}", true);
+        //        }
+        //    }
+        //    else
+        //    {
+        //        this.Page.ClientScript.RegisterStartupScript(this.Page.GetType(), "StopLoading", "DisplayErrorMessage('110088');{sessionStorage.setItem('StartLoading', 'false');StopLoadFromPatChart();}", true);
+        //    }
+        //}
 
 
     }

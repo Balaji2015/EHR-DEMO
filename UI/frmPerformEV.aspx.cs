@@ -392,41 +392,56 @@ namespace Acurus.Capella.UI
                 ArrayList EvDetails = new ArrayList();
 
                 IList<Human> lstHuman = new List<Human>();
-                IList<Human> lstInsHuman = new List<Human>();
-
-                //Get Details from Xml
-                string FileName = "Human" + "_" + data[0] + ".xml";
-                string strXmlFilePath = Path.Combine(System.Configuration.ConfigurationSettings.AppSettings["XMLPath"], FileName);
-                if (File.Exists(strXmlFilePath) == true)
+                IList<Human> lstInsHuman = new List<Human>(); IList<string> ilstGeneralPlanTagList = new List<string>();
+                ilstGeneralPlanTagList.Add("HumanList");
+                IList<Human> lsthuman = new List<Human>();
+                Human objFillHuman = new Human();
+                IList<object> ilstGeneralPlanBlobFinal = new List<object>();
+                ilstGeneralPlanBlobFinal = UtilityManager.ReadBlob(Convert.ToUInt64(data[0]), ilstGeneralPlanTagList);
+                if (ilstGeneralPlanBlobFinal != null && ilstGeneralPlanBlobFinal.Count > 0)
                 {
-                    XmlDocument itemDoc = new XmlDocument();
-                    using (FileStream fs = new FileStream(strXmlFilePath, FileMode.Open, FileAccess.Read, FileShare.Read))
+                    if (ilstGeneralPlanBlobFinal[0] != null)
                     {
-                        itemDoc.Load(fs);
-
-                        XmlNodeList xmlhumanList = itemDoc.GetElementsByTagName("Human");
-                        Human objFillHuman = new Human();
-                        if (xmlhumanList != null && xmlhumanList.Count > 0)
+                        for (int iCount = 0; iCount < ((IList<object>)ilstGeneralPlanBlobFinal[0]).Count; iCount++)
                         {
-                            objFillHuman.Id = Convert.ToUInt64(xmlhumanList[0].Attributes.GetNamedItem("Id").Value);
-                            objFillHuman.Birth_Date = Convert.ToDateTime(xmlhumanList[0].Attributes.GetNamedItem("Birth_Date").Value);
-                            objFillHuman.First_Name = xmlhumanList[0].Attributes.GetNamedItem("First_Name").Value;
-                            objFillHuman.Last_Name = xmlhumanList[0].Attributes.GetNamedItem("Last_Name").Value;
-                            objFillHuman.MI = xmlhumanList[0].Attributes.GetNamedItem("MI").Value;
-                            objFillHuman.Sex = xmlhumanList[0].Attributes.GetNamedItem("Sex").Value;
-                            objFillHuman.Suffix = xmlhumanList[0].Attributes.GetNamedItem("Suffix").Value;
-                            objFillHuman.Street_Address1 = xmlhumanList[0].Attributes.GetNamedItem("Street_Address1").Value;
-                            objFillHuman.City = xmlhumanList[0].Attributes.GetNamedItem("City").Value;
-                            objFillHuman.State = xmlhumanList[0].Attributes.GetNamedItem("State").Value;
-                            objFillHuman.ZipCode = xmlhumanList[0].Attributes.GetNamedItem("ZipCode").Value;
-                            if (xmlhumanList[0].Attributes.GetNamedItem("Birth_Order") != null)
-                                objFillHuman.Birth_Order = xmlhumanList[0].Attributes.GetNamedItem("Birth_Order").Value;
-                            lstHuman.Add(objFillHuman);
+                            objFillHuman = (Human)((IList<object>)ilstGeneralPlanBlobFinal[0])[iCount];
+                            lsthuman.Add(objFillHuman);
                         }
-                        fs.Close();
-                        fs.Dispose();
                     }
                 }
+                //Get Details from Xml
+                //string FileName = "Human" + "_" + data[0] + ".xml";
+               // string strXmlFilePath = Path.Combine(System.Configuration.ConfigurationSettings.AppSettings["XMLPath"], FileName);
+                //if (File.Exists(strXmlFilePath) == true)
+                //{
+                //    XmlDocument itemDoc = new XmlDocument();
+                //    using (FileStream fs = new FileStream(strXmlFilePath, FileMode.Open, FileAccess.Read, FileShare.Read))
+                //    {
+                //        itemDoc.Load(fs);
+
+                //        XmlNodeList xmlhumanList = itemDoc.GetElementsByTagName("Human");
+                //        Human objFillHuman = new Human();
+                //        if (xmlhumanList != null && xmlhumanList.Count > 0)
+                //        {
+                //            objFillHuman.Id = Convert.ToUInt64(xmlhumanList[0].Attributes.GetNamedItem("Id").Value);
+                //            objFillHuman.Birth_Date = Convert.ToDateTime(xmlhumanList[0].Attributes.GetNamedItem("Birth_Date").Value);
+                //            objFillHuman.First_Name = xmlhumanList[0].Attributes.GetNamedItem("First_Name").Value;
+                //            objFillHuman.Last_Name = xmlhumanList[0].Attributes.GetNamedItem("Last_Name").Value;
+                //            objFillHuman.MI = xmlhumanList[0].Attributes.GetNamedItem("MI").Value;
+                //            objFillHuman.Sex = xmlhumanList[0].Attributes.GetNamedItem("Sex").Value;
+                //            objFillHuman.Suffix = xmlhumanList[0].Attributes.GetNamedItem("Suffix").Value;
+                //            objFillHuman.Street_Address1 = xmlhumanList[0].Attributes.GetNamedItem("Street_Address1").Value;
+                //            objFillHuman.City = xmlhumanList[0].Attributes.GetNamedItem("City").Value;
+                //            objFillHuman.State = xmlhumanList[0].Attributes.GetNamedItem("State").Value;
+                //            objFillHuman.ZipCode = xmlhumanList[0].Attributes.GetNamedItem("ZipCode").Value;
+                //            if (xmlhumanList[0].Attributes.GetNamedItem("Birth_Order") != null)
+                //                objFillHuman.Birth_Order = xmlhumanList[0].Attributes.GetNamedItem("Birth_Order").Value;
+                //            lstHuman.Add(objFillHuman);
+                //        }
+                //        fs.Close();
+                //        fs.Dispose();
+                //    }
+                //}
 
                 Carrier carrierList = new Carrier();
                 CarrierManager carrierMngr = new CarrierManager();
@@ -448,43 +463,60 @@ namespace Acurus.Capella.UI
                     var pat = from p in patInsList where p.Insurance_Plan_ID == Convert.ToUInt64(data[2]) select p;
                     Insured_human_id = pat.ToList<PatientInsuredPlan>()[0].Insured_Human_ID.ToString();
                 }
-
-                //Get insured human details
-                string FileNameIns = "Human" + "_" + Insured_human_id + ".xml";
-                string strXmlFilePathIns = Path.Combine(System.Configuration.ConfigurationSettings.AppSettings["XMLPath"], FileNameIns);
-                if (File.Exists(strXmlFilePathIns) == true)
+              
+               lsthuman = new List<Human>();
+                 objFillHuman = new Human();
+                ilstGeneralPlanBlobFinal = new List<object>();
+                ilstGeneralPlanBlobFinal = UtilityManager.ReadBlob(Convert.ToUInt64(Insured_human_id), ilstGeneralPlanTagList);
+                if (ilstGeneralPlanBlobFinal != null && ilstGeneralPlanBlobFinal.Count > 0)
                 {
-                    XmlDocument itemDoc = new XmlDocument();
-                    using (FileStream fs = new FileStream(strXmlFilePathIns, FileMode.Open, FileAccess.Read, FileShare.Read))
+                    if (ilstGeneralPlanBlobFinal[0] != null)
                     {
-                        itemDoc.Load(fs);
-                        XmlNodeList xmlhumanList = itemDoc.GetElementsByTagName("Human");
-                        Human objInsFillHuman = new Human();
-                        if (xmlhumanList != null && xmlhumanList.Count > 0)
+                        for (int iCount = 0; iCount < ((IList<object>)ilstGeneralPlanBlobFinal[0]).Count; iCount++)
                         {
-                            objInsFillHuman.Id = Convert.ToUInt64(xmlhumanList[0].Attributes.GetNamedItem("Id").Value);
-                            objInsFillHuman.Birth_Date = Convert.ToDateTime(xmlhumanList[0].Attributes.GetNamedItem("Birth_Date").Value);
-                            objInsFillHuman.First_Name = xmlhumanList[0].Attributes.GetNamedItem("First_Name").Value;
-                            objInsFillHuman.Last_Name = xmlhumanList[0].Attributes.GetNamedItem("Last_Name").Value;
-                            objInsFillHuman.MI = xmlhumanList[0].Attributes.GetNamedItem("MI").Value;
-                            objInsFillHuman.Sex = xmlhumanList[0].Attributes.GetNamedItem("Sex").Value;
-                            objInsFillHuman.Suffix = xmlhumanList[0].Attributes.GetNamedItem("Suffix").Value;
-                            objInsFillHuman.Street_Address1 = xmlhumanList[0].Attributes.GetNamedItem("Street_Address1").Value;
-                            objInsFillHuman.City = xmlhumanList[0].Attributes.GetNamedItem("City").Value;
-                            objInsFillHuman.State = xmlhumanList[0].Attributes.GetNamedItem("State").Value;
-                            objInsFillHuman.ZipCode = xmlhumanList[0].Attributes.GetNamedItem("ZipCode").Value;
-                            lstInsHuman.Add(objInsFillHuman);
+                            objFillHuman = (Human)((IList<object>)ilstGeneralPlanBlobFinal[0])[iCount];
+                            lsthuman.Add(objFillHuman);
                         }
-                        fs.Close();
-                        fs.Dispose();
                     }
                 }
+                //Get insured human details
+                //string FileNameIns = "Human" + "_" + Insured_human_id + ".xml";
+                //string strXmlFilePathIns = Path.Combine(System.Configuration.ConfigurationSettings.AppSettings["XMLPath"], FileNameIns);
+                //if (File.Exists(strXmlFilePathIns) == true)
+                //{
+                //    XmlDocument itemDoc = new XmlDocument();
+                //    using (FileStream fs = new FileStream(strXmlFilePathIns, FileMode.Open, FileAccess.Read, FileShare.Read))
+                //    {
+                //        itemDoc.Load(fs);
+                //        XmlNodeList xmlhumanList = itemDoc.GetElementsByTagName("Human");
+                //        Human objInsFillHuman = new Human();
+                //        if (xmlhumanList != null && xmlhumanList.Count > 0)
+                //        {
+                //            objInsFillHuman.Id = Convert.ToUInt64(xmlhumanList[0].Attributes.GetNamedItem("Id").Value);
+                //            objInsFillHuman.Birth_Date = Convert.ToDateTime(xmlhumanList[0].Attributes.GetNamedItem("Birth_Date").Value);
+                //            objInsFillHuman.First_Name = xmlhumanList[0].Attributes.GetNamedItem("First_Name").Value;
+                //            objInsFillHuman.Last_Name = xmlhumanList[0].Attributes.GetNamedItem("Last_Name").Value;
+                //            objInsFillHuman.MI = xmlhumanList[0].Attributes.GetNamedItem("MI").Value;
+                //            objInsFillHuman.Sex = xmlhumanList[0].Attributes.GetNamedItem("Sex").Value;
+                //            objInsFillHuman.Suffix = xmlhumanList[0].Attributes.GetNamedItem("Suffix").Value;
+                //            objInsFillHuman.Street_Address1 = xmlhumanList[0].Attributes.GetNamedItem("Street_Address1").Value;
+                //            objInsFillHuman.City = xmlhumanList[0].Attributes.GetNamedItem("City").Value;
+                //            objInsFillHuman.State = xmlhumanList[0].Attributes.GetNamedItem("State").Value;
+                //            objInsFillHuman.ZipCode = xmlhumanList[0].Attributes.GetNamedItem("ZipCode").Value;
+                //            lstInsHuman.Add(objInsFillHuman);
+                //        }
+                //        fs.Close();
+                //        fs.Dispose();
+                //    }
+                //}
 
                 IList<InsurancePlan> InsurancePlanList = new List<InsurancePlan>();
                 InsurancePlanManager InsurancePlanMngr = new InsurancePlanManager();
                 //Ins ID to be passed
                 if (data[2] != null && data[2] != "")
                     InsurancePlanList = InsurancePlanMngr.GetInsurancebyID(Convert.ToUInt64(data[2]));
+                //string FileName = "Human" + "_" + data[0] + ".xml";
+                 //string strXmlFilePath = Path.Combine(System.Configuration.ConfigurationSettings.AppSettings["XMLPath"], FileName);
 
                 //ProviderAddressDetails ConfigXML
                 string sProjectName = System.Configuration.ConfigurationSettings.AppSettings["EVProjectName"].ToString();
@@ -497,7 +529,7 @@ namespace Acurus.Capella.UI
                 {
                     XmlDocument xmldoc = new XmlDocument();
                     string strXmlFilePath1 = Path.Combine(System.Web.Hosting.HostingEnvironment.ApplicationPhysicalPath, "ConfigXML\\PhysicianAddressDetails.xml");
-                    if (File.Exists(strXmlFilePath) == true)
+                    //if (File.Exists(strXmlFilePath) == true)
                     {
                         xmldoc.Load(System.Web.Hosting.HostingEnvironment.ApplicationPhysicalPath + "ConfigXML\\" + "PhysicianAddressDetails" + ".xml");
                         XmlNode nodeMatchingPhysicianAddress = xmldoc.SelectSingleNode("/PhysicianAddress/p" + "230");//Dr mesiwala ID
