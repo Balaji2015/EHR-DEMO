@@ -4282,30 +4282,30 @@ namespace Acurus.Capella.UI
                 //status = "Third Block - Sub 3";
                 //proc.WaitForExit();
                 //status = "Third Block - Sub 4";
-                retry:
-                    try
-                    {
-                        System.IO.File.Copy(sSourceFile, sDestFile, true);
-                    }
-                    catch (Exception Ex)
-                    {
-                        //if (Ex.Message.ToLower().Contains("used by another process"))
-                        //{
-                        //    if (iTryCount < 20)
-                        //    {
-                        //        iTryCount++;
-                        //        Thread.Sleep(3000);
-                        //        goto retry;
-                        //    }
-                        //    else
-                        //    {
-                        //        throw new Exception(status + " " + Ex.Message + "  " + Ex.InnerException);
-                        //    }
-                        //}
-                        throw new Exception(status + " " + Ex.Message + "  " + Ex.InnerException);
+                //retry:
+                    //try
+                    //{
+                    //    System.IO.File.Copy(sSourceFile, sDestFile, true);
+                    //}
+                    //catch (Exception Ex)
+                    //{
+                    //    //if (Ex.Message.ToLower().Contains("used by another process"))
+                    //    //{
+                    //    //    if (iTryCount < 20)
+                    //    //    {
+                    //    //        iTryCount++;
+                    //    //        Thread.Sleep(3000);
+                    //    //        goto retry;
+                    //    //    }
+                    //    //    else
+                    //    //    {
+                    //    //        throw new Exception(status + " " + Ex.Message + "  " + Ex.InnerException);
+                    //    //    }
+                    //    //}
+                    //    throw new Exception(status + " " + Ex.Message + "  " + Ex.InnerException);
 
 
-                    }
+                    //}
                     InsertIntostatserrorlog(sXmlName + sXMLID + ".xml");
                     status = string.Empty;
                 }
