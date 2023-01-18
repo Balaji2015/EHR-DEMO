@@ -1494,7 +1494,7 @@ namespace Acurus.Capella.UI
             ilstImmnAllergyList.Add("ProblemListList");
 
             IList<object> ilstImmnAllergyFinal = new List<object>();
-            ilstImmnAllergyFinal = UtilityManager.ReadBlob(ClientSession.EncounterId, ilstImmnAllergyList);
+            ilstImmnAllergyFinal = UtilityManager.ReadBlob(ClientSession.HumanId, ilstImmnAllergyList);
 
             if (ilstImmnAllergyFinal != null && ilstImmnAllergyFinal.Count > 0)
             {
