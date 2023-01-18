@@ -1908,7 +1908,7 @@ namespace Acurus.Capella.UI
 
                 ilstHospitalizationHistoryTagList.Add("HospitalizationHistoryMasterList");
                 ilstHospitalizationHistoryTagList.Add("EncounterList");
-
+                IList<Encounter> lstencounter = new List<Encounter>();
                 ilstInHospitalizationHistoryBlobFinal = UtilityManager.ReadBlob(ClientSession.HumanId, ilstHospitalizationHistoryTagList);
 
                 if (ilstInHospitalizationHistoryBlobFinal != null && ilstInHospitalizationHistoryBlobFinal.Count > 0)
@@ -1930,7 +1930,8 @@ namespace Acurus.Capella.UI
                         {
                             if (((Encounter)((IList<object>)ilstInHospitalizationHistoryBlobFinal[1])[iCount]).Encounter_ID == ClientSession.EncounterId)
                             {
-                                HospitalDTO.Encount = (Encounter)((IList<object>)ilstInHospitalizationHistoryBlobFinal[1]);
+
+                                HospitalDTO.Encount = (Encounter)((IList<object>)ilstInHospitalizationHistoryBlobFinal[1])[iCount];
                             }
                         }
                     }
