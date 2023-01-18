@@ -400,7 +400,7 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
                             if (bDocumentsConsistent && bDocumentsConsistent1)
                             {
                                
-                                if (XMLObj.strXmlFilePath != string.Empty)
+                                if (XMLObj.itemDoc.InnerXml != string.Empty)
                                 {
                                    // XMLObj.itemDoc.Save(XMLObj.strXmlFilePath);
                                     int trycount = 0;
