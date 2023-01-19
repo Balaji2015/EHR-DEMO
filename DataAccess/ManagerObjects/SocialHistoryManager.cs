@@ -511,7 +511,15 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
                                 #endregion
 
                                 #region "Modified by Balaji.TJ - 2023-03-01"
-                                WriteBlob(HumanID,  ObjXML.itemDoc, MySession, insertList, updateList, deleteList,  ObjXML, false);
+                                if ((insertList!=null && insertList.Count > 0) || (updateList!=null && updateList.Count > 0) || (deleteList!=null && deleteList.Count > 0))
+                                {
+                                    WriteBlob(HumanID, ObjXML.itemDoc, MySession, insertList, updateList, deleteList, ObjXML, false);
+                                }
+                                else
+                                {
+                                    SocialHistoryMasterManager objSocialMasterManager = new SocialHistoryMasterManager();
+                                    objSocialMasterManager.WriteBlob(HumanID, ObjXML.itemDoc, MySession, MasterinsertList, MasterupdateList, MasterdeleteList, ObjXML, false);
+                                }
                                 #endregion
                             }
                             catch (Exception xmlexcep)

@@ -460,7 +460,15 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
                                 #endregion
 
                                 #region "Modified by Balaji.TJ - 2023-01-05"
-                                WriteBlob(Human_Id, XMLObj.itemDoc, MySession, SaveLst, UpdateLst, DeleteLst, XMLObj, false);
+                                if (SaveLst.Count > 0 || UpdateLst.Count > 0 || DeleteLst.Count > 0)
+                                {
+                                    WriteBlob(Human_Id, XMLObj.itemDoc, MySession, SaveLst, UpdateLst, DeleteLst, XMLObj, false);
+                                }
+                                else
+                                {
+                                    FamilyHistoryMasterManager objPFSHFamilyMaster = new FamilyHistoryMasterManager();
+                                    objPFSHFamilyMaster.WriteBlob(Human_Id, XMLObj.itemDoc, MySession, MasterinsertList, MasterupdateList, MasterdeleteList, XMLObj, false);
+                                }
                                 #endregion
 
                             }
