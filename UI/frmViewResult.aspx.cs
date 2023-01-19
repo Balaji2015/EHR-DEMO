@@ -541,6 +541,30 @@ namespace Acurus.Capella.UI
                 //goto retry;
             }
 
+            IList<string> ilstHumanTag = new List<string>();
+            ilstHumanTag.Add("HumanList");
+
+            IList<object> ilstHumanBlobList = new List<object>();
+            ilstHumanBlobList = UtilityManager.ReadBlob(human_id, ilstHumanTag);
+
+            Human objFillHuman = new Human();
+
+            if (ilstHumanBlobList != null && ilstHumanBlobList.Count > 0)
+            {
+                if (ilstHumanBlobList[0] != null)
+                {
+                    for (int iCount = 0; iCount < ((IList<object>)ilstHumanBlobList[0]).Count; iCount++)
+                    {
+                        objFillHuman = ((Human)((IList<object>)ilstHumanBlobList[0])[iCount]);
+                        hdnHumanId.Value = Convert.ToString(objFillHuman.Id);                        
+                        hdnDOB.Value = Convert.ToDateTime(objFillHuman.Birth_Date).ToString();                        
+                        hdnPatientfirstname.Value = objFillHuman.First_Name;                        
+                        hdnPatientlastname.Value = objFillHuman.Last_Name;                       
+                        hdnPatientmiddlename.Value = objFillHuman.MI;                        
+                        hdnPatientType.Value = objFillHuman.Human_Type;
+                    }
+                }
+            }
 
             //string FileName = "Human" + "_" + human_id + ".xml";
             //string strXmlFilePath = Path.Combine(System.Configuration.ConfigurationSettings.AppSettings["XMLPath"], FileName);
