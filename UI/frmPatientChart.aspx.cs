@@ -128,7 +128,9 @@ namespace Acurus.Capella.UI
             IList<Encounter_Blob> ilstEncounterBlob = EncounterBlobMngr.GetEncounterBlob(ClientSession.EncounterId);
             if (ilstEncounterBlob.Count == 0 && ClientSession.EncounterId > 0)
             {
-                objEncounterblob = ilstEncounterBlob[0];
+                //objEncounterblob = ilstEncounterBlob[0];
+
+                throw new Exception("Encounter XML is not found for Encounter ID " + ClientSession.EncounterId + ". Please contact support.");
 
                 string sDirectoryPath = string.Empty;
                 if (Directory.Exists(HttpContext.Current.Server.MapPath("Template_XML")))
@@ -259,7 +261,9 @@ namespace Acurus.Capella.UI
             IList<Human_Blob> ilstHumanBlob = HumanBlobMngr.GetHumanBlob(ClientSession.HumanId);
             if (ilstHumanBlob.Count == 0 && ClientSession.HumanId > 0)
             {
-                objHumanblob = ilstHumanBlob[0];
+                //objHumanblob = ilstHumanBlob[0];
+
+                throw new Exception("Human XML is not found for Human ID " + ClientSession.HumanId + ". Please contact support.");
 
                 string sDirectoryPath = string.Empty;
                 if (Directory.Exists(HttpContext.Current.Server.MapPath("Template_XML")))
@@ -1971,7 +1975,9 @@ namespace Acurus.Capella.UI
                 IList<Encounter_Blob> ilstEncounterBlob = EncounterBlobMngr.GetEncounterBlob(ClientSession.EncounterId);
                 if (ilstEncounterBlob.Count == 0 && ClientSession.EncounterId > 0)
                 {
-                    objEncounterblob = ilstEncounterBlob[0];
+                    //objEncounterblob = ilstEncounterBlob[0];
+
+                    throw new Exception("Encounter XML is not found for Encounter ID " + ClientSession.EncounterId + ". Please contact support.");
 
                     string sDirectoryPath = string.Empty;
                     if (Directory.Exists(HttpContext.Current.Server.MapPath("Template_XML")))
@@ -2102,7 +2108,9 @@ namespace Acurus.Capella.UI
                 IList<Human_Blob> ilstHumanBlob = HumanBlobMngr.GetHumanBlob(ClientSession.HumanId);
                 if (ilstHumanBlob.Count == 0 && ClientSession.HumanId > 0)
                 {
-                    objHumanblob = ilstHumanBlob[0];
+                    //objHumanblob = ilstHumanBlob[0];
+
+                    throw new Exception("Human XML is not found for Human ID " + ClientSession.HumanId + ". Please contact support.");
 
                     string sDirectoryPath = string.Empty;
                     if (Directory.Exists(HttpContext.Current.Server.MapPath("Template_XML")))
