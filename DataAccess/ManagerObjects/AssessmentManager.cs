@@ -2703,7 +2703,9 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
                         IList<PotentialDiagnosis> lsttemp = new List<PotentialDiagnosis>();
                         for (int iCount = 0; iCount < ((IList<object>)ilstAsshumanBlobFinal[2]).Count; iCount++)
                         {
-                            objPotentialDiagnosis.Add((PotentialDiagnosis)((IList<object>)ilstAsshumanBlobFinal[2])[iCount]);
+                            //Code comment by balaji.TJ
+                            //objPotentialDiagnosis.Add((PotentialDiagnosis)((IList<object>)ilstAsshumanBlobFinal[2])[iCount]);
+                            lsttemp.Add((PotentialDiagnosis)((IList<object>)ilstAsshumanBlobFinal[2])[iCount]);
                         }
                         objPotentialDiagnosis=(from m in lsttemp where m.Move_To_Assessment != "Y" select m).ToList<PotentialDiagnosis>();
                     }
