@@ -1937,10 +1937,10 @@ namespace Acurus.Capella.UI
                                 {
                                     ImmHislst.Add((ImmunizationHistory)((IList<object>)ilstImmunizationBlobFinal[0])[iCount]);
                                     if (((ImmunizationHistory)((IList<object>)ilstImmunizationBlobFinal[0])[iCount]).Encounter_ID == ClientSession.EncounterId)
-                                {
-                                    _is_from_current_encounter_data = true;
+                                        //{
+                                        _is_from_current_encounter_data = true;
+                                    //}
                                 }
-
                                     if (_is_from_current_encounter_data)
                                     {
                                         //ilstSaveImmunizationHistory.Add(objImmunizationHistory);
@@ -2015,11 +2015,11 @@ namespace Acurus.Capella.UI
                                         }
 
                                     }
-                                }
+                                //}
                             }
 
 
-                            else if(ilstImmunizationBlobFinal[0] != null)
+                            else if(ilstImmunizationBlobFinal[0] != null && ((IList<object>)ilstImmunizationBlobFinal[0]).Count ==0)
                             {
                                       IList<string> ilstImmunizationHisTagList = new List<string>();
                                         ilstImmunizationHisTagList.Add("ImmunizationMasterHistoryList");
