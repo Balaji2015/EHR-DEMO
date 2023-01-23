@@ -1156,7 +1156,7 @@ function callweb(icon, List, id) {
                 var targetControlValue = id;
                 var innerdiv = '';
                 var pos = $('#' + targetControlValue).position();
-                $("#" + targetControlValue).attr("onkeydown", "insertTab(this, event)");//BUGID:45541
+              //  $("#" + targetControlValue).attr("onkeydown", "insertTab(this, event)");//BUGID:45541
                 innerdiv += "<li class='alinkstyle' style='text-decoration: none; list-style-type: none;font-weight:bolder;font-style: italic;cursor:default' onclick=\"OpenPopup('" + $('#' + targetControlValue)[0].name + "');\">Click here to Add or Update Keywords</li>";
                 for (var i = 0; i < values.length ; i++) {
                     innerdiv += "<li style='text-decoration: none; list-style-type: none;color:black;cursor:default' onclick=\"fun('" + values[i].split("\r\n").join("\n").split("\n").join("~") + "^" + targetControlValue + "');\">" + values[i] + "</li>";//BUGID:45541
