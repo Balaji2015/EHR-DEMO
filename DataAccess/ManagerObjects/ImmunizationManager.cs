@@ -396,7 +396,8 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
             IList<TreatmentPlan> Delete_Tplan = new List<TreatmentPlan>();
 
             string FileMgnt_ID = string.Empty;
-            Session.GetISession().Clear();
+            //Session.GetISession().Clear();
+            Session.GetISession().Close();
             //ISession MySession = Session.GetISession();
             using (ISession MySession = Session.GetISession())
             {
