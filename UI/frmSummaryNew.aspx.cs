@@ -203,17 +203,35 @@ namespace Acurus.Capella.UI
 
 
                 IList<object> ilstSummaryBlob_Final = new List<object>();
-                ilstSummaryBlob_Final = UtilityManager.ReadBlob(Encounter_Id, ilstSummaryTag_List);
-
-                if (ilstSummaryBlob_Final != null && ilstSummaryBlob_Final.Count > 0)
+                try
                 {
-                    if (ilstSummaryBlob_Final[0] != null)
+                    ilstSummaryBlob_Final = UtilityManager.ReadBlob(Encounter_Id, ilstSummaryTag_List);
+
+                    if (ilstSummaryBlob_Final != null && ilstSummaryBlob_Final.Count > 0)
                     {
-                        for (int iCount = 0; iCount < ((IList<object>)ilstSummaryBlob_Final[0]).Count; iCount++)
+                        if (ilstSummaryBlob_Final[0] != null)
                         {
-                            HumanID = ((Encounter)((IList<object>)ilstSummaryBlob_Final[0])[iCount]).Human_ID.ToString();
+                            for (int iCount = 0; iCount < ((IList<object>)ilstSummaryBlob_Final[0]).Count; iCount++)
+                            {
+                                HumanID = ((Encounter)((IList<object>)ilstSummaryBlob_Final[0])[iCount]).Human_ID.ToString();
+                            }
                         }
                     }
+                }
+                catch (Exception XMLExcep)
+                {
+                    if (Encounter_Id != 0)
+                    {
+                        ScriptManager.RegisterStartupScript(this, typeof(frmEncounter), "ErrorMessage", "RegenerateXML('" + Encounter_Id.ToString() + "','Encounter','summary');", true);
+
+                    }
+                    else
+                        ScriptManager.RegisterStartupScript(this, typeof(frmEncounter), "ErrorMessage", "RegenerateXML('" + ClientSession.EncounterId.ToString() + "','Encounter','summary');", true);
+
+
+
+                    return;
+
                 }
 
                 // try 

@@ -188,12 +188,23 @@ namespace Acurus.Capella.UI
                 cboMethodOfPayment.CssClass = "Editabletxtbox";
 
             }
-
-            string sdivPatientstrip = UtilityManager.FillPatientStrip(humanID);
-            if (sdivPatientstrip != null)
+        ln:
+            try
             {
-                divPatientstrip.InnerText = sdivPatientstrip;              
-              }           
+                string sdivPatientstrip = UtilityManager.FillPatientStrip(humanID);
+                if (sdivPatientstrip != null)
+                {
+                    divPatientstrip.InnerText = sdivPatientstrip;
+                }
+            }
+            catch (Exception ex)
+            {
+                //XmlText.Close();
+                //Thread.Sleep(5000);
+                UtilityManager.GenerateXML(humanID.ToString(), "Human");
+
+                goto ln;
+            }
 
             //string FileName = "Human" + "_" + humanID + ".xml";
             //string strXmlFilePath = Path.Combine(System.Configuration.ConfigurationSettings.AppSettings["XMLPath"], FileName);

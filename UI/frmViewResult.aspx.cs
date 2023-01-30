@@ -540,30 +540,41 @@ namespace Acurus.Capella.UI
 
                 //goto retry;
             }
-
-            IList<string> ilstHumanTag = new List<string>();
-            ilstHumanTag.Add("HumanList");
-
-            IList<object> ilstHumanBlobList = new List<object>();
-            ilstHumanBlobList = UtilityManager.ReadBlob(human_id, ilstHumanTag);
-
-            Human objFillHuman = new Human();
-
-            if (ilstHumanBlobList != null && ilstHumanBlobList.Count > 0)
+            ln:
+            try
             {
-                if (ilstHumanBlobList[0] != null)
+                IList<string> ilstHumanTag = new List<string>();
+                ilstHumanTag.Add("HumanList");
+
+                IList<object> ilstHumanBlobList = new List<object>();
+                ilstHumanBlobList = UtilityManager.ReadBlob(human_id, ilstHumanTag);
+
+                Human objFillHuman = new Human();
+
+                if (ilstHumanBlobList != null && ilstHumanBlobList.Count > 0)
                 {
-                    for (int iCount = 0; iCount < ((IList<object>)ilstHumanBlobList[0]).Count; iCount++)
+                    if (ilstHumanBlobList[0] != null)
                     {
-                        objFillHuman = ((Human)((IList<object>)ilstHumanBlobList[0])[iCount]);
-                        hdnHumanId.Value = Convert.ToString(objFillHuman.Id);                        
-                        hdnDOB.Value = Convert.ToDateTime(objFillHuman.Birth_Date).ToString();                        
-                        hdnPatientfirstname.Value = objFillHuman.First_Name;                        
-                        hdnPatientlastname.Value = objFillHuman.Last_Name;                       
-                        hdnPatientmiddlename.Value = objFillHuman.MI;                        
-                        hdnPatientType.Value = objFillHuman.Human_Type;
+                        for (int iCount = 0; iCount < ((IList<object>)ilstHumanBlobList[0]).Count; iCount++)
+                        {
+                            objFillHuman = ((Human)((IList<object>)ilstHumanBlobList[0])[iCount]);
+                            hdnHumanId.Value = Convert.ToString(objFillHuman.Id);
+                            hdnDOB.Value = Convert.ToDateTime(objFillHuman.Birth_Date).ToString();
+                            hdnPatientfirstname.Value = objFillHuman.First_Name;
+                            hdnPatientlastname.Value = objFillHuman.Last_Name;
+                            hdnPatientmiddlename.Value = objFillHuman.MI;
+                            hdnPatientType.Value = objFillHuman.Human_Type;
+                        }
                     }
                 }
+            }
+            catch (Exception ex)
+            {
+                //XmlText.Close();
+                //Thread.Sleep(5000);
+                UtilityManager.GenerateXML(human_id.ToString(), "Human");
+
+                goto ln;
             }
 
             //string FileName = "Human" + "_" + human_id + ".xml";
