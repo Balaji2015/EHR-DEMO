@@ -524,23 +524,58 @@ namespace Acurus.Capella.UI
 
             }
 
-            IList<Human_Blob> ilstHumanBlob = new List<Human_Blob>();
-            ilstHumanBlob = HumanBlobMngr.GetHumanBlob(Convert.ToUInt64(HumanID));
-            if (ilstHumanBlob.Count>0)
+            try
             {
-                sXMLHumanDoc = System.Text.Encoding.UTF8.GetString(ilstHumanBlob[0].Human_XML);
-                if (sXMLHumanDoc.Substring(0, 1) != "<")
-                    sXMLHumanDoc = sXMLHumanDoc.Substring(1, sXMLHumanDoc.Length - 1);
+                IList<Human_Blob> ilstHumanBlob = new List<Human_Blob>();
+                ilstHumanBlob = HumanBlobMngr.GetHumanBlob(Convert.ToUInt64(HumanID));
+                if (ilstHumanBlob.Count > 0)
+                {
+                    sXMLHumanDoc = System.Text.Encoding.UTF8.GetString(ilstHumanBlob[0].Human_XML);
+                    if (sXMLHumanDoc.Substring(0, 1) != "<")
+                        sXMLHumanDoc = sXMLHumanDoc.Substring(1, sXMLHumanDoc.Length - 1);
+                }
             }
-            
-            IList<Encounter_Blob> ilstEncounterBlob = new List<Encounter_Blob>();
-            ilstEncounterBlob = EncounterBlobMngr.GetEncounterBlob(Encounter_Id);
-            if (ilstEncounterBlob.Count > 0)
+            catch (Exception ex)
             {
-                sXMLEncounterDoc = System.Text.Encoding.UTF8.GetString(ilstEncounterBlob[0].Encounter_XML);
-                if (sXMLEncounterDoc.Substring(0, 1) != "<")
-                    sXMLEncounterDoc = sXMLEncounterDoc.Substring(1, sXMLEncounterDoc.Length - 1);
+                // if (ex.Message.ToLower().Contains("input string was not") == true || ex.Message.ToLower().Contains("element") == true||ex.Message.ToLower().Contains("unexpected end of file") == true || ex.Message.ToLower().Contains("is an unexpected token") == true)
+                {
+                    //xmltxtReader.Close();
+
+                    ScriptManager.RegisterStartupScript(this, typeof(frmEncounter), "ErrorMessage", "RegenerateXML('" + HumanID.ToString() + "','Human','summary');", true);
+
+
+                    //UtilityManager.GenerateXML(ClientSession.HumanId.ToString(), "Human");
+                    return;
+                }
+
             }
+
+            try
+            { 
+                IList<Encounter_Blob> ilstEncounterBlob = new List<Encounter_Blob>();
+                ilstEncounterBlob = EncounterBlobMngr.GetEncounterBlob(Encounter_Id);
+                if (ilstEncounterBlob.Count > 0)
+                {
+                    sXMLEncounterDoc = System.Text.Encoding.UTF8.GetString(ilstEncounterBlob[0].Encounter_XML);
+                    if (sXMLEncounterDoc.Substring(0, 1) != "<")
+                        sXMLEncounterDoc = sXMLEncounterDoc.Substring(1, sXMLEncounterDoc.Length - 1);
+                }
+            }
+            catch (Exception ex)
+            {
+                // if (ex.Message.ToLower().Contains("input string was not") == true || ex.Message.ToLower().Contains("element") == true||ex.Message.ToLower().Contains("unexpected end of file") == true || ex.Message.ToLower().Contains("is an unexpected token") == true)
+                {
+                    //xmltxtReader.Close();
+
+                    ScriptManager.RegisterStartupScript(this, typeof(frmEncounter), "ErrorMessage", "RegenerateXML('" + Encounter_Id.ToString() + "','Encounter','summary');", true);
+
+
+                    //UtilityManager.GenerateXML(ClientSession.HumanId.ToString(), "Human");
+                    return;
+                }
+
+            }
+
             //if (!IsPostBack)
             {
 

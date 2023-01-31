@@ -1806,30 +1806,50 @@ namespace Acurus.Capella.UI
                                 if (ConfigurationSettings.AppSettings["IsEFax"] != null && ConfigurationSettings.AppSettings["IsEFax"].ToString().ToUpper() == "Y")
                                 {
                                     //sFaxSubject
-                                    string sFaxFirstname = string.Empty;
-                                    string sFaxLastName = string.Empty;
-                                    IList<Human> lsthuman = new List<Human>();
-                                    IList<string> ilstGeneralPlanTagList = new List<string>();
-                                    ilstGeneralPlanTagList.Add("HumanList");
-                                    IList<object> ilstGeneralPlanBlobFinal = new List<object>();
-                                    ilstGeneralPlanBlobFinal = UtilityManager.ReadBlob(Convert.ToUInt64(objresultmaster.Matching_Patient_Id.ToString()), ilstGeneralPlanTagList);
-                                    if (ilstGeneralPlanBlobFinal != null && ilstGeneralPlanBlobFinal.Count > 0)
+                                    
+                                   
+                                        string sFaxFirstname = string.Empty;
+                                        string sFaxLastName = string.Empty;
+                                    retry:
+                                    try
                                     {
-                                        if (ilstGeneralPlanBlobFinal[0] != null)
+                                        IList<Human> lsthuman = new List<Human>();
+                                        IList<string> ilstGeneralPlanTagList = new List<string>();
+                                        ilstGeneralPlanTagList.Add("HumanList");
+                                        IList<object> ilstGeneralPlanBlobFinal = new List<object>();
+                                        ilstGeneralPlanBlobFinal = UtilityManager.ReadBlob(Convert.ToUInt64(objresultmaster.Matching_Patient_Id.ToString()), ilstGeneralPlanTagList);
+                                        if (ilstGeneralPlanBlobFinal != null && ilstGeneralPlanBlobFinal.Count > 0)
                                         {
-                                            for (int iCount = 0; iCount < ((IList<object>)ilstGeneralPlanBlobFinal[0]).Count; iCount++)
+                                            if (ilstGeneralPlanBlobFinal[0] != null)
                                             {
-                                                //objFillHuman = (Human)((IList<object>)ilstGeneralPlanBlobFinal[0])[iCount];
-                                                lsthuman.Add((Human)((IList<object>)ilstGeneralPlanBlobFinal[0])[iCount]);
-                                            }
-                                            sFaxFirstname = "_" + lsthuman[0].First_Name;
-                                            sFaxLastName = "_" + lsthuman[0].Last_Name;
+                                                for (int iCount = 0; iCount < ((IList<object>)ilstGeneralPlanBlobFinal[0]).Count; iCount++)
+                                                {
+                                                    //objFillHuman = (Human)((IList<object>)ilstGeneralPlanBlobFinal[0])[iCount];
+                                                    lsthuman.Add((Human)((IList<object>)ilstGeneralPlanBlobFinal[0])[iCount]);
+                                                }
+                                                sFaxFirstname = "_" + lsthuman[0].First_Name;
+                                                sFaxLastName = "_" + lsthuman[0].Last_Name;
 
-                                           
+
+                                            }
                                         }
                                     }
-                                //retry:
-                                //    string strXmlHumanPath = Path.Combine(System.Configuration.ConfigurationSettings.AppSettings["XMLPath"], "Human_" + objresultmaster.Matching_Patient_Id.ToString() + ".xml");
+                                    catch (Exception ex)
+                                    {
+                                        //if (ex.Message.ToLower().Contains("there is an unclosed literal string") == true || ex.Message.ToLower().Contains("root element is missing") == true || ex.Message.ToLower().Contains("unexpected end of file") == true || ex.Message.ToLower().Contains("is an unexpected token") == true)
+                                        //{
+                                        XmlText.Close();
+                                        UtilityManager.GenerateXML(objresultmaster.Matching_Patient_Id.ToString().ToString(), "Human");
+                                        //return;
+                                        goto retry;
+                                        //}
+                                        //else
+                                        //{
+                                        //    throw new Exception(ex.Message + " - " + strXmlHumanPath);
+                                        //}
+                                    }
+                                    //retry:
+                                    //    string strXmlHumanPath = Path.Combine(System.Configuration.ConfigurationSettings.AppSettings["XMLPath"], "Human_" + objresultmaster.Matching_Patient_Id.ToString() + ".xml");
                                     //try
                                     //{
                                     //    if (File.Exists(strXmlHumanPath) == true)
