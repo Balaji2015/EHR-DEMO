@@ -91,7 +91,7 @@ Deploy Test Job 10.0.0.11:
   #- echo "Backup CMG blob..Completed.."
 
   - echo "Backup CMG blobimp..Start.."
-  - xcopy /y /s "F:\Acurus_Web\capella_cmg_project\capella_cmg_blobimp\*.*" "F:\Acurus_Web\Deployee\Backup-do not delete\Git\capella_cmg_blob"
+  - xcopy /y /s "F:\Acurus_Web\capella_cmg_project\capella_cmg_blobimp\*.*" "F:\Acurus_Web\Deployee\Backup-do not delete\Git\capella_cmg_blobimp"
   - echo "Backup CMG blobimp..Completed.."
 
   #- echo "Deployee CMG..Start.."
