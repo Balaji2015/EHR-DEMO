@@ -15681,9 +15681,13 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
             //{
             //itemDoc.Save(strXmlEncounterFilePath);
 
-           
+            //code modified by balaji.TJ 2023-01-31
+            EncounterBlobManager EncounterBlobMngr = new EncounterBlobManager();
+            IList<Encounter_Blob> ilstEncounterBlob = EncounterBlobMngr.GetEncounterBlob(ulEncID);
+            if (ilstEncounterBlob.Count == 0)
+            {
 
-            string sDirectoryPath = System.Web.HttpContext.Current.Server.MapPath("Template_XML");
+                string sDirectoryPath = System.Web.HttpContext.Current.Server.MapPath("Template_XML");
                 string sXmlPath = Path.Combine(sDirectoryPath, "Base_XML.xml");
                 XmlDocument itemDoc = new XmlDocument();
                 XmlTextReader XmlText = new XmlTextReader(sXmlPath);
@@ -15694,30 +15698,30 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
                 if (xmlAgenode != null && xmlAgenode.Count > 0)
                     xmlAgenode[0].ParentNode.RemoveChild(xmlAgenode[0]);
 
-            // itemDoc.Save(strXmlEncounterFilePath);
-
-            //int trycount = 0;
-            //trytosaveagain:
-                try
-                {
                 // itemDoc.Save(strXmlEncounterFilePath);
-                ISession session = Session.GetISession();
+
+                //int trycount = 0;
+                //trytosaveagain:
                 try
                 {
-                    using (ITransaction trans = session.BeginTransaction(IsolationLevel.ReadUncommitted))
+                    // itemDoc.Save(strXmlEncounterFilePath);
+                    ISession session = Session.GetISession();
+                    try
                     {
-                        WriteBlob( ulEncID, itemDoc, session, null, updateEncounterList, null, null, true);
+                        using (ITransaction trans = session.BeginTransaction(IsolationLevel.ReadUncommitted))
+                        {
+                            WriteBlob(ulEncID, itemDoc, session, null, updateEncounterList, null, null, true);
 
-                        trans.Commit();
+                            trans.Commit();
+                        }
                     }
-                }
-                catch (Exception ex1)
-                {
+                    catch (Exception ex1)
+                    {
 
-                    throw new Exception(ex1.Message);
-                }
+                        throw new Exception(ex1.Message);
+                    }
 
-            }
+                }
                 catch (Exception xmlexcep)
                 {
                     //trycount++;
@@ -15770,7 +15774,8 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
                     //    goto trytosaveagain;
                     //}
                 }
-            //}
+                //}
+            }
 
             //SaveUpdateDeleteWithTransaction(ref addEncounterList, updateEncounterList, null, MACAddress);
             SaveUpdateDelete_DBAndXML_WithTransaction(ref addEncounterList, ref updateEncounterList, null, MACAddress, true, false, ulEncID, string.Empty);
