@@ -732,16 +732,18 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
             IList<string> ilstGeneralPlanTagList = new List<string>();
             ilstGeneralPlanTagList.Add("TreatmentPlanList");
 
-
-            IList<object> ilstGeneralPlanBlobFinal = new List<object>();
-            ilstGeneralPlanBlobFinal = ReadBlob(EncounterID, ilstGeneralPlanTagList);
-            if (ilstGeneralPlanBlobFinal != null && ilstGeneralPlanBlobFinal.Count > 0)
+            if (EncounterID != 0)
             {
-                if (ilstGeneralPlanBlobFinal[0] != null)
+                IList<object> ilstGeneralPlanBlobFinal = new List<object>();
+                ilstGeneralPlanBlobFinal = ReadBlob(EncounterID, ilstGeneralPlanTagList);
+                if (ilstGeneralPlanBlobFinal != null && ilstGeneralPlanBlobFinal.Count > 0)
                 {
-                    for (int iCount = 0; iCount < ((IList<object>)ilstGeneralPlanBlobFinal[0]).Count; iCount++)
+                    if (ilstGeneralPlanBlobFinal[0] != null)
                     {
-                        objTreatmentPlan.Add((TreatmentPlan)((IList<object>)ilstGeneralPlanBlobFinal[0])[iCount]);
+                        for (int iCount = 0; iCount < ((IList<object>)ilstGeneralPlanBlobFinal[0]).Count; iCount++)
+                        {
+                            objTreatmentPlan.Add((TreatmentPlan)((IList<object>)ilstGeneralPlanBlobFinal[0])[iCount]);
+                        }
                     }
                 }
             }

@@ -2599,6 +2599,10 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
             string sXMLType = "";
 
             IList<object> ilstResult = new List<object>();
+            if (EntityID == 0)
+            {
+                return ilstResult;
+            }
             IList<object> ilstEntity = new List<object>();
             XmlDocument xmlDoc = new XmlDocument();
             string sXMLContent = String.Empty;

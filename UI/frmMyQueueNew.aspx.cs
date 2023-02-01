@@ -770,10 +770,10 @@ namespace Acurus.Capella.UI
                                 throw new Exception("Encounter XML is invalid");
                             }
                         }
-                        else
-                        {
-                            throw new Exception("Encounter XML is not found");
-                        }
+                        //else
+                        //{
+                        //    throw new Exception("Encounter XML is not found");
+                        //}
 
 
                     }

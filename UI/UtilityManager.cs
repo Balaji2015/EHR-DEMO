@@ -5107,9 +5107,17 @@ namespace Acurus.Capella.UI
 
         public static IList<object> ReadBlob(ulong EntityID, IList<string> ilstTagName, string sMyXMLType = "")
         {
+            
+
             string sXMLType = "";
 
             IList<object> ilstResult = new List<object>();
+
+            if (EntityID == 0)
+            {
+                return ilstResult;
+            }
+
             IList<object> ilstEntity = new List<object>();
             XmlDocument xmlDoc = new XmlDocument();
             string sXMLContent = string.Empty;
