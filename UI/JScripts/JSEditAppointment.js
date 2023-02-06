@@ -817,8 +817,9 @@ function OpenPatientDemographics() {
             setRadWindowPropertiesDemographics(childWindow, 1230, 1130);
 
             childWindow.add_close(function PatientDemographicsClick(oWindow, args) {
-                var Result = args.get_argument();
-                document.getElementById("btnHumanDetailUpdate").click();
+                //var Result = args.get_argument();
+                //document.getElementById("btnHumanDetailUpdate").click();
+                setPAtientDetails(humanId);
                 document.getElementById("txtProviderSearch").value = document.getElementById("hdnrenprovidersearch").value;
               
             });
@@ -826,6 +827,27 @@ function OpenPatientDemographics() {
 
     return false;
 }
+
+
+function setPAtientDetails(humanid) {
+    $.ajax({
+        type: "POST",
+        url: "frmEditAppointment.aspx/GetHumanDetails",
+        data: JSON.stringify({
+            "humanid": humanid,
+        }),
+        contentType: "application/json; charset=utf-8",
+        dataType: "json",
+        async: true,
+        success: function (data) {
+
+            var objdata = $.parseJSON(data.d);
+            document.getElementById('divPatientstrip').innerText = objdata;
+        }
+    });
+}
+
+
 
 function OpenPatientTask() {
 

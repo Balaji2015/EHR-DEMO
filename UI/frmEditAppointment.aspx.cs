@@ -24,6 +24,9 @@ using System.Diagnostics;
 using System.IO;
 using System.Xml.Serialization;
 using System.Reflection;
+using Newtonsoft.Json;
+using System.Web.Services;
+
 
 namespace Acurus.Capella.UI
 {
@@ -6924,6 +6927,86 @@ namespace Acurus.Capella.UI
                     PhyLibID = Convert.ToInt32(xmlTec[0].Attributes.GetNamedItem("Physician_Library_ID").Value.ToString());
             }
             return PhyLibID;
+        }
+
+        [WebMethod(EnableSession = true)]
+        public static string GetHumanDetails(string humanid)
+        {
+
+            if (ClientSession.UserName == string.Empty)
+            {
+                HttpContext.Current.Response.StatusCode = 999;
+                HttpContext.Current.Response.Status = "999 Session Expired";
+                HttpContext.Current.Response.StatusDescription = "frmSessionExpired.aspx";
+                return "Session Expired";
+            }
+            IList<Human> objhuman = new List<Human>();
+            //HumanManager humanMngr = new HumanManager();
+            //objhuman = humanMngr.patientdetails(hdnHumanID.Value);
+            string PatientStrip = "";
+            IList<string> ilstEditAppTagList = new List<string>();
+            ilstEditAppTagList.Add("HumanList");
+
+            IList<object> ilstEditAppFinal = new List<object>();
+            ilstEditAppFinal = UtilityManager.ReadBlob(Convert.ToUInt64(humanid), ilstEditAppTagList);
+
+            if (ilstEditAppFinal.Count > 0 && ilstEditAppFinal != null)
+            {
+                if (ilstEditAppFinal[0] != null)
+                {
+                    for (int iCount = 0; iCount < ((IList<object>)ilstEditAppFinal[0]).Count; iCount++)
+                    {
+                        objhuman.Add((Human)((IList<object>)ilstEditAppFinal[0])[iCount]);
+                    }
+                }
+            }
+
+            if (objhuman != null && objhuman.Count > 0)
+            {
+
+                string phoneno = "";
+
+
+                if (objhuman[0].Home_Phone_No.Length == 14)
+                {
+                    phoneno = objhuman[0].Home_Phone_No;
+                }
+                else
+                {
+                    phoneno = objhuman[0].Cell_Phone_Number;
+                }
+
+                // cache the current time
+                DateTime now = DateTime.Today; // today is fine, don't need the timestamp from now
+                                               // get the difference in years
+                int years = 0;
+                if (objhuman[0].Birth_Date != null)
+                    years = now.Year - objhuman[0].Birth_Date.Year;
+                // subtract another year if we're before the
+                // birth day in the current year
+                if (now.Month < objhuman[0].Birth_Date.Month || (now.Month == objhuman[0].Birth_Date.Month && now.Day < objhuman[0].Birth_Date.Day))
+                    --years;
+
+
+                string sSex = string.Empty;
+                if (objhuman[0].Sex != null && objhuman[0].Sex.Trim() != "")
+                    sSex = objhuman[0].Sex.Substring(0, 1);
+
+                PatientStrip = objhuman[0].Last_Name + "," + objhuman[0].First_Name +
+           "  " + objhuman[0].MI + "  " + objhuman[0].Suffix + "   |   " +
+            objhuman[0].Birth_Date.ToString("dd-MMM-yyyy") + "   |   " +
+           years.ToString() +
+           "  year(s)    |   " + sSex + "   |   Acc #:" + objhuman[0].Id +
+           "   |   " + "Med Rec #:" + objhuman[0].Medical_Record_Number + "   |   " +
+           "Phone #:" + phoneno + "   |   Patient Type:" + objhuman[0].Human_Type;
+            }
+            else
+            {
+                PatientStrip = " " + "   |" + "|" + "|" + "|" + "|";
+            }
+
+
+            return JsonConvert.SerializeObject(PatientStrip);
         }
 
         #endregion
