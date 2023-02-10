@@ -1623,6 +1623,7 @@ namespace Acurus.Capella.UI.WebServices
                     {
                         for (int iCount = 0; iCount < ((IList<object>)ilstEandMBlobFinal[0]).Count; iCount++)
                         {
+                            //GitLab #3646
                             if (Convert.ToUInt64(((Immunization)((IList<object>)ilstEandMBlobFinal[0])[iCount]).Encounter_Id) == ClientSession.EncounterId)
                             {
                                 lstimm.Add((Immunization)((IList<object>)ilstEandMBlobFinal[0])[iCount]);
@@ -1636,6 +1637,7 @@ namespace Acurus.Capella.UI.WebServices
                     {
                         for (int iCount = 0; iCount < ((IList<object>)ilstEandMBlobFinal[1]).Count; iCount++)
                         {
+                            //GitLab #3646
                             if (Convert.ToUInt64(((ImmunizationHistory)((IList<object>)ilstEandMBlobFinal[1])[iCount]).Encounter_ID) == ClientSession.EncounterId)
                             {
                                 lstimmhis.Add((ImmunizationHistory)((IList<object>)ilstEandMBlobFinal[1])[iCount]);
