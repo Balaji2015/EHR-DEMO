@@ -1342,12 +1342,12 @@
 
                             <td style="width:24%;text-align:right;">
                                <asp:Button ID="Button1" runat="server" Text="Perform EV" Width="120px" Class="aspresizedbluebutton"
-                                    OnClientClick="return OpenEV();" style="margin-top: -2%; margin-right: -1%; " />&nbsp;&nbsp;
+                                    OnClientClick="return OpenEV();" style="margin-top: -2%; margin-right: -1%; " Visible="false" />&nbsp;&nbsp;
                             </td>
                                        
-                            <td align="left" style="width: 2%"> 
+                            <td align="right" style="width: 2%"> 
                             <asp:Button ID="btnViewUpdateInsurance" runat="server" AccessKey="U"  CssClass="aspresizedbluebutton"    OnClientClick="return openPatInsurancewindowScreen();"                        
-                                  Text="View /Update Insurance Policies"  Width="220px" style="margin-top: -2%;" />
+                                  Text="Patient Demographics"  Width="158px" style="margin-top: -3%;" />
                              </td>
                           
                             <td style="width:2%;text-align:right;">                                 
