@@ -153,20 +153,20 @@ Deploy PRODUCTION Job 10.1.0.10 :
   script:
   
   - echo "Backup CMG..Start.."
-  #- xcopy /y /s "F:\Acurus_Web\capella_cmg_project\capella_cmg_ehr\*.*" "F:\Acurus_Web\Deployee\Backup-do not delete\Git\CMG"
+  - xcopy /y /s "F:\Acurus_Web\capella_cmg_project\capella_cmg_ehr\*.*" "F:\Acurus_Web\Deployee\Backup-do not delete\Git\CMG"
   - echo "Backup CMG..Completed.."
 
-  - echo "Backup Wish..Start.."
-  - xcopy /y /s "F:\Acurus_Web\capella_wc_project\capella_wc_ehr\*.*" "F:\Acurus_Web\Deployee\Backup-do not delete\Git\WC"
-  - echo "Backup Wish..Completed.."
+  #- echo "Backup Wish..Start.."
+  #- xcopy /y /s "F:\Acurus_Web\capella_wc_project\capella_wc_ehr\*.*" "F:\Acurus_Web\Deployee\Backup-do not delete\Git\WC"
+  #- echo "Backup Wish..Completed.."
   
   - echo "Deployee CMG..Start.."  
-  #- xcopy /y /s "F:\Acurus_Web\Deployee\builds\Capella_publish\*.*" "F:\Acurus_Web\capella_cmg_project\capella_cmg_ehr\"
+  - xcopy /y /s "F:\Acurus_Web\Deployee\builds\Capella_publish\*.*" "F:\Acurus_Web\capella_cmg_project\capella_cmg_ehr\"
   - echo "Deployee CMG..Completed.."
 
-  - echo "Deployee Wish..Start.."  
-  - xcopy /y /s "F:\Acurus_Web\Deployee\builds\Capella_publish\*.*" "F:\Acurus_Web\capella_wc_project\capella_wc_ehr\"
-  - echo "Deployee Wish..Completed.."
+  #- echo "Deployee Wish..Start.."  
+  #- xcopy /y /s "F:\Acurus_Web\Deployee\builds\Capella_publish\*.*" "F:\Acurus_Web\capella_wc_project\capella_wc_ehr\"
+  #- echo "Deployee Wish..Completed.."
 
 
 
