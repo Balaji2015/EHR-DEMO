@@ -396,8 +396,10 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
             IList<TreatmentPlan> Delete_Tplan = new List<TreatmentPlan>();
 
             string FileMgnt_ID = string.Empty;
-            Session.GetISession().Clear();
+            //Session.GetISession().Clear();
             //ISession MySession = Session.GetISession();
+            //Gitlab #3583
+            Session.GetISession().Close();
             using (ISession MySession = Session.GetISession())
             {
                 try
