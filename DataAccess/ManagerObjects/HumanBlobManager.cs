@@ -49,6 +49,7 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
         public IList<Human_Blob> GetHumanBlob(ulong ulHumanID)
         {
             IList<Human_Blob> ilstHumanBlob = new List<Human_Blob>();
+            session.GetISession().Close();
             ICriteria crit = session.GetISession().CreateCriteria(typeof(Human_Blob)).Add(Expression.Eq("Id", ulHumanID));
             ilstHumanBlob = crit.List<Human_Blob>();
 
