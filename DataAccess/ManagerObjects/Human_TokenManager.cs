@@ -377,7 +377,19 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
             }
             return iResult;
         }
+        public Human_Token GetHumanTokenbyhumanid(ulong human_id)
+        {
+            Human_Token objHuman_Token = new Human_Token();
+            using (ISession iMySession = NHibernateSessionManager.Instance.CreateISession())
+            {
+                ICriteria crit = iMySession.CreateCriteria(typeof(Human_Token)).Add(Expression.Eq("Human_ID", human_id));
+                if (crit.List<Human_Token>().Count != 0)
+                    objHuman_Token = crit.List<Human_Token>()[0];
+                iMySession.Close();
+            }
 
+            return objHuman_Token;
+        }
         #endregion
     }
 }

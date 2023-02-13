@@ -82,7 +82,7 @@ function ddlSexualOrientation_change() {
     }
     document.getElementById(GetClientId("hdnSexualOrientationSpecify")).value = "";
     document.getElementById(GetClientId("hdnGenderIdentity")).value = "";
-  
+
 }
 
 
@@ -102,7 +102,7 @@ function ddlGenderIdentity_change() {
 }
 
 function CloseWindow() {
-    if (document.getElementById(GetClientId("btnViewUpdateInsurance")).disabled == false) {
+    if (document.getElementById(GetClientId("btnViewUpdateInsurance")) != undefined && document.getElementById(GetClientId("btnViewUpdateInsurance")).disabled == false) {
         if (document.getElementById(GetClientId("txtNoofPolicies")).value != "") {
             if (parseInt(document.getElementById(GetClientId("txtNoofPolicies")).value) < 1) {
                 if (window.confirm("Insurance Policies not added. Do you want to add?")) {
@@ -121,18 +121,18 @@ function CloseWindow() {
                         obj.push("ExAccountNo=" + txtExternalAccNo);
                         obj.push("PatientType=" + document.getElementById(GetClientId("hdnPatientType")).value);
                         setTimeout(
-             function () {
-                 var oWnd = GetRadWindow();
-                 var childWindow = oWnd.BrowserWindow.radopen("frmAddInsurancePolicies.aspx?HumanId=" + objhumanid + "&InsuranceType=" + true + "&LastName=" + txtPatientlastname + "&FirstName=" + txtPatientfirstname + "&ExAccountNo=" + txtExternalAccNo + "&PatientType=" + document.getElementById(GetClientId("hdnPatientType")).value, "ctl00_DemographicsModalWindow");
-                 SetRadWindowProperties(childWindow, 850, 1140);
-                 childWindow.remove_close(OpenPatIns);
-                 childWindow.remove_close(AddGuarantorClick);
-                 childWindow.remove_close(ViewGaurantorClick);
-                 childWindow.add_close(OpenAddInsForNewPatient);
-                 childWindow.remove_close(SelectGaurantorClick);
-                 childWindow.remove_close(FindPatientClick);
-                 childWindow.remove_close(CloseWorksetClick);
-             }, 0);
+                            function () {
+                                var oWnd = GetRadWindow();
+                                var childWindow = oWnd.BrowserWindow.radopen("frmAddInsurancePolicies.aspx?HumanId=" + objhumanid + "&InsuranceType=" + true + "&LastName=" + txtPatientlastname + "&FirstName=" + txtPatientfirstname + "&ExAccountNo=" + txtExternalAccNo + "&PatientType=" + document.getElementById(GetClientId("hdnPatientType")).value, "ctl00_DemographicsModalWindow");
+                                SetRadWindowProperties(childWindow, 850, 1140);
+                                childWindow.remove_close(OpenPatIns);
+                                childWindow.remove_close(AddGuarantorClick);
+                                childWindow.remove_close(ViewGaurantorClick);
+                                childWindow.add_close(OpenAddInsForNewPatient);
+                                childWindow.remove_close(SelectGaurantorClick);
+                                childWindow.remove_close(FindPatientClick);
+                                childWindow.remove_close(CloseWorksetClick);
+                            }, 0);
                         return false;
                     }
                     else {
@@ -144,18 +144,18 @@ function CloseWindow() {
                         obj.push("ExAccountNo=" + txtExternalAccNo);
                         obj.push("PatientType=" + document.getElementById(GetClientId("hdnPatientType")).value);
                         setTimeout(
-          function () {
-              var oWnd = GetRadWindow();
-              var childWindow = oWnd.BrowserWindow.radopen("frmAddInsurancePolicies.aspx?HumanId=" + HumanId + "&InsuranceType=" + true + "&LastName=" + txtPatientlastname + "&FirstName=" + txtPatientfirstname + "&ExAccountNo=" + txtExternalAccNo + "&PatientType=" + document.getElementById(GetClientId("hdnPatientType")).value, "ctl00_DemographicsModalWindow");
-              SetRadWindowProperties(childWindow, 850, 1140);
-              childWindow.remove_close(OpenPatIns);
-              childWindow.remove_close(AddGuarantorClick);
-              childWindow.remove_close(ViewGaurantorClick);
-              childWindow.add_close(OpenAddInsForNewPatient);
-              childWindow.remove_close(SelectGaurantorClick);
-              childWindow.remove_close(FindPatientClick);
-              childWindow.remove_close(CloseWorksetClick);
-          }, 0);
+                            function () {
+                                var oWnd = GetRadWindow();
+                                var childWindow = oWnd.BrowserWindow.radopen("frmAddInsurancePolicies.aspx?HumanId=" + HumanId + "&InsuranceType=" + true + "&LastName=" + txtPatientlastname + "&FirstName=" + txtPatientfirstname + "&ExAccountNo=" + txtExternalAccNo + "&PatientType=" + document.getElementById(GetClientId("hdnPatientType")).value, "ctl00_DemographicsModalWindow");
+                                SetRadWindowProperties(childWindow, 850, 1140);
+                                childWindow.remove_close(OpenPatIns);
+                                childWindow.remove_close(AddGuarantorClick);
+                                childWindow.remove_close(ViewGaurantorClick);
+                                childWindow.add_close(OpenAddInsForNewPatient);
+                                childWindow.remove_close(SelectGaurantorClick);
+                                childWindow.remove_close(FindPatientClick);
+                                childWindow.remove_close(CloseWorksetClick);
+                            }, 0);
                         return false;
                     }
                     return false;
@@ -232,18 +232,12 @@ function CloseWindow() {
     }
 }
 function jsFormatSSN(asSSNControl) {
-    var re = /\D/g; var lvCurrentSSNControlID = asSSNControl.id; var lvSSNControl = lvCurrentSSNControlID.substring(lvCurrentSSNControlID.lastIndexOf("_") + 1); var lvParent; var lvCompare; var lvRequired; if (lvSSNControl == "msktxtSSN")
-    { lvParent = document.getElementById(GetClientId("msktxtSSN")); }
-    var lvNumber = lvParent.value.replace(re, ""); var lvLength = lvNumber.length; if (lvLength > 3 && lvLength < 6)
-    { var lvSegmentA = lvNumber.slice(0, 3); var lvSegmentB = lvNumber.slice(3, 5); lvParent.value = lvSegmentA + "-" + lvSegmentB; }
-    else
-    {
-        if (lvLength > 5)
-        { var lvSegmentA = lvNumber.slice(0, 3); var lvSegmentB = lvNumber.slice(3, 5); var lvSegmentC = lvNumber.slice(5, 9); lvParent.value = lvSegmentA + "-" + lvSegmentB + "-" + lvSegmentC; }
-        else
-        {
-            if (lvLength < 1)
-            { lvParent.value = ""; }
+    var re = /\D/g; var lvCurrentSSNControlID = asSSNControl.id; var lvSSNControl = lvCurrentSSNControlID.substring(lvCurrentSSNControlID.lastIndexOf("_") + 1); var lvParent; var lvCompare; var lvRequired; if (lvSSNControl == "msktxtSSN") { lvParent = document.getElementById(GetClientId("msktxtSSN")); }
+    var lvNumber = lvParent.value.replace(re, ""); var lvLength = lvNumber.length; if (lvLength > 3 && lvLength < 6) { var lvSegmentA = lvNumber.slice(0, 3); var lvSegmentB = lvNumber.slice(3, 5); lvParent.value = lvSegmentA + "-" + lvSegmentB; }
+    else {
+        if (lvLength > 5) { var lvSegmentA = lvNumber.slice(0, 3); var lvSegmentB = lvNumber.slice(3, 5); var lvSegmentC = lvNumber.slice(5, 9); lvParent.value = lvSegmentA + "-" + lvSegmentB + "-" + lvSegmentC; }
+        else {
+            if (lvLength < 1) { lvParent.value = ""; }
             lvParent.value = lvNumber;
         }
     }
@@ -258,11 +252,11 @@ function FormatPhone(event, txtbox) {
         return false; else {
         if (txtbox.value.length == 0)
             txtbox.value += "("; else if (txtbox.value.length == 4)
-                txtbox.value += ")"; else if (txtbox.value.length == 5)
-                    txtbox.value += " "
-                else if (txtbox.value.length == 8)
-                    txtbox.value += "-"; else if (txtbox.value.length == 11)
-                        return
+            txtbox.value += ")"; else if (txtbox.value.length == 5)
+            txtbox.value += " "
+        else if (txtbox.value.length == 8)
+            txtbox.value += "-"; else if (txtbox.value.length == 11)
+            return
     }
 }
 function ChangeDeathStatus(control) {
@@ -301,11 +295,9 @@ function ChangeDeathStatus(control) {
             return false;
         }
 }
-function changelabel()
-{
+function changelabel() {
     var control = document.getElementById(GetClientId("ddlPatientStatus"));
-    if (control.value == "DECEASED")
-    {
+    if (control.value == "DECEASED") {
         document.getElementById(GetClientId("dtpDateOfDeath")).disabled = false;
         document.getElementById(GetClientId("ddlReasonForDeath")).disabled = false;
         $('#ctl00_C5POBody_dtpDateOfDeath').removeClass('nonEditabletxtbox');
@@ -332,8 +324,8 @@ function changelabel()
         document.getElementById(GetClientId("ddlReasonForDeath")).value = "";
         $('#ctl00_C5POBody_lblDateOfDeath').html($('#ctl00_C5POBody_lblDateOfDeath').html().replace("*", ""));
         $('#ctl00_C5POBody_lblReasonForDeath').html($('#ctl00_C5POBody_lblReasonForDeath').html().replace("*", ""));
-          document.getElementById(GetClientId("ctl00_C5POBody_lblReasonForDeath")).style.color = "Black";
-          document.getElementById(GetClientId("ctl00_C5POBody_lblReasonForDeath")).style.color = "Black";
+        document.getElementById(GetClientId("ctl00_C5POBody_lblReasonForDeath")).style.color = "Black";
+        document.getElementById(GetClientId("ctl00_C5POBody_lblReasonForDeath")).style.color = "Black";
         document.getElementById(GetClientId("btnSave")).disabled = false;
         document.getElementById(GetClientId("hdnstatus")).value = "";
 
@@ -342,47 +334,34 @@ function changelabel()
 function AllowAlphabet(e) {
     document.getElementById(GetClientId("btnSave")).disabled = false; isIE = document.all ? 1 : 0
     keyEntry = !isIE ? e.which : event.keyCode; if (((keyEntry >= '65') && (keyEntry <= '90')) || ((keyEntry >= '97') && (keyEntry <= '122')) || (keyEntry == '46') || (keyEntry == '32') || keyEntry == '45')
-        return true; else
-    { return false; }
+        return true; else { return false; }
 }
 function Copy(data) {
     document.getElementById(GetClientId("btnSave")).disabled = false; document.getElementById(GetClientId("hdnSaveFlag")).value = true;
     if (document.getElementById(GetClientId("chkGuarantorIsPatient")).checked == true) {
-        if (data == 'Lastname')
-        { var LastName = document.getElementById(GetClientId("txtPatientlastname")).value; document.getElementById(GetClientId("txtGuarantorLastName")).value = LastName }
-        if (data == 'Firstname')
-        { var LastName = document.getElementById(GetClientId("txtPatientfirstname")).value; document.getElementById(GetClientId("txtGuarantorFirstName")).value = LastName }
-        if (data == 'MiddleName')
-        { var LastName = document.getElementById(GetClientId("txtPatientmiddlename")).value; document.getElementById(GetClientId("txtGuarantorMiddleName")).value = LastName }
-        if (data == 'Address')
-        { var LastName = document.getElementById(GetClientId("txtPatientAddress")).value; document.getElementById(GetClientId("txtGuarantorAddress")).value = LastName }
-        if (data == 'Address Line')
-        { var LastName = document.getElementById(GetClientId("txtPatientAddressLine2")).value; document.getElementById(GetClientId("txtGuarantorAddressLine2")).value = LastName }
+        if (data == 'Lastname') { var LastName = document.getElementById(GetClientId("txtPatientlastname")).value; document.getElementById(GetClientId("txtGuarantorLastName")).value = LastName }
+        if (data == 'Firstname') { var LastName = document.getElementById(GetClientId("txtPatientfirstname")).value; document.getElementById(GetClientId("txtGuarantorFirstName")).value = LastName }
+        if (data == 'MiddleName') { var LastName = document.getElementById(GetClientId("txtPatientmiddlename")).value; document.getElementById(GetClientId("txtGuarantorMiddleName")).value = LastName }
+        if (data == 'Address') { var LastName = document.getElementById(GetClientId("txtPatientAddress")).value; document.getElementById(GetClientId("txtGuarantorAddress")).value = LastName }
+        if (data == 'Address Line') { var LastName = document.getElementById(GetClientId("txtPatientAddressLine2")).value; document.getElementById(GetClientId("txtGuarantorAddressLine2")).value = LastName }
         if (data == 'Zipcode') {
             var LastName = $find(GetClientId("msktxtZipcode"))._text; $find(GetClientId("msktxtGuarantorZipCode")).set_value(LastName);
         }
-        if (data == 'HomePhone')
-        { var LastName = document.getElementById(GetClientId("msktxtHomePhno")).value; $find(GetClientId("msktxtGuarantorHomeNo")).set_value(LastName) }
+        if (data == 'HomePhone') { var LastName = document.getElementById(GetClientId("msktxtHomePhno")).value; $find(GetClientId("msktxtGuarantorHomeNo")).set_value(LastName) }
 
-        if (data == 'Email')
-        { var Email = document.getElementById(GetClientId("txtEmail")).value; document.getElementById(GetClientId("txtGuaEmail")).value = Email }
+        if (data == 'Email') { var Email = document.getElementById(GetClientId("txtEmail")).value; document.getElementById(GetClientId("txtGuaEmail")).value = Email }
 
-        if (data == 'CellPhone')
-        { var LastName = document.getElementById(GetClientId("msktxtCellPhno")).value; $find(GetClientId("msktxtGuarantorCellNo")).set_value(LastName) }
-        if (data == 'City')
-        { var LastName = document.getElementById(GetClientId("txtCity")).value; document.getElementById(GetClientId("txtGuarantorCity")).value = LastName }
-        if (data == "SEX")
-        { var textData = document.getElementById(GetClientId("ddlPatientsex")).value; document.getElementById(GetClientId("ddlGuarantorSex")).value = textData; }
+        if (data == 'CellPhone') { var LastName = document.getElementById(GetClientId("msktxtCellPhno")).value; $find(GetClientId("msktxtGuarantorCellNo")).set_value(LastName) }
+        if (data == 'City') { var LastName = document.getElementById(GetClientId("txtCity")).value; document.getElementById(GetClientId("txtGuarantorCity")).value = LastName }
+        if (data == "SEX") { var textData = document.getElementById(GetClientId("ddlPatientsex")).value; document.getElementById(GetClientId("ddlGuarantorSex")).value = textData; }
 
-        if (data == "DOB")
-        { var textData = document.getElementById(GetClientId("dtpPatientDOB")).value; document.getElementById(GetClientId("dtpGuarantorDOB")).value = textData; }
+        if (data == "DOB") { var textData = document.getElementById(GetClientId("dtpPatientDOB")).value; document.getElementById(GetClientId("dtpGuarantorDOB")).value = textData; }
         if (data == "PatientDOB") {
             $find(GetClientId("dtpGuarantorDOB")).set_value($find(GetClientId("dtpPatientDOB")).get_value());
             AutoSave();
         }
 
-        if (data == "State")
-        { var textData = document.getElementById(GetClientId("ddlState")).value; document.getElementById(GetClientId("ddlGuarantorState")).value = textData; }
+        if (data == "State") { var textData = document.getElementById(GetClientId("ddlState")).value; document.getElementById(GetClientId("ddlGuarantorState")).value = textData; }
     }
 }
 function change(btn) {
@@ -425,19 +404,19 @@ function openPatInsurancewindow() {
             obj.push("CurrentProcess=" + document.getElementById(GetClientId("txtCurrentProcess")).value);
 
             setTimeout(
-            function () {
-                var oWnd = GetRadWindow();
-                var oManager = oWnd.get_windowManager();
-                var childWindow = oManager.BrowserWindow.radopen("frmPatientInsurancePolicyMaintenance.aspx?HumanId=" + HumanId + "&PatientType=" + document.getElementById(GetClientId("hdnPatientType")).value + "&CurrentProcess=" + document.getElementById(GetClientId("txtCurrentProcess")).value + "&EncounterId=" + document.getElementById(GetClientId("hdnEncounterID")).value, "ctl00_DemographicsModalWindow");
-                SetRadWindowProperties(childWindow, 590, 1160);
-                childWindow.add_close(OpenPatIns);
-                childWindow.remove_close(AddGuarantorClick);
-                childWindow.remove_close(ViewGaurantorClick);
-                childWindow.remove_close(OpenAddInsForNewPatient);
-                childWindow.remove_close(SelectGaurantorClick);
-                childWindow.remove_close(FindPatientClick);
-                childWindow.remove_close(CloseWorksetClick);
-            }, 0);
+                function () {
+                    var oWnd = GetRadWindow();
+                    var oManager = oWnd.get_windowManager();
+                    var childWindow = oManager.BrowserWindow.radopen("frmPatientInsurancePolicyMaintenance.aspx?HumanId=" + HumanId + "&PatientType=" + document.getElementById(GetClientId("hdnPatientType")).value + "&CurrentProcess=" + document.getElementById(GetClientId("txtCurrentProcess")).value + "&EncounterId=" + document.getElementById(GetClientId("hdnEncounterID")).value, "ctl00_DemographicsModalWindow");
+                    SetRadWindowProperties(childWindow, 590, 1160);
+                    childWindow.add_close(OpenPatIns);
+                    childWindow.remove_close(AddGuarantorClick);
+                    childWindow.remove_close(ViewGaurantorClick);
+                    childWindow.remove_close(OpenAddInsForNewPatient);
+                    childWindow.remove_close(SelectGaurantorClick);
+                    childWindow.remove_close(FindPatientClick);
+                    childWindow.remove_close(CloseWorksetClick);
+                }, 0);
         }
     }
     else {
@@ -455,19 +434,19 @@ function openPatInsurancewindow() {
             obj.push("ExAccountNo=" + txtExternalAccNo);
             obj.push("PatientType=" + document.getElementById(GetClientId("hdnPatientType")).value);
             setTimeout(
-            function () {
-                var oWnd = GetRadWindow();
-                var oManager = oWnd.get_windowManager();
-                var childWindow = oManager.BrowserWindow.radopen("frmAddInsurancePolicies.aspx?HumanId=" + objhumanid + "&InsuranceType=" + true + "&LastName=" + txtPatientlastname + "&FirstName=" + txtPatientfirstname + "&ExAccountNo=" + txtExternalAccNo + "&PatientType=" + document.getElementById(GetClientId("hdnPatientType")).value + "&EncounterId=" + document.getElementById(GetClientId("hdnEncounterID")).value, "ctl00_DemographicsModalWindow");
-                SetRadWindowProperties(childWindow, 850, 1140);
-                childWindow.add_close(OpenAddInsForNewPatient);
-                childWindow.remove_close(OpenPatIns);
-                childWindow.remove_close(AddGuarantorClick);
-                childWindow.remove_close(ViewGaurantorClick);
-                childWindow.remove_close(SelectGaurantorClick);
-                childWindow.remove_close(FindPatientClick);
-                childWindow.remove_close(CloseWorksetClick);
-            }, 0);
+                function () {
+                    var oWnd = GetRadWindow();
+                    var oManager = oWnd.get_windowManager();
+                    var childWindow = oManager.BrowserWindow.radopen("frmAddInsurancePolicies.aspx?HumanId=" + objhumanid + "&InsuranceType=" + true + "&LastName=" + txtPatientlastname + "&FirstName=" + txtPatientfirstname + "&ExAccountNo=" + txtExternalAccNo + "&PatientType=" + document.getElementById(GetClientId("hdnPatientType")).value + "&EncounterId=" + document.getElementById(GetClientId("hdnEncounterID")).value, "ctl00_DemographicsModalWindow");
+                    SetRadWindowProperties(childWindow, 850, 1140);
+                    childWindow.add_close(OpenAddInsForNewPatient);
+                    childWindow.remove_close(OpenPatIns);
+                    childWindow.remove_close(AddGuarantorClick);
+                    childWindow.remove_close(ViewGaurantorClick);
+                    childWindow.remove_close(SelectGaurantorClick);
+                    childWindow.remove_close(FindPatientClick);
+                    childWindow.remove_close(CloseWorksetClick);
+                }, 0);
         }
         else {
             var obj = new Array();
@@ -478,19 +457,19 @@ function openPatInsurancewindow() {
             obj.push("ExAccountNo=" + txtExternalAccNo);
             obj.push("PatientType=" + document.getElementById(GetClientId("hdnPatientType")).value);
             setTimeout(
-  function () {
-      var oWnd = GetRadWindow();
-      var oManager = oWnd.get_windowManager();
-      var childWindow = oManager.BrowserWindow.radopen("frmAddInsurancePolicies.aspx?HumanId=" + HumanId + "&InsuranceType=" + true + "&LastName=" + txtPatientlastname + "&FirstName=" + txtPatientfirstname + "&ExAccountNo=" + txtExternalAccNo + "&PatientType=" + document.getElementById(GetClientId("hdnPatientType")).value + "&EncounterId=" + document.getElementById(GetClientId("hdnEncounterID")).value, "ctl00_DemographicsModalWindow");
-      SetRadWindowProperties(childWindow, 850, 1140);
-      childWindow.add_close(OpenAddInsForNewPatient);
-      childWindow.remove_close(OpenPatIns);
-      childWindow.remove_close(AddGuarantorClick);
-      childWindow.remove_close(ViewGaurantorClick);
-      childWindow.remove_close(SelectGaurantorClick);
-      childWindow.remove_close(FindPatientClick);
-      childWindow.remove_close(CloseWorksetClick);
-  }, 0);
+                function () {
+                    var oWnd = GetRadWindow();
+                    var oManager = oWnd.get_windowManager();
+                    var childWindow = oManager.BrowserWindow.radopen("frmAddInsurancePolicies.aspx?HumanId=" + HumanId + "&InsuranceType=" + true + "&LastName=" + txtPatientlastname + "&FirstName=" + txtPatientfirstname + "&ExAccountNo=" + txtExternalAccNo + "&PatientType=" + document.getElementById(GetClientId("hdnPatientType")).value + "&EncounterId=" + document.getElementById(GetClientId("hdnEncounterID")).value, "ctl00_DemographicsModalWindow");
+                    SetRadWindowProperties(childWindow, 850, 1140);
+                    childWindow.add_close(OpenAddInsForNewPatient);
+                    childWindow.remove_close(OpenPatIns);
+                    childWindow.remove_close(AddGuarantorClick);
+                    childWindow.remove_close(ViewGaurantorClick);
+                    childWindow.remove_close(SelectGaurantorClick);
+                    childWindow.remove_close(FindPatientClick);
+                    childWindow.remove_close(CloseWorksetClick);
+                }, 0);
         }
     }
     return false;
@@ -501,18 +480,18 @@ function OpenFindPatient() {
     obj.push("ScreenName=Demographics");
 
     setTimeout(
-  function () {
-      var oWnd = GetRadWindow();
-      var childWindow = oWnd.BrowserWindow.radopen("frmFindPatient.aspx?ScreenName=Demographics", "ctl00_DemographicsModalWindow");
-      SetRadWindowProperties(childWindow, 251, 1200);
-      childWindow.add_close(FindPatientClick);
-      childWindow.remove_close(OpenAddInsForNewPatient);
-      childWindow.remove_close(OpenPatIns);
-      childWindow.remove_close(AddGuarantorClick);
-      childWindow.remove_close(ViewGaurantorClick);
-      childWindow.remove_close(SelectGaurantorClick);
-      childWindow.remove_close(CloseWorksetClick);
-  }, 0);
+        function () {
+            var oWnd = GetRadWindow();
+            var childWindow = oWnd.BrowserWindow.radopen("frmFindPatient.aspx?ScreenName=Demographics", "ctl00_DemographicsModalWindow");
+            SetRadWindowProperties(childWindow, 251, 1200);
+            childWindow.add_close(FindPatientClick);
+            childWindow.remove_close(OpenAddInsForNewPatient);
+            childWindow.remove_close(OpenPatIns);
+            childWindow.remove_close(AddGuarantorClick);
+            childWindow.remove_close(ViewGaurantorClick);
+            childWindow.remove_close(SelectGaurantorClick);
+            childWindow.remove_close(CloseWorksetClick);
+        }, 0);
     return false;
 }
 function OpenFindPatientForGuarantor() {
@@ -521,33 +500,29 @@ function OpenFindPatientForGuarantor() {
 
 
     setTimeout(
-  function () {
-      var oWnd = GetRadWindow();
-      var childWindow = oWnd.BrowserWindow.radopen("frmFindPatient.aspx?ScreenName=Demographics", "ctl00_DemographicsModalWindow");
-      SetRadWindowProperties(childWindow, 251, 1200);
-      childWindow.add_close(SelectGaurantorClick);
-      childWindow.remove_close(FindPatientClick);
-      childWindow.remove_close(OpenAddInsForNewPatient);
-      childWindow.remove_close(OpenPatIns);
-      childWindow.remove_close(AddGuarantorClick);
-      childWindow.remove_close(ViewGaurantorClick);
-      childWindow.remove_close(CloseWorksetClick);
-  }, 0);
+        function () {
+            var oWnd = GetRadWindow();
+            var childWindow = oWnd.BrowserWindow.radopen("frmFindPatient.aspx?ScreenName=Demographics", "ctl00_DemographicsModalWindow");
+            SetRadWindowProperties(childWindow, 251, 1200);
+            childWindow.add_close(SelectGaurantorClick);
+            childWindow.remove_close(FindPatientClick);
+            childWindow.remove_close(OpenAddInsForNewPatient);
+            childWindow.remove_close(OpenPatIns);
+            childWindow.remove_close(AddGuarantorClick);
+            childWindow.remove_close(ViewGaurantorClick);
+            childWindow.remove_close(CloseWorksetClick);
+        }, 0);
     return false;
 }
 function ShowConfirmMessage() {
     var Result = window.showModalDialog("Script/frmMessageBox.aspx", null, "center:yes;resizable:yes;dialogHeight:98px;dialogWidth:236px;location=no"); if (Result != null) {
-        if (Result.OkCancel == 1)
-        { document.getElementById(GetClientId("TextBox1")).value = Result.OkCancel; }
-        else
-        { document.getElementById(GetClientId("TextBox1")).value = "Clicked Cancel:" + Result.OkCancel; return false; }
+        if (Result.OkCancel == 1) { document.getElementById(GetClientId("TextBox1")).value = Result.OkCancel; }
+        else { document.getElementById(GetClientId("TextBox1")).value = "Clicked Cancel:" + Result.OkCancel; return false; }
     }
 }
 function OpenCloseWorkset() {
-    var dt = new Date(); var now = new Date(); var then = now.getDay() + '-' + (now.getMonth() + 1) + '-' + now.getFullYear(); then += ' ' + now.getHours() + ':' + now.getMinutes() + ':' + now.getSeconds(); var utc = (now.getUTCMonth() + 1) + '/' + now.getUTCDate() + '/' + now.getUTCFullYear(); utc += ' ' + now.getUTCHours() + ':' + now.getUTCMinutes() + ':' + now.getUTCSeconds(); document.getElementById(GetClientId("hdnLocalTime")).value = utc; if (document.getElementById(GetClientId("txtWorkSetID")).value == "" || document.getElementById(GetClientId("hdnParentScreen")).value == "Review Exception" || document.getElementById(GetClientId("hdnParentScreen")).value == "Update Call Log")
-    { CloseWindow(); }
-    else
-    {
+    var dt = new Date(); var now = new Date(); var then = now.getDay() + '-' + (now.getMonth() + 1) + '-' + now.getFullYear(); then += ' ' + now.getHours() + ':' + now.getMinutes() + ':' + now.getSeconds(); var utc = (now.getUTCMonth() + 1) + '/' + now.getUTCDate() + '/' + now.getUTCFullYear(); utc += ' ' + now.getUTCHours() + ':' + now.getUTCMinutes() + ':' + now.getUTCSeconds(); document.getElementById(GetClientId("hdnLocalTime")).value = utc; if (document.getElementById(GetClientId("txtWorkSetID")).value == "" || document.getElementById(GetClientId("hdnParentScreen")).value == "Review Exception" || document.getElementById(GetClientId("hdnParentScreen")).value == "Update Call Log") { CloseWindow(); }
+    else {
 
         var dt = new Date();
         var now = new Date();
@@ -569,19 +544,19 @@ function OpenCloseWorkset() {
         obj.HumanID = document.getElementById(GetClientId('txtHumanID')).value;
         obj.CloseWorksetStartTime = document.getElementById(GetClientId('hdnCloseWorksetStartTime')).value;
         setTimeout(
-    function () {
-        var oWnd = GetRadWindow();
-        var childWindow = oWnd.BrowserWindow.radopen("frmCloseWorkset.aspx?WFObjectID=" + obj.WFObjectID + "&DOPStart=" + obj.CloseWorksetStartTime + "&CompletedList=" + obj.CompletedList + "&WFObjIDNotStarted=" + obj.WFObjIDNotStarted + "&CompAmt=" + obj.CompAmt + "&PostedAmt=" + obj.PostedAmount + "&ParentScreen=" + obj.ParentScreen + "&BatchType=" + obj.BatchType + "&BillDestination=" + obj.BillDestination + "&HumanID=" + obj.HumanID, "ctl00_DemographicsViewReportModalWindow");
-        SetRadWindowProperties(childWindow, 700, 850);
-        childWindow.remove_close(FindPatientClick);
-        childWindow.remove_close(OpenAddInsForNewPatient);
-        childWindow.remove_close(OpenPatIns);
-        childWindow.remove_close(AddGuarantorClick);
-        childWindow.remove_close(ViewGaurantorClick);
-        childWindow.remove_close(SelectGaurantorClick);
-        childWindow.remove_close(ViewReportClick);
-        childWindow.add_close(CloseWorksetClick);
-    }, 0);
+            function () {
+                var oWnd = GetRadWindow();
+                var childWindow = oWnd.BrowserWindow.radopen("frmCloseWorkset.aspx?WFObjectID=" + obj.WFObjectID + "&DOPStart=" + obj.CloseWorksetStartTime + "&CompletedList=" + obj.CompletedList + "&WFObjIDNotStarted=" + obj.WFObjIDNotStarted + "&CompAmt=" + obj.CompAmt + "&PostedAmt=" + obj.PostedAmount + "&ParentScreen=" + obj.ParentScreen + "&BatchType=" + obj.BatchType + "&BillDestination=" + obj.BillDestination + "&HumanID=" + obj.HumanID, "ctl00_DemographicsViewReportModalWindow");
+                SetRadWindowProperties(childWindow, 700, 850);
+                childWindow.remove_close(FindPatientClick);
+                childWindow.remove_close(OpenAddInsForNewPatient);
+                childWindow.remove_close(OpenPatIns);
+                childWindow.remove_close(AddGuarantorClick);
+                childWindow.remove_close(ViewGaurantorClick);
+                childWindow.remove_close(SelectGaurantorClick);
+                childWindow.remove_close(ViewReportClick);
+                childWindow.add_close(CloseWorksetClick);
+            }, 0);
         return false;
     }
 }
@@ -592,8 +567,7 @@ function CloseWorksetClick(oWindow, args) {
     }
 }
 function GetClientId(strid) {
-    var count = document.forms[0].length; var i = 0; var eleName; for (i = 0; i < count; i++)
-    { eleName = document.forms[0].elements[i].id; pos = eleName.indexOf(strid); if (pos >= 0) break; }
+    var count = document.forms[0].length; var i = 0; var eleName; for (i = 0; i < count; i++) { eleName = document.forms[0].elements[i].id; pos = eleName.indexOf(strid); if (pos >= 0) break; }
     return eleName;
 }
 function ViewReportClick(oWindow, args) {
@@ -861,7 +835,7 @@ function PatientInformationValidation() {
     document.getElementById(GetClientId('hdnAge')).value = age;
     if (document.getElementById(GetClientId('hdnAge')).value < 18) {
         document.getElementById(GetClientId("chkGuarantorIsPatient")).checked = false; //false;
-        document.getElementById(GetClientId("btnUncheckGurantor")).click(); 
+        document.getElementById(GetClientId("btnUncheckGurantor")).click();
         document.getElementById(GetClientId("txtGuarantorLastName")).value = "";
         document.getElementById(GetClientId("txtGuarantorFirstName")).value = "";
         document.getElementById(GetClientId("txtGuarantorMiddleName")).value = "";
@@ -878,7 +852,7 @@ function PatientInformationValidation() {
         document.getElementById(GetClientId("txtGuaEmail")).value = "";
         DisplayErrorMessage('420081');
         { sessionStorage.setItem('StartLoading', 'false'); StopLoadFromPatChart(); }
-      
+
         return false;
     }
 
@@ -986,7 +960,7 @@ function IsEmail(email) {
 function EnableSendEmail(ctl) {
     if (ctl.checked == true) {
         document.getElementById(GetClientId("btnSendEmail")).disabled = false;
-     
+
         $('#spanemail').addClass('MandLabelstyle').removeClass('spanstyle');
         document.getElementById(GetClientId("spanemailstar")).style.display = "block";
     }
@@ -1028,10 +1002,10 @@ function OpenViewMessage() {
     obj.push("AccountNum=" + svalue);
     obj.push("EncounterId=" + EncId);
     setTimeout(
-   function () {
-       var oWnd = GetRadWindow();
-       var result = oWnd.BrowserWindow.openModal("frmViewMessage.aspx", 1000, 1190, obj);
-   }, 0);
+        function () {
+            var oWnd = GetRadWindow();
+            var result = oWnd.BrowserWindow.openModal("frmViewMessage.aspx", 1000, 1190, obj);
+        }, 0);
 
     return false;
 }
@@ -1193,7 +1167,7 @@ function AddGuarantorClick(oWindow, args) {
     var Result = args.get_argument();
     if (Result) {
         document.getElementById(GetClientId("hdnGuarantorID")).value = Result.HumanID;
-        document.getElementById(GetClientId("btnSave")).disabled = false;s
+        document.getElementById(GetClientId("btnSave")).disabled = false; s
         document.getElementById(GetClientId("hdnSaveFlag")).value = true;
         document.getElementById(GetClientId("btnAddGuarantorRefresh")).click();
     }
@@ -1210,7 +1184,7 @@ function SelectGaurantorClick(oWindow, args) {
     var email = Result.EMail;
     if (Result.Address != null)
         var address = Result.Address;
-    
+
     if (Result) {
 
         document.getElementById(GetClientId("hdnGuarantorID")).value = Result.HumanId;
@@ -1222,7 +1196,7 @@ function SelectGaurantorClick(oWindow, args) {
             document.getElementById(GetClientId("txtGuarantorMiddleName")).value = name.split(' ')[1];
         if (dob != undefined && dob.split(' ')[0] != undefined)
             document.getElementById(GetClientId("dtpGuarantorDOB")).value = dob.split(' ')[0];
-        if( sex != undefined)
+        if (sex != undefined)
             document.getElementById(GetClientId("ddlGuarantorSex")).value = Result.PatientGender;
         if (status != undefined)
             document.getElementById(GetClientId("ddlPatientStatus")).value = Result.Status;
@@ -1242,7 +1216,7 @@ function SelectGaurantorClick(oWindow, args) {
             document.getElementById(GetClientId("msktxtGuarantorZipCode")).value = Result.ZipCode;
         if (email != undefined)
             document.getElementById(GetClientId("txtGuaEmail")).value = Result.EMail;
-      
+
 
         document.getElementById(GetClientId("btnSave")).disabled = false;
         document.getElementById(GetClientId("hdnSaveFlag")).value = true;
@@ -1348,7 +1322,7 @@ function validatedate(inputText, ControlId) {
 
             var CurrentDate = new Date();
             var CurrentYear = CurrentDate.getFullYear();
-           
+
             if (document.getElementById(GetClientId("dtpPatientDOB")).value != "__-___-____" || document.getElementById(GetClientId("dtpEmerDOB")).value != "__-___-____") {
                 if (ControlId == 'dtpPatientDOB') {
                     Dobdate = parseMyDate(document.getElementById(GetClientId("dtpPatientDOB")).value);
@@ -1427,16 +1401,16 @@ function OpenIndexing() {
     obj.HumanID = document.getElementById(GetClientId('txtAccountNo')).value;
 
     setTimeout(
-           function () {
-               var oWnd = GetRadWindow();
-               var childWindow = oWnd.BrowserWindow.radopen("frmIndexing.aspx?WFObjectID=" + obj.WFObjectID + "&HumanId=" + obj.HumanID, "ctl00_DemographicsModalWindow");               
-               SetRadWindowProperties(childWindow, 500, 1250);
-               childWindow.add_close(function IndexClick(oWindow, args) {
-                   var Result = args.get_argument();
-                   if (Result != null) {
-                   }
-               });
-           }, 0);
+        function () {
+            var oWnd = GetRadWindow();
+            var childWindow = oWnd.BrowserWindow.radopen("frmIndexing.aspx?WFObjectID=" + obj.WFObjectID + "&HumanId=" + obj.HumanID, "ctl00_DemographicsModalWindow");
+            SetRadWindowProperties(childWindow, 500, 1250);
+            childWindow.add_close(function IndexClick(oWindow, args) {
+                var Result = args.get_argument();
+                if (Result != null) {
+                }
+            });
+        }, 0);
     return false;
 }
 function ClosePatientDemographics() {
@@ -1476,11 +1450,11 @@ function OpenDemographics() {
         obj.push("HumanId=" + AccNO1);
         obj.push("EncounterId=" + EncounterID);
         setTimeout(
-       function () {
-           var oWnd = GetRadWindow();
-           var childWindow = oWnd.BrowserWindow.openModal("frmPopup.aspx", 460, 1000, obj, "ctl00_DemographicsModalWindow");
+            function () {
+                var oWnd = GetRadWindow();
+                var childWindow = oWnd.BrowserWindow.openModal("frmPopup.aspx", 460, 1000, obj, "ctl00_DemographicsModalWindow");
 
-       }, 0);
+            }, 0);
 
     }
 
@@ -1492,11 +1466,11 @@ function OpenAddressHistory() {
     var obj = new Array();
     obj.push("HumanId=" + AccNO1);
     setTimeout(
-     function () {
-         var oWnd = GetRadWindow();
-         var childWindow = oWnd.BrowserWindow.openModal("frmAddressHistory.aspx", 600, 1030, obj, "ctl00_DemographicsModalWindow");
+        function () {
+            var oWnd = GetRadWindow();
+            var childWindow = oWnd.BrowserWindow.openModal("frmAddressHistory.aspx", 600, 1030, obj, "ctl00_DemographicsModalWindow");
 
-     }, 0);
+        }, 0);
 }
 function PreventDot(evt) {
     var charCode = (evt.which) ? evt.which : event.keyCode
@@ -1717,7 +1691,16 @@ function parseMyDate(s) {
     return new Date(year, month, date);
 }
 
+var uPatientId = "";
 $(document).ready(function () {
+    $("#txtStartdate").datetimepicker({ timepicker: false, format: 'd-M-Y' });
+    $("#txtEnddate").datetimepicker({ timepicker: false, format: 'd-M-Y' });
+    document.getElementById('ctl00_C5POBody_TextBox3').style.backgroundColor = "#BFDBFF";
+    document.getElementById('imginsuredText').style.visibility = "hidden";
+    document.getElementById('ctl00_C5POBody_TextBox3').disabled = true;
+    document.getElementById('ctl00_C5POBody_txtplanSearch').setAttribute("data-plan-id", "0");
+    document.getElementById(GetClientId("btnViewUpdateInsurance")).style.display = "none";
+    document.getElementById('ctl00_C5POBody_btnaddins').disabled = true;
     $(document.getElementById(GetClientId("dtpPatientDOB"))).datepicker({
         dateFormat: 'dd-M-yy', changeYear: true, changeMonth: true, maxDate: new Date(), yearRange: "-120:+0",
         onSelect: function (selected, evnt) {
@@ -1729,10 +1712,66 @@ $(document).ready(function () {
         $(document.getElementById(GetClientId("dtpPatientDOB"))).focus();
     });
     $("[id*=pbDropdown]").addClass('displaynonestyle');
-
-
+    uPatientId = document.getElementById("ctl00_C5POBody_HiddenPatientName").value.split('&')[1];
+    loadgrid();
+  //  scrolify($('#tblpolicyinfo'), 50);
 
 });
+
+function loadgrid() {
+
+    $.ajax({
+
+        type: "POST",
+        url: "./frmPatientDemographics.aspx/loadGrid",
+        data: JSON.stringify({ "uPatientId": uPatientId, }),
+        contentType: "application/json; charset=utf-8",
+        dataType: "json",
+        success: function (data) {
+            var objdata = $.parseJSON(data.d);
+            var j = 0;
+            if (objdata.length > 0) {
+
+                for (var i = 0; i < objdata.length; i++) {
+                    j = parseInt(j) + parseInt("1");
+                    var vStatus = objdata[i].Active;
+                    if (vStatus.toUpperCase() == "YES") {
+                        var vFinalStatus = "Active";
+                    }
+                    else {
+                        var vFinalStatus = "Inactive";
+                    }
+                    if (objdata[i].Termination_Date == null || objdata[i].Termination_Date != undefined) {
+                        var Termination_Date = "";
+                    }
+                    else {
+                        var Termination_Date = objdata[i].Termination_Date;
+                    }
+                    if (objdata[i].Effective_Start_Date == null || objdata[i].Effective_Start_Date != undefined) {
+                        var Effective_Start_Date = "";
+                    }
+                    else {
+                        var Effective_Start_Date = objdata[i].Effective_Start_Date;
+                    }
+                    if (document.getElementById('ctl00_C5POBody_chkActiveStatus').checked && vFinalStatus == "Active") {
+                        var newRow = document.getElementById('tbodupolicyinfo').insertRow();
+                        newRow.innerHTML = "<tr><td style='width: 5%;text-align: center'><img src='Resources/edit.gif' onclick='Edit(this);'/></td><td style='width: 10%;text-align: center'>" + objdata[i].Insurance_Type + "</td><td style='width: 10 %;text-align: center'>" + objdata[i].Plan_Name + "</td><td style='width: 10 %;text-align: center'>" + objdata[i].Policy_Holder_ID + "</td><td style='width: 5 %;text-align: center'>" + objdata[i].Relationship + "</td ><td style='width: 15 %;text-align: center'>" + objdata[i].Insured_Name + "</td><td style='width: 10 %;text-align: center'>" + objdata[i].Insured_Name + "</td><td style='width: 7 %;text-align: center'> " + Effective_Start_Date + "</td><td style='width: 7 %;text-align: center'>" + Termination_Date + "</td><td style='width: 7 %;text-align: center'>" + vFinalStatus + "</td><td style='display:none'>" + objdata[i].Sortorder + "</td><td style='display:none'>" + objdata[i].Plan_ID + "</td><td style='display:none'>" + objdata[i].Id + "</td><td style='display:none'>" + objdata[i].Insured_Human_ID + "</td><td style='display:none'>" + parseInt(j) + "</td><tr>";
+                    }
+                    else if (!document.getElementById('ctl00_C5POBody_chkActiveStatus').checked && vFinalStatus != "Active") {
+                        //var newRow = document.getElementById('tbodupolicyinfo').insertRow();
+                        //newRow.innerHTML = "<tr><td style='width: 5%;text-align: center'><img src='Resources/edit.gif' onclick='Edit(this);'/></td><td style='width: 10%;text-align: center'>" + objdata[i].Insurance_Type + "</td><td style='width: 10 %;text-align: center'>" + objdata[i].Plan_Name + "</td><td style='width: 10 %;text-align: center'>" + objdata[i].Policy_Holder_ID + "</td><td style='width: 5 %;text-align: center'>" + objdata[i].Relationship + "</td ><td style='width: 15 %;text-align: center'>" + objdata[i].Insured_Name + "</td><td style='width: 10 %;text-align: center'>" + objdata[i].Insured_Name + "</td><td style='width: 7 %;text-align: center'> " + Effective_Start_Date + "</td><td style='width: 7 %;text-align: center'>" + Termination_Date + "</td><td style='width: 7 %;text-align: center'>" + vFinalStatus + "</td><td style='display:none'>" + objdata[i].Sortorder + "</td><td style='display:none'>" + objdata[i].Plan_ID + "</td><td style='display:none'>" + objdata[i].Id + "</td><td style='display:none'>" + objdata[i].Insured_Human_ID + "</td><td style='display:none'>" + parseInt(j) + "</td><tr>";
+                    }
+
+                }
+            }
+            
+
+        }
+
+    });
+}
+
+
 
 function chkShowAllChange() {
     Facility = document.getElementById(GetClientId("hdnFacilityName")).value;
@@ -1774,18 +1813,915 @@ function chkShowAllChange() {
             alert(data.d);
         }
     });
+
+}
+
+//Add Insurance Policy Change.
+
+function scrolify(tblAsJQueryObject, height) {
+    var oTbl = tblAsJQueryObject;
+    var oTblDiv = $("<div id='dvAdd'/>");
+    oTblDiv.css('height', height);
+    oTblDiv.css('overflow', 'auto');
+    oTblDiv.css('margin-top', '-20px');
+    oTbl.wrap(oTblDiv);
+    oTbl.attr("data-item-original-width", oTbl.width());
+    oTbl.find('thead tr td').each(function () {
+        $(this).attr("data-item-original-width", $(this).width());
+    });
+    oTbl.find('tbody tr:eq(0) td').each(function () {
+        $(this).attr("data-item-original-width", $(this).width());
+    });
+    var newTbl = oTbl.clone();
+    oTbl.find('thead tr').remove();
+    newTbl.find('tbody tr').remove();
+
+    oTbl.parent().parent().prepend(newTbl);
+    newTbl.wrap("<div/>");
+    newTbl.width(newTbl.attr('data-item-original-width'));
+    newTbl.find('thead tr td').each(function () {
+        $(this).width($(this).attr("data-item-original-width"));
+    });
+    oTbl.width(oTbl.attr('data-item-original-width'));
+    oTbl.find('tbody tr:eq(0) td').each(function () {
+        $(this).width($(this).attr("data-item-original-width"));
+    });
+    if (tblAsJQueryObject[0] != undefined) {
+        if (tblAsJQueryObject[0].parentElement.parentElement.id == "GeneralQTable") {
+            $("#ScrollIDGeneral").css('height', '');
+            $("#ScrollIDGeneral").css('overflow-y', '');
+        }
+        else {
+            $("#scrollID").css('height', '');
+            $("#scrollID").css('overflow-y', '');
+        }
+    }
+}
+
+function OpenAddinsured() {
+
+    setTimeout(
+        function () {
+            var oWnd = GetRadWindow();
+            { sessionStorage.setItem('StartLoading', 'true'); StartLoadFromPatChart(); }
+
+            var childWindow = oWnd.BrowserWindow.radopen("frmPatientDemographics.aspx?HumanId=" + 0 + "&DisableFindPat=TRUE&Functionality=ADDPATIENT", "ModalWindow");
+            setRadWindowProperties(childWindow, 1230, 1130);
+            childWindow.add_close(QuickPatientClickAddPatient);
+
+        }, 0);
+    return false;
+}
+function QuickPatientClickAddPatient(oWindow, args) {
+
+    var result = args.get_argument();
+    oWindow.remove_close(QuickPatientClickAddPatient);
+    if (result) {
+        var Result = new Object();
+
+        document.getElementById("ctl00_C5POBody_TextBox2").value = result.PatientName + "|" + result.PatientDOB + "|" + result.PatientType + "|" + result.PatientGender;
+        document.getElementById('ctl00_C5POBody_TextBox2').attributes['data-human-id'].value = result.Human_id;
+        document.getElementById('ctl00_C5POBody_TextBox2').disabled = true;
+        document.getElementById('ctl00_C5POBody_TextBox2').style.backgroundColor = "#BFDBFF"
+
+
+
+
+        //Result.HumanId = result.Human_id;
+        //Result.PatientName = result.PatientName;
+        //Result.PatientDOB = result.PatientDOB;
+        //Result.Encounter_Provider_ID = result.Encounter_Provider_ID;
+        //Result.Cell_Phone = result.Cell_Phone;
+        //Result.Home_Phone = result.Home_Phone;
+        //Result.HumanType = result.PatientType;
+        //Result.IsNewPatient = result.IsNewPatient;
+        //Result.IsQuickPatient = result.IsQuickPatient;
+        //Result.PatientGender = result.PatientGender;
+
+    }
+}
+function setRadWindowProperties(childWindow, height, width) {
+    childWindow.SetModal(true);
+    childWindow.set_visibleStatusbar(false);
+    childWindow.setSize(width, height);
+    childWindow.set_behaviors(Telerik.Web.UI.WindowBehaviors.Move | Telerik.Web.UI.WindowBehaviors.Close);
+    childWindow.set_iconUrl("Resources/16_16.ico");
+    childWindow.set_keepInScreenBounds(true);
+    childWindow.set_centerIfModal(true);
+    childWindow.center();
+
+}
+
+function btnaddinsured(e) {
+    var PriChecked = document.getElementById("ctl00_C5POBody_rdbPRI").checked;
+    var SecChecked = document.getElementById("ctl00_C5POBody_rdbSEC").checked;
+    var TerChecked = document.getElementById("ctl00_C5POBody_rdbTER").checked;
+    if (document.getElementById("ctl00_C5POBody_txtplanSearch").attributes['data-plan-id']) {
+        var PlanVal = document.getElementById("ctl00_C5POBody_txtplanSearch").attributes['data-plan-id'].value;
+    }
+    else {
+        var PlanVal = 0;
+    }
+    var planname = document.getElementById("ctl00_C5POBody_txtplanSearch").value;
    
+    var insurehumanid = document.getElementById("ctl00_C5POBody_TextBox2").attributes['data-human-id'].value;
+    
+    var insurename = document.getElementById("ctl00_C5POBody_TextBox2").value.split('|')[0];
+    var PolicyVal = document.getElementById("ctl00_C5POBody_TextBox1").value;
+    var SpecificVal = document.getElementById("ctl00_C5POBody_TextBox3").value;
+    var EffStartDate = document.getElementById("txtStartdate").value;
+    var EffEndDate = document.getElementById("txtEnddate").value;
+    var SelectInsured = document.getElementById("ctl00_C5POBody_TextBox2").value;
+    var RelationVal = document.getElementById("ctl00_C5POBody_ddlPatientRelation");
+    var insuranceType = '';
+    if (document.getElementById("ctl00_C5POBody_rdbPRI").checked)
+        insuranceType = "PRIMARY";
+    else if (document.getElementById("ctl00_C5POBody_rdbSEC").checked)
+        insuranceType = "SECONDARY";
+
+    else if (document.getElementById("ctl00_C5POBody_rdbTER").checked)
+        insuranceType = "TERTIARY";
+    var status = "";
+    if (document.getElementById("ctl00_C5POBody_rdstatusactive").checked)
+        status = "Active";
+    else if (document.getElementById("ctl00_C5POBody_rdstatusinactive").checked)
+        status = "Inactive";
+    var human_id = document.getElementById(GetClientId("txtAccountNo")).value;
+
+
+    var patientname = document.getElementById(GetClientId("txtPatientlastname")).value + "," + document.getElementById(GetClientId("txtPatientfirstname")).value
+
+    if (PriChecked == false && SecChecked == false && TerChecked == false) {
+        DisplayErrorMessage('410006');
+        return false;
+    }
+    else if (PlanVal == "0") {
+        DisplayErrorMessage('380028');
+        return false;
+    }
+    else if (PlanVal == "Other") {
+        if (SpecificVal == "") {
+            DisplayErrorMessage('410030');
+            return false;
+        }
+
+    }
+    else if (PolicyVal == "") {
+        DisplayErrorMessage('410031');
+        return false;
+    }
+    else if (RelationVal.options[RelationVal.selectedIndex].text == "") {
+        DisplayErrorMessage('380051');
+        return false;
+    }
+    else if (SelectInsured == "") {
+        DisplayErrorMessage('420043');
+        return false;
+    }
+   
+    else if (EffStartDate == "" && EffEndDate != "") {
+        DisplayErrorMessage('380016');
+        return false;
+    }
+
+    else if (Date.parse(EffStartDate) > Date.parse(EffEndDate)) {
+         DisplayErrorMessage('380005');
+        return false;
+    }
+    
+
+    else if (document.getElementById("txtStartdate").value.length != 0) {
+        if (document.getElementById("txtStartdate").value != "__-___-____") {
+            if (DateValidattion("txtStartdate") == false) {
+                DisplayErrorMessage('350010');
+                return false;
+            }
+        }
+    }
+
+
+   else if (document.getElementById("txtEnddate").value.length != 0) {
+        if (document.getElementById("txtEnddate").value != "__-___-____") {
+            if (DateValidattion("txtEnddate") == false) {
+
+                DisplayErrorMessage('350011');
+                return false;
+            }
+        }
+    }
+
+    
+
+    
+        var id = "0";
+        
+        $.ajax({
+            type: "POST",
+            url: "./frmPatientDemographics.aspx/SetInsuranceType",
+            data: JSON.stringify({
+                "humanid": human_id,
+                "insuranceType": insuranceType,
+                "id": id,
+                "policyholderid": PolicyVal,
+                "active": "Yes",
+                "PatientName": patientname,
+                "insurehumanid": insurehumanid,
+                "insid": PlanVal,
+                "Effective_Start_Date": EffStartDate,
+                "Termination_Date": EffEndDate,
+                "relationship": RelationVal.options[RelationVal.selectedIndex].text
+
+            }),
+            contentType: "application/json; charset=utf-8",
+            dataType: "json",
+            async: true,
+            success: function (data) {
+                var objdata = $.parseJSON(data.d);
+
+                //if ($('#tblpolicyinfo tbody tr').length == 1) {
+                //    $('#tblpolicyinfo tbody tr').remove();
+                //}
+                //else {
+                var sortordernew = 0;
+                var sortorderexists = 0;
+                if (objdata.ValidationError != undefined && objdata.ValidationError == "Success") {
+
+                    if (objdata.Sortorderlookup != undefined && objdata.Sortorderlookup.length > 0) {
+                        for (var j = 0; j < objdata.Sortorderlookup.length; j++) {
+                            if (objdata.Sortorderlookup[j].Value == insuranceType) {
+                                sortordernew = objdata.Sortorderlookup[j].Sort_Order;
+                                break;
+                            }
+                        }
+                        for (var j = 0; j < objdata.Sortorderlookup.length; j++) {
+                            if (objdata.Sortorderlookup[j].Value == "OLD " + insuranceType) {
+                                sortorderexists = objdata.Sortorderlookup[j].Sort_Order;
+                                break;
+                            }
+                        }
+
+                    }
+                    if (e.value.toUpperCase() == "ADD") {
+
+                        var maxvalue = 0;
+                        if (document.getElementById('ctl00_C5POBody_chkActiveStatus').checked && vFinalStatus == "Active") {
+                        for (var j = 0; j < $('#tbodupolicyinfo  tr').length; j++) {
+                          
+                           
+                            if (parseInt($('#tbodupolicyinfo tr')[j].childNodes[14].innerText) > parseInt(maxvalue))
+
+                                maxvalue = parseInt($('#tbodupolicyinfo tr')[j].childNodes[14].innerText);
+
+                            if ($('#tbodupolicyinfo tr')[j].childNodes[1].innerText == insuranceType) {
+
+                                $('#tbodupolicyinfo tr')[j].childNodes[1].innerText = "OLD " + $('#tbodupolicyinfo tr')[j].childNodes[1].innerText
+                                $('#tbodupolicyinfo tr')[j].childNodes[10].innerText = sortorderexists;
+
+                            }
+                        }
+                        //}
+                        
+                            var newRow = document.getElementById('tbodupolicyinfo').insertRow();
+                            newRow.innerHTML = "<tr><td style='width: 5%;text-align: center'><img src='Resources/edit.gif' onclick='Edit(this);'/></td><td style='width: 10%;text-align: center'>" + insuranceType + "</td><td style='width: 10 %;text-align: center'>" + planname + "</td><td style='width: 10 %;text-align: center'>" + PolicyVal + "</td><td style='width: 5 %;text-align: center'>" + RelationVal.options[RelationVal.selectedIndex].text + "</td ><td style='width: 15 %;text-align: center'>" + insurename + "</td><td style='width: 10 %;text-align: center'>" + SpecificVal + "</td><td style='width: 7 %;text-align: center'> " + EffStartDate + "</td><td style='width: 7 %;text-align: center'>" + EffEndDate + "</td><td style='width: 7 %;text-align: center'>" + status + "</td><td style='display:none'>" + sortordernew + "</td><td style='display:none'>" + PlanVal + "</td><td style='display:none'>" + id + "</td><td style='display:none'>" + insurehumanid + "</td><td style='display:none'>" + parseInt(parseInt(maxvalue) + parseInt("1")) + "</td><tr>";
+                            btnclearinsured();
+                        }
+                    }
+                    else {
+
+
+                        for (var j = 0; j < $('#tbodupolicyinfo  tr').length; j++) {
+                            //if ($('#tblpolicyinfo tr')[j].childNodes[11].innerText != "0") {
+
+                            //    $('#tblpolicyinfo tr')[j].remove();
+                            //}
+
+
+
+                            if ($('#tbodupolicyinfo tr')[j].childNodes[1].innerText == insuranceType && $('#tbodupolicyinfo tr')[j].childNodes[14].innerText != document.getElementById("ctl00_C5POBody_hdnpatinsuredid").value) {
+
+                                $('#tbodupolicyinfo tr')[j].childNodes[1].innerText = "OLD " + $('#tbodupolicyinfo tr')[j].childNodes[1].innerText
+                                $('#tbodupolicyinfo tr')[j].childNodes[10].innerText = sortorderexists;
+
+                            }
+
+                            if ($('#tbodupolicyinfo tr')[j].childNodes[14].innerText == document.getElementById("ctl00_C5POBody_hdnpatinsuredid").value) {
+
+                                $('#tbodupolicyinfo tr')[j].childNodes[1].innerText = insuranceType;
+                                $('#tbodupolicyinfo tr')[j].childNodes[2].innerText = planname;
+                                $('#tbodupolicyinfo tr')[j].childNodes[3].innerText = PolicyVal;
+                                $('#tbodupolicyinfo tr')[j].childNodes[4].innerText = RelationVal.options[RelationVal.selectedIndex].text;
+                                $('#tbodupolicyinfo tr')[j].childNodes[5].innerText = insurename;
+                                $('#tbodupolicyinfo tr')[j].childNodes[6].innerText = SpecificVal;
+
+                                $('#tbodupolicyinfo tr')[j].childNodes[7].innerText = EffStartDate;
+                                $('#tbodupolicyinfo tr')[j].childNodes[8].innerText = EffEndDate;
+                                $('#tbodupolicyinfo tr')[j].childNodes[9].innerText = status;
+                                $('#tbodupolicyinfo tr')[j].childNodes[10].innerText = sortordernew;
+                                $('#tbodupolicyinfo tr')[j].childNodes[11].innerText = PlanVal;
+                                $('#tbodupolicyinfo tr')[j].childNodes[13].innerText = insurehumanid;
+                                btnclearinsured();
+
+
+
+                            }
+
+                        }
+                    }
+                }
+
+                else if (objdata.ValidationError != undefined) {
+                    alert(objdata.ValidationError);
+                }
+                //if (objdata.length > 0) {
+                //    for (var i = 0; i < objdata.length; i++) {
+                //        var vStatus = objdata[i].Active;
+                //        if (vStatus == "Yes") {
+                //            var vFinalStatus = "Active";
+                //        }
+                //        else {
+                //            var vFinalStatus = "Inactive";
+                //        }
+                //        if (objdata[i].Termination_Date == null || objdata[i].Termination_Date != undefined) {
+                //            var Termination_Date = "";
+                //        }
+                //        else {
+                //            var Termination_Date = objdata[i].Termination_Date;
+                //        }
+                //        if (objdata[i].Effective_Start_Date == null || objdata[i].Effective_Start_Date != undefined) {
+                //            var Effective_Start_Date = "";
+                //        }
+                //        else {
+                //            var Effective_Start_Date = objdata[i].Effective_Start_Date;
+                //        }
+                //        if (document.getElementById('ctl00_C5POBody_chkActiveStatus').checked && vFinalStatus == "Active") {
+                //            var newRow = document.getElementById('tblpolicyinfo').insertRow();
+                //            newRow.innerHTML = "<tr><td style='width: 5%;text-align: center'></td><td style='width: 10%;text-align: center'>" + objdata[i].Insurance_Type + "</td><td style='width: 10 %;text-align: center'>" + objdata[i].Plan_Name + "</td><td style='width: 10 %;text-align: center'>" + objdata[i].Policy_Holder_ID + "</td><td style='width: 5 %;text-align: center'>" + objdata[i].Relationship + "</td ><td style='width: 15 %;text-align: center'>" + objdata[i].Insured_Name + "</td><td style='width: 10 %;text-align: center'>" + objdata[i].Insured_Name + "</td><td style='width: 7 %;text-align: center'> " + Effective_Start_Date + "</td><td style='width: 7 %;text-align: center'>" + Termination_Date + "</td><td style='width: 7 %;text-align: center'>" + vFinalStatus + "</td><td style='display:none'>" + objdata[i].Plan_ID + "</td><td style='display:none'>" + objdata[i].Id + "</td><tr>";
+                //        }
+                //        else if (!document.getElementById('ctl00_C5POBody_chkActiveStatus').checked && vFinalStatus != "Active") {
+                //            var newRow = document.getElementById('tblpolicyinfo').insertRow();
+                //            newRow.innerHTML = "<tr><td style='width: 5%;text-align: center'></td><td style='width: 10%;text-align: center'>" + objdata[i].Insurance_Type + "</td><td style='width: 10 %;text-align: center'>" + objdata[i].Plan_Name + "</td><td style='width: 10 %;text-align: center'>" + objdata[i].Policy_Holder_ID + "</td><td style='width: 5 %;text-align: center'>" + objdata[i].Relationship + "</td ><td style='width: 15 %;text-align: center'>" + objdata[i].Insured_Name + "</td><td style='width: 10 %;text-align: center'>" + objdata[i].Insured_Name + "</td><td style='width: 7 %;text-align: center'> " + Effective_Start_Date + "</td><td style='width: 7 %;text-align: center'>" + Termination_Date + "</td><td style='width: 7 %;text-align: center'>" + vFinalStatus + "</td><td style='display:none'>" + objdata[i].Plan_ID + "</td><td style='display:none'>" + objdata[i].Id + "</td><tr>";
+                //        }
+                //    }
+                //}
+                //else {
+                //    var newRow = document.getElementById('tblpolicyinfo').insertRow();
+                //    newRow.innerHTML = "<tr>No Data Found</tr>";
+                //}
+
+
+            },
+            failure: function (data) {
+                alert(data.d);
+            }
+        });
+    }
+
+function Edit(e) {
+
+
+    if (e.parentElement.parentElement.childNodes[1].innerText == "PRIMARY")
+        document.getElementById("ctl00_C5POBody_rdbPRI").checked = true;;
+    if (e.parentElement.parentElement.childNodes[1].innerText == "SECONDARY")
+        document.getElementById("ctl00_C5POBody_rdbSEC").checked = true;
+    if (e.parentElement.parentElement.childNodes[1].innerText == "TERTIARY")
+        document.getElementById("ctl00_C5POBody_rdbTER").checked = true;
+
+
+
+    document.getElementById("ctl00_C5POBody_txtplanSearch").attributes['data-plan-id'].value = e.parentElement.parentElement.childNodes[11].innerText;
+    document.getElementById("ctl00_C5POBody_txtplanSearch").value = e.parentElement.parentElement.childNodes[2].innerText;
+    document.getElementById("ctl00_C5POBody_TextBox2").attributes['data-human-id'].value = e.parentElement.parentElement.childNodes[13].innerText
+    document.getElementById("ctl00_C5POBody_TextBox2").value = e.parentElement.parentElement.childNodes[5].innerText;
+    document.getElementById("ctl00_C5POBody_TextBox1").value = e.parentElement.parentElement.childNodes[3].innerText;
+    document.getElementById("ctl00_C5POBody_TextBox3").value = e.parentElement.parentElement.childNodes[6].innerText;
+    document.getElementById("txtStartdate").value = e.parentElement.parentElement.childNodes[7].innerText;
+    document.getElementById("txtEnddate").value = e.parentElement.parentElement.childNodes[8].innerText;
+    var RelationVal = document.getElementById("ctl00_C5POBody_ddlPatientRelation");
+    RelationVal.options[RelationVal.selectedIndex].text = e.parentElement.parentElement.childNodes[4].innerText;
+    document.getElementById("ctl00_C5POBody_hdnpatinsuredid").value = e.parentElement.parentElement.childNodes[14].innerText;
+    document.getElementById("ctl00_C5POBody_Hdnsortorder").value = e.parentElement.parentElement.childNodes[10].innerText;
+    var status = e.parentElement.parentElement.childNodes[9].innerText;
+
+    if (status.toUpperCase() == "ACTIVE")
+        document.getElementById("ctl00_C5POBody_rdstatusactive").checked = true;
+    else if (status.toUpperCase() == "INACTIVE")
+        document.getElementById("ctl00_C5POBody_rdstatusinactive").checked = true;
+
+
+
+
+    $('#btnadd').val("Update");
+
+    $('#btnclear').val("Cancel");
+
+
+}
+function btnclearinsured() {
+    document.getElementById("ctl00_C5POBody_ddlPatientRelation").selectedIndex = 0;
+    document.getElementById("ctl00_C5POBody_TextBox2").value = document.getElementById("ctl00_C5POBody_HiddenPatientName").value.split('&')[0];
+    document.getElementById("ctl00_C5POBody_TextBox2").setAttribute("data-human-id", document.getElementById("ctl00_C5POBody_HiddenPatientName").value.split('&')[1]);
+    document.getElementById('ctl00_C5POBody_rdbPRI').checked = false;
+    document.getElementById('ctl00_C5POBody_rdbSEC').checked = false;
+    document.getElementById('ctl00_C5POBody_rdbTER').checked = false;
+    document.getElementById('ctl00_C5POBody_rdstatusactive').checked = true;
+    document.getElementById('ctl00_C5POBody_rdstatusinactive').checked = false;
+    document.getElementById("ctl00_C5POBody_txtplanSearch").value = "";
+    document.getElementById('ctl00_C5POBody_txtplanSearch').style.backgroundColor = "#FFFFFF";
+    document.getElementById('ctl00_C5POBody_txtplanSearch').setAttribute("data-plan-id", "0");
+    document.getElementById('ctl00_C5POBody_txtplanSearch').disabled = false;
+    document.getElementById("ctl00_C5POBody_TextBox1").value = "";
+    document.getElementById("txtStartdate").value = "";
+    document.getElementById("txtEnddate").value = "";
+    document.getElementById("ctl00_C5POBody_TextBox3").value = "";
+    document.getElementById('ctl00_C5POBody_TextBox2').disabled = true;
+    document.getElementById('ctl00_C5POBody_TextBox2').style.backgroundColor = "#BFDBFF"
+    document.getElementById('imginsuredText').display = "none";
+    document.getElementById('ctl00_C5POBody_btnaddins').disabled = true;
+    $('#btnadd').val("Add");
+
+    $('#btnclear').val("Clear");
+
 }
 
 
+function PatientRelationchange() {
+    var RelationVal = document.getElementById("ctl00_C5POBody_ddlPatientRelation");
+
+    if (RelationVal.options[RelationVal.selectedIndex].text == "SELF") {
+        document.getElementById("ctl00_C5POBody_TextBox2").value = document.getElementById("ctl00_C5POBody_HiddenPatientName").value.split('&')[0];
+        document.getElementById('ctl00_C5POBody_TextBox2').attributes['data-human-id'].value = document.getElementById("ctl00_C5POBody_HiddenPatientName").value.split('&')[1];
+        document.getElementById('ctl00_C5POBody_TextBox2').disabled = true;
+        document.getElementById('ctl00_C5POBody_TextBox2').style.backgroundColor = "#BFDBFF"
+        document.getElementById('imginsuredText').display = "none";
+        document.getElementById('ctl00_C5POBody_btnaddins').disabled = true;
+        document.getElementById('imginsuredText').style.visibility = "hidden";
+
+    }
+    else {
+        $('#ctl00_C5POBody_TextBox2').val('');
+        document.getElementById('ctl00_C5POBody_TextBox2').attributes['data-human-id'].value = "0";
+        document.getElementById('ctl00_C5POBody_TextBox2').disabled = false;
+        document.getElementById('ctl00_C5POBody_TextBox2').style.backgroundColor = "#FFFFFF"
+        document.getElementById('imginsuredText').display = "block";
+        document.getElementById('ctl00_C5POBody_btnaddins').disabled = false;
+        $('#ctl00_C5POBody_TextBox2').removeClass('nonEditabletxtbox');
+        document.getElementById('imginsuredText').style.visibility = "visible";
+
+    }
+}
+
+var intPatientlen = -1;
+
+function PreventTyping(e) {
+    e.preventDefault();
+    e.stopImmediatePropagation();
+}
+function LogTimeString(time_string) {
+    UI_Time_Stop = new Date();
+
+    var WS_Time = parseFloat(time_string.split(';')[0].split(':')[1].replace('s', ''));
+    var DB_Time = parseFloat(time_string.split(';')[1].split(':')[1].replace('s', ''));
+    var UI_Time = ((UI_Time_Stop.getTime() - UI_Time_Start.getTime()) / 1000) - WS_Time - DB_Time;
+    console.log(time_string + " UI_Time :" + UI_Time + "s; Total_Time :" + (WS_Time + DB_Time + UI_Time).toString() + "s;");
+
+}
+function Filter(array, terms) {
+    arrayOfTerms = terms.split(" ");
+    if (arrayOfTerms.length > 1 && arrayOfTerms[1].trim() != "") {
+        var first_resultant = array;
+        var resultant;
+        for (var i = 1; i < arrayOfTerms.length; i++) {
+            resultant = $.grep(first_resultant, function (item) {
+                return item.label.toLowerCase().indexOf(arrayOfTerms[i].toLowerCase()) > -1;
+            });
+            first_resultant = resultant;
+        }
+        return first_resultant;
+    }
+    else {
+        return array;
+    }
+}
+
+function PatientSelected(event, ui) {
+    { sessionStorage.setItem('StartLoading', 'true'); StartLoadFromPatChart(); }
+
+    var txtPatientSearch = document.getElementById("ctl00_C5POBody_TextBox2");
+
+    var WSData = {
+        HumanID: ui.item.value,
+        FullDetails: ui.item.label
+    }
+
+    $.ajax({
+        type: "POST",
+        contentType: "application/json; charset=utf-8",
+        url: "./frmFindPatient.aspx/GetHumanDetails",
+        data: JSON.stringify(WSData),
+        dataType: "json",
+        success: function (data) {
+            var SelectedPatient = JSON.parse(data.d);
+            var HumanDetails = SelectedPatient.HumanDetails;
+            var txtPatientSearch = document.getElementById('ctl00_C5POBody_TextBox2');
+            txtPatientSearch.value = SelectedPatient.DisplayString;
+            txtPatientSearch.attributes['data-human-details'].value = JSON.stringify(HumanDetails);
+            { sessionStorage.setItem('StartLoading', 'false'); StopLoadFromPatChart(); }
+            $(document).off("click", PreventTyping).off("keydown", PreventTyping).css('cursor', 'default');
+
+
+
+        }
+    });
+    txtPatientSearch.value = ui.item.label;
+    txtPatientSearch.attributes['data-human-id'].value = ui.item.value;
+    txtPatientSearch.style.backgroundColor = "#BFDBFF";
+    txtPatientSearch.disabled = true;
+    //HumanDetails.HumanId;
+
+    return false;
+}
+$("#imginsuredText").on("click", function () {
+
+    $('#ctl00_C5POBody_TextBox2').val('').focus();
+    intPatientlen = 0;
+    arrPatient = [];
+    $(".ui-autocomplete").hide();
+
+    document.getElementById('ctl00_C5POBody_TextBox2').style.backgroundColor = "#FFFFFF";
+    document.getElementById('ctl00_C5POBody_TextBox2').attributes['data-human-id'].value = "0";
+    document.getElementById('ctl00_C5POBody_TextBox2').disabled = false;
+
+});
+$("#ctl00_C5POBody_imgClearplanText").on("click", function () {
+
+    $('#ctl00_C5POBody_txtplanSearch').val('').focus();
+    intplanlength = 0;
+    arrPatient = [];
+    $(".ui-autocomplete").hide();
+
+    document.getElementById('ctl00_C5POBody_txtplanSearch').style.backgroundColor = "#FFFFFF";
+    document.getElementById('ctl00_C5POBody_txtplanSearch').attributes['data-plan-id'].value = "0";
+    document.getElementById('ctl00_C5POBody_txtplanSearch').disabled = false;
+
+});
+function PlanSelected(event, ui) {
+
+
+    var txtPatientSearch = document.getElementById("ctl00_C5POBody_txtplanSearch");
+    txtPatientSearch.value = ui.item.label;
+    txtPatientSearch.attributes['data-plan-id'].value = ui.item.value;
+    txtPatientSearch.style.backgroundColor = "#BFDBFF";
+    txtPatientSearch.disabled = true;
+    if (txtPatientSearch.value.toUpperCase() == "OTHERS") {
+        document.getElementById('ctl00_C5POBody_TextBox3').style.backgroundColor = "#FFFFFF";
+
+        document.getElementById('ctl00_C5POBody_TextBox3').disabled = false;
+
+    }
+
+    return false;
+}
+
+var intPatientlen = -1;
+if ($("#ctl00_C5POBody_TextBox2").length) {
+    $("#ctl00_C5POBody_TextBox2").autocomplete({
+        source: function (request, response) {
+            if ($("#ctl00_C5POBody_TextBox2").val().trim().length > 2) {
+                if (intPatientlen == 0) {
+                    UI_Time_Start = new Date();
+                    { sessionStorage.setItem('StartLoading', 'true'); StartLoadFromPatChart(); }
+
+                    arrPatient = [];
+                    var strkeyWords = $("#ctl00_C5POBody_TextBox2").val().split(' ');
+                    var bMoreThanOneKeyword = (strkeyWords.length >= 2 && strkeyWords[1].trim() != "") ? true : false;
+                    var account_status = "ACTIVE"; //document.getElementById('chkIncludeInactive').checked ? "INACTIVE" : "ACTIVE";
+                    var patient_status = "ALIVE";//document.getElementById("chkIncludeDeceased").checked ? "DECEASED" : "ALIVE";
+                    var patient_type = "REGULAR";//document.getElementById("rdbRegular").checked ? "REGULAR" : (document.getElementById("rdbWC").checked ? "WC" : (document.getElementById("rdbAuto").checked ? "AUTO" : "ALL"));
+                    var WSData = {
+                        text_searched: strkeyWords[0],
+                        account_status: account_status,
+                        patient_status: patient_status,
+                        human_type: patient_type
+                    };
+
+                    $.ajax({
+                        type: "POST",
+                        contentType: "application/json; charset=utf-8",
+                        url: "./frmFindPatient.aspx/GetPatientDetailsByTokens",
+                        data: JSON.stringify(WSData),
+                        dataType: "json",
+                        success: function (data) {
+                            { sessionStorage.setItem('StartLoading', 'false'); StopLoadFromPatChart(); }
+
+                            var jsonData = $.parseJSON(data.d);
+                            if (jsonData.Error != undefined) {
+                                alert(jsonData.Error);
+                                return;
+                            }
+                            if (jsonData.Time_Taken != undefined)
+                                LogTimeString(jsonData.Time_Taken);
+                            if (jsonData.Result != undefined) {
+                                var no_matches = [];
+                                no_matches.push(jsonData.Result);
+                                response($.map(no_matches, function (item) {
+                                    return {
+                                        label: item,
+                                        val: "0"
+                                    }
+                                }));
+                            }
+                            else {
+                                var results;
+                                if (bMoreThanOneKeyword)
+                                    results = Filter(jsonData.Matching_Result, request.term);
+                                else
+                                    results = jsonData.Matching_Result;
+
+                                arrPatient = jsonData.Matching_Result;
+                                response($.map(results, function (item) {
+                                    return {
+                                        label: item.label,
+                                        val: JSON.stringify(item.value),
+                                        value: item.value.HumanId
+                                    }
+                                }));
+                            }
+                        },
+                        error: function OnError(xhr) {
+                            { sessionStorage.setItem('StartLoading', 'false'); StopLoadFromPatChart(); }
+                            if (xhr.status == 999)
+                                window.location = xhr.statusText;
+                            else {
+                                var log = JSON.parse(xhr.responseText);
+                                console.log(log);
+                                alert("USER MESSAGE:\n" +
+                                    ". Cannot process request. Please Login again and retry. \nEXCEPTION DETAILS: \n" +
+                                    "Message: " + log.Message);
+                            }
+                        }
+
+                    });
+                }
+                else if (intPatientlen != -1) {
+
+                    var results = Filter(arrPatient, request.term);
+                    response($.map(results, function (item) {
+                        return {
+                            label: item.label,
+                            val: JSON.stringify(item.value),
+                            value: item.value.HumanId
+                        }
+                    }));
+                }
+            }
+        },
+        minlength: 0,
+        multiple: true,
+        mustMatch: false,
+        select: PatientSelected,
+        open: function () {
+            // $('.ui-autocomplete.ui-menu.ui-widget').width($('#txtPatientSearch').width());
+            $('.ui-autocomplete.ui-menu.ui-widget').width("249px");
+            $('.ui-autocomplete.ui-menu.ui-widget').css("left", "59%");
+            $('.ui-autocomplete.ui-menu.ui-widget').find('li:last').css("border-bottom", "0px");
+            $('#ctl00_C5POBody_TextBox2').focus();
+        },
+        focus: function () { return false; }
+    }).on("paste", function (e) {
+        intPatientlen = -1;
+        arrPatient = [];
+        $(".ui-autocomplete").hide();
+    }).on("input", function (e) {
+        $("#ctl00_C5POBody_TextBox2").css("color", "black").attr({ "data-human-id": "0", "data-human-details": "" });
+        if ($("#ctl00_C5POBody_TextBox2").val().charAt(e.currentTarget.value.length - 1) == " ") {
+            if (e.currentTarget.value.split(" ").length > 2)
+                intPatientlen = intPatientlen + 1;
+            else
+                intPatientlen = 0;
+        }
+        else {
+            if ($("#ctl00_C5POBody_TextBox2").val().length != 0 && intPatientlen != -1) {
+                intPatientlen = intPatientlen + 1;
+            }
+
+            if ($("#ctl00_C5POBody_TextBox2").val().length == 0 || $("#ctl00_C5POBody_TextBox2").val().indexOf(" ") == -1) {
+                intPatientlen = -1;
+                arrPatient = [];
+                $(".ui-autocomplete").hide();
+            }
+        }
+    }).on("click", function (e) {
+        $('#txtPatientSearchQuick').val('');
+        $("#txtPatientSearchQuick").attr({ "data-human-id": "0", "data-human-details": "" });
+    }).on("focus", function (e) {
+        $('#txtPatientSearchQuick').val('');
+        $("#txtPatientSearchQuick").attr({ "data-human-id": "0", "data-human-details": "" });
+    })
+
+    $("#ctl00_C5POBody_TextBox2").data("ui-autocomplete")._renderItem = function (ul, item) {
+        if (item.label != "No matches found.") {
+            var HumanDetails = $.parseJSON(item.val);
+            var list_item = $("<li>")
+                .attr({ "data-value": item.value, "data-val": item.val }).css({ "border-bottom": "1px solid #ccc", "font-size": "11px", "margin-bottom": "3px", "padding-bottom": "3px" })
+                .append(item.label)
+                .appendTo(ul);
+            if (HumanDetails.Account_Status.toUpperCase() == "INACTIVE")
+                list_item.addClass("inactive");
+            if (HumanDetails.Status.toUpperCase() == "DECEASED")
+                list_item.addClass("deceased");
+            return list_item;
+        }
+        else
+            return $("<li>")
+                .attr({ "data-value": item.value, "data-val": item.val }).css({ "border-bottom": "1px solid #ccc", "font-size": "11px", "margin-bottom": "3px", "padding-bottom": "3px" })
+                .addClass("disabled")
+                .append(item.label)
+                .appendTo(ul).on("click", function (e) {
+                    e.preventDefault();
+                    e.stopImmediatePropagation();
+                });
+    };
+}
+
+var intplanlength = 0;
+
+
+$("#ctl00_C5POBody_txtplanSearch").autocomplete({
+    source: function (request, response) {
+
+        if ($("#ctl00_C5POBody_TextBox2").val().length > 2) {
+            UI_Time_Start = new Date();
+            { sessionStorage.setItem('StartLoading', 'true'); StartLoadFromPatChart(); }
+
+            arrPatient = [];
+            var strkeyWords = $("#ctl00_C5POBody_txtplanSearch").val();
+
+            //var account_status = "ACTIVE"; //document.getElementById('chkIncludeInactive').checked ? "INACTIVE" : "ACTIVE";
+            //var patient_status = "ALIVE";//document.getElementById("chkIncludeDeceased").checked ? "DECEASED" : "ALIVE";
+            //var patient_type = "REGULAR";//document.getElementById("rdbRegular").checked ? "REGULAR" : (document.getElementById("rdbWC").checked ? "WC" : (document.getElementById("rdbAuto").checked ? "AUTO" : "ALL"));
+            var WSData = {
+                text_searched: strkeyWords
+                //account_status: account_status,
+                //patient_status: patient_status,
+                //human_type: patient_type
+            };
+
+            $.ajax({
+                type: "POST",
+                contentType: "application/json; charset=utf-8",
+                url: "./frmFindPatient.aspx/GetPlanDetailsByTokens",
+                data: JSON.stringify(WSData),
+                dataType: "json",
+                success: function (data) {
+                    { sessionStorage.setItem('StartLoading', 'false'); StopLoadFromPatChart(); }
+
+                    var jsonData = $.parseJSON(data.d);
+                    if (jsonData.Error != undefined) {
+                        alert(jsonData.Error);
+                        return;
+                    }
+                    if (jsonData.Time_Taken != undefined)
+                        LogTimeString(jsonData.Time_Taken);
+                    if (jsonData.Result != undefined) {
+                        var no_matches = [];
+                        no_matches.push(jsonData.Result);
+                        response($.map(no_matches, function (item) {
+                            return {
+                                label: item,
+                                val: "0"
+                            }
+                        }));
+                    }
+                    else {
+                        var results;
+
+                        results = jsonData.Matching_Result;
+
+                        arrPatient = jsonData.Matching_Result;
+                        response($.map(results, function (item) {
+                            return {
+                                label: item.label,
+                                val: JSON.stringify(item.value),
+                                value: item.value.PlanId
+                            }
+                        }));
+                    }
+                },
+                error: function OnError(xhr) {
+                    { sessionStorage.setItem('StartLoading', 'false'); StopLoadFromPatChart(); }
+                    if (xhr.status == 999)
+                        window.location = xhr.statusText;
+                    else {
+                        var log = JSON.parse(xhr.responseText);
+                        console.log(log);
+                        alert("USER MESSAGE:\n" +
+                            ". Cannot process request. Please Login again and retry. \nEXCEPTION DETAILS: \n" +
+                            "Message: " + log.Message);
+                    }
+                }
+
+            });
+        }
+        else if (intplanlength != -1) {
+
+            //var results = Filter(arrPatient, request.term);
+            //response($.map(results, function (item) {
+            //    return {
+            //        label: item.label,
+            //        val: JSON.stringify(item.value),
+            //        value: item.value.PlanId
+            //    }
+            //}));
+        }
+
+    },
+    minlength: 2,
+    multiple: true,
+    mustMatch: false,
+    select: PlanSelected,
+    open: function () {
+        // $('.ui-autocomplete.ui-menu.ui-widget').width($('#txtPatientSearch').width());
+        $('.ui-autocomplete.ui-menu.ui-widget').width("290px");
+        $('.ui-autocomplete.ui-menu.ui-widget').css("left", "30%");
+        $('.ui-autocomplete.ui-menu.ui-widget').find('li:last').css("border-bottom", "0px");
+        $('#ctl00_C5POBody_txtplanSearch').focus();
+    },
+    focus: function () { return false; }
+}).on("paste", function (e) {
+    intplanlength = -1;
+    arrPatient = [];
+    $(".ui-autocomplete").hide();
+}).on("input", function (e) {
+    $("#ctl00_C5POBody_txtplanSearch").css("color", "black").attr({ "data-plan-id": "0" });
 
 
 
 
 
+}).on("click", function (e) {
+    //$('#txtPatientSearchQuick').val('');
+    //$("#txtPatientSearchQuick").attr({ "data-human-id": "0", "data-human-details": "" });
+}).on("focus", function (e) {
+    //$('#txtPatientSearchQuick').val('');
+    //$("#txtPatientSearchQuick").attr({ "data-human-id": "0", "data-human-details": "" });
+})
 
 
+function DateValidattion(dateToValidate) {
+    var splitdate = document.getElementById(dateToValidate).value;
+    var dt1 = new Date();
+    var dd = new Date();
+    var month = new Array();
+    switch (splitdate.split('-')[1]) {
+        case "Jan":
+            x = 0;
+            break;
+        case "Feb":
+            x = 1;
+            break;
+        case "Mar":
+            x = 2;
+            break;
+        case "Apr":
+            x = 3;
+            break;
+        case "May":
+            x = 4;
+            break;
+        case "Jun":
+            x = 5;
+            break;
+        case "Jul":
+            x = 6;
+            break;
+        case "Aug":
+            x = 7;
+            break;
+        case "Sep":
+            x = 8;
+            break;
+        case "Oct":
+            x = 9;
+            break;
+        case "Nov":
+            x = 10;
+            break;
+        case "Dec":
+            x = 11;
+            break;
+        case splitdate.split('-')[1]:
+            return false;
+            break;
+
+    }
 
 
-
-
+    dd.setFullYear(splitdate.split('-')[2], x, splitdate.split('-')[0]);
+    if (isNaN(dd)) {
+        return false;
+    }
+    if (splitdate.split('-')[0] > 31) {
+        return false;
+    }
+    return true;
+}

@@ -1680,283 +1680,130 @@ namespace Acurus.Capella.UI
         protected global::System.Web.UI.WebControls.DropDownList ddlDefaultFacility;
 
         /// <summary>
-        /// lblPrimaryInsPlanName control.
+        /// pnlPatientInsuranceList control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Label lblPrimaryInsPlanName;
+        protected global::System.Web.UI.WebControls.Panel pnlPatientInsuranceList;
 
         /// <summary>
-        /// txtPrimaryInsPlanName control.
+        /// rdbPRI control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox txtPrimaryInsPlanName;
+        protected global::System.Web.UI.WebControls.RadioButton rdbPRI;
 
         /// <summary>
-        /// lblPrimaryInsCarrierName control.
+        /// rdbSEC control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Label lblPrimaryInsCarrierName;
+        protected global::System.Web.UI.WebControls.RadioButton rdbSEC;
 
         /// <summary>
-        /// txtPrimaryInsCarrierName control.
+        /// rdbTER control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox txtPrimaryInsCarrierName;
+        protected global::System.Web.UI.WebControls.RadioButton rdbTER;
 
         /// <summary>
-        /// lblPCPPhysician control.
+        /// txtplanSearch control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Label lblPCPPhysician;
+        protected global::System.Web.UI.WebControls.TextBox txtplanSearch;
 
         /// <summary>
-        /// txtPCPProvider control.
+        /// imgClearplanText control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox txtPCPProvider;
+        protected global::System.Web.UI.HtmlControls.HtmlImage imgClearplanText;
 
         /// <summary>
-        /// lblNPI control.
+        /// TextBox3 control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Label lblNPI;
+        protected global::System.Web.UI.WebControls.TextBox TextBox3;
 
         /// <summary>
-        /// txtNPI control.
+        /// TextBox1 control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox txtNPI;
+        protected global::System.Web.UI.WebControls.TextBox TextBox1;
 
         /// <summary>
-        /// btnFindPCPProvider control.
+        /// ddlPatientRelation control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Button btnFindPCPProvider;
+        protected global::System.Web.UI.WebControls.DropDownList ddlPatientRelation;
 
         /// <summary>
-        /// lblHumanType control.
+        /// TextBox2 control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Label lblHumanType;
+        protected global::System.Web.UI.WebControls.TextBox TextBox2;
 
         /// <summary>
-        /// cboHumanType control.
+        /// btnaddins control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.DropDownList cboHumanType;
+        protected global::System.Web.UI.HtmlControls.HtmlInputButton btnaddins;
 
         /// <summary>
-        /// lblPriInsID control.
+        /// rdstatusactive control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Label lblPriInsID;
+        protected global::System.Web.UI.WebControls.RadioButton rdstatusactive;
 
         /// <summary>
-        /// txtPriInsID control.
+        /// rdstatusinactive control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox txtPriInsID;
+        protected global::System.Web.UI.WebControls.RadioButton rdstatusinactive;
 
         /// <summary>
-        /// lblPriInsuredName control.
+        /// chkActiveStatus control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Label lblPriInsuredName;
-
-        /// <summary>
-        /// txtPriInsuredName control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox txtPriInsuredName;
-
-        /// <summary>
-        /// lblPriRelation control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.Label lblPriRelation;
-
-        /// <summary>
-        /// txtPriRelation control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox txtPriRelation;
-
-        /// <summary>
-        /// lblPrimaryInsEVStatus control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.Label lblPrimaryInsEVStatus;
-
-        /// <summary>
-        /// txtPrimaryInsEvStatus control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox txtPrimaryInsEvStatus;
-
-        /// <summary>
-        /// lblSecInsuredID control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.Label lblSecInsuredID;
-
-        /// <summary>
-        /// txtSecInsuredID control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox txtSecInsuredID;
-
-        /// <summary>
-        /// lblSecInsPlanName control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.Label lblSecInsPlanName;
-
-        /// <summary>
-        /// txtSecInsPlanName control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox txtSecInsPlanName;
-
-        /// <summary>
-        /// lblSecname control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.Label lblSecname;
-
-        /// <summary>
-        /// txtsecinsuredname control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox txtsecinsuredname;
-
-        /// <summary>
-        /// lblSecRelation control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.Label lblSecRelation;
-
-        /// <summary>
-        /// txtSecRelation control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox txtSecRelation;
-
-        /// <summary>
-        /// lblSecInsCarrierName control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.Label lblSecInsCarrierName;
-
-        /// <summary>
-        /// txtSecInsCarrierName control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox txtSecInsCarrierName;
-
-        /// <summary>
-        /// lblSecInsEVStatus control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.Label lblSecInsEVStatus;
-
-        /// <summary>
-        /// txtSecInsEVStatus control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox txtSecInsEVStatus;
+        protected global::System.Web.UI.WebControls.CheckBox chkActiveStatus;
 
         /// <summary>
         /// lblRecentScannedStatus0 control.
@@ -2578,6 +2425,33 @@ namespace Acurus.Capella.UI
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.HiddenField hdnGenderIdentity;
+
+        /// <summary>
+        /// HiddenPatientName control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.HiddenField HiddenPatientName;
+
+        /// <summary>
+        /// hdnpatinsuredid control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.HiddenField hdnpatinsuredid;
+
+        /// <summary>
+        /// Hdnsortorder control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.HiddenField Hdnsortorder;
 
         /// <summary>
         /// btnFindpatientClick control.

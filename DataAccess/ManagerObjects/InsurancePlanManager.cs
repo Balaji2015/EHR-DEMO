@@ -20,7 +20,7 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
         PayerLibraryDTO SaveInsurancePlan(InsurancePlan insPlan, int PageNumber, int MaxResultSet, string MACAddress);
         IList<InsurancePlan> CheckInsuranceDuplicate(IList<InsurancePlan> InsPlanList);
         PayerLibraryDTO GetInsuranceList(int CarrierId, int iPageNumber, int iMaxResultSet);
-        PayerLibraryDTO DeleteInsurancePlan(InsurancePlan insPlan, int PageNumber, int MaxResultSet, string MACAddress);        
+        PayerLibraryDTO DeleteInsurancePlan(InsurancePlan insPlan, int PageNumber, int MaxResultSet, string MACAddress);
         //PaymentPostingDTO LoadHumanAndInsuranceDetails(ulong HumanId);
         int CheckInsuranceDuplicate(string PlanName, string CarrierName, string Address, string city, string state, string zip, string id);
 
@@ -90,13 +90,13 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
         }
         public IList<InsurancePlan> GetInsurancebyCarrierID(ulong CarrierId)
         {
-             IList<InsurancePlan> lstInsPln = new List<InsurancePlan>();
-             using (ISession iMySession = NHibernateSessionManager.Instance.CreateISession())
-             {
-                 ICriteria crit = iMySession.CreateCriteria(typeof(InsurancePlan)).Add(Expression.Eq("Carrier_ID", Convert.ToInt32(CarrierId)));
-                 lstInsPln = crit.List<InsurancePlan>();
-                 iMySession.Close();
-             }
+            IList<InsurancePlan> lstInsPln = new List<InsurancePlan>();
+            using (ISession iMySession = NHibernateSessionManager.Instance.CreateISession())
+            {
+                ICriteria crit = iMySession.CreateCriteria(typeof(InsurancePlan)).Add(Expression.Eq("Carrier_ID", Convert.ToInt32(CarrierId)));
+                lstInsPln = crit.List<InsurancePlan>();
+                iMySession.Close();
+            }
             return lstInsPln;
         }
 
@@ -110,7 +110,7 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
                 lstInsPln = crit.List<InsurancePlan>();
                 iMySession.Close();
             }
-             return lstInsPln;
+            return lstInsPln;
         }
 
         public PayerLibraryDTO updateInsurancePlan(InsurancePlan insPlan, int PageNumber, int MaxResultSet, string MACAddress)
@@ -293,7 +293,7 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
                 iMySession.Close();
             }
             return objPayerLibraryDTO;
-        }        
+        }
 
         //public PaymentPostingDTO LoadHumanAndInsuranceDetails(ulong HumanId)
         //{
@@ -362,7 +362,7 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
         //    }
         //    return ilstInsName;
         //}
-        public InsurancePlan GetInsuranceByInsuranceName(string InsuranceName) 
+        public InsurancePlan GetInsuranceByInsuranceName(string InsuranceName)
         {
             InsurancePlan InsPlanRecord = new InsurancePlan();
             using (ISession iMySession = NHibernateSessionManager.Instance.CreateISession())
@@ -395,6 +395,32 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
                 mySession.Close();
             }
             return objPatInsPlan;
+        }
+
+        public IList<InsurancePlan> GetPlanFromTokens(string text_searched)
+        {
+
+            ISession iMySession = NHibernateSessionManager.Instance.CreateISession();
+            IList<InsurancePlan> lstMatchingPlan = new List<InsurancePlan>();
+
+            string sQuery = "select Insurance_Plan_ID,Insurance_Plan_Name from insurance_plan where Insurance_Plan_Name like '"+ text_searched +"%'";
+
+            ISQLQuery query = iMySession.CreateSQLQuery(sQuery);
+            ArrayList arrPatients = new ArrayList(query.List());
+            iMySession.Close();
+            for (int iCount = 0; iCount < arrPatients.Count; iCount++)
+            {
+                InsurancePlan tempHuman = new InsurancePlan();
+                object[] objHuman = (object[])arrPatients[iCount];
+                tempHuman.Id = Convert.ToUInt32(objHuman[0].ToString());
+                tempHuman.Ins_Plan_Name = objHuman[1].ToString();
+
+
+                lstMatchingPlan.Add(tempHuman);
+
+            }
+            return lstMatchingPlan;
+
         }
         #endregion
     }

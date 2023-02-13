@@ -134,7 +134,7 @@
                 <table style="width: 50%; float: right;">
                     <tr id="trAddOrModifyPatient">
                         <td align="right">
-                            <input type="button" id="btnQuickPatientCreate" value="Quick Patient Create" onclick="return OpenQuickPatient();" tabindex="15" style="width: 160px" disabled="disabled" class="aspresizedbluebutton" />
+                            <input type="hidden" id="btnQuickPatientCreate" value="Quick Patient Create" onclick="return OpenQuickPatient();" runat="server" tabindex="15" style="width: 160px;display:none" disabled="disabled" class="aspresizedbluebutton" />
                         </td>
                         <td align="right">
                             <input type="button" id="btnAddpatient" runat="server" value="Add Patient" onclick="return OpenDemoForAdd();" tabindex="16" style="width: 160px" disabled="disabled"  class="aspresizedbluebutton" />

@@ -7,7 +7,7 @@
 
 <script runat="server">
 
-   
+
 </script>
 
 <asp:Content ID="Demographics" ContentPlaceHolderID="C5POBody" runat="server">
@@ -16,11 +16,12 @@
         <%--<script src="https://logrocket.acurussolutions.io/LogRocket.js"; crossorigin="anonymous"></script> <script>window.LogRocket && window.LogRocket.init('akido/akido-test', { mergeIframes: true }, { enableVerboseLogging: true });</script>--%>
         <link href="~/CSS/style.css" rel="stylesheet" type="text/css" />
         <link href="~/CSS/font-awesome.css" rel="stylesheet" type="text/css" />
-        <link href="CSS/jquery-ui.min.css" rel="stylesheet" />
+        <%--<link href="CSS/jquery-ui.min.css" rel="stylesheet" />--%>
           <link href="CSS/CommonStyle.css" rel="stylesheet" type="text/css" />
-        <script type="text/javascript" src="JScripts/jquery-2.1.3.js"></script>
-        <script type="text/javascript" src="JScripts/jquery-ui.min.js"></script>
-        <base target="_self" />
+        <link rel="stylesheet" href="CSS/datetimepicker.css" />
+       <%-- <script type="text/javascript" src="JScripts/jquery-2.1.3.js"></script>
+        <script type="text/javascript" src="JScripts/jquery-ui.min.js"></script>--%>
+      <base target="_self" />
         <style type="text/css">
             .style155 {
                 width: 75px;
@@ -170,7 +171,7 @@
                 height: 38px;
             }
 
-            
+
 
             .style240 {
                 width: 72px;
@@ -362,75 +363,103 @@
             .style318 {
                 width: 46px;
             }
+
             .auto-style1 {
                 width: 335px;
             }
+
             .auto-style6 {
                 width: 77px;
                 height: 28px;
             }
+
             .auto-style7 {
                 width: 182px;
                 height: 28px;
             }
+
             .auto-style8 {
                 width: 10px;
                 height: 28px;
             }
+
             .auto-style9 {
                 height: 28px;
             }
+
             .auto-style10 {
                 width: 82px;
                 height: 28px;
             }
+
             .auto-style11 {
                 height: 20px;
                 width: 139px;
             }
+
             .auto-style16 {
                 width: 165px;
                 height: 8px;
             }
+
             .auto-style17 {
                 width: 76px;
                 height: 8px;
             }
+
             .auto-style18 {
                 width: 77px;
                 height: 8px;
             }
+
             .auto-style19 {
                 width: 182px;
                 height: 8px;
             }
+
             .auto-style20 {
                 width: 10px;
                 height: 8px;
             }
+
             .auto-style21 {
                 height: 8px;
             }
+
             .auto-style22 {
                 width: 156px;
                 height: 38px;
             }
+
             .auto-style23 {
                 width: 195px;
                 height: 38px;
             }
+
             .auto-style24 {
                 height: 38px;
             }
 
-            #pnlPatientInfo fieldset{
+            #pnlPatientInfo fieldset {
                 height: 600px;
             }
 
+            .ui-autocomplete {
+                -webkit-margin-before: 3px !important;
+                max-height: 150px;
+                overflow-y: auto;
+            }
 
+            .ui-state-focus {
+                color: #808080;
+                background-color: #bbe2f1 !important;
+                outline: none;
+                border: 0px !important;
+            }
         </style>
     </head>
     <body>
+        
         <telerik:RadWindowManager ID="ModalWindowMngt" runat="server">
             <Windows>
                 <telerik:RadWindow ID="DemographicsModalWindow" runat="server" VisibleOnPageLoad="false"
@@ -621,7 +650,7 @@
                                 </td>
                                 
                                 <td style="width:11%">
-
+                                    
                                      <span class="MandLabelstyle">Address Line 1</span><span class="manredforstar">*</span>
 
                                     <%--<asp:Label ID="lblPatientaddress" runat="server" mand="Yes" Text="Address Line 1*" 
@@ -1454,7 +1483,7 @@
                                 </td>
                                 <td class="auto-style8">&nbsp;
                                 </td>
-                                <td class="auto-style9">
+                                <td class="auto-style8">
                                     <asp:Label ID="lblNoofPolicies" runat="server" Text="# of Ins Policies" CssClass="spanstyle" EnableViewState="false"></asp:Label>
                                 </td>
                                 <td colspan="5" class="auto-style9">
@@ -1538,151 +1567,106 @@
                                     </asp:DropDownList>
                                 </td>
                             </tr>
+                          
                             <tr>
-                                <td class="auto-style18">
-                                    <asp:Label ID="lblPrimaryInsPlanName" CssClass="spanstyle" runat="server" Text="Pri. Ins. Plan" EnableViewState="false"></asp:Label>
-                                </td>
-                                <td class="auto-style19">
-                                    <asp:TextBox ID="txtPrimaryInsPlanName" runat="server" CssClass="nonEditabletxtbox" ReadOnly="True"
-                                        Width="182px"></asp:TextBox>
-                                </td>
-                                <td class="auto-style20">&nbsp;
-                                </td>
-                                <td class="auto-style21">
-                                    <asp:Label ID="lblPrimaryInsCarrierName" CssClass="spanstyle" runat="server" Text="Pri. Ins. Carrier"
-                                        EnableViewState="false"></asp:Label>
-                                </td>
-                                <td class="auto-style16">
-                                    <asp:TextBox ID="txtPrimaryInsCarrierName" runat="server" CssClass="nonEditabletxtbox" 
-                                       ReadOnly="True" Width="165px"></asp:TextBox>
-                                </td>
-                                <td class="auto-style20">&nbsp;
-                                </td>
-                                <td class="auto-style17">
-                                    <asp:Label ID="lblPCPPhysician" CssClass="spanstyle" runat="server" Text="PCP/Ref. Phy" EnableViewState="false"></asp:Label>
-                                </td>
-                                <td class="auto-style21" colspan="4">
-                                <%--<asp:Panel ID="Panel3" runat="server">--%>
-                                    <table style="width: 100%;">
-                                        <tr>
-                                            <td class="style303">
-                                                <asp:TextBox ID="txtPCPProvider" runat="server" onchange="AutoSave();" onkeypress="ClearPCPTag();"
-                                                    Width="140px" CssClass="nonEditabletxtbox"></asp:TextBox>
+                        <td class="style4" colspan="7" valign="bottom" style="margin: 0px; padding: 0px">
+                            <asp:Panel ID="pnlPatientInsuranceList" runat="server" GroupingText="Patient Insurance List" Height="260px"
+                                Width="175%" Font-Bold="True" CssClass="LabelStyleBold">
+                              <table>
+                                  <tr>
+                                    <td style="width: 22%;">
+                                        <span  class="MandLabelstyle">Priority </span>
+                                        <asp:RadioButton ID="rdbPRI" Checked="false" Text="PRI" runat="server" GroupName="InsuranceType"  CssClass="Editabletxtbox" />
+                                        <asp:RadioButton ID="rdbSEC" Checked="false" Text="SEC" runat="server" GroupName="InsuranceType"  CssClass="Editabletxtbox" />
+                                        <asp:RadioButton ID="rdbTER" Checked="false" Text="TER" runat="server" GroupName="InsuranceType"  CssClass="Editabletxtbox" />
+                                        
+                                    </td>
+                                      <td style="width: 46%; text-align: right;">
+                                        <span  class="MandLabelstyle">Plan </span>
+                                       <asp:TextBox ID="txtplanSearch" CssClass="spanstyle" runat="server" Width="72%" ></asp:TextBox>
+                                       <img id="imgClearplanText" src="Resources/Delete-Blue.png" runat="server" alt="X" title="Click to clear the text field." style="width:10px;margin-top:-5px;"/>
+                                       </td>
+                                            <td style="width: 35%;text-align: right;">
+                                        <span  class="spanstyle">Specify Other </span>
+                                       <asp:TextBox ID="TextBox3" CssClass="spanstyle" runat="server" Width="55%" ></asp:TextBox>
+                                       </td>                          
+                                   </tr>
+                                  </table>
+                                <table>
+                                  <tr>
+                                       <td style="width: 25%;">
+                                        <span  class="MandLabelstyle">Policy holder Id </span>
+                                       <asp:TextBox ID="TextBox1" CssClass="spanstyle" runat="server" Width="55%" ></asp:TextBox>
+                                       </td>
+                                    <td style="width: 25%;">
+                                          <span  class="MandLabelstyle">Rel.to Patient </span>
+                                       <asp:DropDownList ID="ddlPatientRelation" onchange="PatientRelationchange();" runat="server" style="width:145px"></asp:DropDownList>
+                                    </td>
+                                   <td style="width: 36%;text-align: left;">
+                                        <span  class="spanstyle">Select Insured </span>
+                                       <asp:TextBox ID="TextBox2" CssClass="spanstyle" runat="server" Width="68%" ></asp:TextBox>
+                                       <img id="imginsuredText" src="Resources/Delete-Blue.png" alt="X" title="Click to clear the text field." style="width:10px;margin-top:-5px;"/>
+                                       </td>
+                                   <td style="width: 15%;text-align: center;">
+                                         <input type="button" id="btnaddins" runat="server" value="Add New Insured" class="aspresizedbluebutton" onclick="OpenAddinsured();"/>
+                
+                                      </td>
+                                    
+                                   </tr>
+                                  <tr>
+                                    <td style="width: 25%;">
+                                          <span  class="spanstyle">Eff. Start Date &nbsp;</span>
+                                         <input type="text" class="DateInput" id="txtStartdate" placeholder="dd-MMM-yyyy" style="width: 55%;"  />                                </td>
+                                   <td style="width: 20%; text-align: left; ">
+                                        <span  class="spanstyle">Eff. End Date </span>
+                                       <input type="text" class="DateInput" id="txtEnddate" placeholder="dd-MMM-yyyy" style="width: 55%;"  />                             </td>
+                                      <td>
+                                       <span  class="spanstyle">Status </span>
+                                        <asp:RadioButton ID="rdstatusactive" Checked="true" Text="Active" runat="server" GroupName="Status" CssClass="Editabletxtbox" />
+                                        <asp:RadioButton ID="rdstatusinactive" Checked="false" Text="Inactive" runat="server" GroupName="Status"  CssClass="Editabletxtbox" />
+                                      
+                                       </td>
+                                   <td style="width: 15%;text-align: center;">
+                                         <input type="button" id="btnadd" onclick="btnaddinsured(this)" value="Add"   class="aspresizedgreenbutton" />
+                                         <input type="button" id="btnclear" onclick="btnclearinsured()" value="Clear All"   class="aspresizedredbutton" />
+                
+                                      </td>
+                                    
+                                   </tr>
+
+                                  <tr>
+                                            <td class="style24">
+                                                <asp:CheckBox ID="chkActiveStatus" runat="server"
+                                                    EnableViewState="false" CssClass="spanstyle"
+                                                    Text="Show Active Only." onchange="loadgrid();" Checked="true"/>
                                             </td>
-                                            <td class="style304">
-                                                <asp:Label ID="lblNPI" CssClass="spanstyle" runat="server" Text="NPI"></asp:Label>
-                                            </td>
-                                            <td class="style164">
-                                                <asp:TextBox ID="txtNPI" runat="server" Width="70px" MaxLength="10" onkeypress="return isNumberKey(event)"
-                                                   CssClass="nonEditabletxtbox"></asp:TextBox>
-                                            </td>
-                                            <td><%--class="style305"--%>
-                                                <asp:Button ID="btnFindPCPProvider" runat="server" OnClick="btnFindPCPProvider_Click"
-                                                    OnClientClick="return OpenRereralPhysician();" Text="Find PCP" ToolTip="Find PCP" CssClass="aspresizedbluebutton"
-                                                    Width="73px" />
-                                            </td>
-                                            <td class="style270">
-                                                <asp:Label ID="lblHumanType" CssClass="spanstyle" runat="server" EnableViewState="false" Text="Patient Type"></asp:Label>
-                                            </td>
-                                            <td>
-                                                <asp:DropDownList ID="cboHumanType" runat="server" onchange="AutoSave();" Width="95px" CssClass="Editabletxtbox">
-                                                </asp:DropDownList>
-                                            </td>
-                                        </tr>
-                                    </table>
-                                <%--</asp:Panel>--%>
-                                </td>
-                            </tr>
+                                      </tr>
+                                    <tr></tr>
+                                  </table>
+                                <div style="width: 100%;height:120px;overflow:scroll;">
+                                   <table id="tblpolicyinfo" class="table table-bordered Gridbodystyle" >
+                        <thead class="Gridheaderstyle">
                             <tr>
-                                <td class="style288">
-                                    <asp:Label ID="lblPriInsID" CssClass="spanstyle" runat="server" Text="Pri.Insured Acc.#" EnableViewState="False"></asp:Label>
-                                </td>
-                                <td class="style222">
-                                    <asp:TextBox ID="txtPriInsID" runat="server" Width="182px" ReadOnly="True" CssClass="nonEditabletxtbox"></asp:TextBox>
-                                </td>
-                                <td class="style294"></td>
-                                <td class="style223">
-                                    <asp:Label ID="lblPriInsuredName" CssClass="spanstyle" runat="server" Text="Pri.Insured Name" EnableViewState="false"></asp:Label>
-                                </td>
-                                <td class="style224">
-                                    <asp:TextBox ID="txtPriInsuredName" runat="server" ReadOnly="True" CssClass="nonEditabletxtbox"
-                                        Width="165px"></asp:TextBox>
-                                </td>
-                                <td class="style294"></td>
-                                <td class="style250">
-                                    <asp:Label ID="lblPriRelation" CssClass="spanstyle" runat="server" Text="Pri.Relation" EnableViewState="false"></asp:Label>
-                                </td>
-                                <td class="style237">
-                                    <asp:TextBox ID="txtPriRelation" runat="server" ReadOnly="True" CssClass="nonEditabletxtbox"
-                                        Width="185px"></asp:TextBox>
-                                </td>
-                                <td class="style294"></td>
-                                <td class="style239">
-                                    <asp:Label ID="lblPrimaryInsEVStatus" CssClass="spanstyle" runat="server" Text="Pri.Ins Status" Width="80px"
-                                        EnableViewState="false"></asp:Label>
-                                </td>
-                                <td class="style227">
-                                    <asp:TextBox ID="txtPrimaryInsEvStatus" runat="server" CssClass="nonEditabletxtbox" 
-                                        ReadOnly="True" Width="180px"></asp:TextBox>
-                                </td>
+                                <th class="Gridheaderstyle" style="width: 5%; text-align: center">Edit</th>
+                                <th class="Gridheaderstyle" style="width: 10%; text-align: center">Priority</th>
+                                <th class="Gridheaderstyle" style="width: 10%; text-align: center">Plan Name</th>
+                                <th class="Gridheaderstyle" style="width: 10%; text-align: center">Policy Holder Id</th>
+                                <th class="Gridheaderstyle" style="width: 5%; text-align: center">Rel.To Patient</th>
+                                <th class="Gridheaderstyle" style="width: 15%; text-align: center">Insured Name</th>
+                                <th class="Gridheaderstyle" style="width: 10%; text-align: center">Specify Other</th>
+                                <th class="Gridheaderstyle" style="width: 7%; text-align: center">Eff.Start Date</th>
+                                <th class="Gridheaderstyle" style="width: 7%; text-align: center">Eff.Stop Date</th>
+                                <th class="Gridheaderstyle" style="width: 5%; text-align: center">Status</th>
                             </tr>
-                            <tr>
-                                <td class="style282">
-                                    <asp:Label ID="lblSecInsuredID" CssClass="spanstyle" runat="server" Text="Sec.Insured Acc.#" EnableViewState="False"></asp:Label>
-                                </td>
-                                <td class="style298">
-                                    <asp:TextBox ID="txtSecInsuredID" runat="server" Width="182px" ReadOnly="True" CssClass="nonEditabletxtbox"></asp:TextBox>
-                                </td>
-                                <td class="style241">&nbsp;
-                                </td>
-                                <td class="style246">
-                                    <asp:Label ID="lblSecInsPlanName" CssClass="spanstyle" runat="server" Text="Sec. Ins.Plan" EnableViewState="false"></asp:Label>
-                                </td>
-                                <td class="style296">
-                                    <asp:TextBox ID="txtSecInsPlanName" runat="server" CssClass="nonEditabletxtbox" 
-                                         ReadOnly="True" Width="165px"></asp:TextBox>
-                                </td>
-                                <td class="style241">&nbsp;
-                                </td>
-                                <td class="style299">
-                                    <asp:Label ID="lblSecname" CssClass="spanstyle" runat="server" EnableViewState="False" Text="Sec.Insured Name"></asp:Label>
-                                </td>
-                                <td class="style300">
-                                    <asp:TextBox ID="txtsecinsuredname" runat="server" CssClass="nonEditabletxtbox"  ReadOnly="True" Width="185px"></asp:TextBox>
-                                </td>
-                                <td class="style241">&nbsp;
-                                </td>
-                                <td class="style170">
-                                    <asp:Label ID="lblSecRelation" CssClass="spanstyle" runat="server" EnableViewState="False" Text="Sec.Relation"></asp:Label>
-                                </td>
-                                <td>
-                                    <asp:TextBox ID="txtSecRelation" runat="server" CssClass="nonEditabletxtbox"  ReadOnly="True" Width="180px"></asp:TextBox>
-                                </td>
-                            </tr>
-
-                            <tr>
-                                 <td class="style299">
-                                     
-                                     <asp:Label ID="lblSecInsCarrierName" CssClass="spanstyle" runat="server" EnableViewState="false" Text="Sec. Ins. Carrier"></asp:Label>
-                                 </td>
-                                <td class="style300">
-                                    <asp:TextBox ID="txtSecInsCarrierName" runat="server" CssClass="nonEditabletxtbox" ReadOnly="True" Width="185px"></asp:TextBox>
-                                </td>
-
-                                <td></td>
-
-                                 <td class="style170">
-                                     <asp:Label ID="lblSecInsEVStatus" CssClass="spanstyle" runat="server" EnableViewState="false" Text="Sec Ins Status"></asp:Label>
-                                </td>
-                                <td>
-                                    <asp:TextBox ID="txtSecInsEVStatus" runat="server" CssClass="nonEditabletxtbox"  ReadOnly="True" Width="180px"></asp:TextBox>
-                                </td>
-                                <td>
-                                    &nbsp;</td>
-
-                                <td colspan="5">
-                                     &nbsp;</td>
-                            </tr>
+                        </thead>
+                        <tbody id="tbodupolicyinfo" class="Gridbodystyle">
+                        </tbody>
+                    </table>
+                                    </div>
+                            </asp:Panel>
+                        </td>
+                    </tr>
+                           
                             <tr>
                                 <td class="style282">
                                     <%--<asp:Label ID="lblRecentVerification" runat="server" Text="Recent EV Status" EnableViewState="false"></asp:Label>--%>
@@ -1841,7 +1825,7 @@
                                 <td align="left" colspan="2">
                                     <asp:Button ID="btnViewUpdateInsurance" runat="server" AccessKey="U" OnClick="btnViewUpdateInsurance_Click" CssClass="aspresizedbluebutton"
                                         OnClientClick="return openPatInsurancewindow();" Text="View /Update Insurance Policies"
-                                        Width="239px" style="margin-left:357px;"/>
+                                        Width="239px" style="margin-left:357px; " Visible ="false"/>
                                 </td>
                                 <td class="style159">
                                     <asp:Button ID="btnSave" runat="server" Text="Save" Width="150px" OnClientClick="return PatientInformationValidation();" CssClass="aspresizedgreenbutton"
@@ -1854,8 +1838,11 @@
                             </tr>
                             
                         </table>
+                       
                     </asp:Panel>
                 </div>
+                
+                
                 <asp:HiddenField ID="txtPCPProviderTag" runat="server" EnableViewState="false" />
                 <asp:HiddenField ID="hdnPatientID" runat="server" EnableViewState="false" />
                 <asp:HiddenField ID="hdnHumanId" runat="server" EnableViewState="false" />
@@ -1891,6 +1878,9 @@
                 <asp:HiddenField ID="hdnGuarantorIdForView" runat="server" EnableViewState="false" />
                   <asp:HiddenField ID="hdnSexualOrientationSpecify" runat="server" EnableViewState="false" />
                   <asp:HiddenField ID="hdnGenderIdentity" runat="server" EnableViewState="false" />
+                <asp:HiddenField ID="HiddenPatientName" runat="server" EnableViewState="false" />
+                <asp:HiddenField ID="hdnpatinsuredid" runat="server" EnableViewState="false" />
+                 <asp:HiddenField ID="Hdnsortorder" runat="server" EnableViewState="false" />
                 <asp:Button ID="btnFindpatientClick" runat="server" Text="Button" Style="display: none"
                     OnClick="btnFindpatientClick_Click" />
                 <asp:Button ID="btnMessageType" runat="server" Text="Button" Style="display: none" OnClientClick="return NewCloseWindow();" OnClick="btnSave_Click" />
@@ -1920,6 +1910,11 @@
             <asp:Button ID="btnsaveDuplicate" runat="server" OnClick="btnCheckDuplicate_Click"
                                 Text="Button" style="display: none" />
             <asp:PlaceHolder ID="PlaceHolder1" runat="server">
+                
+              <script src=" <script src="JScripts/jquery-2.1.3.js" type="text/javascript"></script>
+            <script src="JScripts/jquery-ui.min1.11.4.js" type="text/javascript"></script>
+            <link href="CSS/jquery-ui.css" rel="stylesheet" />
+              <script src="JScripts/bootstrap.min.js" type="text/javascript"></script>
                 <script src="JScripts/JSModalWindow.js?version=<%=ConfigurationManager.AppSettings["VersionConfiguration"].ToString().Replace("Capella - ","") %>" type="text/javascript"></script>
 
                 <script src="JScripts/JSDemographics.js?version=<%=ConfigurationManager.AppSettings["VersionConfiguration"].ToString().Replace("Capella - ","") %>" type="text/javascript"></script>
@@ -1929,8 +1924,9 @@
                 <script src="JScripts/JSCustomDLC.js?version=<%=ConfigurationManager.AppSettings["VersionConfiguration"].ToString().Replace("Capella - ","") %>" type="text/javascript"></script>
 
                 <script src="JScripts/JSAvoidRightClick.js?version=<%=ConfigurationManager.AppSettings["VersionConfiguration"].ToString().Replace("Capella - ","") %>" type="text/javascript"></script>
+                 <script src="JScripts/jquery.datetimepicker.js?version=<%=ConfigurationManager.AppSettings["VersionConfiguration"].ToString().Replace("Capella - ","") %>" type="text/javascript"></script>
                 
-                <link href="CSS/style.css" rel="stylesheet" type="text/css" />
+                  <link href="CSS/style.css" rel="stylesheet" type="text/css" />
             </asp:PlaceHolder>
         </form>
     </body>

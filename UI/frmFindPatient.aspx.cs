@@ -32,6 +32,7 @@ namespace Acurus.Capella.UI
 
         protected void Page_Load(object sender, EventArgs e)
         {
+           
             this.Page.Title = "Capella Find Patient";
 
             if (!IsPostBack)
@@ -150,6 +151,89 @@ namespace Acurus.Capella.UI
             }
         }
 
+        [System.Web.Script.Services.ScriptMethod()]
+        [System.Web.Services.WebMethod(EnableSession = true)]
+        public static string GetPlanDetailsByTokens(string text_searched)
+        {
+            if (ClientSession.UserName == string.Empty)
+            {
+                HttpContext.Current.Response.StatusCode = 999;
+                HttpContext.Current.Response.Status = "999 Session Expired";
+                HttpContext.Current.Response.StatusDescription = "frmSessionExpired.aspx";
+                return "Session Expired";
+            }
+            Stopwatch watch = new Stopwatch();
+            watch.Start();
+            double WS_Time = 0;
+            double DB_Time = 0;
+            string CurrentKeywordCriteria = text_searched;
+            try
+            {
+                if (HttpContext.Current.Session["PreviousPlanKeywordCriteria"] != null
+                    && HttpContext.Current.Session["PreviousPlanList"] != null
+                    && HttpContext.Current.Session["PreviousPlanKeywordCriteria"].ToString().Trim().ToLower() == CurrentKeywordCriteria.ToLower())
+                {
+                    var lstResult = JsonConvert.DeserializeObject(HttpContext.Current.Session["PreviousPlanList"].ToString());
+                    //HttpContext.Current.Session["PreviousPatientList"];
+                    watch.Stop();
+                    WS_Time = watch.Elapsed.TotalSeconds;
+                    string time_taken = "WS_Time : " + (WS_Time - DB_Time).ToString() + "s; DB_Time : " + (DB_Time).ToString() + "s;";
+                    var lstFinalResult = new
+                    {
+                        Matching_Result = lstResult,
+                        Time_Taken = time_taken
+                    };
+                    return JsonConvert.SerializeObject(lstFinalResult);
+                }
+                else
+                {
+                    IList<InsurancePlan> lstHumans = new List<InsurancePlan>();
+                    InsurancePlanManager objPlanManager = new InsurancePlanManager();
+                    text_searched = text_searched.Replace("'", "''");
+                    lstHumans = objPlanManager.GetPlanFromTokens(text_searched);
+
+                    var lstResult = (from Hum in lstHumans
+                                     select new
+                                     {
+                                         label = Hum.Ins_Plan_Name.ToUpper(),
+                                         value = new
+                                         {
+                                             PlanId = Hum.Id.ToString()
+                                         }
+                                     });
+
+                   
+                    if (lstResult.Count() == 0)
+                    {
+                        var lstFinalResult = new
+                        {
+                            Result = "No matches found.",
+                            
+                        };
+                        return JsonConvert.SerializeObject(lstFinalResult);
+                    }
+                    else
+                    {
+                        HttpContext.Current.Session.Add("PreviousPlanKeywordCriteria", CurrentKeywordCriteria);
+                        HttpContext.Current.Session.Add("PreviousPlanList", JsonConvert.SerializeObject(lstResult));
+                        var lstFinalResult = new
+                        {
+                            Matching_Result = lstResult,
+                            
+                        };
+                        return JsonConvert.SerializeObject(lstFinalResult);
+                    }
+                }
+            }
+            catch (Exception exception)
+            {
+                var lstFinalResult = new
+                {
+                    Error = "The following error occurred :" + exception.Message + ". Please contact support."
+                };
+                return JsonConvert.SerializeObject(lstFinalResult);
+            }
+        }
         [WebMethod(EnableSession = true)]
         public static void CreateAuditLogEntry(int HumanID, string startTime)
         {
