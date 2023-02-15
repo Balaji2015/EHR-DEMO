@@ -197,42 +197,76 @@ namespace Acurus.Capella.UI
 
                 int flag = 0;
             
-                IList<string> ilstSummaryTag_List = new List<string>();
-                ilstSummaryTag_List.Add("EncounterList");
+                //IList<string> ilstSummaryTag_List = new List<string>();
+                //ilstSummaryTag_List.Add("EncounterList");
 
-
-
-                IList<object> ilstSummaryBlob_Final = new List<object>();
-                try
+                EncounterBlobManager EncounterBlobMngr = new EncounterBlobManager();
+                IList<Encounter_Blob> ilstEncounterBlob = EncounterBlobMngr.GetEncounterBlob(Encounter_Id);
+                if (ilstEncounterBlob.Count > 0)
                 {
-                    ilstSummaryBlob_Final = UtilityManager.ReadBlob(Encounter_Id, ilstSummaryTag_List);
-
-                    if (ilstSummaryBlob_Final != null && ilstSummaryBlob_Final.Count > 0)
+                    string sXMLContent = string.Empty;
+                    XmlDocument xmlDoc = new XmlDocument();
+                    try
                     {
-                        if (ilstSummaryBlob_Final[0] != null)
+                        sXMLContent = System.Text.Encoding.UTF8.GetString(ilstEncounterBlob[0].Encounter_XML);
+                        if (sXMLContent.Substring(0, 1) != "<")
+                            sXMLContent = sXMLContent.Substring(1, sXMLContent.Length - 1);
+                        xmlDoc.LoadXml(sXMLContent);
+
+                        XmlNodeList xmlNodeList = xmlDoc.GetElementsByTagName("EncounterList");
+                        if (xmlNodeList.Count > 0)
                         {
-                            for (int iCount = 0; iCount < ((IList<object>)ilstSummaryBlob_Final[0]).Count; iCount++)
-                            {
-                                HumanID = ((Encounter)((IList<object>)ilstSummaryBlob_Final[0])[iCount]).Human_ID.ToString();
+                            for (int j = 0; j < xmlNodeList[0].ChildNodes.Count; j++)
+                            {                                
+                                HumanID = xmlNodeList[0].ChildNodes[j].Attributes["Human_ID"].Value;
+                                break;
                             }
                         }
-                    }
-                }
-                catch (Exception XMLExcep)
-                {
-                    if (Encounter_Id != 0)
+
+                        }
+                    catch
                     {
-                        ScriptManager.RegisterStartupScript(this, typeof(frmEncounter), "ErrorMessage", "RegenerateXML('" + Encounter_Id.ToString() + "','Encounter','summary');", true);
+                        if (Encounter_Id != 0)
+                        {
+                            ScriptManager.RegisterStartupScript(this, typeof(frmEncounter), "ErrorMessage", "RegenerateXML('" + Encounter_Id.ToString() + "','Encounter','summary');", true);
 
+                        }
+                        else
+                            ScriptManager.RegisterStartupScript(this, typeof(frmEncounter), "ErrorMessage", "RegenerateXML('" + ClientSession.EncounterId.ToString() + "','Encounter','summary');", true);
+                        return;
+                        //throw new Exception("Encounter XML is invalid");
                     }
-                    else
-                        ScriptManager.RegisterStartupScript(this, typeof(frmEncounter), "ErrorMessage", "RegenerateXML('" + ClientSession.EncounterId.ToString() + "','Encounter','summary');", true);
-
-
-
-                    return;
-
                 }
+
+                //IList<object> ilstSummaryBlob_Final = new List<object>();
+                //try
+                //{
+                //    ilstSummaryBlob_Final = UtilityManager.ReadBlob(Encounter_Id, ilstSummaryTag_List);
+
+                //    if (ilstSummaryBlob_Final != null && ilstSummaryBlob_Final.Count > 0)
+                //    {
+                //        if (ilstSummaryBlob_Final[0] != null)
+                //        {
+                //            for (int iCount = 0; iCount < ((IList<object>)ilstSummaryBlob_Final[0]).Count; iCount++)
+                //            {
+                //                HumanID = ((Encounter)((IList<object>)ilstSummaryBlob_Final[0])[iCount]).Human_ID.ToString();
+                //            }
+                //        }
+                //    }
+                //}
+                //catch (Exception XMLExcep)
+                //{
+                //    if (Encounter_Id != 0)
+                //    {
+                //        ScriptManager.RegisterStartupScript(this, typeof(frmEncounter), "ErrorMessage", "RegenerateXML('" + Encounter_Id.ToString() + "','Encounter','summary');", true);
+
+                //    }
+                //    else
+                //        ScriptManager.RegisterStartupScript(this, typeof(frmEncounter), "ErrorMessage", "RegenerateXML('" + ClientSession.EncounterId.ToString() + "','Encounter','summary');", true);
+
+                //    return;
+
+                //}
 
                 // try 
                 //{
@@ -528,11 +562,13 @@ namespace Acurus.Capella.UI
             {
                 IList<Human_Blob> ilstHumanBlob = new List<Human_Blob>();
                 ilstHumanBlob = HumanBlobMngr.GetHumanBlob(Convert.ToUInt64(HumanID));
+                XmlDocument xmlHumanDoc = new XmlDocument();
                 if (ilstHumanBlob.Count > 0)
                 {
                     sXMLHumanDoc = System.Text.Encoding.UTF8.GetString(ilstHumanBlob[0].Human_XML);
                     if (sXMLHumanDoc.Substring(0, 1) != "<")
                         sXMLHumanDoc = sXMLHumanDoc.Substring(1, sXMLHumanDoc.Length - 1);
+                    xmlHumanDoc.LoadXml(sXMLHumanDoc);
                 }
             }
             catch (Exception ex)
