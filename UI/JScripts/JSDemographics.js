@@ -2118,7 +2118,7 @@ function btnaddinsured(e) {
     }
 
     if (Date.parse(EffStartDate) > Date.parse(EffEndDate)) {
-        DisplayErrorMessage('380005');
+        DisplayErrorMessage('410033');
         return false;
     }
 

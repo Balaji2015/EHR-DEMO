@@ -691,6 +691,7 @@
 	<Message number="410030" Type="OK" Text="Please enter the Specify Other" />
 	<Message number="410031" Type="OK" Text="Please enter the policy holder id" />
     <Message number="410032" Type="OKCANCEL" Text="Are you sure you want to clear all the fields?" />
+	<Message number="410033" Type="OK" Text="Effective End date should be greater than Effective Start date. Please enter a valid date" />
 	
 	<Message number="410101" Type="OK" Text="Past Date cannot be earlier to Start Date" />
 	<Message number="410102" Type="OK" Text="Past Date cannot be the End Date" />
