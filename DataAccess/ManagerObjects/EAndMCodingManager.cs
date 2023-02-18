@@ -1715,6 +1715,26 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
                                 }
                             }
                         }
+
+
+                        //For SortOrder
+                        if (InProcCPT.Count > 0)
+                            lstprocedure = obj.GetProcedureList(InProcCPT);
+                        for (int i = 0; i < InProcCPT.Count; i++)
+                        {
+                            IList<string> FinalProcedurelist = (from m in TempProcedureListInhousePro where m.Split('~')[0] == InProcCPT[i].ToString() select m).ToList<string>();
+
+
+                            if (FinalProcedurelist.Count > 0)
+                            {
+                                IList<ProcedureCodeLibrary> tempSort = (from m in lstprocedure where m.Procedure_Code == InProcCPT[i].ToString() select m).ToList<ProcedureCodeLibrary>();
+                                if (tempSort.Count > 0)
+                                {
+                                    TempProcedureList.Add(FinalProcedurelist[0] + "~" + tempSort[0].Sort_Order);
+                                }
+                            }
+                        }
+
                     }
                     if (Is_CMG_Ancillary)
                     {
@@ -2127,7 +2147,7 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
                 //                }
                 //            }
 
-                //            //For SortOrder
+                //           //For SortOrder 
                 //            if (InProcCPT.Count > 0)
                 //                lstprocedure = obj.GetProcedureList(InProcCPT);
                 //            for (int i = 0; i < InProcCPT.Count; i++)
