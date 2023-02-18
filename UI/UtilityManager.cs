@@ -4467,10 +4467,11 @@ namespace Acurus.Capella.UI
                                             sResult = "Failure";
                                         }
                                     }
-                                    else
-                                    {
-                                        sResult = status;
-                                    }
+                                }
+                                else
+                                {
+                                    sResult = status;
+                                }
                                 string sConnectionString = System.Configuration.ConfigurationManager.ConnectionStrings["con"].ConnectionString;
                                 var builder = new MySqlConnectionStringBuilder(sConnectionString);
 
