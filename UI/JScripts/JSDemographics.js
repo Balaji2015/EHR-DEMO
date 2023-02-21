@@ -2350,6 +2350,7 @@ function Edit(e) {
     document.getElementById("ctl00_C5POBody_txtPlanSearch").value = e.parentElement.parentElement.childNodes[2].innerText;
     document.getElementById('ctl00_C5POBody_txtPlanSearch').style.backgroundColor = "#BFDBFF";
     document.getElementById('ctl00_C5POBody_txtPlanSearch').disabled = true;
+    document.getElementById('ctl00_C5POBody_imgClearplanText').style.visibility = "hidden";
     document.getElementById("ctl00_C5POBody_txtSelectinsured").attributes['data-human-id'].value = e.parentElement.parentElement.childNodes[13].innerText
     document.getElementById("ctl00_C5POBody_txtSelectinsured").value = e.parentElement.parentElement.childNodes[16].innerText;
     document.getElementById("ctl00_C5POBody_txtPolicyholderid").value = e.parentElement.parentElement.childNodes[3].innerText;
@@ -2446,7 +2447,8 @@ function btnclearinsured(btnclearAll) {
         document.getElementById('ctl00_C5POBody_txtSelectinsured').style.backgroundColor = "#BFDBFF"
         document.getElementById('ctl00_C5POBody_txtSpecify').disabled = true;
         document.getElementById('ctl00_C5POBody_txtSpecify').style.backgroundColor = "#BFDBFF"
-        document.getElementById('imginsuredText').display = "none";
+    document.getElementById('imginsuredText').display = "none";
+    document.getElementById('ctl00_C5POBody_imgClearplanText').style.visibility = "visible";
     document.getElementById('ctl00_C5POBody_btnaddins').disabled = true;
     $('#lblSelectInsured').removeClass('MandLabelstyle');
     $('#lblSelectInsured').addClass('spanstyle');
