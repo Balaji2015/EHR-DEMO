@@ -403,7 +403,7 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
             ISession iMySession = NHibernateSessionManager.Instance.CreateISession();
             IList<InsurancePlan> lstMatchingPlan = new List<InsurancePlan>();
 
-            string sQuery = "select Insurance_Plan_ID,Insurance_Plan_Name from insurance_plan where Insurance_Plan_Name like '"+ text_searched + "%' and Active<>'N'";
+            string sQuery = "select Insurance_Plan_ID,Insurance_Plan_Name,Carrier_ID from insurance_plan where Insurance_Plan_Name like '" + text_searched + "%' and Active<>'N'";
 
             ISQLQuery query = iMySession.CreateSQLQuery(sQuery);
             ArrayList arrPatients = new ArrayList(query.List());
@@ -414,7 +414,7 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
                 object[] objHuman = (object[])arrPatients[iCount];
                 tempHuman.Id = Convert.ToUInt32(objHuman[0].ToString());
                 tempHuman.Ins_Plan_Name = objHuman[1].ToString();
-
+                tempHuman.Carrier_ID = Convert.ToInt32(objHuman[2].ToString());
 
                 lstMatchingPlan.Add(tempHuman);
 
