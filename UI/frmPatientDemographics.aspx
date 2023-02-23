@@ -6,8 +6,6 @@
 <%@ Register Assembly="Telerik.Web.UI" Namespace="Telerik.Web.UI" TagPrefix="telerik" %>
 
 <script runat="server">
-
-
 </script>
 
 <asp:Content ID="Demographics" ContentPlaceHolderID="C5POBody" runat="server">
@@ -1571,7 +1569,7 @@
                               <table>
                                   <tr>
                                     <td style="width: 25%;">
-                                        <span  class="MandLabelstyle">Priority &nbsp;&nbsp;</span>
+                                        <span  class="MandLabelstyle">Priority</span><span class="manredforstar">* &nbsp;</span> 
                                         <span  class="MandLabelstyle">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
                                         <asp:RadioButton ID="rdbPRI" Checked="false" Text="Pri." runat="server" GroupName="InsuranceType"  CssClass="Editabletxtbox" onchange="AutoSave();" />
                                         <asp:RadioButton ID="rdbSEC" Checked="false" Text="Sec." runat="server" GroupName="InsuranceType"  CssClass="Editabletxtbox" onchange="AutoSave();" />
@@ -1579,14 +1577,14 @@
                                         
                                     </td>
                                       <td style="width: 40%; text-align: left;">
-                                        <span  class="MandLabelstyle">Plan &nbsp;&nbsp;</span>
+                                        <span  class="MandLabelstyle">Plan</span><span class="manredforstar">* &nbsp;</span> 
                                        <asp:TextBox ID="txtPlanSearch" CssClass="spanstyle" runat="server" Width="72%" onchange="AutoSave();" ></asp:TextBox>
                                        <img id="imgClearplanText" src="Resources/Delete-Blue.png" runat="server" alt="X" title="Click to clear the text field." style="width:10px;margin-top:-5px;"/>
                                        </td>
                                       <td>
                                           </td>
                                             <td style="width: 35%;text-align: left;">
-                                        <span  class="spanstyle" id="lblSpecifyOther">Specify Other &nbsp;</span>
+                                        <span  class="spanstyle" id="lblSpecifyOther">Specify Other</span> 
                                        <asp:TextBox ID="txtSpecify" CssClass="spanstyle" runat="server" Width="70%" onchange="AutoSave();" ></asp:TextBox>
                                        </td>                          
                                    </tr>
@@ -1594,15 +1592,15 @@
                                 <table>
                                   <tr>
                                        <td style="width: 25%;">
-                                        <span  class="MandLabelstyle">Policy holder Id </span>
+                                        <span  class="MandLabelstyle">Policy holder Id</span><span class="manredforstar">*</span> 
                                        <asp:TextBox ID="txtPolicyholderid" CssClass="spanstyle" runat="server" Width="55%" MaxLength="25" onchange="AutoSave();" ></asp:TextBox>
                                        </td>
                                     <td style="width: 25%;">
-                                          <span  class="MandLabelstyle">Rel.to Patient </span>
-                                       <asp:DropDownList ID="ddlPatientRelation" onchange="PatientRelationchange();Autosave();" runat="server" style="width:145px"></asp:DropDownList>
+                                          <span  class="MandLabelstyle">Rel.to Patient</span><span class="manredforstar">*</span> 
+                                       <asp:DropDownList ID="ddlPatientRelation" onchange="PatientRelationchange();Autosave();" runat="server" style="width:146px"></asp:DropDownList>
                                     </td>
                                    <td style="width: 36%;text-align: left;">
-                                        <span id="lblSelectInsured"  class="spanstyle">Select Insured </span>
+                                        <span id="lblSelectInsured"  class="spanstyle">Select Insured</span>
                                        <asp:TextBox ID="txtSelectinsured" CssClass="spanstyle" runat="server" Width="68%" onchange="AutoSave();" ></asp:TextBox>
                                        <img id="imginsuredText" src="Resources/Delete-Blue.png" alt="X" title="Click to clear the text field." style="width:10px;margin-top:-5px;"/>
                                        </td>
@@ -1614,9 +1612,9 @@
                                    </tr>
                                   <tr>
                                     <td style="width: 25%;">
-                                          <span  class="spanstyle">Eff. Start Date &nbsp;</span>
-                                         <span style="width: 148px;">
-                                         <telerik:RadMaskedTextBox ID="txtStartdate" runat="server" Mask="##-Lll-####" Width="148px" onchange="AutoSave(); "  >
+                                          <span  class="spanstyle">Eff. Start Date&nbsp;&nbsp;&nbsp;&nbsp;</span>
+                                         <span style="width: 146px;">
+                                         <telerik:RadMaskedTextBox ID="txtStartdate" runat="server" Mask="##-Lll-####" Width="146px" onchange="AutoSave(); "  >
                                                     <ClientEvents OnValueChanged="PatientDemographicsDateVlidation" />
                                                     <InvalidStyle Resize="None" />
                                                     <FocusedStyle Resize="None" BackColor="White" />
@@ -1628,9 +1626,9 @@
                                                 </telerik:RadMaskedTextBox></span>
                                     </td>
                                    <td style="width: 20%; text-align: left; ">
-                                        <span  class="spanstyle">Eff. End Date </span>
+                                        <span  class="spanstyle">Eff. End Date &nbsp;</span>
                                          
-                                       <telerik:RadMaskedTextBox ID="txtEnddate" runat="server" Mask="##-Lll-####" Width="148px" onchange="AutoSave(); "  >
+                                       <telerik:RadMaskedTextBox ID="txtEnddate" runat="server" Mask="##-Lll-####" Width="146px" onchange="AutoSave(); "  >
                                                     <ClientEvents OnValueChanged="PatientDemographicsDateVlidation" />
                                                     <InvalidStyle Resize="None" />
                                                     <FocusedStyle Resize="None" BackColor="White" />

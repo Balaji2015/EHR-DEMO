@@ -880,12 +880,16 @@ namespace Acurus.Capella.UI
             IList<PatientInsuredPlan> Templistlist = new List<PatientInsuredPlan>();
             Eligibility_VerficationManager EligibilityMngr = new Eligibility_VerficationManager();
             PatientInsuredPlanManager objmanager = new PatientInsuredPlanManager();
+            ulong carrierid = 0;
             if (Human_id != "")
             {
                 Getlist = objmanager.getInsurancePoliciesByHumanId(Convert.ToUInt64(Human_id));
             }
             IList<Eligibility_Verification> EligList = new List<Eligibility_Verification>();
-
+            IList<Human> lstUpdateHuman = new List<Human>();
+            HumanManager HumanMngr = new HumanManager();
+            CarrierManager CarrierMngr = new CarrierManager();
+            string sCarrierName = "";
             foreach (object[] oj in name)
             {
                 PatientInsuredPlan obj = new PatientInsuredPlan();
@@ -922,7 +926,8 @@ namespace Acurus.Capella.UI
                     Templistlist[0].Assignment = "Yes";
                     updatelist.Add(Templistlist[0]);
                     EligList = EligibilityMngr.GetEligDetailsUsingHumanandPolicyHolderID(Convert.ToUInt64(Human_id), oj[2].ToString());
-
+                    if (oj[0].ToString().ToUpper()=="PRIMARY")
+                        carrierid = Convert.ToUInt64(oj[16].ToString());
                     if (EligList != null && EligList.Count > 0)
                     {
 
@@ -931,7 +936,7 @@ namespace Acurus.Capella.UI
                         EligibilityMngr.UpdateEligibilityVerificationInformatnion(EligList[0], string.Empty);
                         EligList = EligibilityMngr.GetEligDetailsUsingHumanandPolicyHolderIDandInsPlanID(Convert.ToUInt64(Human_id), oj[2].ToString(), Convert.ToUInt64(oj[10].ToString()));
                     }
-
+                  
                 }
                 else
                 {
@@ -959,18 +964,63 @@ namespace Acurus.Capella.UI
                     {
                         obj.Insured_Human_ID = Convert.ToUInt64(oj[12].ToString());
                     }
+
+                    if (oj[0].ToString().ToUpper() == "PRIMARY")
+                        carrierid = Convert.ToUInt64(oj[16].ToString());
+
                     obj.Created_By = ClientSession.UserName;
                     obj.Created_Date_And_Time = UtilityManager.ConvertToUniversal();
                     obj.Other_Insurance_Comments = oj[5].ToString();
                     obj.Relationship_No = Convert.ToInt32(oj[14].ToString());
                     obj.Assignment = "Yes";
                     savelist.Add(obj);
+                   
                 }
 
 
 
             }
             objmanager.BatchAddUpdatePatInsured(savelist, updatelist, String.Empty);
+            IList<Human> humanList = HumanMngr.GetPatientDetailsUsingPatientInformattion(Convert.ToUInt64(Human_id));
+            Human objHumanList = new Human();
+            if (humanList != null && humanList.Count > 0) //code added by balaji.TJ 2015-12-17         
+                objHumanList = humanList[0];
+            if (objHumanList != null)
+            {
+                if (objHumanList.PatientInsuredBag != null && objHumanList.PatientInsuredBag.Count > 0)
+                {
+                    //IList<PatientInsuredPlan> PatInsOrderedList = objHumanList.PatientInsuredBag.OrderBy(x => x.Sort_Order).ToList<PatientInsuredPlan>();
+                    IList<PatientInsuredPlan> PatInsOrderedList = (from m in objHumanList.PatientInsuredBag where m.Insurance_Type.ToUpper() == "PRIMARY" && m.Active.ToUpper()=="YES" select m).ToList<PatientInsuredPlan>();
+
+
+                    if (PatInsOrderedList.Count > 0)
+                    {
+
+                        lstUpdateHuman = HumanMngr.GetPatientDetailsUsingPatientInformattion(Convert.ToUInt64(Human_id));
+                        if (lstUpdateHuman.Count() > 0)
+                        {
+                            lstUpdateHuman[0].Primary_Carrier_ID = carrierid;
+                            Carrier objcarrierName = CarrierMngr.GetCarrierUsingId(Convert.ToUInt64(lstUpdateHuman[0].Primary_Carrier_ID));
+                            if (objcarrierName != null)
+                                sCarrierName = objcarrierName.Carrier_Name;
+                            HumanMngr.UpdateBatchToHuman(lstUpdateHuman[0], null, null, sCarrierName);
+                        }
+                    }
+                    else
+                    {
+
+                        lstUpdateHuman = HumanMngr.GetPatientDetailsUsingPatientInformattion(Convert.ToUInt64(Human_id));
+                        if (lstUpdateHuman.Count() > 0)
+                        {
+                            lstUpdateHuman[0].Primary_Carrier_ID = 0; ;
+                            sCarrierName = "";
+                            HumanMngr.UpdateBatchToHuman(lstUpdateHuman[0], null, null, sCarrierName);
+                        }
+
+                    }
+                }
+            }
+
 
 
             return "Success";
