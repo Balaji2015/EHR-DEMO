@@ -2229,8 +2229,8 @@ function RegenerateXML(Humanid, xmlType, page) {
                     alert("Regenerated xml cannot be copied, as XML is being used by another process. Please logout and Re-Login to continue with this patient chart.")
                 }
                 else {
-                    ToolStripAlertHide();
-                    alert(ProtocolLst);
+                    ToolStripAlertHidexml();
+                    alert("XML is not generated successfully. Please contact support.");
                 }
             }
 

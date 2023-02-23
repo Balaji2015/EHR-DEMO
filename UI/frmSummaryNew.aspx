@@ -68,7 +68,7 @@
         <div>        <asp:ImageButton ID="btnWord" runat="server" ImageUrl="~/Resources/Word.png" ImageAlign="Right"  OnClick="btnWord_Click" ToolTip="Download Summary" style=" height: 41px;
     border-width: 0px;
     margin-top: -41px;" /></div>--%>
-        <div id="summarydiv" runat="server" style="height: 660px; display: none; padding: 15px; font-weight: bolder; background-color: aliceblue">Summary Xml is not found.Please contact Acurus.</div>
+        <div id="summarydiv" runat="server" style="height: 660px; display: none; padding: 15px; font-weight: bolder; background-color: aliceblue">Encounter Xml is not found. Please contact support team to regenerate the XML.</div>
         <%-- <div style="height:50px;display:block" id="divSummary" >
         <table style="width:100%">
             <tr style="width:100%">

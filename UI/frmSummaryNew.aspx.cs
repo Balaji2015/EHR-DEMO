@@ -222,6 +222,11 @@ namespace Acurus.Capella.UI
                                 break;
                             }
                         }
+                        else
+                        {
+                            ScriptManager.RegisterStartupScript(this, typeof(frmEncounter), "SummaryAlert", "SummaryHumanIDAlert();", true);
+                            return;
+                        }
 
                     }
                     catch
@@ -236,6 +241,11 @@ namespace Acurus.Capella.UI
                         return;
                         //throw new Exception("Encounter XML is invalid");
                     }
+                }
+                else
+                {
+                    ScriptManager.RegisterStartupScript(this, typeof(frmEncounter), "SummaryAlert", "SummaryAlert();", true);
+                    return;
                 }
 
                 //IList<object> ilstSummaryBlob_Final = new List<object>();
@@ -655,6 +665,7 @@ namespace Acurus.Capella.UI
                     {
 
                         ScriptManager.RegisterStartupScript(this, typeof(frmEncounter), "SummaryAlert", "SummaryAlert();", true);
+                        return;
                     }
                 }
 
@@ -679,6 +690,7 @@ namespace Acurus.Capella.UI
                 {
 
                     ScriptManager.RegisterStartupScript(this, typeof(frmEncounter), "SummaryAlert", "SummaryAlert();", true);
+                    return;
                 }
             }
             objTimer.Stop();
@@ -908,6 +920,7 @@ namespace Acurus.Capella.UI
             {
 
                 ScriptManager.RegisterStartupScript(this, typeof(frmEncounter), "SummaryAlert", "SummaryAlert();", true);
+                return;
             }
 
             //ScriptManager.RegisterStartupScript(this, typeof(frmEncounter), "SummaryAlert", "SummaryTimeStamp('" + totaltime + "','" + transformtime + "');", true);

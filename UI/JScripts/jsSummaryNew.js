@@ -5,6 +5,15 @@
     document.getElementById('xslFrame').style.display = "none";
     
 }
+
+function SummaryHumanIDAlert() {
+    document.getElementById('summarydiv').style.display = "block";
+    document.getElementById('divSummary').style.display = "none";
+    document.getElementById('xslFrame').style.display = "none";
+    document.getElementById('summarydiv').innerText = "EncounterList Tag is not found. Please contact support team to regenerate the XML.";
+
+}
+
 function SummaryTimeStamp(totaltime, transormtime) {
     console.log("TotalTime:" + totaltime + "ms");
     console.log("TransormTime:" + transormtime + "ms");
