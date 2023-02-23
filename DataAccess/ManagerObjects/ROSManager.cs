@@ -398,10 +398,10 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
                                     xmlModules[0].RemoveChild(ParentNodeList[0]);
                                 }
                             }
-                            if (ListToInsertROS.Count > 0 || ListToUpdateRos.Count > 0 || ListToUpdateRos.Count > 0)
+                            if ((ListToInsertROS != null && ListToInsertROS.Count > 0 )|| (ListToUpdateRos != null && ListToUpdateRos.Count > 0 )|| (ListToDeleteRos != null && ListToDeleteRos.Count > 0))
                             {
                                 WriteBlob(EncounterId, XMLObj.itemDoc, MySession, ListToInsertROS, ListToUpdateRos, ListToDeleteRos, XMLObj, false);
-                            } else if (generalNotesListInsert.Count>0 || generalNotesListUpdate.Count>0)
+                            } else if ((generalNotesListInsert != null && generalNotesListInsert.Count > 0 ) || (generalNotesListUpdate != null && generalNotesListUpdate.Count>0))
                             {
                                 generalNotesManager.WriteBlob(EncounterId, XMLObj.itemDoc, MySession, generalNotesListInsert, generalNotesListUpdate, null, XMLObj, false);
                             }
