@@ -2421,7 +2421,7 @@ myapp.controller('assessmentCtrl', function ($scope, $http) {
             RefreshOverallSummaryTooltip();
 
             { sessionStorage.setItem('StartLoading', 'false'); StopLoadFromPatChart(); }
-            RefreshNotification('Assessment');
+            RefreshNotification('Assessment|ServiceAndProcedureCode');
             RefreshOverallSummaryTooltip();
             //RafCalculation();
 

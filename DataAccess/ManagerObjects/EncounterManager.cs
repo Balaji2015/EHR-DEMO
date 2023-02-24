@@ -41,7 +41,7 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
         //FillAppointment GetAppointmentByDateandPhy(DateTime DOS, ulong[] PhyID, string[] FacName);
         IList<FillWillingonCancel> GetAppointmentsforPatientwithStatus(ulong ulHumanID, Boolean bShowPastAlso, int PageNumber, int MaxResultSet);
         AppointmentPreChecks CheckDuplicateAppointment(ulong PatientId, ulong PhysicianId, DateTime DOS, string FacilityName, DateTime Blockdate, string Time, int Duration, ulong EncID);
-        FillPatientSummaryBarDTO LoadPatientSummaryBar(ulong EncounterId, ulong HumanId, DateTime LocalDate, string UserName,string sLegalorg);
+        FillPatientSummaryBarDTO LoadPatientSummaryBar(ulong EncounterId, ulong HumanId, DateTime LocalDate, string UserName, string sLegalorg);
         //ChargePostingDTO CreateEncounterforCoding(IList<Encounter> EncList, IList<WFObjectBilling> WfList, string MacAddress);
         //IList<AppointmentReport> GetAppointmentReport(DateTime AppointmentDateFrom, DateTime AppointmentDateTo);
         DataSet dsPendingHccReport(string sAnnualProcedure, string strCarrierName);
@@ -652,12 +652,12 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
                 if (bEncounter)
                 {
                     trans.Commit();
-                   // XMLObj.itemDoc.Save(XMLObj.strXmlFilePath);
+                    // XMLObj.itemDoc.Save(XMLObj.strXmlFilePath);
                     int trycount = 0;
                 trytosaveagain:
                     try
                     {
-                       // XMLObj.itemDoc.Save(XMLObj.strXmlFilePath);
+                        // XMLObj.itemDoc.Save(XMLObj.strXmlFilePath);
                     }
                     catch (Exception xmlexcep)
                     {
@@ -792,7 +792,7 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
                     if (bEncounter)
                     {
                         trans.Commit();
-                       // XMLObj.itemDoc.Save(XMLObj.strXmlFilePath);
+                        // XMLObj.itemDoc.Save(XMLObj.strXmlFilePath);
 
                         int trycount = 0;
                     trytosaveagain:
@@ -2349,10 +2349,10 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
                                     goto m;
                                 }
 
-                                //.Contains("G0438").ToString()||obj.Contains("G0439"))
+                            //.Contains("G0438").ToString()||obj.Contains("G0439"))
                             //obj[q]=obj.Contains("")
 
-                                //if (Gcode == false)
+                            //if (Gcode == false)
                             //{
                             l:
                                 if (obj[0].ToString() == sAnnualPhysicalProcedure[0].ToString() || obj[0].ToString() == sAnnualPhysicalProcedure[1].ToString())
@@ -3442,7 +3442,7 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
         //}
         //vinoth branch 3_0_43
 
-        public FillPatientSummaryBarDTO LoadPatientSummaryBar(ulong EncounterId, ulong HumanId, DateTime LocalDate, string UserName,string sLegalorg)
+        public FillPatientSummaryBarDTO LoadPatientSummaryBar(ulong EncounterId, ulong HumanId, DateTime LocalDate, string UserName, string sLegalorg)
         {
             FillPatientSummaryBarDTO objPatientSummary = new FillPatientSummaryBarDTO();
             //  ISession iMySession = NHibernateSessionManager.Instance.CreateISession();
@@ -3708,7 +3708,7 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
         }
 
         //Saravanan Loadpatientsummary
-        public FillPatientSummaryBarDTO LoadPatientSummaryBarUsingList(ulong EncounterId, ulong HumanId, DateTime LocalDate, string UserName, IList<int> ilstChangeSummaryBar,string sLegalorg)
+        public FillPatientSummaryBarDTO LoadPatientSummaryBarUsingList(ulong EncounterId, ulong HumanId, DateTime LocalDate, string UserName, IList<int> ilstChangeSummaryBar, string sLegalorg)
         {
             FillPatientSummaryBarDTO objPatientSummary = new FillPatientSummaryBarDTO();
             using (ISession iMySession = NHibernateSessionManager.Instance.CreateISession())
@@ -8566,8 +8566,8 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
                     */
                     // Added by Valli
                     IDictionary<string, IList<string>> CPTICD = new Dictionary<string, IList<string>>();
-                  string  sE_And_M_CPT_And_ICD= System.Configuration.ConfigurationSettings.AppSettings["E_And_M_CPT_And_ICD"].ToString();
-                  string sPlan = "";// System.Configuration.ConfigurationSettings.AppSettings["Primary_Plan"].ToString();
+                    string sE_And_M_CPT_And_ICD = System.Configuration.ConfigurationSettings.AppSettings["E_And_M_CPT_And_ICD"].ToString();
+                    string sPlan = "";// System.Configuration.ConfigurationSettings.AppSettings["Primary_Plan"].ToString();
                     if (sE_And_M_CPT_And_ICD != "")
                     {
                         string[] sVal = sE_And_M_CPT_And_ICD.Split('$');
@@ -8625,9 +8625,9 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
                             }
 
                         }
-                       
-                            objMoveVerifyDTO.IsICDPresent = GcodeCheckList.Contains("False") == true ? false : true;
-                           
+
+                        objMoveVerifyDTO.IsICDPresent = GcodeCheckList.Contains("False") == true ? false : true;
+
                         if (Convert.ToBoolean(objMoveVerifyDTO.IsGcodePresent) == true && Convert.ToBoolean(objMoveVerifyDTO.IsICDPresent) == false)
                         {
                             bGCodeCheck = true;
@@ -8729,11 +8729,11 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
                                 }
                                 if (objDocWfObject.Current_Process == "REVIEW_CODING")
                                 {
-                                    ICriteria criteriaPlan = iMySession.CreateCriteria(typeof(TreatmentPlan)).Add(Expression.Eq("Encounter_Id", EncRecord.Id)).Add(Expression.Eq("Amendment_Type","Corrections to be Made")); //selectedPhyID
-                                    if (EncRecord.Encounter_Provider_Review_ID==0)
+                                    ICriteria criteriaPlan = iMySession.CreateCriteria(typeof(TreatmentPlan)).Add(Expression.Eq("Encounter_Id", EncRecord.Id)).Add(Expression.Eq("Amendment_Type", "Corrections to be Made")); //selectedPhyID
+                                    if (EncRecord.Encounter_Provider_Review_ID == 0)
                                     {
                                         objWfMngr.MoveToNextProcess(objDocWfObject.Obj_System_Id, objDocWfObject.Obj_Type, 1, "UNKNOWN", currentDate, MACAddress, null, null);
-                                    } 
+                                    }
                                     else if (criteriaPlan.List<TreatmentPlan>() != null && criteriaPlan.List<TreatmentPlan>().Count > 0)
                                     {
                                         objWfMngr.MoveToNextProcess(objDocWfObject.Obj_System_Id, objDocWfObject.Obj_Type, 6, sOwner, currentDate, MACAddress, null, null);
@@ -8742,7 +8742,7 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
                                     {
                                         objWfMngr.MoveToNextProcess(objDocWfObject.Obj_System_Id, objDocWfObject.Obj_Type, 5, sOwner, currentDate, MACAddress, null, null);
                                     }
-                                     objMoveVerifyDTO.IsWorkflowPushed = true;
+                                    objMoveVerifyDTO.IsWorkflowPushed = true;
                                 }
                                 else
                                 {
@@ -8833,7 +8833,7 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
                     else if (objDocWfObject.Current_Process == "PROVIDER_REVIEW_CORRECTION")
                     {
                         string sEquivalantOwner = string.Empty;
-                           
+
                         //To get the equivalant allocation process to get the owner
                         if (objDocWfObject.Process_Allocation != string.Empty)
                         {
@@ -8850,7 +8850,7 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
                                     }
                                 }
                             }
-                            else if (objDocWfObject.Process_Allocation.Contains("PROVIDER_REVIEW")==true)
+                            else if (objDocWfObject.Process_Allocation.Contains("PROVIDER_REVIEW") == true)
                             {
                                 string[] sAlloc = objDocWfObject.Process_Allocation.Split('|');
                                 for (int i = 0; i < sAlloc.Length; i++)
@@ -9044,8 +9044,8 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
                     wfObjMngr.MoveToNextProcess(EncounterWfObject.Obj_System_Id, EncounterWfObject.Obj_Type, 1, "UNKNOWN", dtCurrentDateTime, sMacAddress, null, null);
 
                     // Move to Checkout from physician GITLAB #3084
-                   if(UserRole.ToUpper()!= "MEDICAL ASSISTANT" && encounterRecord.Is_EandM_Submitted!="Y")
-                    encounterRecord.Is_EandM_Submitted = "N";
+                    if (UserRole.ToUpper() != "MEDICAL ASSISTANT" && encounterRecord.Is_EandM_Submitted != "Y")
+                        encounterRecord.Is_EandM_Submitted = "N";
                     else
                         encounterRecord.Is_EandM_Submitted = "Y";
 
@@ -9059,7 +9059,7 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
                     {
                         wfObjMngr.MoveToNextProcess(DocumentationWfObject.Obj_System_Id, DocumentationWfObject.Obj_Type, 2, "UNKNOWN", dtCurrentDateTime, sMacAddress, null, null);
                         if (BillingWfObject.Current_Process == "BATCHING_WAIT")
-                        wfObjMngr.MoveToNextProcess(BillingWfObject.Obj_System_Id, BillingWfObject.Obj_Type, 1, "UNKNOWN", dtCurrentDateTime, sMacAddress, null, null);
+                            wfObjMngr.MoveToNextProcess(BillingWfObject.Obj_System_Id, BillingWfObject.Obj_Type, 1, "UNKNOWN", dtCurrentDateTime, sMacAddress, null, null);
                     }
                 }
             }
@@ -9143,8 +9143,8 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
                     if (encounterRecord != null)
                     {
                         //Provider review Move to next process  GITLAB #3084
-                        if(sButtonName.ToUpper() != "MOVE TO PHYSICIAN ASSISTANT")
-                        encounterRecord.Is_EandM_Submitted = "Y";
+                        if (sButtonName.ToUpper() != "MOVE TO PHYSICIAN ASSISTANT")
+                            encounterRecord.Is_EandM_Submitted = "Y";
 
                         if (DocumentationWfObject.Current_Process.ToUpper() == "PROVIDER_REVIEW_2" && DocumentationWfObject.Process_Allocation.IndexOf("REVIEW_CODING") > -1)
                         {
@@ -9184,7 +9184,7 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
                         }
                     }
                 }
-               
+
                 /*else if (DocumentReviewWfObject != null && DocumentReviewWfObject.Current_Process.ToUpper() == "PROVIDER_REVIEW")
                 {
                     //if (sRoleLoginUser.ToUpper() == "PHYSICIAN")
@@ -9644,13 +9644,13 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
                     GenerateXml objXml = new GenerateXml();
                     EncounterBlobManager blobmanager = new EncounterBlobManager();
                     IList<Encounter_Blob> obj = new List<Encounter_Blob>();
-                    obj= blobmanager.GetEncounterBlob(ulEncId);
+                    obj = blobmanager.GetEncounterBlob(ulEncId);
 
                     //Crerate Encounter xml when save Phone Encounter 
                     // string EncounterFileName = "Encounter" + "_" + ulEncId + ".xml";
                     // string strXmlEncounterFilePath = Path.Combine(System.Configuration.ConfigurationSettings.AppSettings["XMLPath"], EncounterFileName);
                     // if (File.Exists(strXmlEncounterFilePath) == false)
-                    if(obj.Count==0)
+                    if (obj.Count == 0)
                     {
                         string sDirectoryPath = System.Web.HttpContext.Current.Server.MapPath("Template_XML");
                         string sXmlPath = Path.Combine(sDirectoryPath, "Base_XML.xml");
@@ -9662,7 +9662,7 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
                         XmlNodeList xmlAgenode = itemDoc.GetElementsByTagName("Age");
                         if (xmlAgenode != null)
                             xmlAgenode[0].ParentNode.RemoveChild(xmlAgenode[0]);
-                       // itemDoc.Save(strXmlEncounterFilePath);
+                        // itemDoc.Save(strXmlEncounterFilePath);
                     }
                     List<object> lstObj = SaveEncounter.Cast<object>().ToList();
                     // objXml.GenerateXmlSave(lstObj, ulEncId, string.Empty, true);
@@ -9671,10 +9671,10 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
                     WriteBlob(ulEncId, objXml.itemDoc, MySession, SaveEncounter, null, null, objXml, true);
                     trans.Commit();
                     trans = MySession.BeginTransaction();
-                   // List<object> lstObj = SaveEncounter.Cast<object>().ToList();
+                    // List<object> lstObj = SaveEncounter.Cast<object>().ToList();
                     //objXml.GenerateXmlSave(lstObj, ulEncId, string.Empty, true);
                     //objXml.itemDoc = null;
-                  //  objXml.GenerateXmlSave(lstObj, ulEncId, string.Empty, false, true, false, false,ref objXml);
+                    //  objXml.GenerateXmlSave(lstObj, ulEncId, string.Empty, false, true, false, false,ref objXml);
                 }
 
                 if (SavePlan != null && SavePlan.Count > 0)
@@ -9813,7 +9813,7 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
                 if (SaveEncounter != null && SaveEncounter.Count > 0)
                 {
                     //iResult = SaveUpdateDeleteWithoutTransaction(ref SaveEncounter, null, null, MySession, sMacAddress);
-                    iResult = SaveUpdateDelete_DBAndXML_WithoutTransaction(ref SaveEncounter, ref EncListUpdate, null, MySession, sMacAddress, false, false, SaveEncounter[0].Id, string.Empty, ref XMLObj) ;
+                    iResult = SaveUpdateDelete_DBAndXML_WithoutTransaction(ref SaveEncounter, ref EncListUpdate, null, MySession, sMacAddress, false, false, SaveEncounter[0].Id, string.Empty, ref XMLObj);
 
                     if (iResult == 2)
                     {
@@ -9837,7 +9837,7 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
                     }
                     ulEncId = SaveEncounter[0].Id;
                     //Crerate Encounter xml when save Phone Encounter 
-                   
+
                     EncounterBlobManager EncounterBlobMngr = new EncounterBlobManager();
                     //IList<Encounter_Blob> ilstEncounterBlob = EncounterBlobMngr.GetEncounterBlob(ulEncId);
                     //if (ilstEncounterBlob.Count < 0)
@@ -9846,60 +9846,60 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
                     //string strXmlEncounterFilePath = Path.Combine(System.Configuration.ConfigurationSettings.AppSettings["XMLPath"], EncounterFileName);
                     //if (File.Exists(strXmlEncounterFilePath) == false)
                     //{
-                        // string sDirectoryPath = System.Web.HttpContext.Current.Server.MapPath("Template_XML");
-                        //string sXmlPath = Path.Combine(sDirectoryPath, "Base_XML.xml");
-                        string sXmlPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Template_XML\\Base_XML.xml");
-                        XmlDocument itemDoc = new XmlDocument();
-                        XmlTextReader XmlText = new XmlTextReader(sXmlPath);
+                    // string sDirectoryPath = System.Web.HttpContext.Current.Server.MapPath("Template_XML");
+                    //string sXmlPath = Path.Combine(sDirectoryPath, "Base_XML.xml");
+                    string sXmlPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Template_XML\\Base_XML.xml");
+                    XmlDocument itemDoc = new XmlDocument();
+                    XmlTextReader XmlText = new XmlTextReader(sXmlPath);
                     XMLObj.itemDoc.Load(XmlText);
-                        XmlText.Close();
+                    XmlText.Close();
 
-                        XmlNodeList xmlAgenode = XMLObj.itemDoc.GetElementsByTagName("Age");
-                        if (xmlAgenode != null)
-                            xmlAgenode[0].ParentNode.RemoveChild(xmlAgenode[0]);
+                    XmlNodeList xmlAgenode = XMLObj.itemDoc.GetElementsByTagName("Age");
+                    if (xmlAgenode != null)
+                        xmlAgenode[0].ParentNode.RemoveChild(xmlAgenode[0]);
 
-                        IEnumerable<XElement> ilstPhysician = null;
-                        XmlNodeList xmlMember_ID = XMLObj.itemDoc.GetElementsByTagName("Encounter_Provider_Name");
+                    IEnumerable<XElement> ilstPhysician = null;
+                    XmlNodeList xmlMember_ID = XMLObj.itemDoc.GetElementsByTagName("Encounter_Provider_Name");
 
-                        string sPhysicianFacilityXmlPath = System.Web.Hosting.HostingEnvironment.ApplicationPhysicalPath + "\\ConfigXML\\PhysicianFacilityMapping.xml";
-                        XDocument xmlPhysician = XDocument.Load(sPhysicianFacilityXmlPath);
-                        ilstPhysician = xmlPhysician.Element("ROOT").Element("PhyList").Elements("Facility").Elements("Physician").Where(aa => aa.Attribute("ID").Value.ToString() == SaveEncounter[0].Encounter_Provider_ID.ToString());
-                        if (ilstPhysician != null && ilstPhysician.Count() > 0)
+                    string sPhysicianFacilityXmlPath = System.Web.Hosting.HostingEnvironment.ApplicationPhysicalPath + "\\ConfigXML\\PhysicianFacilityMapping.xml";
+                    XDocument xmlPhysician = XDocument.Load(sPhysicianFacilityXmlPath);
+                    ilstPhysician = xmlPhysician.Element("ROOT").Element("PhyList").Elements("Facility").Elements("Physician").Where(aa => aa.Attribute("ID").Value.ToString() == SaveEncounter[0].Encounter_Provider_ID.ToString());
+                    if (ilstPhysician != null && ilstPhysician.Count() > 0)
+                    {
+                        xmlMember_ID[0].InnerText = ilstPhysician.Attributes("prefix").First().Value.ToString() + " " + ilstPhysician.Attributes("firstname").First().Value.ToString() + " " + ilstPhysician.Attributes("middlename").First().Value.ToString() + " " + ilstPhysician.Attributes("lastname").First().Value.ToString();
+                    }
+
+                    string sPhysicianid = SaveEncounter[0].Encounter_Provider_ID.ToString();
+                    XmlNodeList xmlPhysicianAddress = XMLObj.itemDoc.GetElementsByTagName("Physician_Address");
+                    if (xmlPhysicianAddress != null)
+                    {
+                        string sPhysicianXmlPath = System.Web.Hosting.HostingEnvironment.ApplicationPhysicalPath + "\\ConfigXML\\PhysicianAddressDetails.xml";
+                        XmlDocument itemPhysiciandoc = new XmlDocument();
+                        XmlTextReader XmlPhysicianText = new XmlTextReader(sPhysicianXmlPath);
+                        itemPhysiciandoc.Load(XmlPhysicianText);
+
+                        XmlNodeList xmlphy = itemPhysiciandoc.GetElementsByTagName("p" + sPhysicianid);
+                        if (xmlphy.Count > 0)
                         {
-                            xmlMember_ID[0].InnerText = ilstPhysician.Attributes("prefix").First().Value.ToString() + " " + ilstPhysician.Attributes("firstname").First().Value.ToString() + " " + ilstPhysician.Attributes("middlename").First().Value.ToString() + " " + ilstPhysician.Attributes("lastname").First().Value.ToString();
+                            xmlPhysicianAddress[0].Attributes[0].Value = xmlphy[0].Attributes[0].Value;
+                            xmlPhysicianAddress[0].Attributes[1].Value = xmlphy[0].Attributes[1].Value;
+                            xmlPhysicianAddress[0].Attributes[2].Value = xmlphy[0].Attributes[2].Value;
+                            xmlPhysicianAddress[0].Attributes[3].Value = xmlphy[0].Attributes[3].Value;
+                            xmlPhysicianAddress[0].Attributes[4].Value = xmlphy[0].Attributes[4].Value;
+                            xmlPhysicianAddress[0].Attributes[5].Value = xmlphy[0].Attributes[5].Value;
+                            xmlPhysicianAddress[0].Attributes[6].Value = xmlphy[0].Attributes[6].Value;
+                            xmlPhysicianAddress[0].Attributes[7].Value = xmlphy[0].Attributes[7].Value;
                         }
+                    }
 
-                        string sPhysicianid = SaveEncounter[0].Encounter_Provider_ID.ToString();
-                        XmlNodeList xmlPhysicianAddress = XMLObj.itemDoc.GetElementsByTagName("Physician_Address");
-                        if (xmlPhysicianAddress != null)
-                        {
-                            string sPhysicianXmlPath = System.Web.Hosting.HostingEnvironment.ApplicationPhysicalPath + "\\ConfigXML\\PhysicianAddressDetails.xml";
-                            XmlDocument itemPhysiciandoc = new XmlDocument();
-                            XmlTextReader XmlPhysicianText = new XmlTextReader(sPhysicianXmlPath);
-                            itemPhysiciandoc.Load(XmlPhysicianText);
+                    //itemDoc.Save(strXmlEncounterFilePath);
 
-                            XmlNodeList xmlphy = itemPhysiciandoc.GetElementsByTagName("p" + sPhysicianid);
-                            if (xmlphy.Count > 0)
-                            {
-                                xmlPhysicianAddress[0].Attributes[0].Value = xmlphy[0].Attributes[0].Value;
-                                xmlPhysicianAddress[0].Attributes[1].Value = xmlphy[0].Attributes[1].Value;
-                                xmlPhysicianAddress[0].Attributes[2].Value = xmlphy[0].Attributes[2].Value;
-                                xmlPhysicianAddress[0].Attributes[3].Value = xmlphy[0].Attributes[3].Value;
-                                xmlPhysicianAddress[0].Attributes[4].Value = xmlphy[0].Attributes[4].Value;
-                                xmlPhysicianAddress[0].Attributes[5].Value = xmlphy[0].Attributes[5].Value;
-                                xmlPhysicianAddress[0].Attributes[6].Value = xmlphy[0].Attributes[6].Value;
-                                xmlPhysicianAddress[0].Attributes[7].Value = xmlphy[0].Attributes[7].Value;
-                            }
-                        }
 
-                        //itemDoc.Save(strXmlEncounterFilePath);
-                       
-                       
                     GenerateXml objXml = new GenerateXml();
                     List<object> lstObj = SaveEncounter.Cast<object>().ToList();
-                   // objXml.GenerateXmlSave(lstObj, ulEncId, string.Empty, true);
-                   // objXml.itemDoc = null;
-                    XMLObj.GenerateXmlSave(lstObj, ulEncId, string.Empty, false, true, false, false,ref XMLObj);
+                    // objXml.GenerateXmlSave(lstObj, ulEncId, string.Empty, true);
+                    // objXml.itemDoc = null;
+                    XMLObj.GenerateXmlSave(lstObj, ulEncId, string.Empty, false, true, false, false, ref XMLObj);
                     WriteBlob(ulEncId, XMLObj.itemDoc, MySession, SaveEncounter, null, null, XMLObj, true);
                     trans.Commit();
                     trans = MySession.BeginTransaction();
@@ -10172,27 +10172,27 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
             //IList<string> ilstEncounterTagList = new List<string>();
             //ilstEncounterTagList.Add("EncounterList");
             //ilstEncBlob = ReadBlob( ulEncID, ilstEncounterTagList);
-            
+
             //if (File.Exists(strXmlEncounterFilePath) == false)
             //{
-                string sDirectoryPath = System.Web.HttpContext.Current.Server.MapPath("Template_XML");
-                string sXmlPath = Path.Combine(sDirectoryPath, "Base_XML.xml");
-                XmlDocument itemDoc = new XmlDocument();
-                XmlTextReader XmlText = new XmlTextReader(sXmlPath);
-                itemDoc.Load(XmlText);
-                XmlText.Close();
+            string sDirectoryPath = System.Web.HttpContext.Current.Server.MapPath("Template_XML");
+            string sXmlPath = Path.Combine(sDirectoryPath, "Base_XML.xml");
+            XmlDocument itemDoc = new XmlDocument();
+            XmlTextReader XmlText = new XmlTextReader(sXmlPath);
+            itemDoc.Load(XmlText);
+            XmlText.Close();
 
-                XmlNodeList xmlAgenode = itemDoc.GetElementsByTagName("Age");
-                if (xmlAgenode != null && xmlAgenode.Count > 0)
-                    xmlAgenode[0].ParentNode.RemoveChild(xmlAgenode[0]);
-                //itemDoc.Save(strXmlEncounterFilePath);
+            XmlNodeList xmlAgenode = itemDoc.GetElementsByTagName("Age");
+            if (xmlAgenode != null && xmlAgenode.Count > 0)
+                xmlAgenode[0].ParentNode.RemoveChild(xmlAgenode[0]);
+            //itemDoc.Save(strXmlEncounterFilePath);
 
             ISession session = Session.GetISession();
             try
             {
                 using (ITransaction trans = session.BeginTransaction(IsolationLevel.ReadUncommitted))
                 {
-                    WriteBlob( ulEncID, itemDoc, session, null, encupdateList, null, null, true);
+                    WriteBlob(ulEncID, itemDoc, session, null, encupdateList, null, null, true);
 
                     trans.Commit();
                 }
@@ -10638,19 +10638,19 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
                             {
                                 wfObjMngr.MoveToNextProcess(DocumentationWfObject.Obj_System_Id, DocumentationWfObject.Obj_Type, 5, sCurrentOwner, dtCurrentDateTime, sMacAddress, null, null);
 
-                                 DocumentationWfObject = wfObjMngr.GetByObjectSystemId(ulEncounterID, "DOCUMENTATION");
-                                 if (DocumentationWfObject.Current_Process == "PROVIDER_REVIEW")
-                                 {
-                                     if (ulSelectedPhyID != 0)
-                                     {
-                                         ICriteria criteria = iMySession.CreateCriteria(typeof(User)).Add(Expression.Eq("Physician_Library_ID", ulSelectedPhyID));
-                                         if (criteria.List<User>() != null && criteria.List<User>().Count > 0)
-                                         {
-                                             sCurrentOwner = criteria.List<User>()[0].user_name;
-                                             wfObjMngr.UpdateOwner(DocumentationWfObject.Obj_System_Id, DocumentationWfObject.Obj_Type, sCurrentOwner, string.Empty);
-                                         }
-                                     }
-                                 }
+                                DocumentationWfObject = wfObjMngr.GetByObjectSystemId(ulEncounterID, "DOCUMENTATION");
+                                if (DocumentationWfObject.Current_Process == "PROVIDER_REVIEW")
+                                {
+                                    if (ulSelectedPhyID != 0)
+                                    {
+                                        ICriteria criteria = iMySession.CreateCriteria(typeof(User)).Add(Expression.Eq("Physician_Library_ID", ulSelectedPhyID));
+                                        if (criteria.List<User>() != null && criteria.List<User>().Count > 0)
+                                        {
+                                            sCurrentOwner = criteria.List<User>()[0].user_name;
+                                            wfObjMngr.UpdateOwner(DocumentationWfObject.Obj_System_Id, DocumentationWfObject.Obj_Type, sCurrentOwner, string.Empty);
+                                        }
+                                    }
+                                }
                             }
                             else
                             {
@@ -10697,7 +10697,7 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
                             if (DocumentationWfObject.Current_Process == "DOCUMENT_COMPLETE")
                             {
                                 BillingWfObject = wfObjMngr.GetByObjectSystemId(ulEncounterID, "BILLING");
-                                if (BillingWfObject.Current_Process =="BATCHING_WAIT")
+                                if (BillingWfObject.Current_Process == "BATCHING_WAIT")
                                     wfObjMngr.MoveToNextProcess(BillingWfObject.Obj_System_Id, BillingWfObject.Obj_Type, CloseType, "UNKNOWN", dtCurrentDateTime, sMacAddress, null, null);
                             }
                         }
@@ -10717,7 +10717,7 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
                 }
                 iMySession.Close();
             }
-                #endregion
+            #endregion
         }
 
         //added By suresh on 11-April-2012 for Summary Report 
@@ -13005,75 +13005,79 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
                             string[] sQuery = query.Split('&');
                             string[] sEntity = lstCDS.Entity_Name.Split('&');
                             string[] sScreenName = lstCDS.SCN_Name.Split('&');
-                            if (sScreenName.Contains(ScreenName) == true)
+                            string[] ScreenNametemp = ScreenName.Split('|');
+                            for (int k = 0; k < ScreenNametemp.Length; k++)
                             {
-                                for (int i = 0; i < sQuery.Count(); i++)
+                                if (sScreenName.Contains(ScreenNametemp[k]) == true)
                                 {
-                                    ArysqlList = null;
-                                    if (bCheck == false)
+                                    for (int i = 0; i < sQuery.Count(); i++)
                                     {
-                                        if (ulEncounterId != 0)
+                                        ArysqlList = null;
+                                        if (bCheck == false)
                                         {
-                                            QuerySQL = iMySession.CreateSQLQuery(sQuery[i].Replace(":HumanID", ulHumanID.ToString()).Replace(":Enc", ulEncounterId.ToString())).AddEntity(sEntity[i]);
-                                            ArysqlList = new ArrayList(QuerySQL.List());
-                                        }
-                                        else
-                                        {
-                                            if (sQuery[i].Contains(":Enc") == false)
+                                            if (ulEncounterId != 0)
                                             {
-                                                QuerySQL = iMySession.CreateSQLQuery(sQuery[i].Replace(":HumanID", ulHumanID.ToString())).AddEntity(sEntity[i]);
+                                                QuerySQL = iMySession.CreateSQLQuery(sQuery[i].Replace(":HumanID", ulHumanID.ToString()).Replace(":Enc", ulEncounterId.ToString())).AddEntity(sEntity[i]);
                                                 ArysqlList = new ArrayList(QuerySQL.List());
                                             }
-                                        }
+                                            else
+                                            {
+                                                if (sQuery[i].Contains(":Enc") == false)
+                                                {
+                                                    QuerySQL = iMySession.CreateSQLQuery(sQuery[i].Replace(":HumanID", ulHumanID.ToString())).AddEntity(sEntity[i]);
+                                                    ArysqlList = new ArrayList(QuerySQL.List());
+                                                }
+                                            }
 
-                                        if (ArysqlList != null && ArysqlList.Count > 0)
+                                            if (ArysqlList != null && ArysqlList.Count > 0)
+                                            {
+                                                bCheck = false;
+                                            }
+                                            else
+                                            {
+                                                bCheck = true;
+                                            }
+                                        }
+                                    }
+                                    if (bCheck == false)
+                                    {
+                                        //save
+                                        IList<Notification> lstNotification = NotificationList.Where(a => a.CDS_Rule_Master_Name.Trim().ToUpper() == lstCDS.Clinincal_Decision_Name.Trim().ToUpper()).ToList<Notification>();
+                                        if (lstNotification.Count == 0)
                                         {
-                                            bCheck = false;
+                                            saveNotify.CDS_Rule_Master_Name = lstCDS.Clinincal_Decision_Name;
+                                            saveNotify.Human_ID = ulHumanID.ToString();
+                                            saveNotify.Encounter_ID = ulEncounterId.ToString();
+                                            saveNotify.Created_By = UserName;
+                                            saveNotify.Created_Date_And_Time = Current_dt;
+                                            saveNotify.Modified_By = "";
+                                            saveNotify.Modified_Date_And_Time = DateTime.MinValue;
+                                            saveNotify.Status = "Active";
+                                            ilstSaveNotify.Add(saveNotify);
                                         }
                                         else
                                         {
-                                            bCheck = true;
+                                            foreach (Notification item in lstNotification)
+                                            {
+                                                updateNotify = item;
+                                                updateNotify.Modified_By = UserName;
+                                                updateNotify.Modified_Date_And_Time = Current_dt;
+                                                updateNotify.Status = "Active";
+                                                ilstUpdateNotify.Add(updateNotify);
+                                            }
                                         }
-                                    }
-                                }
-                                if (bCheck == false)
-                                {
-                                    //save
-                                    IList<Notification> lstNotification = NotificationList.Where(a => a.CDS_Rule_Master_Name.Trim().ToUpper() == lstCDS.Clinincal_Decision_Name.Trim().ToUpper()).ToList<Notification>();
-                                    if (lstNotification.Count == 0)
-                                    {
-                                        saveNotify.CDS_Rule_Master_Name = lstCDS.Clinincal_Decision_Name;
-                                        saveNotify.Human_ID = ulHumanID.ToString();
-                                        saveNotify.Encounter_ID = ulEncounterId.ToString();
-                                        saveNotify.Created_By = UserName;
-                                        saveNotify.Created_Date_And_Time = Current_dt;
-                                        saveNotify.Modified_By = "";
-                                        saveNotify.Modified_Date_And_Time = DateTime.MinValue;
-                                        saveNotify.Status = "Active";
-                                        ilstSaveNotify.Add(saveNotify);
                                     }
                                     else
                                     {
+                                        IList<Notification> lstNotification = NotificationList.Where(a => a.CDS_Rule_Master_Name.Trim().ToUpper() == lstCDS.Clinincal_Decision_Name.Trim().ToUpper()).ToList<Notification>();
                                         foreach (Notification item in lstNotification)
                                         {
                                             updateNotify = item;
                                             updateNotify.Modified_By = UserName;
                                             updateNotify.Modified_Date_And_Time = Current_dt;
-                                            updateNotify.Status = "Active";
+                                            updateNotify.Status = "Inactive";
                                             ilstUpdateNotify.Add(updateNotify);
                                         }
-                                    }
-                                }
-                                else
-                                {
-                                    IList<Notification> lstNotification = NotificationList.Where(a => a.CDS_Rule_Master_Name.Trim().ToUpper() == lstCDS.Clinincal_Decision_Name.Trim().ToUpper()).ToList<Notification>();
-                                    foreach (Notification item in lstNotification)
-                                    {
-                                        updateNotify = item;
-                                        updateNotify.Modified_By = UserName;
-                                        updateNotify.Modified_Date_And_Time = Current_dt;
-                                        updateNotify.Status = "Inactive";
-                                        ilstUpdateNotify.Add(updateNotify);
                                     }
                                 }
                             }
@@ -13745,7 +13749,7 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
                             //objhumanmanager.SaveUpdateDeleteWithTransaction(ref humanListadd, temp_lst, null, macAddress);
                             objhumanmanager.SaveUpdateDelete_DBAndXML_WithTransaction(ref humanListadd, ref temp_lst, null, macAddress, true, false, temp_lst[0].Id, string.Empty);
                             RCopiaTransactionManager objRcopiaMngr = new RCopiaTransactionManager();
-                            objRcopiaMngr.SendPatientToRCopia(Human_Id, macAddress,sLegalOrg);
+                            objRcopiaMngr.SendPatientToRCopia(Human_Id, macAddress, sLegalOrg);
                         }
                     }
                     else
@@ -13758,7 +13762,7 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
                         objHuman.Human_Type = "REGULAR";
                         objHuman.Account_Status = "Active";
                         IList<Human> ilstHuman = new List<Human>();
-                        Human_Id = objhumanmanager.AppendHumanFromImport(objHuman,sLegalOrg);
+                        Human_Id = objhumanmanager.AppendHumanFromImport(objHuman, sLegalOrg);
                         //ilstHuman = objhumanmanager.SaveHumanforSummary(lsthuman);
                         // Human_Id = ilstHuman[0].Id;
 
@@ -14175,7 +14179,7 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
                     }
                 }
                 RCopiaGenerateXML objMedicationmanager = new RCopiaGenerateXML();
-                objMedicationmanager.creteSendAllergyXml(lstallergy.ToArray(), null, null,sLegalOrg);
+                objMedicationmanager.creteSendAllergyXml(lstallergy.ToArray(), null, null, sLegalOrg);
 
                 #endregion
 
@@ -14191,7 +14195,7 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
                     }
                 }
                 RCopiaGenerateXML objMedicationmanagerobjMedicationmanager = new RCopiaGenerateXML();
-                objMedicationmanagerobjMedicationmanager.creteSendMedicationXml(lstmedication, null, null,sLegalOrg);
+                objMedicationmanagerobjMedicationmanager.creteSendMedicationXml(lstmedication, null, null, sLegalOrg);
                 RCopiaSessionManager rcopiaSessionMngr = new RCopiaSessionManager(sLegalOrg);
                 Rcopia_Update_InfoManager objUpdateInfoMngr = new Rcopia_Update_InfoManager();
 
@@ -14200,7 +14204,7 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
                 //objUpdateInfoMngr.DownloadRCopiaInfo(rcopiaSessionMngr.UploadAddress, UserName, macAddress, DateTime.UtcNow, FacilityName, EncID);
 
                 //Patient Level RCopia Download - Commented
-                objUpdateInfoMngr.DownloadRCopiaInfo(rcopiaSessionMngr.UploadAddress, UserName, macAddress, DateTime.UtcNow, FacilityName, EncID, Human_Id,sLegalOrg);
+                objUpdateInfoMngr.DownloadRCopiaInfo(rcopiaSessionMngr.UploadAddress, UserName, macAddress, DateTime.UtcNow, FacilityName, EncID, Human_Id, sLegalOrg);
                 #endregion
 
 
@@ -15069,7 +15073,7 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
  + "and f.doc_sub_type in (" + newList + ")  and  (w.current_process='BILLING_WAIT' OR w.current_process='BILLING_COMPLETE') and f.result_master_id<>0  and m.Result_Review_Comments like '%Test Reviewed: %'").AddEntity("f", typeof(FileManagementIndex));
 
                         IList<FileManagementIndex> queryoutput = sqlquery.List<FileManagementIndex>();
-                        
+
                         for (int i = 0; i < queryoutput.Count; i++)
                         {
                             //sDescList.Add("StressTestReport" + "^" + queryoutput[i].Id + "^" + queryoutput[i].Document_Date.ToString("dd-MMM-yyyy hh:mm tt") + "^" + "Stress Test Signed Report" + "^" + queryoutput[i].File_Path + "^" + queryoutput[i].Document_Type + "^" + queryoutput[i].Order_ID + "^" + queryoutput[i].Result_Master_ID);
@@ -16036,7 +16040,7 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
                 //check for current_process to prevent DOCUMENTATION Object from Moving to REVIEW_CODING from PROVIDER_PROCESS on click of Move to Provider from MA
                 if (iWfObject != null && iWfObject.Count > 0)
                 {
-                    if (iWfObject != null && iWfObject.Count > 0 && (iWfObject[0].Current_Process.ToUpper() == "PROVIDER_PROCESS_WAIT" || iWfObject[0].Current_Process.ToUpper() == "SCRIBE_PROCESS_WAIT" ||  iWfObject[0].Current_Process.ToUpper() == "MA_PROCESS"))
+                    if (iWfObject != null && iWfObject.Count > 0 && (iWfObject[0].Current_Process.ToUpper() == "PROVIDER_PROCESS_WAIT" || iWfObject[0].Current_Process.ToUpper() == "SCRIBE_PROCESS_WAIT" || iWfObject[0].Current_Process.ToUpper() == "MA_PROCESS"))
                     {
 
 
@@ -16077,7 +16081,7 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
                             else
                             {
                                 objWfMngr.MoveToNextProcess(iWfObject[0].Obj_System_Id, iWfObject[0].Obj_Type, 1, sUsername, System.TimeZoneInfo.ConvertTimeToUtc(DateTime.Today), iWfObject[0].Current_Process, null, null);
-                         
+
                             }
                             IList<Encounter> lstAddEncounter = null;
                             IList<Encounter> lstUpdateEncounter = new List<Encounter>();
@@ -16095,7 +16099,7 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
                         objWfMngr.MoveToNextProcess(iWfObject[0].Obj_System_Id, iWfObject[0].Obj_Type, 1, sUsername, System.TimeZoneInfo.ConvertTimeToUtc(DateTime.Today), iWfObject[0].Current_Process, null, null);
 
                     }
-                    if (iWfObject != null && iWfObject.Count > 0 && iWfObject[0].Current_Process.ToUpper() == "TECHNICIAN_PROCESS" )
+                    if (iWfObject != null && iWfObject.Count > 0 && iWfObject[0].Current_Process.ToUpper() == "TECHNICIAN_PROCESS")
                     {
                         objWfMngr.MoveToNextProcess(iWfObject[0].Obj_System_Id, iWfObject[0].Obj_Type, 1, "UNKNOWN", System.TimeZoneInfo.ConvertTimeToUtc(DateTime.Today), iWfObject[0].Current_Process, null, null);
 
@@ -16133,7 +16137,7 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
             EMICDCount = emICDMngr.GetEMICDCount(ulMyEncounterID);
 
 
-          //  var GcodeList = from g in objMoveVerifyDTO.EandMCodingList where (g.Procedure_Code == "G0438" || g.Procedure_Code == "G0439") select g.Id;
+            //  var GcodeList = from g in objMoveVerifyDTO.EandMCodingList where (g.Procedure_Code == "G0438" || g.Procedure_Code == "G0439") select g.Id;
             var GcodeList = from g in objMoveVerifyDTO.EandMCodingList where (g.Procedure_Code == "G0438" || g.Procedure_Code == "G0439") select g.Encounter_ID;
 
             if (GcodeList != null && GcodeList.Count() > 0)
@@ -16225,10 +16229,10 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
         {
             Boolean bCheck = false;
 
-            ISQLQuery sql = session.GetISession().CreateSQLQuery("select count(*) from procedure_code_library where procedure_code in (select procedure_code from e_m_coding where encounter_id='" + ulEncID +"' and is_delete!='Y' and (procedure_code in ('99080','99024','MAVST','NCVST','NO CHARGE','NOBILL','NURSE','TB','WT','BP','A9270','99421','99422','99423') or procedure_charge >=1.00));");
+            ISQLQuery sql = session.GetISession().CreateSQLQuery("select count(*) from procedure_code_library where procedure_code in (select procedure_code from e_m_coding where encounter_id='" + ulEncID + "' and is_delete!='Y' and (procedure_code in ('99080','99024','MAVST','NCVST','NO CHARGE','NOBILL','NURSE','TB','WT','BP','A9270','99421','99422','99423') or procedure_charge >=1.00));");
 
             ArrayList ilistObj = new ArrayList(sql.List());
-            if (ilistObj != null && ilistObj.Count>0)
+            if (ilistObj != null && ilistObj.Count > 0)
             {
                 if (Convert.ToUInt64(ilistObj[0]) >= 1)
                     bCheck = true;
@@ -16249,9 +16253,9 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
             IList<WFObject> iWfObject = new List<WFObject>();
             iWfObject = objWfMngr.GetByDocumentObjectSystemId(EncListupdate[0].Id, "BILLING");
 
-            if (iWfObject[0].Current_Process=="BATCHING_WAIT")
+            if (iWfObject[0].Current_Process == "BATCHING_WAIT")
                 objWfMngr.MoveToNextProcess(iWfObject[0].Obj_System_Id, iWfObject[0].Obj_Type, 1, "UNKNOWN", System.TimeZoneInfo.ConvertTimeToUtc(DateTime.Today), iWfObject[0].Current_Process, null, null);
-                       
+
             //if (EncListupdate != null)
             //{
             //    if (EncListupdate.Count > 0)
@@ -16725,7 +16729,7 @@ AND E.ENCOUNTER_PROVIDER_SIGNED_DATE<>'0001-01-01 00:00:00'
                                 FillApptList.Birth_Date.Add(Convert.ToDateTime(oj[18].ToString()));
                             if (oj[19] != null)
                                 FillApptList.Human_Type.Add(oj[19].ToString());
-                           // if (sFacility != null && sFacility.ToUpper() == FacName.FirstOrDefault().ToUpper())
+                            // if (sFacility != null && sFacility.ToUpper() == FacName.FirstOrDefault().ToUpper())
                             if (ilstFacAncillary.Count > 0)
                                 FillApptList.PhysicianName.Add(oj[12].ToString() + " - " + oj[13].ToString() + " " + oj[14].ToString());
                             else
@@ -16749,7 +16753,7 @@ AND E.ENCOUNTER_PROVIDER_SIGNED_DATE<>'0001-01-01 00:00:00'
                                     sPhyName += "," + oj[15].ToString();
                                 FillApptList.PhysicianName.Add(sPhyName);
                             }
-                                
+
 
                             FillApptList.FacilityName.Add(oj[16].ToString());
                             FillApptList.PatientName.Add(sPatientName);
@@ -17332,19 +17336,19 @@ AND E.ENCOUNTER_PROVIDER_SIGNED_DATE<>'0001-01-01 00:00:00'
                 IQuery query2 = iMySession.GetNamedQuery("Fill.GetEncountersByRange.ColumnHeadings");
                 arylstColumnHeadings = new ArrayList(query2.List());
 
-//                string sQuery = "select * from (SELECT cast(enc.Date_of_Service as char(100)) as DOS, enc.Human_ID as Patient_Account_Number,concat(Last_Name, ',',First_Name,'  ' ,MI,'  ' ,Suffix) as Patient_Name,  " +
-//    "cast(h.Birth_Date as char(100)) as Patient_DOB,enc.Facility_Name,concat(ifnull(p.Physician_Prefix,''),' ',ifnull(p.Physician_First_Name,''),' '," +
-//    "ifnull(p.Physician_Middle_Name,''),' ',ifnull(p.Physician_Last_Name,''),' ',ifnull(p.Physician_Suffix,'')) as Provider_Name," +
-//"ifnull(pat.policy_holder_id,'') as Member_ID,ifnull(ins.insurance_plan_name,'') as Plan_Name ,enc.Encounter_ID as Encounter_ID, ins.Carrier_ID " +
-// "FROM encounter enc left join human h on (enc.human_id=h.human_id) left join physician_library p on (enc.Encounter_Provider_ID = p.physician_library_id)" +
-// "left join pat_insured_plan pat on (h.human_id=pat.human_id) left join insurance_plan ins on (pat.insurance_plan_id= ins.insurance_plan_id) where :WhereCondition" +
-// "union all " +
-// "SELECT cast(enc.Date_of_Service as char(100)) as DOS, enc.Human_ID as Patient_Account_Number,concat(Last_Name, ',',First_Name,'  ' ,MI,'  ' ,Suffix) as Patient_Name,  " +
-//    "cast(h.Birth_Date as char(100)) as Patient_DOB,enc.Facility_Name,concat(ifnull(p.Physician_Prefix,''),' ',ifnull(p.Physician_First_Name,''),' '," +
-//    "ifnull(p.Physician_Middle_Name,''),' ',ifnull(p.Physician_Last_Name,''),' ',ifnull(p.Physician_Suffix,'')) as Provider_Name," +
-//"ifnull(pat.policy_holder_id,'') as Member_ID,ifnull(ins.insurance_plan_name,'') as Plan_Name ,enc.Encounter_ID as Encounter_ID, ins.Carrier_ID " +
-// "FROM encounter_arc enc left join human h on (enc.human_id=h.human_id) left join physician_library p on (enc.Encounter_Provider_ID = p.physician_library_id)" +
-// "left join pat_insured_plan pat on (h.human_id=pat.human_id) left join insurance_plan ins on (pat.insurance_plan_id= ins.insurance_plan_id) where :WhereCondition ) as d order by DOS";
+                //                string sQuery = "select * from (SELECT cast(enc.Date_of_Service as char(100)) as DOS, enc.Human_ID as Patient_Account_Number,concat(Last_Name, ',',First_Name,'  ' ,MI,'  ' ,Suffix) as Patient_Name,  " +
+                //    "cast(h.Birth_Date as char(100)) as Patient_DOB,enc.Facility_Name,concat(ifnull(p.Physician_Prefix,''),' ',ifnull(p.Physician_First_Name,''),' '," +
+                //    "ifnull(p.Physician_Middle_Name,''),' ',ifnull(p.Physician_Last_Name,''),' ',ifnull(p.Physician_Suffix,'')) as Provider_Name," +
+                //"ifnull(pat.policy_holder_id,'') as Member_ID,ifnull(ins.insurance_plan_name,'') as Plan_Name ,enc.Encounter_ID as Encounter_ID, ins.Carrier_ID " +
+                // "FROM encounter enc left join human h on (enc.human_id=h.human_id) left join physician_library p on (enc.Encounter_Provider_ID = p.physician_library_id)" +
+                // "left join pat_insured_plan pat on (h.human_id=pat.human_id) left join insurance_plan ins on (pat.insurance_plan_id= ins.insurance_plan_id) where :WhereCondition" +
+                // "union all " +
+                // "SELECT cast(enc.Date_of_Service as char(100)) as DOS, enc.Human_ID as Patient_Account_Number,concat(Last_Name, ',',First_Name,'  ' ,MI,'  ' ,Suffix) as Patient_Name,  " +
+                //    "cast(h.Birth_Date as char(100)) as Patient_DOB,enc.Facility_Name,concat(ifnull(p.Physician_Prefix,''),' ',ifnull(p.Physician_First_Name,''),' '," +
+                //    "ifnull(p.Physician_Middle_Name,''),' ',ifnull(p.Physician_Last_Name,''),' ',ifnull(p.Physician_Suffix,'')) as Provider_Name," +
+                //"ifnull(pat.policy_holder_id,'') as Member_ID,ifnull(ins.insurance_plan_name,'') as Plan_Name ,enc.Encounter_ID as Encounter_ID, ins.Carrier_ID " +
+                // "FROM encounter_arc enc left join human h on (enc.human_id=h.human_id) left join physician_library p on (enc.Encounter_Provider_ID = p.physician_library_id)" +
+                // "left join pat_insured_plan pat on (h.human_id=pat.human_id) left join insurance_plan ins on (pat.insurance_plan_id= ins.insurance_plan_id) where :WhereCondition ) as d order by DOS";
 
                 string sQuery = "select * from (SELECT concat(Last_Name, ',',First_Name,'  ' ,MI,'  ' ,Suffix) as Patient_Name,cast(h.Birth_Date as char(100)) as Patient_DOB, enc.Human_ID as Patient_Account_Number, ifnull(pat.policy_holder_id,'') as Member_ID,  cast(enc.Date_of_Service as char(100)) as DOS, " +
     "concat(ifnull(p.Physician_Prefix,''),' ',ifnull(p.Physician_First_Name,''),' '," +
@@ -17420,7 +17424,7 @@ AND E.ENCOUNTER_PROVIDER_SIGNED_DATE<>'0001-01-01 00:00:00'
             query.SetString(3, sMonths);
             arrList = new ArrayList(query.List());
             foreach (object[] oj in arrList)
-                sDescList.Add( oj[1].ToString() + " ~ " + oj[2].ToString() + "^" + oj[0].ToString());
+                sDescList.Add(oj[1].ToString() + " ~ " + oj[2].ToString() + "^" + oj[0].ToString());
 
             return sDescList;
         }

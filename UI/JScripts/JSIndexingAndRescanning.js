@@ -292,7 +292,7 @@ function btnMoveToNextProcess_Clicked() {
             else {
                 if (document.getElementById("hdnIsMyScan").value != "" && document.getElementById("hdnIsMyScan").value == "true") {
                     if ($("#PatientDetails")[0] != null && $("#PatientDetails")[0] != undefined)
-                        document.getElementById("hdnHumanID").value = $("#PatientDetails")[0].value.split(':').pop().trim();
+                        document.getElementById("hdnHumanID").value = $("#PatientDetails")[0].value.split(':')[1].split('|')[0].trim();
 
                     document.getElementById("hdnsourceFile").value = $("#tbFilesBody tr.highlight")[0].cells[2].innerText;
                     //For myscan direct upload take only grid line items.

@@ -449,7 +449,7 @@ namespace Acurus.Capella.UI
             if (hdnHumanID.Value == "" && PatientDetails.Text != "")
             {
                 if (PatientDetails.Text.Contains(':'))
-                    hdnHumanID.Value = PatientDetails.Text.Split(':')[1];
+                    hdnHumanID.Value = PatientDetails.Text.Split(':')[1].Split('|')[0];
             }
             if (hdnHumanID.Value != "")
             {
@@ -583,7 +583,7 @@ namespace Acurus.Capella.UI
             if (hdnHumanID.Value == "" && PatientDetails.Text != "")
             {
                 if (PatientDetails.Text.Contains(':'))
-                    hdnHumanID.Value = PatientDetails.Text.Split(':')[1];
+                    hdnHumanID.Value = PatientDetails.Text.Split(':')[1].Split('|')[0];
             }
             if (hdnHumanID.Value != "")
             {
@@ -1237,7 +1237,7 @@ namespace Acurus.Capella.UI
             if (hdnHumanID.Value == "" && PatientDetails.Text != "")
             {
                 if (PatientDetails.Text.Contains(':'))
-                    hdnHumanID.Value = PatientDetails.Text.Split(':')[1];
+                    hdnHumanID.Value = PatientDetails.Text.Split(':')[1].Split('|')[0];
             }
             if (hdnHumanID.Value == "")// || PatientDetails.Text == "")
             {
@@ -1794,7 +1794,7 @@ namespace Acurus.Capella.UI
             if (hdnHumanID.Value == "" && PatientDetails.Text != "")
             {
                 if (PatientDetails.Text.Contains(':'))
-                    hdnHumanID.Value = PatientDetails.Text.Split(':')[1];
+                    hdnHumanID.Value = PatientDetails.Text.Split(':')[1].Split('|')[0];
             }
             if (hdnHumanID.Value == "")//|| PatientDetails.Text == "")
             {

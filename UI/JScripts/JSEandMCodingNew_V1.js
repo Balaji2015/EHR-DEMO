@@ -2880,6 +2880,16 @@ myapp.controller('EandMCodingCtrl', function ($scope, $http) {
             if (icdcount) {
 
                 if (!alert('Please select at least one ICD')) {
+
+                    localStorage.setItem("bSave", "true");
+                    window.parent.parent.parent.parent.theForm.ctl00_C5POBody_hdnIsSaveEnable.value = false;
+                    localStorage.setItem("CCAndEandMAutosave", "true");
+                    bSaveCheck = false;
+                    DisableChartLevelAutoSave();//BugID:52795
+                    AutoSaveSuccessful();
+                    DeleteArray = [];
+                    RefreshNotification('ServiceAndProcedureCode');
+
                     if (localStorage.getItem("MovetofromEandM") == "False") {
 
                         $($(window.top.document).find('iframe[id=ctl00_C5POBody_EncounterContainer]')[0].contentDocument).find("ul li a")[0].click();
@@ -2895,6 +2905,7 @@ myapp.controller('EandMCodingCtrl', function ($scope, $http) {
 
                     }
                 }
+             
                 //DisplayErrorMessage('530004');
 
                 // bSaveCheck = true;
@@ -2903,7 +2914,14 @@ myapp.controller('EandMCodingCtrl', function ($scope, $http) {
             }
             if (!isprimary && UserRole.toUpperCase() == 'PHYSICIAN') {
 
-               
+                localStorage.setItem("bSave", "true");
+                window.parent.parent.parent.parent.theForm.ctl00_C5POBody_hdnIsSaveEnable.value = false;
+                localStorage.setItem("CCAndEandMAutosave", "true");
+                bSaveCheck = false;
+                DisableChartLevelAutoSave();//BugID:52795
+                AutoSaveSuccessful();
+                DeleteArray = [];
+                RefreshNotification('ServiceAndProcedureCode');
                 if (!alert('Please mark the Primary ICD') ) {
                     if (localStorage.getItem("MovetofromEandM") == "False") {
 
@@ -2920,7 +2938,7 @@ myapp.controller('EandMCodingCtrl', function ($scope, $http) {
 
                     }
                 }
-
+                //BugID: 49118
                 // bSaveCheck = true;
                 //AutoSaveUnsuccessful();
 
@@ -2929,6 +2947,16 @@ myapp.controller('EandMCodingCtrl', function ($scope, $http) {
           
             //GitLab #3038
             if (test.IsBillableNo == "180045") {
+
+                localStorage.setItem("bSave", "true");
+                window.parent.parent.parent.parent.theForm.ctl00_C5POBody_hdnIsSaveEnable.value = false;
+                localStorage.setItem("CCAndEandMAutosave", "true");
+                bSaveCheck = false;
+                DisableChartLevelAutoSave();//BugID:52795
+                AutoSaveSuccessful();
+                DeleteArray = [];
+                RefreshNotification('ServiceAndProcedureCode');
+
                 if (UserRole.toUpperCase() == 'PHYSICIAN' && ValEnableScreen.indexOf('EnableScreen') < 0) {
 
                     if (!alert('Please select the ICD Z00.00 or Z00.01 for Gcodes G0438 or G0439'))   {
