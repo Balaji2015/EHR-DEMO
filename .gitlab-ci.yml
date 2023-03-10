@@ -10,7 +10,10 @@ variables:
   MSBUILD_PATH: C:\Program Files\Microsoft Visual Studio\2022\Professional\MSBuild\Current\Bin\MSBuild.exe
 
 stages:
- - Solution build
+ - Solution build test 4
+ - Solution build test 11
+ - Solution build production 6
+ - Solution build production 10
  - Deploy TESTING 10.0.0.4
  - Deploy TESTING 10.0.0.11
  - Deploy PRODUCTION 10.1.0.6 
@@ -21,11 +24,89 @@ before_script:
    - '& "$env:NUGET_PATH" restore EHR-Capella5.0.sln'
    - echo "Nuget script..Completed"
  
-build Job:
+build test Job:
+  tags:
+    - azure test4 tag
   rules:
-    - if: '$SERVER_TESTING_11 =="10.0.0.11" || $SERVER_TESTING_4 =="10.0.0.4" || $SERVER_PRODUCTION_6 =="10.1.0.6" || $SERVER_PRODUCTION_10 =="10.1.0.10"'
-  stage: Solution build
+    - if: ' $SERVER_TESTING_4 =="10.0.0.4" '
+  stage: Solution build test 4
   script:
+  - echo "UI Building..start"
+  - '& "$env:MSBUILD_PATH" EHR-Capella5.0.sln 
+    /p:DeployOnBuild=true 
+    /p:Configuration=Release
+    /p:DeleteExistingFiles=True 
+    /p:Platform="Any CPU"     
+    /p:PublishProfile=FolderProfile.pubxml
+    #/p:publishUrl=E:\Deployee\builds\Capella_publish\ 
+    #/p:ExcludeFoldersFromDeployment=.\ehr-capella5.0\PatientPortal
+    #/p:IgnoreDeployManagedRuntimeVersion=True 
+    #/p:publishUrl=.\EHR_REPORTS2.0\bin\Publish\ '
+   
+  - echo "Building..Completed"
+   artifacts:
+    expire_in: 365 days
+    paths:
+    - EHR-Capella5.0\
+    
+ build test Job:
+   tags:
+    - azure-test11
+   rules:
+     - if: '$SERVER_TESTING_11 =="10.0.0.11" '
+   stage: Solution build test 11
+   script:
+  - echo "UI Building..start"
+  - '& "$env:MSBUILD_PATH" EHR-Capella5.0.sln 
+    /p:DeployOnBuild=true 
+    /p:Configuration=Release
+    /p:DeleteExistingFiles=True 
+    /p:Platform="Any CPU"     
+    /p:PublishProfile=FolderProfile.pubxml
+    #/p:publishUrl=E:\Deployee\builds\Capella_publish\ 
+    #/p:ExcludeFoldersFromDeployment=.\ehr-capella5.0\PatientPortal
+    #/p:IgnoreDeployManagedRuntimeVersion=True 
+    #/p:publishUrl=.\EHR_REPORTS2.0\bin\Publish\ '
+   
+   - echo "Building..Completed"
+   artifacts:
+    expire_in: 365 days
+    paths:
+    - EHR-Capella5.0\
+    
+ build production Job:
+    tags:
+    - azure prod 6 tag
+    rules:
+    - if: '$SERVER_PRODUCTION_6 =="10.1.0.6" '
+    stage: Solution build production 6
+    script:
+  - echo "UI Building..start"
+  - '& "$env:MSBUILD_PATH" EHR-Capella5.0.sln 
+    /p:DeployOnBuild=true 
+    /p:Configuration=Release
+    /p:DeleteExistingFiles=True 
+    /p:Platform="Any CPU"     
+    /p:PublishProfile=FolderProfile.pubxml
+    #/p:publishUrl=E:\Deployee\builds\Capella_publish\ 
+    #/p:ExcludeFoldersFromDeployment=.\ehr-capella5.0\PatientPortal
+    #/p:IgnoreDeployManagedRuntimeVersion=True 
+    #/p:publishUrl=.\EHR_REPORTS2.0\bin\Publish\ '
+   
+  - echo "Building..Completed"
+  artifacts:
+    expire_in: 365 days
+    paths:
+    - EHR-Capella5.0\
+    
+    
+ build Production Job:
+   tags:
+     - Azure prod 10 tag
+   rules:
+    - if: ' $SERVER_PRODUCTION_10 =="10.1.0.10"'
+   stage: Solution build production 10
+   script:
   - echo "UI Building..start"
   - '& "$env:MSBUILD_PATH" EHR-Capella5.0.sln 
     /p:DeployOnBuild=true 
@@ -45,6 +126,8 @@ build Job:
     - EHR-Capella5.0\
 
 Deploy Test Job 10.0.0.4 :
+  tags:
+    - azure test4 tag
   rules:
     - if: '$SERVER_TESTING_4 =="10.0.0.4"'
   environment:
@@ -54,18 +137,25 @@ Deploy Test Job 10.0.0.4 :
   script:
   
   #- echo "Backup CMG..Start.."
-  ##- xcopy /y /s "F:\Acurus_Web\capella_cmg_project\capella_cmg_ehr_4_8\*.*" "F:\Acurus_Web\Deployee\Backup-do not delete\Git\CMG"
+  #- xcopy /y /s "F:\Acurus_Web\capella_cmg_project\capella_cmg_ehr_4_8\*.*" "F:\Acurus_Web\Deployee\Backup-do not delete\Git\CMG"
   #- echo "Backup CMG..Completed.."
   
   #- echo "Deployee CMG..Start.."  
   #- xcopy /y /s "F:\Acurus_Web\Deployee\builds\Capella_publish\*.*" "F:\Acurus_Web\capella_cmg_project\capella_cmg_ehr_4_8\"
   #- echo "Deployee CMG..Completed.."
   
-  - echo "Deployee CMG BLOBIMP..Start.."
-  - xcopy /y /s "F:\Acurus_Web\Deployee\builds\Capella_publish\*.*" "F:\Acurus_Web\capella_cmg_project\capella_cmg_blobimp\"
-  - echo "Deployee CMG BLOBIMP..Completed.."
+  - echo "Backup CMG MT..Start.."
+  - xcopy /y /s "F:\Acurus_Web\capella_cmg_project\capella_cmg_mt\*.*" "F:\Acurus_Web\Deployee\Backup-do not delete\Git\capella_cmg_mt"
+  - echo "Backup CMG MT..Completed.."
+  
+  - echo "Deployee CMG MT..Start.."
+  - xcopy /y /s "F:\Acurus_Web\Deployee\builds\Capella_publish\*.*" "F:\Acurus_Web\capella_cmg_project\capella_cmg_mt\"
+  - echo "Deployee CMG MT..Completed.."
+  
  
 Deploy Test Job 10.0.0.11:
+  tags:
+    - azure-test11
   rules:
     - if: '$SERVER_TESTING_11 =="10.0.0.11"'
   environment:
@@ -78,46 +168,10 @@ Deploy Test Job 10.0.0.11:
   #- xcopy /y /s "F:\Acurus_Web\capella_cmg_project\capella_cmg_ehr_4_8\*.*" "F:\Acurus_Web\Deployee\Backup-do not delete\Git\CMG"
   #- echo "Backup CMG..Completed.."
 
-  #- echo "Backup WC..Start.."      
-  #- xcopy /y /s "F:\Acurus_Web\capella_hca_project\capella_wc\*.*" "F:\Acurus_Web\Deployee\Backup-do not delete\Git\WC"
-  #- echo "Backup WC..Completed.."
-
-  #- echo "Backup CQM..Start.."      
-  #- xcopy /y /s "F:\Acurus_Web\capella_cmg_project\capella_cmg_ehr_cqm_talend\*.*" "F:\Acurus_Web\Deployee\Backup-do not delete\Git\CQM"
-  #- echo "Backup CQM..Completed.."
-
-  #- echo "Backup CMG blob..Start.."
-  #- xcopy /y /s "F:\Acurus_Web\capella_cmg_project\capella_cmg_blob\*.*" "F:\Acurus_Web\Deployee\Backup-do not delete\Git\capella_cmg_blob"
-  #- echo "Backup CMG blob..Completed.."
-
-  #- echo "Backup CMG blobimp..Start.."
-  #- xcopy /y /s "F:\Acurus_Web\capella_cmg_project\capella_cmg_blobimp\*.*" "F:\Acurus_Web\Deployee\Backup-do not delete\Git\capella_cmg_blobimp"
-  #- echo "Backup CMG blobimp..Completed.."
-
   - echo "Backup CMG MT..Start.."
   - xcopy /y /s "F:\Acurus_Web\capella_cmg_project\capella_cmg_mt\*.*" "F:\Acurus_Web\Deployee\Backup-do not delete\Git\capella_cmg_mt"
   - echo "Backup CMG MT..Completed.."
-
-  #- echo "Deployee CMG..Start.."
-  #- xcopy /y /s "F:\Acurus_Web\Deployee\builds\Capella_publish\*.*" "F:\Acurus_Web\capella_cmg_project\capella_cmg_ehr_4_8\"
-  #- echo "Deployee CMG..Completed.."
-
-  #- echo "Deployee WC..Start.."
-  #- xcopy /y /s "F:\Acurus_Web\Deployee\builds\Capella_publish\*.*" "F:\Acurus_Web\capella_hca_project\capella_wc\"
-  #- echo "Deployee WC..Completed.."
-
-  #- echo "Deployee CQM..Start.."
-  # - xcopy /y /s "F:\Acurus_Web\Deployee\builds\Capella_publish\*.*" "F:\Acurus_Web\capella_cmg_project\capella_cmg_ehr_cqm_talend\"
-  #- echo "Deployee CQM..Completed.."
   
-  #- echo "Deployee CMG BLOB..Start.."
-  #- xcopy /y /s "F:\Acurus_Web\Deployee\builds\Capella_publish\*.*" "F:\Acurus_Web\capella_cmg_project\capella_cmg_blob\"
-  #- echo "Deployee CMG BLOB..Completed.."
-
-  #- echo "Deployee CMG BLOBIMP..Start.."
-  #- xcopy /y /s "F:\Acurus_Web\Deployee\builds\Capella_publish\*.*" "F:\Acurus_Web\capella_cmg_project\capella_cmg_blobimp\"
-  #- echo "Deployee CMG BLOBIMP..Completed.."
-
   - echo "Deployee CMG MT..Start.."
   - xcopy /y /s "F:\Acurus_Web\Deployee\builds\Capella_publish\*.*" "F:\Acurus_Web\capella_cmg_project\capella_cmg_mt\"
   - echo "Deployee CMG MT..Completed.."
@@ -127,6 +181,8 @@ Deploy Test Job 10.0.0.11:
   #- echo "Deployee PATIENT PORTAL..Completed.."
 
 Deploy PRODUCTION Job 10.1.0.6 :
+  tags:
+   -  azure prod 6 tag
   rules:
     - if: '$SERVER_PRODUCTION_6 =="10.1.0.6"'
   environment:
@@ -144,6 +200,8 @@ Deploy PRODUCTION Job 10.1.0.6 :
   - echo "Deployee CMG..Completed.."
 
 Deploy PRODUCTION Job 10.1.0.10 :
+  tags:
+    - Azure prod 10 tag
   rules:
     - if: '$SERVER_PRODUCTION_10 =="10.1.0.10"'
   environment:
@@ -153,20 +211,14 @@ Deploy PRODUCTION Job 10.1.0.10 :
   script:
   
   - echo "Backup CMG..Start.."
-  #- xcopy /y /s "F:\Acurus_Web\capella_cmg_project\capella_cmg_ehr\*.*" "F:\Acurus_Web\Deployee\Backup-do not delete\Git\CMG"
+  - xcopy /y /s "F:\Acurus_Web\capella_cmg_project\capella_cmg_ehr\*.*" "F:\Acurus_Web\Deployee\Backup-do not delete\Git\CMG"
   - echo "Backup CMG..Completed.."
 
-  - echo "Backup Wish..Start.."
-  - xcopy /y /s "F:\Acurus_Web\capella_wc_project\capella_wc_ehr\*.*" "F:\Acurus_Web\Deployee\Backup-do not delete\Git\WC"
-  - echo "Backup Wish..Completed.."
-  
   - echo "Deployee CMG..Start.."  
-  #- xcopy /y /s "F:\Acurus_Web\Deployee\builds\Capella_publish\*.*" "F:\Acurus_Web\capella_cmg_project\capella_cmg_ehr\"
+  - xcopy /y /s "F:\Acurus_Web\Deployee\builds\Capella_publish\*.*" "F:\Acurus_Web\capella_cmg_project\capella_cmg_ehr\"
   - echo "Deployee CMG..Completed.."
 
-  - echo "Deployee Wish..Start.."  
-  - xcopy /y /s "F:\Acurus_Web\Deployee\builds\Capella_publish\*.*" "F:\Acurus_Web\capella_wc_project\capella_wc_ehr\"
-  - echo "Deployee Wish..Completed.."
+  
 
 
 
