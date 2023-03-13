@@ -1723,7 +1723,8 @@ namespace Acurus.Capella.UI
                             {
                                 if (((Encounter)((IList<object>)ilstInHospitalizationHistoryBlobFinal[1])[iCount]).Encounter_ID == ClientSession.EncounterId)
                                 {
-                                    HospHistDTO.Encount = (Encounter)((IList<object>)ilstInHospitalizationHistoryBlobFinal[1]);
+                                    //GitLab #3940
+                                    HospHistDTO.Encount = (Encounter)(((IList<object>)ilstInHospitalizationHistoryBlobFinal[1])[iCount]);
                                 }
                             }
                         }
