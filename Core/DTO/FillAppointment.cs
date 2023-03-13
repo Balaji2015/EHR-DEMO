@@ -26,9 +26,9 @@ namespace Acurus.Capella.Core.DTO
         private IList<string> _Is_Medicare_Plan = new List<string>();
         private IList<string> _Is_Batch_Created = new List<string>();
         private IList<string> _Outstanding_Orders = new List<string>();
-        private IList<string> _Perform_EV_Status = new List<string>();
+        //private IList<string> _Perform_EV_Status = new List<string>();
         private IList<string> _TypeofVisit = new List<string>();
-        private  IList<string> _EVMode= new List<string>();
+        //private  IList<string> _EVMode= new List<string>();
         private IList<string> _Is_ACO_Eligible = new List<string>();
         #region Constructors
 
@@ -41,12 +41,12 @@ namespace Acurus.Capella.Core.DTO
 
         #region Properties
 
-        [DataMember]
-        public virtual IList<string> EVMode
-        {
-            get { return _EVMode; }
-            set { _EVMode = value; }
-        }
+        //[DataMember]
+        //public virtual IList<string> EVMode
+        //{
+        //    get { return _EVMode; }
+        //    set { _EVMode = value; }
+        //}
 
 
         [DataMember]
@@ -157,15 +157,15 @@ namespace Acurus.Capella.Core.DTO
                 _Outstanding_Orders = value;
             }
         }
-        [DataMember]
-        public virtual IList<string> Perform_EV_Status
-        {
-            get { return _Perform_EV_Status; }
-            set
-            {
-                _Perform_EV_Status = value;
-            }
-        }
+        //[DataMember]
+        //public virtual IList<string> Perform_EV_Status
+        //{
+        //    get { return _Perform_EV_Status; }
+        //    set
+        //    {
+        //        _Perform_EV_Status = value;
+        //    }
+        //}
         [DataMember]
         public virtual IList<string> TypeofVisit
         {

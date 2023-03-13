@@ -16777,38 +16777,49 @@ AND E.ENCOUNTER_PROVIDER_SIGNED_DATE<>'0001-01-01 00:00:00'
                             //FillApptList.Payment_Paid.Add(oj[23].ToString());
                             //if (oj[23] != null)
                             //FillApptList.Payment_Paid.Add(oj[23].ToString());
-                            if (oj[23] != null)
-                            {
-                                if (oj[23].ToString().Replace(" ", "") == "()-")
-                                {
-                                    FillApptList.Perform_EV_Status.Add("");
-                                }
-                                else
-                                {
-                                    FillApptList.Perform_EV_Status.Add(oj[23].ToString());
-                                }
-                            }
-                            else
-                                FillApptList.Perform_EV_Status.Add("");
+
+                            //Gitlab #3552
+                            //if (oj[23] != null)
+                            //{
+                            //    if (oj[23].ToString().Replace(" ", "") == "()-")
+                            //    {
+                            //        FillApptList.Perform_EV_Status.Add("");
+                            //    }
+                            //    else
+                            //    {
+                            //        FillApptList.Perform_EV_Status.Add(oj[23].ToString());
+                            //    }
+                            //}
+                            //else
+                            //    FillApptList.Perform_EV_Status.Add("");
+
+                            //if (oj[24] != null)
+                            //{
+
+
+                            //    FillApptList.EVMode.Add(oj[24].ToString());
+                            //}
+                            //else
+                            //    FillApptList.EVMode.Add("");
+
+                            //if (oj[26] != null)
+                            //    FillApptList.Payment_Paid.Add(oj[26].ToString());
+
+                            //if (oj[25] != null)
+                            //    FillApptList.TypeofVisit.Add(oj[25].ToString());
+
+                            //if (oj[26] != null)
+                            //    FillApptList.Is_ACO_Eligible.Add(oj[26].ToString());
+
 
                             if (oj[24] != null)
-                            {
+                                FillApptList.Payment_Paid.Add(oj[24].ToString());
 
+                            if (oj[23] != null)
+                                FillApptList.TypeofVisit.Add(oj[23].ToString());
 
-                                FillApptList.EVMode.Add(oj[24].ToString());
-                            }
-                            else
-                                FillApptList.EVMode.Add("");
-
-
-                            if (oj[26] != null)
-                                FillApptList.Payment_Paid.Add(oj[26].ToString());
-
-                            if (oj[25] != null)
-                                FillApptList.TypeofVisit.Add(oj[25].ToString());
-
-                            if (oj[26] != null)
-                                FillApptList.Is_ACO_Eligible.Add(oj[26].ToString());
+                            if (oj[24] != null)
+                                FillApptList.Is_ACO_Eligible.Add(oj[24].ToString());
 
                             //FillApptList.Document_Type.Add(oj[22].ToString());
 

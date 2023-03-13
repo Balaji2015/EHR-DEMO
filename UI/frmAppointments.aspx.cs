@@ -2924,53 +2924,54 @@ namespace Acurus.Capella.UI
                     {
                         TimeSpan ts = new TimeSpan(0, LoadApptList.Duration_Minutes[i], 0);
 
-                        string EvStatus = "";
+                        //string EvStatus = "";
                         string IsACOEligible = string.Empty;
 
-                        if (ClientSession.UserPermissionDTO.Scntab != null)
-                        {
-                            var scn_id = (from p in ClientSession.UserPermissionDTO.Scntab where p.SCN_Name == "frmPerformEV" select p).ToList();
-                            if (scn_id.Count() > 0)
-                            {
-                                var SendEV = from p in ClientSession.UserPermissionDTO.Screens where p.SCN_ID == Convert.ToInt32(scn_id[0].SCN_ID) && p.Permission == "U" select p;
-                                if (SendEV.Count() > 0)
-                                {
-                                    if (LoadApptList.Perform_EV_Status != null && LoadApptList.Perform_EV_Status.Count() > 0)
-                                    {
-                                        if (LoadApptList.Perform_EV_Status[i] != null && LoadApptList.Perform_EV_Status[i] != string.Empty)
-                                        {
-                                            EvStatus = "  - " + LoadApptList.Perform_EV_Status[i].ToString();
-                                        }
+                        //Gitlab #3552
+                        //if (ClientSession.UserPermissionDTO.Scntab != null)
+                        //{
+                        //    var scn_id = (from p in ClientSession.UserPermissionDTO.Scntab where p.SCN_Name == "frmPerformEV" select p).ToList();
+                        //    if (scn_id.Count() > 0)
+                        //    {
+                        //        var SendEV = from p in ClientSession.UserPermissionDTO.Screens where p.SCN_ID == Convert.ToInt32(scn_id[0].SCN_ID) && p.Permission == "U" select p;
+                        //        if (SendEV.Count() > 0)
+                        //        {
+                        //            if (LoadApptList.Perform_EV_Status != null && LoadApptList.Perform_EV_Status.Count() > 0)
+                        //            {
+                        //                if (LoadApptList.Perform_EV_Status[i] != null && LoadApptList.Perform_EV_Status[i] != string.Empty)
+                        //                {
+                        //                    EvStatus = "  - " + LoadApptList.Perform_EV_Status[i].ToString();
+                        //                }
                                       
                                     
-                                        else
-                                        {
-                                            EvStatus = "  - EV-NOT PERFORMED";
-                                        }
-                                    }
-                                    else if ((LoadApptList.EVMode != null && LoadApptList.EVMode.Count() > 0 && LoadApptList.EVMode[i] != null && LoadApptList.EVMode[i] != string.Empty && LoadApptList.EVMode[i].ToString().ToUpper().Contains("MANUAL")))
-                                    {
-                                        EvStatus = " - EV-PERFORMED MANUALLY";
-                                    }
+                        //                else
+                        //                {
+                        //                    EvStatus = "  - EV-NOT PERFORMED";
+                        //                }
+                        //            }
+                        //            else if ((LoadApptList.EVMode != null && LoadApptList.EVMode.Count() > 0 && LoadApptList.EVMode[i] != null && LoadApptList.EVMode[i] != string.Empty && LoadApptList.EVMode[i].ToString().ToUpper().Contains("MANUAL")))
+                        //            {
+                        //                EvStatus = " - EV-PERFORMED MANUALLY";
+                        //            }
 
-                                    else
-                                    {
-                                        EvStatus = "  - EV-NOT PERFORMED";
-                                    }
-                                }
-                                else
-                                {
-                                    EvStatus = "  - EV-NOT PERFORMED";
-                                }
-                            }
-                        }
+                        //            else
+                        //            {
+                        //                EvStatus = "  - EV-NOT PERFORMED";
+                        //            }
+                        //        }
+                        //        else
+                        //        {
+                        //            EvStatus = "  - EV-NOT PERFORMED";
+                        //        }
+                        //    }
+                        //}
 
                         if (LoadApptList.Is_ACO_Eligible[i] != string.Empty && LoadApptList.Is_ACO_Eligible[i] != "N")
                             IsACOEligible = "  - " + LoadApptList.Is_ACO_Eligible[i];
 
-                        appt = new Telerik.Web.UI.Appointment(LoadApptList.Human_ID[i].ToString() + "-", UtilityManager.ConvertToLocal(LoadApptList.Appointment_Date[i]), UtilityManager.ConvertToLocal(LoadApptList.Appointment_Date[i].AddHours(ts.Hours).AddMinutes(ts.Minutes).AddSeconds(ts.Seconds)), " - " + LoadApptList.PatientName[i].ToString() + " - " + LoadApptList.ApptStatus[i].ToString() + EvStatus + IsACOEligible);
+                        appt = new Telerik.Web.UI.Appointment(LoadApptList.Human_ID[i].ToString() + "-", UtilityManager.ConvertToLocal(LoadApptList.Appointment_Date[i]), UtilityManager.ConvertToLocal(LoadApptList.Appointment_Date[i].AddHours(ts.Hours).AddMinutes(ts.Minutes).AddSeconds(ts.Seconds)), " - " + LoadApptList.PatientName[i].ToString() + " - " + LoadApptList.ApptStatus[i].ToString() + IsACOEligible);//EvStatus + IsACOEligible);
                         appt.ToolTip = LoadApptList.Human_ID[i].ToString() + " - " + LoadApptList.PatientName[i].ToString() + " - " + LoadApptList.TypeofVisit[i].ToString();
-                        appt.Subject = UtilityManager.ConvertToLocal(LoadApptList.Appointment_Date[i]).ToString("hh:mm:ss tt") + "-" + UtilityManager.ConvertToLocal(LoadApptList.Appointment_Date[i].AddHours(ts.Hours).AddMinutes(ts.Minutes).AddSeconds(ts.Seconds)).ToString("hh:mm:ss tt") + " - " + LoadApptList.PatientName[i].ToString() + " - " + LoadApptList.ApptStatus[i].ToString() + EvStatus + IsACOEligible;
+                        appt.Subject = UtilityManager.ConvertToLocal(LoadApptList.Appointment_Date[i]).ToString("hh:mm:ss tt") + "-" + UtilityManager.ConvertToLocal(LoadApptList.Appointment_Date[i].AddHours(ts.Hours).AddMinutes(ts.Minutes).AddSeconds(ts.Seconds)).ToString("hh:mm:ss tt") + " - " + LoadApptList.PatientName[i].ToString() + " - " + LoadApptList.ApptStatus[i].ToString() + IsACOEligible; //EvStatus + IsACOEligible;
                         appt.ID = LoadApptList.EncounterId[i] + "-" + LoadApptList.Payment_Paid[i] + "-" + LoadApptList.E_Super_Bill[i];// + "-" + LoadApptList.Document_Type[i];
                         appt.Start = UtilityManager.ConvertToLocal(LoadApptList.Appointment_Date[i]);
                         appt.End = appt.Start.AddHours(ts.Hours).AddMinutes(ts.Minutes).AddSeconds(ts.Seconds);
@@ -3133,7 +3134,7 @@ namespace Acurus.Capella.UI
                 {
                     try
                     {
-                        string EvStatus = "";
+                        //string EvStatus = "";
                         string IsACOEligible = string.Empty;
 
                         if (ClientSession.UserPermissionDTO.Scntab != null)
@@ -3168,33 +3169,35 @@ namespace Acurus.Capella.UI
                                 //        EvStatus = "  - EV Status - NOT PERFORMED";
                                 //    }
                                 //}
-                                if (SendEV.Count() > 0)
-                                {
-                                    if (LoadApptList.Perform_EV_Status != null && LoadApptList.Perform_EV_Status.Count() > 0)
-                                    {
-                                        if (LoadApptList.Perform_EV_Status[i] != null && LoadApptList.Perform_EV_Status[i] != string.Empty)
-                                        {
-                                            EvStatus = "  - " + LoadApptList.Perform_EV_Status[i].ToString();
-                                        }
 
-                                        else if ((LoadApptList.EVMode != null && LoadApptList.EVMode.Count() > 0 && LoadApptList.EVMode[i] != null && LoadApptList.EVMode[i] != string.Empty && LoadApptList.EVMode[i].ToString().ToUpper().Contains("MANUAL")))
-                                        {
-                                            EvStatus = " - EV-PERFORMED MANUALLY";
-                                        }
-                                        else
-                                        {
-                                            EvStatus = "  - EV-NOT PERFORMED";
-                                        }
-                                    }
-                                    else
-                                    {
-                                        EvStatus = "  - EV-NOT PERFORMED";
-                                    }
-                                }
-                                else
-                                {
-                                    EvStatus = "  - EV-NOT PERFORMED";
-                                }
+                                //Gitlab #3552
+                                //if (SendEV.Count() > 0)
+                                //{
+                                //    if (LoadApptList.Perform_EV_Status != null && LoadApptList.Perform_EV_Status.Count() > 0)
+                                //    {
+                                //        if (LoadApptList.Perform_EV_Status[i] != null && LoadApptList.Perform_EV_Status[i] != string.Empty)
+                                //        {
+                                //            EvStatus = "  - " + LoadApptList.Perform_EV_Status[i].ToString();
+                                //        }
+
+                                //        else if ((LoadApptList.EVMode != null && LoadApptList.EVMode.Count() > 0 && LoadApptList.EVMode[i] != null && LoadApptList.EVMode[i] != string.Empty && LoadApptList.EVMode[i].ToString().ToUpper().Contains("MANUAL")))
+                                //        {
+                                //            EvStatus = " - EV-PERFORMED MANUALLY";
+                                //        }
+                                //        else
+                                //        {
+                                //            EvStatus = "  - EV-NOT PERFORMED";
+                                //        }
+                                //    }
+                                //    else
+                                //    {
+                                //        EvStatus = "  - EV-NOT PERFORMED";
+                                //    }
+                                //}
+                                //else
+                                //{
+                                //    EvStatus = "  - EV-NOT PERFORMED";
+                                //}
                             }
                         }
 
@@ -3202,7 +3205,7 @@ namespace Acurus.Capella.UI
                             IsACOEligible = "  - "+LoadApptList.Is_ACO_Eligible[i];
 
                         TimeSpan ts = new TimeSpan(0, LoadApptList.Duration_Minutes[i], 0);
-                        appt = new Telerik.Web.UI.Appointment(LoadApptList.Human_ID[i].ToString() + "-", UtilityManager.ConvertToLocal(LoadApptList.Appointment_Date[i]), UtilityManager.ConvertToLocal(LoadApptList.Appointment_Date[i].AddHours(ts.Hours).AddMinutes(ts.Minutes).AddSeconds(ts.Seconds)), " - " + LoadApptList.PatientName[i].ToString() + " - " + LoadApptList.ApptStatus[i] + EvStatus + IsACOEligible);
+                        appt = new Telerik.Web.UI.Appointment(LoadApptList.Human_ID[i].ToString() + "-", UtilityManager.ConvertToLocal(LoadApptList.Appointment_Date[i]), UtilityManager.ConvertToLocal(LoadApptList.Appointment_Date[i].AddHours(ts.Hours).AddMinutes(ts.Minutes).AddSeconds(ts.Seconds)), " - " + LoadApptList.PatientName[i].ToString() + " - " + LoadApptList.ApptStatus[i] + IsACOEligible);// EvStatus + IsACOEligible);
                         if (LoadApptList.Is_Medicare_Plan[i].ToString() == "Y")
                         {
                             appt.ToolTip = LoadApptList.Human_ID[i].ToString() + " - " + LoadApptList.PatientName[i].ToString() + " - " + LoadApptList.TypeofVisit[i].ToString() + "(MEDICARE)" + " ; " + "\n" + LoadApptList.Outstanding_Orders[i].ToString();
@@ -3211,7 +3214,7 @@ namespace Acurus.Capella.UI
                         {
                             appt.ToolTip = LoadApptList.Human_ID[i].ToString() + " - " + LoadApptList.PatientName[i].ToString() + " - " + LoadApptList.TypeofVisit[i].ToString() + " ; " + "\n" + LoadApptList.Outstanding_Orders[i].ToString();
                         }
-                        appt.Subject = UtilityManager.ConvertToLocal(LoadApptList.Appointment_Date[i]).ToString("hh:mm:ss tt") + "-" + UtilityManager.ConvertToLocal(LoadApptList.Appointment_Date[i].AddHours(ts.Hours).AddMinutes(ts.Minutes).AddSeconds(ts.Seconds)).ToString("hh:mm:ss tt") + " - " + LoadApptList.PatientName[i].ToString() + " - " + LoadApptList.ApptStatus[i].ToString() + "\n" + LoadApptList.Outstanding_Orders[i].ToString() + EvStatus + IsACOEligible;
+                        appt.Subject = UtilityManager.ConvertToLocal(LoadApptList.Appointment_Date[i]).ToString("hh:mm:ss tt") + "-" + UtilityManager.ConvertToLocal(LoadApptList.Appointment_Date[i].AddHours(ts.Hours).AddMinutes(ts.Minutes).AddSeconds(ts.Seconds)).ToString("hh:mm:ss tt") + " - " + LoadApptList.PatientName[i].ToString() + " - " + LoadApptList.ApptStatus[i].ToString() + "\n" + LoadApptList.Outstanding_Orders[i].ToString() + IsACOEligible;// EvStatus + IsACOEligible;
                         appt.ID = LoadApptList.EncounterId[i] + "-" + LoadApptList.Payment_Paid[i] + "-" + LoadApptList.E_Super_Bill[i] + /*"-" + LoadApptList.Document_Type[i] +*/ "-" + LoadApptList.Birth_Date[i].ToString() + "-" + LoadApptList.Human_Type[i];
                         if (ClientSession.UserRole.Trim().ToUpper() == "OFFICE MANAGER")
                             appt.ID += "-" + LoadApptList.Is_Batch_Created[i];
