@@ -63,8 +63,6 @@
 	<Message number="010020" Type="OK" Text="You have not filled the security questions yet. Please contact the System Administrator."></Message>
 	<Message number="010021" Type="OKCANCEL" Text="User is already logged in. Would you like to continue?"></Message>
 	<Message number="010022" Type="OK" Text="Please enter Corrections to be made."></Message>
-	<Message number="010024" Type="OK" Text="The default server is not mapped for the user. Please contact support."></Message>
-	
 	
 	<Message number="050001" Type="OK" Text="Please select a line item first."></Message>
 	<Message number="050002" Type="ToolStrip" Text="Moved Successfully."></Message>

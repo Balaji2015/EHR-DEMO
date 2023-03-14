@@ -381,12 +381,6 @@ namespace Acurus.Capella.UI
                         UtilityManager.inserttologgingtable(ClientSession.EncounterId.ToString(), ClientSession.HumanId.ToString(), ClientSession.UserName, ClientSession.PhysicianId.ToString(), "Login btnOk : End", DateTime.Now, hdnGroupId.Value, "frmLogin");
                         return;
                     }
-                    else
-                    {
-                        this.Page.ClientScript.RegisterStartupScript(this.Page.GetType(), string.Empty, "DisplayErrorMessage('010024');", true);
-                        txtUserName.Focus();
-                        return;
-                    }
 
                     ClientSession.UserRole = login[0].role;
                     // ClientSession.PersonName = login[0].person_name;
