@@ -451,9 +451,15 @@ namespace Acurus.Capella.UI
                 if (PatientDetails.Text.Contains(':'))
                     hdnHumanID.Value = PatientDetails.Text.Split(':')[1].Split('|')[0];
             }
+
             if (hdnHumanID.Value != "")
             {
-                ClientSession.HumanId = Convert.ToUInt32(hdnHumanID.Value);
+                ulong ulongValue = 0;
+                bool isNumber = ulong.TryParse(hdnHumanID.Value, out ulongValue);
+                if (isNumber == true)
+                {
+                    ClientSession.HumanId = Convert.ToUInt32(hdnHumanID.Value);
+                }
             }
             if (cboDocumentType.SelectedValue.ToUpper() == "DIAGNOSTIC ORDER" && hdnHumanID.Value.Trim() != "")
             {
@@ -1639,17 +1645,19 @@ namespace Acurus.Capella.UI
                 {
                     indexListOnSession.Add(item);
                 }
-                if (updateList != null && updateList.Count > 0)
-                {
-                    foreach (scan_index item in updateList)
-                    {
-                        if (indexListOnSession != null && indexListOnSession.Count > 0)//BugID:54354
-                        {
-                            var record = indexListOnSession.FirstOrDefault(a => a.Id == item.Id).Version++;
-                        }
+                //record variable not used
 
-                    }
-                }
+                //if (updateList != null && updateList.Count > 0)
+                //{
+                //    foreach (scan_index item in updateList)
+                //    {
+                //        if (indexListOnSession != null && indexListOnSession.Count > 0)//BugID:54354
+                //        {
+                //            var record = indexListOnSession.FirstOrDefault(a => a.Id == item.Id).Version++;
+                //        }
+
+                //    }
+                //}
 
                 Session["IndexList"] = indexListOnSession;
                 LoadGridView(indexListOnSession);
@@ -2246,8 +2254,14 @@ namespace Acurus.Capella.UI
                 }
                 catch (System.Exception ee)
                 {
-
-                    throw new Exception(ee.Message + "  Error in saving as multipage ");
+                    if (ee.Message != null)
+                    {
+                        throw new Exception(ee.Message + "  Error in saving as multipage ");
+                    }
+                    else
+                    {
+                        throw new Exception(" Error in saving as multipage ");
+                    }
                 }
             }
             else
@@ -4096,16 +4110,20 @@ namespace Acurus.Capella.UI
                     //string sPaperOrder = lstorders.FirstOrDefault(a => a.Order_Submit_ID == order_submit_id).Lab_Procedure.ToString();
 
                     StringBuilder OrderedPhysician = new StringBuilder();
+                    if(lstorders != null && lstorders.Count>0)
                     OrderedPhysician.Append(lstorders.FirstOrDefault(a => a.Order_Submit_ID == order_submit_id).Physician_ID.ToString());
 
                     StringBuilder OrderedLab = new StringBuilder();
-                    OrderedLab.Append(lstorders.FirstOrDefault(a => a.Order_Submit_ID == order_submit_id).Internal_Property_LabID.ToString());
+                    if (lstorders != null && lstorders.Count > 0)
+                        OrderedLab.Append(lstorders.FirstOrDefault(a => a.Order_Submit_ID == order_submit_id).Internal_Property_LabID.ToString());
 
                     StringBuilder OrderedID = new StringBuilder();
-                    OrderedID.Append(lstorders.FirstOrDefault(a => a.Order_Submit_ID == order_submit_id).Order_Submit_ID.ToString());
+                    if (lstorders != null && lstorders.Count > 0)
+                        OrderedID.Append(lstorders.FirstOrDefault(a => a.Order_Submit_ID == order_submit_id).Order_Submit_ID.ToString());
 
                     StringBuilder sPaperOrder = new StringBuilder();
-                    sPaperOrder.Append(lstorders.FirstOrDefault(a => a.Order_Submit_ID == order_submit_id).Lab_Procedure.ToString());
+                    if (lstorders != null && lstorders.Count > 0)
+                        sPaperOrder.Append(lstorders.FirstOrDefault(a => a.Order_Submit_ID == order_submit_id).Lab_Procedure.ToString());
 
                     if (OrderedPhysician.ToString() == "0")
                     {
@@ -4117,8 +4135,9 @@ namespace Acurus.Capella.UI
                     // string selectedValue = OrderedPhysician + "|" + OrderedLab + "|" + OrderedID;
                     StringBuilder selectedValue = new StringBuilder();
                     selectedValue.Append(OrderedPhysician + "|" + OrderedLab + "|" + OrderedID);
-
-                    DateTime orderedDatetime = lstorders.FirstOrDefault(a => a.Order_Submit_ID == order_submit_id).Internal_Property_Spec_Collection_Date;
+                    DateTime orderedDatetime = DateTime.MinValue;
+                    if (lstorders != null && lstorders.Count > 0)
+                         orderedDatetime = lstorders.FirstOrDefault(a => a.Order_Submit_ID == order_submit_id).Internal_Property_Spec_Collection_Date;
                     //string ConvertedorderedDatetime = string.Empty;
                     StringBuilder ConvertedorderedDatetime = new StringBuilder();
 
