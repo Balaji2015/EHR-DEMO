@@ -317,13 +317,46 @@ namespace Acurus.Capella.UI
                     {
                         message += System.Environment.NewLine + System.Environment.NewLine + "SIZE OF CURRENT SESSION: Unable to calculate since Session is unavailable in this context." + System.Environment.NewLine;
                     }
-
+                    
                     Exception exc = Server.GetLastError().GetBaseException();
+
+                    //Gitlab #3897 - Handling the Unhandled Exception - Start
+                    string sMessage = "";
+                    string statserrorlogstacktrace = "";
+
+                    if (exc != null && exc.Message != null )
+                        sMessage = exc.Message;
+
+                    if (exc != null && exc.StackTrace != null)
+                        statserrorlogstacktrace = exc.StackTrace;
+                    if (exc != null && exc.InnerException != null && exc.InnerException.Message != null && sMessage == string.Empty)
+                    {
+                        sMessage = sMessage + exc.InnerException.Message;
+                    }
+                    if (exc != null && exc.InnerException != null && exc.InnerException.StackTrace != null && sMessage == string.Empty)
+                    {
+                        statserrorlogstacktrace = statserrorlogstacktrace + exc.InnerException.StackTrace;
+                    }
+
+                    string version = "";
+                    if (System.Configuration.ConfigurationSettings.AppSettings["VersionConfiguration"] != null)
+                        version = System.Configuration.ConfigurationSettings.AppSettings["VersionConfiguration"].ToString();
+
+                    string[] server = version.Split('|');
+                    string serverno = "";
+                    if (server.Length > 1)
+                        serverno = server[1].Trim();
+                    //Gitlab #3897 - Handling the Unhandled Exception - End 
 
                     if (exc != null && exc.Message != null)
                     {
                         if ((exc.Message.Contains("System.Web.HttpUnhandledException") || exc.Message.Contains("Script controls may not be registered after PreRender")) && ((exc.Message.Contains("Row was updated or deleted by another transaction") == false) && ((exc.InnerException != null) ? (exc.InnerException.Message.Contains("Row was updated or deleted by another transaction") == false) : true)))
                         {
+                            //Gitlab #3897 - Handling the Unhandled Exception - Start
+                            string insertQuery = "insert into  stats_apperrorlog values(0,'" + sMessage.Replace(@"\\", @"\\\\").Replace(@"\", @"\\").Replace(@"\\\\\\\\", @"\\\\").Replace("'", "") + "', '" + serverno + "','" + DateTime.Now + "','" + ClientSession.UserName + "','" + ClientSession.EncounterId + "','" + ClientSession.HumanId + "','" + ClientSession.PhysicianId + "','" + statserrorlogstacktrace.Replace("'", "") + "','" + DateTime.Now.ToString("yyyy-MM-dd hh:mm:ss") + "')";
+                            int iReturn = DBConnector.WriteData(insertQuery);
+                            //Gitlab #3897 - Handling the Unhandled Exception - End
+
                             Server.ClearError();
                             message += "ERROR HANDLING METHOD : Server.ClearError()" + System.Environment.NewLine + System.Environment.NewLine;
                         }
@@ -333,6 +366,10 @@ namespace Acurus.Capella.UI
                             {
                                 if (exc.Message.IndexOf("Transaction XML") > -1)
                                 {
+                                    //Gitlab #3897 - Handling the Unhandled Exception - Start
+                                    string insertQuery = "insert into  stats_apperrorlog values(0,'" + sMessage.Replace(@"\\", @"\\\\").Replace(@"\", @"\\").Replace(@"\\\\\\\\", @"\\\\").Replace("'", "") + "', '" + serverno + "','" + DateTime.Now + "','" + ClientSession.UserName + "','" + ClientSession.EncounterId + "','" + ClientSession.HumanId + "','" + ClientSession.PhysicianId + "','" + statserrorlogstacktrace.Replace("'", "") + "','" + DateTime.Now.ToString("yyyy-MM-dd hh:mm:ss") + "')";
+                                    int iReturn = DBConnector.WriteData(insertQuery);
+                                    //Gitlab #3897 - Handling the Unhandled Exception - End
                                     //  Console.Error=function (){alert}
                                     //System.Web.UI.Page Errorpage = (System.Web.UI.Page)HttpContext.Current.Handler;
                                     //Errorpage.ClientScript.RegisterClientScriptBlock(GetType(), "MyScriptKey", " alert('XML is not found.Kindly contact support. ');", true);
@@ -340,7 +377,10 @@ namespace Acurus.Capella.UI
                                 }
                                 else if (exc.Message.IndexOf("To Process is not found") > -1)//BugID:53884
                                 {
-
+                                    //Gitlab #3897 - Handling the Unhandled Exception - Start
+                                    string insertQuery = "insert into  stats_apperrorlog values(0,'" + sMessage.Replace(@"\\", @"\\\\").Replace(@"\", @"\\").Replace(@"\\\\\\\\", @"\\\\").Replace("'", "") + "', '" + serverno + "','" + DateTime.Now + "','" + ClientSession.UserName + "','" + ClientSession.EncounterId + "','" + ClientSession.HumanId + "','" + ClientSession.PhysicianId + "','" + statserrorlogstacktrace.Replace("'", "") + "','" + DateTime.Now.ToString("yyyy-MM-dd hh:mm:ss") + "')";
+                                    int iReturn = DBConnector.WriteData(insertQuery);
+                                    //Gitlab #3897 - Handling the Unhandled Exception - End
                                 }
                                 else if (exc.Message.ToUpper().Contains("THE PROCESS CANNOT ACCESS THE FILE") && (exc.Message.Contains("Human_") || exc.Message.Contains("Encounter_")) && exc.Message.ToUpper().Contains(".XML' BECAUSE IT IS BEING USED BY ANOTHER PROCESS"))//BugID:56782
                                 {
