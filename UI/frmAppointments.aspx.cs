@@ -614,23 +614,26 @@ namespace Acurus.Capella.UI
             //{
             //    sAncillary = System.Configuration.ConfigurationManager.AppSettings["AncillaryTestClinic"].ToString();
             //}
-
-            var facAncillary = from f in ApplicationObject.facilityLibraryList where f.Fac_Name == cboFacilityName.SelectedItem.Text select f;
-            IList<FacilityLibrary> ilstFacAncillary = facAncillary.ToList<FacilityLibrary>();
-            if (cboFacilityName.SelectedItem != null)
+            if (ApplicationObject.facilityLibraryList != null && cboFacilityName.SelectedItem != null)
             {
-                //if (sAncillary.Trim() != cboFacilityName.SelectedItem.Text.Trim())
-                if (ilstFacAncillary.Count > 0 && ilstFacAncillary[0].Is_Ancillary != "Y")
+                var facAncillary = from f in ApplicationObject.facilityLibraryList where f.Fac_Name == cboFacilityName.SelectedItem.Text select f;
+                IList<FacilityLibrary> ilstFacAncillary = facAncillary.ToList<FacilityLibrary>();
+                if (cboFacilityName.SelectedItem != null)
                 {
-                    chkShowActive.Enabled = true;
+                    //if (sAncillary.Trim() != cboFacilityName.SelectedItem.Text.Trim())
+                    if (ilstFacAncillary.Count > 0 && ilstFacAncillary[0].Is_Ancillary != "Y")
+                    {
+                        chkShowActive.Enabled = true;
+                    }
+                    else
+                    {
+                        chkShowActive.Enabled = false;
+                    }
                 }
+
                 else
-                {
-                    chkShowActive.Enabled = false;
-                }
+                    chkShowActive.Enabled = true;
             }
-            else
-                chkShowActive.Enabled = true;
             if (hdnSourceScreen.Value == "AppointmentFacility" || ClientSession.UserRole.ToUpper() == "PHYSICIAN" || ClientSession.UserRole.ToUpper() == "PHYSICIAN ASSISTANT")
                 FillCheckListBoxForPhysicianSetUp(hdnApptFacName.Value, true);
             else
@@ -4006,16 +4009,23 @@ namespace Acurus.Capella.UI
 
             if (TempFac != null)
             {
-                DateTime dtStart = Convert.ToDateTime(TempFac[0].Start_Time);
-                DateTime dtEnd = Convert.ToDateTime(TempFac[0].End_Time);
                 try
                 {
+                    DateTime dtStart = Convert.ToDateTime(TempFac[0].Start_Time);
+                    DateTime dtEnd = Convert.ToDateTime(TempFac[0].End_Time);
+
                     schAppointmentScheduler.DayStartTime = TimeSpan.FromHours(Convert.ToDouble(dtStart.Hour));
                     schAppointmentScheduler.DayEndTime = TimeSpan.FromHours(Convert.ToDouble(dtEnd.Hour));
                     schAppointmentScheduler.MinutesPerRow = TempFac[0].Slot_Length;
                 }
                 catch
                 {
+                    DateTime dtStart = Convert.ToDateTime("08:00:00");
+                    DateTime dtEnd = Convert.ToDateTime("17:00:00");
+
+                    schAppointmentScheduler.DayStartTime = TimeSpan.FromHours(Convert.ToDouble(dtStart.Hour));
+                    schAppointmentScheduler.DayEndTime = TimeSpan.FromHours(Convert.ToDouble(dtEnd.Hour));
+                    schAppointmentScheduler.MinutesPerRow = 15;
                 }
             }
             if (chkShowActive.Checked)
