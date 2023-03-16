@@ -28,6 +28,7 @@ using MySql.Data.MySqlClient;
 using System.Threading;
 using System.Diagnostics;
 using Acurus.Capella.DataAccess;
+using DocumentFormat.OpenXml.Drawing.Charts;
 
 namespace Acurus.Capella.UI
 {
@@ -5263,7 +5264,14 @@ namespace Acurus.Capella.UI
                                                     if (property.Name == nodevalue.Name)
                                                     {
                                                         if (property.PropertyType.Name.ToUpper() == "UINT64")
-                                                            property.SetValue(objEntity, Convert.ToUInt64(nodevalue.Value), null);
+                                                        {
+                                                            ulong ulongValue = 0;
+                                                            bool isNumber = ulong.TryParse(nodevalue.Value, out ulongValue);
+                                                            if (isNumber==true)
+                                                            {
+                                                                property.SetValue(objEntity, Convert.ToUInt64(nodevalue.Value), null);
+                                                            }
+                                                        }
                                                         else if (property.PropertyType.Name.ToUpper() == "STRING")
                                                             property.SetValue(objEntity, Convert.ToString(nodevalue.Value), null);
                                                         else if (property.PropertyType.Name.ToUpper() == "DATETIME")
