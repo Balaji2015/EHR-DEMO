@@ -5181,10 +5181,16 @@ namespace Acurus.Capella.UI
                     IList<Human_Blob> ilstHumanBlob = HumanBlobMngr.GetHumanBlob(EntityID);
                     if (ilstHumanBlob.Count > 0)
                     {
+                        try { 
                         sXMLContent = System.Text.Encoding.UTF8.GetString(ilstHumanBlob[0].Human_XML);
                         if (sXMLContent.Substring(0, 1) != "<")
                             sXMLContent = sXMLContent.Substring(1, sXMLContent.Length - 1);
                         xmlDoc.LoadXml(sXMLContent);
+                        }
+                        catch
+                        {
+                            throw new Exception("Human XML is invalid");
+                        }
                     }
                     else
                     {
