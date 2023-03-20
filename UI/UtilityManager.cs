@@ -5177,79 +5177,48 @@ namespace Acurus.Capella.UI
                 }
                 if (sXMLType == "Blob_Human")
                 {
-                    //HumanBlobManager HumanBlobMngr = new HumanBlobManager();
-                    //IList<Human_Blob> ilstHumanBlob = HumanBlobMngr.GetHumanBlob(EntityID);
-                    //if (ilstHumanBlob.Count > 0)
-                    //{
-                    //    //try { 
-                    //    sXMLContent = System.Text.Encoding.UTF8.GetString(ilstHumanBlob[0].Human_XML);
-                    //    if (sXMLContent.Substring(0, 1) != "<")
-                    //        sXMLContent = sXMLContent.Substring(1, sXMLContent.Length - 1);
-                    //    xmlDoc.LoadXml(sXMLContent);
-                    //    //}
-                    //    //catch
-                    //    //{
-                    //    //    throw new Exception("Human XML is invalid");
-                    //    //}
-                    //}
-                    //else
-                    //{
-                    //    throw new Exception("Human XML is not found");
-                    //}
-                    string strXmlHumanPath = Path.Combine(System.Configuration.ConfigurationSettings.AppSettings["XMLPath"], "Human_26738.xml");
-                    if (File.Exists(strXmlHumanPath) == true)
+                    HumanBlobManager HumanBlobMngr = new HumanBlobManager();
+                    IList<Human_Blob> ilstHumanBlob = HumanBlobMngr.GetHumanBlob(EntityID);
+                    if (ilstHumanBlob.Count > 0)
                     {
-                        using (FileStream fs = new FileStream(strXmlHumanPath, FileMode.Open, FileAccess.Read, FileShare.Read))
-                        {
-                            XmlDocument itemDoc = new XmlDocument();
-                            XmlTextReader xmltxtReader = new XmlTextReader(fs);
-                            itemDoc.Load(xmltxtReader);
-                            xmlDoc.LoadXml(itemDoc.InnerXml);
-                            xmltxtReader.Close();
+                        try { 
+                        sXMLContent = System.Text.Encoding.UTF8.GetString(ilstHumanBlob[0].Human_XML);
+                        if (sXMLContent.Substring(0, 1) != "<")
+                            sXMLContent = sXMLContent.Substring(1, sXMLContent.Length - 1);
+                        xmlDoc.LoadXml(sXMLContent);
                         }
+                        catch
+                        {
+                            throw new Exception("Human XML is invalid");
+                        }
+                    }
+                    else
+                    {
+                        throw new Exception("Human XML is not found");
                     }
                 }
                 else if (sXMLType == "Blob_Encounter")
                 {
-                    //EncounterBlobManager EncounterBlobMngr = new EncounterBlobManager();
-                    //IList<Encounter_Blob> ilstEncounterBlob = EncounterBlobMngr.GetEncounterBlob(EntityID);
-                    //if (ilstEncounterBlob.Count > 0)
-                    //{
-                    //    try
-                    //    {
-                    //        sXMLContent = System.Text.Encoding.UTF8.GetString(ilstEncounterBlob[0].Encounter_XML);
-                    //        if (sXMLContent.Substring(0, 1) != "<")
-                    //            sXMLContent = sXMLContent.Substring(1, sXMLContent.Length - 1);
-                    //        xmlDoc.LoadXml(sXMLContent);
-                    //    }
-                    //    catch
-                    //    {
-                    //        throw new Exception("Encounter XML is invalid");
-                    //    }
-                    //}
-                    //else
-                    //{
-                    //    throw new Exception("Encounter XML is not found");
-                    //}
-
-                    string strXmlEncounterPath = Path.Combine(System.Configuration.ConfigurationSettings.AppSettings["XMLPath"], "Encounter_1500628.xml");
-                    if (File.Exists(strXmlEncounterPath) == true)
+                    EncounterBlobManager EncounterBlobMngr = new EncounterBlobManager();
+                    IList<Encounter_Blob> ilstEncounterBlob = EncounterBlobMngr.GetEncounterBlob(EntityID);
+                    if (ilstEncounterBlob.Count > 0)
                     {
-                        using (FileStream fs = new FileStream(strXmlEncounterPath, FileMode.Open, FileAccess.Read, FileShare.Read))
+                        try
                         {
-                            XmlDocument itemDoc = new XmlDocument();
-                            XmlTextReader xmltxtReader = new XmlTextReader(fs);
-                            itemDoc.Load(xmltxtReader);
-                            xmlDoc.LoadXml(itemDoc.InnerXml);
-                            xmltxtReader.Close();
+                            sXMLContent = System.Text.Encoding.UTF8.GetString(ilstEncounterBlob[0].Encounter_XML);
+                            if (sXMLContent.Substring(0, 1) != "<")
+                                sXMLContent = sXMLContent.Substring(1, sXMLContent.Length - 1);
+                            xmlDoc.LoadXml(sXMLContent);
+                        }
+                        catch
+                        {
+                            throw new Exception("Encounter XML is invalid");
                         }
                     }
                     else
                     {
                         throw new Exception("Encounter XML is not found");
                     }
-
-
                 }
 
 
