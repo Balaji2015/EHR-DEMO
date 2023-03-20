@@ -5196,6 +5196,7 @@ namespace Acurus.Capella.UI
                     {
                         throw new Exception("Human XML is not found");
                     }
+
                 }
                 else if (sXMLType == "Blob_Encounter")
                 {
