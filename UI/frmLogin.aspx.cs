@@ -92,8 +92,8 @@ namespace Acurus.Capella.UI
                 hdnServiceLink.Value = System.Configuration.ConfigurationSettings.AppSettings["EVServiceLink"];
             if (System.Configuration.ConfigurationSettings.AppSettings["EVProjectName"] != null)
                 hdnEvProjectName.Value = System.Configuration.ConfigurationSettings.AppSettings["EVProjectName"];
-            if (System.Configuration.ConfigurationSettings.AppSettings["Reportpathhttp"] != null)
-                hdnReportPathhttp.Value = System.Configuration.ConfigurationSettings.AppSettings["Reportpathhttp"];
+            //if (System.Configuration.ConfigurationSettings.AppSettings["Reportpathhttp"] != null)
+            //    hdnReportPathhttp.Value = System.Configuration.ConfigurationSettings.AppSettings["Reportpathhttp"];
 
             if (hdnOkButton.Value == "true")
             {
