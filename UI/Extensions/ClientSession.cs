@@ -100,7 +100,7 @@ namespace Acurus.Capella.UI
         {
             get
             {
-                return HttpContext.Current != null ? (HttpContext.Current.Session[userPermissionDTO] != null ? (UserPermissionDTO)HttpContext.Current.Session[userPermissionDTO] : new UserPermissionDTO()) : new UserPermissionDTO();
+                return HttpContext.Current != null ? (HttpContext.Current.Session!=null ? (HttpContext.Current.Session[userPermissionDTO] != null ? (UserPermissionDTO)HttpContext.Current.Session[userPermissionDTO] : new UserPermissionDTO()) : new UserPermissionDTO()) : new UserPermissionDTO();
             }
 
             set
@@ -114,7 +114,7 @@ namespace Acurus.Capella.UI
         {
             get
             {
-                return HttpContext.Current != null ? (HttpContext.Current.Session[_CDSNotificationRule] != null ? (IList<CDSRuleMaster>)HttpContext.Current.Session[_CDSNotificationRule] : new List<CDSRuleMaster>()) : new List<CDSRuleMaster>();
+                return HttpContext.Current != null ? (HttpContext.Current.Session != null ? (HttpContext.Current.Session[_CDSNotificationRule] != null ? (IList<CDSRuleMaster>)HttpContext.Current.Session[_CDSNotificationRule] : new List<CDSRuleMaster>()) : new List<CDSRuleMaster>()) : new List<CDSRuleMaster>();
             }
 
             set
@@ -127,7 +127,7 @@ namespace Acurus.Capella.UI
         {
             get
             {
-                return HttpContext.Current != null ? (HttpContext.Current.Session[_NotificationUserLookup] != null ? (IList<UserLookup>)HttpContext.Current.Session[_NotificationUserLookup] : new List<UserLookup>()) : new List<UserLookup>();
+                return HttpContext.Current != null ? (HttpContext.Current.Session != null ? (HttpContext.Current.Session[_NotificationUserLookup] != null ? (IList<UserLookup>)HttpContext.Current.Session[_NotificationUserLookup] : new List<UserLookup>()) : new List<UserLookup>() ) : new List<UserLookup>();
             }
 
             set
@@ -140,8 +140,8 @@ namespace Acurus.Capella.UI
         {
             get
             {
-                //return HttpContext.Current != null ? (HttpContext.Current.Session[userName] != null ? Convert.ToString(HttpContext.Current.Session[userName]) : string.Empty) : string.Empty;
-                return HttpContext.Current != null ? (HttpContext.Current.Session != null ? (HttpContext.Current.Session[userName] != null ? Convert.ToString(HttpContext.Current.Session[userName]) : string.Empty) : string.Empty) : string.Empty;  
+                return HttpContext.Current != null ? (HttpContext.Current.Session != null ? (HttpContext.Current.Session[userName] != null ? Convert.ToString(HttpContext.Current.Session[userName]) : string.Empty) : string.Empty) : string.Empty;
+
             }
 
             set
@@ -154,7 +154,7 @@ namespace Acurus.Capella.UI
         {
             get
             {
-                return HttpContext.Current != null ? (HttpContext.Current.Session[physicianUserName] != null ? (string)HttpContext.Current.Session[physicianUserName] : string.Empty) : string.Empty;
+                return HttpContext.Current != null ? (HttpContext.Current.Session != null ? (HttpContext.Current.Session[physicianUserName] != null ? (string)HttpContext.Current.Session[physicianUserName] : string.Empty) : string.Empty ) : string.Empty;
             }
 
             set
@@ -180,7 +180,7 @@ namespace Acurus.Capella.UI
         {
             get
             {
-                return HttpContext.Current != null ? (HttpContext.Current.Session[userRole] != null ? (string)HttpContext.Current.Session[userRole] : string.Empty) : string.Empty;
+                return HttpContext.Current != null ? (HttpContext.Current.Session != null ? (HttpContext.Current.Session[userRole] != null ? (string)HttpContext.Current.Session[userRole] : string.Empty) : string.Empty ) : string.Empty;
             }
 
             set
@@ -193,7 +193,7 @@ namespace Acurus.Capella.UI
         {
             get
             {
-                return HttpContext.Current != null ? (HttpContext.Current.Session[facilityName] != null ? (string)HttpContext.Current.Session[facilityName] : string.Empty) : string.Empty;
+                return HttpContext.Current != null ? (HttpContext.Current.Session != null ? (HttpContext.Current.Session[facilityName] != null ? (string)HttpContext.Current.Session[facilityName] : string.Empty) : string.Empty) : string.Empty;
             }
 
             set
@@ -206,7 +206,7 @@ namespace Acurus.Capella.UI
         {
             get
             {
-                return HttpContext.Current != null ? (HttpContext.Current.Session[userCurrentProcess] != null ? (string)HttpContext.Current.Session[userCurrentProcess] : string.Empty) : string.Empty;
+                return HttpContext.Current != null ? (HttpContext.Current.Session != null ? (HttpContext.Current.Session[userCurrentProcess] != null ? (string)HttpContext.Current.Session[userCurrentProcess] : string.Empty) : string.Empty ) : string.Empty;
 
             }
 
@@ -220,7 +220,7 @@ namespace Acurus.Capella.UI
         {
             get
             {
-                return HttpContext.Current != null ? (HttpContext.Current.Session[userCurrentOwner] != null ? (string)HttpContext.Current.Session[userCurrentOwner] : string.Empty) : string.Empty;
+                return HttpContext.Current != null ? (HttpContext.Current.Session != null ? (HttpContext.Current.Session[userCurrentOwner] != null ? (string)HttpContext.Current.Session[userCurrentOwner] : string.Empty) : string.Empty) : string.Empty;
             }
 
             set
@@ -233,7 +233,7 @@ namespace Acurus.Capella.UI
         {
             get
             {
-                return HttpContext.Current != null ? (HttpContext.Current.Session[userCurrentList] != null ? (ArrayList)HttpContext.Current.Session[userCurrentList] : new ArrayList()) : new ArrayList();
+                return HttpContext.Current != null ? (HttpContext.Current.Session != null ? (HttpContext.Current.Session[userCurrentList] != null ? (ArrayList)HttpContext.Current.Session[userCurrentList] : new ArrayList()) : new ArrayList()) : new ArrayList();
             }
 
             set
@@ -261,7 +261,7 @@ namespace Acurus.Capella.UI
         {
             get
             {
-                return HttpContext.Current != null ? (HttpContext.Current.Session[userPermission] != null ? (string)HttpContext.Current.Session[userPermission] : string.Empty) : string.Empty;
+                return HttpContext.Current != null ? (HttpContext.Current.Session != null ? (HttpContext.Current.Session[userPermission] != null ? (string)HttpContext.Current.Session[userPermission] : string.Empty) : string.Empty) : string.Empty; 
 
             }
 
@@ -275,7 +275,7 @@ namespace Acurus.Capella.UI
         {
             get
             {
-                return HttpContext.Current != null ? (HttpContext.Current.Session[checkUser] != null ? (bool)HttpContext.Current.Session[checkUser] : false) : false;
+                return HttpContext.Current != null ? (HttpContext.Current.Session != null ? (HttpContext.Current.Session[checkUser] != null ? (bool)HttpContext.Current.Session[checkUser] : false) : false) : false;
             }
 
             set
@@ -301,7 +301,7 @@ namespace Acurus.Capella.UI
         {
             get
             {
-                return HttpContext.Current != null ? (HttpContext.Current.Session[currentObjectType] != null ? (string)HttpContext.Current.Session[currentObjectType] : string.Empty) : string.Empty;
+                return HttpContext.Current != null ? (HttpContext.Current.Session != null ? (HttpContext.Current.Session[currentObjectType] != null ? (string)HttpContext.Current.Session[currentObjectType] : string.Empty) : string.Empty) : string.Empty;
 
             }
 
@@ -315,7 +315,7 @@ namespace Acurus.Capella.UI
         {
             get
             {
-                return HttpContext.Current != null ? (HttpContext.Current.Session[encounterId] != null ? (ulong)HttpContext.Current.Session[encounterId] : 0) : 0;
+                return HttpContext.Current != null ? (HttpContext.Current.Session != null ? (HttpContext.Current.Session[encounterId] != null ? (ulong)HttpContext.Current.Session[encounterId] : 0) : 0) : 0;
             }
 
             set
@@ -329,7 +329,7 @@ namespace Acurus.Capella.UI
             get
             {
 
-                return HttpContext.Current != null ? (HttpContext.Current.Session[selectedencounterid] != null ? (ulong)HttpContext.Current.Session[selectedencounterid] : 0) : 0;
+                return HttpContext.Current != null ? (HttpContext.Current.Session != null ? (HttpContext.Current.Session[selectedencounterid] != null ? (ulong)HttpContext.Current.Session[selectedencounterid] : 0) : 0) : 0;
             }
 
             set
@@ -342,7 +342,7 @@ namespace Acurus.Capella.UI
         {
             get
             {
-                return HttpContext.Current != null ? (HttpContext.Current.Session[selectedfrom] != null ? (string)HttpContext.Current.Session[selectedfrom] : string.Empty) : string.Empty;
+                return HttpContext.Current != null ? (HttpContext.Current.Session != null ? (HttpContext.Current.Session[selectedfrom] != null ? (string)HttpContext.Current.Session[selectedfrom] : string.Empty) : string.Empty) : string.Empty;
 
             }
 
@@ -358,9 +358,9 @@ namespace Acurus.Capella.UI
         {
             get
             {
-                return HttpContext.Current != null ? (HttpContext.Current.Session[physicianId] != null ? (ulong)HttpContext.Current.Session[physicianId] : 0) : 0;
-            }
+                return HttpContext.Current != null ? (HttpContext.Current.Session != null ? (HttpContext.Current.Session[physicianId] != null ? (ulong)HttpContext.Current.Session[physicianId] : 0) : 0) : 0;
 
+            }
             set
             {
                 HttpContext.Current.Session[physicianId] = value;
@@ -371,7 +371,7 @@ namespace Acurus.Capella.UI
         {
             get
             {
-                return HttpContext.Current != null ? (HttpContext.Current.Session[humanId] != null ? (ulong)HttpContext.Current.Session[humanId] : 0) : 0;
+                return HttpContext.Current != null ? (HttpContext.Current.Session != null ? (HttpContext.Current.Session[humanId] != null ? (ulong)HttpContext.Current.Session[humanId] : 0) : 0) : 0;
             }
 
             set
@@ -384,7 +384,7 @@ namespace Acurus.Capella.UI
         {
             get
             {
-                return HttpContext.Current != null ? (HttpContext.Current.Session[fillEncounterandWFObject] != null ? (FillEncounterandWFObject)HttpContext.Current.Session[fillEncounterandWFObject] : new FillEncounterandWFObject()) : new FillEncounterandWFObject();
+                return HttpContext.Current != null ? (HttpContext.Current.Session != null ? (HttpContext.Current.Session[fillEncounterandWFObject] != null ? (FillEncounterandWFObject)HttpContext.Current.Session[fillEncounterandWFObject] : new FillEncounterandWFObject()) : new FillEncounterandWFObject()) : new FillEncounterandWFObject();
             }
 
             set
@@ -397,7 +397,7 @@ namespace Acurus.Capella.UI
         {
             get
             {
-                return HttpContext.Current != null ? (HttpContext.Current.Session[patientPaneList] != null ? (IList<PatientPane>)HttpContext.Current.Session[patientPaneList] : new List<PatientPane>()) : new List<PatientPane>();
+                return HttpContext.Current != null ? (HttpContext.Current.Session != null ? (HttpContext.Current.Session[patientPaneList] != null ? (IList<PatientPane>)HttpContext.Current.Session[patientPaneList] : new List<PatientPane>()) : new List<PatientPane>()) : new List<PatientPane>();
             }
 
             set
@@ -409,8 +409,8 @@ namespace Acurus.Capella.UI
         public static FillPatientChart FillPatientChart
         {
             get
-            {
-                return HttpContext.Current != null ? (HttpContext.Current.Session[fillPatientChart] != null ? (FillPatientChart)HttpContext.Current.Session[fillPatientChart] : new FillPatientChart()) : new FillPatientChart();
+            { 
+                return HttpContext.Current != null ? (HttpContext.Current.Session != null ? (HttpContext.Current.Session[fillPatientChart] != null ? (FillPatientChart)HttpContext.Current.Session[fillPatientChart] : new FillPatientChart()) : new FillPatientChart()) : new FillPatientChart();
             }
 
             set
@@ -423,7 +423,7 @@ namespace Acurus.Capella.UI
         {
             get
             {
-                return HttpContext.Current != null ? (HttpContext.Current.Session[rCopiaUserName] != null ? (string)HttpContext.Current.Session[rCopiaUserName] : string.Empty) : string.Empty;
+                return HttpContext.Current != null ? (HttpContext.Current.Session != null ? (HttpContext.Current.Session[rCopiaUserName] != null ? (string)HttpContext.Current.Session[rCopiaUserName] : string.Empty) : string.Empty) : string.Empty;
             }
 
             set
@@ -436,7 +436,7 @@ namespace Acurus.Capella.UI
         {
             get
             {
-                return HttpContext.Current != null ? (HttpContext.Current.Session[is_RCopia_Notification_Required] != null ? (string)HttpContext.Current.Session[is_RCopia_Notification_Required] : string.Empty) : string.Empty;
+                return HttpContext.Current != null ? (HttpContext.Current.Session != null ? (HttpContext.Current.Session[is_RCopia_Notification_Required] != null ? (string)HttpContext.Current.Session[is_RCopia_Notification_Required] : string.Empty) : string.Empty) : string.Empty;
             }
 
             set
@@ -449,7 +449,7 @@ namespace Acurus.Capella.UI
         {
             get
             {
-                return HttpContext.Current != null ? (HttpContext.Current.Session[pFSHVerified] != null ? (bool)HttpContext.Current.Session[pFSHVerified] : false) : false;
+                return HttpContext.Current != null ? (HttpContext.Current.Session != null ?  (HttpContext.Current.Session[pFSHVerified] != null ? (bool)HttpContext.Current.Session[pFSHVerified] : false) : false ) :false;
             }
 
             set
@@ -462,7 +462,7 @@ namespace Acurus.Capella.UI
         {
             get
             {
-                return HttpContext.Current != null ? (HttpContext.Current.Session[isDirtySocialHistory] != null ? (bool)HttpContext.Current.Session[isDirtySocialHistory] : false) : false;
+                return HttpContext.Current != null ? (HttpContext.Current.Session != null ? (HttpContext.Current.Session[isDirtySocialHistory] != null ? (bool)HttpContext.Current.Session[isDirtySocialHistory] : false) : false ) :false;
             }
 
             set
@@ -476,7 +476,7 @@ namespace Acurus.Capella.UI
 
             get
             {
-                return HttpContext.Current != null ? (HttpContext.Current.Session[_UniversalTime] != null ? (string)HttpContext.Current.Session[_UniversalTime] : string.Empty) : string.Empty;
+                return HttpContext.Current != null ? (HttpContext.Current.Session != null ? (HttpContext.Current.Session[_UniversalTime] != null ? (string)HttpContext.Current.Session[_UniversalTime] : string.Empty) : string.Empty) : string.Empty;
             }
 
             set
@@ -489,7 +489,7 @@ namespace Acurus.Capella.UI
         {
             get
             {
-                return HttpContext.Current != null ? (HttpContext.Current.Session[_LocalOffSetTime] != null ? (string)HttpContext.Current.Session[_LocalOffSetTime] : string.Empty) : string.Empty;
+                return HttpContext.Current != null ? (HttpContext.Current.Session != null ? (HttpContext.Current.Session[_LocalOffSetTime] != null ? (string)HttpContext.Current.Session[_LocalOffSetTime] : string.Empty) : string.Empty) : string.Empty;
             }
 
             set
@@ -502,7 +502,7 @@ namespace Acurus.Capella.UI
         {
             get
             {
-                return HttpContext.Current != null ? (HttpContext.Current.Session[_LocalDate] != null ? (string)HttpContext.Current.Session[_LocalDate] : string.Empty) : string.Empty;
+                return HttpContext.Current != null ? (HttpContext.Current.Session != null ? (HttpContext.Current.Session[_LocalDate] != null ? (string)HttpContext.Current.Session[_LocalDate] : string.Empty) : string.Empty) : string.Empty;
             }
 
             set
@@ -517,7 +517,7 @@ namespace Acurus.Capella.UI
         {
             get
             {
-                return HttpContext.Current != null ? (HttpContext.Current.Session[_LocalTime] != null ? (string)HttpContext.Current.Session[_LocalTime] : string.Empty) : string.Empty;
+                return HttpContext.Current != null ? (HttpContext.Current.Session != null ? (HttpContext.Current.Session[_LocalTime] != null ? (string)HttpContext.Current.Session[_LocalTime] : string.Empty) : string.Empty) : string.Empty;
             }
 
             set
@@ -543,7 +543,7 @@ namespace Acurus.Capella.UI
         {
             get
             {
-                return HttpContext.Current != null ? (HttpContext.Current.Session[_Save_Summary] != null ? (bool)HttpContext.Current.Session[_Save_Summary] : false) : false;
+                return HttpContext.Current != null ? (HttpContext.Current.Session != null ? (HttpContext.Current.Session[_Save_Summary] != null ? (bool)HttpContext.Current.Session[_Save_Summary] : false) : false) : false;
             }
 
             set
@@ -568,7 +568,7 @@ namespace Acurus.Capella.UI
             get
             {
 
-                return HttpContext.Current != null ? (HttpContext.Current.Session[sWindowlst] != null ? (ArrayList)HttpContext.Current.Session[sWindowlst] : new ArrayList()) : new ArrayList();
+                return HttpContext.Current != null ? (HttpContext.Current.Session != null ? (HttpContext.Current.Session[sWindowlst] != null ? (ArrayList)HttpContext.Current.Session[sWindowlst] : new ArrayList()) : new ArrayList()) : new ArrayList();
             }
 
             set
@@ -581,7 +581,7 @@ namespace Acurus.Capella.UI
         {
             get
             {
-                return HttpContext.Current != null ? (HttpContext.Current.Session[currentPhysicianId] != null ? (ulong)HttpContext.Current.Session[currentPhysicianId] : 0) : 0;
+                return HttpContext.Current != null ? (HttpContext.Current.Session != null ? (HttpContext.Current.Session[currentPhysicianId] != null ? (ulong)HttpContext.Current.Session[currentPhysicianId] : 0) : 0 ) : 0;
             }
 
             set
@@ -594,7 +594,7 @@ namespace Acurus.Capella.UI
         {
             get
             {
-                return HttpContext.Current != null ? (HttpContext.Current.Session[sSelectedTab] != null ? (string)HttpContext.Current.Session[sSelectedTab] : string.Empty) : string.Empty;
+                return HttpContext.Current != null ? (HttpContext.Current.Session != null ? (HttpContext.Current.Session[sSelectedTab] != null ? (string)HttpContext.Current.Session[sSelectedTab] : string.Empty) : string.Empty) : string.Empty;
 
             }
 
@@ -608,7 +608,7 @@ namespace Acurus.Capella.UI
         {
             get
             {
-                return HttpContext.Current != null ? (HttpContext.Current.Session[summaryList] != null ? (string)HttpContext.Current.Session[summaryList] : string.Empty) : string.Empty;
+                return HttpContext.Current != null ? (HttpContext.Current.Session != null ? (HttpContext.Current.Session[summaryList] != null ? (string)HttpContext.Current.Session[summaryList] : string.Empty) : string.Empty) : string.Empty;
             }
 
             set
@@ -620,7 +620,7 @@ namespace Acurus.Capella.UI
         {
             get
             {
-                return HttpContext.Current != null ? (HttpContext.Current.Session[_SavedSession] != null ? (string)HttpContext.Current.Session[_SavedSession] : string.Empty) : string.Empty;
+                return HttpContext.Current != null ? (HttpContext.Current.Session != null ? (HttpContext.Current.Session[_SavedSession] != null ? (string)HttpContext.Current.Session[_SavedSession] : string.Empty) : string.Empty) : string.Empty;
             }
 
             set
@@ -632,7 +632,7 @@ namespace Acurus.Capella.UI
         {
             get
             {
-                return HttpContext.Current != null ? (HttpContext.Current.Session[_PatientPane] != null ? (string)HttpContext.Current.Session[_PatientPane] : string.Empty) : string.Empty;
+                return HttpContext.Current != null ? (HttpContext.Current.Session != null ? (HttpContext.Current.Session[_PatientPane] != null ? (string)HttpContext.Current.Session[_PatientPane] : string.Empty) : string.Empty) : string.Empty;
             }
 
             set
@@ -670,7 +670,7 @@ namespace Acurus.Capella.UI
         {
             get
             {
-                return HttpContext.Current != null ? (HttpContext.Current.Session[physiciandetails] != null ? (IList<PhysicianLibrary>)HttpContext.Current.Session[physiciandetails] : new List<PhysicianLibrary>()) : new List<PhysicianLibrary>();
+                return HttpContext.Current != null ? (HttpContext.Current.Session != null ? (HttpContext.Current.Session[physiciandetails] != null ? (IList<PhysicianLibrary>)HttpContext.Current.Session[physiciandetails] : new List<PhysicianLibrary>()) : new List<PhysicianLibrary>()) : new List<PhysicianLibrary>();
 
             }
 
@@ -684,7 +684,7 @@ namespace Acurus.Capella.UI
         {
             get
             {
-                return HttpContext.Current != null ? (HttpContext.Current.Session[_LegalOrg] != null ? (string)HttpContext.Current.Session[_LegalOrg] : string.Empty) : string.Empty;
+                return HttpContext.Current != null ? (HttpContext.Current.Session != null ? (HttpContext.Current.Session[_LegalOrg] != null ? (string)HttpContext.Current.Session[_LegalOrg] : string.Empty) : string.Empty ) : string.Empty;
 
             }
 
@@ -698,7 +698,7 @@ namespace Acurus.Capella.UI
         {
             get
             {
-                return HttpContext.Current != null ? (HttpContext.Current.Session[_UserCarrier] != null ? (string)HttpContext.Current.Session[_UserCarrier] : string.Empty) : string.Empty;
+                return HttpContext.Current != null ? (HttpContext.Current.Session != null ? (HttpContext.Current.Session[_UserCarrier] != null ? (string)HttpContext.Current.Session[_UserCarrier] : string.Empty) : string.Empty ) : string.Empty;
 
             }
 
@@ -712,7 +712,7 @@ namespace Acurus.Capella.UI
         {
             get
             {
-                return HttpContext.Current != null ? (HttpContext.Current.Session[_bFollows_DST] != null ? (bool)HttpContext.Current.Session[_bFollows_DST] : false) : false;
+                return HttpContext.Current != null ? (HttpContext.Current.Session != null ? (HttpContext.Current.Session[_bFollows_DST] != null ? (bool)HttpContext.Current.Session[_bFollows_DST] : false) : false ) : false;
 
             }
 
