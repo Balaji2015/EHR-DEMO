@@ -1189,6 +1189,7 @@ namespace Acurus.Capella.UI
                 txtSelectedPages.Disabled = true;
                 rdbAll.Checked = true;
                 btnMoveToNextProcess.Disabled = false;
+                
                 if (index_lst != null && index_lst.Count > 0)
                 {
                     LoadGridView(index_lst);
@@ -1647,17 +1648,17 @@ namespace Acurus.Capella.UI
                 }
                 //record variable not used
 
-                //if (updateList != null && updateList.Count > 0)
-                //{
-                //    foreach (scan_index item in updateList)
-                //    {
-                //        if (indexListOnSession != null && indexListOnSession.Count > 0)//BugID:54354
-                //        {
-                //            var record = indexListOnSession.FirstOrDefault(a => a.Id == item.Id).Version++;
-                //        }
+                if (updateList != null && updateList.Count > 0)
+                {
+                    foreach (scan_index item in updateList)
+                    {
+                        if (indexListOnSession != null && indexListOnSession.Count > 0)//BugID:54354
+                        {
+                            var record = indexListOnSession.FirstOrDefault(a => a.Id == item.Id).Version++;
+                        }
 
-                //    }
-                //}
+                    }
+                }
 
                 Session["IndexList"] = indexListOnSession;
                 LoadGridView(indexListOnSession);
