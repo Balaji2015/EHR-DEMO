@@ -99,11 +99,11 @@ Deploy Test Job 10.0.0.11:
   script:
   
   - echo "Deployee CMG..Start.."
-  - xcopy /y /s "F:\Acurus_Web\Deployee\builds\Capella_publish\*.*" "F:\Acurus_Web\EHR_RELEASE\RELEASE_CMG\"
+  - xcopy /y /s "F:\Acurus_Web\Deployee\builds\Capella_publish\*.*" "F:\Acurus_Web\capella_cmg_project\Capella_cmg_training\"
   - echo "Deployee CMG..Completed.."
 
   - echo "Deployee WC..Start.."
-  - xcopy /y /s "F:\Acurus_Web\Deployee\builds\Capella_publish\*.*" "F:\Acurus_Web\EHR_RELEASE\RELEASE_WC\"
+  #- xcopy /y /s "F:\Acurus_Web\Deployee\builds\Capella_publish\*.*" "F:\Acurus_Web\EHR_RELEASE\RELEASE_WC\"
   - echo "Deployee WC..Completed.."
 
 
