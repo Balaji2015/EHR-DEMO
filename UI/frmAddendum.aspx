@@ -436,7 +436,7 @@
                                 <asp:Label ID="lblSelectReviewPhysician" runat="server" Text="Select Review Physician"></asp:Label>
                             </td>
                             <td>
-                                <telerik:RadComboBox ID="cboShowAllPhysicians" runat="server" Height="40px" Width="500px" AutoPostBack="true"
+                                <telerik:RadComboBox ID="cboShowAllPhysicians" runat="server" Height="100px" Width="500px" AutoPostBack="true"
                                     OnSelectedIndexChanged="cboShowAllPhysicians_SelectedIndexChanged" OnClientSelectedIndexChanged="EnableButtons">
                                 </telerik:RadComboBox>
                             </td>
