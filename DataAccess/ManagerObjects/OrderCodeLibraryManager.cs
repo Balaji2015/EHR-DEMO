@@ -71,13 +71,22 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
             IList<OrderCodeLibrary> retList = new List<OrderCodeLibrary>();
             using (ISession iMySession = NHibernateSessionManager.Instance.CreateISession())
             {
+                //Gitlab #3922  - An item with the same key has already been added
+                //            ICriteria crit = iMySession.CreateCriteria(typeof(OrderCodeLibrary))
+                //                .SetProjection(Projections.Distinct(Projections.ProjectionList()
+                //.Add(Projections.Alias(Projections.Property("Order_Code"), "Order_Code"))
+                //.Add(Projections.Alias(Projections.Property("Order_Code_Name"), "Order_Code_Name"))
+                //.Add(Projections.Alias(Projections.Property("Order_Group_Name"), "Order_Group_Name"))))
+                //                .Add(Expression.Like("Order_Code", Code + "%")).Add(Expression.Like("Order_Code_Name", "%" + Description + "%"))
+                //                .Add(Expression.Eq("Lab_ID", LabID));
+
                 ICriteria crit = iMySession.CreateCriteria(typeof(OrderCodeLibrary))
-                    .SetProjection(Projections.Distinct(Projections.ProjectionList()
-    .Add(Projections.Alias(Projections.Property("Order_Code"), "Order_Code"))
-    .Add(Projections.Alias(Projections.Property("Order_Code_Name"), "Order_Code_Name"))
-    .Add(Projections.Alias(Projections.Property("Order_Group_Name"), "Order_Group_Name"))))
-                    .Add(Expression.Like("Order_Code", Code + "%")).Add(Expression.Like("Order_Code_Name", "%" + Description + "%"))
-                    .Add(Expression.Eq("Lab_ID", LabID));
+                   .SetProjection(Projections.Distinct(Projections.ProjectionList()
+   .Add(Projections.Alias(Projections.Property("Order_Code"), "Order_Code"))
+   .Add(Projections.Alias(Projections.Property("Order_Code_Name"), "Order_Code_Name"))))
+                   .Add(Expression.Like("Order_Code", Code + "%")).Add(Expression.Like("Order_Code_Name", "%" + Description + "%"))
+                   .Add(Expression.Eq("Lab_ID", LabID));
+
                 crit.SetResultTransformer(
      new NHibernate.Transform.AliasToBeanResultTransformer(typeof(OrderCodeLibrary)));
                
