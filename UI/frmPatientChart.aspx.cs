@@ -130,7 +130,9 @@ namespace Acurus.Capella.UI
             {
                 //objEncounterblob = ilstEncounterBlob[0];
 
-                throw new Exception("Encounter XML is not found for Encounter ID " + ClientSession.EncounterId + ". Please contact support.");
+                //throw new Exception("Encounter XML is not found for Encounter ID " + ClientSession.EncounterId + ". Please contact support.");
+                ScriptManager.RegisterStartupScript(this, typeof(frmEncounter), "ErrorMessage", "RegenerateXML('" + ClientSession.EncounterId.ToString() + "','Encounter','patientchart');", true);
+                return;
 
                 string sDirectoryPath = string.Empty;
                 if (Directory.Exists(HttpContext.Current.Server.MapPath("Template_XML")))
@@ -263,8 +265,9 @@ namespace Acurus.Capella.UI
             {
                 //objHumanblob = ilstHumanBlob[0];
 
-                throw new Exception("Human XML is not found for Human ID " + ClientSession.HumanId + ". Please contact support.");
-
+                //throw new Exception("Human XML is not found for Human ID " + ClientSession.HumanId + ". Please contact support.");
+                ScriptManager.RegisterStartupScript(this, typeof(frmEncounter), "ErrorMessage", "RegenerateXML('" + ClientSession.HumanId.ToString() + "','Human','patientchart');", true);
+                return;
                 string sDirectoryPath = string.Empty;
                 if (Directory.Exists(HttpContext.Current.Server.MapPath("Template_XML")))
                     sDirectoryPath = HttpContext.Current.Server.MapPath("Template_XML");
@@ -1976,9 +1979,11 @@ namespace Acurus.Capella.UI
                 if (ilstEncounterBlob.Count == 0 && ClientSession.EncounterId > 0)
                 {
                     //objEncounterblob = ilstEncounterBlob[0];
-
-                    throw new Exception("Encounter XML is not found for Encounter ID " + ClientSession.EncounterId + ". Please contact support.");
-
+                    //GitLab #3960
+                    //throw new Exception("Encounter XML is not found for Encounter ID " + ClientSession.EncounterId + ". Please contact support.");
+                    //GitLab #3960
+                    ScriptManager.RegisterStartupScript(this, typeof(frmEncounter), "ErrorMessage", "RegenerateXML('" + ClientSession.EncounterId.ToString() + "','Encounter','patientchart');", true);
+                    return;
                     string sDirectoryPath = string.Empty;
                     if (Directory.Exists(HttpContext.Current.Server.MapPath("Template_XML")))
                         sDirectoryPath = HttpContext.Current.Server.MapPath("Template_XML");
@@ -2109,9 +2114,11 @@ namespace Acurus.Capella.UI
                 if (ilstHumanBlob.Count == 0 && ClientSession.HumanId > 0)
                 {
                     //objHumanblob = ilstHumanBlob[0];
-
-                    throw new Exception("Human XML is not found for Human ID " + ClientSession.HumanId + ". Please contact support.");
-
+                    //GitLab #3960
+                    //throw new Exception("Human XML is not found for Human ID " + ClientSession.HumanId + ". Please contact support.");
+                    //GitLab #3960
+                    ScriptManager.RegisterStartupScript(this, typeof(frmEncounter), "ErrorMessage", "RegenerateXML('" + ClientSession.HumanId.ToString() + "','Human','patientchart');", true);
+                    return;
                     string sDirectoryPath = string.Empty;
                     if (Directory.Exists(HttpContext.Current.Server.MapPath("Template_XML")))
                         sDirectoryPath = HttpContext.Current.Server.MapPath("Template_XML");

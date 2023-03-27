@@ -6,13 +6,21 @@
     
 }
 
-function SummaryHumanIDAlert() {
+function SummaryHumanIDAlert(sMessage) {
     document.getElementById('summarydiv').style.display = "block";
     document.getElementById('divSummary').style.display = "none";
     document.getElementById('xslFrame').style.display = "none";
-    document.getElementById('summarydiv').innerText = "EncounterList Tag is not found. Please contact support team to regenerate the XML.";
+    //GitLab #3933
+    if (sMessage == "EncounterList Tag") {
+        document.getElementById('summarydiv').innerText = sMessage + " is not found. Please contact support team to regenerate the XML.";
+    }
+    else if (sMessage == "Encounter Xml")
+    {
+        document.getElementById('summarydiv').innerText = sMessage + " is not found. Please contact support team to regenerate the XML.";
+    }
 
 }
+
 
 function SummaryTimeStamp(totaltime, transormtime) {
     console.log("TotalTime:" + totaltime + "ms");

@@ -49,7 +49,7 @@ namespace Acurus.Capella.UI
             {
                 IList<Encounter_Blob> ilstEncounterBlob = new List<Encounter_Blob>();
                 EncounterBlobManager EncounterBlobMngr = new EncounterBlobManager();
-               
+
                 ilstEncounterBlob = EncounterBlobMngr.GetEncounterBlob(Encounter_Id);
                 if (ilstEncounterBlob.Count > 0)
                 {
@@ -57,13 +57,19 @@ namespace Acurus.Capella.UI
                     if (sXMLEncounterDoc.Substring(0, 1) != "<")
                         sXMLEncounterDoc = sXMLEncounterDoc.Substring(1, sXMLEncounterDoc.Length - 1);
                 }
+                //GitLab #3933
+                else
+                {
+                    ScriptManager.RegisterStartupScript(this, typeof(frmEncounter), "ErrorMessage", "RegenerateXML('" + Encounter_Id.ToString() + "','Encounter','summary');", true);
+                    return;
+                }
                 FileName = "Encounter" + "_" + Encounter_Id + ".xml";
             }
-            else
+            else if (ClientSession.EncounterId > 0)
             {
                 IList<Encounter_Blob> ilstEncounterBlob = new List<Encounter_Blob>();
                 EncounterBlobManager EncounterBlobMngr = new EncounterBlobManager();
-              
+
                 ilstEncounterBlob = EncounterBlobMngr.GetEncounterBlob(ClientSession.EncounterId);
                 if (ilstEncounterBlob.Count > 0)
                 {
@@ -71,7 +77,19 @@ namespace Acurus.Capella.UI
                     if (sXMLEncounterDoc.Substring(0, 1) != "<")
                         sXMLEncounterDoc = sXMLEncounterDoc.Substring(1, sXMLEncounterDoc.Length - 1);
                 }
+                //GitLab #3933
+                else
+                {
+                    ScriptManager.RegisterStartupScript(this, typeof(frmEncounter), "ErrorMessage", "RegenerateXML('" + ClientSession.EncounterId.ToString() + "','Encounter','summary');", true);
+                    return;
+                }
                 FileName = "Encounter" + "_" + ClientSession.EncounterId + ".xml";
+            }
+            //GitLab #3933
+            else
+            {
+                ScriptManager.RegisterStartupScript(this, typeof(frmEncounter), "SummaryAlert", "SummaryHumanIDAlert('Encounter Xml');", true);
+                return;
             }
 
            // strXmlEncounterPath1 = Path.Combine(System.Configuration.ConfigurationSettings.AppSettings["XMLPath"], FileName);
