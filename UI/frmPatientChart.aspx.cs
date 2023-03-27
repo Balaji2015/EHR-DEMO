@@ -2116,9 +2116,9 @@ namespace Acurus.Capella.UI
                     //objHumanblob = ilstHumanBlob[0];
                     //GitLab #3960
                     //throw new Exception("Human XML is not found for Human ID " + ClientSession.HumanId + ". Please contact support.");
-                    //GitLab #3960
+                    //GitLab #3960 
                     ScriptManager.RegisterStartupScript(this, typeof(frmEncounter), "ErrorMessage", "RegenerateXML('" + ClientSession.HumanId.ToString() + "','Human','patientchart');", true);
-                    return;
+                    return; 
                     string sDirectoryPath = string.Empty;
                     if (Directory.Exists(HttpContext.Current.Server.MapPath("Template_XML")))
                         sDirectoryPath = HttpContext.Current.Server.MapPath("Template_XML");

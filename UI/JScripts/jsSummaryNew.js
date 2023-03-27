@@ -10,7 +10,7 @@ function SummaryHumanIDAlert(sMessage) {
     document.getElementById('summarydiv').style.display = "block";
     document.getElementById('divSummary').style.display = "none";
     document.getElementById('xslFrame').style.display = "none";
-    //GitLab #3933
+    //GitLab #3933  
     if (sMessage == "EncounterList Tag") {
         document.getElementById('summarydiv').innerText = sMessage + " is not found. Please contact support team to regenerate the XML.";
     }
@@ -18,7 +18,7 @@ function SummaryHumanIDAlert(sMessage) {
     {
         document.getElementById('summarydiv').innerText = sMessage + " is not found. Please contact support team to regenerate the XML.";
     }
-
+ 
 }
 
 

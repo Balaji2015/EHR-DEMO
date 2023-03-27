@@ -49,7 +49,7 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
         public IList<Encounter_Blob> GetEncounterBlob(ulong ulEncounterID)
         {
             IList<Encounter_Blob> ilstEncounterBlob = new List<Encounter_Blob>();
-            //GitLab #3960
+            //GitLab #3960  
             session.GetISession().Close();
             ICriteria crit = session.GetISession().CreateCriteria(typeof(Encounter_Blob)).Add(Expression.Eq("Id", ulEncounterID));
             ilstEncounterBlob = crit.List<Encounter_Blob>();

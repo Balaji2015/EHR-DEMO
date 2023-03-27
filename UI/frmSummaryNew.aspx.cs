@@ -224,8 +224,8 @@ namespace Acurus.Capella.UI
                         }
                         else
                         {
-                            ScriptManager.RegisterStartupScript(this, typeof(frmEncounter), "SummaryAlert", "SummaryHumanIDAlert('EncounterList Tag');", true);
-                            return;
+                             ScriptManager.RegisterStartupScript(this, typeof(frmEncounter), "SummaryAlert", "SummaryHumanIDAlert('EncounterList Tag');", true);
+                            return;  
                         }
 
                     }
