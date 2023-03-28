@@ -211,6 +211,8 @@
     <Content Include="frmPrintPDF.aspx" />
     <Content Include="frmSendHealthRecord.aspx" />
     <Content Include="frmSessionExpired.aspx" />
+    <Content Include="frmSessionExpiredIndirectAccess.aspx" />
+    <Content Include="frmSessionExpiredMultiLogin.aspx" />
     <Content Include="frmSummaryOfCare.aspx" />
     <Content Include="frmValidationArea.aspx" />
     <Content Include="frmViewResult.aspx" />
@@ -560,6 +562,20 @@
     </Compile>
     <Compile Include="frmSessionExpired.aspx.designer.cs">
       <DependentUpon>frmSessionExpired.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="frmSessionExpiredIndirectAccess.aspx.cs">
+      <DependentUpon>frmSessionExpiredIndirectAccess.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="frmSessionExpiredIndirectAccess.aspx.designer.cs">
+      <DependentUpon>frmSessionExpiredIndirectAccess.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="frmSessionExpiredMultiLogin.aspx.cs">
+      <DependentUpon>frmSessionExpiredMultiLogin.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="frmSessionExpiredMultiLogin.aspx.designer.cs">
+      <DependentUpon>frmSessionExpiredMultiLogin.aspx</DependentUpon>
     </Compile>
     <Compile Include="frmSummaryOfCare.aspx.cs">
       <DependentUpon>frmSummaryOfCare.aspx</DependentUpon>

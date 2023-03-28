@@ -168,7 +168,8 @@ namespace Acurus.Capella.UI
 
                                 HttpContext.Current.Response.StatusCode = 999;
                                 HttpContext.Current.Response.Status = "999 Session Expired";
-                                HttpContext.Current.Response.StatusDescription = "frmSessionExpired.aspx?Reason=Abandoned&From=Globalasaxcs|Linenumber=132";
+                                //HttpContext.Current.Response.StatusDescription = "frmSessionExpired.aspx?Reason=Abandoned&From=Globalasaxcs|Linenumber=132";
+                                HttpContext.Current.Response.StatusDescription = "frmSessionExpiredMultiLogin.aspx?Reason=Abandoned&From=Globalasaxcs|Linenumber=132";
                             }
                             else
                             {
@@ -177,7 +178,8 @@ namespace Acurus.Capella.UI
 
                                 UtilityManager.inserttologgingtableforSessionTimeout("Redirecting to Session Expired due to Multilogin - Linenumber=135 ", Request.Url.ToString(), string.Empty);
 
-                                Response.Redirect("~/frmSessionExpired.aspx?Reason=Abandoned&From=Globalasaxcs|Linenumber=135");
+                                //Response.Redirect("~/frmSessionExpired.aspx?Reason=Abandoned&From=Globalasaxcs|Linenumber=135");
+                                Response.Redirect("~/frmSessionExpiredMultiLogin.aspx?Reason=Abandoned&From=Globalasaxcs|Linenumber=135");
                             }
                         }
                         //var isPresent = (from obj in lstUserID where obj.Current_Session_ID != HttpContext.Current.Session.SessionID select obj).ToList();
@@ -217,7 +219,8 @@ namespace Acurus.Capella.UI
 
                             HttpContext.Current.Response.StatusCode = 999;
                             HttpContext.Current.Response.Status = "999 Session Expired";
-                            HttpContext.Current.Response.StatusDescription = "frmSessionExpired.aspx?Reason=Abandoned&From=Globalasaxcs|Linenumber=167";
+                            //HttpContext.Current.Response.StatusDescription = "frmSessionExpired.aspx?Reason=Abandoned&From=Globalasaxcs|Linenumber=167";
+                            HttpContext.Current.Response.StatusDescription = "frmSessionExpiredMultiLogin.aspx?Reason=Abandoned&From=Globalasaxcs|Linenumber=167";
                         }
                         else
                         {
@@ -225,7 +228,8 @@ namespace Acurus.Capella.UI
                             //ClientSession.LocalDate + ";" + ClientSession.LocalTime, "Redirecting to Session Expired - Linenumber=170 " + " - " + Request.Url.ToString(), DateTime.Now, "0", "");
                             UtilityManager.inserttologgingtableforSessionTimeout("Redirecting to Session Expired due to Multilogin - Linenumber=170 ", Request.Url.ToString(), string.Empty);
 
-                            Response.Redirect("~/frmSessionExpired.aspx?Reason=Abandoned&From=Globalasaxcs|Linenumber=170");
+                           // Response.Redirect("~/frmSessionExpired.aspx?Reason=Abandoned&From=Globalasaxcs|Linenumber=170");
+                            Response.Redirect("~/frmSessionExpiredMultiLogin.aspx?Reason=Abandoned&From=Globalasaxcs|Linenumber=170");
                             //HttpContext.Current.Response.StatusCode = 999;
                             //HttpContext.Current.Response.Status = "999 Session Expired";
                             //HttpContext.Current.Response.StatusDescription = "frmSessionExpired.aspx?Reason=Abandoned&From=Globalasaxcs|Linenumber=174";
@@ -577,12 +581,14 @@ namespace Acurus.Capella.UI
                             if (IsAjaxRequest(HttpContext.Current.Request))
                             {
                                 UtilityManager.inserttologgingtableforSessionTimeout("Check Login - Redirecting to Session Expired due to Multilogin - line number 382 in global.asax", Request.Url.ToString(), string.Empty);
-                                HttpContext.Current.Response.StatusDescription = "frmSessionExpired.aspx?Reason=Abandoned&From=Globalasaxcs|Linenumber=382";
+                                //HttpContext.Current.Response.StatusDescription = "frmSessionExpired.aspx?Reason=Abandoned&From=Globalasaxcs|Linenumber=382";
+                                HttpContext.Current.Response.StatusDescription = "frmSessionExpiredMultiLogin.aspx?Reason=Abandoned&From=Globalasaxcs|Linenumber=382";
                             }
                             else
                             {
                                 UtilityManager.inserttologgingtableforSessionTimeout("Check Login - Redirecting to Session Expired due to Multilogin - line number 384 in global.asax", Request.Url.ToString(), string.Empty);
-                                Response.Redirect("~/frmSessionExpired.aspx?Reason=Abandoned&From=Globalasaxcs|Linenumber=384");
+                                // Response.Redirect("~/frmSessionExpired.aspx?Reason=Abandoned&From=Globalasaxcs|Linenumber=384");
+                                Response.Redirect("~/frmSessionExpiredMultiLogin.aspx?Reason=Abandoned&From=Globalasaxcs|Linenumber=384");
                             }
                             isMultiLogIn = false;
                         }
@@ -625,12 +631,14 @@ namespace Acurus.Capella.UI
                         if (IsAjaxRequest(HttpContext.Current.Request))
                         {
                             UtilityManager.inserttologgingtableforSessionTimeout("Check Login - Redirecting to Session Expired due to Multilogin - line number 417 in global.asax", Request.Url.ToString(), string.Empty);
-                            HttpContext.Current.Response.StatusDescription = "frmSessionExpired.aspx?Reason=Abandoned&From=Globalasaxcs|Linenumber=417";
+                            //HttpContext.Current.Response.StatusDescription = "frmSessionExpired.aspx?Reason=Abandoned&From=Globalasaxcs|Linenumber=417";
+                            HttpContext.Current.Response.StatusDescription = "frmSessionExpiredMultiLogin.aspx?Reason=Abandoned&From=Globalasaxcs|Linenumber=417";
                         }
                         else
                         {
                             UtilityManager.inserttologgingtableforSessionTimeout("Check Login - Redirecting to Session Expired due to Multilogin - line number 419 in global.asax", Request.Url.ToString(), string.Empty);
-                            Response.Redirect("~/frmSessionExpired.aspx?Reason=Abandoned&From=Globalasaxcs|Linenumber=419");
+                            //Response.Redirect("~/frmSessionExpired.aspx?Reason=Abandoned&From=Globalasaxcs|Linenumber=419");
+                            Response.Redirect("~/frmSessionExpiredMultiLogin.aspx?Reason=Abandoned&From=Globalasaxcs|Linenumber=419");
                         }
                         isMultiLogIn = false;
                     }

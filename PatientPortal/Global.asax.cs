@@ -98,10 +98,14 @@ namespace Acurus.Capella.PatientPortal
                             {
                                 HttpContext.Current.Response.StatusCode = 999;
                                 HttpContext.Current.Response.Status = "999 Session Expired";
-                                HttpContext.Current.Response.StatusDescription = "frmSessionExpired.aspx?Reason=Abandoned";
+                                //HttpContext.Current.Response.StatusDescription = "frmSessionExpired.aspx?Reason=Abandoned";
+                                HttpContext.Current.Response.StatusDescription = "frmSessionExpiredMultiLogin.aspx?Reason=Abandoned";
                             }
                             else
-                                Response.Redirect("~/frmSessionExpired.aspx?Reason=Abandoned");
+                            {
+                                //Response.Redirect("~/frmSessionExpired.aspx?Reason=Abandoned");
+                                Response.Redirect("~/frmSessionExpiredMultiLogin.aspx?Reason=Abandoned");
+                            }
                         }
                         //var isPresent = (from obj in lstUserID where obj.Current_Session_ID != HttpContext.Current.Session.SessionID select obj).ToList();
                         // isMultiLogIn = false;
@@ -133,10 +137,14 @@ namespace Acurus.Capella.PatientPortal
                         {
                             HttpContext.Current.Response.StatusCode = 999;
                             HttpContext.Current.Response.Status = "999 Session Expired";
-                            HttpContext.Current.Response.StatusDescription = "frmSessionExpired.aspx?Reason=Abandoned";
+                            //HttpContext.Current.Response.StatusDescription = "frmSessionExpired.aspx?Reason=Abandoned";
+                            HttpContext.Current.Response.StatusDescription = "frmSessionExpiredMultiLogin.aspx?Reason=Abandoned";
                         }
                         else
-                            Response.Redirect("~/frmSessionExpired.aspx?Reason=Abandoned");
+                        {
+                            //Response.Redirect("~/frmSessionExpired.aspx?Reason=Abandoned");
+                            Response.Redirect("~/frmSessionExpiredMultiLogin.aspx?Reason=Abandoned");
+                        }
                     }
                 }
             }
@@ -321,9 +329,15 @@ namespace Acurus.Capella.PatientPortal
                             if (isMultiLogIn == true)
                             {
                                 if (IsAjaxRequest(HttpContext.Current.Request))
-                                    HttpContext.Current.Response.StatusDescription = "frmSessionExpired.aspx?Reason=Abandoned";
+                                {
+                                    //HttpContext.Current.Response.StatusDescription = "frmSessionExpired.aspx?Reason=Abandoned";
+                                    HttpContext.Current.Response.StatusDescription = "frmSessionExpiredMultiLogin.aspx?Reason=Abandoned";
+                                }
                                 else
-                                    Response.Redirect("~/frmSessionExpired.aspx?Reason=Abandoned");
+                                {
+                                   // Response.Redirect("~/frmSessionExpired.aspx?Reason=Abandoned");
+                                    Response.Redirect("~/frmSessionExpiredMultiLogin.aspx?Reason=Abandoned");
+                                }
                                 isMultiLogIn = false;
                             }
                             else
@@ -356,9 +370,15 @@ namespace Acurus.Capella.PatientPortal
                     if (isMultiLogIn == true)
                     {
                         if (IsAjaxRequest(HttpContext.Current.Request))
-                            HttpContext.Current.Response.StatusDescription = "frmSessionExpired.aspx?Reason=Abandoned";
+                        {
+                           // HttpContext.Current.Response.StatusDescription = "frmSessionExpired.aspx?Reason=Abandoned";
+                            HttpContext.Current.Response.StatusDescription = "frmSessionExpiredMultiLogin.aspx?Reason=Abandoned";
+                        }
                         else
-                            Response.Redirect("~/frmSessionExpired.aspx?Reason=Abandoned");
+                        {
+                            //Response.Redirect("~/frmSessionExpired.aspx?Reason=Abandoned");
+                            Response.Redirect("~/frmSessionExpiredMultiLogin.aspx?Reason=Abandoned");
+                        }
                         isMultiLogIn = false;
                     }
                     else

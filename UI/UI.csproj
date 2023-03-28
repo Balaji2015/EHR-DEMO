@@ -358,6 +358,8 @@
     <Content Include="frmQRCodeGenerator.aspx" />
     <Content Include="frmQuickPatientCreate.aspx" />
     <Content Include="frmResetPassword.aspx" />
+    <Content Include="frmSessionExpiredIndirectAccess.aspx" />
+    <Content Include="frmSessionExpiredMultiLogin.aspx" />
     <Content Include="frmSummaryNew.aspx" />
     <Content Include="frmTest.aspx" />
     <Content Include="General_With_Specialty.html" />
@@ -1540,6 +1542,20 @@
     </Compile>
     <Compile Include="frmSessionExpired.aspx.designer.cs">
       <DependentUpon>frmSessionExpired.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="frmSessionExpiredIndirectAccess.aspx.cs">
+      <DependentUpon>frmSessionExpiredIndirectAccess.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="frmSessionExpiredIndirectAccess.aspx.designer.cs">
+      <DependentUpon>frmSessionExpiredIndirectAccess.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="frmSessionExpiredMultiLogin.aspx.cs">
+      <DependentUpon>frmSessionExpiredMultiLogin.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="frmSessionExpiredMultiLogin.aspx.designer.cs">
+      <DependentUpon>frmSessionExpiredMultiLogin.aspx</DependentUpon>
     </Compile>
     <Compile Include="frmSpecialityDiagnosis.aspx.cs">
       <DependentUpon>frmSpecialityDiagnosis.aspx</DependentUpon>

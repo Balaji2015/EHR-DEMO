@@ -1,35 +1,23 @@
-﻿using System;
-using System.Collections;
-using System.Configuration;
-using System.Data;
+﻿using Acurus.Capella.DataAccess.ManagerObjects;
+using System;
+using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Web;
-using System.Web.Security;
 using System.Web.UI;
-using System.Web.UI.HtmlControls;
 using System.Web.UI.WebControls;
-using System.Web.UI.WebControls.WebParts;
-using System.Xml.Linq;
-using Acurus.Capella.Core.DomainObjects;
-using Acurus.Capella.DataAccess.ManagerObjects;
-using log4net;
-using System.IO;
-namespace Acurus.Capella.PatientPortal
+
+namespace Acurus.Capella.UI
 {
-    public partial class frmSessionExpired : System.Web.UI.Page
+    public partial class frmSessionExpiredIndirectAccess : System.Web.UI.Page
     {
-        private static readonly ILog log = LogManager.GetLogger("Error");
-        private static readonly ILog logFile = LogManager.GetLogger("Session");
         public static bool bFirstTime = false;
         protected void Page_Load(object sender, EventArgs e)
         {
-            log4net.Config.XmlConfigurator.ConfigureAndWatch(new FileInfo(Server.MapPath("Web.config")));
-            logFile.Info(DateTime.UtcNow.ToString() + "- Before Session Expiration", null);
             UserSessionManager userSessionMngr = new UserSessionManager();
-            logFile.Info(DateTime.UtcNow.ToString() + "- After Session Expiration", null);
-          //  userSessionMngr.DeleteUserSessionAtSessionEnd(HttpContext.Current.Session.SessionID); 
+            //  userSessionMngr.DeleteUserSessionAtSessionEnd(HttpContext.Current.Session.SessionID); 
             //Global.ht.Remove(ClientSession.UserName);
-           // userSessionMngr.DeleteUserSessionFromXml(HttpContext.Current.Session.SessionID);
+            // userSessionMngr.DeleteUserSessionFromXml(HttpContext.Current.Session.SessionID);
             UtilityManager.DeleteUserSessionFile(string.Empty, Session.SessionID);
             /* To clean the user-specific temp directory */
             if (Directory.Exists(Session.SessionID))
@@ -44,10 +32,7 @@ namespace Acurus.Capella.PatientPortal
                 bFirstTime = true;
             }
             ScriptManager.RegisterStartupScript(this, this.GetType(), string.Empty, "if(top.window.document.getElementById('ctl00_Loading')!=null||top.window.document.getElementById('ctl00_Loading')!=undefined)top.window.document.getElementById('ctl00_Loading').style.display = 'none';", true);
-            if (Request.QueryString["Reason"] != null && Request.QueryString["Reason"].ToString() == "Abandoned")
-                Label1.Text = "This session has expired since you logged in from another system. <br /> <br />" + "Date Time : " + DateTime.Now.ToString("dd/MMM/yyyy hh:mm:ss tt");
-            else
-                Label1.Text += "<br /> <br />Date Time : " + DateTime.Now.ToString("dd/MMM/yyyy hh:mm:ss tt");
+            Label1.Text += "<br /> <br />Date Time : " + DateTime.Now.ToString("dd/MMM/yyyy hh:mm:ss tt");
         }
 
         protected void btnLogin_Click(object sender, EventArgs e)
@@ -78,7 +63,7 @@ namespace Acurus.Capella.PatientPortal
                 }
                 else
                 {
-                    Response.Write("<script> window.top.location.href=\" webfrmLogin.aspx\"; </script>");
+                    Response.Write("<script> window.top.location.href=\" frmLogin.aspx\"; </script>");
                 }
                 bFirstTime = false;
             }

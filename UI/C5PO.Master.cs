@@ -340,7 +340,8 @@ namespace Acurus.Capella.UI
 
             if (ClientSession.UserName == "" && ClientSession.FacilityName == "")
             {
-                Response.Redirect("~/frmSessionExpired.aspx");
+                //Response.Redirect("~/frmSessionExpired.aspx");
+                Response.Redirect("~/frmSessionExpiredIndirectAccess.aspx");
             }
             else
             {

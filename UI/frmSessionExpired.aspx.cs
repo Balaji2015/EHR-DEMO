@@ -40,7 +40,9 @@ namespace Acurus.Capella.UI
             }
             ScriptManager.RegisterStartupScript(this, this.GetType(), string.Empty, "if(top.window.document.getElementById('ctl00_Loading')!=null||top.window.document.getElementById('ctl00_Loading')!=undefined)top.window.document.getElementById('ctl00_Loading').style.display = 'none';", true);
             if (Request.QueryString["Reason"] != null && Request.QueryString["Reason"].ToString() == "Abandoned")
-                Label1.Text = "This session has expired since you logged in from another system.";
+                Label1.Text = "This session has expired since you logged in from another system. <br /> <br />" + "Date Time : " + DateTime.Now.ToString("dd/MMM/yyyy hh:mm:ss tt");
+            else
+                Label1.Text += "<br /> <br />Date Time : " + DateTime.Now.ToString("dd/MMM/yyyy hh:mm:ss tt");
         }
 
         protected void btnLogin_Click(object sender, EventArgs e)
