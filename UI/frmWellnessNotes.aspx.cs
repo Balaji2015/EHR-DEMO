@@ -60,7 +60,9 @@ namespace Acurus.Capella.UI
                 //GitLab #3933   
                 else
                 {
-                    ScriptManager.RegisterStartupScript(this, typeof(frmEncounter), "ErrorMessage", "RegenerateXML('" + Encounter_Id.ToString() + "','Encounter','summary');", true);
+                    //ScriptManager.RegisterStartupScript(this, typeof(frmEncounter), "ErrorMessage", "RegenerateXML('" + Encounter_Id.ToString() + "','Encounter','summary');", true);
+                    //return;
+                    ScriptManager.RegisterStartupScript(this, typeof(frmEncounter), "SummaryAlert", "SummaryHumanIDAlert('Encounter XML');", true);
                     return;
                 }
                 FileName = "Encounter" + "_" + Encounter_Id + ".xml";
@@ -80,7 +82,9 @@ namespace Acurus.Capella.UI
                 //GitLab #3933
                 else
                 {
-                    ScriptManager.RegisterStartupScript(this, typeof(frmEncounter), "ErrorMessage", "RegenerateXML('" + ClientSession.EncounterId.ToString() + "','Encounter','summary');", true);
+                    //ScriptManager.RegisterStartupScript(this, typeof(frmEncounter), "ErrorMessage", "RegenerateXML('" + ClientSession.EncounterId.ToString() + "','Encounter','summary');", true);
+                    //return;
+                    ScriptManager.RegisterStartupScript(this, typeof(frmEncounter), "SummaryAlert", "SummaryHumanIDAlert('Encounter XML');", true);
                     return;
                 }
                 FileName = "Encounter" + "_" + ClientSession.EncounterId + ".xml";
@@ -88,7 +92,7 @@ namespace Acurus.Capella.UI
             //GitLab #3933
             else
             {
-                ScriptManager.RegisterStartupScript(this, typeof(frmEncounter), "SummaryAlert", "SummaryHumanIDAlert('Encounter Xml');", true);
+                ScriptManager.RegisterStartupScript(this, typeof(frmEncounter), "SummaryAlert", "SummaryHumanIDAlert('Encounter ID');", true);
                 return;
             }
 

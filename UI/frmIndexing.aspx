@@ -72,7 +72,7 @@
                 <asp:ScriptReference Assembly="Telerik.Web.UI" Name="Telerik.Web.UI.Common.jQueryInclude.js"></asp:ScriptReference>
             </Scripts>
         </telerik:RadScriptManager>--%>
-        <asp:ToolkitScriptManager ID="ToolkitScriptManager2" runat="server">
+        <asp:ToolkitScriptManager ID="ToolkitScriptManager2" runat="server" EnableViewState="false">
         </asp:ToolkitScriptManager>
         <%--<div id="dMyscanMessage"  style="display:none;height: 647px; margin-top: 130px;margin-left: 310px;width: 1145px;font-size: 20px !important;align-content: center;">
             <i class="fa fa-check-circle" style="color:green;font-size:165px;margin-left:155px"></i><br />

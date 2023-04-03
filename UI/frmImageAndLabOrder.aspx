@@ -248,7 +248,7 @@
 </head>
 <body onload="FormLoad();OpenNotificationPopUp('ORDER');">
     <form id="form1" runat="server">
-        <telerik:RadScriptManager ID="ToolkitScriptManager1" runat="server">
+        <telerik:RadScriptManager ID="ToolkitScriptManager1" runat="server" EnableViewState="false">
             <Scripts>
                 <asp:ScriptReference Assembly="Telerik.Web.UI" Name="Telerik.Web.UI.Common.Core.js"></asp:ScriptReference>
                 <asp:ScriptReference Assembly="Telerik.Web.UI" Name="Telerik.Web.UI.Common.jQuery.js"></asp:ScriptReference>

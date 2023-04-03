@@ -236,8 +236,14 @@ namespace Acurus.Capella.UI
                             ScriptManager.RegisterStartupScript(this, typeof(frmEncounter), "ErrorMessage", "RegenerateXML('" + Encounter_Id.ToString() + "','Encounter','summary');", true);
 
                         }
-                        else
+                        else if (ClientSession.EncounterId != 0)
+                        {
                             ScriptManager.RegisterStartupScript(this, typeof(frmEncounter), "ErrorMessage", "RegenerateXML('" + ClientSession.EncounterId.ToString() + "','Encounter','summary');", true);
+                        }
+                        else
+                        {
+                            ScriptManager.RegisterStartupScript(this, typeof(frmEncounter), "SummaryAlert", "SummaryAlert();", true);
+                        }
                         return;
                         //throw new Exception("Encounter XML is invalid");
                     }

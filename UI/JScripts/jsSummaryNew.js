@@ -11,14 +11,8 @@ function SummaryHumanIDAlert(sMessage) {
     document.getElementById('divSummary').style.display = "none";
     document.getElementById('xslFrame').style.display = "none";
     //GitLab #3933  
-    if (sMessage == "EncounterList Tag") {
-        document.getElementById('summarydiv').innerText = sMessage + " is not found. Please contact support team to regenerate the XML.";
-    }
-    else if (sMessage == "Encounter Xml")
-    {
-        document.getElementById('summarydiv').innerText = sMessage + " is not found. Please contact support team to regenerate the XML.";
-    }
- 
+    document.getElementById('summarydiv').innerText = sMessage + " is not found. Please contact support team to regenerate the XML.";
+    
 }
 
 
