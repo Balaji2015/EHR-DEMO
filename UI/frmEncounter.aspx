@@ -195,7 +195,7 @@
             </Windows>
         </telerik:RadWindowManager>
 
-        <telerik:RadScriptManager ID="RadScriptManager1" runat="server" EnableViewState="false">
+        <telerik:RadScriptManager ID="RadScriptManager1" runat="server">
             <Scripts>
                 <asp:ScriptReference Assembly="Telerik.Web.UI" Name="Telerik.Web.UI.Common.Core.js"></asp:ScriptReference>
                 <asp:ScriptReference Assembly="Telerik.Web.UI" Name="Telerik.Web.UI.Common.jQuery.js"></asp:ScriptReference>

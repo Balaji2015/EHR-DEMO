@@ -759,7 +759,7 @@ button.close {
             </div>--%>
             </telerik:RadAjaxPanel>
         </div>
-        <asp:ToolkitScriptManager ID="toolkitScriptMngr" runat="server" EnableViewState="false">
+        <asp:ToolkitScriptManager ID="toolkitScriptMngr" runat="server">
             <Scripts>
                 <asp:ScriptReference Assembly="Telerik.Web.UI" Name="Telerik.Web.UI.Common.Core.js"></asp:ScriptReference>
                 <asp:ScriptReference Assembly="Telerik.Web.UI" Name="Telerik.Web.UI.Common.jQuery.js"></asp:ScriptReference>
