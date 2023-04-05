@@ -809,7 +809,14 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
                     }
                     finally
                     {
-                        MySession.Close();
+                        if (MySession.IsOpen)
+                        {
+                            MySession.Close();
+                        }
+                        else
+                        {
+                            session.GetISession().Close();
+                        }
                     }
                 }
             }
