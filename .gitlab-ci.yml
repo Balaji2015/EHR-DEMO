@@ -12,7 +12,7 @@ variables:
 stages:
  - Solution build 4
  - Solution build 11
- - Solution build Production 6
+ - Solution build production 6
  - Solution build Production 10
  - Deploy TESTING 10.0.0.4
  - Deploy TESTING 10.0.0.11
