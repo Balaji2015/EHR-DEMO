@@ -338,8 +338,10 @@ namespace Acurus.Capella.UI.WebServices
 
                 if (dicValues["ElectronicDeclrChecked"]!=null && dicValues["ElectronicDeclrChecked"].ToString() == "true")
                 {
-                    dtMySignDateTime = DateTime.Now;
-                    EncRecord.Encounter_Provider_Signed_Date = UtilityManager.ConvertToUniversal(dtMySignDateTime);
+                    //GitLab - #3974
+                    //dtMySignDateTime = DateTime.Now;
+                    //EncRecord.Encounter_Provider_Signed_Date = UtilityManager.ConvertToUniversal(dtMySignDateTime);
+                    EncRecord.Encounter_Provider_Signed_Date = UtilityManager.ConvertToUniversal();
                 }
                 else
                 {
