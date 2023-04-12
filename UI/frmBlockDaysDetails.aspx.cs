@@ -17,6 +17,7 @@ using Acurus.Capella.DataAccess.ManagerObjects;
 using Telerik.Web.UI;
 using System.IO;
 using System.Xml;
+using DocumentFormat.OpenXml.Presentation;
 
 namespace Acurus.Capella.UI
 {
@@ -125,7 +126,10 @@ namespace Acurus.Capella.UI
                 hdnFacilityName.Value = Request.QueryString["Facility_Name"].Replace("_", "#");
                 FacilityList = new List<FacilityLibrary>();
                 ddlFacilityName.Items.Add("");
-                FacilityList = ApplicationObject.facilityLibraryList;//Codereview FacilityMngr.GetFacilityList();
+                //Gitlab #4133
+                //FacilityList = ApplicationObject.facilityLibraryList;//Codereview FacilityMngr.GetFacilityList();
+                var faclist = from f in ApplicationObject.facilityLibraryList where f.Legal_Org == ClientSession.LegalOrg select f;
+                FacilityList = faclist.ToList<FacilityLibrary>();
                 if (FacilityList != null)
                 {
                     if (FacilityList.Count > 0)
