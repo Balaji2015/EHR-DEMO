@@ -400,8 +400,9 @@ function Add(sCheckDuplicatefax) {
             return false;
         }
     }
-    var vgrd = $('#divgrd').css('display');
-    var WSData = JSON.stringify({
+   
+            var vgrd = $('#divgrd').css('display');
+            var WSData = JSON.stringify({
         Category: sCategory,
         Prefix: $("#ddlPrefix")[0].value,
         Specialty: Specialtylist,//$("#ddlSpecialty")[0].value,
@@ -657,7 +658,9 @@ function AddProvider() {
             return false;
         }
     }
-    var vgrd = $('#divgrd').css('display');
+   
+            var vgrd = $('#divgrd').css('display');
+        
     var vFax = '';
     var WSData = JSON.stringify({
         Category: sCategory,
@@ -700,16 +703,30 @@ function AddProvider() {
             else
                 objdata = $.parseJSON(data.d);
             var tabContents;
-            
-            if (vgrd == "none" && objdata == "None") {
+            if (objdata.includes("|")) {
+                var Getobjval = objdata.split("|")[0]
+            }
+            else {
+                var Getobjval = objdata;
+            }
+            if (vgrd == "none" && Getobjval == "None") {
                 DisplayErrorMessage('110020');
-                Aftersave();
                 var IsEnableGrid = localStorage.getItem("IsEnableGrid");
                 if (IsEnableGrid != null && IsEnableGrid != undefined) {
                     if (IsEnableGrid == "false") {
                         $("#btnClose").click();
+                        var vProviderName = $("#ddlPrefix")[0].value + ". " + $("#txtFirstName")[0].value + " " + document.getElementById("txtMI").value + " " + $("#txtLastName")[0].value;
+                        var vPhyNmae = $("#ddlPrefix")[0].value + $("#txtFirstName")[0].value + " " + document.getElementById("txtMI").value + " " + $("#txtLastName")[0].value + $("#txtSuffix")[0].value;
+                        var vFullName = $("#ddlPrefix")[0].value + $("#txtFirstName")[0].value + " " + document.getElementById("txtMI").value + " " + $("#txtLastName")[0].value + "(" + $("#txtSuffix")[0].value + ")";
+                        var PCP_PhyDetails = objdata.split("|")[1] + "&" + vProviderName + "&" + vPhyNmae + "&" + $("#txtNPI")[0].value +"&" +vFullName + "|" + "NPI:" + $("#txtNPI")[0].value + "|" + Specialtylist + "|" + "FACILITY:" + FacilityList + "|"
+                            + "ADDR: " +$("#txtAddressLine1")[0].value + "," + $("#txtAddressLine2")[0].value + "," + $("#txtCity")[0].value + ","
+                            + $("#txtState")[0].value + "," + $("#txtZip")[0].value
+                            + "|" + "PH:" + $("#txtPhone")[0].value+ "FAX:" + $("#txtFax")[0].value ;
+
+                        localStorage.setItem("PhyDetails", PCP_PhyDetails);
                     }
                 }
+                Aftersave();
             }
             else if (objdata != "" && objdata.length > 0) {
                 if (objdata[0].ExistNPI != null) {
@@ -730,6 +747,13 @@ function AddProvider() {
                         { sessionStorage.setItem('StartLoading', 'false'); StopLoadFromPatChart(); }
                         return;
                     }
+
+                    var PCP_PhyDetails = objdata[i].Physician_Library_ID + "|" + vName + "|" + objdata[i].NPI + "|" + objdata[i].specialty + "|" + objdata[i].Facility + "|"
+                        + objdata[i].Physician_Address1 + "," + objdata[i].Physician_Address2 + "," + objdata[i].Physician_City + "," + objdata[i].Physician_State + "," + objdata[i].Physician_Zip + "|"
+                            + objdata[i].Physician_Fax + "|" + objdata[i].Physician_Telephone ;
+
+                    localStorage.setItem("PhyDetails", PCP_PhyDetails);
+                   
                 }
                 if (vgrd != "none") {
                     for (var i = 0; i < objdata.length; i++) {

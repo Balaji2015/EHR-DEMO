@@ -56,7 +56,7 @@ namespace Acurus.Capella.UI
         StaticLookupManager objStaticLookUpMngr = new StaticLookupManager();
         FileManagementIndexManager objfileproxy = new FileManagementIndexManager();
         PatientNotesManager objPatientNotesMngr = new PatientNotesManager();
-        
+
 
         void Page_PreInit(Object sender, EventArgs e)
         {
@@ -94,9 +94,9 @@ namespace Acurus.Capella.UI
                     }
                 }
             }
-           
 
-                this.Page.Title = "Patient Demographics" + "-" + ClientSession.UserName;
+
+            this.Page.Title = "Patient Demographics" + "-" + ClientSession.UserName;
 
             if (Request.QueryString["EnableMaster"] != null)
             {
@@ -133,7 +133,7 @@ namespace Acurus.Capella.UI
                 hdnFacilityName.Value = ClientSession.FacilityName;
                 IList<string> patientlst = new List<string>();
                 PatientNotesManager objPatNotesMngr = new PatientNotesManager();
-                patientlst = objPatNotesMngr.MapPhysicianUserListForFacility(ClientSession.FacilityName,ClientSession.LegalOrg);
+                patientlst = objPatNotesMngr.MapPhysicianUserListForFacility(ClientSession.FacilityName, ClientSession.LegalOrg);
                 if (patientlst != null && patientlst.Count > 0)
                 {
                     ddlAssignedTo.Items.Add("");
@@ -365,7 +365,7 @@ namespace Acurus.Capella.UI
                         btnaddins.Disabled = true;
 
                     }
-            }
+                }
 
                 ShownDemographics();
                 if (Request["ScreenName"] != null)
@@ -413,7 +413,7 @@ namespace Acurus.Capella.UI
             IList<ScnTab> TempCheckScnTab = new List<ScnTab>();
             string sBACType = string.Empty;
             IList<ScnTab> MyScnTab;
-       
+
             if (this.Items["Title"] == null)
             {
                 sFormName = this.AppRelativeVirtualPath;
@@ -463,7 +463,7 @@ namespace Acurus.Capella.UI
                     }
                 }
             }
-           
+
             SecurityServiceUtility objSecurityServiceUtility = new SecurityServiceUtility();
             objSecurityServiceUtility.ApplyUserPermissions(this);
             if (txtRace.Enabled == true)
@@ -502,8 +502,8 @@ namespace Acurus.Capella.UI
                 {
                     //IList<PatientInsuredPlan> PatInsOrderedList = objHumanList.PatientInsuredBag.OrderBy(x => x.Sort_Order).ToList<PatientInsuredPlan>();
                     IList<PatientInsuredPlan> PatInsOrderedList = objHumanList.PatientInsuredBag.OrderBy(x => x.Insurance_Type).ToList<PatientInsuredPlan>();
-                    
-                    
+
+
                     dt.Columns.Add("Policy_Holder_ID", typeof(string));
                     dt.Columns.Add("Plan_ID", typeof(string));
                     dt.Columns.Add("Plan_Name", typeof(string));
@@ -526,17 +526,22 @@ namespace Acurus.Capella.UI
                     dt.Columns.Add("Sortorder", typeof(int));
                     dt.Columns.Add("Specify_Other", typeof(string));
                     dt.Columns.Add("Insured_Details", typeof(string));
+                    dt.Columns.Add("PCP_Name", typeof(string));
+                    dt.Columns.Add("PCP_ID", typeof(string));
+                    dt.Columns.Add("PCP_Grid_Name", typeof(string));
+                    dt.Columns.Add("PCP_Textbox_Name", typeof(string));
+                    dt.Columns.Add("PCP_NPI", typeof(string));
+                   IList<ulong> vPhyId = PatInsOrderedList.Select(aa => aa.PCP_ID).Distinct().ToArray();
+                    FindPhysican physician_dto = new FindPhysican();
+                    PhysicianManager objPhysicianManager = new PhysicianManager();
+                    physician_dto = objPhysicianManager.FindPhysicianID(vPhyId);
+                    int icount = 0;
                     foreach (PatientInsuredPlan obj in PatInsOrderedList)//objHumanList.PatientInsuredBag)
                     {
-
-                        // if (((chkShowActiveOnly.Checked == true) && (obj.Active.ToUpper() == "YES")) || ((chkShowActiveOnly.Checked == false)))// && ((obj.Active == "No") || (obj.Active == null))))                    
-                        // loadGridRows(obj);
-                        IList<Human> humanInsList = HumanMngr.GetPatientDetailsUsingPatientInformattion(obj.Insured_Human_ID);
-                        if (humanInsList != null && humanInsList.Count > 0) //code added by balaji.tj 2015-12-17        
+                       IList<Human> humanInsList = HumanMngr.GetPatientDetailsUsingPatientInformattion(obj.Insured_Human_ID);
+                        if (humanInsList != null && humanInsList.Count > 0)
                             InsuredHumanList = humanInsList[0];
                         ulong InsID = 0;
-                        //if (Request["Insurance_Plan_ID"] != null && Request["Insurance_Plan_ID"] != "undefined")
-                          //  InsID = Convert.ToUInt64(Request["Insurance_Plan_ID"]);
                         InsurancePlan objInsurancePlan = new InsurancePlan();
                         if (dt != null)
                         {
@@ -570,9 +575,6 @@ namespace Acurus.Capella.UI
                                 dr["Termination_Date"] = obj.Termination_Date.ToString("dd-MMM-yyyy");
                             if (InsuredHumanList != null)
                             {
-
-                               // document.getElementById("ctl00_C5POBody_TextBox2").value = result.PatientName + "|DOB: " + result.PatientDOB + "|" + result.PatientGender + "| ACC#:" + result.Human_id + "| PATIENT TYPE:" + result.HumanType;
-
                                 dr["Insured_Name"] = InsuredHumanList.Last_Name + " " + InsuredHumanList.First_Name;
                                 dr["Insured_DOB"] = InsuredHumanList.Birth_Date.ToString("dd-MMM-yyyy");
                                 dr["Insured_Sex"] = InsuredHumanList.Sex;
@@ -581,15 +583,45 @@ namespace Acurus.Capella.UI
                             dr["Insured_Human_ID"] = obj.Insured_Human_ID;
                             dr["Id"] = obj.Id;
                             dr["Specify_Other"] = obj.Other_Insurance_Comments;
+                            dr["PCP_Name"] = obj.PCP_Name;
+                            dr["PCP_ID"] = obj.PCP_ID;
+                            
+                         
+
+                            if (physician_dto.PhyList.Count > 0 && obj.PCP_ID!=0)
+                            {
+
+                                string sPcpGridName = physician_dto.PhyList[icount].PhyPrefix + " " + physician_dto.PhyList[icount].PhyFirstName + " " + physician_dto.PhyList[icount].PhyMiddleName + " " + physician_dto.PhyList[icount].PhyLastName;
 
 
-
+                                string sPcpTextboxName = physician_dto.PhyList[icount].PhyPrefix + " " + physician_dto.PhyList[icount].PhyFirstName + " " + physician_dto.PhyList[icount].PhyMiddleName + " " + physician_dto.PhyList[icount].PhyLastName + "(" + physician_dto.PhyList[icount].PhySuffix + ")" + " | " +
+                                                              "NPI:" + physician_dto.PhyList[icount].PhyNPI + " | " +
+                                                              physician_dto.PhyList[icount].PhySpecialtyCode + " | " +
+                                                              "FACILITY:" + physician_dto.PhyList[icount].PhyFacility + " | " +
+                                                              "ADDR: " + physician_dto.PhyList[icount].PhyAddrs + ", " +
+                                                              physician_dto.PhyList[icount].PhyCity + "," +
+                                                              physician_dto.PhyList[icount].PhyState + " " +
+                                                              physician_dto.PhyList[icount].PhyZip + " | " +
+                                                              ((physician_dto.PhyList[icount].PhyPhone.Trim()) != "" ? "PH:" + physician_dto.PhyList[icount].PhyPhone + " | " : "") +
+                                                              (physician_dto.PhyList[icount].PhyFax.Trim() != "" ? "FAX:" + physician_dto.PhyList[icount].PhyFax : "");
+                                dr["PCP_Grid_Name"] = sPcpGridName;
+                                dr["PCP_Textbox_Name"] = sPcpTextboxName;
+                                dr["PCP_NPI"] = physician_dto.PhyList[icount].PhyNPI;
+                                icount++;
+                            }
+                            else
+                            {
+                                dr["PCP_Grid_Name"] = "";
+                                dr["PCP_Textbox_Name"] = "";
+                                dr["PCP_NPI"] = "";
+                            }
+                           
                             dt.Rows.Add(dr);
 
                         }
                     }
                 }
-               
+
             }
             return JsonConvert.SerializeObject(dt);
         }
@@ -618,7 +650,7 @@ namespace Acurus.Capella.UI
             string sOriginalInsType = "";
             HumanManager HumanMngr = new HumanManager();
             IList<PatientInsuredPlan> PatientinsuredList = new List<PatientInsuredPlan>();
-           // patientInsuredPlanList = PatInsuredMngr.getInsurancePoliciesByHumanId((Convert.ToUInt64(humanid)));
+            // patientInsuredPlanList = PatInsuredMngr.getInsurancePoliciesByHumanId((Convert.ToUInt64(humanid)));
             PatientInsuredPlan objplan = new PatientInsuredPlan();
             string errormsg = "Success";
 
@@ -642,7 +674,7 @@ namespace Acurus.Capella.UI
                     {
 
                         errormsg = "Policy Holder ID is Invalid!&#xA;Format Example:$@" + sResult.Split('|')[1];
-                        
+
                     }
                 }
             }
@@ -868,7 +900,7 @@ namespace Acurus.Capella.UI
                 Sortorderlookup = Staticlist,
                 ValidationError = errormsg
             };
-           return JsonConvert.SerializeObject(result);
+            return JsonConvert.SerializeObject(result);
         }
         [System.Web.Script.Services.ScriptMethod()]
         [System.Web.Services.WebMethod(EnableSession = true)]
@@ -880,6 +912,8 @@ namespace Acurus.Capella.UI
             IList<PatientInsuredPlan> Templistlist = new List<PatientInsuredPlan>();
             Eligibility_VerficationManager EligibilityMngr = new Eligibility_VerficationManager();
             PatientInsuredPlanManager objmanager = new PatientInsuredPlanManager();
+            string pcpname = string.Empty;
+            string pcpnpi = string.Empty;
             ulong carrierid = 0;
             if (Human_id != "")
             {
@@ -893,50 +927,62 @@ namespace Acurus.Capella.UI
             foreach (object[] oj in name)
             {
                 PatientInsuredPlan obj = new PatientInsuredPlan();
-                Templistlist = (from m in Getlist where m.Id == Convert.ToUInt64(oj[11]) select m).ToList<PatientInsuredPlan>();
+                Templistlist = (from m in Getlist where m.Id == Convert.ToUInt64(oj[12]) select m).ToList<PatientInsuredPlan>();
                 if (Templistlist.Count > 0)
                 {
                     Templistlist[0].Insurance_Type = oj[0].ToString();
                     Templistlist[0].Policy_Holder_ID = oj[2].ToString();
                     Templistlist[0].Relationship = oj[3].ToString();
-                    if (oj[6].ToString().Trim() != String.Empty)
-                        Templistlist[0].Effective_Start_Date = Convert.ToDateTime(oj[6].ToString());
                     if (oj[7].ToString().Trim() != String.Empty)
-                        Templistlist[0].Termination_Date = Convert.ToDateTime(oj[7].ToString());
-                    if (oj[8].ToString().ToUpper() == "ACTIVE")
+                        Templistlist[0].Effective_Start_Date = Convert.ToDateTime(oj[7].ToString());
+                    if (oj[8].ToString().Trim() != String.Empty)
+                        Templistlist[0].Termination_Date = Convert.ToDateTime(oj[8].ToString());
+                    if (oj[9].ToString().ToUpper() == "ACTIVE")
 
                         Templistlist[0].Active = "Yes";
                     else
                         Templistlist[0].Active = "No";
 
-                    Templistlist[0].Sort_Order = Convert.ToInt32(oj[9].ToString());
-                    Templistlist[0].Insurance_Plan_ID = Convert.ToUInt64(oj[10].ToString());
-                    if (Convert.ToUInt64(oj[12].ToString()) == 0)
+                    Templistlist[0].Sort_Order = Convert.ToInt32(oj[10].ToString());
+                    Templistlist[0].Insurance_Plan_ID = Convert.ToUInt64(oj[11].ToString());
+                    if (Convert.ToUInt64(oj[13].ToString()) == 0)
                     {
                         Templistlist[0].Insured_Human_ID = Convert.ToUInt64(Human_id);
                     }
                     else
                     {
-                        Templistlist[0].Insured_Human_ID = Convert.ToUInt64(oj[12].ToString());
+                        Templistlist[0].Insured_Human_ID = Convert.ToUInt64(oj[13].ToString());
                     }
                     Templistlist[0].Modified_By = ClientSession.UserName;
                     Templistlist[0].Modified_Date_And_Time = UtilityManager.ConvertToUniversal();
-                    Templistlist[0].Other_Insurance_Comments = oj[5].ToString();
-                    Templistlist[0].Relationship_No = Convert.ToInt32(oj[14].ToString());
+                    Templistlist[0].Other_Insurance_Comments = oj[6].ToString();
+                    if (oj[19].ToString() != null)
+                    {
+                        Templistlist[0].PCP_Name = oj[19].ToString();
+                    }
+                    if (oj[18].ToString() != null)
+                    {
+                        Templistlist[0].PCP_ID = Convert.ToUInt64(oj[18].ToString());
+                    }
+                    Templistlist[0].Relationship_No = Convert.ToInt32(oj[15].ToString());
                     Templistlist[0].Assignment = "Yes";
                     updatelist.Add(Templistlist[0]);
                     EligList = EligibilityMngr.GetEligDetailsUsingHumanandPolicyHolderID(Convert.ToUInt64(Human_id), oj[2].ToString());
-                    if (oj[0].ToString().ToUpper()=="PRIMARY")
-                        carrierid = Convert.ToUInt64(oj[16].ToString());
+                    if (oj[0].ToString().ToUpper() == "PRIMARY")
+                    {
+                        carrierid = Convert.ToUInt64(oj[17].ToString());
+                        pcpname = oj[19].ToString();
+                        pcpnpi = oj[21].ToString();
+                    }
                     if (EligList != null && EligList.Count > 0)
                     {
 
-                        EligList[0].Insurance_Plan_ID = Convert.ToUInt64(oj[10].ToString());
+                        EligList[0].Insurance_Plan_ID = Convert.ToUInt64(oj[11].ToString());
 
                         EligibilityMngr.UpdateEligibilityVerificationInformatnion(EligList[0], string.Empty);
-                        EligList = EligibilityMngr.GetEligDetailsUsingHumanandPolicyHolderIDandInsPlanID(Convert.ToUInt64(Human_id), oj[2].ToString(), Convert.ToUInt64(oj[10].ToString()));
+                        EligList = EligibilityMngr.GetEligDetailsUsingHumanandPolicyHolderIDandInsPlanID(Convert.ToUInt64(Human_id), oj[2].ToString(), Convert.ToUInt64(oj[11].ToString()));
                     }
-                  
+
                 }
                 else
                 {
@@ -944,37 +990,44 @@ namespace Acurus.Capella.UI
                     obj.Insurance_Type = oj[0].ToString();
                     obj.Policy_Holder_ID = oj[2].ToString();
                     obj.Relationship = oj[3].ToString();
-                    if (oj[6].ToString().Trim() != String.Empty)
-                        obj.Effective_Start_Date = Convert.ToDateTime(oj[6].ToString());
                     if (oj[7].ToString().Trim() != String.Empty)
-                        obj.Termination_Date = Convert.ToDateTime(oj[7].ToString());
-                    if (oj[8].ToString().ToUpper() == "ACTIVE")
+                        obj.Effective_Start_Date = Convert.ToDateTime(oj[7].ToString());
+                    if (oj[8].ToString().Trim() != String.Empty)
+                        obj.Termination_Date = Convert.ToDateTime(oj[8].ToString());
+                    if (oj[9].ToString().ToUpper() == "ACTIVE")
 
                         obj.Active = "Yes";
                     else
                         obj.Active = "No";
 
-                    obj.Sort_Order = Convert.ToInt32(oj[9].ToString());
-                    obj.Insurance_Plan_ID = Convert.ToUInt64(oj[10].ToString());
-                    if (Convert.ToUInt64(oj[12].ToString()) == 0)
+                    obj.Sort_Order = Convert.ToInt32(oj[10].ToString());
+                    obj.Insurance_Plan_ID = Convert.ToUInt64(oj[11].ToString());
+                    if (Convert.ToUInt64(oj[13].ToString()) == 0)
                     {
                         obj.Insured_Human_ID = Convert.ToUInt64(Human_id);
                     }
                     else
                     {
-                        obj.Insured_Human_ID = Convert.ToUInt64(oj[12].ToString());
+                        obj.Insured_Human_ID = Convert.ToUInt64(oj[13].ToString());
                     }
 
                     if (oj[0].ToString().ToUpper() == "PRIMARY")
-                        carrierid = Convert.ToUInt64(oj[16].ToString());
+                    {
+                        carrierid = Convert.ToUInt64(oj[17].ToString());
+                        pcpname = oj[19].ToString();
+                        pcpnpi = oj[21].ToString();
+                    }
+
 
                     obj.Created_By = ClientSession.UserName;
                     obj.Created_Date_And_Time = UtilityManager.ConvertToUniversal();
-                    obj.Other_Insurance_Comments = oj[5].ToString();
-                    obj.Relationship_No = Convert.ToInt32(oj[14].ToString());
+                    obj.PCP_Name = oj[19].ToString();
+                    obj.PCP_ID = Convert.ToUInt64(oj[18].ToString());
+                    obj.Other_Insurance_Comments = oj[6].ToString();
+                    obj.Relationship_No = Convert.ToInt32(oj[15].ToString());
                     obj.Assignment = "Yes";
                     savelist.Add(obj);
-                   
+
                 }
 
 
@@ -990,7 +1043,7 @@ namespace Acurus.Capella.UI
                 if (objHumanList.PatientInsuredBag != null && objHumanList.PatientInsuredBag.Count > 0)
                 {
                     //IList<PatientInsuredPlan> PatInsOrderedList = objHumanList.PatientInsuredBag.OrderBy(x => x.Sort_Order).ToList<PatientInsuredPlan>();
-                    IList<PatientInsuredPlan> PatInsOrderedList = (from m in objHumanList.PatientInsuredBag where m.Insurance_Type.ToUpper() == "PRIMARY" && m.Active.ToUpper()=="YES" select m).ToList<PatientInsuredPlan>();
+                    IList<PatientInsuredPlan> PatInsOrderedList = (from m in objHumanList.PatientInsuredBag where m.Insurance_Type.ToUpper() == "PRIMARY" && m.Active.ToUpper() == "YES" select m).ToList<PatientInsuredPlan>();
 
 
                     if (PatInsOrderedList.Count > 0)
@@ -1000,6 +1053,8 @@ namespace Acurus.Capella.UI
                         if (lstUpdateHuman.Count() > 0)
                         {
                             lstUpdateHuman[0].Primary_Carrier_ID = carrierid;
+                            lstUpdateHuman[0].PCP_Name = pcpname;
+                            lstUpdateHuman[0].PCP_NPI = pcpnpi;
                             Carrier objcarrierName = CarrierMngr.GetCarrierUsingId(Convert.ToUInt64(lstUpdateHuman[0].Primary_Carrier_ID));
                             if (objcarrierName != null)
                                 sCarrierName = objcarrierName.Carrier_Name;
@@ -1012,7 +1067,8 @@ namespace Acurus.Capella.UI
                         lstUpdateHuman = HumanMngr.GetPatientDetailsUsingPatientInformattion(Convert.ToUInt64(Human_id));
                         if (lstUpdateHuman.Count() > 0)
                         {
-                            lstUpdateHuman[0].Primary_Carrier_ID = 0; ;
+                            lstUpdateHuman[0].Primary_Carrier_ID = 0;
+                            lstUpdateHuman[0].PCP_Name = string.Empty;
                             sCarrierName = "";
                             HumanMngr.UpdateBatchToHuman(lstUpdateHuman[0], null, null, sCarrierName);
                         }
@@ -1025,6 +1081,8 @@ namespace Acurus.Capella.UI
 
             return "Success";
         }
+
+        
         protected void btnSave_Click(object sender, EventArgs e)
         {
             string YesNoMessage = hdnYesNoMessage.Value;
@@ -1277,7 +1335,7 @@ namespace Acurus.Capella.UI
                     //}
                     #endregion
 
-                   UpdateAgeinBlob(humanObj.Id, humanObj.Birth_Date);
+                    UpdateAgeinBlob(humanObj.Id, humanObj.Birth_Date);
                 }
                 if (humanObj != null)
                 {
@@ -1472,7 +1530,7 @@ namespace Acurus.Capella.UI
                 //    sPriCarrier = txtPrimaryInsCarrierName.Text;
                 //}
                 objHumanDTO.HumanDetails = HumanMngr.UpdateBatchToHuman(objHuman, objPatguarantor, objPatInsPLan, sPriCarrier);
-              //  objHumanDTO.HumanDetails = HumanMngr.UpdateBatchToHuman(objHuman, objPatguarantor, objPatInsPLan,string.Empty);
+                //  objHumanDTO.HumanDetails = HumanMngr.UpdateBatchToHuman(objHuman, objPatguarantor, objPatInsPLan,string.Empty);
 
                 IList<Human> ilstHuman = new List<Human>();
                 ilstHuman.Add(objHuman);
@@ -1624,7 +1682,7 @@ namespace Acurus.Capella.UI
             this.Page.ClientScript.RegisterStartupScript(this.Page.GetType(), "Stoploadcursor", " {sessionStorage.setItem('StartLoading', 'false');StopLoadFromPatChart();}", true);
         }
 
-      
+
         public void LoadComboboxValues()
         {
             iStaticlookuplist = staticLookUpMngr.getStaticLookupByFieldName("SEX");
@@ -2391,6 +2449,10 @@ namespace Acurus.Capella.UI
                         break;
                     }
                 }
+                     if (objHumanDTO.HumanDetails.Is_Translator_Required.ToUpper() == "Y")
+                    {
+                        chkReqTranslator.Checked = true;                        
+                    }
                 txtRace.Text = objHumanDTO.HumanDetails.Race.ToString();
                 txtGranularity.Text = objHumanDTO.HumanDetails.Granularity.ToString();
 
@@ -2462,7 +2524,7 @@ namespace Acurus.Capella.UI
                             }
                             else if (objHumanDTO.HumanDetails.PatientInsuredBag[i].PCP_Name != string.Empty && objHumanDTO.HumanDetails.PatientInsuredBag[i].PCP_NPI != string.Empty)
                             {
-                               // txtPCPProvider.Text = objHumanDTO.HumanDetails.PatientInsuredBag[i].PCP_Name;
+                                // txtPCPProvider.Text = objHumanDTO.HumanDetails.PatientInsuredBag[i].PCP_Name;
                                 //txtNPI.Text = objHumanDTO.HumanDetails.PatientInsuredBag[i].PCP_NPI;
                                 break;
                             }
@@ -2479,7 +2541,7 @@ namespace Acurus.Capella.UI
                         if (objPhyLib != null)
                         {
                             string sPhyName = objPhyLib.PhyPrefix + " " + objPhyLib.PhyFirstName + " " + objPhyLib.PhyMiddleName + " " + objPhyLib.PhyLastName + " " + objPhyLib.PhySuffix;
-                           // txtPCPProvider.Text = sPhyName;
+                            // txtPCPProvider.Text = sPhyName;
                             //txtNPI.Text = objPhyLib.PhyNPI.ToString();
                             txtPCPProviderTag.Value = objHumanDTO.HumanDetails.Encounter_Provider_ID.ToString();
                         }
@@ -2545,7 +2607,7 @@ namespace Acurus.Capella.UI
 
                 txtRecentScannedStatus.Text = objHumanDTO.InsuranceCopy + "\n" + objHumanDTO.PatientInfo;
                 txtRecentVerificationStatus.Text = objHumanDTO.EligiblityVerified;
-              //  txtPriInsID.Text = objHumanDTO.sPriInsuredID.ToString();
+                //  txtPriInsID.Text = objHumanDTO.sPriInsuredID.ToString();
                 //txtPriRelation.Text = objHumanDTO.sPriRelation;
                 //txtPriInsuredName.Text = objHumanDTO.sPriInsuredName;
                 //Added by priyangha
@@ -3050,12 +3112,19 @@ namespace Acurus.Capella.UI
             {
                 objHuman.Encounter_Provider_ID = 0;
             }
-           // objHuman.PCP_NPI = txtNPI.Text;
-           // objHuman.PCP_Name = txtPCPProvider.Text;
+            // objHuman.PCP_NPI = txtNPI.Text;
+            // objHuman.PCP_Name = txtPCPProvider.Text;
             #endregion
             objHuman.Patient_Account_External = txtExternalAccNo.Text;
             objHuman.Preferred_Language = ddlPreferredLanguage.Text;
-
+            if (chkReqTranslator.Checked == true)
+            {
+                objHuman.Is_Translator_Required = "Y";
+            }
+            else
+            {
+                objHuman.Is_Translator_Required = "N";
+            }
             objHuman.Race_Alias = "";
             objHuman.Race_No = "0";
             if (hdnRaceTag.Value != string.Empty)
@@ -3392,7 +3461,7 @@ namespace Acurus.Capella.UI
             //Added To refresh policy Details
             txtNoofPolicies.Text = patinsuredlist.Count.ToString();
             //txtPrimaryInsCarrierClass.Text = string.Empty;
-           // txtPrimaryInsPlanName.Text = string.Empty;
+            // txtPrimaryInsPlanName.Text = string.Empty;
             hdnPrimInsPlanID.Value = "0";
 
             //txtPrimaryInsCarrierName.Text = string.Empty;
@@ -3402,7 +3471,7 @@ namespace Acurus.Capella.UI
 
             //txtPriRelation.Text = string.Empty;
             //txtPrimaryInsEvStatus.Text = string.Empty;
-           // txtSecInsCarrierName.Text = string.Empty;
+            // txtSecInsCarrierName.Text = string.Empty;
             //txtSecInsEVStatus.Text = string.Empty;
             //txtPriInsID.Text = string.Empty;
             foreach (PatientInsuredPlan p in patinsuredlist)
@@ -3414,16 +3483,16 @@ namespace Acurus.Capella.UI
                     IList<Human> humanList = HumanMngr.GetPatientDetailsUsingPatientInformattion(p.Insured_Human_ID);
                     if (humanList != null && humanList.Count > 0)
                     {
-                      //  txtPriInsuredName.Text = humanList[0].Last_Name + "," + humanList[0].First_Name + " " + humanList[0].MI;
+                        //  txtPriInsuredName.Text = humanList[0].Last_Name + "," + humanList[0].First_Name + " " + humanList[0].MI;
                     }
                     InsurancePlan objInsurancePlan = new InsurancePlan();
                     objInsurancePlan = InsMngr.GetInsurancebyID(p.Insurance_Plan_ID)[0];
                     if (objInsurancePlan != null)
                     {
                         // txtPrimaryInsCarrierClass.Text = objInsurancePlan.Financial_Class_Name;
-                      //  txtPrimaryInsPlanName.Text = objInsurancePlan.Ins_Plan_Name;
+                        //  txtPrimaryInsPlanName.Text = objInsurancePlan.Ins_Plan_Name;
                         hdnPrimInsPlanID.Value = objInsurancePlan.Id.ToString();
-                      //  txtPrimaryInsEvStatus.Text = "ACTIVE";
+                        //  txtPrimaryInsEvStatus.Text = "ACTIVE";
                         Carrier objCarrier = null;
                         IList<Carrier> CarrierList = InsMngr.GetCarrierList();
                         if (CarrierList != null && CarrierList.Count > 0)
@@ -3432,7 +3501,7 @@ namespace Acurus.Capella.UI
                         }
                         if (objCarrier != null)
                         {
-                           // txtPrimaryInsCarrierName.Text = objCarrier.Carrier_Name;
+                            // txtPrimaryInsCarrierName.Text = objCarrier.Carrier_Name;
                         }
 
                     }
@@ -3447,7 +3516,7 @@ namespace Acurus.Capella.UI
                         IList<Human> humanList = HumanMngr.GetPatientDetailsUsingPatientInformattion(p.Insured_Human_ID);
                         if (humanList != null && humanList.Count > 0)
                         {
-                           // txtsecinsuredname.Text = humanList[0].Last_Name + "," + humanList[0].First_Name + " " + humanList[0].MI;
+                            // txtsecinsuredname.Text = humanList[0].Last_Name + "," + humanList[0].First_Name + " " + humanList[0].MI;
                         }
                         // txtSecRelation.Text = p.Relationship;
 
@@ -3463,7 +3532,7 @@ namespace Acurus.Capella.UI
                         }
                         if (objCarrier != null)
                         {
-                           // txtSecInsCarrierName.Text = objCarrier.Carrier_Name;
+                            // txtSecInsCarrierName.Text = objCarrier.Carrier_Name;
                         }
                     }
 
@@ -3674,7 +3743,7 @@ namespace Acurus.Capella.UI
                         //}
                         objHumanDTO.HumanDetails = HumanMngr.UpdateBatchToHuman(objHuman, objPatguarantor, objPatInsPLan, sPriCarrier);
 
-                       // objHumanDTO.HumanDetails = HumanMngr.UpdateBatchToHuman(objHuman, objPatguarantor, objPatInsPLan,string.Empty);
+                        // objHumanDTO.HumanDetails = HumanMngr.UpdateBatchToHuman(objHuman, objPatguarantor, objPatInsPLan,string.Empty);
                         if (objHumanDTO.HumanDetails != null && objHumanDTO.HumanDetails.Id != 0)
                         {
                             saveSuccess = true;
@@ -3999,7 +4068,7 @@ namespace Acurus.Capella.UI
                         else
                         {
                             //btnEditName.Enabled = true;
-                           // btnViewUpdateInsurance.Enabled = true;
+                            // btnViewUpdateInsurance.Enabled = true;
                             //DisableTableLayout(pnlPatientInfo);
                             //DisableGroupbox();
                         }
@@ -4221,7 +4290,7 @@ namespace Acurus.Capella.UI
             //txtPriInsID.Text = string.Empty;
             //txtSecInsuredID.Text = string.Empty;
             HumanDTO objRefreshHumanDTO = HumanMngr.GetHumanInuranceAndCarrierDetailsRCM(ulHumanID, string.Empty, string.Empty);
-           // txtPrimaryInsPlanName.Text = objRefreshHumanDTO.InsuranceDetails.Ins_Plan_Name;
+            // txtPrimaryInsPlanName.Text = objRefreshHumanDTO.InsuranceDetails.Ins_Plan_Name;
             hdnPrimInsPlanID.Value = objRefreshHumanDTO.InsuranceDetails.Id.ToString();
 
             Carrier objCarrier = CarrierMngr.GetCarrierUsingId(Convert.ToUInt64(objRefreshHumanDTO.InsuranceDetails.Carrier_ID));
@@ -4396,7 +4465,7 @@ namespace Acurus.Capella.UI
             msktxtGuarantorHomeNo.Text = objHumanDTO.HumanDetails.Guarantor_Home_Phone_Number;
             msktxtGuarantorZipCode.Text = objHumanDTO.HumanDetails.Guarantor_Zip_Code;
         }
-            public void ShownDemographics()
+        public void ShownDemographics()
         {
             txtNotes.DName = "pbDropDown";
 
@@ -4469,7 +4538,7 @@ namespace Acurus.Capella.UI
                     ddlGuarantorRelationship.CssClass = "Editabletxtbox";
                 }
                 btnEditName.Enabled = false;
-               // btnViewUpdateInsurance.Enabled = false;
+                // btnViewUpdateInsurance.Enabled = false;
             }
             else
             {
@@ -4787,7 +4856,7 @@ namespace Acurus.Capella.UI
             if (hdnPatientID.Value.ToString() != string.Empty)
             {
                 btnSendEmail.Enabled = true;
-               // btnViewUpdateInsurance.Enabled = true;
+                // btnViewUpdateInsurance.Enabled = true;
                 btnSave.Enabled = true;
                 if (hdnPatientID.Value != string.Empty)
                     LoadHumanDetails(Convert.ToUInt64(hdnPatientID.Value), string.Empty, string.Empty);
@@ -5127,7 +5196,7 @@ namespace Acurus.Capella.UI
                 }
                 else
                 {
-                  //  btnViewUpdateInsurance.Enabled = true;
+                    //  btnViewUpdateInsurance.Enabled = true;
                 }
             }
 
@@ -5421,11 +5490,11 @@ namespace Acurus.Capella.UI
             IList<string> patientlst = new List<string>();
             PatientNotesManager objPatNotesMngr = new PatientNotesManager();
             if (chkshowall == "false" && facility == "")
-                patientlst = objPatNotesMngr.MapPhysicianUserListForFacility(ClientSession.FacilityName,ClientSession.LegalOrg);
+                patientlst = objPatNotesMngr.MapPhysicianUserListForFacility(ClientSession.FacilityName, ClientSession.LegalOrg);
             else if (chkshowall == "false" && facility != "")
-                patientlst = objPatNotesMngr.MapPhysicianUserListForFacility(facility,ClientSession.LegalOrg);
+                patientlst = objPatNotesMngr.MapPhysicianUserListForFacility(facility, ClientSession.LegalOrg);
             else
-                patientlst = objPatNotesMngr.MapPhysicianUserListForFacility("SHOW ALL",ClientSession.LegalOrg);
+                patientlst = objPatNotesMngr.MapPhysicianUserListForFacility("SHOW ALL", ClientSession.LegalOrg);
             var Result = new { AssignedTo = patientlst };
             return JsonConvert.SerializeObject(Result);
         }
@@ -5538,8 +5607,5 @@ namespace Acurus.Capella.UI
             }
         }
 
-
-
-
-    }
+    }      
 }

@@ -339,40 +339,31 @@ namespace Acurus.Capella.UI
         protected global::System.Web.UI.WebControls.DropDownList ddlPatientMaritalStatus;
 
         /// <summary>
-        /// lblEmploymentStatus control.
+        /// msktxtCellPhno control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Label lblEmploymentStatus;
+        protected global::Telerik.Web.UI.RadMaskedTextBox msktxtCellPhno;
 
         /// <summary>
-        /// ddlEmploymentStatus control.
+        /// lblHomePhno control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.DropDownList ddlEmploymentStatus;
+        protected global::System.Web.UI.WebControls.Label lblHomePhno;
 
         /// <summary>
-        /// lblEmployerName control.
+        /// msktxtHomePhno control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Label lblEmployerName;
-
-        /// <summary>
-        /// txtEmployerName control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox txtEmployerName;
+        protected global::Telerik.Web.UI.RadMaskedTextBox msktxtHomePhno;
 
         /// <summary>
         /// Label1 control.
@@ -445,24 +436,6 @@ namespace Acurus.Capella.UI
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.TextBox TxtGenderIdentity;
-
-        /// <summary>
-        /// lblPreferredLanguage control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.Label lblPreferredLanguage;
-
-        /// <summary>
-        /// ddlPreferredLanguage control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.DropDownList ddlPreferredLanguage;
 
         /// <summary>
         /// lblEthnicity control.
@@ -555,6 +528,42 @@ namespace Acurus.Capella.UI
         protected global::System.Web.UI.WebControls.ImageButton ImageGranularity;
 
         /// <summary>
+        /// lblPreferredLanguage control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Label lblPreferredLanguage;
+
+        /// <summary>
+        /// ddlPreferredLanguage control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.DropDownList ddlPreferredLanguage;
+
+        /// <summary>
+        /// chkReqTranslator control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.CheckBox chkReqTranslator;
+
+        /// <summary>
+        /// Translator control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Label Translator;
+
+        /// <summary>
         /// lblLicenseState control.
         /// </summary>
         /// <remarks>
@@ -591,22 +600,22 @@ namespace Acurus.Capella.UI
         protected global::System.Web.UI.WebControls.DropDownList ddlPreferredCorrespondenceMode;
 
         /// <summary>
-        /// lblHomePhno control.
+        /// lblEmploymentStatus control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Label lblHomePhno;
+        protected global::System.Web.UI.WebControls.Label lblEmploymentStatus;
 
         /// <summary>
-        /// msktxtHomePhno control.
+        /// ddlEmploymentStatus control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::Telerik.Web.UI.RadMaskedTextBox msktxtHomePhno;
+        protected global::System.Web.UI.WebControls.DropDownList ddlEmploymentStatus;
 
         /// <summary>
         /// Label8 control.
@@ -645,22 +654,22 @@ namespace Acurus.Capella.UI
         protected global::System.Web.UI.WebControls.Image imgOverAllSummary;
 
         /// <summary>
-        /// lblCellPhno control.
+        /// lblEmployerName control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Label lblCellPhno;
+        protected global::System.Web.UI.WebControls.Label lblEmployerName;
 
         /// <summary>
-        /// msktxtCellPhno control.
+        /// txtEmployerName control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::Telerik.Web.UI.RadMaskedTextBox msktxtCellPhno;
+        protected global::System.Web.UI.WebControls.TextBox txtEmployerName;
 
         /// <summary>
         /// lblWorkPhoneno control.
@@ -1813,6 +1822,24 @@ namespace Acurus.Capella.UI
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.RadioButton rdStatusinactive;
+
+        /// <summary>
+        /// txtProviderSearch control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.TextBox txtProviderSearch;
+
+        /// <summary>
+        /// imgClearProviderText control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlImage imgClearProviderText;
 
         /// <summary>
         /// chkActiveStatus control.

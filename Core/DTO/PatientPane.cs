@@ -48,6 +48,7 @@ namespace Acurus.Capella.Core.DTO
         private string _PhotoPath = string.Empty;
         private string _PastDue = string.Empty;
         private string _ACO_Is_Eligible_Patient = string.Empty;
+        private string _Preferred_Language = string.Empty;
 
         #endregion
 
@@ -300,6 +301,15 @@ namespace Acurus.Capella.Core.DTO
         {
             get { return _ACO_Is_Eligible_Patient; }
             set { _ACO_Is_Eligible_Patient = value; }
+        }
+
+        
+        [DataMember]
+
+        public virtual string Preferred_Language
+        {
+            get { return _Preferred_Language; }
+            set { _Preferred_Language = value; }
         }
 
         #endregion

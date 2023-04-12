@@ -736,21 +736,23 @@
                                     </asp:Panel>
                                 </td>
                                 
-                                <td style="width:11%">
-                                    <asp:Label ID="lblEmploymentStatus" runat="server" CssClass="spanstyle" Text="Emp.Status" EnableViewState="false"></asp:Label>
-                                </td>
-                                <td style="width:11%">
-                                    <asp:DropDownList ID="ddlEmploymentStatus" runat="server" onchange="showTip(this);" CssClass="Editabletxtbox"
-                                        onmouseover="OnMouseHover(this);" Width="99%">
-                                    </asp:DropDownList>
-                                </td>
                                 <td align="left" style="width:11%">
-                                    <asp:Label ID="lblEmployerName" runat="server" CssClass="spanstyle" Text="Emp.Name" EnableViewState="false"></asp:Label>
+                                     <span class="MandLabelstyle">Cell Ph#</span><span class="manredforstar">*</span>                                    
                                 </td>
                                 <td width="150" style="width:11%">
-                                    <asp:TextBox ID="txtEmployerName" runat="server" onchange="AutoSave();" onkeypress="AutoSave();" CssClass="Editabletxtbox"
-                                        autocomplete="off" Width="160%" MaxLength="100" EnableViewState="false"></asp:TextBox>
+                                    <telerik:RadMaskedTextBox ID="msktxtCellPhno" runat="server" onkeyup="Copy('CellPhone');" CssClass="Editabletxtbox"
+                                        onkeypress="AutoSave();" Mask="(###) ###-####" Width="99%" EnableViewState="false">
+                                    </telerik:RadMaskedTextBox>
                                 </td>
+                                 <td style="width:11%">
+                                    <asp:Label ID="lblHomePhno" runat="server" Text="Home Ph#" CssClass="spanstyle" EnableViewState="false"></asp:Label>
+                                </td>
+                                <td style="width:11%">
+                                    <telerik:RadMaskedTextBox ID="msktxtHomePhno" runat="server" onkeypress="AutoSave();" CssClass="Editabletxtbox"
+                                        onkeyup="Copy('HomePhone');" Mask="(###) ###-####" Width="167%" EnableViewState="false">
+                                    </telerik:RadMaskedTextBox>
+                                </td>
+                                
                             </tr>
 
 
@@ -795,27 +797,17 @@
 
 
                             <tr style="width:100%">
-                                <td style="width:11%">
-                                    <asp:Label ID="lblPreferredLanguage" runat="server" Text="Pref.Lang" CssClass="spanstyle" EnableViewState="false"></asp:Label>
-                                    <%--<asp:Label ID="lblPreferredLanguage" runat="server" Text="Pref.Lang*" ForeColor="Red"
-                                    EnableViewState="false"></asp:Label>--%>
-                                </td>
-                                <td style="width:11%">
-                                    <asp:DropDownList ID="ddlPreferredLanguage" onchange="showTip(this);" runat="server" CssClass="Editabletxtbox"
-                                        onmouseover="OnMouseHover(this);" Width="99%">
-                                    </asp:DropDownList>
-                                </td>
-                              
+                               
                                 <td style="width:11%">
                                     <asp:Label ID="lblEthnicity" runat="server" Text="Ethnicity" CssClass="spanstyle" EnableViewState="false"></asp:Label>
                                     <%--<asp:Label ID="lblEthnicity" runat="server" ForeColor="Red" Text="Ethnicity*" EnableViewState="false"></asp:Label>--%>
+                                   
                                 </td>
-                                <td style="width:11%">
-                                    <asp:DropDownList ID="ddlEthnicity" runat="server" onchange="showTip(this);" onmouseover="OnMouseHover(this);" CssClass="Editabletxtbox"
-                                        Width="99%">
-                                    </asp:DropDownList>
-                                </td>
-                               
+                                 <td style="width:11%">
+                                           <asp:DropDownList ID="ddlEthnicity" runat="server" onchange="showTip(this);" onmouseover="OnMouseHover(this);" CssClass="Editabletxtbox"
+                                        Width="100%">
+                                    </asp:DropDownList>  
+                                     </td>
                                 <td style="width:11%">
                                     <asp:Label ID="lblRace" runat="server" CssClass="spanstyle" Text="Race" EnableViewState="false"></asp:Label>
                                     <%--<asp:Label ID="lblRace" runat="server" ForeColor="Red" Text="Race*" EnableViewState="false"></asp:Label>--%>
@@ -829,10 +821,10 @@
                                             <td style="width: 95%">
                                                 <asp:TextBox ID="txtRace" runat="server" TextMode="MultiLine" Style="position: static; resize: none;" CssClass="Editabletxtbox"
                                                     MaxLength="32767" nospell="true"
-                                                    Width="120px" oncopy="return false" onpaste="return false" oncut="return false"
+                                                    Width="150px" oncopy="return false" onpaste="return false" oncut="return false"
                                                     onblur="return textboxReleave(this,event);" />
                                                 <asp:ListBox ID="listRace" runat="server" onblur="return textboxReleave(this,event);" CssClass="Editabletxtbox"
-                                                    Style="display: none; position: absolute; width: 120px;" Font-Bold="false" onclick="return listRaceChange(this);"></asp:ListBox>
+                                                    Style="display: none; position: absolute; width: 155px;" Font-Bold="false" onclick="return listRaceChange(this);"></asp:ListBox>
                                             </td>
                                             <td style="width: 5%;">
                                                 <%-- <asp:Button ID ="btnDropdown" runat ="server" Text ="+" OnClientClick=" return btnDropDown();" />--%>
@@ -864,10 +856,36 @@
                                                 <asp:ImageButton ID="ImageGranularity" runat="server" AutoPostBack="false" OnClientClick="return GranularityImageButton();"
                                                     ImageUrl="~/Resources/Dropdownimg.jpg" />
                                             </td>
+                                            
                                         </tr>
                                     </table>
                                 </td>
-                            </tr>
+                                                                   
+                                 <td style="width:11%">
+                                    <asp:Label ID="lblPreferredLanguage" runat="server" Text="Pref.Lang" CssClass="spanstyle" EnableViewState="false"></asp:Label>
+                                    <%--<asp:Label ID="lblPreferredLanguage" runat="server" Text="Pref.Lang*" ForeColor="Red"
+                                    EnableViewState="false"></asp:Label>--%>
+                                                
+                                </td>
+                                          
+                                 
+                               <td style="width:11%">
+                                    <table width="220%">
+                                        <tr>
+                                            <td style="width:50%">
+                                    <asp:DropDownList ID="ddlPreferredLanguage" onchange="showTip(this);" runat="server" CssClass="Editabletxtbox"
+                                        onmouseover="OnMouseHover(this);" Width="115%">
+                                         </asp:DropDownList>
+                                   </td>                                            
+                                            <td id="tdReqTranslator" style="width: 75%; text-align: right; display: block">
+                                                <asp:CheckBox ID="chkReqTranslator" runat="server" AutoPostBack="True" onclick="AutoSave();"
+                                                    CssClass="spanstyle" />
+                                                <asp:Label ID="Translator" runat="server" Text="Req.</br>Translator" CssClass="spanstyle" EnableViewState="false"></asp:Label>
+                                            </td>
+                                        </tr>
+                                        </table>
+                                                                                        
+                                           </tr>
                             <tr style="width:100%">
                                 <td style="width:11%">
                                     <asp:Label ID="lblLicenseState" runat="server" Text="License State" CssClass="spanstyle" EnableViewState="false"></asp:Label>
@@ -885,16 +903,15 @@
                                         onmouseover="OnMouseHover(this);" Width="99%">
                                     </asp:DropDownList>
                                 </td>
-                                
                                 <td style="width:11%">
-                                    <asp:Label ID="lblHomePhno" runat="server" Text="Home Ph#" CssClass="spanstyle" EnableViewState="false"></asp:Label>
+                                    <asp:Label ID="lblEmploymentStatus" runat="server" CssClass="spanstyle" Text="Emp.Status" EnableViewState="false"></asp:Label>
                                 </td>
                                 <td style="width:11%">
-                                    <telerik:RadMaskedTextBox ID="msktxtHomePhno" runat="server" onkeypress="AutoSave();" CssClass="Editabletxtbox"
-                                        onkeyup="Copy('HomePhone');" Mask="(###) ###-####" Width="98%" EnableViewState="false">
-                                    </telerik:RadMaskedTextBox>
+                                    <asp:DropDownList ID="ddlEmploymentStatus" runat="server" onchange="showTip(this);" CssClass="Editabletxtbox"
+                                        onmouseover="OnMouseHover(this);" Width="99%">
+                                    </asp:DropDownList>
                                 </td>
-                                  
+                                                                 
                                  <td style="width:15%;">
                                       <asp:Label ID="Label8" runat="server" CssClass="spanstyle" Text="Patient Photo"></asp:Label>
                                      <asp:Label ID="Label9" runat="server" CssClass="Editabletxtbox" Text="(File Format supported:*.jpg,*.png)" style="width:2%; color:blue; font-size:2%" Font-Size="20px"></asp:Label>
@@ -921,15 +938,14 @@
                                   <%--</td>--%>
                             </tr>
                             <tr style="width:100%">
-                                 <td align="left" style="width:11%">
-                                    <asp:Label ID="lblCellPhno" runat="server" Text="Cell Ph#" CssClass="spanstyle" EnableViewState="false"></asp:Label>
+                                <td align="left" style="width:11%">
+                                    <asp:Label ID="lblEmployerName" runat="server" CssClass="spanstyle" Text="Emp.Name" EnableViewState="false"></asp:Label>
                                 </td>
                                 <td width="150" style="width:11%">
-                                    <telerik:RadMaskedTextBox ID="msktxtCellPhno" runat="server" onkeyup="Copy('CellPhone');" CssClass="Editabletxtbox"
-                                        onkeypress="AutoSave();" Mask="(###) ###-####" Width="99%" EnableViewState="false">
-                                    </telerik:RadMaskedTextBox>
+                                    <asp:TextBox ID="txtEmployerName" runat="server" onchange="AutoSave();" onkeypress="AutoSave();" CssClass="Editabletxtbox"
+                                        autocomplete="off" Width="92%" MaxLength="100" EnableViewState="false"></asp:TextBox>
                                 </td>
-                                
+                                                                 
                                 <td style="width:11%">
                                     <asp:Label ID="lblWorkPhoneno" runat="server" Text="Work Ph#" CssClass="spanstyle" EnableViewState="false"></asp:Label>
                                 </td>
@@ -1455,7 +1471,7 @@
                                 </td>
                                 <td class="style218">&nbsp;
                                 </td>
-                                <td class="style194">
+                                <td class="style164">
                                     <asp:Label ID="lblEmerCellNo" runat="server" Text="Cell Ph #" EnableViewState="false" CssClass="spanstyle"></asp:Label>
                                 </td>
                                 <td>
@@ -1564,7 +1580,7 @@
                           
                             <tr>
                         <td class="style4" colspan="7" valign="bottom" style="margin: 0px; padding: 0px">
-                            <asp:Panel ID="pnlPatientInsuranceList" runat="server" GroupingText="Patient Insurance List" Height="260px"
+                            <asp:Panel ID="pnlPatientInsuranceList" runat="server" GroupingText="Patient Insurance List" Height="320px"
                                 Width="164%" Font-Bold="True" CssClass="LabelStyleBold">
                               <table>
                                   <tr>
@@ -1646,16 +1662,35 @@
                                         <asp:RadioButton ID="rdStatusinactive" Checked="false" Text="Inactive" runat="server" GroupName="Status"  CssClass="Editabletxtbox" onchange="AutoSave();" />
                                       
                                        </td>
-                                   <td style="width: 15%;text-align: center;">
+                                                                     
+                                   </tr>
+                                    </table>
+                                <table>
+                                    <tr>
+                                        <td style="width: 10%;">
+                                         <span class="spanstyle">PCP</span>
+                                         </td>
+                                        <td style="width:51%; text-align: left;">
+                                        <asp:TextBox ID="txtProviderSearch" runat="server"  data-phy-id="0"  data-phy-details="" Rows="2" TextMode="MultiLine" placeholder="Type minimum 3 characters of Last or First name or Specialty or NPI or Facility and follow it by a space.."  style="width:110%;resize:none"  ></asp:TextBox> 
+                                        </td>
+                                        <td style="width: 1%;text-align: right;">
+                                        <img id="imgClearProviderText" runat="server" src="Resources/Delete-Blue.png" alt="X" title="Click to clear the text field." onclick="return ProviderSearchclear();" style="position: absolute; margin-left: 45px; cursor: pointer; width: 10px; height: 10px;" />
+                                        </td>
+                                        <td style="width: 25%;text-align: right;">
+                                            <input type="button" id="btnAddPhysician" value="Add Provider" onclick="return OpenAddPhysician();" style="width: 120px; left: 2000px !important;" class="aspresizedbluebutton" />
+                                        </td>
+                                        <td style="width: 10%;text-align: right;">
                                          <input type="button" id="btnAdd" onclick="btnaddinsured(this)" value="Add"   class="aspresizedgreenbutton" />
-                                         <input type="button" id="btnClearAll" onclick="btnclearinsured(true)" value="Clear All"   class="aspresizedredbutton" />
+                                            </td>
+                                             <td style="width: 10%;text-align: center;">
+                                         <input type="button" id="btnClearAll" onclick="btnclearinsured(true)" value="Clear All" style="margin-right: 13px;"  class="aspresizedredbutton" />
                 
                                       </td>
-                                    
-                                   </tr>
-
+                                        </tr>
+                                      </table>
+                                 <table>
                                   <tr>
-                                            <td class="style24">
+                                            <td style="width:20%;" class="style24">
                                                 <asp:CheckBox ID="chkActiveStatus" runat="server"
                                                     EnableViewState="false" CssClass="spanstyle"
                                                     Text="Show Active Only."  onchange="DisplayActiveInsurance();" Checked="true"/>
@@ -1670,10 +1705,11 @@
                                 <th class="Gridheaderstyle" style="width: 5%; text-align: center">Edit</th>
                                 <th class="Gridheaderstyle" style="width: 10%; text-align: center">Priority</th>
                                 <th class="Gridheaderstyle" style="width: 10%; text-align: center">Plan Name</th>
-                                <th class="Gridheaderstyle" style="width: 10%; text-align: center">Policy Holder Id</th>
+                                <th class="Gridheaderstyle" style="width: 7%; text-align: center">Policy Holder Id</th>
                                 <th class="Gridheaderstyle" style="width: 5%; text-align: center">Rel.To Patient</th>
-                                <th class="Gridheaderstyle" style="width: 15%; text-align: center">Insured Name</th>
-                                <th class="Gridheaderstyle" style="width: 10%; text-align: center">Specify Other</th>
+                                <th class="Gridheaderstyle" style="width: 12%; text-align: center">Insured Name</th>
+                                <th class="Gridheaderstyle" style="width: 10%; text-align: center">PCP</th>
+                                <th class="Gridheaderstyle" style="width: 7%; text-align: center">Specify Other</th>
                                 <th class="Gridheaderstyle" style="width: 7%; text-align: center">Eff.Start Date</th>
                                 <th class="Gridheaderstyle" style="width: 7%; text-align: center">Eff.End Date</th>
                                 <th class="Gridheaderstyle" style="width: 5%; text-align: center">Status</th>

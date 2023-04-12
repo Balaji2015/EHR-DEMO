@@ -159,6 +159,7 @@
     <property name="RCopia_Prescription_Last_Updated_Date_Time" column="RCopia_Prescription_Last_Updated_Date_Time" />
     <property name="Legal_Org" column="Legal_Org" />
     <property name="Primary_Carrier_ID" column="Primary_Carrier_ID" />
+	<property name="Is_Translator_Required" column="Is_Translator_Required" />
 
     <bag name="PatientInsuredBag" cascade="all" lazy="false" inverse="true" >
       <key column="Human_ID" />

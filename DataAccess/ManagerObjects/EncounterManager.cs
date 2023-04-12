@@ -1325,6 +1325,8 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
                             objPatPane.ACO_Is_Eligible_Patient = xmlHumanNode.Attributes.GetNamedItem("ACO_Is_Eligible_Patient").Value.ToString();
                         else
                             objPatPane.ACO_Is_Eligible_Patient = "";
+                        if (xmlHumanNode.Attributes.GetNamedItem("Is_Translator_Required").Value != null && xmlHumanNode.Attributes.GetNamedItem("Is_Translator_Required").Value != string.Empty)
+                            objPatPane.Preferred_Language = xmlHumanNode.Attributes.GetNamedItem("Preferred_Language").Value.ToString();
 
                         //For bud Id 70617 
                         XmlNodeList xmlAgenode = xmlDoc.GetElementsByTagName("Age");
@@ -16835,6 +16837,15 @@ AND E.ENCOUNTER_PROVIDER_SIGNED_DATE<>'0001-01-01 00:00:00'
 
                             if (oj[24] != null)
                                 FillApptList.Is_ACO_Eligible.Add(oj[24].ToString());
+
+                            if (oj[25] != null && oj[26]!=null && oj[26].ToString().ToUpper() == "Y")
+                            {
+                                FillApptList.Preferred_Language.Add(oj[25].ToString()+" req.");
+                            }
+                            else
+                            {
+                                FillApptList.Preferred_Language.Add("");
+                            }
 
                             //FillApptList.Document_Type.Add(oj[22].ToString());
 

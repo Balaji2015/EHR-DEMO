@@ -633,12 +633,6 @@ function PatientInformationValidation() {
         { sessionStorage.setItem('StartLoading', 'false'); StopLoadFromPatChart(); }
         return false;
     }
-    if (document.getElementById(GetClientId("msktxtCellPhno")).value.length != 0 && PhNoValid(GetClientId("msktxtCellPhno")) == false && document.getElementById(GetClientId("msktxtCellPhno")).value != "(___) ___-____") {
-        DisplayErrorMessage('420005');
-        document.getElementById(GetClientId("msktxtCellPhno")).focus();
-        { sessionStorage.setItem('StartLoading', 'false'); StopLoadFromPatChart(); }
-        return false;
-    }
     if (document.getElementById(GetClientId("msktxtCGPhNo")).value.length != 0 && PhNoValid(GetClientId("msktxtCGPhNo")) == false && document.getElementById(GetClientId("msktxtCGPhNo")).value != "(___) ___-____") {
 
         DisplayErrorMessage('420090');
@@ -656,6 +650,9 @@ function PatientInformationValidation() {
             return false;
         }
     }
+
+   
+    
     if (document.getElementById(GetClientId("msktxtHomePhno")).value.length != 0 && PhNoValid(GetClientId("msktxtHomePhno")) == false && document.getElementById(GetClientId("msktxtHomePhno")).value != "(___) ___-____") {
         DisplayErrorMessage('420006');
         document.getElementById(GetClientId("msktxtHomePhno")).focus();
@@ -680,6 +677,28 @@ function PatientInformationValidation() {
             return false;
         }
     }
+    if (document.getElementById(GetClientId("txtPatientAddress")).value.length == 0) {
+
+        DisplayErrorMessage('420085');
+        document.getElementById(GetClientId("txtPatientAddress")).focus();
+        { sessionStorage.setItem('StartLoading', 'false'); StopLoadFromPatChart(); }
+        return false;
+    }
+    if (document.getElementById(GetClientId("txtCity")).value.length == 0) {
+
+        DisplayErrorMessage('420076');
+        document.getElementById(GetClientId("txtCity")).focus();
+        { sessionStorage.setItem('StartLoading', 'false'); StopLoadFromPatChart(); }
+        return false;
+    }
+    if (document.getElementById(GetClientId("ddlState")).value.length == 0) {
+
+        DisplayErrorMessage('420077');
+        document.getElementById(GetClientId("ddlState")).focus();
+        { sessionStorage.setItem('StartLoading', 'false'); StopLoadFromPatChart(); }
+        return false;
+    }
+
     if (document.getElementById(GetClientId("msktxtZipcode")).value == "_____-____") {
 
         DisplayErrorMessage('420054');
@@ -687,6 +706,21 @@ function PatientInformationValidation() {
         { sessionStorage.setItem('StartLoading', 'false'); StopLoadFromPatChart(); }
         return false;
     }
+
+    if (document.getElementById(GetClientId("msktxtCellPhno")).value.length != 0 && PhNoValid(GetClientId("msktxtCellPhno")) == false && document.getElementById(GetClientId("msktxtCellPhno")).value != "(___) ___-____") {
+        DisplayErrorMessage('420005');
+        document.getElementById(GetClientId("msktxtCellPhno")).focus();
+        { sessionStorage.setItem('StartLoading', 'false'); StopLoadFromPatChart(); }
+        return false;
+    }
+
+    if (document.getElementById(GetClientId("msktxtCellPhno")).value == "(___) ___-____" || document.getElementById(GetClientId("msktxtCellPhno")).value == "") {
+        DisplayErrorMessage('420091');
+        document.getElementById(GetClientId("msktxtCellPhno")).focus();
+        { sessionStorage.setItem('StartLoading', 'false'); StopLoadFromPatChart(); }
+        return false;
+    }
+      
     if (document.getElementById(GetClientId("chkGuarantorIsPatient")).disabled == false && document.getElementById(GetClientId("chkGuarantorIsPatient")).checked == false) {
         if (document.getElementById(GetClientId("msktxtGuarantorCellNo")).value.length != 0 && PhNoValid(GetClientId("msktxtGuarantorCellNo")) == false && document.getElementById(GetClientId("msktxtGuarantorCellNo")).value != "(___) ___-____") {
 
@@ -733,27 +767,7 @@ function PatientInformationValidation() {
         { sessionStorage.setItem('StartLoading', 'false'); StopLoadFromPatChart(); }
         return false;
     }
-    if (document.getElementById(GetClientId("txtPatientAddress")).value.length == 0) {
-
-        DisplayErrorMessage('420085');
-        document.getElementById(GetClientId("txtPatientAddress")).focus();
-        { sessionStorage.setItem('StartLoading', 'false'); StopLoadFromPatChart(); }
-        return false;
-    }
-    if (document.getElementById(GetClientId("txtCity")).value.length == 0) {
-
-        DisplayErrorMessage('420076');
-        document.getElementById(GetClientId("txtCity")).focus();
-        { sessionStorage.setItem('StartLoading', 'false'); StopLoadFromPatChart(); }
-        return false;
-    }
-    if (document.getElementById(GetClientId("ddlState")).value.length == 0) {
-
-        DisplayErrorMessage('420077');
-        document.getElementById(GetClientId("ddlState")).focus();
-        { sessionStorage.setItem('StartLoading', 'false'); StopLoadFromPatChart(); }
-        return false;
-    }
+    
     if ((document.getElementById(GetClientId("chkEnrollOnlineAccess")).checked == true)) {
         if (document.getElementById(GetClientId("txtEmail")).value.length == 0) {
             DisplayErrorMessage('420056');
@@ -1269,7 +1283,18 @@ function dtpPatientDOB_OnDateSelected(sender, args) {
 
 function showTip(ddl) {
 
-    document.getElementById(GetClientId(ddl.id)).title = document.getElementById(GetClientId(ddl.id)).options[document.getElementById(GetClientId(ddl.id)).selectedIndex].text; AutoSave();
+    document.getElementById(GetClientId(ddl.id)).title = document.getElementById(GetClientId(ddl.id)).options[document.getElementById(GetClientId(ddl.id)).selectedIndex].text;
+    if (document.getElementById("ctl00_C5POBody_ddlPreferredLanguage").value == "Patient Refuses to answer" || document.getElementById("ctl00_C5POBody_ddlPreferredLanguage").value == "Declined to specify" || document.getElementById("ctl00_C5POBody_ddlPreferredLanguage").value == "Preferred Language not indicated") {
+        document.getElementById("ctl00_C5POBody_chkReqTranslator").checked = false;
+        document.getElementById("tdReqTranslator").style.display = "none";
+        document.getElementById("ctl00_C5POBody_ddlPreferredLanguage").style.width = "120px";
+        }
+    else {
+        document.getElementById("ctl00_C5POBody_chkReqTranslator").checked = false;
+        document.getElementById("tdReqTranslator").style.display = "block";
+        document.getElementById("ctl00_C5POBody_ddlPreferredLanguage").style.width = "115px";
+        }
+    AutoSave();
 }
 
 function OnMouseHover(ddl) {
@@ -1626,13 +1651,13 @@ function RaceImageButton(sender, args) {
     if (ImageType != "DropDown") {
         document.getElementById(GetClientId("listRace")).style.display = "block";
         document.getElementById(GetClientId("listRace")).style.position = "absolute";
-        document.getElementById(GetClientId("listRace")).style.width = "120px";
+        document.getElementById(GetClientId("listRace")).style.width = "155px";
         document.getElementById(GetClientId("hdnimgurl")).value = "DropDown";
     }
     else {
         document.getElementById(GetClientId("listRace")).style.display = "none";
         document.getElementById(GetClientId("listRace")).style.position = "absolute";
-        document.getElementById(GetClientId("listRace")).style.width = "120px";
+        document.getElementById(GetClientId("listRace")).style.width = "155px";
         document.getElementById(GetClientId("hdnimgurl")).value = "";
     }
     SaveEnable();
@@ -1728,7 +1753,11 @@ $(document).ready(function () {
         document.getElementById('btnAdd').disabled = true;
         document.getElementById('btnClearAll').disabled = true;
     }
-
+    if (document.getElementById("ctl00_C5POBody_ddlPreferredLanguage").value == "Patient Refuses to answer" || document.getElementById("ctl00_C5POBody_ddlPreferredLanguage").value == "Declined to specify" || document.getElementById("ctl00_C5POBody_ddlPreferredLanguage").value == "Preferred Language not indicated") {
+        document.getElementById("ctl00_C5POBody_chkReqTranslator").checked = false;
+        document.getElementById("tdReqTranslator").style.display = "none";
+        document.getElementById("ctl00_C5POBody_ddlPreferredLanguage").style.width = "120px";
+    }
     document.getElementById('ctl00_C5POBody_txtSpecify').style.backgroundColor = "#BFDBFF";
     document.getElementById('imginsuredText').style.visibility = "hidden";
     document.getElementById('ctl00_C5POBody_txtSpecify').disabled = true;
@@ -1736,7 +1765,10 @@ $(document).ready(function () {
     document.getElementById('ctl00_C5POBody_txtPlanSearch').setAttribute("data-carrier-id", "0");
     document.getElementById(GetClientId("btnViewUpdateInsurance")).style.display = "none";
     document.getElementById('ctl00_C5POBody_btnaddins').disabled = true;
-   
+    document.getElementById("ctl00_C5POBody_txtProviderSearch").setAttribute("data-phy-id", "0"); 
+    document.getElementById('ctl00_C5POBody_txtProviderSearch').setAttribute("data-phy-details", "0");   
+    document.getElementById('ctl00_C5POBody_txtProviderSearch').setAttribute("data-phy-gridname", "");
+    document.getElementById('ctl00_C5POBody_txtProviderSearch').setAttribute("data-phy-npi", ""); 
 
     $(document.getElementById(GetClientId("dtpPatientDOB"))).datepicker({
         dateFormat: 'dd-M-yy', changeYear: true, changeMonth: true, maxDate: new Date(), yearRange: "-120:+0",
@@ -1816,6 +1848,13 @@ function loadgrid() {
                     else {
                         var Effective_Start_Date = objdata[i].Effective_Start_Date;
                     }
+                    if (objdata[i].PCP_Name == null || objdata[i].PCP_Name == undefined) {
+                        var PCP_Name = "";
+                    }
+                    else {
+                        var PCP_Name = objdata[i].PCP_Name;
+                    }
+
                     var vsrc;
                     if (document.getElementById('ctl00_C5POBody_rdbPRI').disabled == true) {
                         vsrc = "Resources/editdisabled.png";
@@ -1823,8 +1862,8 @@ function loadgrid() {
                     else {
                         vsrc = "Resources/edit.gif";
                          }
-                        var newRow = document.getElementById('tbodupolicyinfo').insertRow();
-                    newRow.innerHTML = "<tr><td style='width: 5%;text-align: center'><img src="+vsrc+" onclick='Edit(this);'/></td><td style='width: 10%;text-align: center'>" + objdata[i].Insurance_Type + "</td><td style='width: 10 %;text-align: center'>" + objdata[i].Plan_Name + "</td><td style='width: 10 %;text-align: center'>" + objdata[i].Policy_Holder_ID + "</td><td style='width: 5 %;text-align: center'>" + objdata[i].Relationship + "</td ><td style='width: 15 %;text-align: center'>" + objdata[i].Insured_Name + "</td><td style='width: 10 %;text-align: center'>" + objdata[i].Specify_Other + "</td><td style='width: 7 %;text-align: center'> " + Effective_Start_Date + "</td><td style='width: 7 %;text-align: center'>" + Termination_Date + "</td><td style='width: 7 %;text-align: center'>" + vFinalStatus + "</td><td style='display:none'>" + objdata[i].Sortorder + "</td><td style='display:none'>" + objdata[i].Plan_ID + "</td><td style='display:none'>" + objdata[i].Id + "</td><td style='display:none'>" + objdata[i].Insured_Human_ID + "</td><td style='display:none'>" + parseInt(j) + "</td><td style='display:none'>" + objdata[i].Relationship_Number + "</td><td style='display:none'>" + objdata[i].Insured_Details + "</td><td style='display:none'>" + objdata[i].CarrierID + "</td><tr>";
+                    var newRow = document.getElementById('tbodupolicyinfo').insertRow();
+                    newRow.innerHTML = "<tr><td style='width: 5%;text-align: center'><img src=" + vsrc + " onclick='Edit(this);'/></td><td style='width: 10%;text-align: center'>" + objdata[i].Insurance_Type + "</td><td style='width: 10 %;text-align: center'>" + objdata[i].Plan_Name + "</td><td style='width: 10 %;text-align: center'>" + objdata[i].Policy_Holder_ID + "</td><td style='width: 5 %;text-align: center'>" + objdata[i].Relationship + "</td ><td style='width: 10 %;text-align: center'>" + objdata[i].Insured_Name + "</td ><td style='width: 10 %;text-align: center'>" + objdata[i].PCP_Grid_Name + "</td><td style='width: 10 %;text-align: center'>" + objdata[i].Specify_Other + "</td><td style='width: 7 %;text-align: center'> " + Effective_Start_Date + "</td><td style='width: 7 %;text-align: center'>" + Termination_Date + "</td><td style='width: 7 %;text-align: center'>" + vFinalStatus + "</td><td style='display:none'>" + objdata[i].Sortorder + "</td><td style='display:none'>" + objdata[i].Plan_ID + "</td><td style='display:none'>" + objdata[i].Id + "</td><td style='display:none'>" + objdata[i].Insured_Human_ID + "</td><td style='display:none'>" + parseInt(j) + "</td><td style='display:none'>" + objdata[i].Relationship_Number + "</td><td style='display:none'>" + objdata[i].Insured_Details + "</td><td style='display:none'>" + objdata[i].CarrierID + "</td><td style='display:none'>" + objdata[i].PCP_ID + "</td><td style='display:none'>" + objdata[i].PCP_Name + "</td><td style='display:none'>" + objdata[i].PCP_Textbox_Name + "</td><td style='display:none'>" + objdata[i].PCP_NPI + "</td><tr>";
                     document.getElementById(GetClientId("txtNoofPolicies")).value = $('#tbodupolicyinfo tr').length;
 
                 }
@@ -1845,7 +1884,7 @@ function DisplayActiveInsurance() {
     if (document.getElementById('ctl00_C5POBody_chkActiveStatus').checked) {
         for (var k = 0; k < $('#tbodupolicyinfo  tr').length; k++) {
 
-            if ($('#tbodupolicyinfo tr')[k].childNodes[9].innerText.toUpperCase() != "ACTIVE") {
+            if ($('#tbodupolicyinfo tr')[k].childNodes[10].innerText.toUpperCase() != "ACTIVE") {
                 $('#tbodupolicyinfo tr')[k].style.display = "none";
             }
 
@@ -2065,8 +2104,34 @@ function btnaddinsured(e) {
         var PlanVal = 0;
         var carrierVal = 0;
     }
-    var planname = document.getElementById("ctl00_C5POBody_txtPlanSearch").value;
+    if (document.getElementById("ctl00_C5POBody_txtProviderSearch").attributes['data-phy-id'] && document.getElementById("ctl00_C5POBody_txtProviderSearch").value !="") {
+        var vPcpId = document.getElementById("ctl00_C5POBody_txtProviderSearch").attributes['data-phy-id'].value;
+    }
+    else {
+        var vPcpId = 0;
+    }
 
+    if (vPcpId != '0' && document.getElementById("ctl00_C5POBody_txtProviderSearch").value != "") {
+        var vPCPName = document.getElementById("ctl00_C5POBody_txtProviderSearch").attributes['data-phy-gridname'].value;
+    }
+    else {
+        var vPCPName = ""; 
+    }
+    if (vPcpId != '0' && document.getElementById("ctl00_C5POBody_txtProviderSearch").value != "") {
+        var vPcpnpi = document.getElementById("ctl00_C5POBody_txtProviderSearch").attributes['data-phy-npi'].value;
+    }
+    else {
+        var vPcpnpi = "";
+    }
+    if (vPcpId!='0' && document.getElementById("ctl00_C5POBody_txtProviderSearch").value != "") {
+        var vProviderName = document.getElementById("ctl00_C5POBody_txtProviderSearch").attributes['data-phy-details'].value;
+    }
+    else {
+        var vProviderName = "";
+    }
+    
+    var vProviderFullName = document.getElementById("ctl00_C5POBody_txtProviderSearch").value;
+    var planname = document.getElementById("ctl00_C5POBody_txtPlanSearch").value;
     var insurehumanid = document.getElementById("ctl00_C5POBody_txtSelectinsured").attributes['data-human-id'].value;
 
     var insurename = document.getElementById("ctl00_C5POBody_txtSelectinsured").value.split('|')[0];
@@ -2094,9 +2159,8 @@ function btnaddinsured(e) {
     else if (document.getElementById("ctl00_C5POBody_rdStatusinactive").checked)
         status = "Inactive";
     var human_id = document.getElementById(GetClientId("txtAccountNo")).value;
-
-
-    var patientname = document.getElementById(GetClientId("txtPatientlastname")).value + "," + document.getElementById(GetClientId("txtPatientfirstname")).value
+    
+     var patientname = document.getElementById(GetClientId("txtPatientlastname")).value + "," + document.getElementById(GetClientId("txtPatientfirstname")).value
     if (document.getElementById("btnAdd").value == 'Add') {
         if (PriChecked == false && SecChecked == false && TerChecked == false) {
             DisplayErrorMessage('410006');
@@ -2170,10 +2234,10 @@ function btnaddinsured(e) {
             EffEndDate = "";
         }
     }
-   
-
-
-
+    if (vProviderFullName !="" && vPcpId ==0) {
+        DisplayErrorMessage('350013');
+        return false;
+    }
 
     var id = "0";
 
@@ -2230,21 +2294,21 @@ function btnaddinsured(e) {
                    // if (document.getElementById('ctl00_C5POBody_chkActiveStatus').checked && status.toUpperCase() == "ACTIVE") {
                         for (var j = 0; j < tablelength; j++) {
 
-                            if (parseInt($('#tbodupolicyinfo tr')[j].childNodes[14].innerText) > parseInt(maxvalue))
+                            if (parseInt($('#tbodupolicyinfo tr')[j].childNodes[15].innerText) > parseInt(maxvalue))
 
-                                maxvalue = parseInt($('#tbodupolicyinfo tr')[j].childNodes[14].innerText);
+                                maxvalue = parseInt($('#tbodupolicyinfo tr')[j].childNodes[15].innerText);
 
                             if ($('#tbodupolicyinfo tr')[j].childNodes[1].innerText == insuranceType) {
 
                                 $('#tbodupolicyinfo tr')[j].childNodes[1].innerText = "OLD " + $('#tbodupolicyinfo tr')[j].childNodes[1].innerText
-                                $('#tbodupolicyinfo tr')[j].childNodes[10].innerText = sortorderexists;
+                                $('#tbodupolicyinfo tr')[j].childNodes[11].innerText = sortorderexists;
 
                             }
                         }
                        // }
-
+                    
                     var newRow = document.getElementById('tbodupolicyinfo').insertRow();
-                    newRow.innerHTML = "<tr><td style='width: 5%;text-align: center'><img src='Resources/edit.gif' onclick='Edit(this);'/></td><td style='width: 10%;text-align: center'>" + insuranceType + "</td><td style='width: 10 %;text-align: center'>" + planname + "</td><td style='width: 10 %;text-align: center'>" + PolicyVal + "</td><td style='width: 5 %;text-align: center'>" + RelationVal.options[RelationVal.selectedIndex].text + "</td ><td style='width: 15 %;text-align: center'>" + insurename + "</td><td style='width: 10 %;text-align: center'>" + SpecificVal + "</td><td style='width: 7 %;text-align: center'> " + EffStartDate + "</td><td style='width: 7 %;text-align: center'>" + EffEndDate + "</td><td style='width: 7 %;text-align: center'>" + status + "</td><td style='display:none'>" + sortordernew + "</td><td style='display:none'>" + PlanVal + "</td><td style='display:none'>" + id + "</td><td style='display:none'>" + insurehumanid + "</td><td style='display:none'>" + parseInt(parseInt(maxvalue) + parseInt("1")) + "</td><td style='display:none'>" + RelationVal.options[RelationVal.selectedIndex].value + "</td><td style='display:none'>" + InsuredFullname + "</td><td style='display:none'>" + carrierVal + "</td><tr>";
+                    newRow.innerHTML = "<tr><td style='width: 5%;text-align: center'><img src='Resources/edit.gif' onclick='Edit(this);'/></td><td style='width: 10%;text-align: center'>" + insuranceType + "</td><td style='width: 10 %;text-align: center'>" + planname + "</td><td style='width: 10 %;text-align: center'>" + PolicyVal + "</td><td style='width: 5 %;text-align: center'>" + RelationVal.options[RelationVal.selectedIndex].text + "</td ><td style='width: 10%;text-align: center'>" + insurename + "</td ><td style='width: 10 %;text-align: center'>" + vPCPName + "</td><td style='width: 10 %;text-align: center'>" + SpecificVal + "</td><td style='width: 7 %;text-align: center'> " + EffStartDate + "</td><td style='width: 7 %;text-align: center'>" + EffEndDate + "</td><td style='width: 7 %;text-align: center'>" + status + "</td><td style='display:none'>" + sortordernew + "</td><td style='display:none'>" + PlanVal + "</td><td style='display:none'>" + id + "</td><td style='display:none'>" + insurehumanid + "</td><td style='display:none'>" + parseInt(parseInt(maxvalue) + parseInt("1")) + "</td><td style='display:none'>" + RelationVal.options[RelationVal.selectedIndex].value + "</td><td style='display:none'>" + InsuredFullname + "</td><td style='display:none'>" + carrierVal + "</td><td style='display:none'>" + vPcpId + "</td><td style='display:none'>" + vProviderName + "</td><td style='display:none'>" + vProviderFullName + "</td><td style='display:none'>" + vPcpnpi + "</td><tr>";
                     document.getElementById(GetClientId("txtNoofPolicies")).value = $('#tbodupolicyinfo tr').length;
                     btnclearinsured(false);
                     //}
@@ -2265,32 +2329,38 @@ function btnaddinsured(e) {
 
 
 
-                        if ($('#tbodupolicyinfo tr')[j].childNodes[1].innerText == insuranceType && $('#tbodupolicyinfo tr')[j].childNodes[14].innerText != document.getElementById("ctl00_C5POBody_hdnpatinsuredid").value) {
+                        if ($('#tbodupolicyinfo tr')[j].childNodes[1].innerText == insuranceType && $('#tbodupolicyinfo tr')[j].childNodes[15].innerText != document.getElementById("ctl00_C5POBody_hdnpatinsuredid").value) {
 
                             $('#tbodupolicyinfo tr')[j].childNodes[1].innerText = "OLD " + $('#tbodupolicyinfo tr')[j].childNodes[1].innerText
-                            $('#tbodupolicyinfo tr')[j].childNodes[10].innerText = sortorderexists;
+                            $('#tbodupolicyinfo tr')[j].childNodes[11].innerText = sortorderexists;
 
                         }
 
-                        if ($('#tbodupolicyinfo tr')[j].childNodes[14].innerText == document.getElementById("ctl00_C5POBody_hdnpatinsuredid").value) {
+                        if ($('#tbodupolicyinfo tr')[j].childNodes[15].innerText == document.getElementById("ctl00_C5POBody_hdnpatinsuredid").value) {
                             if (insuranceType!="")
                             $('#tbodupolicyinfo tr')[j].childNodes[1].innerText = insuranceType;
                             $('#tbodupolicyinfo tr')[j].childNodes[2].innerText = planname;
                             $('#tbodupolicyinfo tr')[j].childNodes[3].innerText = PolicyVal;
                             $('#tbodupolicyinfo tr')[j].childNodes[4].innerText = RelationVal.options[RelationVal.selectedIndex].text;
-                            $('#tbodupolicyinfo tr')[j].childNodes[5].innerText = insurename;
-                            $('#tbodupolicyinfo tr')[j].childNodes[6].innerText = SpecificVal;
+                            $('#tbodupolicyinfo tr')[j].childNodes[5].innerText = insurename; 
+                            $('#tbodupolicyinfo tr')[j].childNodes[6].innerText = vPCPName;
+                            $('#tbodupolicyinfo tr')[j].childNodes[7].innerText = SpecificVal;
 
-                            $('#tbodupolicyinfo tr')[j].childNodes[7].innerText = EffStartDate;
-                            $('#tbodupolicyinfo tr')[j].childNodes[8].innerText = EffEndDate;
-                            $('#tbodupolicyinfo tr')[j].childNodes[9].innerText = status;
+                            $('#tbodupolicyinfo tr')[j].childNodes[8].innerText = EffStartDate;
+                            $('#tbodupolicyinfo tr')[j].childNodes[9].innerText = EffEndDate;
+                            $('#tbodupolicyinfo tr')[j].childNodes[10].innerText = status;
                             if(parseInt(sortordernew)!=0)
-                            $('#tbodupolicyinfo tr')[j].childNodes[10].innerText = sortordernew;
-                            $('#tbodupolicyinfo tr')[j].childNodes[11].innerText = PlanVal;
-                            $('#tbodupolicyinfo tr')[j].childNodes[13].innerText = insurehumanid;
-                            $('#tbodupolicyinfo tr')[j].childNodes[15].innerText = RelationVal.options[RelationVal.selectedIndex].value;
-                            $('#tbodupolicyinfo tr')[j].childNodes[16].innerText = InsuredFullname;
-                            $('#tbodupolicyinfo tr')[j].childNodes[17].innerText = carrierVal
+                            $('#tbodupolicyinfo tr')[j].childNodes[11].innerText = sortordernew;
+                            $('#tbodupolicyinfo tr')[j].childNodes[12].innerText = PlanVal;
+                            $('#tbodupolicyinfo tr')[j].childNodes[14].innerText = insurehumanid;
+                            $('#tbodupolicyinfo tr')[j].childNodes[16].innerText = RelationVal.options[RelationVal.selectedIndex].value;
+                            $('#tbodupolicyinfo tr')[j].childNodes[17].innerText = InsuredFullname;
+                            $('#tbodupolicyinfo tr')[j].childNodes[18].innerText = carrierVal;
+                            $('#tbodupolicyinfo tr')[j].childNodes[19].innerText = vPcpId;
+                            $('#tbodupolicyinfo tr')[j].childNodes[20].innerText = vProviderName;
+                            $('#tbodupolicyinfo tr')[j].childNodes[21].innerText = vProviderFullName;
+                            $('#tbodupolicyinfo tr')[j].childNodes[22].innerText = vPcpnpi;
+                            
                             btnclearinsured(false);
                         }
 
@@ -2345,7 +2415,10 @@ function btnaddinsured(e) {
             //    newRow.innerHTML = "<tr>No Data Found</tr>";
             //}
 
-
+            document.getElementById("ctl00_C5POBody_txtProviderSearch").setAttribute("data-phy-id", "0");
+            document.getElementById('ctl00_C5POBody_txtProviderSearch').setAttribute("data-phy-details", "0");
+            document.getElementById('ctl00_C5POBody_txtProviderSearch').setAttribute("data-phy-gridname", ""); 
+            document.getElementById('ctl00_C5POBody_txtProviderSearch').setAttribute("data-phy-npi", ""); 
         },
         failure: function (data) {
             alert(data.d);
@@ -2373,24 +2446,33 @@ function Edit(e) {
     }
 
 
-    document.getElementById("ctl00_C5POBody_txtPlanSearch").attributes['data-plan-id'].value = e.parentElement.parentElement.childNodes[11].innerText;
-    document.getElementById("ctl00_C5POBody_txtPlanSearch").attributes['data-carrier-id'].value = e.parentElement.parentElement.childNodes[17].innerText;
+    document.getElementById("ctl00_C5POBody_txtPlanSearch").attributes['data-plan-id'].value = e.parentElement.parentElement.childNodes[12].innerText;
+    document.getElementById("ctl00_C5POBody_txtPlanSearch").attributes['data-carrier-id'].value = e.parentElement.parentElement.childNodes[18].innerText;
     document.getElementById("ctl00_C5POBody_txtPlanSearch").value = e.parentElement.parentElement.childNodes[2].innerText;
     document.getElementById('ctl00_C5POBody_txtPlanSearch').style.backgroundColor = "#BFDBFF";
     document.getElementById('ctl00_C5POBody_txtPlanSearch').disabled = true;
     document.getElementById('ctl00_C5POBody_imgClearplanText').style.visibility = "hidden";
-    document.getElementById("ctl00_C5POBody_txtSelectinsured").attributes['data-human-id'].value = e.parentElement.parentElement.childNodes[13].innerText
-    document.getElementById("ctl00_C5POBody_txtSelectinsured").value = e.parentElement.parentElement.childNodes[16].innerText;
+    document.getElementById("ctl00_C5POBody_txtSelectinsured").attributes['data-human-id'].value = e.parentElement.parentElement.childNodes[14].innerText
+    document.getElementById("ctl00_C5POBody_txtSelectinsured").value = e.parentElement.parentElement.childNodes[17].innerText;
     document.getElementById("ctl00_C5POBody_txtPolicyholderid").value = e.parentElement.parentElement.childNodes[3].innerText;
-    document.getElementById("ctl00_C5POBody_txtSpecify").value = e.parentElement.parentElement.childNodes[6].innerText;
-    if (e.parentElement.parentElement.childNodes[7].innerText != "") {
-        document.getElementById("ctl00_C5POBody_txtStartdate").value = e.parentElement.parentElement.childNodes[7].innerText;
+    document.getElementById("ctl00_C5POBody_txtSpecify").value = e.parentElement.parentElement.childNodes[7].innerText;
+    if (e.parentElement.parentElement.childNodes[6].innerText != "") {
+        document.getElementById("ctl00_C5POBody_txtProviderSearch").attributes['data-phy-id'].value = e.parentElement.parentElement.childNodes[19].innerText;
+        document.getElementById('ctl00_C5POBody_txtProviderSearch').attributes['data-phy-gridname'].value = e.parentElement.parentElement.childNodes[6].innerText;
+        document.getElementById('ctl00_C5POBody_txtProviderSearch').attributes['data-phy-details'].value = e.parentElement.parentElement.childNodes[20].innerText
+        document.getElementById('ctl00_C5POBody_txtProviderSearch').attributes['data-phy-npi'].value = e.parentElement.parentElement.childNodes[22].innerText            ;
+        document.getElementById("ctl00_C5POBody_txtProviderSearch").value = e.parentElement.parentElement.childNodes[21].innerText;       
+        document.getElementById('ctl00_C5POBody_txtProviderSearch').disabled = true;
+        document.getElementById('ctl00_C5POBody_txtProviderSearch').style.backgroundColor = "#BFDBFF";
+    }
+    if (e.parentElement.parentElement.childNodes[8].innerText != "") {
+        document.getElementById("ctl00_C5POBody_txtStartdate").value = e.parentElement.parentElement.childNodes[8].innerText;
     }
     else {
         document.getElementById("ctl00_C5POBody_txtStartdate").value = "__-___-____";
     }
-    if (e.parentElement.parentElement.childNodes[8].innerText != "") {
-        document.getElementById("ctl00_C5POBody_txtEnddate").value = e.parentElement.parentElement.childNodes[8].innerText;
+    if (e.parentElement.parentElement.childNodes[9].innerText != "") {
+        document.getElementById("ctl00_C5POBody_txtEnddate").value = e.parentElement.parentElement.childNodes[9].innerText;
     }
     else {
         document.getElementById("ctl00_C5POBody_txtEnddate").value = "__-___-____";
@@ -2409,7 +2491,7 @@ function Edit(e) {
     if (e.parentElement.parentElement.childNodes[4].innerText == "SELF") {
         document.getElementById('ctl00_C5POBody_txtSelectinsured').disabled = true;
         document.getElementById('ctl00_C5POBody_txtSelectinsured').style.backgroundColor = "#BFDBFF";
-        document.getElementById('ctl00_C5POBody_txtSelectinsured').value="";
+        document.getElementById('ctl00_C5POBody_txtSelectinsured').value = "";
         document.getElementById('imginsuredText').display = "none";
         document.getElementById('ctl00_C5POBody_btnaddins').disabled = true;
         document.getElementById('imginsuredText').style.visibility = "hidden";
@@ -2429,17 +2511,16 @@ function Edit(e) {
         $('#lblSelectInsured').addClass('manredforstar');
         document.getElementById("lblSelectInsured").innerHTML = "Select Insured*";
 
-
     }
-    document.getElementById("ctl00_C5POBody_hdnpatinsuredid").value = e.parentElement.parentElement.childNodes[14].innerText;
-    document.getElementById("ctl00_C5POBody_Hdnsortorder").value = e.parentElement.parentElement.childNodes[10].innerText;
-    var status = e.parentElement.parentElement.childNodes[9].innerText;
+    document.getElementById("ctl00_C5POBody_hdnpatinsuredid").value = e.parentElement.parentElement.childNodes[15].innerText;
+    document.getElementById("ctl00_C5POBody_Hdnsortorder").value = e.parentElement.parentElement.childNodes[11].innerText;
+    var status = e.parentElement.parentElement.childNodes[10].innerText;
 
     if (status.toUpperCase() == "ACTIVE")
         document.getElementById("ctl00_C5POBody_rdStatusactive").checked = true;
     else if (status.toUpperCase() == "INACTIVE")
         document.getElementById("ctl00_C5POBody_rdStatusinactive").checked = true;
-
+    
 
     DisplayActiveInsurance();
 
@@ -2476,11 +2557,15 @@ function btnclearinsured(btnclearAll) {
         document.getElementById('ctl00_C5POBody_txtPlanSearch').style.backgroundColor = "#FFFFFF";
     document.getElementById('ctl00_C5POBody_txtPlanSearch').setAttribute("data-plan-id", "0");
     document.getElementById('ctl00_C5POBody_txtPlanSearch').setAttribute("data-carrier-id", "0");
-        document.getElementById('ctl00_C5POBody_txtPlanSearch').disabled = false;
+    document.getElementById('ctl00_C5POBody_txtPlanSearch').disabled = false;
+    document.getElementById('ctl00_C5POBody_txtProviderSearch').disabled = false;
+    document.getElementById('ctl00_C5POBody_txtProviderSearch').value = "";
+      document.getElementById('ctl00_C5POBody_txtProviderSearch').style.backgroundColor = "#FFFFFF";
         document.getElementById("ctl00_C5POBody_txtPolicyholderid").value = "";
         document.getElementById("ctl00_C5POBody_txtStartdate").value = "__-___-____";
         document.getElementById("ctl00_C5POBody_txtEnddate").value = "__-___-____";
-        document.getElementById("ctl00_C5POBody_txtSpecify").value = "";
+    document.getElementById("ctl00_C5POBody_txtSpecify").value = "";
+    document.getElementById('ctl00_C5POBody_txtSelectinsured').value = "";
         document.getElementById('ctl00_C5POBody_txtSelectinsured').disabled = true;
         document.getElementById('ctl00_C5POBody_txtSelectinsured').style.backgroundColor = "#BFDBFF"
         document.getElementById('ctl00_C5POBody_txtSpecify').disabled = true;
@@ -3037,6 +3122,187 @@ $("#ctl00_C5POBody_txtPlanSearch").data("ui-autocomplete")._renderItem = functio
 };
 
 
+function ProviderSelected(event, ui) {
+    AutoSave();
+    var ProviderDetails = JSON.parse(ui.item.val);
+    var txtProviderSearch = document.getElementById("ctl00_C5POBody_txtProviderSearch");
+    document.getElementById('ctl00_C5POBody_txtProviderSearch').disabled = true;
+    document.getElementById('ctl00_C5POBody_txtProviderSearch').style.backgroundColor = "#BFDBFF";
+
+    txtProviderSearch.attributes['data-phy-id'].value = ProviderDetails.ulPhyId;
+    txtProviderSearch.attributes['data-phy-details'].value = ProviderDetails.sPhyName;
+    txtProviderSearch.attributes['data-phy-gridname'].value = ProviderDetails.sPhyshortName;
+    txtProviderSearch.attributes['data-phy-npi'].value = ProviderDetails.sPhyNPI; 
+    txtProviderSearch.value = ui.item.label;
+    var provider = "";
+
+    provider = JSON.parse(ui.item.val).ulPhyId + "|" +
+        JSON.parse(ui.item.val).sPhyName + "|" +
+        JSON.parse(ui.item.val).sPhyshortName + "|" +
+        JSON.parse(ui.item.val).sPhyNPI + "|" +
+        JSON.parse(ui.item.val).sPhySpecialty + "|" +
+        JSON.parse(ui.item.val).sPhyFacility + "|" +
+        JSON.parse(ui.item.val).sPhyAddress + "|" +
+        JSON.parse(ui.item.val).sPhyFax + "|" +
+        JSON.parse(ui.item.val).sPhyPhone
+
+    document.getElementById('ctl00_C5POBody_txtProviderSearch').disabled = true;
+
+    return false;
+}
+function ProviderSearchclear() {
+    $("#ctl00_C5POBody_txtProviderSearch").attr("disabled", false);
+    $("#ctl00_C5POBody_txtProviderSearch").val("");
+    document.getElementById('ctl00_C5POBody_txtProviderSearch').style.backgroundColor = "#FFFFFF";
+    
+}
+
+$("#ctl00_C5POBody_txtProviderSearch").autocomplete({
+    source: function (request, response) {
+
+        if ($("#ctl00_C5POBody_txtProviderSearch").val().length > 2) {
+            UI_Time_Start = new Date();
+            { sessionStorage.setItem('StartLoading', 'true'); StartLoadFromPatChart(); }
+            
+            arrPatient = [];
+            var strkeyWords = $("#ctl00_C5POBody_txtProviderSearch").val();
+            var bMoreThanOneKeyword = (strkeyWords.length >= 2 && strkeyWords[1].trim() != "") ? true : false;
+            //var account_status = "ACTIVE"; //document.getElementById('chkIncludeInactive').checked ? "INACTIVE" : "ACTIVE";
+            //var patient_status = "ALIVE";//document.getElementById("chkIncludeDeceased").checked ? "DECEASED" : "ALIVE";
+            //var patient_type = "REGULAR";//document.getElementById("rdbRegular").checked ? "REGULAR" : (document.getElementById("rdbWC").checked ? "WC" : (document.getElementById("rdbAuto").checked ? "AUTO" : "ALL"));
+            var WSData = {
+                text_searched: strkeyWords
+                //account_status: account_status,
+                //patient_status: patient_status,
+                //human_type: patient_type
+            };
+
+            $.ajax({
+                type: "POST",
+                contentType: "application/json; charset=utf-8",
+                url: "./frmFindReferralPhysician.aspx/GetProviderDetailsByTokens",
+                data: JSON.stringify(WSData),
+                dataType: "json",
+                success: function (data) {
+                    flag = 0;
+                    { sessionStorage.setItem('StartLoading', 'false'); StopLoadFromPatChart(); }
+                    $("#txtProviderSearch").off("keydown", PreventTyping);
+                    var jsonData = $.parseJSON(data.d);
+                    if (jsonData.Error != undefined) {
+                        alert(jsonData.Error);
+                        return;
+                    }
+
+                    if (jsonData.Result != undefined) {
+                        var no_matches = [];
+                        no_matches.push(jsonData.Result);
+                        response($.map(no_matches, function (item) {
+                            return {
+                                label: item,
+                                val: "0"
+                            }
+                        }));
+                    }
+                    else {
+                        var results;
+                        if (bMoreThanOneKeyword)
+                            results = Filter(jsonData.Matching_Result, request.term);
+                        else
+                            results = jsonData.Matching_Result;
+
+                        arrProvider = jsonData.Matching_Result;
+                        response($.map(results, function (item) {
+                            return {
+                                label: item.label,
+                                val: JSON.stringify(item.value),
+                                value: item.value.ulPhyId
+                            }
+                        }));
+                    }
+                },
+                error: function OnError(xhr) {
+                    { sessionStorage.setItem('StartLoading', 'false'); StopLoadFromPatChart(); }
+                    if (xhr.status == 999)
+                        window.location = xhr.statusText;
+                    else {
+                        var log = JSON.parse(xhr.responseText);
+                        console.log(log);
+                        alert("USER MESSAGE:\n" +
+                            ". Cannot process request. Please Login again and retry. \nEXCEPTION DETAILS: \n" +
+                            "Message: " + log.Message);
+                    }
+                }
+
+            });
+        }
+        //else if (intProviderlen != -1) {
+
+        //    var results = Filter(arrProvider, request.term);
+        //    response($.map(results, function (item) {
+        //        return {
+        //            label: item.label,
+        //            val: JSON.stringify(item.value),
+        //            value: item.value.ulPhyId
+        //        }
+        //    }));
+        //}
+},
+    minlength: 2,
+    multiple: true,
+    mustMatch: false,
+    select: ProviderSelected,
+    open: function () {
+        // $('.ui-autocomplete.ui-menu.ui-widget').width($('#txtPatientSearch').width());
+        $('.ui-autocomplete.ui-menu.ui-widget').width("525px");
+        $('.ui-autocomplete.ui-menu.ui-widget').css("left", "138px");
+        $('.ui-autocomplete.ui-menu.ui-widget').find('li:last').css("border-bottom", "0px");
+        $('#ctl00_C5POBody_txtProviderSearch').focus();
+
+
+    },
+    focus: function () { return false; }
+}).on("paste", function (e) {
+    intplanlength = -1;
+    arrPatient = [];
+    $(".ui-autocomplete").hide();
+}).on("input", function (e) {
+    $("#ctl00_C5POBody_txtProviderSearch").css("color", "black").attr({ "data-phy-id": "0" });
+    $("#ctl00_C5POBody_txtProviderSearch").css("color", "black").attr({ "data-phy-details": "0" });
+    $("#ctl00_C5POBody_txtProviderSearch").css("color", "black").attr({ "data-phy-gridname": "" }); 
+    $("#ctl00_C5POBody_txtProviderSearch").css("color", "black").attr({ "data-phy-npi": "" }); 
+
+}).on("click", function (e) {
+    // $('#txtPlanSearch').val('');
+    //$("#txtPlanSearch").attr({ "data-human-id": "0", "data-human-details": "" });
+}).on("focus", function (e) {
+    //$('#txtPlanSearch').val('');
+    //$("#txtPlanSearch").attr({ "data-human-id": "0", "data-human-details": "" });
+})
+$("#ctl00_C5POBody_txtProviderSearch").data("ui-autocomplete")._renderItem = function (ul, item) {
+
+    if (item.label != "No matches found.") {
+
+        var list_item = $("<li>")
+            .attr({ "data-value": item.value, "data-val": item.val }).css({ "border-bottom": "1px solid #ccc", "font-size": "11px", "margin-bottom": "3px", "padding-bottom": "3px" })
+            .append(item.label)
+            .appendTo(ul);
+
+        return list_item;
+    }
+    else
+        return $("<li>")
+            .attr({ "data-value": item.value, "data-val": item.val }).css({ "border-bottom": "1px solid #ccc", "font-size": "11px", "margin-bottom": "3px", "padding-bottom": "3px" })
+            .addClass("disabled")
+            .append(item.label)
+            .appendTo(ul).on("click", function (e) {
+                e.preventDefault();
+                e.stopImmediatePropagation();
+            });
+};
+
+
+
+
 function DateValidattion(dateToValidate) {
     var splitdate = document.getElementById(dateToValidate).value;
     var dt1 = new Date();
@@ -3094,4 +3360,32 @@ function DateValidattion(dateToValidate) {
         return false;
     }
     return true;
+}
+
+function OpenAddPhysician() {
+    localStorage.setItem("IsEnableGrid", "false");
+    $(top.window.document).find("#TabPhysicianLibrary").modal({ backdrop: "static", keyboard: false }, 'show');
+    $(top.window.document).find("#TabModalPhysicianLibraryTitle")[0].textContent = "Provider Library";
+    $(top.window.document).find("#TabmdldlgPhysicianLibrary")[0].style.width = "850px";
+    $(top.window.document).find("#TabmdldlgPhysicianLibrary")[0].style.height = "440px"; //"715px"; 
+    $(top.window.document).find("#TabmdldlgPhysicianLibrary")[0].style.left = "150px";
+    var sPath = "frmPhysicianLibray.aspx";
+    $(top.window.document).find("#TabPhysicianLibraryFrame")[0].style.height = "275px"; //"495px";
+    $(top.window.document).find("#TabPhysicianLibraryFrame")[0].contentDocument.location.href = sPath;
+    $(top.window.document).find("#TabPhysicianLibrary").modal("show");
+    $(top.window.document).find("#TabPhysicianLibrary").one("hidden.bs.modal", function (e) {
+        var PhyDetails = localStorage.getItem("PhyDetails");
+        var PhyID = PhyDetails.split("&")[0];
+        if (PhyID != "") {
+            document.getElementById("ctl00_C5POBody_txtProviderSearch").attributes['data-phy-id'].value = PhyID;
+            document.getElementById("ctl00_C5POBody_txtProviderSearch").attributes['data-phy-gridname'].value = PhyDetails.split("&")[1];
+            document.getElementById("ctl00_C5POBody_txtProviderSearch").attributes['data-phy-details'].value = PhyDetails.split("&")[2];
+            document.getElementById("ctl00_C5POBody_txtProviderSearch").attributes['data-phy-npi'].value = PhyDetails.split("&")[3];
+            document.getElementById('ctl00_C5POBody_txtProviderSearch').value = PhyDetails.split("&")[4];
+            document.getElementById('ctl00_C5POBody_txtProviderSearch').disabled = true;
+            document.getElementById('ctl00_C5POBody_txtProviderSearch').style.backgroundColor = "#BFDBFF";
+            localStorage.setItem("PhyDetails", "");
+        }
+    });
+    return false;
 }

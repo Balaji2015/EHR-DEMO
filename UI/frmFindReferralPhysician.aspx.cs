@@ -84,6 +84,7 @@ namespace Acurus.Capella.UI
                                          {
                                              ulPhyId = Phy.PhyId,
                                              sPhyName = Phy.PhyPrefix + " " + Phy.PhyFirstName+ " " + Phy.PhyLastName + " " + Phy.PhySuffix,
+                                             sPhyshortName = Phy.PhyPrefix + " " + Phy.PhyFirstName + " " + Phy.PhyLastName,
                                              sPhyNPI = Phy.PhyNPI,
                                              sPhySpecialty = Phy.PhySpecialtyCode,
                                              sPhyFacility = Phy.PhyFacility,
@@ -123,6 +124,106 @@ namespace Acurus.Capella.UI
                 return JsonConvert.SerializeObject(lstFinalResult);
             }
         }
+
+
+        //#region Web Methods
+        //[System.Web.Script.Services.ScriptMethod()]
+        //[System.Web.Services.WebMethod(EnableSession = true)]
+        //public static string GetProviderDetailsByTokensPCP(string text_searched)
+        //{
+        //    if (ClientSession.UserName == string.Empty)
+        //    {
+        //        HttpContext.Current.Response.StatusCode = 999;
+        //        HttpContext.Current.Response.Status = "999 Session Expired";
+        //        HttpContext.Current.Response.StatusDescription = "frmSessionExpired.aspx";
+        //        return "Session Expired";
+        //    }
+        //    try
+        //    {
+        //        if (HttpContext.Current.Session["PreviousProviderKeywordCriteria"] != null
+        //            && HttpContext.Current.Session["PreviousProviderList"] != null
+        //            && HttpContext.Current.Session["PreviousProviderKeywordCriteria"].ToString().Trim().ToLower() == text_searched.ToLower())
+        //        {
+        //            var lstResult = JsonConvert.DeserializeObject(HttpContext.Current.Session["PreviousProviderList"].ToString());// HttpContext.Current.Session["PreviousProviderList"];
+
+        //            var lstFinalResult = new
+        //            {
+        //                Matching_Result = lstResult
+        //            };
+        //            return JsonConvert.SerializeObject(lstFinalResult);
+        //        }
+        //        else
+        //        {
+        //            FindPhysican physician_dto = new FindPhysican();
+        //            PhysicianManager objPhysicianManager = new PhysicianManager();
+        //            physician_dto = objPhysicianManager.FindPhysician(text_searched);
+
+
+        //            PhysicianFacilityDTO obj1 = new PhysicianFacilityDTO();
+        //            //  obj1.PhyFirstName="Click here to add physician";
+        //            //physician_dto.PhyList.Add(obj1);
+        //            var lstResult = (from Phy in physician_dto.PhyList
+        //                             select
+        //                             new
+        //                             {
+        //                                 label =
+        //                               Phy.PhyPrefix + " " + Phy.PhyFirstName + " " + Phy.PhyMiddleName + " "+ Phy.PhyLastName + "(" + Phy.PhySuffix + ")" + " | " +
+        //                                                      "NPI:" + Phy.PhyNPI + " | " +
+        //                                                      Phy.PhySpecialtyCode + " | " +
+        //                                                      "FACILITY:" + Phy.PhyFacility + " | " +
+        //                                                      "ADDR: " + Phy.PhyAddrs + ", " +
+        //                                                      Phy.PhyCity + "," +
+        //                                                      Phy.PhyState + " " +
+        //                                                      Phy.PhyZip + " | " +
+        //                                                      ((Phy.PhyPhone.Trim()) != "" ? "PH:" + Phy.PhyPhone + " | " : "") +
+        //                                                      (Phy.PhyFax.Trim() != "" ? "FAX:" + Phy.PhyFax : ""),
+        //                                 value = new
+        //                                 {
+        //                                     ulPhyId = Phy.PhyId,
+        //                                     sPhyName = Phy.PhyPrefix + " " + Phy.PhyFirstName + " " + Phy.PhyMiddleName + " "  + Phy.PhyLastName + " " + Phy.PhySuffix,
+        //                                     sPhyFirstName = Phy.PhyPrefix +" "+Phy.PhyFirstName + " " + Phy.PhyMiddleName + " " + Phy.PhyLastName,
+        //                                     sPhyNPI = Phy.PhyNPI,
+        //                                     sPhySpecialty = Phy.PhySpecialtyCode,
+        //                                     sPhyFacility = Phy.PhyFacility,
+        //                                     ulPhySplID = Phy.PhySpecialtyID,
+        //                                     sPhyAddress = Phy.PhyAddrs,
+        //                                     sPhyFax = Phy.PhyFax,
+        //                                     sPhyPhone = Phy.PhyPhone
+
+        //                                 }
+        //                             });
+        //            if (lstResult.Count() == 0)
+        //            {
+        //                var lstFinalResult = new
+        //                {
+        //                    Result = "No matches found."
+        //                };
+        //                return JsonConvert.SerializeObject(lstFinalResult);
+        //            }
+        //            else
+        //            {
+        //                HttpContext.Current.Session.Add("PreviousProviderKeywordCriteria", text_searched);
+        //                HttpContext.Current.Session.Add("PreviousProviderList", JsonConvert.SerializeObject(lstResult));
+        //                var lstFinalResult = new
+        //                {
+        //                    Matching_Result = lstResult
+        //                };
+        //                return JsonConvert.SerializeObject(lstFinalResult);
+        //            }
+        //        }
+        //    }
+        //    catch (Exception exception)
+        //    {
+        //        var lstFinalResult = new
+        //        {
+        //            Error = "The following error occurred :" + exception.Message + ". Please contact support."
+        //        };
+        //        return JsonConvert.SerializeObject(lstFinalResult);
+        //    }
+        //}
+        //#endregion
+
+
         [System.Web.Script.Services.ScriptMethod()]
         [System.Web.Services.WebMethod(EnableSession = true)]
         public static string GetProviderDetailsFaxByTokens(string text_searched)

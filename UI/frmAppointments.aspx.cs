@@ -2975,6 +2975,10 @@ namespace Acurus.Capella.UI
                         appt = new Telerik.Web.UI.Appointment(LoadApptList.Human_ID[i].ToString() + "-", UtilityManager.ConvertToLocal(LoadApptList.Appointment_Date[i]), UtilityManager.ConvertToLocal(LoadApptList.Appointment_Date[i].AddHours(ts.Hours).AddMinutes(ts.Minutes).AddSeconds(ts.Seconds)), " - " + LoadApptList.PatientName[i].ToString() + " - " + LoadApptList.ApptStatus[i].ToString() + IsACOEligible);//EvStatus + IsACOEligible);
                         appt.ToolTip = LoadApptList.Human_ID[i].ToString() + " - " + LoadApptList.PatientName[i].ToString() + " - " + LoadApptList.TypeofVisit[i].ToString();
                         appt.Subject = UtilityManager.ConvertToLocal(LoadApptList.Appointment_Date[i]).ToString("hh:mm:ss tt") + "-" + UtilityManager.ConvertToLocal(LoadApptList.Appointment_Date[i].AddHours(ts.Hours).AddMinutes(ts.Minutes).AddSeconds(ts.Seconds)).ToString("hh:mm:ss tt") + " - " + LoadApptList.PatientName[i].ToString() + " - " + LoadApptList.ApptStatus[i].ToString() + IsACOEligible; //EvStatus + IsACOEligible;
+                        if (LoadApptList.Preferred_Language[i].ToString() != null && LoadApptList.Preferred_Language[i].ToString() != string.Empty)
+                        {
+                            appt.Subject += "- " + LoadApptList.Preferred_Language[i].ToString();
+                        }
                         appt.ID = LoadApptList.EncounterId[i] + "-" + LoadApptList.Payment_Paid[i] + "-" + LoadApptList.E_Super_Bill[i];// + "-" + LoadApptList.Document_Type[i];
                         appt.Start = UtilityManager.ConvertToLocal(LoadApptList.Appointment_Date[i]);
                         appt.End = appt.Start.AddHours(ts.Hours).AddMinutes(ts.Minutes).AddSeconds(ts.Seconds);
@@ -3217,7 +3221,11 @@ namespace Acurus.Capella.UI
                         {
                             appt.ToolTip = LoadApptList.Human_ID[i].ToString() + " - " + LoadApptList.PatientName[i].ToString() + " - " + LoadApptList.TypeofVisit[i].ToString() + " ; " + "\n" + LoadApptList.Outstanding_Orders[i].ToString();
                         }
-                        appt.Subject = UtilityManager.ConvertToLocal(LoadApptList.Appointment_Date[i]).ToString("hh:mm:ss tt") + "-" + UtilityManager.ConvertToLocal(LoadApptList.Appointment_Date[i].AddHours(ts.Hours).AddMinutes(ts.Minutes).AddSeconds(ts.Seconds)).ToString("hh:mm:ss tt") + " - " + LoadApptList.PatientName[i].ToString() + " - " + LoadApptList.ApptStatus[i].ToString() + "\n" + LoadApptList.Outstanding_Orders[i].ToString() + IsACOEligible;// EvStatus + IsACOEligible;
+                        appt.Subject = UtilityManager.ConvertToLocal(LoadApptList.Appointment_Date[i]).ToString("hh:mm:ss tt") + "-" + UtilityManager.ConvertToLocal(LoadApptList.Appointment_Date[i].AddHours(ts.Hours).AddMinutes(ts.Minutes).AddSeconds(ts.Seconds)).ToString("hh:mm:ss tt") + " - " + LoadApptList.PatientName[i].ToString() + " - " + LoadApptList.ApptStatus[i].ToString() + "\n" + LoadApptList.Outstanding_Orders[i].ToString() + IsACOEligible ;// EvStatus + IsACOEligible;
+                        if (LoadApptList.Preferred_Language[i].ToString() != null && LoadApptList.Preferred_Language[i].ToString() != string.Empty)
+                        {
+                            appt.Subject += "- " + LoadApptList.Preferred_Language[i].ToString();
+                        }
                         appt.ID = LoadApptList.EncounterId[i] + "-" + LoadApptList.Payment_Paid[i] + "-" + LoadApptList.E_Super_Bill[i] + /*"-" + LoadApptList.Document_Type[i] +*/ "-" + LoadApptList.Birth_Date[i].ToString() + "-" + LoadApptList.Human_Type[i];
                         if (ClientSession.UserRole.Trim().ToUpper() == "OFFICE MANAGER")
                             appt.ID += "-" + LoadApptList.Is_Batch_Created[i];

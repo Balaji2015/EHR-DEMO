@@ -24,6 +24,7 @@ namespace Acurus.Capella.UI.WebServices
     [System.Web.Script.Services.ScriptService]
     public class PhysicianLibraryServices : System.Web.Services.WebService
     {
+        
         [WebMethod(EnableSession = true)]
         public string LoadPhysicianLibrary(string Category)
         {
@@ -105,8 +106,8 @@ namespace Acurus.Capella.UI.WebServices
         [WebMethod(EnableSession = true)]
         public string AddProvider(string Category, string Specialty, string Prefix, string Facility, string PhyLastName, string PhyFirstName, string Suffix, string PhyNPI, string Company, string PhyAddress1, string PhyAddress2, string PhyState, string PhyCity, string Zip, string Phone, string Fax, string Email, string ButtonType, string PhysicianId, string PhysicianType, string PhyMI, string grddisplay, string CheckDuplicatefax, string sCategory)
         {
-
-             IList<string> ilstCategory = new List<string>();
+            ulong ProviderID = 0;
+            IList<string> ilstCategory = new List<string>();
              if (sCategory != null && sCategory.Contains(','))
             {
                 ilstCategory = sCategory.Split(',').ToList();
@@ -281,6 +282,7 @@ namespace Acurus.Capella.UI.WebServices
                 PhysicianLibrary objPhy = SavedPhyList.Count > 0 ? SavedPhyList[0] : null;
                 PhysicianSpecialty objPhySpec = PhySpecSaveList.Count > 0 ? PhySpecSaveList[0] : null;
                 MapFacilityPhysician objPhyFac = MapFacPhysList.Count > 0 ? MapFacPhysList[0] : null;
+                ProviderID = objPhy.Id;
                 InsertPhysicianIntoXMLs(objPhy, sXmlSpecialty, sXmlFacility);
                 #endregion
             }
@@ -933,7 +935,7 @@ namespace Acurus.Capella.UI.WebServices
                 }
                 else
                 {
-                    return JsonConvert.SerializeObject("None");
+                    return JsonConvert.SerializeObject("None|" + ProviderID);
                 }
             }
             else

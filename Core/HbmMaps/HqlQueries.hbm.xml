@@ -13284,6 +13284,19 @@ and  w.Obj_Type  in ('DIAGNOSTIC ORDER','INTERNAL ORDER','IMMUNIZATION ORDER','R
  as f on f.facility_name=m.facility_name WHERE P.Category in('PROVIDER','NON USER(Physician)','NON CAPELLA USER(Physician)')
  and (P.Physician_Last_Name LIKE ? OR P.Physician_First_Name LIKE ? or M.Facility_Name like ?);]]>
 	</sql-query>
+	<sql-query name="Find.Physician.by.ID">
+		<!--<![CDATA[SELECT P.Physician_Library_ID,P.Physician_Prefix,P.Physician_First_Name, P.Physician_Middle_Name,P.Physician_Last_Name,P.Physician_Suffix, S.Specialty,P.Physician_City,P.Physician_State, P.Physician_Zip,P.Physician_NPI,S.physician_specialty_id,M.Facility_Name,P.Physician_Fax,ifnull(f.facility_Address1,''),P.Physician_Telephone FROM `physician_library` P left JOIN map_facility_physician M ON (P.Physician_Library_ID=M.Physician_ID) left join physician_specialty s on (p.Physician_Library_ID=s.Physician_ID)  left join facility_library as f on f.facility_name=m.facility_name WHERE P.Physician_Last_Name LIKE ? OR P.Physician_First_Name LIKE ? or S.Specialty LIKE ? or P.Physician_NPI LIKE ? or M.Facility_Name like ? ;]]>-->
+		<!--<![CDATA[SELECT P.Physician_Library_ID,P.Physician_Prefix,P.Physician_First_Name, P.Physician_Middle_Name,P.Physician_Last_Name,P.Physician_Suffix, S.Specialty,f.Facility_City,f.Facility_State, f.Facility_Zip,P.Physician_NPI,S.physician_specialty_id,M.Facility_Name,P.Physician_Fax,ifnull(f.facility_Address1,''),P.Physician_Telephone FROM `physician_library` P left JOIN map_facility_physician M ON (P.Physician_Library_ID=M.Physician_ID) left join physician_specialty s on (p.Physician_Library_ID=s.Physician_ID)  left join facility_library as f on f.facility_name=m.facility_name WHERE P.Physician_Last_Name LIKE ? OR P.Physician_First_Name LIKE ? or S.Specialty LIKE ? or P.Physician_NPI LIKE ? or M.Facility_Name like ? ;]]>-->
+		<![CDATA[SELECT P.Physician_Library_ID,P.Physician_Prefix,P.Physician_First_Name,
+ P.Physician_Middle_Name,P.Physician_Last_Name,P.Physician_Suffix, S.Specialty,
+ ifnull(f.Facility_City,p.Physician_City),ifnull(f.Facility_State,p.Physician_State), ifnull(f.Facility_Zip,p.Physician_Zip),
+ P.Physician_NPI,S.physician_specialty_id,
+ M.Facility_Name,P.Physician_Fax,ifnull(f.facility_Address1,p.Physician_Address1),P.Physician_Telephone FROM
+ `physician_library` P left JOIN map_facility_physician M ON (P.Physician_Library_ID=M.Physician_ID)
+ left join physician_specialty s on (p.Physician_Library_ID=s.Physician_ID)  left join facility_library
+ as f on f.facility_name=m.facility_name WHERE P.Category in('PROVIDER','NON USER(Physician)','NON CAPELLA USER(Physician)')
+ and Physician_Library_ID in (:PhyIds) group by Physician_Library_ID;]]>
+	</sql-query>
 	<sql-query name="FindPhysicianFax">
 		<!--<![CDATA[SELECT P.Physician_Library_ID,P.Physician_Prefix,P.Physician_First_Name, P.Physician_Middle_Name,P.Physician_Last_Name,P.Physician_Suffix, S.Specialty,P.Physician_City,P.Physician_State, P.Physician_Zip,P.Physician_NPI,S.physician_specialty_id,M.Facility_Name,P.Physician_Fax,ifnull(f.facility_Address1,''),P.Physician_Telephone FROM `physician_library` P left JOIN map_facility_physician M ON (P.Physician_Library_ID=M.Physician_ID) left join physician_specialty s on (p.Physician_Library_ID=s.Physician_ID)  left join facility_library as f on f.facility_name=m.facility_name WHERE P.Physician_Last_Name LIKE ? OR P.Physician_First_Name LIKE ? or S.Specialty LIKE ? or P.Physician_NPI LIKE ? or M.Facility_Name like ? ;]]>-->
 		<!--<![CDATA[SELECT P.Physician_Library_ID,P.Physician_Prefix,P.Physician_First_Name, P.Physician_Middle_Name,P.Physician_Last_Name,P.Physician_Suffix, S.Specialty,f.Facility_City,f.Facility_State, f.Facility_Zip,P.Physician_NPI,S.physician_specialty_id,M.Facility_Name,P.Physician_Fax,ifnull(f.facility_Address1,''),P.Physician_Telephone FROM `physician_library` P left JOIN map_facility_physician M ON (P.Physician_Library_ID=M.Physician_ID) left join physician_specialty s on (p.Physician_Library_ID=s.Physician_ID)  left join facility_library as f on f.facility_name=m.facility_name WHERE P.Physician_Last_Name LIKE ? OR P.Physician_First_Name LIKE ? or S.Specialty LIKE ? or P.Physician_NPI LIKE ? or M.Facility_Name like ? ;]]>-->
@@ -13629,7 +13642,7 @@ and w.Current_Process<>'CANCELLED' and h.Human_ID is not NULL) as main left join
 (SELECT a.Encounter_ID,a.Appointment_Provider_ID,a.Human_ID,cast(a.Appointment_Date as char(100)) as Appointment_Date,
 a.Duration_Minutes,w.Current_Process,h.Last_Name,h.First_Name,h.MI,h.Prefix,h.Suffix,p.Physician_Prefix,p.Physician_First_Name,p.
 Physician_Middle_Name,p.Physician_Last_Name,p.Physician_Suffix, a.Facility_Name ,p.Encounter_Mode,
-cast(h.Birth_Date as char(100)) as Birth_Date,h.Human_Type,w.Obj_Type,a.Is_batch_created,a.Order_Submit_ID,a.visit_type, h.ACO_Is_Eligible_Patient 
+cast(h.Birth_Date as char(100)) as Birth_Date,h.Human_Type,w.Obj_Type,a.Is_batch_created,a.Order_Submit_ID,a.visit_type, h.ACO_Is_Eligible_Patient ,h.Preferred_Language, h.Is_Translator_Required
 from encounter a
 left join wf_object w on (a.Encounter_ID = w.Obj_System_Id and w.Obj_Type = 'ENCOUNTER' and a.human_id<>0)
 left join human h on (a.human_id=h.human_id)
@@ -13642,7 +13655,7 @@ select main.*, if(c.Encounter_ID = main.encounter_id,"Y","N") as Payment_Paid fr
 (SELECT a.Encounter_ID,a.Appointment_Provider_ID,a.Human_ID,cast(a.Appointment_Date as char(100)) as Appointment_Date,
 a.Duration_Minutes,w.Current_Process,h.Last_Name,h.First_Name,h.MI,h.Prefix,h.Suffix,p.Physician_Prefix,p.Physician_First_Name,p.
 Physician_Middle_Name,p.Physician_Last_Name,p.Physician_Suffix, a.Facility_Name ,p.Encounter_Mode,
-cast(h.Birth_Date as char(100)) as Birth_Date,h.Human_Type,w.Obj_Type,a.Is_batch_created,a.Order_Submit_ID,a.visit_type,h.ACO_Is_Eligible_Patient  
+cast(h.Birth_Date as char(100)) as Birth_Date,h.Human_Type,w.Obj_Type,a.Is_batch_created,a.Order_Submit_ID,a.visit_type,h.ACO_Is_Eligible_Patient ,h.Preferred_Language, h.Is_Translator_Required 
 from encounter_arc a
 left join wf_object_arc w on (a.Encounter_ID = w.Obj_System_Id and w.Obj_Type = 'ENCOUNTER' and a.human_id<>0)
 left join human h on (a.human_id=h.human_id)
@@ -13704,7 +13717,7 @@ m.machine_name,
 p.Physician_First_Name,
 p.Physician_Last_Name,
 p.Physician_suffix, a.Facility_Name ,p.Encounter_Mode,
-cast(h.Birth_Date as char(100)) as Birth_Date,h.Human_Type,w.Obj_Type,a.Is_batch_created,a.Order_Submit_ID ,a.visit_type, h.ACO_Is_Eligible_Patient  
+cast(h.Birth_Date as char(100)) as Birth_Date,h.Human_Type,w.Obj_Type,a.Is_batch_created,a.Order_Submit_ID ,a.visit_type, h.ACO_Is_Eligible_Patient  ,h.Preferred_Language, h.Is_Translator_Required
 from encounter a
 left join wf_object w on (a.Encounter_ID = w.Obj_System_Id and w.Obj_Type = 'ENCOUNTER' and a.human_id<>0)
 left join human h on (a.human_id=h.human_id)
@@ -13722,7 +13735,7 @@ m.machine_name,
 p.Physician_First_Name,
 p.Physician_Last_Name,
 p.Physician_suffix, a.Facility_Name ,p.Encounter_Mode,
-cast(h.Birth_Date as char(100)) as Birth_Date,h.Human_Type,w.Obj_Type,a.Is_batch_created,a.Order_Submit_ID, a.visit_type, h.ACO_Is_Eligible_Patient  
+cast(h.Birth_Date as char(100)) as Birth_Date,h.Human_Type,w.Obj_Type,a.Is_batch_created,a.Order_Submit_ID, a.visit_type, h.ACO_Is_Eligible_Patient ,h.Preferred_Language, h.Is_Translator_Required
 from encounter_arc a
 left join wf_object_arc w on (a.Encounter_ID = w.Obj_System_Id and w.Obj_Type = 'ENCOUNTER' and a.human_id<>0)
 left join human h on (a.human_id=h.human_id)

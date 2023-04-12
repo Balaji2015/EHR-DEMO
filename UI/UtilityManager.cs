@@ -5701,6 +5701,11 @@ namespace Acurus.Capella.UI
                 sPatientStrip = " " + "   |" + "|" + "|" + "|" + "|";
             }
 
+            if (objFillHuman.Is_Translator_Required != null && objFillHuman.Is_Translator_Required.ToUpper() == "Y")
+            {
+                sPatientStrip += objFillHuman.Preferred_Language+" req." + "   |   ";
+            }
+
             if (sAcoEligiblePatient != null && sAcoEligiblePatient != string.Empty && sAcoEligiblePatient != "N")
             {
                 sPatientStrip += sAcoEligiblePatient + "   |   ";

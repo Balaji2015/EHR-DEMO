@@ -168,6 +168,7 @@ namespace Acurus.Capella.Core.DomainObjects
 
         private string _Legal_Org = string.Empty;
         private ulong _Primary_Carrier_ID = 0;
+        private string _sIsTranslatorRequired = "N";
         #endregion
 
         #region HashCode Value
@@ -329,6 +330,7 @@ namespace Acurus.Capella.Core.DomainObjects
 
             sb.Append(_Legal_Org);
             sb.Append(_Primary_Carrier_ID);
+            sb.Append(_sIsTranslatorRequired);
             return sb.ToString().GetHashCode();
         }
         #endregion
@@ -1298,6 +1300,12 @@ namespace Acurus.Capella.Core.DomainObjects
         {
             get { return _Primary_Carrier_ID; }
             set { _Primary_Carrier_ID = value; }
+        }
+        [DataMember]
+        public virtual string Is_Translator_Required
+        {
+            get { return _sIsTranslatorRequired; }
+            set { _sIsTranslatorRequired = value; }
         }
 
         #endregion

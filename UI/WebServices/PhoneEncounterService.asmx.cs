@@ -166,7 +166,12 @@ objFillHuman.Birth_Date.ToString("dd-MMM-yyyy") + " | " +
 " | " + "Med Rec #:" + objFillHuman.Medical_Record_Number + " | " +
 "Phone #:" + phoneno + " | Patient Type:" + objFillHuman.Human_Type + " | ";
 
-                if (sAcoEligiblePatient != null && sAcoEligiblePatient != string.Empty && sAcoEligiblePatient != "N")
+                    if (objFillHuman.Is_Translator_Required != null && objFillHuman.Is_Translator_Required.ToUpper() == "Y")
+                    {
+                        sPatientstrip += objFillHuman.Preferred_Language + " req." + "   |   ";
+                    }
+
+                    if (sAcoEligiblePatient != null && sAcoEligiblePatient != string.Empty && sAcoEligiblePatient != "N")
                 {
                     sPatientstrip += sAcoEligiblePatient + "   |   ";
                 }

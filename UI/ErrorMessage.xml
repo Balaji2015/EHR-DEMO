@@ -498,6 +498,7 @@
 	<Message number="350010" Type="OK" Text="Invalid Effective Start Date" />
 	<Message number="350011" Type="OK" Text="Invalid Termination Date" />
 	<Message number="350012" Type="YesNoCancel" Text="There are unsaved changes.&#xD;Would you like to save them?" />
+	<Message number="350013" Type="OK" Text="PCP not found in the system, please 'Add Provider' and select from the list." />
 
 	<Message number="270001" Type="ToolStrip" Text="Saved Successfully." />
 	<Message number="270002" Type="OKCANCEL" Text="Would you like to clear all the values entered?" />
@@ -799,6 +800,8 @@
 	<Message number="420016" Type="OK" Text="Enter First Name in Emergency Contact Info" />
 	<Message number="420017" Type="OK" Text="Enter Middle Name in Emergency Contact Info" />
 	<Message number="420090" Type="OK" Text="Invalid Care Giver Phone Number" />
+	<Message number="420091" Type="OK" Text="Please Enter Cell Phone Number" />
+	<Message number="420092" Type="OK" Text="Translator required is not a valid option for the selected Preferred Language" />
 
 	<Message number="420018" Type="ToolStrip" Text="Saved successfully." />
 	<Message number="420019" Type="OK" Text="This feature is not currently available. Please contact the System Administrator." />

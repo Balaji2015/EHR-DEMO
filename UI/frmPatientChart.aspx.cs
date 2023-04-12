@@ -1631,7 +1631,7 @@ namespace Acurus.Capella.UI
             if (objPatChart.PatChartList != null && objPatChart.PatChartList.Count > 0)
             {
                 UtilityManager.inserttologgingtable(ClientSession.EncounterId.ToString(), ClientSession.HumanId.ToString(), ClientSession.UserName, ClientSession.PhysicianId.ToString(), "Patient Chart - FillPatientPane - Call FillPatientSummaryBarforPatientChart : Start", DateTime.Now, sGroup_ID_Log, "frmPatientChart");
-                string strPatientstrip = FillPatientSummaryBarforPatientChart(objPatChart.PatChartList[0].Last_Name, objPatChart.PatChartList[0].First_Name, objPatChart.PatChartList[0].MI, objPatChart.PatChartList[0].Suffix, objPatChart.PatChartList[0].Birth_Date, objPatChart.PatChartList[0].Human_Id, objPatChart.PatChartList[0].Medical_Record_Number, objPatChart.PatChartList[0].HomePhoneNo, objPatChart.PatChartList[0].Sex, objPatChart.PatChartList[0].Patient_Status, objPatChart.PatChartList[0].SSN, objPatChart.PatChartList[0].Patient_Type, sPriPlan, sPriCarrier, sSecPlan, sSecCarrier, objPatChart.PatChartList[0].CellPhoneNo, objPatChart.PatChartList[0].PastDue, objPatChart.PatChartList[0].ACO_Is_Eligible_Patient);
+                string strPatientstrip = FillPatientSummaryBarforPatientChart(objPatChart.PatChartList[0].Last_Name, objPatChart.PatChartList[0].First_Name, objPatChart.PatChartList[0].MI, objPatChart.PatChartList[0].Suffix, objPatChart.PatChartList[0].Birth_Date, objPatChart.PatChartList[0].Human_Id, objPatChart.PatChartList[0].Medical_Record_Number, objPatChart.PatChartList[0].HomePhoneNo, objPatChart.PatChartList[0].Sex, objPatChart.PatChartList[0].Patient_Status, objPatChart.PatChartList[0].SSN, objPatChart.PatChartList[0].Patient_Type, sPriPlan, sPriCarrier, sSecPlan, sSecCarrier, objPatChart.PatChartList[0].CellPhoneNo, objPatChart.PatChartList[0].PastDue, objPatChart.PatChartList[0].ACO_Is_Eligible_Patient, objPatChart.PatChartList[0].Preferred_Language);
                 UtilityManager.inserttologgingtable(ClientSession.EncounterId.ToString(), ClientSession.HumanId.ToString(), ClientSession.UserName, ClientSession.PhysicianId.ToString(), "Patient Chart - FillPatientPane - Call FillPatientSummaryBarforPatientChart : End", DateTime.Now, sGroup_ID_Log, "frmPatientChart");
                 string strPatientstriptext = string.Empty;
                 if (sPriPlan != string.Empty || sSecPlan != string.Empty)
@@ -1700,7 +1700,7 @@ namespace Acurus.Capella.UI
             return years;
         }
 
-        public string FillPatientSummaryBarforPatientChart(string LastName, string FirstName, string MI, string Suffix, DateTime DOB, ulong ulHumanID, string MedRecNo, string HomePhoneNo, string Sex, string PatientStatus, string SSN, string PatientType, string sPriPlan, string sPriCarrier, string sSecPlan, string sSecCarrier, string CellPhoneNo, string PastDue, string sAcoEligiblePatient)
+        public string FillPatientSummaryBarforPatientChart(string LastName, string FirstName, string MI, string Suffix, DateTime DOB, ulong ulHumanID, string MedRecNo, string HomePhoneNo, string Sex, string PatientStatus, string SSN, string PatientType, string sPriPlan, string sPriCarrier, string sSecPlan, string sSecCarrier, string CellPhoneNo, string PastDue, string sAcoEligiblePatient, string Preferred_Language)
         {
 
             string sMySummary;
@@ -1783,6 +1783,10 @@ namespace Acurus.Capella.UI
 
             sMySummary += "Past Due: $ " + PastDue + "   |   ";
 
+            if(Preferred_Language != null && Preferred_Language != string.Empty)
+            {
+                sMySummary += Preferred_Language.ToString() + " req." + "   |   ";
+            }
             if (sAcoEligiblePatient != null && sAcoEligiblePatient != string.Empty && sAcoEligiblePatient != "N")
             {
                 sMySummary += sAcoEligiblePatient + "   |   ";
