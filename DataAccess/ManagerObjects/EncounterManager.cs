@@ -1325,9 +1325,14 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
                             objPatPane.ACO_Is_Eligible_Patient = xmlHumanNode.Attributes.GetNamedItem("ACO_Is_Eligible_Patient").Value.ToString();
                         else
                             objPatPane.ACO_Is_Eligible_Patient = "";
-                        if (xmlHumanNode.Attributes.GetNamedItem("Is_Translator_Required") != null &&  xmlHumanNode.Attributes.GetNamedItem("Is_Translator_Required").Value != null && xmlHumanNode.Attributes.GetNamedItem("Is_Translator_Required").Value != string.Empty)
+                        if (xmlHumanNode.Attributes.GetNamedItem("Is_Translator_Required") != null && xmlHumanNode.Attributes.GetNamedItem("Is_Translator_Required").Value != null && xmlHumanNode.Attributes.GetNamedItem("Is_Translator_Required").Value != string.Empty && xmlHumanNode.Attributes.GetNamedItem("Is_Translator_Required").Value == "Y")
+                        {
                             objPatPane.Preferred_Language = xmlHumanNode.Attributes.GetNamedItem("Preferred_Language").Value.ToString();
-
+                        }
+                        else
+                        {
+                            objPatPane.Preferred_Language = "";
+                        }
                         //For bud Id 70617 
                         XmlNodeList xmlAgenode = xmlDoc.GetElementsByTagName("Age");
                         if (xmlAgenode != null && xmlAgenode.Count > 0)
