@@ -456,13 +456,15 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
 
             if (bFacilityBasis == false)
             {
-                sq = iMySession.CreateSQLQuery("SELECT p.*,u.* FROM physician_library p,user u where p.Physician_Library_ID=u.Physician_Library_ID and u.Legal_Org='"+sLegalOrg+ "' order by p.physician_last_Name asc")
+                //GitLab#4177 and 4179
+                sq = iMySession.CreateSQLQuery("SELECT p.*,u.* FROM physician_library p,user u where p.Physician_Library_ID=u.Physician_Library_ID and u.Legal_Org='"+sLegalOrg+ "' and u.Status='A' order by p.physician_last_Name asc")
              .AddEntity("p", typeof(PhysicianLibrary))
              .AddEntity("u", typeof(User));
             }
             else
             {
-                sq = iMySession.CreateSQLQuery("SELECT p.*,u.* FROM physician_library p,user u,map_facility_physician m where p.Physician_Library_ID=u.Physician_Library_ID and m.Physician_ID=p.Physician_Library_ID and m.Facility_Name = '" + sFacName + "'order by p.physician_last_Name asc")
+                //GitLab#4177 and 4179
+                sq = iMySession.CreateSQLQuery("SELECT p.*,u.* FROM physician_library p,user u,map_facility_physician m where p.Physician_Library_ID=u.Physician_Library_ID and m.Physician_ID=p.Physician_Library_ID and m.Facility_Name = '" + sFacName + "' and u.Status='A' order by p.physician_last_Name asc")
              .AddEntity("p", typeof(PhysicianLibrary))
              .AddEntity("u", typeof(User));
             }
