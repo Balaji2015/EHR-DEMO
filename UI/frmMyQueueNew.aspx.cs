@@ -1153,7 +1153,11 @@ namespace Acurus.Capella.UI
                 return "Session Expired";
             }
             WFObjectManager wfMngr = new WFObjectManager();
-            wfMngr.UpdateOwner(Convert.ToUInt64(data[1]), data[0], ClientSession.UserName, string.Empty);
+            for (int iCount = 0; iCount < data.Length; iCount++)
+            {
+                //wfMngr.UpdateOwner(Convert.ToUInt64(data[1]), data[0], ClientSession.UserName, string.Empty);
+                wfMngr.UpdateOwner(Convert.ToUInt64(data[iCount].Split('~')[1]), data[iCount].Split('~')[0], ClientSession.UserName, string.Empty);
+            }
             string[] processType = new string[2];
             processType[0] = "UNASSIGNED";
             string[] ObjType = new string[1];
