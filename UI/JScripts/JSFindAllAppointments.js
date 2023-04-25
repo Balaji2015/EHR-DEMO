@@ -92,7 +92,7 @@ function OpenEditAppointment() {
             var physicianName = MasterTable1.getCellByColumnUniqueName(row, "ProviderName").innerHTML;
             var physicianId = MasterTable1.getCellByColumnUniqueName(row, "Appt_Provider_Id").innerHTML;
             var is_archieve = MasterTable1.getCellByColumnUniqueName(row, "Is_Archieve").innerHTML;
-            if (is_archieve == "Main") {
+            //if (is_archieve == "Main") {
                 var Facility;
                 if (fac.indexOf("#") != -1) {
                     Facility = fac.replace("#", "_");
@@ -113,12 +113,12 @@ function OpenEditAppointment() {
         });
     }, 0);
                 }
-            }
-            else {
-                DisplayErrorMessage("110092");
-                { sessionStorage.setItem('StartLoading', 'false'); StopLoadFromPatChart(); }
-                return false;
-            }
+            //}
+            //else {
+            //    DisplayErrorMessage("110092");
+            //    { sessionStorage.setItem('StartLoading', 'false'); StopLoadFromPatChart(); }
+            //    return false;
+            //}
             return false;
         }
     }
