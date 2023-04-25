@@ -92,6 +92,7 @@ function OpenEditAppointment() {
             var physicianName = MasterTable1.getCellByColumnUniqueName(row, "ProviderName").innerHTML;
             var physicianId = MasterTable1.getCellByColumnUniqueName(row, "Appt_Provider_Id").innerHTML;
             var is_archieve = MasterTable1.getCellByColumnUniqueName(row, "Is_Archieve").innerHTML;
+            //Jira #CAP-68
             //if (is_archieve == "Main") {
                 var Facility;
                 if (fac.indexOf("#") != -1) {
@@ -112,7 +113,8 @@ function OpenEditAppointment() {
             document.getElementById("btnRefresh").click();
         });
     }, 0);
-                }
+            }
+//Jira #CAP-68
             //}
             //else {
             //    DisplayErrorMessage("110092");
