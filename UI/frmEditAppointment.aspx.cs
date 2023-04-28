@@ -1159,7 +1159,7 @@ namespace Acurus.Capella.UI
                 //DateTimePickerColorChange(dtpApptDate, true);
                 //TimePickerColorChange(dtpStartTime, true);
                 // if (EncRecord.Referring_Physician != string.Empty || EncRecord.PCP_Physician != string.Empty)
-
+                
                 if (EncRecord != null && ulMyEncID != 0)//vasanth
                 {
                     HdnRefPhy.Value = EncRecord.Referring_Physician + "|" + EncRecord.Referring_Address + "|" + EncRecord.Referring_Phone_No + "|" + EncRecord.Referring_Fax_No + "|" + EncRecord.Referring_Provider_NPI + "|" + EncRecord.Referring_Facility;
@@ -2528,12 +2528,12 @@ namespace Acurus.Capella.UI
                         //EncRecord.PCP_Fax_No = hdnpcpprovider.Value.Split('|')[6].ToString();
                         //EncRecord.PCP_Provider_NPI = hdnpcpprovider.Value.Split('|')[2].ToString();
 
-                        EncRecord.PCP_Facility = hdnpcpprovider.Value.Split('|')[2].ToString();
+                        EncRecord.PCP_Facility = hdnpcpprovider.Value.Split('|')[2].Split(':')[1].Trim().ToString();
                         EncRecord.PCP_Physician = hdnpcpprovider.Value.Split('|')[0].ToString();
-                        EncRecord.PCP_Address = hdnpcpprovider.Value.Split('|')[3].ToString();
-                        EncRecord.PCP_Phone_No = hdnpcpprovider.Value.Split('|')[4].ToString();
-                        EncRecord.PCP_Fax_No = hdnpcpprovider.Value.Split('|')[5].ToString();
-                        EncRecord.PCP_Provider_NPI = hdnpcpprovider.Value.Split('|')[1].ToString();
+                        EncRecord.PCP_Address = hdnpcpprovider.Value.Split('|')[3].Split(':')[1].Trim().ToString();
+                        EncRecord.PCP_Phone_No = hdnpcpprovider.Value.Split('|')[4].Split(':')[1].Trim().ToString();
+                        EncRecord.PCP_Fax_No = hdnpcpprovider.Value.Split('|')[5].Split(':')[1].Trim().ToString();
+                        EncRecord.PCP_Provider_NPI = hdnpcpprovider.Value.Split('|')[1].Split(':')[1].Trim().ToString();
                     }
                     if (!chkSelfReferred.Checked)
                     {
@@ -3937,6 +3937,15 @@ namespace Acurus.Capella.UI
                 {
                     btnOrder.Enabled = false;
                 }
+
+                if (tabReferringProvAndPCP.SelectedIndex == 0)
+                {
+                    imgClearProviderText.Visible = false;
+                }
+                if (tabReferringProvAndPCP.SelectedIndex == 1)
+                {
+                    imgClearProviderText.Visible = true;
+                }
                 imgClearProviderText.Style.Add("top", "246px !important");
                 lblOrder.ForeColor = Color.Red;
                 lblOrder.Text = lblOrder.Text.Replace("*", "");
@@ -4080,6 +4089,10 @@ namespace Acurus.Capella.UI
             }
             else
             {
+                if (tabReferringProvAndPCP.SelectedIndex == 0)
+                {
+                    imgClearProviderText.Visible = true;
+                }
                 imgClearProviderText.Style.Add("top", "234px !important");
                 cboOrder.Items.Clear();
                 cboOrder.Enabled = false;
@@ -4335,8 +4348,18 @@ namespace Acurus.Capella.UI
 
             if (tabReferringProvAndPCP.SelectedIndex == 0)
             {
+                var facAncillary = from f in ApplicationObject.facilityLibraryList where f.Fac_Name == cboFacility.SelectedItem.Text select f;
+                IList<FacilityLibrary> ilstFacAncillary = facAncillary.ToList<FacilityLibrary>();
+                if (ilstFacAncillary.Count > 0 && ilstFacAncillary[0].Is_Ancillary == "Y")
+                {                    
+                        imgClearProviderText.Visible = false;                                        
+                }
+                else
+                {
+                    imgClearProviderText.Visible = true;
+                }
 
-                imgClearProviderText.Style.Add("top", "234px !important");
+                    imgClearProviderText.Style.Add("top", "234px !important");
 
                 chkSelfReferred.Visible = true;
                 if (hdnEncounterID.Value != null && hdnEncounterID.Value != string.Empty)
@@ -4455,6 +4478,7 @@ namespace Acurus.Capella.UI
             }
             else if (tabReferringProvAndPCP.SelectedIndex == 1)
             {
+                imgClearProviderText.Visible = true;
                 imgClearProviderText.Style.Add("top", "224px !important");
                 chkSelfReferred.Visible = false;
                 //Jira #CAP-69 - labels are missing
@@ -4513,121 +4537,125 @@ namespace Acurus.Capella.UI
                 //}
         }
         }
-         //Jira #CAP-69 - labels are missing
-         public void pcpDefaultDemographics()
+        //Jira #CAP-69 - labels are missing
+        public void pcpDefaultDemographics()
+        {
+            if (!IsPostBack)
             {
-                if (hdnEncounterID.Value != null && hdnEncounterID.Value != string.Empty)
+            if (hdnEncounterID.Value != null && hdnEncounterID.Value != string.Empty)
+            {
+                if (hdnEncounterID.Value != "0")
                 {
-                    if (hdnEncounterID.Value != "0")
+                    Encntlist = EncMngr.GetEncounterByEncounterID(Convert.ToUInt32(hdnEncounterID.Value));
+                    if (Encntlist.Count > 0)
                     {
-                        Encntlist = EncMngr.GetEncounterByEncounterID(Convert.ToUInt32(hdnEncounterID.Value));
-                        if (Encntlist.Count > 0)
+                        if (Encntlist[0].PCP_Physician != string.Empty)
                         {
-                            if (Encntlist[0].PCP_Physician != string.Empty)
-                            {
-                                //txtReferringFacility.Text = Encntlist[0].PCP_Facility;
-                                //txtReferringProvider.Text = Encntlist[0].PCP_Physician;
-                                //txtReferingAddress.Text = Encntlist[0].PCP_Address;
-                                //msktxtReferingPhoneNo.Text = Encntlist[0].PCP_Phone_No;
-                                //msktxtReferingFaxNo.Text = Encntlist[0].PCP_Fax_No;
-                                //txtProviderNPI.Text = Encntlist[0].PCP_Provider_NPI;
-                                //txtReferringProvider.Attributes.Add("onkeypress", "return false;");
-                                //txtReferringFacility.Attributes.Add("onkeypress", "return false;");
-                                //txtReferingAddress.Attributes.Add("onkeypress", "return false;");
-                                //txtProviderNPI.Attributes.Add("onkeypress", "return false;");
-                                //txtProviderNPI.Attributes.Add("onkeydown", "return false;");
-                                //txtReferringProvider.Attributes.Add("onkeydown", "return false;");
-                                //txtReferringFacility.Attributes.Add("onkeydown", "return false;");
-                                //txtReferingAddress.Attributes.Add("onkeydown", "return false;");
-                                //msktxtReferingPhoneNo.ReadOnly = true;
-                                //msktxtReferingFaxNo.ReadOnly = true;
+                            //txtReferringFacility.Text = Encntlist[0].PCP_Facility;
+                            //txtReferringProvider.Text = Encntlist[0].PCP_Physician;
+                            //txtReferingAddress.Text = Encntlist[0].PCP_Address;
+                            //msktxtReferingPhoneNo.Text = Encntlist[0].PCP_Phone_No;
+                            //msktxtReferingFaxNo.Text = Encntlist[0].PCP_Fax_No;
+                            //txtProviderNPI.Text = Encntlist[0].PCP_Provider_NPI;
+                            //txtReferringProvider.Attributes.Add("onkeypress", "return false;");
+                            //txtReferringFacility.Attributes.Add("onkeypress", "return false;");
+                            //txtReferingAddress.Attributes.Add("onkeypress", "return false;");
+                            //txtProviderNPI.Attributes.Add("onkeypress", "return false;");
+                            //txtProviderNPI.Attributes.Add("onkeydown", "return false;");
+                            //txtReferringProvider.Attributes.Add("onkeydown", "return false;");
+                            //txtReferringFacility.Attributes.Add("onkeydown", "return false;");
+                            //txtReferingAddress.Attributes.Add("onkeydown", "return false;");
+                            //msktxtReferingPhoneNo.ReadOnly = true;
+                            //msktxtReferingFaxNo.ReadOnly = true;
 
-                                //txtProviderSearch.Text = " |" + Encntlist[0].Referring_Physician + "| NPI: " + Encntlist[0].Referring_Provider_NPI + "| Facility: " + Encntlist[0].Referring_Facility + "| Address:" + Encntlist[0].Referring_Address + "| Fax No:" + Encntlist[0].Referring_Fax_No + "| Phone No:" + Encntlist[0].Referring_Phone_No;
-                                //  hdnpcpprovider.Value = " |" + Encntlist[0].Referring_Physician + "|" + Encntlist[0].Referring_Provider_NPI + "|" + "" + "|" + Encntlist[0].Referring_Facility + "|" + Encntlist[0].Referring_Address + "|" + Encntlist[0].Referring_Fax_No + "|" + Encntlist[0].Referring_Phone_No; ; ;
-                                txtProviderSearch.Text = Encntlist[0].PCP_Physician + "| NPI: " + Encntlist[0].PCP_Provider_NPI +
-                                 "| Facility: " + Encntlist[0].PCP_Facility + "| Address:" + Encntlist[0].PCP_Address +
-                                 "| Phone No:" + Encntlist[0].PCP_Phone_No + "| Fax No:" + Encntlist[0].PCP_Fax_No;
-                                //Jira #CAP-69 - labels are missing
-                                //hdnpcpprovider.Value = " |" + Encntlist[0].PCP_Physician + "|" + Encntlist[0].PCP_Provider_NPI + "|" + "" + "|" + Encntlist[0].PCP_Facility +
-                                //    "|" + Encntlist[0].PCP_Address + "|"
-                                //    + Encntlist[0].PCP_Fax_No + "|" + Encntlist[0].PCP_Phone_No;
+                            //txtProviderSearch.Text = " |" + Encntlist[0].Referring_Physician + "| NPI: " + Encntlist[0].Referring_Provider_NPI + "| Facility: " + Encntlist[0].Referring_Facility + "| Address:" + Encntlist[0].Referring_Address + "| Fax No:" + Encntlist[0].Referring_Fax_No + "| Phone No:" + Encntlist[0].Referring_Phone_No;
+                            //  hdnpcpprovider.Value = " |" + Encntlist[0].Referring_Physician + "|" + Encntlist[0].Referring_Provider_NPI + "|" + "" + "|" + Encntlist[0].Referring_Facility + "|" + Encntlist[0].Referring_Address + "|" + Encntlist[0].Referring_Fax_No + "|" + Encntlist[0].Referring_Phone_No; ; ;
+                            txtProviderSearch.Text = Encntlist[0].PCP_Physician + "| NPI: " + Encntlist[0].PCP_Provider_NPI +
+                             "| Facility: " + Encntlist[0].PCP_Facility + "| Address:" + Encntlist[0].PCP_Address +
+                             "| Phone No:" + Encntlist[0].PCP_Phone_No + "| Fax No:" + Encntlist[0].PCP_Fax_No;
+                            //Jira #CAP-69 - labels are missing
+                            //hdnpcpprovider.Value = " |" + Encntlist[0].PCP_Physician + "|" + Encntlist[0].PCP_Provider_NPI + "|" + "" + "|" + Encntlist[0].PCP_Facility +
+                            //    "|" + Encntlist[0].PCP_Address + "|"
+                            //    + Encntlist[0].PCP_Fax_No + "|" + Encntlist[0].PCP_Phone_No;
 
-                                //hdnpcpprovidersearch.Value = " |" + Encntlist[0].PCP_Physician + "|" + Encntlist[0].PCP_Provider_NPI + "|" + "" + "|" + Encntlist[0].PCP_Facility +
-                                //    "|" + Encntlist[0].PCP_Address + "|"
-                                //    + Encntlist[0].PCP_Fax_No + "|" + Encntlist[0].PCP_Phone_No;
+                            //hdnpcpprovidersearch.Value = " |" + Encntlist[0].PCP_Physician + "|" + Encntlist[0].PCP_Provider_NPI + "|" + "" + "|" + Encntlist[0].PCP_Facility +
+                            //    "|" + Encntlist[0].PCP_Address + "|"
+                            //    + Encntlist[0].PCP_Fax_No + "|" + Encntlist[0].PCP_Phone_No;
 
-                                hdnpcpprovider.Value = Encntlist[0].PCP_Physician + "| NPI: " + Encntlist[0].PCP_Provider_NPI +
-                                 "| Facility: " + Encntlist[0].PCP_Facility + "| Address:" + Encntlist[0].PCP_Address +
-                                 "| Phone No:" + Encntlist[0].PCP_Phone_No + "| Fax No:" + Encntlist[0].PCP_Fax_No;
+                            hdnpcpprovider.Value = Encntlist[0].PCP_Physician + "| NPI: " + Encntlist[0].PCP_Provider_NPI +
+                             "| Facility: " + Encntlist[0].PCP_Facility + "| Address:" + Encntlist[0].PCP_Address +
+                             "| Phone No:" + Encntlist[0].PCP_Phone_No + "| Fax No:" + Encntlist[0].PCP_Fax_No;
 
-                                hdnpcpprovidersearch.Value = Encntlist[0].PCP_Physician + "| NPI: " + Encntlist[0].PCP_Provider_NPI +
-                                 "| Facility: " + Encntlist[0].PCP_Facility + "| Address:" + Encntlist[0].PCP_Address +
-                                 "| Phone No:" + Encntlist[0].PCP_Phone_No + "| Fax No:" + Encntlist[0].PCP_Fax_No;
-                            }
-                            else
-                            {
-                                txtProviderSearch.Text = "";
-                            }
-                        }
-                    }
-                    else
-                    {
-                        FindPhysican InsuredList = new FindPhysican();
-                        PatientInsuredPlanManager objPhysicianManager = new PatientInsuredPlanManager();
-                        InsuredList = objPhysicianManager.FindPhysicianByInsureList(Convert.ToUInt64(Request["Human_id"]));
-
-                        if (InsuredList.PhyList.Count > 0)
-                        {
-                            txtProviderSearch.Text = InsuredList.PhyList[0].PhyPrefix + " " + InsuredList.PhyList[0].PhyFirstName + " " + InsuredList.PhyList[0].PhyMiddleName + " " + InsuredList.PhyList[0].PhyLastName + "(" + InsuredList.PhyList[0].PhySuffix + ")" + " | " +
-                                                             "NPI:" + InsuredList.PhyList[0].PhyNPI + " | " +
-                                                             "Facility:" + InsuredList.PhyList[0].PhyFacility + " | " +
-                                                             "Address:" + InsuredList.PhyList[0].PhyAddrs + ", " +
-                                                             InsuredList.PhyList[0].PhyCity + "," +
-                                                             InsuredList.PhyList[0].PhyState + " " +
-                                                             InsuredList.PhyList[0].PhyZip + " | " +
-                                                             ((InsuredList.PhyList[0].PhyPhone.Trim()) != "" ? "Phone No:" + InsuredList.PhyList[0].PhyPhone + " | " : "") +
-                                                             (InsuredList.PhyList[0].PhyFax.Trim() != "" ? " Fax No:" + InsuredList.PhyList[0].PhyFax : "");
-                            hdnpcpprovider.Value = InsuredList.PhyList[0].PhyPrefix + " " + InsuredList.PhyList[0].PhyFirstName + " " + InsuredList.PhyList[0].PhyMiddleName + " " + InsuredList.PhyList[0].PhyLastName + "(" + InsuredList.PhyList[0].PhySuffix + ")" + " | " +
-                                                          "NPI:" + InsuredList.PhyList[0].PhyNPI + " | " +
-                                                          "Facility:" + InsuredList.PhyList[0].PhyFacility + " | " +
-                                                          "Address:" + InsuredList.PhyList[0].PhyAddrs + ", " +
-                                                          InsuredList.PhyList[0].PhyCity + "," +
-                                                          InsuredList.PhyList[0].PhyState + " " +
-                                                          InsuredList.PhyList[0].PhyZip + " | " +
-                                                          ((InsuredList.PhyList[0].PhyPhone.Trim()) != "" ? "Phone No:" + InsuredList.PhyList[0].PhyPhone + " | " : "") +
-                                                          (InsuredList.PhyList[0].PhyFax.Trim() != "" ? " Fax No:" + InsuredList.PhyList[0].PhyFax : "");
-
-                            hdnpcpprovidersearch.Value = InsuredList.PhyList[0].PhyPrefix + " " + InsuredList.PhyList[0].PhyFirstName + " " + InsuredList.PhyList[0].PhyMiddleName + " " + InsuredList.PhyList[0].PhyLastName + "(" + InsuredList.PhyList[0].PhySuffix + ")" + " | " +
-                                                          "NPI:" + InsuredList.PhyList[0].PhyNPI + " | " +
-                                                          "Facility:" + InsuredList.PhyList[0].PhyFacility + " | " +
-                                                          "Address:" + InsuredList.PhyList[0].PhyAddrs + ", " +
-                                                          InsuredList.PhyList[0].PhyCity + "," +
-                                                          InsuredList.PhyList[0].PhyState + " " +
-                                                          InsuredList.PhyList[0].PhyZip + " | " +
-                                                          ((InsuredList.PhyList[0].PhyPhone.Trim()) != "" ? "Phone No:" + InsuredList.PhyList[0].PhyPhone + " | " : "") +
-                                                          (InsuredList.PhyList[0].PhyFax.Trim() != "" ? " Fax No:" + InsuredList.PhyList[0].PhyFax : "");
+                            hdnpcpprovidersearch.Value = Encntlist[0].PCP_Physician + "| NPI: " + Encntlist[0].PCP_Provider_NPI +
+                             "| Facility: " + Encntlist[0].PCP_Facility + "| Address:" + Encntlist[0].PCP_Address +
+                             "| Phone No:" + Encntlist[0].PCP_Phone_No + "| Fax No:" + Encntlist[0].PCP_Fax_No;
                         }
                         else
                         {
                             txtProviderSearch.Text = "";
                         }
                     }
+                }
+                else
+                {
 
-                    if (hdnpcpprovidersearch.Value != null && hdnpcpprovidersearch.Value.Trim() != "")//Added by Vasanth
+                    FindPhysican InsuredList = new FindPhysican();
+                    PatientInsuredPlanManager objPhysicianManager = new PatientInsuredPlanManager();
+                    InsuredList = objPhysicianManager.FindPhysicianByInsureList(Convert.ToUInt64(Request["Human_id"]));
+
+                    if (InsuredList.PhyList.Count > 0)
                     {
-                        //txtReferringProvider.Text = HdnPcpPhy.Value.Split('|')[0].ToString();
-                        //txtReferingAddress.Text = HdnPcpPhy.Value.Split('|')[1].ToString();
-                        //msktxtReferingPhoneNo.Text = HdnPcpPhy.Value.Split('|')[2].ToString();
-                        //msktxtReferingFaxNo.Text = HdnPcpPhy.Value.Split('|')[3].ToString();
-                        //txtProviderNPI.Text = HdnPcpPhy.Value.Split('|')[4].ToString();
-                        //txtReferringFacility.Text = HdnPcpPhy.Value.Split('|')[5].ToString();
+                        txtProviderSearch.Text = InsuredList.PhyList[0].PhyPrefix + " " + InsuredList.PhyList[0].PhyFirstName + " " + InsuredList.PhyList[0].PhyMiddleName + " " + InsuredList.PhyList[0].PhyLastName + "(" + InsuredList.PhyList[0].PhySuffix + ")" + " | " +
+                                                         "NPI:" + InsuredList.PhyList[0].PhyNPI + " | " +
+                                                         "Facility:" + InsuredList.PhyList[0].PhyFacility + " | " +
+                                                         "Address:" + InsuredList.PhyList[0].PhyAddrs + ", " +
+                                                         InsuredList.PhyList[0].PhyCity + "," +
+                                                         InsuredList.PhyList[0].PhyState + " " +
+                                                         InsuredList.PhyList[0].PhyZip + " | " +
+                                                         ((InsuredList.PhyList[0].PhyPhone.Trim()) != "" ? "Phone No:" + InsuredList.PhyList[0].PhyPhone + " | " : "") +
+                                                         (InsuredList.PhyList[0].PhyFax.Trim() != "" ? " Fax No:" + InsuredList.PhyList[0].PhyFax : "");
+                        hdnpcpprovider.Value = InsuredList.PhyList[0].PhyPrefix + " " + InsuredList.PhyList[0].PhyFirstName + " " + InsuredList.PhyList[0].PhyMiddleName + " " + InsuredList.PhyList[0].PhyLastName + "(" + InsuredList.PhyList[0].PhySuffix + ")" + " | " +
+                                                      "NPI:" + InsuredList.PhyList[0].PhyNPI + " | " +
+                                                      "Facility:" + InsuredList.PhyList[0].PhyFacility + " | " +
+                                                      "Address:" + InsuredList.PhyList[0].PhyAddrs + ", " +
+                                                      InsuredList.PhyList[0].PhyCity + "," +
+                                                      InsuredList.PhyList[0].PhyState + " " +
+                                                      InsuredList.PhyList[0].PhyZip + " | " +
+                                                      ((InsuredList.PhyList[0].PhyPhone.Trim()) != "" ? "Phone No:" + InsuredList.PhyList[0].PhyPhone + " | " : "") +
+                                                      (InsuredList.PhyList[0].PhyFax.Trim() != "" ? " Fax No:" + InsuredList.PhyList[0].PhyFax : "");
 
-                        txtProviderSearch.Text = hdnpcpprovidersearch.Value;
+                        hdnpcpprovidersearch.Value = InsuredList.PhyList[0].PhyPrefix + " " + InsuredList.PhyList[0].PhyFirstName + " " + InsuredList.PhyList[0].PhyMiddleName + " " + InsuredList.PhyList[0].PhyLastName + "(" + InsuredList.PhyList[0].PhySuffix + ")" + " | " +
+                                                      "NPI:" + InsuredList.PhyList[0].PhyNPI + " | " +
+                                                      "Facility:" + InsuredList.PhyList[0].PhyFacility + " | " +
+                                                      "Address:" + InsuredList.PhyList[0].PhyAddrs + ", " +
+                                                      InsuredList.PhyList[0].PhyCity + "," +
+                                                      InsuredList.PhyList[0].PhyState + " " +
+                                                      InsuredList.PhyList[0].PhyZip + " | " +
+                                                      ((InsuredList.PhyList[0].PhyPhone.Trim()) != "" ? "Phone No:" + InsuredList.PhyList[0].PhyPhone + " | " : "") +
+                                                      (InsuredList.PhyList[0].PhyFax.Trim() != "" ? " Fax No:" + InsuredList.PhyList[0].PhyFax : "");
+                    }
+                    else
+                    {
+                        txtProviderSearch.Text = "";
                     }
 
                 }
-                
-            
+
+                if (hdnpcpprovidersearch.Value != null && hdnpcpprovidersearch.Value.Trim() != "")//Added by Vasanth
+                {
+                    //txtReferringProvider.Text = HdnPcpPhy.Value.Split('|')[0].ToString();
+                    //txtReferingAddress.Text = HdnPcpPhy.Value.Split('|')[1].ToString();
+                    //msktxtReferingPhoneNo.Text = HdnPcpPhy.Value.Split('|')[2].ToString();
+                    //msktxtReferingFaxNo.Text = HdnPcpPhy.Value.Split('|')[3].ToString();
+                    //txtProviderNPI.Text = HdnPcpPhy.Value.Split('|')[4].ToString();
+                    //txtReferringFacility.Text = HdnPcpPhy.Value.Split('|')[5].ToString();
+
+                    txtProviderSearch.Text = hdnpcpprovidersearch.Value;
+                }
+
+            }
+
+
             if (txtProviderSearch.Text != "")
             {
                 txtProviderSearch.Enabled = false;
@@ -4636,6 +4664,7 @@ namespace Acurus.Capella.UI
             {
                 txtProviderSearch.Enabled = true;
             }
+        }
         
 }
 

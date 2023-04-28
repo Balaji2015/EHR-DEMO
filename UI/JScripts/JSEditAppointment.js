@@ -876,6 +876,8 @@ function PcpPrimaryDefault(humanid) {
 
             var objdata = $.parseJSON(data.d);
             document.getElementById("txtProviderSearch").value = objdata;
+            document.getElementById("hdnpcpprovider").value = objdata; 
+            document.getElementById("hdnpcpprovidersearch").value = objdata;   
         }
     });
 }
