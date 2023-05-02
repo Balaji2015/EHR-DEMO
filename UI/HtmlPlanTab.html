@@ -126,7 +126,8 @@
     <script type="text/javascript">
     var JSFiles = ["JScripts/JSErrorMessage.js", "JScripts/JSAvoidRightClick.js", "JScripts/JsPlanTab.js"];
     for (var i = 0; i < JSFiles.length; i++) {
-        var JSLink = JSFiles[i] + "?version=" + sessionStorage.getItem("ScriptVersion");
+        //var JSLink = JSFiles[i] + "?version=" + sessionStorage.getItem("ScriptVersion");
+        var JSLink = JSFiles[i] + "?version=" + localStorage.getItem("ScriptVersion");
         var JSElement = document.createElement('script');
         JSElement.src = JSLink;
         document.getElementsByTagName('body')[0].appendChild(JSElement);
