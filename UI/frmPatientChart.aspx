@@ -760,8 +760,10 @@
             }
             if (sessionStorage.getItem("nav") == null) {
                 var ProjectName = '<%=ConfigurationManager.AppSettings["ProjectName"]%>';
-                sessionStorage.setItem("Projname", ProjectName.trim().toUpperCase());
-
+                //Jira - #CAP-80
+                //sessionStorage.setItem("Projname", ProjectName.trim().toUpperCase());
+                if (ProjectName != undefined && ProjectName != null)
+                localStorage.setItem("Projname", ProjectName.trim().toUpperCase());
                 var ReportPath = '<%=ConfigurationManager.AppSettings["Reportpath"]%>';
                 sessionStorage.setItem("ReportPath", ReportPath);
                 var nav = '<%=ConfigurationManager.AppSettings["nav"]%>';

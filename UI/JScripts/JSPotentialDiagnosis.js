@@ -575,7 +575,11 @@ ProblemApp.controller('CtrlPotentialDiagnosis', function ($scope, $http) {
             ICDList = [];
             $(top.window.document).find("#btnAssessment")[0].disabled = true;
         }
-        sessionStorage.setItem('PotentialICDList', ICDList);
+        //Jira - #CAP-80
+        //sessionStorage.setItem('PotentialICDList', ICDList);
+        if (ICDList != undefined && ICDList != null){
+    localStorage.setItem('PotentialICDList', ICDList);
+}
     }
     $(top.window.document).find("#chkPDShowAll").change(function () {
         $scope.chkPDShowAllClick();
