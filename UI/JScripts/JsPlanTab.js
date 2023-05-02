@@ -303,13 +303,19 @@ function loadplanTabs(event) {
             paneID = $(event.target).attr('href');
             var HtmlVersion = $(paneID)[0].attributes.getNamedItem('data-src').nodeValue;
             if (HtmlVersion.indexOf('?') > -1) {
-                if (HtmlVersion.split('?')[1].split("=")[1] != sessionStorage.getItem("ScriptVersion")) {
-                    var HtmlVersion = $(paneID)[0].attributes.getNamedItem('data-src').nodeValue.split('?')[0] + "?version=" + sessionStorage.getItem("ScriptVersion");
+                //Jira - #CAP-80
+                //if (HtmlVersion.split('?')[1].split("=")[1] != sessionStorage.getItem("ScriptVersion")) {
+                if (HtmlVersion.split('?')[1].split("=")[1] != localStorage.getItem("ScriptVersion")) {
+                    //Jira - #CAP-80
+                    //var HtmlVersion = $(paneID)[0].attributes.getNamedItem('data-src').nodeValue.split('?')[0] + "?version=" + sessionStorage.getItem("ScriptVersion");
+                    var HtmlVersion = $(paneID)[0].attributes.getNamedItem('data-src').nodeValue.split('?')[0] + "?version=" + localStorage.getItem("ScriptVersion");
                 }
             }
-            else
-                var HtmlVersion = $(paneID)[0].attributes.getNamedItem('data-src').nodeValue + "?version=" + sessionStorage.getItem("ScriptVersion");
-
+            else {
+                //Jira - #CAP-80
+                //var HtmlVersion = $(paneID)[0].attributes.getNamedItem('data-src').nodeValue + "?version=" + sessionStorage.getItem("ScriptVersion");
+                var HtmlVersion = $(paneID)[0].attributes.getNamedItem('data-src').nodeValue + "?version=" + localStorage.getItem("ScriptVersion");
+            }
             $(paneID).attr('data-src', HtmlVersion);
             src = $(paneID).attr('data-src');
             $(paneID + " iframe").attr("src", src);
@@ -322,13 +328,20 @@ function loadplanTabs(event) {
     }
     var HtmlVersion = $(paneID)[0].attributes.getNamedItem('data-src').nodeValue;
     if (HtmlVersion.indexOf('?') > -1) {
-        if (HtmlVersion.split('?')[1].split("=")[1] != sessionStorage.getItem("ScriptVersion")) {
-            var HtmlVersion = $(paneID)[0].attributes.getNamedItem('data-src').nodeValue.split('?')[0] + "?version=" + sessionStorage.getItem("ScriptVersion");
+        //Jira - #CAP-80
+        //if (HtmlVersion.split('?')[1].split("=")[1] != sessionStorage.getItem("ScriptVersion")) 
+        if (HtmlVersion.split('?')[1].split("=")[1] != localStorage.getItem("ScriptVersion")) {
+            //Jira - #CAP-80
+            //var HtmlVersion = $(paneID)[0].attributes.getNamedItem('data-src').nodeValue.split('?')[0] + "?version=" + sessionStorage.getItem("ScriptVersion");
+            var HtmlVersion = $(paneID)[0].attributes.getNamedItem('data-src').nodeValue.split('?')[0] + "?version=" + localStorage.getItem("ScriptVersion");
+        
         }
     }
-    else
-        var HtmlVersion = $(paneID)[0].attributes.getNamedItem('data-src').nodeValue + "?version=" + sessionStorage.getItem("ScriptVersion");
-
+    else {
+        //Jira - #CAP-80
+        //var HtmlVersion = $(paneID)[0].attributes.getNamedItem('data-src').nodeValue + "?version=" + sessionStorage.getItem("ScriptVersion");
+        var HtmlVersion = $(paneID)[0].attributes.getNamedItem('data-src').nodeValue + "?version=" + localStorage.getItem("ScriptVersion");
+    }
     $(paneID).attr('data-src', HtmlVersion);
 }
 

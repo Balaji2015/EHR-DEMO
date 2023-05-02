@@ -25,7 +25,9 @@ function ChangeEnable(item) {
 
 function chkStatusChange(cIDs) {
 
-    if (sessionStorage.getItem("Projname") != undefined && sessionStorage.getItem("Projname").toUpperCase() == "WISH") {
+    //Jira - #CAP-80
+    //if (sessionStorage.getItem("Projname") != undefined && sessionStorage.getItem("Projname").toUpperCase() == "WISH") {
+    if (localStorage.getItem("Projname") != undefined && localStorage.getItem("Projname").toUpperCase() == "WISH") {
         cIDs.parentNode.parentNode.children[21].innerText = "Y";
         $('#btnSave')[0].disabled = false;
         localStorage.setItem("bSave", "false");
@@ -47,7 +49,9 @@ function chkStatusChange(cIDs) {
 }
 
 function cboStatusChange(cIDs) {
-    if (sessionStorage.getItem("Projname") != undefined && sessionStorage.getItem("Projname").toUpperCase() == "WISH") {
+    //Jira - #CAP-80
+    //if (sessionStorage.getItem("Projname") != undefined && sessionStorage.getItem("Projname").toUpperCase() == "WISH") {
+    if (localStorage.getItem("Projname") != undefined && localStorage.getItem("Projname").toUpperCase() == "WISH") {
         $('#btnSave')[0].disabled = false;
         localStorage.setItem("bSave", "false");
         window.parent.parent.parent.parent.theForm.ctl00_C5POBody_hdnIsSaveEnable.value = true;
@@ -340,7 +344,9 @@ myapp.controller('assessmentCtrl', function ($scope, $http) {
 
     $(top.window.document).find("#btnMinimizeViewResultICD").css({ "display": "none" }); //BugID:44399 
     $(top.window.document).find("#divFormView").css({ "position": "absolute" });
-    if (sessionStorage.getItem("Projname") != undefined && sessionStorage.getItem("Projname").toUpperCase() == "WISH") {
+    //Jira - #CAP-80
+    //if (sessionStorage.getItem("Projname") != undefined && sessionStorage.getItem("Projname").toUpperCase() == "WISH") {
+    if (localStorage.getItem("Projname") != undefined && localStorage.getItem("Projname").toUpperCase() == "WISH") {
         $("#lblStatus").css({ "display": "none" });
     }
     $http({
@@ -387,7 +393,9 @@ myapp.controller('assessmentCtrl', function ($scope, $http) {
             if ($scope.PotentailDiagnosisList.length > 0) {
                 { sessionStorage.setItem('StartLoading', 'true'); StartLoadFromPatChart(); }
                 $(top.window.document).find("#divPotential").modal({ backdrop: 'static', keyboard: false }, 'show');
-                $(top.window.document).find("#PotentialFrame")[0].contentDocument.location.href = "htmlPotentialDiagnosis.html?version=" + sessionStorage.getItem("ScriptVersion") + "&Screen=ASSESSMENT";
+                //Jira - #CAP-80
+                //$(top.window.document).find("#PotentialFrame")[0].contentDocument.location.href = "htmlPotentialDiagnosis.html?version=" + sessionStorage.getItem("ScriptVersion") + "&Screen=ASSESSMENT";
+                $(top.window.document).find("#PotentialFrame")[0].contentDocument.location.href = "htmlPotentialDiagnosis.html?version=" + localStorage.getItem("ScriptVersion") + "&Screen=ASSESSMENT";
             }
             if (test12.btnPotentialDiagnosis == true) {
                 $('#btnPotentailDiagnosis')[0].disabled = false;
@@ -1317,8 +1325,9 @@ myapp.controller('assessmentCtrl', function ($scope, $http) {
             return array;
         }
     }
-
-    $('#dlstICD10').load("htmICD10.html?version" + sessionStorage.getItem("ScriptVersion").split('|')[0].trim(), function () {
+    //Jira - #CAP-80
+    //$('#dlstICD10').load("htmICD10.html?version" + sessionStorage.getItem("ScriptVersion").split('|')[0].trim(), function () {
+    $('#dlstICD10').load("htmICD10.html?version" + localStorage.getItem("ScriptVersion").split('|')[0].trim(), function () {
         arrICD10Codes = $.map($('#dlstICD10 option'), function (li) {
             return $(li).attr("value");
         });
@@ -1333,7 +1342,9 @@ myapp.controller('assessmentCtrl', function ($scope, $http) {
                     bBool = true;
                 }
                 if (arrICD10Codes == null) {
-                    $.get("htmICD10.html?version" + sessionStorage.getItem("ScriptVersion").split('|')[0].trim()).done(function (file) {
+                    //Jira - #CAP-80
+                    //$.get("htmICD10.html?version" + sessionStorage.getItem("ScriptVersion").split('|')[0].trim()).done(function (file) {
+                    $.get("htmICD10.html?version" + localStorage.getItem("ScriptVersion").split('|')[0].trim()).done(function (file) {
 
                         arrICD10Codes = $.map(file, function (li) {
                             return $(li).attr("value");
@@ -2657,7 +2668,9 @@ myapp.controller('assessmentCtrl', function ($scope, $http) {
     $scope.ClearAllAssessmentTable = function () {
 
         if (DisplayErrorMessage('220011') == true) {
-            if (sessionStorage.getItem("Projname") != undefined && sessionStorage.getItem("Projname").toUpperCase() != "WISH") {
+            //Jira - #CAP-80
+            //if (sessionStorage.getItem("Projname") != undefined && sessionStorage.getItem("Projname").toUpperCase() != "WISH") {
+            if (localStorage.getItem("Projname") != undefined && localStorage.getItem("Projname").toUpperCase() != "WISH") {
                 $('select').prop('selectedIndex', 0);
             }
             $('textarea').val('');
@@ -2766,8 +2779,12 @@ myapp.controller('assessmentCtrl', function ($scope, $http) {
         { sessionStorage.setItem('StartLoading', 'true'); StartLoadFromPatChart(); }
         bAssoICDOpen = false;
         var ICDSplitList;
-        if (sessionStorage.getItem("PotentialICDList") != null) {
-            var ICDList = sessionStorage.getItem("PotentialICDList");
+        //Jira - #CAP-80
+        //if (sessionStorage.getItem("PotentialICDList") != null) {
+        if (localStorage.getItem("PotentialICDList") != null) {
+            //Jira - #CAP-80
+            //var ICDList = sessionStorage.getItem("PotentialICDList");
+            var ICDList = localStorage.getItem("PotentialICDList");
             if (ICDList.indexOf(',|') > -1) {
                 ICDSplitList = ICDList.split(",|");
             }
@@ -2901,7 +2918,9 @@ myapp.controller('assessmentCtrl', function ($scope, $http) {
     $scope.btnPotentailDiagnosis_Click = function () {
         { sessionStorage.setItem('StartLoading', 'true'); StartLoadFromPatChart(); }
         $(top.window.document).find("#divPotential").modal({ backdrop: 'static', keyboard: false }, 'show');
-        $(top.window.document).find("#PotentialFrame")[0].contentDocument.location.href = "htmlPotentialDiagnosis.html?version=" + sessionStorage.getItem("ScriptVersion") + "&Screen=ASSESSMENT";
+        //Jira - #CAP-80
+        //$(top.window.document).find("#PotentialFrame")[0].contentDocument.location.href = "htmlPotentialDiagnosis.html?version=" + sessionStorage.getItem("ScriptVersion") + "&Screen=ASSESSMENT";
+        $(top.window.document).find("#PotentialFrame")[0].contentDocument.location.href = "htmlPotentialDiagnosis.html?version=" + localStorage.getItem("ScriptVersion") + "&Screen=ASSESSMENT";
     }
 
     $scope.OpenAssICDQuestionnaire = function () {

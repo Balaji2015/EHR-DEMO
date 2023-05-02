@@ -104,8 +104,10 @@ myapp.controller('EandMCodingCtrl', function ($scope, $http) {
             $('#divICDPanel *').attr("disabled", "disabled").off('click');
         }
         EnablePriRbtn = test.EnablePriRbtn;
-        sessionStorage.setItem("Is_CMG_Ancillary", test.IsCMGAncillary);
-
+        //Jira - #CAP-80
+        //sessionStorage.setItem("Is_CMG_Ancillary", test.IsCMGAncillary);
+        if (test.IsCMGAncillary != undefined && test.IsCMGAncillary != null)
+        localStorage.setItem("Is_CMG_Ancillary", test.IsCMGAncillary);
         if (test.BillingInstruction != "")
             $('#txtBillingInstruction').val(test.BillingInstruction);
 
@@ -952,7 +954,9 @@ myapp.controller('EandMCodingCtrl', function ($scope, $http) {
             return array;
         }
     }
-    $('#dlstICD10').load("htmICD10.html?version=" + sessionStorage.getItem("ScriptVersion").split('|')[0].trim(), function () {
+    //Jira - #CAP-80
+    // $('#dlstICD10').load("htmICD10.html?version=" + sessionStorage.getItem("ScriptVersion").split('|')[0].trim(), function () {
+    $('#dlstICD10').load("htmICD10.html?version=" + localStorage.getItem("ScriptVersion").split('|')[0].trim(), function () {
         arrICD10Codes = $.map($('#dlstICD10 option'), function (li) {
             return $(li).attr("value");
         });
@@ -961,7 +965,9 @@ myapp.controller('EandMCodingCtrl', function ($scope, $http) {
         source:
             function (request, response) {
                 if (arrICD10Codes == null) {
-                    $.get("htmICD10.html?version" + sessionStorage.getItem("ScriptVersion").split('|')[0].trim()).done(function (file) {
+                    //Jira - #CAP-80
+                    //$.get("htmICD10.html?version" + sessionStorage.getItem("ScriptVersion").split('|')[0].trim()).done(function (file) {
+                    $.get("htmICD10.html?version" + localStorage.getItem("ScriptVersion").split('|')[0].trim()).done(function (file) {
                         arrICD10Codes = $.map(file, function (li) {
                             return $(li).attr("value");
                         });
@@ -2796,7 +2802,9 @@ myapp.controller('EandMCodingCtrl', function ($scope, $http) {
             var sICDCode = chkICDContainer.cells[2].innerText.trim();
             var sICDDesc = chkICDContainer.cells[3].innerText.trim();
             var Source = "ASSESSMENT";
-            if (sessionStorage.getItem("Is_CMG_Ancillary") != null && sessionStorage.getItem("Is_CMG_Ancillary").toUpperCase() == "TRUE") {//BugID:52857
+            //Jira - #CAP-80
+            //if (sessionStorage.getItem("Is_CMG_Ancillary") != null && sessionStorage.getItem("Is_CMG_Ancillary").toUpperCase() == "TRUE") {//BugID:52857
+            if (localStorage.getItem("Is_CMG_Ancillary") != null && localStorage.getItem("Is_CMG_Ancillary").toUpperCase() == "TRUE") {
                 Source = "ORDERS_ASSESSMENT";
             }
             // if (chkICD1 != "" || chkICD2 != "" || chkICD3 != "" || chkICD4 != "" || chkICD5 != "" || chkICD6 != "")

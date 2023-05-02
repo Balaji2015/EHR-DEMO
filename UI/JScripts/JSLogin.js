@@ -5,8 +5,9 @@ $(document).ready(function () {
     localStorage.removeItem("ShowallGeneralqueue");
     var version = document.getElementById('hdnVersion').value;
     var ProjectName = document.getElementById('hdnProjectName').value;
-    sessionStorage.setItem("Projname", ProjectName.trim().toUpperCase());
-
+    //Jira - #CAP-80
+    //sessionStorage.setItem("Projname", ProjectName.trim().toUpperCase());
+    localStorage.setItem("Projname", ProjectName.trim().toUpperCase());
     var ReportPath = document.getElementById('hdnreportPath').value;
     sessionStorage.setItem("ReportPath", ReportPath);
     var LoginHeader = document.getElementById('hdnLoginheader').value;
@@ -22,8 +23,12 @@ $(document).ready(function () {
     var ReportPathhttp = document.getElementById('hdnReportPathhttp').value;
           sessionStorage.setItem("ReportPathhttp", ReportPathhttp);
     document.getElementById('lblProduct').innerHTML = "EHR <span style='color:black;font-size:13px;font-weight:500;'> - " + version.replace('Capella - ', '') + "</span>";
-   
+   //Jira - #CAP-80
+    //Use localstorage insted of Sessionstorage and currently use sessionstorage also because of sessionstorage use more page
+    if (version.split('-')[1].trim() != undefined && version.split('-')[1].trim() != null){
     sessionStorage.setItem("ScriptVersion", version.split('-')[1].trim());
+    localStorage.setItem("ScriptVersion", version.split('-')[1].trim());
+}
     document.getElementById('lblProduct').innerHTML = "EHR <span style='color:black;font-size:13px;font-weight:500;'> - " + version.replace('Capella - ', '') + "</span>";
     $($('#ulSystemMessages')[0].parentElement).css('overflow', 'auto');
     if (sessionStorage.getItem("MailClinicalCnt") != null && sessionStorage.getItem("MailClinicalCnt") != undefined)//BugID:48547
@@ -511,8 +516,11 @@ function EHRLanding(FileName) {
     localStorage.removeItem("ShowallGeneralqueue");
     var version = document.getElementById('hdnVersion').value;
     var ProjectName = document.getElementById('hdnProjectName').value;
-    sessionStorage.setItem("Projname", ProjectName.trim().toUpperCase());
-
+    //Jira - #CAP-80
+    //sessionStorage.setItem("Projname", ProjectName.trim().toUpperCase());
+    if (ProjectName != undefined && ProjectName != null) {
+        localStorage.setItem("Projname", ProjectName.trim().toUpperCase());
+    }
     var ReportPath = document.getElementById('hdnreportPath').value;
     sessionStorage.setItem("ReportPath", ReportPath);
     var LoginHeader = document.getElementById('hdnLoginheader').value;
@@ -528,8 +536,13 @@ function EHRLanding(FileName) {
     var ReportPathhttp = document.getElementById('hdnReportPathhttp').value;
     sessionStorage.setItem("ReportPathhttp", ReportPathhttp);
     document.getElementById('lblProduct').innerHTML = "EHR <span style='color:black;font-size:13px;font-weight:500;'> - " + version.replace('Capella - ', '') + "</span>";
+    //Jira - #CAP-80
+    //Use localstorage insted of Sessionstorage and currently use sessionstorage also because of sessionstorage use more page
+    if (version.split('-')[1].trim() != undefined && version.split('-')[1].trim() != null) {
+        sessionStorage.setItem("ScriptVersion", version.split('-')[1].trim());
+        localStorage.setItem("ScriptVersion", version.split('-')[1].trim());
+    }
 
-    sessionStorage.setItem("ScriptVersion", version.split('-')[1].trim());
     document.getElementById('lblProduct').innerHTML = "EHR <span style='color:black;font-size:13px;font-weight:500;'> - " + version.replace('Capella - ', '') + "</span>";
     $($('#ulSystemMessages')[0].parentElement).css('overflow', 'auto');
     if (sessionStorage.getItem("MailClinicalCnt") != null && sessionStorage.getItem("MailClinicalCnt") != undefined)//BugID:48547
