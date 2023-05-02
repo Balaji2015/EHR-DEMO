@@ -14,7 +14,7 @@
     <subDoc  name="Assisting Living" Default_Value="Demo Sheet"></subDoc>
     <subDoc  name="Abstraction" Default_Value="Demo Sheet" ></subDoc>
     <subDoc  name="Medical Records" Default_Value="Demo Sheet" ></subDoc>
-    <subDoc  name="Billing" Default_Value="Demo Sheet" ></subDoc>
+    <subDoc  name="Billing" Default_Value="Demo Sheet"></subDoc>
   </DocElement>
   <DocElement name="History and Physical" Sort="3" Default_Value="Patient Documents">
     <subDoc  name="Growth Charts" Default_Value="Demo Sheet"></subDoc>
@@ -99,6 +99,7 @@
     <subDoc  name="SSN Card Copy" Default_Value="Demo Sheet"></subDoc>
     <subDoc  name="Demo Sheet" Default_Value="Demo Sheet"></subDoc>
     <subDoc  name="Identity Document" Default_Value="Demo Sheet"></subDoc>
+    <subDoc  name="Patient Collection" Default_Value="Demo Sheet"></subDoc>
   </DocElement>
   <DocElement name="Referral" Sort="11" Default_Value="Patient Documents">
     <subDoc  name="Nutritionist" Default_Value="Demo Sheet"></subDoc>
@@ -227,7 +228,7 @@
     <subDoc  name="Parathyroid Scintigraphy" Default_Value="Demo Sheet"></subDoc>
     <subDoc  name="Surgeries" Default_Value="Demo Sheet"></subDoc>
     <subDoc  name="Ultrasound Guided Biopsy" Default_Value="Demo Sheet"></subDoc>
-    <subDoc  name="Ultrasound Guided Injection" Default_Value="Demo Sheet"></subDoc>    
+    <subDoc  name="Ultrasound Guided Injection" Default_Value="Demo Sheet"></subDoc>
     <subDoc  name="Other" Default_Value="Demo Sheet"></subDoc>
   </DocElement>
   <DocElement name="Forms" Sort="15" Default_Value="Patient Documents">

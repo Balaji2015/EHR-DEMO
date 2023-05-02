@@ -1,0 +1,370 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ROOT>
+<PhyList>
+<Facility name="1330 SAN BERNARDINO RD #G" default-physician-id="4779" Legal_Org="CMG">
+<Physician prefix="" firstname="TECH VISIT" middlename="" lastname="" suffix="" username="TECH_VISIT" ID="4420" status="Y" npi="" machine_technician_id="0" Legal_Org="CMG"/>
+</Facility>
+<Facility name="138 HARVARD AVE" default-physician-id="261" Legal_Org="CMG">
+<Physician prefix="Dr." firstname="Ashok" middlename="V" lastname="Sharma" suffix="M.D." username="ASHARMA" ID="261" status="Y" npi="1205804580" machine_technician_id="0" Legal_Org="CMG"/>
+<Physician prefix="Dr." firstname="Hla Myint Maung" middlename="S" lastname="Hwang" suffix="M.D." username="HHMAUNG" ID="3257" status="Y" npi="1356357560" machine_technician_id="0" Legal_Org="CMG"/>
+<Physician prefix="Dr." firstname="Krishi" middlename="" lastname="Chanduri" suffix="MD" username="KCHANDURI" ID="4294" status="Y" npi="1598957540" machine_technician_id="0" Legal_Org="CMG"/>
+</Facility>
+<Facility name="1382 E FOOTHILL BLVD" default-physician-id="4779" Legal_Org="CMG">
+<Physician prefix="Dr." firstname="Ani" middlename="" lastname="Berberyan" suffix="MD" username="ABERBERYAN" ID="4779" status="Y" npi="1700230224" machine_technician_id="0" Legal_Org="CMG"/>
+</Facility>
+<Facility name="160 E ARTESIA #220" default-physician-id="4289" Legal_Org="CMG">
+<Physician prefix="Dr." firstname="Samudrala" middlename="" lastname="Srinath" suffix="M.D." username="SSRINATH" ID="4289" status="Y" npi=" 155830294" machine_technician_id="0" Legal_Org="CMG"/>
+<Physician prefix="" firstname="TECH VISIT" middlename="" lastname="" suffix="" username="TECH_VISIT" ID="4420" status="Y" npi="" machine_technician_id="0" Legal_Org="CMG"/>
+<Physician prefix="Dr." firstname="Jerry Jin-Hyoung" middlename="" lastname="Kim" suffix="M.D." username="JKIM" ID="4783" status="Y" npi="1912295510" machine_technician_id="0" Legal_Org="CMG"/>
+<Physician prefix="Dr." firstname="Kavoos" middlename="C" lastname="Nazeri" suffix="M.D." username="SNAZERI" ID="2857" status="Y" npi="1477731644" machine_technician_id="0" Legal_Org="CMG"/>
+<Physician prefix="Dr." firstname="Sana Ahmad" middlename="" lastname="Qureshi" suffix="" username="SAQURESHI" ID="4945" status="Y" npi="1427476894" machine_technician_id="0" Legal_Org="CMG"/>
+</Facility>
+<Facility name="160 E. ARTESIA STREET, STE #360" default-physician-id="204" Legal_Org="CMG">
+<Physician prefix="Dr." firstname="Neeraj" middlename="" lastname="Gupta" suffix="M.D." username="NGUPTA" ID="204" status="Y" npi="1457329732" machine_technician_id="0" Legal_Org="CMG"/>
+<Physician prefix="Dr." firstname="Gregory" middlename="R" lastname="Lercel" suffix="M.D." username="GLERCEL" ID="222" status="Y" npi="1942232723" machine_technician_id="0" Legal_Org="CMG"/>
+<Physician prefix="" firstname="TECH VISIT" middlename="" lastname="" suffix="" username="TECH_VISIT" ID="4420" status="Y" npi="" machine_technician_id="0" Legal_Org="CMG"/>
+</Facility>
+<Facility name="16465 S LAKES PRKWY # 250" default-physician-id="4420" Legal_Org="CMG">
+<Physician prefix="" firstname="TECH VISIT" middlename="" lastname="" suffix="" username="TECH_VISIT" ID="4420" status="Y" npi="" machine_technician_id="0" Legal_Org="CMG"/>
+</Facility>
+<Facility name="1866 N OG AVE # 102-A" default-physician-id="107" Legal_Org="CMG">
+<Physician prefix="Dr." firstname="Daryoosh" middlename="" lastname="Valamanesh" suffix="M.D." username="DVALAMANESH" ID="107" status="Y" npi="1205804671" machine_technician_id="0" Legal_Org="CMG"/>
+<Physician prefix="" firstname="TECH VISIT" middlename="" lastname="" suffix="" username="TECH_VISIT" ID="4420" status="Y" npi="" machine_technician_id="0" Legal_Org="CMG"/>
+</Facility>
+<Facility name="1866 N OG AVE # 102-B" default-physician-id="227" Legal_Org="CMG">
+<Physician prefix="Dr." firstname="Rishu" middlename="" lastname="Marwaha" suffix="M.D." username="RMARWAHA" ID="227" status="Y" npi="1457490294" machine_technician_id="0" Legal_Org="CMG"/>
+<Physician prefix="" firstname="TECH VISIT" middlename="" lastname="" suffix="" username="TECH_VISIT" ID="4420" status="Y" npi="" machine_technician_id="0" Legal_Org="CMG"/>
+</Facility>
+<Facility name="1866 N OG AVE # 102-C" default-physician-id="213" Legal_Org="CMG">
+<Physician prefix="" firstname="TECH VISIT" middlename="" lastname="" suffix="" username="TECH_VISIT" ID="4420" status="Y" npi="" machine_technician_id="0" Legal_Org="CMG"/>
+</Facility>
+<Facility name="1866 N OG AVE # 104" default-physician-id="2377" Legal_Org="CMG">
+<Physician prefix="" firstname="TECH VISIT" middlename="" lastname="" suffix="" username="TECH_VISIT" ID="4420" status="Y" npi="" machine_technician_id="0" Legal_Org="CMG"/>
+<Physician prefix="Dr." firstname="Sudhir" middlename="K" lastname="Reddy" suffix="M.D." username="SREDDY" ID="2377" status="Y" npi="1720015282" machine_technician_id="0" Legal_Org="CMG"/>
+<Physician prefix="" firstname="Leslie Vanessa" middlename="" lastname="Theroith" suffix="FNP" username="LTHEROITH" ID="4064" status="Y" npi="1841473097" machine_technician_id="0" Legal_Org="CMG"/>
+<Physician prefix="Dr." firstname="Mysore" middlename="" lastname="Nagaraja" suffix="MD" username="MNAGARAJA" ID="4799" status="Y" npi="1760451298" machine_technician_id="0" Legal_Org="CMG"/>
+<Physician prefix="Dr." firstname="Yeong" middlename="" lastname="Sheu" suffix="M.D." username="YSHEU" ID="4868" status="Y" npi="1700865177" machine_technician_id="0" Legal_Org="CMG"/>
+</Facility>
+<Facility name="1866 N OG AVE # 201" default-physician-id="3122" Legal_Org="CMG">
+<Physician prefix="Dr." firstname="William" middlename="L" lastname="Discepolo" suffix="M.D." username="WDISCEPOLO" ID="3122" status="Y" npi="1932308137" machine_technician_id="0" Legal_Org="CMG"/>
+<Physician prefix="" firstname="TECH VISIT" middlename="" lastname="" suffix="" username="TECH_VISIT" ID="4420" status="Y" npi="" machine_technician_id="0" Legal_Org="CMG"/>
+<Physician prefix="Dr." firstname="Ramanna" middlename="" lastname="Merla" suffix="M.D." username="RMERLA" ID="3075" status="Y" npi="1336343912" machine_technician_id="0" Legal_Org="CMG"/>
+</Facility>
+<Facility name="1866 N OG AVE # 202" default-physician-id="3111" Legal_Org="CMG">
+<Physician prefix="Dr." firstname="Muthusamy" middlename="" lastname="Muthiah" suffix="MD,FACC,MHA" username="MMUTHIAH" ID="234" status="Y" npi="1679541148" machine_technician_id="0" Legal_Org="CMG"/>
+<Physician prefix="Dr." firstname="Rama" middlename="" lastname="Thumati" suffix="MD,FACC" username="RTHUMATI" ID="268" status="Y" npi="1841268240" machine_technician_id="0" Legal_Org="CMG"/>
+<Physician prefix="Dr." firstname="Jayapal" middlename="A" lastname="Reddy" suffix="M.D." username="JREDDY" ID="248" status="Y" npi="1073573903" machine_technician_id="0" Legal_Org="CMG"/>
+<Physician prefix="Dr." firstname="Nitanth" middlename="" lastname="Vangala" suffix="M.D." username="NVANGALA" ID="3111" status="Y" npi="1861690141" machine_technician_id="0" Legal_Org="CMG"/>
+<Physician prefix="Dr." firstname="Gaurav" middlename="" lastname="Parikh" suffix="M.D." username="GPARIKH" ID="4296" status="Y" npi="1144494550" machine_technician_id="0" Legal_Org="CMG"/>
+<Physician prefix="Dr." firstname="Haritha" middlename="R" lastname="Alla" suffix="M.D.,F.A.C.C.,R.P.V.I." username="HALLA" ID="179" status="Y" npi="1487739835" machine_technician_id="0" Legal_Org="CMG"/>
+<Physician prefix="" firstname="TECH VISIT" middlename="" lastname="" suffix="" username="TECH_VISIT" ID="4420" status="Y" npi="" machine_technician_id="0" Legal_Org="CMG"/>
+<Physician prefix="" firstname="Rohan" middlename="" lastname="Bassi" suffix="NP-C" username="RBASSI" ID="4821" status="Y" npi="1023655560" machine_technician_id="0" Legal_Org="CMG"/>
+<Physician prefix="Dr." firstname="Suneel" middlename="" lastname="Kumar" suffix="M.D." username="SKUMAR" ID="4857" status="Y" npi="1275816654" machine_technician_id="0" Legal_Org="CMG"/>
+<Physician prefix="Dr." firstname="Krishna Anurag" middlename="" lastname="Pulumati" suffix="M.D." username="KPULUMATI" ID="4951" status="Y" npi="1982044244" machine_technician_id="0" Legal_Org="CMG"/>
+<Physician prefix="Dr." firstname="Bhavi" middlename="" lastname="Pandya" suffix="M.D." username="BPANDYA" ID="5038" status="Y" npi="1467892059" machine_technician_id="0" Legal_Org="CMG"/>
+</Facility>
+<Facility name="1880 N. ORANGE GROVE AVENUE" default-physician-id="204" Legal_Org="CMG">
+<Physician prefix="" firstname="TECH VISIT" middlename="" lastname="" suffix="" username="TECH_VISIT" ID="4420" status="Y" npi="" machine_technician_id="0" Legal_Org="CMG"/>
+</Facility>
+<Facility name="1904 N OG AVE" default-physician-id="100" Legal_Org="CMG">
+<Physician prefix="Dr." firstname="Rita" middlename="K" lastname="Pradhan" suffix="M.D.,F.A.C.E." username="RPRADHAN" ID="105" status="Y" npi="1336117738" machine_technician_id="0" Legal_Org="CMG"/>
+<Physician prefix="Dr." firstname="Jaffar" middlename="A" lastname="Tremazi" suffix="M.D." username="JTREMAZI" ID="106" status="Y" npi="1649248782" machine_technician_id="0" Legal_Org="CMG"/>
+<Physician prefix="" firstname="Betty" middlename="" lastname="Licciardo" suffix="R.D.,M.P.H.,C.D.E." username="BLICCIARDO" ID="103" status="Y" npi="1043265622" machine_technician_id="0" Legal_Org="CMG"/>
+<Physician prefix="Dr." firstname="Daryoosh" middlename="" lastname="Valamanesh" suffix="M.D." username="DVALAMANESH" ID="107" status="Y" npi="1205804671" machine_technician_id="0" Legal_Org="CMG"/>
+<Physician prefix="Dr." firstname="Jeereddi" middlename="A" lastname="Prasad" suffix="M.D., F.A.C.E., F.A.C.P.,E.C.N.U." username="JPRASAD" ID="100" status="Y" npi="1821058470" machine_technician_id="0" Legal_Org="CMG"/>
+<Physician prefix="Dr." firstname="Sapna" middlename="Sangani" lastname="Rasania" suffix="M.D. , M.P.H." username="SRASANIA" ID="4516" status="Y" npi="1427336759" machine_technician_id="0" Legal_Org="CMG"/>
+<Physician prefix="" firstname="TECH VISIT" middlename="" lastname="" suffix="" username="TECH_VISIT" ID="4420" status="Y" npi="" machine_technician_id="0" Legal_Org="CMG"/>
+<Physician prefix="" firstname="Peter" middlename="" lastname="Carreon" suffix="FNP" username="PCARREON" ID="4841" status="Y" npi="1578023917" machine_technician_id="0" Legal_Org="CMG"/>
+</Facility>
+<Facility name="1940 N ORANGE GROVE" default-physician-id="2855" Legal_Org="CMG">
+<Physician prefix="Dr." firstname="Gurbinder" middlename="S" lastname="Sadana" suffix="MD,FCCP" username="GSADANA" ID="256" status="Y" npi="1205898327" machine_technician_id="0" Legal_Org="CMG"/>
+<Physician prefix="Dr." firstname="Heather" middlename="" lastname="Davis" suffix="M.D." username="HDAVIS" ID="191" status="Y" npi="1154390391" machine_technician_id="0" Legal_Org="CMG"/>
+<Physician prefix="Dr." firstname="Nadir" middlename="A" lastname="Eltahir" suffix="M.D.,F.C.C.P." username="NELTAHIR" ID="2693" status="Y" npi="1053389338" machine_technician_id="0" Legal_Org="CMG"/>
+<Physician prefix="Dr." firstname="Rakesh" middlename="" lastname="Sinha" suffix="MD,FCCP" username="RSINHA" ID="265" status="Y" npi="1306006358" machine_technician_id="0" Legal_Org="CMG"/>
+<Physician prefix="Dr." firstname="Nathaniel" middlename="" lastname="Soriano" suffix="M.D." username="NSORIANO" ID="4384" status="Y" npi="1679890271" machine_technician_id="0" Legal_Org="CMG"/>
+<Physician prefix="Dr." firstname="Derrick" middlename="" lastname="Raptis" suffix="M.D." username="DRAPTIS" ID="2855" status="Y" npi="1679749683" machine_technician_id="0" Legal_Org="CMG"/>
+<Physician prefix="" firstname="TECH VISIT" middlename="" lastname="" suffix="" username="TECH_VISIT" ID="4420" status="Y" npi="" machine_technician_id="0" Legal_Org="CMG"/>
+<Physician prefix="Dr." firstname="Joseph" middlename="" lastname="Gordon" suffix="M.D." username="JGORDON" ID="4781" status="Y" npi="1811243652" machine_technician_id="0" Legal_Org="CMG"/>
+<Physician prefix="Dr." firstname="Anthony" middlename="" lastname="Gan" suffix="DO" username="AGAN" ID="4858" status="Y" npi="1902223092" machine_technician_id="0" Legal_Org="CMG"/>
+<Physician prefix="" firstname="Montesa" middlename="" lastname="Scribe" suffix="" username="CMONTESA_SCRIBE" ID="4983" status="Y" npi="" machine_technician_id="0" Legal_Org="CMG"/>
+<Physician prefix="Dr." firstname="Guangqiang" middlename="" lastname="Gao" suffix="M.D." username="GGAO" ID="4152" status="Y" npi="1124322086" machine_technician_id="0" Legal_Org="CMG"/>
+<Physician prefix="Dr." firstname="Christine" middlename="" lastname="Montesa" suffix="M.D." username="CMONTESA" ID="4792" status="Y" npi="1467616581" machine_technician_id="0" Legal_Org="CMG"/>
+</Facility>
+<Facility name="297 WEST ARTESIA STREET, SUITE A" default-physician-id="4903" Legal_Org="CMG">
+<Physician prefix="Dr." firstname="Christopher" middlename="" lastname="Harper" suffix="M.D." username="CHARPER" ID="4199" status="Y" npi="1013150630" machine_technician_id="0" Legal_Org="CMG"/>
+<Physician prefix="" firstname="Brian" middlename="" lastname="Hughes" suffix="PA-C" username="BHUGHES" ID="4154" status="Y" npi="" machine_technician_id="0" Legal_Org="CMG"/>
+<Physician prefix="" firstname="TECH VISIT" middlename="" lastname="" suffix="" username="TECH_VISIT" ID="4420" status="Y" npi="" machine_technician_id="0" Legal_Org="CMG"/>
+<Physician prefix="Dr." firstname="Sam" middlename="" lastname="Arasoghli" suffix="M.D" username="SARASOGHLI" ID="2140" status="Y" npi="1770685935" machine_technician_id="0" Legal_Org="CMG"/>
+<Physician prefix="" firstname="Sami" middlename="" lastname="Ali" suffix="PA-C" username="SALI" ID="4903" status="Y" npi="1306491121" machine_technician_id="0" Legal_Org="CMG"/>
+</Facility>
+<Facility name="430 W BASELINE AVE" default-physician-id="2815" Legal_Org="CMG">
+<Physician prefix="" firstname="TECH VISIT" middlename="" lastname="" suffix="" username="TECH_VISIT" ID="4420" status="Y" npi="" machine_technician_id="0" Legal_Org="CMG"/>
+<Physician prefix="Dr." firstname="Mary" middlename="N" lastname="Kasem" suffix="M.D." username="KMARY" ID="2815" status="Y" npi="1982639993" machine_technician_id="0" Legal_Org="CMG"/>
+<Physician prefix="Dr." firstname="Robyn" middlename="D" lastname="Jacoby" suffix="D.O." username="RJACOBY" ID="2839" status="Y" npi="1487623575" machine_technician_id="0" Legal_Org="CMG"/>
+</Facility>
+<Facility name="520 E FOOTHILL BLVD #A" default-physician-id="102" Legal_Org="CMG">
+<Physician prefix="Dr." firstname="Ewa" middlename="H" lastname="Konca" suffix="M.D." username="EKONCA" ID="102" status="Y" npi="1134197528" machine_technician_id="0" Legal_Org="CMG"/>
+<Physician prefix="" firstname="Vanessa" middlename="" lastname="Pedrego" suffix="PA-C" username="VPEDREGO" ID="109" status="Y" npi="1467763755" machine_technician_id="0" Legal_Org="CMG"/>
+<Physician prefix="" firstname="TECH VISIT" middlename="" lastname="" suffix="" username="TECH_VISIT" ID="4420" status="Y" npi="" machine_technician_id="0" Legal_Org="CMG"/>
+<Physician prefix="" firstname="David" middlename="" lastname="Cao" suffix="PA-C" username="DCAO" ID="4905" status="Y" npi="1437758653" machine_technician_id="0" Legal_Org="CMG"/>
+<Physician prefix="" firstname="Nancy Si Jia" middlename="" lastname="Meng" suffix="NP" username="NMENG" ID="5024" status="Y" npi="1760134852" machine_technician_id="0" Legal_Org="CMG"/>
+</Facility>
+<Facility name="520 E FOOTHILL BLVD #C" default-physician-id="3122" Legal_Org="CMG">
+<Physician prefix="" firstname="TECH VISIT" middlename="" lastname="" suffix="" username="TECH_VISIT" ID="4420" status="Y" npi="" machine_technician_id="0" Legal_Org="CMG"/>
+</Facility>
+<Facility name="5385 WALNUT AVE" default-physician-id="3111" Legal_Org="CMG">
+<Physician prefix="Dr." firstname="Gaurav" middlename="" lastname="Parikh" suffix="M.D." username="GPARIKH" ID="4296" status="Y" npi="1144494550" machine_technician_id="0" Legal_Org="CMG"/>
+<Physician prefix="Dr." firstname="Jeereddi" middlename="A" lastname="Prasad" suffix="M.D., F.A.C.E., F.A.C.P.,E.C.N.U." username="JPRASAD" ID="100" status="Y" npi="1821058470" machine_technician_id="0" Legal_Org="CMG"/>
+<Physician prefix="Dr." firstname="Nitanth" middlename="" lastname="Vangala" suffix="M.D." username="NVANGALA" ID="3111" status="Y" npi="1861690141" machine_technician_id="0" Legal_Org="CMG"/>
+<Physician prefix="" firstname="TECH VISIT" middlename="" lastname="" suffix="" username="TECH_VISIT" ID="4420" status="Y" npi="" machine_technician_id="0" Legal_Org="CMG"/>
+<Physician prefix="Dr." firstname="Ramanna" middlename="" lastname="Merla" suffix="M.D." username="RMERLA" ID="3075" status="Y" npi="1336343912" machine_technician_id="0" Legal_Org="CMG"/>
+<Physician prefix="Dr." firstname="Ewa" middlename="H" lastname="Konca" suffix="M.D." username="EKONCA" ID="102" status="Y" npi="1134197528" machine_technician_id="0" Legal_Org="CMG"/>
+<Physician prefix="" firstname="Vanessa" middlename="" lastname="Pedrego" suffix="PA-C" username="VPEDREGO" ID="109" status="Y" npi="1467763755" machine_technician_id="0" Legal_Org="CMG"/>
+<Physician prefix="Dr." firstname="Urvi" middlename="" lastname="Vyas" suffix="MD" username="UVYAS" ID="4842" status="Y" npi="1730477142" machine_technician_id="0" Legal_Org="CMG"/>
+<Physician prefix="Dr." firstname="Krishna Anurag" middlename="" lastname="Pulumati" suffix="M.D." username="KPULUMATI" ID="4951" status="Y" npi="1982044244" machine_technician_id="0" Legal_Org="CMG"/>
+</Facility>
+<Facility name="585 N MTN AVE STE A" default-physician-id="254" Legal_Org="CMG">
+<Physician prefix="" firstname="TECH VISIT" middlename="" lastname="" suffix="" username="TECH_VISIT" ID="4420" status="Y" npi="" machine_technician_id="0" Legal_Org="CMG"/>
+</Facility>
+<Facility name="585 N MTN AVE STE C" default-physician-id="4420" Legal_Org="CMG">
+<Physician prefix="" firstname="TECH VISIT" middlename="" lastname="" suffix="" username="TECH_VISIT" ID="4420" status="Y" npi="" machine_technician_id="0" Legal_Org="CMG"/>
+</Facility>
+<Facility name="591 N 13TH AVE" default-physician-id="3075" Legal_Org="CMG">
+<Physician prefix="" firstname="TECH VISIT" middlename="" lastname="" suffix="" username="TECH_VISIT" ID="4420" status="Y" npi="" machine_technician_id="0" Legal_Org="CMG"/>
+</Facility>
+<Facility name="790 E BONITA AVE" default-physician-id="203" Legal_Org="CMG">
+<Physician prefix="Dr." firstname="Miriam" middlename="L" lastname="Schmidt-Villanueva" suffix="M.D." username="MSCHMIDT" ID="260" status="Y" npi="1689642092" machine_technician_id="0" Legal_Org="CMG"/>
+<Physician prefix="Dr." firstname="Redemption" middlename="G" lastname="Geronimo" suffix="M.D." username="RGERONIMO" ID="203" status="Y" npi="1497723803" machine_technician_id="0" Legal_Org="CMG"/>
+<Physician prefix="" firstname="Jehan" middlename="" lastname="Goubran" suffix="PA-C" username="JGOUBRAN" ID="1903" status="Y" npi="1942413356" machine_technician_id="0" Legal_Org="CMG"/>
+<Physician prefix="" firstname="Jane" middlename="E" lastname="Rodgers" suffix="PA" username="JRODGERS" ID="254" status="Y" npi="1235372145" machine_technician_id="0" Legal_Org="CMG"/>
+<Physician prefix="Dr." firstname="Nallely" middlename="" lastname="Flores Lazcano" suffix="M.D." username="NFLAZCANO" ID="4279" status="Y" npi="1831327030" machine_technician_id="0" Legal_Org="CMG"/>
+<Physician prefix="Dr." firstname="Christopher" middlename="" lastname="Harper" suffix="M.D." username="CHARPER" ID="4199" status="Y" npi="1013150630" machine_technician_id="0" Legal_Org="CMG"/>
+<Physician prefix="" firstname="TECH VISIT" middlename="" lastname="" suffix="" username="TECH_VISIT" ID="4420" status="Y" npi="" machine_technician_id="0" Legal_Org="CMG"/>
+<Physician prefix="Dr." firstname="Uzma" middlename="" lastname="Waraich" suffix="M.D." username="UWARAICH" ID="3035" status="Y" npi="1528221843" machine_technician_id="0" Legal_Org="CMG"/>
+<Physician prefix="Dr." firstname="Maher" middlename="" lastname="Tama" suffix="MD" username="MTAMA" ID="4782" status="Y" npi="1326393737" machine_technician_id="0" Legal_Org="CMG"/>
+<Physician prefix="Dr." firstname="Ani" middlename="" lastname="Berberyan" suffix="MD" username="ABERBERYAN" ID="4779" status="Y" npi="1700230224" machine_technician_id="0" Legal_Org="CMG"/>
+<Physician prefix="Dr." firstname="Mohammad" middlename="" lastname="Elbatta" suffix="M.D." username="MELBATTA" ID="4793" status="Y" npi="1316204894" machine_technician_id="0" Legal_Org="CMG"/>
+<Physician prefix="" firstname="Jalpa" middlename="" lastname="Chaudhari" suffix="NP" username="JCHAUDHARI" ID="4828" status="Y" npi="1962032706" machine_technician_id="0" Legal_Org="CMG"/>
+<Physician prefix="Dr." firstname="Nazia" middlename="" lastname="Siddiqi" suffix="M.D." username="NSIDDIQI" ID="4563" status="Y" npi="1578879755" machine_technician_id="0" Legal_Org="CMG"/>
+<Physician prefix="Dr." firstname="Urvi" middlename="" lastname="Vyas" suffix="MD" username="UVYAS" ID="4842" status="Y" npi="1730477142" machine_technician_id="0" Legal_Org="CMG"/>
+<Physician prefix=" Dr." firstname="Weera" middlename="" lastname="Sukhumthammarat" suffix="M.D." username="WEERA" ID="4982" status="Y" npi="1619407806" machine_technician_id="0" Legal_Org="CMG"/>
+</Facility>
+<Facility name="811 E 11TH ST, SUITE# 208" default-physician-id="4799" Legal_Org="CMG">
+<Physician prefix="" firstname="TECH VISIT" middlename="" lastname="" suffix="" username="TECH_VISIT" ID="4420" status="Y" npi="" machine_technician_id="0" Legal_Org="CMG"/>
+<Physician prefix="Dr." firstname="Maher" middlename="" lastname="Tama" suffix="MD" username="MTAMA" ID="4782" status="Y" npi="1326393737" machine_technician_id="0" Legal_Org="CMG"/>
+<Physician prefix="Dr." firstname="Mohammad" middlename="" lastname="Elbatta" suffix="M.D." username="MELBATTA" ID="4793" status="Y" npi="1316204894" machine_technician_id="0" Legal_Org="CMG"/>
+<Physician prefix="Dr." firstname="Mysore" middlename="" lastname="Nagaraja" suffix="MD" username="MNAGARAJA" ID="4799" status="Y" npi="1760451298" machine_technician_id="0" Legal_Org="CMG"/>
+<Physician prefix="Dr." firstname="Sudhir" middlename="K" lastname="Reddy" suffix="M.D." username="SREDDY" ID="2377" status="Y" npi="1720015282" machine_technician_id="0" Legal_Org="CMG"/>
+<Physician prefix="Dr." firstname="Yeong" middlename="" lastname="Sheu" suffix="M.D." username="YSHEU" ID="4868" status="Y" npi="1700865177" machine_technician_id="0" Legal_Org="CMG"/>
+<Physician prefix="" firstname="Jalpa" middlename="" lastname="Chaudhari" suffix="NP" username="JCHAUDHARI" ID="4828" status="Y" npi="1962032706" machine_technician_id="0" Legal_Org="CMG"/>
+</Facility>
+<Facility name="8330 RED OAK SUITE #101" default-physician-id="179" Legal_Org="CMG">
+<Physician prefix="Dr." firstname="Haritha" middlename="R" lastname="Alla" suffix="M.D.,F.A.C.C.,R.P.V.I." username="HALLA" ID="179" status="Y" npi="1487739835" machine_technician_id="0" Legal_Org="CMG"/>
+<Physician prefix="Dr." firstname="Ramanna" middlename="" lastname="Merla" suffix="M.D." username="RMERLA" ID="3075" status="Y" npi="1336343912" machine_technician_id="0" Legal_Org="CMG"/>
+<Physician prefix="" firstname="TECH VISIT" middlename="" lastname="" suffix="" username="TECH_VISIT" ID="4420" status="Y" npi="" machine_technician_id="0" Legal_Org="CMG"/>
+<Physician prefix="Dr." firstname="Jayapal" middlename="A" lastname="Reddy" suffix="M.D." username="JREDDY" ID="248" status="Y" npi="1073573903" machine_technician_id="0" Legal_Org="CMG"/>
+<Physician prefix="Dr." firstname="Nitanth" middlename="" lastname="Vangala" suffix="M.D." username="NVANGALA" ID="3111" status="Y" npi="1861690141" machine_technician_id="0" Legal_Org="CMG"/>
+<Physician prefix="" firstname="Rohan" middlename="" lastname="Bassi" suffix="NP-C" username="RBASSI" ID="4821" status="Y" npi="1023655560" machine_technician_id="0" Legal_Org="CMG"/>
+<Physician prefix="Dr." firstname="Krishna Anurag" middlename="" lastname="Pulumati" suffix="M.D." username="KPULUMATI" ID="4951" status="Y" npi="1982044244" machine_technician_id="0" Legal_Org="CMG"/>
+<Physician prefix="" firstname="Brooke" middlename="" lastname="Heying" suffix="PA" username="BHEYING" ID="4962" status="Y" npi="1508529561" machine_technician_id="0" Legal_Org="CMG"/>
+<Physician prefix="Dr." firstname="Gaurav" middlename="" lastname="Parikh" suffix="M.D." username="GPARIKH" ID="4296" status="Y" npi="1144494550" machine_technician_id="0" Legal_Org="CMG"/>
+<Physician prefix="Dr." firstname="Bhavi" middlename="" lastname="Pandya" suffix="M.D." username="BPANDYA" ID="5038" status="Y" npi="1467892059" machine_technician_id="0" Legal_Org="CMG"/>
+</Facility>
+<Facility name="8330 RED OAK SUITE #201" default-physician-id="2841" Legal_Org="CMG">
+<Physician prefix="Dr." firstname="Khader" middlename="K" lastname="Abounasr" suffix="M.D." username="KABOUNASR" ID="2841" status="Y" npi="1780884015" machine_technician_id="0" Legal_Org="CMG"/>
+<Physician prefix="Dr." firstname="Nyein Aye" middlename="" lastname="Tint" suffix="M.D." username="NATINT" ID="4323" status="Y" npi="1336533447" machine_technician_id="0" Legal_Org="CMG"/>
+<Physician prefix="" firstname="TECH VISIT" middlename="" lastname="" suffix="" username="TECH_VISIT" ID="4420" status="Y" npi="" machine_technician_id="0" Legal_Org="CMG"/>
+<Physician prefix="Dr." firstname="Harvey" middlename="D" lastname="Cohen" suffix="MD" username="HCOHEN" ID="4814" status="Y" npi="1972517423" machine_technician_id="0" Legal_Org="CMG"/>
+<Physician prefix="" firstname="Jessica" middlename="" lastname="Garner" suffix="FNP-C" username="JGARNER" ID="4906" status="Y" npi="1427633205" machine_technician_id="0" Legal_Org="CMG"/>
+<Physician prefix="" firstname="Carolyn Marie" middlename="" lastname="Dreyer" suffix="NP" username="CDREYER" ID="4963" status="Y" npi="1386213734" machine_technician_id="0" Legal_Org="CMG"/>
+<Physician prefix="" firstname="Velma" middlename="D" lastname="Yep" suffix="NP" username="VYEP" ID="3077" status="Y" npi="1316090103" machine_technician_id="0" Legal_Org="CMG"/>
+<Physician prefix=" Dr." firstname="Weera" middlename="" lastname="Sukhumthammarat" suffix="M.D." username="WEERA" ID="4982" status="Y" npi="1619407806" machine_technician_id="0" Legal_Org="CMG"/>
+<Physician prefix="Dr." firstname="Daryoosh" middlename="" lastname="Valamanesh" suffix="M.D." username="DVALAMANESH" ID="107" status="Y" npi="1205804671" machine_technician_id="0" Legal_Org="CMG"/>
+</Facility>
+<Facility name="9170 HAVEN AVENUE, SUITE 108" default-physician-id="230" Legal_Org="CMG">
+<Physician prefix="" firstname="TECH VISIT" middlename="" lastname="" suffix="" username="TECH_VISIT" ID="4420" status="Y" npi="" machine_technician_id="0" Legal_Org="CMG"/>
+</Facility>
+<Facility name="9170 HAVEN AVENUE, SUITE 120" default-physician-id="102,2857" Legal_Org="CMG">
+<Physician prefix="Dr." firstname="Jeereddi" middlename="A" lastname="Prasad" suffix="M.D., F.A.C.E., F.A.C.P.,E.C.N.U." username="JPRASAD" ID="100" status="Y" npi="1821058470" machine_technician_id="0" Legal_Org="CMG"/>
+<Physician prefix="Dr." firstname="Ewa" middlename="H" lastname="Konca" suffix="M.D." username="EKONCA" ID="102" status="Y" npi="1134197528" machine_technician_id="0" Legal_Org="CMG"/>
+<Physician prefix="Dr." firstname="Kavoos" middlename="C" lastname="Nazeri" suffix="M.D." username="SNAZERI" ID="2857" status="Y" npi="1477731644" machine_technician_id="0" Legal_Org="CMG"/>
+<Physician prefix="" firstname="TECH VISIT" middlename="" lastname="" suffix="" username="TECH_VISIT" ID="4420" status="Y" npi="" machine_technician_id="0" Legal_Org="CMG"/>
+<Physician prefix="" firstname="Brianda" middlename="" lastname="Ulloa" suffix="PA-C" username="BULLOA" ID="4904" status="Y" npi="1770188468" machine_technician_id="0" Legal_Org="CMG"/>
+<Physician prefix="" firstname="David" middlename="" lastname="Cao" suffix="PA-C" username="DCAO" ID="4905" status="Y" npi="1437758653" machine_technician_id="0" Legal_Org="CMG"/>
+<Physician prefix="" firstname="Nancy Si Jia" middlename="" lastname="Meng" suffix="NP" username="NMENG" ID="5024" status="Y" npi="1760134852" machine_technician_id="0" Legal_Org="CMG"/>
+</Facility>
+<Facility name="9190 HAVEN AVE 1ST FLR" default-physician-id="237,4251" Legal_Org="CMG">
+<Physician prefix="Dr." firstname="Hetalben" middlename="G" lastname="Makwana" suffix="M.D." username="HMAKWANA" ID="4251" status="Y" npi="1093028078" machine_technician_id="0" Legal_Org="CMG"/>
+<Physician prefix="Dr." firstname="Peter" middlename="J" lastname="Niciforos" suffix="M.D." username="PNICIFOROS" ID="237" status="Y" npi="1356359277" machine_technician_id="0" Legal_Org="CMG"/>
+<Physician prefix="" firstname="TECH VISIT" middlename="" lastname="" suffix="" username="TECH_VISIT" ID="4420" status="Y" npi="" machine_technician_id="0" Legal_Org="CMG"/>
+<Physician prefix="Dr." firstname="Ani" middlename="" lastname="Berberyan" suffix="MD" username="ABERBERYAN" ID="4779" status="Y" npi="1700230224" machine_technician_id="0" Legal_Org="CMG"/>
+<Physician prefix="" firstname="Aman" middlename="" lastname="Sircar" suffix="DNP, FNP-C" username="ASIRCAR" ID="4952" status="Y" npi="1386182087" machine_technician_id="0" Legal_Org="CMG"/>
+<Physician prefix="Dr." firstname="Daryoosh" middlename="" lastname="Valamanesh" suffix="M.D." username="DVALAMANESH" ID="107" status="Y" npi="1205804671" machine_technician_id="0" Legal_Org="CMG"/>
+<Physician prefix=" Dr." firstname="Weera" middlename="" lastname="Sukhumthammarat" suffix="M.D." username="WEERA" ID="4982" status="Y" npi="1619407806" machine_technician_id="0" Legal_Org="CMG"/>
+</Facility>
+<Facility name="9190 HAVEN AVE II FLOOR SUITE# 200" default-physician-id="3257,4294" Legal_Org="CMG">
+<Physician prefix="" firstname="TECH VISIT" middlename="" lastname="" suffix="" username="TECH_VISIT" ID="4420" status="Y" npi="" machine_technician_id="0" Legal_Org="CMG"/>
+<Physician prefix="Dr." firstname="Hla Myint Maung" middlename="S" lastname="Hwang" suffix="M.D." username="HHMAUNG" ID="3257" status="Y" npi="1356357560" machine_technician_id="0" Legal_Org="CMG"/>
+<Physician prefix="Dr." firstname="Krishi" middlename="" lastname="Chanduri" suffix="MD" username="KCHANDURI" ID="4294" status="Y" npi="1598957540" machine_technician_id="0" Legal_Org="CMG"/>
+</Facility>
+<Facility name="9190 HAVEN AVE II FLOOR SUITE# 210" default-physician-id="5005" Legal_Org="CMG">
+<Physician prefix="" firstname="TECH VISIT" middlename="" lastname="" suffix="" username="TECH_VISIT" ID="4420" status="Y" npi="" machine_technician_id="0" Legal_Org="CMG"/>
+<Physician prefix="Dr." firstname="Johnnie" middlename="M" lastname="Woodson Jr" suffix="MD" username="JWOODSON" ID="5005" status="Y" npi="1780727750" machine_technician_id="0" Legal_Org="CMG"/>
+</Facility>
+<Facility name="9190 HAVEN AVENUE (Haven Urgent Care)" default-physician-id="237" Legal_Org="CMG">
+<Physician prefix="Dr." firstname="Daryoosh" middlename="" lastname="Valamanesh" suffix="M.D." username="DVALAMANESH" ID="107" status="Y" npi="1205804671" machine_technician_id="0" Legal_Org="CMG"/>
+<Physician prefix="Dr." firstname="Peter" middlename="J" lastname="Niciforos" suffix="M.D." username="PNICIFOROS" ID="237" status="Y" npi="1356359277" machine_technician_id="0" Legal_Org="CMG"/>
+<Physician prefix="" firstname="Velma" middlename="D" lastname="Yep" suffix="NP" username="VYEP" ID="3077" status="Y" npi="1316090103" machine_technician_id="0" Legal_Org="CMG"/>
+<Physician prefix="" firstname="Melissa" middlename="C" lastname="Williams" suffix="NP" username="MWILLIAMS" ID="3108" status="Y" npi="1710021456" machine_technician_id="0" Legal_Org="CMG"/>
+<Physician prefix="" firstname="Leslie Vanessa" middlename="" lastname="Theroith" suffix="FNP" username="LTHEROITH" ID="4064" status="Y" npi="1841473097" machine_technician_id="0" Legal_Org="CMG"/>
+<Physician prefix="Dr." firstname="Redemption" middlename="G" lastname="Geronimo" suffix="M.D." username="RGERONIMO" ID="203" status="Y" npi="1497723803" machine_technician_id="0" Legal_Org="CMG"/>
+<Physician prefix="Dr." firstname="Donald" middlename="" lastname="Underwood" suffix="DO MD" username="DUNDERWOOD" ID="1682" status="Y" npi="1598861817" machine_technician_id="0" Legal_Org="CMG"/>
+<Physician prefix="" firstname="TECH VISIT" middlename="" lastname="" suffix="" username="TECH_VISIT" ID="4420" status="Y" npi="" machine_technician_id="0" Legal_Org="CMG"/>
+<Physician prefix="Dr." firstname="Ani" middlename="" lastname="Berberyan" suffix="MD" username="ABERBERYAN" ID="4779" status="Y" npi="1700230224" machine_technician_id="0" Legal_Org="CMG"/>
+<Physician prefix="" firstname="Louis" middlename="" lastname="Sithu" suffix="FNP" username="LSITHU" ID="4840" status="Y" npi="1306318225" machine_technician_id="0" Legal_Org="CMG"/>
+<Physician prefix="" firstname="Peter" middlename="" lastname="Carreon" suffix="FNP" username="PCARREON" ID="4841" status="Y" npi="1578023917" machine_technician_id="0" Legal_Org="CMG"/>
+<Physician prefix=" Dr." firstname="Weera" middlename="" lastname="Sukhumthammarat" suffix="M.D." username="WEERA" ID="4982" status="Y" npi="1619407806" machine_technician_id="0" Legal_Org="CMG"/>
+</Facility>
+<Facility name="ANCILLARY 8330 REDOAK 1ST FLR" default-physician-id="4972" Legal_Org="CMG">
+<Physician prefix="" firstname="Nuclear" middlename="" lastname="Modern Mobile" suffix="" username="NMTECH" ID="4972" status="Y" npi="" machine_technician_id="21" Legal_Org="CMG"/>
+<Physician prefix="" firstname="Said" middlename="" lastname="Abdul" suffix="" username="ASAID" ID="4510" status="Y" npi="" machine_technician_id="23" Legal_Org="CMG"/>
+<Physician prefix="" firstname="Lucas" middlename="" lastname="Cheryl" suffix="" username="LCHERYL" ID="4521" status="Y" npi="" machine_technician_id="25" Legal_Org="CMG"/>
+<Physician prefix="" firstname="Mcot" middlename="" lastname="" suffix="" username="MTECH" ID="4933" status="Y" npi="" machine_technician_id="26" Legal_Org="CMG"/>
+<Physician prefix="" firstname="Gabriela" middlename="" lastname="Clemente" suffix="" username="GCLEMENTE" ID="4949" status="Y" npi="" machine_technician_id="31" Legal_Org="CMG"/>
+<Physician prefix="" firstname="Jessica" middlename="" lastname="Sepulveda" suffix="" username="JSEPULVEDA" ID="4920" status="Y" npi="" machine_technician_id="32" Legal_Org="CMG"/>
+</Facility>
+<Facility name="CMG LAB AND ANCILLARY 1866 #101" default-physician-id="2871" Legal_Org="CMG">
+<Physician prefix="" firstname="Karen" middlename="" lastname="Eckl" suffix="" username="EKAREN" ID="2871" status="Y" npi="" machine_technician_id="1" Legal_Org="CMG"/>
+<Physician prefix="" firstname="Said" middlename="" lastname="Abdul" suffix="" username="ASAID" ID="4510" status="Y" npi="" machine_technician_id="2" Legal_Org="CMG"/>
+<Physician prefix="" firstname="Said" middlename="" lastname="Abdul" suffix="" username="ASAID" ID="4510" status="Y" npi="" machine_technician_id="4" Legal_Org="CMG"/>
+<Physician prefix="" firstname="Karima" middlename="" lastname="Sbih" suffix="" username="SKARIMA" ID="4511" status="Y" npi="" machine_technician_id="5" Legal_Org="CMG"/>
+<Physician prefix="" firstname="Yasmeen" middlename="" lastname="Akram" suffix="" username="YAAKRAM" ID="4512" status="Y" npi="" machine_technician_id="9" Legal_Org="CMG"/>
+<Physician prefix="" firstname="Yasmeen" middlename="" lastname="Akram" suffix="" username="YAAKRAM" ID="4512" status="Y" npi="" machine_technician_id="10" Legal_Org="CMG"/>
+<Physician prefix="" firstname="Lucas" middlename="" lastname="Cheryl" suffix="" username="LCHERYL" ID="4521" status="Y" npi="" machine_technician_id="11" Legal_Org="CMG"/>
+<Physician prefix="" firstname="Erik" middlename="" lastname="Guerra" suffix="" username="EGUERRA" ID="2878" status="Y" npi="" machine_technician_id="12" Legal_Org="CMG"/>
+<Physician prefix="" firstname="Daisy" middlename="" lastname="Real" suffix="" username="DREAL" ID="4762" status="Y" npi="" machine_technician_id="15" Legal_Org="CMG"/>
+<Physician prefix="" firstname="Deirdre" middlename="" lastname="Aguilera" suffix="" username="DAGUILERA_CT" ID="4773" status="Y" npi="" machine_technician_id="16" Legal_Org="CMG"/>
+<Physician prefix="" firstname="Jessica" middlename="" lastname="Sepulveda" suffix="" username="JSEPULVEDA" ID="4920" status="Y" npi="" machine_technician_id="18" Legal_Org="CMG"/>
+<Physician prefix="" firstname="Mcot" middlename="" lastname="" suffix="" username="MTECH" ID="4933" status="Y" npi="" machine_technician_id="19" Legal_Org="CMG"/>
+<Physician prefix="" firstname="Gabriela" middlename="" lastname="Clemente" suffix="" username="GCLEMENTE" ID="4949" status="Y" npi="" machine_technician_id="20" Legal_Org="CMG"/>
+<Physician prefix="" firstname="Nuclear" middlename="" lastname="Modern Mobile" suffix="" username="NMTECH" ID="4972" status="Y" npi="" machine_technician_id="33" Legal_Org="CMG"/>
+</Facility>
+<Facility name="CYPRESS" default-physician-id="5064" Legal_Org="CMG">
+<Physician prefix="Dr." firstname="Nicole" middlename="" lastname="Morris" suffix="M.D." username="NMORRIS" ID="5064" status="Y" npi="1535708444" machine_technician_id="0" Legal_Org="CMG"/>
+</Facility>
+<Facility name="CYPRESS TEST FACILITY" default-physician-id="5063" Legal_Org="CMG">
+<Physician prefix="Dr." firstname="Aaron" middlename="" lastname="Jimenez
+" suffix="M.D." username="AAJIMENEZ" ID="5063" status="Y" npi="1538010962" machine_technician_id="0" Legal_Org="CMG"/>
+<Physician prefix="Dr." firstname="Nicole" middlename="" lastname="Morris" suffix="M.D." username="NMORRIS" ID="5064" status="Y" npi="1535708444" machine_technician_id="0" Legal_Org="CMG"/>
+</Facility>
+<Facility name="DEVICE FACILITY" default-physician-id="4795" Legal_Org="CMG">
+<Physician prefix="" firstname="Device" middlename="" lastname="Tech_Phy" suffix="" username="PHY_DEVICE_TECH" ID="4795" status="Y" npi="" machine_technician_id="0" Legal_Org="CMG"/>
+</Facility>
+<Facility name="HAVEN EYE INST. 9190, II FLOOR" default-physician-id="4966" Legal_Org="CMG">
+<Physician prefix="Dr." firstname="Michael Dang" middlename="" lastname="Pham" suffix="DO" username="MDPHAM" ID="4966" status="y" npi="1922462845" machine_technician_id="0" Legal_Org="CMG"/>
+</Facility>
+<Facility name="RJ 1866 N OG AVE # 102" default-physician-id="213" Legal_Org="RJ">
+<Physician prefix="Dr." firstname="Robert" middlename="C" lastname="Jones" suffix="M.D." username="RJONES" ID="213" status="Y" npi="1275501629" machine_technician_id="0" Legal_Org="RJ"/>
+</Facility>
+<Facility name="RJ TEST FACILITY" default-physician-id="5046" Legal_Org="RJ">
+<Physician prefix="Dr." firstname="PHY_1_RJ" middlename="" lastname="TEST" suffix="M.D" username="PHY_1_RJ" ID="5046" status="Y" npi="" machine_technician_id="0" Legal_Org="RJ"/>
+<Physician prefix="Dr." firstname="PHY_7_RJ" middlename="" lastname="TEST" suffix="M.D" username="PHY_7_RJ" ID="5047" status="Y" npi="" machine_technician_id="0" Legal_Org="RJ"/>
+</Facility>
+<Facility name="TEST FACILITY" default-physician-id="2854" Legal_Org="CMG">
+<Physician prefix="" firstname="PA_1" middlename="" lastname="" suffix="" username="PA_1" ID="2853" status="Y" npi="" machine_technician_id="0" Legal_Org="CMG"/>
+<Physician prefix="" firstname="PHY_7" middlename="" lastname="" suffix="" username="PHY_7" ID="4328" status="Y" npi="" machine_technician_id="0" Legal_Org="CMG"/>
+<Physician prefix="Dr." firstname="PHY_1" middlename="" lastname="TEST" suffix="M.D" username="PHY_1" ID="2854" status="Y" npi="1234567890" machine_technician_id="0" Legal_Org="CMG"/>
+<Physician prefix="" firstname="PHY_LAB" middlename="" lastname="NON_CAPELLA" suffix="" username="NON_CAPELLA" ID="4387" status="Y" npi="1324567890" machine_technician_id="0" Legal_Org="CMG"/>
+<Physician prefix="" firstname="RAT_1" middlename="" lastname="TRANSCRIPTION" suffix="" username="RAT_1" ID="4238" status="Y" npi="" machine_technician_id="0" Legal_Org="CMG"/>
+<Physician prefix="" firstname="RAT_2" middlename="" lastname="TRANSCRIPTION" suffix="" username="RAT_2" ID="4239" status="Y" npi="" machine_technician_id="0" Legal_Org="CMG"/>
+<Physician prefix="" firstname="RAT_3" middlename="" lastname="TRANSCRIPTION" suffix="" username="RAT_3" ID="4283" status="Y" npi="" machine_technician_id="0" Legal_Org="CMG"/>
+<Physician prefix="" firstname="RAT_4" middlename="" lastname="TRANSCRIPTION" suffix="" username="RAT_4" ID="4284" status="Y" npi="" machine_technician_id="0" Legal_Org="CMG"/>
+<Physician prefix="" firstname="RGT_1" middlename="" lastname="TRANSCRIPTION" suffix="" username="RGT_1" ID="4285" status="Y" npi="" machine_technician_id="0" Legal_Org="CMG"/>
+<Physician prefix="" firstname="RGT_2" middlename="" lastname="TRANSCRIPTION" suffix="" username="RGT_2" ID="4286" status="Y" npi="" machine_technician_id="0" Legal_Org="CMG"/>
+<Physician prefix="" firstname="RGT_3" middlename="" lastname="TRANSCRIPTION" suffix="" username="RGT_3" ID="4287" status="Y" npi="" machine_technician_id="0" Legal_Org="CMG"/>
+<Physician prefix="" firstname="MUT_1" middlename="" lastname="TRANSCRIPTION" suffix="" username="MUT_1" ID="4240" status="Y" npi="" machine_technician_id="0" Legal_Org="CMG"/>
+<Physician prefix="" firstname="MUT_2" middlename="" lastname="TRANSCRIPTION" suffix="" username="MUT_2" ID="4241" status="Y" npi="" machine_technician_id="0" Legal_Org="CMG"/>
+<Physician prefix="" firstname="MUT_3" middlename="" lastname="TRANSCRIPTION" suffix="" username="MUT_3" ID="4281" status="Y" npi="" machine_technician_id="0" Legal_Org="CMG"/>
+<Physician prefix="" firstname="MUT_4" middlename="" lastname="TRANSCRIPTION" suffix="" username="MUT_4" ID="4282" status="Y" npi="" machine_technician_id="0" Legal_Org="CMG"/>
+<Physician prefix="" firstname="GUS_1" middlename="" lastname="TRANSCRIPTION" suffix="" username="GUS_1" ID="4802" status="Y" npi="" machine_technician_id="0" Legal_Org="CMG"/>
+<Physician prefix="" firstname="GUS_2" middlename="" lastname="TRANSCRIPTION" suffix="" username="GUS_2" ID="4803" status="Y" npi="" machine_technician_id="0" Legal_Org="CMG"/>
+<Physician prefix="" firstname="GUS_3" middlename="" lastname="TRANSCRIPTION" suffix="" username="GUS_3" ID="4804" status="Y" npi="" machine_technician_id="0" Legal_Org="CMG"/>
+<Physician prefix="Dr." firstname="PHY_5" middlename="" lastname="TEST" suffix="M.D" username="PHY_5" ID="4844" status="Y" npi="" machine_technician_id="0" Legal_Org="CMG"/>
+<Physician prefix="" firstname="PA_5" middlename="" lastname="" suffix="" username="PA_5" ID="4845" status="Y" npi="" machine_technician_id="0" Legal_Org="CMG"/>
+<Physician prefix="Dr." firstname="PHY_2" middlename="" lastname="TEST" suffix="M.D" username="PHY_2" ID="4909" status="Y" npi="" machine_technician_id="0" Legal_Org="CMG"/>
+<Physician prefix="Dr." firstname="PHY_3" middlename="" lastname="TEST" suffix="M.D" username="PHY_3" ID="4910" status="Y" npi="" machine_technician_id="0" Legal_Org="CMG"/>
+<Physician prefix="" firstname="HAT_1" middlename="" lastname="TRANSCRIPTION" suffix="" username="HAT_1" ID="4230" status="Y" npi="" machine_technician_id="0" Legal_Org="CMG"/>
+<Physician prefix="" firstname="HAT_2" middlename="" lastname="TRANSCRIPTION" suffix="" username="HAT_2" ID="4233" status="Y" npi="" machine_technician_id="0" Legal_Org="CMG"/>
+<Physician prefix="Dr." firstname="David" middlename="" lastname="Chang" suffix="M.D." username="DCHANG" ID="4931" status="Y" npi="" machine_technician_id="0" Legal_Org="CMG"/>
+<Physician prefix="" firstname="N.C" middlename="" lastname="Krishnan" suffix="" username="NCKRISHNAN" ID="4940" status="Y" npi="" machine_technician_id="0" Legal_Org="CMG"/>
+</Facility>
+<Facility name="UVB" default-physician-id="5005" Legal_Org="CMG">
+<Physician prefix="" firstname="TECH VISIT" middlename="" lastname="" suffix="" username="TECH_VISIT" ID="4420" status="Y" npi="" machine_technician_id="0" Legal_Org="CMG"/>
+<Physician prefix="Dr." firstname="Johnnie" middlename="M" lastname="Woodson Jr" suffix="MD" username="JWOODSON" ID="5005" status="Y" npi="1780727750" machine_technician_id="0" Legal_Org="CMG"/>
+</Facility>
+</PhyList>
+<UnMappedPhyList>
+<Physician prefix="" firstname="Aime" middlename="" lastname="Rodriguez" suffix="" username="ARODRIGUEZ_SCRIBE" ID="4485" status="Y" npi=""/>
+<Physician prefix="Dr." firstname="Jhonatan Teodoro" middlename="" lastname="Munoz Espinoza" suffix="M.D." username="JMUNOZ" ID="4195" status="Y" npi="1174881510"/>
+<Physician prefix="" firstname="Konca" middlename="" lastname="Scribe" suffix="" username="KONCA_SCRIBE" ID="4805" status="Y" npi=""/>
+<Physician prefix="" firstname="Scribe1" middlename="" lastname="Alla" suffix="" username="SCRIBE1_ALLA" ID="4928" status="Y" npi=""/>
+<Physician prefix="" firstname="Robles" middlename="" lastname="Scribe1" suffix="" username="SCRIBE1_DROBLES" ID="4810" status="Y" npi=""/>
+<Physician prefix="" firstname="Konca" middlename="" lastname="Scribe1" suffix="" username="SCRIBE1_EKONCA" ID="4807" status="Y" npi=""/>
+<Physician prefix="" firstname="Cohen" middlename="" lastname="Scribe1" suffix="" username="SCRIBE1_HCOHEN" ID="4817" status="Y" npi=""/>
+<Physician prefix="" firstname="Scribe1" middlename="" lastname="Nazeri" suffix="" username="SCRIBE1_NAZERI" ID="4926" status="Y" npi=""/>
+<Physician prefix="" firstname="Scribe1" middlename="" lastname="Parikh" suffix="" username="SCRIBE1_PARIKH" ID="4932" status="Y" npi=""/>
+<Physician prefix="" firstname="Rasania" middlename="" lastname="Scribe1" suffix="" username="SCRIBE1_RASANIA" ID="4875" status="Y" npi=""/>
+<Physician prefix="" firstname="SReddy" middlename="" lastname="Scribe1" suffix="" username="SCRIBE1_SREDDY" ID="4872" status="Y" npi=""/>
+<Physician prefix="" firstname="Konca" middlename="" lastname="Scribe2" suffix="" username="SCRIBE2_EKONCA" ID="4808" status="Y" npi=""/>
+<Physician prefix="" firstname="Konca" middlename="" lastname="Scribe3" suffix="" username="SCRIBE3_EKONCA" ID="4809" status="Y" npi=""/>
+<Physician prefix="" firstname="SCRIBE_1" middlename="" lastname="" suffix="" username="SCRIBE_1" ID="4664" status="Y" npi=""/>
+<Physician prefix="" firstname="SCRIBE_2" middlename="" lastname="" suffix="" username="SCRIBE_2" ID="4665" status="Y" npi=""/>
+<Physician prefix="" firstname="Scribe" middlename="" lastname="Jwoodson" suffix="" username="SCRIBE_JWOODSON" ID="5012" status="Y" npi=""/>
+</UnMappedPhyList>
+<PhyAsstList>
+<PhysicianAssistant ID="109" Default_Physician="102"/>
+<PhysicianAssistant ID="254" Default_Physician="4199"/>
+<PhysicianAssistant ID="2860" Default_Physician="102"/>
+<PhysicianAssistant ID="3103" Default_Physician="237"/>
+<PhysicianAssistant ID="4191" Default_Physician="102"/>
+<PhysicianAssistant ID="4064" Default_Physician="237"/>
+<PhysicianAssistant ID="4204" Default_Physician="102"/>
+<PhysicianAssistant ID="3077" Default_Physician="237"/>
+<PhysicianAssistant ID="4412" Default_Physician="102"/>
+<PhysicianAssistant ID="4154" Default_Physician="4199"/>
+<PhysicianAssistant ID="2010" Default_Physician="4198"/>
+<PhysicianAssistant ID="4485" Default_Physician="4251"/>
+<PhysicianAssistant ID="4721" Default_Physician="2815"/>
+<PhysicianAssistant ID="4722" Default_Physician="2815"/>
+<PhysicianAssistant ID="4723" Default_Physician="2815"/>
+<PhysicianAssistant ID="4724" Default_Physician="2815"/>
+<PhysicianAssistant ID="4725" Default_Physician="2815"/>
+<PhysicianAssistant ID="4726" Default_Physician="2815"/>
+<PhysicianAssistant ID="4727" Default_Physician="2815"/>
+<PhysicianAssistant ID="4728" Default_Physician="2815"/>
+<PhysicianAssistant ID="4729" Default_Physician="2815"/>
+<PhysicianAssistant ID="4730" Default_Physician="2815"/>
+<PhysicianAssistant ID="4731" Default_Physician="2815"/>
+<PhysicianAssistant ID="4738" Default_Physician="102"/>
+<PhysicianAssistant ID="4777" Default_Physician="2815"/>
+<PhysicianAssistant ID="4821" Default_Physician="248"/>
+<PhysicianAssistant ID="4828" Default_Physician="4782"/>
+<PhysicianAssistant ID="4840" Default_Physician="237"/>
+<PhysicianAssistant ID="4841" Default_Physician="237"/>
+<PhysicianAssistant ID="4845" Default_Physician="4328"/>
+<PhysicianAssistant ID="4821" Default_Physician="4296"/>
+<PhysicianAssistant ID="2853" Default_Physician="4844"/>
+<PhysicianAssistant ID="4904" Default_Physician="102"/>
+<PhysicianAssistant ID="4905" Default_Physician="102"/>
+<PhysicianAssistant ID="4906" Default_Physician="2841"/>
+<PhysicianAssistant ID="4929" Default_Physician="4814"/>
+<PhysicianAssistant ID="4952" Default_Physician="237"/>
+<PhysicianAssistant ID="4962" Default_Physician="179"/>
+<PhysicianAssistant ID="4963" Default_Physician="4814"/>
+<PhysicianAssistant ID="3077" Default_Physician="107"/>
+<PhysicianAssistant ID="3077" Default_Physician="4323"/>
+<PhysicianAssistant ID="5024" Default_Physician="102"/>
+<PhysicianAssistant ID="4828" Default_Physician="2377"/>
+</PhyAsstList>
+
+</ROOT>

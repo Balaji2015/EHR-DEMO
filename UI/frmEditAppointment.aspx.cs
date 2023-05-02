@@ -5927,11 +5927,11 @@ namespace Acurus.Capella.UI
 
 
                             NewEnc.Referring_Facility = hdnrenprovider.Value.Split('|')[2].Split(':')[1].Trim().ToString();
-                            NewEnc.Referring_Physician = hdnrenprovider.Value.Split('|')[1].ToString();
-                            NewEnc.Referring_Address = hdnrenprovider.Value.Split('|')[4].Split(':')[1].ToString();
-                            NewEnc.Referring_Phone_No = hdnrenprovider.Value.Split('|')[5].Split(':')[1].Trim().ToString();
-                            NewEnc.Referring_Fax_No = hdnrenprovider.Value.Split('|')[6].Split(':')[1].Trim().ToString();
-                            NewEnc.Referring_Provider_NPI = hdnrenprovider.Value.Split('|')[2].Split(':')[1].Trim().ToString();
+                            NewEnc.Referring_Physician = hdnrenprovider.Value.Split('|')[0].ToString();
+                            NewEnc.Referring_Address = hdnrenprovider.Value.Split('|')[3].Split(':')[1].ToString();
+                            NewEnc.Referring_Phone_No = hdnrenprovider.Value.Split('|')[4].Split(':')[1].Trim().ToString();
+                            NewEnc.Referring_Fax_No = hdnrenprovider.Value.Split('|')[5].Split(':')[1].Trim().ToString();
+                            NewEnc.Referring_Provider_NPI = hdnrenprovider.Value.Split('|')[1].Split(':')[1].Trim().ToString();
                         }
                     }
                     else

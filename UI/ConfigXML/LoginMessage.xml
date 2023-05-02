@@ -1,35 +1,37 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <Login>
-  <KeyFeaturesList>
-    <KeyFeatures Name="Meaningful Use Certified EHR by InfoGuard " link=""></KeyFeatures>
-    <KeyFeatures Name="WorkFlow Friendly "  link=""></KeyFeatures>
-    <KeyFeatures Name="Audit Compliant "  link=""></KeyFeatures>
-    <KeyFeatures Name="Easy Assessment"  link=""></KeyFeatures>
-    <KeyFeatures Name="Integrated with Labs and Pharmacies "  link=""></KeyFeatures>
-  </KeyFeaturesList>
-  <SystemMessagesList>
-    <SystemMessage Name="Release 6.0.0.0.0.0 / 1 Feb 18"  link=""></SystemMessage>
-    <SystemMessage Name="Dermatology speciality related PSDs updated"  link=""></SystemMessage>
-    <SystemMessage Name="Provision to compare two photos"  link=""></SystemMessage>
-    <SystemMessage Name="2015 HIT Certification Measure related updates"  link=""></SystemMessage>
-    <SystemMessage Name="Release note can be downloaded through Knowledge Center"  link=""></SystemMessage>
-  </SystemMessagesList>
-  <KnowledgeCentreList>
-    <KnowledgeCentre Name="Release 6.0.0.0.0.0 / 1 Feb 18" link="https://cmg.capellaehr.com/documents/User_Manual/DeltaDocument.pdf"></KnowledgeCentre>
-    <KnowledgeCentre Name="ICD10-Basics" link="http://www.roadto10.org/icd-10-basics"></KnowledgeCentre>
-    <KnowledgeCentre Name="ICD10-Provider Resources" link="https://www.cms.gov/Medicare/Coding/ICD10/ProviderResources.html"></KnowledgeCentre>
-  </KnowledgeCentreList>
-  <ContactDeatilsList>
-    <Address>
-      <b>Address :</b><br/>
-      160 South Old Springs Road<br/>
-      Suite# 280<br/>
-      Anaheim Hills<br/>
-      CA 92808<br/>
-      USA. <br/> <br/>
-      <b> Support Phone#: </b>714-221-6311 (Mon-Fri 8:00 AM - 4:30 PM - US Pacific Time)<br/><br/>
-      <b> Email to:</b> capellasupport@acurussolutions.com (including any after-hours support)<br/><br/>
-      <b>Fax:</b> 909-348-8194
-    </Address>
-  </ContactDeatilsList>
+	<KeyFeaturesList>
+		<KeyFeatures Name="ONC Certified - CEHRT 2015 Edition by SLI" link=""></KeyFeatures>
+		<KeyFeatures Name="WorkFlow Friendly " link=""></KeyFeatures>
+		<KeyFeatures Name="Audit Compliant " link=""></KeyFeatures>
+		<KeyFeatures Name="Easy Assessment" link=""></KeyFeatures>
+		<KeyFeatures Name="Integrated with Labs and Pharmacies " link=""></KeyFeatures>
+	</KeyFeaturesList>
+	<SystemMessagesList>
+		<SystemMessage Name="Capella System Requirement Document ." link="https://cmg.capellaehr.com/documents/User_Manual/System_Requirements.pdf"></SystemMessage>
+		<SystemMessage Name="Release of new version of Capella EHR on Friday, 21st April'23." link="https://cmg.capellaehr.com/documents/User_Manual/DeltaDocument_21stApril.pdf"></SystemMessage>
+		<SystemMessage Name="Enhancements include changes in demographics screen (PCP, Cell phone mandatory, Translator required)." link=""></SystemMessage>
+        <SystemMessage Name="Issues related to e-signature time stamp, Block Calendar report, Amendment access resolved." link=""></SystemMessage>
+	</SystemMessagesList>
+	<KnowledgeCentreList>
+		<KnowledgeCentre Name="Delta document for release dated Friday, 21st April'23." link="https://cmg.capellaehr.com/documents/User_Manual/DeltaDocument_21stApril.pdf"></KnowledgeCentre>
+		<KnowledgeCentre Name="Instructions for accessing Teams." link="https://cmg.capellaehr.com/documents/User_Manual/Teams_Instructions.pdf"></KnowledgeCentre>
+		<KnowledgeCentre Name="User Manuals / Help Docs." link="https://cmg.capellaehr.com/documents/User_Manual/Capella_Docs_Index.pdf"></KnowledgeCentre>
+		<KnowledgeCentre Name="Training PPT - FO." link="https://cmg.capellaehr.com/documents/User_Manual/Capella_FO_BusinessProcesses.pdf"></KnowledgeCentre>
+		<KnowledgeCentre Name="Training PPT - MA." link="https://cmg.capellaehr.com/documents/User_Manual/Capella_MA_BusinessProcesses.pdf"></KnowledgeCentre>
+		<KnowledgeCentre Name="Training PPT - PHY." link="https://cmg.capellaehr.com/documents/User_Manual/Capella_Provider_BusinessProcesses.pdf"></KnowledgeCentre>
+
+	</KnowledgeCentreList>
+	<ContactDeatilsList>
+		<Address>
+			<b>Address :</b><br/>
+			840 Towne Center Dr.,<br/>
+			Pomona,<br/>
+			CA 91767-5900<br/>
+			USA. <br/> <br/>
+			<b> Support Phone#: </b>909-281-9856 (Mon-Fri 8:00 AM - 12:00 AM - US Pacific Time)<br/><br/>
+			<b> Email to:</b> capella-support@akidolabs.com (including any after-hours support)<br/><br/>
+			<b>Fax:</b> 909-348-8194
+		</Address>
+	</ContactDeatilsList>
 </Login>

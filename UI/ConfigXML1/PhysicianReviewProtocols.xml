@@ -1,0 +1,8 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<PhyAsstSpecificProtocolsList>
+  <PhyAsstSpecificProtocol id="3077" value="VELMA D YEP">
+    <PhysicianList>
+      <Physician id="102" value="Dr. Ewa H Konca" rule="CA Regulatory Rule"></Physician>
+    </PhysicianList>
+  </PhyAsstSpecificProtocol>
+</PhyAsstSpecificProtocolsList>

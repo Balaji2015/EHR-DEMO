@@ -1,0 +1,10 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<Templates>  
+  <Template Template_Name="Anterior and Posterior" Template_Path="Resources\BodyImageTemplates\Anterior and Posterior.png" Template_Map="Anterior_and_Posterior_map" Excluded_Physicians_Ids="" />
+  <Template Template_Name="Eyes and Ears" Template_Path="Resources\BodyImageTemplates\Eyes and Ears.png" Template_Map="Eyes_and_Ears_map" Excluded_Physicians_Ids="" />
+  <Template Template_Name="Head and Face" Template_Path="Resources\BodyImageTemplates\Head and Face.png" Template_Map="Head_and_Face_map" Excluded_Physicians_Ids="" />
+  <Template Template_Name="Nose and Lips" Template_Path="Resources\BodyImageTemplates\Nose and Lips.png" Template_Map="Nose_and_Lips_map" Excluded_Physicians_Ids="" />
+  <Template Template_Name="Foot and Hands" Template_Path="Resources\BodyImageTemplates\Foot and Hands.png" Template_Map="Foot_and_Hands_map" Excluded_Physicians_Ids="" />
+  <Template Template_Name="Thyroid Left" Template_Path="Resources\BodyImageTemplates\Thyroid Left.png" Template_Map="Thyroid_Left_map" Excluded_Physicians_Ids="" />
+  <Template Template_Name="Thyroid Right" Template_Path="Resources\BodyImageTemplates\Thyroid Right.png" Template_Map="Thyroid_Right_map" Excluded_Physicians_Ids="" />
+</Templates>

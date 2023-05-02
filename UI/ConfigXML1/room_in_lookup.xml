@@ -1,0 +1,162 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<root>
+<facility name="138 HARVARD AVE">
+<exam_room Name="" sortorder="9999"/>
+<exam_room Name ="ER_1" sortorder ="9999" />
+<exam_room Name ="ER_2" sortorder ="9999" />
+</facility>
+
+<facility name="1866 N OG AVE # 101">
+<exam_room Name="" sortorder="9999"/>
+<exam_room Name ="ER_1" sortorder ="9999" />
+<exam_room Name ="ER_2" sortorder ="9999" />
+<exam_room Name ="ER_3" sortorder ="9999" />
+</facility>
+
+<facility name="9866 N OG AVE # 102">
+<exam_room Name="" sortorder="9999"/>
+<exam_room Name ="ER_1" sortorder ="9999" />
+<exam_room Name ="ER_2" sortorder ="9999" />
+<exam_room Name ="ER_3" sortorder ="9999" />
+<exam_room Name ="ER_4" sortorder ="9999" />
+<exam_room Name ="ER_5" sortorder ="9999" />
+<exam_room Name ="ER_6" sortorder ="9999" />
+</facility>
+
+<facility name="1866 N OG AVE # 201">
+<exam_room Name="" sortorder="9999"/>
+<exam_room Name ="ER_1" sortorder ="9999" />
+<exam_room Name ="ER_2" sortorder ="9999" />
+<exam_room Name ="ER_3" sortorder ="9999" />
+<exam_room Name ="ER_4" sortorder ="9999" />
+</facility>
+
+<facility name="1866 N OG AVE # 202">
+<exam_room Name="" sortorder="9999"/>
+<exam_room Name ="ER_1" sortorder ="9999" />
+<exam_room Name ="ER_2" sortorder ="9999" />
+<exam_room Name ="ER_3" sortorder ="9999" />
+<exam_room Name ="ER_4" sortorder ="9999" />
+<exam_room Name ="ER_5" sortorder ="9999" />
+<exam_room Name ="ER_6" sortorder ="9999" />
+<exam_room Name ="ER_7" sortorder ="9999" />
+<exam_room Name ="ER_8" sortorder ="9999" />
+<exam_room Name ="ER_9" sortorder ="9999" />
+<exam_room Name ="ER_10" sortorder ="9999" />
+<exam_room Name ="ER_11" sortorder ="9999" />
+<exam_room Name ="ER_12" sortorder ="9999" />
+<exam_room Name ="ER_1A" sortorder ="9999" />
+<exam_room Name ="ER_1B" sortorder ="9999" />
+<exam_room Name ="Strees Room" sortorder ="9999" />
+</facility>
+
+<facility name="1904 N OG AVE">
+<exam_room Name="" sortorder="9999"/>
+<exam_room Name ="ER_1" sortorder ="9999" />
+<exam_room Name ="ER_2" sortorder ="9999" />
+<exam_room Name ="ER_3" sortorder ="9999" />
+<exam_room Name ="ER_4" sortorder ="9999" />
+<exam_room Name ="ER_5" sortorder ="9999" />
+<exam_room Name ="ER_6" sortorder ="9999" />
+</facility>
+
+<facility name="430 W BASELINE AVE">
+<exam_room Name="" sortorder="9999"/>
+<exam_room Name ="Miya_1" sortorder ="9999" />
+<exam_room Name ="Miya_2" sortorder ="9999" />
+<exam_room Name ="Rude_1" sortorder ="9999" />
+<exam_room Name ="Rude_2" sortorder ="9999" />
+<exam_room Name ="Rude_3" sortorder ="9999" />
+<exam_room Name ="Orr_1" sortorder ="9999" />
+<exam_room Name ="Orr_2" sortorder ="9999" />
+<exam_room Name ="Orr_3" sortorder ="9999" />
+<exam_room Name ="Jacoby_1" sortorder ="9999" />
+<exam_room Name ="Jacoby_2" sortorder ="9999" />
+<exam_room Name ="Kasem_1" sortorder ="9999" />
+<exam_room Name ="Immunization/EKG" sortorder ="9999" />
+</facility>
+
+<facility name="585 N MTN AVE STE A">
+<exam_room Name="" sortorder="9999"/>
+<exam_room Name ="ER_1" sortorder ="9999" />
+<exam_room Name ="ER_2" sortorder ="9999" />
+</facility>
+
+<facility name="591 N 13TH AVE">
+<exam_room Name="" sortorder="9999"/>
+<exam_room Name ="ER_1" sortorder ="9999" />
+<exam_room Name ="ER_2" sortorder ="9999" />
+<exam_room Name ="ER_3" sortorder ="9999" />
+<exam_room Name ="ER_4" sortorder ="9999" />
+</facility>
+
+<facility name="790 E BONITA AVE">
+<exam_room Name="" sortorder="9999"/>
+<exam_room Name ="ER_202" sortorder ="9999" />
+<exam_room Name ="ER_203" sortorder ="9999" />
+<exam_room Name ="ER_205" sortorder ="9999" />
+<exam_room Name ="ER_206" sortorder ="9999" />
+<exam_room Name ="ER_207" sortorder ="9999" />
+<exam_room Name ="ER_208" sortorder ="9999" />
+<exam_room Name ="ER_210" sortorder ="9999" />
+<exam_room Name ="ER_211" sortorder ="9999" />
+<exam_room Name ="ER_214" sortorder ="9999" />
+<exam_room Name ="ER_216" sortorder ="9999" />
+<exam_room Name ="ER_217" sortorder ="9999" />
+<exam_room Name ="ER_218" sortorder ="9999" />
+<exam_room Name ="ER_219" sortorder ="9999" />
+<exam_room Name ="ER_221" sortorder ="9999" />
+<exam_room Name ="ER_222" sortorder ="9999" />
+<exam_room Name ="ER_223" sortorder ="9999" />
+<exam_room Name ="ER_225B" sortorder ="9999" />
+<exam_room Name ="ER_226" sortorder ="9999" />
+<exam_room Name ="ER_227" sortorder ="9999" />
+<exam_room Name ="ER_236" sortorder ="9999" />
+<exam_room Name ="ER_238" sortorder ="9999" />
+<exam_room Name ="ER_239" sortorder ="9999" />
+<exam_room Name ="ER_241" sortorder ="9999" />
+<exam_room Name ="ER_243" sortorder ="9999" />
+<exam_room Name ="ER_244" sortorder ="9999" />
+<exam_room Name ="ER_215" sortorder ="9999" />
+<exam_room Name ="ER_237" sortorder ="9999" />
+</facility>
+
+<facility name="9190 HAVEN AVE 1ST FLR">
+<exam_room Name="" sortorder="9999"/>
+<exam_room Name ="ER_2" sortorder ="9999" />
+<exam_room Name ="ER_3" sortorder ="9999" />
+<exam_room Name ="ER_4" sortorder ="9999" />
+<exam_room Name ="ER_5" sortorder ="9999" />
+<exam_room Name ="ER_7" sortorder ="9999" />
+<exam_room Name ="ER_8" sortorder ="9999" />
+<exam_room Name ="ER_9" sortorder ="9999" />
+<exam_room Name ="ER_10" sortorder ="9999" />
+<exam_room Name ="ER_11" sortorder ="9999" />
+<exam_room Name ="ER_15" sortorder ="9999" />
+<exam_room Name ="ER_17" sortorder ="9999" />
+<exam_room Name ="ER_18" sortorder ="9999" />
+<exam_room Name ="ER_19" sortorder ="9999" />
+<exam_room Name ="ER_20" sortorder ="9999" />
+<exam_room Name ="ER_21" sortorder ="9999" />
+<exam_room Name ="ER_22" sortorder ="9999" />
+<exam_room Name ="ER_23" sortorder ="9999" />
+<exam_room Name ="ER_24" sortorder ="9999" />
+</facility>
+
+<facility name="IVDMC">
+<exam_room Name="" sortorder="9999"/>
+<exam_room Name ="ER_1" sortorder ="9999" />
+<exam_room Name ="ER_2" sortorder ="9999" />
+</facility>
+  <facility name="TEST FACILITY">
+    <exam_room Name="" sortorder="9999"/>
+    <exam_room Name ="TF_1" sortorder ="9999" />
+    <exam_room Name ="TF_2" sortorder ="9999" />
+    <exam_room Name ="TF_3" sortorder ="9999" />
+    <exam_room Name ="TF_4" sortorder ="9999" />
+    <exam_room Name ="TF_5" sortorder ="9999" />
+    <exam_room Name ="TF_6" sortorder ="9999" />
+  </facility>
+  
+</root>
+

@@ -1,0 +1,877 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<UserList>
+<User User_Name="AADAMS" Default_Facility="160 E ARTESIA #220" Role="Office Manager" Physician_Library_ID="0" person_name="Amanda Adams" Default_MyQ_Days="4" Legal_Org="CMG" />
+<User User_Name="AAGUIRRE" Default_Facility="1866 N OG AVE # 202" Role="Front Office" Physician_Library_ID="0" person_name="Alyssa Aguirre" Default_MyQ_Days="4" Legal_Org="CMG" />
+<User User_Name="AAJIMENEZ" Default_Facility="CYPRESS TEST FACILITY" Role="Physician" Physician_Library_ID="5063" person_name="Dr. Aaron Jimenez M.D." Default_MyQ_Days="14" Legal_Org="CMG" />
+<User User_Name="AAKULA" Default_Facility="160 E. ARTESIA STREET, STE #360" Role="Front Office" Physician_Library_ID="0" person_name="Akhila Akula" Default_MyQ_Days="4" Legal_Org="CMG" />
+<User User_Name="AALDARACA" Default_Facility="840 TOWN CENTER DR" Role="Office Manager" Physician_Library_ID="0" person_name="Angie Aldaraca" Default_MyQ_Days="4" Legal_Org="CMG" />
+<User User_Name="AAMEZCUIA" Default_Facility="160 E. ARTESIA STREET, STE #360" Role="Front Office" Physician_Library_ID="0" person_name="Alissa Amezcuia" Default_MyQ_Days="4" Legal_Org="CMG" />
+<User User_Name="AAPARICIO" Default_Facility="160 E ARTESIA #220" Role="Medical Assistant" Physician_Library_ID="0" person_name="Amanda Aparicio" Default_MyQ_Days="4" Legal_Org="CMG" />
+<User User_Name="AARELLANO" Default_Facility="9190 HAVEN AVE 1ST FLR" Role="Medical Assistant" Physician_Library_ID="0" person_name="Alejandra Arellano" Default_MyQ_Days="4" Legal_Org="CMG" />
+<User User_Name="AARTEAGA" Default_Facility="9190 HAVEN AVE 1ST FLR" Role="Medical Assistant" Physician_Library_ID="0" person_name="Alicia Arteaga" Default_MyQ_Days="4" Legal_Org="CMG" />
+<User User_Name="AARTHY_1139" Default_Facility="TEST FACILITY" Role="Front Office" Physician_Library_ID="0" person_name="Aarthy_1139" Default_MyQ_Days="4" Legal_Org="CMG" />
+<User User_Name="ABEJAR" Default_Facility="1866 N OG AVE # 202" Role="Front Office" Physician_Library_ID="0" person_name="Allyson Bejar" Default_MyQ_Days="4" Legal_Org="CMG" />
+<User User_Name="ABERBERYAN" Default_Facility="9190 HAVEN AVE 1ST FLR" Role="Physician" Physician_Library_ID="4779" person_name="Dr.Ani Berberyan, MD" Default_MyQ_Days="14" Legal_Org="CMG" />
+<User User_Name="ABGARCIA" Default_Facility="520 E FOOTHILL BLVD #A" Role="Medical Assistant" Physician_Library_ID="0" person_name="Abraham Garcia" Default_MyQ_Days="4" Legal_Org="CMG" />
+<User User_Name="ACONTRERAS" Default_Facility="160 E. ARTESIA STREET, STE #360" Role="Medical Assistant" Physician_Library_ID="0" person_name="Alma Contreras" Default_MyQ_Days="4" Legal_Org="CMG" />
+<User User_Name="ACORTEZ" Default_Facility="1940 N ORANGE GROVE" Role="Front Office" Physician_Library_ID="0" person_name="Ashley Cortez" Default_MyQ_Days="4" Legal_Org="CMG" />
+<User User_Name="ACYNTHIA" Default_Facility="1866 N OG AVE # 201" Role="Medical Assistant" Physician_Library_ID="0" person_name="Cynthia Abundiz" Default_MyQ_Days="4" Legal_Org="CMG" />
+<User User_Name="ADATTI" Default_Facility="9190 HAVEN AVENUE (Haven Urgent Care)" Role="Front Office" Physician_Library_ID="0" person_name="Appala Naidu Datti" Default_MyQ_Days="4" Legal_Org="CMG" />
+<User User_Name="ADHAMSANI" Default_Facility="8330 RED OAK SUITE #101" Role="Front Office" Physician_Library_ID="0" person_name="Achyuth Reddy Dhamsani" Default_MyQ_Days="4" Legal_Org="CMG" />
+<User User_Name="ADVALENCIA" Default_Facility="1866 N OG AVE # 202" Role="Front Office" Physician_Library_ID="0" person_name="Adriana Valencia" Default_MyQ_Days="4" Legal_Org="CMG" />
+<User User_Name="AFRIN" Default_Facility="TEST FACILITY" Role="Front Office" Physician_Library_ID="0" person_name="Afrin MD" Default_MyQ_Days="4" Legal_Org="CMG" />
+<User User_Name="AFUENTES" Default_Facility="9170 HAVEN AVENUE, SUITE 120" Role="Medical Assistant" Physician_Library_ID="0" person_name="Ambria Fuentes" Default_MyQ_Days="4" Legal_Org="CMG" />
+<User User_Name="AGAN" Default_Facility="1940 N ORANGE GROVE" Role="Physician" Physician_Library_ID="4858" person_name="Dr. Anthony Gan, DO" Default_MyQ_Days="14" Legal_Org="CMG" />
+<User User_Name="AGANDI" Default_Facility="1904 N OG AVE" Role="Front Office" Physician_Library_ID="0" person_name="Anil Gandi" Default_MyQ_Days="4" Legal_Org="CMG" />
+<User User_Name="AGONZALEZ" Default_Facility="9190 HAVEN AVE 1ST FLR" Role="Medical Assistant" Physician_Library_ID="0" person_name="Anthony Gonzalez" Default_MyQ_Days="4" Legal_Org="CMG" />
+<User User_Name="AGRACIAN" Default_Facility="9190 HAVEN AVE 1ST FLR" Role="Medical Assistant" Physician_Library_ID="0" person_name="Ana Gracian" Default_MyQ_Days="4" Legal_Org="CMG" />
+<User User_Name="AGUARDIOLA" Default_Facility="1866 N OG AVE # 202" Role="Front Office" Physician_Library_ID="0" person_name="Angel Guardiola" Default_MyQ_Days="4" Legal_Org="CMG" />
+<User User_Name="AGURROLA" Default_Facility="9190 HAVEN AVE 1ST FLR" Role="Medical Assistant" Physician_Library_ID="0" person_name="Adela Gurrola" Default_MyQ_Days="4" Legal_Org="CMG" />
+<User User_Name="AGUTIERREZ" Default_Facility="1866 N OG AVE # 102" Role="Front Office" Physician_Library_ID="0" person_name="Aida Gutierrez" Default_MyQ_Days="4" Legal_Org="CMG" />
+<User User_Name="AGUZMAN" Default_Facility="1866 N OG AVE # 202" Role="Medical Assistant" Physician_Library_ID="0" person_name="Adrena Guzman" Default_MyQ_Days="4" Legal_Org="CMG" />
+<User User_Name="AHUSSAIN" Default_Facility="TEST FACILITY" Role="Front Office" Physician_Library_ID="0" person_name="Abdul Hussain_496" Default_MyQ_Days="4" Legal_Org="CMG" />
+<User User_Name="AHUSSAIN_RJ" Default_Facility="RJ TEST FACILITY" Role="Front Office" Physician_Library_ID="0" person_name="Abdul Hussain_496" Default_MyQ_Days="4" Legal_Org="RJ" />
+<User User_Name="AISANTIAGO" Default_Facility="8330 RED OAK SUITE #201" Role="Front Office" Physician_Library_ID="0" person_name="Aidee Santiago" Default_MyQ_Days="4" Legal_Org="CMG" />
+<User User_Name="AJARVEY" Default_Facility="1940 N ORANGE GROVE" Role="Front Office" Physician_Library_ID="0" person_name="Amanda Jarvey" Default_MyQ_Days="4" Legal_Org="CMG" />
+<User User_Name="AJIMENEZ" Default_Facility="9190 HAVEN AVE 1ST FLR" Role="Medical Assistant" Physician_Library_ID="0" person_name="Ashley Jimenez" Default_MyQ_Days="4" Legal_Org="CMG" />
+<User User_Name="AJRLUNA" Default_Facility="138 HARVARD AVE" Role="Medical Assistant" Physician_Library_ID="0" person_name="Alondra Jacqueline Ruiz Luna" Default_MyQ_Days="4" Legal_Org="CMG" />
+<User User_Name="AKARROTHU" Default_Facility="TEST FACILITY" Role="Front Office" Physician_Library_ID="0" person_name="Anitha Karrothu" Default_MyQ_Days="4" Legal_Org="CMG" />
+<User User_Name="AKERR" Default_Facility="840 TOWN CENTER DR" Role="Front Office" Physician_Library_ID="0" person_name="Angela Kerr" Default_MyQ_Days="4" Legal_Org="CMG" />
+<User User_Name="AKYASA" Default_Facility="9170 HAVEN AVENUE, SUITE 120" Role="Front Office" Physician_Library_ID="0" person_name="Anitha Devi Kyasa" Default_MyQ_Days="4" Legal_Org="CMG" />
+<User User_Name="ALEIVA" Default_Facility="8330 RED OAK SUITE #201" Role="Medical Assistant" Physician_Library_ID="0" person_name="Angie Leiva" Default_MyQ_Days="4" Legal_Org="CMG" />
+<User User_Name="ALIEM" Default_Facility="1866 N OG AVE # 202" Role="Front Office" Physician_Library_ID="0" person_name="Angelica Liem" Default_MyQ_Days="4" Legal_Org="CMG" />
+<User User_Name="ALPEREZ" Default_Facility="1940 N ORANGE GROVE" Role="Medical Assistant" Physician_Library_ID="0" person_name="Alexandria Perez" Default_MyQ_Days="4" Legal_Org="CMG" />
+<User User_Name="ALUGO" Default_Facility="9190 HAVEN AVE II FLOOR SUITE# 210" Role="Medical Assistant" Physician_Library_ID="0" person_name="Alyssa Lugo" Default_MyQ_Days="4" Legal_Org="CMG" />
+<User User_Name="ALUNA" Default_Facility="790 E BONITA AVE" Role="Medical Assistant" Physician_Library_ID="0" person_name="Amy Luna" Default_MyQ_Days="4" Legal_Org="CMG" />
+<User User_Name="ALYPEREZ" Default_Facility="CMG LAB AND ANCILLARY 1866 #101" Role="Front Office" Physician_Library_ID="0" person_name="Alyssa Perez" Default_MyQ_Days="4" Legal_Org="CMG" />
+<User User_Name="AMADDELA" Default_Facility="9190 HAVEN AVE II FLOOR SUITE# 210" Role="Front Office" Physician_Library_ID="0" person_name="Anand Maddela" Default_MyQ_Days="4" Legal_Org="CMG" />
+<User User_Name="AMERRICK" Default_Facility="840 TOWN CENTER DR" Role="Coder" Physician_Library_ID="0" person_name="Alma Merrick" Default_MyQ_Days="4" Legal_Org="CMG" />
+<User User_Name="AMONTES" Default_Facility="1866 N OG AVE # 202" Role="Front Office" Physician_Library_ID="0" person_name="Adriana Montes" Default_MyQ_Days="4" Legal_Org="CMG" />
+<User User_Name="AMONTOYA" Default_Facility="840 TOWN CENTER DR" Role="Front Office" Physician_Library_ID="0" person_name="Aida Montoya" Default_MyQ_Days="4" Legal_Org="CMG" />
+<User User_Name="AMUNIPALLY" Default_Facility="TEST FACILITY" Role="Front Office" Physician_Library_ID="0" person_name="Arundhathi Munipally" Default_MyQ_Days="4" Legal_Org="CMG" />
+<User User_Name="ANAGULAPALLY" Default_Facility="1904 N OG AVE" Role="Front Office" Physician_Library_ID="0" person_name="Anjali Nagulapally" Default_MyQ_Days="4" Legal_Org="CMG" />
+<User User_Name="ANANDERSON" Default_Facility="1866 N OG AVE # 202" Role="Front Office" Physician_Library_ID="0" person_name="Angel Anderson" Default_MyQ_Days="4" Legal_Org="CMG" />
+<User User_Name="ANANDHI" Default_Facility="TEST FACILITY" Role="Coder" Physician_Library_ID="0" person_name="ANANDHI_1248" Default_MyQ_Days="4" Legal_Org="CMG" />
+<User User_Name="ANARANJO" Default_Facility="9190 HAVEN AVE II FLOOR SUITE# 210" Role="Front Office" Physician_Library_ID="0" person_name="Ashley Naranjo" Default_MyQ_Days="4" Legal_Org="CMG" />
+<User User_Name="ANC101_FO" Default_Facility="CMG LAB AND ANCILLARY 1866 #101" Role="Medical Assistant" Physician_Library_ID="0" person_name="ANC101_FO" Default_MyQ_Days="4" Legal_Org="CMG" />
+<User User_Name="ANHERNANDEZ" Default_Facility="9190 HAVEN AVENUE (Haven Urgent Care)" Role="Medical Assistant" Physician_Library_ID="0" person_name="Angelica Hernandez" Default_MyQ_Days="4" Legal_Org="CMG" />
+<User User_Name="ANORTIZ" Default_Facility="790 E BONITA AVE" Role="Medical Assistant" Physician_Library_ID="0" person_name="Anthony Ortiz" Default_MyQ_Days="4" Legal_Org="CMG" />
+<User User_Name="ANTORRES" Default_Facility="160 E. ARTESIA STREET, STE #360" Role="Front Office" Physician_Library_ID="0" person_name="Anallely Torres" Default_MyQ_Days="4" Legal_Org="CMG" />
+<User User_Name="AOCERVANTES" Default_Facility="790 E BONITA AVE" Role="Medical Assistant" Physician_Library_ID="0" person_name="ANDREA ORAJEL CERVANTES" Default_MyQ_Days="4" Legal_Org="CMG" />
+<User User_Name="APADILLA" Default_Facility="297 WEST ARTESIA STREET, SUITE A" Role="Medical Assistant" Physician_Library_ID="0" person_name="Angel Padilla" Default_MyQ_Days="4" Legal_Org="CMG" />
+<User User_Name="APANIAGUA" Default_Facility="790 E BONITA AVE" Role="Front Office" Physician_Library_ID="0" person_name="Alex Paniagua" Default_MyQ_Days="4" Legal_Org="CMG" />
+<User User_Name="APARTIDA" Default_Facility="9190 HAVEN AVE 1ST FLR" Role="Medical Assistant" Physician_Library_ID="0" person_name="Abigail Partida" Default_MyQ_Days="4" Legal_Org="CMG" />
+<User User_Name="ARAMIREZ" Default_Facility="1866 N OG AVE # 202" Role="Medical Assistant" Physician_Library_ID="0" person_name="Alma Ramirez" Default_MyQ_Days="4" Legal_Org="CMG" />
+<User User_Name="ARAMOS" Default_Facility="9190 HAVEN AVE 1ST FLR" Role="Medical Assistant" Physician_Library_ID="0" person_name="Alexis Ramos" Default_MyQ_Days="4" Legal_Org="CMG" />
+<User User_Name="ARASOTI" Default_Facility="160 E ARTESIA #220" Role="Front Office" Physician_Library_ID="0" person_name="Anjali Rasoti" Default_MyQ_Days="4" Legal_Org="CMG" />
+<User User_Name="ARCOBIAN" Default_Facility="790 E BONITA AVE" Role="Medical Assistant" Physician_Library_ID="0" person_name="Alondra Rodriguez Cobian" Default_MyQ_Days="4" Legal_Org="CMG" />
+<User User_Name="AREYES" Default_Facility="9190 HAVEN AVE 1ST FLR" Role="Medical Assistant" Physician_Library_ID="0" person_name="Angel Reyes" Default_MyQ_Days="4" Legal_Org="CMG" />
+<User User_Name="ARLOPEZ" Default_Facility="840 TOWN CENTER DR" Role="Front Office" Physician_Library_ID="0" person_name="Lopez, Art" Default_MyQ_Days="4" Legal_Org="CMG" />
+<User User_Name="ARODRIGUEZ" Default_Facility="9190 HAVEN AVE 1ST FLR" Role="Medical Assistant" Physician_Library_ID="0" person_name="Aime Rodriguez" Default_MyQ_Days="4" Legal_Org="CMG" />
+<User User_Name="ARODRIGUEZ_SCRIBE" Default_Facility="9190 HAVEN AVE 1ST FLR" Role="Scribe" Physician_Library_ID="4485" person_name="Aime Rodriguez" Default_MyQ_Days="14" Legal_Org="CMG" />
+<User User_Name="ASAID" Default_Facility="CMG LAB AND ANCILLARY 1866 #101" Role="Technician" Physician_Library_ID="4510" person_name="Said Abdul" Default_MyQ_Days="4" Legal_Org="CMG" />
+<User User_Name="ASALINAS" Default_Facility="5385 WALNUT AVE" Role="Medical Assistant" Physician_Library_ID="0" person_name="Angelina Salinas" Default_MyQ_Days="4" Legal_Org="CMG" />
+<User User_Name="ASHAFFI" Default_Facility="TEST FACILITY" Role="Coder" Physician_Library_ID="0" person_name="Ahmed Shaffi_1549" Default_MyQ_Days="4" Legal_Org="CMG" />
+<User User_Name="ASHARMA" Default_Facility="138 HARVARD AVE" Role="Physician" Physician_Library_ID="261" person_name="Dr. Ashok V Sharma M.D." Default_MyQ_Days="14" Legal_Org="CMG" />
+<User User_Name="ASIRCAR" Default_Facility="9190 HAVEN AVE 1ST FLR" Role="Physician Assistant" Physician_Library_ID="4952" person_name="Aman Sircar, DNP, FNP-C" Default_MyQ_Days="14" Legal_Org="CMG" />
+<User User_Name="ASTRINGER" Default_Facility="1866 N OG AVE # 202" Role="Front Office" Physician_Library_ID="0" person_name="Andre Stringer" Default_MyQ_Days="4" Legal_Org="CMG" />
+<User User_Name="ATERMEDZHYAN" Default_Facility="160 E. ARTESIA STREET, STE #360" Role="Medical Assistant" Physician_Library_ID="0" person_name="Agavani Termedzhyan" Default_MyQ_Days="4" Legal_Org="CMG" />
+<User User_Name="ATOLEDO" Default_Facility="160 E. ARTESIA STREET, STE #360" Role="Front Office" Physician_Library_ID="0" person_name="Alexandra Toledo" Default_MyQ_Days="4" Legal_Org="CMG" />
+<User User_Name="AVALENCIA" Default_Facility="1940 N ORANGE GROVE" Role="Office Manager" Physician_Library_ID="0" person_name="Angelina Valencia" Default_MyQ_Days="4" Legal_Org="CMG" />
+<User User_Name="AVARGAS" Default_Facility="160 E. ARTESIA STREET, STE #360" Role="Medical Assistant" Physician_Library_ID="0" person_name="Ashley Vargas" Default_MyQ_Days="4" Legal_Org="CMG" />
+<User User_Name="AVILLARREAL" Default_Facility="1904 N OG AVE" Role="Medical Assistant" Physician_Library_ID="0" person_name="Arlene Villarreal" Default_MyQ_Days="4" Legal_Org="CMG" />
+<User User_Name="AWATSON" Default_Facility="8330 RED OAK SUITE #201" Role="Medical Assistant" Physician_Library_ID="0" person_name="Ann Watson" Default_MyQ_Days="4" Legal_Org="CMG" />
+<User User_Name="AWEEMS" Default_Facility="1940 N ORANGE GROVE" Role="Medical Assistant" Physician_Library_ID="0" person_name="Weems, Alisha" Default_MyQ_Days="4" Legal_Org="CMG" />
+<User User_Name="AZAKINOVA" Default_Facility="840 TOWN CENTER DR" Role="Front Office" Physician_Library_ID="0" person_name="Angela Zakinova" Default_MyQ_Days="4" Legal_Org="CMG" />
+<User User_Name="AZETINA" Default_Facility="CMG LAB AND ANCILLARY 1866 #101" Role="Front Office" Physician_Library_ID="0" person_name="Adriana Zetina" Default_MyQ_Days="4" Legal_Org="CMG" />
+<User User_Name="BARUL" Default_Facility="790 E BONITA AVE" Role="Coder" Physician_Library_ID="0" person_name="B. Arul" Default_MyQ_Days="4" Legal_Org="CMG" />
+<User User_Name="BARUL_OM" Default_Facility="TEST FACILITY" Role="Office Manager" Physician_Library_ID="0" person_name="B.Arul" Default_MyQ_Days="4" Legal_Org="CMG" />
+<User User_Name="BBROOKS" Default_Facility="1940 N ORANGE GROVE" Role="Medical Assistant" Physician_Library_ID="0" person_name="Brianna Brooks" Default_MyQ_Days="4" Legal_Org="CMG" />
+<User User_Name="BCJIMENEZ" Default_Facility="520 E FOOTHILL BLVD #A" Role="Medical Assistant" Physician_Library_ID="0" person_name="Brenda Cano- Jimenez" Default_MyQ_Days="4" Legal_Org="CMG" />
+<User User_Name="BCOMSTOCK" Default_Facility="790 E BONITA AVE" Role="Medical Assistant" Physician_Library_ID="0" person_name="Blanca Comstock" Default_MyQ_Days="4" Legal_Org="CMG" />
+<User User_Name="BDARAM" Default_Facility="TEST FACILITY" Role="Front Office" Physician_Library_ID="0" person_name="Bhulakshmi Daram" Default_MyQ_Days="4" Legal_Org="CMG" />
+<User User_Name="BDASARI" Default_Facility="1940 N ORANGE GROVE" Role="Front Office" Physician_Library_ID="0" person_name="Bhavani Dasari" Default_MyQ_Days="4" Legal_Org="CMG" />
+<User User_Name="BEMARTINEZ" Default_Facility="840 TOWN CENTER DR" Role="Front Office" Physician_Library_ID="0" person_name="Belinda Martinez" Default_MyQ_Days="4" Legal_Org="CMG" />
+<User User_Name="BERODRIGUEZ" Default_Facility="8330 RED OAK SUITE #201" Role="Medical Assistant" Physician_Library_ID="0" person_name="Belen Rodriguez" Default_MyQ_Days="4" Legal_Org="CMG" />
+<User User_Name="BGALLO" Default_Facility="9170 HAVEN AVENUE, SUITE 120" Role="Medical Assistant" Physician_Library_ID="0" person_name="Beatriz Gallo" Default_MyQ_Days="4" Legal_Org="CMG" />
+<User User_Name="BGONZALEZ" Default_Facility="160 E. ARTESIA STREET, STE #360" Role="Medical Assistant" Physician_Library_ID="0" person_name="Brandy Gonzalez" Default_MyQ_Days="4" Legal_Org="CMG" />
+<User User_Name="BGUERRA" Default_Facility="840 TOWN CENTER DR" Role="Coder" Physician_Library_ID="0" person_name="Barbara Guerra" Default_MyQ_Days="4" Legal_Org="CMG" />
+<User User_Name="BHERNANDEZ" Default_Facility="9190 HAVEN AVE 1ST FLR" Role="Medical Assistant" Physician_Library_ID="0" person_name="Brenda Hernandez" Default_MyQ_Days="4" Legal_Org="CMG" />
+<User User_Name="BHEYING" Default_Facility="8330 RED OAK SUITE #101" Role="Physician Assistant" Physician_Library_ID="4962" person_name="Brooke Heying, PA" Default_MyQ_Days="14" Legal_Org="CMG" />
+<User User_Name="BHUGHES" Default_Facility="297 WEST ARTESIA STREET, SUITE A" Role="Physician Assistant" Physician_Library_ID="4154" person_name="Brian Hughes PA-C" Default_MyQ_Days="14" Legal_Org="CMG" />
+<User User_Name="BIMIN" Default_Facility="160 E. ARTESIA STREET, STE #360" Role="Medical Assistant" Physician_Library_ID="0" person_name="Brett Iminormino" Default_MyQ_Days="4" Legal_Org="CMG" />
+<User User_Name="BJIMENEZ" Default_Facility="9190 HAVEN AVE 1ST FLR" Role="Medical Assistant" Physician_Library_ID="0" person_name="Blanca Jimenez" Default_MyQ_Days="4" Legal_Org="CMG" />
+<User User_Name="BJOEL" Default_Facility="790 E BONITA AVE" Role="Front Office" Physician_Library_ID="0" person_name="Bhupathi Joel" Default_MyQ_Days="4" Legal_Org="CMG" />
+<User User_Name="BKHAKHERIA" Default_Facility="9190 HAVEN AVE 1ST FLR" Role="Medical Assistant" Physician_Library_ID="0" person_name="Breanna Khakheria" Default_MyQ_Days="4" Legal_Org="CMG" />
+<User User_Name="BLEMUS" Default_Facility="1866 N OG AVE # 202" Role="Office Manager" Physician_Library_ID="0" person_name="Bernice Lemus" Default_MyQ_Days="4" Legal_Org="CMG" />
+<User User_Name="BLICCIARDO" Default_Facility="1904 N OG AVE" Role="Physician" Physician_Library_ID="103" person_name="Betty Licciardo R.D.,M.P.H.,C.D.E." Default_MyQ_Days="14" Legal_Org="CMG" />
+<User User_Name="BMARTINEZ" Default_Facility="9190 HAVEN AVE 1ST FLR" Role="Medical Assistant" Physician_Library_ID="0" person_name="Brenda Martinez" Default_MyQ_Days="4" Legal_Org="CMG" />
+<User User_Name="BMVALENCIA" Default_Facility="790 E BONITA AVE" Role="Medical Assistant" Physician_Library_ID="0" person_name="Bianca Murillovalencia" Default_MyQ_Days="4" Legal_Org="CMG" />
+<User User_Name="BNIGEL" Default_Facility="840 TOWN CENTER DR" Role="Front Office" Physician_Library_ID="0" person_name="Bandong, Nigel" Default_MyQ_Days="4" Legal_Org="CMG" />
+<User User_Name="BPADILLA" Default_Facility="138 HARVARD AVE" Role="Medical Assistant" Physician_Library_ID="0" person_name="Bianey Padilla" Default_MyQ_Days="4" Legal_Org="CMG" />
+<User User_Name="BPANDYA" Default_Facility="1866 N OG AVE # 202" Role="Physician" Physician_Library_ID="5038" person_name="Dr. Bhavi Pandya M.D." Default_MyQ_Days="14" Legal_Org="CMG" />
+<User User_Name="BRAMIREZ" Default_Facility="790 E BONITA AVE" Role="Medical Assistant" Physician_Library_ID="0" person_name="Brittany Ramirez" Default_MyQ_Days="4" Legal_Org="CMG" />
+<User User_Name="BRMARTINEZ" Default_Facility="790 E BONITA AVE" Role="Medical Assistant" Physician_Library_ID="0" person_name="Brenda Martinez" Default_MyQ_Days="4" Legal_Org="CMG" />
+<User User_Name="BRRAMIREZ" Default_Facility="297 WEST ARTESIA STREET, SUITE A" Role="Medical Assistant" Physician_Library_ID="0" person_name="Brianna Ramirez" Default_MyQ_Days="4" Legal_Org="CMG" />
+<User User_Name="BTAYLOR" Default_Facility="1866 N OG AVE # 202" Role="Front Office" Physician_Library_ID="0" person_name="Brint Taylor" Default_MyQ_Days="4" Legal_Org="CMG" />
+<User User_Name="BULLOA" Default_Facility="9170 HAVEN AVENUE, SUITE 120" Role="Physician Assistant" Physician_Library_ID="4904" person_name="Brianda Ulloa, PA-C" Default_MyQ_Days="14" Legal_Org="CMG" />
+<User User_Name="BVALDEZ" Default_Facility="CMG LAB AND ANCILLARY 1866 #101" Role="Medical Assistant" Physician_Library_ID="0" person_name="Beatriz Valdez" Default_MyQ_Days="4" Legal_Org="CMG" />
+<User User_Name="CAELIAS" Default_Facility="9190 HAVEN AVENUE (Haven Urgent Care)" Role="Medical Assistant" Physician_Library_ID="0" person_name="Carolina Elias" Default_MyQ_Days="4" Legal_Org="CMG" />
+<User User_Name="CAGONZALEZ" Default_Facility="1866 N OG AVE # 202" Role="Front Office" Physician_Library_ID="0" person_name="Carissa Gonzalez" Default_MyQ_Days="4" Legal_Org="CMG" />
+<User User_Name="CALMA" Default_Facility="160 E. ARTESIA STREET, STE #360" Role="Medical Assistant" Physician_Library_ID="0" person_name="Celina De Alma" Default_MyQ_Days="4" Legal_Org="CMG" />
+<User User_Name="CAMARTINEZ" Default_Facility="9190 HAVEN AVE II FLOOR SUITE# 210" Role="Medical Assistant" Physician_Library_ID="0" person_name="Catherine Martinez" Default_MyQ_Days="4" Legal_Org="CMG" />
+<User User_Name="CANCIRA" Default_Facility="160 E. ARTESIA STREET, STE #360" Role="Medical Assistant" Physician_Library_ID="0" person_name="Celia Ancira" Default_MyQ_Days="4" Legal_Org="CMG" />
+<User User_Name="CBOSCH" Default_Facility="840 TOWN CENTER DR" Role="Office Manager" Physician_Library_ID="0" person_name="Cathy Bosch" Default_MyQ_Days="4" Legal_Org="CMG" />
+<User User_Name="CBURROLA" Default_Facility="790 E BONITA AVE" Role="Medical Assistant" Physician_Library_ID="0" person_name="Claudia Burrola" Default_MyQ_Days="4" Legal_Org="CMG" />
+<User User_Name="CCARRILLO" Default_Facility="9190 HAVEN AVE 1ST FLR" Role="Medical Assistant" Physician_Library_ID="0" person_name="Crystal Carrillo" Default_MyQ_Days="4" Legal_Org="CMG" />
+<User User_Name="CCASAR" Default_Facility="790 E BONITA AVE" Role="Medical Assistant" Physician_Library_ID="0" person_name="Champee Casar" Default_MyQ_Days="4" Legal_Org="CMG" />
+<User User_Name="CCASCO" Default_Facility="9190 HAVEN AVE 1ST FLR" Role="Medical Assistant" Physician_Library_ID="0" person_name="Carol Casco" Default_MyQ_Days="4" Legal_Org="CMG" />
+<User User_Name="CDEALBA" Default_Facility="160 E. ARTESIA STREET, STE #360" Role="Medical Assistant" Physician_Library_ID="0" person_name="Celina DeAlba" Default_MyQ_Days="4" Legal_Org="CMG" />
+<User User_Name="CDREYER" Default_Facility="8330 RED OAK SUITE #201" Role="Physician Assistant" Physician_Library_ID="4963" person_name="Carolyn Marie Dreyer, NP" Default_MyQ_Days="14" Legal_Org="CMG" />
+<User User_Name="CDUNLOP" Default_Facility="840 TOWN CENTER DR" Role="Coder" Physician_Library_ID="0" person_name="Charlene Dunlop" Default_MyQ_Days="4" Legal_Org="CMG" />
+<User User_Name="CERAMALLU" Default_Facility="1866 N OG AVE # 104" Role="Front Office" Physician_Library_ID="0" person_name="Charan Kumar Goud Eramallu" Default_MyQ_Days="4" Legal_Org="CMG" />
+<User User_Name="CGALVAREZ" Default_Facility="9170 HAVEN AVENUE, SUITE 120" Role="Medical Assistant" Physician_Library_ID="0" person_name="Citlaly Gutierrez Alvarez" Default_MyQ_Days="4" Legal_Org="CMG" />
+<User User_Name="CGARCIA" Default_Facility="9190 HAVEN AVE 1ST FLR" Role="Medical Assistant" Physician_Library_ID="0" person_name="Carla Garcia" Default_MyQ_Days="4" Legal_Org="CMG" />
+<User User_Name="CGARCIA1" Default_Facility="8330 RED OAK SUITE #101" Role="Medical Assistant" Physician_Library_ID="0" person_name="Cynthia Garcia" Default_MyQ_Days="4" Legal_Org="CMG" />
+<User User_Name="CHARPER" Default_Facility="297 WEST ARTESIA STREET, SUITE A" Role="Physician" Physician_Library_ID="4199" person_name="Dr. Christopher Harper M.D." Default_MyQ_Days="14" Legal_Org="CMG" />
+<User User_Name="CHNGINN" Default_Facility="1866 N OG AVE # 201" Role="Front Office" Physician_Library_ID="0" person_name="Chanly Nginn" Default_MyQ_Days="4" Legal_Org="CMG" />
+<User User_Name="CJANAGAM" Default_Facility="160 E. ARTESIA STREET, STE #360" Role="Front Office" Physician_Library_ID="0" person_name="Chandhana Janagam" Default_MyQ_Days="4" Legal_Org="CMG" />
+<User User_Name="CLANDINO" Default_Facility="1866 N OG AVE # 202" Role="Front Office" Physician_Library_ID="0" person_name="Citlali Landino" Default_MyQ_Days="4" Legal_Org="CMG" />
+<User User_Name="CLEE" Default_Facility="520 E FOOTHILL BLVD #A" Role="Medical Assistant" Physician_Library_ID="0" person_name="Christina M Lee" Default_MyQ_Days="4" Legal_Org="CMG" />
+<User User_Name="CMARIN" Default_Facility="160 E. ARTESIA STREET, STE #360" Role="Front Office" Physician_Library_ID="0" person_name="Chantel Marin" Default_MyQ_Days="4" Legal_Org="CMG" />
+<User User_Name="CMATHENY" Default_Facility="9190 HAVEN AVE 1ST FLR" Role="Medical Assistant" Physician_Library_ID="0" person_name="Cynthia Matheny" Default_MyQ_Days="4" Legal_Org="CMG" />
+<User User_Name="CMONTANO" Default_Facility="1904 N OG AVE" Role="Medical Assistant" Physician_Library_ID="0" person_name="Cindy Montano" Default_MyQ_Days="4" Legal_Org="CMG" />
+<User User_Name="CMONTES" Default_Facility="9190 HAVEN AVE 1ST FLR" Role="Medical Assistant" Physician_Library_ID="0" person_name="Cynthia Montes" Default_MyQ_Days="4" Legal_Org="CMG" />
+<User User_Name="CMONTESA" Default_Facility="1940 N ORANGE GROVE" Role="Physician" Physician_Library_ID="4792" person_name="Dr. Christine Montesa M.D." Default_MyQ_Days="14" Legal_Org="CMG" />
+<User User_Name="CMONTESA_SCRIBE" Default_Facility="1940 N ORANGE GROVE" Role="Scribe" Physician_Library_ID="4983" person_name="Montesa Scribe" Default_MyQ_Days="14" Legal_Org="CMG" />
+<User User_Name="CNOYOLA" Default_Facility="297 WEST ARTESIA STREET, SUITE A" Role="Medical Assistant" Physician_Library_ID="0" person_name="Cristina Noyola" Default_MyQ_Days="4" Legal_Org="CMG" />
+<User User_Name="COBANDO" Default_Facility="9190 HAVEN AVE 1ST FLR" Role="Medical Assistant" Physician_Library_ID="0" person_name="Obando, Cherry" Default_MyQ_Days="4" Legal_Org="CMG" />
+<User User_Name="COGONZALEZ" Default_Facility="520 E FOOTHILL BLVD #A" Role="Medical Assistant" Physician_Library_ID="0" person_name="Corina Gonzalez" Default_MyQ_Days="4" Legal_Org="CMG" />
+<User User_Name="CO_5" Default_Facility="TEST FACILITY" Role="Coder" Physician_Library_ID="0" person_name="CO_5" Default_MyQ_Days="4" Legal_Org="CMG" />
+<User User_Name="CO_7" Default_Facility="TEST FACILITY" Role="Coder" Physician_Library_ID="0" person_name="CO_7" Default_MyQ_Days="4" Legal_Org="CMG" />
+<User User_Name="CO_DB" Default_Facility="TEST FACILITY" Role="Coder" Physician_Library_ID="0" person_name="CO_DB" Default_MyQ_Days="4" Legal_Org="CMG" />
+<User User_Name="CO_RJ" Default_Facility="RJ TEST FACILITY" Role="Coder" Physician_Library_ID="0" person_name="Coder_RJ" Default_MyQ_Days="4" Legal_Org="RJ" />
+<User User_Name="CPEDIREDLA" Default_Facility="1940 N ORANGE GROVE" Role="Front Office" Physician_Library_ID="0" person_name="Chandana Pediredla" Default_MyQ_Days="4" Legal_Org="CMG" />
+<User User_Name="CRCARRILLO" Default_Facility="1866 N OG AVE # 102" Role="Front Office" Physician_Library_ID="0" person_name="Cristal Carillo" Default_MyQ_Days="4" Legal_Org="CMG" />
+<User User_Name="CRUIZ" Default_Facility="160 E ARTESIA #220" Role="Front Office" Physician_Library_ID="0" person_name="Crystal Ruiz" Default_MyQ_Days="4" Legal_Org="CMG" />
+<User User_Name="CTOSCANO" Default_Facility="297 WEST ARTESIA STREET, SUITE A" Role="Medical Assistant" Physician_Library_ID="0" person_name="Cindy Toscano" Default_MyQ_Days="4" Legal_Org="CMG" />
+<User User_Name="CWILLIAMS" Default_Facility="840 TOWN CENTER DR" Role="Front Office" Physician_Library_ID="0" person_name="Caryn Williams" Default_MyQ_Days="4" Legal_Org="CMG" />
+<User User_Name="CYEPEZ" Default_Facility="297 WEST ARTESIA STREET, SUITE A" Role="Front Office" Physician_Library_ID="0" person_name="Cynthia Yepez" Default_MyQ_Days="4" Legal_Org="CMG" />
+<User User_Name="DAGUAYO" Default_Facility="790 E BONITA AVE" Role="Medical Assistant" Physician_Library_ID="0" person_name="DANIELA AGUAYO" Default_MyQ_Days="4" Legal_Org="CMG" />
+<User User_Name="DAGUILERA" Default_Facility="9190 HAVEN AVE 1ST FLR" Role="Medical Assistant" Physician_Library_ID="0" person_name="Deirdre Aguilera" Default_MyQ_Days="4" Legal_Org="CMG" />
+<User User_Name="DAGUILERA_CT" Default_Facility="CMG LAB AND ANCILLARY 1866 #101" Role="Technician" Physician_Library_ID="4773" person_name="Deirdre Aguilera" Default_MyQ_Days="4" Legal_Org="CMG" />
+<User User_Name="DAGUIRRE" Default_Facility="790 E BONITA AVE" Role="Medical Assistant" Physician_Library_ID="0" person_name="Diana Aguirre" Default_MyQ_Days="4" Legal_Org="CMG" />
+<User User_Name="DAMARTINEZ" Default_Facility="160 E ARTESIA #220" Role="Front Office" Physician_Library_ID="0" person_name="Daisy Martinez" Default_MyQ_Days="4" Legal_Org="CMG" />
+<User User_Name="DAYALA" Default_Facility="811 E 11TH ST, SUITE# 208" Role="Medical Assistant" Physician_Library_ID="0" person_name="Destini Ayala" Default_MyQ_Days="4" Legal_Org="CMG" />
+<User User_Name="DBAUMANN" Default_Facility="9190 HAVEN AVE 1ST FLR" Role="Medical Assistant" Physician_Library_ID="0" person_name="Denise Baumann" Default_MyQ_Days="4" Legal_Org="CMG" />
+<User User_Name="DBHOWMIK" Default_Facility="TEST FACILITY" Role="Coder" Physician_Library_ID="0" person_name="Dipankar Bhowmik_722" Default_MyQ_Days="4" Legal_Org="CMG" />
+<User User_Name="DCAO" Default_Facility="520 E FOOTHILL BLVD #A" Role="Physician Assistant" Physician_Library_ID="4905" person_name="David Cao, PA-C" Default_MyQ_Days="14" Legal_Org="CMG" />
+<User User_Name="DCAZESSUS" Default_Facility="9190 HAVEN AVE II FLOOR SUITE# 210" Role="Medical Assistant" Physician_Library_ID="0" person_name="Dennise Cazessus" Default_MyQ_Days="4" Legal_Org="CMG" />
+<User User_Name="DCGUERRERO" Default_Facility="9190 HAVEN AVE 1ST FLR" Role="Medical Assistant" Physician_Library_ID="0" person_name="Diana Cabrera-Guerrero" Default_MyQ_Days="4" Legal_Org="CMG" />
+<User User_Name="DCHANG" Default_Facility="TEST FACILITY" Role="Physician" Physician_Library_ID="4931" person_name="Dr.David Chang M.D." Default_MyQ_Days="14" Legal_Org="CMG" />
+<User User_Name="DCOLLAZO" Default_Facility="160 E. ARTESIA STREET, STE #360" Role="Office Manager" Physician_Library_ID="0" person_name="Debra Collazo" Default_MyQ_Days="4" Legal_Org="CMG" />
+<User User_Name="DDESAI" Default_Facility="1866 N OG AVE # 202" Role="Front Office" Physician_Library_ID="0" person_name="Dinakar Desai" Default_MyQ_Days="4" Legal_Org="CMG" />
+<User User_Name="DEGARCIA" Default_Facility="160 E. ARTESIA STREET, STE #360" Role="Medical Assistant" Physician_Library_ID="0" person_name="Desire Garcia" Default_MyQ_Days="4" Legal_Org="CMG" />
+<User User_Name="DEVICE_TECH" Default_Facility="DEVICE FACILITY" Role="Medical Assistant" Physician_Library_ID="0" person_name="Device Tech" Default_MyQ_Days="4" Legal_Org="CMG" />
+<User User_Name="DIBHOWMIK" Default_Facility="297 WEST ARTESIA STREET, SUITE A" Role="Front Office" Physician_Library_ID="0" person_name="Dipankar Bhowmik" Default_MyQ_Days="4" Legal_Org="CMG" />
+<User User_Name="DJASSO" Default_Facility="9190 HAVEN AVE 1ST FLR" Role="Medical Assistant" Physician_Library_ID="0" person_name="Deanna Jasso" Default_MyQ_Days="4" Legal_Org="CMG" />
+<User User_Name="DJOHNSON" Default_Facility="160 E. ARTESIA STREET, STE #360" Role="Medical Assistant" Physician_Library_ID="0" person_name="Donyel Johnson" Default_MyQ_Days="4" Legal_Org="CMG" />
+<User User_Name="DLAURA" Default_Facility="1866 N OG AVE # 202" Role="Front Office" Physician_Library_ID="0" person_name="Laura Diaz" Default_MyQ_Days="4" Legal_Org="CMG" />
+<User User_Name="DMADRID" Default_Facility="1866 N OG AVE # 202" Role="Medical Assistant" Physician_Library_ID="0" person_name="Daraneisha Madrid" Default_MyQ_Days="4" Legal_Org="CMG" />
+<User User_Name="DMARTINEZ" Default_Facility="1940 N ORANGE GROVE" Role="Medical Assistant" Physician_Library_ID="0" person_name="Daisy Martinez" Default_MyQ_Days="4" Legal_Org="CMG" />
+<User User_Name="DMEEHAN" Default_Facility="1866 N OG AVE # 202" Role="Office Manager" Physician_Library_ID="0" person_name="Denise Meehan" Default_MyQ_Days="4" Legal_Org="CMG" />
+<User User_Name="DMENDOZA" Default_Facility="9170 HAVEN AVENUE, SUITE 120" Role="Medical Assistant" Physician_Library_ID="0" person_name="Denise Mendoza" Default_MyQ_Days="4" Legal_Org="CMG" />
+<User User_Name="DMONGE" Default_Facility="790 E BONITA AVE" Role="Front Office" Physician_Library_ID="0" person_name="Delmy Monge" Default_MyQ_Days="4" Legal_Org="CMG" />
+<User User_Name="DPATEL" Default_Facility="790 E BONITA AVE" Role="Medical Assistant" Physician_Library_ID="0" person_name="Divya Patel" Default_MyQ_Days="4" Legal_Org="CMG" />
+<User User_Name="DPULIGILLA" Default_Facility="790 E BONITA AVE" Role="Front Office" Physician_Library_ID="0" person_name="Dayakar Puligilla" Default_MyQ_Days="4" Legal_Org="CMG" />
+<User User_Name="DRAPTIS" Default_Facility="1940 N ORANGE GROVE" Role="Physician" Physician_Library_ID="2855" person_name="Dr. Derrick Raptis M.D." Default_MyQ_Days="14" Legal_Org="CMG" />
+<User User_Name="DREAL" Default_Facility="CMG LAB AND ANCILLARY 1866 #101" Role="Technician" Physician_Library_ID="4762" person_name="Daisy Real" Default_MyQ_Days="4" Legal_Org="CMG" />
+<User User_Name="DREAL_MA" Default_Facility="1866 N OG AVE # 202" Role="Medical Assistant" Physician_Library_ID="0" person_name="Daisy Real" Default_MyQ_Days="4" Legal_Org="CMG" />
+<User User_Name="DRODRIGUEZ" Default_Facility="430 W BASELINE AVE" Role="Front Office" Physician_Library_ID="0" person_name="Denise Rodriguez" Default_MyQ_Days="4" Legal_Org="CMG" />
+<User User_Name="DROJAS" Default_Facility="160 E. ARTESIA STREET, STE #360" Role="Front Office" Physician_Library_ID="0" person_name="David Rojas" Default_MyQ_Days="4" Legal_Org="CMG" />
+<User User_Name="DROSALES" Default_Facility="9170 HAVEN AVENUE, SUITE 120" Role="Medical Assistant" Physician_Library_ID="0" person_name="Diana Rosales" Default_MyQ_Days="4" Legal_Org="CMG" />
+<User User_Name="DROSAS" Default_Facility="1940 N ORANGE GROVE" Role="Medical Assistant" Physician_Library_ID="0" person_name="Desirae Rosas" Default_MyQ_Days="4" Legal_Org="CMG" />
+<User User_Name="DSANDOVAL" Default_Facility="160 E. ARTESIA STREET, STE #360" Role="Front Office" Physician_Library_ID="0" person_name="Dinora Sandoval" Default_MyQ_Days="4" Legal_Org="CMG" />
+<User User_Name="DSILVA" Default_Facility="790 E BONITA AVE" Role="Front Office" Physician_Library_ID="0" person_name="Dominick Silva" Default_MyQ_Days="4" Legal_Org="CMG" />
+<User User_Name="DSORYAL" Default_Facility="840 TOWN CENTER DR" Role="Front Office" Physician_Library_ID="0" person_name="Diana Soryal" Default_MyQ_Days="4" Legal_Org="CMG" />
+<User User_Name="DUNDERWOOD" Default_Facility="9190 HAVEN AVENUE (Haven Urgent Care)" Role="Physician" Physician_Library_ID="1682" person_name="Dr. Donald Underwood DO MD" Default_MyQ_Days="14" Legal_Org="CMG" />
+<User User_Name="DVALAMANESH" Default_Facility="1866 N OG AVE # 102-A" Role="Physician" Physician_Library_ID="107" person_name="Dr. Daryoosh Valamanesh M.D." Default_MyQ_Days="14" Legal_Org="CMG" />
+<User User_Name="DVILLEGAS" Default_Facility="160 E. ARTESIA STREET, STE #360" Role="Medical Assistant" Physician_Library_ID="0" person_name="Daisy Villegas" Default_MyQ_Days="4" Legal_Org="CMG" />
+<User User_Name="DZAVALA" Default_Facility="790 E BONITA AVE" Role="Medical Assistant" Physician_Library_ID="0" person_name="Danielle Zavala" Default_MyQ_Days="4" Legal_Org="CMG" />
+<User User_Name="EALONZO" Default_Facility="9190 HAVEN AVE 1ST FLR" Role="Office Manager" Physician_Library_ID="0" person_name="Eva Alonzo" Default_MyQ_Days="4" Legal_Org="CMG" />
+<User User_Name="ECARRILLO" Default_Facility="160 E. ARTESIA STREET, STE #360" Role="Medical Assistant" Physician_Library_ID="0" person_name="Evelyn Carrillo" Default_MyQ_Days="4" Legal_Org="CMG" />
+<User User_Name="ECASTILLO" Default_Facility="1866 N OG AVE # 202" Role="Front Office" Physician_Library_ID="0" person_name="Ereily Castillo" Default_MyQ_Days="4" Legal_Org="CMG" />
+<User User_Name="ECRUZ" Default_Facility="1866 N OG AVE # 202" Role="Office Manager" Physician_Library_ID="0" person_name="Esther Cruz" Default_MyQ_Days="4" Legal_Org="CMG" />
+<User User_Name="ECRUZ_RJ" Default_Facility="RJ 1866 N OG AVE # 102" Role="Office Manager" Physician_Library_ID="0" person_name="Esther Cruz" Default_MyQ_Days="4" Legal_Org="RJ" />
+<User User_Name="EESCARENO" Default_Facility="790 E BONITA AVE" Role="Medical Assistant" Physician_Library_ID="0" person_name="Erica Escareno" Default_MyQ_Days="4" Legal_Org="CMG" />
+<User User_Name="EGODINEZ" Default_Facility="138 HARVARD AVE" Role="Medical Assistant" Physician_Library_ID="0" person_name="Esbaydi Godinez" Default_MyQ_Days="4" Legal_Org="CMG" />
+<User User_Name="EGOMEZ" Default_Facility="790 E BONITA AVE" Role="Medical Assistant" Physician_Library_ID="0" person_name="Elizabeth Gomez" Default_MyQ_Days="4" Legal_Org="CMG" />
+<User User_Name="EGOMEZ1" Default_Facility="8330 RED OAK SUITE #201" Role="Medical Assistant" Physician_Library_ID="0" person_name="Evelyn Gomez" Default_MyQ_Days="4" Legal_Org="CMG" />
+<User User_Name="EGUERRA" Default_Facility="CMG LAB AND ANCILLARY 1866 #101" Role="Technician" Physician_Library_ID="2878" person_name="Erik Guerra" Default_MyQ_Days="4" Legal_Org="CMG" />
+<User User_Name="EHERNANDEZ" Default_Facility="9190 HAVEN AVE 1ST FLR" Role="Medical Assistant" Physician_Library_ID="0" person_name="Efrain Hernandez" Default_MyQ_Days="4" Legal_Org="CMG" />
+<User User_Name="EHIDALGO" Default_Facility="9170 HAVEN AVENUE, SUITE 108" Role="Medical Assistant" Physician_Library_ID="0" person_name="Elizabeth Hidalgo" Default_MyQ_Days="4" Legal_Org="CMG" />
+<User User_Name="EJACOBO" Default_Facility="790 E BONITA AVE" Role="Medical Assistant" Physician_Library_ID="0" person_name="Elsy Jacobo" Default_MyQ_Days="4" Legal_Org="CMG" />
+<User User_Name="EJONES" Default_Facility="790 E BONITA AVE" Role="Medical Assistant" Physician_Library_ID="0" person_name="Emma Jones" Default_MyQ_Days="4" Legal_Org="CMG" />
+<User User_Name="EKAREN" Default_Facility="CMG LAB AND ANCILLARY 1866 #101" Role="Technician" Physician_Library_ID="2871" person_name="Karen Eckl" Default_MyQ_Days="4" Legal_Org="CMG" />
+<User User_Name="EKONCA" Default_Facility="520 E FOOTHILL BLVD #A" Role="Physician" Physician_Library_ID="102" person_name="Dr. Ewa H Konca M.D." Default_MyQ_Days="14" Legal_Org="CMG" />
+<User User_Name="EMARIN" Default_Facility="1866 N OG AVE # 202" Role="Front Office" Physician_Library_ID="0" person_name="Emily Marin" Default_MyQ_Days="4" Legal_Org="CMG" />
+<User User_Name="EMARTINEZ" Default_Facility="8330 RED OAK SUITE #201" Role="Front Office" Physician_Library_ID="0" person_name="Elizabeth Martinez" Default_MyQ_Days="4" Legal_Org="CMG" />
+<User User_Name="EMONTEZ" Default_Facility="160 E. ARTESIA STREET, STE #360" Role="Medical Assistant" Physician_Library_ID="0" person_name="Erika Montez" Default_MyQ_Days="4" Legal_Org="CMG" />
+<User User_Name="EORTIZ" Default_Facility="9190 HAVEN AVE 1ST FLR" Role="Medical Assistant" Physician_Library_ID="0" person_name="Elizabeth Ortiz" Default_MyQ_Days="4" Legal_Org="CMG" />
+<User User_Name="EPADILLO" Default_Facility="840 TOWN CENTER DR" Role="Front Office" Physician_Library_ID="0" person_name="Vangie Padillo(Evangeline Padillo)" Default_MyQ_Days="4" Legal_Org="CMG" />
+<User User_Name="EPIRKUK" Default_Facility="9170 HAVEN AVENUE, SUITE 120" Role="Office Manager" Physician_Library_ID="0" person_name="Eileen Pirkuk" Default_MyQ_Days="4" Legal_Org="CMG" />
+<User User_Name="ERADA" Default_Facility="840 TOWN CENTER DR" Role="Front Office" Physician_Library_ID="0" person_name="Eleazar Rada" Default_MyQ_Days="4" Legal_Org="CMG" />
+<User User_Name="ERAMIREZ" Default_Facility="1866 N OG AVE # 202" Role="Medical Assistant" Physician_Library_ID="0" person_name="Enedina Ramirez" Default_MyQ_Days="4" Legal_Org="CMG" />
+<User User_Name="EROBISKIE" Default_Facility="1866 N OG AVE # 202" Role="Front Office" Physician_Library_ID="0" person_name="Elka Robiskie" Default_MyQ_Days="4" Legal_Org="CMG" />
+<User User_Name="EROSALES" Default_Facility="1866 N OG AVE # 102" Role="Front Office" Physician_Library_ID="0" person_name="Elsa Rosales" Default_MyQ_Days="4" Legal_Org="CMG" />
+<User User_Name="ESALAS" Default_Facility="9190 HAVEN AVE II FLOOR SUITE# 200" Role="Front Office" Physician_Library_ID="0" person_name="Elvia Salas" Default_MyQ_Days="4" Legal_Org="CMG" />
+<User User_Name="ESANTILLIAN" Default_Facility="8330 RED OAK SUITE #101" Role="Medical Assistant" Physician_Library_ID="0" person_name="Esmeralda Santillian" Default_MyQ_Days="4" Legal_Org="CMG" />
+<User User_Name="ESOMERA" Default_Facility="1866 N OG AVE # 104" Role="Medical Assistant" Physician_Library_ID="0" person_name="Erikka Somera" Default_MyQ_Days="4" Legal_Org="CMG" />
+<User User_Name="ETEJEDA" Default_Facility="790 E BONITA AVE" Role="Medical Assistant" Physician_Library_ID="0" person_name="Esmeralda Tejeda" Default_MyQ_Days="4" Legal_Org="CMG" />
+<User User_Name="ETORRES" Default_Facility="9190 HAVEN AVE 1ST FLR" Role="Medical Assistant" Physician_Library_ID="0" person_name="Erika Torres" Default_MyQ_Days="4" Legal_Org="CMG" />
+<User User_Name="EVILLA" Default_Facility="9190 HAVEN AVE 1ST FLR" Role="Medical Assistant" Physician_Library_ID="0" person_name="Elizabeth Villa-Fana" Default_MyQ_Days="4" Legal_Org="CMG" />
+<User User_Name="EWALKER" Default_Facility="160 E. ARTESIA STREET, STE #360" Role="Medical Assistant" Physician_Library_ID="0" person_name="Elizabeth Walker" Default_MyQ_Days="4" Legal_Org="CMG" />
+<User User_Name="EWEATHER" Default_Facility="160 E. ARTESIA STREET, STE #360" Role="Medical Assistant" Physician_Library_ID="0" person_name="Evan Weathersby" Default_MyQ_Days="4" Legal_Org="CMG" />
+<User User_Name="EWILPHRED" Default_Facility="TEST FACILITY" Role="Front Office" Physician_Library_ID="0" person_name="Wilphred.E" Default_MyQ_Days="4" Legal_Org="CMG" />
+<User User_Name="FBOBADILLA" Default_Facility="811 E 11TH ST, SUITE# 208" Role="Medical Assistant" Physician_Library_ID="0" person_name="Fabiola Bobadilla" Default_MyQ_Days="4" Legal_Org="CMG" />
+<User User_Name="FJOAQUIN" Default_Facility="811 E 11TH ST, SUITE# 208" Role="Medical Assistant" Physician_Library_ID="0" person_name="Fatima Joaquin" Default_MyQ_Days="4" Legal_Org="CMG" />
+<User User_Name="FMONREAL" Default_Facility="8330 RED OAK SUITE #201" Role="Medical Assistant" Physician_Library_ID="0" person_name="Fernanda Monreal" Default_MyQ_Days="4" Legal_Org="CMG" />
+<User User_Name="FOTEST" Default_Facility="TEST FACILITY" Role="Front Office" Physician_Library_ID="0" person_name="FOTest" Default_MyQ_Days="4" Legal_Org="CMG" />
+<User User_Name="FO_1" Default_Facility="TEST FACILITY" Role="Front Office" Physician_Library_ID="0" person_name="FO_1" Default_MyQ_Days="4" Legal_Org="CMG" />
+<User User_Name="FO_10" Default_Facility="TEST FACILITY" Role="Front Office" Physician_Library_ID="0" person_name="FO_10" Default_MyQ_Days="4" Legal_Org="CMG" />
+<User User_Name="FO_11" Default_Facility="TEST FACILITY" Role="Front Office" Physician_Library_ID="0" person_name="FO_11" Default_MyQ_Days="4" Legal_Org="CMG" />
+<User User_Name="FO_12" Default_Facility="TEST FACILITY" Role="Front Office" Physician_Library_ID="0" person_name="FO_12" Default_MyQ_Days="4" Legal_Org="CMG" />
+<User User_Name="FO_13" Default_Facility="TEST FACILITY" Role="Front Office" Physician_Library_ID="0" person_name="FO_13" Default_MyQ_Days="4" Legal_Org="CMG" />
+<User User_Name="FO_14" Default_Facility="TEST FACILITY" Role="Front Office" Physician_Library_ID="0" person_name="FO_14" Default_MyQ_Days="4" Legal_Org="CMG" />
+<User User_Name="FO_15" Default_Facility="TEST FACILITY" Role="Front Office" Physician_Library_ID="0" person_name="FO_15" Default_MyQ_Days="4" Legal_Org="CMG" />
+<User User_Name="FO_16" Default_Facility="TEST FACILITY" Role="Front Office" Physician_Library_ID="0" person_name="FO_16" Default_MyQ_Days="4" Legal_Org="CMG" />
+<User User_Name="FO_17" Default_Facility="TEST FACILITY" Role="Front Office" Physician_Library_ID="0" person_name="FO_17" Default_MyQ_Days="4" Legal_Org="CMG" />
+<User User_Name="FO_18" Default_Facility="TEST FACILITY" Role="Front Office" Physician_Library_ID="0" person_name="FO_18" Default_MyQ_Days="4" Legal_Org="CMG" />
+<User User_Name="FO_19" Default_Facility="TEST FACILITY" Role="Front Office" Physician_Library_ID="0" person_name="FO_19" Default_MyQ_Days="4" Legal_Org="CMG" />
+<User User_Name="FO_20" Default_Facility="TEST FACILITY" Role="Front Office" Physician_Library_ID="0" person_name="FO_20" Default_MyQ_Days="4" Legal_Org="CMG" />
+<User User_Name="FO_21" Default_Facility="TEST FACILITY" Role="Front Office" Physician_Library_ID="0" person_name="FO_21" Default_MyQ_Days="4" Legal_Org="CMG" />
+<User User_Name="FO_22" Default_Facility="TEST FACILITY" Role="Front Office" Physician_Library_ID="0" person_name="FO_22" Default_MyQ_Days="4" Legal_Org="CMG" />
+<User User_Name="FO_23" Default_Facility="TEST FACILITY" Role="Front Office" Physician_Library_ID="0" person_name="FO_23" Default_MyQ_Days="4" Legal_Org="CMG" />
+<User User_Name="FO_24" Default_Facility="TEST FACILITY" Role="Front Office" Physician_Library_ID="0" person_name="FO_24" Default_MyQ_Days="4" Legal_Org="CMG" />
+<User User_Name="FO_25" Default_Facility="TEST FACILITY" Role="Front Office" Physician_Library_ID="0" person_name="FO_25" Default_MyQ_Days="4" Legal_Org="CMG" />
+<User User_Name="FO_26" Default_Facility="TEST FACILITY" Role="Front Office" Physician_Library_ID="0" person_name="FO_26" Default_MyQ_Days="4" Legal_Org="CMG" />
+<User User_Name="FO_27" Default_Facility="TEST FACILITY" Role="Front Office" Physician_Library_ID="0" person_name="FO_27" Default_MyQ_Days="4" Legal_Org="CMG" />
+<User User_Name="FO_28" Default_Facility="TEST FACILITY" Role="Front Office" Physician_Library_ID="0" person_name="FO_28" Default_MyQ_Days="4" Legal_Org="CMG" />
+<User User_Name="FO_29" Default_Facility="TEST FACILITY" Role="Front Office" Physician_Library_ID="0" person_name="FO_29" Default_MyQ_Days="4" Legal_Org="CMG" />
+<User User_Name="FO_30" Default_Facility="TEST FACILITY" Role="Front Office" Physician_Library_ID="0" person_name="FO_30" Default_MyQ_Days="4" Legal_Org="CMG" />
+<User User_Name="FO_5" Default_Facility="TEST FACILITY" Role="Front Office" Physician_Library_ID="0" person_name="FO_5" Default_MyQ_Days="4" Legal_Org="CMG" />
+<User User_Name="FO_7" Default_Facility="TEST FACILITY" Role="Front Office" Physician_Library_ID="0" person_name="FO_7" Default_MyQ_Days="4" Legal_Org="CMG" />
+<User User_Name="FO_DB" Default_Facility="TEST FACILITY" Role="Front Office" Physician_Library_ID="0" person_name="FO_DB" Default_MyQ_Days="4" Legal_Org="CMG" />
+<User User_Name="FO_DB_RJ" Default_Facility="RJ TEST FACILITY" Role="Front Office" Physician_Library_ID="0" person_name="FO_DB_RJ" Default_MyQ_Days="4" Legal_Org="RJ" />
+<User User_Name="FO_RJ" Default_Facility="RJ TEST FACILITY" Role="Front Office" Physician_Library_ID="0" person_name="FO_RJ" Default_MyQ_Days="4" Legal_Org="RJ" />
+<User User_Name="FO_TEST" Default_Facility="TEST FACILITY" Role="Front Office" Physician_Library_ID="0" person_name="FO TEST" Default_MyQ_Days="4" Legal_Org="CMG" />
+<User User_Name="GACUNA" Default_Facility="790 E BONITA AVE" Role="Front Office" Physician_Library_ID="0" person_name="Gloria Acuna" Default_MyQ_Days="4" Legal_Org="CMG" />
+<User User_Name="GAPPALA" Default_Facility="9190 HAVEN AVE II FLOOR SUITE# 200" Role="Front Office" Physician_Library_ID="0" person_name="Gayathri Appala" Default_MyQ_Days="4" Legal_Org="CMG" />
+<User User_Name="GARCIAD" Default_Facility="9190 HAVEN AVE II FLOOR SUITE# 210" Role="Medical Assistant" Physician_Library_ID="0" person_name="Danielle Garcia" Default_MyQ_Days="4" Legal_Org="CMG" />
+<User User_Name="GCHRISTIE" Default_Facility="CMG LAB AND ANCILLARY 1866 #101" Role="Front Office" Physician_Library_ID="0" person_name="Gonzalez  Christie" Default_MyQ_Days="4" Legal_Org="CMG" />
+<User User_Name="GCLEMENTE" Default_Facility="CMG LAB AND ANCILLARY 1866 #101" Role="Technician" Physician_Library_ID="4949" person_name="Gabriela Clemente" Default_MyQ_Days="4" Legal_Org="CMG" />
+<User User_Name="GCRISTELA" Default_Facility="1866 N OG AVE # 202" Role="Medical Assistant" Physician_Library_ID="0" person_name="Gomez Cristela" Default_MyQ_Days="4" Legal_Org="CMG" />
+<User User_Name="GDGUZMAN" Default_Facility="840 TOWN CENTER DR" Role="Front Office" Physician_Library_ID="0" person_name="Gaynelle De Guzman" Default_MyQ_Days="4" Legal_Org="CMG" />
+<User User_Name="GDIAZ" Default_Facility="790 E BONITA AVE" Role="Medical Assistant" Physician_Library_ID="0" person_name="Gabrielle Diaz" Default_MyQ_Days="4" Legal_Org="CMG" />
+<User User_Name="GENRIQUEZ" Default_Facility="160 E. ARTESIA STREET, STE #360" Role="Front Office" Physician_Library_ID="0" person_name="Gladys Enriquez" Default_MyQ_Days="4" Legal_Org="CMG" />
+<User User_Name="GGALLARDO" Default_Facility="9190 HAVEN AVE 1ST FLR" Role="Medical Assistant" Physician_Library_ID="0" person_name="Gisel Gallardo" Default_MyQ_Days="4" Legal_Org="CMG" />
+<User User_Name="GGAO" Default_Facility="1940 N ORANGE GROVE" Role="Physician" Physician_Library_ID="4152" person_name="Dr. Guangqiang Gao M.D." Default_MyQ_Days="14" Legal_Org="CMG" />
+<User User_Name="GGARDNER" Default_Facility="9190 HAVEN AVE 1ST FLR" Role="Medical Assistant" Physician_Library_ID="0" person_name="Gail Gardner" Default_MyQ_Days="4" Legal_Org="CMG" />
+<User User_Name="GHERNANDEZ" Default_Facility="297 WEST ARTESIA STREET, SUITE A" Role="Medical Assistant" Physician_Library_ID="0" person_name="Gabriela Hernandez" Default_MyQ_Days="4" Legal_Org="CMG" />
+<User User_Name="GKVISHNU" Default_Facility="TEST FACILITY" Role="Front Office" Physician_Library_ID="0" person_name="Govinda Kumar Vishnubhatla" Default_MyQ_Days="4" Legal_Org="CMG" />
+<User User_Name="GLERCEL" Default_Facility="160 E. ARTESIA STREET, STE #360" Role="Physician" Physician_Library_ID="222" person_name="Dr. Gregory R Lercel M.D." Default_MyQ_Days="14" Legal_Org="CMG" />
+<User User_Name="GMARCIAL" Default_Facility="9190 HAVEN AVE 1ST FLR" Role="Medical Assistant" Physician_Library_ID="0" person_name="Genesis Marcial" Default_MyQ_Days="4" Legal_Org="CMG" />
+<User User_Name="GMOLINA" Default_Facility="790 E BONITA AVE" Role="Medical Assistant" Physician_Library_ID="0" person_name="Grisel Molina" Default_MyQ_Days="4" Legal_Org="CMG" />
+<User User_Name="GMONDRAGON" Default_Facility="1904 N OG AVE" Role="Office Manager" Physician_Library_ID="0" person_name="Gloria Mondragon" Default_MyQ_Days="4" Legal_Org="CMG" />
+<User User_Name="GPARIKH" Default_Facility="1866 N OG AVE # 202" Role="Physician" Physician_Library_ID="4296" person_name="Dr. Gaurav Parikh MD" Default_MyQ_Days="14" Legal_Org="CMG" />
+<User User_Name="GPEREZ" Default_Facility="8330 RED OAK SUITE #101" Role="Medical Assistant" Physician_Library_ID="0" person_name="Guadalupe Perez" Default_MyQ_Days="4" Legal_Org="CMG" />
+<User User_Name="GRODRIGUEZ" Default_Facility="1866 N OG AVE # 202" Role="Front Office" Physician_Library_ID="0" person_name="Gloria Rodriguez" Default_MyQ_Days="4" Legal_Org="CMG" />
+<User User_Name="GSADANA" Default_Facility="1940 N ORANGE GROVE" Role="Physician" Physician_Library_ID="256" person_name="Dr. Gurbinder S Sadana MD,FCCP" Default_MyQ_Days="14" Legal_Org="CMG" />
+<User User_Name="GSANCHEZ" Default_Facility="1904 N OG AVE" Role="Front Office" Physician_Library_ID="0" person_name="Gabriela Sanchez" Default_MyQ_Days="4" Legal_Org="CMG" />
+<User User_Name="GSPENCER" Default_Facility="1866 N OG AVE # 202" Role="Medical Assistant" Physician_Library_ID="0" person_name="Garland Spencer" Default_MyQ_Days="4" Legal_Org="CMG" />
+<User User_Name="GSZAVALA" Default_Facility="1866 N OG AVE # 201" Role="Front Office" Physician_Library_ID="0" person_name="Gabriela Sanchez-Zavala" Default_MyQ_Days="4" Legal_Org="CMG" />
+<User User_Name="GURODRIGUEZ" Default_Facility="1866 N OG AVE # 202" Role="Front Office" Physician_Library_ID="0" person_name="Guadalupe Rodriguez" Default_MyQ_Days="4" Legal_Org="CMG" />
+<User User_Name="GUS_1" Default_Facility="TEST FACILITY" Role="Physician" Physician_Library_ID="4802" person_name="GUS_1 TRANSCRIPTION" Default_MyQ_Days="14" Legal_Org="CMG" />
+<User User_Name="GUS_2" Default_Facility="TEST FACILITY" Role="Physician" Physician_Library_ID="4803" person_name="GUS_2 TRANSCRIPTION" Default_MyQ_Days="14" Legal_Org="CMG" />
+<User User_Name="GUS_3" Default_Facility="TEST FACILITY" Role="Physician" Physician_Library_ID="4804" person_name="GUS_3 TRANSCRIPTION" Default_MyQ_Days="14" Legal_Org="CMG" />
+<User User_Name="GVELOZ" Default_Facility="1866 N OG AVE # 202" Role="Front Office" Physician_Library_ID="0" person_name="Gabriela Veloz" Default_MyQ_Days="4" Legal_Org="CMG" />
+<User User_Name="GWAGNER" Default_Facility="840 TOWN CENTER DR" Role="Coder" Physician_Library_ID="0" person_name="Gail Wagner" Default_MyQ_Days="4" Legal_Org="CMG" />
+<User User_Name="HALLA" Default_Facility="8330 RED OAK SUITE #101" Role="Physician" Physician_Library_ID="179" person_name="Dr. Haritha R Alla M.D.,F.A.C.C.,R.P.V.I." Default_MyQ_Days="14" Legal_Org="CMG" />
+<User User_Name="HAT_1" Default_Facility="TEST FACILITY" Role="Physician" Physician_Library_ID="4230" person_name="HAT_1 TRANSCRIPTION" Default_MyQ_Days="14" Legal_Org="CMG" />
+<User User_Name="HAT_2" Default_Facility="TEST FACILITY" Role="Physician" Physician_Library_ID="4233" person_name="HAT_2 TRANSCRIPTION" Default_MyQ_Days="14" Legal_Org="CMG" />
+<User User_Name="HBOJORQUEZ" Default_Facility="8330 RED OAK SUITE #101" Role="Medical Assistant" Physician_Library_ID="0" person_name="Heydi Bojorquez" Default_MyQ_Days="4" Legal_Org="CMG" />
+<User User_Name="HCOHEN" Default_Facility="8330 RED OAK SUITE #201" Role="Physician" Physician_Library_ID="4814" person_name="Dr. Harvey D Cohen M.D." Default_MyQ_Days="14" Legal_Org="CMG" />
+<User User_Name="HDAVIS" Default_Facility="1940 N ORANGE GROVE" Role="Physician" Physician_Library_ID="191" person_name="Dr. Heather Davis M.D." Default_MyQ_Days="14" Legal_Org="CMG" />
+<User User_Name="HDEVIL" Default_Facility="1940 N ORANGE GROVE" Role="Front Office" Physician_Library_ID="0" person_name="Hannah Devillanueva" Default_MyQ_Days="4" Legal_Org="CMG" />
+<User User_Name="HGARCIA" Default_Facility="9170 HAVEN AVENUE, SUITE 120" Role="Medical Assistant" Physician_Library_ID="0" person_name="Hilda Garcia" Default_MyQ_Days="4" Legal_Org="CMG" />
+<User User_Name="HHMAUNG" Default_Facility="138 HARVARD AVE" Role="Physician" Physician_Library_ID="3257" person_name="Dr. Hla Myint Maung S Hwang M.D." Default_MyQ_Days="14" Legal_Org="CMG" />
+<User User_Name="HJAJAM" Default_Facility="TEST FACILITY" Role="Front Office" Physician_Library_ID="0" person_name="Hemanth Kumar Jajam" Default_MyQ_Days="4" Legal_Org="CMG" />
+<User User_Name="HKYEGIREDDI" Default_Facility="790 E BONITA AVE" Role="Front Office" Physician_Library_ID="0" person_name="Harish Kumar Yegireddi" Default_MyQ_Days="4" Legal_Org="CMG" />
+<User User_Name="HMAKWANA" Default_Facility="9190 HAVEN AVE 1ST FLR" Role="Physician" Physician_Library_ID="4251" person_name="Dr. Hetalben G Makwana M.D." Default_MyQ_Days="14" Legal_Org="CMG" />
+<User User_Name="HMARTINEZ" Default_Facility="430 W BASELINE AVE" Role="Front Office" Physician_Library_ID="0" person_name="Heather Martinez" Default_MyQ_Days="4" Legal_Org="CMG" />
+<User User_Name="HOALOMARES" Default_Facility="160 E. ARTESIA STREET, STE #360" Role="Medical Assistant" Physician_Library_ID="0" person_name="Hilda Palomares" Default_MyQ_Days="4" Legal_Org="CMG" />
+<User User_Name="HPALOMARES" Default_Facility="160 E ARTESIA #220" Role="Front Office" Physician_Library_ID="0" person_name="Hilda Palomares" Default_MyQ_Days="4" Legal_Org="CMG" />
+<User User_Name="HRUANO" Default_Facility="138 HARVARD AVE" Role="Medical Assistant" Physician_Library_ID="0" person_name="Haydee Ruano" Default_MyQ_Days="4" Legal_Org="CMG" />
+<User User_Name="HSINGH" Default_Facility="TEST FACILITY" Role="Front Office" Physician_Library_ID="0" person_name="Harpreet Singh" Default_MyQ_Days="4" Legal_Org="CMG" />
+<User User_Name="HSYEDA" Default_Facility="9190 HAVEN AVE II FLOOR SUITE# 200" Role="Front Office" Physician_Library_ID="0" person_name="Haneefa Syeda" Default_MyQ_Days="4" Legal_Org="CMG" />
+<User User_Name="HWILSON" Default_Facility="160 E. ARTESIA STREET, STE #360" Role="Medical Assistant" Physician_Library_ID="0" person_name="Heather Wilson" Default_MyQ_Days="4" Legal_Org="CMG" />
+<User User_Name="IDIAZ" Default_Facility="1866 N OG AVE # 202" Role="Front Office" Physician_Library_ID="0" person_name="Isabel Diaz" Default_MyQ_Days="4" Legal_Org="CMG" />
+<User User_Name="IGUTIERREZ" Default_Facility="8330 RED OAK SUITE #201" Role="Front Office" Physician_Library_ID="0" person_name="Irma Gutierrez" Default_MyQ_Days="4" Legal_Org="CMG" />
+<User User_Name="IJANASWAMY" Default_Facility="TEST FACILITY" Role="Front Office" Physician_Library_ID="0" person_name="Indira Janaswamy" Default_MyQ_Days="4" Legal_Org="CMG" />
+<User User_Name="IMARISCAL" Default_Facility="8330 RED OAK SUITE #201" Role="Medical Assistant" Physician_Library_ID="0" person_name="Isabel Mariscal" Default_MyQ_Days="4" Legal_Org="CMG" />
+<User User_Name="IMOLINA" Default_Facility="9190 HAVEN AVE 1ST FLR" Role="Medical Assistant" Physician_Library_ID="0" person_name="Imelda Molina" Default_MyQ_Days="4" Legal_Org="CMG" />
+<User User_Name="IRENTERIA" Default_Facility="790 E BONITA AVE" Role="Medical Assistant" Physician_Library_ID="0" person_name="Itzayana Renteria" Default_MyQ_Days="4" Legal_Org="CMG" />
+<User User_Name="IVELASQUEZ" Default_Facility="1940 N ORANGE GROVE" Role="Medical Assistant" Physician_Library_ID="0" person_name="Irene Velasquez" Default_MyQ_Days="4" Legal_Org="CMG" />
+<User User_Name="IZAZUETA" Default_Facility="790 E BONITA AVE" Role="Medical Assistant" Physician_Library_ID="0" person_name="Ivette Zazueta" Default_MyQ_Days="4" Legal_Org="CMG" />
+<User User_Name="JAFLORES" Default_Facility="8330 RED OAK SUITE #201" Role="Medical Assistant" Physician_Library_ID="0" person_name="Janet Flores" Default_MyQ_Days="4" Legal_Org="CMG" />
+<User User_Name="JARAIZA" Default_Facility="160 E. ARTESIA STREET, STE #360" Role="Medical Assistant" Physician_Library_ID="0" person_name="Jazlinn Araiza" Default_MyQ_Days="4" Legal_Org="CMG" />
+<User User_Name="JAVALOS" Default_Facility="1940 N ORANGE GROVE" Role="Office Manager" Physician_Library_ID="0" person_name="Jacqueline Avalos" Default_MyQ_Days="4" Legal_Org="CMG" />
+<User User_Name="JAYALA" Default_Facility="1866 N OG AVE # 202" Role="Medical Assistant" Physician_Library_ID="0" person_name="Jasmine Ayala" Default_MyQ_Days="4" Legal_Org="CMG" />
+<User User_Name="JBARRAGAN" Default_Facility="1866 N OG AVE # 202" Role="Front Office" Physician_Library_ID="0" person_name="Jacqueline Barragan" Default_MyQ_Days="4" Legal_Org="CMG" />
+<User User_Name="JBASKERVILLE" Default_Facility="297 WEST ARTESIA STREET, SUITE A" Role="Medical Assistant" Physician_Library_ID="0" person_name="Jasmin Baskerville" Default_MyQ_Days="4" Legal_Org="CMG" />
+<User User_Name="JCAMPBELL" Default_Facility="138 HARVARD AVE" Role="Medical Assistant" Physician_Library_ID="0" person_name="Julia Campbell" Default_MyQ_Days="4" Legal_Org="CMG" />
+<User User_Name="JCEBALLOS" Default_Facility="9190 HAVEN AVE 1ST FLR" Role="Medical Assistant" Physician_Library_ID="0" person_name="Jose Ceballos" Default_MyQ_Days="4" Legal_Org="CMG" />
+<User User_Name="JCHAUDHARI" Default_Facility="790 E BONITA AVE" Role="Physician Assistant" Physician_Library_ID="4828" person_name="Jalpa Chaudhari, NP" Default_MyQ_Days="14" Legal_Org="CMG" />
+<User User_Name="JCHAVIRA" Default_Facility="9190 HAVEN AVE 1ST FLR" Role="Medical Assistant" Physician_Library_ID="0" person_name="Jessica Chavira" Default_MyQ_Days="4" Legal_Org="CMG" />
+<User User_Name="JCONTRERAS" Default_Facility="790 E BONITA AVE" Role="Medical Assistant" Physician_Library_ID="0" person_name="Jennifer Contreras" Default_MyQ_Days="4" Legal_Org="CMG" />
+<User User_Name="JDCRUZ" Default_Facility="790 E BONITA AVE" Role="Front Office" Physician_Library_ID="0" person_name="Jenine De La Cruz" Default_MyQ_Days="4" Legal_Org="CMG" />
+<User User_Name="JEFLORES" Default_Facility="1866 N OG AVE # 102-A" Role="Medical Assistant" Physician_Library_ID="0" person_name="Jennifer Flores" Default_MyQ_Days="4" Legal_Org="CMG" />
+<User User_Name="JEGARCIA" Default_Facility="1904 N OG AVE" Role="Front Office" Physician_Library_ID="0" person_name="Jesenia Garcia" Default_MyQ_Days="4" Legal_Org="CMG" />
+<User User_Name="JENLOPEZ" Default_Facility="1866 N OG AVE # 201" Role="Front Office" Physician_Library_ID="0" person_name="Jennifer Lopez" Default_MyQ_Days="4" Legal_Org="CMG" />
+<User User_Name="JFAUSTO" Default_Facility="297 WEST ARTESIA STREET, SUITE A" Role="Medical Assistant" Physician_Library_ID="0" person_name="Jessica Fausto" Default_MyQ_Days="4" Legal_Org="CMG" />
+<User User_Name="JGARCIA" Default_Facility="520 E FOOTHILL BLVD #A" Role="Medical Assistant" Physician_Library_ID="0" person_name="Jennifer Garcia" Default_MyQ_Days="4" Legal_Org="CMG" />
+<User User_Name="JGARNER" Default_Facility="8330 RED OAK SUITE #201" Role="Physician Assistant" Physician_Library_ID="4906" person_name="Jessica Garner, FNP-C" Default_MyQ_Days="14" Legal_Org="CMG" />
+<User User_Name="JGOMEZ" Default_Facility="790 E BONITA AVE" Role="Medical Assistant" Physician_Library_ID="0" person_name="Jocelyn Gomez" Default_MyQ_Days="4" Legal_Org="CMG" />
+<User User_Name="JGORDON" Default_Facility="1940 N ORANGE GROVE" Role="Physician" Physician_Library_ID="4781" person_name="Dr.Joseph Gordon M.D." Default_MyQ_Days="14" Legal_Org="CMG" />
+<User User_Name="JGOUBRAN" Default_Facility="790 E BONITA AVE" Role="Physician Assistant" Physician_Library_ID="1903" person_name="Jehan Goubran PA" Default_MyQ_Days="14" Legal_Org="CMG" />
+<User User_Name="JHALL" Default_Facility="1866 N OG AVE # 202" Role="Front Office" Physician_Library_ID="0" person_name="Jason Hall" Default_MyQ_Days="4" Legal_Org="CMG" />
+<User User_Name="JHOLGUIN" Default_Facility="1866 N OG AVE # 104" Role="Medical Assistant" Physician_Library_ID="0" person_name="Jackie Holguin" Default_MyQ_Days="4" Legal_Org="CMG" />
+<User User_Name="JIGARCIA" Default_Facility="9170 HAVEN AVENUE, SUITE 120" Role="Medical Assistant" Physician_Library_ID="0" person_name="Jimmy Garcia" Default_MyQ_Days="4" Legal_Org="CMG" />
+<User User_Name="JJONES" Default_Facility="790 E BONITA AVE" Role="Medical Assistant" Physician_Library_ID="0" person_name="Julia Jones" Default_MyQ_Days="4" Legal_Org="CMG" />
+<User User_Name="JKIM" Default_Facility="160 E ARTESIA #220" Role="Physician" Physician_Library_ID="4783" person_name="Dr. Jerry Jin-Hyoung Kim  M.D." Default_MyQ_Days="14" Legal_Org="CMG" />
+<User User_Name="JLANZA" Default_Facility="9190 HAVEN AVE 1ST FLR" Role="Medical Assistant" Physician_Library_ID="0" person_name="Jacqueline lanza" Default_MyQ_Days="4" Legal_Org="CMG" />
+<User User_Name="JLEMUS" Default_Facility="1866 N OG AVE # 104" Role="Medical Assistant" Physician_Library_ID="0" person_name="Jesse Lemus" Default_MyQ_Days="4" Legal_Org="CMG" />
+<User User_Name="JLIBORIO" Default_Facility="9190 HAVEN AVE 1ST FLR" Role="Medical Assistant" Physician_Library_ID="0" person_name="Joana Liborio" Default_MyQ_Days="4" Legal_Org="CMG" />
+<User User_Name="JMADDELA" Default_Facility="TEST FACILITY" Role="Front Office" Physician_Library_ID="0" person_name="Janaki Maddela" Default_MyQ_Days="4" Legal_Org="CMG" />
+<User User_Name="JMAGANA" Default_Facility="1940 N ORANGE GROVE" Role="Medical Assistant" Physician_Library_ID="0" person_name="Jesse Magana" Default_MyQ_Days="4" Legal_Org="CMG" />
+<User User_Name="JMARTINEZ" Default_Facility="138 HARVARD AVE" Role="Medical Assistant" Physician_Library_ID="0" person_name="Johanna Martinez" Default_MyQ_Days="4" Legal_Org="CMG" />
+<User User_Name="JMPEREZ" Default_Facility="790 E BONITA AVE" Role="Medical Assistant" Physician_Library_ID="0" person_name="JANETTE MAGANA PEREZ" Default_MyQ_Days="4" Legal_Org="CMG" />
+<User User_Name="JMUNIZ" Default_Facility="8330 RED OAK SUITE #101" Role="Medical Assistant" Physician_Library_ID="0" person_name="Jessica Muniz" Default_MyQ_Days="4" Legal_Org="CMG" />
+<User User_Name="JMUNOZ" Default_Facility="9190 HAVEN AVE 1ST FLR" Role="Physician" Physician_Library_ID="4195" person_name="Dr. Jhonatan Teodoro Munoz Espinoza M.D." Default_MyQ_Days="14" Legal_Org="CMG" />
+<User User_Name="JNUNE" Default_Facility="9170 HAVEN AVENUE, SUITE 120" Role="Front Office" Physician_Library_ID="0" person_name="Jyothi Nune" Default_MyQ_Days="4" Legal_Org="CMG" />
+<User User_Name="JOLOPEZ" Default_Facility="1866 N OG AVE # 202" Role="Front Office" Physician_Library_ID="0" person_name="Jonathan Lopez" Default_MyQ_Days="4" Legal_Org="CMG" />
+<User User_Name="JORONA" Default_Facility="297 WEST ARTESIA STREET, SUITE A" Role="Front Office" Physician_Library_ID="0" person_name="Josefa Orona" Default_MyQ_Days="4" Legal_Org="CMG" />
+<User User_Name="JOVASQUEZ" Default_Facility="9190 HAVEN AVE 1ST FLR" Role="Medical Assistant" Physician_Library_ID="0" person_name="Josephene Vasquez" Default_MyQ_Days="4" Legal_Org="CMG" />
+<User User_Name="JPANDAWALA" Default_Facility="CMG LAB AND ANCILLARY 1866 #101" Role="Front Office" Physician_Library_ID="0" person_name="Jagadish Narayan Pandawala" Default_MyQ_Days="4" Legal_Org="CMG" />
+<User User_Name="JPARRA" Default_Facility="790 E BONITA AVE" Role="Medical Assistant" Physician_Library_ID="0" person_name="James Parra" Default_MyQ_Days="4" Legal_Org="CMG" />
+<User User_Name="JPEREZ" Default_Facility="1866 N OG AVE # 202" Role="Front Office" Physician_Library_ID="0" person_name="Jesse Perez" Default_MyQ_Days="4" Legal_Org="CMG" />
+<User User_Name="JPORTILLO" Default_Facility="1940 N ORANGE GROVE" Role="Front Office" Physician_Library_ID="0" person_name="Jasmine Portillo" Default_MyQ_Days="4" Legal_Org="CMG" />
+<User User_Name="JPRASAD" Default_Facility="1904 N OG AVE" Role="Physician" Physician_Library_ID="100" person_name="Dr. Jeereddi A Prasad M.D., F.A.C.E., F.A.C.P.,E.C" Default_MyQ_Days="14" Legal_Org="CMG" />
+<User User_Name="JRAMIREZ" Default_Facility="1866 N OG AVE # 202" Role="Front Office" Physician_Library_ID="0" person_name="Jacqueline Ramirez" Default_MyQ_Days="4" Legal_Org="CMG" />
+<User User_Name="JRAMOS" Default_Facility="430 W BASELINE AVE" Role="Medical Assistant" Physician_Library_ID="0" person_name="Joann Ramos" Default_MyQ_Days="4" Legal_Org="CMG" />
+<User User_Name="JRANGEL" Default_Facility="8330 RED OAK SUITE #201" Role="Front Office" Physician_Library_ID="0" person_name="Jessica Rangel" Default_MyQ_Days="4" Legal_Org="CMG" />
+<User User_Name="JRAO" Default_Facility="790 E BONITA AVE" Role="Coder" Physician_Library_ID="0" person_name="Jyoti Rao" Default_MyQ_Days="4" Legal_Org="CMG" />
+<User User_Name="JREDDY" Default_Facility="1866 N OG AVE # 202" Role="Physician" Physician_Library_ID="248" person_name="Dr. Jayapal A Reddy M.D." Default_MyQ_Days="14" Legal_Org="CMG" />
+<User User_Name="JRODARTE" Default_Facility="8330 RED OAK SUITE #101" Role="Office Manager" Physician_Library_ID="0" person_name="Jesus Rodarte" Default_MyQ_Days="4" Legal_Org="CMG" />
+<User User_Name="JRODGERS" Default_Facility="790 E BONITA AVE" Role="Physician Assistant" Physician_Library_ID="254" person_name="Jane E Rodgers PA" Default_MyQ_Days="14" Legal_Org="CMG" />
+<User User_Name="JROLAND" Default_Facility="9190 HAVEN AVE 1ST FLR" Role="Medical Assistant" Physician_Library_ID="0" person_name="Jordyn Roland" Default_MyQ_Days="4" Legal_Org="CMG" />
+<User User_Name="JRUIZ" Default_Facility="1866 N OG AVE # 102-B" Role="Medical Assistant" Physician_Library_ID="0" person_name="Jessica Ruiz" Default_MyQ_Days="4" Legal_Org="CMG" />
+<User User_Name="JRUIZ_RJ" Default_Facility="RJ 1866 N OG AVE # 102" Role="Medical Assistant" Physician_Library_ID="0" person_name="Jessica Ruiz" Default_MyQ_Days="4" Legal_Org="RJ" />
+<User User_Name="JSEPULVEDA" Default_Facility="CMG LAB AND ANCILLARY 1866 #101" Role="Technician" Physician_Library_ID="4920" person_name="Jessica Sepulveda" Default_MyQ_Days="4" Legal_Org="CMG" />
+<User User_Name="JSHOCKEY" Default_Facility="430 W BASELINE AVE" Role="Medical Assistant" Physician_Library_ID="0" person_name="Judy Shockey" Default_MyQ_Days="4" Legal_Org="CMG" />
+<User User_Name="JSIGNO" Default_Facility="297 WEST ARTESIA STREET, SUITE A" Role="Office Manager" Physician_Library_ID="0" person_name="Jaypee Signo" Default_MyQ_Days="4" Legal_Org="CMG" />
+<User User_Name="JSINDHE" Default_Facility="811 E 11TH ST, SUITE# 208" Role="Front Office" Physician_Library_ID="0" person_name="Jhansi Sindhe" Default_MyQ_Days="4" Legal_Org="CMG" />
+<User User_Name="JSOLORIO" Default_Facility="1866 N OG AVE # 202" Role="Front Office" Physician_Library_ID="0" person_name="Jacob Solorio" Default_MyQ_Days="4" Legal_Org="CMG" />
+<User User_Name="JTEA" Default_Facility="840 TOWN CENTER DR" Role="Office Manager" Physician_Library_ID="0" person_name="Jay Tea" Default_MyQ_Days="4" Legal_Org="CMG" />
+<User User_Name="JTHAKKALLAPELLY" Default_Facility="9190 HAVEN AVE 1ST FLR" Role="Front Office" Physician_Library_ID="0" person_name="Jyothsna Thakkallapelly" Default_MyQ_Days="4" Legal_Org="CMG" />
+<User User_Name="JTILAR" Default_Facility="9190 HAVEN AVE 1ST FLR" Role="Medical Assistant" Physician_Library_ID="0" person_name="Jeanette Tilar" Default_MyQ_Days="4" Legal_Org="CMG" />
+<User User_Name="JTOLEDO" Default_Facility="CMG LAB AND ANCILLARY 1866 #101" Role="Medical Assistant" Physician_Library_ID="0" person_name="Jessica Toledo" Default_MyQ_Days="4" Legal_Org="CMG" />
+<User User_Name="JTORRES" Default_Facility="1866 N OG AVE # 201" Role="Medical Assistant" Physician_Library_ID="0" person_name="Jennifer Torres" Default_MyQ_Days="4" Legal_Org="CMG" />
+<User User_Name="JTREMAZI" Default_Facility="1904 N OG AVE" Role="Physician" Physician_Library_ID="106" person_name="Dr. Jaffar A Tremazi M.D." Default_MyQ_Days="14" Legal_Org="CMG" />
+<User User_Name="JUALVAREZ" Default_Facility="520 E FOOTHILL BLVD #A" Role="Medical Assistant" Physician_Library_ID="0" person_name="Juliana Alvarez" Default_MyQ_Days="4" Legal_Org="CMG" />
+<User User_Name="JUMARTINEZ" Default_Facility="8330 RED OAK SUITE #201" Role="Front Office" Physician_Library_ID="0" person_name="Jubentina Martinez" Default_MyQ_Days="4" Legal_Org="CMG" />
+<User User_Name="JVALDEZ" Default_Facility="CMG LAB AND ANCILLARY 1866 #101" Role="Office Manager" Physician_Library_ID="0" person_name="Jamilette Valdez" Default_MyQ_Days="4" Legal_Org="CMG" />
+<User User_Name="JVALDIVIA" Default_Facility="9190 HAVEN AVE II FLOOR SUITE# 210" Role="Medical Assistant" Physician_Library_ID="0" person_name="Jacqueline Valdivia" Default_MyQ_Days="4" Legal_Org="CMG" />
+<User User_Name="JVARA" Default_Facility="9190 HAVEN AVENUE (Haven Urgent Care)" Role="Medical Assistant" Physician_Library_ID="0" person_name="Jennifer Vara" Default_MyQ_Days="4" Legal_Org="CMG" />
+<User User_Name="JVEGA" Default_Facility="9170 HAVEN AVENUE, SUITE 120" Role="Office Manager" Physician_Library_ID="0" person_name="Johana Hernandez(vega)" Default_MyQ_Days="4" Legal_Org="CMG" />
+<User User_Name="JVILLALOBOS" Default_Facility="9190 HAVEN AVE 1ST FLR" Role="Medical Assistant" Physician_Library_ID="0" person_name="Jennifer Villalobos" Default_MyQ_Days="4" Legal_Org="CMG" />
+<User User_Name="JVILLEGAS" Default_Facility="1866 N OG AVE # 102" Role="Medical Assistant" Physician_Library_ID="0" person_name="Jennifer Villegas" Default_MyQ_Days="4" Legal_Org="CMG" />
+<User User_Name="JWILSON" Default_Facility="9190 HAVEN AVE 1ST FLR" Role="Medical Assistant" Physician_Library_ID="0" person_name="Jasmine Wilson" Default_MyQ_Days="4" Legal_Org="CMG" />
+<User User_Name="JWOODSON" Default_Facility="9190 HAVEN AVE II FLOOR SUITE# 210" Role="Physician" Physician_Library_ID="5005" person_name="Dr. Johnnie M Woodson, Jr" Default_MyQ_Days="14" Legal_Org="CMG" />
+<User User_Name="JYOUNG" Default_Facility="9190 HAVEN AVE 1ST FLR" Role="Front Office" Physician_Library_ID="0" person_name="Jocelyn Young" Default_MyQ_Days="4" Legal_Org="CMG" />
+<User User_Name="JZUNIGA" Default_Facility="1940 N ORANGE GROVE" Role="Medical Assistant" Physician_Library_ID="0" person_name="Julie Zuniga" Default_MyQ_Days="4" Legal_Org="CMG" />
+<User User_Name="KABOUNASR" Default_Facility="8330 RED OAK SUITE #201" Role="Physician" Physician_Library_ID="2841" person_name="Dr. Khader K Abounasr M.D." Default_MyQ_Days="14" Legal_Org="CMG" />
+<User User_Name="KASADY" Default_Facility="1866 N OG AVE # 102-A" Role="Medical Assistant" Physician_Library_ID="0" person_name="Khlod Al Asady" Default_MyQ_Days="4" Legal_Org="CMG" />
+<User User_Name="KCARILLO" Default_Facility="297 WEST ARTESIA STREET, SUITE A" Role="Medical Assistant" Physician_Library_ID="0" person_name="Karina Carillo" Default_MyQ_Days="4" Legal_Org="CMG" />
+<User User_Name="KCHANDURI" Default_Facility="138 HARVARD AVE" Role="Physician" Physician_Library_ID="4294" person_name="Dr. Krishi Chanduri MD" Default_MyQ_Days="14" Legal_Org="CMG" />
+<User User_Name="KCHINTADA" Default_Facility="1940 N ORANGE GROVE" Role="Front Office" Physician_Library_ID="0" person_name="Kannababu Chintada" Default_MyQ_Days="4" Legal_Org="CMG" />
+<User User_Name="KKONGARI" Default_Facility="1866 N OG AVE # 104" Role="Front Office" Physician_Library_ID="0" person_name="Kumaraswamy Kongari" Default_MyQ_Days="4" Legal_Org="CMG" />
+<User User_Name="KKUGLER" Default_Facility="138 HARVARD AVE" Role="Medical Assistant" Physician_Library_ID="0" person_name="Kristen Kugler" Default_MyQ_Days="4" Legal_Org="CMG" />
+<User User_Name="KLOYA" Default_Facility="TEST FACILITY" Role="Coder" Physician_Library_ID="0" person_name="Kathleen Loya" Default_MyQ_Days="4" Legal_Org="CMG" />
+<User User_Name="KMARTINEZ" Default_Facility="790 E BONITA AVE" Role="Medical Assistant" Physician_Library_ID="0" person_name="Karen Torres Martinez" Default_MyQ_Days="4" Legal_Org="CMG" />
+<User User_Name="KMARY" Default_Facility="430 W BASELINE AVE" Role="Physician" Physician_Library_ID="2815" person_name="Dr. Mary Kasem MD" Default_MyQ_Days="14" Legal_Org="CMG" />
+<User User_Name="KMCNEIL" Default_Facility="9190 HAVEN AVENUE (Haven Urgent Care)" Role="Medical Assistant" Physician_Library_ID="0" person_name="Karvon Mcneil" Default_MyQ_Days="4" Legal_Org="CMG" />
+<User User_Name="KMUNOZ" Default_Facility="8330 RED OAK SUITE #201" Role="Medical Assistant" Physician_Library_ID="0" person_name="Karina Munoz" Default_MyQ_Days="4" Legal_Org="CMG" />
+<User User_Name="KNADIKUDA" Default_Facility="TEST FACILITY" Role="Front Office" Physician_Library_ID="0" person_name="Karthik Nadikuda" Default_MyQ_Days="4" Legal_Org="CMG" />
+<User User_Name="KONCA_SCRIBE" Default_Facility="520 E FOOTHILL BLVD #A" Role="Scribe" Physician_Library_ID="4805" person_name="Konca Scribe" Default_MyQ_Days="14" Legal_Org="CMG" />
+<User User_Name="KORDUNAS" Default_Facility="9190 HAVEN AVENUE (Haven Urgent Care)" Role="Medical Assistant" Physician_Library_ID="0" person_name="Krislynn Ordunas" Default_MyQ_Days="4" Legal_Org="CMG" />
+<User User_Name="KPULUMATI" Default_Facility="1866 N OG AVE # 202" Role="Physician" Physician_Library_ID="4951" person_name="Dr. Krishna Anurag Pulumati, M.D." Default_MyQ_Days="14" Legal_Org="CMG" />
+<User User_Name="KRAMIREZ" Default_Facility="790 E BONITA AVE" Role="Medical Assistant" Physician_Library_ID="0" person_name="Kimberly Ramirez" Default_MyQ_Days="4" Legal_Org="CMG" />
+<User User_Name="KRAVIPATI" Default_Facility="9170 HAVEN AVENUE, SUITE 120" Role="Front Office" Physician_Library_ID="0" person_name="Kiran Ravipati" Default_MyQ_Days="4" Legal_Org="CMG" />
+<User User_Name="KSAMY" Default_Facility="TEST FACILITY" Role="Coder" Physician_Library_ID="0" person_name="KARUPUSAMY_1397" Default_MyQ_Days="4" Legal_Org="CMG" />
+<User User_Name="KUMAR_ACURUS" Default_Facility="TEST FACILITY" Role="Office Manager" Physician_Library_ID="0" person_name="Kumar_Acurus" Default_MyQ_Days="4" Legal_Org="CMG" />
+<User User_Name="KURIBE" Default_Facility="9190 HAVEN AVE 1ST FLR" Role="Medical Assistant" Physician_Library_ID="0" person_name="Kelly Uribe" Default_MyQ_Days="4" Legal_Org="CMG" />
+<User User_Name="KVALENCIA" Default_Facility="CMG LAB AND ANCILLARY 1866 #101" Role="Front Office" Physician_Library_ID="0" person_name="Kierstin Valencia" Default_MyQ_Days="4" Legal_Org="CMG" />
+<User User_Name="KVOSEGUERA" Default_Facility="9190 HAVEN AVE 1ST FLR" Role="Medical Assistant" Physician_Library_ID="0" person_name="Kimberly Valencia Oseguera" Default_MyQ_Days="4" Legal_Org="CMG" />
+<User User_Name="KZAMORA" Default_Facility="790 E BONITA AVE" Role="Medical Assistant" Physician_Library_ID="0" person_name="Kevin Zamora" Default_MyQ_Days="4" Legal_Org="CMG" />
+<User User_Name="LAFERNANDO" Default_Facility="840 TOWN CENTER DR" Role="Front Office" Physician_Library_ID="0" person_name="Fernando, Lilli Anne" Default_MyQ_Days="4" Legal_Org="CMG" />
+<User User_Name="LALATORRE" Default_Facility="9170 HAVEN AVENUE, SUITE 120" Role="Medical Assistant" Physician_Library_ID="0" person_name="Leslie Alatorre" Default_MyQ_Days="4" Legal_Org="CMG" />
+<User User_Name="LAREVALO" Default_Facility="9190 HAVEN AVE 1ST FLR" Role="Front Office" Physician_Library_ID="0" person_name="Lily Arevalo" Default_MyQ_Days="4" Legal_Org="CMG" />
+<User User_Name="LASANCHEZ" Default_Facility="520 E FOOTHILL BLVD #A" Role="Medical Assistant" Physician_Library_ID="0" person_name="Larissa Sanchez" Default_MyQ_Days="4" Legal_Org="CMG" />
+<User User_Name="LAYALA" Default_Facility="297 WEST ARTESIA STREET, SUITE A" Role="Front Office" Physician_Library_ID="0" person_name="Lorena  Ayala" Default_MyQ_Days="4" Legal_Org="CMG" />
+<User User_Name="LCARDENAS" Default_Facility="297 WEST ARTESIA STREET, SUITE A" Role="Front Office" Physician_Library_ID="0" person_name="Lucero Cardenas" Default_MyQ_Days="4" Legal_Org="CMG" />
+<User User_Name="LCASTRO" Default_Facility="790 E BONITA AVE" Role="Medical Assistant" Physician_Library_ID="0" person_name="Linda Castro" Default_MyQ_Days="4" Legal_Org="CMG" />
+<User User_Name="LCHERYL" Default_Facility="CMG LAB AND ANCILLARY 1866 #101" Role="Technician" Physician_Library_ID="4521" person_name="Lucas Cheryl" Default_MyQ_Days="4" Legal_Org="CMG" />
+<User User_Name="LDELGADO" Default_Facility="1940 N ORANGE GROVE" Role="Medical Assistant" Physician_Library_ID="0" person_name="Leslie Delgado" Default_MyQ_Days="4" Legal_Org="CMG" />
+<User User_Name="LESCOBEDO" Default_Facility="790 E BONITA AVE" Role="Medical Assistant" Physician_Library_ID="0" person_name="Liliana Escobedo" Default_MyQ_Days="4" Legal_Org="CMG" />
+<User User_Name="LESTRADA" Default_Facility="430 W BASELINE AVE" Role="Medical Assistant" Physician_Library_ID="0" person_name="Lizette Estrada" Default_MyQ_Days="4" Legal_Org="CMG" />
+<User User_Name="LGOMEZ" Default_Facility="138 HARVARD AVE" Role="Office Manager" Physician_Library_ID="0" person_name="Lucia Gomez" Default_MyQ_Days="4" Legal_Org="CMG" />
+<User User_Name="LGOMEZ_ACURUS" Default_Facility="840 TOWN CENTER DR" Role="Front Office" Physician_Library_ID="0" person_name="Lisa Gomez" Default_MyQ_Days="4" Legal_Org="CMG" />
+<User User_Name="LGUEVARA" Default_Facility="790 E BONITA AVE" Role="Front Office" Physician_Library_ID="0" person_name="Lisa Guevara" Default_MyQ_Days="4" Legal_Org="CMG" />
+<User User_Name="LHERNANDEZ" Default_Facility="790 E BONITA AVE" Role="Medical Assistant" Physician_Library_ID="0" person_name="Lizette Hernandez" Default_MyQ_Days="4" Legal_Org="CMG" />
+<User User_Name="LHOWARD" Default_Facility="520 E FOOTHILL BLVD #A" Role="Medical Assistant" Physician_Library_ID="0" person_name="Leilani Howard" Default_MyQ_Days="4" Legal_Org="CMG" />
+<User User_Name="LIALVAREZ" Default_Facility="520 E FOOTHILL BLVD #A" Role="Medical Assistant" Physician_Library_ID="0" person_name="Lily Alvarez" Default_MyQ_Days="4" Legal_Org="CMG" />
+<User User_Name="LIMEDINA" Default_Facility="9170 HAVEN AVENUE, SUITE 120" Role="Medical Assistant" Physician_Library_ID="0" person_name="Lianna Medina" Default_MyQ_Days="4" Legal_Org="CMG" />
+<User User_Name="LJOHNSTON" Default_Facility="160 E. ARTESIA STREET, STE #360" Role="Medical Assistant" Physician_Library_ID="0" person_name="Leah Johnston" Default_MyQ_Days="4" Legal_Org="CMG" />
+<User User_Name="LLEABO" Default_Facility="840 TOWN CENTER DR" Role="Front Office" Physician_Library_ID="0" person_name="Lisa Leabo" Default_MyQ_Days="4" Legal_Org="CMG" />
+<User User_Name="LLINARES" Default_Facility="9190 HAVEN AVE 1ST FLR" Role="Medical Assistant" Physician_Library_ID="0" person_name="Laura Linares" Default_MyQ_Days="4" Legal_Org="CMG" />
+<User User_Name="LLUCERO" Default_Facility="9170 HAVEN AVENUE, SUITE 120" Role="Medical Assistant" Physician_Library_ID="0" person_name="Lilly Lucero" Default_MyQ_Days="4" Legal_Org="CMG" />
+<User User_Name="LMANIO" Default_Facility="1866 N OG AVE # 202" Role="Medical Assistant" Physician_Library_ID="0" person_name="Loradel Manio " Default_MyQ_Days="4" Legal_Org="CMG" />
+<User User_Name="LMATIAS" Default_Facility="8330 RED OAK SUITE #101" Role="Medical Assistant" Physician_Library_ID="0" person_name="Larissa Matias" Default_MyQ_Days="4" Legal_Org="CMG" />
+<User User_Name="LMENDEZ" Default_Facility="1866 N OG AVE # 202" Role="Medical Assistant" Physician_Library_ID="0" person_name="Lorraine Mendez" Default_MyQ_Days="4" Legal_Org="CMG" />
+<User User_Name="LMENDOZA" Default_Facility="1866 N OG AVE # 202" Role="Medical Assistant" Physician_Library_ID="0" person_name="Lilliana Mendoza" Default_MyQ_Days="4" Legal_Org="CMG" />
+<User User_Name="LMEZA" Default_Facility="9170 HAVEN AVENUE, SUITE 120" Role="Medical Assistant" Physician_Library_ID="0" person_name="Lizette Meza" Default_MyQ_Days="4" Legal_Org="CMG" />
+<User User_Name="LMHERNANDEZ" Default_Facility="9170 HAVEN AVENUE, SUITE 120" Role="Medical Assistant" Physician_Library_ID="0" person_name="Lizbeth Munoz Hernandez" Default_MyQ_Days="4" Legal_Org="CMG" />
+<User User_Name="LNRODRIGUEZ" Default_Facility="297 WEST ARTESIA STREET, SUITE A" Role="Medical Assistant" Physician_Library_ID="0" person_name="Lauren Rodriguez" Default_MyQ_Days="4" Legal_Org="CMG" />
+<User User_Name="LNUNEZ" Default_Facility="9190 HAVEN AVE 1ST FLR" Role="Front Office" Physician_Library_ID="0" person_name="Liliana Nunez" Default_MyQ_Days="4" Legal_Org="CMG" />
+<User User_Name="LOCHOA" Default_Facility="1866 N OG AVE # 102-B" Role="Front Office" Physician_Library_ID="0" person_name="Lydia Ochoa" Default_MyQ_Days="4" Legal_Org="CMG" />
+<User User_Name="LOLASABA" Default_Facility="840 TOWN CENTER DR" Role="Office Manager" Physician_Library_ID="0" person_name="LAURA OLASABA" Default_MyQ_Days="4" Legal_Org="CMG" />
+<User User_Name="LPITTS" Default_Facility="9190 HAVEN AVE 1ST FLR" Role="Medical Assistant" Physician_Library_ID="0" person_name="Lisa Pitts" Default_MyQ_Days="4" Legal_Org="CMG" />
+<User User_Name="LPREETHA" Default_Facility="TEST FACILITY" Role="Front Office" Physician_Library_ID="0" person_name="Preethalakshmi" Default_MyQ_Days="4" Legal_Org="CMG" />
+<User User_Name="LQUINTERO" Default_Facility="790 E BONITA AVE" Role="Medical Assistant" Physician_Library_ID="0" person_name="Litzy Quintero" Default_MyQ_Days="4" Legal_Org="CMG" />
+<User User_Name="LQUIROA" Default_Facility="1940 N ORANGE GROVE" Role="Medical Assistant" Physician_Library_ID="0" person_name="Leslie Quiroa" Default_MyQ_Days="4" Legal_Org="CMG" />
+<User User_Name="LRAMIREZ" Default_Facility="138 HARVARD AVE" Role="Medical Assistant" Physician_Library_ID="0" person_name="Leslie Ramirez" Default_MyQ_Days="4" Legal_Org="CMG" />
+<User User_Name="LRAZO" Default_Facility="1866 N OG AVE # 202" Role="Medical Assistant" Physician_Library_ID="0" person_name="Luz Razo" Default_MyQ_Days="4" Legal_Org="CMG" />
+<User User_Name="LROMERO" Default_Facility="9190 HAVEN AVE 1ST FLR" Role="Medical Assistant" Physician_Library_ID="0" person_name="Leyda Romero" Default_MyQ_Days="4" Legal_Org="CMG" />
+<User User_Name="LSAYAVEDRA" Default_Facility="1866 N OG AVE # 202" Role="Front Office" Physician_Library_ID="0" person_name="Liliana Sayavedra" Default_MyQ_Days="4" Legal_Org="CMG" />
+<User User_Name="LSITHU" Default_Facility="9190 HAVEN AVENUE (Haven Urgent Care)" Role="Physician Assistant" Physician_Library_ID="4840" person_name="Louis Sithu, FNP" Default_MyQ_Days="14" Legal_Org="CMG" />
+<User User_Name="LSONIA" Default_Facility="1866 N OG AVE # 102" Role="Front Office" Physician_Library_ID="0" person_name="Sonia Lopez" Default_MyQ_Days="4" Legal_Org="CMG" />
+<User User_Name="LSUI" Default_Facility="840 TOWN CENTER DR" Role="Front Office" Physician_Library_ID="0" person_name="Lee, Sui" Default_MyQ_Days="4" Legal_Org="CMG" />
+<User User_Name="LTHEROITH" Default_Facility="9190 HAVEN AVE 1ST FLR" Role="Physician Assistant" Physician_Library_ID="4064" person_name="Leslie Vanessa Theroith FNP" Default_MyQ_Days="14" Legal_Org="CMG" />
+<User User_Name="LTORREZ" Default_Facility="9190 HAVEN AVE 1ST FLR" Role="Office Manager" Physician_Library_ID="0" person_name="Lynn Torrez" Default_MyQ_Days="4" Legal_Org="CMG" />
+<User User_Name="LUESTRADA" Default_Facility="CMG LAB AND ANCILLARY 1866 #101" Role="Medical Assistant" Physician_Library_ID="0" person_name="Lucia Estrada" Default_MyQ_Days="4" Legal_Org="CMG" />
+<User User_Name="LVIDARTE" Default_Facility="160 E ARTESIA #220" Role="Front Office" Physician_Library_ID="0" person_name="Leticia Vidarte" Default_MyQ_Days="4" Legal_Org="CMG" />
+<User User_Name="LVILLALOBOS" Default_Facility="9190 HAVEN AVE 1ST FLR" Role="Front Office" Physician_Library_ID="0" person_name="Lesli Villalobos" Default_MyQ_Days="4" Legal_Org="CMG" />
+<User User_Name="MADHAN" Default_Facility="TEST FACILITY" Role="Coder" Physician_Library_ID="0" person_name="MADHAN _1249" Default_MyQ_Days="4" Legal_Org="CMG" />
+<User User_Name="MAGUILERA" Default_Facility="9190 HAVEN AVE 1ST FLR" Role="Medical Assistant" Physician_Library_ID="0" person_name="Marlene Aguilera" Default_MyQ_Days="4" Legal_Org="CMG" />
+<User User_Name="MAGUIRRE" Default_Facility="1866 N OG AVE # 202" Role="Medical Assistant" Physician_Library_ID="0" person_name="Michelle Aguirre" Default_MyQ_Days="4" Legal_Org="CMG" />
+<User User_Name="MAHERNANDEZ" Default_Facility="790 E BONITA AVE" Role="Front Office" Physician_Library_ID="0" person_name="Maria Hernandez" Default_MyQ_Days="4" Legal_Org="CMG" />
+<User User_Name="MALARVIZHI_385" Default_Facility="TEST FACILITY" Role="Coder" Physician_Library_ID="0" person_name="MALARVIZHI_385" Default_MyQ_Days="4" Legal_Org="CMG" />
+<User User_Name="MAMEDINA" Default_Facility="9190 HAVEN AVE II FLOOR SUITE# 210" Role="Medical Assistant" Physician_Library_ID="0" person_name="Marcella Medina" Default_MyQ_Days="4" Legal_Org="CMG" />
+<User User_Name="MAORTIZ" Default_Facility="9190 HAVEN AVE 1ST FLR" Role="Medical Assistant" Physician_Library_ID="0" person_name="Ortiz, Maria" Default_MyQ_Days="4" Legal_Org="CMG" />
+<User User_Name="MASANCHEZ" Default_Facility="790 E BONITA AVE" Role="Front Office" Physician_Library_ID="0" person_name="Marissa Sanchez" Default_MyQ_Days="4" Legal_Org="CMG" />
+<User User_Name="MASCHMIDT" Default_Facility="520 E FOOTHILL BLVD #A" Role="Office Manager" Physician_Library_ID="0" person_name="Maryann Annie Schmidt" Default_MyQ_Days="4" Legal_Org="CMG" />
+<User User_Name="MASILVA" Default_Facility="1866 N OG AVE # 102-B" Role="Medical Assistant" Physician_Library_ID="0" person_name="Maryann Silva" Default_MyQ_Days="4" Legal_Org="CMG" />
+<User User_Name="MA_1" Default_Facility="TEST FACILITY" Role="Medical Assistant" Physician_Library_ID="0" person_name="MA_1" Default_MyQ_Days="4" Legal_Org="CMG" />
+<User User_Name="MA_5" Default_Facility="TEST FACILITY" Role="Medical Assistant" Physician_Library_ID="0" person_name="MA_5" Default_MyQ_Days="4" Legal_Org="CMG" />
+<User User_Name="MA_7" Default_Facility="TEST FACILITY" Role="Medical Assistant" Physician_Library_ID="0" person_name="MA_7" Default_MyQ_Days="4" Legal_Org="CMG" />
+<User User_Name="MA_7_RJ" Default_Facility="RJ TEST FACILITY" Role="Medical Assistant" Physician_Library_ID="0" person_name="MA_7_RJ" Default_MyQ_Days="4" Legal_Org="RJ" />
+<User User_Name="MA_CYPRESS" Default_Facility="CYPRESS TEST FACILITY" Role="Medical Assistant" Physician_Library_ID="0" person_name="MA_CYPRESS" Default_MyQ_Days="4" Legal_Org="CMG" />
+<User User_Name="MA_DB" Default_Facility="TEST FACILITY" Role="Medical Assistant" Physician_Library_ID="0" person_name="MA_DB" Default_MyQ_Days="4" Legal_Org="CMG" />
+<User User_Name="MA_DB_RJ" Default_Facility="RJ TEST FACILITY" Role="Medical Assistant" Physician_Library_ID="0" person_name="MA_DB_RJ" Default_MyQ_Days="4" Legal_Org="RJ" />
+<User User_Name="MA_RJ" Default_Facility="RJ TEST FACILITY" Role="Medical Assistant" Physician_Library_ID="0" person_name="MA_RJ" Default_MyQ_Days="4" Legal_Org="RJ" />
+<User User_Name="MBAGRI" Default_Facility="1866 N OG AVE # 201" Role="Front Office" Physician_Library_ID="0" person_name="Manoj Bagri" Default_MyQ_Days="4" Legal_Org="CMG" />
+<User User_Name="MBHOWMIK" Default_Facility="1866 N OG AVE # 202" Role="Front Office" Physician_Library_ID="0" person_name="Manisha Bhowmik" Default_MyQ_Days="4" Legal_Org="CMG" />
+<User User_Name="MCALZADA" Default_Facility="9190 HAVEN AVE 1ST FLR" Role="Medical Assistant" Physician_Library_ID="0" person_name="Margarita Calzada" Default_MyQ_Days="4" Legal_Org="CMG" />
+<User User_Name="MCARNERO" Default_Facility="430 W BASELINE AVE" Role="Medical Assistant" Physician_Library_ID="0" person_name="Monica Carnero" Default_MyQ_Days="4" Legal_Org="CMG" />
+<User User_Name="MCORTEZ" Default_Facility="430 W BASELINE AVE" Role="Medical Assistant" Physician_Library_ID="0" person_name="Martina Cortez" Default_MyQ_Days="4" Legal_Org="CMG" />
+<User User_Name="MDANDU" Default_Facility="9170 HAVEN AVENUE, SUITE 120" Role="Front Office" Physician_Library_ID="0" person_name="Maheshwari Dandu" Default_MyQ_Days="4" Legal_Org="CMG" />
+<User User_Name="MDEGADO" Default_Facility="9190 HAVEN AVENUE (Haven Urgent Care)" Role="Medical Assistant" Physician_Library_ID="0" person_name="Maria Degado" Default_MyQ_Days="4" Legal_Org="CMG" />
+<User User_Name="MDEVRIES" Default_Facility="8330 RED OAK SUITE #201" Role="Medical Assistant" Physician_Library_ID="0" person_name="Melissa Devries" Default_MyQ_Days="4" Legal_Org="CMG" />
+<User User_Name="MDJBARRON" Default_Facility="1904 N OG AVE" Role="Front Office" Physician_Library_ID="0" person_name="Maria De Jesus Barron" Default_MyQ_Days="4" Legal_Org="CMG" />
+<User User_Name="MDPHAM" Default_Facility="HAVEN EYE INST. 9190, II FLOOR" Role="Physician" Physician_Library_ID="4966" person_name="Dr. Michael Dang Pham, DO" Default_MyQ_Days="14" Legal_Org="CMG" />
+<User User_Name="MELBATTA" Default_Facility="790 E BONITA AVE" Role="Physician" Physician_Library_ID="4793" person_name="Dr. Mohammad Elbatta M.D." Default_MyQ_Days="14" Legal_Org="CMG" />
+<User User_Name="MERODRIGUEZ" Default_Facility="9190 HAVEN AVE 1ST FLR" Role="Medical Assistant" Physician_Library_ID="0" person_name="Melissa Rodriguez" Default_MyQ_Days="4" Legal_Org="CMG" />
+<User User_Name="MESQUIVEL" Default_Facility="520 E FOOTHILL BLVD #A" Role="Medical Assistant" Physician_Library_ID="0" person_name="Mayrem Esquivel" Default_MyQ_Days="4" Legal_Org="CMG" />
+<User User_Name="MGHERNANDEZ" Default_Facility="1866 N OG AVE # 202" Role="Medical Assistant" Physician_Library_ID="0" person_name="Maria G Hernandez" Default_MyQ_Days="4" Legal_Org="CMG" />
+<User User_Name="MGIL" Default_Facility="790 E BONITA AVE" Role="Medical Assistant" Physician_Library_ID="0" person_name="Monica Gil" Default_MyQ_Days="4" Legal_Org="CMG" />
+<User User_Name="MGONZALEZ" Default_Facility="160 E. ARTESIA STREET, STE #360" Role="Medical Assistant" Physician_Library_ID="0" person_name="Maria Gonzalez" Default_MyQ_Days="4" Legal_Org="CMG" />
+<User User_Name="MGUEVARA" Default_Facility="8330 RED OAK SUITE #201" Role="Medical Assistant" Physician_Library_ID="0" person_name="Monica Guevara" Default_MyQ_Days="4" Legal_Org="CMG" />
+<User User_Name="MGUILLEN" Default_Facility="1904 N OG AVE" Role="Front Office" Physician_Library_ID="0" person_name="Marlene Guillen" Default_MyQ_Days="4" Legal_Org="CMG" />
+<User User_Name="MGUZMAN" Default_Facility="811 E 11TH ST, SUITE# 208" Role="Medical Assistant" Physician_Library_ID="0" person_name="Marykate Guzman" Default_MyQ_Days="4" Legal_Org="CMG" />
+<User User_Name="MHABIB" Default_Facility="840 TOWN CENTER DR" Role="Front Office" Physician_Library_ID="0" person_name="Habib, Michael" Default_MyQ_Days="4" Legal_Org="CMG" />
+<User User_Name="MHERNANDEZ" Default_Facility="8330 RED OAK SUITE #101" Role="Medical Assistant" Physician_Library_ID="0" person_name="Mitzy Hernandez" Default_MyQ_Days="4" Legal_Org="CMG" />
+<User User_Name="MIHERNANDEZ" Default_Facility="1904 N OG AVE" Role="Medical Assistant" Physician_Library_ID="0" person_name="Miriam Hernandez" Default_MyQ_Days="4" Legal_Org="CMG" />
+<User User_Name="MIRODRIGUEZ" Default_Facility="1940 N ORANGE GROVE" Role="Medical Assistant" Physician_Library_ID="0" person_name="Michelle Rodriguez" Default_MyQ_Days="4" Legal_Org="CMG" />
+<User User_Name="MITURRALDE" Default_Facility="9190 HAVEN AVE 1ST FLR" Role="Office Manager" Physician_Library_ID="0" person_name="Marilu Iturralde" Default_MyQ_Days="4" Legal_Org="CMG" />
+<User User_Name="MIVARGAS" Default_Facility="790 E BONITA AVE" Role="Medical Assistant" Physician_Library_ID="0" person_name="Maria Iyali Vargas" Default_MyQ_Days="4" Legal_Org="CMG" />
+<User User_Name="MKALYAN" Default_Facility="TEST FACILITY" Role="Front Office" Physician_Library_ID="0" person_name="Madhu Kalyan" Default_MyQ_Days="4" Legal_Org="CMG" />
+<User User_Name="MLAXMISETTI" Default_Facility="HAVEN EYE INST. 9190, II FLOOR" Role="Front Office" Physician_Library_ID="0" person_name="Manasa Laxmisetti" Default_MyQ_Days="4" Legal_Org="CMG" />
+<User User_Name="MLEZO" Default_Facility="1940 N ORANGE GROVE" Role="Medical Assistant" Physician_Library_ID="0" person_name="Mariela Loyde De Lezo" Default_MyQ_Days="4" Legal_Org="CMG" />
+<User User_Name="MLONKA" Default_Facility="TEST FACILITY" Role="Front Office" Physician_Library_ID="0" person_name="Mohan Lonka" Default_MyQ_Days="4" Legal_Org="CMG" />
+<User User_Name="MLORRAINE" Default_Facility="CMG LAB AND ANCILLARY 1866 #101" Role="Medical Assistant" Physician_Library_ID="0" person_name="Mendez  Lorraine" Default_MyQ_Days="4" Legal_Org="CMG" />
+<User User_Name="MLUCERO" Default_Facility="1866 N OG AVE # 102-B" Role="Medical Assistant" Physician_Library_ID="0" person_name="Melody Lucero (Kelley)" Default_MyQ_Days="4" Legal_Org="CMG" />
+<User User_Name="MLUCERO_RJ" Default_Facility="RJ 1866 N OG AVE # 102" Role="Medical Assistant" Physician_Library_ID="0" person_name="Melody Lucero" Default_MyQ_Days="4" Legal_Org="RJ" />
+<User User_Name="MMAMIDI" Default_Facility="840 TOWN CENTER DR" Role="Front Office" Physician_Library_ID="0" person_name="Madhavi Mamidi" Default_MyQ_Days="4" Legal_Org="CMG" />
+<User User_Name="MMARES" Default_Facility="790 E BONITA AVE" Role="Medical Assistant" Physician_Library_ID="0" person_name="Mario Mares" Default_MyQ_Days="4" Legal_Org="CMG" />
+<User User_Name="MMARTIN" Default_Facility="840 TOWN CENTER DR" Role="Front Office" Physician_Library_ID="0" person_name="Martha Martin" Default_MyQ_Days="4" Legal_Org="CMG" />
+<User User_Name="MMATA" Default_Facility="8330 RED OAK SUITE #101" Role="Medical Assistant" Physician_Library_ID="0" person_name="Maria Mata" Default_MyQ_Days="4" Legal_Org="CMG" />
+<User User_Name="MMEDARIS" Default_Facility="160 E. ARTESIA STREET, STE #360" Role="Medical Assistant" Physician_Library_ID="0" person_name="Marianna Medaris" Default_MyQ_Days="4" Legal_Org="CMG" />
+<User User_Name="MMEDINA" Default_Facility="1866 N OG AVE # 104" Role="Medical Assistant" Physician_Library_ID="0" person_name="Mayra Medina" Default_MyQ_Days="4" Legal_Org="CMG" />
+<User User_Name="MMENDIETA" Default_Facility="297 WEST ARTESIA STREET, SUITE A" Role="Medical Assistant" Physician_Library_ID="0" person_name="Marlene Mendieta" Default_MyQ_Days="4" Legal_Org="CMG" />
+<User User_Name="MMERCADO" Default_Facility="9190 HAVEN AVE 1ST FLR" Role="Front Office" Physician_Library_ID="0" person_name="Maria Mercado" Default_MyQ_Days="4" Legal_Org="CMG" />
+<User User_Name="MMOLINA" Default_Facility="160 E. ARTESIA STREET, STE #360" Role="Medical Assistant" Physician_Library_ID="0" person_name="Maria Molina" Default_MyQ_Days="4" Legal_Org="CMG" />
+<User User_Name="MMORA" Default_Facility="160 E. ARTESIA STREET, STE #360" Role="Medical Assistant" Physician_Library_ID="0" person_name="Maria Mora" Default_MyQ_Days="4" Legal_Org="CMG" />
+<User User_Name="MMUTHIAH" Default_Facility="1866 N OG AVE # 202" Role="Physician" Physician_Library_ID="234" person_name="Dr. Muthusamy Muthiah MD,FACC,MHA" Default_MyQ_Days="14" Legal_Org="CMG" />
+<User User_Name="MNAGARAJA" Default_Facility="1866 N OG AVE # 104" Role="Physician" Physician_Library_ID="4799" person_name="Dr. Mysore Nagaraja, MD" Default_MyQ_Days="14" Legal_Org="CMG" />
+<User User_Name="MNANCY" Default_Facility="790 E BONITA AVE" Role="Medical Assistant" Physician_Library_ID="0" person_name="Mendez Nancy" Default_MyQ_Days="4" Legal_Org="CMG" />
+<User User_Name="MOMEDINA" Default_Facility="1940 N ORANGE GROVE" Role="Front Office" Physician_Library_ID="0" person_name="Monica Medina" Default_MyQ_Days="4" Legal_Org="CMG" />
+<User User_Name="MORTIZ" Default_Facility="160 E. ARTESIA STREET, STE #360" Role="Medical Assistant" Physician_Library_ID="0" person_name="Mona Ortiz" Default_MyQ_Days="4" Legal_Org="CMG" />
+<User User_Name="MPEREZ" Default_Facility="520 E FOOTHILL BLVD #A" Role="Office Manager" Physician_Library_ID="0" person_name="Mayra Perez" Default_MyQ_Days="4" Legal_Org="CMG" />
+<User User_Name="MRAMIREZ" Default_Facility="790 E BONITA AVE" Role="Front Office" Physician_Library_ID="0" person_name="Michelle E. Ramirez" Default_MyQ_Days="4" Legal_Org="CMG" />
+<User User_Name="MRODRIGUEZ" Default_Facility="430 W BASELINE AVE" Role="Medical Assistant" Physician_Library_ID="0" person_name="Monique Rodriguez" Default_MyQ_Days="4" Legal_Org="CMG" />
+<User User_Name="MSANCHEZ" Default_Facility="160 E. ARTESIA STREET, STE #360" Role="Medical Assistant" Physician_Library_ID="0" person_name="Maria Sanchez" Default_MyQ_Days="4" Legal_Org="CMG" />
+<User User_Name="MSCHMIDT" Default_Facility="790 E BONITA AVE" Role="Physician" Physician_Library_ID="260" person_name="Dr. Miriam L Schmidt-Villanueva M.D." Default_MyQ_Days="14" Legal_Org="CMG" />
+<User User_Name="MSCHUMACHER" Default_Facility="1382 E FOOTHILL BLVD" Role="Front Office" Physician_Library_ID="0" person_name="Milagros Schumacher" Default_MyQ_Days="4" Legal_Org="CMG" />
+<User User_Name="MSERNA" Default_Facility="9190 HAVEN AVE 1ST FLR" Role="Medical Assistant" Physician_Library_ID="0" person_name="Miriam Serna" Default_MyQ_Days="4" Legal_Org="CMG" />
+<User User_Name="MSILVA" Default_Facility="790 E BONITA AVE" Role="Medical Assistant" Physician_Library_ID="0" person_name="Michelle Silva" Default_MyQ_Days="4" Legal_Org="CMG" />
+<User User_Name="MSORIA" Default_Facility="5385 WALNUT AVE" Role="Medical Assistant" Physician_Library_ID="0" person_name="Maria Soria" Default_MyQ_Days="4" Legal_Org="CMG" />
+<User User_Name="MSORIA_OM" Default_Facility="5385 WALNUT AVE" Role="Office Manager" Physician_Library_ID="0" person_name="Maria Soria" Default_MyQ_Days="4" Legal_Org="CMG" />
+<User User_Name="MTAMA" Default_Facility="790 E BONITA AVE" Role="Physician" Physician_Library_ID="4782" person_name="Dr.Maher Tama, MD" Default_MyQ_Days="14" Legal_Org="CMG" />
+<User User_Name="MTECH" Default_Facility="CMG LAB AND ANCILLARY 1866 #101" Role="Technician" Physician_Library_ID="4933" person_name="Mcot" Default_MyQ_Days="4" Legal_Org="CMG" />
+<User User_Name="MUT_1" Default_Facility="TEST FACILITY" Role="Physician" Physician_Library_ID="4240" person_name="MUT_1 TRANSCRIPTION" Default_MyQ_Days="14" Legal_Org="CMG" />
+<User User_Name="MUT_2" Default_Facility="TEST FACILITY" Role="Physician" Physician_Library_ID="4241" person_name="MUT_2 TRANSCRIPTION" Default_MyQ_Days="14" Legal_Org="CMG" />
+<User User_Name="MUT_3" Default_Facility="TEST FACILITY" Role="Physician" Physician_Library_ID="4281" person_name="MUT_3 TRANSCRIPTION" Default_MyQ_Days="14" Legal_Org="CMG" />
+<User User_Name="MUT_4" Default_Facility="TEST FACILITY" Role="Physician" Physician_Library_ID="4282" person_name="MUT_4 TRANSCRIPTION" Default_MyQ_Days="14" Legal_Org="CMG" />
+<User User_Name="MVALETI" Default_Facility="160 E ARTESIA #220" Role="Front Office" Physician_Library_ID="0" person_name="Mamatha Valeti" Default_MyQ_Days="4" Legal_Org="CMG" />
+<User User_Name="MVERGARA" Default_Facility="8330 RED OAK SUITE #201" Role="Medical Assistant" Physician_Library_ID="0" person_name="Maria Vergara" Default_MyQ_Days="4" Legal_Org="CMG" />
+<User User_Name="MVILLA" Default_Facility="160 E. ARTESIA STREET, STE #360" Role="Medical Assistant" Physician_Library_ID="0" person_name="Mayra Villa" Default_MyQ_Days="4" Legal_Org="CMG" />
+<User User_Name="MVILLAREAL" Default_Facility="790 E BONITA AVE" Role="Front Office" Physician_Library_ID="0" person_name="Mariela Villareal" Default_MyQ_Days="4" Legal_Org="CMG" />
+<User User_Name="MWELLER" Default_Facility="840 TOWN CENTER DR" Role="Front Office" Physician_Library_ID="0" person_name="Micah Weller" Default_MyQ_Days="4" Legal_Org="CMG" />
+<User User_Name="MWILLIAMS" Default_Facility="9190 HAVEN AVENUE (Haven Urgent Care)" Role="Physician" Physician_Library_ID="3108" person_name="Melissa C Williams NP" Default_MyQ_Days="14" Legal_Org="CMG" />
+<User User_Name="NATALIE_ACURUS" Default_Facility="TEST FACILITY" Role="Office Manager" Physician_Library_ID="0" person_name="Natalie Polanco" Default_MyQ_Days="4" Legal_Org="CMG" />
+<User User_Name="NATALIE_RJ" Default_Facility="RJ TEST FACILITY" Role="Office Manager" Physician_Library_ID="0" person_name="Natalie Polanco" Default_MyQ_Days="4" Legal_Org="RJ" />
+<User User_Name="NATINT" Default_Facility="8330 RED OAK SUITE #201" Role="Physician" Physician_Library_ID="4323" person_name="Dr. Nyein Aye Tint M.D." Default_MyQ_Days="14" Legal_Org="CMG" />
+<User User_Name="NAVEENA_1149" Default_Facility="TEST FACILITY" Role="Front Office" Physician_Library_ID="0" person_name="Naveena_1149" Default_MyQ_Days="4" Legal_Org="CMG" />
+<User User_Name="NBETHA" Default_Facility="1866 N OG AVE # 102-A" Role="Front Office" Physician_Library_ID="0" person_name="Naimisha Betha" Default_MyQ_Days="4" Legal_Org="CMG" />
+<User User_Name="NBOGALA" Default_Facility="8330 RED OAK SUITE #101" Role="Front Office" Physician_Library_ID="0" person_name="Narender Bogala" Default_MyQ_Days="4" Legal_Org="CMG" />
+<User User_Name="NCKRISHNAN" Default_Facility="TEST FACILITY" Role="Physician" Physician_Library_ID="4940" person_name="N.C. Krishnan" Default_MyQ_Days="14" Legal_Org="CMG" />
+<User User_Name="NELTAHIR" Default_Facility="1940 N ORANGE GROVE" Role="Physician" Physician_Library_ID="2693" person_name="Dr. Nadir A Eltahir M.D.,F.C.C.P." Default_MyQ_Days="14" Legal_Org="CMG" />
+<User User_Name="NFLAZCANO" Default_Facility="790 E BONITA AVE" Role="Physician" Physician_Library_ID="4279" person_name="Dr. Nallely Flores Lazcano M.D." Default_MyQ_Days="14" Legal_Org="CMG" />
+<User User_Name="NFRIAS" Default_Facility="840 TOWN CENTER DR" Role="Front Office" Physician_Library_ID="0" person_name="Natalie Frias" Default_MyQ_Days="4" Legal_Org="CMG" />
+<User User_Name="NGHOLAR" Default_Facility="9190 HAVEN AVE II FLOOR SUITE# 210" Role="Office Manager" Physician_Library_ID="0" person_name="Nitia Gholar" Default_MyQ_Days="4" Legal_Org="CMG" />
+<User User_Name="NGUPTA" Default_Facility="160 E. ARTESIA STREET, STE #360" Role="Physician" Physician_Library_ID="204" person_name="Dr. Neeraj Gupta M.D." Default_MyQ_Days="14" Legal_Org="CMG" />
+<User User_Name="NHANRAHAN" Default_Facility="790 E BONITA AVE" Role="Medical Assistant" Physician_Library_ID="0" person_name="Nicole Hanrahan" Default_MyQ_Days="4" Legal_Org="CMG" />
+<User User_Name="NHARIRI" Default_Facility="790 E BONITA AVE" Role="Medical Assistant" Physician_Library_ID="0" person_name="Nada Hariri" Default_MyQ_Days="4" Legal_Org="CMG" />
+<User User_Name="NHERRERA" Default_Facility="9190 HAVEN AVENUE (Haven Urgent Care)" Role="Medical Assistant" Physician_Library_ID="0" person_name="Noemi Herrera" Default_MyQ_Days="4" Legal_Org="CMG" />
+<User User_Name="NKURELLA" Default_Facility="TEST FACILITY" Role="Front Office" Physician_Library_ID="0" person_name="Navya Kurella" Default_MyQ_Days="4" Legal_Org="CMG" />
+<User User_Name="NLE" Default_Facility="840 TOWN CENTER DR" Role="Front Office" Physician_Library_ID="0" person_name="Nhi Nguyen Le" Default_MyQ_Days="4" Legal_Org="CMG" />
+<User User_Name="NMANCHIKANTI" Default_Facility="9190 HAVEN AVE II FLOOR SUITE# 210" Role="Front Office" Physician_Library_ID="0" person_name="Nagaraju Manchikanti" Default_MyQ_Days="4" Legal_Org="CMG" />
+<User User_Name="NMENG" Default_Facility="9170 HAVEN AVENUE, SUITE 120" Role="Physician Assistant" Physician_Library_ID="5024" person_name="Nancy Si Jia Meng, NP" Default_MyQ_Days="14" Legal_Org="CMG" />
+<User User_Name="NMORALES" Default_Facility="1940 N ORANGE GROVE" Role="Medical Assistant" Physician_Library_ID="0" person_name="Nazareth Morales" Default_MyQ_Days="4" Legal_Org="CMG" />
+<User User_Name="NMORRIS" Default_Facility="CYPRESS TEST FACILITY" Role="Physician" Physician_Library_ID="5064" person_name="Dr. Nicole Morris M.D." Default_MyQ_Days="14" Legal_Org="CMG" />
+<User User_Name="NMTECH" Default_Facility="ANCILLARY 8330 REDOAK 1ST FLR" Role="Technician" Physician_Library_ID="4972" person_name="Nuclear Modern Mobile" Default_MyQ_Days="4" Legal_Org="CMG" />
+<User User_Name="NON_CAPELLA" Default_Facility="TEST FACILITY" Role="Physician" Physician_Library_ID="4387" person_name="PHY_LAB NON_CAPELLA" Default_MyQ_Days="14" Legal_Org="CMG" />
+<User User_Name="NPANGHATE" Default_Facility="8330 RED OAK SUITE #201" Role="Front Office" Physician_Library_ID="0" person_name="Nikitha Panghate" Default_MyQ_Days="4" Legal_Org="CMG" />
+<User User_Name="NRATHOD" Default_Facility="1904 N OG AVE" Role="Front Office" Physician_Library_ID="0" person_name="Nikhil Rathod" Default_MyQ_Days="4" Legal_Org="CMG" />
+<User User_Name="NSANDOVAL" Default_Facility="790 E BONITA AVE" Role="Medical Assistant" Physician_Library_ID="0" person_name="Neida Sandoval" Default_MyQ_Days="4" Legal_Org="CMG" />
+<User User_Name="NSIDDIQI" Default_Facility="790 E BONITA AVE" Role="Physician" Physician_Library_ID="4563" person_name="Dr. Nazia Siddiqi M.D." Default_MyQ_Days="14" Legal_Org="CMG" />
+<User User_Name="NSNALLA" Default_Facility="1904 N OG AVE" Role="Front Office" Physician_Library_ID="0" person_name="Narayana Swamy Nallagonipalli" Default_MyQ_Days="4" Legal_Org="CMG" />
+<User User_Name="NSORIANO" Default_Facility="1940 N ORANGE GROVE" Role="Physician" Physician_Library_ID="4384" person_name="Dr. Nathaniel Soriano M.D." Default_MyQ_Days="14" Legal_Org="CMG" />
+<User User_Name="NSTEPHANIE" Default_Facility="1866 N OG AVE # 202" Role="Medical Assistant" Physician_Library_ID="0" person_name="Nol Stephanie" Default_MyQ_Days="4" Legal_Org="CMG" />
+<User User_Name="NSUNKHAM" Default_Facility="5385 WALNUT AVE" Role="Front Office" Physician_Library_ID="0" person_name="Naveen Kumar Sunkham" Default_MyQ_Days="4" Legal_Org="CMG" />
+<User User_Name="NTANEJA" Default_Facility="840 TOWN CENTER DR" Role="Office Manager" Physician_Library_ID="0" person_name="Nisha Taneja" Default_MyQ_Days="4" Legal_Org="CMG" />
+<User User_Name="NTORREZ" Default_Facility="430 W BASELINE AVE" Role="Front Office" Physician_Library_ID="0" person_name="Nevaeh Torrez" Default_MyQ_Days="4" Legal_Org="CMG" />
+<User User_Name="NVANGALA" Default_Facility="1866 N OG AVE # 202" Role="Physician" Physician_Library_ID="3111" person_name="Dr. Nitanth Vangala M.D." Default_MyQ_Days="14" Legal_Org="CMG" />
+<User User_Name="NWARD" Default_Facility="160 E. ARTESIA STREET, STE #360" Role="Front Office" Physician_Library_ID="0" person_name="Nicole Ward" Default_MyQ_Days="4" Legal_Org="CMG" />
+<User User_Name="NYCASILLAS" Default_Facility="790 E BONITA AVE" Role="Medical Assistant" Physician_Library_ID="0" person_name="Nancy Yoreni Casillas" Default_MyQ_Days="4" Legal_Org="CMG" />
+<User User_Name="OFFSHORE_INDEX1" Default_Facility="TEST FACILITY" Role="Front Office" Physician_Library_ID="0" person_name="OFFSHORE_INDEX1" Default_MyQ_Days="4" Legal_Org="CMG" />
+<User User_Name="OFFSHORE_INDEX2" Default_Facility="TEST FACILITY" Role="Front Office" Physician_Library_ID="0" person_name="OFFSHORE_INDEX2" Default_MyQ_Days="4" Legal_Org="CMG" />
+<User User_Name="OFFSHORE_INDEX3" Default_Facility="TEST FACILITY" Role="Front Office" Physician_Library_ID="0" person_name="OFFSHORE_INDEX3" Default_MyQ_Days="4" Legal_Org="CMG" />
+<User User_Name="OMAGANA" Default_Facility="9170 HAVEN AVENUE, SUITE 120" Role="Medical Assistant" Physician_Library_ID="0" person_name="Omar Magana" Default_MyQ_Days="4" Legal_Org="CMG" />
+<User User_Name="OM_5" Default_Facility="TEST FACILITY" Role="Office Manager" Physician_Library_ID="0" person_name="OM_5" Default_MyQ_Days="4" Legal_Org="CMG" />
+<User User_Name="OM_7" Default_Facility="TEST FACILITY" Role="Office Manager" Physician_Library_ID="0" person_name="OM_7" Default_MyQ_Days="4" Legal_Org="CMG" />
+<User User_Name="OM_DB" Default_Facility="TEST FACILITY" Role="Office Manager" Physician_Library_ID="0" person_name="OM_DB" Default_MyQ_Days="4" Legal_Org="CMG" />
+<User User_Name="OM_DB_RJ" Default_Facility="RJ TEST FACILITY" Role="Office Manager" Physician_Library_ID="0" person_name="OM_DB_RJ" Default_MyQ_Days="4" Legal_Org="RJ" />
+<User User_Name="OM_RJ" Default_Facility="RJ TEST FACILITY" Role="Office Manager" Physician_Library_ID="0" person_name="OM_RJ" Default_MyQ_Days="4" Legal_Org="RJ" />
+<User User_Name="OSAUDE" Default_Facility="1866 N OG AVE # 201" Role="Front Office" Physician_Library_ID="0" person_name="Odrea Saude" Default_MyQ_Days="4" Legal_Org="CMG" />
+<User User_Name="OSGARCIA" Default_Facility="1866 N OG AVE # 202" Role="Medical Assistant" Physician_Library_ID="0" person_name="OSCAR GARCIA" Default_MyQ_Days="4" Legal_Org="CMG" />
+<User User_Name="PANNAPUREDDY" Default_Facility="297 WEST ARTESIA STREET, SUITE A" Role="Front Office" Physician_Library_ID="0" person_name="Priyadarshini Annapureddy" Default_MyQ_Days="4" Legal_Org="CMG" />
+<User User_Name="PARIAL" Default_Facility="9190 HAVEN AVE 1ST FLR" Role="Front Office" Physician_Library_ID="0" person_name="Platas, Arial" Default_MyQ_Days="4" Legal_Org="CMG" />
+<User User_Name="PA_1" Default_Facility="TEST FACILITY" Role="Physician Assistant" Physician_Library_ID="2853" person_name="PA_1" Default_MyQ_Days="14" Legal_Org="CMG" />
+<User User_Name="PA_5" Default_Facility="TEST FACILITY" Role="Physician Assistant" Physician_Library_ID="4845" person_name="PA_5" Default_MyQ_Days="14" Legal_Org="CMG" />
+<User User_Name="PBEHMARDI" Default_Facility="840 TOWN CENTER DR" Role="Front Office" Physician_Library_ID="0" person_name="Parmida Behmardi" Default_MyQ_Days="4" Legal_Org="CMG" />
+<User User_Name="PCARREON" Default_Facility="9190 HAVEN AVENUE (Haven Urgent Care)" Role="Physician Assistant" Physician_Library_ID="4841" person_name="Peter Carreon, FNP" Default_MyQ_Days="14" Legal_Org="CMG" />
+<User User_Name="PCAUDILLO" Default_Facility="9190 HAVEN AVE 1ST FLR" Role="Front Office" Physician_Library_ID="0" person_name="Patricia Caudillo" Default_MyQ_Days="4" Legal_Org="CMG" />
+<User User_Name="PCAUDILLO1" Default_Facility="9170 HAVEN AVENUE, SUITE 120" Role="Medical Assistant" Physician_Library_ID="0" person_name="Patricia Caudillo" Default_MyQ_Days="4" Legal_Org="CMG" />
+<User User_Name="PDWARAPUREDDI" Default_Facility="1866 N OG AVE # 202" Role="Front Office" Physician_Library_ID="0" person_name="Paravathi Dwarapureddi" Default_MyQ_Days="4" Legal_Org="CMG" />
+<User User_Name="PFLORES" Default_Facility="790 E BONITA AVE" Role="Office Manager" Physician_Library_ID="0" person_name="Patricia Flores" Default_MyQ_Days="4" Legal_Org="CMG" />
+<User User_Name="PGALVAN" Default_Facility="1866 N OG AVE # 202" Role="Medical Assistant" Physician_Library_ID="0" person_name="Phyllis Galvan" Default_MyQ_Days="4" Legal_Org="CMG" />
+<User User_Name="PHERMOSILLA" Default_Facility="1940 N ORANGE GROVE" Role="Medical Assistant" Physician_Library_ID="0" person_name="Pamela Hermosilla" Default_MyQ_Days="4" Legal_Org="CMG" />
+<User User_Name="PHERNANDEZ" Default_Facility="1866 N OG AVE # 202" Role="Front Office" Physician_Library_ID="0" person_name="Priscilla Hernandez" Default_MyQ_Days="4" Legal_Org="CMG" />
+<User User_Name="PHY_1" Default_Facility="TEST FACILITY" Role="Physician" Physician_Library_ID="2854" person_name="Dr. PHY_1 TEST M.D" Default_MyQ_Days="14" Legal_Org="CMG" />
+<User User_Name="PHY_1_RJ" Default_Facility="RJ TEST FACILITY" Role="Physician" Physician_Library_ID="5046" person_name="Dr. PHY_1_RJ TEST M.D" Default_MyQ_Days="14" Legal_Org="RJ" />
+<User User_Name="PHY_2" Default_Facility="TEST FACILITY" Role="Physician" Physician_Library_ID="4909" person_name="Dr. PHY_2 TEST M.D" Default_MyQ_Days="14" Legal_Org="CMG" />
+<User User_Name="PHY_3" Default_Facility="TEST FACILITY" Role="Physician" Physician_Library_ID="4910" person_name="Dr. PHY_3 TEST M.D" Default_MyQ_Days="14" Legal_Org="CMG" />
+<User User_Name="PHY_5" Default_Facility="TEST FACILITY" Role="Physician" Physician_Library_ID="4844" person_name="Dr. PHY_5 TEST M.D" Default_MyQ_Days="14" Legal_Org="CMG" />
+<User User_Name="PHY_7" Default_Facility="TEST FACILITY" Role="Physician" Physician_Library_ID="4328" person_name="PHY_7" Default_MyQ_Days="14" Legal_Org="CMG" />
+<User User_Name="PHY_7_RJ" Default_Facility="RJ TEST FACILITY" Role="Physician" Physician_Library_ID="5047" person_name="Dr. PHY_7_RJ TEST M.D" Default_MyQ_Days="14" Legal_Org="RJ" />
+<User User_Name="PHY_DEVICE_TECH" Default_Facility="DEVICE FACILITY" Role="Physician" Physician_Library_ID="4795" person_name="Device Tech_Phy" Default_MyQ_Days="14" Legal_Org="CMG" />
+<User User_Name="PJAMBIGA" Default_Facility="TEST FACILITY" Role="Front Office" Physician_Library_ID="0" person_name="Prasad Jambiga" Default_MyQ_Days="4" Legal_Org="CMG" />
+<User User_Name="PKIMBERLEE" Default_Facility="840 TOWN CENTER DR" Role="Front Office" Physician_Library_ID="0" person_name="Porter, Kimberlee" Default_MyQ_Days="4" Legal_Org="CMG" />
+<User User_Name="PKMUDADLA" Default_Facility="9170 HAVEN AVENUE, SUITE 120" Role="Front Office" Physician_Library_ID="0" person_name="Praveen Kumar Mudadla" Default_MyQ_Days="4" Legal_Org="CMG" />
+<User User_Name="PLZEPEDA" Default_Facility="9190 HAVEN AVENUE (Haven Urgent Care)" Role="Medical Assistant" Physician_Library_ID="0" person_name="Pauline Zepeda" Default_MyQ_Days="4" Legal_Org="CMG" />
+<User User_Name="PNICIFOROS" Default_Facility="9190 HAVEN AVE 1ST FLR" Role="Physician" Physician_Library_ID="237" person_name="Dr. Peter J Niciforos M.D." Default_MyQ_Days="14" Legal_Org="CMG" />
+<User User_Name="POOJA" Default_Facility="TEST FACILITY" Role="Coder" Physician_Library_ID="0" person_name="pooja.rg_1581" Default_MyQ_Days="4" Legal_Org="CMG" />
+<User User_Name="POOJA_RJ" Default_Facility="RJ TEST FACILITY" Role="Front Office" Physician_Library_ID="0" person_name="Pooja.rg" Default_MyQ_Days="4" Legal_Org="RJ" />
+<User User_Name="PPORTILLO" Default_Facility="430 W BASELINE AVE" Role="Medical Assistant" Physician_Library_ID="0" person_name="Patricia Portillo" Default_MyQ_Days="4" Legal_Org="CMG" />
+<User User_Name="PPOTHARAPALLY" Default_Facility="TEST FACILITY" Role="Front Office" Physician_Library_ID="0" person_name="Prasanna Potharapally" Default_MyQ_Days="4" Legal_Org="CMG" />
+<User User_Name="PRAKASH_ACURUS" Default_Facility="TEST FACILITY" Role="Office Manager" Physician_Library_ID="0" person_name="Prakash_Acurus" Default_MyQ_Days="4" Legal_Org="CMG" />
+<User User_Name="PRAKASH_ACURUS_RJ" Default_Facility="RJ TEST FACILITY" Role="Office Manager" Physician_Library_ID="0" person_name="Prakash_Acurus" Default_MyQ_Days="4" Legal_Org="RJ" />
+<User User_Name="PRAMAPPAGARI" Default_Facility="TEST FACILITY" Role="Front Office" Physician_Library_ID="0" person_name="Prahallad Ramappagari" Default_MyQ_Days="4" Legal_Org="CMG" />
+<User User_Name="PRIYA" Default_Facility="TEST FACILITY" Role="Coder" Physician_Library_ID="0" person_name="PRIYA_1225" Default_MyQ_Days="4" Legal_Org="CMG" />
+<User User_Name="PRODRIGUEZ" Default_Facility="9190 HAVEN AVE 1ST FLR" Role="Medical Assistant" Physician_Library_ID="0" person_name="Paola Rodriguez" Default_MyQ_Days="4" Legal_Org="CMG" />
+<User User_Name="PSANGANA" Default_Facility="297 WEST ARTESIA STREET, SUITE A" Role="Front Office" Physician_Library_ID="0" person_name="Pavana Jyothi Sangana" Default_MyQ_Days="4" Legal_Org="CMG" />
+<User User_Name="PTIRRE" Default_Facility="9190 HAVEN AVE 1ST FLR" Role="Medical Assistant" Physician_Library_ID="0" person_name="Priscilla Tirre" Default_MyQ_Days="4" Legal_Org="CMG" />
+<User User_Name="PVARA" Default_Facility="790 E BONITA AVE" Role="Front Office" Physician_Library_ID="0" person_name="Prem Kumar Vara" Default_MyQ_Days="4" Legal_Org="CMG" />
+<User User_Name="RAGUILAR" Default_Facility="297 WEST ARTESIA STREET, SUITE A" Role="Front Office" Physician_Library_ID="0" person_name="Rachel Aguilar" Default_MyQ_Days="4" Legal_Org="CMG" />
+<User User_Name="RAMYA" Default_Facility="TEST FACILITY" Role="Coder" Physician_Library_ID="0" person_name="RAMYA_1377" Default_MyQ_Days="4" Legal_Org="CMG" />
+<User User_Name="RASHEED" Default_Facility="TEST FACILITY" Role="Office Manager" Physician_Library_ID="0" person_name="Rasheed Mohammed" Default_MyQ_Days="4" Legal_Org="CMG" />
+<User User_Name="RAT_1" Default_Facility="TEST FACILITY" Role="Physician" Physician_Library_ID="4238" person_name="RAT_1 TRANSCRIPTION" Default_MyQ_Days="14" Legal_Org="CMG" />
+<User User_Name="RAT_2" Default_Facility="TEST FACILITY" Role="Physician" Physician_Library_ID="4239" person_name="RAT_2 TRANSCRIPTION" Default_MyQ_Days="14" Legal_Org="CMG" />
+<User User_Name="RAT_3" Default_Facility="TEST FACILITY" Role="Physician" Physician_Library_ID="4283" person_name="RAT_3 TRANSCRIPTION" Default_MyQ_Days="14" Legal_Org="CMG" />
+<User User_Name="RAT_4" Default_Facility="TEST FACILITY" Role="Physician" Physician_Library_ID="4284" person_name="RAT_4 TRANSCRIPTION" Default_MyQ_Days="14" Legal_Org="CMG" />
+<User User_Name="RBALNE" Default_Facility="9190 HAVEN AVE II FLOOR SUITE# 200" Role="Front Office" Physician_Library_ID="0" person_name="Revathi Balne" Default_MyQ_Days="4" Legal_Org="CMG" />
+<User User_Name="RBASSI" Default_Facility="1866 N OG AVE # 202" Role="Physician Assistant" Physician_Library_ID="4821" person_name="Rohan Bassi, NP-C" Default_MyQ_Days="14" Legal_Org="CMG" />
+<User User_Name="RBRAGA" Default_Facility="840 TOWN CENTER DR" Role="Front Office" Physician_Library_ID="0" person_name="Rhodabelle Braga" Default_MyQ_Days="4" Legal_Org="CMG" />
+<User User_Name="RBROWN" Default_Facility="8330 RED OAK SUITE #201" Role="Medical Assistant" Physician_Library_ID="0" person_name="Renee Brown" Default_MyQ_Days="4" Legal_Org="CMG" />
+<User User_Name="RCANTRELL" Default_Facility="430 W BASELINE AVE" Role="Office Manager" Physician_Library_ID="0" person_name="Rosemary Cantrell" Default_MyQ_Days="4" Legal_Org="CMG" />
+<User User_Name="RCANTRELL_CO" Default_Facility="430 W BASELINE AVE" Role="Coder" Physician_Library_ID="0" person_name="Rosemary Cantrell" Default_MyQ_Days="4" Legal_Org="CMG" />
+<User User_Name="RCASAS" Default_Facility="430 W BASELINE AVE" Role="Medical Assistant" Physician_Library_ID="0" person_name="Rita Casas" Default_MyQ_Days="4" Legal_Org="CMG" />
+<User User_Name="RCASTRO" Default_Facility="790 E BONITA AVE" Role="Front Office" Physician_Library_ID="0" person_name="Rachel Castro" Default_MyQ_Days="4" Legal_Org="CMG" />
+<User User_Name="RCUEVAS" Default_Facility="1866 N OG AVE # 202" Role="Front Office" Physician_Library_ID="0" person_name="Rosario Cuevas" Default_MyQ_Days="4" Legal_Org="CMG" />
+<User User_Name="RDOMINGUEZ" Default_Facility="790 E BONITA AVE" Role="Medical Assistant" Physician_Library_ID="0" person_name="Rosa Dominguez" Default_MyQ_Days="4" Legal_Org="CMG" />
+<User User_Name="RESPINOZA" Default_Facility="9190 HAVEN AVE 1ST FLR" Role="Medical Assistant" Physician_Library_ID="0" person_name="Rosa Espinoza" Default_MyQ_Days="4" Legal_Org="CMG" />
+<User User_Name="RGARDEA" Default_Facility="9190 HAVEN AVE 1ST FLR" Role="Medical Assistant" Physician_Library_ID="0" person_name="Reynaldo Gardea" Default_MyQ_Days="4" Legal_Org="CMG" />
+<User User_Name="RGERONIMO" Default_Facility="790 E BONITA AVE" Role="Physician" Physician_Library_ID="203" person_name="Dr. Redemption G Geronimo M.D." Default_MyQ_Days="14" Legal_Org="CMG" />
+<User User_Name="RGNAVARRO" Default_Facility="790 E BONITA AVE" Role="Medical Assistant" Physician_Library_ID="0" person_name="Raul Garcia-Navarro" Default_MyQ_Days="4" Legal_Org="CMG" />
+<User User_Name="RGOUD" Default_Facility="TEST FACILITY" Role="Front Office" Physician_Library_ID="0" person_name="Raju Goud" Default_MyQ_Days="4" Legal_Org="CMG" />
+<User User_Name="RGRANADOS" Default_Facility="9190 HAVEN AVE II FLOOR SUITE# 210" Role="Office Manager" Physician_Library_ID="0" person_name="Raul Granados" Default_MyQ_Days="4" Legal_Org="CMG" />
+<User User_Name="RGT_1" Default_Facility="TEST FACILITY" Role="Physician" Physician_Library_ID="4285" person_name="RGT_1 TRANSCRIPTION" Default_MyQ_Days="14" Legal_Org="CMG" />
+<User User_Name="RGT_2" Default_Facility="TEST FACILITY" Role="Physician" Physician_Library_ID="4286" person_name="RGT_2 TRANSCRIPTION" Default_MyQ_Days="14" Legal_Org="CMG" />
+<User User_Name="RGT_3" Default_Facility="TEST FACILITY" Role="Physician" Physician_Library_ID="4287" person_name="RGT_3 TRANSCRIPTION" Default_MyQ_Days="14" Legal_Org="CMG" />
+<User User_Name="RHERNANDEZ" Default_Facility="811 E 11TH ST, SUITE# 208" Role="Medical Assistant" Physician_Library_ID="0" person_name="Reyna Hernandez" Default_MyQ_Days="4" Legal_Org="CMG" />
+<User User_Name="RJACOBY" Default_Facility="430 W BASELINE AVE" Role="Physician" Physician_Library_ID="2839" person_name="Dr. Robyn Jacoby DO" Default_MyQ_Days="14" Legal_Org="CMG" />
+<User User_Name="RJONES" Default_Facility="RJ 1866 N OG AVE # 102" Role="Physician" Physician_Library_ID="213" person_name="Dr.Robert C Jones M.D" Default_MyQ_Days="14" Legal_Org="RJ" />
+<User User_Name="RKALETI" Default_Facility="1904 N OG AVE" Role="Front Office" Physician_Library_ID="0" person_name="Rathnakumari Aleti" Default_MyQ_Days="4" Legal_Org="CMG" />
+<User User_Name="RKIRLA" Default_Facility="TEST FACILITY" Role="Front Office" Physician_Library_ID="0" person_name="Ramya Kirla" Default_MyQ_Days="4" Legal_Org="CMG" />
+<User User_Name="RKOUDAGANI" Default_Facility="138 HARVARD AVE" Role="Front Office" Physician_Library_ID="0" person_name="Raju Koudagani" Default_MyQ_Days="4" Legal_Org="CMG" />
+<User User_Name="RMARWAHA" Default_Facility="1866 N OG AVE # 102-B" Role="Physician" Physician_Library_ID="227" person_name="Dr. Rishu Marwaha M.D." Default_MyQ_Days="14" Legal_Org="CMG" />
+<User User_Name="RMATAM" Default_Facility="1866 N OG AVE # 104" Role="Front Office" Physician_Library_ID="0" person_name="Roja Rani Matam" Default_MyQ_Days="4" Legal_Org="CMG" />
+<User User_Name="RMEDINA" Default_Facility="160 E. ARTESIA STREET, STE #360" Role="Office Manager" Physician_Library_ID="0" person_name="Rosie Medina" Default_MyQ_Days="4" Legal_Org="CMG" />
+<User User_Name="RMERLA" Default_Facility="1866 N OG AVE # 201" Role="Physician" Physician_Library_ID="3075" person_name="Dr. Ramanna Merla M.D." Default_MyQ_Days="14" Legal_Org="CMG" />
+<User User_Name="RNEELA" Default_Facility="TEST FACILITY" Role="Front Office" Physician_Library_ID="0" person_name="Rajya laxmi Neela" Default_MyQ_Days="4" Legal_Org="CMG" />
+<User User_Name="ROCHOA" Default_Facility="1904 N OG AVE" Role="Front Office" Physician_Library_ID="0" person_name="Reyna Ochoa" Default_MyQ_Days="4" Legal_Org="CMG" />
+<User User_Name="ROGONZALEZ" Default_Facility="8330 RED OAK SUITE #101" Role="Medical Assistant" Physician_Library_ID="0" person_name="Rocio Gonzalez" Default_MyQ_Days="4" Legal_Org="CMG" />
+<User User_Name="RPENKI" Default_Facility="520 E FOOTHILL BLVD #A" Role="Front Office" Physician_Library_ID="0" person_name="Renuka Penki" Default_MyQ_Days="4" Legal_Org="CMG" />
+<User User_Name="RPLACENSIA" Default_Facility="8330 RED OAK SUITE #201" Role="Medical Assistant" Physician_Library_ID="0" person_name="Ramon Placensia" Default_MyQ_Days="4" Legal_Org="CMG" />
+<User User_Name="RPRADHAN" Default_Facility="1904 N OG AVE" Role="Physician" Physician_Library_ID="105" person_name="Dr. Rita K Pradhan M.D.,F.A.C.E." Default_MyQ_Days="14" Legal_Org="CMG" />
+<User User_Name="RPREETHA" Default_Facility="TEST FACILITY" Role="Coder" Physician_Library_ID="0" person_name="R. Preetha" Default_MyQ_Days="4" Legal_Org="CMG" />
+<User User_Name="RRAZO" Default_Facility="1866 N OG AVE # 202" Role="Front Office" Physician_Library_ID="0" person_name="Ruby Razo" Default_MyQ_Days="4" Legal_Org="CMG" />
+<User User_Name="RRODRIGUEZ" Default_Facility="811 E 11TH ST, SUITE# 208" Role="Medical Assistant" Physician_Library_ID="0" person_name="Raquel Rodriguez" Default_MyQ_Days="4" Legal_Org="CMG" />
+<User User_Name="RRUIZ" Default_Facility="160 E. ARTESIA STREET, STE #360" Role="Front Office" Physician_Library_ID="0" person_name="Roxanne Ruiz" Default_MyQ_Days="4" Legal_Org="CMG" />
+<User User_Name="RSBENITEZ" Default_Facility="297 WEST ARTESIA STREET, SUITE A" Role="Medical Assistant" Physician_Library_ID="0" person_name="Rodrigo San Pablo Benitez" Default_MyQ_Days="4" Legal_Org="CMG" />
+<User User_Name="RSEPULVEDA" Default_Facility="138 HARVARD AVE" Role="Front Office" Physician_Library_ID="0" person_name="Raquel Sepulveda" Default_MyQ_Days="4" Legal_Org="CMG" />
+<User User_Name="RSHAIK" Default_Facility="1940 N ORANGE GROVE" Role="Front Office" Physician_Library_ID="0" person_name="Raheem Shaik" Default_MyQ_Days="4" Legal_Org="CMG" />
+<User User_Name="RSHANTHI" Default_Facility="TEST FACILITY" Role="Front Office" Physician_Library_ID="0" person_name="R. Shanthi" Default_MyQ_Days="4" Legal_Org="CMG" />
+<User User_Name="RSINHA" Default_Facility="1940 N ORANGE GROVE" Role="Physician" Physician_Library_ID="265" person_name="Dr. Rakesh Sinha MD,FCCP" Default_MyQ_Days="14" Legal_Org="CMG" />
+<User User_Name="RSOTO" Default_Facility="160 E. ARTESIA STREET, STE #360" Role="Office Manager" Physician_Library_ID="0" person_name="Rosalba Soto" Default_MyQ_Days="4" Legal_Org="CMG" />
+<User User_Name="RSTELLA" Default_Facility="9190 HAVEN AVE 1ST FLR" Role="Front Office" Physician_Library_ID="0" person_name="Rebecca Stella" Default_MyQ_Days="4" Legal_Org="CMG" />
+<User User_Name="RSTERLING" Default_Facility="1866 N OG AVE # 202" Role="Front Office" Physician_Library_ID="0" person_name="Reylene Sterling" Default_MyQ_Days="4" Legal_Org="CMG" />
+<User User_Name="RSUNDAR" Default_Facility="TEST FACILITY" Role="Front Office" Physician_Library_ID="0" person_name="Sundar.R" Default_MyQ_Days="4" Legal_Org="CMG" />
+<User User_Name="RSYEDA" Default_Facility="1940 N ORANGE GROVE" Role="Front Office" Physician_Library_ID="0" person_name="Rayeesa Syeda" Default_MyQ_Days="4" Legal_Org="CMG" />
+<User User_Name="RTALLAPALLY" Default_Facility="CMG LAB AND ANCILLARY 1866 #101" Role="Front Office" Physician_Library_ID="0" person_name="Rashi Tallapally" Default_MyQ_Days="4" Legal_Org="CMG" />
+<User User_Name="RTHUMATI" Default_Facility="1866 N OG AVE # 202" Role="Physician" Physician_Library_ID="268" person_name="Dr. Rama Thumati MD,FACC" Default_MyQ_Days="14" Legal_Org="CMG" />
+<User User_Name="RYAJJALA" Default_Facility="297 WEST ARTESIA STREET, SUITE A" Role="Front Office" Physician_Library_ID="0" person_name="Ravi Kumar Yajjala" Default_MyQ_Days="4" Legal_Org="CMG" />
+<User User_Name="RYANDAVA" Default_Facility="790 E BONITA AVE" Role="Front Office" Physician_Library_ID="0" person_name="Revathi Yandava" Default_MyQ_Days="4" Legal_Org="CMG" />
+<User User_Name="SADUNURI" Default_Facility="1866 N OG AVE # 202" Role="Front Office" Physician_Library_ID="0" person_name="Swetha Adunuri" Default_MyQ_Days="4" Legal_Org="CMG" />
+<User User_Name="SALI" Default_Facility="297 WEST ARTESIA STREET, SUITE A" Role="Physician Assistant" Physician_Library_ID="4903" person_name="Sami Ali, PA-C" Default_MyQ_Days="14" Legal_Org="CMG" />
+<User User_Name="SAQURESHI" Default_Facility="160 E ARTESIA #220" Role="Physician" Physician_Library_ID="4945" person_name="Dr. Sana Ahmad Qureshi" Default_MyQ_Days="14" Legal_Org="CMG" />
+<User User_Name="SARASOGHLI" Default_Facility="297 WEST ARTESIA STREET, SUITE A" Role="Physician" Physician_Library_ID="2140" person_name="Dr. Sam Arasoghli, M.D" Default_MyQ_Days="14" Legal_Org="CMG" />
+<User User_Name="SARA_ACURUS" Default_Facility="840 TOWN CENTER DR" Role="Front Office" Physician_Library_ID="0" person_name="Sara Menjivar" Default_MyQ_Days="4" Legal_Org="CMG" />
+<User User_Name="SARREOLA" Default_Facility="9190 HAVEN AVE 1ST FLR" Role="Medical Assistant" Physician_Library_ID="0" person_name="Sylvia Arreola" Default_MyQ_Days="4" Legal_Org="CMG" />
+<User User_Name="SAVALDEZ" Default_Facility="790 E BONITA AVE" Role="Medical Assistant" Physician_Library_ID="0" person_name="Sammantha Valdez" Default_MyQ_Days="4" Legal_Org="CMG" />
+<User User_Name="SAVARGAS" Default_Facility="138 HARVARD AVE" Role="Front Office" Physician_Library_ID="0" person_name="Samantha Vargas" Default_MyQ_Days="4" Legal_Org="CMG" />
+<User User_Name="SBALA" Default_Facility="TEST FACILITY" Role="Front Office" Physician_Library_ID="0" person_name="S.Balaji" Default_MyQ_Days="4" Legal_Org="CMG" />
+<User User_Name="SBALAJI_RJ" Default_Facility="RJ TEST FACILITY" Role="Front Office" Physician_Library_ID="0" person_name="Balaji s" Default_MyQ_Days="4" Legal_Org="RJ" />
+<User User_Name="SBARRAS" Default_Facility="138 HARVARD AVE" Role="Medical Assistant" Physician_Library_ID="0" person_name="Stephanie Barras" Default_MyQ_Days="4" Legal_Org="CMG" />
+<User User_Name="SBARRIOS" Default_Facility="138 HARVARD AVE" Role="Medical Assistant" Physician_Library_ID="0" person_name="Sandra Barrios" Default_MyQ_Days="4" Legal_Org="CMG" />
+<User User_Name="SBARROS" Default_Facility="138 HARVARD AVE" Role="Front Office" Physician_Library_ID="0" person_name="Stephannie Barros" Default_MyQ_Days="4" Legal_Org="CMG" />
+<User User_Name="SBLACKARD" Default_Facility="8330 RED OAK SUITE #201" Role="Office Manager" Physician_Library_ID="0" person_name="Shannon Blackard" Default_MyQ_Days="4" Legal_Org="CMG" />
+<User User_Name="SBOMMI" Default_Facility="520 E FOOTHILL BLVD #A" Role="Front Office" Physician_Library_ID="0" person_name="Sowjanya Bommi Bommi" Default_MyQ_Days="4" Legal_Org="CMG" />
+<User User_Name="SCASTILLO" Default_Facility="1866 N OG AVE # 104" Role="Office Manager" Physician_Library_ID="0" person_name="Silvia Castillo" Default_MyQ_Days="4" Legal_Org="CMG" />
+<User User_Name="SCEJA" Default_Facility="1904 N OG AVE" Role="Medical Assistant" Physician_Library_ID="0" person_name="Samantha Ceja" Default_MyQ_Days="4" Legal_Org="CMG" />
+<User User_Name="SCHAKRALA" Default_Facility="TEST FACILITY" Role="Front Office" Physician_Library_ID="0" person_name="Sandhya Chakrala" Default_MyQ_Days="4" Legal_Org="CMG" />
+<User User_Name="SCHINTALDINDI" Default_Facility="8330 RED OAK SUITE #101" Role="Front Office" Physician_Library_ID="0" person_name="Swetha Chintaldindi" Default_MyQ_Days="4" Legal_Org="CMG" />
+<User User_Name="SCRIBE1_ALLA" Default_Facility="8330 RED OAK SUITE #101" Role="Scribe" Physician_Library_ID="4928" person_name="Alla Scribe1" Default_MyQ_Days="14" Legal_Org="CMG" />
+<User User_Name="SCRIBE1_DROBLES" Default_Facility="9190 HAVEN AVE II FLOOR SUITE# 210" Role="Scribe" Physician_Library_ID="4810" person_name="Robles Scribe1" Default_MyQ_Days="14" Legal_Org="CMG" />
+<User User_Name="SCRIBE1_EKONCA" Default_Facility="9170 HAVEN AVENUE, SUITE 120" Role="Scribe" Physician_Library_ID="4807" person_name="Konca Scribe1" Default_MyQ_Days="14" Legal_Org="CMG" />
+<User User_Name="SCRIBE1_HCOHEN" Default_Facility="8330 RED OAK SUITE #201" Role="Scribe" Physician_Library_ID="4817" person_name="Cohen Scribe1" Default_MyQ_Days="14" Legal_Org="CMG" />
+<User User_Name="SCRIBE1_NAZERI" Default_Facility="9170 HAVEN AVENUE, SUITE 120" Role="Scribe" Physician_Library_ID="4926" person_name="Scribe1_Nazeri" Default_MyQ_Days="14" Legal_Org="CMG" />
+<User User_Name="SCRIBE1_PARIKH" Default_Facility="1866 N OG AVE # 202" Role="Scribe" Physician_Library_ID="4932" person_name="Parikh Scribe1" Default_MyQ_Days="14" Legal_Org="CMG" />
+<User User_Name="SCRIBE1_RASANIA" Default_Facility="1904 N OG AVE" Role="Scribe" Physician_Library_ID="4875" person_name="Rasania Scribe1" Default_MyQ_Days="14" Legal_Org="CMG" />
+<User User_Name="SCRIBE1_SREDDY" Default_Facility="1866 N OG AVE # 104" Role="Scribe" Physician_Library_ID="4872" person_name="Sreddy Scribe1" Default_MyQ_Days="14" Legal_Org="CMG" />
+<User User_Name="SCRIBE2_EKONCA" Default_Facility="9170 HAVEN AVENUE, SUITE 120" Role="Scribe" Physician_Library_ID="4808" person_name="Konca Scribe2" Default_MyQ_Days="14" Legal_Org="CMG" />
+<User User_Name="SCRIBE3_EKONCA" Default_Facility="9170 HAVEN AVENUE, SUITE 120" Role="Scribe" Physician_Library_ID="4809" person_name="Konca Scribe3" Default_MyQ_Days="14" Legal_Org="CMG" />
+<User User_Name="SCRIBE_1" Default_Facility="TEST FACILITY" Role="Scribe" Physician_Library_ID="4664" person_name="SCRIBE_1" Default_MyQ_Days="14" Legal_Org="CMG" />
+<User User_Name="SCRIBE_2" Default_Facility="TEST FACILITY" Role="Scribe" Physician_Library_ID="4665" person_name="SCRIBE_2" Default_MyQ_Days="14" Legal_Org="CMG" />
+<User User_Name="SCRIBE_JWOODSON" Default_Facility="9190 HAVEN AVE II FLOOR SUITE# 210" Role="Scribe" Physician_Library_ID="5012" person_name="Scribe Jwoodson" Default_MyQ_Days="14" Legal_Org="CMG" />
+<User User_Name="SDAZA" Default_Facility="9190 HAVEN AVE 1ST FLR" Role="Medical Assistant" Physician_Library_ID="0" person_name="Soledad Daza" Default_MyQ_Days="4" Legal_Org="CMG" />
+<User User_Name="SDEATHRIAGE" Default_Facility="9190 HAVEN AVE 1ST FLR" Role="Front Office" Physician_Library_ID="0" person_name="Saralyn Deathriage" Default_MyQ_Days="4" Legal_Org="CMG" />
+<User User_Name="SDELGADO" Default_Facility="1866 N OG AVE # 102-A" Role="Medical Assistant" Physician_Library_ID="0" person_name="Sabrina Delgado" Default_MyQ_Days="4" Legal_Org="CMG" />
+<User User_Name="SDURAN" Default_Facility="1866 N OG AVE # 202" Role="Front Office" Physician_Library_ID="0" person_name="Stephanie Duran" Default_MyQ_Days="4" Legal_Org="CMG" />
+<User User_Name="SFELIX" Default_Facility="9190 HAVEN AVE 1ST FLR" Role="Front Office" Physician_Library_ID="0" person_name="Sonia Felix" Default_MyQ_Days="4" Legal_Org="CMG" />
+<User User_Name="SGEEDIKANTI" Default_Facility="9190 HAVEN AVE 1ST FLR" Role="Front Office" Physician_Library_ID="0" person_name="Sridhar Geedikanti" Default_MyQ_Days="4" Legal_Org="CMG" />
+<User User_Name="SGUNANA" Default_Facility="1866 N OG AVE # 102-A" Role="Front Office" Physician_Library_ID="0" person_name="Sudheer Gunana" Default_MyQ_Days="4" Legal_Org="CMG" />
+<User User_Name="SHCARTER" Default_Facility="1866 N OG AVE # 201" Role="Front Office" Physician_Library_ID="0" person_name="Sherri Carter" Default_MyQ_Days="4" Legal_Org="CMG" />
+<User User_Name="SHOEB" Default_Facility="790 E BONITA AVE" Role="Front Office" Physician_Library_ID="0" person_name="Shoeb MD" Default_MyQ_Days="4" Legal_Org="CMG" />
+<User User_Name="SIBANEZ" Default_Facility="9190 HAVEN AVE 1ST FLR" Role="Medical Assistant" Physician_Library_ID="0" person_name="Sandy Ibanez" Default_MyQ_Days="4" Legal_Org="CMG" />
+<User User_Name="SICARDENAS" Default_Facility="HAVEN EYE INST. 9190, II FLOOR" Role="Medical Assistant" Physician_Library_ID="0" person_name="Sindi Cardenas" Default_MyQ_Days="4" Legal_Org="CMG" />
+<User User_Name="SJAMES" Default_Facility="9190 HAVEN AVE II FLOOR SUITE# 210" Role="Medical Assistant" Physician_Library_ID="0" person_name="Sarah James" Default_MyQ_Days="4" Legal_Org="CMG" />
+<User User_Name="SJAREGUI" Default_Facility="9190 HAVEN AVE 1ST FLR" Role="Medical Assistant" Physician_Library_ID="0" person_name="Sandra Jaregui" Default_MyQ_Days="4" Legal_Org="CMG" />
+<User User_Name="SJUNJOOR" Default_Facility="9170 HAVEN AVENUE, SUITE 120" Role="Front Office" Physician_Library_ID="0" person_name="Shravya Junjoor" Default_MyQ_Days="4" Legal_Org="CMG" />
+<User User_Name="SKALUVA" Default_Facility="9190 HAVEN AVENUE (Haven Urgent Care)" Role="Front Office" Physician_Library_ID="0" person_name="Sandeep Kaluva" Default_MyQ_Days="4" Legal_Org="CMG" />
+<User User_Name="SKARIMA" Default_Facility="CMG LAB AND ANCILLARY 1866 #101" Role="Technician" Physician_Library_ID="4511" person_name="Karima Sbih" Default_MyQ_Days="4" Legal_Org="CMG" />
+<User User_Name="SKAUR" Default_Facility="138 HARVARD AVE" Role="Medical Assistant" Physician_Library_ID="0" person_name="Satinder Kaur" Default_MyQ_Days="4" Legal_Org="CMG" />
+<User User_Name="SKOMMU" Default_Facility="CMG LAB AND ANCILLARY 1866 #101" Role="Front Office" Physician_Library_ID="0" person_name="Satesh Kumar Kommu" Default_MyQ_Days="4" Legal_Org="CMG" />
+<User User_Name="SKOYYADA" Default_Facility="1904 N OG AVE" Role="Front Office" Physician_Library_ID="0" person_name="Sandhya Rani Koyyada" Default_MyQ_Days="4" Legal_Org="CMG" />
+<User User_Name="SKRVELLALA" Default_Facility="CMG LAB AND ANCILLARY 1866 #101" Role="Front Office" Physician_Library_ID="0" person_name="Sai Kumar Reddy Vellala" Default_MyQ_Days="4" Legal_Org="CMG" />
+<User User_Name="SKUMAR" Default_Facility="1866 N OG AVE # 202" Role="Physician" Physician_Library_ID="4857" person_name="Dr. Suneel Kumar, M.D." Default_MyQ_Days="14" Legal_Org="CMG" />
+<User User_Name="SLIERA" Default_Facility="8330 RED OAK SUITE #101" Role="Front Office" Physician_Library_ID="0" person_name="Savannah Liera" Default_MyQ_Days="4" Legal_Org="CMG" />
+<User User_Name="SLINISHA" Default_Facility="TEST FACILITY" Role="Coder" Physician_Library_ID="0" person_name="Shanthilin Linisha" Default_MyQ_Days="4" Legal_Org="CMG" />
+<User User_Name="SLINISHA_RJ" Default_Facility="RJ TEST FACILITY" Role="Front Office" Physician_Library_ID="0" person_name="Shanthilin Linisha" Default_MyQ_Days="4" Legal_Org="RJ" />
+<User User_Name="SLYNALL" Default_Facility="1866 N OG AVE # 202" Role="Front Office" Physician_Library_ID="0" person_name="Samantha Lynall" Default_MyQ_Days="4" Legal_Org="CMG" />
+<User User_Name="SMADARI" Default_Facility="1904 N OG AVE" Role="Front Office" Physician_Library_ID="0" person_name="Sudha Rani Madari" Default_MyQ_Days="4" Legal_Org="CMG" />
+<User User_Name="SMAILA" Default_Facility="1940 N ORANGE GROVE" Role="Front Office" Physician_Library_ID="0" person_name="Shirisha Maila" Default_MyQ_Days="4" Legal_Org="CMG" />
+<User User_Name="SMALSBERGER" Default_Facility="430 W BASELINE AVE" Role="Medical Assistant" Physician_Library_ID="0" person_name="Suzanne Malsberger" Default_MyQ_Days="4" Legal_Org="CMG" />
+<User User_Name="SMATEOS" Default_Facility="1940 N ORANGE GROVE" Role="Medical Assistant" Physician_Library_ID="0" person_name="Sandra Mateos" Default_MyQ_Days="4" Legal_Org="CMG" />
+<User User_Name="SMICHEAL" Default_Facility="TEST FACILITY" Role="Coder" Physician_Library_ID="0" person_name="S. Micheal raj" Default_MyQ_Days="4" Legal_Org="CMG" />
+<User User_Name="SMORALES" Default_Facility="790 E BONITA AVE" Role="Medical Assistant" Physician_Library_ID="0" person_name="Stephanie Morales" Default_MyQ_Days="4" Legal_Org="CMG" />
+<User User_Name="SMOTIKE" Default_Facility="9190 HAVEN AVE II FLOOR SUITE# 210" Role="Front Office" Physician_Library_ID="0" person_name="Sabitha Motike" Default_MyQ_Days="4" Legal_Org="CMG" />
+<User User_Name="SMRAJ" Default_Facility="TEST FACILITY" Role="Front Office" Physician_Library_ID="0" person_name="S.Micheal Raj" Default_MyQ_Days="4" Legal_Org="CMG" />
+<User User_Name="SNAZERI" Default_Facility="9170 HAVEN AVENUE, SUITE 120" Role="Physician" Physician_Library_ID="2857" person_name="Dr. Kavoos C Nazeri M.D." Default_MyQ_Days="14" Legal_Org="CMG" />
+<User User_Name="SOFELIX" Default_Facility="8330 RED OAK SUITE #101" Role="Medical Assistant" Physician_Library_ID="0" person_name="Sonia Sanchez" Default_MyQ_Days="4" Legal_Org="CMG" />
+<User User_Name="SORAGANTI" Default_Facility="1866 N OG AVE # 102-B" Role="Front Office" Physician_Library_ID="0" person_name="Sai Kiran Oraganti" Default_MyQ_Days="4" Legal_Org="CMG" />
+<User User_Name="SOWAN" Default_Facility="TEST FACILITY" Role="Coder" Physician_Library_ID="0" person_name="Sowantharya" Default_MyQ_Days="4" Legal_Org="CMG" />
+<User User_Name="SOWAN_RJ" Default_Facility="RJ TEST FACILITY" Role="Front Office" Physician_Library_ID="0" person_name="Sowantharya" Default_MyQ_Days="4" Legal_Org="RJ" />
+<User User_Name="SPANDIRLA" Default_Facility="8330 RED OAK SUITE #101" Role="Front Office" Physician_Library_ID="0" person_name="Sindhu Sri Pandirla" Default_MyQ_Days="4" Legal_Org="CMG" />
+<User User_Name="SPANG" Default_Facility="1904 N OG AVE" Role="Front Office" Physician_Library_ID="0" person_name="Syama Pang" Default_MyQ_Days="4" Legal_Org="CMG" />
+<User User_Name="SPEDROZA" Default_Facility="1940 N ORANGE GROVE" Role="Medical Assistant" Physician_Library_ID="0" person_name="Sandra Pedroza" Default_MyQ_Days="4" Legal_Org="CMG" />
+<User User_Name="SPEREZ" Default_Facility="1866 N OG AVE # 202" Role="Front Office" Physician_Library_ID="0" person_name="Sandra Perez" Default_MyQ_Days="4" Legal_Org="CMG" />
+<User User_Name="SPINEDA" Default_Facility="138 HARVARD AVE" Role="Medical Assistant" Physician_Library_ID="0" person_name="Samantha Pineda" Default_MyQ_Days="4" Legal_Org="CMG" />
+<User User_Name="SPISANI" Default_Facility="840 TOWN CENTER DR" Role="Front Office" Physician_Library_ID="0" person_name="Sandra Pisani" Default_MyQ_Days="4" Legal_Org="CMG" />
+<User User_Name="SPUNATI" Default_Facility="138 HARVARD AVE" Role="Front Office" Physician_Library_ID="0" person_name="Sravani Punati" Default_MyQ_Days="4" Legal_Org="CMG" />
+<User User_Name="SRASANIA" Default_Facility="1904 N OG AVE" Role="Physician" Physician_Library_ID="4516" person_name="Dr. Sapna Sangani Rasania M.D. , M.P.H." Default_MyQ_Days="14" Legal_Org="CMG" />
+<User User_Name="SREDDY" Default_Facility="1866 N OG AVE # 104" Role="Physician" Physician_Library_ID="2377" person_name="Dr. Sudhir Reddy, MD" Default_MyQ_Days="14" Legal_Org="CMG" />
+<User User_Name="SRINI" Default_Facility="TEST FACILITY" Role="Front Office" Physician_Library_ID="0" person_name="B.Srinivasan" Default_MyQ_Days="4" Legal_Org="CMG" />
+<User User_Name="SRI_ACURUS" Default_Facility="TEST FACILITY" Role="Office Manager" Physician_Library_ID="0" person_name="Sri_Acurus" Default_MyQ_Days="4" Legal_Org="CMG" />
+<User User_Name="SRI_ACURUS_RJ" Default_Facility="RJ TEST FACILITY" Role="Office Manager" Physician_Library_ID="0" person_name="Sri_Acurus" Default_MyQ_Days="4" Legal_Org="RJ" />
+<User User_Name="SRUIZ" Default_Facility="8330 RED OAK SUITE #201" Role="Medical Assistant" Physician_Library_ID="0" person_name="Sandra Ruiz" Default_MyQ_Days="4" Legal_Org="CMG" />
+<User User_Name="SSAMUDRALA" Default_Facility="9190 HAVEN AVE II FLOOR SUITE# 210" Role="Front Office" Physician_Library_ID="0" person_name="Shailaja Samudrala" Default_MyQ_Days="4" Legal_Org="CMG" />
+<User User_Name="SSAYANI" Default_Facility="840 TOWN CENTER DR" Role="Office Manager" Physician_Library_ID="0" person_name="Shana Sayani" Default_MyQ_Days="4" Legal_Org="CMG" />
+<User User_Name="SSEEPANA" Default_Facility="1904 N OG AVE" Role="Front Office" Physician_Library_ID="0" person_name="Srikanth Seepana" Default_MyQ_Days="4" Legal_Org="CMG" />
+<User User_Name="SSPRETZER" Default_Facility="1866 N OG AVE # 202" Role="Front Office" Physician_Library_ID="0" person_name="Sydney Savannah Pretzer" Default_MyQ_Days="4" Legal_Org="CMG" />
+<User User_Name="SSRINATH" Default_Facility="160 E ARTESIA #220" Role="Physician" Physician_Library_ID="4289" person_name="Dr. Samudrala Srinath M.D." Default_MyQ_Days="14" Legal_Org="CMG" />
+<User User_Name="SSRIRAMOJU" Default_Facility="8330 RED OAK SUITE #201" Role="Front Office" Physician_Library_ID="0" person_name="Srividya Sriramoju" Default_MyQ_Days="4" Legal_Org="CMG" />
+<User User_Name="SSUAZO" Default_Facility="790 E BONITA AVE" Role="Medical Assistant" Physician_Library_ID="0" person_name="Selena Suazo" Default_MyQ_Days="4" Legal_Org="CMG" />
+<User User_Name="SSUMMERS" Default_Facility="9190 HAVEN AVE 1ST FLR" Role="Office Manager" Physician_Library_ID="0" person_name="Susanna Summers" Default_MyQ_Days="4" Legal_Org="CMG" />
+<User User_Name="SSUNDAR" Default_Facility="TEST FACILITY" Role="Front Office" Physician_Library_ID="0" person_name="S. Sundarajan" Default_MyQ_Days="4" Legal_Org="CMG" />
+<User User_Name="STGONZALEZ" Default_Facility="1866 N OG AVE # 202" Role="Medical Assistant" Physician_Library_ID="0" person_name="Stephanie Gonzalez" Default_MyQ_Days="4" Legal_Org="CMG" />
+<User User_Name="STRODRIGUEZ" Default_Facility="160 E. ARTESIA STREET, STE #360" Role="Front Office" Physician_Library_ID="0" person_name="Stephanie Rodriguez" Default_MyQ_Days="4" Legal_Org="CMG" />
+<User User_Name="SVASQUEZ" Default_Facility="160 E. ARTESIA STREET, STE #360" Role="Medical Assistant" Physician_Library_ID="0" person_name="Samantha Vasquez" Default_MyQ_Days="4" Legal_Org="CMG" />
+<User User_Name="SVILLEGAS" Default_Facility="1940 N ORANGE GROVE" Role="Medical Assistant" Physician_Library_ID="0" person_name="Stephanie Villegas" Default_MyQ_Days="4" Legal_Org="CMG" />
+<User User_Name="SYAGIREDDY" Default_Facility="TEST FACILITY" Role="Front Office" Physician_Library_ID="0" person_name="SubhaSri Yagireddy" Default_MyQ_Days="4" Legal_Org="CMG" />
+<User User_Name="SZAPIEN" Default_Facility="1940 N ORANGE GROVE" Role="Medical Assistant" Physician_Library_ID="0" person_name="Sarah Zapien" Default_MyQ_Days="4" Legal_Org="CMG" />
+<User User_Name="TAMUNOZ" Default_Facility="1866 N OG AVE # 202" Role="Front Office" Physician_Library_ID="0" person_name="Tania Munoz" Default_MyQ_Days="4" Legal_Org="CMG" />
+<User User_Name="TARAMARAO" Default_Facility="TEST FACILITY" Role="Coder" Physician_Library_ID="0" person_name="Tirumalasetty Abhiram Ramarao_1568" Default_MyQ_Days="4" Legal_Org="CMG" />
+<User User_Name="TBUENCAMINO" Default_Facility="9190 HAVEN AVENUE (Haven Urgent Care)" Role="Office Manager" Physician_Library_ID="0" person_name="Therese Buencamino" Default_MyQ_Days="4" Legal_Org="CMG" />
+<User User_Name="TECH_VISIT" Default_Facility="9190 HAVEN AVE II FLOOR SUITE# 200" Role="Physician" Physician_Library_ID="4420" person_name="TECH VISIT" Default_MyQ_Days="14" Legal_Org="CMG" />
+<User User_Name="TEMP1" Default_Facility="TEST FACILITY" Role="Front Office" Physician_Library_ID="0" person_name="Temp1 User" Default_MyQ_Days="4" Legal_Org="CMG" />
+<User User_Name="TEMP2" Default_Facility="TEST FACILITY" Role="Front Office" Physician_Library_ID="0" person_name="TEMP2 User" Default_MyQ_Days="4" Legal_Org="CMG" />
+<User User_Name="TEMP3" Default_Facility="TEST FACILITY" Role="Front Office" Physician_Library_ID="0" person_name="TEMP3 User" Default_MyQ_Days="4" Legal_Org="CMG" />
+<User User_Name="TEST_DB" Default_Facility="TEST FACILITY" Role="Medical Assistant" Physician_Library_ID="0" person_name="MA DB_TEST" Default_MyQ_Days="4" Legal_Org="CMG" />
+<User User_Name="TGALLAGHER" Default_Facility="9170 HAVEN AVENUE, SUITE 120" Role="Medical Assistant" Physician_Library_ID="0" person_name="Tania Gallagher" Default_MyQ_Days="4" Legal_Org="CMG" />
+<User User_Name="THAWKS" Default_Facility="840 TOWN CENTER DR" Role="Medical Assistant" Physician_Library_ID="0" person_name="Taylor Hawks" Default_MyQ_Days="4" Legal_Org="CMG" />
+<User User_Name="THERNANDEZ" Default_Facility="160 E. ARTESIA STREET, STE #360" Role="Front Office" Physician_Library_ID="0" person_name="Toila Hernandez" Default_MyQ_Days="4" Legal_Org="CMG" />
+<User User_Name="TMAHESHWARI" Default_Facility="TEST FACILITY" Role="Front Office" Physician_Library_ID="0" person_name="Tarun Maheshwari" Default_MyQ_Days="4" Legal_Org="CMG" />
+<User User_Name="TMANANSALA" Default_Facility="297 WEST ARTESIA STREET, SUITE A" Role="Medical Assistant" Physician_Library_ID="0" person_name="Troy Manansala" Default_MyQ_Days="4" Legal_Org="CMG" />
+<User User_Name="TMITCHELL" Default_Facility="9170 HAVEN AVENUE, SUITE 120" Role="Medical Assistant" Physician_Library_ID="0" person_name="Terricca Mitchell" Default_MyQ_Days="4" Legal_Org="CMG" />
+<User User_Name="TMOTINO" Default_Facility="1940 N ORANGE GROVE" Role="Medical Assistant" Physician_Library_ID="0" person_name="Tricia Motino" Default_MyQ_Days="4" Legal_Org="CMG" />
+<User User_Name="TNUNEZ" Default_Facility="1866 N OG AVE # 201" Role="Medical Assistant" Physician_Library_ID="0" person_name="Teresa Nunez" Default_MyQ_Days="4" Legal_Org="CMG" />
+<User User_Name="TRIVERA" Default_Facility="790 E BONITA AVE" Role="Front Office" Physician_Library_ID="0" person_name="Tamiko Rivera" Default_MyQ_Days="4" Legal_Org="CMG" />
+<User User_Name="TTRIPLETT" Default_Facility="297 WEST ARTESIA STREET, SUITE A" Role="Medical Assistant" Physician_Library_ID="0" person_name="Tyler Triplett" Default_MyQ_Days="4" Legal_Org="CMG" />
+<User User_Name="UBATTULA" Default_Facility="TEST FACILITY" Role="Front Office" Physician_Library_ID="0" person_name="UmaMaheshwari Battula" Default_MyQ_Days="4" Legal_Org="CMG" />
+<User User_Name="UHERNANDEZ" Default_Facility="790 E BONITA AVE" Role="Medical Assistant" Physician_Library_ID="0" person_name="Uriel Hernandez" Default_MyQ_Days="4" Legal_Org="CMG" />
+<User User_Name="UKANTU" Default_Facility="1940 N ORANGE GROVE" Role="Front Office" Physician_Library_ID="0" person_name="Uha Kantu" Default_MyQ_Days="4" Legal_Org="CMG" />
+<User User_Name="URGENTCARE_1" Default_Facility="9190 HAVEN AVE 1ST FLR" Role="Front Office" Physician_Library_ID="0" person_name="Urgent Care 1" Default_MyQ_Days="4" Legal_Org="CMG" />
+<User User_Name="URGENTCARE_2" Default_Facility="9190 HAVEN AVE 1ST FLR" Role="Front Office" Physician_Library_ID="0" person_name="Urgent Care 2" Default_MyQ_Days="4" Legal_Org="CMG" />
+<User User_Name="URGENTCARE_3" Default_Facility="9190 HAVEN AVE 1ST FLR" Role="Front Office" Physician_Library_ID="0" person_name="Urgent Care 3" Default_MyQ_Days="4" Legal_Org="CMG" />
+<User User_Name="URGENTCARE_4" Default_Facility="9190 HAVEN AVE 1ST FLR" Role="Front Office" Physician_Library_ID="0" person_name="Urgent Care 4" Default_MyQ_Days="4" Legal_Org="CMG" />
+<User User_Name="UVYAS" Default_Facility="790 E BONITA AVE" Role="Physician" Physician_Library_ID="4842" person_name="Dr. Urvi Vyas, MD" Default_MyQ_Days="14" Legal_Org="CMG" />
+<User User_Name="UWARAICH" Default_Facility="790 E BONITA AVE" Role="Physician" Physician_Library_ID="3035" person_name="Dr. Uzma Waraich M.D." Default_MyQ_Days="14" Legal_Org="CMG" />
+<User User_Name="VAGUILAR" Default_Facility="9190 HAVEN AVE 1ST FLR" Role="Medical Assistant" Physician_Library_ID="0" person_name="Virginia Aguilar" Default_MyQ_Days="4" Legal_Org="CMG" />
+<User User_Name="VALCANTAR" Default_Facility="430 W BASELINE AVE" Role="Front Office" Physician_Library_ID="0" person_name="Veronica Alcantar" Default_MyQ_Days="4" Legal_Org="CMG" />
+<User User_Name="VARIAS" Default_Facility="840 TOWN CENTER DR" Role="Front Office" Physician_Library_ID="0" person_name="Vincente Arias" Default_MyQ_Days="4" Legal_Org="CMG" />
+<User User_Name="VCANTORAN" Default_Facility="1904 N OG AVE" Role="Medical Assistant" Physician_Library_ID="0" person_name="Valeria Cantoran" Default_MyQ_Days="4" Legal_Org="CMG" />
+<User User_Name="VCERVANTES" Default_Facility="1866 N OG AVE # 102-A" Role="Front Office" Physician_Library_ID="0" person_name="Vanessa Cervantes" Default_MyQ_Days="4" Legal_Org="CMG" />
+<User User_Name="VDIVVELA" Default_Facility="1866 N OG AVE # 202" Role="Front Office" Physician_Library_ID="0" person_name="Visweswara Rao Divvela" Default_MyQ_Days="4" Legal_Org="CMG" />
+<User User_Name="VELMA" Default_Facility="9190 HAVEN AVE 1ST FLR" Role="Medical Assistant" Physician_Library_ID="0" person_name="Velma D Yep NP-BC" Default_MyQ_Days="4" Legal_Org="CMG" />
+<User User_Name="VESWARI" Default_Facility="TEST FACILITY" Role="Coder" Physician_Library_ID="0" person_name="VAITHEESWARI _1252" Default_MyQ_Days="4" Legal_Org="CMG" />
+<User User_Name="VGOMEZ" Default_Facility="8330 RED OAK SUITE #201" Role="Medical Assistant" Physician_Library_ID="0" person_name="Veronica Gomez" Default_MyQ_Days="4" Legal_Org="CMG" />
+<User User_Name="VKORE" Default_Facility="790 E BONITA AVE" Role="Front Office" Physician_Library_ID="0" person_name="Veena Kore" Default_MyQ_Days="4" Legal_Org="CMG" />
+<User User_Name="VKUMAR" Default_Facility="TEST FACILITY" Role="Coder" Physician_Library_ID="0" person_name="VINOTHKUMAR_1478" Default_MyQ_Days="4" Legal_Org="CMG" />
+<User User_Name="VMENEZ" Default_Facility="160 E ARTESIA #220" Role="Medical Assistant" Physician_Library_ID="0" person_name="Vanessa Menez" Default_MyQ_Days="4" Legal_Org="CMG" />
+<User User_Name="VNOORA" Default_Facility="1866 N OG AVE # 202" Role="Front Office" Physician_Library_ID="0" person_name="Vinodh Noora" Default_MyQ_Days="4" Legal_Org="CMG" />
+<User User_Name="VPADILLA" Default_Facility="160 E ARTESIA #220" Role="Medical Assistant" Physician_Library_ID="0" person_name="Veronica Padilla" Default_MyQ_Days="4" Legal_Org="CMG" />
+<User User_Name="VPEDREGO" Default_Facility="520 E FOOTHILL BLVD #A" Role="Physician Assistant" Physician_Library_ID="109" person_name="Vanessa Pedrego PA-C" Default_MyQ_Days="14" Legal_Org="CMG" />
+<User User_Name="VRAMIREZ" Default_Facility="9190 HAVEN AVE 1ST FLR" Role="Medical Assistant" Physician_Library_ID="0" person_name="Vanessa Ramirez" Default_MyQ_Days="4" Legal_Org="CMG" />
+<User User_Name="VREDONDO" Default_Facility="8330 RED OAK SUITE #201" Role="Medical Assistant" Physician_Library_ID="0" person_name="Veronica Redondo" Default_MyQ_Days="4" Legal_Org="CMG" />
+<User User_Name="VREGIDI" Default_Facility="5385 WALNUT AVE" Role="Front Office" Physician_Library_ID="0" person_name="Vamsi Regidi" Default_MyQ_Days="4" Legal_Org="CMG" />
+<User User_Name="VROMAN" Default_Facility="1866 N OG AVE # 202" Role="Front Office" Physician_Library_ID="0" person_name="Valeria Roman" Default_MyQ_Days="4" Legal_Org="CMG" />
+<User User_Name="VRUBY" Default_Facility="840 TOWN CENTER DR" Role="Front Office" Physician_Library_ID="0" person_name="Villaroza, Ruby" Default_MyQ_Days="4" Legal_Org="CMG" />
+<User User_Name="VSMITH" Default_Facility="840 TOWN CENTER DR" Role="Front Office" Physician_Library_ID="0" person_name="Vilma Smith" Default_MyQ_Days="4" Legal_Org="CMG" />
+<User User_Name="VSUNDURU" Default_Facility="TEST FACILITY" Role="Front Office" Physician_Library_ID="0" person_name="Visalakshi Sunduru" Default_MyQ_Days="4" Legal_Org="CMG" />
+<User User_Name="VTHAMMI" Default_Facility="1866 N OG AVE # 201" Role="Front Office" Physician_Library_ID="0" person_name="Veena Thammi" Default_MyQ_Days="4" Legal_Org="CMG" />
+<User User_Name="VYEP" Default_Facility="9190 HAVEN AVENUE (Haven Urgent Care)" Role="Physician Assistant" Physician_Library_ID="3077" person_name="Velma D Yep NP-C" Default_MyQ_Days="14" Legal_Org="CMG" />
+<User User_Name="VZUKOWSKI" Default_Facility="1866 N OG AVE # 102-C" Role="Front Office" Physician_Library_ID="0" person_name="Vera Zukowski" Default_MyQ_Days="4" Legal_Org="CMG" />
+<User User_Name="VZUKOWSKI_RJ" Default_Facility="RJ 1866 N OG AVE # 102" Role="Front Office" Physician_Library_ID="0" person_name="Vera Zukowski" Default_MyQ_Days="4" Legal_Org="RJ" />
+<User User_Name="WCONTRERAS" Default_Facility="811 E 11TH ST, SUITE# 208" Role="Medical Assistant" Physician_Library_ID="0" person_name="Wendi Contreras" Default_MyQ_Days="4" Legal_Org="CMG" />
+<User User_Name="WDISCEPOLO" Default_Facility="520 E FOOTHILL BLVD #C" Role="Physician" Physician_Library_ID="3122" person_name="Dr. William L Discepolo M.D." Default_MyQ_Days="14" Legal_Org="CMG" />
+<User User_Name="WEERA" Default_Facility="790 E BONITA AVE" Role="Physician" Physician_Library_ID="4982" person_name="Dr. Weera Sukhumthammarat, M.D." Default_MyQ_Days="14" Legal_Org="CMG" />
+<User User_Name="YAAKRAM" Default_Facility="CMG LAB AND ANCILLARY 1866 #101" Role="Technician" Physician_Library_ID="4512" person_name="Yasmeen Akram" Default_MyQ_Days="4" Legal_Org="CMG" />
+<User User_Name="YAGOMEZ" Default_Facility="790 E BONITA AVE" Role="Medical Assistant" Physician_Library_ID="0" person_name="Yadira Gomez" Default_MyQ_Days="4" Legal_Org="CMG" />
+<User User_Name="YAKRAM" Default_Facility="CMG LAB AND ANCILLARY 1866 #101" Role="Office Manager" Physician_Library_ID="0" person_name="Yasmeen Akram" Default_MyQ_Days="4" Legal_Org="CMG" />
+<User User_Name="YALANCHE" Default_Facility="1880 N. ORANGE GROVE AVENUE" Role="Medical Assistant" Physician_Library_ID="0" person_name="Yamilet Avila Lanche" Default_MyQ_Days="4" Legal_Org="CMG" />
+<User User_Name="YCAMPOS" Default_Facility="790 E BONITA AVE" Role="Front Office" Physician_Library_ID="0" person_name="Yesena Campos" Default_MyQ_Days="4" Legal_Org="CMG" />
+<User User_Name="YESPINOZA" Default_Facility="297 WEST ARTESIA STREET, SUITE A" Role="Front Office" Physician_Library_ID="0" person_name="Yesenia Espinoza" Default_MyQ_Days="4" Legal_Org="CMG" />
+<User User_Name="YGARCIA" Default_Facility="790 E BONITA AVE" Role="Medical Assistant" Physician_Library_ID="0" person_name="Yamilex Garcia" Default_MyQ_Days="4" Legal_Org="CMG" />
+<User User_Name="YNEELA" Default_Facility="1866 N OG AVE # 104" Role="Front Office" Physician_Library_ID="0" person_name="Yogitha Neela" Default_MyQ_Days="4" Legal_Org="CMG" />
+<User User_Name="YPADILLA" Default_Facility="297 WEST ARTESIA STREET, SUITE A" Role="Front Office" Physician_Library_ID="0" person_name="Yazmin Padilla" Default_MyQ_Days="4" Legal_Org="CMG" />
+<User User_Name="YPADILLA1" Default_Facility="297 WEST ARTESIA STREET, SUITE A" Role="Medical Assistant" Physician_Library_ID="0" person_name="Yazmin Padilla" Default_MyQ_Days="4" Legal_Org="CMG" />
+<User User_Name="YSANABRIA" Default_Facility="790 E BONITA AVE" Role="Medical Assistant" Physician_Library_ID="0" person_name="Yesenia Sanabria" Default_MyQ_Days="4" Legal_Org="CMG" />
+<User User_Name="YSHEU" Default_Facility="811 E 11TH ST, SUITE# 208" Role="Physician" Physician_Library_ID="4868" person_name="Dr. Yeong Sheu M.D." Default_MyQ_Days="14" Legal_Org="CMG" />
+<User User_Name="YSOSA" Default_Facility="1866 N OG AVE # 202" Role="Medical Assistant" Physician_Library_ID="0" person_name="Yanira Sosa" Default_MyQ_Days="4" Legal_Org="CMG" />
+<User User_Name="YVILLA" Default_Facility="9190 HAVEN AVE 1ST FLR" Role="Medical Assistant" Physician_Library_ID="0" person_name="Yesenia Villa" Default_MyQ_Days="4" Legal_Org="CMG" />
+<User User_Name="YZAMORA" Default_Facility="1382 E FOOTHILL BLVD" Role="Front Office" Physician_Library_ID="0" person_name="Yesenia Zamora" Default_MyQ_Days="4" Legal_Org="CMG" />
+
+</UserList>
