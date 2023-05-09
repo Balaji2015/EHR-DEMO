@@ -247,10 +247,14 @@ $(document).ready(function () {
                     document.getElementById("txtProviderSearch").disabled = true;
                 }
                 else {
-                    if (IsDisabledProviderSearch == "true")//change
-                        document.getElementById("txtProviderSearch").disabled = true;
-                    else
-                        document.getElementById("txtProviderSearch").disabled = false;//have to change
+                    //Jira #CAP-158 -  Not able to navigate tab
+                    if (document.getElementById("hdnCurrentProcess").value != "" && document.getElementById("hdnCurrentProcess").value.toUpperCase() == "SCHEDULED") 
+                        {
+                            if (IsDisabledProviderSearch == "true")//change
+                                document.getElementById("txtProviderSearch").disabled = true;
+                            else
+                                document.getElementById("txtProviderSearch").disabled = false;//have to change
+                        }
                     document.getElementById("txtProviderSearch").value = "";
                 }
             }
@@ -260,11 +264,15 @@ $(document).ready(function () {
     else {
         if (document.getElementById("hdnpcpprovidersearch") != null && document.getElementById("hdnrenprovidersearch").value != "| NPI: | Facility: | Address:| Phone No:| Fax No:") {
             document.getElementById("txtProviderSearch").value = document.getElementById("hdnpcpprovidersearch").value;
+            //Jira #CAP-158 -  Not able to navigate tab
+            if (document.getElementById("hdnCurrentProcess").value != "" && document.getElementById("hdnCurrentProcess").value.toUpperCase() == "SCHEDULED") 
+            {
             if (document.getElementById("hdnpcpprovidersearch").value != "") {
                 document.getElementById("txtProviderSearch").disabled = true;
             }
             else {
                 document.getElementById("txtProviderSearch").disabled = false;
+                }
             }
         }
     }

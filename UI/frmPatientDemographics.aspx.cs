@@ -577,7 +577,9 @@ namespace Acurus.Capella.UI
                                 dr["Termination_Date"] = obj.Termination_Date.ToString("dd-MMM-yyyy");
                             if (InsuredHumanList != null)
                             {
-                                dr["Insured_Name"] = InsuredHumanList.Last_Name + " " + InsuredHumanList.First_Name;
+                                //Jira #CAP-146 - Able to add duplicate insurance
+                                //dr["Insured_Name"] = InsuredHumanList.Last_Name + " " + InsuredHumanList.First_Name;
+                                dr["Insured_Name"] = InsuredHumanList.Last_Name + "," + InsuredHumanList.First_Name + " " + InsuredHumanList.MI;
                                 dr["Insured_DOB"] = InsuredHumanList.Birth_Date.ToString("dd-MMM-yyyy");
                                 dr["Insured_Sex"] = InsuredHumanList.Sex;
                                 dr["Insured_Details"] = InsuredHumanList.Last_Name + " " + InsuredHumanList.First_Name + "|DOB: " + Convert.ToDateTime(InsuredHumanList.Birth_Date).ToString("dd-MMM-yyyyy") + "|" + InsuredHumanList.Sex + "| ACC#:" + InsuredHumanList.Id + "| PATIENT TYPE:" + InsuredHumanList.Human_Type;

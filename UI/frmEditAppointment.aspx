@@ -411,6 +411,8 @@
                         <asp:Panel ID="pnlScheduleAppointment" runat="server" Width="800px" Height="590px" Margin-top="5px !important"
                             GroupingText="Schedule Appointment" CssClass="LabelStyleBold">
                             <table style="width: 66%;">
+                                 
+                                 <asp:Panel ID="pnlAppointmentDetails" runat="server">
                                 <tr>
                                     <td class="style21">
                                         <asp:Label ID="lblApptDate" runat="server" CssClass="Editabletxtbox" Text="Appt Date"></asp:Label>
@@ -498,7 +500,7 @@
                                             Width="130px" />
                                     </td>
                                 </tr>
-
+                                </asp:Panel>
                                 <tr>
                                     <td colspan="6" style="width: auto">
                                         <asp:Panel ID="pnlReferringProvAndPCP" runat="server" CssClass="LabelStyleBold" GroupingText="Referring Details">
@@ -517,6 +519,8 @@
                                                 <telerik:RadPageView ID="rdmpReferringProvAndPCP" runat="server" Width="100%">
                                                 </telerik:RadPageView>
                                             </telerik:RadMultiPage>--%>
+                                             
+                                             <asp:Panel ID="pnlReferringDetails" runat="server">
                                             <table>
                                                 <tr>
                                                     <td style="width: 125px"></td>
@@ -670,10 +674,12 @@
                                                     </td>
                                                 </tr>
                                             </table>
+                                                 </asp:Panel>
                                         </asp:Panel>
                                     </td>
                                 </tr>
-
+                                 
+                                <asp:Panel ID="pnlVisit" runat="server">
                                 <tr>
                                     <td class="style21">
                                         <asp:Label ID="lblPurposeofVisit" runat="server" Text="Type of Visit" CssClass="Editabletxtbox"></asp:Label>
@@ -793,11 +799,12 @@
                                                     <td colspan="2">
                                                         <asp:TextBox ID="txtReasonCode" runat="server" Width="611px" onkeypress="EnableSaveButton(this);" CssClass="nonEditabletxtbox"></asp:TextBox>
                                                     </td>
-                                                </tr>
+                                                </tr>                                                
                                             </table>
                                         </asp:Panel>
                                     </td>
                                 </tr>
+                                 </asp:Panel>
                             </table>
                         </asp:Panel>
                         <div id="divLoading" class="modal" runat="server" style="text-align: center; display: none">

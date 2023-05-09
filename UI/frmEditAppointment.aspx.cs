@@ -1297,10 +1297,15 @@ namespace Acurus.Capella.UI
                     DateTimePickerColorChange(this.dtpApptDate, true);
                     TimePickerColorChange(dtpStartTime, true);
                     cboFacility.Enabled = false;
-                    pnlScheduleAppointment.Enabled = false;
+                    //Jira #CAP-158 -  Not able to navigate tab 
+                    // pnlScheduleAppointment.Enabled = false;
+                    pnlAppointmentDetails.Enabled = false;
+                    pnlReferringDetails.Enabled = false;
+                    pnlVisit.Enabled= false;
+
                     btnPatientDemographics.Enabled = false;
                     btnPatientTask.Enabled = false;
-                    
+                    tabReferringProvAndPCP.Enabled = true;
                 }
 
 
@@ -4560,7 +4565,33 @@ namespace Acurus.Capella.UI
 
                 //}
         }
-           
+            //Jira #CAP-158 -  Not able to navigate tab 
+            if (hdnCurrentProcess.Value != null && hdnCurrentProcess.Value!= "" && hdnCurrentProcess.Value.ToUpper() != "SCHEDULED")
+            {
+                this.Page.Title = "View Appointment" + "-" + ClientSession.UserName;
+                chkReschedule.Enabled = false;
+                chkSelfReferred.Enabled = false;
+                chkShowAllPhysicians.Enabled = false;
+                btnSave.Enabled = false;
+                txtPurposeofVisit.txtDLC.Enabled = false;
+                txtNotes.txtDLC.Enabled = false;
+                DisableTableLayout(pnlReschedule);
+                chkReschedule.Enabled = false;
+                chkShowAllPhysicians.Enabled = false;
+                chkSelfReferred.Enabled = false;
+                btnSave.Enabled = false;
+                DateTimePickerColorChange(this.dtpApptDate, true);
+                TimePickerColorChange(dtpStartTime, true);
+                cboFacility.Enabled = false;
+                pnlAppointmentDetails.Enabled = false;
+                pnlReferringDetails.Enabled = false;
+                pnlVisit.Enabled = false;
+                txtProviderSearch.Enabled = false;
+
+                btnPatientDemographics.Enabled = false;
+                btnPatientTask.Enabled = false;
+                
+            }
         }
         //Jira #CAP-69 - labels are missing
         public void pcpDefaultDemographics()
@@ -4713,15 +4744,17 @@ namespace Acurus.Capella.UI
 
             }
 
-
-            if (txtProviderSearch.Text != "")
-            {
-                txtProviderSearch.Enabled = false;
-            }
-            else
-            {
-                txtProviderSearch.Enabled = true;
-            }
+                if (hdnCurrentProcess.Value != null && hdnCurrentProcess.Value.ToUpper() == "SCHEDULED")
+                {
+                    if (txtProviderSearch.Text != "")
+                    {
+                        txtProviderSearch.Enabled = false;
+                    }
+                    else
+                    {
+                        txtProviderSearch.Enabled = true;
+                    }
+                }
         }
         
 }
