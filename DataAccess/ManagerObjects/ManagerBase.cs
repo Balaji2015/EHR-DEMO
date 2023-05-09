@@ -1533,7 +1533,9 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
                                         else
                                         {
                                             tempXMLObj = new GenerateXml();
-                                            tempXMLObj = XMLObjList.Where(item => item.itemDoc.BaseURI.Contains("_" + uHuman_id + ".xml")).FirstOrDefault();
+                                            //Jira #CAP-128
+                                            //tempXMLObj = XMLObjList.Where(item => item.itemDoc.BaseURI.Contains("_" + uHuman_id + ".xml")).FirstOrDefault();
+                                            tempXMLObj = XMLObjList.Where(item => item.itemDoc.InnerXml.Contains(uHuman_id.ToString())).FirstOrDefault();
                                             lstobjxml = lstObj;
                                             if (tempXMLObj == null)
                                             {
@@ -1544,7 +1546,9 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
                                             {
                                                 GenerateXml xmlobjtemp = new GenerateXml();
                                                 xmlobjtemp.itemDoc = null;
-                                                tempXMLObj.GenerateXmlSaveStatic(lstObj, uHuman_id, string.Empty, false, xmlobjtemp);
+                                                //Jira #CAP-128
+                                                //tempXMLObj.GenerateXmlSaveStatic(lstObj, uHuman_id, string.Empty, false, xmlobjtemp);
+                                                tempXMLObj.GenerateXmlSaveStatic(lstObj, uHuman_id, string.Empty, false, tempXMLObj);
                                             }
                                             bsavehit = true;
 
@@ -1583,7 +1587,9 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
                                         else
                                         {
                                             tempXMLObj = new GenerateXml();
-                                            tempXMLObj = XMLObjList.Where(item => item.itemDoc.BaseURI.Contains("_" + uHuman_id + ".xml")).FirstOrDefault();
+                                            //Jira #CAP-128
+                                            //tempXMLObj = XMLObjList.Where(item => item.itemDoc.BaseURI.Contains("_" + uHuman_id + ".xml")).FirstOrDefault();
+                                            tempXMLObj = XMLObjList.Where(item => item.itemDoc.InnerXml.Contains(uHuman_id.ToString())).FirstOrDefault();
                                             lstobjxml = lstObj;
                                             GenerateXml XMLObjtemp = new GenerateXml();
                                             XMLObjtemp.itemDoc = null;
@@ -1593,7 +1599,11 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
                                                 goto ln;
                                             }
                                             else
-                                                tempXMLObj.GenerateXmlUpdate(lstObj, uHuman_id, string.Empty, false, XMLObjtemp);
+                                            {
+                                                //Jira #CAP-128
+                                                //tempXMLObj.GenerateXmlUpdate(lstObj, uHuman_id, string.Empty, false, XMLObjtemp);
+                                                tempXMLObj.GenerateXmlUpdate(lstObj, uHuman_id, string.Empty, false, tempXMLObj);
+                                            }
                                             bsavehit = true;
                                         }
                                         lstCheckDataConsistency = lstCheckDataConsistency.Concat(lstObj).ToList<object>();
