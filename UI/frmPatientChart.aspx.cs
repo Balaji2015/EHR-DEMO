@@ -1722,15 +1722,16 @@ namespace Acurus.Capella.UI
                 sPatientSex = " ";
             }
 
-            string phoneno = "";
-            if (HomePhoneNo.Length == 14)
-            {
-                phoneno = HomePhoneNo;
-            }
-            else
-            {
-                phoneno = CellPhoneNo;
-            }
+            //Jira #Cap123 - Cel phone num included
+            //string phoneno = "";
+            //if (HomePhoneNo.Length == 14)
+            //{
+            //    phoneno = HomePhoneNo;
+            //}
+            //else
+            //{
+            //    phoneno = CellPhoneNo;
+            //}
 
 
             if (PatientStatus == "DECEASED")
@@ -1743,23 +1744,41 @@ namespace Acurus.Capella.UI
                 //   "   |   " + "Med Rec #:" + MedRecNo + "   |   " +
                 //   "Phone #:" + phoneno + "   |   ";
 
+                //Jira #Cap123 - Cel phone num included
+                //sMySummary = LastName + "," + FirstName +
+                //   "  " + MI + "  " + Suffix + "   |   " +
+                //   DOB.ToString("dd-MMM-yyyy") + "   |   " +
+                //   (CalculateAge(DOB)).ToString() +
+                //   "  year(s)    |   " + sPatientSex + "   |   Acct #:" + ulHumanID +
+                //   "   |   " + "Med Rec #:" + MedRecNo + "   |   " +
+                //   "Phone #:" + phoneno + "   |   " + PatientStatus + "   |   ";
+
                 sMySummary = LastName + "," + FirstName +
                    "  " + MI + "  " + Suffix + "   |   " +
                    DOB.ToString("dd-MMM-yyyy") + "   |   " +
                    (CalculateAge(DOB)).ToString() +
                    "  year(s)    |   " + sPatientSex + "   |   Acct #:" + ulHumanID +
                    "   |   " + "Med Rec #:" + MedRecNo + "   |   " +
-                   "Phone #:" + phoneno + "   |   " + PatientStatus + "   |   ";
+                   "Home Phone #:" + HomePhoneNo + "   |   " + "Cell Phone #:" + CellPhoneNo + "   |   " + PatientStatus + "   |   ";
             }
             else
             {
+                //Jira #Cap123 - Cel phone num included
+               // sMySummary = LastName + "," + FirstName +
+               //"  " + MI + "  " + Suffix + "   |   " +
+               //DOB.ToString("dd-MMM-yyyy") + "   |   " +
+               //(CalculateAge(DOB)).ToString() +
+               //"  year(s)    |   " + sPatientSex + "   |   Acct #:" + ulHumanID +
+               //"   |   " + "Med Rec #:" + MedRecNo + "   |   " +
+               //"Phone #:" + phoneno + "   |   ";
+
                 sMySummary = LastName + "," + FirstName +
-               "  " + MI + "  " + Suffix + "   |   " +
-               DOB.ToString("dd-MMM-yyyy") + "   |   " +
-               (CalculateAge(DOB)).ToString() +
-               "  year(s)    |   " + sPatientSex + "   |   Acct #:" + ulHumanID +
-               "   |   " + "Med Rec #:" + MedRecNo + "   |   " +
-               "Phone #:" + phoneno + "   |   ";
+             "  " + MI + "  " + Suffix + "   |   " +
+             DOB.ToString("dd-MMM-yyyy") + "   |   " +
+             (CalculateAge(DOB)).ToString() +
+             "  year(s)    |   " + sPatientSex + "   |   Acct #:" + ulHumanID +
+             "   |   " + "Med Rec #:" + MedRecNo + "   |   " +
+             "Home Phone #:" + HomePhoneNo + "   |   "+ "Cell Phone #:" + CellPhoneNo + "   |   ";
 
             }
 

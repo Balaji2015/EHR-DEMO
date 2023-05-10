@@ -5648,22 +5648,22 @@ namespace Acurus.Capella.UI
             {
                 return null;
             }
+            //Jira #Cap123 - Cel phone num included
+            //string phoneno = "";
 
-            string phoneno = "";
+            //if (objFillHuman != null)
+            //{
 
-            if (objFillHuman != null)
-            {
+            //    if (objFillHuman.Home_Phone_No.Length == 14)
+            //    {
+            //        phoneno = objFillHuman.Home_Phone_No;
+            //    }
+            //    else
+            //    {
+            //        phoneno = objFillHuman.Cell_Phone_Number;
+            //    }
 
-                if (objFillHuman.Home_Phone_No.Length == 14)
-                {
-                    phoneno = objFillHuman.Home_Phone_No;
-                }
-                else
-                {
-                    phoneno = objFillHuman.Cell_Phone_Number;
-                }
-
-            }
+            //}
 
             string sPatientSex = string.Empty;
 
@@ -5688,14 +5688,22 @@ namespace Acurus.Capella.UI
 
             if (objFillHuman != null)
             {
+                //Jira #Cap123 - Cel phone num included
+                //    sPatientStrip = objFillHuman.Last_Name + "," + objFillHuman.First_Name +
+                //"  " + objFillHuman.MI + "  " + objFillHuman.Suffix + "   |   " +
+                // objFillHuman.Birth_Date.ToString("dd-MMM-yyyy") + "   |   " +
+                //(CalculateAge(objFillHuman.Birth_Date)).ToString() +
+                //"  year(s)    |   " + sPatientSex + "   |   Acc #:" + humanID +
+                //"   |   " + "Med Rec #:" + objFillHuman.Medical_Record_Number + "   |   " +
+                //"Phone #:" + phoneno + "   |   Patient Type:" + objFillHuman.Human_Type + "   |   ";
                 sPatientStrip = objFillHuman.Last_Name + "," + objFillHuman.First_Name +
-            "  " + objFillHuman.MI + "  " + objFillHuman.Suffix + "   |   " +
-             objFillHuman.Birth_Date.ToString("dd-MMM-yyyy") + "   |   " +
-            (CalculateAge(objFillHuman.Birth_Date)).ToString() +
-            "  year(s)    |   " + sPatientSex + "   |   Acc #:" + humanID +
-            "   |   " + "Med Rec #:" + objFillHuman.Medical_Record_Number + "   |   " +
-            "Phone #:" + phoneno + "   |   Patient Type:" + objFillHuman.Human_Type + "   |   ";
-            }
+                "  " + objFillHuman.MI + "  " + objFillHuman.Suffix + "   |   " +
+                 objFillHuman.Birth_Date.ToString("dd-MMM-yyyy") + "   |   " +
+                (CalculateAge(objFillHuman.Birth_Date)).ToString() +
+                "  year(s)    |   " + sPatientSex + "   |   Acc #:" + humanID +
+                "   |   " + "Med Rec #:" + objFillHuman.Medical_Record_Number + "   |   " +
+                "Home Phone #:" + objFillHuman.Home_Phone_No + "  |  Cell Phone #:" + objFillHuman.Cell_Phone_Number + "   |   Patient Type:" + objFillHuman.Human_Type + "   |   ";
+            } 
             else
             {
                 sPatientStrip = " " + "   |" + "|" + "|" + "|" + "|";
