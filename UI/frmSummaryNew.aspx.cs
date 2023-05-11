@@ -584,6 +584,8 @@ namespace Acurus.Capella.UI
                     sXMLHumanDoc = System.Text.Encoding.UTF8.GetString(ilstHumanBlob[0].Human_XML);
                     if (sXMLHumanDoc.Substring(0, 1) != "<")
                         sXMLHumanDoc = sXMLHumanDoc.Substring(1, sXMLHumanDoc.Length - 1);
+                    //Jira #CAP-115
+                    sXMLHumanDoc = UtilityManager.ReplaceSpecialCharaters(sXMLHumanDoc);
                     xmlHumanDoc.LoadXml(sXMLHumanDoc);
                 }
             }
@@ -611,6 +613,8 @@ namespace Acurus.Capella.UI
                     sXMLEncounterDoc = System.Text.Encoding.UTF8.GetString(ilstEncounterBlob[0].Encounter_XML);
                     if (sXMLEncounterDoc.Substring(0, 1) != "<")
                         sXMLEncounterDoc = sXMLEncounterDoc.Substring(1, sXMLEncounterDoc.Length - 1);
+                    //Jira #CAP-115
+                    sXMLEncounterDoc = UtilityManager.ReplaceSpecialCharaters(sXMLEncounterDoc);
                 }
             }
             catch (Exception ex)
@@ -835,9 +839,9 @@ namespace Acurus.Capella.UI
                 sb.Append(sXMLHumanDoc.ToString().Replace(SUB, "").Replace("<notes>", "").Replace("<Modules>", ""));
                 StringBuilder htmlOutput = new StringBuilder();
                 TextWriter htmlWriter = new StringWriter(htmlOutput);
-
+               
                 XmlReader xmlr = XmlReader.Create(new StringReader(sb.ToString()));
-
+              
                 XslCompiledTransform objXSLTransform = new XslCompiledTransform();
                 XsltSettings settingsxsl = new XsltSettings(true, false);
                 objXSLTransform.Load(strTransformSource, settingsxsl, new XmlUrlResolver());

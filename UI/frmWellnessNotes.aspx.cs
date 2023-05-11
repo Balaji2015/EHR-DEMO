@@ -56,6 +56,8 @@ namespace Acurus.Capella.UI
                     sXMLEncounterDoc = System.Text.Encoding.UTF8.GetString(ilstEncounterBlob[0].Encounter_XML);
                     if (sXMLEncounterDoc.Substring(0, 1) != "<")
                         sXMLEncounterDoc = sXMLEncounterDoc.Substring(1, sXMLEncounterDoc.Length - 1);
+                    //Jira #CAP-115
+                    sXMLEncounterDoc = UtilityManager.ReplaceSpecialCharaters(sXMLEncounterDoc);
                 }
                 //GitLab #3933   
                 else
@@ -78,6 +80,8 @@ namespace Acurus.Capella.UI
                     sXMLEncounterDoc = System.Text.Encoding.UTF8.GetString(ilstEncounterBlob[0].Encounter_XML);
                     if (sXMLEncounterDoc.Substring(0, 1) != "<")
                         sXMLEncounterDoc = sXMLEncounterDoc.Substring(1, sXMLEncounterDoc.Length - 1);
+                    //Jira #CAP-115
+                    sXMLEncounterDoc = UtilityManager.ReplaceSpecialCharaters(sXMLEncounterDoc);
                 }
                 //GitLab #3933
                 else
@@ -348,6 +352,8 @@ namespace Acurus.Capella.UI
                 sXMLHumanDoc = System.Text.Encoding.UTF8.GetString(ilstHumanBlob[0].Human_XML);
                 if (sXMLHumanDoc.Substring(0, 1) != "<")
                     sXMLHumanDoc = sXMLHumanDoc.Substring(1, sXMLHumanDoc.Length - 1);
+                //Jira #CAP-115
+                sXMLHumanDoc = UtilityManager.ReplaceSpecialCharaters(sXMLHumanDoc);
             }
 
             IList<Encounter_Blob> ilstEncounterBlob = new List<Encounter_Blob>();
@@ -357,6 +363,8 @@ namespace Acurus.Capella.UI
                 sXMLEncounterDoc = System.Text.Encoding.UTF8.GetString(ilstEncounterBlob[0].Encounter_XML);
                 if (sXMLEncounterDoc.Substring(0, 1) != "<")
                     sXMLEncounterDoc = sXMLEncounterDoc.Substring(1, sXMLEncounterDoc.Length - 1);
+                //Jira #CAP-115
+                sXMLEncounterDoc = UtilityManager.ReplaceSpecialCharaters(sXMLEncounterDoc);
             }
 
             DataSet ds;

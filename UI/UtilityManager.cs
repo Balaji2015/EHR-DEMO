@@ -5751,6 +5751,18 @@ namespace Acurus.Capella.UI
             }
         }
 
+        public static string ReplaceSpecialCharaters(string sXMLContent)
+        {
+
+            sXMLContent=sXMLContent.Replace("&#x00;", " ").Replace("&#x01;", " ").Replace("&#x02;", " ").Replace("&#x03;", " ").Replace("&#x04;", " ").Replace("&#x05;", " ")
+                .Replace("&#x06;", " ").Replace("&#x07;", " ").Replace("&#x08;", " ").Replace("&#x0B;", " ").Replace("&#x0C;", " ").Replace("&#x0E;", " ")
+                .Replace("&#x0F;", " ").Replace("&#x10;", " ").Replace("&#x11;", " ").Replace("&#x12;", " ").Replace("&#x13;", " ").Replace("&#x14;", " ")
+                .Replace("&#x15;", " ").Replace("&#x16;", " ").Replace("&#x17;", " ").Replace("&#x18;", " ").Replace("&#x19;", " ").Replace("&#x1A;", " ")
+                .Replace("&#x1B;", " ").Replace("&#x1C;", " ").Replace("&#x1D;", " ").Replace("&#x1E;", " ").Replace("&#x1F;", " ").Replace("&#x7F;", " ");
+            return sXMLContent;
+
+        }
+
 
     }
 }
