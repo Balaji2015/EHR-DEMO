@@ -1332,9 +1332,28 @@ namespace Acurus.Capella.UI
                 DisableTableLayout(pnlReschedule);
                 btnFindAvailableSlot.Enabled = false;
             }
-            if (txtProviderSearch.Text != "")
+            if (tabReferringProvAndPCP.SelectedIndex == 0)
             {
-                txtProviderSearch.Enabled = false;
+                if (hdnrenprovider.Value != "")
+                {
+                    txtProviderSearch.Enabled = false;
+                }
+                else
+                {
+                    txtProviderSearch.Enabled = true;
+                }
+            }
+            else
+            {
+                if (hdnpcpprovidersearch.Value != "")
+                {
+                    txtProviderSearch.Enabled = false;
+                }
+                else
+                {
+                    txtProviderSearch.Enabled = true;
+                }
+
             }
             //Jira #CAP-69 - labels are missing
             
