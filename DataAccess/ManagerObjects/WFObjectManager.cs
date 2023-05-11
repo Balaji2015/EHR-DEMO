@@ -2104,6 +2104,11 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
             string PreviousProcess;
 
             PreviousProcess = WFManager.GetPreviousProcess(WFobj.Fac_Name, WFobj.Obj_Type, WFobj.Obj_Sub_Type, WFobj.Current_Process, iCloseType, WFobj.Doc_Type, WFobj.Doc_Sub_Type);
+            //Jira #CAP-121 - Appointment Empty Current Process is fixed
+            if (PreviousProcess == string.Empty)
+            {
+                return 1;
+            }
 
             //To move the curren object into next process
             WFobj.Is_Default_MyQ_LineItem = 1;

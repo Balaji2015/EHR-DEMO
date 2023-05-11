@@ -1182,7 +1182,13 @@ namespace Acurus.Capella.UI
                         }
                         if (hdnEncounterID.Value != string.Empty && hdnLocalTime.Value != string.Empty)
                         {
-                            wfMngr.MoveToPreviousProcess(Convert.ToUInt64(hdnEncounterID.Value), "ENCOUNTER", iCloseType, "UNKNOWN", Convert.ToDateTime(hdnLocalTime.Value), string.Empty);
+                            //Jira #CAP-121 - Appointment Empty Current Process is fixed
+                            int iMoveToPreviousProcess = wfMngr.MoveToPreviousProcess(Convert.ToUInt64(hdnEncounterID.Value), "ENCOUNTER", iCloseType, "UNKNOWN", Convert.ToDateTime(hdnLocalTime.Value), string.Empty);
+                            if(iMoveToPreviousProcess == 1)
+                            {
+                                ScriptManager.RegisterStartupScript(this, this.GetType(), "alert", "DisplayErrorMessage('110096');", true);
+                                return;
+                            }
                             if (hdnMyEncounterStatus.Value.ToUpper() == "NO_SHOW" || hdnMyEncounterStatus.Value.ToUpper() == "WALKED_AWAY")//Added for Provider_Review PhysicianAssistant WorkFlow Change. Implementation of CA Rule for Provider Review
                                 EncMngr.TriggerSPforProvReviewStatusTracker("WALK_IN", Convert.ToUInt64(hdnEncounterID.Value));
                             FillAllAppointmentsForDate();

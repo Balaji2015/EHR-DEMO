@@ -161,7 +161,7 @@
 	<Message number="110089" Type="OK" Text="There is no encounter to download."></Message>
 	<Message number="110094" Type="ToolStrip" Text ="Phone Encounter Cancelled."></Message>
 	<Message number="110095" Type="ToolStrip" Text ="Phone Encounter Saved, Attached to the Patient Chart and Submitted to eSuperbill Successfully."></Message>
-
+	<Message number="110096" Type="OK" Text="The Appointment is already  updated. Can not Undo. Please refresh the Scheduler and retry."></Message>
 
 	<Message number="110090" Type="OK" Text="The selected appointment is moved to archive table. So, this transaction is not supported."></Message>
 	<Message number="110091" Type="OK" Text="Please select atleast one Facility."></Message>
