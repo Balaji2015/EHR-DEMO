@@ -579,90 +579,103 @@ namespace Acurus.Capella.UI
                         IList<FacilityLibrary> ilstFac = fac.ToList<FacilityLibrary>();
                         if (ilstFac.Count > 0 && ilstFac[0].Is_Ancillary != "Y")
                         {
-                            //if (sAncillary != string.Empty && sAncillary != cboFacility.SelectedItem.Text.Trim())
+
+                            #region old db call commented for Jira #CAP-151 - Edited PCP info occurs in Referring Provider info tab 
+                            ////if (sAncillary != string.Empty && sAncillary != cboFacility.SelectedItem.Text.Trim())
+                            ////{
+                            ////  hdnEncounter_Physician_id.Value = fillneweditappt.Encounter_Provider_ID.ToString();
+                            ////PhysicianManager phyMngr = new PhysicianManager();
+
+                            //// new code to obtain physician list from xml -- Pujhitha
+                            //PhysicianLibrary objPhyLib = GetPhysicianDetailsByPhyID(hdnEncounter_Physician_id.Value.Trim());
+
+                            ////IList<PhysicianLibrary> phylist = phyMngr.GetphysiciannameByPhyID(Convert.ToUInt64(hdnEncounter_Physician_id.Value));
+                            ////if (phylist != null && phylist.Count > 0)
+                            ////{
+
+
+                            //if (objPhyLib != null)
                             //{
-                            //  hdnEncounter_Physician_id.Value = fillneweditappt.Encounter_Provider_ID.ToString();
-                            //PhysicianManager phyMngr = new PhysicianManager();
+                            //    //old code
+                            //    // string sPhyName = objPhyLib.PhyPrefix + " " + objPhyLib.PhyFirstName + " " + objPhyLib.PhyLastName + " " + objPhyLib.PhySuffix;
+                            //    //Gitlab# 2485 - Physician Name Display Change
+                            //    string sPhyName = string.Empty;
+                            //     if (objPhyLib.PhyLastName != String.Empty)
+                            //        sPhyName += objPhyLib.PhyLastName;
+                            //    if (objPhyLib.PhyFirstName != String.Empty)
+                            //    {
+                            //        if (sPhyName != String.Empty)
+                            //            sPhyName += "," + objPhyLib.PhyFirstName;
+                            //        else
+                            //            sPhyName += objPhyLib.PhyFirstName;
+                            //    }
+                            //    if (objPhyLib.PhyMiddleName != String.Empty)
+                            //        sPhyName += " " + objPhyLib.PhyMiddleName;
+                            //    if (objPhyLib.PhySuffix != String.Empty)
+                            //        sPhyName += "," + objPhyLib.PhySuffix;
 
-                            // new code to obtain physician list from xml -- Pujhitha
-                            PhysicianLibrary objPhyLib = GetPhysicianDetailsByPhyID(hdnEncounter_Physician_id.Value.Trim());
+                            //    //  txtReferringProvider.Text = sPhyName;
+                            //    //  txtReferringFacility.Text = objPhyLib.PhyNotes;
+                            //    //txtReferingAddress.Text = objPhyLib.PhyAddress1;
+                            //    //  msktxtReferingPhoneNo.Text = objPhyLib.PhyTelephone;
+                            //    //  msktxtReferingFaxNo.Text = objPhyLib.PhyFax;
+                            //    //  txtProviderNPI.Text = objPhyLib.PhyNPI;
 
-                            //IList<PhysicianLibrary> phylist = phyMngr.GetphysiciannameByPhyID(Convert.ToUInt64(hdnEncounter_Physician_id.Value));
-                            //if (phylist != null && phylist.Count > 0)
-                            //{
 
+                            //    //Jira #CAP-69 - labels are missing
+                            //    txtProviderSearch.Text = sPhyName + "| NPI: " + objPhyLib.PhyNPI +
+                            //        "| Facility: " + "" + "| Address:" + objPhyLib.PhyAddress1 +
+                            //        "| Phone No:" + objPhyLib.PhyTelephone + "| Fax No:" + objPhyLib.PhyFax ;
 
-                            if (objPhyLib != null)
+                            //    //hdnrenprovider.Value = " |" + sPhyName + "|" + objPhyLib.PhyNPI + "|" + "" + "|" + "" + "|" + objPhyLib.PhyAddress1 + "|"
+                            //    //    + objPhyLib.PhyFax + "|" + objPhyLib.PhyTelephone;
+
+                            //    //hdnpcpprovider.Value = " |" + sPhyName + "|" + objPhyLib.PhyNPI + "|" + "" + "|" + "" + "|" + objPhyLib.PhyAddress1 + "|"
+                            //    //    + objPhyLib.PhyFax + "|" + objPhyLib.PhyTelephone;
+
+                            //    //hdnrenprovidersearch.Value = " |" + sPhyName + "|" + objPhyLib.PhyNPI + "|" + "" + "|" + "" + "|" + objPhyLib.PhyAddress1 + "|"
+                            //     // + objPhyLib.PhyFax + "|" + objPhyLib.PhyTelephone;
+
+                            //    hdnrenprovider.Value = sPhyName + "| NPI: " + objPhyLib.PhyNPI +
+                            //        "| Facility: " + "" + "| Address:" + objPhyLib.PhyAddress1 +
+                            //        "| Phone No:" + objPhyLib.PhyTelephone + "| Fax No:" + objPhyLib.PhyFax ;
+
+                            //    hdnpcpprovider.Value = sPhyName + "| NPI: " + objPhyLib.PhyNPI +
+                            //        "| Facility: " + "" + "| Address:" + objPhyLib.PhyAddress1 +
+                            //        "| Phone No:" + objPhyLib.PhyTelephone + "| Fax No:" + objPhyLib.PhyFax ;
+
+                            //    txtProviderSearch.Enabled = false;
+                            //    hdnrenprovidersearch.Value = sPhyName + "| NPI: " + objPhyLib.PhyNPI + "|Facility: " + "" + "|Address:" + objPhyLib.PhyAddress1 + "| " +
+                            //        " Phone No:" + objPhyLib.PhyTelephone + "| Fax No:"
+                            //       + objPhyLib.PhyFax ;
+
+                            //    // HdnRefPhy.Value = sPhyName + "|" + objPhyLib.PhyAddress1 + "|" + objPhyLib.PhyTelephone + "|" + objPhyLib.PhyFax + "|" + objPhyLib.PhyNPI + "|" + objPhyLib.PhyNotes;
+                            //    // HdnPcpPhy.Value = sPhyName + "|" + objPhyLib.PhyAddress1 + "|" + objPhyLib.PhyTelephone + "|" + objPhyLib.PhyFax + "|" + objPhyLib.PhyNPI + "|" + objPhyLib.PhyNotes;
+
+                            //    if (ddlPhysicianName.Items.Count > 0)//added for bug id=38345 
+                            //    {
+                            //        //if (txtReferringProvider.Text.Trim() != string.Empty && txtReferringProvider.Text.Contains(ddlPhysicianName.SelectedItem.Text))
+                            //        //{
+                            //        //    chkSelfReferred.Checked = true;
+                            //        //    btnFindPhysician.Enabled = false;
+                            //        //}
+                            //    }
+                            //    else
+                            //        chkSelfReferred.Checked = false;
+                            //}
+                            #endregion
+                            if (ddlPhysicianName.Items.Count > 0)//added for bug id=38345 
                             {
-                                //old code
-                                // string sPhyName = objPhyLib.PhyPrefix + " " + objPhyLib.PhyFirstName + " " + objPhyLib.PhyLastName + " " + objPhyLib.PhySuffix;
-                                //Gitlab# 2485 - Physician Name Display Change
-                                string sPhyName = string.Empty;
-                                 if (objPhyLib.PhyLastName != String.Empty)
-                                    sPhyName += objPhyLib.PhyLastName;
-                                if (objPhyLib.PhyFirstName != String.Empty)
-                                {
-                                    if (sPhyName != String.Empty)
-                                        sPhyName += "," + objPhyLib.PhyFirstName;
-                                    else
-                                        sPhyName += objPhyLib.PhyFirstName;
-                                }
-                                if (objPhyLib.PhyMiddleName != String.Empty)
-                                    sPhyName += " " + objPhyLib.PhyMiddleName;
-                                if (objPhyLib.PhySuffix != String.Empty)
-                                    sPhyName += "," + objPhyLib.PhySuffix;
-
-                                //  txtReferringProvider.Text = sPhyName;
-                                //  txtReferringFacility.Text = objPhyLib.PhyNotes;
-                                //txtReferingAddress.Text = objPhyLib.PhyAddress1;
-                                //  msktxtReferingPhoneNo.Text = objPhyLib.PhyTelephone;
-                                //  msktxtReferingFaxNo.Text = objPhyLib.PhyFax;
-                                //  txtProviderNPI.Text = objPhyLib.PhyNPI;
-
-
-                                //Jira #CAP-69 - labels are missing
-                                txtProviderSearch.Text = sPhyName + "| NPI: " + objPhyLib.PhyNPI +
-                                    "| Facility: " + "" + "| Address:" + objPhyLib.PhyAddress1 +
-                                    "| Phone No:" + objPhyLib.PhyTelephone + "| Fax No:" + objPhyLib.PhyFax ;
-                                
-                                //hdnrenprovider.Value = " |" + sPhyName + "|" + objPhyLib.PhyNPI + "|" + "" + "|" + "" + "|" + objPhyLib.PhyAddress1 + "|"
-                                //    + objPhyLib.PhyFax + "|" + objPhyLib.PhyTelephone;
-
-                                //hdnpcpprovider.Value = " |" + sPhyName + "|" + objPhyLib.PhyNPI + "|" + "" + "|" + "" + "|" + objPhyLib.PhyAddress1 + "|"
-                                //    + objPhyLib.PhyFax + "|" + objPhyLib.PhyTelephone;
-
-                                //hdnrenprovidersearch.Value = " |" + sPhyName + "|" + objPhyLib.PhyNPI + "|" + "" + "|" + "" + "|" + objPhyLib.PhyAddress1 + "|"
-                                 // + objPhyLib.PhyFax + "|" + objPhyLib.PhyTelephone;
-
-                                hdnrenprovider.Value = sPhyName + "| NPI: " + objPhyLib.PhyNPI +
-                                    "| Facility: " + "" + "| Address:" + objPhyLib.PhyAddress1 +
-                                    "| Phone No:" + objPhyLib.PhyTelephone + "| Fax No:" + objPhyLib.PhyFax ;
-
-                                hdnpcpprovider.Value = sPhyName + "| NPI: " + objPhyLib.PhyNPI +
-                                    "| Facility: " + "" + "| Address:" + objPhyLib.PhyAddress1 +
-                                    "| Phone No:" + objPhyLib.PhyTelephone + "| Fax No:" + objPhyLib.PhyFax ;
-
-                                txtProviderSearch.Enabled = false;
-                                hdnrenprovidersearch.Value = sPhyName + "| NPI: " + objPhyLib.PhyNPI + "|Facility: " + "" + "|Address:" + objPhyLib.PhyAddress1 + "| " +
-                                    " Phone No:" + objPhyLib.PhyTelephone + "| Fax No:"
-                                   + objPhyLib.PhyFax ;
-
-                                // HdnRefPhy.Value = sPhyName + "|" + objPhyLib.PhyAddress1 + "|" + objPhyLib.PhyTelephone + "|" + objPhyLib.PhyFax + "|" + objPhyLib.PhyNPI + "|" + objPhyLib.PhyNotes;
-                                // HdnPcpPhy.Value = sPhyName + "|" + objPhyLib.PhyAddress1 + "|" + objPhyLib.PhyTelephone + "|" + objPhyLib.PhyFax + "|" + objPhyLib.PhyNPI + "|" + objPhyLib.PhyNotes;
-
-                                if (ddlPhysicianName.Items.Count > 0)//added for bug id=38345 
-                                {
-                                    //if (txtReferringProvider.Text.Trim() != string.Empty && txtReferringProvider.Text.Contains(ddlPhysicianName.SelectedItem.Text))
-                                    //{
-                                    //    chkSelfReferred.Checked = true;
-                                    //    btnFindPhysician.Enabled = false;
-                                    //}
-                                }
-                                else
-                                    chkSelfReferred.Checked = false;
+                                //if (txtReferringProvider.Text.Trim() != string.Empty && txtReferringProvider.Text.Contains(ddlPhysicianName.SelectedItem.Text))
+                                //{
+                                //    chkSelfReferred.Checked = true;
+                                //    btnFindPhysician.Enabled = false;
+                                //}
                             }
-
-                        }
+                            else
+                                chkSelfReferred.Checked = false;
+                        
+                    }
                         else
                         {
                             hdnEncounter_Physician_id.Value = "0";
