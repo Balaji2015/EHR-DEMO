@@ -2163,7 +2163,6 @@ function btnaddinsured(e) {
             DisplayErrorMessage('410006');
             return false;
         }
-
     }
 
     if (PlanVal == "0") {
@@ -2252,7 +2251,7 @@ function btnaddinsured(e) {
             else {
                 //Jira #CAP-141 - Remove Relationship to Patient from the Matching criteria  && Jira #CAP-146 - Able to add duplicate insurance
                 //if ($('#tbodupolicyinfo tr')[k].getElementsByTagName('td')[2].innerText == planname.trim() && $('#tbodupolicyinfo tr')[k].getElementsByTagName('td')[3].innerText == PolicyVal.trim() && $('#tbodupolicyinfo tr')[k].getElementsByTagName('td')[4].innerText == RelationVal.options[RelationVal.selectedIndex].text && $('#tbodupolicyinfo tr')[k].getElementsByTagName('td')[5].innerText == insurename.trim()) {
-            if ($('#tbodupolicyinfo tr')[k].getElementsByTagName('td')[2].innerText.toUpperCase() == planname.trim().toUpperCase() && $('#tbodupolicyinfo tr')[k].getElementsByTagName('td')[3].innerText.toUpperCase() == PolicyVal.trim().toUpperCase() &&  $('#tbodupolicyinfo tr')[k].getElementsByTagName('td')[5].innerText.toUpperCase() == insurename.trim().toUpperCase()) {
+                if ($('#tbodupolicyinfo tr')[k].getElementsByTagName('td')[2].innerText.toUpperCase() == planname.trim().toUpperCase() && $('#tbodupolicyinfo tr')[k].getElementsByTagName('td')[3].innerText.toUpperCase() == PolicyVal.trim().toUpperCase() &&  $('#tbodupolicyinfo tr')[k].getElementsByTagName('td')[14].innerText.trim() == insurehumanid.trim()) {
                     DisplayErrorMessage('350014');
                     return false;
                 }
