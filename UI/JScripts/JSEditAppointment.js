@@ -328,6 +328,9 @@ function ProviderSelected(event, ui) {
 }
 function ProviderSearchclear()
 {
+    //Jira #cap-185 - Auto Save warning message not received in Edit Appointment screen
+    EnableSaveButton(this);
+
     $("#txtProviderSearch").attr("disabled", false);
     $("#txtProviderSearch").val("");
     if (document.getElementById("chkSelfReferred") == null) {
