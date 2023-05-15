@@ -397,7 +397,30 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
             }
             return GetFromImmunizationHistory(ulHumanID, iPageNumber, iMaxResult, ulEncounterID, isLoad);
         }
-
+        //Jira #CAP-187 - update in immunization_history
+        public ImmunizationHistoryDTO UpdateImmunizationHistoryAndMasterDetails(IList<ImmunizationMasterHistory> objImmuHistoryMaster, IList<ImmunizationHistory> objImmuHistorySave, IList<ImmunizationHistory> UpdateList, ulong ulHumanID, int iPageNumber, int iMaxResult, string sMacAddress, ulong ulEncounterID, bool isLoad)
+        {
+            if (objImmuHistoryMaster!= null &&  objImmuHistoryMaster.Count > 0)
+            {
+                ImmunizationMasterHistoryManager masterManager = new ImmunizationMasterHistoryManager();
+                masterManager.UpdateImmunizationHistoryDetails(null, null, objImmuHistoryMaster, ulHumanID, 0, 0, string.Empty, 0, true);
+            }
+            if ((UpdateList!=null && objImmuHistorySave != null) &&  (UpdateList.Count > 0 ||objImmuHistorySave.Count > 0))
+            {
+                ulong ulHumanid = 0;
+                if (UpdateList.Count > 0)
+                {
+                    ulHumanid = UpdateList[0].Human_ID;
+                }
+                else if (objImmuHistorySave.Count > 0)
+                {
+                    ulHumanid = objImmuHistorySave[0].Human_ID;
+                }
+                if(ulHumanid>0)
+                    SaveUpdateDelete_DBAndXML_WithTransaction(ref objImmuHistorySave, ref UpdateList, null, sMacAddress, true, true, ulHumanid, string.Empty);
+            }
+            return GetFromImmunizationHistory(ulHumanID, iPageNumber, iMaxResult, ulEncounterID, isLoad);
+        }
         public ImmunizationHistoryDTO GetLoadPhyProcedAndVaccAndPhyCodeLib(ulong PhysicianID, string procedureType, ulong LabID,string sLegalOrg)
         {
             bool IsPrevious = false;
