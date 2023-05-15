@@ -149,6 +149,14 @@ function handleError(evt) {
             //if (evt.message.indexOf("Failed to execute 'insertRule' on 'CSSStyleSheet'") < 0)
                 //alert("Something went wrong! \n There seems to be a problem with this page. Please retry and if the problem persists, contact Capella Support with patient and page details.");
         }
+        //Jira #CAP-191
+        else if (evt.error.stack.indexOf("Telerik.Web.UI.WebResource.axd") > -1) {
+            if (top.window.document.getElementById('ctl00_Loading') != null)
+                top.window.document.getElementById('ctl00_Loading').style.display = "none";
+            if (top.window.document.getElementById('divLoading') != null)
+                top.window.document.getElementById('divLoading').style.display = "none";
+            ScriptErrorLogEntry(evt.message, evt.lineno, evt.colno, evt.filename, evt.error.stack, false);
+        }
         else {
             if (top.window.document.getElementById('ctl00_Loading') != null)
                 top.window.document.getElementById('ctl00_Loading').style.display = "none";
