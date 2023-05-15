@@ -2133,7 +2133,7 @@ namespace Acurus.Capella.UI
 
 
         [WebMethod(EnableSession = true)]
-        public static void ErrorLogEntry(string ErrorMessage, string ErrorLineNo, string ErrorColumnNo, string ErrorUrl, string ErrorStack)
+        public static string ErrorLogEntry(string ErrorMessage, string ErrorLineNo, string ErrorColumnNo, string ErrorUrl, string ErrorStack)
         {
             string notification = string.Empty;
             if (ClientSession.UserName == string.Empty)
@@ -2141,21 +2141,52 @@ namespace Acurus.Capella.UI
                 HttpContext.Current.Response.StatusCode = 999;
                 HttpContext.Current.Response.Status = "999 Session Expired";
                 HttpContext.Current.Response.StatusDescription = "frmSessionExpired.aspx";
-                return;
+                return string.Empty;
             }
-            string message = System.Environment.NewLine + System.Environment.NewLine + "------------------------------BEGINNING OF THIS SCRIPT ERROR------------------------------------" + System.Environment.NewLine + System.Environment.NewLine +
+            //jira #CAP-30 - Old Code
+            //string message = System.Environment.NewLine + System.Environment.NewLine + "------------------------------BEGINNING OF THIS SCRIPT ERROR------------------------------------" + System.Environment.NewLine + System.Environment.NewLine +
+            //"MESSAGE: " + ErrorMessage + System.Environment.NewLine + 
+            //"TIME: " + DateTime.Now.ToString() + " . UTC TIME: " + DateTime.UtcNow.ToString() + System.Environment.NewLine +
+            //"SOURCE: " + ErrorUrl + System.Environment.NewLine +
+            //"CURRENT USER: " + Convert.ToString(ClientSession.UserName) + System.Environment.NewLine +
+            //"ENCOUNTER ID: " + Convert.ToString(ClientSession.EncounterId) + System.Environment.NewLine +
+            //"HUMAN ID: " + Convert.ToString(ClientSession.HumanId) + System.Environment.NewLine +
+            //"PHYSICIAN ID: " + Convert.ToString(ClientSession.PhysicianId) + System.Environment.NewLine +
+            //"LINE NUMBER: " + ErrorLineNo + System.Environment.NewLine +
+            //"COLUMN NUMBER: " + ErrorColumnNo + System.Environment.NewLine +
+            //"STACKTRACE: " + ErrorStack + System.Environment.NewLine;
+            //message += System.Environment.NewLine + System.Environment.NewLine + "------------------------------END OF THIS SCRIPT ERROR------------------------------------" + System.Environment.NewLine + System.Environment.NewLine;
+            //log.Error(message);
+
+            //jira #CAP-30 - New Code
+            string version = "";
+            if (System.Configuration.ConfigurationSettings.AppSettings["VersionConfiguration"] != null)
+                version = System.Configuration.ConfigurationSettings.AppSettings["VersionConfiguration"].ToString();
+
+            string[] server = version.Split('|');
+            string serverno = "";
+            if (server.Length > 1)
+                serverno = server[1].Trim();
+
+            string message =
             "MESSAGE: " + ErrorMessage + System.Environment.NewLine +
-            "TIME: " + DateTime.Now.ToString() + " . UTC TIME: " + DateTime.UtcNow.ToString() + System.Environment.NewLine +
             "SOURCE: " + ErrorUrl + System.Environment.NewLine +
-            "CURRENT USER: " + Convert.ToString(ClientSession.UserName) + System.Environment.NewLine +
-            "ENCOUNTER ID: " + Convert.ToString(ClientSession.EncounterId) + System.Environment.NewLine +
-            "HUMAN ID: " + Convert.ToString(ClientSession.HumanId) + System.Environment.NewLine +
-            "PHYSICIAN ID: " + Convert.ToString(ClientSession.PhysicianId) + System.Environment.NewLine +
             "LINE NUMBER: " + ErrorLineNo + System.Environment.NewLine +
-            "COLUMN NUMBER: " + ErrorColumnNo + System.Environment.NewLine +
-            "STACKTRACE: " + ErrorStack + System.Environment.NewLine;
-            message += System.Environment.NewLine + System.Environment.NewLine + "------------------------------END OF THIS SCRIPT ERROR------------------------------------" + System.Environment.NewLine + System.Environment.NewLine;
-            log.Error(message);
+            "COLUMN NUMBER: " + ErrorColumnNo + System.Environment.NewLine;
+            string insertQuery = "insert into  stats_apperrorlog values(0,'" + message.Replace(@"\\", @"\\\\").Replace(@"\", @"\\").Replace(@"\\\\\\\\", @"\\\\").Replace("'", "") + "', '" + serverno + "','" + DateTime.Now + "','" + ClientSession.UserName + "','" + ClientSession.EncounterId + "','" + ClientSession.HumanId + "','" + ClientSession.PhysicianId + "','" + ErrorStack.Replace("'", "") + "','" + DateTime.Now.ToString("yyyy-MM-dd hh:mm:ss") + "')";
+            int iReturn = DBConnector.WriteData(insertQuery);
+
+            string Query = "select * from stats_apperrorlog order by Id desc limit 1";
+            DataSet ds = DBConnector.ReadData(Query);
+            string sFriendlyErrorMsg = string.Empty;
+            if (ds.Tables.Count > 0 && ds.Tables[0].Rows.Count > 0)
+            {
+                //friendlyErrorMsg.Text = DateTime.Now.ToString("dd/MMM/yyyy hh:mm:ss tt") + "_" + ds.Tables[0].Rows[0][0].ToString() + ": " + generalErrorMsg;
+                sFriendlyErrorMsg = DateTime.Now.ToString("dd/MMM/yyyy hh:mm:ss tt") + "_" + ds.Tables[0].Rows[0][0].ToString() + ": " + "A problem has occurred on this web site. Please try again. If this error continues, please contact support. <br><br>" + ErrorMessage;
+
+            }
+            var returnList = JsonConvert.SerializeObject(sFriendlyErrorMsg);
+            return returnList;
         }
     }
 }

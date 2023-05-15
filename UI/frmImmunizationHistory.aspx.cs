@@ -562,6 +562,8 @@ namespace Acurus.Capella.UI
                                 IList<ImmunizationMasterHistory> objImmunizationHistoryDTO = (IList<ImmunizationMasterHistory>)Session["ImmunizationMasterHistory"];
                                 IList<ImmunizationMasterHistory> SaveImmunizationHistory = new List<ImmunizationMasterHistory>();
                                 IList<ImmunizationMasterHistory> UpdateImmunizationHistory = new List<ImmunizationMasterHistory>();
+                                IList<ImmunizationHistory> SaveImmunHistory = new List<ImmunizationHistory>();
+                                IList<ImmunizationHistory> UpdateImmunHistory = new List<ImmunizationHistory>();
                                 IList<ulong> lstId = new List<ulong>();
                                 foreach (ImmunizationMasterHistory item in objImmunizationHistoryDTO)
                                 {
@@ -573,10 +575,78 @@ namespace Acurus.Capella.UI
 
                                 if (lstId.Count > 0 && !lstId.Any(a => a == ulUpdateDelId))
                                     UpdateImmunizationHistory.Add(immunizationMasterHistory);
+                                //Jira #CAP-187 - update in immunization_history
+                                if (Session["ImmunizationHistory"] == null)
+                                {
+                                    foreach (ImmunizationMasterHistory item in objImmunizationHistoryDTO)
+                                    {
+                                        
+                                            ImmunizationHistory objHistory = new ImmunizationHistory();
+                                            //bugId:61103 
+                                            //AddorUpdateImmunizationHistory(objHistory);
+
+                                            objHistory.Immunization_Description = item.Immunization_Description;
+                                            objHistory.CVX_Code = item.CVX_Code;
+                                            objHistory.Route_Of_Administration = item.Route_Of_Administration;
+
+                                            objHistory.Is_VIS_Given = item.Is_VIS_Given;
+                                            objHistory.Date_On_Vis = item.Date_On_Vis;
+                                            objHistory.Vis_Given_Date = item.Vis_Given_Date;
+                                            objHistory.Procedure_Code = item.Procedure_Code;
+                                            objHistory.Human_ID = ClientSession.HumanId;
+                                            objHistory.Physician_ID = ClientSession.PhysicianId;
+
+                                            objHistory.Lot_Number = item.Lot_Number;
+
+                                            objHistory.Administered_Amount = item.Administered_Amount;
+
+                                            objHistory.Administered_Date = item.Administered_Date;
+
+                                            objHistory.Manufacturer = item.Manufacturer;
+                                            objHistory.Administered_Unit = item.Administered_Unit;
+
+                                            objHistory.Expiry_Date = item.Expiry_Date;
+                                            objHistory.Immunization_Source = item.Immunization_Source;
+                                            objHistory.Location = item.Location;
+                                            objHistory.Protection_State = item.Protection_State;
+
+                                            objHistory.Dose = item.Dose;
+
+                                            objHistory.Dose_No = item.Dose_No;
+                                            objHistory.Notes = item.Notes;
+
+                                            objHistory.Snomed_Code = item.Snomed_Code;
+                                            objHistory.Immunization_History_Master_ID = item.Id;
+                                            objHistory.Created_By = ClientSession.UserName;
+                                            objHistory.Is_Deleted = "N";
+                                            objHistory.Created_Date_And_Time = UtilityManager.ConvertToUniversal();
+                                            objHistory.Encounter_ID = ClientSession.EncounterId;
+                                            SaveImmunHistory.Add(objHistory);
+                                        
+
+                                    }
+                                }
+                                else
+                                {
+                                    IList<ImmunizationHistory> ResultListimmu = (IList<ImmunizationHistory>)Session["ImmunizationHistory"];
+                                    IList<ImmunizationHistory> tempimmu = (from obj in ResultListimmu where obj.Immunization_History_Master_ID == ulUpdateDelId select obj).ToList().ToList<ImmunizationHistory>();
+                                    ImmunizationHistory immuobj = new ImmunizationHistory();
+                                    if (tempimmu.Count > 0)
+                                    {
+                                        immuobj = tempimmu[0];
+                                        AddorUpdateImmunizationHistory(immuobj);
+                                        immuobj.Modified_By = ClientSession.UserName;
+                                        immuobj.Modified_Date_And_Time = UtilityManager.ConvertToUniversal();
+                                        immuobj.Is_Deleted = "N";
+                                        UpdateImmunHistory.Add(immuobj);
+                                    }
+                                }
 
                                 //ImmMasterList = (IList<ImmunizationMasterHistory>)Session["ImmunizationMasterHistory"];
                                 UpdateImmunizationHistory = (IList<ImmunizationMasterHistory>)Session["ImmunizationMasterHistory"];
-                                LoadImmunHistoryGrid = immunizationMasterManager.UpdateImmunizationHistoryDetails(ImmMasterList, SaveImmunizationHistory, UpdateImmunizationHistory, ClientSession.HumanId, 0, 0, string.Empty, 0, true);
+                                //Jira #CAP-187 - update in immunization_history
+                                //LoadImmunHistoryGrid = immunizationMasterManager.UpdateImmunizationHistoryDetails(ImmMasterList, SaveImmunizationHistory, UpdateImmunizationHistory, ClientSession.HumanId, 0, 0, string.Empty, 0, true);
+                                LoadImmunHistoryGrid = immunizationMngr.UpdateImmunizationHistoryAndMasterDetails(UpdateImmunizationHistory, SaveImmunHistory, UpdateImmunHistory, ClientSession.HumanId, 0, 0, string.Empty, ClientSession.EncounterId, false);
                             }
 
                         }

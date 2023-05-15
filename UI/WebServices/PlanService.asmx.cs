@@ -1365,7 +1365,16 @@ namespace Acurus.Capella.UI.WebServices
                                 Plan_date = Convert.ToDateTime(objCarePlanDTOList[i].Plan_Date);
                             else
                                 Plan_date = Convert.ToDateTime(objCarePlanDTOList[i].Plan_Date + " 6:30:00 PM");
-                            objCarePlan.Plan_Date = UtilityManager.ConvertToLocal(Plan_date).ToString("yyyy-MMM-dd");
+                            //jira #CAP-187 - old code
+                            //objCarePlan.Plan_Date = UtilityManager.ConvertToLocal(Plan_date).ToString("yyyy-MMM-dd");
+                            //jira #CAP-187 - new code
+                            if (objCarePlan.Care_Name_Value == "Flu Vaccine" || objCarePlan.Care_Name_Value == "Pneumonia Vaccine" || objCarePlan.Care_Name_Value == "Colorectal Screen")
+                            {
+                                objCarePlan.Plan_Date = Plan_date.ToString("yyyy-MMM-dd");
+                            }
+                            else {
+                                objCarePlan.Plan_Date = UtilityManager.ConvertToLocal(Plan_date).ToString("yyyy-MMM-dd");
+                            }
                         }
                         else
                         {
