@@ -233,14 +233,15 @@ $(document).ready(function () {
             }
             else {
                 document.getElementById("txtProviderSearch").value = document.getElementById("hdnrenprovidersearch").value;
-                var cLength = document.getElementById("imgClearProviderText").attributes.length;
-                var IsDisabledProviderSearch = "true";
-                for (var i = 0; i < cLength; i++)
+                if (document.getElementById("imgClearProviderText") != null)
                 {
-                    if(document.getElementById("imgClearProviderText").attributes[i].name=="onclick")
-                    {
-                        IsDisabledProviderSearch = "false";
-                        break;
+                    var cLength = document.getElementById("imgClearProviderText").attributes.length;
+                    var IsDisabledProviderSearch = "true";
+                    for (var i = 0; i < cLength; i++) {
+                        if (document.getElementById("imgClearProviderText").attributes[i].name == "onclick") {
+                            IsDisabledProviderSearch = "false";
+                            break;
+                        }
                     }
                 }
                 if (document.getElementById("txtProviderSearch").value != "" && document.getElementById("hdnrenprovidersearch").value != "| NPI: | Facility: | Address:| Phone No:| Fax No:") {
