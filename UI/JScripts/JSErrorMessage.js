@@ -158,7 +158,7 @@ function handleError(evt) {
                 top.window.document.getElementById('divLoading').style.display = "none";
             //ScriptErrorLogEntry(evt.message, evt.lineno, evt.colno, evt.filename, evt.error.stack, false);
         }
-        //Jira #CAP-193
+        //Jira #CAP-206
         else if (evt.message.indexOf("Failed to execute 'focus'"))
         {
             if (top.window.document.getElementById('ctl00_Loading') != null)
