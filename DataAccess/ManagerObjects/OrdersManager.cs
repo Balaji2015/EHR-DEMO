@@ -6582,8 +6582,9 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
             //    }
             //}
             #endregion
-            Session.GetISession().Clear();
-            ISession MySession = Session.GetISession();
+            //jira #CAP-248
+            //Session.GetISession().Clear();
+            //ISession MySession = Session.GetISession();
             ITransaction trans = null;
             TreatmentPlanManager objTreatmentPlanManager = new TreatmentPlanManager();
             IList<TreatmentPlan> objTreatmentPlan = new List<TreatmentPlan>();
@@ -6697,6 +6698,8 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
             int iResult = 0;
             try
             {
+                //jira #CAP-248
+                ISession MySession = Session.GetISession();
                 #region TreatmentPlan
                 Delete_Tplan = (from obj in objTreatmentPlan where lstorders.Any(a => a.Id == obj.Source_ID) select obj).ToList<TreatmentPlan>();
                 if (Delete_Tplan != null && Delete_Tplan.Count > 0)
