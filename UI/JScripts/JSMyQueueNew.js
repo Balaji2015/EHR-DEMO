@@ -321,7 +321,7 @@ $(document).ready(function () {
                             //jira #cap190 - Workflow issue - Current process PROVIDER_PROCESS current owner MA
                             if (data.d == 'UNKNOWN') {
                                 { sessionStorage.setItem('StartLoading', 'false'); StopLoadFromPatChart(); }
-                                DisplayErrorMessage('140007');
+                                DisplayErrorMessage('1400013');
                                 return false;
                             }
                             sessionStorage.setItem("EnablePFSHMenu", "true");

@@ -275,16 +275,13 @@
 	<Message number="140004" Type="OK" Text="Selected encounter cannot be moved from General Queue."></Message>
 	<Message number="140005" Type="OK" Text="No Encounter is found for the selected patient."></Message>
 	<Message number="140006" Type="OK" Text="Please select a File."></Message>
-	<Message number="140007" Type="OK" Text="You are making changes to an encounter that has already been updated. Please refresh this page to view latest updates."></Message>
-	
-
-
 	<Message number="140007" Type="OK" Text="Appointment cannot be fixed for a deceased patient"></Message>
 	<Message number="140008" Type="OKCANCEL" Text="The Selected Patient is deceased, Would you like to continue?"></Message>
 	<Message number="140009" Type="OKCANCEL" Text="Would you like to move the dummy order?"></Message>
 	<Message number="1400010" Type="OK" Text="Selected Item can't move to myorder."></Message>
 	<Message number="1400011" Type="OK" Text="Message log cannot be created for selected order."></Message>
 	<Message number="1400012" Type="OK" Text="The selected file was already processed by {0}"/>
+	<Message number="1400013" Type="OK" Text="You are making changes to an encounter that has already been updated. Please refresh this page to view latest updates."></Message>
 
 
 	<Message number="150001" Type="OK" Text="Please enter the search parameters."></Message>
