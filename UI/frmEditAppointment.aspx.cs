@@ -264,9 +264,10 @@ namespace Acurus.Capella.UI
                         ddlVisitType.Text = EncRecord.Visit_Type.ToUpper();
                     }
 
-                    if (ddlVisitType.Items.Count > 0)
-                    {
-                        if (ddlVisitType.Items.FindItemByText(EncRecord.Visit_Type.ToUpper()) == null)
+                    //Jira #CAP-168 - if condition is commented for set the iteam for the deactivate user 
+                    // if (ddlVisitType.Items.Count > 0)
+                    // {
+                    if (ddlVisitType.Items.FindItemByText(EncRecord.Visit_Type.ToUpper()) == null)
                         {
                             RadComboBoxItem items = new RadComboBoxItem();
                             items.Text = EncRecord.Visit_Type.ToUpper();
@@ -275,7 +276,7 @@ namespace Acurus.Capella.UI
                             HdnEditVisit.Value = EncRecord.Visit_Type.ToUpper() + "|" + EncRecord.Duration_Minutes.ToString();
                         }
                         ddlVisitType.Items.FindItemByText(EncRecord.Visit_Type.ToUpper()).Selected = true;
-                    }
+                    //}
                     ddlDuration.Text = EncRecord.Duration_Minutes.ToString();
                     //logger.Debug("EncRecord.Visit_Type=" + EncRecord.Visit_Type);
 
@@ -878,6 +879,41 @@ namespace Acurus.Capella.UI
                         }
                     }
                 }
+                //Jira #CAP-168
+                if (ddlPhysicianName.Items.Count == 0 || ddlPhysicianName.Text == "" || ddlPhysicianName.Text == string.Empty || ddlPhysicianName.Text == null)
+                {
+                    string sPhyName = string.Empty;
+                    IList<PhysicianLibrary> ilstPhysicianLibrary = new List<PhysicianLibrary>();
+                    PhysicianManager phymngr = new PhysicianManager();
+                    ilstPhysicianLibrary=phymngr.GetphysiciannameByPhyID(ulMyPhysicianID);
+                    if (ilstPhysicianLibrary != null && ilstPhysicianLibrary.Count > 0)
+                    {
+                        if (ilstPhysicianLibrary[0].PhyLastName != String.Empty)
+                            sPhyName += ilstPhysicianLibrary[0].PhyLastName;
+                        if (ilstPhysicianLibrary[0].PhyFirstName != String.Empty)
+                        {
+                            if (sPhyName != String.Empty)
+                                sPhyName += "," + ilstPhysicianLibrary[0].PhyFirstName;
+                            else
+                                sPhyName += ilstPhysicianLibrary[0].PhyFirstName;
+                        }
+                        if (ilstPhysicianLibrary[0].PhyMiddleName != String.Empty)
+                            sPhyName += " " + ilstPhysicianLibrary[0].PhyMiddleName;
+                        if (ilstPhysicianLibrary[0].PhySuffix != String.Empty)
+                            sPhyName += "," + ilstPhysicianLibrary[0].PhySuffix;
+
+                        RadComboBoxItem item1 = new RadComboBoxItem();
+                        item1.Value = ilstPhysicianLibrary[0].Id.ToString();
+                        item1.Text = sPhyName;
+                        ddlPhysicianName.Items.Add(item1);
+                        int iselectedindex = ddlPhysicianName.Items.IndexOf(item1);
+                        ddlPhysicianName.SelectedIndex = iselectedindex;
+                        phyCheck = true;
+                    }
+                    
+                }
+                //Jira #CAP-168
+                //if (!phyCheck)
                 if (!phyCheck)
                 {
                     chkShowAllPhysicians.Checked = true;
@@ -6778,8 +6814,7 @@ namespace Acurus.Capella.UI
             duration = new int[xmlUserList.Count];
             description = new string[xmlUserList.Count];
             string DefaultValue = "";
-
-
+           
             if (xmlUserList.Count > 0)
             {
                 //logger.Debug("XML tag " + povphysicianId + " found");
@@ -6827,14 +6862,22 @@ namespace Acurus.Capella.UI
             }
             else if (xmlUserList.Count == 0)
             {
-                //logger.Debug("XML tag " + povphysicianId + " not found");
-                ddlVisitType.SelectedIndex = -1;
-                ddlDuration.Text = "";
-                txtVisitDescription.Text = "";
-                if (!(Request["Imported"] != null && Request["Imported"].ToString() == "Y"))
+                //Jira #CAP-168 - check the deactivate (selectedUsers) user count 
+                IList<PhysicianLibrary> PhysicianList = UtilityManager.GetPhysicianList(hdnFacilityName.Value.Trim(), ClientSession.LegalOrg);
+                var user = from u in PhysicianList where u.PhyId == ulMyPhysicianID select u.PhyId;
+                IList<ulong> selectedUsers = new List<ulong>();
+                selectedUsers = user.ToList<ulong>();
+                if (selectedUsers.Count > 0)
                 {
-                    this.Page.ClientScript.RegisterStartupScript(this.Page.GetType(), "Edit Appointment", "DisplayErrorMessage('110026');", true);
-                    return;
+                    //logger.Debug("XML tag " + povphysicianId + " not found");
+                    ddlVisitType.SelectedIndex = -1;
+                    ddlDuration.Text = "";
+                    txtVisitDescription.Text = "";
+                    if (!(Request["Imported"] != null && Request["Imported"].ToString() == "Y"))
+                    {
+                        this.Page.ClientScript.RegisterStartupScript(this.Page.GetType(), "Edit Appointment", "DisplayErrorMessage('110026');", true);
+                        return;
+                    }
                 }
             }
             if (duration.Count() > 0)
