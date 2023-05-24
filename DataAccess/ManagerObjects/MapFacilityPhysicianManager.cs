@@ -19,7 +19,8 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
         //ArrayList GetPhyisicianListbyFacilityName(string sFacilityName);
         //PhysicianFacilityDTO GetPhyisicianListbyFacName(string sFacilityName);
         IList<ulong> GetMapFacilityListbyPhyStatus(string sStatus);
-
+        IList<MapFacilityPhysician> GetPhyisician_ListbyFacilityName(string Facility_Name, string sLegalOrg);
+        IList<string> GetUser_ListbyFacilityName(string sFacilityName);
     }
 
     public partial class MapFacilityPhysicianManager : ManagerBase<MapFacilityPhysician, ulong>, IMapFacilityPhysicianManager
@@ -221,6 +222,28 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
                 mySession.Close();
             }
             return PhyFacDTO;
+        }
+        public IList<MapFacilityPhysician> GetPhyisician_ListbyFacilityName(string Facility_Name,string sLegalOrg)
+        {
+            IList<MapFacilityPhysician> MapPhyList = new List<MapFacilityPhysician>();
+            using (ISession mySession = NHibernateSessionManager.Instance.CreateISession())
+            {
+                ICriteria crit = mySession.CreateCriteria(typeof(MapFacilityPhysician)).Add(Expression.Eq("Facility_Name", Facility_Name)).Add(Expression.Eq("Legal_Org", sLegalOrg)).AddOrder(Order.Asc("Phy_Rec_ID"));
+                MapPhyList = crit.List<MapFacilityPhysician>();
+                mySession.Close();
+            }
+            return MapPhyList;
+        }
+        public IList<string> GetUser_ListbyFacilityName(string sFacilityName)
+        {
+            IList<string> UserList = new List<string>();
+            using (ISession mySession = NHibernateSessionManager.Instance.CreateISession())
+            {
+                IList<string> objLst = mySession.CreateSQLQuery("select user_name from map_facility_user where Facility_Name='" + sFacilityName +"'").List<string>();
+                UserList = objLst.ToList<string>(); ;
+                mySession.Close();
+            }
+            return UserList;
         }
         public IList<MapFacilityPhysician> GetPhyisician_ListbyFacNameList(IList<string> Facility_Name, ulong ulPhysicianId)
         {

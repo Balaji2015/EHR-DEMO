@@ -195,3 +195,7 @@ function rbUpdateOwnerOnClick()
         { sessionStorage.setItem('StartLoading', 'true'); StartLoadFromPatChart();}
     }
 }
+ //Jira #CAP-195
+function chkShowAllOwner() {
+        { sessionStorage.setItem('StartLoading', 'true'); StartLoadFromPatChart(); }
+}
