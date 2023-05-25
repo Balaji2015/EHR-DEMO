@@ -240,7 +240,7 @@ function DisplayErrorMessage(ErrorNo, NotificationName, Messagelist) {
     var msgList = loadXMLDoc('ErrorMessage.xml' + "?version=" + sessionStorage.getItem("ScriptVersion"));//BugID:40306 .to load new xml on version change.
     if (msgList != null && msgList != undefined) {
         //CAP-287 - Error handling if errorno doesn't exist in ErrorMessage.xml
-        if (Msg != undefined && Msg != null) {
+        if (msgList[ErrorNo] != undefined && msgList[ErrorNo] != null) {
             var Msg = msgList[ErrorNo].split('-');
             var Message = Msg[1];
             var ErrType = Msg[0];
