@@ -239,18 +239,24 @@ function DisplayErrorMessage(ErrorNo, NotificationName, Messagelist) {
     }
     var msgList = loadXMLDoc('ErrorMessage.xml' + "?version=" + sessionStorage.getItem("ScriptVersion"));//BugID:40306 .to load new xml on version change.
     if (msgList != null && msgList != undefined) {
-        var Msg = msgList[ErrorNo].split('-');
-        var Message = Msg[1];
-        var ErrType = Msg[0];
-        if (Messagelist != undefined) {
-            if (Messagelist.length != 0) {
-                var Msg = Messagelist.split('-');;
-                for (var i = 0; i < Msg.length; i++) {
-                    var replaceMsg = '{' + i + '}';
-                    var Message = Message.replace(replaceMsg, Msg[i]);
+        //CAP-287 - Error handling if errorno doesn't exist in ErrorMessage.xml
+        if (Msg != undefined && Msg != null) {
+            var Msg = msgList[ErrorNo].split('-');
+            var Message = Msg[1];
+            var ErrType = Msg[0];
+            if (Messagelist != undefined) {
+                if (Messagelist.length != 0) {
+                    var Msg = Messagelist.split('-');;
+                    for (var i = 0; i < Msg.length; i++) {
+                        var replaceMsg = '{' + i + '}';
+                        var Message = Message.replace(replaceMsg, Msg[i]);
 
+                    }
                 }
             }
+        }
+        else {
+            alert("Error Number " + ErrorNo + " is not found in ErrorMessage.xml. Please contact support.");
         }
         switch (ErrType) {
             case "OK":
