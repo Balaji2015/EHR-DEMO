@@ -202,7 +202,8 @@ function LoadDocuments() {
         });
     });
 
-    if (currentprocess.toUpperCase() != "SCRIBE_PROCESS" && currentprocess.toUpperCase() != "SCRIBE_REVIEW_CORRECTION" && currentprocess.toUpperCase() != "SCRIBE_CORRECTION" &&  currentprocess.toUpperCase() != "DICTATION_REVIEW" && currentprocess.toUpperCase() != "CODER_REVIEW_CORRECTION" && currentprocess.toUpperCase() != "PROVIDER_PROCESS" && currentprocess.toUpperCase() != "TECHNICIAN_PROCESS" && currentprocess.toUpperCase() != "PROVIDER_REVIEW_CORRECTION") {//CMG Ancilliary
+    //CAP-285 - null handling for current process variable
+    if ((currentprocess ?? "").toUpperCase() != "SCRIBE_PROCESS" && (currentprocess ?? "").toUpperCase() != "SCRIBE_REVIEW_CORRECTION" && (currentprocess ?? "").toUpperCase() != "SCRIBE_CORRECTION" && (currentprocess ?? "").toUpperCase() != "DICTATION_REVIEW" && (currentprocess ?? "").toUpperCase() != "CODER_REVIEW_CORRECTION" && (currentprocess ?? "").toUpperCase() != "PROVIDER_PROCESS" && (currentprocess ?? "").toUpperCase() != "TECHNICIAN_PROCESS" && (currentprocess ?? "").toUpperCase() != "PROVIDER_REVIEW_CORRECTION") {//CMG Ancilliary
 
         $('#btnPrint')[0].disabled = true;
         $('#btnClearall')[0].disabled = true;
@@ -229,7 +230,7 @@ function LoadDocuments() {
         $("#chkAfterStudies")[0].disabled = true;
     }
 
-    if (currentprocess.toUpperCase() == "SCRIBE_PROCESS" || currentprocess.toUpperCase() == "SCRIBE_CORRECTION" || currentprocess.toUpperCase() == "SCRIBE_REVIEW_CORRECTION")
+    if ((currentprocess ?? "").toUpperCase() == "SCRIBE_PROCESS" || (currentprocess ?? "").toUpperCase() == "SCRIBE_CORRECTION" || (currentprocess ?? "").toUpperCase() == "SCRIBE_REVIEW_CORRECTION")
         $('#pnlElectronicSignature ').find(':input').prop('disabled', true);
     $('#btnSave')[0].disabled = true;
     window.parent.parent.parent.parent.theForm.ctl00_C5POBody_hdnIsSaveEnable.value = "false";
