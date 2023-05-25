@@ -1295,7 +1295,8 @@ function OnLoadGrid(lastindexfilename) {
             var objdata = $.parseJSON(data.d);
             var vdelete = "<td></td>";
             $("#tblFiles tr").empty();
-            if (objdata.FilesList.length > 0) {
+            //CAP-280 - Null handling if objdata is null or undefined
+            if (objdata?.FilesList?.length??0 > 0) {
                 for (var i = 0; i < objdata.FilesList.length; i++) {
 
                     if (objdata.IsDeleteEnable != null && objdata.IsDeleteEnable != "" && objdata.IsDeleteEnable == "true") {

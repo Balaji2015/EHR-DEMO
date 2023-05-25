@@ -551,6 +551,9 @@
                                                                         Width="200px" CssClass="Editabletxtbox">
                                                                     </telerik:RadComboBox>
                                                                 </td>
+                                                                <td class="style26">
+                                                                    <asp:CheckBox ID="checkkShowAllOwner" runat="server" OnCheckedChanged="checkkShowAllOwner_CheckedChanged" onclick="chkShowAllOwner();" Text="Show All" AutoPostBack="true" />
+                                                                </td>
                                                                 <td>
                                                                     <asp:Button ID="btnUpdateOwner" runat="server" Text="Update Owner" OnClientClick="return btnUpdateOwnerClick();" OnClick="btnUpdateOwner_Click" CssClass="aspresizedbluebutton" />
                                                                 </td>

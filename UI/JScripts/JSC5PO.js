@@ -48,7 +48,8 @@ function OpenModal(data) {
 
         var result = openModal("frmFindPatient.aspx", 251, 1200, obj, "ctl00_RadWindow2");
         var WindowName = $find('ctl00_RadWindow2');
-        WindowName.add_close(OnOpendPatientChartClick);
+        //CAP-278 - Prevent to call add_close method if windowname is null or undefined
+        WindowName?.add_close(OnOpendPatientChartClick);
     }
     else if (itemValue.toUpperCase() == "ORDER DASH BOARD") {
         StartLoadingImage();
@@ -148,7 +149,7 @@ function OpenModal(data) {
 
                                     var result = openModal("frmFindPatient.aspx", 251, 1200, obj, "ctl00_RadWindow2");
                                     var WindowName = $find('ctl00_RadWindow2');
-                                    WindowName.add_close(OnClientCloseManageProblemList);
+                                    WindowName?.add_close(OnClientCloseManageProblemList);
                                 }
                                 { sessionStorage.setItem('StartLoading', 'false'); StopLoadFromPatChart(); }
                             },
@@ -189,7 +190,7 @@ function OpenModal(data) {
 
                     var result = openModal("frmFindPatient.aspx", 251, 1200, obj, "ctl00_RadWindow2");
                     var WindowName = $find('ctl00_RadWindow2');
-                    WindowName.add_close(OnClientCloseManageProblemList);
+                    WindowName?.add_close(OnClientCloseManageProblemList);
                 }
             }
         }
@@ -210,7 +211,7 @@ function OpenModal(data) {
 
                 var result = openModal("frmFindPatient.aspx", 251, 1200, obj, "ctl00_RadWindow2");
                 var WindowName = $find('ctl00_RadWindow2');
-                WindowName.add_close(OnClientCloseManageProblemList);
+                WindowName?.add_close(OnClientCloseManageProblemList);
             }
         }
     }
@@ -232,7 +233,7 @@ function OpenModal(data) {
 
             var result = openModal("frmFindPatient.aspx", 251, 1200, obj, "ctl00_RadWindow2");
             var WindowName = $find('ctl00_RadWindow2');
-            WindowName.add_close(OnClientClosePotentialDiagnosis);
+            WindowName?.add_close(OnClientClosePotentialDiagnosis);
         }
     }
 
@@ -256,7 +257,7 @@ function OpenModal(data) {
         var result = openModal("frmBlockDays.aspx", 540, 1230, obj, "ctl00_ModalWindow");
         var WindowName = $find('ctl00_ModalWindow');
         WindowName.set_behaviors(-Telerik.Web.UI.WindowAutoSizeBehaviors.Close);
-        WindowName.add_close(function CloseBlockDays(oWindow, args) {
+        WindowName?.add_close(function CloseBlockDays(oWindow, args) {
             { sessionStorage.setItem('StartLoading', 'false'); StopLoadFromPatChart(); }
         });
     }
@@ -265,7 +266,7 @@ function OpenModal(data) {
 
             var Result = openModal("frmFindPatient.aspx", 251, 1200, null, 'ctl00_ModalWindow');
             var WindowName = $find('ctl00_ModalWindow');
-            WindowName.add_close(OnOpenViewTransactionClick);
+            WindowName?.add_close(OnOpenViewTransactionClick);
         }
         else {
 
@@ -294,7 +295,7 @@ function OpenModal(data) {
         obj.push("ScreenName=Menu Find Patient");
         var result = openModal("frmFindPatient.aspx", 251, 1200, obj, "ctl00_RadWindow2");
         var WindowName = $find('ctl00_RadWindow2');
-        WindowName.add_close(OnClientCloseFindPatient);
+        WindowName?.add_close(OnClientCloseFindPatient);
 
     }
     else if (itemValue == "PQRI") {
@@ -353,7 +354,7 @@ function OpenModal(data) {
         if (ID == undefined || ID == "") {
             var result = openModal("frmFindPatient.aspx", 251, 1200, obj, "ctl00_ModalWindow");
             var WindowName = $find('ctl00_ModalWindow');
-            WindowName.add_close(OnClientCloseMRE);
+            WindowName?.add_close(OnClientCloseMRE);
 
         }
         else {
@@ -433,7 +434,7 @@ function OpenModal(data) {
         if (ID == undefined || ID == "") {
             var result = openModal("frmFindPatient.aspx", 251, 1200, obj, "ctl00_PFSHWindow");
             var WindowName = $find('ctl00_PFSHWindow');
-            WindowName.add_close(OnClientClosePFSH);
+            WindowName?.add_close(OnClientClosePFSH);
         }
         else {
             if ($(top.window.document).find("iframe")[0].contentDocument.URL.indexOf("frmEncounter") > -1) {
@@ -464,7 +465,7 @@ function OpenModal(data) {
             var result = openModal("frmFindPatient.aspx", 251, 1200, obj, "ctl00_ModalWindow");
             EMRPhoneEnounter = "Yes";
             var WindowName = $find('ctl00_ModalWindow');
-            WindowName.add_close(OnClientClosePhoneEncounter);
+            WindowName?.add_close(OnClientClosePhoneEncounter);
         }
         else {
             obj.push("openingfrom=" + "Menu");
@@ -578,7 +579,7 @@ function OpenModal(data) {
             var Result = openModal("frmFindPatient.aspx", 251, 1200, null, 'ctl00_ModalWindow');
             var WindowName = $find('ctl00_ModalWindow');
 
-            WindowName.add_close(OnOpenPatientCommunicationClick);
+            WindowName?.add_close(OnOpenPatientCommunicationClick);
 
 
         }
@@ -587,7 +588,7 @@ function OpenModal(data) {
             obj.push("IsMYQ=" + "N");
             var result = openModal("frmPatientCommunication.aspx", 810, 1050, obj, "ctl00_ModalWindow");
             var WindowName = $find('ctl00_ModalWindow');
-            WindowName.add_close(OnClosePatientCommunicationClick);
+            WindowName?.add_close(OnClosePatientCommunicationClick);
             return false;
 
         }
@@ -611,7 +612,7 @@ function OpenModal(data) {
             var Result = openModal("frmFindPatient.aspx", 251, 1200, null, 'ctl00_ModalWindow');
             var WindowName = $find('ctl00_ModalWindow');
 
-            WindowName.add_close(OnOpenViewPatientTaskClick);
+            WindowName?.add_close(OnOpenViewPatientTaskClick);
 
         }
 
@@ -637,7 +638,7 @@ function OpenModal(data) {
         if (ID == undefined || ID == "") {
             var result = openModal("frmFindPatient.aspx", 251, 1200, obj, "ctl00_ModalWindow");
             var WindowName = $find('ctl00_ModalWindow');
-            WindowName.add_close(OnClientCloseACO);
+            WindowNam?.add_close(OnClientCloseACO);
         }
         else {
             $.ajax({
@@ -682,7 +683,7 @@ function OpenModal(data) {
             var Result = openModal("frmFindPatient.aspx", 251, 1200, null, 'ctl00_ModalWindow');
             var WindowName = $find('ctl00_ModalWindow');
 
-            WindowName.add_close(OpenPatientPayementsAccountClick);
+            WindowName?.add_close(OpenPatientPayementsAccountClick);
 
 
         }
@@ -694,7 +695,7 @@ function OpenModal(data) {
             var result = openModal("frmPatientPayment.aspx", 450, 1047, obj, "ctl00_ModalWindow");
 
             var WindowName = $find('ctl00_ModalWindow');
-            WindowName.add_close(OnClosePatientPayementsAccountClick);
+            WindowName?.add_close(OnClosePatientPayementsAccountClick);
             return false;
 
         }
@@ -706,7 +707,7 @@ function OpenModal(data) {
             var Result = openModal("frmFindPatient.aspx", 251, 1200, null, 'ctl00_ModalWindow');
             var WindowName = $find('ctl00_ModalWindow');
 
-            WindowName.add_close(OnOpenViewMessageClick);
+            WindowName?.add_close(OnOpenViewMessageClick);
 
         }
         else {

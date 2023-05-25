@@ -1,4 +1,4 @@
-﻿Atalasoft.Utils.InitClientScript(MyPageLoad);
+﻿//Atalasoft.Utils.InitClientScript(MyPageLoad);
 function MyPageLoad(){WebAnnotationViewer1.AnnotationClicked = OnAnnotationClicked;WebAnnotationViewer1.AnnotationChanged=OnAnnotationChanged;}
 function OnAnnotationChanged(e){};
 function OnAnnotationClicked(e){};

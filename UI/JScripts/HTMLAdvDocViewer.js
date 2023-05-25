@@ -1,7 +1,7 @@
-﻿Atalasoft.Utils.InitClientScript(myPageLoad);
+﻿//Atalasoft.Utils.InitClientScript(myPageLoad);
 
 function myPageLoad() {
- 
+   
     WebThumbnailViewer1.UrlChanged = OnThumbnailUrlChanged;
     WebThumbnailViewer1.ThumbnailDropServer = OnThumbnailsReordered;
     WebThumbnailViewer1.ThumbnailClicked = OnThumbnailClicked;

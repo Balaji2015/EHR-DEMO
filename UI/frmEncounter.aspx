@@ -86,10 +86,6 @@
             /*background-color: rgb(191, 219, 255);*/         
         }
 
-        /*.nav-tabs > li.active > a, .nav-tabs > li.active > a:focus, .nav-tabs > li.active > a:hover {
-            background-color: rgba(193, 194, 208, 0.98) !important;
-        }*/
-
         :focus {
             outline: none !important;
         }

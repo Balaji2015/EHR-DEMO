@@ -1,4 +1,4 @@
-﻿Atalasoft.Utils.InitClientScript(MyPageLoad);
+﻿//Atalasoft.Utils.InitClientScript(MyPageLoad);
 function mouseDown(n) { try { if (2 == event.button || 3 == event.button) return !1 } catch (n) { if (3 == n.which) return !1 } } document.oncontextmenu = function () { return !1 }, document.onmousedown = mouseDown;
 function EnableSave() { $find('btnSave').set_enabled(true); window.parent.parent.parent.parent.theForm.ctl00_C5POBody_hdnIsSaveEnable.value = "true"; localStorage.setItem("bSave", "false");}
 function MyPageLoad() { WebAnnotationViewer1.AnnotationClicked = OnAnnotationClicked; WebAnnotationViewer1.AnnotationChanged = OnAnnotationChanged;}
