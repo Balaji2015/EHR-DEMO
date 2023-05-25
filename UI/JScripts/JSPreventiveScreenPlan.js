@@ -1,4 +1,6 @@
 ﻿var first_time = null;
+//CAP-324 - Declare variable for lbl
+var lbl;
 function checkboxClicked() {
     var chk = document.getElementById("chkPreventivePlan");
     if (chk.checked) {
@@ -585,7 +587,8 @@ function PreventiveScreenPlanCopyPrevious() {
                                 break;
                             }
                         }
-                        if (lbl != "" && lbl.className != "lblversion") {
+                        //CAP-324 - Handle null & undefined value
+                        if ((lbl ?? "") != "" && lbl.className != "lblversion") {
                             lbl.parentNode.nextElementSibling.children[0].value = previouslst[i].Status;
                             if (previouslst[i].Status == "") {
                                 lbl.parentNode.nextElementSibling.children[0].selectedIndex = 0;
