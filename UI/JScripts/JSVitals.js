@@ -1667,33 +1667,36 @@ function CheckIsBMIIsValid() {
 
             var heightnotes = document.getElementById('txtNotesWeight_txtDLC').value.split(',');
             var resason = document.getElementById('hdnreason').value.split('~');
-            for (var i = 0; i < heightnotes.length; i++) {
+            for (var i = 0; i < heightnotes?.length; i++) {
                 for (var j = 0; j < resason.length; j++) {
-                    if (resason[j].split('|')[0].indexOf("WEIGHT") > -1 && resason[j].split('|')[1] == heightnotes[i].trim()) {
-                        if ((heightnotes.length == 0 && i == 0) || i == heightnotes.length - 1)
-                            document.getElementById('txtNotesWeight_txtDLC').value = document.getElementById('txtNotesWeight_txtDLC').value.replace(heightnotes[i].trim(), "");
+                    //CAP - 282 - Preventing undefined error.
+                    if (resason[j]?.split('|')[0]?.indexOf("WEIGHT") != undefined && resason[j]?.split('|')[1] != undefined && heightnotes[i] != undefined) {
+                        if (resason[j].split('|')[0].indexOf("WEIGHT") > -1 && resason[j].split('|')[1] == heightnotes[i].trim()) {
+                            if ((heightnotes.length == 0 && i == 0) || i == heightnotes.length - 1)
+                                document.getElementById('txtNotesWeight_txtDLC').value = document.getElementById('txtNotesWeight_txtDLC').value.replace(heightnotes[i].trim(), "");
 
-                        else
-                            document.getElementById('txtNotesWeight_txtDLC').value = document.getElementById('txtNotesWeight_txtDLC').value.replace(heightnotes[i].trim() + ", ", "");
-                         if (document.getElementById('txtNotesBMI_txtDLC').value != "" && document.getElementById('txtNotesBMI_txtDLC').value.indexOf(heightnotes[i].trim()) > -1 && document.getElementById('txtNotesHeight_txtDLC').value.indexOf(heightnotes[i].trim()) <= -1)
-                            document.getElementById('txtNotesBMI_txtDLC').value = document.getElementById('txtNotesBMI_txtDLC').value.replace(heightnotes[i].trim(), "");
+                            else
+                                document.getElementById('txtNotesWeight_txtDLC').value = document.getElementById('txtNotesWeight_txtDLC').value.replace(heightnotes[i].trim() + ", ", "");
+                            if (document.getElementById('txtNotesBMI_txtDLC').value != "" && document.getElementById('txtNotesBMI_txtDLC').value.indexOf(heightnotes[i].trim()) > -1 && document.getElementById('txtNotesHeight_txtDLC').value.indexOf(heightnotes[i].trim()) <= -1)
+                                document.getElementById('txtNotesBMI_txtDLC').value = document.getElementById('txtNotesBMI_txtDLC').value.replace(heightnotes[i].trim(), "");
 
-                         var notes = document.getElementById('txtNotesBMI_txtDLC').value.split(',');
-                         var ref = "";
-                         for (var i = 0; i < notes.length; i++) {
+                            var notes = document.getElementById('txtNotesBMI_txtDLC').value.split(',');
+                            var ref = "";
+                            for (var i = 0; i < notes.length; i++) {
 
-                             if (ref == "") {
-                                 if (notes[i].trim() != "")
-                                     ref = notes[i];
-                             }
-                             else {
-                                 if (notes[i].trim() != "")
-                                 ref = ref + "," + notes[i];
-                             }
+                                if (ref == "") {
+                                    if (notes[i].trim() != "")
+                                        ref = notes[i];
+                                }
+                                else {
+                                    if (notes[i].trim() != "")
+                                        ref = ref + "," + notes[i];
+                                }
 
-                         }
+                            }
 
-                         document.getElementById('txtNotesBMI_txtDLC').value = ref;
+                            document.getElementById('txtNotesBMI_txtDLC').value = ref;
+                        }
                     }
                 }
 
@@ -1706,32 +1709,35 @@ function CheckIsBMIIsValid() {
 
             var heightnotes = document.getElementById('txtNotesHeight_txtDLC').value.split(',');
             var resason = document.getElementById('hdnreason').value.split('~');
-            for (var i = 0; i < heightnotes.length; i++) {
+            for (var i = 0; i < heightnotes?.length; i++) {
                 for (var j = 0; j < resason.length; j++) {
-                    if (resason[j].split('|')[0].indexOf("HEIGHT") > -1 && resason[j].split('|')[1] == heightnotes[i].trim()) {
-                        if ((heightnotes.length == 0 && i == 0) || i == heightnotes.length - 1)
-                            document.getElementById('txtNotesHeight_txtDLC').value = document.getElementById('txtNotesHeight_txtDLC').value.replace(heightnotes[i].trim(), "");
-                        else
-                            document.getElementById('txtNotesHeight_txtDLC').value = document.getElementById('txtNotesHeight_txtDLC').value.replace(heightnotes[i].trim() + ", ", "");
-                        if (document.getElementById('txtNotesBMI_txtDLC').value != "" && document.getElementById('txtNotesBMI_txtDLC').value.indexOf(heightnotes[i].trim()) > -1 && document.getElementById('txtNotesHeight_txtDLC').value.indexOf(heightnotes[i].trim()) <= -1)
-                            document.getElementById('txtNotesBMI_txtDLC').value = document.getElementById('txtNotesBMI_txtDLC').value.replace(heightnotes[i].trim(), "");
+                    //CAP - 282 - Preventing undefined error.
+                    if (resason[j]?.split('|')[0]?.indexOf("HEIGHT") != undefined && resason[j]?.split('|')[1] != undefined && heightnotes[i] != undefined) {
+                        if (resason[j].split('|')[0].indexOf("HEIGHT") > -1 && resason[j].split('|')[1] == heightnotes[i].trim()) {
+                            if ((heightnotes.length == 0 && i == 0) || i == heightnotes.length - 1)
+                                document.getElementById('txtNotesHeight_txtDLC').value = document.getElementById('txtNotesHeight_txtDLC').value.replace(heightnotes[i].trim(), "");
+                            else
+                                document.getElementById('txtNotesHeight_txtDLC').value = document.getElementById('txtNotesHeight_txtDLC').value.replace(heightnotes[i].trim() + ", ", "");
+                            if (document.getElementById('txtNotesBMI_txtDLC').value != "" && document.getElementById('txtNotesBMI_txtDLC').value.indexOf(heightnotes[i].trim()) > -1 && document.getElementById('txtNotesHeight_txtDLC').value.indexOf(heightnotes[i].trim()) <= -1)
+                                document.getElementById('txtNotesBMI_txtDLC').value = document.getElementById('txtNotesBMI_txtDLC').value.replace(heightnotes[i].trim(), "");
 
-                        var notes = document.getElementById('txtNotesBMI_txtDLC').value.split(',');
-                        var ref = "";
-                        for (var i = 0; i < notes.length; i++) {
+                            var notes = document.getElementById('txtNotesBMI_txtDLC').value.split(',');
+                            var ref = "";
+                            for (var i = 0; i < notes.length; i++) {
 
-                            if (ref == "") {
-                                if (notes[i].trim() != "")
-                                    ref = notes[i];
+                                if (ref == "") {
+                                    if (notes[i].trim() != "")
+                                        ref = notes[i];
+                                }
+                                else {
+                                    if (notes[i].trim() != "")
+                                        ref = ref + "," + notes[i];
+                                }
+
                             }
-                            else {
-                                if (notes[i].trim() != "")
-                                    ref = ref + "," + notes[i];
-                            }
 
+                            document.getElementById('txtNotesBMI_txtDLC').value = ref;
                         }
-
-                        document.getElementById('txtNotesBMI_txtDLC').value = ref;
                     }
                 }
 
