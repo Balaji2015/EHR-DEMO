@@ -739,8 +739,7 @@ filter:progid:DXImageTransform.Microsoft.Blur(PixelRadius='4');
                     <div style="display:flex ; justify-content:center ; align-items:center ; height:100vh ">
                         <div style="margin:0; padding:0;font-family: sans-serif;color: #bfdbff;text-align: center;font-size: 150%;font-family: 'Helvetica Neue';">
                             <h1 style="font-weight: normal;margin: 0 auto; font-size: 100px; text-shadow: 0 2px 2px #000;">⚠</h1>
-                            <h4 style="font-weight: normal; margin:0px 10px ; ">Internet connection is not detected. Try the following.</h4>
-                            <div style="margin-bottom:10px;font-size:17px;">1. Checking the network cables, modem, and router <br />2. Reconnecting to Wi-Fi
+                            <h4 style="font-weight: normal; margin:0px 10px ; ">Internet connection lost. Please check your internet connection. You may need to retry your last action.</h4>
                             </div>
                         </div>
                     </div>
@@ -2157,10 +2156,25 @@ filter:progid:DXImageTransform.Microsoft.Blur(PixelRadius='4');
     </form>
     <script>
         //CAP-29 - Internet check event.
+        function formatAMPM(date) {
+            var hours = date.getHours();
+            var minutes = date.getMinutes();
+            var seconds = date.getSeconds();
+            var ampm = hours >= 12 ? 'PM' : 'AM';
+            hours = hours % 12;
+            hours = hours ? hours : 12; // the hour '0' should be '12'
+            minutes = minutes < 10 ? '0' + minutes : minutes;
+            seconds = seconds < 10 ? '0' + seconds : seconds;
+            var strTime = hours + ':' + minutes + ':' + seconds + ' ' + ampm;
+            return strTime;
+        }
+
+        var offlineTime = '';
         window.addEventListener("offline", (event) => {
             $("#divInternetLoader").css("display", "block");
             sessionStorage.setItem('StartLoading', 'false');
             StopLoadFromPatChart();
+            offlineTime = formatAMPM(new Date());
         });
 
         window.addEventListener("online", (event) => {
@@ -2168,8 +2182,9 @@ filter:progid:DXImageTransform.Microsoft.Blur(PixelRadius='4');
             sessionStorage.setItem('StartLoading', 'true');
             StartLoadFromPatChart();
 
+            var onlineTime = formatAMPM(new Date());
             var ErrorLogData = {
-                ErrorMessage: 'Internet connection is not detected.',
+                ErrorMessage: 'Internet connection is not detected between ' + offlineTime + ' and ' + onlineTime,
                 ErrorLineNo: '', //sErrorLineNo
                 ErrorColumnNo: '', //sErrorColumnNo
                 ErrorUrl: '', //sErrorUrl
