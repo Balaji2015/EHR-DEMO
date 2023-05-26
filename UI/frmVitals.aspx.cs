@@ -1423,10 +1423,12 @@ namespace Acurus.Capella.UI
                                         {
                                             injectingScript += "if(uservalue ==''){passedBoundryValue = true;}else{if( uservalue <=max && uservalue >=min){passedBoundryValue = true;}else{passedBoundryValue = false;}}";
                                         }
+
+                                        //CAP-273 - fix focus function focus options
                                         if (DsObj.Control_Name_Thin_Client.ToUpper() == "HBA1C")
-                                            injectingScript += "if(passedBoundryValue==false){ DisplayErrorMessage('200030','',min+'-'+max);document.getElementById('" + txtbox.ID + "').value='';document.getElementById('" + "HbA1C Status" + "').value='';document.getElementById('" + txtbox.ID + "').focus(true);return;}";
+                                            injectingScript += "if(passedBoundryValue==false){ DisplayErrorMessage('200030','',min+'-'+max);document.getElementById('" + txtbox.ID + "').value='';document.getElementById('" + "HbA1C Status" + "').value='';document.getElementById('" + txtbox.ID + "').focus({focusVisible:true});return;}";
                                         else
-                                            injectingScript += "if(passedBoundryValue==false){DisplayErrorMessage('200030','',min+'-'+max);document.getElementById('" + txtbox.ID + "').value='';document.getElementById('" + txtbox.ID + "').focus(true);return;}";
+                                            injectingScript += "if(passedBoundryValue==false){DisplayErrorMessage('200030','',min+'-'+max);document.getElementById('" + txtbox.ID + "').value='';document.getElementById('" + txtbox.ID + "').focus({focusVisible:true});return;}";
 
                                         if (DsObj.Control_Name_Thin_Client.ToUpper().Contains("HEIGHT") || DsObj.Control_Name_Thin_Client.ToUpper().Contains("WEIGHT"))
                                         {

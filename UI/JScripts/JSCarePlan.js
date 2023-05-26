@@ -256,7 +256,8 @@ function fun(agrulist) {
     var value = agrulist.split(",");
     if (value.length > 2) {
         control = value[5];
-        sugglistval = $("#" + control + ".actcmpt").val().trim();
+        //CAP-284 - Null handling for trim function
+        sugglistval = ($("#" + control + ".actcmpt").val()??"").trim();
         var selectedvalue = value[0] + ',' + value[1] + ',' + value[2] + ',' + value[3] + ',' + value[4];
         if (sugglistval != " " && sugglistval != "") {
             var subsugglistval = sugglistval;

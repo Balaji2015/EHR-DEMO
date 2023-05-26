@@ -3228,8 +3228,9 @@ function SortCol(Col, tdArray) {
                 var date = tdArray[i].innerText.split(' ')[0];
                 date = DateConversion(date);
                 if (tdArray[i].innerText.split(' ')[1] != undefined) {
-                    var t1 = tdArray[i].innerText.split(' ')[1].replace(':', '');
-                    var t2 = tdArray[i].innerText.split(' ')[2].replace('A', 0).replace('P', 1).replace('M', '');
+                    //CAP-281 - null handling in array
+                    var t1 = tdArray[i]?.innerText?.split(' ')[1]?.replace(':', '');
+                    var t2 = tdArray[i]?.innerText?.split(' ')[2]?.replace('A', 0).replace('P', 1).replace('M', '');
                     tdArray[i].innerText = date + "" + t1 + "" + t2;
                 }
                 else

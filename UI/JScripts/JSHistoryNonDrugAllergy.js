@@ -129,22 +129,23 @@ function enableField(chkValue) {
             var CControl = pcontrol.id.replace("chkYes", "chkNo");
             document.getElementById(CControl).checked = false;
             var TControl = pcontrol.id.replace("chkYes", "DLC");
-            document.getElementById(TControl.replace(" ", "") + "_txtDLC").disabled = false;
-            document.getElementById(TControl.replace(" ", "") + "_txtDLC").value = "";
-            document.getElementById(TControl.replace(" ", "") + "_pbDropdown").disabled = false;
-            $('#' + TControl.replace(" ", "") + "_pbDropdown").css({ 'background': '', 'opacity': '' });
-            $('#' + TControl.replace(" ", "") + "_pbDropdown").addClass('pbDropdownBackground');
-            $('#' + TControl.replace(" ", "") + "_pbDropdown").removeClass('pbDropdownBackgrounddisable');
+            //CAP-276 - replace all spaces in the tcontrol name
+            document.getElementById(TControl.replaceAll(" ", "") + "_txtDLC").disabled = false
+            document.getElementById(TControl.replaceAll(" ", "") + "_txtDLC").value = "";
+            document.getElementById(TControl.replaceAll(" ", "") + "_pbDropdown").disabled = false;
+            $('#' + TControl.replaceAll(" ", "") + "_pbDropdown").css({ 'background': '', 'opacity': '' });
+            $('#' + TControl.replaceAll(" ", "") + "_pbDropdown").addClass('pbDropdownBackground');
+            $('#' + TControl.replaceAll(" ", "") + "_pbDropdown").removeClass('pbDropdownBackgrounddisable');
         }
         else
         {
             var TControl = pcontrol.id.replace("chkYes", "DLC");
-            document.getElementById(TControl.replace(" ", "") + "_txtDLC").disabled = true;
-            document.getElementById(TControl.replace(" ", "") + "_txtDLC").value = "";
-            document.getElementById(TControl.replace(" ", "") + "_pbDropdown").disabled = true;
-            $('#' + TControl.replace(" ", "") + "_pbDropdown").css("background", "rgb(128, 128, 128) !important");
-            $('#' + TControl.replace(" ", "") + "_pbDropdown").addClass('pbDropdownBackgrounddisable');
-            $('#' + TControl.replace(" ", "") + "_pbDropdown").removeClass('pbDropdownBackground');
+            document.getElementById(TControl.replaceAll(" ", "") + "_txtDLC").disabled = true;
+            document.getElementById(TControl.replaceAll(" ", "") + "_txtDLC").value = "";
+            document.getElementById(TControl.replaceAll(" ", "") + "_pbDropdown").disabled = true;
+            $('#' + TControl.replaceAll(" ", "") + "_pbDropdown").css("background", "rgb(128, 128, 128) !important");
+            $('#' + TControl.replaceAll(" ", "") + "_pbDropdown").addClass('pbDropdownBackgrounddisable');
+            $('#' + TControl.replaceAll(" ", "") + "_pbDropdown").removeClass('pbDropdownBackground');
             var TNonDrugAllergy = TControl.replace(" ", "") + "_listDLC";
             document.getElementById(TNonDrugAllergy).style.display = "none";
             var listcontrolNonDrugAllergy = document.getElementById(TControl.replace(" ", "") + "_pbDropdown");
