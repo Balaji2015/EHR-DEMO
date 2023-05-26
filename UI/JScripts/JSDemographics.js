@@ -3421,7 +3421,8 @@ function OpenAddPhysician() {
     $(top.window.document).find("#TabPhysicianLibraryFrame")[0].contentDocument.location.href = sPath;
     $(top.window.document).find("#TabPhysicianLibrary").modal("show");
     $(top.window.document).find("#TabPhysicianLibrary").one("hidden.bs.modal", function (e) {
-        var PhyDetails = localStorage.getItem("PhyDetails");
+        //CAP-291 - Preventing undefined
+        var PhyDetails = localStorage.getItem("PhyDetails") ?? "";
         var PhyID = PhyDetails.split("&")[0];
         if (PhyID != "") {
             document.getElementById("ctl00_C5POBody_txtProviderSearch").attributes['data-phy-id'].value = PhyID;
