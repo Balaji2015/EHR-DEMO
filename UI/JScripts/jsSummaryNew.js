@@ -7,12 +7,20 @@
 }
 
 function SummaryHumanIDAlert(sMessage) {
-    document.getElementById('summarydiv').style.display = "block";
-    document.getElementById('divSummary').style.display = "none";
-    document.getElementById('xslFrame').style.display = "none";
+    //CAP-297 - Prevant undefind.
+    if (document.getElementById('summarydiv')?.style?.display != undefined) {
+        document.getElementById('summarydiv').style.display = "block";
+    }
+    if (document.getElementById('divSummary')?.style?.display != undefined) {
+        document.getElementById('divSummary').style.display = "none";
+    }
+    if (document.getElementById('xslFrame')?.style?.display != undefined) {
+        document.getElementById('xslFrame').style.display = "none";
+    }
     //GitLab #3933  
-    document.getElementById('summarydiv').innerText = sMessage + " is not found. Please contact support team to regenerate the XML.";
-    
+    if (document.getElementById('summarydiv')?.innerText != undefined) {
+        document.getElementById('summarydiv').innerText = sMessage + " is not found. Please contact support team to regenerate the XML.";
+    }
 }
 
 
