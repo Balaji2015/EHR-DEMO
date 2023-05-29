@@ -2817,11 +2817,16 @@ function RowClick() {
         }
     });
     $("#GeneralQTable tr").dblclick(function () {
-        if (event.target.tagName != 'TH' && document.getElementById("RefreshQ").innerText.indexOf("Refresh Encounters Q") > -1) {
-            { sessionStorage.setItem('StartLoading', 'true'); StartLoadFromPatChart(); }
-            $(this)[0].children[0].children[0].checked = true;
-            checkboxclick($(this)[0].children[0].children[0]);
-            $('#Processenc').click();
+        //CAP-346 - Prevent Undefined.
+        if (event?.target?.tagName != undefined && document.getElementById("RefreshQ")?.innerText?.indexOf("Refresh Encounters Q") != undefined) {
+            if (event.target.tagName != 'TH' && document.getElementById("RefreshQ").innerText.indexOf("Refresh Encounters Q") > -1) {
+                { sessionStorage.setItem('StartLoading', 'true'); StartLoadFromPatChart(); }
+                if ($(this)[0]?.children[0]?.children[0]?.checked != undefined) {
+                    $(this)[0].children[0].children[0].checked = true;
+                    checkboxclick($(this)[0].children[0].children[0]);
+                }
+                $('#Processenc').click();
+            }
         }
     });
     $("#GeneralQTable tr").click(function () {
