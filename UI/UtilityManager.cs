@@ -38,7 +38,7 @@ namespace Acurus.Capella.UI
     {
         public static ulong ulMyFindPatientID;
         public const ulong CASH_CARRIER_ID = 41;
-        public static XslCompiledTransform objXSLTransform = new XslCompiledTransform();
+   
         //BugID:53765
         //*Commented for UtilityManager CleanUp*
         /*public static ulong ulAppointmentID;
@@ -5768,71 +5768,74 @@ namespace Acurus.Capella.UI
         //Jira #CAP-344
         public static string PrintSummaryUsingXSLT(string strTransformSource, XmlReader xmlr)
         {
-            objXSLTransform = new XslCompiledTransform();
             StringBuilder htmlOutput = new StringBuilder();
-            TextWriter htmlWriter = new StringWriter(htmlOutput);
-            XsltSettings settingsxsl = new XsltSettings(true, false);
-            objXSLTransform.Load(strTransformSource, settingsxsl, new XmlUrlResolver());
-            objXSLTransform.Transform(xmlr, null, htmlWriter);
+            using (TextWriter htmlWriter = new StringWriter(htmlOutput))
+            {
+                XslCompiledTransform objXSLTransform = new XslCompiledTransform();
+                XsltSettings settingsxsl = new XsltSettings(true, false);
+                objXSLTransform.Load(strTransformSource, settingsxsl, new XmlUrlResolver());
+                objXSLTransform.Transform(xmlr, null, htmlWriter);
 
-            return htmlWriter.ToString();
+                return htmlWriter.ToString();
+            }
         }
         //Jira #CAP-344
         public static void PrintPDFUsingXSLT(string sXMLEncounterDoc, string sXMLHumanDoc, string xsltFile, string outputDocument, string sGroup_ID_Log)
         {
-            objXSLTransform = new XslCompiledTransform();
-            DataSet ds;
-            XmlDataDocument xmlDoc;
-            XslCompiledTransform xslTran;
-            XmlElement root;
-            XPathNavigator nav;
-            XmlTextWriter writer;
-            XsltSettings settings = new XsltSettings(true, false);
-
-            ds = new DataSet();
-            //ds.ReadXml(xmlDataFile);
-            //ds.ReadXml(new XmlTextReader(new StringReader(sXMLEncounterDoc)));
-            StringBuilder sb = new StringBuilder();
-            sb.Append(sXMLEncounterDoc.ToString().Replace("</notes>", "").Replace("</Modules>", ""));
-            if (sXMLHumanDoc != "" && sXMLHumanDoc != string.Empty)
-            {
-                string SUB = sXMLHumanDoc.ToString().Substring(0, sXMLHumanDoc.LastIndexOf("?>") + 2);
-
-                sb.Append(sXMLHumanDoc.ToString().Replace(SUB, "").Replace("<notes>", "").Replace("<Modules>", ""));
-            }
-            ds.ReadXml(new XmlTextReader(new StringReader(sb.ToString())));
-
-            xmlDoc = new XmlDataDocument(ds);
-            // xslTran.Load(xsltFile);
-            if (sGroup_ID_Log != null && sGroup_ID_Log != string.Empty)
-            {
-                UtilityManager.inserttologgingtable(ClientSession.EncounterId.ToString(), ClientSession.HumanId.ToString(), ClientSession.UserName, ClientSession.PhysicianId.ToString(), "Summary Consultation PDF XSLT Load : Start", DateTime.Now, sGroup_ID_Log, "frmSummaryNew");
-
-            }
-            objXSLTransform.Load(xsltFile, settings, new XmlUrlResolver());
-            if (sGroup_ID_Log != null && sGroup_ID_Log != string.Empty)
-            {
-                UtilityManager.inserttologgingtable(ClientSession.EncounterId.ToString(), ClientSession.HumanId.ToString(), ClientSession.UserName, ClientSession.PhysicianId.ToString(), "Summary Consultation PDF XSLT Load : End", DateTime.Now, sGroup_ID_Log, "frmSummaryNew");
-            }
-            root = xmlDoc.DocumentElement;
-
-
-            nav = root.CreateNavigator();
             if (File.Exists(outputDocument))
             {
                 File.Delete(outputDocument);
             }
-            writer = new XmlTextWriter(outputDocument, System.Text.Encoding.UTF8);
-            objXSLTransform.Transform(nav, writer);
-            writer.Close();
-            writer = null;
-            nav = null;
-            root = null;
-            xmlDoc = null;
-            ds = null;
+            using (XmlTextWriter writer = new XmlTextWriter(outputDocument, System.Text.Encoding.UTF8))
+            {
+                XslCompiledTransform objXSLTransform = new XslCompiledTransform();
+                DataSet ds;
+                XmlDataDocument xmlDoc;
+                XslCompiledTransform xslTran;
+                XmlElement root;
+                XPathNavigator nav;
+                //XmlTextWriter writer;
+                XsltSettings settings = new XsltSettings(true, false);
+
+                ds = new DataSet();
+                //ds.ReadXml(xmlDataFile);
+                //ds.ReadXml(new XmlTextReader(new StringReader(sXMLEncounterDoc)));
+                StringBuilder sb = new StringBuilder();
+                sb.Append(sXMLEncounterDoc.ToString().Replace("</notes>", "").Replace("</Modules>", ""));
+                if (sXMLHumanDoc != "" && sXMLHumanDoc != string.Empty)
+                {
+                    string SUB = sXMLHumanDoc.ToString().Substring(0, sXMLHumanDoc.LastIndexOf("?>") + 2);
+
+                    sb.Append(sXMLHumanDoc.ToString().Replace(SUB, "").Replace("<notes>", "").Replace("<Modules>", ""));
+                }
+                ds.ReadXml(new XmlTextReader(new StringReader(sb.ToString())));
+
+                xmlDoc = new XmlDataDocument(ds);
+                // xslTran.Load(xsltFile);
+                if (sGroup_ID_Log != null && sGroup_ID_Log != string.Empty)
+                {
+                    UtilityManager.inserttologgingtable(ClientSession.EncounterId.ToString(), ClientSession.HumanId.ToString(), ClientSession.UserName, ClientSession.PhysicianId.ToString(), "Summary Consultation PDF XSLT Load : Start", DateTime.Now, sGroup_ID_Log, "frmSummaryNew");
+
+                }
+                objXSLTransform.Load(xsltFile, settings, new XmlUrlResolver());
+                if (sGroup_ID_Log != null && sGroup_ID_Log != string.Empty)
+                {
+                    UtilityManager.inserttologgingtable(ClientSession.EncounterId.ToString(), ClientSession.HumanId.ToString(), ClientSession.UserName, ClientSession.PhysicianId.ToString(), "Summary Consultation PDF XSLT Load : End", DateTime.Now, sGroup_ID_Log, "frmSummaryNew");
+                }
+                root = xmlDoc.DocumentElement;
+
+
+                nav = root.CreateNavigator();
+                //writer = new XmlTextWriter(outputDocument, System.Text.Encoding.UTF8);
+                objXSLTransform.Transform(nav, writer);
+                writer.Close();
+                //writer = null;
+                nav = null;
+                root = null;
+                xmlDoc = null;
+                ds = null;
+            }
         }
-
-
     }
 }
 
