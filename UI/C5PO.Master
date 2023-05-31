@@ -2199,17 +2199,17 @@ filter:progid:DXImageTransform.Microsoft.Blur(PixelRadius='4');
                 contentType: "application/json; charset=utf-8",
                 success: function (data) {
                     { sessionStorage.setItem('StartLoading', 'false'); StopLoadFromPatChart(); }
-                    if (isAlert == true) {
-                        var errormeg = data.d;
-                        if (errormeg[0] == '"' && errormeg[(errormeg.length) - 1] == '"') {
-                            errormeg = errormeg.slice(1, -1);
-                        }
-                        $(window.top.document).find('#pErrorMsg').html("Error : " + errormeg);
-                        $(window.top.document).find('#divErrorMessage').modal({ backdrop: 'static', keyboard: false }, 'show');
-                        $(window.top.document).find('#btnErrorOk').css("display", "none");
-                        $(window.top.document).find('#btnErrorCancel').css("display", "none");
-                        $(window.top.document).find('#btnErrorOkCancel').css("display", "");
-                    }
+                    //if (isAlert == true) {
+                    //    var errormeg = data.d;
+                    //    if (errormeg[0] == '"' && errormeg[(errormeg.length) - 1] == '"') {
+                    //        errormeg = errormeg.slice(1, -1);
+                    //    }
+                    //    $(window.top.document).find('#pErrorMsg').html("Error : " + errormeg);
+                    //    $(window.top.document).find('#divErrorMessage').modal({ backdrop: 'static', keyboard: false }, 'show');
+                    //    $(window.top.document).find('#btnErrorOk').css("display", "none");
+                    //    $(window.top.document).find('#btnErrorCancel').css("display", "none");
+                    //    $(window.top.document).find('#btnErrorOkCancel').css("display", "");
+                    //}
                 },
                 error: function OnError(xhr) {
                     { sessionStorage.setItem('StartLoading', 'false'); StopLoadFromPatChart(); }
