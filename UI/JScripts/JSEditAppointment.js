@@ -14,6 +14,15 @@ function chkchange()
         document.getElementById("hdbselref").value = 'N';
 }
 $(document).ready(function () {
+
+    //Jira #CAP-366 - Avoid Save while pressing the Enter Key
+    $("#dtpStartTime_dateInput").keydown(function (event) {
+        if (event.keyCode == 13 && event.target.id.indexOf("dtpStartTime") > -1) {
+            event.preventDefault();
+            return false;
+        }
+    });
+
     var curleft = curtop = 0;
     var current_element = document.getElementById('txtPatientSearch');
     if (current_element == null) {
