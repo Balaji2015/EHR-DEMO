@@ -134,8 +134,8 @@ function CheckMandatory(txtbx) {
     if ((document.getElementById('txtUserName').value.indexOf('!') != -1) || (document.getElementById('txtUserName').value.indexOf('{') != -1) || (document.getElementById('txtUserName').value.indexOf('}') != -1) || (document.getElementById('txtUserName').value.indexOf('\\') != -1) || (document.getElementById('txtUserName').value.indexOf('[') != -1) || (document.getElementById('txtUserName').value.indexOf(']') != -1) || (document.getElementById('txtUserName').value.indexOf('<') != -1) || (document.getElementById('txtUserName').value.indexOf('>') != -1) || (document.getElementById('txtUserName').value.indexOf('?') != -1) || (document.getElementById('txtUserName').value.indexOf(';') != -1) || (document.getElementById('txtUserName').value.indexOf(',') != -1) || (document.getElementById('txtUserName').value.indexOf('|') != -1) || (document.getElementById('txtUserName').value.indexOf(':') != -1) || (document.getElementById('txtUserName').value.indexOf('/') != -1)) {
         document.getElementById('hdnOkButton').value = "false";
         DisplayErrorMessage('000019');
-        $find('txtUserName').clear();
-        $find('txtPassword').clear();
+        document.getElementById('txtUserName').clear();
+        document.getElementById('txtPassword').clear();
         document.getElementById('txtUserName').focus();
         
         return false;
@@ -143,8 +143,9 @@ function CheckMandatory(txtbx) {
     else if ((document.getElementById('txtPassword').value.indexOf('{') != -1) || (document.getElementById('txtPassword').value.indexOf('}') != -1) || (document.getElementById('txtPassword').value.indexOf('\\') != -1) || (document.getElementById('txtPassword').value.indexOf('[') != -1) || (document.getElementById('txtPassword').value.indexOf(']') != -1) || (document.getElementById('txtPassword').value.indexOf('<') != -1) || (document.getElementById('txtPassword').value.indexOf('>') != -1) || (document.getElementById('txtPassword').value.indexOf('?') != -1) || (document.getElementById('txtPassword').value.indexOf(';') != -1) || (document.getElementById('txtPassword').value.indexOf(',') != -1) || (document.getElementById('txtPassword').value.indexOf('|') != -1) || (document.getElementById('txtPassword').value.indexOf(':') != -1) || (document.getElementById('txtPassword').value.indexOf('/') != -1)) {
         document.getElementById('hdnOkButton').value = "false";
         DisplayErrorMessage('000019');
-        $find('txtPassword').clear();
-        $find('txtUserName').clear();
+        //CAP-325 - remove $find and add document.getElementById
+        document.getElementById('txtPassword').clear();
+        document.getElementById('txtUserName').clear();
         document.getElementById('txtUserName').focus();
         return false;
     }

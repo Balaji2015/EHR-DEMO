@@ -3230,6 +3230,8 @@ function redirectToCCEprescription() {
     var value = window.location.search.toString();
     var HumanID = "";
     var enc_id = sessionStorage.getItem("EncId_PatSummaryBar");
+    //CAP-300 & CAP-326 - Declare variable.
+    var openingFrom = "";
     if (value != "" && value.indexOf('&') > -1) {
         HumanID = value.split('&')[0].split('=')[1];
         openingFrom = value.split('&')[1].split('=')[1];
