@@ -226,7 +226,13 @@ $(document).ready(function () {
                 sessionStorage.setItem("EncId_PatSummaryBar", queryString.split("&")[3].split("=")[1]);
                 sessionStorage.setItem("Enc_DOS", queryString.split("&")[4].split("=")[1].replace("%20", " ").replace("%20", " "));
             }
-
+            //Jira #CAP-337
+            if (queryString.split("&")[3] != undefined && queryString.split("&")[3].indexOf("EncounterID") > -1) {
+                sessionStorage.setItem("EncId_PatSummaryBar", queryString.split("&")[3].split("=")[1]);
+            }
+            if (queryString.split("&")[2] != undefined && queryString.split("&")[2].indexOf("EncounterDate") > -1) {
+                sessionStorage.setItem("Enc_DOS", queryString.split("&")[2].split("=")[1].replace("T", " ").replace("%20", " ").replace("%20", " "));
+            }
 
         }
         else

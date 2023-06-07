@@ -594,11 +594,12 @@ function btnClose_Clicked(sender, args) {
                     window.parent.parent.parent.parent.theForm.ctl00_C5POBody_hdnIsSaveEnable.value = "false";
                     $(dvdialog).dialog("close");
                     self.close();
-                    if (window.parent.parent.location.href.indexOf('Encounter') <0) {
+                    if (window.parent.parent.location.href.indexOf('Encounter') < 0) {
                         return false;
                     }
-                    else
+                    else {
                         window.parent.parent.location.reload();
+                    }
                 },
                 "Cancel": function () {
                     sessionStorage.setItem("AutoSave_OrderMenu", "false");
@@ -618,8 +619,9 @@ function btnClose_Clicked(sender, args) {
         if (window.parent.parent.location.href.indexOf('Encounter') < 0) {
             return false;
         }
-        else
+        else {
             window.parent.parent.location.reload();
+        }
     }
 
 }

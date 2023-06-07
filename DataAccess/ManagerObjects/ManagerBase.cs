@@ -2397,6 +2397,62 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
             #endregion
         }
 
+        //Jira CAP-333 - New Method
+        public void WebservicetriggerUsingDirectTransaction()
+        {
+            #region AuditLogEntry
+            string Is_Audit_log = "N";
+            //Added by Jisha for Delete AuditLog 
+            if (System.Configuration.ConfigurationManager.AppSettings["Is_Audit_Log"] != null)
+                Is_Audit_log = System.Configuration.ConfigurationManager.AppSettings["Is_Audit_Log"];
+
+            if (Is_Audit_log == "Y")
+            {
+                if (NHibernateSessionUtility.Instance.MyAuditLogList.Count > 0)
+                {
+                    string Project_Name = string.Empty;
+                    if (System.Configuration.ConfigurationManager.AppSettings["ProjectName"] != null)
+                        Project_Name = System.Configuration.ConfigurationManager.AppSettings["ProjectName"];
+                    string HumanID;
+                    string Entity_Name;
+                    string Entity_ID;
+                    string Attribute_Name;
+                    string OldValue;
+                    string NewValue;
+                    string TransactionType;
+                    string TransactionBy;
+                    string Transaction_Date_Time;
+                    if (NHibernateSessionUtility.Instance.MyAuditLogList != null && NHibernateSessionUtility.Instance.MyAuditLogList.Count > 0)
+                    {
+                        string[] lstHumanID = NHibernateSessionUtility.Instance.MyAuditLogList.Select(a => a.Human_ID.ToString()).ToArray();
+                        HumanID = string.Join("|~|", lstHumanID.Select(x => x.ToString()).ToArray());
+                        string[] lstEntity_Name = NHibernateSessionUtility.Instance.MyAuditLogList.Select(a => a.Entity_Name.ToString()).ToArray();
+                        Entity_Name = string.Join("|~|", lstEntity_Name);
+                        string[] lstEntity_ID = NHibernateSessionUtility.Instance.MyAuditLogList.Select(a => a.Entity_Id.ToString()).ToArray();
+                        Entity_ID = string.Join("|~|", lstEntity_ID);
+                        string[] lstAttribute_Name = NHibernateSessionUtility.Instance.MyAuditLogList.Select(a => a.Attribute.ToString()).ToArray();
+                        Attribute_Name = string.Join("|~|", lstAttribute_Name);
+                        string[] lstOldValue = NHibernateSessionUtility.Instance.MyAuditLogList.Select(a => a.Old_Value.ToString()).ToArray();
+                        OldValue = string.Join("|~|", lstOldValue);
+                        string[] lstNewValue = NHibernateSessionUtility.Instance.MyAuditLogList.Select(a => a.New_Value.ToString()).ToArray();
+                        NewValue = string.Join("|~|", lstNewValue);
+                        string[] lstTransactionType = NHibernateSessionUtility.Instance.MyAuditLogList.Select(a => a.Transaction_Type.ToString()).ToArray();
+                        TransactionType = string.Join("|~|", lstTransactionType);
+                        string[] lstTransactionBy = NHibernateSessionUtility.Instance.MyAuditLogList.Select(a => a.Transaction_By.ToString()).ToArray();
+                        TransactionBy = string.Join("|~|", lstTransactionBy);
+                        string[] lstTransaction_Date_Time = NHibernateSessionUtility.Instance.MyAuditLogList.Select(a => a.Transaction_Date_And_Time.ToString()).ToArray();
+                        Transaction_Date_Time = string.Join("|~|", lstTransaction_Date_Time);
+                        TriggerService(Project_Name, HumanID, Entity_Name, Entity_ID
+                                       , Attribute_Name, OldValue, NewValue, TransactionType, TransactionBy, Transaction_Date_Time);
+                    }
+                    NHibernateSessionUtility.Instance.MyAuditLogList.Clear();
+                }
+
+            }
+
+            #endregion
+        }
+
         public void WriteBlob(ulong EntityID, XmlDocument xmlDoc, ISession MySession, IList<T> saveList, IList<T> updateList, IList<T> deleteList, GenerateXml objGenerateXml, Boolean bIsEncounterXMLCreate)
         {
             if (EntityID == 0)
