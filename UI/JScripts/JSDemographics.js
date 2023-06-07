@@ -2245,26 +2245,27 @@ function btnaddinsured(e) {
         vRowID = "";
     }
     for (var k = 0; k < $('#tbodupolicyinfo  tr').length; k++) {
-
-        if (vRowID != $('#tbodupolicyinfo tr')[k].getElementsByTagName('td')[11].innerText) {
-            if (RelationVal.options[RelationVal.selectedIndex].text == "SELF") {
-                //Jira #CAP-141 - Remove Relationship to Patient from the Matching criteria && Jira #CAP-146 - Able to add duplicate insurance
-                //if ($('#tbodupolicyinfo tr')[k].getElementsByTagName('td')[2].innerText == planname.trim() && $('#tbodupolicyinfo tr')[k].getElementsByTagName('td')[3].innerText == PolicyVal.trim() && $('#tbodupolicyinfo tr')[k].getElementsByTagName('td')[4].innerText == RelationVal.options[RelationVal.selectedIndex].text) {
-                if ($('#tbodupolicyinfo tr')[k].getElementsByTagName('td')[2].innerText.toUpperCase() == planname.trim().toUpperCase() && $('#tbodupolicyinfo tr')[k].getElementsByTagName('td')[3].innerText.toUpperCase() == PolicyVal.trim().toUpperCase() && $('#tbodupolicyinfo tr')[k].getElementsByTagName('td')[14].innerText.trim() == insurehumanid.trim()) {
-                    DisplayErrorMessage('350014');
-                    return false;
+        //Jira #Cap-264 - If the Payer not found plan is added with 2 different "specify other" it should not be considered as duplicate
+         if (document.getElementById("ctl00_C5POBody_txtPlanSearch").value != "PAYER NOT FOUND") {
+            if (vRowID != $('#tbodupolicyinfo tr')[k].getElementsByTagName('td')[11].innerText) {
+                if (RelationVal.options[RelationVal.selectedIndex].text == "SELF") {
+                    //Jira #CAP-141 - Remove Relationship to Patient from the Matching criteria && Jira #CAP-146 - Able to add duplicate insurance
+                    //if ($('#tbodupolicyinfo tr')[k].getElementsByTagName('td')[2].innerText == planname.trim() && $('#tbodupolicyinfo tr')[k].getElementsByTagName('td')[3].innerText == PolicyVal.trim() && $('#tbodupolicyinfo tr')[k].getElementsByTagName('td')[4].innerText == RelationVal.options[RelationVal.selectedIndex].text) {
+                    if ($('#tbodupolicyinfo tr')[k].getElementsByTagName('td')[2].innerText.toUpperCase() == planname.trim().toUpperCase() && $('#tbodupolicyinfo tr')[k].getElementsByTagName('td')[3].innerText.toUpperCase() == PolicyVal.trim().toUpperCase() && $('#tbodupolicyinfo tr')[k].getElementsByTagName('td')[14].innerText.trim() == insurehumanid.trim()) {
+                        DisplayErrorMessage('350014');
+                        return false;
+                    }
                 }
-            }
-            else {
-                //Jira #CAP-141 - Remove Relationship to Patient from the Matching criteria  && Jira #CAP-146 - Able to add duplicate insurance
-                //if ($('#tbodupolicyinfo tr')[k].getElementsByTagName('td')[2].innerText == planname.trim() && $('#tbodupolicyinfo tr')[k].getElementsByTagName('td')[3].innerText == PolicyVal.trim() && $('#tbodupolicyinfo tr')[k].getElementsByTagName('td')[4].innerText == RelationVal.options[RelationVal.selectedIndex].text && $('#tbodupolicyinfo tr')[k].getElementsByTagName('td')[5].innerText == insurename.trim()) {
-                if ($('#tbodupolicyinfo tr')[k].getElementsByTagName('td')[2].innerText.toUpperCase() == planname.trim().toUpperCase() && $('#tbodupolicyinfo tr')[k].getElementsByTagName('td')[3].innerText.toUpperCase() == PolicyVal.trim().toUpperCase() && $('#tbodupolicyinfo tr')[k].getElementsByTagName('td')[14].innerText.trim() == insurehumanid.trim()) {
-                    DisplayErrorMessage('350014');
-                    return false;
+                else {
+                    //Jira #CAP-141 - Remove Relationship to Patient from the Matching criteria  && Jira #CAP-146 - Able to add duplicate insurance
+                    //if ($('#tbodupolicyinfo tr')[k].getElementsByTagName('td')[2].innerText == planname.trim() && $('#tbodupolicyinfo tr')[k].getElementsByTagName('td')[3].innerText == PolicyVal.trim() && $('#tbodupolicyinfo tr')[k].getElementsByTagName('td')[4].innerText == RelationVal.options[RelationVal.selectedIndex].text && $('#tbodupolicyinfo tr')[k].getElementsByTagName('td')[5].innerText == insurename.trim()) {
+                    if ($('#tbodupolicyinfo tr')[k].getElementsByTagName('td')[2].innerText.toUpperCase() == planname.trim().toUpperCase() && $('#tbodupolicyinfo tr')[k].getElementsByTagName('td')[3].innerText.toUpperCase() == PolicyVal.trim().toUpperCase() && $('#tbodupolicyinfo tr')[k].getElementsByTagName('td')[14].innerText.trim() == insurehumanid.trim()) {
+                        DisplayErrorMessage('350014');
+                        return false;
+                    }
                 }
             }
         }
-
     }
 
     var id = "0";
