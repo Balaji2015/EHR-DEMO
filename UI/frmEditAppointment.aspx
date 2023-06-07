@@ -448,7 +448,7 @@
                                     </td>
                                     <td class="style33">
                                         <telerik:RadTimePicker ID="dtpStartTime" runat="server" Culture="English (United States)"
-                                            Height="25px" onkeypress="EnableSaveButton(this);" Skin="Web20" Width="160px" CssClass="Editabletxtbox">
+                                            Height="25px" onkeypress="EnableSaveButton(this);" Skin="Web20" Width="160px"  CssClass="Editabletxtbox">
                                             <TimePopupButton CssClass="" HoverImageUrl="" ImageUrl="" />
                                             <TimeView CellSpacing="-1" Columns="7" Interval="00:10:00" TimeFormat="HH:mm">
                                             </TimeView>

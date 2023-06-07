@@ -1607,7 +1607,8 @@ namespace Acurus.Capella.UI.WebServices
             {
                 foreach (PastMedicalHistory objPMH in CurrentPastMedList)
                 {
-                    var obj = (from sList in SavedPastMedicalList where sList.Past_Medical_Info.ToUpper() == objPMH.Past_Medical_Info.ToUpper() select sList).ToList<PastMedicalHistory>();
+                    //Jira Cap-348 - Index Out of Range error message when Provider adds Arthropathy in PMH
+                    var obj = (from sList in SavedPastMedicalList where sList.Past_Medical_Info.Trim().ToUpper() == objPMH.Past_Medical_Info.Trim().ToUpper() select sList).ToList<PastMedicalHistory>();
                     if (obj.Count > 0)//Update
                     {
                         PastMedicalHistory objPast = new PastMedicalHistory();
@@ -1635,7 +1636,10 @@ namespace Acurus.Capella.UI.WebServices
                 if (SavedPastMedicalList.Count > 0 && SavedPastMedicalList[0].Encounter_Id == ClientSession.EncounterId)
                 {
                     if (CurrentPastMedList.Count > 0)
-                        DeleteList = (SavedPastMedicalList.Where(p => !CurrentPastMedList.Any(p2 => p2.Past_Medical_Info == p.Past_Medical_Info))).ToList<PastMedicalHistory>();
+                    {
+                        //Jira Cap-348 - Index Out of Range error message when Provider adds Arthropathy in PMH
+                        DeleteList = (SavedPastMedicalList.Where(p => !CurrentPastMedList.Any(p2 => p2.Past_Medical_Info.Trim().ToUpper() == p.Past_Medical_Info.Trim().ToUpper()))).ToList<PastMedicalHistory>();
+                    }
                     else
                         DeleteList = SavedPastMedicalList;
                 }
@@ -1770,7 +1774,10 @@ namespace Acurus.Capella.UI.WebServices
                 {
                     CurrentPastMedListMaster = (IList<PastMedicalHistoryMaster>)HttpContext.Current.Session["PastMedicalMaster"];
                     if (CurrentPastMedListMaster.Count > 0)
-                        DeleteListMasterTemp = (CurrentPastMedListMaster.Where(p => !SaveList.Any(p2 => p2.Past_Medical_Info == p.Past_Medical_Info))).ToList<PastMedicalHistoryMaster>();
+                    {
+                        //Jira Cap-348 - Index Out of Range error message when Provider adds Arthropathy in PMH
+                        DeleteListMasterTemp = (CurrentPastMedListMaster.Where(p => !SaveList.Any(p2 => p2.Past_Medical_Info.Trim().ToUpper() == p.Past_Medical_Info.Trim().ToUpper()))).ToList<PastMedicalHistoryMaster>();
+                    }
                 }
             }
 
@@ -1996,6 +2003,7 @@ namespace Acurus.Capella.UI.WebServices
                 foreach (PastMedicalHistory objpmh in SaveList)
                 {
                     PastMedicalHistoryMaster objAddPMHMaster = new PastMedicalHistoryMaster();
+                    //Jira Cap-348 - Index Out of Range error message when Provider adds Arthropathy in PMH
                     lstPMHmasterTemp = lstPastHisMaster.Where(a => a.Past_Medical_Info.Trim().ToUpper() == objpmh.Past_Medical_Info.Trim().ToUpper() && a.Is_Deleted == "N").ToList<PastMedicalHistoryMaster>();
                     if (lstPMHmasterTemp.Count() == 0)
                     {
@@ -2016,7 +2024,8 @@ namespace Acurus.Capella.UI.WebServices
                     else
                     {
                         IList<PastMedicalHistoryMaster> tempSessionData = new List<PastMedicalHistoryMaster>();
-                        tempSessionData = lstPastHisMaster.Where(a => a.Past_Medical_Info == objpmh.Past_Medical_Info && a.Is_Deleted == "N").ToList();
+                        //Jira Cap-348 - Index Out of Range error message when Provider adds Arthropathy in PMH
+                        tempSessionData = lstPastHisMaster.Where(a => a.Past_Medical_Info.Trim().ToUpper() == objpmh.Past_Medical_Info.Trim().ToUpper() && a.Is_Deleted == "N").ToList();
                         foreach (PastMedicalHistoryMaster temp in tempSessionData)
                         {
                             objAddPMHMaster = temp;
@@ -2038,7 +2047,8 @@ namespace Acurus.Capella.UI.WebServices
                 {
                     PastMedicalHistoryMaster objAddPMHMaster = new PastMedicalHistoryMaster();
                     IList<PastMedicalHistoryMaster> tempSessionData = new List<PastMedicalHistoryMaster>();
-                    tempSessionData = lstPastHisMaster.Where(a => a.Past_Medical_Info == objpmhUpdate.Past_Medical_Info && a.Is_Deleted == "N").ToList();
+                    //Jira Cap-348 - Index Out of Range error message when Provider adds Arthropathy in PMH
+                    tempSessionData = lstPastHisMaster.Where(a => a.Past_Medical_Info.Trim().ToUpper() == objpmhUpdate.Past_Medical_Info.Trim().ToUpper() && a.Is_Deleted == "N").ToList();
                     foreach (PastMedicalHistoryMaster temp in tempSessionData)
                     {
                         objAddPMHMaster = temp;
@@ -2065,7 +2075,8 @@ namespace Acurus.Capella.UI.WebServices
                     {
                         PastMedicalHistoryMaster objAddPMHMaster = new PastMedicalHistoryMaster();
                         IList<PastMedicalHistoryMaster> tempSessionData = new List<PastMedicalHistoryMaster>();
-                        tempSessionData = lstPastHisMaster.Where(a => a.Past_Medical_Info == objpmhDelete.Past_Medical_Info && a.Is_Deleted == "N").ToList();
+                        //Jira Cap-348 - Index Out of Range error message when Provider adds Arthropathy in PMH
+                        tempSessionData = lstPastHisMaster.Where(a => a.Past_Medical_Info.Trim().ToUpper() == objpmhDelete.Past_Medical_Info.Trim().ToUpper() && a.Is_Deleted == "N").ToList();
                         foreach (PastMedicalHistoryMaster temp in tempSessionData)
                         {
                             objAddPMHMaster = temp;
@@ -2089,7 +2100,8 @@ namespace Acurus.Capella.UI.WebServices
                     {
                         PastMedicalHistoryMaster objAddPMHMaster = new PastMedicalHistoryMaster();
                         IList<PastMedicalHistoryMaster> tempSessionData = new List<PastMedicalHistoryMaster>();
-                        tempSessionData = lstPastHisMaster.Where(a => a.Past_Medical_Info == objpmhDelete.Past_Medical_Info && a.Is_Deleted == "N").ToList();
+                        //Jira Cap-348 - Index Out of Range error message when Provider adds Arthropathy in PMH
+                        tempSessionData = lstPastHisMaster.Where(a => a.Past_Medical_Info.Trim().ToUpper() == objpmhDelete.Past_Medical_Info.Trim().ToUpper() && a.Is_Deleted == "N").ToList();
                         foreach (PastMedicalHistoryMaster temp in tempSessionData)
                         {
                             objAddPMHMaster = temp;

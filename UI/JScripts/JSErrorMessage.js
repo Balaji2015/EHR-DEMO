@@ -2280,14 +2280,21 @@ function ScriptErrorLogEntry(sErrorMessage, sErrorLineNo, sErrorColumnNo, sError
         },
         error: function OnError(xhr) {
             { sessionStorage.setItem('StartLoading', 'false'); StopLoadFromPatChart(); }
-            if (xhr.status == 999)
-                window.location = xhr.statusText;
-            else {
-                var log = JSON.parse(xhr.responseText);
-                console.log(log);
-                alert("USER MESSAGE:\n" +
-                                ". Cannot process request. Please Login again and retry. \nEXCEPTION DETAILS: \n" +
-                               "Message: " + log.Message);
+            //Jira #CAP-382 - check xhr and xhr.status and xhr.responseText  null and undefind
+            if (xhr != null && xhr != undefined) {
+                //if (xhr.status == 999)
+                if (xhr.status != null && xhr.status != undefined && xhr.status == 999)
+                    window.location = xhr.statusText;
+                else {
+                    //Jira #CAP - 382
+                    if (xhr.responseText != null && xhr.responseText != undefined) {
+                        var log = JSON.parse(xhr.responseText);
+                        console.log(log);
+                        alert("USER MESSAGE:\n" +
+                            ". Cannot process request. Please Login again and retry. \nEXCEPTION DETAILS: \n" +
+                            "Message: " + log.Message);
+                    }
+                }
             }
         }
     });

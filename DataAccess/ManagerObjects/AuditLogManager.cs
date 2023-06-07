@@ -169,7 +169,7 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
         //BugID:49685
         public void InsertIntoAuditLog(string EntityName, string TransactionType, int HumanID, string UserName)
         {
-            IList<AuditLog> AuditLList = new List<AuditLog>();
+            //IList<AuditLog> AuditLList = new List<AuditLog>();
             AuditLog aLog = new AuditLog();
             aLog.Human_ID = HumanID;
             aLog.Entity_Name = EntityName;
@@ -180,8 +180,13 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
             aLog.Old_Value = String.Empty;
             aLog.Entity_Id = 0;
             aLog.Attribute = String.Empty;
-            AuditLList.Add(aLog);
-            AppendToAuditLog(AuditLList, string.Empty);
+
+            //Jira CAP-333 - oldCode
+            //AuditLList.Add(aLog);
+            //AppendToAuditLog(AuditLList, string.Empty);
+            //Jira CAP-333 - newCode
+            NHibernateSessionUtility.Instance.MyAuditLogList.Add(aLog);
+            WebservicetriggerUsingDirectTransaction();
         }
         #endregion
 
