@@ -1224,6 +1224,8 @@ namespace Acurus.Capella.UI.WebServices
             //{
             objCarePlanDTOList = objCarePlanManager.GetPlanCareFromServerforThin(ClientSession.EncounterId, ClientSession.HumanId, sSex, finalYear);
             var version = (from list in objCarePlanDTOList where list.Version != 0 select list.Version);
+            //Jira CAP-339
+            Hashtable Careplan_master_id = new Hashtable();
             if (objCarePlanDTOList.Count > 0)
             {
                 for (int i = 0; i < objCarePlanDTOList.Count; i++)
@@ -1335,6 +1337,8 @@ namespace Acurus.Capella.UI.WebServices
                                 objCarePlanDTOList[i].Status = "";
                             }
                         }
+                        //Jira CAP-339
+                        Careplan_master_id.Add(objCarePlanDTOList[i].Care_Plan_Lookup_ID, objCarePlanDTOList[i].Master_ID);
                     }
                     else
                     {
@@ -1421,6 +1425,8 @@ namespace Acurus.Capella.UI.WebServices
                             }
                         }
                         objCarePlanList.Add(objCarePlan);
+                        //Jira CAP-339
+                        Careplan_master_id.Add(objCarePlanDTOList[i].Care_Plan_Lookup_ID, objCarePlanDTOList[i].Master_ID);
                     }
                 }
 
@@ -1432,12 +1438,12 @@ namespace Acurus.Capella.UI.WebServices
 
             if (objCarePlanList.Count > 0)
             {
-                var result = new { objCarePlanList = objCarePlanList, DOB = PatientDOB.ToString(), currentProcess = ClientSession.UserCurrentProcess };
+                var result = new { objCarePlanList = objCarePlanList, DOB = PatientDOB.ToString(), currentProcess = ClientSession.UserCurrentProcess, MasterID= Careplan_master_id };
                 return JsonConvert.SerializeObject(result);
             }
             else
             {
-                var result = new { objCarePlanList = objCarePlanDTOList, DOB = PatientDOB.ToString(), currentProcess = ClientSession.UserCurrentProcess };
+                var result = new { objCarePlanList = objCarePlanDTOList, DOB = PatientDOB.ToString(), currentProcess = ClientSession.UserCurrentProcess, MasterID = Careplan_master_id };
                 return JsonConvert.SerializeObject(result);
             }
 
