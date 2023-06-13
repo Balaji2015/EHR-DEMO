@@ -95,6 +95,18 @@ namespace Acurus.Capella.UI
                 }
             }
 
+            //CAP-70 Set selected value to the patient sax.
+            if (HiddenPatientSex.Value != "")
+            {
+                for (int i = 0; i < ddlPatientsex.Items.Count; i++)
+                {
+                    if (Convert.ToString(ddlPatientsex.Items[i].Text).ToUpper() == HiddenPatientSex.Value.ToUpper())
+                    {
+                        ddlPatientsex.SelectedIndex = i;
+                        break;
+                    }
+                }
+            }
 
             this.Page.Title = "Patient Demographics" + "-" + ClientSession.UserName;
 
@@ -531,14 +543,14 @@ namespace Acurus.Capella.UI
                     dt.Columns.Add("PCP_Grid_Name", typeof(string));
                     dt.Columns.Add("PCP_Textbox_Name", typeof(string));
                     dt.Columns.Add("PCP_NPI", typeof(string));
-                   IList<ulong> vPhyId = PatInsOrderedList.Select(aa => aa.PCP_ID).Distinct().ToArray();
+                    IList<ulong> vPhyId = PatInsOrderedList.Select(aa => aa.PCP_ID).Distinct().ToArray();
                     FindPhysican physician_dto = new FindPhysican();
                     PhysicianManager objPhysicianManager = new PhysicianManager();
                     physician_dto = objPhysicianManager.FindPhysicianID(vPhyId);
-                    
+
                     foreach (PatientInsuredPlan obj in PatInsOrderedList)//objHumanList.PatientInsuredBag)
                     {
-                       IList<Human> humanInsList = HumanMngr.GetPatientDetailsUsingPatientInformattion(obj.Insured_Human_ID);
+                        IList<Human> humanInsList = HumanMngr.GetPatientDetailsUsingPatientInformattion(obj.Insured_Human_ID);
                         if (humanInsList != null && humanInsList.Count > 0)
                             InsuredHumanList = humanInsList[0];
                         ulong InsID = 0;
@@ -609,7 +621,7 @@ namespace Acurus.Capella.UI
                                 dr["PCP_Grid_Name"] = sPcpGridName;
                                 dr["PCP_Textbox_Name"] = sPcpTextboxName;
                                 dr["PCP_NPI"] = ilstCurrentPhyFacDTO[0].PhyNPI;
-                           
+
                             }
                             else
                             {
@@ -648,11 +660,11 @@ namespace Acurus.Capella.UI
                             //        dr["PCP_Textbox_Name"] = "";
                             //        dr["PCP_NPI"] = "";
                             //    }
-                               
+
                             //}
-                        
-                        
-                           
+
+
+
                             dt.Rows.Add(dr);
 
                         }
@@ -1119,7 +1131,7 @@ namespace Acurus.Capella.UI
             return "Success";
         }
 
-        
+
         protected void btnSave_Click(object sender, EventArgs e)
         {
             string YesNoMessage = hdnYesNoMessage.Value;
@@ -2276,6 +2288,7 @@ namespace Acurus.Capella.UI
                     if (Convert.ToString(ddlPatientsex.Items[i].Text).ToUpper() == objHumanDTO.HumanDetails.Sex.ToUpper())
                     {
                         ddlPatientsex.SelectedIndex = i;
+                        HiddenPatientSex.Value = objHumanDTO.HumanDetails.Sex;
                         break;
                     }
                 }
@@ -2486,10 +2499,10 @@ namespace Acurus.Capella.UI
                         break;
                     }
                 }
-                     if (objHumanDTO.HumanDetails.Is_Translator_Required.ToUpper() == "Y")
-                    {
-                        chkReqTranslator.Checked = true;                        
-                    }
+                if (objHumanDTO.HumanDetails.Is_Translator_Required.ToUpper() == "Y")
+                {
+                    chkReqTranslator.Checked = true;
+                }
                 txtRace.Text = objHumanDTO.HumanDetails.Race.ToString();
                 txtGranularity.Text = objHumanDTO.HumanDetails.Granularity.ToString();
 
@@ -2879,7 +2892,7 @@ namespace Acurus.Capella.UI
             //objHuman.Birth_Date = dtpPatientDOB.SelectedDate.Value;
             objHuman.Birth_Date = Convert.ToDateTime(dtpPatientDOB.Text);
             objHuman.Declared_Bankruptcy = ddlDeclaredBankruptcy.SelectedItem.Text;// "N";
-            objHuman.Sex = ddlPatientsex.SelectedItem.Text;
+            objHuman.Sex = HiddenPatientSex.Value;
             objHuman.Street_Address1 = txtPatientAddress.Text;
             objHuman.Street_Address2 = txtPatientAddressLine2.Text;
             objHuman.City = txtCity.Text;
@@ -4909,6 +4922,11 @@ namespace Acurus.Capella.UI
             InsuranceLoad();
         }
 
+        //protected void ddlPatientsex_SelectedIndexChanged(object sender, EventArgs e)
+        //{
+        //    HiddenPatientSex.Value = ddlPatientsex.SelectedItem.Text;
+        //}
+
         protected void txtMothersMaidenName_TextChanged(object sender, EventArgs e)
         {
             btnSave.Enabled = true;
@@ -5644,5 +5662,5 @@ namespace Acurus.Capella.UI
             }
         }
 
-    }      
+    }
 }

@@ -652,8 +652,9 @@
                                     <%--<asp:Label ID="lblPatientSex" runat="server" Text="Sex *" mand="Yes"  EnableViewState="False"></asp:Label>--%>
                                 </td>
                                 <td style="width:11%">
-                                    <asp:DropDownList ID="ddlPatientsex" runat="server" onchange="Copy('SEX');" Width="99%" >
+                                    <asp:DropDownList ID="ddlPatientsex" runat="server" onchange="patientSexChanged();" Width="99%">
                                     </asp:DropDownList>
+                                    <asp:HiddenField ID="HiddenPatientSex" runat="server" />
                                 </td>
                                 
                                 <td style="width:11%">
@@ -1988,6 +1989,13 @@
                   <link href="CSS/style.css" rel="stylesheet" type="text/css" />
             </asp:PlaceHolder>
         </form>
+        <script type="text/javascript">
+            //CAP-70 Create a function for storing a value in the hidden field.
+            function patientSexChanged() {
+                $('#ctl00_C5POBody_HiddenPatientSex').val($('#ctl00_C5POBody_ddlPatientsex').val());
+                Copy('SEX');
+            }
+        </script>
     </body>
 </asp:Content>
 <asp:Content ID="Content1" runat="server" ContentPlaceHolderID="head">

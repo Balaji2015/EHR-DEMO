@@ -23,6 +23,7 @@ using System.Data.SqlClient;
 using System.Configuration;
 using System.Xml;
 using DocumentFormat.OpenXml.Drawing;
+using static System.Windows.Forms.VisualStyles.VisualStyleElement.StartPanel;
 
 
 namespace Acurus.Capella.UI
@@ -302,20 +303,37 @@ namespace Acurus.Capella.UI
                 objauditlog.Attribute = "Patient";
                 Savelist.Add(objauditlog);
 
+                //Jira CAP-333 - new code
+                objauditlog = new AuditLog();
+
+                objauditlog.Human_ID = HumanID;
+                objauditlog.Entity_Name = "Human";
+                objauditlog.Transaction_Type = "QUERY";
+                objauditlog.Transaction_Date_And_Time = utc;
+                objauditlog.Transaction_By = ClientSession.UserName;
+                objauditlog.New_Value = String.Empty;
+                objauditlog.Old_Value = String.Empty;
+                objauditlog.Entity_Id = 0;
+                objauditlog.Attribute = String.Empty;
+                Savelist.Add(objauditlog);
+
+
+
                 AuditLogManager objAuditManager = new AuditLogManager();
                 objAuditManager.AppendSelectEntryToAuditLog(Savelist, string.Empty);
                 HttpContext.Current.Session.Remove("PreviousPatientList");
                 HttpContext.Current.Session.Remove("PreviousPatientKeyword");
 
-                string Entity_Name = "Human";
-                string Transaction_Type = "QUERY";
-                int Human_ID = 0;
-                if (HumanID != 0)
-                    Human_ID = Convert.ToInt32(HumanID);
-                else
-                    Human_ID = Convert.ToInt32(ClientSession.HumanId);
-                AuditLogManager objAuditLogManager = new AuditLogManager();
-                objAuditLogManager.InsertIntoAuditLog(Entity_Name, Transaction_Type, Human_ID, ClientSession.UserName);
+                //Jira CAP-333 - oldcode
+                //string Entity_Name = "Human";
+                //string Transaction_Type = "QUERY";
+                //int Human_ID = 0;
+                //if (HumanID != 0)
+                //    Human_ID = Convert.ToInt32(HumanID);
+                //else
+                //    Human_ID = Convert.ToInt32(ClientSession.HumanId);
+                //AuditLogManager objAuditLogManager = new AuditLogManager();
+                //objAuditLogManager.InsertIntoAuditLog(Entity_Name, Transaction_Type, Human_ID, ClientSession.UserName);
             }
         }
 

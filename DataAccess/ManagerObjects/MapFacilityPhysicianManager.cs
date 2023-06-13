@@ -168,7 +168,7 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
         {
             //ICriteria crit = session.GetISession().CreateCriteria(typeof(MapFacilityPhysician)).Add(Expression.Eq("Status", sStatus)).AddOrder(Order.Asc("Sort_Order"));
             //return crit.List<MapFacilityPhysician>();
-           // ISQLQuery sql;
+            // ISQLQuery sql;
             IList<MapFacilityPhysician> MapFacPhyList = new List<MapFacilityPhysician>();
             IList<ulong> NewMapFacPhyList = new List<ulong>();
             using (ISession mySession = NHibernateSessionManager.Instance.CreateISession())
@@ -223,7 +223,7 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
             }
             return PhyFacDTO;
         }
-        public IList<MapFacilityPhysician> GetPhyisician_ListbyFacilityName(string Facility_Name,string sLegalOrg)
+        public IList<MapFacilityPhysician> GetPhyisician_ListbyFacilityName(string Facility_Name, string sLegalOrg)
         {
             IList<MapFacilityPhysician> MapPhyList = new List<MapFacilityPhysician>();
             using (ISession mySession = NHibernateSessionManager.Instance.CreateISession())
@@ -239,7 +239,7 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
             IList<string> UserList = new List<string>();
             using (ISession mySession = NHibernateSessionManager.Instance.CreateISession())
             {
-                IList<string> objLst = mySession.CreateSQLQuery("select user_name from map_facility_user where Facility_Name='" + sFacilityName +"'").List<string>();
+                IList<string> objLst = mySession.CreateSQLQuery("select user_name from map_facility_user where Facility_Name='" + sFacilityName + "'").List<string>();
                 UserList = objLst.ToList<string>(); ;
                 mySession.Close();
             }
@@ -257,5 +257,48 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
             }
             return MapPhyList;
         }
+
+        public IList<string> GetPhysicianListByLegalOrg(string sLegalOrg, string sFacilityName)
+        {
+            IList<string> UserList = new List<string>();
+            IList<string> ilstPhysicianList = new List<string>();
+            // ISession iMySession = NHibernateSessionManager.Instance.CreateISession();
+            using (ISession iMySession = NHibernateSessionManager.Instance.CreateISession())
+            {
+                if (sFacilityName == "ALL")
+                {
+                    ISQLQuery sqlquery = iMySession.CreateSQLQuery("select concat(l.Physician_Library_ID,'$',concat(if(l.Physician_Last_Name<>'',concat(l.Physician_Last_Name,',',l.Physician_First_Name),l.Physician_First_Name),if(l.Physician_Suffix<>'',concat(' ',l.Physician_Middle_Name,',',l.Physician_Suffix),l.Physician_Middle_Name)),'@',m.Facility_Name,'|',u.user_name)as Phy_Details  from physician_library l left join map_facility_physician m on l.Physician_Library_ID =m.Physician_ID left join user u on l.Physician_Library_ID=u.Physician_Library_ID where m.Facility_Name<>'' and m.Legal_Org='" + sLegalOrg + "' order by Physician_Last_Name");
+                    ilstPhysicianList = sqlquery.List<string>();
+                    UserList = ilstPhysicianList.ToList<string>();
+                }
+                else
+                {
+                    ISQLQuery sqlquery = iMySession.CreateSQLQuery("select concat(l.Physician_Library_ID,'$',concat(if(l.Physician_Last_Name<>'',concat(l.Physician_Last_Name,',',l.Physician_First_Name),l.Physician_First_Name),if(l.Physician_Suffix<>'',concat(' ',l.Physician_Middle_Name,',',l.Physician_Suffix),l.Physician_Middle_Name)),'@',m.Facility_Name,'|',u.user_name)as Phy_Details from physician_library l left join map_facility_physician m on l.Physician_Library_ID =m.Physician_ID left join user u on l.Physician_Library_ID=u.Physician_Library_ID where m.Facility_Name='" + sFacilityName + "' and m.Legal_Org='" + sLegalOrg + "' order by Physician_Last_Name");
+                    ilstPhysicianList = sqlquery.List<string>();
+                    UserList = ilstPhysicianList.ToList<string>();
+                }
+
+                iMySession.Close();
+            }
+            return UserList;
+            // return crit.List<Encounter>();
+        }
+
+        public IList<string> GetSupervisingPhysicianList(string sLegalOrg, ulong uPhyAssistantID, string sFacilityName)
+        {
+            IList<string> UserList = new List<string>();
+            IList<string> ilstPhysicianList = new List<string>();
+            // ISession iMySession = NHibernateSessionManager.Instance.CreateISession();
+            using (ISession iMySession = NHibernateSessionManager.Instance.CreateISession())
+            {
+                ISQLQuery sqlquery = iMySession.CreateSQLQuery("select concat(l.Physician_Library_ID,'$',concat(if(l.Physician_Last_Name<>'',concat(l.Physician_Last_Name,',',l.Physician_First_Name),l.Physician_First_Name),if(l.Physician_Suffix<>'',concat(' ',l.Physician_Middle_Name,',',l.Physician_Suffix),l.Physician_Middle_Name)),'@',m.Facility_Name,'|',p.default_physician,'|',u.user_name)as Phy_Details  from map_physician_phy_assistant p left join physician_library l on p.Physician_ID=l.Physician_Library_ID left join map_facility_physician m on m.Physician_ID=l.Physician_Library_ID left join user u on p.Physician_ID=u.Physician_Library_ID where p.Physician_Asst_ID=" + uPhyAssistantID + " and m.Legal_Org='" + sLegalOrg + "' and p.Facility_Name='" + sFacilityName + "' group by l.Physician_Library_ID,p.Facility_Name order by Physician_Last_Name");
+                ilstPhysicianList = sqlquery.List<string>();
+                UserList = ilstPhysicianList.ToList<string>();
+                iMySession.Close();
+            }
+            return UserList;
+            // return crit.List<Encounter>();
+        }
+
     }
 }

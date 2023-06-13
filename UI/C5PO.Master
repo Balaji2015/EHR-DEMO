@@ -2155,6 +2155,13 @@ filter:progid:DXImageTransform.Microsoft.Blur(PixelRadius='4');
         </asp:PlaceHolder>
     </form>
     <script>
+        var ipAddress = "";
+        $(document).ready(function () {
+            $.getJSON('https://api.ipify.org?format=json', function (data) {
+                ipAddress = data.ip;
+            });
+        });
+
         //CAP-29 - Internet check event.
         function formatAMPM(date) {
             var hours = date.getHours();
@@ -2188,7 +2195,7 @@ filter:progid:DXImageTransform.Microsoft.Blur(PixelRadius='4');
                 ErrorLineNo: '', //sErrorLineNo
                 ErrorColumnNo: '', //sErrorColumnNo
                 ErrorUrl: '', //sErrorUrl
-                ErrorStack: '', //sErrorStack
+                ErrorStack: ipAddress, //sErrorStack
             }
             $.ajax({
                 type: "POST",

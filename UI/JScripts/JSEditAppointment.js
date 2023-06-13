@@ -22,6 +22,18 @@ $(document).ready(function () {
             return false;
         }
     });
+    $("#dtpApptDate_dateInput").keydown(function (event) {
+        if (event.keyCode == 13 && event.target.id.indexOf("dtpApptDate") > -1) {
+            event.preventDefault();
+            return false;
+        }
+    });
+    $("#ddlDuration").keydown(function (event) {
+        if (event.keyCode == 13 && event.target.id.indexOf("ddlDuration") > -1) {
+            event.preventDefault();
+            return false;
+        }
+    });
 
     var curleft = curtop = 0;
     var current_element = document.getElementById('txtPatientSearch');

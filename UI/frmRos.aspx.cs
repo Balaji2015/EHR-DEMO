@@ -549,7 +549,9 @@ namespace Acurus.Capella.UI
                 foreach (var item in symptomListString)
                 {
                     string txt = item;
-                    Font f = new Font(FontFamily.GenericSansSerif, 8.2f, FontStyle.Regular);
+                    //Jira CAP-81
+                    //Font f = new Font(FontFamily.GenericSansSerif, 8.2f, FontStyle.Regular);
+                    Font f = new Font(FontFamily.GenericSansSerif, 8.2f);
                     Bitmap bp = new Bitmap(1, 1);
                     Graphics gp = Graphics.FromImage(bp);
                     int height = (int)gp.MeasureString(txt, f, symptomWidth).Height;

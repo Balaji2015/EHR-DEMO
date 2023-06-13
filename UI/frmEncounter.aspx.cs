@@ -23,7 +23,9 @@ using System.IO;
 using System.Web.Services;
 using MySql.Data.MySqlClient;
 using System.Threading;
-
+using DocumentFormat.OpenXml.Wordprocessing;
+using ListItem = System.Web.UI.WebControls.ListItem;
+using static System.Windows.Forms.VisualStyles.VisualStyleElement.StartPanel;
 
 namespace Acurus.Capella.UI
 {
@@ -200,9 +202,6 @@ namespace Acurus.Capella.UI
                 ViewState["Node"] = node;
                 hdnTab.Value = string.Empty;
 
-                
-
-               
 
                 //Encounter> ilstEncounter = EncRecord;// objEncounterManager.GetEncounterByEncounterID(ClientSession.EncounterId);
                 if (EncRecord.Is_PFSH_Verified.Trim() == "Y")
@@ -290,7 +289,7 @@ namespace Acurus.Capella.UI
                 if (!issuccess)
                 {
                     ViewState["IsRegenerateXML"] = true;
-                    ScriptManager.RegisterStartupScript(this, typeof(frmEncounter), "ErrorMessage", "RegenerateXML('" + ClientSession.EncounterId+ "','Encounter','encounter');", true);
+                    ScriptManager.RegisterStartupScript(this, typeof(frmEncounter), "ErrorMessage", "RegenerateXML('" + ClientSession.EncounterId + "','Encounter','encounter');", true);
 
 
                     //UtilityManager.GenerateXML(ClientSession.HumanId.ToString(), "Human");
@@ -331,7 +330,7 @@ namespace Acurus.Capella.UI
 
 
 
-                XmlNode nodeMatchingFacility = xmldocUser.SelectSingleNode("/CapellaScribeLookupList/CapellaScribeLookup[@ProviderID='" + ClientSession.FillEncounterandWFObject.EncRecord.Appointment_Provider_ID.ToString() + "' and @Legal_Org='"+ClientSession.LegalOrg+"']");
+                XmlNode nodeMatchingFacility = xmldocUser.SelectSingleNode("/CapellaScribeLookupList/CapellaScribeLookup[@ProviderID='" + ClientSession.FillEncounterandWFObject.EncRecord.Appointment_Provider_ID.ToString() + "' and @Legal_Org='" + ClientSession.LegalOrg + "']");
                 if (nodeMatchingFacility != null)
 
                     btnmovetoscribe.Style.Add("display", "block");//.Visible = true;
@@ -355,7 +354,7 @@ namespace Acurus.Capella.UI
             //}
 
         }
-       
+
         HumanManager objHumanManagerACO = new HumanManager();
         bool LoadPage()
         {
@@ -393,10 +392,10 @@ namespace Acurus.Capella.UI
             }
             pnlBarGroupTabs.InnerText = EncRecord.Facility_Name + "   |   " + sDateofService.ToString("dd-MMM-yyyy hh:mm tt") + "   |   " + EncRecord.Visit_Type + "   |   " + strPhysicianDetails + "   |   " + EncRecord.Assigned_Med_Asst_User_Name + "   |   " + EncRecord.Assigned_Scribe_User_Name; // +facList[0].POS_Description + "   |   ";
 
-            // UtilityManager.inserttologgingtable(ClientSession.EncounterId.ToString(), ClientSession.HumanId.ToString(), ClientSession.UserName, ClientSession.PhysicianId.ToString(), "OpeningEncounterXMLfromMyQ");
+        // UtilityManager.inserttologgingtable(ClientSession.EncounterId.ToString(), ClientSession.HumanId.ToString(), ClientSession.UserName, ClientSession.PhysicianId.ToString(), "OpeningEncounterXMLfromMyQ");
 
-            //string FileName = "Encounter" + "_" + ClientSession.EncounterId + ".xml";
-            //string strXmlFilePath = Path.Combine(System.Configuration.ConfigurationSettings.AppSettings["XMLPath"], FileName);
+        //string FileName = "Encounter" + "_" + ClientSession.EncounterId + ".xml";
+        //string strXmlFilePath = Path.Combine(System.Configuration.ConfigurationSettings.AppSettings["XMLPath"], FileName);
         ln:
             XmlTextReader XmlText = null;
 
@@ -411,12 +410,12 @@ namespace Acurus.Capella.UI
 
                 try
                 {
-                        XmlDocument itemDoc = new XmlDocument();
+                    XmlDocument itemDoc = new XmlDocument();
 
-                        sXMLContent = System.Text.Encoding.UTF8.GetString(ilstEncounterBlob[0].Encounter_XML);
-                        if (sXMLContent.Substring(0, 1) != "<")
-                            sXMLContent = sXMLContent.Substring(1, sXMLContent.Length - 1);
-                        itemDoc.LoadXml(sXMLContent);
+                    sXMLContent = System.Text.Encoding.UTF8.GetString(ilstEncounterBlob[0].Encounter_XML);
+                    if (sXMLContent.Substring(0, 1) != "<")
+                        sXMLContent = sXMLContent.Substring(1, sXMLContent.Length - 1);
+                    itemDoc.LoadXml(sXMLContent);
 
                     //XmlText = new XmlTextReader(strXmlFilePath);
                     //itemDoc.Load(XmlText);
@@ -459,21 +458,21 @@ namespace Acurus.Capella.UI
                                 xmlPhysicianAddress[0].Attributes[7].Value = xmlphy[0].Attributes[7].Value;
                         }
                     }
-                        //itemDoc.Save(strXmlFilePath);
-                        IList<Encounter_Blob> ilstUpdateBlob = new List<Encounter_Blob>();
-                        byte[] bytes = null;
-                        try
-                        {
-                            bytes = System.Text.Encoding.Default.GetBytes(itemDoc.OuterXml);
-                        }
-                        catch (Exception ex)
-                        {
-
-                        }
-                        objEncounterblob.Encounter_XML = bytes;
-                        ilstUpdateBlob.Add(objEncounterblob);
-                        EncounterBlobMngr.SaveEncounterBlobWithTransaction(ilstUpdateBlob, string.Empty);
+                    //itemDoc.Save(strXmlFilePath);
+                    IList<Encounter_Blob> ilstUpdateBlob = new List<Encounter_Blob>();
+                    byte[] bytes = null;
+                    try
+                    {
+                        bytes = System.Text.Encoding.Default.GetBytes(itemDoc.OuterXml);
                     }
+                    catch (Exception ex)
+                    {
+
+                    }
+                    objEncounterblob.Encounter_XML = bytes;
+                    ilstUpdateBlob.Add(objEncounterblob);
+                    EncounterBlobMngr.SaveEncounterBlobWithTransaction(ilstUpdateBlob, string.Empty);
+                }
                 catch (Exception ex)
                 {
                     // if (ex.Message.ToLower().Contains("input string was not") == true || ex.Message.ToLower().Contains("element") == true||ex.Message.ToLower().Contains("unexpected end of file") == true || ex.Message.ToLower().Contains("is an unexpected token") == true)
@@ -1134,7 +1133,7 @@ namespace Acurus.Capella.UI
             DateTime dtClientDate = localTime;
             if (ClientSession.UserName != null && ClientSession.FacilityName != null && ClientSession.EncounterId != null)
                 //Commented the Patient Level RCopia Download
-                objUpdateInfoMngr.DownloadRCopiaInfo(rcopiaSessionMngr.DownloadAddress, ClientSession.UserName, string.Empty, dtClientDate, ClientSession.FacilityName, ClientSession.EncounterId, ClientSession.HumanId,ClientSession.LegalOrg);
+                objUpdateInfoMngr.DownloadRCopiaInfo(rcopiaSessionMngr.DownloadAddress, ClientSession.UserName, string.Empty, dtClientDate, ClientSession.FacilityName, ClientSession.EncounterId, ClientSession.HumanId, ClientSession.LegalOrg);
             //Old 
             //objUpdateInfoMngr.DownloadRCopiaInfo(rcopiaSessionMngr.DownloadAddress, ClientSession.UserName, string.Empty, dtClientDate, ClientSession.FacilityName, ClientSession.EncounterId);
 
@@ -1153,7 +1152,7 @@ namespace Acurus.Capella.UI
                     //objUpdateInfoMngr.DownloadRCopiaInfo(ClientSession.UserName, ApplicationObject.macAddress, dtClientDate, ClientSession.FacilityName, ClientSession.EncounterId);
                     //objUpdateInfoMngr.DownloadRCopiaInfo(rcopiaSessionMngr.UploadAddress, ClientSession.UserName, string.Empty, dtClientDate, ClientSession.FacilityName, ClientSession.EncounterId);
                     //Patient Level RCopia Download - Commented
-                    objUpdateInfoMngr.DownloadRCopiaInfo(rcopiaSessionMngr.UploadAddress, ClientSession.UserName, string.Empty, dtClientDate, ClientSession.FacilityName, ClientSession.EncounterId, ClientSession.HumanId,ClientSession.LegalOrg);
+                    objUpdateInfoMngr.DownloadRCopiaInfo(rcopiaSessionMngr.UploadAddress, ClientSession.UserName, string.Empty, dtClientDate, ClientSession.FacilityName, ClientSession.EncounterId, ClientSession.HumanId, ClientSession.LegalOrg);
                     //Old
                     //objUpdateInfoMngr.DownloadRCopiaInfo(rcopiaSessionMngr.UploadAddress, ClientSession.UserName, string.Empty, dtClientDate, ClientSession.FacilityName, ClientSession.EncounterId);
                     ScriptManager.RegisterStartupScript(this, this.Page.GetType(), "summaryMsg", "refreshSummaryBar('" + newTabName + "');", true);
@@ -1482,13 +1481,13 @@ namespace Acurus.Capella.UI
                     {
                         //if (ClientSession.PhysicianUserName.ToString().ToUpper() == item.Attributes[0].Value.ToUpper())
                         //{
-                            //sFacilityName = item.Attributes[1].Value;
-                            //sRole = item.Attributes[3].Value;
-                            if (item.Attributes.GetNamedItem("Default_Facility").Value != null)
-                                sFacilityName = item.Attributes.GetNamedItem("Default_Facility").Value;
-                            if (item.Attributes.GetNamedItem("Role").Value != null)
-                                sRole = item.Attributes.GetNamedItem("Role").Value;
-                            break;
+                        //sFacilityName = item.Attributes[1].Value;
+                        //sRole = item.Attributes[3].Value;
+                        if (item.Attributes.GetNamedItem("Default_Facility").Value != null)
+                            sFacilityName = item.Attributes.GetNamedItem("Default_Facility").Value;
+                        if (item.Attributes.GetNamedItem("Role").Value != null)
+                            sRole = item.Attributes.GetNamedItem("Role").Value;
+                        break;
                         //}
                     }
             }
@@ -1609,7 +1608,7 @@ namespace Acurus.Capella.UI
             }
             if (triggerSP)
                 UpdateReviewTrackerforEncounter();
-                //objEncounterManager.TriggerSPforProvReviewStatusTracker(Input_Mode, ClientSession.EncounterId);
+            //objEncounterManager.TriggerSPforProvReviewStatusTracker(Input_Mode, ClientSession.EncounterId);
 
             if (objMoveVerifyDTO != null)
             {
@@ -2212,347 +2211,509 @@ namespace Acurus.Capella.UI
                 FillCboPhysician(EncRecord.Facility_Name);
 
         }
-
+        public void chkShowAllPhysicians_CheckedChanged(object sender, EventArgs e)
+        {           
+            if (EncRecord != null && EncRecord.Facility_Name != "")
+                FillCboPhysician(EncRecord.Facility_Name);
+            ScriptManager.RegisterStartupScript(this, typeof(frmEncounter), "WaitCursorStop", " {sessionStorage.setItem('StartLoading', 'false');StopLoadFromPatChart();}", true);
+        }
 
         public void FillCboPhysician(string sFacility_Name)
         {
+           
             cboPhysicianName.Items.Clear();
-            /* Code Block to populate physician list */
-            // bool showAll = true;
-            XDocument xmlDocumentType = null;
-            if (File.Exists(Server.MapPath(@"ConfigXML\PhysicianFacilityMapping.xml")))
-                xmlDocumentType = XDocument.Load(Server.MapPath(@"ConfigXML\PhysicianFacilityMapping.xml"));
-            //StaticLookup objStatics = null;
-            ListItem liDropdown = null;
-            IList<string> PhyASStIDlist = new List<string>();
-            IList<string> PhyIDlist = new List<string>();
-            Dictionary<string,string> hashUser = new Dictionary<string, string>();
 
-            int i = 0;
+            #region OLD Code
+            ///* Code Block to populate physician list */
+            //// bool showAll = true;
+           // XDocument xmlDocumentType = null;
+            //if (File.Exists(Server.MapPath(@"ConfigXML\PhysicianFacilityMapping.xml")))
+             //xmlDocumentType = XDocument.Load(Server.MapPath(@"ConfigXML\PhysicianFacilityMapping.xml"));
+            ////StaticLookup objStatics = null;
+            //ListItem liDropdown = null;
+            //IList<string> PhyASStIDlist = new List<string>();
+            //IList<string> PhyIDlist = new List<string>();
+            //Dictionary<string, string> hashUser = new Dictionary<string, string>();
 
-            foreach (XElement elements in xmlDocumentType.Elements("ROOT").Elements("PhyAsstList").Elements())
-            {
-                PhyASStIDlist.Add(elements.Attribute("ID").Value);
-                if (elements.Attribute("ID").Value.ToString() == ClientSession.PhysicianId.ToString())
-                {
-                    PhyIDlist.Add(elements.Attribute("Physician_ID").Value);
-                    i++;
-                }
-            }
 
-            
+            //int i = 0;
 
-            IList<ListItem> liComboItems = new List<ListItem>();
-            //if (ClientSession.UserRole != null && ClientSession.UserRole.ToUpper() == "PHYSICIAN ASSISTANT")
+            //foreach (XElement elements in xmlDocumentType.Elements("ROOT").Elements("PhyAsstList").Elements())
             //{
-            //    for (int iCount=0;iCount<PhyASStIDlist.Count;iCount++)
+            //    PhyASStIDlist.Add(elements.Attribute("ID").Value);
+            //    if (elements.Attribute("ID").Value.ToString() == ClientSession.PhysicianId.ToString())
             //    {
-            //        if (PhyASStIDlist[iCount].ToString() == ClientSession.PhysicianId.ToString() && sFacility_Name != string.Empty)
+            //        PhyIDlist.Add(elements.Attribute("Physician_ID").Value);
+            //        i++;
+            //    }
+            //}
+
+
+
+            //IList<ListItem> liComboItems = new List<ListItem>();
+            ////if (ClientSession.UserRole != null && ClientSession.UserRole.ToUpper() == "PHYSICIAN ASSISTANT")
+            ////{
+            ////    for (int iCount=0;iCount<PhyASStIDlist.Count;iCount++)
+            ////    {
+            ////        if (PhyASStIDlist[iCount].ToString() == ClientSession.PhysicianId.ToString() && sFacility_Name != string.Empty)
+            ////        {
+            ////            foreach (XElement elements in xmlDocumentType.Elements("ROOT").Elements("PhyList").Elements())
+            ////            {
+            ////                string xmlValue = elements.Attribute("name").Value;
+            ////                if (elements.Attribute("Legal_Org") != null && elements.Attribute("Legal_Org").Value == ClientSession.LegalOrg)
+            ////                {
+            ////                    foreach (XElement phyItems in elements.Elements())
+            ////                    {
+            ////                        string phyName = string.Empty;
+            ////                        string username = string.Empty;
+            ////                        string prefix = string.Empty;
+            ////                        string firstname = string.Empty;
+            ////                        string middlename = string.Empty;
+            ////                        string lastname = string.Empty;
+            ////                        string suffix = string.Empty;
+            ////                        string phyID = string.Empty;
+
+            ////                        if (phyItems.Attribute("username").Value != null)
+            ////                            username = phyItems.Attribute("username").Value;
+            ////                        if (phyItems.Attribute("prefix").Value != null)
+            ////                            prefix = phyItems.Attribute("prefix").Value;
+            ////                        if (phyItems.Attribute("firstname").Value != null)
+            ////                            firstname = phyItems.Attribute("firstname").Value;
+            ////                        if (phyItems.Attribute("middlename").Value != null)
+            ////                            middlename = phyItems.Attribute("middlename").Value;
+            ////                        if (phyItems.Attribute("lastname").Value != null)
+            ////                            lastname = phyItems.Attribute("lastname").Value;
+            ////                        if (phyItems.Attribute("suffix").Value != null)
+            ////                            suffix = phyItems.Attribute("suffix").Value;
+            ////                        if (phyItems.Attribute("ID").Value != null)
+            ////                            phyID = phyItems.Attribute("ID").Value;
+
+            ////                        //Gitlab# 2485 - Physician Name Display Change
+            ////                        if (lastname != String.Empty)
+            ////                            phyName += lastname;
+            ////                        if (firstname != String.Empty)
+            ////                        {
+            ////                            if (phyName != String.Empty)
+            ////                                phyName += "," + firstname;
+            ////                            else
+            ////                                phyName += firstname;
+            ////                        }
+            ////                        if (middlename != String.Empty)
+            ////                            phyName += " " + middlename;
+            ////                        if (suffix != String.Empty)
+            ////                            phyName += "," + suffix;
+
+            ////                        if (username != string.Empty && hashUser.ContainsKey(phyID) == false && phyID == PhyIDlist[iCount])
+            ////                        {
+            ////                            //Old Code
+            ////                            //liDropdown = new ListItem(username + " - " + phyName, phyID);
+            ////                            //Gitlab# 2485 - Physician Name Display Change
+            ////                            hashUser.Add(phyID.ToString(), username);
+            ////                            liDropdown = new ListItem(phyName, phyID);
+            ////                            liDropdown.Attributes.Add("FacilityName", ClientSession.FacilityName); // xmlValue);
+            ////                            liDropdown.Attributes.Add("default", "true");
+            ////                            liDropdown.Attributes.CssStyle.Add("display", "");
+            ////                            liComboItems.Add(liDropdown);
+            ////                        }
+            ////                    }
+            ////                }
+            ////            }
+            ////        }
+            ////    }
+            ////}
+            ////else
+            //{
+            //    foreach (XElement elements in xmlDocumentType.Elements("ROOT").Elements("PhyList").Elements())
+            //    {
+            //        string xmlValue = elements.Attribute("name").Value;
+            //        // if (xmlValue != string.Empty && xmlValue.ToUpper() == ClientSession.FacilityName.ToUpper())
+            //        if (elements.Attribute("Legal_Org") != null && xmlValue != string.Empty && sFacility_Name != "" && xmlValue.ToUpper() == sFacility_Name.ToUpper() && elements.Attribute("Legal_Org").Value == ClientSession.LegalOrg)
             //        {
-            //            foreach (XElement elements in xmlDocumentType.Elements("ROOT").Elements("PhyList").Elements())
+            //            foreach (XElement phyItems in elements.Elements())
             //            {
-            //                string xmlValue = elements.Attribute("name").Value;
-            //                if (elements.Attribute("Legal_Org") != null && elements.Attribute("Legal_Org").Value == ClientSession.LegalOrg)
+            //                string phyName = string.Empty;
+            //                string username = string.Empty;
+            //                string prefix = string.Empty;
+            //                string firstname = string.Empty;
+            //                string middlename = string.Empty;
+            //                string lastname = string.Empty;
+            //                string suffix = string.Empty;
+            //                string phyID = string.Empty;
+
+            //                if (phyItems.Attribute("username").Value != null)
+            //                    username = phyItems.Attribute("username").Value;
+            //                if (phyItems.Attribute("prefix").Value != null)
+            //                    prefix = phyItems.Attribute("prefix").Value;
+            //                if (phyItems.Attribute("firstname").Value != null)
+            //                    firstname = phyItems.Attribute("firstname").Value;
+            //                if (phyItems.Attribute("middlename").Value != null)
+            //                    middlename = phyItems.Attribute("middlename").Value;
+            //                if (phyItems.Attribute("lastname").Value != null)
+            //                    lastname = phyItems.Attribute("lastname").Value;
+            //                if (phyItems.Attribute("suffix").Value != null)
+            //                    suffix = phyItems.Attribute("suffix").Value;
+            //                if (phyItems.Attribute("ID").Value != null)
+            //                    phyID = phyItems.Attribute("ID").Value;
+
+            //                //old code
+            //                //if (prefix != "")
+            //                //{
+            //                //    phyName += prefix + " ";
+            //                //}
+            //                //if (firstname != "")
+            //                //{
+            //                //    phyName += firstname + " ";
+            //                //}
+            //                //if (middlename != "")
+            //                //{
+            //                //    phyName += middlename + " ";
+            //                //}
+            //                //if (lastname != "")
+            //                //{
+            //                //    phyName += lastname + " ";
+            //                //}
+            //                //if (suffix != "")
+            //                //{
+            //                //    phyName += suffix;
+            //                //}
+            //                //Gitlab# 2485 - Physician Name Display Change
+            //                if (lastname != String.Empty)
+            //                    phyName += lastname;
+            //                if (firstname != String.Empty)
             //                {
-            //                    foreach (XElement phyItems in elements.Elements())
+            //                    if (phyName != String.Empty)
+            //                        phyName += "," + firstname;
+            //                    else
+            //                        phyName += firstname;
+            //                }
+            //                if (middlename != String.Empty)
+            //                    phyName += " " + middlename;
+            //                if (suffix != String.Empty)
+            //                    phyName += "," + suffix;
+            //                if (ClientSession.UserRole != null && ClientSession.UserRole.ToUpper() == "PHYSICIAN ASSISTANT" && (PhyASStIDlist.Contains(phyID)))
+            //                {
+            //                    continue;
+            //                }
+            //                else
+            //                {
+            //                    if (ClientSession.UserRole != null && ClientSession.UserRole.ToUpper() == "PHYSICIAN ASSISTANT")
             //                    {
-            //                        string phyName = string.Empty;
-            //                        string username = string.Empty;
-            //                        string prefix = string.Empty;
-            //                        string firstname = string.Empty;
-            //                        string middlename = string.Empty;
-            //                        string lastname = string.Empty;
-            //                        string suffix = string.Empty;
-            //                        string phyID = string.Empty;
-
-            //                        if (phyItems.Attribute("username").Value != null)
-            //                            username = phyItems.Attribute("username").Value;
-            //                        if (phyItems.Attribute("prefix").Value != null)
-            //                            prefix = phyItems.Attribute("prefix").Value;
-            //                        if (phyItems.Attribute("firstname").Value != null)
-            //                            firstname = phyItems.Attribute("firstname").Value;
-            //                        if (phyItems.Attribute("middlename").Value != null)
-            //                            middlename = phyItems.Attribute("middlename").Value;
-            //                        if (phyItems.Attribute("lastname").Value != null)
-            //                            lastname = phyItems.Attribute("lastname").Value;
-            //                        if (phyItems.Attribute("suffix").Value != null)
-            //                            suffix = phyItems.Attribute("suffix").Value;
-            //                        if (phyItems.Attribute("ID").Value != null)
-            //                            phyID = phyItems.Attribute("ID").Value;
-
-            //                        //Gitlab# 2485 - Physician Name Display Change
-            //                        if (lastname != String.Empty)
-            //                            phyName += lastname;
-            //                        if (firstname != String.Empty)
+            //                        if (PhyIDlist.Contains(phyID) && username != string.Empty && hashUser.ContainsKey(phyID) == false)
             //                        {
-            //                            if (phyName != String.Empty)
-            //                                phyName += "," + firstname;
-            //                            else
-            //                                phyName += firstname;
-            //                        }
-            //                        if (middlename != String.Empty)
-            //                            phyName += " " + middlename;
-            //                        if (suffix != String.Empty)
-            //                            phyName += "," + suffix;
-
-            //                        if (username != string.Empty && hashUser.ContainsKey(phyID) == false && phyID == PhyIDlist[iCount])
-            //                        {
-            //                            //Old Code
-            //                            //liDropdown = new ListItem(username + " - " + phyName, phyID);
-            //                            //Gitlab# 2485 - Physician Name Display Change
             //                            hashUser.Add(phyID.ToString(), username);
             //                            liDropdown = new ListItem(phyName, phyID);
-            //                            liDropdown.Attributes.Add("FacilityName", ClientSession.FacilityName); // xmlValue);
+            //                            liDropdown.Attributes.Add("FacilityName", xmlValue);
             //                            liDropdown.Attributes.Add("default", "true");
             //                            liDropdown.Attributes.CssStyle.Add("display", "");
             //                            liComboItems.Add(liDropdown);
             //                        }
             //                    }
+            //                    else if (username != string.Empty && hashUser.ContainsKey(phyID) == false)
+            //                    {
+            //                        //Old Code
+            //                        //liDropdown = new ListItem(username + " - " + phyName, phyID);
+            //                        //Gitlab# 2485 - Physician Name Display Change
+            //                        hashUser.Add(phyID.ToString(), username);
+            //                        liDropdown = new ListItem(phyName, phyID);
+            //                        liDropdown.Attributes.Add("FacilityName", xmlValue);
+            //                        liDropdown.Attributes.Add("default", "true");
+            //                        liDropdown.Attributes.CssStyle.Add("display", "");
+            //                        liComboItems.Add(liDropdown);
+            //                    }
             //                }
+            //            }
+            //        }
+            //        else if (elements.Attribute("Legal_Org") != null && elements.Attribute("Legal_Org").Value == ClientSession.LegalOrg)
+            //        {
+            //            foreach (XElement phyItems in elements.Elements())
+            //            {
+            //                string phyName = string.Empty;
+            //                string username = string.Empty;
+            //                string prefix = string.Empty;
+            //                string firstname = string.Empty;
+            //                string middlename = string.Empty;
+            //                string lastname = string.Empty;
+            //                string suffix = string.Empty;
+            //                string phyID = string.Empty;
+
+            //                if (phyItems.Attribute("username").Value != null)
+            //                    username = phyItems.Attribute("username").Value;
+            //                if (phyItems.Attribute("prefix").Value != null)
+            //                    prefix = phyItems.Attribute("prefix").Value;
+            //                if (phyItems.Attribute("firstname").Value != null)
+            //                    firstname = phyItems.Attribute("firstname").Value;
+            //                if (phyItems.Attribute("middlename").Value != null)
+            //                    middlename = phyItems.Attribute("middlename").Value;
+            //                if (phyItems.Attribute("lastname").Value != null)
+            //                    lastname = phyItems.Attribute("lastname").Value;
+            //                if (phyItems.Attribute("suffix").Value != null)
+            //                    suffix = phyItems.Attribute("suffix").Value;
+            //                if (phyItems.Attribute("ID").Value != null)
+            //                    phyID = phyItems.Attribute("ID").Value;
+
+            //                //old code
+            //                //if (prefix != "")
+            //                //{
+            //                //    phyName += prefix + " ";
+            //                //}
+            //                //if (firstname != "")
+            //                //{
+            //                //    phyName += firstname + " ";
+            //                //}
+            //                //if (middlename != "")
+            //                //{
+            //                //    phyName += middlename + " ";
+            //                //}
+            //                //if (lastname != "")
+            //                //{
+            //                //    phyName += lastname + " ";
+            //                //}
+            //                //if (suffix != "")
+            //                //{
+            //                //    phyName += suffix;
+            //                //}
+            //                //Gitlab# 2485 - Physician Name Display Change
+            //                if (lastname != String.Empty)
+            //                    phyName += lastname;
+            //                if (firstname != String.Empty)
+            //                {
+            //                    if (phyName != String.Empty)
+            //                        phyName += "," + firstname;
+            //                    else
+            //                        phyName += firstname;
+            //                }
+            //                if (middlename != String.Empty)
+            //                    phyName += " " + middlename;
+            //                if (suffix != String.Empty)
+            //                    phyName += "," + suffix;
+            //                if (ClientSession.UserRole != null && ClientSession.UserRole.ToUpper() == "PHYSICIAN ASSISTANT" && (PhyASStIDlist.Contains(phyID)))
+            //                {
+            //                    continue;
+            //                }
+            //                else
+            //                {
+            //                    if (ClientSession.UserRole != null && ClientSession.UserRole.ToUpper() == "PHYSICIAN ASSISTANT" && PhyIDlist.Contains(phyID) && username != string.Empty && hashUser.ContainsKey(phyID) == false)
+            //                    {
+            //                        continue;
+            //                        //hashUser.Add(phyID.ToString(), username);
+            //                        //liDropdown = new ListItem(phyName, phyID);
+            //                        //liDropdown.Attributes.Add("FacilityName", xmlValue);
+            //                        //liDropdown.Attributes.Add("default", "true");
+            //                        //liDropdown.Attributes.CssStyle.Add("display", "");
+            //                        //liComboItems.Add(liDropdown);
+
+            //                    }
+            //                    else if (username != string.Empty && hashUser.ContainsKey(phyID) == false)
+            //                    {
+            //                        //Old Code
+            //                        //liDropdown = new ListItem(username + " - " + phyName, phyID);
+            //                        //Gitlab# 2485 - Physician Name Display Change
+            //                        hashUser.Add(phyID.ToString(), username);
+            //                        liDropdown = new ListItem(phyName, phyID);
+            //                        liDropdown.Attributes.Add("default", "false");
+            //                        liDropdown.Attributes.Add("FacilityName", xmlValue);
+            //                        liDropdown.Attributes.CssStyle.Add("display", "none");
+            //                        liComboItems.Add(liDropdown);
+            //                    }
+            //                }
+
             //            }
             //        }
             //    }
             //}
+            ////IList<ListItem> sortlst = liComboItems.OrderBy(x => x.Text).ToList();
+            ////Old Code
+            ////IList<ListItem> sortlst = liComboItems.OrderBy(x => x.Text.Split('-')[1].Split(new string[] { "Dr." }, StringSplitOptions.None).Length > 1 ? x.Text.Split('-')[1].Split(new string[] { "Dr." }, StringSplitOptions.None)[1] : x.Text.Split('-')[1]).ToList().OrderBy(x => x.Text).ToList();
+            ////Gitlab# 2485 - Physician Name Display Change
+            //IList<ListItem> sortlst = liComboItems.OrderBy(x => x.Text).ToList();
+            ////cboPhysicianName.Items.AddRange(sortlst.Distinct().ToArray());bugId:38683   
+            //cboPhysicianName.Items.AddRange(sortlst.ToArray());
+            //ListItem phyEmptyItem = new ListItem("", "0");
+            //cboPhysicianName.Items.Insert(0, phyEmptyItem);
+            //liComboItems.OrderBy(x => x.Value).ToList();
+
+            //if (!IsPostBack || Convert.ToBoolean(ViewState["IsRegenerateXML"]) == true)
+            //{
+            //    ViewState["IsRegenerateXML"] = false;
+            //    if (ClientSession.UserRole.ToUpper() == "PHYSICIAN ASSISTANT" && ClientSession.UserCurrentProcess == "PROVIDER_PROCESS")
+            //    {
+            //        IEnumerable<XElement> MapFacilityPhysician = (from x in xmlDocumentType.Elements("ROOT").Elements("PhyAsstList")
+            //                                                   .Elements("PhysicianAssistant")
+            //                                                      where x.Attribute("ID").Value == ClientSession.PhysicianId.ToString()
+            //                                                      select x);
+            //        if (MapFacilityPhysician != null && MapFacilityPhysician.Count() > 0)
+            //        {
+            //            ulong uDefaultPhysicianID = 0;
+            //            //foreach (XElement phyItems in MapFacilityPhysician.Elements())
+            //            foreach (XElement phyItems in MapFacilityPhysician)
+            //            {
+            //                uDefaultPhysicianID = phyItems.Attribute("Default_Physician").Value != "" ? (Convert.ToUInt32(phyItems.Attribute("Default_Physician").Value)) : (0);
+            //            }
+            //            ListItem SelectedPhysician = (cboPhysicianName.Items.FindByValue(uDefaultPhysicianID.ToString()));
+            //            if (SelectedPhysician != null)
+            //            {
+            //                hdnindex.Value = cboPhysicianName.Items.IndexOf(SelectedPhysician).ToString();
+            //                cboPhysicianName.SelectedIndex = Convert.ToInt32(hdnindex.Value);
+            //                //Old Code
+            //                //hdnLocalPhy.Value = cboPhysicianName.SelectedValue + '~' + cboPhysicianName.SelectedItem.Text.Split('-')[0];
+            //                //Gitlab# 2485 - Physician Name Display Change
+            //                hdnLocalPhy.Value = cboPhysicianName.SelectedValue + '~' + hashUser[cboPhysicianName.SelectedValue].ToString();
+            //            }
+            //        }
+            //    }
+            //    else
+            //    {
+            //        ListItem SelectedPhysician;
+            //        if (EncRecord.Encounter_Provider_ID != 0)
+            //        {
+            //            SelectedPhysician = (cboPhysicianName.Items.FindByValue(EncRecord.Encounter_Provider_ID.ToString()));
+
+            //        }
+            //        else
+            //        {
+            //            SelectedPhysician = (cboPhysicianName.Items.FindByValue(EncRecord.Appointment_Provider_ID.ToString()));
+            //        }
+
+            //        if (SelectedPhysician != null)
+            //        {
+            //            hdnindex.Value = cboPhysicianName.Items.IndexOf(SelectedPhysician).ToString();
+            //            cboPhysicianName.SelectedIndex = Convert.ToInt32(hdnindex.Value);
+            //            //Old Code
+            //            //hdnLocalPhy.Value = cboPhysicianName.SelectedValue + '~' + cboPhysicianName.SelectedItem.Text.Split('-')[0];
+            //            //Gitlab# 2485 - Physician Name Display Change
+            //            hdnLocalPhy.Value = cboPhysicianName.SelectedValue + '~' + hashUser[cboPhysicianName.SelectedValue].ToString();
+            //        }
+            //    }
+            //    //for (int i = 0; i < cboPhysicianName.Items.Count; i++)
+            //    //{
+            //    //  if (Convert.ToUInt32(cboPhysicianName.Items[i].Value) == Convert.ToInt32(EncRecord.Appointment_Provider_ID))
+            //    //    {
+            //    //        cboPhysicianName.SelectedIndex = i;
+            //    //        hdnindex.Value = cboPhysicianName.SelectedIndex.ToString();
+            //    //        hdnLocalPhy.Value = cboPhysicianName.SelectedValue + '~' + cboPhysicianName.SelectedItem.Text.Split('-')[0];
+            //    //    }
+            //    //}
+            //    Session["EncounterProvID"] = cboPhysicianName.SelectedValue.ToString();
+            //}
             //else
+            //{
+            //    ulong iIndex = 0;
+            //    if (ulong.TryParse(hdnindex.Value, out iIndex) && iIndex != 0)
+            //    {
+            //        cboPhysicianName.SelectedIndex = Convert.ToInt32(hdnindex.Value);
+            //        //Old Code
+            //        //hdnLocalPhy.Value = cboPhysicianName.SelectedValue + '~' + cboPhysicianName.SelectedItem.Text.Split('-')[0];
+            //        //Gitlab# 2485 - Physician Name Display Change
+            //        hdnLocalPhy.Value = cboPhysicianName.SelectedValue + '~' + hashUser[cboPhysicianName.SelectedValue].ToString();
+            //    }
+            //    else
+            //    {
+            //        hdnLocalPhy.Value = string.Empty;
+            //    }
+            //}
+            //Session["PhysicianList"] = PhyUserList;
+            //Session["DefaultSelectedPhysician"] = cboPhysicianName.SelectedIndex;
+
+            #endregion
+            //Jira #Cap-360 - Supervising Provider not listed for MA to select in the chart 
+            MapFacilityPhysicianManager objMapFacilityPhysician = new MapFacilityPhysicianManager();
+            IList<string> Phylist = new List<string>();
+            Dictionary<string, string> hashUser = new Dictionary<string, string>();
+            ListItem liDropdown = null;
+            IList<ListItem> liComboItems = new List<ListItem>();
+           
+            ulong uDefaultPhysicianID = 0;
+
+            if (ClientSession.UserRole != null && ClientSession.UserRole.ToUpper() == "PHYSICIAN ASSISTANT")
             {
-                foreach (XElement elements in xmlDocumentType.Elements("ROOT").Elements("PhyList").Elements())
+                if (chkShowAllPhysicians.Checked == true)
                 {
-                    string xmlValue = elements.Attribute("name").Value;
-                    // if (xmlValue != string.Empty && xmlValue.ToUpper() == ClientSession.FacilityName.ToUpper())
-                    if (elements.Attribute("Legal_Org") != null && xmlValue != string.Empty && sFacility_Name != "" && xmlValue.ToUpper() == sFacility_Name.ToUpper() && elements.Attribute("Legal_Org").Value == ClientSession.LegalOrg)
+                    Phylist = objMapFacilityPhysician.GetPhysicianListByLegalOrg(ClientSession.LegalOrg, "ALL");
+                }
+                else
+                {
+                    Phylist = objMapFacilityPhysician.GetSupervisingPhysicianList(ClientSession.LegalOrg, ClientSession.PhysicianId, sFacility_Name);
+                }
+
+            }
+            else
+            {
+                if (chkShowAllPhysicians.Checked == true)
+                {
+                    Phylist = objMapFacilityPhysician.GetPhysicianListByLegalOrg(ClientSession.LegalOrg, "ALL");
+                }
+                else
+                {
+                    Phylist = objMapFacilityPhysician.GetPhysicianListByLegalOrg(ClientSession.LegalOrg, sFacility_Name);
+                }
+            }
+
+            for (int iPhycount = 0; iPhycount < Phylist.Count; iPhycount++)
+            {
+                string sPhyId = string.Empty;
+                string sPhyName = string.Empty;
+                string sFacility = string.Empty;
+                string username = string.Empty;
+                if (Phylist[iPhycount] != null)
+                {
+
+                    if (ClientSession.UserRole != null && ClientSession.UserRole.ToUpper() == "PHYSICIAN ASSISTANT" && chkShowAllPhysicians.Checked == false)
                     {
-                        foreach (XElement phyItems in elements.Elements())
-                        {
-                            string phyName = string.Empty;
-                            string username = string.Empty;
-                            string prefix = string.Empty;
-                            string firstname = string.Empty;
-                            string middlename = string.Empty;
-                            string lastname = string.Empty;
-                            string suffix = string.Empty;
-                            string phyID = string.Empty;
-
-                            if (phyItems.Attribute("username").Value != null)
-                                username = phyItems.Attribute("username").Value;
-                            if (phyItems.Attribute("prefix").Value != null)
-                                prefix = phyItems.Attribute("prefix").Value;
-                            if (phyItems.Attribute("firstname").Value != null)
-                                firstname = phyItems.Attribute("firstname").Value;
-                            if (phyItems.Attribute("middlename").Value != null)
-                                middlename = phyItems.Attribute("middlename").Value;
-                            if (phyItems.Attribute("lastname").Value != null)
-                                lastname = phyItems.Attribute("lastname").Value;
-                            if (phyItems.Attribute("suffix").Value != null)
-                                suffix = phyItems.Attribute("suffix").Value;
-                            if (phyItems.Attribute("ID").Value != null)
-                                phyID = phyItems.Attribute("ID").Value;
-
-                            //old code
-                            //if (prefix != "")
-                            //{
-                            //    phyName += prefix + " ";
-                            //}
-                            //if (firstname != "")
-                            //{
-                            //    phyName += firstname + " ";
-                            //}
-                            //if (middlename != "")
-                            //{
-                            //    phyName += middlename + " ";
-                            //}
-                            //if (lastname != "")
-                            //{
-                            //    phyName += lastname + " ";
-                            //}
-                            //if (suffix != "")
-                            //{
-                            //    phyName += suffix;
-                            //}
-                            //Gitlab# 2485 - Physician Name Display Change
-                            if (lastname != String.Empty)
-                                phyName += lastname;
-                            if (firstname != String.Empty)
-                            {
-                                if (phyName != String.Empty)
-                                    phyName += "," + firstname;
-                                else
-                                    phyName += firstname;
-                            }
-                            if (middlename != String.Empty)
-                                phyName += " " + middlename;
-                            if (suffix != String.Empty)
-                                phyName += "," + suffix;
-                            if (ClientSession.UserRole != null && ClientSession.UserRole.ToUpper() == "PHYSICIAN ASSISTANT" && (PhyASStIDlist.Contains(phyID)))
-                            {
-                                continue;
-                            }
-                            else
-                            {
-                                if (ClientSession.UserRole != null && ClientSession.UserRole.ToUpper() == "PHYSICIAN ASSISTANT")
-                                {
-                                    if (PhyIDlist.Contains(phyID) && username != string.Empty && hashUser.ContainsKey(phyID) == false)
-                                    {
-                                        hashUser.Add(phyID.ToString(), username);
-                                        liDropdown = new ListItem(phyName, phyID);
-                                        liDropdown.Attributes.Add("FacilityName", xmlValue);
-                                        liDropdown.Attributes.Add("default", "true");
-                                        liDropdown.Attributes.CssStyle.Add("display", "");
-                                        liComboItems.Add(liDropdown);
-                                    }
-                                }
-                                else if (username != string.Empty && hashUser.ContainsKey(phyID) == false)
-                                {
-                                    //Old Code
-                                    //liDropdown = new ListItem(username + " - " + phyName, phyID);
-                                    //Gitlab# 2485 - Physician Name Display Change
-                                    hashUser.Add(phyID.ToString(), username);
-                                    liDropdown = new ListItem(phyName, phyID);
-                                    liDropdown.Attributes.Add("FacilityName", xmlValue);
-                                    liDropdown.Attributes.Add("default", "true");
-                                    liDropdown.Attributes.CssStyle.Add("display", "");
-                                    liComboItems.Add(liDropdown);
-                                }
-                            }
-                        }
+                        sPhyId = Phylist[iPhycount].Split('$')[0];
+                        sPhyName = Phylist[iPhycount].Split('$')[1].Split('@')[0];
+                        sFacility = Phylist[iPhycount].Split('$')[1].Split('@')[1].Split('|')[0];
+                        uDefaultPhysicianID = Convert.ToUInt64(Phylist[0].Split('$')[1].Split('@')[1].Split('|')[1]);
+                        username = Phylist[0].Split('$')[1].Split('@')[1].Split('|')[2];
                     }
-                    else if (elements.Attribute("Legal_Org") != null && elements.Attribute("Legal_Org").Value == ClientSession.LegalOrg)
+                    else
                     {
-                        foreach (XElement phyItems in elements.Elements())
-                        {
-                            string phyName = string.Empty;
-                            string username = string.Empty;
-                            string prefix = string.Empty;
-                            string firstname = string.Empty;
-                            string middlename = string.Empty;
-                            string lastname = string.Empty;
-                            string suffix = string.Empty;
-                            string phyID = string.Empty;
+                        sPhyId = Phylist[iPhycount].Split('$')[0];
+                        sPhyName = Phylist[iPhycount].Split('$')[1].Split('@')[0];
+                        sFacility = Phylist[iPhycount].Split('$')[1].Split('@')[1].Split('|')[0];
+                        username = Phylist[iPhycount].Split('$')[1].Split('@')[1].Split('|')[1];
+                    }
 
-                            if (phyItems.Attribute("username").Value != null)
-                                username = phyItems.Attribute("username").Value;
-                            if (phyItems.Attribute("prefix").Value != null)
-                                prefix = phyItems.Attribute("prefix").Value;
-                            if (phyItems.Attribute("firstname").Value != null)
-                                firstname = phyItems.Attribute("firstname").Value;
-                            if (phyItems.Attribute("middlename").Value != null)
-                                middlename = phyItems.Attribute("middlename").Value;
-                            if (phyItems.Attribute("lastname").Value != null)
-                                lastname = phyItems.Attribute("lastname").Value;
-                            if (phyItems.Attribute("suffix").Value != null)
-                                suffix = phyItems.Attribute("suffix").Value;
-                            if (phyItems.Attribute("ID").Value != null)
-                                phyID = phyItems.Attribute("ID").Value;
 
-                            //old code
-                            //if (prefix != "")
-                            //{
-                            //    phyName += prefix + " ";
-                            //}
-                            //if (firstname != "")
-                            //{
-                            //    phyName += firstname + " ";
-                            //}
-                            //if (middlename != "")
-                            //{
-                            //    phyName += middlename + " ";
-                            //}
-                            //if (lastname != "")
-                            //{
-                            //    phyName += lastname + " ";
-                            //}
-                            //if (suffix != "")
-                            //{
-                            //    phyName += suffix;
-                            //}
-                            //Gitlab# 2485 - Physician Name Display Change
-                            if (lastname != String.Empty)
-                                phyName += lastname;
-                            if (firstname != String.Empty)
-                            {
-                                if (phyName != String.Empty)
-                                    phyName += "," + firstname;
-                                else
-                                    phyName += firstname;
-                            }
-                            if (middlename != String.Empty)
-                                phyName += " " + middlename;
-                            if (suffix != String.Empty)
-                                phyName += "," + suffix;
-                            if (ClientSession.UserRole != null && ClientSession.UserRole.ToUpper() == "PHYSICIAN ASSISTANT" && (PhyASStIDlist.Contains(phyID)))
-                            {
-                                continue;
-                            }
-                            else
-                            {
-                                if (ClientSession.UserRole != null && ClientSession.UserRole.ToUpper() == "PHYSICIAN ASSISTANT" && PhyIDlist.Contains(phyID) && username != string.Empty && hashUser.ContainsKey(phyID) == false)
-                                {                                   
-                                        continue;
-                                        //hashUser.Add(phyID.ToString(), username);
-                                        //liDropdown = new ListItem(phyName, phyID);
-                                        //liDropdown.Attributes.Add("FacilityName", xmlValue);
-                                        //liDropdown.Attributes.Add("default", "true");
-                                        //liDropdown.Attributes.CssStyle.Add("display", "");
-                                        //liComboItems.Add(liDropdown);
-                                   
-                                }
-                                 else if (username != string.Empty && hashUser.ContainsKey(phyID) == false)
-                                {
-                                    //Old Code
-                                    //liDropdown = new ListItem(username + " - " + phyName, phyID);
-                                    //Gitlab# 2485 - Physician Name Display Change
-                                    hashUser.Add(phyID.ToString(), username);
-                                    liDropdown = new ListItem(phyName, phyID);
-                                    liDropdown.Attributes.Add("default", "false");
-                                    liDropdown.Attributes.Add("FacilityName", xmlValue);
-                                    liDropdown.Attributes.CssStyle.Add("display", "none");
-                                    liComboItems.Add(liDropdown);
-                                }
-                            }
-
-                        }
+                    if (hashUser.ContainsKey(sPhyId) == false && ClientSession.CurrentPhysicianId != Convert.ToUInt64(sPhyId))
+                    {
+                        hashUser.Add(sPhyId.ToString(), username);
+                        liDropdown = new ListItem(sPhyName, sPhyId);
+                        liDropdown.Attributes.Add("FacilityName", sFacility);
+                        liDropdown.Attributes.Add("default", "true");
+                        liDropdown.Attributes.CssStyle.Add("display", "");
+                        liComboItems.Add(liDropdown);
                     }
                 }
             }
-            //IList<ListItem> sortlst = liComboItems.OrderBy(x => x.Text).ToList();
-            //Old Code
-            //IList<ListItem> sortlst = liComboItems.OrderBy(x => x.Text.Split('-')[1].Split(new string[] { "Dr." }, StringSplitOptions.None).Length > 1 ? x.Text.Split('-')[1].Split(new string[] { "Dr." }, StringSplitOptions.None)[1] : x.Text.Split('-')[1]).ToList().OrderBy(x => x.Text).ToList();
-            //Gitlab# 2485 - Physician Name Display Change
+            
             IList<ListItem> sortlst = liComboItems.OrderBy(x => x.Text).ToList();
-            //cboPhysicianName.Items.AddRange(sortlst.Distinct().ToArray());bugId:38683   
-
             cboPhysicianName.Items.AddRange(sortlst.ToArray());
             ListItem phyEmptyItem = new ListItem("", "0");
             cboPhysicianName.Items.Insert(0, phyEmptyItem);
             liComboItems.OrderBy(x => x.Value).ToList();
 
-            if (!IsPostBack || Convert.ToBoolean(ViewState["IsRegenerateXML"])==true)
+            if (!IsPostBack || Convert.ToBoolean(ViewState["IsRegenerateXML"]) == true)
             {
                 ViewState["IsRegenerateXML"] = false;
                 if (ClientSession.UserRole.ToUpper() == "PHYSICIAN ASSISTANT" && ClientSession.UserCurrentProcess == "PROVIDER_PROCESS")
                 {
-                    IEnumerable<XElement> MapFacilityPhysician = (from x in xmlDocumentType.Elements("ROOT").Elements("PhyAsstList")
-                                                               .Elements("PhysicianAssistant")
-                                                                  where x.Attribute("ID").Value == ClientSession.PhysicianId.ToString()
-                                                                  select x);
-                    if (MapFacilityPhysician != null && MapFacilityPhysician.Count() > 0)
+                    //if (chkShowAllPhysicians.Checked == true)
+                    //{
+                    //    uDefaultPhysicianID = Convert.ToUInt64(ViewState["DefaultPhysicianID"]);
+                    //}
+                    //else
+                    //{
+                        ViewState["DefaultPhysicianID"] = uDefaultPhysicianID;
+                    //}
+                    ListItem SelectedPhysician = (cboPhysicianName.Items.FindByValue(uDefaultPhysicianID.ToString()));
+                    if (SelectedPhysician != null)
                     {
-                        ulong uDefaultPhysicianID = 0;
-                        //foreach (XElement phyItems in MapFacilityPhysician.Elements())
-                        foreach (XElement phyItems in MapFacilityPhysician)
-                        {
-                            uDefaultPhysicianID = phyItems.Attribute("Default_Physician").Value != "" ? (Convert.ToUInt32(phyItems.Attribute("Default_Physician").Value)) : (0);
-                        }
-                        ListItem SelectedPhysician = (cboPhysicianName.Items.FindByValue(uDefaultPhysicianID.ToString()));
-                        if (SelectedPhysician != null)
-                        {
-                            hdnindex.Value = cboPhysicianName.Items.IndexOf(SelectedPhysician).ToString();
-                            cboPhysicianName.SelectedIndex = Convert.ToInt32(hdnindex.Value);
-                            //Old Code
-                            //hdnLocalPhy.Value = cboPhysicianName.SelectedValue + '~' + cboPhysicianName.SelectedItem.Text.Split('-')[0];
-                            //Gitlab# 2485 - Physician Name Display Change
-                            hdnLocalPhy.Value = cboPhysicianName.SelectedValue + '~' + hashUser[cboPhysicianName.SelectedValue].ToString();
-                        }
+                        cboPhysicianName.SelectedIndex = cboPhysicianName.Items.IndexOf(cboPhysicianName.Items.FindByValue(SelectedPhysician.Value));
+                        hdnindex.Value = cboPhysicianName.SelectedValue;
+                        hdnLocalPhy.Value = cboPhysicianName.SelectedValue + '~' + hashUser[cboPhysicianName.SelectedValue].ToString();
+                        
                     }
+
                 }
                 else
                 {
@@ -2569,43 +2730,43 @@ namespace Acurus.Capella.UI
 
                     if (SelectedPhysician != null)
                     {
-                        hdnindex.Value = cboPhysicianName.Items.IndexOf(SelectedPhysician).ToString();
-                        cboPhysicianName.SelectedIndex = Convert.ToInt32(hdnindex.Value);
-                        //Old Code
-                        //hdnLocalPhy.Value = cboPhysicianName.SelectedValue + '~' + cboPhysicianName.SelectedItem.Text.Split('-')[0];
-                        //Gitlab# 2485 - Physician Name Display Change
+                        cboPhysicianName.SelectedIndex = cboPhysicianName.Items.IndexOf(cboPhysicianName.Items.FindByValue(SelectedPhysician.Value));
+                        hdnindex.Value = cboPhysicianName.SelectedValue;
                         hdnLocalPhy.Value = cboPhysicianName.SelectedValue + '~' + hashUser[cboPhysicianName.SelectedValue].ToString();
+                        ViewState["DefaultPhysicianID"] = hdnindex.Value;
                     }
                 }
-                //for (int i = 0; i < cboPhysicianName.Items.Count; i++)
-                //{
-                //  if (Convert.ToUInt32(cboPhysicianName.Items[i].Value) == Convert.ToInt32(EncRecord.Appointment_Provider_ID))
-                //    {
-                //        cboPhysicianName.SelectedIndex = i;
-                //        hdnindex.Value = cboPhysicianName.SelectedIndex.ToString();
-                //        hdnLocalPhy.Value = cboPhysicianName.SelectedValue + '~' + cboPhysicianName.SelectedItem.Text.Split('-')[0];
-                //    }
-                //}
-                Session["EncounterProvID"] = cboPhysicianName.SelectedValue.ToString();
             }
             else
             {
-                ulong iIndex = 0;
-                if (ulong.TryParse(hdnindex.Value, out iIndex) && iIndex != 0)
+                //ulong iIndex = 0;
+               // if (ulong.TryParse(hdnindex.Value, out iIndex) && iIndex != 0)
+                    if(hdnindex.Value!="0")
                 {
-                    cboPhysicianName.SelectedIndex = Convert.ToInt32(hdnindex.Value);
-                    //Old Code
-                    //hdnLocalPhy.Value = cboPhysicianName.SelectedValue + '~' + cboPhysicianName.SelectedItem.Text.Split('-')[0];
-                    //Gitlab# 2485 - Physician Name Display Change
-                    hdnLocalPhy.Value = cboPhysicianName.SelectedValue + '~' + hashUser[cboPhysicianName.SelectedValue].ToString();
+                    if (cboPhysicianName.Items.FindByValue(hdnindex.Value) != null)
+                    {
+                        cboPhysicianName.SelectedIndex = cboPhysicianName.Items.IndexOf(cboPhysicianName.Items.FindByValue(hdnindex.Value));
+                        hdnLocalPhy.Value = cboPhysicianName.SelectedValue + '~' + hashUser[cboPhysicianName.SelectedValue].ToString();
+                        hdnindex.Value = cboPhysicianName.SelectedValue;
+                    }
+                    else
+                    {
+                        cboPhysicianName.SelectedIndex = cboPhysicianName.Items.IndexOf(cboPhysicianName.Items.FindByValue(ViewState["DefaultPhysicianID"].ToString()));
+                        hdnLocalPhy.Value = cboPhysicianName.SelectedValue + '~' + hashUser[cboPhysicianName.SelectedValue].ToString();
+                        hdnindex.Value = cboPhysicianName.SelectedValue;
+                       }
                 }
                 else
                 {
                     hdnLocalPhy.Value = string.Empty;
                 }
             }
+            Session["EncounterProvID"] = cboPhysicianName.SelectedValue.ToString();
+            
             Session["PhysicianList"] = PhyUserList;
             Session["DefaultSelectedPhysician"] = cboPhysicianName.SelectedIndex;
+
+           
         }
         public void RemoveWindowItem(ulong patientID)
         {
@@ -3364,7 +3525,7 @@ namespace Acurus.Capella.UI
                 objProvReviewTracker.Modified_Date_And_Time = UtilityManager.ConvertToUniversal();
                 provRevTrackerManager.SaveUpdateProviderReviewTracker(null, objProvReviewTracker);
             }
-            else if (lstProvRevTrack == null || lstProvRevTrack.Count==0)
+            else if (lstProvRevTrack == null || lstProvRevTrack.Count == 0)
             {
                 objProvReviewTracker.Human_ID = ClientSession.HumanId;
                 objProvReviewTracker.Encounter_ID = ClientSession.EncounterId;
@@ -3375,7 +3536,7 @@ namespace Acurus.Capella.UI
                     objProvReviewTracker.Status = "INACTIVE";
                 objProvReviewTracker.Created_By = ClientSession.UserName;
                 objProvReviewTracker.Created_Date_And_Time = UtilityManager.ConvertToUniversal();
-                provRevTrackerManager.SaveUpdateProviderReviewTracker(objProvReviewTracker,null);
+                provRevTrackerManager.SaveUpdateProviderReviewTracker(objProvReviewTracker, null);
             }
         }
 

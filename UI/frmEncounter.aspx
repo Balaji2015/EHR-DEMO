@@ -228,8 +228,8 @@
                                     HorizontalAlign="NotSet">
                                     <asp:DropDownList ID="cboPhysicianName" runat="server" Width="244px" Style="margin-left: 1px;" onchange="getDropdownListSelectedText();">
                                     </asp:DropDownList>
-                                    <asp:CheckBox ID="chkShowAllPhysicians" runat="server" Text="Show all Physicians"
-                                        AutoPostBack="false" onchange="chkShowAllPhysicians_CheckedChanged(this);" CssClass="noWrapText Editabletxtbox " Style="margin-left: -2px;" />
+                                    <asp:CheckBox ID="chkShowAllPhysicians" runat="server" Text="Show all Physicians" onchange="chkShowAllPhysicians_CheckedChanged(this);"
+                                        AutoPostBack="true" OnCheckedChanged="chkShowAllPhysicians_CheckedChanged" CssClass="noWrapText Editabletxtbox " Style="margin-left: -2px;" />
                                     <asp:CheckBox ID="chkACOValidation" runat="server" AutoPostBack="false" CssClass="noWrapText" Text="ACO Discussed" Style="font-weight: lighter; margin-left: 4px;" />
                                     <asp:CheckBox ID="chkProviderReview" runat="server" AutoPostBack="true" CssClass="noWrapText" Text="Is Review Required" Style="font-weight: lighter; margin-left: 4px;" />
                                     <asp:CheckBox ID="chkcorrectionreview" runat="server"  CssClass="noWrapText" Text="Is Correction Required" Style="font-weight: lighter; margin-left: 4px;" />
@@ -410,7 +410,7 @@
         <asp:HiddenField ID="hdnIsACOValid" runat="server" Value="false" EnableViewState="false" />
         <asp:HiddenField ID="hdnACOValidated" runat="server" Value="false" EnableViewState="false" />
         <asp:HiddenField ID="hdnPFSHInfoBy" runat="server" Value="false" EnableViewState="false" />
-        <asp:HiddenField ID="hdnindex" runat="server" EnableViewState="false" />
+        <asp:HiddenField ID="hdnindex" runat="server" EnableViewState="true"/>
         <asp:HiddenField ID="hdnPFSHVerifiedEnable" runat="server" Value="false" EnableViewState="false" />
         <asp:HiddenField ID="hdnSaveButtonID" runat="server" EnableViewState="false" />
         <asp:HiddenField ID="hdnTabClick" runat="server" EnableViewState="false" Value="first" />

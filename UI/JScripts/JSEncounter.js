@@ -519,32 +519,37 @@ function FollowUpWindowClientClosePageLoad(oWindow, args) {
     document.getElementById("hdnCloseFS").value = "false";
 }
 
-function chkShowAllPhysicians_CheckedChanged(checkStatus) {
-
-    if (checkStatus.firstChild.checked) {
-        var usedNames = {};
-        $("#cboPhysicianName > option").each(function () {
-            if (usedNames[this.text]) {
-                $(this).css('display', 'none');
-            } else {
-                usedNames[this.text] = this.value;
-                $(this).css('display', 'block');
-            }
-        });
-    }
-    else {
-        $("#cboPhysicianName > option").each(function () {
-            var option = $(this);
-            if (option.attr('default') == 'true' || option.attr('default') == '') { option.css('display', 'block'); } else { option.css('display', 'none'); }
-        });
-    }
+function chkShowAllPhysicians_CheckedChanged(checkStatus) {    
+    //Jira #Cap-360 - Supervising Provider not listed for MA to select in the chart
+    //if (checkStatus.firstChild.checked) {
+    //    var usedNames = {};
+    //    $("#cboPhysicianName > option").each(function () {
+    //        if (usedNames[this.text]) {
+    //            $(this).css('display', 'none');
+    //        } else {
+    //            usedNames[this.text] = this.value;
+    //            $(this).css('display', 'block');
+    //        }
+    //    });
+    //}
+    //else {
+    //    $("#cboPhysicianName > option").each(function () {
+    //        var option = $(this);
+    //        if (option.attr('default') == 'true' || option.attr('default') == '') { option.css('display', 'block'); } else { option.css('display', 'none'); }
+    //    });
+    //}
+    { sessionStorage.setItem('StartLoading', 'true'); StartLoadFromPatChart(); }
+    var DropdownList = document.getElementById("cboPhysicianName");
+    var SelectedIndex = DropdownList.value;
+    document.getElementById("hdnindex").value = SelectedIndex;
 }
 
 function getDropdownListSelectedText() {
     document.getElementById('btnmovetoscribe').style.display = "none";
     var DropdownList = document.getElementById("cboPhysicianName");
-    var SelectedIndex = DropdownList.selectedIndex;
+    var SelectedIndex = DropdownList.value;
     document.getElementById("hdnindex").value = SelectedIndex;
+    
     //Old Code
     //document.getElementById("hdnLocalPhy").value = DropdownList.value + '~' + DropdownList.selectedOptions[0].textContent.split('-')[0];
     //Gitlab# 2485 - Physician Name Display Change

@@ -4701,8 +4701,10 @@ namespace Acurus.Capella.UI
                     objVitalDTO = vitalmngr.GetPastVitalDetailsByEncounterID(saveList[0].Encounter_ID, ClientSession.PhysicianId, Convert.ToInt16(humanAgeInMonths.ToString().Split('.')[0]), humanSex, "'BMI-AGE','HC-AGE'", ScreenID, saveList[0].Human_ID);
                 }
             }
-            if (objVitalDTO == null && objVitalDTO.VitalsList == null)
-                vitalList = objVitalDTO.VitalsList;
+            //Jira cap355 - BP values missing in summary, notes
+            //if (objVitalDTO == null && objVitalDTO.VitalsList == null)
+            if (objVitalDTO != null && objVitalDTO.VitalsList != null)
+            vitalList = objVitalDTO.VitalsList;
 
             DataSet dsGetVitals = new DataSet();
             string Loinc_observation = string.Empty;

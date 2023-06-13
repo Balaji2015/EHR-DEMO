@@ -13,6 +13,7 @@ namespace Acurus.Capella.Core.DomainObjects
         #region Declarations
         private ulong _Encounter_ID = 0;
         private byte[] _Encounter_XML = null;
+        private byte[] _Human_XML = null;
         private string _createdby = string.Empty;
         private DateTime _createddateandtime;
         private string _modifiedby = string.Empty;
@@ -29,6 +30,7 @@ namespace Acurus.Capella.Core.DomainObjects
 
             sb.Append(_Encounter_ID);
             sb.Append(_Encounter_XML);
+            sb.Append(_Human_XML);
             sb.Append(_createdby = string.Empty);
             sb.Append(_createddateandtime);
             sb.Append(_modifiedby = string.Empty);
@@ -51,6 +53,12 @@ namespace Acurus.Capella.Core.DomainObjects
         {
             get { return _Encounter_XML; }
             set { _Encounter_XML = value; }
+        }
+        [DataMember]
+        public virtual byte[] Human_XML
+        {
+            get { return _Human_XML; }
+            set { _Human_XML = value; }
         }
         [DataMember]
         public virtual string Created_By

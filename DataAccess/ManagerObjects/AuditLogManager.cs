@@ -148,23 +148,32 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
 
         public void AppendSelectEntryToAuditLog(IList<AuditLog> AuditLogList, string MACAddress)
         {
-            string[] table_names = AuditLogList.Select(item => item.Entity_Name.Split('.').Last()).ToArray<string>();
-            if (table_names != null && table_names.Count() > 0)
+            //Jira CAP-333 -oldcode
+            //string[] table_names = AuditLogList.Select(item => item.Entity_Name.Split('.').Last()).ToArray<string>();
+            //if (table_names != null && table_names.Count() > 0)
+            //{
+            //    MasterTableListManager mastertablemanager = new MasterTableListManager();
+            //    IList<MasterTableList> masterlist = mastertablemanager.GetAuditTrailTableListByTableNames(table_names);
+            //    IList<AuditLog> updateList = null;
+            //    IList<AuditLog> deleteList = null;
+            //    if (masterlist.Count > 0)
+            //    {
+            //        for (int i = 0; i < masterlist.Count;i++ )
+            //        {
+            //          //  SaveUpdateDeleteWithTransaction(ref AuditLogList, null, null, MACAddress);
+            //            SaveUpdateDelete_DBAndXML_WithTransaction(ref AuditLogList, ref updateList, deleteList, MACAddress, false, false,Convert.ToUInt32(AuditLogList[0].Human_ID), string.Empty);
+            //            return;
+            //        }
+            //    }
+            //}
+
+            ///Jira CAP-333 - newcode
+            foreach (AuditLog auditlog in AuditLogList)
             {
-                MasterTableListManager mastertablemanager = new MasterTableListManager();
-                IList<MasterTableList> masterlist = mastertablemanager.GetAuditTrailTableListByTableNames(table_names);
-                IList<AuditLog> updateList = null;
-                IList<AuditLog> deleteList = null;
-                if (masterlist.Count > 0)
-                {
-                    for (int i = 0; i < masterlist.Count;i++ )
-                    {
-                      //  SaveUpdateDeleteWithTransaction(ref AuditLogList, null, null, MACAddress);
-                        SaveUpdateDelete_DBAndXML_WithTransaction(ref AuditLogList, ref updateList, deleteList, MACAddress, false, false,Convert.ToUInt32(AuditLogList[0].Human_ID), string.Empty);
-                        return;
-                    }
-                }
+                NHibernateSessionUtility.Instance.MyAuditLogList.Add(auditlog);
             }
+            WebservicetriggerUsingDirectTransaction();
+
         }
         //BugID:49685
         public void InsertIntoAuditLog(string EntityName, string TransactionType, int HumanID, string UserName)

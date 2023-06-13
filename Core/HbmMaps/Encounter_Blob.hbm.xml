@@ -7,6 +7,7 @@
 		<version name="Version"/>
 		
 		<property name="Encounter_XML" column="Encounter_XML" />
+		<property name="Human_XML" column="Human_XML" />
 		<property name="Created_By" column="Created_By" />
 		<property name="Created_Date_And_Time" column="Created_Date_And_Time" />
 		<property name="Modified_By" column="Modified_By" />

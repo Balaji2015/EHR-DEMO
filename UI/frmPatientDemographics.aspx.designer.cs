@@ -258,6 +258,15 @@ namespace Acurus.Capella.UI
         protected global::System.Web.UI.WebControls.DropDownList ddlPatientsex;
 
         /// <summary>
+        /// HiddenPatientSex control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.HiddenField HiddenPatientSex;
+
+        /// <summary>
         /// txtPatientAddress control.
         /// </summary>
         /// <remarks>
