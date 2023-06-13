@@ -2710,7 +2710,15 @@ namespace Acurus.Capella.UI
                     {
                         cboPhysicianName.SelectedIndex = cboPhysicianName.Items.IndexOf(cboPhysicianName.Items.FindByValue(SelectedPhysician.Value));
                         hdnindex.Value = cboPhysicianName.SelectedValue;
-                        hdnLocalPhy.Value = cboPhysicianName.SelectedValue + '~' + hashUser[cboPhysicianName.SelectedValue].ToString();
+                        if (hdnindex.Value != "0")
+                        {
+                            hdnLocalPhy.Value = cboPhysicianName.SelectedValue + '~' + hashUser[cboPhysicianName.SelectedValue].ToString();
+                        }
+                        else
+                        {
+                            hdnLocalPhy.Value = string.Empty;
+                        }
+                        
                         
                     }
 
@@ -2732,8 +2740,15 @@ namespace Acurus.Capella.UI
                     {
                         cboPhysicianName.SelectedIndex = cboPhysicianName.Items.IndexOf(cboPhysicianName.Items.FindByValue(SelectedPhysician.Value));
                         hdnindex.Value = cboPhysicianName.SelectedValue;
-                        hdnLocalPhy.Value = cboPhysicianName.SelectedValue + '~' + hashUser[cboPhysicianName.SelectedValue].ToString();
                         ViewState["DefaultPhysicianID"] = hdnindex.Value;
+                        if (hdnindex.Value != "0")
+                        {
+                            hdnLocalPhy.Value = cboPhysicianName.SelectedValue + '~' + hashUser[cboPhysicianName.SelectedValue].ToString();
+                        }
+                        else
+                        {
+                            hdnLocalPhy.Value = string.Empty;
+                        }
                     }
                 }
             }
@@ -2741,20 +2756,21 @@ namespace Acurus.Capella.UI
             {
                 //ulong iIndex = 0;
                // if (ulong.TryParse(hdnindex.Value, out iIndex) && iIndex != 0)
-                    if(hdnindex.Value!="0")
+                if(hdnindex.Value!="0")
                 {
                     if (cboPhysicianName.Items.FindByValue(hdnindex.Value) != null)
                     {
-                        cboPhysicianName.SelectedIndex = cboPhysicianName.Items.IndexOf(cboPhysicianName.Items.FindByValue(hdnindex.Value));
-                        hdnLocalPhy.Value = cboPhysicianName.SelectedValue + '~' + hashUser[cboPhysicianName.SelectedValue].ToString();
+                        cboPhysicianName.SelectedIndex = cboPhysicianName.Items.IndexOf(cboPhysicianName.Items.FindByValue(hdnindex.Value));                        
                         hdnindex.Value = cboPhysicianName.SelectedValue;
+                        hdnLocalPhy.Value = cboPhysicianName.SelectedValue + '~' + hashUser[cboPhysicianName.SelectedValue].ToString();
+                      
                     }
                     else
                     {
                         cboPhysicianName.SelectedIndex = cboPhysicianName.Items.IndexOf(cboPhysicianName.Items.FindByValue(ViewState["DefaultPhysicianID"].ToString()));
-                        hdnLocalPhy.Value = cboPhysicianName.SelectedValue + '~' + hashUser[cboPhysicianName.SelectedValue].ToString();
                         hdnindex.Value = cboPhysicianName.SelectedValue;
-                       }
+                        hdnLocalPhy.Value = cboPhysicianName.SelectedValue + '~' + hashUser[cboPhysicianName.SelectedValue].ToString();                        
+                    }
                 }
                 else
                 {
