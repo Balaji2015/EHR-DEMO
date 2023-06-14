@@ -2697,7 +2697,7 @@ namespace Acurus.Capella.UI
                 ViewState["IsRegenerateXML"] = false;
                 if (ClientSession.UserRole.ToUpper() == "PHYSICIAN ASSISTANT" && ClientSession.UserCurrentProcess == "PROVIDER_PROCESS")
                 {                   
-                        ViewState["DefaultPhysicianID"] = uDefaultPhysicianID;
+                    ViewState["DefaultPhysicianID"] = uDefaultPhysicianID;
                    
                     ListItem SelectedPhysician = (cboPhysicianName.Items.FindByValue(uDefaultPhysicianID.ToString()));
                     if (SelectedPhysician != null)
