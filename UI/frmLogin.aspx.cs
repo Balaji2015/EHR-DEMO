@@ -24,7 +24,7 @@ namespace Acurus.Capella.UI
 
         protected void Page_Load(object sender, EventArgs e)
         {
-            DateTime dtStartTime = DateTime.Now;
+            DateTime dtStartTime = DateTime.Now;  
 
             if (hdnGroupId != null && hdnGroupId.Value == "")
             {
