@@ -3306,6 +3306,18 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
                                        string _AttributeName, string _OldValue, string _NewValue,
                                        string _TransactionType, string _Transaction_By, string _Transaction_Date_Time)
         {
+
+            _OldValue = _OldValue.Replace("\\n", "").Replace("\n", "").Replace("\\r","").Replace("\r", "")
+                        .Replace("<br/>", "").Replace(System.Environment.NewLine, "")
+                        .Replace("%0a", "").Replace("%5cn", "").Replace("%0d", "").Replace("%5cr", "")
+                        .Replace("%09", "").Replace("%08", "").Replace("%2509", "").Replace("%0c", "").Replace("%07", "");
+
+            _NewValue = _NewValue.Replace("\\n", "").Replace("\n", "").Replace("\\r", "").Replace("\r", "")
+                .Replace("<br/>", "").Replace(System.Environment.NewLine, "")
+                .Replace("%0a", "").Replace("%5cn", "").Replace("%0d", "").Replace("%5cr", "")
+                .Replace("%09", "").Replace("%08", "").Replace("%2509", "").Replace("%0c", "").Replace("%07", "");
+
+
             string ServiceURl = string.Empty;
             if (System.Configuration.ConfigurationManager.AppSettings["Audit_LoggingService"] != null)
                 ServiceURl = System.Configuration.ConfigurationManager.AppSettings["Audit_LoggingService"];
