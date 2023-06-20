@@ -360,7 +360,8 @@ namespace Acurus.Capella.UI
                 ListItem lst = new ListItem();
                 UserLookupManager userLookupMngr = new UserLookupManager();
                 IList<UserLookup> ilstUserLookup = userLookupMngr.GetFieldLookupListByFieldNameandDescription(ClientSession.UserName, "PLAN LIST", ddlPayerName.SelectedItem.Value);
-                //ddlPlan.Items.Add("ALL");
+                //CAP-362 : Add All option for primary plan
+                ddlPlan.Items.Add("ALL");
 
                 if (ilstUserLookup.Count > 0 && ilstUserLookup.Count == 1 && ilstUserLookup[0].Value.ToUpper() == "ALL")
                 {
