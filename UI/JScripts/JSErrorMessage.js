@@ -31,8 +31,8 @@ function inserLog(EncounterId, HumanID, Message) {
                 var log = JSON.parse(xhr.responseText);
                 console.log(log);
                 alert("USER MESSAGE:\n" +
-                                    ". Cannot process request. Please Login again and retry. \nEXCEPTION DETAILS: \n" +
-                                   "Message: " + log.Message);
+                    ". Cannot process request. Please Login again and retry. \nEXCEPTION DETAILS: \n" +
+                    "Message: " + log.Message);
             }
         }
     });
@@ -85,7 +85,17 @@ function inserLog(EncounterId, HumanID, Message) {
 //}
 
 //Jira #CAP-30 - Newcode
-window.addEventListener("error", handleError, true);
+//window.addEventListener("error", handleError, true);
+window.onerror = function (message, file, line, column, error) {
+    var objError = {
+        message: message,
+        lineno: line,
+        colno: column,
+        filename: file,
+        error: error,
+    };
+    handleError(objError);
+}
 
 function handleError(evt) {
     if (evt.message) {
@@ -107,7 +117,7 @@ function handleError(evt) {
                 top.window.document.getElementById('divLoading').style.display = "none";
             //DisplayErrorMessage('000022');
             ScriptErrorLogEntry(evt.message, evt.lineno, evt.colno, evt.filename, evt.error.stack, true);
-           
+
         }
         else if (evt.message.indexOf("Cannot read property 'window' of null") > -1) {
             { sessionStorage.setItem('StartLoading', 'false'); StopLoadFromPatChart(); }
@@ -148,7 +158,7 @@ function handleError(evt) {
                 top.window.document.getElementById('divLoading').style.display = "none";
             ScriptErrorLogEntry(evt.message, evt.lineno, evt.colno, evt.filename, evt.error.stack, true);
             //if (evt.message.indexOf("Failed to execute 'insertRule' on 'CSSStyleSheet'") < 0)
-                //alert("Something went wrong! \n There seems to be a problem with this page. Please retry and if the problem persists, contact Capella Support with patient and page details.");
+            //alert("Something went wrong! \n There seems to be a problem with this page. Please retry and if the problem persists, contact Capella Support with patient and page details.");
         }
         //Jira #CAP-191
         else if (evt.error.stack.indexOf("Telerik.Web.UI.WebResource.axd") > -1) {
@@ -1679,8 +1689,8 @@ function LoadNotification(Value) {
                     var log = JSON.parse(xhr.responseText);
                     console.log(log);
                     alert("USER MESSAGE:\n" +
-                                    ". Cannot process request. Please Login again and retry. \nEXCEPTION DETAILS: \n" +
-                                   "Message: " + log.Message);
+                        ". Cannot process request. Please Login again and retry. \nEXCEPTION DETAILS: \n" +
+                        "Message: " + log.Message);
                 }
             }
         });
@@ -1816,8 +1826,8 @@ function CreateAuditLogEntryForTransactions(TransactionType, EntityName, HumanID
                 var log = JSON.parse(xhr.responseText);
                 console.log(log);
                 alert("USER MESSAGE:\n" +
-                                    ". Cannot process request. Please Login again and retry. \nEXCEPTION DETAILS: \n" +
-                                   "Message: " + log.Message);
+                    ". Cannot process request. Please Login again and retry. \nEXCEPTION DETAILS: \n" +
+                    "Message: " + log.Message);
             }
         }
     });
@@ -1943,8 +1953,8 @@ function RafCalculation() {
                 var log = JSON.parse(xhr.responseText);
                 console.log(log);
                 alert("USER MESSAGE:\n" +
-                                    ". Cannot process request. Please Login again and retry. \nEXCEPTION DETAILS: \n" +
-                                   "Message: " + log.Message);
+                    ". Cannot process request. Please Login again and retry. \nEXCEPTION DETAILS: \n" +
+                    "Message: " + log.Message);
             }
         }
     });
@@ -1984,8 +1994,8 @@ function LoadReport() {
                 var log = JSON.parse(xhr.responseText);
                 console.log(log);
                 alert("USER MESSAGE:\n" +
-                                    ". Cannot process request. Please Login again and retry. \nEXCEPTION DETAILS: \n" +
-                                   "Message: " + log.Message);
+                    ". Cannot process request. Please Login again and retry. \nEXCEPTION DETAILS: \n" +
+                    "Message: " + log.Message);
             }
         }
     });
@@ -2041,8 +2051,8 @@ function GetProtocolList() {
                 var log = JSON.parse(xhr.responseText);
                 console.log(log);
                 alert("USER MESSAGE:\n" +
-                                    ". Cannot process request. Please Login again and retry. \nEXCEPTION DETAILS: \n" +
-                                   "Message: " + log.Message);
+                    ". Cannot process request. Please Login again and retry. \nEXCEPTION DETAILS: \n" +
+                    "Message: " + log.Message);
             }
         }
     });
@@ -2367,8 +2377,8 @@ function RegenerateXML(Humanid, xmlType, page) {
                 console.log(log);
 
                 alert("USER MESSAGE:\n" +
-                                ". Cannot process request. Please Login again and retry. \nEXCEPTION DETAILS: \n" +
-                               "Message: " + log.Message);
+                    ". Cannot process request. Please Login again and retry. \nEXCEPTION DETAILS: \n" +
+                    "Message: " + log.Message);
 
             }
             { sessionStorage.setItem('StartLoading', 'false'); StopLoadFromPatChart(); }
@@ -2435,8 +2445,8 @@ function reloadPatientSummaryBarXmlRegenerate() {
                 if (log.Message.indexOf("Unexpected end of file") > 0 && log.Message.indexOf("There is an unclosed literal string") > 0 &&
                     log.Message.indexOf("is an unexpected token") > 0) {
                     alert("USER MESSAGE:\n" +
-                                    ". Cannot process request. Please Login again and retry. \nEXCEPTION DETAILS: \n" +
-                                   "Message: " + log.Message);
+                        ". Cannot process request. Please Login again and retry. \nEXCEPTION DETAILS: \n" +
+                        "Message: " + log.Message);
                 }
             }
             { sessionStorage.setItem('StartLoading', 'false'); StopLoadFromPatChart(); }

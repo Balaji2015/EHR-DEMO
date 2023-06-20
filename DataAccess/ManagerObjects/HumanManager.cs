@@ -4190,14 +4190,14 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
                 }
                 else
                     sQuery += "token like '" + _Token + "%' and account_status='active' and patient_status = 'alive' and human_type ='REGULAR' ";
-
+                //Jira CAP-449 - Add group by human_id in the query
                 if (user_carrier != "0")
                 {
-                    sQuery += " and legal_org ='" + legal_org + "' and Primary_Carrier_ID in (" + user_carrier + ")  order by result";
+                    sQuery += " and legal_org ='" + legal_org + "' and Primary_Carrier_ID in (" + user_carrier + ") group by human_id  order by result";
                 }
                 else
                 {
-                    sQuery += " and legal_org ='" + legal_org + "'  order by result";
+                    sQuery += " and legal_org ='" + legal_org + "' group by human_id  order by result";
                 }
 
                 ISQLQuery query = iMySession.CreateSQLQuery(sQuery);

@@ -52,7 +52,7 @@ build Job 4:
 
 build Job 11:
   tags:
-    - azure-test11
+    - Azure_test_11
   rules:
     - if: '$SERVER_TESTING_11 =="10.0.0.11"'
   stage: Solution build 11
@@ -149,17 +149,17 @@ Deploy Test Job 10.0.0.4 :
   #- echo "Deployee CMG BLOBIMP..Completed.."
 
   - echo "Backup CMG MT..Start.."
-  #- xcopy /y /s "F:\Acurus_Web\capella_cmg_project\capella_cmg_mt\*.*" "F:\Acurus_Web\Deployee\Backup-do not delete\Git\capella_cmg_mt"
+  - xcopy /y /s "F:\Acurus_Web\capella_cmg_project\capella_cmg_mt\*.*" "F:\Acurus_Web\Deployee\Backup-do not delete\Git\capella_cmg_mt"
   - echo "Backup CMG MT..Completed.."
 
   - echo "Deployee CMG MT..Start.."
-  #- xcopy /y /s "F:\Acurus_Web\Deployee\builds\Capella_publish\*.*" "F:\Acurus_Web\capella_cmg_project\capella_cmg_mt\"
+  - xcopy /y /s "F:\Acurus_Web\Deployee\builds\Capella_publish\*.*" "F:\Acurus_Web\capella_cmg_project\capella_cmg_mt\"
   - echo "Deployee CMG MT..Completed.."
 
  
 Deploy Test Job 10.0.0.11:
   tags:
-    - azure-test11
+    - Azure_test_11
   rules:
     - if: '$SERVER_TESTING_11 =="10.0.0.11"'
   environment:
@@ -190,7 +190,6 @@ Deploy Test Job 10.0.0.11:
 
   - echo "Backup CMG MT..Start.."
   - xcopy /y /s "F:\Acurus_Web\capella_cmg_project\capella_cmg_mt\*.*" "F:\Acurus_Web\Deployee\Backup-do not delete\Git\capella_cmg_mt"
-  #- xcopy /y /s "F:\Acurus_Web\Deployee\builds\Capella_publish\*.*" "F:\Acurus_Web\capella_cmg_project\Capella_cmg_training\"
   - echo "Backup CMG MT..Completed.."
 
   #- echo "Deployee CMG..Start.."
