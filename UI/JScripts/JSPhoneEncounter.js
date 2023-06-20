@@ -3029,7 +3029,8 @@ myapp.controller('PhoneEncounterCtrl', function ($scope, $http) {
             //self.close();
             // return;
             $("#btnClose").click();
-
+            //Jira Cap-409 - Phone encounter duplicating
+            { sessionStorage.setItem('StartLoading', 'false'); StopLoadFromPatChart(); }
         })
         .error(function (error, status, headers, config) {
 
@@ -3102,7 +3103,7 @@ myapp.controller('PhoneEncounterCtrl', function ($scope, $http) {
         //    else
         //        alert(error.Message + ".Please Contact Support!");
         //});
-        { sessionStorage.setItem('StartLoading', 'false'); StopLoadFromPatChart(); }
+        //{ sessionStorage.setItem('StartLoading', 'false'); StopLoadFromPatChart(); }
     }
     $scope.RefershGrid = function () {
 

@@ -30,11 +30,14 @@ using System.Xml.XPath;
 using Ionic.Zip;
 using MySql.Data.MySqlClient;
 using System.Threading;
+using log4net;
 
 namespace Acurus.Capella.UI
 {
     public partial class frmAppointments : System.Web.UI.Page
     {
+        private static readonly ILog logFile = LogManager.GetLogger("Error");
+
         #region Declarations
         //iTextSharp.text.Font boldFont = iTextSharp.text.FontFactory.GetFont("Arial", 7, iTextSharp.text.Font.BOLD, iTextSharp.text.BaseColor.BLACK);
         //iTextSharp.text.Font normalFont = iTextSharp.text.FontFactory.GetFont("Arial", 9, iTextSharp.text.Font.NORMAL, iTextSharp.text.BaseColor.BLACK);
@@ -94,283 +97,108 @@ namespace Acurus.Capella.UI
 
         protected void Page_Load(object sender, EventArgs e)
         {
-
-            if (!IsPostBack)
-            {
-                //logger.Debug("Page Load occuring for the first time");
-                btnClose.Visible = false;
-                System.Diagnostics.Stopwatch LoadTime = new System.Diagnostics.Stopwatch();
-                LoadTime.Start();
-                IList<FacilityLibrary> facList;
-                IList<FacilityLibrary> TempFac = new List<FacilityLibrary>();
-                if (hdnSourceScreen != null)
+            logFile.Info(DateTime.UtcNow.ToString() + "- Page Load - Start", null);
+            try {
+                if (!IsPostBack)
                 {
-                    hdnSourceScreen.Value = Request.QueryString["hdnSourceScreen"];
-                }
-                hdnRole.Value = ClientSession.UserRole.ToUpper().ToString();
-                //Added by bala for Color coding in sheduler
-                //logger.Debug("getStaticLookupByFieldName DB Call Starting");
-                //Stopwatch getStaticLookupByFieldNameDBCall = new Stopwatch();
-                //getStaticLookupByFieldNameDBCall.Start();
-                //objStaticLookup = staticLookupMngr.getStaticLookupByFieldName("CATEGORY OF BLOCK", "Sort_Order");
-                //getStaticLookupByFieldNameDBCall.Stop();
-                //logger.Debug("getStaticLookupByFieldName DB Call Completed. Time Taken : " + getStaticLookupByFieldNameDBCall.Elapsed.Seconds + "." + getStaticLookupByFieldNameDBCall.Elapsed.Milliseconds + "s.");
-                //Session["TypeofvisitColorList"] = objStaticLookup;
-                switch (hdnSourceScreen.Value)
-                {
-                    case "AppointmentFacility":
-                        //logger.Debug("Screen Setup is for Physician");
-                        btnClose.Visible = true;
-                        this.Page.Title = "Physician Calendar All Facility" + "-" + ClientSession.UserName;
-                        hdnTitle.Value = this.Page.Title;
-                        chkShowActive.Text = "Show All";
-                        chkShowAllPhysicians.Visible = true;
-                        chkShowActive.Checked = false;
-                        btnBlockDays.Visible = false;
-                        btnFindAppointments.Enabled = true;
-                        btnPhysiciancalenderFacility.Visible = false;
-                        pnlFacilityHeader.InnerText = "Providers";
-                        pnlProvidersHeader.InnerText = "Facility";
-                        //Stream phylis = PhyMngr.GetPhysicianList();
-                        //var serializer = new NetDataContractSerializer();
-                        //object obj = (object)serializer.ReadObject(phylis);
-                        IList<PhysicianLibrary> PhyList = new List<PhysicianLibrary>();
-                        //logger.Debug("Request['hdnApptPhyId']=" + Request["hdnApptPhyId"]);
-                        if (Request.QueryString["hdnApptPhyId"] != string.Empty)
-                        {
-                            hdnApptPhyId.Value = Request.QueryString["hdnApptPhyId"];
-                        }
-                        //logger.Debug("Request['hdnApptFacName']=" + Request["hdnApptFacName"]);
-                        if (Request.QueryString["hdnApptFacName"] != string.Empty)
-                        {
-                            hdnApptFacName.Value = Request.QueryString["hdnApptFacName"].Replace("_", "#");
-                        }
-                        //logger.Debug("Loading Physician list for specified facility from XML");
-                        PhyList = UtilityManager.GetPhysicianList(hdnApptFacName.Value,ClientSession.LegalOrg);//PhyMngr.GetPhysicianListbyFacility(hdnApptFacName.Value, "Y");
-                        PhyList = PhyList.OrderBy(a => a.PhyLastName).ToList<PhysicianLibrary>();
-                        if (PhyList != null)
-                        {
-                            //logger.Debug("Physician list is not null. Count = " + PhyList.Count);
-                            for (int i = 0; i < PhyList.Count; i++)
-                            {
-                                System.Web.UI.WebControls.ListItem cboItem = new System.Web.UI.WebControls.ListItem();
-                                //cboItem.Text = PhyList[i].PhyPrefix + " " + PhyList[i].PhyFirstName + " " + PhyList[i].PhyMiddleName + " " + PhyList[i].PhyLastName + " " + PhyList[i].PhySuffix;
-                                //Old Code
-                                //cboItem.Text = PhyList[i].PhyPrefix + " " + PhyList[i].PhyFirstName + " " + PhyList[i].PhyMiddleName + " " + PhyList[i].PhyLastName;
-                                //Gitlab# 2485 - Physician Name Display Change
-                                if (PhyList[i].PhyLastName != String.Empty)
-                                    cboItem.Text += PhyList[i].PhyLastName;
-                                if (PhyList[i].PhyFirstName != String.Empty)
-                                {
-                                    if (cboItem.Text != String.Empty)
-                                        cboItem.Text += "," + PhyList[i].PhyFirstName;
-                                    else
-                                        cboItem.Text += PhyList[i].PhyFirstName;
-                                }
-                                if (PhyList[i].PhyMiddleName != String.Empty)
-                                    cboItem.Text += " " + PhyList[i].PhyMiddleName;
-                                if (PhyList[i].PhySuffix != String.Empty)
-                                    cboItem.Text += "," + PhyList[i].PhySuffix;
+                    logFile.Info(DateTime.UtcNow.ToString() + "- Is PostBack - Start", null);
+                    //logger.Debug("Page Load occuring for the first time");
 
-                                cboItem.Value = PhyList[i].Id.ToString();
-                                this.cboFacilityName.Items.Add(cboItem);
-                                if (hdnApptPhyId.Value == PhyList[i].Id.ToString())
-                                {
-                                    cboFacilityName.Items.FindByText(cboItem.Text).Selected = true;
-                                    cboFacilityName.Attributes.Add("Tag", PhyList[i].Id.ToString());
-                                }
-
-                            }
-                            Session["PhysicianList"] = PhyList;
-                        }
-                        //else
-                        //logger.Debug("Physician list is null");
-
-                        #region ModifiedRegionForPerformanceTuning
-                        if (hdnApptFacName.Value == string.Empty)
-                        {
-                            //logger.Debug("Loading Facility list for specified Physician from XML");
-                            IList<MapFacilityPhysician> mapfacList = UtilityManager.GetFacilityListMappedToPhysician(cboFacilityName.Attributes["Tag"].ToString());
-                            if (mapfacList != null && mapfacList.Count != 0)
-                            {
-                                TempFac = ApplicationObject.facilityLibraryList.Where(item => item.Fac_Name == mapfacList[0].Facility_Name).ToList<FacilityLibrary>();
-                                //logger.Debug("Facility list is not null. Count = " + mapfacList.Count);
-                            }
-                            else
-                                TempFac = ApplicationObject.facilityLibraryList;
-                        }
-                        else
-                            TempFac = ApplicationObject.facilityLibraryList.Where(item => item.Fac_Name == hdnApptFacName.Value).ToList<FacilityLibrary>();
-
-                        //---Commented by Pujhitha. from this DB call only the start and end time is extracted. 
-                        //---These values can be obtained from Session["PhysicianList"] which has these required values and is filled from XML
-                        //IList<MapFacilityPhysician> mapfacList = new List<MapFacilityPhysician>();
-                        //IList<FacilityLibrary> facilityList = ApplicationObject.facilityLibraryList;//Codereview FacilityMngr.GetFacilityList();
-                        //MapFacilityPhysicianManager mapPhyfac = new MapFacilityPhysicianManager();
-                        //if (cboFacilityName.Attributes["Tag"] != null)
-                        //    mapfacList = mapPhyfac.GetMapFacilityListbyPhyID(Convert.ToUInt64(cboFacilityName.Attributes["Tag"].ToString()));
-                        //if (hdnApptFacName.Value == string.Empty)
-                        //{
-
-                        //    var fac = from f in facilityList where f.Fac_Name == mapfacList[0].Facility_Name select f;
-                        //    TempFac = fac.ToList<FacilityLibrary>();
-                        //}
-                        //else
-                        //{
-
-                        //    var fac = from f in facilityList where f.Fac_Name == hdnApptFacName.Value select f;
-                        //    TempFac = fac.ToList<FacilityLibrary>();
-                        //}
-                        #endregion
-
-                        break;
-
-                    case "":
-                        //logger.Debug("Screen Setup is for FO");
-                        this.Page.Title = "Appointments" + "-" + ClientSession.UserName;
-                        hdnTitle.Value = this.Page.Title;
-                        chkShowAllPhysicians.Visible = false;
-                        //facList = ApplicationObject.facilityLibraryList;//FacilityMngr.GetFacilityList();
-                        var faclist = from f in ApplicationObject.facilityLibraryList where f.Legal_Org == ClientSession.LegalOrg select f;
-                        facList = faclist.ToList<FacilityLibrary>();
-                        //logger.Debug("Filling Facility Combobox");
-                        if (facList != null)
-                        {
-                            //logger.Debug("Facility list count=" + facList.Count.ToString());
-                            for (int i = 0; i < facList.Count; i++)
-                            {
-                                System.Web.UI.WebControls.ListItem cboItem = new System.Web.UI.WebControls.ListItem();
-                                cboItem.Text = facList[i].Fac_Name;
-                                // cboItem.Value = facList[i].Id.ToString();
-                                this.cboFacilityName.Items.Add(cboItem);
-                            }
-                        }
-                        //else
-                        //logger.Debug("Facility list is null. Note it is Application Object. So it must be some serious issue.");
-                        if (ClientSession.FacilityName != null)
-                        {
-                            cboFacilityName.Text = ClientSession.FacilityName;
-                        }
-                        if (facList.Count > 0 && cboFacilityName.Text != string.Empty)
-                        {
-                            var fac1 = from f in facList where f.Fac_Name == cboFacilityName.Text select f;
-                            TempFac = fac1.ToList<FacilityLibrary>();
-                        }
-
-
-                        break;
-
-                    case "Menu":
-                        if (ClientSession.UserRole.ToUpper() == "PHYSICIAN" || ClientSession.UserRole.ToUpper() == "PHYSICIAN ASSISTANT")
-                        {
+                    logFile.Info(DateTime.UtcNow.ToString() + "- Load Start - Start", null);
+                    btnClose.Visible = false;
+                    System.Diagnostics.Stopwatch LoadTime = new System.Diagnostics.Stopwatch();
+                    LoadTime.Start();
+                    logFile.Info(DateTime.UtcNow.ToString() + "- Load Start - End", null);
+                    IList<FacilityLibrary> facList;
+                    IList<FacilityLibrary> TempFac = new List<FacilityLibrary>();
+                    logFile.Info(DateTime.UtcNow.ToString() + "- Store Hidden Value - Start", null);
+                    if (hdnSourceScreen != null)
+                    {
+                        hdnSourceScreen.Value = Request.QueryString["hdnSourceScreen"];
+                    }
+                    hdnRole.Value = ClientSession.UserRole.ToUpper().ToString();
+                    //Added by bala for Color coding in sheduler
+                    //logger.Debug("getStaticLookupByFieldName DB Call Starting");
+                    //Stopwatch getStaticLookupByFieldNameDBCall = new Stopwatch();
+                    //getStaticLookupByFieldNameDBCall.Start();
+                    //objStaticLookup = staticLookupMngr.getStaticLookupByFieldName("CATEGORY OF BLOCK", "Sort_Order");
+                    //getStaticLookupByFieldNameDBCall.Stop();
+                    //logger.Debug("getStaticLookupByFieldName DB Call Completed. Time Taken : " + getStaticLookupByFieldNameDBCall.Elapsed.Seconds + "." + getStaticLookupByFieldNameDBCall.Elapsed.Milliseconds + "s.");
+                    //Session["TypeofvisitColorList"] = objStaticLookup;
+                    switch (hdnSourceScreen.Value)
+                    {
+                        case "AppointmentFacility":
                             //logger.Debug("Screen Setup is for Physician");
+                            btnClose.Visible = true;
                             this.Page.Title = "Physician Calendar All Facility" + "-" + ClientSession.UserName;
                             hdnTitle.Value = this.Page.Title;
                             chkShowActive.Text = "Show All";
                             chkShowAllPhysicians.Visible = true;
                             chkShowActive.Checked = false;
-                            btnBlockDays.Enabled = true;
-                            //btnFindAppointments.Enabled = false;\\For bug id 45801
+                            btnBlockDays.Visible = false;
                             btnFindAppointments.Enabled = true;
                             btnPhysiciancalenderFacility.Visible = false;
                             pnlFacilityHeader.InnerText = "Providers";
                             pnlProvidersHeader.InnerText = "Facility";
-                            hdnSourceScreen.Value = "AppointmentFacility";
                             //Stream phylis = PhyMngr.GetPhysicianList();
                             //var serializer = new NetDataContractSerializer();
                             //object obj = (object)serializer.ReadObject(phylis);
-                            IList<PhysicianLibrary> PhyList1 = new List<PhysicianLibrary>();
-                            if (ClientSession.PhysicianId != null && ClientSession.PhysicianId > 0)
+                            IList<PhysicianLibrary> PhyList = new List<PhysicianLibrary>();
+                            //logger.Debug("Request['hdnApptPhyId']=" + Request["hdnApptPhyId"]);
+                            if (Request.QueryString["hdnApptPhyId"] != string.Empty)
                             {
-                                hdnApptPhyId.Value = ClientSession.PhysicianId.ToString();
+                                hdnApptPhyId.Value = Request.QueryString["hdnApptPhyId"];
                             }
-                            if (ClientSession.FacilityName != null)
+                            //logger.Debug("Request['hdnApptFacName']=" + Request["hdnApptFacName"]);
+                            if (Request.QueryString["hdnApptFacName"] != string.Empty)
                             {
-                                hdnApptFacName.Value = ClientSession.FacilityName.ToString();
+                                hdnApptFacName.Value = Request.QueryString["hdnApptFacName"].Replace("_", "#");
                             }
-
-                            bool bPhysicianMappedToLoggedInFacility = true;
+                            logFile.Info(DateTime.UtcNow.ToString() + "- Get Physician List - Start", null);
                             //logger.Debug("Loading Physician list for specified facility from XML");
-                            PhyList1 = UtilityManager.GetPhysicianList(hdnApptFacName.Value, ClientSession.LegalOrg);//.Where(item => item.Is_Active.ToUpper() == "Y").ToList<PhysicianLibrary>();//PhyMngr.GetPhysicianListbyFacility(hdnApptFacName.Value, "Y");
-                            if (!PhyList1.Any(phy => phy.Id == ClientSession.PhysicianId))
+                            PhyList = UtilityManager.GetPhysicianList(hdnApptFacName.Value, ClientSession.LegalOrg);//PhyMngr.GetPhysicianListbyFacility(hdnApptFacName.Value, "Y");
+                            PhyList = PhyList.OrderBy(a => a.PhyLastName).ToList<PhysicianLibrary>();
+                            if (PhyList != null)
                             {
-                                PhyList1 = UtilityManager.GetPhysicianList("", ClientSession.LegalOrg);
-                                chkShowAllPhysicians.Checked = true;
-                            }
-                            PhyList1 = PhyList1.OrderBy(a => a.PhyLastName).ToList<PhysicianLibrary>();
-                            if (PhyList1 != null)
-                            {
-                                //logger.Debug("Physician list is not null. Count = " + PhyList1.Count);
-                                string PrvdName = string.Empty;
-
-                                for (int i = 0; i < PhyList1.Count; i++)
+                                //logger.Debug("Physician list is not null. Count = " + PhyList.Count);
+                                for (int i = 0; i < PhyList.Count; i++)
                                 {
                                     System.Web.UI.WebControls.ListItem cboItem = new System.Web.UI.WebControls.ListItem();
-                                    /*string str = PhyList1[i].PhyPrefix + " " + PhyList1[i].PhyFirstName + " " + PhyList1[i].PhyMiddleName + " " + PhyList1[i].PhyLastName;
-                                    PrvdName = str;
-                                    //if (str.Length > 31)
-                                    //{
-                                    //    PrvdName = str.Substring(0, 30);
-                                    //}
-                                    cboItem.Attributes.Add("title", str);
-                                    cboItem.Text = PrvdName;
-                                    cboItem.Value = PhyList1[i].Id.ToString();
-                                    this.cboFacilityName.Items.Add(cboItem);*/
-
-                                    string strXmlFilePathTech = Path.Combine(System.Web.Hosting.HostingEnvironment.ApplicationPhysicalPath, "ConfigXML\\machine_technician.xml");
-                                    if (File.Exists(strXmlFilePathTech) == true)
+                                    //cboItem.Text = PhyList[i].PhyPrefix + " " + PhyList[i].PhyFirstName + " " + PhyList[i].PhyMiddleName + " " + PhyList[i].PhyLastName + " " + PhyList[i].PhySuffix;
+                                    //Old Code
+                                    //cboItem.Text = PhyList[i].PhyPrefix + " " + PhyList[i].PhyFirstName + " " + PhyList[i].PhyMiddleName + " " + PhyList[i].PhyLastName;
+                                    //Gitlab# 2485 - Physician Name Display Change
+                                    if (PhyList[i].PhyLastName != String.Empty)
+                                        cboItem.Text += PhyList[i].PhyLastName;
+                                    if (PhyList[i].PhyFirstName != String.Empty)
                                     {
-                                        XmlDocument xmldoc = new XmlDocument();
-                                        xmldoc.Load(System.Web.Hosting.HostingEnvironment.ApplicationPhysicalPath + "ConfigXML\\" + "machine_technician" + ".xml");
-                                        if (PhyList1[i].PhyColor != "" && PhyList1[i].PhyColor != "0")
-                                        {
-                                            XmlNodeList xmlTec = xmldoc.GetElementsByTagName("MachineTechnician" + PhyList1[i].PhyColor);
-
-                                            if (xmlTec != null && xmlTec[0] != null)
-                                            {
-                                                cboItem.Text = xmlTec[0].Attributes.GetNamedItem("machine_name").Value + " - " + PhyList1[i].PhyFirstName + " " + PhyList1[i].PhyLastName; //PhysicianList[i].PhyPrefix + " " + PhysicianList[i].PhyFirstName + " " + PhysicianList[i].PhyMiddleName + " " + PhysicianList[i].PhyLastName;
-                                                cboItem.Value = xmlTec[0].Attributes.GetNamedItem("machine_technician_library_id").Value;
-                                                cboItem.Attributes.Add("title", cboItem.Text);
-                                            }
-                                        }
+                                        if (cboItem.Text != String.Empty)
+                                            cboItem.Text += "," + PhyList[i].PhyFirstName;
                                         else
-                                        {
-                                            //Old Code
-                                            //cboItem.Text = PhyList1[i].PhyPrefix + " " + PhyList1[i].PhyFirstName + " " + PhyList1[i].PhyMiddleName + " " + PhyList1[i].PhyLastName;
-                                            //Gitlab# 2485 - Physician Name Display Change
-                                            if (PhyList1[i].PhyLastName != String.Empty)
-                                            cboItem.Text += PhyList1[i].PhyLastName;
-                                            if (PhyList1[i].PhyFirstName != String.Empty)
-                                            {
-                                                if (cboItem.Text != String.Empty)
-                                                    cboItem.Text += "," + PhyList1[i].PhyFirstName;
-                                                else
-                                                    cboItem.Text += PhyList1[i].PhyFirstName;
-                                            }
-                                            if (PhyList1[i].PhyMiddleName != String.Empty)
-                                                cboItem.Text += " " + PhyList1[i].PhyMiddleName;
-                                            if (PhyList1[i].PhySuffix != String.Empty)
-                                                cboItem.Text += "," + PhyList1[i].PhySuffix;
-                                            cboItem.Value = PhyList1[i].Id.ToString();
-                                            cboItem.Attributes.Add("title", cboItem.Text);
-                                        }
-                                        this.cboFacilityName.Items.Add(cboItem); ;
+                                            cboItem.Text += PhyList[i].PhyFirstName;
                                     }
+                                    if (PhyList[i].PhyMiddleName != String.Empty)
+                                        cboItem.Text += " " + PhyList[i].PhyMiddleName;
+                                    if (PhyList[i].PhySuffix != String.Empty)
+                                        cboItem.Text += "," + PhyList[i].PhySuffix;
 
-
-                                    if (hdnApptPhyId.Value == PhyList1[i].Id.ToString())
+                                    cboItem.Value = PhyList[i].Id.ToString();
+                                    this.cboFacilityName.Items.Add(cboItem);
+                                    if (hdnApptPhyId.Value == PhyList[i].Id.ToString())
                                     {
                                         cboFacilityName.Items.FindByText(cboItem.Text).Selected = true;
-                                        cboFacilityName.Attributes.Add("Tag", PhyList1[i].Id.ToString());
+                                        cboFacilityName.Attributes.Add("Tag", PhyList[i].Id.ToString());
                                     }
+
                                 }
-                                Session["PhysicianList"] = PhyList1;
+                                Session["PhysicianList"] = PhyList;
                             }
+                            logFile.Info(DateTime.UtcNow.ToString() + "- Get Physician List - End", null);
                             //else
                             //logger.Debug("Physician list is null");
-                            //------------------------------------------
+                            logFile.Info(DateTime.UtcNow.ToString() + "-Get Facility List Mapped To Physician - Start", null);
                             #region ModifiedRegionForPerformanceTuning
-                            if (hdnApptFacName.Value == string.Empty && bPhysicianMappedToLoggedInFacility)
+                            if (hdnApptFacName.Value == string.Empty)
                             {
                                 //logger.Debug("Loading Facility list for specified Physician from XML");
                                 IList<MapFacilityPhysician> mapfacList = UtilityManager.GetFacilityListMappedToPhysician(cboFacilityName.Attributes["Tag"].ToString());
@@ -384,266 +212,479 @@ namespace Acurus.Capella.UI
                             }
                             else
                                 TempFac = ApplicationObject.facilityLibraryList.Where(item => item.Fac_Name == hdnApptFacName.Value).ToList<FacilityLibrary>();
-                            //IList<MapFacilityPhysician> mapfacList1 = new List<MapFacilityPhysician>();
-                            //IList<FacilityLibrary> facilityList1 = ApplicationObject.facilityLibraryList;//Codereview FacilityMngr.GetFacilityList();
-                            //MapFacilityPhysicianManager mapPhyfac1 = new MapFacilityPhysicianManager();
+
+                            //---Commented by Pujhitha. from this DB call only the start and end time is extracted. 
+                            //---These values can be obtained from Session["PhysicianList"] which has these required values and is filled from XML
+                            //IList<MapFacilityPhysician> mapfacList = new List<MapFacilityPhysician>();
+                            //IList<FacilityLibrary> facilityList = ApplicationObject.facilityLibraryList;//Codereview FacilityMngr.GetFacilityList();
+                            //MapFacilityPhysicianManager mapPhyfac = new MapFacilityPhysicianManager();
                             //if (cboFacilityName.Attributes["Tag"] != null)
-                            //{
-                            //    mapfacList1 = mapPhyfac1.GetMapFacilityListbyPhyID(Convert.ToUInt64(cboFacilityName.Attributes["Tag"].ToString()));
-                            //}
+                            //    mapfacList = mapPhyfac.GetMapFacilityListbyPhyID(Convert.ToUInt64(cboFacilityName.Attributes["Tag"].ToString()));
                             //if (hdnApptFacName.Value == string.Empty)
                             //{
-                            //    if (facilityList1.Count > 0)
-                            //    {
-                            //        var fac = from f in facilityList1 where f.Fac_Name == mapfacList1[0].Facility_Name select f;
-                            //        TempFac = fac.ToList<FacilityLibrary>();
-                            //    }
 
-
+                            //    var fac = from f in facilityList where f.Fac_Name == mapfacList[0].Facility_Name select f;
+                            //    TempFac = fac.ToList<FacilityLibrary>();
                             //}
                             //else
                             //{
-                            //    if (facilityList1.Count > 0)
-                            //    {
-                            //        var fac = from f in facilityList1 where f.Fac_Name == hdnApptFacName.Value select f;
-                            //        TempFac = fac.ToList<FacilityLibrary>();
-                            //    }
 
+                            //    var fac = from f in facilityList where f.Fac_Name == hdnApptFacName.Value select f;
+                            //    TempFac = fac.ToList<FacilityLibrary>();
                             //}
                             #endregion
-                        }
-                        else
-                        {
+                            logFile.Info(DateTime.UtcNow.ToString() + "- Get Facility List Mapped To Physician - End", null);
+                            break;
+                           
+                        case "":
+                            logFile.Info(DateTime.UtcNow.ToString() + "- Appointment Load - Start", null);
                             //logger.Debug("Screen Setup is for FO");
                             this.Page.Title = "Appointments" + "-" + ClientSession.UserName;
                             hdnTitle.Value = this.Page.Title;
                             chkShowAllPhysicians.Visible = false;
-                            //facList = ApplicationObject.facilityLibraryList;
-
-                            var fac = from f in ApplicationObject.facilityLibraryList where f.Legal_Org == ClientSession.LegalOrg select f;
-                            facList = fac.ToList<FacilityLibrary>();
-
+                            //facList = ApplicationObject.facilityLibraryList;//FacilityMngr.GetFacilityList();
+                            var faclist = from f in ApplicationObject.facilityLibraryList where f.Legal_Org == ClientSession.LegalOrg select f;
+                            facList = faclist.ToList<FacilityLibrary>();
                             //logger.Debug("Filling Facility Combobox");
                             if (facList != null)
                             {
                                 //logger.Debug("Facility list count=" + facList.Count.ToString());
-                                string FacName = string.Empty;
                                 for (int i = 0; i < facList.Count; i++)
                                 {
                                     System.Web.UI.WebControls.ListItem cboItem = new System.Web.UI.WebControls.ListItem();
-                                    string FacName1 = facList[i].Fac_Name;
-                                    FacName = facList[i].Fac_Name;
-                                    //if (facList[i].Fac_Name.Length > 31)
-                                    //{
-                                    //    FacName = facList[i].Fac_Name.Substring(0, 30);
-                                    //}
-                                    cboItem.Attributes.Add("title", FacName1);
-                                    cboItem.Text = FacName;
-                                    cboItem.Value = FacName1;
+                                    cboItem.Text = facList[i].Fac_Name;
+                                    // cboItem.Value = facList[i].Id.ToString();
                                     this.cboFacilityName.Items.Add(cboItem);
                                 }
                             }
                             //else
                             //logger.Debug("Facility list is null. Note it is Application Object. So it must be some serious issue.");
-
-                            //----------------------------
                             if (ClientSession.FacilityName != null)
                             {
                                 cboFacilityName.Text = ClientSession.FacilityName;
                             }
                             if (facList.Count > 0 && cboFacilityName.Text != string.Empty)
                             {
-                                var facmnu = from f in facList where f.Fac_Name == cboFacilityName.Text select f;
-                                TempFac = facmnu.ToList<FacilityLibrary>();
+                                var fac1 = from f in facList where f.Fac_Name == cboFacilityName.Text select f;
+                                TempFac = fac1.ToList<FacilityLibrary>();
                             }
 
-                        }
-                        break;
-                }
-                if (ClientSession.UserRole.ToUpper() == "MEDICAL ASSISTANT")
-                {
-                    btnBlockDays.Enabled = false;
-                }
-                IList<ProcessMaster> TempProcList;
-                TempProcList = ApplicationObject.processMasterList;
-                if (TempProcList != null && TempProcList.Count > 0)
-                {
-                    var ColoredProcess = (from colorprocess in TempProcList where colorprocess.Process_Color != string.Empty select colorprocess);
-                    proclist = ColoredProcess.ToList<ProcessMaster>();
+                            logFile.Info(DateTime.UtcNow.ToString() + "- Appointment Load - End", null);
+                            break;
 
-                    var DistinctColor = (from colorporcess in TempProcList select colorporcess.Process_Color).Distinct();
-                    ColorList = DistinctColor.ToList<string>();
-                }
-                //else
-                //logger.Debug("Process Master list is null. Note it is Application Object. So it must be some serious issue.");
-                if (ColorList!=null&&ColorList.Count > 0)
-                {
-                    Session["ColorList"] = ColorList;
-                }
-                if (proclist!=null&&proclist.Count > 0)
-                {
-                    Session["proclist"] = proclist;
-                }
+                        case "Menu":
+                            logFile.Info(DateTime.UtcNow.ToString() + "- Menu Load - Start", null);
+                            if (ClientSession.UserRole.ToUpper() == "PHYSICIAN" || ClientSession.UserRole.ToUpper() == "PHYSICIAN ASSISTANT")
+                            {
+                                logFile.Info(DateTime.UtcNow.ToString() + "- Menu Load PHYSICIAN - Start", null);
+                                //logger.Debug("Screen Setup is for Physician");
+                                this.Page.Title = "Physician Calendar All Facility" + "-" + ClientSession.UserName;
+                                hdnTitle.Value = this.Page.Title;
+                                chkShowActive.Text = "Show All";
+                                chkShowAllPhysicians.Visible = true;
+                                chkShowActive.Checked = false;
+                                btnBlockDays.Enabled = true;
+                                //btnFindAppointments.Enabled = false;\\For bug id 45801
+                                btnFindAppointments.Enabled = true;
+                                btnPhysiciancalenderFacility.Visible = false;
+                                pnlFacilityHeader.InnerText = "Providers";
+                                pnlProvidersHeader.InnerText = "Facility";
+                                hdnSourceScreen.Value = "AppointmentFacility";
+                                //Stream phylis = PhyMngr.GetPhysicianList();
+                                //var serializer = new NetDataContractSerializer();
+                                //object obj = (object)serializer.ReadObject(phylis);
+                                IList<PhysicianLibrary> PhyList1 = new List<PhysicianLibrary>();
+                                if (ClientSession.PhysicianId != null && ClientSession.PhysicianId > 0)
+                                {
+                                    hdnApptPhyId.Value = ClientSession.PhysicianId.ToString();
+                                }
+                                if (ClientSession.FacilityName != null)
+                                {
+                                    hdnApptFacName.Value = ClientSession.FacilityName.ToString();
+                                }
 
-                //srividhya
-                //if (Session["LocalDate"] != null)
-                if (ClientSession.LocalDate != null && ClientSession.LocalDate != string.Empty)
-                {
-                    //set default date
-                    Calendar1.SelectedDate = DateTime.Now;
-                    //sriivdhya
-                    //Calendar1.SelectedDate = DateTime.ParseExact(Session["LocalDate"].ToString(), "M/dd/yyyy", CultureInfo.InvariantCulture);
-                    //assign current date
-                    try
-                    {
-                        if (ClientSession.LocalDate == "")
-                            ClientSession.LocalDate = hdnLocalDate.Value;
-                        Calendar1.SelectedDate = DateTime.ParseExact(ClientSession.LocalDate.ToString(), "M/dd/yyyy", CultureInfo.InvariantCulture);
+                                bool bPhysicianMappedToLoggedInFacility = true;
+                                //logger.Debug("Loading Physician list for specified facility from XML");
+                                PhyList1 = UtilityManager.GetPhysicianList(hdnApptFacName.Value, ClientSession.LegalOrg);//.Where(item => item.Is_Active.ToUpper() == "Y").ToList<PhysicianLibrary>();//PhyMngr.GetPhysicianListbyFacility(hdnApptFacName.Value, "Y");
+                                if (!PhyList1.Any(phy => phy.Id == ClientSession.PhysicianId))
+                                {
+                                    PhyList1 = UtilityManager.GetPhysicianList("", ClientSession.LegalOrg);
+                                    chkShowAllPhysicians.Checked = true;
+                                }
+                                PhyList1 = PhyList1.OrderBy(a => a.PhyLastName).ToList<PhysicianLibrary>();
+                                if (PhyList1 != null)
+                                {
+                                    //logger.Debug("Physician list is not null. Count = " + PhyList1.Count);
+                                    string PrvdName = string.Empty;
+
+                                    for (int i = 0; i < PhyList1.Count; i++)
+                                    {
+                                        System.Web.UI.WebControls.ListItem cboItem = new System.Web.UI.WebControls.ListItem();
+                                        /*string str = PhyList1[i].PhyPrefix + " " + PhyList1[i].PhyFirstName + " " + PhyList1[i].PhyMiddleName + " " + PhyList1[i].PhyLastName;
+                                        PrvdName = str;
+                                        //if (str.Length > 31)
+                                        //{
+                                        //    PrvdName = str.Substring(0, 30);
+                                        //}
+                                        cboItem.Attributes.Add("title", str);
+                                        cboItem.Text = PrvdName;
+                                        cboItem.Value = PhyList1[i].Id.ToString();
+                                        this.cboFacilityName.Items.Add(cboItem);*/
+
+                                        string strXmlFilePathTech = Path.Combine(System.Web.Hosting.HostingEnvironment.ApplicationPhysicalPath, "ConfigXML\\machine_technician.xml");
+                                        if (File.Exists(strXmlFilePathTech) == true)
+                                        {
+                                            XmlDocument xmldoc = new XmlDocument();
+                                            xmldoc.Load(System.Web.Hosting.HostingEnvironment.ApplicationPhysicalPath + "ConfigXML\\" + "machine_technician" + ".xml");
+                                            if (PhyList1[i].PhyColor != "" && PhyList1[i].PhyColor != "0")
+                                            {
+                                                XmlNodeList xmlTec = xmldoc.GetElementsByTagName("MachineTechnician" + PhyList1[i].PhyColor);
+
+                                                if (xmlTec != null && xmlTec[0] != null)
+                                                {
+                                                    cboItem.Text = xmlTec[0].Attributes.GetNamedItem("machine_name").Value + " - " + PhyList1[i].PhyFirstName + " " + PhyList1[i].PhyLastName; //PhysicianList[i].PhyPrefix + " " + PhysicianList[i].PhyFirstName + " " + PhysicianList[i].PhyMiddleName + " " + PhysicianList[i].PhyLastName;
+                                                    cboItem.Value = xmlTec[0].Attributes.GetNamedItem("machine_technician_library_id").Value;
+                                                    cboItem.Attributes.Add("title", cboItem.Text);
+                                                }
+                                            }
+                                            else
+                                            {
+                                                //Old Code
+                                                //cboItem.Text = PhyList1[i].PhyPrefix + " " + PhyList1[i].PhyFirstName + " " + PhyList1[i].PhyMiddleName + " " + PhyList1[i].PhyLastName;
+                                                //Gitlab# 2485 - Physician Name Display Change
+                                                if (PhyList1[i].PhyLastName != String.Empty)
+                                                    cboItem.Text += PhyList1[i].PhyLastName;
+                                                if (PhyList1[i].PhyFirstName != String.Empty)
+                                                {
+                                                    if (cboItem.Text != String.Empty)
+                                                        cboItem.Text += "," + PhyList1[i].PhyFirstName;
+                                                    else
+                                                        cboItem.Text += PhyList1[i].PhyFirstName;
+                                                }
+                                                if (PhyList1[i].PhyMiddleName != String.Empty)
+                                                    cboItem.Text += " " + PhyList1[i].PhyMiddleName;
+                                                if (PhyList1[i].PhySuffix != String.Empty)
+                                                    cboItem.Text += "," + PhyList1[i].PhySuffix;
+                                                cboItem.Value = PhyList1[i].Id.ToString();
+                                                cboItem.Attributes.Add("title", cboItem.Text);
+                                            }
+                                            this.cboFacilityName.Items.Add(cboItem); ;
+                                        }
+
+
+                                        if (hdnApptPhyId.Value == PhyList1[i].Id.ToString())
+                                        {
+                                            cboFacilityName.Items.FindByText(cboItem.Text).Selected = true;
+                                            cboFacilityName.Attributes.Add("Tag", PhyList1[i].Id.ToString());
+                                        }
+                                    }
+                                    Session["PhysicianList"] = PhyList1;
+                                }
+                                //else
+                                //logger.Debug("Physician list is null");
+                                //------------------------------------------
+                                #region ModifiedRegionForPerformanceTuning
+                                if (hdnApptFacName.Value == string.Empty && bPhysicianMappedToLoggedInFacility)
+                                {
+                                    //logger.Debug("Loading Facility list for specified Physician from XML");
+                                    IList<MapFacilityPhysician> mapfacList = UtilityManager.GetFacilityListMappedToPhysician(cboFacilityName.Attributes["Tag"].ToString());
+                                    if (mapfacList != null && mapfacList.Count != 0)
+                                    {
+                                        TempFac = ApplicationObject.facilityLibraryList.Where(item => item.Fac_Name == mapfacList[0].Facility_Name).ToList<FacilityLibrary>();
+                                        //logger.Debug("Facility list is not null. Count = " + mapfacList.Count);
+                                    }
+                                    else
+                                        TempFac = ApplicationObject.facilityLibraryList;
+                                }
+                                else
+                                    TempFac = ApplicationObject.facilityLibraryList.Where(item => item.Fac_Name == hdnApptFacName.Value).ToList<FacilityLibrary>();
+                                //IList<MapFacilityPhysician> mapfacList1 = new List<MapFacilityPhysician>();
+                                //IList<FacilityLibrary> facilityList1 = ApplicationObject.facilityLibraryList;//Codereview FacilityMngr.GetFacilityList();
+                                //MapFacilityPhysicianManager mapPhyfac1 = new MapFacilityPhysicianManager();
+                                //if (cboFacilityName.Attributes["Tag"] != null)
+                                //{
+                                //    mapfacList1 = mapPhyfac1.GetMapFacilityListbyPhyID(Convert.ToUInt64(cboFacilityName.Attributes["Tag"].ToString()));
+                                //}
+                                //if (hdnApptFacName.Value == string.Empty)
+                                //{
+                                //    if (facilityList1.Count > 0)
+                                //    {
+                                //        var fac = from f in facilityList1 where f.Fac_Name == mapfacList1[0].Facility_Name select f;
+                                //        TempFac = fac.ToList<FacilityLibrary>();
+                                //    }
+
+
+                                //}
+                                //else
+                                //{
+                                //    if (facilityList1.Count > 0)
+                                //    {
+                                //        var fac = from f in facilityList1 where f.Fac_Name == hdnApptFacName.Value select f;
+                                //        TempFac = fac.ToList<FacilityLibrary>();
+                                //    }
+
+                                //}
+                                #endregion
+                                logFile.Info(DateTime.UtcNow.ToString() + "- Menu Load PHYSICIAN - End", null);
+                            }
+                            else
+                            {
+                                logFile.Info(DateTime.UtcNow.ToString() + "- Menu Load MA - Start", null);
+                                //logger.Debug("Screen Setup is for FO");
+                                this.Page.Title = "Appointments" + "-" + ClientSession.UserName;
+                                hdnTitle.Value = this.Page.Title;
+                                chkShowAllPhysicians.Visible = false;
+                                //facList = ApplicationObject.facilityLibraryList;
+
+                                var fac = from f in ApplicationObject.facilityLibraryList where f.Legal_Org == ClientSession.LegalOrg select f;
+                                facList = fac.ToList<FacilityLibrary>();
+
+                                //logger.Debug("Filling Facility Combobox");
+                                if (facList != null)
+                                {
+                                    //logger.Debug("Facility list count=" + facList.Count.ToString());
+                                    string FacName = string.Empty;
+                                    for (int i = 0; i < facList.Count; i++)
+                                    {
+                                        System.Web.UI.WebControls.ListItem cboItem = new System.Web.UI.WebControls.ListItem();
+                                        string FacName1 = facList[i].Fac_Name;
+                                        FacName = facList[i].Fac_Name;
+                                        //if (facList[i].Fac_Name.Length > 31)
+                                        //{
+                                        //    FacName = facList[i].Fac_Name.Substring(0, 30);
+                                        //}
+                                        cboItem.Attributes.Add("title", FacName1);
+                                        cboItem.Text = FacName;
+                                        cboItem.Value = FacName1;
+                                        this.cboFacilityName.Items.Add(cboItem);
+                                    }
+                                }
+                                //else
+                                //logger.Debug("Facility list is null. Note it is Application Object. So it must be some serious issue.");
+
+                                //----------------------------
+                                if (ClientSession.FacilityName != null)
+                                {
+                                    cboFacilityName.Text = ClientSession.FacilityName;
+                                }
+                                if (facList.Count > 0 && cboFacilityName.Text != string.Empty)
+                                {
+                                    var facmnu = from f in facList where f.Fac_Name == cboFacilityName.Text select f;
+                                    TempFac = facmnu.ToList<FacilityLibrary>();
+                                }
+                                logFile.Info(DateTime.UtcNow.ToString() + "- Menu Load MA - End", null);
+                            }
+                            break;
                     }
-                    catch 
+                    logFile.Info(DateTime.UtcNow.ToString() + "- Store Hidden Value - End", null);
+                    logFile.Info(DateTime.UtcNow.ToString() + "- MA Button Block Days - Start", null);
+                    if (ClientSession.UserRole.ToUpper() == "MEDICAL ASSISTANT")
                     {
+                        btnBlockDays.Enabled = false;
+                    }
+                    logFile.Info(DateTime.UtcNow.ToString() + "- MA Button Block Days - End", null);
+                    logFile.Info(DateTime.UtcNow.ToString() + "- Load Procedure List - Start", null);
+                    IList<ProcessMaster> TempProcList;
+                    TempProcList = ApplicationObject.processMasterList;
+                    if (TempProcList != null && TempProcList.Count > 0)
+                    {
+                        var ColoredProcess = (from colorprocess in TempProcList where colorprocess.Process_Color != string.Empty select colorprocess);
+                        proclist = ColoredProcess.ToList<ProcessMaster>();
+
+                        var DistinctColor = (from colorporcess in TempProcList select colorporcess.Process_Color).Distinct();
+                        ColorList = DistinctColor.ToList<string>();
+                    }
+                    //else
+                    //logger.Debug("Process Master list is null. Note it is Application Object. So it must be some serious issue.");
+                    if (ColorList != null && ColorList.Count > 0)
+                    {
+                        Session["ColorList"] = ColorList;
+                    }
+                    if (proclist != null && proclist.Count > 0)
+                    {
+                        Session["proclist"] = proclist;
+                    }
+                    logFile.Info(DateTime.UtcNow.ToString() + "- Load Procedure List - End", null);
+                    //srividhya
+                    //if (Session["LocalDate"] != null)
+                    logFile.Info(DateTime.UtcNow.ToString() + "- Calender Select Date - Start", null);
+                    if (ClientSession.LocalDate != null && ClientSession.LocalDate != string.Empty)
+                    {
+                        //set default date
                         Calendar1.SelectedDate = DateTime.Now;
-                        //logger.Debug("Conversion of LocalTime of value='" + ClientSession.LocalDate.ToString() + "' to DateTime threw an error.", exp);
-                        // throw (exp);
+                        //sriivdhya
+                        //Calendar1.SelectedDate = DateTime.ParseExact(Session["LocalDate"].ToString(), "M/dd/yyyy", CultureInfo.InvariantCulture);
+                        //assign current date
+                        try
+                        {
+                            if (ClientSession.LocalDate == "")
+                                ClientSession.LocalDate = hdnLocalDate.Value;
+                            Calendar1.SelectedDate = DateTime.ParseExact(ClientSession.LocalDate.ToString(), "M/dd/yyyy", CultureInfo.InvariantCulture);
+                        }
+                        catch
+                        {
+                            Calendar1.SelectedDate = DateTime.Now;
+                            //logger.Debug("Conversion of LocalTime of value='" + ClientSession.LocalDate.ToString() + "' to DateTime threw an error.", exp);
+                            // throw (exp);
+                        }
+                        schAppointmentScheduler.SelectedDate = Calendar1.SelectedDate;
+                        //Calendar1.TodayDayStyle.BackColor = Color.Beige; //commented by nijanthan
                     }
-                    schAppointmentScheduler.SelectedDate = Calendar1.SelectedDate;
-                    //Calendar1.TodayDayStyle.BackColor = Color.Beige; //commented by nijanthan
-                }
-                //logger.Debug("Request['Duedate']=" + Request["Duedate"]);
-                if (Request["Duedate"] != null)
-                {
+                    //logger.Debug("Request['Duedate']=" + Request["Duedate"]);
+                    if (Request["Duedate"] != null)
+                    {
+                        try
+                        {
+                            Calendar1.SelectedDate = Convert.ToDateTime(Request["Duedate"]);
+                        }
+                        catch (Exception exp)
+                        {
+                            //logger.Debug("Conversion of Due Date to DateTime threw an error.", exp);
+                            throw (exp);
+                        }
+                        //Calendar1.VisibleDate = Convert.ToDateTime(Request["Duedate"]); //commented by nijanthan
+                        schAppointmentScheduler.SelectedDate = Calendar1.SelectedDate;
+                    }
+                    //else if (Session["Localtime"] != null)
+                    //{
+                    //    Calendar1.SelectedDate = ToLoalTime.LocalTimeFromTimeOffset(Session["Localtime"].ToString(), DateTime.Now); ;
+                    //    schAppointmentScheduler.SelectedDate = Calendar1.SelectedDate;
+                    //}
+                    if (Calendar1.SelectedDate.ToString("dd-MMM-yyyy") != string.Empty)
+                    {
+                        hdnSelectedDate.Value = Calendar1.SelectedDate.ToString("dd-MMM-yyyy");
+                    }
+                    DateTime dtStart = new DateTime();
+                    DateTime dtEnd = new DateTime();
+                    if (TempFac != null && TempFac.Count() > 0)
+                    {
+                        if (TempFac[0].Start_Time != null && TempFac[0].Start_Time != string.Empty)
+                        {
+                            try
+                            {
+                                dtStart = Convert.ToDateTime(TempFac[0].Start_Time);
+                            }
+                            catch (Exception exp)
+                            {
+                                //logger.Debug("Conversion of Start Time of value='" + TempFac[0].Start_Time + "' to DateTime threw an error.", exp);
+                                throw (exp);
+                            }
+                        }
+                        if (TempFac[0].Start_Time != null && TempFac[0].End_Time != string.Empty)
+                        {
+                            try
+                            {
+                                dtEnd = Convert.ToDateTime(TempFac[0].End_Time);
+                            }
+                            catch (Exception exp)
+                            {
+                                //logger.Debug("Conversion of End Time of value='" + TempFac[0].End_Time + "' to DateTime threw an error.", exp);
+                                throw (exp);
+                            }
+                        }
+                    }
+
                     try
                     {
-                        Calendar1.SelectedDate = Convert.ToDateTime(Request["Duedate"]);
+                        schAppointmentScheduler.DayStartTime = TimeSpan.FromHours(Convert.ToDouble(dtStart.Hour));
                     }
                     catch (Exception exp)
                     {
-                        //logger.Debug("Conversion of Due Date to DateTime threw an error.", exp);
+                        //logger.Debug("Conversion of Start Hour of value='" + dtStart.Hour + "' to double threw an error.", exp);
                         throw (exp);
                     }
-                    //Calendar1.VisibleDate = Convert.ToDateTime(Request["Duedate"]); //commented by nijanthan
-                    schAppointmentScheduler.SelectedDate = Calendar1.SelectedDate;
+                    try
+                    {
+                        schAppointmentScheduler.DayEndTime = TimeSpan.FromHours(Convert.ToDouble(dtEnd.Hour));
+                    }
+                    catch (Exception exp)
+                    {
+                        //logger.Debug("Conversion of End Hour of value='" + dtEnd.Hour + "' to double threw an error.", exp);
+                        throw (exp);
+                    }
+                    logFile.Info(DateTime.UtcNow.ToString() + "- Calender Select Date - End", null);
+                    logFile.Info(DateTime.UtcNow.ToString() + "- Selected Index Change - Start", null);
+                    Stopwatch Timer1 = new Stopwatch();
+                    Timer1.Start();
+                    cboFacilityName_SelectedIndexChanged(sender, e);
+                    Timer1.Stop();
+                    //logger.Debug("Loading Facilities or Physicians for combobox and filling the Scheduler as per Physician, Facility and Date. Time Taken : " + Timer1.Elapsed.Seconds + "." + Timer1.Elapsed.Milliseconds + "s.");
+                    LoadTime.Stop();
+                    lblLoad.Text = "Page Load -Minutes: " + LoadTime.Elapsed.Minutes.ToString() + " Seconds :" + LoadTime.Elapsed.Seconds.ToString() + " MilliSec : " + LoadTime.Elapsed.Milliseconds.ToString();
+                    logFile.Info(DateTime.UtcNow.ToString() + "- Selected Index Change - End", null);
+                    logFile.Info(DateTime.UtcNow.ToString() + "- Is PostBack - End", null);
                 }
-                //else if (Session["Localtime"] != null)
+                logFile.Info(DateTime.UtcNow.ToString() + "- Button Enable Disable - Start", null);
+                if (hdnTitle.Value != "")
+                    this.Page.Title = hdnTitle.Value;
+                //if (System.Configuration.ConfigurationManager.AppSettings["AncillaryTestClinic"] != null)
                 //{
-                //    Calendar1.SelectedDate = ToLoalTime.LocalTimeFromTimeOffset(Session["Localtime"].ToString(), DateTime.Now); ;
-                //    schAppointmentScheduler.SelectedDate = Calendar1.SelectedDate;
+                //    sAncillary = System.Configuration.ConfigurationManager.AppSettings["AncillaryTestClinic"].ToString();
                 //}
-                if (Calendar1.SelectedDate.ToString("dd-MMM-yyyy") != string.Empty)
+                if (ClientSession.UserRole.ToUpper() == "CODER")
                 {
-                    hdnSelectedDate.Value = Calendar1.SelectedDate.ToString("dd-MMM-yyyy");
+                    cboFacilityName.Enabled = false;
+                    chklstProviders.Enabled = false;
+                    chkShowActive.Enabled = false;
                 }
-                DateTime dtStart = new DateTime();
-                DateTime dtEnd = new DateTime();
-                if (TempFac != null && TempFac.Count() > 0 )
-                {
-                    if (TempFac[0].Start_Time !=null &&TempFac[0].Start_Time != string.Empty)
-                    {
-                        try
-                        {
-                            dtStart = Convert.ToDateTime(TempFac[0].Start_Time);
-                        }
-                        catch (Exception exp)
-                        {
-                            //logger.Debug("Conversion of Start Time of value='" + TempFac[0].Start_Time + "' to DateTime threw an error.", exp);
-                            throw (exp);
-                        }
-                    }
-                    if (TempFac[0].Start_Time != null && TempFac[0].End_Time != string.Empty)
-                    {
-                        try
-                        {
-                            dtEnd = Convert.ToDateTime(TempFac[0].End_Time);
-                        }
-                        catch (Exception exp)
-                        {
-                            //logger.Debug("Conversion of End Time of value='" + TempFac[0].End_Time + "' to DateTime threw an error.", exp);
-                            throw (exp);
-                        }
-                    }
-                }
-
-                try
-                {
-                    schAppointmentScheduler.DayStartTime = TimeSpan.FromHours(Convert.ToDouble(dtStart.Hour));
-                }
-                catch (Exception exp)
-                {
-                    //logger.Debug("Conversion of Start Hour of value='" + dtStart.Hour + "' to double threw an error.", exp);
-                    throw (exp);
-                }
-                try
-                {
-                    schAppointmentScheduler.DayEndTime = TimeSpan.FromHours(Convert.ToDouble(dtEnd.Hour));
-                }
-                catch (Exception exp)
-                {
-                    //logger.Debug("Conversion of End Hour of value='" + dtEnd.Hour + "' to double threw an error.", exp);
-                    throw (exp);
-                }
-
-                Stopwatch Timer1 = new Stopwatch();
-                Timer1.Start();
-                cboFacilityName_SelectedIndexChanged(sender, e);
-                Timer1.Stop();
-                //logger.Debug("Loading Facilities or Physicians for combobox and filling the Scheduler as per Physician, Facility and Date. Time Taken : " + Timer1.Elapsed.Seconds + "." + Timer1.Elapsed.Milliseconds + "s.");
-                LoadTime.Stop();
-                lblLoad.Text = "Page Load -Minutes: " + LoadTime.Elapsed.Minutes.ToString() + " Seconds :" + LoadTime.Elapsed.Seconds.ToString() + " MilliSec : " + LoadTime.Elapsed.Milliseconds.ToString();
-            }
-            if (hdnTitle.Value != "")
-                this.Page.Title = hdnTitle.Value;
-            //if (System.Configuration.ConfigurationManager.AppSettings["AncillaryTestClinic"] != null)
-            //{
-            //    sAncillary = System.Configuration.ConfigurationManager.AppSettings["AncillaryTestClinic"].ToString();
-            //}
-            if (ClientSession.UserRole.ToUpper() == "CODER")
+                schAppointmentScheduler.EnableAjaxSkinRendering = true;
+                logFile.Info(DateTime.UtcNow.ToString() + "- Button Enable Disable - Start", null);
+                //OverAllPageLoad.Stop();
+                //logger.Debug("--------------------frmAppointments Page Load Completed. Time Taken :'" + OverAllPageLoad.Elapsed.Seconds + "." + OverAllPageLoad.Elapsed.Milliseconds + "s'--------------------");
+               }
+            catch (Exception ex)
             {
-                cboFacilityName.Enabled = false;
-                chklstProviders.Enabled = false;
-                chkShowActive.Enabled = false;
+                logFile.Info(DateTime.UtcNow.ToString() +ex, null);
             }
-            schAppointmentScheduler.EnableAjaxSkinRendering = true;
-            //OverAllPageLoad.Stop();
-            //logger.Debug("--------------------frmAppointments Page Load Completed. Time Taken :'" + OverAllPageLoad.Elapsed.Seconds + "." + OverAllPageLoad.Elapsed.Milliseconds + "s'--------------------");
+            logFile.Info(DateTime.UtcNow.ToString() + "- Page Load - End", null);
         }
 
         protected void cboFacilityName_SelectedIndexChanged(object sender, EventArgs e)
         {
             #region New Code
-            //if (System.Configuration.ConfigurationManager.AppSettings["AncillaryTestClinic"] != null)
-            //{
-            //    sAncillary = System.Configuration.ConfigurationManager.AppSettings["AncillaryTestClinic"].ToString();
-            //}
-            if (ApplicationObject.facilityLibraryList != null && cboFacilityName.SelectedItem != null)
+            try
             {
-                var facAncillary = from f in ApplicationObject.facilityLibraryList where f.Fac_Name == cboFacilityName.SelectedItem.Text select f;
-                IList<FacilityLibrary> ilstFacAncillary = facAncillary.ToList<FacilityLibrary>();
-                if (cboFacilityName.SelectedItem != null)
+                //if (System.Configuration.ConfigurationManager.AppSettings["AncillaryTestClinic"] != null)
+                //{
+                //    sAncillary = System.Configuration.ConfigurationManager.AppSettings["AncillaryTestClinic"].ToString();
+                //}
+                logFile.Info(DateTime.UtcNow.ToString() + "- cbo FacilityName Selected Index Changed - Start", null);
+                if (ApplicationObject.facilityLibraryList != null && cboFacilityName.SelectedItem != null)
                 {
-                    //if (sAncillary.Trim() != cboFacilityName.SelectedItem.Text.Trim())
-                    if (ilstFacAncillary.Count > 0 && ilstFacAncillary[0].Is_Ancillary != "Y")
+                    var facAncillary = from f in ApplicationObject.facilityLibraryList where f.Fac_Name == cboFacilityName.SelectedItem.Text select f;
+                    IList<FacilityLibrary> ilstFacAncillary = facAncillary.ToList<FacilityLibrary>();
+                    if (cboFacilityName.SelectedItem != null)
                     {
-                        chkShowActive.Enabled = true;
+                        //if (sAncillary.Trim() != cboFacilityName.SelectedItem.Text.Trim())
+                        if (ilstFacAncillary.Count > 0 && ilstFacAncillary[0].Is_Ancillary != "Y")
+                        {
+                            chkShowActive.Enabled = true;
+                        }
+                        else
+                        {
+                            chkShowActive.Enabled = false;
+                        }
                     }
+
                     else
-                    {
-                        chkShowActive.Enabled = false;
-                    }
+                        chkShowActive.Enabled = true;
                 }
-
+                if (hdnSourceScreen.Value == "AppointmentFacility" || ClientSession.UserRole.ToUpper() == "PHYSICIAN" || ClientSession.UserRole.ToUpper() == "PHYSICIAN ASSISTANT")
+                    FillCheckListBoxForPhysicianSetUp(hdnApptFacName.Value, true);
                 else
-                    chkShowActive.Enabled = true;
+                    FillCheckListBoxForFOSetUp(cboFacilityName.Text, true);
+
+                if (chklstProviders.Items.Cast<System.Web.UI.WebControls.ListItem>().Any(li => li.Selected))
+                    schAppointmentScheduler.Visible = true;
+
+                FillAllAppointmentsForDate();
+                this.Page.ClientScript.RegisterStartupScript(this.Page.GetType(), "StopLoading", " {sessionStorage.setItem('StartLoading', 'false');StopLoadFromPatChart();}", true);
+                logFile.Info(DateTime.UtcNow.ToString() + "- cbo FacilityName Selected Index Changed - End", null);
             }
-            if (hdnSourceScreen.Value == "AppointmentFacility" || ClientSession.UserRole.ToUpper() == "PHYSICIAN" || ClientSession.UserRole.ToUpper() == "PHYSICIAN ASSISTANT")
-                FillCheckListBoxForPhysicianSetUp(hdnApptFacName.Value, true);
-            else
-                FillCheckListBoxForFOSetUp(cboFacilityName.Text, true);
-
-            if (chklstProviders.Items.Cast<System.Web.UI.WebControls.ListItem>().Any(li => li.Selected))
-                schAppointmentScheduler.Visible = true;
-
-            FillAllAppointmentsForDate();
-            this.Page.ClientScript.RegisterStartupScript(this.Page.GetType(), "StopLoading", " {sessionStorage.setItem('StartLoading', 'false');StopLoadFromPatChart();}", true);
+            catch (Exception ex)
+            {
+                logFile.Info(DateTime.UtcNow.ToString() + "cboFacilityName_SelectedIndexChanged"+ex, null);
+            }
             #endregion
 
             #region Old Code
@@ -2853,528 +2894,574 @@ namespace Acurus.Capella.UI
             //{
             //    sAncillary = System.Configuration.ConfigurationManager.AppSettings["AncillaryTestClinic"].ToString();
             //}
-            var facAncillary = from f in ApplicationObject.facilityLibraryList where f.Fac_Name == cboFacilityName.SelectedItem.Text select f;
-            IList<FacilityLibrary> ilstFacAncillary = facAncillary.ToList<FacilityLibrary>();
-          
-
-            #region New Code
-
-            if (schAppointmentScheduler.SelectedView.ToString().Trim() == "WeekView")
+            try
             {
-                hdnSchedulerView.Value = "SwitchToWeekView";
-            }
-            else if (schAppointmentScheduler.SelectedView.ToString().Trim() == "MonthView")
-            {
-                hdnSchedulerView.Value = "SwitchToMonthView";
-            }
-            #region Physician Login
-            if (hdnSourceScreen.Value == "AppointmentFacility")
-            {
-                if (chklstProviders.SelectedItem == null || Calendar1.SelectedDate.ToString("dd-MMM-yyyy") == "01-Jan-1980" || Calendar1.SelectedDate == DateTime.MinValue)
-                    return;
-                #region Variables Declarations
+                logFile.Info(DateTime.UtcNow.ToString() + "-FillAllAppointmentsForDate - Fill Facility Ancillary- Start", null);
+                var facAncillary = from f in ApplicationObject.facilityLibraryList where f.Fac_Name == cboFacilityName.SelectedItem.Text select f;
+                IList<FacilityLibrary> ilstFacAncillary = facAncillary.ToList<FacilityLibrary>();
+                logFile.Info(DateTime.UtcNow.ToString() + "-FillAllAppointmentsForDate - Fill Facility Ancillary- End", null);
 
-                IList<ProcessMaster> tempProc = new List<ProcessMaster>();
-                IList<ProcessMaster> TempProcList;
-                IList<string> facilityList = new List<string>();
-                IList<ulong> PhyIDList = new List<ulong>();
-                FillAppointment LoadApptList;
-                Telerik.Web.UI.Appointment appt;
-
-                #endregion
-
-                #region DB Call
-
-                if (System.Text.RegularExpressions.Regex.IsMatch(hdnApptPhyId.Value, "^[0-9]*$") == true)
+                #region New Code
+                logFile.Info(DateTime.UtcNow.ToString() + "-FillAllAppointmentsForDate - Set Hidden Value- Start", null);
+                if (schAppointmentScheduler.SelectedView.ToString().Trim() == "WeekView")
                 {
-                    PhyIDList.Add(Convert.ToUInt64(hdnApptPhyId.Value));
+                    hdnSchedulerView.Value = "SwitchToWeekView";
                 }
-                facilityList = chklstProviders.Items.Cast<System.Web.UI.WebControls.ListItem>().Where(li => li.Selected).Select(li => li.Text).ToList<string>();
-                string time_taken = "";
-                Stopwatch LoadAppointmentsDBCall = new Stopwatch();
-                LoadAppointmentsDBCall.Start();
-                DateTime StartDateTime = new DateTime(Calendar1.SelectedDate.Year, Calendar1.SelectedDate.Month, Calendar1.SelectedDate.Day, 0, 0, 0);
-                StartDateTime = UtilityManager.ConvertToUniversal(StartDateTime);
-                DateTime EndDateTime = new DateTime(Calendar1.SelectedDate.Year, Calendar1.SelectedDate.Month, Calendar1.SelectedDate.Day, 23, 59, 59);
-                EndDateTime = UtilityManager.ConvertToUniversal(EndDateTime);
-
-                //For Bug ID 61776
-                //if (cboFacilityName.SelectedItem != null && sAncillary.Trim() != cboFacilityName.SelectedItem.Text.Trim())
-                if (cboFacilityName.SelectedItem != null && ilstFacAncillary.Count > 0 && ilstFacAncillary[0].Is_Ancillary != "Y")
+                else if (schAppointmentScheduler.SelectedView.ToString().Trim() == "MonthView")
                 {
-                    Is_Ancillary = false;
-                    LoadApptList = EncMngr.GetAppointmentsByDatePhysicianFacility(StartDateTime, EndDateTime, PhyIDList.ToArray<ulong>(), facilityList.ToArray<string>(), hdnSchedulerView.Value, out time_taken, false, Is_Ancillary);
+                    hdnSchedulerView.Value = "SwitchToMonthView";
                 }
-                else
+                logFile.Info(DateTime.UtcNow.ToString() + "-FillAllAppointmentsForDate - Set Hidden Value- End", null);
+                #region Physician Login
+                logFile.Info(DateTime.UtcNow.ToString() + "-FillAllAppointmentsForDate - Appointment Facility Physician- Start", null);
+                if (hdnSourceScreen.Value == "AppointmentFacility")
                 {
-                    Is_Ancillary = false;
-                    LoadApptList = EncMngr.GetAppointmentsByDatePhysicianFacility(StartDateTime, EndDateTime, PhyIDList.ToArray<ulong>(), facilityList.ToArray<string>(), hdnSchedulerView.Value, out time_taken, false, Is_Ancillary);
-                }
-                LoadAppointmentsDBCall.Stop();
-                time_taken += "Overall Time Taken :" + LoadAppointmentsDBCall.Elapsed.Seconds + "." + LoadAppointmentsDBCall.Elapsed.Milliseconds + "s.";
-                #endregion
+                    logFile.Info(DateTime.UtcNow.ToString() + "-FillAllAppointmentsForDate -Check List Provider - Start", null);
+                    if (chklstProviders.SelectedItem == null || Calendar1.SelectedDate.ToString("dd-MMM-yyyy") == "01-Jan-1980" || Calendar1.SelectedDate == DateTime.MinValue)
+                        return;
+                    logFile.Info(DateTime.UtcNow.ToString() + "-FillAllAppointmentsForDate -Check List Provider - End", null);
+                    #region Variables Declarations
+                    logFile.Info(DateTime.UtcNow.ToString() + "-FillAllAppointmentsForDate -Variable Declaration - Start", null);
+                    IList<ProcessMaster> tempProc = new List<ProcessMaster>();
+                    IList<ProcessMaster> TempProcList;
+                    IList<string> facilityList = new List<string>();
+                    IList<ulong> PhyIDList = new List<ulong>();
+                    FillAppointment LoadApptList;
+                    Telerik.Web.UI.Appointment appt;
+                    logFile.Info(DateTime.UtcNow.ToString() + "-FillAllAppointmentsForDate -Variable Declaration - End", null);
+                    #endregion
 
-                #region Fill Scheduler with Appointments
-                schAppointmentScheduler.Appointments.Clear();
-
-                TempProcList = ApplicationObject.processMasterList;
-                if (TempProcList.Count > 0)
-                {
-                    var ColoredProcess = (from colorprocess in TempProcList where colorprocess.Process_Color != string.Empty select colorprocess);
-                    proclist = ColoredProcess.ToList<ProcessMaster>();
-
-                    var DistinctColor = (from colorporcess in TempProcList select colorporcess.Process_Color).Distinct();
-                    ColorList = DistinctColor.ToList<string>();
-                }
-
-                for (int i = 0; i < LoadApptList.EncounterId.Count; i++)
-                {
-                    try
+                    #region DB Call
+                    logFile.Info(DateTime.UtcNow.ToString() + "-FillAllAppointmentsForDate -DB Call - Start", null);
+                    if (System.Text.RegularExpressions.Regex.IsMatch(hdnApptPhyId.Value, "^[0-9]*$") == true)
                     {
-                        TimeSpan ts = new TimeSpan(0, LoadApptList.Duration_Minutes[i], 0);
+                        PhyIDList.Add(Convert.ToUInt64(hdnApptPhyId.Value));
+                    }
+                    logFile.Info(DateTime.UtcNow.ToString() + "-FillAllAppointmentsForDate -Fill Facility List - Start", null);
+                    facilityList = chklstProviders.Items.Cast<System.Web.UI.WebControls.ListItem>().Where(li => li.Selected).Select(li => li.Text).ToList<string>();
+                    string time_taken = "";
+                    Stopwatch LoadAppointmentsDBCall = new Stopwatch();
+                    LoadAppointmentsDBCall.Start();
+                    DateTime StartDateTime = new DateTime(Calendar1.SelectedDate.Year, Calendar1.SelectedDate.Month, Calendar1.SelectedDate.Day, 0, 0, 0);
+                    StartDateTime = UtilityManager.ConvertToUniversal(StartDateTime);
+                    DateTime EndDateTime = new DateTime(Calendar1.SelectedDate.Year, Calendar1.SelectedDate.Month, Calendar1.SelectedDate.Day, 23, 59, 59);
+                    EndDateTime = UtilityManager.ConvertToUniversal(EndDateTime);
 
-                        //string EvStatus = "";
-                        string IsACOEligible = string.Empty;
+                    //For Bug ID 61776
+                    //if (cboFacilityName.SelectedItem != null && sAncillary.Trim() != cboFacilityName.SelectedItem.Text.Trim())
+                    if (cboFacilityName.SelectedItem != null && ilstFacAncillary.Count > 0 && ilstFacAncillary[0].Is_Ancillary != "Y")
+                    {
+                        Is_Ancillary = false;
+                        LoadApptList = EncMngr.GetAppointmentsByDatePhysicianFacility(StartDateTime, EndDateTime, PhyIDList.ToArray<ulong>(), facilityList.ToArray<string>(), hdnSchedulerView.Value, out time_taken, false, Is_Ancillary);
+                    }
+                    else
+                    {
+                        Is_Ancillary = false;
+                        LoadApptList = EncMngr.GetAppointmentsByDatePhysicianFacility(StartDateTime, EndDateTime, PhyIDList.ToArray<ulong>(), facilityList.ToArray<string>(), hdnSchedulerView.Value, out time_taken, false, Is_Ancillary);
+                    }
+                    LoadAppointmentsDBCall.Stop();
+                    logFile.Info(DateTime.UtcNow.ToString() + "-FillAllAppointmentsForDate -Fill Facility List - End", null);
+                    time_taken += "Overall Time Taken :" + LoadAppointmentsDBCall.Elapsed.Seconds + "." + LoadAppointmentsDBCall.Elapsed.Milliseconds + "s.";
+                    logFile.Info(DateTime.UtcNow.ToString() + "-FillAllAppointmentsForDate -DB Call - End", null);
+                    #endregion
 
-                        //Gitlab #3552
-                        //if (ClientSession.UserPermissionDTO.Scntab != null)
-                        //{
-                        //    var scn_id = (from p in ClientSession.UserPermissionDTO.Scntab where p.SCN_Name == "frmPerformEV" select p).ToList();
-                        //    if (scn_id.Count() > 0)
-                        //    {
-                        //        var SendEV = from p in ClientSession.UserPermissionDTO.Screens where p.SCN_ID == Convert.ToInt32(scn_id[0].SCN_ID) && p.Permission == "U" select p;
-                        //        if (SendEV.Count() > 0)
-                        //        {
-                        //            if (LoadApptList.Perform_EV_Status != null && LoadApptList.Perform_EV_Status.Count() > 0)
-                        //            {
-                        //                if (LoadApptList.Perform_EV_Status[i] != null && LoadApptList.Perform_EV_Status[i] != string.Empty)
-                        //                {
-                        //                    EvStatus = "  - " + LoadApptList.Perform_EV_Status[i].ToString();
-                        //                }
-                                      
-                                    
-                        //                else
-                        //                {
-                        //                    EvStatus = "  - EV-NOT PERFORMED";
-                        //                }
-                        //            }
-                        //            else if ((LoadApptList.EVMode != null && LoadApptList.EVMode.Count() > 0 && LoadApptList.EVMode[i] != null && LoadApptList.EVMode[i] != string.Empty && LoadApptList.EVMode[i].ToString().ToUpper().Contains("MANUAL")))
-                        //            {
-                        //                EvStatus = " - EV-PERFORMED MANUALLY";
-                        //            }
+                    #region Fill Scheduler with Appointments
+                    logFile.Info(DateTime.UtcNow.ToString() + "-FillAllAppointmentsForDate -Fill Scheduler with Appointments - Start", null);
+                    schAppointmentScheduler.Appointments.Clear();
+                    logFile.Info(DateTime.UtcNow.ToString() + "-FillAllAppointmentsForDate -Store Procedure and color List - Start", null);
+                    TempProcList = ApplicationObject.processMasterList;
+                    if (TempProcList.Count > 0)
+                    {
+                        var ColoredProcess = (from colorprocess in TempProcList where colorprocess.Process_Color != string.Empty select colorprocess);
+                        proclist = ColoredProcess.ToList<ProcessMaster>();
 
-                        //            else
-                        //            {
-                        //                EvStatus = "  - EV-NOT PERFORMED";
-                        //            }
-                        //        }
-                        //        else
-                        //        {
-                        //            EvStatus = "  - EV-NOT PERFORMED";
-                        //        }
-                        //    }
-                        //}
-
-                        if (LoadApptList.Is_ACO_Eligible[i] != string.Empty && LoadApptList.Is_ACO_Eligible[i] != "N")
-                            IsACOEligible = "  - " + LoadApptList.Is_ACO_Eligible[i];
-
-                        appt = new Telerik.Web.UI.Appointment(LoadApptList.Human_ID[i].ToString() + "-", UtilityManager.ConvertToLocal(LoadApptList.Appointment_Date[i]), UtilityManager.ConvertToLocal(LoadApptList.Appointment_Date[i].AddHours(ts.Hours).AddMinutes(ts.Minutes).AddSeconds(ts.Seconds)), " - " + LoadApptList.PatientName[i].ToString() + " - " + LoadApptList.ApptStatus[i].ToString() + IsACOEligible);//EvStatus + IsACOEligible);
-                        appt.ToolTip = LoadApptList.Human_ID[i].ToString() + " - " + LoadApptList.PatientName[i].ToString() + " - " + LoadApptList.TypeofVisit[i].ToString();
-                        appt.Subject = UtilityManager.ConvertToLocal(LoadApptList.Appointment_Date[i]).ToString("hh:mm:ss tt") + "-" + UtilityManager.ConvertToLocal(LoadApptList.Appointment_Date[i].AddHours(ts.Hours).AddMinutes(ts.Minutes).AddSeconds(ts.Seconds)).ToString("hh:mm:ss tt") + " - " + LoadApptList.PatientName[i].ToString() + " - " + LoadApptList.ApptStatus[i].ToString() + IsACOEligible; //EvStatus + IsACOEligible;
-                        if (LoadApptList.Preferred_Language[i].ToString() != null && LoadApptList.Preferred_Language[i].ToString() != string.Empty)
+                        var DistinctColor = (from colorporcess in TempProcList select colorporcess.Process_Color).Distinct();
+                        ColorList = DistinctColor.ToList<string>();
+                    }
+                    logFile.Info(DateTime.UtcNow.ToString() + "-FillAllAppointmentsForDate -Store Procedure and color List - End", null);
+                    for (int i = 0; i < LoadApptList.EncounterId.Count; i++)
+                    {
+                        logFile.Info(DateTime.UtcNow.ToString() + "-FillAllAppointmentsForDate -Load Appointment - Start", null);
+                        try
                         {
-                            appt.Subject += "- " + LoadApptList.Preferred_Language[i].ToString();
-                        }
-                        appt.ID = LoadApptList.EncounterId[i] + "-" + LoadApptList.Payment_Paid[i] + "-" + LoadApptList.E_Super_Bill[i];// + "-" + LoadApptList.Document_Type[i];
-                        appt.Start = UtilityManager.ConvertToLocal(LoadApptList.Appointment_Date[i]);
-                        appt.End = appt.Start.AddHours(ts.Hours).AddMinutes(ts.Minutes).AddSeconds(ts.Seconds);
-                        //appt.End = UtilityManager.ConvertToLocal(LoadApptList.Appointment_Date[i].AddHours(ts.Hours).AddMinutes(ts.Minutes).AddSeconds(ts.Seconds));
-                        appt.Description = LoadApptList.ApptStatus[i];
-                        appt.Font.Bold = true;
-                        appt.Font.Size = 9;
-                        IList<string> matchingFacility = facilityList.Where(item => item == LoadApptList.FacilityName[i]).ToList<string>();
+                            TimeSpan ts = new TimeSpan(0, LoadApptList.Duration_Minutes[i], 0);
 
-                        if (matchingFacility != null && matchingFacility.Count > 0)
-                        {
-                            appt.Resources.Add(new Resource("Facility", matchingFacility[0], matchingFacility[0]));
-                        }
+                            //string EvStatus = "";
+                            string IsACOEligible = string.Empty;
 
-                        if (proclist.Count > 0)
-                        {
-                            var Choose = from c in proclist where c.Process_Name == appt.Description select c;
-                            if (Choose != null && Choose.Count() > 0)
-                                tempProc = Choose.ToList<ProcessMaster>();
-                            else
-                                tempProc = null;
-                        }
-                        if (tempProc != null && tempProc.Count > 0)
-                        {
-                            IList<string> colrList = ColorList.Where(item => item.ToUpper() == tempProc[0].Process_Color.ToUpper()).ToList<string>();
-                            if (colrList.Count > 0)//&& LoadApptList.Document_Type[i] != "Y")
+                            //Gitlab #3552
+                            //if (ClientSession.UserPermissionDTO.Scntab != null)
+                            //{
+                            //    var scn_id = (from p in ClientSession.UserPermissionDTO.Scntab where p.SCN_Name == "frmPerformEV" select p).ToList();
+                            //    if (scn_id.Count() > 0)
+                            //    {
+                            //        var SendEV = from p in ClientSession.UserPermissionDTO.Screens where p.SCN_ID == Convert.ToInt32(scn_id[0].SCN_ID) && p.Permission == "U" select p;
+                            //        if (SendEV.Count() > 0)
+                            //        {
+                            //            if (LoadApptList.Perform_EV_Status != null && LoadApptList.Perform_EV_Status.Count() > 0)
+                            //            {
+                            //                if (LoadApptList.Perform_EV_Status[i] != null && LoadApptList.Perform_EV_Status[i] != string.Empty)
+                            //                {
+                            //                    EvStatus = "  - " + LoadApptList.Perform_EV_Status[i].ToString();
+                            //                }
+
+
+                            //                else
+                            //                {
+                            //                    EvStatus = "  - EV-NOT PERFORMED";
+                            //                }
+                            //            }
+                            //            else if ((LoadApptList.EVMode != null && LoadApptList.EVMode.Count() > 0 && LoadApptList.EVMode[i] != null && LoadApptList.EVMode[i] != string.Empty && LoadApptList.EVMode[i].ToString().ToUpper().Contains("MANUAL")))
+                            //            {
+                            //                EvStatus = " - EV-PERFORMED MANUALLY";
+                            //            }
+
+                            //            else
+                            //            {
+                            //                EvStatus = "  - EV-NOT PERFORMED";
+                            //            }
+                            //        }
+                            //        else
+                            //        {
+                            //            EvStatus = "  - EV-NOT PERFORMED";
+                            //        }
+                            //    }
+                            //}
+                            logFile.Info(DateTime.UtcNow.ToString() + "-FillAllAppointmentsForDate -Fill Appointment - Start", null);
+                            if (LoadApptList.Is_ACO_Eligible[i] != string.Empty && LoadApptList.Is_ACO_Eligible[i] != "N")
+                                IsACOEligible = "  - " + LoadApptList.Is_ACO_Eligible[i];
+
+                            appt = new Telerik.Web.UI.Appointment(LoadApptList.Human_ID[i].ToString() + "-", UtilityManager.ConvertToLocal(LoadApptList.Appointment_Date[i]), UtilityManager.ConvertToLocal(LoadApptList.Appointment_Date[i].AddHours(ts.Hours).AddMinutes(ts.Minutes).AddSeconds(ts.Seconds)), " - " + LoadApptList.PatientName[i].ToString() + " - " + LoadApptList.ApptStatus[i].ToString() + IsACOEligible);//EvStatus + IsACOEligible);
+                            appt.ToolTip = LoadApptList.Human_ID[i].ToString() + " - " + LoadApptList.PatientName[i].ToString() + " - " + LoadApptList.TypeofVisit[i].ToString();
+                            appt.Subject = UtilityManager.ConvertToLocal(LoadApptList.Appointment_Date[i]).ToString("hh:mm:ss tt") + "-" + UtilityManager.ConvertToLocal(LoadApptList.Appointment_Date[i].AddHours(ts.Hours).AddMinutes(ts.Minutes).AddSeconds(ts.Seconds)).ToString("hh:mm:ss tt") + " - " + LoadApptList.PatientName[i].ToString() + " - " + LoadApptList.ApptStatus[i].ToString() + IsACOEligible; //EvStatus + IsACOEligible;
+                            if (LoadApptList.Preferred_Language[i].ToString() != null && LoadApptList.Preferred_Language[i].ToString() != string.Empty)
                             {
-                                appt.BackColor = Color.FromName(tempProc[0].Process_Color);
-                                appt.BorderColor = Color.Black;
-                                schAppointmentScheduler.InsertAppointment(appt);
+                                appt.Subject += "- " + LoadApptList.Preferred_Language[i].ToString();
                             }
-                        }
-                    }
-                    catch (Exception e)
-                    {
-                        throw (e);
-                    }
-                }
-                #endregion
+                            appt.ID = LoadApptList.EncounterId[i] + "-" + LoadApptList.Payment_Paid[i] + "-" + LoadApptList.E_Super_Bill[i];// + "-" + LoadApptList.Document_Type[i];
+                            appt.Start = UtilityManager.ConvertToLocal(LoadApptList.Appointment_Date[i]);
+                            appt.End = appt.Start.AddHours(ts.Hours).AddMinutes(ts.Minutes).AddSeconds(ts.Seconds);
+                            //appt.End = UtilityManager.ConvertToLocal(LoadApptList.Appointment_Date[i].AddHours(ts.Hours).AddMinutes(ts.Minutes).AddSeconds(ts.Seconds));
+                            appt.Description = LoadApptList.ApptStatus[i];
+                            appt.Font.Bold = true;
+                            appt.Font.Size = 9;
+                            logFile.Info(DateTime.UtcNow.ToString() + "-FillAllAppointmentsForDate -Fill Appointment - End", null);
+                            logFile.Info(DateTime.UtcNow.ToString() + "-FillAllAppointmentsForDate -Fill Matching Appointment - Start", null);
+                            IList<string> matchingFacility = facilityList.Where(item => item == LoadApptList.FacilityName[i]).ToList<string>();
 
-                #region Fill Scheduler with Blocked Appointment Time Slots
-
-                IList<Blockdays> blockList;
-                blockList = LoadApptList.blockList;
-
-                for (int i = 0; i < blockList.Count; i++)
-                {
-                    try
-                    {
-                        DateTime from = Convert.ToDateTime(blockList[i].From_Time);
-                        DateTime to = Convert.ToDateTime(blockList[i].To_Time);
-
-                        int i1 = (to - from).Hours * 60;
-                        int i2 = (to - from).Minutes;
-                        TimeSpan ts = new TimeSpan(0, i1 + i2, 0);
-
-                        DateTime dt = blockList[i].Block_Date.AddHours(Convert.ToDateTime(blockList[i].From_Time).Hour).AddMinutes(Convert.ToDateTime(blockList[i].From_Time).Minute);
-
-                        appt = new Telerik.Web.UI.Appointment();
-
-                        //if (blockList[i].Block_Type != "RECURSIVE" && blockList[i].Block_Type != "NON RECURSIVE")
-                        //{
-                        //    TypeofVistList.Add(blockList[i].Block_Type.ToString() + "|" + blockList[i].From_Time.ToString() + "|" + blockList[i].To_Time.ToString() + "|" + blockList[i].Block_Date.ToString() + "|" + blockList[i].Facility_Name);
-                        //    continue;
-                        //}
-
-                        string sStart = Convert.ToDateTime(blockList[i].Block_Date).ToShortDateString() + " " + Convert.ToDateTime(blockList[i].From_Time).ToShortTimeString();
-                        appt.Start = Convert.ToDateTime(sStart);
-                        string sEnd = Convert.ToDateTime(blockList[i].Block_Date).ToShortDateString() + " " + Convert.ToDateTime(blockList[i].To_Time).ToShortTimeString();
-                        appt.End = Convert.ToDateTime(sEnd);
-                        appt.Subject = Convert.ToDateTime(sStart).ToString("hh:mm:ss tt") + "-" + Convert.ToDateTime(sEnd).ToString("hh:mm:ss tt") + "-" + blockList[i].Reason;
-                        string ProviderName = string.Empty;
-                        appt.Resources.Add(new Resource("Facility", blockList[i].Facility_Name, blockList[i].Facility_Name));
-                        appt.Description = string.Empty;
-                        //To assign the Color
-                        if (System.Configuration.ConfigurationManager.AppSettings["AppointmentBlockColor"] == null)
-                        {
-                            throw new Exception("Please specify Appointment Back Color in the Config File");
-                        }
-
-                        Color tmpForeColor = Color.FromName(System.Configuration.ConfigurationManager.AppSettings["AppointmentBlockColor"]);
-
-                        appt.BackColor = tmpForeColor;
-                        appt.BorderColor = Color.Black;
-                        appt.Font.Bold = true;
-                        schAppointmentScheduler.InsertAppointment(appt);
-
-                    }
-                    catch (Exception e)
-                    {
-                        throw e;
-                    }
-                }
-                #endregion
-                RefreshMyResources();
-                //Session["TypeofVisit"] = TypeofVistList;
-            }
-            #endregion
-            #region FO or MA Login
-            else
-            {
-                if (chklstProviders.SelectedItem == null || Calendar1.SelectedDate.ToString("dd-MMM-yyyy") == "01-Jan-1980" || Calendar1.SelectedDate == DateTime.MinValue)
-                    return;
-
-                #region Variables Declarations
-
-                IList<ProcessMaster> tempProc = new List<ProcessMaster>();
-                IList<ulong> PhyIDList = new List<ulong>();
-                FillAppointment LoadApptList;
-                IList<string> facilityList = new List<string>();
-                Telerik.Web.UI.Appointment appt;
-
-                #endregion
-
-                #region DBCall
-
-                hdnPhyIDColor.Value = string.Empty;
-                for (int k = 0; k < chklstProviders.Items.Count; k++)
-                {
-                    if (chklstProviders.Items[k].Selected == true && System.Text.RegularExpressions.Regex.IsMatch(chklstProviders.Items[k].Value, "^[0-9]*$") == true)
-                    {
-                        PhyIDList.Add(Convert.ToUInt64(chklstProviders.Items[k].Value));
-                        hdnApptPhyId.Value = chklstProviders.Items[k].Value;
-                        hdnPhyIDColor.Value = chklstProviders.Items[k].Value;
-                    }
-                }
-
-                facilityList.Add(cboFacilityName.SelectedItem.Text);
-
-                if (Calendar1.SelectedDate == DateTime.MinValue)
-                {
-                    Calendar1.SelectedDate = UtilityManager.ConvertToLocal(DateTime.UtcNow);
-                }
-                string time_taken = "";
-                Stopwatch LoadAppointmentsDBCall = new Stopwatch();
-                LoadAppointmentsDBCall.Start();
-                DateTime StartDateTime = new DateTime(Calendar1.SelectedDate.Year, Calendar1.SelectedDate.Month, Calendar1.SelectedDate.Day, 0, 0, 0);
-                StartDateTime = UtilityManager.ConvertToUniversal(StartDateTime);
-                DateTime EndDateTime = new DateTime(Calendar1.SelectedDate.Year, Calendar1.SelectedDate.Month, Calendar1.SelectedDate.Day, 23, 59, 59);
-                EndDateTime = UtilityManager.ConvertToUniversal(EndDateTime);
-
-               // if (sAncillary.Trim() != cboFacilityName.SelectedItem.Text.Trim())
-                if (ilstFacAncillary.Count > 0 && ilstFacAncillary[0].Is_Ancillary != "Y")
-                {
-                    Is_Ancillary = false;
-                    LoadApptList = EncMngr.GetAppointmentsByDatePhysicianFacility(StartDateTime, EndDateTime, PhyIDList.ToArray<ulong>(), facilityList.ToArray<string>(), hdnSchedulerView.Value, out time_taken, true, Is_Ancillary);
-                }
-                else
-                {
-                    Is_Ancillary = true;
-                    LoadApptList = EncMngr.GetAppointmentsByDatePhysicianFacility(StartDateTime, EndDateTime, PhyIDList.ToArray<ulong>(), facilityList.ToArray<string>(), hdnSchedulerView.Value, out time_taken, true, Is_Ancillary);
-                }
-                LoadAppointmentsDBCall.Stop();
-                time_taken += "Overall Time Taken :" + LoadAppointmentsDBCall.Elapsed.Seconds + "." + LoadAppointmentsDBCall.Elapsed.Milliseconds + "s.";
-                #endregion
-
-                #region Fill Scheduler with Appointments
-                schAppointmentScheduler.Appointments.Clear();
-                for (int i = 0; i < LoadApptList.EncounterId.Count; i++)
-                {
-                    try
-                    {
-                        //string EvStatus = "";
-                        string IsACOEligible = string.Empty;
-
-                        if (ClientSession.UserPermissionDTO.Scntab != null)
-                        {
-                            var scn_id = (from p in ClientSession.UserPermissionDTO.Scntab where p.SCN_Name == "frmPerformEV" select p).ToList();
-                            if (scn_id.Count() > 0)
+                            if (matchingFacility != null && matchingFacility.Count > 0)
                             {
-                                var SendEV = from p in ClientSession.UserPermissionDTO.Screens where p.SCN_ID == Convert.ToInt32(scn_id[0].SCN_ID) && p.Permission == "U" select p;
-                                //if (SendEV.Count() > 0)
-                                //{
-                                //    if (LoadApptList.Perform_EV_Status != null && LoadApptList.Perform_EV_Status.Count() > 0)
-                                //    {
-                                //        if (LoadApptList.Perform_EV_Status[i] != null && LoadApptList.Perform_EV_Status[i] != string.Empty && LoadApptList.Perform_EV_Status[i].Trim().ToUpper().Contains("EV") == true)
-                                //        {
-                                //            EvStatus = "  - EV Status - " + LoadApptList.Perform_EV_Status[i].ToString();
-                                //        }
-                                //        else if (LoadApptList.Perform_EV_Status[i] != null && LoadApptList.Perform_EV_Status[i] != string.Empty && LoadApptList.Perform_EV_Status[i].Trim().ToUpper().Contains("INVALID") == true)
-                                //        {
-                                //            EvStatus = "  - EV Status - " + LoadApptList.Perform_EV_Status[i].ToString();
-                                //        }
-                                //        else if (LoadApptList.Perform_EV_Status[i] != null && LoadApptList.Perform_EV_Status[i] != string.Empty)
-                                //        {
-                                //            EvStatus = "  - EV Status - Inprogress";
-                                //        }
-                                //        else
-                                //        {
-                                //            EvStatus = "  - EV Status - NOT PERFORMED";
-                                //        }
-                                //    }
-                                //    else
-                                //    {
-                                //        EvStatus = "  - EV Status - NOT PERFORMED";
-                                //    }
-                                //}
-
-                                //Gitlab #3552
-                                //if (SendEV.Count() > 0)
-                                //{
-                                //    if (LoadApptList.Perform_EV_Status != null && LoadApptList.Perform_EV_Status.Count() > 0)
-                                //    {
-                                //        if (LoadApptList.Perform_EV_Status[i] != null && LoadApptList.Perform_EV_Status[i] != string.Empty)
-                                //        {
-                                //            EvStatus = "  - " + LoadApptList.Perform_EV_Status[i].ToString();
-                                //        }
-
-                                //        else if ((LoadApptList.EVMode != null && LoadApptList.EVMode.Count() > 0 && LoadApptList.EVMode[i] != null && LoadApptList.EVMode[i] != string.Empty && LoadApptList.EVMode[i].ToString().ToUpper().Contains("MANUAL")))
-                                //        {
-                                //            EvStatus = " - EV-PERFORMED MANUALLY";
-                                //        }
-                                //        else
-                                //        {
-                                //            EvStatus = "  - EV-NOT PERFORMED";
-                                //        }
-                                //    }
-                                //    else
-                                //    {
-                                //        EvStatus = "  - EV-NOT PERFORMED";
-                                //    }
-                                //}
-                                //else
-                                //{
-                                //    EvStatus = "  - EV-NOT PERFORMED";
-                                //}
+                                appt.Resources.Add(new Resource("Facility", matchingFacility[0], matchingFacility[0]));
                             }
-                        }
-
-                        if (LoadApptList.Is_ACO_Eligible.Count < i && LoadApptList.Is_ACO_Eligible[i] != string.Empty && LoadApptList.Is_ACO_Eligible[i] != "N")
-                            IsACOEligible = "  - "+LoadApptList.Is_ACO_Eligible[i];
-
-                        TimeSpan ts = new TimeSpan(0, LoadApptList.Duration_Minutes[i], 0);
-                        appt = new Telerik.Web.UI.Appointment(LoadApptList.Human_ID[i].ToString() + "-", UtilityManager.ConvertToLocal(LoadApptList.Appointment_Date[i]), UtilityManager.ConvertToLocal(LoadApptList.Appointment_Date[i].AddHours(ts.Hours).AddMinutes(ts.Minutes).AddSeconds(ts.Seconds)), " - " + LoadApptList.PatientName[i].ToString() + " - " + LoadApptList.ApptStatus[i] + IsACOEligible);// EvStatus + IsACOEligible);
-                        if (LoadApptList.Is_Medicare_Plan[i].ToString() == "Y")
-                        {
-                            appt.ToolTip = LoadApptList.Human_ID[i].ToString() + " - " + LoadApptList.PatientName[i].ToString() + " - " + LoadApptList.TypeofVisit[i].ToString() + "(MEDICARE)" + " ; " + "\n" + LoadApptList.Outstanding_Orders[i].ToString();
-                        }
-                        else
-                        {
-                            appt.ToolTip = LoadApptList.Human_ID[i].ToString() + " - " + LoadApptList.PatientName[i].ToString() + " - " + LoadApptList.TypeofVisit[i].ToString() + " ; " + "\n" + LoadApptList.Outstanding_Orders[i].ToString();
-                        }
-                        appt.Subject = UtilityManager.ConvertToLocal(LoadApptList.Appointment_Date[i]).ToString("hh:mm:ss tt") + "-" + UtilityManager.ConvertToLocal(LoadApptList.Appointment_Date[i].AddHours(ts.Hours).AddMinutes(ts.Minutes).AddSeconds(ts.Seconds)).ToString("hh:mm:ss tt") + " - " + LoadApptList.PatientName[i].ToString() + " - " + LoadApptList.ApptStatus[i].ToString() + "\n" + LoadApptList.Outstanding_Orders[i].ToString() + IsACOEligible ;// EvStatus + IsACOEligible;
-                        if (LoadApptList.Preferred_Language[i].ToString() != null && LoadApptList.Preferred_Language[i].ToString() != string.Empty)
-                        {
-                            appt.Subject += "- " + LoadApptList.Preferred_Language[i].ToString();
-                        }
-                        appt.ID = LoadApptList.EncounterId[i] + "-" + LoadApptList.Payment_Paid[i] + "-" + LoadApptList.E_Super_Bill[i] + /*"-" + LoadApptList.Document_Type[i] +*/ "-" + LoadApptList.Birth_Date[i].ToString() + "-" + LoadApptList.Human_Type[i];
-                        if (ClientSession.UserRole.Trim().ToUpper() == "OFFICE MANAGER")
-                            appt.ID += "-" + LoadApptList.Is_Batch_Created[i];
-                        appt.Start = UtilityManager.ConvertToLocal(LoadApptList.Appointment_Date[i]);
-                        appt.End = appt.Start.AddHours(ts.Hours).AddMinutes(ts.Minutes).AddSeconds(ts.Seconds);
-
-                        //appt.End = UtilityManager.ConvertToLocal(LoadApptList.Appointment_Date[i].AddHours(ts.Hours).AddMinutes(ts.Minutes).AddSeconds(ts.Seconds));
-                        appt.Description = LoadApptList.ApptStatus[i];
-                        appt.Font.Bold = true;
-                        appt.Font.Size = 9;
-                        //appt.Resources.Add(new Resource("Physician", "4", "Quinton -  Pererras Ernie"));
-                        appt.Resources.Add(new Resource("Physician", LoadApptList.Appointment_Provider_ID[i].ToString(), LoadApptList.PhysicianName[i]));
-
-                        IList<ProcessMaster> TempProcList;
-                        TempProcList = ApplicationObject.processMasterList;
-                        if (TempProcList.Count > 0)
-                        {
-                            var ColoredProcess = (from colorprocess in TempProcList where colorprocess.Process_Color != string.Empty select colorprocess);
-                            proclist = ColoredProcess.ToList<ProcessMaster>();
-                            var DistinctColor = (from colorporcess in TempProcList select colorporcess.Process_Color).Distinct();
-                            ColorList = DistinctColor.ToList<string>();
-                        }
-                        if (proclist.Count > 0)
-                        {
-                            var Choose = from c in proclist where c.Process_Name == appt.Description select c;//(IList<ProcessMaster>)Session["proclist"] 
-                            if (Choose != null && Choose.Count() > 0)
-                                tempProc = Choose.ToList<ProcessMaster>();
-                            else
-                                tempProc = null;
-                        }
-
-                        if (tempProc != null && tempProc.Count > 0)
-                        {
-                            IList<string> colrList = ColorList.Where(item => item.ToUpper() == tempProc[0].Process_Color.ToUpper()).ToList<string>();
-                            if (colrList.Count > 0)//&& LoadApptList.Document_Type[i] != "Y")
+                            logFile.Info(DateTime.UtcNow.ToString() + "-FillAllAppointmentsForDate -Fill Matching Appointment - End", null);
+                            logFile.Info(DateTime.UtcNow.ToString() + "-FillAllAppointmentsForDate -Fill Procedure List - Start", null);
+                            if (proclist.Count > 0)
                             {
-                                appt.BackColor = Color.FromName(tempProc[0].Process_Color);
-                                appt.BorderColor = Color.Black;
-                                schAppointmentScheduler.InsertAppointment(appt);
-                            }
-                        }
-                    }
-                    catch (Exception e)
-                    {
-                        throw (e);
-                    }
-                }
-                #endregion
-
-                #region Fill Scheduler with Blocked Appointment Time Slots
-
-                IList<Blockdays> blockList;
-                blockList = LoadApptList.blockList;
-                for (int i = 0; i < blockList.Count; i++)
-                {
-                    try
-                    {
-                        DateTime from = Convert.ToDateTime(blockList[i].From_Time);
-                        DateTime to = Convert.ToDateTime(blockList[i].To_Time);
-
-                        int i1 = (to - from).Hours * 60;
-                        int i2 = (to - from).Minutes;
-                        TimeSpan ts = new TimeSpan(0, i1 + i2, 0);
-
-                        DateTime dt = blockList[i].Block_Date.AddHours(Convert.ToDateTime(blockList[i].From_Time).Hour).AddMinutes(Convert.ToDateTime(blockList[i].From_Time).Minute);
-
-                        appt = new Telerik.Web.UI.Appointment();
-                        //if (blockList[i].Block_Type != "RECURSIVE" && blockList[i].Block_Type != "NON RECURSIVE")
-                        //{
-                        //    TypeofVistList.Add(blockList[i].Block_Type.ToString() + "|" + blockList[i].From_Time.ToString() + "|" + blockList[i].To_Time.ToString() + "|" + blockList[i].Block_Date.ToString() + "|" + blockList[i].Physician_ID);
-                        //    continue;
-                        //}
-                        string sStart = Convert.ToDateTime(blockList[i].Block_Date).ToShortDateString() + " " + Convert.ToDateTime(blockList[i].From_Time).ToShortTimeString();
-                        appt.Start = Convert.ToDateTime(sStart);
-                        string sEnd = Convert.ToDateTime(blockList[i].Block_Date).ToShortDateString() + " " + Convert.ToDateTime(blockList[i].To_Time).ToShortTimeString();
-                        appt.End = Convert.ToDateTime(sEnd);
-                        appt.Subject = Convert.ToDateTime(sStart).ToString("hh:mm:ss tt") + "-" + Convert.ToDateTime(sEnd).ToString("hh:mm:ss tt") + "-" + blockList[i].Reason;
-                        string ProviderName = string.Empty;
-                        for (int j = 0; j < chklstProviders.Items.Count; j++)
-                        {
-                            if (chklstProviders.Items[j].Selected == true)
-                            {
-                              //  if (sAncillary.Trim() != cboFacilityName.SelectedItem.Text.Trim())
-                                if (ilstFacAncillary.Count > 0 && ilstFacAncillary[0].Is_Ancillary != "Y")
-                                {
-                                    if (chklstProviders.Items[j].Value == blockList[i].Physician_ID.ToString())
-                                    {
-                                        ProviderName = chklstProviders.Items[j].Text;
-                                        break;
-                                    }
-                                }
+                                var Choose = from c in proclist where c.Process_Name == appt.Description select c;
+                                if (Choose != null && Choose.Count() > 0)
+                                    tempProc = Choose.ToList<ProcessMaster>();
                                 else
+                                    tempProc = null;
+                            }
+                            logFile.Info(DateTime.UtcNow.ToString() + "-FillAllAppointmentsForDate -Fill Procedure List - End", null);
+                            logFile.Info(DateTime.UtcNow.ToString() + "-FillAllAppointmentsForDate -Fill Temp Procedure List - Start", null);
+                            if (tempProc != null && tempProc.Count > 0)
+                            {
+                                IList<string> colrList = ColorList.Where(item => item.ToUpper() == tempProc[0].Process_Color.ToUpper()).ToList<string>();
+                                if (colrList.Count > 0)//&& LoadApptList.Document_Type[i] != "Y")
                                 {
-                                    if (chklstProviders.Items[j].Value == blockList[i].Machine_Technician_Library_ID.ToString())
+                                    appt.BackColor = Color.FromName(tempProc[0].Process_Color);
+                                    appt.BorderColor = Color.Black;
+                                    schAppointmentScheduler.InsertAppointment(appt);
+                                }
+                            }
+                            logFile.Info(DateTime.UtcNow.ToString() + "-FillAllAppointmentsForDate -Fill Temp Procedure List - End", null);
+                        }
+                        catch (Exception e)
+                        {
+                            throw (e);
+                        }
+                        logFile.Info(DateTime.UtcNow.ToString() + "-FillAllAppointmentsForDate -Load Appointment - End", null);
+                    }
+                    logFile.Info(DateTime.UtcNow.ToString() + "-FillAllAppointmentsForDate -Fill Scheduler with Appointments - End", null);
+                    #endregion
+
+                    #region Fill Scheduler with Blocked Appointment Time Slots
+                    logFile.Info(DateTime.UtcNow.ToString() + "-FillAllAppointmentsForDate -Fill Blocked Appointment - Start", null);
+                    IList<Blockdays> blockList;
+                    blockList = LoadApptList.blockList;
+
+                    for (int i = 0; i < blockList.Count; i++)
+                    {
+                        try
+                        {
+                            logFile.Info(DateTime.UtcNow.ToString() + "-FillAllAppointmentsForDate - Block List - Start", null);
+                            DateTime from = Convert.ToDateTime(blockList[i].From_Time);
+                            DateTime to = Convert.ToDateTime(blockList[i].To_Time);
+
+                            int i1 = (to - from).Hours * 60;
+                            int i2 = (to - from).Minutes;
+                            TimeSpan ts = new TimeSpan(0, i1 + i2, 0);
+
+                            DateTime dt = blockList[i].Block_Date.AddHours(Convert.ToDateTime(blockList[i].From_Time).Hour).AddMinutes(Convert.ToDateTime(blockList[i].From_Time).Minute);
+
+                            appt = new Telerik.Web.UI.Appointment();
+
+                            //if (blockList[i].Block_Type != "RECURSIVE" && blockList[i].Block_Type != "NON RECURSIVE")
+                            //{
+                            //    TypeofVistList.Add(blockList[i].Block_Type.ToString() + "|" + blockList[i].From_Time.ToString() + "|" + blockList[i].To_Time.ToString() + "|" + blockList[i].Block_Date.ToString() + "|" + blockList[i].Facility_Name);
+                            //    continue;
+                            //}
+
+                            string sStart = Convert.ToDateTime(blockList[i].Block_Date).ToShortDateString() + " " + Convert.ToDateTime(blockList[i].From_Time).ToShortTimeString();
+                            appt.Start = Convert.ToDateTime(sStart);
+                            string sEnd = Convert.ToDateTime(blockList[i].Block_Date).ToShortDateString() + " " + Convert.ToDateTime(blockList[i].To_Time).ToShortTimeString();
+                            appt.End = Convert.ToDateTime(sEnd);
+                            appt.Subject = Convert.ToDateTime(sStart).ToString("hh:mm:ss tt") + "-" + Convert.ToDateTime(sEnd).ToString("hh:mm:ss tt") + "-" + blockList[i].Reason;
+                            string ProviderName = string.Empty;
+                            appt.Resources.Add(new Resource("Facility", blockList[i].Facility_Name, blockList[i].Facility_Name));
+                            appt.Description = string.Empty;
+                            //To assign the Color
+                            if (System.Configuration.ConfigurationManager.AppSettings["AppointmentBlockColor"] == null)
+                            {
+                                throw new Exception("Please specify Appointment Back Color in the Config File");
+                            }
+
+                            Color tmpForeColor = Color.FromName(System.Configuration.ConfigurationManager.AppSettings["AppointmentBlockColor"]);
+
+                            appt.BackColor = tmpForeColor;
+                            appt.BorderColor = Color.Black;
+                            appt.Font.Bold = true;
+                            schAppointmentScheduler.InsertAppointment(appt);
+                            logFile.Info(DateTime.UtcNow.ToString() + "-FillAllAppointmentsForDate - Block List - End", null);
+                        }
+                        catch (Exception e)
+                        {
+                            throw e;
+                        }
+                    }
+                    logFile.Info(DateTime.UtcNow.ToString() + "-FillAllAppointmentsForDate -Fill Blocked Appointment - End", null);
+                    #endregion
+                    RefreshMyResources();
+                    //Session["TypeofVisit"] = TypeofVistList;
+                    logFile.Info(DateTime.UtcNow.ToString() + "-FillAllAppointmentsForDate - Appointment Facility Physician- End", null);
+                }
+                
+                #endregion
+                    #region FO or MA Login
+                else
+                {
+                    logFile.Info(DateTime.UtcNow.ToString() + "-FillAllAppointmentsForDate - Appointment Facility Fo or MA - Start", null);
+                    if (chklstProviders.SelectedItem == null || Calendar1.SelectedDate.ToString("dd-MMM-yyyy") == "01-Jan-1980" || Calendar1.SelectedDate == DateTime.MinValue)
+                        return;
+
+                    #region Variables Declarations
+                    logFile.Info(DateTime.UtcNow.ToString() + "-FillAllAppointmentsForDate - Variable Declaration - Start", null);
+                    IList<ProcessMaster> tempProc = new List<ProcessMaster>();
+                    IList<ulong> PhyIDList = new List<ulong>();
+                    FillAppointment LoadApptList;
+                    IList<string> facilityList = new List<string>();
+                    Telerik.Web.UI.Appointment appt;
+                    logFile.Info(DateTime.UtcNow.ToString() + "-FillAllAppointmentsForDate - Variable Declaration - End", null);
+                    #endregion
+
+                    #region DBCall
+                    logFile.Info(DateTime.UtcNow.ToString() + "-FillAllAppointmentsForDate - DB Call - Start", null);
+                    logFile.Info(DateTime.UtcNow.ToString() + "-FillAllAppointmentsForDate - Fill Hidden Value - Start", null);
+                    hdnPhyIDColor.Value = string.Empty;
+                    for (int k = 0; k < chklstProviders.Items.Count; k++)
+                    {
+                        if (chklstProviders.Items[k].Selected == true && System.Text.RegularExpressions.Regex.IsMatch(chklstProviders.Items[k].Value, "^[0-9]*$") == true)
+                        {
+                            PhyIDList.Add(Convert.ToUInt64(chklstProviders.Items[k].Value));
+                            hdnApptPhyId.Value = chklstProviders.Items[k].Value;
+                            hdnPhyIDColor.Value = chklstProviders.Items[k].Value;
+                        }
+                    }
+                    logFile.Info(DateTime.UtcNow.ToString() + "-FillAllAppointmentsForDate - Fill Hidden Value - End", null);
+                    logFile.Info(DateTime.UtcNow.ToString() + "-FillAllAppointmentsForDate - Fill Facility List - Start", null);
+                    facilityList.Add(cboFacilityName.SelectedItem.Text);
+
+                    if (Calendar1.SelectedDate == DateTime.MinValue)
+                    {
+                        Calendar1.SelectedDate = UtilityManager.ConvertToLocal(DateTime.UtcNow);
+                    }
+                    string time_taken = "";
+                    Stopwatch LoadAppointmentsDBCall = new Stopwatch();
+                    LoadAppointmentsDBCall.Start();
+                    DateTime StartDateTime = new DateTime(Calendar1.SelectedDate.Year, Calendar1.SelectedDate.Month, Calendar1.SelectedDate.Day, 0, 0, 0);
+                    StartDateTime = UtilityManager.ConvertToUniversal(StartDateTime);
+                    DateTime EndDateTime = new DateTime(Calendar1.SelectedDate.Year, Calendar1.SelectedDate.Month, Calendar1.SelectedDate.Day, 23, 59, 59);
+                    EndDateTime = UtilityManager.ConvertToUniversal(EndDateTime);
+
+                    // if (sAncillary.Trim() != cboFacilityName.SelectedItem.Text.Trim())
+                    if (ilstFacAncillary.Count > 0 && ilstFacAncillary[0].Is_Ancillary != "Y")
+                    {
+                        Is_Ancillary = false;
+                        LoadApptList = EncMngr.GetAppointmentsByDatePhysicianFacility(StartDateTime, EndDateTime, PhyIDList.ToArray<ulong>(), facilityList.ToArray<string>(), hdnSchedulerView.Value, out time_taken, true, Is_Ancillary);
+                    }
+                    else
+                    {
+                        Is_Ancillary = true;
+                        LoadApptList = EncMngr.GetAppointmentsByDatePhysicianFacility(StartDateTime, EndDateTime, PhyIDList.ToArray<ulong>(), facilityList.ToArray<string>(), hdnSchedulerView.Value, out time_taken, true, Is_Ancillary);
+                    }
+                    LoadAppointmentsDBCall.Stop();
+                    time_taken += "Overall Time Taken :" + LoadAppointmentsDBCall.Elapsed.Seconds + "." + LoadAppointmentsDBCall.Elapsed.Milliseconds + "s.";
+                    logFile.Info(DateTime.UtcNow.ToString() + "-FillAllAppointmentsForDate - Fill Facility List - End", null);
+                    logFile.Info(DateTime.UtcNow.ToString() + "-FillAllAppointmentsForDate - DB Call - End", null);
+                    #endregion
+
+                    #region Fill Scheduler with Appointments
+                    logFile.Info(DateTime.UtcNow.ToString() + "-FillAllAppointmentsForDate - Fill Scheduler with Appointments - Start", null);
+                    schAppointmentScheduler.Appointments.Clear();
+                    for (int i = 0; i < LoadApptList.EncounterId.Count; i++)
+                    {
+                        try
+                        {
+                            logFile.Info(DateTime.UtcNow.ToString() + "-FillAllAppointmentsForDate -Load Appointment - Start", null);
+                            //string EvStatus = "";
+                            string IsACOEligible = string.Empty;
+
+                            if (ClientSession.UserPermissionDTO.Scntab != null)
+                            {
+                                var scn_id = (from p in ClientSession.UserPermissionDTO.Scntab where p.SCN_Name == "frmPerformEV" select p).ToList();
+                                if (scn_id.Count() > 0)
+                                {
+                                    var SendEV = from p in ClientSession.UserPermissionDTO.Screens where p.SCN_ID == Convert.ToInt32(scn_id[0].SCN_ID) && p.Permission == "U" select p;
+                                    //if (SendEV.Count() > 0)
+                                    //{
+                                    //    if (LoadApptList.Perform_EV_Status != null && LoadApptList.Perform_EV_Status.Count() > 0)
+                                    //    {
+                                    //        if (LoadApptList.Perform_EV_Status[i] != null && LoadApptList.Perform_EV_Status[i] != string.Empty && LoadApptList.Perform_EV_Status[i].Trim().ToUpper().Contains("EV") == true)
+                                    //        {
+                                    //            EvStatus = "  - EV Status - " + LoadApptList.Perform_EV_Status[i].ToString();
+                                    //        }
+                                    //        else if (LoadApptList.Perform_EV_Status[i] != null && LoadApptList.Perform_EV_Status[i] != string.Empty && LoadApptList.Perform_EV_Status[i].Trim().ToUpper().Contains("INVALID") == true)
+                                    //        {
+                                    //            EvStatus = "  - EV Status - " + LoadApptList.Perform_EV_Status[i].ToString();
+                                    //        }
+                                    //        else if (LoadApptList.Perform_EV_Status[i] != null && LoadApptList.Perform_EV_Status[i] != string.Empty)
+                                    //        {
+                                    //            EvStatus = "  - EV Status - Inprogress";
+                                    //        }
+                                    //        else
+                                    //        {
+                                    //            EvStatus = "  - EV Status - NOT PERFORMED";
+                                    //        }
+                                    //    }
+                                    //    else
+                                    //    {
+                                    //        EvStatus = "  - EV Status - NOT PERFORMED";
+                                    //    }
+                                    //}
+
+                                    //Gitlab #3552
+                                    //if (SendEV.Count() > 0)
+                                    //{
+                                    //    if (LoadApptList.Perform_EV_Status != null && LoadApptList.Perform_EV_Status.Count() > 0)
+                                    //    {
+                                    //        if (LoadApptList.Perform_EV_Status[i] != null && LoadApptList.Perform_EV_Status[i] != string.Empty)
+                                    //        {
+                                    //            EvStatus = "  - " + LoadApptList.Perform_EV_Status[i].ToString();
+                                    //        }
+
+                                    //        else if ((LoadApptList.EVMode != null && LoadApptList.EVMode.Count() > 0 && LoadApptList.EVMode[i] != null && LoadApptList.EVMode[i] != string.Empty && LoadApptList.EVMode[i].ToString().ToUpper().Contains("MANUAL")))
+                                    //        {
+                                    //            EvStatus = " - EV-PERFORMED MANUALLY";
+                                    //        }
+                                    //        else
+                                    //        {
+                                    //            EvStatus = "  - EV-NOT PERFORMED";
+                                    //        }
+                                    //    }
+                                    //    else
+                                    //    {
+                                    //        EvStatus = "  - EV-NOT PERFORMED";
+                                    //    }
+                                    //}
+                                    //else
+                                    //{
+                                    //    EvStatus = "  - EV-NOT PERFORMED";
+                                    //}
+                                }
+                            }
+                            logFile.Info(DateTime.UtcNow.ToString() + "-FillAllAppointmentsForDate -Fill Appointment - Start", null);
+                            if (LoadApptList.Is_ACO_Eligible.Count < i && LoadApptList.Is_ACO_Eligible[i] != string.Empty && LoadApptList.Is_ACO_Eligible[i] != "N")
+                                IsACOEligible = "  - " + LoadApptList.Is_ACO_Eligible[i];
+
+                            TimeSpan ts = new TimeSpan(0, LoadApptList.Duration_Minutes[i], 0);
+                            appt = new Telerik.Web.UI.Appointment(LoadApptList.Human_ID[i].ToString() + "-", UtilityManager.ConvertToLocal(LoadApptList.Appointment_Date[i]), UtilityManager.ConvertToLocal(LoadApptList.Appointment_Date[i].AddHours(ts.Hours).AddMinutes(ts.Minutes).AddSeconds(ts.Seconds)), " - " + LoadApptList.PatientName[i].ToString() + " - " + LoadApptList.ApptStatus[i] + IsACOEligible);// EvStatus + IsACOEligible);
+                            if (LoadApptList.Is_Medicare_Plan[i].ToString() == "Y")
+                            {
+                                appt.ToolTip = LoadApptList.Human_ID[i].ToString() + " - " + LoadApptList.PatientName[i].ToString() + " - " + LoadApptList.TypeofVisit[i].ToString() + "(MEDICARE)" + " ; " + "\n" + LoadApptList.Outstanding_Orders[i].ToString();
+                            }
+                            else
+                            {
+                                appt.ToolTip = LoadApptList.Human_ID[i].ToString() + " - " + LoadApptList.PatientName[i].ToString() + " - " + LoadApptList.TypeofVisit[i].ToString() + " ; " + "\n" + LoadApptList.Outstanding_Orders[i].ToString();
+                            }
+                            appt.Subject = UtilityManager.ConvertToLocal(LoadApptList.Appointment_Date[i]).ToString("hh:mm:ss tt") + "-" + UtilityManager.ConvertToLocal(LoadApptList.Appointment_Date[i].AddHours(ts.Hours).AddMinutes(ts.Minutes).AddSeconds(ts.Seconds)).ToString("hh:mm:ss tt") + " - " + LoadApptList.PatientName[i].ToString() + " - " + LoadApptList.ApptStatus[i].ToString() + "\n" + LoadApptList.Outstanding_Orders[i].ToString() + IsACOEligible;// EvStatus + IsACOEligible;
+                            if (LoadApptList.Preferred_Language[i].ToString() != null && LoadApptList.Preferred_Language[i].ToString() != string.Empty)
+                            {
+                                appt.Subject += "- " + LoadApptList.Preferred_Language[i].ToString();
+                            }
+                            appt.ID = LoadApptList.EncounterId[i] + "-" + LoadApptList.Payment_Paid[i] + "-" + LoadApptList.E_Super_Bill[i] + /*"-" + LoadApptList.Document_Type[i] +*/ "-" + LoadApptList.Birth_Date[i].ToString() + "-" + LoadApptList.Human_Type[i];
+                            if (ClientSession.UserRole.Trim().ToUpper() == "OFFICE MANAGER")
+                                appt.ID += "-" + LoadApptList.Is_Batch_Created[i];
+                            appt.Start = UtilityManager.ConvertToLocal(LoadApptList.Appointment_Date[i]);
+                            appt.End = appt.Start.AddHours(ts.Hours).AddMinutes(ts.Minutes).AddSeconds(ts.Seconds);
+
+                            //appt.End = UtilityManager.ConvertToLocal(LoadApptList.Appointment_Date[i].AddHours(ts.Hours).AddMinutes(ts.Minutes).AddSeconds(ts.Seconds));
+                            appt.Description = LoadApptList.ApptStatus[i];
+                            appt.Font.Bold = true;
+                            appt.Font.Size = 9;
+                            //appt.Resources.Add(new Resource("Physician", "4", "Quinton -  Pererras Ernie"));
+                            appt.Resources.Add(new Resource("Physician", LoadApptList.Appointment_Provider_ID[i].ToString(), LoadApptList.PhysicianName[i]));
+                            logFile.Info(DateTime.UtcNow.ToString() + "-FillAllAppointmentsForDate -Fill Appointment - End", null);
+                            logFile.Info(DateTime.UtcNow.ToString() + "-FillAllAppointmentsForDate -Fill Procedure List - Start", null);
+                            IList<ProcessMaster> TempProcList;
+                            TempProcList = ApplicationObject.processMasterList;
+                            if (TempProcList.Count > 0)
+                            {
+                                var ColoredProcess = (from colorprocess in TempProcList where colorprocess.Process_Color != string.Empty select colorprocess);
+                                proclist = ColoredProcess.ToList<ProcessMaster>();
+                                var DistinctColor = (from colorporcess in TempProcList select colorporcess.Process_Color).Distinct();
+                                ColorList = DistinctColor.ToList<string>();
+                            }
+                            logFile.Info(DateTime.UtcNow.ToString() + "-FillAllAppointmentsForDate -Fill  Procedure List - End", null);
+                            logFile.Info(DateTime.UtcNow.ToString() + "-FillAllAppointmentsForDate -Fill Temp Procedure List - Start", null);
+                            if (proclist.Count > 0)
+                            {
+                                var Choose = from c in proclist where c.Process_Name == appt.Description select c;//(IList<ProcessMaster>)Session["proclist"] 
+                                if (Choose != null && Choose.Count() > 0)
+                                    tempProc = Choose.ToList<ProcessMaster>();
+                                else
+                                    tempProc = null;
+                            }
+
+                            logFile.Info(DateTime.UtcNow.ToString() + "-FillAllAppointmentsForDate -Fill Temp Procedure List - End", null);
+                            if (tempProc != null && tempProc.Count > 0)
+                            {
+                                IList<string> colrList = ColorList.Where(item => item.ToUpper() == tempProc[0].Process_Color.ToUpper()).ToList<string>();
+                                if (colrList.Count > 0)//&& LoadApptList.Document_Type[i] != "Y")
+                                {
+                                    appt.BackColor = Color.FromName(tempProc[0].Process_Color);
+                                    appt.BorderColor = Color.Black;
+                                    schAppointmentScheduler.InsertAppointment(appt);
+                                }
+                            }
+                            logFile.Info(DateTime.UtcNow.ToString() + "-FillAllAppointmentsForDate -Load Appointment - End", null);
+                        }
+                        catch (Exception e)
+                        {
+                            throw (e);
+                        }
+                    }
+                    logFile.Info(DateTime.UtcNow.ToString() + "-FillAllAppointmentsForDate - Fill Scheduler with Appointments - End", null);
+                    #endregion
+
+                    #region Fill Scheduler with Blocked Appointment Time Slots
+                    logFile.Info(DateTime.UtcNow.ToString() + "-FillAllAppointmentsForDate - Fill Scheduler with Blocked Appointments - Start", null);
+                    IList<Blockdays> blockList;
+                    blockList = LoadApptList.blockList;
+                    for (int i = 0; i < blockList.Count; i++)
+                    {
+                        try
+                        {
+                            logFile.Info(DateTime.UtcNow.ToString() + "-FillAllAppointmentsForDate - Block List - Start", null);
+                            DateTime from = Convert.ToDateTime(blockList[i].From_Time);
+                            DateTime to = Convert.ToDateTime(blockList[i].To_Time);
+
+                            int i1 = (to - from).Hours * 60;
+                            int i2 = (to - from).Minutes;
+                            TimeSpan ts = new TimeSpan(0, i1 + i2, 0);
+
+                            DateTime dt = blockList[i].Block_Date.AddHours(Convert.ToDateTime(blockList[i].From_Time).Hour).AddMinutes(Convert.ToDateTime(blockList[i].From_Time).Minute);
+
+                            appt = new Telerik.Web.UI.Appointment();
+                            //if (blockList[i].Block_Type != "RECURSIVE" && blockList[i].Block_Type != "NON RECURSIVE")
+                            //{
+                            //    TypeofVistList.Add(blockList[i].Block_Type.ToString() + "|" + blockList[i].From_Time.ToString() + "|" + blockList[i].To_Time.ToString() + "|" + blockList[i].Block_Date.ToString() + "|" + blockList[i].Physician_ID);
+                            //    continue;
+                            //}
+                            string sStart = Convert.ToDateTime(blockList[i].Block_Date).ToShortDateString() + " " + Convert.ToDateTime(blockList[i].From_Time).ToShortTimeString();
+                            appt.Start = Convert.ToDateTime(sStart);
+                            string sEnd = Convert.ToDateTime(blockList[i].Block_Date).ToShortDateString() + " " + Convert.ToDateTime(blockList[i].To_Time).ToShortTimeString();
+                            appt.End = Convert.ToDateTime(sEnd);
+                            appt.Subject = Convert.ToDateTime(sStart).ToString("hh:mm:ss tt") + "-" + Convert.ToDateTime(sEnd).ToString("hh:mm:ss tt") + "-" + blockList[i].Reason;
+                            string ProviderName = string.Empty;
+                            for (int j = 0; j < chklstProviders.Items.Count; j++)
+                            {
+                                if (chklstProviders.Items[j].Selected == true)
+                                {
+                                    //  if (sAncillary.Trim() != cboFacilityName.SelectedItem.Text.Trim())
+                                    if (ilstFacAncillary.Count > 0 && ilstFacAncillary[0].Is_Ancillary != "Y")
                                     {
-                                        ProviderName = chklstProviders.Items[j].Text;
-                                        break;
+                                        if (chklstProviders.Items[j].Value == blockList[i].Physician_ID.ToString())
+                                        {
+                                            ProviderName = chklstProviders.Items[j].Text;
+                                            break;
+                                        }
+                                    }
+                                    else
+                                    {
+                                        if (chklstProviders.Items[j].Value == blockList[i].Machine_Technician_Library_ID.ToString())
+                                        {
+                                            ProviderName = chklstProviders.Items[j].Text;
+                                            break;
+                                        }
                                     }
                                 }
                             }
-                        }
-                       // if (sAncillary.Trim() != cboFacilityName.SelectedItem.Text.Trim())
-                        if (ilstFacAncillary.Count > 0 && ilstFacAncillary[0].Is_Ancillary != "Y")
-                        {
-                            appt.Resources.Add(new Resource("Physician", blockList[i].Physician_ID.ToString(), ProviderName));
-                        }
-                        else
-                        {
-                            appt.Resources.Add(new Resource("Physician", blockList[i].Machine_Technician_Library_ID.ToString(), ProviderName));
-                        }
-                        appt.Description = string.Empty;
-                        //To assign the Color
-                        if (System.Configuration.ConfigurationManager.AppSettings["AppointmentBlockColor"] == null)
-                        {
-                            throw new Exception("Plese specify Appointment Back Color in the Config File");
-                        }
-                        IList<ProcessMaster> TempProcList;
-                        TempProcList = ApplicationObject.processMasterList;
-                        if (TempProcList.Count > 0)
-                        {
-                            var ColoredProcess = (from colorprocess in TempProcList where colorprocess.Process_Color != string.Empty select colorprocess);
-                            proclist = ColoredProcess.ToList<ProcessMaster>();
-                            var DistinctColor = (from colorporcess in TempProcList select colorporcess.Process_Color).Distinct();
-                            ColorList = DistinctColor.ToList<string>();
-                        }
+                            // if (sAncillary.Trim() != cboFacilityName.SelectedItem.Text.Trim())
+                            if (ilstFacAncillary.Count > 0 && ilstFacAncillary[0].Is_Ancillary != "Y")
+                            {
+                                appt.Resources.Add(new Resource("Physician", blockList[i].Physician_ID.ToString(), ProviderName));
+                            }
+                            else
+                            {
+                                appt.Resources.Add(new Resource("Physician", blockList[i].Machine_Technician_Library_ID.ToString(), ProviderName));
+                            }
+                            appt.Description = string.Empty;
+                            //To assign the Color
+                            if (System.Configuration.ConfigurationManager.AppSettings["AppointmentBlockColor"] == null)
+                            {
+                                throw new Exception("Plese specify Appointment Back Color in the Config File");
+                            }
+                            IList<ProcessMaster> TempProcList;
+                            TempProcList = ApplicationObject.processMasterList;
+                            if (TempProcList.Count > 0)
+                            {
+                                var ColoredProcess = (from colorprocess in TempProcList where colorprocess.Process_Color != string.Empty select colorprocess);
+                                proclist = ColoredProcess.ToList<ProcessMaster>();
+                                var DistinctColor = (from colorporcess in TempProcList select colorporcess.Process_Color).Distinct();
+                                ColorList = DistinctColor.ToList<string>();
+                            }
 
-                        Color tmpForeColor = Color.FromName(System.Configuration.ConfigurationManager.AppSettings["AppointmentBlockColor"]);
-                        IList<string> colrList = ColorList;
-                        appt.BackColor = tmpForeColor;
-                        appt.BorderColor = Color.Black;
-                        appt.Font.Bold = true;
-                        schAppointmentScheduler.InsertAppointment(appt);
-                    }
-                    catch
-                    {
+                            Color tmpForeColor = Color.FromName(System.Configuration.ConfigurationManager.AppSettings["AppointmentBlockColor"]);
+                            IList<string> colrList = ColorList;
+                            appt.BackColor = tmpForeColor;
+                            appt.BorderColor = Color.Black;
+                            appt.Font.Bold = true;
+                            schAppointmentScheduler.InsertAppointment(appt);
+                            logFile.Info(DateTime.UtcNow.ToString() + "-FillAllAppointmentsForDate - Block List - End", null);
+                        }
+                        catch
+                        {
 
+                        }
                     }
+                    logFile.Info(DateTime.UtcNow.ToString() + "-FillAllAppointmentsForDate - Fill Scheduler with Blocked Appointments - End", null);
+
+                    #endregion
+                    RefreshMyResources();
+                    hdnApptFacName.Value = cboFacilityName.SelectedItem.Text;
+                    //Session["TypeofVisit"] = TypeofVistList;
+                    logFile.Info(DateTime.UtcNow.ToString() + "-FillAllAppointmentsForDate - Appointment Facility Fo or MA - End", null);
                 }
-
-                #endregion
-                RefreshMyResources();
-                hdnApptFacName.Value = cboFacilityName.SelectedItem.Text;
-                //Session["TypeofVisit"] = TypeofVistList;
+            }
+            catch(Exception ex)
+            {
+                logFile.Info(DateTime.UtcNow.ToString() + "-FillAllAppointmentsForDate -"+ex, null);
             }
             #endregion
             #endregion
@@ -3830,93 +3917,108 @@ namespace Acurus.Capella.UI
 
         private void RefreshMyResources()
         {
-            if (hdnSourceScreen.Value == "AppointmentFacility")
+            try
             {
-                try
+                
+                if (hdnSourceScreen.Value == "AppointmentFacility")
                 {
-                    this.schAppointmentScheduler.Resources.Clear();
-                    this.schAppointmentScheduler.ResourceTypes.Clear();
-                }
-                catch
-                {
-
-                }
-
-                ResourceType restype = new ResourceType("Facility");
-                schAppointmentScheduler.ResourceTypes.Add(restype);
-                //Session["restype"] = restype;
-                for (int j = 0; j < chklstProviders.Items.Count; j++)
-                {
-                    if (chklstProviders.Items[j].Selected == true)
+                    logFile.Info(DateTime.UtcNow.ToString() + "-RefreshMyResources -Clear Appointment Scheduler - Start", null);
+                    try
                     {
-                        try
-                        {
-                            schAppointmentScheduler.Resources.Add(new Resource("Facility", chklstProviders.Items[j].Text, chklstProviders.Items[j].Text));
-                        }
-                        catch
-                        {
-                        }
-                        schAppointmentScheduler.GroupBy = "Facility";
+                        this.schAppointmentScheduler.Resources.Clear();
+                        this.schAppointmentScheduler.ResourceTypes.Clear();
                     }
+                    catch
+                    {
+
+                    }
+
+                    ResourceType restype = new ResourceType("Facility");
+                    schAppointmentScheduler.ResourceTypes.Add(restype);
+                    //Session["restype"] = restype;
+                    for (int j = 0; j < chklstProviders.Items.Count; j++)
+                    {
+                        if (chklstProviders.Items[j].Selected == true)
+                        {
+                            try
+                            {
+                                schAppointmentScheduler.Resources.Add(new Resource("Facility", chklstProviders.Items[j].Text, chklstProviders.Items[j].Text));
+                            }
+                            catch
+                            {
+                            }
+                            schAppointmentScheduler.GroupBy = "Facility";
+                        }
+                    }
+                    schAppointmentScheduler.GroupingDirection = GroupingDirection.Horizontal;
+                    logFile.Info(DateTime.UtcNow.ToString() + "-RefreshMyResources -Clear Appointment Scheduler - End", null);
                 }
-                schAppointmentScheduler.GroupingDirection = GroupingDirection.Horizontal;
+                else
+                {
+                    logFile.Info(DateTime.UtcNow.ToString() + "-RefreshMyResources -Clear Appointment Scheduler - Start", null);
+                    try
+                    {
+                        this.schAppointmentScheduler.Resources.Clear();
+                        this.schAppointmentScheduler.ResourceTypes.Clear();
+                    }
+                    catch
+                    {
+                    }
+
+                    ResourceType restype = new ResourceType("Physician");
+                    schAppointmentScheduler.ResourceTypes.Add(restype);
+                    //Session["restype"] = restype;
+                    for (int j = 0; j < chklstProviders.Items.Count; j++)
+                    {
+                        if (chklstProviders.Items[j].Selected == true)
+                        {
+                            try
+                            {
+                                //schAppointmentScheduler.Resources.Add(new Resource("Physician", "4", "Quinton -  Pererras Ernie"));
+                                schAppointmentScheduler.Resources.Add(new Resource("Physician", chklstProviders.Items[j].Value.ToString(), chklstProviders.Items[j].Text));
+                            }
+                            catch
+                            {
+                            }
+                            schAppointmentScheduler.GroupBy = "Physician";
+                        }
+                    }
+                    schAppointmentScheduler.GroupingDirection = GroupingDirection.Horizontal;
+                    logFile.Info(DateTime.UtcNow.ToString() + "-RefreshMyResources -Clear Appointment Scheduler - End", null);
+                }
             }
-            else
+            catch(Exception ex)
             {
-                try
-                {
-                    this.schAppointmentScheduler.Resources.Clear();
-                    this.schAppointmentScheduler.ResourceTypes.Clear();
-                }
-                catch
-                {
-                }
-
-                ResourceType restype = new ResourceType("Physician");
-                schAppointmentScheduler.ResourceTypes.Add(restype);
-                //Session["restype"] = restype;
-                for (int j = 0; j < chklstProviders.Items.Count; j++)
-                {
-                    if (chklstProviders.Items[j].Selected == true)
-                    {
-                        try
-                        {
-                            //schAppointmentScheduler.Resources.Add(new Resource("Physician", "4", "Quinton -  Pererras Ernie"));
-                            schAppointmentScheduler.Resources.Add(new Resource("Physician", chklstProviders.Items[j].Value.ToString(), chklstProviders.Items[j].Text));
-                        }
-                        catch
-                        {
-                        }
-                        schAppointmentScheduler.GroupBy = "Physician";
-                    }
-                }
-                schAppointmentScheduler.GroupingDirection = GroupingDirection.Horizontal;
+                logFile.Info(DateTime.UtcNow.ToString() + "- RefreshMyResources -", null);
             }
             //  RefreshActiveView();
         }
 
         public void FillCheckListBoxForPhysicianSetUp(string facility_name, bool bSelectDefault)
         {
-            //bug id 71401
-            if (cboFacilityName.SelectedItem!=null)
-                hdnApptPhyId.Value = cboFacilityName.SelectedItem.Value.ToString();
+            try
+            {
+                logFile.Info(DateTime.UtcNow.ToString() + "-FillCheckListBoxForPhysicianSetUp- Fill CheckListBox For PhysicianSetUp - Start", null);
+                //bug id 71401
+                if (cboFacilityName.SelectedItem != null)
+                    hdnApptPhyId.Value = cboFacilityName.SelectedItem.Value.ToString();
 
-            //Commented for bug id 71401 - Start
-            //IList<PhysicianLibrary> phyList = UtilityManager.GetPhysicianList(facility_name);
+                //Commented for bug id 71401 - Start
+                //IList<PhysicianLibrary> phyList = UtilityManager.GetPhysicianList(facility_name);
 
-            //if (phyList != null && phyList.Count > 0)// For physician logging into unmapped facility, this list will not contain the physician.
-            //{
-            //    var phy = from p in phyList
-            //              where p.PhyPrefix == cboFacilityName.SelectedItem.Text.Split(' ')[0]
-            //                    && p.PhyFirstName == cboFacilityName.SelectedItem.Text.Split(' ')[1]
-            //                    && p.PhyMiddleName == cboFacilityName.SelectedItem.Text.Split(' ')[2]
-            //                    && p.PhyLastName == cboFacilityName.SelectedItem.Text.Split(' ')[3]
-            //              select p.Id;
-            //    if (phy.Count() > 0)// For physician logged in into unmapped facility, this list will be empty. 
-            //        //hdnApptPhyId.Value will consist of the value of logged in physician which is loaded during page load
-            //        hdnApptPhyId.Value = phy.First().ToString();
-            //Commented for bug id 71401 - End
-
+                //if (phyList != null && phyList.Count > 0)// For physician logging into unmapped facility, this list will not contain the physician.
+                //{
+                //    var phy = from p in phyList
+                //              where p.PhyPrefix == cboFacilityName.SelectedItem.Text.Split(' ')[0]
+                //                    && p.PhyFirstName == cboFacilityName.SelectedItem.Text.Split(' ')[1]
+                //                    && p.PhyMiddleName == cboFacilityName.SelectedItem.Text.Split(' ')[2]
+                //                    && p.PhyLastName == cboFacilityName.SelectedItem.Text.Split(' ')[3]
+                //              select p.Id;
+                //    if (phy.Count() > 0)// For physician logged in into unmapped facility, this list will be empty. 
+                //        //hdnApptPhyId.Value will consist of the value of logged in physician which is loaded during page load
+                //        hdnApptPhyId.Value = phy.First().ToString();
+                //Commented for bug id 71401 - End
+                logFile.Info(DateTime.UtcNow.ToString() + "-FillCheckListBoxForPhysicianSetUp - Fill Facility List - Start", null);
                 IList<MapFacilityPhysician> facList = new List<MapFacilityPhysician>();
 
                 //Commented for bug id 71401 - Start
@@ -3927,7 +4029,7 @@ namespace Acurus.Capella.UI
                 //}
                 //Commented for bug id 71401 - End
 
-                if (hdnApptPhyId.Value.ToString()!=string.Empty)// For physician logged into unmapped facility, this list will be empty. 
+                if (hdnApptPhyId.Value.ToString() != string.Empty)// For physician logged into unmapped facility, this list will be empty. 
                 //facList will be empty, i.e count 0
                 {
                     facList = UtilityManager.GetFacilityListMappedToPhysician(hdnApptPhyId.Value.ToString());
@@ -3949,7 +4051,8 @@ namespace Acurus.Capella.UI
                     TempFac = fac.ToList<FacilityLibrary>();
                     schAppointmentScheduler.Visible = true;
                 }
-
+                logFile.Info(DateTime.UtcNow.ToString() + "-FillCheckListBoxForPhysicianSetUp - Fill Facility List - End", null);
+                logFile.Info(DateTime.UtcNow.ToString() + "-FillCheckListBoxForPhysicianSetUp - Date Fill - Start", null);
                 DateTime dtStart = new DateTime();
                 DateTime dtEnd = new DateTime();
                 if (TempFac.Count > 0)
@@ -3959,7 +4062,7 @@ namespace Acurus.Capella.UI
                     if (TempFac[0].End_Time != string.Empty)
                         dtEnd = Convert.ToDateTime(TempFac[0].End_Time);
                 }
-
+               
                 try
                 {
                     schAppointmentScheduler.DayStartTime = TimeSpan.FromHours(Convert.ToDouble(dtStart.Hour));
@@ -3969,7 +4072,11 @@ namespace Acurus.Capella.UI
                 catch
                 {
                 }
+                logFile.Info(DateTime.UtcNow.ToString() + "-FillCheckListBoxForPhysicianSetUp - Date Fill - End", null);
+                logFile.Info(DateTime.UtcNow.ToString() + "-FillCheckListBoxForPhysicianSetUp - Date Fill - Start", null);
                 chklstProviders.Items.Clear();
+                
+                logFile.Info(DateTime.UtcNow.ToString() + "-FillCheckListBoxForPhysicianSetUp - Unmapped Facility - Start", null);
                 if (facList != null)// For physician logged into unmapped facility, this list will be null.
                 {
                     for (int i = 0; i < facList.Count; i++)
@@ -3987,9 +4094,12 @@ namespace Acurus.Capella.UI
                             chklstProviders.Items[i].Selected = true;
                         }
                     }
+                    logFile.Info(DateTime.UtcNow.ToString() + "-FillCheckListBoxForPhysicianSetUp - Unmapped Facility - Start", null);
                 }
+                
                 else
                 {
+                    logFile.Info(DateTime.UtcNow.ToString() + "-FillCheckListBoxForPhysicianSetUp - Get Facility List Mapped To Physician - Start", null);
                     facList = UtilityManager.GetFacilityListMappedToPhysician(hdnApptPhyId.Value);
                     for (int i = 0; i < facilityList.Count; i++)
                     {
@@ -4007,165 +4117,197 @@ namespace Acurus.Capella.UI
                         }
                     }
                     chkShowActive.Checked = true;
+                    logFile.Info(DateTime.UtcNow.ToString() + "-FillCheckListBoxForPhysicianSetUp - Get Facility List Mapped To Physician - End", null);
                 }
+                logFile.Info(DateTime.UtcNow.ToString() + "- Fill CheckListBox For PhysicianSetUp - End", null);
+            }
+            catch (Exception ex)
+            {
+                logFile.Info(DateTime.UtcNow.ToString() + "FillCheckListBoxForPhysicianSetUp - " + ex, null);
+            }
             //}
         }
 
         public void FillCheckListBoxForFOSetUp(string facility_name, bool bSelectDefault)
         {
-            IList<PhysicianLibrary> PhysicianList = new List<PhysicianLibrary>();
-            //IList<FacilityLibrary> facList = ApplicationObject.facilityLibraryList;
-            var faclist = from f in ApplicationObject.facilityLibraryList where f.Legal_Org == ClientSession.LegalOrg select f;
-            IList<FacilityLibrary> facList = faclist.ToList<FacilityLibrary>();
-            IList<FacilityLibrary> TempFac;
-            var fac = from f in facList where f.Fac_Name.ToString().Contains(facility_name) select f;
-            TempFac = fac.ToList<FacilityLibrary>();
-
-            if (TempFac != null)
+            try
             {
-                try
+                logFile.Info(DateTime.UtcNow.ToString() + "-FillCheckListBoxForFOSetUp - Load PhysicianList - Start", null);
+                IList<PhysicianLibrary> PhysicianList = new List<PhysicianLibrary>();
+                //IList<FacilityLibrary> facList = ApplicationObject.facilityLibraryList;
+                var faclist = from f in ApplicationObject.facilityLibraryList where f.Legal_Org == ClientSession.LegalOrg select f;
+                IList<FacilityLibrary> facList = faclist.ToList<FacilityLibrary>();
+                IList<FacilityLibrary> TempFac;
+                var fac = from f in facList where f.Fac_Name.ToString().Contains(facility_name) select f;
+                TempFac = fac.ToList<FacilityLibrary>();
+                logFile.Info(DateTime.UtcNow.ToString() + "-FillCheckListBoxForFOSetUp - Load PhysicianList - Start", null);
+                if (TempFac != null)
                 {
-                    DateTime dtStart = Convert.ToDateTime(TempFac[0].Start_Time);
-                    DateTime dtEnd = Convert.ToDateTime(TempFac[0].End_Time);
-
-                    schAppointmentScheduler.DayStartTime = TimeSpan.FromHours(Convert.ToDouble(dtStart.Hour));
-                    schAppointmentScheduler.DayEndTime = TimeSpan.FromHours(Convert.ToDouble(dtEnd.Hour));
-                    schAppointmentScheduler.MinutesPerRow = TempFac[0].Slot_Length;
-                }
-                catch
-                {
-                    DateTime dtStart = Convert.ToDateTime("08:00:00");
-                    DateTime dtEnd = Convert.ToDateTime("17:00:00");
-
-                    schAppointmentScheduler.DayStartTime = TimeSpan.FromHours(Convert.ToDouble(dtStart.Hour));
-                    schAppointmentScheduler.DayEndTime = TimeSpan.FromHours(Convert.ToDouble(dtEnd.Hour));
-                    schAppointmentScheduler.MinutesPerRow = 15;
-                }
-            }
-            if (chkShowActive.Checked)
-                PhysicianList = UtilityManager.GetPhysicianList("", ClientSession.LegalOrg);
-            else
-                PhysicianList = UtilityManager.GetPhysicianList(facility_name, ClientSession.LegalOrg);
-            chklstProviders.Items.Clear();
-
-            if (PhysicianList != null)
-            {
-                if (PhysicianList.Count == 0)
-                {
-                    schAppointmentScheduler.Visible = false;
-                    return;
-                }
-                else
-                {
-                    schAppointmentScheduler.Visible = true;
-                }
-
-                XmlDocument xmldoc = new XmlDocument();
-                string strXmlFilePath = Path.Combine(System.Web.Hosting.HostingEnvironment.ApplicationPhysicalPath, "ConfigXML\\PhysicianFacilityMapping.xml");
-                string sDefaultPhysicians = "";
-                if (File.Exists(strXmlFilePath) == true)
-                {
-                    xmldoc.Load(System.Web.Hosting.HostingEnvironment.ApplicationPhysicalPath + "ConfigXML\\" + "PhysicianFacilityMapping" + ".xml");
-
-                    XmlNode nodeMatchingFacility = xmldoc.SelectSingleNode("/ROOT/PhyList/Facility[@name='" + cboFacilityName.SelectedItem.Text.Trim() + "']");
-                    if (nodeMatchingFacility != null)
-                        sDefaultPhysicians = nodeMatchingFacility.Attributes["default-physician-id"].Value.ToString();
-                }
-                string[] lstDefaultPhysicians = sDefaultPhysicians.Split(',');
-
-                //if (System.Configuration.ConfigurationManager.AppSettings["AncillaryTestClinic"] != null)
-                //{
-                //    sAncillary = System.Configuration.ConfigurationManager.AppSettings["AncillaryTestClinic"].ToString();
-                //}
-                var facAncillary = from f in ApplicationObject.facilityLibraryList where f.Fac_Name == cboFacilityName.SelectedItem.Text select f;
-                IList<FacilityLibrary> ilstFacAncillary = facAncillary.ToList<FacilityLibrary>();
-                for (int i = 0; i < PhysicianList.Count; i++)
-                {
-                    System.Web.UI.WebControls.ListItem item = new System.Web.UI.WebControls.ListItem();
-
-                    /* if (sAncillary != string.Empty && sAncillary == cboFacilityName.SelectedItem.Text.Trim())
-                     {
-                         pnlProvidersHeader.InnerText = "Machine - Technician";
-                         string strXmlFilePathTech = Path.Combine(System.Web.Hosting.HostingEnvironment.ApplicationPhysicalPath, "ConfigXML\\machine_technician.xml");
-                         if (File.Exists(strXmlFilePathTech) == true)
-                         {
-                             xmldoc = new XmlDocument();
-                             xmldoc.Load(System.Web.Hosting.HostingEnvironment.ApplicationPhysicalPath + "ConfigXML\\" + "machine_technician" + ".xml");
-                             if (PhysicianList[i].PhyColor!="" && PhysicianList[i].PhyColor != "0")
-                             {
-                                 XmlNodeList xmlTec = xmldoc.GetElementsByTagName("MachineTechnician" + PhysicianList[i].PhyColor);
-                                 item.Text = xmlTec[0].Attributes.GetNamedItem("machine_name").Value + " - " + PhysicianList[i].PhyFirstName + " " + PhysicianList[i].PhyLastName; //PhysicianList[i].PhyPrefix + " " + PhysicianList[i].PhyFirstName + " " + PhysicianList[i].PhyMiddleName + " " + PhysicianList[i].PhyLastName;
-                                 item.Value = xmlTec[0].Attributes.GetNamedItem("machine_technician_library_id").Value;
-                             }
-                             else
-                             {
-                                 item.Text = PhysicianList[i].PhyPrefix + " " + PhysicianList[i].PhyFirstName + " " + PhysicianList[i].PhyMiddleName + " " + PhysicianList[i].PhyLastName;
-                                 item.Value = PhysicianList[i].Id.ToString();
-                             }
-
-                         }
-                     }
-                     else
-                     {
-                         pnlProvidersHeader.InnerText = "Providers";
-                         item.Text = PhysicianList[i].PhyPrefix + " " + PhysicianList[i].PhyFirstName + " " + PhysicianList[i].PhyMiddleName + " " + PhysicianList[i].PhyLastName;
-                         item.Value = PhysicianList[i].Id.ToString();
-                     }
-                    chklstProviders.Items.Add(item);*/
-                    //BugID:53256
-                    //if (sAncillary != string.Empty && sAncillary == cboFacilityName.SelectedItem.Text.Trim() && !chkShowActive.Checked)
-                    if (ilstFacAncillary.Count > 0 && ilstFacAncillary[0].Is_Ancillary == "Y" && !chkShowActive.Checked)
+                    logFile.Info(DateTime.UtcNow.ToString() + "-FillCheckListBoxForFOSetUp - Appointment Scheduler Time- Start", null);
+                    try
                     {
-                        pnlProvidersHeader.InnerText = "Machine - Technician";
+                        DateTime dtStart = Convert.ToDateTime(TempFac[0].Start_Time);
+                        DateTime dtEnd = Convert.ToDateTime(TempFac[0].End_Time);
+
+                        schAppointmentScheduler.DayStartTime = TimeSpan.FromHours(Convert.ToDouble(dtStart.Hour));
+                        schAppointmentScheduler.DayEndTime = TimeSpan.FromHours(Convert.ToDouble(dtEnd.Hour));
+                        schAppointmentScheduler.MinutesPerRow = TempFac[0].Slot_Length;
+                    }
+                    catch
+                    {
+                        DateTime dtStart = Convert.ToDateTime("08:00:00");
+                        DateTime dtEnd = Convert.ToDateTime("17:00:00");
+
+                        schAppointmentScheduler.DayStartTime = TimeSpan.FromHours(Convert.ToDouble(dtStart.Hour));
+                        schAppointmentScheduler.DayEndTime = TimeSpan.FromHours(Convert.ToDouble(dtEnd.Hour));
+                        schAppointmentScheduler.MinutesPerRow = 15;
+                    }
+                    logFile.Info(DateTime.UtcNow.ToString() + "-FillCheckListBoxForFOSetUp - Appointment Scheduler Time- End", null);
+                }
+                logFile.Info(DateTime.UtcNow.ToString() + "-FillCheckListBoxForFOSetUp - Show All Check Box - Start", null);
+                if (chkShowActive.Checked)
+                    PhysicianList = UtilityManager.GetPhysicianList("", ClientSession.LegalOrg);
+                else
+                    PhysicianList = UtilityManager.GetPhysicianList(facility_name, ClientSession.LegalOrg);
+                chklstProviders.Items.Clear();
+                logFile.Info(DateTime.UtcNow.ToString() + "-FillCheckListBoxForFOSetUp - Show All Check Box - End", null);
+               
+                if (PhysicianList != null)
+                {
+                    logFile.Info(DateTime.UtcNow.ToString() + "-FillCheckListBoxForFOSetUp - Appointment Scheduler Visible- Start", null);
+                    if (PhysicianList.Count == 0)
+                    {
+                        schAppointmentScheduler.Visible = false;
+                        return;
                     }
                     else
                     {
-                        pnlProvidersHeader.InnerText = "Providers";
+                        schAppointmentScheduler.Visible = true;
                     }
-                    string strXmlFilePathTech = Path.Combine(System.Web.Hosting.HostingEnvironment.ApplicationPhysicalPath, "ConfigXML\\machine_technician.xml");
-                    if (File.Exists(strXmlFilePathTech) == true)
+                    logFile.Info(DateTime.UtcNow.ToString() + "-FillCheckListBoxForFOSetUp - Appointment Scheduler Visible- End", null);
+                    logFile.Info(DateTime.UtcNow.ToString() + "-FillCheckListBoxForFOSetUp - List Default Physicians- Start", null);
+                    XmlDocument xmldoc = new XmlDocument();
+                    string strXmlFilePath = Path.Combine(System.Web.Hosting.HostingEnvironment.ApplicationPhysicalPath, "ConfigXML\\PhysicianFacilityMapping.xml");
+                    string sDefaultPhysicians = "";
+                    if (File.Exists(strXmlFilePath) == true)
                     {
-                        xmldoc = new XmlDocument();
-                        xmldoc.Load(System.Web.Hosting.HostingEnvironment.ApplicationPhysicalPath + "ConfigXML\\" + "machine_technician" + ".xml");
-                        if (PhysicianList[i].PhyColor != "" && PhysicianList[i].PhyColor != "0")
+                        xmldoc.Load(System.Web.Hosting.HostingEnvironment.ApplicationPhysicalPath + "ConfigXML\\" + "PhysicianFacilityMapping" + ".xml");
+
+                        XmlNode nodeMatchingFacility = xmldoc.SelectSingleNode("/ROOT/PhyList/Facility[@name='" + cboFacilityName.SelectedItem.Text.Trim() + "']");
+                        if (nodeMatchingFacility != null)
+                            sDefaultPhysicians = nodeMatchingFacility.Attributes["default-physician-id"].Value.ToString();
+                    }
+                    string[] lstDefaultPhysicians = sDefaultPhysicians.Split(',');
+                    logFile.Info(DateTime.UtcNow.ToString() + "-FillCheckListBoxForFOSetUp - List Default Physicians- End", null);
+
+                    //if (System.Configuration.ConfigurationManager.AppSettings["AncillaryTestClinic"] != null)
+                    //{
+                    //    sAncillary = System.Configuration.ConfigurationManager.AppSettings["AncillaryTestClinic"].ToString();
+                    //}
+                    logFile.Info(DateTime.UtcNow.ToString() + "-FillCheckListBoxForFOSetUp - List Ancillary Physicians- Start", null);
+                    var facAncillary = from f in ApplicationObject.facilityLibraryList where f.Fac_Name == cboFacilityName.SelectedItem.Text select f;
+                    IList<FacilityLibrary> ilstFacAncillary = facAncillary.ToList<FacilityLibrary>();
+                    for (int i = 0; i < PhysicianList.Count; i++)
+                    {
+                        logFile.Info(DateTime.UtcNow.ToString() + "-FillCheckListBoxForFOSetUp - Fill Provider Name- Start", null);
+                        System.Web.UI.WebControls.ListItem item = new System.Web.UI.WebControls.ListItem();
+
+                        /* if (sAncillary != string.Empty && sAncillary == cboFacilityName.SelectedItem.Text.Trim())
+                         {
+                             pnlProvidersHeader.InnerText = "Machine - Technician";
+                             string strXmlFilePathTech = Path.Combine(System.Web.Hosting.HostingEnvironment.ApplicationPhysicalPath, "ConfigXML\\machine_technician.xml");
+                             if (File.Exists(strXmlFilePathTech) == true)
+                             {
+                                 xmldoc = new XmlDocument();
+                                 xmldoc.Load(System.Web.Hosting.HostingEnvironment.ApplicationPhysicalPath + "ConfigXML\\" + "machine_technician" + ".xml");
+                                 if (PhysicianList[i].PhyColor!="" && PhysicianList[i].PhyColor != "0")
+                                 {
+                                     XmlNodeList xmlTec = xmldoc.GetElementsByTagName("MachineTechnician" + PhysicianList[i].PhyColor);
+                                     item.Text = xmlTec[0].Attributes.GetNamedItem("machine_name").Value + " - " + PhysicianList[i].PhyFirstName + " " + PhysicianList[i].PhyLastName; //PhysicianList[i].PhyPrefix + " " + PhysicianList[i].PhyFirstName + " " + PhysicianList[i].PhyMiddleName + " " + PhysicianList[i].PhyLastName;
+                                     item.Value = xmlTec[0].Attributes.GetNamedItem("machine_technician_library_id").Value;
+                                 }
+                                 else
+                                 {
+                                     item.Text = PhysicianList[i].PhyPrefix + " " + PhysicianList[i].PhyFirstName + " " + PhysicianList[i].PhyMiddleName + " " + PhysicianList[i].PhyLastName;
+                                     item.Value = PhysicianList[i].Id.ToString();
+                                 }
+
+                             }
+                         }
+                         else
+                         {
+                             pnlProvidersHeader.InnerText = "Providers";
+                             item.Text = PhysicianList[i].PhyPrefix + " " + PhysicianList[i].PhyFirstName + " " + PhysicianList[i].PhyMiddleName + " " + PhysicianList[i].PhyLastName;
+                             item.Value = PhysicianList[i].Id.ToString();
+                         }
+                        chklstProviders.Items.Add(item);*/
+                        //BugID:53256
+                        //if (sAncillary != string.Empty && sAncillary == cboFacilityName.SelectedItem.Text.Trim() && !chkShowActive.Checked)
+                        if (ilstFacAncillary.Count > 0 && ilstFacAncillary[0].Is_Ancillary == "Y" && !chkShowActive.Checked)
                         {
-                            XmlNodeList xmlTec = xmldoc.GetElementsByTagName("MachineTechnician" + PhysicianList[i].PhyColor);
-                            if (xmlTec != null && xmlTec[0]!=null)
-                            {
-                                item.Text = xmlTec[0].Attributes.GetNamedItem("machine_name").Value + " - " + PhysicianList[i].PhyFirstName + " " + PhysicianList[i].PhyLastName; //PhysicianList[i].PhyPrefix + " " + PhysicianList[i].PhyFirstName + " " + PhysicianList[i].PhyMiddleName + " " + PhysicianList[i].PhyLastName;
-                                item.Value = xmlTec[0].Attributes.GetNamedItem("machine_technician_library_id").Value;
-                            }
+                            pnlProvidersHeader.InnerText = "Machine - Technician";
                         }
                         else
                         {
-                            //old code
-                            //item.Text = PhysicianList[i].PhyPrefix + " " + PhysicianList[i].PhyFirstName + " " + PhysicianList[i].PhyMiddleName + " " + PhysicianList[i].PhyLastName;
-                            //Gitlab# 2485 - Physician Name Display Change
-                            if (PhysicianList[i].PhyLastName != String.Empty)
-                                item.Text += PhysicianList[i].PhyLastName;
-                            if (PhysicianList[i].PhyFirstName != String.Empty)
-                            {
-                                if (item.Text != String.Empty)
-                                    item.Text += "," + PhysicianList[i].PhyFirstName;
-                                else
-                                    item.Text += PhysicianList[i].PhyFirstName;
-                            }
-                            if (PhysicianList[i].PhyMiddleName != String.Empty)
-                                item.Text += " " + PhysicianList[i].PhyMiddleName;
-                            if (PhysicianList[i].PhySuffix != String.Empty)
-                                item.Text += "," + PhysicianList[i].PhySuffix;
-                            item.Value = PhysicianList[i].Id.ToString();
+                            pnlProvidersHeader.InnerText = "Providers";
                         }
-                        chklstProviders.Items.Add(item);
+                        logFile.Info(DateTime.UtcNow.ToString() + "-FillCheckListBoxForFOSetUp - Fill Provider Name- End", null);
+                        logFile.Info(DateTime.UtcNow.ToString() + "-FillCheckListBoxForFOSetUp - Fill Machine Technician Name- Start", null);
+                        string strXmlFilePathTech = Path.Combine(System.Web.Hosting.HostingEnvironment.ApplicationPhysicalPath, "ConfigXML\\machine_technician.xml");
+                        if (File.Exists(strXmlFilePathTech) == true)
+                        {
+                            logFile.Info(DateTime.UtcNow.ToString() + "-FillCheckListBoxForFOSetUp - Fill Machine Technician Text- Start", null);
+                            xmldoc = new XmlDocument();
+                            xmldoc.Load(System.Web.Hosting.HostingEnvironment.ApplicationPhysicalPath + "ConfigXML\\" + "machine_technician" + ".xml");
+                            if (PhysicianList[i].PhyColor != "" && PhysicianList[i].PhyColor != "0")
+                            {
+                                XmlNodeList xmlTec = xmldoc.GetElementsByTagName("MachineTechnician" + PhysicianList[i].PhyColor);
+                                if (xmlTec != null && xmlTec[0] != null)
+                                {
+                                    item.Text = xmlTec[0].Attributes.GetNamedItem("machine_name").Value + " - " + PhysicianList[i].PhyFirstName + " " + PhysicianList[i].PhyLastName; //PhysicianList[i].PhyPrefix + " " + PhysicianList[i].PhyFirstName + " " + PhysicianList[i].PhyMiddleName + " " + PhysicianList[i].PhyLastName;
+                                    item.Value = xmlTec[0].Attributes.GetNamedItem("machine_technician_library_id").Value;
+                                }
+                            }
+                            else
+                            {
+                                //old code
+                                //item.Text = PhysicianList[i].PhyPrefix + " " + PhysicianList[i].PhyFirstName + " " + PhysicianList[i].PhyMiddleName + " " + PhysicianList[i].PhyLastName;
+                                //Gitlab# 2485 - Physician Name Display Change
+                                if (PhysicianList[i].PhyLastName != String.Empty)
+                                    item.Text += PhysicianList[i].PhyLastName;
+                                if (PhysicianList[i].PhyFirstName != String.Empty)
+                                {
+                                    if (item.Text != String.Empty)
+                                        item.Text += "," + PhysicianList[i].PhyFirstName;
+                                    else
+                                        item.Text += PhysicianList[i].PhyFirstName;
+                                }
+                                if (PhysicianList[i].PhyMiddleName != String.Empty)
+                                    item.Text += " " + PhysicianList[i].PhyMiddleName;
+                                if (PhysicianList[i].PhySuffix != String.Empty)
+                                    item.Text += "," + PhysicianList[i].PhySuffix;
+                                item.Value = PhysicianList[i].Id.ToString();
+                            }
+                            logFile.Info(DateTime.UtcNow.ToString() + "-FillCheckListBoxForFOSetUp - Fill Machine Technician Text- End", null);
+                            chklstProviders.Items.Add(item);
+                        }
+                        logFile.Info(DateTime.UtcNow.ToString() + "-FillCheckListBoxForFOSetUp - Fill Machine Technician Name- Start", null);
+                        logFile.Info(DateTime.UtcNow.ToString() + "-FillCheckListBoxForFOSetUp - Select Default- Start", null);
+                        if (bSelectDefault)
+                        {
+                            if (lstDefaultPhysicians.Any(curritem => curritem == PhysicianList[i].Id.ToString()))
+                                chklstProviders.Items[i].Selected = true;
+                            else
+                                chklstProviders.Items[i].Selected = false;
+                        }
+                        logFile.Info(DateTime.UtcNow.ToString() + "-FillCheckListBoxForFOSetUp - Select Default- End", null);
                     }
-                    if (bSelectDefault)
-                    {
-                        if (lstDefaultPhysicians.Any(curritem => curritem == PhysicianList[i].Id.ToString()))
-                            chklstProviders.Items[i].Selected = true;
-                        else
-                            chklstProviders.Items[i].Selected = false;
-                    }
+                    logFile.Info(DateTime.UtcNow.ToString() + "-FillCheckListBoxForFOSetUp - List Ancillary Physicians- End", null);
                 }
+            }
+            catch(Exception ex)
+            {
+                logFile.Info(DateTime.UtcNow.ToString() + "-FillCheckListBoxForFOSetUp -"+ex, null);
             }
         }
         #endregion
