@@ -31,6 +31,7 @@ using Acurus.Capella.DataAccess;
 using DocumentFormat.OpenXml.Drawing.Charts;
 using System.Xml.Xsl;
 using System.Xml.XPath;
+using DocumentFormat.OpenXml.Spreadsheet;
 
 namespace Acurus.Capella.UI
 {
@@ -1652,6 +1653,7 @@ namespace Acurus.Capella.UI
                         case "BP-Sitting Left": vitalslist.Add("BP-SittingLocation"); break;
                         case "BP-Standing Left": vitalslist.Add("BP-StandingLocation"); break;
                         case "BP-Lying Left": vitalslist.Add("BP-LyingLocation"); break;
+                        //Jira Cap-448 - when added in vitals along with the Lt BP did not gets displayed in Summary bar
                         case "BP-Sitting$ Left": vitalslist.Add("BP-Sitting$Location"); break;
                         case "BP-Standing$ Left": vitalslist.Add("BP-Standing$Location"); break;
                         case "BP-Lying$ Left": vitalslist.Add("BP-Lying$Location"); break;
