@@ -338,8 +338,14 @@ var statusDefaultLst = "";
 var AssoICDQuestionnaire;
 var bAssoICDOpen = false;
 var myapp = angular.module('Assessmentapp', []);
-
-
+//CAP-450: Error Handler for Angular Js
+myapp.config(function ($provide) {
+    $provide.decorator('$exceptionHandler', function ($delegate) {
+        return function (exception, cause) {
+            HandlerAngularjsError(exception);
+        };
+    });
+});
 myapp.controller('assessmentCtrl', function ($scope, $http) {
 
     $(top.window.document).find("#btnMinimizeViewResultICD").css({ "display": "none" }); //BugID:44399 

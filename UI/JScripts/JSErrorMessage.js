@@ -190,7 +190,129 @@ function handleError(evt) {
     }
     return true;
 }
+//CAP-450: Error Handler Method
+function HandlerAngularjsError(evt) {
 
+    if (evt.message) {
+
+        if (evt.message.indexOf("Transaction XML") > -1) {
+            { sessionStorage.setItem('StartLoading', 'false'); StopLoadFromPatChart(); }
+            if (top.window.document.getElementById('ctl00_Loading') != null)
+                top.window.document.getElementById('ctl00_Loading').style.display = "none";
+            if (top.window.document.getElementById('divLoading') != null)
+                top.window.document.getElementById('divLoading').style.display = "none";
+            ScriptErrorLogEntry(evt.message, evt.lineno, evt.colno, evt.filename, evt.error.stack, true);
+            //alert(evt.message.split('$')[1]);
+        }
+        else if (evt.message.indexOf("To Process is not found") > -1) {//BugID:53884
+            { sessionStorage.setItem('StartLoading', 'false'); StopLoadFromPatChart(); }
+            if (top.window.document.getElementById('ctl00_Loading') != null)
+                top.window.document.getElementById('ctl00_Loading').style.display = "none";
+            if (top.window.document.getElementById('divLoading') != null)
+                top.window.document.getElementById('divLoading').style.display = "none";
+            //DisplayErrorMessage('000022');
+            ScriptErrorLogEntry(evt.message, evt.lineno, evt.colno, evt.filename, evt.error.stack, true);
+
+        }
+        else if (evt.message.indexOf("Cannot read property 'window' of null") > -1) {
+            { sessionStorage.setItem('StartLoading', 'false'); StopLoadFromPatChart(); }
+            if (top.window.document.getElementById('ctl00_Loading') != null)
+                top.window.document.getElementById('ctl00_Loading').style.display = "none";
+            if (top.window.document.getElementById('divLoading') != null)
+                top.window.document.getElementById('divLoading').style.display = "none";
+            ScriptErrorLogEntry(evt.message, evt.lineno, evt.colno, evt.filename, evt.error.stack, false);
+        }
+        else if (evt.message.indexOf("Uncaught Sys.ParameterCountException: Sys.ParameterCountException: Parameter count mismatch.") > -1) {
+            { sessionStorage.setItem('StartLoading', 'false'); StopLoadFromPatChart(); }
+            if (top.window.document.getElementById('ctl00_Loading') != null)
+                top.window.document.getElementById('ctl00_Loading').style.display = "none";
+            if (top.window.document.getElementById('divLoading') != null)
+                top.window.document.getElementById('divLoading').style.display = "none";
+            ScriptErrorLogEntry(evt.message, evt.lineno, evt.colno, evt.filename, evt.error.stack, false);
+        }
+        //else if (evt.message.indexOf("Uncaught SyntaxError: Failed to execute 'insertRule' on 'CSSStyleSheet': Failed to parse the rule") > -1) {
+        else if (evt.message.indexOf("Failed to execute 'insertRule' on 'CSSStyleSheet': Failed to parse the rule") > -1) {
+            { sessionStorage.setItem('StartLoading', 'false'); StopLoadFromPatChart(); }
+            if (top.window.document.getElementById('ctl00_Loading') != null)
+                top.window.document.getElementById('ctl00_Loading').style.display = "none";
+            if (top.window.document.getElementById('divLoading') != null)
+                top.window.document.getElementById('divLoading').style.display = "none";
+            ScriptErrorLogEntry(evt.message, evt.lineno, evt.colno, evt.filename, evt.error.stack, false);
+        }
+        else if (evt.message.indexOf("Uncaught Sys.WebForms.PageRequestManagerServerErrorException: Sys.WebForms.PageRequestManagerServerErrorException") > -1) {
+            if (top.window.document.getElementById('ctl00_Loading') != null)
+                top.window.document.getElementById('ctl00_Loading').style.display = "none";
+            if (top.window.document.getElementById('divLoading') != null)
+                top.window.document.getElementById('divLoading').style.display = "none";
+            ScriptErrorLogEntry(evt.message, evt.lineno, evt.colno, evt.filename, evt.error.stack, false);
+        }
+        else if (sessionStorage.getItem('StartLoading') == "true") {
+            if (top.window.document.getElementById('ctl00_Loading') != null)
+                top.window.document.getElementById('ctl00_Loading').style.display = "none";
+            if (top.window.document.getElementById('divLoading') != null)
+                top.window.document.getElementById('divLoading').style.display = "none";
+            //==========Undefinedcode code========
+            if (evt.lineno == undefined)
+                evt.lineno = null;
+            else
+                evt.lineno = evt.lineno;
+
+            if (evt.colno == undefined)
+                evt.colno = null;
+            else
+                evt.colno = evt.colno;
+
+            if (evt.filename == undefined)
+                evt.filename = null;
+            else
+                evt.filename = evt.filename;
+
+
+            var stack;
+            if (evt.error == undefined)
+                stack = null;
+            else
+                stack = evt.error.stack;
+
+            //if (evt.error.stack == undefined)
+            //    evt.error.stack = null;
+            //else
+            //    evt.error.stack = evt.error.stack;
+            //==========Undefinedcode code End========
+            ScriptErrorLogEntry(evt.message, evt.lineno, evt.colno, evt.filename, stack, true);
+            //if (evt.message.indexOf("Failed to execute 'insertRule' on 'CSSStyleSheet'") < 0)
+            //alert("Something went wrong! \n There seems to be a problem with this page. Please retry and if the problem persists, contact Capella Support with patient and page details.");
+        }
+        //Jira #CAP-191
+        else if (evt.error.stack.indexOf("Telerik.Web.UI.WebResource.axd") > -1) {
+            if (top.window.document.getElementById('ctl00_Loading') != null)
+                top.window.document.getElementById('ctl00_Loading').style.display = "none";
+            if (top.window.document.getElementById('divLoading') != null)
+                top.window.document.getElementById('divLoading').style.display = "none";
+            //ScriptErrorLogEntry(evt.message, evt.lineno, evt.colno, evt.filename, evt.error.stack, false);
+        }
+        //Jira CAP-206
+        else if (evt.message.indexOf("Failed to execute 'focus'")) {
+            if (top.window.document.getElementById('ctl00_Loading') != null)
+                top.window.document.getElementById('ctl00_Loading').style.display = "none";
+            if (top.window.document.getElementById('divLoading') != null)
+                top.window.document.getElementById('divLoading').style.display = "none";
+            ScriptErrorLogEntry(evt.message, evt.lineno, evt.colno, evt.filename, evt.error.stack, false);
+        }
+        else {
+            debugger;
+            if (top.window.document.getElementById('ctl00_Loading') != null)
+                top.window.document.getElementById('ctl00_Loading').style.display = "none";
+            if (top.window.document.getElementById('divLoading') != null)
+                top.window.document.getElementById('divLoading').style.display = "none";
+            ScriptErrorLogEntry(evt.message, evt.lineno, evt.colno, evt.filename, evt.error.stack, true);
+            //alert("Something went wrong! \n There seems to be a problem with this page. Please retry and if the problem persists, contact Capella Support with patient and page details. \n" + error.message);
+        }
+
+
+    }
+    return true;
+}
 function downloadFile() {
     document.getElementById('btnword').click();
     document.title = "Progress Notes";
