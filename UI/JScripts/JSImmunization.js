@@ -264,16 +264,40 @@ function EnableSave() {
     if (document.getElementById("hdnLoad") != null) {
         if (document.getElementById("hdnLoad").value == "true") {
             document.getElementById("hdnLoad").value = "false";
-            $find('btnAdd').set_enabled(false);
+            //Jira Cap-456 - JS error fixed
+            if ($find('btnAdd') != null) {
+                $find('btnAdd').set_enabled(false);
+            }
+            else {
+                if ($("#btnAdd") != null) {
+                    $("#btnAdd").prop("disabled", true);
+                }
+            }
             EnableSaveDiagnosticOrder('false');
         }
         else {
-            $find('btnAdd').set_enabled(true);
+            //Jira Cap-456 - JS error fixed
+            if ($find('btnAdd') != null) {
+                $find('btnAdd').set_enabled(true);
+            }
+            else {
+                if ($("#btnAdd") != null) {
+                    $("#btnAdd").prop("disabled", false);
+                }
+            }
             EnableSaveDiagnosticOrder('true');
         }
     }
     else {
-        $find('btnAdd').set_enabled(true);
+        //Jira Cap-456 - JS error fixed
+        if ($find('btnAdd') != null) {
+            $find('btnAdd').set_enabled(true);
+        }
+        else {
+            if ($("#btnAdd") != null) {
+                $("#btnAdd").prop("disabled", false);
+            }
+        }
         EnableSaveDiagnosticOrder('true');
     }
 }
