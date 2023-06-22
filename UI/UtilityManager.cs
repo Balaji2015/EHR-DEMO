@@ -1629,10 +1629,8 @@ namespace Acurus.Capella.UI
             MapVitalsPhysicianManager objMapMngr = new MapVitalsPhysicianManager();
             IList<MapVitalsPhysician> mapVitalList = objMapMngr.GetVitalsForPhysician(ClientSession.PhysicianId);
             mapVitalList = mapVitalList.OrderBy(a => a.Sort_Order).ToList<MapVitalsPhysician>();
-
             VitalsManager objVMngr = new VitalsManager();
             IList<DynamicScreen> dynamicScreenlst = new List<DynamicScreen>();
-
             IList<DynamicScreen> dynList = objVMngr.LoadDynamicScreenXML();
             dynamicScreenlst = (from objMapVit in mapVitalList
                                 join obj in dynList
@@ -1654,6 +1652,12 @@ namespace Acurus.Capella.UI
                         case "BP-Sitting Left": vitalslist.Add("BP-SittingLocation"); break;
                         case "BP-Standing Left": vitalslist.Add("BP-StandingLocation"); break;
                         case "BP-Lying Left": vitalslist.Add("BP-LyingLocation"); break;
+                        case "BP-Sitting$ Left": vitalslist.Add("BP-Sitting$Location"); break;
+                        case "BP-Standing$ Left": vitalslist.Add("BP-Standing$Location"); break;
+                        case "BP-Lying$ Left": vitalslist.Add("BP-Lying$Location"); break;
+                        case "BP-Sitting$ Right": vitalslist.Add("BP-Sitting$Location"); break;
+                        case "BP-Standing$ Right": vitalslist.Add("BP-Standing$Location"); break;
+                        case "BP-Lying$ Right": vitalslist.Add("BP-Lying$Location"); break;
                         default:
                             {
                                 string Vital_value = Regex.Replace(obj.Control_Name, @"\s", "");//BugID:46764
@@ -1847,9 +1851,11 @@ namespace Acurus.Capella.UI
                                     }
                                 }
                             }
-                            if (!sVitalsText.Contains(OrderedVitalList[i].Loinc_Observation) && !Text.Contains(OrderedVitalList[i].Loinc_Observation))
+                            //Jira Cap-448 - when added in vitals along with the Lt BP did not gets displayed in Summary bar
+                            // if (!sVitalsText.Contains(OrderedVitalList[i].Loinc_Observation) && !Text.Contains(OrderedVitalList[i].Loinc_Observation))
+                            if (!Text.Contains(OrderedVitalList[i].Loinc_Observation))
                             {
-                                Text = OrderedVitalList[i].Loinc_Observation + " - " + OrderedVitalList[i].Value + AddVitalUnits(OrderedVitalList[i].Loinc_Observation) + "\n";
+                            Text = OrderedVitalList[i].Loinc_Observation + " - " + OrderedVitalList[i].Value + AddVitalUnits(OrderedVitalList[i].Loinc_Observation) + "\n";
                             }
                         }
 
