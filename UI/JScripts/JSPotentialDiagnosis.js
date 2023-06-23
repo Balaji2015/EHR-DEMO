@@ -8,6 +8,13 @@ var UpdateList = [];
 var DelList = [];
 var bErrorMsg = false;
 var ProblemApp = angular.module('AppPotentialDiagnosis', []);
+ProblemApp.config(function ($provide) {
+    $provide.decorator('$exceptionHandler', function ($delegate) {
+        return function (exception, cause) {
+            HandlerAngularjsError(exception);
+        };
+    });
+});
 ProblemApp.controller('CtrlPotentialDiagnosis', function ($scope, $http) {
     var sData = "";
     if (document.URL.indexOf("ASSESSMENT") == -1) {

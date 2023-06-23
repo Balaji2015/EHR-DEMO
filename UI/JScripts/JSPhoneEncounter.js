@@ -345,6 +345,13 @@ function Close() {
 }
 var UserRole;
 var myapp = angular.module('PhoneEncounterapp', []);
+myapp.config(function ($provide) {
+    $provide.decorator('$exceptionHandler', function ($delegate) {
+        return function (exception, cause) {
+            HandlerAngularjsError(exception);
+        };
+    });
+});
 var myappload = angular.module('EandMCodingapp', []);
 var QuerystringValues = window.location.search;
 var OpeningFrom = QuerystringValues.split('&')[0].replace("?", "");  // QuerystringValues.split('|')[0];//  //

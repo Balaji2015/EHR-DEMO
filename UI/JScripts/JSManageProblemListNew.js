@@ -219,6 +219,13 @@ function SetStatus() {
 }
 
 var ProblemApp = angular.module('AppManageProblem', []);
+ProblemApp.config(function ($provide) {
+    $provide.decorator('$exceptionHandler', function ($delegate) {
+        return function (exception, cause) {
+            HandlerAngularjsError(exception);
+        };
+    });
+});
 ProblemApp.controller('ControllerManageProblem', function ($scope, $http) {
 
     var yrlst = [];

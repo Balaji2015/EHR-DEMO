@@ -64,6 +64,14 @@ document.oncontextmenu = function () {
     document.onmousedown = mouseDown;
 var ValEnableScreen = ""; // window.location.search.toString().split('?')[1];
 var myapp = angular.module('EandMCodingapp', []);
+/*=====new add angular Global function =======*/
+myapp.config(function ($provide) {
+    $provide.decorator('$exceptionHandler', function ($delegate) {
+        return function (exception, cause) {
+            HandlerAngularjsError(exception);
+        };
+    });
+});
 myapp.controller('EandMCodingCtrl', function ($scope, $http) {
     localStorage.setItem("MovetofromEandM", "False");
      ValEnableScreen =  window.location.search.toString().split('?')[1];
