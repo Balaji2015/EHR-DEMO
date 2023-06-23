@@ -8833,6 +8833,10 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
                                     objBillingWfObj = objWfMngr.GetByObjectSystemId(objDocWfObject.Obj_System_Id, "BILLING");
                                     if (objBillingWfObj.Current_Process == "BATCHING_WAIT")
                                         objWfMngr.MoveToNextProcess(objBillingWfObj.Obj_System_Id, objBillingWfObj.Obj_Type, 1, "UNKNOWN", currentDate, MACAddress, null, null);
+                                   
+                                    //Jira CAP-340
+                                    EncounterBlobManager objEncblobmngr = new EncounterBlobManager();
+                                    objEncblobmngr.LockEncounter(ulMyEncounterID, ulMyHumanID, UserName, currentDate);
                                 }
                             }
 
@@ -9080,8 +9084,16 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
                     if (DocumentationWfObject.Current_Process == "MA_PROCESS")
                     {
                         wfObjMngr.MoveToNextProcess(DocumentationWfObject.Obj_System_Id, DocumentationWfObject.Obj_Type, 2, "UNKNOWN", dtCurrentDateTime, sMacAddress, null, null);
+                        WFObject WFDocObj = wfObjMngr.GetByObjectSystemId(DocumentationWfObject.Obj_System_Id, DocumentationWfObject.Obj_Type);
                         if (BillingWfObject.Current_Process == "BATCHING_WAIT")
                             wfObjMngr.MoveToNextProcess(BillingWfObject.Obj_System_Id, BillingWfObject.Obj_Type, 1, "UNKNOWN", dtCurrentDateTime, sMacAddress, null, null);
+
+                        //Jira CAP-340
+                        if (WFDocObj.Current_Process == "DOCUMENT_COMPLETE")
+                        {
+                            EncounterBlobManager objEncblobmngr = new EncounterBlobManager();
+                            objEncblobmngr.LockEncounter(ulEncounterID, ulHumanID, sUserName, dtCurrentDateTime);
+                        }
                     }
                 }
             }
@@ -9202,6 +9214,10 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
                                 BillingWfObject = wfObjMngr.GetByObjectSystemId(DocumentationWfObject.Obj_System_Id, "BILLING");
                                 if (BillingWfObject.Current_Process == "BATCHING_WAIT")
                                     wfObjMngr.MoveToNextProcess(BillingWfObject.Obj_System_Id, BillingWfObject.Obj_Type, 1, "UNKNOWN", dtCurrentDateTime, sMacAddress, null, null);
+
+                                //Jira CAP-340
+                                EncounterBlobManager objEncblobmngr = new EncounterBlobManager();
+                                objEncblobmngr.LockEncounter(ulEncounterID, ulHumanID, sUserName, dtCurrentDateTime);
                             }
                         }
                     }
@@ -10684,6 +10700,10 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
                                     BillingWfObject = wfObjMngr.GetByObjectSystemId(ulEncounterID, "BILLING");
                                     if (BillingWfObject.Current_Process == "BATCHING_WAIT")
                                         wfObjMngr.MoveToNextProcess(BillingWfObject.Obj_System_Id, BillingWfObject.Obj_Type, 1, "UNKNOWN", dtCurrentDateTime, sMacAddress, null, null);
+
+                                    //Jira CAP-340
+                                    EncounterBlobManager objEncblobmngr = new EncounterBlobManager();
+                                    objEncblobmngr.LockEncounter(ulEncounterID, ulHumanID, sUserName, dtCurrentDateTime);
                                 }
                             }
                             if (EncounterWfObject != null && EncounterWfObject.Current_Process.ToUpper() == "CHECK_OUT_WAIT")
@@ -10723,6 +10743,10 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
                                 BillingWfObject = wfObjMngr.GetByObjectSystemId(ulEncounterID, "BILLING");
                                 if (BillingWfObject.Current_Process == "BATCHING_WAIT")
                                     wfObjMngr.MoveToNextProcess(BillingWfObject.Obj_System_Id, BillingWfObject.Obj_Type, CloseType, "UNKNOWN", dtCurrentDateTime, sMacAddress, null, null);
+
+                                //Jira CAP-340
+                                EncounterBlobManager objEncblobmngr = new EncounterBlobManager();
+                                objEncblobmngr.LockEncounter(ulEncounterID, ulHumanID, sUserName, dtCurrentDateTime);
                             }
                         }
                     }

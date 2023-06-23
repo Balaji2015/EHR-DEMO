@@ -2155,8 +2155,12 @@ filter:progid:DXImageTransform.Microsoft.Blur(PixelRadius='4');
         </asp:PlaceHolder>
     </form>
     <script>
-        //CAP-393 - It will store IP address.
         var ipAddress = "";
+        $(document).ready(function(){
+            getIpAddress();
+        });
+
+        //CAP-393 - It will store IP address.
         function getIpAddress() {
             $.ajax({
                 type: "GET",

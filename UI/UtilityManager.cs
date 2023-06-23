@@ -31,6 +31,7 @@ using Acurus.Capella.DataAccess;
 using DocumentFormat.OpenXml.Drawing.Charts;
 using System.Xml.Xsl;
 using System.Xml.XPath;
+using System.Security.RightsManagement;
 
 namespace Acurus.Capella.UI
 {
@@ -1629,10 +1630,8 @@ namespace Acurus.Capella.UI
             MapVitalsPhysicianManager objMapMngr = new MapVitalsPhysicianManager();
             IList<MapVitalsPhysician> mapVitalList = objMapMngr.GetVitalsForPhysician(ClientSession.PhysicianId);
             mapVitalList = mapVitalList.OrderBy(a => a.Sort_Order).ToList<MapVitalsPhysician>();
-
             VitalsManager objVMngr = new VitalsManager();
             IList<DynamicScreen> dynamicScreenlst = new List<DynamicScreen>();
-
             IList<DynamicScreen> dynList = objVMngr.LoadDynamicScreenXML();
             dynamicScreenlst = (from objMapVit in mapVitalList
                                 join obj in dynList
@@ -1654,6 +1653,13 @@ namespace Acurus.Capella.UI
                         case "BP-Sitting Left": vitalslist.Add("BP-SittingLocation"); break;
                         case "BP-Standing Left": vitalslist.Add("BP-StandingLocation"); break;
                         case "BP-Lying Left": vitalslist.Add("BP-LyingLocation"); break;
+                        //Jira Cap-448 - when added in vitals along with the Lt BP did not gets displayed in Summary bar
+                        case "BP-Sitting$ Left": vitalslist.Add("BP-Sitting$Location"); break;
+                        case "BP-Standing$ Left": vitalslist.Add("BP-Standing$Location"); break;
+                        case "BP-Lying$ Left": vitalslist.Add("BP-Lying$Location"); break;
+                        case "BP-Sitting$ Right": vitalslist.Add("BP-Sitting$Location"); break;
+                        case "BP-Standing$ Right": vitalslist.Add("BP-Standing$Location"); break;
+                        case "BP-Lying$ Right": vitalslist.Add("BP-Lying$Location"); break;
                         default:
                             {
                                 string Vital_value = Regex.Replace(obj.Control_Name, @"\s", "");//BugID:46764
@@ -1847,9 +1853,11 @@ namespace Acurus.Capella.UI
                                     }
                                 }
                             }
-                            if (!sVitalsText.Contains(OrderedVitalList[i].Loinc_Observation) && !Text.Contains(OrderedVitalList[i].Loinc_Observation))
+                            //Jira Cap-448 - when added in vitals along with the Lt BP did not gets displayed in Summary bar
+                            // if (!sVitalsText.Contains(OrderedVitalList[i].Loinc_Observation) && !Text.Contains(OrderedVitalList[i].Loinc_Observation))
+                            if (!Text.Contains(OrderedVitalList[i].Loinc_Observation))
                             {
-                                Text = OrderedVitalList[i].Loinc_Observation + " - " + OrderedVitalList[i].Value + AddVitalUnits(OrderedVitalList[i].Loinc_Observation) + "\n";
+                            Text = OrderedVitalList[i].Loinc_Observation + " - " + OrderedVitalList[i].Value + AddVitalUnits(OrderedVitalList[i].Loinc_Observation) + "\n";
                             }
                         }
 
@@ -3256,7 +3264,8 @@ namespace Acurus.Capella.UI
             return sSnomedCode;
         }
 
-        class FileErrorList
+        
+         class FileErrorList
         {
             public string FileName { get; set; }
             public int TotalErrorCount { get; set; }
@@ -5835,6 +5844,36 @@ namespace Acurus.Capella.UI
                 xmlDoc = null;
                 ds = null;
             }
+        }
+
+        public Boolean LoadBlobHumanXML(ulong ulHumanID, ulong ulEncounterID, IList<Encounter_Blob> ilstEncounterBlob, out string sXMLHumanDoc)
+        {
+            Boolean bAlert = false;
+            sXMLHumanDoc = string.Empty;
+            WFObjectManager wfObjMngr = new WFObjectManager();
+            WFObject DocumentationWfObject = wfObjMngr.GetByObjectSystemId(ulEncounterID, "DOCUMENTATION");
+            if (DocumentationWfObject.Current_Process == "DOCUMENT_COMPLETE")
+            {
+                if (ilstEncounterBlob != null && ilstEncounterBlob.Count > 0 && ilstEncounterBlob[0].Human_XML != null)
+                {
+                    sXMLHumanDoc = System.Text.Encoding.UTF8.GetString(ilstEncounterBlob[0].Human_XML);
+                }
+                else
+                {
+                    bAlert = true;
+                }
+            }
+            else
+            {
+                IList<Human_Blob> ilstHumanBlob = new List<Human_Blob>();
+                HumanBlobManager HumanBlobMngr = new HumanBlobManager();
+                ilstHumanBlob = HumanBlobMngr.GetHumanBlob(Convert.ToUInt64(ulHumanID));
+                if (ilstHumanBlob != null && ilstHumanBlob.Count > 0 && ilstHumanBlob[0].Human_XML != null)
+                {
+                    sXMLHumanDoc = System.Text.Encoding.UTF8.GetString(ilstHumanBlob[0].Human_XML);
+                }
+            }
+            return bAlert;
         }
     }
 }

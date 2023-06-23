@@ -2996,4 +2996,5 @@
 	<Message number="1011191" Type="CCDGenerate" Text="The CCD Generate is in progress. Please wait as it takes few minutes."></Message>
 	<Message number="1011192" Type="OK" Text="There is an existing CCD Generate request found in the Queue. Please either try after some time or contact Acurus to clear the queue."></Message>
 	<Message number="1011193" Type="CCDGenerate" Text="The C2 Import is in progress. Please wait as it takes few minutes."></Message>
+	<Message number="1011194" Type="OK" Text="Locked Human xml is not present. Can not generate notes. Please contact support."></Message>
 </ErrorMessage>

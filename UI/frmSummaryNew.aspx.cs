@@ -58,6 +58,8 @@ namespace Acurus.Capella.UI
 
             ulong Human_ID = 0;
             string HumanID = "";
+            EncounterBlobManager EncounterBlobMngr = new EncounterBlobManager();
+            IList<Encounter_Blob> ilstEncounterBlob = new List<Encounter_Blob>();
 
             if (Request.QueryString["EncounterId"] != null)
             {
@@ -200,8 +202,9 @@ namespace Acurus.Capella.UI
                 //IList<string> ilstSummaryTag_List = new List<string>();
                 //ilstSummaryTag_List.Add("EncounterList");
 
-                EncounterBlobManager EncounterBlobMngr = new EncounterBlobManager();
-                IList<Encounter_Blob> ilstEncounterBlob = EncounterBlobMngr.GetEncounterBlob(Encounter_Id);
+                //EncounterBlobManager EncounterBlobMngr = new EncounterBlobManager();
+                //IList<Encounter_Blob> ilstEncounterBlob = EncounterBlobMngr.GetEncounterBlob(Encounter_Id);
+                ilstEncounterBlob = EncounterBlobMngr.GetEncounterBlob(Encounter_Id);
                 if (ilstEncounterBlob.Count > 0)
                 {
                     string sXMLContent = string.Empty;
@@ -224,7 +227,7 @@ namespace Acurus.Capella.UI
                         }
                         else
                         {
-                             ScriptManager.RegisterStartupScript(this, typeof(frmEncounter), "SummaryAlert", "SummaryHumanIDAlert('EncounterList Tag');", true);
+                             ScriptManager.RegisterStartupScript(this, typeof(frmEncounter), "SummaryAlert", "SummaryHumanIDAlert('EncounterList Tag is not found. Please contact support team to regenerate the XML.');", true);
                             return;  
                         }
 
@@ -576,17 +579,31 @@ namespace Acurus.Capella.UI
 
             try
             {
-                IList<Human_Blob> ilstHumanBlob = new List<Human_Blob>();
-                ilstHumanBlob = HumanBlobMngr.GetHumanBlob(Convert.ToUInt64(HumanID));
-                XmlDocument xmlHumanDoc = new XmlDocument();
-                if (ilstHumanBlob.Count > 0)
+                //Jira CAP-379
+                UtilityManager utilitymngr = new UtilityManager();
+                Boolean bAlert = utilitymngr.LoadBlobHumanXML(Convert.ToUInt64(HumanID), Encounter_Id, ilstEncounterBlob, out sXMLHumanDoc);
+
+                if (bAlert == true)
                 {
-                    sXMLHumanDoc = System.Text.Encoding.UTF8.GetString(ilstHumanBlob[0].Human_XML);
+                    ScriptManager.RegisterStartupScript(this, typeof(frmEncounter), "SummaryAlert", "SummaryHumanIDAlert('Locked Human xml is not present. Please contact support.');", true);
+                    return;
+                }
+                //IList<Human_Blob> ilstHumanBlob = new List<Human_Blob>();
+                //ilstHumanBlob = HumanBlobMngr.GetHumanBlob(Convert.ToUInt64(HumanID));
+                XmlDocument xmlHumanDoc = new XmlDocument();
+                //if (ilstHumanBlob.Count > 0)
+                if (sXMLHumanDoc != null && sXMLHumanDoc != "" && sXMLHumanDoc != string.Empty)
+                {
+                    //sXMLHumanDoc = System.Text.Encoding.UTF8.GetString(ilstHumanBlob[0].Human_XML);
                     if (sXMLHumanDoc.Substring(0, 1) != "<")
                         sXMLHumanDoc = sXMLHumanDoc.Substring(1, sXMLHumanDoc.Length - 1);
                     //Jira #CAP-115
                     sXMLHumanDoc = UtilityManager.ReplaceSpecialCharaters(sXMLHumanDoc);
                     xmlHumanDoc.LoadXml(sXMLHumanDoc);
+                }
+                else {
+                    ScriptManager.RegisterStartupScript(this, typeof(frmEncounter), "SummaryAlert", "SummaryHumanIDAlert('Locked Human xml is not present. Please contact support.');", true);
+                    return;
                 }
             }
             catch (Exception ex)
@@ -606,8 +623,8 @@ namespace Acurus.Capella.UI
 
             try
             {
-                IList<Encounter_Blob> ilstEncounterBlob = new List<Encounter_Blob>();
-                ilstEncounterBlob = EncounterBlobMngr.GetEncounterBlob(Encounter_Id);
+                //IList<Encounter_Blob> ilstEncounterBlob = new List<Encounter_Blob>();
+                //ilstEncounterBlob = EncounterBlobMngr.GetEncounterBlob(Encounter_Id);
                 if (ilstEncounterBlob.Count > 0)
                 {
                     sXMLEncounterDoc = System.Text.Encoding.UTF8.GetString(ilstEncounterBlob[0].Encounter_XML);

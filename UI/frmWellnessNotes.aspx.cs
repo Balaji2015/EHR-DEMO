@@ -32,13 +32,15 @@ namespace Acurus.Capella.UI
         string sXMLEncounterDoc = string.Empty;
         HumanBlobManager HumanBlobMngr = new HumanBlobManager();
         EncounterBlobManager EncounterBlobMngr = new EncounterBlobManager();
+        IList<Encounter_Blob> ilstEncounterBlob = new List<Encounter_Blob>();
+        ulong Encounter_Id = 0;
         protected void Page_Load(object sender, EventArgs e)
         {
             sNotesName = Request.QueryString["SubMenuName"].Split('?')[0];
 
 
-            ulong Encounter_Id = 0;
-
+            //ulong Encounter_Id = 0;
+            
             if (Request.QueryString["EncounterId"] != null)
             {
                 Encounter_Id = Convert.ToUInt32(Request.QueryString["EncounterId"].ToString());
@@ -47,8 +49,8 @@ namespace Acurus.Capella.UI
             string FileName = string.Empty;
             if (Encounter_Id != 0)
             {
-                IList<Encounter_Blob> ilstEncounterBlob = new List<Encounter_Blob>();
-                EncounterBlobManager EncounterBlobMngr = new EncounterBlobManager();
+                //IList<Encounter_Blob> ilstEncounterBlob = new List<Encounter_Blob>();
+                //EncounterBlobManager EncounterBlobMngr = new EncounterBlobManager();
 
                 ilstEncounterBlob = EncounterBlobMngr.GetEncounterBlob(Encounter_Id);
                 if (ilstEncounterBlob.Count > 0)
@@ -64,15 +66,15 @@ namespace Acurus.Capella.UI
                 {
                     //ScriptManager.RegisterStartupScript(this, typeof(frmEncounter), "ErrorMessage", "RegenerateXML('" + Encounter_Id.ToString() + "','Encounter','summary');", true);
                     //return;
-                    ScriptManager.RegisterStartupScript(this, typeof(frmEncounter), "SummaryAlert", "SummaryHumanIDAlert('Encounter XML');", true);
+                    ScriptManager.RegisterStartupScript(this, typeof(frmEncounter), "SummaryAlert", "SummaryHumanIDAlert('Encounter XML is not found. Please contact support team to regenerate the XML.');", true);
                     return;
                 }
                 FileName = "Encounter" + "_" + Encounter_Id + ".xml";
             }
             else if (ClientSession.EncounterId > 0)
             {
-                IList<Encounter_Blob> ilstEncounterBlob = new List<Encounter_Blob>();
-                EncounterBlobManager EncounterBlobMngr = new EncounterBlobManager();
+                //IList<Encounter_Blob> ilstEncounterBlob = new List<Encounter_Blob>();
+                //EncounterBlobManager EncounterBlobMngr = new EncounterBlobManager();
 
                 ilstEncounterBlob = EncounterBlobMngr.GetEncounterBlob(ClientSession.EncounterId);
                 if (ilstEncounterBlob.Count > 0)
@@ -88,7 +90,7 @@ namespace Acurus.Capella.UI
                 {
                     //ScriptManager.RegisterStartupScript(this, typeof(frmEncounter), "ErrorMessage", "RegenerateXML('" + ClientSession.EncounterId.ToString() + "','Encounter','summary');", true);
                     //return;
-                    ScriptManager.RegisterStartupScript(this, typeof(frmEncounter), "SummaryAlert", "SummaryHumanIDAlert('Encounter XML');", true);
+                    ScriptManager.RegisterStartupScript(this, typeof(frmEncounter), "SummaryAlert", "SummaryHumanIDAlert('Encounter XML is not found. Please contact support team to regenerate the XML.');", true);
                     return;
                 }
                 FileName = "Encounter" + "_" + ClientSession.EncounterId + ".xml";
@@ -96,7 +98,7 @@ namespace Acurus.Capella.UI
             //GitLab #3933
             else
             {
-                ScriptManager.RegisterStartupScript(this, typeof(frmEncounter), "SummaryAlert", "SummaryHumanIDAlert('Encounter ID');", true);
+                ScriptManager.RegisterStartupScript(this, typeof(frmEncounter), "SummaryAlert", "SummaryHumanIDAlert('Encounter ID is not found. Please contact support team to regenerate the XML.');", true);
                 return;
             }
 
@@ -130,21 +132,24 @@ namespace Acurus.Capella.UI
                 xsltFile = Path.Combine(System.Configuration.ConfigurationSettings.AppSettings["XMLPath"], "EHR_Wellness_Notes.xsl");
                 OutputNamingConvention = System.Configuration.ConfigurationSettings.AppSettings["WellnessNotesNamingConvention"];
                 NotesName = FileNameGeneration(OutputNamingConvention);
-                if (!status)
+                if (NotesName != string.Empty)
                 {
+                    if (!status)
+                    {
 
-                    DownloadNotes(xsltFile, NotesName, sNotesName);
-                }
-                else
-                {
-                    string file = Path.Combine(file_location, Name);
-                    Response.ContentType = "application/x-download";
-                    Response.AddHeader("Content-Disposition", string.Format("attachment; filename=\"{0}\"", NotesName + ".pdf"));
-                    Response.WriteFile(file);
+                        DownloadNotes(xsltFile, NotesName, sNotesName);
+                    }
+                    else
+                    {
+                        string file = Path.Combine(file_location, Name);
+                        Response.ContentType = "application/x-download";
+                        Response.AddHeader("Content-Disposition", string.Format("attachment; filename=\"{0}\"", NotesName + ".pdf"));
+                        Response.WriteFile(file);
 
-                    Response.Flush();
-                    System.IO.File.Delete(file);
-                    Response.End();
+                        Response.Flush();
+                        System.IO.File.Delete(file);
+                        Response.End();
+                    }
                 }
             }
             if (sNotesName.ToUpper() == "TREATMENT NOTES")
@@ -152,14 +157,20 @@ namespace Acurus.Capella.UI
                 xsltFile = Path.Combine(System.Configuration.ConfigurationSettings.AppSettings["XMLPath"], "EHR_Treatment_Notes.xsl");
                 OutputNamingConvention = System.Configuration.ConfigurationSettings.AppSettings["TreatmentNotesNamingConvention"];
                 NotesName = FileNameGeneration(OutputNamingConvention);
-                DownloadNotes(xsltFile, NotesName, sNotesName);
+                if (NotesName != string.Empty)
+                {
+                    DownloadNotes(xsltFile, NotesName, sNotesName);
+                }
             }
             if (sNotesName.ToUpper() == "CARE NOTE")
             {
                 xsltFile = Path.Combine(System.Configuration.ConfigurationSettings.AppSettings["XMLPath"], "EHR_Care_Notes.xsl");
                 OutputNamingConvention = System.Configuration.ConfigurationSettings.AppSettings["CareNotesNamingConvention"];
                 NotesName = FileNameGeneration(OutputNamingConvention);
-                DownloadNotes(xsltFile, NotesName, sNotesName);
+                if (NotesName != string.Empty)
+                {
+                    DownloadNotes(xsltFile, NotesName, sNotesName);
+                }
             }
 
         }
@@ -197,12 +208,30 @@ namespace Acurus.Capella.UI
                         string sDOB = string.Empty;
                         XmlDocument itemDoc = new XmlDocument();
                         string sXMLContent = string.Empty;
-
-                        HumanBlobManager HumanBlobMngr = new HumanBlobManager();
-                        IList<Human_Blob> ilstHumanBlob = HumanBlobMngr.GetHumanBlob(ClientSession.HumanId);
-                        if (ilstHumanBlob.Count > 0)
+                        ulong ulMyEncounterID = 0;
+                        if (Encounter_Id != 0)
                         {
-                            sXMLContent = System.Text.Encoding.UTF8.GetString(ilstHumanBlob[0].Human_XML);
+                            ulMyEncounterID = Encounter_Id;
+                        }
+                        else if (ClientSession.EncounterId>0) {
+                            ulMyEncounterID = ClientSession.EncounterId;
+                        }
+
+                        //Jira CAP-379
+                        //HumanBlobManager HumanBlobMngr = new HumanBlobManager();
+                        //IList<Human_Blob> ilstHumanBlob = HumanBlobMngr.GetHumanBlob(ClientSession.HumanId);
+                        UtilityManager utilitymngr = new UtilityManager();
+                        Boolean bAlert = utilitymngr.LoadBlobHumanXML(Convert.ToUInt64(ClientSession.HumanId), ulMyEncounterID, ilstEncounterBlob, out sXMLHumanDoc);
+
+                        if (bAlert == true)
+                        {
+                            ScriptManager.RegisterStartupScript(this, this.Page.GetType(), "", "DisplayErrorMessage('1011194'); {sessionStorage.setItem('StartLoading', 'false');StopLoadFromPatChart();}", true);
+                            return string.Empty;
+                        }
+                        //if (ilstHumanBlob.Count > 0)
+                        if (sXMLHumanDoc != null && sXMLHumanDoc != "" && sXMLHumanDoc != string.Empty)
+                        {
+                            sXMLContent = sXMLHumanDoc;
                             if (sXMLContent.Substring(0, 1) != "<")
                                 sXMLContent = sXMLContent.Substring(1, sXMLContent.Length - 1);
                             itemDoc.LoadXml(sXMLContent);
@@ -345,19 +374,21 @@ namespace Acurus.Capella.UI
            // string xmlDataFile = strXmlEncounterPath1;
             string WordOutputName = NotesName + ".html";
             string outputDocument = Path.Combine(System.Configuration.ConfigurationSettings.AppSettings["XMLPath"], WordOutputName);
-            IList<Human_Blob> ilstHumanBlob = new List<Human_Blob>();
-            ilstHumanBlob = HumanBlobMngr.GetHumanBlob(Convert.ToUInt64( ClientSession.HumanId));
-            if (ilstHumanBlob.Count > 0)
-            {
-                sXMLHumanDoc = System.Text.Encoding.UTF8.GetString(ilstHumanBlob[0].Human_XML);
-                if (sXMLHumanDoc.Substring(0, 1) != "<")
-                    sXMLHumanDoc = sXMLHumanDoc.Substring(1, sXMLHumanDoc.Length - 1);
-                //Jira #CAP-115
-                sXMLHumanDoc = UtilityManager.ReplaceSpecialCharaters(sXMLHumanDoc);
-            }
 
-            IList<Encounter_Blob> ilstEncounterBlob = new List<Encounter_Blob>();
-            ilstEncounterBlob = EncounterBlobMngr.GetEncounterBlob(Convert.ToUInt64(ClientSession.EncounterId));
+            //Jira CAP-379
+            //IList<Human_Blob> ilstHumanBlob = new List<Human_Blob>();
+            //ilstHumanBlob = HumanBlobMngr.GetHumanBlob(Convert.ToUInt64( ClientSession.HumanId));
+            //if (ilstHumanBlob.Count > 0)
+            //{
+            //    sXMLHumanDoc = System.Text.Encoding.UTF8.GetString(ilstHumanBlob[0].Human_XML);
+            //    if (sXMLHumanDoc.Substring(0, 1) != "<")
+            //        sXMLHumanDoc = sXMLHumanDoc.Substring(1, sXMLHumanDoc.Length - 1);
+            //    //Jira #CAP-115
+            //    sXMLHumanDoc = UtilityManager.ReplaceSpecialCharaters(sXMLHumanDoc);
+            //}
+
+            //IList<Encounter_Blob> ilstEncounterBlob = new List<Encounter_Blob>();
+            //ilstEncounterBlob = EncounterBlobMngr.GetEncounterBlob(Convert.ToUInt64(ClientSession.EncounterId));
             if (ilstEncounterBlob.Count > 0)
             {
                 sXMLEncounterDoc = System.Text.Encoding.UTF8.GetString(ilstEncounterBlob[0].Encounter_XML);
@@ -366,6 +397,28 @@ namespace Acurus.Capella.UI
                 //Jira #CAP-115
                 sXMLEncounterDoc = UtilityManager.ReplaceSpecialCharaters(sXMLEncounterDoc);
             }
+            //Jira CAP-379
+            UtilityManager utilitymngr = new UtilityManager();
+            Boolean bAlert = utilitymngr.LoadBlobHumanXML(Convert.ToUInt64(ClientSession.HumanId), Convert.ToUInt64(ClientSession.EncounterId), ilstEncounterBlob, out sXMLHumanDoc);
+
+            if (bAlert == true)
+            {
+                ScriptManager.RegisterStartupScript(this, typeof(frmEncounter), "SummaryAlert", "SummaryHumanIDAlert('Locked Human xml is not present. Please contact support.');", true);
+                return;
+            }
+            if (sXMLHumanDoc != null && sXMLHumanDoc != "" && sXMLHumanDoc != string.Empty)
+            {
+                if (sXMLHumanDoc.Substring(0, 1) != "<")
+                    sXMLHumanDoc = sXMLHumanDoc.Substring(1, sXMLHumanDoc.Length - 1);
+                //Jira #CAP-115
+                sXMLHumanDoc = UtilityManager.ReplaceSpecialCharaters(sXMLHumanDoc);
+            }
+            else
+            {
+                ScriptManager.RegisterStartupScript(this, typeof(frmEncounter), "SummaryAlert", "SummaryHumanIDAlert('Locked Human xml is not present. Please contact support.');", true);
+                return;
+            }
+
             //Jira #CAP-344 - OldCode
             //DataSet ds;
             //XmlDataDocument xmlDoc;

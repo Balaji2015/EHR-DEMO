@@ -10,6 +10,7 @@ using System.Runtime.Serialization;
 using System.Web.Mail;
 using System.Data;
 using System.Linq;
+using System.Xml;
 
 namespace Acurus.Capella.DataAccess.ManagerObjects
 {
@@ -20,6 +21,7 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
         IList<Encounter_Blob> GetEncounterBlob(ulong ulEncounterID);
 
         void SaveEncounterBlobWithTransaction( IList<Encounter_Blob> ListToUpdateEncounterBlob, string MACAddress);
+        void LockEncounter(ulong ulEncounterID, ulong ulHumanID, string sUserName, DateTime dtModifiedDateTime);
     }
 
     public partial class EncounterBlobManager : ManagerBase<Encounter_Blob, ulong>, IEncounterBlobManager
@@ -61,6 +63,28 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
         {
             IList<Encounter_Blob> ilstEncounterBlob = null;
             SaveUpdateDeleteWithTransaction(ref ilstEncounterBlob,ListToUpdateEncounterBlob, null, MACAddress);
+        }
+        //Jira CAP-340 - New method for lock the DOCUMENT_COMPLEATE Encounter 
+        public void LockEncounter(ulong ulEncounterID, ulong ulHumanID ,string sUserName ,DateTime dtModifiedDateTime)
+        {
+            IList<Encounter_Blob> ilstEncounterBlob = new List<Encounter_Blob>();
+            IList<Human_Blob> ilstHumanBlob = new List<Human_Blob>();
+            HumanBlobManager humanBlobManager = new HumanBlobManager();
+
+            ilstEncounterBlob = GetEncounterBlob(ulEncounterID);
+            ilstHumanBlob = humanBlobManager.GetHumanBlob(ulHumanID);
+
+            if (ilstEncounterBlob.Count > 0 && ilstHumanBlob.Count > 0)
+            {
+                for (int iCount = 0; iCount < ilstEncounterBlob.Count; iCount++)
+                {
+                    ilstEncounterBlob[iCount].Human_XML = ilstHumanBlob[iCount].Human_XML;
+                    ilstEncounterBlob[iCount].Modified_Date_And_Time = dtModifiedDateTime;
+                    ilstEncounterBlob[iCount].Modified_By = sUserName;
+                }
+                SaveEncounterBlobWithTransaction(ilstEncounterBlob, string.Empty);
+
+            }
         }
         #endregion
     }

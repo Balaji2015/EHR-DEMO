@@ -31,7 +31,7 @@ namespace Acurus.Capella.UI
 
         string sXMLHumanDoc = string.Empty;
         string sXMLEncounterDoc = string.Empty;
-
+        IList<Encounter_Blob> ilstEncounterBlob = new List<Encounter_Blob>();
         protected void Page_Load(object sender, EventArgs e)
         {
             ulong Encounter_Id = 0;
@@ -43,21 +43,20 @@ namespace Acurus.Capella.UI
                 // ClientSession.Selectedencounterid = Encounter_Id;
             }
             EncounterBlobManager EncounterBlobMngr = new EncounterBlobManager();
-            HumanBlobManager HumanBlobMngr=new HumanBlobManager();
-            IList<Human_Blob> ilstHumanBlob = new List<Human_Blob>();
-            ilstHumanBlob = HumanBlobMngr.GetHumanBlob(Convert.ToUInt64(ClientSession.HumanId));
-            if (ilstHumanBlob.Count > 0)
-            {
-                sXMLHumanDoc = System.Text.Encoding.UTF8.GetString(ilstHumanBlob[0].Human_XML);
-                if (sXMLHumanDoc.Substring(0, 1) != "<")
-                    sXMLHumanDoc = sXMLHumanDoc.Substring(1, sXMLHumanDoc.Length - 1);
-                //Jira #CAP-115
-                sXMLHumanDoc = UtilityManager.ReplaceSpecialCharaters(sXMLHumanDoc);
-            }
+            //HumanBlobManager HumanBlobMngr=new HumanBlobManager();
+            //IList<Human_Blob> ilstHumanBlob = new List<Human_Blob>();
+            //ilstHumanBlob = HumanBlobMngr.GetHumanBlob(Convert.ToUInt64(ClientSession.HumanId));
+            //if (ilstHumanBlob.Count > 0)
+            //{
+            //    sXMLHumanDoc = System.Text.Encoding.UTF8.GetString(ilstHumanBlob[0].Human_XML);
+            //    if (sXMLHumanDoc.Substring(0, 1) != "<")
+            //        sXMLHumanDoc = sXMLHumanDoc.Substring(1, sXMLHumanDoc.Length - 1);
+            //    //Jira #CAP-115
+            //    sXMLHumanDoc = UtilityManager.ReplaceSpecialCharaters(sXMLHumanDoc);
+            //}
             if (Encounter_Id != 0)
-
             {
-                IList<Encounter_Blob> ilstEncounterBlob = new List<Encounter_Blob>();
+                //IList<Encounter_Blob> ilstEncounterBlob = new List<Encounter_Blob>();
                 ilstEncounterBlob = EncounterBlobMngr.GetEncounterBlob(Encounter_Id);
                 if (ilstEncounterBlob.Count > 0)
                 {
@@ -85,10 +84,29 @@ namespace Acurus.Capella.UI
                 }
                 //ScriptManager.RegisterStartupScript(this, this.Page.GetType(), "", "DisplayErrorMessage('110063'); {sessionStorage.setItem('StartLoading', 'false');StopLoadFromPatChart();}", true);
             }
+            //Jira CAP-379
+            UtilityManager utilitymngr = new UtilityManager();
+            Boolean bAlert = utilitymngr.LoadBlobHumanXML(Convert.ToUInt64(ClientSession.HumanId), Encounter_Id, ilstEncounterBlob, out sXMLHumanDoc);
+
+            if (bAlert == true)
+            {
+                ScriptManager.RegisterStartupScript(this, this.Page.GetType(), "", "DisplayErrorMessage('1011194'); {sessionStorage.setItem('StartLoading', 'false');StopLoadFromPatChart();}", true);
+                return;
+            }
+
+            if (sXMLHumanDoc != null && sXMLHumanDoc != "" && sXMLHumanDoc != string.Empty)
+            {
+                if (sXMLHumanDoc.Substring(0, 1) != "<")
+                    sXMLHumanDoc = sXMLHumanDoc.Substring(1, sXMLHumanDoc.Length - 1);
+                //Jira #CAP-115
+                sXMLHumanDoc = UtilityManager.ReplaceSpecialCharaters(sXMLHumanDoc);
+            }
+            else {
+                ScriptManager.RegisterStartupScript(this, this.Page.GetType(), "", "DisplayErrorMessage('1011194'); {sessionStorage.setItem('StartLoading', 'false');StopLoadFromPatChart();}", true);
+                return;
+            }
 
 
-               
-            
             if (!IsPostBack)
             {
                 XmlDocument itemDoc = new XmlDocument();

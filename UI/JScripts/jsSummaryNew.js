@@ -19,7 +19,8 @@ function SummaryHumanIDAlert(sMessage) {
     }
     //GitLab #3933  
     if (document.getElementById('summarydiv')?.innerText != undefined) {
-        document.getElementById('summarydiv').innerText = sMessage + " is not found. Please contact support team to regenerate the XML.";
+        //document.getElementById('summarydiv').innerText = sMessage + " is not found. Please contact support team to regenerate the XML.";
+        document.getElementById('summarydiv').innerText = sMessage;
     }
 }
 
