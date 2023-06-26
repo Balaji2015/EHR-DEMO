@@ -26,14 +26,14 @@ using System.Xml.Serialization;
 using System.Reflection;
 using Newtonsoft.Json;
 using System.Web.Services;
-using log4net;
+
 
 namespace Acurus.Capella.UI
 {
     public partial class frmEditAppointment : System.Web.UI.Page
     {
         #region Declarations
-        private static readonly ILog logFile = LogManager.GetLogger("Error");
+
         ulong ulMyEncID;
         ulong ulMyHumanID;
         public ulong ulMyPhysicianID;
@@ -80,631 +80,602 @@ namespace Acurus.Capella.UI
 
         protected void Page_Load(object sender, EventArgs e)
         {
-            try
+            //log4net.GlobalContext.Properties["UserName"] = ClientSession.UserName;
+            //log4net.Config.XmlConfigurator.ConfigureAndWatch(new FileInfo(Server.MapPath("Web.config")));
+            //logger.Debug("--------------------frmEditAppointment Page Load Started--------------------");
+            string time_taken = "";
+            Stopwatch OverAllPageLoad = new Stopwatch();
+            OverAllPageLoad.Start();
+
+            txtPurposeofVisit.txtDLC.Attributes.Add("onkeypress", "EnableSaveButton(this);");
+            txtPurposeofVisit.txtDLC.Attributes.Add("onchange", "EnableSaveButton(this);");
+            txtNotes.txtDLC.Attributes.Add("onkeypress", "EnableSaveButton(this);");
+            txtNotes.txtDLC.Attributes.Add("onchange", "EnableSaveButton(this);");
+            //btnSave.Attributes.Add("Onclick", "javascript:return showTime();");
+            txtPurposeofVisit.ListboxHeight = 150;
+            txtPurposeofVisit.DName = "pbPurposeVisitDropDown";
+            txtNotes.DName = "pbNotesDropDown";
+            if (!IsPostBack)
             {
-                logFile.Info(DateTime.UtcNow.ToString() + "-Page Load - Start", null);
-                //log4net.GlobalContext.Properties["UserName"] = ClientSession.UserName;
-                //log4net.Config.XmlConfigurator.ConfigureAndWatch(new FileInfo(Server.MapPath("Web.config")));
-                //logger.Debug("--------------------frmEditAppointment Page Load Started--------------------");
-                string time_taken = "";
-                Stopwatch OverAllPageLoad = new Stopwatch();
-                OverAllPageLoad.Start();
-                logFile.Info(DateTime.UtcNow.ToString() + "- Add Attributes- Start", null);
-                txtPurposeofVisit.txtDLC.Attributes.Add("onkeypress", "EnableSaveButton(this);");
-                txtPurposeofVisit.txtDLC.Attributes.Add("onchange", "EnableSaveButton(this);");
-                txtNotes.txtDLC.Attributes.Add("onkeypress", "EnableSaveButton(this);");
-                txtNotes.txtDLC.Attributes.Add("onchange", "EnableSaveButton(this);");
-                //btnSave.Attributes.Add("Onclick", "javascript:return showTime();");
-                txtPurposeofVisit.ListboxHeight = 150;
-                txtPurposeofVisit.DName = "pbPurposeVisitDropDown";
-                txtNotes.DName = "pbNotesDropDown";
-                logFile.Info(DateTime.UtcNow.ToString() + "- Add Attributes- End", null);
-                logFile.Info(DateTime.UtcNow.ToString() + "- PostBack - Start", null);
-                if (!IsPostBack)
+                //logger.Debug("Page Load occuring for the first time");
+                IList<FacilityLibrary> facList;
+                hdnParentscreen.Value = "EditAppointMents";
+                hdnPbClick.Value = "Plus";
+                hdnpbNotesClick.Value = "Plus";
+                hdnTestClick.Value = "Plus";
+                System.Diagnostics.Stopwatch LoadTime = new System.Diagnostics.Stopwatch();
+                LoadTime.Start();
+
+                //logger.Debug("Request['Human_id']=" + Request["Human_id"]);
+                //logger.Debug("Request['facility']=" + Request["facility"]);
+                //logger.Debug("Request['PhysicianName']=" + Request["PhysicianName"]);
+                //logger.Debug("Request['PhysicianID']=" + Request["PhysicianID"]);
+                //logger.Debug("Request['SelectedDate']=" + Request["SelectedDate"]);
+                //logger.Debug("Request['CurrentProcess']=" + Request["CurrentProcess"]);
+                //logger.Debug("Request['EncounterID']=" + Request["EncounterID"]);
+
+                if (Request["Human_id"] != null && Request["Human_id"].ToString() != "")
                 {
-                    logFile.Info(DateTime.UtcNow.ToString() + "- Hidden value Set - Start", null);
-                    //logger.Debug("Page Load occuring for the first time");
-                    IList<FacilityLibrary> facList;
-                    hdnParentscreen.Value = "EditAppointMents";
-                    hdnPbClick.Value = "Plus";
-                    hdnpbNotesClick.Value = "Plus";
-                    hdnTestClick.Value = "Plus";
-                    System.Diagnostics.Stopwatch LoadTime = new System.Diagnostics.Stopwatch();
-                    LoadTime.Start();
-                    //logger.Debug("Request['Human_id']=" + Request["Human_id"]);
-                    //logger.Debug("Request['facility']=" + Request["facility"]);
-                    //logger.Debug("Request['PhysicianName']=" + Request["PhysicianName"]);
-                    //logger.Debug("Request['PhysicianID']=" + Request["PhysicianID"]);
-                    //logger.Debug("Request['SelectedDate']=" + Request["SelectedDate"]);
-                    //logger.Debug("Request['CurrentProcess']=" + Request["CurrentProcess"]);
-                    //logger.Debug("Request['EncounterID']=" + Request["EncounterID"]);
-
-                    if (Request["Human_id"] != null && Request["Human_id"].ToString() != "")
+                    try
                     {
-                        try
-                        {
-                            ulMyHumanID = Convert.ToUInt64(Request["Human_id"]);
-                            hdnHumanID.Value = Request["Human_id"].ToString();
-                        }
-                        catch (Exception exp)
-                        {
-                            //logger.Debug("Conversion of Human_ID to UInt threw an error.", exp);
-                            throw (exp);
-                        }
+                        ulMyHumanID = Convert.ToUInt64(Request["Human_id"]);
+                        hdnHumanID.Value = Request["Human_id"].ToString();
                     }
-
-                    if (Request["facility"] != null && Request["facility"].ToString() != "")
+                    catch (Exception exp)
                     {
-                        hdnFacilityName.Value = Request["facility"].ToString().Replace("_", "#");
+                        //logger.Debug("Conversion of Human_ID to UInt threw an error.", exp);
+                        throw (exp);
                     }
+                }
 
-                    if (Request["PhysicianName"] != null)
+                if (Request["facility"] != null && Request["facility"].ToString() != "")
+                {
+                    hdnFacilityName.Value = Request["facility"].ToString().Replace("_", "#");
+                }
+
+                if (Request["PhysicianName"] != null)
+                {
+                    MyProviderName = Request["PhysicianName"].ToString();
+                }
+
+                if (Request["PhysicianID"] != null && Request["PhysicianID"].ToString() != "")
+                {
+                    try
                     {
-                        MyProviderName = Request["PhysicianName"].ToString();
+                        ulMyPhysicianID = Convert.ToUInt64(Request["PhysicianID"]);
+                        hdnPhysicianID.Value = ulMyPhysicianID.ToString();
+                        ClientSession.PhysicianId = ulMyPhysicianID;
                     }
-
-                    if (Request["PhysicianID"] != null && Request["PhysicianID"].ToString() != "")
+                    catch (Exception exp)
                     {
-                        try
-                        {
-                            ulMyPhysicianID = Convert.ToUInt64(Request["PhysicianID"]);
-                            hdnPhysicianID.Value = ulMyPhysicianID.ToString();
-                            ClientSession.PhysicianId = ulMyPhysicianID;
-                        }
-                        catch (Exception exp)
-                        {
-                            //logger.Debug("Conversion of Physician_ID to UInt threw an error.", exp);
-                            throw (exp);
-                        }
+                        //logger.Debug("Conversion of Physician_ID to UInt threw an error.", exp);
+                        throw (exp);
                     }
+                }
 
-                    if (Request["SelectedDate"] != null)
+                if (Request["SelectedDate"] != null)
+                {
+                    hdnSelectedDateTime.Value = Request["SelectedDate"].ToString();
+                }
+
+                if (Request["CurrentProcess"] != null)
+                {
+                    MyStatus = Request["CurrentProcess"];
+                    hdnCurrentProcess.Value = MyStatus;
+                }
+
+                if (Request["EncounterID"] != null && Request["EncounterID"].ToString() != "")
+                {
+                    try
                     {
-                        hdnSelectedDateTime.Value = Request["SelectedDate"].ToString();
+                        ulMyEncID = Convert.ToUInt64(Request["EncounterID"]);
+                        hdnEncounterID.Value = ulMyEncID.ToString();
                     }
-
-                    if (Request["CurrentProcess"] != null)
+                    catch (Exception exp)
                     {
-                        MyStatus = Request["CurrentProcess"];
-                        hdnCurrentProcess.Value = MyStatus;
+                        //logger.Debug("Conversion of Encounter_ID to UInt threw an error.", exp);
+                        throw (exp);
                     }
+                }
 
-                    if (Request["EncounterID"] != null && Request["EncounterID"].ToString() != "")
+                //   txtAuthorizationNo.Attributes.Add("readOnly", "readOnly");
+                FillNewEditAppointment fillneweditappt = null;
+                chkReschedule.Enabled = false;
+                //  btnFindPhysician.Enabled = true;
+                FillPOV();
+
+                //  txtReferringProvider.BackColor = System.Drawing.Color.FromArgb(191, 219, 255);
+                //  txtReferringFacility.BackColor = System.Drawing.Color.FromArgb(191, 219, 255);
+                //  txtProviderNPI.BackColor = System.Drawing.Color.FromArgb(191, 219, 255);
+                //   txtReferingAddress.BackColor = System.Drawing.Color.FromArgb(191, 219, 255);
+                //   msktxtReferingPhoneNo.BackColor = System.Drawing.Color.FromArgb(191, 219, 255);
+                //   msktxtReferingFaxNo.BackColor = System.Drawing.Color.FromArgb(191, 219, 255);
+                // txtProviderNPI.Attributes.Add("onkeypress", "return false;");
+                // txtReferringProvider.Attributes.Add("onkeypress", "return false;");
+                // txtReferringFacility.Attributes.Add("onkeypress", "return false;");
+                //  txtReferingAddress.Attributes.Add("onkeypress", "return false;");
+                // txtProviderNPI.Attributes.Add("onkeydown", "return false;");
+                //  txtReferringProvider.Attributes.Add("onkeydown", "return false;");
+                //txtReferringFacility.Attributes.Add("onkeydown", "return false;");
+                //  txtReferingAddress.Attributes.Add("onkeydown", "return false;");
+                // msktxtReferingFaxNo.ReadOnly = true;
+                // msktxtReferingPhoneNo.ReadOnly = true;
+
+                if (ulMyEncID != 0)
+                {
+                    imgClearProviderText.Style.Add("top", "224px !important");
+                    //logger.Debug("Screen is in Edit Appoinment Mode as Encounter_ID is" + ulMyEncID.ToString());
+                    if (ClientSession.UserName != null)
+                        this.Page.Title = "Edit Appointment" + "-" + ClientSession.UserName;
+                    Stopwatch GetEncounterAndHumanRecordDBCall = new Stopwatch();
+                    GetEncounterAndHumanRecordDBCall.Start();
+                    //logger.Debug("GetEncounterAndHumanRecord DB Call Starting");
+                    fillneweditappt = EncMngr.GetEncounterAndHumanRecord(ulMyEncID, ulMyHumanID);
+                    //logger.Debug("GetEncounterAndHumanRecord DB Call Completed.");
+                    GetEncounterAndHumanRecordDBCall.Stop();
+                    //logger.Debug("GetEncounterAndHumanRecord DB Call Time Taken :" + GetEncounterAndHumanRecordDBCall.Elapsed.Seconds + "." + GetEncounterAndHumanRecordDBCall.Elapsed.Milliseconds + "s");
+                    time_taken += "GetEncounterAndHumanRecordDBCall : " + GetEncounterAndHumanRecordDBCall.Elapsed.Seconds + "." + GetEncounterAndHumanRecordDBCall.Elapsed.Milliseconds + "s; ";
+                    ulordID = fillneweditappt.EncounterRecord.Order_Submit_ID;
+
+                    if (fillneweditappt.EncounterRecord.Encounter_ID == 0)
                     {
-                        try
-                        {
-                            ulMyEncID = Convert.ToUInt64(Request["EncounterID"]);
-                            hdnEncounterID.Value = ulMyEncID.ToString();
-                        }
-                        catch (Exception exp)
-                        {
-                            //logger.Debug("Conversion of Encounter_ID to UInt threw an error.", exp);
-                            throw (exp);
-                        }
-                    }
-                    logFile.Info(DateTime.UtcNow.ToString() + "- Hidden value Set - End", null);
-                    //   txtAuthorizationNo.Attributes.Add("readOnly", "readOnly");
 
-                    logFile.Info(DateTime.UtcNow.ToString() + "-Fill Edit Appoinntment - Start", null);
-                    FillNewEditAppointment fillneweditappt = null;
-                    chkReschedule.Enabled = false;
-                    //  btnFindPhysician.Enabled = true;
-                    FillPOV();
+                        EncRecord = EncMngr.GetEncounterByEncounterIDArchive(ulMyEncID);
+                        dtpApptDate.Enabled = false;
+                        dtpStartTime.Enabled = false;
 
-                    //  txtReferringProvider.BackColor = System.Drawing.Color.FromArgb(191, 219, 255);
-                    //  txtReferringFacility.BackColor = System.Drawing.Color.FromArgb(191, 219, 255);
-                    //  txtProviderNPI.BackColor = System.Drawing.Color.FromArgb(191, 219, 255);
-                    //   txtReferingAddress.BackColor = System.Drawing.Color.FromArgb(191, 219, 255);
-                    //   msktxtReferingPhoneNo.BackColor = System.Drawing.Color.FromArgb(191, 219, 255);
-                    //   msktxtReferingFaxNo.BackColor = System.Drawing.Color.FromArgb(191, 219, 255);
-                    // txtProviderNPI.Attributes.Add("onkeypress", "return false;");
-                    // txtReferringProvider.Attributes.Add("onkeypress", "return false;");
-                    // txtReferringFacility.Attributes.Add("onkeypress", "return false;");
-                    //  txtReferingAddress.Attributes.Add("onkeypress", "return false;");
-                    // txtProviderNPI.Attributes.Add("onkeydown", "return false;");
-                    //  txtReferringProvider.Attributes.Add("onkeydown", "return false;");
-                    //txtReferringFacility.Attributes.Add("onkeydown", "return false;");
-                    //  txtReferingAddress.Attributes.Add("onkeydown", "return false;");
-                    // msktxtReferingFaxNo.ReadOnly = true;
-                    // msktxtReferingPhoneNo.ReadOnly = true;
+                        // ComboBoxColorChange(ddlVisitType, false);
 
-                    if (ulMyEncID != 0)
-                    {
-                        logFile.Info(DateTime.UtcNow.ToString() + "-Fill Encounter Details - Start", null);
-                        imgClearProviderText.Style.Add("top", "224px !important");
-                        //logger.Debug("Screen is in Edit Appoinment Mode as Encounter_ID is" + ulMyEncID.ToString());
-                        if (ClientSession.UserName != null)
-                            this.Page.Title = "Edit Appointment" + "-" + ClientSession.UserName;
-                        Stopwatch GetEncounterAndHumanRecordDBCall = new Stopwatch();
-                        GetEncounterAndHumanRecordDBCall.Start();
-                        //logger.Debug("GetEncounterAndHumanRecord DB Call Starting");
-                        fillneweditappt = EncMngr.GetEncounterAndHumanRecord(ulMyEncID, ulMyHumanID);
-                        //logger.Debug("GetEncounterAndHumanRecord DB Call Completed.");
-                        GetEncounterAndHumanRecordDBCall.Stop();
-                        //logger.Debug("GetEncounterAndHumanRecord DB Call Time Taken :" + GetEncounterAndHumanRecordDBCall.Elapsed.Seconds + "." + GetEncounterAndHumanRecordDBCall.Elapsed.Milliseconds + "s");
-                        time_taken += "GetEncounterAndHumanRecordDBCall : " + GetEncounterAndHumanRecordDBCall.Elapsed.Seconds + "." + GetEncounterAndHumanRecordDBCall.Elapsed.Milliseconds + "s; ";
-                        ulordID = fillneweditappt.EncounterRecord.Order_Submit_ID;
-                        logFile.Info(DateTime.UtcNow.ToString() + "-Fill New Edit Appointment - Start", null);
-                        if (fillneweditappt.EncounterRecord.Encounter_ID == 0)
-                        {
+                        //NumericUpDownColorChange(ddlDuration, false);
 
-                            EncRecord = EncMngr.GetEncounterByEncounterIDArchive(ulMyEncID);
-                            dtpApptDate.Enabled = false;
-                            dtpStartTime.Enabled = false;
-
-                            // ComboBoxColorChange(ddlVisitType, false);
-
-                            //NumericUpDownColorChange(ddlDuration, false);
-
-                            ComboBoxColorChange(ddlPhysicianName, false);
-                            chkShowAllPhysicians.Enabled = false;
-                            // Commented by valli 
-                            //   txtProviderNPI.Attributes.Add("onkeypress", "return false;");
-                            //   txtReferringProvider.Attributes.Add("onkeypress", "return false;");
-                            //  txtReferringFacility.Attributes.Add("onkeypress", "return false;");
-                            // txtReferingAddress.Attributes.Add("onkeypress", "return false;");
-                            // txtProviderNPI.Attributes.Add("onkeydown", "return false;");
-                            // txtReferringProvider.Attributes.Add("onkeydown", "return false;");
-                            // txtReferringFacility.Attributes.Add("onkeydown", "return false;");
-                            //  txtReferingAddress.Attributes.Add("onkeydown", "return false;");
-                            //  msktxtReferingFaxNo.ReadOnly = true;
-                            //  msktxtReferingPhoneNo.ReadOnly = true;
-                            // TextBoxColorChange(txtReferringProvider, false);
-                            //  TextBoxColorChange(txtReferringFacility, false);
-                            //TextBoxColorChange(txtReferingAddress, false);
-                            //  MaskedTextBoxColorChange(msktxtReferingFaxNo, false);
-                            // MaskedTextBoxColorChange(msktxtReferingPhoneNo, false);
-                            chkSelfReferred.Enabled = false;
-                            //btnFindPhysician.Enabled = false;
-                            //   btnFindAuthorization.Enabled = false;
-                            chkReschedule.Enabled = false;
-                            chkSelfReferred.Enabled = false;
-                            chkShowAllPhysicians.Enabled = false;
-                            encounterArc = true;
-                        }
-                        else
-                        {
-                            EncRecord = fillneweditappt.EncounterRecord;
-                        }
-                        logFile.Info(DateTime.UtcNow.ToString() + "-Fill New Edit Appointment - End", null);
-                        //logger.Debug("EncRecord.Visit_Type=" + EncRecord.Visit_Type);
-                        logFile.Info(DateTime.UtcNow.ToString() + "-Fill DDL Value - Start", null);
-                        if (ddlVisitType.Items.Count > 0)
-                        {
-                            ddlVisitType.Text = EncRecord.Visit_Type.ToUpper();
-                        }
-
-                        //Jira #CAP-168 - if condition is commented for set the iteam for the deactivate user 
-                        // if (ddlVisitType.Items.Count > 0)
-                        // {
-                        if (ddlVisitType.Items.FindItemByText(EncRecord.Visit_Type.ToUpper()) == null)
-                        {
-                            RadComboBoxItem items = new RadComboBoxItem();
-                            items.Text = EncRecord.Visit_Type.ToUpper();
-                            ddlVisitType.Items.Add(items);
-                            checkddlvisit = true;
-                            HdnEditVisit.Value = EncRecord.Visit_Type.ToUpper() + "|" + EncRecord.Duration_Minutes.ToString();
-                        }
-                        ddlVisitType.Items.FindItemByText(EncRecord.Visit_Type.ToUpper()).Selected = true;
-                        //}
-                        ddlDuration.Text = EncRecord.Duration_Minutes.ToString();
-                        logFile.Info(DateTime.UtcNow.ToString() + "-Fill DDL Value - End", null);
-                        //logger.Debug("EncRecord.Visit_Type=" + EncRecord.Visit_Type);
-
-                        // commented by valli
-                        //if (EncRecord.Referring_Provider_NPI != string.Empty && EncRecord.PCP_Provider_NPI == string.Empty)
-                        //{
-                        //    txtProviderNPI.Text = EncRecord.Referring_Provider_NPI;
-                        //}
-                        //else if (EncRecord.PCP_Provider_NPI != string.Empty && EncRecord.Referring_Provider_NPI == string.Empty)
-                        //{
-                        //    txtProviderNPI.Text = EncRecord.PCP_Provider_NPI;
-                        //}
-                        //else if (EncRecord.PCP_Provider_NPI != string.Empty && EncRecord.Referring_Provider_NPI != string.Empty)
-                        //{
-                        //    txtProviderNPI.Text = EncRecord.Referring_Provider_NPI;
-                        //}
-
-
-                        logFile.Info(DateTime.UtcNow.ToString() + "-Text Visit - Start", null);
-                        hdnEncounter_Physician_id.Value = fillneweditappt.Encounter_Provider_ID.ToString();
-                        //logger.Debug("Encounter_Provider_ID=" + fillneweditappt.Encounter_Provider_ID.ToString());
-                        if (!checkddlvisit)
-                        {
-                            for (int i = 0; i < ddlVisitType.Items.Count; i++)
-                            {
-                                if (ddlVisitType.Text == ddlVisitType.Items.FindItemByText(ddlVisitType.Items[i].Text).Text)
-                                {
-                                    int iIndexValue = ddlVisitType.SelectedIndex;
-                                    // txtVisitDescription.Text = ddlVisitType.Items.FindItemByText(ddlVisitType.Items[i].Text).Value.Split(new string[] { "$#%" }, StringSplitOptions.None)[1];
-
-                                    txtVisitDescription.Text = description[iIndexValue];
-                                }
-                            }
-                        }
-                        else
-                        {
-                            txtVisitDescription.Text = "";
-                        }
-                        DateTime dtTime = UtilityManager.ConvertToLocal(EncRecord.Appointment_Date);
-                        //logger.Debug("Appointment_Date=" + dtTime.ToString("yyyy-MMM-dd hh:mm:ss"));
-                        dtpStartTime.SelectedTime = new TimeSpan(dtTime.Hour, dtTime.Minute, dtTime.Second);
-
-                        txtPurposeofVisit.txtDLC.Text = EncRecord.Purpose_of_Visit;
-                        txtNotes.txtDLC.Text = EncRecord.Notes;
-                        txtPatientAccountNumber.Text = EncRecord.Human_ID.ToString();
-                        //logger.Debug("EncRecord.Human_ID=" + EncRecord.Human_ID.ToString());
-                        //txtTest.Text = fillneweditappt.Test;//not been used right now 12-01-2016 by vasanth
-
-                        foreach (string str in fillneweditappt.CptAndItsOrderId)
-                        {
-                            hdnOrderList.Value += str + "-";
-                            lstOrdersID.Add(str);
-                        }
-
-                        if (lstOrdersID.Count == 0)
-                        {
-                            lstOrdersID = new List<string>();
-                            hdnOrderList.Value = string.Empty;
-                        }
-                        if (fillneweditappt != null)
-                        {
-                            txtPatientName.Text = fillneweditappt.Last_Name + "," + fillneweditappt.First_Name +
-                           "  " + fillneweditappt.MI + "  " + fillneweditappt.Suffix;
-
-                            //if (fillneweditappt.bAuthcount == false)
-                            //{
-                            //    if (fillneweditappt.AuthNo != string.Empty)
-                            //    {
-                            //        txtAuthorizationNo.Text = fillneweditappt.AuthNo;
-                            //        hdnAuthId.Value = fillneweditappt.AuthorizationId.ToString();
-                            //    }
-                            //}
-                            //else
-                            //{
-                            //    this.Page.ClientScript.RegisterStartupScript(this.Page.GetType(), "Edit Appointment", "OpenAuthorization();", true);
-                            //}
-                        }
-                        logFile.Info(DateTime.UtcNow.ToString() + "-Text Visit - End", null);
-                        //facList = ApplicationObject.facilityLibraryList;
-                        logFile.Info(DateTime.UtcNow.ToString() + "-Fill Facility Library List - Start", null);
-                        var fac = from f in ApplicationObject.facilityLibraryList where f.Legal_Org == ClientSession.LegalOrg select f;
-                        facList = fac.ToList<FacilityLibrary>();
-                        //logger.Debug("Filling Facility Combobox");
-                        if (facList != null)
-                        {
-                            //logger.Debug("Facility list count=" + facList.Count.ToString());
-                            for (int i = 0; i < facList.Count; i++)
-                            {
-                                RadComboBoxItem cboItem = new RadComboBoxItem();
-                                cboItem.Text = facList[i].Fac_Name;
-                                this.cboFacility.Items.Add(cboItem);
-                                if (hdnFacilityName.Value != null && hdnFacilityName.Value != "")
-                                {
-                                    if (hdnFacilityName.Value == facList[i].Fac_Name)
-                                    {
-                                        cboFacility.SelectedIndex = i;
-                                    }
-                                }
-                                else
-                                {
-                                    if (ClientSession.FacilityName == facList[i].Fac_Name)
-                                    {
-                                        cboFacility.SelectedIndex = i;
-                                    }
-                                }
-                            }
-                        }
-                        logFile.Info(DateTime.UtcNow.ToString() + "-Fill Facility Library List - End", null);
-                        //else
-                        //logger.Debug("Facility list is null. Note it is Application Object. So it must be some serious issue.");
-                        //if (cboFacility.SelectedItem.Text.ToUpper() == sFacilityCmg.ToUpper())
-                        //{
-                        logFile.Info(DateTime.UtcNow.ToString() + "-Fill Anc Facility Library List - Start", null);
-                        var facAncillary = from f in ApplicationObject.facilityLibraryList where f.Fac_Name == cboFacility.SelectedItem.Text select f;
-                        IList<FacilityLibrary> ilstFacAncillary = facAncillary.ToList<FacilityLibrary>();
-                        if (ilstFacAncillary.Count > 0 && ilstFacAncillary[0].Is_Ancillary == "Y")
-                        {
-                            ChangeproviderforCMGAncillary(true);
-                        }
-                        else
-                            ChangeproviderforCMGAncillary(false);
-                        logFile.Info(DateTime.UtcNow.ToString() + "-Fill Anc Facility Library List - End", null);
-                        logFile.Info(DateTime.UtcNow.ToString() + "-Fill New Edit Appointment - Start", null);
-                        if (fillneweditappt != null)
-                        {
-                            txtPatientDOB.Text = fillneweditappt.Birth_Date.ToString("dd-MMM-yyyy");
-                            txtHomePhoneNumber.Text = fillneweditappt.Home_Phone_No;
-                            txtCellPhoneNumber.Text = fillneweditappt.Cell_Phone_No;
-                            txtHumanType.Text = fillneweditappt.HumanType;
-                        }
-                        if (MyStatus != null && MyStatus.ToUpper() == "SCHEDULED" && encounterArc == false)
-                        {
-                            chkReschedule.Enabled = true;
-                        }
-                        if (MyStatus != null && MyStatus.ToUpper() != "SCHEDULED")
-                        {
-                            dtpApptDate.Enabled = false;
-                            dtpStartTime.Enabled = false;
-
-                            // ComboBoxColorChange(ddlVisitType, false);
-
-                            // NumericUpDownColorChange(ddlDuration, false);
-
-                            ComboBoxColorChange(ddlPhysicianName, false);
-                            chkShowAllPhysicians.Enabled = false;
-                            // commented by valli
-                            //  txtProviderNPI.Attributes.Add("onkeypress", "return false;");
-                            // txtReferringProvider.Attributes.Add("onkeypress", "return false;");
-                            // txtReferringFacility.Attributes.Add("onkeypress", "return false;");
-                            //  txtReferingAddress.Attributes.Add("onkeypress", "return false;");
-                            // txtProviderNPI.Attributes.Add("onkeydown", "return false;");
-                            // txtReferringProvider.Attributes.Add("onkeydown", "return false;");
-                            // txtReferringFacility.Attributes.Add("onkeydown", "return false;");
-                            //  txtReferingAddress.Attributes.Add("onkeydown", "return false;");
-                            //  msktxtReferingFaxNo.ReadOnly = true;
-                            //  msktxtReferingPhoneNo.ReadOnly = true;
-                            //  TextBoxColorChange(txtReferringProvider, false);
-                            //   TextBoxColorChange(txtReferringFacility, false);
-                            // TextBoxColorChange(txtReferingAddress, false);
-                            //  MaskedTextBoxColorChange(msktxtReferingFaxNo, false);
-                            // MaskedTextBoxColorChange(msktxtReferingPhoneNo, false);
-                            chkSelfReferred.Enabled = false;
-                            //btnFindPhysician.Enabled = false;
-                            // btnFindAuthorization.Enabled = false;
-                            chkReschedule.Enabled = false;
-                            chkSelfReferred.Enabled = false;
-                            chkShowAllPhysicians.Enabled = false;
-                            imgClearProviderText.Attributes.Remove("onclick");
-                            //Jira #CAP-69 - labels are missing
-                            imgClearProviderText.Disabled = true;
-                            logFile.Info(DateTime.UtcNow.ToString() + "-Fill New Edit Appointment - End", null);
-                        }
-                        logFile.Info(DateTime.UtcNow.ToString() + "-Fill Encounter Details - End", null);
+                        ComboBoxColorChange(ddlPhysicianName, false);
+                        chkShowAllPhysicians.Enabled = false;
+                        // Commented by valli 
+                        //   txtProviderNPI.Attributes.Add("onkeypress", "return false;");
+                        //   txtReferringProvider.Attributes.Add("onkeypress", "return false;");
+                        //  txtReferringFacility.Attributes.Add("onkeypress", "return false;");
+                        // txtReferingAddress.Attributes.Add("onkeypress", "return false;");
+                        // txtProviderNPI.Attributes.Add("onkeydown", "return false;");
+                        // txtReferringProvider.Attributes.Add("onkeydown", "return false;");
+                        // txtReferringFacility.Attributes.Add("onkeydown", "return false;");
+                        //  txtReferingAddress.Attributes.Add("onkeydown", "return false;");
+                        //  msktxtReferingFaxNo.ReadOnly = true;
+                        //  msktxtReferingPhoneNo.ReadOnly = true;
+                        // TextBoxColorChange(txtReferringProvider, false);
+                        //  TextBoxColorChange(txtReferringFacility, false);
+                        //TextBoxColorChange(txtReferingAddress, false);
+                        //  MaskedTextBoxColorChange(msktxtReferingFaxNo, false);
+                        // MaskedTextBoxColorChange(msktxtReferingPhoneNo, false);
+                        chkSelfReferred.Enabled = false;
+                        //btnFindPhysician.Enabled = false;
+                        //   btnFindAuthorization.Enabled = false;
+                        chkReschedule.Enabled = false;
+                        chkSelfReferred.Enabled = false;
+                        chkShowAllPhysicians.Enabled = false;
+                        encounterArc = true;
                     }
                     else
                     {
-                        logFile.Info(DateTime.UtcNow.ToString() + "-Fill New Appointment - Start", null);
-                        //logger.Debug("Screen is in New Appoinment Mode as Encounter_ID is 0");
-                        if (ClientSession.UserName != null)
-                            this.Page.Title = "New Appointment" + "-" + ClientSession.UserName;
-                        #region old db call
-                        // fillneweditappt = EncMngr.GetEncounterAndHumanRecord(ulMyEncID, ulMyHumanID);
+                        EncRecord = fillneweditappt.EncounterRecord;
+                    }
+                    //logger.Debug("EncRecord.Visit_Type=" + EncRecord.Visit_Type);
+                    if (ddlVisitType.Items.Count > 0)
+                    {
+                        ddlVisitType.Text = EncRecord.Visit_Type.ToUpper();
+                    }
 
-                        //  EncRecord = fillneweditappt.EncounterRecord;
-                        //txtPatientAccountNumber.Text = fillneweditappt.Human_ID.ToString();
+                    //Jira #CAP-168 - if condition is commented for set the iteam for the deactivate user 
+                    // if (ddlVisitType.Items.Count > 0)
+                    // {
+                    if (ddlVisitType.Items.FindItemByText(EncRecord.Visit_Type.ToUpper()) == null)
+                    {
+                        RadComboBoxItem items = new RadComboBoxItem();
+                        items.Text = EncRecord.Visit_Type.ToUpper();
+                        ddlVisitType.Items.Add(items);
+                        checkddlvisit = true;
+                        HdnEditVisit.Value = EncRecord.Visit_Type.ToUpper() + "|" + EncRecord.Duration_Minutes.ToString();
+                    }
+                    ddlVisitType.Items.FindItemByText(EncRecord.Visit_Type.ToUpper()).Selected = true;
+                    //}
+                    ddlDuration.Text = EncRecord.Duration_Minutes.ToString();
+                    //logger.Debug("EncRecord.Visit_Type=" + EncRecord.Visit_Type);
 
-                        //if (fillneweditappt != null)
+                    // commented by valli
+                    //if (EncRecord.Referring_Provider_NPI != string.Empty && EncRecord.PCP_Provider_NPI == string.Empty)
+                    //{
+                    //    txtProviderNPI.Text = EncRecord.Referring_Provider_NPI;
+                    //}
+                    //else if (EncRecord.PCP_Provider_NPI != string.Empty && EncRecord.Referring_Provider_NPI == string.Empty)
+                    //{
+                    //    txtProviderNPI.Text = EncRecord.PCP_Provider_NPI;
+                    //}
+                    //else if (EncRecord.PCP_Provider_NPI != string.Empty && EncRecord.Referring_Provider_NPI != string.Empty)
+                    //{
+                    //    txtProviderNPI.Text = EncRecord.Referring_Provider_NPI;
+                    //}
+
+
+
+                    hdnEncounter_Physician_id.Value = fillneweditappt.Encounter_Provider_ID.ToString();
+                    //logger.Debug("Encounter_Provider_ID=" + fillneweditappt.Encounter_Provider_ID.ToString());
+                    if (!checkddlvisit)
+                    {
+                        for (int i = 0; i < ddlVisitType.Items.Count; i++)
+                        {
+                            if (ddlVisitType.Text == ddlVisitType.Items.FindItemByText(ddlVisitType.Items[i].Text).Text)
+                            {
+                                int iIndexValue = ddlVisitType.SelectedIndex;
+                                // txtVisitDescription.Text = ddlVisitType.Items.FindItemByText(ddlVisitType.Items[i].Text).Value.Split(new string[] { "$#%" }, StringSplitOptions.None)[1];
+
+                                txtVisitDescription.Text = description[iIndexValue];
+                            }
+                        }
+                    }
+                    else
+                    {
+                        txtVisitDescription.Text = "";
+                    }
+                    DateTime dtTime = UtilityManager.ConvertToLocal(EncRecord.Appointment_Date);
+                    //logger.Debug("Appointment_Date=" + dtTime.ToString("yyyy-MMM-dd hh:mm:ss"));
+                    dtpStartTime.SelectedTime = new TimeSpan(dtTime.Hour, dtTime.Minute, dtTime.Second);
+
+                    txtPurposeofVisit.txtDLC.Text = EncRecord.Purpose_of_Visit;
+                    txtNotes.txtDLC.Text = EncRecord.Notes;
+                    txtPatientAccountNumber.Text = EncRecord.Human_ID.ToString();
+                    //logger.Debug("EncRecord.Human_ID=" + EncRecord.Human_ID.ToString());
+                    //txtTest.Text = fillneweditappt.Test;//not been used right now 12-01-2016 by vasanth
+
+                    foreach (string str in fillneweditappt.CptAndItsOrderId)
+                    {
+                        hdnOrderList.Value += str + "-";
+                        lstOrdersID.Add(str);
+                    }
+
+                    if (lstOrdersID.Count == 0)
+                    {
+                        lstOrdersID = new List<string>();
+                        hdnOrderList.Value = string.Empty;
+                    }
+                    if (fillneweditappt != null)
+                    {
+                        txtPatientName.Text = fillneweditappt.Last_Name + "," + fillneweditappt.First_Name +
+                       "  " + fillneweditappt.MI + "  " + fillneweditappt.Suffix;
+
+                        //if (fillneweditappt.bAuthcount == false)
                         //{
-                        //    txtPatientName.Text = fillneweditappt.Last_Name + "," + fillneweditappt.First_Name +
-                        //   "  " + fillneweditappt.MI + "  " + fillneweditappt.Suffix;
-                        //}
-
-                        // txtPatientDOB.Text = fillneweditappt.Birth_Date.ToString("dd-MMM-yyyy");
-                        //txtHumanType.Text = fillneweditappt.HumanType;
-
-                        //txtHomePhoneNumber.Text = fillneweditappt.Home_Phone_No;
-                        //txtCellPhoneNumber.Text = fillneweditappt.Cell_Phone_No;
-
-                        //ddlVisitType.Text = EncRecord.Visit_Type;
-                        #endregion
-                        //fillneweditappt.Human_ID = ulMyHumanID;
-                        txtPatientAccountNumber.Text = ulMyHumanID.ToString();
-                        //logger.Debug("Request['PatientName']=" + Request["PatientName"]);
-                        //logger.Debug("Request['PatientDOB']=" + Request["PatientDOB"]);
-                        //logger.Debug("Request['HumanType']=" + Request["HumanType"]);
-                        //logger.Debug("Request['Home_Phone']=" + Request["Home_Phone"]);
-                        //logger.Debug("Request['Cell_Phone']=" + Request["Cell_Phone"]);
-                        //logger.Debug("Request['Encounter_Provider_ID']=" + Request["Encounter_Provider_ID"]);
-
-                        if (Request["PatientName"] != null && Request["PatientName"].ToString() != "")
-                        {
-                            txtPatientName.Text = Request["PatientName"].ToString();
-                        }
-
-                        if (Request["PatientDOB"] != null && Request["PatientDOB"].ToString() != "")
-                        {
-                            try
-                            {
-                                txtPatientDOB.Text = Convert.ToDateTime(Request["PatientDOB"]).ToString("dd-MMM-yyyy");
-                            }
-                            catch (Exception exp)
-                            {
-                                //logger.Debug("Conversion of Patient DOB to DateTime threw an error.", exp);
-                                throw (exp);
-                            }
-                        }
-
-                        if (Request["HumanType"] != null && Request["HumanType"].ToString() != "")
-                        {
-                            txtHumanType.Text = Request["HumanType"];
-                        }
-
-                        if (Request["Home_Phone"] != null && Request["Home_Phone"].ToString() != "")
-                        {
-
-                            txtHomePhoneNumber.Text = Request["Home_Phone"];
-
-                        }
-
-                        if (Request["Cell_Phone"] != null && Request["Cell_Phone"].ToString() != "")
-                        {
-                            txtCellPhoneNumber.Text = Request["Cell_Phone"];
-                        }
-
-                        if (Request["Encounter_Provider_ID"] != null && Request["Encounter_Provider_ID"].ToString() != "")
-                        {
-                            hdnEncounter_Physician_id.Value = Request["Encounter_Provider_ID"];
-                        }
-                        //facList = ApplicationObject.facilityLibraryList;
-                        logFile.Info(DateTime.UtcNow.ToString() + "-Facility Appointment List- Start", null);
-                        var facNewApptList = from f in ApplicationObject.facilityLibraryList where f.Legal_Org == ClientSession.LegalOrg select f;
-                        facList = facNewApptList.ToList<FacilityLibrary>();
-                        //logger.Debug("Filling Facility Combobox");
-                        if (facList != null)
-                        {
-                            //logger.Debug("Facility list count=" + facList.Count.ToString());
-                            for (int i = 0; i < facList.Count; i++)
-                            {
-                                RadComboBoxItem cboItem = new RadComboBoxItem();
-                                cboItem.Text = facList[i].Fac_Name;
-                                this.cboFacility.Items.Add(cboItem);
-                                if (hdnFacilityName.Value != "")
-                                {
-                                    if (hdnFacilityName.Value == facList[i].Fac_Name)
-                                    {
-                                        cboFacility.SelectedIndex = i;
-                                    }
-                                }
-                                else
-                                {
-                                    if (ClientSession.FacilityName == facList[i].Fac_Name)
-                                    {
-                                        cboFacility.SelectedIndex = i;
-                                    }
-                                }
-                            }
-                        }
-
-                        //else
-                        //logger.Debug("Facility list is null. Note it is Application Object. So it must be some serious issue.");
-
-                        //for (int i = 0; i < ddlVisitType.Items.Count; i++)
-                        //{
-                        //    if (ddlVisitType.SelectedItem.Text == ddlVisitType.Items.FindItemByText(ddlVisitType.Items[i].Text).Text)
+                        //    if (fillneweditappt.AuthNo != string.Empty)
                         //    {
-                        //        int iIndexValue = ddlVisitType.SelectedIndex;
-                        //        txtVisitDescription.Text = description[iIndexValue];
+                        //        txtAuthorizationNo.Text = fillneweditappt.AuthNo;
+                        //        hdnAuthId.Value = fillneweditappt.AuthorizationId.ToString();
                         //    }
                         //}
-                        /* Changed for bug id=38345 
-                        lblReferringName.Text = "PCP. Provider";
-                        lblReferingFacility.Text = "PCP. Facility";
-                        lblReferingAddress.Text = "PCP. Address";
-                        lblReferingPhoneNo.Text = "PCP. Phone";
-                        lblReferingFaxNo.Text = "PCP. Fax";
-                        chkSelfReferred.Visible = false;
-                        tabReferringProvAndPCP.SelectedIndex = 1; */
-
-                        chkSelfReferred.Visible = true;
-                        //    lblReferringName.Text = "Ref. Provider";
-                        // lblReferingFacility.Text = "Ref. Facility";
-                        //lblReferingAddress.Text = "Ref. Address";
-                        //lblReferingPhoneNo.Text = "Ref. Phone";
-                        //lblReferingFaxNo.Text = "Ref. Fax";
-                        tabReferringProvAndPCP.SelectedIndex = 0;
-                        logFile.Info(DateTime.UtcNow.ToString() + "-Facility Appointment List- End", null);
-                        logFile.Info(DateTime.UtcNow.ToString() + "-Fill hidden value- Start", null);
-                        if (hdnEncounter_Physician_id.Value != null && hdnEncounter_Physician_id.Value != "" && hdnEncounter_Physician_id.Value != "0")//vasanth
+                        //else
+                        //{
+                        //    this.Page.ClientScript.RegisterStartupScript(this.Page.GetType(), "Edit Appointment", "OpenAuthorization();", true);
+                        //}
+                    }
+                    //facList = ApplicationObject.facilityLibraryList;
+                    var fac = from f in ApplicationObject.facilityLibraryList where f.Legal_Org == ClientSession.LegalOrg select f;
+                    facList = fac.ToList<FacilityLibrary>();
+                    //logger.Debug("Filling Facility Combobox");
+                    if (facList != null)
+                    {
+                        //logger.Debug("Facility list count=" + facList.Count.ToString());
+                        for (int i = 0; i < facList.Count; i++)
                         {
-                            var fac = from f in ApplicationObject.facilityLibraryList where f.Fac_Name == cboFacility.SelectedItem.Text select f;
-                            IList<FacilityLibrary> ilstFac = fac.ToList<FacilityLibrary>();
-                            if (ilstFac.Count > 0 && ilstFac[0].Is_Ancillary != "Y")
+                            RadComboBoxItem cboItem = new RadComboBoxItem();
+                            cboItem.Text = facList[i].Fac_Name;
+                            this.cboFacility.Items.Add(cboItem);
+                            if (hdnFacilityName.Value != null && hdnFacilityName.Value != "")
                             {
-
-                                #region old db call commented for Jira #CAP-151 - Edited PCP info occurs in Referring Provider info tab 
-                                ////if (sAncillary != string.Empty && sAncillary != cboFacility.SelectedItem.Text.Trim())
-                                ////{
-                                ////  hdnEncounter_Physician_id.Value = fillneweditappt.Encounter_Provider_ID.ToString();
-                                ////PhysicianManager phyMngr = new PhysicianManager();
-
-                                //// new code to obtain physician list from xml -- Pujhitha
-                                //PhysicianLibrary objPhyLib = GetPhysicianDetailsByPhyID(hdnEncounter_Physician_id.Value.Trim());
-
-                                ////IList<PhysicianLibrary> phylist = phyMngr.GetphysiciannameByPhyID(Convert.ToUInt64(hdnEncounter_Physician_id.Value));
-                                ////if (phylist != null && phylist.Count > 0)
-                                ////{
-
-
-                                //if (objPhyLib != null)
-                                //{
-                                //    //old code
-                                //    // string sPhyName = objPhyLib.PhyPrefix + " " + objPhyLib.PhyFirstName + " " + objPhyLib.PhyLastName + " " + objPhyLib.PhySuffix;
-                                //    //Gitlab# 2485 - Physician Name Display Change
-                                //    string sPhyName = string.Empty;
-                                //     if (objPhyLib.PhyLastName != String.Empty)
-                                //        sPhyName += objPhyLib.PhyLastName;
-                                //    if (objPhyLib.PhyFirstName != String.Empty)
-                                //    {
-                                //        if (sPhyName != String.Empty)
-                                //            sPhyName += "," + objPhyLib.PhyFirstName;
-                                //        else
-                                //            sPhyName += objPhyLib.PhyFirstName;
-                                //    }
-                                //    if (objPhyLib.PhyMiddleName != String.Empty)
-                                //        sPhyName += " " + objPhyLib.PhyMiddleName;
-                                //    if (objPhyLib.PhySuffix != String.Empty)
-                                //        sPhyName += "," + objPhyLib.PhySuffix;
-
-                                //    //  txtReferringProvider.Text = sPhyName;
-                                //    //  txtReferringFacility.Text = objPhyLib.PhyNotes;
-                                //    //txtReferingAddress.Text = objPhyLib.PhyAddress1;
-                                //    //  msktxtReferingPhoneNo.Text = objPhyLib.PhyTelephone;
-                                //    //  msktxtReferingFaxNo.Text = objPhyLib.PhyFax;
-                                //    //  txtProviderNPI.Text = objPhyLib.PhyNPI;
-
-
-                                //    //Jira #CAP-69 - labels are missing
-                                //    txtProviderSearch.Text = sPhyName + "| NPI: " + objPhyLib.PhyNPI +
-                                //        "| Facility: " + "" + "| Address:" + objPhyLib.PhyAddress1 +
-                                //        "| Phone No:" + objPhyLib.PhyTelephone + "| Fax No:" + objPhyLib.PhyFax ;
-
-                                //    //hdnrenprovider.Value = " |" + sPhyName + "|" + objPhyLib.PhyNPI + "|" + "" + "|" + "" + "|" + objPhyLib.PhyAddress1 + "|"
-                                //    //    + objPhyLib.PhyFax + "|" + objPhyLib.PhyTelephone;
-
-                                //    //hdnpcpprovider.Value = " |" + sPhyName + "|" + objPhyLib.PhyNPI + "|" + "" + "|" + "" + "|" + objPhyLib.PhyAddress1 + "|"
-                                //    //    + objPhyLib.PhyFax + "|" + objPhyLib.PhyTelephone;
-
-                                //    //hdnrenprovidersearch.Value = " |" + sPhyName + "|" + objPhyLib.PhyNPI + "|" + "" + "|" + "" + "|" + objPhyLib.PhyAddress1 + "|"
-                                //     // + objPhyLib.PhyFax + "|" + objPhyLib.PhyTelephone;
-
-                                //    hdnrenprovider.Value = sPhyName + "| NPI: " + objPhyLib.PhyNPI +
-                                //        "| Facility: " + "" + "| Address:" + objPhyLib.PhyAddress1 +
-                                //        "| Phone No:" + objPhyLib.PhyTelephone + "| Fax No:" + objPhyLib.PhyFax ;
-
-                                //    hdnpcpprovider.Value = sPhyName + "| NPI: " + objPhyLib.PhyNPI +
-                                //        "| Facility: " + "" + "| Address:" + objPhyLib.PhyAddress1 +
-                                //        "| Phone No:" + objPhyLib.PhyTelephone + "| Fax No:" + objPhyLib.PhyFax ;
-
-                                //    txtProviderSearch.Enabled = false;
-                                //    hdnrenprovidersearch.Value = sPhyName + "| NPI: " + objPhyLib.PhyNPI + "|Facility: " + "" + "|Address:" + objPhyLib.PhyAddress1 + "| " +
-                                //        " Phone No:" + objPhyLib.PhyTelephone + "| Fax No:"
-                                //       + objPhyLib.PhyFax ;
-
-                                //    // HdnRefPhy.Value = sPhyName + "|" + objPhyLib.PhyAddress1 + "|" + objPhyLib.PhyTelephone + "|" + objPhyLib.PhyFax + "|" + objPhyLib.PhyNPI + "|" + objPhyLib.PhyNotes;
-                                //    // HdnPcpPhy.Value = sPhyName + "|" + objPhyLib.PhyAddress1 + "|" + objPhyLib.PhyTelephone + "|" + objPhyLib.PhyFax + "|" + objPhyLib.PhyNPI + "|" + objPhyLib.PhyNotes;
-
-                                //    if (ddlPhysicianName.Items.Count > 0)//added for bug id=38345 
-                                //    {
-                                //        //if (txtReferringProvider.Text.Trim() != string.Empty && txtReferringProvider.Text.Contains(ddlPhysicianName.SelectedItem.Text))
-                                //        //{
-                                //        //    chkSelfReferred.Checked = true;
-                                //        //    btnFindPhysician.Enabled = false;
-                                //        //}
-                                //    }
-                                //    else
-                                //        chkSelfReferred.Checked = false;
-                                //}
-                                #endregion
-                                if (ddlPhysicianName.Items.Count > 0)//added for bug id=38345 
+                                if (hdnFacilityName.Value == facList[i].Fac_Name)
                                 {
-                                    //if (txtReferringProvider.Text.Trim() != string.Empty && txtReferringProvider.Text.Contains(ddlPhysicianName.SelectedItem.Text))
-                                    //{
-                                    //    chkSelfReferred.Checked = true;
-                                    //    btnFindPhysician.Enabled = false;
-                                    //}
+                                    cboFacility.SelectedIndex = i;
                                 }
-                                else
-                                    chkSelfReferred.Checked = false;
-
                             }
                             else
                             {
-                                hdnEncounter_Physician_id.Value = "0";
-                                HdnRefPhy.Value = "|||||";//for static
-                                HdnPcpPhy.Value = "|||||";
+                                if (ClientSession.FacilityName == facList[i].Fac_Name)
+                                {
+                                    cboFacility.SelectedIndex = i;
+                                }
                             }
+                        }
+                    }
+                    //else
+                    //logger.Debug("Facility list is null. Note it is Application Object. So it must be some serious issue.");
+                    //if (cboFacility.SelectedItem.Text.ToUpper() == sFacilityCmg.ToUpper())
+                    //{
+                    var facAncillary = from f in ApplicationObject.facilityLibraryList where f.Fac_Name == cboFacility.SelectedItem.Text select f;
+                    IList<FacilityLibrary> ilstFacAncillary = facAncillary.ToList<FacilityLibrary>();
+                    if (ilstFacAncillary.Count > 0 && ilstFacAncillary[0].Is_Ancillary == "Y")
+                    {
+                        ChangeproviderforCMGAncillary(true);
+                    }
+                    else
+                        ChangeproviderforCMGAncillary(false);
+                    if (fillneweditappt != null)
+                    {
+                        txtPatientDOB.Text = fillneweditappt.Birth_Date.ToString("dd-MMM-yyyy");
+                        txtHomePhoneNumber.Text = fillneweditappt.Home_Phone_No;
+                        txtCellPhoneNumber.Text = fillneweditappt.Cell_Phone_No;
+                        txtHumanType.Text = fillneweditappt.HumanType;
+                    }
+                    if (MyStatus != null && MyStatus.ToUpper() == "SCHEDULED" && encounterArc == false)
+                    {
+                        chkReschedule.Enabled = true;
+                    }
+                    if (MyStatus != null && MyStatus.ToUpper() != "SCHEDULED")
+                    {
+                        dtpApptDate.Enabled = false;
+                        dtpStartTime.Enabled = false;
+
+                        // ComboBoxColorChange(ddlVisitType, false);
+
+                        // NumericUpDownColorChange(ddlDuration, false);
+
+                        ComboBoxColorChange(ddlPhysicianName, false);
+                        chkShowAllPhysicians.Enabled = false;
+                        // commented by valli
+                        //  txtProviderNPI.Attributes.Add("onkeypress", "return false;");
+                        // txtReferringProvider.Attributes.Add("onkeypress", "return false;");
+                        // txtReferringFacility.Attributes.Add("onkeypress", "return false;");
+                        //  txtReferingAddress.Attributes.Add("onkeypress", "return false;");
+                        // txtProviderNPI.Attributes.Add("onkeydown", "return false;");
+                        // txtReferringProvider.Attributes.Add("onkeydown", "return false;");
+                        // txtReferringFacility.Attributes.Add("onkeydown", "return false;");
+                        //  txtReferingAddress.Attributes.Add("onkeydown", "return false;");
+                        //  msktxtReferingFaxNo.ReadOnly = true;
+                        //  msktxtReferingPhoneNo.ReadOnly = true;
+                        //  TextBoxColorChange(txtReferringProvider, false);
+                        //   TextBoxColorChange(txtReferringFacility, false);
+                        // TextBoxColorChange(txtReferingAddress, false);
+                        //  MaskedTextBoxColorChange(msktxtReferingFaxNo, false);
+                        // MaskedTextBoxColorChange(msktxtReferingPhoneNo, false);
+                        chkSelfReferred.Enabled = false;
+                        //btnFindPhysician.Enabled = false;
+                        // btnFindAuthorization.Enabled = false;
+                        chkReschedule.Enabled = false;
+                        chkSelfReferred.Enabled = false;
+                        chkShowAllPhysicians.Enabled = false;
+                        imgClearProviderText.Attributes.Remove("onclick");
+                        //Jira #CAP-69 - labels are missing
+                        imgClearProviderText.Disabled = true;
+
+                    }
+                }
+                else
+                {
+                    //logger.Debug("Screen is in New Appoinment Mode as Encounter_ID is 0");
+                    if (ClientSession.UserName != null)
+                        this.Page.Title = "New Appointment" + "-" + ClientSession.UserName;
+                    #region old db call
+                    // fillneweditappt = EncMngr.GetEncounterAndHumanRecord(ulMyEncID, ulMyHumanID);
+
+                    //  EncRecord = fillneweditappt.EncounterRecord;
+                    //txtPatientAccountNumber.Text = fillneweditappt.Human_ID.ToString();
+
+                    //if (fillneweditappt != null)
+                    //{
+                    //    txtPatientName.Text = fillneweditappt.Last_Name + "," + fillneweditappt.First_Name +
+                    //   "  " + fillneweditappt.MI + "  " + fillneweditappt.Suffix;
+                    //}
+
+                    // txtPatientDOB.Text = fillneweditappt.Birth_Date.ToString("dd-MMM-yyyy");
+                    //txtHumanType.Text = fillneweditappt.HumanType;
+
+                    //txtHomePhoneNumber.Text = fillneweditappt.Home_Phone_No;
+                    //txtCellPhoneNumber.Text = fillneweditappt.Cell_Phone_No;
+
+                    //ddlVisitType.Text = EncRecord.Visit_Type;
+                    #endregion
+                    //fillneweditappt.Human_ID = ulMyHumanID;
+                    txtPatientAccountNumber.Text = ulMyHumanID.ToString();
+                    //logger.Debug("Request['PatientName']=" + Request["PatientName"]);
+                    //logger.Debug("Request['PatientDOB']=" + Request["PatientDOB"]);
+                    //logger.Debug("Request['HumanType']=" + Request["HumanType"]);
+                    //logger.Debug("Request['Home_Phone']=" + Request["Home_Phone"]);
+                    //logger.Debug("Request['Cell_Phone']=" + Request["Cell_Phone"]);
+                    //logger.Debug("Request['Encounter_Provider_ID']=" + Request["Encounter_Provider_ID"]);
+
+                    if (Request["PatientName"] != null && Request["PatientName"].ToString() != "")
+                    {
+                        txtPatientName.Text = Request["PatientName"].ToString();
+                    }
+
+                    if (Request["PatientDOB"] != null && Request["PatientDOB"].ToString() != "")
+                    {
+                        try
+                        {
+                            txtPatientDOB.Text = Convert.ToDateTime(Request["PatientDOB"]).ToString("dd-MMM-yyyy");
+                        }
+                        catch (Exception exp)
+                        {
+                            //logger.Debug("Conversion of Patient DOB to DateTime threw an error.", exp);
+                            throw (exp);
+                        }
+                    }
+
+                    if (Request["HumanType"] != null && Request["HumanType"].ToString() != "")
+                    {
+                        txtHumanType.Text = Request["HumanType"];
+                    }
+
+                    if (Request["Home_Phone"] != null && Request["Home_Phone"].ToString() != "")
+                    {
+
+                        txtHomePhoneNumber.Text = Request["Home_Phone"];
+
+                    }
+
+                    if (Request["Cell_Phone"] != null && Request["Cell_Phone"].ToString() != "")
+                    {
+                        txtCellPhoneNumber.Text = Request["Cell_Phone"];
+                    }
+
+                    if (Request["Encounter_Provider_ID"] != null && Request["Encounter_Provider_ID"].ToString() != "")
+                    {
+                        hdnEncounter_Physician_id.Value = Request["Encounter_Provider_ID"];
+                    }
+                    //facList = ApplicationObject.facilityLibraryList;
+                    var facNewApptList = from f in ApplicationObject.facilityLibraryList where f.Legal_Org == ClientSession.LegalOrg select f;
+                    facList = facNewApptList.ToList<FacilityLibrary>();
+                    //logger.Debug("Filling Facility Combobox");
+                    if (facList != null)
+                    {
+                        //logger.Debug("Facility list count=" + facList.Count.ToString());
+                        for (int i = 0; i < facList.Count; i++)
+                        {
+                            RadComboBoxItem cboItem = new RadComboBoxItem();
+                            cboItem.Text = facList[i].Fac_Name;
+                            this.cboFacility.Items.Add(cboItem);
+                            if (hdnFacilityName.Value != "")
+                            {
+                                if (hdnFacilityName.Value == facList[i].Fac_Name)
+                                {
+                                    cboFacility.SelectedIndex = i;
+                                }
+                            }
+                            else
+                            {
+                                if (ClientSession.FacilityName == facList[i].Fac_Name)
+                                {
+                                    cboFacility.SelectedIndex = i;
+                                }
+                            }
+                        }
+                    }
+
+                    //else
+                    //logger.Debug("Facility list is null. Note it is Application Object. So it must be some serious issue.");
+
+                    //for (int i = 0; i < ddlVisitType.Items.Count; i++)
+                    //{
+                    //    if (ddlVisitType.SelectedItem.Text == ddlVisitType.Items.FindItemByText(ddlVisitType.Items[i].Text).Text)
+                    //    {
+                    //        int iIndexValue = ddlVisitType.SelectedIndex;
+                    //        txtVisitDescription.Text = description[iIndexValue];
+                    //    }
+                    //}
+                    /* Changed for bug id=38345 
+                    lblReferringName.Text = "PCP. Provider";
+                    lblReferingFacility.Text = "PCP. Facility";
+                    lblReferingAddress.Text = "PCP. Address";
+                    lblReferingPhoneNo.Text = "PCP. Phone";
+                    lblReferingFaxNo.Text = "PCP. Fax";
+                    chkSelfReferred.Visible = false;
+                    tabReferringProvAndPCP.SelectedIndex = 1; */
+
+                    chkSelfReferred.Visible = true;
+                    //    lblReferringName.Text = "Ref. Provider";
+                    // lblReferingFacility.Text = "Ref. Facility";
+                    //lblReferingAddress.Text = "Ref. Address";
+                    //lblReferingPhoneNo.Text = "Ref. Phone";
+                    //lblReferingFaxNo.Text = "Ref. Fax";
+                    tabReferringProvAndPCP.SelectedIndex = 0;
+
+                    if (hdnEncounter_Physician_id.Value != null && hdnEncounter_Physician_id.Value != "" && hdnEncounter_Physician_id.Value != "0")//vasanth
+                    {
+                        var fac = from f in ApplicationObject.facilityLibraryList where f.Fac_Name == cboFacility.SelectedItem.Text select f;
+                        IList<FacilityLibrary> ilstFac = fac.ToList<FacilityLibrary>();
+                        if (ilstFac.Count > 0 && ilstFac[0].Is_Ancillary != "Y")
+                        {
+
+                            #region old db call commented for Jira #CAP-151 - Edited PCP info occurs in Referring Provider info tab 
+                            ////if (sAncillary != string.Empty && sAncillary != cboFacility.SelectedItem.Text.Trim())
+                            ////{
+                            ////  hdnEncounter_Physician_id.Value = fillneweditappt.Encounter_Provider_ID.ToString();
+                            ////PhysicianManager phyMngr = new PhysicianManager();
+
+                            //// new code to obtain physician list from xml -- Pujhitha
+                            //PhysicianLibrary objPhyLib = GetPhysicianDetailsByPhyID(hdnEncounter_Physician_id.Value.Trim());
+
+                            ////IList<PhysicianLibrary> phylist = phyMngr.GetphysiciannameByPhyID(Convert.ToUInt64(hdnEncounter_Physician_id.Value));
+                            ////if (phylist != null && phylist.Count > 0)
+                            ////{
+
+
+                            //if (objPhyLib != null)
+                            //{
+                            //    //old code
+                            //    // string sPhyName = objPhyLib.PhyPrefix + " " + objPhyLib.PhyFirstName + " " + objPhyLib.PhyLastName + " " + objPhyLib.PhySuffix;
+                            //    //Gitlab# 2485 - Physician Name Display Change
+                            //    string sPhyName = string.Empty;
+                            //     if (objPhyLib.PhyLastName != String.Empty)
+                            //        sPhyName += objPhyLib.PhyLastName;
+                            //    if (objPhyLib.PhyFirstName != String.Empty)
+                            //    {
+                            //        if (sPhyName != String.Empty)
+                            //            sPhyName += "," + objPhyLib.PhyFirstName;
+                            //        else
+                            //            sPhyName += objPhyLib.PhyFirstName;
+                            //    }
+                            //    if (objPhyLib.PhyMiddleName != String.Empty)
+                            //        sPhyName += " " + objPhyLib.PhyMiddleName;
+                            //    if (objPhyLib.PhySuffix != String.Empty)
+                            //        sPhyName += "," + objPhyLib.PhySuffix;
+
+                            //    //  txtReferringProvider.Text = sPhyName;
+                            //    //  txtReferringFacility.Text = objPhyLib.PhyNotes;
+                            //    //txtReferingAddress.Text = objPhyLib.PhyAddress1;
+                            //    //  msktxtReferingPhoneNo.Text = objPhyLib.PhyTelephone;
+                            //    //  msktxtReferingFaxNo.Text = objPhyLib.PhyFax;
+                            //    //  txtProviderNPI.Text = objPhyLib.PhyNPI;
+
+
+                            //    //Jira #CAP-69 - labels are missing
+                            //    txtProviderSearch.Text = sPhyName + "| NPI: " + objPhyLib.PhyNPI +
+                            //        "| Facility: " + "" + "| Address:" + objPhyLib.PhyAddress1 +
+                            //        "| Phone No:" + objPhyLib.PhyTelephone + "| Fax No:" + objPhyLib.PhyFax ;
+
+                            //    //hdnrenprovider.Value = " |" + sPhyName + "|" + objPhyLib.PhyNPI + "|" + "" + "|" + "" + "|" + objPhyLib.PhyAddress1 + "|"
+                            //    //    + objPhyLib.PhyFax + "|" + objPhyLib.PhyTelephone;
+
+                            //    //hdnpcpprovider.Value = " |" + sPhyName + "|" + objPhyLib.PhyNPI + "|" + "" + "|" + "" + "|" + objPhyLib.PhyAddress1 + "|"
+                            //    //    + objPhyLib.PhyFax + "|" + objPhyLib.PhyTelephone;
+
+                            //    //hdnrenprovidersearch.Value = " |" + sPhyName + "|" + objPhyLib.PhyNPI + "|" + "" + "|" + "" + "|" + objPhyLib.PhyAddress1 + "|"
+                            //     // + objPhyLib.PhyFax + "|" + objPhyLib.PhyTelephone;
+
+                            //    hdnrenprovider.Value = sPhyName + "| NPI: " + objPhyLib.PhyNPI +
+                            //        "| Facility: " + "" + "| Address:" + objPhyLib.PhyAddress1 +
+                            //        "| Phone No:" + objPhyLib.PhyTelephone + "| Fax No:" + objPhyLib.PhyFax ;
+
+                            //    hdnpcpprovider.Value = sPhyName + "| NPI: " + objPhyLib.PhyNPI +
+                            //        "| Facility: " + "" + "| Address:" + objPhyLib.PhyAddress1 +
+                            //        "| Phone No:" + objPhyLib.PhyTelephone + "| Fax No:" + objPhyLib.PhyFax ;
+
+                            //    txtProviderSearch.Enabled = false;
+                            //    hdnrenprovidersearch.Value = sPhyName + "| NPI: " + objPhyLib.PhyNPI + "|Facility: " + "" + "|Address:" + objPhyLib.PhyAddress1 + "| " +
+                            //        " Phone No:" + objPhyLib.PhyTelephone + "| Fax No:"
+                            //       + objPhyLib.PhyFax ;
+
+                            //    // HdnRefPhy.Value = sPhyName + "|" + objPhyLib.PhyAddress1 + "|" + objPhyLib.PhyTelephone + "|" + objPhyLib.PhyFax + "|" + objPhyLib.PhyNPI + "|" + objPhyLib.PhyNotes;
+                            //    // HdnPcpPhy.Value = sPhyName + "|" + objPhyLib.PhyAddress1 + "|" + objPhyLib.PhyTelephone + "|" + objPhyLib.PhyFax + "|" + objPhyLib.PhyNPI + "|" + objPhyLib.PhyNotes;
+
+                            //    if (ddlPhysicianName.Items.Count > 0)//added for bug id=38345 
+                            //    {
+                            //        //if (txtReferringProvider.Text.Trim() != string.Empty && txtReferringProvider.Text.Contains(ddlPhysicianName.SelectedItem.Text))
+                            //        //{
+                            //        //    chkSelfReferred.Checked = true;
+                            //        //    btnFindPhysician.Enabled = false;
+                            //        //}
+                            //    }
+                            //    else
+                            //        chkSelfReferred.Checked = false;
                             //}
+                            #endregion
+                            if (ddlPhysicianName.Items.Count > 0)//added for bug id=38345 
+                            {
+                                //if (txtReferringProvider.Text.Trim() != string.Empty && txtReferringProvider.Text.Contains(ddlPhysicianName.SelectedItem.Text))
+                                //{
+                                //    chkSelfReferred.Checked = true;
+                                //    btnFindPhysician.Enabled = false;
+                                //}
+                            }
+                            else
+                                chkSelfReferred.Checked = false;
+
                         }
                         else
                         {
@@ -712,189 +683,159 @@ namespace Acurus.Capella.UI
                             HdnRefPhy.Value = "|||||";//for static
                             HdnPcpPhy.Value = "|||||";
                         }
-                        logFile.Info(DateTime.UtcNow.ToString() + "-Fill hidden value - End", null);
-                        logFile.Info(DateTime.UtcNow.ToString() + "-Fill New Appointment - End", null);
-                    }
-                    logFile.Info(DateTime.UtcNow.ToString() + "-Fill Edit Appoinntment - End", null);
-
-                    logFile.Info(DateTime.UtcNow.ToString() + "-Fill Hidden Selected Date - Start", null);
-                    if (hdnSelectedDateTime.Value != null && hdnSelectedDateTime.Value != string.Empty)
-                    {
-                        DateTime dt = new DateTime();
-                        TimeSpan ts = new TimeSpan();
-                        if (hdnSelectedDateTime.Value != string.Empty)
-                        {
-                            try
-                            {
-                                dt = Convert.ToDateTime(hdnSelectedDateTime.Value);
-                            }
-                            catch (Exception exp)
-                            {
-                                //logger.Debug("Conversion of Calender Selected Date from hdnSelectedDateTime.Value='" + hdnSelectedDateTime.Value + "' to DateTime threw an error.", exp);
-                                throw (exp);
-                            }
-                            ts = new TimeSpan(dt.Hour, dt.Minute, dt.Second);
-                        }
-
-                        dtpStartTime.SelectedTime = ts;
-                        //if (dtpStartTime.SelectedTime == TimeSpan.Zero)
-                        //{
-                        //    //logger.Debug("Request.QueryString['LocalTime']=" + Request.QueryString["LocalTime"].ToString());
-                        //    if (Request.QueryString["LocalTime"] != null && Request.QueryString["LocalTime"].ToString() != "")
-                        //    {
-                        //        try
-                        //        {
-                        //            DateTime dt1 = Convert.ToDateTime(Request.QueryString["LocalTime"].ToString());
-                        //            DateTime localtime = UtilityManager.ConvertToLocal(dt1);
-                        //            TimeSpan ts1 = new TimeSpan(localtime.Hour, localtime.Minute, localtime.Second);
-                        //            dtpStartTime.SelectedTime = ts1;
-                        //        }
-                        //        catch (Exception exp)
-                        //        {
-                        //            //logger.Debug("Conversion of Request.QueryString['LocalTime']=" + Request.QueryString["LocalTime"].ToString() + " to DateTime threw an error.", exp);
-                        //            throw (exp);
-                        //        }
-                        //    }
                         //}
                     }
+                    else
+                    {
+                        hdnEncounter_Physician_id.Value = "0";
+                        HdnRefPhy.Value = "|||||";//for static
+                        HdnPcpPhy.Value = "|||||";
+                    }
 
-                    if (hdnSelectedDateTime.Value != null && hdnSelectedDateTime.Value != string.Empty)
+                }
+
+                if (hdnSelectedDateTime.Value != null && hdnSelectedDateTime.Value != string.Empty)
+                {
+                    DateTime dt = new DateTime();
+                    TimeSpan ts = new TimeSpan();
+                    if (hdnSelectedDateTime.Value != string.Empty)
                     {
                         try
                         {
-                            dtpApptDate.SelectedDate = Convert.ToDateTime(hdnSelectedDateTime.Value);
-                            CalendarDate = Convert.ToDateTime(dtpApptDate.SelectedDate.Value);
+                            dt = Convert.ToDateTime(hdnSelectedDateTime.Value);
                         }
                         catch (Exception exp)
                         {
                             //logger.Debug("Conversion of Calender Selected Date from hdnSelectedDateTime.Value='" + hdnSelectedDateTime.Value + "' to DateTime threw an error.", exp);
                             throw (exp);
                         }
+                        ts = new TimeSpan(dt.Hour, dt.Minute, dt.Second);
                     }
 
-                    saveCheckingFlag = true;
-                    logFile.Info(DateTime.UtcNow.ToString() + "-Fill Hidden Selected Date - End", null);
-                    //not been used right now 12-01-2016 by vasanth
-                    //if (hdnFacilityName.Value.ToUpper() == staticMngr.getStaticLookupByFieldName("CMG FACILITY NAME")[0].Value.ToUpper())
+                    dtpStartTime.SelectedTime = ts;
+                    //if (dtpStartTime.SelectedTime == TimeSpan.Zero)
                     //{
-                    //    lblTest.Text += "*";
-                    //    lblTest.ForeColor = Color.Red;
-
-                    //}
-
-                    // from here
-
-                    //FillPhysicianUser PhyUserList;     
-                    //logger.Debug("Loading Physician List for Facility='" + hdnFacilityName.Value.Trim().ToUpper() + "'");
-                    logFile.Info(DateTime.UtcNow.ToString() + "-Fill Hidden facility value - Start", null);
-                    IList<PhysicianLibrary> PhysicianList = null;
-                    if (hdnFacilityName.Value != null)
-                        PhysicianList = UtilityManager.GetPhysicianList(hdnFacilityName.Value.Trim(), ClientSession.LegalOrg);//PhyMngr.GetPhysicianandUser(true, hdnFacilityName.Value);
-
-                    //if (hdnFacilityName.Value.ToUpper().Trim() == System.Configuration.ConfigurationManager.AppSettings["CMGFacilityName"].Trim().ToUpper())
-                    //{
-                    //    if (PhysicianList.Count > 0)
+                    //    //logger.Debug("Request.QueryString['LocalTime']=" + Request.QueryString["LocalTime"].ToString());
+                    //    if (Request.QueryString["LocalTime"] != null && Request.QueryString["LocalTime"].ToString() != "")
                     //    {
-                    //        PhysicianList = (from p in PhysicianList                                               
-                    //                               where p.Category.ToUpper().Trim() == "MACHINE"
-                    //                               select p).ToList<PhysicianLibrary>();                        
+                    //        try
+                    //        {
+                    //            DateTime dt1 = Convert.ToDateTime(Request.QueryString["LocalTime"].ToString());
+                    //            DateTime localtime = UtilityManager.ConvertToLocal(dt1);
+                    //            TimeSpan ts1 = new TimeSpan(localtime.Hour, localtime.Minute, localtime.Second);
+                    //            dtpStartTime.SelectedTime = ts1;
+                    //        }
+                    //        catch (Exception exp)
+                    //        {
+                    //            //logger.Debug("Conversion of Request.QueryString['LocalTime']=" + Request.QueryString["LocalTime"].ToString() + " to DateTime threw an error.", exp);
+                    //            throw (exp);
+                    //        }
                     //    }
                     //}
-                    ddlPhysicianName.Items.Clear();
-                    bool phyCheck = false;
-                    //logger.Debug("Physician List count='" + PhysicianList.Count + "'");
+                }
 
-                    RadComboBoxItem item = new RadComboBoxItem();
-                    item.Text = "";
-                    item.Value = "0";
-                    XmlDocument xmldoc = new XmlDocument();
-                    ddlPhysicianName.Items.Add(item);
-                    if (PhysicianList != null)
+                if (hdnSelectedDateTime.Value != null && hdnSelectedDateTime.Value != string.Empty)
+                {
+                    try
+                    {
+                        dtpApptDate.SelectedDate = Convert.ToDateTime(hdnSelectedDateTime.Value);
+                        CalendarDate = Convert.ToDateTime(dtpApptDate.SelectedDate.Value);
+                    }
+                    catch (Exception exp)
+                    {
+                        //logger.Debug("Conversion of Calender Selected Date from hdnSelectedDateTime.Value='" + hdnSelectedDateTime.Value + "' to DateTime threw an error.", exp);
+                        throw (exp);
+                    }
+                }
+
+                saveCheckingFlag = true;
+
+
+                //not been used right now 12-01-2016 by vasanth
+                //if (hdnFacilityName.Value.ToUpper() == staticMngr.getStaticLookupByFieldName("CMG FACILITY NAME")[0].Value.ToUpper())
+                //{
+                //    lblTest.Text += "*";
+                //    lblTest.ForeColor = Color.Red;
+
+                //}
+
+                // from here
+
+                //FillPhysicianUser PhyUserList;     
+                //logger.Debug("Loading Physician List for Facility='" + hdnFacilityName.Value.Trim().ToUpper() + "'");
+                IList<PhysicianLibrary> PhysicianList = null;
+                if (hdnFacilityName.Value != null)
+                    PhysicianList = UtilityManager.GetPhysicianList(hdnFacilityName.Value.Trim(), ClientSession.LegalOrg);//PhyMngr.GetPhysicianandUser(true, hdnFacilityName.Value);
+
+                //if (hdnFacilityName.Value.ToUpper().Trim() == System.Configuration.ConfigurationManager.AppSettings["CMGFacilityName"].Trim().ToUpper())
+                //{
+                //    if (PhysicianList.Count > 0)
+                //    {
+                //        PhysicianList = (from p in PhysicianList                                               
+                //                               where p.Category.ToUpper().Trim() == "MACHINE"
+                //                               select p).ToList<PhysicianLibrary>();                        
+                //    }
+                //}
+                ddlPhysicianName.Items.Clear();
+                bool phyCheck = false;
+                //logger.Debug("Physician List count='" + PhysicianList.Count + "'");
+
+                RadComboBoxItem item = new RadComboBoxItem();
+                item.Text = "";
+                item.Value = "0";
+                XmlDocument xmldoc = new XmlDocument();
+                ddlPhysicianName.Items.Add(item);
+                if (PhysicianList != null)
+                {
+
+                    for (int i = 0; i < PhysicianList.Count; i++)
                     {
 
-                        for (int i = 0; i < PhysicianList.Count; i++)
+                        item = new RadComboBoxItem();
+
+                        //if (sAncillary != string.Empty && sAncillary == cboFacility.SelectedItem.Text.Trim())
+                        //{
+                        var fac = from f in ApplicationObject.facilityLibraryList where f.Fac_Name == cboFacility.SelectedItem.Text select f;
+                        IList<FacilityLibrary> ilstFac = fac.ToList<FacilityLibrary>();
+                        if (ilstFac.Count > 0 && ilstFac[0].Is_Ancillary == "Y")
                         {
-
-                            item = new RadComboBoxItem();
-
-                            //if (sAncillary != string.Empty && sAncillary == cboFacility.SelectedItem.Text.Trim())
-                            //{
-                            var fac = from f in ApplicationObject.facilityLibraryList where f.Fac_Name == cboFacility.SelectedItem.Text select f;
-                            IList<FacilityLibrary> ilstFac = fac.ToList<FacilityLibrary>();
-                            if (ilstFac.Count > 0 && ilstFac[0].Is_Ancillary == "Y")
+                            string strXmlFilePathTech = Path.Combine(System.Web.Hosting.HostingEnvironment.ApplicationPhysicalPath, "ConfigXML\\machine_technician.xml");
+                            if (File.Exists(strXmlFilePathTech) == true)
                             {
-                                string strXmlFilePathTech = Path.Combine(System.Web.Hosting.HostingEnvironment.ApplicationPhysicalPath, "ConfigXML\\machine_technician.xml");
-                                if (File.Exists(strXmlFilePathTech) == true)
+                                xmldoc = new XmlDocument();
+                                xmldoc.Load(System.Web.Hosting.HostingEnvironment.ApplicationPhysicalPath + "ConfigXML\\" + "machine_technician" + ".xml");
+                                if (PhysicianList[i].PhyColor != "0")
                                 {
-                                    xmldoc = new XmlDocument();
-                                    xmldoc.Load(System.Web.Hosting.HostingEnvironment.ApplicationPhysicalPath + "ConfigXML\\" + "machine_technician" + ".xml");
-                                    if (PhysicianList[i].PhyColor != "0")
+                                    XmlNodeList xmlTec = xmldoc.GetElementsByTagName("MachineTechnician" + PhysicianList[i].PhyColor);
+                                    if (xmlTec != null && xmlTec.Count > 0)
                                     {
-                                        XmlNodeList xmlTec = xmldoc.GetElementsByTagName("MachineTechnician" + PhysicianList[i].PhyColor);
-                                        if (xmlTec != null && xmlTec.Count > 0)
-                                        {
-                                            item.Text = xmlTec[0].Attributes.GetNamedItem("machine_name").Value + " - " + PhysicianList[i].PhyPrefix + " " + PhysicianList[i].PhyFirstName + " " + PhysicianList[i].PhyMiddleName + " " + PhysicianList[i].PhyLastName;
-                                            item.Value = xmlTec[0].Attributes.GetNamedItem("machine_technician_library_id").Value;
-                                        }
-                                    }
-                                    else
-                                    {
-                                        //old code
-                                        //item.Text = PhysicianList[i].PhyPrefix + " " + PhysicianList[i].PhyFirstName + " " + PhysicianList[i].PhyMiddleName + " " + PhysicianList[i].PhyLastName;
-                                        //Gitlab# 2485 - Physician Name Display Change
-                                        if (PhysicianList[i].PhyLastName != String.Empty)
-                                            item.Text += PhysicianList[i].PhyLastName;
-                                        if (PhysicianList[i].PhyFirstName != String.Empty)
-                                        {
-                                            if (item.Text != String.Empty)
-                                                item.Text += "," + PhysicianList[i].PhyFirstName;
-                                            else
-                                                item.Text += PhysicianList[i].PhyFirstName;
-                                        }
-                                        if (PhysicianList[i].PhyMiddleName != String.Empty)
-                                            item.Text += " " + PhysicianList[i].PhyMiddleName;
-                                        if (PhysicianList[i].PhySuffix != String.Empty)
-                                            item.Text += "," + PhysicianList[i].PhySuffix;
-                                        item.Value = PhysicianList[i].Id.ToString();
-                                    }
-
-                                    ddlPhysicianName.Items.Add(item);
-                                    if (item.Value == ulMyPhysicianID.ToString())
-                                    {
-                                        phyCheck = true;
-                                        ddlPhysicianName.SelectedIndex = i + 1;
-                                        hdnEditApptPhyID.Value = ddlPhysicianName.SelectedValue.ToString();//added by vasanth
+                                        item.Text = xmlTec[0].Attributes.GetNamedItem("machine_name").Value + " - " + PhysicianList[i].PhyPrefix + " " + PhysicianList[i].PhyFirstName + " " + PhysicianList[i].PhyMiddleName + " " + PhysicianList[i].PhyLastName;
+                                        item.Value = xmlTec[0].Attributes.GetNamedItem("machine_technician_library_id").Value;
                                     }
                                 }
-                            }
-                            else
-                            {
-                                string sPhyName = string.Empty;
-                                if (PhysicianList != null)
-                                //old code
-                                // sPhyName = PhysicianList[i].PhyPrefix + " " + PhysicianList[i].PhyFirstName + " " + PhysicianList[i].PhyLastName;
-                                //Gitlab# 2485 - Physician Name Display Change
+                                else
                                 {
+                                    //old code
+                                    //item.Text = PhysicianList[i].PhyPrefix + " " + PhysicianList[i].PhyFirstName + " " + PhysicianList[i].PhyMiddleName + " " + PhysicianList[i].PhyLastName;
+                                    //Gitlab# 2485 - Physician Name Display Change
                                     if (PhysicianList[i].PhyLastName != String.Empty)
-                                        sPhyName += PhysicianList[i].PhyLastName;
+                                        item.Text += PhysicianList[i].PhyLastName;
                                     if (PhysicianList[i].PhyFirstName != String.Empty)
                                     {
-                                        if (sPhyName != String.Empty)
-                                            sPhyName += "," + PhysicianList[i].PhyFirstName;
+                                        if (item.Text != String.Empty)
+                                            item.Text += "," + PhysicianList[i].PhyFirstName;
                                         else
-                                            sPhyName += PhysicianList[i].PhyFirstName;
+                                            item.Text += PhysicianList[i].PhyFirstName;
                                     }
                                     if (PhysicianList[i].PhyMiddleName != String.Empty)
-                                        sPhyName += " " + PhysicianList[i].PhyMiddleName;
+                                        item.Text += " " + PhysicianList[i].PhyMiddleName;
                                     if (PhysicianList[i].PhySuffix != String.Empty)
-                                        sPhyName += "," + PhysicianList[i].PhySuffix;
+                                        item.Text += "," + PhysicianList[i].PhySuffix;
+                                    item.Value = PhysicianList[i].Id.ToString();
                                 }
 
-                                RadComboBoxItem item1 = new RadComboBoxItem();
-                                item1.Value = PhysicianList[i].Id.ToString();
-                                item1.Text = sPhyName;
-                                ddlPhysicianName.Items.Add(item1);
-                                if (item1.Value == ulMyPhysicianID.ToString())
+                                ddlPhysicianName.Items.Add(item);
+                                if (item.Value == ulMyPhysicianID.ToString())
                                 {
                                     phyCheck = true;
                                     ddlPhysicianName.SelectedIndex = i + 1;
@@ -902,558 +843,562 @@ namespace Acurus.Capella.UI
                                 }
                             }
                         }
-                    }
-                    logFile.Info(DateTime.UtcNow.ToString() + "-Fill Hidden facility value - End", null);
-                    //Jira #CAP-168
-                    logFile.Info(DateTime.UtcNow.ToString() + "-Fill physician value - Start", null);
-                    if (ddlPhysicianName.Items.Count == 0 || ddlPhysicianName.SelectedItem.Text == "" || ddlPhysicianName.SelectedItem.Text == string.Empty || ddlPhysicianName.SelectedItem.Text == null)
-                    {
-                        string sPhyName = string.Empty;
-                        IList<PhysicianLibrary> ilstPhysicianLibrary = new List<PhysicianLibrary>();
-                        PhysicianManager phymngr = new PhysicianManager();
-                        ilstPhysicianLibrary = phymngr.GetphysiciannameByPhyID(ulMyPhysicianID);
-                        if (ilstPhysicianLibrary != null && ilstPhysicianLibrary.Count > 0)
-                        {
-                            if (ilstPhysicianLibrary[0].PhyLastName != String.Empty)
-                                sPhyName += ilstPhysicianLibrary[0].PhyLastName;
-                            if (ilstPhysicianLibrary[0].PhyFirstName != String.Empty)
-                            {
-                                if (sPhyName != String.Empty)
-                                    sPhyName += "," + ilstPhysicianLibrary[0].PhyFirstName;
-                                else
-                                    sPhyName += ilstPhysicianLibrary[0].PhyFirstName;
-                            }
-                            if (ilstPhysicianLibrary[0].PhyMiddleName != String.Empty)
-                                sPhyName += " " + ilstPhysicianLibrary[0].PhyMiddleName;
-                            if (ilstPhysicianLibrary[0].PhySuffix != String.Empty)
-                                sPhyName += "," + ilstPhysicianLibrary[0].PhySuffix;
-
-                            RadComboBoxItem item1 = new RadComboBoxItem();
-                            item1.Value = ilstPhysicianLibrary[0].Id.ToString();
-                            item1.Text = sPhyName;
-                            ddlPhysicianName.Items.Add(item1);
-                            int iselectedindex = ddlPhysicianName.Items.IndexOf(item1);
-                            ddlPhysicianName.SelectedIndex = iselectedindex;
-                            phyCheck = true;
-                        }
-
-                    }
-                    logFile.Info(DateTime.UtcNow.ToString() + "-Fill physician value - End", null);
-                    //Jira #CAP-168
-                    //if (!phyCheck)
-                    logFile.Info(DateTime.UtcNow.ToString() + "-Check Show all physician - Start", null);
-                    if (!phyCheck)
-                    {
-                        chkShowAllPhysicians.Checked = true;
-                        chkShowAllPhysicians_CheckedChanged(sender, e);
-                        hdnEditApptPhyID.Value = ddlPhysicianName.SelectedValue.ToString();//added by vasanth
-                    }
-                    logFile.Info(DateTime.UtcNow.ToString() + "-Check Show all physician - End", null);
-
-                    //end here
-                    logFile.Info(DateTime.UtcNow.ToString() + "-Tab Referring - Start", null);
-                    if (EncRecord != null && EncRecord.Referring_Physician != null && (EncRecord.Referring_Physician != string.Empty && EncRecord.PCP_Physician == string.Empty) || (EncRecord.Referring_Physician == string.Empty && EncRecord.PCP_Physician == string.Empty) && ulMyEncID != 0)
-                    {
-                        tabReferringProvAndPCP.SelectedIndex = 0;
-                        //if (ddlPhysicianName.SelectedItem.Text == EncRecord.Referring_Physician)
-                        if (EncRecord.Referring_Physician != null && EncRecord.Referring_Physician.Trim() != string.Empty && EncRecord.Referring_Physician.Contains(ddlPhysicianName.SelectedItem.Text))
-                        {
-                            chkSelfReferred.Checked = false;
-                            // btnFindPhysician.Enabled = false;
-                        }
                         else
                         {
-                            if (EncRecord.Is_Self_Referred == "Y")
-                                chkSelfReferred.Checked = true;
+                            string sPhyName = string.Empty;
+                            if (PhysicianList != null)
+                            //old code
+                            // sPhyName = PhysicianList[i].PhyPrefix + " " + PhysicianList[i].PhyFirstName + " " + PhysicianList[i].PhyLastName;
+                            //Gitlab# 2485 - Physician Name Display Change
+                            {
+                                if (PhysicianList[i].PhyLastName != String.Empty)
+                                    sPhyName += PhysicianList[i].PhyLastName;
+                                if (PhysicianList[i].PhyFirstName != String.Empty)
+                                {
+                                    if (sPhyName != String.Empty)
+                                        sPhyName += "," + PhysicianList[i].PhyFirstName;
+                                    else
+                                        sPhyName += PhysicianList[i].PhyFirstName;
+                                }
+                                if (PhysicianList[i].PhyMiddleName != String.Empty)
+                                    sPhyName += " " + PhysicianList[i].PhyMiddleName;
+                                if (PhysicianList[i].PhySuffix != String.Empty)
+                                    sPhyName += "," + PhysicianList[i].PhySuffix;
+                            }
+
+                            RadComboBoxItem item1 = new RadComboBoxItem();
+                            item1.Value = PhysicianList[i].Id.ToString();
+                            item1.Text = sPhyName;
+                            ddlPhysicianName.Items.Add(item1);
+                            if (item1.Value == ulMyPhysicianID.ToString())
+                            {
+                                phyCheck = true;
+                                ddlPhysicianName.SelectedIndex = i + 1;
+                                hdnEditApptPhyID.Value = ddlPhysicianName.SelectedValue.ToString();//added by vasanth
+                            }
+                        }
+                    }
+                }
+                //Jira #CAP-168
+                if (ddlPhysicianName.Items.Count == 0 || ddlPhysicianName.SelectedItem.Text == "" || ddlPhysicianName.SelectedItem.Text == string.Empty || ddlPhysicianName.SelectedItem.Text == null)
+                {
+                    string sPhyName = string.Empty;
+                    IList<PhysicianLibrary> ilstPhysicianLibrary = new List<PhysicianLibrary>();
+                    PhysicianManager phymngr = new PhysicianManager();
+                    ilstPhysicianLibrary = phymngr.GetphysiciannameByPhyID(ulMyPhysicianID);
+                    if (ilstPhysicianLibrary != null && ilstPhysicianLibrary.Count > 0)
+                    {
+                        if (ilstPhysicianLibrary[0].PhyLastName != String.Empty)
+                            sPhyName += ilstPhysicianLibrary[0].PhyLastName;
+                        if (ilstPhysicianLibrary[0].PhyFirstName != String.Empty)
+                        {
+                            if (sPhyName != String.Empty)
+                                sPhyName += "," + ilstPhysicianLibrary[0].PhyFirstName;
                             else
-                                chkSelfReferred.Checked = false;
-                            //btnFindPhysician.Enabled = true;
+                                sPhyName += ilstPhysicianLibrary[0].PhyFirstName;
                         }
+                        if (ilstPhysicianLibrary[0].PhyMiddleName != String.Empty)
+                            sPhyName += " " + ilstPhysicianLibrary[0].PhyMiddleName;
+                        if (ilstPhysicianLibrary[0].PhySuffix != String.Empty)
+                            sPhyName += "," + ilstPhysicianLibrary[0].PhySuffix;
 
-                        chkSelfReferred.Visible = true;
-
-                        // commented by valli
-
-
-                        //   lblReferringName.Text = "Ref. Provider";
-                        // lblReferingFacility.Text = "Ref. Facility";
-                        //  lblReferingAddress.Text = "Ref. Address";
-                        //  lblReferingPhoneNo.Text = "Ref. Phone";
-                        //  lblReferingFaxNo.Text = "Ref. Fax";
-                        //   txtReferringFacility.Text = EncRecord.Referring_Facility;
-                        //   txtReferringProvider.Text = EncRecord.Referring_Physician;
-                        //  txtReferingAddress.Text = EncRecord.Referring_Address;
-                        // msktxtReferingPhoneNo.Text = EncRecord.Referring_Phone_No;
-                        //  msktxtReferingFaxNo.Text = EncRecord.Referring_Fax_No;
-                        //   txtProviderNPI.Text = EncRecord.Referring_Provider_NPI;
-                        //  btnFindPhysician.Enabled = true;
-                        //    txtReferringProvider.Attributes.Add("onkeypress", "return false;");
-                        // txtReferringFacility.Attributes.Add("onkeypress", "return false;");
-                        //  txtReferingAddress.Attributes.Add("onkeypress", "return false;");
-                        // txtProviderNPI.Attributes.Add("onkeypress", "return false;");
-                        //  txtProviderNPI.Attributes.Add("onkeydown", "return false;");
-                        //  txtReferringProvider.Attributes.Add("onkeydown", "return false;");
-                        // txtReferringFacility.Attributes.Add("onkeydown", "return false;");
-                        //   txtReferingAddress.Attributes.Add("onkeydown", "return false;");
-                        // msktxtReferingFaxNo.ReadOnly = true;
-                        //  msktxtReferingPhoneNo.ReadOnly = true;
-                        if (EncRecord.Referring_Physician != "")
-                        {
-                            txtProviderSearch.Enabled = false;
-                            txtProviderSearch.Text = EncRecord.Referring_Physician + "| NPI: " + EncRecord.Referring_Provider_NPI +
-                                      "| Facility: " + EncRecord.Referring_Facility + "| Address:" + EncRecord.Referring_Address +
-                                      "| Phone No:" + EncRecord.Referring_Phone_No + "| Fax No:" + EncRecord.Referring_Fax_No;
-
-                            //Jira #CAP-69 - labels are missing
-                            //hdnrenprovider.Value = " |" + EncRecord.Referring_Physician + "|" + EncRecord.Referring_Provider_NPI + "|" + "" + "|" + EncRecord.Referring_Facility +
-                            //    "|" + EncRecord.Referring_Address + "|"
-                            //    + EncRecord.Referring_Fax_No + "|" + EncRecord.Referring_Phone_No;
-
-                            //hdnrenprovidersearch.Value = " |" + EncRecord.Referring_Physician + "|" + EncRecord.Referring_Provider_NPI + "|" + "" + "|" + EncRecord.Referring_Facility +
-                            //    "|" + EncRecord.Referring_Address + "|"
-                            //    + EncRecord.Referring_Fax_No + "|" + EncRecord.Referring_Phone_No;
-
-                            hdnrenprovider.Value = EncRecord.Referring_Physician + "| NPI: " + EncRecord.Referring_Provider_NPI +
-                                      "| Facility: " + EncRecord.Referring_Facility + "| Address:" + EncRecord.Referring_Address +
-                                      "| Phone No:" + EncRecord.Referring_Phone_No + "| Fax No:" + EncRecord.Referring_Fax_No;
-
-                            hdnrenprovidersearch.Value = EncRecord.Referring_Physician + "| NPI: " + EncRecord.Referring_Provider_NPI +
-                                      "| Facility: " + EncRecord.Referring_Facility + "| Address:" + EncRecord.Referring_Address +
-                                      "| Phone No:" + EncRecord.Referring_Phone_No + "| Fax No:" + EncRecord.Referring_Fax_No;
-                        }
-                        logFile.Info(DateTime.UtcNow.ToString() + "-Tab Referring - End", null);
+                        RadComboBoxItem item1 = new RadComboBoxItem();
+                        item1.Value = ilstPhysicianLibrary[0].Id.ToString();
+                        item1.Text = sPhyName;
+                        ddlPhysicianName.Items.Add(item1);
+                        int iselectedindex = ddlPhysicianName.Items.IndexOf(item1);
+                        ddlPhysicianName.SelectedIndex = iselectedindex;
+                        phyCheck = true;
                     }
-                    else if (EncRecord != null && EncRecord.PCP_Physician != string.Empty && EncRecord.Referring_Physician == string.Empty)
+
+                }
+                //Jira #CAP-168
+                //if (!phyCheck)
+                if (!phyCheck)
+                {
+                    chkShowAllPhysicians.Checked = true;
+                    chkShowAllPhysicians_CheckedChanged(sender, e);
+                    hdnEditApptPhyID.Value = ddlPhysicianName.SelectedValue.ToString();//added by vasanth
+                }
+
+
+                //end here
+                if (EncRecord != null && EncRecord.Referring_Physician != null && (EncRecord.Referring_Physician != string.Empty && EncRecord.PCP_Physician == string.Empty) || (EncRecord.Referring_Physician == string.Empty && EncRecord.PCP_Physician == string.Empty) && ulMyEncID != 0)
+                {
+                    tabReferringProvAndPCP.SelectedIndex = 0;
+                    //if (ddlPhysicianName.SelectedItem.Text == EncRecord.Referring_Physician)
+                    if (EncRecord.Referring_Physician != null && EncRecord.Referring_Physician.Trim() != string.Empty && EncRecord.Referring_Physician.Contains(ddlPhysicianName.SelectedItem.Text))
                     {
-                        logFile.Info(DateTime.UtcNow.ToString() + "-Tab Referring Change - Start", null);
-                        tabReferringProvAndPCP.SelectedIndex = 1;
-                        chkSelfReferred.Visible = false;
-                        //   lblReferringName.Text = "PCP. Provider";
-                        //   lblReferingFacility.Text = "PCP. Facility";
-                        //lblReferingAddress.Text = "PCP. Address";
-                        //lblReferingPhoneNo.Text = "PCP. Phone";
-                        //lblReferingFaxNo.Text = "PCP. Fax";
-                        //   txtReferringFacility.Text = EncRecord.PCP_Facility;
-                        //    txtReferringProvider.Text = EncRecord.PCP_Physician;
-                        //txtReferingAddress.Text = EncRecord.PCP_Address;
-                        //msktxtReferingPhoneNo.Text = EncRecord.PCP_Phone_No;
-                        //msktxtReferingFaxNo.Text = EncRecord.PCP_Fax_No;
-                        //  txtProviderNPI.Text = EncRecord.PCP_Provider_NPI;
-                        //btnFindPhysician.Enabled = true;
-                        //  txtReferringProvider.Attributes.Add("onkeypress", "return false;");
-                        //  txtReferringFacility.Attributes.Add("onkeypress", "return false;");
-                        //txtReferingAddress.Attributes.Add("onkeypress", "return false;");
-                        //  txtProviderNPI.Attributes.Add("onkeypress", "return false;");
-                        //  txtProviderNPI.Attributes.Add("onkeydown", "return false;");
-                        //  txtReferringProvider.Attributes.Add("onkeydown", "return false;");
-                        //  txtReferringFacility.Attributes.Add("onkeydown", "return false;");
-                        //txtReferingAddress.Attributes.Add("onkeydown", "return false;");
-                        //msktxtReferingFaxNo.ReadOnly = true;
-                        //msktxtReferingPhoneNo.ReadOnly = true;
-                        if (EncRecord.PCP_Physician != "")
-                        {
-                            txtProviderSearch.Text = EncRecord.PCP_Physician + "| NPI: " + EncRecord.PCP_Provider_NPI +
-                                      "| Facility: " + EncRecord.PCP_Facility + "| Address:" + EncRecord.PCP_Address +
-                                      "| Phone No:" + EncRecord.PCP_Phone_No + "| Fax No:" + EncRecord.PCP_Fax_No;
-
-                            //Jira #CAP-69 - labels are missing
-                            //hdnpcpprovider.Value = " |" + EncRecord.PCP_Physician + "|" + EncRecord.PCP_Provider_NPI + "|" + "" + "|" + EncRecord.PCP_Facility +
-                            //    "|" + EncRecord.PCP_Address + "|"
-                            //    + EncRecord.PCP_Fax_No + "|" + EncRecord.PCP_Phone_No;
-
-                            //hdnpcpprovidersearch.Value = " |" + EncRecord.PCP_Physician + "|" + EncRecord.PCP_Provider_NPI + "|" + "" + "|" + EncRecord.PCP_Facility +
-                            //    "|" + EncRecord.PCP_Address + "|"
-                            //    + EncRecord.PCP_Fax_No + "|" + EncRecord.PCP_Phone_No;
-
-
-                            hdnpcpprovider.Value = EncRecord.Referring_Physician + "| NPI: " + EncRecord.Referring_Provider_NPI +
-                                    "| Facility: " + EncRecord.Referring_Facility + "| Address:" + EncRecord.Referring_Address +
-                                    "| Phone No:" + EncRecord.Referring_Phone_No + "| Fax No:" + EncRecord.Referring_Fax_No;
-
-                            hdnpcpprovidersearch.Value = EncRecord.Referring_Physician + "| NPI: " + EncRecord.Referring_Provider_NPI +
-                                      "| Facility: " + EncRecord.Referring_Facility + "| Address:" + EncRecord.Referring_Address +
-                                      "| Phone No:" + EncRecord.Referring_Phone_No + "| Fax No:" + EncRecord.Referring_Fax_No;
-
-
-                            txtProviderSearch.Enabled = false;
-                        }
-                        logFile.Info(DateTime.UtcNow.ToString() + "-Tab Referring Change - End", null);
-                    }
-                    else if (EncRecord != null && EncRecord.Referring_Physician != string.Empty && EncRecord.PCP_Physician != string.Empty)
-                    {
-                        logFile.Info(DateTime.UtcNow.ToString() + "-Encounter Record Empty - Start", null);
-                        tabReferringProvAndPCP.SelectedIndex = 0;
-                        chkSelfReferred.Visible = true;
                         chkSelfReferred.Checked = false;
-                        //    lblReferringName.Text = "Ref. Provider";
-                        //  lblReferingFacility.Text = "Ref. Facility";
-                        //lblReferingAddress.Text = "Ref. Address";
-                        //lblReferingPhoneNo.Text = "Ref. Phone";
-                        //lblReferingFaxNo.Text = "Ref. Fax";
-                        //   txtReferringFacility.Text = EncRecord.Referring_Facility;
-                        //   txtReferringProvider.Text = EncRecord.Referring_Physician;
-                        //txtReferingAddress.Text = EncRecord.Referring_Address;
-                        //msktxtReferingPhoneNo.Text = EncRecord.Referring_Phone_No;
-                        //msktxtReferingFaxNo.Text = EncRecord.Referring_Fax_No;
-                        //txtProviderNPI.Text = EncRecord.Referring_Provider_NPI;
-                        // txtReferringProvider.Attributes.Add("onkeypress", "return false;");
-                        //txtReferringFacility.Attributes.Add("onkeypress", "return false;");
-                        //txtReferingAddress.Attributes.Add("onkeypress", "return false;");
-                        //txtProviderNPI.Attributes.Add("onkeypress", "return false;");
-                        //txtProviderNPI.Attributes.Add("onkeydown", "return false;");
-                        // txtReferringProvider.Attributes.Add("onkeydown", "return false;");
-                        //txtReferringFacility.Attributes.Add("onkeydown", "return false;");
-                        //txtReferingAddress.Attributes.Add("onkeydown", "return false;");
-                        //msktxtReferingPhoneNo.ReadOnly = true;
-                        //msktxtReferingFaxNo.ReadOnly = true;
-                        if (EncRecord.Referring_Physician != "")
-                        {
-                            txtProviderSearch.Text = EncRecord.Referring_Physician + "| NPI: " + EncRecord.Referring_Provider_NPI +
-                                       "| Facility: " + EncRecord.Referring_Facility + "| Address:" + EncRecord.Referring_Address +
-                                       "| Phone No:" + EncRecord.Referring_Phone_No + "| Fax No:" + EncRecord.Referring_Fax_No;
-                            //Jira #CAP-69 - labels are missing
-                            //hdnrenprovider.Value = " |" + EncRecord.Referring_Physician + "|" + EncRecord.Referring_Provider_NPI + "|" + "" + "|" + EncRecord.Referring_Facility +
-                            //    "|" + EncRecord.Referring_Address + "|"
-                            //    + EncRecord.Referring_Fax_No + "|" + EncRecord.Referring_Phone_No;
-                            //hdnrenprovidersearch.Value = EncRecord.Referring_Physician + "|" + EncRecord.Referring_Provider_NPI + "|" + "" + "|" + EncRecord.Referring_Facility +
-                            // "|" + EncRecord.Referring_Address + "|"
-                            // + EncRecord.Referring_Fax_No + "|" + EncRecord.Referring_Phone_No;
-
-                            hdnrenprovider.Value = EncRecord.Referring_Physician + "| NPI: " + EncRecord.Referring_Provider_NPI +
-                                       "| Facility: " + EncRecord.Referring_Facility + "| Address:" + EncRecord.Referring_Address +
-                                       "| Phone No:" + EncRecord.Referring_Phone_No + "| Fax No:" + EncRecord.Referring_Fax_No;
-                            hdnrenprovidersearch.Value = EncRecord.Referring_Physician + "| NPI: " + EncRecord.Referring_Provider_NPI +
-                                       "| Facility: " + EncRecord.Referring_Facility + "| Address:" + EncRecord.Referring_Address +
-                                       "| Phone No:" + EncRecord.Referring_Phone_No + "| Fax No:" + EncRecord.Referring_Fax_No;
-
-                            txtProviderSearch.Enabled = false;
-                        }
-
-                        logFile.Info(DateTime.UtcNow.ToString() + "-Encounter Record Empty - End", null);
-
+                        // btnFindPhysician.Enabled = false;
                     }
+                    else
+                    {
+                        if (EncRecord.Is_Self_Referred == "Y")
+                            chkSelfReferred.Checked = true;
+                        else
+                            chkSelfReferred.Checked = false;
+                        //btnFindPhysician.Enabled = true;
+                    }
+
+                    chkSelfReferred.Visible = true;
 
                     // commented by valli
 
-                    //if (txtReferringProvider.Text.Trim() != string.Empty && txtReferringProvider.Text.Contains(ddlPhysicianName.SelectedItem.Text))
-                    //{
-                    //    chkSelfReferred.Checked = true;
-                    //    btnFindPhysician.Enabled = false;
-                    //}
-                    //else
-                    //{
-                    //    chkSelfReferred.Checked = false;
-                    //    btnFindPhysician.Enabled = true;
-                    //}
 
-                    //if (txtProviderSearch.Text.Trim() != string.Empty && txtProviderSearch.Text.Contains(ddlPhysicianName.SelectedItem.Text))
-                    //{
-                    //    chkSelfReferred.Checked = true;
-                    //    // btnFindPhysician.Enabled = false;
-                    //}
-                    //else
-                    //{
-                    //    chkSelfReferred.Checked = false;
-                    //    //    btnFindPhysician.Enabled = true;
-                    //} //Commentted for BugID:56036
-
-                    logFile.Info(DateTime.UtcNow.ToString() + "- Disable layout - Start", null);
-                    DisableTableLayout(pnlReschedule);
-
-                    // FillReasonCode();                
-                    if (EncRecord != null && EncRecord.Reschedule_Reason_Code != string.Empty)
+                    //   lblReferringName.Text = "Ref. Provider";
+                    // lblReferingFacility.Text = "Ref. Facility";
+                    //  lblReferingAddress.Text = "Ref. Address";
+                    //  lblReferingPhoneNo.Text = "Ref. Phone";
+                    //  lblReferingFaxNo.Text = "Ref. Fax";
+                    //   txtReferringFacility.Text = EncRecord.Referring_Facility;
+                    //   txtReferringProvider.Text = EncRecord.Referring_Physician;
+                    //  txtReferingAddress.Text = EncRecord.Referring_Address;
+                    // msktxtReferingPhoneNo.Text = EncRecord.Referring_Phone_No;
+                    //  msktxtReferingFaxNo.Text = EncRecord.Referring_Fax_No;
+                    //   txtProviderNPI.Text = EncRecord.Referring_Provider_NPI;
+                    //  btnFindPhysician.Enabled = true;
+                    //    txtReferringProvider.Attributes.Add("onkeypress", "return false;");
+                    // txtReferringFacility.Attributes.Add("onkeypress", "return false;");
+                    //  txtReferingAddress.Attributes.Add("onkeypress", "return false;");
+                    // txtProviderNPI.Attributes.Add("onkeypress", "return false;");
+                    //  txtProviderNPI.Attributes.Add("onkeydown", "return false;");
+                    //  txtReferringProvider.Attributes.Add("onkeydown", "return false;");
+                    // txtReferringFacility.Attributes.Add("onkeydown", "return false;");
+                    //   txtReferingAddress.Attributes.Add("onkeydown", "return false;");
+                    // msktxtReferingFaxNo.ReadOnly = true;
+                    //  msktxtReferingPhoneNo.ReadOnly = true;
+                    if (EncRecord.Referring_Physician != "")
                     {
-                        ddlReasonCode.Text = EncRecord.Reschedule_Reason_Code;
-                        if (ddlReasonCode.Items.Count == 0)
-                            FillReasonCode();
-                        if (ddlReasonCode.Items.Count > 0)
-                            ddlReasonCode.Items.FindItemByText(EncRecord.Reschedule_Reason_Code).Selected = true;
-                        txtReasonCode.Text = EncRecord.Reschedule_Reason_Text;
+                        txtProviderSearch.Enabled = false;
+                        txtProviderSearch.Text = EncRecord.Referring_Physician + "| NPI: " + EncRecord.Referring_Provider_NPI +
+                                  "| Facility: " + EncRecord.Referring_Facility + "| Address:" + EncRecord.Referring_Address +
+                                  "| Phone No:" + EncRecord.Referring_Phone_No + "| Fax No:" + EncRecord.Referring_Fax_No;
+
+                        //Jira #CAP-69 - labels are missing
+                        //hdnrenprovider.Value = " |" + EncRecord.Referring_Physician + "|" + EncRecord.Referring_Provider_NPI + "|" + "" + "|" + EncRecord.Referring_Facility +
+                        //    "|" + EncRecord.Referring_Address + "|"
+                        //    + EncRecord.Referring_Fax_No + "|" + EncRecord.Referring_Phone_No;
+
+                        //hdnrenprovidersearch.Value = " |" + EncRecord.Referring_Physician + "|" + EncRecord.Referring_Provider_NPI + "|" + "" + "|" + EncRecord.Referring_Facility +
+                        //    "|" + EncRecord.Referring_Address + "|"
+                        //    + EncRecord.Referring_Fax_No + "|" + EncRecord.Referring_Phone_No;
+
+                        hdnrenprovider.Value = EncRecord.Referring_Physician + "| NPI: " + EncRecord.Referring_Provider_NPI +
+                                  "| Facility: " + EncRecord.Referring_Facility + "| Address:" + EncRecord.Referring_Address +
+                                  "| Phone No:" + EncRecord.Referring_Phone_No + "| Fax No:" + EncRecord.Referring_Fax_No;
+
+                        hdnrenprovidersearch.Value = EncRecord.Referring_Physician + "| NPI: " + EncRecord.Referring_Provider_NPI +
+                                  "| Facility: " + EncRecord.Referring_Facility + "| Address:" + EncRecord.Referring_Address +
+                                  "| Phone No:" + EncRecord.Referring_Phone_No + "| Fax No:" + EncRecord.Referring_Fax_No;
                     }
 
-                    txtReasonCode.Focus();
-                    if (txtReasonCode.Text == string.Empty)
-                        txtReasonCode.Text = ddlReasonCode.Text;
-                    LoadTime.Stop();
-                    logFile.Info(DateTime.UtcNow.ToString() + "- Disable layout - End", null);
-
-                    logFile.Info(DateTime.UtcNow.ToString() + "- Facility LibraryList - Start", null);
-                    SecurityServiceUtility objSecurity = new SecurityServiceUtility();
-                    objSecurity.ApplyUserPermissions(this.Page);
-                    //if (cboFacility.SelectedItem.Text.ToUpper() == sFacilityCmg.ToUpper())
-                    //{
-                    var vfacAcillary = from f in ApplicationObject.facilityLibraryList where f.Fac_Name == cboFacility.SelectedItem.Text select f;
-                    IList<FacilityLibrary> lstFacAncillary = vfacAcillary.ToList<FacilityLibrary>();
-                    if (lstFacAncillary.Count > 0 && lstFacAncillary[0].Is_Ancillary == "Y")
+                }
+                else if (EncRecord != null && EncRecord.PCP_Physician != string.Empty && EncRecord.Referring_Physician == string.Empty)
+                {
+                    tabReferringProvAndPCP.SelectedIndex = 1;
+                    chkSelfReferred.Visible = false;
+                    //   lblReferringName.Text = "PCP. Provider";
+                    //   lblReferingFacility.Text = "PCP. Facility";
+                    //lblReferingAddress.Text = "PCP. Address";
+                    //lblReferingPhoneNo.Text = "PCP. Phone";
+                    //lblReferingFaxNo.Text = "PCP. Fax";
+                    //   txtReferringFacility.Text = EncRecord.PCP_Facility;
+                    //    txtReferringProvider.Text = EncRecord.PCP_Physician;
+                    //txtReferingAddress.Text = EncRecord.PCP_Address;
+                    //msktxtReferingPhoneNo.Text = EncRecord.PCP_Phone_No;
+                    //msktxtReferingFaxNo.Text = EncRecord.PCP_Fax_No;
+                    //  txtProviderNPI.Text = EncRecord.PCP_Provider_NPI;
+                    //btnFindPhysician.Enabled = true;
+                    //  txtReferringProvider.Attributes.Add("onkeypress", "return false;");
+                    //  txtReferringFacility.Attributes.Add("onkeypress", "return false;");
+                    //txtReferingAddress.Attributes.Add("onkeypress", "return false;");
+                    //  txtProviderNPI.Attributes.Add("onkeypress", "return false;");
+                    //  txtProviderNPI.Attributes.Add("onkeydown", "return false;");
+                    //  txtReferringProvider.Attributes.Add("onkeydown", "return false;");
+                    //  txtReferringFacility.Attributes.Add("onkeydown", "return false;");
+                    //txtReferingAddress.Attributes.Add("onkeydown", "return false;");
+                    //msktxtReferingFaxNo.ReadOnly = true;
+                    //msktxtReferingPhoneNo.ReadOnly = true;
+                    if (EncRecord.PCP_Physician != "")
                     {
-                        ChangeproviderforCMGAncillary(true);
+                        txtProviderSearch.Text = EncRecord.PCP_Physician + "| NPI: " + EncRecord.PCP_Provider_NPI +
+                                  "| Facility: " + EncRecord.PCP_Facility + "| Address:" + EncRecord.PCP_Address +
+                                  "| Phone No:" + EncRecord.PCP_Phone_No + "| Fax No:" + EncRecord.PCP_Fax_No;
+
+                        //Jira #CAP-69 - labels are missing
+                        //hdnpcpprovider.Value = " |" + EncRecord.PCP_Physician + "|" + EncRecord.PCP_Provider_NPI + "|" + "" + "|" + EncRecord.PCP_Facility +
+                        //    "|" + EncRecord.PCP_Address + "|"
+                        //    + EncRecord.PCP_Fax_No + "|" + EncRecord.PCP_Phone_No;
+
+                        //hdnpcpprovidersearch.Value = " |" + EncRecord.PCP_Physician + "|" + EncRecord.PCP_Provider_NPI + "|" + "" + "|" + EncRecord.PCP_Facility +
+                        //    "|" + EncRecord.PCP_Address + "|"
+                        //    + EncRecord.PCP_Fax_No + "|" + EncRecord.PCP_Phone_No;
+
+
+                        hdnpcpprovider.Value = EncRecord.Referring_Physician + "| NPI: " + EncRecord.Referring_Provider_NPI +
+                                "| Facility: " + EncRecord.Referring_Facility + "| Address:" + EncRecord.Referring_Address +
+                                "| Phone No:" + EncRecord.Referring_Phone_No + "| Fax No:" + EncRecord.Referring_Fax_No;
+
+                        hdnpcpprovidersearch.Value = EncRecord.Referring_Physician + "| NPI: " + EncRecord.Referring_Provider_NPI +
+                                  "| Facility: " + EncRecord.Referring_Facility + "| Address:" + EncRecord.Referring_Address +
+                                  "| Phone No:" + EncRecord.Referring_Phone_No + "| Fax No:" + EncRecord.Referring_Fax_No;
+
+
+                        txtProviderSearch.Enabled = false;
                     }
-                    else
-                        ChangeproviderforCMGAncillary(false);
-
-                    logFile.Info(DateTime.UtcNow.ToString() + "- Facility LibraryList - End", null);
-
-                    logFile.Info(DateTime.UtcNow.ToString() + "- Enable Save New Appointment - Start", null);
-                    if (this.Page.Title.Contains("New Appointment") == true && txtPurposeofVisit.txtDLC.Enabled == true)
+                }
+                else if (EncRecord != null && EncRecord.Referring_Physician != string.Empty && EncRecord.PCP_Physician != string.Empty)
+                {
+                    tabReferringProvAndPCP.SelectedIndex = 0;
+                    chkSelfReferred.Visible = true;
+                    chkSelfReferred.Checked = false;
+                    //    lblReferringName.Text = "Ref. Provider";
+                    //  lblReferingFacility.Text = "Ref. Facility";
+                    //lblReferingAddress.Text = "Ref. Address";
+                    //lblReferingPhoneNo.Text = "Ref. Phone";
+                    //lblReferingFaxNo.Text = "Ref. Fax";
+                    //   txtReferringFacility.Text = EncRecord.Referring_Facility;
+                    //   txtReferringProvider.Text = EncRecord.Referring_Physician;
+                    //txtReferingAddress.Text = EncRecord.Referring_Address;
+                    //msktxtReferingPhoneNo.Text = EncRecord.Referring_Phone_No;
+                    //msktxtReferingFaxNo.Text = EncRecord.Referring_Fax_No;
+                    //txtProviderNPI.Text = EncRecord.Referring_Provider_NPI;
+                    // txtReferringProvider.Attributes.Add("onkeypress", "return false;");
+                    //txtReferringFacility.Attributes.Add("onkeypress", "return false;");
+                    //txtReferingAddress.Attributes.Add("onkeypress", "return false;");
+                    //txtProviderNPI.Attributes.Add("onkeypress", "return false;");
+                    //txtProviderNPI.Attributes.Add("onkeydown", "return false;");
+                    // txtReferringProvider.Attributes.Add("onkeydown", "return false;");
+                    //txtReferringFacility.Attributes.Add("onkeydown", "return false;");
+                    //txtReferingAddress.Attributes.Add("onkeydown", "return false;");
+                    //msktxtReferingPhoneNo.ReadOnly = true;
+                    //msktxtReferingFaxNo.ReadOnly = true;
+                    if (EncRecord.Referring_Physician != "")
                     {
-                        btnSave.Enabled = true;
-                        chkReschedule.Enabled = false;
-                    }
-                    else if (MyStatus != null && MyStatus.ToUpper() != "SCHEDULED")
-                    {
-                        btnSave.Enabled = false;
-                        chkReschedule.Enabled = false;
-                        chkShowAllPhysicians.Enabled = false;
-                        chkSelfReferred.Enabled = false;
-                        dtpApptDate.Enabled = false;
-                        dtpStartTime.Enabled = false;
-                        dtpStartTime.Enabled = true;
-                        ddlPhysicianName.Enabled = false;
-                        ddlVisitType.Enabled = false;
-                        ddlDuration.Enabled = false;
-                    }
-                    else if (this.Page.Title.Contains("Edit Appointment") == true)
-                    {
-                        DateTimePickerColorChange(this.dtpApptDate, true);
-                        TimePickerColorChange(dtpStartTime, true);
-                        DisableTableLayout(pnlReschedule);
-                        btnFindAvailableSlot.Enabled = false;
-                    }
-                    logFile.Info(DateTime.UtcNow.ToString() + "- Enable Save New Appointment - Start", null);
-                    //txtPurposeofVisit.SetTheUBACForDynamicControls();
-                    //txtNotes.SetTheUBACForDynamicControls();
-                    #region not been used right now 12-01-2016 by vasanth
-                    //if (hdnFacilityName.Value != System.Configuration.ConfigurationSettings.AppSettings["CMGFacilityName"])
-                    //{
-                    //    pbTestDropDown.Enabled = false;
-                    //    pbTestDropDown.ImageUrl = "~/Resources/plus_new_disabled.gif"; ;    
+                        txtProviderSearch.Text = EncRecord.Referring_Physician + "| NPI: " + EncRecord.Referring_Provider_NPI +
+                                   "| Facility: " + EncRecord.Referring_Facility + "| Address:" + EncRecord.Referring_Address +
+                                   "| Phone No:" + EncRecord.Referring_Phone_No + "| Fax No:" + EncRecord.Referring_Fax_No;
+                        //Jira #CAP-69 - labels are missing
+                        //hdnrenprovider.Value = " |" + EncRecord.Referring_Physician + "|" + EncRecord.Referring_Provider_NPI + "|" + "" + "|" + EncRecord.Referring_Facility +
+                        //    "|" + EncRecord.Referring_Address + "|"
+                        //    + EncRecord.Referring_Fax_No + "|" + EncRecord.Referring_Phone_No;
+                        //hdnrenprovidersearch.Value = EncRecord.Referring_Physician + "|" + EncRecord.Referring_Provider_NPI + "|" + "" + "|" + EncRecord.Referring_Facility +
+                        // "|" + EncRecord.Referring_Address + "|"
+                        // + EncRecord.Referring_Fax_No + "|" + EncRecord.Referring_Phone_No;
 
-                    //    pbTestClear.Enabled = false;
-                    //    pbTestClear.ImageUrl = "~/Resources/close_disabled.png";
+                        hdnrenprovider.Value = EncRecord.Referring_Physician + "| NPI: " + EncRecord.Referring_Provider_NPI +
+                                   "| Facility: " + EncRecord.Referring_Facility + "| Address:" + EncRecord.Referring_Address +
+                                   "| Phone No:" + EncRecord.Referring_Phone_No + "| Fax No:" + EncRecord.Referring_Fax_No;
+                        hdnrenprovidersearch.Value = EncRecord.Referring_Physician + "| NPI: " + EncRecord.Referring_Provider_NPI +
+                                   "| Facility: " + EncRecord.Referring_Facility + "| Address:" + EncRecord.Referring_Address +
+                                   "| Phone No:" + EncRecord.Referring_Phone_No + "| Fax No:" + EncRecord.Referring_Fax_No;
 
-                    //}
-                    //if (pbTestDropDown.Enabled == true)
-                    //{
-                    //    if (this.Page.Title.Contains("Edit") == true)
-                    //    {
-                    //        pbTestDropDown.Enabled = true;
-                    //        pbTestDropDown.ImageUrl = "~/Resources/pbAdd.png";
-                    //        pbTestClear.Enabled = true;
-                    //        pbTestClear.ImageUrl = "~/Resources/close_small_pressed.gif";
-
-                    //    }
-                    //}
-                    #endregion
-                    //DateTimePickerColorChange(dtpApptDate, true);
-                    //TimePickerColorChange(dtpStartTime, true);
-                    // if (EncRecord.Referring_Physician != string.Empty || EncRecord.PCP_Physician != string.Empty)
-                    logFile.Info(DateTime.UtcNow.ToString() + "- Hidden Ref Physician - Start", null);
-                    if (EncRecord != null && ulMyEncID != 0)//vasanth
-                    {
-                        HdnRefPhy.Value = EncRecord.Referring_Physician + "|" + EncRecord.Referring_Address + "|" + EncRecord.Referring_Phone_No + "|" + EncRecord.Referring_Fax_No + "|" + EncRecord.Referring_Provider_NPI + "|" + EncRecord.Referring_Facility;
-                        HdnPcpPhy.Value = EncRecord.PCP_Physician + "|" + EncRecord.PCP_Address + "|" + EncRecord.PCP_Phone_No + "|" + EncRecord.PCP_Fax_No + "|" + EncRecord.PCP_Provider_NPI + "|" + EncRecord.PCP_Facility;
+                        txtProviderSearch.Enabled = false;
                     }
-                    pcpDefaultDemographics();
-                    logFile.Info(DateTime.UtcNow.ToString() + "- Hidden Ref Physician - End", null);
-                    /*added BugId : 59356*/
-                    logFile.Info(DateTime.UtcNow.ToString() + "- PostBack - End", null);
+
+
+
+                }
+
+                // commented by valli
+
+                //if (txtReferringProvider.Text.Trim() != string.Empty && txtReferringProvider.Text.Contains(ddlPhysicianName.SelectedItem.Text))
+                //{
+                //    chkSelfReferred.Checked = true;
+                //    btnFindPhysician.Enabled = false;
+                //}
+                //else
+                //{
+                //    chkSelfReferred.Checked = false;
+                //    btnFindPhysician.Enabled = true;
+                //}
+
+                //if (txtProviderSearch.Text.Trim() != string.Empty && txtProviderSearch.Text.Contains(ddlPhysicianName.SelectedItem.Text))
+                //{
+                //    chkSelfReferred.Checked = true;
+                //    // btnFindPhysician.Enabled = false;
+                //}
+                //else
+                //{
+                //    chkSelfReferred.Checked = false;
+                //    //    btnFindPhysician.Enabled = true;
+                //} //Commentted for BugID:56036
+
+
+                DisableTableLayout(pnlReschedule);
+
+                // FillReasonCode();                
+                if (EncRecord != null && EncRecord.Reschedule_Reason_Code != string.Empty)
+                {
+                    ddlReasonCode.Text = EncRecord.Reschedule_Reason_Code;
+                    if (ddlReasonCode.Items.Count == 0)
+                        FillReasonCode();
+                    if (ddlReasonCode.Items.Count > 0)
+                        ddlReasonCode.Items.FindItemByText(EncRecord.Reschedule_Reason_Code).Selected = true;
+                    txtReasonCode.Text = EncRecord.Reschedule_Reason_Text;
+                }
+
+                txtReasonCode.Focus();
+                if (txtReasonCode.Text == string.Empty)
+                    txtReasonCode.Text = ddlReasonCode.Text;
+
+                LoadTime.Stop();
+                SecurityServiceUtility objSecurity = new SecurityServiceUtility();
+                objSecurity.ApplyUserPermissions(this.Page);
+                //if (cboFacility.SelectedItem.Text.ToUpper() == sFacilityCmg.ToUpper())
+                //{
+                var vfacAcillary = from f in ApplicationObject.facilityLibraryList where f.Fac_Name == cboFacility.SelectedItem.Text select f;
+                IList<FacilityLibrary> lstFacAncillary = vfacAcillary.ToList<FacilityLibrary>();
+                if (lstFacAncillary.Count > 0 && lstFacAncillary[0].Is_Ancillary == "Y")
+                {
+                    ChangeproviderforCMGAncillary(true);
                 }
                 else
+                    ChangeproviderforCMGAncillary(false);
+                if (this.Page.Title.Contains("New Appointment") == true && txtPurposeofVisit.txtDLC.Enabled == true)
                 {
-                    logFile.Info(DateTime.UtcNow.ToString() + "- Not Postback - Start", null);
-                    if (chkSelfReferred.Checked == true)
-                    {
-                        imgClearProviderText.Attributes.Remove("onclick");
-                    }
-                    // Commented by valli need to check
-                    if (tabReferringProvAndPCP.SelectedIndex == 0)
-                    {
-                        logFile.Info(DateTime.UtcNow.ToString() + "- Not Postback Tab 0- Start", null);
-                        imgClearProviderText.Style.Add("top", "234px !important");
-                        //if (sAncillary != string.Empty && sAncillary != cboFacility.SelectedItem.Text.Trim())
-                        //{
-                        var fac = from f in ApplicationObject.facilityLibraryList where f.Fac_Name == cboFacility.SelectedItem.Text select f;
-                        IList<FacilityLibrary> ilstFac = fac.ToList<FacilityLibrary>();
-                        if (ilstFac.Count > 0 && ilstFac[0].Is_Ancillary != "Y")
-                        {
-                            if (HdnRefPhy != null && HdnRefPhy.Value.Trim() != "" && HdnRefPhy.Value != string.Empty)
-                            {
-                                // txtReferringProvider.Text = HdnRefPhy.Value.Split('|')[0].ToString();
-                                // txtReferingAddress.Text = HdnRefPhy.Value.Split('|')[1].ToString();
-                                // msktxtReferingPhoneNo.Text = HdnRefPhy.Value.Split('|')[2].ToString();
-                                //  msktxtReferingFaxNo.Text = HdnRefPhy.Value.Split('|')[3].ToString();
-                                // txtProviderNPI.Text = HdnRefPhy.Value.Split('|')[4].ToString();
-                                // txtReferringFacility.Text = HdnRefPhy.Value.Split('|')[5].ToString();
-                            }
-                        }
-                        logFile.Info(DateTime.UtcNow.ToString() + "- Not Postback Tab 0- End", null);
-                    }
-                    else if (tabReferringProvAndPCP.SelectedIndex == 1)
-                    {
-                        logFile.Info(DateTime.UtcNow.ToString() + "- Not Postback Tab 1- Start", null);
-                        imgClearProviderText.Style.Add("top", "224px !important");
-                        if (EncRecord != null && EncRecord.PCP_Physician != null && EncRecord.PCP_Physician != "")
-                        {
-                            //Jira #CAP-69 - labels are missing
-                            //hdnpcpprovidersearch.Value = " |" + EncRecord.PCP_Physician + "|" + EncRecord.PCP_Provider_NPI + "|" + "" + "|" + EncRecord.PCP_Facility +
-                            //    "|" + EncRecord.PCP_Address + "|"
-                            //    + EncRecord.PCP_Fax_No + "|" + EncRecord.PCP_Phone_No;
-
-
-                            hdnpcpprovidersearch.Value = EncRecord.PCP_Physician + "| NPI: " + EncRecord.PCP_Provider_NPI +
-                                     "| Facility: " + EncRecord.PCP_Facility + "| Address:" + EncRecord.PCP_Address + "| Fax No:" + EncRecord.PCP_Fax_No +
-                                     "| Phone No:" + EncRecord.PCP_Phone_No;
-
-                        }
-                        // if (HdnPcpPhy.Value != null && HdnPcpPhy.Value.Trim() != "")
-                        // {
-                        //txtReferringProvider.Text = HdnPcpPhy.Value.Split('|')[0].ToString();
-                        //txtReferingAddress.Text = HdnPcpPhy.Value.Split('|')[1].ToString();
-                        // msktxtReferingPhoneNo.Text = HdnPcpPhy.Value.Split('|')[2].ToString();
-                        // msktxtReferingFaxNo.Text = HdnPcpPhy.Value.Split('|')[3].ToString();
-                        // txtProviderNPI.Text = HdnPcpPhy.Value.Split('|')[4].ToString();
-                        // txtReferringFacility.Text = HdnPcpPhy.Value.Split('|')[5].ToString();
-                        // }
-                        logFile.Info(DateTime.UtcNow.ToString() + "- Not Postback Tab 1- End", null);
-                    }
-                    logFile.Info(DateTime.UtcNow.ToString() + "- Not Postback - Start", null);
+                    btnSave.Enabled = true;
+                    chkReschedule.Enabled = false;
                 }
-                logFile.Info(DateTime.UtcNow.ToString() + "- Fill Patient Strip- Start", null);
-                bool issuccess = FillPatientStrip(Convert.ToUInt64(Request["Human_id"]));
-                if (!issuccess)
+                else if (MyStatus != null && MyStatus.ToUpper() != "SCHEDULED")
                 {
-                    ScriptManager.RegisterStartupScript(this, typeof(frmEncounter), "ErrorMessage", "RegenerateXML('" + Request["Human_id"].ToString() + "','Human','Appointment');", true);
-
-
-                    //UtilityManager.GenerateXML(ClientSession.HumanId.ToString(), "Human");
-                    return;
+                    btnSave.Enabled = false;
+                    chkReschedule.Enabled = false;
+                    chkShowAllPhysicians.Enabled = false;
+                    chkSelfReferred.Enabled = false;
+                    dtpApptDate.Enabled = false;
+                    dtpStartTime.Enabled = false;
+                    dtpStartTime.Enabled = true;
+                    ddlPhysicianName.Enabled = false;
+                    ddlVisitType.Enabled = false;
+                    ddlDuration.Enabled = false;
                 }
-                logFile.Info(DateTime.UtcNow.ToString() + "- Fill Patient Strip- End", null);
-                logFile.Info(DateTime.UtcNow.ToString() + "- Fill Hidden Value- Start", null);
-                if (cboFacility.SelectedItem != null && cboFacility.SelectedItem.Text != "")//&& cboFacility.SelectedItem.Text.ToUpper() == sFacilityCmg.ToUpper())
+                else if (this.Page.Title.Contains("Edit Appointment") == true)
                 {
-                    var facAncillary = from f in ApplicationObject.facilityLibraryList where f.Fac_Name == cboFacility.SelectedItem.Text select f;
-                    IList<FacilityLibrary> ilstFacAncillary = facAncillary.ToList<FacilityLibrary>();
-                    if (ilstFacAncillary.Count > 0 && ilstFacAncillary[0].Is_Ancillary == "Y")
+                    DateTimePickerColorChange(this.dtpApptDate, true);
+                    TimePickerColorChange(dtpStartTime, true);
+                    DisableTableLayout(pnlReschedule);
+                    btnFindAvailableSlot.Enabled = false;
+                }
+                //txtPurposeofVisit.SetTheUBACForDynamicControls();
+                //txtNotes.SetTheUBACForDynamicControls();
+                #region not been used right now 12-01-2016 by vasanth
+                //if (hdnFacilityName.Value != System.Configuration.ConfigurationSettings.AppSettings["CMGFacilityName"])
+                //{
+                //    pbTestDropDown.Enabled = false;
+                //    pbTestDropDown.ImageUrl = "~/Resources/plus_new_disabled.gif"; ;    
+
+                //    pbTestClear.Enabled = false;
+                //    pbTestClear.ImageUrl = "~/Resources/close_disabled.png";
+
+                //}
+                //if (pbTestDropDown.Enabled == true)
+                //{
+                //    if (this.Page.Title.Contains("Edit") == true)
+                //    {
+                //        pbTestDropDown.Enabled = true;
+                //        pbTestDropDown.ImageUrl = "~/Resources/pbAdd.png";
+                //        pbTestClear.Enabled = true;
+                //        pbTestClear.ImageUrl = "~/Resources/close_small_pressed.gif";
+
+                //    }
+                //}
+                #endregion
+                //DateTimePickerColorChange(dtpApptDate, true);
+                //TimePickerColorChange(dtpStartTime, true);
+                // if (EncRecord.Referring_Physician != string.Empty || EncRecord.PCP_Physician != string.Empty)
+
+                if (EncRecord != null && ulMyEncID != 0)//vasanth
+                {
+                    HdnRefPhy.Value = EncRecord.Referring_Physician + "|" + EncRecord.Referring_Address + "|" + EncRecord.Referring_Phone_No + "|" + EncRecord.Referring_Fax_No + "|" + EncRecord.Referring_Provider_NPI + "|" + EncRecord.Referring_Facility;
+                    HdnPcpPhy.Value = EncRecord.PCP_Physician + "|" + EncRecord.PCP_Address + "|" + EncRecord.PCP_Phone_No + "|" + EncRecord.PCP_Fax_No + "|" + EncRecord.PCP_Provider_NPI + "|" + EncRecord.PCP_Facility;
+                }
+                pcpDefaultDemographics();
+                /*added BugId : 59356*/
+
+            }
+            else
+            {
+                if (chkSelfReferred.Checked == true)
+                {
+                    imgClearProviderText.Attributes.Remove("onclick");
+                }
+                // Commented by valli need to check
+                if (tabReferringProvAndPCP.SelectedIndex == 0)
+                {
+                    imgClearProviderText.Style.Add("top", "234px !important");
+                    //if (sAncillary != string.Empty && sAncillary != cboFacility.SelectedItem.Text.Trim())
+                    //{
+                    var fac = from f in ApplicationObject.facilityLibraryList where f.Fac_Name == cboFacility.SelectedItem.Text select f;
+                    IList<FacilityLibrary> ilstFac = fac.ToList<FacilityLibrary>();
+                    if (ilstFac.Count > 0 && ilstFac[0].Is_Ancillary != "Y")
                     {
-                        hdnFacility.Value = "true";
+                        if (HdnRefPhy != null && HdnRefPhy.Value.Trim() != "" && HdnRefPhy.Value != string.Empty)
+                        {
+                            // txtReferringProvider.Text = HdnRefPhy.Value.Split('|')[0].ToString();
+                            // txtReferingAddress.Text = HdnRefPhy.Value.Split('|')[1].ToString();
+                            // msktxtReferingPhoneNo.Text = HdnRefPhy.Value.Split('|')[2].ToString();
+                            //  msktxtReferingFaxNo.Text = HdnRefPhy.Value.Split('|')[3].ToString();
+                            // txtProviderNPI.Text = HdnRefPhy.Value.Split('|')[4].ToString();
+                            // txtReferringFacility.Text = HdnRefPhy.Value.Split('|')[5].ToString();
+                        }
                     }
-                    else
+
+                }
+                else if (tabReferringProvAndPCP.SelectedIndex == 1)
+                {
+                    imgClearProviderText.Style.Add("top", "224px !important");
+                    if (EncRecord != null && EncRecord.PCP_Physician != null && EncRecord.PCP_Physician != "")
                     {
-                        hdnFacility.Value = "false";
+                        //Jira #CAP-69 - labels are missing
+                        //hdnpcpprovidersearch.Value = " |" + EncRecord.PCP_Physician + "|" + EncRecord.PCP_Provider_NPI + "|" + "" + "|" + EncRecord.PCP_Facility +
+                        //    "|" + EncRecord.PCP_Address + "|"
+                        //    + EncRecord.PCP_Fax_No + "|" + EncRecord.PCP_Phone_No;
+
+
+                        hdnpcpprovidersearch.Value = EncRecord.PCP_Physician + "| NPI: " + EncRecord.PCP_Provider_NPI +
+                                 "| Facility: " + EncRecord.PCP_Facility + "| Address:" + EncRecord.PCP_Address + "| Fax No:" + EncRecord.PCP_Fax_No +
+                                 "| Phone No:" + EncRecord.PCP_Phone_No;
+
                     }
+                    // if (HdnPcpPhy.Value != null && HdnPcpPhy.Value.Trim() != "")
+                    // {
+                    //txtReferringProvider.Text = HdnPcpPhy.Value.Split('|')[0].ToString();
+                    //txtReferingAddress.Text = HdnPcpPhy.Value.Split('|')[1].ToString();
+                    // msktxtReferingPhoneNo.Text = HdnPcpPhy.Value.Split('|')[2].ToString();
+                    // msktxtReferingFaxNo.Text = HdnPcpPhy.Value.Split('|')[3].ToString();
+                    // txtProviderNPI.Text = HdnPcpPhy.Value.Split('|')[4].ToString();
+                    // txtReferringFacility.Text = HdnPcpPhy.Value.Split('|')[5].ToString();
+                    // }
+
+                }
+            }
+            bool issuccess = FillPatientStrip(Convert.ToUInt64(Request["Human_id"]));
+            if (!issuccess)
+            {
+                ScriptManager.RegisterStartupScript(this, typeof(frmEncounter), "ErrorMessage", "RegenerateXML('" + Request["Human_id"].ToString() + "','Human','Appointment');", true);
+
+
+                //UtilityManager.GenerateXML(ClientSession.HumanId.ToString(), "Human");
+                return;
+            }
+            if (cboFacility.SelectedItem != null && cboFacility.SelectedItem.Text != "")//&& cboFacility.SelectedItem.Text.ToUpper() == sFacilityCmg.ToUpper())
+            {
+                var facAncillary = from f in ApplicationObject.facilityLibraryList where f.Fac_Name == cboFacility.SelectedItem.Text select f;
+                IList<FacilityLibrary> ilstFacAncillary = facAncillary.ToList<FacilityLibrary>();
+                if (ilstFacAncillary.Count > 0 && ilstFacAncillary[0].Is_Ancillary == "Y")
+                {
+                    hdnFacility.Value = "true";
                 }
                 else
                 {
                     hdnFacility.Value = "false";
                 }
-                logFile.Info(DateTime.UtcNow.ToString() + "- Fill Hidden Value- End", null);
-
-                logFile.Info(DateTime.UtcNow.ToString() + "- Fill Form Text- Start", null);
-                foreach (RadTab rdTab in tabReferringProvAndPCP.Tabs)
-                {
-                    if (rdTab.Text == "Enter PCP info")
-                    {
-                        if (hdnFacility.Value.Trim().ToUpper() == "TRUE")
-                        {
-                            rdTab.Enabled = false;
-                        }
-                        else
-                        {
-                            rdTab.Enabled = true;
-                        }
-
-                    }
-                }
-
-                if (hdnEncounterID.Value != null && hdnEncounterID.Value != "0")
-                {
-                    this.Page.Title = "Edit Appointment" + "-" + ClientSession.UserName;
-                    btnSave.Enabled = false;
-                }
-                else
-                {
-                    this.Page.Title = "New Appointment" + "-" + ClientSession.UserName;
-                }
-
-                if (MyStatus != null)
-                {
-                    if (MyStatus.ToUpper() != "SCHEDULED" && MyStatus != string.Empty)
-                    {
-                        this.Page.Title = "View Appointment" + "-" + ClientSession.UserName;
-                        chkReschedule.Enabled = false;
-                        chkSelfReferred.Enabled = false;
-                        chkShowAllPhysicians.Enabled = false;
-                        btnSave.Enabled = false;
-                        txtPurposeofVisit.txtDLC.Enabled = false;
-                        //    chkWillingnessInCancellation.Enabled = false;
-                        txtNotes.txtDLC.Enabled = false;
-                        DisableTableLayout(pnlReschedule);
-                        chkReschedule.Enabled = false;
-                        chkShowAllPhysicians.Enabled = false;
-                        chkSelfReferred.Enabled = false;
-                        btnSave.Enabled = false;
-                        DateTimePickerColorChange(this.dtpApptDate, true);
-                        TimePickerColorChange(dtpStartTime, true);
-                        cboFacility.Enabled = false;
-                        //Jira #CAP-158 -  Not able to navigate tab 
-                        // pnlScheduleAppointment.Enabled = false;
-                        pnlAppointmentDetails.Enabled = false;
-                        pnlReferringDetails.Enabled = false;
-                        pnlVisit.Enabled = false;
-                        txtProviderSearch.Enabled = false;
-                        imgClearProviderText.Visible = false;
-
-                        btnPatientDemographics.Enabled = false;
-                        btnPatientTask.Enabled = false;
-                        tabReferringProvAndPCP.Enabled = true;
-                    }
-
-
-
-                }
-                if (chkReschedule.Enabled == false)
-                {
-                    chkReschedule.ForeColor = Color.Gray;
-                    DisableTableLayout(pnlReschedule);
-                    btnFindAvailableSlot.Enabled = false;
-                }
-                if (tabReferringProvAndPCP.SelectedIndex == 0)
-                {
-                    if (hdnrenprovider.Value != "")
-                    {
-                        txtProviderSearch.Enabled = false;
-                    }
-                    else
-                    {
-                        txtProviderSearch.Enabled = true;
-                    }
-                }
-                else
-                {
-                    if (hdnpcpprovidersearch.Value != "")
-                    {
-                        txtProviderSearch.Enabled = false;
-                    }
-                    else
-                    {
-                        txtProviderSearch.Enabled = true;
-                    }
-
-                }
-                //Jira #CAP-69 - labels are missing
-
-                OverAllPageLoad.Stop();
-                time_taken += "OverAllPageLoad : " + OverAllPageLoad.Elapsed.Seconds + "." + OverAllPageLoad.Elapsed.Milliseconds + "s; ";
-                hdnTimeTaken.Value = time_taken;
-                //logger.Debug("--------------------frmEditAppointment Page Load Completed. Time Taken :'" + OverAllPageLoad.Elapsed.Seconds + "." + OverAllPageLoad.Elapsed.Milliseconds + "s'--------------------");
-                ScriptManager.RegisterStartupScript(this, this.Page.GetType(), "Appointment", " {sessionStorage.setItem('StartLoading', 'false');StopLoadFromPatChart();}", true);
-                logFile.Info(DateTime.UtcNow.ToString() + "- Fill Form Text- End", null);
             }
-            catch (Exception ex)
+            else
             {
-                logFile.Info(DateTime.UtcNow.ToString() + "Page Load"+ex.Message, null);
+                hdnFacility.Value = "false";
             }
+            foreach (RadTab rdTab in tabReferringProvAndPCP.Tabs)
+            {
+                if (rdTab.Text == "Enter PCP info")
+                {
+                    if (hdnFacility.Value.Trim().ToUpper() == "TRUE")
+                    {
+                        rdTab.Enabled = false;
+                    }
+                    else
+                    {
+                        rdTab.Enabled = true;
+                    }
+
+                }
+            }
+
+            if (hdnEncounterID.Value != null && hdnEncounterID.Value != "0")
+            {
+                this.Page.Title = "Edit Appointment" + "-" + ClientSession.UserName;
+                btnSave.Enabled = false;
+            }
+            else
+            {
+                this.Page.Title = "New Appointment" + "-" + ClientSession.UserName;
+            }
+
+            if (MyStatus != null)
+            {
+                if (MyStatus.ToUpper() != "SCHEDULED" && MyStatus != string.Empty)
+                {
+                    this.Page.Title = "View Appointment" + "-" + ClientSession.UserName;
+                    chkReschedule.Enabled = false;
+                    chkSelfReferred.Enabled = false;
+                    chkShowAllPhysicians.Enabled = false;
+                    btnSave.Enabled = false;
+                    txtPurposeofVisit.txtDLC.Enabled = false;
+                    //    chkWillingnessInCancellation.Enabled = false;
+                    txtNotes.txtDLC.Enabled = false;
+                    DisableTableLayout(pnlReschedule);
+                    chkReschedule.Enabled = false;
+                    chkShowAllPhysicians.Enabled = false;
+                    chkSelfReferred.Enabled = false;
+                    btnSave.Enabled = false;
+                    DateTimePickerColorChange(this.dtpApptDate, true);
+                    TimePickerColorChange(dtpStartTime, true);
+                    cboFacility.Enabled = false;
+                    //Jira #CAP-158 -  Not able to navigate tab 
+                    // pnlScheduleAppointment.Enabled = false;
+                    pnlAppointmentDetails.Enabled = false;
+                    pnlReferringDetails.Enabled = false;
+                    pnlVisit.Enabled = false;
+                    txtProviderSearch.Enabled = false;
+                    imgClearProviderText.Visible = false;
+
+                    btnPatientDemographics.Enabled = false;
+                    btnPatientTask.Enabled = false;
+                    tabReferringProvAndPCP.Enabled = true;
+                }
+
+
+
+            }
+            if (chkReschedule.Enabled == false)
+            {
+                chkReschedule.ForeColor = Color.Gray;
+                DisableTableLayout(pnlReschedule);
+                btnFindAvailableSlot.Enabled = false;
+            }
+            if (tabReferringProvAndPCP.SelectedIndex == 0)
+            {
+                if (hdnrenprovider.Value != "")
+                {
+                    txtProviderSearch.Enabled = false;
+                }
+                else
+                {
+                    txtProviderSearch.Enabled = true;
+                }
+            }
+            else
+            {
+                if (hdnpcpprovidersearch.Value != "")
+                {
+                    txtProviderSearch.Enabled = false;
+                }
+                else
+                {
+                    txtProviderSearch.Enabled = true;
+                }
+
+            }
+            //Jira #CAP-69 - labels are missing
+
+            OverAllPageLoad.Stop();
+            time_taken += "OverAllPageLoad : " + OverAllPageLoad.Elapsed.Seconds + "." + OverAllPageLoad.Elapsed.Milliseconds + "s; ";
+            hdnTimeTaken.Value = time_taken;
+            //logger.Debug("--------------------frmEditAppointment Page Load Completed. Time Taken :'" + OverAllPageLoad.Elapsed.Seconds + "." + OverAllPageLoad.Elapsed.Milliseconds + "s'--------------------");
+            ScriptManager.RegisterStartupScript(this, this.Page.GetType(), "Appointment", " {sessionStorage.setItem('StartLoading', 'false');StopLoadFromPatChart();}", true);
+
         }
         public void hdnbtngeneratexml_Click(object sender, EventArgs e)
         {
@@ -1473,7 +1418,7 @@ namespace Acurus.Capella.UI
             // Assign PatientStrip Values
             else
             {
-                 issuccess = false;
+                issuccess = false;
             }
             //string FileName = "Human" + "_" + humanID + ".xml";
             //string strXmlFilePath = Path.Combine(System.Configuration.ConfigurationSettings.AppSettings["XMLPath"], FileName);
@@ -1698,7 +1643,7 @@ namespace Acurus.Capella.UI
             catch (Exception exp)
             {
                 //logger.Debug("Conversion of Duration from ddlDuration.Text='" + ddlDuration.Text + "' to UInt threw an error.", exp);
-               // throw (exp);
+                // throw (exp);
             }
             try
             {
@@ -1847,7 +1792,7 @@ namespace Acurus.Capella.UI
                     //  EncRecord.Referring_Phone_No = msktxtReferingPhoneNo.TextWithLiterals;
                     // EncRecord.Referring_Fax_No = msktxtReferingFaxNo.TextWithLiterals;
                     //  EncRecord.Referring_Provider_NPI = txtProviderNPI.Text.Trim();
-                    if (hdnpcpprovider.Value != null && hdnpcpprovider.Value != "" && hdnpcpprovider.Value!="|||||")
+                    if (hdnpcpprovider.Value != null && hdnpcpprovider.Value != "" && hdnpcpprovider.Value != "|||||")
                     {
                         //Jira #CAP-69 - labels are missing
                         //EncRecord.PCP_Facility = hdnpcpprovider.Value.Split('|')[3].ToString();
@@ -1878,7 +1823,7 @@ namespace Acurus.Capella.UI
                         if (hdnrenprovider.Value != null && hdnrenprovider.Value.Trim() != "" && hdnrenprovider.Value != "|||||")
                         {
                             EncRecord.Is_Self_Referred = "N";
-                            
+
                             EncRecord.Referring_Facility = hdnrenprovider.Value.Split('|')[2].Split(':')[1].Trim().ToString();
                             EncRecord.Referring_Physician = hdnrenprovider.Value.Split('|')[0].ToString();
                             EncRecord.Referring_Address = hdnrenprovider.Value.Split('|')[3].Split(':')[1].ToString();
@@ -2872,409 +2817,386 @@ namespace Acurus.Capella.UI
 
         protected void chkSelfReferred_CheckedChanged(object sender, EventArgs e)
         {
-            try
+            if (chkSelfReferred.Checked == true)
             {
-                logFile.Info(DateTime.UtcNow.ToString() + "- chkSelfReferred_CheckedChanged - Start", null);
-                if (chkSelfReferred.Checked == true)
-                {
-                    rdoReferringProvider.Checked = false;
-                    rdoPcp.Checked = false;
-                    HdnRefPhy.Value = "|||||||";
-                    txtProviderSearch.Text = string.Empty;
+                rdoReferringProvider.Checked = false;
+                rdoPcp.Checked = false;
+                HdnRefPhy.Value = "|||||||";
+                txtProviderSearch.Text = string.Empty;
 
-                    //Commentted for BugId: 56036
-                    //if (ddlPhysicianName.Items.Count > 0)
-                    //{
-                    //    //txtReferringFacility.Text = string.Empty;
-                    //    //txtReferringProvider.Text = string.Empty;
-                    //    //txtReferingAddress.Text = string.Empty;
-                    //    //msktxtReferingPhoneNo.Text = string.Empty;
-                    //    //msktxtReferingFaxNo.Text = string.Empty;
-                    //    //txtProviderNPI.Text = string.Empty;
-                    //    rdoReferringProvider.Checked = false;
-                    //    rdoPcp.Checked = false;
-                    //    //  txtReferringFacility.Text = hdnFacilityName.Value;
-                    //    PhysicianLibrary objPhysicianLibrary = GetPhysicianDetailsByPhyID(ddlPhysicianName.Items[ddlPhysicianName.SelectedIndex].Value);//PhyMngr.GetphysiciannameByPhyID(Convert.ToUInt64(ddlPhysicianName.Items[ddlPhysicianName.SelectedIndex].Value));
-                    //    if (objPhysicianLibrary != null)
-                    //    {
-                    //        //  txtReferringFacility.Text = cboFacility.SelectedItem.Text;
-                    //        FacilityManager obj = new FacilityManager();
-                    //        IList<FacilityLibrary> lstfacirty = obj.GetFacilityByFacilityname(cboFacility.SelectedItem.Text);
-                    //        //if (lstfacirty != null && lstfacirty.Count > 0)
-                    //        //    txtReferingAddress.Text = lstfacirty[0].Fac_Address1;
-                    //        //else
-                    //        //    txtReferingAddress.Text = objPhysicianLibrary.PhyAddress1.ToString();
-                    //        //msktxtReferingPhoneNo.Text = objPhysicianLibrary.PhyTelephone.ToString();
-                    //        //msktxtReferingFaxNo.Text = string.Empty;
-                    //        //if (msktxtReferingFaxNo.Text == "(   )    -")
-                    //        //{
-                    //        //    msktxtReferingFaxNo.Text = objPhysicianLibrary.PhyFax.ToString();
-                    //        //}
-                    //        //txtProviderNPI.Text = objPhysicianLibrary.PhyNPI.ToString();
+                //Commentted for BugId: 56036
+                //if (ddlPhysicianName.Items.Count > 0)
+                //{
+                //    //txtReferringFacility.Text = string.Empty;
+                //    //txtReferringProvider.Text = string.Empty;
+                //    //txtReferingAddress.Text = string.Empty;
+                //    //msktxtReferingPhoneNo.Text = string.Empty;
+                //    //msktxtReferingFaxNo.Text = string.Empty;
+                //    //txtProviderNPI.Text = string.Empty;
+                //    rdoReferringProvider.Checked = false;
+                //    rdoPcp.Checked = false;
+                //    //  txtReferringFacility.Text = hdnFacilityName.Value;
+                //    PhysicianLibrary objPhysicianLibrary = GetPhysicianDetailsByPhyID(ddlPhysicianName.Items[ddlPhysicianName.SelectedIndex].Value);//PhyMngr.GetphysiciannameByPhyID(Convert.ToUInt64(ddlPhysicianName.Items[ddlPhysicianName.SelectedIndex].Value));
+                //    if (objPhysicianLibrary != null)
+                //    {
+                //        //  txtReferringFacility.Text = cboFacility.SelectedItem.Text;
+                //        FacilityManager obj = new FacilityManager();
+                //        IList<FacilityLibrary> lstfacirty = obj.GetFacilityByFacilityname(cboFacility.SelectedItem.Text);
+                //        //if (lstfacirty != null && lstfacirty.Count > 0)
+                //        //    txtReferingAddress.Text = lstfacirty[0].Fac_Address1;
+                //        //else
+                //        //    txtReferingAddress.Text = objPhysicianLibrary.PhyAddress1.ToString();
+                //        //msktxtReferingPhoneNo.Text = objPhysicianLibrary.PhyTelephone.ToString();
+                //        //msktxtReferingFaxNo.Text = string.Empty;
+                //        //if (msktxtReferingFaxNo.Text == "(   )    -")
+                //        //{
+                //        //    msktxtReferingFaxNo.Text = objPhysicianLibrary.PhyFax.ToString();
+                //        //}
+                //        //txtProviderNPI.Text = objPhysicianLibrary.PhyNPI.ToString();
 
-                    //        //}
-                    //        //PhysicianManager phyMngr = new PhysicianManager();
-                    //        //IList<PhysicianLibrary> phylist = phyMngr.GetphysiciannameByPhyID(Convert.ToUInt64(hdnEncounter_Physician_id.Value));
-                    //        //if (phylist != null && phylist.Count > 0)
-                    //        //{
-                    //        //    PhysicianLibrary objPhyLib = phylist[0];
+                //        //}
+                //        //PhysicianManager phyMngr = new PhysicianManager();
+                //        //IList<PhysicianLibrary> phylist = phyMngr.GetphysiciannameByPhyID(Convert.ToUInt64(hdnEncounter_Physician_id.Value));
+                //        //if (phylist != null && phylist.Count > 0)
+                //        //{
+                //        //    PhysicianLibrary objPhyLib = phylist[0];
 
-                    //        //    if (objPhyLib != null)
-                    //        //    {
-                    //        string sPhyName = string.Empty;
-                    //        if (objPhysicianLibrary != null)
-                    //        {
-                    //            string facilityadd = "";
-                    //            if (lstfacirty.Count > 0)
-                    //            {
-                    //                facilityadd = lstfacirty[0].Fac_Address1;
-                    //            }
+                //        //    if (objPhyLib != null)
+                //        //    {
+                //        string sPhyName = string.Empty;
+                //        if (objPhysicianLibrary != null)
+                //        {
+                //            string facilityadd = "";
+                //            if (lstfacirty.Count > 0)
+                //            {
+                //                facilityadd = lstfacirty[0].Fac_Address1;
+                //            }
 
-                    //            //objPhysicianLibrary.PhyLastName + ", " + objPhysicianLibrary.PhyFirstName + " " + objPhysicianLibrary.PhyMiddleName + "(" + objPhysicianLibrary.PhySuffix + ")" + " | " +
-                    //            //                                 "NPI:" + objPhysicianLibrary.PhyNPI + " | " +
-                    //            //                                 "" + " | " +
-                    //            //                                 "FACILITY:" + "" + " | " +
-                    //            //                                 "ADDR: " + objPhysicianLibrary.PhyAddress1 + ", " +
-                    //            //                                 objPhysicianLibrary.PhyCity + "," +
-                    //            //                                 objPhysicianLibrary.PhyState + " " +
-                    //            //                                 objPhysicianLibrary.PhyZip + " | " +
-                    //            //                                 ((objPhysicianLibrary.PhyTelephone.Trim()) != "" ? "PH:" + objPhysicianLibrary.PhyTelephone + " | " : "") 
-                    //            //                                 (objPhysicianLibrary.PhyFax.Trim() != "" ? "FAX:" + objPhysicianLibrary.PhyFax : "");
+                //            //objPhysicianLibrary.PhyLastName + ", " + objPhysicianLibrary.PhyFirstName + " " + objPhysicianLibrary.PhyMiddleName + "(" + objPhysicianLibrary.PhySuffix + ")" + " | " +
+                //            //                                 "NPI:" + objPhysicianLibrary.PhyNPI + " | " +
+                //            //                                 "" + " | " +
+                //            //                                 "FACILITY:" + "" + " | " +
+                //            //                                 "ADDR: " + objPhysicianLibrary.PhyAddress1 + ", " +
+                //            //                                 objPhysicianLibrary.PhyCity + "," +
+                //            //                                 objPhysicianLibrary.PhyState + " " +
+                //            //                                 objPhysicianLibrary.PhyZip + " | " +
+                //            //                                 ((objPhysicianLibrary.PhyTelephone.Trim()) != "" ? "PH:" + objPhysicianLibrary.PhyTelephone + " | " : "") 
+                //            //                                 (objPhysicianLibrary.PhyFax.Trim() != "" ? "FAX:" + objPhysicianLibrary.PhyFax : "");
 
 
-                    //            sPhyName = objPhysicianLibrary.PhyPrefix + " " + objPhysicianLibrary.PhyFirstName + " " + objPhysicianLibrary.PhyLastName + " " + objPhysicianLibrary.PhySuffix;
-                    //            // txtReferringProvider.Text = sPhyName;
-                    //            // HdnRefPhy.Value = sPhyName + "|" + objPhysicianLibrary.PhyAddress1 + "|" + objPhysicianLibrary.PhyTelephone + "|" + objPhysicianLibrary.PhyFax + "|" + objPhysicianLibrary.PhyNPI + "|" + objPhysicianLibrary.PhyNotes; ;//for static
-                    //            hdnrenprovider.Value = objPhysicianLibrary.Id + "|" + sPhyName + "|" + objPhysicianLibrary.PhyNPI + "|" + "" + "|" + cboFacility.SelectedItem.Text + "|" +
-                    //               facilityadd + "|" + objPhysicianLibrary.PhyFax + "|" + objPhysicianLibrary.PhyTelephone;
-                    //            hdnrenprovidersearch.Value = objPhysicianLibrary.PhyLastName + ", " + objPhysicianLibrary.PhyFirstName + " " +
-                    //                 objPhysicianLibrary.PhyMiddleName + "(" + objPhysicianLibrary.PhySuffix + ")" + " | " +
-                    //                                                   "NPI:" + objPhysicianLibrary.PhyNPI + " | " +
-                    //                                                  "" + " | " +
-                    //                                                   "FACILITY:" + cboFacility.SelectedItem.Text + " | " +
-                    //                                                   "ADDR: " + facilityadd + ", " +
-                    //                                                   objPhysicianLibrary.PhyCity + "," +
-                    //                                                   objPhysicianLibrary.PhyState + " " +
-                    //                                                   objPhysicianLibrary.PhyZip + " | " +
-                    //                                                   ((objPhysicianLibrary.PhyTelephone.Trim()) != "" ? "PH:" + objPhysicianLibrary.PhyTelephone + " | " : "") +
-                    //                                                   (objPhysicianLibrary.PhyFax.Trim() != "" ? "FAX:" + objPhysicianLibrary.PhyFax : "");
+                //            sPhyName = objPhysicianLibrary.PhyPrefix + " " + objPhysicianLibrary.PhyFirstName + " " + objPhysicianLibrary.PhyLastName + " " + objPhysicianLibrary.PhySuffix;
+                //            // txtReferringProvider.Text = sPhyName;
+                //            // HdnRefPhy.Value = sPhyName + "|" + objPhysicianLibrary.PhyAddress1 + "|" + objPhysicianLibrary.PhyTelephone + "|" + objPhysicianLibrary.PhyFax + "|" + objPhysicianLibrary.PhyNPI + "|" + objPhysicianLibrary.PhyNotes; ;//for static
+                //            hdnrenprovider.Value = objPhysicianLibrary.Id + "|" + sPhyName + "|" + objPhysicianLibrary.PhyNPI + "|" + "" + "|" + cboFacility.SelectedItem.Text + "|" +
+                //               facilityadd + "|" + objPhysicianLibrary.PhyFax + "|" + objPhysicianLibrary.PhyTelephone;
+                //            hdnrenprovidersearch.Value = objPhysicianLibrary.PhyLastName + ", " + objPhysicianLibrary.PhyFirstName + " " +
+                //                 objPhysicianLibrary.PhyMiddleName + "(" + objPhysicianLibrary.PhySuffix + ")" + " | " +
+                //                                                   "NPI:" + objPhysicianLibrary.PhyNPI + " | " +
+                //                                                  "" + " | " +
+                //                                                   "FACILITY:" + cboFacility.SelectedItem.Text + " | " +
+                //                                                   "ADDR: " + facilityadd + ", " +
+                //                                                   objPhysicianLibrary.PhyCity + "," +
+                //                                                   objPhysicianLibrary.PhyState + " " +
+                //                                                   objPhysicianLibrary.PhyZip + " | " +
+                //                                                   ((objPhysicianLibrary.PhyTelephone.Trim()) != "" ? "PH:" + objPhysicianLibrary.PhyTelephone + " | " : "") +
+                //                                                   (objPhysicianLibrary.PhyFax.Trim() != "" ? "FAX:" + objPhysicianLibrary.PhyFax : "");
 
 
-                    //            txtProviderSearch.Text = objPhysicianLibrary.PhyLastName + ", " + objPhysicianLibrary.PhyFirstName + " " +
-                    //                objPhysicianLibrary.PhyMiddleName + "(" + objPhysicianLibrary.PhySuffix + ")" + " | " +
-                    //                                                  "NPI:" + objPhysicianLibrary.PhyNPI + " | " +
-                    //                                                 "" + " | " +
-                    //                                                  "FACILITY:" + cboFacility.SelectedItem.Text + " | " +
-                    //                                                  "ADDR: " + facilityadd + ", " +
-                    //                                                  objPhysicianLibrary.PhyCity + "," +
-                    //                                                  objPhysicianLibrary.PhyState + " " +
-                    //                                                  objPhysicianLibrary.PhyZip + " | " +
-                    //                                                  ((objPhysicianLibrary.PhyTelephone.Trim()) != "" ? "PH:" + objPhysicianLibrary.PhyTelephone + " | " : "") +
-                    //                                                  (objPhysicianLibrary.PhyFax.Trim() != "" ? "FAX:" + objPhysicianLibrary.PhyFax : "");
+                //            txtProviderSearch.Text = objPhysicianLibrary.PhyLastName + ", " + objPhysicianLibrary.PhyFirstName + " " +
+                //                objPhysicianLibrary.PhyMiddleName + "(" + objPhysicianLibrary.PhySuffix + ")" + " | " +
+                //                                                  "NPI:" + objPhysicianLibrary.PhyNPI + " | " +
+                //                                                 "" + " | " +
+                //                                                  "FACILITY:" + cboFacility.SelectedItem.Text + " | " +
+                //                                                  "ADDR: " + facilityadd + ", " +
+                //                                                  objPhysicianLibrary.PhyCity + "," +
+                //                                                  objPhysicianLibrary.PhyState + " " +
+                //                                                  objPhysicianLibrary.PhyZip + " | " +
+                //                                                  ((objPhysicianLibrary.PhyTelephone.Trim()) != "" ? "PH:" + objPhysicianLibrary.PhyTelephone + " | " : "") +
+                //                                                  (objPhysicianLibrary.PhyFax.Trim() != "" ? "FAX:" + objPhysicianLibrary.PhyFax : "");
 
-                    //        }
-                    //        //}
-                    //    }
-                    //    else
-                    //    {
-                    //        HdnRefPhy.Value = "|||||||";//for static
-                    //    }
-                    //    //txtReferringProvider.ReadOnly = true;
-                    //    //txtReferringFacility.ReadOnly = true;
-                    //    //txtReferingAddress.ReadOnly = true;
-                    //    //msktxtReferingPhoneNo.ReadOnly = true;
-                    //    //msktxtReferingFaxNo.ReadOnly = true;
-                    //    //txtProviderNPI.ReadOnly = true;
-                    //    //btnFindPhysician.Enabled = false;
-                    //    //txtReferringProvider.BackColor = System.Drawing.Color.FromArgb(191, 219, 255);
-                    //    //TextBoxColorChange(txtReferringProvider, false);
-                    //    //txtReferringFacility.BackColor = System.Drawing.Color.FromArgb(191, 219, 255);
-                    //    //TextBoxColorChange(txtReferringFacility, false);
-                    //    //txtProviderNPI.BackColor = System.Drawing.Color.FromArgb(191, 219, 255);
-                    //    //TextBoxColorChange(txtReferingAddress, false);
-                    //    //txtProviderNPI.Attributes.Add("onkeypress", "return false;");
-                    //    //txtReferringProvider.Attributes.Add("onkeypress", "return false;");
-                    //    //txtReferringFacility.Attributes.Add("onkeypress", "return false;");
-                    //    //txtReferingAddress.Attributes.Add("onkeypress", "return false;");
-                    //    //txtProviderNPI.Attributes.Add("onkeydown", "return false;");
-                    //    //txtReferringProvider.Attributes.Add("onkeydown", "return false;");
-                    //    //txtReferringFacility.Attributes.Add("onkeydown", "return false;");
-                    //    //txtReferingAddress.Attributes.Add("onkeydown", "return false;");
-                    //    //txtReferingAddress.BackColor = System.Drawing.Color.FromArgb(191, 219, 255);
-                    //    //MaskedTextBoxColorChange(msktxtReferingPhoneNo, false);
-                    //    //msktxtReferingPhoneNo.BackColor = System.Drawing.Color.FromArgb(191, 219, 255);
-                    //    //MaskedTextBoxColorChange(msktxtReferingFaxNo, false);
-                    //    //msktxtReferingFaxNo.BackColor = System.Drawing.Color.FromArgb(191, 219, 255);
-                    //    //TextBoxColorChange(txtProviderNPI, false);
-                    //    //btnFindPhysician.Enabled = false;
-                    //    //msktxtReferingFaxNo.ReadOnly = true;
-                    //    //msktxtReferingPhoneNo.ReadOnly = true;
-                    //    //btnSave.Attributes.Add("disabled", "false");
-
-
-                    //}
-                    //else
-                    //{
-                    //    chkSelfReferred.Checked = false;
-                    //}
-
-                    ScriptManager.RegisterStartupScript(this, this.Page.GetType(), "showVal", "EnableSaveButtononunload(); {sessionStorage.setItem('StartLoading', 'false');StopLoadFromPatChart();}", true);
-                    // txtProviderSearch.Enabled = false; ////change
-                    imgClearProviderText.Attributes.Remove("onclick");
+                //        }
+                //        //}
+                //    }
+                //    else
+                //    {
+                //        HdnRefPhy.Value = "|||||||";//for static
+                //    }
+                //    //txtReferringProvider.ReadOnly = true;
+                //    //txtReferringFacility.ReadOnly = true;
+                //    //txtReferingAddress.ReadOnly = true;
+                //    //msktxtReferingPhoneNo.ReadOnly = true;
+                //    //msktxtReferingFaxNo.ReadOnly = true;
+                //    //txtProviderNPI.ReadOnly = true;
+                //    //btnFindPhysician.Enabled = false;
+                //    //txtReferringProvider.BackColor = System.Drawing.Color.FromArgb(191, 219, 255);
+                //    //TextBoxColorChange(txtReferringProvider, false);
+                //    //txtReferringFacility.BackColor = System.Drawing.Color.FromArgb(191, 219, 255);
+                //    //TextBoxColorChange(txtReferringFacility, false);
+                //    //txtProviderNPI.BackColor = System.Drawing.Color.FromArgb(191, 219, 255);
+                //    //TextBoxColorChange(txtReferingAddress, false);
+                //    //txtProviderNPI.Attributes.Add("onkeypress", "return false;");
+                //    //txtReferringProvider.Attributes.Add("onkeypress", "return false;");
+                //    //txtReferringFacility.Attributes.Add("onkeypress", "return false;");
+                //    //txtReferingAddress.Attributes.Add("onkeypress", "return false;");
+                //    //txtProviderNPI.Attributes.Add("onkeydown", "return false;");
+                //    //txtReferringProvider.Attributes.Add("onkeydown", "return false;");
+                //    //txtReferringFacility.Attributes.Add("onkeydown", "return false;");
+                //    //txtReferingAddress.Attributes.Add("onkeydown", "return false;");
+                //    //txtReferingAddress.BackColor = System.Drawing.Color.FromArgb(191, 219, 255);
+                //    //MaskedTextBoxColorChange(msktxtReferingPhoneNo, false);
+                //    //msktxtReferingPhoneNo.BackColor = System.Drawing.Color.FromArgb(191, 219, 255);
+                //    //MaskedTextBoxColorChange(msktxtReferingFaxNo, false);
+                //    //msktxtReferingFaxNo.BackColor = System.Drawing.Color.FromArgb(191, 219, 255);
+                //    //TextBoxColorChange(txtProviderNPI, false);
+                //    //btnFindPhysician.Enabled = false;
+                //    //msktxtReferingFaxNo.ReadOnly = true;
+                //    //msktxtReferingPhoneNo.ReadOnly = true;
+                //    //btnSave.Attributes.Add("disabled", "false");
 
 
-                }
-                else
-                {
-                    imgClearProviderText.Attributes.Add("onclick", "return ProviderSearchclear();");
+                //}
+                //else
+                //{
+                //    chkSelfReferred.Checked = false;
+                //}
+
+                ScriptManager.RegisterStartupScript(this, this.Page.GetType(), "showVal", "EnableSaveButtononunload(); {sessionStorage.setItem('StartLoading', 'false');StopLoadFromPatChart();}", true);
+                // txtProviderSearch.Enabled = false; ////change
+                imgClearProviderText.Attributes.Remove("onclick");
 
 
-                    hdnrenprovider.Value = "";
-                    txtProviderSearch.Text = "";
-                    hdnrenprovidersearch.Value = "";
-                    txtProviderSearch.Enabled = true;
-                    //txtReferringProvider.Text = string.Empty; //by vasanth
-                    //txtReferringFacility.Text = string.Empty;
-                    //txtReferingAddress.Text = string.Empty;
-                    //msktxtReferingFaxNo.Text = string.Empty;
-                    //msktxtReferingPhoneNo.Text = string.Empty;
-                    //txtProviderNPI.Text = string.Empty;
-
-                    //txtReferringProvider.ReadOnly = false;
-                    //txtReferringFacility.ReadOnly = false;
-                    //txtReferingAddress.ReadOnly = false;
-                    //msktxtReferingPhoneNo.ReadOnly = false;
-                    //msktxtReferingFaxNo.ReadOnly = false;
-                    //txtProviderNPI.ReadOnly = false;
-                    //btnFindPhysician.Enabled = true;
-                    btnSave.Enabled = true;
-                    //btnSave.Attributes.Add("disabled", "false");
-                    //txtReferringProvider.BackColor = System.Drawing.Color.White;
-                    //txtReferringFacility.BackColor = System.Drawing.Color.White;
-                    //txtProviderNPI.BackColor = System.Drawing.Color.White;
-                    //txtReferingAddress.BackColor = System.Drawing.Color.White;
-                    //msktxtReferingPhoneNo.BackColor = System.Drawing.Color.White;
-                    //msktxtReferingFaxNo.BackColor = System.Drawing.Color.White;
-                    // Commented by valli
-                    //  if (HdnRefPhy.Value != null && HdnRefPhy.Value != "" && HdnRefPhy.Value != string.Empty)
-                    // {
-                    //if (txtReferringProvider.Text.Trim() != HdnRefPhy.Value.Split('|')[0].ToString().Trim())
-                    //{
-                    //    txtReferringFacility.Text = string.Empty;
-                    //    txtReferringProvider.Text = string.Empty;
-                    //    txtReferingAddress.Text = string.Empty;
-                    //    msktxtReferingPhoneNo.Text = string.Empty;
-                    //    msktxtReferingFaxNo.Text = string.Empty;
-                    //    txtProviderNPI.Text = string.Empty;
-                    //    txtReferringProvider.Text = HdnRefPhy.Value.Split('|')[0].ToString();
-                    //    txtReferingAddress.Text = HdnRefPhy.Value.Split('|')[1].ToString();
-                    //    msktxtReferingPhoneNo.Text = HdnRefPhy.Value.Split('|')[2].ToString();
-                    //    msktxtReferingFaxNo.Text = HdnRefPhy.Value.Split('|')[3].ToString();
-                    //    txtProviderNPI.Text = HdnRefPhy.Value.Split('|')[4].ToString();
-                    //    txtReferringFacility.Text = HdnRefPhy.Value.Split('|')[5].ToString();
-                    //}
-                    //else
-                    //{
-                    //    //PhysicianManager phyMngr = new PhysicianManager();
-                    //    //IList<PhysicianLibrary> phylist = phyMngr.GetphysiciannameByPhyID(Convert.ToUInt64(hdnEncounter_Physician_id.Value));
-                    //    //if (phylist != null && phylist.Count > 0)
-                    //    //{
-                    //    PhysicianLibrary objPhyLib = GetPhysicianDetailsByPhyID(hdnEncounter_Physician_id.Value);
-
-                    //    if (objPhyLib != null)
-                    //    {
-                    //        txtReferringFacility.Text = string.Empty;
-                    //        txtReferringProvider.Text = string.Empty;
-                    //        txtReferingAddress.Text = string.Empty;
-                    //        msktxtReferingPhoneNo.Text = string.Empty;
-                    //        msktxtReferingFaxNo.Text = string.Empty;
-                    //        txtProviderNPI.Text = string.Empty;
-                    //        string sPhyName = objPhyLib.PhyPrefix + " " + objPhyLib.PhyFirstName + " " + objPhyLib.PhyLastName + " " + objPhyLib.PhySuffix;
-                    //        txtReferringFacility.Text = objPhyLib.PhyNotes;
-                    //        txtReferringProvider.Text = sPhyName;
-                    //        txtReferingAddress.Text = objPhyLib.PhyAddress1;
-                    //        msktxtReferingPhoneNo.Text = objPhyLib.PhyTelephone;
-                    //        msktxtReferingFaxNo.Text = objPhyLib.PhyFax;
-                    //        txtProviderNPI.Text = objPhyLib.PhyNPI;
-                    //        HdnRefPhy.Value = sPhyName + "|" + objPhyLib.PhyAddress1 + "|" + objPhyLib.PhyTelephone + "|" + objPhyLib.PhyFax + "|" + objPhyLib.PhyNPI + "|" + objPhyLib.PhyNotes;//for static
-                    //        //}
-                    //    }
-                    //    else
-                    //    {
-                    //        HdnRefPhy.Value = "|||||";//for static
-                    //        txtReferringFacility.Text = "";
-                    //        txtReferringProvider.Text = "";
-                    //        txtReferingAddress.Text = "";
-                    //        msktxtReferingPhoneNo.Text = "";
-                    //        msktxtReferingFaxNo.Text = "";
-                    //        txtProviderNPI.Text = "";
-                    //    }
-                    //}
-                    // }
-
-                    ScriptManager.RegisterStartupScript(this, this.Page.GetType(), "showVal", "EnableSaveButtononunload(); {sessionStorage.setItem('StartLoading', 'false');StopLoadFromPatChart();}", true);
-                }
-                logFile.Info(DateTime.UtcNow.ToString() + "- chkSelfReferred_CheckedChanged - End", null);
             }
-            catch (Exception ex)
+            else
             {
-                logFile.Info(DateTime.UtcNow.ToString() + "- chkSelfReferred_CheckedChanged"+ex.Message, null);
+                imgClearProviderText.Attributes.Add("onclick", "return ProviderSearchclear();");
+
+
+                hdnrenprovider.Value = "";
+                txtProviderSearch.Text = "";
+                hdnrenprovidersearch.Value = "";
+                txtProviderSearch.Enabled = true;
+                //txtReferringProvider.Text = string.Empty; //by vasanth
+                //txtReferringFacility.Text = string.Empty;
+                //txtReferingAddress.Text = string.Empty;
+                //msktxtReferingFaxNo.Text = string.Empty;
+                //msktxtReferingPhoneNo.Text = string.Empty;
+                //txtProviderNPI.Text = string.Empty;
+
+                //txtReferringProvider.ReadOnly = false;
+                //txtReferringFacility.ReadOnly = false;
+                //txtReferingAddress.ReadOnly = false;
+                //msktxtReferingPhoneNo.ReadOnly = false;
+                //msktxtReferingFaxNo.ReadOnly = false;
+                //txtProviderNPI.ReadOnly = false;
+                //btnFindPhysician.Enabled = true;
+                btnSave.Enabled = true;
+                //btnSave.Attributes.Add("disabled", "false");
+                //txtReferringProvider.BackColor = System.Drawing.Color.White;
+                //txtReferringFacility.BackColor = System.Drawing.Color.White;
+                //txtProviderNPI.BackColor = System.Drawing.Color.White;
+                //txtReferingAddress.BackColor = System.Drawing.Color.White;
+                //msktxtReferingPhoneNo.BackColor = System.Drawing.Color.White;
+                //msktxtReferingFaxNo.BackColor = System.Drawing.Color.White;
+                // Commented by valli
+                //  if (HdnRefPhy.Value != null && HdnRefPhy.Value != "" && HdnRefPhy.Value != string.Empty)
+                // {
+                //if (txtReferringProvider.Text.Trim() != HdnRefPhy.Value.Split('|')[0].ToString().Trim())
+                //{
+                //    txtReferringFacility.Text = string.Empty;
+                //    txtReferringProvider.Text = string.Empty;
+                //    txtReferingAddress.Text = string.Empty;
+                //    msktxtReferingPhoneNo.Text = string.Empty;
+                //    msktxtReferingFaxNo.Text = string.Empty;
+                //    txtProviderNPI.Text = string.Empty;
+                //    txtReferringProvider.Text = HdnRefPhy.Value.Split('|')[0].ToString();
+                //    txtReferingAddress.Text = HdnRefPhy.Value.Split('|')[1].ToString();
+                //    msktxtReferingPhoneNo.Text = HdnRefPhy.Value.Split('|')[2].ToString();
+                //    msktxtReferingFaxNo.Text = HdnRefPhy.Value.Split('|')[3].ToString();
+                //    txtProviderNPI.Text = HdnRefPhy.Value.Split('|')[4].ToString();
+                //    txtReferringFacility.Text = HdnRefPhy.Value.Split('|')[5].ToString();
+                //}
+                //else
+                //{
+                //    //PhysicianManager phyMngr = new PhysicianManager();
+                //    //IList<PhysicianLibrary> phylist = phyMngr.GetphysiciannameByPhyID(Convert.ToUInt64(hdnEncounter_Physician_id.Value));
+                //    //if (phylist != null && phylist.Count > 0)
+                //    //{
+                //    PhysicianLibrary objPhyLib = GetPhysicianDetailsByPhyID(hdnEncounter_Physician_id.Value);
+
+                //    if (objPhyLib != null)
+                //    {
+                //        txtReferringFacility.Text = string.Empty;
+                //        txtReferringProvider.Text = string.Empty;
+                //        txtReferingAddress.Text = string.Empty;
+                //        msktxtReferingPhoneNo.Text = string.Empty;
+                //        msktxtReferingFaxNo.Text = string.Empty;
+                //        txtProviderNPI.Text = string.Empty;
+                //        string sPhyName = objPhyLib.PhyPrefix + " " + objPhyLib.PhyFirstName + " " + objPhyLib.PhyLastName + " " + objPhyLib.PhySuffix;
+                //        txtReferringFacility.Text = objPhyLib.PhyNotes;
+                //        txtReferringProvider.Text = sPhyName;
+                //        txtReferingAddress.Text = objPhyLib.PhyAddress1;
+                //        msktxtReferingPhoneNo.Text = objPhyLib.PhyTelephone;
+                //        msktxtReferingFaxNo.Text = objPhyLib.PhyFax;
+                //        txtProviderNPI.Text = objPhyLib.PhyNPI;
+                //        HdnRefPhy.Value = sPhyName + "|" + objPhyLib.PhyAddress1 + "|" + objPhyLib.PhyTelephone + "|" + objPhyLib.PhyFax + "|" + objPhyLib.PhyNPI + "|" + objPhyLib.PhyNotes;//for static
+                //        //}
+                //    }
+                //    else
+                //    {
+                //        HdnRefPhy.Value = "|||||";//for static
+                //        txtReferringFacility.Text = "";
+                //        txtReferringProvider.Text = "";
+                //        txtReferingAddress.Text = "";
+                //        msktxtReferingPhoneNo.Text = "";
+                //        msktxtReferingFaxNo.Text = "";
+                //        txtProviderNPI.Text = "";
+                //    }
+                //}
+                // }
+
+                ScriptManager.RegisterStartupScript(this, this.Page.GetType(), "showVal", "EnableSaveButtononunload(); {sessionStorage.setItem('StartLoading', 'false');StopLoadFromPatChart();}", true);
             }
         }
 
         protected void chkShowAllPhysicians_CheckedChanged(object sender, EventArgs e)
         {
-            try
+            IList<PhysicianLibrary> PhyList;
+
+            if (chkShowAllPhysicians.Checked == true)
             {
-                IList<PhysicianLibrary> PhyList;
-                logFile.Info(DateTime.UtcNow.ToString() + "- chkShowAllPhysicians_CheckedChanged - Start", null);
-                if (chkShowAllPhysicians.Checked == true)
-                {
-                    PhyList = UtilityManager.GetPhysicianList("", ClientSession.LegalOrg);//PhyMngr.GetPhysicianandUser(false, string.Empty);
-                }
-                else
-                {
-                    PhyList = UtilityManager.GetPhysicianList(cboFacility.Text.Trim().ToUpper(), ClientSession.LegalOrg);//PhyMngr.GetPhysicianandUser(true, cboFacility.Text);
-                }
-                ddlPhysicianName.Items.Clear();
+                PhyList = UtilityManager.GetPhysicianList("", ClientSession.LegalOrg);//PhyMngr.GetPhysicianandUser(false, string.Empty);
+            }
+            else
+            {
+                PhyList = UtilityManager.GetPhysicianList(cboFacility.Text.Trim().ToUpper(), ClientSession.LegalOrg);//PhyMngr.GetPhysicianandUser(true, cboFacility.Text);
+            }
+            ddlPhysicianName.Items.Clear();
 
-                XmlDocument xmldoc = new XmlDocument();
-                for (int i = 0; i < PhyList.Count; i++)
+            XmlDocument xmldoc = new XmlDocument();
+            for (int i = 0; i < PhyList.Count; i++)
+            {
+                //string sPhyName = PhyUserList.PhyList[i].PhyPrefix + " " + PhyUserList.PhyList[i].PhyFirstName + " " + PhyUserList.PhyList[i].PhyMiddleName + " " + PhyUserList.PhyList[i].PhyLastName + " " + PhyUserList.PhyList[i].PhySuffix;
+                RadComboBoxItem item1 = new RadComboBoxItem();
+                if (i == 0)
                 {
-                    //string sPhyName = PhyUserList.PhyList[i].PhyPrefix + " " + PhyUserList.PhyList[i].PhyFirstName + " " + PhyUserList.PhyList[i].PhyMiddleName + " " + PhyUserList.PhyList[i].PhyLastName + " " + PhyUserList.PhyList[i].PhySuffix;
-                    RadComboBoxItem item1 = new RadComboBoxItem();
-                    if (i == 0)
-                    {
-                        RadComboBoxItem item2 = new RadComboBoxItem();
-                        item2.Text = "";
-                        item2.Value = "0";
-                        ddlPhysicianName.Items.Add(item2);
-                    }
-                    //if (sAncillary != string.Empty && sAncillary == cboFacility.SelectedItem.Text.Trim())
-                    //{
-                    logFile.Info(DateTime.UtcNow.ToString() + "- chkShowAllPhysicians_CheckedChanged Load Facility Lib - Start", null);
-                    var fac = from f in ApplicationObject.facilityLibraryList where f.Fac_Name == cboFacility.SelectedItem.Text select f;
-                    IList<FacilityLibrary> ilstFac = fac.ToList<FacilityLibrary>();
-                    if (ilstFac.Count > 0 && ilstFac[0].Is_Ancillary == "Y")
-                    {
-                        string strXmlFilePathTech = Path.Combine(System.Web.Hosting.HostingEnvironment.ApplicationPhysicalPath, "ConfigXML\\machine_technician.xml");
-                        if (File.Exists(strXmlFilePathTech) == true)
-                        {
-                            xmldoc = new XmlDocument();
-                            xmldoc.Load(System.Web.Hosting.HostingEnvironment.ApplicationPhysicalPath + "ConfigXML\\" + "machine_technician" + ".xml");
-                            if (PhyList[i].PhyColor != "" && PhyList[i].PhyColor != "0")
-                            {
-                                XmlNodeList xmlTec = xmldoc.GetElementsByTagName("MachineTechnician" + PhyList[i].PhyColor);
-                                if (xmlTec != null)
-                                {
-                                    item1.Text = xmlTec[0].Attributes.GetNamedItem("machine_name").Value + " - " + PhyList[i].PhyPrefix + " " + PhyList[i].PhyFirstName + " " + PhyList[i].PhyMiddleName + " " + PhyList[i].PhyLastName;
-                                    item1.Value = xmlTec[0].Attributes.GetNamedItem("machine_technician_library_id").Value;
-                                }
-                            }
-                            else
-                            {
-                                item1.Text = PhyList[i].PhyPrefix + " " + PhyList[i].PhyFirstName + " " + PhyList[i].PhyMiddleName + " " + PhyList[i].PhyLastName;
-                                item1.Value = PhyList[i].Id.ToString();
-                            }
-
-                            ddlPhysicianName.Items.Add(item1);
-                            logFile.Info(DateTime.UtcNow.ToString() + "- chkShowAllPhysicians_CheckedChanged Load Facility Lib - End", null);
-                            //if (item1.Value == ulMyPhysicianID.ToString())
-                            //{
-                            //    phyCheck = true;
-                            //    ddlPhysicianName.SelectedIndex = i;
-                            //    hdnEditApptPhyID.Value = ddlPhysicianName.SelectedValue.ToString();//added by vasanth
-                            //}
-                        }
-                    }
-                    else
-                    {
-                        logFile.Info(DateTime.UtcNow.ToString() + "- chkShowAllPhysicians_CheckedChanged Load Non Anc Facility- Start", null);
-                        string sPhyName = string.Empty;
-                        if (PhyList[i] != null)
-                        {
-                            //old code
-                            //sPhyName = PhyList[i].PhyPrefix + " " + PhyList[i].PhyFirstName + " " + PhyList[i].PhyLastName;
-                            //Gitlab# 2485 - Physician Name Display Change
-                            if (PhyList[i].PhyLastName != String.Empty)
-                                sPhyName += PhyList[i].PhyLastName;
-                            if (PhyList[i].PhyFirstName != String.Empty)
-                            {
-                                if (sPhyName != String.Empty)
-                                    sPhyName += "," + PhyList[i].PhyFirstName;
-                                else
-                                    sPhyName += PhyList[i].PhyFirstName;
-                            }
-                            if (PhyList[i].PhyMiddleName != String.Empty)
-                                sPhyName += " " + PhyList[i].PhyMiddleName;
-                            if (PhyList[i].PhySuffix != String.Empty)
-                                sPhyName += "," + PhyList[i].PhySuffix;
-                        }
-
-                        RadComboBoxItem item = new RadComboBoxItem();
-                        item.Value = PhyList[i].Id.ToString();
-                        item.Text = sPhyName;
-                        ddlPhysicianName.Items.Add(item);
-                        logFile.Info(DateTime.UtcNow.ToString() + "- chkShowAllPhysicians_CheckedChanged Load Non Anc Facility- End", null);
-                    }
-                    //if (ddlPhysicianName.Items[i].Value == hdnPhysicianID.Value)
-                    //{
-                    //    ddlPhysicianName.SelectedIndex = i;
-                    //}
-                    if (ddlPhysicianName.Items[i + 1].Value != null)
-                    {
-                        if (PhyList[i].PhyNotes == "Default" && chkShowAllPhysicians.Checked == false && ddlPhysicianName.Items[i + 1].Value != hdnPhysicianID.Value)
-                        {
-                            ddlPhysicianName.SelectedIndex = i + 1;
-                        }
-                        else if (PhyList[i].PhyNotes != "Default" && chkShowAllPhysicians.Checked == false && ddlPhysicianName.Items[i + 1].Value == hdnPhysicianID.Value)
-                        {
-                            ddlPhysicianName.SelectedIndex = i + 1;
-                        }
-                        else if (PhyList[i].PhyNotes == "Default" && chkShowAllPhysicians.Checked == false && ddlPhysicianName.Items[i + 1].Value == hdnPhysicianID.Value)
-                        {
-                            ddlPhysicianName.SelectedIndex = i + 1;
-                        }
-                        else if (chkShowAllPhysicians.Checked == true)
-                        {
-                            if (ddlPhysicianName.Items[i + 1].Value == hdnPhysicianID.Value && hdnPhysicianID.Value != "0")
-                            {
-                                ddlPhysicianName.SelectedIndex = i + 1;
-                            }
-                        }
-                    }
+                    RadComboBoxItem item2 = new RadComboBoxItem();
+                    item2.Text = "";
+                    item2.Value = "0";
+                    ddlPhysicianName.Items.Add(item2);
                 }
-                btnSave.Enabled = true;
-
-                if (chkSelfReferred.Checked == true)
-                {
-                    //chkSelfReferred.Checked = false; Bug ID: 60606
-                    chkSelfReferred_CheckedChanged(sender, e);
-                }
-                logFile.Info(DateTime.UtcNow.ToString() + "- chkShowAllPhysicians_CheckedChanged Change Provider Anc- Start", null);
-                ClientSession.PhysicianId = ddlPhysicianName.SelectedValue != null && ddlPhysicianName.SelectedValue.Trim() != "" ? Convert.ToUInt64(ddlPhysicianName.SelectedValue) : 0;
-                hdnEditApptPhyID.Value = ddlPhysicianName.SelectedValue != null && ddlPhysicianName.SelectedValue.Trim() != "" ? ddlPhysicianName.SelectedValue.ToString() : "0";
-                FillPOV();
-                //if (cboFacility.SelectedItem.Text.ToUpper() == sFacilityCmg.ToUpper())
+                //if (sAncillary != string.Empty && sAncillary == cboFacility.SelectedItem.Text.Trim())
                 //{
-                var facAncillary = from f in ApplicationObject.facilityLibraryList where f.Fac_Name == cboFacility.SelectedItem.Text select f;
-                IList<FacilityLibrary> ilstFacAncillary = facAncillary.ToList<FacilityLibrary>();
-                if (ilstFacAncillary.Count > 0 && ilstFacAncillary[0].Is_Ancillary == "Y")
+                var fac = from f in ApplicationObject.facilityLibraryList where f.Fac_Name == cboFacility.SelectedItem.Text select f;
+                IList<FacilityLibrary> ilstFac = fac.ToList<FacilityLibrary>();
+                if (ilstFac.Count > 0 && ilstFac[0].Is_Ancillary == "Y")
                 {
-                    ChangeproviderforCMGAncillary(true);
+                    string strXmlFilePathTech = Path.Combine(System.Web.Hosting.HostingEnvironment.ApplicationPhysicalPath, "ConfigXML\\machine_technician.xml");
+                    if (File.Exists(strXmlFilePathTech) == true)
+                    {
+                        xmldoc = new XmlDocument();
+                        xmldoc.Load(System.Web.Hosting.HostingEnvironment.ApplicationPhysicalPath + "ConfigXML\\" + "machine_technician" + ".xml");
+                        if (PhyList[i].PhyColor != "" && PhyList[i].PhyColor != "0")
+                        {
+                            XmlNodeList xmlTec = xmldoc.GetElementsByTagName("MachineTechnician" + PhyList[i].PhyColor);
+                            if (xmlTec != null)
+                            {
+                                item1.Text = xmlTec[0].Attributes.GetNamedItem("machine_name").Value + " - " + PhyList[i].PhyPrefix + " " + PhyList[i].PhyFirstName + " " + PhyList[i].PhyMiddleName + " " + PhyList[i].PhyLastName;
+                                item1.Value = xmlTec[0].Attributes.GetNamedItem("machine_technician_library_id").Value;
+                            }
+                        }
+                        else
+                        {
+                            item1.Text = PhyList[i].PhyPrefix + " " + PhyList[i].PhyFirstName + " " + PhyList[i].PhyMiddleName + " " + PhyList[i].PhyLastName;
+                            item1.Value = PhyList[i].Id.ToString();
+                        }
+
+                        ddlPhysicianName.Items.Add(item1);
+                        //if (item1.Value == ulMyPhysicianID.ToString())
+                        //{
+                        //    phyCheck = true;
+                        //    ddlPhysicianName.SelectedIndex = i;
+                        //    hdnEditApptPhyID.Value = ddlPhysicianName.SelectedValue.ToString();//added by vasanth
+                        //}
+                    }
                 }
                 else
-                    ChangeproviderforCMGAncillary(false);
-                ScriptManager.RegisterStartupScript(this, this.Page.GetType(), "ShowAllProvidersClicked", " {sessionStorage.setItem('StartLoading', 'false');StopLoadFromPatChart();}", true);
-                logFile.Info(DateTime.UtcNow.ToString() + "- chkShowAllPhysicians_CheckedChanged Change Provider Anc- End", null);
+                {
+                    string sPhyName = string.Empty;
+                    if (PhyList[i] != null)
+                    {
+                        //old code
+                        //sPhyName = PhyList[i].PhyPrefix + " " + PhyList[i].PhyFirstName + " " + PhyList[i].PhyLastName;
+                        //Gitlab# 2485 - Physician Name Display Change
+                        if (PhyList[i].PhyLastName != String.Empty)
+                            sPhyName += PhyList[i].PhyLastName;
+                        if (PhyList[i].PhyFirstName != String.Empty)
+                        {
+                            if (sPhyName != String.Empty)
+                                sPhyName += "," + PhyList[i].PhyFirstName;
+                            else
+                                sPhyName += PhyList[i].PhyFirstName;
+                        }
+                        if (PhyList[i].PhyMiddleName != String.Empty)
+                            sPhyName += " " + PhyList[i].PhyMiddleName;
+                        if (PhyList[i].PhySuffix != String.Empty)
+                            sPhyName += "," + PhyList[i].PhySuffix;
+                    }
 
-                logFile.Info(DateTime.UtcNow.ToString() + "- chkShowAllPhysicians_CheckedChanged - End", null);
+                    RadComboBoxItem item = new RadComboBoxItem();
+                    item.Value = PhyList[i].Id.ToString();
+                    item.Text = sPhyName;
+                    ddlPhysicianName.Items.Add(item);
+                }
+                //if (ddlPhysicianName.Items[i].Value == hdnPhysicianID.Value)
+                //{
+                //    ddlPhysicianName.SelectedIndex = i;
+                //}
+                if (ddlPhysicianName.Items[i + 1].Value != null)
+                {
+                    if (PhyList[i].PhyNotes == "Default" && chkShowAllPhysicians.Checked == false && ddlPhysicianName.Items[i + 1].Value != hdnPhysicianID.Value)
+                    {
+                        ddlPhysicianName.SelectedIndex = i + 1;
+                    }
+                    else if (PhyList[i].PhyNotes != "Default" && chkShowAllPhysicians.Checked == false && ddlPhysicianName.Items[i + 1].Value == hdnPhysicianID.Value)
+                    {
+                        ddlPhysicianName.SelectedIndex = i + 1;
+                    }
+                    else if (PhyList[i].PhyNotes == "Default" && chkShowAllPhysicians.Checked == false && ddlPhysicianName.Items[i + 1].Value == hdnPhysicianID.Value)
+                    {
+                        ddlPhysicianName.SelectedIndex = i + 1;
+                    }
+                    else if (chkShowAllPhysicians.Checked == true)
+                    {
+                        if (ddlPhysicianName.Items[i + 1].Value == hdnPhysicianID.Value && hdnPhysicianID.Value != "0")
+                        {
+                            ddlPhysicianName.SelectedIndex = i + 1;
+                        }
+                    }
+                }
             }
-            catch (Exception ex)
+            btnSave.Enabled = true;
+
+            if (chkSelfReferred.Checked == true)
             {
-                logFile.Info(DateTime.UtcNow.ToString() + "- chkShowAllPhysicians_CheckedChanged -"+ex.Message, null);
+                //chkSelfReferred.Checked = false; Bug ID: 60606
+                chkSelfReferred_CheckedChanged(sender, e);
             }
+            ClientSession.PhysicianId = ddlPhysicianName.SelectedValue != null && ddlPhysicianName.SelectedValue.Trim() != "" ? Convert.ToUInt64(ddlPhysicianName.SelectedValue) : 0;
+            hdnEditApptPhyID.Value = ddlPhysicianName.SelectedValue != null && ddlPhysicianName.SelectedValue.Trim() != "" ? ddlPhysicianName.SelectedValue.ToString() : "0";
+            FillPOV();
+            //if (cboFacility.SelectedItem.Text.ToUpper() == sFacilityCmg.ToUpper())
+            //{
+            var facAncillary = from f in ApplicationObject.facilityLibraryList where f.Fac_Name == cboFacility.SelectedItem.Text select f;
+            IList<FacilityLibrary> ilstFacAncillary = facAncillary.ToList<FacilityLibrary>();
+            if (ilstFacAncillary.Count > 0 && ilstFacAncillary[0].Is_Ancillary == "Y")
+            {
+                ChangeproviderforCMGAncillary(true);
+            }
+            else
+                ChangeproviderforCMGAncillary(false);
+            ScriptManager.RegisterStartupScript(this, this.Page.GetType(), "ShowAllProvidersClicked", " {sessionStorage.setItem('StartLoading', 'false');StopLoadFromPatChart();}", true);
         }
+
         protected void chkReschedule_CheckedChanged(object sender, EventArgs e)
         {
 
@@ -3357,7 +3279,7 @@ namespace Acurus.Capella.UI
 
             if (hdnpcpprovidersearch.Value != "" && tabReferringProvAndPCP.SelectedIndex == 1)
 
-                txtProviderSearch.Text = hdnpcpprovidersearch.Value; 
+                txtProviderSearch.Text = hdnpcpprovidersearch.Value;
 
             if (ddlPhysicianName.SelectedValue != null)
                 ClientSession.PhysicianId = Convert.ToUInt64(ddlPhysicianName.SelectedValue);
@@ -3451,9 +3373,9 @@ namespace Acurus.Capella.UI
 
             if (ilstEditAppFinal.Count > 0 && ilstEditAppFinal != null)
             {
-                if (ilstEditAppFinal[0]!=null)
+                if (ilstEditAppFinal[0] != null)
                 {
-                    for(int iCount=0; iCount < ((IList<object>)ilstEditAppFinal[0]).Count; iCount++)
+                    for (int iCount = 0; iCount < ((IList<object>)ilstEditAppFinal[0]).Count; iCount++)
                     {
                         objhuman.Add((Human)((IList<object>)ilstEditAppFinal[0])[iCount]);
                     }
@@ -3583,7 +3505,7 @@ namespace Acurus.Capella.UI
 
                             if (hdnEncounter_Physician_id.Value != "" && hdnEncounter_Physician_id.Value != "0")//vasanth
                             {
-                               //tabReferringProvAndPCP.SelectedIndex = 1;
+                                //tabReferringProvAndPCP.SelectedIndex = 1;
                                 //lblReferringName.Text = "PCP. Provider";
                                 //lblReferingFacility.Text = "PCP. Facility";
                                 //lblReferingAddress.Text = "PCP. Address";
@@ -3873,7 +3795,7 @@ namespace Acurus.Capella.UI
                         if (sPhyName.Trim() != "")
                         {
                             hdnrenprovider.Value = objPhysicianLibrary.Id + "|" + sPhyName + "|" + objPhysicianLibrary.PhyNPI + "|" + "" + "|" + cboFacility.SelectedItem.Text + "|" +
-                               facilityadd + "|" + objPhysicianLibrary.PhyTelephone + "|" + objPhysicianLibrary.PhyFax ;
+                               facilityadd + "|" + objPhysicianLibrary.PhyTelephone + "|" + objPhysicianLibrary.PhyFax;
                             //Jira #CAP-156 - Index was outside bounds 
                             //hdnrenprovidersearch.Value = objPhysicianLibrary.PhyLastName + ", " + objPhysicianLibrary.PhyFirstName + " " +
                             //    objPhysicianLibrary.PhyMiddleName + "(" + objPhysicianLibrary.PhySuffix + ")" + " | " +
@@ -3932,7 +3854,7 @@ namespace Acurus.Capella.UI
         {
             if (hdnrenprovidersearch.Value != "" && tabReferringProvAndPCP.SelectedIndex == 0)
 
-                txtProviderSearch.Text = hdnrenprovidersearch.Value; 
+                txtProviderSearch.Text = hdnrenprovidersearch.Value;
 
             if (hdnpcpprovidersearch.Value != "" && tabReferringProvAndPCP.SelectedIndex == 1)
 
@@ -4098,205 +4020,194 @@ namespace Acurus.Capella.UI
 
         public void ChangeproviderforCMGAncillary(Boolean bcheck)
         {
-            try
+            if (bcheck)
             {
-                if (bcheck)
+                cboOrder.Items.Clear();
+                cboOrder.Enabled = true;
+                //if (ClientSession.FacilityName != null && ClientSession.FacilityName.ToUpper() == sFacilityCmg.ToUpper())
+                //if (cboFacility.SelectedItem.Text.ToUpper() == sFacilityCmg.ToUpper())
+                //{
+                var facAncillary = from f in ApplicationObject.facilityLibraryList where f.Fac_Name == cboFacility.SelectedItem.Text select f;
+                IList<FacilityLibrary> ilstFacAncillary = facAncillary.ToList<FacilityLibrary>();
+                if (ilstFacAncillary.Count > 0 && ilstFacAncillary[0].Is_Ancillary == "Y")
                 {
-                    logFile.Info(DateTime.UtcNow.ToString() + "- ChangeproviderforCMGAncillary - Ancillary Provider Change - Start", null);
-                    cboOrder.Items.Clear();
-                    cboOrder.Enabled = true;
-                    //if (ClientSession.FacilityName != null && ClientSession.FacilityName.ToUpper() == sFacilityCmg.ToUpper())
-                    //if (cboFacility.SelectedItem.Text.ToUpper() == sFacilityCmg.ToUpper())
-                    //{
-                    var facAncillary = from f in ApplicationObject.facilityLibraryList where f.Fac_Name == cboFacility.SelectedItem.Text select f;
-                    IList<FacilityLibrary> ilstFacAncillary = facAncillary.ToList<FacilityLibrary>();
-                    if (ilstFacAncillary.Count > 0 && ilstFacAncillary[0].Is_Ancillary == "Y")
-                    {
-                        btnOrder.Enabled = true;
-                    }
-                    else
-                    {
-                        btnOrder.Enabled = false;
-                    }
-
-                    if (tabReferringProvAndPCP.SelectedIndex == 0)
-                    {
-                        imgClearProviderText.Visible = false;
-                    }
-                    if (tabReferringProvAndPCP.SelectedIndex == 1)
-                    {
-                        imgClearProviderText.Visible = true;
-                    }
-                    imgClearProviderText.Style.Add("top", "246px !important");
-                    lblOrder.ForeColor = Color.Red;
-                    lblOrder.Text = lblOrder.Text.Replace("*", "");
-                    lblOrder.Text += "*";
-                    tabReferringProvAndPCP.Tabs[0].Text = "Enter Ord provider details";
-                    //lblReferringName.Text = "Ord. Provider";
-                    //lblReferingFacility.Text = "Ord. Facility";
-                    //lblReferingAddress.Text = "Ord. Address";
-                    //lblReferingPhoneNo.Text = "Ord. Phone #";
-                    //lblReferingFaxNo.Text = "Ord. Fax #";
-                    lblProviderName.Text = "Machine - Technician";
-                    //btnFindPhysician.Enabled = false;
-                    chkSelfReferred.Enabled = false;
-                    OrdersManager objorder = new OrdersManager();
-                    IList<string> ilstOrder = new List<string>();
-
-                    if (hdnHumanID.Value != null && hdnHumanID.Value != "")
-                    {
-                        ulong ulHuman = 0;
-                        ulHuman = Convert.ToUInt32(hdnHumanID.Value);
-
-                        var ancillary = from f in ApplicationObject.facilityLibraryList where f.Fac_Name == cboFacility.SelectedItem.Text select f;
-                        IList<FacilityLibrary> ilstAncillaryFacility = ancillary.ToList<FacilityLibrary>();
-
-                        XDocument xmlLab = XDocument.Load(Server.MapPath(@"ConfigXML\LabList.xml"));
-
-                        IEnumerable<XElement> xml = xmlLab.Element("LabList")
-                           .Elements("Lab").Where(a => a.Attribute("type").Value.ToString() != "DME" && a.Attribute("name").Value.ToString() == ilstAncillaryFacility[0].Short_Name)
-                           .OrderBy(s => (int)s.Attribute("sort_order"));
-
-                        string xmlValue = string.Empty;
-
-                        if (xml != null)
-                        {
-                            foreach (XElement LabElement in xml)
-                            {
-                                xmlValue = LabElement.Attribute("id").Value;
-                            }
-                        }
-
-                        ilstOrder = objorder.GetOrderByHuman(ulHuman, cboFacility.SelectedItem.Text, Convert.ToUInt64(xmlValue));
-                        if (ilstOrder != null && ilstOrder.Count() > 0)
-                        {
-                            cboOrder.Items.Add(new RadComboBoxItem());
-                            for (int i = 0; i < ilstOrder.Count; i++)
-                            {
-                                string[] str = ilstOrder[i].ToString().Split('^');
-                                RadComboBoxItem ilst = new RadComboBoxItem();
-                                ilst.Text = str[0];
-                                if (ilstOrder[i].ToString().Contains('^'))
-                                    ilst.Value = str[1];
-                                else
-                                    ilst.Value = ilstOrder[i].ToString().Split('|')[0];
-                                cboOrder.Items.Add(ilst);
-                            }
-                        }
-                        Boolean val = false;
-                        if (ulordID != 0)
-                        {
-                            int selectorder = 0;
-                            for (int j = 0; j < cboOrder.Items.Count; j++)
-                            {
-                                if (cboOrder.Items[j].Text.Split('|')[0].ToString().Trim() == ulordID.ToString())
-                                {
-                                    selectorder = j;
-                                    if (cboOrder.Items[j].Text.Split('|')[2].ToString().Trim() != "")
-                                        val = true;
-                                    break;
-                                }
-                            }
-                            cboOrder.SelectedIndex = selectorder;
-                        }
-                        //if (cboOrder.Items.Count > 0)
-                        //    btnOrder.Enabled = true;
-                        //else
-                        //{
-                        //    btnOrder.Enabled = true;
-                        //}
-                        //For bug ID 52793 
-                        if (val)
-                        {
-                            //txtReferringProvider.ReadOnly = true;
-                            //txtProviderNPI.ReadOnly = true;
-                            //txtReferringFacility.ReadOnly = true;
-                            //txtReferingAddress.ReadOnly = true;
-                            //msktxtReferingPhoneNo.ReadOnly = true;
-                            //msktxtReferingFaxNo.ReadOnly = true;
-                            //txtReferringProvider.Attributes.Add("onkeypress", "return false;");
-                            //txtReferringFacility.Attributes.Add("onkeypress", "return false;");
-                            //txtReferingAddress.Attributes.Add("onkeypress", "return false;");
-                            //txtProviderNPI.Attributes.Add("onkeypress", "return false;");
-                            //txtProviderNPI.Attributes.Add("onkeydown", "return false;");
-                            //txtReferringProvider.Attributes.Add("onkeydown", "return false;");
-                            //txtReferringFacility.Attributes.Add("onkeydown", "return false;");
-                            //txtReferingAddress.Attributes.Add("onkeydown", "return false;");
-
-                            //txtProviderNPI.Style.Add("background-color", "#BFDBFF");
-
-
-                            //txtReferingAddress.Style.Add("background-color", "#BFDBFF");
-
-
-                            //txtReferringProvider.Style.Add("background-color", "#BFDBFF");
-
-                            //txtReferringFacility.Style.Add("background-color", "#BFDBFF");
-
-                            //msktxtReferingPhoneNo.Style.Add("background-color", "#BFDBFF");
-
-                            //msktxtReferingFaxNo.Style.Add("background-color", "#BFDBFF");
-                        }
-
-                        else
-                        {
-                            //txtReferringProvider.ReadOnly = false;
-                            //txtProviderNPI.ReadOnly = false;
-                            //txtReferringFacility.ReadOnly = false;
-                            //txtReferingAddress.ReadOnly = false;
-                            //msktxtReferingPhoneNo.ReadOnly = false;
-                            //msktxtReferingFaxNo.ReadOnly = false;
-                            //txtProviderNPI.Attributes.Remove("onkeypress");
-                            //txtProviderNPI.Attributes.Remove("onkeydown");
-                            //txtProviderNPI.Style.Add("background-color", "#ffffff");
-
-                            //txtReferingAddress.Attributes.Remove("onkeypress");
-                            //txtReferingAddress.Attributes.Remove("onkeydown");
-                            //txtReferingAddress.Style.Add("background-color", "#ffffff");
-
-                            //txtReferringProvider.Attributes.Remove("onkeydown");
-                            //txtReferringProvider.Attributes.Remove("onkeypress");
-                            //txtReferringProvider.Style.Add("background-color", "#ffffff");
-
-                            //txtReferringFacility.Attributes.Remove("onkeydown");
-                            //txtReferringFacility.Attributes.Remove("onkeypress");
-                            //txtReferringFacility.Style.Add("background-color", "#ffffff");
-
-                            //msktxtReferingPhoneNo.Style.Add("background-color", "#ffffff");
-
-                            //msktxtReferingFaxNo.Style.Add("background-color", "#ffffff");
-                        }
-                    }
-                    logFile.Info(DateTime.UtcNow.ToString() + "- ChangeproviderforCMGAncillary - Ancillary Provider Change - Start", null);
+                    btnOrder.Enabled = true;
                 }
                 else
                 {
-                    logFile.Info(DateTime.UtcNow.ToString() + "- ChangeproviderforCMGAncillary - Ancillary Provider Change tab 0- Start", null);
-                    if (tabReferringProvAndPCP.SelectedIndex == 0)
-                    {
-                        imgClearProviderText.Visible = true;
-                    }
-                    imgClearProviderText.Style.Add("top", "234px !important");
-                    cboOrder.Items.Clear();
-                    cboOrder.Enabled = false;
                     btnOrder.Enabled = false;
-                    lblOrder.ForeColor = Color.Black;
-                    lblOrder.Text = lblOrder.Text.Replace("*", "");
-                    tabReferringProvAndPCP.Tabs[0].Text = "Referring Provider Info";
-                    //lblReferringName.Text = "Ref. Provider";
-                    //lblReferingFacility.Text = "Ref. Facility";
-                    //lblReferingAddress.Text = "Ref. Address";
-                    //lblReferingPhoneNo.Text = "Ref. Phone #";
-                    //lblReferingFaxNo.Text = "Ref. Fax #";
-                    lblProviderName.Text = "Prov. Name";
-                    // btnFindPhysician.Enabled = true;
-                    chkSelfReferred.Enabled = true;
-                    logFile.Info(DateTime.UtcNow.ToString() + "- ChangeproviderforCMGAncillary - Ancillary Provider Change tab 0- End", null);
+                }
+
+                if (tabReferringProvAndPCP.SelectedIndex == 0)
+                {
+                    imgClearProviderText.Visible = false;
+                }
+                if (tabReferringProvAndPCP.SelectedIndex == 1)
+                {
+                    imgClearProviderText.Visible = true;
+                }
+                imgClearProviderText.Style.Add("top", "246px !important");
+                lblOrder.ForeColor = Color.Red;
+                lblOrder.Text = lblOrder.Text.Replace("*", "");
+                lblOrder.Text += "*";
+                tabReferringProvAndPCP.Tabs[0].Text = "Enter Ord provider details";
+                //lblReferringName.Text = "Ord. Provider";
+                //lblReferingFacility.Text = "Ord. Facility";
+                //lblReferingAddress.Text = "Ord. Address";
+                //lblReferingPhoneNo.Text = "Ord. Phone #";
+                //lblReferingFaxNo.Text = "Ord. Fax #";
+                lblProviderName.Text = "Machine - Technician";
+                //btnFindPhysician.Enabled = false;
+                chkSelfReferred.Enabled = false;
+                OrdersManager objorder = new OrdersManager();
+                IList<string> ilstOrder = new List<string>();
+
+                if (hdnHumanID.Value != null && hdnHumanID.Value != "")
+                {
+                    ulong ulHuman = 0;
+                    ulHuman = Convert.ToUInt32(hdnHumanID.Value);
+
+                    var ancillary = from f in ApplicationObject.facilityLibraryList where f.Fac_Name == cboFacility.SelectedItem.Text select f;
+                    IList<FacilityLibrary> ilstAncillaryFacility = ancillary.ToList<FacilityLibrary>();
+
+                    XDocument xmlLab = XDocument.Load(Server.MapPath(@"ConfigXML\LabList.xml"));
+
+                    IEnumerable<XElement> xml = xmlLab.Element("LabList")
+                       .Elements("Lab").Where(a => a.Attribute("type").Value.ToString() != "DME" && a.Attribute("name").Value.ToString() == ilstAncillaryFacility[0].Short_Name)
+                       .OrderBy(s => (int)s.Attribute("sort_order"));
+
+                    string xmlValue = string.Empty;
+
+                    if (xml != null)
+                    {
+                        foreach (XElement LabElement in xml)
+                        {
+                            xmlValue = LabElement.Attribute("id").Value;
+                        }
+                    }
+
+                    ilstOrder = objorder.GetOrderByHuman(ulHuman, cboFacility.SelectedItem.Text, Convert.ToUInt64(xmlValue));
+                    if (ilstOrder != null && ilstOrder.Count() > 0)
+                    {
+                        cboOrder.Items.Add(new RadComboBoxItem());
+                        for (int i = 0; i < ilstOrder.Count; i++)
+                        {
+                            string[] str = ilstOrder[i].ToString().Split('^');
+                            RadComboBoxItem ilst = new RadComboBoxItem();
+                            ilst.Text = str[0];
+                            if (ilstOrder[i].ToString().Contains('^'))
+                                ilst.Value = str[1];
+                            else
+                                ilst.Value = ilstOrder[i].ToString().Split('|')[0];
+                            cboOrder.Items.Add(ilst);
+                        }
+                    }
+                    Boolean val = false;
+                    if (ulordID != 0)
+                    {
+                        int selectorder = 0;
+                        for (int j = 0; j < cboOrder.Items.Count; j++)
+                        {
+                            if (cboOrder.Items[j].Text.Split('|')[0].ToString().Trim() == ulordID.ToString())
+                            {
+                                selectorder = j;
+                                if (cboOrder.Items[j].Text.Split('|')[2].ToString().Trim() != "")
+                                    val = true;
+                                break;
+                            }
+                        }
+                        cboOrder.SelectedIndex = selectorder;
+                    }
+                    //if (cboOrder.Items.Count > 0)
+                    //    btnOrder.Enabled = true;
+                    //else
+                    //{
+                    //    btnOrder.Enabled = true;
+                    //}
+                    //For bug ID 52793 
+                    if (val)
+                    {
+                        //txtReferringProvider.ReadOnly = true;
+                        //txtProviderNPI.ReadOnly = true;
+                        //txtReferringFacility.ReadOnly = true;
+                        //txtReferingAddress.ReadOnly = true;
+                        //msktxtReferingPhoneNo.ReadOnly = true;
+                        //msktxtReferingFaxNo.ReadOnly = true;
+                        //txtReferringProvider.Attributes.Add("onkeypress", "return false;");
+                        //txtReferringFacility.Attributes.Add("onkeypress", "return false;");
+                        //txtReferingAddress.Attributes.Add("onkeypress", "return false;");
+                        //txtProviderNPI.Attributes.Add("onkeypress", "return false;");
+                        //txtProviderNPI.Attributes.Add("onkeydown", "return false;");
+                        //txtReferringProvider.Attributes.Add("onkeydown", "return false;");
+                        //txtReferringFacility.Attributes.Add("onkeydown", "return false;");
+                        //txtReferingAddress.Attributes.Add("onkeydown", "return false;");
+
+                        //txtProviderNPI.Style.Add("background-color", "#BFDBFF");
+
+
+                        //txtReferingAddress.Style.Add("background-color", "#BFDBFF");
+
+
+                        //txtReferringProvider.Style.Add("background-color", "#BFDBFF");
+
+                        //txtReferringFacility.Style.Add("background-color", "#BFDBFF");
+
+                        //msktxtReferingPhoneNo.Style.Add("background-color", "#BFDBFF");
+
+                        //msktxtReferingFaxNo.Style.Add("background-color", "#BFDBFF");
+                    }
+
+                    else
+                    {
+                        //txtReferringProvider.ReadOnly = false;
+                        //txtProviderNPI.ReadOnly = false;
+                        //txtReferringFacility.ReadOnly = false;
+                        //txtReferingAddress.ReadOnly = false;
+                        //msktxtReferingPhoneNo.ReadOnly = false;
+                        //msktxtReferingFaxNo.ReadOnly = false;
+                        //txtProviderNPI.Attributes.Remove("onkeypress");
+                        //txtProviderNPI.Attributes.Remove("onkeydown");
+                        //txtProviderNPI.Style.Add("background-color", "#ffffff");
+
+                        //txtReferingAddress.Attributes.Remove("onkeypress");
+                        //txtReferingAddress.Attributes.Remove("onkeydown");
+                        //txtReferingAddress.Style.Add("background-color", "#ffffff");
+
+                        //txtReferringProvider.Attributes.Remove("onkeydown");
+                        //txtReferringProvider.Attributes.Remove("onkeypress");
+                        //txtReferringProvider.Style.Add("background-color", "#ffffff");
+
+                        //txtReferringFacility.Attributes.Remove("onkeydown");
+                        //txtReferringFacility.Attributes.Remove("onkeypress");
+                        //txtReferringFacility.Style.Add("background-color", "#ffffff");
+
+                        //msktxtReferingPhoneNo.Style.Add("background-color", "#ffffff");
+
+                        //msktxtReferingFaxNo.Style.Add("background-color", "#ffffff");
+                    }
                 }
             }
-            catch (Exception ex)
+            else
             {
-                logFile.Info(DateTime.UtcNow.ToString() + "- ChangeproviderforCMGAncillary -"+ex.Message, null);
+                if (tabReferringProvAndPCP.SelectedIndex == 0)
+                {
+                    imgClearProviderText.Visible = true;
+                }
+                imgClearProviderText.Style.Add("top", "234px !important");
+                cboOrder.Items.Clear();
+                cboOrder.Enabled = false;
+                btnOrder.Enabled = false;
+                lblOrder.ForeColor = Color.Black;
+                lblOrder.Text = lblOrder.Text.Replace("*", "");
+                tabReferringProvAndPCP.Tabs[0].Text = "Referring Provider Info";
+                //lblReferringName.Text = "Ref. Provider";
+                //lblReferingFacility.Text = "Ref. Facility";
+                //lblReferingAddress.Text = "Ref. Address";
+                //lblReferingPhoneNo.Text = "Ref. Phone #";
+                //lblReferingFaxNo.Text = "Ref. Fax #";
+                lblProviderName.Text = "Prov. Name";
+                // btnFindPhysician.Enabled = true;
+                chkSelfReferred.Enabled = true;
             }
         }
         protected void btnOrderCreate_Click(object sender, EventArgs e)
@@ -4529,7 +4440,7 @@ namespace Acurus.Capella.UI
 
         protected void tabReferringProvAndPCP_TabClick(object sender, RadTabStripEventArgs e)
         {
-                if (hdnbtnsave.Value.ToString().ToUpper() == "TRUE")
+            if (hdnbtnsave.Value.ToString().ToUpper() == "TRUE")
                 btnSave.Enabled = false;
             else
                 btnSave.Enabled = true;
@@ -4539,15 +4450,15 @@ namespace Acurus.Capella.UI
                 var facAncillary = from f in ApplicationObject.facilityLibraryList where f.Fac_Name == cboFacility.SelectedItem.Text select f;
                 IList<FacilityLibrary> ilstFacAncillary = facAncillary.ToList<FacilityLibrary>();
                 if (ilstFacAncillary.Count > 0 && ilstFacAncillary[0].Is_Ancillary == "Y")
-                {                    
-                        imgClearProviderText.Visible = false;                                        
+                {
+                    imgClearProviderText.Visible = false;
                 }
                 else
                 {
                     imgClearProviderText.Visible = true;
                 }
 
-                    imgClearProviderText.Style.Add("top", "234px !important");
+                imgClearProviderText.Style.Add("top", "234px !important");
 
                 chkSelfReferred.Visible = true;
                 if (hdnEncounterID.Value != null && hdnEncounterID.Value != string.Empty)
@@ -4597,7 +4508,7 @@ namespace Acurus.Capella.UI
                 if (hdnEncounterID.Value != string.Empty)
                 {
                     if (hdnEncounterID.Value != "0")
-                    {                      
+                    {
                         Encntlist = EncMngr.GetEncounterByEncounterID(Convert.ToUInt32(hdnEncounterID.Value));
 
                         if (Encntlist.Count > 0)
@@ -4624,7 +4535,7 @@ namespace Acurus.Capella.UI
                                 //    }
 
 
-                                txtProviderSearch.Text = Encntlist[0].Referring_Physician + "| NPI: " + Encntlist[0].Referring_Provider_NPI + "| Facility: " + Encntlist[0].Referring_Facility + "| Address:" + Encntlist[0].Referring_Address + "| Phone No:" + Encntlist[0].Referring_Phone_No + "| Fax No:" + Encntlist[0].Referring_Fax_No ;
+                                txtProviderSearch.Text = Encntlist[0].Referring_Physician + "| NPI: " + Encntlist[0].Referring_Provider_NPI + "| Facility: " + Encntlist[0].Referring_Facility + "| Address:" + Encntlist[0].Referring_Address + "| Phone No:" + Encntlist[0].Referring_Phone_No + "| Fax No:" + Encntlist[0].Referring_Fax_No;
                                 //hdnrenprovider.Value = " |" + Encntlist[0].Referring_Physician + "|" + EncRecord.Referring_Provider_NPI + "|" + "" + "|" + EncRecord.Referring_Facility + "|" + EncRecord.Referring_Address + "|" + EncRecord.Referring_Fax_No + "|" + EncRecord.Referring_Phone_No;
 
                             }
@@ -4633,7 +4544,7 @@ namespace Acurus.Capella.UI
                                 txtProviderSearch.Text = "";
                             }
                         }
-                       
+
                     }
                     else
                     {
@@ -4647,7 +4558,7 @@ namespace Acurus.Capella.UI
                         //msktxtReferingFaxNo.Text = HdnRefPhy.Value.Split('|')[3].ToString();
                         //txtProviderNPI.Text = HdnRefPhy.Value.Split('|')[4].ToString();
                         //txtReferringFacility.Text = HdnRefPhy.Value.Split('|')[5].ToString();
-                        txtProviderSearch.Text = hdnrenprovidersearch.Value; 
+                        txtProviderSearch.Text = hdnrenprovidersearch.Value;
                     }
                     if (ddlPhysicianName.Items.Count > 0)
                     {
@@ -4661,7 +4572,7 @@ namespace Acurus.Capella.UI
                         chkSelfReferred.Checked = false;
                 }
                 if (Encntlist.Count > 0)
-                    hdnrenprovider.Value = Encntlist[0].Referring_Physician + "| NPI: " + Encntlist[0].Referring_Provider_NPI + "|  Facility: " + Encntlist[0].Referring_Facility + "| Address:" + Encntlist[0].Referring_Address + "| Phone No:" + Encntlist[0].Referring_Phone_No + "| Fax No:" + Encntlist[0].Referring_Fax_No ;
+                    hdnrenprovider.Value = Encntlist[0].Referring_Physician + "| NPI: " + Encntlist[0].Referring_Provider_NPI + "|  Facility: " + Encntlist[0].Referring_Facility + "| Address:" + Encntlist[0].Referring_Address + "| Phone No:" + Encntlist[0].Referring_Phone_No + "| Fax No:" + Encntlist[0].Referring_Fax_No;
 
             }
             else if (tabReferringProvAndPCP.SelectedIndex == 1)
@@ -4723,9 +4634,9 @@ namespace Acurus.Capella.UI
                 //}
 
                 //}
-        }
+            }
             //Jira #CAP-158 -  Not able to navigate tab 
-            if (hdnCurrentProcess.Value != null && hdnCurrentProcess.Value!= "" && hdnCurrentProcess.Value.ToUpper() != "SCHEDULED")
+            if (hdnCurrentProcess.Value != null && hdnCurrentProcess.Value != "" && hdnCurrentProcess.Value.ToUpper() != "SCHEDULED")
             {
                 this.Page.Title = "View Appointment" + "-" + ClientSession.UserName;
                 chkReschedule.Enabled = false;
@@ -4750,136 +4661,89 @@ namespace Acurus.Capella.UI
 
                 btnPatientDemographics.Enabled = false;
                 btnPatientTask.Enabled = false;
-                
+
             }
         }
         //Jira #CAP-69 - labels are missing
         public void pcpDefaultDemographics()
         {
-            try
+            if (!IsPostBack)
             {
-                logFile.Info(DateTime.UtcNow.ToString() + "- PCP Default - Start", null);
-                if (!IsPostBack)
+                if (hdnEncounterID.Value != null && hdnEncounterID.Value != string.Empty)
                 {
-                    logFile.Info(DateTime.UtcNow.ToString() + "- PCP Default Postback - Start", null);
-                    if (hdnEncounterID.Value != null && hdnEncounterID.Value != string.Empty)
+                    if (hdnEncounterID.Value != "0")
                     {
-                        if (hdnEncounterID.Value != "0")
+                        Encntlist = EncMngr.GetEncounterByEncounterID(Convert.ToUInt32(hdnEncounterID.Value));
+                        if (Encntlist.Count > 0)
                         {
-                            logFile.Info(DateTime.UtcNow.ToString() + "- PCP Default Encounter - Start", null);
-                            Encntlist = EncMngr.GetEncounterByEncounterID(Convert.ToUInt32(hdnEncounterID.Value));
-                            if (Encntlist.Count > 0)
+                            if (Encntlist[0].PCP_Physician != string.Empty)
                             {
-                                if (Encntlist[0].PCP_Physician != string.Empty)
-                                {
-                                    //txtReferringFacility.Text = Encntlist[0].PCP_Facility;
-                                    //txtReferringProvider.Text = Encntlist[0].PCP_Physician;
-                                    //txtReferingAddress.Text = Encntlist[0].PCP_Address;
-                                    //msktxtReferingPhoneNo.Text = Encntlist[0].PCP_Phone_No;
-                                    //msktxtReferingFaxNo.Text = Encntlist[0].PCP_Fax_No;
-                                    //txtProviderNPI.Text = Encntlist[0].PCP_Provider_NPI;
-                                    //txtReferringProvider.Attributes.Add("onkeypress", "return false;");
-                                    //txtReferringFacility.Attributes.Add("onkeypress", "return false;");
-                                    //txtReferingAddress.Attributes.Add("onkeypress", "return false;");
-                                    //txtProviderNPI.Attributes.Add("onkeypress", "return false;");
-                                    //txtProviderNPI.Attributes.Add("onkeydown", "return false;");
-                                    //txtReferringProvider.Attributes.Add("onkeydown", "return false;");
-                                    //txtReferringFacility.Attributes.Add("onkeydown", "return false;");
-                                    //txtReferingAddress.Attributes.Add("onkeydown", "return false;");
-                                    //msktxtReferingPhoneNo.ReadOnly = true;
-                                    //msktxtReferingFaxNo.ReadOnly = true;
+                                //txtReferringFacility.Text = Encntlist[0].PCP_Facility;
+                                //txtReferringProvider.Text = Encntlist[0].PCP_Physician;
+                                //txtReferingAddress.Text = Encntlist[0].PCP_Address;
+                                //msktxtReferingPhoneNo.Text = Encntlist[0].PCP_Phone_No;
+                                //msktxtReferingFaxNo.Text = Encntlist[0].PCP_Fax_No;
+                                //txtProviderNPI.Text = Encntlist[0].PCP_Provider_NPI;
+                                //txtReferringProvider.Attributes.Add("onkeypress", "return false;");
+                                //txtReferringFacility.Attributes.Add("onkeypress", "return false;");
+                                //txtReferingAddress.Attributes.Add("onkeypress", "return false;");
+                                //txtProviderNPI.Attributes.Add("onkeypress", "return false;");
+                                //txtProviderNPI.Attributes.Add("onkeydown", "return false;");
+                                //txtReferringProvider.Attributes.Add("onkeydown", "return false;");
+                                //txtReferringFacility.Attributes.Add("onkeydown", "return false;");
+                                //txtReferingAddress.Attributes.Add("onkeydown", "return false;");
+                                //msktxtReferingPhoneNo.ReadOnly = true;
+                                //msktxtReferingFaxNo.ReadOnly = true;
 
-                                    //txtProviderSearch.Text = " |" + Encntlist[0].Referring_Physician + "| NPI: " + Encntlist[0].Referring_Provider_NPI + "| Facility: " + Encntlist[0].Referring_Facility + "| Address:" + Encntlist[0].Referring_Address + "| Fax No:" + Encntlist[0].Referring_Fax_No + "| Phone No:" + Encntlist[0].Referring_Phone_No;
-                                    //  hdnpcpprovider.Value = " |" + Encntlist[0].Referring_Physician + "|" + Encntlist[0].Referring_Provider_NPI + "|" + "" + "|" + Encntlist[0].Referring_Facility + "|" + Encntlist[0].Referring_Address + "|" + Encntlist[0].Referring_Fax_No + "|" + Encntlist[0].Referring_Phone_No; ; ;
-                                    txtProviderSearch.Text = Encntlist[0].PCP_Physician + "| NPI: " + Encntlist[0].PCP_Provider_NPI +
-                                     "| Facility: " + Encntlist[0].PCP_Facility + "| Address:" + Encntlist[0].PCP_Address +
-                                     "| Phone No:" + Encntlist[0].PCP_Phone_No + "| Fax No:" + Encntlist[0].PCP_Fax_No;
-                                    //Jira #CAP-69 - labels are missing
-                                    //hdnpcpprovider.Value = " |" + Encntlist[0].PCP_Physician + "|" + Encntlist[0].PCP_Provider_NPI + "|" + "" + "|" + Encntlist[0].PCP_Facility +
-                                    //    "|" + Encntlist[0].PCP_Address + "|"
-                                    //    + Encntlist[0].PCP_Fax_No + "|" + Encntlist[0].PCP_Phone_No;
+                                //txtProviderSearch.Text = " |" + Encntlist[0].Referring_Physician + "| NPI: " + Encntlist[0].Referring_Provider_NPI + "| Facility: " + Encntlist[0].Referring_Facility + "| Address:" + Encntlist[0].Referring_Address + "| Fax No:" + Encntlist[0].Referring_Fax_No + "| Phone No:" + Encntlist[0].Referring_Phone_No;
+                                //  hdnpcpprovider.Value = " |" + Encntlist[0].Referring_Physician + "|" + Encntlist[0].Referring_Provider_NPI + "|" + "" + "|" + Encntlist[0].Referring_Facility + "|" + Encntlist[0].Referring_Address + "|" + Encntlist[0].Referring_Fax_No + "|" + Encntlist[0].Referring_Phone_No; ; ;
+                                txtProviderSearch.Text = Encntlist[0].PCP_Physician + "| NPI: " + Encntlist[0].PCP_Provider_NPI +
+                                 "| Facility: " + Encntlist[0].PCP_Facility + "| Address:" + Encntlist[0].PCP_Address +
+                                 "| Phone No:" + Encntlist[0].PCP_Phone_No + "| Fax No:" + Encntlist[0].PCP_Fax_No;
+                                //Jira #CAP-69 - labels are missing
+                                //hdnpcpprovider.Value = " |" + Encntlist[0].PCP_Physician + "|" + Encntlist[0].PCP_Provider_NPI + "|" + "" + "|" + Encntlist[0].PCP_Facility +
+                                //    "|" + Encntlist[0].PCP_Address + "|"
+                                //    + Encntlist[0].PCP_Fax_No + "|" + Encntlist[0].PCP_Phone_No;
 
-                                    //hdnpcpprovidersearch.Value = " |" + Encntlist[0].PCP_Physician + "|" + Encntlist[0].PCP_Provider_NPI + "|" + "" + "|" + Encntlist[0].PCP_Facility +
-                                    //    "|" + Encntlist[0].PCP_Address + "|"
-                                    //    + Encntlist[0].PCP_Fax_No + "|" + Encntlist[0].PCP_Phone_No;
+                                //hdnpcpprovidersearch.Value = " |" + Encntlist[0].PCP_Physician + "|" + Encntlist[0].PCP_Provider_NPI + "|" + "" + "|" + Encntlist[0].PCP_Facility +
+                                //    "|" + Encntlist[0].PCP_Address + "|"
+                                //    + Encntlist[0].PCP_Fax_No + "|" + Encntlist[0].PCP_Phone_No;
 
-                                    hdnpcpprovider.Value = Encntlist[0].PCP_Physician + "| NPI: " + Encntlist[0].PCP_Provider_NPI +
-                                     "| Facility: " + Encntlist[0].PCP_Facility + "| Address:" + Encntlist[0].PCP_Address +
-                                     "| Phone No:" + Encntlist[0].PCP_Phone_No + "| Fax No:" + Encntlist[0].PCP_Fax_No;
+                                hdnpcpprovider.Value = Encntlist[0].PCP_Physician + "| NPI: " + Encntlist[0].PCP_Provider_NPI +
+                                 "| Facility: " + Encntlist[0].PCP_Facility + "| Address:" + Encntlist[0].PCP_Address +
+                                 "| Phone No:" + Encntlist[0].PCP_Phone_No + "| Fax No:" + Encntlist[0].PCP_Fax_No;
 
-                                    hdnpcpprovidersearch.Value = Encntlist[0].PCP_Physician + "| NPI: " + Encntlist[0].PCP_Provider_NPI +
-                                     "| Facility: " + Encntlist[0].PCP_Facility + "| Address:" + Encntlist[0].PCP_Address +
-                                     "| Phone No:" + Encntlist[0].PCP_Phone_No + "| Fax No:" + Encntlist[0].PCP_Fax_No;
-                                }
-                                else
-                                {
-                                    txtProviderSearch.Text = "";
-                                }
+                                hdnpcpprovidersearch.Value = Encntlist[0].PCP_Physician + "| NPI: " + Encntlist[0].PCP_Provider_NPI +
+                                 "| Facility: " + Encntlist[0].PCP_Facility + "| Address:" + Encntlist[0].PCP_Address +
+                                 "| Phone No:" + Encntlist[0].PCP_Phone_No + "| Fax No:" + Encntlist[0].PCP_Fax_No;
                             }
-                            logFile.Info(DateTime.UtcNow.ToString() + "- PCP Default Encounter - End", null);
-                        }
-                        else
-                        {
-                            logFile.Info(DateTime.UtcNow.ToString() + "- PCP Default Empty - Start", null);
-                            FindPhysican InsuredList = new FindPhysican();
-                            PatientInsuredPlanManager objPhysicianManager = new PatientInsuredPlanManager();
-                            InsuredList = objPhysicianManager.FindPhysicianByInsureList(Convert.ToUInt64(Request["Human_id"]));
-
-                            if (InsuredList.PhyList.Count > 0)
+                            else
                             {
-                                //Jira #CAP-156 - Index was outside bounds 
-                                //txtProviderSearch.Text = InsuredList.PhyList[0].PhyPrefix + " " + InsuredList.PhyList[0].PhyFirstName + " " + InsuredList.PhyList[0].PhyMiddleName + " " + InsuredList.PhyList[0].PhyLastName + "(" + InsuredList.PhyList[0].PhySuffix + ")" + " | " +
-                                //                                 "NPI:" + InsuredList.PhyList[0].PhyNPI + " | " +
-                                //                                 "Facility:" + InsuredList.PhyList[0].PhyFacility + " | " +
-                                //                                 "Address:" + InsuredList.PhyList[0].PhyAddrs + ", " +
-                                //                                 InsuredList.PhyList[0].PhyCity + "," +
-                                //                                 InsuredList.PhyList[0].PhyState + " " +
-                                //                                 InsuredList.PhyList[0].PhyZip + " | " +
-                                //                                 ((InsuredList.PhyList[0].PhyPhone.Trim()) != "" ? "Phone No:" + InsuredList.PhyList[0].PhyPhone + " | " : "") +
-                                //                                 (InsuredList.PhyList[0].PhyFax.Trim() != "" ? "Fax No:" + InsuredList.PhyList[0].PhyFax : "");
+                                txtProviderSearch.Text = "";
+                            }
+                        }
+                    }
+                    else
+                    {
 
-                                txtProviderSearch.Text = InsuredList.PhyList[0].PhyPrefix + " " + InsuredList.PhyList[0].PhyFirstName + " " + InsuredList.PhyList[0].PhyMiddleName + " " + InsuredList.PhyList[0].PhyLastName + "(" + InsuredList.PhyList[0].PhySuffix + ")" + " | " +
-                                                             "NPI:" + InsuredList.PhyList[0].PhyNPI + " | " +
-                                                             "Facility:" + InsuredList.PhyList[0].PhyFacility + " | " +
-                                                             "Address:" + InsuredList.PhyList[0].PhyAddrs + ", " +
-                                                             InsuredList.PhyList[0].PhyCity + "," +
-                                                             InsuredList.PhyList[0].PhyState + " " +
-                                                             InsuredList.PhyList[0].PhyZip + " | " +
-                                                             ((InsuredList.PhyList[0].PhyPhone.Trim()) != "" ? "Phone No:" + InsuredList.PhyList[0].PhyPhone + " | " : "Phone No: | ") +
-                                                             (InsuredList.PhyList[0].PhyFax.Trim() != "" ? "Fax No:" + InsuredList.PhyList[0].PhyFax : "Fax No:");
-                                //Jira #CAP-156 - Index was outside bounds 
-                                //hdnpcpprovider.Value = InsuredList.PhyList[0].PhyPrefix + " " + InsuredList.PhyList[0].PhyFirstName + " " + InsuredList.PhyList[0].PhyMiddleName + " " + InsuredList.PhyList[0].PhyLastName + "(" + InsuredList.PhyList[0].PhySuffix + ")" + " | " +
-                                //                          "NPI:" + InsuredList.PhyList[0].PhyNPI + " | " +
-                                //                          "Facility:" + InsuredList.PhyList[0].PhyFacility + " | " +
-                                //                          "Address:" + InsuredList.PhyList[0].PhyAddrs + ", " +
-                                //                          InsuredList.PhyList[0].PhyCity + "," +
-                                //                          InsuredList.PhyList[0].PhyState + " " +
-                                //                          InsuredList.PhyList[0].PhyZip + " | " +
-                                //                          ((InsuredList.PhyList[0].PhyPhone.Trim()) != "" ? "Phone No:" + InsuredList.PhyList[0].PhyPhone + " | " : "") +
-                                //                          (InsuredList.PhyList[0].PhyFax.Trim() != "" ? "Fax No:" + InsuredList.PhyList[0].PhyFax : "");
+                        FindPhysican InsuredList = new FindPhysican();
+                        PatientInsuredPlanManager objPhysicianManager = new PatientInsuredPlanManager();
+                        InsuredList = objPhysicianManager.FindPhysicianByInsureList(Convert.ToUInt64(Request["Human_id"]));
 
-                                hdnpcpprovider.Value = InsuredList.PhyList[0].PhyPrefix + " " + InsuredList.PhyList[0].PhyFirstName + " " + InsuredList.PhyList[0].PhyMiddleName + " " + InsuredList.PhyList[0].PhyLastName + "(" + InsuredList.PhyList[0].PhySuffix + ")" + " | " +
-                                                          "NPI:" + InsuredList.PhyList[0].PhyNPI + " | " +
-                                                          "Facility:" + InsuredList.PhyList[0].PhyFacility + " | " +
-                                                          "Address:" + InsuredList.PhyList[0].PhyAddrs + ", " +
-                                                          InsuredList.PhyList[0].PhyCity + "," +
-                                                          InsuredList.PhyList[0].PhyState + " " +
-                                                          InsuredList.PhyList[0].PhyZip + " | " +
-                                                          ((InsuredList.PhyList[0].PhyPhone.Trim()) != "" ? "Phone No:" + InsuredList.PhyList[0].PhyPhone + " | " : "Phone No: | ") +
-                                                          (InsuredList.PhyList[0].PhyFax.Trim() != "" ? "Fax No:" + InsuredList.PhyList[0].PhyFax : "Fax No:");
+                        if (InsuredList.PhyList.Count > 0)
+                        {
+                            //Jira #CAP-156 - Index was outside bounds 
+                            //txtProviderSearch.Text = InsuredList.PhyList[0].PhyPrefix + " " + InsuredList.PhyList[0].PhyFirstName + " " + InsuredList.PhyList[0].PhyMiddleName + " " + InsuredList.PhyList[0].PhyLastName + "(" + InsuredList.PhyList[0].PhySuffix + ")" + " | " +
+                            //                                 "NPI:" + InsuredList.PhyList[0].PhyNPI + " | " +
+                            //                                 "Facility:" + InsuredList.PhyList[0].PhyFacility + " | " +
+                            //                                 "Address:" + InsuredList.PhyList[0].PhyAddrs + ", " +
+                            //                                 InsuredList.PhyList[0].PhyCity + "," +
+                            //                                 InsuredList.PhyList[0].PhyState + " " +
+                            //                                 InsuredList.PhyList[0].PhyZip + " | " +
+                            //                                 ((InsuredList.PhyList[0].PhyPhone.Trim()) != "" ? "Phone No:" + InsuredList.PhyList[0].PhyPhone + " | " : "") +
+                            //                                 (InsuredList.PhyList[0].PhyFax.Trim() != "" ? "Fax No:" + InsuredList.PhyList[0].PhyFax : "");
 
-                                //Jira #CAP-156 - Index was outside bounds 
-                                //hdnpcpprovidersearch.Value = InsuredList.PhyList[0].PhyPrefix + " " + InsuredList.PhyList[0].PhyFirstName + " " + InsuredList.PhyList[0].PhyMiddleName + " " + InsuredList.PhyList[0].PhyLastName + "(" + InsuredList.PhyList[0].PhySuffix + ")" + " | " +
-                                //                          "NPI:" + InsuredList.PhyList[0].PhyNPI + " | " +
-                                //                          "Facility:" + InsuredList.PhyList[0].PhyFacility + " | " +
-                                //                          "Address:" + InsuredList.PhyList[0].PhyAddrs + ", " +
-                                //                          InsuredList.PhyList[0].PhyCity + "," +
-                                //                          InsuredList.PhyList[0].PhyState + " " +
-                                //                          InsuredList.PhyList[0].PhyZip + " | " +
-                                //                          ((InsuredList.PhyList[0].PhyPhone.Trim()) != "" ? "Phone No:" + InsuredList.PhyList[0].PhyPhone + " | " : "") +
-                                //                          (InsuredList.PhyList[0].PhyFax.Trim() != "" ? "Fax No:" + InsuredList.PhyList[0].PhyFax : "");
-
-                                hdnpcpprovidersearch.Value = InsuredList.PhyList[0].PhyPrefix + " " + InsuredList.PhyList[0].PhyFirstName + " " + InsuredList.PhyList[0].PhyMiddleName + " " + InsuredList.PhyList[0].PhyLastName + "(" + InsuredList.PhyList[0].PhySuffix + ")" + " | " +
+                            txtProviderSearch.Text = InsuredList.PhyList[0].PhyPrefix + " " + InsuredList.PhyList[0].PhyFirstName + " " + InsuredList.PhyList[0].PhyMiddleName + " " + InsuredList.PhyList[0].PhyLastName + "(" + InsuredList.PhyList[0].PhySuffix + ")" + " | " +
                                                          "NPI:" + InsuredList.PhyList[0].PhyNPI + " | " +
                                                          "Facility:" + InsuredList.PhyList[0].PhyFacility + " | " +
                                                          "Address:" + InsuredList.PhyList[0].PhyAddrs + ", " +
@@ -4888,47 +4752,83 @@ namespace Acurus.Capella.UI
                                                          InsuredList.PhyList[0].PhyZip + " | " +
                                                          ((InsuredList.PhyList[0].PhyPhone.Trim()) != "" ? "Phone No:" + InsuredList.PhyList[0].PhyPhone + " | " : "Phone No: | ") +
                                                          (InsuredList.PhyList[0].PhyFax.Trim() != "" ? "Fax No:" + InsuredList.PhyList[0].PhyFax : "Fax No:");
-                            }
-                            else
-                            {
-                                txtProviderSearch.Text = "";
-                            }
-                            logFile.Info(DateTime.UtcNow.ToString() + "- PCP Default Empty - End", null);
-                        }
+                            //Jira #CAP-156 - Index was outside bounds 
+                            //hdnpcpprovider.Value = InsuredList.PhyList[0].PhyPrefix + " " + InsuredList.PhyList[0].PhyFirstName + " " + InsuredList.PhyList[0].PhyMiddleName + " " + InsuredList.PhyList[0].PhyLastName + "(" + InsuredList.PhyList[0].PhySuffix + ")" + " | " +
+                            //                          "NPI:" + InsuredList.PhyList[0].PhyNPI + " | " +
+                            //                          "Facility:" + InsuredList.PhyList[0].PhyFacility + " | " +
+                            //                          "Address:" + InsuredList.PhyList[0].PhyAddrs + ", " +
+                            //                          InsuredList.PhyList[0].PhyCity + "," +
+                            //                          InsuredList.PhyList[0].PhyState + " " +
+                            //                          InsuredList.PhyList[0].PhyZip + " | " +
+                            //                          ((InsuredList.PhyList[0].PhyPhone.Trim()) != "" ? "Phone No:" + InsuredList.PhyList[0].PhyPhone + " | " : "") +
+                            //                          (InsuredList.PhyList[0].PhyFax.Trim() != "" ? "Fax No:" + InsuredList.PhyList[0].PhyFax : "");
 
-                        if (hdnpcpprovidersearch.Value != null && hdnpcpprovidersearch.Value.Trim() != "")//Added by Vasanth
-                        {
-                            //txtReferringProvider.Text = HdnPcpPhy.Value.Split('|')[0].ToString();
-                            //txtReferingAddress.Text = HdnPcpPhy.Value.Split('|')[1].ToString();
-                            //msktxtReferingPhoneNo.Text = HdnPcpPhy.Value.Split('|')[2].ToString();
-                            //msktxtReferingFaxNo.Text = HdnPcpPhy.Value.Split('|')[3].ToString();
-                            //txtProviderNPI.Text = HdnPcpPhy.Value.Split('|')[4].ToString();
-                            //txtReferringFacility.Text = HdnPcpPhy.Value.Split('|')[5].ToString();
+                            hdnpcpprovider.Value = InsuredList.PhyList[0].PhyPrefix + " " + InsuredList.PhyList[0].PhyFirstName + " " + InsuredList.PhyList[0].PhyMiddleName + " " + InsuredList.PhyList[0].PhyLastName + "(" + InsuredList.PhyList[0].PhySuffix + ")" + " | " +
+                                                      "NPI:" + InsuredList.PhyList[0].PhyNPI + " | " +
+                                                      "Facility:" + InsuredList.PhyList[0].PhyFacility + " | " +
+                                                      "Address:" + InsuredList.PhyList[0].PhyAddrs + ", " +
+                                                      InsuredList.PhyList[0].PhyCity + "," +
+                                                      InsuredList.PhyList[0].PhyState + " " +
+                                                      InsuredList.PhyList[0].PhyZip + " | " +
+                                                      ((InsuredList.PhyList[0].PhyPhone.Trim()) != "" ? "Phone No:" + InsuredList.PhyList[0].PhyPhone + " | " : "Phone No: | ") +
+                                                      (InsuredList.PhyList[0].PhyFax.Trim() != "" ? "Fax No:" + InsuredList.PhyList[0].PhyFax : "Fax No:");
 
-                            txtProviderSearch.Text = hdnpcpprovidersearch.Value;
-                        }
+                            //Jira #CAP-156 - Index was outside bounds 
+                            //hdnpcpprovidersearch.Value = InsuredList.PhyList[0].PhyPrefix + " " + InsuredList.PhyList[0].PhyFirstName + " " + InsuredList.PhyList[0].PhyMiddleName + " " + InsuredList.PhyList[0].PhyLastName + "(" + InsuredList.PhyList[0].PhySuffix + ")" + " | " +
+                            //                          "NPI:" + InsuredList.PhyList[0].PhyNPI + " | " +
+                            //                          "Facility:" + InsuredList.PhyList[0].PhyFacility + " | " +
+                            //                          "Address:" + InsuredList.PhyList[0].PhyAddrs + ", " +
+                            //                          InsuredList.PhyList[0].PhyCity + "," +
+                            //                          InsuredList.PhyList[0].PhyState + " " +
+                            //                          InsuredList.PhyList[0].PhyZip + " | " +
+                            //                          ((InsuredList.PhyList[0].PhyPhone.Trim()) != "" ? "Phone No:" + InsuredList.PhyList[0].PhyPhone + " | " : "") +
+                            //                          (InsuredList.PhyList[0].PhyFax.Trim() != "" ? "Fax No:" + InsuredList.PhyList[0].PhyFax : "");
 
-                    }
-
-                    if (hdnCurrentProcess.Value != null && hdnCurrentProcess.Value.ToUpper() == "SCHEDULED")
-                    {
-                        if (txtProviderSearch.Text != "")
-                        {
-                            txtProviderSearch.Enabled = false;
+                            hdnpcpprovidersearch.Value = InsuredList.PhyList[0].PhyPrefix + " " + InsuredList.PhyList[0].PhyFirstName + " " + InsuredList.PhyList[0].PhyMiddleName + " " + InsuredList.PhyList[0].PhyLastName + "(" + InsuredList.PhyList[0].PhySuffix + ")" + " | " +
+                                                     "NPI:" + InsuredList.PhyList[0].PhyNPI + " | " +
+                                                     "Facility:" + InsuredList.PhyList[0].PhyFacility + " | " +
+                                                     "Address:" + InsuredList.PhyList[0].PhyAddrs + ", " +
+                                                     InsuredList.PhyList[0].PhyCity + "," +
+                                                     InsuredList.PhyList[0].PhyState + " " +
+                                                     InsuredList.PhyList[0].PhyZip + " | " +
+                                                     ((InsuredList.PhyList[0].PhyPhone.Trim()) != "" ? "Phone No:" + InsuredList.PhyList[0].PhyPhone + " | " : "Phone No: | ") +
+                                                     (InsuredList.PhyList[0].PhyFax.Trim() != "" ? "Fax No:" + InsuredList.PhyList[0].PhyFax : "Fax No:");
                         }
                         else
                         {
-                            txtProviderSearch.Enabled = true;
+                            txtProviderSearch.Text = "";
                         }
+
                     }
-                    logFile.Info(DateTime.UtcNow.ToString() + "- PCP Default Postback - End", null);
+
+                    if (hdnpcpprovidersearch.Value != null && hdnpcpprovidersearch.Value.Trim() != "")//Added by Vasanth
+                    {
+                        //txtReferringProvider.Text = HdnPcpPhy.Value.Split('|')[0].ToString();
+                        //txtReferingAddress.Text = HdnPcpPhy.Value.Split('|')[1].ToString();
+                        //msktxtReferingPhoneNo.Text = HdnPcpPhy.Value.Split('|')[2].ToString();
+                        //msktxtReferingFaxNo.Text = HdnPcpPhy.Value.Split('|')[3].ToString();
+                        //txtProviderNPI.Text = HdnPcpPhy.Value.Split('|')[4].ToString();
+                        //txtReferringFacility.Text = HdnPcpPhy.Value.Split('|')[5].ToString();
+
+                        txtProviderSearch.Text = hdnpcpprovidersearch.Value;
+                    }
+
+                }
+
+                if (hdnCurrentProcess.Value != null && hdnCurrentProcess.Value.ToUpper() == "SCHEDULED")
+                {
+                    if (txtProviderSearch.Text != "")
+                    {
+                        txtProviderSearch.Enabled = false;
+                    }
+                    else
+                    {
+                        txtProviderSearch.Enabled = true;
+                    }
                 }
             }
-            catch (Exception ex)
-            {
-                logFile.Info(DateTime.UtcNow.ToString() + "- PCP Default"+ex.Message, null);
-            }
-}
+
+        }
 
         #region Empty Events. Some cause error when removed. Clean up when Time permits
 
@@ -5543,7 +5443,7 @@ namespace Acurus.Capella.UI
                 //logger.Debug("GetBlockCategory DB Call Starting");
                 Stopwatch GetBlockCategoryDBCall = new Stopwatch();
                 GetBlockCategoryDBCall.Start();
-                string MyPhyIntList = PhyPOVMngr.GetBlockCategory(ddlVisitType.Text,ClientSession.LegalOrg);
+                string MyPhyIntList = PhyPOVMngr.GetBlockCategory(ddlVisitType.Text, ClientSession.LegalOrg);
                 GetBlockCategoryDBCall.Stop();
                 //logger.Debug("GetBlockCategory DB Call Completed. Time Taken : " + GetBlockCategoryDBCall.Elapsed.Seconds + "." + GetBlockCategoryDBCall.Elapsed.Milliseconds + "s.");
                 //TOVLookupManager tovLookupMnger = new TOVLookupManager();
@@ -6541,7 +6441,7 @@ namespace Acurus.Capella.UI
                 {
                     if (!chkSelfReferred.Checked)
                     {
-                        if (hdnrenprovider.Value != "" && hdnrenprovider.Value!= "|||||")
+                        if (hdnrenprovider.Value != "" && hdnrenprovider.Value != "|||||")
                         {
                             EncRecord.Is_Self_Referred = "N";
                             //Jira #CAP-69 - labels are missing
@@ -6904,102 +6804,91 @@ namespace Acurus.Capella.UI
             //ddlDuration.Text = duration[iMyDefaultIndex].ToString();
 
             #endregion
-            try {
-                //logger.Debug("Filling Type Of Visit Combobox");
-                logFile.Info(DateTime.UtcNow.ToString() + "- FillPOV - Load POV - Start", null);
-                ddlVisitType.Items.Clear();
-                string povphysicianId = "P" + ClientSession.PhysicianId.ToString();
-                XmlDocument xmldocUser = new XmlDocument();
-                xmldocUser.Load(Server.MapPath(@"ConfigXML\Physician_POV.xml"));
-                XmlNodeList xmlUserList = xmldocUser.GetElementsByTagName(povphysicianId);
-                duration = new int[xmlUserList.Count];
-                description = new string[xmlUserList.Count];
-                string DefaultValue = "";
 
-                if (xmlUserList.Count > 0)
-                {
-                    logFile.Info(DateTime.UtcNow.ToString() + "- FillPOV - Filled user XML - Start", null);
-                    //logger.Debug("XML tag " + povphysicianId + " found");
-                    string Purpose_of_Visit = "";
-                    string Duration = "";
-                    string Description = "";
-                    int icount = 0;
-                    int iselected = -1;
+            //logger.Debug("Filling Type Of Visit Combobox");
+            ddlVisitType.Items.Clear();
+            string povphysicianId = "P" + ClientSession.PhysicianId.ToString();
+            XmlDocument xmldocUser = new XmlDocument();
+            xmldocUser.Load(Server.MapPath(@"ConfigXML\Physician_POV.xml"));
+            XmlNodeList xmlUserList = xmldocUser.GetElementsByTagName(povphysicianId);
+            duration = new int[xmlUserList.Count];
+            description = new string[xmlUserList.Count];
+            string DefaultValue = "";
 
-                    DefaultValue = xmlUserList[0].Attributes[4].Value;
-                    foreach (XmlNode item in xmlUserList)
-                    {
-                        if (item.Attributes[5].Value == ClientSession.LegalOrg)
-                        {
-                            Purpose_of_Visit = item.Attributes[0].Value;
-                            Duration = item.Attributes[1].Value;
-                            Description = item.Attributes[3].Value;
-                            RadComboBoxItem items = new RadComboBoxItem();
-                            items.Text = Purpose_of_Visit.ToUpper();
-                            //items.Value = Duration + "$#%" + Description;
-                            ddlVisitType.Items.Add(items);
-                            if (ddlVisitType.Items[icount].Text.ToUpper() == DefaultValue.ToUpper())
-                                iselected = icount;
-                            //ddlVisitType.Items[icount].Selected = true;
-                            //  else
-                            //   ddlVisitType.Items[icount].Selected = false;
-                            duration[icount] = Convert.ToInt32(Duration);
-                            description[icount] = Description;
-                            icount++;
-                        }
-                    }
-                    ddlVisitType.SelectedIndex = iselected;
-
-                    //string[] splitvalues = ddlVisitType.SelectedItem.Value.Split(new string[] { "$#%" }, StringSplitOptions.None);
-                    //if (splitvalues != null && splitvalues.Length == 2)
-                    //{
-                    //    ddlDuration.Text = splitvalues[0];
-                    //    txtVisitDescription.Text = splitvalues[1];
-                    //}
-                    if (ddlVisitType.SelectedIndex != -1)
-                    {
-                        ddlDuration.Text = duration[ddlVisitType.SelectedIndex].ToString();
-                        txtVisitDescription.Text = description[ddlVisitType.SelectedIndex].ToString();
-                    }
-                    logFile.Info(DateTime.UtcNow.ToString() + "- FillPOV - Filled user XML - End", null);
-                }
-                else if (xmlUserList.Count == 0)
-                {
-                    logFile.Info(DateTime.UtcNow.ToString() + "- FillPOV -Not Filled user XML - Start", null);
-                    //Jira #CAP-168 - check the deactivate (selectedUsers) user count 
-                    IList<PhysicianLibrary> PhysicianList = UtilityManager.GetPhysicianList(hdnFacilityName.Value.Trim(), ClientSession.LegalOrg);
-                    var user = from u in PhysicianList where u.PhyId == ulMyPhysicianID select u.PhyId;
-                    IList<ulong> selectedUsers = new List<ulong>();
-                    selectedUsers = user.ToList<ulong>();
-                    if (selectedUsers.Count > 0)
-                    {
-                        //logger.Debug("XML tag " + povphysicianId + " not found");
-                        ddlVisitType.SelectedIndex = -1;
-                        ddlDuration.Text = "";
-                        txtVisitDescription.Text = "";
-                        if (!(Request["Imported"] != null && Request["Imported"].ToString() == "Y"))
-                        {
-                            this.Page.ClientScript.RegisterStartupScript(this.Page.GetType(), "Edit Appointment", "DisplayErrorMessage('110026');", true);
-                            return;
-                        }
-                    }
-                    logFile.Info(DateTime.UtcNow.ToString() + "- FillPOV -Not Filled user XML - End", null);
-                }
-                if (duration.Count() > 0)
-                {
-                    Session["duration"] = duration;
-                }
-                if (description.Count() > 0)
-                {
-                    Session["description"] = description;
-                }
-                logFile.Info(DateTime.UtcNow.ToString() + "- FillPOV - Load POV - Start", null);
-            }
-            catch (Exception ex)
+            if (xmlUserList.Count > 0)
             {
-                logFile.Info(DateTime.UtcNow.ToString() + "- FillPOV -"+ex.Message, null);
+                //logger.Debug("XML tag " + povphysicianId + " found");
+                string Purpose_of_Visit = "";
+                string Duration = "";
+                string Description = "";
+                int icount = 0;
+                int iselected = -1;
+
+                DefaultValue = xmlUserList[0].Attributes[4].Value;
+                foreach (XmlNode item in xmlUserList)
+                {
+                    if (item.Attributes[5].Value == ClientSession.LegalOrg)
+                    {
+                        Purpose_of_Visit = item.Attributes[0].Value;
+                        Duration = item.Attributes[1].Value;
+                        Description = item.Attributes[3].Value;
+                        RadComboBoxItem items = new RadComboBoxItem();
+                        items.Text = Purpose_of_Visit.ToUpper();
+                        //items.Value = Duration + "$#%" + Description;
+                        ddlVisitType.Items.Add(items);
+                        if (ddlVisitType.Items[icount].Text.ToUpper() == DefaultValue.ToUpper())
+                            iselected = icount;
+                        //ddlVisitType.Items[icount].Selected = true;
+                        //  else
+                        //   ddlVisitType.Items[icount].Selected = false;
+                        duration[icount] = Convert.ToInt32(Duration);
+                        description[icount] = Description;
+                        icount++;
+                    }
+                }
+                ddlVisitType.SelectedIndex = iselected;
+
+                //string[] splitvalues = ddlVisitType.SelectedItem.Value.Split(new string[] { "$#%" }, StringSplitOptions.None);
+                //if (splitvalues != null && splitvalues.Length == 2)
+                //{
+                //    ddlDuration.Text = splitvalues[0];
+                //    txtVisitDescription.Text = splitvalues[1];
+                //}
+                if (ddlVisitType.SelectedIndex != -1)
+                {
+                    ddlDuration.Text = duration[ddlVisitType.SelectedIndex].ToString();
+                    txtVisitDescription.Text = description[ddlVisitType.SelectedIndex].ToString();
+                }
             }
+            else if (xmlUserList.Count == 0)
+            {
+                //Jira #CAP-168 - check the deactivate (selectedUsers) user count 
+                IList<PhysicianLibrary> PhysicianList = UtilityManager.GetPhysicianList(hdnFacilityName.Value.Trim(), ClientSession.LegalOrg);
+                var user = from u in PhysicianList where u.PhyId == ulMyPhysicianID select u.PhyId;
+                IList<ulong> selectedUsers = new List<ulong>();
+                selectedUsers = user.ToList<ulong>();
+                if (selectedUsers.Count > 0)
+                {
+                    //logger.Debug("XML tag " + povphysicianId + " not found");
+                    ddlVisitType.SelectedIndex = -1;
+                    ddlDuration.Text = "";
+                    txtVisitDescription.Text = "";
+                    if (!(Request["Imported"] != null && Request["Imported"].ToString() == "Y"))
+                    {
+                        this.Page.ClientScript.RegisterStartupScript(this.Page.GetType(), "Edit Appointment", "DisplayErrorMessage('110026');", true);
+                        return;
+                    }
+                }
             }
+            if (duration.Count() > 0)
+            {
+                Session["duration"] = duration;
+            }
+            if (description.Count() > 0)
+            {
+                Session["description"] = description;
+            }
+        }
 
         /*unused*/
         public string convertToTime(string t)
@@ -7180,29 +7069,20 @@ namespace Acurus.Capella.UI
 
         public void ComboBoxColorChange(RadComboBox combobox, Boolean bToNormal)
         {
-            try
+            if (bToNormal == false)
             {
-                logFile.Info(DateTime.UtcNow.ToString() + "- ComboBoxColorChange - Start-", null);
-                if (bToNormal == false)
-                {
-                    //combobox.Font = new Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold);
-                    combobox.Enabled = false;
-                    //combobox.BackColor = System.Drawing.Color.FromArgb(191, 219, 255);
+                //combobox.Font = new Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold);
+                combobox.Enabled = false;
+                //combobox.BackColor = System.Drawing.Color.FromArgb(191, 219, 255);
 
 
-                }
-                else
-                {
-                    combobox.Enabled = true;
-                    combobox.BackColor = Color.White;
-                    // combobox.Font = new Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular);
-
-                }
-                logFile.Info(DateTime.UtcNow.ToString() + "- ComboBoxColorChange - End-", null);
             }
-            catch(Exception ex)
+            else
             {
-                logFile.Info(DateTime.UtcNow.ToString() + "- ComboBoxColorChange -"+ex.Message, null);
+                combobox.Enabled = true;
+                combobox.BackColor = Color.White;
+                // combobox.Font = new Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular);
+
             }
         }
 
@@ -7307,33 +7187,27 @@ namespace Acurus.Capella.UI
 
         private void FillReasonCode()
         {
-            try {
-                logFile.Info(DateTime.UtcNow.ToString() + "- FillReasonCode - Start", null);
-                IList<StaticLookup> fieldlist;
-                FieldLookup lookup;
-                //Latha - 10 Aug 2011 - Start - AllLookups singleton
-                //AllLookups objAllLookups = new AllLookups();            
-                fieldlist = staticMngr.getStaticLookupByFieldName("RESCHEDULE REASON CODE", "Sort_Order");
-                //Latha - 10 Aug 2011 - End
+            IList<StaticLookup> fieldlist;
+            FieldLookup lookup;
+            //Latha - 10 Aug 2011 - Start - AllLookups singleton
+            //AllLookups objAllLookups = new AllLookups();            
+            fieldlist = staticMngr.getStaticLookupByFieldName("RESCHEDULE REASON CODE", "Sort_Order");
+            //Latha - 10 Aug 2011 - End
 
-                ddlReasonCode.Items.Clear();
-                if (fieldlist != null)
-                {
-                    for (int i = 0; i < fieldlist.Count; i++)
-                    {
-                        lookup = fieldlist[i];
-                        ddlReasonCode.Items.Add(new RadComboBoxItem(lookup.Value));
-                    }
-                }
-                ddlReasonCode.Items.Add(new RadComboBoxItem("Other"));
-                ddlReasonCode.SelectedIndex = 0;
-                logFile.Info(DateTime.UtcNow.ToString() + "- FillReasonCode - End", null);
-            }
-            catch (Exception ex)
+            ddlReasonCode.Items.Clear();
+            if (fieldlist != null)
             {
-                logFile.Info(DateTime.UtcNow.ToString() + "- FillReasonCode -"+ex.Message, null);
+                for (int i = 0; i < fieldlist.Count; i++)
+                {
+                    lookup = fieldlist[i];
+                    ddlReasonCode.Items.Add(new RadComboBoxItem(lookup.Value));
+                }
             }
+            ddlReasonCode.Items.Add(new RadComboBoxItem("Other"));
+            ddlReasonCode.SelectedIndex = 0;
+
         }
+
         //not been used right now 03-02-2016 by vasanth
         //object[] GenerateIsCMGOrderObject()
         //{
@@ -7391,39 +7265,31 @@ namespace Acurus.Capella.UI
 
         public void DisableTableLayout(Panel tablelayout)
         {
-            try
+            for (int i = 0; i < tablelayout.Controls.Count; i++)
             {
-                logFile.Info(DateTime.UtcNow.ToString() + "- DisableTableLayout - Start", null);
-                for (int i = 0; i < tablelayout.Controls.Count; i++)
+                if (tablelayout.Controls[i].GetType().ToString().Contains("TextBox"))
                 {
-                    if (tablelayout.Controls[i].GetType().ToString().Contains("TextBox"))
-                    {
-                        TextBox txtBox = (TextBox)tablelayout.Controls[i];
-                        TextBoxColorChange(txtBox, false);
-                    }
-                    else if (tablelayout.Controls[i].GetType().ToString().Contains("RadComboBox"))
-                    {
-                        RadComboBox combobox = (RadComboBox)tablelayout.Controls[i];
-                        ComboBoxColorChange(combobox, false);
-                    }
-                    else if (tablelayout.Controls[i].GetType().ToString().Contains("CheckBox"))
-                    {
-                        CheckBox checkbox = (CheckBox)tablelayout.Controls[i];
-                        if (checkbox.ID != "chkGuarantorIsPatient")
-                        {
-                            //                        CheckBoxColorChange(checkbox,);
-                        }
-                    }
-
+                    TextBox txtBox = (TextBox)tablelayout.Controls[i];
+                    TextBoxColorChange(txtBox, false);
                 }
-                tablelayout.ForeColor = Color.Gray;
-                logFile.Info(DateTime.UtcNow.ToString() + "- DisableTableLayout - End", null);
+                else if (tablelayout.Controls[i].GetType().ToString().Contains("RadComboBox"))
+                {
+                    RadComboBox combobox = (RadComboBox)tablelayout.Controls[i];
+                    ComboBoxColorChange(combobox, false);
+                }
+                else if (tablelayout.Controls[i].GetType().ToString().Contains("CheckBox"))
+                {
+                    CheckBox checkbox = (CheckBox)tablelayout.Controls[i];
+                    if (checkbox.ID != "chkGuarantorIsPatient")
+                    {
+                        //                        CheckBoxColorChange(checkbox,);
+                    }
+                }
+
             }
-            catch (Exception ex)
-            {
-                logFile.Info(DateTime.UtcNow.ToString() + "- DisableTableLayout" + ex, null);
-            }
+            tablelayout.ForeColor = Color.Gray;
         }
+
         public PhysicianLibrary GetPhysicianDetailsByPhyID(string physician_id)
         {
             //logger.Debug("GetPhysicianDetailsByPhyID method called to retrieve physician details fromk 2 XMLs using Physician_ID");
@@ -7612,11 +7478,12 @@ namespace Acurus.Capella.UI
             Encntlist = EncMngr.GetEncounterByEncounterID(Convert.ToUInt32(EncounterId));
             if (Encntlist.Count > 0)
             {
-                if (Encntlist[0].PCP_Physician != string.Empty) { 
+                if (Encntlist[0].PCP_Physician != string.Empty)
+                {
                     value = Encntlist[0].PCP_Physician + "| NPI: " + Encntlist[0].PCP_Provider_NPI +
                          "| Facility: " + Encntlist[0].PCP_Facility + "| Address:" + Encntlist[0].PCP_Address +
                          "| Phone No:" + Encntlist[0].PCP_Phone_No + "| Fax No:" + Encntlist[0].PCP_Fax_No;
-            }
+                }
             }
 
             else if (InsuredList.PhyList.Count > 0)
@@ -7646,7 +7513,7 @@ namespace Acurus.Capella.UI
             }
             else
             {
-                 value = "";
+                value = "";
 
             }
             return JsonConvert.SerializeObject(value);
