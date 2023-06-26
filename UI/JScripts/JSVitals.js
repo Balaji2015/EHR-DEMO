@@ -2639,8 +2639,9 @@ function setBPStatus(idsys, iddia) {
             var sysvalye = sysvalue.value;
             var diaval = diavalue.value;
 
-
-            if ((parseFloat(sysvalye) >= 140 || parseFloat(diaval) >= 90) && idname.indexOf("Sitting") > -1) {
+            //Jira Cap-430 - BP status changes when the time value of the second BP is modified
+            //if ((parseFloat(sysvalye) >= 140 || parseFloat(diaval) >= 90) && idname.indexOf("Sitting") > -1) {
+            if ((parseFloat(sysvalye) >= 120 || parseFloat(diaval) >= 80) && idname.indexOf("Sitting") > -1) {
                 if (idname.indexOf("Second") > -1) {
                     arraydate.push(b);
                 }// arraydate.splice(2);
@@ -2650,8 +2651,9 @@ function setBPStatus(idsys, iddia) {
 
 
             }
-
-            if ((parseFloat(sysvalye) >= 140 || parseFloat(diaval) >= 90) && idname.indexOf("Standing") > -1) {
+            //Jira Cap-430 - BP status changes when the time value of the second BP is modified
+            //if ((parseFloat(sysvalye) >= 140 || parseFloat(diaval) >= 90) && idname.indexOf("Standing") > -1) {
+            if ((parseFloat(sysvalye) >= 120 || parseFloat(diaval) >= 80) && idname.indexOf("Standing") > -1) {
                 if (idname.indexOf("Second") > -1)
                     arraydate.push(d);//arraydate.splice(4);
                 else
@@ -2659,7 +2661,9 @@ function setBPStatus(idsys, iddia) {
 
 
             }
-            if ((parseFloat(sysvalye) >= 140 || parseFloat(diaval) >= 90) && idname.indexOf("Lying") > -1) {
+            //Jira Cap-430 - BP status changes when the time value of the second BP is modified
+           // if ((parseFloat(sysvalye) >= 140 || parseFloat(diaval) >= 90) && idname.indexOf("Lying") > -1) {
+            if ((parseFloat(sysvalye) >= 120 || parseFloat(diaval) >= 80) && idname.indexOf("Lying") > -1) {
                 if (idname.indexOf("Second") > -1)
                     arraydate.push(f);
                 else
@@ -2801,7 +2805,7 @@ function setBPStatus(idsys, iddia) {
                                 }
 
                                 else if (document.getElementById('hdnBPValue').value == "" && flagdatecheck == 1) {
-                                    if (default_date == "") {
+                                    if (default_date == "" || default_date == undefined) {
                                         arraydate.sort(function (a, b) { // sort object by retirement date
                                             var dateA = new Date(a), dateB = new Date(b)
                                             return dateA - dateB //sort by date ascending
