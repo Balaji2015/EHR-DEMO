@@ -77,7 +77,7 @@ build Job 11:
 
 build Production Job 6:
   tags:
-    - Azure_prod_6
+    - Azure_Prod_6
   rules:
     - if: '$SERVER_PRODUCTION_6 =="10.1.0.6"'
   stage: Solution build production 6
@@ -102,7 +102,7 @@ build Production Job 6:
 
 build Production Job 10:
   tags:
-    - Azure_prod_10
+    - Azure_Prod_10
   rules:
     - if: '$SERVER_PRODUCTION_10 =="10.1.0.10"'
   stage: Solution build Production 10
@@ -222,7 +222,7 @@ Deploy Test Job 10.0.0.11:
 
 Deploy PRODUCTION Job 10.1.0.6 :
   tags:
-    - Azure_prod_6
+    - Azure_Prod_6
   rules:
     - if: '$SERVER_PRODUCTION_6 =="10.1.0.6"'
   environment:
@@ -242,7 +242,7 @@ Deploy PRODUCTION Job 10.1.0.6 :
 
 Deploy PRODUCTION Job 10.1.0.10 :
   tags:
-    - Azure_prod_10
+    - Azure_Prod_10
   rules:
     - if: '$SERVER_PRODUCTION_10 =="10.1.0.10"'
   environment:
