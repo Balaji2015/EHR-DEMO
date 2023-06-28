@@ -18,7 +18,7 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
         void saveAddendum(IList<AddendumNotes> saveList, string facilityName, String ownerName, String userRole, bool isReview, string macAddress);
         void updateAddendum(IList<AddendumNotes> saveList, string facilityName, String ownerName, int closeType, string macAddress);
         IList<AddendumNotes> getAddendumNotesForPhysician(ulong addendumID, ulong encounterID);
-        void moveToAddendum(IList<AddendumNotes> loadList, string facilityName, String ownerName, String userRole, bool isSave, bool isReview, int closeType, string macAddress, bool bAddendumSaved, GenerateXml objGenerateXML);
+        void moveToAddendum(IList<AddendumNotes> loadList, string facilityName, String ownerName, String userRole, bool isSave, bool isReview, int closeType, string macAddress, bool bAddendumSaved, GenerateXml objGenerateXML, byte[] objHumanXml = null);
         void saveUpdateAddendum(IList<AddendumNotes> saveList, IList<AddendumNotes> updateList, string facilityName, String ownerName, String userRole, bool isSave, bool isReview, int closeType, bool isDirectMoveToProvider, string macAddress, bool bSaveXML);
     }
 
@@ -226,6 +226,21 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
 
         public void saveUpdateAddendum(IList<AddendumNotes> saveList, IList<AddendumNotes> updateList, string facilityName, String ownerName, String userRole, bool isSave, bool isReview, int closeType, bool isDirectMoveToProvider, string macAddress, bool bSaveXML)
         {
+            EncounterBlobManager encounterBlobManager = new EncounterBlobManager();
+            IList<Encounter_Blob> blbenc = new List<Encounter_Blob>();
+            byte[] bytesHumanXml = null;
+            if (saveList != null && saveList.Count > 0)
+            {
+                blbenc = encounterBlobManager.GetEncounterBlob(saveList[0].Encounter_ID);
+            }
+            else if(updateList != null && updateList.Count > 0) 
+            {
+                blbenc = encounterBlobManager.GetEncounterBlob(updateList[0].Encounter_ID);
+            }
+            if (blbenc != null && blbenc.Count > 0)
+            {
+                bytesHumanXml = blbenc[0].Human_XML;
+            }
             iTryCount = 0;
         TryAgain:
             int iResult = 0;
@@ -282,7 +297,7 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
                     if (saveList != null && saveList.Count > 0)
                     {
                         closeType = isDirectMoveToProvider ? closeType : userRole.ToUpper() == "MEDICAL ASSISTANT" ? 4 : 1;
-                        moveToAddendum(saveList, facilityName, ownerName, userRole, isSave, isReview, closeType, macAddress, bAddendumSaved, XMLObj);
+                        moveToAddendum(saveList, facilityName, ownerName, userRole, isSave, isReview, closeType, macAddress, bAddendumSaved, XMLObj, bytesHumanXml);
                         if (bAddendumSaved)
                         {
                             // XMLObj.itemDoc.Save(XMLObj.strXmlFilePath);
@@ -291,7 +306,7 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
                             try
                             {
                                 //XMLObj.itemDoc.Save(XMLObj.strXmlFilePath);
-                                WriteBlob(encID, XMLObj.itemDoc, MySession, null, saveList, updateList, XMLObj, false);
+                                WriteBlob(encID, XMLObj.itemDoc, MySession, null, saveList, updateList, XMLObj, false, bytesHumanXml);
 
                             }
                             catch (Exception xmlexcep)
@@ -355,7 +370,7 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
                     {
                         if (!isSave && (updateList != null && updateList.Count > 0))
                         {
-                            moveToAddendum(updateList, facilityName, ownerName, userRole, isSave, isReview, closeType, macAddress, bAddendumSaved, XMLObj);
+                            moveToAddendum(updateList, facilityName, ownerName, userRole, isSave, isReview, closeType, macAddress, bAddendumSaved, XMLObj, bytesHumanXml);
                             if (bAddendumSaved)
                             {
                                 // XMLObj.itemDoc.Save(XMLObj.strXmlFilePath);
@@ -365,7 +380,7 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
                                 try
                                 {
                                     // XMLObj.itemDoc.Save(XMLObj.strXmlFilePath);
-                                    WriteBlob(encID, XMLObj.itemDoc, MySession, null, saveList, updateList, XMLObj, false);
+                                    WriteBlob(encID, XMLObj.itemDoc, MySession, null, saveList, updateList, XMLObj, false, bytesHumanXml);
                                 }
                                 catch (Exception xmlexcep)
                                 {
@@ -545,7 +560,7 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
             return ilstAddendumNotes;
         }
 
-        public void moveToAddendum(IList<AddendumNotes> loadList, string facilityName, String ownerName, String userRole, bool isSave, bool isReview, int closeType, string macAddress, bool bAddendumSaved, GenerateXml objGenerateXML)
+        public void moveToAddendum(IList<AddendumNotes> loadList, string facilityName, String ownerName, String userRole, bool isSave, bool isReview, int closeType, string macAddress, bool bAddendumSaved, GenerateXml objGenerateXML, byte[] objHumanXml = null)
         {
             iTryCount = 0;
         TryAgain:
@@ -578,7 +593,7 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
                     //iResult = objWfMnger.InsertToWorkFlowObject(WFObj, (userRole == string.Empty || userRole.ToUpper() == "PHYSICIAN ASSISTANT") ? 1 : userRole.ToUpper() == "PHYSICIAN" ? 2 : userRole.ToUpper() == "MEDICAL ASSISTANT" ? 4 : 3, macAddress, MySession);
                     //iResult = objWfMnger.InsertToWorkFlowObject(WFObj, userRole == string.Empty ? 1 : userRole.ToUpper() == "PHYSICIAN" ? 2 : userRole.ToUpper() == "MEDICAL ASSISTANT" ? 4 : !isReview ? 2 : 3, macAddress, MySession);
 
-                    WriteBlob(loadList[0].Encounter_ID, objGenerateXML.itemDoc, MySession, loadList, null, null, objGenerateXML, false);
+                    WriteBlob(loadList[0].Encounter_ID, objGenerateXML.itemDoc, MySession, loadList, null, null, objGenerateXML, false, objHumanXml);
 
                 }
                 else
@@ -598,7 +613,7 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
                     WFObjectManager objWfMnger = new WFObjectManager();
                     iResult = objWfMnger.MoveToNextProcess(loadList[0].Id, "ADDENDUM", closeType, ownerName, loadList[0].Provider_Review_Signed_Date_And_Time, macAddress, null, MySession);
 
-                    WriteBlob(loadList[0].Encounter_ID, objGenerateXML.itemDoc, MySession, null, loadList, null, objGenerateXML, false);
+                    WriteBlob(loadList[0].Encounter_ID, objGenerateXML.itemDoc, MySession, null, loadList, null, objGenerateXML, false, objHumanXml);
 
                 }
 

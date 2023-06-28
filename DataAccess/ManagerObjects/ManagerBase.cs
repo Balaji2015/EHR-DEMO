@@ -2453,7 +2453,7 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
             #endregion
         }
 
-        public void WriteBlob(ulong EntityID, XmlDocument xmlDoc, ISession MySession, IList<T> saveList, IList<T> updateList, IList<T> deleteList, GenerateXml objGenerateXml, Boolean bIsEncounterXMLCreate)
+        public void WriteBlob(ulong EntityID, XmlDocument xmlDoc, ISession MySession, IList<T> saveList, IList<T> updateList, IList<T> deleteList, GenerateXml objGenerateXml, Boolean bIsEncounterXMLCreate, byte[] objHumanXml = null)
         {
             if (EntityID == 0)
             {
@@ -2582,7 +2582,10 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
                         objEncounterblob.Created_By = objGenerateXml.sCreatedBy;
                         objEncounterblob.Created_Date_And_Time = objGenerateXml.dtCreatedDateandTime;
                     }
-
+                    if (objHumanXml != null)
+                    {
+                        objEncounterblob.Human_XML= objHumanXml;
+                    }
                     byte[] bytes = null;
                     try
                     {
