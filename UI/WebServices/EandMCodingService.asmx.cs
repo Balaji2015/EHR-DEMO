@@ -1146,7 +1146,15 @@ namespace Acurus.Capella.UI.WebServices
             }
             EncounterManager objencManager = new EncounterManager();
             Encounter EncRecord = null;
-
+            //Jira CAP-512
+            EncounterBlobManager encounterBlobManager = new EncounterBlobManager();
+            IList<Encounter_Blob> encounterBlobList = null;
+            byte[] bytesHumanXml = null;
+            encounterBlobList =encounterBlobManager.GetEncounterBlob(ClientSession.EncounterId);
+            if (encounterBlobList != null && encounterBlobList.Count > 0)
+            {
+                bytesHumanXml = encounterBlobList[0].Human_XML;
+            }
             //Check for Z00.00 or Z00.01 Validation, if G Code is added
 
             //ICD
@@ -1471,6 +1479,11 @@ namespace Acurus.Capella.UI.WebServices
                         ClientSession.FillEncounterandWFObject.EncRecord = ObjEncManager.UpdateE_SuperBill(EncUpdateList, string.Empty);
                     }
                 }
+            }
+            //Jira CAP-512
+            if (ClientSession.EncounterId > 0)
+            {
+                encounterBlobManager.UpdateHumanXML(ClientSession.EncounterId, bytesHumanXml);
             }
 
             /*End For Git Lab Id: 1666*/

@@ -67,7 +67,7 @@ namespace Acurus.Capella.UI
             ElementManager objElementManager = new ElementManager();
             ApplicationObject.elementList = objElementManager.GetAllElement(string.Empty);
 
-            log4net.Config.XmlConfigurator.Configure();
+            //log4net.Config.XmlConfigurator.Configure();
         }
 
         protected void Session_Start(object sender, EventArgs e)
