@@ -459,7 +459,8 @@ function ImplantableScreenOpen(isUDI) {
     $(top.window.document).find("#TabFrameImplantable")[0].style.height = "95%";
     $(top.window.document).find(".modal-body")[8].style.height = "80%";
     var ScreenMode = '';
-    if (document.URL.split('&')[3].indexOf('ScreenMode') > -1) {
+    //jira cap - 513
+    if (document.URL.split('&')[3] != undefined && document.URL.split('&')[3].indexOf('ScreenMode') > -1) {
         ScreenMode = document.URL.split('&')[3].split('=')[1];
     }
     $(top.window.document).find("#TabFrameImplantable")[0].contentDocument.location.href = "frmImplantableDevice.aspx?ProcedureCode=" + Prodecure + "&Notes=" + ProNotes + "&Issaveorupdate=" + saveupdate + "&UpdateKeyValue=" + Updatekey + "&EncounterID=" + EncId + "&ScreenMode=" + ScreenMode;
