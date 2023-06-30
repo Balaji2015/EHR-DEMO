@@ -1337,7 +1337,8 @@ namespace Acurus.Capella.UI
                 }
                 else
                 {
-                    ScriptManager.RegisterStartupScript(this, this.Page.GetType(), string.Empty, "DisplayErrorMessage('380060');", true);
+                    //Jira Cap - 517
+                    //ScriptManager.RegisterStartupScript(this, this.Page.GetType(), string.Empty, "DisplayErrorMessage('380060');", true);
                     delete_SelectedRow();
                     Button2_Click1(sender, e);
                     spanPaymentNotes.Attributes.Remove("class"); /*added*/
