@@ -17,6 +17,7 @@ using System.Web.Hosting;
 using System.Web.Script.Serialization;
 using System.Web.Script.Services;
 using System.Threading;
+using static System.Windows.Forms.VisualStyles.VisualStyleElement.StartPanel;
 
 namespace Acurus.Capella.UI.WebServices
 {
@@ -809,7 +810,9 @@ objFillHuman.Birth_Date.ToString("dd-MMM-yyyy") + " | " +
             //objEandMManager.SaveUpdateEandMCodingForPhoneEncounter(EAndMCPTSaveList, EAndMCPTUpdateList, (IList<EandMCodingICD>)HttpContext.Current.Session["EandMICDList"], sPhyName, UtilityManager.ConvertToUniversal(), EAndMICDUpdateList);//, string.Empty, null, null, null);
             //Modified by balaji
             objEandMManager.SaveUpdateEandMCodingForPhoneEncounter(EAndMCPTSaveList, EAndMCPTUpdateList, EAndMICDSaveList, sPhyName, UtilityManager.ConvertToUniversal(), EAndMICDUpdateList);//, string.Empty, null, null, null);
-
+            // Jira cap - 499 - Need to Implement Phone Encounter Locking                                                                                                                                                                             //Jira CAP-340
+            EncounterBlobManager objEncblobmngr = new EncounterBlobManager();
+            objEncblobmngr.LockEncounter(uEncounterid, ulHumanID, ClientSession.UserName, UtilityManager.ConvertToUniversal());
             return "Success";
 
         }

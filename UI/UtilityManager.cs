@@ -5846,7 +5846,7 @@ namespace Acurus.Capella.UI
             }
         }
 
-        public Boolean LoadBlobHumanXML(ulong ulHumanID, ulong ulEncounterID, IList<Encounter_Blob> ilstEncounterBlob,string sTabMode, out string sXMLHumanDoc)
+        public Boolean LoadBlobHumanXML(ulong ulHumanID, ulong ulEncounterID, IList<Encounter_Blob> ilstEncounterBlob,string sTabMode, out string sXMLHumanDoc,string sIsPhone_Encounter="N")
         {
             Boolean bAlert = false;
             sXMLHumanDoc = string.Empty;
@@ -5860,7 +5860,8 @@ namespace Acurus.Capella.UI
                     DocumentationWfObject = wfObjMngr.GetWfObjArchiveByObjectSystemId(ulEncounterID, "DOCUMENTATION");
                 }
 
-                if (DocumentationWfObject.Current_Process == "DOCUMENT_COMPLETE")
+            // jira cap-499
+            if (DocumentationWfObject.Current_Process == "DOCUMENT_COMPLETE" || sIsPhone_Encounter.ToUpper()=="Y")
                 {
                     if (ilstEncounterBlob != null && ilstEncounterBlob.Count > 0 && ilstEncounterBlob[0].Human_XML != null)
                     {

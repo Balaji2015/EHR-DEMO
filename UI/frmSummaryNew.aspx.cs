@@ -44,6 +44,8 @@ namespace Acurus.Capella.UI
         HumanBlobManager HumanBlobMngr = new HumanBlobManager();
         EncounterBlobManager EncounterBlobMngr = new EncounterBlobManager();
         string sTabMode = "false";
+
+        string sIsPhoneEncounter = "N";
         protected void Page_Load(object sender, EventArgs e)
         {
             Loadsummary();
@@ -550,6 +552,8 @@ namespace Acurus.Capella.UI
                 btntreatment.Visible = false;
                 if (File.Exists(Path.Combine(System.Configuration.ConfigurationSettings.AppSettings["XMLPath"], "EHR_Phone_Encounter_Summary.xsl")))
                 {
+                    // jira cap-499
+                    sIsPhoneEncounter = "Y";
                     strTransformSource = Path.Combine(System.Configuration.ConfigurationSettings.AppSettings["XMLPath"], "EHR_Phone_Encounter_Summary.xsl");
                 }
                 //For Phone encounter cancel appointment
@@ -585,7 +589,7 @@ namespace Acurus.Capella.UI
             {
                 //Jira CAP-379
                 UtilityManager utilitymngr = new UtilityManager();
-                Boolean bAlert = utilitymngr.LoadBlobHumanXML(Convert.ToUInt64(HumanID), Encounter_Id, ilstEncounterBlob, sTabMode, out sXMLHumanDoc);
+                Boolean bAlert = utilitymngr.LoadBlobHumanXML(Convert.ToUInt64(HumanID), Encounter_Id, ilstEncounterBlob, sTabMode, out sXMLHumanDoc, sIsPhoneEncounter);
 
                 if (bAlert == true)
                 {
@@ -979,6 +983,8 @@ namespace Acurus.Capella.UI
             string xsltFile = string.Empty;
             if (Request.QueryString["PhoneEncounter"] != null && Request.QueryString["PhoneEncounter"].Contains("True"))
             {
+                // jira cap-499
+                sIsPhoneEncounter = "Y";
                 xsltFile = Path.Combine(System.Configuration.ConfigurationSettings.AppSettings["XMLPath"], "EHR_Phone_Encounter_Notes.xsl");
             }
             else
@@ -1622,7 +1628,8 @@ margin:0in 0in 0in 9in;
 
             string xsltFile = string.Empty;
             if (Request.QueryString["PhoneEncounter"] != null && Request.QueryString["PhoneEncounter"].Contains("True"))
-            {
+            {// jira cap-499
+                sIsPhoneEncounter = "Y";
                 xsltFile = Path.Combine(System.Configuration.ConfigurationSettings.AppSettings["XMLPath"], "EHR_Phone_Encounter_Notes.xsl");
             }
             else
@@ -2593,7 +2600,8 @@ margin:0in 0in 0in 9in;
 
             string xsltFile = string.Empty;
             if (Request.QueryString["PhoneEncounter"] != null && Request.QueryString["PhoneEncounter"].Contains("True"))
-            {
+            {// jira cap-499
+                sIsPhoneEncounter = "Y";
                 xsltFile = Path.Combine(System.Configuration.ConfigurationSettings.AppSettings["XMLPath"], "EHR_Phone_Encounter_Notes.xsl");
             }
             else
