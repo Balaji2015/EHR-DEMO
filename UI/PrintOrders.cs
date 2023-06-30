@@ -6678,7 +6678,9 @@ namespace Acurus.Capella.UI
             if (sSignatureDateTime != string.Empty)
             {
                 //sFooter = "Electronically Signed by " + sPhysicianName + " at " + Convert.ToDateTime(sSignatureDateTime).ToString("dd-MMM-yyyy");
-                sFooter = "Electronically Signed by " + sSignedPhysicianName + " at " + Convert.ToDateTime(sSignatureDateTime).ToString("dd-MMM-yyyy");
+                //Jir Cap - 488
+                //sFooter = "Electronically Signed by " + sSignedPhysicianName + " at " + Convert.ToDateTime(sSignatureDateTime).ToString("dd-MMM-yyyy");
+                sFooter = "Electronically Signed by " + sSignedPhysicianName + " on " + Convert.ToDateTime(sSignatureDateTime).ToString("dd-MMM-yyyy");
             }
             //else
             //{
