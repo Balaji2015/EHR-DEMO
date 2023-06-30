@@ -836,7 +836,8 @@ function makeUL(array, MenuName) {
                     resultsDate.push(array[i].split('^')[2].split(' ')[0]);
                 }
             }
-            if (array[i].split('^')[3] == "Stress Test" || array[i].split('^')[3] == "Nuclear Medicine") {
+            //Jira Cap-468 - Echo and Vascular test templates required Signed
+           // if (array[i].split('^')[3] == "Stress Test" || array[i].split('^')[3] == "Nuclear Medicine") {
                 for (var z = 0; z < array.length; z++) {
                     if (array[z].split('^')[0] == "StressTestReport" && array[z].split('^')[3] == array[i].split('^')[3]+" Signed Report") {
                         resultSubarray.push(array[z]);
@@ -848,7 +849,7 @@ function makeUL(array, MenuName) {
                             resultsDate.push(array[z].split('^')[2].split(' ')[0]);
                         }
                     }
-                }
+                //}
             }
         }
 
