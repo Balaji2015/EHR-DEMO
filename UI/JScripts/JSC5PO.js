@@ -3319,40 +3319,31 @@ window.addEventListener("online", (event) => {
         ErrorStack: ipAddress, //sErrorStack
     }
     if (bSleep == false) {
-        $.ajax({
-            type: "POST",
-            async: true,
-            url: "frmRCopiaToolbar.aspx/ErrorLogEntry",
-            data: JSON.stringify(ErrorLogData),
-            dataType: "json",
-            contentType: "application/json; charset=utf-8",
-            success: function (data) {
-                { sessionStorage.setItem('StartLoading', 'false'); StopLoadFromPatChart(); }
-                //if (isAlert == true) {
-                //    var errormeg = data.d;
-                //    if (errormeg[0] == '"' && errormeg[(errormeg.length) - 1] == '"') {
-                //        errormeg = errormeg.slice(1, -1);
-                //    }
-                //    $(window.top.document).find('#pErrorMsg').html("Error : " + errormeg);
-                //    $(window.top.document).find('#divErrorMessage').modal({ backdrop: 'static', keyboard: false }, 'show');
-                //    $(window.top.document).find('#btnErrorOk').css("display", "none");
-                //    $(window.top.document).find('#btnErrorCancel').css("display", "none");
-                //    $(window.top.document).find('#btnErrorOkCancel').css("display", "");
-                //}
-            },
-            error: function OnError(xhr) {
-                { sessionStorage.setItem('StartLoading', 'false'); StopLoadFromPatChart(); }
-                if (xhr.status == 999)
-                    window.location = xhr.statusText;
-                else {
-                    var log = JSON.parse(xhr.responseText);
-                    console.log(log);
-                    alert("USER MESSAGE:\n" +
-                        ". Cannot process request. Please Login again and retry. \nEXCEPTION DETAILS: \n" +
-                        "Message: " + log.Message);
-                }
-            }
-        });
+        //Due to Jira CAP-471 its temporarily commented
+
+        //$.ajax({
+        //    type: "POST",
+        //    async: true,
+        //    url: "frmRCopiaToolbar.aspx/ErrorLogEntry",
+        //    data: JSON.stringify(ErrorLogData),
+        //    dataType: "json",
+        //    contentType: "application/json; charset=utf-8",
+        //    success: function (data) {
+        //        { sessionStorage.setItem('StartLoading', 'false'); StopLoadFromPatChart(); }
+        //    },
+        //    error: function OnError(xhr) {
+        //        { sessionStorage.setItem('StartLoading', 'false'); StopLoadFromPatChart(); }
+        //        if (xhr.status == 999)
+        //            window.location = xhr.statusText;
+        //        else {
+        //            var log = JSON.parse(xhr.responseText);
+        //            console.log(log);
+        //            alert("USER MESSAGE:\n" +
+        //                ". Cannot process request. Please Login again and retry. \nEXCEPTION DETAILS: \n" +
+        //                "Message: " + log.Message);
+        //        }
+        //    }
+        //});
     }
     //Jira CAP-501
     { sessionStorage.setItem('StartLoading', 'false'); StopLoadFromPatChart(); }
