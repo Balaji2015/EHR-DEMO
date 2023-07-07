@@ -22,8 +22,7 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
 
         void SaveEncounterBlobWithTransaction( IList<Encounter_Blob> ListToUpdateEncounterBlob, string MACAddress);
         void LockEncounter(ulong ulEncounterID, ulong ulHumanID, string sUserName, DateTime dtModifiedDateTime);
-
-        void UpdateHumanXML(ulong ulEncounterID, byte[] objHumanXml);
+        
     }
 
     public partial class EncounterBlobManager : ManagerBase<Encounter_Blob, ulong>, IEncounterBlobManager
@@ -87,20 +86,6 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
                 SaveEncounterBlobWithTransaction(ilstEncounterBlob, string.Empty);
 
             }
-        }
-        //Jira CAP-512
-        public void UpdateHumanXML(ulong ulEncounterID, byte[] objHumanXml)
-        {
-            IList<Encounter_Blob> ilstEncounterBlob = new List<Encounter_Blob>();
-
-            ilstEncounterBlob = GetEncounterBlob(ulEncounterID);
-
-            for (int iCount = 0; iCount < ilstEncounterBlob.Count; iCount++)
-            {
-                ilstEncounterBlob[iCount].Human_XML = objHumanXml;
-            }
-            SaveEncounterBlobWithTransaction(ilstEncounterBlob, string.Empty);
-
         }
         #endregion
     }

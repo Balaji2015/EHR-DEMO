@@ -19,6 +19,9 @@ using System.Text;
 using MySql.Data.MySqlClient;
 using System.Configuration;
 using System.Xml.Serialization;
+using NHibernate.Type;
+using System.Data.Linq;
+
 namespace Acurus.Capella.DataAccess.ManagerObjects
 {
     public interface IManagerBase<T, TKey> : IDisposable
@@ -2453,7 +2456,7 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
             #endregion
         }
 
-        public void WriteBlob(ulong EntityID, XmlDocument xmlDoc, ISession MySession, IList<T> saveList, IList<T> updateList, IList<T> deleteList, GenerateXml objGenerateXml, Boolean bIsEncounterXMLCreate, byte[] objHumanXml = null)
+        public void WriteBlob(ulong EntityID, XmlDocument xmlDoc, ISession MySession, IList<T> saveList, IList<T> updateList, IList<T> deleteList, GenerateXml objGenerateXml, Boolean bIsEncounterXMLCreate)
         {
             if (EntityID == 0)
             {
@@ -2582,10 +2585,6 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
                         objEncounterblob.Created_By = objGenerateXml.sCreatedBy;
                         objEncounterblob.Created_Date_And_Time = objGenerateXml.dtCreatedDateandTime;
                     }
-                    if (objHumanXml != null)
-                    {
-                        objEncounterblob.Human_XML= objHumanXml;
-                    }
                     byte[] bytes = null;
                     try
                     {
@@ -2653,7 +2652,22 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
                         }
                         ilstEncounterBlob.Add(objEncounterblob);
 
-                        EncounterBlobMngr.SaveEncounterBlobWithoutTransaction(ilstInsertEncounterBlob, ilstEncounterBlob, MySession, string.Empty);
+                        //Jira #CAP-574, #CAP-578
+                        //EncounterBlobMngr.SaveEncounterBlobWithoutTransaction(ilstInsertEncounterBlob, ilstEncounterBlob, MySession, string.Empty);
+                        if (ilstEncounterBlob[0].Encounter_ID > 0)
+                        {
+                            string sQureyJoin = "Update blob_encounter set Encounter_XML = :EncXML ," +
+                               " Modified_By ='" + ilstEncounterBlob[0].Modified_By + "', " +
+                               "Modified_Date_And_Time ='" + ilstEncounterBlob[0].Modified_Date_And_Time.ToString("yyyy-MM-dd hh:mm:ss") + "', " +
+                               "Version =" + (ilstEncounterBlob[0].Version + 1).ToString() +
+                               " where Encounter_ID =" + ilstEncounterBlob[0].Encounter_ID.ToString();
+
+                            ISQLQuery query = MySession.CreateSQLQuery(sQureyJoin);
+                            query.SetParameter("EncXML", ilstEncounterBlob[0].Encounter_XML);
+
+                            IList<object> ilstObj = new List<object>();
+                            ilstObj = query.List<object>();
+                        }
                     }
                 }
 

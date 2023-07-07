@@ -1480,11 +1480,6 @@ namespace Acurus.Capella.UI.WebServices
                     }
                 }
             }
-            //Jira CAP-512
-            if (ClientSession.EncounterId > 0)
-            {
-                encounterBlobManager.UpdateHumanXML(ClientSession.EncounterId, bytesHumanXml);
-            }
 
             /*End For Git Lab Id: 1666*/
             if (!Is_CMG_Ancillary)
