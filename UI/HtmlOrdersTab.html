@@ -209,8 +209,18 @@
             dataType: "json",
             async: true,
             success: function (data) {
+                //old code
                 //Jira #CAP-337
-                localStorage.setItem("PrevSubTab", "");
+                //localStorage.setItem("PrevSubTab", "");
+
+                //New code
+                //Jira #CAP-509 -  avoid to set blank for PrevSubTab in localStorage
+                var Currenrtab = $('#myTabs').find('.tabstyle.active')[0].innerText;
+                if (Currenrtab != localStorage.getItem("PrevSubTab")) {
+                    //Jira #CAP-337
+                    localStorage.setItem("PrevSubTab", "");
+                }
+
                 Sessionvalues = (data.d);
                 var tab_disable = (data.d).split('=')[1];
                 if (tab_disable != "") {

@@ -357,15 +357,6 @@ namespace Acurus.Capella.UI
         protected global::System.Web.UI.HtmlControls.HtmlGenericControl mnuEMR_smnuPFSH;
 
         /// <summary>
-        /// mnuEMR_smnuManualResultEntry control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.HtmlControls.HtmlGenericControl mnuEMR_smnuManualResultEntry;
-
-        /// <summary>
         /// mnuEMR_smnuException control.
         /// </summary>
         /// <remarks>
