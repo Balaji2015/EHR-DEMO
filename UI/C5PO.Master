@@ -847,7 +847,7 @@ filter:progid:DXImageTransform.Microsoft.Blur(PixelRadius='4');
                                                 <li runat="server" id="mnuEMR_smnuPhoneEncounter"><a href="#" onclick="OpenModal('Phone Encounter');">Phone Encounter</a></li>
                                                 <li runat="server" id="mnuEMR_smnuImportVitals"><a href="#" onclick="OpenModal('Enter Vitals');">Enter Vitals</a></li>
                                                 <li runat="server" id="mnuEMR_smnuPFSH"><a href="#" onclick="OpenModal('PFSH');">PFSH</a></li>
-                                                <li runat="server" id="mnuEMR_smnuManualResultEntry"><a href="#" onclick="OpenModal('Manual Result Entry');">Manual Result Entry</a></li>
+                                                <%--<li runat="server" id="mnuEMR_smnuManualResultEntry"><a href="#" onclick="OpenModal('Manual Result Entry');">Manual Result Entry</a></li>--%>
                                                 <li runat="server" id="mnuEMR_smnuException">
                                                     <a href="#">Exception  <span class="caret"></span></a>
                                                     <div>

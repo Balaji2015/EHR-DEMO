@@ -93,7 +93,9 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
             IList<InsurancePlan> lstInsPln = new List<InsurancePlan>();
             using (ISession iMySession = NHibernateSessionManager.Instance.CreateISession())
             {
-                ICriteria crit = iMySession.CreateCriteria(typeof(InsurancePlan)).Add(Expression.Eq("Carrier_ID", Convert.ToInt32(CarrierId)));
+                //Jira #CAP-516
+                //ICriteria crit = iMySession.CreateCriteria(typeof(InsurancePlan)).Add(Expression.Eq("Carrier_ID", Convert.ToInt32(CarrierId)));
+                ICriteria crit = iMySession.CreateCriteria(typeof(InsurancePlan)).Add(Expression.Eq("Carrier_ID", Convert.ToInt32(CarrierId))).Add(Expression.Eq("Active", "Y"));
                 lstInsPln = crit.List<InsurancePlan>();
                 iMySession.Close();
             }
@@ -106,7 +108,9 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
             IList<InsurancePlan> lstInsPln = new List<InsurancePlan>();
             using (ISession iMySession = NHibernateSessionManager.Instance.CreateISession())
             {
-                ICriteria crit = iMySession.CreateCriteria(typeof(InsurancePlan));
+                //Jira #CAP-516
+                //ICriteria crit = iMySession.CreateCriteria(typeof(InsurancePlan));
+                ICriteria crit = iMySession.CreateCriteria(typeof(InsurancePlan)).Add(Expression.Eq("Active", "Y"));
                 lstInsPln = crit.List<InsurancePlan>();
                 iMySession.Close();
             }

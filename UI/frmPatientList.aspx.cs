@@ -373,17 +373,20 @@ namespace Acurus.Capella.UI
                         IList<InsurancePlan> ilsIns = insMngr.GetInsurancebyCarrierID(Convert.ToUInt64(ddlPayerName.SelectedItem.Value));
                         for (int iCount = 0; iCount < ilsIns.Count; iCount++)
                         {
-                            lst = new ListItem();
-                            lst.Text = ilsIns[iCount].Ins_Plan_Name;
-                            lst.Value = ilsIns[iCount].Id.ToString();
-                            ddlPlan.Items.Add(lst);
+                                lst = new ListItem();
+                                lst.Text = ilsIns[iCount].Ins_Plan_Name;
+                                lst.Value = ilsIns[iCount].Id.ToString();
+                                ddlPlan.Items.Add(lst);
                         }
                     }
                 }
                 else if (ilstUserLookup.Count > 0)
                 {
                     InsurancePlanManager insMngr = new InsurancePlanManager();
-                    IList<InsurancePlan> ilstInsPlan = insMngr.GetAll();
+
+                    //Jira #CAP-516
+                    //IList<InsurancePlan> ilstInsPlan = insMngr.GetAll();
+                    IList<InsurancePlan> ilstInsPlan = insMngr.GetInsurancebyIDAll();
 
                     for (int iCount = 0; iCount < ilstUserLookup.Count; iCount++)
                     {
