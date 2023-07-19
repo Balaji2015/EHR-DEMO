@@ -80,7 +80,7 @@ function OpenModal(data) {
             var test = $($(top.window.document).find('#ctl00_C5POBody_EncounterContainer')[0].contentDocument).find('.clsIframe').contents()[7].all.namedItem('btnSave');
             if (test != null && test != undefined && test.disabled == false) {
                 $(top.window.document).find("body").append("<div id='dvdialog' style='min-height: 65px !important; width: auto; max-height: none; height: auto; display: none;'>" +
-                                  "<p style='font-family: Verdana,Arial,sans-serif; font-size: 13.5px;'>There are unsaved changes.Do you want to save them?</p></div>");
+                    "<p style='font-family: Verdana,Arial,sans-serif; font-size: 13.5px;'>There are unsaved changes.Do you want to save them?</p></div>");
                 dvdialog = window.parent.parent.parent.parent.document.getElementsByTagName('div').namedItem('dvdialog');
                 $(function () {
                     $(dvdialog).dialog({
@@ -667,8 +667,8 @@ function OpenModal(data) {
                         var log = JSON.parse(xhr.responseText);
                         console.log(log);
                         alert("USER MESSAGE:\n" +
-                                    ". Cannot process request. Please Login again and retry. \nEXCEPTION DETAILS: \n" +
-                                   "Message: " + log.Message);
+                            ". Cannot process request. Please Login again and retry. \nEXCEPTION DETAILS: \n" +
+                            "Message: " + log.Message);
                     }
                 }
             });
@@ -1015,7 +1015,7 @@ function OpenModal(data) {
         var Result = openModal("frmEHRMeasureCalculation.aspx", 750, 980, obj, "ctl00_ModalWindow");
         return false;
     }
-        //BugID:49829
+    //BugID:49829
     else if (itemValue.toUpperCase() == "PATIENT LIST") {
         StartLoadingImage();
         var obj = new Array();
@@ -1514,8 +1514,8 @@ function OpenModal(data) {
                     var log = JSON.parse(xhr.responseText);
                     console.log(log);
                     alert("USER MESSAGE:\n" +
-                                    ". Cannot process request. Please Login again and retry. \nEXCEPTION DETAILS: \n" +
-                                   "Message: " + log.Message);
+                        ". Cannot process request. Please Login again and retry. \nEXCEPTION DETAILS: \n" +
+                        "Message: " + log.Message);
                 }
             }
         });
@@ -1635,16 +1635,15 @@ function OpenModal(data) {
         //StartLoadingImage();
         var obj = new Array();
         var Result = openModal("frmImportCQM.aspx", 201, 850, obj, "");
-        
-        
+
+
     }
 
 }
 
 
 function GetClientId(strid) {
-    var count = document.forms[0].length; var i = 0; var eleName; for (i = 0; i < count; i++)
-    { eleName = document.forms[0].elements[i].id; pos = eleName.indexOf(strid); if (pos >= 0) break; }
+    var count = document.forms[0].length; var i = 0; var eleName; for (i = 0; i < count; i++) { eleName = document.forms[0].elements[i].id; pos = eleName.indexOf(strid); if (pos >= 0) break; }
     return eleName;
 }
 function OpenPatientTask() {
@@ -1705,7 +1704,7 @@ function OnClientButtonClicked(sender, args) {
         OpenERX('REPORT');
         args.set_cancel(true);
     }
-        /*for medication review status */
+    /*for medication review status */
     else if (args._item.get_value() == "tsRcopiarx_review_status") {
         OpenERX('REVIEW');
         args.set_cancel(true);
@@ -1784,7 +1783,7 @@ function OnClientClickedSubMenu(data) {
     else if (data == "tsRcopiarx_pending") {
         OpenERX('REPORT');
     }
-        /*for medication review status */
+    /*for medication review status */
     else if (data == "tsRcopiarx_review_status") {
         OpenERX('REVIEW');
 
@@ -2426,8 +2425,8 @@ function OnClientCloseACO(oWindow, args) {
                     var log = JSON.parse(xhr.responseText);
                     console.log(log);
                     alert("USER MESSAGE:\n" +
-                                    ". Cannot process request. Please Login again and retry. \nEXCEPTION DETAILS: \n" +
-                                   "Message: " + log.Message);
+                        ". Cannot process request. Please Login again and retry. \nEXCEPTION DETAILS: \n" +
+                        "Message: " + log.Message);
                 }
             }
         });
@@ -2445,18 +2444,18 @@ function OnClientClosePhoneEncounter(oWindow, args) {
         var HumanId = arg.HumanId;
         if (HumanId != "0") {
             setTimeout(
-            function () {
+                function () {
 
-                if (EMRPhoneEnounter == "Yes") {
-                    window.parent.location.href = "frmPatientChart.aspx?HumanID=" + HumanId + "&ScreenName=PhoneEncounter" + "&openingfrom=Menu";
-                }
-                else {
-                    var result = openModal("HtmlPhoneEncounter.html?openingfrom=Menu&MyHumanID=" + HumanId + "&LoadPatientChart=False", 800, 1230, obj, "ctl00_ModalWindow");
-                    var WindowName = $find('ctl00_ModalWindow');
-                    WindowName.set_behaviors(-Telerik.Web.UI.WindowAutoSizeBehaviors.Close);
-                }
+                    if (EMRPhoneEnounter == "Yes") {
+                        window.parent.location.href = "frmPatientChart.aspx?HumanID=" + HumanId + "&ScreenName=PhoneEncounter" + "&openingfrom=Menu";
+                    }
+                    else {
+                        var result = openModal("HtmlPhoneEncounter.html?openingfrom=Menu&MyHumanID=" + HumanId + "&LoadPatientChart=False", 800, 1230, obj, "ctl00_ModalWindow");
+                        var WindowName = $find('ctl00_ModalWindow');
+                        WindowName.set_behaviors(-Telerik.Web.UI.WindowAutoSizeBehaviors.Close);
+                    }
 
-            }, 0);
+                }, 0);
         }
     }
 
@@ -2644,8 +2643,8 @@ function loadRcopia() {
                 var log = JSON.parse(xhr.responseText);
                 console.log(log);
                 alert("USER MESSAGE:\n" +
-                                    ". Cannot process request. Please Login again and retry. \nEXCEPTION DETAILS: \n" +
-                                   "Message: " + log.Message);
+                    ". Cannot process request. Please Login again and retry. \nEXCEPTION DETAILS: \n" +
+                    "Message: " + log.Message);
             }
             { sessionStorage.setItem('StartLoading', 'false'); StopLoadFromPatChart(); }
         }
@@ -2669,13 +2668,13 @@ function loadImpportedPatient() {
                         var log = JSON.parse(xhr.responseText);
                         console.log(log);
                         alert("USER MESSAGE:\n" +
-                                    ". Cannot process request. Please Login again and retry. \nEXCEPTION DETAILS: \n" +
-                                   "Message: " + log.Message);
+                            ". Cannot process request. Please Login again and retry. \nEXCEPTION DETAILS: \n" +
+                            "Message: " + log.Message);
                     }
                     else {
                         alert("USER MESSAGE:\n" +
-                                    ". Cannot process request. Please Login again and retry. \nEXCEPTION DETAILS: \n" +
-                                   "Message: " + log.Message);
+                            ". Cannot process request. Please Login again and retry. \nEXCEPTION DETAILS: \n" +
+                            "Message: " + log.Message);
                     }
                 }
                 { sessionStorage.setItem('StartLoading', 'false'); StopLoadFromPatChart(); }
@@ -2716,8 +2715,8 @@ function loadMailClinicalInfoCount() {
                     var log = JSON.parse(xhr.responseText);
                     console.log(log);
                     alert("USER MESSAGE:\n" +
-                                    ". Cannot process request. Please Login again and retry. \nEXCEPTION DETAILS: \n" +
-                                   "Message: " + log.Message);
+                        ". Cannot process request. Please Login again and retry. \nEXCEPTION DETAILS: \n" +
+                        "Message: " + log.Message);
                 }
                 { sessionStorage.setItem('StartLoading', 'false'); StopLoadFromPatChart(); }
             }
@@ -2914,8 +2913,8 @@ function CheckEncountersForMenuPFSH(humanID, str) {
                 var log = JSON.parse(xhr.responseText);
                 console.log(log);
                 alert("USER MESSAGE:\n" +
-                                    ". Cannot process request. Please Login again and retry. \nEXCEPTION DETAILS: \n" +
-                                   "Message: " + log.Message);
+                    ". Cannot process request. Please Login again and retry. \nEXCEPTION DETAILS: \n" +
+                    "Message: " + log.Message);
             }
             { sessionStorage.setItem('StartLoading', 'false'); StopLoadFromPatChart(); }
         }
@@ -3059,8 +3058,7 @@ function OpenIndexing(Mode) {
     HumanID = document.getElementById(GetClientId("hdnHumanID")).value;
 
     // if (CFacilityName == "CMG LAB AND ANCILLARY 1866 #101") 
-    if (CFacilityName == document.getElementById(GetClientId("hdnIsAncillary")).value)
-    {
+    if (CFacilityName == document.getElementById(GetClientId("hdnIsAncillary")).value) {
         var Continue = DisplayErrorMessage('172507');
         if (Continue != undefined && Continue == true) {
             var obj = new Array();
@@ -3177,8 +3175,8 @@ function reloadSummaryEprescription() {
                 var log = JSON.parse(xhr.responseText);
                 console.log(log);
                 alert("USER MESSAGE:\n" +
-                                    ". Cannot process request. Please Login again and retry. \nEXCEPTION DETAILS: \n" +
-                                   "Message: " + log.Message);
+                    ". Cannot process request. Please Login again and retry. \nEXCEPTION DETAILS: \n" +
+                    "Message: " + log.Message);
             }
         }
 
@@ -3247,26 +3245,9 @@ function redirectToCCEprescription() {
         //$("#ctl00_C5POBody_dvCheck li .colored").removeClass("colored");       
     }
     else { //for tab level
-        if ($($(window.top.document).find('iframe[id=ctl00_C5POBody_EncounterContainer]')[0].contentDocument).find("ul li a") != null && $($(window.top.document).find('iframe[id=ctl00_C5POBody_EncounterContainer]')[0].contentDocument).find("ul li a") != undefined && $($(window.top.document).find('iframe[id=ctl00_C5POBody_EncounterContainer]')[0].contentDocument).find("ul li a")[0] != null && $($(window.top.document).find('iframe[id=ctl00_C5POBody_EncounterContainer]')[0].contentDocument).find("ul li a")[0]!=undefined)
-          $($(window.top.document).find('iframe[id=ctl00_C5POBody_EncounterContainer]')[0].contentDocument).find("ul li a")[0].click();
+        if ($($(window.top.document).find('iframe[id=ctl00_C5POBody_EncounterContainer]')[0].contentDocument).find("ul li a") != null && $($(window.top.document).find('iframe[id=ctl00_C5POBody_EncounterContainer]')[0].contentDocument).find("ul li a") != undefined && $($(window.top.document).find('iframe[id=ctl00_C5POBody_EncounterContainer]')[0].contentDocument).find("ul li a")[0] != null && $($(window.top.document).find('iframe[id=ctl00_C5POBody_EncounterContainer]')[0].contentDocument).find("ul li a")[0] != undefined)
+            $($(window.top.document).find('iframe[id=ctl00_C5POBody_EncounterContainer]')[0].contentDocument).find("ul li a")[0].click();
     }
-}
-
-var ipAddress = "";
-//$(document).ready(function () {
-//    getIpAddress();
-//});
-
-//CAP-393 - It will store IP address.
-function getIpAddress() {
-    //$.ajax({
-    //    type: "GET",
-    //    async: false,
-    //    url: "https://api.ipify.org?format=json",
-    //    success: function (data) {
-    //        ipAddress = data.ip;
-    //    }
-    //});
 }
 
 //CAP-29 - Internet check event.
@@ -3308,7 +3289,7 @@ window.addEventListener("online", (event) => {
     $("#divInternetLoader").css("display", "none");
     sessionStorage.setItem('StartLoading', 'true');
     StartLoadFromPatChart();
-    getIpAddress();
+    var ipAddress = localStorage.getItem("ClientIpAddress");
 
     var onlineTime = formatAMPM(new Date());
     var ErrorLogData = {
@@ -3316,34 +3297,34 @@ window.addEventListener("online", (event) => {
         ErrorLineNo: '', //sErrorLineNo
         ErrorColumnNo: '', //sErrorColumnNo
         ErrorUrl: '', //sErrorUrl
-        ErrorStack: ipAddress, //sErrorStack
+        ErrorStack: ipAddress || "", //sErrorStack
     }
     if (bSleep == false) {
         //Due to Jira CAP-471 its temporarily commented
 
-        //$.ajax({
-        //    type: "POST",
-        //    async: true,
-        //    url: "frmRCopiaToolbar.aspx/ErrorLogEntry",
-        //    data: JSON.stringify(ErrorLogData),
-        //    dataType: "json",
-        //    contentType: "application/json; charset=utf-8",
-        //    success: function (data) {
-        //        { sessionStorage.setItem('StartLoading', 'false'); StopLoadFromPatChart(); }
-        //    },
-        //    error: function OnError(xhr) {
-        //        { sessionStorage.setItem('StartLoading', 'false'); StopLoadFromPatChart(); }
-        //        if (xhr.status == 999)
-        //            window.location = xhr.statusText;
-        //        else {
-        //            var log = JSON.parse(xhr.responseText);
-        //            console.log(log);
-        //            alert("USER MESSAGE:\n" +
-        //                ". Cannot process request. Please Login again and retry. \nEXCEPTION DETAILS: \n" +
-        //                "Message: " + log.Message);
-        //        }
-        //    }
-        //});
+        $.ajax({
+            type: "POST",
+            async: true,
+            url: "frmRCopiaToolbar.aspx/ErrorLogEntry",
+            data: JSON.stringify(ErrorLogData),
+            dataType: "json",
+            contentType: "application/json; charset=utf-8",
+            success: function (data) {
+                { sessionStorage.setItem('StartLoading', 'false'); StopLoadFromPatChart(); }
+            },
+            error: function OnError(xhr) {
+                { sessionStorage.setItem('StartLoading', 'false'); StopLoadFromPatChart(); }
+                if (xhr.status == 999)
+                    window.location = xhr.statusText;
+                else {
+                    var log = JSON.parse(xhr.responseText);
+                    console.log(log);
+                    alert("USER MESSAGE:\n" +
+                        ". Cannot process request. Please Login again and retry. \nEXCEPTION DETAILS: \n" +
+                        "Message: " + log.Message);
+                }
+            }
+        });
     }
     //Jira CAP-501
     { sessionStorage.setItem('StartLoading', 'false'); StopLoadFromPatChart(); }

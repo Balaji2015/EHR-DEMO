@@ -472,7 +472,7 @@
                                                             <input type="button" id="btnFindAllAppointments" value="Find All Appointments" onclick="return OpenFindAllAppointments();" class="aspresizedbluebutton" />
                                                             <input type="button" id="btnSaveMyQ" value="Save" onclick="return SaveClick(this);" style="display:none;" /> <%--class="aspresizedgreenbutton" --%>
                                                             <input type="button" id="btnSaveSendMyQ" value="Send" onclick="return SaveClick(this);" class="aspresizedgreenbutton" />
-                                                            <input type="button" id="btnSaveCompletedMyQ" value="Task Completed" onclick="return SaveClick(this);" class="aspresizedgreenbutton" />
+                                                            <input type="button" id="btnSaveCompletedMyQ" value="Task Complete" onclick="return SaveClick(this);" class="aspresizedgreenbutton" />
                                                             <button id="btnPatient" runat="server" onclick="return btnpatientChart_Click();" visible="true" class="aspresizedbluebutton">Open Patient Chart</button>
                                                               <input type="button" id="btnePrescribe" value="ePrescribe" class="aspresizedbluebutton" onclick="return btnePrescribe_Click();"/>
                                                             <button id="btnCancelMyQ" onclick="return CancelMyQ();" class="aspresizedredbutton" >Close</button>

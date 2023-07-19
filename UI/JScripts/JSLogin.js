@@ -6,6 +6,7 @@ $(document).ready(function () {
     localStorage.removeItem("MyTask14");
     localStorage.removeItem("MyShowAllMyTask");
     localStorage.removeItem("ShowallGeneralqueue");
+    localStorage.removeItem("ClientIpAddress");
     var version = document.getElementById('hdnVersion').value;
     var ProjectName = document.getElementById('hdnProjectName').value;
     //Jira - #CAP-80
@@ -128,8 +129,7 @@ function LoadSystemMessagesKnowledgeCenterdetails() {
 
 }
 
-function CheckMandatory(txtbx) {
-
+async function CheckMandatory(txtbx) {
     localStorage.setItem('PhysicianCPT', '');
     localStorage.setItem('PhysicianICD', '');
     document.getElementById('txtPassword').focus();
@@ -175,10 +175,27 @@ function CheckMandatory(txtbx) {
         document.getElementById('hdnFacltyName').value = document.getElementById('ddlFacility').value;
         setTimeZone();
         ShowLoading();
+        await getIpAddress();
         return true;
     }
 
 }
+
+function getIpAddress() {
+    $.ajax({
+        type: "POST",
+        async: true,
+        url: "frmRCopiaToolbar.aspx/GetIPAddress",
+        dataType: "json",
+        contentType: "application/json; charset=utf-8",
+        success: function (data) {
+            localStorage.setItem("ClientIpAddress", data.d);
+        },
+        error: function OnError(xhr) {
+        }
+    });
+}
+
 function setTimeZone() {
     var hiddenObj = document.getElementById('hdnLocalTime');
     hiddenObj.value = showTime().toString();
@@ -521,6 +538,7 @@ function EHRLanding(FileName) {
     localStorage.removeItem("MyTask14");
     localStorage.removeItem("MyShowAllMyTask");
     localStorage.removeItem("ShowallGeneralqueue");
+    localStorage.removeItem("ClientIpAddress");
     var version = document.getElementById('hdnVersion').value;
     var ProjectName = document.getElementById('hdnProjectName').value;
     //Jira - #CAP-80

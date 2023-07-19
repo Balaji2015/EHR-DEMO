@@ -681,11 +681,11 @@ namespace Acurus.Capella.UI
                 UtilityManager.inserttologgingtable(ClientSession.EncounterId.ToString(), ClientSession.HumanId.ToString(), ClientSession.UserName, ClientSession.PhysicianId.ToString(), "SaveMyQClick : End", DateTime.Now, sGroup_ID_Log, "frmPatientCommunication");
                 return "";
             }
-            else if (Button == "Task Completed")
+            else if (Button == "Task Complete")
             {
-                UtilityManager.inserttologgingtable(ClientSession.EncounterId.ToString(), ClientSession.HumanId.ToString(), ClientSession.UserName, ClientSession.PhysicianId.ToString(), "SaveMyQClick ManagerCall Task Completed - UpdatePatientMessage : Start", DateTime.Now, sGroup_ID_Log, "frmPatientCommunication");
+                UtilityManager.inserttologgingtable(ClientSession.EncounterId.ToString(), ClientSession.HumanId.ToString(), ClientSession.UserName, ClientSession.PhysicianId.ToString(), "SaveMyQClick ManagerCall Task Complete - UpdatePatientMessage : Start", DateTime.Now, sGroup_ID_Log, "frmPatientCommunication");
                 objPatNotesMngr.UpdatePatientMessage(objPatNotes, "TASK", 1, "UNKNOWN", UtilityManager.ConvertToUniversal(), null);
-                UtilityManager.inserttologgingtable(ClientSession.EncounterId.ToString(), ClientSession.HumanId.ToString(), ClientSession.UserName, ClientSession.PhysicianId.ToString(), "SaveMyQClick ManagerCall Task Completed - UpdatePatientMessage : End", DateTime.Now, sGroup_ID_Log, "frmPatientCommunication");
+                UtilityManager.inserttologgingtable(ClientSession.EncounterId.ToString(), ClientSession.HumanId.ToString(), ClientSession.UserName, ClientSession.PhysicianId.ToString(), "SaveMyQClick ManagerCall Task Complete - UpdatePatientMessage : End", DateTime.Now, sGroup_ID_Log, "frmPatientCommunication");
                 UtilityManager.inserttologgingtable(ClientSession.EncounterId.ToString(), ClientSession.HumanId.ToString(), ClientSession.UserName, ClientSession.PhysicianId.ToString(), "SaveMyQClick : End", DateTime.Now, sGroup_ID_Log, "frmPatientCommunication");
                 return "";
             }
