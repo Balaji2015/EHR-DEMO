@@ -516,7 +516,7 @@
     var AspxPages = ["#tbSummary", "#tbEPrescription", "#tbVitals", "#tbROS", "#tbCCHPI"];
     $('.nav-tabs a').on('shown.bs.tab', function (event) {
 
-        // {sessionStorage.setItem('StartLoading', 'false');StopLoadFromPatChart();} Commented to Persist Loading Screen till the Child Screen Loads Completely.   
+        // {sessionStorage.setItem('StartLoading', 'false');StopLoadFromPatChart();} Commented to Persist Loading Screen till the Child Screen Loads Completely.
         //BugID:46035 - autosave when Codes are checked in Fav.Sheet.
         var evt = event;
         if (event == undefined && event_bkup != undefined) {
@@ -533,8 +533,8 @@
                 if (event != undefined)
                     event_bkup = event;
                 if (DisplayErrorMessage('530020') == true) {
-//CAP-625: Handle Click event                    
-if ($(top.window.document).find(".in").find(".close")[0] != null && $(top.window.document).find(".in").find(".close")[0] != undefined) {
+                    //CAP-625: Handle Click event                    
+                    if ($(top.window.document).find(".in").find(".close")[0] != null && $(top.window.document).find(".in").find(".close")[0] != undefined) {
                         $(top.window.document).find(".in").find(".close")[0].click();
                     }
                 }
@@ -1139,7 +1139,7 @@ if ($(top.window.document).find(".in").find(".close")[0] != null && $(top.window
                             }
                         });
                     }
-//CAP-625: Handle Click event
+                    //CAP-625: Handle Click event
                     if ($('.clsIframe').contents()[9].all.namedItem('btnsave') != null && $('.clsIframe').contents()[9].all.namedItem('btnsave') != undefined) {
                         $('.clsIframe').contents()[9].all.namedItem('btnsave').click();
                     }
@@ -1161,8 +1161,8 @@ if ($(top.window.document).find(".in").find(".close")[0] != null && $(top.window
                     //BugID:51562 
                     var prvTab = PrevTab.attr('href');
                     if (prvTab.match("#tbEandM") != null) {
-              //CAP-625: Handle Click event         
- if ($(top.window.document).find(".in").find(".close") != null && $(top.window.document).find(".in").find(".close") != undefined && $(top.window.document).find(".in").find(".close").length > 1) {
+                        //CAP-625: Handle Click event         
+                        if ($(top.window.document).find(".in").find(".close") != null && $(top.window.document).find(".in").find(".close") != undefined && $(top.window.document).find(".in").find(".close").length > 1) {
                             $(top.window.document).find(".in").find(".close")[0].click();
                         }
                         //if ($(top.window.document).find(".in").find(".close") != null && $(top.window.document).find(".in").find(".close") != undefined && $(top.window.document).find(".in").find(".close").length > 1)
@@ -1171,7 +1171,7 @@ if ($(top.window.document).find(".in").find(".close")[0] != null && $(top.window
                     paneID = $(event.target).attr('href');
                     sessionStorage.setItem("Enc_PaneId", paneID);
                     sessionStorage.setItem("Enc_Src", $(paneID).attr('data-src'));
-//CAP-625: Handle Click event
+                    //CAP-625: Handle Click event
                     if ($('.clsIframe').contents()[11].all.namedItem('btnSave') != null && $('.clsIframe').contents()[11].all.namedItem('btnSave') != undefined) {
                         $('.clsIframe').contents()[11].all.namedItem('btnSave').click();
                     }
@@ -1197,20 +1197,20 @@ if ($(top.window.document).find(".in").find(".close")[0] != null && $(top.window
                     sessionStorage.setItem("Enc_PaneId", paneID);
                     sessionStorage.setItem("Enc_Src", $(paneID).attr('data-src'));
                     if (subtab == "General Plan") {
-//CAP-625: Handle Click event
+                        //CAP-625: Handle Click event
                         if ($('.clsIframe').contents()[10].all.namedItem('generalplan').children[0].contentDocument.all.namedItem('btnSave') != null && $('.clsIframe').contents()[10].all.namedItem('generalplan').children[0].contentDocument.all.namedItem('btnSave') != undefined) {
                             $('.clsIframe').contents()[10].all.namedItem('generalplan').children[0].contentDocument.all.namedItem('btnSave').click();
                         }
                     }
                     else if (subtab == "Individualized CarePlan") {
                         //CAP-625: Handle Click event
-if ($('.clsIframe').contents()[10].all.namedItem('IndividualCarePlan').children[0].contentDocument.all.namedItem('btnSave') != null && $('.clsIframe').contents()[10].all.namedItem('IndividualCarePlan').children[0].contentDocument.all.namedItem('btnSave') != undefined) {
+                        if ($('.clsIframe').contents()[10].all.namedItem('IndividualCarePlan').children[0].contentDocument.all.namedItem('btnSave') != null && $('.clsIframe').contents()[10].all.namedItem('IndividualCarePlan').children[0].contentDocument.all.namedItem('btnSave') != undefined) {
                             $('.clsIframe').contents()[10].all.namedItem('IndividualCarePlan').children[0].contentDocument.all.namedItem('btnSave').click();
                         }
                     }
                     else if (subtab == "Preventive Screen Plan") {
                         //CAP-625: Handle Click event
-if ($('.clsIframe').contents()[10].all.namedItem('PreventiveScreen').children[0].contentDocument.all.namedItem('btnSave') != null && $('.clsIframe').contents()[10].all.namedItem('PreventiveScreen').children[0].contentDocument.all.namedItem('btnSave') != undefined) {
+                        if ($('.clsIframe').contents()[10].all.namedItem('PreventiveScreen').children[0].contentDocument.all.namedItem('btnSave') != null && $('.clsIframe').contents()[10].all.namedItem('PreventiveScreen').children[0].contentDocument.all.namedItem('btnSave') != undefined) {
                             $('.clsIframe').contents()[10].all.namedItem('PreventiveScreen').children[0].contentDocument.all.namedItem('btnSave').click();
                         }
                     }
@@ -1228,7 +1228,7 @@ if ($('.clsIframe').contents()[10].all.namedItem('PreventiveScreen').children[0]
                     //}
                 }
                 else if (PrevTab[0].innerText == "SUMMARY") {
-//CAP-625: Handle Click event
+                    //CAP-625: Handle Click event
                     if ($('.clsIframe').contents()[12].all.namedItem('btnSave') != null && $('.clsIframe').contents()[12].all.namedItem('btnSave') != undefined) {
                         $('.clsIframe').contents()[12].all.namedItem('btnSave').click();
                     }
@@ -1586,11 +1586,11 @@ if ($('.clsIframe').contents()[10].all.namedItem('PreventiveScreen').children[0]
                 //                sessionStorage.setItem("Enc_PaneId", paneID);
                 //                sessionStorage.setItem("Enc_Src", $(paneID).attr('data-src'));
                 //if (subtab == "Diagnostic Order") {
-                    //if ($('.clsIframe').contents()[8].all.namedItem('DiagnosticOrder').children[0].contentDocument.all.namedItem('btnOrderSubmit') != null && $('.clsIframe').contents()[8].all.namedItem('DiagnosticOrder').children[0].contentDocument.all.namedItem('btnOrderSubmit') != undefined) {
-                        // $('.clsIframe').contents()[8]?.all?.namedItem('DiagnosticOrder').children[0]?.contentDocument.all?.namedItem('btnOrderSubmit')?.click();
-                   // }
-                    
-                }
+                //if ($('.clsIframe').contents()[8].all.namedItem('DiagnosticOrder').children[0].contentDocument.all.namedItem('btnOrderSubmit') != null && $('.clsIframe').contents()[8].all.namedItem('DiagnosticOrder').children[0].contentDocument.all.namedItem('btnOrderSubmit') != undefined) {
+                // $('.clsIframe').contents()[8]?.all?.namedItem('DiagnosticOrder').children[0]?.contentDocument.all?.namedItem('btnOrderSubmit')?.click();
+                // }
+
+                //}
                 //                else if (subtab == "Referral Order") {
                 //                    $('.clsIframe').contents()[8].all.namedItem('ReferralOrder').children[0].contentDocument.all.namedItem('btnAddRefOrder').click();
                 //                }
@@ -1818,7 +1818,7 @@ if ($('.clsIframe').contents()[10].all.namedItem('PreventiveScreen').children[0]
                 //BugID:51562 
                 var prvTab = PrevTab.attr('href');
                 if (prvTab.match("#tbEandM") != null) {
-//CAP-625: Handle Click event
+                    //CAP-625: Handle Click event
                     if ($(top.window.document).find(".in").find(".close") != null && $(top.window.document).find(".in").find(".close") != undefined && $(top.window.document).find(".in").find(".close").length > 1)
                         $(top.window.document).find(".in").find(".close")[0].click();
                 }
@@ -1852,7 +1852,7 @@ if ($('.clsIframe').contents()[10].all.namedItem('PreventiveScreen').children[0]
                                 alert("USER MESSAGE:\n" +
                                     ". Cannot process request. Please Login again and retry. \nEXCEPTION DETAILS: \n" +
                                     "Message: " + log.Message);
-                             {sessionStorage.setItem('StartLoading', 'false');StopLoadFromPatChart();}
+                            {sessionStorage.setItem('StartLoading', 'false');StopLoadFromPatChart();}
                         }
                     });
                 }
