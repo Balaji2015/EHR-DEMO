@@ -77,7 +77,7 @@
             }
             TabClick.value = "first";
         }
-     
+
         document.getElementById('hdnSaveEnable').value = "false"
     }
     else {
@@ -122,7 +122,7 @@
             }
             TabClick.value = "first";
         }
-        
+
     }
 }
 
@@ -555,104 +555,126 @@ function LoadPFSHTabs(event) {
         localStorage.setItem("PrevSubTab", CurTab[0].innerText);
         var myPos, atPos;
         if (window.parent.parent.parent.parent.theForm.ctl00_C5POBody_hdnIsSaveEnable.value == "true") {
-                event.preventDefault();
-                sessionStorage.setItem("AutoSave_PFSH", "false");
-                { sessionStorage.setItem('StartLoading', 'true'); StartLoadFromPatChart(); }
-                //$(dvdialog).dialog("close");
-                //$(dvdialog).remove();
-                sessionStorage.setItem("AutoSave_PFSH", "true");
-                if (PrevTab[0].innerText == "Past Medical History") {
-                    paneID = $(event.target).attr('href');
-                    sessionStorage.setItem('PFSH_paneID', paneID);
-                    src = $(paneID).attr('data-src') + "?" + Sessionvalues;
-                    sessionStorage.setItem('PFSH_src', src);
-                    var prevTabtxt = $(PrevTab).text();
-                    sessionStorage.setItem('PFSH_PrevTabText', prevTabtxt);
-                    $('.clsIframe').contents()[0].all.namedItem('btnSave').click();
-                }
-                else if (PrevTab[0].innerText == "Surg./Proc.") {
-                    paneID = $(event.target).attr('href');
-                    sessionStorage.setItem('PFSH_paneID', paneID);
-                    src = $(paneID).attr('data-src') + "?" + Sessionvalues;
-                    sessionStorage.setItem('PFSH_src', src);
-                    var prevTabtxt = $(PrevTab).text();
-                    sessionStorage.setItem('PFSH_PrevTabText', prevTabtxt);
-                    $('.clsIframe').contents()[1].all.namedItem('btnAdd').click();
-                }
-                else if (PrevTab[0].innerText == "Hospitalization History") {
-                    paneID = $(event.target).attr('href');
-                    sessionStorage.setItem('PFSH_paneID', paneID);
-                    src = $(paneID).attr('data-src') + "?" + Sessionvalues;
-                    sessionStorage.setItem('PFSH_src', src);
-                    var prevTabtxt = $(PrevTab).text();
-                    sessionStorage.setItem('PFSH_PrevTabText', prevTabtxt);
+            event.preventDefault();
+            sessionStorage.setItem("AutoSave_PFSH", "false");
+            { sessionStorage.setItem('StartLoading', 'true'); StartLoadFromPatChart(); }
+            //$(dvdialog).dialog("close");
+            //$(dvdialog).remove();
+            sessionStorage.setItem("AutoSave_PFSH", "true");
+            if (PrevTab[0].innerText == "Past Medical History") {
+                paneID = $(event.target).attr('href');
+                sessionStorage.setItem('PFSH_paneID', paneID);
+                src = $(paneID).attr('data-src') + "?" + Sessionvalues;
+                sessionStorage.setItem('PFSH_src', src);
+                var prevTabtxt = $(PrevTab).text();
+                sessionStorage.setItem('PFSH_PrevTabText', prevTabtxt);
+                //CAP-537 : PFSH - Family History screen loading for long time
+                $(paneID + " iframe").attr("src", src);
+                $('.clsIframe').contents()[0].all.namedItem('btnSave').click();
+            }
+            else if (PrevTab[0].innerText == "Surg./Proc.") {
+                paneID = $(event.target).attr('href');
+                sessionStorage.setItem('PFSH_paneID', paneID);
+                src = $(paneID).attr('data-src') + "?" + Sessionvalues;
+                sessionStorage.setItem('PFSH_src', src);
+                var prevTabtxt = $(PrevTab).text();
+                sessionStorage.setItem('PFSH_PrevTabText', prevTabtxt);
+                
+                //CAP-537 : PFSH - Family History screen loading for long time
+                $(paneID + " iframe").attr("src", src);
+                $('.clsIframe').contents()[1]?.all?.namedItem('btnAdd')?.click();
+            }
+            else if (PrevTab[0].innerText == "Hospitalization History") {
+                paneID = $(event.target).attr('href');
+                sessionStorage.setItem('PFSH_paneID', paneID);
+                src = $(paneID).attr('data-src') + "?" + Sessionvalues;
+                sessionStorage.setItem('PFSH_src', src);
+                var prevTabtxt = $(PrevTab).text();
+                sessionStorage.setItem('PFSH_PrevTabText', prevTabtxt);
+                //CAP-537 : PFSH - Family History screen loading for long time
+                $(paneID + " iframe").attr("src", src);
+                if ($('.clsIframe').contents()[2].all.namedItem('btnAdd') != null && $('.clsIframe').contents()[2].all.namedItem('btnAdd') != undefined) {
                     $('.clsIframe').contents()[2].all.namedItem('btnAdd').click();
                 }
-                else if (PrevTab[0].innerText == "Family History") {
-                    paneID = $(event.target).attr('href');
-                    sessionStorage.setItem('PFSH_paneID', paneID);
-                    src = $(paneID).attr('data-src') + "?" + Sessionvalues;
-                    sessionStorage.setItem('PFSH_src', src);
-                    var prevTabtxt = $(PrevTab).text();
-                    sessionStorage.setItem('PFSH_PrevTabText', prevTabtxt);
-                    $('.clsIframe').contents()[3].all.namedItem('btnSave').click();
-                }
-                else if (PrevTab[0].innerText == "Social History") {
-                    paneID = $(event.target).attr('href');
-                    sessionStorage.setItem('PFSH_paneID', paneID);
-                    src = $(paneID).attr('data-src') + "?" + Sessionvalues;
-                    sessionStorage.setItem('PFSH_src', src);
-                    var prevTabtxt = $(PrevTab).text();
-                    sessionStorage.setItem('PFSH_PrevTabText', prevTabtxt);
-                    $('.clsIframe').contents()[4].all.namedItem('btnSave').click();
 
-                }
-                //else if (PrevTab[0].innerText == "Rx History") {
-                //    paneID = $(event.target).attr('href');
-                //    sessionStorage.setItem('PFSH_paneID', paneID);
-                //    src = $(paneID).attr('data-src') + "?" + Sessionvalues;
-                //    sessionStorage.setItem('PFSH_src', src);
-                //    var prevTabtxt = $(PrevTab).text();
-                //    sessionStorage.setItem('PFSH_PrevTabText', prevTabtxt);
-                //    $('.clsIframe').contents()[5].all.namedItem('btnAdd').click();
-                //}
-                else if (PrevTab[0].innerText == "Non Drug Allergy") {
-                    paneID = $(event.target).attr('href');
-                    sessionStorage.setItem('PFSH_paneID', paneID);
-                    src = $(paneID).attr('data-src') + "?" + Sessionvalues;
-                    sessionStorage.setItem('PFSH_src', src);
-                    var prevTabtxt = $(PrevTab).text();
-                    sessionStorage.setItem('PFSH_PrevTabText', prevTabtxt);
-                    $('.clsIframe').contents()[5].all.namedItem('btnSave').click();
-                }
-                //else if (PrevTab[0].innerText == "Drug Allergy") {
-                //    paneID = $(event.target).attr('href');
-                //    sessionStorage.setItem('PFSH_paneID', paneID);
-                //    src = $(paneID).attr('data-src') + "?" + Sessionvalues;
-                //    sessionStorage.setItem('PFSH_src', src);
-                //    var prevTabtxt = $(PrevTab).text();
-                //    sessionStorage.setItem('PFSH_PrevTabText', prevTabtxt);
-                //    $('.clsIframe').contents()[7].all.namedItem('btnAdd').click();
-                //}
-                else if (PrevTab[0].innerText == "Immunization History") {
-                    paneID = $(event.target).attr('href');
-                    sessionStorage.setItem('PFSH_paneID', paneID);
-                    src = $(paneID).attr('data-src') + "?" + Sessionvalues;
-                    sessionStorage.setItem('PFSH_src', src);
-                    var prevTabtxt = $(PrevTab).text();
-                    sessionStorage.setItem('PFSH_PrevTabText', prevTabtxt);
-                    $('.clsIframe').contents()[6].all.namedItem('btnSave').click();
+            }
+            else if (PrevTab[0].innerText == "Family History") {
+                paneID = $(event.target).attr('href');
+                sessionStorage.setItem('PFSH_paneID', paneID);
+                src = $(paneID).attr('data-src') + "?" + Sessionvalues;
+                sessionStorage.setItem('PFSH_src', src);
+                var prevTabtxt = $(PrevTab).text();
+                sessionStorage.setItem('PFSH_PrevTabText', prevTabtxt);
+                //CAP-537 : PFSH - Family History screen loading for long time
+                $(paneID + " iframe").attr("src", src);
+                $('.clsIframe').contents()[3]?.all?.namedItem('btnSave')?.click();
+            }
+            else if (PrevTab[0].innerText == "Social History") {
+                paneID = $(event.target).attr('href');
+                sessionStorage.setItem('PFSH_paneID', paneID);
+                src = $(paneID).attr('data-src') + "?" + Sessionvalues;
+                sessionStorage.setItem('PFSH_src', src);
+                var prevTabtxt = $(PrevTab).text();
+                sessionStorage.setItem('PFSH_PrevTabText', prevTabtxt);
+                //CAP-537 : PFSH - Family History screen loading for long time
+                $(paneID + " iframe").attr("src", src);
+                // CAP-303 Cannot read properties of null (reading click)
+                $('.clsIframe').contents()[4]?.all?.namedItem('btnSave')?.click();
 
-                }
-                else if (PrevTab[0].innerText == "AD") {
-                    paneID = $(event.target).attr('href');
-                    sessionStorage.setItem('PFSH_paneID', paneID);
-                    src = $(paneID).attr('data-src') + "?" + Sessionvalues;
-                    sessionStorage.setItem('PFSH_src', src);
-                    var prevTabtxt = $(PrevTab).text();
-                    sessionStorage.setItem('PFSH_PrevTabText', prevTabtxt);
-                    $('.clsIframe').contents()[7].all.namedItem('btnPFSHAutoSave').click();
-                }
+            }
+            //else if (PrevTab[0].innerText == "Rx History") {
+            //    paneID = $(event.target).attr('href');
+            //    sessionStorage.setItem('PFSH_paneID', paneID);
+            //    src = $(paneID).attr('data-src') + "?" + Sessionvalues;
+            //    sessionStorage.setItem('PFSH_src', src);
+            //    var prevTabtxt = $(PrevTab).text();
+            //    sessionStorage.setItem('PFSH_PrevTabText', prevTabtxt);
+            //    $('.clsIframe').contents()[5].all.namedItem('btnAdd').click();
+            //}
+            else if (PrevTab[0].innerText == "Non Drug Allergy") {
+                paneID = $(event.target).attr('href');
+                sessionStorage.setItem('PFSH_paneID', paneID);
+                src = $(paneID).attr('data-src') + "?" + Sessionvalues;
+                sessionStorage.setItem('PFSH_src', src);
+                var prevTabtxt = $(PrevTab).text();
+                sessionStorage.setItem('PFSH_PrevTabText', prevTabtxt);
+                //CAP-537 : PFSH - Family History screen loading for long time
+                $(paneID + " iframe").attr("src", src);
+                $('.clsIframe').contents()[5].all.namedItem('btnSave').click();
+            }
+            //else if (PrevTab[0].innerText == "Drug Allergy") {
+            //    paneID = $(event.target).attr('href');
+            //    sessionStorage.setItem('PFSH_paneID', paneID);
+            //    src = $(paneID).attr('data-src') + "?" + Sessionvalues;
+            //    sessionStorage.setItem('PFSH_src', src);
+            //    var prevTabtxt = $(PrevTab).text();
+            //    sessionStorage.setItem('PFSH_PrevTabText', prevTabtxt);
+            //    $('.clsIframe').contents()[7].all.namedItem('btnAdd').click();
+            //}
+            else if (PrevTab[0].innerText == "Immunization History") {
+                paneID = $(event.target).attr('href');
+                sessionStorage.setItem('PFSH_paneID', paneID);
+                src = $(paneID).attr('data-src') + "?" + Sessionvalues;
+                sessionStorage.setItem('PFSH_src', src);
+                var prevTabtxt = $(PrevTab).text();
+                sessionStorage.setItem('PFSH_PrevTabText', prevTabtxt);
+                //CAP-537 : PFSH - Family History screen loading for long time
+                $(paneID + " iframe").attr("src", src);
+                $('.clsIframe').contents()[6].all.namedItem('btnSave').click();
+
+            }
+            else if (PrevTab[0].innerText == "AD") {
+                paneID = $(event.target).attr('href');
+                sessionStorage.setItem('PFSH_paneID', paneID);
+                src = $(paneID).attr('data-src') + "?" + Sessionvalues;
+                sessionStorage.setItem('PFSH_src', src);
+                var prevTabtxt = $(PrevTab).text();
+                sessionStorage.setItem('PFSH_PrevTabText', prevTabtxt);
+                //CAP-537 : PFSH - Family History screen loading for long time
+                $(paneID + " iframe").attr("src", src);
+                $('.clsIframe').contents()[7].all.namedItem('btnPFSHAutoSave').click();
+            }
+
         }
         else {
             if ($(".ui-dialog").is(":visible")) {
@@ -669,7 +691,7 @@ function LoadPFSHTabs(event) {
                 window.parent.parent.parent.parent.theForm.ctl00_C5POBody_hdnIsSaveEnable.value = "true";
                 { sessionStorage.setItem('StartLoading', 'false'); StopLoadFromPatChart(); }
             }
-           
+
         }
         if (paneID == "#pastmedHis") {
             var HtmlVersion = $(paneID)[0].attributes.getNamedItem('data-src').nodeValue;
@@ -799,7 +821,7 @@ function LoadPhysicianList(Control) {
                     if (FacilityRole.split('&')[0] != "" && FacilityRole.split('&')[2] != "" ) {
                         for (var i = 0; i < FacilityList.length; i++) {
                             if (FacilityList[i].getAttribute("name") == FacilityRole.split('&')[0]) {
-                                
+
                                 document.getElementById("cboPhysician").options.length = 0;
                                 var PhyEmptyOption = document.createElement("option");
                                 PhyEmptyOption.text = "";
@@ -1223,7 +1245,7 @@ function EnablePFSH() {
 
 function CloseWnd() {
 
-  PrevTab = $($(top.window.document).find('iframe')[0].contentDocument).find("li.active a");  // previous tab
+    PrevTab = $($(top.window.document).find('iframe')[0].contentDocument).find("li.active a");  // previous tab
     var myPos, atPos;
     if (window.parent.parent.parent.parent.theForm.ctl00_C5POBody_hdnIsSaveEnable.value == "true") {
         { sessionStorage.setItem('StartLoading', 'false'); StopLoadFromPatChart(); }
@@ -1231,7 +1253,7 @@ function CloseWnd() {
         sessionStorage.setItem("AutoSave_PFSHClose", "false");
         if (document.title == 'PFSH' && document.URL.indexOf('openingfrom=Menu') > -1) {
             $(window.document).find('body').append('<div id="dvdialogMenu" style="min-height: 65px !important; width: auto; max-height: none; height: auto; display: none;">' +
-            '<p style="font-family: Verdana,Arial,sans-serif; font-size: 13.5px;">There are unsaved changes.Do you want to save the them?</p></div>');
+                '<p style="font-family: Verdana,Arial,sans-serif; font-size: 13.5px;">There are unsaved changes.Do you want to save the them?</p></div>');
             dvdialog = $('#dvdialogMenu');
             myPos = "center center";
             atPos = 'center center';
