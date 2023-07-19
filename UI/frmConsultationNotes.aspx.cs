@@ -72,7 +72,8 @@ namespace Acurus.Capella.UI
             {
                 FileNames = "Encounter" + "_" + ClientSession.EncounterId + ".xml";
 
-                IList<Encounter_Blob> ilstEncounterBlob = new List<Encounter_Blob>();
+                //Jira #CAP-597 - Commented the lin no 76 for declare ilstEncounterBlob variable as public 
+                //IList<Encounter_Blob> ilstEncounterBlob = new List<Encounter_Blob>();
                 ilstEncounterBlob = EncounterBlobMngr.GetEncounterBlob(ClientSession.EncounterId);
                 if (ilstEncounterBlob.Count > 0)
                 {
