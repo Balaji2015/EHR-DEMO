@@ -7,5 +7,6 @@
     <property name="Command" column="Command" />
     <property name="Last_Updated_Date_Time" column="Last_Updated_Date_Time" />
     <property name="Value" column="Value" />
+	<property name="Legal_Org" column="Legal_Org" />
   </class>
 </hibernate-mapping>

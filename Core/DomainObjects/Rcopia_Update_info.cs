@@ -15,6 +15,7 @@ namespace Acurus.Capella.Core.DomainObjects
         private string _Command=string.Empty;
         private DateTime _Last_Updated_Date_Time = DateTime.MinValue;
         private string _Value = string.Empty;
+        private string _Legal_Org = string.Empty;
         #endregion
 
         #region Constructors
@@ -68,6 +69,15 @@ namespace Acurus.Capella.Core.DomainObjects
             }
         }
 
+        [DataMember]
+        public virtual string Legal_Org
+        {
+            get { return _Legal_Org; }
+            set
+            {
+                _Legal_Org = value;
+            }
+        }
         #endregion
 
     }
