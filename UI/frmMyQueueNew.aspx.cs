@@ -827,6 +827,9 @@ namespace Acurus.Capella.UI
 
             var proc = from p in ApplicationObject.processMasterList where p.Process_Name == data[3].ToString() select p;
             ProcMasterRecord = proc.ToList<ProcessMaster>()[0];
+
+            //Jira #CAP-580
+            ClientSession.Selectedencounterid = 0;
             return true;
         }
         [WebMethod(EnableSession = true)]
