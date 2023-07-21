@@ -16,7 +16,7 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
     public partial interface IRcopia_Update_InfoManager : IManagerBase<Rcopia_Update_info, ulong>
     {
         IList<Rcopia_Update_info> GetRcopiaUpdateInfo();
-        void InsertinToRcopia_Update_info(string sCommand, DateTime dtLastUpdateTime, string sValue, string sMacAddress);
+        void InsertinToRcopia_Update_info(string sCommand, DateTime dtLastUpdateTime, string sValue, string sMacAddress, string sLegalOrg);
         //void DownloadRCopiaInfo(string sDownloadAddress, string sUserName, string sMACAddress, DateTime dtClientDate, string sFacilityName, ulong EncID);
         void DownloadRCopiaInfo(string sUploadAddress, string sUserName, string sMACAddress, DateTime dtClientDate, string sFacilityName, ulong EncID, ulong ulHumanID, string sLegalOrg);
         string GetRcopiaUpdateInfoCommandName(string sCommandName);
@@ -72,20 +72,42 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
             return ResultDate;
         }
 
-        public void InsertinToRcopia_Update_info(string sCommand, DateTime dtLastUpdateTime, string sValue, string sMacAddress)
+        public string GetRcopiaUpdateInfoCommandNameAndLegalOrg(string sCommandName, string sLegalOrg)
+        {
+
+            IList<Rcopia_Update_info> RcopiaUpdateList = new List<Rcopia_Update_info>();
+            ArrayList aryRcopiaUpdateList;
+            string ResultDate = "";
+            ISession mySession = NHibernateSessionManager.Instance.CreateISession();
+            IQuery query1 = mySession.GetNamedQuery("GetRcopiaLastUpdateDateTimeByLegalOrg.UsingCommand");
+            query1.SetString(0, sCommandName);
+            query1.SetString(1, sLegalOrg);
+
+
+            aryRcopiaUpdateList = new ArrayList(query1.List());
+            mySession.Close();
+            foreach (string oj in aryRcopiaUpdateList)
+            {
+                ResultDate = oj.ToString();
+            }
+            return ResultDate;
+        }
+
+        public void InsertinToRcopia_Update_info(string sCommand, DateTime dtLastUpdateTime, string sValue, string sMacAddress, string sLegalOrg)
         {
             IList<Rcopia_Update_info> ilstUpdateInfo = new List<Rcopia_Update_info>();
-            IList<Rcopia_Update_info> ilstinsert = new List<Rcopia_Update_info>();
+            IList<Rcopia_Update_info> ilstinsert = null;
             Rcopia_Update_info rcopiaupdate = new Rcopia_Update_info();
             //ISession mySession = NHibernateSessionManager.Instance.CreateISession();
             using (ISession mySession = NHibernateSessionManager.Instance.CreateISession())
             {
-                ICriteria crit = mySession.CreateCriteria(typeof(Rcopia_Update_info)).Add(Expression.Eq("Command", sCommand));
+                ICriteria crit = mySession.CreateCriteria(typeof(Rcopia_Update_info)).Add(Expression.Eq("Command", sCommand)).Add(Expression.Eq("Legal_Org", sLegalOrg));
                 if (crit.List<Rcopia_Update_info>().Count > 0)
                 {
                     rcopiaupdate = crit.List<Rcopia_Update_info>()[0];
                     rcopiaupdate.Last_Updated_Date_Time = dtLastUpdateTime;
                     rcopiaupdate.Value = sValue;
+                    rcopiaupdate.Legal_Org = sLegalOrg;
                     ilstUpdateInfo.Add(rcopiaupdate);
                 }
                 mySession.Close();

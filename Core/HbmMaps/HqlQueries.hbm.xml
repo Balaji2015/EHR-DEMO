@@ -12518,6 +12518,11 @@ where Is_Deleted='N' and e.result_master_id<>0 and Reason_Code in('ACUR_LAB_05',
       SELECT Cast(date_format(last_updated_date_time,'%m/%d/%Y %T') as char(100)) FROM `rcopia_update_info` where Command=?;
 ]]>
 	</sql-query>
+	<sql-query name="GetRcopiaLastUpdateDateTimeByLegalOrg.UsingCommand">
+		<![CDATA[
+      SELECT Cast(date_format(last_updated_date_time,'%m/%d/%Y %T') as char(100)) FROM `rcopia_update_info` where Command=? and Legal_Org=?;
+]]>
+	</sql-query>
 
 	<sql-query name="GetACODetails">
 		<![CDATA[
