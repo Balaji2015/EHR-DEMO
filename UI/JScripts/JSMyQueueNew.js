@@ -1153,6 +1153,8 @@ function loadMytask() {
     var myOpenTask = localStorage.getItem('MyOpenTask');
     if (myOpenTask == "Checked") {
         $("#chkOpenTask")[0].checked = true;
+        $("#chkMyTask14")[0].checked = false;
+        $("#chkMyTask14")[0].disabled = true;
     } else {
         $("#chkOpenTask")[0].checked = false;
     }
@@ -1177,6 +1179,8 @@ function loadMytask() {
     if (showallchecked == "Checked") {
         Showall = "Checked";
         $("#chkMyShowAll")[0].checked = true;
+        $("#chkMyTask14")[0].checked = false;
+        $("#chkMyTask14")[0].disabled = true;
     } else {
         Showall = "Unchecked"
     }
@@ -1844,13 +1848,12 @@ function chkMyTask14Click(sender) {
 
 function chkOpenTaskClick() {
     { sessionStorage.setItem('StartLoading', 'true'); StartLoadFromPatChart(); }
-
-    $("#chkMyTask14").checked = false;
-    $("#chkMyTask14").disabled = false;
+    $("#chkMyTask14")[0].checked = false;
+    $("#chkMyTask14")[0].disabled = false;
     var myOpenTask = $("#chkOpenTask")[0].checked ? "Checked" : "Unchecked";
     localStorage.setItem('MyOpenTask', myOpenTask);
     if ($("#chkOpenTask")[0].checked) {
-        $("#chkMyTask14").disabled = true;
+        $("#chkMyTask14")[0].disabled = true;
     }
 
     var Showall = $("#chkMyShowAll")[0].checked ? "Checked" : "Unchecked";
@@ -2299,6 +2302,14 @@ function shwllclck() {
         }
         
         var OpenTask = $("#chkOpenTask")[0].checked ? "Checked" : "Unchecked";
+
+        if ($("#chkMyShowAll")[0].checked) {
+            $("#chkMyTask14")[0].checked = false;
+            $("#chkMyTask14")[0].disabled = true;
+        } else {
+            $("#chkMyTask14")[0].checked = false;
+            $("#chkMyTask14")[0].disabled = false;
+        }
 
         $.ajax({
             type: "POST",
