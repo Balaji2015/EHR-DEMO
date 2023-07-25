@@ -6,7 +6,7 @@ $(document).ready(function () {
     localStorage.removeItem("MyTask14");
     localStorage.removeItem("MyShowAllMyTask");
     localStorage.removeItem("ShowallGeneralqueue");
-    localStorage.removeItem("ClientIpAddress");
+    //localStorage.removeItem("ClientIpAddress");
     var version = document.getElementById('hdnVersion').value;
     var ProjectName = document.getElementById('hdnProjectName').value;
     //Jira - #CAP-80
@@ -538,7 +538,7 @@ function EHRLanding(FileName) {
     localStorage.removeItem("MyTask14");
     localStorage.removeItem("MyShowAllMyTask");
     localStorage.removeItem("ShowallGeneralqueue");
-    localStorage.removeItem("ClientIpAddress");
+    //localStorage.removeItem("ClientIpAddress");
     var version = document.getElementById('hdnVersion').value;
     var ProjectName = document.getElementById('hdnProjectName').value;
     //Jira - #CAP-80

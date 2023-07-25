@@ -2155,21 +2155,6 @@ filter:progid:DXImageTransform.Microsoft.Blur(PixelRadius='4');
         </asp:PlaceHolder>
     </form>
    
-    <script>
-        function getIPAddress() {
-            $.ajax({
-                type: "POST",
-                async: true,
-                url: "frmRCopiaToolbar.aspx/GetIPAddress",
-                dataType: "json",
-                contentType: "application/json; charset=utf-8",
-                success: function (data) {
-                    console.log(data);
-                },
-                error: function OnError(xhr) {
-                }
-            });
-        }
-    </script>
+    
 </body>
 </html>
