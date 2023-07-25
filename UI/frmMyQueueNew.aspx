@@ -128,7 +128,7 @@
                                          <input type="checkbox" id="chkOpenTask" class="Editabletxtbox" style="display:none;" onclick="chkOpenTaskClick()" />
                                      </td>
                                      <td>
-                                        <label id="lblOpenTask" for="chkOpenTask" class="checkbox-inline Editabletxtbox" style="padding-left: 4px; padding-right: 10px;display:none;">Open task created by me</label>
+                                        <label id="lblOpenTask" for="chkOpenTask" class="checkbox-inline Editabletxtbox" style="padding-left: 4px; padding-right: 10px;display:none;">Open Tasks created by me</label>
                                      </td>
                                      <td>
                                          <input type="checkbox" id="chkMyTask14" class="Editabletxtbox" style="display:none;" onclick="chkMyTask14Click(this)" />
