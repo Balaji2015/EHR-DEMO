@@ -185,19 +185,19 @@ function SurgicalSave(sender, args) {
     if ($('#txtSurgeryName').val().trim() == "") {
          {sessionStorage.setItem('StartLoading', 'false');StopLoadFromPatChart();}
         DisplayErrorMessage('180018');
-        //sender.set_autoPostBack(false);
+        sender.set_autoPostBack(false);
         PFSH_SaveUnsuccessful();
     }
     else if ($('#dtpDateOfSurgery_cboDate').val().trim() != "" && $('#dtpDateOfSurgery_cboMonth').val().trim() == "" && $('#dtpDateOfSurgery_cboYear').val().trim() != "") {
          {sessionStorage.setItem('StartLoading', 'false');StopLoadFromPatChart();}
         DisplayErrorMessage('180611');
-        //sender.set_autoPostBack(false);
+        sender.set_autoPostBack(false);
         PFSH_SaveUnsuccessful();
     }
     else {
         //CAP-536 PFSH - Surgical History screen loading for long time
-        //__doPostBack('btnAdd', "true");
-        //sender.set_autoPostBack(true);
+        sender.set_autoPostBack(false);
+        __doPostBack('btnAdd', "true");
         { sessionStorage.setItem('StartLoading', 'true'); StartLoadFromPatChart();}
         $find("lstSurgeryName").clearSelection();
         $('#lstSurgeryName').find('li').addClass('ChangeLabel')

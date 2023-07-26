@@ -146,16 +146,6 @@ namespace Acurus.Capella.UI
             string strtime = string.Empty;
             DateTime utc = DateTime.UtcNow;
 
-            //CAP-536 PFSH
-            if (txtSurgeryName.Text == "") 
-            {
-                return;
-            }
-            if(dtpDateOfSurgery.cboDate.Text.Trim() != "" && dtpDateOfSurgery.cboMonth.Text.Trim() == "" && dtpDateOfSurgery.cboYear.Text.Trim() != "")
-            {
-                return;
-            }
-
 
             if (hdnLocalTime.Value != string.Empty)
             {
