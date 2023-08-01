@@ -4,6 +4,8 @@
 
 <html xmlns="http://www.w3.org/1999/xhtml" >
 <head runat="server">
+  <%--CAP-413: Restrict the Capella EHR access in multiple tabs --%>
+  <script src="JScripts/JsRestrictMultipleTab.js?version=<%=ConfigurationManager.AppSettings["VersionConfiguration"].ToString().Replace("Capella - ","") %>" type="text/javascript"></script>   
 <base target=_self></base>
     <title></title>
     <asp:ContentPlaceHolder ID="head" runat="server">

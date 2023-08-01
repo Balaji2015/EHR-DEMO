@@ -7,11 +7,11 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width,height=device-height initial-scale=1">
     <title>Login</title>
-   <%--<script src="https://logrocket.acurussolutions.io/LogRocket.js"; crossorigin="anonymous"></script> <script>window.LogRocket && window.LogRocket.init('akido/akido-test', { mergeIframes: true }, { enableVerboseLogging: true });</script>--%>
+    <%--<script src="https://logrocket.acurussolutions.io/LogRocket.js"; crossorigin="anonymous"></script> <script>window.LogRocket && window.LogRocket.init('akido/akido-test', { mergeIframes: true }, { enableVerboseLogging: true });</script>--%>
     <link href="CSS/font-awesome.4.4.0.css" rel="stylesheet" />
 
-   <script src="JScripts/jquery-1.11.3.min.js" type="text/javascript"></script>
-     
+    <script src="JScripts/jquery-1.11.3.min.js" type="text/javascript"></script>
+   
     <%--<script type="text/javascript">
         //$("#btnOk").click(function (e) {
         //    return true;
@@ -169,7 +169,7 @@
             width: 180px;
         }
 
-       
+
 
 
         /*#ulKnowledgecenter li {
@@ -247,22 +247,22 @@
             top: 11%;
             left: 50%;
             /*transform: translate(-50%, -50%);*/
-         /*height: 100px;*/
-         
+            /*height: 100px;*/
+
         }
 
         .BackgroundImage{
-             background: url(../Resources/maintenance.jpg);
-             background-repeat: no-repeat;
-             height:1000px;
-             width:2000px;
+            background: url(../Resources/maintenance.jpg);
+            background-repeat: no-repeat;
+            height:1000px;
+            width:2000px;
             background-size:1700px 794px;
-           
+
 
         }
     </style>
-        <%--<link href="CSS/font-awesome.css" rel="stylesheet" type="text/css" />--%>
-      <link href="CSS/CommonStyle.css" rel="stylesheet" type="text/css" />
+    <%--<link href="CSS/font-awesome.css" rel="stylesheet" type="text/css" />--%>
+    <link href="CSS/CommonStyle.css" rel="stylesheet" type="text/css" />
 </head>
 <body style="width: 100%;">
     <%--<script type="text/javascript">!function (e, t, n) {
@@ -310,113 +310,113 @@
 
 </script>--%>
 
-     <script id="ze-snippet" src="https://static.zdassets.com/ekr/snippet.js?key=115b8368-0fd6-4f41-bd95-8c6eddfd7ba7"> </script>
+    <script id="ze-snippet" src="https://static.zdassets.com/ekr/snippet.js?key=115b8368-0fd6-4f41-bd95-8c6eddfd7ba7"> </script>
 
     <script type="text/javascript">
-  window.zESettings = {
-    webWidget: {
-      launcher: {
-        label: {
-          'en-US': ' '
-        }
-      }
-    }
-  };
+        window.zESettings = {
+            webWidget: {
+                launcher: {
+                    label: {
+                        'en-US': ' '
+                    }
+                }
+            }
+        };
     </script>
 
     <form id="frmLoginNew" runat="server" style="width: 100%; height: 900px; overflow-x: hidden; overflow-y: hidden;">
-       <div class="container-fluid">
+        <div class="container-fluid">
             <div >
-            <div class="col-md-1 text-right">
-                <img id="imgleft" height="60px" alt="" width="100" />
-            </div>
-            <div class="col-md-8 align-bottom text-sm-left " style="margin-top: 22px;">
-                <label id="lblProduct" for="EHR" class="logoEHR">EHR</label>
-            </div>
-            <div id="#divproductname_version" class="col-md-3 text-sm-right" style="text-align: right">
-                <img id="imgright" height="60px" alt="" width="100" />
-            </div>
+                <div class="col-md-1 text-right">
+                    <img id="imgleft" height="60px" alt="" width="100" />
+                </div>
+                <div class="col-md-8 align-bottom text-sm-left " style="margin-top: 22px;">
+                    <label id="lblProduct" for="EHR" class="logoEHR">EHR</label>
+                </div>
+                <div id="#divproductname_version" class="col-md-3 text-sm-right" style="text-align: right">
+                    <img id="imgright" height="60px" alt="" width="100" />
+                </div>
 
-            <div class="container">
-                <div>
+                <div class="container">
+                    <div>
 
-                    <br />
-                    <br />
+                        <br />
+                        <br />
 
-                    <div class="row">
-                        <%-- <div class="col-md-4 ">
+                        <div class="row">
+                            <%-- <div class="col-md-4 ">
                     <img src="Images/ACURUS Logo_Modified.png" width="200"   />
                 </div>--%>
 
-                        <div class="col-md-6 mobile-hide col-lg-6 col-sm-6">
-                            <div  id="divpanelsucess" >
-                                <div id="dvpanelheading">
-                                    <%--<img src="Images/rsz_note-icon.png" class="transparent" />--%>
+                            <div class="col-md-6 mobile-hide col-lg-6 col-sm-6">
+                                <div  id="divpanelsucess" >
+                                    <div id="dvpanelheading">
+                                        <%--<img src="Images/rsz_note-icon.png" class="transparent" />--%>
                              Key Features
+                                    </div>
+                                    <div class="panel-body fixed-panel Editabletxtbox">
+                                        <br />
+                                        <ul id="ulFeatures">
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="col-md-6 col-lg-6 col-sm-6">
+                                <div class="card card-container">
+                                    <div class="container">
+                                        <div style="float: left;">
+                                            <span  id="spnlogo" class="logoLogin" >LOGIN
+                                            </span>
+                                        </div>
+                                    </div>
+                                    <hr size="16">
+                                    <form class="form-signin">
+                                        <input type="text" id="txtUserName" runat="server" class="form-control Editabletxtbox" placeholder="UserName" autofocus="autofocus" maxlength="50" /><br />
+                                        <%--<input type="text" id="txtUserName" class="form-control" placeholder="UserName" autofocus="autofocus" runat="server" />--%>
+                                        <input type="password" id="txtPassword" class="form-control Editabletxtbox" placeholder="Password" runat="server" maxlength="50" /><br />
+                                        <select id="ddlFacility" runat="server" class="form-control Editabletxtbox">
+                                            <option value="0">Select Facility</option>
+                                        </select>
+                                        <div id="remember" class="checkbox">
+                                            <%--<a href="" class="pagerLink">Forgot Password</a>--%>
+                                            <%--<img src="Images/Support.png" id="imgSupport" class="support" style="padding-left:98%" title="Need Support?" />--%>
+                                        </div>
+                                        <div id="divsubmit">
+                                            <button class="btn btn-lg btn-primary btn-block btn-signin btnclass htmlbtnstyle" runat="server" id="btnOk" onclick="return CheckMandatory();" onserverclick="btnOk_Click">Sign in</button>
+                                            <%--<button class="button green bigrounded" id="btnOk" runat="server" style="font-size:small;" onclick="CheckMandatory();" onserverclick="btnOk_Click">Login</button>--%>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+
+
+                        </div>
+                    </div>
+                    <br />
+
+                    <div class="row">
+                        <div class="col-md-4 mobile-hide col-lg-4 col-sm-4">
+                            <div id="divpanelsucess1">
+                                <div  id="dvpanelheading1" >
+                                    <%--<img src="Images/System Messages.png" class="transparent" />--%>
+                        System Messages
                                 </div>
                                 <div class="panel-body fixed-panel Editabletxtbox">
-                                    <br />
-                                    <ul id="ulFeatures">
+                                    <ul id="ulSystemMessages"  >
                                     </ul>
                                 </div>
                             </div>
                         </div>
-
-                        <div class="col-md-6 col-lg-6 col-sm-6">
-                            <div class="card card-container">
-                                <div class="container">
-                                    <div style="float: left;">
-                                        <span  id="spnlogo" class="logoLogin" >LOGIN
-                                        </span>
-                                    </div>
-                                </div>
-                                <hr size="16">
-                                <form class="form-signin">
-                                    <input type="text" id="txtUserName" runat="server" class="form-control Editabletxtbox" placeholder="UserName" autofocus="autofocus" maxlength="50" /><br />
-                                    <%--<input type="text" id="txtUserName" class="form-control" placeholder="UserName" autofocus="autofocus" runat="server" />--%>
-                                    <input type="password" id="txtPassword" class="form-control Editabletxtbox" placeholder="Password" runat="server" maxlength="50" /><br />
-                                    <select id="ddlFacility" runat="server" class="form-control Editabletxtbox">
-                                        <option value="0">Select Facility</option>
-                                    </select>
-                                    <div id="remember" class="checkbox">
-                                        <%--<a href="" class="pagerLink">Forgot Password</a>--%>
-                                        <%--<img src="Images/Support.png" id="imgSupport" class="support" style="padding-left:98%" title="Need Support?" />--%>
-                                    </div>
-                                    <div id="divsubmit">
-                                        <button class="btn btn-lg btn-primary btn-block btn-signin btnclass htmlbtnstyle" runat="server" id="btnOk" onclick="return CheckMandatory();" onserverclick="btnOk_Click">Sign in</button>
-                                        <%--<button class="button green bigrounded" id="btnOk" runat="server" style="font-size:small;" onclick="CheckMandatory();" onserverclick="btnOk_Click">Login</button>--%>
-                                    </div>
-                                </form>
-                            </div>
-                        </div>
-
-
-                    </div>
-                </div>
-                <br />
-
-                <div class="row">
-                    <div class="col-md-4 mobile-hide col-lg-4 col-sm-4">
-                        <div id="divpanelsucess1">
-                            <div  id="dvpanelheading1" >
-                                <%--<img src="Images/System Messages.png" class="transparent" />--%>
-                        System Messages
-                            </div>
-                            <div class="panel-body fixed-panel Editabletxtbox">
-                                <ul id="ulSystemMessages"  >
-                                </ul>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-md-4 mobile-hide col-lg-4 col-sm-4">
-                        <div id="divpanelsucess2">
-                            <div id="dvpanelheading2">
-                                <%--<img src="Images/Contacts.png" />--%>
+                        <div class="col-md-4 mobile-hide col-lg-4 col-sm-4">
+                            <div id="divpanelsucess2">
+                                <div id="dvpanelheading2">
+                                    <%--<img src="Images/Contacts.png" />--%>
                         Contact Details
-                            </div>
-                            <div class="panel-body fixed-panel">
-                                <p id="pContactDetails" class="Editabletxtbox">
-                                   <%-- <b>Address:</b><br />
+                                </div>
+                                <div class="panel-body fixed-panel">
+                                    <p id="pContactDetails" class="Editabletxtbox">
+                                        <%-- <b>Address:</b><br />
                                     160 South Old Springs Road<br />
                                     Suite# 280<br />
                                     Anaheim Hills<br />
@@ -432,142 +432,142 @@
                                     <br />
 
                                     <b>Email:</b> capellasupport@acurussolutions.com--%>
-                                </p>
+                                    </p>
+                                </div>
                             </div>
                         </div>
-                    </div>
 
 
-                    <div class="col-md-4 mobile-hide col-lg-4 col-sm-4">
-                        <div id="divpanelsucess3">
-                            <div id="dvpanelheading3">
-                                <%--<img src="Images/Knowledge center.png" />--%>
+                        <div class="col-md-4 mobile-hide col-lg-4 col-sm-4">
+                            <div id="divpanelsucess3">
+                                <div id="dvpanelheading3">
+                                    <%--<img src="Images/Knowledge center.png" />--%>
                             Knowledge Center
+                                </div>
+                                <div class="panel-body fixed-panel Editabletxtbox">
+                                    <ul id="ulKnowledgecenter" >
+                                    </ul>
+                                </div>
                             </div>
-                            <div class="panel-body fixed-panel Editabletxtbox">
-                                <ul id="ulKnowledgecenter" >
-                                </ul>
+                        </div>
+
+                        <div id="dvSupportModal" class="modal fade">
+                            <div class="modal-dialog">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+
+                                        <div class="row">
+                                            <div class="col-xs-4">
+                                                <%--<img class="modal-title" src="Images/Logo.png" style="padding-left: 5px" />--%>
+                                            </div>
+                                            <div class="col-xs-4">
+                                                <h3>Need Support</h3>
+                                            </div>
+                                            <div class="col-xs-4">
+                                                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="modal-body">
+
+
+                                        <div class="form-group">
+                                            <div class="row">
+                                                <span class="col-xs-3">Screen text :</span>
+                                                <div class="col-xs-8">
+
+                                                    <input type="text" class="form-control" id="txtScreentext" value="Login" disabled="disabled" />
+
+                                                </div>
+
+                                            </div>
+                                            <br />
+                                            <div class="row">
+                                                <span class="col-xs-3">Date time :</span>
+                                                <div class="col-xs-8">
+                                                    <input type="text" class="form-control" id="txtDateTime" value="15-JUL-2015" disabled="disabled" />
+                                                </div>
+                                            </div>
+                                            <br />
+                                            <div class="row">
+                                                <span class="col-xs-3">User Name <span style="color: red">*</span>:</span>
+                                                <div class="col-xs-8">
+                                                    <input type="text" class="form-control" id="inpUserName" placeholder="Please Enter UserName" />
+                                                </div>
+                                            </div>
+                                            <br />
+                                            <div class="row">
+                                                <span class="col-xs-3">Email/Phone No :</span>
+                                                <div class="col-xs-8">
+                                                    <input type="text" class="form-control" id="iptxtEmail" placeholder="Email/Phone No" />
+                                                </div>
+                                            </div>
+                                            <br />
+
+                                            <div class="row">
+                                                <span class="col-xs-3">Priority :</span>
+                                                <div>
+                                                    <div class="btn-group col-xs-8">
+
+                                                        <select id="selPriority" class="form-control">
+                                                            <option value="Select">Select a Priority</option>
+                                                            <option value="High">High</option>
+                                                            <option value="Medium">Medium</option>
+                                                            <option value="Low">Low</option>
+                                                        </select>
+
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <br />
+                                            <div class="row">
+                                                <span class="col-xs-3">Tell us more about the issue<span style="color: red">*</span> : </span>
+                                                <div class="col-xs-8">
+                                                    <textarea class="form-control custom-control" rows="4" style="resize: none" id="inputlg"></textarea>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-primary" id="btnsupportsubmit">Submit</button>
+                                        <button type="button" class="btn btn-default" data-dismiss="modal" id="btncancel">Close</button>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>
 
-                    <div id="dvSupportModal" class="modal fade">
-                        <div class="modal-dialog">
-                            <div class="modal-content">
-                                <div class="modal-header">
 
-                                    <div class="row">
-                                        <div class="col-xs-4">
-                                            <%--<img class="modal-title" src="Images/Logo.png" style="padding-left: 5px" />--%>
+
+                    <div id="divErrorMessage" class="modal modal-wide fade" style="z-index: 50000000!important;">
+                        <div class="modal-dialog" style="width: 30%; margin-top: 0%;">
+                            <div class="modal-content">
+                                <div class="modal-header" style="height: 46px;">
+                                    <div class="row" style="margin-top: -25px;">
+                                        <div class="col-xs-8">
+                                            <h3>Capella -EHR</h3>
                                         </div>
-                                        <div class="col-xs-4">
-                                            <h3>Need Support</h3>
-                                        </div>
-                                        <div class="col-xs-4">
+                                        <div class="col-xs-4" style="margin-top: 17px;">
                                             <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
                                         </div>
                                     </div>
                                 </div>
-                                <div class="modal-body">
+                                <div class="modal-body" id="divErrorMsgBody">
+                                    <p style="font-size: small;" id="pErrorMsg"></p>
 
-
-                                    <div class="form-group">
-                                        <div class="row">
-                                            <span class="col-xs-3">Screen text :</span>
-                                            <div class="col-xs-8">
-
-                                                <input type="text" class="form-control" id="txtScreentext" value="Login" disabled="disabled" />
-
-                                            </div>
-
-                                        </div>
-                                        <br />
-                                        <div class="row">
-                                            <span class="col-xs-3">Date time :</span>
-                                            <div class="col-xs-8">
-                                                <input type="text" class="form-control" id="txtDateTime" value="15-JUL-2015" disabled="disabled" />
-                                            </div>
-                                        </div>
-                                        <br />
-                                        <div class="row">
-                                            <span class="col-xs-3">User Name <span style="color: red">*</span>:</span>
-                                            <div class="col-xs-8">
-                                                <input type="text" class="form-control" id="inpUserName" placeholder="Please Enter UserName" />
-                                            </div>
-                                        </div>
-                                        <br />
-                                        <div class="row">
-                                            <span class="col-xs-3">Email/Phone No :</span>
-                                            <div class="col-xs-8">
-                                                <input type="text" class="form-control" id="iptxtEmail" placeholder="Email/Phone No" />
-                                            </div>
-                                        </div>
-                                        <br />
-
-                                        <div class="row">
-                                            <span class="col-xs-3">Priority :</span>
-                                            <div>
-                                                <div class="btn-group col-xs-8">
-
-                                                    <select id="selPriority" class="form-control">
-                                                        <option value="Select">Select a Priority</option>
-                                                        <option value="High">High</option>
-                                                        <option value="Medium">Medium</option>
-                                                        <option value="Low">Low</option>
-                                                    </select>
-
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <br />
-                                        <div class="row">
-                                            <span class="col-xs-3">Tell us more about the issue<span style="color: red">*</span> : </span>
-                                            <div class="col-xs-8">
-                                                <textarea class="form-control custom-control" rows="4" style="resize: none" id="inputlg"></textarea>
-                                            </div>
-                                        </div>
-                                    </div>
                                 </div>
-                                <div class="modal-footer">
-                                    <button type="button" class="btn btn-primary" id="btnsupportsubmit">Submit</button>
-                                    <button type="button" class="btn btn-default" data-dismiss="modal" id="btncancel">Close</button>
+                                <div class="modal-footer" style="height: 50px;">
+                                    <button id="btnErrorOk" style="margin-top: -10px; border: 1px solid !important;">Ok</button>
+                                    <button id="btnErrorCancel" style="margin-top: -10px; border: 1px solid !important;">Cancel</button>
+                                    <button id="btnErrorOkCancel" data-dismiss="modal" style="margin-top: -10px; border: 1px solid !important;">OK</button>
                                 </div>
                             </div>
                         </div>
                     </div>
+
                 </div>
-
-
-
-                <div id="divErrorMessage" class="modal modal-wide fade" style="z-index: 50000000!important;">
-                    <div class="modal-dialog" style="width: 30%; margin-top: 0%;">
-                        <div class="modal-content">
-                            <div class="modal-header" style="height: 46px;">
-                                <div class="row" style="margin-top: -25px;">
-                                    <div class="col-xs-8">
-                                        <h3>Capella -EHR</h3>
-                                    </div>
-                                    <div class="col-xs-4" style="margin-top: 17px;">
-                                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="modal-body" id="divErrorMsgBody">
-                                <p style="font-size: small;" id="pErrorMsg"></p>
-
-                            </div>
-                            <div class="modal-footer" style="height: 50px;">
-                                <button id="btnErrorOk" style="margin-top: -10px; border: 1px solid !important;">Ok</button>
-                                <button id="btnErrorCancel" style="margin-top: -10px; border: 1px solid !important;">Cancel</button>
-                                <button id="btnErrorOkCancel" data-dismiss="modal" style="margin-top: -10px; border: 1px solid !important;">OK</button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
             </div>
-            </div>
-         
+
             <%-- <div id='resultLoading' class='modal' style='text-align: center; display: none'>
        <br /><br /><br /><br />
         <center></center><br /><img src='Resources/wait.ico' title='[Please wait while the page is loading...]'alt='Loading...' /><br />
@@ -582,24 +582,24 @@
             <asp:HiddenField ID="hdnUserName" runat="server" EnableViewState="false" />
             <asp:HiddenField ID="hdnFacltyName" runat="server" EnableViewState="false" />
             <asp:HiddenField ID="hdnOkButton" runat="server" EnableViewState="false" />
-           <asp:HiddenField ID="hdnVersion" runat="server" EnableViewState="false" />
+            <asp:HiddenField ID="hdnVersion" runat="server" EnableViewState="false" />
             <asp:HiddenField ID="hdnProjectName" runat="server" EnableViewState="false" />
             <asp:HiddenField ID="hdnreportPath" runat="server" EnableViewState="false" />
             <asp:HiddenField ID="hdnLoginheader" runat="server" EnableViewState="false" />
             <asp:HiddenField ID="hdnVersionKey" runat="server" EnableViewState="false" />
             <asp:HiddenField ID="hdnServiceLink" runat="server" EnableViewState="false" />
-           <asp:HiddenField ID="hdnPersonName" runat="server" EnableViewState="false" />
-             <asp:HiddenField ID="hdnEvProjectName" runat="server" EnableViewState="false" />  <asp:HiddenField ID="hdnReportPathhttp" runat="server" EnableViewState="false" />
-           <asp:HiddenField ID="hdnGroupId" runat="server" EnableViewState="false" />
-           
-           <asp:HiddenField ID="hdnroleLanding" runat="server" EnableViewState="false" />
+            <asp:HiddenField ID="hdnPersonName" runat="server" EnableViewState="false" />
+            <asp:HiddenField ID="hdnEvProjectName" runat="server" EnableViewState="false" />  <asp:HiddenField ID="hdnReportPathhttp" runat="server" EnableViewState="false" />
+            <asp:HiddenField ID="hdnGroupId" runat="server" EnableViewState="false" />
+
+            <asp:HiddenField ID="hdnroleLanding" runat="server" EnableViewState="false" />
             <asp:HiddenField ID="hdnRCopia_User_NameLanding" runat="server" EnableViewState="false" />
             <asp:HiddenField ID="hdnIs_RCopia_Notification_RequiredLanding" runat="server" EnableViewState="false" />
             <asp:HiddenField ID="hdnPhysician_Library_IDLanding" runat="server" EnableViewState="false" />
             <asp:HiddenField ID="hdnLanding_Screen_IDLanding" runat="server" Value="false" />
-           <asp:HiddenField ID="hdnEMailAddress" runat="server" Value="false" />
+            <asp:HiddenField ID="hdnEMailAddress" runat="server" Value="false" />
 
-           
+
 
 
             <asp:PlaceHolder ID="PlaceHolder1" runat="server">
@@ -607,12 +607,14 @@
                 <script src="JScripts/bootstrap.min3.1.1.max.js" type="text/javascript"></script>
                 <script src="JScripts/jsLogin.js?version=<%=ConfigurationManager.AppSettings["VersionConfiguration"]%>"></script>
                 <script src="JScripts/jsErrorMessage.js?version=<%=ConfigurationManager.AppSettings["VersionConfiguration"]%>"></script>
-                <script src="JScripts/JSAvoidRightClick.js?version=<%=ConfigurationManager.AppSettings["VersionConfiguration"].ToString().Replace("Capella - ","") %>" type="text/javascript"></script>
+                <script src="JScripts/JSAvoidRightClick.js?version=<%=ConfigurationManager.AppSettings["VersionConfiguration"].ToString().Replace("Capella - ","") %>" type="text/javascript"></script>        
+                 <%--CAP-413: Restrict the Capella EHR access in multiple tabs --%>
+                <script src="JScripts/JsRestrictMultipleTab.js?version=<%=ConfigurationManager.AppSettings["VersionConfiguration"].ToString().Replace("Capella - ","") %>" type="text/javascript"></script>
             </asp:PlaceHolder>
         </div>
 
-       
+
     </form>
-     
+    
 </body>
 </html>
