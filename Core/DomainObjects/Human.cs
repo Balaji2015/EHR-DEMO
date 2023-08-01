@@ -1308,7 +1308,7 @@ namespace Acurus.Capella.Core.DomainObjects
             get { return _sIsTranslatorRequired; }
             set { _sIsTranslatorRequired = value; }
         }
-
+        //CAP-602 - Add new field in Human table
         [DataMember]
         public virtual string Dynamics_Number
         {
