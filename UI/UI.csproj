@@ -358,6 +358,7 @@
     <Content Include="frmQRCodeGenerator.aspx" />
     <Content Include="frmQuickPatientCreate.aspx" />
     <Content Include="frmResetPassword.aspx" />
+    <Content Include="frmRestrictMultipleTabs.aspx" />
     <Content Include="frmSessionExpiredIndirectAccess.aspx" />
     <Content Include="frmSessionExpiredMultiLogin.aspx" />
     <Content Include="frmSummaryNew.aspx" />
@@ -372,6 +373,7 @@
     <Content Include="JScripts\jquery.ui.autocomplete.js" />
     <Content Include="JScripts\jQueryAngular.js" />
     <Content Include="JScripts\jsAssessmentNew.js" />
+    <Content Include="JScripts\JsRestrictMultipleTab.js" />
     <Content Include="JScripts\JSDMEOrder.js" />
     <Content Include="JScripts\JSImportCQM.js" />
     <Content Include="JScripts\JSMask.Min.js" />
@@ -406,6 +408,7 @@
     <Content Include="Resources\Filter.bmp" />
     <Content Include="Resources\graph.JPG" />
     <Content Include="Resources\minus_new.gif" />
+    <Content Include="Resources\multipletab.png" />
     <Content Include="Resources\pbAdd.png" />
     <Content Include="Resources\pbclear.png" />
     <Content Include="Resources\person.gif" />
@@ -1458,6 +1461,13 @@
     </Compile>
     <Compile Include="frmResetPassword.aspx.designer.cs">
       <DependentUpon>frmResetPassword.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="frmRestrictMultipleTabs.aspx.cs">
+      <DependentUpon>frmRestrictMultipleTabs.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="frmRestrictMultipleTabs.aspx.designer.cs">
+      <DependentUpon>frmRestrictMultipleTabs.aspx</DependentUpon>
     </Compile>
     <Compile Include="frmResultInterpretation.aspx.cs">
       <DependentUpon>frmResultInterpretation.aspx</DependentUpon>
