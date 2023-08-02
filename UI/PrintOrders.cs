@@ -6649,6 +6649,10 @@ namespace Acurus.Capella.UI
                 string[] sSeperator = new string[] { "Test Reviewed: " };
                 string[] sTemplates = sTemplate[1].Split(';');
                 sNotes = sTemplate[0].Split(sSeperator, StringSplitOptions.None)[1];
+                //CAP-655 remove (M) from suffix, Replace "(M)" with an empty string using regular expression
+                string pattern = @"\s?\(M\)$";
+                sNotes = Regex.Replace(sNotes, pattern, string.Empty);
+
                 string sReplace = "Interpreting Physician";
                 if (sTemplate[1].Split(new string[] { "Interpreting Physician" }, StringSplitOptions.None).Length > 1)
                 {
@@ -6699,19 +6703,20 @@ namespace Acurus.Capella.UI
             BaseFont bfTimes = BaseFont.CreateFont(BaseFont.TIMES_ROMAN, BaseFont.CP1252, false);
             //PdfPTable pdfTable = new PdfPTable(new float[] { 100 });
 
-            Paragraph par = new Paragraph(sPhysicianName, boldFont);
-            par.Alignment = iTextSharp.text.Element.ALIGN_CENTER;
-            doc.Add(par);
+            //CAP-497: Remove the Signed Physician name in the Interpretation notes header
+            //Paragraph par = new Paragraph(sPhysicianName, boldFont);
+            //par.Alignment = iTextSharp.text.Element.ALIGN_CENTER;
+            //doc.Add(par);
 
             //FacilityManager facMngr = new FacilityManager();
             //IList<FacilityLibrary> facList = facMngr.GetFacilityListByFacilityName(sFacilityName);
             //if (facList != null && facList.Count > 0)
             //{
-                //string sFacilityAddress = sFacilityName; // facList[0].Fac_Address1 + Environment.NewLine + facList[0].Fac_City + " " + facList[0].Fac_State + " " + facList[0].Fac_Zip + Environment.NewLine + facList[0].Fac_Telephone + Environment.NewLine + Environment.NewLine;
+            //string sFacilityAddress = sFacilityName; // facList[0].Fac_Address1 + Environment.NewLine + facList[0].Fac_City + " " + facList[0].Fac_State + " " + facList[0].Fac_Zip + Environment.NewLine + facList[0].Fac_Telephone + Environment.NewLine + Environment.NewLine;
 
-                par = new Paragraph(sFacilityAddress, normalFont);
-                par.Alignment = iTextSharp.text.Element.ALIGN_CENTER;
-                doc.Add(par);
+            Paragraph par = new Paragraph(sFacilityAddress, normalFont);
+            par.Alignment = iTextSharp.text.Element.ALIGN_CENTER;
+            doc.Add(par);
             //}
 
             par = new Paragraph(sPatientInfo + Environment.NewLine, normalFont);
