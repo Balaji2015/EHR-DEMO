@@ -1693,6 +1693,16 @@ function QPCDateValidation(sender, args) {
         }
 
     }
+    $(document.getElementById(sender._clientID)).datepicker({
+        dateFormat: 'dd-M-yy', changeYear: true, changeMonth: true, yearRange: "-120:+0",
+        onSelect: function (selected, evnt) {
+            $telerik.findMaskedTextBox(sender._clientID).set_value(selected);
+            AutoSave();
+        }
+    });
+    $(document.getElementById(sender._clientID)).click(function () {
+        $(document.getElementById(sender._clientID)).focus();
+    });
 
 
 }
@@ -2041,8 +2051,28 @@ $(document).ready(function () {
         $(document.getElementById(GetClientId("dtpPatientDOB"))).focus();
     });
 
-
 });
+
+//Cap - 669
+function btnEditName_Click() {   
+    $(document.getElementById("dtpPatientDOB")).click(function () {
+        $(document.getElementById("dtpPatientDOB")).focus();
+    });
+    setTimeout(function () {
+        $("#dtpPatientDOB").datepicker(
+            {
+                dateFormat: 'dd-M-yy', changeYear: true, changeMonth: true, maxDate: new Date(), yearRange: "-120:+0",
+                onSelect: function (selected, evnt) {
+                    $telerik.findMaskedTextBox("dtpPatientDOB").set_value(selected);
+                    AutoSave();
+                }
+            }
+        );
+    }, 300);
+    
+}
+
+
 
 function ClickUploadControl() {
     $("#fileupload").click();
@@ -2175,7 +2205,7 @@ function AddGuarantorClick(oWindow, args) {
     var Result = args.get_argument();
     if (Result) {
         document.getElementById(GetClientId("hdnGuarantorID")).value = Result.HumanID;
-        document.getElementById(GetClientId("btnSave")).disabled = false; s
+        document.getElementById(GetClientId("btnSave")).disabled = false; 
         document.getElementById(GetClientId("hdnSaveFlag")).value = true;
         document.getElementById(GetClientId("btnAddGuarantorRefresh")).click();
     }

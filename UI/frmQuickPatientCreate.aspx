@@ -12,7 +12,7 @@
     <%--<script src="https://logrocket.acurussolutions.io/LogRocket.js"; crossorigin="anonymous"></script> <script>window.LogRocket && window.LogRocket.init('akido/akido-test', { mergeIframes: true }, { enableVerboseLogging: true });</script>--%>
     <link href="CSS/style.css" rel="stylesheet" type="text/css" />
         <link href="CSS/font-awesome.css" rel="stylesheet" type="text/css" />
-        
+      
     <style type="text/css">
         .Policypanel_with_padding {
         }
@@ -159,7 +159,7 @@
                                             
                                             </td>
                                             <td style="padding-bottom:5px;">
-                                                 <asp:Button ID="btnEditName" runat="server" Text="Edit Name" OnClick="btnEditName_Click" Class="aspresizedbluebutton"
+                                                 <asp:Button ID="btnEditName" runat="server" Text="Edit Name" OnClick="btnEditName_Click" onclientclick="btnEditName_Click();" Class="aspresizedbluebutton"
                                                  AccessKey="E" Width="100px" style=" margin-left:61px; margin-top:-10px "/>
                                             </td>
                                         </tr>
@@ -1451,27 +1451,28 @@
             OnClientClick="return CloseWindow();" />
         <asp:HiddenField ID="hdnMessageType" runat="server" />
         <asp:HiddenField ID="hdnBSave" runat="server" />
-        <asp:PlaceHolder ID="PlaceHolder1" runat="server">
+        <asp:PlaceHolder ID="PlaceHolder1" runat="server" >
+        </asp:PlaceHolder>
+            
             <link href="CSS/jquery-ui.min.css" rel="stylesheet" />
           <link href="CSS/CommonStyle.css" rel="stylesheet" type="text/css" />
         <script type="text/javascript" src="JScripts/jquery-2.1.3.js"></script>
         <script type="text/javascript" src="JScripts/jquery-ui.min.js"></script>
             <link href="CSS/jquery-ui.css" rel="stylesheet" />
-
-            <script src="JScripts/bootstrap.min.js"></script>
+        <script src="JScripts/bootstrap.min.js"></script>
             <link href="CSS/ElementStyles.css" rel="stylesheet" type="text/css" />
-
+            
             <script src="JScripts/JSQuickPatient.js?version=<%=ConfigurationManager.AppSettings["VersionConfiguration"].ToString().Replace("Capella - ","") %>" type="text/javascript"></script>
            
             <script src="JScripts/JSModalWindow.js?version=<%=ConfigurationManager.AppSettings["VersionConfiguration"].ToString().Replace("Capella - ","") %>" type="text/javascript"></script>
 
             <script src="JScripts/JSErrorMessage.js?version=<%=ConfigurationManager.AppSettings["VersionConfiguration"].ToString().Replace("Capella - ","") %>" type="text/javascript"></script>
-
+            
             <script src="JScripts/JSAvoidRightClick.js?version=<%=ConfigurationManager.AppSettings["VersionConfiguration"].ToString().Replace("Capella - ","") %>" type="text/javascript"></script>
             
                 <%--<link href="CSS/style.css" rel="stylesheet" type="text/css" />--%>
 
-        </asp:PlaceHolder>
+        
     </form>
 </body>
 </html>

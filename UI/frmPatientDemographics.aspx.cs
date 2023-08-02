@@ -2840,7 +2840,10 @@ namespace Acurus.Capella.UI
             TextBoxColorChange(txtPatientmiddlename);
             ComboBoxColorChange(ddlPatientsex);
             ComboBoxColorChange(ddlSuffix);
-            dtpPatientDOB.Enabled = false;
+            //Cap - 669
+            //dtpPatientDOB.Enabled = false;
+            dtpPatientDOB.CssClass = "nonEditabletxtbox";
+            dtpPatientDOB.Attributes.Add("disabled", "disabled");
         }
         public void TextBoxColorChange(TextBox txtbox)
         {
@@ -2864,18 +2867,25 @@ namespace Acurus.Capella.UI
         {
             if (bToNormal == false)
             {
-                combobox.Enabled = false;
+                //Cap - 669
+                //combobox.Enabled = false;
+                combobox.Attributes.Add("disabled", "disabled");
                 combobox.CssClass = "nonEditabletxtbox";
             }
             else
             {
-                combobox.Enabled = true;
+                //Cap - 669
+                //combobox.Enabled = true;
+                combobox.Attributes.Remove("disabled");
+                combobox.Attributes.Add("enabled", "enabled");
                 combobox.CssClass = "Editabletxtbox";
             }
         }
         public void ComboBoxColorChange(DropDownList combobox)
         {
-            combobox.Enabled = false;
+            //Cap - 669
+            //combobox.Enabled = false;
+            combobox.Attributes.Add("disabled", "disabled");
             combobox.CssClass = "nonEditabletxtbox";
 
         }
@@ -3472,7 +3482,10 @@ namespace Acurus.Capella.UI
         }
         public void ComboBoxColorChangeWhite(DropDownList combobox)
         {
-            combobox.Enabled = true;
+            //cap - 669
+            //combobox.Enabled = true;
+            combobox.Attributes.Remove("disabled");
+            combobox.Attributes.Add("enabled", "enabled");
             combobox.CssClass = "Editabletxtbox";
         }
 
@@ -4163,7 +4176,12 @@ namespace Acurus.Capella.UI
             txtPatientlastname.Focus();
             ComboBoxColorChangeWhite(ddlPatientsex);
             ComboBoxColorChangeWhite(ddlSuffix);
-            dtpPatientDOB.Enabled = true;
+            //cap-669
+            //dtpPatientDOB.Enabled = true;
+            dtpPatientDOB.Attributes.Remove("disabled");
+            dtpPatientDOB.Attributes.Add("enabled", "enabled");
+            dtpPatientDOB.CssClass = "Editabletxtbox";
+
             if (ddlPatientStatus.Text.ToUpper() != "DECEASED")
             {
                 dtpDateOfDeath.Enabled = false;
@@ -4564,8 +4582,14 @@ namespace Acurus.Capella.UI
             if (hdnPatientID.Value == "0")
             {
                 //DisableGroupbox();
-                ddlPatientsex.Enabled = true;
-                ddlSuffix.Enabled = true;
+                //Cap - 669
+                //ddlPatientsex.Enabled = true;
+                //ddlSuffix.Enabled = true;
+                ddlPatientsex.Attributes.Remove("disabled");
+                ddlSuffix.Attributes.Remove("disabled");
+                ddlPatientsex.Attributes.Add("enabled", "enabled");
+                ddlSuffix.Attributes.Add("enabled", "enabled");
+
                 if (chkGuarantorIsPatient.Checked == true)
                 {
                     ddlGuarantorSex.Enabled = false;
@@ -4592,9 +4616,14 @@ namespace Acurus.Capella.UI
             }
             else
             {
-                ddlPatientsex.Enabled = false;
-                ddlSuffix.Enabled = false;
-                dtpPatientDOB.Enabled = false;
+                //Cap - 669
+                //ddlPatientsex.Enabled = false;
+                //ddlSuffix.Enabled = false;
+                //dtpPatientDOB.Enabled = false;
+                ddlPatientsex.Attributes.Add("disabled", "disabled");
+                ddlSuffix.Attributes.Add("disabled", "disabled");
+                dtpPatientDOB.Attributes.Add("disabled", "disabled");
+
                 if (chkGuarantorIsPatient.Checked == true)
                 {
                     ddlGuarantorSex.Enabled = false;
