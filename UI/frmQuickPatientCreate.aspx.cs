@@ -1411,11 +1411,12 @@ namespace Acurus.Capella.UI
                 if (tablelayout.Controls[i].GetType().ToString().Contains("RadMaskedTextBox"))
                 {
                     RadMaskedTextBox MskTxtBox = (RadMaskedTextBox)tablelayout.Controls[i];
-                    if (MskTxtBox.ID == "msktxtZipcode")
-                    {
-                        MaskedTextBoxColorChange(MskTxtBox, false);
-                    }
-                    else if (MskTxtBox.ID == "dtpPatientDOB")
+                    //Cap - 669
+                    //if (MskTxtBox.ID == "msktxtZipcode")
+                    //{
+                    //    MaskedTextBoxColorChange(MskTxtBox, false);
+                    //}
+                    if (MskTxtBox.ID == "dtpPatientDOB")
                     {
                         MaskedTextBoxColorChange(MskTxtBox, false);
                     }
@@ -1461,7 +1462,9 @@ namespace Acurus.Capella.UI
                 else if (tablelayout.Controls[i].GetType().ToString().Contains("DropDownList"))
                 {
                     DropDownList combobox = (DropDownList)tablelayout.Controls[i];
-                    if (combobox.ID != "cboPreferredConfidentialCoreespondenceMode")
+                    //Cap - 669
+                   // if (combobox.ID != "cboPreferredConfidentialCoreespondenceMode")
+                   if (combobox.ID != "cboPreferredConfidentialCoreespondenceMode" && combobox.ID != "cboHumanType")
                         ComboBoxColorChange(combobox, false);
                     if (bShowPatInfo == true)
                         ComboBoxColorChange(combobox, false);
@@ -1510,14 +1513,20 @@ namespace Acurus.Capella.UI
             {
                 combobox.Enabled = false;
                 combobox.CssClass = "nonEditabletxtbox";
-                combobox.Attributes.Add("readonly", "readonly");
-              
+                //Cap - 669
+                //combobox.Attributes.Add("readonly", "readonly");
+                combobox.Attributes.Add("disabled", "disabled");
+
             }
             else
             {
                 combobox.Enabled = true;
                 combobox.CssClass = "Editabletxtbox";
-                combobox.Attributes.Add("readonly", "");
+                
+                //Cap - 669
+                // combobox.Attributes.Add("readonly", "");
+                combobox.Attributes.Remove("disabled");
+                combobox.Attributes.Add("enabled", "enabled");
             }
         }
         public void PolicyInformationClearall()
@@ -5748,11 +5757,17 @@ namespace Acurus.Capella.UI
             {
                 if (bToNormal == false)
                 {
-                    datetimepicker.Enabled = false;
+                    //Cap - 669
+                    //datetimepicker.Enabled = false;
+                    datetimepicker.Attributes.Add("disabled", "disabled");
                 }
                 else
                 {
-                    datetimepicker.Enabled = true;
+                    //Cap - 669
+                    //datetimepicker.Enabled = true;
+                    datetimepicker.Attributes.Remove("disabled");
+                    datetimepicker.Attributes.Add("enabled", "enabled");
+
                 }
             }
         }
@@ -5998,6 +6013,12 @@ namespace Acurus.Capella.UI
             ComboBoxColorChange(cboPatientSex, true);
             ComboBoxColorChange(cboPatientSuffix, true);
             MaskedTextBoxColorChange(msktxtZipcode, true);
+            //Cap - 669
+            dtpPatientDOB.Attributes.Remove("disabled");
+            dtpPatientDOB.CssClass = "Editabletxtbox";
+            dtpPatientDOB.ReadOnly = false;
+            dtpPatientDOB.Enabled =true;
+
             ScreenMode = "EDIT NAME";
         }
 
@@ -8222,6 +8243,9 @@ namespace Acurus.Capella.UI
                 msktxtbox.CssClass = "nonEditabletxtbox";
                 //msktxtbox.Attributes.Add("disabled", "disabled");
                 //msktxtbox.Enabled = false;
+                // Cap - 669
+                msktxtbox.Attributes.Add("disabled", "disabled");
+
             }
             else
             {
@@ -8230,6 +8254,9 @@ namespace Acurus.Capella.UI
                 msktxtbox.CssClass = "Editabletxtbox";
                 //msktxtbox.Attributes.Add("disabled", "");
                 //msktxtbox.Enabled = true;
+                //Cap - 669
+                msktxtbox.Attributes.Remove("disabled");
+                msktxtbox.Attributes.Add("enable", "enable");
             }
         }
 
