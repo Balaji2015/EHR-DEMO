@@ -41,8 +41,8 @@
                 <div class="divdat">
                     <p id="rcorners3" class="Editabletxtbox">MULTIPLE TAB ACCESS WARNING</p>
                     <br />
-                    <p style="font-size: 22px;" class="Editabletxtbox">
-                        <img src="Resources/multipletab.png" alt="Pineapple" style="width: 250px; height: 118px; margin-right: 15px;" />
+                    <p style="font-size: 22px;margin:15px" class="Editabletxtbox">
+                        <img src="Resources/multipletab.png" alt="Pineapple" style="width: 283px; height: 126px; margin-right: 15px;" />
                         You already have an active EHR session. Use "Windows" in the active session to navigate to other open charts.
                     </p>
                 </div>

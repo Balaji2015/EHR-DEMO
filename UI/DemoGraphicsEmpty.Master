@@ -15,9 +15,7 @@
         <asp:ContentPlaceHolder ID="C5POBody" runat="server">
         
         </asp:ContentPlaceHolder>
-    </div>
-        <%--CAP-413: Restrict the Capella EHR access in multiple tabs --%>
-  <script src="JScripts/JsRestrictMultipleTab.js?version=<%=ConfigurationManager.AppSettings["VersionConfiguration"].ToString().Replace("Capella - ","") %>" type="text/javascript"></script>   
+    </div>  
     </form>
 </body>
 </html>
