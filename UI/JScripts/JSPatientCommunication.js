@@ -7,7 +7,7 @@ function btnpatientChart_Click() {
     var queryString = window.location.search.toString().split('?')[1];
     if (queryString != undefined && queryString != "") {
         humanid = queryString.split("&")[0].split('=')[1];
-    } 
+    }
     //Result = openNonModal("frmPatientchart.aspx?HumanID=" + humanid + "&from=openpatientchart&ScreenMode=Menu&openingfrom=Menu", 780, 1250, obj);//BugID:45892
     Result = openNonModal("frmPatientchart.aspx?HumanID=" + humanid + "&from=viewresult&ScreenMode=Menu&openingfrom=Menu", 780, 1250, obj);//BugID:45892
 
@@ -58,7 +58,7 @@ function btnPrint_Clicked() {
         dataType: "json",
         async: true,
         success: function (path) {
-            
+
             $($(top.window.document).find('#ProcessiFrameReport')[0]).attr('src', "");
             $(top.window.document).find("#ModalReport").modal({ backdrop: 'static', keyboard: false }, 'show');
             $(top.window.document).find("#mdlcontentReport")[0].style.width = "100%";
@@ -77,8 +77,8 @@ function btnPrint_Clicked() {
                 var log = JSON.parse(xhr.responseText);
                 console.log(log);
                 alert("USER MESSAGE:\n" +
-                                    ". Cannot process request. Please Login again and retry. \nEXCEPTION DETAILS: \n" +
-                                   "Message: " + log.Message);
+                    ". Cannot process request. Please Login again and retry. \nEXCEPTION DETAILS: \n" +
+                    "Message: " + log.Message);
             }
         }
     });
@@ -106,56 +106,55 @@ function btnePrescribe_Click() {
 }
 
 function SaveMenuClick() {
-    
-    StartLoadFromPatChart();
+    { sessionStorage.setItem('StartLoading', 'true'); StartLoadFromPatChart(); }
     if ($("[id*='lblCallerName']")[0].innerHTML == "Spoken To*" && $("[id*='txtCallerName']")[0].value.trim() == "") {
         localStorage.setItem("bSaveSuccess", "");
         localStorage.setItem("bSave", "false");
         DisplayErrorMessage('7580012');
-        StopLoadFromPatChart();
+        { sessionStorage.setItem('StartLoading', 'false'); StopLoadFromPatChart(); }
         return false;
     }
     else if (document.getElementById("ddlRelationship").value != "Self" && document.getElementById("ddlRelationship").value != "" && document.getElementById("txtCallerName").value == "") {
         localStorage.setItem("bSaveSuccess", "");
         localStorage.setItem("bSave", "false");
         DisplayErrorMessage('7580012');
-        StopLoadFromPatChart();
+        { sessionStorage.setItem('StartLoading', 'false'); StopLoadFromPatChart(); }
         return false;
     }
     else if ($("#ddlType option:selected").text() == "TASK" && $("#ddlAssignedTo option:selected").text() == "") {
         localStorage.setItem("bSaveSuccess", "");
         localStorage.setItem("bSave", "false");
         DisplayErrorMessage('7580007');
-        StopLoadFromPatChart();
+        { sessionStorage.setItem('StartLoading', 'false'); StopLoadFromPatChart(); }
         return false;
     }
-   
+
     else if ($("#ddlMessageType option:selected").text() == "") {
         localStorage.setItem("bSaveSuccess", "");
         localStorage.setItem("bSave", "false");
         DisplayErrorMessage('7580008');
-        StopLoadFromPatChart();
+        { sessionStorage.setItem('StartLoading', 'false'); StopLoadFromPatChart(); }
         return false;
     }
     else if (document.getElementById("DLC_txtDLC").value == "") {
         localStorage.setItem("bSaveSuccess", "");
         localStorage.setItem("bSave", "false");
         DisplayErrorMessage('7580009');
-        StopLoadFromPatChart();
+        { sessionStorage.setItem('StartLoading', 'false'); StopLoadFromPatChart(); }
         return false;
     }
     else if ($("#ddlRelationship option:selected").text() == "Self" && $("#ddlRelationship option:selected").text() == "") {
         localStorage.setItem("bSaveSuccess", "");
         localStorage.setItem("bSave", "false");
         DisplayErrorMessage('7580012');
-        StopLoadFromPatChart();
+        { sessionStorage.setItem('StartLoading', 'false'); StopLoadFromPatChart(); }
         return false;
     }
     else if ($("[id*='lblCallerName']")[0].innerHTML == "Spoken To*" && $("[id*='txtCallerName']")[0].value.trim() == "") {
         localStorage.setItem("bSaveSuccess", "");
         localStorage.setItem("bSave", "false");
         DisplayErrorMessage('7580012');
-        StopLoadFromPatChart();
+        { sessionStorage.setItem('StartLoading', 'false'); StopLoadFromPatChart(); }
         return false;
     }
     else {
@@ -202,19 +201,19 @@ function SaveMenuClick() {
                 AfterSaveClear();
                 Assingnmethod();
                 localStorage.setItem('bSave', 'true');
-                StopLoadFromPatChart();
+                { sessionStorage.setItem('StartLoading', 'false'); StopLoadFromPatChart(); }
                 return false;
             },
             error: function OnError(xhr) {
-                StopLoadFromPatChart();
+                { sessionStorage.setItem('StartLoading', 'false'); StopLoadFromPatChart(); }
                 if (xhr.status == 999)
                     window.location = xhr.statusText;
                 else {
                     var log = JSON.parse(xhr.responseText);
                     console.log(log);
                     alert("USER MESSAGE:\n" +
-                                    ". Cannot process request. Please Login again and retry. \nEXCEPTION DETAILS: \n" +
-                                   "Message: " + log.Message);
+                        ". Cannot process request. Please Login again and retry. \nEXCEPTION DETAILS: \n" +
+                        "Message: " + log.Message);
                 }
             }
         });
@@ -231,23 +230,23 @@ function GetParameterValues(param) {
     }
 }
 function SaveClick(sender) {
-    StartLoadFromPatChart();
+    { sessionStorage.setItem('StartLoading', 'true'); StartLoadFromPatChart(); }
     if ($("#ddlAssignedTo option:selected").text() == "" && sender.defaultValue != "Task Complete") {
         DisplayErrorMessage('390009');
         localStorage.setItem("bSaveSuccess", "");
-        StopLoadFromPatChart();
+        { sessionStorage.setItem('StartLoading', 'false'); StopLoadFromPatChart(); }
         return false;
     }
     else if ($("#ddlMessageType option:selected").text() == "") {
         DisplayErrorMessage('390016');
         localStorage.setItem("bSaveSuccess", "");
-        StopLoadFromPatChart();
+        { sessionStorage.setItem('StartLoading', 'false'); StopLoadFromPatChart(); }
         return false;
     }
     else if ($("#DLC_txtDLC").val() == "" && sender.defaultValue != "Task Complete") {
         alert("Please enter Message Notes");
         localStorage.setItem("bSaveSuccess", "");
-        StopLoadFromPatChart();
+        { sessionStorage.setItem('StartLoading', 'false'); StopLoadFromPatChart(); }
         return false;
     }
     else {
@@ -342,25 +341,25 @@ function SaveClick(sender) {
                         localStorage.setItem("bSave", "")
                     }
                 }
-                StopLoadFromPatChart();
+                { sessionStorage.setItem('StartLoading', 'false'); StopLoadFromPatChart(); }
                 return false;
             },
             error: function OnError(xhr) {
-                StopLoadFromPatChart();
+                { sessionStorage.setItem('StartLoading', 'false'); StopLoadFromPatChart(); }
                 if (xhr.status == 999)
                     window.location = xhr.statusText;
                 else {
                     var log = JSON.parse(xhr.responseText);
                     console.log(log);
                     alert("USER MESSAGE:\n" +
-                                    ". Cannot process request. Please Login again and retry. \nEXCEPTION DETAILS: \n" +
-                                   "Message: " + log.Message);
+                        ". Cannot process request. Please Login again and retry. \nEXCEPTION DETAILS: \n" +
+                        "Message: " + log.Message);
                 }
             }
         });
     }
 
-    StopLoadFromPatChart();
+    { sessionStorage.setItem('StartLoading', 'false'); StopLoadFromPatChart(); }
     return false;
 }
 function CancelForPatientCommunication(sender) {
@@ -534,7 +533,7 @@ function FacilityChange(sender) {
             alert(data.d);
         }
     });
-   
+
     document.getElementById("btnSaveMenu").disabled = false;
     localStorage.setItem("bSave", "false");
     return false;
@@ -554,7 +553,7 @@ function FacilityChanges(Facility) {
             });
         });
 
-        
+
         var vddlAssignedTo = $("[id*='ddlAssignedTo']")[0].options;
         if (vddlAssignedTo.length > 0) {
             for (var i = 0; i < vddlAssignedTo.length; i++) {
@@ -624,15 +623,15 @@ function SearchClick() {
             return false;
         },
         error: function OnError(xhr) {
-            StopLoadFromPatChart();
+            { sessionStorage.setItem('StartLoading', 'false'); StopLoadFromPatChart(); }
             if (xhr.status == 999)
                 window.location = xhr.statusText;
             else {
                 var log = JSON.parse(xhr.responseText);
                 console.log(log);
                 alert("USER MESSAGE:\n" +
-                                    ". Cannot process request. Please Login again and retry. \nEXCEPTION DETAILS: \n" +
-                                   "Message: " + log.Message);
+                    ". Cannot process request. Please Login again and retry. \nEXCEPTION DETAILS: \n" +
+                    "Message: " + log.Message);
             }
         }
     });
@@ -645,7 +644,7 @@ function ClearClick() {
     return false;
 }
 $(document).ready(function () {
-    StartLoadFromPatChart();
+    { sessionStorage.setItem('StartLoading', 'true'); StartLoadFromPatChart(); }
     sessionStorage.setItem('MYQ', '');
     sessionStorage.setItem('PatientCommunication', '');
     sessionStorage.setItem('sFacility', '');
@@ -802,7 +801,7 @@ $(document).ready(function () {
                 }
 
                 $("#ddlPriority option:eq(2)").attr('selected', 'selected');
-                
+
                 document.getElementById("ddlAssignedTo").options.length = 0;
                 var vAssignedTo = objdata.AssignedTo;
                 if (vAssignedTo != null && vAssignedTo.length > 0) {
@@ -823,7 +822,7 @@ $(document).ready(function () {
                         }
                     });
                 }
-               
+
                 var cookies = document.cookie.split(';');
                 var CLegalOrg = "";
                 for (var l = 0; l < cookies.length; l++) {
@@ -923,8 +922,7 @@ $(document).ready(function () {
                         var date = d + "-" + arr[m] + "-" + y;
                         $("#txtMessageDate")[0].value = date;
                         //Gitlab #2823 - Fill Add to Patient Chart Checkbox
-                        if (objdata.Message[0].Is_PatientChart == "Y")
-                        {
+                        if (objdata.Message[0].Is_PatientChart == "Y") {
                             document.getElementById("ChkPatientChart").checked = true;
                         }
                         else {
@@ -1005,24 +1003,24 @@ $(document).ready(function () {
             $("span[mand=Yes]").each(function () {
                 $(this).html($(this).html().replace("*", "<span class='manredforstar'>*</span>"));
             });
-            StopLoadFromPatChart();
+            { sessionStorage.setItem('StartLoading', 'false'); StopLoadFromPatChart(); }
         },
         error: function OnError(xhr) {
-            StopLoadFromPatChart();
+            { sessionStorage.setItem('StartLoading', 'false'); StopLoadFromPatChart(); }
             if (xhr.status == 999)
                 window.location = xhr.statusText;
             else {
                 var log = JSON.parse(xhr.responseText);
                 console.log(log);
                 alert("USER MESSAGE:\n" +
-                                    ". Cannot process request. Please Login again and retry. \nEXCEPTION DETAILS: \n" +
-                                   "Message: " + log.Message);
+                    ". Cannot process request. Please Login again and retry. \nEXCEPTION DETAILS: \n" +
+                    "Message: " + log.Message);
             }
         }
     });
-    
+
     if (sessionStorage.getItem('MYQ') != "true" || sessionStorage.getItem('PatientCommunication') == "true") {
-        
+
         FillMessageGrid();
     }
     else
@@ -1033,10 +1031,10 @@ $(document).ready(function () {
             if ($("[id*='pnlMessageInfo']")[0] != undefined) {
                 $("[id*='pnlMessageInfo']")[0].className = "displayNone";
             }
-            StopLoadFromPatChart();
+            { sessionStorage.setItem('StartLoading', 'false'); StopLoadFromPatChart(); }
         }
 
-    StopLoadFromPatChart();
+    { sessionStorage.setItem('StartLoading', 'false'); StopLoadFromPatChart(); }
 });
 var vhumanid = "";
 function FillMessageGrid() {
@@ -1126,15 +1124,15 @@ function FillMessageGrid() {
                         }
 
                     }
-                   
+
                 }
                 $("[id*='grdMessages']").append("<table id=grdMessagestable class='table table-bordered Gridbodystyle' style='table-layout: fixed;width:100%'><thead style='border: 0px;width:96.7%;' ><tr class='Gridheaderstyle'><th  style='border: 1px solid #909090;width:30px'>Edit</th><th style='border: 1px solid #909090;width:60px'>Type</th><th style='border: 1px solid #909090;width:100px'>Assigned To</th><th style='border: 1px solid #909090;width:60px'>Priority</th><th style='border: 1px solid #909090;width:150px'>Msg.Description</th><th style='border: 1px solid #909090;width:250px'>Msg.Notes</th><th style='border: 1px solid #909090;width:100px'>Spoken To</th><th style='border: 1px solid #909090;width:100px'>Relationship</th><th style='border: 1px solid #909090;width:150px'>Created By</th><th style='border: 1px solid #909090;width:100px'>Message Origin</th><th style='border: 1px solid #909090;width:100px'>Message Date</th><th style='border: 1px solid #909090;width:150px;white-space: normal;'>Task Created Date and Time</th><th style='border: 1px solid #909090;width:150px'>Facility Name</th><th style='border: 1px solid #909090;width:150px'>Modified By</th><th style='border: 1px solid #909090;width:150px;white-space: normal'>Task Modified Date and Time</th><th style='border: 1px solid #909090;display:none;'>Source</th><th style='border: 1px solid #909090;display:none;'>Enc Id</th><th style='border: 1px solid #909090;display:none;'>Line Id</th><th style='border: 1px solid #909090;display:none;'>Line Type</th><th style='border: 1px solid #909090;display:none;'>Header Id</th><th style='border: 1px solid #909090;display:none;'>Header Type</th><th style='border: 1px solid #909090;display:none;'>Current Process</th><th style='border: 1px solid #909090;display:none;'>Message ID</th><th style='border: 1px solid #909090;display:none;'>WfobjectID</th><th style='border: 1px solid #909090;width:150px;white-space: normal;'>Status</th><th style='border: 1px solid #909090;width:150px;white-space: normal;'>Task Complete Date and Time</th></thead><tbody style='word-wrap: break-word;'></thead><tbody style='word-wrap: break-word;'>" + TableContents + "</tbody></table>");
             }
             else {
                 $("[id*='grdMessages']").append("<table id=grdMessagestable class='table table-bordered Gridbodystyle' style='table-layout: fixed;width:100%'><thead style='border: 0px;width:96.7%;' class='Gridheaderstyle'><tr class='Gridheaderstyle'><th  style='border: 1px solid #909090;width:30px'>Edit</th><th style='border: 1px solid #909090;width:60px'>Type</th><th style='border: 1px solid #909090;width:100px'>Assigned To</th><th style='border: 1px solid #909090;width:60px'>Priority</th><th style='border: 1px solid #909090;width:150px'>Msg.Description</th><th style='border: 1px solid #909090;width:250px'>Msg.Notes</th><th style='border: 1px solid #909090;width:100px'>Spoken To</th><th style='border: 1px solid #909090;width:100px'>Relationship</th><th style='border: 1px solid #909090;width:150px'>Created By</th><th style='border: 1px solid #909090;width:100px'>Message Origin</th><th style='border: 1px solid #909090;width:100px'>Message Date</th><th style='border: 1px solid #909090;width:150px;white-space: normal;'>Task Created Date and Time</th><th style='border: 1px solid #909090;width:150px'>Facility Name</th><th style='border: 1px solid #909090;width:150px'>Modified By</th><th style='border: 1px solid #909090;width:150px;white-space: normal'>Task Modified Date and Time</th><th style='border: 1px solid #909090;display:none;'>Source</th><th style='border: 1px solid #909090;display:none;'>Enc Id</th><th style='border: 1px solid #909090;display:none;'>Line Id</th><th style='border: 1px solid #909090;display:none;'>Line Type</th><th style='border: 1px solid #909090;display:none;'>Header Id</th><th style='border: 1px solid #909090;display:none;'>Header Type</th><th style='border: 1px solid #909090;display:none;'>Current Process</th><th style='border: 1px solid #909090;display:none;'>Message ID</th><th style='border: 1px solid #909090;display:none;'>WfobjectID</th><th style='border: 1px solid #909090;width:150px;white-space: normal;'>Status</th><th style='border: 1px solid #909090;width:150px;white-space: normal;'>Task Complete Date and Time</th></thead><tbody style='word-wrap: break-word;'></tbody></table>");
             }
-            
-            StopLoadFromPatChart();
+
+            { sessionStorage.setItem('StartLoading', 'false'); StopLoadFromPatChart(); }
             $("[id*='btnSaveMenu']")[0].disabled = true;
             if (localStorage.getItem("bSaveSuccess") == "true") {
                 localStorage.setItem('bSaveSuccess', '');
@@ -1143,21 +1141,21 @@ function FillMessageGrid() {
             return false;
         },
         error: function OnError(xhr) {
-            StopLoadFromPatChart();
+            { sessionStorage.setItem('StartLoading', 'false'); StopLoadFromPatChart(); }
             if (xhr.status == 999)
                 window.location = xhr.statusText;
             else {
                 var log = JSON.parse(xhr.responseText);
                 console.log(log);
                 alert("USER MESSAGE:\n" +
-                                    ". Cannot process request. Please Login again and retry. \nEXCEPTION DETAILS: \n" +
-                                   "Message: " + log.Message);
+                    ". Cannot process request. Please Login again and retry. \nEXCEPTION DETAILS: \n" +
+                    "Message: " + log.Message);
             }
         }
     });
 }
 function img(e) {
-    
+
     var row = e.parentNode.parentNode;
     if (row.cells[21].innerHTML == "OPEN_TASK") {
 
@@ -1240,7 +1238,7 @@ function img(e) {
             document.getElementById("ChkPatientChart").checked = true;
         }
         else {
-            document.getElementById("ChkPatientChart").checked = false;                
+            document.getElementById("ChkPatientChart").checked = false;
         }
     }
 
@@ -1352,7 +1350,7 @@ function chkShowAllChange() {
             alert(data.d);
         }
     });
-   
+
 }
 function EditAssingnmethod(row) {
     var vfacility = $("[id*='ddlFacilityName']");
@@ -1380,7 +1378,7 @@ function EditAssingnmethod(row) {
                     var opt = document.createElement("option");
                     for (var i = 0; i < vAssignedTo.length; i++) {
                         var opt = document.createElement("option");
-                        
+
                         opt.text = vAssignedTo[i].split('|')[1];
                         opt.value = vAssignedTo[i].split('|')[0];
                         opt.title = vAssignedTo[i].split('|')[1];
@@ -1441,7 +1439,7 @@ function Assingnmethod() {
             alert(data.d);
         }
     });
-      
+
 }
 function ClearAllMenu() {
     if ($("#btnSaveMenu").val() == "Add") {
@@ -1496,7 +1494,7 @@ function CancelMenu() {
         if ($(top.window.document).find("iframe[name='" + winName + "']").length != 0) {
             if (!$($(top.window.document).find("iframe[name='" + winName + "']")[0].contentDocument).find('body').is('#dvdialogMenu'))
                 $($(top.window.document).find("iframe[name='" + winName + "']")[0].contentDocument).find('body').append('<div id="dvdialogMenu" style="min-height: 65px !important; width: auto; max-height: none; height: auto; display: none;">' +
-                '<p style="font-family: Verdana,Arial,sans-serif; font-size: 13.5px;">There are unsaved changes.Do you want to save them?</p></div>');
+                    '<p style="font-family: Verdana,Arial,sans-serif; font-size: 13.5px;">There are unsaved changes.Do you want to save them?</p></div>');
             dvdialog = $($(top.window.document).find("iframe[name='" + winName + "']")[0].contentDocument).find('body').find('#dvdialogMenu');
         }
         else if ($(top.window.document).find("iframe[name='ctl00_ModalWindow']").length != 0) {
@@ -1518,10 +1516,10 @@ function CancelMenu() {
             title: "Capella -EHR",
             buttons: {
                 "Yes": function () {
-                    
+
                     localStorage.setItem("bSaveSuccess", "true");
                     $("[id*='btnSaveMenu']")[0].click();
-                    StopLoadFromPatChart();
+                    { sessionStorage.setItem('StartLoading', 'false'); StopLoadFromPatChart(); }
                     localStorage.setItem("bSave", "true");
                     $(dvdialog).dialog("close");
                     return false;
@@ -1549,7 +1547,7 @@ function CancelMenu() {
         return false;
     }
 
-   
+
 }
 function CancelMyQ() {
     if (Result != undefined) {
