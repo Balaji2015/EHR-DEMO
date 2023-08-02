@@ -131,9 +131,9 @@ namespace Acurus.Capella.UI
                 cboAcceptOrDeny.SelectedIndex = 0;
 
                 loadAddendum();
-
-                if (rdProvider.Checked)
-                    cboAcceptOrDeny.Enabled = false;
+                //Jira #CAP-700
+                //if (rdProvider.Checked)
+                //    cboAcceptOrDeny.Enabled = false;
                 hdnIsLoad.Value = "false";
 
                 txtAddendumNotes.txtDLC.Focus();
@@ -294,9 +294,10 @@ namespace Acurus.Capella.UI
                 //spanAcceptOrDeny.Attributes.Remove("class"); /*added*/
                 //spanAcceptOrDeny.Attributes.Add("class", "spanstyle");/*black*/
 
-                spanAcceptOrDeny.Attributes.Remove("class");
+                //Jira #CAP-700
+                // spanAcceptOrDeny.Attributes.Remove("class");
 
-                spanAcceptOrDeny.Attributes.Add("class", "MandLabelstyle");
+                //spanAcceptOrDeny.Attributes.Add("class", "MandLabelstyle");
 
 
 
@@ -827,7 +828,7 @@ namespace Acurus.Capella.UI
                     objAddendumNotesManager.saveUpdateAddendum(tempList, addendumList, objFillEncounterandWFObject.EncRecord.Facility_Name, ClientSession.UserName, ClientSession.UserRole, true, false, 0, isDirectMoveToProvider, string.Empty, false);//, dtLocalTime);
                 }
                 else
-                    objAddendumNotesManager.saveUpdateAddendum(addendumList, tempList, objFillEncounterandWFObject.EncRecord.Facility_Name, ClientSession.UserName, ClientSession.UserRole, true, false, 0, isDirectMoveToProvider, string.Empty, false);//, dtLocalTime);
+                        objAddendumNotesManager.saveUpdateAddendum(addendumList, tempList, objFillEncounterandWFObject.EncRecord.Facility_Name, ClientSession.UserName, ClientSession.UserRole, true, false, 0, isDirectMoveToProvider, string.Empty, false);//, dtLocalTime);
             }
             else if (ClientSession.UserRole.ToUpper() == GetEnumDescription(UserType.eUserType_PhysicanAssistant) || ClientSession.UserRole.ToUpper() == GetEnumDescription(UserType.eUserType_Physician))
             {
@@ -1252,15 +1253,23 @@ namespace Acurus.Capella.UI
                     if(rdProvider.Checked==true)
                     {
 
-                        spanAcceptOrDeny.Attributes.Remove("class"); /*added*/
-                        spanAcceptOrDeny.Attributes.Add("class", "spanstyle");/*black*/
+                        // spanAcceptOrDeny.Attributes.Remove("class"); /*added*/
+                        //spanAcceptOrDeny.Attributes.Add("class", "spanstyle");/*black*/
+
+                        spanAcceptOrDeny.Attributes.Remove("class");
+                        spanAcceptOrDeny.Attributes.Add("class", "color:black;");
+                        spanAcceptOrDeny.InnerText = "Accept or Deny ?";
                     }
                     else
                     {
                         //spanAcceptOrDeny.Text = "Accept or Deny ?*";
                         //spanAcceptOrDeny.ForeColor = System.Drawing.Color.Red;
 
-                        spanAcceptOrDeny.Attributes.Add("class", "MandLabelstyle");/*red*/
+                        //spanAcceptOrDeny.Attributes.Add("class", "MandLabelstyle");/*red*/
+                        //spanAcceptOrDeny.Attributes.Add("class", "manredforstar");
+                        spanAcceptOrDeny.Attributes.Remove("class");
+                        spanAcceptOrDeny.Attributes.Add("class", "manredforstar");
+                        spanAcceptOrDeny.InnerText = "Accept or Deny ?*";
                         spanAcceptOrDeny.Visible = true;
 
 
@@ -1453,17 +1462,22 @@ namespace Acurus.Capella.UI
         {
             btnSaveAndClose.Enabled = true;
             btnMoveToProviderReview.Enabled = true;
-            cboAcceptOrDeny.Enabled = true;
+            //cboAcceptOrDeny.Enabled = true;
             //lblAcceptOrDeny.ForeColor = System.Drawing.Color.Red;
-            spanAcceptOrDeny.Attributes.Remove("class"); /*added*/
-            spanAcceptOrDeny.Attributes.Add("class", "spanstyle");/*black*/
+            //Jira #CAP-700 -oldcode
+            //spanAcceptOrDeny.Attributes.Remove("class"); /*added*/
+            //spanAcceptOrDeny.Attributes.Add("class", "spanstyle");/*black*/
 
-            if(chkShowAllPhysicians.Checked == true)
-            {
-                spanAcceptOrDeny.Attributes.Remove("class");
+            //if(chkShowAllPhysicians.Checked == true)
+            //{
+            //    spanAcceptOrDeny.Attributes.Remove("class");
 
-                spanAcceptOrDeny.Attributes.Add("class", "MandLabelstyle");
-            }
+            //  spanAcceptOrDeny.Attributes.Add("class", "MandLabelstyle");
+            //}
+            //Jira #CAP-700-newcode
+            spanAcceptOrDeny.Attributes.Remove("class");
+            spanAcceptOrDeny.Attributes.Add("class", "manredforstar");
+            spanAcceptOrDeny.InnerText = "Accept or Deny ?*";
 
         }
 
@@ -1471,11 +1485,17 @@ namespace Acurus.Capella.UI
         {
             btnSaveAndClose.Enabled = true;
             btnMoveToProviderReview.Enabled = true;
-            cboAcceptOrDeny.Enabled = false;
+            //Jira #CAP-700
+            //cboAcceptOrDeny.Enabled = false;
+
             //lblAcceptOrDeny.ForeColor = System.Drawing.Color.Black;
             //span1.ForeColor = System.Drawing.Color.Black;
             spanAcceptOrDeny.Attributes.Remove("class"); /*added*/
-            spanAcceptOrDeny.Attributes.Add("class", "spanstyle");/*black*/
+            //Jira #CAP-700
+            //spanAcceptOrDeny.Attributes.Add("class", "spanstyle");/*black*/
+
+            spanAcceptOrDeny.Attributes.Add("class", "color:black;");
+            spanAcceptOrDeny.InnerText = "Accept or Deny ?";
 
 
         }

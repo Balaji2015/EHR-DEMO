@@ -1495,6 +1495,14 @@ function OpenModal(data) {
             contentType: "application/json; charset=utf-8",
             dataType: "json",
             success: function (response) {
+
+                //Jira #CAP-663
+                if (document.getElementById("ctl00_C5POBody_EncounterContainer") != undefined && document.getElementById("ctl00_C5POBody_EncounterContainer").src == "") {
+                    DisplayErrorMessage('7490013');
+                    { sessionStorage.setItem('StartLoading', 'false'); StopLoadFromPatChart(); }
+                    return true;
+                }
+
                 var result = response.d;
                 if (result != "") {
                     if (result == "OpenAddendumForm") {

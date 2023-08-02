@@ -70,7 +70,11 @@ function rdPat_rdPro_Change() {
     if (event.target.id.indexOf("rdProvider") > -1 && event.target.checked == true) {
         $find('cboAcceptOrDeny').set_enabled(true);
         $find('cboAcceptOrDeny').clearSelection();
-        $('#spanAcceptOrDeny').css('color', 'black').text("Accept or Deny ?");
+        //Jira #CAP-700
+       // $('#spanAcceptOrDeny').css('color', 'black').text("Accept or Deny ?");
+        $('#spanAcceptOrDeny').text("Accept or Deny ?");
+        document.getElementById("spanAcceptOrDeny").classList.remove("manredforstar");
+        document.getElementById("spanAcceptOrDeny").style.color = "black";
     }
     else if (event.target.id.indexOf("rdPatient") > -1 && event.target.checked == true) {
         $find('cboAcceptOrDeny').set_enabled(true);
@@ -136,8 +140,12 @@ function OnbtnSaveAndCloseClick(sender, eventArgs) {
    // sender.set_autoPostBack(true);
     //else {
     //    v1 == 0;
-    //Jira Cap - 600
-        __doPostBack('btnMoveToProviderReview');
+
+    //Jira #CAP-656 and Jira #CAP-659 and Jira #CAP-658
+    ////Jira Cap - 600
+       // __doPostBack('btnMoveToProviderReview');
+    sender.set_autoPostBack(false);
+    __doPostBack('btnMoveToProviderReview', "true");
     //}
 }
 var v = 0;
