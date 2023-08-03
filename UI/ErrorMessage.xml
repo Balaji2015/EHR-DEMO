@@ -2997,5 +2997,5 @@
 	<Message number="1011192" Type="OK" Text="There is an existing CCD Generate request found in the Queue. Please either try after some time or contact Acurus to clear the queue."></Message>
 	<Message number="1011193" Type="CCDGenerate" Text="The C2 Import is in progress. Please wait as it takes few minutes."></Message>
 	<Message number="1011194" Type="OK" Text="Human xml is not preserved for the encounter. Please contact support."></Message>
-	<Message number="1011195" Type="OK" Text="Coding Exception cannot be Performed for this encounter."></Message>
+	<Message number="1011195" Type="OK" Text="Coding Exception can not be performed for this encounter."></Message>
 </ErrorMessage>

@@ -8873,7 +8873,7 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
                                 string[] sAlloc = objDocWfObject.Process_Allocation.Split('|');
                                 for (int i = 0; i < sAlloc.Length; i++)
                                 {
-                                    if (sAlloc[i].StartsWith("REVIEW_CODING" + "-") == true)
+                                    if (sAlloc[i].StartsWith("REVIEW_CODING" + "-") == true|| sAlloc[i].StartsWith("AKIDO_REVIEW_CODING" + "-") == true)
                                     {
                                         string[] sString = sAlloc[i].Split('-');
                                         sEquivalantOwner = sString[1];

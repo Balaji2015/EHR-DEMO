@@ -3053,13 +3053,13 @@ function movetoEnc() {
                 currentProcess = $row.find('td:nth-child(8)')[0].outerText.trim();
 
 
-                if (currentProcess == 'MA_PROCESS' || currentProcess == 'REVIEW_CODING' || currentProcess == 'TECHNICIAN_PROCESS'
-                    || currentProcess == 'READING_PROVIDER_PROCESS' || currentProcess == 'SURGERY_COORDINATOR_PROCESS' || currentProcess == 'SCRIBE_PROCESS') {
+                if (currentProcess == 'MA_PROCESS' || currentProcess == 'REVIEW_CODING' || currentProcess == 'AKIDO_REVIEW_CODING' || currentProcess == 'TECHNICIAN_PROCESS'
+                    || currentProcess == 'READING_PROVIDER_PROCESS' || currentProcess == 'SURGERY_COORDINATOR_PROCESS' || currentProcess == 'SCRIBE_PROCESS' || currentProcess == 'AKIDO_SCRIBE_PROCESS') {
                     var objType = $row.find('td:nth-child(16)')[0].outerText.trim();
                     var ExamRoom = document.getElementById("Exam").value;
                     var now = new Date();
                     var utc = (now.getUTCMonth() + 1) + '/' + now.getUTCDate() + '/' + now.getUTCFullYear(); utc += ' ' + now.getUTCHours() + ':' + now.getUTCMinutes() + ':' + now.getUTCSeconds();
-                    if (currentProcess == 'MA_PROCESS' || currentProcess == 'TECHNICIAN_PROCESS' || currentProcess == 'READING_PROVIDER_PROCESS' || currentProcess == 'SCRIBE_PROCESS') {
+                    if (currentProcess == 'MA_PROCESS' || currentProcess == 'TECHNICIAN_PROCESS' || currentProcess == 'READING_PROVIDER_PROCESS' || currentProcess == 'SCRIBE_PROCESS' || currentProcess == 'AKIDO_SCRIBE_PROCESS') {
                         var encounterID = $row.find('td:nth-child(14)')[0].outerText.trim();
                         var humanID = $row.find('td:nth-child(3)')[0].outerText.trim();//BugID:52865
                         inputData.push(Showall + "~" + currentProcess + "~" + encounterID + "~" + utc + "~" + objType + "~" + ExamRoom + "~" + humanID);

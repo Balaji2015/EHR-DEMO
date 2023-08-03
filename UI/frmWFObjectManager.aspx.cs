@@ -801,7 +801,7 @@ namespace Acurus.Capella.UI
                         encProxy.UpdateEncounter(enc, string.Empty, new object[] { "false" });
                     }
                 }
-                if (selectedItem["Current Process"].Text == "SCRIBE_PROCESS" || selectedItem["Current Process"].Text == "SCRIBE_CORRECTION" || selectedItem["Current Process"].Text == "SCRIBE_REVIEW_CORRECTION")
+                if (selectedItem["Current Process"].Text == "SCRIBE_PROCESS" || selectedItem["Current Process"].Text == "AKIDO_SCRIBE_PROCESS" || selectedItem["Current Process"].Text == "SCRIBE_CORRECTION" || selectedItem["Current Process"].Text == "SCRIBE_REVIEW_CORRECTION")
                 {
                     EncounterManager encProxy = new EncounterManager();
                     Encounter enc = new Encounter();

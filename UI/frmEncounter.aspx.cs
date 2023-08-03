@@ -2086,7 +2086,7 @@ namespace Acurus.Capella.UI
                     //        return;
                     //    }
                     //}
-                    if (ehrwfobj.Current_Process == "REVIEW_CODING" || ehrwfobj.Current_Process == "REVIEW_CODING_2")
+                    if (ehrwfobj.Current_Process == "REVIEW_CODING" || ehrwfobj.Current_Process == "AKIDO_REVIEW_CODING" || ehrwfobj.Current_Process == "REVIEW_CODING_2")
                     {
 
                         bool IsPrimaryFilled = objMoveVerifyDTO.EAndMIsPrimaryFilled;
