@@ -2168,7 +2168,10 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
             WFobj.Current_Process = PreviousProcess;
             WFobj.Current_Arrival_Time = System.TimeZoneInfo.ConvertTimeToUtc(DateTime.Now);
             WFobj.Current_Owner = sOwner;
-
+            if (PreviousProcess == "AKIDO_SCRIBE_PROCESS")
+            {
+                WFobj.Process_Allocation = WFobj.Process_Allocation + "|" + PreviousProcess + "-" + sOwner;
+            }
             IList<WFObject> wfObjList = new List<WFObject>();
             wfObjList.Add(WFobj);
 
