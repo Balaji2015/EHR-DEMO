@@ -284,9 +284,13 @@ $(document).ready(function () {
             var Showall = '';
             $("#chkShowAll")[0].checked ? Showall = "Checked" : Showall = "Unchecked";
             var currentProcess = $('#EncounterTable > tbody > tr.highlight > td:nth-child(8)')[0].outerText.trim();
-            if (currentProcess == "SCRIBE_CORRECTION" || currentProcess == 'SCRIBE_PROCESS' || currentProcess == "SCRIBE_REVIEW_CORRECTION" || currentProcess == 'MA_PROCESS' || currentProcess == 'REVIEW_CODING' || currentProcess == 'CHECK_OUT' || currentProcess == 'SURGERY_COORDINATOR_PROCESS') {
+            //Jira #CAP-706
+            //if (currentProcess == "SCRIBE_CORRECTION" || currentProcess == 'SCRIBE_PROCESS' || currentProcess == "SCRIBE_REVIEW_CORRECTION" || currentProcess == 'MA_PROCESS' || currentProcess == 'REVIEW_CODING' || currentProcess == 'CHECK_OUT' || currentProcess == 'SURGERY_COORDINATOR_PROCESS') {
+            if (currentProcess == "SCRIBE_CORRECTION" || currentProcess == 'SCRIBE_PROCESS' || currentProcess == "SCRIBE_REVIEW_CORRECTION" || currentProcess == 'MA_PROCESS' || currentProcess == 'REVIEW_CODING' || currentProcess == 'CHECK_OUT' || currentProcess == 'SURGERY_COORDINATOR_PROCESS' || currentProcess == "AKIDO_SCRIBE_PROCESS" || currentProcess == 'AKIDO_REVIEW_CODING') {
                 var objType = $('#EncounterTable > tbody > tr.highlight > td:nth-child(16)')[0].outerText.trim();
-                if (currentProcess == "SCRIBE_CORRECTION" || currentProcess == 'SCRIBE_PROCESS' || currentProcess == "SCRIBE_REVIEW_CORRECTION" || currentProcess == 'MA_PROCESS' || currentProcess == 'TECHNICIAN_PROCESS' || currentProcess == 'READING_PROVIDER_PROCESS' || currentProcess == 'REVIEW_CODING' || currentProcess == 'CHECK_OUT' || currentProcess == 'SURGERY_COORDINATOR_PROCESS') {
+                //Jira #CAP-706
+                //if (currentProcess == "SCRIBE_CORRECTION" || currentProcess == 'SCRIBE_PROCESS' || currentProcess == "SCRIBE_REVIEW_CORRECTION" || currentProcess == 'MA_PROCESS' || currentProcess == 'TECHNICIAN_PROCESS' || currentProcess == 'READING_PROVIDER_PROCESS' || currentProcess == 'REVIEW_CODING' || currentProcess == 'CHECK_OUT' || currentProcess == 'SURGERY_COORDINATOR_PROCESS') {
+                if (currentProcess == "SCRIBE_CORRECTION" || currentProcess == 'SCRIBE_PROCESS' || currentProcess == "SCRIBE_REVIEW_CORRECTION" || currentProcess == 'MA_PROCESS' || currentProcess == 'TECHNICIAN_PROCESS' || currentProcess == 'READING_PROVIDER_PROCESS' || currentProcess == 'REVIEW_CODING' || currentProcess == 'CHECK_OUT' || currentProcess == 'SURGERY_COORDINATOR_PROCESS' || currentProcess == "AKIDO_SCRIBE_PROCESS" || currentProcess == 'AKIDO_REVIEW_CODING') {
                     var encounterID = $('#EncounterTable > tbody > tr.highlight > td:nth-child(14)')[0].outerText.trim();
                 }
                 var apptdt = $('#EncounterTable > tbody > tr.highlight > td:nth-child(2)')[0].outerText.trim();
@@ -326,6 +330,8 @@ $(document).ready(function () {
                             }
                             sessionStorage.setItem("EnablePFSHMenu", "true");
                             localStorage.setItem("CodingException", encounterID);
+                            //Jira #CAP-709
+                            localStorage.setItem("CurrentProcess", currentProcess);
                             sessionStorage.setItem("EncId_PatSummaryBar", encounterID);
                             //sessionStorage.setItem("Enc_DOS", date);
                             sessionStorage.setItem("Enc_DOS", data.d);
@@ -513,6 +519,8 @@ function MyQclick() {
                 async: true,
                 success: function (data) {
                     localStorage.setItem("CodingException", encounter_id);
+                    //J/ira #CAP-709
+                    localStorage.setItem("CurrentProcess", Curprocess);
                     sessionStorage.setItem("EnablePFSHMenu", "true");
                     sessionStorage.setItem("EncId_PatSummaryBar", encounter_id);
                     sessionStorage.setItem("Enc_DOS", date);
@@ -750,6 +758,8 @@ function MyQclick() {
                 success: function (data) {
                     { sessionStorage.setItem('StartLoading', 'false'); StopLoadFromPatChart(); }
                     localStorage.setItem("CodingException", encounter_id);
+                    //Jira #CAP-709
+                    localStorage.setItem("CurrentProcess", Curprocess);
                     sessionStorage.setItem("EncId_PatSummaryBar", encounter_id);
                     sessionStorage.setItem("Enc_DOS", "");
                     window.location = "frmPatientChart.aspx?isOpenAddendum=true" + "&currentAddendumId=" + AddendumID;
@@ -2300,7 +2310,7 @@ function shwllclck() {
         if (myOpenTask == "Checked") {
             $("#chkOpenTask")[0].checked = true;
         }
-        
+
         var OpenTask = $("#chkOpenTask")[0].checked ? "Checked" : "Unchecked";
 
         if ($("#chkMyShowAll")[0].checked) {

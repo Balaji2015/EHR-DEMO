@@ -525,10 +525,21 @@ function OpenModal(data) {
     else if (itemValue == "Create Coding Exception") {
         StartLoadingImage();
         var flag = localStorage.getItem("CodingException");
+        //Jira #CAP-709
+        var curprocess = "";
 
+        if (localStorage.getItem("CurrentProcess") != null && localStorage.getItem("CurrentProcess") != undefined)
+            curprocess = localStorage.getItem("CurrentProcess");
         QEncounterID = document.getElementById(GetClientId("hdnQencounterId")).value;
         var Physiain = document.getElementById(GetClientId("pnlBarGroupTabs")).value;
-        var AddendumID = document.getElementById(GetClientId("hdnAddendumID")).value
+        var AddendumID = document.getElementById(GetClientId("hdnAddendumID")).value;
+        //Jira #CAP-709
+        if (curprocess.toUpperCase() == "AKIDO_REVIEW_CODING") {
+            StopLoadingImage();
+            DisplayErrorMessage('1011195');
+            return false;
+        }
+
         if (QEncounterID != "" && flag != QEncounterID) {
             StopLoadingImage();
             alert(' Coding Exception cannot be raised for the selected encounter! ');

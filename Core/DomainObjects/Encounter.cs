@@ -125,6 +125,7 @@ namespace Acurus.Capella.Core.DomainObjects
         private string _Is_Self_Referred = "N";
         private string _Assigned_Scribe_User_Name = string.Empty;
         private DateTime _E_M_Submitted_Date_And_Time = DateTime.MinValue;
+        private string _Is_Signed_in_Akido_Note = "N";
         #endregion
 
         #region Constructors
@@ -242,7 +243,7 @@ namespace Acurus.Capella.Core.DomainObjects
             sb.Append(_Is_Self_Referred);
             sb.Append(_Assigned_Scribe_User_Name);
             sb.Append(_E_M_Submitted_Date_And_Time);
-            
+            sb.Append(_Is_Signed_in_Akido_Note);
             return sb.ToString().GetHashCode();
         }
 
@@ -1367,6 +1368,15 @@ namespace Acurus.Capella.Core.DomainObjects
             set
             {
                 _E_M_Submitted_Date_And_Time = value;
+            }
+        }
+        [DataMember]
+        public virtual string Is_Signed_in_Akido_Note
+        {
+            get { return _Is_Signed_in_Akido_Note; }
+            set
+            {
+                _Is_Signed_in_Akido_Note = value;
             }
         }
     }

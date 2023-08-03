@@ -116,5 +116,6 @@
     <property name="Assigned_Scribe_User_Name" column="Assigned_Scribe_User_Name" />
 
 	<property name="E_M_Submitted_Date_And_Time" column="E_M_Submitted_Date_And_Time" />
+	  <property name="Is_Signed_in_Akido_Note" column="Is_Signed_in_Akido_Note" />
   </class>
 </hibernate-mapping>

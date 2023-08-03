@@ -8720,8 +8720,9 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
                     }
                     // && condition added by manimozhi on 29th dec 2011
 
+                    //Jira #CAP-707
                     //if ((objDocWfObject.Current_Process == "REVIEW_CODING" || objDocWfObject.Current_Process == "REVIEW_CODING_2") && userCurrentProcess == objDocWfObject.Current_Process)
-                    if ((objDocWfObject.Current_Process == "REVIEW_CODING" || objDocWfObject.Current_Process == "REVIEW_CODING_2") && userCurrentProcess == objDocWfObject.Current_Process && (btnID == "btnPhysiciancorrection"))
+                    if ((objDocWfObject.Current_Process == "REVIEW_CODING" || objDocWfObject.Current_Process == "REVIEW_CODING_2" || objDocWfObject.Current_Process == "AKIDO_REVIEW_CODING") && userCurrentProcess == objDocWfObject.Current_Process && (btnID == "btnPhysiciancorrection"))
                     {
                         /***  added for perfomance tuning 
                          * objMoveVerifyDTO.EAndMIsPrimaryFilled  is required only for REVIEW_CODING process
@@ -16281,6 +16282,12 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
                 }
             }
 
+            //Jira #CAP-707
+            if (objDocWfobj.Current_Process == "AKIDO_SCRIBE_PROCESS")
+            {
+                WFObjectManager objenco = new WFObjectManager();
+                objenco.MoveToNextProcess(ulMyEncounterID, "DOCUMENTATION", 1, "UNKNOWN", Convert.ToDateTime(currentDate), string.Empty, null, null);
+            }
 
             return objMoveVerifyDTO;
 
@@ -17546,6 +17553,129 @@ AND E.ENCOUNTER_PROVIDER_SIGNED_DATE<>'0001-01-01 00:00:00'
 
         }
 
+        //Jira #CAP-706 - new Method-SaveandMoveAkidoEncounter
+        public void SaveandMoveAkidoEncounter(IList<Encounter> ilstUpdateEncounter)
+        {
+            ISession MySession = Session.GetISession();
+            ITransaction trans = null;
+            GenerateXml XMLObj = new GenerateXml();
+            IList<Encounter> lstsaveencounter = new List<Encounter>();
+            int iResult = 0;
+            WFObjectManager wfObjectManager = new WFObjectManager();
+
+        TryAgain:
+            try
+            {
+                trans = MySession.BeginTransaction();
+
+                iResult = SaveUpdateDelete_DBAndXML_WithoutTransaction(ref lstsaveencounter, ref ilstUpdateEncounter, null, MySession, String.Empty, true, false, ilstUpdateEncounter[0].Id, string.Empty, ref XMLObj);
+                wfObjectManager.MoveToNextProcess(ilstUpdateEncounter[0].Id, "ENCOUNTER", 1, "UNKNOWN", System.TimeZoneInfo.ConvertTimeToUtc(DateTime.Today), string.Empty, null, MySession);
+
+                //if bResult = false then, the deadlock is occured 
+                if (iResult == 2)
+                {
+                    if (iTryCount < 5)
+                    {
+                        iTryCount++;
+                        goto TryAgain;
+                    }
+                }
+
+
+                int trycount = 0;
+            trytosaveagain:
+                try
+                {
+                    if (XMLObj.itemDoc.InnerXml != null && XMLObj.itemDoc.InnerXml != "")
+                    {
+                        try
+                        {
+
+                            WriteBlob(ilstUpdateEncounter[0].Id, XMLObj.itemDoc, MySession, lstsaveencounter, ilstUpdateEncounter, null, XMLObj, false);
+
+                        }
+                        catch (Exception xmlexcep)
+                        {
+                            throw xmlexcep;
+
+                        }
+                    }
+
+                    trans.Commit();
+                }
+                catch (Exception xmlexcep)
+                {
+                    trycount++;
+                    if (trycount <= 3)
+                    {
+                        int TimeMilliseconds = 0;
+                        if (System.Configuration.ConfigurationSettings.AppSettings["ThreadSleepTime"] != null)
+                            TimeMilliseconds = Convert.ToInt32(System.Configuration.ConfigurationSettings.AppSettings["ThreadSleepTime"]);
+
+                        Thread.Sleep(TimeMilliseconds);
+                        string sMsg = string.Empty;
+                        string sExStackTrace = string.Empty;
+
+                        string version = "";
+                        if (System.Configuration.ConfigurationSettings.AppSettings["VersionConfiguration"] != null)
+                            version = System.Configuration.ConfigurationSettings.AppSettings["VersionConfiguration"].ToString();
+
+                        string[] server = version.Split('|');
+                        string serverno = "";
+                        if (server.Length > 1)
+                            serverno = server[1].Trim();
+
+                        if (xmlexcep.InnerException != null && xmlexcep.InnerException.Message != null)
+                            sMsg = xmlexcep.InnerException.Message;
+                        else
+                            sMsg = xmlexcep.Message;
+
+                        if (xmlexcep != null && xmlexcep.StackTrace != null)
+                            sExStackTrace = xmlexcep.StackTrace;
+
+                        string insertQuery = "insert into  stats_apperrorlog values(0,'" + sMsg.Replace(@"\\", @"\\\\").Replace(@"\", @"\\").Replace(@"\\\\\\\\", @"\\\\").Replace("'", "") + Environment.NewLine + " Retry: " + trycount + "', '" + serverno + "','" + DateTime.Now + "','','0','0','0','" + sExStackTrace.Replace("'", "") + "','" + DateTime.Now.ToString("yyyy-MM-dd hh:mm:ss") + "')";
+                        string ConnectionData;
+                        ConnectionData = ConfigurationManager.ConnectionStrings["con"].ConnectionString;
+                        using (MySqlConnection con = new MySqlConnection(ConnectionData))
+                        {
+                            using (MySqlCommand cmd = new MySqlCommand(insertQuery))
+                            {
+                                cmd.Connection = con;
+                                try
+                                {
+                                    con.Open();
+                                    cmd.ExecuteNonQuery();
+                                    con.Close();
+                                }
+                                catch
+                                {
+                                }
+                            }
+                        }
+                        goto trytosaveagain;
+                    }
+                }
+            }
+            catch (NHibernate.Exceptions.GenericADOException ex)
+            {
+                trans.Rollback();
+                // MySession.Close();
+                throw new Exception(ex.Message);
+            }
+            catch (Exception e)
+            {
+                trans.Rollback();
+                //MySession.Close();
+                throw new Exception(e.Message);
+            }
+
+            finally
+            {
+                MySession.Close();
+            }
+
+
+        }
 
     }
 }

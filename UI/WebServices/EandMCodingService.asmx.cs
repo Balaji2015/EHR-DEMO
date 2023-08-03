@@ -185,8 +185,12 @@ namespace Acurus.Capella.UI.WebServices
             EMDTOIcdlst = eandmDTO.EandMCodingICDList.Select(a => a.ICD).Distinct().ToList<string>();//BugID:46020
             string bsaveenable = "false";
 
+            //Jira #CAP-707
+            //if ((sCurrentProcess != "ADDENDUM_CODING" && sCurrentProcess != "ADDENDUM_CODING_2" && sCurrentProcess != "ADDENDUM_CORRECTION" && sCurrentProcess != "ADDENDUM_PROCESS" && sCurrentProcess != "DICTATION_REVIEW" && sCurrentProcess != "MA_PROCESS" && sCurrentProcess != "MA_REVIEW" && sCurrentProcess != "CODER_REVIEW_CORRECTION" && sCurrentProcess != "PROVIDER_PROCESS" &&
+            //   sCurrentProcess != "READING_PROVIDER_PROCESS" && sCurrentProcess != "SCRIBE_REVIEW_CORRECTION" && sCurrentProcess != "SCRIBE_PROCESS" && sCurrentProcess != "SCRIBE_CORRECTION" && sCurrentProcess != "REVIEW_CODING" && sCurrentProcess != "REVIEW_CODING_2" && sCurrentProcess != "TECHNICIAN_PROCESS" && sCurrentProcess != "") || sBatchStatus == "CLOSED" || eandmDTO.BillingWFObjCurrentProcess == "BATCHING_COMPLETE")
+            //{
             if ((sCurrentProcess != "ADDENDUM_CODING" && sCurrentProcess != "ADDENDUM_CODING_2" && sCurrentProcess != "ADDENDUM_CORRECTION" && sCurrentProcess != "ADDENDUM_PROCESS" && sCurrentProcess != "DICTATION_REVIEW" && sCurrentProcess != "MA_PROCESS" && sCurrentProcess != "MA_REVIEW" && sCurrentProcess != "CODER_REVIEW_CORRECTION" && sCurrentProcess != "PROVIDER_PROCESS" &&
-               sCurrentProcess != "READING_PROVIDER_PROCESS" && sCurrentProcess != "SCRIBE_REVIEW_CORRECTION" && sCurrentProcess != "SCRIBE_PROCESS" && sCurrentProcess != "SCRIBE_CORRECTION" && sCurrentProcess != "REVIEW_CODING" && sCurrentProcess != "REVIEW_CODING_2" && sCurrentProcess != "TECHNICIAN_PROCESS" && sCurrentProcess != "") || sBatchStatus == "CLOSED" || eandmDTO.BillingWFObjCurrentProcess == "BATCHING_COMPLETE")
+              sCurrentProcess != "READING_PROVIDER_PROCESS" && sCurrentProcess != "SCRIBE_REVIEW_CORRECTION" && sCurrentProcess != "SCRIBE_PROCESS" && sCurrentProcess != "SCRIBE_CORRECTION" && sCurrentProcess != "REVIEW_CODING" && sCurrentProcess != "REVIEW_CODING_2" && sCurrentProcess != "TECHNICIAN_PROCESS" && sCurrentProcess != "" && sCurrentProcess != "AKIDO_SCRIBE_PROCESS" && sCurrentProcess != "AKIDO_REVIEW_CODING") || sBatchStatus == "CLOSED" || eandmDTO.BillingWFObjCurrentProcess == "BATCHING_COMPLETE")
             {
                 if (ClientSession.UserRole.ToUpper() != "PHYSICIAN ASSISTANT")//Added for Provider_Review PhysicianAssistant WorkFlow Change. Implementation of CA Rule for Provider Review
                 {
@@ -1333,8 +1337,12 @@ namespace Acurus.Capella.UI.WebServices
                 }
             }
 
+            //Jira #CAP-707
+            //if ((sCurrentProcess != "ADDENDUM_CODING" && sCurrentProcess != "ADDENDUM_CODING_2" && sCurrentProcess != "ADDENDUM_CORRECTION" && sCurrentProcess != "ADDENDUM_PROCESS" && sCurrentProcess != "DICTATION_REVIEW" && sCurrentProcess != "MA_PROCESS" && sCurrentProcess != "MA_REVIEW" && sCurrentProcess != "CODER_REVIEW_CORRECTION" && sCurrentProcess != "PROVIDER_PROCESS" &&
+            //   sCurrentProcess != "SCRIBE_CORRECTION" && sCurrentProcess != "SCRIBE_PROCESS" && sCurrentProcess != "READING_PROVIDER_PROCESS" && sCurrentProcess != "REVIEW_CODING" && sCurrentProcess != "REVIEW_CODING_2" && sCurrentProcess != "TECHNICIAN_PROCESS" && sCurrentProcess != "") || sBatchStatus == "CLOSED")
+            //{
             if ((sCurrentProcess != "ADDENDUM_CODING" && sCurrentProcess != "ADDENDUM_CODING_2" && sCurrentProcess != "ADDENDUM_CORRECTION" && sCurrentProcess != "ADDENDUM_PROCESS" && sCurrentProcess != "DICTATION_REVIEW" && sCurrentProcess != "MA_PROCESS" && sCurrentProcess != "MA_REVIEW" && sCurrentProcess != "CODER_REVIEW_CORRECTION" && sCurrentProcess != "PROVIDER_PROCESS" &&
-               sCurrentProcess != "SCRIBE_CORRECTION" && sCurrentProcess != "SCRIBE_PROCESS" && sCurrentProcess != "READING_PROVIDER_PROCESS" && sCurrentProcess != "REVIEW_CODING" && sCurrentProcess != "REVIEW_CODING_2" && sCurrentProcess != "TECHNICIAN_PROCESS" && sCurrentProcess != "") || sBatchStatus == "CLOSED")
+               sCurrentProcess != "SCRIBE_CORRECTION" && sCurrentProcess != "SCRIBE_PROCESS" && sCurrentProcess != "READING_PROVIDER_PROCESS" && sCurrentProcess != "REVIEW_CODING" && sCurrentProcess != "REVIEW_CODING_2" && sCurrentProcess != "TECHNICIAN_PROCESS" && sCurrentProcess != "AKIDO_SCRIBE_PROCESS" && sCurrentProcess != "AKIDO_REVIEW_CODING" && sCurrentProcess != "") || sBatchStatus == "CLOSED")
             {
                 if (ClientSession.UserRole.ToUpper() != "PHYSICIAN ASSISTANT")//Added for Provider_Review PhysicianAssistant WorkFlow Change. Implementation of CA Rule for Provider Review
                 {

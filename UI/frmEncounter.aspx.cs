@@ -564,6 +564,24 @@ namespace Acurus.Capella.UI
                     btnPhysiciancorrection.Value = "Move To Checkout";
                     FillCboPhysician(EncRecord.Facility_Name);
                 }
+                //Jira #CAP-707 - strat
+                else if (ehrwfobj.Current_Process.ToUpper() == "AKIDO_SCRIBE_PROCESS")
+                {
+                    if (ehrwfobj.Current_Owner.ToUpper() == ClientSession.UserName.ToUpper())
+                    {
+                        btnMove.Visible = true;
+                        btnMove.Value = "Move to Next Process";
+                        btnPhysiciancorrection.Value = "Move To Checkout";
+                        //FillCboPhysician(EncRecord.Facility_Name);
+                        btnPhysiciancorrection.Visible = true;
+                        btnPhysiciancorrection.Disabled = true;
+                        btnMoveToMA.Visible = false;
+                        cboPhysicianName.Visible = false;
+                        chkShowAllPhysicians.Visible = false;
+                    }
+
+                }
+                //Jira #CAP-707 - end
                 else if (ehrwfobj.Current_Process.ToUpper() == "MA_PROCESS")
                 {
                     if (ehrwfobj.Current_Owner.ToUpper() == ClientSession.UserName.ToUpper())
@@ -640,7 +658,10 @@ namespace Acurus.Capella.UI
                     btnCopyPreviousEncounter.Disabled = true;
 
                 }
-                else if (ehrwfobj.Current_Process.ToUpper() == "PROVIDER_REVIEW_CORRECTION" || ehrwfobj.Current_Process.ToUpper() == "CODER_REVIEW_CORRECTION" || ehrwfobj.Current_Process.ToUpper() == "REVIEW_CODING_2" || ehrwfobj.Current_Process.ToUpper() == "REVIEW_CODING")
+                //Jira #CAP-707
+                //else if (ehrwfobj.Current_Process.ToUpper() == "PROVIDER_REVIEW_CORRECTION" || ehrwfobj.Current_Process.ToUpper() == "CODER_REVIEW_CORRECTION" || ehrwfobj.Current_Process.ToUpper() == "REVIEW_CODING_2" || ehrwfobj.Current_Process.ToUpper() == "REVIEW_CODING")
+                //{
+                else if (ehrwfobj.Current_Process.ToUpper() == "PROVIDER_REVIEW_CORRECTION" || ehrwfobj.Current_Process.ToUpper() == "CODER_REVIEW_CORRECTION" || ehrwfobj.Current_Process.ToUpper() == "REVIEW_CODING_2" || ehrwfobj.Current_Process.ToUpper() == "REVIEW_CODING" || ehrwfobj.Current_Process.ToUpper() == "AKIDO_REVIEW_CODING")
                 {
                     if (ehrwfobj.Current_Owner.ToUpper() == ClientSession.UserName.ToUpper())
                     {
@@ -691,7 +712,10 @@ namespace Acurus.Capella.UI
                 }
 
                 WFObject TempWFRecord = ClientSession.FillEncounterandWFObject.EncounterWFRecord;
-                if ((TempWFRecord.Current_Process.ToUpper() == "CHECK_OUT" || TempWFRecord.Current_Process.ToUpper() == "CHECK_OUT_COMPLETE") && ehrwfobj.Current_Process.ToUpper() != "CODER_REVIEW_CORRECTION" && ehrwfobj.Current_Process.ToUpper() != "PROVIDER_REVIEW_CORRECTION" && ehrwfobj.Current_Process.ToUpper() != "REVIEW_CODING_2" && ehrwfobj.Current_Process.ToUpper() != "REVIEW_CODING")
+                //Jira #CAP-707
+                //if ((TempWFRecord.Current_Process.ToUpper() == "CHECK_OUT" || TempWFRecord.Current_Process.ToUpper() == "CHECK_OUT_COMPLETE") && ehrwfobj.Current_Process.ToUpper() != "CODER_REVIEW_CORRECTION" && ehrwfobj.Current_Process.ToUpper() != "PROVIDER_REVIEW_CORRECTION" && ehrwfobj.Current_Process.ToUpper() != "REVIEW_CODING_2" && ehrwfobj.Current_Process.ToUpper() != "REVIEW_CODING")
+                //{
+                if ((TempWFRecord.Current_Process.ToUpper() == "CHECK_OUT" || TempWFRecord.Current_Process.ToUpper() == "CHECK_OUT_COMPLETE") && ehrwfobj.Current_Process.ToUpper() != "CODER_REVIEW_CORRECTION" && ehrwfobj.Current_Process.ToUpper() != "PROVIDER_REVIEW_CORRECTION" && ehrwfobj.Current_Process.ToUpper() != "REVIEW_CODING_2" && ehrwfobj.Current_Process.ToUpper() != "REVIEW_CODING" && ehrwfobj.Current_Process.ToUpper() != "AKIDO_REVIEW_CODING")
                 {
                     btnPhysiciancorrection.Disabled = true;
                     ViewState["Chkoutbtn"] = false;
@@ -1818,6 +1842,12 @@ namespace Acurus.Capella.UI
                 Response.Write("<script> window.top.location.href=\" frmMyQueueNew.aspx\"; </script>");
             }
             #endregion
+            //Jira #CAP-707
+            if (btnMove.Value.ToUpper() == "MOVE TO NEXT PROCESS" && ehrwfobj.Current_Process == "AKIDO_SCRIBE_PROCESS")
+            {
+                //Added by Selvaraman - for Workflow
+                Response.Write("<script> window.top.location.href=\" frmMyQueueNew.aspx\"; </script>");
+            }
             ScriptManager.RegisterStartupScript(this, typeof(frmEncounter), "WaitCursor", " {sessionStorage.setItem('StartLoading', 'false');StopLoadFromPatChart();}RefreshNotification('CalculateALL');", true);//BugID:47852
         }
 

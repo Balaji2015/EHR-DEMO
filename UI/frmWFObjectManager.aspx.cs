@@ -66,7 +66,7 @@ namespace Acurus.Capella.UI
                         {
                             for (int iCount = 0; iCount < ((IList<object>)ilstEditAppFinal[0]).Count; iCount++)
                             {
-                                
+
 
                                 if (((Human)((IList<object>)ilstEditAppFinal[0])[iCount]).Birth_Date != null)
                                 {
@@ -74,31 +74,31 @@ namespace Acurus.Capella.UI
                                 }
                                 if (((Human)((IList<object>)ilstEditAppFinal[0])[iCount]).Last_Name != null)
                                 {
-                                   if (sName == string.Empty)
-                                            sName = ((Human)((IList<object>)ilstEditAppFinal[0])[iCount]).Last_Name.ToString();
+                                    if (sName == string.Empty)
+                                        sName = ((Human)((IList<object>)ilstEditAppFinal[0])[iCount]).Last_Name.ToString();
                                     else
-                                            sName += "," + ((Human)((IList<object>)ilstEditAppFinal[0])[iCount]).Last_Name.ToString();
+                                        sName += "," + ((Human)((IList<object>)ilstEditAppFinal[0])[iCount]).Last_Name.ToString();
                                 }
                                 if (((Human)((IList<object>)ilstEditAppFinal[0])[iCount]).First_Name != null)
                                 {
-                                        if (sName == string.Empty)
-                                            sName = ((Human)((IList<object>)ilstEditAppFinal[0])[iCount]).First_Name.ToString();
-                                        else
-                                            sName += "," + ((Human)((IList<object>)ilstEditAppFinal[0])[iCount]).First_Name.ToString();
+                                    if (sName == string.Empty)
+                                        sName = ((Human)((IList<object>)ilstEditAppFinal[0])[iCount]).First_Name.ToString();
+                                    else
+                                        sName += "," + ((Human)((IList<object>)ilstEditAppFinal[0])[iCount]).First_Name.ToString();
                                 }
                                 if (((Human)((IList<object>)ilstEditAppFinal[0])[iCount]).MI != null)
                                 {
-                                        if (sName == string.Empty)
-                                            sName = ((Human)((IList<object>)ilstEditAppFinal[0])[iCount]).MI.ToString();
-                                        else
-                                            sName += " " + ((Human)((IList<object>)ilstEditAppFinal[0])[iCount]).MI.ToString();
+                                    if (sName == string.Empty)
+                                        sName = ((Human)((IList<object>)ilstEditAppFinal[0])[iCount]).MI.ToString();
+                                    else
+                                        sName += " " + ((Human)((IList<object>)ilstEditAppFinal[0])[iCount]).MI.ToString();
                                 }
                                 if (((Human)((IList<object>)ilstEditAppFinal[0])[iCount]).Suffix != null)
                                 {
-                                        if (sName == string.Empty)
-                                            sName = ((Human)((IList<object>)ilstEditAppFinal[0])[iCount]).Suffix.ToString();
-                                        else
-                                            sName += " " + ((Human)((IList<object>)ilstEditAppFinal[0])[iCount]).Suffix.ToString();
+                                    if (sName == string.Empty)
+                                        sName = ((Human)((IList<object>)ilstEditAppFinal[0])[iCount]).Suffix.ToString();
+                                    else
+                                        sName += " " + ((Human)((IList<object>)ilstEditAppFinal[0])[iCount]).Suffix.ToString();
                                 }
 
                             }
@@ -618,7 +618,7 @@ namespace Acurus.Capella.UI
                         return;
                     }
                     enc = encList[0];
-                  
+
                     if (Physician_Library_ID != 0) // (cboUpdateOwner.Items[cboUpdateOwner.SelectedIndex].Value != string.Empty)
                     {
                         enc.Encounter_Provider_ID = Physician_Library_ID; // Convert.ToInt32(cboUpdateOwner.Items[cboUpdateOwner.SelectedIndex].Value);
@@ -710,19 +710,19 @@ namespace Acurus.Capella.UI
                     IList<Encounter_Blob> ilstEncounterBlob = EncounterBlobMngr.GetEncounterBlob(enc.Id);
                     if (ilstEncounterBlob.Count > 0)
                     {
-                        objEncounterblob= ilstEncounterBlob[0];
+                        objEncounterblob = ilstEncounterBlob[0];
                         sXMLContent = System.Text.Encoding.UTF8.GetString(ilstEncounterBlob[0].Encounter_XML);
                         if (sXMLContent.Substring(0, 1) != "<")
                             sXMLContent = sXMLContent.Substring(1, sXMLContent.Length - 1);
                         itemDoc.LoadXml(sXMLContent);
 
-                    
-                    //if (File.Exists(strXmlFilePath) == true)
-                    //{
-                    //    XmlDocument itemDoc = new XmlDocument();
-                    //    XmlTextReader XmlText = new XmlTextReader(strXmlFilePath);
-                    //    itemDoc.Load(XmlText);
-                    //    XmlText.Close();
+
+                        //if (File.Exists(strXmlFilePath) == true)
+                        //{
+                        //    XmlDocument itemDoc = new XmlDocument();
+                        //    XmlTextReader XmlText = new XmlTextReader(strXmlFilePath);
+                        //    itemDoc.Load(XmlText);
+                        //    XmlText.Close();
                         IEnumerable<XElement> ilstPhysician = null;
                         XmlNodeList xmlMember_ID = itemDoc.GetElementsByTagName("Encounter_Provider_Name");
 
@@ -989,58 +989,65 @@ namespace Acurus.Capella.UI
             pnlUpdateProcess.Enabled = true;
             pnlUpdateOwner.Enabled = false;
 
-            
-                GridDataItem grdSelectedItem = (GridDataItem)grdAdminModule.SelectedItems[0];
 
-                IList<ProcessMaster> proclist = ApplicationObject.processMasterList; // (IList<ProcessMaster>)ViewState["proclist"];
-                IList<ProcUser> ProcUser = (IList<ProcUser>)ViewState["ProcUser"];
+            GridDataItem grdSelectedItem = (GridDataItem)grdAdminModule.SelectedItems[0];
 
-                if (proclist.Count > 0)
+            IList<ProcessMaster> proclist = ApplicationObject.processMasterList; // (IList<ProcessMaster>)ViewState["proclist"];
+            IList<ProcUser> ProcUser = (IList<ProcUser>)ViewState["ProcUser"];
+
+            if (proclist.Count > 0)
+            {
+                //ViewState["proclist"] = proclist;
+                IList<ProcessMaster> BackPushAllowedProcess = (from p in proclist where p.Process_Name == grdSelectedItem["Current Process"].Text select p).ToList<ProcessMaster>();
+                if (BackPushAllowedProcess.Count > 0)
                 {
-                    //ViewState["proclist"] = proclist;
-                    IList<ProcessMaster> BackPushAllowedProcess = (from p in proclist where p.Process_Name == grdSelectedItem["Current Process"].Text select p).ToList<ProcessMaster>();
-                    if (BackPushAllowedProcess.Count>0)
+                    if (BackPushAllowedProcess[0].Is_Back_Push_Allowed == "Y")
                     {
-                        if (BackPushAllowedProcess[0].Is_Back_Push_Allowed=="Y")
+                        if (grdSelectedItem["Current Process"].Text == "MA_PROCESS")
                         {
-                            if (grdSelectedItem["Current Process"].Text == "MA_PROCESS")
+                            cboPreviousProcess.Items.Add(new RadComboBoxItem("SCHEDULED"));
+
+                            ScriptManager.RegisterStartupScript(this, this.GetType(), string.Empty, " {sessionStorage.setItem('StartLoading', 'false');StopLoadFromPatChart();}", true);
+                            return;
+                        }
+                        //Jira #CAP-706-start
+                        if (grdSelectedItem["Current Process"].Text == "PROVIDER_PROCESS")
+                        {
+                            cboPreviousProcess.Items.Add(new RadComboBoxItem("AKIDO_SCRIBE_PROCESS"));
+                            ScriptManager.RegisterStartupScript(this, this.GetType(), string.Empty, " {sessionStorage.setItem('StartLoading', 'false');StopLoadFromPatChart();}", true);
+                            return;
+                        }
+                        //Jira #CAP-706-end
+                        IList<WorkFlow> worflowList = WorkFlowMngr.GetWorkFlowMapListbyFacilityNameandObjType(grdSelectedItem["Facility Name"].Text, grdSelectedItem["Object Type"].Text, grdSelectedItem["Current Process"].Text);
+
+                        var wfProcess = (from wfToprocess in worflowList
+                                         select new { wfToprocess.From_Process, wfToprocess.To_Process }).Distinct();
+
+                        foreach (var Toprocess in wfProcess)
+                        {
+                            if (Toprocess.From_Process != "CHECK_OUT_WAIT" && Toprocess.From_Process != "CHECK_OUT_COMPLETE")
                             {
-                                cboPreviousProcess.Items.Add(new RadComboBoxItem("SCHEDULED"));
-
-                                ScriptManager.RegisterStartupScript(this, this.GetType(), string.Empty, " {sessionStorage.setItem('StartLoading', 'false');StopLoadFromPatChart();}", true);
-                                return;
-                            }
-
-                            IList<WorkFlow> worflowList = WorkFlowMngr.GetWorkFlowMapListbyFacilityNameandObjType(grdSelectedItem["Facility Name"].Text, grdSelectedItem["Object Type"].Text, grdSelectedItem["Current Process"].Text);
-
-                            var wfProcess = (from wfToprocess in worflowList
-                                             select new { wfToprocess.From_Process, wfToprocess.To_Process }).Distinct();
-
-                            foreach (var Toprocess in wfProcess)
-                            {
-                                if (Toprocess.From_Process != "CHECK_OUT_WAIT" && Toprocess.From_Process != "CHECK_OUT_COMPLETE")
+                                if (grdSelectedItem["Current Process"].Text != Toprocess.From_Process)//Added by Naveena for bug_id 26501,26498
                                 {
-                                    if (grdSelectedItem["Current Process"].Text != Toprocess.From_Process)//Added by Naveena for bug_id 26501,26498
+                                    if (grdSelectedItem["Current Process"].Text == "CANCELLED")
                                     {
-                                        if (grdSelectedItem["Current Process"].Text == "CANCELLED")
-                                        {
-                                            if (Toprocess.From_Process.ToString() != "MA_PROCESS")
-                                            {
-                                                cboPreviousProcess.Items.Add(new RadComboBoxItem(Toprocess.From_Process));
-                                            }
-                                        }
-                                        else
+                                        if (Toprocess.From_Process.ToString() != "MA_PROCESS")
                                         {
                                             cboPreviousProcess.Items.Add(new RadComboBoxItem(Toprocess.From_Process));
                                         }
                                     }
+                                    else
+                                    {
+                                        cboPreviousProcess.Items.Add(new RadComboBoxItem(Toprocess.From_Process));
+                                    }
                                 }
-
-                                
                             }
+
+
                         }
                     }
                 }
+            }
 
             ScriptManager.RegisterStartupScript(this, this.GetType(), string.Empty, " {sessionStorage.setItem('StartLoading', 'false');StopLoadFromPatChart();}", true);
         }
@@ -1176,6 +1183,34 @@ namespace Acurus.Capella.UI
                 BillingWfObject = wfObjMngr.GetByObjectSystemId(Convert.ToUInt64(grdAdminModule.SelectedItems[0].Cells[2].Text), "BILLING");
                 wfObjMngr.DeleteDocumentationObject(BillingWfObject);
             }
+            //Jira #CAP-706-start
+            else if (selectedItem["Current Process"].Text == "PROVIDER_PROCESS")
+            {
+                if (grdAdminModule.SelectedItems[0].Cells[2].Text != string.Empty && selectedItem["Object Type"].Text != string.Empty)
+                {
+                    WfObjectMngr.MoveToPreviousProcessForAdmin(Convert.ToUInt64(grdAdminModule.SelectedItems[0].Cells[2].Text), selectedItem["Object Type"].Text, "UNKNOWN", cboPreviousProcess.SelectedItem.Text, System.TimeZoneInfo.ConvertTimeToUtc(DateTime.Now), string.Empty);
+                }
+                //WfObjectMngr.MoveToNextProcess(Convert.ToUInt64(grdAdminModule.SelectedItems[0].Cells[2].Text),"ENCOUNTER",1,"UNKNOWN",)
+                //    (Convert.ToUInt64(grdAdminModule.SelectedItems[0].Cells[2].Text), "ENCOUNTER", "UNKNOWN", cboPreviousProcess.SelectedItem.Text, System.TimeZoneInfo.ConvertTimeToUtc(DateTime.Now), string.Empty);
+
+
+                EncounterManager objEncounter = new EncounterManager();
+                IList<Encounter> ilstUpdateEncounter = new List<Encounter>();
+
+                ilstUpdateEncounter = objEncounter.GetEncounterByEncounterID(Convert.ToUInt64(grdAdminModule.SelectedItems[0].Cells[2].Text));
+                if (ilstUpdateEncounter.Count > 0)
+                {
+                    ilstUpdateEncounter[0].Is_Signed_in_Akido_Note = "Y";
+                    ilstUpdateEncounter[0].Modified_By = ClientSession.UserName;
+                    ilstUpdateEncounter[0].Modified_Date_and_Time = UtilityManager.ConvertToUniversal(); ;
+
+                    objEncounter.SaveandMoveAkidoEncounter(ilstUpdateEncounter);
+                }
+
+
+
+            }
+            //Jira #CAP-706-end
             else
             {
                 WfObjectMngr.MoveToPreviousProcessForAdmin(Convert.ToUInt64(grdAdminModule.SelectedItems[0].Cells[2].Text), selectedItem["Object Type"].Text, "UNKNOWN", cboPreviousProcess.SelectedItem.Text, System.TimeZoneInfo.ConvertTimeToUtc(DateTime.Now), string.Empty);
@@ -1271,8 +1306,8 @@ namespace Acurus.Capella.UI
                         if (File.Exists(Server.MapPath(@"ConfigXML\PhysicianAddressDetails.xml")))
                             xmlPhysician = XDocument.Load(Server.MapPath(@"ConfigXML\PhysicianAddressDetails.xml"));
                         MapFacilityPhysicianManager mapfacphymnge = new MapFacilityPhysicianManager();
-                        IList<string> NonPhysician = new List<string>();   
-                        IList<MapFacilityPhysician> Physician = new  List<MapFacilityPhysician>(); 
+                        IList<string> NonPhysician = new List<string>();
+                        IList<MapFacilityPhysician> Physician = new List<MapFacilityPhysician>();
                         XmlDocument xmldocUser = new XmlDocument();
                         xmldocUser.Load(Server.MapPath(@"ConfigXML\User.xml"));
                         if (userOldList.Count > 0)
@@ -1286,11 +1321,11 @@ namespace Acurus.Capella.UI
                             {
                                 NonPhysician = mapfacphymnge.GetUser_ListbyFacilityName(grdSelectedItem["Facility Name"].Text);
                             }
-                            
-                            
+
+
 
                         }
-                        
+
 
 
 
