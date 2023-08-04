@@ -103,7 +103,9 @@ function OnbtnSaveAndCloseClick(sender, eventArgs) {
         v1 = 1;
         return;
     }
-    if (document.getElementById('rdPatient').checked == true && $find('cboAcceptOrDeny').get_selectedItem().get_text().trim() == "" && userRole != "CODER") {
+    //Jira #CAP-725
+    //if (document.getElementById('rdPatient').checked == true && $find('cboAcceptOrDeny').get_selectedItem().get_text().trim() == "" && userRole != "CODER") {
+    if (document.getElementById('rdPatient').checked == true && document.getElementById("cboAcceptOrDeny").value.trim() == "" && userRole != "CODER") {
         DisplayErrorMessage('7490011');
         sender.set_autoPostBack(false);
         NotSaved();
@@ -159,7 +161,9 @@ function OnbtnSaveAndClose(sender, eventArgs) {
         v = 1;
         return;
     }
-    if (document.getElementById('rdPatient').checked == true && $find('cboAcceptOrDeny').get_selectedItem().get_text().trim() == "" && userRole != "CODER") {
+    //Jira #CAP-725
+    //if (document.getElementById('rdPatient').checked == true && $find('cboAcceptOrDeny').get_selectedItem().get_text().trim() == "" && userRole != "CODER") {
+    if (document.getElementById('rdPatient').checked == true && document.getElementById("cboAcceptOrDeny").value.trim() == "" && userRole != "CODER") {
         DisplayErrorMessage('7490011');
         sender.set_autoPostBack(false);
         NotSaved();
