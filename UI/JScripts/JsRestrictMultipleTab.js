@@ -48,6 +48,13 @@ if (!localStorage.getItem('_instance') || localStorage.getItem('_instance') && !
         localStorage.removeItem('_instance');
         localStorage.removeItem('newtab');
     });
+
+     // Add an event listener to detect when the user closes the tab or navigates away
+    window.addEventListener('unload', function () {
+        // Remove the key from the local storage when the user leaves the page
+        localStorage.removeItem('_instance');
+        localStorage.removeItem('newtab');
+    });
 }
 else {
     localStorage.setItem('newtab', 'true');
