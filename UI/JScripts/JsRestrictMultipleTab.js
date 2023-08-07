@@ -16,16 +16,41 @@
 
 //CAP-413 Restrict the Capella EHR access in multiple tabs
 // Check if the page is the first instance by looking for a specific key in the local storage
-if (!localStorage.getItem('_instance')) {
+//if (!localStorage.getItem('_instance')) {
+//    // Set a key in the local storage to mark this as the first instance
+//    localStorage.setItem('_instance', 'true');
+
+//    // Add an event listener to detect when the user closes the tab or navigates away
+//    window.addEventListener('beforeunload', function () {
+//        // Remove the key from the local storage when the user leaves the page
+//        localStorage.removeItem('_instance');
+//    });
+
+//    window.addEventListener('unload', function () {
+//        // Remove the key from the local storage when the user leaves the page
+//        localStorage.removeItem('_instance');
+//    });
+//}
+//else {
+//    // If the key is already present in the local storage, it means another instance of the page is open.
+//    // Redirect the current page to a different URL to prevent multiple instances.
+//    window.location.replace("frmRestrictMultipleTabs.aspx");
+//}
+
+if (!localStorage.getItem('_instance') || localStorage.getItem('_instance') && !localStorage.getItem('newtab')){
     // Set a key in the local storage to mark this as the first instance
     localStorage.setItem('_instance', 'true');
+    localStorage.setItem('newtab', 'false');
 
     // Add an event listener to detect when the user closes the tab or navigates away
     window.addEventListener('beforeunload', function () {
         // Remove the key from the local storage when the user leaves the page
         localStorage.removeItem('_instance');
+        localStorage.removeItem('newtab');
     });
-} else {
+}
+else {
+    localStorage.setItem('newtab', 'true');
     // If the key is already present in the local storage, it means another instance of the page is open.
     // Redirect the current page to a different URL to prevent multiple instances.
     window.location.replace("frmRestrictMultipleTabs.aspx");
