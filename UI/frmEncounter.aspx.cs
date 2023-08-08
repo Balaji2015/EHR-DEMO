@@ -2086,7 +2086,9 @@ namespace Acurus.Capella.UI
                     //        return;
                     //    }
                     //}
-                    if (ehrwfobj.Current_Process == "REVIEW_CODING" || ehrwfobj.Current_Process == "REVIEW_CODING_2")
+                    //Jira Cap- 740
+                    // if (ehrwfobj.Current_Process == "REVIEW_CODING" || ehrwfobj.Current_Process == "REVIEW_CODING_2" )
+                    if (ehrwfobj.Current_Process == "REVIEW_CODING" || ehrwfobj.Current_Process == "REVIEW_CODING_2" || ehrwfobj.Current_Process == "AKIDO_REVIEW_CODING")
                     {
 
                         bool IsPrimaryFilled = objMoveVerifyDTO.EAndMIsPrimaryFilled;
@@ -2850,6 +2852,17 @@ namespace Acurus.Capella.UI
             //objMoveVerifyDTO = objEncounterManager.PerformMoveVerification(ClientSession.EncounterId, ClientSession.PhysicianId, ClientSession.HumanId, UtilityManager.ConvertToLocal(DateTime.Now), ClientSession.FacilityName, ClientSession.UserName, false, string.Empty, string.Empty, ClientSession.UserCurrentProcess, string.Empty, btnPhysiciancorrection.Text, bDuplicateCheck, ClientSession.UserRole);
             string check = "True";
             objMoveVerifyDTO = objEncounterManager.PerformMoveVerification(ClientSession.EncounterId, ClientSession.PhysicianId, ClientSession.HumanId, UtilityManager.ConvertToLocal(DateTime.Now), ClientSession.FacilityName, ClientSession.UserName, false, string.Empty, string.Empty, ClientSession.UserCurrentProcess, string.Empty, btnPhysiciancorrection.Value, bDuplicateCheck, ClientSession.UserRole, "btnHiddenDuplicateCheck", bCheck, check);
+            //Jira Cap- 740
+            if (objMoveVerifyDTO.IsWorkflowPushed)
+            {
+                bIsWorkFlowButtonClicked = true;
+
+                if (ClientSession.HumanId != null)
+                    RemoveWindowItem(ClientSession.HumanId);
+                Response.Write("<script> window.top.location.href=\" frmMyQueueNew.aspx\"; </script>");
+                bFormClose = false;
+            }
+
         }
 
         protected void hdnButtonEnable_Click(object sender, EventArgs e)
