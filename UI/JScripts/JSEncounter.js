@@ -2255,7 +2255,7 @@ function AkidoNoteClick() {
     //Result = openNonModal(AkidoNoteURL, 780, 1250, obj);
     //if (Result == null)
     //    return false;
-    window.open(AkidoNoteURL, '_blank').focus();
+    window.open(AkidoNoteURL, '_blank');
 
     return false;
 }

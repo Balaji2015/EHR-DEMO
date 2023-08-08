@@ -324,7 +324,7 @@ function AkidoNoteClickSum(sAkidoURL) {
     //if (Result == null)
     //    return false;
     $('#resultLoading').css("display", "none");
-    window.open(sAkidoURL, '_blank').focus();
+    window.open(sAkidoURL, '_blank');
 
    
     

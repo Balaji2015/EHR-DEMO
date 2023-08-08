@@ -48,10 +48,7 @@ namespace Acurus.Capella.UI
         string sIsPhoneEncounter = "N";
         protected void Page_Load(object sender, EventArgs e)
         {
-            if (!IsPostBack)
-            {
-                Loadsummary();
-            }
+            Loadsummary();
         }
 
 
@@ -134,7 +131,7 @@ namespace Acurus.Capella.UI
             //        Console.WriteLine(ex.ToString());
             //    }
             //}
-            if (System.Configuration.ConfigurationSettings.AppSettings["IsAkidoNoteSummary"] == "Y" && UtilityManager.IsAkidoEncounter(Encounter_Id.ToString()) == true)
+            if (Request.QueryString["Menu"] == null && System.Configuration.ConfigurationSettings.AppSettings["IsAkidoNoteSummary"] == "Y" && UtilityManager.IsAkidoEncounter(Encounter_Id.ToString()) == true)
             {
                 xslFrame.Visible = false;
                 //AkidoFrame.Visible = true;
@@ -152,6 +149,11 @@ namespace Acurus.Capella.UI
                 string sAkidoURL = System.Configuration.ConfigurationSettings.AppSettings["AkidoNoteURL"].ToString().Replace("[CapellaEncounterID]", Encounter_Id.ToString()).Replace("[ClientName]", ClientSession.LegalOrg.ToLower());
 
                 ScriptManager.RegisterStartupScript(this, typeof(frmEncounter), "Summary", "AkidoNoteClickSum('" + sAkidoURL + "');", true);
+                return;
+            }
+            else if (Request.QueryString["Menu"] != null && System.Configuration.ConfigurationSettings.AppSettings["IsAkidoNoteSummary"] == "Y" && UtilityManager.IsAkidoEncounter(ClientSession.EncounterId.ToString()) == true)
+            {
+                ScriptManager.RegisterStartupScript(this, this.GetType(), string.Empty, "DisplayErrorMessage('1011197'); {sessionStorage.setItem('StartLoading', 'false');StopLoadFromPatChart();}", true);
                 return;
             }
 
@@ -1638,15 +1640,6 @@ margin:0in 0in 0in 9in;
         }
         protected void btnPDF_Click(object sender, EventArgs e)
         {
-            //Jira #CAP-731 -start
-            if (System.Configuration.ConfigurationSettings.AppSettings["IsAkidoNoteSummary"] == "Y" && UtilityManager.IsAkidoEncounter(ClientSession.EncounterId.ToString()) == true)
-            {
-                ScriptManager.RegisterStartupScript(this, this.GetType(), string.Empty, "alert('The Notes can not be generated for this encounter, as this encounter is part of the Akido Note.'); {sessionStorage.setItem('StartLoading', 'false');StopLoadFromPatChart();}", true);
-                return;
-            }
-            //Jira #CAP-731 -end
-
-
             string sGroup_ID_Log = ClientSession.EncounterId.ToString() + "-" + ClientSession.HumanId.ToString() + "-" + ClientSession.PhysicianId.ToString() + "-" + DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss:FFF");
             UtilityManager.inserttologgingtable(ClientSession.EncounterId.ToString(), ClientSession.HumanId.ToString(), ClientSession.UserName, ClientSession.PhysicianId.ToString(), "Summary Progress Notes PDF : Start", DateTime.Now, sGroup_ID_Log, "frmSummaryNew");
             Stopwatch objTimernew = new Stopwatch();
