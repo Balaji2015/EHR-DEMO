@@ -49,5 +49,20 @@
             </div>
         </div>
     </form>
+    <script>
+        window.addEventListener("load", function () {
+            localStorage.setItem("isDuplicate", "true");
+        });
+
+        window.addEventListener('beforeunload', function () {
+            // Remove the key from the local storage when the user leaves the page
+            localStorage.removeItem('isDuplicate');
+
+        });
+
+        window.addEventListener("unload", function () {
+            localStorage.removeItem('isDuplicate');
+        });
+    </script>
 </body>
 </html>
