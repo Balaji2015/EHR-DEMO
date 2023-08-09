@@ -228,7 +228,7 @@
 	<!--<Message number="180043" Type="OK" Text="The encounter will be moved to Physician Review after Coding Review is completed." />
   <Message number="180044" Type="OKCANCEL" Text="Duplicate Procedure Codes are found in Serv./Proc. Codes, Are you sure want to Remove the Serv./Proc.Codes"></Message>-->
 	<Message number="180043" Type="OKCANCEL" Text="Would you like to send a copy to the provider for review?" />
-	<Message number="180044" Type="OKCANCEL" Text="The List has duplicate procedure entries. Would you like to remove?"></Message>
+	<Message number="180044" Type="OKCANCEL" Text="The List has duplicate procedure entries. Do you want to move the encounter to Next Process?"></Message>
 	<!--<Message number="180045" Type="OK" Text="Please select the V70.0 ICD for Gcodes G0438 or G0439"></Message>-->
 	<Message number="180045" Type="OK" Text="Please select the ICD Z00.00 or Z00.01 for Gcodes G0438 or G0439"></Message>
 
