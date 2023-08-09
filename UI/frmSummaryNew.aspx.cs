@@ -131,6 +131,12 @@ namespace Acurus.Capella.UI
             //        Console.WriteLine(ex.ToString());
             //    }
             //}
+            
+            if (Encounter_Id == 0)
+            {
+                Encounter_Id = ClientSession.EncounterId;
+                Human_ID = ClientSession.HumanId;
+            }
             if (Request.QueryString["Menu"] == null && System.Configuration.ConfigurationSettings.AppSettings["IsAkidoNoteSummary"] == "Y" && UtilityManager.IsAkidoEncounter(Encounter_Id.ToString()) == true)
             {
                 xslFrame.Visible = false;
