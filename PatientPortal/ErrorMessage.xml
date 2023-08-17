@@ -2139,7 +2139,7 @@
   <Message number="7430000" Type="OK" Text="Please enter the Caller Spoken To." />
   <Message number="7430001" Type="OKCANCEL" Text="There are unsaved changes.&#xD;Click &apos;OK&apos; to go back &amp; save the changes or&#xD;Click &apos;Cancel&apos; to proceed without saving."></Message>
   <Message number="7430002" Type="ToolStrip" Text="Saved Successfully." />
-  <Message number="7430004" Type="OK" Text="Please Enter the Password"></Message>
+  <Message number="7430004" Type="OK" Text="Please sign the Phone Encounter"></Message>
   <Message number="7430005" Type="OK" Text="Please enter the Valid Password"></Message>
   <!-- Suvarnni M V- Phone Encounter-->
   <Message number="7430006" Type="YesNoCancel" Text="There are unsaved changes.&#xD;Would you like to save them?"></Message>
@@ -2952,4 +2952,5 @@
   <Message number="1011162" Type="OK" Text="Please select the services from same authorization number.."/>
 	<Message number="1011191" Type="CCDGenerate" Text="The CCD Generate is in progress. Please wait as it takes few minutes."></Message>
 	<Message number="1011192" Type="OK" Text="There is an existing CCD Generate request found in the Queue. Please try after some time."></Message>
+	<Message number="1011198" Type="OK" Text="A new phone encounter can not be created while you have an encounter open."></Message>
 </ErrorMessage>
