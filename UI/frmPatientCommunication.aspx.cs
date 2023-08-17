@@ -468,7 +468,9 @@ namespace Acurus.Capella.UI
                 objpatientnotes.Message_Orign = MessageOrigin;
                 objpatientnotes.Priority = Priority;
                 objpatientnotes.Message_Description = MessageType;
-                objpatientnotes.Notes = "@" + ClientSession.UserName + "(" + Convert.ToDateTime(DateTime).ToString("dd-MMM-yyyy hh:mm:ss tt") + "): " + DLC;
+                //CAP-674 - If the note is coming then concat.
+                if (!string.IsNullOrEmpty(DLC))
+                { objpatientnotes.Notes = "@" + ClientSession.UserName + "(" + Convert.ToDateTime(DateTime).ToString("dd-MMM-yyyy hh:mm:ss tt") + "): " + DLC; }
                 objpatientnotes.Created_By = ClientSession.UserName;
                 objpatientnotes.Type = Type;
                 if ((MessageDate != null) && MessageDate != "" && (MessageDate.ToString() != "0001-01-01"))
@@ -518,7 +520,11 @@ namespace Acurus.Capella.UI
                     objpatientnotes.Message_Orign = MessageOrigin;
                     objpatientnotes.Priority = Priority;
                     objpatientnotes.Message_Description = MessageType;
-                    objpatientnotes.Notes = objpatientnotes.Notes + Environment.NewLine + "@" + ClientSession.UserName + "(" + Convert.ToDateTime(DateTime).ToString("dd-MMM-yyyy hh:mm:ss tt") + "): " + DLC;  //DLC;
+                    //CAP-674 - If the note is coming then concat.
+                    if (!string.IsNullOrEmpty(DLC))
+                    {
+                        objpatientnotes.Notes = objpatientnotes.Notes + Environment.NewLine + "@" + ClientSession.UserName + "(" + Convert.ToDateTime(DateTime).ToString("dd-MMM-yyyy hh:mm:ss tt") + "): " + DLC;  //DLC;
+                    }
                     objpatientnotes.Modified_By = ClientSession.UserName;
                     objpatientnotes.Type = Type;
                     if ((MessageDate != null) && MessageDate != "" && (MessageDate.ToString() != "0001-01-01"))
@@ -664,7 +670,9 @@ namespace Acurus.Capella.UI
                 if (MessageDate != null && MessageDate != "")
                     objPatNotes.Message_Date_And_Time = UtilityManager.ConvertToUniversal(Convert.ToDateTime(MessageDate));
                 //objPatNotes.Message_Date_And_Time = Convert.ToDateTime(MessageDate);//BugID:43162
-                objPatNotes.Notes = HistoryNotes + "\n@" + ClientSession.UserName + "(" + Convert.ToDateTime(datetime).ToString("dd-MMM-yyyy hh:mm:ss tt") + "): " + DLC;
+                //CAP-674 - If the note is coming then concat.
+                if (!string.IsNullOrEmpty(DLC))
+                { objPatNotes.Notes = HistoryNotes + "\n@" + ClientSession.UserName + "(" + Convert.ToDateTime(datetime).ToString("dd-MMM-yyyy hh:mm:ss tt") + "): " + DLC; }
                 objPatNotes.Priority = Priority;
                 objPatNotes.Modified_By = ClientSession.UserName;
                 objPatNotes.Modified_Date_And_Time = UtilityManager.ConvertToUniversal();
