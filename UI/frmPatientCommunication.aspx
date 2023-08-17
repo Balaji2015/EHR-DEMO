@@ -344,7 +344,7 @@
                                 <table id="Table1" runat="server" style="width: 100%">
                                     <tr>
                                         <td>--%>
-                             <div id="divPatientstrip" runat="server" class=" pnlBarGroup Editabletxtbox " style="height: 21px; margin-top: -8px; vertical-align: middle; padding-top: 4px; position: relative; padding-left: 0px; border: 0px !important;"></div>
+                             <div id="divPatientstrip" runat="server" class=" pnlBarGroup Editabletxtbox " style="margin-top: -8px; vertical-align: middle; padding-top: 4px; position: relative; padding-left: 0px; border: 0px !important;"></div>
                             <asp:TextBox ID="txtAccount" runat="server" style="display:none;"></asp:TextBox>
                                        <%--</td>
                                     </tr>
