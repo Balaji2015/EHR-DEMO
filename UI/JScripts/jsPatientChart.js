@@ -62,8 +62,7 @@ function OpenPhoneEncounter() {
     obj.push("openingfrom=" + "Menu");
     obj.push("MyHumanID=" + document.getElementById('ctl00_C5POBody_hdnHumanNo').value);
     //CAP-601 - validate encounter for phone encounter.
-    var page = document.getElementsByTagName('iframe')[0].src;
-    if (page?.indexOf("frmEncounter.aspx") > 0) {
+    if ($('#ctl00_C5POBody_EncounterContainer').length == 1) {
         DisplayErrorMessage('1011198');
     } else {
         var result = openModal("HtmlPhoneEncounter.html", 800, 1200, obj, "PhoneEncounter");

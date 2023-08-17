@@ -538,6 +538,7 @@ myapp.controller('PhoneEncounterCtrl', function ($scope, $http) {
             //window.parent.parent.parent.parent.theForm.ctl00_C5POBody_hdnIsSaveEnable.value = false;
         }
         { sessionStorage.setItem('StartLoading', 'false'); StopLoadFromPatChart(); }//change
+        StopLoadingImage();
     })
         .error(function (error, status, headers, config) {
 
@@ -3013,7 +3014,6 @@ myapp.controller('PhoneEncounterCtrl', function ($scope, $http) {
                 AutoSaveUnsuccessful();
                 return;
             }
-            debugger
             //$scope.EandMCodingCPTTable = test.ProcedureList;
             //$scope.EandMCodingICDTable = test.ICDList;
             //$scope.AssEandMCodingICDTable = test.AssICDlist;

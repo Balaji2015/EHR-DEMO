@@ -470,8 +470,7 @@ function OpenModal(data) {
         }
         else {
             //CAP-601 - validate encounter for phone encounter.
-            var page = document.getElementsByTagName('iframe')[0].src;
-            if (page?.indexOf("frmEncounter.aspx") > 0) {
+            if ($('#ctl00_C5POBody_EncounterContainer').length == 1) {
                 DisplayErrorMessage('1011198');
                 StopLoadingImage();
             } else {
@@ -1750,14 +1749,12 @@ function OnClientButtonClicked(sender, args) {
         }
         else {
             //CAP-601 - validate encounter for phone encounter.
-            var page = document.getElementsByTagName('iframe')[0].src;
-            if (page?.indexOf("frmEncounter.aspx") > 0) {
+            if ($('#ctl00_C5POBody_EncounterContainer').length == 1) {
                 DisplayErrorMessage('1011198');
             } else {
-                var result = openModal("HtmlPhoneEncounter.html", 800, 1230, obj, "ctl00_ModalWindow");
                 obj.push("openingfrom=" + "Menu");
                 obj.push("MyHumanID=" + ID);
-
+                var result = openModal("HtmlPhoneEncounter.html", 800, 1230, obj, "ctl00_ModalWindow");
                 var Window = $find('ctl00_ModalWindow');
                 Window.add_close(function ClosePhoneEnc(oWindow, args) {
                     window.location.href = "frmPatientChart.aspx"
@@ -1860,14 +1857,13 @@ function OnClientClickedSubMenu(data) {
             }
             else {
                 //CAP-601 - validate encounter for phone encounter.
-                var page = document.getElementsByTagName('iframe')[0].src;
-                if (page?.indexOf("frmEncounter.aspx") > 0) {
+                if ($('#ctl00_C5POBody_EncounterContainer').length == 1) {
                     DisplayErrorMessage('1011198');
                     StopLoadingImage();
                 } else {
-                    var result = openModal("HtmlPhoneEncounter.html", 800, 1230, obj, "ctl00_ModalWindow");
                     obj.push("openingfrom=" + "Menu");
                     obj.push("MyHumanID=" + ID);
+                    var result = openModal("HtmlPhoneEncounter.html", 800, 1230, obj, "ctl00_ModalWindow");
                     var Window = GetRadWindow();
                     if (Window != undefined && Window != null)
                         Window.add_close(function ClosePhoneEnc(oWindow, args) {
@@ -2489,8 +2485,7 @@ function OnClientClosePhoneEncounter(oWindow, args) {
                     }
                     else {
                         //CAP-601 - validate encounter for phone encounter.
-                        var page = document.getElementsByTagName('iframe')[0].src;
-                        if (page?.indexOf("frmEncounter.aspx") > 0) {
+                        if ($('#ctl00_C5POBody_EncounterContainer').length == 1) {
                             DisplayErrorMessage('1011198');
                         } else {
                             var result = openModal("HtmlPhoneEncounter.html?openingfrom=Menu&MyHumanID=" + HumanId + "&LoadPatientChart=False", 800, 1230, obj, "ctl00_ModalWindow");
