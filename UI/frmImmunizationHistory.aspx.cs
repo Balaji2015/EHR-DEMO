@@ -990,9 +990,14 @@ namespace Acurus.Capella.UI
                 {
                     if ((IList<ImmunizationMasterHistory>)Session["LoadImmunizationMasterList"] != null && ((IList<ImmunizationMasterHistory>)Session["LoadImmunizationMasterList"]).Count > 0)
                     {
-                        if (grdImmunization.MasterTableView.Items.Count > 0 && System.Text.RegularExpressions.Regex.IsMatch(grdImmunization.MasterTableView.Items[Convert.ToInt32(e.CommandArgument)].Cells[8].Text, "^[0-9]*$") == true)
+                        //Jira #CAP-610
+                        //if (grdImmunization.MasterTableView.Items.Count > 0 && System.Text.RegularExpressions.Regex.IsMatch(grdImmunization.MasterTableView.Items[Convert.ToInt32(e.CommandArgument)].Cells[8].Text, "^[0-9]*$") == true)
+                        //{
+                        //    DeleteFromMaster(Convert.ToUInt64(grdImmunization.MasterTableView.Items[Convert.ToInt32(e.CommandArgument)].Cells[8].Text));
+                        //}
+                        if (grdImmunization.MasterTableView.Items.Count > 0 && System.Text.RegularExpressions.Regex.IsMatch(grdImmunization.MasterTableView.Items[Convert.ToInt32(e.CommandArgument)].Cells[9].Text, "^[0-9]*$") == true)
                         {
-                            DeleteFromMaster(Convert.ToUInt64(grdImmunization.MasterTableView.Items[Convert.ToInt32(e.CommandArgument)].Cells[8].Text));
+                            DeleteFromMaster(Convert.ToUInt64(grdImmunization.MasterTableView.Items[Convert.ToInt32(e.CommandArgument)].Cells[9].Text));
                         }
                     }
                     else
