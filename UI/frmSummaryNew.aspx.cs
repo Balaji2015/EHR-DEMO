@@ -137,7 +137,10 @@ namespace Acurus.Capella.UI
                 Encounter_Id = ClientSession.EncounterId;
                 Human_ID = ClientSession.HumanId;
             }
-            if (Request.QueryString["Menu"] == null && System.Configuration.ConfigurationSettings.AppSettings["IsAkidoNoteSummary"] == "Y" && UtilityManager.IsAkidoEncounter(Encounter_Id.ToString()) == true)
+            //Jira #CAP-855
+            string sIsAkidoEncounter = "false";
+            sIsAkidoEncounter = UtilityManager.IsAkidoEncounter(Encounter_Id.ToString());
+            if (Request.QueryString["Menu"] == null && System.Configuration.ConfigurationSettings.AppSettings["IsAkidoNoteSummary"] == "Y" && sIsAkidoEncounter == "true")
             {
                 xslFrame.Visible = false;
                 //AkidoFrame.Visible = true;
@@ -157,9 +160,20 @@ namespace Acurus.Capella.UI
                 ScriptManager.RegisterStartupScript(this, typeof(frmEncounter), "Summary", "AkidoNoteClickSum('" + sAkidoURL + "');", true);
                 return;
             }
-            else if (Request.QueryString["Menu"] != null && System.Configuration.ConfigurationSettings.AppSettings["IsAkidoNoteSummary"] == "Y" && UtilityManager.IsAkidoEncounter(ClientSession.EncounterId.ToString()) == true)
+            else if (Request.QueryString["Menu"] != null && System.Configuration.ConfigurationSettings.AppSettings["IsAkidoNoteSummary"] == "Y" && sIsAkidoEncounter == "true")
             {
                 ScriptManager.RegisterStartupScript(this, this.GetType(), string.Empty, "DisplayErrorMessage('1011197'); {sessionStorage.setItem('StartLoading', 'false');StopLoadFromPatChart();}", true);
+                return;
+            }
+            //Jira #CAP-855
+            else if (Request.QueryString["Menu"] == null && System.Configuration.ConfigurationSettings.AppSettings["IsAkidoNoteSummary"] == "Y" && sIsAkidoEncounter == "Exception")
+            {
+                ScriptManager.RegisterStartupScript(this, typeof(frmEncounter), "SummaryAlert", "SummaryHumanIDAlert('Could not connect to Akido Chart. Please contact support.'); {sessionStorage.setItem('StartLoading', 'false');StopLoadFromPatChart();}", true);
+                return;
+            }
+            else if (Request.QueryString["Menu"] != null && System.Configuration.ConfigurationSettings.AppSettings["IsAkidoNoteSummary"] == "Y" && sIsAkidoEncounter == "Exception")
+            {
+                ScriptManager.RegisterStartupScript(this, this.GetType(), string.Empty, "DisplayErrorMessage('1011199'); {sessionStorage.setItem('StartLoading', 'false');StopLoadFromPatChart();}", true);
                 return;
             }
 
@@ -4368,9 +4382,17 @@ margin:0in 0in 0in 9in;
         protected void btnPDFconsult_Click(object sender, EventArgs e)
         {
             //Jira #CAP-731 -start
-            if (System.Configuration.ConfigurationSettings.AppSettings["IsAkidoNoteSummary"] == "Y" && UtilityManager.IsAkidoEncounter(ClientSession.EncounterId.ToString()) == true)
+            //Jira #CAP-855
+            string sIsAkidoEncounter = "false";
+            sIsAkidoEncounter = UtilityManager.IsAkidoEncounter(ClientSession.EncounterId.ToString());
+            if (System.Configuration.ConfigurationSettings.AppSettings["IsAkidoNoteSummary"] == "Y" && sIsAkidoEncounter == "true")
             {
                 ScriptManager.RegisterStartupScript(this, this.GetType(), string.Empty, "alert('The Notes can not be generated for this encounter, as this encounter is part of the Akido Note.'); {sessionStorage.setItem('StartLoading', 'false');StopLoadFromPatChart();}", true);
+                return;
+            }
+            else if (System.Configuration.ConfigurationSettings.AppSettings["IsAkidoNoteSummary"] == "Y" && sIsAkidoEncounter == "Exception")
+            {
+                ScriptManager.RegisterStartupScript(this, this.GetType(), string.Empty, "DisplayErrorMessage('1011199'); {sessionStorage.setItem('StartLoading', 'false');StopLoadFromPatChart();}", true);
                 return;
             }
             //Jira #CAP-731 -end

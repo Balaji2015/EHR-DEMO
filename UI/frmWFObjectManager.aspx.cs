@@ -1192,9 +1192,16 @@ namespace Acurus.Capella.UI
                 if (grdAdminModule.SelectedItems[0].Cells[2].Text != string.Empty && selectedItem["Object Type"].Text != string.Empty)
                 {
                     //Jira #CAP-724 -start
-                    if (System.Configuration.ConfigurationSettings.AppSettings["IsAkidoEncounterCheck"] == "Y" && cboPreviousProcess.SelectedItem.Text == "AKIDO_SCRIBE_PROCESS" && UtilityManager.IsAkidoEncounter(grdAdminModule.SelectedItems[0].Cells[2].Text.ToString()) == false)
+                    //Jira #CAP-855
+                    string sIsAkidoEncounter = UtilityManager.IsAkidoEncounter(grdAdminModule.SelectedItems[0].Cells[2].Text.ToString());
+                    if (System.Configuration.ConfigurationSettings.AppSettings["IsAkidoEncounterCheck"] == "Y" && cboPreviousProcess.SelectedItem.Text == "AKIDO_SCRIBE_PROCESS" && sIsAkidoEncounter == "false")
                     {
                         ScriptManager.RegisterStartupScript(this, this.GetType(), string.Empty, "DisplayErrorMessage('1011196'); {sessionStorage.setItem('StartLoading', 'false');StopLoadFromPatChart();}", true);
+                        return;
+                    }
+                    else if (System.Configuration.ConfigurationSettings.AppSettings["IsAkidoNoteSummary"] == "Y" && sIsAkidoEncounter == "Exception")
+                    {
+                        ScriptManager.RegisterStartupScript(this, this.GetType(), string.Empty, "DisplayErrorMessage('1011199'); {sessionStorage.setItem('StartLoading', 'false');StopLoadFromPatChart();}", true);
                         return;
                     }
                     //Jira #CAP-724 -end

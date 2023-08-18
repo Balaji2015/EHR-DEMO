@@ -5900,9 +5900,9 @@ namespace Acurus.Capella.UI
             return bAlert;
         }
 
-        public static Boolean IsAkidoEncounter(string sEncounterID)
+        public static string IsAkidoEncounter(string sEncounterID)
         {
-            Boolean bIsAkidoEncounter = false;
+            string bIsAkidoEncounter = "false";
 
             try
             {
@@ -5924,11 +5924,12 @@ namespace Acurus.Capella.UI
 
                 if (json.ToString() != "[]")
                 {
-                    bIsAkidoEncounter = true;
+                    bIsAkidoEncounter = "true";
                 }
             }
             catch (Exception ex)
             {
+                bIsAkidoEncounter = "Exception";
                 Console.WriteLine(ex.ToString());
             }
 

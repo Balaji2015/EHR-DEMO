@@ -67,10 +67,17 @@ namespace Acurus.Capella.UI
                     sXMLEncounterDoc = UtilityManager.ReplaceSpecialCharaters(sXMLEncounterDoc);
                 }
                 FileNames = "Encounter" + "_" + Encounter_Id + ".xml";
-
-                if (Request.QueryString["Menu"] != null && System.Configuration.ConfigurationSettings.AppSettings["IsAkidoNoteSummary"] == "Y" && UtilityManager.IsAkidoEncounter(Encounter_Id.ToString()) == true)
+                //Jira #CAP-855
+                string sIsAkidoEncounter = "false";
+                sIsAkidoEncounter = UtilityManager.IsAkidoEncounter(Encounter_Id.ToString());
+                if (Request.QueryString["Menu"] != null && System.Configuration.ConfigurationSettings.AppSettings["IsAkidoNoteSummary"] == "Y" && sIsAkidoEncounter == "true")
                 {
                     ScriptManager.RegisterStartupScript(this, this.GetType(), string.Empty, "DisplayErrorMessage('1011197'); {sessionStorage.setItem('StartLoading', 'false');StopLoadFromPatChart();}", true);
+                    return;
+                }
+                else if (System.Configuration.ConfigurationSettings.AppSettings["IsAkidoNoteSummary"] == "Y" && sIsAkidoEncounter == "Exception")
+                {
+                    ScriptManager.RegisterStartupScript(this, this.GetType(), string.Empty, "DisplayErrorMessage('1011199'); {sessionStorage.setItem('StartLoading', 'false');StopLoadFromPatChart();}", true);
                     return;
                 }
             }
@@ -89,10 +96,17 @@ namespace Acurus.Capella.UI
                     //Jira #CAP-115
                     sXMLEncounterDoc = UtilityManager.ReplaceSpecialCharaters(sXMLEncounterDoc);
                 }
-
-                if (Request.QueryString["Menu"] != null && System.Configuration.ConfigurationSettings.AppSettings["IsAkidoNoteSummary"] == "Y" && UtilityManager.IsAkidoEncounter(ClientSession.EncounterId.ToString()) == true)
+                //Jira #CAP-855
+                string sIsAkidoEncounter = "false";
+                sIsAkidoEncounter = UtilityManager.IsAkidoEncounter(ClientSession.EncounterId.ToString());
+                if (Request.QueryString["Menu"] != null && System.Configuration.ConfigurationSettings.AppSettings["IsAkidoNoteSummary"] == "Y" && sIsAkidoEncounter == "true")
                 {
                     ScriptManager.RegisterStartupScript(this, this.GetType(), string.Empty, "DisplayErrorMessage('1011197'); {sessionStorage.setItem('StartLoading', 'false');StopLoadFromPatChart();}", true);
+                    return;
+                }
+                else if (System.Configuration.ConfigurationSettings.AppSettings["IsAkidoNoteSummary"] == "Y" && sIsAkidoEncounter == "Exception")
+                {
+                    ScriptManager.RegisterStartupScript(this, this.GetType(), string.Empty, "DisplayErrorMessage('1011199'); {sessionStorage.setItem('StartLoading', 'false');StopLoadFromPatChart();}", true);
                     return;
                 }
                 //ScriptManager.RegisterStartupScript(this, this.Page.GetType(), "", "DisplayErrorMessage('110063'); {sessionStorage.setItem('StartLoading', 'false');StopLoadFromPatChart();}", true);
