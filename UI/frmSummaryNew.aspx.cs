@@ -139,7 +139,8 @@ namespace Acurus.Capella.UI
             }
             //Jira #CAP-855
             string sIsAkidoEncounter = "false";
-            sIsAkidoEncounter = UtilityManager.IsAkidoEncounter(Encounter_Id.ToString());
+            string sExMessage = "";
+            sIsAkidoEncounter = UtilityManager.IsAkidoEncounter(Encounter_Id.ToString(), out sExMessage);
             if (Request.QueryString["Menu"] == null && System.Configuration.ConfigurationSettings.AppSettings["IsAkidoNoteSummary"] == "Y" && sIsAkidoEncounter == "true")
             {
                 xslFrame.Visible = false;
@@ -168,7 +169,9 @@ namespace Acurus.Capella.UI
             //Jira #CAP-855
             else if (Request.QueryString["Menu"] == null && System.Configuration.ConfigurationSettings.AppSettings["IsAkidoNoteSummary"] == "Y" && sIsAkidoEncounter == "Exception")
             {
-                ScriptManager.RegisterStartupScript(this, typeof(frmEncounter), "SummaryAlert", "SummaryHumanIDAlert('Could not connect to Akido Chart. Please contact support.'); {sessionStorage.setItem('StartLoading', 'false');StopLoadFromPatChart();}", true);
+                
+                string sErrorMessag = DateTime.Now.ToString("dd/MMM/yyyy hh:mm:ss tt") + "_1011199: " + "We have encounter an error retrieving the clinical note.  Try again and If this persists, contact support. $|$ Exception Message: "+ sExMessage.Replace("'","");
+                ScriptManager.RegisterStartupScript(this, typeof(frmEncounter), "SummaryAlert", "SummaryHumanIDAlert('"+ sErrorMessag + "'); {sessionStorage.setItem('StartLoading', 'false');StopLoadFromPatChart();}", true);
                 return;
             }
             else if (Request.QueryString["Menu"] != null && System.Configuration.ConfigurationSettings.AppSettings["IsAkidoNoteSummary"] == "Y" && sIsAkidoEncounter == "Exception")
@@ -4407,7 +4410,8 @@ margin:0in 0in 0in 9in;
             //Jira #CAP-731 -start
             //Jira #CAP-855
             string sIsAkidoEncounter = "false";
-            sIsAkidoEncounter = UtilityManager.IsAkidoEncounter(ClientSession.EncounterId.ToString());
+            string sExMessage = "";
+            sIsAkidoEncounter = UtilityManager.IsAkidoEncounter(ClientSession.EncounterId.ToString(), out sExMessage);
             if (System.Configuration.ConfigurationSettings.AppSettings["IsAkidoNoteSummary"] == "Y" && sIsAkidoEncounter == "true")
             {
                 ScriptManager.RegisterStartupScript(this, this.GetType(), string.Empty, "alert('The Notes can not be generated for this encounter, as this encounter is part of the Akido Note.'); {sessionStorage.setItem('StartLoading', 'false');StopLoadFromPatChart();}", true);

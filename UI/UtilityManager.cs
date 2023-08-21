@@ -5909,8 +5909,9 @@ namespace Acurus.Capella.UI
             return bAlert;
         }
 
-        public static string IsAkidoEncounter(string sEncounterID)
+        public static string IsAkidoEncounter(string sEncounterID, out string sExMessage)
         {
+            sExMessage = "";
             string bIsAkidoEncounter = "false";
 
             try
@@ -5939,6 +5940,7 @@ namespace Acurus.Capella.UI
             catch (Exception ex)
             {
                 bIsAkidoEncounter = "Exception";
+                sExMessage= ex.Message;
                 Console.WriteLine(ex.ToString());
             }
 

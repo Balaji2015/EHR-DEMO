@@ -63,7 +63,8 @@ namespace Acurus.Capella.UI
                 }
                 //Jira #CAP-855
                 string sIsAkidoEncounter = "false";
-                sIsAkidoEncounter = UtilityManager.IsAkidoEncounter(Encounter_Id.ToString());
+                string sExMessage = "";
+                sIsAkidoEncounter = UtilityManager.IsAkidoEncounter(Encounter_Id.ToString(), out sExMessage);
 
                 if (Request.QueryString["Menu"] != null && System.Configuration.ConfigurationSettings.AppSettings["IsAkidoNoteSummary"] == "Y" && sIsAkidoEncounter == "true")
                 {
@@ -110,7 +111,8 @@ namespace Acurus.Capella.UI
                 FileName = "Encounter" + "_" + ClientSession.EncounterId + ".xml";
                 //Jira #CAP-855
                 string sIsAkidoEncounter = "false";
-                sIsAkidoEncounter = UtilityManager.IsAkidoEncounter(ClientSession.EncounterId.ToString());
+                string sExMessage = "";
+                sIsAkidoEncounter = UtilityManager.IsAkidoEncounter(ClientSession.EncounterId.ToString(), out sExMessage);
 
                 if (Request.QueryString["Menu"] != null && System.Configuration.ConfigurationSettings.AppSettings["IsAkidoNoteSummary"] == "Y" && sIsAkidoEncounter == "true")
                 {
@@ -145,7 +147,8 @@ namespace Acurus.Capella.UI
             //Jira #CAP-731 -start
             //Jira #CAP-855
             string sIsAkidoEncounter = "false";
-            sIsAkidoEncounter = UtilityManager.IsAkidoEncounter(ClientSession.EncounterId.ToString());
+            string sExMessage = "";
+            sIsAkidoEncounter = UtilityManager.IsAkidoEncounter(ClientSession.EncounterId.ToString(), out sExMessage);
 
             if (System.Configuration.ConfigurationSettings.AppSettings["IsAkidoNoteSummary"] == "Y" && sIsAkidoEncounter == "true")
             {
