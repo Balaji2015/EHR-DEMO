@@ -1,11 +1,8 @@
 ﻿<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="frmRestrictMultipleTabs.aspx.cs" Inherits="Acurus.Capella.UI.frmRestrictMultipleTabs" %>
-
 <!DOCTYPE html>
-
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head runat="server">
     <title></title>
-
     <style>
         #rcorners3 {
             border-radius: 25px;
@@ -18,16 +15,13 @@
             font-size: 25px;
             font-weight: bold;
         }
-
         img {
             float: right;
         }
-
         .divdat {
             padding-left: 150px;
             width: 1300px;
         }
-
         .Editabletxtbox {
             font-weight: normal;
             font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
@@ -49,20 +43,5 @@
             </div>
         </div>
     </form>
-    <script>
-        window.addEventListener("load", function () {
-            localStorage.setItem("isDuplicate", "true");
-        });
-
-        window.addEventListener('beforeunload', function () {
-            // Remove the key from the local storage when the user leaves the page
-            localStorage.removeItem('isDuplicate');
-
-        });
-
-        window.addEventListener("unload", function () {
-            localStorage.removeItem('isDuplicate');
-        });
-    </script>
 </body>
 </html>
