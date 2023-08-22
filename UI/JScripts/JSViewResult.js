@@ -538,14 +538,16 @@ function OpenResultInterpretation() {
     var notes = '';
     var ProvNoteshistory = document.getElementById('DLC_txtDLC').value;
     if (ProvNoteshistory != '') {
-        notes = ProvNoteshistory;
+        //Cap - 747
+        //notes = ProvNoteshistory;
+        notes = ProvNoteshistory.replaceAll("&", "$|$|$|$|").replaceAll("#", "!^!^!^!^").replaceAll("+","~|~|~|~|");
     }
     else {
         //notes = document.getElementById("txtProvNoteshistory").value;
 
         // Cap - 747
         //notes = document.getElementById("txtProvNoteshistory").attributes[5].value.replaceAll("<br/>", "")
-        notes = document.getElementById("txtProvNoteshistory").attributes[5].value.replaceAll("<br/>", "").replaceAll("&", "$|$");
+        notes = document.getElementById("txtProvNoteshistory").attributes[5].value.replaceAll("<br/>", "").replaceAll("&", "$|$|$|$|").replaceAll("#", "!^!^!^!^").replaceAll("+", "~|~|~|~|");
 
     }
     //if (notes != '') {
