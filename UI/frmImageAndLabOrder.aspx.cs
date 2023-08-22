@@ -2252,6 +2252,10 @@ namespace Acurus.Capella.UI
             gbProcedures.Enabled = IsEnable;
             gbSelectICD.Enabled = IsEnable;
             gbSpecimenDetails.Enabled = IsEnable;
+            //CAP-667
+            pbSelectICD.Disabled = !IsEnable;
+            btnAllProcedures.Disabled = !IsEnable;
+            btnSelectLocation.Disabled = !IsEnable;
             //btnPrintlabel.Enabled = IsEnable;
             //btnPrintRequsition.Enabled = IsEnable;
             //btnClearAll.Enabled = IsEnable; //Commentted for bugID:37656

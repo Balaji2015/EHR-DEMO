@@ -2576,3 +2576,7 @@ function reloadPatientSummaryBarXmlRegenerate() {
 
     });
 }
+
+function navigateRestrictMultipleTabClick() {
+    window.location.href = "https://cmg.capellaehr.com/documents/User_Manual/Window_feature_20230803.pdf";
+}

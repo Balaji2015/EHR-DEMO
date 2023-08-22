@@ -37,11 +37,12 @@
                     <br />
                     <p style="font-size: 22px;margin:15px" class="Editabletxtbox">
                         <img src="Resources/multipletab.png" alt="Pineapple" style="width: 283px; height: 126px; margin-right: 15px;" />
-                        You already have an active EHR session. Use "Windows" in the active session to navigate to other open charts.
+                        You already have an active EHR session. Use "<a id="navigateWindowLink" href="#" onclick="navigateRestrictMultipleTabClick()">Windows</a>" in the active session to navigate to other open charts.
                     </p>
                 </div>
             </div>
         </div>
     </form>
+    <script src="JScripts/JSErrorMessage.js?version=<%=ConfigurationManager.AppSettings["VersionConfiguration"].ToString().Replace("Capella - ","") %>"></script>
 </body>
 </html>
