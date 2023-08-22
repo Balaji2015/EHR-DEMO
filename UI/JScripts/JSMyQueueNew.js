@@ -500,7 +500,7 @@ function MyQclick() {
             }
             //CAP-618 alert message if has Test Details.
             else if (headerList?.includes('Test Details') == true && (Curprocess == undefined || Curprocess == null || Curprocess == '')) {
-                alert("These encounters are accessible by Ancillary users only.");
+                alert("Please relogin using default facility to access these encounters in My Q.");
                 { sessionStorage.setItem('StartLoading', 'false'); StopLoadFromPatChart(); }
                 return false;
             }
