@@ -10,9 +10,7 @@ channel.addEventListener('message', (msg) => {
 
     var currentURL = window.location.href;
 
-    //var isAllowMultipleTabs = false;
     if (currentURL.match(/[?&]allowmultipletab=([^&]+)/) != undefined && currentURL.match(/[?&]allowmultipletab=([^&]+)/) != null) {
-        //isAllowMultipleTabs = currentURL.match(/[?&]allowmultipletab=([^&]+)/)[1];
         return;
     }
 
