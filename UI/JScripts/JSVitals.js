@@ -92,7 +92,10 @@ function CheckMaxValue(minvalue, maxvalue, id) {
 }
 function OpenPastVitals() {
     $("#PastVitals").modal({ backdrop: "static" });
-    $('#PastVitalsFrame')[0].contentDocument.location.href = "frmVitalsHistory.aspx";
+    //CAP-779 Cannot read properties of null
+    if (document.getElementById('PastVitalsFrame') != undefined && document.getElementById('PastVitalsFrame') != null && $('#PastVitalsFrame')[0]?.contentDocument != undefined && $('#PastVitalsFrame')[0]?.contentDocument != null) {
+        $('#PastVitalsFrame')[0].contentDocument.location.href = "frmVitalsHistory.aspx";
+    }
     $("#PastVitalsTitle")[0].textContent = "Past Vitals";
 }
 
@@ -1549,7 +1552,8 @@ function CalculateBMIOnFtInchAndLBS(HeightFt, HeightInch, Weight) {
                 document.getElementById('BMI').value = '';
         }
     } catch (Exception) {
-        if (document.getElementById('BMI') != undefined)
+        //CAP-290 Cannot read properties of null (reading value)
+        //if (document.getElementById('BMI') != undefined && document.getElementById('BMI') != null)
             document.getElementById('BMI').value = '';
     }
 }
