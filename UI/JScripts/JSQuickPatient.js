@@ -1245,7 +1245,10 @@ function isNumberKey(evt) {
         return false;
     if (document.getElementById("hdnScreenMode").value != "COLLECT COPAY") {
         document.getElementById("hdnBSave").value = true;
-        document.getElementById("btnSave").disabled = false;
+        //CAP-795 Cannot set properties of null
+        if (document?.getElementById("btnSave") != undefined && document?.getElementById("btnSave") != null) {
+            document.getElementById("btnSave").disabled = false;
+        }
         return true;
     }
 }
@@ -1813,8 +1816,11 @@ function Addcursor() {
 function CalAmt(ctrl) {
     if (document.getElementById("hdnScreenMode").value != "COLLECT COPAY") {
         if (ctrl != undefined && ctrl.readOnly != true) {
-            document.getElementById("hdnBSave").value = true;
-            document.getElementById("btnSave").disabled = false;
+            //CAP-795 Cannot set properties of null
+            if (document?.getElementById("btnSave") != undefined && document?.getElementById("btnSave") != null) {
+                document.getElementById("hdnBSave").value = true;
+                document.getElementById("btnSave").disabled = false;
+            }
             AmtCalc();
         }
     }

@@ -204,7 +204,11 @@ function LoadEnableDisable() {
 }
 
 function SetACOFlag(FlagValue) {
-    parent.document.getElementById('hdnIsACOValid').value = FlagValue;
+    //CAP-795 Cannot set properties of null
+    hdnIsACOValid = parent?.document?.getElementById('hdnIsACOValid');
+    if (hdnIsACOValid != undefined && hdnIsACOValid != null) {
+        parent.document.getElementById('hdnIsACOValid').value = FlagValue;
+    }
 }
 var Sessionvalues;
 var PhysicianName = "";
