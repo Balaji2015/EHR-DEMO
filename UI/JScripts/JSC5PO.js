@@ -1713,8 +1713,9 @@ function OpenERX(MyType) {
 
     var result = openModal("frmRCopiaWebBrowser.aspx", 1100, 960, obj, "ctl00_ModalWindow");
     var WindowName = $find('ctl00_ModalWindow');
-    WindowName.set_behaviors(Telerik.Web.UI.WindowBehaviors.Close);
-    WindowName.add_close(LoadRcopiaCount);//BugID:54514
+    //CAP-776 Cannot read properties of null 
+    WindowName?.set_behaviors(Telerik.Web.UI.WindowBehaviors.Close);
+    WindowName?.add_close(LoadRcopiaCount);//BugID:54514
     return false;
 }
 
@@ -1885,9 +1886,11 @@ function OnClientClickedSubMenu(data) {
         if (ID == undefined || ID == "") {
             var result = openModal("frmFindPatient.aspx", 251, 1200, obj, "ctl00_ModalWindow");
             var WindowName = $find('ctl00_ModalWindow');
-            WindowName.add_close(OnClientPatientCommunication);
+            //CAP-780 Cannot read properties of null
+            WindowName?.add_close(OnClientPatientCommunication);
         }
         else {
+            //CAP-780 Cannot read properties of null  
             var result = openModal("frmPatientCommunication.aspx?IsMYQ=N", 810, 1050, obj, "ctl00_ModalWindow");
             var WindowName = $find('ctl00_ModalWindow');
             //CAP-302 - handle null value
