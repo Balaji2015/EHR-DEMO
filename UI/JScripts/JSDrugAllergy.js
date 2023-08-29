@@ -131,7 +131,7 @@ function GetReaction(icon, List) {
                             document.getElementsByTagName("div")[i].hidden = true;
                         }
                     }
-
+                    //CAP-804 Syntax error, unrecognized expression
                     $("<div id='" + "sg" + targetControlValue + "'tabindex='0'/>").html(innerdiv)
                       .css({
                           top: topPosition + $(".actcmpt").height() + 11,
@@ -149,8 +149,7 @@ function GetReaction(icon, List) {
                           zIndex: '17',
                           overflowX: 'auto',
                           'border-radius': '2px'
-
-                      }).insertAfter($("#" + targetControlValue + ".actcmpt"));
+                      }).insertAfter($("#" + targetControlValue?.trim() + ".actcmpt"));
                 }
                 EnableSave();
                 { sessionStorage.setItem('StartLoading', 'false'); StopLoadFromPatChart(); }
@@ -215,7 +214,7 @@ function GetNotesList(icon, List) {
                             document.getElementsByTagName("div")[i].hidden = true;
                         }
                     }
-
+                    //CAP-804 Syntax error, unrecognized expression
                     $("<div id='" + "sg" + targetControlValue + "'tabindex='0'/>").html(innerdiv)
                       .css({
                           top: topPosition + $(".actcmpt").height() + 3,
@@ -232,9 +231,8 @@ function GetNotesList(icon, List) {
                           fontSize: '12px',
                           zIndex: '17',
                           overflowX: 'auto',
-                          'border-radius': '2px'
-
-                      }).insertAfter($("#" + targetControlValue + ".actcmpt"));
+                          'border-radius': '2px'                        
+                      }).insertAfter($("#" + targetControlValue?.trim() + ".actcmpt"));
                 }
                 EnableSave();
                 { sessionStorage.setItem('StartLoading', 'false'); StopLoadFromPatChart(); }
@@ -533,7 +531,8 @@ function AddItem(agrulist) {
     var control;
     var value = agrulist.split("^");
     if (value.length > 2) {
-        control = value[5];
+        //CAP-804 Syntax error, unrecognized expression
+        control = value[5]?.trim();
         sugglistval = $("#" + control + ".actcmpt").val().trim();
         var selectedvalue = value[0] + ',' + value[1] + ',' + value[2] + ',' + value[3] + ',' + value[4];
         if (sugglistval != " " && sugglistval != "") {
@@ -552,7 +551,8 @@ function AddItem(agrulist) {
         }
     }
     else {
-        sugglistval = $("#" + value[1] + ".actcmpt").val().trim();
+        //CAP-804 Syntax error, unrecognized expression
+        sugglistval = $("#" + value[1]?.trim() + ".actcmpt").val().trim();
         if (sugglistval != " " && sugglistval != "") {
             var subsugglistval = sugglistval.split(",")
             var len = subsugglistval.length;
@@ -563,11 +563,11 @@ function AddItem(agrulist) {
                 }
             }
             if (flag == 0) {
-                $("#" + value[1] + ".actcmpt").val(sugglistval + "," + value[0]);
+                $("#" + value[1]?.trim() + ".actcmpt").val(sugglistval + "," + value[0]);
             }
         }
         else {
-            $("#" + value[1] + ".actcmpt").val(value[0]);
+            $("#" + value[1]?.trim() + ".actcmpt").val(value[0]);
         }
     }
 }
