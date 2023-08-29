@@ -329,6 +329,7 @@
         <asp:Button ID="btnLoadDefaultValues" runat="server" CssClass="displayNone" OnClick="btnLoadDefaultValues_Click" />
         <input type="button" runat="server" style="display: none" id="btnsavehidden" onserverclick="btnSave_Click" />
         <asp:HiddenField ID="hdnPicId" runat="server" />
+         <asp:HiddenField ID="hdnVisittype" runat="server" />
          <asp:HiddenField ID="hdnBPValue" runat="server" />
         <asp:HiddenField ID="hdnBMI" runat="server" />
         <asp:HiddenField ID="hdnHbA1c" runat="server" />

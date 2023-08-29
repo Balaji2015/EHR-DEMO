@@ -2371,7 +2371,80 @@ function OnVitalsLoad() {
             }
         }
     });
+    //Jira #CAP-733
+    var sVisitType = "";
+    var sDefaulttext = "Not performed - Telemedicine";
 
+    $($(window.top.document).find('iframe[id=ctl00_C5POBody_EncounterContainer]')[0].contentDocument).find("#pnlBarGroupTabs")[0].innerHTML
+    if ($($(window.top.document).find('iframe[id=ctl00_C5POBody_EncounterContainer]')[0].contentDocument) != null &&
+        $($(window.top.document).find('iframe[id=ctl00_C5POBody_EncounterContainer]')[0].contentDocument) != undefined) {
+        if (($($(window.top.document).find('iframe[id=ctl00_C5POBody_EncounterContainer]')[0].contentDocument).find("#pnlBarGroupTabs") != null) &&
+            $($(window.top.document).find('iframe[id=ctl00_C5POBody_EncounterContainer]')[0].contentDocument).find("#pnlBarGroupTabs") != undefined) {
+
+            if ($($(window.top.document).find('iframe[id=ctl00_C5POBody_EncounterContainer]')[0].contentDocument).find("#pnlBarGroupTabs")[0].innerHTML.split('|').length > 2)
+
+                sVisitType = $($(window.top.document).find('iframe[id=ctl00_C5POBody_EncounterContainer]')[0].contentDocument).find("#pnlBarGroupTabs")[0].innerHTML.split('|')[2].trim()
+        }
+    }
+
+
+    document.getElementById('hdnVisittype').value = sVisitType;
+
+    if (sVisitType.toUpperCase() == "TELEMEDICINE") {
+
+        if (document.getElementById('Height').value == "" && document.getElementById('HeightInch').value == "") {
+            document.getElementById('txtNotesHeight_txtDLC').value = sDefaulttext;
+            $('#btnSaveVitals').prop('disabled', false);
+        }
+        if (document.getElementById('Weight').value == "") {
+            document.getElementById('txtNotesWeight_txtDLC').value = sDefaulttext;
+            $('#btnSaveVitals').prop('disabled', false);
+        }
+        if (document.getElementById('BMI').value == "") {
+            document.getElementById('txtNotesBMI_txtDLC').value = sDefaulttext;
+            $('#btnSaveVitals').prop('disabled', false);
+
+        }
+        if (document.getElementById('BPSittingSysDia').value == "") {
+            document.getElementById('txtNotesBPSittingSysDia_txtDLC').value = sDefaulttext;
+            $('#btnSaveVitals').prop('disabled', false);
+        }
+
+
+    }
+
+    $("#Height,#Weight,#BPSittingSysDia,#BPSittingDiastolic,#HeightInch").on('keyup', function (e) {
+
+        if (sVisitType.toUpperCase() == "TELEMEDICINE") {
+
+            if (document.getElementById('Height').value != "" || document.getElementById('HeightInch').value != "")
+                document.getElementById('txtNotesHeight_txtDLC').value = document.getElementById('txtNotesHeight_txtDLC').value.replace(sDefaulttext, '');
+            else
+                document.getElementById('txtNotesHeight_txtDLC').value = sDefaulttext;
+
+            if (document.getElementById('Weight').value != "")
+                document.getElementById('txtNotesWeight_txtDLC').value = document.getElementById('txtNotesWeight_txtDLC').value.replace(sDefaulttext, '');
+            else
+                document.getElementById('txtNotesWeight_txtDLC').value = sDefaulttext;
+
+            if (document.getElementById('BMI').value != "")
+                document.getElementById('txtNotesBMI_txtDLC').value = document.getElementById('txtNotesBMI_txtDLC').value.replace(sDefaulttext, '');
+            else
+                document.getElementById('txtNotesBMI_txtDLC').value = sDefaulttext;
+
+
+            if (document.getElementById('BPSittingSysDia').value != "")
+                document.getElementById('txtNotesBPSittingSysDia_txtDLC').value = document.getElementById('txtNotesBPSittingSysDia_txtDLC').value.replace(sDefaulttext, '');
+            else
+                document.getElementById('txtNotesBPSittingSysDia_txtDLC').value = sDefaulttext;
+
+
+
+
+
+
+        }
+    });
     { sessionStorage.setItem('StartLoading', 'false'); StopLoadFromPatChart(); }
 }
 function test() {

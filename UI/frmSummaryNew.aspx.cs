@@ -170,7 +170,7 @@ namespace Acurus.Capella.UI
             else if (Request.QueryString["Menu"] == null && System.Configuration.ConfigurationSettings.AppSettings["IsAkidoNoteSummary"] == "Y" && sIsAkidoEncounter == "Exception")
             {
                 
-                string sErrorMessag = DateTime.Now.ToString("dd/MMM/yyyy hh:mm:ss tt") + "_1011199: " + "We have encounter an error retrieving the clinical note.  Try again and If this persists, contact support. $|$ Exception Message: "+ sExMessage.Replace("'","");
+                string sErrorMessag = DateTime.Now.ToString("dd/MMM/yyyy hh:mm:ss tt") + "_1011199: " + "We have encountered an error retrieving the clinical note.  Try again and if this persists, contact support. $|$ Exception Message: " + sExMessage.Replace("'","");
                 ScriptManager.RegisterStartupScript(this, typeof(frmEncounter), "SummaryAlert", "SummaryHumanIDAlert('"+ sErrorMessag + "'); {sessionStorage.setItem('StartLoading', 'false');StopLoadFromPatChart();}", true);
                 return;
             }
