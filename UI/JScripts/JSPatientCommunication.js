@@ -369,7 +369,7 @@ function SaveClick(sender) {
         });
     }
 //Jira #CAP-889
-    if (sender.id == 'btnSaveCompletedMyQ') {
+    if (sender.id == 'btnSaveCompletedMyQ' || sender.id == 'btnSaveSendMyQ' ) {
         RemoveItem(document.URL, "MessageID");
     }
     { sessionStorage.setItem('StartLoading', 'false'); StopLoadFromPatChart(); }

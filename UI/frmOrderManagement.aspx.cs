@@ -77,17 +77,17 @@ namespace Acurus.Capella.UI
                 {
                     xmldoc.Load(System.Web.Hosting.HostingEnvironment.ApplicationPhysicalPath + "ConfigXML\\" + "Facility_Library" + ".xml");
                     XmlNodeList xmlFacilityList = xmldoc.GetElementsByTagName("Facility");
-
+                    cboFacilityName.Items.Add(new RadComboBoxItem("ALL"));
                     if (xmlFacilityList.Count > 0)
                     {
                         foreach (XmlNode item in xmlFacilityList)
                         {
                             if (item != null && item.Attributes.GetNamedItem("Legal_Org").Value == ClientSession.LegalOrg)
                                 cboFacilityName.Items.Add(new RadComboBoxItem(item.Attributes[0].Value));
-
-                            if (item != null && ClientSession.FacilityName == item.Attributes[0].Value)
-                                cboFacilityName.SelectedIndex = cboFacilityName.Items.FindItemIndexByText(item.Attributes[0].Value); ;
-                        }
+                            //Cap - 534
+                            //if (item != null && ClientSession.FacilityName == item.Attributes[0].Value)                              
+                            //cboFacilityName.SelectedIndex = cboFacilityName.Items.FindItemIndexByText(item.Attributes[0].Value);                           
+                        }                      
                     }
                 }
 
@@ -451,8 +451,11 @@ namespace Acurus.Capella.UI
             //grdReport.DataSource = null;
             //grdReport.DataBind();
             lblResultsFound.Text = string.Empty;
-            cboFacilityName.SelectedIndex = cboFacilityName.Items.FindItemIndexByText(ClientSession.FacilityName);
-            cboFacilityName.Text = ClientSession.FacilityName;
+            //cboFacilityName.SelectedIndex = cboFacilityName.Items.FindItemIndexByText(ClientSession.FacilityName);
+            //cboFacilityName.Text = ClientSession.FacilityName;
+            //Cap-534
+            cboFacilityName.SelectedIndex = cboFacilityName.Items.FindItemIndexByText("ALL");
+            cboFacilityName.Text = "ALL";
         }
 
         protected void btnClose_Click(object sender, EventArgs e)
@@ -824,12 +827,25 @@ namespace Acurus.Capella.UI
                 GetDateRange(out fromdate, out todate);
                 Session.Remove("SearchOrder");
                 mpnOrderManagement.PageNumber = 1;
+                //Cap - 534
+                String sFacilityName = string.Empty;
+                if(cboFacilityName.Text != "ALL")
+                {
+                    sFacilityName = cboFacilityName.Text;
+                }
+                else
+                {
+                    sFacilityName = "%";
+                }
+
                 //if (cboOrderType.Text.ToUpper() == "DIAGNOSTIC ORDER" || cboOrderType.Text.ToUpper() == "IMAGE ORDER" || cboOrderType.Text.ToUpper() == "INTERNAL DIAGNOSTIC ORDER" || cboOrderType.Text.ToUpper() == "INTERNAL IMAGE ORDER")
                 if (cboOrderType.Text.ToUpper() == "DIAGNOSTIC ORDER" || cboOrderType.Text.ToUpper() == "DME ORDER")
                 {
                     //SearchFillOrderManagement = objOrderManagementMngr.SearchOrder(cboOrderType.Text, cboOrderStatus.Text, cboFacilityName.Text, 0, fromdate, todate, Convert.ToUInt64(sHumanID), Convert.ToUInt64(txtProviderName.Attributes["tagProviderName"]), Convert.ToUInt64(labItem.Value), Convert.ToUInt64(0), mpnOrderManagement.PageNumber, mpnOrderManagement.MaxResultPerPage);
                     //FillSearchResultLabAndImage(SearchFillOrderManagement);
-                    SearchFillOrderManagement = objOrderManagementMngr.SearchOrder(cboOrderType.Text, cboOrderStatus.Text, cboFacilityName.Text, 0, fromdate, todate, Convert.ToUInt64(sHumanID), Convert.ToUInt64(txtProviderName.Attributes["tagProviderName"]), Convert.ToUInt64(labItem.Value), Convert.ToUInt64(0), mpnOrderManagement.PageNumber, mpnOrderManagement.MaxResultPerPage);
+                    //Cap - 534
+                    //SearchFillOrderManagement = objOrderManagementMngr.SearchOrder(cboOrderType.Text, cboOrderStatus.Text, cboFacilityName.Text, 0, fromdate, todate, Convert.ToUInt64(sHumanID), Convert.ToUInt64(txtProviderName.Attributes["tagProviderName"]), Convert.ToUInt64(labItem.Value), Convert.ToUInt64(0), mpnOrderManagement.PageNumber, mpnOrderManagement.MaxResultPerPage);
+                    SearchFillOrderManagement = objOrderManagementMngr.SearchOrder(cboOrderType.Text, cboOrderStatus.Text, sFacilityName, 0, fromdate, todate, Convert.ToUInt64(sHumanID), Convert.ToUInt64(txtProviderName.Attributes["tagProviderName"]), Convert.ToUInt64(labItem.Value), Convert.ToUInt64(0), mpnOrderManagement.PageNumber, mpnOrderManagement.MaxResultPerPage);
                     if (SearchFillOrderManagement != null)
                     {
                         FillSearchResultLabAndImage(SearchFillOrderManagement, mpnOrderManagement.PageNumber, mpnOrderManagement.MaxResultPerPage);
@@ -840,7 +856,9 @@ namespace Acurus.Capella.UI
                 {
                     //SearchImmunizationList = objImmunizationMngr.SearchImmunizationOrder(cboOrderType.Text, cboOrderStatus.Text, cboFacilityName.Text, 0, fromdate, todate, Convert.ToUInt64(sHumanID), Convert.ToUInt64(txtProviderName.Attributes["tagProviderName"]), mpnOrderManagement.PageNumber, mpnOrderManagement.MaxResultPerPage);
                     //FillSearchResultImmunization(SearchImmunizationList);
-                    SearchImmunizationList = objImmunizationMngr.SearchImmunizationOrder(cboOrderType.Text, cboOrderStatus.Text, cboFacilityName.Text, 0, fromdate, todate, Convert.ToUInt64(sHumanID), Convert.ToUInt64(txtProviderName.Attributes["tagProviderName"]), mpnOrderManagement.PageNumber, mpnOrderManagement.MaxResultPerPage);
+                    //Cap - 534
+                    //SearchImmunizationList = objImmunizationMngr.SearchImmunizationOrder(cboOrderType.Text, cboOrderStatus.Text, cboFacilityName.Text, 0, fromdate, todate, Convert.ToUInt64(sHumanID), Convert.ToUInt64(txtProviderName.Attributes["tagProviderName"]), mpnOrderManagement.PageNumber, mpnOrderManagement.MaxResultPerPage);
+                    SearchImmunizationList = objImmunizationMngr.SearchImmunizationOrder(cboOrderType.Text, cboOrderStatus.Text, sFacilityName, 0, fromdate, todate, Convert.ToUInt64(sHumanID), Convert.ToUInt64(txtProviderName.Attributes["tagProviderName"]), mpnOrderManagement.PageNumber, mpnOrderManagement.MaxResultPerPage);
                     if (SearchImmunizationList != null)
                     {
                         FillSearchResultImmunization(SearchImmunizationList, mpnOrderManagement.PageNumber, mpnOrderManagement.MaxResultPerPage);
@@ -851,7 +869,9 @@ namespace Acurus.Capella.UI
                 {
                     //SearchReferralOrderList = objReferralOrder.SearchReferralOrder(0, fromdate, todate, Convert.ToUInt64(sHumanID), Convert.ToUInt64(txtProviderName.Attributes["tagProviderName"]), mpnOrderManagement.PageNumber, mpnOrderManagement.MaxResultPerPage, cboOrderType.Text, cboOrderStatus.Text, cboFacilityName.Text);
                     //FillSearchResultReferral(SearchReferralOrderList);
-                    SearchReferralOrderList = objReferralOrder.SearchReferralOrder(0, fromdate, todate, Convert.ToUInt64(sHumanID), Convert.ToUInt64(txtProviderName.Attributes["tagProviderName"]), mpnOrderManagement.PageNumber, mpnOrderManagement.MaxResultPerPage, cboOrderType.Text, cboOrderStatus.Text, cboFacilityName.Text);
+                    //Cap - 534
+                    //SearchReferralOrderList = objReferralOrder.SearchReferralOrder(0, fromdate, todate, Convert.ToUInt64(sHumanID), Convert.ToUInt64(txtProviderName.Attributes["tagProviderName"]), mpnOrderManagement.PageNumber, mpnOrderManagement.MaxResultPerPage, cboOrderType.Text, cboOrderStatus.Text, cboFacilityName.Text);
+                    SearchReferralOrderList = objReferralOrder.SearchReferralOrder(0, fromdate, todate, Convert.ToUInt64(sHumanID), Convert.ToUInt64(txtProviderName.Attributes["tagProviderName"]), mpnOrderManagement.PageNumber, mpnOrderManagement.MaxResultPerPage, cboOrderType.Text, cboOrderStatus.Text, sFacilityName);
                     if (SearchReferralOrderList != null)
                     {
                         FillSearchResultReferral(SearchReferralOrderList, mpnOrderManagement.PageNumber, mpnOrderManagement.MaxResultPerPage);
@@ -862,7 +882,9 @@ namespace Acurus.Capella.UI
                 {
                     //SearchOtherProcedureList = objProcedureMngr.SearchProcedureOrder(cboOrderType.Text, cboOrderStatus.Text, cboFacilityName.Text, 0, fromdate, todate, Convert.ToUInt64(sHumanID), Convert.ToUInt64(txtProviderName.Attributes["tagProviderName"]), mpnOrderManagement.PageNumber, mpnOrderManagement.MaxResultPerPage);
                     //FillSearchResultOtherProcedure(SearchOtherProcedureList);
-                    SearchOtherProcedureList = objProcedureMngr.SearchProcedureOrder(cboOrderType.Text, cboOrderStatus.Text, cboFacilityName.Text, 0, fromdate, todate, Convert.ToUInt64(sHumanID), Convert.ToUInt64(txtProviderName.Attributes["tagProviderName"]), mpnOrderManagement.PageNumber, mpnOrderManagement.MaxResultPerPage);
+                    //Cap - 534
+                    //SearchOtherProcedureList = objProcedureMngr.SearchProcedureOrder(cboOrderType.Text, cboOrderStatus.Text, cboFacilityName.Text, 0, fromdate, todate, Convert.ToUInt64(sHumanID), Convert.ToUInt64(txtProviderName.Attributes["tagProviderName"]), mpnOrderManagement.PageNumber, mpnOrderManagement.MaxResultPerPage);
+                    SearchOtherProcedureList = objProcedureMngr.SearchProcedureOrder(cboOrderType.Text, cboOrderStatus.Text, sFacilityName, 0, fromdate, todate, Convert.ToUInt64(sHumanID), Convert.ToUInt64(txtProviderName.Attributes["tagProviderName"]), mpnOrderManagement.PageNumber, mpnOrderManagement.MaxResultPerPage);
                     if (SearchOtherProcedureList != null)
                     {
                         FillSearchResultOtherProcedure(SearchOtherProcedureList, mpnOrderManagement.PageNumber, mpnOrderManagement.MaxResultPerPage);

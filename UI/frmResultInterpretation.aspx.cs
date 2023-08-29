@@ -42,7 +42,6 @@ namespace Acurus.Capella.UI
         }
         protected void Page_Load(object sender, EventArgs e)
         {
-            btnDelete.Visible= false;
             if (!IsPostBack)
             {
                 if (Request["HumanText"] != null && Request["HumanText"] != "")
@@ -385,8 +384,8 @@ namespace Acurus.Capella.UI
                     ScriptManager.RegisterStartupScript(this, this.Page.GetType(), "ErrmormsgMa", "DisplayErrorMessage('115057'); {sessionStorage.setItem('StartLoading', 'false');StopLoadFromPatChart();StopLoadingImage();}", true);
                     return;
                 }
-            }
-
+            }             
+            
             if (objResultMaster != null && objResultMaster.Id != 0)
             {
                 objResultMaster.Modified_By = ClientSession.UserName;
@@ -403,6 +402,13 @@ namespace Acurus.Capella.UI
                         String sHeader_Test = Result_Review_Comments[i].Substring(0, Result_Review_Comments[i].IndexOf(";")).Replace("[[[Test Reviewed: ", "");
                         string[] sHeader = sHeader_Test.Split(':');
                         string sddlTemplate = ddlTemplate.SelectedValue;
+
+                        if (sHeader[0] != string.Empty && sHeader[2] != string.Empty && sHeader[2].Trim() == sddlTemplate.Trim() && sHeader[0].Split('(').Length>0 && sHeader[0].Split('(')[0].Replace("@", "") != ClientSession.UserName)
+                        {
+                            ScriptManager.RegisterStartupScript(this, this.Page.GetType(), "ErrmormsgMa", "DisplayErrorMessage('115069'); {sessionStorage.setItem('StartLoading', 'false');StopLoadFromPatChart();StopLoadingImage();}", true);
+                            return;
+                        }
+
                         if (sHeader[2] != string.Empty && sHeader[2].Trim() != sddlTemplate.Trim())
                         {
                             if (objResultMaster.Result_Review_Comments == string.Empty)
@@ -413,8 +419,6 @@ namespace Acurus.Capella.UI
                             {
                                 objResultMaster.Result_Review_Comments = objResultMaster.Result_Review_Comments + "<br/>" + Result_Review_Comments[i];
                             }
-
-
                         }
                     }
 

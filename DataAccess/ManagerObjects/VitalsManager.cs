@@ -1038,12 +1038,28 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
 
             return objPatientResults;
         }
-        public IList<PatientResults> GetPatientListByDos(string fromDate, string toDate, ulong human_id)
+        //Jira #CAP-630
+        //public IList<PatientResults> GetPatientListByDos(string fromDate, string toDate, ulong human_id)
+        //{
+        //    IList<PatientResults> isltPatientResults = new List<PatientResults>();
+        //    using (ISession iMySession = NHibernateSessionManager.Instance.CreateISession())
+        //    {
+        //        ISQLQuery sql = iMySession.CreateSQLQuery("select a.* from (select p.* from patient_results p where p.Captured_date_and_time>= STR_TO_DATE('" + fromDate + "', '%Y-%m-%d %H:%i:%s')  and p.Captured_date_and_time< STR_TO_DATE('" + toDate + "', '%Y-%m-%d %H:%i:%s') and human_id=" + human_id + " and Loinc_Observation like'%bp%'  and value like '%/%'order by Captured_date_and_time desc) a group by Loinc_Observation").AddEntity("a.*", typeof(PatientResults));
+        //        isltPatientResults = sql.List<PatientResults>();
+        //        iMySession.Close();
+        //    }
+        //    return isltPatientResults;
+        //}
+        public IList<PatientResults> GetPatientListByDos(string fromDate, string toDate, ulong human_id, ulong EncounterId)
         {
             IList<PatientResults> isltPatientResults = new List<PatientResults>();
             using (ISession iMySession = NHibernateSessionManager.Instance.CreateISession())
             {
-                ISQLQuery sql = iMySession.CreateSQLQuery("select a.* from (select p.* from patient_results p where p.Captured_date_and_time>= STR_TO_DATE('" + fromDate + "', '%Y-%m-%d %H:%i:%s')  and p.Captured_date_and_time< STR_TO_DATE('" + toDate + "', '%Y-%m-%d %H:%i:%s') and human_id=" + human_id + " and Loinc_Observation like'%bp%'  and value like '%/%'order by Captured_date_and_time desc) a group by Loinc_Observation").AddEntity("a.*", typeof(PatientResults));
+                ISQLQuery sql;
+                if (EncounterId == 0)
+                    sql = iMySession.CreateSQLQuery("select a.* from (select p.* from patient_results p where p.Captured_date_and_time>= STR_TO_DATE('" + fromDate + "', '%Y-%m-%d %H:%i:%s')  and p.Captured_date_and_time< STR_TO_DATE('" + toDate + "', '%Y-%m-%d %H:%i:%s') and human_id=" + human_id + " and Loinc_Observation like'%bp%'  and value like '%/%'order by Captured_date_and_time desc) a group by Loinc_Observation").AddEntity("a.*", typeof(PatientResults));
+                else
+                    sql = iMySession.CreateSQLQuery("select a.* from (select p.* from patient_results p where p.Captured_date_and_time>= STR_TO_DATE('" + fromDate + "', '%Y-%m-%d %H:%i:%s')  and p.Captured_date_and_time< STR_TO_DATE('" + toDate + "', '%Y-%m-%d %H:%i:%s') and human_id=" + human_id + " and Encounter_id!=" + EncounterId + " and Loinc_Observation like'%bp%'  and value like '%/%'order by Captured_date_and_time desc) a group by Loinc_Observation").AddEntity("a.*", typeof(PatientResults));
                 isltPatientResults = sql.List<PatientResults>();
                 iMySession.Close();
             }

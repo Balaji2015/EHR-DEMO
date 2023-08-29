@@ -489,7 +489,7 @@ function MoveToNextProcessClicked(sender, args) {
         //event.preventDefault();
         //event.stopPropagation();
         // {sessionStorage.setItem('StartLoading', 'false');StopLoadFromPatChart();}
-       
+
         //$(dvdialog).dialog({
         //    modal: true,
         //    title: "Capella -EHR",
@@ -503,7 +503,7 @@ function MoveToNextProcessClicked(sender, args) {
         //            { sessionStorage.setItem('StartLoading', 'true'); StartLoadFromPatChart();}
         //            sessionStorage.setItem("autoMovetonxtProc", "true");
         //            document.getElementById('hdnType').value = "Yes";
-                   
+
         //            top.window.document.getElementById('ctl00_Loading').style.display = 'none';
         //            __doPostBack('btnMoveToNextProcess'); //document.getElementById("btnMoveToNextProcess").click(); //$find('btnMoveToNextProcess').click();
         //            $(dvdialog).dialog("close");
@@ -525,11 +525,15 @@ function MoveToNextProcessClicked(sender, args) {
         //        }
         //    }
         //});
+
+        //Jira #CAP-889
+        RemoveItem(document.URL, "Orders");
     }
     else
     {
         return true;
     }
+
 }
 function saveorder() {
     

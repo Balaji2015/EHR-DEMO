@@ -1786,6 +1786,7 @@
 	<Message number="115066" Type="OK" Text="Result is already archived. So, It can not be deleted. Please contact support."></Message>
 	<Message number="115067" Type="OK" Text="This result has been signed and can not be deleted."></Message>
 	<Message number="115068" Type="OK" Text="There are multiple results indexed to this order, please contact support for assistance."></Message>
+	<Message number="115069" Type="OK" Text="You can not delete the Interpretation Note, as you are not the Author of the Interpretation note."></Message>
 
 	<Message number="4000029" Type="OK" Text="You have to Transfer the balance responsibility" />
 	<Message number="4000043" Type="OK" Text="Paid amount to patient {0} can not be greater than the amount remaining in the check $ {1}" />
@@ -3001,5 +3002,5 @@
 	<Message number="1011196" Type="OK" Text="Encounter is not captured in Akido Chart, cannot update process."></Message>
 	<Message number="1011197" Type="OK" Text="The Notes can not be generated for this encounter, as this encounter is part of the Akido Note."></Message>
 	<Message number="1011198" Type="OK" Text="A new phone encounter can not be created while you have an encounter open."></Message>
-	<Message number="1011199" Type="OK" Text="We have encounter an error retrieving the clinical note.  Try again and If this persists, contact support."></Message>
+	<Message number="1011199" Type="OK" Text="We have encountered an error retrieving the clinical note.  Try again and if this persists, contact support."></Message>
 </ErrorMessage>

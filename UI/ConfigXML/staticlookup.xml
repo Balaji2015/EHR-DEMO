@@ -41,6 +41,7 @@
     <ReasonNotPerformed Field_Name="REASON NOT PERFORMED FOR BMI" Value="Patient non-compliant - refused access to services" Description="413310006" Sort_Order="8"/>
     <ReasonNotPerformed Field_Name="REASON NOT PERFORMED FOR BMI" Value="Patient non-compliant - refused intervention / support" Description="413311005" Sort_Order="9"/>
     <ReasonNotPerformed Field_Name="REASON NOT PERFORMED FOR BMI" Value="Patient non-compliant - refused service" Description="413312003" Sort_Order="10"/>
+	  <ReasonNotPerformed Field_Name="REASON NOT PERFORMED FOR BMI" Value="Not performed - Telemedicine" Description="111111111" Sort_Order="10"/>
     <ReasonNotPerformed Field_Name="REASON NOT PERFORMED FOR BP-SITTING SYS/DIA" Value="Procedure contraindicated" Description="183932001" Sort_Order="1"/>
     <ReasonNotPerformed Field_Name="REASON NOT PERFORMED FOR BP-SITTING SYS/DIA" Value="Medical contraindication" Description="397745006" Sort_Order="2"/>
     <ReasonNotPerformed Field_Name="REASON NOT PERFORMED FOR BP-SITTING SYS/DIA" Value="Patient non-compliant - refused service" Description="413312003" Sort_Order="3"/>
@@ -52,6 +53,7 @@
     <ReasonNotPerformed Field_Name="REASON NOT PERFORMED FOR BP-SITTING SYS/DIA" Value="Patient non-compliant - refused access to services" Description="413310006" Sort_Order="9"/>
     <ReasonNotPerformed Field_Name="REASON NOT PERFORMED FOR BP-SITTING SYS/DIA" Value="Patient non-compliant - refused intervention / support" Description="413311005" Sort_Order="10"/>
     <ReasonNotPerformed Field_Name="REASON NOT PERFORMED FOR BP-SITTING SYS/DIA" Value="Not Performed" Description="111111111" Sort_Order="11"/>
+	  <ReasonNotPerformed Field_Name="REASON NOT PERFORMED FOR BP-SITTING SYS/DIA" Value="Not performed - Telemedicine" Description="111111111" Sort_Order="10"/>
     <ReasonNotPerformed Field_Name="REASON NOT PERFORMED FOR BP-STANDING SYS/DIA" Value="Procedure contraindicated" Description="183932001" Sort_Order="1"/>
     <ReasonNotPerformed Field_Name="REASON NOT PERFORMED FOR BP-STANDING SYS/DIA" Value="Medical contraindication" Description="397745006" Sort_Order="2"/>
     <ReasonNotPerformed Field_Name="REASON NOT PERFORMED FOR BP-STANDING SYS/DIA" Value="Patient non-compliant - refused service" Description="413312003" Sort_Order="3"/>
@@ -107,6 +109,8 @@
     <ReasonNotPerformed Field_Name="REASON NOT PERFORMED FOR HEIGHT" Value="Patient non-compliant - refused service" Description="413312003" Sort_Order="10"/>
     <ReasonNotPerformed Field_Name="REASON NOT PERFORMED FOR HEIGHT" Value="Treatment not tolerated" Description="407563006" Sort_Order="3"/>
     <ReasonNotPerformed Field_Name="REASON NOT PERFORMED FOR HEIGHT" Value="Not Performed" Description="111111111" Sort_Order="7"/>
+
+	  <ReasonNotPerformed Field_Name="REASON NOT PERFORMED FOR HEIGHT" Value="Not performed - Telemedicine" Description="111111111" Sort_Order="10"/>
     <ReasonNotPerformed Field_Name="REASON NOT PERFORMED FOR WEIGHT" Value="Refusal of treatment by patient" Description="105480006" Sort_Order="1"/>
     <ReasonNotPerformed Field_Name="REASON NOT PERFORMED FOR WEIGHT" Value="Medical contraindication" Description="397745006" Sort_Order="2"/>    
     <ReasonNotPerformed Field_Name="REASON NOT PERFORMED FOR WEIGHT" Value="Procedure refused" Description="183944003" Sort_Order="4"/>
@@ -118,7 +122,9 @@
     <ReasonNotPerformed Field_Name="REASON NOT PERFORMED FOR WEIGHT" Value="Patient non-compliant - refused service" Description="413312003" Sort_Order="10"/>
     <ReasonNotPerformed Field_Name="REASON NOT PERFORMED FOR WEIGHT" Value="Wheelchair" Description="225612007" Sort_Order="7"/>
     <ReasonNotPerformed Field_Name="REASON NOT PERFORMED FOR WEIGHT" Value="Not Performed" Description="111111111" Sort_Order="8"/>
-        
+	  <ReasonNotPerformed Field_Name="REASON NOT PERFORMED FOR WEIGHT" Value="Not performed - Telemedicine" Description="111111111" Sort_Order="10"/>
+
+
   </ReasonNotPerformedList>
   <FollowupList>
     <Followup Field_Name="FOLLOWUP FOR BMI" Value="Giving encouragement to exercise" Description="304549008" Sort_Order="1"/>

@@ -510,8 +510,8 @@
                                                         </telerik:RadComboBox>
                                                     </td>
                                                     <td class="style20">
-                                                        <asp:Label ID="lblFacility" runat="server" Text="Facility Name*" Width="100%"  CssClass="Editabletxtbox"
-                                                            EnableViewState="false"  mand="Yes"></asp:Label>
+                                                        <asp:Label ID="lblFacility" runat="server" Text="Facility Name" Width="100%"  CssClass="Editabletxtbox"
+                                                            EnableViewState="false"></asp:Label>
                                                     </td>
                                                     <td class="style20">
                                                         <telerik:RadComboBox ID="cboFacilityName" runat="server" Height="150px"  CssClass="Editabletxtbox">
