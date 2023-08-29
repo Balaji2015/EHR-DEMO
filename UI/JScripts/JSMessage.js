@@ -1,10 +1,11 @@
 ﻿  function closeWindow()
+  {
+      //CAP-782 Cannot read properties of null
+     if(document.getElementById("IsLoginOpen")?.value!="YES")
      {
-     if(document.getElementById("IsLoginOpen").value!="YES")
-     {
-	self.close();
-	}
-     }
+	    self.close();
+	 }
+  }
      function SetIntervalTime(time)
      {
       self.setInterval(function(){closeWindow()},time);
