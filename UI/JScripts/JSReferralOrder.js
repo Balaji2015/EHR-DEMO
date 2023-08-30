@@ -523,7 +523,7 @@ function WindowClose() {
         oWindow = window.frameElement.radWindow;
     if (oWindow != null)
         oWindow.close();
-    window.top.location.href = "frmMyQueueNew.aspx";// BugID:42368
+    //window.top.location.href = "frmMyQueueNew.aspx";// BugID:42368
     
 }
 

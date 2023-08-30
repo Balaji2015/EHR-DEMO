@@ -299,6 +299,11 @@ function SaveClick(sender) {
             dataType: "json",
             success: function (data) {
                 if (sender.defaultValue == "Task Complete" || sender.defaultValue == "Send") {
+                    //Jira #CAP-889
+                    var sCheckAssigned = data.d;
+                    if ((sender.id == 'btnSaveCompletedMyQ' || sender.id == 'btnSaveSendMyQ') && sCheckAssigned == '"true"') {
+                        RemoveItem(document.URL, "MessageID");
+                    }
                     if (Result != undefined) {
                         if (false == Result.closed) {
 
@@ -370,10 +375,7 @@ function SaveClick(sender) {
             }
         });
     }
-//Jira #CAP-889
-    if (sender.id == 'btnSaveCompletedMyQ' || sender.id == 'btnSaveSendMyQ' ) {
-        RemoveItem(document.URL, "MessageID");
-    }
+
     { sessionStorage.setItem('StartLoading', 'false'); StopLoadFromPatChart(); }
     return false;
 }

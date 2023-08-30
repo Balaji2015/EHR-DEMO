@@ -677,6 +677,7 @@ namespace Acurus.Capella.UI
                 objPatNotes.Modified_By = ClientSession.UserName;
                 objPatNotes.Modified_Date_And_Time = UtilityManager.ConvertToUniversal();
             }
+            string sCheckAssigned = "true";
             if (Button == "Save")
             {
                 UtilityManager.inserttologgingtable(ClientSession.EncounterId.ToString(), ClientSession.HumanId.ToString(), ClientSession.UserName, ClientSession.PhysicianId.ToString(), "SaveMyQClick ManagerCall Save - updatePatientMessageAlone : Start", DateTime.Now, sGroup_ID_Log, "frmPatientCommunication");
@@ -693,7 +694,12 @@ namespace Acurus.Capella.UI
                 objPatNotesMngr.UpdatePatientMessage(objPatNotes, string.Empty, 1, AssignedTo, UtilityManager.ConvertToUniversal(), null);
                 UtilityManager.inserttologgingtable(ClientSession.EncounterId.ToString(), ClientSession.HumanId.ToString(), ClientSession.UserName, ClientSession.PhysicianId.ToString(), "SaveMyQClick ManagerCall Send - UpdatePatientMessage : End", DateTime.Now, sGroup_ID_Log, "frmPatientCommunication");
                 UtilityManager.inserttologgingtable(ClientSession.EncounterId.ToString(), ClientSession.HumanId.ToString(), ClientSession.UserName, ClientSession.PhysicianId.ToString(), "SaveMyQClick : End", DateTime.Now, sGroup_ID_Log, "frmPatientCommunication");
-                return "";
+                if (AssignedTo == ClientSession.UserName)
+                {
+                    sCheckAssigned = "false";
+                }
+                //return "";
+                return JsonConvert.SerializeObject(sCheckAssigned);
             }
             else if (Button == "Task Complete")
             {

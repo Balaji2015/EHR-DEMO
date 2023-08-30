@@ -2612,10 +2612,17 @@ function RemoveItem(URL, atrName) {
                 sURLAtr = "OrderSubmitId";
                 sTagAtr = "Order_ID";
             }
+            
             else {
                 sURLAtr = "OrderSubmitId";
                 sTagAtr = "Order_Submit_ID";
             }
+        }
+        else if (URL.indexOf("EditedOrderSubmitID") > -1
+            && URL.substring(URL.indexOf("EditedOrderSubmitID"), URL.length).split("&")[0].split("=")[1] != ''
+            && URL.substring(URL.indexOf("EditedOrderSubmitID"), URL.length).split("&")[0].split("=")[1] > 0) {
+            sURLAtr = "EditedOrderSubmitID";
+            sTagAtr = "Order_Submit_ID";
         }
     }
     else {
