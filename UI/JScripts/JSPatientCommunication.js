@@ -107,7 +107,9 @@ function btnePrescribe_Click() {
     obj.push("openingFrom=" + "Menu");
     obj.push("IsSentToRCopia=" + "Y");
     obj.push("LocalTime=" + document.getElementById(GetClientId('hdnLocalTime')).value);
-    Result = openNonModal("frmRCopiaWebBrowser.aspx", 535, 860, obj, 'ctl00_ModalWindow');
+    //Jira #CAP-903
+    //Result = openNonModal("frmRCopiaWebBrowser.aspx", 535, 860, obj, 'ctl00_ModalWindow');
+    Result = openModal("frmRCopiaWebBrowser.aspx", 535, 860, obj, 'ctl00_ModalWindow');
     $('#resultLoading').css("display", "none");
     if (Result == null)
         return false;
@@ -369,7 +371,7 @@ function SaveClick(sender) {
         });
     }
 //Jira #CAP-889
-    if (sender.id == 'btnSaveCompletedMyQ') {
+    if (sender.id == 'btnSaveCompletedMyQ' || sender.id == 'btnSaveSendMyQ' ) {
         RemoveItem(document.URL, "MessageID");
     }
     { sessionStorage.setItem('StartLoading', 'false'); StopLoadFromPatChart(); }

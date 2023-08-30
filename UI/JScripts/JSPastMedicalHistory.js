@@ -1887,7 +1887,8 @@ function NotesChanged(icon, List, id) {
 
                             $(this).css("display", "none");
                         })
-                        .insertAfter($("#" + targetControlValue + ".actcmpt"));
+                         //CAP-804 Syntax error, unrecognized expression
+                        .insertAfter($("#" + targetControlValue?.trim() + ".actcmpt"));
                 }
                // EnableSave();
 
@@ -1919,7 +1920,8 @@ function SelectedNotes(agrulist) {
     $('#btnSave')[0].disabled = false;
     EnableSave();
     var value = agrulist.split(",");
-    var sugglistval = $("#" + value[1] + ".actcmpt").val().trim();
+     //CAP-804 Syntax error, unrecognized expression
+    var sugglistval = $("#" + value[1]?.trim() + ".actcmpt").val().trim();
 
     if (sugglistval != " " && sugglistval != "") {
         var subsugglistval = sugglistval.split(",")
@@ -1931,11 +1933,11 @@ function SelectedNotes(agrulist) {
             }
         }
         if (flag == 0) {
-            $("#" + value[1] + ".actcmpt").val(sugglistval + "," + value[0]);
+            $("#" + value[1]?.trim() + ".actcmpt").val(sugglistval + "," + value[0]);
         }
     }
     else {
-        $("#" + value[1] + ".actcmpt").val(value[0]);
+        $("#" + value[1]?.trim() + ".actcmpt").val(value[0]);
     }
 
     EnableSave();

@@ -3255,12 +3255,22 @@ function OnSuccessSummaryBarEprescription(response) {
     var regex = /<BR\s*[\/]?>/gi;
 
     if (response != null) {
-
+        //CAP-795  Cannot read properties of null
+        if (top?.window?.document?.getElementById("ctl00_C5POBody_lblAllergies") != undefined && top?.window?.document?.getElementById("ctl00_C5POBody_lblAllergies") != null) {
         top.window.document.getElementById("ctl00_C5POBody_lblAllergies").innerHTML = response.d[0];
+        }
+        if (top?.window?.document?.getElementById("ctl00_C5POBody_lblCheifComplaints") != undefined && top?.window?.document?.getElementById("ctl00_C5POBody_lblCheifComplaints") != null) {
         top.window.document.getElementById("ctl00_C5POBody_lblCheifComplaints").innerHTML = response.d[1];
+        }
+        if (top?.window?.document?.getElementById("ctl00_C5POBody_lblProblemList") != undefined && top?.window?.document?.getElementById("ctl00_C5POBody_lblProblemList") != null) {
         top.window.document.getElementById("ctl00_C5POBody_lblProblemList").innerHTML = response.d[2];
+        }
+        if (top?.window?.document?.getElementById("ctl00_C5POBody_lblVitals") != undefined && top?.window?.document?.getElementById("ctl00_C5POBody_lblVitals") != null) {
         top.window.document.getElementById("ctl00_C5POBody_lblVitals").innerHTML = response.d[3];
+        }
+        if (top?.window?.document?.getElementById("ctl00_C5POBody_lblMedication") != undefined && top?.window?.document?.getElementById("ctl00_C5POBody_lblMedication") != null) {
         top.window.document.getElementById("ctl00_C5POBody_lblMedication").innerHTML = response.d[4];
+        }
         if (response.d[5].replace("Allergies :<br/>", "").length != 0)
             top.window.document.getElementById("Allergies_tooltp").innerText = response.d[5].replace(regex, "\n") + "\n";
         else

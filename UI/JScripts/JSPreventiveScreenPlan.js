@@ -713,6 +713,7 @@ function callweb(icon, List, id) {
                             document.getElementsByTagName("div")[i].hidden = true;
                         }
                     }
+                    //CAP-804 Syntax error, unrecognized expression
                     $("<div id='" + "sg" + targetControlValue + "'tabindex='0'/>").html(innerdiv)
                       .css({
                           top: pos.top + $(".actcmpt").height() + 5,
@@ -738,7 +739,7 @@ function callweb(icon, List, id) {
 
                             $(this).css("display", "none");
                         })
-                        .insertAfter($("#" + targetControlValue + ".actcmpt"));
+                        .insertAfter($("#" + targetControlValue?.trim() + ".actcmpt"));
                 }
                 EnableSave();
                  {sessionStorage.setItem('StartLoading', 'false');StopLoadFromPatChart();}
@@ -785,7 +786,8 @@ function fun(agrulist) {
     var control;
     var value = agrulist.split(",");
     if (value.length > 2) {
-        control = value[5];
+        //CAP-804 Syntax error, unrecognized expression
+        control = value[5]?.trim();
         //CAP-283 - null handling if valur is null or undefined
         sugglistval = ($("#" + control + ".actcmpt").val()??"").trim();
         var selectedvalue = value[0] + ',' + value[1] + ',' + value[2] + ',' + value[3] + ',' + value[4];
@@ -805,7 +807,8 @@ function fun(agrulist) {
         }
     }
     else {
-        sugglistval = $("#" + value[1] + ".actcmpt").val().trim();
+        //CAP-804 Syntax error, unrecognized expression
+        sugglistval = $("#" + value[1]?.trim() + ".actcmpt").val().trim();
         if (sugglistval != " " && sugglistval != "") {
             var subsugglistval = sugglistval.split(",")
             var len = subsugglistval.length;
@@ -816,11 +819,11 @@ function fun(agrulist) {
                 }
             }
             if (flag == 0) {
-                $("#" + value[1] + ".actcmpt").val(sugglistval + "," + value[0]);
+                $("#" + value[1]?.trim() + ".actcmpt").val(sugglistval + "," + value[0]);
             }
         }
         else {
-            $("#" + value[1] + ".actcmpt").val(value[0]);
+            $("#" + value[1]?.trim() + ".actcmpt").val(value[0]);
         }
     }
 }

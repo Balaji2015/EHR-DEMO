@@ -2607,8 +2607,15 @@ function RemoveItem(URL, atrName) {
         else if (URL.indexOf("OrderSubmitId") > -1
             && URL.substring(URL.indexOf("OrderSubmitId"), URL.length).split("&")[0].split("=")[1] != ''
             && URL.substring(URL.indexOf("OrderSubmitId"), URL.length).split("&")[0].split("=")[1] > 0) {
-            sURLAtr = "OrderSubmitId";
-            sTagAtr = "Order_Submit_ID";
+
+            if (URL.indexOf("frmReferralOrder") > -1) {
+                sURLAtr = "OrderSubmitId";
+                sTagAtr = "Order_ID";
+            }
+            else {
+                sURLAtr = "OrderSubmitId";
+                sTagAtr = "Order_Submit_ID";
+            }
         }
     }
     else {

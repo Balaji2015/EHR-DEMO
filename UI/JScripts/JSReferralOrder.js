@@ -510,6 +510,9 @@ function btnMoveToNextProcess_Clicked(sender, args) {
     var now = new Date();
     var utc = now.toUTCString();
     document.getElementById(GetClientId("hdnLocalTime")).value = utc;
+
+    //Jira #CAP-889
+    RemoveItem(document.URL, "Orders");
 }
 
 function WindowClose() {
