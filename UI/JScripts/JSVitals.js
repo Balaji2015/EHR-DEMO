@@ -2392,22 +2392,27 @@ function OnVitalsLoad() {
 
     if (sVisitType.toUpperCase() == "TELEMEDICINE") {
 
-        if (document.getElementById('Height').value == "" && document.getElementById('HeightInch').value == "") {
+        if (document.getElementById('Height').value == "" && document.getElementById('HeightInch').value == "" && document.getElementById('txtNotesHeight_txtDLC').value=="") {
             document.getElementById('txtNotesHeight_txtDLC').value = sDefaulttext;
-            $('#btnSaveVitals').prop('disabled', false);
+            EnableSave(true);
+
+           // $('#btnSaveVitals').prop('disabled', false);
         }
-        if (document.getElementById('Weight').value == "") {
+        if (document.getElementById('Weight').value == "" && document.getElementById('txtNotesWeight_txtDLC').value == "" ) {
             document.getElementById('txtNotesWeight_txtDLC').value = sDefaulttext;
-            $('#btnSaveVitals').prop('disabled', false);
+            EnableSave(true);
+          //  $('#btnSaveVitals').prop('disabled', false);
         }
-        if (document.getElementById('BMI').value == "") {
+        if (document.getElementById('BMI').value == "" && document.getElementById('txtNotesBMI_txtDLC').value=="") {
             document.getElementById('txtNotesBMI_txtDLC').value = sDefaulttext;
-            $('#btnSaveVitals').prop('disabled', false);
+          //  $('#btnSaveVitals').prop('disabled', false);
+            EnableSave(true);
 
         }
-        if (document.getElementById('BPSittingSysDia').value == "") {
+        if (document.getElementById('BPSittingSysDia').value == "" && document.getElementById('txtNotesBPSittingSysDia_txtDLC').value =="" ) {
             document.getElementById('txtNotesBPSittingSysDia_txtDLC').value = sDefaulttext;
-            $('#btnSaveVitals').prop('disabled', false);
+           // $('#btnSaveVitals').prop('disabled', false);
+            EnableSave(true);
         }
 
 
