@@ -302,6 +302,9 @@ function SaveClick(sender) {
                     if ((sender.id == 'btnSaveCompletedMyQ' || sender.id == 'btnSaveSendMyQ') && sCheckAssigned == '"true"') {
                         RemoveItem(document.URL, "MessageID");
                     }
+                    if (sender.id == 'btnSaveCompletedMyQ') {
+                        RemoveItem(document.URL, "MessageID");
+                    }
                     if (Result != undefined) {
                         if (false == Result.closed) {
 
