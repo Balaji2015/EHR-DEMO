@@ -217,6 +217,27 @@ namespace Acurus.Capella.UI
                                     PDFLOAD.Attributes.Add("src", "frmPrintPDF.aspx?pdf=" + SelectedItems.Value + "&SI=" + SelectedItems.Value.ToString() + "#zoom=100" + "&Location=" + Request["Location"].ToString());
                                     FaxCurrentFileName.Value = SelectedItems.Value;
                                 }
+                                //Cap - 854
+                                else if (SelectedItems.Value == "Cash Price List")
+                                {
+                                   XmlDocument xml_doc = new XmlDocument();
+                                    if (File.Exists(System.Web.Hosting.HostingEnvironment.ApplicationPhysicalPath + "ConfigXML\\staticlookup.xml"))
+                                    {
+                                        xml_doc.Load(System.Web.Hosting.HostingEnvironment.ApplicationPhysicalPath + "ConfigXML\\staticlookup.xml");
+                                        XmlNodeList xml_nodelst = xml_doc.GetElementsByTagName("HelpMenu");
+                                        foreach (XmlNode xml_node in xml_nodelst)
+                                        {
+                                            if (xml_node.Attributes.GetNamedItem("Name").Value != "" && xml_node.Attributes.GetNamedItem("Name").Value== "Cash Price List" && xml_node.Attributes.GetNamedItem("ReferenceLink").Value!="")
+                                            {
+                                                string sPath = xml_node.Attributes.GetNamedItem("ReferenceLink").Value;
+                                                PDFLOAD.Attributes.Add("src", "frmPrintPDF.aspx?pdf=" + Server.MapPath(sPath) + "&SI=" + SelectedItems.Value.ToString() + "#zoom=100" + "&Location=" + Request["Location"].ToString());
+                                                FaxCurrentFileName.Value = Server.MapPath(sPath);
+                                            }
+                                        }
+                                    }
+                                    btnSendfax.Visible = false;
+                                    btnprint.Visible = false;
+                                }
                                 else
                                 {
                                     PDFLOAD.Attributes.Add("src", "frmPrintPDF.aspx?pdf=" + Server.MapPath("Documents\\Physician_Specific_Documents\\Patient Education\\" + SelectedItems.Value + ".pdf") + "&SI=" + SelectedItems.Value.ToString() + "#zoom=100" + "&Location=" + Request["Location"].ToString());

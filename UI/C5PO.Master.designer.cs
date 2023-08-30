@@ -888,6 +888,15 @@ namespace Acurus.Capella.UI
         protected global::System.Web.UI.HtmlControls.HtmlGenericControl mnuReports_smnuPatientReminderReport;
 
         /// <summary>
+        /// mnuHelp control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlGenericControl mnuHelp;
+
+        /// <summary>
         /// mnuWindow control.
         /// </summary>
         /// <remarks>
@@ -906,22 +915,13 @@ namespace Acurus.Capella.UI
         protected global::System.Web.UI.HtmlControls.HtmlGenericControl ulwindow;
 
         /// <summary>
-        /// mnuHelp control.
+        /// mnuAbout control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.HtmlControls.HtmlGenericControl mnuHelp;
-
-        /// <summary>
-        /// mnuHelp_smnuAbout control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.HtmlControls.HtmlGenericControl mnuHelp_smnuAbout;
+        protected global::System.Web.UI.HtmlControls.HtmlGenericControl mnuAbout;
 
         /// <summary>
         /// lblLogged control.

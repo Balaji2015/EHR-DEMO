@@ -1663,6 +1663,16 @@ function OpenModal(data) {
 
 
     }
+    //Cap - 854
+    else if (itemValue == "Cash Price List") {
+        StartLoadingImage();
+        var obj = new Array();
+        obj.push("SI=" + "Cash Price List");
+        obj.push("Location=" + "STATIC");
+        var result = openModal("frmPrintPDF.aspx", 750, 900, obj, "ctl00_ModalWindow");
+
+    }
+
 
 }
 

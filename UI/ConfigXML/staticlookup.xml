@@ -1246,4 +1246,7 @@
     <ServiceTypeSelection Type="Physician Visit - Well" Code="PT" ServiceTypeCode="30" Payer="10051|87726"/>
     <ServiceTypeSelection Type="Physician Visit - Well" Code="UC" ServiceTypeCode="30" Payer="10051|940360524|62308|10353|87726"/>
   </ServiceTypeSelectionList>
+	<HelpMenuList>
+		<HelpMenu Name="Cash Price List" ReferenceLink="Documents\User_Manual\Cash Price List.pdf"/>
+	</HelpMenuList>
 </root>

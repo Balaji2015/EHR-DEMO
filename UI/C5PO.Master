@@ -1033,20 +1033,22 @@
                                             </ul>
                                         </div>
                                     </li>
+                                     <li runat="server" id="mnuHelp">
+                                        <a href="#" id="ancHelp">Help</a>
+                                        <div>
+                                            <ul>
+                                                <li runat="server" id="mnuHelp_smnuCashPriceList"><a href="#" onclick="OpenModal('Cash Price List');">Cash Price List</a></li>                                                
+                                            </ul>
+                                        </div>
+                                    </li>
                                     <li runat="server" id="mnuWindow"><a href="#" id="ancWindow">Window</a>
                                         <div>
                                             <ul runat="server" id="ulwindow" class="winClass"></ul>
                                         </div>
                                     </li>
-                                    <li runat="server" id="mnuHelp">
-                                        <a href="#" id="ancHelp">Help</a>
-                                        <div>
-                                            <ul>
-                                                <li runat="server" id="mnuHelp_smnuAbout"><a href="#" onclick="OpenModal('About');">About</a></li>
-                                                <%--<li runat="server" id="mnuHelp_smnuKnowledgeCenter"><a href="#" onclick="OpenModal('Knowledge Center');">MACRA - Knowledge Center</a></li>--%>
-                                            </ul>
-                                        </div>
-                                    </li>
+                                     <li runat="server" id="mnuAbout"><a href="#" onclick="OpenModal('About');">About</a>
+                                      </li>
+                                   
                                     <li style="position: absolute; right: 52px;">
                                         <asp:Label ID="lblLogged" runat="server" Style="font-weight: bold; font-style: italic;"></asp:Label>
                                     </li>
