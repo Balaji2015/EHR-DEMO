@@ -21,7 +21,7 @@ using System.Xml;
 using Newtonsoft.Json.Linq;
 using Newtonsoft.Json;
 using System.Web.Script.Serialization;
-
+using Org.BouncyCastle.Asn1.Ocsp;
 
 namespace Acurus.Capella.UI
 {
@@ -403,12 +403,11 @@ namespace Acurus.Capella.UI
                         string[] sHeader = sHeader_Test.Split(':');
                         string sddlTemplate = ddlTemplate.SelectedValue;
 
-                        if (sHeader[0] != string.Empty && sHeader[2] != string.Empty && sHeader[2].Trim() == sddlTemplate.Trim() && sHeader[0].Split('(').Length>0 && sHeader[0].Split('(')[0].Replace("@", "") != ClientSession.UserName)
+                        if (sHeader[0] != string.Empty && sHeader[2] != string.Empty && sHeader[2].Trim() == sddlTemplate.Trim() && sHeader[0].Split('(').Length>0 && sHeader[0].Split('(')[0].Replace("@", "") != ClientSession.UserName && Request["CheckVisible"] !=null && Request["CheckVisible"] == "false")
                         {
                             ScriptManager.RegisterStartupScript(this, this.Page.GetType(), "ErrmormsgMa", "DisplayErrorMessage('115069'); {sessionStorage.setItem('StartLoading', 'false');StopLoadFromPatChart();StopLoadingImage();}", true);
                             return;
                         }
-
                         if (sHeader[2] != string.Empty && sHeader[2].Trim() != sddlTemplate.Trim())
                         {
                             if (objResultMaster.Result_Review_Comments == string.Empty)

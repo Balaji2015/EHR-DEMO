@@ -1786,7 +1786,7 @@
 	<Message number="115066" Type="OK" Text="Result is already archived. So, It can not be deleted. Please contact support."></Message>
 	<Message number="115067" Type="OK" Text="This result has been signed and can not be deleted."></Message>
 	<Message number="115068" Type="OK" Text="There are multiple results indexed to this order, please contact support for assistance."></Message>
-	<Message number="115069" Type="OK" Text="You can not delete the Interpretation Note, as you are not the Author of the Interpretation note."></Message>
+	<Message number="115069" Type="OK" Text="You can not delete the Interpretation Note, as you are not the Author/Current Owner of the Interpretation note."></Message>
 
 	<Message number="4000029" Type="OK" Text="You have to Transfer the balance responsibility" />
 	<Message number="4000043" Type="OK" Text="Paid amount to patient {0} can not be greater than the amount remaining in the check $ {1}" />

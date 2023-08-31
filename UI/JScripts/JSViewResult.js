@@ -563,6 +563,13 @@ function OpenResultInterpretation() {
         notes = document.getElementById("txtProvNoteshistory").attributes[5].value.replaceAll("<br/>", "").replaceAll("&", "$|$|$|$|").replaceAll("#", "!^!^!^!^").replaceAll("+", "~|~|~|~|");
 
     }
+    let MoveButtonVisible;
+    if (document.getElementById("btnMoveToNextProcess") != null && document.getElementById("btnMoveToNextProcess").style.display != undefined && document.getElementById("btnMoveToNextProcess").style.display) {
+        MoveButtonVisible = "true";
+    }
+    else {
+        MoveButtonVisible = "false";
+    }
     //if (notes != '') {
     //    if (!notes.includes("Test Reviewed: ")) {
     //        if (!DisplayErrorMessage('115061')) {
@@ -583,7 +590,7 @@ function OpenResultInterpretation() {
     $(top.window.document).find("#TabModalResultInterpretationsTitle")[0].textContent = "Interpretation Notes";
     $(top.window.document).find("#TabmdldlgResultInterpretations")[0].style.width = "900px";
     $(top.window.document).find("#TabmdldlgResultInterpretations")[0].style.height = "875px";
-    var sPath = "frmResultInterpretation.aspx?HumanText=" + PatientInformation + "&FileText=" + document.getElementById('txtFileInformation').value.split("#").join("%23") + "&DocumentSubType=" + document.getElementById(GetClientId('hdnSubDocumentType')).value + "&ProviderNotes=" + JSON.stringify(notes) + "&ProviderNotesHistory=" + JSON.stringify(document.getElementById("txtProvNoteshistory").value) + "&CurrentProcess=" + document.getElementById("hdncurrentProcess").value; //+ "&ResultMasterID=" + document.getElementById(GetClientId('ResultMasterID')).value;
+    var sPath = "frmResultInterpretation.aspx?HumanText=" + PatientInformation + "&FileText=" + document.getElementById('txtFileInformation').value.split("#").join("%23") + "&DocumentSubType=" + document.getElementById(GetClientId('hdnSubDocumentType')).value + "&ProviderNotes=" + JSON.stringify(notes) + "&ProviderNotesHistory=" + JSON.stringify(document.getElementById("txtProvNoteshistory").value) + "&CurrentProcess=" + document.getElementById("hdncurrentProcess").value + "&CheckVisible=" + MoveButtonVisible; //+ "&ResultMasterID=" + document.getElementById(GetClientId('ResultMasterID')).value;
     $(top.window.document).find("#TabResultInterpretationsFrame")[0].style.height = "635px";
     $(top.window.document).find("#TabResultInterpretationsFrame")[0].contentDocument.location.href = sPath;
 
