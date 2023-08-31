@@ -627,7 +627,8 @@ function MyQclick() {
                 var obj = new Array();
                 openRadWindow("frmIndexing.aspx?ScanId=" + ScanID + "&CurrentZone=" + utc, 700, 1225, obj, 'IndexWindow');
                 $find('IndexWindow').set_behaviors(Telerik.Web.UI.WindowBehaviors.None);
-                $find('IndexWindow').add_close(function () { $('#RefreshMyQ').click(); });
+                //$find('IndexWindow').add_close(function () { $('#RefreshMyQ').click(); });
+                $find('IndexWindow').add_close(OnClientCloseWindow);
                 return false;
             }
         }

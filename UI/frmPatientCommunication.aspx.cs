@@ -42,9 +42,10 @@ namespace Acurus.Capella.UI
             lblassignedto.ForeColor = Color.Red;
             lblassignedto.Text = "Assigned To*";
             ulong ulHumanID = 0;
-            if (Request["AccountNum"] != null)
+            //CAP-809
+            if (Request["AccountNum"] != null && Request["AccountNum"] != "")
             {
-                ulHumanID = Convert.ToUInt64(Request["AccountNum"]);
+                ulong.TryParse(Request["AccountNum"], out ulHumanID);
             }
             else
             {

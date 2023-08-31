@@ -711,7 +711,12 @@ function btnClose_Clicked() {
                         document.getElementById("btnSave").click();
                     else
                         document.getElementById("btnMoveToNextProcess").click();
-                    "" != $("#hdnPageState").val() && (DisplayErrorMessage("1007001"), self.close())
+                    //"" != $("#hdnPageState").val() && (DisplayErrorMessage("1007001"), self.close())
+                    if ($("#hdnPageState").val()!="" && DisplayErrorMessage("1007001")) {
+                        OnClientCloseWindow();
+                        self.close()
+                    }
+
                     return false;
                 },
                 "No": function () {

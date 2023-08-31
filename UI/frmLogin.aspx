@@ -11,7 +11,7 @@
     <link href="CSS/font-awesome.4.4.0.css" rel="stylesheet" />
 
     <script src="JScripts/jquery-1.11.3.min.js" type="text/javascript"></script>
-   
+
     <%--<script type="text/javascript">
         //$("#btnOk").click(function (e) {
         //    return true;
@@ -609,7 +609,7 @@
                 <script src="JScripts/jsErrorMessage.js?version=<%=ConfigurationManager.AppSettings["VersionConfiguration"]%>"></script>
                 <script src="JScripts/JSAvoidRightClick.js?version=<%=ConfigurationManager.AppSettings["VersionConfiguration"].ToString().Replace("Capella - ","") %>" type="text/javascript"></script>        
                  <%--CAP-413: Restrict the Capella EHR access in multiple tabs --%>
-                <script src="JScripts/JsRestrictMultipleTab.js?version=<%=ConfigurationManager.AppSettings["VersionConfiguration"].ToString().Replace("Capella - ","") %>" type="text/javascript"></script>
+                <%--<script src="JScripts/JsRestrictMultipleTab.js?version=<%=ConfigurationManager.AppSettings["VersionConfiguration"].ToString().Replace("Capella - ","") %>" type="text/javascript"></script>--%>
             </asp:PlaceHolder>
         </div>
 
