@@ -284,7 +284,7 @@ function HandlerAngularjsError(evt) {
             //alert("Something went wrong! \n There seems to be a problem with this page. Please retry and if the problem persists, contact Capella Support with patient and page details.");
         }
         //Jira #CAP-191
-        else if (evt.error.stack.indexOf("Telerik.Web.UI.WebResource.axd") > -1) {
+        else if (evt.error != undefined && evt.error.stack != undefined && evt.error.stack.indexOf("Telerik.Web.UI.WebResource.axd") > -1) {
             if (top.window.document.getElementById('ctl00_Loading') != null)
                 top.window.document.getElementById('ctl00_Loading').style.display = "none";
             if (top.window.document.getElementById('divLoading') != null)
@@ -1650,7 +1650,10 @@ function LoadNotification(Value) {
 
     if ((window.location.href.indexOf("frmAppointments.aspx") == -1) && (window.parent == null || (window.parent.location.href.indexOf("frmAppointments.aspx") == -1))) {
         if (window.parent.location.href.indexOf("frmMyQueueNew.aspx") == -1 || window.location.href.indexOf("frmMyQueueNew.aspx") == -1) {
-            $(top.window.document).find("#divNotifyPullUp")[0].style.display = "block";//BugID:48010
+            //Jira #CAP-772 - check the undefind and null to the $(top.window.document).find("#divNotifyPullUp")[0]
+            if ($(top.window.document).find("#divNotifyPullUp")[0] != undefined && $(top.window.document).find("#divNotifyPullUp")[0] != null) {
+                $(top.window.document).find("#divNotifyPullUp")[0].style.display = "block";//BugID:48010
+            }
             $(top.window.document).find("#divNotify")[0].style.display = "block";
             if ($('#notificationpopup')[0] != null) {
                 $('#notificationpopup')[0].innerText = "NOTIFICATION : Loading...";
@@ -1763,7 +1766,9 @@ function LoadNotification(Value) {
 
                     { sessionStorage.setItem('StartLoading', 'false'); StopLoadFromPatChart(); }
                     var NotificationCount = 0;
-                    if (data.d.split("~~~")[1].split("~*~")[0] != undefined && data.d.split("~~~")[1].split("~*~")[0].trim != "") {
+                    //Jira #CAP-772 - check the undefind and null to the ata.d.split("~~~")[1]
+                    //if (data.d.split("~~~")[1].split("~*~")[0] != undefined && data.d.split("~~~")[1].split("~*~")[0].trim != "") {
+                    if (data.d.split("~~~") != undefined && data.d.split("~~~")[1] != undefined && data.d.split("~~~")[1] != null && data.d.split("~~~")[1].split("~*~") != undefined && data.d.split("~~~")[1].split("~*~") != null && data.d.split("~~~")[1].split("~*~")[0] != undefined && data.d.split("~~~")[1].split("~*~")[0] != null && data.d.split("~~~")[1].split("~*~")[0].trim != "") {
                         NotificationCount = data.d.split("~~~")[1].split("~*~")[0];
                         var Notification_Content = NotificationText.split('~@ ');
                         var divNotify = $(top.window.document).find("#innerContent");
@@ -2433,7 +2438,10 @@ function ScriptErrorLogEntry(sErrorMessage, sErrorLineNo, sErrorColumnNo, sError
 }
 
 function ToolStripAlert(message) {
-    $(top.window.document).find("#CheckAlert")[0].style.display = "block";
+    //Jira #CAP-772 - check the undefind and null to the $(top.window.document).find("#CheckAlert")[0]
+    if ($(top.window.document).find("#CheckAlert") != undefined && $(top.window.document).find("#CheckAlert")!=null $(top.window.document).find("#CheckAlert")[0] != undefined && $(top.window.document).find("#CheckAlert")[0] != null) {
+        $(top.window.document).find("#CheckAlert")[0].style.display = "block";
+    }
     $(top.window.document).find("#innerMsgText")[0].innerText = message;
 
     setTimeout(function () { ToolStripAlertHide(); }, 5000);

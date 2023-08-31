@@ -516,7 +516,9 @@ function licstboxclick(e) {
                 if (e.toUpperCase().indexOf("HEIGHT") > -1 || e.toUpperCase().indexOf("WEIGHT") > -1) {
                     if (document.getElementById(ID).options[index] != undefined)
                         var txtValue = document.getElementById(ID).options[index].textContent;
-                    if (document.getElementById(ID).selectedOptions[0].attributes.length > 0) {
+                    //Jira #CAP-770 
+                    //if (document.getElementById(ID).selectedOptions[0].attributes.length > 0) {
+                    if (document.getElementById(ID) != undefined && document.getElementById(ID)!= null && document.getElementById(ID).selectedOptions[0] != undefined && document.getElementById(ID).selectedOptions[0] != null && document.getElementById(ID).selectedOptions[0].attributes.length > 0) {
                         var txtboxnew = "";
                         if (document.getElementById('txtNotesBMI_txtDLC') != undefined) {
                             txtboxnew = document.getElementById('txtNotesBMI_txtDLC').value
@@ -546,7 +548,12 @@ function licstboxclick(e) {
             }
             if (ID1 == "ctmDLCChief_Complaints_txtDLC") {
                 var txtboxHPI = document.getElementById("ctmDLCHPI_Notes_txtDLC").value;
-                var HPItxtValue = document.getElementById(ID).options[index].value;
+                //var HPItxtValue = document.getElementById(ID).options[index].value;
+                //Jira #CAP-770 check undefind for document.getElementById(ID).options[index]
+                var HPItxtValue = '';
+                if (document.getElementById(ID) != undefined && document.getElementById(ID) != null && document.getElementById(ID).options[index] != undefined && document.getElementById(ID).options[index] != null) {
+                    HPItxtValue = document.getElementById(ID).options[index].value;
+                }
                 if (txtboxHPI == '' && txtboxHPI.indexOf(HPItxtValue) == -1) {
                     txtboxHPI = HPItxtValue;
                     document.getElementById("ctmDLCHPI_Notes_txtDLC").value = txtboxHPI;

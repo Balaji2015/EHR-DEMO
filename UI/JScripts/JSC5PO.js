@@ -77,7 +77,12 @@ function OpenModal(data) {
         var dvdialog;
         var vassessment = sessionStorage.getItem("TabAssesment")
         if (vassessment == "ASSESSMENT") {
-            var test = $($(top.window.document).find('#ctl00_C5POBody_EncounterContainer')[0].contentDocument).find('.clsIframe').contents()[7].all.namedItem('btnSave');
+            //Jira #CAP-769
+            //var test = $($(top.window.document).find('#ctl00_C5POBody_EncounterContainer')[0].contentDocument).find('.clsIframe').contents()[7].all.namedItem('btnSave');
+            var test = null;
+            if ($(top.window.document).find('#ctl00_C5POBody_EncounterContainer') != undefined && $(top.window.document).find('#ctl00_C5POBody_EncounterContainer') != null && $(top.window.document).find('#ctl00_C5POBody_EncounterContainer').length > 0) {
+                test = $($(top.window.document).find('#ctl00_C5POBody_EncounterContainer')[0].contentDocument).find('.clsIframe').contents()[7].all.namedItem('btnSave');
+            }
             if (test != null && test != undefined && test.disabled == false) {
                 $(top.window.document).find("body").append("<div id='dvdialog' style='min-height: 65px !important; width: auto; max-height: none; height: auto; display: none;'>" +
                     "<p style='font-family: Verdana,Arial,sans-serif; font-size: 13.5px;'>There are unsaved changes.Do you want to save them?</p></div>");
@@ -3320,7 +3325,7 @@ function redirectToCCEprescription() {
         //$("#ctl00_C5POBody_dvCheck li .colored").removeClass("colored");       
     }
     else { //for tab level
-        if ($($(window.top.document).find('iframe[id=ctl00_C5POBody_EncounterContainer]')[0].contentDocument).find("ul li a") != null && $($(window.top.document).find('iframe[id=ctl00_C5POBody_EncounterContainer]')[0].contentDocument).find("ul li a") != undefined && $($(window.top.document).find('iframe[id=ctl00_C5POBody_EncounterContainer]')[0].contentDocument).find("ul li a")[0] != null && $($(window.top.document).find('iframe[id=ctl00_C5POBody_EncounterContainer]')[0].contentDocument).find("ul li a")[0] != undefined)
+        if ($(window.top.document).find('iframe[id=ctl00_C5POBody_EncounterContainer]')[0] != undefined && $(window.top.document).find('iframe[id=ctl00_C5POBody_EncounterContainer]')[0].contentDocument != undefined &&  $($(window.top.document).find('iframe[id=ctl00_C5POBody_EncounterContainer]')[0].contentDocument).find("ul li a") != null && $($(window.top.document).find('iframe[id=ctl00_C5POBody_EncounterContainer]')[0].contentDocument).find("ul li a") != undefined && $($(window.top.document).find('iframe[id=ctl00_C5POBody_EncounterContainer]')[0].contentDocument).find("ul li a")[0] != null && $($(window.top.document).find('iframe[id=ctl00_C5POBody_EncounterContainer]')[0].contentDocument).find("ul li a")[0] != undefined)
             $($(window.top.document).find('iframe[id=ctl00_C5POBody_EncounterContainer]')[0].contentDocument).find("ul li a")[0].click();
     }
 }

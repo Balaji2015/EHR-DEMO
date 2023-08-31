@@ -306,6 +306,8 @@ $('.nav-tabs a').on('shown.bs.tab', function (event) {
     if (window.parent.parent.parent.parent.theForm.ctl00_C5POBody_hdnIsSaveEnable.value == "true" && localStorage.getItem("bSave") == "false") {
             { sessionStorage.setItem('StartLoading', 'true'); StartLoadFromPatChart(); }
             //$(dvdialog).dialog("close");
+        //Jira #CAP-771 - check the PrevTab[0] is undefind or null
+        if (PrevTab[0] != undefined && PrevTab[0] != null) {
             if (PrevTab[0].innerText == "General") {
                 event.preventDefault();
                 event.stopPropagation();
@@ -742,7 +744,7 @@ $('.nav-tabs a').on('shown.bs.tab', function (event) {
                     }
                 }, 1000);
             }
-                //start
+            //start
             else if (PrevTab[0].innerText == "Pain Assessment") {
                 event.preventDefault();
                 event.stopPropagation();
@@ -1244,6 +1246,7 @@ $('.nav-tabs a').on('shown.bs.tab', function (event) {
                     }
                 }, 1000);
             }
+        }
             return;
         // {sessionStorage.setItem('StartLoading', 'false');StopLoadFromPatChart();}
         //event.preventDefault();

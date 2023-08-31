@@ -3009,9 +3009,13 @@ if ($("#ctl00_C5POBody_txtSelectinsured").length) {
                 .attr({ "data-value": item.value, "data-val": item.val }).css({ "border-bottom": "1px solid #ccc", "font-size": "11px", "margin-bottom": "3px", "padding-bottom": "3px" })
                 .append(human_tocken)
                 .appendTo(ul);
-            if (HumanDetails.Account_Status.toUpperCase() == "INACTIVE")
+            //Jira #CAP-774 - Check the undefind and null to the HumanDetails.Account_Status
+            //if (HumanDetails.Account_Status.toUpperCase() == "INACTIVE")
+            if (HumanDetails.Account_Status != undefined && HumanDetails.Account_Status != null && HumanDetails.Account_Status.toUpperCase() == "INACTIVE")
                 list_item.addClass("inactive");
-            if (HumanDetails.Status.toUpperCase() == "DECEASED")
+            //Jira #CAP-774 - Check the undefind and null to the HumanDetails.Status
+            //if (HumanDetails.Status.toUpperCase() == "DECEASED")
+            if (HumanDetails.Status != undefined && HumanDetails.Status != null && HumanDetails.Status.toUpperCase() == "DECEASED")
                 list_item.addClass("deceased");
             return list_item;
         }

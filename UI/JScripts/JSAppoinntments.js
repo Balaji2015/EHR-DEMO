@@ -8,7 +8,9 @@ var SelectedDate;
 
 //METHODS--------------------------
 window.top.setInterval(function () {
-    if ($(top.window.document).find("#CheckAlert") != undefined)
+    //Jira #CAP-768
+    //if ($(top.window.document).find("#CheckAlert") != undefined)
+    if ($(top.window.document).find("#CheckAlert") != undefined && $(top.window.document).find("#CheckAlert") != null && $(top.window.document).find("#CheckAlert").length > 0 && $(top.window.document).find("#CheckAlert")[0] != undefined && $(top.window.document).find("#CheckAlert")[0] != null)
         $(top.window.document).find("#CheckAlert")[0].style.display = "none";
 }, 6500);
 function showTime() {
@@ -1133,8 +1135,10 @@ function btnToday_Clicked() {
     //CAP-775 Cannot read properties of null - jsAppointments
     var selected_date = $find('ctl00_C5POBody_Calendar1')?.get_selectedDates();
     var today = new Date();
-    //CAP-289 - Cannot read properties of undefined 
-    if (selected_date != undefined && selected_date != null && (selected_date[0][0] != today.getFullYear() || selected_date[0][1] != (today.getMonth() + 1) || selected_date[0][2] != today.getDate())) {
+    //Jira #CAP-768
+    ////CAP-289 - Cannot read properties of undefined
+    //if (selected_date != undefined && selected_date != null && (selected_date[0][0] != today.getFullYear() || selected_date[0][1] != (today.getMonth() + 1) || selected_date[0][2] != today.getDate())) {
+    if (selected_date != undefined && selected_date != null && selected_date > 0 && (selected_date[0][0] != today.getFullYear() || selected_date[0][1] != (today.getMonth() + 1) || selected_date[0][2] != today.getDate())) {
         { sessionStorage.setItem('StartLoading', 'true'); StartLoadFromPatChart(); }
         return true;
     }
