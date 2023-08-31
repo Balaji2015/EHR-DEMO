@@ -7290,8 +7290,15 @@ namespace Acurus.Capella.UI
             {
                 if (grdExistingPolicies.SelectedRow.Cells[19].Text == "ELECTRONIC" && grdExistingPolicies.SelectedRow.Cells[19].Text != "null")
                 {
-
-                    cboVerificationType.SelectedValue = "ELECTRONIC";
+                    //CAP-828
+                    if (cboVerificationType.Items.FindByValue("ELECTRONIC") != null)
+                    {
+                        cboVerificationType.SelectedValue = "ELECTRONIC";
+                    }
+                    else
+                    {
+                        ScriptManager.RegisterStartupScript(this, this.Page.GetType(), "", "DisplayErrorMessage('1011201');", true);
+                    }
                 }
                 else
                 {
