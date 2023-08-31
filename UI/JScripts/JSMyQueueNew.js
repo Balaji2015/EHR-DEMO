@@ -374,6 +374,10 @@ $(document).ready(function () {
         return false;
     });
     $('#Processenctr').click(function () {
+
+        //Jira #CAP-889
+        sessionStorage.setItem('MyQRemoveIdList', '');
+
         if ($('#MyQTable').children().find('.highlight').length > 0 && $('#MyQTable').children().find('.highlight')[0].classList.length == 1) {
             var currentProcessscnt = 0;
             $('#MyQTable tr.highlight').each(function (i, row) {
