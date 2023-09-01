@@ -2604,13 +2604,13 @@ function RemoveItem(URL, atrName) {
             && URL.substring(URL.indexOf("ResultMasterID"), URL.length).split("&")[0].split("=")[1] != ''
             && URL.substring(URL.indexOf("ResultMasterID"), URL.length).split("&")[0].split("=")[1] > 0) {
             sURLAtr = "ResultMasterID";
-            sTagAtr = "ResultMasterID";
+            sTagAtr = "19";
         }
         else if (URL.indexOf("File_Ref_ID") > -1
             && URL.substring(URL.indexOf("File_Ref_ID"), URL.length).split("&")[0].split("=")[1] != ''
             && URL.substring(URL.indexOf("File_Ref_ID"), URL.length).split("&")[0].split("=")[1] > 0) {
             sURLAtr = "File_Ref_ID";
-            sTagAtr = "File_Reference_No";
+            sTagAtr = "20";
         }
         else if (URL.indexOf("OrderSubmitId") > -1
             && URL.substring(URL.indexOf("OrderSubmitId"), URL.length).split("&")[0].split("=")[1] != ''
@@ -2618,19 +2618,19 @@ function RemoveItem(URL, atrName) {
 
             if (URL.indexOf("frmReferralOrder") > -1) {
                 sURLAtr = "OrderSubmitId";
-                sTagAtr = "Order_ID";
+                sTagAtr = "13";
             }
             
             else {
                 sURLAtr = "OrderSubmitId";
-                sTagAtr = "Order_Submit_ID";
+                sTagAtr = "17";
             }
         }
         else if (URL.indexOf("EditedOrderSubmitID") > -1
             && URL.substring(URL.indexOf("EditedOrderSubmitID"), URL.length).split("&")[0].split("=")[1] != ''
             && URL.substring(URL.indexOf("EditedOrderSubmitID"), URL.length).split("&")[0].split("=")[1] > 0) {
             sURLAtr = "EditedOrderSubmitID";
-            sTagAtr = "Order_Submit_ID";
+            sTagAtr = "17";
         }
     }
     else {

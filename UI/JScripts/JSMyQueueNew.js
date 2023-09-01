@@ -832,7 +832,8 @@ function OnClientCloseWindow() {
         var removearry = removeList.split(",");
         for (let i = 0; i < removearry.length; i++) {
             if (btnid.indexOf("Order") > -1) {
-                $('#MyQTable tr td#' + removearry[i].split("~")[1] + ':contains(' + removearry[i].split("~")[0] + ')').parent().remove();
+                //$('#MyQTable tr td#' + removearry[i].split("~")[1] + ':contains(' + removearry[i].split("~")[0] + ')').parent().remove();
+                $('#MyQTable tr').find('td:eq(' + removearry[i].split("~")[1] + '):contains(' + removearry[i].split("~")[0] + ')').parent().remove();
             }
             else if (btnid == "btnMyTask") {
                 $('#MyQTable tr').find('td:eq(8):contains(' + removearry[i].split("~")[0] + ')').parent().remove();
