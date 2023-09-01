@@ -1396,7 +1396,7 @@ function btnClose_Clicked() {
          else
          {
              //Jira #CAP-773 - Check undefind and null to the $(top.window.document).find("iframe")[0]
-             if ($(top.window.document).find("iframe") != undefined && $(top.window.document).find("iframe") != null $(top.window.document).find("iframe")[0] != undefined && $(top.window.document).find("iframe")[0] != null) {
+             if ($(top.window.document).find("iframe") != undefined && $(top.window.document).find("iframe") != null && $(top.window.document).find("iframe")[0] != undefined && $(top.window.document).find("iframe")[0] != null) {
                  if (!$($(top.window.document).find("iframe")[0].contentDocument).find('body').is('#dvdialogMenu'))
                      $($(top.window.document).find("iframe")[0].contentDocument).find('body').append('<div id="dvdialogMenu" style="min-height: 65px !important; width: auto; max-height: none; height: auto; display: none;">' +
                          '<p style="font-family: Verdana,Arial,sans-serif; font-size: 13.5px;">There are unsaved changes.Do you want to save the them?</p></div>');
