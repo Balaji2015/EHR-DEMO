@@ -53,7 +53,7 @@ $(document).ready(function () {
     }
   
     if ($("#txtProviderSearch").length > 0) {
-        $("#txtProviderSearch")?.autocomplete({
+        $("#txtProviderSearch").autocomplete({
         source: function (request, response) {
             if ($("#txtProviderSearch").val().trim().length > 2) {
                 if (intProviderlen == 0) {
