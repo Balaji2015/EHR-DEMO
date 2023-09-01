@@ -384,8 +384,8 @@ namespace Acurus.Capella.UI
                     ScriptManager.RegisterStartupScript(this, this.Page.GetType(), "ErrmormsgMa", "DisplayErrorMessage('115057'); {sessionStorage.setItem('StartLoading', 'false');StopLoadFromPatChart();StopLoadingImage();}", true);
                     return;
                 }
-            }             
-            
+            }
+
             if (objResultMaster != null && objResultMaster.Id != 0)
             {
                 objResultMaster.Modified_By = ClientSession.UserName;
@@ -403,7 +403,7 @@ namespace Acurus.Capella.UI
                         string[] sHeader = sHeader_Test.Split(':');
                         string sddlTemplate = ddlTemplate.SelectedValue;
 
-                        if (sHeader[0] != string.Empty && sHeader[2] != string.Empty && sHeader[2].Trim() == sddlTemplate.Trim() && sHeader[0].Split('(').Length>0 && sHeader[0].Split('(')[0].Replace("@", "") != ClientSession.UserName && Request["CheckVisible"] !=null && Request["CheckVisible"] == "false")
+                        if (sHeader[0] != string.Empty && sHeader[2] != string.Empty && sHeader[2].Trim() == sddlTemplate.Trim() && sHeader[0].Split('(').Length > 0 && sHeader[0].Split('(')[0].Replace("@", "") != ClientSession.UserName && Request["CheckVisible"] != null && Request["CheckVisible"] == "false")
                         {
                             ScriptManager.RegisterStartupScript(this, this.Page.GetType(), "ErrmormsgMa", "DisplayErrorMessage('115069'); {sessionStorage.setItem('StartLoading', 'false');StopLoadFromPatChart();StopLoadingImage();}", true);
                             return;
@@ -436,6 +436,16 @@ namespace Acurus.Capella.UI
 
                 ScriptManager.RegisterStartupScript(this, this.Page.GetType(), "ErrmormsgMa", "DeletedInterpretationNotes();", true);
 
+            }
+            //Jira #CAP-925
+            else
+            {
+                if (Templatesource != null && (Templatesource.ContainsKey(ddlTemplate.Items[ddlTemplate.SelectedIndex].Text.ToString())))
+                {
+                    txtSummary.Text = Templatesource[ddlTemplate.Items[ddlTemplate.SelectedIndex].Text];
+                }
+
+                ScriptManager.RegisterStartupScript(this, this.Page.GetType(), "ErrmormsgMa", "DeletedInterpretationNotes();", true);
             }
 
 

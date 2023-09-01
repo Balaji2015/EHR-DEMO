@@ -652,7 +652,11 @@ function OpenResultInterpretation() {
 
             if ($(top.window.document).find("#txtDeletedInterpretationsInformation")[0].value != null &&
                 $(top.window.document).find("#txtDeletedInterpretationsInformation")[0].value != undefined
-                && $(top.window.document).find("#txtDeletedInterpretationsInformation")[0].value != "") {
+                && $(top.window.document).find("#txtDeletedInterpretationsInformation")[0].value != ""
+                && document.getElementById('txtProvNoteshistory').value != undefined
+                && document.getElementById('txtProvNoteshistory').value != null
+                && document.getElementById('txtProvNoteshistory').getAttribute("interpretationtext") != undefined 
+                && document.getElementById('txtProvNoteshistory').getAttribute("interpretationtext") != null) {
 
                 var n = JSON.parse($(top.window.document).find("#txtDeletedInterpretationsInformation")[0].value);
                 //document.getElementById(GetClientId("hdnResultInterpretations")).value = n;
