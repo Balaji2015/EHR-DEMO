@@ -55,14 +55,7 @@ namespace Acurus.Capella.UI
                 {
                     txtFileInformation.Value = Request["FileText"].ToString();
                 }
-                //Cap - 686
-                if (Request["CurrentProcess"] != null)
-                {
-                    if (Request["CurrentProcess"].ToString() == "BILLING_WAIT")
-                    {
-                        btnDelete.Visible = false;
-                    }
-                }
+               
                 txtSummary.Attributes.Add("onkeydown", "insertTab(this,event);");
                 txtSummary.Attributes.Add("onfocus", "focusTab(this,event);");
                 lstTestOrdered = staticMngr.getStaticLookupByFieldName("RESULT INTERPRETATION TEST FOR " + Request["DocumentSubType"].ToString());
@@ -333,6 +326,15 @@ namespace Acurus.Capella.UI
             ResultMasterManager rsManager = new ResultMasterManager();
             ulong ulFileManagementIndexID = 0;
             ulong resMasID = 0;
+
+            if (Request["CurrentProcess"] != null)
+            {
+                if (Request["CurrentProcess"].ToString() == "BILLING_WAIT")
+                {
+                    ScriptManager.RegisterStartupScript(this, this.Page.GetType(), "ErrmormsgMa", "DisplayErrorMessage('115070'); {sessionStorage.setItem('StartLoading', 'false');StopLoadFromPatChart();StopLoadingImage();}", true);
+                    return;
+                }
+            }
 
             if (Session["Order_Id"] != null && Session["Order_Id"] != string.Empty && Convert.ToUInt32(Session["Order_Id"]) != 0)
             {
