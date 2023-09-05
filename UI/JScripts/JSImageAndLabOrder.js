@@ -533,6 +533,8 @@ function MoveToNextProcessClicked(sender, args) {
     }
     else
     {
+        //Jira #CAP-889
+        RemoveItem(document.URL, "Orders");
         return true;
     }
 
