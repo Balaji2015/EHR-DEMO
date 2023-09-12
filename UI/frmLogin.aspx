@@ -608,8 +608,7 @@
                 <script src="JScripts/jsLogin.js?version=<%=ConfigurationManager.AppSettings["VersionConfiguration"]%>"></script>
                 <script src="JScripts/jsErrorMessage.js?version=<%=ConfigurationManager.AppSettings["VersionConfiguration"]%>"></script>
                 <script src="JScripts/JSAvoidRightClick.js?version=<%=ConfigurationManager.AppSettings["VersionConfiguration"].ToString().Replace("Capella - ","") %>" type="text/javascript"></script>        
-                 <%--CAP-413: Restrict the Capella EHR access in multiple tabs --%>
-                <script src="JScripts/JsRestrictMultipleTab.js?version=<%=ConfigurationManager.AppSettings["VersionConfiguration"].ToString().Replace("Capella - ","") %>" type="text/javascript"></script>
+                 <%-- <script src="JScripts/JsRestrictMultipleTab.js?version=<%=ConfigurationManager.AppSettings["VersionConfiguration"].ToString().Replace("Capella - ","") %>" type="text/javascript"></script>--%>
             </asp:PlaceHolder>
         </div>
 
