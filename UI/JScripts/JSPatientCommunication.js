@@ -10,8 +10,8 @@ function btnpatientChart_Click() {
     }
     //Result = openNonModal("frmPatientchart.aspx?HumanID=" + humanid + "&from=openpatientchart&ScreenMode=Menu&openingfrom=Menu", 780, 1250, obj);//BugID:45892
     //Cap - 891
-    /*Result = openNonModal("frmPatientchart.aspx?HumanID=" + humanid + "&from=viewresult&ScreenMode=Menu&openingfrom=Menu", 780, 1250, obj);*///BugID:45892
-    Result = openNonModal("frmPatientchart.aspx?HumanID=" + humanid + "&ScreenMode=Menu&openingfrom=Menu&from=viewresult", 780, 1250, obj);
+    Result = openNonModal("frmPatientchart.aspx?HumanID=" + humanid + "&from=viewresult&ScreenMode=Menu&openingfrom=Menu", 780, 1250, obj);//BugID:45892
+    //Result = openNonModal("frmPatientchart.aspx?HumanID=" + humanid + "&ScreenMode=Menu&openingfrom=Menu&from=viewresult", 780, 1250, obj);
 
     $('#resultLoading').css("display", "none");
     if (Result == null)

@@ -177,10 +177,7 @@ namespace Acurus.Capella.UI.WebServices
             }
             
             FillEandMCoding eandmDTO = EandMCodingMngr.LoadEandMCodingNew(Convert.ToUInt64(ClientSession.EncounterId), Convert.ToUInt64(ClientSession.HumanId), EncRcrdDOS, out bSaveEnable, Is_CMG_Ancillary);//added for CMG Ancilliary
-            if (eandmDTO.EncounterList.Count > 0)
-            {
-                sBatchStatus = eandmDTO.EncounterList[0].Batch_Status;
-            }
+            sBatchStatus = eandmDTO.EncounterList[0].Batch_Status;
             string EnableScreen = string.Empty, EnablePriRbtn = string.Empty;
             string btnDelete = "Resources/Delete-Blue.png";
             string btnDeleteAdditionalICD = "Resources/Delete-Blue.png";
