@@ -327,9 +327,27 @@ namespace Acurus.Capella.UI
             ulong ulFileManagementIndexID = 0;
             ulong resMasID = 0;
 
-            if (Request["CurrentProcess"] != null)
+            //Cap - 1042
+            WFObjectManager WFObjMngr = new WFObjectManager();
+            WFObject wfObj = new WFObject();
+            if (Session["Order_Id"] != null && Session["Order_Id"] != string.Empty && Convert.ToUInt32(Session["Order_Id"]) != 0)
             {
-                if (Request["CurrentProcess"].ToString() == "BILLING_WAIT")
+                wfObj = WFObjMngr.GetByObjectSystemIdIncludeArchive(Convert.ToUInt32(Session["Order_Id"]), "DIAGNOSTIC ORDER");
+            }
+            else if (Session["Result_Master_Id"] != null && UInt64.TryParse(Session["Result_Master_Id"].ToString(), out resMasID) && resMasID!=0)
+            {
+                wfObj = WFObjMngr.GetByObjectSystemIdIncludeArchive(resMasID, "DIAGNOSTIC_RESULT");
+            }
+            else if (Request["ResultMasterID"] != null && UInt64.TryParse(Request["ResultMasterID"], out resMasID) && resMasID != 0)
+            {
+                wfObj = WFObjMngr.GetByObjectSystemIdIncludeArchive(resMasID, "DIAGNOSTIC_RESULT");
+            }
+
+            //if (Request["CurrentProcess"] != null)
+            //if (Request["CurrentProcess"].ToString() = != "BILLING_WAIT")
+            if (wfObj.Current_Process!=string.Empty)
+            {
+                if (wfObj.Current_Process == "BILLING_WAIT")
                 {
                     ScriptManager.RegisterStartupScript(this, this.Page.GetType(), "ErrmormsgMa", "DisplayErrorMessage('115070'); {sessionStorage.setItem('StartLoading', 'false');StopLoadFromPatChart();StopLoadingImage();}", true);
                     return;
