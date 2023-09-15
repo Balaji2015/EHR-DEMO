@@ -307,7 +307,9 @@ namespace Acurus.Capella.UI
 
                             else if (Request["Location"].ToUpper() == "CHART")
                             {
-                                PDFLOAD.Attributes.Add("src", "frmPrintPDF.aspx?pdf=" + Server.MapPath("Documents\\" + Session.SessionID + "\\" + SelectedItems.Value) + "&SI=" + SelectedItems.Value.ToString() + "#zoom=100" + "&Location=" + Request["Location"].ToString());
+                                //CAP-970
+                                //PDFLOAD.Attributes.Add("src", "frmPrintPDF.aspx?pdf=" + Server.MapPath("Documents\\" + Session.SessionID + "\\" + SelectedItems.Value) + "&SI=" + SelectedItems.Value.ToString() + "#zoom=100" + "&Location=" + Request["Location"].ToString());
+                                PDFLOAD.Attributes.Add("src", "Documents\\" + Session.SessionID + "\\" + SelectedItems.Value);
                                 FaxCurrentFileName.Value = Server.MapPath("Documents\\" + Session.SessionID + "\\" + SelectedItems.Value);
                                 ScriptManager.RegisterStartupScript(this, this.Page.GetType(), "", " {sessionStorage.setItem('StartLoading', 'false');StopLoadFromPatChart();}", true);
                             }

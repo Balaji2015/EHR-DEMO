@@ -175,6 +175,7 @@ namespace Acurus.Capella.UI.WebServices
             {
                 Is_CMG_Ancillary = true;
             }
+            
             FillEandMCoding eandmDTO = EandMCodingMngr.LoadEandMCodingNew(Convert.ToUInt64(ClientSession.EncounterId), Convert.ToUInt64(ClientSession.HumanId), EncRcrdDOS, out bSaveEnable, Is_CMG_Ancillary);//added for CMG Ancilliary
             sBatchStatus = eandmDTO.EncounterList[0].Batch_Status;
             string EnableScreen = string.Empty, EnablePriRbtn = string.Empty;

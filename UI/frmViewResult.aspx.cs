@@ -2943,7 +2943,9 @@ namespace Acurus.Capella.UI
                             string[] Result_Review = objResultMaster.Result_Review_Comments.Split(new string[] { "]]]" }, StringSplitOptions.None);
                             for (int i = 0; i < Result_Review.Length; i++)
                             {
-                                if (Result_Review[i].Trim() != string.Empty && Result_Review[i].Split(';')[0].Split(':')[3].Trim() == testname.Trim())
+                                //Cap - 907
+                                //if (Result_Review[i].Trim() != string.Empty && Result_Review[i].Split(';')[0].Split(':')[3].Trim() == testname.Trim())
+                                    if (Result_Review[i].Trim() != string.Empty && Result_Review[i].Contains("Test Reviewed: ") == true && Result_Review[i].Split(';')[0].Length>0 && Result_Review[i].Split(';')[0].Split(':').Length>3 && Result_Review[i].Split(';')[0].Split(':')[3].Trim() == testname.Trim())
                                 {
                                     DlcUpdate = true;
                                     break;
@@ -2997,7 +2999,6 @@ namespace Acurus.Capella.UI
                                         else
                                             NotesHistory = NotesHistory + reviewcomments[i];
                                     }
-
                                 }
                                 txtProvNoteshistory.Text = NotesHistory.Replace("<br/>", "\n"); ;// objResultMaster.Result_Review_Comments.Substring(0, objResultMaster.Result_Review_Comments.IndexOf(";")).Replace("[[[Test Reviewed: ", "");
                                 if (txtProvNoteshistory.Attributes["InterpretationText"] != null)

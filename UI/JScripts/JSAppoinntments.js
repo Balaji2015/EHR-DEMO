@@ -1138,7 +1138,8 @@ function btnToday_Clicked() {
     //Jira #CAP-768
     ////CAP-289 - Cannot read properties of undefined
     //if (selected_date != undefined && selected_date != null && (selected_date[0][0] != today.getFullYear() || selected_date[0][1] != (today.getMonth() + 1) || selected_date[0][2] != today.getDate())) {
-    if (selected_date != undefined && selected_date != null && selected_date > 0 && (selected_date[0][0] != today.getFullYear() || selected_date[0][1] != (today.getMonth() + 1) || selected_date[0][2] != today.getDate())) {
+    //CAP-1009 - Add missing word '.length' after selected_date.
+    if (selected_date != undefined && selected_date != null && selected_date.length > 0 && (selected_date[0][0] != today.getFullYear() || selected_date[0][1] != (today.getMonth() + 1) || selected_date[0][2] != today.getDate())) {
         { sessionStorage.setItem('StartLoading', 'true'); StartLoadFromPatChart(); }
         return true;
     }

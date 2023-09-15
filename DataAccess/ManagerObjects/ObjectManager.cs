@@ -2092,7 +2092,12 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
                         {
                             query1 = Mysession.GetNamedQuery("CountFillMyTaskObjectDetails.WithoutFacility.ShowAllFalse");
                             query1.SetString(0, UserName);
-                            query1.SetString(1, UserName);
+                            //Jira #CAP-939 -start
+                            //query1.SetString(1, UserName);
+                            string[] ObjTaskType = new string[1];
+                            ObjTaskType[0] = "TASK";
+                            query1.SetParameterList("ObjList", ObjTaskType);
+                            //Jira #CAP-939 - end
                             // query1.SetParameterList("ObjList", myObjType);
                             FavoriteList = new ArrayList(query1.List());
                             myq.My_Task_Count = Convert.ToInt16(FavoriteList[0]);

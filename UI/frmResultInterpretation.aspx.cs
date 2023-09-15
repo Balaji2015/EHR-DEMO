@@ -398,10 +398,21 @@ namespace Acurus.Capella.UI
                 objResultMaster.Result_Review_Comments = string.Empty;
                 for (int i = 0; i < Result_Review_Comments.Length; i++)
                 {
-
-                    if (Result_Review_Comments[i].Trim() != string.Empty && Result_Review_Comments[i].Trim().Contains("Test Reviewed"))
+                    //Cap - 907
+                    //if (Result_Review_Comments[i].Trim() != string.Empty && Result_Review_Comments[i].Trim().Contains("Test Reviewed"))
+                    if (Result_Review_Comments[i].Trim() != string.Empty)
                     {
-                        String sHeader_Test = Result_Review_Comments[i].Substring(0, Result_Review_Comments[i].IndexOf(";")).Replace("[[[Test Reviewed: ", "");
+                        //Cap - 907
+                        //sHeader_Test = Result_Review_Comments[i].Substring(0, Result_Review_Comments[i].IndexOf(";")).Replace("[[[Test Reviewed: ", "");
+                        String sHeader_Test = string.Empty;
+                        if (Result_Review_Comments[i].Trim().Contains("Test Reviewed"))
+                        {
+                            sHeader_Test = Result_Review_Comments[i].Substring(0, Result_Review_Comments[i].IndexOf(";")).Replace("[[[Test Reviewed: ", "");
+                        }
+                        else
+                        {
+                            sHeader_Test = Result_Review_Comments[i];
+                        }
                         string[] sHeader = sHeader_Test.Split(':');
                         string sddlTemplate = ddlTemplate.SelectedValue;
 

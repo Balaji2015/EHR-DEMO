@@ -711,10 +711,14 @@ function btnClose_Clicked() {
                         document.getElementById("btnSave").click();
                     else
                         document.getElementById("btnMoveToNextProcess").click();
+                     //Jira #CAP-889
                     //"" != $("#hdnPageState").val() && (DisplayErrorMessage("1007001"), self.close())
-                    if ($("#hdnPageState").val()!="" && DisplayErrorMessage("1007001")) {
-                        OnClientCloseWindow();
-                        self.close()
+                    //Jira #CAP-593
+                    //if ($("#hdnPageState").val()!="" && DisplayErrorMessage("1007001")) {
+                    if ($("#hdnPageState").val() != "") {
+                        DisplayErrorMessage("1007001");
+                        //OnClientCloseWindow();
+                        //self.close();
                     }
 
                     return false;

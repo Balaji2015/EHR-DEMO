@@ -308,6 +308,7 @@ namespace Acurus.Capella.UI
                                 // txtVisitDescription.Text = ddlVisitType.Items.FindItemByText(ddlVisitType.Items[i].Text).Value.Split(new string[] { "$#%" }, StringSplitOptions.None)[1];
 
                                 txtVisitDescription.Text = description[iIndexValue];
+                                HdnEditVisit.Value = ddlVisitType.Text.ToUpper() + "|" + duration[iIndexValue].ToString();
                             }
                         }
                     }
@@ -3336,6 +3337,7 @@ namespace Acurus.Capella.UI
                     txtVisitDescription.Text = "";
                 }
             }
+            HdnEditVisit.Value = ddlVisitType.SelectedItem.Text + "|" + ddlDuration.Text;
             btnSave.Enabled = true;
         }
 
@@ -6836,7 +6838,8 @@ namespace Acurus.Capella.UI
                         items.Text = Purpose_of_Visit.ToUpper();
                         //items.Value = Duration + "$#%" + Description;
                         ddlVisitType.Items.Add(items);
-                        if (ddlVisitType.Items[icount].Text.ToUpper() == DefaultValue.ToUpper())
+                        string visitType = string.IsNullOrEmpty(HdnEditVisit.Value.Split('|')[0].ToUpper()) ? DefaultValue.ToUpper() : HdnEditVisit.Value.Split('|')[0].ToUpper();
+                        if (ddlVisitType.Items[icount].Text.ToUpper() == visitType)
                             iselected = icount;
                         //ddlVisitType.Items[icount].Selected = true;
                         //  else

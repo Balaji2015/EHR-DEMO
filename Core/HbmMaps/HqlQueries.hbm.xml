@@ -12718,11 +12718,15 @@ cast(h.Birth_Date as char(100)) as b,h.Patient_Account_External,w.Obj_Type FROM 
 left join patient_notes n  on (n.Message_Id=w.obj_system_id) left join human h on (n.Human_id=h.human_id) 
 where  w.current_owner = ?  and w.Is_Default_MyQ_LineItem=1 and (w.Obj_Type in (:ObjList))) as c]]>-->
 		<!--<![CDATA[SELECT count(*) FROM wf_object w left join process_master m on (w.current_process=m.process_name) where w.Is_Default_MyQ_LineItem=1 and  w.current_owner = ?  and  w.Obj_Type ='TASK' and m.process_type='ASSIGNED';]]>-->
-		<![CDATA[SELECT count(distinct a.message_id) from ((select p.message_id FROM patient_notes p left join wf_object w on (p.message_id=w.obj_system_id and w.obj_type='TASK') 
+		<!--<![CDATA[SELECT count(distinct a.message_id) from ((select p.message_id FROM patient_notes p left join wf_object w on (p.message_id=w.obj_system_id and w.obj_type='TASK') 
   where w.Is_Default_MyQ_LineItem=1 and  w.current_owner = ?  and  w.current_process='OPEN_TASK')
   union all
   (select p.message_id FROM patient_notes p left join wf_object w on (p.message_id=w.obj_system_id and w.obj_type='TASK') 
-  where w.Is_Default_MyQ_LineItem=1 and p.created_by = ?  and  w.current_process='OPEN_TASK')) as a;]]>
+  where w.Is_Default_MyQ_LineItem=1 and p.created_by = ?  and  w.current_process='OPEN_TASK')) as a;]]>-->
+		<![CDATA[SELECT count(*) FROM wf_object w left join patient_notes n  on (n.Message_Id=w.obj_system_id) 
+left join human h on (n.Human_id=h.human_id) 
+left join process_master m on (w.current_process=m.process_name) 
+where w.Is_Default_MyQ_LineItem=1 and  w.current_owner = ?  and (w.Obj_Type in (:ObjList)) and m.process_type='ASSIGNED' order by n.Message_Date_And_Time;]]>
 	</sql-query>
 
 	<sql-query name="CountFillMyTaskObjectDetails.WithFacility.ShowAllFalse">
