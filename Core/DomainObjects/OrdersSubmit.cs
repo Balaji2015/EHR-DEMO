@@ -59,7 +59,7 @@ namespace Acurus.Capella.Core.DomainObjects
         private int _Duration_for_DME_Need_in_Months = 0;
         private int _Duration_for_Supplies_Need_in_Months = 0;
         private string _Is_Urgent = "N";
-
+        private string _Is_Task_Created = "N";
         #endregion
 
         #region Constructors
@@ -121,6 +121,7 @@ namespace Acurus.Capella.Core.DomainObjects
             sb.Append(_Duration_for_DME_Need_in_Months);
             sb.Append(_Duration_for_Supplies_Need_in_Months);
             sb.Append(_Is_Urgent);
+            sb.Append(_Is_Task_Created);
             return sb.ToString().GetHashCode();
         }
 
@@ -439,6 +440,12 @@ namespace Acurus.Capella.Core.DomainObjects
         {
             get { return _Is_Urgent; }
             set { _Is_Urgent = value; }
+        }
+        [DataMember]
+        public virtual string Is_Task_Created
+        {
+            get { return _Is_Task_Created; }
+            set { _Is_Task_Created = value; }
         }
         #endregion
 

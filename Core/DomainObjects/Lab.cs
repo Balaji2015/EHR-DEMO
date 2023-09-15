@@ -22,6 +22,7 @@ namespace Acurus.Capella.Core.DomainObjects
         private int _Sort_Order = 0;
         //Janani - Main - 30 Jul 2011 - End
         private string _Category = string.Empty;
+        private string _Is_Task_Notification_Required = string.Empty;   
         #endregion
 
         #region Constructors
@@ -47,6 +48,7 @@ namespace Acurus.Capella.Core.DomainObjects
             sb.Append(_Sort_Order);
             //Janani - Main - 30 Jul 2011 - End
             sb.Append(_Category);
+            sb.Append(_Is_Task_Notification_Required);
             return sb.ToString().GetHashCode();
         }
 
@@ -111,6 +113,14 @@ namespace Acurus.Capella.Core.DomainObjects
             get { return _Category; }
             set { _Category = value; }
         }
+
+        [DataMember]
+        public virtual string Is_Task_Notification_Required
+        {
+            get { return _Is_Task_Notification_Required; }
+            set { _Is_Task_Notification_Required = value; }
+        }
+
         #endregion
 
     }

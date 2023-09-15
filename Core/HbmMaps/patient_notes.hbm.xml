@@ -41,6 +41,6 @@
     <property name="Carrier_ID" column="Carrier_ID" />
     <property name="Batch_ID" column="Batch_ID" />
     <property name="Is_Patient_Message" column="Is_Patient_Message" />
-
+	<property name="Orders_Submit_ID" column="Orders_Submit_ID" />
   </class>
 </hibernate-mapping>

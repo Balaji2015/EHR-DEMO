@@ -47,5 +47,6 @@
     <property name="Duration_for_DME_Need_in_Months" column="Duration_for_DME_Need_in_Months"/>
     <property name="Duration_for_Supplies_Need_in_Months" column="Duration_for_Supplies_Need_in_Months"/>
     <property name="Is_Urgent" column="Is_Urgent"/>
+	<property name="Is_Task_Created" column="Is_Task_Created"/>  
   </class>
 </hibernate-mapping>

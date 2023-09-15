@@ -16,5 +16,6 @@
     <property name="Sort_Order" column="Sort_Order" />
     <!--Janani - Main - 30 Jul 2011 - End-->
     <property name="Category" column="Category" />
+	<property name="Is_Task_Notification_Required" column="Is_Task_Notification_Required" />
   </class>
 </hibernate-mapping>

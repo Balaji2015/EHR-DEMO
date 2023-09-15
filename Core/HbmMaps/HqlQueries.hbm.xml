@@ -12524,6 +12524,18 @@ where Is_Deleted='N' and e.result_master_id<>0 and Reason_Code in('ACUR_LAB_05',
 ]]>
 	</sql-query>
 
+
+	<sql-query name="GetOrderObjectDetails.For.TaskCreate">
+		<![CDATA[
+      select os.Order_Submit_ID,os.Stat, cast(os.Created_Date_And_Time as char(100)) as OrderDate,"Task" as task,"Normal" as priority,"Ancillary Order" as Ancillary_Order, os.created_by,
+concat_ws(" ",NULLIF(pl.Physician_Prefix,''), NULLIF(pl.Physician_First_Name, ''),NULLIF(pl.Physician_Middle_Name, ''), NULLIF(pl.Physician_Last_Name, '')) as PhysicianName,
+o.Lab_Procedure,o.Lab_Procedure_Description,l.lab_name, a.ICD,a.ICD_Description,os.facility_name,cast(os.Modified_Date_And_Time as char(100)) , wo.Current_Process, os.Human_ID from orders_submit os 
+left join  wf_object wo  on os.Order_Submit_ID = wo.Obj_System_Id left join Lab l on l.Lab_ID = os.Lab_ID left join patient_notes p on os.Order_Submit_ID = p.Orders_Submit_ID 
+left join physician_library pl on os.Physician_ID=pl.Physician_Library_ID left join orders o on os.Order_Submit_ID=o.Order_Submit_ID left join orders_assessment a on os.Order_Submit_ID=a.Order_Submit_ID 
+where l.Is_Task_Notification_Required="Y" and os.Is_Task_Created !="Y"  
+]]>
+	</sql-query>
+	
 	<sql-query name="GetACODetails">
 		<![CDATA[
       select h.ACO_Is_Eligible_Patient,h.ACO_Patient_Discussed,h.ACO_Patient_Discussed_By,h.Last_Name,h.First_Name,h.MI,h.Suffix from human h where h.human_id=?;

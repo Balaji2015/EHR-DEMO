@@ -12,13 +12,13 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
 {
 
     public partial interface IPatientNotesManager : IManagerBase<PatientNotes, ulong>
-    {                        
+    {
         IList<PatientNotes> Getpatientdetails(string humanid);
         IList<PatientNotes> Getpatienttask(string user, string humanid);
         IList<PatientNotes> GetPopupDetails(string humanid);
-        IList<PatientNotes> GetMessageTask(string humanid);                
-        ulong GetPhysicianIdNew(string Facility);        
-        IList<PatientNotes> AddToPatientNotes(IList<PatientNotes> patientlst);        
+        IList<PatientNotes> GetMessageTask(string humanid);
+        ulong GetPhysicianIdNew(string Facility);
+        IList<PatientNotes> AddToPatientNotes(IList<PatientNotes> patientlst);
         IList<PatientNotes> GetIsPopUp(string HumanId);
         IList<PatientNotes> AddPatientlst(IList<PatientNotes> patientlst, IList<PatientNotes> PatientNotesUpdateList, IList<WFObject> WFobjUpdateList);
         void UpdatePopUpTable(IList<PatientNotes> iListPopup, string MacAddress);
@@ -28,13 +28,14 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
         void UpdatePatientMessage(PatientNotes messages, string ObjType, int CloseType, string owner, DateTime startTime, string MacAddress);
         IList<string> MapPhysicianUserListForFacility(string sFacilityName, string sLegalOrg);
         IList<PatientNotes> GetMessageDetails(string MessageDescription, string MessageNotes, string humanid);
-        IList<PatientNotes> GetFilteredMessageDetailsByEncounterId(string MessageDescription, string MessageNotes, string EncounterID, string HumanID);                                
+        IList<PatientNotes> GetFilteredMessageDetailsByEncounterId(string MessageDescription, string MessageNotes, string EncounterID, string HumanID);
         IList<PatientNotes> GetFilteredLineItemMessages(string MessageDescription, string MessageNotes, string HumanID, string ChargeLineID, string ChargeHeaderID);
-        IList<PatientNotes> GetFilteredMessageDetails(string MessageDescription, string MessageNotes, string HumanID);                        
-        ulong SavePatientAndreturnid(IList<PatientNotes> SaveList, string MacAddress);        
+        IList<PatientNotes> GetFilteredMessageDetails(string MessageDescription, string MessageNotes, string HumanID);
+        ulong SavePatientAndreturnid(IList<PatientNotes> SaveList, string MacAddress);
         PatientNotes GetByPatientObjectID(ulong PatientId);
         int SavePatientWithoutTransaction(IList<PatientNotes> ListToInsert, ISession MySession, string MACAddress);
         PatientDetailDto GetPopupDetailsNew(string humanid);
+        void SavePatientTaskByOrder(PatientNotes messages, WFObject Wfobj, string MacAddress);
     }
     public partial class PatientNotesManager : ManagerBase<PatientNotes, ulong>, IPatientNotesManager
     {
@@ -54,8 +55,8 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
         #endregion
 
         #region Get Methods                
-        public IList<PatientNotes> AddPatientlst(IList<PatientNotes> patientlst,IList<PatientNotes> PatientNotesUpdateList,IList<WFObject> WFobjUpdateList)
-        {           
+        public IList<PatientNotes> AddPatientlst(IList<PatientNotes> patientlst, IList<PatientNotes> PatientNotesUpdateList, IList<WFObject> WFobjUpdateList)
+        {
             ISession MySession = Session.GetISession();
             iTryCount = 0;
             GenerateXml ObjXML = null;
@@ -70,7 +71,7 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
                         if ((patientlst != null && patientlst.Count > 0) || (PatientNotesUpdateList != null && PatientNotesUpdateList.Count > 0))
                         {
 
-                            iResult = SaveUpdateDelete_DBAndXML_WithoutTransaction(ref patientlst, ref PatientNotesUpdateList, null, MySession, string.Empty, false, false, 0, "",ref ObjXML);
+                            iResult = SaveUpdateDelete_DBAndXML_WithoutTransaction(ref patientlst, ref PatientNotesUpdateList, null, MySession, string.Empty, false, false, 0, "", ref ObjXML);
 
                             if (iResult == 2)
                             {
@@ -121,7 +122,7 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
                             }
                         }
                         MySession.Flush();
-                        trans.Commit();                    
+                        trans.Commit();
                     }
                     catch (NHibernate.Exceptions.GenericADOException ex)
                     {
@@ -154,9 +155,9 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
             IList<PatientNotes> PatNotes = null;
             //GenerateXml XMLObj = null;
             SaveUpdateDelete_DBAndXML_WithTransaction(ref SaveList, ref PatNotes, null, string.Empty, false, false, 0, string.Empty);
-           // SaveUpdateDelete_DBAndXML_WithoutTransaction(ref SaveList, ref PatNotes, null, MySession, string.Empty, false, false, 0, "", ref XMLObj);
+            // SaveUpdateDelete_DBAndXML_WithoutTransaction(ref SaveList, ref PatNotes, null, MySession, string.Empty, false, false, 0, "", ref XMLObj);
             return SaveList;
-        }                
+        }
         public IList<PatientNotes> Getpatientdetails(string humanid)
         {
             //ArrayList arrList = null; 
@@ -165,10 +166,10 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
             IList<PatientNotes> assign = new List<PatientNotes>();
             using (ISession iMySession = NHibernateSessionManager.Instance.CreateISession())
             {
-                IQuery query =iMySession.GetNamedQuery("Get.patientdetail");            
-              
+                IQuery query = iMySession.GetNamedQuery("Get.patientdetail");
+
                 query.SetString(0, humanid);
-                
+
                 arrypatientdetail = new ArrayList(query.List());
                 iMySession.Close();
             }
@@ -213,7 +214,7 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
                 IQuery query = iMySession.GetNamedQuery("Get.Taskpatientdetail");
 
                 query.SetString(0, user);
-                query.SetString(1, humanid);               
+                query.SetString(1, humanid);
                 arrypatientdetail = new ArrayList(query.List());
                 iMySession.Close();
             }
@@ -249,7 +250,7 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
         }
         public IList<PatientNotes> GetPopupDetails(string humanid)
         {
-           // ArrayList arrList = null;
+            // ArrayList arrList = null;
             IList<PatientNotes> assign = new List<PatientNotes>();
             PatientNotes objpatientnotes = new PatientNotes();
 
@@ -337,7 +338,7 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
         public IList<PatientNotes> GetMessageTask(string humanid)
         {
             //ArrayList arrList = null;
-              IList<PatientNotes> assign = new List<PatientNotes>();
+            IList<PatientNotes> assign = new List<PatientNotes>();
             PatientNotes objpatientnotes = new PatientNotes();
             ArrayList arrypatientdetail = new ArrayList();
             using (ISession iMySession = NHibernateSessionManager.Instance.CreateISession())
@@ -470,7 +471,7 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
             using (ISession iMySession = NHibernateSessionManager.Instance.CreateISession())
             {
                 IQuery query = iMySession.GetNamedQuery("GetIsPopUp");
-                query.SetString(0, HumanId);                
+                query.SetString(0, HumanId);
                 arrList = new ArrayList(query.List());
                 iMySession.Close();
             }
@@ -496,61 +497,61 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
         int iTryCount = 0;
         public void UpdatePopUpTable(IList<PatientNotes> iListPopup, string MacAddress)
         {
-      #region
-        //    ISession MySession = Session.GetISession();
-        //    ITransaction trans = null;
-        //    trans = MySession.BeginTransaction();
-        //    int iResult = 0;
-        //    GenerateXml ObjXML = null;
-        //TryAgain:
-        //    try
-        //    {
-        //        IList<PatientNotes> PatientDummy = new List<PatientNotes>();
-        //        iResult = SaveUpdateDelete_DBAndXML_WithoutTransaction(ref PatientDummy, ref iListPopup, null, MySession, MacAddress, false, false, 0, "", ref ObjXML);
-        //        if (iResult == 2)
-        //        {
-        //            if (iTryCount < 5)
-        //            {
-        //                iTryCount++;
-        //                goto TryAgain;
-        //            }
-        //            else
-        //            {
-        //                trans.Rollback();
-        //                //MySession.Close();
-        //                throw new Exception("Deadlock is occured. Transaction failed");
-        //            }
-        //        }
-        //        else if (iResult == 1)
-        //        {
-        //            trans.Rollback();
-        //            //MySession.Close();
-        //            throw new Exception("Exception is occured. Transaction failed");
-        //        }
+            #region
+            //    ISession MySession = Session.GetISession();
+            //    ITransaction trans = null;
+            //    trans = MySession.BeginTransaction();
+            //    int iResult = 0;
+            //    GenerateXml ObjXML = null;
+            //TryAgain:
+            //    try
+            //    {
+            //        IList<PatientNotes> PatientDummy = new List<PatientNotes>();
+            //        iResult = SaveUpdateDelete_DBAndXML_WithoutTransaction(ref PatientDummy, ref iListPopup, null, MySession, MacAddress, false, false, 0, "", ref ObjXML);
+            //        if (iResult == 2)
+            //        {
+            //            if (iTryCount < 5)
+            //            {
+            //                iTryCount++;
+            //                goto TryAgain;
+            //            }
+            //            else
+            //            {
+            //                trans.Rollback();
+            //                //MySession.Close();
+            //                throw new Exception("Deadlock is occured. Transaction failed");
+            //            }
+            //        }
+            //        else if (iResult == 1)
+            //        {
+            //            trans.Rollback();
+            //            //MySession.Close();
+            //            throw new Exception("Exception is occured. Transaction failed");
+            //        }
 
-        //        MySession.Flush();
-        //        trans.Commit();
-        //    }
-        //    catch (NHibernate.Exceptions.GenericADOException ex)
-        //    {
-        //        trans.Rollback();
-        //        // MySession.Close();
-        //        throw new Exception(ex.Message);
-        //    }
-        //    catch (Exception e)
-        //    {
-        //        trans.Rollback();
-        //        //MySession.Close();
-        //        throw new Exception(e.Message);
-        //    }
-        //    finally
-        //    {
-        //        MySession.Close();
-        //    }
-        //    // return iListAuth[0].Id;
-     #endregion
-                IList<PatientNotes> PatientDummy = new List<PatientNotes>();
-                SaveUpdateDelete_DBAndXML_WithTransaction(ref PatientDummy, ref iListPopup, null, MacAddress, false, false, 0, string.Empty);
+            //        MySession.Flush();
+            //        trans.Commit();
+            //    }
+            //    catch (NHibernate.Exceptions.GenericADOException ex)
+            //    {
+            //        trans.Rollback();
+            //        // MySession.Close();
+            //        throw new Exception(ex.Message);
+            //    }
+            //    catch (Exception e)
+            //    {
+            //        trans.Rollback();
+            //        //MySession.Close();
+            //        throw new Exception(e.Message);
+            //    }
+            //    finally
+            //    {
+            //        MySession.Close();
+            //    }
+            //    // return iListAuth[0].Id;
+            #endregion
+            IList<PatientNotes> PatientDummy = new List<PatientNotes>();
+            SaveUpdateDelete_DBAndXML_WithTransaction(ref PatientDummy, ref iListPopup, null, MacAddress, false, false, 0, string.Empty);
         }
 
         public IList<PatientNotes> GetPatientNotesByMsgID(ulong ulMsgID)
@@ -657,8 +658,140 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
             finally
             {
                 MySession.Close();
-            }            
+            }
         }
+
+        public void SavePatientTaskByOrder(PatientNotes messages, WFObject Wfobj, string MacAddress)
+        {
+
+            IList<PatientNotes> messageList = new List<PatientNotes>();
+            messageList.Add(messages);
+            int iTryCount = 0;
+            GenerateXml ObjXML = null;
+        TryAgain:
+            int iResult = 0;
+
+            IList<OrdersSubmit> OrderSubmitTemp = null;
+            IList<OrdersSubmit> orderSubmitList = new List<OrdersSubmit>();
+            OrdersSubmit orderSubmitDetails = null;
+            OrdersSubmitManager OrderSubmitManager = new OrdersSubmitManager();
+            if (messageList != null && messageList.Count > 0)
+            {
+                orderSubmitDetails = OrderSubmitManager.GetById((ulong)messageList[0].Orders_Submit_ID);
+            }
+
+            ISession MySession = Session.GetISession();
+            ITransaction trans = null;
+            try
+            {
+                trans = MySession.BeginTransaction();
+                if (messageList != null && messageList.Count > 0)
+                {
+                    IList<PatientNotes> PatNotesTemp = null;
+                    iResult = SaveUpdateDelete_DBAndXML_WithoutTransaction(ref messageList, ref PatNotesTemp, null, MySession, MacAddress, false, false, 0, "", ref ObjXML);
+                    if (iResult == 2)
+                    {
+                        if (iTryCount < 5)
+                        {
+                            iTryCount++;
+                            goto TryAgain;
+                        }
+                        else
+                        {
+                            trans.Rollback();
+                            // MySession.Close();
+                            throw new Exception("Deadlock occurred. Transaction failed.");
+                        }
+                    }
+                    else if (iResult == 1)
+                    {
+                        trans.Rollback();
+                        //MySession.Close();
+                        throw new Exception("Exception occurred. Transaction failed.");
+                    }
+                }
+
+
+                if (Wfobj != null)
+                {
+                    Wfobj.Obj_System_Id = messageList[0].Id;
+                    WFObjectManager WFObjectManager = new WFObjectManager();
+                    iResult = WFObjectManager.InsertToWorkFlowObject(Wfobj, 1, MacAddress, MySession);
+
+                    if (iResult == 2)
+                    {
+                        if (iTryCount < 5)
+                        {
+                            iTryCount++;
+                            goto TryAgain;
+                        }
+                        else
+                        {
+                            trans.Rollback();
+                            //  MySession.Close();
+                            throw new Exception("Deadlock occurred. Transaction failed.");
+                        }
+                    }
+                    else if (iResult == 1)
+                    {
+                        trans.Rollback();
+                        // MySession.Close();
+                        throw new Exception("Exception occurred. Transaction failed.");
+                    }
+                }
+
+
+                if (orderSubmitDetails != null)
+                {
+                    orderSubmitDetails.Is_Task_Created = "Y";
+
+                    orderSubmitList.Add(orderSubmitDetails);
+
+                    iResult = OrderSubmitManager.SaveUpdateDeleteWithoutTransaction(ref OrderSubmitTemp, orderSubmitList, null, MySession, MacAddress);
+
+                    if (iResult == 2)
+                    {
+                        if (iTryCount < 5)
+                        {
+                            iTryCount++;
+                            goto TryAgain;
+                        }
+                        else
+                        {
+                            trans.Rollback();
+                            //  MySession.Close();
+                            throw new Exception("Deadlock occurred. Transaction failed.");
+                        }
+                    }
+                    else if (iResult == 1)
+                    {
+                        trans.Rollback();
+                        // MySession.Close();
+                        throw new Exception("Exception occurred. Transaction failed.");
+                    }
+                }
+                MySession.Flush();
+                trans.Commit();
+
+            }
+            catch (NHibernate.Exceptions.GenericADOException ex)
+            {
+                trans.Rollback();
+                // MySession.Close();
+                throw new Exception(ex.Message);
+            }
+            catch (Exception e)
+            {
+                trans.Rollback();
+                //MySession.Close();
+                throw new Exception(e.Message);
+            }
+            finally
+            {
+                MySession.Close();
+            }
+        }
+
         public void UpdatePatientMessage(PatientNotes messages, string ObjType, int CloseType, string owner, DateTime startTime, string MacAddress)
         {
             IList<PatientNotes> messageList = new List<PatientNotes>();
@@ -677,7 +810,7 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
                 int iTryCount = 0;
             TryAgain:
                 int iResult = 0;
-            GenerateXml objXMl = null;
+                GenerateXml objXMl = null;
                 ISession MySession = Session.GetISession();
                 ITransaction trans = null;
                 try
@@ -769,7 +902,7 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
                 //Gitlab# 2485 - Physician Name Display Change
                 using (ISession iMySession = NHibernateSessionManager.Instance.CreateISession())
                 {
-                    IList<object> objLst = iMySession.CreateSQLQuery("select * from (select u.user_name as UserName,u.person_name as LastName,'' as FirstName,'' as MI,'' as Suffix from user u where status = 'a' and u.Legal_Org='"+sLegalOrg+ "' and u.physician_library_id = 0 union all select u.user_name as UserName,p.Physician_Last_Name as LastName, Physician_First_Name as FirstName, Physician_Middle_Name as MI,Physician_Suffix as Suffix from user u, physician_library p where status = 'a' and u.physician_library_id <> 0 and u.Legal_Org='" + sLegalOrg + "' and u.Physician_Library_ID = p.Physician_Library_ID) as a order by LastName,FirstName").List<object>();
+                    IList<object> objLst = iMySession.CreateSQLQuery("select * from (select u.user_name as UserName,u.person_name as LastName,'' as FirstName,'' as MI,'' as Suffix from user u where status = 'a' and u.Legal_Org='" + sLegalOrg + "' and u.physician_library_id = 0 union all select u.user_name as UserName,p.Physician_Last_Name as LastName, Physician_First_Name as FirstName, Physician_Middle_Name as MI,Physician_Suffix as Suffix from user u, physician_library p where status = 'a' and u.physician_library_id <> 0 and u.Legal_Org='" + sLegalOrg + "' and u.Physician_Library_ID = p.Physician_Library_ID) as a order by LastName,FirstName").List<object>();
 
                     for (int i = 0; i < objLst.Count; i++)
                     {
@@ -846,7 +979,7 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
                 IQuery query = iMySession.GetNamedQuery("Get.MessageInfo");
                 query.SetString(0, MessageDescription + "%");
                 query.SetString(1, "%" + MessageNotes + "%");
-                query.SetString(2, humanid);               
+                query.SetString(2, humanid);
                 arrypatientdetail = new ArrayList(query.List());
                 iMySession.Close();
             }
@@ -879,7 +1012,7 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
             return assign;
 
 
-        }        
+        }
         public IList<PatientNotes> GetFilteredMessageDetailsByEncounterId(string MessageDescription, string MessageNotes, string EncounterID, string HumanID)
         {
             //ArrayList arrList = null;
@@ -894,7 +1027,7 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
                 query.SetString(0, MessageDescription + "%");
                 query.SetString(1, "%" + MessageNotes + "%");
                 query.SetString(2, EncounterID);
-                query.SetString(3, HumanID);              
+                query.SetString(3, HumanID);
                 arrypatientdetail = new ArrayList(query.List());
                 iMySession.Close();
             }
@@ -927,7 +1060,7 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
             return assign;
 
 
-        }        
+        }
         public IList<PatientNotes> GetFilteredLineItemMessages(string MessageDescription, string MessageNotes, string HumanID, string ChargeLineID, string ChargeHeaderID)
         {
             //ArrayList arrList = null;
@@ -979,7 +1112,7 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
         public IList<PatientNotes> GetFilteredMessageDetails(string MessageDescription, string MessageNotes, string HumanID)
         {
             //ArrayList arrList = null;
-              IList<PatientNotes> assign = new List<PatientNotes>();
+            IList<PatientNotes> assign = new List<PatientNotes>();
             PatientNotes objpatientnotes = new PatientNotes();
 
             ArrayList arrypatientdetail = new ArrayList();
@@ -1022,7 +1155,7 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
             return assign;
 
 
-        }                        
+        }
         public ulong SavePatientAndreturnid(IList<PatientNotes> SaveList, string MacAddress)
         {
             ulong NoteID = 0;
@@ -1033,7 +1166,7 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
                 NoteID = SaveList[0].Id;
             }
             return NoteID;
-        }        
+        }
 
         public int SavePatientWithoutTransaction(IList<PatientNotes> ListToInsert, ISession MySession, string MACAddress)
         {
@@ -1053,7 +1186,7 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
             PatientNotes ResultNotesid = new PatientNotes();
             using (ISession iMySession = NHibernateSessionManager.Instance.CreateISession())
             {
-                ICriteria criteria =iMySession.CreateCriteria(typeof(PatientNotes)).Add(Expression.Eq("Id", PatientId));
+                ICriteria criteria = iMySession.CreateCriteria(typeof(PatientNotes)).Add(Expression.Eq("Id", PatientId));
                 if (criteria.List<PatientNotes>().Count > 0)
                 {
                     ResultNotesid = criteria.List<PatientNotes>()[0];
@@ -1066,14 +1199,14 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
         public void updatePatientMessageAlone(PatientNotes objPatientNotes)
         {
             ISession MySession = Session.GetISession();
-            IList<PatientNotes> ilist=new List<PatientNotes>();
+            IList<PatientNotes> ilist = new List<PatientNotes>();
             ilist.Add(objPatientNotes);
-            IList<PatientNotes> ilistPatient=null;
+            IList<PatientNotes> ilistPatient = null;
             SaveUpdateDelete_DBAndXML_WithTransaction(ref ilistPatient, ref ilist, null, "", false, false, 0, "");
         }
 
         public PatientDetailDto GetPopupDetailsNew(string humanid)
-        {         
+        {
             PatientDetailDto PatientDetailsto = new PatientDetailDto();
             using (ISession iMySession = NHibernateSessionManager.Instance.CreateISession())
             {
@@ -1113,7 +1246,7 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
                         PhyCreatedBy = new PhysicianLibrary();
 
                     //Gitlab# 2485 - Physician Name Display Change
-                    if (UserAssignedTo.Physician_Library_ID==0)
+                    if (UserAssignedTo.Physician_Library_ID == 0)
                     {
                         PatientNotesRecord.Assigned_To = UserAssignedTo.person_name;
                     }
@@ -1161,7 +1294,7 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
                     PatientDetailsto.ilstWFObj.Add(WFObjRecord);
                     PatientDetailsto.ilstUser.Add(UserAssignedTo);
                     PatientDetailsto.ilstUser.Add(UserCreatedBy);
-                    
+
                 }
                 iMySession.Close();
             }
