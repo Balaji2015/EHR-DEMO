@@ -193,8 +193,8 @@ $(document).ready(function () {
                     $("#btnEnc")[0].innerText = "Encounters Q " + "(" + objdata.data.length + ")";
 
                     $("#btnOrder")[0].innerText = "Orders Q " + "(" + objdata.count[0].Order_Count + ")";
-                    $("#btnAmendmnt")[0].innerText = "Amendment Q" + "(" + objdata.count[0].Amendmnt_Count + ")";
-
+                    $("#btnAmendmnt")[0].innerText = "Amendment Q " + "(" + objdata.count[0].Amendmnt_Count + ")";
+                    $("#btnTask")[0].innerText = "Tasks Q " + "(" + objdata.count[0].Task_Count + ")";
                     localStorage.setItem("GenralOrderCount", objdata.count[0].Order_Count);
                     $("#btnEnc").addClass("btncolorMyQ");
                     $("#btnGeneral").addClass("btncolorMyQ");
@@ -276,45 +276,39 @@ $(document).ready(function () {
             $('#GeneralQTable th').find('input[type=checkbox]:checked').each(function () {
                 $(this).prop('checked', false);
             });
-            alert("Please select one encounter to process");
+            if ((this).innerText.indexOf('Task') > -1) {
+                alert("Please select one Task to process");
+            }
+            else if ((this).innerText.indexOf('Encounter') > -1) {
+                alert("Please select one encounter to process");
+            }
+            //alert("Please select one encounter to process");
             { sessionStorage.setItem('StartLoading', 'false'); StopLoadFromPatChart(); }
             return false;
         }
         else if ($('#GeneralQTable').children().find('.highlight').length > 0) {
             var Showall = '';
             $("#chkShowAll")[0].checked ? Showall = "Checked" : Showall = "Unchecked";
-            var currentProcess = $('#EncounterTable > tbody > tr.highlight > td:nth-child(8)')[0].outerText.trim();
-            //Jira #CAP-706
-            //if (currentProcess == "SCRIBE_CORRECTION" || currentProcess == 'SCRIBE_PROCESS' || currentProcess == "SCRIBE_REVIEW_CORRECTION" || currentProcess == 'MA_PROCESS' || currentProcess == 'REVIEW_CODING' || currentProcess == 'CHECK_OUT' || currentProcess == 'SURGERY_COORDINATOR_PROCESS') {
-            if (currentProcess == "SCRIBE_CORRECTION" || currentProcess == 'SCRIBE_PROCESS' || currentProcess == "SCRIBE_REVIEW_CORRECTION" || currentProcess == 'MA_PROCESS' || currentProcess == 'REVIEW_CODING' || currentProcess == 'CHECK_OUT' || currentProcess == 'SURGERY_COORDINATOR_PROCESS' || currentProcess == "AKIDO_SCRIBE_PROCESS" || currentProcess == 'AKIDO_REVIEW_CODING') {
-                var objType = $('#EncounterTable > tbody > tr.highlight > td:nth-child(16)')[0].outerText.trim();
-                //Jira #CAP-706
-                //if (currentProcess == "SCRIBE_CORRECTION" || currentProcess == 'SCRIBE_PROCESS' || currentProcess == "SCRIBE_REVIEW_CORRECTION" || currentProcess == 'MA_PROCESS' || currentProcess == 'TECHNICIAN_PROCESS' || currentProcess == 'READING_PROVIDER_PROCESS' || currentProcess == 'REVIEW_CODING' || currentProcess == 'CHECK_OUT' || currentProcess == 'SURGERY_COORDINATOR_PROCESS') {
-                if (currentProcess == "SCRIBE_CORRECTION" || currentProcess == 'SCRIBE_PROCESS' || currentProcess == "SCRIBE_REVIEW_CORRECTION" || currentProcess == 'MA_PROCESS' || currentProcess == 'TECHNICIAN_PROCESS' || currentProcess == 'READING_PROVIDER_PROCESS' || currentProcess == 'REVIEW_CODING' || currentProcess == 'CHECK_OUT' || currentProcess == 'SURGERY_COORDINATOR_PROCESS' || currentProcess == "AKIDO_SCRIBE_PROCESS" || currentProcess == 'AKIDO_REVIEW_CODING') {
-                    var encounterID = $('#EncounterTable > tbody > tr.highlight > td:nth-child(14)')[0].outerText.trim();
-                }
-                var apptdt = $('#EncounterTable > tbody > tr.highlight > td:nth-child(2)')[0].outerText.trim();
-                var humanid = $('#EncounterTable > tbody > tr.highlight > td:nth-child(3)')[0].outerText.trim();
-                var physcianid = $('#EncounterTable > tbody > tr.highlight > td:nth-child(15)')[0].outerText.trim();
-                var date = $('#EncounterTable > tbody > tr.highlight > td:nth-child(17)')[0].outerText.trim();
-                var ExamRoom = document.getElementById("Exam").value;
-                var now = new Date();
-                var utc = (now.getUTCMonth() + 1) + '/' + now.getUTCDate() + '/' + now.getUTCFullYear(); utc += ' ' + now.getUTCHours() + ':' + now.getUTCMinutes() + ':' + now.getUTCSeconds();
-                if (currentProcess == "CHECK_OUT") {
-                    if (humanid != undefined && humanid != '' && encounterID != undefined && encounterID != '' && physcianid != undefined && physcianid != '') {
-                        var obj = new Array();
-                        $('#GeneralQTable td').find('input[type=checkbox]:checked')[0].checked = false;
-                        $('#GeneralQTable tr').removeClass("highlight");
-                        var Result = openRadWindow("frmCheckOut.aspx?HumanID=" + humanid + "&EncounterID=" + encounterID + "&PhysicianId=" + physcianid, 800, 1260, obj, 'RadWindowCheckout');
-                        return false;
+            if ((this).innerText.indexOf('Task') > -1) {
+                if (document.getElementById("RefreshQ").innerText.indexOf("Refresh Task Q") > -1 && $('#RefreshQ').is(":visible")) {
+                    var currRow = $('#GeneralQTable').children().find('.highlight');
+                    var human_id = $(currRow)[0].children[2].innerText.trim();
+                    var Facility = $(currRow)[0].children[6].innerText.trim();
+                    var MessageId = $(currRow)[0].children[8].innerText.trim();
+                    var Data = [human_id, Facility];
+                    var sPersonname = '';
+                    for (var l = 0; l < cookies.length; l++) {
+                        if (cookies[l].indexOf("CPersonName") > -1) {
+                            sPersonname = cookies[l].split("=")[1];
+                        }
                     }
-                }
-                else {
-                    var Data = [humanid, encounterID, physcianid, currentProcess, objType, date, utc, ExamRoom, Showall, apptdt];
-
+                    //if (sPersonname != $(currRow)[0].children[5].innerText.trim()) {
+                    //    { sessionStorage.setItem('StartLoading', 'false'); StopLoadFromPatChart(); }
+                    //    return false;
+                    //}
                     $.ajax({
                         type: "POST",
-                        url: "frmMyQueueNew.aspx/ProcessGenEncounter",
+                        url: "frmMyQueueNew.aspx/ProcessTask",
                         data: JSON.stringify({
                             "data": Data,
                         }),
@@ -322,23 +316,16 @@ $(document).ready(function () {
                         dataType: "json",
                         async: true,
                         success: function (data) {
-                            //jira #cap190 - Workflow issue - Current process PROVIDER_PROCESS current owner MA
-                            if (data.d == 'UNKNOWN') {
-                                { sessionStorage.setItem('StartLoading', 'false'); StopLoadFromPatChart(); }
-                                DisplayErrorMessage('1400013');
-                                return false;
-                            }
-                            sessionStorage.setItem("EnablePFSHMenu", "true");
-                            localStorage.setItem("CodingException", encounterID);
-                            //Jira #CAP-709
-                            localStorage.setItem("CurrentProcess", currentProcess);
-                            sessionStorage.setItem("EncId_PatSummaryBar", encounterID);
-                            //sessionStorage.setItem("Enc_DOS", date);
-                            sessionStorage.setItem("Enc_DOS", data.d);
-                            window.location = "frmPatientChart.aspx?hdnLocalTime=" + utc + "&Notification_Type=All";//BugID:52556,52627
-                            $('#GeneralQTable td').find('input[type=checkbox]:checked').removeAttr('checked');
-                            $('#GeneralQTable tr').removeClass("highlight");
+                            var obj = new Array();
+                            jQuery('body').css('cursor', 'default');
+                            //for BugID:38984- to open task with patientchart as background.
 
+                            var Result = openRadWindow("frmPatientCommunication.aspx?AccountNum=" + human_id + "&openingfrom=GenQTask&parentscreen=" + "MyQ" + "&MessageID=" + MessageId, 550, 1050, obj, 'ModalWindow');
+                            var windowName = $find('ModalWindow');
+                            windowName.add_close(OnClientCloseWindow);
+                            windowName.set_behaviors(-Telerik.Web.UI.WindowAutoSizeBehaviors.Close);
+                            { sessionStorage.setItem('StartLoading', 'false'); StopLoadFromPatChart(); }
+                            return false;
                         },
                         error: function OnError(xhr) {
                             { sessionStorage.setItem('StartLoading', 'false'); StopLoadFromPatChart(); }
@@ -355,16 +342,96 @@ $(document).ready(function () {
                     });
                 }
             }
-            else {
-                alert('Selected encounter cannot be processed.');
-                $('#GeneralQTable td').find('input[type=checkbox]:checked').removeAttr('checked');
-                $('#GeneralQTable tr').removeClass("highlight");
-                { sessionStorage.setItem('StartLoading', 'false'); StopLoadFromPatChart(); }
-                return false;
+            else if ((this).innerText.indexOf('Encounter') > -1) {
+                var currentProcess = $('#EncounterTable > tbody > tr.highlight > td:nth-child(8)')[0].outerText.trim();
+                //Jira #CAP-706
+                //if (currentProcess == "SCRIBE_CORRECTION" || currentProcess == 'SCRIBE_PROCESS' || currentProcess == "SCRIBE_REVIEW_CORRECTION" || currentProcess == 'MA_PROCESS' || currentProcess == 'REVIEW_CODING' || currentProcess == 'CHECK_OUT' || currentProcess == 'SURGERY_COORDINATOR_PROCESS') {
+                if (currentProcess == "SCRIBE_CORRECTION" || currentProcess == 'SCRIBE_PROCESS' || currentProcess == "SCRIBE_REVIEW_CORRECTION" || currentProcess == 'MA_PROCESS' || currentProcess == 'REVIEW_CODING' || currentProcess == 'CHECK_OUT' || currentProcess == 'SURGERY_COORDINATOR_PROCESS' || currentProcess == "AKIDO_SCRIBE_PROCESS" || currentProcess == 'AKIDO_REVIEW_CODING') {
+                    var objType = $('#EncounterTable > tbody > tr.highlight > td:nth-child(16)')[0].outerText.trim();
+                    //Jira #CAP-706
+                    //if (currentProcess == "SCRIBE_CORRECTION" || currentProcess == 'SCRIBE_PROCESS' || currentProcess == "SCRIBE_REVIEW_CORRECTION" || currentProcess == 'MA_PROCESS' || currentProcess == 'TECHNICIAN_PROCESS' || currentProcess == 'READING_PROVIDER_PROCESS' || currentProcess == 'REVIEW_CODING' || currentProcess == 'CHECK_OUT' || currentProcess == 'SURGERY_COORDINATOR_PROCESS') {
+                    if (currentProcess == "SCRIBE_CORRECTION" || currentProcess == 'SCRIBE_PROCESS' || currentProcess == "SCRIBE_REVIEW_CORRECTION" || currentProcess == 'MA_PROCESS' || currentProcess == 'TECHNICIAN_PROCESS' || currentProcess == 'READING_PROVIDER_PROCESS' || currentProcess == 'REVIEW_CODING' || currentProcess == 'CHECK_OUT' || currentProcess == 'SURGERY_COORDINATOR_PROCESS' || currentProcess == "AKIDO_SCRIBE_PROCESS" || currentProcess == 'AKIDO_REVIEW_CODING') {
+                        var encounterID = $('#EncounterTable > tbody > tr.highlight > td:nth-child(14)')[0].outerText.trim();
+                    }
+                    var apptdt = $('#EncounterTable > tbody > tr.highlight > td:nth-child(2)')[0].outerText.trim();
+                    var humanid = $('#EncounterTable > tbody > tr.highlight > td:nth-child(3)')[0].outerText.trim();
+                    var physcianid = $('#EncounterTable > tbody > tr.highlight > td:nth-child(15)')[0].outerText.trim();
+                    var date = $('#EncounterTable > tbody > tr.highlight > td:nth-child(17)')[0].outerText.trim();
+                    var ExamRoom = document.getElementById("Exam").value;
+                    var now = new Date();
+                    var utc = (now.getUTCMonth() + 1) + '/' + now.getUTCDate() + '/' + now.getUTCFullYear(); utc += ' ' + now.getUTCHours() + ':' + now.getUTCMinutes() + ':' + now.getUTCSeconds();
+                    if (currentProcess == "CHECK_OUT") {
+                        if (humanid != undefined && humanid != '' && encounterID != undefined && encounterID != '' && physcianid != undefined && physcianid != '') {
+                            var obj = new Array();
+                            $('#GeneralQTable td').find('input[type=checkbox]:checked')[0].checked = false;
+                            $('#GeneralQTable tr').removeClass("highlight");
+                            var Result = openRadWindow("frmCheckOut.aspx?HumanID=" + humanid + "&EncounterID=" + encounterID + "&PhysicianId=" + physcianid, 800, 1260, obj, 'RadWindowCheckout');
+                            return false;
+                        }
+                    }
+                    else {
+                        var Data = [humanid, encounterID, physcianid, currentProcess, objType, date, utc, ExamRoom, Showall, apptdt];
+
+                        $.ajax({
+                            type: "POST",
+                            url: "frmMyQueueNew.aspx/ProcessGenEncounter",
+                            data: JSON.stringify({
+                                "data": Data,
+                            }),
+                            contentType: "application/json; charset=utf-8",
+                            dataType: "json",
+                            async: true,
+                            success: function (data) {
+                                //jira #cap190 - Workflow issue - Current process PROVIDER_PROCESS current owner MA
+                                if (data.d == 'UNKNOWN') {
+                                    { sessionStorage.setItem('StartLoading', 'false'); StopLoadFromPatChart(); }
+                                    DisplayErrorMessage('1400013');
+                                    return false;
+                                }
+                                sessionStorage.setItem("EnablePFSHMenu", "true");
+                                localStorage.setItem("CodingException", encounterID);
+                                //Jira #CAP-709
+                                localStorage.setItem("CurrentProcess", currentProcess);
+                                sessionStorage.setItem("EncId_PatSummaryBar", encounterID);
+                                //sessionStorage.setItem("Enc_DOS", date);
+                                sessionStorage.setItem("Enc_DOS", data.d);
+                                window.location = "frmPatientChart.aspx?hdnLocalTime=" + utc + "&Notification_Type=All";//BugID:52556,52627
+                                $('#GeneralQTable td').find('input[type=checkbox]:checked').removeAttr('checked');
+                                $('#GeneralQTable tr').removeClass("highlight");
+
+                            },
+                            error: function OnError(xhr) {
+                                { sessionStorage.setItem('StartLoading', 'false'); StopLoadFromPatChart(); }
+                                if (xhr.status == 999)
+                                    window.location = xhr.statusText;
+                                else {
+                                    var log = JSON.parse(xhr.responseText);
+                                    console.log(log);
+                                    alert("USER MESSAGE:\n" +
+                                        ". Cannot process request. Please Login again and retry. \nEXCEPTION DETAILS: \n" +
+                                        "Message: " + log.Message);
+                                }
+                            }
+                        });
+                    }
+                }
+                else {
+                    alert('Selected encounter cannot be processed.');
+                    $('#GeneralQTable td').find('input[type=checkbox]:checked').removeAttr('checked');
+                    $('#GeneralQTable tr').removeClass("highlight");
+                    { sessionStorage.setItem('StartLoading', 'false'); StopLoadFromPatChart(); }
+                    return false;
+                }
             }
         }
         else {
-            alert("Please select an encounter to process.");
+            if ((this).innerText.indexOf('Task') > -1) {
+                alert("Please select an Task to process.");
+            }
+            else if ((this).innerText.indexOf('Encounter') > -1) {
+                alert("Please select an encounter to process.");
+            }
+            //alert("Please select an encounter to process.");
             $('#GeneralQTable td').find('input[type=checkbox]:checked').removeAttr('checked');
             $('#GeneralQTable tr').removeClass("highlight");
             { sessionStorage.setItem('StartLoading', 'false'); StopLoadFromPatChart(); }
@@ -827,8 +894,15 @@ function OnClientCloseWindow() {
     //Jira #CAP-889
     //chkShowAllClick();
     var removeList = sessionStorage.getItem('MyQRemoveIdList');
-    var btnid = $('#divMyQTab .btncolorMyQ')[0].id;
-    if (removeList!= null && removeList != "") {
+    var btnid = '';
+    if ($('#btnMyQ')[0].className.indexOf('btncolorMyQ') > -1) {
+        btnid = $('#divMyQTab .btncolorMyQ')[0].id;
+    }
+    else {
+        btnid = $('#divGeneralQTabs .btncolorMyQ')[0].id;
+    }
+    
+    if (removeList != "") {
         var removearry = removeList.split(",");
         for (let i = 0; i < removearry.length; i++) {
             if (btnid.indexOf("Order") > -1) {
@@ -837,6 +911,9 @@ function OnClientCloseWindow() {
             }
             else if (btnid == "btnMyTask") {
                 $('#MyQTable tr').find('td:eq(8):contains(' + removearry[i].split("~")[0] + ')').parent().remove();
+            }
+            else if (btnid == "btnTask") {
+                $('#GeneralQTable tr').find('td:eq(8):contains(' + removearry[i].split("~")[0] + ')').parent().remove();
             }
             else if (btnid == "btnMyScan") {
                 $('#MyQTable tr').find('td:eq(5):contains(' + removearry[i].split("~")[0] + ')').parent().remove();
@@ -852,14 +929,17 @@ function OnClientCloseWindow() {
         }
 
         var numberofEncounters = "";
-        if ($('#dvAdd').find("#EncounterTable tbody").length > 0) {
-            numberofEncounters = $('#dvAdd').find("#EncounterTable tbody").children().length;
+        if (btnid == "btnTask" && $('#GeneralQTable').find("#EncounterTable tbody").length > 0) {
+            numberofEncounters = $('#GeneralQTable').find("#EncounterTable tbody").children().length;
+        }
+        else if ($('#dvAdd').find("#EncounterTable tbody").length > 0) {
+             numberofEncounters = $('#dvAdd').find("#EncounterTable tbody").children().length;
         }
         else {
             numberofEncounters = 0;
         }
         if (btnid != undefined && numberofEncounters != undefined) {
-            document.getElementById(btnid).innerText = document.getElementById(btnid).innerText.split("(")[0] + "(" + numberofEncounters + ")";
+            document.getElementById(btnid).innerText = document.getElementById(btnid).innerText.split("(")[0] + " (" + numberofEncounters + ")";
         }
     }
    
@@ -908,8 +988,9 @@ function GenQLoad() {
 
                 $("#btnOrder")[0].innerText = "Orders Q " + "(" + objdata.count[0].Order_Count + ")";
 
-                $("#btnAmendmnt")[0].innerText = "Amendment Q" + "(" + objdata.count[0].Amendmnt_Count + ")";
+                $("#btnAmendmnt")[0].innerText = "Amendment Q " + "(" + objdata.count[0].Amendmnt_Count + ")";
 
+                $("#btnTask")[0].innerText = "Tasks Q " + "(" + objdata.count[0].Task_Count + ")";
 
                 localStorage.setItem("GenralOrderCount", objdata.count[0].Order_Count);
 
@@ -1080,6 +1161,8 @@ function ShowMyQTabs(sender) {
         $("#btnAmendmnt").addClass("default");
         $("#btnOrder").removeClass("btncolorMyQ");
         $("#btnOrder").addClass("default");
+        $("#btnTask").removeClass("btncolorMyQ");
+        $("#btnTask").addClass("default");
 
         $('#btnChkOut')[0].style.display = "";//BugID:48827
         { sessionStorage.setItem('StartLoading', 'true'); StartLoadFromPatChart(); }
@@ -1590,10 +1673,14 @@ function loadenc() {
     $("#chkMyShowAll")[0].disabled = false;
     var sShowall = '';
     var MyShowAll = localStorage.getItem('ShowallGeneralqueue');
-    if (MyShowAll == "Checked")
+    if (MyShowAll == "Checked") {
         sShowall = MyShowAll;
-    else
+        $("#chkShowAll")[0].checked = true;
+    }
+    else {
         sShowall = "Unchecked";
+        $("#chkShowAll")[0].checked = false;
+    }
     $.ajax({
         type: "POST",
         url: "frmMyQueueNew.aspx/LoadEncounterTabClick",
@@ -1635,6 +1722,70 @@ function loadenc() {
             }
             //$('#EncounterTable th').addClass('header');
             SortTableHeader('GeneralQ');
+            RowClick();
+            { sessionStorage.setItem('StartLoading', 'false'); StopLoadFromPatChart(); }
+        },
+        error: function OnError(xhr) {
+            { sessionStorage.setItem('StartLoading', 'false'); StopLoadFromPatChart(); }
+            if (xhr.status == 999)
+                window.location = xhr.statusText;
+            else {
+                var log = JSON.parse(xhr.responseText);
+                console.log(log);
+                alert("USER MESSAGE:\n" +
+                    ". Cannot process request. Please Login again and retry. \nEXCEPTION DETAILS: \n" +
+                    "Message: " + log.Message);
+            }
+        }
+    });
+
+}
+function loadTask() {
+    $("#chkShowAll")[0].disabled = false;
+    var sShowall = '';
+    //var MyShowAll = localStorage.getItem('ShowallGeneralqueue');
+    $("#chkShowAll")[0].checked ? sShowall = "Checked" : sShowall = "Unchecked";
+    //if (Showall == "Checked")
+    //    sShowall = MyShowAll;
+    //else
+    //    sShowall = "Unchecked";
+    $.ajax({
+        type: "POST",
+        url: "frmMyQueueNew.aspx/LoadGeneralTask",
+        data: JSON.stringify({
+            "sShowall": sShowall,
+        }),
+        contentType: "application/json; charset=utf-8",
+        dataType: "json",
+        async: true,
+        success: function (data) {
+            $('#GeneralQTable').empty();
+            var tabContents;
+            var objdata = $.parseJSON(data.d);
+
+            if (objdata.length > 0) {
+                var Msg_Date_And_Time = '';
+                for (var i = 0; i < objdata.length; i++) {
+
+                    if (objdata[i].Msg_Date_And_Time == "0001-01-01T00:00:00")
+                        Msg_Date_And_Time = "";
+                    else
+                        Msg_Date_And_Time = ConvertDate(objdata[i].Msg_Date_And_Time.replace("T", " "));
+                    
+
+                    if (i == 0)
+                        tabContents = "<tr><td style='width:2%'><input type='checkbox' onclick='checkboxclick(this)'/></td><td style='width:7%'>" + objdata[i].Priority + "</td><td style='width:5%'>" + objdata[i].Human_ID + "</td><td style='width:7%'>" + objdata[i].Last_Name + "," + objdata[i].First_Name + " " + objdata[i].MI + "</td><td style='width:8%'>" + Msg_Date_And_Time.split(' ')[0] + "</td><td style='width:7%' title='" + objdata[i].Message_Notes.replace(/[\r\n]+/gm, "").replace('<br/>', " ") + "'>" + objdata[i].Message_Description + "</td><td style='width:7%'>" + objdata[i].Facility_Name + "</td><td style='width:7%'>" + objdata[i].Created_By + "</td><td style='display:none'>" + objdata[i].Message_ID + "</td></tr>";
+                    else
+                        tabContents = tabContents + "<tr><td style='width:2%'><input type='checkbox' onclick='checkboxclick(this)'/></td><td style='width:7%'>" + objdata[i].Priority + "</td><td style='width:5%'>" + objdata[i].Human_ID + "</td><td style='width:7%'>" + objdata[i].Last_Name + "," + objdata[i].First_Name + " " + objdata[i].MI + "</td><td style='width:8%'>" + Msg_Date_And_Time.split(' ')[0] + "</td><td style='width:7%' title='" + objdata[i].Message_Notes.replace(/[\r\n]+/gm, "").replace('<br/>', " ") + "'>" + objdata[i].Message_Description + "</td><td style='width:7%'>" + objdata[i].Facility_Name + "</td><td style='width:7%'>" + objdata[i].Created_By + "</td><td style='display:none'>" + objdata[i].Message_ID + "</td></tr>";
+                }
+
+                $("#GeneralQTable").append("<table id=EncounterTable class='table table-bordered Gridbodystyle' style='table-layout: fixed;'><thead class='header' style='border: 0px;width:96.7%;'><tr class='header'><th style='border: 1px solid #909090;text-align: center;width: 2%;'>Select<input type='checkbox' onclick='selectAll(this)'/></th><th style='border: 1px solid #909090;text-align: center;width: 7%;'>Priority</th><th style='border: 1px solid #909090;text-align: center;width: 5%;'>Acct. #</th><th style='border: 1px solid #909090;text-align: center;width: 7%;'>Patient Name</th><th style='border: 1px solid #909090;text-align: center;width: 8%;'>Message Date</th><th style='border: 1px solid #909090;text-align: center;width: 7%;'>Message Description</th><th style='border: 1px solid #909090;text-align: center;width: 7%;'>Facility Name</th><th style='border: 1px solid #909090;text-align: center;width: 7%;'>Created By</th><th style='border: 1px solid #909090; display: none;'>Message_ID</th></tr></thead><tbody style='word-wrap: break-word;'>" + tabContents + "</tbody></table>");
+            }
+            else {
+                $("#GeneralQTable").append("<table id=EncounterTable class='table table-bordered Gridbodystyle' style='table-layout: fixed;'><thead class='header' style='border: 0px;width:96.7%;'><tr class='header'><th style='border: 1px solid #909090;text-align: center;width: 2%;'>Select<input type='checkbox' onclick='selectAll(this)'/></th><th style='border: 1px solid #909090;text-align: center;width: 7%;'>Priority</th><th style='border: 1px solid #909090;text-align: center;width: 5%;'>Acct. #</th><th style='border: 1px solid #909090;text-align: center;width: 7%;'>Patient Name</th><th style='border: 1px solid #909090;text-align: center;width: 8%;'>Message Date</th><th style='border: 1px solid #909090;text-align: center;width: 7%;'>Message Description</th><th style='border: 1px solid #909090;text-align: center;width: 7%;'>Facility Name</th><th style='border: 1px solid #909090;text-align: center;width: 7%;'>Created By</th><th style='border: 1px solid #909090; display: none;'>Message_ID</th></tr></thead></table>");
+            }
+            $("#btnTask")[0].innerText = "Tasks Q " + "(" + objdata.length + ")";
+            SortTableHeader('GeneralQTask');
             RowClick();
             { sessionStorage.setItem('StartLoading', 'false'); StopLoadFromPatChart(); }
         },
@@ -2175,6 +2326,8 @@ function ChangeTableForTabs(sender) {
         $('#GeneralQTable').empty();
         $("#btnEnc").removeClass("default");
         $("#btnEnc").addClass("btncolorMyQ");
+        $("#btnTask").removeClass("btncolorMyQ");
+        $("#btnTask").addClass("default");
         $("#btnOrder").removeClass("btncolorMyQ");
         $("#btnOrder").addClass("default");
         $("#btnScan").removeClass("btncolorMyQ");
@@ -2199,7 +2352,37 @@ function ChangeTableForTabs(sender) {
         $('#btnChkOut')[0].style.display = "";
         $('#MoveTo')[0].innerText = "Move To My Encounters";
         $('#Processenc')[0].style.display = "none";
+        $('#Processenc')[0].innerText = "Process Encounter";
         window.setTimeout(loadenc, 300);
+    }
+    else if (sender.innerText.indexOf("Task") > -1) {
+        { sessionStorage.setItem('StartLoading', 'true'); StartLoadFromPatChart(); }
+        $('#GeneralQTable').empty();
+        $("#btnTask").removeClass("default");
+        $("#btnTask").addClass("btncolorMyQ");
+        $("#btnOrder").removeClass("btncolorMyQ");
+        $("#btnOrder").addClass("default");
+        $("#btnEnc").removeClass("btncolorMyQ");
+        $("#btnEnc").addClass("default");
+        $("#btnScan").removeClass("btncolorMyQ");
+        $("#btnScan").addClass("default");
+        $("#btnGeneral").removeClass("default");
+        $("#btnGeneral").addClass("btncolorMyQ");
+        $("#btnAmendmnt").removeClass("btncolorMyQ");
+        $("#btnAmendmnt").addClass("default");
+        $('#RefreshQ').css("background-color", "");
+        $('#btnChkOut').css("background-color", "");
+        $('#MoveTo').css("background-color", "");
+        $('#RefreshQ')[0].innerText = "Refresh Task Q";
+        $('#MoveTo')[0].innerText = "Move To My Task";
+        $('#btnChkOut')[0].style.display = "none";
+        $('#lblEr')[0].style.display = "none";
+        $('#Exam')[0].style.display = "none";
+        $('#Processenc').css("background-color", "");
+        $('#Processenc')[0].style.display = "inline-block";
+        $('#Processenc')[0].style.visibility = "visible";
+        $('#Processenc')[0].innerText = "Process Task";
+        window.setTimeout(loadTask, 300);
     }
     else if (sender.innerText.indexOf("Order") > -1) {
         { sessionStorage.setItem('StartLoading', 'true'); StartLoadFromPatChart(); }
@@ -2208,6 +2391,8 @@ function ChangeTableForTabs(sender) {
         $("#btnOrder").addClass("btncolorMyQ");
         $("#btnEnc").removeClass("btncolorMyQ");
         $("#btnEnc").addClass("default");
+        $("#btnTask").removeClass("btncolorMyQ");
+        $("#btnTask").addClass("default");
         $("#btnScan").removeClass("btncolorMyQ");
         $("#btnScan").addClass("default");
         $("#btnGeneral").removeClass("default");
@@ -2235,6 +2420,8 @@ function ChangeTableForTabs(sender) {
         $("#btnOrder").addClass("default");
         $("#btnEnc").removeClass("btncolorMyQ");
         $("#btnEnc").addClass("default");
+        $("#btnTask").removeClass("btncolorMyQ");
+        $("#btnTask").addClass("default");
         $("#btnScan").removeClass("btncolorMyQ");
         $("#btnScan").addClass("default");
         $("#btnGeneral").removeClass("default");
@@ -3003,6 +3190,10 @@ function shwllclck() {
         });
 
     }
+    else if (document.getElementById("RefreshQ").innerText.indexOf("Refresh Task Q") > -1 && $('#RefreshQ').is(":visible")) {
+        $('#GeneralQTable').empty();
+        loadTask();
+    }
 }
 
 function chkShowAllClick(sender) {
@@ -3110,7 +3301,16 @@ function RowClick() {
                 }
                 $('#Processenc').click();
             }
+            else if (event.target.tagName != 'TH' && document.getElementById("RefreshQ").innerText.indexOf("Refresh Task Q") > -1) {
+                { sessionStorage.setItem('StartLoading', 'true'); StartLoadFromPatChart(); }
+                if ($(this)[0]?.children[0]?.children[0]?.checked != undefined) {
+                    $(this)[0].children[0].children[0].checked = true;
+                    checkboxclick($(this)[0].children[0].children[0]);
+                }
+                $('#Processenc').click();
+            }
         }
+        
 //Jira #CAP-889
         sessionStorage.setItem('MyQRemoveIdList', '');
     });
@@ -3401,6 +3601,46 @@ function movetoorder() {
         }
     });
 }
+function movetotask() {
+    var inputData = new Array();
+    $('#EncounterTable > tbody > tr.highlight').each(function (i, row) {
+
+        var $row = $(row);
+
+        inputData.push("TASK" + "~" + $row.find('td:nth-child(9)')[0].innerText);
+    });
+    
+    $.ajax({
+        type: "POST",
+        url: "frmMyQueueNew.aspx/MoveToMyTask",
+        data: JSON.stringify({
+            "data": inputData,
+        }),
+        contentType: "application/json; charset=utf-8",
+        dataType: "json",
+        async: true,
+        success: function (data) {
+            $('#GeneralQTable').empty();
+            //var tabContents;
+            //var objdata = $.parseJSON(data.d);
+            loadTask();
+            //$('#EncounterTable th').addClass('header');
+            { sessionStorage.setItem('StartLoading', 'false'); StopLoadFromPatChart(); }
+        },
+        error: function OnError(xhr) {
+            { sessionStorage.setItem('StartLoading', 'false'); StopLoadFromPatChart(); }
+            if (xhr.status == 999)
+                window.location = xhr.statusText;
+            else {
+                var log = JSON.parse(xhr.responseText);
+                console.log(log);
+                alert("USER MESSAGE:\n" +
+                    ". Cannot process request. Please Login again and retry. \nEXCEPTION DETAILS: \n" +
+                    "Message: " + log.Message);
+            }
+        }
+    });
+}
 function MoveToClick(sender) {
 
     var Showall = '';
@@ -3435,6 +3675,17 @@ function MoveToClick(sender) {
         else {
             { sessionStorage.setItem('StartLoading', 'false'); StopLoadFromPatChart(); }
             alert("Please select an encounter to process.");
+        }
+    }
+    else if (document.getElementById("MoveTo").innerText.indexOf("Move To My Task") > -1 && $('#RefreshQ').is(":visible")) {
+        { sessionStorage.setItem('StartLoading', 'true'); StartLoadFromPatChart(); }
+        if ($('#GeneralQTable').children().find('.highlight').length > 0) {
+
+            window.setTimeout(movetotask, 300);
+        }
+        else {
+            { sessionStorage.setItem('StartLoading', 'false'); StopLoadFromPatChart(); }
+            alert("Please select an task to process.");
         }
     }
 }
@@ -3594,7 +3845,7 @@ function SortTableHeader(s) {
     if (s == 'MyQ' || s == 'MyQTask' || s == 'MyQOrder' || s == 'MyQScan' || s == 'MyQPrescription' || s == 'MyQAmendment')
         Header = $("#MyQTable th");
     else
-        if (s == 'GeneralQOrder' || s == 'GeneralQ' || s == 'GeneralQScan' || s == 'GeneralQAmendment')
+        if (s == 'GeneralQOrder' || s == 'GeneralQ' || s == 'GeneralQScan' || s == 'GeneralQAmendment' || s == 'GeneralQTask')
             Header = $("#GeneralQTable th");
     for (var i = 0; i < Header.length; i++)
         Header[i].title = "Click here to sort";
@@ -3678,6 +3929,7 @@ function SortTableHeader(s) {
                 case 'GeneralQOrder': billQ = ['d', 'd', 'i', 'i', 's', 'd', 's', 's', 's', 's']; break;
                 case 'GeneralQScan': billQ = ['s', 'i', 'd', 's', 's', 's']; break;
                 case 'GeneralQAmendment': billQ = ['d', 'd', 's', 'i', 'i', 's', 'd', 's', 's', 'd', 's', 's']; break;
+                case 'GeneralQTask': billQ = ['','s', 'i', 's', 'd', 's', 's', 's']; break;
             }
             var columnIndex = $(this).index();
             var Col = billQ[columnIndex];

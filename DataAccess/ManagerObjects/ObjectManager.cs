@@ -1272,6 +1272,8 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
                         myq.Message_Notes = Convert.ToString(oj[14]);
                     if (oj[15] != null && oj[15] != string.Empty)
                         myq.Created_By = Convert.ToString(oj[15]);
+                    if (oj[16] != null && oj[16] != string.Empty)
+                        myq.Facility_Name = Convert.ToString(oj[16]);
                 }
                 //else if (ObjType.Contains("DIAGNOSTIC ORDER") || ObjType.Contains("IMAGE ORDER") || ObjType.Contains("INTERNAL DIAGNOSTIC ORDER") || ObjType.Contains("INTERNAL IMAGE ORDER"))
                 else if (ObjType.Contains("DIAGNOSTIC ORDER") || ObjType.Contains("IMAGE ORDER"))
@@ -2106,10 +2108,16 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
                         {
 
                             query1 = Mysession.GetNamedQuery("CountFillMyTaskObjectDetails.WithFacility.ShowAllFalse");
-                            query1.SetString(2, FacName);
-                            query1.SetString(0, UserName);
-                            query1.SetString(1, "UNKNOWN");
-                            //query1.SetParameterList("ObjList", myObjType);
+                            //query1.SetString(2, FacName);
+                            //query1.SetString(0, UserName);
+                            //query1.SetString(1, "UNKNOWN");
+                            ////query1.SetParameterList("ObjList", myObjType);
+                            query1.SetString("userName", UserName);
+                            query1.SetString("currentOwner", "UNKNOWN");
+                            query1.SetString("facilityName", FacName);
+                            string[] ObjTaskType = new string[1];
+                            ObjTaskType[0] = "TASK";
+                            query1.SetParameterList("ObjList", ObjTaskType);
                             FavoriteList = new ArrayList(query1.List());
                             myq.Task_Count = Convert.ToInt16(FavoriteList[0]);
                         }
@@ -3003,20 +3011,56 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
                     }
                     else if (ObjType.Contains("TASK"))
                     {
-                        if (bShowAll == true)
-                        {
+                        //if (bShowAll == true)
+                        //{
 
-                            if (FacName == "ALL")
+                        //    if (FacName == "ALL")
+                        //    {
+                        //        query1 = Mysession.GetNamedQuery("FillMyTaskObjectDetails.WithoutFacility");
+                        //        query1.SetString(0, UserName);
+                        //    }
+                        //}
+                        //else
+                        //{
+                        //    if (FacName == "ALL")
+                        //    {
+
+                        //        //queryTask = Mysession.GetNamedQuery("FillMyTaskObjectDetails.WithoutFacility.ShowAllFalseCreatedby");
+                        //        //queryTask.SetString(0, UserName);
+                        //        //queryTask.SetParameterList("ObjList", ObjType);
+                        //        //FavoriteListTask = new ArrayList(queryTask.List());
+                        //        query1 = Mysession.GetNamedQuery("FillMyTaskObjectDetails.WithoutFacility.ShowAllFalse");
+                        //        query1.SetString(0, UserName);
+                        //        // query1.SetInt32(2, DefaultNoofDays);
+                        //    }
+                        //    else
+                        //    {
+                        //        query1 = Mysession.GetNamedQuery("FillMyTaskObjectDetails.WithFacility.ShowAllFalse");
+                        //        query1.SetString(0, UserName);
+                        //        query1.SetString(1, "UNKNOWN");
+                        //        query1.SetString(2, FacName);
+                        //        //query1.SetInt32(2, DefaultNoofDays);
+                        //    }
+                        //}
+                        ////query1.SetString(0, UserName);
+                        ////if (ProcessType == "UNASSIGNED")
+                        ////{
+                        ////    query1.SetString(1, "UNKNOWN");
+                        ////}
+                        ////else
+                        ////{
+                        ////    query1.SetString(1, UserName);
+                        ////}
+
+                        if (FacName == "ALL")
+                        {
+                            if (bShowAll)
                             {
                                 query1 = Mysession.GetNamedQuery("FillMyTaskObjectDetails.WithoutFacility");
                                 query1.SetString(0, UserName);
                             }
-                        }
-                        else
-                        {
-                            if (FacName == "ALL")
+                            else
                             {
-
                                 //queryTask = Mysession.GetNamedQuery("FillMyTaskObjectDetails.WithoutFacility.ShowAllFalseCreatedby");
                                 //queryTask.SetString(0, UserName);
                                 //queryTask.SetParameterList("ObjList", ObjType);
@@ -3025,24 +3069,27 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
                                 query1.SetString(0, UserName);
                                 // query1.SetInt32(2, DefaultNoofDays);
                             }
+                        }
+                        else
+                        {
+                            if (bShowAll)
+                            {
+                                query1 = Mysession.GetNamedQuery("FillGenTaskObjectDetails.WithFacility.WithAllAppointments");
+                                //query1.SetDateTime(0, DateTime.MinValue);
+                                query1.SetString("userName", UserName);
+                                query1.SetString("currentOwner", "UNKNOWN");
+                                query1.SetString("facilityName", FacName);
+                            }
                             else
                             {
-                                query1 = Mysession.GetNamedQuery("FillMyTaskObjectDetails.WithFacility.ShowAllFalse");
-                                query1.SetString(0, UserName);
-                                query1.SetString(1, "UNKNOWN");
-                                query1.SetString(2, FacName);
+                                query1 = Mysession.GetNamedQuery("FillGenTaskObjectDetails.WithFacility.ShowAllFalse");
+                                query1.SetString("userName", UserName);
+                                query1.SetString("currentOwner", "UNKNOWN");
+                                query1.SetString("facilityName", FacName);
                                 //query1.SetInt32(2, DefaultNoofDays);
                             }
                         }
-                        //query1.SetString(0, UserName);
-                        //if (ProcessType == "UNASSIGNED")
-                        //{
-                        //    query1.SetString(1, "UNKNOWN");
-                        //}
-                        //else
-                        //{
-                        //    query1.SetString(1, UserName);
-                        //}
+
                         query1.SetParameterList("ObjList", ObjType);
                         FavoriteList = new ArrayList(query1.List());
                         //ArrayList FavoriteListFinaltask = new ArrayList();

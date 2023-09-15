@@ -176,6 +176,7 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
                                 objordsub.Modified_By = string.Empty;
                                 objordsub.Modified_Date_And_Time = DateTime.MinValue;
                                 objordsub.Facility_Name = sFacilityName;
+                                objordsub.Is_Task_Created = "N";
                                 ilstOrdersSubmitnew.Add(objordsub);
                             }
                         }
@@ -298,6 +299,7 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
                 {
                     os.Height = Height;
                     os.Weight = Weight;
+                    os.Is_Task_Created = "N";
                 }
                 iMySession.Close();
             }
@@ -1717,10 +1719,12 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
 
                 if (SavOrderSubmit.Count > 0)
                 {
+                    SavOrderSubmit[0].Is_Task_Created = "N";
                     uHumanId = SavOrderSubmit[0].Human_ID;
                 }
                 else if (UpdOrderSubmit.Count > 0)
                 {
+                    UpdOrderSubmit[0].Is_Task_Created = "N";
                     uHumanId = UpdOrderSubmit[0].Human_ID;
                 }
                 iResult = objOrdersSubmitManager.SaveUpdateDelete_DBAndXML_WithoutTransaction(ref SavOrderSubmit, ref UpdOrderSubmit, null, MySession, MACAddress, true, true, uHumanId, string.Empty, ref XMLObj);
@@ -1837,10 +1841,12 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
                     IList<Orders> updOrders = saveList.Concat(updtList).ToList<Orders>();
                     if (tempOrdersSubmit.Count > 0)
                     {
+                        tempOrdersSubmit[0].Is_Task_Created = "N";
                         uHumanId = tempOrdersSubmit[0].Human_ID;
                     }
                     else if (updOrdersSubmit.Count > 0)
                     {
+                        updOrdersSubmit[0].Is_Task_Created = "N";
                         uHumanId = updOrdersSubmit[0].Human_ID;
                     }
                     // iResult = objOrdersSubmitManager.SaveUpdateDeleteWithoutTransaction(ref tempOrdersSubmit, updOrdersSubmit, null, MySession, MACAddress);
@@ -2564,6 +2570,7 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
                         IList<OrdersSubmit> SaveList = new List<OrdersSubmit>();
                         IList<OrdersSubmit> SaveListnull = null;
                         //trans = MySession.BeginTransaction();
+                        objOrdersSubmit.Is_Task_Created = "N";
                         SaveList.Add(objOrdersSubmit);
                         //int i = objOrdersSubmitManager.SaveUpdateDeleteWithoutTransaction(ref SaveList, null, null, MySession, MACAddress);
                         int i = objOrdersSubmitManager.SaveUpdateDelete_DBAndXML_WithoutTransaction(ref SaveList, ref SaveListnull, null, MySession, MACAddress, false, true, 0, string.Empty, ref XMLObj);
@@ -9518,6 +9525,7 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
                         {
                             if (ordersubmitlist.Count > 0)
                             {
+                                ordersubmitlist.ToList().ForEach(x => x.Is_Task_Created = "N");
                                 iResult = objOrdersSubmitManager.SaveUpdateDelete_DBAndXML_WithoutTransaction(ref ordersubmitlistnull, ref ordersubmitlist, null, MySession, MACAddress, false, true, 0, string.Empty, ref XMLObj);
                                 if (iResult == 2)
                                 {

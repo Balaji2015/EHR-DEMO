@@ -891,7 +891,7 @@ where w.current_owner = ? and (w.Obj_Type in (:ObjList))]]>
 	<sql-query name="FillMyTaskObjectDetails.WithoutFacility">
 		<![CDATA[SELECT n.Message_ID,N.Human_Id,N.Message_Description,(select u.person_name from user u where u.user_name=N.Assigned_To),N.Modified_By
 ,cast(N.Modified_Date_And_Time as char(100)) as d,cast(N.Message_Date_And_Time as char(100)),n.Version,ifnull(h.last_name,''),ifnull(h.first_name,''),ifnull(h.mi,''),
-h.Patient_Account_External,w.Obj_Type,n.priority,n.Notes,(select u.person_name from user u where u.user_name=n.Created_By) FROM wf_object w left join patient_notes n 
+h.Patient_Account_External,w.Obj_Type,n.priority,n.Notes,(select u.person_name from user u where u.user_name=n.Created_By),'' FROM wf_object w left join patient_notes n 
 on (n.Message_Id=w.obj_system_id) left join human h on (n.Human_id=h.human_id) 
 left join process_master m on (w.current_process=m.process_name)
 where w.current_owner = ? and (w.Obj_Type in (:ObjList))  and m.process_type='ASSIGNED' order by n.Message_Date_And_Time desc ]]>
@@ -1001,7 +1001,7 @@ where w.Is_Default_MyQ_LineItem=1 and  w.current_owner = ?  and (w.Obj_Type in (
 	<sql-query name="FillMyTaskObjectDetails.WithoutFacility.ShowAllFalse">
 		<![CDATA[SELECT n.Message_ID,N.Human_Id,N.Message_Description,(select u.person_name from user u where u.user_name=N.Assigned_To),N.Modified_By
 ,cast(N.Modified_Date_And_Time as char(100)) as d,cast(N.Message_Date_And_Time as char(100)),n.Version,ifnull(h.last_name,''),ifnull(h.first_name,''),ifnull(h.mi,''),
-h.Patient_Account_External,w.Obj_Type,n.priority,n.Notes,(select u.person_name from user u where u.user_name=n.Created_By) FROM wf_object w left join patient_notes n  on (n.Message_Id=w.obj_system_id) 
+h.Patient_Account_External,w.Obj_Type,n.priority,n.Notes,(select u.person_name from user u where u.user_name=n.Created_By),'' FROM wf_object w left join patient_notes n  on (n.Message_Id=w.obj_system_id) 
 left join human h on (n.Human_id=h.human_id) 
 left join process_master m on (w.current_process=m.process_name) 
 where w.Is_Default_MyQ_LineItem=1 and  w.current_owner = ?  and (w.Obj_Type in (:ObjList)) and m.process_type='ASSIGNED' order by n.Message_Date_And_Time desc ]]>
@@ -7592,6 +7592,21 @@ left join carrier c on (i.carrier_id=c.carrier_id)
     and w.facility_name = :facilityName
     and (w.Obj_Type in (:ObjList))]]>
 	</sql-query>
+	<sql-query name="FillGenTaskObjectDetails.WithFacility.WithAllAppointments">
+		<![CDATA[SELECT n.Message_ID,N.Human_Id,N.Message_Description,(select u.person_name from user u where u.user_name=N.Assigned_To),N.Modified_By
+,cast(N.Modified_Date_And_Time as char(100)) as d,cast(N.Message_Date_And_Time as char(100)),n.Version,ifnull(h.last_name,''),ifnull(h.first_name,''),ifnull(h.mi,''),
+h.Patient_Account_External,w.Obj_Type,n.priority,n.Notes,(select u.person_name from user u where u.user_name=n.Created_By),n.Facility_Name
+    
+    FROM wf_object w 
+    inner join patient_notes n on (w.obj_system_id = n.Message_Id) 
+    inner join human h on (n.Human_ID = h.Human_ID) 
+    inner join process_user pu on (w.current_process = pu.process_name)
+    where 
+    pu.user_name = :userName 
+    and w.current_owner = :currentOwner 
+    and w.facility_name = :facilityName       
+    and (w.Obj_Type in (:ObjList)) order by n.Message_Date_And_Time desc]]>
+	</sql-query>
 	<!--commentted by prabu after merge-->
 
 	<!--<sql-query name="FillMyAddendumObjectDetails.WithoutFacility.WithoutAllAppointments">
@@ -7726,6 +7741,22 @@ Physician_Suffix) from physician_library where Physician_Library_ID = a.Provider
     and w.current_owner = :currentOwner
     and w.facility_name = :facilityName
     and (w.Obj_Type in (:ObjList))]]>
+	</sql-query>
+	<sql-query name="FillGenTaskObjectDetails.WithFacility.ShowAllFalse">
+		<!--, if(a.Provider_Signed_ID > 0 && a.Provider_Review_Signed_ID > 0, (select concat(Physician_Prefix,' ',Physician_First_Name,' ',Physician_Middle_Name,' ',Physician_Last_Name,' ',Physician_Suffix) from physician_library where Physician_Library_ID = a.Provider_Review_Signed_ID), if(a.Provider_Signed_ID > 0, (select concat(Physician_Prefix,' ',Physician_First_Name,' ',Physician_Middle_Name,' ',Physician_Last_Name,' ',Physician_Suffix) from physician_library where Physician_Library_ID = a.Provider_Signed_ID), ' '))-->
+		<![CDATA[SELECT n.Message_ID,N.Human_Id,N.Message_Description,(select u.person_name from user u where u.user_name=N.Assigned_To),N.Modified_By
+,cast(N.Modified_Date_And_Time as char(100)) as d,cast(N.Message_Date_And_Time as char(100)),n.Version,ifnull(h.last_name,''),ifnull(h.first_name,''),ifnull(h.mi,''),
+h.Patient_Account_External,w.Obj_Type,n.priority,n.Notes,(select u.person_name from user u where u.user_name=n.Created_By),n.Facility_Name
+    
+    FROM wf_object w 
+    inner join patient_notes n on (w.obj_system_id = n.Message_Id) 
+    inner join human h on (n.Human_ID = h.Human_ID) 
+    inner join process_user pu on (w.current_process = pu.process_name)
+    where w.Is_Default_MyQ_LineItem=1 and
+    pu.user_name = :userName 
+    and w.current_owner = :currentOwner 
+    and w.facility_name = :facilityName       
+    and (w.Obj_Type in (:ObjList)) order by n.Message_Date_And_Time desc]]>
 	</sql-query>
 
 
@@ -12524,6 +12555,18 @@ where Is_Deleted='N' and e.result_master_id<>0 and Reason_Code in('ACUR_LAB_05',
 ]]>
 	</sql-query>
 
+
+	<sql-query name="GetOrderObjectDetails.For.TaskCreate">
+		<![CDATA[
+      select os.Order_Submit_ID,os.Stat, cast(os.Created_Date_And_Time as char(100)) as OrderDate,"Task" as task,"Normal" as priority,"Ancillary Order" as Ancillary_Order, os.created_by,
+concat_ws(" ",NULLIF(pl.Physician_Prefix,''), NULLIF(pl.Physician_First_Name, ''),NULLIF(pl.Physician_Middle_Name, ''), NULLIF(pl.Physician_Last_Name, '')) as PhysicianName,
+o.Lab_Procedure,o.Lab_Procedure_Description,l.lab_name, a.ICD,a.ICD_Description,os.facility_name,cast(os.Modified_Date_And_Time as char(100)) , wo.Current_Process, os.Human_ID from orders_submit os 
+left join  wf_object wo  on os.Order_Submit_ID = wo.Obj_System_Id left join Lab l on l.Lab_ID = os.Lab_ID left join patient_notes p on os.Order_Submit_ID = p.Orders_Submit_ID 
+left join physician_library pl on os.Physician_ID=pl.Physician_Library_ID left join orders o on os.Order_Submit_ID=o.Order_Submit_ID left join orders_assessment a on os.Order_Submit_ID=a.Order_Submit_ID 
+where l.Is_Task_Notification_Required="Y" and os.Is_Task_Created !="Y"  
+]]>
+	</sql-query>
+	
 	<sql-query name="GetACODetails">
 		<![CDATA[
       select h.ACO_Is_Eligible_Patient,h.ACO_Patient_Discussed,h.ACO_Patient_Discussed_By,h.Last_Name,h.First_Name,h.MI,h.Suffix from human h where h.human_id=?;
@@ -12724,14 +12767,25 @@ cast(h.Birth_Date as char(100)) as b,h.Patient_Account_External,w.Obj_Type FROM 
 left join process_user u on (w.current_process=u.process_name)
 where u.user_name=? and w.current_owner = ?  and w.Is_Default_MyQ_LineItem=1 and w.facility_name= ? and (w.Obj_Type in (:ObjList))) as c]]>-->
 
-		<![CDATA[SELECT count(*) FROM wf_object w
+		<!--<![CDATA[SELECT count(*) FROM wf_object w
 left join patient_notes n  on (n.Message_Id=w.obj_system_id)
 left join human h on (n.Human_id=h.human_id)
 left join process_user u on (w.current_process=u.process_name)
 where  w.Is_Default_MyQ_LineItem=1
 and  u.user_name=? and w.current_owner =?
 and w.facility_name=?
-and w.Obj_Type ='TASK']]>
+and w.Obj_Type ='TASK']]>-->
+
+		<![CDATA[SELECT count(*)
+    FROM wf_object w 
+    inner join patient_notes n on (w.obj_system_id = n.Message_Id) 
+    inner join human h on (n.Human_ID = h.Human_ID) 
+    inner join process_user pu on (w.current_process = pu.process_name)
+    where w.Is_Default_MyQ_LineItem=1 and
+    pu.user_name = :userName 
+    and w.current_owner = :currentOwner 
+    and w.facility_name = :facilityName       
+    and (w.Obj_Type in (:ObjList))]]>
 	</sql-query>
 
 	<sql-query name="CountFillMyAddendumObjectDetails.WithoutFacility.WithAllAppointments">

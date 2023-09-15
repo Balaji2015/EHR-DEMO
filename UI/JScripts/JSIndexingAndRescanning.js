@@ -348,9 +348,6 @@ function btnMoveToNextProcess_Clicked() {
 
 //Jira #CAP-889
     RemoveItem(document.URL, "ScanId");
-    if (document.URL.indexOf("OnlineDocuments") > -1) {
-        self.close();
-    }
 }
 function ClickMovetoNextProcess() {
     document.getElementById("IsClickDirectUpload").value = "No";

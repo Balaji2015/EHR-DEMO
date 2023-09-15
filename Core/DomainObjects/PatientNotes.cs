@@ -47,7 +47,7 @@ namespace Acurus.Capella.Core.DomainObjects
         private string _Carrier_ID = string.Empty;
         private int _Batch_ID = 0;
         private string _Is_Patient_Message = string.Empty;
-
+        private int _Orders_Submit_ID = 0;
         #endregion
         #region Constructors
 
@@ -94,7 +94,7 @@ namespace Acurus.Capella.Core.DomainObjects
             sb.Append(_Batch_ID);
             sb.Append(_Claim_Number);
             sb.Append(_Is_Patient_Message);
-
+            sb.Append(_Orders_Submit_ID);
             return sb.ToString().GetHashCode();
         }
         #endregion
@@ -402,6 +402,15 @@ namespace Acurus.Capella.Core.DomainObjects
             set
             {
                 _Is_Patient_Message = value;
+            }
+        }
+        [DataMember]
+        public virtual int Orders_Submit_ID
+        {
+            get { return _Orders_Submit_ID; }
+            set
+            {
+                _Orders_Submit_ID = value;
             }
         }
         #endregion

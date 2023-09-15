@@ -167,6 +167,7 @@
             <div id="divGeneralQTabs" class="inlineArrangement" style="margin-bottom: -7px; height: 7%;">
 
                 <button id="btnEnc" type="button" class="btn btn-default" onclick="ChangeTableForTabs(this)">Encounters Q</button>
+                <button id="btnTask" type="button" class="btn btn-default" onclick="ChangeTableForTabs(this)">Tasks Q</button>
                 <button id="btnOrder" type="button" class="btn btn-default" onclick="ChangeTableForTabs(this)">Orders Q</button>
                 <button id="btnScan" type="button" class="btn btn-default" onclick="ChangeTableForTabs(this)" style="display: none">Scan Q</button>
                 <button id="btnAmendmnt" type="button" class="btn btn-default" onclick="ChangeTableForTabs(this)">Amendment Q</button>

@@ -399,6 +399,7 @@
     <Compile Include="DTO\OrderLabDetailsDTO.cs" />
     <Compile Include="DTO\OrdersDTO.cs" />
     <Compile Include="DTO\OrderSpecimenDTO.cs" />
+    <Compile Include="DTO\OrderTaskDTO.cs" />
     <Compile Include="DTO\PatientDetailDto.cs" />
     <Compile Include="DTO\PatientPane.cs" />
     <Compile Include="DTO\PatientResultsDTO.cs" />

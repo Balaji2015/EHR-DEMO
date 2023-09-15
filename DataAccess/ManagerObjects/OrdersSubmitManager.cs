@@ -24,7 +24,7 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
         string GetTestUsingOrderSubmitID(ulong Ordersubmit_ID);
         string GetOrderingPhysicianByOrderSubmitID(ulong OrdersSubmitID);
         ulong GetOrderingPhysicianIdByOrderSubmitID(ulong OrdersSubmitID);
-        
+        IList<OrderTaskDTO> GetOrderDetailsForTaskNotification();
     }
     public partial class OrdersSubmitManager : ManagerBase<OrdersSubmit, ulong>, IOrdersSubmitManager
     {
@@ -795,6 +795,41 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
             }
             return LabLocationAddress;
 
+        }
+
+        public IList<OrderTaskDTO> GetOrderDetailsForTaskNotification()
+        {
+
+            ISession mySession = NHibernateSessionManager.Instance.CreateISession();
+            IQuery query1 = mySession.GetNamedQuery("GetOrderObjectDetails.For.TaskCreate");
+
+            ArrayList objects = new ArrayList(query1.List());
+            IList<OrderTaskDTO> OrdersSubmitList = new List<OrderTaskDTO>();
+            OrderTaskDTO OsObj = new OrderTaskDTO();
+            foreach (object[] obj in objects)
+            {
+                OsObj = new OrderTaskDTO();
+                OsObj.Order_Submit_ID = Convert.ToUInt64(obj[0]);
+                OsObj.Stat = obj[1].ToString();
+                OsObj.Created_Date_And_Time = Convert.ToDateTime((obj[2]));
+                OsObj.Task = obj[3].ToString();
+                OsObj.Priority = obj[4].ToString();
+                OsObj.Ancillary_Order = obj[5].ToString();
+                OsObj.Created_By = obj[6].ToString();
+                OsObj.Physician_Name = obj[7].ToString();
+                OsObj.Lab_Procedure = obj[8].ToString();
+                OsObj.Lab_Procedure_Description = obj[9].ToString();
+                OsObj.Lab_Name = obj[10].ToString();
+                OsObj.ICD = obj[11].ToString();
+                OsObj.ICD_Description = obj[12].ToString();
+                OsObj.Facility_Name = obj[13].ToString();
+                OsObj.Modified_Date_And_Time = Convert.ToDateTime((obj[14]));
+                OsObj.Current_Process = obj[15].ToString();
+                OsObj.Human_ID = Convert.ToUInt64(obj[16]);
+
+                OrdersSubmitList.Add(OsObj);
+            }
+            return OrdersSubmitList;
         }
     }
 }

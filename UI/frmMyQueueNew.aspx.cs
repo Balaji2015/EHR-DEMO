@@ -1180,6 +1180,32 @@ namespace Acurus.Capella.UI
             return JsonConvert.SerializeObject(addendumGeneralQ.ToList<MyQ>());
         }
         [WebMethod(EnableSession = true)]
+        public static string MoveToMyTask(string[] data)
+        {
+            if (ClientSession.UserName == string.Empty)
+            {
+                HttpContext.Current.Response.StatusCode = 999;
+                HttpContext.Current.Response.Status = "999 Session Expired";
+                HttpContext.Current.Response.StatusDescription = "frmSessionExpired.aspx";
+                return "Session Expired";
+            }
+            WFObjectManager wfMngr = new WFObjectManager();
+            for (int iCount = 0; iCount < data.Length; iCount++)
+            {
+                //wfMngr.UpdateOwner(Convert.ToUInt64(data[1]), data[0], ClientSession.UserName, string.Empty);
+                wfMngr.UpdateOwner(Convert.ToUInt64(data[iCount].Split('~')[1]), data[iCount].Split('~')[0], ClientSession.UserName, string.Empty);
+            }
+            //string[] processType = new string[2];
+            //processType[0] = "UNASSIGNED";
+            //string[] ObjType = new string[1];
+            //ObjType[0] = "ADDENDUM";
+            IList<MyQ> addendumGeneralQList = new List<MyQ>();
+            //addendumGeneralQList = wfMngr.GetListObjects(ClientSession.FacilityName, ObjType, processType, ClientSession.UserName, false, iDefaultDays, string.Empty);// ClientSession.DefaultNoofDays);
+            //var addendumGeneralQ = from p in addendumGeneralQList where p.Current_Owner == "UNKNOWN" select p;
+            //return JsonConvert.SerializeObject(addendumGeneralQList.ToList<MyQ>());
+            return JsonConvert.SerializeObject(addendumGeneralQList);
+        }
+        [WebMethod(EnableSession = true)]
         public static string MoveToMyEncounters(string[] data)
         {
             if (ClientSession.UserName == string.Empty)
@@ -1465,5 +1491,37 @@ namespace Acurus.Capella.UI
             }
             return string.Empty;
         }
+        [WebMethod(EnableSession = true)]
+        public static string LoadGeneralTask(string sShowall)
+        {
+            if (ClientSession.UserName == string.Empty)
+            {
+                HttpContext.Current.Response.StatusCode = 999;
+                HttpContext.Current.Response.Status = "999 Session Expired";
+                HttpContext.Current.Response.StatusDescription = "frmSessionExpired.aspx";
+                return "Session Expired";
+            }
+            string sGroup_ID_Log = ClientSession.EncounterId.ToString() + "-" + ClientSession.HumanId.ToString() + "-" + ClientSession.PhysicianId.ToString() + "-" + DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss:FFF");
+            UtilityManager.inserttologgingtable(ClientSession.EncounterId.ToString(), ClientSession.HumanId.ToString(), ClientSession.UserName, ClientSession.PhysicianId.ToString(), "MyQueue LoadTask : Start", DateTime.Now, sGroup_ID_Log, "frmMyQueueNew");
+            bool bValue = false;
+            if (sShowall == "Checked")
+                bValue = true;
+            string[] ProcessType = new string[2];
+            ProcessType[0] = "UNASSIGNED";
+
+            string[] ObjType = new string[1];
+            ObjType[0] = "TASK";
+            IList<MyQ> TaskQ = new List<MyQ>();
+            WFObjectManager wfMngr = new WFObjectManager();
+            UtilityManager.inserttologgingtable(ClientSession.EncounterId.ToString(), ClientSession.HumanId.ToString(), ClientSession.UserName, ClientSession.PhysicianId.ToString(), "MyQueue LoadTask GetListObjects DB call: Start", DateTime.Now, sGroup_ID_Log, "frmMyQueueNew");
+            TaskQ = wfMngr.GetListObjects(ClientSession.FacilityName, ObjType, ProcessType, ClientSession.UserName, bValue, iDefaultDays, string.Empty);// ClientSession.DefaultNoofDays);
+            UtilityManager.inserttologgingtable(ClientSession.EncounterId.ToString(), ClientSession.HumanId.ToString(), ClientSession.UserName, ClientSession.PhysicianId.ToString(), "MyQueue LoadTask GetListObjects DB call: End", DateTime.Now, sGroup_ID_Log, "frmMyQueueNew");
+
+            //TaskQ = TaskQ.Where(a => a.Current_Owner == "UNKNOWN").ToList<MyQ>();
+            //OrdersQ = OrdersQ.OrderByDescending(a => a.Created_Date_And_Time).ToList<MyQ>();
+            UtilityManager.inserttologgingtable(ClientSession.EncounterId.ToString(), ClientSession.HumanId.ToString(), ClientSession.UserName, ClientSession.PhysicianId.ToString(), "MyQueue LoadTask : End", DateTime.Now, sGroup_ID_Log, "frmMyQueueNew");
+            return JsonConvert.SerializeObject(TaskQ.ToList<MyQ>());
+        }
+
     }
 }

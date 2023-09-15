@@ -3437,8 +3437,9 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
                 ObjType[3] = "ADDENDUM";
                 ObjType[4] = "DIAGNOSTIC_RESULT";
                 ObjType[5] = "DME ORDER";
+                ObjType[6] = "TASK";
 
-                
+
             }
 
             IList<MyQueueCountDTO> GenQCount = new List<MyQueueCountDTO>();
