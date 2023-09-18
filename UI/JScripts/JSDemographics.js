@@ -1814,67 +1814,82 @@ $(document).ready(function () {
 
 function loadgrid() {
     //$('#tbodupolicyinfo tr').remove();
-
     $.ajax({
 
         type: "POST",
         url: "./frmPatientDemographics.aspx/loadGrid",
-        data: JSON.stringify({ "uPatientId": uPatientId, }),
+        //CAP 319 Bad control character in string literal in JSON 
+        //data: JSON.stringify({ "uPatientId": uPatientId }),
+        data: JSON.stringify({ "uPatientId": uPatientId }),
         contentType: "application/json; charset=utf-8",
         dataType: "json",
         success: function (data) {
-            document.getElementById("tbodupolicyinfo").innerHTML = "";
-            var objdata = $.parseJSON(data.d);
-            var j = 0;
-            if (objdata.length > 0) {
-                var index = 0;
+            document.getElementById("tbodupolicyinfo").innerHTML = "";          
+            if (data != undefined && data != null)
+            {
+               //CAP-831 Bad escaped character in JSON at position 353
+                if (isValidJSON(data.d))
+                {
+                    var objdata = JSON.parse(data.d);
+               
+                     var j = 0;
+                    if (objdata.length > 0)
+                    {
+                        var index = 0;
 
-                for (var i = 0; i < objdata.length; i++) {
-                    j = parseInt(j) + parseInt("1");
-                    var vStatus = objdata[i].Active;
-                    if (vStatus.toUpperCase() == "YES") {
-                        var vFinalStatus = "Active";
-                    }
-                    else {
-                        var vFinalStatus = "Inactive";
-                    }
-                    if (objdata[i].Termination_Date == null || objdata[i].Termination_Date == undefined) {
-                        var Termination_Date = "";
-                    }
-                    else {
-                        var Termination_Date = objdata[i].Termination_Date;
-                    }
-                    if (objdata[i].Effective_Start_Date == null || objdata[i].Effective_Start_Date == undefined) {
-                        var Effective_Start_Date = "";
-                    }
-                    else {
-                        var Effective_Start_Date = objdata[i].Effective_Start_Date;
-                    }
-                    if (objdata[i].PCP_Name == null || objdata[i].PCP_Name == undefined) {
-                        var PCP_Name = "";
-                    }
-                    else {
-                        var PCP_Name = objdata[i].PCP_Name;
+                        for (var i = 0; i < objdata.length; i++) {
+                        j = parseInt(j) + parseInt("1");
+                        var vStatus = objdata[i].Active;
+                        if (vStatus !== undefined && vStatus.toUpperCase() == "YES") {
+                            var vFinalStatus = "Active";
+                        }
+                        else {
+                            var vFinalStatus = "Inactive";
+                        }
+                        if (objdata[i].Termination_Date == null || objdata[i].Termination_Date == undefined) {
+                            var Termination_Date = "";
+                        }
+                        else {
+                            var Termination_Date = objdata[i].Termination_Date;
+                        }
+                        if (objdata[i].Effective_Start_Date == null || objdata[i].Effective_Start_Date == undefined) {
+                            var Effective_Start_Date = "";
+                        }
+                        else {
+                            var Effective_Start_Date = objdata[i].Effective_Start_Date;
+                        }
+                        if (objdata[i].PCP_Name == null || objdata[i].PCP_Name == undefined) {
+                            var PCP_Name = "";
+                        }
+                        else {
+                            var PCP_Name = objdata[i].PCP_Name;
+                        }
+
+                        var vsrc;
+                        if (document.getElementById('ctl00_C5POBody_rdbPRI').disabled == true) {
+                            vsrc = "Resources/editdisabled.png";
+                        }
+                        else {
+                            vsrc = "Resources/edit.gif";
+                        }
+                        var newRow = document.getElementById('tbodupolicyinfo').insertRow();
+                        newRow.innerHTML = "<tr><td style='width: 5%;text-align: center'><img src=" + vsrc + " onclick='Edit(this);'/></td><td style='width: 10%;text-align: center'>" + objdata[i].Insurance_Type + "</td><td style='width: 10 %;text-align: center'>" + objdata[i].Plan_Name + "</td><td style='width: 10 %;text-align: center'>" + objdata[i].Policy_Holder_ID + "</td><td style='width: 5 %;text-align: center'>" + objdata[i].Relationship + "</td ><td style='width: 10 %;text-align: center'>" + objdata[i].Insured_Name + "</td ><td style='width: 10 %;text-align: center'>" + objdata[i].PCP_Grid_Name + "</td><td style='width: 10 %;text-align: center'>" + objdata[i].Specify_Other + "</td><td style='width: 7 %;text-align: center'> " + Effective_Start_Date + "</td><td style='width: 7 %;text-align: center'>" + Termination_Date + "</td><td style='width: 7 %;text-align: center'>" + vFinalStatus + "</td><td style='display:none'>" + objdata[i].Sortorder + "</td><td style='display:none'>" + objdata[i].Plan_ID + "</td><td style='display:none'>" + objdata[i].Id + "</td><td style='display:none'>" + objdata[i].Insured_Human_ID + "</td><td style='display:none'>" + parseInt(j) + "</td><td style='display:none'>" + objdata[i].Relationship_Number + "</td><td style='display:none'>" + objdata[i].Insured_Details + "</td><td style='display:none'>" + objdata[i].CarrierID + "</td><td style='display:none'>" + objdata[i].PCP_ID + "</td><td style='display:none'>" + objdata[i].PCP_Name + "</td><td style='display:none'>" + objdata[i].PCP_Textbox_Name + "</td><td style='display:none'>" + objdata[i].PCP_NPI + "</td><tr>";
+                        document.getElementById(GetClientId("txtNoofPolicies")).value = $('#tbodupolicyinfo tr').length;
+
                     }
 
-                    var vsrc;
-                    if (document.getElementById('ctl00_C5POBody_rdbPRI').disabled == true) {
-                        vsrc = "Resources/editdisabled.png";
-                    }
-                    else {
-                        vsrc = "Resources/edit.gif";
-                    }
-                    var newRow = document.getElementById('tbodupolicyinfo').insertRow();
-                    newRow.innerHTML = "<tr><td style='width: 5%;text-align: center'><img src=" + vsrc + " onclick='Edit(this);'/></td><td style='width: 10%;text-align: center'>" + objdata[i].Insurance_Type + "</td><td style='width: 10 %;text-align: center'>" + objdata[i].Plan_Name + "</td><td style='width: 10 %;text-align: center'>" + objdata[i].Policy_Holder_ID + "</td><td style='width: 5 %;text-align: center'>" + objdata[i].Relationship + "</td ><td style='width: 10 %;text-align: center'>" + objdata[i].Insured_Name + "</td ><td style='width: 10 %;text-align: center'>" + objdata[i].PCP_Grid_Name + "</td><td style='width: 10 %;text-align: center'>" + objdata[i].Specify_Other + "</td><td style='width: 7 %;text-align: center'> " + Effective_Start_Date + "</td><td style='width: 7 %;text-align: center'>" + Termination_Date + "</td><td style='width: 7 %;text-align: center'>" + vFinalStatus + "</td><td style='display:none'>" + objdata[i].Sortorder + "</td><td style='display:none'>" + objdata[i].Plan_ID + "</td><td style='display:none'>" + objdata[i].Id + "</td><td style='display:none'>" + objdata[i].Insured_Human_ID + "</td><td style='display:none'>" + parseInt(j) + "</td><td style='display:none'>" + objdata[i].Relationship_Number + "</td><td style='display:none'>" + objdata[i].Insured_Details + "</td><td style='display:none'>" + objdata[i].CarrierID + "</td><td style='display:none'>" + objdata[i].PCP_ID + "</td><td style='display:none'>" + objdata[i].PCP_Name + "</td><td style='display:none'>" + objdata[i].PCP_Textbox_Name + "</td><td style='display:none'>" + objdata[i].PCP_NPI + "</td><tr>";
-                    document.getElementById(GetClientId("txtNoofPolicies")).value = $('#tbodupolicyinfo tr').length;
+                         DisplayActiveInsurance();
+                         sortTable();
 
+
+                    }
                 }
-
-                DisplayActiveInsurance();
-                sortTable();
-
+                else
+                {
+                    alert("An error occured while loading patient insurance grid. Please reload the page and try again.");
+                }
             }
-
+           
 
         }
 
@@ -1919,7 +1934,7 @@ function chkShowAllChange() {
         url: "frmPatientCommunication.aspx/laodAssigned",
         data: JSON.stringify({
             "chkshowall": checked,
-            "facility": Facility,
+            "facility": Facility
         }),
         contentType: "application/json; charset=utf-8",
         dataType: "json",
