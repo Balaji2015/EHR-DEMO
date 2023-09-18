@@ -1370,6 +1370,7 @@ namespace Acurus.Capella.UI
                                             perListForBMI.Append("[");
                                             foreach (PercentileLookUp obj in percentileListForBMI)
                                             {
+                                                
                                                 perListForBMI.Append("{'Age_In_Months':'" + obj.Age_In_Months + "','Category':'" + obj.Category + "','L':'" + obj.L + "','S':'" + obj.S + "','Sex':'" + obj.Sex + "','M':'" + obj.M + "'},");
                                             }
                                             perListForBMI = perListForBMI.Remove(perListForBMI.Length - 1, 1);
@@ -1387,11 +1388,12 @@ namespace Acurus.Capella.UI
 
                                         ScriptManager.RegisterStartupScript(this, this.GetType(), "ObjectsInjection", bmiPerStatus + perLookup + perInc + BMIStatInject + bmiStatusColor, true);
                                     }
-
+                                    //CAP-781 Cannot read properties of null - frmVitals
                                     if (DsObj.Maximum_Value != string.Empty || DsObj.Minimum_Value != string.Empty)
                                     {
                                         txtbox.Attributes.Add("onblur", FunctionName + "(this, event)");
-                                        injectingScript = "function " + FunctionName + "(sender, eventArgs){var passedBoundryValue=false;var uservalue=sender.value;var min=" + DsObj.Minimum_Value + ";var max=" + DsObj.Maximum_Value + ";";
+                                        injectingScript = "function " + FunctionName + "(sender, eventArgs){var passedBoundryValue=false;var uservalue=sender?.value;var min=" + DsObj.Minimum_Value + ";var max=" + DsObj.Maximum_Value + ";";
+
                                         if (DsObj.Control_Name_Thin_Client.ToUpper() == "HEIGHTINCH")
                                         {
                                             string InMinValue = string.Empty;
@@ -1411,7 +1413,7 @@ namespace Acurus.Capella.UI
                                                 }
                                             }
                                             string InjectMinMax = "min=" + InMinValue + ";max=" + InMaxValue + ";";
-                                            injectingScript += @"var ctrhtval =document.getElementById('Height');var InchFlag=false;if(ctrhtval.value==''||ctrhtval.value=='0'){InchFlag=true;";
+                                            injectingScript += @"var ctrhtval =document.getElementById('Height');var InchFlag=false;if(ctrhtval?.value==''||ctrhtval?.value=='0'){InchFlag=true;";
                                             injectingScript += InjectMinMax + "}";
 
                                         }
@@ -1434,18 +1436,18 @@ namespace Acurus.Capella.UI
 
                                         if (DsObj.Control_Name_Thin_Client.ToUpper().Contains("HEIGHT") || DsObj.Control_Name_Thin_Client.ToUpper().Contains("WEIGHT"))
                                         {
-                                            injectingScript += "CalculateBMIOnFtInchAndLBS(document.getElementById('Height').value,document.getElementById('HeightInch').value,document.getElementById('Weight').value);";
+                                            injectingScript += "CalculateBMIOnFtInchAndLBS(document?.getElementById('Height')?.value,document?.getElementById('HeightInch')?.value,document?.getElementById('Weight')?.value);";
                                             injectingScript += "CheckIsBMIIsValid();";
-                                            injectingScript += "SetBMIStatus(document.getElementById('BMI').value);";
+                                            injectingScript += "SetBMIStatus(document?.getElementById('BMI')?.value);";
 
                                         }
                                         if (DsObj.Control_Name_Thin_Client.ToUpper() == "HEIGHTINCH")
                                         {
                                             string HeightInchConverstion = @"var ctrhtval =document.getElementById('Height');var InchFlag=false;if(ctrhtval.value==''||ctrhtval.value=='0'){InchFlag=true;}if(InchFlag){if(ctrhtval!=null){var convValue =	ConvertInchtoFeetInch(uservalue);if(convValue.length>0){document.getElementById('Height').value=convValue[0];document.getElementById('HeightInch').value=convValue[1];}}}";
                                             injectingScript += HeightInchConverstion;
-                                            injectingScript += "CalculateBMIOnFtInchAndLBS(document.getElementById('Height').value,document.getElementById('HeightInch').value,document.getElementById('Weight').value);";
+                                            injectingScript += "CalculateBMIOnFtInchAndLBS(document?.getElementById('Height')?.value,document?.getElementById('HeightInch')?.value,document?.getElementById('Weight')?.value);";
                                             injectingScript += "CheckIsBMIIsValid();";
-                                            injectingScript += "SetBMIStatus(document.getElementById('BMI').value);";
+                                            injectingScript += "SetBMIStatus(document?.getElementById('BMI')?.value);";
                                         }
 
                                         else if (DsObj.Control_Name_Thin_Client.Contains("HbA1C"))
@@ -1480,9 +1482,9 @@ namespace Acurus.Capella.UI
                                             injectingScript += ColorSetting;
 
                                             if (!DsObj.Control_Name_Thin_Client.Contains("STATUSSecond"))
-                                                injectingScript += "SetHBA1CStatus(sender.value,sender.id,'HbA1C Status');";
+                                                injectingScript += "SetHBA1CStatus(sender?.value,sender.id,'HbA1C Status');";
                                             else
-                                                injectingScript += "SetHBA1CStatus(sender.value,sender.id,'HbA1C STATUSSecond');";
+                                                injectingScript += "SetHBA1CStatus(sender?.value,sender.id,'HbA1C STATUSSecond');";
 
                                         }
                                         else if (DsObj.Control_Name_Thin_Client.Contains("Hgb"))
@@ -1517,9 +1519,9 @@ namespace Acurus.Capella.UI
                                             injectingScript += ColorSetting;
 
                                             if (!DsObj.Control_Name_Thin_Client.Contains("STATUSSecond"))
-                                                injectingScript += "SetHGBStatus(sender.value,sender.id,'Hgb Status');";
+                                                injectingScript += "SetHGBStatus(sender?.value,sender.id,'Hgb Status');";
                                             else
-                                                injectingScript += "SetHGBStatus(sender.value,sender.id,'Hgb STATUSSecond');";
+                                                injectingScript += "SetHGBStatus(sender?.value,sender.id,'Hgb STATUSSecond');";
 
                                         }
                                         else if (DsObj.Control_Name_Thin_Client.Contains("Urine for Microalbumin"))
@@ -1549,11 +1551,12 @@ namespace Acurus.Capella.UI
                                             }
 
                                             if (!DsObj.Control_Name_Thin_Client.Contains("Second"))
-                                                injectingScript += "SetUrineforMicroalbuminStatus(sender.value,sender.id,'Urine for Microalbumin Status');";
+                                                injectingScript += "SetUrineforMicroalbuminStatus(sender?.value,sender.id,'Urine for Microalbumin Status');";
                                         }
                                         else if (DsObj.Control_Name_Thin_Client.Contains("ABI Test"))
                                         {
                                             if (StaticLookUpList != null && StaticLookUpList.Count > 0)
+                                            
                                             {
                                                 iFieldLookupList = StaticLookUpList.Where(q => q.Field_Name == "ABI TESTSTATUS").ToList();
                                             }
@@ -1578,7 +1581,7 @@ namespace Acurus.Capella.UI
                                             }
 
                                             if (!DsObj.Control_Name_Thin_Client.Contains("Second"))
-                                                injectingScript += "SetABITestStatus(sender.value,sender.id,'ABI Test Status');";
+                                                injectingScript += "SetABITestStatus(sender?.value,sender?.id,'ABI Test Status');";
                                         }
                                         else if (DsObj.Control_Name_Thin_Client.Contains("eGFR"))
                                         {
@@ -1612,14 +1615,15 @@ namespace Acurus.Capella.UI
                                             injectingScript += ColorSetting;
 
                                             if (!DsObj.Control_Name_Thin_Client.Contains("Second"))
-                                                injectingScript += "SetEGFRStatus(sender.value,sender.id,'eGFR Status');";
+                                                injectingScript += "SetEGFRStatus(sender?.value,sender?.id,'eGFR Status');";
                                             else
-                                                injectingScript += "SetEGFRStatus(sender.value,sender.id,'eGFR StatusSecond');";
+                                                injectingScript += "SetEGFRStatus(sender?.value,sender?.id,'eGFR StatusSecond');";
 
                                         }
                                         else if (DsObj.Control_Name_Thin_Client.Contains("Blood Sugar-Fasting"))//For Bug id:46800
                                         //else if (DsObj.Control_Name_Thin_Client.Contains("BloodSugar-Fasting"))
                                         {
+                                           
                                             if (StaticLookUpList != null && StaticLookUpList.Count > 0)
                                             {
                                                 iFieldLookupList = StaticLookUpList.Where(q => q.Field_Name == "BLOOD SUGAR-FASTING STATUS").ToList();
@@ -1652,9 +1656,9 @@ namespace Acurus.Capella.UI
                                             injectingScript += ColorSetting;
 
                                             if (!DsObj.Control_Name_Thin_Client.Contains("Second"))
-                                                injectingScript += "SetBloodSugarFastingStatus(sender.value,sender.id,'Blood Sugar-Fasting Status');";
+                                                injectingScript += "SetBloodSugarFastingStatus(sender?.value,sender.id,'Blood Sugar-Fasting Status');";
                                             else
-                                                injectingScript += "SetBloodSugarFastingStatus(sender.value,sender.id,'Blood Sugar-Fasting StatusSecond');";
+                                                injectingScript += "SetBloodSugarFastingStatus(sender?.value,sender.id,'Blood Sugar-Fasting StatusSecond');";
                                         }
                                         else if (DsObj.Control_Name_Thin_Client.Contains("Blood Sugar-Post Prandial"))//For Bug id:46800
                                         // else if (DsObj.Control_Name_Thin_Client.Contains("BloodSugar-PostPrandial"))
@@ -1695,9 +1699,9 @@ namespace Acurus.Capella.UI
                                             injectingScript += ColorSetting;
 
                                             if (!DsObj.Control_Name_Thin_Client.Contains("Second"))
-                                                injectingScript += "SetBloodSugarPostPrandialStatus(sender.value,sender.id,'Blood Sugar-Post Prandial Status');";
+                                                injectingScript += "SetBloodSugarPostPrandialStatus(sender?.value,sender.id,'Blood Sugar-Post Prandial Status');";
                                             else
-                                                injectingScript += "SetBloodSugarPostPrandialStatus(sender.value,sender.id,'Blood Sugar-Post Prandial StatusSecond');";
+                                                injectingScript += "SetBloodSugarPostPrandialStatus(sender?.value,sender.id,'Blood Sugar-Post Prandial StatusSecond');";
                                         }
                                         injectingScript += "}";
 
