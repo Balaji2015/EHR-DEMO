@@ -2528,7 +2528,8 @@ function OpenFinancialReport() {
             //var test = ReportUrl + "&ReportName=PATIENT TRANSACTIONS" + "&PatientName=" + PatientName + "&Parameters=" + sParameters + "&FromDate=" + sFromDate + "&ToDate=" + sToDate + "&PatientID=" + sPatientID + "&FacilityName=" + FacilityName + "&Arc=" + "Y" + "&__title=" + "PATIENT TRANSACTIONS";
             var test = sBIRTReportUrl + sDBConnection;;
             $($(top.window.document).find('#ProcessiFrameReport')[0]).attr('src', "");
-            $(top.window.document).find('#ProcessiFrameReport')[0].style.height = "126%";
+            //CAP-955
+            //$(top.window.document).find('#ProcessiFrameReport')[0].style.height = "126%";
             $(top.window.document).find("#ModalReport").modal({ backdrop: 'static', keyboard: false }, 'show');
             $(top.window.document).find("#mdlcontentReport")[0].style.width = "153%";
             $(top.window.document).find("#mdlcontentReport")[0].style.height = "58%";
