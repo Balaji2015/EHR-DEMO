@@ -16,20 +16,11 @@
     <!--<link href="CSS/style.css" rel="stylesheet" type="text/css" />-->
     <link href="CSS/CommonStyle.css" rel="stylesheet" type="text/css" />
     <script src="JScripts/JSModalWindow.js" type="text/javascript"></script>
-
-
+    <!--CAP-897 Dynamically add Javscript reference to the HTML files-->
     <script type="text/javascript">
-        var JSFiles = ["JScripts/JSErrorMessage.js", "JScripts/JSModalWindow.js"];
-        for (var i = 0; i < JSFiles.length; i++) {
-            var JSLink = JSFiles[i] + "?version=" + sessionStorage.getItem("ScriptVersion");
-            var JSElement = document.createElement('script');
-            JSElement.src = JSLink;
-            JSElement.async = false;
-            document.getElementsByTagName('head')[0].appendChild(JSElement);
-        }
+        ["JSErrorMessage.js", "JSModalWindow.js", "JSPhoneEncounter.js"].forEach(script => document.write(`<script src="JScripts/${script}?version=${sessionStorage.getItem("ScriptVersion")}"><\/script>`));
     </script>
-    <script src="JScripts/JSPhoneEncounter.js?v=37.00"></script>
-
+    <!--<script src="JScripts/JSPhoneEncounter.js?v=37.00"></script>-->
     <style>
         @media screen and (min-width: 0px) and (max-width: 720px) {
 

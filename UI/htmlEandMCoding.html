@@ -13,20 +13,23 @@
     <link href="CSS/font-awesome.css" rel="stylesheet" type="text/css" />
     <!--<link href="CSS/style.css" rel="stylesheet" type="text/css" />-->
     <link href="CSS/CommonStyle.css?v=37.00" rel="stylesheet" type="text/css" />
-
-
-
-    <script type="text/javascript">
-        var JSFiles = ["JScripts/JSErrorMessage.js", "JScripts/JSModalWindow.js"];
-        for (var i = 0; i < JSFiles.length; i++) {
-            var JSLink = JSFiles[i] + "?version=" + sessionStorage.getItem("ScriptVersion");
-            var JSElement = document.createElement('script');
-            JSElement.src = JSLink;
-            JSElement.async = false;
-            document.getElementsByTagName('head')[0].appendChild(JSElement);
-        }
+    <!--CAP-897 Dynamically add Javscript reference to the HTML files-->
+    <script>
+        ["JSErrorMessage.js", "JSModalWindow.js", "JSEandMCodingNew_V1.js"].forEach(script => document.write(`<script src="JScripts/${script}?version=${sessionStorage.getItem("ScriptVersion")}"><\/script>`));
     </script>
-    <script src="JScripts/JSEandMCodingNew_V1.js?v=52.00"></script>
+    <script type="text/javascript">
+        //var JSFiles = ["JScripts/JSErrorMessage.js", "JScripts/JSModalWindow.js"];
+        //for (var i = 0; i < JSFiles.length; i++) {
+        //    var JSLink = JSFiles[i] + "?version=" + sessionStorage.getItem("ScriptVersion");
+        //    var JSElement = document.createElement('script');
+        //    JSElement.src = JSLink;
+        //    JSElement.async = false;
+        //    document.getElementsByTagName('head')[0].appendChild(JSElement);
+        //}
+
+    </script>
+
+    <!--<script src="JScripts/JSEandMCodingNew_V1.js?v=52.00"></script>-->
     <style>
         @media screen and (min-width: 0px) and (max-width: 7250px) {
 

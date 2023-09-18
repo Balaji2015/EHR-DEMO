@@ -13,17 +13,18 @@
     <link href="CSS/bootstrap.min.css" rel="stylesheet" />
     <script src="JScripts/bootstrap.min.js"></script>
 
-    <script type="text/javascript">
-        var JSFiles = ["JScripts/JSErrorMessage.js", "JScripts/JSModalWindow.js", "JScripts/JSAvoidRightClick.js"];
-        for (var i = 0; i < JSFiles.length; i++) {
-            var JSLink = JSFiles[i] + "?version=" + sessionStorage.getItem("ScriptVersion");
-            var JSElement = document.createElement('script');
-            JSElement.src = JSLink;
-            JSElement.async = false;
-            document.getElementsByTagName('head')[0].appendChild(JSElement);
-        }
+    <!--<script type="text/javascript">
+
+    </script>-->
+    <!--<script>document.write("<script src='JScripts/JSErrorMessage.js?version=" + sessionStorage.getItem("ScriptVersion") + "'><\/script>")</script>
+    <script>document.write("<script src='JScripts/JSModalWindow.js?version=" + sessionStorage.getItem("ScriptVersion") + "'><\/script>")</script>
+    <script>document.write("<script src='JScripts/JSAvoidRightClick.js?version=" + sessionStorage.getItem("ScriptVersion") + "'><\/script>")</script>
+    <script>document.write("<script src='JScripts/jsAssessmentNew.js?version=" + sessionStorage.getItem("ScriptVersion") + "'><\/script>")</script>-->
+    <!--<script src="JScripts/jsAssessmentNew.js?version=V6.1.0.1.9.72 | 6"></script>-->
+    <!--CAP-897 Dynamically add Javscript reference to the HTML files-->
+    <script>
+        ["JSErrorMessage.js", "JSModalWindow.js", "JSAvoidRightClick.js", "jsAssessmentNew.js"].forEach(script => document.write(`<script src="JScripts/${script}?version=${sessionStorage.getItem("ScriptVersion")}"><\/script>`));
     </script>
-    <script src="JScripts/jsAssessmentNew.js?v=8.38"></script>
 
 
 
