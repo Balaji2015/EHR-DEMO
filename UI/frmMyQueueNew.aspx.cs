@@ -849,10 +849,18 @@ namespace Acurus.Capella.UI
         {
             if (ClientSession.UserName == string.Empty)
             {
-                HttpContext.Current.Response.StatusCode = 999;
+                HttpContext.Current.Response.StatusCode = 999;  
                 HttpContext.Current.Response.Status = "999 Session Expired";
                 HttpContext.Current.Response.StatusDescription = "frmSessionExpired.aspx";
                 return false;
+            }
+            if (data.Contains("GeneralQ") == true)
+            {
+                WFObjectManager wfMngr = new WFObjectManager();
+                PatientNotesManager patnotesMngr = new PatientNotesManager();
+
+                wfMngr.UpdateOwner(Convert.ToUInt64(data[4]), data[3], ClientSession.UserName, string.Empty);
+                patnotesMngr.UpdateAssignTo(Convert.ToUInt64(data[4]), ClientSession.UserName);
             }
             ClientSession.UserCurrentList.Add(ClientSession.UserName);
             ClientSession.UserCurrentOwner = ClientSession.UserName;

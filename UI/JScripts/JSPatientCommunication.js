@@ -1575,6 +1575,9 @@ function CancelMenu() {
 
 }
 function CancelMyQ() {
+    if (document.URL.indexOf('GenQTask') > -1) {
+        RemoveItem(document.URL, "MessageID");
+    }
     if (Result != undefined) {
         if (false == Result.closed) {
 

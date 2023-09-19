@@ -295,7 +295,7 @@ $(document).ready(function () {
                     var human_id = $(currRow)[0].children[2].innerText.trim();
                     var Facility = $(currRow)[0].children[6].innerText.trim();
                     var MessageId = $(currRow)[0].children[8].innerText.trim();
-                    var Data = [human_id, Facility];
+                    var Data = [human_id, Facility, 'GeneralQ', 'TASK',MessageId];
                     var sPersonname = '';
                     for (var l = 0; l < cookies.length; l++) {
                         if (cookies[l].indexOf("CPersonName") > -1) {
