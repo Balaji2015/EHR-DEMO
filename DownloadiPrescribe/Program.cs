@@ -170,7 +170,7 @@ namespace DownloadiPrescribe
             //Deleted Order
             else if ((orderSubmitData?.Current_Process ?? string.Empty) == "DELETED_ORDER")
             {
-                var pstUpdatedDateTime = TimeZoneInfo.ConvertTimeFromUtc(orderSubmitData.Created_Date_And_Time, timeInfo);
+                var pstUpdatedDateTime = TimeZoneInfo.ConvertTimeFromUtc(orderSubmitData.Current_Arrival_Time, timeInfo);
                 strNotes.Append($"@{orderSubmitData.Created_By}({pstUpdatedDateTime:dd-MMM-yyyy hh:mm:ss tt}): ");
                 strNotes.AppendLine("The ancillary order has been deleted.");
                 strNotes.AppendLine($"Ancillary Order Date : {orderSubmitData.Created_Date_And_Time:dd-MMM-yyyy}");
@@ -184,7 +184,7 @@ namespace DownloadiPrescribe
             //Updated Order
             else
             {
-                var pstUpdatedDateTime = TimeZoneInfo.ConvertTimeFromUtc(orderSubmitData.Created_Date_And_Time, timeInfo);
+                var pstUpdatedDateTime = TimeZoneInfo.ConvertTimeFromUtc(orderSubmitData.Modified_Date_And_Time, timeInfo);
                 strNotes.Append($"@{orderSubmitData.Created_By}({pstUpdatedDateTime:dd-MMM-yyyy hh:mm:ss tt}): ");
                 strNotes.AppendLine("The ancillary order has been updated.");
                 strNotes.AppendLine($"Ancillary Order Date : {orderSubmitData.Created_Date_And_Time:dd-MMM-yyyy}");

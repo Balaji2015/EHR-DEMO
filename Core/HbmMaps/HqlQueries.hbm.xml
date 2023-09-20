@@ -12566,7 +12566,7 @@ join Lab l on l.Lab_ID = os.Lab_ID
 join orders o on os.Order_Submit_ID=o.Order_Submit_ID 
 join physician_library pl on os.Physician_ID=pl.Physician_Library_ID
 left join orders_assessment a on os.Order_Submit_ID=a.Order_Submit_ID 
-where l.Is_Task_Notification_Required="Y" and os.Is_Task_Created !="Y"
+where l.Is_Task_Notification_Required="Y" and os.Is_Task_Created !="Y" and o.Lab_Procedure_Description<>''
 ]]>
 	</sql-query>
 
