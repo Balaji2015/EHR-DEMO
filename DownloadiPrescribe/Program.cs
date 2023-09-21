@@ -17,7 +17,8 @@ namespace DownloadiPrescribe
 {
     public class Program
     {
-        static async Task Main(string[] args)
+        //static async Task Main(string[] args)
+        static void Main(string[] args)
         {
             switch (ConfigurationManager.AppSettings["AgentName"])
             {
@@ -46,8 +47,8 @@ namespace DownloadiPrescribe
             //method2Timer.Start();
             //Console.WriteLine("Download RCopia Method Invoked");
 
-            Console.WriteLine("Press Enter to exit.");
-            Console.ReadLine();
+            //Console.WriteLine("Press Enter to exit.");
+            //Console.ReadLine();
         }
 
         private static void HandleException(Action methodCallback, Timer timer)
