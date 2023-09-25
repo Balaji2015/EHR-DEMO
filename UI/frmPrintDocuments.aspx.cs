@@ -1531,7 +1531,11 @@ namespace Acurus.Capella.UI
                 TextBoxColorChange(false);          
             else           
                 TextBoxColorChange(true);
-           
+            //Cap - 936
+            if (cboIsDocumentGiven.SelectedIndex == 0 && chklstSelectDocuments.Items.Cast<ListItem>().Count(li => li.Selected) >0)
+            {
+                cboIsDocumentGiven.SelectedIndex = 1;
+            }
             //if (chkDueOn.Checked)           //code added by balaji.TJ 2015-11-26
             //    txtDueon.Enabled = true;
             ScriptManager.RegisterStartupScript(this, this.Page.GetType(), string.Empty, "Relationshiploadingstop();", true);
@@ -2034,7 +2038,10 @@ namespace Acurus.Capella.UI
             cboRelationship.Items[0].Selected = true;
             cboRelationship.SelectedIndex = 0;
             cboRelationship.Enabled = false;
+            //Cap - 936
             cboIsDocumentGiven.Enabled = false;
+            cboIsDocumentGiven.Items[0].Selected = true;
+            cboIsDocumentGiven.SelectedIndex = 0;
             txtGivenTo.Enabled = false;
             txtGivenTo.CssClass = "nonEditabletxtbox";
             txtGivenTo.Text = string.Empty;

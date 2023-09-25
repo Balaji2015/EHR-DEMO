@@ -232,6 +232,7 @@
                                         <td style="width: 15%">
                                             <telerik:RadComboBox ID="cboIsDocumentGiven" runat="server" Width="100%" CssClass="Editabletxtbox">
                                                 <Items>
+                                                    <telerik:RadComboBoxItem Text="" Value="" />
                                                     <telerik:RadComboBoxItem Text="Yes" Value="Yes" />
                                                     <telerik:RadComboBoxItem Text="No" Value="No" />
                                                 </Items>

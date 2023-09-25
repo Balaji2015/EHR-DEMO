@@ -46,7 +46,7 @@ function EnableSave() {
 
 }
 function OpenPDFStatic(fileNotFound, screen, DownloadDoc, FaxSubject) {
-    if(FaxSubject!="")
+    if (FaxSubject != "")
         localStorage['FaxSubject1'] = JSON.stringify(FaxSubject);
     if (document.getElementById('hdnSelectedItem').value != "") {
         var obj = new Array();
@@ -154,7 +154,7 @@ var currentprocess;
 var DOS = "";
 function LoadDocuments() {
     { sessionStorage.setItem('StartLoading', 'true'); StartLoadFromPatChart(); }
-   
+
     var rows = $("#tblPlan tbody tr");
     var QuerystringValues = localStorage.getItem('QueryStr').split('&');//BugID:47526
     physician_Name = QuerystringValues[1];
@@ -443,7 +443,7 @@ function LoadDocuments() {
             $('#txtPlan')[0].value = Plan;
             if (ChkboxDocument_Checked)
 
-                if (currentprocess.toUpperCase() != "SCRIBE_PROCESS" && currentprocess.toUpperCase() != "AKIDO_SCRIBE_PROCESS" && currentprocess.toUpperCase() != "SCRIBE_REVIEW_CORRECTION" && currentprocess.toUpperCase() != "SCRIBE_CORRECTION" &&  currentprocess.toUpperCase() != "DICTATION_REVIEW" && currentprocess.toUpperCase() != "CODER_REVIEW_CORRECTION" && currentprocess.toUpperCase() != "PROVIDER_PROCESS" && currentprocess.toUpperCase() != "TECHNICIAN_PROCESS" && currentprocess.toUpperCase() != "PROVIDER_REVIEW_CORRECTION") {//CMG Ancilliary
+                if (currentprocess.toUpperCase() != "SCRIBE_PROCESS" && currentprocess.toUpperCase() != "AKIDO_SCRIBE_PROCESS" && currentprocess.toUpperCase() != "SCRIBE_REVIEW_CORRECTION" && currentprocess.toUpperCase() != "SCRIBE_CORRECTION" && currentprocess.toUpperCase() != "DICTATION_REVIEW" && currentprocess.toUpperCase() != "CODER_REVIEW_CORRECTION" && currentprocess.toUpperCase() != "PROVIDER_PROCESS" && currentprocess.toUpperCase() != "TECHNICIAN_PROCESS" && currentprocess.toUpperCase() != "PROVIDER_REVIEW_CORRECTION") {//CMG Ancilliary
                     $("a").attr('disabled', true);
                     $("a").attr('onclick', false);
                     $("a").css('backgroundColor', '#6D7777');
@@ -489,9 +489,9 @@ function LoadDocuments() {
 
 }
 window.addEventListener("contextmenu",
-  function (e) {
-      e.stopPropagation()
-  }, true);
+    function (e) {
+        e.stopPropagation()
+    }, true);
 function followupKeypress() {
     event.preventDefault();
 
@@ -1102,7 +1102,7 @@ function openProgress_Plan(screen, human_id, EncId, summary) {
         if (human_id != null && human_id != "" && human_id != "0") {
             if (EncId != null && EncId != "" && EncId != "0") {
                 var sPath = ""
-               // sPath = "frmSummaryNew.aspx?Menu=PDF";
+                // sPath = "frmSummaryNew.aspx?Menu=PDF";
                 sPath = "frmSummaryNew.aspx?Menu=PDF" + "&TabMode=true";
                 //BugID:42305
                 $(top.window.document).find('#ProcessFrame1')[0].contentDocument.location.href = sPath;
@@ -1265,18 +1265,18 @@ function callweb(icon, List, id) {
                         }
                     }
                     $("<div class='Listdiv'  id='" + "sg" + targetControlValue + "'tabindex='0'/>").html(innerdiv)
-                      .css({
-                          top: '30px',
-                          left: '60px',
-                          width: $("#" + targetControlValue).width() + 6,
-                          height: '250px',
-                          overflow: 'scroll',
-                          position: 'absolute',
-                          background: 'white',
-                          bottom: '0',
-                          border: '1px solid black',
-                          floating: 'top'
-                      })
+                        .css({
+                            top: '30px',
+                            left: '60px',
+                            width: $("#" + targetControlValue).width() + 6,
+                            height: '250px',
+                            overflow: 'scroll',
+                            position: 'absolute',
+                            background: 'white',
+                            bottom: '0',
+                            border: '1px solid black',
+                            floating: 'top'
+                        })
                         .insertAfter($("#" + targetControlValue));
                 }
 
@@ -1443,6 +1443,10 @@ function cboRelationship_SelectedIndexChanged() {
         $('#txtGivento')[0].readOnly = false;
         $('#txtGivento')[0].style.backgroundColor = "white";
     }
+    //Cap - 936
+    if (Data != "" && $('#cboIsDocumentGiven')[0].selectedIndex== 0) {
+        $('#cboIsDocumentGiven')[0].selectedIndex = 1;
+    }
     { sessionStorage.setItem('StartLoading', 'false'); StopLoadFromPatChart(); }
     if (!(document.getElementById("btnMovetoPhyAsst") != null && document.getElementById("btnMovetoPhyAsst").disabled == false))
         $('#btnSave')[0].disabled = false;
@@ -1590,7 +1594,7 @@ function FollowupNotes(icon, List, id) {
                 var pos = $('#' + targetControlValue).position();
                 $("#" + targetControlValue).attr("onkeydown", "insertTab(this, event)");//BugID:45541
                 innerdiv += "<li class='alinkstyle' style='text-decoration: none; list-style-type: none;font-weight:bolder;font-style: italic;cursor:default' onclick=\"OpenPopup('" + $('#' + targetControlValue)[0].attributes.getNamedItem('data-src').value + "');\">Click here to Add or Update Keywords</li>";
-                for (var i = 0; i < values.length ; i++) {
+                for (var i = 0; i < values.length; i++) {
                     innerdiv += "<li style='text-decoration: none;cursor:default; list-style-type: none;color:black' onclick=\"FollowUp('" + values[i].replace(/'/g, "\\'").split("\r\n").join("\n").split("<br />").join("~") + "^" + targetControlValue + "');\">" + values[i] + "</li>";//BugID:45541
                 }
 
@@ -1606,24 +1610,24 @@ function FollowupNotes(icon, List, id) {
                     }
                     //BugID:49036 - Decreased height for follow-up notes
                     $("<div  class='Listdiv' id='" + "sg" + targetControlValue + "'tabindex='0'/>").html(innerdiv)
-                      .css({
-                          top: pos.top + $("#" + targetControlValue).height() + 7,
-                          left: pos.left + 12,
-                          height: '50px',
-                          overflow: 'scroll',
-                          position: 'fixed',
-                          background: 'white',
-                          bottom: '0',
-                          floating: 'top',
-                          width: '400px',
-                          border: '1px solid #8e8e8e',
-                          background: '#FFF',
-                          fontFamily: 'Segoe UI",Arial,sans-serif',
-                          fontSize: '12px',
-                          zIndex: '17',
-                          overflowX: 'auto'
+                        .css({
+                            top: pos.top + $("#" + targetControlValue).height() + 7,
+                            left: pos.left + 12,
+                            height: '50px',
+                            overflow: 'scroll',
+                            position: 'fixed',
+                            background: 'white',
+                            bottom: '0',
+                            floating: 'top',
+                            width: '400px',
+                            border: '1px solid #8e8e8e',
+                            background: '#FFF',
+                            fontFamily: 'Segoe UI",Arial,sans-serif',
+                            fontSize: '12px',
+                            zIndex: '17',
+                            overflowX: 'auto'
 
-                      })
+                        })
 
                         .insertAfter($("#" + targetControlValue));
                     // }
@@ -1704,12 +1708,12 @@ function OpenPDF_PrintDocument(fileNotFound, screen, project, summary, FaxSubjec
     obj.push("Location=" + "STATIC");
 
     setTimeout(
-  function () {
-      var oWnd = GetRadWindow();
-      var childWindow = oWnd.BrowserWindow.radopen("frmPrintPDF.aspx?SI=" + document.getElementById('hdnSelectedItem').value + "&Location=STATIC", "RadWindow2");
-      SetRadWindowProperties(childWindow, 720, 750);
-      childWindow.add_close(EnableSave);
-  }, 0);
+        function () {
+            var oWnd = GetRadWindow();
+            var childWindow = oWnd.BrowserWindow.radopen("frmPrintPDF.aspx?SI=" + document.getElementById('hdnSelectedItem').value + "&Location=STATIC", "RadWindow2");
+            SetRadWindowProperties(childWindow, 720, 750);
+            childWindow.add_close(EnableSave);
+        }, 0);
     if (screen != null) {
         if (project.indexOf("UCM") > -1) {
             openCareTreatPlan_PrintDocument(screen, FaxSubject);
@@ -1749,11 +1753,11 @@ function openProgress_PrintDocument(screen, FaxSubject) {
         if (document.getElementById(GetClientId("hdnHumanID")) != null && document.getElementById(GetClientId("hdnHumanID")).value != "" && document.getElementById(GetClientId("hdnHumanID")).value != "0") {
             if (document.getElementById(GetClientId("hdnEncounterId")) != null && document.getElementById(GetClientId("hdnEncounterId")).value != "" && document.getElementById(GetClientId("hdnEncounterId")).value != "0") {
                 setTimeout(
-    function () {
-        var objConsult = openModalProgress("frmSummaryNew.aspx", 700, 750, obj, "RadwindowPDF");
-        var win = $find("RadwindowPDF");
-        win.hide();
-    }, 0);
+                    function () {
+                        var objConsult = openModalProgress("frmSummaryNew.aspx", 700, 750, obj, "RadwindowPDF");
+                        var win = $find("RadwindowPDF");
+                        win.hide();
+                    }, 0);
             }
         }
     }
@@ -1761,13 +1765,13 @@ function openProgress_PrintDocument(screen, FaxSubject) {
         if (document.getElementById(GetClientId("hdnHumanID")) != null && document.getElementById(GetClientId("hdnHumanID")).value != "" && document.getElementById(GetClientId("hdnHumanID")).value != "0") {
             if (document.getElementById(GetClientId("hdnEncounterId")) != null && document.getElementById(GetClientId("hdnEncounterId")).value != "" && document.getElementById(GetClientId("hdnEncounterId")).value != "0") {
                 setTimeout(
-   function () {
-       //var objConsult = openModalProgress("frmSummaryNew.aspx?Menu=True", 700, 750, obj, "RadwindowPDF");
-       var objConsult = openModalProgress("frmSummaryNew.aspx?Menu=True&TabMode=true", 700, 750, obj, "RadwindowPDF");
-       var win = $find("RadwindowPDF");
-       win.hide();
+                    function () {
+                        //var objConsult = openModalProgress("frmSummaryNew.aspx?Menu=True", 700, 750, obj, "RadwindowPDF");
+                        var objConsult = openModalProgress("frmSummaryNew.aspx?Menu=True&TabMode=true", 700, 750, obj, "RadwindowPDF");
+                        var win = $find("RadwindowPDF");
+                        win.hide();
 
-   }, 0);
+                    }, 0);
             }
         }
 
@@ -1797,14 +1801,14 @@ function openCareTreatPlan_PrintDocument(screen, FaxSubject) {
             if (document.getElementById(GetClientId("hdnEncounterId")) != null && document.getElementById(GetClientId("hdnEncounterId")).value != "" && document.getElementById(GetClientId("hdnEncounterId")).value != "0") {
 
                 setTimeout(
-    function () {
-        var objWindow = $find("RadWindow5");
-        var objConsult = openModalProgress("frmWellnessNotes.aspx?SubMenuName=Treatment Notes", 700, 750, obj, "RadWindow5");
-        var win = $find("RadWindow5");
-        win.hide();
-        EnableSave();
+                    function () {
+                        var objWindow = $find("RadWindow5");
+                        var objConsult = openModalProgress("frmWellnessNotes.aspx?SubMenuName=Treatment Notes", 700, 750, obj, "RadWindow5");
+                        var win = $find("RadWindow5");
+                        win.hide();
+                        EnableSave();
 
-    }, 0);
+                    }, 0);
             }
         }
         var objWindow = $find("WellnessWindow");
@@ -1823,14 +1827,14 @@ function openCareTreatPlan_PrintDocument(screen, FaxSubject) {
         if (document.getElementById(GetClientId("hdnHumanID")) != null && document.getElementById(GetClientId("hdnHumanID")).value != "" && document.getElementById(GetClientId("hdnHumanID")).value != "0") {
             if (document.getElementById(GetClientId("hdnEncounterId")) != null && document.getElementById(GetClientId("hdnEncounterId")).value != "" && document.getElementById(GetClientId("hdnEncounterId")).value != "0") {
                 setTimeout(
-    function () {
-        var objWindow = $find("RadWindow5");
-        var objConsult = openModalProgress("frmWellnessNotes.aspx?SubMenuName=Treatment Notes", 700, 750, obj, "RadWindow5");
-        var win = $find("RadWindow5");
-        win.hide();
-        EnableSave();
+                    function () {
+                        var objWindow = $find("RadWindow5");
+                        var objConsult = openModalProgress("frmWellnessNotes.aspx?SubMenuName=Treatment Notes", 700, 750, obj, "RadWindow5");
+                        var win = $find("RadWindow5");
+                        win.hide();
+                        EnableSave();
 
-    }, 0);
+                    }, 0);
             }
         }
     }
@@ -1838,13 +1842,13 @@ function openCareTreatPlan_PrintDocument(screen, FaxSubject) {
         if (document.getElementById(GetClientId("hdnHumanID")) != null && document.getElementById(GetClientId("hdnHumanID")).value != "" && document.getElementById(GetClientId("hdnHumanID")).value != "0") {
             if (document.getElementById(GetClientId("hdnEncounterId")) != null && document.getElementById(GetClientId("hdnEncounterId")).value != "" && document.getElementById(GetClientId("hdnEncounterId")).value != "0") {
                 setTimeout(
-   function () {
-       var objWindow = $find("RadWindow4");
-       var objConsult = openModalProgress("frmWellnessNotes.aspx?SubMenuName=Care Note", 700, 750, obj, "RadWindow4");
-       var win = $find("RadWindow4");
-       win.hide();
-       EnableSave();
-   }, 0);
+                    function () {
+                        var objWindow = $find("RadWindow4");
+                        var objConsult = openModalProgress("frmWellnessNotes.aspx?SubMenuName=Care Note", 700, 750, obj, "RadWindow4");
+                        var win = $find("RadWindow4");
+                        win.hide();
+                        EnableSave();
+                    }, 0);
             }
         }
 
@@ -1910,7 +1914,7 @@ function Printwaitcursor() {
 
 function Close_printDocument(sender, args) {
     if ((document.getElementById("btnSave") != null && document.getElementById("btnSave").disabled == false) || (document.getElementById("btnMovetoPhyAsst") != null && document.getElementById("btnMovetoPhyAsst").disabled == false)) {
-       // { sessionStorage.setItem('StartLoading', 'true'); StartLoadFromPatChart(); }
+        // { sessionStorage.setItem('StartLoading', 'true'); StartLoadFromPatChart(); }
         if (document.getElementById('btnMovetoPhyAsst') != null)
             document.getElementById("hdnSaveDetails").value = "true";
         //triggerServerSave = true;
@@ -2185,7 +2189,7 @@ function ValidationPrintDoc() {
     else
         document.getElementById('hdnChkElecDeclaration').value = "false";
 
-    
+
     __doPostBack('btnMovetoPhyAsst', '');
 
 
@@ -2248,9 +2252,9 @@ function ValidationPrintDocscribe() {
     else
         document.getElementById('hdnChkElecDeclaration').value = "false";
 
-   // __doPostBack('btnmovetoscribe', '');
+    // __doPostBack('btnmovetoscribe', '');
 
-   return true;
+    return true;
 }
 function OpenAddOrUpdatePlan() {
 
@@ -2351,25 +2355,25 @@ function callwebplan(icon, List, id) {
                     }
                 }
                 $("<div class='Listdiv'  id='" + "sg" + targetControlValue + "'tabindex='0'/>").html(innerdiv)
-                 .css({
+                    .css({
 
-                     //BugID:47395
-                     top: fixed_ht + $("#" + targetControlValue).height() + 8,
-                     left: '410px',
-                     width: '390px',
-                     height: '200px',
-                     overflow: 'auto',
-                     position: 'fixed',
-                     background: 'white',
-                     bottom: '0',
-                     zIndex: '17',
-                     border: '1px solid black',
-                     floating: 'top',
-                     marginBottom: '10px'
+                        //BugID:47395
+                        top: fixed_ht + $("#" + targetControlValue).height() + 8,
+                        left: '410px',
+                        width: '390px',
+                        height: '200px',
+                        overflow: 'auto',
+                        position: 'fixed',
+                        background: 'white',
+                        bottom: '0',
+                        zIndex: '17',
+                        border: '1px solid black',
+                        floating: 'top',
+                        marginBottom: '10px'
 
-                 })
+                    })
 
-                   .insertAfter($("#" + targetControlValue));
+                    .insertAfter($("#" + targetControlValue));
                 if (FlloUpFreq_count == 0) {
                     $("li[id^=FollowupList]").css("display", "block");
                 }
@@ -2383,8 +2387,8 @@ function callwebplan(icon, List, id) {
                 else {
                     var log = JSON.parse(xhr.responseText);
                     console.log(log);
-                   // alert("USER MESSAGE:\n" +
-                                   // ". Cannot process request. Please Login again and retry. \nEXCEPTION DETAILS: \n" +
+                    // alert("USER MESSAGE:\n" +
+                    // ". Cannot process request. Please Login again and retry. \nEXCEPTION DETAILS: \n" +
                     //"Message: " + log.Message);
 
                     window.location = "ErrorPage.aspx?Message=" + log.Message + "|$|" + log.StackTrace;;
@@ -2533,11 +2537,33 @@ function EnableDocuments() {
         { sessionStorage.setItem('StartLoading', 'true'); StartLoadFromPatChart(); }
         $("#btnClearDrpdwn").click();//BugID:40876
         { sessionStorage.setItem('StartLoading', 'false'); StopLoadFromPatChart(); }
-    } else {
-
-        $find('cboRelationship').enable(true);
-        $find('cboIsDocumentGiven').enable(true);
     }
+    //Cap - 936
+    //else {
+    //    $find('cboRelationship').enable(true);
+    //    $find('cboIsDocumentGiven').enable(true);
+    //}
+    else {
+        $find('cboRelationship').enable(true);
+        if (document.getElementById("cboRelationship").value == "") {
+            var cmb = $find("cboRelationship");
+            if (cmb._itemData.length > 0) {
+                var val = cmb._itemData[1].value;
+                var cItem = cmb.findItemByText(val);
+                cItem.select();
+            }
+        }
+
+        $find('cboIsDocumentGiven').enable(true);
+        var cmbDoc = $find("cboIsDocumentGiven");
+        if (cmbDoc._itemData.length > 0) {
+            var valDoc = cmbDoc._itemData[1].value;
+            var cDocItem = cmbDoc.findItemByText(valDoc);
+            cDocItem.select();
+        }
+    }
+
+
     EnableSave();
 }
 function OpenAddUpdateKeywords(FieldName) {
@@ -2617,8 +2643,8 @@ function ChangeRadio() {
         if (document.getElementById("btnmovetoscribe") != null)
             document.getElementById("btnmovetoscribe").disabled = false;
 
-        if (document.getElementById("btnSave") != null)Close_printDocument
-            document.getElementById("btnSave").disabled = true;
+        if (document.getElementById("btnSave") != null) Close_printDocument
+        document.getElementById("btnSave").disabled = true;
         document.getElementById("chkElectronicDeclaration").disabled = true;
         document.getElementById("chkElectronicDeclaration").checked = false;
     }
@@ -2728,7 +2754,7 @@ function FillEncDataInGenealPLan(EncData) {
             }
         }
 
-        if (currentprocess.toUpperCase() != "SCRIBE_PROCESS" && currentprocess.toUpperCase() != "AKIDO_SCRIBE_PROCESS" &&  currentprocess.toUpperCase() != "SCRIBE_REVIEW_CORRECTION" && currentprocess.toUpperCase() != "DICTATION_REVIEW" && currentprocess.toUpperCase() != "CODER_REVIEW_CORRECTION" && currentprocess.toUpperCase() != "PROVIDER_PROCESS" && currentprocess.toUpperCase() != "TECHNICIAN_PROCESS" && currentprocess.toUpperCase() != "PROVIDER_REVIEW_CORRECTION" && EncData.Return_In_Months != 0) //{//CMG Ancilliary
+        if (currentprocess.toUpperCase() != "SCRIBE_PROCESS" && currentprocess.toUpperCase() != "AKIDO_SCRIBE_PROCESS" && currentprocess.toUpperCase() != "SCRIBE_REVIEW_CORRECTION" && currentprocess.toUpperCase() != "DICTATION_REVIEW" && currentprocess.toUpperCase() != "CODER_REVIEW_CORRECTION" && currentprocess.toUpperCase() != "PROVIDER_PROCESS" && currentprocess.toUpperCase() != "TECHNICIAN_PROCESS" && currentprocess.toUpperCase() != "PROVIDER_REVIEW_CORRECTION" && EncData.Return_In_Months != 0) //{//CMG Ancilliary
         {
 
             $("#txtReturnIn")[0].disabled = false;
