@@ -899,7 +899,7 @@ where w.current_owner = ? and (w.Obj_Type in (:ObjList))  and m.process_type='AS
 	<sql-query name="FillMyTaskObjectDetails.WithoutFacilityCreatedby">
 		<![CDATA[SELECT n.Message_ID,N.Human_Id,N.Message_Description,(select u.person_name from user u where u.user_name=N.Assigned_To),N.Modified_By
 ,cast(N.Modified_Date_And_Time as char(100)) as d,cast(N.Message_Date_And_Time as char(100)),n.Version,ifnull(h.last_name,''),ifnull(h.first_name,''),ifnull(h.mi,''),
-h.Patient_Account_External,w.Obj_Type,n.priority,n.Notes,(select u.person_name from user u where u.user_name=n.Created_By) FROM wf_object w left join patient_notes n 
+h.Patient_Account_External,w.Obj_Type,n.priority,n.Notes,(select u.person_name from user u where u.user_name=n.Created_By),'' FROM wf_object w left join patient_notes n 
 on (n.Message_Id=w.obj_system_id) left join human h on (n.Human_id=h.human_id) 
 left join process_master m on (w.current_process=m.process_name)
 where n.created_by = ? and (w.Obj_Type in (:ObjList))  and m.process_type='ASSIGNED' order by n.Message_Date_And_Time desc ]]>
@@ -908,7 +908,7 @@ where n.created_by = ? and (w.Obj_Type in (:ObjList))  and m.process_type='ASSIG
 	<sql-query name="FillMyTaskObjectDetailsCompletedCreatedBy">
 		<![CDATA[SELECT n.Message_ID,N.Human_Id,N.Message_Description,(select u.person_name from user u where u.user_name=N.Assigned_To),N.Modified_By
 ,cast(N.Modified_Date_And_Time as char(100)) as d,cast(N.Message_Date_And_Time as char(100)),n.Version,ifnull(h.last_name,''),ifnull(h.first_name,''),ifnull(h.mi,''),
-h.Patient_Account_External,w.Obj_Type,n.priority,n.Notes,(select u.person_name from user u where u.user_name=n.Created_By) FROM wf_object w left join patient_notes n  on (n.Message_Id=w.obj_system_id)
+h.Patient_Account_External,w.Obj_Type,n.priority,n.Notes,(select u.person_name from user u where u.user_name=n.Created_By),'' FROM wf_object w left join patient_notes n  on (n.Message_Id=w.obj_system_id)
 left join human h on (n.Human_id=h.human_id)
 where w.Is_Default_MyQ_LineItem=1 and w.current_process='close_task' and  n.created_by = ?
  and (w.Obj_Type in (:ObjList)) order by n.Message_Date_And_Time desc ]]>
@@ -917,7 +917,7 @@ where w.Is_Default_MyQ_LineItem=1 and w.current_process='close_task' and  n.crea
 	<sql-query name="FillMyTaskObjectDetailsCompleted">
 		<![CDATA[SELECT n.Message_ID,N.Human_Id,N.Message_Description,(select u.person_name from user u where u.user_name=N.Assigned_To),N.Modified_By
 ,cast(N.Modified_Date_And_Time as char(100)) as d,cast(N.Message_Date_And_Time as char(100)),n.Version,ifnull(h.last_name,''),ifnull(h.first_name,''),ifnull(h.mi,''),
-h.Patient_Account_External,w.Obj_Type,n.priority,n.Notes,(select u.person_name from user u where u.user_name=n.Created_By) FROM wf_object w left join patient_notes n  on (n.Message_Id=w.obj_system_id)
+h.Patient_Account_External,w.Obj_Type,n.priority,n.Notes,(select u.person_name from user u where u.user_name=n.Created_By),'' FROM wf_object w left join patient_notes n  on (n.Message_Id=w.obj_system_id)
 left join human h on (n.Human_id=h.human_id)
 where w.Is_Default_MyQ_LineItem=1 and w.current_process='close_task' and  n.Assigned_To = ?
  and (w.Obj_Type in (:ObjList)) order by n.Message_Date_And_Time desc ]]>
@@ -1009,7 +1009,7 @@ where w.Is_Default_MyQ_LineItem=1 and  w.current_owner = ?  and (w.Obj_Type in (
 	<sql-query name="FillMyTaskObjectDetails.WithoutFacility.ShowAllFalseCreatedby">
 		<![CDATA[SELECT n.Message_ID,N.Human_Id,N.Message_Description,(select u.person_name from user u where u.user_name=N.Assigned_To),N.Modified_By
 ,cast(N.Modified_Date_And_Time as char(100)) as d,cast(N.Message_Date_And_Time as char(100)),n.Version,ifnull(h.last_name,''),ifnull(h.first_name,''),ifnull(h.mi,''),
-h.Patient_Account_External,w.Obj_Type,n.priority,n.Notes,(select u.person_name from user u where u.user_name=n.Created_By) FROM wf_object w left join patient_notes n  on (n.Message_Id=w.obj_system_id)
+h.Patient_Account_External,w.Obj_Type,n.priority,n.Notes,(select u.person_name from user u where u.user_name=n.Created_By),'' FROM wf_object w left join patient_notes n  on (n.Message_Id=w.obj_system_id)
 left join human h on (n.Human_id=h.human_id)
 left join process_master m on (w.current_process=m.process_name)
 where w.Is_Default_MyQ_LineItem=1 and  n.created_by =?  and (w.Obj_Type in (:ObjList)) and m.process_type='ASSIGNED' order by n.Message_Date_And_Time desc ]]>
