@@ -2940,7 +2940,9 @@ namespace Acurus.Capella.UI
                             string NotesHistory = "";
                             //Cap - 686
                             Boolean DlcUpdate = false;
-                            string[] Result_Review = objResultMaster.Result_Review_Comments.Split(new string[] { "]]]" }, StringSplitOptions.None);
+                            //Cap - 1099
+                            //string[] Result_Review = objResultMaster.Result_Review_Comments.Split(new string[] { "]]]" }, StringSplitOptions.None);
+                            string[] Result_Review = objResultMaster.Result_Review_Comments.Split(new string[] { "<br/>" }, StringSplitOptions.None);
                             for (int i = 0; i < Result_Review.Length; i++)
                             {
                                 //Cap - 907

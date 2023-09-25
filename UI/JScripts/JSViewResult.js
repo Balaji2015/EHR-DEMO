@@ -124,8 +124,8 @@ function loadRcopia() {
                 var log = JSON.parse(xhr.responseText);
                 console.log(log);
                 alert("USER MESSAGE:\n" +
-                                    ". Cannot process request. Please Login again and retry. \nEXCEPTION DETAILS: \n" +
-                                   "Message: " + log.Message);
+                    ". Cannot process request. Please Login again and retry. \nEXCEPTION DETAILS: \n" +
+                    "Message: " + log.Message);
             }
             { sessionStorage.setItem('StartLoading', 'false'); StopLoadFromPatChart(); }
         }
@@ -294,7 +294,7 @@ function openLink(urls) {
     var temp = urls.split(';');
     var IsLonic = 0;
     if (temp.length > 1) {
-        for (var i = 0; i < temp.length ; i++) {
+        for (var i = 0; i < temp.length; i++) {
             if (temp[i] != "") {
                 window.open("http://apps.nlm.nih.gov/medlineplus/services/mpconnect.cfm?mainSearchCriteria.v.cs=2.16.840.1.113883.6.1&mainSearchCriteria.v.c=" + temp[i] + "&informationRecipient.languageCode.c = en", "_blank");
             }
@@ -333,8 +333,8 @@ function ClickMovetoma(sender, args) {
     if (document.getElementById('DLC_txtDLC').disabled == false && document.getElementById('DLC_txtDLC').value == "") {
         //var Continue = DisplayErrorMessage('115060');
         //if (Continue != undefined && Continue == true) {
-            StartLoadingImage();
-            __doPostBack('btnMoveToMa', "true");
+        StartLoadingImage();
+        __doPostBack('btnMoveToMa', "true");
         //}
         //else {
         //    { sessionStorage.setItem('StartLoading', 'false'); StopLoadFromPatChart(); }
@@ -346,8 +346,8 @@ function ClickMovetoma(sender, args) {
 
         //var Continue = DisplayErrorMessage('115060');
         //if (Continue != undefined && Continue == true) {
-            StartLoadingImage();
-            __doPostBack('btnMoveToMa', "true");
+        StartLoadingImage();
+        __doPostBack('btnMoveToMa', "true");
         //}
         //else {
         //    { sessionStorage.setItem('StartLoading', 'false'); StopLoadFromPatChart(); }
@@ -358,7 +358,7 @@ function ClickMovetoma(sender, args) {
         StartLoadingImage();//BugID:41027 -- move to next result
         __doPostBack('btnMoveToMa', "true");
     }
-//Jira #CAP-889
+    //Jira #CAP-889
     RemoveItem(document.URL, "Orders");
     { sessionStorage.setItem('StartLoading', 'false'); StopLoadFromPatChart(); }
 }
@@ -372,8 +372,8 @@ function ClickMovetonextProcess(sender, args) {
     if (document.getElementById('DLC_txtDLC').disabled == false && document.getElementById('DLC_txtDLC').value == "") {
         //var Continue = DisplayErrorMessage('115060');
         //if (Continue != undefined && Continue == true) {
-            StartLoadingImage();
-            __doPostBack('btnMoveToNextProcess', "true");
+        StartLoadingImage();
+        __doPostBack('btnMoveToNextProcess', "true");
         //}
         //else {
         //    { sessionStorage.setItem('StartLoading', 'false'); StopLoadFromPatChart(); }
@@ -383,8 +383,8 @@ function ClickMovetonextProcess(sender, args) {
     if (document.getElementById('txtMedicalAssistantNotes').disabled == false && document.getElementById('txtMedicalAssistantNotes').value == "") {
         //var Continue = DisplayErrorMessage('115060');
         //if (Continue != undefined && Continue == true) {
-            StartLoadingImage();
-            __doPostBack('btnMoveToNextProcess', "true");
+        StartLoadingImage();
+        __doPostBack('btnMoveToNextProcess', "true");
         //}
         //else {
         //    { sessionStorage.setItem('StartLoading', 'false'); StopLoadFromPatChart(); }
@@ -399,7 +399,7 @@ function ClickMovetonextProcess(sender, args) {
     //End For BUg Id 56084-4.9.18
     //BugID:41027 -- move to next result
 
-//Jira #CAP-889
+    //Jira #CAP-889
     RemoveItem(document.URL, "Orders");
 }
 
@@ -553,7 +553,9 @@ function OpenResultInterpretation() {
     if (ProvNoteshistory != '') {
         //Cap - 747
         //notes = ProvNoteshistory;
-        notes = ProvNoteshistory.replaceAll("&", "$|$|$|$|").replaceAll("#", "!^!^!^!^").replaceAll("+", "~|~|~|~|");
+        //Cap - 1076
+        ProvNoteshistory = ProvNoteshistory + document.getElementById("txtProvNoteshistory").attributes[5].value;
+        notes = ProvNoteshistory.replaceAll("<br/>", "").replaceAll("&", "$|$|$|$|").replaceAll("#", "!^!^!^!^").replaceAll("+", "~|~|~|~|");
     }
     else {
         //notes = document.getElementById("txtProvNoteshistory").value;
@@ -592,7 +594,26 @@ function OpenResultInterpretation() {
     $(top.window.document).find("#TabmdldlgResultInterpretations")[0].style.height = "875px";
     //Cap - 1054
     //var sPath = "frmResultInterpretation.aspx?HumanText=" + PatientInformation + "&FileText=" + document.getElementById('txtFileInformation').value.split("#").join("%23") + "&DocumentSubType=" + document.getElementById(GetClientId('hdnSubDocumentType')).value + "&ProviderNotes=" + JSON.stringify(notes) + "&ProviderNotesHistory=" + JSON.stringify(document.getElementById("txtProvNoteshistory").value) + "&CurrentProcess=" + document.getElementById("hdncurrentProcess").value + "&CheckVisible=" + MoveButtonVisible; //+ "&ResultMasterID=" + document.getElementById(GetClientId('ResultMasterID')).value;
-    var sPath = "frmResultInterpretation.aspx?HumanText=" + PatientInformation + "&FileText=" + document.getElementById('txtFileInformation').value.split("#").join("%23") + "&DocumentSubType=" + document.getElementById(GetClientId('hdnSubDocumentType')).value + "&ProviderNotes=" + JSON.stringify(notes) + "&CurrentProcess=" + document.getElementById("hdncurrentProcess").value + "&CheckVisible=" + MoveButtonVisible;
+    // var sPath = "frmResultInterpretation.aspx?HumanText=" + PatientInformation + "&FileText=" + document.getElementById('txtFileInformation').value.split("#").join("%23") + "&DocumentSubType=" + document.getElementById(GetClientId('hdnSubDocumentType')).value + "&ProviderNotes=" + JSON.stringify(notes) + "&CurrentProcess=" + document.getElementById("hdncurrentProcess").value + "&CheckVisible=" + MoveButtonVisible;
+    var sPath = "frmResultInterpretation.aspx";
+    $.ajax({
+        type: "POST",
+        async: true,
+        url: "frmResultInterpretation.aspx/LoadInterpretation",
+        data: JSON.stringify({
+            "HumanText": PatientInformation,
+            "FileText": document.getElementById('txtFileInformation').value.split("#").join("%23"),
+            "DocumentSubType": document.getElementById(GetClientId('hdnSubDocumentType')).value,
+            "ProviderNotes": notes,
+            "ResultMasterID": document.getElementById(GetClientId('ResultMasterID')).value,
+            "CheckVisible": MoveButtonVisible
+        }),
+        contentType: "application/json; charset=utf-8",
+        dataType: "json",
+        success: function (data) {
+
+        },
+    })
     $(top.window.document).find("#TabResultInterpretationsFrame")[0].style.height = "635px";
     $(top.window.document).find("#TabResultInterpretationsFrame")[0].contentDocument.location.href = sPath;
 
@@ -657,7 +678,7 @@ function OpenResultInterpretation() {
                 && $(top.window.document).find("#txtDeletedInterpretationsInformation")[0].value != ""
                 && document.getElementById('txtProvNoteshistory').value != undefined
                 && document.getElementById('txtProvNoteshistory').value != null
-                && document.getElementById('txtProvNoteshistory').getAttribute("interpretationtext") != undefined 
+                && document.getElementById('txtProvNoteshistory').getAttribute("interpretationtext") != undefined
                 && document.getElementById('txtProvNoteshistory').getAttribute("interpretationtext") != null) {
 
                 var n = JSON.parse($(top.window.document).find("#txtDeletedInterpretationsInformation")[0].value);
@@ -851,8 +872,8 @@ function DeleteFilesIndexing(filename) {
                     var log = JSON.parse(xhr.responseText);
                     console.log(log);
                     alert("USER MESSAGE:\n" +
-                                        ". Cannot process request. Please Login again and retry. \nEXCEPTION DETAILS: \n" +
-                                       "Message: " + log.Message);
+                        ". Cannot process request. Please Login again and retry. \nEXCEPTION DETAILS: \n" +
+                        "Message: " + log.Message);
                 }
             }
         });
