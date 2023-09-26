@@ -4399,8 +4399,19 @@ namespace Acurus.Capella.UI
                     sourceDocument.Open();
                     foreach (int pageNumber in iPageNumber)
                     {
-                        ObjImportedPage = ObjPdfCopyProvider.GetImportedPage(objPDFReader, pageNumber);
-                        ObjPdfCopyProvider.AddPage(ObjImportedPage);
+                        //CAP-793
+                        try
+                        {
+                            if (pageNumber > 0)
+                            {
+                                ObjImportedPage = ObjPdfCopyProvider.GetImportedPage(objPDFReader, pageNumber);
+                                ObjPdfCopyProvider.AddPage(ObjImportedPage);
+                            }
+                        }
+                        catch (Exception ex)
+                        {
+                            throw ex;
+                        }
                     }
                     sourceDocument.Close();
                     objPDFReader.Close();
@@ -4417,7 +4428,7 @@ namespace Acurus.Capella.UI
                     Thread.Sleep(1500);
                     goto TryAgain;
                 }
-                else 
+                else
                 {
                     try
                     {
