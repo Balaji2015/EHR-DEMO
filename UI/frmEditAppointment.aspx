@@ -664,7 +664,7 @@
                                                         <span class="spanstyle">Provider Search</span>
                                                     </td>
                                                     <td style="width: 82%;">
-                                                        <asp:TextBox ID="txtProviderSearch" runat="server"  data-phy-id="0"  data-phy-details="" Rows="3" TextMode="MultiLine" placeholder="Type minimum 3 characters of Last or First name or Specialty or NPI or Facility and follow it by a space.."  style="width:111.5%;resize:none" ></asp:TextBox> 
+                                                        <asp:TextBox ID="txtProviderSearch" runat="server"  data-phy-id="0"  data-phy-details="" Rows="3" TextMode="MultiLine" placeholder="Type minimum 3 characters of Last or First name or Facility and follow it by a space.."  style="width:111.5%;resize:none" ></asp:TextBox> 
                                                     <td style="width:10%;">
 
                                                         <img id="imgClearProviderText" runat="server" src="Resources/Delete-Blue.png" alt="X" title="Click to clear the text field." onclick="return ProviderSearchclear();" style="position: absolute; margin-left: 65px; top: 246px !important; cursor: pointer; width: 10px; height: 10px;" />
