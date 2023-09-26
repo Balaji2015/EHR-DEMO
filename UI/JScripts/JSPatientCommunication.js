@@ -69,10 +69,11 @@ function btnPrint_Clicked() {
         dataType: "json",
         async: true,
         success: function (path) {
-
             $($(top.window.document).find('#ProcessiFrameReport')[0]).attr('src', "");
             $(top.window.document).find("#ModalReport").modal({ backdrop: 'static', keyboard: false }, 'show');
             $(top.window.document).find("#mdlcontentReport")[0].style.width = "100%";
+            //CAP-1010
+            $(top.window.document).find("#mdlcontentReport").css({ "margin-left": "0%", "margin-top": "15%" });
             $(top.window.document).find("#ProcessiFrameReport")[0].style.border = "1px solid #D0D0D0";
             $($(top.window.document).find('#ProcessiFrameReport')[0]).attr('src', path.d);
             $(top.window.document).find("#ModalReportTtle")[0].textContent = "";
