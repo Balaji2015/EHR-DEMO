@@ -630,18 +630,26 @@ namespace Acurus.Capella.UI
                     }
                     catch (Exception ex)
                     {
-                        //Jira #CAP-67 
-                        if (iTryCount <= 3)
+                        string sErrorMessage = "";
+                        if (UtilityManager.CheckFileNotFoundException(ex, out sErrorMessage))
                         {
-                            iTryCount = iTryCount + 1;
-                            Thread.Sleep(1500);
-                            goto TryAgain;
+                            ScriptManager.RegisterStartupScript(this, this.GetType(), "Key", "alert(\" " + sErrorMessage + "\");", true);
                         }
                         else
                         {
+                            //Jira #CAP-67 
+                            if (iTryCount <= 3)
+                            {
+                                iTryCount = iTryCount + 1;
+                                Thread.Sleep(1500);
+                                goto TryAgain;
+                            }
+                            else
+                            {
 
-                            UtilityManager.RetryExecptionLog(ex, iTryCount);
-                            throw (ex);
+                                UtilityManager.RetryExecptionLog(ex, iTryCount);
+                                throw (ex);
+                            }
                         }
                     }
 
@@ -1116,17 +1124,25 @@ namespace Acurus.Capella.UI
                             }
                             catch (Exception ex)
                             {
-                                //Jira #CAP-67 
-                                if (iTryCount <= 3)
+                                string sErrorMessage = "";
+                                if (UtilityManager.CheckFileNotFoundException(ex, out sErrorMessage))
                                 {
-                                    iTryCount = iTryCount + 1;
-                                    Thread.Sleep(1500);
-                                    goto TryAgain;
+                                    ScriptManager.RegisterStartupScript(this, this.GetType(), "Key", "alert(\" " + sErrorMessage + "\");", true);
                                 }
                                 else
                                 {
-                                    UtilityManager.RetryExecptionLog(ex, iTryCount);
-                                    throw (ex);
+                                    //Jira #CAP-67 
+                                    if (iTryCount <= 3)
+                                    {
+                                        iTryCount = iTryCount + 1;
+                                        Thread.Sleep(1500);
+                                        goto TryAgain;
+                                    }
+                                    else
+                                    {
+                                        UtilityManager.RetryExecptionLog(ex, iTryCount);
+                                        throw (ex);
+                                    }
                                 }
                             }
                             _imgBig.Src = "";
@@ -1239,17 +1255,25 @@ namespace Acurus.Capella.UI
                 }
                 catch (Exception ex)
                 {
-                    //Jira #CAP-67 
-                    if (iTryCount <= 3)
+                    string sErrorMessage = "";
+                    if (UtilityManager.CheckFileNotFoundException(ex, out sErrorMessage))
                     {
-                        iTryCount = iTryCount + 1;
-                        Thread.Sleep(1500);
-                        goto TryAgain;
+                        ScriptManager.RegisterStartupScript(this, this.GetType(), "Key", "alert(\" " + sErrorMessage + "\");", true);
                     }
                     else
                     {
-                        UtilityManager.RetryExecptionLog(ex, iTryCount);
-                        throw (ex);
+                        //Jira #CAP-67 
+                        if (iTryCount <= 3)
+                        {
+                            iTryCount = iTryCount + 1;
+                            Thread.Sleep(1500);
+                            goto TryAgain;
+                        }
+                        else
+                        {
+                            UtilityManager.RetryExecptionLog(ex, iTryCount);
+                            throw (ex);
+                        }
                     }
                 }
 
@@ -1352,17 +1376,25 @@ namespace Acurus.Capella.UI
                 }
                 catch (Exception ex)
                 {
-                    //Jira #CAP-67 
-                    if (iTryCount <= 3)
+                    string sErrorMessage = "";
+                    if (UtilityManager.CheckFileNotFoundException(ex, out sErrorMessage))
                     {
-                        iTryCount = iTryCount + 1;
-                        Thread.Sleep(1500);
-                        goto TryAgain;
+                        ScriptManager.RegisterStartupScript(this, this.GetType(), "Key", "alert(\" " + sErrorMessage + "\");", true);
                     }
                     else
                     {
-                        UtilityManager.RetryExecptionLog(ex, iTryCount);
-                        throw (ex);
+                        //Jira #CAP-67 
+                        if (iTryCount <= 3)
+                        {
+                            iTryCount = iTryCount + 1;
+                            Thread.Sleep(1500);
+                            goto TryAgain;
+                        }
+                        else
+                        {
+                            UtilityManager.RetryExecptionLog(ex, iTryCount);
+                            throw (ex);
+                        }
                     }
                 }
 
@@ -1794,18 +1826,26 @@ namespace Acurus.Capella.UI
                         }
                         catch (Exception ex)
                         {
-                            //Jira #CAP-67 
-                            if (iTryCount <= 3)
+                            string sErrorMessage = "";
+                            if (UtilityManager.CheckFileNotFoundException(ex, out sErrorMessage))
                             {
-                                iTryCount = iTryCount + 1;
-                                Thread.Sleep(1500);
-                                goto TryAgain;
+                                ScriptManager.RegisterStartupScript(this, this.GetType(), "Key", "alert(\" " + sErrorMessage + "\");", true);
                             }
                             else
                             {
-                                UtilityManager.RetryExecptionLog(ex, iTryCount);
-                                UtilityManager.inserttologgingtable(ClientSession.EncounterId.ToString(), ClientSession.HumanId.ToString(), ClientSession.UserName, ClientSession.PhysicianId.ToString(), "FrmImagviewer Line No - 1490 - " + ex.Message + " - Username is " + userName + " -  Password " + password + " - UNCAuthPath " + UNCAuthPath + " - UNCPAth" + UNCPath + "-URI " + uri.Replace(ftpIP, UNCPath), DateTime.Now, "0", "frmimageviewer");
-                                throw (ex);
+                                //Jira #CAP-67 
+                                if (iTryCount <= 3)
+                                {
+                                    iTryCount = iTryCount + 1;
+                                    Thread.Sleep(1500);
+                                    goto TryAgain;
+                                }
+                                else
+                                {
+                                    UtilityManager.RetryExecptionLog(ex, iTryCount);
+                                    UtilityManager.inserttologgingtable(ClientSession.EncounterId.ToString(), ClientSession.HumanId.ToString(), ClientSession.UserName, ClientSession.PhysicianId.ToString(), "FrmImagviewer Line No - 1490 - " + ex.Message + " - Username is " + userName + " -  Password " + password + " - UNCAuthPath " + UNCAuthPath + " - UNCPAth" + UNCPath + "-URI " + uri.Replace(ftpIP, UNCPath), DateTime.Now, "0", "frmimageviewer");
+                                    throw (ex);
+                                }
                             }
                         }
 
@@ -2113,17 +2153,25 @@ namespace Acurus.Capella.UI
                     }
                     catch (Exception ex)
                     {
-                        //Jira #CAP-67 
-                        if (iTryCount <= 3)
+                        string sErrorMessage = "";
+                        if (UtilityManager.CheckFileNotFoundException(ex, out sErrorMessage))
                         {
-                            iTryCount = iTryCount + 1;
-                            Thread.Sleep(1500);
-                            goto TryAgain;
+                            ScriptManager.RegisterStartupScript(this, this.GetType(), "Key", "alert(\" " + sErrorMessage + "\");", true);
                         }
                         else
                         {
-                            UtilityManager.RetryExecptionLog(ex, iTryCount);
-                            throw (ex);
+                            //Jira #CAP-67 
+                            if (iTryCount <= 3)
+                            {
+                                iTryCount = iTryCount + 1;
+                                Thread.Sleep(1500);
+                                goto TryAgain;
+                            }
+                            else
+                            {
+                                UtilityManager.RetryExecptionLog(ex, iTryCount);
+                                throw (ex);
+                            }
                         }
                     }
 
@@ -2298,17 +2346,25 @@ namespace Acurus.Capella.UI
                     }
                     catch (Exception ex)
                     {
-                        //Jira #CAP-67 
-                        if (iTryCount <= 3)
+                        string sErrorMessage = "";
+                        if (UtilityManager.CheckFileNotFoundException(ex, out sErrorMessage))
                         {
-                            iTryCount = iTryCount + 1;
-                            Thread.Sleep(1500);
-                            goto TryAgain;
+                            ScriptManager.RegisterStartupScript(this, this.GetType(), "Key", "alert(\" " + sErrorMessage + "\");", true);
                         }
                         else
                         {
-                            UtilityManager.RetryExecptionLog(ex, iTryCount);
-                            throw (ex);
+                            //Jira #CAP-67 
+                            if (iTryCount <= 3)
+                            {
+                                iTryCount = iTryCount + 1;
+                                Thread.Sleep(1500);
+                                goto TryAgain;
+                            }
+                            else
+                            {
+                                UtilityManager.RetryExecptionLog(ex, iTryCount);
+                                throw (ex);
+                            }
                         }
                     }
                     _imgBig.Src = "";
@@ -2395,7 +2451,12 @@ namespace Acurus.Capella.UI
                     DirectoryInfo dir = new DirectoryInfo(sFilePath.Replace("ftp:", "").Replace("http:", ""));
                     sHumanID = dir.Parent.Name.ToString();
                 }
-                ftpImage.DownloadFromImageServer(sHumanID, ftpServerIP, ftpUserName, ftpPassword, Path.GetFileName(sFilePath), slocalPath);
+                ftpImage.DownloadFromImageServer(sHumanID, ftpServerIP, ftpUserName, ftpPassword, Path.GetFileName(sFilePath), slocalPath, out string sCheckFileNotFoundException);
+                if (sCheckFileNotFoundException != "" && sCheckFileNotFoundException.Contains("CheckFileNotFoundException"))
+                {
+                    ScriptManager.RegisterStartupScript(this, this.GetType(), "Key", "alert(\"" + sCheckFileNotFoundException.Split('~')[1] + "\");", true);
+                    return;
+                }
                 string sAtalaPath = Server.MapPath(@"atala-capture-download/" + Session.SessionID + "/Download_ImageViewer/" + Path.GetFileName(sFilePath));
                 sAtalaPath = sAtalaPath.Replace(@"/", @"\").Replace(@"\\\\", @"\\").Replace(@"\\\", @"\\").Replace(@"\\", @"\");
                 Response.Clear();
@@ -2422,7 +2483,12 @@ namespace Acurus.Capella.UI
                             sHumanID = dir.Parent.Name.ToString();
                         }
                     }
-                    ftpImage.DownloadFromImageServer(sHumanID, ftpServerIP, ftpUserName, ftpPassword, Path.GetFileName(FileNames[i]), slocalPath);
+                    ftpImage.DownloadFromImageServer(sHumanID, ftpServerIP, ftpUserName, ftpPassword, Path.GetFileName(FileNames[i]), slocalPath, out string sCheckFileNotFoundException);
+                    if (sCheckFileNotFoundException != "" && sCheckFileNotFoundException.Contains("CheckFileNotFoundException"))
+                    {
+                        ScriptManager.RegisterStartupScript(this, this.GetType(), "Key", "alert(\"" + sCheckFileNotFoundException.Split('~')[1] + "\");", true);
+                        return;
+                    }
                     string orig_image = slocalPath + "\\" + Path.GetFileName(FileNames[i]);
                    
                     FilePaths.Add(orig_image);

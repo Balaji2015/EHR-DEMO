@@ -154,7 +154,12 @@ namespace Acurus.Capella.UI
                     }
                     FTPImageProcess objftp = new FTPImageProcess();
                     Session["ADFilePAth"] = null;
-                    bool status = objftp.DownloadFromADImageServer(ClientSession.HumanId.ToString(), Path.GetFileName(ilstFMI[0].Generate_Link_File_Path), virdir.ToString());
+                    bool status = objftp.DownloadFromADImageServer(ClientSession.HumanId.ToString(), Path.GetFileName(ilstFMI[0].Generate_Link_File_Path), virdir.ToString(),out string sCheckFileNotFoundException);
+                    if (sCheckFileNotFoundException != "" && sCheckFileNotFoundException.Contains("CheckFileNotFoundException"))
+                    {
+                        ScriptManager.RegisterStartupScript(this, this.GetType(), "Key", "alert(\"" + sCheckFileNotFoundException.Split('~')[1] + "\");", true);
+                        return;
+                    }
                     string spath = virdir + "\\" + Path.GetFileName(ilstFMI[0].Generate_Link_File_Path);
                     Session["ADFilePAth"] = spath;
                 }

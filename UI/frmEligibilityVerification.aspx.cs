@@ -1625,7 +1625,14 @@ namespace Acurus.Capella.UI
                             string ftpPassword = System.Configuration.ConfigurationSettings.AppSettings["ftpPassword"];
                             string ftpServerIP = System.Configuration.ConfigurationSettings.AppSettings["ftpServerIP"];
 
-                            if (ftpImageProcess.CreateDirectory(txtPatientAccountNo.Text, ftpServerIP, ftpUserID, ftpPassword))
+                            //if (ftpImageProcess.CreateDirectory(txtPatientAccountNo.Text, ftpServerIP, ftpUserID, ftpPassword))
+                            bool bCreateDirectory = ftpImageProcess.CreateDirectory(txtPatientAccountNo.Text, ftpServerIP, ftpUserID, ftpPassword, out string sCheckFileNotFoundException);
+                            if (sCheckFileNotFoundException != "" && sCheckFileNotFoundException.Contains("CheckFileNotFoundException"))
+                            {
+                                ScriptManager.RegisterStartupScript(this, this.GetType(), "Key", "alert(\"" + sCheckFileNotFoundException.Split('~')[1] + "\");", true);
+                                return;
+                            }
+                            if (bCreateDirectory)
                             {
                                 if (MyCreateDirectory(txtPatientAccountNo.Text, ftpServerIP, ftpUserID, ftpPassword, string.Empty))
                                 {
@@ -1634,7 +1641,12 @@ namespace Acurus.Capella.UI
                                     if (lastNumToAdd.Length == 1)
                                         lastNumToAdd = "0" + lastNumToAdd;
                                     string sStoringFormat = ClientSession.FacilityName.Replace("#", "") + "_EV_" + DateTime.Now.ToString("yyyyMMdd") + "_" + ClientSession.HumanId.ToString() + "_" + lastNumToAdd + Path.GetExtension(file.FileName);
-                                    serverPath = ftpImageProcess.UploadToImageServer(txtPatientAccountNo.Text, ftpServerIP, ftpUserID, ftpPassword, SelectedFilePath, sStoringFormat);
+                                    serverPath = ftpImageProcess.UploadToImageServer(txtPatientAccountNo.Text, ftpServerIP, ftpUserID, ftpPassword, SelectedFilePath, sStoringFormat, out string sCheckFileNotFoundExceptions);
+                                    if (sCheckFileNotFoundExceptions != "" && sCheckFileNotFoundExceptions.Contains("CheckFileNotFoundException"))
+                                    {
+                                        ScriptManager.RegisterStartupScript(this, this.GetType(), "Key", "alert(\"" + sCheckFileNotFoundExceptions.Split('~')[1] + "\");", true);
+                                        return;
+                                    }
                                     if (serverPath != string.Empty)
                                     {
                                         FileManagementIndex filemanagementIndex = new FileManagementIndex();

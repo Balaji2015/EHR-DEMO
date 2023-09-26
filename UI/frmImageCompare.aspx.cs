@@ -22,6 +22,7 @@ using System.Text.RegularExpressions;
 using System.Net;
 using System.Web.Services;
 using System.Threading;
+using DocumentFormat.OpenXml.Wordprocessing;
 
 namespace Acurus.Capella.UI
 {
@@ -290,28 +291,36 @@ namespace Acurus.Capella.UI
                                     }
                                     else
                                     {
-                                        sImgPath = CurrentURL.Scheme + Uri.SchemeDelimiter + Request.Url.Authority + "//atala-capture-download//"+Session.SessionID+"//ExamPDF//" + Path.GetFileName(FilePath); ;
+                                        sImgPath = CurrentURL.Scheme + Uri.SchemeDelimiter + Request.Url.Authority + "//atala-capture-download//" + Session.SessionID + "//ExamPDF//" + Path.GetFileName(FilePath); ;
                                     }
 
-                                  
+
                                     bigImgPDF.Attributes.Add("src", sImgPath);
-                                  
+
                                 }
                             }
                         }
                         catch (Exception ex)
                         {
-                            //Jira #CAP-64
-                            if (iTryCount <= 3)
+                            string sErrorMessage = "";
+                            if (UtilityManager.CheckFileNotFoundException(ex, out sErrorMessage))
                             {
-                                iTryCount = iTryCount + 1;
-                                Thread.Sleep(1500);
-                                goto TryAgain;
+                                ScriptManager.RegisterStartupScript(this, this.GetType(), "Key", "alert(\" " + sErrorMessage + "\");", true);
                             }
                             else
                             {
-                                UtilityManager.RetryExecptionLog(ex, iTryCount);
-                                throw (ex);
+                                //Jira #CAP-64
+                                if (iTryCount <= 3)
+                                {
+                                    iTryCount = iTryCount + 1;
+                                    Thread.Sleep(1500);
+                                    goto TryAgain;
+                                }
+                                else
+                                {
+                                    UtilityManager.RetryExecptionLog(ex, iTryCount);
+                                    throw (ex);
+                                }
                             }
                         }
 
@@ -539,17 +548,25 @@ namespace Acurus.Capella.UI
                     }
                     catch (Exception ex)
                     {
-                        //Jira #CAP-64
-                        if (iTryCount <= 3)
+                        string sErrorMessage = "";
+                        if (UtilityManager.CheckFileNotFoundException(ex, out sErrorMessage))
                         {
-                            iTryCount = iTryCount + 1;
-                            Thread.Sleep(1500);
-                            goto TryAgain;
+                            ScriptManager.RegisterStartupScript(this, this.GetType(), "Key", "alert(\" " + sErrorMessage + "\");", true);
                         }
                         else
                         {
-                            UtilityManager.RetryExecptionLog(ex, iTryCount);
-                            throw (ex);
+                            //Jira #CAP-64
+                            if (iTryCount <= 3)
+                            {
+                                iTryCount = iTryCount + 1;
+                                Thread.Sleep(1500);
+                                goto TryAgain;
+                            }
+                            else
+                            {
+                                UtilityManager.RetryExecptionLog(ex, iTryCount);
+                                throw (ex);
+                            }
                         }
                     }
 
@@ -639,17 +656,25 @@ namespace Acurus.Capella.UI
                 }
                 catch (Exception ex)
                 {
-                    //Jira #CAP-64
-                    if (iTryCount <= 3)
+                    string sErrorMessage = "";
+                    if (UtilityManager.CheckFileNotFoundException(ex, out sErrorMessage))
                     {
-                        iTryCount = iTryCount + 1;
-                        Thread.Sleep(1500);
-                        goto TryAgain;
+                        ScriptManager.RegisterStartupScript(this, this.GetType(), "Key", "alert(\" " + sErrorMessage + "\");", true);
                     }
                     else
                     {
-                        UtilityManager.RetryExecptionLog(ex, iTryCount);
-                        throw (ex);
+                        //Jira #CAP-64
+                        if (iTryCount <= 3)
+                        {
+                            iTryCount = iTryCount + 1;
+                            Thread.Sleep(1500);
+                            goto TryAgain;
+                        }
+                        else
+                        {
+                            UtilityManager.RetryExecptionLog(ex, iTryCount);
+                            throw (ex);
+                        }
                     }
                 }
              
@@ -789,17 +814,25 @@ namespace Acurus.Capella.UI
                 }
                 catch (Exception ex)
                 {
-                    //Jira #CAP-64
-                    if (iTryCount <= 3)
+                    string sErrorMessage = "";
+                    if (UtilityManager.CheckFileNotFoundException(ex, out sErrorMessage))
                     {
-                        iTryCount = iTryCount + 1;
-                        Thread.Sleep(1500);
-                        goto TryAgain;
+                        ScriptManager.RegisterStartupScript(this, this.GetType(), "Key", "alert(\" " + sErrorMessage + "\");", true);
                     }
                     else
                     {
-                        UtilityManager.RetryExecptionLog(ex, iTryCount);
-                        throw (ex);
+                        //Jira #CAP-64
+                        if (iTryCount <= 3)
+                        {
+                            iTryCount = iTryCount + 1;
+                            Thread.Sleep(1500);
+                            goto TryAgain;
+                        }
+                        else
+                        {
+                            UtilityManager.RetryExecptionLog(ex, iTryCount);
+                            throw (ex);
+                        }
                     }
                 }
 
@@ -1707,17 +1740,25 @@ namespace Acurus.Capella.UI
                         }
                         catch (Exception ex)
                         {
-                            //Jira #CAP-64
-                            if (iTryCount <= 3)
+                            string sErrorMessage = "";
+                            if (UtilityManager.CheckFileNotFoundException(ex, out sErrorMessage))
                             {
-                                iTryCount = iTryCount + 1;
-                                Thread.Sleep(1500);
-                                goto TryAgain;
+                                ScriptManager.RegisterStartupScript(this, this.GetType(), "Key", "alert(\" " + sErrorMessage + "\");", true);
                             }
                             else
                             {
-                                UtilityManager.RetryExecptionLog(ex, iTryCount);
-                                throw (ex);
+                                //Jira #CAP-64
+                                if (iTryCount <= 3)
+                                {
+                                    iTryCount = iTryCount + 1;
+                                    Thread.Sleep(1500);
+                                    goto TryAgain;
+                                }
+                                else
+                                {
+                                    UtilityManager.RetryExecptionLog(ex, iTryCount);
+                                    throw (ex);
+                                }
                             }
                         }
 
@@ -1945,17 +1986,25 @@ namespace Acurus.Capella.UI
                     }
                     catch (Exception ex)
                     {
-                        //Jira #CAP-64
-                        if (iTryCount <= 3)
+                        string sErrorMessage = "";
+                        if (UtilityManager.CheckFileNotFoundException(ex, out sErrorMessage))
                         {
-                            iTryCount = iTryCount + 1;
-                            Thread.Sleep(1500);
-                            goto TryAgain;
+                            ScriptManager.RegisterStartupScript(this, this.GetType(), "Key", "alert(\" " + sErrorMessage + "\");", true);
                         }
                         else
                         {
-                            UtilityManager.RetryExecptionLog(ex, iTryCount);
-                            throw (ex);
+                            //Jira #CAP-64
+                            if (iTryCount <= 3)
+                            {
+                                iTryCount = iTryCount + 1;
+                                Thread.Sleep(1500);
+                                goto TryAgain;
+                            }
+                            else
+                            {
+                                UtilityManager.RetryExecptionLog(ex, iTryCount);
+                                throw (ex);
+                            }
                         }
                     }
 

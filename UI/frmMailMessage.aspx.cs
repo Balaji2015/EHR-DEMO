@@ -487,7 +487,12 @@ namespace Acurus.Capella.UI
             // DirectoryInfo childDir = new DirectoryInfo(new FileInfo(files[i]).DirectoryName);
             string[] sDirName = hdnpath.Value.Split('/');
             string ftpip = Path.Combine(ftpServerIP, sDirName[sDirName.Length - 2]);
-            ftpImage.DownloadFromImageServer("0", ftpip, ftpUserName, ftpPassword, Path.GetFileName(hdnpath.Value), localpath);
+            ftpImage.DownloadFromImageServer("0", ftpip, ftpUserName, ftpPassword, Path.GetFileName(hdnpath.Value), localpath, out string sCheckFileNotFoundException);
+            if (sCheckFileNotFoundException != "" && sCheckFileNotFoundException.Contains("CheckFileNotFoundException"))
+            {
+                ScriptManager.RegisterStartupScript(this, this.GetType(), "Key", "alert(\"" + sCheckFileNotFoundException.Split('~')[1] + "\");", true);
+                return;
+            }
             string orig_image = localpath + "\\" + Path.GetFileName(hdnpath.Value);
 
 

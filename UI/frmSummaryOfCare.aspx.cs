@@ -781,14 +781,26 @@ namespace Acurus.Capella.UI
                 string ftpServerIP = System.Configuration.ConfigurationSettings.AppSettings["ftpServerIP"];
                 FTPImageProcess ftpImageProcess = new FTPImageProcess();
                 IList<FileManagementIndex> fileList = new List<FileManagementIndex>();
-                if (ftpImageProcess.CreateDirectory(sAccountNo, ftpServerIP, ftpUserID, ftpPassword))
+                //if (ftpImageProcess.CreateDirectory(sAccountNo, ftpServerIP, ftpUserID, ftpPassword))
+                bool bCreateDirectory = ftpImageProcess.CreateDirectory(sAccountNo, ftpServerIP, ftpUserID, ftpPassword,out string sCheckFileNotFoundException);
+                if (sCheckFileNotFoundException != "" && sCheckFileNotFoundException.Contains("CheckFileNotFoundException"))
+                {
+                    ScriptManager.RegisterStartupScript(this, this.GetType(), "Key", "alert(\"" + sCheckFileNotFoundException.Split('~')[1] + "\");", true);
+                    return;
+                }
+                if (bCreateDirectory)
                 {
                     string tempSelectPath = (string)Session["PDF_Path"];
                     lastNumToAdd = Convert.ToString(prevNum + 1);
                     if (lastNumToAdd.Length == 1)
                         lastNumToAdd = "0" + lastNumToAdd;
                     sStoringFormat = ClientSession.FacilityName.Replace("#", "") + "_SUMMARY_OF_CARE_" + DateTime.Now.ToString("yyyyMMdd") + "_" + sAccountNo + "_" + lastNumToAdd + ".pdf";
-                    sFTPAddress = ftpImageProcess.UploadToImageServer(sAccountNo, ftpServerIP, ftpUserID, ftpPassword, tempSelectPath, sStoringFormat);
+                    sFTPAddress = ftpImageProcess.UploadToImageServer(sAccountNo, ftpServerIP, ftpUserID, ftpPassword, tempSelectPath, sStoringFormat, out string sCheckFileNotFoundExceptions);
+                    if (sCheckFileNotFoundExceptions != "" && sCheckFileNotFoundExceptions.Contains("CheckFileNotFoundException"))
+                    {
+                        ScriptManager.RegisterStartupScript(this, this.GetType(), "Key", "alert(\"" + sCheckFileNotFoundExceptions.Split('~')[1] + "\");", true);
+                        return;
+                    }
                     if (sFTPAddress != string.Empty)
                     {
                         FileManagementIndex objfileIndex = new FileManagementIndex();

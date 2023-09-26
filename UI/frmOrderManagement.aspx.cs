@@ -136,7 +136,6 @@ namespace Acurus.Capella.UI
                 //Cap - 1007
                 RadComboBoxSelectedIndexChangedEventArgs e1 = new RadComboBoxSelectedIndexChangedEventArgs("DIAGNOSTIC ORDER", string.Empty, "DIAGNOSTIC ORDER", string.Empty);
                 cboOrderType_SelectedIndexChanged(sender, e1);
-
             }
 
             txtPatientName.ReadOnly = true;
@@ -749,17 +748,18 @@ namespace Acurus.Capella.UI
             }
             btnAddResult.Enabled = false;
             string sHumanID = string.Empty;
-            if (cboOrderType.SelectedIndex == 0 || cboOrderType.SelectedIndex < 0)
-            {
-                grdReport.DataSource = new string[] { };
-                grdReport.DataBind();
-                this.Page.ClientScript.RegisterStartupScript(this.Page.GetType(), string.Empty, "DisplayErrorMessage('7090003');", true);
-                lblResultsFound.Text = "No Result(s) found";
-                hdnResultsLabel.Value = "No Result(s) found";
-                return;
-            }
-            else if (cboOrderType.SelectedIndex != 0)
-            {
+            // Cap - 1007 - Set default order.
+            //if (cboOrderType.SelectedIndex == 0 || cboOrderType.SelectedIndex < 0)
+            //{
+            //    grdReport.DataSource = new string[] { };
+            //    grdReport.DataBind();
+            //    this.Page.ClientScript.RegisterStartupScript(this.Page.GetType(), string.Empty, "DisplayErrorMessage('7090003');", true);
+            //    lblResultsFound.Text = "No Result(s) found";
+            //    hdnResultsLabel.Value = "No Result(s) found";
+            //    return;
+            //}
+            //else if (cboOrderType.SelectedIndex != 0)
+            //{
                 if (chkDate.Checked == true && dtpToDate.SelectedDate < dtpFromDate.SelectedDate)
                 {
                     this.Page.ClientScript.RegisterStartupScript(this.Page.GetType(), string.Empty, "DisplayErrorMessage('7090008');", true);
@@ -768,18 +768,20 @@ namespace Acurus.Capella.UI
                     dtpToDate.Focus();
                     return;
                 }
-                if (cboOrderType.SelectedIndex != 0 && cboLabCenter.Text.Trim() != string.Empty)
-                {
-                    labItem = cboLabCenter.SelectedItem as RadComboBoxItem;
-                }
-                else
-                {
-                    labItem = new RadComboBoxItem();
-                    int i = 0;
-                    labItem.Value = i.ToString();
-                }
+            // Cap - 1007 - Set default order.
+            //if (cboOrderType.SelectedIndex != 0 && cboLabCenter.Text.Trim() != string.Empty)
+            if(cboLabCenter.Text.Trim() != string.Empty)
+            {
+                labItem = cboLabCenter.SelectedItem as RadComboBoxItem;
+            }
+            else
+            {
+                labItem = new RadComboBoxItem();
+                int i = 0;
+                labItem.Value = i.ToString();
+            }
 
-                if (txtPatientName.Text == string.Empty)
+            if (txtPatientName.Text == string.Empty)
                 {
                     int i = 0;
                     txtPatientName.Attributes["tagPatientName"] = i.ToString();
@@ -910,7 +912,7 @@ namespace Acurus.Capella.UI
                     hdnResultsLabel.Value = "No Result(s) found";
                     mpnOrderManagement.Reset();
                 }
-            }
+            //}
 
             ScriptManager.RegisterStartupScript(this, this.GetType(), "SearchOrders", " {sessionStorage.setItem('StartLoading', 'false');StopLoadFromPatChart();}", true);
             //divLoading.Style.Add("display", "none");

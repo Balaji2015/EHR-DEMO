@@ -2192,9 +2192,10 @@ namespace Acurus.Capella.UI
 
             return returnImage;
         }
-
-        public static bool saveMultipage(System.Drawing.Image[] bmp, string location, string type)
+        
+        public static bool saveMultipage(System.Drawing.Image[] bmp, string location, string type, out string sCheckFileNotFoundException)
         {
+            sCheckFileNotFoundException = "";
             if (bmp != null && location != null)
             {
                 //Jira #CAP-39
@@ -2268,23 +2269,33 @@ namespace Acurus.Capella.UI
                 }
                 catch (System.Exception ee)
                 {
-                    //Jira #CAP-39
-                    if (iTryCount <= 3)
+                    string sErrorMessage = "";
+                    if (UtilityManager.CheckFileNotFoundException(ee, out sErrorMessage))
                     {
-                        iTryCount = iTryCount + 1;
-                        Thread.Sleep(1500);
-                        goto TryAgain;
+                        //ScriptManager.RegisterStartupScript(this, this.GetType(), "Key", "alert('" + sErrorMessage + "');", true);
+                        sCheckFileNotFoundException = "CheckFileNotFoundException ~" + sErrorMessage;
+                        return false;
                     }
                     else
                     {
-                        UtilityManager.RetryExecptionLog(ee, iTryCount);
-                        if (ee.Message != null)
+                        //Jira #CAP-39
+                        if (iTryCount <= 3)
                         {
-                            throw new Exception(ee.Message + "  Error in saving as multipage ");
+                            iTryCount = iTryCount + 1;
+                            Thread.Sleep(1500);
+                            goto TryAgain;
                         }
                         else
                         {
-                            throw new Exception(" Error in saving as multipage ");
+                            UtilityManager.RetryExecptionLog(ee, iTryCount);
+                            if (ee.Message != null)
+                            {
+                                throw new Exception(ee.Message + "  Error in saving as multipage ");
+                            }
+                            else
+                            {
+                                throw new Exception(" Error in saving as multipage ");
+                            }
                         }
                     }
                 }
@@ -2860,7 +2871,14 @@ namespace Acurus.Capella.UI
             #region FTP Transfer
             FTPImageProcess _ftpImageProcess = new FTPImageProcess();
 
-            if (_ftpImageProcess.CreateDirectory(ClientSession.HumanId.ToString(), ftpServerIP, string.Empty, string.Empty))
+            //if (_ftpImageProcess.CreateDirectory(ClientSession.HumanId.ToString(), ftpServerIP, string.Empty, string.Empty))
+            bool bCreateDirectory = _ftpImageProcess.CreateDirectory(ClientSession.HumanId.ToString(), ftpServerIP, string.Empty, string.Empty,out string sCheckFileNotFoundException);
+            if (sCheckFileNotFoundException != "" && sCheckFileNotFoundException.Contains("CheckFileNotFoundException"))
+            {
+                ScriptManager.RegisterStartupScript(this, this.GetType(), "Key", "alert(\"" + sCheckFileNotFoundException.Split('~')[1] + "\");", true);
+                return;
+            }
+            if (bCreateDirectory)
             {
                 //DirectoryInfo directory = new DirectoryInfo(Server.MapPath("~/atala-capture-upload/" + Session.SessionID));
                 //if (!directory.Exists)
@@ -2881,7 +2899,12 @@ namespace Acurus.Capella.UI
                         ScriptManager.RegisterStartupScript(this, this.Page.GetType(), "NetworkError", "StopLoadOnUploadFile();alert('There is a temporary error occured. Please Login again and retry. If issue persists, Please contact Support.');", true);
                         return;
                     }
-                    serverPath = _ftpImageProcess.UploadToImageServer(ClientSession.HumanId.ToString(), ftpServerIP, string.Empty, string.Empty, scanIndexList[i].Indexed_File_Path, string.Empty);
+                    serverPath = _ftpImageProcess.UploadToImageServer(ClientSession.HumanId.ToString(), ftpServerIP, string.Empty, string.Empty, scanIndexList[i].Indexed_File_Path, string.Empty, out string sCheckFileNotFoundExceptions);
+                    if (sCheckFileNotFoundExceptions != "" && sCheckFileNotFoundExceptions.Contains("CheckFileNotFoundException"))
+                    {
+                        ScriptManager.RegisterStartupScript(this, this.GetType(), "Key", "alert(\"" + sCheckFileNotFoundExceptions.Split('~')[1] + "\");", true);
+                        return;
+                    }
                     //try
                     //{
                     //    //File Moved to Image Server without Ftp.
@@ -2912,7 +2935,12 @@ namespace Acurus.Capella.UI
                         {
                             // string filedirectorypath = _ftpImageProcess.UploadToADfiletoServerIndexing(ClientSession.HumanId.ToString(), scanIndexList[i].Indexed_File_Path);
                             //filemanagementIndex.Generate_Link_File_Path = filedirectorypath;
-                            filemanagementIndex.Generate_Link_File_Path = _ftpImageProcess.UploadToADfiletoServerIndexing(ClientSession.HumanId.ToString(), scanIndexList[i].Indexed_File_Path);
+                            filemanagementIndex.Generate_Link_File_Path = _ftpImageProcess.UploadToADfiletoServerIndexing(ClientSession.HumanId.ToString(), scanIndexList[i].Indexed_File_Path,this,out string sCheckFileNotFoundExce);
+                            if (sCheckFileNotFoundExce != "" && sCheckFileNotFoundExce.Contains("CheckFileNotFoundException"))
+                            {
+                                ScriptManager.RegisterStartupScript(this, this.GetType(), "Key", "alert(\"" + sCheckFileNotFoundExce.Split('~')[1] + "\");", true);
+                                return;
+                            }
                         }
                         fileManagementIndexList.Add(filemanagementIndex);
 
@@ -3089,17 +3117,25 @@ namespace Acurus.Capella.UI
             }
             catch (Exception ex)
             {
-                //Jira #CAP-39
-                if (iTryCount <= 3)
+                string sErrorMessage = "";
+                if (UtilityManager.CheckFileNotFoundException(ex, out sErrorMessage))
                 {
-                    iTryCount = iTryCount + 1;
-                    Thread.Sleep(1500);
-                    goto TryAgain;
+                    ScriptManager.RegisterStartupScript(this, this.GetType(), "Key", "alert(\" " + sErrorMessage + "\");", true);
                 }
                 else
                 {
-                    UtilityManager.RetryExecptionLog(ex, iTryCount);
-                    throw ex;
+                    //Jira #CAP-39
+                    if (iTryCount <= 3)
+                    {
+                        iTryCount = iTryCount + 1;
+                        Thread.Sleep(1500);
+                        goto TryAgain;
+                    }
+                    else
+                    {
+                        UtilityManager.RetryExecptionLog(ex, iTryCount);
+                        throw ex;
+                    }
                 }
             }
 
@@ -3500,7 +3536,14 @@ namespace Acurus.Capella.UI
                     System.Drawing.Image[] splittedFiles = null;
                     splittedFiles = splitTiffImageToSeparateImages(sourceFile.ToString(), selectedPageNumbers);
                     //CAP-935
-                    bool res = saveMultipage(splittedFiles, filePath.ToString(), "TIFF");
+                    bool res = saveMultipage(splittedFiles, filePath.ToString(), "TIFF",out string sCheckFileNotFoundException);
+
+                    if (sCheckFileNotFoundException != "" && sCheckFileNotFoundException.Contains("CheckFileNotFoundException"))
+                    {
+                        ScriptManager.RegisterStartupScript(this, this.GetType(), "Key", "alert(\"" + sCheckFileNotFoundException.Split('~')[1] + "\");", true);
+                        return;
+                    }   
+
                     if (res == false)
                     {
                         ScriptManager.RegisterStartupScript(this, this.Page.GetType(), "NetworkError", "alert('Problem in Saving Files to Clinical NAS. Please Contact Support.');", true);
@@ -3523,15 +3566,23 @@ namespace Acurus.Capella.UI
                     }
                     catch (Exception ex)
                     {
-                        //Jira #CAP-39
-                        if (iTryCount <= 3)
+                        string sErrorMessage = "";
+                        if (UtilityManager.CheckFileNotFoundException(ex, out sErrorMessage))
                         {
-                            iTryCount = iTryCount + 1;
-                            Console.WriteLine(ex.Message);
-                            Thread.Sleep(1500);
-                            goto TryAgain;
+                            ScriptManager.RegisterStartupScript(this, this.GetType(), "Key", "alert(\" " + sErrorMessage + "\");", true);
                         }
-                        else { UtilityManager.RetryExecptionLog(ex, iTryCount); throw (ex); }
+                        else
+                        {
+                            //Jira #CAP-39
+                            if (iTryCount <= 3)
+                            {
+                                iTryCount = iTryCount + 1;
+                                Console.WriteLine(ex.Message);
+                                Thread.Sleep(1500);
+                                goto TryAgain;
+                            }
+                            else { UtilityManager.RetryExecptionLog(ex, iTryCount); throw (ex); }
+                        }
                     }
                 }
 
@@ -4409,26 +4460,34 @@ namespace Acurus.Capella.UI
             }
             catch (Exception ex)
             {
-                //Jira #CAP-39
-                if (iTryCount <= 3)
+                string sErrorMessage = "";
+                if (UtilityManager.CheckFileNotFoundException(ex, out sErrorMessage))
                 {
-                    iTryCount = iTryCount + 1;
-                    Console.WriteLine(ex.Message);
-                    Thread.Sleep(1500);
-                    goto TryAgain;
+                    ScriptManager.RegisterStartupScript(this, this.GetType(), "Key", "alert(\" " + sErrorMessage + "\");", true);
                 }
-                else 
+                else
                 {
-                    try
+                    //Jira #CAP-39
+                    if (iTryCount <= 3)
                     {
-                        UtilityManager.RetryExecptionLog(ex, iTryCount, "SourcePath: " + sSourcePdfPath + " ~ DestinationPath: " + sDestinationPdfPath);
+                        iTryCount = iTryCount + 1;
+                        Console.WriteLine(ex.Message);
+                        Thread.Sleep(1500);
+                        goto TryAgain;
                     }
-                    catch (Exception)
+                    else
                     {
-                        ScriptManager.RegisterClientScriptBlock(this, this.GetType(), "Key", "alert('Something went wrong. Please reload the page and try again');", true);
+                        try
+                        {
+                            UtilityManager.RetryExecptionLog(ex, iTryCount, "SourcePath: " + sSourcePdfPath + " ~ DestinationPath: " + sDestinationPdfPath);
+                        }
+                        catch (Exception)
+                        {
+                            ScriptManager.RegisterClientScriptBlock(this, this.GetType(), "Key", "alert('Something went wrong. Please reload the page and try again');", true);
+                        }
                     }
-                }
 
+                }
             }
         }
         #endregion
@@ -4629,18 +4688,26 @@ namespace Acurus.Capella.UI
                     }
                     catch (Exception ex)
                     {
-                        //Jira #CAP-39
-                        if (iTryCount <= 3)
+                        string sErrorMessage = "";
+                        if (UtilityManager.CheckFileNotFoundException(ex, out sErrorMessage))
                         {
-                            iTryCount = iTryCount + 1;
-                            Thread.Sleep(1500);
-                            goto TryAgain;
+                            ScriptManager.RegisterStartupScript(this, this.GetType(), "Key", "alert(\" "+ sErrorMessage+ "\");", true);
                         }
                         else
                         {
-                            UtilityManager.RetryExecptionLog(ex, iTryCount);
-                            Console.Write(ex);
-                            throw (ex);
+                            //Jira #CAP-39
+                            if (iTryCount <= 3)
+                            {
+                                iTryCount = iTryCount + 1;
+                                Thread.Sleep(1500);
+                                goto TryAgain;
+                            }
+                            else
+                            {
+                                UtilityManager.RetryExecptionLog(ex, iTryCount);
+                                Console.Write(ex);
+                                throw (ex);
+                            }
                         }
                     }
                 }
@@ -5003,6 +5070,7 @@ namespace Acurus.Capella.UI
         [WebMethod(EnableSession = true)]
         public static string DeleteThumbnail(string ImagePath, string delPgNo)
         {
+
             if (ClientSession.UserName == string.Empty)
             {
                 HttpContext.Current.Response.StatusCode = 999;
@@ -5041,7 +5109,12 @@ namespace Acurus.Capella.UI
 
                         System.Drawing.Image[] splittedFiles = null;
                         splittedFiles = splitTiffImageToSeparateImages(ImagePath, selectedPageNumbers);
-                        bool res = saveMultipage(splittedFiles, ImagePath, "TIFF");
+                        bool res = saveMultipage(splittedFiles, ImagePath, "TIFF", out string sCheckFileNotFoundException);
+                        if (sCheckFileNotFoundException != "" && sCheckFileNotFoundException.Contains("CheckFileNotFoundException"))
+                        {
+                            //ScriptManager.RegisterStartupScript(this, this.GetType(), "Key", "alert(\"" + sCheckFileNotFoundException.Split('~')[1] + "\");", true);
+                            return sCheckFileNotFoundException;
+                        }
                         if (ImagePath != null && ImagePath != string.Empty)
                         {
                             using (System.Drawing.Image imgbg = System.Drawing.Image.FromFile(ImagePath))

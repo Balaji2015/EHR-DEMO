@@ -8615,7 +8615,12 @@ namespace Acurus.Capella.UI
                 {
 
                     string filename = hdnUploadFile.Value;
-                    sFTPPath = ftpImage.UploadToImageServer("PatientPhoto", ftpServerIP, ftpUserName, ftpPassword, filename, string.Empty);
+                    sFTPPath = ftpImage.UploadToImageServer("PatientPhoto", ftpServerIP, ftpUserName, ftpPassword, filename, string.Empty, out string sCheckFileNotFoundException);
+                    if (sCheckFileNotFoundException != "" && sCheckFileNotFoundException.Contains("CheckFileNotFoundException"))
+                    {
+                        ScriptManager.RegisterStartupScript(this, this.GetType(), "Key", "alert(\"" + sCheckFileNotFoundException.Split('~')[1] + "\");", true);
+                        return string.Empty;
+                    }
                     //imgOverAllSummary.ImageUrl = "~//atala-capture-download/" + Session.SessionID + "//" + sImgFileName;
                     imgOverAllSummary.ImageUrl = "~//atala-capture-download/" + Session.SessionID + "//" + Path.GetFileName(filename);
 
@@ -8652,8 +8657,12 @@ namespace Acurus.Capella.UI
                 virdir.Create();
             }
 
-            ftpImage.DownloadFromImageServer("PatientPhoto", ftpServerIP, ftpUserName, ftpPassword, Path.GetFileName(sPhotoPath), sPath);
-
+            ftpImage.DownloadFromImageServer("PatientPhoto", ftpServerIP, ftpUserName, ftpPassword, Path.GetFileName(sPhotoPath), sPath, out string sCheckFileNotFoundException);
+            if (sCheckFileNotFoundException != "" && sCheckFileNotFoundException.Contains("CheckFileNotFoundException"))
+            {
+                ScriptManager.RegisterStartupScript(this, this.GetType(), "Key", "alert(\"" + sCheckFileNotFoundException.Split('~')[1] + "\");", true);
+                return;
+            }
             imgOverAllSummary.ImageUrl = "~//atala-capture-download/" + Session.SessionID + "//" + Path.GetFileName(sPhotoPath);
 
 

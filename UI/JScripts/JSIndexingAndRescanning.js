@@ -1031,6 +1031,11 @@ function DeleteThumbnails(FullFilePath, FirstFileName, FirstFilePath) {
                             contentType: "application/json; charset=utf-8",
                             dataType: "json",
                             success: function (data) {
+
+                                if (data.d.indexOf("CheckFileNotFoundException")) {
+                                    alert(data.d.Split('~')[1]);
+                                }
+
                                 { sessionStorage.setItem('StartLoading', 'false'); StopLoadFromPatChart(); }
                                 GridOpenFile(FirstFileName, FirstFilePath.replace(FirstFileName, ""), "");
                             },

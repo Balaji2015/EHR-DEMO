@@ -274,7 +274,14 @@ namespace Acurus.Capella.UI
 
                     int i = 1;
                     // if (ftpImageProcess.CreateDirectoryFAX(UNCAuthPath, UNCPath, ftpIP, userName, password, domain, sDestinationFTPPath))
-                    if (ftpImageProcess.CreateDirectory(sDestinationFTPPath, ftpServerIP, ftpUserID, ftpPassword))
+                    //if (ftpImageProcess.CreateDirectory(sDestinationFTPPath, ftpServerIP, ftpUserID, ftpPassword))
+                    bool bCreateDirectory = ftpImageProcess.CreateDirectory(sDestinationFTPPath, ftpServerIP, ftpUserID, ftpPassword, out string sCheckFileNotFoundException);
+                    if (sCheckFileNotFoundException != "" && sCheckFileNotFoundException.Contains("CheckFileNotFoundException"))
+                    {
+                        ScriptManager.RegisterStartupScript(this, this.GetType(), "Key", "alert(\"" + sCheckFileNotFoundException.Split('~')[1] + "\");", true);
+                        return;
+                    }
+                    if (bCreateDirectory)
                     {
                         if (UploadImage.UploadedFiles.Count > 0 || Request["Result"] != null)
                         {
@@ -333,7 +340,12 @@ namespace Acurus.Capella.UI
                                 string sStoringFormat = DateTime.Now.ToString("yyyyMMddhhmmss") + "_" + i.ToString() + Path.GetExtension(pdffilepath);
                                 i++;
                                 //sFTPAddress = ftpImageProcess.UploadToImageServerFAX(UNCAuthPath, UNCPath, ftpIP, userName, password, domain, sDestinationFTPPath, SelectedFilePath, sStoringFormat);
-                                sFTPAddress = ftpImageProcess.UploadToImageServer(sDestinationFTPPath, ftpServerIP, ftpUserID, ftpPassword, pdffilepath, sStoringFormat);
+                                sFTPAddress = ftpImageProcess.UploadToImageServer(sDestinationFTPPath, ftpServerIP, ftpUserID, ftpPassword, pdffilepath, sStoringFormat,out string sCheckFileNotFoundExceptions);
+                                if(sCheckFileNotFoundExceptions != "" && sCheckFileNotFoundExceptions.Contains("CheckFileNotFoundException")) 
+                                {
+                                    ScriptManager.RegisterStartupScript(this, this.GetType(), "Key", "alert(\"" + sCheckFileNotFoundExceptions.Split('~')[1] + "\");", true);
+                                    return;
+                                }
                                 // string sFilePath = sFacilityPath + sStoringFormat;
                                 if (sAttachFileName == string.Empty)
                                     sAttachFileName = sFTPAddress;
@@ -400,7 +412,12 @@ namespace Acurus.Capella.UI
                               // ftpImageProcess.DownloadFromImageServer(ClientSession.HumanId.ToString(), ftpServerIPre, ftpUserNamere, ftpPasswordre, Path.GetFileName(hdnfilePath.Value), SelectedFilePath);
                                 //ftpImageProcess.DownloadFromImageServer(HumanId, ftpServerIPre, ftpUserNamere, ftpPasswordre, Path.GetFileName(hdnfilePath.Value), SelectedFilePath);
                               
-                                ftpImageProcess.DownloadFromImageServer(HumanId, ftpServerIPre, ftpUserNamere, ftpPasswordre, Path.GetFileName(hdnfilePath.Value), sLocalPath);                                
+                                ftpImageProcess.DownloadFromImageServer(HumanId, ftpServerIPre, ftpUserNamere, ftpPasswordre, Path.GetFileName(hdnfilePath.Value), sLocalPath,out string sCheckFileNotFoundExc);
+                                if (sCheckFileNotFoundExc != "" && sCheckFileNotFoundExc.Contains("CheckFileNotFoundException"))
+                                {
+                                    ScriptManager.RegisterStartupScript(this, this.GetType(), "Key", "alert(\"" + sCheckFileNotFoundExc.Split('~')[1] + "\");", true);
+                                    return;
+                                }
                                 if (Path.GetExtension(hdnfilePath.Value).ToUpper() == ".PNG" || Path.GetExtension(hdnfilePath.Value).ToUpper() == ".GIF" || Path.GetExtension(hdnfilePath.Value).ToUpper() == ".JPG" || Path.GetExtension(hdnfilePath.Value).ToUpper() == ".JPEG" || Path.GetExtension(hdnfilePath.Value).ToUpper() == ".BMP")
                                 {
                                     pdffilepath = Server.MapPath("~/atala-capture-upload/" + Session.SessionID + "/EFAX/" + ClientSession.FacilityName.Replace(" ", "_").Replace("#", "").Replace(",", "") + "/" + DateTime.Now.ToString("yyyyMMdd") + "/" + "image.pdf");
@@ -440,7 +457,12 @@ namespace Acurus.Capella.UI
 
                                 }
                                 string sStoringFormat = DateTime.Now.ToString("yyyyMMddhhmmss") + Path.GetExtension(pdffilepath);
-                                sFTPAddress = ftpImageProcess.UploadToImageServer(sDestinationFTPPath, ftpServerIP, ftpUserID, ftpPassword, pdffilepath, sStoringFormat);
+                                sFTPAddress = ftpImageProcess.UploadToImageServer(sDestinationFTPPath, ftpServerIP, ftpUserID, ftpPassword, pdffilepath, sStoringFormat, out string sCheckFileNotFoundExceptions);
+                                if (sCheckFileNotFoundExceptions != "" && sCheckFileNotFoundExceptions.Contains("CheckFileNotFoundException"))
+                                {
+                                    ScriptManager.RegisterStartupScript(this, this.GetType(), "Key", "alert(\"" + sCheckFileNotFoundExceptions.Split('~')[1] + "\");", true);
+                                    return;
+                                }
                                 // string sFilePath = sFacilityPath + sStoringFormat;
                                 if (sAttachFileName == string.Empty)
                                     sAttachFileName = sFTPAddress;
@@ -455,8 +477,12 @@ namespace Acurus.Capella.UI
                                 // sFTPAddress = ftpImageProcess.UploadToImageServerFAX(UNCAuthPath, UNCPath, ftpIP, userName, password, domain, sDestinationFTPPath, SelectedFilePath, sStoringFormat);
 
                                 string sStoringFormat = DateTime.Now.ToString("yyyyMMddhhmmss") + Path.GetExtension(hdnfilePath.Value);
-                                sFTPAddress = ftpImageProcess.UploadToImageServer(sDestinationFTPPath, ftpServerIP, ftpUserID, ftpPassword, SelectedFilePath, sStoringFormat);
-
+                                sFTPAddress = ftpImageProcess.UploadToImageServer(sDestinationFTPPath, ftpServerIP, ftpUserID, ftpPassword, SelectedFilePath, sStoringFormat, out string sCheckFileNotFoundExceptions);
+                                if (sCheckFileNotFoundExceptions != "" && sCheckFileNotFoundExceptions.Contains("CheckFileNotFoundException"))
+                                {
+                                    ScriptManager.RegisterStartupScript(this, this.GetType(), "Key", "alert(\"" + sCheckFileNotFoundExceptions.Split('~')[1] + "\");", true);
+                                    return;
+                                }
                                 //  sFilePath = sFacilityPath + sStoringFormat;
                                 if (sAttachFileName == string.Empty)
                                     sAttachFileName = sFTPAddress;
