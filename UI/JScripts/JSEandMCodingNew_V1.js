@@ -216,11 +216,18 @@ myapp.controller('EandMCodingCtrl', function ($scope, $http) {
                         if (xhr.status == 999)
                             window.location = xhr.statusText;
                         else {
+                            //CAP-798
+                            if (isValidJSON(xhr.responseText)) {
                             var log = JSON.parse(xhr.responseText);
                             console.log(log);
                             alert("USER MESSAGE:\n" +
                                 ". Cannot process request. Please Login again and retry. \nEXCEPTION DETAILS: \n" +
                                 "Message: " + log.Message);
+                        }
+                            else {
+                                alert("USER MESSAGE:\n" +
+                                    ". Cannot process request. Please Login again and retry.");
+                            }
                         }
                     }
                 });
@@ -658,6 +665,11 @@ myapp.controller('EandMCodingCtrl', function ($scope, $http) {
                             alert("USER MESSAGE:\n" +
                                 ". Cannot process request. Please Login again and retry. \nEXCEPTION DETAILS: \n" +
                                 "Message: " + log.Message);
+                        }
+                            else {
+                                alert("USER MESSAGE:\n" +
+                                    ". Cannot process request. Please Login again and retry.");
+                            }
                         }
                     }
                 });

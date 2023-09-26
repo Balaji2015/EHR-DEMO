@@ -1301,6 +1301,12 @@ namespace Acurus.Capella.UI
             {
                 foreach (KeyValuePair<string, string> item in dictionary)
                 {
+                    //CAP-824:Multiple controls with the same ID
+                    var htmlCheckBoxCount = divNonDrugAllergy.Controls.OfType<CheckBox>().Count(controls => controls.ID == "chkYes" + item.Key);
+                    var htmlCheckNoBoxCount = divNonDrugAllergy.Controls.OfType<CheckBox>().Count(controls => controls.ID == "chkNo" + item.Key);
+                    var htmlDlcCount = divNonDrugAllergy.Controls.OfType<CustomDLCNew>().Count(controls => controls.ID == "DLC" + item.Key.Replace(" ", ""));
+                    if (htmlCheckBoxCount == 1 && htmlCheckNoBoxCount == 1 && htmlDlcCount == 1)
+                    {
                     CheckBox htmlCheckBox = (CheckBox)divNonDrugAllergy.FindControl("chkYes" + item.Key);
                     CheckBox htmlCheckNoBox = (CheckBox)divNonDrugAllergy.FindControl("chkNo" + item.Key);
                     CustomDLCNew DlcNew = ((CustomDLCNew)divNonDrugAllergy.FindControl("DLC" + item.Key.Replace(" ", "")));
@@ -1345,6 +1351,7 @@ namespace Acurus.Capella.UI
 
                             }
                         }
+                }
                 }
 
             }

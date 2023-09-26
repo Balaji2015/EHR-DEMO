@@ -53,11 +53,11 @@ $(document).ready(function () {
                 src = $(paneID).attr('data-src') + "?" + (data.d).split('-')[0];
                 var tab_disable = (data.d).split('-')[2].split('=')[1];
                 if (tab_disable != "") {
-                    plan_tab_to_disable = JSON.parse((data.d).split('-')[2].split('=')[1]);
-                    for (var i = 0; i < plan_tab_to_disable.length; i++) {
-                        plan_tab.push(plan_tab_to_disable[i].tab.split('_')[1].replace("tb", ""));
-                        $("#myTabs a[href*='" + plan_tab[i] + "']").addClass("disableTab");
-                    }
+                        plan_tab_to_disable = JSON.parse((data.d).split('-')[2].split('=')[1]);
+                        for (var i = 0; i < plan_tab_to_disable.length; i++) {
+                            plan_tab.push(plan_tab_to_disable[i].tab.split('_')[1].replace("tb", ""));
+                            $("#myTabs a[href*='" + plan_tab[i] + "']").addClass("disableTab");
+                        }
                 }
                 $(paneID + " iframe").attr("src", src);
                 localStorage.setItem('QueryStr', "?&" + data.d);//BugID:47526
@@ -71,11 +71,19 @@ $(document).ready(function () {
                 if (xhr.status == 999)
                     window.location = xhr.statusText;
                 else {
-                    var log = JSON.parse(xhr.responseText);
+                    //CAP-798 Unexpected end of JSON input
+                    if (isValidJSON(xhr.responseText)) {
+                        var log = JSON.parse(xhr.responseText);
+                    
                     console.log(log);
                     alert("USER MESSAGE:\n" +
                                     ". Cannot process request. Please Login again and retry. \nEXCEPTION DETAILS: \n" +
-                                   "Message: " + log.Message);
+                        "Message: " + log.Message);
+                    } else {
+                        alert("USER MESSAGE:\n" +
+                            ". Cannot process request. Please Login again and retry.");
+                    }
+
                 }
                  {sessionStorage.setItem('StartLoading', 'false');StopLoadFromPatChart();}
             }

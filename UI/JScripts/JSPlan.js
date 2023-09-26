@@ -691,14 +691,22 @@ function SavePlan() {
             if (xhr.status == 999)
                 window.location = xhr.statusText;
             else {
-                var log = JSON.parse(xhr.responseText);
+                //CAP-798 Unexpected end of JSON input
+                if (isValidJSON(xhr.responseText)) {
+                    var log = JSON.parse(xhr.responseText);
+                
                 console.log(log);
                 //alert("USER MESSAGE:\n" +
                 //                    ". Cannot process request. Please Login again and retry. \nEXCEPTION DETAILS: \n" +
                 //                   "Message: " + log.Message);
 
                 window.location = "ErrorPage.aspx?Message=" + log.Message + "|$|" + log.StackTrace;;
+                }
+                else {
+                    alert("USER MESSAGE:\n" +
+                                    ". Cannot process request. Please Login again and retry.");
 
+                }
             }
             { sessionStorage.setItem('StartLoading', 'false'); StopLoadFromPatChart(); }
         }

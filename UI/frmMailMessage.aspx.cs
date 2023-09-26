@@ -38,124 +38,128 @@ namespace Acurus.Capella.UI
                 string strContent1 = "";
                 if (Request["BodyMessage"] != null)
                 {
-                    byte[] btArrayASCII = Convert.FromBase64String(Request["BodyMessage"].ToString());
+
+                    //CAP-833 The input is not a valid Base-64 string
+                    byte[] btArrayASCII = ValidateAndDecodeBase64String(Request["BodyMessage"]?.ToString());
+              
                     //txtMessage.Text=  ASCIIEncoding.ASCII.GetString(btArrayASCII).Replace("&amp;","&");
-
-                    strContent1 = ASCIIEncoding.ASCII.GetString(btArrayASCII).Replace("&amp;", "&");
-                    //string[] tokens = strContent1.Split(new string[] { "Body : " }, 2, 0);
-
-                    string[] tokens = strContent1.Split(new string[] { "Body : " }, Regex.Matches(strContent1, "Body : ").Count + 1, 0);
-
-
-                    string strContent = tokens[tokens.Count() - 1].ToString();
-
-                    //string strContent = strContent1.Substring(strContent1.LastIndexOf("Body"), strContent1.Length - strContent1.LastIndexOf("Body"));
-                    string[] sOutput = strContent1.Split('\n');
-                    string sValue = string.Empty;
-                    string sFinalvalue = string.Empty;
-                    for (int i = 0; i < sOutput.Count(); i++)
+                    if (btArrayASCII != null)
                     {
-                        sValue = string.Empty;
-                        string[] sSplit = sOutput[i].ToString().Split(new string[] { "Body : " }, Regex.Matches(sOutput[i].ToString(), "Body : ").Count + 1, 0);
-                        if (sSplit.Count() > 0)
+                        strContent1 = ASCIIEncoding.ASCII.GetString(btArrayASCII).Replace("&amp;", "&");
+                        //string[] tokens = strContent1.Split(new string[] { "Body : " }, 2, 0);
+
+                        string[] tokens = strContent1.Split(new string[] { "Body : " }, Regex.Matches(strContent1, "Body : ").Count + 1, 0);
+
+
+                        string strContent = tokens[tokens.Count() - 1].ToString();
+
+                        //string strContent = strContent1.Substring(strContent1.LastIndexOf("Body"), strContent1.Length - strContent1.LastIndexOf("Body"));
+                        string[] sOutput = strContent1.Split('\n');
+                        string sValue = string.Empty;
+                        string sFinalvalue = string.Empty;
+                        for (int i = 0; i < sOutput.Count(); i++)
                         {
-                            for (int j = 0; j < sSplit.Count(); j++)
+                            sValue = string.Empty;
+                            string[] sSplit = sOutput[i].ToString().Split(new string[] { "Body : " }, Regex.Matches(sOutput[i].ToString(), "Body : ").Count + 1, 0);
+                            if (sSplit.Count() > 0)
                             {
-                                sValue = string.Empty;
-                                if (sSplit[j].ToString().TrimEnd() != "Body :")
+                                for (int j = 0; j < sSplit.Count(); j++)
                                 {
-                                    var vv = (from p in sSplit[j].Split(' ') where p.ToString().TrimStart().StartsWith("www.") || p.ToString().TrimStart().StartsWith("https:") || p.ToString().TrimStart().StartsWith("http:") || p.ToString().TrimStart().StartsWith("ftp:") select p).ToArray();
-                                    if (vv.Length > 0)
+                                    sValue = string.Empty;
+                                    if (sSplit[j].ToString().TrimEnd() != "Body :")
                                     {
-                                        string sURL = string.Empty;
-                                        sValue = sSplit[j].ToString();
-                                        for (int k = 0; k < vv.Length; k++)
+                                        var vv = (from p in sSplit[j].Split(' ') where p.ToString().TrimStart().StartsWith("www.") || p.ToString().TrimStart().StartsWith("https:") || p.ToString().TrimStart().StartsWith("http:") || p.ToString().TrimStart().StartsWith("ftp:") select p).ToArray();
+                                        if (vv.Length > 0)
                                         {
-                                            if (vv[k].ToString() != "")
+                                            string sURL = string.Empty;
+                                            sValue = sSplit[j].ToString();
+                                            for (int k = 0; k < vv.Length; k++)
                                             {
-                                                sURL = getUrl(vv[k].ToString());
-                                                sValue = sValue.Replace(vv[k].ToString(), sURL);
+                                                if (vv[k].ToString() != "")
+                                                {
+                                                    sURL = getUrl(vv[k].ToString());
+                                                    sValue = sValue.Replace(vv[k].ToString(), sURL);
+                                                }
                                             }
                                         }
+                                        else
+                                        {
+                                            sValue = getUrl(sSplit[j].ToString());
+                                            if (sValue == "")
+                                            {
+                                                if (sSplit[j] == "" && j == 0 && sSplit.Count() > 1)
+                                                {
+                                                    sValue = "Body : ";
+                                                }
+                                                else
+                                                    sValue = sSplit[j].ToString();
+                                            }
+                                        }
+
+
+                                        sFinalvalue += sValue + "\n";
                                     }
                                     else
                                     {
-                                        sValue = getUrl(sSplit[j].ToString());
-                                        if (sValue == "")
-                                        {
-                                            if (sSplit[j] == "" && j == 0 && sSplit.Count() > 1)
-                                            {
-                                                sValue = "Body : ";
-                                            }
-                                            else
-                                                sValue = sSplit[j].ToString();
-                                        }
+                                        sFinalvalue += sSplit[j].ToString();
                                     }
-
-
-                                    sFinalvalue += sValue + "\n";
                                 }
-                                else
-                                {
-                                    sFinalvalue += sSplit[j].ToString();
-                                }
+
+                            }
+                            else
+                            {
+                                sFinalvalue += sOutput[i].ToString() + "\n";
                             }
 
-                        }
-                        else
-                        {
-                            sFinalvalue += sOutput[i].ToString() + "\n";
+
                         }
 
+                        //string[] sSplit = strContent.Split('\n');
+                        //string sValue = string.Empty;
+                        //string sFinalvalue = string.Empty;
+                        //foreach(string sval in sSplit)
+                        //{
+                        //    sValue = string.Empty;
+                        //    if(sval.TrimStart().StartsWith("www."))
+                        //    {
+                        //        Regex urlregex = new Regex(@"(www.([\w.]+\/?)\S*)", RegexOptions.IgnoreCase | RegexOptions.CultureInvariant | RegexOptions.IgnorePatternWhitespace | RegexOptions.Compiled);
+                        //        sValue = urlregex.Replace(sval, "<a href=\"//$1\" target=\"_blank\">$1</a>");
+                        //    }
+                        //    else if (sval.TrimStart().StartsWith("https:"))
+                        //    {
+                        //        Regex urlregex = new Regex(@"(https:\/\/([\w.]+\/?)\S*)", RegexOptions.IgnoreCase | RegexOptions.CultureInvariant | RegexOptions.IgnorePatternWhitespace | RegexOptions.Compiled);
+                        //        sValue = urlregex.Replace(sval, "<a href=\"$1\" target=\"_blank\">$1</a>");
+                        //    }
+                        //    else if (sval.TrimStart().StartsWith("http:"))
+                        //    {
+                        //        Regex urlregex = new Regex(@"(http:\/\/([\w.]+\/?)\S*)", RegexOptions.IgnoreCase | RegexOptions.CultureInvariant | RegexOptions.IgnorePatternWhitespace | RegexOptions.Compiled);
+                        //        sValue = urlregex.Replace(sval, "<a href=\"$1\" target=\"_blank\">$1</a>");
+                        //    }
+                        //    else if (sval.TrimStart().StartsWith("ftp:"))
+                        //    {
+                        //        Regex urlregex = new Regex(@"(ftp:\/\/([\w.]+\/?)\S*)", RegexOptions.IgnoreCase | RegexOptions.CultureInvariant | RegexOptions.IgnorePatternWhitespace | RegexOptions.Compiled);
+                        //        sValue = urlregex.Replace(sval, "<a href=\"$1\" target=\"_blank\">$1</a>");
+                        //    }
+                        //    else
+                        //    {
+                        //        sValue = sval;
+                        //    }
+                        //    sFinalvalue += sValue+"\n";
+                        //}
+                        //string svalfirst = string.Empty;
+                        //foreach (string sval in tokens.Take(tokens.Length-1))
+                        //{
+                        //    svalfirst += sval + "Body : ";
+                        //}
 
+                        //lblcontent.Text = tokens[0].ToString().Replace("\n", "<br>") + "Body : " + sFinalvalue.Replace("\n", "<br>");//strContent.ToString().Replace("\n", "<br>");
+
+                        //lblcontent.Text = svalfirst.Replace("\n", "<br>") + sFinalvalue.Replace("\n", "<br>");
+
+                        lblcontent.Text = sFinalvalue.Replace("\n", "<br>");
+
+                        Session["Content"] = strContent1;
                     }
-
-                    //string[] sSplit = strContent.Split('\n');
-                    //string sValue = string.Empty;
-                    //string sFinalvalue = string.Empty;
-                    //foreach(string sval in sSplit)
-                    //{
-                    //    sValue = string.Empty;
-                    //    if(sval.TrimStart().StartsWith("www."))
-                    //    {
-                    //        Regex urlregex = new Regex(@"(www.([\w.]+\/?)\S*)", RegexOptions.IgnoreCase | RegexOptions.CultureInvariant | RegexOptions.IgnorePatternWhitespace | RegexOptions.Compiled);
-                    //        sValue = urlregex.Replace(sval, "<a href=\"//$1\" target=\"_blank\">$1</a>");
-                    //    }
-                    //    else if (sval.TrimStart().StartsWith("https:"))
-                    //    {
-                    //        Regex urlregex = new Regex(@"(https:\/\/([\w.]+\/?)\S*)", RegexOptions.IgnoreCase | RegexOptions.CultureInvariant | RegexOptions.IgnorePatternWhitespace | RegexOptions.Compiled);
-                    //        sValue = urlregex.Replace(sval, "<a href=\"$1\" target=\"_blank\">$1</a>");
-                    //    }
-                    //    else if (sval.TrimStart().StartsWith("http:"))
-                    //    {
-                    //        Regex urlregex = new Regex(@"(http:\/\/([\w.]+\/?)\S*)", RegexOptions.IgnoreCase | RegexOptions.CultureInvariant | RegexOptions.IgnorePatternWhitespace | RegexOptions.Compiled);
-                    //        sValue = urlregex.Replace(sval, "<a href=\"$1\" target=\"_blank\">$1</a>");
-                    //    }
-                    //    else if (sval.TrimStart().StartsWith("ftp:"))
-                    //    {
-                    //        Regex urlregex = new Regex(@"(ftp:\/\/([\w.]+\/?)\S*)", RegexOptions.IgnoreCase | RegexOptions.CultureInvariant | RegexOptions.IgnorePatternWhitespace | RegexOptions.Compiled);
-                    //        sValue = urlregex.Replace(sval, "<a href=\"$1\" target=\"_blank\">$1</a>");
-                    //    }
-                    //    else
-                    //    {
-                    //        sValue = sval;
-                    //    }
-                    //    sFinalvalue += sValue+"\n";
-                    //}
-                    //string svalfirst = string.Empty;
-                    //foreach (string sval in tokens.Take(tokens.Length-1))
-                    //{
-                    //    svalfirst += sval + "Body : ";
-                    //}
-
-                    //lblcontent.Text = tokens[0].ToString().Replace("\n", "<br>") + "Body : " + sFinalvalue.Replace("\n", "<br>");//strContent.ToString().Replace("\n", "<br>");
-
-                    //lblcontent.Text = svalfirst.Replace("\n", "<br>") + sFinalvalue.Replace("\n", "<br>");
-
-                    lblcontent.Text = sFinalvalue.Replace("\n", "<br>");
-
-                    Session["Content"] = strContent1;
-
                 }
                 if (Request["PatientID"] != null && Request["EmailID"] != "" && Request["EncounterID"] != "0")
                 {
@@ -415,6 +419,34 @@ namespace Acurus.Capella.UI
             }
 
         }
+        public static byte[] ValidateAndDecodeBase64String(string base64String)
+        {
+            try
+            {
+                if (string.IsNullOrWhiteSpace(base64String))
+                {
+                    return null;
+                }
+
+                // Remove spaces from the input string
+                string cleanedBase64 = base64String.Replace(" ", "");
+
+                // Define a regular expression pattern for valid Base64 strings
+                string base64Pattern = @"^[A-Za-z0-9+/]*={0,2}$";
+
+                if (Regex.IsMatch(cleanedBase64, base64Pattern))
+                {
+                    return Convert.FromBase64String(cleanedBase64);
+                }
+
+                return null;
+            }
+            catch (Exception)
+            {
+                return null;
+            }
+        }
+
         protected void btndownload_Click(object sender, EventArgs e)
         {
             string localPath = string.Empty;
