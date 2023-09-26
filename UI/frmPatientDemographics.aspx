@@ -1683,7 +1683,7 @@
                                          <span class="spanstyle">PCP</span>
                                          </td>
                                         <td style="width:51%; text-align: left;">
-                                        <asp:TextBox ID="txtProviderSearch" runat="server"  data-phy-id="0"  data-phy-details="" Rows="2" TextMode="MultiLine" placeholder="Type minimum 3 characters of Last or First name or Specialty or NPI or Facility and follow it by a space.."  style="width:110%;resize:none"  ></asp:TextBox> 
+                                        <asp:TextBox ID="txtProviderSearch" runat="server"  data-phy-id="0"  data-phy-details="" Rows="2" TextMode="MultiLine" placeholder="Type minimum 3 characters of Last or First name or Facility and follow it by a space.."  style="width:110%;resize:none"  ></asp:TextBox> 
                                         </td>
                                         <td style="width: 1%;text-align: right;">
                                         <img id="imgClearProviderText" runat="server" src="Resources/Delete-Blue.png" alt="X" title="Click to clear the text field." onclick="return ProviderSearchclear();" style="position: absolute; margin-left: 45px; cursor: pointer; width: 10px; height: 10px;" />
