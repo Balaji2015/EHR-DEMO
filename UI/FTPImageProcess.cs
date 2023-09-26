@@ -7,6 +7,7 @@ using System.Collections;
 using System.IO;
 using System.Net;
 using System.Threading;
+using System.Web.UI;
 
 namespace Acurus.Capella.UI
 {
@@ -17,8 +18,9 @@ namespace Acurus.Capella.UI
         FtpWebRequest reqFTP;
         FtpWebResponse responseFTP;
         
-        public string UploadToImageServer(string HumanID, string serverIP, string UserName, string Password, string SelectedFilePath, string File_Name_Convention)
+        public string UploadToImageServer(string HumanID, string serverIP, string UserName, string Password, string SelectedFilePath, string File_Name_Convention,out string sCheckFileNotFoundException)
         {
+            sCheckFileNotFoundException = "";
             #region "Ftp Operations"
             //bool result = true;
             string serverPath = string.Empty;
@@ -99,7 +101,7 @@ namespace Acurus.Capella.UI
             }
             //Jira #CAP-39
             int iTrycount = 1;
-       TryAgain:
+        TryAgain:
             try
             {
                 using (UNCAccessWithCredentials unc = new UNCAccessWithCredentials())
@@ -115,23 +117,30 @@ namespace Acurus.Capella.UI
             }
             catch (Exception ex)
             {
-                //Jira #CAP-39
-                if ( iTrycount <= 3)
+                string sErrorMessage = "";
+                if (UtilityManager.CheckFileNotFoundException(ex, out sErrorMessage))
                 {
-                    iTrycount++;
-                    Thread.Sleep(1500);
-                    goto TryAgain;
+                    //ScriptManager.RegisterStartupScript(this, this.GetType(), "Key", "alert('" + sErrorMessage + "');", true);
+                    sCheckFileNotFoundException = "CheckFileNotFoundException ~" + sErrorMessage;
+                    return string.Empty;
                 }
                 else
                 {
-                    UtilityManager.RetryExecptionLog(ex, iTrycount);
-                    UtilityManager.inserttologgingtable(ClientSession.EncounterId.ToString(), ClientSession.HumanId.ToString(), ClientSession.UserName, ClientSession.PhysicianId.ToString(), "FtpImageProcess,cs Line No - 113 - " + ex.Message + " - Username is " + userName + " -  Password " + password + " - UNCAuthPath " + UNCAuthPath + " - UNCPAth" + UNCPath + " - Selected Path - " + SelectedFilePath + " - URI - " + uri.Replace(ftpIP, UNCPath), DateTime.Now, "0", "frmimageviewer");
+                    //Jira #CAP-39
+                    if (iTrycount <= 3)
+                    {
+                        iTrycount++;
+                        Thread.Sleep(1500);
+                        goto TryAgain;
+                    }
+                    else
+                    {
+                        UtilityManager.RetryExecptionLog(ex, iTrycount);
+                        UtilityManager.inserttologgingtable(ClientSession.EncounterId.ToString(), ClientSession.HumanId.ToString(), ClientSession.UserName, ClientSession.PhysicianId.ToString(), "FtpImageProcess,cs Line No - 113 - " + ex.Message + " - Username is " + userName + " -  Password " + password + " - UNCAuthPath " + UNCAuthPath + " - UNCPAth" + UNCPath + " - Selected Path - " + SelectedFilePath + " - URI - " + uri.Replace(ftpIP, UNCPath), DateTime.Now, "0", "frmimageviewer");
 
-                    result = false;
+                        result = false;
+                    }
                 }
-
-
-
             }
 
 
@@ -146,8 +155,9 @@ namespace Acurus.Capella.UI
         }
 
 
-        public bool CreateDirectory(string HumanID, string serverIP, string UserName, string Password)
+        public bool CreateDirectory(string HumanID, string serverIP, string UserName, string Password,out string sCheckFileNotFoundException)
         {
+            sCheckFileNotFoundException = "";
             uri = serverIP + HumanID + "/";
 
             string UNCAuthPath = System.Configuration.ConfigurationSettings.AppSettings["UNCAuthPath"];
@@ -158,7 +168,7 @@ namespace Acurus.Capella.UI
             string domain = System.Configuration.ConfigurationSettings.AppSettings["Domain"];
             //Jira #CAP-39
             int iTrycount = 1;
-       TryAgain:
+        TryAgain:
             try
             {
                 using (UNCAccessWithCredentials unc = new UNCAccessWithCredentials())
@@ -175,25 +185,36 @@ namespace Acurus.Capella.UI
             }
             catch (Exception ex)
             {
-                //Jira #CAP-39
-                if ( iTrycount <= 3)
+                string sErrorMessage = "";
+                if (UtilityManager.CheckFileNotFoundException(ex, out sErrorMessage))
                 {
-                    iTrycount++;
-                    Thread.Sleep(1500);
-                    goto TryAgain;
+                    //ScriptManager.RegisterStartupScript(this, this.GetType(), "Key", "alert('" + sErrorMessage + "');", true);
+                    sCheckFileNotFoundException = "CheckFileNotFoundException ~" + sErrorMessage;
+                    return false;
                 }
                 else
                 {
-                    UtilityManager.RetryExecptionLog(ex, iTrycount);
-                    UtilityManager.inserttologgingtable(ClientSession.EncounterId.ToString(), ClientSession.HumanId.ToString(), ClientSession.UserName, ClientSession.PhysicianId.ToString(), "FTpImageProcess.cs Line No - 155 - " + ex.Message + " - Username is " + userName + " -  Password " + password + " - UNCAuthPath " + UNCAuthPath + " - UNCPAth" + UNCPath + " - URI - " + uri.Replace(ftpIP, UNCPath), DateTime.Now, "0", "frmimageviewer");
+                    //Jira #CAP-39
+                    if (iTrycount <= 3)
+                    {
+                        iTrycount++;
+                        Thread.Sleep(1500);
+                        goto TryAgain;
+                    }
+                    else
+                    {
+                        UtilityManager.RetryExecptionLog(ex, iTrycount);
+                        UtilityManager.inserttologgingtable(ClientSession.EncounterId.ToString(), ClientSession.HumanId.ToString(), ClientSession.UserName, ClientSession.PhysicianId.ToString(), "FTpImageProcess.cs Line No - 155 - " + ex.Message + " - Username is " + userName + " -  Password " + password + " - UNCAuthPath " + UNCAuthPath + " - UNCPAth" + UNCPath + " - URI - " + uri.Replace(ftpIP, UNCPath), DateTime.Now, "0", "frmimageviewer");
+                    }
                 }
             }
             return true;
         }
 
 
-        public bool FileCopy(string HumanID, string serverIP, string UserName, string Password, string FileName, string localPath)
+        public bool FileCopy(string HumanID, string serverIP, string UserName, string Password, string FileName, string localPath,out string sCheckFileNotFoundException)
         {
+            sCheckFileNotFoundException = "";
             /* Credential To Access NAS Server */
 
             string UNCPath = System.Configuration.ConfigurationSettings.AppSettings["UNCPath"];
@@ -237,17 +258,27 @@ namespace Acurus.Capella.UI
             }
             catch(Exception ex)
             {
-                //Jira #CAP-39
-                if ( iTrycount <= 3)
+                string sErrorMessage = "";
+                if (UtilityManager.CheckFileNotFoundException(ex, out sErrorMessage))
                 {
-                    iTrycount++;
-                    Thread.Sleep(1500);
-                    goto TryAgain;
+                    //ScriptManager.RegisterStartupScript(this, this.GetType(), "Key", "alert('" + sErrorMessage + "');", true);
+                    sCheckFileNotFoundException = "CheckFileNotFoundException ~" + sErrorMessage;
+                    return false;
                 }
                 else
                 {
-                    UtilityManager.RetryExecptionLog(ex, iTrycount);
-                    isFileCopyFailed = false; result = false;
+                    //Jira #CAP-39
+                    if (iTrycount <= 3)
+                    {
+                        iTrycount++;
+                        Thread.Sleep(1500);
+                        goto TryAgain;
+                    }
+                    else
+                    {
+                        UtilityManager.RetryExecptionLog(ex, iTrycount);
+                        isFileCopyFailed = false; result = false;
+                    }
                 }
             }
 
@@ -255,8 +286,9 @@ namespace Acurus.Capella.UI
 
             return result;
         }
-        public bool DownloadFromImageServer(string HumanID, string serverIP, string UserName, string Password, string FileName, string localPath)
+        public bool DownloadFromImageServer(string HumanID, string serverIP, string UserName, string Password, string FileName, string localPath,out string sCheckFileNotFoundException)
         {
+            sCheckFileNotFoundException = "";
             /* Credential To Access NAS Server */
             string UNCAuthPath = System.Configuration.ConfigurationSettings.AppSettings["UNCAuthPath"];
             string UNCPath = System.Configuration.ConfigurationSettings.AppSettings["UNCPath"];
@@ -304,17 +336,27 @@ namespace Acurus.Capella.UI
             }
             catch (Exception ex)
             {
-                //Jira #CAP-39
-                if ( iTrycount <= 3)
+                string sErrorMessage = "";
+                if (UtilityManager.CheckFileNotFoundException(ex, out sErrorMessage))
                 {
-                    iTrycount++;
-                    Thread.Sleep(1500);
-                    goto TryAgain;
+                    //ScriptManager.RegisterStartupScript(this, this.GetType(), "Key", "alert('" + sErrorMessage + "');", true);
+                    sCheckFileNotFoundException = "CheckFileNotFoundException ~" + sErrorMessage;
+                    return false;
                 }
                 else
                 {
-                    UtilityManager.RetryExecptionLog(ex, iTrycount);
-                    UtilityManager.inserttologgingtable(ClientSession.EncounterId.ToString(), ClientSession.HumanId.ToString(), ClientSession.UserName, ClientSession.PhysicianId.ToString(), "FtpImageProcess.cs Line No - 250 - " + ex.Message + " - Username is " + userName + " -  Password " + password + " - UNCAuthPath " + UNCAuthPath + " - UNCPAth" + UNCPath + " -Source URI - " + uri.Replace(ftpIP, UNCPath) + " - Destination Path - " + (Path.Combine(localPath, FileName)), DateTime.Now, "0", "frmimageviewer");
+                    //Jira #CAP-39
+                    if (iTrycount <= 3)
+                    {
+                        iTrycount++;
+                        Thread.Sleep(1500);
+                        goto TryAgain;
+                    }
+                    else
+                    {
+                        UtilityManager.RetryExecptionLog(ex, iTrycount);
+                        UtilityManager.inserttologgingtable(ClientSession.EncounterId.ToString(), ClientSession.HumanId.ToString(), ClientSession.UserName, ClientSession.PhysicianId.ToString(), "FtpImageProcess.cs Line No - 250 - " + ex.Message + " - Username is " + userName + " -  Password " + password + " - UNCAuthPath " + UNCAuthPath + " - UNCPAth" + UNCPath + " -Source URI - " + uri.Replace(ftpIP, UNCPath) + " - Destination Path - " + (Path.Combine(localPath, FileName)), DateTime.Now, "0", "frmimageviewer");
+                    }
                 }
             }
 
@@ -325,8 +367,9 @@ namespace Acurus.Capella.UI
 
         }
 
-        public bool DownloadFromImageServerforEV(string HumanID, string serverIP, string UserName, string Password, string FileName, string localPath)
+        public bool DownloadFromImageServerforEV(string HumanID, string serverIP, string UserName, string Password, string FileName, string localPath,out string sCheckFileNotFoundException)
         {
+            sCheckFileNotFoundException = "";
             /* Credential To Access NAS Server */
             string UNCAuthPath = System.Configuration.ConfigurationSettings.AppSettings["EVUNCAuthPath"];
             string UNCPath = System.Configuration.ConfigurationSettings.AppSettings["EVUNCPath"];
@@ -374,16 +417,26 @@ namespace Acurus.Capella.UI
             }
             catch(Exception ex)
             {
-                //Jira #CAP-39
-                if ( iTrycount <= 3)
+                string sErrorMessage = "";
+                if (UtilityManager.CheckFileNotFoundException(ex, out sErrorMessage))
                 {
-                    iTrycount++;
-                    Thread.Sleep(1500);
-                    goto TryAgain;
+                    //ScriptManager.RegisterStartupScript(this, this.GetType(), "Key", "alert('" + sErrorMessage + "');", true);
+                    sCheckFileNotFoundException = "CheckFileNotFoundException ~" + sErrorMessage;
+                    return false;
                 }
                 else
                 {
-                    UtilityManager.RetryExecptionLog(ex, iTrycount);
+                    //Jira #CAP-39
+                    if (iTrycount <= 3)
+                    {
+                        iTrycount++;
+                        Thread.Sleep(1500);
+                        goto TryAgain;
+                    }
+                    else
+                    {
+                        UtilityManager.RetryExecptionLog(ex, iTrycount);
+                    }
                 }
             }
 
@@ -393,45 +446,57 @@ namespace Acurus.Capella.UI
 
         }
 
-        public bool DeleteFromImageServer(string HumanID, string serverIP, string UserName, string Password, string FileName)
+        //public bool DeleteFromImageServer(string HumanID, string serverIP, string UserName, string Password, string FileName,out string sCheckFileNotFoundException)
+        //{
+        //    sCheckFileNotFoundException = "";
+        //    bool result = true;
+        //    uri = serverIP + HumanID + "/" + FileName;
+
+        //    //Jira #CAP-39
+        //    int iTrycount = 1;
+        //   TryAgain:
+        //    try
+        //    {
+        //        reqFTP = (FtpWebRequest)FtpWebRequest.Create(new Uri(uri));
+        //        reqFTP.Credentials = new NetworkCredential(UserName, Password);
+        //        reqFTP.KeepAlive = false;
+        //        reqFTP.UsePassive = false;
+        //        reqFTP.Method = WebRequestMethods.Ftp.DeleteFile;
+        //        responseFTP = (FtpWebResponse)reqFTP.GetResponse();
+
+        //    }
+        //    catch(Exception ex)
+        //    {
+        //        string sErrorMessage = "";
+        //        if (UtilityManager.CheckFileNotFoundException(ex, out sErrorMessage))
+        //        {
+        //            //ScriptManager.RegisterStartupScript(this, this.GetType(), "Key", "alert('" + sErrorMessage + "');", true);
+        //            sCheckFileNotFoundException = "CheckFileNotFoundException ~" + sErrorMessage;
+        //            return false;
+        //        }
+        //        else
+        //        {
+        //            //Jira #CAP-39
+        //            if (iTrycount <= 3)
+        //            {
+        //                iTrycount++;
+        //                Thread.Sleep(1500);
+        //                goto TryAgain;
+        //            }
+        //            else
+        //            {
+        //                UtilityManager.RetryExecptionLog(ex, iTrycount);
+        //                result = false;
+        //            }
+        //        }
+        //    }
+
+        //    return result;
+        //}
+
+        public ArrayList GetTemplateImagesList(string serverIP, string UserName, string Password ,out string sCheckFileNotFoundException)
         {
-            bool result = true;
-            uri = serverIP + HumanID + "/" + FileName;
-
-            //Jira #CAP-39
-            int iTrycount = 1;
-           TryAgain:
-            try
-            {
-                reqFTP = (FtpWebRequest)FtpWebRequest.Create(new Uri(uri));
-                reqFTP.Credentials = new NetworkCredential(UserName, Password);
-                reqFTP.KeepAlive = false;
-                reqFTP.UsePassive = false;
-                reqFTP.Method = WebRequestMethods.Ftp.DeleteFile;
-                responseFTP = (FtpWebResponse)reqFTP.GetResponse();
-
-            }
-            catch(Exception ex)
-            {
-                //Jira #CAP-39
-                if ( iTrycount <= 3)
-                {
-                    iTrycount++;
-                    Thread.Sleep(1500);
-                    goto TryAgain;
-                }
-                else
-                {
-                    UtilityManager.RetryExecptionLog(ex, iTrycount);
-                    result = false;
-                }
-            }
-
-            return result;
-        }
-
-        public ArrayList GetTemplateImagesList(string serverIP, string UserName, string Password)
-        {
+            sCheckFileNotFoundException = "";
             uri = serverIP + "/";
             ArrayList fileList = new ArrayList();
 
@@ -465,16 +530,26 @@ namespace Acurus.Capella.UI
             }
             catch(Exception ex)
             {
-                //Jira #CAP-39
-                if ( iTrycount <= 3)
+                string sErrorMessage = "";
+                if (UtilityManager.CheckFileNotFoundException(ex, out sErrorMessage))
                 {
-                    iTrycount++;
-                    Thread.Sleep(1500);
-                    goto TryAgain;
+                    //ScriptManager.RegisterStartupScript(this, this.GetType(), "Key", "alert('" + sErrorMessage + "');", true);
+                    sCheckFileNotFoundException = "CheckFileNotFoundException ~" + sErrorMessage;
+                    return new ArrayList();
                 }
                 else
                 {
-                    UtilityManager.RetryExecptionLog(ex, iTrycount);
+                    //Jira #CAP-39
+                    if (iTrycount <= 3)
+                    {
+                        iTrycount++;
+                        Thread.Sleep(1500);
+                        goto TryAgain;
+                    }
+                    else
+                    {
+                        UtilityManager.RetryExecptionLog(ex, iTrycount);
+                    }
                 }
             }
 
@@ -605,7 +680,8 @@ namespace Acurus.Capella.UI
             {
                 if (!status)
                 {
-                    arrFiles.Add(GetTemplateImagesList(serverip, username, password));
+                    //arrFiles.Add(GetTemplateImagesList(serverip, username, password));
+                    arrFiles.Add(GetTemplateImagesList(serverip, username, password, out string sCheckFileNotFoundException));
                 }
             }
             return arrFiles;
@@ -613,9 +689,9 @@ namespace Acurus.Capella.UI
 
 
 
-        public string UploadToADfiletoServerIndexing(string HumanID, string SelectedFilePath)
+        public string UploadToADfiletoServerIndexing(string HumanID, string SelectedFilePath,Page pObejct,out string sCheckFileNotFoundException)
         {
-
+            sCheckFileNotFoundException = "";
             string serverPath = string.Empty;
             FileInfo fileInf = new FileInfo(SelectedFilePath);
             /* Credential To Access NAS Server */
@@ -629,7 +705,7 @@ namespace Acurus.Capella.UI
             //Jira #CAP-39
             int iTrycount = 1;
             uri = ftpIP + HumanID + "/";
-           TryAgain:
+        TryAgain:
             try
             {
                 using (UNCAccessWithCredentials unc = new UNCAccessWithCredentials())
@@ -637,7 +713,12 @@ namespace Acurus.Capella.UI
                     if (unc.NetUseWithCredentials(UNCAuthPath, userName, domain, password))
                     {
                         {
-                            CreateDirectoryAD(HumanID.ToString(), ftpIP, userName, password);
+                            CreateDirectoryAD(HumanID.ToString(), ftpIP, userName, password,out string sCheckFileNotFoundExceptions);
+                            if (sCheckFileNotFoundExceptions != "" && sCheckFileNotFoundExceptions.Contains("CheckFileNotFoundException"))
+                            {
+                                ScriptManager.RegisterStartupScript(pObejct, pObejct.GetType(), "Key", "alert(\"" + sCheckFileNotFoundExceptions.Split('~')[1] + "\");", true);
+                                return string.Empty;
+                            }
 
                             uri = ((uri + fileInf.Name));
                             System.IO.File.Copy(SelectedFilePath, uri.Replace(ftpIP, UNCPath), true);
@@ -652,17 +733,28 @@ namespace Acurus.Capella.UI
             }
             catch (Exception ex)
             {
-                //Jira #CAP-39
-                if ( iTrycount <= 3)
+                string sErrorMessage = "";
+                if (UtilityManager.CheckFileNotFoundException(ex, out sErrorMessage))
                 {
-                    iTrycount++;
-                    Thread.Sleep(1500);
-                    goto TryAgain;
+                    //ScriptManager.RegisterStartupScript(this, this.GetType(), "Key", "alert('" + sErrorMessage + "');", true);
+                    sCheckFileNotFoundException = "CheckFileNotFoundException ~" + sErrorMessage;
+                    return string.Empty;
                 }
                 else
                 {
-                    UtilityManager.RetryExecptionLog(ex, iTrycount);
-                    UtilityManager.inserttologgingtable(ClientSession.EncounterId.ToString(), ClientSession.HumanId.ToString(), ClientSession.UserName, ClientSession.PhysicianId.ToString(), "FtpImageProcess.cs Line No - 539 - " + ex.Message + " - Username is " + userName + " -  Password " + password + " - UNCAuthPath " + UNCAuthPath + " - UNCPAth" + UNCPath + " - SelectedPath -" + SelectedFilePath + "- URI -" + uri.Replace(ftpIP, UNCPath), DateTime.Now, "0", "frmimageviewer");
+
+                    //Jira #CAP-39
+                    if (iTrycount <= 3)
+                    {
+                        iTrycount++;
+                        Thread.Sleep(1500);
+                        goto TryAgain;
+                    }
+                    else
+                    {
+                        UtilityManager.RetryExecptionLog(ex, iTrycount);
+                        UtilityManager.inserttologgingtable(ClientSession.EncounterId.ToString(), ClientSession.HumanId.ToString(), ClientSession.UserName, ClientSession.PhysicianId.ToString(), "FtpImageProcess.cs Line No - 539 - " + ex.Message + " - Username is " + userName + " -  Password " + password + " - UNCAuthPath " + UNCAuthPath + " - UNCPAth" + UNCPath + " - SelectedPath -" + SelectedFilePath + "- URI -" + uri.Replace(ftpIP, UNCPath), DateTime.Now, "0", "frmimageviewer");
+                    }
                 }
                     result = false;
             }
@@ -675,8 +767,9 @@ namespace Acurus.Capella.UI
             return serverPath;
         }
 
-        public bool DownloadFromADImageServer(string HumanID, string sourceFileName, string DestinationFolderPath)
+        public bool DownloadFromADImageServer(string HumanID, string sourceFileName, string DestinationFolderPath,out string sCheckFileNotFoundException)
         {
+            sCheckFileNotFoundException = "";
             string UNCAuthPath = System.Configuration.ConfigurationSettings.AppSettings["UNCAuthPathAD"];
             string UNCPath = System.Configuration.ConfigurationSettings.AppSettings["UNCPathAD"];
             string ftpIP = System.Configuration.ConfigurationSettings.AppSettings["ftpServerIPAD"];
@@ -690,7 +783,7 @@ namespace Acurus.Capella.UI
             }
             //Jira #CAP-39
             int iTrycount = 1;
-           TryAgain:
+        TryAgain:
             try
             {
                 using (UNCAccessWithCredentials unc = new UNCAccessWithCredentials())
@@ -704,26 +797,37 @@ namespace Acurus.Capella.UI
                     }
                 }
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
-                //Jira #CAP-39
-                if ( iTrycount <= 3)
+                string sErrorMessage = "";
+                if (UtilityManager.CheckFileNotFoundException(ex, out sErrorMessage))
                 {
-                    iTrycount++;
-                    Thread.Sleep(1500);
-                    goto TryAgain;
+                    //ScriptManager.RegisterStartupScript(this, this.GetType(), "Key", "alert('" + sErrorMessage + "');", true);
+                    sCheckFileNotFoundException = "CheckFileNotFoundException ~" + sErrorMessage;
+                    return false;
                 }
                 else
                 {
-                    UtilityManager.RetryExecptionLog(ex, iTrycount);
+                    //Jira #CAP-39
+                    if (iTrycount <= 3)
+                    {
+                        iTrycount++;
+                        Thread.Sleep(1500);
+                        goto TryAgain;
+                    }
+                    else
+                    {
+                        UtilityManager.RetryExecptionLog(ex, iTrycount);
+                    }
                 }
-                    result = false;
+                result = false;
             }
             return result;
         }
 
-        public bool CreateDirectoryAD(string HumanID, string serverIP, string UserName, string Password)
+        public bool CreateDirectoryAD(string HumanID, string serverIP, string UserName, string Password,out string sCheckFileNotFoundException)
         {
+            sCheckFileNotFoundException = "";
             uri = serverIP + HumanID + "/";
 
             string UNCAuthPath = System.Configuration.ConfigurationSettings.AppSettings["UNCAuthPathAD"];
@@ -734,7 +838,7 @@ namespace Acurus.Capella.UI
             string domain = System.Configuration.ConfigurationSettings.AppSettings["DomainAD"];
             //Jira #CAP-39
             int iTrycount = 1;
-          TryAgain:
+        TryAgain:
             try
             {
                 using (UNCAccessWithCredentials unc = new UNCAccessWithCredentials())
@@ -749,195 +853,238 @@ namespace Acurus.Capella.UI
 
                 }
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
-                //Jira #CAP-39
-                if ( iTrycount <= 3)
+                string sErrorMessage = "";
+                if (UtilityManager.CheckFileNotFoundException(ex, out sErrorMessage))
                 {
-                    iTrycount++;
-                    Thread.Sleep(1500);
-                    goto TryAgain;
+                    //ScriptManager.RegisterStartupScript(this, this.GetType(), "Key", "alert('" + sErrorMessage + "');", true);
+                    sCheckFileNotFoundException = "CheckFileNotFoundException ~" + sErrorMessage;
+                    return false;
                 }
                 else
                 {
-                    UtilityManager.RetryExecptionLog(ex, iTrycount);
-                }
-            }
-            return true;
-        }
-        public bool CreateDirectoryFAX(string UNCAuthPath, string UNCPath, string ftpIP, string userName, string password, string domain, string sDestinationFtpPath)
-        {
-            //string UNCAuthPath = System.Configuration.ConfigurationSettings.AppSettings["UNCAuthPath"];
-            //string UNCPath = System.Configuration.ConfigurationSettings.AppSettings["UNCPath"];
-            //string ftpIP = System.Configuration.ConfigurationSettings.AppSettings["ftpServerIP"];
-            //string userName = System.Configuration.ConfigurationSettings.AppSettings["UserName"];
-            //string password = System.Configuration.ConfigurationSettings.AppSettings["Password"];
-            //string domain = System.Configuration.ConfigurationSettings.AppSettings["Domain"];
-            uri = UNCPath + "/" + sDestinationFtpPath + "/";
-            
-            //Jira #CAP-39
-            int iTrycount = 1;
-       TryAgain:
-            try
-            {
-                using (UNCAccessWithCredentials unc = new UNCAccessWithCredentials())
-                {
-                    if (unc.NetUseWithCredentials(UNCAuthPath, userName, domain, password))
+
+                    //Jira #CAP-39
+                    if (iTrycount <= 3)
                     {
-                        {
-                            Directory.CreateDirectory(uri);
-                        }
-
+                        iTrycount++;
+                        Thread.Sleep(1500);
+                        goto TryAgain;
                     }
-
-                }
-            }
-            catch(Exception ex )
-            {
-                //Jira #CAP-39
-                if ( iTrycount <= 3)
-                {
-                    iTrycount++;
-                    Thread.Sleep(1500);
-                    goto TryAgain;
-                }
-                else
-                {
-                    UtilityManager.RetryExecptionLog(ex, iTrycount);
-                }
-            }
-            return true;
-        }
-
-        public string UploadToImageServerFAX(string UNCAuthPath, string UNCPath, string ftpIP, string userName, string password, string domain, string sDestinationFtpPath, string SourceFilePath, string File_Name_Convention)
-        {
-
-            string serverPath = string.Empty;
-            FileInfo fileInf = new FileInfo(SourceFilePath);
-
-
-            /* Credential To Access NAS Server */
-            //string UNCAuthPath = System.Configuration.ConfigurationSettings.AppSettings["UNCAuthPath"];
-            //string UNCPath = System.Configuration.ConfigurationSettings.AppSettings["UNCPath"];
-            //string ftpIP = System.Configuration.ConfigurationSettings.AppSettings["ftpServerIP"];
-            //string userName = System.Configuration.ConfigurationSettings.AppSettings["UserName"];
-            //string password = System.Configuration.ConfigurationSettings.AppSettings["Password"];
-            //string domain = System.Configuration.ConfigurationSettings.AppSettings["Domain"];
-            bool result = false;
-
-            uri = ftpIP + "/" + sDestinationFtpPath + "/";
-
-            if (File_Name_Convention != string.Empty)
-            {
-                uri = ((uri + File_Name_Convention));
-            }
-            else
-            {
-                uri = ((uri + fileInf.Name));
-            }
-            //Jira #CAP-39
-            int iTrycount = 1;
-           TryAgain:
-            try
-            {
-                using (UNCAccessWithCredentials unc = new UNCAccessWithCredentials())
-                {
-                    if (unc.NetUseWithCredentials(UNCAuthPath, userName, domain, password))
+                    else
                     {
-                        {
-                            System.IO.File.Copy(SourceFilePath, uri.Replace(ftpIP, UNCPath), true);
-                            result = true;
-                        }
-                    }
-                }
-            }
-            catch(Exception ex)
-            {
-                //Jira #CAP-39
-                if (iTrycount <= 3)
-                {
-                    iTrycount++;
-                    Thread.Sleep(1500);
-                    goto TryAgain;
-                }
-                else
-                {
-                    UtilityManager.RetryExecptionLog(ex, iTrycount);
-                    result = false;
-                }
-            }
-
-
-            if (result)
-            {
-                serverPath = uri;
-            }
-
-            return serverPath;
-
-
-        }
-
-
-        public bool DownloadFromImageServerFax(string SourcePath, string DestinationPath)
-        {
-            /* Credential To Access NAS Server */
-            string UNCAuthPath = System.Configuration.ConfigurationSettings.AppSettings["UNCAuthPath"];
-            string UNCPath = System.Configuration.ConfigurationSettings.AppSettings["UNCPath"];
-            string ftpIP = System.Configuration.ConfigurationSettings.AppSettings["ftpServerIP"];
-            string userName = System.Configuration.ConfigurationSettings.AppSettings["UserName"];
-            string password = System.Configuration.ConfigurationSettings.AppSettings["Password"];
-            string domain = System.Configuration.ConfigurationSettings.AppSettings["Domain"];
-            bool result = false;
-
-
-
-
-
-            //if (HumanID != "0")
-            //{
-            //    uri = serverIP + HumanID + "/" + FileName;
-            //}
-            //else
-            //{
-            //    uri = serverIP + "/" + FileName;
-            //}
-
-            //Jira #CAP-39
-            int iTrycount = 1;
-       TryAgain:
-            try
-            {
-                using (UNCAccessWithCredentials unc = new UNCAccessWithCredentials())
-                {
-                    if (unc.NetUseWithCredentials(UNCAuthPath, userName, domain, password))
-                    {
-                        {
-                            System.IO.File.Copy(SourcePath, DestinationPath, true);
-                            result = true;
-                        }
-                    }
-                }
-            }
-
-            catch(Exception ex)
-            {
-                //Jira #CAP-39
-                if ( iTrycount <= 3)
-                {
-                    iTrycount++;
-                    Thread.Sleep(1500);
-                    goto TryAgain;
-                }
-                else
-                {
                         UtilityManager.RetryExecptionLog(ex, iTrycount);
                     }
+                }
             }
-
-            return result;
-
+            return true;
         }
+        //public bool CreateDirectoryFAX(string UNCAuthPath, string UNCPath, string ftpIP, string userName, string password, string domain, string sDestinationFtpPath,out string sCheckFileNotFoundException)
+        //{
+        //    sCheckFileNotFoundException = "";
+        //    //string UNCAuthPath = System.Configuration.ConfigurationSettings.AppSettings["UNCAuthPath"];
+        //    //string UNCPath = System.Configuration.ConfigurationSettings.AppSettings["UNCPath"];
+        //    //string ftpIP = System.Configuration.ConfigurationSettings.AppSettings["ftpServerIP"];
+        //    //string userName = System.Configuration.ConfigurationSettings.AppSettings["UserName"];
+        //    //string password = System.Configuration.ConfigurationSettings.AppSettings["Password"];
+        //    //string domain = System.Configuration.ConfigurationSettings.AppSettings["Domain"];
+        //    uri = UNCPath + "/" + sDestinationFtpPath + "/";
+            
+        //    //Jira #CAP-39
+        //    int iTrycount = 1;
+        //TryAgain:
+        //    try
+        //    {
+        //        using (UNCAccessWithCredentials unc = new UNCAccessWithCredentials())
+        //        {
+        //            if (unc.NetUseWithCredentials(UNCAuthPath, userName, domain, password))
+        //            {
+        //                {
+        //                    Directory.CreateDirectory(uri);
+        //                }
+
+        //            }
+
+        //        }
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        string sErrorMessage = "";
+        //        if (UtilityManager.CheckFileNotFoundException(ex, out sErrorMessage))
+        //        {
+        //            //ScriptManager.RegisterStartupScript(this, this.GetType(), "Key", "alert('" + sErrorMessage + "');", true);
+        //            sCheckFileNotFoundException = "CheckFileNotFoundException ~" + sErrorMessage;
+        //            return false;
+        //        }
+        //        else
+        //        {
+        //            //Jira #CAP-39
+        //            if (iTrycount <= 3)
+        //            {
+        //                iTrycount++;
+        //                Thread.Sleep(1500);
+        //                goto TryAgain;
+        //            }
+        //            else
+        //            {
+        //                UtilityManager.RetryExecptionLog(ex, iTrycount);
+        //            }
+        //        }
+        //    }
+        //    return true;
+        //}
+
+        //public string UploadToImageServerFAX(string UNCAuthPath, string UNCPath, string ftpIP, string userName, string password, string domain, string sDestinationFtpPath, string SourceFilePath, string File_Name_Convention,out string sCheckFileNotFoundException)
+        //{
+        //    sCheckFileNotFoundException = "";
+        //    string serverPath = string.Empty;
+        //    FileInfo fileInf = new FileInfo(SourceFilePath);
+
+
+        //    /* Credential To Access NAS Server */
+        //    //string UNCAuthPath = System.Configuration.ConfigurationSettings.AppSettings["UNCAuthPath"];
+        //    //string UNCPath = System.Configuration.ConfigurationSettings.AppSettings["UNCPath"];
+        //    //string ftpIP = System.Configuration.ConfigurationSettings.AppSettings["ftpServerIP"];
+        //    //string userName = System.Configuration.ConfigurationSettings.AppSettings["UserName"];
+        //    //string password = System.Configuration.ConfigurationSettings.AppSettings["Password"];
+        //    //string domain = System.Configuration.ConfigurationSettings.AppSettings["Domain"];
+        //    bool result = false;
+
+        //    uri = ftpIP + "/" + sDestinationFtpPath + "/";
+
+        //    if (File_Name_Convention != string.Empty)
+        //    {
+        //        uri = ((uri + File_Name_Convention));
+        //    }
+        //    else
+        //    {
+        //        uri = ((uri + fileInf.Name));
+        //    }
+        //    //Jira #CAP-39
+        //    int iTrycount = 1;
+        //   TryAgain:
+        //    try
+        //    {
+        //        using (UNCAccessWithCredentials unc = new UNCAccessWithCredentials())
+        //        {
+        //            if (unc.NetUseWithCredentials(UNCAuthPath, userName, domain, password))
+        //            {
+        //                {
+        //                    System.IO.File.Copy(SourceFilePath, uri.Replace(ftpIP, UNCPath), true);
+        //                    result = true;
+        //                }
+        //            }
+        //        }
+        //    }
+        //    catch(Exception ex)
+        //    {
+        //        string sErrorMessage = "";
+        //        if (UtilityManager.CheckFileNotFoundException(ex, out sErrorMessage))
+        //        {
+        //            //ScriptManager.RegisterStartupScript(this, this.GetType(), "Key", "alert('" + sErrorMessage + "');", true);
+        //            sCheckFileNotFoundException = "CheckFileNotFoundException ~" + sErrorMessage;
+        //            return string.Empty;
+        //        }
+        //        else
+        //        {
+        //            //Jira #CAP-39
+        //            if (iTrycount <= 3)
+        //            {
+        //                iTrycount++;
+        //                Thread.Sleep(1500);
+        //                goto TryAgain;
+        //            }
+        //            else
+        //            {
+        //                UtilityManager.RetryExecptionLog(ex, iTrycount);
+        //                result = false;
+        //            }
+        //        }
+        //    }
+
+
+        //    if (result)
+        //    {
+        //        serverPath = uri;
+        //    }
+
+        //    return serverPath;
+
+
+        //}
+
+
+        //public bool DownloadFromImageServerFax(string SourcePath, string DestinationPath,out string sCheckFileNotFoundException)
+        //{
+        //    sCheckFileNotFoundException = "";
+        //    /* Credential To Access NAS Server */
+        //    string UNCAuthPath = System.Configuration.ConfigurationSettings.AppSettings["UNCAuthPath"];
+        //    string UNCPath = System.Configuration.ConfigurationSettings.AppSettings["UNCPath"];
+        //    string ftpIP = System.Configuration.ConfigurationSettings.AppSettings["ftpServerIP"];
+        //    string userName = System.Configuration.ConfigurationSettings.AppSettings["UserName"];
+        //    string password = System.Configuration.ConfigurationSettings.AppSettings["Password"];
+        //    string domain = System.Configuration.ConfigurationSettings.AppSettings["Domain"];
+        //    bool result = false;
+
+
+
+
+
+        //    //if (HumanID != "0")
+        //    //{
+        //    //    uri = serverIP + HumanID + "/" + FileName;
+        //    //}
+        //    //else
+        //    //{
+        //    //    uri = serverIP + "/" + FileName;
+        //    //}
+
+        //    //Jira #CAP-39
+        //    int iTrycount = 1;
+        //TryAgain:
+        //    try
+        //    {
+        //        using (UNCAccessWithCredentials unc = new UNCAccessWithCredentials())
+        //        {
+        //            if (unc.NetUseWithCredentials(UNCAuthPath, userName, domain, password))
+        //            {
+        //                {
+        //                    System.IO.File.Copy(SourcePath, DestinationPath, true);
+        //                    result = true;
+        //                }
+        //            }
+        //        }
+        //    }
+
+        //    catch (Exception ex)
+        //    {
+        //        string sErrorMessage = "";
+        //        if (UtilityManager.CheckFileNotFoundException(ex, out sErrorMessage))
+        //        {
+        //            //ScriptManager.RegisterStartupScript(this, this.GetType(), "Key", "alert('" + sErrorMessage + "');", true);
+        //            sCheckFileNotFoundException = "CheckFileNotFoundException ~" + sErrorMessage;
+        //            return false;
+        //        }
+        //        else
+        //        {
+        //            //Jira #CAP-39
+        //            if (iTrycount <= 3)
+        //            {
+        //                iTrycount++;
+        //                Thread.Sleep(1500);
+        //                goto TryAgain;
+        //            }
+        //            else
+        //            {
+        //                UtilityManager.RetryExecptionLog(ex, iTrycount);
+        //            }
+        //        }
+        //    }
+
+        //    return result;
+
+        //}
 
     }
 }

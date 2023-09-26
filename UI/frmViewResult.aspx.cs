@@ -762,11 +762,23 @@ namespace Acurus.Capella.UI
                         FTPImageProcess _ftpImageProcess = new FTPImageProcess();
                         string serverPath = string.Empty;
 
-                        if (_ftpImageProcess.CreateDirectory(ClientSession.HumanId.ToString(), ftpServerIP, ftpUserName, ftpPassword))
+                        //if (_ftpImageProcess.CreateDirectory(ClientSession.HumanId.ToString(), ftpServerIP, ftpUserName, ftpPassword))
+                        bool bCreateDirectory = _ftpImageProcess.CreateDirectory(ClientSession.HumanId.ToString(), ftpServerIP, ftpUserName, ftpPassword,out string sCheckFileNotFoundException);
+                        if (sCheckFileNotFoundException != "" && sCheckFileNotFoundException.Contains("CheckFileNotFoundException"))
+                        {
+                            ScriptManager.RegisterStartupScript(this, this.GetType(), "Key", "alert(\"" + sCheckFileNotFoundException.Split('~')[1] + "\");", true);
+                            return;
+                        }
+                        if (bCreateDirectory)
                         {
                             for (int i = 0; i < lstScanIndex.Count; i++)
                             {
-                                serverPath = _ftpImageProcess.UploadToImageServer(lstScanIndex[i].Human_ID.ToString(), ftpServerIP, ftpUserName, ftpPassword, Server.MapPath(lstScanIndex[i].Indexed_File_Path), string.Empty);
+                                serverPath = _ftpImageProcess.UploadToImageServer(lstScanIndex[i].Human_ID.ToString(), ftpServerIP, ftpUserName, ftpPassword, Server.MapPath(lstScanIndex[i].Indexed_File_Path), string.Empty, out string sCheckFileNotFoundExceptionses);
+                                if (sCheckFileNotFoundExceptionses != "" && sCheckFileNotFoundExceptionses.Contains("CheckFileNotFoundException"))
+                                {
+                                    ScriptManager.RegisterStartupScript(this, this.GetType(), "Key", "alert(\"" + sCheckFileNotFoundExceptionses.Split('~')[1] + "\");", true);
+                                    return;
+                                }
                                 if (serverPath != string.Empty)
                                 {
                                     FileManagementIndex filemanagementIndex = new FileManagementIndex();

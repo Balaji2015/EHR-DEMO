@@ -5946,6 +5946,35 @@ namespace Acurus.Capella.UI
 
             return bIsAkidoEncounter;
         }
+        public static bool CheckFileNotFoundException(Exception ex, out string sErrorMessage)
+        {
+            sErrorMessage = string.Empty;
+            bool bCheckFileNotFoundException =false;
+            if (ex.Message != null)
+            {
+                sErrorMessage = "MESSAGE: " + ex.Message + "\\n\\n";
+            }
+            if (ex.InnerException != null && ex.InnerException.Message != null)
+            {
+                sErrorMessage += "INNER EXCEPTION: " + ex.InnerException.Message + "\\n\\n";
+            }
+            if (ex.StackTrace != null)
+            {
+                sErrorMessage += "STACK TRACE: " + ex.StackTrace.ToString();
+            }
+            sErrorMessage = sErrorMessage.Replace("'", "");
+            sErrorMessage = sErrorMessage.Replace(System.Environment.NewLine, "");
+            bCheckFileNotFoundException = (sErrorMessage.Contains("Could not find file") ||
+                                           sErrorMessage.Contains("Access to the path") ||
+                                           sErrorMessage.Contains("Specific file is not present in the location") ||
+                                           sErrorMessage.Contains("The process cannot access the file") ||
+                                           sErrorMessage.Contains("Could not find a part of the path") ||
+                                           sErrorMessage.Contains("pdf not found as file or resource") ||
+                                           sErrorMessage.Contains("Invalid page number") ||
+                                           sErrorMessage.Contains("trailer not found"));
+            return bCheckFileNotFoundException;
+
+        }
     }
 }
 

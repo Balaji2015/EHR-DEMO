@@ -1537,7 +1537,12 @@ namespace Acurus.Capella.UI
                 virdir.Create();
             }
 
-            ftpImage.DownloadFromImageServer("PatientPhoto", ftpServerIP, ftpUserName, ftpPassword, Path.GetFileName(ClientSession.FillPatientChart.PatChartList[0].PhotoPath.ToString()), sPath);
+            ftpImage.DownloadFromImageServer("PatientPhoto", ftpServerIP, ftpUserName, ftpPassword, Path.GetFileName(ClientSession.FillPatientChart.PatChartList[0].PhotoPath.ToString()), sPath, out string sCheckFileNotFoundException);
+            if (sCheckFileNotFoundException != "" && sCheckFileNotFoundException.Contains("CheckFileNotFoundException"))
+            {
+                ScriptManager.RegisterStartupScript(this, this.GetType(), "Key", "alert(\"" + sCheckFileNotFoundException.Split('~')[1] + "\");", true);
+                return;
+            }
 
             imgOverAllSummary.ImageUrl = "~//atala-capture-download/" + Session.SessionID + "//" + Path.GetFileName(ClientSession.FillPatientChart.PatChartList[0].PhotoPath.ToString());
             UtilityManager.inserttologgingtable(ClientSession.EncounterId.ToString(), ClientSession.HumanId.ToString(), ClientSession.UserName, ClientSession.PhysicianId.ToString(), "Patient Chart - LoadSummaryFromOtherForms  - LoadPatientPhoto Frontend API [To load patient photo]: End", DateTime.Now, sGroup_ID_Log, "frmPatientChart");

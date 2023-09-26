@@ -179,7 +179,12 @@ namespace Acurus.Capella.UI
                                 if (Human_id == 0)
                                     Human_id = ClientSession.HumanId;
 
-                                ftpImage.DownloadFromImageServerforEV(Human_id.ToString(), ftpServerIP, ftpUserName, ftpPassword, Path.GetFileName(strSplit[0]), grouplocalPath);
+                                ftpImage.DownloadFromImageServerforEV(Human_id.ToString(), ftpServerIP, ftpUserName, ftpPassword, Path.GetFileName(strSplit[0]), grouplocalPath,out string sCheckFileNotFoundException);
+                                if (sCheckFileNotFoundException != "" && sCheckFileNotFoundException.Contains("CheckFileNotFoundException"))
+                                {
+                                    ScriptManager.RegisterStartupScript(this, this.GetType(), "Key", "alert(\"" + sCheckFileNotFoundException.Split('~')[1] + "\");", true);
+                                    return;
+                                }
                                 string orig_image = grouplocalPath + "\\" + Path.GetFileName(strSplit[0]);
                                 string FileLocalPath = orig_image;
                                 PDFLOAD.Attributes.Add("src", "frmPrintPDF.aspx?pdf=" + FileLocalPath + "&SI=" + strSplit[0].ToString() + "#zoom=100" + "&Location=" + Request["Location"].ToString() + "&Human_ID=" + Human_id + "&PageTitle=Eligibility Verification - Response File");
@@ -297,7 +302,12 @@ namespace Acurus.Capella.UI
                                 FTPImageProcess ftpImage = new FTPImageProcess();
                                 if (Human_id == 0)
                                     Human_id = ClientSession.HumanId;
-                                ftpImage.DownloadFromImageServerforEV(Human_id.ToString(), ftpServerIP, ftpUserName, ftpPassword, Path.GetFileName(Request["SI"].ToString()), grouplocalPath);
+                                ftpImage.DownloadFromImageServerforEV(Human_id.ToString(), ftpServerIP, ftpUserName, ftpPassword, Path.GetFileName(Request["SI"].ToString()), grouplocalPath, out string sCheckFileNotFoundException);
+                                if (sCheckFileNotFoundException != "" && sCheckFileNotFoundException.Contains("CheckFileNotFoundException"))
+                                {
+                                    ScriptManager.RegisterStartupScript(this, this.GetType(), "Key", "alert(\"" + sCheckFileNotFoundException.Split('~')[1] + "\");", true);
+                                    return;
+                                }
                                 string orig_image = grouplocalPath + "\\" + Path.GetFileName(SelectedItems.Value);
                                 string FileLocalPath = orig_image;
                                 PDFLOAD.Attributes.Add("src", "frmPrintPDF.aspx?pdf=" + FileLocalPath + "&SI=" + Request["SI"].ToString() + "#zoom=100" + "&Location=" + Request["Location"].ToString() + "&Human_ID=" + Human_id + "&PageTitle=Eligibility Verification - Response File");
@@ -403,7 +413,14 @@ namespace Acurus.Capella.UI
 
                         if (!Is_Exist_In_Local)
                         {
-                            if (_ftpImageProcess.DownloadFromImageServer(ClientSession.HumanId.ToString(), ftpServerIP, ftpUserName, ftpPassword, _fileName, localPath + "\\Summary_Of_Care"))
+                            //if (_ftpImageProcess.DownloadFromImageServer(ClientSession.HumanId.ToString(), ftpServerIP, ftpUserName, ftpPassword, _fileName, localPath + "\\Summary_Of_Care"))
+                            bool bDownloadFromImageServer = _ftpImageProcess.DownloadFromImageServer(ClientSession.HumanId.ToString(), ftpServerIP, ftpUserName, ftpPassword, _fileName, localPath + "\\Summary_Of_Care", out string sCheckFileNotFoundException);
+                            if (sCheckFileNotFoundException != "" && sCheckFileNotFoundException.Contains("CheckFileNotFoundException"))
+                            {
+                                ScriptManager.RegisterStartupScript(this, this.GetType(), "Key", "alert(\"" + sCheckFileNotFoundException.Split('~')[1] + "\");", true);
+                                return;
+                            }
+                            if (bDownloadFromImageServer)
                             {
                                 simagePathname = localPath + "\\Summary_Of_Care\\" + _fileName;
                             }
@@ -582,7 +599,12 @@ namespace Acurus.Capella.UI
                     if (Human_id == 0)
                         Human_id = Convert.ToUInt64(e.Tab.Attributes["HumanID"]);
 
-                    ftpImage.DownloadFromImageServerforEV(Human_id.ToString(), ftpServerIP, ftpUserName, ftpPassword, Path.GetFileName(e.Tab.Value), grouplocalPath);
+                    ftpImage.DownloadFromImageServerforEV(Human_id.ToString(), ftpServerIP, ftpUserName, ftpPassword, Path.GetFileName(e.Tab.Value), grouplocalPath, out string sCheckFileNotFoundException);
+                    if (sCheckFileNotFoundException != "" && sCheckFileNotFoundException.Contains("CheckFileNotFoundException"))
+                    {
+                        ScriptManager.RegisterStartupScript(this, this.GetType(), "Key", "alert(\"" + sCheckFileNotFoundException.Split('~')[1] + "\");", true);
+                        return;
+                    }
                     string orig_image = grouplocalPath + "\\" + Path.GetFileName(e.Tab.Value);
                     string FileLocalPath = orig_image;
                     PDFLOAD.Attributes.Add("src", "frmPrintPDF.aspx?pdf=" + FileLocalPath + "&SI=" + e.Tab.Text.ToString() + "#zoom=100" + "&Location=" + Request["Location"].ToString() + "&Human_ID=" + Human_id + "&PageTitle=Eligibility Verification - Response File");
