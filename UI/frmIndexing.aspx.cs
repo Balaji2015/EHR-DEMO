@@ -4556,7 +4556,8 @@ namespace Acurus.Capella.UI
                     ddSelectedFacility.Text = ClientSession.FacilityName;
                 }
                 //string sFacilityName = string.Empty;
-                StringBuilder sFacilityName = new StringBuilder(); ;
+                //Cap - 1097
+                //StringBuilder sFacilityName = new StringBuilder();
                 if (fileupload.HasFile)
                 {
                     string[] sFileExtension = { ".tif", ".jpeg", ".png", ".jpg", ".bmp", ".pdf", ".tiff" };
@@ -4573,6 +4574,8 @@ namespace Acurus.Capella.UI
                 TryAgain:
                     try
                     {
+                        //Cap - 1097
+                        StringBuilder sFacilityName = new StringBuilder();
 
                         if (rdbRemoteDir.Checked == true)
                         {
