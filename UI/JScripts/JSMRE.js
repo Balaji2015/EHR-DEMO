@@ -252,6 +252,8 @@ function btnAllProcedures_Clicked(sender, args) {
     //Jira #CAP-591
     $find("MessageWindow")._iframe.style.height = "100%";
     $find("MessageWindow")._iframe.style.width = "100%";
+    $("#RadWindowWrapper_MessageWindow").css('top', '120px')
+    $($("#RadWindowWrapper_MessageWindow")[0].childNodes[0]).css('height', '500px')
     return false;
 
 }
