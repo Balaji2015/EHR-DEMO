@@ -181,7 +181,9 @@ namespace Acurus.Capella.UI
             dtHuman.Columns.Add("Pt. Acc. #", typeof(string));
             dtHuman.Columns.Add("Member ID", typeof(string));
             dtHuman.Columns.Add("DOS", typeof(DateTime));
-            dtHuman.Columns.Add("Provider Name", typeof(string));
+            //Jira CAP-1014
+            //dtHuman.Columns.Add("Provider Name", typeof(string));
+            dtHuman.Columns.Add("Enc. Provider", typeof(string));
             dtHuman.Columns.Add("Pri. Carrier", typeof(string));
             dtHuman.Columns.Add("Pri. Plan", typeof(string));
             dtHuman.Columns.Add("Type of Visit", typeof(string));
@@ -351,6 +353,8 @@ namespace Acurus.Capella.UI
         protected void ddlPayerName_SelectedIndexChanged(object sender, EventArgs e)
         {
             SelectPlan();
+            //Jira CAP-490
+            ScriptManager.RegisterStartupScript(this, this.Page.GetType(), string.Empty, "{sessionStorage.setItem('StartLoading', 'false');StopLoadFromPatChart();}", true);
         }
 
         void SelectPlan()

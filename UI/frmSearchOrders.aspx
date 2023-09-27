@@ -114,7 +114,11 @@
                                     <td align="right">
                                         <asp:Button ID="btnAllProcedures" runat="server" Text="All Procedures"  
                                             CssClass="aspresizedbluebutton" OnClientClick="return btnAllProcedures_Clicked();" />
-                                       
+                                        <%--<Jira #CAP-591>--%>
+                                   <asp:Button ID="btnOk" runat="server" Text="OK" CssClass="aspresizedgreenbutton" OnClick="btnOk_Click" />
+
+                                        <asp:Button ID="btnCancel" runat="server" Text="Cancel" CssClass="aspresizedredbutton" OnClientClick="return CloseOrders();" />
+
                                     </td>
                                 </tr>
                             </table>
@@ -123,7 +127,8 @@
                 </tr>
                 <tr>
                     <td colspan="6">
-                        <asp:Panel ID="pnlButtons" runat="server" Width="100%">
+                         <%--<Jira #CAP-591>--%>    
+                        <%--<asp:Panel ID="pnlButtons" runat="server" Width="100%">
                             <table width="100%">
                                 <tr>
                                     <td align="right">
@@ -133,11 +138,11 @@
                                     <td align="right" style="width: 5%">
                                       <%--  <asp:Button ID="btnCancel" runat="server" Text="Cancel" OnClientClick="CloseOrders();"
                                             Width="100%" />--%>
-                                      <asp:Button ID="btnCancel" runat="server" Text="Cancel" CssClass="aspresizedredbutton" OnClientClick="return CloseOrders();" />
-                                    </td>
-                                </tr>
-                            </table>
-                        </asp:Panel>
+                                      <%--<asp:Button ID="btnCancel" runat="server" Text="Cancel" CssClass="aspresizedredbutton" OnClientClick="return CloseOrders();" />--%>
+                                    <%--</td>--%>
+                                <%--</tr>--%>
+                            <%--</table>--%>
+                        <%--</asp:Panel>--%>
                     </td>
                 </tr>
             </table>

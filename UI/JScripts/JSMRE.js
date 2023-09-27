@@ -249,6 +249,9 @@ function btnAllProcedures_Clicked(sender, args) {
     obj.push("selectedLabID=" + ddlLab.get_selectedItem().get_value());
     openModal("frmAllProcedures.aspx", 550, 680, obj, 'MessageWindow');
     $find('MessageWindow').add_close(OnClientCloseAllProcedures);
+    //Jira #CAP-591
+    $find("MessageWindow")._iframe.style.height = "100%";
+    $find("MessageWindow")._iframe.style.width = "100%";
     return false;
 
 }
