@@ -300,7 +300,7 @@
                         </td>
 
                         <td style="width: 18%">
-                            <asp:DropDownList ID="ddlPayerName" runat="server" AutoPostBack="True" Width="74%" Style="margin-left: 15px;" OnSelectedIndexChanged="ddlPayerName_SelectedIndexChanged"></asp:DropDownList><%-- OnSelectedIndexChanged="ddlPayerName_SelectedIndexChanged"--%>
+                            <asp:DropDownList ID="ddlPayerName" runat="server" AutoPostBack="True" Width="74%" Style="margin-left: 15px;" OnSelectedIndexChanged="ddlPayerName_SelectedIndexChanged" onchange="LoadingImage();"></asp:DropDownList><%-- OnSelectedIndexChanged="ddlPayerName_SelectedIndexChanged"--%>
                         </td>
 
                         <td style="width: 8%">
