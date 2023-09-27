@@ -301,6 +301,9 @@
                                                                     <asp:ListItem Text="No" Value="N" />
                                                                 </asp:DropDownList>
                                                             </td>
+                                                             <td style="width: 90px;"colspan="2">
+     <asp:CheckBox ID="chkReviewandSign" EnableViewState="true"  runat="server"  Text="Reviewed and Signed" CssClass="Editabletxtbox" AutoPostBack="false" />
+ </td>
                                                         </tr>
                                                     </table>
                                                 </asp:Panel>

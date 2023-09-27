@@ -1751,6 +1751,8 @@ namespace Acurus.Capella.UI
             txtSelectedPages.Value = "";
             txtSelectedPages.Disabled = true;
             btnMoveToNextProcess.Disabled = false;
+            //Cap - 571
+            chkReviewandSign.Checked = false;
             // IsSaveClickedSucessfull.Value = "Success";
             if (IsClickDirectUpload.Value == "Yes")
             {
@@ -3010,7 +3012,14 @@ namespace Acurus.Capella.UI
                     //MoveToNextWorkFlow(scanIndexList[j].Order_ID, "DIAGNOSTIC ORDER", physicianName);
                     string[] current_process = new string[] { "ORDER_GENERATE" };
                     WFObjectManager WFProxy = new WFObjectManager();
-                    WFProxy.MoveToNextProcess(scanIndexList[j].Order_ID, "DIAGNOSTIC ORDER", 8, Physician_Name.ToString(), UtilityManager.ConvertToUniversal(DateTime.Now), null, current_process, null);
+                    //cap - 571
+                    //WFProxy.MoveToNextProcess(scanIndexList[j].Order_ID, "DIAGNOSTIC ORDER", 8, Physician_Name.ToString(), UtilityManager.ConvertToUniversal(DateTime.Now), null, current_process, null);
+                    if (scanIndexList[j].Is_Manually_Reviewed_And_Signed == "Y")
+                        WFProxy.MoveToNextProcess(scanIndexList[j].Order_ID, "DIAGNOSTIC ORDER", 9, Physician_Name.ToString(), UtilityManager.ConvertToUniversal(DateTime.Now), null, current_process, null);
+                    else
+                    {
+                        WFProxy.MoveToNextProcess(scanIndexList[j].Order_ID, "DIAGNOSTIC ORDER", 8, Physician_Name.ToString(), UtilityManager.ConvertToUniversal(DateTime.Now), null, current_process, null);
+                    }
                 }
             }
 
@@ -3597,6 +3606,12 @@ namespace Acurus.Capella.UI
                 scanIndexObject.Page_Selected = txtSelectedPages.Value;
                 scanIndexObject.Document_Type = cboDocumentType.SelectedItem.Text;
                 scanIndexObject.Document_Sub_Type = cboDocumentSubType.Text;
+                //Cap - 571
+                if (chkReviewandSign.Checked)
+                    scanIndexObject.Is_Manually_Reviewed_And_Signed = "Y";
+                else
+                    scanIndexObject.Is_Manually_Reviewed_And_Signed = "N";
+
                 if (cboDocumentType.SelectedValue.ToUpper() != "ENCOUNTERS")
                     scanIndexObject.Document_Date = UtilityManager.ConvertToUniversal(Convert.ToDateTime(dtpDocumentDate.Value + " 07:30:00"));// + DateTime.Now.TimeOfDay));
                 else
@@ -3612,6 +3627,12 @@ namespace Acurus.Capella.UI
 
                 if (action == "Update")
                 {
+                    //Cap - 571
+                    if (chkReviewandSign.Checked)
+                        scanIndexObject.Is_Manually_Reviewed_And_Signed = "Y";
+                    else
+                        scanIndexObject.Is_Manually_Reviewed_And_Signed = "N";
+
                     scanIndexObject.Modified_By = ClientSession.UserName;
                     scanIndexObject.Modified_Date_And_Time = UtilityManager.ConvertToUniversal();
                 }
@@ -3832,6 +3853,11 @@ namespace Acurus.Capella.UI
                                               where doc.Id == Convert.ToUInt64(scanIndexID)
                                               select doc).ToList<scan_index>();
                 Session.Add("EditList", temp_lst);
+                //Cap - 571
+                if (temp_lst[0].Is_Manually_Reviewed_And_Signed == "Y")
+                    chkReviewandSign.Checked = true;
+                else
+                    chkReviewandSign.Checked = false;
 
                 IList<Scan> temp_Scan_lst = new List<Scan>();
                 ScanManager objScnmngr = new ScanManager();

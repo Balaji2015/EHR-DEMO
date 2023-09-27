@@ -10,13 +10,13 @@ namespace Acurus.Capella.Core.DomainObjects
     public partial class scan_index : BusinessBase<ulong>
     {
 
-         #region Declarations
+        #region Declarations
 
         private ulong _Human_ID = 0;
         private ulong _physician_id = 0;
         private ulong _Scan_ID = 0;
         private ulong _Order_ID = 0;
-        private DateTime _Document_Date=DateTime.MinValue;
+        private DateTime _Document_Date = DateTime.MinValue;
         private string _Document_Type = string.Empty;
         private string _Document_Sub_Type = string.Empty;
         private string _Indexed_File_Path = string.Empty;
@@ -24,11 +24,11 @@ namespace Acurus.Capella.Core.DomainObjects
         private string _Created_By = string.Empty;
         private DateTime _Created_Date_And_Time = DateTime.Now;
         private string _Modified_By = string.Empty;
-        private DateTime _Modified_Date_And_Time=DateTime.MinValue;
+        private DateTime _Modified_Date_And_Time = DateTime.MinValue;
         private Scan _scan_information;
         private string _object_type = string.Empty;
         private string _physician_name = string.Empty;
-        private int _Version=0;
+        private int _Version = 0;
         private string _lab_name = string.Empty;
         private IList<StaticLookup> lookupList = new List<StaticLookup>();
         private ulong _Encounter_id = 0;
@@ -38,7 +38,8 @@ namespace Acurus.Capella.Core.DomainObjects
         private ulong _Appointment_Provider_ID = 0;
         private DateTime _Document_To_Date = DateTime.MinValue;
         private string _Is_Narrative_Interpretation = string.Empty;
-        
+        private string _Is_Manually_Reviewed_And_Signed ="N";
+
 
         #endregion
 
@@ -73,6 +74,8 @@ namespace Acurus.Capella.Core.DomainObjects
             sb.Append(_Appointment_Provider_ID);
             sb.Append(_Document_To_Date);
             sb.Append(_Is_Narrative_Interpretation);
+            sb.Append(_Is_Manually_Reviewed_And_Signed);
+
             return sb.ToString().GetHashCode();
         }
 
@@ -80,7 +83,7 @@ namespace Acurus.Capella.Core.DomainObjects
 
         #region Properties
 
-        
+
         [DataMember]
         public virtual ulong Human_ID
         {
@@ -100,7 +103,7 @@ namespace Acurus.Capella.Core.DomainObjects
             get { return _Scan_ID; }
             set { _Scan_ID = value; }
         }
-        
+
         [DataMember]
         public virtual DateTime Document_Date
         {
@@ -120,7 +123,7 @@ namespace Acurus.Capella.Core.DomainObjects
             get { return _Document_Sub_Type; }
             set { _Document_Sub_Type = value; }
         }
-     
+
         [DataMember]
         public virtual string Indexed_File_Path
         {
@@ -167,9 +170,9 @@ namespace Acurus.Capella.Core.DomainObjects
             set { _scan_information = value; }
         }
 
-        
 
-            [DataMember]
+
+        [DataMember]
         public virtual string Object_Type
         {
             get { return _object_type; }
@@ -257,7 +260,14 @@ namespace Acurus.Capella.Core.DomainObjects
             get { return _Is_Narrative_Interpretation; }
             set { _Is_Narrative_Interpretation = value; }
         }
-      
+        [DataMember]
+        public virtual string Is_Manually_Reviewed_And_Signed
+        {
+            get { return _Is_Manually_Reviewed_And_Signed; }
+            set { _Is_Manually_Reviewed_And_Signed = value; }
+        }
+
+
         #endregion
     }
 }
