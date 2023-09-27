@@ -146,7 +146,9 @@ function DeletedInterpretationNotes() {
 
 }
 
-
+function LoadResultInterpretation(){
+    { sessionStorage.setItem('StartLoading', 'true'); StartLoadFromPatChart(); }
+}
 
 
 

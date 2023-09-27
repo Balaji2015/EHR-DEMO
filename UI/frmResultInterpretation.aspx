@@ -21,7 +21,7 @@
     <link href="CSS/CommonStyle.css" rel="stylesheet" type="text/css" />
 </head>
 
-<body>
+<body onload="LoadResultInterpretation()">
     
     <form id="form1" runat="server">
         <telerik:RadWindowManager ID="ModalWindowMngt" runat="server" EnableViewState="false">

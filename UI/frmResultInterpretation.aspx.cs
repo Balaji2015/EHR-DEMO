@@ -132,6 +132,7 @@ namespace Acurus.Capella.UI
                 if (ddlTemplate.Text == string.Empty)
                     btnSaveInt.Disabled = true;
             }
+            ScriptManager.RegisterStartupScript(this, this.Page.GetType(), "PatientChartLoad", "{setTimeout(function(){sessionStorage.setItem('StartLoading', 'false');StopLoadFromPatChart();},300);}", true);
         }
 
       /*  protected void btnPrintInt_ServerClick(object sender, EventArgs e)
