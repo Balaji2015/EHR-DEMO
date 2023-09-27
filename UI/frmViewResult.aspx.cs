@@ -3079,7 +3079,9 @@ namespace Acurus.Capella.UI
                         if (!objResultMaster.Result_Review_Comments.Contains("@" + ClientSession.UserName + "(" + UtilityManager.ConvertToLocal(DateTime.UtcNow).ToString("dd-MMM-yyyy hh:mm tt") + "): " + "[No Comments]"))
                         {
                             objResultMaster.Result_Review_Comments = (objResultMaster.Result_Review_Comments.Trim() != string.Empty ? objResultMaster.Result_Review_Comments + "<br/>" : string.Empty) + "@" + ClientSession.UserName + "(" + UtilityManager.ConvertToLocal(DateTime.UtcNow).ToString("dd-MMM-yyyy hh:mm tt") + "): " + "[No Comments]";
-                            txtProvNoteshistory.Text = objResultMaster.Result_Review_Comments.Replace("<br/>", "\n");
+                            //Cap - 1054
+                            //txtProvNoteshistory.Text = objResultMaster.Result_Review_Comments.Replace("<br/>", "\n");
+                            txtProvNoteshistory.Text = txtProvNoteshistory.Text+ "\n@" + ClientSession.UserName + "(" + UtilityManager.ConvertToLocal(DateTime.UtcNow).ToString("dd-MMM-yyyy hh:mm tt") + "): " + "[No Comments]";
                             DLC.txtDLC.Text = string.Empty;
                         }
                     }
