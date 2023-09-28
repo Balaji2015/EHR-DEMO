@@ -3083,7 +3083,15 @@ namespace Acurus.Capella.UI
                             objResultMaster.Result_Review_Comments = (objResultMaster.Result_Review_Comments.Trim() != string.Empty ? objResultMaster.Result_Review_Comments + "<br/>" : string.Empty) + "@" + ClientSession.UserName + "(" + UtilityManager.ConvertToLocal(DateTime.UtcNow).ToString("dd-MMM-yyyy hh:mm tt") + "): " + "[No Comments]";
                             //Cap - 1054
                             //txtProvNoteshistory.Text = objResultMaster.Result_Review_Comments.Replace("<br/>", "\n");
-                            txtProvNoteshistory.Text = txtProvNoteshistory.Text+ "\n@" + ClientSession.UserName + "(" + UtilityManager.ConvertToLocal(DateTime.UtcNow).ToString("dd-MMM-yyyy hh:mm tt") + "): " + "[No Comments]";
+                            if(txtProvNoteshistory.Text != "")
+                            {
+                                txtProvNoteshistory.Text = txtProvNoteshistory.Text + "\n@" + ClientSession.UserName + "(" + UtilityManager.ConvertToLocal(DateTime.UtcNow).ToString("dd-MMM-yyyy hh:mm tt") + "): " + "[No Comments]";
+                            }
+                            else
+                            {
+                                txtProvNoteshistory.Text = "@" + ClientSession.UserName + "(" + UtilityManager.ConvertToLocal(DateTime.UtcNow).ToString("dd-MMM-yyyy hh:mm tt") + "): " + "[No Comments]";
+                            }
+                            
                             DLC.txtDLC.Text = string.Empty;
                         }
                     }
