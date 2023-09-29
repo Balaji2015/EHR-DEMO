@@ -726,7 +726,7 @@ function SaveExam() {
             error: function OnError(xhr) {
                 AutoSaveUnsuccessful();
                 if (xhr.status == 999)
-                    window.location = xhr.statusText;
+                    window.location = "/frmSessionExpired.aspx";
                 else {
                     //CAP-798 Unexpected end of JSON input
                     if (isValidJSON(xhr.responseText)) {
@@ -859,7 +859,7 @@ function SaveExam() {
             },
             error: function OnError(xhr) {
                 if (xhr.status == 999)
-                    window.location = xhr.statusText;
+                    window.location = "/frmSessionExpired.aspx";
                 else {
                     var log = JSON.parse(xhr.responseText);
                     console.log(log);
@@ -1201,7 +1201,7 @@ function callweb(icon, List, id) {
             },
             error: function OnError(xhr) {
                 if (xhr.status == 999)
-                    window.location = xhr.statusText;
+                    window.location = "/frmSessionExpired.aspx";
                 else {
                     var log = JSON.parse(xhr.responseText);
                     console.log(log);
@@ -1411,7 +1411,7 @@ function LoadControl(LoadType, type) {
 
             error: function OnError(xhr) {
                 if (xhr.status == 999)
-                    window.location = xhr.statusText;
+                    window.location = "/frmSessionExpired.aspx";
                 else {
                     if (xhr.responseText != null && xhr.responseText != undefined && xhr.responseText != "") {
                         var log = JSON.parse(xhr.responseText);
@@ -1518,7 +1518,7 @@ function LoadControl(LoadType, type) {
             },
             error: function OnError(xhr) {
                 if (xhr.status == 999)
-                    window.location = xhr.statusText;
+                    window.location = "/frmSessionExpired.aspx";
                 else {
                     var log = JSON.parse(xhr.responseText);
                     console.log(log);
