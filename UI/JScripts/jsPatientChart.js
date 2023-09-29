@@ -1264,7 +1264,7 @@ function tree_add_leaf_example_click(leaf, node, pnode, tree) {
     }
     //else if (leaf[0].id.split('^')[0] == "Stress Test Signed Report") {
     else if (leaf[0].id.split('^')[0].indexOf("Signed Report") >0){
-
+         var IntNotes = "";
         var WSData = JSON.stringify({
             sResultMasterId: leaf[0].id.split('^')[2]
         });
@@ -1280,7 +1280,9 @@ function tree_add_leaf_example_click(leaf, node, pnode, tree) {
                 var result = $.parseJSON(data.d);
                 //Cap - 878
                 //$('#ctl00_C5POBody_EncounterContainer')[0].src = "frmPrintPDF.aspx?InterpretationNotes=PatientChart&IntNotes=" + JSON.stringify(result.ResultReviewComments.replaceAll("<br/>", "") + "&PhySigDate=" + JSON.stringify(result.SignedDate) + "&PhySigName=" + JSON.stringify(result.SignedPhyName) + "&FacAddress=" + encodeURIComponent(result.FacilityAddress);
-                $('#ctl00_C5POBody_EncounterContainer')[0].src = "frmPrintPDF.aspx?InterpretationNotes=PatientChart&IntNotes=" + JSON.stringify(result.ResultReviewComments.replaceAll("<br/>", "").replaceAll("&", "$|$|$|$|").replaceAll("#", "!^!^!^!^").replaceAll("+", "~|~|~|~|")) + "&PhySigDate=" + JSON.stringify(result.SignedDate) + "&PhySigName=" + JSON.stringify(result.SignedPhyName) + "&FacAddress=" + encodeURIComponent(result.FacilityAddress);
+                //Cap - 1054               
+                //$('#ctl00_C5POBody_EncounterContainer')[0].src = "frmPrintPDF.aspx?InterpretationNotes=PatientChart&IntNotes=" + JSON.stringify(result.ResultReviewComments.replaceAll("<br/>", "").replaceAll("&", "$|$|$|$|").replaceAll("#", "!^!^!^!^").replaceAll("+", "~|~|~|~|")) + "&PhySigDate=" + JSON.stringify(result.SignedDate) + "&PhySigName=" + JSON.stringify(result.SignedPhyName) + "&FacAddress=" + encodeURIComponent(result.FacilityAddress);
+                $('#ctl00_C5POBody_EncounterContainer')[0].src = "frmPrintPDF.aspx?InterpretationNotes=PatientChart&IntNotes="+IntNotes+"&ResultMasterId=" + leaf[0].id.split('^')[2] + "&PhySigDate=" + JSON.stringify(result.SignedDate) + "&PhySigName=" + JSON.stringify(result.SignedPhyName) + "&FacAddress=" + encodeURIComponent(result.FacilityAddress);
             },
             error: function OnError(xhr) {
                 { sessionStorage.setItem('StartLoading', 'false'); StopLoadFromPatChart(); }

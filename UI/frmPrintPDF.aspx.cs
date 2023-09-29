@@ -16,6 +16,7 @@ using System.Net;
 using System.Xml;
 using Acurus.Capella.Core.DomainObjects;
 using System.Collections.Generic;
+using Acurus.Capella.DataAccess.ManagerObjects;
 
 namespace Acurus.Capella.UI
 {
@@ -515,7 +516,9 @@ namespace Acurus.Capella.UI
 
                     btnprint.Visible = false;
                     btnSendfax.Visible = false;
-                    if (Request["IntNotes"] != null)
+                    //Cap - 1054
+                    //if (Request["IntNotes"] != null)
+                    if (Request["IntNotes"] !=null && Request["ResultMasterId"] != null)
                     {
                         string sPhysicianSignDate = string.Empty;
                         string sPhysicianSignName = string.Empty;
@@ -532,9 +535,21 @@ namespace Acurus.Capella.UI
                         {
                             sFacAddress = Request["FacAddress"].ToString();
                         }
+                        //Cap - 1054
+                        ResultMasterManager objResMasMngr = new ResultMasterManager();
+                        IList<ResultMaster> lstresultmaster = new List<ResultMaster>();
+                        string sResultReviewComments = string.Empty;
+                        lstresultmaster = objResMasMngr.GetResultMasterListByResultmasterIDForMRE(Convert.ToUInt64(Request["ResultMasterId"]));
+
+                        if (lstresultmaster.Count() > 0)
+                        {
+                            sResultReviewComments = lstresultmaster[0].Result_Review_Comments;
+                        }
                         //Cap - 878
-                       // PrintInterpretationNotesPDF(Request["IntNotes"].ToString().Replace("\"", ""), sPhysicianSignDate.Replace("\"", ""), sPhysicianSignName.Replace("\"", ""), sFacAddress.Replace("\"", "").Replace("\\r\\n", "\r\n"));
-                        PrintInterpretationNotesPDF(Request["IntNotes"].ToString().Replace("$|$|$|$|", "&").Replace("!^!^!^!^", "#").Replace("~|~|~|~|", "+").Replace("\"", ""), sPhysicianSignDate.Replace("\"", ""), sPhysicianSignName.Replace("\"", ""), sFacAddress.Replace("\"", "").Replace("\\r\\n","\r\n"));
+                        // PrintInterpretationNotesPDF(Request["IntNotes"].ToString().Replace("\"", ""), sPhysicianSignDate.Replace("\"", ""), sPhysicianSignName.Replace("\"", ""), sFacAddress.Replace("\"", "").Replace("\\r\\n", "\r\n"));
+                        //Cap - 1054
+                        //PrintInterpretationNotesPDF(Request["IntNotes"].ToString().Replace("$|$|$|$|", "&").Replace("!^!^!^!^", "#").Replace("~|~|~|~|", "+").Replace("\"", ""), sPhysicianSignDate.Replace("\"", ""), sPhysicianSignName.Replace("\"", ""), sFacAddress.Replace("\"", "").Replace("\\r\\n","\r\n"));
+                        PrintInterpretationNotesPDF(sResultReviewComments.ToString().Replace("<br/>", "").Replace("$|$|$|$|", "&").Replace("!^!^!^!^", "#").Replace("~|~|~|~|", "+").Replace("\"", ""), sPhysicianSignDate.Replace("\"", ""), sPhysicianSignName.Replace("\"", ""), sFacAddress.Replace("\"", "").Replace("\\r\\n", "\r\n"));
                     }
                 }
                 RadTabStrip2.Enabled = true;
