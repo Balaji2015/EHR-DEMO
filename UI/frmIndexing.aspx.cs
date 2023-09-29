@@ -1143,6 +1143,8 @@ namespace Acurus.Capella.UI
             }
             else
             {
+                //Cap - 1121
+                chkReviewandSign.Checked = false;
                 HideOrders();
 
             }

@@ -598,7 +598,6 @@ function OpenResultInterpretation() {
     var sPath = "frmResultInterpretation.aspx";
     $.ajax({
         type: "POST",
-        async: true,
         url: "frmResultInterpretation.aspx/LoadInterpretation",
         data: JSON.stringify({
             "HumanText": PatientInformation,
