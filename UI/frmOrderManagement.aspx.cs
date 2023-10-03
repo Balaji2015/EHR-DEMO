@@ -166,6 +166,8 @@ namespace Acurus.Capella.UI
                 {
                     cboOrderType.Items.Add(new RadComboBoxItem(sOrderList[j]));
                 }
+                // Cap - 1136
+                cboOrderType.Text = "DIAGNOSTIC ORDER";
             }
         }
 
