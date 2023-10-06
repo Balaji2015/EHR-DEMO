@@ -1189,9 +1189,22 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
                         if (resultNTEList[i].Comment_Type == "ASR Comments")
                         {
                             string ObrId = resultNTEList[i].Result_OBR_ID.ToString();
-                            resultNTEList[i].Result_OBR_ID = obrInsertList.Where(a => a.temp_property == ObrId).Select(a => a.Id).ToList<ulong>()[0]; // obrInsertList[ObrId].Id;
+                            //Jira CAP-1116
+                            if (obrInsertList.Count > 0)
+                            {
+
+                                //resultNTEList[i].Result_OBR_ID = obrInsertList.Where(a => a.temp_property == ObrId).Select(a => a.Id).ToList<ulong>()[0]; // obrInsertList[ObrId].Id;
+                                List<ulong> obrInsertListtemp = obrInsertList.Where(a => a.temp_property == ObrId).Select(a => a.Id).ToList<ulong>();
+                                if (obrInsertListtemp.Count > 0) { resultNTEList[i].Result_OBR_ID = obrInsertListtemp[0]; }
+                            }
                             string ObxId = resultNTEList[i].Result_OBX_ID.ToString();
-                            resultNTEList[i].Result_OBX_ID = obxInsertList.Where(a => a.temp_property == ObxId).Select(a => a.Id).ToList<ulong>()[0]; // obxInsertList[ObxId].Id;
+                            //Jira CAP-1116
+                            if (obxInsertList.Count > 0)
+                            {
+                                //resultNTEList[i].Result_OBX_ID = obxInsertList.Where(a => a.temp_property == ObxId).Select(a => a.Id).ToList<ulong>()[0]; // obxInsertList[ObxId].Id;
+                                List<ulong> obxInsertListtemp = obxInsertList.Where(a => a.temp_property == ObxId).Select(a => a.Id).ToList<ulong>();
+                                if (obxInsertListtemp.Count > 0) { resultNTEList[i].Result_OBX_ID = obxInsertListtemp[0]; }
+                            }
                         }
                         nteInsertList.Add(resultNTEList[i]);
                     }
