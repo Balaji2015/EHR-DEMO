@@ -7400,7 +7400,9 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
             using (ISession iMySession = NHibernateSessionManager.Instance.CreateISession())
             {
                 ISQLQuery sql;
-                sql = iMySession.CreateSQLQuery("select o.Order_ID,o.Order_Submit_ID,o.Lab_Procedure,o.Lab_Procedure_Description,os.Lab_ID,CAST(os.Specimen_Collection_Date_And_Time as CHAR(30)),o.Physician_ID,CAST(o.Created_Date_And_Time as CHAR(30)),o.Order_Code_Type,os.Encounter_ID from orders o,wf_object wf,orders_submit os where o.human_id=" + Human_id + " and o.Order_Submit_ID=wf.obj_system_id and wf.Current_process='" + CurrentProcess + "' and o.order_submit_id = os.order_submit_id and wf.obj_type ='" + ObjectType + "' ORDER BY o.Created_Date_And_Time ASC");//.AddEntity("o", typeof(Orders));//.AddEntity("wf", typeof(WFObject)).AddEntity("os", typeof(OrdersSubmit));
+                //CAP-1153
+                //sql = iMySession.CreateSQLQuery("select o.Order_ID,o.Order_Submit_ID,o.Lab_Procedure,o.Lab_Procedure_Description,os.Lab_ID,CAST(os.Specimen_Collection_Date_And_Time as CHAR(30)),o.Physician_ID,CAST(o.Created_Date_And_Time as CHAR(30)),o.Order_Code_Type,os.Encounter_ID from orders o,wf_object wf,orders_submit os where o.human_id=" + Human_id + " and o.Order_Submit_ID=wf.obj_system_id and wf.Current_process='" + CurrentProcess + "' and o.order_submit_id = os.order_submit_id and wf.obj_type ='" + ObjectType + "' ORDER BY o.Created_Date_And_Time ASC");//.AddEntity("o", typeof(Orders));//.AddEntity("wf", typeof(WFObject)).AddEntity("os", typeof(OrdersSubmit));
+                sql = iMySession.CreateSQLQuery("select o.Order_ID,o.Order_Submit_ID,o.Lab_Procedure,o.Lab_Procedure_Description,os.Lab_ID,CAST(os.Specimen_Collection_Date_And_Time as CHAR(30)),o.Physician_ID,CAST(o.Created_Date_And_Time as CHAR(30)),o.Order_Code_Type,os.Encounter_ID,l.Lab_Name from orders o,wf_object wf,orders_submit os, lab l where o.human_id=" + Human_id + " and o.Order_Submit_ID=wf.obj_system_id and wf.Current_process='" + CurrentProcess + "' and o.order_submit_id = os.order_submit_id and wf.obj_type ='" + ObjectType + "' and os.Lab_ID=l.Lab_ID ORDER BY o.Created_Date_And_Time ASC");//.AddEntity("o", typeof(Orders));//.AddEntity("wf", typeof(WFObject)).AddEntity("os", typeof(OrdersSubmit));
 
                 ArrayList arrList = new ArrayList(sql.List());
                 for (int i = 0; i < arrList.Count; i++)
@@ -7417,6 +7419,8 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
                     lstCurrentRecord.Created_Date_And_Time = Convert.ToDateTime(oj[7]);
                     lstCurrentRecord.Order_Code_Type = Convert.ToString(oj[8]);
                     lstCurrentRecord.Encounter_ID = Convert.ToUInt64(oj[9]);
+                    //CAP-1153
+                    lstCurrentRecord.Internal_Property_Lab_Name= Convert.ToString(oj[10]);
                     lstcriteriaByOrderSubmitID.Add(lstCurrentRecord);
                 }
 
