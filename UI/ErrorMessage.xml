@@ -74,7 +74,7 @@
 	<Message number="110003" Type="OK" Text="Please select the Physician."></Message>
 	<Message number="110004" Type="OK" Text="Please select the Patient."></Message>
 	<Message number="110005" Type="OK" Text="Please select the Appointment Date."></Message>
-	<Message number="110006" Type="OK" Text="Please select the Purpose of Visit."></Message>
+	<Message number="110006" Type="OK" Text="Please select the Type of Visit."></Message>
 	<Message number="110007" Type="OK" Text="Please select the Duration."></Message>
 	<Message number="110008" Type="ToolStrip" Text="Encounter created successfully."></Message>
 	<Message number="110009" Type="ToolStrip" Text="Encounter Chief Complaint(s) updated successfully."></Message>
