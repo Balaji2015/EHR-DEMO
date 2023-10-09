@@ -437,6 +437,12 @@ namespace Acurus.Capella.UI
 
             }
 
+            //CAP-923
+            if (Request["sScreenMode"] == "CheckedIn")
+            {
+                this.Page.Title = "Check In" + " - " + ClientSession.UserName;
+            }
+
             if (Button1.Visible == true)
             {
                 if (ClientSession.UserPermissionDTO != null && ClientSession.UserPermissionDTO.Scntab != null)
