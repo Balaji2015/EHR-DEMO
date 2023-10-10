@@ -48,13 +48,14 @@ function EnableSave() {
 function OpenPDFStatic(fileNotFound, screen, DownloadDoc, FaxSubject) {
     if (FaxSubject != "")
         localStorage['FaxSubject1'] = JSON.stringify(FaxSubject);
-    if (document.getElementById('hdnSelectedItem').value != "") {
-        var obj = new Array();
-        obj.push("SI=" + document.getElementById('hdnSelectedItem').value);
-        obj.push("Location=" + "STATIC");
+        //Jira CAP-1011
+    //if (document.getElementById('hdnSelectedItem').value != "") {
+    //    var obj = new Array();
+    //    obj.push("SI=" + document.getElementById('hdnSelectedItem').value);
+    //    obj.push("Location=" + "STATIC");
 
-        setTimeout(function () { GetRadWindow().BrowserWindow.openModal('frmPrintPDF.aspx', 800, 1000, obj); }, 0);
-    }
+    //    setTimeout(function () { GetRadWindow().BrowserWindow.openModal('frmPrintPDF.aspx', 800, 1000, obj); }, 0);
+    //}
     if (screen != null && screen != "") {
         openProgress(screen);
     }
@@ -1719,7 +1720,9 @@ function OpenPDF_PrintDocument(fileNotFound, screen, project, summary, FaxSubjec
         function () {
             var oWnd = GetRadWindow();
             var childWindow = oWnd.BrowserWindow.radopen("frmPrintPDF.aspx?SI=" + document.getElementById('hdnSelectedItem').value + "&Location=STATIC", "RadWindow2");
-            SetRadWindowProperties(childWindow, 720, 750);
+            //Jira CAP-1011
+            //SetRadWindowProperties(childWindow, 720, 750);
+            SetRadWindowProperties(childWindow, 800, 1000);
             childWindow.add_close(EnableSave);
         }, 0);
     if (screen != null) {
