@@ -4767,6 +4767,8 @@ namespace Acurus.Capella.UI
                     objpatientnotes.Created_Date_And_Time = UtilityManager.ConvertToUniversal();
                     objpatientnotes.Message_Description = ddlMessageDescription.SelectedItem.Text;
                     objpatientnotes.Message_Date_And_Time = UtilityManager.ConvertToUniversal();
+                    //CAP-1125
+                    objpatientnotes.Is_PatientChart = "N";
 
                     WFObject objWf = new WFObject();
                     objWf.Current_Process = "START";

@@ -3007,14 +3007,22 @@ namespace Acurus.Capella.PatientPortal
             }
             if (xmldoc.GetElementsByTagName("maritalStatusCode")[0] != null)
             {
-                try
+                //CAP-930 - comment try catch and check the codition
+                //try
+                //{
+                if (xmldoc.GetElementsByTagName("maritalStatusCode") != null && xmldoc.GetElementsByTagName("maritalStatusCode").Count > 0 && xmldoc.GetElementsByTagName("maritalStatusCode")[0] != null && xmldoc.GetElementsByTagName("maritalStatusCode")[0].Attributes.GetNamedItem("displayName") != null)
                 {
                     martialCode = xmldoc.GetElementsByTagName("maritalStatusCode")[0].Attributes.GetNamedItem("displayName").Value;
                 }
-                catch
+                else
                 {
                     martialCode = "";
                 }
+                //}
+                //catch
+                //{
+                //    martialCode = "";
+                //}
             }
             if (pat_Race == "")
                 pat_Race = "UNKNOWN";

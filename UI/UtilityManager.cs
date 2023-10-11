@@ -362,8 +362,9 @@ namespace Acurus.Capella.UI
                             offset -= 1;
                     }
                 }
-
-                if (inputDateTime.ToString() != "01-01-0001 12:00:00 AM")
+                //Jira CAP-1185
+                //if (inputDateTime.ToString() != "01-01-0001 12:00:00 AM")
+                if (inputDateTime.ToString() != "01-01-0001 12:00:00 AM" && inputDateTime.ToString() != "1/1/0001 12:00:00 AM")
                 {
                     if (Hours.Length != 0 && Hours.Length == 2)
                     {
