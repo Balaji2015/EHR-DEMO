@@ -1619,7 +1619,10 @@ namespace Acurus.Capella.UI
 
             string jsonIncompleteProblemList = new JavaScriptSerializer().Serialize(sIncompleteList);
 
-            string jsonIsAssessmentRAFUpdate = new JavaScriptSerializer().Serialize(System.Configuration.ConfigurationSettings.AppSettings["Is_AssessmentRAFUpdate"]);
+            //Jira CAP-1183
+            //string jsonIsAssessmentRAFUpdate = new JavaScriptSerializer().Serialize(System.Configuration.ConfigurationSettings.AppSettings["Is_AssessmentRAFUpdate"]);
+
+            string jsonIsAssessmentRAFUpdate = new JavaScriptSerializer().Serialize(System.Configuration.ConfigurationSettings.AppSettings["Is_AssessmentRAFUpdate_" + ClientSession.LegalOrg]);
 
             string jsons = "{\"AssessmentList\" :" + json + "," + "\"ProblemList\" :" + jsonArray + "," + "\"InCompleteProblemList\" :" + jsonIncompleteProblemList + "," + "\"IsAssessmentRAFUpdate\" :" + jsonIsAssessmentRAFUpdate +
                              "}";
