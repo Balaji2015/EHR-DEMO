@@ -252,7 +252,7 @@
                                                 </asp:DropDownList>
                                             </td>
                                             <td style="padding-bottom:5px;"> 
-                                                <asp:Label ID="lblCellPhno" CssClass="Editabletxtbox" runat="server" Text="Cell Ph#" style="margin-left:30%" Width="72px"></asp:Label>
+                                                <span class="MandLabelstyle" style="margin-left:30%">Cell Ph#</span><span class="manredforstar">*</span>                                    
                                             </td>
                                             <td style="padding-bottom:5px;">
                                                 <telerik:RadMaskedTextBox ID="msktxtCellPhno" runat="server" onkeypress="AutoSave(this);"

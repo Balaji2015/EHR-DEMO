@@ -730,6 +730,17 @@ function ValidatePatientInformation() {
             { sessionStorage.setItem('StartLoading', 'false'); StopLoadFromPatChart(); }
             return false;
         }
+        //CAP-991
+        if (document.getElementById("msktxtCellPhno").value == "(___) ___-____") {
+
+            DisplayErrorMessage('380031');
+            window.setTimeout(function () {
+                document.getElementById('msktxtCellPhno').focus();
+            }, 0);
+            document.getElementById("hdnValidation").value = "false";
+            { sessionStorage.setItem('StartLoading', 'false'); StopLoadFromPatChart(); }
+            return false;
+        }
         if (document.getElementById("msktxtCellPhno").value.length != 0 && PhNoValid("msktxtCellPhno") == false && document.getElementById("msktxtCellPhno").value != "(___) ___-____" && document.getElementById("msktxtCellPhno").RadInputValidationValue.length < 14) {
 
             DisplayErrorMessage('380031');
