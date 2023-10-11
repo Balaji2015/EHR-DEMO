@@ -29,6 +29,20 @@ namespace Acurus.Capella.UI
         }
         protected void Page_Load(object sender, EventArgs e)
         {
+            //Jira CAP-953
+            if (ClientSession.UserPermissionDTO != null && ClientSession.UserPermissionDTO.Userscntab != null)
+            {
+                var MyuserScnTab = from c in ClientSession.UserPermissionDTO.Userscntab where c.scn_id == Convert.ToUInt64("101131") && c.user_name == ClientSession.UserName select c;
+
+                if (MyuserScnTab != null && MyuserScnTab.ToList<user_scn_tab>().Count > 0)
+                {
+                    ScriptManager.RegisterStartupScript(this, this.Page.GetType(), "MyQueue", "{sessionStorage.setItem('IsAkidoPhysician', 'YES');}", true);
+                }
+                else
+                {
+                    ScriptManager.RegisterStartupScript(this, this.Page.GetType(), "MyQueue", "{sessionStorage.setItem('IsAkidoPhysician', 'NO');}", true);
+                }
+            }
 
             if (Request.Cookies["Human_Details"] != null)
             {

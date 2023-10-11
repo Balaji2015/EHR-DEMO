@@ -23,7 +23,52 @@ namespace Acurus.Capella.UI
             XmlDocument itemDoc = new XmlDocument();
             //XmlNodeList xmlTagName = null;
 
-            if (ClientSession.HumanId != 0)
+            //Jira CAP-953 - start
+            ulong ulHumanID = 0;
+            ulong ulEncounterID = 0;
+            ulong ulPhysicanID = 0;
+            DateTime Date_of_Service = DateTime.MinValue;
+            if (Request["HumanID"] != null)
+            {
+                ulHumanID = Convert.ToUInt64(Request["HumanID"]);
+            }
+            else if (ClientSession.HumanId != 0)
+            {
+                ulHumanID = ClientSession.HumanId;
+            }
+
+            if (Request["EncounterID"] != null)
+            {
+                ulEncounterID = Convert.ToUInt64(Request["EncounterID"]);
+            }
+            else if (ClientSession.EncounterId != 0)
+            {
+                ulEncounterID = ClientSession.EncounterId;
+            }
+
+
+            if (Request["PhysicianID"] != null)
+            {
+                ulPhysicanID = Convert.ToUInt64(Request["PhysicianID"]);
+            }
+            else if (ClientSession.PhysicianId != 0)
+            {
+                ulPhysicanID = ClientSession.PhysicianId;
+            }
+
+            if (Request["DOS"] != null)
+            {
+                Date_of_Service = Convert.ToDateTime(Request["DOS"]);
+            }
+            else if (ClientSession.FillEncounterandWFObject.EncRecord.Date_of_Service != DateTime.MinValue)
+            {
+                Date_of_Service = ClientSession.FillEncounterandWFObject.EncRecord.Date_of_Service;
+            }
+            //Jira CAP-953 - end
+
+            //Jira CAP-953
+            //if (ClientSession.HumanId != 0)
+            if (ulHumanID != 0)
             {
                 IList<string> ilstHumanTag = new List<string>();
                 ilstHumanTag.Add("HumanList");
@@ -31,7 +76,9 @@ namespace Acurus.Capella.UI
                 try
                 {
                     IList<object> ilstHumanBlobList = new List<object>();
-                    ilstHumanBlobList = UtilityManager.ReadBlob(ClientSession.HumanId, ilstHumanTag);
+                    //Jira CAP-953
+                    //ilstHumanBlobList = UtilityManager.ReadBlob(ClientSession.HumanId, ilstHumanTag);
+                    ilstHumanBlobList = UtilityManager.ReadBlob(ulHumanID, ilstHumanTag);
 
                     if (ilstHumanBlobList != null && ilstHumanBlobList.Count > 0)
                     {
@@ -48,7 +95,10 @@ namespace Acurus.Capella.UI
                 {
                     //XmlText.Close();
                     //Thread.Sleep(5000);
-                    UtilityManager.GenerateXML(ClientSession.HumanId.ToString(), "Human");
+
+                    //Jira CAP-953
+                    //UtilityManager.GenerateXML(ClientSession.HumanId.ToString(), "Human");
+                    UtilityManager.GenerateXML(ulHumanID.ToString(), "Human");
 
                     goto ln;
                 }
@@ -100,15 +150,17 @@ namespace Acurus.Capella.UI
                 //    }
             }
 
-                //To Get Physician Details
-                XmlDocument xmldoc1 = new XmlDocument();
+            //To Get Physician Details
+            XmlDocument xmldoc1 = new XmlDocument();
             string sPhyFirstName = string.Empty;
             string sPhyLastName = string.Empty;
             string strXmlFilePath1 = Path.Combine(System.Web.Hosting.HostingEnvironment.ApplicationPhysicalPath, "ConfigXML\\PhysicianAddressDetails.xml");
             if (File.Exists(strXmlFilePath1) == true)
             {
                 xmldoc1.Load(System.Web.Hosting.HostingEnvironment.ApplicationPhysicalPath + "ConfigXML\\" + "PhysicianAddressDetails" + ".xml");
-                XmlNode nodeMatchingPhysicianAddress = xmldoc1.SelectSingleNode("/PhysicianAddress/p" + ClientSession.PhysicianId);
+                //Jira CAP-953
+                //XmlNode nodeMatchingPhysicianAddress = xmldoc1.SelectSingleNode("/PhysicianAddress/p" + ClientSession.PhysicianId);
+                XmlNode nodeMatchingPhysicianAddress = xmldoc1.SelectSingleNode("/PhysicianAddress/p" + ulPhysicanID);
                 if (nodeMatchingPhysicianAddress != null)
                 {
                     sPhyFirstName = nodeMatchingPhysicianAddress.Attributes["Physician_First_Name"].Value.ToString();
@@ -118,8 +170,9 @@ namespace Acurus.Capella.UI
 
             var lstPatient = new
             {
-
-                id = "" + ClientSession.HumanId.ToString() + "",
+                //Jira CAP-953
+                //id = "" + ClientSession.HumanId.ToString() + "",
+                id = "" + ulHumanID.ToString() + "",
                 dob = objFillHuman.Birth_Date,
                 firstName = objFillHuman.First_Name,
                 lastName = objFillHuman.Last_Name,
@@ -128,16 +181,21 @@ namespace Acurus.Capella.UI
 
             var lstPhysician = new
             {
-                id = "" + ClientSession.PhysicianId + "",
+                //Jira CAP-953
+                //id = "" + ClientSession.PhysicianId + "",
+                id = "" + ulPhysicanID + "",
                 firstName = sPhyFirstName,
                 lastName = sPhyLastName,
             };
 
             var lstEncounter = new
             {
-
-                id = "" + ClientSession.EncounterId + "",
-                dateOfService = UtilityManager.ConvertToLocal(ClientSession.FillEncounterandWFObject.EncRecord.Date_of_Service).ToString("MM/dd/yyyy"),
+                //Jira CAP-953
+                //id = "" + ClientSession.EncounterId + "",
+                id = "" + ulEncounterID + "",
+                //Jira CAP-953
+                //dateOfService = UtilityManager.ConvertToLocal(ClientSession.FillEncounterandWFObject.EncRecord.Date_of_Service).ToString("MM/dd/yyyy"),
+                dateOfService = UtilityManager.ConvertToLocal(Date_of_Service).ToString("MM/dd/yyyy"),
             };
 
             var lstFinalResult = new
@@ -169,7 +227,7 @@ namespace Acurus.Capella.UI
                 }
                 plBarCode.Controls.Add(imgBarCode);
             }
-
+            ScriptManager.RegisterStartupScript(this, this.Page.GetType(), "QRCodeGenerator", "{sessionStorage.setItem('StartLoading', 'false');StopLoadFromPatChart();}", true);
         }
     }
 }
