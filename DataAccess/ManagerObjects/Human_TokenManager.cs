@@ -54,7 +54,9 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
 
                 if (sPriCarrier == string.Empty)
                 {
-                    Result = ListToInsertHuman[0].Last_Name + "," + ListToInsertHuman[0].First_Name + " " + ListToInsertHuman[0].MI
+                    //Jira CAP-1151
+                    //Result = ListToInsertHuman[0].Last_Name + "," + ListToInsertHuman[0].First_Name + " " + ListToInsertHuman[0].MI
+                    Result = ListToInsertHuman[0].Last_Name + ", " + ListToInsertHuman[0].First_Name + " " + ListToInsertHuman[0].MI
                               + " | DOB: " + ListToInsertHuman[0].Birth_Date.ToString("dd-MMM-yyyy")
                               + " | " + ListToInsertHuman[0].Sex
                               + " | ACC#: " + ListToInsertHuman[0].Id.ToString()
@@ -67,7 +69,9 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
                 }
                 else
                 {
-                    Result = ListToInsertHuman[0].Last_Name + "," + ListToInsertHuman[0].First_Name + " " + ListToInsertHuman[0].MI
+                    //Jira CAP-1151
+                    //Result = ListToInsertHuman[0].Last_Name + "," + ListToInsertHuman[0].First_Name + " " + ListToInsertHuman[0].MI
+                    Result = ListToInsertHuman[0].Last_Name + ", " + ListToInsertHuman[0].First_Name + " " + ListToInsertHuman[0].MI
                               + " | DOB: " + ListToInsertHuman[0].Birth_Date.ToString("dd-MMM-yyyy")
                               + " | " + ListToInsertHuman[0].Sex
                               + " | ACC#: " + ListToInsertHuman[0].Id.ToString()
@@ -220,7 +224,9 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
 
                     if (sPriCarrier == string.Empty)
                     {
-                        Result = ListToUpdateHuman[0].Last_Name + "," + ListToUpdateHuman[0].First_Name + " " + ListToUpdateHuman[0].MI
+                        //Jira CAP-1151
+                        //Result = ListToUpdateHuman[0].Last_Name + "," + ListToUpdateHuman[0].First_Name + " " + ListToUpdateHuman[0].MI
+                        Result = ListToUpdateHuman[0].Last_Name + ", " + ListToUpdateHuman[0].First_Name + " " + ListToUpdateHuman[0].MI
                                       + " | DOB: " + ListToUpdateHuman[0].Birth_Date.ToString("dd-MMM-yyyy")
                                       + " | " + ListToUpdateHuman[0].Sex
                                       + " | ACC#: " + ListToUpdateHuman[0].Id.ToString()
@@ -233,7 +239,9 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
                     }
                     else
                     {
-                        Result = ListToUpdateHuman[0].Last_Name + "," + ListToUpdateHuman[0].First_Name + " " + ListToUpdateHuman[0].MI
+                        //Jira CAP-1151
+                        //Result = ListToUpdateHuman[0].Last_Name + "," + ListToUpdateHuman[0].First_Name + " " + ListToUpdateHuman[0].MI
+                        Result = ListToUpdateHuman[0].Last_Name + ", " + ListToUpdateHuman[0].First_Name + " " + ListToUpdateHuman[0].MI
                                       + " | DOB: " + ListToUpdateHuman[0].Birth_Date.ToString("dd-MMM-yyyy")
                                       + " | " + ListToUpdateHuman[0].Sex
                                       + " | ACC#: " + ListToUpdateHuman[0].Id.ToString()
@@ -265,7 +273,9 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
 
                         if (sPriCarrier == string.Empty)
                         {
-                            Result = ListToUpdateHuman[0].Last_Name + "," + ListToUpdateHuman[0].First_Name + " " + ListToUpdateHuman[0].MI
+                            //Jira CAP-1151
+                            //Result = ListToUpdateHuman[0].Last_Name + "," + ListToUpdateHuman[0].First_Name + " " + ListToUpdateHuman[0].MI
+                            Result = ListToUpdateHuman[0].Last_Name + ", " + ListToUpdateHuman[0].First_Name + " " + ListToUpdateHuman[0].MI
                                           + " | DOB: " + ListToUpdateHuman[0].Birth_Date.ToString("dd-MMM-yyyy")
                                           + " | " + ListToUpdateHuman[0].Sex
                                           + " | ACC#: " + ListToUpdateHuman[0].Id.ToString()
@@ -278,7 +288,9 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
                         }
                         else
                         {
-                            Result = ListToUpdateHuman[0].Last_Name + "," + ListToUpdateHuman[0].First_Name + " " + ListToUpdateHuman[0].MI
+                            //Jira CAP-1151
+                            //Result = ListToUpdateHuman[0].Last_Name + "," + ListToUpdateHuman[0].First_Name + " " + ListToUpdateHuman[0].MI
+                            Result = ListToUpdateHuman[0].Last_Name + ", " + ListToUpdateHuman[0].First_Name + " " + ListToUpdateHuman[0].MI
                                           + " | DOB: " + ListToUpdateHuman[0].Birth_Date.ToString("dd-MMM-yyyy")
                                           + " | " + ListToUpdateHuman[0].Sex
                                           + " | ACC#: " + ListToUpdateHuman[0].Id.ToString()
