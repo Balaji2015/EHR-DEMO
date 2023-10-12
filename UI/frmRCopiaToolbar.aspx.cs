@@ -1908,7 +1908,9 @@ namespace Acurus.Capella.UI
                 return "Session Expired";
             }
 
-            string RAFxmlPath = Path.Combine(System.Configuration.ConfigurationManager.AppSettings["RAF_XMLPath"].ToString(), System.Configuration.ConfigurationManager.AppSettings["ProjectName"].ToString());
+            //Jira CAP-1183
+            //string RAFxmlPath = Path.Combine(System.Configuration.ConfigurationManager.AppSettings["RAF_XMLPath"].ToString(), System.Configuration.ConfigurationManager.AppSettings["ProjectName"].ToString());
+            string RAFxmlPath = Path.Combine(System.Configuration.ConfigurationManager.AppSettings["RAF_XMLPath"].ToString(), ClientSession.LegalOrg.ToString());
             string FileName = "RAF" + "_" + ClientSession.HumanId + ".xml";
             string strXmlFilePath = Path.Combine(RAFxmlPath, FileName);
             string RAFscore = "";
