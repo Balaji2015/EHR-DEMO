@@ -680,7 +680,7 @@ function ValidatePatientInformation() {
     var dtLocal = new Date();
     document.getElementById("hdnPCTime").value = dtLocal.toLocaleDateString();
     document.getElementById("hdnValidation").value = "true";
-    if (document.getElementById("txtPatientLastName").readOnly == false) {
+    //if (document.getElementById("txtPatientLastName").readOnly == false) {
         if (document.getElementById("txtPatientLastName").value.length == 0) {
 
             DisplayErrorMessage('380010');
@@ -839,7 +839,7 @@ function ValidatePatientInformation() {
             { sessionStorage.setItem('StartLoading', 'false'); StopLoadFromPatChart(); }
             return false;
         }
-    }
+    //}
 
     if (document.getElementById("gbEligibilityVerification") != null && document.getElementById("chkEligibilityVerified").checked == true) {
         if (document.getElementById("ddlPayerName").value.length == 0) {

@@ -207,7 +207,7 @@
    
     <link href="CSS/font-awesome.min4.7.0.css" rel="stylesheet" />
       <%--CAP-413: Restrict the Capella EHR access in multiple tabs --%>
-    <script src="JScripts/JsRestrictMultipleTab.js?version=<%=ConfigurationManager.AppSettings["VersionConfiguration"].ToString().Replace("Capella - ","") %>" type="text/javascript"></script>
+    <%--<script src="JScripts/JsRestrictMultipleTab.js?version=<%=ConfigurationManager.AppSettings["VersionConfiguration"].ToString().Replace("Capella - ","") %>" type="text/javascript"></script>--%>
 </head>
 <body>
     <script id="ze-snippet" src="https://static.zdassets.com/ekr/snippet.js?key=115b8368-0fd6-4f41-bd95-8c6eddfd7ba7"> </script>
