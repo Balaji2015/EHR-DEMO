@@ -535,6 +535,7 @@ function setRadWindowProperties(childWindow, height, width) {
 
 
 function OpenResultInterpretation() {
+    { sessionStorage.setItem('StartLoading', 'true'); StartLoadFromPatChart(); }
     //var obj = new Array();
     //obj.push("HumanText=" + document.getElementById('txtPatientInformation').value.split("#").join("%23"));
     //obj.push("FileText=" + document.getElementById('txtFileInformation').value.split("#").join("%23"));
@@ -548,21 +549,21 @@ function OpenResultInterpretation() {
     //WindowName.set_behaviors(Telerik.Web.UI.WindowBehaviors.Close + Telerik.Web.UI.WindowBehaviors.Move);
     //WindowName.add_close(FillProviderNotes);
     //return false;
-    var notes = '';
+    var notes1 = '';
     var ProvNoteshistory = document.getElementById('DLC_txtDLC').value;
     if (ProvNoteshistory != '') {
         //Cap - 747
         //notes = ProvNoteshistory;
         //Cap - 1076
         ProvNoteshistory = ProvNoteshistory + document.getElementById("txtProvNoteshistory").attributes[5].value;
-        notes = ProvNoteshistory.replaceAll("<br/>", "").replaceAll("&", "$|$|$|$|").replaceAll("#", "!^!^!^!^").replaceAll("+", "~|~|~|~|");
+        notes1 = ProvNoteshistory.replaceAll("<br/>", "").replaceAll("&", "$|$|$|$|").replaceAll("#", "!^!^!^!^").replaceAll("+", "~|~|~|~|");
     }
     else {
         //notes = document.getElementById("txtProvNoteshistory").value;
 
         // Cap - 747
         //notes = document.getElementById("txtProvNoteshistory").attributes[5].value.replaceAll("<br/>", "")
-        notes = document.getElementById("txtProvNoteshistory").attributes[5].value.replaceAll("<br/>", "").replaceAll("&", "$|$|$|$|").replaceAll("#", "!^!^!^!^").replaceAll("+", "~|~|~|~|");
+        notes1 = document.getElementById("txtProvNoteshistory").attributes[5].value.replaceAll("<br/>", "").replaceAll("&", "$|$|$|$|").replaceAll("#", "!^!^!^!^").replaceAll("+", "~|~|~|~|");
 
     }
     let MoveButtonVisible;
@@ -594,27 +595,60 @@ function OpenResultInterpretation() {
     $(top.window.document).find("#TabmdldlgResultInterpretations")[0].style.height = "875px";
     //Cap - 1054
     //var sPath = "frmResultInterpretation.aspx?HumanText=" + PatientInformation + "&FileText=" + document.getElementById('txtFileInformation').value.split("#").join("%23") + "&DocumentSubType=" + document.getElementById(GetClientId('hdnSubDocumentType')).value + "&ProviderNotes=" + JSON.stringify(notes) + "&ProviderNotesHistory=" + JSON.stringify(document.getElementById("txtProvNoteshistory").value) + "&CurrentProcess=" + document.getElementById("hdncurrentProcess").value + "&CheckVisible=" + MoveButtonVisible; //+ "&ResultMasterID=" + document.getElementById(GetClientId('ResultMasterID')).value;
-    // var sPath = "frmResultInterpretation.aspx?HumanText=" + PatientInformation + "&FileText=" + document.getElementById('txtFileInformation').value.split("#").join("%23") + "&DocumentSubType=" + document.getElementById(GetClientId('hdnSubDocumentType')).value + "&ProviderNotes=" + JSON.stringify(notes) + "&CurrentProcess=" + document.getElementById("hdncurrentProcess").value + "&CheckVisible=" + MoveButtonVisible;
-    var sPath = "frmResultInterpretation.aspx";
-    $.ajax({
-        type: "POST",
-        url: "frmResultInterpretation.aspx/LoadInterpretation",
-        data: JSON.stringify({
-            "HumanText": PatientInformation,
-            "FileText": document.getElementById('txtFileInformation').value.split("#").join("%23"),
-            "DocumentSubType": document.getElementById(GetClientId('hdnSubDocumentType')).value,
-            "ProviderNotes": notes,
-            "ResultMasterID": document.getElementById(GetClientId('ResultMasterID')).value,
-            "CheckVisible": MoveButtonVisible
-        }),
-        contentType: "application/json; charset=utf-8",
-        dataType: "json",
-        success: function (data) {
+    //Cap - 1184
+    var sPath = "frmResultInterpretation.aspx?HumanText=" + PatientInformation + "&FileText=" + document.getElementById('txtFileInformation').value.split("#").join("%23") + "&DocumentSubType=" + document.getElementById(GetClientId('hdnSubDocumentType')).value + "&CurrentProcess=" + document.getElementById("hdncurrentProcess").value + "&CheckVisible=" + MoveButtonVisible;
+    //var sPath = "frmResultInterpretation.aspx";
+    //$.ajax({
+    //    type: "POST",
+    //    url: "frmResultInterpretation.aspx/LoadInterpretation",
+    //    data: JSON.stringify({
+    //        "HumanText": PatientInformation,
+    //        "FileText": document.getElementById('txtFileInformation').value.split("#").join("%23"),
+    //        "DocumentSubType": document.getElementById(GetClientId('hdnSubDocumentType')).value,
+    //        "ProviderNotes": notes,
+    //        "ResultMasterID": document.getElementById(GetClientId('ResultMasterID')).value,
+    //        "CheckVisible": MoveButtonVisible
+    //    }),
+    //    contentType: "application/json; charset=utf-8",
+    //    dataType: "json",
+    //    success: function (data) {
 
-        },
-    })
+    //    },
+    //})
     $(top.window.document).find("#TabResultInterpretationsFrame")[0].style.height = "635px";
     $(top.window.document).find("#TabResultInterpretationsFrame")[0].contentDocument.location.href = sPath;
+    $(top.window.document).find("#TabResultInterpretationsFrame")[0].addEventListener("load", function () {
+
+        var iFrameWindow = $(top.window.document).find("#TabResultInterpretationsFrame")[0]?.contentWindow?.document;
+        if (iFrameWindow != undefined && iFrameWindow != null) {
+            if (iFrameWindow.getElementById("hdnPostback").value == "False") {
+                iFrameWindow.getElementById("hdnProviderNotes").value = notes1;
+                $.ajax({
+                    type: "POST",
+                    url: "frmResultInterpretation.aspx/LoadInterpretationNotes",
+                    async: false,
+                    data: JSON.stringify({
+                        "ProviderNotes": notes1,
+                    }),
+                    contentType: "application/json; charset=utf-8",
+                    dataType: "json",
+                    success: function (data) {
+                        if (data != undefined && data != '') {
+                            if (isValidJSON(data.d)) {
+                                var Noteselect = JSON.parse(data.d);
+                                if (Noteselect?.DLLText != undefined && Noteselect?.DLLText != null) {
+                                    iFrameWindow.getElementById("ddlTemplate").value = Noteselect.DLLText;
+                                }
+                                if (Noteselect?.TxtNotes != undefined && Noteselect?.TxtNotes != null) {
+                                    iFrameWindow.getElementById("txtSummary").value = Noteselect.TxtNotes;
+                                }
+                            }
+                        }
+                    },
+                });
+            }
+        }
+    });
 
     //Cap - 686
     let bRepeat = false;
@@ -728,13 +762,14 @@ function OpenResultInterpretation() {
                 document.getElementById('hdnNewProviderhistoryattribute').value = NewProviderhistoryattribute;
 
                 document.getElementById("hdnSetvalue").click();
-                { sessionStorage.setItem('StartLoading', 'true'); StartLoadFromPatChart(); }
+                
             }
 
             //$(top.window.document).find("#TabResultInterpretations").modal({ backdrop: "", keyboard: false }, 'hide');
             //e.stopPropagation();
         }
     });
+    { sessionStorage.setItem('StartLoading', 'true'); StartLoadFromPatChart(); }
     return false;
 }
 

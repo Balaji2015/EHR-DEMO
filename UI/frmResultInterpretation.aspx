@@ -90,6 +90,10 @@
         <asp:HiddenField ID="hdnPatientType" runat="server" EnableViewState="false" />
         <asp:HiddenField ID="hdnFileName" runat="server" EnableViewState="false" />
         <asp:PlaceHolder ID="PlaceHolder1" runat="server">
+             <asp:HiddenField ID="hdnProviderNotes" runat="server" EnableViewState="false" />
+
+        <asp:HiddenField ID="hdnPostback" runat="server" EnableViewState="false" />
+
             <%--<script src="JScripts/jquery-1.11.3.min.js"></script>
             <script src="JScripts/jquery-ui.min1.10.2.js"></script>--%>
             <%--<script src="JScripts/bootstrap.min.js"></script>

@@ -29,13 +29,7 @@ namespace Acurus.Capella.UI
     {
         StaticLookupManager staticMngr = new StaticLookupManager();
         IList<StaticLookup> lstTestOrdered = null;
-        //Cap - 1054
-        static string sHumanText = string.Empty;
-        static string sFileText = string.Empty;
-        static string sDocumentSubType = string.Empty;
-        static string sProviderNotes = string.Empty;
-        static string sResultMasterID = string.Empty;
-        static string sCheckVisible = string.Empty;
+
         public Dictionary<string, string> Templatesource
         {
             get
@@ -47,49 +41,94 @@ namespace Acurus.Capella.UI
                 ViewState["Templatesource"] = value;
             }
         }
-        //Cap - 1054
-        [System.Web.Services.WebMethod(EnableSession = true)]
-        public static string LoadInterpretation(string HumanText, string FileText, string DocumentSubType, string ProviderNotes, string ResultMasterID,string CheckVisible)
-        {
-            sHumanText = HumanText;
-            sFileText = FileText;
-            sDocumentSubType = DocumentSubType;
-            sProviderNotes = ProviderNotes;
-            sResultMasterID = ResultMasterID;
-            sCheckVisible = CheckVisible;
+        //Cap - 1054 - Commented for - Cap - 1184
+        //[System.Web.Services.WebMethod(EnableSession = true)]
+        //public static string LoadInterpretation(string HumanText, string FileText, string DocumentSubType, string ProviderNotes, string ResultMasterID,string CheckVisible)
+        //{
+        //    string sHumanText = HumanText;
+        //    string sFileText = FileText;
+        //    string sDocumentSubType = DocumentSubType;
+        //    string sProviderNotes = ProviderNotes;
+        //    string sResultMasterID = ResultMasterID;
+        //    string sCheckVisible = CheckVisible;
 
-            return JsonConvert.SerializeObject("Success");
+        //    frmResultInterpretation NewFunction = new frmResultInterpretation();
+        //    NewFunction.StoreNotes(sHumanText, sFileText, sDocumentSubType, sProviderNotes, sResultMasterID, sCheckVisible);
+
+        //    return JsonConvert.SerializeObject("Success");
+        //}
+        //Cap - 1184
+        [System.Web.Services.WebMethod(EnableSession = true)]
+        public static string LoadInterpretationNotes(string ProviderNotes)
+        {
+            string NotesVal = ProviderNotes;
+            frmResultInterpretation NewFile = new frmResultInterpretation();
+            string currentItemNotes = string.Empty;
+            string ddlText = string.Empty;
+            if (NotesVal != null && NotesVal != "")
+            {
+                string[] sSeperator = new string[] { "Test Reviewed: " };
+
+                string[] sTemplate = NotesVal.ToString().Split(new string[] { "Test Reviewed: " }, StringSplitOptions.None);
+                if (sTemplate.Count() > 1)
+                {
+                    for (int i = 0; i < sTemplate.Length; i++)
+                    {
+                        if (sTemplate[i].Trim() != string.Empty && sTemplate[i].Contains(';'))
+                        {
+                            ListItem item = new ListItem();
+                            item.Text = sTemplate[i].Split(';')[0];
+                            ddlText = item.Text;
+                            string Notes = sTemplate[i].Split(';')[1].Replace("$|$|$|$|", "&").Replace("!^!^!^!^", "#").Replace("~|~|~|~|", "+").Replace("\\n", "\n").Replace("\\t", "\t").Replace("\\r", "\r").Replace("\"", "");
+
+                            currentItemNotes = Notes.TrimStart('\n');
+                            break;
+                        }
+                    }
+                }
+            }
+
+            var result = new
+            {
+                DLLText = ddlText,
+                TxtNotes = currentItemNotes,
+            };
+
+            return JsonConvert.SerializeObject(result);
         }
 
         protected void Page_Load(object sender, EventArgs e)
         {
+
             if (!IsPostBack)
             {
+                //Cap - 1184
+                hdnPostback.Value = "False";
                 //Cap - 1054
-                // if (Request["HumanText"] != null && Request["HumanText"] != "")
-                if (sHumanText != null && sHumanText != "")
+                if (Request["HumanText"] != null && Request["HumanText"] != "")
+                // if (sHumanText != null && sHumanText != "")
                 {
-                    //txtPatientInformation.Value = Request["HumanText"].ToString();
-                    txtPatientInformation.Value = sHumanText;
+                    txtPatientInformation.Value = Request["HumanText"].ToString();
+                    //txtPatientInformation.Value = sHumanText;
                     txtPatientInformation.Visible = true;
                 }
                 else
                     txtPatientInformation.Visible = false;
                 //Cap - 1054
-                //if (Request["FileText"] != null && Request["FileText"] != "")
-                if (sFileText != null && sFileText != "")
+                if (Request["FileText"] != null && Request["FileText"] != "")
+                //if (sFileText != null && sFileText != "")
                 {
-                    //txtFileInformation.Value = Request["FileText"].ToString();
-                    txtFileInformation.Value = sFileText;
+                    txtFileInformation.Value = Request["FileText"].ToString();
+                    //txtFileInformation.Value = sFileText;
                 }
-               
+
                 txtSummary.Attributes.Add("onkeydown", "insertTab(this,event);");
                 txtSummary.Attributes.Add("onfocus", "focusTab(this,event);");
                 //Cap - 1054
-                //lstTestOrdered = staticMngr.getStaticLookupByFieldName("RESULT INTERPRETATION TEST FOR " + Request["DocumentSubType"].ToString());
-                lstTestOrdered = staticMngr.getStaticLookupByFieldName("RESULT INTERPRETATION TEST FOR " + sDocumentSubType.ToString());
+                lstTestOrdered = staticMngr.getStaticLookupByFieldName("RESULT INTERPRETATION TEST FOR " + Request["DocumentSubType"].ToString());
+                //lstTestOrdered = staticMngr.getStaticLookupByFieldName("RESULT INTERPRETATION TEST FOR " + sDocumentSubType.ToString());
                 Templatesource = new Dictionary<string, string>();
-                //lstTestOrdered = staticMngr.getStaticLookupByFieldName("RESULT INTERPRETATION TEST FOR NUCLEAR MEDICINE");
+                lstTestOrdered = staticMngr.getStaticLookupByFieldName("RESULT INTERPRETATION TEST FOR NUCLEAR MEDICINE");
                 ddlTemplate.Items.Add("");
                 Templatesource.Add("", "");
                 for (int iCount = 0; iCount < lstTestOrdered.Count; iCount++)
@@ -97,131 +136,137 @@ namespace Acurus.Capella.UI
                     ddlTemplate.Items.Add(lstTestOrdered[iCount].Value.ToString());
                     Templatesource.Add(lstTestOrdered[iCount].Value.ToString(), lstTestOrdered[iCount].Description.ToString());
                 }
-                //Cap - 1054
+                //Cap - 1054 - Commented for - Cap - 1184
                 //if (Request["ProviderNotes"] != null && Request["ProviderNotes"] != "")
-                if (sProviderNotes != null && sProviderNotes != "")
-                {
-                    string[] sSeperator = new string[] { "Test Reviewed: " };
+                //if (sProviderNotes != null && sProviderNotes != "")
+                //{
+                //    string[] sSeperator = new string[] { "Test Reviewed: " };
 
-                    //Test Reviewed: 
+                //    //Test Reviewed: 
 
-                    // string[] reviewcomments = objresultmaster.Result_Review_Comments.Split(new string[] { "]]]" }, StringSplitOptions.None);
-                    //Cap - 1054
-                   // string[] sTemplate = Request["ProviderNotes"].ToString().Split(new string[] { "Test Reviewed: " }, StringSplitOptions.None);
-                    string[] sTemplate = sProviderNotes.ToString().Split(new string[] { "Test Reviewed: " }, StringSplitOptions.None);
-                    if (sTemplate.Count() > 1)
-                    {
-                        for (int i = 0; i < sTemplate.Length; i++)
-                        {
-                            if (sTemplate[i].Trim() != string.Empty && sTemplate[i].Contains(';'))
-                            {
-                                ListItem item = new ListItem();
-                                item.Text = sTemplate[i].Split(';')[0];
-                                ddlTemplate.SelectedIndex = ddlTemplate.Items.IndexOf(item);
+                //    // string[] reviewcomments = objresultmaster.Result_Review_Comments.Split(new string[] { "]]]" }, StringSplitOptions.None);
+                //    //Cap - 1054
+                //   // string[] sTemplate = Request["ProviderNotes"].ToString().Split(new string[] { "Test Reviewed: " }, StringSplitOptions.None);
+                //    string[] sTemplate = sProviderNotes.ToString().Split(new string[] { "Test Reviewed: " }, StringSplitOptions.None);
+                //    if (sTemplate.Count() > 1)
+                //    {
+                //        for (int i = 0; i < sTemplate.Length; i++)
+                //        {
+                //            if (sTemplate[i].Trim() != string.Empty && sTemplate[i].Contains(';'))
+                //            {
+                //                ListItem item = new ListItem();
+                //                item.Text = sTemplate[i].Split(';')[0];
+                //                ddlTemplate.SelectedIndex = ddlTemplate.Items.IndexOf(item);
 
-                                // Cap - 747
-                                //string Notes = sTemplate[i].Split(';')[1].Replace("\\n", "\n").Replace("\\t", "\t").Replace("\\r", "\r").Replace("\"", "");
-                                string Notes = sTemplate[i].Split(';')[1].Replace("$|$|$|$|", "&").Replace("!^!^!^!^", "#").Replace("~|~|~|~|","+").Replace("\\n", "\n").Replace("\\t", "\t").Replace("\\r", "\r").Replace("\"", "");
+                //                // Cap - 747
+                //                //string Notes = sTemplate[i].Split(';')[1].Replace("\\n", "\n").Replace("\\t", "\t").Replace("\\r", "\r").Replace("\"", "");
+                //                string Notes = sTemplate[i].Split(';')[1].Replace("$|$|$|$|", "&").Replace("!^!^!^!^", "#").Replace("~|~|~|~|","+").Replace("\\n", "\n").Replace("\\t", "\t").Replace("\\r", "\r").Replace("\"", "");
 
-                                txtSummary.Text = Notes.TrimStart('\n');
-                                break;
-                            }
-                        }
-                    }
-                }
+                //                txtSummary.Text = Notes.TrimStart('\n');
+                //                break;
+                //            }
+                //        }
+                //    }
+                //}
                 if (ddlTemplate.Text == string.Empty)
                     btnSaveInt.Disabled = true;
             }
+            //Cap - 1184
+            else
+            {
+                hdnPostback.Value = "True";
+            }
+
             ScriptManager.RegisterStartupScript(this, this.Page.GetType(), "PatientChartLoad", "{setTimeout(function(){sessionStorage.setItem('StartLoading', 'false');StopLoadFromPatChart();},300);}", true);
         }
 
-      /*  protected void btnPrintInt_ServerClick(object sender, EventArgs e)
-        {
-            PrintOrders print = new PrintOrders();
-            string sOutput = string.Empty;
+        /*  protected void btnPrintInt_ServerClick(object sender, EventArgs e)
+          {
+              PrintOrders print = new PrintOrders();
+              string sOutput = string.Empty;
 
-            string sDirPath = Server.MapPath("Documents/" + Session.SessionID);
+              string sDirPath = Server.MapPath("Documents/" + Session.SessionID);
 
-            DirectoryInfo ObjSearchDir = new DirectoryInfo(sDirPath);
+              DirectoryInfo ObjSearchDir = new DirectoryInfo(sDirPath);
 
-            if (!ObjSearchDir.Exists)
-            {
-                ObjSearchDir.Create();
-            }
-            string TargetFileDirectory = Server.MapPath("Documents\\" + Session.SessionID);
+              if (!ObjSearchDir.Exists)
+              {
+                  ObjSearchDir.Create();
+              }
+              string TargetFileDirectory = Server.MapPath("Documents\\" + Session.SessionID);
 
-            string sPhysicianName = string.Empty;
-            XmlDocument xmldoc1 = new XmlDocument();
-            string strXmlFilePath1 = Path.Combine(System.Web.Hosting.HostingEnvironment.ApplicationPhysicalPath, "ConfigXML\\PhysicianAddressDetails.xml");
-            if (File.Exists(strXmlFilePath1) == true)
-            {
-                xmldoc1.Load(System.Web.Hosting.HostingEnvironment.ApplicationPhysicalPath + "ConfigXML\\" + "PhysicianAddressDetails" + ".xml");
-                XmlNode nodeMatchingPhysicianAddress = xmldoc1.SelectSingleNode("/PhysicianAddress/p" + ClientSession.CurrentPhysicianId);
-                if (nodeMatchingPhysicianAddress != null)
-                {
-                    sPhysicianName = nodeMatchingPhysicianAddress.Attributes["Physician_prefix"].Value.ToString() + " " +
-                    nodeMatchingPhysicianAddress.Attributes["Physician_First_Name"].Value.ToString() + " " +
-                    nodeMatchingPhysicianAddress.Attributes["Physician_Middle_Name"].Value.ToString() + " " +
-                    nodeMatchingPhysicianAddress.Attributes["Physician_Last_Name"].Value.ToString() + " " +
-                    nodeMatchingPhysicianAddress.Attributes["Physician_Suffix"].Value.ToString();
-                }
-            }
+              string sPhysicianName = string.Empty;
+              XmlDocument xmldoc1 = new XmlDocument();
+              string strXmlFilePath1 = Path.Combine(System.Web.Hosting.HostingEnvironment.ApplicationPhysicalPath, "ConfigXML\\PhysicianAddressDetails.xml");
+              if (File.Exists(strXmlFilePath1) == true)
+              {
+                  xmldoc1.Load(System.Web.Hosting.HostingEnvironment.ApplicationPhysicalPath + "ConfigXML\\" + "PhysicianAddressDetails" + ".xml");
+                  XmlNode nodeMatchingPhysicianAddress = xmldoc1.SelectSingleNode("/PhysicianAddress/p" + ClientSession.CurrentPhysicianId);
+                  if (nodeMatchingPhysicianAddress != null)
+                  {
+                      sPhysicianName = nodeMatchingPhysicianAddress.Attributes["Physician_prefix"].Value.ToString() + " " +
+                      nodeMatchingPhysicianAddress.Attributes["Physician_First_Name"].Value.ToString() + " " +
+                      nodeMatchingPhysicianAddress.Attributes["Physician_Middle_Name"].Value.ToString() + " " +
+                      nodeMatchingPhysicianAddress.Attributes["Physician_Last_Name"].Value.ToString() + " " +
+                      nodeMatchingPhysicianAddress.Attributes["Physician_Suffix"].Value.ToString();
+                  }
+              }
 
 
-            string sPatientInfo = string.Empty;
+              string sPatientInfo = string.Empty;
 
-            if (txtPatientInformation.Value != string.Empty && txtPatientInformation.Value.Split('|').Length > 5)
-            {
-                sPatientInfo = "Patient Name: " + txtPatientInformation.Value.Split('|')[0] + Environment.NewLine +
-                "Date of Birth: " + txtPatientInformation.Value.Split('|')[1] + Environment.NewLine +
-                "MRN: " + txtPatientInformation.Value.Split('|')[5].Split(':')[1] + Environment.NewLine;
-            }
+              if (txtPatientInformation.Value != string.Empty && txtPatientInformation.Value.Split('|').Length > 5)
+              {
+                  sPatientInfo = "Patient Name: " + txtPatientInformation.Value.Split('|')[0] + Environment.NewLine +
+                  "Date of Birth: " + txtPatientInformation.Value.Split('|')[1] + Environment.NewLine +
+                  "MRN: " + txtPatientInformation.Value.Split('|')[5].Split(':')[1] + Environment.NewLine;
+              }
 
-            string sHumanID = string.Empty;
-            if (Session["human_id"] != null)
-                sHumanID = Session["human_id"].ToString();
-            if (ddlTemplate.Items[ddlTemplate.SelectedIndex].Text != "")
-            {
-                string sSignDate = string.Empty;
-                string Notes = "Test Reviewed: " + ddlTemplate.Items[ddlTemplate.SelectedIndex].Text.ToString() + ";\n" + txtSummary.Text;
+              string sHumanID = string.Empty;
+              if (Session["human_id"] != null)
+                  sHumanID = Session["human_id"].ToString();
+              if (ddlTemplate.Items[ddlTemplate.SelectedIndex].Text != "")
+              {
+                  string sSignDate = string.Empty;
+                  string Notes = "Test Reviewed: " + ddlTemplate.Items[ddlTemplate.SelectedIndex].Text.ToString() + ";\n" + txtSummary.Text;
 
-                if (Request["ProviderNotesHistory"] != null)
-                {
+                  if (Request["ProviderNotesHistory"] != null)
+                  {
 
-                    string[] sTemplate = Request["ProviderNotes"].Split(new string[] { "Test Reviewed: " }, StringSplitOptions.None);
-                    if (sTemplate.Count() > 1)
-                    {
-                        for (int i = 0; i < sTemplate.Length; i++)
-                        {
-                            if (sTemplate[i].Trim() != string.Empty && sTemplate[i].Contains(';') && sTemplate[i].StartsWith(ddlTemplate.Items[ddlTemplate.SelectedIndex].Text) == true)
-                            {
-                                if (Request["ProviderNotesHistory"].Replace("\\n", "\n").Contains('\n') == true && Request["ProviderNotesHistory"].Replace("\\n", "\n").Split('\n').Length > (i - 1))
-                                {
-                                    if (Request["ProviderNotesHistory"].Replace("\\n", "\n").Split('\n')[i - 1].Contains("(") == true && Request["ProviderNotesHistory"].Replace("\\n", "\n").Split('\n')[i - 1].Contains(")") == true)
-                                    {
-                                        sSignDate = ExtractBetween(Request["ProviderNotesHistory"].Replace("\\n", "\n").Split('\n')[i - 1], "(", ")");
-                                    }
-                                }
-                            }
-                        }
-                    }
-                }
-                string sFaclilityName = ConfigurationManager.AppSettings["CMGFacilityName"].Trim().ToUpper();
-                // sOutput = print.PrintInterpretationNotes(Notes, sPhysicianName, ClientSession.FacilityName, sPatientInfo, sHumanID, TargetFileDirectory, ddlTemplate.Text, sSignDate);
-                sOutput = print.PrintInterpretationNotes(Notes, sPhysicianName, sFaclilityName, sPatientInfo, sHumanID, TargetFileDirectory, ddlTemplate.Text, sSignDate,sPhysicianName);
-                string sPrintPathName = sOutput.Split('|')[0];
-                string[] Split = new string[] { Server.MapPath("Documents\\" + Session.SessionID) };
-                string[] FileName = sPrintPathName.Split(Split, StringSplitOptions.RemoveEmptyEntries);
-                hdnFileName.Value = "Documents\\" + Session.SessionID.ToString() + "\\" + FileName[0].ToString();
-                ScriptManager.RegisterStartupScript(this, this.GetType(), "PrintInterpretation", "PrintInterpretation();", true);
-            }
-            else
-            {
-                ScriptManager.RegisterStartupScript(this, this.GetType(), "PrintError", "DisplayErrorMessage('115059');", true);
+                      string[] sTemplate = Request["ProviderNotes"].Split(new string[] { "Test Reviewed: " }, StringSplitOptions.None);
+                      if (sTemplate.Count() > 1)
+                      {
+                          for (int i = 0; i < sTemplate.Length; i++)
+                          {
+                              if (sTemplate[i].Trim() != string.Empty && sTemplate[i].Contains(';') && sTemplate[i].StartsWith(ddlTemplate.Items[ddlTemplate.SelectedIndex].Text) == true)
+                              {
+                                  if (Request["ProviderNotesHistory"].Replace("\\n", "\n").Contains('\n') == true && Request["ProviderNotesHistory"].Replace("\\n", "\n").Split('\n').Length > (i - 1))
+                                  {
+                                      if (Request["ProviderNotesHistory"].Replace("\\n", "\n").Split('\n')[i - 1].Contains("(") == true && Request["ProviderNotesHistory"].Replace("\\n", "\n").Split('\n')[i - 1].Contains(")") == true)
+                                      {
+                                          sSignDate = ExtractBetween(Request["ProviderNotesHistory"].Replace("\\n", "\n").Split('\n')[i - 1], "(", ")");
+                                      }
+                                  }
+                              }
+                          }
+                      }
+                  }
+                  string sFaclilityName = ConfigurationManager.AppSettings["CMGFacilityName"].Trim().ToUpper();
+                  // sOutput = print.PrintInterpretationNotes(Notes, sPhysicianName, ClientSession.FacilityName, sPatientInfo, sHumanID, TargetFileDirectory, ddlTemplate.Text, sSignDate);
+                  sOutput = print.PrintInterpretationNotes(Notes, sPhysicianName, sFaclilityName, sPatientInfo, sHumanID, TargetFileDirectory, ddlTemplate.Text, sSignDate,sPhysicianName);
+                  string sPrintPathName = sOutput.Split('|')[0];
+                  string[] Split = new string[] { Server.MapPath("Documents\\" + Session.SessionID) };
+                  string[] FileName = sPrintPathName.Split(Split, StringSplitOptions.RemoveEmptyEntries);
+                  hdnFileName.Value = "Documents\\" + Session.SessionID.ToString() + "\\" + FileName[0].ToString();
+                  ScriptManager.RegisterStartupScript(this, this.GetType(), "PrintInterpretation", "PrintInterpretation();", true);
+              }
+              else
+              {
+                  ScriptManager.RegisterStartupScript(this, this.GetType(), "PrintError", "DisplayErrorMessage('115059');", true);
 
-            }
-        }
-        */
+              }
+          }
+          */
 
         protected void ddlTemplate_SelectedIndexChanged(object sender, EventArgs e)
         {
@@ -231,7 +276,9 @@ namespace Acurus.Capella.UI
                 int i = 0;
                 //Cap - 1054
                 //string[] sTemplate = Request["ProviderNotes"].ToString().Split(new string[] { "Test Reviewed: " }, StringSplitOptions.None);
-                string[] sTemplate = sProviderNotes.ToString().Split(new string[] { "Test Reviewed: " }, StringSplitOptions.None);
+                //string[] sTemplate = sProviderNotes.ToString().Split(new string[] { "Test Reviewed: " }, StringSplitOptions.None);
+                //Cap - 1184
+                string[] sTemplate = hdnProviderNotes.Value.ToString().Split(new string[] { "Test Reviewed: " }, StringSplitOptions.None);
                 if (sTemplate.Count() > 0)
                 {
                     for (i = 0; i < sTemplate.Length; i++)
@@ -246,8 +293,9 @@ namespace Acurus.Capella.UI
                             // Cap - 747
                             //string Notes = sTemplate[i].Split(';')[1].Replace("\\n", "\n").Replace("\\t", "\t").Replace("\\r", "\r").Replace("\"", "");
                             string Notes = sTemplate[i].Split(';')[1].Replace("$|$|$|$|", "&").Replace("!^!^!^!^", "#").Replace("~|~|~|~|", "+").Replace("\\n", "\n").Replace("\\t", "\t").Replace("\\r", "\r").Replace("\"", "");
-
-                            txtSummary.Text = Notes.TrimStart('\n');
+                            //Cap - 1184
+                            //txtSummary.Text = Notes.TrimStart('\n');
+                            txtSummary.Text = Notes.TrimStart('\r').TrimStart('\n');
                             break;
                         }
                     }
@@ -296,7 +344,7 @@ namespace Acurus.Capella.UI
             ResultMasterManager objResMasMngr = new ResultMasterManager();
             IList<ResultMaster> lstresultmaster = new List<ResultMaster>();
             string sFacilityAddress = string.Empty;
-         
+
             lstresultmaster = objResMasMngr.GetResultMasterListByResultmasterIDForMRE(Convert.ToUInt32(sResultMasterId));
 
             string sResultReviewComments = string.Empty;
@@ -311,7 +359,7 @@ namespace Acurus.Capella.UI
 
                 OrdersSubmitManager OrdersSubmitMngr = new OrdersSubmitManager();
                 sFacilityAddress = OrdersSubmitMngr.GetLabLocationAddressbyOrderSubmitID(lstresultmaster[0].Order_ID);
-               
+
                 if (iSignedPhysicianId != 0)
                 {
                     if (lstresultmaster[0].Modified_Date_And_Time.ToString("yyyy-MM-dd") != "0001-01-01")
@@ -325,12 +373,12 @@ namespace Acurus.Capella.UI
 
                     XmlDocument xmldoc1 = new XmlDocument();
                     string strXmlFilePath1 = Path.Combine(System.Web.Hosting.HostingEnvironment.ApplicationPhysicalPath, "ConfigXML\\PhysicianAddressDetails.xml");
-                    if (File.Exists(strXmlFilePath1) == true )
+                    if (File.Exists(strXmlFilePath1) == true)
                     {
                         xmldoc1.Load(System.Web.Hosting.HostingEnvironment.ApplicationPhysicalPath + "ConfigXML\\" + "PhysicianAddressDetails" + ".xml");
                         XmlNode nodeMatchingPhysicianAddress = xmldoc1.SelectSingleNode("/PhysicianAddress/p" + iSignedPhysicianId);
                         if (nodeMatchingPhysicianAddress != null)
-                        {  
+                        {
                             sSignedPhysicianName = nodeMatchingPhysicianAddress.Attributes["Physician_prefix"].Value.ToString() + " " +
                             nodeMatchingPhysicianAddress.Attributes["Physician_First_Name"].Value.ToString() + " " +
                             nodeMatchingPhysicianAddress.Attributes["Physician_Middle_Name"].Value.ToString() + " " +
@@ -369,20 +417,20 @@ namespace Acurus.Capella.UI
             {
                 wfObj = WFObjMngr.GetByObjectSystemIdIncludeArchive(Convert.ToUInt32(Session["Order_Id"]), "DIAGNOSTIC ORDER");
             }
-            else if (Session["Result_Master_Id"] != null && UInt64.TryParse(Session["Result_Master_Id"].ToString(), out resMasID) && resMasID!=0)
+            else if (Session["Result_Master_Id"] != null && UInt64.TryParse(Session["Result_Master_Id"].ToString(), out resMasID) && resMasID != 0)
             {
                 wfObj = WFObjMngr.GetByObjectSystemIdIncludeArchive(resMasID, "DIAGNOSTIC_RESULT");
             }
             //Cap - 1054
-            // else if (Request["ResultMasterID"] != null && UInt64.TryParse(Request["ResultMasterID"], out resMasID) && resMasID != 0)
-            else if (sResultMasterID != null && UInt64.TryParse(sResultMasterID, out resMasID) && resMasID != 0)
+            else if (Request["ResultMasterID"] != null && UInt64.TryParse(Request["ResultMasterID"], out resMasID) && resMasID != 0)
+            // else if (sResultMasterID != null && UInt64.TryParse(sResultMasterID, out resMasID) && resMasID != 0)
             {
                 wfObj = WFObjMngr.GetByObjectSystemIdIncludeArchive(resMasID, "DIAGNOSTIC_RESULT");
             }
 
             //if (Request["CurrentProcess"] != null)
             //if (Request["CurrentProcess"].ToString() = != "BILLING_WAIT")
-            if (wfObj.Current_Process!=string.Empty)
+            if (wfObj.Current_Process != string.Empty)
             {
                 if (wfObj.Current_Process == "BILLING_WAIT")
                 {
@@ -397,9 +445,9 @@ namespace Acurus.Capella.UI
                 if (lstResultMaster != null && lstResultMaster.Count > 0 && lstResultMaster.Count == 1)
                 {
                     //Jira #CAP-921 - Condition added in the top if condition
-                   // if (lstResultMaster.Count == 1)
+                    // if (lstResultMaster.Count == 1)
                     //{
-                        objResultMaster = lstResultMaster[0];
+                    objResultMaster = lstResultMaster[0];
                     //}
                 }
                 else if (lstResultMaster.Count > 1)
@@ -409,8 +457,8 @@ namespace Acurus.Capella.UI
                         objResultMaster = rsManager.GetById(resMasID);
                     }
                     //Cap - 1054
-                    //else if (Request["ResultMasterID"] != null && UInt64.TryParse(Request["ResultMasterID"], out resMasID))
-                    else if (sResultMasterID != null && UInt64.TryParse(sResultMasterID, out resMasID))
+                    else if (Request["ResultMasterID"] != null && UInt64.TryParse(Request["ResultMasterID"], out resMasID))
+                    //else if (sResultMasterID != null && UInt64.TryParse(sResultMasterID, out resMasID))
                     {
                         objResultMaster = rsManager.GetById(resMasID);
                     }
@@ -431,8 +479,8 @@ namespace Acurus.Capella.UI
                 }
             }
             //Cap - 1054
-            //else if (Request["ResultMasterID"] != null && UInt64.TryParse(Request["ResultMasterID"], out resMasID) && resMasID != 0)
-            else if (sResultMasterID != null && UInt64.TryParse(sResultMasterID, out resMasID) && resMasID != 0)
+            else if (Request["ResultMasterID"] != null && UInt64.TryParse(Request["ResultMasterID"], out resMasID) && resMasID != 0)
+            //else if (sResultMasterID != null && UInt64.TryParse(sResultMasterID, out resMasID) && resMasID != 0)
             {
                 objResultMaster = rsManager.GetById(resMasID);
                 if (objResultMaster != null && objResultMaster.Id != 0)
@@ -475,7 +523,7 @@ namespace Acurus.Capella.UI
                         string[] sHeader = sHeader_Test.Split(':');
                         string sddlTemplate = ddlTemplate.SelectedValue;
 
-                        if (sHeader[0] != string.Empty && sHeader[2] != string.Empty && sHeader[2].Trim() == sddlTemplate.Trim() && sHeader[0].Split('(').Length > 0 && sHeader[0].Split('(')[0].Replace("@", "") != ClientSession.UserName && sCheckVisible != null && sCheckVisible == "false")
+                        if (sHeader[0] != string.Empty && sHeader[2] != string.Empty && sHeader[2].Trim() == sddlTemplate.Trim() && sHeader[0].Split('(').Length > 0 && sHeader[0].Split('(')[0].Replace("@", "") != ClientSession.UserName && Request["CheckVisible"] != null && Request["CheckVisible"] == "false")
                         {
                             ScriptManager.RegisterStartupScript(this, this.Page.GetType(), "ErrmormsgMa", "DisplayErrorMessage('115069'); {sessionStorage.setItem('StartLoading', 'false');StopLoadFromPatChart();StopLoadingImage();}", true);
                             return;
