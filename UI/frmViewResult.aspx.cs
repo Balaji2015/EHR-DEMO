@@ -22,6 +22,7 @@ using System.Xml;
 using System.Text;
 using System.Threading;
 using System.Web.Services;
+using Newtonsoft.Json;
 
 
 namespace Acurus.Capella.UI
@@ -111,12 +112,19 @@ namespace Acurus.Capella.UI
             ulong Key_id = 0;
             if (ConfigurationManager.AppSettings["TemplateNotes"] != null)
                 sNotes = ConfigurationManager.AppSettings["TemplateNotes"].ToString().Split('|');
-
+            //Cap - 529
+            hdnNotes.Value = ConfigurationManager.AppSettings["TemplateNotes"].ToString();
             if (Request["HumanID"] != null && Request["HumanID"] != "")
             {
                 human_id = Convert.ToUInt64(Request["HumanID"].ToString());
+                //Cap - 529
+                Session["SaveHumanId"] = Request["HumanId"];
             }
-
+            //Cap - 529
+            if (Request["ResultMasterID"] != null && Request["ResultMasterID"] != "")
+            {
+                Session["ResultMasterID"] = Request["ResultMasterID"];
+            }
             if (!IsPostBack)
             {
                 if (Request["Openingfrom"] != null && Request["Openingfrom"] == "MyorderQueue")
@@ -534,6 +542,8 @@ namespace Acurus.Capella.UI
                 if (sPatientstrip != null)
                 {
                     txtPatientInformation.Value = sPatientstrip;
+                    //Cap - 1193
+                    hdnHumanText.Value = sPatientstrip;
                 }
             }
             catch (Exception Ex)
@@ -692,7 +702,11 @@ namespace Acurus.Capella.UI
             }
             else
                 btnEfax.Enabled = false;
-
+            // Cap - 529
+            if (tvViewIndex.SelectedNode.Attributes["OrderSubmitId"] != null)
+            {
+                hdnOrderSubmitId.Value = tvViewIndex.SelectedNode.Attributes["OrderSubmitId"];
+            }
         }
         private string ConstructTreeView(ulong humanId, string Doc_type, ulong KeyID)
         {
@@ -2330,7 +2344,8 @@ namespace Acurus.Capella.UI
                 LabId = 32;
             //if (btnSave.Enabled == true)//bug Id:56084 
             // {
-            SaveNotes();
+            //Cap - 529
+            //SaveNotes();
             //  }
             if (LabId == 32)
             {
@@ -2421,7 +2436,8 @@ namespace Acurus.Capella.UI
                         //if (btnSave.Enabled == true)
                         if (btnSave.Disabled == false)
                         {
-                            SaveNotes();
+                            //Cap - 529
+                            //SaveNotes();
                         }
 
                         IList<string> _Status_Flag = new List<string>();
@@ -2529,7 +2545,8 @@ namespace Acurus.Capella.UI
                         //if (btnSave.Enabled == true)
                         if (btnSave.Disabled == false)
                         {
-                            SaveNotes();
+                            //Cap - 529
+                            //SaveNotes();
                         }
 
                         IList<string> _Status_Flag = new List<string>();
@@ -2609,11 +2626,58 @@ namespace Acurus.Capella.UI
                 //btnSave.Style["margin-left"] = "281px";//"348px";  //"440px";
                 // btnSave.Style["margin-left"] = "455px";
             }
+            //Cap - 529
+            ResultMaster objresultmaster = new ResultMaster();
+            ResultMasterManager masterProxy = new ResultMasterManager();
+            string NotesHistory = "";
+            string notesattribute = "";
+            objresultmaster = masterProxy.GetReviewCommentsForViewIndexedImages(Convert.ToUInt64(Session["human_id"]), ("OrderSubmitID" + Request["OrderSubmitId"]));
+            if (objresultmaster != null && objresultmaster.Id != 0)
+            {
+                DLC.txtDLC.Text = string.Empty;
+                if (hdnSubDocumentType.Value != string.Empty && sNotes != null && sNotes.Count() > 0 && (sNotes.Contains(hdnSubDocumentType.Value.ToString()))) // && objresultmaster.Result_Review_Comments.Trim().Contains("Test Reviewed: ") == true)
+                {
+                    string[] reviewcomments = objresultmaster.Result_Review_Comments.Split(new string[] { "]]]" }, StringSplitOptions.None);
 
+                    for (int i = 0; i < reviewcomments.Length; i++)
+                    {
+                        if (reviewcomments[i].Trim() != string.Empty)
+                        {
+                            if (reviewcomments[i].Contains("Test Reviewed: ") == true)
+                            {
+
+                                NotesHistory = NotesHistory + reviewcomments[i].Substring(0, reviewcomments[i].IndexOf(";")).Replace("[[[Test Reviewed: ", "");
+                                //Cap - 686
+                                if (notesattribute == string.Empty)
+                                {
+                                    notesattribute = reviewcomments[i].Substring(reviewcomments[i].IndexOf("[[[") + 3, reviewcomments[i].Length - reviewcomments[i].IndexOf("[[[") - 3);
+                                }
+                                else
+                                {
+                                    notesattribute = notesattribute + "<br/>" + reviewcomments[i].Substring(reviewcomments[i].IndexOf("[[[") + 3, reviewcomments[i].Length - reviewcomments[i].IndexOf("[[[") - 3);
+                                }
+
+                            }
+                            else
+                            {
+                                NotesHistory = NotesHistory + reviewcomments[i];
+
+                            }
+                        }
+
+                    }
+
+                }
+            }
             //End
             ScriptManager.RegisterStartupScript(this, this.Page.GetType(), "MovedSuccessfully", "DisplayErrorMessage('050002');", true);
             //ScriptManager.RegisterStartupScript(this, this.Page.GetType(), "Close", "End(); {sessionStorage.setItem('StartLoading', 'false');StopLoadFromPatChart();}", true);
             ScriptManager.RegisterStartupScript(this, this.Page.GetType(), "NextResult", "ViewNextResult();", true);//BugID:41027 -- move to next result
+            //Cap - 529
+            ScriptManager.RegisterStartupScript(this, this.Page.GetType(), string.Empty, "{sessionStorage.setItem('StartLoading', 'false');StopLoadFromPatChart();}", true);
+            txtProvNoteshistory.Text = NotesHistory.Replace("<br/>", "\n").Replace("\n\n\n", "\n");
+            txtProvNoteshistory.Attributes.Add("InterpretationText", notesattribute.Replace("<br/>", "\n").Replace("\n\n\n", "\n"));
+            DLC.txtDLC.Text = "";
         }
         protected void btnMoveToMa_Click(object sender, EventArgs e)
         {
@@ -2621,7 +2685,8 @@ namespace Acurus.Capella.UI
             // {
             //ScriptManager.RegisterStartupScript(this, this.Page.GetType(), string.Empty, "{sessionStorage.setItem('StartLoading', 'false');StopLoadFromPatChart();}", true);
 
-            SaveNotes();
+            //Cap - 529
+            //SaveNotes();
             // }
             WFObjectManager obj_workFlow = new WFObjectManager();
 
@@ -2803,10 +2868,409 @@ namespace Acurus.Capella.UI
 
             }
 
+            //Cap - 529
+            ResultMaster objresultmaster = new ResultMaster();
+            ResultMasterManager masterProxy = new ResultMasterManager();
+            string NotesHistory = "";
+            string notesattribute = "";
+            objresultmaster = masterProxy.GetReviewCommentsForViewIndexedImages(Convert.ToUInt64(Session["human_id"]), ("OrderSubmitID" + Request["OrderSubmitId"]));
+            if (objresultmaster != null && objresultmaster.Id != 0)
+            {
+                DLC.txtDLC.Text = string.Empty;
+                if (hdnSubDocumentType.Value != string.Empty && sNotes != null && sNotes.Count() > 0 && (sNotes.Contains(hdnSubDocumentType.Value.ToString()))) // && objresultmaster.Result_Review_Comments.Trim().Contains("Test Reviewed: ") == true)
+                {
+                    string[] reviewcomments = objresultmaster.Result_Review_Comments.Split(new string[] { "]]]" }, StringSplitOptions.None);
+
+                    for (int i = 0; i < reviewcomments.Length; i++)
+                    {
+                        if (reviewcomments[i].Trim() != string.Empty)
+                        {
+                            if (reviewcomments[i].Contains("Test Reviewed: ") == true)
+                            {
+
+                                NotesHistory = NotesHistory + reviewcomments[i].Substring(0, reviewcomments[i].IndexOf(";")).Replace("[[[Test Reviewed: ", "");
+                                //Cap - 686
+                                if (notesattribute == string.Empty)
+                                {
+                                    notesattribute = reviewcomments[i].Substring(reviewcomments[i].IndexOf("[[[") + 3, reviewcomments[i].Length - reviewcomments[i].IndexOf("[[[") - 3);
+                                }
+                                else
+                                {
+                                    notesattribute = notesattribute + "<br/>" + reviewcomments[i].Substring(reviewcomments[i].IndexOf("[[[") + 3, reviewcomments[i].Length - reviewcomments[i].IndexOf("[[[") - 3);
+                                }
+
+                            }
+                            else
+                            {
+                                NotesHistory = NotesHistory + reviewcomments[i];
+
+                            }
+                        }
+
+                    }
+
+                }
+            }
+
             //ScriptManager.RegisterStartupScript(this, this.Page.GetType(), "Close", "End(); {sessionStorage.setItem('StartLoading', 'false');StopLoadFromPatChart();}", true);
             ScriptManager.RegisterStartupScript(this, this.Page.GetType(), "NextResult", "ViewNextResult(); {sessionStorage.setItem('StartLoading', 'false');StopLoadFromPatChart();}", true);//BugID:41027 -- move to next result
+            //Cap - 529                                                                                                                                                                                  //Cap - 529
+            txtProvNoteshistory.Text = NotesHistory.Replace("<br/>", "\n").Replace("\n\n\n", "\n");
+            txtProvNoteshistory.Attributes.Add("InterpretationText", notesattribute.Replace("<br/>", "\n").Replace("\n\n\n", "\n"));
+            DLC.txtDLC.Text = "";
         }
-        public void SaveNotes()
+        //Cap - 529
+        //public void SaveNotes()
+        //{
+        //    ResultMasterManager masterProxy = new ResultMasterManager();
+        //    IList<ResultMaster> lstResultMaster = new List<ResultMaster>();
+        //    ResultMaster objResultMaster = new ResultMaster();
+        //    ResultMasterManager rsManager = new ResultMasterManager();
+        //    ulong resMasID = 0;
+
+        //    ulong ulFileManagementIndexID = 0;
+
+        //    //For Bug Id 56084-4.9.18
+        //    //if (ClientSession.UserRole.ToUpper().Trim() == "MEDICAL ASSISTANT" && txtMedicalAssistantNotes.Text=="")
+        //    //{
+        //    //    ScriptManager.RegisterStartupScript(this, this.Page.GetType(), "ErrmormsgMa", "alert('Please Enter Medical Assistant Notes'); {sessionStorage.setItem('StartLoading', 'false');StopLoadFromPatChart();StopLoadingImage();}", true);
+        //    //    return;
+        //    //}
+        //    //if ((ClientSession.UserRole.ToUpper().Trim() == "PHYSICIAN" ||  ClientSession.UserRole.ToUpper() == "PHYSICIAN ASSISTANT") && DLC.txtDLC.Text == "")
+        //    //{
+        //    //    ScriptManager.RegisterStartupScript(this, this.Page.GetType(), "ErrmormsgMa", "alert('Please Enter Provider  Notes'); {sessionStorage.setItem('StartLoading', 'false');StopLoadFromPatChart();StopLoadingImage();}", true);
+        //    //    return;
+        //    //}
+
+
+        //    if (Session["Order_Id"] != null && Session["Order_Id"] != string.Empty && Convert.ToUInt32(Session["Order_Id"]) != 0)
+        //    //if (Request["OrderSubmitId"] != null && Request["OrderSubmitId"] != string.Empty && Convert.ToUInt32(Request["OrderSubmitId"]) != 0)
+        //    {
+        //        lstResultMaster = rsManager.GetResultReviewNotesBasedOnOrderSubmitId(Convert.ToUInt32(Session["Order_Id"]));
+        //        //lstResultMaster = rsManager.GetResultReviewNotesBasedOnOrderSubmitId(Convert.ToUInt32(Request["OrderSubmitId"]));
+        //        if (lstResultMaster != null && lstResultMaster.Count > 0)
+        //        {
+        //            if (lstResultMaster.Count == 1)
+        //            {
+        //                objResultMaster = lstResultMaster[0];
+        //            }
+        //            else if (lstResultMaster.Count > 1)
+        //            {
+        //                if (Session["Result_Master_Id"] != null && UInt64.TryParse(Session["Result_Master_Id"].ToString(), out resMasID))
+        //                {
+        //                    //    IList<ResultMaster> lstResMaster = new List<ResultMaster>();
+        //                    //    lstResMaster = lstResultMaster.Where(a => a.Id == resMasID).ToList<ResultMaster>();
+        //                    //    if (lstResMaster != null && lstResMaster.Count > 0)
+        //                    //        objResultMaster = lstResMaster[0];
+        //                    //    else
+        //                    //    {
+        //                    //        ScriptManager.RegisterStartupScript(this, this.Page.GetType(), "ErrmormsgMa", "DisplayErrorMessage('115058'); {sessionStorage.setItem('StartLoading', 'false');StopLoadFromPatChart();StopLoadingImage();}", true);
+        //                    //        return;
+        //                    //    }
+        //                    objResultMaster = rsManager.GetById(resMasID);
+        //                }
+        //                else if (Request["ResultMasterID"] != null && UInt64.TryParse(Request["ResultMasterID"], out resMasID))
+        //                {
+        //                    //IList<ResultMaster> lstResMaster = new List<ResultMaster>();
+        //                    //lstResMaster = lstResultMaster.Where(a => a.Id == resMasID).ToList<ResultMaster>();
+        //                    //if (lstResMaster != null && lstResMaster.Count > 0)
+        //                    //    objResultMaster = lstResMaster[0];
+        //                    //else
+        //                    //{
+        //                    //    ScriptManager.RegisterStartupScript(this, this.Page.GetType(), "ErrmormsgMa", "DisplayErrorMessage('115058'); {sessionStorage.setItem('StartLoading', 'false');StopLoadFromPatChart();StopLoadingImage();}", true);
+        //                    //    return;
+        //                    //}
+        //                    objResultMaster = rsManager.GetById(resMasID);
+        //                }
+        //            }
+        //            if (objResultMaster != null && objResultMaster.Id != 0)
+        //            {
+        //                objResultMaster.Modified_By = ClientSession.UserName;
+        //                objResultMaster.Modified_Date_And_Time = UtilityManager.ConvertToUniversal();
+        //            }
+        //        }
+        //        else
+        //        {
+        //            objResultMaster = new ResultMaster();
+        //            objResultMaster.PID_External_Patient_ID = Convert.ToString(Request["HumanId"]);
+        //            objResultMaster.PID_Alternate_Patient_ID = objResultMaster.PID_External_Patient_ID;
+        //            objResultMaster.Created_By = ClientSession.UserName;
+        //            objResultMaster.Order_ID = Convert.ToUInt32(Session["Order_Id"]);  //Request["OrderSubmitId"]);
+        //            objResultMaster.Created_Date_And_Time = UtilityManager.ConvertToUniversal();
+        //            //jira cap-498
+        //            objResultMaster.Matching_Patient_Id = Convert.ToUInt32(Request["HumanId"]);
+        //        }
+        //    }
+        //    else if (Session["Result_Master_Id"] != null && UInt64.TryParse(Session["Result_Master_Id"].ToString(), out resMasID))
+        //    {
+        //        IList<ResultMaster> lstResMaster = new List<ResultMaster>();
+        //        objResultMaster = rsManager.GetById(resMasID);
+        //        if (objResultMaster != null && objResultMaster.Id != 0)
+        //        {
+        //            objResultMaster.Modified_By = ClientSession.UserName;
+        //            objResultMaster.Modified_Date_And_Time = UtilityManager.ConvertToUniversal();
+        //        }
+        //        else
+        //        {
+        //            objResultMaster = new ResultMaster();
+        //            //ScriptManager.RegisterStartupScript(this, this.Page.GetType(), "ErrmormsgMa", "DisplayErrorMessage('115058'); {sessionStorage.setItem('StartLoading', 'false');StopLoadFromPatChart();StopLoadingImage();}", true);
+        //            //return;
+        //        }
+        //    }
+        //    else if (Request["ResultMasterID"] != null && UInt64.TryParse(Request["ResultMasterID"], out resMasID) && resMasID != 0)
+        //    {
+        //        IList<ResultMaster> lstResMaster = new List<ResultMaster>();
+        //        objResultMaster = rsManager.GetById(resMasID);
+        //        if (objResultMaster != null && objResultMaster.Id != 0)
+        //        {
+        //            objResultMaster.Modified_By = ClientSession.UserName;
+        //            objResultMaster.Modified_Date_And_Time = UtilityManager.ConvertToUniversal();
+        //        }
+        //        else
+        //        {
+        //            ScriptManager.RegisterStartupScript(this, this.Page.GetType(), "ErrmormsgMa", "DisplayErrorMessage('115057'); {sessionStorage.setItem('StartLoading', 'false');StopLoadFromPatChart();StopLoadingImage();}", true);
+        //            return;
+        //        }
+        //    }
+
+        //    if (objResultMaster != null)
+        //    {
+        //        string sNote = (DLC.txtDLC.Text.Trim() != string.Empty ? DLC.txtDLC.Text : txtProvNoteshistory.Text);
+        //        if (DLC.txtDLC.Text.Trim() != string.Empty)
+        //        {
+        //            if (objResultMaster.Id == 0)
+        //            {
+        //                objResultMaster = new ResultMaster();
+        //                objResultMaster.PID_External_Patient_ID = Convert.ToString(Request["HumanId"]);
+        //                objResultMaster.PID_Alternate_Patient_ID = objResultMaster.PID_External_Patient_ID;
+        //                objResultMaster.Created_By = ClientSession.UserName;
+        //                if (tvViewIndex.SelectedNode.Attributes["OrderSubmitId"] != null)
+        //                    objResultMaster.Order_ID = Convert.ToUInt32(tvViewIndex.SelectedNode.Attributes["OrderSubmitId"]); //Convert.ToUInt32(Request["OrderSubmitId"]);
+        //                objResultMaster.Created_Date_And_Time = UtilityManager.ConvertToUniversal();
+        //                objResultMaster.Matching_Patient_Id = Convert.ToUInt64(objResultMaster.PID_External_Patient_ID);
+        //                ulFileManagementIndexID = Convert.ToUInt64(Session["Key_id"]);
+        //            }
+        //            //jira cap-498
+        //            else
+        //            {
+        //                ulFileManagementIndexID = Convert.ToUInt64(Session["Key_id"]);
+        //            }
+        //            if (hdnSubDocumentType.Value != string.Empty && sNotes != null && sNotes.Count() > 0 && (sNotes.Contains(hdnSubDocumentType.Value.ToString()))) // && sNote.Contains("Test Reviewed: ") == true)
+        //            {
+        //                // objResultMaster.Result_Review_Comments = sNote;
+        //                //objResultMaster.Result_Review_Comments = (txtProvNoteshistory.Text.Trim() != string.Empty ? txtProvNoteshistory.Text + "<br/>" : string.Empty) + "@" + ClientSession.UserName + "(" + UtilityManager.ConvertToLocal(DateTime.UtcNow).ToString("dd-MMM-yyyy hh:mm tt") + "): " + "[[[" + DLC.txtDLC.Text + "]]]";
+
+        //                if (sNote.Contains("Test Reviewed: ") == true)
+        //                {
+        //                    string notes = "";
+
+        //                    if (txtProvNoteshistory.Attributes["InterpretationText"] != null)
+        //                        notes = txtProvNoteshistory.Attributes["InterpretationText"].Trim();
+        //                    string textboxnotes = DLC.txtDLC.Text;
+        //                    string testname = textboxnotes.Split(new string[] { "Test Reviewed:" }, StringSplitOptions.None)[1].Split(';')[0];
+        //                    string NotesHistory = "";
+        //                    //Cap - 686
+        //                    Boolean DlcUpdate = false;
+        //                    //Cap - 1099
+        //                    //string[] Result_Review = objResultMaster.Result_Review_Comments.Split(new string[] { "]]]" }, StringSplitOptions.None);
+        //                    string[] Result_Review = objResultMaster.Result_Review_Comments.Split(new string[] { "<br/>" }, StringSplitOptions.None);
+        //                    for (int i = 0; i < Result_Review.Length; i++)
+        //                    {
+        //                        //Cap - 907
+        //                        //if (Result_Review[i].Trim() != string.Empty && Result_Review[i].Split(';')[0].Split(':')[3].Trim() == testname.Trim())
+        //                            if (Result_Review[i].Trim() != string.Empty && Result_Review[i].Contains("Test Reviewed: ") == true && Result_Review[i].Split(';')[0].Length>0 && Result_Review[i].Split(';')[0].Split(':').Length>3 && Result_Review[i].Split(';')[0].Split(':')[3].Trim() == testname.Trim())
+        //                        {
+        //                            DlcUpdate = true;
+        //                            break;
+        //                        }
+
+        //                    }
+        //                    //Cap - 686
+        //                    //if (notes.IndexOf(testname) >= 0)
+        //                    if (DlcUpdate == true)
+        //                    {
+        //                        //Cap - 1099
+        //                        //string[] Result_Review_Comments = objResultMaster.Result_Review_Comments.Split(new string[] { "]]]" }, StringSplitOptions.None);
+        //                        string[] Result_Review_Comments = objResultMaster.Result_Review_Comments.Split(new string[] { "<br/>" }, StringSplitOptions.None);
+
+        //                        for (int i = 0; i < Result_Review_Comments.Length; i++)
+        //                        {
+        //                            //Cap - 686
+        //                            //if (Result_Review_Comments[i].Trim() != string.Empty && Result_Review_Comments[i].IndexOf(testname) >= 0)
+        //                            //CAP-1042
+        //                            //if (Result_Review_Comments[i].Trim() != string.Empty && Result_Review_Comments[i].Split(';')[0].Split(':')[3].Trim() == testname.Trim())
+        //                            if (Result_Review_Comments[i].Trim() != string.Empty && Result_Review_Comments[i].Split(';')[0].Split(':').Length > 3 && Result_Review_Comments[i].Split(';')[0].Split(':')[3].Trim() == testname.Trim())
+        //                            {
+        //                                objResultMaster.Result_Review_Comments = objResultMaster.Result_Review_Comments.Replace(Result_Review_Comments[i].Substring(Result_Review_Comments[i].IndexOf("[[[") + 3, Result_Review_Comments[i].Length - Result_Review_Comments[i].IndexOf("[[[") - 3), DLC.txtDLC.Text+"]]]");
+        //                              //Cap - 1099
+        //                                if (objResultMaster.Result_Review_Comments.EndsWith("]]]") == false)
+        //                                {
+        //                                    objResultMaster.Result_Review_Comments = objResultMaster.Result_Review_Comments + "]]]";
+        //                                }
+        //                                txtProvNoteshistory.Attributes.Add("InterpretationText", txtProvNoteshistory.Attributes["InterpretationText"].Trim().Replace(Result_Review_Comments[i].Substring(Result_Review_Comments[i].IndexOf("[[[") + 3, Result_Review_Comments[i].Length - Result_Review_Comments[i].IndexOf("[[[") - 3).Replace("]]]", ""), DLC.txtDLC.Text));
+
+        //                                if (Result_Review_Comments[i].Trim() != string.Empty && Result_Review_Comments[i].Contains("Test Reviewed: ") == true)
+        //                                    NotesHistory = NotesHistory + Result_Review_Comments[i].Substring(0, Result_Review_Comments[i].IndexOf(";")).Replace("[[[Test Reviewed: ", "");
+        //                                else if (Result_Review_Comments[i].Trim() != string.Empty)
+        //                                {
+        //                                    NotesHistory = NotesHistory + Result_Review_Comments[i];
+        //                                }
+        //                            }
+
+        //                        }
+
+        //                        // objResultMaster.Result_Review_Comments.Split(new string[] { "]]]" }, StringSplitOptions.None)[0].Substring(objResultMaster.Result_Review_Comments.Split(new string[] { "]]]" }, StringSplitOptions.None)[0].IndexOf("[[[")+3, objResultMaster.Result_Review_Comments.Split(new string[] { "]]]" }, StringSplitOptions.None)[0].Length-objResultMaster.Result_Review_Comments.Split(new string[] { "]]]" }, StringSplitOptions.None)[0].IndexOf("[[[")-3)
+        //                    }
+        //                    else
+        //                    {
+
+
+        //                        objResultMaster.Result_Review_Comments = (objResultMaster.Result_Review_Comments.Trim() != string.Empty ? objResultMaster.Result_Review_Comments + "<br/>" : string.Empty) + "@" + ClientSession.UserName + "(" + UtilityManager.ConvertToLocal(DateTime.UtcNow).ToString("dd-MMM-yyyy hh:mm tt") + "): " + "[[[" + DLC.txtDLC.Text + "]]]";
+
+
+
+        //                        string[] reviewcomments = objResultMaster.Result_Review_Comments.Split(new string[] { "]]]" }, StringSplitOptions.None);
+
+        //                        for (int i = 0; i < reviewcomments.Length; i++)
+        //                        {
+        //                            if (reviewcomments[i].Trim() != string.Empty)
+        //                            {
+        //                                if (reviewcomments[i].Contains("Test Reviewed: ") == true)
+
+        //                                    NotesHistory = NotesHistory + reviewcomments[i].Substring(0, reviewcomments[i].IndexOf(";")).Replace("[[[Test Reviewed: ", "");
+        //                                else
+        //                                    NotesHistory = NotesHistory + reviewcomments[i];
+        //                            }
+        //                        }
+        //                        txtProvNoteshistory.Text = NotesHistory.Replace("<br/>", "\n"); ;// objResultMaster.Result_Review_Comments.Substring(0, objResultMaster.Result_Review_Comments.IndexOf(";")).Replace("[[[Test Reviewed: ", "");
+        //                        if (txtProvNoteshistory.Attributes["InterpretationText"] != null)
+        //                            txtProvNoteshistory.Attributes.Add("InterpretationText", txtProvNoteshistory.Attributes["InterpretationText"].Trim() + "<br/>" + DLC.txtDLC.Text);
+        //                        // txtProvNoteshistory.Attributes.Add("InterpretationText", objResultMaster.Result_Review_Comments.Substring(objResultMaster.Result_Review_Comments.IndexOf("[[[") + 3, objResultMaster.Result_Review_Comments.IndexOf("]]]") - objResultMaster.Result_Review_Comments.IndexOf("[[[") - 3));
+        //                        else
+        //                            txtProvNoteshistory.Attributes.Add("InterpretationText", DLC.txtDLC.Text);
+
+        //                    }
+        //                }
+        //                else
+        //                {
+        //                    string NotesHistory = "";
+        //                    objResultMaster.Result_Review_Comments = (objResultMaster.Result_Review_Comments.Trim() != string.Empty ? objResultMaster.Result_Review_Comments + "<br/>" : string.Empty) + "@" + ClientSession.UserName + "(" + UtilityManager.ConvertToLocal(DateTime.UtcNow).ToString("dd-MMM-yyyy hh:mm tt") + "): " + DLC.txtDLC.Text;
+
+        //                    string[] reviewcomments = objResultMaster.Result_Review_Comments.Split(new string[] { "]]]" }, StringSplitOptions.None);
+
+        //                    for (int i = 0; i < reviewcomments.Length; i++)
+        //                    {
+        //                        if (reviewcomments[i].Trim() != string.Empty)
+        //                        {
+        //                            if (reviewcomments[i].Contains("Test Reviewed: ") == true)
+
+        //                                NotesHistory = NotesHistory + reviewcomments[i].Substring(0, reviewcomments[i].IndexOf(";")).Replace("[[[Test Reviewed: ", "");
+        //                            else
+        //                                NotesHistory = NotesHistory + reviewcomments[i];
+        //                        }
+        //                    }
+        //                    txtProvNoteshistory.Text = NotesHistory.Replace("<br/>", "\n"); ;
+        //                    // txtProvNoteshistory.Text = objResultMaster.Result_Review_Comments.Replace("<br/>", "\n");
+
+        //                    //if (txtProvNoteshistory.Attributes["InterpretationText"] != null)
+        //                    //    txtProvNoteshistory.Attributes.Add("InterpretationText", txtProvNoteshistory.Attributes["InterpretationText"].Trim() + "<br/>" + DLC.txtDLC.Text);
+        //                    //// txtProvNoteshistory.Attributes.Add("InterpretationText", objResultMaster.Result_Review_Comments.Substring(objResultMaster.Result_Review_Comments.IndexOf("[[[") + 3, objResultMaster.Result_Review_Comments.IndexOf("]]]") - objResultMaster.Result_Review_Comments.IndexOf("[[[") - 3));
+        //                    //else
+        //                    //    txtProvNoteshistory.Attributes.Add("InterpretationText", DLC.txtDLC.Text);
+        //                }
+        //            }
+        //            else
+        //            {
+        //                objResultMaster.Result_Review_Comments = (txtProvNoteshistory.Text.Trim() != string.Empty ? txtProvNoteshistory.Text + "<br/>" : string.Empty) + "@" + ClientSession.UserName + "(" + UtilityManager.ConvertToLocal(DateTime.UtcNow).ToString("dd-MMM-yyyy hh:mm tt") + "): " + DLC.txtDLC.Text;
+        //                txtProvNoteshistory.Text = objResultMaster.Result_Review_Comments.Replace("<br/>", "\n");
+        //            }
+
+        //            DLC.txtDLC.Text = string.Empty;
+        //            DLC.txtDLC.Enabled = true;
+
+        //            DLC.txtDLC.BackColor = System.Drawing.ColorTranslator.FromHtml("White");
+        //            DLC.pbDropdown.Attributes.Remove("class");
+        //            DLC.pbDropdown.Attributes.Add("class", "pbDropdownBackground");
+        //        }
+        //        else
+        //        {
+        //            //For Bug Id 56084-4.9.18
+        //            if (DLC.txtDLC.Enabled == true)
+        //            {
+        //                //if (hdnSubDocumentType.Value != string.Empty && sNotes != null && sNotes.Count() > 0 && (sNotes.Contains(hdnSubDocumentType.Value.ToString())) && sNote.Contains("Test Reviewed: ") == true)
+        //                //{
+        //                //    objResultMaster.Result_Review_Comments = sNote;
+        //                //}
+        //                //else
+        //                if (!objResultMaster.Result_Review_Comments.Contains("@" + ClientSession.UserName + "(" + UtilityManager.ConvertToLocal(DateTime.UtcNow).ToString("dd-MMM-yyyy hh:mm tt") + "): " + "[No Comments]"))
+        //                {
+        //                    objResultMaster.Result_Review_Comments = (objResultMaster.Result_Review_Comments.Trim() != string.Empty ? objResultMaster.Result_Review_Comments + "<br/>" : string.Empty) + "@" + ClientSession.UserName + "(" + UtilityManager.ConvertToLocal(DateTime.UtcNow).ToString("dd-MMM-yyyy hh:mm tt") + "): " + "[No Comments]";
+        //                    //Cap - 1054
+        //                    //txtProvNoteshistory.Text = objResultMaster.Result_Review_Comments.Replace("<br/>", "\n");
+        //                    if(txtProvNoteshistory.Text != "")
+        //                    {
+        //                        txtProvNoteshistory.Text = txtProvNoteshistory.Text + "\n@" + ClientSession.UserName + "(" + UtilityManager.ConvertToLocal(DateTime.UtcNow).ToString("dd-MMM-yyyy hh:mm tt") + "): " + "[No Comments]";
+        //                    }
+        //                    else
+        //                    {
+        //                        txtProvNoteshistory.Text = "@" + ClientSession.UserName + "(" + UtilityManager.ConvertToLocal(DateTime.UtcNow).ToString("dd-MMM-yyyy hh:mm tt") + "): " + "[No Comments]";
+        //                    }
+
+        //                    DLC.txtDLC.Text = string.Empty;
+        //                }
+        //            }
+
+        //        }
+        //        if (txtMedicalAssistantNotes.Text.Trim() != string.Empty)
+        //        {
+        //            if (objResultMaster.Id == 0)
+        //            {
+        //                objResultMaster = new ResultMaster();
+        //                if (Request["HumanId"] != null)
+        //                    objResultMaster.PID_External_Patient_ID = Convert.ToString(Request["HumanId"]);
+        //                objResultMaster.PID_Alternate_Patient_ID = objResultMaster.PID_External_Patient_ID;
+        //                objResultMaster.Created_By = ClientSession.UserName;
+        //                //if (Request["OrderSubmitId"] != null)
+        //                //    objResultMaster.Order_ID = Convert.ToUInt32(Request["OrderSubmitId"]);
+        //                if (tvViewIndex.SelectedNode.Attributes["OrderSubmitId"] != null)
+        //                    objResultMaster.Order_ID = Convert.ToUInt32(tvViewIndex.SelectedNode.Attributes["OrderSubmitId"]);
+        //                objResultMaster.Created_Date_And_Time = UtilityManager.ConvertToUniversal();
+        //                objResultMaster.Matching_Patient_Id = Convert.ToUInt64(objResultMaster.PID_External_Patient_ID);
+        //                ulFileManagementIndexID = Convert.ToUInt64(Session["Key_id"]);
+        //            }
+        //            //jira cap-498
+        //            else
+        //            {
+        //                ulFileManagementIndexID = Convert.ToUInt64(Session["Key_id"]);
+        //            }
+        //            objResultMaster.MA_Notes = (txtMedNoteshistory.Text.Trim() != string.Empty ? txtMedNoteshistory.Text + "<br/>" : string.Empty) + "@" + ClientSession.UserName + "(" + UtilityManager.ConvertToLocal(DateTime.UtcNow).ToString("dd-MMM-yyyy hh:mm tt") + "): " + txtMedicalAssistantNotes.Text;
+        //            txtMedNoteshistory.Text = objResultMaster.MA_Notes.Replace("<br/>", "\n");
+        //            txtMedicalAssistantNotes.Text = string.Empty;
+        //        }
+        //        else
+        //        {
+        //            //For Bug Id 56084-4.9.18
+        //            if (txtMedicalAssistantNotes.Enabled == true)
+        //            {
+        //                objResultMaster.MA_Notes = (txtMedNoteshistory.Text.Trim() != string.Empty ? txtMedNoteshistory.Text + "<br/>" : string.Empty) + "@" + ClientSession.UserName + "(" + UtilityManager.ConvertToLocal(DateTime.UtcNow).ToString("dd-MMM-yyyy hh:mm tt") + "): " + "[No Comments]";
+        //                txtMedNoteshistory.Text = objResultMaster.MA_Notes.Replace("<br/>", "\n");
+        //                txtMedicalAssistantNotes.Text = string.Empty;
+        //            }
+        //        }
+        //        if (chkPhyName.Checked == true)
+        //        {
+        //            objResultMaster.Reviewed_Provider_Sign_ID = Convert.ToInt32(ClientSession.PhysicianId);
+        //        }
+        //        objResultMaster = rsManager.SaveResultMasterItem(objResultMaster, ulFileManagementIndexID);
+        //        //tvViewIndex.SelectedNode.Attributes.Add("ResultMasterID", objResultMaster.Id.ToString());
+        //        Session["Notes"] = objResultMaster;
+        //    }
+        //    ScriptManager.RegisterStartupScript(this, this.Page.GetType(), "AutoSave", "SaveViewResults();", true);
+        //    btnSave.Disabled = true;
+        //    hdnSave.Value = "false";
+        //}
+        [WebMethod(EnableSession = true)]
+        public static string SaveNotesWeb(string sDLC_TxtDLC, string sTxtProvNoteshistory, string sTxtProvNoteshistoryAttr, string sTxtMedicalAssistantNotes, string sTxtMedNoteshistory, bool bChkPhyName, string sHdnSubDocumentType, bool bTxtMedicalAssistantNotesEnable, string sTvViewIndex, bool bDLCTxtDLC, string sConfigNotes)
         {
             ResultMasterManager masterProxy = new ResultMasterManager();
             IList<ResultMaster> lstResultMaster = new List<ResultMaster>();
@@ -2815,25 +3279,9 @@ namespace Acurus.Capella.UI
             ulong resMasID = 0;
 
             ulong ulFileManagementIndexID = 0;
-
-            //For Bug Id 56084-4.9.18
-            //if (ClientSession.UserRole.ToUpper().Trim() == "MEDICAL ASSISTANT" && txtMedicalAssistantNotes.Text=="")
-            //{
-            //    ScriptManager.RegisterStartupScript(this, this.Page.GetType(), "ErrmormsgMa", "alert('Please Enter Medical Assistant Notes'); {sessionStorage.setItem('StartLoading', 'false');StopLoadFromPatChart();StopLoadingImage();}", true);
-            //    return;
-            //}
-            //if ((ClientSession.UserRole.ToUpper().Trim() == "PHYSICIAN" ||  ClientSession.UserRole.ToUpper() == "PHYSICIAN ASSISTANT") && DLC.txtDLC.Text == "")
-            //{
-            //    ScriptManager.RegisterStartupScript(this, this.Page.GetType(), "ErrmormsgMa", "alert('Please Enter Provider  Notes'); {sessionStorage.setItem('StartLoading', 'false');StopLoadFromPatChart();StopLoadingImage();}", true);
-            //    return;
-            //}
-
-
-            if (Session["Order_Id"] != null && Session["Order_Id"] != string.Empty && Convert.ToUInt32(Session["Order_Id"]) != 0)
-            //if (Request["OrderSubmitId"] != null && Request["OrderSubmitId"] != string.Empty && Convert.ToUInt32(Request["OrderSubmitId"]) != 0)
+            if (HttpContext.Current.Session["Order_Id"] != null && HttpContext.Current.Session["Order_Id"] != string.Empty && Convert.ToUInt32(HttpContext.Current.Session["Order_Id"]) != 0)
             {
-                lstResultMaster = rsManager.GetResultReviewNotesBasedOnOrderSubmitId(Convert.ToUInt32(Session["Order_Id"]));
-                //lstResultMaster = rsManager.GetResultReviewNotesBasedOnOrderSubmitId(Convert.ToUInt32(Request["OrderSubmitId"]));
+                lstResultMaster = rsManager.GetResultReviewNotesBasedOnOrderSubmitId(Convert.ToUInt32(HttpContext.Current.Session["Order_Id"]));
                 if (lstResultMaster != null && lstResultMaster.Count > 0)
                 {
                     if (lstResultMaster.Count == 1)
@@ -2842,30 +3290,12 @@ namespace Acurus.Capella.UI
                     }
                     else if (lstResultMaster.Count > 1)
                     {
-                        if (Session["Result_Master_Id"] != null && UInt64.TryParse(Session["Result_Master_Id"].ToString(), out resMasID))
+                        if (HttpContext.Current.Session["Result_Master_Id"] != null && UInt64.TryParse(HttpContext.Current.Session["Result_Master_Id"].ToString(), out resMasID))
                         {
-                            //    IList<ResultMaster> lstResMaster = new List<ResultMaster>();
-                            //    lstResMaster = lstResultMaster.Where(a => a.Id == resMasID).ToList<ResultMaster>();
-                            //    if (lstResMaster != null && lstResMaster.Count > 0)
-                            //        objResultMaster = lstResMaster[0];
-                            //    else
-                            //    {
-                            //        ScriptManager.RegisterStartupScript(this, this.Page.GetType(), "ErrmormsgMa", "DisplayErrorMessage('115058'); {sessionStorage.setItem('StartLoading', 'false');StopLoadFromPatChart();StopLoadingImage();}", true);
-                            //        return;
-                            //    }
                             objResultMaster = rsManager.GetById(resMasID);
                         }
-                        else if (Request["ResultMasterID"] != null && UInt64.TryParse(Request["ResultMasterID"], out resMasID))
+                        else if (HttpContext.Current.Session["ResultMasterID"] != null && UInt64.TryParse(HttpContext.Current.Session["ResultMasterID"].ToString(), out resMasID))
                         {
-                            //IList<ResultMaster> lstResMaster = new List<ResultMaster>();
-                            //lstResMaster = lstResultMaster.Where(a => a.Id == resMasID).ToList<ResultMaster>();
-                            //if (lstResMaster != null && lstResMaster.Count > 0)
-                            //    objResultMaster = lstResMaster[0];
-                            //else
-                            //{
-                            //    ScriptManager.RegisterStartupScript(this, this.Page.GetType(), "ErrmormsgMa", "DisplayErrorMessage('115058'); {sessionStorage.setItem('StartLoading', 'false');StopLoadFromPatChart();StopLoadingImage();}", true);
-                            //    return;
-                            //}
                             objResultMaster = rsManager.GetById(resMasID);
                         }
                     }
@@ -2878,16 +3308,16 @@ namespace Acurus.Capella.UI
                 else
                 {
                     objResultMaster = new ResultMaster();
-                    objResultMaster.PID_External_Patient_ID = Convert.ToString(Request["HumanId"]);
+                    objResultMaster.PID_External_Patient_ID = Convert.ToString(HttpContext.Current.Session["SaveHumanId"]);
                     objResultMaster.PID_Alternate_Patient_ID = objResultMaster.PID_External_Patient_ID;
                     objResultMaster.Created_By = ClientSession.UserName;
-                    objResultMaster.Order_ID = Convert.ToUInt32(Session["Order_Id"]);  //Request["OrderSubmitId"]);
+                    objResultMaster.Order_ID = Convert.ToUInt32(HttpContext.Current.Session["Order_Id"]);
                     objResultMaster.Created_Date_And_Time = UtilityManager.ConvertToUniversal();
                     //jira cap-498
-                    objResultMaster.Matching_Patient_Id = Convert.ToUInt32(Request["HumanId"]);
+                    objResultMaster.Matching_Patient_Id = Convert.ToUInt32(HttpContext.Current.Session["SaveHumanId"]);
                 }
             }
-            else if (Session["Result_Master_Id"] != null && UInt64.TryParse(Session["Result_Master_Id"].ToString(), out resMasID))
+            else if (HttpContext.Current.Session["Result_Master_Id"] != null && UInt64.TryParse(HttpContext.Current.Session["Result_Master_Id"].ToString(), out resMasID))
             {
                 IList<ResultMaster> lstResMaster = new List<ResultMaster>();
                 objResultMaster = rsManager.GetById(resMasID);
@@ -2899,11 +3329,9 @@ namespace Acurus.Capella.UI
                 else
                 {
                     objResultMaster = new ResultMaster();
-                    //ScriptManager.RegisterStartupScript(this, this.Page.GetType(), "ErrmormsgMa", "DisplayErrorMessage('115058'); {sessionStorage.setItem('StartLoading', 'false');StopLoadFromPatChart();StopLoadingImage();}", true);
-                    //return;
                 }
             }
-            else if (Request["ResultMasterID"] != null && UInt64.TryParse(Request["ResultMasterID"], out resMasID) && resMasID != 0)
+            else if (HttpContext.Current.Session["ResultMasterID"] != null && UInt64.TryParse(HttpContext.Current.Session["ResultMasterID"].ToString(), out resMasID) && resMasID != 0)
             {
                 IList<ResultMaster> lstResMaster = new List<ResultMaster>();
                 objResultMaster = rsManager.GetById(resMasID);
@@ -2914,104 +3342,86 @@ namespace Acurus.Capella.UI
                 }
                 else
                 {
-                    ScriptManager.RegisterStartupScript(this, this.Page.GetType(), "ErrmormsgMa", "DisplayErrorMessage('115057'); {sessionStorage.setItem('StartLoading', 'false');StopLoadFromPatChart();StopLoadingImage();}", true);
-                    return;
+                    return JsonConvert.SerializeObject("115057");
                 }
             }
 
             if (objResultMaster != null)
             {
-                string sNote = (DLC.txtDLC.Text.Trim() != string.Empty ? DLC.txtDLC.Text : txtProvNoteshistory.Text);
-                if (DLC.txtDLC.Text.Trim() != string.Empty)
+                string sNote = (sDLC_TxtDLC.Trim() != string.Empty ? sDLC_TxtDLC : sTxtProvNoteshistory);
+                if (sDLC_TxtDLC.Trim() != string.Empty)
                 {
                     if (objResultMaster.Id == 0)
                     {
                         objResultMaster = new ResultMaster();
-                        objResultMaster.PID_External_Patient_ID = Convert.ToString(Request["HumanId"]);
+                        objResultMaster.PID_External_Patient_ID = Convert.ToString(HttpContext.Current.Session["SaveHumanId"]);
                         objResultMaster.PID_Alternate_Patient_ID = objResultMaster.PID_External_Patient_ID;
                         objResultMaster.Created_By = ClientSession.UserName;
-                        if (tvViewIndex.SelectedNode.Attributes["OrderSubmitId"] != null)
-                            objResultMaster.Order_ID = Convert.ToUInt32(tvViewIndex.SelectedNode.Attributes["OrderSubmitId"]); //Convert.ToUInt32(Request["OrderSubmitId"]);
+                        if (sTvViewIndex != null)
+                            objResultMaster.Order_ID = Convert.ToUInt32(sTvViewIndex); //Convert.ToUInt32(Request["OrderSubmitId"]);
                         objResultMaster.Created_Date_And_Time = UtilityManager.ConvertToUniversal();
                         objResultMaster.Matching_Patient_Id = Convert.ToUInt64(objResultMaster.PID_External_Patient_ID);
-                        ulFileManagementIndexID = Convert.ToUInt64(Session["Key_id"]);
+                        ulFileManagementIndexID = Convert.ToUInt64(HttpContext.Current.Session["Key_id"]);
                     }
-                    //jira cap-498
                     else
                     {
-                        ulFileManagementIndexID = Convert.ToUInt64(Session["Key_id"]);
+                        ulFileManagementIndexID = Convert.ToUInt64(HttpContext.Current.Session["Key_id"]);
                     }
-                    if (hdnSubDocumentType.Value != string.Empty && sNotes != null && sNotes.Count() > 0 && (sNotes.Contains(hdnSubDocumentType.Value.ToString()))) // && sNote.Contains("Test Reviewed: ") == true)
+                    if (sHdnSubDocumentType != string.Empty && sConfigNotes != null && (sConfigNotes.Contains(sHdnSubDocumentType.ToString())))
                     {
-                        // objResultMaster.Result_Review_Comments = sNote;
-                        //objResultMaster.Result_Review_Comments = (txtProvNoteshistory.Text.Trim() != string.Empty ? txtProvNoteshistory.Text + "<br/>" : string.Empty) + "@" + ClientSession.UserName + "(" + UtilityManager.ConvertToLocal(DateTime.UtcNow).ToString("dd-MMM-yyyy hh:mm tt") + "): " + "[[[" + DLC.txtDLC.Text + "]]]";
-
                         if (sNote.Contains("Test Reviewed: ") == true)
                         {
                             string notes = "";
 
-                            if (txtProvNoteshistory.Attributes["InterpretationText"] != null)
-                                notes = txtProvNoteshistory.Attributes["InterpretationText"].Trim();
-                            string textboxnotes = DLC.txtDLC.Text;
+                            if (sTxtProvNoteshistoryAttr != null)
+                                notes = sTxtProvNoteshistoryAttr.Trim();
+                            string textboxnotes = sDLC_TxtDLC;
                             string testname = textboxnotes.Split(new string[] { "Test Reviewed:" }, StringSplitOptions.None)[1].Split(';')[0];
                             string NotesHistory = "";
-                            //Cap - 686
                             Boolean DlcUpdate = false;
-                            //Cap - 1099
-                            //string[] Result_Review = objResultMaster.Result_Review_Comments.Split(new string[] { "]]]" }, StringSplitOptions.None);
                             string[] Result_Review = objResultMaster.Result_Review_Comments.Split(new string[] { "<br/>" }, StringSplitOptions.None);
                             for (int i = 0; i < Result_Review.Length; i++)
                             {
-                                //Cap - 907
-                                //if (Result_Review[i].Trim() != string.Empty && Result_Review[i].Split(';')[0].Split(':')[3].Trim() == testname.Trim())
-                                    if (Result_Review[i].Trim() != string.Empty && Result_Review[i].Contains("Test Reviewed: ") == true && Result_Review[i].Split(';')[0].Length>0 && Result_Review[i].Split(';')[0].Split(':').Length>3 && Result_Review[i].Split(';')[0].Split(':')[3].Trim() == testname.Trim())
+                                if (Result_Review[i].Trim() != string.Empty && Result_Review[i].Contains("Test Reviewed: ") == true && Result_Review[i].Split(';')[0].Length > 0 && Result_Review[i].Split(';')[0].Split(':').Length > 3 && Result_Review[i].Split(';')[0].Split(':')[3].Trim() == testname.Trim())
                                 {
                                     DlcUpdate = true;
                                     break;
                                 }
 
                             }
-                            //Cap - 686
-                            //if (notes.IndexOf(testname) >= 0)
                             if (DlcUpdate == true)
                             {
-                                //Cap - 1099
-                                //string[] Result_Review_Comments = objResultMaster.Result_Review_Comments.Split(new string[] { "]]]" }, StringSplitOptions.None);
                                 string[] Result_Review_Comments = objResultMaster.Result_Review_Comments.Split(new string[] { "<br/>" }, StringSplitOptions.None);
+                                string[] ProvNoteshistoryAttr = sTxtProvNoteshistoryAttr.Split(new string[] { "<br/>" }, StringSplitOptions.None);
 
                                 for (int i = 0; i < Result_Review_Comments.Length; i++)
                                 {
-                                    //Cap - 686
-                                    //if (Result_Review_Comments[i].Trim() != string.Empty && Result_Review_Comments[i].IndexOf(testname) >= 0)
-                                    //CAP-1042
-                                    //if (Result_Review_Comments[i].Trim() != string.Empty && Result_Review_Comments[i].Split(';')[0].Split(':')[3].Trim() == testname.Trim())
                                     if (Result_Review_Comments[i].Trim() != string.Empty && Result_Review_Comments[i].Split(';')[0].Split(':').Length > 3 && Result_Review_Comments[i].Split(';')[0].Split(':')[3].Trim() == testname.Trim())
                                     {
-                                        objResultMaster.Result_Review_Comments = objResultMaster.Result_Review_Comments.Replace(Result_Review_Comments[i].Substring(Result_Review_Comments[i].IndexOf("[[[") + 3, Result_Review_Comments[i].Length - Result_Review_Comments[i].IndexOf("[[[") - 3), DLC.txtDLC.Text+"]]]");
-                                      //Cap - 1099
+                                        objResultMaster.Result_Review_Comments = objResultMaster.Result_Review_Comments.Replace(Result_Review_Comments[i].Substring(Result_Review_Comments[i].IndexOf("[[[") + 3, Result_Review_Comments[i].Length - Result_Review_Comments[i].IndexOf("[[[") - 3), sDLC_TxtDLC + "]]]");
                                         if (objResultMaster.Result_Review_Comments.EndsWith("]]]") == false)
                                         {
                                             objResultMaster.Result_Review_Comments = objResultMaster.Result_Review_Comments + "]]]";
                                         }
-                                        txtProvNoteshistory.Attributes.Add("InterpretationText", txtProvNoteshistory.Attributes["InterpretationText"].Trim().Replace(Result_Review_Comments[i].Substring(Result_Review_Comments[i].IndexOf("[[[") + 3, Result_Review_Comments[i].Length - Result_Review_Comments[i].IndexOf("[[[") - 3).Replace("]]]", ""), DLC.txtDLC.Text));
 
-                                        if (Result_Review_Comments[i].Trim() != string.Empty && Result_Review_Comments[i].Contains("Test Reviewed: ") == true)
-                                            NotesHistory = NotesHistory + Result_Review_Comments[i].Substring(0, Result_Review_Comments[i].IndexOf(";")).Replace("[[[Test Reviewed: ", "");
-                                        else if (Result_Review_Comments[i].Trim() != string.Empty)
-                                        {
-                                            NotesHistory = NotesHistory + Result_Review_Comments[i];
-                                        }
                                     }
-
                                 }
 
-                                // objResultMaster.Result_Review_Comments.Split(new string[] { "]]]" }, StringSplitOptions.None)[0].Substring(objResultMaster.Result_Review_Comments.Split(new string[] { "]]]" }, StringSplitOptions.None)[0].IndexOf("[[[")+3, objResultMaster.Result_Review_Comments.Split(new string[] { "]]]" }, StringSplitOptions.None)[0].Length-objResultMaster.Result_Review_Comments.Split(new string[] { "]]]" }, StringSplitOptions.None)[0].IndexOf("[[[")-3)
+                                for(int j = 0; j< ProvNoteshistoryAttr.Length;j++)
+                                {
+                                    if(ProvNoteshistoryAttr[j].Trim() != string.Empty && ProvNoteshistoryAttr[j].Split(':')[1].Split(';')[0].Trim() == testname.Trim())
+                                    {
+                                        sTxtProvNoteshistoryAttr = sTxtProvNoteshistoryAttr.Replace(ProvNoteshistoryAttr[j], sDLC_TxtDLC);
+                                    }
+                                    
+                                }                                                                                   
+                                                                    
                             }
                             else
                             {
 
 
-                                objResultMaster.Result_Review_Comments = (objResultMaster.Result_Review_Comments.Trim() != string.Empty ? objResultMaster.Result_Review_Comments + "<br/>" : string.Empty) + "@" + ClientSession.UserName + "(" + UtilityManager.ConvertToLocal(DateTime.UtcNow).ToString("dd-MMM-yyyy hh:mm tt") + "): " + "[[[" + DLC.txtDLC.Text + "]]]";
+                                objResultMaster.Result_Review_Comments = (objResultMaster.Result_Review_Comments.Trim() != string.Empty ? objResultMaster.Result_Review_Comments + "<br/>" : string.Empty) + "@" + ClientSession.UserName + "(" + UtilityManager.ConvertToLocal(DateTime.UtcNow).ToString("dd-MMM-yyyy hh:mm tt") + "): " + "[[[" + sDLC_TxtDLC + "]]]";
 
 
 
@@ -3028,19 +3438,17 @@ namespace Acurus.Capella.UI
                                             NotesHistory = NotesHistory + reviewcomments[i];
                                     }
                                 }
-                                txtProvNoteshistory.Text = NotesHistory.Replace("<br/>", "\n"); ;// objResultMaster.Result_Review_Comments.Substring(0, objResultMaster.Result_Review_Comments.IndexOf(";")).Replace("[[[Test Reviewed: ", "");
-                                if (txtProvNoteshistory.Attributes["InterpretationText"] != null)
-                                    txtProvNoteshistory.Attributes.Add("InterpretationText", txtProvNoteshistory.Attributes["InterpretationText"].Trim() + "<br/>" + DLC.txtDLC.Text);
-                                // txtProvNoteshistory.Attributes.Add("InterpretationText", objResultMaster.Result_Review_Comments.Substring(objResultMaster.Result_Review_Comments.IndexOf("[[[") + 3, objResultMaster.Result_Review_Comments.IndexOf("]]]") - objResultMaster.Result_Review_Comments.IndexOf("[[[") - 3));
+                                if (sTxtProvNoteshistoryAttr != null && sTxtProvNoteshistoryAttr != "")
+                                    sTxtProvNoteshistoryAttr = sTxtProvNoteshistoryAttr.Trim() + "<br/>" + sDLC_TxtDLC;
                                 else
-                                    txtProvNoteshistory.Attributes.Add("InterpretationText", DLC.txtDLC.Text);
-
+                                    sTxtProvNoteshistoryAttr = sDLC_TxtDLC;
+                                sTxtProvNoteshistory = NotesHistory.Replace("<br/>", "\n");
                             }
                         }
                         else
                         {
                             string NotesHistory = "";
-                            objResultMaster.Result_Review_Comments = (objResultMaster.Result_Review_Comments.Trim() != string.Empty ? objResultMaster.Result_Review_Comments + "<br/>" : string.Empty) + "@" + ClientSession.UserName + "(" + UtilityManager.ConvertToLocal(DateTime.UtcNow).ToString("dd-MMM-yyyy hh:mm tt") + "): " + DLC.txtDLC.Text;
+                            objResultMaster.Result_Review_Comments = (objResultMaster.Result_Review_Comments.Trim() != string.Empty ? objResultMaster.Result_Review_Comments + "<br/>" : string.Empty) + "@" + ClientSession.UserName + "(" + UtilityManager.ConvertToLocal(DateTime.UtcNow).ToString("dd-MMM-yyyy hh:mm tt") + "): " + sDLC_TxtDLC;
 
                             string[] reviewcomments = objResultMaster.Result_Review_Comments.Split(new string[] { "]]]" }, StringSplitOptions.None);
 
@@ -3055,105 +3463,87 @@ namespace Acurus.Capella.UI
                                         NotesHistory = NotesHistory + reviewcomments[i];
                                 }
                             }
-                            txtProvNoteshistory.Text = NotesHistory.Replace("<br/>", "\n"); ;
-                            // txtProvNoteshistory.Text = objResultMaster.Result_Review_Comments.Replace("<br/>", "\n");
-
-                            //if (txtProvNoteshistory.Attributes["InterpretationText"] != null)
-                            //    txtProvNoteshistory.Attributes.Add("InterpretationText", txtProvNoteshistory.Attributes["InterpretationText"].Trim() + "<br/>" + DLC.txtDLC.Text);
-                            //// txtProvNoteshistory.Attributes.Add("InterpretationText", objResultMaster.Result_Review_Comments.Substring(objResultMaster.Result_Review_Comments.IndexOf("[[[") + 3, objResultMaster.Result_Review_Comments.IndexOf("]]]") - objResultMaster.Result_Review_Comments.IndexOf("[[[") - 3));
-                            //else
-                            //    txtProvNoteshistory.Attributes.Add("InterpretationText", DLC.txtDLC.Text);
+                            sTxtProvNoteshistory = NotesHistory.Replace("<br/>", "\n");
                         }
                     }
                     else
                     {
-                        objResultMaster.Result_Review_Comments = (txtProvNoteshistory.Text.Trim() != string.Empty ? txtProvNoteshistory.Text + "<br/>" : string.Empty) + "@" + ClientSession.UserName + "(" + UtilityManager.ConvertToLocal(DateTime.UtcNow).ToString("dd-MMM-yyyy hh:mm tt") + "): " + DLC.txtDLC.Text;
-                        txtProvNoteshistory.Text = objResultMaster.Result_Review_Comments.Replace("<br/>", "\n");
+                        objResultMaster.Result_Review_Comments = (sTxtProvNoteshistory.Trim() != string.Empty ? sTxtProvNoteshistory + "<br/>" : string.Empty) + "@" + ClientSession.UserName + "(" + UtilityManager.ConvertToLocal(DateTime.UtcNow).ToString("dd-MMM-yyyy hh:mm tt") + "): " + sDLC_TxtDLC;
+                        sTxtProvNoteshistory = objResultMaster.Result_Review_Comments.Replace("<br/>", "\n");
                     }
 
-                    DLC.txtDLC.Text = string.Empty;
-                    DLC.txtDLC.Enabled = true;
-
-                    DLC.txtDLC.BackColor = System.Drawing.ColorTranslator.FromHtml("White");
-                    DLC.pbDropdown.Attributes.Remove("class");
-                    DLC.pbDropdown.Attributes.Add("class", "pbDropdownBackground");
+                    sDLC_TxtDLC = "Empty";
                 }
                 else
                 {
-                    //For Bug Id 56084-4.9.18
-                    if (DLC.txtDLC.Enabled == true)
+                    if (bDLCTxtDLC == false)
                     {
-                        //if (hdnSubDocumentType.Value != string.Empty && sNotes != null && sNotes.Count() > 0 && (sNotes.Contains(hdnSubDocumentType.Value.ToString())) && sNote.Contains("Test Reviewed: ") == true)
-                        //{
-                        //    objResultMaster.Result_Review_Comments = sNote;
-                        //}
-                        //else
                         if (!objResultMaster.Result_Review_Comments.Contains("@" + ClientSession.UserName + "(" + UtilityManager.ConvertToLocal(DateTime.UtcNow).ToString("dd-MMM-yyyy hh:mm tt") + "): " + "[No Comments]"))
                         {
                             objResultMaster.Result_Review_Comments = (objResultMaster.Result_Review_Comments.Trim() != string.Empty ? objResultMaster.Result_Review_Comments + "<br/>" : string.Empty) + "@" + ClientSession.UserName + "(" + UtilityManager.ConvertToLocal(DateTime.UtcNow).ToString("dd-MMM-yyyy hh:mm tt") + "): " + "[No Comments]";
-                            //Cap - 1054
-                            //txtProvNoteshistory.Text = objResultMaster.Result_Review_Comments.Replace("<br/>", "\n");
-                            if(txtProvNoteshistory.Text != "")
+                            if (sTxtProvNoteshistory != "")
                             {
-                                txtProvNoteshistory.Text = txtProvNoteshistory.Text + "\n@" + ClientSession.UserName + "(" + UtilityManager.ConvertToLocal(DateTime.UtcNow).ToString("dd-MMM-yyyy hh:mm tt") + "): " + "[No Comments]";
+                                sTxtProvNoteshistory = sTxtProvNoteshistory + "\n@" + ClientSession.UserName + "(" + UtilityManager.ConvertToLocal(DateTime.UtcNow).ToString("dd-MMM-yyyy hh:mm tt") + "): " + "[No Comments]";
                             }
                             else
                             {
-                                txtProvNoteshistory.Text = "@" + ClientSession.UserName + "(" + UtilityManager.ConvertToLocal(DateTime.UtcNow).ToString("dd-MMM-yyyy hh:mm tt") + "): " + "[No Comments]";
+                                sTxtProvNoteshistory = "@" + ClientSession.UserName + "(" + UtilityManager.ConvertToLocal(DateTime.UtcNow).ToString("dd-MMM-yyyy hh:mm tt") + "): " + "[No Comments]";
                             }
-                            
-                            DLC.txtDLC.Text = string.Empty;
+
+                            sDLC_TxtDLC = "Empty";
                         }
                     }
 
                 }
-                if (txtMedicalAssistantNotes.Text.Trim() != string.Empty)
+                if (sTxtMedicalAssistantNotes.Trim() != string.Empty)
                 {
                     if (objResultMaster.Id == 0)
                     {
                         objResultMaster = new ResultMaster();
-                        if (Request["HumanId"] != null)
-                            objResultMaster.PID_External_Patient_ID = Convert.ToString(Request["HumanId"]);
+                        if (HttpContext.Current.Session["SaveHumanId"] != null)
+                            objResultMaster.PID_External_Patient_ID = Convert.ToString(HttpContext.Current.Session["SaveHumanId"]);
                         objResultMaster.PID_Alternate_Patient_ID = objResultMaster.PID_External_Patient_ID;
                         objResultMaster.Created_By = ClientSession.UserName;
-                        //if (Request["OrderSubmitId"] != null)
-                        //    objResultMaster.Order_ID = Convert.ToUInt32(Request["OrderSubmitId"]);
-                        if (tvViewIndex.SelectedNode.Attributes["OrderSubmitId"] != null)
-                            objResultMaster.Order_ID = Convert.ToUInt32(tvViewIndex.SelectedNode.Attributes["OrderSubmitId"]);
+                        if (sTvViewIndex != null)
+                            objResultMaster.Order_ID = Convert.ToUInt32(sTvViewIndex);
                         objResultMaster.Created_Date_And_Time = UtilityManager.ConvertToUniversal();
                         objResultMaster.Matching_Patient_Id = Convert.ToUInt64(objResultMaster.PID_External_Patient_ID);
-                        ulFileManagementIndexID = Convert.ToUInt64(Session["Key_id"]);
+                        ulFileManagementIndexID = Convert.ToUInt64(HttpContext.Current.Session["Key_id"]);
                     }
-                    //jira cap-498
                     else
                     {
-                        ulFileManagementIndexID = Convert.ToUInt64(Session["Key_id"]);
+                        ulFileManagementIndexID = Convert.ToUInt64(HttpContext.Current.Session["Key_id"]);
                     }
-                    objResultMaster.MA_Notes = (txtMedNoteshistory.Text.Trim() != string.Empty ? txtMedNoteshistory.Text + "<br/>" : string.Empty) + "@" + ClientSession.UserName + "(" + UtilityManager.ConvertToLocal(DateTime.UtcNow).ToString("dd-MMM-yyyy hh:mm tt") + "): " + txtMedicalAssistantNotes.Text;
-                    txtMedNoteshistory.Text = objResultMaster.MA_Notes.Replace("<br/>", "\n");
-                    txtMedicalAssistantNotes.Text = string.Empty;
+                    objResultMaster.MA_Notes = (sTxtMedicalAssistantNotes.Trim() != string.Empty ? sTxtMedicalAssistantNotes + "<br/>" : string.Empty) + "@" + ClientSession.UserName + "(" + UtilityManager.ConvertToLocal(DateTime.UtcNow).ToString("dd-MMM-yyyy hh:mm tt") + "): " + sTxtMedicalAssistantNotes;
+                    sTxtMedNoteshistory = objResultMaster.MA_Notes.Replace("<br/>", "\n");
+                    sTxtMedicalAssistantNotes = "Empty";
                 }
                 else
                 {
-                    //For Bug Id 56084-4.9.18
-                    if (txtMedicalAssistantNotes.Enabled == true)
+                    if (bTxtMedicalAssistantNotesEnable == false)
                     {
-                        objResultMaster.MA_Notes = (txtMedNoteshistory.Text.Trim() != string.Empty ? txtMedNoteshistory.Text + "<br/>" : string.Empty) + "@" + ClientSession.UserName + "(" + UtilityManager.ConvertToLocal(DateTime.UtcNow).ToString("dd-MMM-yyyy hh:mm tt") + "): " + "[No Comments]";
-                        txtMedNoteshistory.Text = objResultMaster.MA_Notes.Replace("<br/>", "\n");
-                        txtMedicalAssistantNotes.Text = string.Empty;
+                        objResultMaster.MA_Notes = (sTxtMedNoteshistory.Trim() != string.Empty ? sTxtMedNoteshistory + "<br/>" : string.Empty) + "@" + ClientSession.UserName + "(" + UtilityManager.ConvertToLocal(DateTime.UtcNow).ToString("dd-MMM-yyyy hh:mm tt") + "): " + "[No Comments]";
+                        sTxtMedNoteshistory = objResultMaster.MA_Notes.Replace("<br/>", "\n");
+                        sTxtMedicalAssistantNotes = "Empty";
                     }
                 }
-                if (chkPhyName.Checked == true)
+                if (bChkPhyName == true)
                 {
                     objResultMaster.Reviewed_Provider_Sign_ID = Convert.ToInt32(ClientSession.PhysicianId);
                 }
                 objResultMaster = rsManager.SaveResultMasterItem(objResultMaster, ulFileManagementIndexID);
-                //tvViewIndex.SelectedNode.Attributes.Add("ResultMasterID", objResultMaster.Id.ToString());
-                Session["Notes"] = objResultMaster;
+                HttpContext.Current.Session["Notes"] = objResultMaster;
             }
-            ScriptManager.RegisterStartupScript(this, this.Page.GetType(), "AutoSave", "SaveViewResults();", true);
-            btnSave.Disabled = true;
-            hdnSave.Value = "false";
+            var result = new
+            {
+                DLC_TxtDLC = sDLC_TxtDLC,
+                TxtProvNoteshistory = sTxtProvNoteshistory,
+                TxtProvNoteshistoryAttr = sTxtProvNoteshistoryAttr,
+                TxtMedNoteshistory = sTxtMedNoteshistory,
+                TxtMedicalAssistantNotes = sTxtMedicalAssistantNotes
+            };
+
+            return JsonConvert.SerializeObject(result);
         }
 
 
@@ -3395,7 +3785,8 @@ namespace Acurus.Capella.UI
 
         protected void btnSave_Click1(object sender, EventArgs e)
         {
-            SaveNotes();
+            //Cap - 529
+            //SaveNotes();
         }
 
         protected void rdbMA_CheckedChanged(object sender, EventArgs e)
@@ -3993,7 +4384,7 @@ namespace Acurus.Capella.UI
             {
                 btnSave.Disabled = false;
             }
-            ScriptManager.RegisterStartupScript(this, this.Page.GetType(), "Test", "{sessionStorage.setItem('StartLoading', 'false');StopLoadFromPatChart();StopLoadingImage();}", true);
+            //ScriptManager.RegisterStartupScript(this, this.Page.GetType(), "Test", "{sessionStorage.setItem('StartLoading', 'false');StopLoadFromPatChart();StopLoadingImage();}", true);
 
         }
 

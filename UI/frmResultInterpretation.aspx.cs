@@ -108,7 +108,7 @@ namespace Acurus.Capella.UI
                 if (Request["HumanText"] != null && Request["HumanText"] != "")
                 // if (sHumanText != null && sHumanText != "")
                 {
-                    txtPatientInformation.Value = Request["HumanText"].ToString();
+                    txtPatientInformation.Value = Request["HumanText"].ToString().Replace("%23","#");
                     //txtPatientInformation.Value = sHumanText;
                     txtPatientInformation.Visible = true;
                 }

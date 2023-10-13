@@ -780,6 +780,15 @@ namespace Acurus.Capella.UI
         protected global::System.Web.UI.WebControls.HiddenField hdnNewProviderhistoryattribute;
 
         /// <summary>
+        /// hdnHumanText control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.HiddenField hdnHumanText;
+
+        /// <summary>
         /// hdnSetvalue control.
         /// </summary>
         /// <remarks>
@@ -796,6 +805,24 @@ namespace Acurus.Capella.UI
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.HiddenField hdncurrentProcess;
+
+        /// <summary>
+        /// hdnNotes control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.HiddenField hdnNotes;
+
+        /// <summary>
+        /// hdnOrderSubmitId control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.HiddenField hdnOrderSubmitId;
 
         /// <summary>
         /// hdnbtngenerateresultxml control.

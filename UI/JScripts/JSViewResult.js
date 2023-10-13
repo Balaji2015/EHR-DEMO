@@ -334,6 +334,10 @@ function ClickMovetoma(sender, args) {
         //var Continue = DisplayErrorMessage('115060');
         //if (Continue != undefined && Continue == true) {
         StartLoadingImage();
+        //Cap - 529
+        if (document.getElementById('btnSave').disabled == false) {
+            btnSave_ClientClicked();
+        }
         __doPostBack('btnMoveToMa', "true");
         //}
         //else {
@@ -347,6 +351,10 @@ function ClickMovetoma(sender, args) {
         //var Continue = DisplayErrorMessage('115060');
         //if (Continue != undefined && Continue == true) {
         StartLoadingImage();
+        //Cap - 529
+        if (document.getElementById('btnSave').disabled == false) {
+            btnSave_ClientClicked();
+        }
         __doPostBack('btnMoveToMa', "true");
         //}
         //else {
@@ -356,6 +364,10 @@ function ClickMovetoma(sender, args) {
     }
     else {
         StartLoadingImage();//BugID:41027 -- move to next result
+        //Cap - 529
+        if (document.getElementById('btnSave').disabled == false) {
+            btnSave_ClientClicked();
+        }
         __doPostBack('btnMoveToMa', "true");
     }
     //Jira #CAP-889
@@ -373,6 +385,10 @@ function ClickMovetonextProcess(sender, args) {
         //var Continue = DisplayErrorMessage('115060');
         //if (Continue != undefined && Continue == true) {
         StartLoadingImage();
+        //Cap - 529
+        if (document.getElementById('btnSave').disabled == false) {
+            btnSave_ClientClicked();
+        }
         __doPostBack('btnMoveToNextProcess', "true");
         //}
         //else {
@@ -384,6 +400,10 @@ function ClickMovetonextProcess(sender, args) {
         //var Continue = DisplayErrorMessage('115060');
         //if (Continue != undefined && Continue == true) {
         StartLoadingImage();
+        //Cap - 529
+        if (document.getElementById('btnSave').disabled == false) {
+            btnSave_ClientClicked();
+        }
         __doPostBack('btnMoveToNextProcess', "true");
         //}
         //else {
@@ -394,6 +414,10 @@ function ClickMovetonextProcess(sender, args) {
     }
     else {
         StartLoadingImage();
+        //Cap - 529
+        if (document.getElementById('btnSave').disabled == false) {
+            btnSave_ClientClicked();
+        }
         __doPostBack('btnMoveToNextProcess', "true");
     }
     //End For BUg Id 56084-4.9.18
@@ -405,8 +429,78 @@ function ClickMovetonextProcess(sender, args) {
 
 function btnSave_ClientClicked(sender, args) {
     { sessionStorage.setItem('StartLoading', 'true'); StartLoadFromPatChart(); }
-    __doPostBack('btnSave', "true");
+    //Cap - 529
+    //{ sessionStorage.setItem('StartLoading', 'true'); StartLoadFromPatChart(); }
+    // __doPostBack('btnSave', "true");
     // return true;
+    var chkPhyName;
+    if (document.getElementById('chkPhyName') != null) {
+        chkPhyName = document.getElementById('chkPhyName').checked;
+    }
+    else {
+        chkPhyName = false;
+    }
+    var DLC_txtDLC = document.getElementById('DLC_txtDLC');
+
+    var Note = {
+        "sDLC_TxtDLC": DLC_txtDLC.value,
+        "sTxtProvNoteshistory": document.getElementById('txtProvNoteshistory').value,
+        "sTxtProvNoteshistoryAttr": document.getElementById('txtProvNoteshistory').getAttribute("InterpretationText"),
+        "sTxtMedicalAssistantNotes": document.getElementById('txtMedicalAssistantNotes').value,
+        "sTxtMedNoteshistory": document.getElementById('txtMedNoteshistory').value,
+        "bChkPhyName": chkPhyName,
+        "sHdnSubDocumentType": document.getElementById('hdnSubDocumentType').value,
+        "bTxtMedicalAssistantNotesEnable": document.getElementById('txtMedicalAssistantNotes').disabled,
+        "sTvViewIndex": document.getElementById('hdnOrderSubmitId').value,
+        "bDLCTxtDLC": DLC_txtDLC.disabled,
+        "sConfigNotes": document.getElementById('hdnNotes').value
+    };
+    $.ajax({
+        type: "POST",
+        url: "frmViewResult.aspx/SaveNotesWeb",
+        data: JSON.stringify(Note),
+        contentType: "application/json; charset=utf-8",
+        dataType: "json",
+        success: function (data) {
+            if (data != undefined && data != '') {
+                if (isValidJSON(data.d)) {
+                    var NotesVal = JSON.parse(data.d);
+                    if (NotesVal != undefined && NotesVal == '115057') {
+                        DisplayErrorMessage('115057');
+                        return false;
+                    }
+                    if (NotesVal.DLC_TxtDLC != undefined && NotesVal.DLC_TxtDLC == 'Empty') {
+                        document.getElementById('DLC_txtDLC').value = "";
+                        document.getElementById('DLC_txtDLC').disabled = false;
+                        document.getElementById('DLC_txtDLC').classList.remove("nonEditabletxtbox");
+                        document.getElementById('DLC_txtDLC').style.backgroundColor = "White";
+                    }
+                    if (NotesVal.TxtProvNoteshistory != undefined && NotesVal.TxtProvNoteshistory != null) {
+                        //document.getElementById('txtProvNoteshistory').innerHTML = NotesVal.TxtProvNoteshistory;
+                        document.getElementById('hdnNewProviderNotesHistory').value = NotesVal.TxtProvNoteshistory;
+                    }
+                    if (NotesVal.TxtProvNoteshistoryAttr != undefined && NotesVal.TxtProvNoteshistoryAttr != null) {
+                        // document.getElementById('txtProvNoteshistory').setAttribute("InterpretationText", NotesVal.TxtProvNoteshistoryAttr);
+                        document.getElementById('hdnNewProviderhistoryattribute').value = NotesVal.TxtProvNoteshistoryAttr;
+                    }
+
+                    if (NotesVal.TxtMedNoteshistory != undefined && NotesVal.TxtMedNoteshistory != null) {
+                        document.getElementById('txtMedNoteshistory').value = NotesVal.TxtMedNoteshistory;
+                    }
+                    if (NotesVal.TxtMedicalAssistantNotes != undefined && NotesVal.TxtMedicalAssistantNotes == 'Empty') {
+                        document.getElementById('txtMedicalAssistantNotes').value = "";
+                    }
+
+                    document.getElementById('btnSave').disabled = true;
+                    document.getElementById('hdnSave').value = false;
+
+                    document.getElementById("hdnSetvalue").click();
+                }
+            }
+            setTimeout(function () { sessionStorage.setItem('StartLoading', 'false'); StopLoadFromPatChart() }, 2000);
+        },
+    })
+  
 }
 
 function btnSave_ClientNodeClick() {
@@ -585,8 +679,12 @@ function OpenResultInterpretation() {
     //}
 
     var PatientInformation = '';
-    if (document.getElementById('txtPatientInformation') != null && document.getElementById('txtPatientInformation') != undefined && document.getElementById('txtPatientInformation') != '')
-        PatientInformation = document.getElementById('txtPatientInformation').value.split("#").join("%23");
+    //Cap - 1193
+    //if (document.getElementById('txtPatientInformation') != null && document.getElementById('txtPatientInformation') != undefined && document.getElementById('txtPatientInformation') != '')
+    //    PatientInformation = document.getElementById('txtPatientInformation').value.split("#").join("%23");
+    if (document.getElementById('hdnHumanText') != null && document.getElementById('hdnHumanText') != undefined && document.getElementById('hdnHumanText') != '')
+        PatientInformation = document.getElementById('hdnHumanText').value.split("#").join("%23");
+
     $(top.window.document).find("#txtResultInterpretationsInformation")[0].value = "";
     $(top.window.document).find("#txtDeletedInterpretationsInformation")[0].value = "";
     $(top.window.document).find("#TabResultInterpretations").modal({ backdrop: "static", keyboard: false }, 'show');
