@@ -497,7 +497,7 @@ function btnSave_ClientClicked(sender, args) {
                     document.getElementById("hdnSetvalue").click();
                 }
             }
-            setTimeout(function () { sessionStorage.setItem('StartLoading', 'false'); StopLoadFromPatChart() }, 2000);
+            setTimeout(function () { sessionStorage.setItem('StartLoading', 'false'); StopLoadFromPatChart() }, 3000);
         },
     })
   
