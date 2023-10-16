@@ -460,6 +460,7 @@ function btnSave_ClientClicked(sender, args) {
         url: "frmViewResult.aspx/SaveNotesWeb",
         data: JSON.stringify(Note),
         contentType: "application/json; charset=utf-8",
+        async:false,
         dataType: "json",
         success: function (data) {
             if (data != undefined && data != '') {
