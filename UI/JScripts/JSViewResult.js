@@ -496,9 +496,17 @@ function btnSave_ClientClicked(sender, args) {
                     document.getElementById('hdnSave').value = false;
 
                     document.getElementById("hdnSetvalue").click();
+                   
                 }
             }
-            setTimeout(function () { sessionStorage.setItem('StartLoading', 'false'); StopLoadFromPatChart() }, 3000);
+            setTimeout(function () {
+                 //Cap - 1222
+                document.getElementById('DLC_txtDLC').value = "";
+                document.getElementById('DLC_txtDLC').disabled = false;
+                document.getElementById('DLC_txtDLC').classList.remove("nonEditabletxtbox");
+                document.getElementById('DLC_txtDLC').style.backgroundColor = "White";
+                sessionStorage.setItem('StartLoading', 'false'); StopLoadFromPatChart() }, 3000);
+
         },
     })
   
