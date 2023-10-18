@@ -819,7 +819,9 @@ namespace Acurus.Capella.UI
                                     string[] sPhyName = NotesHistory.Split(new string[] { "\n" }, StringSplitOptions.None);
                                     for (int j = 0; j < sPhyName.Length; j++)
                                     {
-                                        if (sPhyName[j].Contains(sInterpretationTitle) == true)
+                                        //Cap - 1230
+                                        //if (sPhyName[j].Contains(sInterpretationTitle) == true)
+                                        if (sPhyName[j] == sInterpretationTitle)
                                         {
                                             XmlNode nodeMatchingPhysicianAddress = xmldoc1.SelectSingleNode("/UserList/User[@User_Name='" + sPhyName[j].Substring(1, sPhyName[j].IndexOf(sInterpretationTitle) - 25) + "']"); // + ClientSession.CurrentPhysicianId);
                                             if (nodeMatchingPhysicianAddress != null)
