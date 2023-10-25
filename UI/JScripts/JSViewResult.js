@@ -498,7 +498,9 @@ function OpenPatientCommunication() {
         PatientM_name = document.getElementById(GetClientId("hdnPatientmiddlename")).value;
         Dob = document.getElementById(GetClientId("hdnDOB")).value.split(" ")[0];
         PatientType = document.getElementById(GetClientId("hdnPatientType")).value;
-        var result = openModal("frmPatientCommunication.aspx?IsMYQ=N" + "&AccountNum=" + Id + "&PatientName=" + PatientF_name + "," + PatientL_name + " " + PatientM_name + "&PatientDOB=" + Dob + "&HumanType=" + PatientType, 810, 1050, obj, "ctl00_ModalWindow");
+        //Jira Cap - 1226
+        //var result = openModal("frmPatientCommunication.aspx?IsMYQ=N" + "&AccountNum=" + Id + "&PatientName=" + PatientF_name + "," + PatientL_name + " " + PatientM_name + "&PatientDOB=" + Dob + "&HumanType=" + PatientType, 810, 1050, obj, "ctl00_ModalWindow");
+        var result = openModal("frmPatientCommunication.aspx?AccountNum=" + Id + "&IsMYQ=N &PatientName=" + PatientF_name + "," + PatientL_name + " " + PatientM_name + "&PatientDOB=" + Dob + "&HumanType=" + PatientType, 810, 1050, obj, "ctl00_ModalWindow");
         var WindowName = $find('ctl00_ModalWindow');
         WindowName.set_behaviors(-Telerik.Web.UI.WindowAutoSizeBehaviors.Close);
     }
