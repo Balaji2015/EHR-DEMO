@@ -208,7 +208,9 @@ namespace Acurus.Capella.UI
 
 
             // if (Session["NonDrugAllergyFieldLookupList"] != null && (chkShowAll.Checked||!chkShowAll.Enabled))is_FieldLookUp
-            if (Session["NonDrugAllergyFieldLookupList"] != null && is_FieldLookUp)
+            //Cap - 1178
+            //if (Session["NonDrugAllergyFieldLookupList"] != null && is_FieldLookUp)
+            if (Session["NonDrugAllergyFieldLookupList"] != null && is_FieldLookUp && (chkShowAll.Checked==true || !chkShowAll.Enabled))
             {
                 NonDrugAllergyFieldLookupList = (IList<FieldLookup>)Session["NonDrugAllergyFieldLookupList"];
 
@@ -875,6 +877,7 @@ namespace Acurus.Capella.UI
                     }
                 }
             }
+            
             ScriptManager.RegisterStartupScript(this, this.Page.GetType(), "StopLoading", " {sessionStorage.setItem('StartLoading', 'false');StopLoadFromPatChart();}", true);
 
         }
