@@ -75,6 +75,17 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
             }
             return lstscn;
         }
+        public IList<scan_index> GetScannedObjectByHumanID(ulong humanID)
+        {
+            IList<scan_index> lstscn = new List<scan_index>();
+            using (ISession iMySession = NHibernateSessionManager.Instance.CreateISession())
+            {
+                ICriteria criteria = iMySession.CreateCriteria(typeof(scan_index)).Add(Expression.Eq("Human_ID", humanID));
+                lstscn = criteria.List<scan_index>();
+                iMySession.Close();
+            }
+            return lstscn;
+        }
 
         public IList<scan_index> GetDetailsbyscanid(ulong sacnid)
         {

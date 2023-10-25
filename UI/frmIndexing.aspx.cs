@@ -569,6 +569,12 @@ namespace Acurus.Capella.UI
                 btnClearAll.Text = "Cancel";
                 hdnUpdateMode.Value = string.Empty;
             }
+            //Cap - 1141
+            else
+            {
+                btnSave.Text = "Add";
+                btnClearAll.Text = "Reset";
+            }
             if (btnSave.Text == "Update")
             {
                 rdbAll.Checked = false;
@@ -727,6 +733,11 @@ namespace Acurus.Capella.UI
                 OrdersManager objorders = new OrdersManager();
                 lstorderstemp = objorders.GetLabProcedureBy_ObjectType_And_CurrentProcess_And_HumanId(cboDocumentType.SelectedItem.Value, "ORDER_GENERATE", ClientSession.HumanId);
                 IList<string> ilstOrdersubmit = new List<string>();
+                //Cap - 1118
+                IList<scan_index> lstscan = new List<scan_index>();
+                Scan_IndexManager objmanager = new Scan_IndexManager();
+                lstscan = objmanager.GetScannedObjectByHumanID(ClientSession.HumanId);
+
                 //string sFacilityCmg = ConfigurationManager.AppSettings["CMGFacilityName"].Trim().ToUpper();
                 //string sFacilityAncillary = ConfigurationManager.AppSettings["AncillaryLab"].Trim().ToUpper();
                 IList<string> lstordersCMG = new List<string>();
@@ -852,6 +863,8 @@ namespace Acurus.Capella.UI
                             {
                                 bIsSkip = false;
                                 var AncLab = (from l in ilstAncillaryFac where l.Short_Name.ToUpper() == item.Order_Code_Type.ToUpper() select l).ToList();
+                                //Cap - 1118
+                                var scanorder = (from m in lstscan where m.Order_ID == submittedorders select m).ToList();
                                 if (AncLab.Count > 0)
                                 {
                                     if (item.Encounter_ID == 0)
@@ -872,6 +885,13 @@ namespace Acurus.Capella.UI
                                             }
                                         }
                                     }
+                                }
+                                //Cap - 1118
+                                else if (scanorder.Count > 0)
+                                {
+                                    bIsSkip = true;
+                                    continue;
+
                                 }
 
                                 if (item.Lab_Procedure != "" && item.Lab_Procedure_Description != "")
@@ -1208,7 +1228,8 @@ namespace Acurus.Capella.UI
                 }
                 updateGrid.Update();
                 waitCursor.Update();
-
+                //Cap - 1139
+                ScriptManager.RegisterStartupScript(this, this.Page.GetType(), "Deletegrid", "if(document.getElementById('grdIndexing').rows.length <= 1){localStorage.setItem('IsSaveClickedSucessfull','');} ", true);
             }
 
             else if (e.CommandName == "EditRow")
@@ -2534,7 +2555,9 @@ namespace Acurus.Capella.UI
                     //{
                     var vfacAncillary = from f in ApplicationObject.facilityLibraryList where f.Fac_Name == elements.Attribute("name").Value select f;
                     IList<FacilityLibrary> lstFacAncillary = vfacAncillary.ToList<FacilityLibrary>();
-                    if (elements.Attribute("name").Value.ToUpper() == ddSelectedFacility.Text.ToUpper() && lstFacAncillary.Count > 0 && lstFacAncillary[0].Is_Ancillary != "Y")// && elements.Attribute("name").Value.ToUpper() != ConfigurationManager.AppSettings["CMGFacilityName"].Trim().ToUpper())
+                    //Cap - 1119
+                    //if (elements.Attribute("name").Value.ToUpper() == ddSelectedFacility.Text.ToUpper() && lstFacAncillary.Count > 0 && lstFacAncillary[0].Is_Ancillary != "Y")// && elements.Attribute("name").Value.ToUpper() != ConfigurationManager.AppSettings["CMGFacilityName"].Trim().ToUpper())
+                    if (elements.Attribute("name").Value.ToUpper() == ddSelectedFacility.Text.ToUpper() && lstFacAncillary.Count > 0 && lstFacAncillary[0].Is_Ancillary != "Y" && elements.Attribute("Legal_Org").Value == ClientSession.LegalOrg)
                     {
                         foreach (XElement phyItems in elements.Elements())
                         {
@@ -3994,6 +4017,11 @@ namespace Acurus.Capella.UI
                     OrdersManager objorders = new OrdersManager();
                     //lstorders = objorders.GetLabProcedureBy_ObjectType_And_CurrentProcess_And_HumanId("DIAGNOSTIC ORDER", "ORDER_GENERATE", ClientSession.HumanId); ;
 
+                    //Cap - 1118
+                    IList<scan_index> lstscan = new List<scan_index>();
+                    Scan_IndexManager objmanager = new Scan_IndexManager();
+                    lstscan = objmanager.GetScannedObjectByHumanID(ClientSession.HumanId);
+
 
                     IList<Orders> lstorderstemp = new List<Orders>();
                     lstorderstemp = objorders.GetLabProcedureBy_ObjectType_And_CurrentProcess_And_HumanId("DIAGNOSTIC ORDER", "ORDER_GENERATE", ClientSession.HumanId);
@@ -4096,6 +4124,8 @@ namespace Acurus.Capella.UI
 
                                     bIsSkip = false;
                                     var AncLab = (from l in ilstAncillaryFac where l.Short_Name.ToUpper() == item.Order_Code_Type.ToUpper() select l).ToList();
+                                    //Cap - 1118
+                                    var scanorder = (from m in lstscan where m.Order_ID == submittedorders && m.Id != scanIndexID select m).ToList();
                                     if (AncLab.Count > 0)
                                     {
                                         if (item.Encounter_ID == 0)
@@ -4117,7 +4147,13 @@ namespace Acurus.Capella.UI
                                             }
                                         }
                                     }
+                                    //Cap - 1118
+                                    else if (scanorder.Count > 0)
+                                    {
+                                        bIsSkip = true;
+                                        continue;
 
+                                    }
 
                                     if (item.Lab_Procedure != "" && item.Lab_Procedure_Description != "")
                                     {
@@ -4222,6 +4258,7 @@ namespace Acurus.Capella.UI
                     //if (sFacilityCmg.ToUpper() == ClientSession.FacilityName.ToUpper())
                     //{
                     var facAncillary = from f in ApplicationObject.facilityLibraryList where f.Fac_Name == ClientSession.FacilityName select f;
+                    
                     IList<FacilityLibrary> ilstFacAncillary = facAncillary.ToList<FacilityLibrary>();
                     if (ilstFacAncillary.Count > 0 && ilstFacAncillary[0].Is_Ancillary == "Y")// && elements.Attribute("name").Value.ToUpper() != ConfigurationManager.AppSettings["CMGFacilityName"].Trim().ToUpper())
                     {
@@ -5771,7 +5808,9 @@ namespace Acurus.Capella.UI
             {
                 //if (elements.Attribute("name").Value.ToUpper() != ConfigurationManager.AppSettings["CMGFacilityName"].Trim().ToUpper())
                 //{
-                var facAncillary = from f in ApplicationObject.facilityLibraryList where f.Fac_Name == elements.Attribute("name").Value select f;
+                //Cap - 1119
+                //var facAncillary = from f in ApplicationObject.facilityLibraryList where f.Fac_Name == elements.Attribute("name").Value select f;
+                var facAncillary = from f in ApplicationObject.facilityLibraryList where f.Fac_Name == elements.Attribute("name").Value && elements.Attribute("Legal_Org").Value == ClientSession.LegalOrg select f;
                 IList<FacilityLibrary> ilstFacAncillary = facAncillary.ToList<FacilityLibrary>();
                 if (ilstFacAncillary.Count > 0 && ilstFacAncillary[0].Is_Ancillary != "Y")
                 {

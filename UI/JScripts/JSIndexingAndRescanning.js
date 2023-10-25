@@ -63,7 +63,8 @@ function clearall() {
         $("#btnClearAll").val("Reset");
         $("#btnSave").val("Add");
         $("#btnSave")[0].disabled = true;
-
+        //Cap - 1139
+        document.getElementById("hdnIsEditgrid").value = "";
         document.getElementById("cboIs_Interperated").selectedIndex = 0;
         document.getElementById("cboDocumentType").selectedIndex = 9;
         var cboDocumentType = document.getElementById("cboDocumentType");
@@ -74,7 +75,8 @@ function clearall() {
         $("#cboPhysician").empty();
         $("#cboOrderPhysician").empty();
         $("#cboLab").empty();
-        document.getElementById("hdnIsEditgrid").value = "";
+        //Cap - 1139
+        //document.getElementById("hdnIsEditgrid").value = "";
         $("#dOrder").removeAttr("data-target");
         $("#dOrder").removeClass("panel-headingIndexing");
         $("#dOrder").addClass("panel-headingdisable LabelStyle");
@@ -1380,7 +1382,9 @@ function OnLoadGridMyscan() {
 
 
 function GridOpenFile(SelectedFileName, sFilePath, IsPendingCheck, isClick) {
-    localStorage.setItem('IsSaveClickedSucessfull', "");
+    //Cap - 1141
+    if (document.getElementById("grdIndexing").rows.length <= 1)
+     localStorage.setItem('IsSaveClickedSucessfull', "");
     sFilePath = sFilePath.split("\\").join("/");
     { sessionStorage.setItem('StartLoading', 'true'); StartLoadFromPatChart(); }
     if (document.getElementById("hdnIsMyScan").value == "" && document.getElementById("grdIndexing").rows.length > 1 && IsPendingCheck != "") {
