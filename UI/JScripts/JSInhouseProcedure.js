@@ -544,74 +544,59 @@ function btnClearAllImplantable_Clicked(sender, args) {
 function CloseImplantable() {
     if (!document.getElementById('btnAdd').disabled) {
         event.preventDefault();
-        sessionStorage.setItem('StartLoading', 'true'); StartLoadFromPatChart();
-        if (document.getElementById('hdnBtnFind').value == "" && document.getElementById('txtDeviceIdentifier').value != "" && document.getElementById('txtDeviceIdentifier').readOnly == false) {
-            { sessionStorage.setItem('StartLoading', 'false'); StopLoadFromPatChart(); }
-            DisplayErrorMessage('280021');
-            document.getElementById('btnFind').disabled = false;
-            return;
-        }
-        else if (document.getElementById('txtProcedure').value == "99999-Implantable Devices" && document.getElementById('txtDeviceIdentifier').value == "" && document.getElementById('hdnBtnFind').value == "") {
-            { sessionStorage.setItem('StartLoading', 'false'); StopLoadFromPatChart(); }
-            DisplayErrorMessage('280022');
-            return;
-        }
-        $find("btnAdd").click();
-        { sessionStorage.setItem('StartLoading', 'false'); StopLoadFromPatChart(); }
-        $(top.window.document).find("#btnCloseImplantable").click();
-        EnableSaveImplantableDiagnosticOrder('false');
-        return false;
-        //$("body").append("<div id='dvdialogMenu' style='min-height: 65px !important; width: auto; max-height: none; height: auto; display: none;'>" +
-        //                       "<p style='font-family: Verdana,Arial,sans-serif; font-size: 12.5px;'>There are unsaved changes.Do you want to save them?</p></div>")
-        //dvdialog = $('#dvdialogMenu');
-        //myPos = "center center";
-        //atPos = 'center center';
-        //event.preventDefault();
 
-        //$(dvdialog).dialog({
-        //    modal: true,
-        //    title: "Capella EHR",
-        //    position: {
-        //        my: 'left' + " " + 'center',
-        //        at: 'center' + " " + 'center + 100px'
-        //    },
-        //    buttons: {
-        //        "Yes": function () {                   
-        //            sessionStorage.setItem('StartLoading', 'true'); StartLoadFromPatChart();
-        //            if (document.getElementById('hdnBtnFind').value == "" && document.getElementById('txtDeviceIdentifier').value != "" && document.getElementById('txtDeviceIdentifier').readOnly==false) {
-        //                { sessionStorage.setItem('StartLoading', 'false'); StopLoadFromPatChart(); }
-        //                DisplayErrorMessage('280021');
-        //                document.getElementById('btnFind').disabled = false;
-        //                $(dvdialog).dialog("close");
-        //                $(dvdialog).remove();
-        //                return;
-        //            }
-        //            else if (document.getElementById('txtProcedure').value == "99999-Implantable Devices" && document.getElementById('txtDeviceIdentifier').value == "" && document.getElementById('hdnBtnFind').value=="") {
-        //                { sessionStorage.setItem('StartLoading', 'false'); StopLoadFromPatChart(); }
-        //                DisplayErrorMessage('280022');
-        //                $(dvdialog).dialog("close");
-        //                $(dvdialog).remove();
-        //                return;
-        //            }
-        //            $find("btnAdd").click();
-        //            $(dvdialog).dialog("close");
-        //            $(dvdialog).remove();
-        //            $(top.window.document).find("#btnCloseImplantable").click();
-        //            return false;
-        //        },
-        //        "No": function () {
-        //            $(dvdialog).dialog("close");
-        //            $(dvdialog).remove();
-        //            $(top.window.document).find("#btnCloseImplantable").click();
-        //            return false;
-        //        },
-        //        "Cancel": function () {
-        //            $(dvdialog).dialog("close");
-        //            $(dvdialog).remove();
-        //            return false;
-        //        }
-        //    }
-        //});
+        $("body").append("<div id='dvdialogMenu' style='min-height: 65px !important; width: auto; max-height: none; height: auto; display: none;'>" +
+            "<p style='font-family: Verdana,Arial,sans-serif; font-size: 12.5px;'>There are unsaved changes.Do you want to save them?</p></div>")
+        dvdialog = $('#dvdialogMenu');
+        myPos = "center center";
+        atPos = 'center center';
+
+        $(dvdialog).dialog({
+            modal: true,
+            title: "Capella EHR",
+            position: {
+                my: 'left' + " " + 'center',
+                at: 'center' + " " + 'center + 100px'
+            },
+            buttons: {
+                "Yes": function () {
+                    if (document.getElementById('hdnBtnFind').value == "" && document.getElementById('txtDeviceIdentifier').value != "" && document.getElementById('txtDeviceIdentifier').readOnly == false) {
+                        { sessionStorage.setItem('StartLoading', 'false'); StopLoadFromPatChart(); }
+                        DisplayErrorMessage('280021');
+                        document.getElementById('btnFind').disabled = false;
+                        return;
+                    }
+                    else if (document.getElementById('txtProcedure').value == "99999-Implantable Devices" && document.getElementById('txtDeviceIdentifier').value == "" && document.getElementById('hdnBtnFind').value == "") {
+                        { sessionStorage.setItem('StartLoading', 'false'); StopLoadFromPatChart(); }
+                        DisplayErrorMessage('280022');
+                        return;
+                    }
+                    else if ($('#txtDescription').val() == "") {
+                        { sessionStorage.setItem('StartLoading', 'false'); StopLoadFromPatChart(); }
+                        DisplayErrorMessage('280023');
+                        return;
+                    }
+                    $(dvdialog).dialog("close");
+                    $(dvdialog).remove();
+                    $find('btnAdd').set_enabled(true);
+                    EnableSaveDiagnosticOrder('true');
+                    $find('btnAdd').click();
+                    return false;
+                },
+                "No": function () {
+                    $(dvdialog).dialog("close");
+                    $(dvdialog).remove();
+                    $(top.window.document).find("#btnCloseImplantable").click();
+                    return false;
+                },
+                "Cancel": function () {
+                    $(dvdialog).dialog("close");
+                    $(dvdialog).remove();
+                    $(top.window.document).find("#btnCloseImplantable").click();
+                    return false;
+                }
+            }
+        });
     }
     else {
         { sessionStorage.setItem('StartLoading', 'false'); StopLoadFromPatChart(); }

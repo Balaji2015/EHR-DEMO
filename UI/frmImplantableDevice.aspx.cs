@@ -115,6 +115,7 @@ namespace Acurus.Capella.UI
                 }
                 btnFind.Enabled = false;
                 hdnBtnFind.Value = "";
+                btnAdd.Enabled = false;
             }
         }
       
@@ -129,6 +130,12 @@ namespace Acurus.Capella.UI
             else if (txtProcedure.Text == "99999-Implantable Devices" && txtDeviceIdentifier.Text.Trim() == string.Empty && hdnBtnFind.Value == "")
             {
                 ScriptManager.RegisterStartupScript(this, this.Page.GetType(), "Implantablealert", "DisplayErrorMessage('280022');{sessionStorage.setItem('StartLoading', 'false');StopLoadFromPatChart();}", true);
+                return;
+            }
+            //CAP-1046
+            else if (txtDescription.Text.Trim() == string.Empty)
+            {
+                ScriptManager.RegisterStartupScript(this, this.Page.GetType(), "Implantablealert", "DisplayErrorMessage('280023');{sessionStorage.setItem('StartLoading', 'false');StopLoadFromPatChart();}", true);
                 return;
             }
             else

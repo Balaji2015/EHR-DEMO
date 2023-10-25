@@ -1809,21 +1809,23 @@ namespace Acurus.Capella.UI
                 cboSpecimenUnits.Focus();
                 return false;
             }
-            
+
             //string sLAb = System.Configuration.ConfigurationManager.AppSettings["AncillaryLab"].ToUpper();
-            var lab = from l in ApplicationObject.facilityLibraryList where l.Short_Name == cboLab.Items[cboLab.SelectedIndex].Text select l;
-            IList<FacilityLibrary> facLabList = lab.ToList<FacilityLibrary>();
+            //CAP-697
+            //var lab = from l in ApplicationObject.facilityLibraryList where l.Short_Name == cboLab.Items[cboLab.SelectedIndex].Text select l;
+            //IList<FacilityLibrary> facLabList = lab.ToList<FacilityLibrary>();
 
             //if (cboLab.Items[cboLab.SelectedIndex].Text.ToUpper() == sLAb)
-            if (facLabList.Count>0)
-            {
-                var scheckProcedures = (from a in chklstFrequentlyUsedProcedures.Items.Cast<ListItem>() where a.Selected == true && a.Value != "HEADERROW" select a.Value.Split('~')[a.Value.Split('~').Length - 1]).Distinct().ToArray();
-                if (scheckProcedures.Count() > 1)
-                {
-                    ScriptManager.RegisterStartupScript(this, this.Page.GetType(), string.Empty, "Order_SaveUnsuccessful();DisplayErrorMessage('230158'); {sessionStorage.setItem('StartLoading', 'false');StopLoadFromPatChart();}", true);
-                    return false;
-                }
-            }
+
+            //if (facLabList.Count>0)
+            //{
+            //    var scheckProcedures = (from a in chklstFrequentlyUsedProcedures.Items.Cast<ListItem>() where a.Selected == true && a.Value != "HEADERROW" select a.Value.Split('~')[a.Value.Split('~').Length - 1]).Distinct().ToArray();
+            //    if (scheckProcedures.Count() > 1)
+            //    {
+            //        ScriptManager.RegisterStartupScript(this, this.Page.GetType(), string.Empty, "Order_SaveUnsuccessful();DisplayErrorMessage('230158'); {sessionStorage.setItem('StartLoading', 'false');StopLoadFromPatChart();}", true);
+            //        return false;
+            //    }
+            //}
 
             return true;
         }

@@ -227,8 +227,8 @@
                             <table style="width: 100%">
                                 <tr style="width: 100%">
                                     <td style="width: 13%">
-                                        <asp:Label ID="DevIdentifier" runat="server" Text="Device Identifier(UDI/DI)"
-                                           class="Editabletxtbox"></asp:Label>
+                                        <asp:Label ID="DevIdentifier" runat="server" Text="Device Identifier(UDI/DI)*"
+                                           class="Editabletxtbox MandLabelstyle"></asp:Label>
                                         <i id="tipforfindbtn" class="fa fa-question-circle tooltip"><span class="tooltiptext">Please enter the Device Indentifier(UDI/DI) and click find button.</span></i></td>
                                     <td style="width: 60%">
                                         <asp:TextBox ID="txtDeviceIdentifier" runat="server" Width="88%" class="Editabletxtbox" onclick="EnableFind();" onchange="EnableFind();"></asp:TextBox>

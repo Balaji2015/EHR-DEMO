@@ -549,6 +549,7 @@
 	<Message number="280020" Type="OK" Text="Please enter the UDI(Unique Device Identifier)" />
 	<Message number="280021" Type="OK" Text="Please click the Find button" />
 	<Message number="280022" Type="OK" Text="Please add Implantable Device details." />
+	<Message number="280023" Type="OK" Text="Please fill the valid Device Identifier(UDI/DI)" />
 
 
 	<Message number="290001" Type="ToolStrip" Text="Saved successfully." />
@@ -2300,6 +2301,7 @@
 	<Message number="7490011" Type="OK" Text= "Please Choose Accept/Deny."></Message>
 	<Message number="7490012" Type="OK" Text= "Please Enter the Amendment Notes."></Message>
 	<Message number="7490013" Type="OK" Text ="Please open the patient chart and select the encounter to view Amendment"></Message>
+	<Message number="7490014" Type="OK" Text ="Please open the patient chart and select the encounter to view the Feedback for coding exception"></Message>
 
 	<Message number="420064" Type="OK" Text="Please Select the Date Of Death" />
 	<Message number="420065" Type="OK" Text="Please Select the Reason for Death" />

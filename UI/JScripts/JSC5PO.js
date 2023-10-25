@@ -513,18 +513,25 @@ function OpenModal(data) {
         StartLoadingImage();
         QEncounterID = document.getElementById(GetClientId("hdnQencounterId")).value;
         if (QEncounterID != "") {
-            $(top.window.document).find("#TabException").modal({ backdrop: "static", keyboard: false }, 'show');
-            $(top.window.document).find("#TabModalExceptionTitle")[0].textContent = "Feedback for Coding Exception";
-            $(top.window.document).find("#TabmdldlgException")[0].style.width = "950px";
-            $(top.window.document).find("#TabmdldlgException")[0].style.height = "800px";
-            var sPath = ""
-            var patientName = $("[id*='lblPatientStrip']")[0].innerHTML.split('|')[0].trim();
-            sPath = "frmException.aspx?formName=" + "Feedback for Coding Exception" + "&PatientName=" + patientName;
-            $(top.window.document).find("#TabExceptionFrame")[0].style.height = "725px";
-            $(top.window.document).find("#TabExceptionFrame")[0].contentDocument.location.href = sPath;
-            $(top.window.document).find("#TabException").one("hidden.bs.modal", function (e) {
-            });
-            return false;
+            //CAP-1200
+            var humanID = document.getElementById(GetClientId("hdnHumanID")).value;
+            if (humanID == "" || humanID == undefined) {
+                StopLoadingImage();
+                DisplayErrorMessage('7490014');
+            } else {
+                $(top.window.document).find("#TabException").modal({ backdrop: "static", keyboard: false }, 'show');
+                $(top.window.document).find("#TabModalExceptionTitle")[0].textContent = "Feedback for Coding Exception";
+                $(top.window.document).find("#TabmdldlgException")[0].style.width = "950px";
+                $(top.window.document).find("#TabmdldlgException")[0].style.height = "800px";
+                var sPath = ""
+                var patientName = $("[id*='lblPatientStrip']")[0]?.innerHTML?.split('|')[0]?.trim() || "";
+                sPath = "frmException.aspx?formName=" + "Feedback for Coding Exception" + "&PatientName=" + patientName;
+                $(top.window.document).find("#TabExceptionFrame")[0].style.height = "725px";
+                $(top.window.document).find("#TabExceptionFrame")[0].contentDocument.location.href = sPath;
+                $(top.window.document).find("#TabException").one("hidden.bs.modal", function (e) {
+                });
+                return false;
+            }
         }
         else {
             StopLoadingImage();
