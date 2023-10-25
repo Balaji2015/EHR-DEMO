@@ -1764,7 +1764,7 @@
 	<Message number="115042" Type="OKCANCEL" Text="Would you like to save the changes before Moving to MA"></Message>
 	<Message number="115043" Type="OK" Text="Please select the Document Type"></Message>
 	<Message number="115044" Type="OK" Text="Please select the Document Sub Type"></Message>
-	<Message number="115045" Type="OK" Text="Please fill the page number"></Message>
+	<Message number="115045" Type="OK" Text="Please fill the valid page number"></Message>
 	<!--<Message number="115046" Type="OKCANCEL" Text="Would you like to Move to next Process without indexing all the pages?"></Message>-->
 	<Message number="115047" Type="OK" Text="Encounter ID is blank."></Message>
 	<Message number="115048" Type="OK" Text="Moved to Next Process."></Message>
