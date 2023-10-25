@@ -182,7 +182,7 @@ function btnSave_Clicked() {
         //CAP-1140
         var aNew = a.indexOf(',') >= 0 || a.indexOf('-') >= 0 ? a : parseInt(a || 0);
         if (aNew == 0) return DisplayErrorMessage("115045"), $("#hdnPageState").val(""), !1;
-        if (aNew != 0)
+        if (aNew != 0) {
             for (var r = a.split(","), l = 0; l < r.length; l++) {
                 if (r[l].indexOf("-") > -1) {
                     var o = r[l].split("-");
@@ -195,6 +195,12 @@ function btnSave_Clicked() {
                 else if (parseInt(r[l]) > i)
                     return alert("Entered page number exceeds the total no of pages"), $("#hdnPageState").val(""), !1;
             }
+            //CAP-1221
+            var regex = /\b0+\b(?!\d)/g; // regular expression to match one or more "0" characters not followed by any digit
+            if (regex.test(a)) {
+                return DisplayErrorMessage("115045"), $("#hdnPageState").val(""), !1;
+            }
+        }
     }
     var d = $("#cboStandingOrders");
     if (!d[0].disabled) {
