@@ -1421,7 +1421,9 @@ namespace Acurus.Capella.UI
                             {
                                 btnDeleteIndexing.Visible = true;
                                 hdnfileindexid.Value = lstScanFiles[0].Scan_Index_Conversion_ID.ToString();
-                                DelIndexDiv.Attributes.Add("width", "40% !important");
+                                //Cap - 1199
+                                //DelIndexDiv.Attributes.Add("width", "40% !important");
+                                DelIndexDiv.Attributes.Add("width", "35% !important");
                             }
                             else
                             {
