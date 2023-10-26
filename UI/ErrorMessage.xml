@@ -13,8 +13,8 @@
 	<Message number="000012" Type="OK" Text="Session Expired. Please login again."></Message>
 	<Message number="000013" Type="OK" Text="Method {0} is not found in the Local Database."></Message>
 	<Message number="000014" Type="OK" Text="PCP ID {0} is not found in the Physician Library Table. Please contact Capella Support at 714 221 6311 for further assistance.."></Message>
-	<Message number="000015" Type="OK" Text="Please select the file first."></Message>
-	<Message number="000016" Type="OK" Text="Please select the standard first."></Message>
+	<Message number="000015" Type="OK" Text="Please select the file."></Message>
+	<Message number="000016" Type="OK" Text="Please select the standard."></Message>
 	<Message number="000017" Type="OK" Text="Input file is not in the correct format."></Message>
 	<Message number="000018" Type="OK" Text="Capella dictionary file is not found. The application will now exit."></Message>
 	<Message number="000019" Type="OK" Text="Invalid special characters { } [ ] | \\ ; :"></Message>
@@ -53,7 +53,7 @@
 	<Message number="010011" Type="OK" Text="Password updated successfully."></Message>
 	<Message number="010021" Type="ToolStrip" Text="Password changed successfully."></Message>
 	<Message number="010012" Type="OK" Text="Please Enter Amendment to Treatment Plan"></Message>
-	<Message number="010013" Type="OK" Text="Please change the Password First."></Message>
+	<Message number="010013" Type="OK" Text="Please change the Password."></Message>
 	<Message number="010014" Type="OK" Text="Capella is undergoing scheduled downtime. The application will now exit."></Message>
 	<Message number="010015" Type="OK" Text="Please sign this encounter before proceeding to the next process."></Message>
 	<Message number="010016" Type="OK" Text="Your new password cannot be the same as your old password."></Message>
@@ -65,7 +65,7 @@
 	<Message number="010022" Type="OK" Text="Please enter Corrections to be made."></Message>
 	<Message number="010024" Type="OK" Text="The default server is not mapped for the user. Please contact support."></Message>
 	
-	<Message number="050001" Type="OK" Text="Please select a line item first."></Message>
+	<Message number="050001" Type="OK" Text="Please select a line item."></Message>
 	<Message number="050002" Type="ToolStrip" Text="Moved Successfully."></Message>
 	<Message number="050003" Type="OK" Text="Please Enter the Old Password."></Message>
 	
@@ -95,10 +95,10 @@
 	<Message number="110024" Type="OK" Text ="You cannot check in a patient with the selected Appointment Status."></Message>
 	<Message number="110025" Type="OK" Text ="The Next Process is not available. Please contact the System Administrator."></Message>
 	<Message number="110026" Type="OK" Text ="Type of Visit list is not Found. Please contact Acurus Support."></Message>
-	<Message number="110027" Type="OK" Text ="Please select the appointment first."></Message>
+	<Message number="110027" Type="OK" Text ="Please select the appointment."></Message>
 	<Message number="110028" Type="OK" Text ="Please select the appointment Start Time."></Message>
 	<Message number="110029" Type="OK" Text ="To Date cannot be earlier than From Date"></Message>
-	<Message number="110030" Type="OK" Text ="Please select the Patient first."></Message>
+	<Message number="110030" Type="OK" Text ="Please select the Patient."></Message>
 	<Message number="110031" Type="OK" Text ="The specified patient has an appointment already in {0}."></Message>
 	<Message number="110032" Type="OK" Text ="Physician Name not Found. Please contact the System Administrator."></Message>
 	<Message number="110033" Type="OK" Text ="Please enter the Reason for Cancellation"></Message>
@@ -197,8 +197,8 @@
 	<Message number="180024" Type="OK" Text="Please enter the To Date in either of the following formats: yyyy/MMM/dd or yyyy/MMM or yyyy" />
 	<Message number="180025" Type="OK" Text="Please select any one of the fields."></Message>
 	<Message number="180026" Type="OKCANCEL" Text="Are you sure you want to continue and &#xD;verify PFSH?"></Message>
-	<Message number="180027" Type="OK" Text="Please select the Assigned Physician first"></Message>
-	<Message number="180028" Type="OK" Text="Please sign the Encounter first"></Message>
+	<Message number="180027" Type="OK" Text="Please select the Assigned Physician"></Message>
+	<Message number="180028" Type="OK" Text="Please sign the Encounter"></Message>
 	<Message number="180029" Type="ToolStrip" Text="Encounter is Digitally Signed and Moved to Next Process"></Message>
 	<Message number="180030" Type="OK" Text="Please fill at least one Serv./Proc. Codes."></Message>
 	<Message number="180031" Type="OK" Text="Please select at least one Primary ICD for all items in the Serv./Proc. Code screen"></Message>
@@ -469,7 +469,7 @@
 	<Message number="210005" Type="OK" Text="Error occurred during update (Current owner cannot be null). contact Capella Support at 714 221 6311 for further assistance." />
 	<Message number="210006" Type="OK" Text="Please enter the feedback for the open issues" />
 	<Message number="210007" Type="OKCANCEL" Text="Would you like to save the data entered in tab {0}?" />
-	<Message number="210008" Type="OK" Text="Please open the Demographics and upload the Patient to RCopia First." />
+	<Message number="210008" Type="OK" Text="Please open the Demographics and upload the Patient to RCopia." />
 	<Message number="210009" Type="ToolStrip" Text="Moved to MA" />
 	<Message number="210010" Type="OK" Text="There is no previous encounter."></Message>
 	<Message number="210011" Type="OKCANCEL" Text="Would you like to save the chief Complaint(s)?"></Message>
@@ -512,7 +512,7 @@
 	<Message number="270010" Type="OKCANCEL" Text="Are you sure you want to clear the whole data?" />
 
 	<Message number="270101" Type="ToolStrip" Text="Uploaded Successfully." />
-	<Message number="270102" Type="OK" Text="Please select a file first." />
+	<Message number="270102" Type="OK" Text="Please select a file." />
 	<Message number="270103" Type="ToolStrip" Text="Deleted Successfully." />
 	<Message number="270104" Type="OKCANCEL" Text="Are you sure you want to delete the group?" />
 	<Message number="270105" Type="OK" Text="Please select the grouptype." />
@@ -635,7 +635,7 @@
 	<Message number="380055" Type="OK" Text="Please Enter Copay amount or Received on account."></Message>
 	<Message number="380056" Type="OK" Text="Insurance details with entered policy holder ID already exist"></Message>
 	<Message number="380057" Type="OK" Text="Policy Holder ID is Invalid!&#xA;Format Example: {0}" />
-	<Message number="380058" Type="OK" Text="Please Select the Facility-Dos First"></Message>
+	<Message number="380058" Type="OK" Text="Please Select the Facility-Dos"></Message>
 	<Message number="380059" Type="OK" Text="Please enter a valid $ amount to add payment entry."></Message>
 
 
@@ -670,7 +670,7 @@
 	<Message number="330017" Type="OK" Text="This feature is not currently available. Please contact the System Administrator."></Message>
 	<Message number="330018" Type="OK" Text="Facility with the same name already exists."></Message>
 	<Message number="330019" Type="OKCANCEL" Text="Would you like to Clear All without saving?" />
-	<Message number="330020" Type="OK" Text="Please fill the Insurance First" />
+	<Message number="330020" Type="OK" Text="Please fill the Insurance" />
 
 
 
@@ -1283,7 +1283,7 @@
 	<Message number="980004" Type="OKCANCEL" Text="There are unsaved changes.&#xD;Click &apos;OK&apos; to go back &amp; save the changes or&#xD;Click &apos;Cancel&apos; to proceed without saving."></Message>
 	<Message number="980005" Type="OK" Text="Maximum of '{0}' Summary Bar is only Allowed"></Message>
 	<Message number="980006" Type="OK" Text="Minimum of '{0}' Summary Bar is Required"></Message>
-	<Message number="980007" Type="OK" Text="Please select the '{0}' First"></Message>
+	<Message number="980007" Type="OK" Text="Please select the '{0}'"></Message>
 	<Message number="980008" Type="OK" Text="Patient Summary bar does not have minimum Summary List "></Message>
 	<Message number="980009" Type="OK" Text="Patient Summary bar has Summary List more than maximum Summary List "></Message>
 	<Message number="980010" Type="OK" Text="Object Type cannot be empty"></Message>
@@ -1520,7 +1520,7 @@
 	<Message number="755006" Type="OK" Text="From Date cannot be greater than To Date"></Message>
 	<Message number="755007" Type="OK" Text="To Date cannot be Empty"></Message>
 	<Message number="755008" Type="OK" Text="To Date cannot be Less than From Date"></Message>
-	<Message number="755009" Type="OK" Text="Select the Physician first"></Message>
+	<Message number="755009" Type="OK" Text="Select the Physician"></Message>
 	<Message number="755010" Type="OKCANCEL" Text="Would you like to clear tha data?"></Message>
 
 
@@ -1894,13 +1894,13 @@
 	<Message number="7090014" Type="OK" Text="Print requisition is not applicable for Paper Order."></Message>
 
 	<!--<frmOrderException>-->
-	<Message number="7100001" Type="OK" Text="Please select a line item from Unassigned Results first."></Message>
+	<Message number="7100001" Type="OK" Text="Please select a line item from Unassigned Results."></Message>
 	<Message number="7100002" Type="OK" Text="Please select the correct patient and match."></Message>
 	<Message number="7100003" Type="YesNo" Text="Would you like to close?" />
 	<Message number="7100004" Type="OK" Text="Please select the correct order to match." />
 	<Message number="7100005" Type="OK" Text="Please fill any one of the search criteria" />
 	<Message number="7100006" Type="OK" Text="Please select a result and an order to match." />
-	<Message number="7100007" Type="OK" Text="Please select a result first." />
+	<Message number="7100007" Type="OK" Text="Please select a result." />
 	<Message number="7100008" Type="OK" Text="Results matched with patient." />
 	<Message number="7100009" Type="OK" Text="Please select a patient to match the result." />
 	<Message number="7100010" Type="OK" Text="Results matched with patient." />
@@ -2401,7 +2401,7 @@
 	<Message number="9030011" Type="OK" Text="Please select the physician or patient."></Message>
 	<Message number="9030012" Type="OK" Text="Please select the encounter match."></Message>
 	<Message number="9030013" Type="OK" Text="Please save the tab match."></Message>
-	<Message number="9030014" Type="OK" Text="Please select a Order first."></Message>
+	<Message number="9030014" Type="OK" Text="Please select a Order."></Message>
 	<Message number="9030015" Type="OK" Text="Please select a file to parse."></Message>
 	<Message number="9030016" Type="ToolStrip" Text="Process completed successfully."></Message>
 	<Message number="9030017" Type="OK" Text="Please select at least one result Item."></Message>
@@ -2777,12 +2777,12 @@
 	<Message number="1007007" Type="OK" Text="Mail Sent Successfully To {0}."></Message>
 	<Message number="1007008" Type="OK" Text="Mail Received Sucessfully."></Message>
 	<Message number="1007009" Type="OK" Text="Mail Sending Failed {0}."></Message>
-	<Message number="1007010" Type="OK" Text="Please Click generate button first."></Message>
+	<Message number="1007010" Type="OK" Text="Please Click generate button."></Message>
 	<Message number="1007011" Type="OK" Text="There are no encounter(s) available for the selected patients."></Message>
 	<Message number="1007012" Type="OK" Text="User xml file is not found. If issue continues, Please contact Support."></Message>
 	<Message number="1007013" Type="OK" Text="CDS Rules list is not found in DB. Please relogin and try again.If issue continues, Please contact Support."></Message>
 	<Message number="1007014" Type="OK" Text="Please Enter the Valid Direct Recipient Mail ID"></Message>
-	<Message number="1007015" Type="OK" Text="Please generate the clinical summary first."></Message>
+	<Message number="1007015" Type="OK" Text="Please generate the clinical summary."></Message>
 	<Message number="1007016" Type="ToolStrip" Text="Scheduled successfully."></Message>
 	<Message number="1007017" Type="OK" Text="EMail Port is not mapped in the DB. Cannot send mail."></Message>
 	<Message number="1007018" Type="OK" Text="EMail Password is not mapped in the DB. Cannot send mail."></Message>
@@ -2963,7 +2963,7 @@
 	<Message number="1011158" Type="OKCANCEL" Text="Would you like to cancel without changes?" />
 	<Message number="1011159" Type="ToolStrip" Text="Deleted successfully." />
 	<Message number="1011160" Type="OK" Text="Please Enter Valid To Date."/>
-	<Message number="1011161" Type="OK" Text="Please select the patient first."/>
+	<Message number="1011161" Type="OK" Text="Please select the patient."/>
 	<Message number="1011162" Type="OK" Text="Please select the services from same authorization number."/>
 	<Message number="1011163" Type="OK" Text="Please enter the Referred From Provider."/>
 	<Message number="1011164" Type="OK" Text="Please enter the Referred To Provider or Select Facility."/>

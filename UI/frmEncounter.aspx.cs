@@ -3646,14 +3646,6 @@ namespace Acurus.Capella.UI
             }
         }
 
-        protected void btnQRCode_ServerClick(object sender, EventArgs e)
-        {
-
-        }
-
-        protected void btnAkidoNote_ServerClick(object sender, EventArgs e)
-        {
-
-        }
+        
     }
 }
