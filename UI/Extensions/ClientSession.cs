@@ -69,6 +69,7 @@ namespace Acurus.Capella.UI
         private const string _LegalOrg = "ClientLegalOrg";
         private const string _UserCarrier = "ClientUserCarrier";
         private const string _bFollows_DST = "ClientbFollows_DST";
+        private const string _Is_All_Facilities = "ClientIs_All_Facilities";
 
         // private const string _NotificationCount = "ClientNotificationCount";//BugID:47780
         // public static bool bIsMandatoryNotifPresent = false;
@@ -719,6 +720,20 @@ namespace Acurus.Capella.UI
             set
             {
                 HttpContext.Current.Session[_bFollows_DST] = value;
+            }
+        }
+
+        public static string Is_All_Facilities
+        {
+            get
+            {
+                return HttpContext.Current != null ? (HttpContext.Current.Session != null ? (HttpContext.Current.Session[_Is_All_Facilities] != null ? (string)HttpContext.Current.Session[_Is_All_Facilities] : string.Empty) : string.Empty) : string.Empty;
+
+            }
+
+            set
+            {
+                HttpContext.Current.Session[_Is_All_Facilities] = value;
             }
         }
         # endregion

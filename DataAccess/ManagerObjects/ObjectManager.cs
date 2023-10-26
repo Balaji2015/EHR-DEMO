@@ -2023,39 +2023,77 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
             {
                 try
                 {
-                    ArrayList encounterList = null;
-
-                    IQuery query1 = Mysession.GetNamedQuery("FillMyEncounterObjectDetails.WithoutFacility.WithAllAppointments.Count");
-
-                    if (ProcessType == "UNASSIGNED")
+                    if (FacName.Contains("ViewAllFacilities"))
                     {
-                        query1 = Mysession.GetNamedQuery("FillMyEncounterObjectDetails.WithFacility.WithAllAppointments.Count");
-                        // query1.SetInt32(0, DefaultNoofDays);
-                        query1.SetString(0, UserName);
+
+                        ArrayList encounterList = null;
+
+                        IQuery query1 = Mysession.GetNamedQuery("FillMyEncounterObjectDetails.WithoutFacility.WithAllAppointments.Count");
+
                         if (ProcessType == "UNASSIGNED")
                         {
-                            query1.SetString(1, "UNKNOWN");
+                            query1 = Mysession.GetNamedQuery("FillMyEncounterObjectDetails.WithFacility.WithAllAppointments.chkViewAllFacilities.Count");
+                            // query1.SetInt32(0, DefaultNoofDays);
+                            query1.SetString(0, UserName);
+                            if (ProcessType == "UNASSIGNED")
+                            {
+                                query1.SetString(1, "UNKNOWN");
+                            }
+                            else
+                            {
+                                query1.SetString(1, UserName);
+                            }
+                            //query1.SetString(2, FacName);
+
+
+
                         }
                         else
                         {
-                            query1.SetString(1, UserName);
+
+                            query1.SetString(0, UserName);
+
                         }
-                        query1.SetString(2, FacName);
 
-
-
+                        query1.SetParameterList("ObjList", ObjType);
+                        encounterList = new ArrayList(query1.List());
+                        EncounterCount = Convert.ToUInt32(encounterList[0]);
                     }
                     else
                     {
+                        ArrayList encounterList = null;
 
-                        query1.SetString(0, UserName);
+                        IQuery query1 = Mysession.GetNamedQuery("FillMyEncounterObjectDetails.WithoutFacility.WithAllAppointments.Count");
 
+                        if (ProcessType == "UNASSIGNED")
+                        {
+                            query1 = Mysession.GetNamedQuery("FillMyEncounterObjectDetails.WithFacility.WithAllAppointments.Count");
+                            // query1.SetInt32(0, DefaultNoofDays);
+                            query1.SetString(0, UserName);
+                            if (ProcessType == "UNASSIGNED")
+                            {
+                                query1.SetString(1, "UNKNOWN");
+                            }
+                            else
+                            {
+                                query1.SetString(1, UserName);
+                            }
+                            query1.SetString(2, FacName);
+
+
+
+                        }
+                        else
+                        {
+
+                            query1.SetString(0, UserName);
+
+                        }
+
+                        query1.SetParameterList("ObjList", ObjType);
+                        encounterList = new ArrayList(query1.List());
+                        EncounterCount = Convert.ToUInt32(encounterList[0]);
                     }
-
-                    query1.SetParameterList("ObjList", ObjType);
-                    encounterList = new ArrayList(query1.List());
-                    EncounterCount = Convert.ToUInt32(encounterList[0]);
-
                 }
                 catch (Exception Ex)
                 {
@@ -2066,6 +2104,13 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
         }
         public IList<MyQueueCountDTO> ObjectCount(string FacName, string[] ObjType, string UserName, int DefaultNoofDays)
         {
+
+
+            if (FacName.Contains("ViewAllFacilities"))
+            {
+                FacName = FacName.Split('~')[1];
+            }
+
             //string sAncillary = string.Empty;
             //if (System.Configuration.ConfigurationManager.AppSettings["AncillaryTestClinic"] != null)
             //{
@@ -2812,48 +2857,211 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
                         }
                         else
                         {
-                            if (bShowAll == true)
+                            if (FacName.Contains("ViewAllFacilities"))
                             {
-                                query1 = Mysession.CreateSQLQuery("select Carrier_ID,Facility_Name from map_user_carrier_facility where user_name='" + UserName + "'");
-                                ArrayList ilistObj = new ArrayList(query1.List());
-                                if (ilistObj != null)
+                                if (bShowAll == true)
                                 {
-                                    if (ilistObj.Count == 0)
+                                    query1 = Mysession.CreateSQLQuery("select Carrier_ID,Facility_Name from map_user_carrier_facility where user_name='" + UserName + "'");
+                                    ArrayList ilistObj = new ArrayList(query1.List());
+                                    if (ilistObj != null)
                                     {
-                                        query1 = Mysession.GetNamedQuery("FillMyEncounterObjectDetails.WithFacility.WithAllAppointments");
-                                        query1.SetString(0, FacName);
-                                        if (ProcessType == "UNASSIGNED")
+                                        if (ilistObj.Count == 0)
                                         {
-                                            query1.SetString(1, "UNKNOWN");
+                                            query1 = Mysession.GetNamedQuery("FillMyEncounterObjectDetails.WithFacility.WithAllAppointments.chkViewAllFacilities");
+                                            //query1.SetString(0, FacName);
+                                            if (ProcessType == "UNASSIGNED")
+                                            {
+                                                query1.SetString(0, "UNKNOWN");
+                                            }
+                                            else
+                                            {
+                                                query1.SetString(0, UserName);
+                                            }
+                                            query1.SetString(1, UserName);
                                         }
                                         else
                                         {
+                                            string[] CarrierList = new string[ilistObj.Count];
+                                            //string[] FacilityList = new string[ilistObj.Count];
+                                            int iCount = 0;
+                                            foreach (object item in ilistObj)
+                                            {
+                                                object[] obj = (object[])item;
+
+                                                CarrierList[iCount] = obj[0].ToString();
+                                                //if (obj[1].ToString() == "ALL")
+                                                //    FacilityList[iCount] = FacName;
+                                                //else
+                                                //    FacilityList[iCount] = obj[1].ToString();
+                                                iCount++;
+                                            }
+
+                                            if (CarrierList.Length == 1 && CarrierList[0] == "0" )//&& FacilityList.Length == 1)
+                                            {
+                                                query1 = Mysession.GetNamedQuery("FillMyEncounterObjectDetails.WithFacility.WithAllAppointments.chkViewAllFacilities");
+                                                //query1.SetString(0, FacName);
+
+                                                if (ProcessType == "UNASSIGNED")
+                                                {
+                                                    query1.SetString(0, "UNKNOWN");
+                                                }
+                                                else
+                                                {
+                                                    query1.SetString(0, UserName);
+                                                }
+                                                query1.SetString(1, UserName);
+                                            }
+                                            else
+                                            {
+                                                query1 = Mysession.GetNamedQuery("FillMyEncounterObjectDetails.WithFacility.WithAllAppointments.WithCarrier.chkViewAllFacilities");
+
+                                                if (ProcessType == "UNASSIGNED")
+                                                {
+                                                    query1.SetString(0, "UNKNOWN");
+                                                }
+                                                else
+                                                {
+                                                    query1.SetString(0, UserName);
+                                                }
+                                                query1.SetString(1, UserName);
+
+                                                //query1.SetParameterList("FacList", FacilityList);
+                                                query1.SetParameterList("CarrierList", CarrierList);
+                                            }
+                                        }
+                                    }
+
+                                    //if (Carrier == "0")
+                                    //{
+                                    //    query1 = Mysession.GetNamedQuery("FillMyEncounterObjectDetails.WithFacility.WithAllAppointments");
+                                    //}
+                                    //else
+                                    //{
+                                    //    query1 = Mysession.GetNamedQuery("FillMyEncounterObjectDetails.WithFacility.WithAllAppointments.WithCarrier");
+                                    //    query1.SetString(3, Carrier);
+                                    //}
+                                    //query1.SetString(0, FacName);
+
+                                    //if (ProcessType == "UNASSIGNED")
+                                    //{
+                                    //    query1.SetString(1, "UNKNOWN");
+                                    //}
+                                    //else
+                                    //{
+                                    //    query1.SetString(1, UserName);
+                                    //}
+                                    //query1.SetString(2, UserName);
+
+                                }
+                                else
+                                {
+                                    query1 = Mysession.CreateSQLQuery("select Carrier_ID,Facility_Name from map_user_carrier_facility where user_name='" + UserName + "'");
+                                    ArrayList ilistObj = new ArrayList(query1.List());
+                                    if (ilistObj != null)
+                                    {
+                                        if (ilistObj.Count == 0)
+                                        {
+                                            query1 = Mysession.GetNamedQuery("FillMyEncounterObjectDetails.WithFacility.WithoutAllAppointments.chkViewAllFacilities");
+                                            //query1.SetString(0, FacName);
+
+                                            if (ProcessType == "UNASSIGNED")
+                                            {
+                                                query1.SetString(0, "UNKNOWN");
+                                            }
+                                            else
+                                            {
+                                                query1.SetString(0, UserName);
+                                            }
                                             query1.SetString(1, UserName);
                                         }
-                                        query1.SetString(2, UserName);
-                                    }
-                                    else
-                                    {
-                                        string[] CarrierList = new string[ilistObj.Count];
-                                        string[] FacilityList = new string[ilistObj.Count];
-                                        int iCount = 0;
-                                        foreach (object item in ilistObj)
+                                        else
                                         {
-                                            object[] obj = (object[])item;
+                                            string[] CarrierList = new string[ilistObj.Count];
+                                            //string[] FacilityList = new string[ilistObj.Count];
+                                            int iCount = 0;
+                                            foreach (object item in ilistObj)
+                                            {
+                                                object[] obj = (object[])item;
 
-                                            CarrierList[iCount] = obj[0].ToString();
-                                            if (obj[1].ToString() == "ALL")
-                                                FacilityList[iCount] = FacName;
+                                                CarrierList[iCount] = obj[0].ToString();
+                                                //if (obj[1].ToString() == "ALL")
+                                                //    FacilityList[iCount] = FacName;
+                                                //else
+                                                //    FacilityList[iCount] = obj[1].ToString();
+                                                iCount++;
+                                            }
+
+                                            if (CarrierList.Length == 1 && CarrierList[0] == "0" )//&& FacilityList.Length == 1)
+                                            {
+                                                query1 = Mysession.GetNamedQuery("FillMyEncounterObjectDetails.WithFacility.WithoutAllAppointments.chkViewAllFacilities");
+                                                //query1.SetString(0, FacName);
+
+                                                if (ProcessType == "UNASSIGNED")
+                                                {
+                                                    query1.SetString(0, "UNKNOWN");
+                                                }
+                                                else
+                                                {
+                                                    query1.SetString(0, UserName);
+                                                }
+                                                query1.SetString(1, UserName);
+                                            }
                                             else
-                                                FacilityList[iCount] = obj[1].ToString();
-                                            iCount++;
-                                        }
+                                            {
+                                                query1 = Mysession.GetNamedQuery("FillMyEncounterObjectDetails.WithFacility.WithoutAllAppointments.WithCarrier.chkViewAllFacilities");
+                                                // query1.SetString(0, FacName);
 
-                                        if (CarrierList.Length == 1 && CarrierList[0] == "0" && FacilityList.Length == 1)
+                                                if (ProcessType == "UNASSIGNED")
+                                                {
+                                                    query1.SetString(0, "UNKNOWN");
+                                                }
+                                                else
+                                                {
+                                                    query1.SetString(0, UserName);
+                                                }
+                                                query1.SetString(1, UserName);
+
+                                                //query1.SetParameterList("FacList", FacilityList);
+                                                query1.SetParameterList("CarrierList", CarrierList);
+                                            }
+                                        }
+                                    }
+
+                                    //if (Carrier == "0")
+                                    //{
+                                    //    query1 = Mysession.GetNamedQuery("FillMyEncounterObjectDetails.WithFacility.WithoutAllAppointments");
+                                    //}
+                                    //else
+                                    //{
+                                    //    query1 = Mysession.GetNamedQuery("FillMyEncounterObjectDetails.WithFacility.WithoutAllAppointments.WithCarrier");
+                                    //    query1.SetString(3, Carrier);
+                                    //}
+                                    //// query1.SetInt32(0, DefaultNoofDays);
+                                    //query1.SetString(0, FacName);
+
+                                    //if (ProcessType == "UNASSIGNED")
+                                    //{
+                                    //    query1.SetString(1, "UNKNOWN");
+                                    //}
+                                    //else
+                                    //{
+                                    //    query1.SetString(1, UserName);
+                                    //}
+                                    //query1.SetString(2, UserName);
+                                }
+                            }
+                            else
+                            {
+                                if (bShowAll == true)
+                                {
+                                    query1 = Mysession.CreateSQLQuery("select Carrier_ID,Facility_Name from map_user_carrier_facility where user_name='" + UserName + "'");
+                                    ArrayList ilistObj = new ArrayList(query1.List());
+                                    if (ilistObj != null)
+                                    {
+                                        if (ilistObj.Count == 0)
                                         {
                                             query1 = Mysession.GetNamedQuery("FillMyEncounterObjectDetails.WithFacility.WithAllAppointments");
                                             query1.SetString(0, FacName);
-
                                             if (ProcessType == "UNASSIGNED")
                                             {
                                                 query1.SetString(1, "UNKNOWN");
@@ -2866,85 +3074,85 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
                                         }
                                         else
                                         {
-                                            query1 = Mysession.GetNamedQuery("FillMyEncounterObjectDetails.WithFacility.WithAllAppointments.WithCarrier");
-
-                                            if (ProcessType == "UNASSIGNED")
+                                            string[] CarrierList = new string[ilistObj.Count];
+                                            string[] FacilityList = new string[ilistObj.Count];
+                                            int iCount = 0;
+                                            foreach (object item in ilistObj)
                                             {
-                                                query1.SetString(0, "UNKNOWN");
+                                                object[] obj = (object[])item;
+
+                                                CarrierList[iCount] = obj[0].ToString();
+                                                if (obj[1].ToString() == "ALL")
+                                                    FacilityList[iCount] = FacName;
+                                                else
+                                                    FacilityList[iCount] = obj[1].ToString();
+                                                iCount++;
+                                            }
+
+                                            if (CarrierList.Length == 1 && CarrierList[0] == "0" && FacilityList.Length == 1)
+                                            {
+                                                query1 = Mysession.GetNamedQuery("FillMyEncounterObjectDetails.WithFacility.WithAllAppointments");
+                                                query1.SetString(0, FacName);
+
+                                                if (ProcessType == "UNASSIGNED")
+                                                {
+                                                    query1.SetString(1, "UNKNOWN");
+                                                }
+                                                else
+                                                {
+                                                    query1.SetString(1, UserName);
+                                                }
+                                                query1.SetString(2, UserName);
                                             }
                                             else
                                             {
-                                                query1.SetString(0, UserName);
-                                            }
-                                            query1.SetString(1, UserName);
+                                                query1 = Mysession.GetNamedQuery("FillMyEncounterObjectDetails.WithFacility.WithAllAppointments.WithCarrier");
 
-                                            query1.SetParameterList("FacList", FacilityList);
-                                            query1.SetParameterList("CarrierList", CarrierList);
+                                                if (ProcessType == "UNASSIGNED")
+                                                {
+                                                    query1.SetString(0, "UNKNOWN");
+                                                }
+                                                else
+                                                {
+                                                    query1.SetString(0, UserName);
+                                                }
+                                                query1.SetString(1, UserName);
+
+                                                query1.SetParameterList("FacList", FacilityList);
+                                                query1.SetParameterList("CarrierList", CarrierList);
+                                            }
                                         }
                                     }
+
+                                    //if (Carrier == "0")
+                                    //{
+                                    //    query1 = Mysession.GetNamedQuery("FillMyEncounterObjectDetails.WithFacility.WithAllAppointments");
+                                    //}
+                                    //else
+                                    //{
+                                    //    query1 = Mysession.GetNamedQuery("FillMyEncounterObjectDetails.WithFacility.WithAllAppointments.WithCarrier");
+                                    //    query1.SetString(3, Carrier);
+                                    //}
+                                    //query1.SetString(0, FacName);
+
+                                    //if (ProcessType == "UNASSIGNED")
+                                    //{
+                                    //    query1.SetString(1, "UNKNOWN");
+                                    //}
+                                    //else
+                                    //{
+                                    //    query1.SetString(1, UserName);
+                                    //}
+                                    //query1.SetString(2, UserName);
+
                                 }
-
-                                //if (Carrier == "0")
-                                //{
-                                //    query1 = Mysession.GetNamedQuery("FillMyEncounterObjectDetails.WithFacility.WithAllAppointments");
-                                //}
-                                //else
-                                //{
-                                //    query1 = Mysession.GetNamedQuery("FillMyEncounterObjectDetails.WithFacility.WithAllAppointments.WithCarrier");
-                                //    query1.SetString(3, Carrier);
-                                //}
-                                //query1.SetString(0, FacName);
-
-                                //if (ProcessType == "UNASSIGNED")
-                                //{
-                                //    query1.SetString(1, "UNKNOWN");
-                                //}
-                                //else
-                                //{
-                                //    query1.SetString(1, UserName);
-                                //}
-                                //query1.SetString(2, UserName);
-
-                            }
-                            else
-                            {
-                                query1 = Mysession.CreateSQLQuery("select Carrier_ID,Facility_Name from map_user_carrier_facility where user_name='" + UserName + "'");
-                                ArrayList ilistObj = new ArrayList(query1.List());
-                                if (ilistObj != null)
+                                else
                                 {
-                                    if (ilistObj.Count == 0)
+                                    query1 = Mysession.CreateSQLQuery("select Carrier_ID,Facility_Name from map_user_carrier_facility where user_name='" + UserName + "'");
+                                    ArrayList ilistObj = new ArrayList(query1.List());
+                                    if (ilistObj != null)
                                     {
-                                        query1 = Mysession.GetNamedQuery("FillMyEncounterObjectDetails.WithFacility.WithoutAllAppointments");
-                                        query1.SetString(0, FacName);
-
-                                        if (ProcessType == "UNASSIGNED")
-                                        {
-                                            query1.SetString(1, "UNKNOWN");
-                                        }
-                                        else
-                                        {
-                                            query1.SetString(1, UserName);
-                                        }
-                                        query1.SetString(2, UserName);
-                                    }
-                                    else
-                                    {
-                                        string[] CarrierList = new string[ilistObj.Count];
-                                        string[] FacilityList = new string[ilistObj.Count];
-                                        int iCount = 0;
-                                        foreach (object item in ilistObj)
-                                        {
-                                            object[] obj = (object[])item;
-
-                                            CarrierList[iCount] = obj[0].ToString();
-                                            if (obj[1].ToString() == "ALL")
-                                                FacilityList[iCount] = FacName;
-                                            else
-                                                FacilityList[iCount] = obj[1].ToString();
-                                            iCount++;
-                                        }
-
-                                        if (CarrierList.Length == 1 && CarrierList[0] == "0" && FacilityList.Length == 1)
+                                        if (ilistObj.Count == 0)
                                         {
                                             query1 = Mysession.GetNamedQuery("FillMyEncounterObjectDetails.WithFacility.WithoutAllAppointments");
                                             query1.SetString(0, FacName);
@@ -2961,46 +3169,79 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
                                         }
                                         else
                                         {
-                                            query1 = Mysession.GetNamedQuery("FillMyEncounterObjectDetails.WithFacility.WithoutAllAppointments.WithCarrier");
-                                            // query1.SetString(0, FacName);
-
-                                            if (ProcessType == "UNASSIGNED")
+                                            string[] CarrierList = new string[ilistObj.Count];
+                                            string[] FacilityList = new string[ilistObj.Count];
+                                            int iCount = 0;
+                                            foreach (object item in ilistObj)
                                             {
-                                                query1.SetString(0, "UNKNOWN");
+                                                object[] obj = (object[])item;
+
+                                                CarrierList[iCount] = obj[0].ToString();
+                                                if (obj[1].ToString() == "ALL")
+                                                    FacilityList[iCount] = FacName;
+                                                else
+                                                    FacilityList[iCount] = obj[1].ToString();
+                                                iCount++;
+                                            }
+
+                                            if (CarrierList.Length == 1 && CarrierList[0] == "0" && FacilityList.Length == 1)
+                                            {
+                                                query1 = Mysession.GetNamedQuery("FillMyEncounterObjectDetails.WithFacility.WithoutAllAppointments");
+                                                query1.SetString(0, FacName);
+
+                                                if (ProcessType == "UNASSIGNED")
+                                                {
+                                                    query1.SetString(1, "UNKNOWN");
+                                                }
+                                                else
+                                                {
+                                                    query1.SetString(1, UserName);
+                                                }
+                                                query1.SetString(2, UserName);
                                             }
                                             else
                                             {
-                                                query1.SetString(0, UserName);
-                                            }
-                                            query1.SetString(1, UserName);
+                                                query1 = Mysession.GetNamedQuery("FillMyEncounterObjectDetails.WithFacility.WithoutAllAppointments.WithCarrier");
+                                                // query1.SetString(0, FacName);
 
-                                            query1.SetParameterList("FacList", FacilityList);
-                                            query1.SetParameterList("CarrierList", CarrierList);
+                                                if (ProcessType == "UNASSIGNED")
+                                                {
+                                                    query1.SetString(0, "UNKNOWN");
+                                                }
+                                                else
+                                                {
+                                                    query1.SetString(0, UserName);
+                                                }
+                                                query1.SetString(1, UserName);
+
+                                                query1.SetParameterList("FacList", FacilityList);
+                                                query1.SetParameterList("CarrierList", CarrierList);
+                                            }
                                         }
                                     }
+
+                                    //if (Carrier == "0")
+                                    //{
+                                    //    query1 = Mysession.GetNamedQuery("FillMyEncounterObjectDetails.WithFacility.WithoutAllAppointments");
+                                    //}
+                                    //else
+                                    //{
+                                    //    query1 = Mysession.GetNamedQuery("FillMyEncounterObjectDetails.WithFacility.WithoutAllAppointments.WithCarrier");
+                                    //    query1.SetString(3, Carrier);
+                                    //}
+                                    //// query1.SetInt32(0, DefaultNoofDays);
+                                    //query1.SetString(0, FacName);
+
+                                    //if (ProcessType == "UNASSIGNED")
+                                    //{
+                                    //    query1.SetString(1, "UNKNOWN");
+                                    //}
+                                    //else
+                                    //{
+                                    //    query1.SetString(1, UserName);
+                                    //}
+                                    //query1.SetString(2, UserName);
                                 }
-
-                                //if (Carrier == "0")
-                                //{
-                                //    query1 = Mysession.GetNamedQuery("FillMyEncounterObjectDetails.WithFacility.WithoutAllAppointments");
-                                //}
-                                //else
-                                //{
-                                //    query1 = Mysession.GetNamedQuery("FillMyEncounterObjectDetails.WithFacility.WithoutAllAppointments.WithCarrier");
-                                //    query1.SetString(3, Carrier);
-                                //}
-                                //// query1.SetInt32(0, DefaultNoofDays);
-                                //query1.SetString(0, FacName);
-
-                                //if (ProcessType == "UNASSIGNED")
-                                //{
-                                //    query1.SetString(1, "UNKNOWN");
-                                //}
-                                //else
-                                //{
-                                //    query1.SetString(1, UserName);
-                                //}
-                                //query1.SetString(2, UserName);
                             }
 
                         }

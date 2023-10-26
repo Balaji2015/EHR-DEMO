@@ -516,7 +516,7 @@ function OpenModal(data) {
             //CAP-1200
             var humanID = document.getElementById(GetClientId("hdnHumanID")).value;
             var encounterId = document.getElementById(GetClientId("hdnEncounterId")).value
-            if (humanID == "" || humanID == undefined || encounterId == "" || encounterId == undefined) {
+            if (humanID == "" || humanID == "0" || humanID == undefined || encounterId == "" || encounterId == "0" || encounterId == undefined) {
                 StopLoadingImage();
                 DisplayErrorMessage('7490014');
             } else {

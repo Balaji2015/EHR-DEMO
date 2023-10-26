@@ -290,7 +290,7 @@ function EnableSaveDiagnosticOrder(IsEnable) {
     }
 }
 function btnManageFrequentlyUsed_Click() {
-    
+
     $(top.window.document).find("#TabModal").modal({ backdrop: 'static', keyboard: false });
     $(top.window.document).find("#Tabmdldlg")[0].style.width = "85%";
     $(top.window.document).find("#Tabmdldlg")[0].style.height = "73%";
@@ -309,11 +309,12 @@ function btnAdd_Clicked(sender, args) {
     var utc = now.toUTCString();
     document.getElementById("hdnLocalTime").value = utc;
 
-  { sessionStorage.setItem('StartLoading', 'true'); StartLoadFromPatChart(); }
+    { sessionStorage.setItem('StartLoading', 'true'); StartLoadFromPatChart(); }
 
 }
 function btnAddImplantable(sender, args) {
-   sessionStorage.setItem('StartLoading', 'true'); StartLoadFromPatChart();
+    $find("btnAdd").set_text($("#btnAdd").attr("title"));
+    sessionStorage.setItem('StartLoading', 'true'); StartLoadFromPatChart();
 }
 
 function btnClearAll_Clicked(sender, args) {
@@ -342,7 +343,7 @@ function btnClearAll_Clicked(sender, args) {
         }
 
         $find('btnAdd').set_enabled(false);
-       
+
         EnableSaveDiagnosticOrder('false');
         document.getElementById('btnClear').click();
         { sessionStorage.setItem('StartLoading', 'false'); StopLoadFromPatChart(); }
@@ -376,7 +377,7 @@ function OnLoadProcedure() {
     top.window.document.getElementById('ctl00_Loading').style.display = "none";
     { sessionStorage.setItem('StartLoading', 'false'); StopLoadFromPatChart(); }
 
-    
+
     $("[id*=pbDropdown]").addClass('pbDropdownBackground');
 }
 
@@ -444,13 +445,13 @@ function ImplantableScreenOpen(isUDI) {
     var ProNotes = null;
     if (isUDI=="true")
     {
-         Prodecure = document.getElementById("hProcedure").value;
-         ProNotes = document.getElementById("hNotes").value;
+        Prodecure = document.getElementById("hProcedure").value;
+        ProNotes = document.getElementById("hNotes").value;
     }
     else
     { 
-         Prodecure = document.getElementById("txtProcedure").value;
-         ProNotes = document.getElementById("ctmDLC_procedure_txtDLC").value;
+        Prodecure = document.getElementById("txtProcedure").value;
+        ProNotes = document.getElementById("ctmDLC_procedure_txtDLC").value;
     }
     $(top.window.document).find("#TabModalImplantable").modal({ backdrop: 'static', keyboard: false }, 'show');
     $(top.window.document).find("#TabmdldlgImplantable")[0].style.width = "85%";
@@ -493,9 +494,9 @@ function EnableSaveImplantableDiagnosticOrder(IsEnable) {
     }
     else
     {
-    $($(window.top.document).find('iframe[id=ctl00_C5POBody_EncounterContainer]')[0].contentDocument).find("ul li a")[0].click();
-    $($(window.top.document).find('iframe[id=ctl00_C5POBody_EncounterContainer]')[0].contentDocument).find("ul li a")[8].click();
-    localStorage.setItem("Implant", "Procedures")
+        $($(window.top.document).find('iframe[id=ctl00_C5POBody_EncounterContainer]')[0].contentDocument).find("ul li a")[0].click();
+        $($(window.top.document).find('iframe[id=ctl00_C5POBody_EncounterContainer]')[0].contentDocument).find("ul li a")[8].click();
+        localStorage.setItem("Implant", "Procedures")
     }
 
 }
@@ -555,8 +556,8 @@ function CloseImplantable() {
             modal: true,
             title: "Capella EHR",
             position: {
-                my: 'left' + " " + 'center',
-                at: 'center' + " " + 'center + 100px'
+                my: myPos,
+                at: atPos
             },
             buttons: {
                 "Yes": function () {
@@ -578,6 +579,8 @@ function CloseImplantable() {
                     }
                     $(dvdialog).dialog("close");
                     $(dvdialog).remove();
+                    //CAP-874
+                    $find("btnAdd").set_text($("#btnAdd").attr("title"));
                     $find('btnAdd').set_enabled(true);
                     EnableSaveDiagnosticOrder('true');
                     $find('btnAdd').click();
@@ -592,7 +595,6 @@ function CloseImplantable() {
                 "Cancel": function () {
                     $(dvdialog).dialog("close");
                     $(dvdialog).remove();
-                    $(top.window.document).find("#btnCloseImplantable").click();
                     return false;
                 }
             }
