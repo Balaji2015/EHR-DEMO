@@ -44,6 +44,18 @@ namespace Acurus.Capella.UI
                 }
             }
 
+            if (ClientSession.Is_All_Facilities.ToUpper() == "Y")
+            {
+                chkViewAllFacilities.Visible = true;
+                lblViewAllFac.Visible= true;
+                chkViewAllFacilities.Checked = true;
+            }
+            else
+            {
+                chkViewAllFacilities.Visible = false;
+                lblViewAllFac.Visible = false;
+            }
+
             if (Request.Cookies["Human_Details"] != null)
             {
                 Response.Cookies["Human_Details"].Expires = DateTime.Today.AddDays(-1);
@@ -176,7 +188,7 @@ namespace Acurus.Capella.UI
         }
 
         [WebMethod(EnableSession = true)]
-        public static string MyEncounterLoad(string sShowall)
+        public static string MyEncounterLoad(string sShowall,string sViewAllFacilities)
         {
             if (ClientSession.UserName == string.Empty)
             {
@@ -267,7 +279,14 @@ namespace Acurus.Capella.UI
                 Hashtable LoadMyQ = new Hashtable();
                 IList<MyQueueCountDTO> QCount = new List<MyQueueCountDTO>();
                 UtilityManager.inserttologgingtable(ClientSession.EncounterId.ToString(), ClientSession.HumanId.ToString(), ClientSession.UserName, ClientSession.PhysicianId.ToString(), "MyQueue MyEncounterLoad LoadMyQHashTable DB call: Start", DateTime.Now, sGroup_ID_Log, "frmMyQueueNew");
-                LoadMyQ = wfMngr.LoadMyQHashTable(ClientSession.FacilityName, ObjType, ProcessType, ClientSession.UserName, false, iDefaultDays, "");//ClientSession.DefaultNoofDays);
+                if (sViewAllFacilities == "Checked")
+                {
+                    LoadMyQ = wfMngr.LoadMyQHashTable("ViewAllFacilities~"+ ClientSession.FacilityName, ObjType, ProcessType, ClientSession.UserName, false, iDefaultDays, "");//ClientSession.DefaultNoofDays);
+                }
+                else
+                {
+                    LoadMyQ = wfMngr.LoadMyQHashTable(ClientSession.FacilityName, ObjType, ProcessType, ClientSession.UserName, false, iDefaultDays, "");//ClientSession.DefaultNoofDays);
+                }
                 UtilityManager.inserttologgingtable(ClientSession.EncounterId.ToString(), ClientSession.HumanId.ToString(), ClientSession.UserName, ClientSession.PhysicianId.ToString(), "MyQueue MyEncounterLoad LoadMyQHashTable DB call: Start", DateTime.Now, sGroup_ID_Log, "frmMyQueueNew");
                 PatientQ = (IList<MyQ>)LoadMyQ["MyQ"];
                 var pat = new List<MyQ>();
@@ -904,7 +923,7 @@ namespace Acurus.Capella.UI
             return true;
         }
         [WebMethod(EnableSession = true)]
-        public static string LoadEncounter()
+        public static string LoadEncounter(string sViewAllFacilities)
         {
             if (ClientSession.UserName == string.Empty)
             {
@@ -926,7 +945,14 @@ namespace Acurus.Capella.UI
             Hashtable LoadMyQ = new Hashtable();
             IList<MyQueueCountDTO> QCount = new List<MyQueueCountDTO>();
             UtilityManager.inserttologgingtable(ClientSession.EncounterId.ToString(), ClientSession.HumanId.ToString(), ClientSession.UserName, ClientSession.PhysicianId.ToString(), "MyQueue LoadEncounter LoadMyQHashTable DB call : Start", DateTime.Now, sGroup_ID_Log, "frmMyQueueNew");
-            LoadMyQ = wfMngr.LoadMyQHashTable(ClientSession.FacilityName, ObjType, ProcessType, ClientSession.UserName, false, iDefaultDays, "");// ClientSession.DefaultNoofDays);
+            if (sViewAllFacilities == "Checked")
+            {
+                LoadMyQ = wfMngr.LoadMyQHashTable("ViewAllFacilities~" + ClientSession.FacilityName, ObjType, ProcessType, ClientSession.UserName, false, iDefaultDays, "");// ClientSession.DefaultNoofDays);
+            }
+            else
+            {
+                LoadMyQ = wfMngr.LoadMyQHashTable(ClientSession.FacilityName, ObjType, ProcessType, ClientSession.UserName, false, iDefaultDays, "");// ClientSession.DefaultNoofDays);
+            }
             UtilityManager.inserttologgingtable(ClientSession.EncounterId.ToString(), ClientSession.HumanId.ToString(), ClientSession.UserName, ClientSession.PhysicianId.ToString(), "MyQueue LoadEncounter LoadMyQHashTable DB call : End", DateTime.Now, sGroup_ID_Log, "frmMyQueueNew");
             PatientQ = (IList<MyQ>)LoadMyQ["MyQ"];
             var pat = new List<MyQ>();
@@ -1099,7 +1125,7 @@ namespace Acurus.Capella.UI
             return JsonConvert.SerializeObject(addendumGeneralQ.ToList<MyQ>());
         }
         [WebMethod(EnableSession = true)]
-        public static string LoadEncounterTabClick(string sShowall)
+        public static string LoadEncounterTabClick(string sShowall,string sViewAllFacilities)
         {
             if (ClientSession.UserName == string.Empty)
             {
@@ -1125,28 +1151,36 @@ namespace Acurus.Capella.UI
             IList<MyQ> MyQ;
             WFObjectManager wfMngr = new WFObjectManager();
             UtilityManager.inserttologgingtable(ClientSession.EncounterId.ToString(), ClientSession.HumanId.ToString(), ClientSession.UserName, ClientSession.PhysicianId.ToString(), "MyQueue LoadEncounterTabClick GetListObjects DB call: Start", DateTime.Now, sGroup_ID_Log, "frmMyQueueNew");
-            MyQ = wfMngr.GetListObjects(ClientSession.FacilityName, ObjType, ProcessType, ClientSession.UserName, bValue, iDefaultDays, string.Empty);// ClientSession.DefaultNoofDays);
-            UtilityManager.inserttologgingtable(ClientSession.EncounterId.ToString(), ClientSession.HumanId.ToString(), ClientSession.UserName, ClientSession.PhysicianId.ToString(), "MyQueue LoadEncounterTabClick GetListObjects DB call: End", DateTime.Now, sGroup_ID_Log, "frmMyQueueNew");
-            if (MyQ != null && MyQ.Count > 0)
+            if (sViewAllFacilities == "Checked")
             {
-                //MyQ = MyQ.Where(a => a.Current_Owner == "UNKNOWN" && a.EHR_Obj_Type != "DIAGNOSTIC ORDER" && a.EHR_Obj_Type != "IMAGE ORDER" && a.EHR_Obj_Type != "INTERNAL ORDER" && a.EHR_Obj_Type != "SCAN" && a.EHR_Obj_Type != "IMMUNIZATION ORDER" && a.EHR_Obj_Type != "REFERRAL ORDER" && a.Current_Process != "DICTATION_EXCEPTION" && a.Current_Process != "DICTATION_WAIT" && a.Facility_Name == ClientSession.FacilityName).ToList<MyQ>();
-                MyQ = MyQ.Where(a => a.EHR_Obj_Type != "DIAGNOSTIC ORDER" && a.EHR_Obj_Type != "DME ORDER" && a.EHR_Obj_Type != "IMAGE ORDER" && a.EHR_Obj_Type != "SCAN" && a.EHR_Obj_Type != "IMMUNIZATION ORDER" && a.EHR_Obj_Type != "REFERRAL ORDER" && a.Current_Process != "DICTATION_EXCEPTION" && a.Current_Process != "DICTATION_WAIT").ToList<MyQ>();
-
-                //  MyQ = MyQ.Where(a => a.Current_Owner == "UNKNOWN" && a.EHR_Obj_Type != "DIAGNOSTIC ORDER" && a.EHR_Obj_Type != "DME ORDER" && a.EHR_Obj_Type != "IMAGE ORDER" && a.EHR_Obj_Type != "SCAN" && a.EHR_Obj_Type != "IMMUNIZATION ORDER" && a.EHR_Obj_Type != "REFERRAL ORDER" && a.Current_Process != "DICTATION_EXCEPTION" && a.Current_Process != "DICTATION_WAIT" && a.Facility_Name == ClientSession.FacilityName).ToList<MyQ>();
-                MyQ = MyQ.OrderByDescending(a => a.Appt_Date_Time).ToList<MyQ>();
+                MyQ = wfMngr.GetListObjects("ViewAllFacilities~" + ClientSession.FacilityName, ObjType, ProcessType, ClientSession.UserName, bValue, iDefaultDays, string.Empty);// ClientSession.DefaultNoofDays); 
+            }
+            else
+            {
+                MyQ = wfMngr.GetListObjects(ClientSession.FacilityName, ObjType, ProcessType, ClientSession.UserName, bValue, iDefaultDays, string.Empty);// ClientSession.DefaultNoofDays); 
             }
 
-            //ulong Encountershowallcount = 0;
-            //Acurus.Capella.DataAccess.ManagerObjects.ObjectManager objMngr = new Acurus.Capella.DataAccess.ManagerObjects.ObjectManager();
-            //Encountershowallcount = objMngr.GetEncountershowallcount(ProcessType[0], ClientSession.UserName, ObjType, ClientSession.FacilityName);
+                UtilityManager.inserttologgingtable(ClientSession.EncounterId.ToString(), ClientSession.HumanId.ToString(), ClientSession.UserName, ClientSession.PhysicianId.ToString(), "MyQueue LoadEncounterTabClick GetListObjects DB call: End", DateTime.Now, sGroup_ID_Log, "frmMyQueueNew");
+                if (MyQ != null && MyQ.Count > 0)
+                {
+                    //MyQ = MyQ.Where(a => a.Current_Owner == "UNKNOWN" && a.EHR_Obj_Type != "DIAGNOSTIC ORDER" && a.EHR_Obj_Type != "IMAGE ORDER" && a.EHR_Obj_Type != "INTERNAL ORDER" && a.EHR_Obj_Type != "SCAN" && a.EHR_Obj_Type != "IMMUNIZATION ORDER" && a.EHR_Obj_Type != "REFERRAL ORDER" && a.Current_Process != "DICTATION_EXCEPTION" && a.Current_Process != "DICTATION_WAIT" && a.Facility_Name == ClientSession.FacilityName).ToList<MyQ>();
+                    MyQ = MyQ.Where(a => a.EHR_Obj_Type != "DIAGNOSTIC ORDER" && a.EHR_Obj_Type != "DME ORDER" && a.EHR_Obj_Type != "IMAGE ORDER" && a.EHR_Obj_Type != "SCAN" && a.EHR_Obj_Type != "IMMUNIZATION ORDER" && a.EHR_Obj_Type != "REFERRAL ORDER" && a.Current_Process != "DICTATION_EXCEPTION" && a.Current_Process != "DICTATION_WAIT").ToList<MyQ>();
+
+                    //  MyQ = MyQ.Where(a => a.Current_Owner == "UNKNOWN" && a.EHR_Obj_Type != "DIAGNOSTIC ORDER" && a.EHR_Obj_Type != "DME ORDER" && a.EHR_Obj_Type != "IMAGE ORDER" && a.EHR_Obj_Type != "SCAN" && a.EHR_Obj_Type != "IMMUNIZATION ORDER" && a.EHR_Obj_Type != "REFERRAL ORDER" && a.Current_Process != "DICTATION_EXCEPTION" && a.Current_Process != "DICTATION_WAIT" && a.Facility_Name == ClientSession.FacilityName).ToList<MyQ>();
+                    MyQ = MyQ.OrderByDescending(a => a.Appt_Date_Time).ToList<MyQ>();
+                }
+
+                //ulong Encountershowallcount = 0;
+                //Acurus.Capella.DataAccess.ManagerObjects.ObjectManager objMngr = new Acurus.Capella.DataAccess.ManagerObjects.ObjectManager();
+                //Encountershowallcount = objMngr.GetEncountershowallcount(ProcessType[0], ClientSession.UserName, ObjType, ClientSession.FacilityName);
 
 
 
-            //var result = new { data = MyQ, role = ClientSession.UserRole, EncounterCount = Encountershowallcount };
-            UtilityManager.inserttologgingtable(ClientSession.EncounterId.ToString(), ClientSession.HumanId.ToString(), ClientSession.UserName, ClientSession.PhysicianId.ToString(), "MyQueue LoadEncounterTabClick : End", DateTime.Now, sGroup_ID_Log, "frmMyQueueNew");
-            var result = new { data = MyQ, role = ClientSession.UserRole };
-            return JsonConvert.SerializeObject(result);
-        }
+                //var result = new { data = MyQ, role = ClientSession.UserRole, EncounterCount = Encountershowallcount };
+                UtilityManager.inserttologgingtable(ClientSession.EncounterId.ToString(), ClientSession.HumanId.ToString(), ClientSession.UserName, ClientSession.PhysicianId.ToString(), "MyQueue LoadEncounterTabClick : End", DateTime.Now, sGroup_ID_Log, "frmMyQueueNew");
+                var result = new { data = MyQ, role = ClientSession.UserRole };
+                return JsonConvert.SerializeObject(result);
+            }
 
 
 
@@ -1235,7 +1269,7 @@ namespace Acurus.Capella.UI
             return JsonConvert.SerializeObject(addendumGeneralQList);
         }
         [WebMethod(EnableSession = true)]
-        public static string MoveToMyEncounters(string[] data)
+        public static string MoveToMyEncounters(string[] data,string sViewAllFacilities)
         {
             if (ClientSession.UserName == string.Empty)
             {
@@ -1270,8 +1304,16 @@ namespace Acurus.Capella.UI
                     ExamRoom = dataMove[5].ToString();
                     string encounterID = dataMove[2];
                     string objType = dataMove[4];
-                    MyQ = EncMngr.UpdateEncounterMoveTo(Convert.ToUInt64(dataMove[2]), ClientSession.UserName, ClientSession.UserName, Convert.ToDateTime(localTime),
-                                                        ClientSession.CurrentObjectType, ExamRoom, ClientSession.FacilityName, objType, ProcessType, bValue, iDefaultDays, string.Empty);
+                    if (sViewAllFacilities == "Checked")
+                    {
+                        MyQ = EncMngr.UpdateEncounterMoveTo(Convert.ToUInt64(dataMove[2]), ClientSession.UserName, ClientSession.UserName, Convert.ToDateTime(localTime),
+                                                        ClientSession.CurrentObjectType, ExamRoom, "ViewAllFacilities~" + ClientSession.FacilityName, objType, ProcessType, bValue, iDefaultDays, string.Empty);
+                    }
+                    else
+                    {
+                        MyQ = EncMngr.UpdateEncounterMoveTo(Convert.ToUInt64(dataMove[2]), ClientSession.UserName, ClientSession.UserName, Convert.ToDateTime(localTime),
+                                                            ClientSession.CurrentObjectType, ExamRoom, ClientSession.FacilityName, objType, ProcessType, bValue, iDefaultDays, string.Empty);
+                    }
                     if (dataMove[6] != "")
                         ClientSession.HumanId = Convert.ToUInt64(dataMove[6]);
                     if (dataMove[2] != "")
@@ -1283,8 +1325,16 @@ namespace Acurus.Capella.UI
                 {
                     string wfObjectID = dataMove[2];
                     string objType = dataMove[4];
-                    MyQ = EncMngr.UpdateEncounterMoveTo(Convert.ToUInt64(dataMove[2]), ClientSession.UserName, ClientSession.UserName, Convert.ToDateTime(localTime),
-                                                         ClientSession.CurrentObjectType, ExamRoom, ClientSession.FacilityName, objType, ProcessType, bValue, iDefaultDays, string.Empty);
+                    if (sViewAllFacilities == "Checked")
+                    {
+                        MyQ = EncMngr.UpdateEncounterMoveTo(Convert.ToUInt64(dataMove[2]), ClientSession.UserName, ClientSession.UserName, Convert.ToDateTime(localTime),
+                            ClientSession.CurrentObjectType, ExamRoom, "ViewAllFacilities~" + ClientSession.FacilityName, objType, ProcessType, bValue, iDefaultDays, string.Empty);
+                    }
+                    else
+                    {
+                        MyQ = EncMngr.UpdateEncounterMoveTo(Convert.ToUInt64(dataMove[2]), ClientSession.UserName, ClientSession.UserName, Convert.ToDateTime(localTime),
+                            ClientSession.CurrentObjectType, ExamRoom, ClientSession.FacilityName, objType, ProcessType, bValue, iDefaultDays, string.Empty);
+                    }
                 }
 
                 if (MyQ != null && MyQ.Count > 0)

@@ -112,7 +112,7 @@ namespace Acurus.Capella.UI
                 ClientSession.SavedSession = "DELETED";
                 UtilityManager.inserttologgingtableforSessionTimeout("Login Page Load - Before Calling LandingintoEHR - Input is" + Request.Form["EHRUserName"], Request.Url.ToString(), string.Empty);
 
-                LandingintoEHR(Request.Form["EHRUserName"], Request.Form["EHRFacilityName"], Request.Form["EHRhdnLocalTime"], Request.Form["EHRhdnLocalDate"], Request.Form["EHRhdnUniversaloffset"], Request.Form["EHRhdnLocalDateAndTime"], Request.Form["EHRhdnFollowsDayLightSavings"], Request.Form["UserRole"], Request.Form["RCopiaUserName"], Request.Form["EMailAddress"], Request.Form["Is_RCopia_Notification_Required"], Request.Form["PhysicianId"], Request.Form["Landing_Screen_ID"], hdnGroupId.Value, Request.Form["PersonName"],Request.Form["LegalOrg"],Request.Form["UserCarrier"], Request.Form["IsFirstTimeCall"], Request.Form["DefaultServer"]);
+                LandingintoEHR(Request.Form["EHRUserName"], Request.Form["EHRFacilityName"], Request.Form["EHRhdnLocalTime"], Request.Form["EHRhdnLocalDate"], Request.Form["EHRhdnUniversaloffset"], Request.Form["EHRhdnLocalDateAndTime"], Request.Form["EHRhdnFollowsDayLightSavings"], Request.Form["UserRole"], Request.Form["RCopiaUserName"], Request.Form["EMailAddress"], Request.Form["Is_RCopia_Notification_Required"], Request.Form["PhysicianId"], Request.Form["Landing_Screen_ID"], hdnGroupId.Value, Request.Form["PersonName"],Request.Form["LegalOrg"],Request.Form["UserCarrier"], Request.Form["IsFirstTimeCall"], Request.Form["DefaultServer"], Request.Form["IsAllFacilities"]);
 
                 UtilityManager.inserttologgingtableforSessionTimeout("Login Page Load - After Calling LandingintoEHR - Input is", Request.Url.ToString(), string.Empty);
 
@@ -335,6 +335,7 @@ namespace Acurus.Capella.UI
                         data.Add("UserCarrier", objLoginDTO.UserCarrier);
                         data.Add("IsFirstTimeCall", "true");
                         data.Add("DefaultServer", login[0].Default_Server);
+                        data.Add("IsAllFacilities", login[0].Is_All_Facilities);
                         hdnroleLanding.Value = login[0].role;
                         hdnRCopia_User_NameLanding.Value = login[0].RCopia_User_Name;
                         hdnIs_RCopia_Notification_RequiredLanding.Value = login[0].Is_RCopia_Notification_Required;
@@ -348,7 +349,7 @@ namespace Acurus.Capella.UI
                         ClientSession.LegalOrg = login[0].Legal_Org;
                         ClientSession.UserCarrier = objLoginDTO.UserCarrier.ToString();
                         UtilityManager.inserttologgingtableforSessionTimeout("hdnbtnLogin_Click - After setting the parameters for redirection - " + txtUserName.Value, Request.Url.ToString(), string.Empty);
-
+                        ClientSession.Is_All_Facilities = login[0].Is_All_Facilities;
                         //IList<string> ilstUser = UtilityManager.FindUserSessionFiles(ClientSession.UserName, string.Empty);
                         //if (ilstUser.Count > 0)
                         //{
@@ -430,6 +431,7 @@ namespace Acurus.Capella.UI
                     ClientSession.LegalOrg = login[0].Legal_Org;
                     ClientSession.UserCarrier = objLoginDTO.UserCarrier.ToString();
                     Session["LandingScnID"] = login[0].Landing_Screen_ID;
+                    ClientSession.Is_All_Facilities = login[0].Is_All_Facilities;
 
                     //HttpCookie cookieLocal = new HttpCookie("CurrPhyId", login[0].Physician_Library_ID.ToString());
                     //cookieLocal.HttpOnly=false;
@@ -787,7 +789,7 @@ namespace Acurus.Capella.UI
             }
         }
 
-        public string LandingintoEHR(string sUserName, string sFacilityName, string shdnLocalTime, string shdnLocalDate, string shdnUniversaloffset, string shdnLocalDateAndTime, string shdnFollowsDayLightSavings, string sUserRole, string sRCopiaUserName, string sEMailAddress, string sIs_RCopia_Notification_Required, string sPhysicianId, string sLanding_Screen_ID, string shdnGroupId, string sPersonName,string sLegalOrg, string sUserCarrier, string sIsFirstTimeCall, string sDefaultServer)
+        public string LandingintoEHR(string sUserName, string sFacilityName, string shdnLocalTime, string shdnLocalDate, string shdnUniversaloffset, string shdnLocalDateAndTime, string shdnFollowsDayLightSavings, string sUserRole, string sRCopiaUserName, string sEMailAddress, string sIs_RCopia_Notification_Required, string sPhysicianId, string sLanding_Screen_ID, string shdnGroupId, string sPersonName,string sLegalOrg, string sUserCarrier, string sIsFirstTimeCall, string sDefaultServer,string sIsAllFacilities)
         {
             UtilityManager.inserttologgingtableforSessionTimeout("LandingintoEHR API - Start - input is - " + sUserName, Request.Url.ToString(), string.Empty);
 
@@ -890,6 +892,7 @@ namespace Acurus.Capella.UI
                 objUser.user_name = sUserName.ToUpper();
                 objUser.EMail_Address = sEMailAddress;
                 objUser.Legal_Org = sLegalOrg;
+                objUser.Is_All_Facilities = sIsAllFacilities;
                 login.Add(objUser);
             }
 
@@ -906,6 +909,7 @@ namespace Acurus.Capella.UI
                 ClientSession.CurrentPhysicianId = login[0].Physician_Library_ID;
                 ClientSession.LegalOrg = login[0].Legal_Org;
                 ClientSession.UserCarrier = sUserCarrier;
+                ClientSession.Is_All_Facilities = login[0].Is_All_Facilities;
 
                 ScnTabManager objScnTabmngr = new ScnTabManager();
                 ClientSession.UserPermissionDTO = objLoginDTO.UserPermissionDTO;

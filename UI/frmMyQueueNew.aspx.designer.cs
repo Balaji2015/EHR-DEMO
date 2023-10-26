@@ -7,11 +7,13 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace Acurus.Capella.UI {
-    
-    
-    public partial class frmMyQueueNew {
-        
+namespace Acurus.Capella.UI
+{
+
+
+    public partial class frmMyQueueNew
+    {
+
         /// <summary>
         /// WindowMngr control.
         /// </summary>
@@ -20,7 +22,7 @@ namespace Acurus.Capella.UI {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::Telerik.Web.UI.RadWindowManager WindowMngr;
-        
+
         /// <summary>
         /// MessageWindow control.
         /// </summary>
@@ -29,7 +31,7 @@ namespace Acurus.Capella.UI {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::Telerik.Web.UI.RadWindow MessageWindow;
-        
+
         /// <summary>
         /// RadWindowCheckout control.
         /// </summary>
@@ -38,7 +40,7 @@ namespace Acurus.Capella.UI {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::Telerik.Web.UI.RadWindow RadWindowCheckout;
-        
+
         /// <summary>
         /// IndexWindow control.
         /// </summary>
@@ -47,7 +49,7 @@ namespace Acurus.Capella.UI {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::Telerik.Web.UI.RadWindow IndexWindow;
-        
+
         /// <summary>
         /// lblcount control.
         /// </summary>
@@ -56,7 +58,25 @@ namespace Acurus.Capella.UI {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Label lblcount;
-        
+
+        /// <summary>
+        /// lblViewAllFac control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlGenericControl lblViewAllFac;
+
+        /// <summary>
+        /// chkViewAllFacilities control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlInputCheckBox chkViewAllFacilities;
+
         /// <summary>
         /// RadScriptManager1 control.
         /// </summary>
