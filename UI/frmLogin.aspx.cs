@@ -376,7 +376,16 @@ namespace Acurus.Capella.UI
 
                         //For Bug ID :74036 
                         ScriptManager.RegisterStartupScript(this, this.Page.GetType(), "Login", "sessionStorage.setItem('StartLoading', 'true');StartLoadFromPatChart();", true);
-                        HttpHelper.RedirectAndPOST(this.Page, login[0].Default_Server, data);
+                        //CAP-1167
+                        var returnURL = Request.QueryString["redirecturl"]?.ToString();
+                        if (!string.IsNullOrEmpty(returnURL))
+                        {
+                            Response.Redirect(returnURL);
+                        }
+                        else
+                        {
+                            HttpHelper.RedirectAndPOST(this.Page, login[0].Default_Server, data);
+                        }
 
                         ScriptManager.RegisterStartupScript(this, this.Page.GetType(), "Login", "sessionStorage.setItem('StartLoading', 'false');StopLoadFromPatChart();", true);
                         UtilityManager.inserttologgingtable(ClientSession.EncounterId.ToString(), ClientSession.HumanId.ToString(), ClientSession.UserName, ClientSession.PhysicianId.ToString(), "Login btnOk : End", DateTime.Now, hdnGroupId.Value, "frmLogin");
