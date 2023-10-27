@@ -636,7 +636,10 @@ namespace Acurus.Capella.UI
             //if (cboDocumentType.SelectedValue.ToUpper() == "DIAGNOSTIC ORDER" && PatientDetails.CssClass == "patientPaneEnabled")
             {
                 //ScriptManager.RegisterStartupScript(this, this.Page.GetType(), "ordersValidation", "alert('Please Choose Patient to load outstanding orders');", true);
-                ScriptManager.RegisterStartupScript(this, this.Page.GetType(), "ordersValidation", "StopLoadOnUploadFile();alert('Please Select Patient first, to get outstanding orders');", true);
+                
+                //Jira CAP-1212 - In ErrorMessage.Xml also removed the "first" word.
+                //ScriptManager.RegisterStartupScript(this, this.Page.GetType(), "ordersValidation", "StopLoadOnUploadFile();alert('Please Select Patient first, to get outstanding orders');", true);
+                ScriptManager.RegisterStartupScript(this, this.Page.GetType(), "ordersValidation", "StopLoadOnUploadFile();alert('Please Select the Patient to get outstanding orders');", true);
                 if (cboDocumentType.Items != null && cboDocumentType.Items.Count > 0)
                 {
                     if (cboDocumentType.SelectedIndex > -1)

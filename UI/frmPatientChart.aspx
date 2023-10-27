@@ -734,6 +734,8 @@
     <asp:HiddenField ID="hdnccAutosave" runat="server" Value="false" EnableViewState="false" />
     <asp:HiddenField ID="hdnOwnerEncMismatch" runat="server" EnableViewState="false" />
     <asp:HiddenField ID="hdnOwnerEncMismatchEncID" runat="server" EnableViewState="false" />
+     <asp:HiddenField ID="hdnSummaryEncID" runat="server" EnableViewState="false" />
+    <asp:HiddenField ID="hdnSummaryPageFlag" runat="server" EnableViewState="false" />
     <asp:HiddenField ID="hdnQencounterId" runat="server" Value="" EnableViewState="false" />
     <asp:HiddenField ID="hdnPatientStrip" runat="server" EnableViewState="false" />
     <asp:Button ID="hdnbtngeneratexml" runat="server" OnClick="hdnbtngeneratexml_Click"  style="display:none" />

@@ -270,12 +270,12 @@
                             </td>
                             <td style="margin: 0px; padding: 0px;">
                                 <button id="btnQRCode" style="margin-right: 2px;margin-left:8px !important " class="btn btn-primary aspAkidoBluebutton" 
-                                value="" runat="server" onclick="if (!IsSaveEnabled(this)) return;else  QRCodeClick(); " onserverclick="btnQRCode_ServerClick" >Dictate (Mobile) <i class="fa fa-qrcode" aria-hidden="true"></i></button>
+                                value="" runat="server" onclick="if (!IsSaveEnabled(this)) return;else  QRCodeClick(); " >Dictate (Mobile) <i class="fa fa-qrcode" aria-hidden="true"></i></button>
 
                             </td>
                             <td style="margin: 0px; padding: 0px;">
                                 <button id="btnAkidoNote" style="margin-right: 2px; height: 34px; " class="btn btn-primary aspAkidoBluebutton" 
-                                value="" runat="server" onclick="if (!IsSaveEnabled(this)) return;else  AkidoNoteClick(); " onserverclick="btnAkidoNote_ServerClick" >Akido Note <i class="bi bi-box-arrow-up-right" aria-hidden="true"></i></button>
+                                value="" runat="server" onclick="if (!IsSaveEnabled(this)) return;else  AkidoNoteClick(); "  >Akido Note <i class="bi bi-box-arrow-up-right" aria-hidden="true"></i></button>
 
                             </td>
                         </tr>

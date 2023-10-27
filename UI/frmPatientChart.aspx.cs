@@ -23,6 +23,8 @@ using System.Xml;
 using System.Web.Services;
 using System.Threading;
 using MySql.Data.MySqlClient;
+using DocumentFormat.OpenXml.Drawing.Charts;
+using System.Text.RegularExpressions;
 
 namespace Acurus.Capella.UI
 {
@@ -1877,6 +1879,34 @@ namespace Acurus.Capella.UI
 
         public void Patientchartload()
         {
+            //CAP-1167
+            var currentURL = HttpContext.Current.Request.Url;
+           
+            var urlPattern = @"^https?://[^/]+/frmPatientChart\.aspx\?EncounterID=\d+$";
+            if (Regex.IsMatch(currentURL.AbsoluteUri, urlPattern) && Request.QueryString["EncounterID"] != null)
+            { 
+                string encounter_ID = Request.QueryString["EncounterID"];
+
+                string valueToReplace = encounter_ID;
+                string clientSessionValue = ClientSession.EncounterId.ToString();
+
+                // Replace the matching part in the clientSessionValue with encounter_ID
+                clientSessionValue = clientSessionValue.Replace(clientSessionValue, valueToReplace);
+
+                // Set the updated value in ClientSession.HumanId
+                ClientSession.EncounterId = Convert.ToUInt64(clientSessionValue);
+                EncounterManager EncounterMngr = new EncounterManager();
+                IList<Encounter> ilstEncounter = EncounterMngr.GetEncounterByEncounterIDIncludeArchive(ClientSession.EncounterId);
+
+                var humanId = ilstEncounter.FirstOrDefault()?.Human_ID ?? 0;
+                ClientSession.HumanId = humanId;
+
+                if (humanId > 0)
+                {
+                    hdnSummaryEncID.Value = encounter_ID;
+                    hdnSummaryPageFlag.Value = "true";
+                }                   
+            }
             //EncounterManager objUserLookupManager = new EncounterManager();
             //IList<string> userLookup = objUserLookupManager.GetEncounterListArray(ClientSession.HumanId);
             string ChildTabName = string.Empty;

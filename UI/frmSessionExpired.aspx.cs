@@ -72,8 +72,21 @@ namespace Acurus.Capella.UI
                         Response.Write("<script> window.top.location.href=\" webfrmLogin.aspx?" + SplitLink[1].ToString() + "\"; </script>");
                 }
                 else
-                { 
-                    Response.Write("<script> window.top.location.href=\" frmLogin.aspx\"; </script>");
+                {
+                    //CAP-1167
+                    var CurrentUrl = Session["currenturl"]?.ToString();
+                    if (!string.IsNullOrEmpty(CurrentUrl))
+                    {
+                        var returnURL = $"~/frmLogin.aspx?redirecturl={HttpUtility.UrlEncode(CurrentUrl)}";
+                        Session["currenturl"] = null;
+                        Response.Redirect(returnURL);
+                    }
+                    else
+                    {
+                        Response.Write("<script> window.top.location.href=\" frmLogin.aspx\"; </script>");
+                    }
+                  
+                    
                 }
                 bFirstTime = false;
             }

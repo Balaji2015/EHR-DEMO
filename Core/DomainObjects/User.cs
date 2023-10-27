@@ -34,6 +34,7 @@ namespace Acurus.Capella.Core.DomainObjects
         private string _Legal_Org = string.Empty;
         private DateTime _Last_Successful_Login_Date_Time = DateTime.MinValue;
         private string _admin_password = string.Empty;
+        private string _Is_All_Facilities = string.Empty;
         #endregion
 
         #region constuctors
@@ -69,6 +70,7 @@ namespace Acurus.Capella.Core.DomainObjects
             sb.Append(_Legal_Org);
             sb.Append(_Last_Successful_Login_Date_Time);
             sb.Append(_admin_password);
+            sb.Append(_Is_All_Facilities);
             return sb.ToString().GetHashCode();
         }
 
@@ -301,6 +303,15 @@ namespace Acurus.Capella.Core.DomainObjects
             set
             {
                 _admin_password = value;
+            }
+        }
+        [DataMember]
+        public virtual string Is_All_Facilities
+        {
+            get { return _Is_All_Facilities; }
+            set
+            {
+                _Is_All_Facilities = value;
             }
         }
         #endregion

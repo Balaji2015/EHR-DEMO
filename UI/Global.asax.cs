@@ -15,6 +15,8 @@ using System.IO;
 using log4net;
 using System.Reflection;
 using System.Diagnostics;
+using System.Text.RegularExpressions;
+
 [assembly: log4net.Config.XmlConfigurator(Watch = true)]
 
 namespace Acurus.Capella.UI
@@ -75,7 +77,15 @@ namespace Acurus.Capella.UI
             //UtilityManager.inserttologgingtable(ClientSession.UserName.ToString(), ClientSession.UserRole.ToString(), ClientSession.FacilityName,
             //     ClientSession.LocalDate + ";" + ClientSession.LocalTime, "Session is starting - Session Timeout limit is - "+Session.Timeout, DateTime.Now, "0", "frmSessionExpires");
             UtilityManager.inserttologgingtableforSessionTimeout("Session is starting", Request.Url.ToString(), string.Empty);
-
+            //CAP-1167
+            var currentURL = Request.Url.AbsoluteUri.ToString();
+            var encounterUrlPattern = @"^https?://[^/]+/frmPatientChart\.aspx\?EncounterID=\d+$";
+            var humanUrlPattern = @"^https?://[^/]+/frmPatientChart\.aspx\?(?:HumanID=\d+)?(&ScreenMode=Menu)?(&openingfrom=Menu)?$";
+            if (Regex.IsMatch(currentURL, humanUrlPattern) || Regex.IsMatch(currentURL, encounterUrlPattern))
+            {
+                Session["currenturl"] = Request.Url.AbsoluteUri;
+            }
+            
             //Session.Timeout = 1440; o
             //if (HttpContext.Current.Session != null)
             //    log4net.GlobalContext.Properties["SessionID"] = HttpContext.Current.Session.SessionID;
@@ -588,7 +598,7 @@ namespace Acurus.Capella.UI
                             {
                                 UtilityManager.inserttologgingtableforSessionTimeout("Check Login - Redirecting to Session Expired due to Multilogin - line number 384 in global.asax", Request.Url.ToString(), string.Empty);
                                 // Response.Redirect("~/frmSessionExpired.aspx?Reason=Abandoned&From=Globalasaxcs|Linenumber=384");
-                                Response.Redirect("~/frmSessionExpiredMultiLogin.aspx?Reason=Abandoned&From=Globalasaxcs|Linenumber=384");
+                                 Response.Redirect("~/frmSessionExpiredMultiLogin.aspx?Reason=Abandoned&From=Globalasaxcs|Linenumber=384");
                             }
                             isMultiLogIn = false;
                         }
@@ -603,7 +613,27 @@ namespace Acurus.Capella.UI
                             else
                             {
                                 UtilityManager.inserttologgingtableforSessionTimeout("Check Login - Redirecting to Session Expired due to Timeout or Unknown reason - line number 395 in global.asax", Request.Url.ToString(), string.Empty);
-                                Response.Redirect("~/frmSessionExpired.aspx?From=Globalasaxcs|Linenumber=395");
+                                //CAP-1075
+                                //CAP-1167
+                                var currentURL = Request.Url.AbsoluteUri.ToString();
+                                var encounterUrlPattern = @"^https?://[^/]+/frmPatientChart\.aspx\?EncounterID=\d+$";
+                                var humanUrlPattern = @"^https?://[^/]+/frmPatientChart\.aspx\?(?:HumanID=\d+)?(&ScreenMode=Menu)?(&openingfrom=Menu)?$";
+                                if (Regex.IsMatch(currentURL, humanUrlPattern) || Regex.IsMatch(currentURL, encounterUrlPattern))
+                                {
+                                    var CurrentUrl = Session["currenturl"]?.ToString();
+
+                                    if (!string.IsNullOrEmpty(CurrentUrl))
+                                    {
+                                        var returnURL = string.IsNullOrEmpty(CurrentUrl) ? "~/frmLogin.aspx" : $"~/frmLogin.aspx?redirecturl={HttpUtility.UrlEncode(CurrentUrl)}";
+                                        Session["currenturl"] = null;
+                                        Response.Redirect(returnURL);
+                                    }
+                                }
+                                else
+                                {
+                                    Response.Redirect("~/frmSessionExpired.aspx?From=Globalasaxcs|Linenumber=395");
+                                }
+
                             }
                             //if ( SessionData == "")
                             //{

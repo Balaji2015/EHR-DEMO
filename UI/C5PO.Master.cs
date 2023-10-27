@@ -22,6 +22,7 @@ using System.Runtime.Serialization;
 using System.IO;
 using System.Web.SessionState;
 using System.Reflection;
+using System.Text.RegularExpressions;
 
 namespace Acurus.Capella.UI
 {
@@ -35,6 +36,14 @@ namespace Acurus.Capella.UI
             if (this.Page.AppRelativeVirtualPath.ToUpper().Contains("FRMMYQUEUE") == true || this.Page.AppRelativeVirtualPath.ToUpper().Contains("FRMPATIENTCHART") == true)
             {
                 ModalWindow.Visible = false;
+            }
+            //CAP-1167
+            var currentURL = Request.Url.AbsoluteUri.ToString();
+            var encounterUrlPattern = @"^https?://[^/]+/frmPatientChart\.aspx\?EncounterID=\d+$";
+            var humanUrlPattern = @"^https?://[^/]+/frmPatientChart\.aspx\?(?:HumanID=\d+)?(&ScreenMode=Menu)?(&openingfrom=Menu)?$";
+            if (Regex.IsMatch(currentURL, humanUrlPattern) || Regex.IsMatch(currentURL, encounterUrlPattern))
+            {
+                Session["currenturl"] = Request.Url.AbsoluteUri;
             }
             //else if (this.Page.AppRelativeVirtualPath.ToUpper().Contains("FRMPATIENTCHART") == true)
             //{
@@ -338,10 +347,24 @@ namespace Acurus.Capella.UI
                 tsbrowse.Style["cursor"] = "default";
             }
 
+            //CAP-1167
             if (ClientSession.UserName == "" && ClientSession.FacilityName == "")
             {
-                //Response.Redirect("~/frmSessionExpired.aspx");
-                Response.Redirect("~/frmSessionExpiredIndirectAccess.aspx");
+                //CAP-1075
+                if (Regex.IsMatch(currentURL, humanUrlPattern) || Regex.IsMatch(currentURL, encounterUrlPattern))
+                {
+                    var CurrentUrl = Session["currenturl"]?.ToString();
+                    if (!string.IsNullOrEmpty(CurrentUrl))
+                    {
+                        var returnURL = $"~/frmLogin.aspx?redirecturl={HttpUtility.UrlEncode(CurrentUrl)}";
+                        Session["currenturl"] = null;
+                        Response.Redirect(returnURL);
+                    }
+                }
+                else
+                {
+                    Response.Redirect("~/frmSessionExpiredIndirectAccess.aspx");
+                }
             }
             else
             {
@@ -725,9 +748,13 @@ namespace Acurus.Capella.UI
             }
             try
             {
+
                 HttpContext.Current.Application.Remove("user");
                 Session["ShowAllState"] = null;
                 Session["GeneralQShowAll"] = null;
+                //CAP-1167
+                Session.Abandon();
+                Response.Cookies.Clear();
             }
             catch
             { }

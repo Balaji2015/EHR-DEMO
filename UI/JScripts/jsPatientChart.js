@@ -276,9 +276,14 @@ $(document).ready(function () {
         $("div.bhoechie-tab>div.bhoechie-tab-content").eq(index).addClass("active");
     });
     if (document.getElementById(GetClientId('hdnOwnerEncMismatch')).value.toUpperCase() == "TRUE") {
-        //$('#ctl00_C5POBody_EncounterContainer')[0].src = "frmSummaryNew.aspx?EncounterId=" + document.getElementById(GetClientId('hdnOwnerEncMismatchEncID')).value;
+          //$('#ctl00_C5POBody_EncounterContainer')[0].src = "frmSummaryNew.aspx?EncounterId=" + document.getElementById(GetClientId('hdnOwnerEncMismatchEncID')).value;
         $('#ctl00_C5POBody_EncounterContainer')[0].src = "frmSummaryNew.aspx?EncounterId=" + document.getElementById(GetClientId('hdnOwnerEncMismatchEncID')).value + "&TabMode=true";
         DisplayErrorMessage('5001');
+    }  
+    //CAP-1167
+    var enc_Id = parseInt(document.getElementById(GetClientId('hdnSummaryEncID'))?.value) ?? 0;
+    if (document.getElementById(GetClientId('hdnSummaryPageFlag')).value.toUpperCase() == "TRUE" && enc_Id > 0) {
+        $('#ctl00_C5POBody_EncounterContainer')[0].src = "frmSummaryNew.aspx?EncounterId=" + enc_Id + "&TabMode=true";
     }
 });
 

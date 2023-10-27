@@ -2232,6 +2232,8 @@ function QRCodeClick() {
                 $('#btnCloseQRCode').addClass('aspresizedredbutton');
                 //}
                 $(top.window.document).find("#QRCodeInfo")[0].style.display = "block";
+                //Jira CAP-1215
+                event.preventDefault();
             }
         }
     }
@@ -2255,7 +2257,13 @@ function AkidoNoteClick() {
     //Result = openNonModal(AkidoNoteURL, 780, 1250, obj);
     //if (Result == null)
     //    return false;
+
+    //Jira CAP-1215
+    event.preventDefault();
+    sessionStorage.setItem('StartLoading', 'false'); StopLoadFromPatChart();
+
     window.open(AkidoNoteURL, '_blank');
 
-    return false;
+    //Jira CAP-1215
+    //return false;
 }

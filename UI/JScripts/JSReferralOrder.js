@@ -140,59 +140,68 @@ function OnclientCloseFindPhysician(oWindow, args) {
 
 function refOrderValidation(sender, args) {
     //CAP-1176 - remove all the return statement.
+    var isSuccess = true;
     var now = new Date();
     var utc = now.toUTCString();
     document.getElementById(GetClientId("hdnLocalTime")).value = utc;
-    if ($find('txtProviderName')._text.trim() == '') {
+    if ($find('txtProviderName')._text.trim() == '' && isSuccess) {
         DisplayErrorMessage('720011');
         sender.set_autoPostBack(false);
          {sessionStorage.setItem('StartLoading', 'false');StopLoadFromPatChart();}
         Order_SaveUnsuccessful();
-    } else if ($find('cboSpecialty')._text.trim() == '') {
+        isSuccess = false;
+    } else if ($find('cboSpecialty')._text.trim() == '' && isSuccess) {
         DisplayErrorMessage('720003');
         sender.set_autoPostBack(false);
          {sessionStorage.setItem('StartLoading', 'false');StopLoadFromPatChart();}
         Order_SaveUnsuccessful();
-    } else if (document.getElementById('rbtnYes').enabled == true && $find('txtAuthorizationNumber')._text.trim() == '') {
+        isSuccess = false;
+    } else if (document.getElementById('rbtnYes').enabled == true && $find('txtAuthorizationNumber')._text.trim() == '' && isSuccess) {
         DisplayErrorMessage('720010');
         sender.set_autoPostBack(false);
          {sessionStorage.setItem('StartLoading', 'false');StopLoadFromPatChart();}
         Order_SaveUnsuccessful();
+        isSuccess = false;
     }
-    if (document.getElementById('txtReasonForReferral_txtDLC').value.trim() == '') {
+    if (document.getElementById('txtReasonForReferral_txtDLC').value.trim() == '' && isSuccess) {
         DisplayErrorMessage('720009');
         sender.set_autoPostBack(false);
          {sessionStorage.setItem('StartLoading', 'false');StopLoadFromPatChart();}
         Order_SaveUnsuccessful();
+        isSuccess = false;
     }
-    if (document.getElementById(GetClientId("msktxtFacilityPhoneNumber")).value.length != 0 && PhNoValid(GetClientId("msktxtFacilityPhoneNumber")) == false && document.getElementById(GetClientId("msktxtFacilityPhoneNumber")).value != "(___) ___-____") {
+    if (document.getElementById(GetClientId("msktxtFacilityPhoneNumber")).value.length != 0 && PhNoValid(GetClientId("msktxtFacilityPhoneNumber")) == false && document.getElementById(GetClientId("msktxtFacilityPhoneNumber")).value != "(___) ___-____" && isSuccess) {
 
         DisplayErrorMessage('420005');
         sender.set_autoPostBack(false);
         document.getElementById(GetClientId("msktxtFacilityPhoneNumber")).focus();
-         {sessionStorage.setItem('StartLoading', 'false');StopLoadFromPatChart();}
+        { sessionStorage.setItem('StartLoading', 'false'); StopLoadFromPatChart(); }
+        isSuccess = false;
     }
-    if (document.getElementById(GetClientId("msktxtFacilityFaxNumber")).value.length != 0 && PhNoValid(GetClientId("msktxtFacilityFaxNumber")) == false && document.getElementById(GetClientId("msktxtFacilityFaxNumber")).value != "(___) ___-____") {
+    if (document.getElementById(GetClientId("msktxtFacilityFaxNumber")).value.length != 0 && PhNoValid(GetClientId("msktxtFacilityFaxNumber")) == false && document.getElementById(GetClientId("msktxtFacilityFaxNumber")).value != "(___) ___-____" && isSuccess) {
 
         DisplayErrorMessage('420013');
         sender.set_autoPostBack(false);
         document.getElementById(GetClientId("msktxtFacilityFaxNumber")).focus();
-         {sessionStorage.setItem('StartLoading', 'false');StopLoadFromPatChart();}
+        { sessionStorage.setItem('StartLoading', 'false'); StopLoadFromPatChart(); }
+        isSuccess = false;
     }
-    if (!DateValidattion("dtpValidTill"))
+    if (!DateValidattion("dtpValidTill") && isSuccess)
     {
         DisplayErrorMessage('380006');
         sender.set_autoPostBack(false);
-         {sessionStorage.setItem('StartLoading', 'false');StopLoadFromPatChart();}
+        { sessionStorage.setItem('StartLoading', 'false'); StopLoadFromPatChart(); }
+        isSuccess = false;
     }
     if (document.getElementById(GetClientId("msktxtFacilityZipCode")).value.length != 0 && document.getElementById(GetClientId("msktxtFacilityZipCode")).value != "_____-____") {
         var str = document.getElementById(GetClientId("msktxtFacilityZipCode")).value;
-        if (str.replace(/_/gi, "").length != 6 && str.replace(/_/gi, "").length != 10) {
+        if (str.replace(/_/gi, "").length != 6 && str.replace(/_/gi, "").length != 10 && isSuccess) {
 
             DisplayErrorMessage('420050');
             sender.set_autoPostBack(false);
             document.getElementById(GetClientId("msktxtFacilityZipCode")).focus();
-             {sessionStorage.setItem('StartLoading', 'false');StopLoadFromPatChart();}
+            { sessionStorage.setItem('StartLoading', 'false'); StopLoadFromPatChart(); }
+            isSuccess = false;
         }
         else {
             sender.set_autoPostBack(true);

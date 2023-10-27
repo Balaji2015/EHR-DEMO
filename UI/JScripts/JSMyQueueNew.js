@@ -66,11 +66,16 @@ $(document).ready(function () {
         loadGeneralQueue();
     }
     else {
+        var ViewAllFacilities = "";
+        if ($("#ctl00_C5POBody_chkViewAllFacilities")[0] != undefined && $("#ctl00_C5POBody_chkViewAllFacilities")[0] != null) {
+            $("#ctl00_C5POBody_chkViewAllFacilities")[0].checked ? ViewAllFacilities = "Checked" : ViewAllFacilities = "Unchecked";
+        }
         $.ajax({
             type: "POST",
             url: "frmMyQueueNew.aspx/MyEncounterLoad",
             data: JSON.stringify({
                 "sShowall": Showall,
+                "sViewAllFacilities": ViewAllFacilities
             }),
             contentType: "application/json; charset=utf-8",
             dataType: "json",
@@ -177,7 +182,7 @@ $(document).ready(function () {
                     localStorage.setItem("Myorderscount", objdata.count[0].My_Order_Count);
                     if (objdata.EncounterCount != null && objdata.EncounterCount != undefined) {
                         $("#ctl00_C5POBody_lblcount").css('font-size', '11px');
-                        $("#ctl00_C5POBody_lblcount")[0].innerHTML = 'Total encounters to be signed are<span style="color:red;"> ' + objdata.EncounterCount + '</span>. To view current as well as more than 7 days old encounters, click on "ShowAll".'
+                        $("#ctl00_C5POBody_lblcount")[0].innerHTML = 'Total encounters to be signed are<span style="color:red;"> ' + objdata.EncounterCount + '</span>. To view current as well as more than 21 days old encounters, click on "ShowAll".'
 
                     }
                     else
@@ -1014,10 +1019,18 @@ function GenQLoad() {
     }
     else {
         $("#chkShowAll")[0].checked = false;
+
+        var ViewAllFacilities = "";
+        if ($("#ctl00_C5POBody_chkViewAllFacilities")[0] != undefined && $("#ctl00_C5POBody_chkViewAllFacilities")[0] != null) {
+            $("#ctl00_C5POBody_chkViewAllFacilities")[0].checked ? ViewAllFacilities = "Checked" : ViewAllFacilities = "Unchecked";
+        }
+
         $.ajax({
             type: "POST",
             url: "frmMyQueueNew.aspx/LoadEncounter",
-            data: "",
+            data: JSON.stringify({
+                "sViewAllFacilities": ViewAllFacilities
+            }),
             contentType: "application/json; charset=utf-8",
             dataType: "json",
             async: true,
@@ -1191,7 +1204,7 @@ function MyQLoad() {
                 localStorage.setItem("Myorderscount", objdata.count[0].My_Order_Count);
                 if (objdata.EncounterCount != null && objdata.EncounterCount != undefined) {
                     $("#ctl00_C5POBody_lblcount").css('font-size', '11px');
-                    $("#ctl00_C5POBody_lblcount")[0].innerHTML = 'Total encounters to be signed are <span style="color:red;">' + objdata.EncounterCount + '</span>. To view current as well as more than 7 days old encounters, click on "ShowAll".'
+                    $("#ctl00_C5POBody_lblcount")[0].innerHTML = 'Total encounters to be signed are <span style="color:red;">' + objdata.EncounterCount + '</span>. To view current as well as more than 21 days old encounters, click on "ShowAll".'
                 }
                 else
                     $("#ctl00_C5POBody_lblcount")[0].innerHTML = "";
@@ -1420,7 +1433,7 @@ function loadMyenc() {
 
             if (objdata.EncounterCount != null && objdata.EncounterCount != undefined) {
                 $("#ctl00_C5POBody_lblcount").css('font-size', '11px');
-                $("#ctl00_C5POBody_lblcount")[0].innerHTML = 'Total encounters to be signed are <span style="color:red;">' + objdata.EncounterCount + '</span>. To view current as well as more than 7 days old encounters, click on "ShowAll".'
+                $("#ctl00_C5POBody_lblcount")[0].innerHTML = 'Total encounters to be signed are <span style="color:red;">' + objdata.EncounterCount + '</span>. To view current as well as more than 21 days old encounters, click on "ShowAll".'
             }
 
             else
@@ -1840,11 +1853,16 @@ function loadenc() {
         sShowall = "Unchecked";
         $("#chkShowAll")[0].checked = false;
     }
+    var ViewAllFacilities = "";
+    if ($("#ctl00_C5POBody_chkViewAllFacilities")[0] != undefined && $("#ctl00_C5POBody_chkViewAllFacilities")[0] != null) {
+        $("#ctl00_C5POBody_chkViewAllFacilities")[0].checked ? ViewAllFacilities = "Checked" : ViewAllFacilities = "Unchecked";
+    }
     $.ajax({
         type: "POST",
         url: "frmMyQueueNew.aspx/LoadEncounterTabClick",
         data: JSON.stringify({
             "sShowall": sShowall,
+            "sViewAllFacilities": ViewAllFacilities
         }),
         contentType: "application/json; charset=utf-8",
         dataType: "json",
@@ -3178,11 +3196,16 @@ function shwllclck() {
         $('#MoveTo').css("background-color", "");
         $('#Processenc')[0].style.display = "none";
 
+        var ViewAllFacilities = "";
+        if ($("#ctl00_C5POBody_chkViewAllFacilities")[0] != undefined && $("#ctl00_C5POBody_chkViewAllFacilities")[0] != null) {
+            $("#ctl00_C5POBody_chkViewAllFacilities")[0].checked ? ViewAllFacilities = "Checked" : ViewAllFacilities = "Unchecked";
+        }
         $.ajax({
             type: "POST",
             url: "frmMyQueueNew.aspx/LoadEncounterTabClick",
             data: JSON.stringify({
                 "sShowall": ShowallGeneral,
+                "sViewAllFacilities": ViewAllFacilities
             }),
             contentType: "application/json; charset=utf-8",
             dataType: "json",
@@ -3583,17 +3606,22 @@ function movetoEnc() {
             }
         });
         if (inputData.length > 0 && flag == 0) {
-
+            var ViewAllFacilities = "";
+            if ($("#ctl00_C5POBody_chkViewAllFacilities")[0] != undefined && $("#ctl00_C5POBody_chkViewAllFacilities")[0] != null) {
+                $("#ctl00_C5POBody_chkViewAllFacilities")[0].checked ? ViewAllFacilities = "Checked" : ViewAllFacilities = "Unchecked";
+            }
             $.ajax({
                 type: "POST",
                 url: "frmMyQueueNew.aspx/MoveToMyEncounters",
                 data: JSON.stringify({
                     "data": inputData,
+                    "sViewAllFacilities": ViewAllFacilities
                 }),
                 contentType: "application/json; charset=utf-8",
                 dataType: "json",
                 async: true,
                 success: function (data) {
+                    
                     var sShowall = '';
                     var MyShowAll = localStorage.getItem('ShowallGeneralqueue');
                     if (MyShowAll == "Checked") {
