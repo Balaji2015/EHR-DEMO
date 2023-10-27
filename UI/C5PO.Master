@@ -1975,9 +1975,9 @@
                 </div>
             </div>
         </div>
-        <div id="TabFax" class="modal fade" style="margin-top: 20px; margin-left: 0px; padding-left: 55px;background-color: rgba(0, 0, 0, 0.13);z-index: 5001;">
+        <div id="TabFax" class="modal fade" style="margin-top: 20px; margin-left: 0px; padding-left: 55px;background-color: rgba(0, 0, 0, 0.13);z-index: 9999;">
             <div id="TabmdldlgEFax" class="modal-dialog" style="width: 95%; margin-left:150px; margin-top: 10px; position: absolute!important;">
-                <div class=" modal-content" style="height: 95%">
+                <div class=" modal-content" style="height: 85%">
                     <div class="modal-header" style="height: 40px">
                         <button type="button" class="close" id="btnFaxClose" style="font-size: 30px !important;" data-dismiss="modal" aria-hidden="true">&times;</button>
                         <h3 class="modal-title" style="font-family: sans-serif; font-weight: bold; font-size: medium" id="TabModalEFaxTitle"></h3>

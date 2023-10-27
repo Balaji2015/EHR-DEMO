@@ -141,11 +141,11 @@ function btnFaxClick(sender, args) {
     localStorage['FaxSubject'] = vFaxSubject.replace("__", "_");
     localStorage.setItem("IsMenuEFax", "N");
     $(top.window.document).find("#TabFax").modal({ backdrop: "static", keyboard: false }, 'show');
-    $(top.window.document).find("#TabFax").css({"z-index:":"5001"});
+    //$(top.window.document).find("#TabFax").css({"z-index:":"5001"});
     $(top.window.document).find("#TabModalEFaxTitle")[0].textContent = "Efax";
     $(top.window.document).find("#TabmdldlgEFax")[0].style.width = "1050px";
     $(top.window.document).find("#TabmdldlgEFax")[0].style.height = "963px";
-    $(top.window.document).find("#TabmdldlgEFax").css({ "margin-left": "165px"});
+    $(top.window.document).find("#TabmdldlgEFax").css({ "margin-left": "22%"});
     var sPath = ""
     sPath = "frmEFax.aspx?DMEOrder=" + document.getElementById('FaxCurrentFileName').value;
     $(top.window.document).find("#TabEFaxFrame")[0].style.height = "659px";
