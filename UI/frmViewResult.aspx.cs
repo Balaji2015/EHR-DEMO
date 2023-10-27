@@ -2697,13 +2697,34 @@ namespace Acurus.Capella.UI
                 }
                 else
                 {
-                    //For Bug Id 56084-4.9.18
-                    //if (cboMoveToMA.Text == string.Empty && cboMoveToMA.Visible == true)
-                    //{
-                    //    ScriptManager.RegisterStartupScript(this, this.Page.GetType(), "ErrmormsgMa", "DisplayErrorMessage('115046'); {sessionStorage.setItem('StartLoading', 'false');StopLoadFromPatChart();StopLoadingImage();}", true);
-                    //    return;
-                    //}
-                    string[] current_process = new string[] { "RESULT_REVIEW" };
+                    //Cap - 1247
+                    if (Request["CurrentProcess"] != null && Request["CurrentProcess"].ToUpper().Trim() == "MA_RESULTS")
+                    {
+                        if (Request["ObjType"] != null && Request["ObjType"].ToString().ToUpper() == "DIAGNOSTIC_RESULT")
+                        {
+                            //Old Code
+                            //obj_workFlow.UpdateOwner(Convert.ToUInt64(Request["ResultMasterID"]), "DIAGNOSTIC_RESULT", cboMoveToMA.Text.Contains('-') ? cboMoveToMA.Text.Split('-')[0] : string.Empty, string.Empty);
+                            //Gitlab# 2485 - Physician Name Display Change
+                            obj_workFlow.UpdateOwner(Convert.ToUInt64(Request["ResultMasterID"]), "DIAGNOSTIC_RESULT", cboMoveToMA.SelectedItem.Value, string.Empty);
+                        }
+                        else
+                        {
+                            //Old Code
+                            //obj_workFlow.UpdateOwner(Convert.ToUInt64(Request["OrderSubmitId"]), "DIAGNOSTIC ORDER", cboMoveToMA.Text.Contains('-') ? cboMoveToMA.Text.Split('-')[0] : string.Empty, string.Empty);
+                            //Gitlab# 2485 - Physician Name Display Change
+                            obj_workFlow.UpdateOwner(Convert.ToUInt64(Request["OrderSubmitId"]), "DIAGNOSTIC ORDER", cboMoveToMA.SelectedItem.Value, string.Empty);
+                        }
+                    }
+                    else
+                    {
+
+                        //For Bug Id 56084-4.9.18
+                        //if (cboMoveToMA.Text == string.Empty && cboMoveToMA.Visible == true)
+                        //{
+                        //    ScriptManager.RegisterStartupScript(this, this.Page.GetType(), "ErrmormsgMa", "DisplayErrorMessage('115046'); {sessionStorage.setItem('StartLoading', 'false');StopLoadFromPatChart();StopLoadingImage();}", true);
+                        //    return;
+                        //}
+                        string[] current_process = new string[] { "RESULT_REVIEW" };
                     IList<Encounter> lstenc = new List<Encounter>();
                     EncounterManager objencmanager = new EncounterManager();
                     if (Request["ObjType"] != null && Request["ObjType"].ToString().ToUpper() == "DIAGNOSTIC_RESULT")
@@ -2731,6 +2752,7 @@ namespace Acurus.Capella.UI
                         //Gitlab# 2485 - Physician Name Display Change
                         obj_workFlow.MoveToNextProcess(Convert.ToUInt64(Request["OrderSubmitId"]), "DIAGNOSTIC ORDER", 7, cboMoveToMA.SelectedItem.Value, UtilityManager.ConvertToUniversal(), null, current_process, null);
                     }
+                }
                 }
             }
             else if (Request["Opening_from"] != null && Request["Opening_from"] == "Patient_Pane") //Opening from Left side Patient Pane
