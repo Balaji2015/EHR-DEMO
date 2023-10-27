@@ -347,6 +347,7 @@ namespace Acurus.Capella.UI
                 tsbrowse.Style["cursor"] = "default";
             }
 
+            //CAP-1167
             if (ClientSession.UserName == "" && ClientSession.FacilityName == "")
             {
                 //CAP-1075
@@ -747,9 +748,13 @@ namespace Acurus.Capella.UI
             }
             try
             {
+
                 HttpContext.Current.Application.Remove("user");
                 Session["ShowAllState"] = null;
                 Session["GeneralQShowAll"] = null;
+                //CAP-1167
+                Session.Abandon();
+                Response.Cookies.Clear();
             }
             catch
             { }

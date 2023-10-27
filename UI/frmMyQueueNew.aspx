@@ -187,6 +187,8 @@
                             <button type="button" class="btn btn-primary btncolor" onclick="chkShowAllClick(this)" id="RefreshQ" style="background-color: none;">Refresh Encounters Q</button>
                             <button type="button" class="btn btn-primary btncolor" onclick="MoveToClick(this)" id="MoveTo" style="background-color: none;">Move To My Encounters</button>
                             <button type="button" class="btn btn-primary btncolor" id="Processenc" style="background-color: none;">Process Encounter</button>
+                            <label id="lblViewAllFac"  for="chkViewAllFacilities"  class="checkbox-inline Editabletxtbox" runat="server">
+                                <input type="checkbox" id="chkViewAllFacilities" class="Editabletxtbox" runat="server" onclick="chkShowAllClick(this)" />View All Facilities</label>
                         </td>
                     </tr>
                 </table>
