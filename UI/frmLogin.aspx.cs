@@ -381,7 +381,7 @@ namespace Acurus.Capella.UI
                         var returnURL = Request.QueryString["redirecturl"]?.ToString();
                         if (!string.IsNullOrEmpty(returnURL))
                         {
-                            Response.Redirect(returnURL);
+                            HttpHelper.RedirectAndPOST(this.Page, returnURL, data);
                         }
                         else
                         {
@@ -768,7 +768,7 @@ namespace Acurus.Capella.UI
                     var returnURL = Request.QueryString["redirecturl"]?.ToString();
                     if (!string.IsNullOrEmpty(returnURL))
                     {
-                        Response.Redirect(returnURL);
+                        HttpHelper.RedirectAndPOST(this.Page, returnURL, data);
                     }
                     else
                     {
@@ -966,9 +966,14 @@ namespace Acurus.Capella.UI
 
 
                     //Response.Redirect(ScnTabRecord.ToList<ScnTab>()[0].SCN_Name + ".aspx");
+                    //CAP-1167
                     string sFileName = ScnTabRecord.ToList<ScnTab>()[0].SCN_Name + ".aspx";
+                    var returnURL = Request.QueryString["redirecturl"]?.ToString();
+                    if (!string.IsNullOrEmpty(returnURL))
+                    {
+                        sFileName = returnURL;
+                    }
                     ScriptManager.RegisterStartupScript(this, this.GetType(), "Redit", "EHRLanding('" + sFileName + "');", true);
-
                 }
 
                 //if (Request["OpenPatChart"] != null && Request["OpenPatChart"] == "true")//Changed for CarePointe
