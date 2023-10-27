@@ -381,7 +381,8 @@ namespace Acurus.Capella.UI
                         var returnURL = Request.QueryString["redirecturl"]?.ToString();
                         if (!string.IsNullOrEmpty(returnURL))
                         {
-                            HttpHelper.RedirectAndPOST(this.Page, returnURL, data);
+                            var redirectionURL = login[0].Default_Server + "?redirecturl=" + returnURL;
+                            HttpHelper.RedirectAndPOST(this.Page, redirectionURL, data);
                         }
                         else
                         {
@@ -768,7 +769,8 @@ namespace Acurus.Capella.UI
                     var returnURL = Request.QueryString["redirecturl"]?.ToString();
                     if (!string.IsNullOrEmpty(returnURL))
                     {
-                        HttpHelper.RedirectAndPOST(this.Page, returnURL, data);
+                        var redirectionURL = Session["Default_Server"] + "?redirecturl=" + returnURL;
+                        HttpHelper.RedirectAndPOST(this.Page, redirectionURL, data);
                     }
                     else
                     {
