@@ -430,7 +430,9 @@ namespace Acurus.Capella.UI
             string strLabName = Regex.Replace(ordList[0].LabName, @"[^0-9a-zA-Z]+", " ");
             if (objPhysician != null)
             {
-                sPrintPathName = folderPath + "\\" + humanRecord.Human_ID.ToString() + "_" + humanRecord.Last_Name + " " + humanRecord.MI + " " + humanRecord.First_Name + "_" + objPhysician.PhyPrefix + " " + objPhysician.PhyFirstName + " " + objPhysician.PhyMiddleName + " " + objPhysician.PhyLastName + " " + objPhysician.PhySuffix + "_" + OrderType.Replace(' ', '_') + "_" + strLabName + "_" + ordList[0].LabLocName + "_" + UtilityManager.ConvertToLocal(Createdate[0]).ToString("yyyyMMdd hhmmss tt") + ".pdf";//ordList[0].ObjOrder.Created_Date_And_Time.ToString("yyyyMMdd hhmmss tt") + ".pdf";
+                //CAP-1143
+                //sPrintPathName = folderPath + "\\" + humanRecord.Human_ID.ToString() + "_" + humanRecord.Last_Name + " " + humanRecord.MI + " " + humanRecord.First_Name + "_" + objPhysician.PhyPrefix + " " + objPhysician.PhyFirstName + " " + objPhysician.PhyMiddleName + " " + objPhysician.PhyLastName + " " + objPhysician.PhySuffix + "_" + OrderType.Replace(' ', '_') + "_" + strLabName + "_" + ordList[0].LabLocName + "_" + UtilityManager.ConvertToLocal(Createdate[0]).ToString("yyyyMMdd hhmmss tt") + ".pdf";//ordList[0].ObjOrder.Created_Date_And_Time.ToString("yyyyMMdd hhmmss tt") + ".pdf";
+                sPrintPathName = folderPath + "\\" + Guid.NewGuid().ToString() + ".pdf";
             }
             PdfWriter wr = PdfWriter.GetInstance(doc, new FileStream(sPrintPathName, FileMode.Create));
             iTextSharp.text.Rectangle pageSize = doc.PageSize;
