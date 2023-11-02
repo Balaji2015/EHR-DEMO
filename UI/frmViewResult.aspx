@@ -14,7 +14,8 @@
 
 
         function txtMedicalAssistantNotes_OnKeyPress(sender, args) {
-            document.getElementById(GetClientId("hdnSave")).value = "true";
+            //Cap - 1268
+            //document.getElementById(GetClientId("hdnSave")).value = "true";
             if (window.parent.parent.parent.parent.theForm.ctl00_C5POBody_hdnIsSaveEnable != undefined)
                 window.parent.parent.parent.parent.theForm.ctl00_C5POBody_hdnIsSaveEnable.value = "true";
             document.getElementById(GetClientId("btnSave")).disabled = false;
@@ -659,12 +660,12 @@
                                         <td height="65%" width="32%">
                                             <telerik:RadTextBox ID="txtMedicalAssistantNotes" runat="server" DisabledStyle-CssClass="nonEditabletxtbox" EnabledStyle-CssClass="Editabletxtbox" Height="50px" TextMode="MultiLine" Width="100%" Style="margin-top: 1px;">
                                                 <%--BugID:46406--%>
+                                                <ClientEvents OnValueChanged="txtMedicalAssistantNotes_OnValueChanged" OnKeyPress="txtMedicalAssistantNotes_OnKeyPress" />
                                                 <DisabledStyle ForeColor="Black" Resize="None" />
                                                 <InvalidStyle Resize="None" />
                                                 <HoveredStyle Resize="None" />
                                                 <ReadOnlyStyle Resize="None" />
                                                 <EmptyMessageStyle Resize="None" />
-                                                <ClientEvents OnKeyPress="txtMedicalAssistantNotes_OnKeyPress" />
                                                 <FocusedStyle Resize="None" />
                                                 <EnabledStyle Resize="None" />
                                             </telerik:RadTextBox>
