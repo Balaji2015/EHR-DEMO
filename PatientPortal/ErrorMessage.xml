@@ -613,7 +613,7 @@
   <Message number="380028" Type="OK" Text="Please select the Plan Name" />
   <Message number="380029" Type="OK" Text="Please enter External Account #." />
   <Message number="380030" Type="OK" Text="External Account # already exists."  />
-  <Message number="380031" Type="OK" Text="Invalid Cell Phone Number." />
+  <Message number="380031" Type="OK" Text="Please enter a valid Cell Phone Number." />
   <Message number="380032" Type="OK" Text="Invalid Home Phone Number." />
   <Message number="380033" Type="OK" Text="Invalid Work Phone Number." />
   <!--srividhya - changed from Ok to Toolstrip-->
