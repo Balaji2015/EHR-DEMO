@@ -544,6 +544,8 @@ namespace Acurus.Capella.UI
             MaskedTextBoxColorChange(dtpEffectiveStartDate, false);
             MaskedTextBoxColorChange(dtpTerminationDate, false);
             MaskedTextBoxColorChange(msktxtZipcode, false);
+            //CAP-1327
+            MaskedTextBoxColorChange(msktxtCellPhno, false);
             TextBoxColorChange(txtClaimMailingName, false);
             TextBoxColorChange(txtStreet, false);
             TextBoxColorChange(txtClaimMailingName, false);
@@ -6019,6 +6021,8 @@ namespace Acurus.Capella.UI
             ComboBoxColorChange(cboPatientSex, true);
             ComboBoxColorChange(cboPatientSuffix, true);
             MaskedTextBoxColorChange(msktxtZipcode, true);
+            //CAP-1327
+            MaskedTextBoxColorChange(msktxtCellPhno, true);
             //Cap - 669
             dtpPatientDOB.Attributes.Remove("disabled");
             dtpPatientDOB.CssClass = "Editabletxtbox";
