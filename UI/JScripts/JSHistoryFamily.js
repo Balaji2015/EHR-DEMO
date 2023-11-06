@@ -1,4 +1,11 @@
-﻿function btnClearAll_Clicked(sender,args)
+﻿//CAP-1158
+$('#DLC_listDLC').keypress(function (event) {
+    if (event.keyCode === 10 || event.keyCode === 13) {
+        event.preventDefault();
+    }
+});
+
+function btnClearAll_Clicked(sender, args)
 {
     var IsClearAll = DisplayErrorMessage('180010');
 	     if (IsClearAll == true) {
