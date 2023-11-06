@@ -1602,6 +1602,55 @@ namespace Acurus.Capella.UI
             UtilityManager.inserttologgingtable(ClientSession.EncounterId.ToString(), ClientSession.HumanId.ToString(), ClientSession.UserName, ClientSession.PhysicianId.ToString(), "MyQueue LoadTask : End", DateTime.Now, sGroup_ID_Log, "frmMyQueueNew");
             return JsonConvert.SerializeObject(TaskQ.ToList<MyQ>());
         }
+        [WebMethod(EnableSession = true)]
+        public static string AllTabCount()
+        {
+            if (ClientSession.UserName == string.Empty)
+            {
+                HttpContext.Current.Response.StatusCode = 999;
+                HttpContext.Current.Response.Status = "999 Session Expired";
+                HttpContext.Current.Response.StatusDescription = "frmSessionExpired.aspx";
+                return "Session Expired";
+            }
+
+
+            IList<MyQueueCountDTO> GenQCount = new List<MyQueueCountDTO>();
+            IList<MyQueueCountDTO> MyQCount = new List<MyQueueCountDTO>();
+
+            IList<MyQueueCountDTO> QCount = new List<MyQueueCountDTO>();
+
+            string[] ProcessTypeMyQ = new string[2];
+            ProcessTypeMyQ[0] = "ASSIGNED";
+
+            WFObjectManager wfMngr = new WFObjectManager();
+            MyQCount = wfMngr.AllTabCount("ALL", ProcessTypeMyQ, ClientSession.UserName, iDefaultDays);
+
+
+            string[] ProcessType = new string[2];
+            ProcessType[0] = "UNASSIGNED";
+            GenQCount = wfMngr.AllTabCount(ClientSession.FacilityName, ProcessType, ClientSession.UserName, iDefaultDays);
+
+            //Adding GenQ Count
+            QCount = GenQCount;
+
+            //Adding MyQ Count
+            QCount[0].My_Amendmnt_Count = MyQCount[0].My_Amendmnt_Count;
+            QCount[0].My_DiagRslt_Order_Count = MyQCount[0].My_DiagRslt_Order_Count;
+            QCount[0].My_Diag_Order_Count = MyQCount[0].My_Diag_Order_Count;
+            QCount[0].My_Dict_Count = MyQCount[0].My_Dict_Count;
+            QCount[0].My_Immun_Order_Count = MyQCount[0].My_Immun_Order_Count;
+            QCount[0].My_inter_Order_Count = MyQCount[0].My_inter_Order_Count;
+            QCount[0].My_Order_Count = MyQCount[0].My_Order_Count;
+            QCount[0].My_Presc_Count = MyQCount[0].My_Presc_Count;
+            QCount[0].My_Refer_Order_Count = MyQCount[0].My_Refer_Order_Count;
+            QCount[0].My_Scan_Count = MyQCount[0].My_Scan_Count;
+            QCount[0].My_Task_Count = MyQCount[0].My_Task_Count;
+
+
+            var result = new { count = QCount };
+            return JsonConvert.SerializeObject(result);
+
+        }
 
     }
 }

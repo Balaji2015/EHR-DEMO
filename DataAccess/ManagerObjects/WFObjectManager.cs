@@ -4180,6 +4180,53 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
             }
             return ResultWFObj;
         }
+
+
+
+        public IList<MyQueueCountDTO> AllTabCount(string FacName, string[] ProcessType, string UserName,int DefaultNoofDays)
+        {
+
+            ObjectManager objMngr = new ObjectManager();
+
+
+            string[] ObjType = new string[11];
+
+            if (ProcessType[0] == "ASSIGNED")
+            {
+                ObjType[0] = "DIAGNOSTIC ORDER";
+                //ObjType[1] = "INTERNAL ORDER";
+                ObjType[1] = "IMMUNIZATION ORDER";
+                ObjType[2] = "REFERRAL ORDER";
+                ObjType[3] = "SCAN";
+                ObjType[4] = "E-PRESCRIBE";
+                ObjType[5] = "ADDENDUM";
+                ObjType[6] = "DIAGNOSTIC_RESULT";
+                ObjType[7] = "TASK";
+                ObjType[8] = "DME ORDER";
+
+            }
+            else
+            {
+                ObjType[0] = "DIAGNOSTIC ORDER";
+                //  ObjType[1] = "INTERNAL ORDER";
+                ObjType[1] = "IMMUNIZATION ORDER";
+                ObjType[2] = "REFERRAL ORDER";
+                ObjType[3] = "ADDENDUM";
+                ObjType[4] = "DIAGNOSTIC_RESULT";
+                ObjType[5] = "DME ORDER";
+                ObjType[6] = "TASK";
+
+
+            }
+
+            IList<MyQueueCountDTO> GenQCount = new List<MyQueueCountDTO>();
+            
+            GenQCount = objMngr.ObjectCount(FacName, ObjType, UserName, DefaultNoofDays);
+            
+            return GenQCount;
+
+        }
+
         #endregion
     }
 }

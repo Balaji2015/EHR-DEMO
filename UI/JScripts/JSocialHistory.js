@@ -1,4 +1,11 @@
-﻿//check the particular checkbox
+﻿//CAP-1158
+$('#DLC_txtDLC').keypress(function (event) {
+    if (event.keyCode === 10 || event.keyCode === 13) {
+        event.preventDefault();
+    }
+});
+
+//check the particular checkbox
 function enableField(idCheckbox) {
     var divid = document.getElementById("divSocialHistoryControls");
     if (divid.scrollHeight != null && divid.scrollHeight != undefined)

@@ -413,11 +413,17 @@
                 }
             }
             if (is_disabled == false) {
-                LoadOrdersTabs(event);
+                //CAP-937
+                setTimeout(function () {
+                    LoadOrdersTabs(event);
+                });
             }
         }
-        else
-            LoadOrdersTabs(event);
+        else {
+            setTimeout(function () {
+                LoadOrdersTabs(event);
+            });
+        }
 
     });
 
@@ -439,7 +445,7 @@
                     sessionStorage.setItem('Order_src', src);
                     var prevTabtxt = $(PrevTab).text();
                     sessionStorage.setItem('Order_PrevTabText', prevTabtxt);
-                    $('.clsIframe').contents()[0].all.namedItem('btnOrderSubmit').click();
+                    $('.clsIframe').contents()[0].all.namedItem('btnOrderSubmit')?.click();
                     //if (localStorage.getItem("bSave") == "true") {
                     //    $(dvdialog).dialog("close");
                     //    paneID = $(event.target).attr('href');
@@ -761,6 +767,7 @@
             }
         }
 
+       { sessionStorage.setItem('StartLoading', 'false'); StopLoadFromPatChart(); }
     }
 
 </script>

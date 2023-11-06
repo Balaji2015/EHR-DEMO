@@ -1743,3 +1743,10 @@ function onCopyPrevious(errorCode) {
     }
     { sessionStorage.setItem('StartLoading', 'false'); StopLoadFromPatChart(); }
 }
+
+//Jira CAP-1329
+$(".hasDatepicker").change(function () {
+    
+    EnableSave();
+
+});

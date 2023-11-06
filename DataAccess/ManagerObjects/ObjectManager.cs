@@ -2202,6 +2202,7 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
                         {
                             query1 = Mysession.GetNamedQuery("CountFillMyAddendumObjectDetails.WithoutFacility.WithoutAllAppointments");
                             query1.SetString(0, UserName);
+                            query1.SetString(1, UserName);
                             // query1.SetParameterList("ObjList", myObjType);
                             FavoriteList = new ArrayList(query1.List());
                             myq.My_Amendmnt_Count = Convert.ToInt16(FavoriteList[0]);

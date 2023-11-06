@@ -55,12 +55,55 @@ $(document).ready(function () {
     $("#ProcessModal").modal('hide');
     var MyShowAllmyQueue = localStorage.getItem('MyShowAll');
     var MyShowAll = localStorage.getItem('ShowallGeneralqueue');
+
+    if (MyShowAll == "Checked" || MyShowAllmyQueue == "Checked") {
+        $.ajax({
+            type: "POST",
+            url: "frmMyQueueNew.aspx/AllTabCount",
+            contentType: "application/json; charset=utf-8",
+            dataType: "json",
+            async: true,
+            success: function (data) {
+                var objdata = $.parseJSON(data.d);
+
+                sessionStorage.setItem("My_Task_Count", objdata.count[0].My_Task_Count);
+                sessionStorage.setItem("My_Order_Count", objdata.count[0].My_Order_Count);
+                sessionStorage.setItem("My_Scan_Count", objdata.count[0].My_Scan_Count);
+                sessionStorage.setItem("My_Presc_Count", objdata.count[0].My_Presc_Count);
+                sessionStorage.setItem("My_Amendmnt_Count", objdata.count[0].My_Amendmnt_Count);
+
+                sessionStorage.setItem("Order_Count", objdata.count[0].Order_Count);
+                sessionStorage.setItem("Amendmnt_Count", objdata.count[0].Amendmnt_Count);
+                sessionStorage.setItem("Task_Count", objdata.count[0].Task_Count);
+            },
+            error: function OnError(xhr) {
+                { sessionStorage.setItem('StartLoading', 'false'); StopLoadFromPatChart(); }
+                if (xhr.status == 999)
+                    window.location = "/frmSessionExpired.aspx";
+                else {
+                    //CAP-792
+                    if (isValidJSON(xhr.responseText)) {
+                        var log = JSON.parse(xhr.responseText);
+                        console.log(log);
+                        alert("USER MESSAGE:\n" +
+                            ". Cannot process request. Please Login again and retry. \nEXCEPTION DETAILS: \n" +
+                            "Message: " + log.Message);
+                    }
+                    else {
+                        alert("USER MESSAGE:\n" +
+                            ". Cannot process request. Please Login again and retry.");
+                    }
+                }
+            }
+        });
+
+    }
     if (MyShowAllmyQueue == "Checked") {
         $("#chkMyShowAll")[0].checked = true;
         Showall = "Checked";
         loadMyenc();
     }
-    else if (MyShowAll == "Checked") {
+   else if (MyShowAll == "Checked") {
         $("#chkShowAll")[0].checked = true;
         Showall = "Checked";
         loadGeneralQueue();
@@ -178,7 +221,7 @@ $(document).ready(function () {
                     $("#btnMyScan")[0].innerText = "My Scan " + "(" + objdata.count[0].My_Scan_Count + ")";
                     $("#btnMyPres")[0].innerText = "My Prescription " + "(" + objdata.count[0].My_Presc_Count + ")";
                     $("#btnMyAmendmnt")[0].innerText = "My Amendment " + "(" + objdata.count[0].My_Amendmnt_Count + ")";
-
+                    
                     localStorage.setItem("Myorderscount", objdata.count[0].My_Order_Count);
                     if (objdata.EncounterCount != null && objdata.EncounterCount != undefined) {
                         $("#ctl00_C5POBody_lblcount").css('font-size', '11px');
@@ -190,6 +233,7 @@ $(document).ready(function () {
 
                     $("#btnMyEnc").removeClass("default");
                     $("#btnMyEnc").addClass("btncolorMyQ");
+                    $("#btnMyQ").removeClass("default");
                     $("#btnMyQ").addClass("btncolorMyQ");
                     $("#MovetoNxtProcess").css("display", "inline-block");
                     //$('#EncounterTable th').addClass('header');
@@ -260,6 +304,17 @@ $(document).ready(function () {
                     SortTableHeader('GeneralQ');
 
                 }
+
+                sessionStorage.setItem("My_Task_Count", objdata.count[0].My_Task_Count);
+                sessionStorage.setItem("My_Order_Count", objdata.count[0].My_Order_Count);
+                sessionStorage.setItem("My_Scan_Count", objdata.count[0].My_Scan_Count);
+                sessionStorage.setItem("My_Presc_Count", objdata.count[0].My_Presc_Count);
+                sessionStorage.setItem("My_Amendmnt_Count", objdata.count[0].My_Amendmnt_Count);
+
+                sessionStorage.setItem("Order_Count", objdata.count[0].Order_Count);
+                sessionStorage.setItem("Amendmnt_Count", objdata.count[0].Amendmnt_Count);
+                sessionStorage.setItem("Task_Count", objdata.count[0].Task_Count);
+
                 { sessionStorage.setItem('StartLoading', 'false'); StopLoadFromPatChart(); }
             },
             error: function OnError(xhr) {
@@ -1065,6 +1120,12 @@ function GenQLoad() {
 
                 $("#btnTask")[0].innerText = "Tasks Q " + "(" + objdata.count[0].Task_Count + ")";
 
+
+                sessionStorage.setItem("Order_Count", objdata.count[0].Order_Count);
+                sessionStorage.setItem("Amendmnt_Count", objdata.count[0].Amendmnt_Count);
+                sessionStorage.setItem("Task_Count", objdata.count[0].Task_Count);
+
+
                 localStorage.setItem("GenralOrderCount", objdata.count[0].Order_Count);
 
                 $("#btnEnc").addClass("btncolorMyQ");
@@ -1201,6 +1262,14 @@ function MyQLoad() {
                 $("#btnMyScan")[0].innerText = "My Scan " + "(" + objdata.count[0].My_Scan_Count + ")";
                 $("#btnMyPres")[0].innerText = "My Prescription " + "(" + objdata.count[0].My_Presc_Count + ")";
                 $("#btnMyAmendmnt")[0].innerText = "My Amendment " + "(" + objdata.count[0].My_Amendmnt_Count + ")";
+
+
+                sessionStorage.setItem("My_Task_Count", objdata.count[0].My_Task_Count);
+                sessionStorage.setItem("My_Order_Count", objdata.count[0].My_Order_Count);
+                sessionStorage.setItem("My_Scan_Count", objdata.count[0].My_Scan_Count);
+                sessionStorage.setItem("My_Presc_Count", objdata.count[0].My_Presc_Count);
+                sessionStorage.setItem("My_Amendmnt_Count", objdata.count[0].My_Amendmnt_Count);
+
                 localStorage.setItem("Myorderscount", objdata.count[0].My_Order_Count);
                 if (objdata.EncounterCount != null && objdata.EncounterCount != undefined) {
                     $("#ctl00_C5POBody_lblcount").css('font-size', '11px');
@@ -1327,6 +1396,13 @@ function ShowMyQTabs(sender) {
 }
 
 function loadMyenc() {
+
+    $("#btnMyEnc").removeClass("default");
+    $("#btnMyEnc").addClass("btncolorMyQ");
+    $("#btnMyQ").removeClass("default");
+    $("#btnMyQ").addClass("btncolorMyQ");
+    $("#MovetoNxtProcess").css("display", "inline-block");
+
     $("#chkMyShowAll")[0].disabled = false;
     $('#MyQTable').empty();
     var showallchecked = localStorage.getItem('MyShowAll');
@@ -1422,13 +1498,27 @@ function loadMyenc() {
                 }
 
             }
-            //$("#btnMyEnc")[0].innerText = "My Encounters " + "(" + objdata.data.length + ")";
+            $("#btnMyEnc")[0].innerText = "My Encounters " + "(" + objdata.data.length + ")";
 
-            //$("#btnMyTask")[0].innerText = "My Tasks " + "(*)";
-            //$("#btnMyOrder")[0].innerText = "My Orders " + "(" + localStorage.getItem("Myorderscount") + ")";
-            //$("#btnMyScan")[0].innerText = "My Scan " + "(*)";
-            //$("#btnMyPres")[0].innerText = "My Prescription " + "(*)";
-            //$("#btnMyAmendmnt")[0].innerText = "My Amendment " + "(*)";
+            if (sessionStorage.getItem("My_Task_Count") != null && sessionStorage.getItem("My_Task_Count") != undefined) {
+                $("#btnMyTask")[0].innerText = "My Tasks " + "(" + sessionStorage.getItem("My_Task_Count") +")";
+            }
+
+            if (sessionStorage.getItem("My_Order_Count") != null && sessionStorage.getItem("My_Order_Count") != undefined) {
+                $("#btnMyOrder")[0].innerText = "My Orders " + "(" + sessionStorage.getItem("My_Order_Count") + ")";
+            }
+            if (sessionStorage.getItem("My_Scan_Count") != null && sessionStorage.getItem("My_Scan_Count") != undefined) {
+                $("#btnMyScan")[0].innerText = "My Scan " + "(" + sessionStorage.getItem("My_Scan_Count") +")";
+            }
+            if (sessionStorage.getItem("My_Presc_Count") != null && sessionStorage.getItem("My_Presc_Count") != undefined) {
+                $("#btnMyPres")[0].innerText = "My Prescription " + "(" + sessionStorage.getItem("My_Presc_Count") +")";
+            }
+            if (sessionStorage.getItem("My_Amendmnt_Count") != null && sessionStorage.getItem("My_Amendmnt_Count") != undefined) {
+                $("#btnMyAmendmnt")[0].innerText = "My Amendment " + "(" + sessionStorage.getItem("My_Amendmnt_Count")+")";
+            }
+            
+            
+            
 
 
             if (objdata.EncounterCount != null && objdata.EncounterCount != undefined) {
@@ -1548,6 +1638,11 @@ function loadMytask() {
             }
             //$("#btnMyTask")[0].innerText = "My Tasks " + "(*)"; 
             $("#btnMyTask")[0].innerText = "My Tasks " + "(" + objdata.length + ")";
+
+            if (Showall != "Checked") {
+                sessionStorage.setItem("My_Task_Count", objdata.length);
+            }
+
             $("#ctl00_C5POBody_lblcount")[0].innerHTML = "";
             SortTableHeader('MyQTask');
             //$('#EncounterTable th').addClass('header');
@@ -1663,6 +1758,9 @@ function loadMyorder() {
             else
                 $("#MyQTable").append("<table id=EncounterTable class='table table-bordered Gridbodystyle' ' style='table-layout: fixed;'><thead class='header' style='border: 0px;width:96.7%;'><tr class='header' ><th style='border: 1px solid #909090;text-align: center;width:9%'>Order Date</th><th style='border: 1px solid #909090;display:none;'>Test Date</th><th style='border: 1px solid #909090;text-align: center;width:6%;'>Acct. #</th><th style='border: 1px solid #909090;text-align: center;width:6%'>Ext. Acct. #</th><th style='border: 1px solid #909090;text-align: center;width:10%'>Patient Name</th><th style='border: 1px solid #909090;text-align: center;width:8%'>Patient DOB</th><th style='border: 1px solid #909090;text-align: center;width:10%'>Description</th><th style='border: 1px solid #909090;text-align: center;width:10%'>Ordering Physician</th><th style='border: 1px solid #909090;text-align: center;width:10%'>Current Process</th><th style='border: 1px solid #909090;text-align: center;width:10%'>Lab/Referred to</th><th style='border: 1px solid #909090;display:none;'>Lab Location</th><th style='border: 1px solid #909090;display:none;'>Encounter_ID</th><th style='border: 1px solid #909090;display:none;'>Physician_ID</th><th style='border: 1px solid #909090;display:none;'>Order_ID</th><th style='border: 1px solid #909090;display:none;'>ObjType</th><th style='border: 1px solid #909090;display:none;'>LabID</th><th style='border: 1px solid #909090;display:none;'>LocationID</th><th style='border: 1px solid #909090;display:none;'>Order_Submit_ID</th><th style='border: 1px solid #909090;text-align: center;display:none;'>Referred to Facility</th><th style='border: 1px solid #909090;display:none;'>Result_Master_ID</th><th style='border: 1px solid #909090;text-align: center;width:10%'>Narrative Interpretation</th></tr></thead></table>");
             $("#btnMyOrder")[0].innerText = "My Orders " + "(" + objdata.length + ")";
+            if (Showall != "Checked") {
+                sessionStorage.setItem("My_Order_Count", objdata.length);
+            }
 
             localStorage.setItem("Myorderscount", objdata.length);
             $("#ctl00_C5POBody_lblcount")[0].innerHTML = "Note:All abnormal results are in <span style='color:red'> RED</span> color font.";
@@ -1717,6 +1815,10 @@ function loadMyscan() {
                 $("#MyQTable").append("<table id=EncounterTable class='table table-bordered Gridbodystyle' ' style='table-layout: fixed;'><thead class='header' style='border: 0px;width:96.7%;'><tr class='header' ><th style='border: 1px solid #909090;text-align: center;width:16%'>File Name</th><th style='border: 1px solid #909090;text-align: center;width:16%'>No of Pages</th><th style='border: 1px solid #909090;text-align: center;width:16%'>Scan Date</th><th style='border: 1px solid #909090;text-align: center;width:16%'>Facility Name</th><th style='border: 1px solid #909090;text-align: center;width:16%'>Current Process</th><th style='border: 1px solid #909090;display:none;'>Scan_ID</th><th style='border: 1px solid #909090;display:none;'>Human_ID</th></tr></thead></table>");
             //Jira #CAP-938
             $("#btnMyScan")[0].innerText = "My Scan " + "(" + objdata.length + ")";
+
+            if (Showall != "Checked") {
+                sessionStorage.setItem("My_Scan_Count", objdata.length);
+            }
             //$("#btnMyScan")[0].innerText = "My Scan " + "(*)";
             $("#ctl00_C5POBody_lblcount")[0].innerHTML = "";
             SortTableHeader('MyQScan');
@@ -1769,6 +1871,10 @@ function loadMyprescription() {
             $("#ctl00_C5POBody_lblcount")[0].innerHTML = "";
             //$("#btnMyPres")[0].innerText = "My Prescription " + "(*)";
             $("#btnMyPres")[0].innerText = "My Prescription " + "(" + objdata.length + ")";
+            if (Showall != "Checked") {
+                sessionStorage.setItem("My_Presc_Count", objdata.length);
+            }
+
             SortTableHeader('MyQPrescription');
             RowClick();
             //$('#EncounterTable th').addClass('header');
@@ -1820,6 +1926,9 @@ function loadMyAmendment() {
 
             //$("#btnMyAmendmnt")[0].innerText = "My Amendment " + "(*)";
             $("#btnMyAmendmnt")[0].innerText = "My Amendment " + "(" + objdata.length + ")";
+            if (Showall != "Checked") {
+                sessionStorage.setItem("My_Amendmnt_Count", objdata.length);
+            }
             $("#ctl00_C5POBody_lblcount")[0].innerHTML = "";
             SortTableHeader('MyQAmendment');
             //$('#EncounterTable th').addClass('header');
@@ -1886,11 +1995,19 @@ function loadenc() {
             else {
                 $("#GeneralQTable").append("<table id=EncounterTable class='table table-bordered Gridbodystyle' style='table-layout: fixed;'><thead class='header' style='border: 0px;width:96.7%;'><tr class='header'><th style='border: 1px solid #909090;text-align: center;width: 4%;'>Select<input type='checkbox'  onclick='selectAll(this)'/></th><th style='border: 1px solid #909090;text-align: center;width: 11%;'>Appt. Date & Time</th><th style='border: 1px solid #909090;text-align: center;width: 6%;'>Acct. #</th><th style='border: 1px solid #909090;text-align: center;width: 7%;'>Ext. Acct. #</th><th style='border: 1px solid #909090;text-align: center;width: 10%;'>Patient Name</th><th style='border: 1px solid #909090;text-align: center;width: 7%;'>Patient DOB</th><th style='border: 1px solid #909090;text-align: center;width: 8%;'>Type of Visit</th><th style='border: 1px solid #909090;text-align: center;width: 11%;'>Current Process</th><th style='border: 1px solid #909090;text-align: center;width: 8%;'>Facility Name</th><th style='border: 1px solid #909090;text-align: center;width: 11%;'>Assigned Physician</th><th style='border: 1px solid #909090;text-align: center;width: 7%;'>Pri. Carrier</th><th style='border: 1px solid #909090;text-align: center;width: 7%;'>Pri. Plan</th><th style='border: 1px solid #909090;text-align: center;width: 9%;'>eSuperbill Status</th></tr></thead></table>");
             }
-            //$("#btnEnc")[0].innerText = "Encounters Q " + "(" + objdata.data.length + ")";
+            $("#btnEnc")[0].innerText = "Encounters Q " + "(" + objdata.data.length + ")";
 
-            //$("#btnOrder")[0].innerText = "Orders Q " + "(" + localStorage.getItem("GenralOrderCount") + ")";
+            if (sessionStorage.getItem("Task_Count") != null && sessionStorage.getItem("Task_Count") != undefined) {
+                $("#btnTask")[0].innerText = "Tasks Q " + "(" + sessionStorage.getItem("Task_Count") + ")";
+            }
 
-            //$("#btnAmendmnt")[0].innerText = "Amendment Q" + "(*)";
+            if (sessionStorage.getItem("Order_Count") != null && sessionStorage.getItem("Order_Count") != undefined) {
+                $("#btnOrder")[0].innerText = "Orders Q " + "(" + sessionStorage.getItem("Order_Count") + ")";
+            }
+
+            if (sessionStorage.getItem("Amendmnt_Count") != null && sessionStorage.getItem("Amendmnt_Count") != undefined) {
+                $("#btnAmendmnt")[0].innerText = "Amendment Q" + "(" + sessionStorage.getItem("Amendmnt_Count") +")";
+            }
 
             if (objdata.role == 'Medical Assistant' || objdata.role == 'Physician' || objdata.role == 'Coder') {
                 $('#Processenc').css("background-color", "");
@@ -1962,6 +2079,10 @@ function loadTask() {
                 $("#GeneralQTable").append("<table id=EncounterTable class='table table-bordered Gridbodystyle' style='table-layout: fixed;'><thead class='header' style='border: 0px;width:96.7%;'><tr class='header'><th style='border: 1px solid #909090;text-align: center;width: 2%;'>Select<input type='checkbox' onclick='selectAll(this)'/></th><th style='border: 1px solid #909090;text-align: center;width: 7%;'>Priority</th><th style='border: 1px solid #909090;text-align: center;width: 5%;'>Acct. #</th><th style='border: 1px solid #909090;text-align: center;width: 7%;'>Patient Name</th><th style='border: 1px solid #909090;text-align: center;width: 8%;'>Message Date</th><th style='border: 1px solid #909090;text-align: center;width: 7%;'>Message Description</th><th style='border: 1px solid #909090;text-align: center;width: 7%;'>Facility Name</th><th style='border: 1px solid #909090;text-align: center;width: 7%;'>Created By</th><th style='border: 1px solid #909090; display: none;'>Message_ID</th></tr></thead></table>");
             }
             $("#btnTask")[0].innerText = "Tasks Q " + "(" + objdata.length + ")";
+            if (sShowall != "Checked") {
+                sessionStorage.setItem("Task_Count", objdata.length);
+            }
+
             SortTableHeader('GeneralQTask');
             RowClick();
             { sessionStorage.setItem('StartLoading', 'false'); StopLoadFromPatChart(); }
@@ -2044,6 +2165,8 @@ function loadorder() {
                 $("#GeneralQTable").append("<table id=EncounterTable class='table table-bordered Gridbodystyle' ' style='table-layout: fixed;'><thead class='header' style='border: 0px;width:96.7%;'><tr class='header' ><th style='border: 1px solid #909090;text-align: center;width: 4%;'>Select<input type='checkbox'  onclick='selectAll(this)'/></th><th style='border: 1px solid #909090;width:10%'>Order Date</th><th style='border: 1px solid #909090;display:none;'>Test Date</th><th style='border: 1px solid #909090;;width:10%'>Acct. #</th><th style='border: 1px solid #909090;;width:10%'>Ext. Acct. #</th><th style='border: 1px solid #909090;;width:10%'>Patient Name</th><th style='border: 1px solid #909090;;width:10%'>Patient DOB</th><th style='border: 1px solid #909090;;width:10%'>Description</th><th style='border: 1px solid #909090;;width:10%'>Ordering Physician</th><th style='border: 1px solid #909090;;width:10%'>Current Process</th><th style='border: 1px solid #909090;;width:10%'>Lab</th><th style='border: 1px solid #909090;display:none;'>Lab Location</th><th style='border: 1px solid #909090;display:none;'>Encounter_ID</th><th style='border: 1px solid #909090;display:none;'>Physician_ID</th><th style='border: 1px solid #909090;display:none;'>Order_ID</th><th style='border: 1px solid #909090;display:none;'>ObjType</th><th style='border: 1px solid #909090;display:none;'>LabID</th><th style='border: 1px solid #909090;display:none;'>LocationID</th><th style='border: 1px solid #909090;display:none;'>Order_Submit_ID</th><th style='border: 1px solid #909090;display:none;'>Referred to Facility</th></tr></thead></table>");
             $("#btnOrder")[0].innerText = "Orders Q " + "(" + objdata.length + ")";
 
+            sessionStorage.setItem("Order_Count", objdata.length);
+
             localStorage.setItem("GenralOrderCount", objdata.length);
 
             SortTableHeader('GeneralQOrder');;
@@ -2103,6 +2226,8 @@ function loadamend() {
             //$("#GeneralQTable").append("<table id=EncounterTable class='table table-bordered Gridbodystyle' ' style='table-layout: fixed;'><thead class='header' style='border: 0px;width:96.7%;'><tr class='header' ><th style='border: 1px solid #909090;text-align: center;width:9%'>Appt. Date</th><th style='border: 1px solid #909090;text-align: center;width:9%'>Addendum Date</th><th style='border: 1px solid #909090;text-align: center;width:6%'>Acct. #</th><th style='border: 1px solid #909090;text-align: center;width:7%'>Ext. Acct. #</th><th style='border: 1px solid #909090;text-align: center;width:9%'>Patient Name</th><th style='border: 1px solid #909090;text-align: center;width:9%'>Current Process</th><th style='border: 1px solid #909090;text-align: center;width:9%'>Created Date</th><th style='border: 1px solid #909090;text-align: center;width:9%'>Created By</th><th style='border: 1px solid #909090;text-align: center;width:9%'>Signed By</th><th style='border: 1px solid #909090;display:none;'>EncounterID</th><th style='border: 1px solid #909090;display:none;'>PhysicianID</th><th style='border: 1px solid #909090;display:none;'>ObjType</th><th style='border: 1px solid #909090;display:none;'>AddendumID</th><th style='border: 1px solid #909090;display:none;'>Current Owner</th></tr></thead></table>");
             //$("#btnAmendmnt")[0].innerText = "Amendment Q " + "(*)";
             $("#btnAmendmnt")[0].innerText = "Amendment Q " + "(" + objdata.length + ")";
+
+            sessionStorage.setItem("Amendmnt_Count", objdata.length);
 
             SortTableHeader('GeneralQAmendment');
             //$('#EncounterTable th').addClass('header');
@@ -2174,6 +2299,8 @@ function chkMyTask14Click(sender) {
                         $("#MyQTable").append("<table id=EncounterTable class='table table-bordered Gridbodystyle' style='table-layout: fixed;'><thead class='header' style='border: 0px;width:96.7%;'><tr class='header' ><th style='border: 1px solid #909090;text-align: center;width:6%'>Priority</th><th style='border: 1px solid #909090;text-align: center;width:7%'>Acct. #</th><th style='border: 1px solid #909090;text-align: center;width:10%'>Patient Name</th><th style='border: 1px solid #909090;text-align: center;width:11%'>Message Date</th><th style='border: 1px solid #909090;text-align: center;width:11%'>Message Description</th><th style='border: 1px solid #909090;text-align: center;width:11%'>Assigned To</th><th style='border: 1px solid #909090;text-align: center;width:11%'>Owner</th><th style='border: 1px solid #909090;text-align: center;width:11%'>Completed Date Time</th><th style='border: 1px solid #909090;display:none;'>TaskID</th><th style='border: 1px solid #909090;display:none;'>Version</th></tr></thead></table>");
                     //$("#btnMyTask")[0].innerText = "My Tasks " + "(*)";
                     $("#btnMyTask")[0].innerText = "My Tasks " + "(" + objdata.length + ")";
+                    sessionStorage.setItem("My_Task_Count", objdata.length);
+
                     $("#ctl00_C5POBody_lblcount")[0].innerHTML = "";
                     SortTableHeader('MyQTask');
                     //$('#EncounterTable th').addClass('header');
@@ -2239,6 +2366,7 @@ function chkMyTask14Click(sender) {
                         $("#MyQTable").append("<table id=EncounterTable class='table table-bordered Gridbodystyle' style='table-layout: fixed;'><thead class='header' style='border: 0px;width:96.7%;'><tr class='header' ><th style='border: 1px solid #909090;text-align: center;width:6%'>Priority</th><th style='border: 1px solid #909090;text-align: center;width:7%'>Acct. #</th><th style='border: 1px solid #909090;text-align: center;width:10%'>Patient Name</th><th style='border: 1px solid #909090;text-align: center;width:11%'>Message Date</th><th style='border: 1px solid #909090;text-align: center;width:11%'>Message Description</th><th style='border: 1px solid #909090;text-align: center;width:11%'>Assigned To</th><th style='border: 1px solid #909090;text-align: center;width:11%'>Owner</th><th style='border: 1px solid #909090;text-align: center;width:11%'>Completed Date Time</th><th style='border: 1px solid #909090;display:none;'>TaskID</th><th style='border: 1px solid #909090;display:none;'>Version</th></tr></thead></table>");
                     //$("#btnMyTask")[0].innerText = "My Tasks " + "(*)";
                     $("#btnMyTask")[0].innerText = "My Tasks " + "(" + objdata.length + ")";
+                    sessionStorage.setItem("My_Task_Count", objdata.length);
                     $("#ctl00_C5POBody_lblcount")[0].innerHTML = "";
                     SortTableHeader('MyQTask');
                     //$('#EncounterTable th').addClass('header');
@@ -2316,6 +2444,9 @@ function chkOpenTaskClick() {
                 $("#MyQTable").append("<table id=EncounterTable class='table table-bordered Gridbodystyle' style='table-layout: fixed;'><thead class='header' style='border: 0px;width:96.7%;'><tr class='header' ><th style='border: 1px solid #909090;text-align: center;width:6%'>Priority</th><th style='border: 1px solid #909090;text-align: center;width:7%'>Acct. #</th><th style='border: 1px solid #909090;text-align: center;width:10%'>Patient Name</th><th style='border: 1px solid #909090;text-align: center;width:11%'>Message Date</th><th style='border: 1px solid #909090;text-align: center;width:11%'>Message Description</th><th style='border: 1px solid #909090;text-align: center;width:11%'>Assigned To</th><th style='border: 1px solid #909090;text-align: center;width:11%'>Owner</th><th style='border: 1px solid #909090;text-align: center;width:11%'>Completed Date Time</th><th style='border: 1px solid #909090;display:none;'>TaskID</th><th style='border: 1px solid #909090;display:none;'>Version</th></tr></thead></table>");
             //$("#btnMyTask")[0].innerText = "My Tasks " + "(*)";
             $("#btnMyTask")[0].innerText = "My Tasks " + "(" + objdata.length + ")";
+            if (Showall != "Checked") {
+                sessionStorage.setItem("My_Task_Count", objdata.length);
+            }
             $("#ctl00_C5POBody_lblcount")[0].innerHTML = "";
             SortTableHeader('MyQTask');
             //$('#EncounterTable th').addClass('header');
@@ -2848,6 +2979,9 @@ function shwllclck() {
                     $("#MyQTable").append("<table id=EncounterTable class='table table-bordered Gridbodystyle' style='table-layout: fixed;'><thead class='header' style='border: 0px;width:96.7%;'><tr class='header' ><th style='border: 1px solid #909090;text-align: center;width:6%'>Priority</th><th style='border: 1px solid #909090;text-align: center;width:7%'>Acct. #</th><th style='border: 1px solid #909090;text-align: center;width:10%'>Patient Name</th><th style='border: 1px solid #909090;text-align: center;width:11%'>Message Date</th><th style='border: 1px solid #909090;text-align: center;width:11%'>Message Description</th><th style='border: 1px solid #909090;text-align: center;width:11%'>Assigned To</th><th style='border: 1px solid #909090;text-align: center;width:11%'>Owner</th><th style='border: 1px solid #909090;text-align: center;width:11%'>Completed Date Time</th><th style='border: 1px solid #909090;display:none;'>TaskID</th><th style='border: 1px solid #909090;display:none;'>Version</th></tr></thead></table>");
                 //$("#btnMyTask")[0].innerText = "My Tasks " + "(*)";
                 $("#btnMyTask")[0].innerText = "My Tasks " + "(" + objdata.length + ")";
+                if (Showall != "Checked") {
+                    sessionStorage.setItem("My_Task_Count", objdata.length);
+                }
                 $("#ctl00_C5POBody_lblcount")[0].innerHTML = "";
                 SortTableHeader('MyQTask');
                 //$('#EncounterTable th').addClass('header');
@@ -2912,6 +3046,9 @@ function shwllclck() {
                     $("#MyQTable").append("<table id=EncounterTable class='table table-bordered Gridbodystyle'style='table-layout: fixed;'><thead class='header' style='border: 0px;width:96.7%;'><tr class='header' ><th style='border: 1px solid #909090;text-align: center;width:16%'>File Name</th><th style='border: 1px solid #909090;text-align: center;width:16%'>No of Pages</th><th style='border: 1px solid #909090;text-align: center;width:16%'>Scan Date</th><th style='border: 1px solid #909090;text-align: center;width:16%'>Facility Name</th><th style='border: 1px solid #909090;text-align: center;width:16%'>Current Process</th><th style='border: 1px solid #909090;display:none;'>Scan_ID</th><th style='border: 1px solid #909090;display:none;'>Human_ID</th></tr></thead></table>");
                 //Jira #CAP-938
                 $("#btnMyScan")[0].innerText = "My Scan " + "(" + objdata.length + ")";
+                if (Showall != "Checked") {
+                    sessionStorage.setItem("My_Scan_Count", objdata.length);
+                }
                 //$("#btnMyScan")[0].innerText = "My Scan " + "(*)";
                 $("#ctl00_C5POBody_lblcount")[0].innerHTML = "";
                 SortTableHeader('MyQScan');
@@ -3030,6 +3167,11 @@ function shwllclck() {
                 else
                     $("#MyQTable").append("<table id=EncounterTable class='table table-bordered Gridbodystyle' style='table-layout: fixed;'><thead class='header' style='border: 0px;width:96.7%;'><tr class='header' ><th style='border: 1px solid #909090;text-align: center;width:9%'>Order Date</th><th style='border: 1px solid #909090;display:none;'>Test Date</th><th style='border: 1px solid #909090;text-align: center;width:6%;'>Acct. #</th><th style='border: 1px solid #909090;text-align: center;width:6%'>Ext. Acct. #</th><th style='border: 1px solid #909090;text-align: center;width:10%'>Patient Name</th><th style='border: 1px solid #909090;text-align: center;width:8%'>Patient DOB</th><th style='border: 1px solid #909090;text-align: center;width:10%'>Description</th><th style='border: 1px solid #909090;text-align: center;width:10%'>Ordering Physician</th><th style='border: 1px solid #909090;text-align: center;width:10%'>Current Process</th><th style='border: 1px solid #909090;text-align: center;width:10%'>Lab/Referred to</th><th style='border: 1px solid #909090;display:none;'>Lab Location</th><th style='border: 1px solid #909090;display:none;'>Encounter_ID</th><th style='border: 1px solid #909090;display:none;'>Physician_ID</th><th style='border: 1px solid #909090;display:none;'>Order_ID</th><th style='border: 1px solid #909090;display:none;'>ObjType</th><th style='border: 1px solid #909090;display:none;'>LabID</th><th style='border: 1px solid #909090;display:none;'>LocationID</th><th style='border: 1px solid #909090;display:none;'>Order_Submit_ID</th><th style='border: 1px solid #909090;text-align: center;display:none;'>Referred to Facility</th><th style='border: 1px solid #909090;display:none;'>Result_Master_ID</th><th style='border: 1px solid #909090;text-align: center;width:10%'>Narrative Interpretation</th></tr></thead></table>");
                 $("#btnMyOrder")[0].innerText = "My Orders " + "(" + objdata.length + ")";
+
+                if (Showall != "Checked") {
+                    sessionStorage.setItem("My_Order_Count", objdata.length);
+                }
+
                 localStorage.setItem("Myorderscount", objdata.length);
                 $("#ctl00_C5POBody_lblcount")[0].innerHTML = "Note:All abnormal results are in <span style='color:red'> RED</span> color font.";
                 SortTableHeader('MyQOrder');
@@ -3095,6 +3237,11 @@ function shwllclck() {
                     $("#MyQTable").append("<table id=EncounterTable class='table table-bordered Gridbodystyle' style='table-layout: fixed;'><thead class='header' style='border: 0px;width:96.7%;'><tr class='header' ><th style='border: 1px solid #909090;text-align: center;width:9%'>Appt. Date</th><th style='border: 1px solid #909090;text-align: center;width:9%'>Addendum Date</th><th style='border: 1px solid #909090;text-align: center;width:6%'>Acct. #</th><th style='border: 1px solid #909090;text-align: center;width:7%'>Ext. Acct. #</th><th style='border: 1px solid #909090;text-align: center;width:9%'>Patient Name</th><th style='border: 1px solid #909090;text-align: center;width:9%'>Current Process</th><th style='border: 1px solid #909090;text-align: center;width:9%'>Created Date</th><th style='border: 1px solid #909090;text-align: center;width:9%'>Created By</th><th style='border: 1px solid #909090;text-align: center;width:9%'>Signed By</th><th style='border: 1px solid #909090;display:none;'>EncounterID</th><th style='border: 1px solid #909090;display:none;'>PhysicianID</th><th style='border: 1px solid #909090;display:none;'>ObjType</th><th style='border: 1px solid #909090;display:none;'>AddendumID</th><th style='border: 1px solid #909090;display:none;'>Current Owner</th></tr></thead></table>");
                  //Jira #CAP-938
                 $("#btnMyAmendmnt")[0].innerText = "My Amendment " + "(" + objdata.length + ")";
+
+                if (Showall != "Checked") {
+                    sessionStorage.setItem("My_Amendmnt_Count", objdata.length);
+                }
+
                 //$("#btnMyAmendmnt")[0].innerText = "My Amendment " + "(*)";
                 $("#ctl00_C5POBody_lblcount")[0].innerHTML = "";
                 SortTableHeader('MyQAmendment');
@@ -3161,6 +3308,9 @@ function shwllclck() {
                 // $("#btnMyPres")[0].innerText = "My Prescription " + "(*)";
                 //Jira #CAP-938
                 $("#btnMyPres")[0].innerText = "My Prescription " + "(" + objdata.length + ")";
+                if (Showall != "Checked") {
+                    sessionStorage.setItem("My_Presc_Count", objdata.length);
+                }
                 $("#ctl00_C5POBody_lblcount")[0].innerHTML = "";
                 SortTableHeader('MyQPrescription');
                 //$('#EncounterTable th').addClass('header');
@@ -3320,6 +3470,10 @@ function shwllclck() {
                     $("#GeneralQTable").append("<table id=EncounterTable class='table table-bordered Gridbodystyle' style='table-layout: fixed;'><thead class='header' style='border: 0px;width:96.7%;'><tr class='header' ><th style='border: 1px solid #909090;text-align: center;width: 4%;'>Select<input type='checkbox'  onclick='selectAll(this)'/></th><th style='border: 1px solid #909090;width:10%'>Order Date</th><th style='border: 1px solid #909090;display:none;'>Test Date</th><th style='border: 1px solid #909090;width:10%'>Acct. #</th><th style='border: 1px solid #909090;width:10%'>Ext. Acct. #</th><th style='border: 1px solid #909090;width:10%'>Patient Name</th><th style='border: 1px solid #909090;width:10%'>Patient DOB</th><th style='border: 1px solid #909090;width:10%'>Description</th><th style='border: 1px solid #909090;width:10%'>Ordering Physician</th><th style='border: 1px solid #909090;width:10%'>Current Process</th><th style='border: 1px solid #909090;width:10%'>Lab</th><th style='border: 1px solid #909090;display:none;'>Lab Location</th><th style='border: 1px solid #909090;display:none;'>Encounter_ID</th><th style='border: 1px solid #909090;display:none;'>Physician_ID</th><th style='border: 1px solid #909090;display:none;'>Order_ID</th><th style='border: 1px solid #909090;display:none;'>ObjType</th><th style='border: 1px solid #909090;display:none;'>LabID</th><th style='border: 1px solid #909090;display:none;'>LocationID</th><th style='border: 1px solid #909090;display:none;'>Order_Submit_ID</th><th style='border: 1px solid #909090;display:none'>Referred to Facility</th></tr></thead></table>");
                 $("#btnOrder")[0].innerText = "Orders Q " + "(" + objdata.length + ")";
 
+                if (ShowallGeneral != "Checked") {
+                    sessionStorage.setItem("Order_Count", objdata.length);
+                }
+
                 localStorage.setItem("GenralOrderCount", objdata.length);
                 SortTableHeader('GeneralQOrder');
                 //$('#EncounterTable th').addClass('header');
@@ -3390,6 +3544,9 @@ function shwllclck() {
                     $("#GeneralQTable").append("<table id=EncounterTable class='table table-bordered Gridbodystyle' style='table-layout: fixed;'><thead class='header' style='border: 0px;width:96.7%;'><tr class='header' ><th style='border: 1px solid #909090;text-align: center;width: 3%;'>Select<input type='checkbox'  onclick='selectAll(this)'/></th><th style='border: 1px solid #909090;text-align: center;width:9%'>Appt. Date</th><th style='border: 1px solid #909090;text-align: center;width:9%'>Addendum Date</th><th style='border: 1px solid #909090;text-align: center;width:6%'>Acct. #</th><th style='border: 1px solid #909090;text-align: center;width:7%'>Ext. Acct. #</th><th style='border: 1px solid #909090;text-align: center;width:9%'>Patient Name</th><th style='border: 1px solid #909090;text-align: center;width:9%'>Current Process</th><th style='border: 1px solid #909090;text-align: center;width:9%'>Created Date</th><th style='border: 1px solid #909090;text-align: center;width:9%'>Created By</th><th style='border: 1px solid #909090;text-align: center;width:9%'>Signed By</th><th style='border: 1px solid #909090;display:none;'>EncounterID</th><th style='border: 1px solid #909090;display:none;'>PhysicianID</th><th style='border: 1px solid #909090;display:none;'>ObjType</th><th style='border: 1px solid #909090;display:none;'>AddendumID</th><th style='border: 1px solid #909090;display:none;'>Current Owner</th></tr></thead></table>");
                 //Jira #CAP-938
                 $("#btnAmendmnt")[0].innerText = "Amendment Q " + "(" + objdata.length + ")";
+                if (ShowallGeneral != "Checked") {
+                    sessionStorage.setItem("Amendmnt_Count", objdata.length);
+                }
                  //GitLab#2246
                 //$("#GeneralQTable").append("<table id=EncounterTable class='table table-bordered Gridbodystyle' style='table-layout: fixed;'><thead class='header' style='border: 0px;width:96.7%;'><tr class='header' ><th style='border: 1px solid #909090;text-align: center;width:9%'>Appt. Date</th><th style='border: 1px solid #909090;text-align: center;width:9%'>Addendum Date</th><th style='border: 1px solid #909090;text-align: center;width:6%'>Acct. #</th><th style='border: 1px solid #909090;text-align: center;width:7%'>Ext. Acct. #</th><th style='border: 1px solid #909090;text-align: center;width:9%'>Patient Name</th><th style='border: 1px solid #909090;text-align: center;width:9%'>Current Process</th><th style='border: 1px solid #909090;text-align: center;width:9%'>Created Date</th><th style='border: 1px solid #909090;text-align: center;width:9%'>Created By</th><th style='border: 1px solid #909090;text-align: center;width:9%'>Signed By</th><th style='border: 1px solid #909090;display:none;'>EncounterID</th><th style='border: 1px solid #909090;display:none;'>PhysicianID</th><th style='border: 1px solid #909090;display:none;'>ObjType</th><th style='border: 1px solid #909090;display:none;'>AddendumID</th><th style='border: 1px solid #909090;display:none;'>Current Owner</th></tr></thead></table>");
                 //$("#btnAmendmnt")[0].innerText = "Amendment Q " + "(*)";
@@ -3470,39 +3627,69 @@ function RefreshMyQueue() {
 function RowClick() {
 
     $("#MyQTable tr").click(function () {
-        var existingSelectedItem = $("#MyQTable tr.highlight");
-        var currentprocesscnt = 0;
-        if (isproviderReview == false) {
-            if (existingSelectedItem.length > 0) { existingSelectedItem.removeClass("highlight"); }
-        }
-        //$('#MyQTable tr.highlight').each(function (i, row) {
-        //    var $row = $(row);
-        //    var currentProcesss = '';
-        //    if ($row.find('td:nth-child(7)')[0] != undefined) {
-        //        currentProcesss = $row.find('td:nth-child(7)')[0].outerText.trim();
-        //        if (currentProcesss != "PROVIDER_REVIEW" || currentProcesss != "PROVIDER_REVIEW_2")
-        //            currentprocesscnt++;
-        //    }
-        //});
-        //if (currentprocesscnt == 0) {
+        //Jira CAP-1201
+        ////OldCode start
+        //var existingSelectedItem = $("#MyQTable tr.highlight");
+        //var currentprocesscnt = 0;
+        //if (isproviderReview == false) {
         //    if (existingSelectedItem.length > 0) { existingSelectedItem.removeClass("highlight"); }
         //}
-        isproviderReview = false;
-        $(this).toggleClass("highlight");
+        ////$('#MyQTable tr.highlight').each(function (i, row) {
+        ////    var $row = $(row);
+        ////    var currentProcesss = '';
+        ////    if ($row.find('td:nth-child(7)')[0] != undefined) {
+        ////        currentProcesss = $row.find('td:nth-child(7)')[0].outerText.trim();
+        ////        if (currentProcesss != "PROVIDER_REVIEW" || currentProcesss != "PROVIDER_REVIEW_2")
+        ////            currentprocesscnt++;
+        ////    }
+        ////});
+        ////if (currentprocesscnt == 0) {
+        ////    if (existingSelectedItem.length > 0) { existingSelectedItem.removeClass("highlight"); }
+        ////}
+        //isproviderReview = false;
+        //$(this).toggleClass("highlight");
 
-        //if ($(this).find('input[type="checkbox"]:enabled').length > 0) {
-        //    var existingSelectedItem = $("#MyQTable tr.highlight");
-        //    if (existingSelectedItem.length > 0) {
-        //        if ($(this).find('input[type="checkbox"]:enabled')[0].checked == true) {
-        //            $(this).removeClass("highlight");
-        //            $(this).find('input[type="checkbox"]:enabled')[0].checked = false;
-        //        }
-        //        else {
-        //            $(this).addClass("highlight");
-        //            $(this).find('input[type="checkbox"]:enabled')[0].checked = true;
-        //        }
-        //    }
-        //}
+        ////if ($(this).find('input[type="checkbox"]:enabled').length > 0) {
+        ////    var existingSelectedItem = $("#MyQTable tr.highlight");
+        ////    if (existingSelectedItem.length > 0) {
+        ////        if ($(this).find('input[type="checkbox"]:enabled')[0].checked == true) {
+        ////            $(this).removeClass("highlight");
+        ////            $(this).find('input[type="checkbox"]:enabled')[0].checked = false;
+        ////        }
+        ////        else {
+        ////            $(this).addClass("highlight");
+        ////            $(this).find('input[type="checkbox"]:enabled')[0].checked = true;
+        ////        }
+        ////    }
+        ////}
+        ////OldCode End
+
+        //Jira CAP-1201
+        var existingSelectedItem = $("#MyQTable tr.highlight");
+
+        for (var i = 0; i < existingSelectedItem.length; i++) {
+            var processes = existingSelectedItem[i].children[7].childNodes[0].data;
+            var isproviderReviewMyQ = processes;
+                if(isproviderReviewMyQ != "PROVIDER_REVIEW" && isproviderReviewMyQ != "PROVIDER_REVIEW_2") {
+                existingSelectedItem[i].classList.remove("highlight");
+            }
+        }
+
+        $(this)[0].classList.add('highlight');
+
+        var NewRowprocesses = $(this)[0].children[7].childNodes[0].data;
+        var isproviderReviewMyQNewRow = NewRowprocesses;
+
+        if (isproviderReviewMyQNewRow == "PROVIDER_REVIEW" || isproviderReviewMyQNewRow == "PROVIDER_REVIEW_2") {
+            if ($(this)[0].children[0].children[0].checked == false) {
+                $(this)[0].children[0].children[0].checked = true;
+            }
+            else {
+                $(this)[0].children[0].children[0].checked = false;
+                $(this).removeClass("highlight");
+            }
+            MyQcheckboxclickAction($(this)[0].children[0].children[0]);
+        }
 
     });
     $("#MyQTable tr").dblclick(function () {
@@ -3637,15 +3824,15 @@ function movetoEnc() {
                             for (var i = 0; i < objdata.length; i++) {
                                 var is_submitted = (objdata[i].Is_EandM_Submitted.toUpperCase() == 'Y') ? "Submitted" : "Not Submitted";
                                 if (i == 0)
-                                    tabContents = "<tr> <td style='width:4%'><input type='checkbox' onclick='checkboxclick(this)'/></td><td style='width:12%'>" + ConvertDate(objdata[i].Appt_Date_Time.replace("T", " ")) + "</td><td style='width:6%'>" + objdata[i].Human_ID + "</td><td style='width:7%'>" + objdata[i].External_Account_Number + "</td><td style='width:10%'>" + objdata[i].Last_Name + "," + objdata[i].First_Name + " " + objdata[i].MI + "</td><td style='width:8%'>" + DOBConvert(objdata[i].DOB.replace("T00:00:00", "")) + "</td><td style='width:13%'>" + objdata[i].Current_Process + "</td><td style='width:12%'>" + objdata[i].PhyName + "</td><td style='width:9%;vertical-align: middle;padding-left:25px;'>" + is_submitted + "</td><td style='display:none'>" + objdata[i].Encounter_ID + "</td><td style='display:none'>" + objdata[i].Physician_ID + "</td><td style='display:none'>" + objdata[i].EHR_Obj_Type + "</td><td style='display:none'>" + objdata[i].Date_of_Service + "</td></tr>";
+                                    tabContents = "<tr><td style='width:4%'><input type='checkbox' onclick='checkboxclick(this)'/></td><td style='width:11%'>" + ConvertDate(objdata[i].Appt_Date_Time.replace("T", " ")) + "</td><td style='width:6%'>" + objdata[i].Human_ID + "</td><td style='width:7%'>" + objdata[i].External_Account_Number + "</td><td style='width:10%'>" + objdata[i].Last_Name + "," + objdata[i].First_Name + " " + objdata[i].MI + "</td><td style='width:7%'>" + DOBConvert(objdata[i].DOB.replace("T00:00:00", "")) + "</td><td style='width:8%'>" + objdata[i].Type_Of_Visit + "</td><td style='width:11%'>" + objdata[i].Current_Process + "</td><td style='width:8%'>" + objdata[i].Facility_Name + "</td><td style='width:11%'>" + objdata[i].PhyName + "</td><td style='width:7%'>" + objdata[i].Carrier_Name + "</td><td style='width:7%'>" + objdata[i].Insurance_Plan_Name + "</td><td style='width:9%;vertical-align: middle;padding-left:25px;'>" + is_submitted + "</td><td style='display:none'>" + objdata[i].Encounter_ID + "</td><td style='display:none'>" + objdata[i].Physician_ID + "</td><td style='display:none'>" + objdata[i].EHR_Obj_Type + "</td><td style='display:none'>" + objdata[i].Date_of_Service + "</td></tr>";
                                 else
-                                    tabContents = tabContents + "<tr><td style='width:4%'><input type='checkbox' onclick='checkboxclick(this)''/></td><td style='width:12%'>" + ConvertDate(objdata[i].Appt_Date_Time.replace("T", " ")) + "</td><td style='width:6%'>" + objdata[i].Human_ID + "</td><td style='width:7%'>" + objdata[i].External_Account_Number + "</td><td style='width:10%'>" + objdata[i].Last_Name + "," + objdata[i].First_Name + " " + objdata[i].MI + "</td><td style='width:8%'>" + DOBConvert(objdata[i].DOB.replace("T00:00:00", "")) + "</td><td style='width:13%'>" + objdata[i].Current_Process + "</td><td style='width:12%'>" + objdata[i].PhyName + "</td><td style='width:9%;vertical-align: middle;padding-left:25px;'>" + is_submitted + "</td><td style='display:none'>" + objdata[i].Encounter_ID + "</td><td style='display:none'>" + objdata[i].Physician_ID + "</td><td style='display:none'>" + objdata[i].EHR_Obj_Type + "</td><td style='display:none'>" + objdata[i].Date_of_Service + "</td></tr>";
+                                    tabContents = tabContents + "<tr><td style='width:4%'><input type='checkbox' onclick='checkboxclick(this)'/></td><td style='width:11%'>" + ConvertDate(objdata[i].Appt_Date_Time.replace("T", " ")) + "</td><td style='width:6%'>" + objdata[i].Human_ID + "</td><td style='width:7%'>" + objdata[i].External_Account_Number + "</td><td style='width:10%'>" + objdata[i].Last_Name + "," + objdata[i].First_Name + " " + objdata[i].MI + "</td><td style='width:7%'>" + DOBConvert(objdata[i].DOB.replace("T00:00:00", "")) + "</td><td style='width:8%'>" + objdata[i].Type_Of_Visit + "</td><td style='width:11%'>" + objdata[i].Current_Process + "</td><td style='width:8%'>" + objdata[i].Facility_Name + "</td><td style='width:11%'>" + objdata[i].PhyName + "</td><td style='width:7%'>" + objdata[i].Carrier_Name + "</td><td style='width:7%'>" + objdata[i].Insurance_Plan_Name + "</td><td style='width:9%;vertical-align: middle;padding-left:25px;'>" + is_submitted + "</td><td style='display:none'>" + objdata[i].Encounter_ID + "</td><td style='display:none'>" + objdata[i].Physician_ID + "</td><td style='display:none'>" + objdata[i].EHR_Obj_Type + "</td><td style='display:none'>" + objdata[i].Date_of_Service + "</td></tr>";
                             }
 
-                            $("#GeneralQTable").append("<table id=EncounterTable class='table table-bordered Gridbodystyle' style='table-layout: fixed;'><thead class='header' style='border: 0px;width:96.7%;'><tr class='header'><th style='border: 1px solid #909090;text-align: center;width: 4%;'>Select<input type='checkbox'  onclick='selectAll(this)'/></th><th style='border: 1px solid #909090;text-align: center;width: 12%;'>Appt. Date & Time</th><th style='border: 1px solid #909090;text-align: center;width: 6%;'>Acct. #</th><th style='border: 1px solid #909090;text-align: center;width: 7%;'>Ext. Acct. #</th><th style='border: 1px solid #909090;text-align: center;width: 10%;'>Patient Name</th><th style='border: 1px solid #909090;text-align: center;width: 8%;'>Patient DOB</th><th style='border: 1px solid #909090;text-align: center;width: 11%;'>Current Process</th><th style='border: 1px solid #909090;text-align: center;width: 12%;'>Assigned Physician</th><th style='border: 1px solid #909090;text-align: center;width: 9%;'>eSuperbill Status</th></tr></thead><tbody style='word-wrap: break-word;'>" + tabContents + "</tbody></table>");
+                            $("#GeneralQTable").append("<table id=EncounterTable class='table table-bordered Gridbodystyle' style='table-layout: fixed;'><thead class='header' style='border: 0px;width:96.7%;'><tr class='header'><th style='border: 1px solid #909090;text-align: center;width: 4%;'>Select<input type='checkbox' onclick='selectAll(this)'/></th><th style='border: 1px solid #909090;text-align: center;width: 11%;'>Appt. Date & Time</th><th style='border: 1px solid #909090;text-align: center;width: 6%;'>Acct. #</th><th style='border: 1px solid #909090;text-align: center;width: 7%;'>Ext. Acct. #</th><th style='border: 1px solid #909090;text-align: center;width: 10%;'>Patient Name</th><th style='border: 1px solid #909090;text-align: center;width: 7%;'>Patient DOB</th><th style='border: 1px solid #909090;text-align: center;width: 8%;'>Type of Visit</th><th style='border: 1px solid #909090;text-align: center;width: 11%;'>Current Process</th><th style='border: 1px solid #909090;text-align: center;width: 8%;'>Facility Name</th><th style='border: 1px solid #909090;text-align: center;width: 11%;'>Assigned Physician</th><th style='border: 1px solid #909090;text-align: center;width: 7%;'>Pri. Carrier</th><th style='border: 1px solid #909090;text-align: center;width: 7%;'>Pri. Plan</th><th style='border: 1px solid #909090;text-align: center;width: 9%;'>eSuperbill Status</th></tr></thead><tbody style='word-wrap: break-word;'>" + tabContents + "</tbody></table>");
                         }
                         else {
-                            $("#GeneralQTable").append("<table id=EncounterTable class='table table-bordered Gridbodystyle' style='table-layout: fixed;'><thead class='header' style='border: 0px;width:96.7%;'><tr class='header'><th style='border: 1px solid #909090;text-align: center;width: 4%;'>Select<input type='checkbox'  onclick='selectAll(this)'/></th><th style='border: 1px solid #909090;text-align: center;width: 12%;'>Appt. Date & Time</th><th style='border: 1px solid #909090;text-align: center;width: 6%;'>Acct. #</th><th style='border: 1px solid #909090;text-align: center;width: 7%;'>Ext. Acct. #</th><th style='border: 1px solid #909090;text-align: center;width: 10%;'>Patient Name</th><th style='border: 1px solid #909090;text-align: center;width: 8%;'>Patient DOB</th><th style='border: 1px solid #909090;text-align: center;width: 11%;'>Current Process</th><th style='border: 1px solid #909090;text-align: center;width: 12%;'>Assigned Physician</th><th style='border: 1px solid #909090;text-align: center;width: 9%;'>eSuperbill Status</th></tr></thead></table>");
+                            $("#GeneralQTable").append("<table id=EncounterTable class='table table-bordered Gridbodystyle' style='table-layout: fixed;'><thead class='header' style='border: 0px;width:96.7%;'><tr class='header'><th style='border: 1px solid #909090;text-align: center;width: 4%;'>Select<input type='checkbox' onclick='selectAll(this)'/></th><th style='border: 1px solid #909090;text-align: center;width: 11%;'>Appt. Date & Time</th><th style='border: 1px solid #909090;text-align: center;width: 6%;'>Acct. #</th><th style='border: 1px solid #909090;text-align: center;width: 7%;'>Ext. Acct. #</th><th style='border: 1px solid #909090;text-align: center;width: 10%;'>Patient Name</th><th style='border: 1px solid #909090;text-align: center;width: 7%;'>Patient DOB</th><th style='border: 1px solid #909090;text-align: center;width: 8%;'>Type of Visit</th><th style='border: 1px solid #909090;text-align: center;width: 11%;'>Current Process</th><th style='border: 1px solid #909090;text-align: center;width: 8%;'>Facility Name</th><th style='border: 1px solid #909090;text-align: center;width: 11%;'>Assigned Physician</th><th style='border: 1px solid #909090;text-align: center;width: 7%;'>Pri. Carrier</th><th style='border: 1px solid #909090;text-align: center;width: 7%;'>Pri. Plan</th><th style='border: 1px solid #909090;text-align: center;width: 9%;'>eSuperbill Status</th></tr></thead></table>");
                         }
                         $("#btnEnc")[0].innerText = "Encounters Q " + "(" + objdata.length + ")";
 
@@ -3730,6 +3917,8 @@ function movetoamend() {
             //$("#GeneralQTable").append("<table id=EncounterTable class='table table-bordered Gridbodystyle' style='table-layout: fixed;'><thead class='header' style='border: 0px;width:96.7%;'><tr class='header' ><th style='border: 1px solid #909090;text-align: center;width:9%'>Appt. Date</th><th style='border: 1px solid #909090;text-align: center;width:9%'>Addendum Date</th><th style='border: 1px solid #909090;text-align: center;width:6%'>MRN #</th><th style='border: 1px solid #909090;text-align: center;width:6%'>Acct. #</th><th style='border: 1px solid #909090;text-align: center;width:7%'>Ext. Acct. #</th><th style='border: 1px solid #909090;text-align: center;width:9%'>Patient Name</th><th style='border: 1px solid #909090;text-align: center;width:9%'>Patient DOB</th><th style='border: 1px solid #909090;text-align: center;width:9%'>Facility Name</th><th style='border: 1px solid #909090;text-align: center;width:9%'>Current Process</th><th style='border: 1px solid #909090;text-align: center;width:9%'>Created Date</th><th style='border: 1px solid #909090;text-align: center;width:9%'>Created By</th><th style='border: 1px solid #909090;text-align: center;width:9%'>Signed By</th><th style='border: 1px solid #909090;display:none;'>EncounterID</th><th style='border: 1px solid #909090;display:none;'>PhysicianID</th><th style='border: 1px solid #909090;display:none;'>ObjType</th><th style='border: 1px solid #909090;display:none;'>AddendumID</th><th style='border: 1px solid #909090;display:none;'>Current Owner</th></tr></thead></table>");
             // $("#btnAmendmnt")[0].innerText = "Amendment Q " + "(*)";
             $("#btnAmendmnt")[0].innerText = "Amendment Q " + "(" + objdata.length + ")";
+            sessionStorage.setItem("Amendmnt_Count", objdata.length);
+
             $("#GeneralQTable tr").click(function () {
                 var existingSelectedItem = $("#GeneralQTable tr.highlight"); if (existingSelectedItem.length > 0) { existingSelectedItem.removeClass("highlight"); }
                 $(this).toggleClass("highlight");
@@ -3810,6 +3999,9 @@ function movetoorder() {
             else
                 $("#GeneralQTable").append("<table id=EncounterTable class='table table-bordered Gridbodystyle' style='table-layout: fixed;'><thead class='header' style='border: 0px;width:96.7%;'><tr class='header' ><th style='border: 1px solid #909090;text-align: center;width: 4%;'>Select<input type='checkbox'  onclick='selectAll(this)'/></th><th style='border: 1px solid #909090;'>Order Date</th><th style='border: 1px solid #909090;'>Test Date</th><th style='border: 1px solid #909090;'>Acct. #</th><th style='border: 1px solid #909090;'>Ext. Acct. #</th><th style='border: 1px solid #909090;'>Patient Name</th><th style='border: 1px solid #909090;'>Patient DOB</th><th style='border: 1px solid #909090;'>Description</th><th style='border: 1px solid #909090;'>Ordering Physician</th><th style='border: 1px solid #909090;'>Current Process</th><th style='border: 1px solid #909090;'>Lab</th><th style='border: 1px solid #909090;display:none;'>Lab Location</th><th style='border: 1px solid #909090;display:none;'>Encounter_ID</th><th style='border: 1px solid #909090;display:none;'>Physician_ID</th><th style='border: 1px solid #909090;display:none;'>Order_ID</th><th style='border: 1px solid #909090;display:none;'>ObjType</th><th style='border: 1px solid #909090;display:none;'>LabID</th><th style='border: 1px solid #909090;display:none;'>LocationID</th><th style='border: 1px solid #909090;display:none;'>Order_Submit_ID</th><th style='border: 1px solid #909090;display:none;'>Referred to Facility</th></tr></thead></table>");
             $("#btnOrder")[0].innerText = "Orders Q " + "(" + objdata.length + ")";
+            if (ShowallGeneral != "Checked") {
+                sessionStorage.setItem("Order_Count", objdata.length);
+            }
 
             localStorage.setItem("GenralOrderCount", objdata.length);
             //$('#EncounterTable th').addClass('header');
@@ -4222,6 +4414,29 @@ function SortTableHeader(s) {
 
 }
 function MyQcheckboxclick(evt) {
+    //Jira CAP-1201
+    //if (evt.checked) {
+    //    //$(evt).closest("tr").addClass("highlight");
+    //    $("#MovetoNxtProcess")[0].disabled = false;
+    //    // isproviderReview = true;
+    //}
+    //if ($("input:checkbox[class=myQChkbx]:enabled:checked").length == 0) {
+    //    //$(evt).closest("tr").removeClass("highlight");
+    //    $("#MovetoNxtProcess")[0].disabled = true;
+    //    //isproviderReview = false;
+    //}
+
+    //Jira CAP-1201
+    if (evt.checked) {
+        evt.checked = false;
+    }
+    else {
+        evt.checked = true;
+    }
+
+}
+//Jira CAP-1201
+function MyQcheckboxclickAction(evt) {
     if (evt.checked) {
         //$(evt).closest("tr").addClass("highlight");
         $("#MovetoNxtProcess")[0].disabled = false;

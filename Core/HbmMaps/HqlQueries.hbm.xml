@@ -12922,7 +12922,24 @@ and w.Obj_Type ='TASK']]>-->
     and w.current_owner = ?    
     and w.Is_Default_MyQ_LineItem=1     
     and (w.Obj_Type in (:ObjList)) ) as c ]]>-->
-		<![CDATA[SELECT count(*) FROM wf_object w where w.Is_Default_MyQ_LineItem=1 and  w.current_owner = ? and w.Obj_Type ='ADDENDUM' ;]]>
+		<!--<![CDATA[SELECT count(*) FROM wf_object w where w.Is_Default_MyQ_LineItem=1 and  w.current_owner = ? and w.Obj_Type ='ADDENDUM' ;]]>-->
+		<![CDATA[select SUM(c) from  (SELECT Count(*) as c FROM wf_object w 
+    inner join encounter e on (w.Parent_Obj_System_Id = e.encounter_id) 
+    inner join human h on (e.Human_ID = h.Human_ID) 
+    inner join addendum_Notes a on (w.Obj_System_Id = a.Addendum_Notes_ID) 
+    inner join physician_library p on (e.Encounter_Provider_ID = p.Physician_Library_ID)  
+    where w.Is_Default_MyQ_LineItem=1 and
+     w.current_owner =  ?      
+    and (w.Obj_Type in ('ADDENDUM'))
+    union all
+SELECT Count(*) as c FROM wf_object wa 
+    inner join encounter_arc ea on (wa.Parent_Obj_System_Id = ea.encounter_id) 
+    inner join human h on (ea.Human_ID = h.Human_ID) 
+    inner join addendum_Notes a on (wa.Obj_System_Id = a.Addendum_Notes_ID) 
+    inner join physician_library p on (ea.Encounter_Provider_ID = p.Physician_Library_ID)  
+    where wa.Is_Default_MyQ_LineItem=1 and
+     wa.current_owner =  ?     
+    and (wa.Obj_Type in ('ADDENDUM'))) as c;]]>
 	</sql-query>
 
 	<sql-query name="CountFillMyAddendumObjectDetails.WithFacility.WithAllAppointments">

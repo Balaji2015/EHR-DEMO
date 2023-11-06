@@ -380,7 +380,8 @@ function Exam_Load() {
     }
 
     $("textarea").addClass('spanstyle');
-    $("label").addClass('spanstyle');
+    //Jira CAP-1194
+    //$("label").addClass('spanstyle');
     $("select").addClass('spanstyle');
     $('#tblPlan tr td').addClass('spanstyle');
 
@@ -534,6 +535,37 @@ function SetPhysicianSpecificVisibility() {
         }
     }
     LoadControl("", type);
+
+    //Jira CAP-1194 -  also adding a new attribute (phyname_withcolor) in label element for GeneralWithSpecialty.html in the htmlgenerate program
+
+    var Changelabelcolor = $("#tblExam tbody tr:not([style='display: none;'])");
+
+    for (var i = 0; i < Changelabelcolor.length; i++) {
+
+        if ($(Changelabelcolor[i]).attr("data-physician-ids") != undefined) {
+            if ($(Changelabelcolor[i])[0].children[0].children[0].tagName.toUpperCase() == "LABEL" && $(Changelabelcolor[i])[0].children[0].children[0].attributes[3] != undefined) {
+                var temp_phyname_withcolor = $(Changelabelcolor[i])[0].children[0].children[0].attributes[3].value;
+
+                var phyname_withcolor = temp_phyname_withcolor.slice(temp_phyname_withcolor.indexOf(physician_id), temp_phyname_withcolor.length).split(",")[0];
+
+                if (phyname_withcolor != undefined && phyname_withcolor != null) {
+                    $(Changelabelcolor[i])[0].children[0].children[0].style.removeProperty("color");
+                    $(Changelabelcolor[i])[0].children[0].children[0].classList.remove("spanstyle");
+                    $(Changelabelcolor[i])[0].children[0].children[0].classList.remove("lblcolor");
+
+                    if (phyname_withcolor.split("~")[1] == "BLACK") {
+                        $(Changelabelcolor[i])[0].children[0].children[0].style.setProperty("color","black");
+                        $(Changelabelcolor[i])[0].children[0].children[0].classList.add('spanstyle');
+                    }
+                    else if (phyname_withcolor.split("~")[1] == "GREEN") {
+                        $(Changelabelcolor[i])[0].children[0].children[0].style.setProperty("color", "green");
+                        $(Changelabelcolor[i])[0].children[0].children[0].classList.add('lblcolor');
+                    }
+                }
+            }
+        }
+    }
+
 }
 function SaveExam() {
 
@@ -1015,28 +1047,38 @@ function chkSystem_CheckedChanged() {
     }
     else {
         var combobox = $('select.combo');
+        var classname = "";
         for (var i = 0; i <= combobox.length; i++) {
             if ($('select.combo')[i] != undefined) {
-                var combo = document.getElementById($('select.combo')[i].id);
-                if ($(combo).find('option:selected').val() == 'No Abnormality Detected(NAD)') {
-                    //$($(combo).find('option')[0]).prop('selected', true);
-                    $(combo)[0].value = $(combo).find('option')[0].value;
-                    if ($(combo.parentElement.nextElementSibling).find('textarea')[0].attributes.getNamedItem('data-hidden') != undefined) {
-                        var lstPhysician;
-                        var OtherDescription = "";
-                        var countList = $(combo.parentElement.nextElementSibling).find('textarea')[0].attributes.getNamedItem('data-hidden').value.split('|').length;
-                        for (var j = 0; j < countList; j++) {
-                            if ($(combo.parentElement.nextElementSibling).find('textarea')[0].attributes.getNamedItem('data-hidden').value.split('|')[j].indexOf(physician_id) > -1) {
-                                if ($(combo.parentElement.nextElementSibling).find('textarea')[0].attributes.getNamedItem('data-hidden').value.split('|')[j].split('$')[1] != undefined) {
-                                    OtherDescription = $(combo.parentElement.nextElementSibling).find('textarea')[0].attributes.getNamedItem('data-hidden').value.split('|')[j].split('$')[1];
-                                    if ($(combo.parentElement.nextElementSibling).find('textarea')[0].value != "") {
-                                        if (OtherDescription == $(combo.parentElement.nextElementSibling).find('textarea')[0].value) {
+                classname = "";
+                if (document.getElementById($('select.combo')[i].id.replace("cbo", "lbl")).classList != null) {
+                    if (document.getElementById($('select.combo')[i].id.replace("cbo", "lbl")).classList[0] != undefined) {
+                        classname = document.getElementById($('select.combo')[i].id.replace("cbo", "lbl")).classList[0];
+                    }
+                }
+
+                if (classname != "lblcolor") {
+                    var combo = document.getElementById($('select.combo')[i].id);
+                    if ($(combo).find('option:selected').val() == 'No Abnormality Detected(NAD)') {
+                        //$($(combo).find('option')[0]).prop('selected', true);
+                        $(combo)[0].value = $(combo).find('option')[0].value;
+                        if ($(combo.parentElement.nextElementSibling).find('textarea')[0].attributes.getNamedItem('data-hidden') != undefined) {
+                            var lstPhysician;
+                            var OtherDescription = "";
+                            var countList = $(combo.parentElement.nextElementSibling).find('textarea')[0].attributes.getNamedItem('data-hidden').value.split('|').length;
+                            for (var j = 0; j < countList; j++) {
+                                if ($(combo.parentElement.nextElementSibling).find('textarea')[0].attributes.getNamedItem('data-hidden').value.split('|')[j].indexOf(physician_id) > -1) {
+                                    if ($(combo.parentElement.nextElementSibling).find('textarea')[0].attributes.getNamedItem('data-hidden').value.split('|')[j].split('$')[1] != undefined) {
+                                        OtherDescription = $(combo.parentElement.nextElementSibling).find('textarea')[0].attributes.getNamedItem('data-hidden').value.split('|')[j].split('$')[1];
+                                        if ($(combo.parentElement.nextElementSibling).find('textarea')[0].value != "") {
+                                            if (OtherDescription == $(combo.parentElement.nextElementSibling).find('textarea')[0].value) {
+                                                $(combo.parentElement.nextElementSibling).find('textarea')[0].value = "";
+                                            }
+                                        } else {
                                             $(combo.parentElement.nextElementSibling).find('textarea')[0].value = "";
                                         }
-                                    } else {
-                                        $(combo.parentElement.nextElementSibling).find('textarea')[0].value = "";
+                                        break;
                                     }
-                                    break;
                                 }
                             }
                         }
@@ -1058,8 +1100,12 @@ function ClearSystem() {
         for (var i = 0; i < $("select").length ; i++) {
             if (document.getElementById($('select')[i].id.replace("cbo", "lbl")).style != null) {
 
-                document.getElementById($('select')[i].id.replace("cbo", "lbl")).classList.add('spanstyle');
-                document.getElementById($('select')[i].id.replace("cbo", "lbl")).classList.remove('manredforstar');
+                //Jira CAP-1194
+                if (!document.getElementById($('select')[i].id.replace("cbo", "lbl")).classList.contains("lblcolor")) {
+                    document.getElementById($('select')[i].id.replace("cbo", "lbl")).classList.add('spanstyle');
+                }
+                    document.getElementById($('select')[i].id.replace("cbo", "lbl")).classList.remove('manredforstar');
+                
             }
         }
         $('#btnSave')[0].disabled = false;
@@ -1087,7 +1133,10 @@ $("select").change(function () {
 
 
         document.getElementById(lbl).classList.remove('manredforstar');
-        document.getElementById(lbl).classList.add('spanstyle');
+        //Jira CAP-1194
+        if (!document.getElementById(lbl).classList.contains('lblcolor')) {
+            document.getElementById(lbl).classList.add('spanstyle');
+        }
 
 
         document.getElementById(lbl).style.color = "";
@@ -1116,7 +1165,10 @@ $("select").change(function () {
 
     else {
         document.getElementById(lbl).classList.remove('manredforstar');
-        document.getElementById(lbl).classList.add('spanstyle');
+        //Jira CAP-1194
+        if (!document.getElementById(lbl).classList.contains('lblcolor')) {
+            document.getElementById(lbl).classList.add('spanstyle');
+        }
         PopulateNADValue(combo);
     }
     $('#btnSave')[0].disabled = false;
