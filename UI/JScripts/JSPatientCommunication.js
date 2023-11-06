@@ -1531,29 +1531,39 @@ function CancelMenu() {
         var winName = window.GetRadWindow()._name;
     localStorage.setItem("bSaveSuccess", "");
     if (localStorage.getItem("bSave") == "false") {
-        if ($(top.window.document).find("iframe[name='" + winName + "']").length != 0) {
-            if (!$($(top.window.document).find("iframe[name='" + winName + "']")[0].contentDocument).find('body').is('#dvdialogMenu'))
-                $($(top.window.document).find("iframe[name='" + winName + "']")[0].contentDocument).find('body').append('<div id="dvdialogMenu" style="min-height: 65px !important; width: auto; max-height: none; height: auto; display: none;">' +
-                    '<p style="font-family: Verdana,Arial,sans-serif; font-size: 13.5px;">There are unsaved changes.Do you want to save them?</p></div>');
-            dvdialog = $($(top.window.document).find("iframe[name='" + winName + "']")[0].contentDocument).find('body').find('#dvdialogMenu');
-        }
-        else if ($(top.window.document).find("iframe[name='ctl00_ModalWindow']").length != 0) {
-            if (!$($(top.window.document).find("iframe[name='ctl00_ModalWindow']")[0].contentDocument).find('body').is('#dvdialogMenu'))
-                $($(top.window.document).find("iframe[name='ctl00_ModalWindow']")[0].contentDocument).find('body').append('<div id="dvdialogMenu" style="min-height: 65px !important; width: auto; max-height: none; height: auto; display: none;">' +
-                    '<p style="font-family: Verdana,Arial,sans-serif; font-size: 13.5px;">There are unsaved changes.Do you want to save them?</p></div>');
-            dvdialog = $($(top.window.document).find("iframe[name='ctl00_ModalWindow']")[0].contentDocument).find('body').find('#dvdialogMenu');
-        }
-        else if ($(top.window.document).find("iframe").length != 0) {
-            if (!$($(top.window.document).find("iframe")[0].contentDocument).find('body').is('#dvdialogMenu'))
-                $($(top.window.document).find("iframe")[0].contentDocument).find('body').append('<div id="dvdialogMenu" style="min-height: 65px !important; width: auto; max-height: none; height: auto; display: none;">' +
-                    '<p style="font-family: Verdana,Arial,sans-serif; font-size: 13.5px;">There are unsaved changes.Do you want to save them?</p></div>');
-            dvdialog = $($(top.window.document).find("iframe")[0].contentDocument).find('body').find('#dvdialogMenu');
-        }
+        //Cap - 1149
+        //if ($(top.window.document).find("iframe[name='" + winName + "']").length != 0) {
+        //    if (!$($(top.window.document).find("iframe[name='" + winName + "']")[0].contentDocument).find('body').is('#dvdialogMenu'))
+        //        $($(top.window.document).find("iframe[name='" + winName + "']")[0].contentDocument).find('body').append('<div id="dvdialogMenu" style="min-height: 65px !important; width: auto; max-height: none; height: auto; display: none;">' +
+        //            '<p style="font-family: Verdana,Arial,sans-serif; font-size: 13.5px;">There are unsaved changes.Do you want to save them?</p></div>');
+        //    //dvdialog = $($(top.window.document).find("iframe[name='" + winName + "']")[0].contentDocument).find('body').find('#dvdialogMenu');
+        //    dvdialog = $('#dvdialogMenu');
+        //}
+        //else if ($(top.window.document).find("iframe[name='ctl00_ModalWindow']").length != 0) {
+        //    if (!$($(top.window.document).find("iframe[name='ctl00_ModalWindow']")[0].contentDocument).find('body').is('#dvdialogMenu'))
+        //        $($(top.window.document).find("iframe[name='ctl00_ModalWindow']")[0].contentDocument).find('body').append('<div id="dvdialogMenu" style="min-height: 65px !important; width: auto; max-height: none; height: auto; display: none;">' +
+        //            '<p style="font-family: Verdana,Arial,sans-serif; font-size: 13.5px;">There are unsaved changes.Do you want to save them?</p></div>');
+        //    dvdialog = $($(top.window.document).find("iframe[name='ctl00_ModalWindow']")[0].contentDocument).find('body').find('#dvdialogMenu');
+        //}
+        //else if ($(top.window.document).find("iframe").length != 0) {
+            //if (!$($(top.window.document).find("iframe")[0].contentDocument).find('body').is('#dvdialogMenu'))
+            //    $($(top.window.document).find("iframe")[0].contentDocument).find('body').append('<div id="dvdialogMenu" style="min-height: 65px !important; width: auto; max-height: none; height: auto; display: none;z-index:9999;">' +
+            //        '<p style="font-family: Verdana,Arial,sans-serif; font-size: 13.5px;">There are unsaved changes.Do you want to save them?</p></div>');
+            //dvdialog = $($(top.window.document).find("iframe")[0].contentDocument).find('body').find('#dvdialogMenu');
+       // }
+            $("body").append("<div id='dvdialogMenu' style='min-height: 65px !important; width: auto; max-height: none; height: auto; display: none;'>" +
+                "<p style='font-family: Verdana,Arial,sans-serif; font-size: 12.5px;'>There are unsaved changes.Do you want to save them?</p></div>")
+            dvdialog = $('#dvdialogMenu');
+            
         myPos = "center center";
         atPos = 'center center';
         $(dvdialog).dialog({
             modal: true,
             title: "Capella -EHR",
+            position: {
+                my: myPos,
+                at: atPos
+            },
             buttons: {
                 "Yes": function () {
 
