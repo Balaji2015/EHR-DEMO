@@ -1,5 +1,5 @@
 ﻿//CAP-1158
-$('#DLC_txtDLC').keypress(function (event) {
+$('#DLC_listDLC').keypress(function (event) {
     if (event.keyCode === 10 || event.keyCode === 13) {
         event.preventDefault();
     }
