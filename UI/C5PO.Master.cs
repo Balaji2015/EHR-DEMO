@@ -754,7 +754,14 @@ namespace Acurus.Capella.UI
                 Session["GeneralQShowAll"] = null;
                 //CAP-1167
                 Session.Abandon();
-                Response.Cookies.Clear();
+                //CAP-1311
+                foreach (string cookieName in Request.Cookies.AllKeys)
+                {
+                    HttpCookie myCookie = Request.Cookies[cookieName];
+                    myCookie.Value = ""; // Clear the cookie's value
+                    myCookie.Expires = DateTime.Now.AddYears(-1);// Expire the cookies
+                    Response.Cookies.Add(myCookie); // Update the client-side cookie
+                }
             }
             catch
             { }
