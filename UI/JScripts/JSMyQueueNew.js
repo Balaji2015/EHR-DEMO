@@ -1977,6 +1977,7 @@ function loadenc() {
         dataType: "json",
         async: true,
         success: function (data) {
+            { sessionStorage.setItem('StartLoading', 'true'); StartLoadFromPatChart(); }
             $('#GeneralQTable').empty();
             var tabContents;
             var objdata = $.parseJSON(data.d);
@@ -3695,6 +3696,12 @@ function RowClick() {
     $("#MyQTable tr").dblclick(function () {
         if (event.target.tagName != 'TH' && event.target.type != 'checkbox') {
             { sessionStorage.setItem('StartLoading', 'true'); StartLoadFromPatChart(); }
+
+            if ($(this)[0]?.children[0]?.children[0]?.checked != undefined) {
+                $(this)[0].children[0].children[0].checked = true;
+                $(this)[0].classList.add('highlight');
+            }
+
             MyQclick();
         }
 //Jira #CAP-889
@@ -3816,6 +3823,7 @@ function movetoEnc() {
                         loadenc();
                     }
                     else {
+                        { sessionStorage.setItem('StartLoading', 'true'); StartLoadFromPatChart(); }
                         $('#GeneralQTable').empty();
                         var tabContents;
                         var objdata = $.parseJSON(data.d);
