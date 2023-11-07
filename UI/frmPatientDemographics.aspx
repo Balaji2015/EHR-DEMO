@@ -1225,8 +1225,8 @@
                                         <td class="style185">&nbsp;
                                         </td>
                                         <td class="style212">
-                                            <%--<asp:Label ID="lblGuarantorMiddleName" runat="server" Text="Middle Name" Width="80px"
-                                                EnableViewState="false" CssClass="spanstyle"></asp:Label>--%>
+                                           <asp:Label ID="lblGuarantorMiddleName" runat="server" Text="Middle Name" Width="45px"
+                                                EnableViewState="false" CssClass="spanstyle"></asp:Label>
                                         </td>
                                         <td class="style194">
                                             <asp:TextBox ID="txtGuarantorMiddleName" onchange="AutoSave();" onkeypress="return AllowAlphabet(event)"
