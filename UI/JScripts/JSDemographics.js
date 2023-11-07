@@ -3483,7 +3483,7 @@ function OpenAddPhysician() {
     $(top.window.document).find("#TabModalPhysicianLibraryTitle")[0].textContent = "Provider Library";
     $(top.window.document).find("#TabmdldlgPhysicianLibrary")[0].style.width = "850px";
     $(top.window.document).find("#TabmdldlgPhysicianLibrary")[0].style.height = "440px"; //"715px"; 
-    $(top.window.document).find("#TabmdldlgPhysicianLibrary")[0].style.left = "150px";
+    //$(top.window.document).find("#TabmdldlgPhysicianLibrary")[0].style.left = "150px";
     var sPath = "frmPhysicianLibray.aspx";
     $(top.window.document).find("#TabPhysicianLibraryFrame")[0].style.height = "275px"; //"495px";
     $(top.window.document).find("#TabPhysicianLibraryFrame")[0].contentDocument.location.href = sPath;

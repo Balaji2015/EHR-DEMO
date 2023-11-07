@@ -1975,7 +1975,7 @@
                 </div>
             </div>
         </div>
-        <div id="TabFax" class="modal fade" style="margin-top: 20px; margin-left: 0px; padding-left: 55px;background-color: rgba(0, 0, 0, 0.13);z-index: 9999;">
+        <div id="TabFax" class="modal fade" style="margin-top: 20px; margin-left: 0px; padding-left: 55px;background-color: rgba(0, 0, 0, 0.13);z-index: 8888;">
             <div id="TabmdldlgEFax" class="modal-dialog" style="width: 95%; margin-left:150px; margin-top: 10px; position: absolute!important;">
                 <div class=" modal-content" style="height: 85%">
                     <div class="modal-header" style="height: 40px">
@@ -2021,8 +2021,8 @@
         </div>
 
       
-          <div id="TabPhysicianLibrary" class="modal fade" style="margin-top: 30px; margin-left: 0px; padding-left: 55px; overflow: hidden; background-color: rgba(0, 0, 0, 0.13);z-index: 8001;">
-            <div id="TabmdldlgPhysicianLibrary" class="modal-dialog" style="width: 95%; margin-left:150px; margin-top: 10px; position: absolute!important;">
+          <div id="TabPhysicianLibrary" class="modal fade" style="margin-top: 30px; margin-left: 0px; padding-left: 55px; overflow: hidden; background-color: rgba(0, 0, 0, 0.13);z-index: 8889;">
+            <div id="TabmdldlgPhysicianLibrary" class="modal-dialog" style="width: 95%; margin-left:27%; margin-top: 10px; position: absolute!important;">
                 <div class=" modal-content" style="height: 90%">
                     <div class="modal-header" style="height: 52px">
                         <button type="button" class="close" id="btnPhysicianLibraryClose"  onclick="btnPhysicianLibraryClose_Click();" style="font-size: 30px !important;"  data-dismiss="modal" aria-hidden="true">&times;</button>
