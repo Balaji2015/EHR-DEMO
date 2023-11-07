@@ -137,7 +137,9 @@ namespace Acurus.Capella.UI
                             this.ddlVoucher.Items.Add(Encid);
                             if (ulEncounterID.ToString() == ilstEncounter[iCount].Id.ToString())
                             {
-                                index = iCount + 1;
+                                //Cap - 1326
+                                //index = iCount+1;
+                                index = iCount;
 
                             }
                         }
