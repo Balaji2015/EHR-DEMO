@@ -3847,8 +3847,9 @@ function movetoEnc() {
                         SortTableHeader('GeneralQ');
                         //$('#EncounterTable th').addClass('header');
                         RowClick();
+                        { sessionStorage.setItem('StartLoading', 'false'); StopLoadFromPatChart(); }
                     }
-                    { sessionStorage.setItem('StartLoading', 'false'); StopLoadFromPatChart(); }
+                    
 
                 },
                 error: function OnError(xhr) {
