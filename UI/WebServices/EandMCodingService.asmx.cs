@@ -162,6 +162,7 @@ namespace Acurus.Capella.UI.WebServices
                         sFacName = EncRcrd.Facility_Name;
                         sCloseVisible = "true";
                     }
+                   
                 }
             }
             bool Is_CMG_Ancillary = false;

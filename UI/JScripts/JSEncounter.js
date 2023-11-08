@@ -2214,31 +2214,34 @@ function OpenProviderValidation(appointmentProviderId, appointmentProviderName, 
 
 
 function QRCodeClick() {
-
-        if (window.top.document.getElementById("notificationpopup").innerText != "NOTIFICATION : Loading...") {
-            if ($(top.window.document).find("#QRCodeInfo") != undefined) {
-                var locatn = "frmQRCodeGenerator.aspx";
-                $(top.window.document).find('#QRCode_Modal')[0].contentDocument.location.href = locatn;
-                //if (triggeredBy != undefined && triggeredBy != '' && triggeredBy == "MovetoNextProcess") {
-                //    $(top.window.document).find("#AlertHeader")[0].innerHTML = "Warning";
-                //    $(top.window.document).find("#btnCloseAlert").css("display", "none");
-                //    $('#btnCloseAlert').removeClass('aspresizedredbutton');
-                //    localStorage.setItem('trigerredBy', triggeredBy);
-                //}
-                //else {
-                $(top.window.document).find("#QRCodeHeader")[0].innerHTML = "Scan QR code with your mobile device to dictate";
-                $(top.window.document).find("#btnCloseQRCode").css("display", "block");
-                $('#btnCloseQRCode').removeClass('btn btn-danger');
-                $('#btnCloseQRCode').addClass('aspresizedredbutton');
-                //}
-                $(top.window.document).find("#QRCodeInfo")[0].style.display = "block";
-                //Jira CAP-1215
-                event.preventDefault();
-            }
+    if (window.top.document.getElementById("notificationpopup").innerText != "NOTIFICATION : Loading...") {
+        if ($(top.window.document).find("#QRCodeInfo") != undefined) {
+            var locatn = "frmQRCodeGenerator.aspx";
+            $(top.window.document).find('#QRCode_Modal')[0].contentDocument.location.href = locatn;
+            //if (triggeredBy != undefined && triggeredBy != '' && triggeredBy == "MovetoNextProcess") {
+            //    $(top.window.document).find("#AlertHeader")[0].innerHTML = "Warning";
+            //    $(top.window.document).find("#btnCloseAlert").css("display", "none");
+            //    $('#btnCloseAlert').removeClass('aspresizedredbutton');
+            //    localStorage.setItem('trigerredBy', triggeredBy);
+            //}
+            //else {
+            $(top.window.document).find("#QRCodeHeader")[0].innerHTML = "Scan QR code with your mobile device to dictate";
+            $(top.window.document).find("#btnCloseQRCode").css("display", "block");
+            $('#btnCloseQRCode').removeClass('btn btn-danger');
+            $('#btnCloseQRCode').addClass('aspresizedredbutton');
+            //}
+            $(top.window.document).find("#QRCodeInfo")[0].style.display = "block";
+            //Jira CAP-1215
+            event.preventDefault();
         }
     }
-    
+}
 
+//Jira CAP-1312
+function StartLoadingcursor() {
+    { sessionStorage.setItem('StartLoading', 'true'); StartLoadFromPatChart(); }
+    return true;
+}
 
 function CloseQRCodeModal() {
     $("#QRCodeInfo")[0].style.display = "none";
@@ -2266,4 +2269,5 @@ function AkidoNoteClick() {
 
     //Jira CAP-1215
     //return false;
+    { sessionStorage.setItem('StartLoading', 'false'); StopLoadFromPatChart(); }
 }
