@@ -731,36 +731,56 @@ function ValidatePatientInformation() {
             return false;
         }
         //CAP-991
-        if (document.getElementById("msktxtCellPhno").value == "(___) ___-____") {
 
-            DisplayErrorMessage('380031');
+    if (document.getElementById(GetClientId("msktxtCellPhno")).value.length != 0 && PhNoValid(GetClientId("msktxtCellPhno")) == false && document.getElementById(GetClientId("msktxtCellPhno")).value != "(___) ___-____") {
+        DisplayErrorMessage('420005');
             window.setTimeout(function () {
                 document.getElementById('msktxtCellPhno').focus();
             }, 0);
-            document.getElementById("hdnValidation").value = "false";
-            { sessionStorage.setItem('StartLoading', 'false'); StopLoadFromPatChart(); }
-            return false;
-        }
-        if (document.getElementById("msktxtCellPhno").value.length != 0 && PhNoValid("msktxtCellPhno") == false && document.getElementById("msktxtCellPhno").value != "(___) ___-____" && document.getElementById("msktxtCellPhno").RadInputValidationValue.length < 14) {
+        document.getElementById("hdnValidation").value = "false";
+        { sessionStorage.setItem('StartLoading', 'false'); StopLoadFromPatChart(); }
+        return false;
+    }
 
-            DisplayErrorMessage('380031');
-            window.setTimeout(function () {
+    if (document.getElementById(GetClientId("msktxtCellPhno")).value == "(___) ___-____" || document.getElementById(GetClientId("msktxtCellPhno")).value == "") {
+        DisplayErrorMessage('420091');
+        window.setTimeout(function () {
                 document.getElementById('msktxtCellPhno').focus();
-            }, 0);
-            document.getElementById("hdnValidation").value = "false";
-            { sessionStorage.setItem('StartLoading', 'false'); StopLoadFromPatChart(); }
-            return false;
-        }
-        if (document.getElementById("msktxtCellPhno").RadInputValidationValue.length > 0 && document.getElementById("msktxtCellPhno").RadInputValidationValue.length < 14) {
+        }, 0);
+        document.getElementById("hdnValidation").value = "false";
+        { sessionStorage.setItem('StartLoading', 'false'); StopLoadFromPatChart(); }
+        return false;
+    }
+        //if (document.getElementById("msktxtCellPhno").value == "(___) ___-____") {
 
-            DisplayErrorMessage('380031');
-            window.setTimeout(function () {
-                document.getElementById('msktxtCellPhno').focus();
-            }, 0);
-            document.getElementById("hdnValidation").value = "false";
-            { sessionStorage.setItem('StartLoading', 'false'); StopLoadFromPatChart(); }
-            return false;
-        }
+        //    DisplayErrorMessage('420091');
+        //    window.setTimeout(function () {
+        //        document.getElementById('msktxtCellPhno').focus();
+        //    }, 0);
+        //    document.getElementById("hdnValidation").value = "false";
+        //    { sessionStorage.setItem('StartLoading', 'false'); StopLoadFromPatChart(); }
+        //    return false;
+        //}
+        //if (document.getElementById("msktxtCellPhno").value.length != 0 && PhNoValid("msktxtCellPhno") == false && document.getElementById("msktxtCellPhno").value != "(___) ___-____" && document.getElementById("msktxtCellPhno").RadInputValidationValue.length < 14) {
+
+        //    DisplayErrorMessage('420005');
+        //    window.setTimeout(function () {
+        //        document.getElementById('msktxtCellPhno').focus();
+        //    }, 0);
+        //    document.getElementById("hdnValidation").value = "false";
+        //    { sessionStorage.setItem('StartLoading', 'false'); StopLoadFromPatChart(); }
+        //    return false;
+        //}
+        //if (document.getElementById("msktxtCellPhno").RadInputValidationValue.length > 0 && document.getElementById("msktxtCellPhno").RadInputValidationValue.length < 14) {
+
+        //    DisplayErrorMessage('420091');
+        //    window.setTimeout(function () {
+        //        document.getElementById('msktxtCellPhno').focus();
+        //    }, 0);
+        //    document.getElementById("hdnValidation").value = "false";
+        //    { sessionStorage.setItem('StartLoading', 'false'); StopLoadFromPatChart(); }
+        //    return false;
+        //}
         if (document.getElementById("msktxtHomePhno").value.length != 0 && PhNoValid("msktxtHomePhno") == false && document.getElementById("msktxtHomePhno").value != "(___) ___-____") {
 
             DisplayErrorMessage('380032');
