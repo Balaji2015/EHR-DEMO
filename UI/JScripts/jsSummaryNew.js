@@ -89,6 +89,7 @@ function OpenEfax(sFaxSubject, sRefProvider)
     $(top.window.document).find("#TabmdldlgEFax")[0].style.height = "963px";
     $(top.window.document).find("#TabmdldlgEFax").css({ "margin-left": "100px" });
     var sPath = ""
+    sRefProvider = sRefProvider.replaceAll("#", "~$~");
     sPath = "frmEFax.aspx?ProgressNotes=" + document.getElementById('hdnFilePath').value + "&RefProvider=" + sRefProvider;
     $(top.window.document).find("#TabEFaxFrame")[0].style.height = "659px";
     $(top.window.document).find("#TabEFaxFrame")[0].contentDocument.location.href = sPath;

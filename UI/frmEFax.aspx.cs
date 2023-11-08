@@ -62,11 +62,13 @@ namespace Acurus.Capella.UI
                 }
                 if (Request["RefProvider"] != null && Request["RefProvider"] != string.Empty)
                 {
-                    txtRecName.Value = Request["RefProvider"].ToString();
+                    //Jira CAP-1358
+                    //txtRecName.Value = Request["RefProvider"].ToString();
+                    txtRecName.Value = Request["RefProvider"].ToString().Replace("~$~", "#");
                     var RefProvider = txtRecName.Value.Split('|');
                     for (int i = 0; i < RefProvider.Count(); i++)
                     {
-                        if (RefProvider[i].ToString().Contains("Fax No:"))
+                        if (RefProvider[i].ToString().Contains("Fax No:") || RefProvider[i].ToString().Contains("FAX:"))
                         {
                             string Fax = Regex.Replace(RefProvider[i].ToString().Split(':')[1], @"\s", "");
                             msktxtRecipientFax.Value = Fax;
