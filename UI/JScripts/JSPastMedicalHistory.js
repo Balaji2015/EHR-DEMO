@@ -1325,9 +1325,10 @@ function SetPhysicianSpecificVisibility() {
         }
         Addto_ModifiedControls(e);
     });
-    $("input:text").mask("9999?-aaa-99");
-
-
+    //CAP-1283
+    setTimeout(function () {
+        $("input:text").mask("9999?-aaa-99");
+    },500);
 }
 
 function SaveProblemHistory() {
@@ -1645,6 +1646,7 @@ function Filter(array, terms) {
 var Modified_controls = [];
 var Mod_ctrl_Count = 0;
 $(document).ready(function () {
+    $("input:text").mask("9999?-aaa-99");
     LoadHistoryProblem();
     $("textarea").bind("keydown", function (e) {//BUGID:45541
 
