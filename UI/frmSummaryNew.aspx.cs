@@ -6009,15 +6009,28 @@ margin:0in 0in 0in 9in;
                             sFaxDOS = "_" + Convert.ToDateTime(itemDoc.GetElementsByTagName("EncounterList")[0].ChildNodes[0].Attributes.GetNamedItem("Local_Time").Value).ToString("dd-MMM-yyyy");
 
                         }
+                        //Jira CAP-1358
+                        //if (itemDoc.GetElementsByTagName("EncounterList")[0].ChildNodes[0].Attributes.GetNamedItem("Referring_Physician").Value != "")
+                        //{
+
+                        //    sRefProvider = " |" + itemDoc.GetElementsByTagName("EncounterList")[0].ChildNodes[0].Attributes.GetNamedItem("Referring_Physician").Value +
+                        //        "| NPI: " + itemDoc.GetElementsByTagName("EncounterList")[0].ChildNodes[0].Attributes.GetNamedItem("Referring_Provider_NPI").Value +
+                        //        "| Facility: " + itemDoc.GetElementsByTagName("EncounterList")[0].ChildNodes[0].Attributes.GetNamedItem("Referring_Facility").Value +
+                        //        "| Address:" + itemDoc.GetElementsByTagName("EncounterList")[0].ChildNodes[0].Attributes.GetNamedItem("Referring_Address").Value +
+                        //        "| Fax No:" + itemDoc.GetElementsByTagName("EncounterList")[0].ChildNodes[0].Attributes.GetNamedItem("Referring_Fax_No").Value +
+                        //        "| Phone No:" + itemDoc.GetElementsByTagName("EncounterList")[0].ChildNodes[0].Attributes.GetNamedItem("Referring_Phone_No").Value;
+                        //}
+
+                        //Jira CAP-1358
                         if (itemDoc.GetElementsByTagName("EncounterList")[0].ChildNodes[0].Attributes.GetNamedItem("Referring_Physician").Value != "")
                         {
 
-                            sRefProvider = " |" + itemDoc.GetElementsByTagName("EncounterList")[0].ChildNodes[0].Attributes.GetNamedItem("Referring_Physician").Value +
-                                "| NPI: " + itemDoc.GetElementsByTagName("EncounterList")[0].ChildNodes[0].Attributes.GetNamedItem("Referring_Provider_NPI").Value +
-                                "| Facility: " + itemDoc.GetElementsByTagName("EncounterList")[0].ChildNodes[0].Attributes.GetNamedItem("Referring_Facility").Value +
-                                "| Address:" + itemDoc.GetElementsByTagName("EncounterList")[0].ChildNodes[0].Attributes.GetNamedItem("Referring_Address").Value +
-                                "| Fax No:" + itemDoc.GetElementsByTagName("EncounterList")[0].ChildNodes[0].Attributes.GetNamedItem("Referring_Fax_No").Value +
-                                "| Phone No:" + itemDoc.GetElementsByTagName("EncounterList")[0].ChildNodes[0].Attributes.GetNamedItem("Referring_Phone_No").Value;
+                            sRefProvider = itemDoc.GetElementsByTagName("EncounterList")[0].ChildNodes[0].Attributes.GetNamedItem("Referring_Physician").Value +
+                                " | NPI: " + itemDoc.GetElementsByTagName("EncounterList")[0].ChildNodes[0].Attributes.GetNamedItem("Referring_Provider_NPI").Value +
+                                " | FACILITY: " + itemDoc.GetElementsByTagName("EncounterList")[0].ChildNodes[0].Attributes.GetNamedItem("Referring_Facility").Value +
+                                " | ADDR:" + itemDoc.GetElementsByTagName("EncounterList")[0].ChildNodes[0].Attributes.GetNamedItem("Referring_Address").Value +
+                                " | PH:" + itemDoc.GetElementsByTagName("EncounterList")[0].ChildNodes[0].Attributes.GetNamedItem("Referring_Phone_No").Value +
+                                " | FAX:" + itemDoc.GetElementsByTagName("EncounterList")[0].ChildNodes[0].Attributes.GetNamedItem("Referring_Fax_No").Value;
                         }
                     }
                 }
