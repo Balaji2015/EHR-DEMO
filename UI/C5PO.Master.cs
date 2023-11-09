@@ -755,6 +755,7 @@ namespace Acurus.Capella.UI
                 //CAP-1167
                 Session.Abandon();
                 //CAP-1311
+                ClientSession.FlushSession();
                 foreach (string cookieName in Request.Cookies.AllKeys)
                 {
                     HttpCookie myCookie = Request.Cookies[cookieName];
