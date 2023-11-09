@@ -248,7 +248,7 @@
                             </td>
                             <td style="width: 5%"></td>
                             <td style="width: 65%">
-                                <label runat="server" id="Paienttrend"  class="clinicltrend" style="display: none;">Clinical Trend</label>
+                                <label runat="server" id="Paienttrend"  class="clinicltrend">Clinical Trend</label>
                                 <div id="FlowchartDiv" style="display: none; border-style: ridge; width: 128%; padding: 4%; height: 560px; position: sticky;">
                                     <div style="height: 5%;">
                                         <table>
@@ -344,8 +344,6 @@
                         success: function (sdata) {
                             
                             document.getElementById('FlowchartDiv').style.display = "inline-block";
-                            //CAP-1334
-                            document.getElementById('Paienttrend').style.display = "inline-block";
                             var Result = JSON.parse(sdata.d);
                             var XAXisDetails = JSON.parse(Result.XAxis);
                             var YAXisDetails = JSON.parse(Result.YAxis);

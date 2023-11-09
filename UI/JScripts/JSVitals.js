@@ -394,6 +394,8 @@ function ShowLoading() {
 }
 
 function btnSave_Clicked() {
+    //CAP-937
+    sessionStorage.removeItem("EncAutoSave");
     var values = $('#tblVitalControls').find('input[id ^= "dtpBP"]').map(function () {
         return this.id + "~" + this.value
     }).get();

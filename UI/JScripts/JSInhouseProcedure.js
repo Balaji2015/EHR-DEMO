@@ -561,22 +561,7 @@ function CloseImplantable() {
             },
             buttons: {
                 "Yes": function () {
-                    if (document.getElementById('hdnBtnFind').value == "" && document.getElementById('txtDeviceIdentifier').value != "" && document.getElementById('txtDeviceIdentifier').readOnly == false) {
-                        { sessionStorage.setItem('StartLoading', 'false'); StopLoadFromPatChart(); }
-                        DisplayErrorMessage('280021');
-                        document.getElementById('btnFind').disabled = false;
-                        return;
-                    }
-                    else if (document.getElementById('txtProcedure').value == "99999-Implantable Devices" && document.getElementById('txtDeviceIdentifier').value == "" && document.getElementById('hdnBtnFind').value == "") {
-                        { sessionStorage.setItem('StartLoading', 'false'); StopLoadFromPatChart(); }
-                        DisplayErrorMessage('280022');
-                        return;
-                    }
-                    else if ($('#txtDescription').val() == "") {
-                        { sessionStorage.setItem('StartLoading', 'false'); StopLoadFromPatChart(); }
-                        DisplayErrorMessage('280023');
-                        return;
-                    }
+                    //CAP-1308
                     $(dvdialog).dialog("close");
                     $(dvdialog).remove();
                     //CAP-874

@@ -3043,7 +3043,9 @@ namespace Acurus.Capella.UI
                     //cap - 571
                     //WFProxy.MoveToNextProcess(scanIndexList[j].Order_ID, "DIAGNOSTIC ORDER", 8, Physician_Name.ToString(), UtilityManager.ConvertToUniversal(DateTime.Now), null, current_process, null);
                     if (scanIndexList[j].Is_Manually_Reviewed_And_Signed == "Y")
-                        WFProxy.MoveToNextProcess(scanIndexList[j].Order_ID, "DIAGNOSTIC ORDER", 9, Physician_Name.ToString(), UtilityManager.ConvertToUniversal(DateTime.Now), null, current_process, null);
+                        //Cap - 1250
+                        //WFProxy.MoveToNextProcess(scanIndexList[j].Order_ID, "DIAGNOSTIC ORDER", 9, Physician_Name.ToString(), UtilityManager.ConvertToUniversal(DateTime.Now), null, current_process, null);
+                        WFProxy.MoveToNextProcess(scanIndexList[j].Order_ID, "DIAGNOSTIC ORDER", 9, "UNKNOWN", UtilityManager.ConvertToUniversal(DateTime.Now), null, current_process, null);
                     else
                     {
                         WFProxy.MoveToNextProcess(scanIndexList[j].Order_ID, "DIAGNOSTIC ORDER", 8, Physician_Name.ToString(), UtilityManager.ConvertToUniversal(DateTime.Now), null, current_process, null);
@@ -4438,6 +4440,9 @@ namespace Acurus.Capella.UI
             divLoading.Style.Add("display", "none");
             waitCursor.Update();
 
+            //Cap - 1294
+            ScriptManager.RegisterStartupScript(this, this.Page.GetType(), "EditGridupdate", "localStorage.setItem('IsSaveClickedSucessfull','');", true);
+
         }
 
         public void updateOrderObjects()
@@ -5731,7 +5736,9 @@ namespace Acurus.Capella.UI
             {
                 //if (elements.Attribute("name").Value.ToUpper() != ConfigurationManager.AppSettings["CMGFacilityName"].Trim().ToUpper())
                 //{
-                var facAncillary = from f in ApplicationObject.facilityLibraryList where f.Fac_Name == elements.Attribute("name").Value select f;
+                //Cap - 1343
+                //var facAncillary = from f in ApplicationObject.facilityLibraryList where f.Fac_Name == elements.Attribute("name").Value select f;
+                var facAncillary = from f in ApplicationObject.facilityLibraryList where f.Fac_Name == elements.Attribute("name").Value && elements.Attribute("Legal_Org").Value == ClientSession.LegalOrg select f;
                 IList<FacilityLibrary> ilstFacAncillary = facAncillary.ToList<FacilityLibrary>();
                 if (ilstFacAncillary.Count > 0 && ilstFacAncillary[0].Is_Ancillary != "Y")
                 {

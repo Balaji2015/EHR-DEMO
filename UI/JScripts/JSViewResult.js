@@ -309,14 +309,11 @@ function openLink(urls) {
     }
 
 }
-function txtProviderNotes_OnValueChanged(e) {
+function txtProviderNotes_OnValueChanged(evt) {
     //document.getElementById('btnSave').disabled = false;
     document.getElementById(GetClientId("btnSave")).disabled = false;
-}
-//Cap - 1268
-$("#txtMedicalAssistantNotes").bind('paste', function () {
-    document.getElementById(GetClientId("btnSave")).disabled = false;
-});
+ }
+
 
 function txtMedicalAssistantNotes_OnValueChanged(sender, args) {
     //document.getElementById('btnSave').disabled = false;
@@ -337,7 +334,7 @@ function ClickMovetoma(sender, args) {
     if (document.getElementById('DLC_txtDLC').disabled == false && document.getElementById('DLC_txtDLC').value == "") {
         //var Continue = DisplayErrorMessage('115060');
         //if (Continue != undefined && Continue == true) {
-        StartLoadingImage();      
+        StartLoadingImage();
         __doPostBack('btnMoveToMa', "true");
         //}
         //else {
@@ -350,7 +347,7 @@ function ClickMovetoma(sender, args) {
 
         //var Continue = DisplayErrorMessage('115060');
         //if (Continue != undefined && Continue == true) {
-        StartLoadingImage();      
+        StartLoadingImage();
         __doPostBack('btnMoveToMa', "true");
         //}
         //else {
@@ -376,7 +373,7 @@ function ClickMovetonextProcess(sender, args) {
     if (document.getElementById('DLC_txtDLC').disabled == false && document.getElementById('DLC_txtDLC').value == "") {
         //var Continue = DisplayErrorMessage('115060');
         //if (Continue != undefined && Continue == true) {
-        StartLoadingImage();       
+        StartLoadingImage();
         __doPostBack('btnMoveToNextProcess', "true");
         //}
         //else {
@@ -409,8 +406,8 @@ function ClickMovetonextProcess(sender, args) {
 
 function btnSave_ClientClicked(sender, args) {
     { sessionStorage.setItem('StartLoading', 'true'); StartLoadFromPatChart(); }
-     __doPostBack('btnSave', "true");
-     //return true;   
+    __doPostBack('btnSave', "true");
+    //return true;   
 }
 
 function btnSave_ClientNodeClick() {
@@ -777,7 +774,7 @@ function OpenResultInterpretation() {
                 document.getElementById('hdnNewProviderhistoryattribute').value = NewProviderhistoryattribute;
 
                 document.getElementById("hdnSetvalue").click();
-                
+
             }
 
             //$(top.window.document).find("#TabResultInterpretations").modal({ backdrop: "", keyboard: false }, 'hide');
@@ -932,5 +929,73 @@ function DeleteFilesIndexing(filename) {
         return false;
     }
 }
+
+//Cap - 1256
+function transformTypedChar(charStr) {
+    return charStr == ";" ? "," : charStr;
+}
+$(document).on('keypress', '#DLC_txtDLC', function (evt) {
+   // document.getElementById("DLC_txtDLC").onkeypress = function (evt) {
+
+    document.getElementById(GetClientId("btnSave")).disabled = false;
+    var val = this.value;
+    evt = evt || window.event;
+
+    // Ensure we only handle printable keys, excluding enter and space
+    var charCode = typeof evt.which == "number" ? evt.which : evt.keyCode;
+    if (charCode && charCode > 32) {
+        var keyChar = String.fromCharCode(charCode);
+
+        // Transform typed character
+        var mappedChar = transformTypedChar(keyChar);
+
+        var start, end;
+        if (typeof this.selectionStart == "number" && typeof this.selectionEnd == "number") {
+            // Non-IE browsers and IE 9
+            start = this.selectionStart;
+            end = this.selectionEnd;
+            this.value = val.slice(0, start) + mappedChar + val.slice(end);
+
+            // Move the caret
+            this.selectionStart = this.selectionEnd = start + 1;
+        } else if (document.selection && document.selection.createRange) {
+            // For IE up to version 8
+            var selectionRange = document.selection.createRange();
+            var textInputRange = this.createTextRange();
+            var precedingRange = this.createTextRange();
+            var bookmark = selectionRange.getBookmark();
+            textInputRange.moveToBookmark(bookmark);
+            precedingRange.setEndPoint("EndToStart", textInputRange);
+            start = precedingRange.text.length;
+            end = start + selectionRange.text.length;
+
+            this.value = val.slice(0, start) + mappedChar + val.slice(end);
+            start++;
+
+            // Move the caret
+            textInputRange = this.createTextRange();
+            textInputRange.collapse(true);
+            textInputRange.move("character", start - (this.value.slice(0, start).split("\r\n").length - 1));
+            textInputRange.select();
+        }
+
+        return false;
+    }
+});
+
+$(document).on('paste', '#DLC_txtDLC', function () {
+    document.getElementById(GetClientId("btnSave")).disabled = false;
+    setTimeout(function () {
+        var data = $('#DLC_txtDLC').val();
+        var dataFull = data.replaceAll(";", ",");
+        $('#DLC_txtDLC').val(dataFull);
+    }, '500');
+});
+//Cap - 1268
+$(document).on('paste', '#txtMedicalAssistantNotes', function () {
+    document.getElementById(GetClientId("btnSave")).disabled = false;
+});
+
+
 
 
