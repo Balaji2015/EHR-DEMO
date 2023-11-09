@@ -1155,7 +1155,8 @@ function DOBValidation(dateToValidate) {
 function PhNoValid(sphno) {
     var s = document.getElementById(sphno).value;
     sReplace = s.replace(/_/gi, "");
-    if (sReplace.length < 13) {
+    //CAP-1375
+    if (sReplace.length < 14) {
         return false;
     }
     else {
