@@ -379,15 +379,26 @@ namespace Acurus.Capella.UI
                         ScriptManager.RegisterStartupScript(this, this.Page.GetType(), "Login", "sessionStorage.setItem('StartLoading', 'true');StartLoadFromPatChart();", true);
                         //CAP-1167
                         var returnURL = Request.QueryString["redirecturl"]?.ToString();
+                        //var encodeurl = HttpUtility.UrlEncode(returnURL);
+                       // HttpContext.Current.Session["RedirectUrl"] = returnURL;
+                        var serverRedirectUrl = login[0].Default_Server;
                         if (!string.IsNullOrEmpty(returnURL))
                         {
-                            var redirectionURL = login[0].Default_Server + "?redirecturl=" + returnURL;
-                            HttpHelper.RedirectAndPOST(this.Page, redirectionURL, data);
+                            var defaultServerHost = new Uri(login[0].Default_Server);
+                            var returnUrlHost = new Uri(returnURL);
+                            //CAP - 1306 & 1311
+                            if (defaultServerHost.Authority == returnUrlHost.Authority)
+                            {
+                                serverRedirectUrl = login[0].Default_Server + "?redirecturl=" + returnURL;
                         }
                         else
                         {
-                            HttpHelper.RedirectAndPOST(this.Page, login[0].Default_Server, data);
+                                serverRedirectUrl = login[0].Default_Server + "?redirecturl=" +
+                                    defaultServerHost.Scheme + "://" + defaultServerHost.Authority + returnUrlHost.PathAndQuery;
                         }
+                        }   
+
+                        HttpHelper.RedirectAndPOST(this.Page, serverRedirectUrl, data);
 
                         ScriptManager.RegisterStartupScript(this, this.Page.GetType(), "Login", "sessionStorage.setItem('StartLoading', 'false');StopLoadFromPatChart();", true);
                         UtilityManager.inserttologgingtable(ClientSession.EncounterId.ToString(), ClientSession.HumanId.ToString(), ClientSession.UserName, ClientSession.PhysicianId.ToString(), "Login btnOk : End", DateTime.Now, hdnGroupId.Value, "frmLogin");
@@ -767,16 +778,27 @@ namespace Acurus.Capella.UI
 
                     //CAP-1167
                     var returnURL = Request.QueryString["redirecturl"]?.ToString();
+                    //var returnURL1 = $"~/frmLogin.aspx?redirecturl={HttpUtility.UrlEncode(returnURL)}";
+                    //var returnURL = Request.Url;
+
+                    var serverRedirectUrl = Session["Default_Server"].ToString();
                     if (!string.IsNullOrEmpty(returnURL))
                     {
-                        var redirectionURL = Session["Default_Server"] + "?redirecturl=" + returnURL;
-                        HttpHelper.RedirectAndPOST(this.Page, redirectionURL, data);
+                        var defaultServerHost = new Uri(Session["Default_Server"].ToString());
+                        var returnUrlHost = new Uri(returnURL);
+                        //CAP - 1306 & 1311
+                        if (defaultServerHost?.Authority == returnUrlHost?.Authority)
+                        {
+                            serverRedirectUrl = Session["Default_Server"] + "?redirecturl=" + returnURL;
                     }
                     else
                     {
-                        HttpHelper.RedirectAndPOST(this.Page, Session["Default_Server"].ToString(), data);
+                            serverRedirectUrl = Session["Default_Server"] + "?redirecturl=" +
+                                defaultServerHost.Scheme + "://" + defaultServerHost.Authority + returnUrlHost.PathAndQuery;
+                        }
                     }
 
+                    HttpHelper.RedirectAndPOST(this.Page, serverRedirectUrl, data);
                     return;
                 }
 
