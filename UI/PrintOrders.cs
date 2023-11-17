@@ -513,7 +513,7 @@ namespace Acurus.Capella.UI
 
             doc.Add(new Paragraph("\n"));
 
-            doc.Add(new Paragraph("From:", reducedFont));
+            doc.Add(new Paragraph("Client:", reducedFont));
             doc.Add(new Paragraph(System.Configuration.ConfigurationSettings.AppSettings["ClientName"], normalFont));
 
             doc.Add(new Paragraph("\n"));
@@ -600,7 +600,7 @@ namespace Acurus.Capella.UI
             doc.Add(new Paragraph("\n"));
             phyTable = new PdfPTable(new float[] { 40, 60 });
             phyTable.WidthPercentage = 100;
-            cell = new PdfPCell(new Phrase("Facility & Physician Details", reducedFont));
+            cell = new PdfPCell(new Phrase("Ordering Facility & Physician Details", reducedFont));
             cell.BackgroundColor = BaseColor.LIGHT_GRAY;
             cell.Colspan = 2;
             phyTable.AddCell(cell);
@@ -611,8 +611,27 @@ namespace Acurus.Capella.UI
                 {
                     cell = CreateCell("Facility Name: \n", objFacility.Fac_Name);
                     phyTable.AddCell(cell);
-                    cell = CreateCell("Facility Address: \n", objFacility.Fac_Address1 + "\n" + objFacility.Fac_City);
-                    phyTable.AddCell(cell);
+                    //cell = CreateCell("Facility Address: \n", objFacility.Fac_Address1 + "\n" + objFacility.Fac_City);
+                    //phyTable.AddCell(cell);
+                    string sFacCity = string.Empty;
+                    if (objFacility.Fac_City != string.Empty)
+                    {
+                        sFacCity = objFacility.Fac_City;
+                        if (objFacility.Fac_State != string.Empty)
+                            sFacCity += ", " + objFacility.Fac_State + " - " + objFacility.Fac_Zip;
+                        if (objFacility.Fac_Telephone != string.Empty)
+                            sFacCity += "\n" + "Phone: "+ objFacility.Fac_Telephone;
+                        if (objFacility.Fac_Fax != string.Empty)
+                            sFacCity += "\n" + "Fax: " + objFacility.Fac_Fax;
+
+                        cell = CreateCell("Facility Address: \n", objFacility.Fac_Address1 + "\n" + sFacCity);
+                        phyTable.AddCell(cell);
+                    }
+                    else
+                    {
+                        cell = CreateCell("Facility Address: \n", objFacility.Fac_Address1);
+                        phyTable.AddCell(cell);
+                    }
                 }
             }
             if (objPhysician != null)
