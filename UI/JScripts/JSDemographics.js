@@ -1198,7 +1198,7 @@ function AddGuarantorClick(oWindow, args) {
     var Result = args.get_argument();
     if (Result) {
         document.getElementById(GetClientId("hdnGuarantorID")).value = Result.HumanID;
-        document.getElementById(GetClientId("btnSave")).disabled = false;
+        document.getElementById(GetClientId("btnSave")).disabled = false; 
         document.getElementById(GetClientId("hdnSaveFlag")).value = true;
         document.getElementById(GetClientId("btnAddGuarantorRefresh")).click();
     }
@@ -1761,7 +1761,7 @@ $(document).ready(function () {
     }
     document.getElementById('ctl00_C5POBody_txtSpecify').style.backgroundColor = "#BFDBFF";
     //Jira Cap-634
-    document.getElementById('ctl00_C5POBody_txtSelectinsured').disabled = true;
+    document.getElementById('ctl00_C5POBody_txtSelectinsured').disabled = true; 
     document.getElementById('imginsuredText').style.visibility = "hidden";
     document.getElementById('ctl00_C5POBody_txtSpecify').disabled = true;
     document.getElementById('ctl00_C5POBody_txtPlanSearch').setAttribute("data-plan-id", "0");
@@ -1825,62 +1825,62 @@ function loadgrid() {
         contentType: "application/json; charset=utf-8",
         dataType: "json",
         success: function (data) {
-            document.getElementById("tbodupolicyinfo").innerHTML = "";
+            document.getElementById("tbodupolicyinfo").innerHTML = "";          
             if (data != undefined && data != null)
             {
-                //CAP-831 Bad escaped character in JSON at position 353
+               //CAP-831 Bad escaped character in JSON at position 353
                 if (isValidJSON(data.d))
                 {
                     var objdata = JSON.parse(data.d);
-
-                    var j = 0;
+               
+                     var j = 0;
                     if (objdata.length > 0)
                     {
                         var index = 0;
 
                         for (var i = 0; i < objdata.length; i++) {
-                            j = parseInt(j) + parseInt("1");
-                            var vStatus = objdata[i].Active;
-                            if (vStatus !== undefined && vStatus.toUpperCase() == "YES") {
-                                var vFinalStatus = "Active";
-                            }
-                            else {
-                                var vFinalStatus = "Inactive";
-                            }
-                            if (objdata[i].Termination_Date == null || objdata[i].Termination_Date == undefined) {
-                                var Termination_Date = "";
-                            }
-                            else {
-                                var Termination_Date = objdata[i].Termination_Date;
-                            }
-                            if (objdata[i].Effective_Start_Date == null || objdata[i].Effective_Start_Date == undefined) {
-                                var Effective_Start_Date = "";
-                            }
-                            else {
-                                var Effective_Start_Date = objdata[i].Effective_Start_Date;
-                            }
-                            if (objdata[i].PCP_Name == null || objdata[i].PCP_Name == undefined) {
-                                var PCP_Name = "";
-                            }
-                            else {
-                                var PCP_Name = objdata[i].PCP_Name;
-                            }
-
-                            var vsrc;
-                            if (document.getElementById('ctl00_C5POBody_rdbPRI').disabled == true) {
-                                vsrc = "Resources/editdisabled.png";
-                            }
-                            else {
-                                vsrc = "Resources/edit.gif";
-                            }
-                            var newRow = document.getElementById('tbodupolicyinfo').insertRow();
-                            newRow.innerHTML = "<tr><td style='width: 5%;text-align: center'><img src=" + vsrc + " onclick='Edit(this);'/></td><td style='width: 10%;text-align: center'>" + objdata[i].Insurance_Type + "</td><td style='width: 10 %;text-align: center'>" + objdata[i].Plan_Name + "</td><td style='width: 10 %;text-align: center'>" + objdata[i].Policy_Holder_ID + "</td><td style='width: 5 %;text-align: center'>" + objdata[i].Relationship + "</td ><td style='width: 10 %;text-align: center'>" + objdata[i].Insured_Name + "</td ><td style='width: 10 %;text-align: center'>" + objdata[i].PCP_Grid_Name + "</td><td style='width: 10 %;text-align: center'>" + objdata[i].Specify_Other + "</td><td style='width: 7 %;text-align: center'> " + Effective_Start_Date + "</td><td style='width: 7 %;text-align: center'>" + Termination_Date + "</td><td style='width: 7 %;text-align: center'>" + vFinalStatus + "</td><td style='display:none'>" + objdata[i].Sortorder + "</td><td style='display:none'>" + objdata[i].Plan_ID + "</td><td style='display:none'>" + objdata[i].Id + "</td><td style='display:none'>" + objdata[i].Insured_Human_ID + "</td><td style='display:none'>" + parseInt(j) + "</td><td style='display:none'>" + objdata[i].Relationship_Number + "</td><td style='display:none'>" + objdata[i].Insured_Details + "</td><td style='display:none'>" + objdata[i].CarrierID + "</td><td style='display:none'>" + objdata[i].PCP_ID + "</td><td style='display:none'>" + objdata[i].PCP_Name + "</td><td style='display:none'>" + objdata[i].PCP_Textbox_Name + "</td><td style='display:none'>" + objdata[i].PCP_NPI + "</td><tr>";
-                            document.getElementById(GetClientId("txtNoofPolicies")).value = $('#tbodupolicyinfo tr').length;
-
+                        j = parseInt(j) + parseInt("1");
+                        var vStatus = objdata[i].Active;
+                        if (vStatus !== undefined && vStatus.toUpperCase() == "YES") {
+                            var vFinalStatus = "Active";
+                        }
+                        else {
+                            var vFinalStatus = "Inactive";
+                        }
+                        if (objdata[i].Termination_Date == null || objdata[i].Termination_Date == undefined) {
+                            var Termination_Date = "";
+                        }
+                        else {
+                            var Termination_Date = objdata[i].Termination_Date;
+                        }
+                        if (objdata[i].Effective_Start_Date == null || objdata[i].Effective_Start_Date == undefined) {
+                            var Effective_Start_Date = "";
+                        }
+                        else {
+                            var Effective_Start_Date = objdata[i].Effective_Start_Date;
+                        }
+                        if (objdata[i].PCP_Name == null || objdata[i].PCP_Name == undefined) {
+                            var PCP_Name = "";
+                        }
+                        else {
+                            var PCP_Name = objdata[i].PCP_Name;
                         }
 
-                        DisplayActiveInsurance();
-                        sortTable();
+                        var vsrc;
+                        if (document.getElementById('ctl00_C5POBody_rdbPRI').disabled == true) {
+                            vsrc = "Resources/editdisabled.png";
+                        }
+                        else {
+                            vsrc = "Resources/edit.gif";
+                        }
+                        var newRow = document.getElementById('tbodupolicyinfo').insertRow();
+                        newRow.innerHTML = "<tr><td style='width: 5%;text-align: center'><img src=" + vsrc + " onclick='Edit(this);'/></td><td style='width: 10%;text-align: center'>" + objdata[i].Insurance_Type + "</td><td style='width: 10 %;text-align: center'>" + objdata[i].Plan_Name + "</td><td style='width: 10 %;text-align: center'>" + objdata[i].Policy_Holder_ID + "</td><td style='width: 5 %;text-align: center'>" + objdata[i].Relationship + "</td ><td style='width: 10 %;text-align: center'>" + objdata[i].Insured_Name + "</td ><td style='width: 10 %;text-align: center'>" + objdata[i].PCP_Grid_Name + "</td><td style='width: 10 %;text-align: center'>" + objdata[i].Specify_Other + "</td><td style='width: 7 %;text-align: center'> " + Effective_Start_Date + "</td><td style='width: 7 %;text-align: center'>" + Termination_Date + "</td><td style='width: 7 %;text-align: center'>" + vFinalStatus + "</td><td style='display:none'>" + objdata[i].Sortorder + "</td><td style='display:none'>" + objdata[i].Plan_ID + "</td><td style='display:none'>" + objdata[i].Id + "</td><td style='display:none'>" + objdata[i].Insured_Human_ID + "</td><td style='display:none'>" + parseInt(j) + "</td><td style='display:none'>" + objdata[i].Relationship_Number + "</td><td style='display:none'>" + objdata[i].Insured_Details + "</td><td style='display:none'>" + objdata[i].CarrierID + "</td><td style='display:none'>" + objdata[i].PCP_ID + "</td><td style='display:none'>" + objdata[i].PCP_Name + "</td><td style='display:none'>" + objdata[i].PCP_Textbox_Name + "</td><td style='display:none'>" + objdata[i].PCP_NPI + "</td><tr>";
+                        document.getElementById(GetClientId("txtNoofPolicies")).value = $('#tbodupolicyinfo tr').length;
+
+                    }
+
+                         DisplayActiveInsurance();
+                         sortTable();
 
 
                     }
@@ -1890,7 +1890,7 @@ function loadgrid() {
                     alert("An error occured while loading patient insurance grid. Please reload the page and try again.");
                 }
             }
-
+           
 
         }
 
@@ -2111,9 +2111,6 @@ function saveplanDetails() {
 }
 var editinsurancetype = '';
 function btnaddinsured(e) {
-
-    { sessionStorage.setItem('StartLoading', 'true'); StartLoadFromPatChart(); }
-
     var PriChecked = document.getElementById("ctl00_C5POBody_rdbPRI").checked;
     var SecChecked = document.getElementById("ctl00_C5POBody_rdbSEC").checked;
     var TerChecked = document.getElementById("ctl00_C5POBody_rdbTER").checked;
@@ -2217,27 +2214,23 @@ function btnaddinsured(e) {
     var patientname = document.getElementById(GetClientId("txtPatientlastname")).value + "," + document.getElementById(GetClientId("txtPatientfirstname")).value
     if (document.getElementById("btnAdd").value == 'Add') {
         if (PriChecked == false && SecChecked == false && TerChecked == false) {
-            { sessionStorage.setItem('StartLoading', 'false'); StopLoadFromPatChart(); }
             DisplayErrorMessage('410006');
             return false;
         }
     }
 
     if (PlanVal == "0") {
-        { sessionStorage.setItem('StartLoading', 'false'); StopLoadFromPatChart(); }
         DisplayErrorMessage('380028');
         return false;
     }
 
 
     if (document.getElementById("ctl00_C5POBody_txtPlanSearch").value == "PAYER NOT FOUND" && document.getElementById("ctl00_C5POBody_txtSpecify").value == "") {
-        { sessionStorage.setItem('StartLoading', 'false'); StopLoadFromPatChart(); }
         DisplayErrorMessage('410030');
         return false;
     }
 
     if (PolicyVal == "") {
-        { sessionStorage.setItem('StartLoading', 'false'); StopLoadFromPatChart(); }
         DisplayErrorMessage('410031');
         return false;
     }
@@ -2245,26 +2238,22 @@ function btnaddinsured(e) {
 
 
     if (RelationVal.options[RelationVal.selectedIndex].text == "") {
-        { sessionStorage.setItem('StartLoading', 'false'); StopLoadFromPatChart(); }
         DisplayErrorMessage('380051');
         return false;
     }
 
 
     if (RelationVal.options[RelationVal.selectedIndex].text.toUpperCase() != "SELF" && insurehumanid == "0") {
-        { sessionStorage.setItem('StartLoading', 'false'); StopLoadFromPatChart(); }
         DisplayErrorMessage('420043');
         return false;
     }
 
     if (EffStartDate == "" && EffEndDate != "") {
-        { sessionStorage.setItem('StartLoading', 'false'); StopLoadFromPatChart(); }
         DisplayErrorMessage('380016');
         return false;
     }
 
     if (Date.parse(EffStartDate) > Date.parse(EffEndDate)) {
-        { sessionStorage.setItem('StartLoading', 'false'); StopLoadFromPatChart(); }
         DisplayErrorMessage('410033');
         return false;
     }
@@ -2273,7 +2262,6 @@ function btnaddinsured(e) {
     if (document.getElementById("ctl00_C5POBody_txtStartdate").value.length != 0) {
         if (document.getElementById("ctl00_C5POBody_txtStartdate").value != "__-___-____") {
             if (DateValidattion("ctl00_C5POBody_txtStartdate") == false) {
-                { sessionStorage.setItem('StartLoading', 'false'); StopLoadFromPatChart(); }
                 DisplayErrorMessage('350010');
                 return false;
             }
@@ -2287,7 +2275,7 @@ function btnaddinsured(e) {
     if (document.getElementById("ctl00_C5POBody_txtEnddate").value.length != 0) {
         if (document.getElementById("ctl00_C5POBody_txtEnddate").value != "__-___-____") {
             if (DateValidattion("ctl00_C5POBody_txtEnddate") == false) {
-                { sessionStorage.setItem('StartLoading', 'false'); StopLoadFromPatChart(); }
+
                 DisplayErrorMessage('350011');
                 return false;
             }
@@ -2297,7 +2285,6 @@ function btnaddinsured(e) {
         }
     }
     if (vProviderFullName != "" && vPcpId == 0) {
-        { sessionStorage.setItem('StartLoading', 'false'); StopLoadFromPatChart(); }
         DisplayErrorMessage('350013');
         return false;
     }
@@ -2306,13 +2293,12 @@ function btnaddinsured(e) {
     }
     for (var k = 0; k < $('#tbodupolicyinfo  tr').length; k++) {
         //Jira #Cap-264 - If the Payer not found plan is added with 2 different "specify other" it should not be considered as duplicate
-        if (document.getElementById("ctl00_C5POBody_txtPlanSearch").value != "PAYER NOT FOUND") {
+         if (document.getElementById("ctl00_C5POBody_txtPlanSearch").value != "PAYER NOT FOUND") {
             if (vRowID != $('#tbodupolicyinfo tr')[k].getElementsByTagName('td')[11].innerText) {
                 if (RelationVal.options[RelationVal.selectedIndex].text == "SELF") {
                     //Jira #CAP-141 - Remove Relationship to Patient from the Matching criteria && Jira #CAP-146 - Able to add duplicate insurance
                     //if ($('#tbodupolicyinfo tr')[k].getElementsByTagName('td')[2].innerText == planname.trim() && $('#tbodupolicyinfo tr')[k].getElementsByTagName('td')[3].innerText == PolicyVal.trim() && $('#tbodupolicyinfo tr')[k].getElementsByTagName('td')[4].innerText == RelationVal.options[RelationVal.selectedIndex].text) {
                     if ($('#tbodupolicyinfo tr')[k].getElementsByTagName('td')[2].innerText.toUpperCase() == planname.trim().toUpperCase() && $('#tbodupolicyinfo tr')[k].getElementsByTagName('td')[3].innerText.toUpperCase() == PolicyVal.trim().toUpperCase() && $('#tbodupolicyinfo tr')[k].getElementsByTagName('td')[14].innerText.trim() == insurehumanid.trim()) {
-                        { sessionStorage.setItem('StartLoading', 'false'); StopLoadFromPatChart(); }
                         DisplayErrorMessage('350014');
                         return false;
                     }
@@ -2321,7 +2307,6 @@ function btnaddinsured(e) {
                     //Jira #CAP-141 - Remove Relationship to Patient from the Matching criteria  && Jira #CAP-146 - Able to add duplicate insurance
                     //if ($('#tbodupolicyinfo tr')[k].getElementsByTagName('td')[2].innerText == planname.trim() && $('#tbodupolicyinfo tr')[k].getElementsByTagName('td')[3].innerText == PolicyVal.trim() && $('#tbodupolicyinfo tr')[k].getElementsByTagName('td')[4].innerText == RelationVal.options[RelationVal.selectedIndex].text && $('#tbodupolicyinfo tr')[k].getElementsByTagName('td')[5].innerText == insurename.trim()) {
                     if ($('#tbodupolicyinfo tr')[k].getElementsByTagName('td')[2].innerText.toUpperCase() == planname.trim().toUpperCase() && $('#tbodupolicyinfo tr')[k].getElementsByTagName('td')[3].innerText.toUpperCase() == PolicyVal.trim().toUpperCase() && $('#tbodupolicyinfo tr')[k].getElementsByTagName('td')[14].innerText.trim() == insurehumanid.trim()) {
-                        { sessionStorage.setItem('StartLoading', 'false'); StopLoadFromPatChart(); }
                         DisplayErrorMessage('350014');
                         return false;
                     }
@@ -2466,7 +2451,7 @@ function btnaddinsured(e) {
             else if (objdata.ValidationError != undefined) {
                 if (objdata.ValidationError.indexOf("Policy Holder ID is Invalid") > -1) {
                     var errmsgnumber = objdata.ValidationError.slice(objdata.ValidationError.indexOf('$@') + 2, objdata.ValidationError.length);
-                    { sessionStorage.setItem('StartLoading', 'false'); StopLoadFromPatChart(); }
+
                     DisplayErrorMessage('380057', '', errmsgnumber);
                 }
 
@@ -2517,7 +2502,6 @@ function btnaddinsured(e) {
             alert(data.d);
         }
     });
-    { sessionStorage.setItem('StartLoading', 'false'); StopLoadFromPatChart(); }
 }
 
 function Edit(e) {
@@ -3163,11 +3147,11 @@ $("#ctl00_C5POBody_txtPlanSearch").autocomplete({
                     else {
                         //CAP-792
                         if (isValidJSON(xhr.responseText)) {
-                            var log = JSON.parse(xhr.responseText);
-                            console.log(log);
-                            alert("USER MESSAGE:\n" +
-                                ". Cannot process request. Please Login again and retry. \nEXCEPTION DETAILS: \n" +
-                                "Message: " + log.Message);
+                        var log = JSON.parse(xhr.responseText);
+                        console.log(log);
+                        alert("USER MESSAGE:\n" +
+                            ". Cannot process request. Please Login again and retry. \nEXCEPTION DETAILS: \n" +
+                            "Message: " + log.Message);
                         }
                         else {
                             alert("USER MESSAGE:\n" +

@@ -242,9 +242,7 @@ namespace Acurus.Capella.UI
                 {
                     //if (ClientSession.UserRole.ToUpper() != "CODER")
                     //{
-                    //Cap - 942
-                    ClientSession.processCheck = true;
-                    SecurityServiceUtility obj = new SecurityServiceUtility();
+                        SecurityServiceUtility obj = new SecurityServiceUtility();
                         obj.ApplyUserPermissions(this.Page);
                     //}
                     lnkOrderList.Visible = true;
@@ -754,9 +752,7 @@ namespace Acurus.Capella.UI
                 //btnPlan.Enabled = false;
             }
             //Code Modified By balaji.TJ
-            //Cap - 942
-            //if (ClientSession.UserRole.ToUpper() == "CODER")
-            if (ClientSession.UserRole.ToUpper() == "CODER" || ClientSession.UserCurrentProcess != "PROVIDER_REVIEW" || ClientSession.UserCurrentProcess != "PROVIDER_REVIEW_2")
+            if (ClientSession.UserRole.ToUpper() == "CODER")
             {
                 tblSelectProcedure.Disabled = true; //tblSelectProcedure.Enabled = false;
             }
@@ -825,12 +821,8 @@ namespace Acurus.Capella.UI
                 btnSelectLocation.Disabled = false; //btnSelectLocation.Enabled = true;
             else
                 btnSelectLocation.Disabled = true; //btnSelectLocation.Enabled = false;
-            //Cap - 942
-            //if (ClientSession.UserRole.ToUpper() == "CODER")
-            if (ClientSession.UserRole.ToUpper() == "CODER" || ClientSession.UserCurrentProcess != "PROVIDER_REVIEW" || ClientSession.UserCurrentProcess != "PROVIDER_REVIEW_2")
+            if (ClientSession.UserRole.ToUpper() == "CODER")
             {
-                //Cap - 942
-                ClientSession.processCheck = true;
                 SecurityServiceUtility obj1 = new SecurityServiceUtility();
                 obj1.ApplyUserPermissions(this.Page);
             }
