@@ -189,7 +189,9 @@ namespace Acurus.Capella.UI
             }
             IList<StaticLookup> LookUpList = new List<StaticLookup>();
             StaticLookupManager StaticLookupMngr = new StaticLookupManager();
-            string[] sfield = new string[] { "Fax_Priority", "Fax_Cover Page", "SIGNATURE" };
+            //Jira CAP-1416
+            //string[] sfield = new string[] { "Fax_Priority", "Fax_Cover Page", "SIGNATURE" };
+            string[] sfield = new string[] { "Fax_Priority", "Fax_Cover Page", "EFAX_SIGNATURE" };
             LookUpList = StaticLookupMngr.getStaticLookupByFieldName(sfield);
             string Nameoftheuser = string.Empty;
             string FacilityAddress = string.Empty;
