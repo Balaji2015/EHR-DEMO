@@ -1108,9 +1108,10 @@ function schAppoinmentScheduler_DoubleClick(sender, args) {
     }
 }
 function CloseAppointmentModal() {
+    //Jira CAP-1217
+    $(top.window.document).find("#ctl00_C5POBody_btnRefresh")[0].click();
     self.close();
 }
-
 function AppmntLoad() {
     StopLoadingImage();
      {sessionStorage.setItem('StartLoading', 'false');StopLoadFromPatChart();}
