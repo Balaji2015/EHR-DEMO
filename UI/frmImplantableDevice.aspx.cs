@@ -141,8 +141,9 @@ namespace Acurus.Capella.UI
       
         public void btnAdd_Click(object sender, EventArgs e)
         {
-            if(hdnBtnFind.Value==""&&txtDeviceIdentifier.Text.Trim()!=""&&txtDeviceIdentifier.ReadOnly==false)
-             {
+            //CAP-1364
+            if (txtDeviceIdentifier.Text.Trim() != "" && string.IsNullOrEmpty(txtDescription.Text))
+            {
                     ScriptManager.RegisterStartupScript(this, this.Page.GetType(), string.Empty,
                   "Order_SaveUnsuccessful();DisplayErrorMessage('280021');top.window.document.getElementById('ctl00_Loading').style.display = 'none';", true);
                     btnFind.Enabled = true;

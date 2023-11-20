@@ -200,82 +200,82 @@
     <div id="AngularDiv" ng-app="Assessmentapp" ng-controller="assessmentCtrl">
         <div class="panel-body">
             <!--<div id="divFavICDSearch">
-                <table style="width:100%;border-collapse:separate;border-spacing:0 0.4em;">
-                    <tr>
-                        <td colspan="4">
-                            <table style="border-collapse:separate;border-spacing:0 0.5em;">
-                                <tr>
-                                    <td style="width:100px;">
-                                        <span >ICD9 Code</span>
-                                    </td>
-                                    <td style="width:150px;">
+            <table style="width:100%;border-collapse:separate;border-spacing:0 0.4em;">
+                <tr>
+                    <td colspan="4">
+                        <table style="border-collapse:separate;border-spacing:0 0.5em;">
+                            <tr>
+                                <td style="width:100px;">
+                                    <span >ICD9 Code</span>
+                                </td>
+                                <td style="width:150px;">
 
-                                        <input type="text" ng-disabled="EnableScreen == 'Disable'" style="width:150px;border:1px solid;" placeholder="Type your ICD9 Code  here .." id="txtICD9Code">
+                                    <input type="text" ng-disabled="EnableScreen == 'Disable'" style="width:150px;border:1px solid;" placeholder="Type your ICD9 Code  here .." id="txtICD9Code">
 
-                                    </td>
-                                    <td style="width:150px;text-align: center!important;">
-                                        <span >ICD9 Description</span>
-                                    </td>
-                                    <td style="width:620px;">
-                                        <input type="text" ng-disabled="EnableScreen == 'Disable'" style="width:620px;border:1px solid;" placeholder="Type your ICD9 description here .." id="txtICD9Desc">
-                                    </td>
-                                </tr>
+                                </td>
+                                <td style="width:150px;text-align: center!important;">
+                                    <span >ICD9 Description</span>
+                                </td>
+                                <td style="width:620px;">
+                                    <input type="text" ng-disabled="EnableScreen == 'Disable'" style="width:620px;border:1px solid;" placeholder="Type your ICD9 description here .." id="txtICD9Desc">
+                                </td>
+                            </tr>
 
-                                <tr>
-                                    <td style="width:100px;">
-                                        <span >ICD10 Code</span>
-                                    </td>
+                            <tr>
+                                <td style="width:100px;">
+                                    <span >ICD10 Code</span>
+                                </td>
 
-                                    <td style="width:150px;">
+                                <td style="width:150px;">
 
-                                        <input type="text" ng-disabled="EnableScreen == 'Disable'"  style="width:150px;border:1px solid;" id="txtICD10" placeholder="Type your ICD10 code here .." />
+                                    <input type="text" ng-disabled="EnableScreen == 'Disable'"  style="width:150px;border:1px solid;" id="txtICD10" placeholder="Type your ICD10 code here .." />
 
-                                    </td>
-                                    <td style="width:120px;text-align: center!important;">
-                                        <span >ICD10 Description</span>
-                                    </td>
+                                </td>
+                                <td style="width:120px;text-align: center!important;">
+                                    <span >ICD10 Description</span>
+                                </td>
 
-                                    <td style="width:620px;">
+                                <td style="width:620px;">
 
-                                        <input type="text" ng-disabled="EnableScreen == 'Disable'" style="width:620px;border:1px solid;"  id="txtDescription" placeholder="Type your ICD10 description here .." />
+                                    <input type="text" ng-disabled="EnableScreen == 'Disable'" style="width:620px;border:1px solid;"  id="txtDescription" placeholder="Type your ICD10 description here .." />
 
 
+                                </td>
+                            </tr>
+                        </table>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <div class="panelProblemList panel-default">
+                            <div ng-disabled="EnableScreen == 'Disable'" class="panel-headingProblemList" style="height:38px;">
+                                <span style="vertical-align:-webkit-baseline-middle;">Incomplete ICD10 – ProblemList\PFSH</span>
+                                <a style="float:right;padding:4px 10px!important;" ng-disabled="EnableScreen == 'Disable'" ng-click="EnableScreen == 'Disable'?'return false': OpenQuestionnaire()" class="btn btn-primary Bordercolor">
+                                    <span ng-disabled="EnableScreen == 'Disable'" class="glyphicon glyphicon-arrow-down"></span>
+                                </a>
+                            </div>
+                            <table id="ICDDescQuestionnaire">
+                                <tr ng-repeat="role in FromProblemList">
+                                    <td>
+                                        <input type="checkbox" ng-disabled="EnableScreen == 'Disable'" checklist-model="user.roles" ng-checked="true" checklist-value="role"> {{role.ICDCODE}}-{{role.ICDDescription}}
                                     </td>
                                 </tr>
                             </table>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>
-                            <div class="panelProblemList panel-default">
-                                <div ng-disabled="EnableScreen == 'Disable'" class="panel-headingProblemList" style="height:38px;">
-                                    <span style="vertical-align:-webkit-baseline-middle;">Incomplete ICD10 – ProblemList\PFSH</span>
-                                    <a style="float:right;padding:4px 10px!important;" ng-disabled="EnableScreen == 'Disable'" ng-click="EnableScreen == 'Disable'?'return false': OpenQuestionnaire()" class="btn btn-primary Bordercolor">
-                                        <span ng-disabled="EnableScreen == 'Disable'" class="glyphicon glyphicon-arrow-down"></span>
-                                    </a>
-                                </div>
-                                <table id="ICDDescQuestionnaire">
-                                    <tr ng-repeat="role in FromProblemList">
-                                        <td>
-                                            <input type="checkbox" ng-disabled="EnableScreen == 'Disable'" checklist-model="user.roles" ng-checked="true" checklist-value="role"> {{role.ICDCODE}}-{{role.ICDDescription}}
-                                        </td>
-                                    </tr>
-                                </table>
-                            </div>
-                        </td>
-                        <td>
-                            &nbsp;
-                        </td>
-                        <td>
-                            <textarea type="text" onchange="SaveEnable()" onkeyup="SaveEnable()" onfocus="RightClickMenu();" ng-disabled="EnableScreen == 'Disable'" name="ASSESSMENT GENERAL NOTES" id="txtGeneralNotes" class="Bordercolor" textmode="MultiLine" style="width:480px !important;height:100px;top:10px;resize:none;" maxlength="32767" nospell="true" placeholder="Type your General Notes Here...."></textarea>
-                        </td>
-                        <td>
-                            <a class=" fa fa-plus" style="margin-left: -1px;margin-right: -1px;text-decoration:none;cursor:pointer;    padding: 4px 4px 4px 4px !important;color: #fff;font-size: 12px; border-radius: 2px;" id="GeneralNotes" align="centre" font-bold="false" title="Drop down" onclick="callweb(this, 'ASSESSMENT GENERAL NOTES', 'txtGeneralNotes');" ng-style="{'background' : ButtonBG }">
-                            </a>
-                        </td>
-                    </tr>
-                </table>
-            </div>-->
+                        </div>
+                    </td>
+                    <td>
+                        &nbsp;
+                    </td>
+                    <td>
+                        <textarea type="text" onchange="SaveEnable()" onkeyup="SaveEnable()" onfocus="RightClickMenu();" ng-disabled="EnableScreen == 'Disable'" name="ASSESSMENT GENERAL NOTES" id="txtGeneralNotes" class="Bordercolor" textmode="MultiLine" style="width:480px !important;height:100px;top:10px;resize:none;" maxlength="32767" nospell="true" placeholder="Type your General Notes Here...."></textarea>
+                    </td>
+                    <td>
+                        <a class=" fa fa-plus" style="margin-left: -1px;margin-right: -1px;text-decoration:none;cursor:pointer;    padding: 4px 4px 4px 4px !important;color: #fff;font-size: 12px; border-radius: 2px;" id="GeneralNotes" align="centre" font-bold="false" title="Drop down" onclick="callweb(this, 'ASSESSMENT GENERAL NOTES', 'txtGeneralNotes');" ng-style="{'background' : ButtonBG }">
+                        </a>
+                    </td>
+                </tr>
+            </table>
+        </div>-->
             <div id="divFavICDSearch">
                 <table style="width:100%;border-collapse:separate;border-spacing:0 0.4em;">
                     <tbody>
@@ -326,7 +326,8 @@
                     </tbody>
                 </table>
             </div>
-            <table id="tblCurrICDs" class="table Gridbodystyle" style="height:444px;">
+            <!--CAP-1350-->
+            <table id="tblCurrICDs" class="table Gridbodystyle" style="height:444px;width:95%">
                 <thead id="AssessmentHead" class="Gridheaderstyle">
                     <tr style="width:100%" class="Gridheaderstyle">
                         <th style="width:3.8%;">Del.</th>
@@ -363,17 +364,17 @@
                                 <option ng-repeat="Status in Statuses" style="color:black;" ng-selected="{{a.StatusSelected==Status}}" value="{{Status}}">{{Status}}</option>
                             </select>
                             <!--<select ng-disabled="EnableScreen == 'Disable'" onchange="cboStatusChange(this);" style="width:100px;">
-                                <option value=""></option>
-                                <option style="color:black;" ng-selected="a.Comboboxvalue=='Stable'" value="Stable">Stable</option>
-                                <option style="color:black;" ng-selected="a.Comboboxvalue=='Improved'" value="Improved">Improved</option>
-                                <option style="color:black;" ng-selected="a.Comboboxvalue=='Worsening'" value="Worsening">Worsening</option>
-                                <option style="color:black;" ng-selected="a.Comboboxvalue=='Suspected'" value="Suspected">Suspected</option>
-                                <option style="color:black;" ng-selected="a.Comboboxvalue=='Controlled'" value="Controlled">Controlled</option>
-                                <option style="color:black;" ng-selected="a.Comboboxvalue=='Resolved'" value="Resolved">Resolved</option>
-                                <option style="color:black;" ng-selected="a.Comboboxvalue=='Uncontrolled'" value="Uncontrolled">Uncontrolled</option>
-                                <option style="color:black;" ng-selected="a.Comboboxvalue=='Improving'" value="Improving">Improving</option>
-                                <option style="color:black;" ng-selected="a.Comboboxvalue=='Remission'" value="Remission">Remission</option>
-                            </select>-->
+                            <option value=""></option>
+                            <option style="color:black;" ng-selected="a.Comboboxvalue=='Stable'" value="Stable">Stable</option>
+                            <option style="color:black;" ng-selected="a.Comboboxvalue=='Improved'" value="Improved">Improved</option>
+                            <option style="color:black;" ng-selected="a.Comboboxvalue=='Worsening'" value="Worsening">Worsening</option>
+                            <option style="color:black;" ng-selected="a.Comboboxvalue=='Suspected'" value="Suspected">Suspected</option>
+                            <option style="color:black;" ng-selected="a.Comboboxvalue=='Controlled'" value="Controlled">Controlled</option>
+                            <option style="color:black;" ng-selected="a.Comboboxvalue=='Resolved'" value="Resolved">Resolved</option>
+                            <option style="color:black;" ng-selected="a.Comboboxvalue=='Uncontrolled'" value="Uncontrolled">Uncontrolled</option>
+                            <option style="color:black;" ng-selected="a.Comboboxvalue=='Improving'" value="Improving">Improving</option>
+                            <option style="color:black;" ng-selected="a.Comboboxvalue=='Remission'" value="Remission">Remission</option>
+                        </select>-->
                         </td>
                         <td>
                             <textarea type="text" id="{{$index}}" onfocus="RightClickMenu();" onchange="SaveEnable()" onkeyup="SaveEnable()" ng-disabled="EnableScreen == 'Disable'" name="ASSESSMENT NOTES" style="resize:none; height:40px;width:330px;position:relative;" textmode="MultiLine" maxlength="32767" nospell="true">{{a.Notes}}</textarea>
@@ -400,6 +401,7 @@
                         <td style="width:1%;display:none;">{{a.Orig_Status}}</td>
                     </tr>
                 </tbody>
+
             </table>
         </div>
         <!--</div>-->
@@ -408,8 +410,8 @@
             <button type="button" ng-disabled="EnableScreen == 'Disable'" id="btnCalculators" ng-click="OpenCalculatorLink()" class="btn aspbluebutton aspresizedbluebutton">Calculators</button>
             <label style="font-weight:normal;" id="lblStatus"><input type="checkbox" ng-disabled="EnableScreen == 'Disable'" onchange="chkstatus_change(this)" id="chkStable" />Check all other Status as Stable</label>
         </div>
-
-        <div id="divButtonsPanel" style="float: right; padding-right: 6px !important;">
+        <!--CAP-1350-->
+        <div id="divButtonsPanel" style="float: right; padding-right: 98px !important;">
             <button type="button" ng-disabled="EnableScreen == 'Disable'" ng-click="btnPotentailDiagnosis_Click()" id="btnPotentailDiagnosis" class="btn aspbluebutton aspresizedbluebutton">Potential Diagnosis</button>
             <button id="btnPlan" ng-disabled="EnableScreen == 'Disable'" style="display:none !important;" onclick="OpenPlanScreen()" type="button" class="btn aspbluebutton">Plan</button>
             <button type="button" ng-disabled="EnableScreen == 'Disable'" ng-click="CopyPrevious()" id="btnCopyPrevious" class="btn aspbluebutton aspresizedbluebutton">Copy Previous</button>

@@ -427,7 +427,7 @@
 
     });
 
-   function LoadOrdersTabs(event) {
+    function LoadOrdersTabs(event) {
         CurTab = $(event.target);         // active tab
         PrevTab = $(event.relatedTarget);  // previous tab
         localStorage.setItem("PrevSubTab", CurTab[0].innerText);
@@ -471,7 +471,7 @@
                     sessionStorage.setItem('Order_src', src);
                     var prevTabtxt = $(PrevTab).text();
                     sessionStorage.setItem('Order_PrevTabText', prevTabtxt);
-                    $('.clsIframe').contents()[1].all.namedItem('btnAddRefOrder').click();
+                    $('.clsIframe').contents()[1].all.namedItem('btnAddRefOrder')?.click();
                     //if (localStorage.getItem("bSave") == "true") {
                     //    $(dvdialog).dialog("close");
                     //    paneID = $(event.target).attr('href');
@@ -496,7 +496,7 @@
                     sessionStorage.setItem('Order_src', src);
                     var prevTabtxt = $(PrevTab).text();
                     sessionStorage.setItem('Order_PrevTabText', prevTabtxt);
-                    $('.clsIframe').contents()[2].all.namedItem('btnAdd').click();
+                    $('.clsIframe').contents()[2].all.namedItem('btnAdd')?.click();
                     //if (localStorage.getItem("bSave") == "true") {
                     //    $(dvdialog).dialog("close");
                     //    paneID = $(event.target).attr('href');
@@ -521,7 +521,7 @@
                     sessionStorage.setItem('Order_src', src);
                     var prevTabtxt = $(PrevTab).text();
                     sessionStorage.setItem('Order_PrevTabText', prevTabtxt);
-                    $('.clsIframe').contents()[3].all.namedItem('btnAdd').click();
+                    $('.clsIframe').contents()[3].all.namedItem('btnAdd')?.click();
                     //if (localStorage.getItem("bSave") == "true") {
                     //    $(dvdialog).dialog("close");
                     //    paneID = $(event.target).attr('href');
@@ -545,7 +545,7 @@
                     sessionStorage.setItem('Order_src', src);
                     var prevTabtxt = $(PrevTab).text();
                     sessionStorage.setItem('Order_PrevTabText', prevTabtxt);
-                    $('.clsIframe').contents()[4].all.namedItem('btnAdd').click();
+                    $('.clsIframe').contents()[4].all.namedItem('btnAdd')?.click();
                     //if (localStorage.getItem("bSave") == "true") {
                     //    $(dvdialog).dialog("close");
                     //    paneID = $(event.target).attr('href');

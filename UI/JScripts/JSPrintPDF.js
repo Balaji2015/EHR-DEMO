@@ -100,7 +100,10 @@ function btnFaxClick(sender, args) {
                 { //Checkout print documents
                     if (FaxSubject.includes('|') == false)
                     {
-                        vFaxSubject = "Order" + FaxSubject.split("|")[0].split("$")[0] + "_" + FaxSubject.split('$')[1].split('|')[i].split('_')[2];
+                        //CAP-1266
+                        //vFaxSubject = "Order" + FaxSubject.split("|")[0].split("$")[0] + "_" + FaxSubject.split('$')[1].split('|')[i].split('_')[2];
+                        var str1Length = FaxSubject.split('$').length;
+                        vFaxSubject = "Order" + FaxSubject.split("|")[0].split("$")[0] + (str1Length > 1 ? "_" + FaxSubject.split('$')[1].split('|')[i].split('_')[2] : "");
                     }
                     else
                         vFaxSubject = vTabstrip[i].innerText.split(".pdf")[0] + FaxSubject;;

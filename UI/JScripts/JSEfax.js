@@ -581,7 +581,9 @@ function LoadEfax()
                             option.value = FaxLoadList.LookUpList[i].Description;
                             ddlDropDwncoverpage.add(option);
                         }
-                        else if (FaxLoadList.LookUpList[i].Field_Name == "SIGNATURE") {
+                        //Jira CAP-1416
+                        //else if (FaxLoadList.LookUpList[i].Field_Name == "SIGNATURE") {
+                        else if (FaxLoadList.LookUpList[i].Field_Name == "EFAX_SIGNATURE") {
                             $("#txtareaCoverpage").val(FaxLoadList.LookUpList[i].Value.replace("<Name of the user>", FaxLoadList.Nameoftheuser).replace("<ClientName>", FaxLoadList.FaciltyName).replace("<Facility Address>", FaxLoadList.FacilityAddress).replace("<Facility Phone Number>", FaxLoadList.FacilityPhoneNumber).replace("<Facility Fax Number>", FaxLoadList.FacilityFaxNumber));
                         }
                     }

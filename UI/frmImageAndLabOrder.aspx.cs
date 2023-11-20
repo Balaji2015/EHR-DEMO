@@ -3433,7 +3433,8 @@ namespace Acurus.Capella.UI
                                 MAOrdersSubmit.Is_Submit_Immediately = "N";
                             MAOrdersSubmit.Specimen_Type = cbospecimen.Items[cbospecimen.SelectedIndex].Text;
                             MAOrdersSubmit.Specimen_Unit = cboSpecimenUnits.Items[cboSpecimenUnits.SelectedIndex].Text != string.Empty ? cboSpecimenUnits.Items[cboSpecimenUnits.SelectedIndex].Text : " ";
-                            if (dtpCollectionDate.Value != null && Convert.ToDateTime(dtpCollectionDate.Value) != DateTime.Now)
+                            //CAP-1017
+                            if (!string.IsNullOrEmpty(dtpCollectionDate.Value) && Convert.ToDateTime(dtpCollectionDate.Value) != DateTime.Now)
                                 //MAOrdersSubmit.Specimen_Collection_Date_And_Time =  Convert.ToDateTime(dtpCollectionDate.SelectedDate.Value);
                                 MAOrdersSubmit.Specimen_Collection_Date_And_Time = UtilityManager.ConvertToUniversal(Convert.ToDateTime(dtpCollectionDate.Value));
                             else
