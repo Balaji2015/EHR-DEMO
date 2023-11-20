@@ -44,7 +44,7 @@ namespace Acurus.Capella.UI
         OrdersRequiredFormsManager objOrderRequiredMngr = new OrdersRequiredFormsManager();
         string OrderType = "DIAGNOSTIC ORDER";
         string sScreenMode = string.Empty;
-       // public string sFacilityCmg = string.Empty;
+        // public string sFacilityCmg = string.Empty;
         public bool IsDefaultLab = false;
         //bool TriggerClearAll = true;
         public Dictionary<string, string> AssessmentSource
@@ -180,7 +180,7 @@ namespace Acurus.Capella.UI
             //ClientSession.UserName = "RPRADHAN";
             //ClientSession.FacilityName = "1904 N OG AVE";
             //btnOrderSubmit.Enabled = false;
-                      
+
 
             string ClientSideObjects = string.Empty;
             ClientSideObjects += "var UserRole='" + ClientSession.UserRole + "';";
@@ -189,11 +189,11 @@ namespace Acurus.Capella.UI
             lnkDiagnosticOrder.Attributes.Add("onclick", "WaitCursor();");
             lnkOrderList.Attributes.Add("onclick", "WaitCursor();");
             chklstFrequentlyUsedProcedures.Attributes.Add("onclick", "ChklstFrequentlyEnable();");
-           // sFacilityCmg = System.Configuration.ConfigurationManager.AppSettings["AncillaryTestClinic"].Trim().ToUpper();
+            // sFacilityCmg = System.Configuration.ConfigurationManager.AppSettings["AncillaryTestClinic"].Trim().ToUpper();
             var vfacAncillary = from f in ApplicationObject.facilityLibraryList where f.Fac_Name == ClientSession.FacilityName select f;
             IList<FacilityLibrary> ilstFacAncillary = vfacAncillary.ToList<FacilityLibrary>();
 
-          //  if (ClientSession.FillEncounterandWFObject.EncRecord.Facility_Name == sFacilityCmg)
+            //  if (ClientSession.FillEncounterandWFObject.EncRecord.Facility_Name == sFacilityCmg)
             if (ilstFacAncillary.Count > 0 && ilstFacAncillary[0].Is_Ancillary == "Y")
             {
                 sCmgorder = "Y";
@@ -242,8 +242,10 @@ namespace Acurus.Capella.UI
                 {
                     //if (ClientSession.UserRole.ToUpper() != "CODER")
                     //{
-                        SecurityServiceUtility obj = new SecurityServiceUtility();
-                        obj.ApplyUserPermissions(this.Page);
+                    //Cap - 942
+                    ClientSession.processCheck = true;
+                    SecurityServiceUtility obj = new SecurityServiceUtility();
+                    obj.ApplyUserPermissions(this.Page);
                     //}
                     lnkOrderList.Visible = true;
                     //cboLab.Disabled = false;
@@ -323,11 +325,11 @@ namespace Acurus.Capella.UI
                 //    tblSelectProcedure.Enabled = false;
                 //    //btnPlan.Enabled = false;
                 //}
-                
-                
-                
-               // if (ClientSession.FillEncounterandWFObject.EncRecord.Facility_Name == sFacilityCmg)
-                if (ilstFacAncillary.Count > 0 && ilstFacAncillary[0].Is_Ancillary == "Y" && EncounterID !=0)
+
+
+
+                // if (ClientSession.FillEncounterandWFObject.EncRecord.Facility_Name == sFacilityCmg)
+                if (ilstFacAncillary.Count > 0 && ilstFacAncillary[0].Is_Ancillary == "Y" && EncounterID != 0)
                 {
                     //cboReadingProvider.Disabled = false;
                     //lblReadingProvider.InnerText.Replace("*", "");
@@ -342,7 +344,7 @@ namespace Acurus.Capella.UI
                     string sSelectedOrder = string.Empty;
                     string sLocalTime = DateTime.Now.ToString("yyyy-MM-dd hh:mm:ss tt");
                     //id = objOrdMngr.InsertToOutstandingOrders(sCmgorderSubmitId, EncounterID, OrderType, string.Empty, ilstRequiredForms, ref sSelectedOrder, ClientSession.UserName, sFacilityCmg);
-                    id = objOrdMngr.InsertToOutstandingOrders(sCmgorderSubmitId, EncounterID, OrderType, string.Empty, ilstRequiredForms, ref sSelectedOrder, ClientSession.UserName, ilstFacAncillary[0].Fac_Name,sLocalTime);
+                    id = objOrdMngr.InsertToOutstandingOrders(sCmgorderSubmitId, EncounterID, OrderType, string.Empty, ilstRequiredForms, ref sSelectedOrder, ClientSession.UserName, ilstFacAncillary[0].Fac_Name, sLocalTime);
                     IList<PhysicianLibrary> PhyListAll = new List<PhysicianLibrary>();
                     //  PhyListAll = UtilityManager.GetPhysicianList("");
                     string sPhysicianXmlPath = System.Web.Hosting.HostingEnvironment.ApplicationPhysicalPath + "\\ConfigXML\\PhysicianAddressDetails.xml";
@@ -423,7 +425,7 @@ namespace Acurus.Capella.UI
                 DiagnosticDTO objDiagnosticDTO = new DiagnosticDTO();
 
 
-               // if (ClientSession.FillEncounterandWFObject.EncRecord.Facility_Name != sFacilityCmg)
+                // if (ClientSession.FillEncounterandWFObject.EncRecord.Facility_Name != sFacilityCmg)
                 if (ilstFacAncillary.Count > 0 && ilstFacAncillary[0].Is_Ancillary != "Y")
                 {
                     if (Request["IsFrontScreen"] != null && Request["IsFrontScreen"] == "Y")
@@ -564,7 +566,7 @@ namespace Acurus.Capella.UI
                     sShortName += ilstFacilityAncillary[iCount].Short_Name + "|";
                 }
                 LookUpPerRequest.Add("CMGLabNameFromLookUp", sShortName);
-       
+
                 LoadLookUpValues();
                 btnSelectLocation.Disabled = true; //btnSelectLocation.Enabled = false;
                 btnOrderSubmit.Disabled = true; //btnOrderSubmit.Enabled = false;
@@ -627,7 +629,7 @@ namespace Acurus.Capella.UI
                 //By Mohan BugID=26088 
                 txtOrderNotes.txtDLC.Attributes.Add("onchange", "EnableSaveDiagnosticOrder();");
                 txtOrderNotes.txtDLC.Attributes.Add("onkeypress", "EnableSaveDiagnosticOrder();");
-                txtOrderNotes.txtDLC.Attributes.Add("onkeydown", "insertTab(this,event);");  
+                txtOrderNotes.txtDLC.Attributes.Add("onkeydown", "insertTab(this,event);");
 
                 rbImageOrder.Enabled = false;
                 rbLabOrder.Enabled = false;
@@ -680,7 +682,7 @@ namespace Acurus.Capella.UI
                     //{
                     //    if (procedureList[0].Lab_ID != selectedLabID)
                     //    {
-                    if(LookUpPerRequest.Keys.Contains("procedureType") == true)
+                    if (LookUpPerRequest.Keys.Contains("procedureType") == true)
                         procedureList = objEAndMCodingManager.GetPhysicianProcedure(PhysicianID, LookUpPerRequest["procedureType"].ToUpper(), selectedLabID, ClientSession.LegalOrg);
                     //    }
                     //}
@@ -722,8 +724,8 @@ namespace Acurus.Capella.UI
                 lblCollectionDate.InnerHtml = lblCollectionDate.InnerText;
                 lblCollectionDate.InnerHtml = lblCollectionDate.InnerHtml.Replace("*", "<span class='manredforstar'>*</span>");
                 //lblCollectionDate.Attributes.Add("style", "color:red");
-                 lblCollectionDate.Attributes["Class"] = "";
-                 lblCollectionDate.Attributes["Class"] = "MandLabelstyle";
+                lblCollectionDate.Attributes["Class"] = "";
+                lblCollectionDate.Attributes["Class"] = "MandLabelstyle";
             }
             else
             {
@@ -752,7 +754,9 @@ namespace Acurus.Capella.UI
                 //btnPlan.Enabled = false;
             }
             //Code Modified By balaji.TJ
-            if (ClientSession.UserRole.ToUpper() == "CODER")
+            //Cap - 942
+            //if (ClientSession.UserRole.ToUpper() == "CODER")
+            if (ClientSession.UserRole.ToUpper() == "CODER" || ClientSession.UserCurrentProcess != "PROVIDER_REVIEW" || ClientSession.UserCurrentProcess != "PROVIDER_REVIEW_2")
             {
                 tblSelectProcedure.Disabled = true; //tblSelectProcedure.Enabled = false;
             }
@@ -821,8 +825,12 @@ namespace Acurus.Capella.UI
                 btnSelectLocation.Disabled = false; //btnSelectLocation.Enabled = true;
             else
                 btnSelectLocation.Disabled = true; //btnSelectLocation.Enabled = false;
-            if (ClientSession.UserRole.ToUpper() == "CODER")
+            //Cap - 942
+            //if (ClientSession.UserRole.ToUpper() == "CODER")
+            if (ClientSession.UserRole.ToUpper() == "CODER" || ClientSession.UserCurrentProcess != "PROVIDER_REVIEW" || ClientSession.UserCurrentProcess != "PROVIDER_REVIEW_2")
             {
+                //Cap - 942
+                ClientSession.processCheck = true;
                 SecurityServiceUtility obj1 = new SecurityServiceUtility();
                 obj1.ApplyUserPermissions(this.Page);
             }
@@ -840,8 +848,8 @@ namespace Acurus.Capella.UI
                 lblCollectionDate.InnerText = "Collection Date";//lblCollectionDate.InnerText.Replace("*", string.Empty);
                 lblCollectionDate.Attributes.Add("style", "color:black");
                 hdnCollectionDateIsMand.Value = "false";
-                lblCollectionDate.Attributes["Class"] ="";
-                lblCollectionDate.Attributes["Class"]="spanstyle";
+                lblCollectionDate.Attributes["Class"] = "";
+                lblCollectionDate.Attributes["Class"] = "spanstyle";
             }
             else if (IsMand == true)
             {
@@ -1025,7 +1033,7 @@ namespace Acurus.Capella.UI
             //         this.cboSpecimenUnits.Items.Add(cboItem);
             //     }
             // }
-           // IList<Lab> labList = null;
+            // IList<Lab> labList = null;
             if (cboLab.Items.Count == 0)
             {
                 cboLab.Items.Clear();
@@ -1090,7 +1098,7 @@ namespace Acurus.Capella.UI
             IEnumerable<XElement> xml = xmlLab.Element("LabList")
                .Elements("Lab").Where(a => a.Attribute("type").Value.ToString() != "DME")
                .OrderBy(s => (int)s.Attribute("sort_order"));
-            if (xml != null && (LookUpPerRequest.Keys.Contains("LabIdBasedOnIns")==true))
+            if (xml != null && (LookUpPerRequest.Keys.Contains("LabIdBasedOnIns") == true))
             {
                 string[] FavLab = LookUpPerRequest["LabIdBasedOnIns"].Split(',');
                 bool IsFavLabSet = false;
@@ -1379,7 +1387,7 @@ namespace Acurus.Capella.UI
             //Get Lab Location from xml
             XDocument xmlLabLocation = XDocument.Load(Server.MapPath(@"ConfigXML\LabLocationList.xml"));
 
-            if (xmlLabLocation != null && (LookUpPerRequest.Keys.Contains("FacilityCity")==true && LookUpPerRequest["FacilityCity"] != null))
+            if (xmlLabLocation != null && (LookUpPerRequest.Keys.Contains("FacilityCity") == true && LookUpPerRequest["FacilityCity"] != null))
             {
                 if (LookUpPerRequest["FacilityCity"] != string.Empty)
                 {
@@ -2034,7 +2042,7 @@ namespace Acurus.Capella.UI
                 chkStat.Disabled = true;
                 chkUrgent.Disabled = true;
             }
-                
+
             chkStat.Checked = false;
             chkUrgent.Checked = false;
             cstdtpTestDate.Disabled = !chkTestDateInDate.Checked; //cstdtpTestDate.Enabled = chkTestDateInDate.Checked;
@@ -2227,7 +2235,7 @@ namespace Acurus.Capella.UI
             {
                 errList = new ArrayList();
                 errList.Add(lblLab.InnerText.Replace('*', ' '));
-                ScriptManager.RegisterStartupScript(this, this.Page.GetType(), string.Empty, "DisplayErrorMessage('230106','','" +lblLab.InnerText.Replace('*', ' ')+"')", true);
+                ScriptManager.RegisterStartupScript(this, this.Page.GetType(), string.Empty, "DisplayErrorMessage('230106','','" + lblLab.InnerText.Replace('*', ' ') + "')", true);
                 cboLab.Focus();
             }
 
@@ -2494,14 +2502,14 @@ namespace Acurus.Capella.UI
                     gbSelectICD.Enabled = false;
                 }
                 txtLocation.Value = subtempobj.Lab_Location_Name;
-                if (subtempobj.Lab_Location_ID!=0)
+                if (subtempobj.Lab_Location_ID != 0)
                 {
                     if (!LookUpPerRequest.ContainsKey("labLocID"))
                         LookUpPerRequest.Add("labLocID", subtempobj.Lab_Location_ID.ToString());
                     else
                         LookUpPerRequest["labLocID"] = subtempobj.Lab_Location_ID.ToString();
                 }
-               
+
                 //The following code has been modified for BUG-ID:26468 - Pujhitha
                 foreach (ListItem item in cboBillType.Items)
                 {
@@ -3150,7 +3158,7 @@ namespace Acurus.Capella.UI
 
         protected void btnOrderSubmit_Click(object sender, EventArgs e)
         {
-            
+
 
             hdnImportResult.Value = "false";
             string YesNoCancel = hdnType.Value;
@@ -3260,7 +3268,7 @@ namespace Acurus.Capella.UI
 
                 if (ValidateSave())
                 {
-                    if(LookUpPerRequest.Keys.Contains("CMGLabNameFromLookUp") == true)
+                    if (LookUpPerRequest.Keys.Contains("CMGLabNameFromLookUp") == true)
                     {
                         //if (cboLab.Items[cboLab.SelectedIndex].Text == LookUpPerRequest["CMGLabNameFromLookUp"].ToString() && (!chkMoveToMA.Checked || ClientSession.UserCurrentProcess == "MA_REVIEW"))
                         if (LookUpPerRequest["CMGLabNameFromLookUp"].ToString().Contains(cboLab.Items[cboLab.SelectedIndex].Text) == true && (!chkMoveToMA.Checked || ClientSession.UserCurrentProcess == "MA_REVIEW"))
@@ -3280,7 +3288,7 @@ namespace Acurus.Capella.UI
                             }
                         }
                     }
-                    
+
                     //{
 
                     //System.Diagnostics.Stopwatch stopwatch = MyLog.StartWatch();
@@ -3709,9 +3717,9 @@ namespace Acurus.Capella.UI
                 //}
                 //else
                 //{
-                    objOrder.Physician_ID = PhysicianID;
+                objOrder.Physician_ID = PhysicianID;
                 //}
-                    
+
                 objOrder.Human_ID = HumanID;
                 objOrder.Created_By = ClientSession.UserName;
                 // objOrder.Created_Date_And_Time = timeOnAddClick;
@@ -3814,14 +3822,14 @@ namespace Acurus.Capella.UI
                 //}
                 //else
                 //{
-                    objOrderSubmit.Physician_ID = PhysicianID;
+                objOrderSubmit.Physician_ID = PhysicianID;
                 //}
 
                 //objOrderSubmit.Facility_Name = ClientSession.FacilityName;
                 //GitLab # 2364 - Enabled Menu level Order for Ancillary FO 
                 var facAncillary = from f in ApplicationObject.facilityLibraryList where f.Fac_Name == ClientSession.FacilityName select f;
                 IList<FacilityLibrary> ilstFacAncillary = facAncillary.ToList<FacilityLibrary>();
-                                               
+
                 if (Request["ScreenMode"] != null && Request["ScreenMode"].ToString().ToUpper() == "MENU" && ilstFacAncillary.Count > 0 && ilstFacAncillary[0].Is_Ancillary == "Y")
                 {
                     string strXmlFilePath1 = Path.Combine(System.Web.Hosting.HostingEnvironment.ApplicationPhysicalPath, "ConfigXML\\User.xml");
@@ -3988,7 +3996,7 @@ namespace Acurus.Capella.UI
             var serializer = new NetDataContractSerializer();
             objOrdersManager = new OrdersManager();
             string sSelectedOrder = string.Empty;
-            objOrdersManager.InsertToOrders(SaveOrderList.ToArray<Orders>(), SaveOrdersSubmitList, SaveOrdersAssList.ToArray<OrdersAssessment>(), orderingProcedure.ToArray<string>(), EncounterID, OrderType, string.Empty, ilstRequiredForms, ref sSelectedOrder,sLocalTime);
+            objOrdersManager.InsertToOrders(SaveOrderList.ToArray<Orders>(), SaveOrdersSubmitList, SaveOrdersAssList.ToArray<OrdersAssessment>(), orderingProcedure.ToArray<string>(), EncounterID, OrderType, string.Empty, ilstRequiredForms, ref sSelectedOrder, sLocalTime);
             if (sSelectedOrder != string.Empty)
             {
                 if (sAppointment == "Y")
@@ -4082,9 +4090,9 @@ namespace Acurus.Capella.UI
                     //}
                     //else
                     //{
-                        objNewOrder.Physician_ID = PhysicianID;
+                    objNewOrder.Physician_ID = PhysicianID;
                     //}
-                        
+
                     objNewOrder.Human_ID = HumanID;
                 }
                 //Assign Procedure Details
@@ -4293,9 +4301,9 @@ namespace Acurus.Capella.UI
                 //}
                 //else
                 //{
-                    UpdateOrderSubmit.Physician_ID = PhysicianID;
+                UpdateOrderSubmit.Physician_ID = PhysicianID;
                 //}
-                    
+
                 UpdateOrderSubmit.Encounter_ID = EncounterID;
                 //sarava
                 // ulong PreferredReadingPhysician = 0;
@@ -4441,7 +4449,7 @@ namespace Acurus.Capella.UI
                 }
             }
             List<string> SelectedICD = SelectedAssessment.Select(s => s.Split('-')[0]).ToList();
-            if (OriginalOrdersAssessment != null && OriginalOrdersAssessment.Count() > 0 && SelectedICD!=null)
+            if (OriginalOrdersAssessment != null && OriginalOrdersAssessment.Count() > 0 && SelectedICD != null)
                 delOrdAssList = OriginalOrdersAssessment.Where(oa => !SelectedICD.Any(si => si == oa.ICD)).ToList<OrdersAssessment>();
             #region Commented
             /*Commanded By Manimaran for incorrect entry 
@@ -4521,7 +4529,7 @@ namespace Acurus.Capella.UI
             object[] OrdersRequiredFormsSaveUpdateList = new object[] { SaveListOrdersRequiredForms, UpdateListOrdersRequiredForms, DeleteListOrdersRequiredForms };
 
             objOrdersManager = new OrdersManager();
-            objOrdersManager.UpdateOrders(SaveOrderList, UpdateOrdersList, DeleteOrdersList, savOrdAssList, delOrdAssList, savOrdAssListFornewCPT, null, null, null, null, new string[] { }, new string[] { }, new string[] { }, EncounterID, OrderType.ToUpper(), string.Empty, null, SavListOrderSubmit, UpdListOrderSubmit, DelListOrderSubmit, SaveListOrdersRequiredForms, UpdateListOrdersRequiredForms, DeleteListOrdersRequiredForms,sLocalTime);
+            objOrdersManager.UpdateOrders(SaveOrderList, UpdateOrdersList, DeleteOrdersList, savOrdAssList, delOrdAssList, savOrdAssListFornewCPT, null, null, null, null, new string[] { }, new string[] { }, new string[] { }, EncounterID, OrderType.ToUpper(), string.Empty, null, SavListOrderSubmit, UpdListOrderSubmit, DelListOrderSubmit, SaveListOrdersRequiredForms, UpdateListOrdersRequiredForms, DeleteListOrdersRequiredForms, sLocalTime);
             //IList<Orders> lstTemp = new List<Orders>();            
             //lstTemp = SaveOrderList.Concat(UpdateOrdersList).ToList<Orders>();
             //IList<string> ProceduresViewListTemp = new List<string>();
@@ -4633,23 +4641,23 @@ namespace Acurus.Capella.UI
             if (hdnSelectedItem.Value != string.Empty)
             {
                 string FaxSubject = string.Empty;
-                string sLABNAME = string.Empty;               
+                string sLABNAME = string.Empty;
 
                 if (objOrderDTO.ilstOrderLabDetailsDTO[0].OrdersSubmit != null)
-                {                  
+                {
                     if (objOrderDTO.ilstOrderLabDetailsDTO.Count > 0)
                     {
                         for (int y = 0; y < objOrderDTO.ilstOrderLabDetailsDTO.Count; y++)
-                        {    
-                            if(y==0)
-                                sLABNAME = objOrderDTO.ilstOrderLabDetailsDTO[y].OrdersSubmit.Id+ "_" +objOrderDTO.ilstOrderLabDetailsDTO[y].OrdersSubmit.Lab_Name + "_" + objOrderDTO.ilstOrderLabDetailsDTO[y].OrdersSubmit.Created_Date_And_Time.ToString("dd-MMM-yyyy");
+                        {
+                            if (y == 0)
+                                sLABNAME = objOrderDTO.ilstOrderLabDetailsDTO[y].OrdersSubmit.Id + "_" + objOrderDTO.ilstOrderLabDetailsDTO[y].OrdersSubmit.Lab_Name + "_" + objOrderDTO.ilstOrderLabDetailsDTO[y].OrdersSubmit.Created_Date_And_Time.ToString("dd-MMM-yyyy");
                             else
                                 sLABNAME += "|" + objOrderDTO.ilstOrderLabDetailsDTO[y].OrdersSubmit.Id + "_" + objOrderDTO.ilstOrderLabDetailsDTO[y].OrdersSubmit.Lab_Name + "_" + objOrderDTO.ilstOrderLabDetailsDTO[y].OrdersSubmit.Created_Date_And_Time.ToString("dd-MMM-yyyy");
                         }
                         //
                     }
-                }                              
-                    //FaxSubject = "_" + objFillHumnaDTO.First_Name + " " + objFillHumnaDTO.Last_Name + "_" + objOrderDTO.ilstOrderLabDetailsDTO[0].OrdersSubmit.Lab_Name + "_" + objOrderDTO.ilstOrderLabDetailsDTO[0].OrdersSubmit.Created_Date_And_Time;    
+                }
+                //FaxSubject = "_" + objFillHumnaDTO.First_Name + " " + objFillHumnaDTO.Last_Name + "_" + objOrderDTO.ilstOrderLabDetailsDTO[0].OrdersSubmit.Lab_Name + "_" + objOrderDTO.ilstOrderLabDetailsDTO[0].OrdersSubmit.Created_Date_And_Time;    
                 FaxSubject = "_" + objFillHumnaDTO.First_Name + " " + objFillHumnaDTO.Last_Name + "$" + sLABNAME; //"$" + objOrderDTO.ilstOrderLabDetailsDTO[0].OrdersSubmit.Created_Date_And_Time;               
 
                 //MessageWindow.Width = Unit.Pixel(750);
@@ -4761,7 +4769,7 @@ namespace Acurus.Capella.UI
             }
             else
                 AccountNumberForLabCorp = "04281070";
-            objAbnResponseType = (AbnResponseType)objResultMasterManager.GenerateABNForm(AccountNumberForLabCorp,sHumanName, sIdentificationNumber, LabCorpCPT.Distinct().ToArray<string>(), LabCorpICD.Distinct().ToArray<string>());
+            objAbnResponseType = (AbnResponseType)objResultMasterManager.GenerateABNForm(AccountNumberForLabCorp, sHumanName, sIdentificationNumber, LabCorpCPT.Distinct().ToArray<string>(), LabCorpICD.Distinct().ToArray<string>());
             if (objAbnResponseType.outputType == "Success")
             {
                 if ((bool)objAbnResponseType.isABNRequired)
@@ -4789,7 +4797,7 @@ namespace Acurus.Capella.UI
                             //System.Diagnostics.Process.Start(path);
                             IsABNNeed = true;
                         }
-                        catch 
+                        catch
                         {
                         }
                     }
@@ -4836,8 +4844,8 @@ namespace Acurus.Capella.UI
                 {
                     hdnSelectedItem.Value = hdnSelectedItem.Value.ToString().Substring(1);
                 }
-                ScriptManager.RegisterStartupScript(this, this.Page.GetType(), string.Empty, "OpenPrintPDF('"+hdnSelectedItem.Value.ToString()+"')", true);
-          
+                ScriptManager.RegisterStartupScript(this, this.Page.GetType(), string.Empty, "OpenPrintPDF('" + hdnSelectedItem.Value.ToString() + "')", true);
+
                 //MessageWindow.Width = Unit.Pixel(900);
                 //MessageWindow.Height = Unit.Pixel(750);
                 //MessageWindow.NavigateUrl = "frmPrintPDF.aspx?Location=DYNAMIC&SI=" + hdnSelectedItem.Value.ToString();
@@ -4849,7 +4857,7 @@ namespace Acurus.Capella.UI
         protected void btnMoveToNextProcess_Click(object sender, EventArgs e)
         {
 
-            if (Session["OrderSubmitId"]!=null && Session["OrderSubmitId"].ToString() != string.Empty)
+            if (Session["OrderSubmitId"] != null && Session["OrderSubmitId"].ToString() != string.Empty)
             {
                 hdnTransferVaraible.Value = Convert.ToString(Session["OrderSubmitId"]);
             }
