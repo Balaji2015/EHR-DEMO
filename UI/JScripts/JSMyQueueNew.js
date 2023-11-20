@@ -3669,16 +3669,26 @@ function RowClick() {
         var existingSelectedItem = $("#MyQTable tr.highlight");
 
         for (var i = 0; i < existingSelectedItem.length; i++) {
-            var processes = existingSelectedItem[i].children[7].childNodes[0].data;
+            //Jira CAP-1413
+            //var processes = processes = existingSelectedItem[i].children[7].childNodes[0].data;
+            var processes = "NoCurrentProcess";
+            if (existingSelectedItem[i]?.children[7]?.childNodes[0]?.data != undefined && existingSelectedItem[i]?.children[7]?.childNodes[0]?.data != null) {
+                processes = existingSelectedItem[i].children[7].childNodes[0].data;
+            }
+
             var isproviderReviewMyQ = processes;
-                if(isproviderReviewMyQ != "PROVIDER_REVIEW" && isproviderReviewMyQ != "PROVIDER_REVIEW_2") {
+            if (isproviderReviewMyQ != "PROVIDER_REVIEW" && isproviderReviewMyQ != "PROVIDER_REVIEW_2") {
                 existingSelectedItem[i].classList.remove("highlight");
             }
         }
 
         $(this)[0].classList.add('highlight');
-
-        var NewRowprocesses = $(this)[0].children[7].childNodes[0].data;
+        //Jira CAP-1413
+        //var NewRowprocesses = $(this)[0].children[7].childNodes[0].data;
+        var NewRowprocesses = "NoCurrentProcess";
+        if ($(this)[0]?.children[7]?.childNodes[0]?.data != undefined && $(this)[0]?.children[7]?.childNodes[0]?.data != null) {
+            NewRowprocesses = $(this)[0].children[7].childNodes[0].data;
+        }
         var isproviderReviewMyQNewRow = NewRowprocesses;
 
         if (isproviderReviewMyQNewRow == "PROVIDER_REVIEW" || isproviderReviewMyQNewRow == "PROVIDER_REVIEW_2") {
