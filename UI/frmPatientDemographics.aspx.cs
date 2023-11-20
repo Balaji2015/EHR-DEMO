@@ -126,6 +126,8 @@ namespace Acurus.Capella.UI
             {
                 txtRace.Attributes.Add("ReadOnly", "true");
                 txtGranularity.Attributes.Add("ReadOnly", "true");
+                //Cap - 1394
+                dtpDateOfDeath.Attributes.Add("Readonly", "true");
                 if (chkEnrollOnlineAccess.Checked == false)
                     btnSendEmail.Enabled = false;
                 IList<string> HumanIDList = new List<string>();
@@ -403,6 +405,71 @@ namespace Acurus.Capella.UI
                 }
                 btnAddMessage.Enabled = false;
             }
+
+
+
+            //Capella - 1361
+            if (chkGuarantorIsPatient.Enabled == true)
+            {
+                if (chkGuarantorIsPatient.Checked == true)
+                {
+                    dtpGuarantorDOB.Enabled = false;
+                    DisableTableLayout(pnlGuarantorInfo);
+                    txtGuarantorFirstName.Text = txtPatientfirstname.Text;
+                    txtGuarantorLastName.Text = txtPatientlastname.Text;
+                    txtGuarantorMiddleName.Text = txtPatientmiddlename.Text;
+                    txtGuarantorAddress.Text = txtPatientAddress.Text;
+                    txtGuarantorAddressLine2.Text = txtPatientAddressLine2.Text;
+                    txtGuarantorCity.Text = txtCity.Text;
+                    msktxtGuarantorZipCode.Text = msktxtZipcode.Text;
+                    for (int k = 0; k < ddlGuarantorSex.Items.Count; k++)
+                    {
+                        if (ddlGuarantorSex.Items[k].Text == ddlPatientsex.SelectedItem.Text)
+                        {
+                            ddlGuarantorSex.SelectedIndex = k;
+                            break;
+                        }
+                    }
+                    for (int l = 0; l < ddlGuarantorState.Items.Count; l++)
+                    {
+                        if (ddlGuarantorState.Items[l].Text == ddlState.SelectedItem.Text)
+                        {
+                            ddlGuarantorState.SelectedIndex = l;
+                            break;
+                        }
+                    }
+
+                    for (int i = 0; i < ddlGuarantorRelationship.Items.Count; i++)
+                    {
+                        if (Convert.ToString(ddlGuarantorRelationship.Items[i].Text).ToUpper() == "SELF")
+                        {
+                            ddlGuarantorRelationship.SelectedIndex = i;
+                            break;
+                        }
+                    }
+                    if (dtpPatientDOB.Text != "")
+                        dtpGuarantorDOB.Text = dtpPatientDOB.Text;
+                    msktxtGuarantorCellNo.Text = msktxtCellPhno.Text;
+                    msktxtGuarantorHomeNo.Text = msktxtHomePhno.Text;
+                    ddlGuarantorRelationship.CssClass = "nonEditabletxtbox";
+                }
+                if (chkGuarantorIsPatient.Checked == false)
+                {
+                    btnAddGuarantor.Enabled = true;
+                    btnSelectGaurantor.Enabled = true;
+                    btnViewGaurantor.Enabled = true;
+                    DisableTableLayout(pnlGuarantorInfo);
+                    ddlGuarantorRelationship.Enabled = true;
+                    ddlGuarantorRelationship.BackColor = Color.White;
+                    ClearGuarantorInfo();
+                    ddlGuarantorRelationship.CssClass = "Editabletxtbox";
+                }
+            }
+
+
+
+
+
 
             if (chkGuarantorIsPatient.Enabled && chkGuarantorIsPatient.Checked)
             {
