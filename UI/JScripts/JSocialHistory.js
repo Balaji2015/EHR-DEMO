@@ -1,5 +1,6 @@
 ﻿//CAP-1158
-$('#DLC_listDLC').keypress(function (event) {
+//CAP-1365
+$('*[id*=_listDLC]').keypress(function (event) {
     if (event.keyCode === 10 || event.keyCode === 13) {
         event.preventDefault();
     }
