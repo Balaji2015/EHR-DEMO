@@ -442,8 +442,13 @@ namespace Acurus.Capella.UI
             {
                 this.Page.Title = "Check In" + " - " + ClientSession.UserName;
             }
+            //CAP-1395
+            if (Request["sScreenMode"] == "ELIGIBILITY")
+            {
+                this.Page.Title = "Authorization & EV" + " - " + ClientSession.UserName;
+            }
 
-            if (Button1.Visible == true)
+                if (Button1.Visible == true)
             {
                 if (ClientSession.UserPermissionDTO != null && ClientSession.UserPermissionDTO.Scntab != null)
                 {
