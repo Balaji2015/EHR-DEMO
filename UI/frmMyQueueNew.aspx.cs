@@ -1006,39 +1006,44 @@ namespace Acurus.Capella.UI
                 return "Session Expired";
             }
 
-            WFObjectManager wfMngr = new WFObjectManager();
-
-            ulong selectedID = Convert.ToUInt64(data[0]);
-            if (selectedID != 0)
-            {
-                wfMngr.UpdateOwner(Convert.ToUInt64(data[1]), data[2].ToString(), ClientSession.UserName, string.Empty);
-
-            }
-            if (selectedID == 0)
-            {
-                wfMngr.UpdateOwner(Convert.ToUInt64(data[1]), data[2].ToString(), ClientSession.UserName, string.Empty);
-            }
-            //LoadOrders();
-
-
-            //For Refresh Movetomyorder
-            bool bValue = false;
-            if (data[3].ToString() == "Checked")
-                bValue = true;
-            string[] ProcessType = new string[2];
-            ProcessType[0] = "UNASSIGNED";
-
-            string[] ObjType = new string[6];
-            ObjType[0] = "DIAGNOSTIC ORDER";
-            ObjType[1] = "DME ORDER";
-            // ObjType[1] = "IMAGE ORDER";
-            // ObjType[2] = "INTERNAL ORDER";//For Bug Id 54510
-            ObjType[3] = "IMMUNIZATION ORDER";
-            ObjType[4] = "REFERRAL ORDER";
-            ObjType[5] = "DME ORDER";
+            //Jira CAP-1123
             IList<MyQ> OrdersQ = new List<MyQ>();
-            OrdersQ = wfMngr.GetListObjects(ClientSession.FacilityName, ObjType, ProcessType, ClientSession.UserName, bValue, iDefaultDays, string.Empty);// ClientSession.DefaultNoofDays);
-            OrdersQ = OrdersQ.Where(a => a.Current_Owner == "UNKNOWN").ToList<MyQ>();
+            for (int i = 0; i < data.Length; i++)
+            {
+                string[] dataMove = data[i].Split('~');
+                WFObjectManager wfMngr = new WFObjectManager();
+                ulong selectedID = Convert.ToUInt64(dataMove[0]);
+                if (selectedID != 0)
+                {
+                    wfMngr.UpdateOwner(Convert.ToUInt64(dataMove[1]), dataMove[2].ToString(), ClientSession.UserName, string.Empty);
+
+                }
+                if (selectedID == 0)
+                {
+                    wfMngr.UpdateOwner(Convert.ToUInt64(dataMove[1]), dataMove[2].ToString(), ClientSession.UserName, string.Empty);
+                }
+                //LoadOrders();
+
+
+                //For Refresh Movetomyorder
+                bool bValue = false;
+                if (dataMove[3].ToString() == "Checked")
+                    bValue = true;
+                string[] ProcessType = new string[2];
+                ProcessType[0] = "UNASSIGNED";
+
+                string[] ObjType = new string[6];
+                ObjType[0] = "DIAGNOSTIC ORDER";
+                ObjType[1] = "DME ORDER";
+                // ObjType[1] = "IMAGE ORDER";
+                // ObjType[2] = "INTERNAL ORDER";//For Bug Id 54510
+                ObjType[3] = "IMMUNIZATION ORDER";
+                ObjType[4] = "REFERRAL ORDER";
+                ObjType[5] = "DME ORDER";
+                
+                OrdersQ = wfMngr.GetListObjects(ClientSession.FacilityName, ObjType, ProcessType, ClientSession.UserName, bValue, iDefaultDays, string.Empty);// ClientSession.DefaultNoofDays);
+                OrdersQ = OrdersQ.Where(a => a.Current_Owner == "UNKNOWN").ToList<MyQ>();
+            }
             return JsonConvert.SerializeObject(OrdersQ.ToList<MyQ>());
         }
 

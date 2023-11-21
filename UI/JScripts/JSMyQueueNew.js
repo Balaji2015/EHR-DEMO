@@ -565,6 +565,21 @@ $(document).ready(function () {
         //Jira #CAP-889
         sessionStorage.setItem('MyQRemoveIdList', '');
 
+        //Jira CAP-1354
+        if ($('#MyQTable').children().find('.highlight').length > 1) {
+            alert("Please select one encounter to process");
+            { sessionStorage.setItem('StartLoading', 'false'); StopLoadFromPatChart(); }
+            $('#MyQTable td').find('input[type=checkbox]:checked').each(function () {
+                $(this).prop('checked', false);
+            });
+            $('#MyQTable th').find('input[type=checkbox]:checked').each(function () {
+                $(this).prop('checked', false);
+            });
+            $('#MyQTable tr').removeClass("highlight");
+            return false;
+        }
+
+
         if ($('#MyQTable').children().find('.highlight').length > 0 && $('#MyQTable').children().find('.highlight')[0].classList.length == 1) {
             var currentProcessscnt = 0;
             $('#MyQTable tr.highlight').each(function (i, row) {
@@ -3610,6 +3625,21 @@ function openRadWindow(fromname, height, width, inputargument, RadWindowName) {
     result.center();
 }
 $('#btnChangeExamRoom').click(function (evt) {
+
+    //Jira CAP-1354
+    if ($('#MyQTable').children().find('.highlight').length > 1) {
+        alert("Please select one encounter to process");
+        { sessionStorage.setItem('StartLoading', 'false'); StopLoadFromPatChart(); }
+        $('#MyQTable td').find('input[type=checkbox]:checked').each(function () {
+            $(this).prop('checked', false);
+        });
+        $('#MyQTable th').find('input[type=checkbox]:checked').each(function () {
+            $(this).prop('checked', false);
+        });
+        $('#MyQTable tr').removeClass("highlight");
+        return false;
+    }
+
     var cells = $('#MyQTable').children().find('.highlight').children();
     if (cells.length > 0) {
         openRadWindow("frmRoomIn.aspx?AccountNumber=" + cells[2].innerText + "&PatientName=" + cells[4].innerText + "&PatientDOB=" + cells[5].innerText +
@@ -3707,6 +3737,21 @@ function RowClick() {
 
     });
     $("#MyQTable tr").dblclick(function () {
+        //Jira CAP-1354
+        if ($('#MyQTable').children().find('.highlight').length > 1) {
+            alert("Please select one encounter to process");
+            { sessionStorage.setItem('StartLoading', 'false'); StopLoadFromPatChart(); }
+            $('#MyQTable td').find('input[type=checkbox]:checked').each(function () {
+                $(this).prop('checked', false);
+            });
+            $('#MyQTable th').find('input[type=checkbox]:checked').each(function () {
+                $(this).prop('checked', false);
+            });
+            $('#MyQTable tr').removeClass("highlight");
+            return false;
+        }
+
+
         if (event.target.tagName != 'TH' && event.target.type != 'checkbox') {
             { sessionStorage.setItem('StartLoading', 'true'); StartLoadFromPatChart(); }
 
@@ -3963,85 +4008,97 @@ function movetoamend() {
     });
 }
 function movetoorder() {
-    var EncounterID = $('#EncounterTable > tbody > tr.highlight > td:nth-child(13)')[0].innerText;
-    var OrderID = $('#EncounterTable > tbody > tr.highlight > td:nth-child(15)')[0].innerText;
-    var ObjectType = $('#EncounterTable > tbody > tr.highlight > td:nth-child(16)')[0].innerText;
-    var CurrentProcess = $('#EncounterTable > tbody > tr.highlight > td:nth-child(10)')[0].innerText;
+    var inputData = new Array();
     var ShowallGeneral = "";
     $("#chkShowAll")[0].checked ? ShowallGeneral = "Checked" : ShowallGeneral = "Unchecked";
-    sShowall = ShowallGeneral;
-    var Data = [EncounterID, OrderID, ObjectType, sShowall, CurrentProcess];
-    $.ajax({
-        type: "POST",
-        url: "frmMyQueueNew.aspx/MoveToMyOrder",
-        data: JSON.stringify({
-            "data": Data,
-        }),
-        contentType: "application/json; charset=utf-8",
-        dataType: "json",
-        async: true,
-        success: function (data) {
-            $('#GeneralQTable').empty();
-            var tabContents;
-            var objdata = $.parseJSON(data.d);
-            if (data.d != "[]") {
-                for (var i = 0; i < objdata.length; i++) {
-                    var orderType = objdata[i].EHR_Obj_Type.replace("INTERNAL", "").trim();
-                    if (i == 0) {
-                        if (objdata[i].Reason_For_Referral != "") {
-                            if (objdata[i].Referred_to != "")
-                                tabContents = "<tr><td style='width:56px'><input type='checkbox' onclick='checkboxclick(this)'/></td><td>" + ConvertDate(objdata[i].Created_Date_And_Time.replace("T", " ")) + "</td><td>" + ConvertDate(objdata[i].Test_Date.replace("T", " ")) + "</td><td>" + objdata[i].Human_ID + "</td><td >" + objdata[i].External_Account_Number + "</td><td>" + objdata[i].Last_Name + "," + objdata[i].First_Name + " " + objdata[i].MI + "</td><td >" + DOBConvert(objdata[i].DOB.replace("T00:00:00", "")) + "</td><td >" + objdata[i].Reason_For_Referral + "</td><td>" + objdata[i].PhyName + "</td><td >" + objdata[i].Current_Process + "</td><td >" + objdata[i].Referred_to + "</td><td style='display:none;'>" + objdata[i].Lab_Loc_Name + "</td><td style='display:none;'>" + objdata[i].Encounter_ID + "</td><td style='display:none;'>" + objdata[i].Physician_ID + "</td><td style='display:none;'>" + objdata[i].Order_ID + "</td><td style='display:none;'>" + objdata[i].EHR_Obj_Type + "</td><td style='display:none;'>" + objdata[i].Lab_ID + "</td><td style='display:none;'>" + objdata[i].Lab_Location_ID + "</td><td style='display:none;'>" + objdata[i].Order_Submit_ID + "</td><td style='display:none;' >" + objdata[i].Referred_to_Facility + "</td></tr>";
-                            else
-                                tabContents = "<tr><td style='width:56px'><input type='checkbox' onclick='checkboxclick(this)'/></td><td>" + ConvertDate(objdata[i].Created_Date_And_Time.replace("T", " ")) + "</td><td>" + ConvertDate(objdata[i].Test_Date.replace("T", " ")) + "</td><td>" + objdata[i].Human_ID + "</td><td >" + objdata[i].External_Account_Number + "</td><td>" + objdata[i].Last_Name + "," + objdata[i].First_Name + " " + objdata[i].MI + "</td><td >" + DOBConvert(objdata[i].DOB.replace("T00:00:00", "")) + "</td><td >" + objdata[i].Reason_For_Referral + "</td><td>" + objdata[i].PhyName + "</td><td >" + objdata[i].Current_Process + "</td><td >" + objdata[i].Lab_Name + "</td><td style='display:none;'>" + objdata[i].Lab_Loc_Name + "</td><td style='display:none;'>" + objdata[i].Encounter_ID + "</td><td style='display:none;'>" + objdata[i].Physician_ID + "</td><td style='display:none;'>" + objdata[i].Order_ID + "</td><td style='display:none;'>" + objdata[i].EHR_Obj_Type + "</td><td style='display:none;'>" + objdata[i].Lab_ID + "</td><td style='display:none;'>" + objdata[i].Lab_Location_ID + "</td><td style='display:none;'>" + objdata[i].Order_Submit_ID + "</td><td  style='display:none;'>" + objdata[i].Referred_to_Facility + "</td></tr>";
+    //Jira CAP-1123
+    $('#EncounterTable > tbody > tr.highlight').each(function (i, row) {
+        { sessionStorage.setItem('StartLoading', 'true'); StartLoadFromPatChart(); }
+        var $row = $(row);
+        $row.find('td:nth-child(3)')
+        var EncounterID = $row.find('td:nth-child(13)')[0].innerText;
+        var OrderID = $row.find('td:nth-child(15)')[0].innerText;
+        var ObjectType = $row.find('td:nth-child(16)')[0].innerText;
+        var CurrentProcess = $row.find('td:nth-child(10)')[0].innerText;
+        sShowall = ShowallGeneral;
+        inputData.push(EncounterID + "~" + OrderID + "~" + ObjectType + "~" + sShowall + "~" + CurrentProcess);
+    });
+    if (inputData.length > 0) {
+        $.ajax({
+            type: "POST",
+            url: "frmMyQueueNew.aspx/MoveToMyOrder",
+            data: JSON.stringify({
+                "data": inputData,
+            }),
+            contentType: "application/json; charset=utf-8",
+            dataType: "json",
+            async: true,
+            success: function (data) {
+                $('#GeneralQTable').empty();
+                var tabContents;
+                var objdata = $.parseJSON(data.d);
+                if (data.d != "[]") {
+                    for (var i = 0; i < objdata.length; i++) {
+                        var orderType = objdata[i].EHR_Obj_Type.replace("INTERNAL", "").trim();
+                        if (i == 0) {
+                            if (objdata[i].Reason_For_Referral != "") {
+                                if (objdata[i].Referred_to != "")
+                                    tabContents = "<tr><td style='width:56px'><input type='checkbox' onclick='checkboxclick(this)'/></td><td>" + ConvertDate(objdata[i].Created_Date_And_Time.replace("T", " ")) + "</td><td>" + ConvertDate(objdata[i].Test_Date.replace("T", " ")) + "</td><td>" + objdata[i].Human_ID + "</td><td >" + objdata[i].External_Account_Number + "</td><td>" + objdata[i].Last_Name + "," + objdata[i].First_Name + " " + objdata[i].MI + "</td><td >" + DOBConvert(objdata[i].DOB.replace("T00:00:00", "")) + "</td><td >" + objdata[i].Reason_For_Referral + "</td><td>" + objdata[i].PhyName + "</td><td >" + objdata[i].Current_Process + "</td><td >" + objdata[i].Referred_to + "</td><td style='display:none;'>" + objdata[i].Lab_Loc_Name + "</td><td style='display:none;'>" + objdata[i].Encounter_ID + "</td><td style='display:none;'>" + objdata[i].Physician_ID + "</td><td style='display:none;'>" + objdata[i].Order_ID + "</td><td style='display:none;'>" + objdata[i].EHR_Obj_Type + "</td><td style='display:none;'>" + objdata[i].Lab_ID + "</td><td style='display:none;'>" + objdata[i].Lab_Location_ID + "</td><td style='display:none;'>" + objdata[i].Order_Submit_ID + "</td><td style='display:none;' >" + objdata[i].Referred_to_Facility + "</td></tr>";
+                                else
+                                    tabContents = "<tr><td style='width:56px'><input type='checkbox' onclick='checkboxclick(this)'/></td><td>" + ConvertDate(objdata[i].Created_Date_And_Time.replace("T", " ")) + "</td><td>" + ConvertDate(objdata[i].Test_Date.replace("T", " ")) + "</td><td>" + objdata[i].Human_ID + "</td><td >" + objdata[i].External_Account_Number + "</td><td>" + objdata[i].Last_Name + "," + objdata[i].First_Name + " " + objdata[i].MI + "</td><td >" + DOBConvert(objdata[i].DOB.replace("T00:00:00", "")) + "</td><td >" + objdata[i].Reason_For_Referral + "</td><td>" + objdata[i].PhyName + "</td><td >" + objdata[i].Current_Process + "</td><td >" + objdata[i].Lab_Name + "</td><td style='display:none;'>" + objdata[i].Lab_Loc_Name + "</td><td style='display:none;'>" + objdata[i].Encounter_ID + "</td><td style='display:none;'>" + objdata[i].Physician_ID + "</td><td style='display:none;'>" + objdata[i].Order_ID + "</td><td style='display:none;'>" + objdata[i].EHR_Obj_Type + "</td><td style='display:none;'>" + objdata[i].Lab_ID + "</td><td style='display:none;'>" + objdata[i].Lab_Location_ID + "</td><td style='display:none;'>" + objdata[i].Order_Submit_ID + "</td><td  style='display:none;'>" + objdata[i].Referred_to_Facility + "</td></tr>";
+                            }
+                            else {
+                                if (objdata[i].Referred_to != "")
+                                    tabContents = "<tr><td style='width:56px'><input type='checkbox' onclick='checkboxclick(this)'/></td><td>" + ConvertDate(objdata[i].Created_Date_And_Time.replace("T", " ")) + "</td><td>" + ConvertDate(objdata[i].Test_Date.replace("T", " ")) + "</td><td>" + objdata[i].Human_ID + "</td><td >" + objdata[i].External_Account_Number + "</td><td>" + objdata[i].Last_Name + "," + objdata[i].First_Name + " " + objdata[i].MI + "</td><td >" + DOBConvert(objdata[i].DOB.replace("T00:00:00", "")) + "</td><td >" + objdata[i].Procedure_Ordered + "</td><td>" + objdata[i].PhyName + "</td><td >" + objdata[i].Current_Process + "</td><td >" + objdata[i].Referred_to + "</td><td style='display:none;'>" + objdata[i].Lab_Loc_Name + "</td><td style='display:none;'>" + objdata[i].Encounter_ID + "</td><td style='display:none;'>" + objdata[i].Physician_ID + "</td><td style='display:none;'>" + objdata[i].Order_ID + "</td><td style='display:none;'>" + objdata[i].EHR_Obj_Type + "</td><td style='display:none;'>" + objdata[i].Lab_ID + "</td><td style='display:none;'>" + objdata[i].Lab_Location_ID + "</td><td style='display:none;'>" + objdata[i].Order_Submit_ID + "</td><td  style='display:none;'>" + objdata[i].Referred_to_Facility + "</td></tr>";
+                                else
+                                    tabContents = "<tr><td style='width:56px'><input type='checkbox' onclick='checkboxclick(this)'/></td><td>" + ConvertDate(objdata[i].Created_Date_And_Time.replace("T", " ")) + "</td><td>" + ConvertDate(objdata[i].Test_Date.replace("T", " ")) + "</td><td>" + objdata[i].Human_ID + "</td><td >" + objdata[i].External_Account_Number + "</td><td>" + objdata[i].Last_Name + "," + objdata[i].First_Name + " " + objdata[i].MI + "</td><td >" + DOBConvert(objdata[i].DOB.replace("T00:00:00", "")) + "</td><td >" + objdata[i].Procedure_Ordered + "</td><td>" + objdata[i].PhyName + "</td><td >" + objdata[i].Current_Process + "</td><td >" + objdata[i].Lab_Name + "</td><td style='display:none;'>" + objdata[i].Lab_Loc_Name + "</td><td style='display:none;'>" + objdata[i].Encounter_ID + "</td><td style='display:none;'>" + objdata[i].Physician_ID + "</td><td style='display:none;'>" + objdata[i].Order_ID + "</td><td style='display:none;'>" + objdata[i].EHR_Obj_Type + "</td><td style='display:none;'>" + objdata[i].Lab_ID + "</td><td style='display:none;'>" + objdata[i].Lab_Location_ID + "</td><td style='display:none;'>" + objdata[i].Order_Submit_ID + "</td><td style='display:none;' >" + objdata[i].Referred_to_Facility + "</td></tr>";
+                            }
                         }
                         else {
-                            if (objdata[i].Referred_to != "")
-                                tabContents = "<tr><td style='width:56px'><input type='checkbox' onclick='checkboxclick(this)'/></td><td>" + ConvertDate(objdata[i].Created_Date_And_Time.replace("T", " ")) + "</td><td>" + ConvertDate(objdata[i].Test_Date.replace("T", " ")) + "</td><td>" + objdata[i].Human_ID + "</td><td >" + objdata[i].External_Account_Number + "</td><td>" + objdata[i].Last_Name + "," + objdata[i].First_Name + " " + objdata[i].MI + "</td><td >" + DOBConvert(objdata[i].DOB.replace("T00:00:00", "")) + "</td><td >" + objdata[i].Procedure_Ordered + "</td><td>" + objdata[i].PhyName + "</td><td >" + objdata[i].Current_Process + "</td><td >" + objdata[i].Referred_to + "</td><td style='display:none;'>" + objdata[i].Lab_Loc_Name + "</td><td style='display:none;'>" + objdata[i].Encounter_ID + "</td><td style='display:none;'>" + objdata[i].Physician_ID + "</td><td style='display:none;'>" + objdata[i].Order_ID + "</td><td style='display:none;'>" + objdata[i].EHR_Obj_Type + "</td><td style='display:none;'>" + objdata[i].Lab_ID + "</td><td style='display:none;'>" + objdata[i].Lab_Location_ID + "</td><td style='display:none;'>" + objdata[i].Order_Submit_ID + "</td><td  style='display:none;'>" + objdata[i].Referred_to_Facility + "</td></tr>";
-                            else
-                                tabContents = "<tr><td style='width:56px'><input type='checkbox' onclick='checkboxclick(this)'/></td><td>" + ConvertDate(objdata[i].Created_Date_And_Time.replace("T", " ")) + "</td><td>" + ConvertDate(objdata[i].Test_Date.replace("T", " ")) + "</td><td>" + objdata[i].Human_ID + "</td><td >" + objdata[i].External_Account_Number + "</td><td>" + objdata[i].Last_Name + "," + objdata[i].First_Name + " " + objdata[i].MI + "</td><td >" + DOBConvert(objdata[i].DOB.replace("T00:00:00", "")) + "</td><td >" + objdata[i].Procedure_Ordered + "</td><td>" + objdata[i].PhyName + "</td><td >" + objdata[i].Current_Process + "</td><td >" + objdata[i].Lab_Name + "</td><td style='display:none;'>" + objdata[i].Lab_Loc_Name + "</td><td style='display:none;'>" + objdata[i].Encounter_ID + "</td><td style='display:none;'>" + objdata[i].Physician_ID + "</td><td style='display:none;'>" + objdata[i].Order_ID + "</td><td style='display:none;'>" + objdata[i].EHR_Obj_Type + "</td><td style='display:none;'>" + objdata[i].Lab_ID + "</td><td style='display:none;'>" + objdata[i].Lab_Location_ID + "</td><td style='display:none;'>" + objdata[i].Order_Submit_ID + "</td><td style='display:none;' >" + objdata[i].Referred_to_Facility + "</td></tr>";
+                            if (objdata[i].Reason_For_Referral != "") {
+                                if (objdata[i].Referred_to != "")
+                                    tabContents = tabContents + "<tr><td style='width:56px'><input type='checkbox' onclick='checkboxclick(this)'/></td><td>" + ConvertDate(objdata[i].Created_Date_And_Time.replace("T", " ")) + "</td><td>" + ConvertDate(objdata[i].Test_Date.replace("T", " ")) + "</td><td>" + objdata[i].Human_ID + "</td><td >" + objdata[i].External_Account_Number + "</td><td>" + objdata[i].Last_Name + "," + objdata[i].First_Name + " " + objdata[i].MI + "</td><td >" + DOBConvert(objdata[i].DOB.replace("T00:00:00", "")) + "</td><td >" + objdata[i].Reason_For_Referral + "</td><td>" + objdata[i].PhyName + "</td><td >" + objdata[i].Current_Process + "</td><td >" + objdata[i].Referred_to + "</td><td style='display:none;'>" + objdata[i].Lab_Loc_Name + "</td><td style='display:none;'>" + objdata[i].Encounter_ID + "</td><td style='display:none;'>" + objdata[i].Physician_ID + "</td><td style='display:none;'>" + objdata[i].Order_ID + "</td><td style='display:none;'>" + objdata[i].EHR_Obj_Type + "</td><td style='display:none;'>" + objdata[i].Lab_ID + "</td><td style='display:none;'>" + objdata[i].Lab_Location_ID + "</td><td style='display:none;'>" + objdata[i].Order_Submit_ID + "</td><td  style='display:none;'>" + objdata[i].Referred_to_Facility + "</td></tr>";
+                                else
+                                    tabContents = tabContents + "<tr><td style='width:56px'><input type='checkbox' onclick='checkboxclick(this)'/></td><td>" + ConvertDate(objdata[i].Created_Date_And_Time.replace("T", " ")) + "</td><td>" + ConvertDate(objdata[i].Test_Date.replace("T", " ")) + "</td><td>" + objdata[i].Human_ID + "</td><td >" + objdata[i].External_Account_Number + "</td><td>" + objdata[i].Last_Name + "," + objdata[i].First_Name + " " + objdata[i].MI + "</td><td >" + DOBConvert(objdata[i].DOB.replace("T00:00:00", "")) + "</td><td >" + objdata[i].Reason_For_Referral + "</td><td>" + objdata[i].PhyName + "</td><td >" + objdata[i].Current_Process + "</td><td >" + objdata[i].Lab_Name + "</td><td style='display:none;'>" + objdata[i].Lab_Loc_Name + "</td><td style='display:none;'>" + objdata[i].Encounter_ID + "</td><td style='display:none;'>" + objdata[i].Physician_ID + "</td><td style='display:none;'>" + objdata[i].Order_ID + "</td><td style='display:none;'>" + objdata[i].EHR_Obj_Type + "</td><td style='display:none;'>" + objdata[i].Lab_ID + "</td><td style='display:none;'>" + objdata[i].Lab_Location_ID + "</td><td style='display:none;'>" + objdata[i].Order_Submit_ID + "</td><td  style='display:none;'>" + objdata[i].Referred_to_Facility + "</td></tr>";
+                            }
+                            else {
+                                if (objdata[i].Referred_to != "")
+                                    tabContents = tabContents + "<tr><td style='width:56px'><input type='checkbox' onclick='checkboxclick(this)'/></td><td>" + ConvertDate(objdata[i].Created_Date_And_Time.replace("T", " ")) + "</td><td>" + ConvertDate(objdata[i].Test_Date.replace("T", " ")) + "</td><td>" + objdata[i].Human_ID + "</td><td >" + objdata[i].External_Account_Number + "</td><td>" + objdata[i].Last_Name + "," + objdata[i].First_Name + " " + objdata[i].MI + "</td><td >" + DOBConvert(objdata[i].DOB.replace("T00:00:00", "")) + "</td><td >" + objdata[i].Procedure_Ordered + "</td><td>" + objdata[i].PhyName + "</td><td >" + objdata[i].Current_Process + "</td><td>" + objdata[i].Referred_to + "</td><td style='display:none;'>" + objdata[i].Lab_Loc_Name + "</td><td style='display:none;'>" + objdata[i].Encounter_ID + "</td><td style='display:none;'>" + objdata[i].Physician_ID + "</td><td style='display:none;'>" + objdata[i].Order_ID + "</td><td style='display:none;'>" + objdata[i].EHR_Obj_Type + "</td><td style='display:none;'>" + objdata[i].Lab_ID + "</td><td style='display:none;'>" + objdata[i].Lab_Location_ID + "</td><td style='display:none;'>" + objdata[i].Order_Submit_ID + "</td><td  style='display:none;'>" + objdata[i].Referred_to_Facility + "</td></tr>";
+                                else
+                                    tabContents = tabContents + "<tr><td style='width:56px'><input type='checkbox' onclick='checkboxclick(this)'/></td><td>" + ConvertDate(objdata[i].Created_Date_And_Time.replace("T", " ")) + "</td><td>" + ConvertDate(objdata[i].Test_Date.replace("T", " ")) + "</td><td>" + objdata[i].Human_ID + "</td><td >" + objdata[i].External_Account_Number + "</td><td>" + objdata[i].Last_Name + "," + objdata[i].First_Name + " " + objdata[i].MI + "</td><td >" + DOBConvert(objdata[i].DOB.replace("T00:00:00", "")) + "</td><td >" + objdata[i].Procedure_Ordered + "</td><td>" + objdata[i].PhyName + "</td><td >" + objdata[i].Current_Process + "</td><td >" + objdata[i].Lab_Name + "</td><td style='display:none;'>" + objdata[i].Lab_Loc_Name + "</td><td style='display:none;'>" + objdata[i].Encounter_ID + "</td><td style='display:none;'>" + objdata[i].Physician_ID + "</td><td style='display:none;'>" + objdata[i].Order_ID + "</td><td style='display:none;'>" + objdata[i].EHR_Obj_Type + "</td><td style='display:none;'>" + objdata[i].Lab_ID + "</td><td style='display:none;'>" + objdata[i].Lab_Location_ID + "</td><td style='display:none;'>" + objdata[i].Order_Submit_ID + "</td><td  style='display:none;'>" + objdata[i].Referred_to_Facility + "</td></tr>";
+                            }
                         }
                     }
-                    else {
-                        if (objdata[i].Reason_For_Referral != "") {
-                            if (objdata[i].Referred_to != "")
-                                tabContents = tabContents + "<tr><td style='width:56px'><input type='checkbox' onclick='checkboxclick(this)'/></td><td>" + ConvertDate(objdata[i].Created_Date_And_Time.replace("T", " ")) + "</td><td>" + ConvertDate(objdata[i].Test_Date.replace("T", " ")) + "</td><td>" + objdata[i].Human_ID + "</td><td >" + objdata[i].External_Account_Number + "</td><td>" + objdata[i].Last_Name + "," + objdata[i].First_Name + " " + objdata[i].MI + "</td><td >" + DOBConvert(objdata[i].DOB.replace("T00:00:00", "")) + "</td><td >" + objdata[i].Reason_For_Referral + "</td><td>" + objdata[i].PhyName + "</td><td >" + objdata[i].Current_Process + "</td><td >" + objdata[i].Referred_to + "</td><td style='display:none;'>" + objdata[i].Lab_Loc_Name + "</td><td style='display:none;'>" + objdata[i].Encounter_ID + "</td><td style='display:none;'>" + objdata[i].Physician_ID + "</td><td style='display:none;'>" + objdata[i].Order_ID + "</td><td style='display:none;'>" + objdata[i].EHR_Obj_Type + "</td><td style='display:none;'>" + objdata[i].Lab_ID + "</td><td style='display:none;'>" + objdata[i].Lab_Location_ID + "</td><td style='display:none;'>" + objdata[i].Order_Submit_ID + "</td><td  style='display:none;'>" + objdata[i].Referred_to_Facility + "</td></tr>";
-                            else
-                                tabContents = tabContents + "<tr><td style='width:56px'><input type='checkbox' onclick='checkboxclick(this)'/></td><td>" + ConvertDate(objdata[i].Created_Date_And_Time.replace("T", " ")) + "</td><td>" + ConvertDate(objdata[i].Test_Date.replace("T", " ")) + "</td><td>" + objdata[i].Human_ID + "</td><td >" + objdata[i].External_Account_Number + "</td><td>" + objdata[i].Last_Name + "," + objdata[i].First_Name + " " + objdata[i].MI + "</td><td >" + DOBConvert(objdata[i].DOB.replace("T00:00:00", "")) + "</td><td >" + objdata[i].Reason_For_Referral + "</td><td>" + objdata[i].PhyName + "</td><td >" + objdata[i].Current_Process + "</td><td >" + objdata[i].Lab_Name + "</td><td style='display:none;'>" + objdata[i].Lab_Loc_Name + "</td><td style='display:none;'>" + objdata[i].Encounter_ID + "</td><td style='display:none;'>" + objdata[i].Physician_ID + "</td><td style='display:none;'>" + objdata[i].Order_ID + "</td><td style='display:none;'>" + objdata[i].EHR_Obj_Type + "</td><td style='display:none;'>" + objdata[i].Lab_ID + "</td><td style='display:none;'>" + objdata[i].Lab_Location_ID + "</td><td style='display:none;'>" + objdata[i].Order_Submit_ID + "</td><td  style='display:none;'>" + objdata[i].Referred_to_Facility + "</td></tr>";
-                        }
-                        else {
-                            if (objdata[i].Referred_to != "")
-                                tabContents = tabContents + "<tr><td style='width:56px'><input type='checkbox' onclick='checkboxclick(this)'/></td><td>" + ConvertDate(objdata[i].Created_Date_And_Time.replace("T", " ")) + "</td><td>" + ConvertDate(objdata[i].Test_Date.replace("T", " ")) + "</td><td>" + objdata[i].Human_ID + "</td><td >" + objdata[i].External_Account_Number + "</td><td>" + objdata[i].Last_Name + "," + objdata[i].First_Name + " " + objdata[i].MI + "</td><td >" + DOBConvert(objdata[i].DOB.replace("T00:00:00", "")) + "</td><td >" + objdata[i].Procedure_Ordered + "</td><td>" + objdata[i].PhyName + "</td><td >" + objdata[i].Current_Process + "</td><td>" + objdata[i].Referred_to + "</td><td style='display:none;'>" + objdata[i].Lab_Loc_Name + "</td><td style='display:none;'>" + objdata[i].Encounter_ID + "</td><td style='display:none;'>" + objdata[i].Physician_ID + "</td><td style='display:none;'>" + objdata[i].Order_ID + "</td><td style='display:none;'>" + objdata[i].EHR_Obj_Type + "</td><td style='display:none;'>" + objdata[i].Lab_ID + "</td><td style='display:none;'>" + objdata[i].Lab_Location_ID + "</td><td style='display:none;'>" + objdata[i].Order_Submit_ID + "</td><td  style='display:none;'>" + objdata[i].Referred_to_Facility + "</td></tr>";
-                            else
-                                tabContents = tabContents + "<tr><td style='width:56px'><input type='checkbox' onclick='checkboxclick(this)'/></td><td>" + ConvertDate(objdata[i].Created_Date_And_Time.replace("T", " ")) + "</td><td>" + ConvertDate(objdata[i].Test_Date.replace("T", " ")) + "</td><td>" + objdata[i].Human_ID + "</td><td >" + objdata[i].External_Account_Number + "</td><td>" + objdata[i].Last_Name + "," + objdata[i].First_Name + " " + objdata[i].MI + "</td><td >" + DOBConvert(objdata[i].DOB.replace("T00:00:00", "")) + "</td><td >" + objdata[i].Procedure_Ordered + "</td><td>" + objdata[i].PhyName + "</td><td >" + objdata[i].Current_Process + "</td><td >" + objdata[i].Lab_Name + "</td><td style='display:none;'>" + objdata[i].Lab_Loc_Name + "</td><td style='display:none;'>" + objdata[i].Encounter_ID + "</td><td style='display:none;'>" + objdata[i].Physician_ID + "</td><td style='display:none;'>" + objdata[i].Order_ID + "</td><td style='display:none;'>" + objdata[i].EHR_Obj_Type + "</td><td style='display:none;'>" + objdata[i].Lab_ID + "</td><td style='display:none;'>" + objdata[i].Lab_Location_ID + "</td><td style='display:none;'>" + objdata[i].Order_Submit_ID + "</td><td  style='display:none;'>" + objdata[i].Referred_to_Facility + "</td></tr>";
-                        }
-                    }
+                    $("#GeneralQTable").append("<table id=EncounterTable class='table table-bordered Gridbodystyle' style='table-layout: fixed;'><thead class='header' style='border: 0px;width:96.7%;'><tr class='header' ><th style='border: 1px solid #909090;text-align: center;width: 4%;'>Select<input type='checkbox'  onclick='selectAll(this)'/></th><th style='border: 1px solid #909090;'>Order Date</th><th style='border: 1px solid #909090;'>Test Date</th><th style='border: 1px solid #909090;'>Acct. #</th><th style='border: 1px solid #909090;'>Ext. Acct. #</th><th style='border: 1px solid #909090;'>Patient Name</th><th style='border: 1px solid #909090;'>Patient DOB</th><th style='border: 1px solid #909090;'>Description</th><th style='border: 1px solid #909090;'>Ordering Physician</th><th style='border: 1px solid #909090;'>Current Process</th><th style='border: 1px solid #909090;'>Lab</th><th style='border: 1px solid #909090;display:none;'>Lab Location</th><th style='border: 1px solid #909090;display:none;'>Encounter_ID</th><th style='border: 1px solid #909090;display:none;'>Physician_ID</th><th style='border: 1px solid #909090;display:none;'>Order_ID</th><th style='border: 1px solid #909090;display:none;'>ObjType</th><th style='border: 1px solid #909090;display:none;'>LabID</th><th style='border: 1px solid #909090;display:none;'>LocationID</th><th style='border: 1px solid #909090;display:none;'>Order_Submit_ID</th><th style='border: 1px solid #909090;display:none;'>Referred to Facility</th></tr></thead><tbody style='word-wrap: break-word;'>" + tabContents + "</tbody></table>");
                 }
-                $("#GeneralQTable").append("<table id=EncounterTable class='table table-bordered Gridbodystyle' style='table-layout: fixed;'><thead class='header' style='border: 0px;width:96.7%;'><tr class='header' ><th style='border: 1px solid #909090;text-align: center;width: 4%;'>Select<input type='checkbox'  onclick='selectAll(this)'/></th><th style='border: 1px solid #909090;'>Order Date</th><th style='border: 1px solid #909090;'>Test Date</th><th style='border: 1px solid #909090;'>Acct. #</th><th style='border: 1px solid #909090;'>Ext. Acct. #</th><th style='border: 1px solid #909090;'>Patient Name</th><th style='border: 1px solid #909090;'>Patient DOB</th><th style='border: 1px solid #909090;'>Description</th><th style='border: 1px solid #909090;'>Ordering Physician</th><th style='border: 1px solid #909090;'>Current Process</th><th style='border: 1px solid #909090;'>Lab</th><th style='border: 1px solid #909090;display:none;'>Lab Location</th><th style='border: 1px solid #909090;display:none;'>Encounter_ID</th><th style='border: 1px solid #909090;display:none;'>Physician_ID</th><th style='border: 1px solid #909090;display:none;'>Order_ID</th><th style='border: 1px solid #909090;display:none;'>ObjType</th><th style='border: 1px solid #909090;display:none;'>LabID</th><th style='border: 1px solid #909090;display:none;'>LocationID</th><th style='border: 1px solid #909090;display:none;'>Order_Submit_ID</th><th style='border: 1px solid #909090;display:none;'>Referred to Facility</th></tr></thead><tbody style='word-wrap: break-word;'>" + tabContents + "</tbody></table>");
-            }
-            else
-                $("#GeneralQTable").append("<table id=EncounterTable class='table table-bordered Gridbodystyle' style='table-layout: fixed;'><thead class='header' style='border: 0px;width:96.7%;'><tr class='header' ><th style='border: 1px solid #909090;text-align: center;width: 4%;'>Select<input type='checkbox'  onclick='selectAll(this)'/></th><th style='border: 1px solid #909090;'>Order Date</th><th style='border: 1px solid #909090;'>Test Date</th><th style='border: 1px solid #909090;'>Acct. #</th><th style='border: 1px solid #909090;'>Ext. Acct. #</th><th style='border: 1px solid #909090;'>Patient Name</th><th style='border: 1px solid #909090;'>Patient DOB</th><th style='border: 1px solid #909090;'>Description</th><th style='border: 1px solid #909090;'>Ordering Physician</th><th style='border: 1px solid #909090;'>Current Process</th><th style='border: 1px solid #909090;'>Lab</th><th style='border: 1px solid #909090;display:none;'>Lab Location</th><th style='border: 1px solid #909090;display:none;'>Encounter_ID</th><th style='border: 1px solid #909090;display:none;'>Physician_ID</th><th style='border: 1px solid #909090;display:none;'>Order_ID</th><th style='border: 1px solid #909090;display:none;'>ObjType</th><th style='border: 1px solid #909090;display:none;'>LabID</th><th style='border: 1px solid #909090;display:none;'>LocationID</th><th style='border: 1px solid #909090;display:none;'>Order_Submit_ID</th><th style='border: 1px solid #909090;display:none;'>Referred to Facility</th></tr></thead></table>");
-            $("#btnOrder")[0].innerText = "Orders Q " + "(" + objdata.length + ")";
-            if (ShowallGeneral != "Checked") {
-                sessionStorage.setItem("Order_Count", objdata.length);
+                else
+                    $("#GeneralQTable").append("<table id=EncounterTable class='table table-bordered Gridbodystyle' style='table-layout: fixed;'><thead class='header' style='border: 0px;width:96.7%;'><tr class='header' ><th style='border: 1px solid #909090;text-align: center;width: 4%;'>Select<input type='checkbox'  onclick='selectAll(this)'/></th><th style='border: 1px solid #909090;'>Order Date</th><th style='border: 1px solid #909090;'>Test Date</th><th style='border: 1px solid #909090;'>Acct. #</th><th style='border: 1px solid #909090;'>Ext. Acct. #</th><th style='border: 1px solid #909090;'>Patient Name</th><th style='border: 1px solid #909090;'>Patient DOB</th><th style='border: 1px solid #909090;'>Description</th><th style='border: 1px solid #909090;'>Ordering Physician</th><th style='border: 1px solid #909090;'>Current Process</th><th style='border: 1px solid #909090;'>Lab</th><th style='border: 1px solid #909090;display:none;'>Lab Location</th><th style='border: 1px solid #909090;display:none;'>Encounter_ID</th><th style='border: 1px solid #909090;display:none;'>Physician_ID</th><th style='border: 1px solid #909090;display:none;'>Order_ID</th><th style='border: 1px solid #909090;display:none;'>ObjType</th><th style='border: 1px solid #909090;display:none;'>LabID</th><th style='border: 1px solid #909090;display:none;'>LocationID</th><th style='border: 1px solid #909090;display:none;'>Order_Submit_ID</th><th style='border: 1px solid #909090;display:none;'>Referred to Facility</th></tr></thead></table>");
+                $("#btnOrder")[0].innerText = "Orders Q " + "(" + objdata.length + ")";
+                if (ShowallGeneral != "Checked") {
+                    sessionStorage.setItem("Order_Count", objdata.length);
+                }
+
+                localStorage.setItem("GenralOrderCount", objdata.length);
+                //$('#EncounterTable th').addClass('header');
+                //Jira CAP-1431
+                RowClick();
+                { sessionStorage.setItem('StartLoading', 'false'); StopLoadFromPatChart(); }
+            },
+            error: function OnError(xhr) {
+                { sessionStorage.setItem('StartLoading', 'false'); StopLoadFromPatChart(); }
+                if (xhr.status == 999)
+                    window.location = "/frmSessionExpired.aspx";
+                else {
+                    var log = JSON.parse(xhr.responseText);
+                    console.log(log);
+                    alert("USER MESSAGE:\n" +
+                        ". Cannot process request. Please Login again and retry. \nEXCEPTION DETAILS: \n" +
+                        "Message: " + log.Message);
+                }
             }
 
-            localStorage.setItem("GenralOrderCount", objdata.length);
-            //$('#EncounterTable th').addClass('header');
-            { sessionStorage.setItem('StartLoading', 'false'); StopLoadFromPatChart(); }
-        },
-        error: function OnError(xhr) {
-            { sessionStorage.setItem('StartLoading', 'false'); StopLoadFromPatChart(); }
-            if (xhr.status == 999)
-                window.location = "/frmSessionExpired.aspx";
-            else {
-                var log = JSON.parse(xhr.responseText);
-                console.log(log);
-                alert("USER MESSAGE:\n" +
-                    ". Cannot process request. Please Login again and retry. \nEXCEPTION DETAILS: \n" +
-                    "Message: " + log.Message);
-            }
-        }
-    });
+        });
+    }
 }
 function movetotask() {
     var inputData = new Array();

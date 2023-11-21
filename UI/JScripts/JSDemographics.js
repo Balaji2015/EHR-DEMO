@@ -2115,22 +2115,23 @@ function btnaddinsured(e) {
     var SecChecked = document.getElementById("ctl00_C5POBody_rdbSEC").checked;
     var TerChecked = document.getElementById("ctl00_C5POBody_rdbTER").checked;
 
+    //Cap - 1359 - Commented for this bug
     //Cap - 883
-    if (document.getElementById("btnAdd").value == 'Update') {
-        if (document.getElementById("ctl00_C5POBody_rdStatusactive").checked == true && !PriChecked && !SecChecked && !TerChecked) {
-            if (bOldCheck == true && vOldPriority != null) {
-                if (vOldPriorit.includes("PRIMARY")) {
-                    document.getElementById("ctl00_C5POBody_rdbPRI").checked = true;
-                }
-                if (vOldPriorit.includes("SECONDARY")) {
-                    document.getElementById("ctl00_C5POBody_rdbSEC").checked = true;
-                }
-                if (vOldPriorit.includes("TERTIARY")) {
-                    document.getElementById("ctl00_C5POBody_rdbTER").checked = true;
-                }
-            }
-        }
-    }
+    //if (document.getElementById("btnAdd").value == 'Update') {
+    //    if (document.getElementById("ctl00_C5POBody_rdStatusactive").checked == true && !PriChecked && !SecChecked && !TerChecked) {
+    //        if (bOldCheck == true && vOldPriority != null) {
+    //            if (vOldPriorit.includes("PRIMARY")) {
+    //                document.getElementById("ctl00_C5POBody_rdbPRI").checked = true;
+    //            }
+    //            if (vOldPriorit.includes("SECONDARY")) {
+    //                document.getElementById("ctl00_C5POBody_rdbSEC").checked = true;
+    //            }
+    //            if (vOldPriorit.includes("TERTIARY")) {
+    //                document.getElementById("ctl00_C5POBody_rdbTER").checked = true;
+    //            }
+    //        }
+    //    }
+    //}
 
     //Cap - 182
     if (PriChecked && document.getElementById("ctl00_C5POBody_txtProviderSearch") && document.getElementById("ctl00_C5POBody_txtProviderSearch") != '' && document.getElementById("ctl00_C5POBody_txtProviderSearch").attributes['data-phy-id'].value != null) {
@@ -2212,7 +2213,9 @@ function btnaddinsured(e) {
     var human_id = document.getElementById(GetClientId("txtAccountNo")).value;
 
     var patientname = document.getElementById(GetClientId("txtPatientlastname")).value + "," + document.getElementById(GetClientId("txtPatientfirstname")).value
-    if (document.getElementById("btnAdd").value == 'Add') {
+    //Cap - 1359
+    //if (document.getElementById("btnAdd").value == 'Add')
+    if (document.getElementById("btnAdd").value == 'Add' || document.getElementById("ctl00_C5POBody_rdStatusactive").checked == true) {
         if (PriChecked == false && SecChecked == false && TerChecked == false) {
             DisplayErrorMessage('410006');
             return false;
@@ -2502,6 +2505,8 @@ function btnaddinsured(e) {
             alert(data.d);
         }
     });
+    //Cap -1369
+    e.preventDefault();
 }
 
 function Edit(e) {
