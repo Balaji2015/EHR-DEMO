@@ -696,11 +696,14 @@ function btnNewAddGrid() {
     { sessionStorage.setItem('StartLoading', 'true'); StartLoadFromPatChart(); }
     var Category = '';
     if (document.getElementById("chkProvider").checked)
-        Category = document.getElementById("chkProvider").value;
+        Category = document.getElementById("chkProvider").value.toUpperCase();
     else if (document.getElementById("chkpatient").checked)
-        Category = document.getElementById("chkpatient").value;
+        Category = document.getElementById("chkpatient").value.toUpperCase();
     var txtProviderSearch = document.getElementById("txtRecName");
-    Category = txtProviderSearch.attributes['data-category'].value;
+    //Jira CAP-1387 - Added a condition
+    if (txtProviderSearch?.attributes['data-category']?.value != undefined && txtProviderSearch?.attributes['data-category']?.value != null && txtProviderSearch?.attributes['data-category']?.value != "") {
+        Category = txtProviderSearch.attributes['data-category'].value.toUpperCase();
+    }
     var Fax = document.getElementById("msktxtRecipientFax").value;
     if (Fax != "")
         Fax = "+1" + Fax.replace("-", "").replace("(", "").replace(")", "");
