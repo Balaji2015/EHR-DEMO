@@ -90,6 +90,8 @@ namespace Acurus.Capella.UI
             if (!IsPostBack)
             {
                 SecurityServiceUtility obj = new SecurityServiceUtility();
+                //Cap - 942
+                ClientSession.processCheck = true;
                 obj.ApplyUserPermissions(this.Page);
                 if (Request["HumanID"] != null)
                 {
