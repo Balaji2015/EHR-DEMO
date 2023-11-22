@@ -4263,7 +4263,7 @@ namespace Acurus.Capella.UI
                     //if (sFacilityCmg.ToUpper() == ClientSession.FacilityName.ToUpper())
                     //{
                     var facAncillary = from f in ApplicationObject.facilityLibraryList where f.Fac_Name == ClientSession.FacilityName select f;
-                    
+
                     IList<FacilityLibrary> ilstFacAncillary = facAncillary.ToList<FacilityLibrary>();
                     if (ilstFacAncillary.Count > 0 && ilstFacAncillary[0].Is_Ancillary == "Y")// && elements.Attribute("name").Value.ToUpper() != ConfigurationManager.AppSettings["CMGFacilityName"].Trim().ToUpper())
                     {
@@ -4325,7 +4325,13 @@ namespace Acurus.Capella.UI
                     selectedValue.Append(OrderedPhysician + "|" + OrderedLab + "|" + OrderedID);
                     DateTime orderedDatetime = DateTime.MinValue;
                     if (lstorders != null && lstorders.Count > 0)
-                        orderedDatetime = lstorders.FirstOrDefault(a => a.Order_Submit_ID == order_submit_id).Internal_Property_Spec_Collection_Date;
+                    {
+                        //Cap - 1419
+                        var orderdate = lstorders.FirstOrDefault(a => a.Order_Submit_ID == order_submit_id);
+
+                        if (orderdate != null)
+                            orderedDatetime = lstorders.FirstOrDefault(a => a.Order_Submit_ID == order_submit_id).Internal_Property_Spec_Collection_Date;
+                    }
                     //string ConvertedorderedDatetime = string.Empty;
                     StringBuilder ConvertedorderedDatetime = new StringBuilder();
 

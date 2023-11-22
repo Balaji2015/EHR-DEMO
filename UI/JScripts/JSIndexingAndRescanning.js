@@ -173,10 +173,14 @@ function btnSave_Clicked() {
     var n = $("#cboDocumentSubType :selected").text();
     if ("" == n) return DisplayErrorMessage("115044"), document.getElementById('divLoading').style.display = "none", $("#hdnPageState").val(""), !1;
     if (t.toUpperCase() == "ENCOUNTERS") {
-        if ($("#ddEncPhyName")[0].options.length == 1) return DisplayErrorMessage("115063"), document.getElementById('divLoading').style.display = "none", !1;
-
+        //Cap - 1290
+        //if ($("#ddEncPhyName")[0].options.length == 1) return DisplayErrorMessage("115063"), document.getElementById('divLoading').style.display = "none", !1;
+        if ($("#ddEncPhyName")[0].options.length == 1) return DisplayErrorMessage("115063"), document.getElementById("IsClickDirectUpload").value = "No", document.getElementById('divLoading').style.display = "none", !1;
         var vEncPhyName = $("#ddEncPhyName :selected").text();
-        if ("" == vEncPhyName) return DisplayErrorMessage("115064"), document.getElementById('divLoading').style.display = "none", !1;
+        //Cap - 1290
+        //if ("" == vEncPhyName) return DisplayErrorMessage("115064"), document.getElementById('divLoading').style.display = "none", !1;
+        if ("" == vEncPhyName) return DisplayErrorMessage("115064"), document.getElementById("IsClickDirectUpload").value = "No", document.getElementById('divLoading').style.display = "none", !1;
+
     }
     var a = $("#txtSelectedPages").val(),
     i = parseInt($("#hdnPagecount")[0].value, 10);
