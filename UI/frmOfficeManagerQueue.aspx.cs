@@ -210,8 +210,8 @@ namespace Acurus.Capella.UI
             string sDBConnection = "&odaURL=" + sodaURL + "&odaUser=" + sodaUser + "&odaPassword=" + sodaPassword;
             string sBIRTReportUrl = System.Configuration.ConfigurationManager.AppSettings["BIRTReportUrl_" + ClientSession.LegalOrg].ToString();
             //strPath = sBIRTReportUrl + "Human_Details.rptdesign" + "&strDenID=" + strDenID + "&strNumId=" + strNumId + "&odaURL=" + sodaURL + "&odaUser=" + sodaUser + "&odaPassword=" + sodaPassword;
-
-            if (cboObjectType.Text == "ENCOUNTER" || cboObjectType.Text == "DOCUMENTATION" || cboObjectType.Text == "DOCUMENT REVIEW" || cboObjectType.Text == "PHONE ENCOUNTER")
+            /*Modified by balaji.TJ*/
+            if (cboObjectType.Text == "ENCOUNTER" || cboObjectType.Text == "DOCUMENTATION" || cboObjectType.Text == "DOCUMENT REVIEW" || cboObjectType.Text == "PHONE ENCOUNTER" || cboObjectType.Text == "BILLING")
             {
                 sPath = sBIRTReportUrl + "CAPELLA_" +ClientSession.LegalOrg + "_ENCOUNTER_REPORT.rptdesign" + sDBConnection + "&strObjType=" + cboObjectType.Text + "&strFacilityName=" + cboFacilityName.Text.Replace("#", "%23") + "&strCurrentProcess=" + strCurrentProcess + "&legal_org=" + ClientSession.LegalOrg + "&__title=";
             }
@@ -226,6 +226,11 @@ namespace Acurus.Capella.UI
             else if (cboObjectType.Text == "DIAGNOSTIC ORDER" || cboObjectType.Text == "IMAGE ORDER")
             {
                 sPath = sBIRTReportUrl + "CAPELLA_" + ClientSession.LegalOrg + "_DIAGNOSTIC ORDER_REPORT.rptdesign" + sDBConnection + "&strObjType=" + cboObjectType.Text + "&strFacilityName=" + cboFacilityName.Text.Replace("#", "%23") + "&strCurrentProcess=" + strCurrentProcess + "&legal_org=" + ClientSession.LegalOrg + "&__title="; 
+            }
+            /*Modified by balaji.TJ*/
+            else if (cboObjectType.Text == "DIAGNOSTIC_RESULT")
+            {
+                sPath = sBIRTReportUrl + "CAPELLA_" + ClientSession.LegalOrg + "_DIAGNOSTIC_RESULT_REPORT.rptdesign" + sDBConnection + "&strObjType=" + cboObjectType.Text + "&strFacilityName=" + cboFacilityName.Text.Replace("#", "%23") + "&strCurrentProcess=" + strCurrentProcess + "&legal_org=" + ClientSession.LegalOrg + "&__title=";
             }
             else if (cboObjectType.Text == "IMMUNIZATION ORDER")
             {
