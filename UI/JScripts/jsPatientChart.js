@@ -221,7 +221,9 @@ $(document).ready(function () {
         diff = 11;
     else
         diff = 2;
-    $('#jqxSplitter').css({ "width": "100%", "height": "739" });
+    //Jira CAP-1237
+    //$('#jqxSplitter').css({ "width": "100%", "height": "739" });
+    $('#jqxSplitter').css({ "width": "100%", "height": "750" });
     var queryString = window.location.search.toString().split('?')[1];
     if (queryString != undefined && queryString != "") {
 
