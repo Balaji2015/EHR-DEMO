@@ -8437,7 +8437,6 @@ namespace Acurus.Capella.UI
             {
                 GridDiv.Visible = true;
                 BtnClose1.Style.Add("display", "block");
-                EnableDisbaleSave(false);
                 btnSaveVitals.Disabled = true;
                 btnSaveVitals.Value = "Add";
                 //  btnSave.AccessKey = "a";
@@ -8458,7 +8457,6 @@ namespace Acurus.Capella.UI
             }
             else
             {
-                EnableDisbaleSave(true);
                 btnSaveVitals.Value = "Save";
                 //  btnSave.AccessKey = "s";
                 //  System.Web.UI.HtmlControls.HtmlGenericControl text1 = (System.Web.UI.HtmlControls.HtmlGenericControl)btnSave.FindControl("SpanSave");
@@ -8466,7 +8464,8 @@ namespace Acurus.Capella.UI
                 // System.Web.UI.HtmlControls.HtmlGenericControl text2 = (System.Web.UI.HtmlControls.HtmlGenericControl)btnSave.FindControl("SpanAdditionalword");
                 //  text2.InnerText = "ave";
             }
-
+            //CAP-1429
+            EnableDisbaleSave(false);
         }
         public void SetFocus()
         {
