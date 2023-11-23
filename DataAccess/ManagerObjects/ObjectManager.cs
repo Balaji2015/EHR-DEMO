@@ -2043,6 +2043,7 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
                             {
                                 query1.SetString(1, UserName);
                             }
+                            query1.SetString(2, UserName);
                             //query1.SetString(2, FacName);
 
 
@@ -2879,6 +2880,7 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
                                                 query1.SetString(0, UserName);
                                             }
                                             query1.SetString(1, UserName);
+                                            query1.SetString(2, UserName);
                                         }
                                         else
                                         {
@@ -2911,6 +2913,7 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
                                                     query1.SetString(0, UserName);
                                                 }
                                                 query1.SetString(1, UserName);
+                                                query1.SetString(2, UserName);
                                             }
                                             else
                                             {
@@ -2925,6 +2928,7 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
                                                     query1.SetString(0, UserName);
                                                 }
                                                 query1.SetString(1, UserName);
+                                                query1.SetString(2, UserName);
 
                                                 //query1.SetParameterList("FacList", FacilityList);
                                                 query1.SetParameterList("CarrierList", CarrierList);
@@ -2974,6 +2978,7 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
                                                 query1.SetString(0, UserName);
                                             }
                                             query1.SetString(1, UserName);
+                                            query1.SetString(2, UserName);
                                         }
                                         else
                                         {
@@ -3006,6 +3011,7 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
                                                     query1.SetString(0, UserName);
                                                 }
                                                 query1.SetString(1, UserName);
+                                                query1.SetString(2, UserName);
                                             }
                                             else
                                             {
@@ -3021,6 +3027,7 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
                                                     query1.SetString(0, UserName);
                                                 }
                                                 query1.SetString(1, UserName);
+                                                query1.SetString(2, UserName);
 
                                                 //query1.SetParameterList("FacList", FacilityList);
                                                 query1.SetParameterList("CarrierList", CarrierList);

@@ -759,7 +759,7 @@ P.First_Name,P.Birth_Date, P.Human_ID ]]>
     left join carrier c on (i.Carrier_ID=c.Carrier_ID)
     where    
     w.current_owner = ? and  u.user_name=? and
-    (w.Obj_Type in (:ObjList)) ]]>
+    h.Legal_Org in (select Legal_Org from user where User_Name = ?) and (w.Obj_Type in (:ObjList))  ; ]]>
 
 	</sql-query>
 	<sql-query name="FillMyEncounterObjectDetails.WithFacility.WithAllAppointments.WithCarrier">
@@ -796,8 +796,8 @@ P.First_Name,P.Birth_Date, P.Human_ID ]]>
     on (i.Insurance_Plan_ID=(select Insurance_Plan_ID from pat_insured_plan p where p.Human_ID = h.Human_id && Insurance_Type='PRIMARY' order by Pat_Insured_Plan_ID desc limit 1)) 
     left join carrier c on (i.Carrier_ID=c.Carrier_ID)
     where    
-    w.current_owner = ? and  u.user_name=? and
-    (h.Primary_Carrier_ID in (:CarrierList) and w.Obj_Type in (:ObjList))]]>
+    w.current_owner = ? and  u.user_name=? and h.Legal_Org in (select Legal_Org from user where User_Name = ?) and
+    (h.Primary_Carrier_ID in (:CarrierList) and w.Obj_Type in (:ObjList)) ;]]>
 
 	</sql-query>
 	<sql-query name="FillMyEncounterObjectDetails.WithFacility.WithAllAppointments.Count">
@@ -815,13 +815,14 @@ P.First_Name,P.Birth_Date, P.Human_ID ]]>
 	<sql-query name="FillMyEncounterObjectDetails.WithFacility.WithAllAppointments.chkViewAllFacilities.Count">
 
 
-		<![CDATA[SELECT  Count(*)
-   FROM wf_object w 
-    
-    where 
-   w.current_process in (select process_name from process_user where user_name=?) and
-    w.current_owner = ? and 
-    (w.Obj_Type in (:ObjList)) ]]>
+		<![CDATA[SELECT Count(*) FROM   encounter e left join wf_object w on (w.obj_system_id=e.encounter_id) left join human h on (e.Human_ID=h.Human_ID) left join user u1
+    on (e.Encounter_Provider_ID=u1.Physician_Library_ID) left join process_user u on (w.current_process=u.process_name)
+     left join insurance_plan i
+    on (i.Insurance_Plan_ID=(select Insurance_Plan_ID from pat_insured_plan p where p.Human_ID = h.Human_id && Insurance_Type='PRIMARY' order by Pat_Insured_Plan_ID desc limit 1))  
+    left join carrier c on (i.Carrier_ID=c.Carrier_ID)
+    where    
+     u.user_name=? and w.current_owner = ?  and h.Legal_Org in (select Legal_Org from user where User_Name = ?) and
+    (w.Obj_Type in (:ObjList))  ; ]]>
 
 	</sql-query>
 
@@ -916,8 +917,8 @@ P.First_Name,P.Birth_Date, P.Human_ID ]]>
     on (i.Insurance_Plan_ID=(select Insurance_Plan_ID from pat_insured_plan p where p.Human_ID = h.Human_id && Insurance_Type='PRIMARY' order by Pat_Insured_Plan_ID desc limit 1))   
     left join carrier c on (i.Carrier_ID=c.Carrier_ID)
     where    
-     w.Is_Default_MyQ_LineItem=1 and w.current_owner = ? and  u.user_name=? and
-    (w.Obj_Type in (:ObjList))
+     w.Is_Default_MyQ_LineItem=1 and w.current_owner = ? and  u.user_name=? and h.Legal_Org in (select Legal_Org from user where User_Name = ?) and
+    (w.Obj_Type in (:ObjList)) ;
    ]]>
 	</sql-query>
 	<sql-query name="FillMyEncounterObjectDetails.WithFacility.WithoutAllAppointments.WithCarrier">
@@ -954,8 +955,8 @@ P.First_Name,P.Birth_Date, P.Human_ID ]]>
     on (i.Insurance_Plan_ID=(select Insurance_Plan_ID from pat_insured_plan p where p.Human_ID = h.Human_id && Insurance_Type='PRIMARY' order by Pat_Insured_Plan_ID desc limit 1))  
     left join carrier c on (i.Carrier_ID=c.Carrier_ID)
     where    
-    w.Is_Default_MyQ_LineItem=1 and w.current_owner = ? and  u.user_name=? and
-    (h.Primary_Carrier_ID in (:CarrierList) and w.Obj_Type in (:ObjList))
+    w.Is_Default_MyQ_LineItem=1 and w.current_owner = ? and  u.user_name=? and h.Legal_Org in (select Legal_Org from user where User_Name = ?) and
+    (h.Primary_Carrier_ID in (:CarrierList) and w.Obj_Type in (:ObjList))  ;
    ]]>
 	</sql-query>
 	<sql-query name="FillMyEncounterObjectDetails.WithFacility.WithoutAllAppointments.Count">

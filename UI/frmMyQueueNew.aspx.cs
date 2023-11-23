@@ -1149,7 +1149,7 @@ namespace Acurus.Capella.UI
             string[] ProcessType = new string[1];
             ProcessType[0] = "UNASSIGNED";
 
-            string[] ObjType = new string[3];
+            string[] ObjType = new string[2];
             ObjType[0] = "ENCOUNTER";
             ObjType[1] = "DOCUMENTATION";
             //  ObjType[2] = "PHONE ENCOUNTER";
