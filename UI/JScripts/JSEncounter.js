@@ -2271,3 +2271,12 @@ function AkidoNoteClick() {
     //return false;
     { sessionStorage.setItem('StartLoading', 'false'); StopLoadFromPatChart(); }
 }
+
+//Jira CAP-1379
+$("#tabStripEncounter_tbSummary").click(function () {
+    if ($("ul#myTabs li.active")[0].innerText != "SUMMARY") {
+
+        document.getElementById('WaitingMessage').style.display = 'block';
+        document.getElementById('Summaryframe').style.display = 'none';
+    }
+});

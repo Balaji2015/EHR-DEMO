@@ -1216,6 +1216,11 @@ function tree_add_leaf_example_click(leaf, node, pnode, tree) {
         }
         else {
             //inserLog(leaf[0].id.split('^')[1], "0", "Opening Encounter from Leftside PatientChart");
+            //Jira CAP-1379 - start
+            document.getElementById('WaitingMessage').style.display = 'block';
+            document.getElementById('jqxSplitter').style.height = '80px';
+            document.getElementById('ctl00_C5POBody_EncounterContainer').style.display = 'none';
+            //Jira CAP-1379 -end
             $('#ctl00_C5POBody_EncounterContainer')[0].src = "frmSummaryNew.aspx?EncounterId=" + leaf[0].id.split('^')[1]+"&TabMode=true";
             document.getElementById(GetClientId("hdnEncounterId")).value = leaf[0].id.split('^')[1];
             sessionStorage.setItem("EncId_PatSummaryBar", leaf[0].id.split('^')[1]);

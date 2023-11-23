@@ -170,6 +170,22 @@
             <script src="JScripts/JsHighlight.js?version=<%=ConfigurationManager.AppSettings["VersionConfiguration"].ToString().Replace("Capella - ","") %>" type="text/javascript"></script>
             <script src="JScripts/JSModalWindow.js?version=<%=ConfigurationManager.AppSettings["VersionConfiguration"].ToString().Replace("Capella - ","") %>" type="text/javascript"></script>
         </asp:PlaceHolder>
+        <script>     
+            //Jira CAP-1379
+            window.onload = function () {
+                // Hide loading overlay        
+                window.parent.document.getElementById('WaitingMessage').style.display = 'none';
+                // Show main content       
+                if (window?.parent?.document?.getElementById('Summaryframe') != undefined) {
+                    window.parent.document.getElementById('Summaryframe').style.display = 'block';
+                }
+                else if (window?.parent?.document?.getElementById('ctl00_C5POBody_EncounterContainer') != undefined) {
+                    window.parent.document.getElementById('jqxSplitter').style.height = '750px';
+                    window.parent.document.getElementById('ctl00_C5POBody_EncounterContainer').style.display = 'block';
+                }
+            };
+
+        </script>
     </form>
 </body>
 </html>

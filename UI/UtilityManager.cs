@@ -5914,9 +5914,14 @@ namespace Acurus.Capella.UI
         {
             sExMessage = "";
             string bIsAkidoEncounter = "false";
+            //Jira CAP-1379
+            int iRetryCount = 0;
 
+        retry:
             try
             {
+                iRetryCount = iRetryCount + 1;
+
                 var myUri = new Uri(System.Configuration.ConfigurationSettings.AppSettings["AkidoNoteStatusURL"].ToString().Replace("[CapellaEncounterID]", sEncounterID));
                 string AccessToken = System.Configuration.ConfigurationSettings.AppSettings["AkidoNoteStatusURLToken"].ToString();
                 var myWebRequest = WebRequest.Create(myUri);
@@ -5940,9 +5945,25 @@ namespace Acurus.Capella.UI
             }
             catch (Exception ex)
             {
-                bIsAkidoEncounter = "Exception";
-                sExMessage= ex.Message;
-                Console.WriteLine(ex.ToString());
+                //Jira CAP-1379
+                //bIsAkidoEncounter = "Exception";
+                //sExMessage = ex.Message;
+                //Console.WriteLine(ex.ToString());
+
+                //Jira CAP-1379
+                if (iRetryCount < 3)
+                {
+                    Console.WriteLine("Retrying Count : " + iRetryCount + " -> " + ex.ToString());
+                    System.Threading.Thread.Sleep(new TimeSpan(0, 0, 2));
+                    goto retry;
+                }
+                else
+                {
+                    bIsAkidoEncounter = "Exception";
+                    sExMessage= ex.Message;
+                    Console.WriteLine(ex.ToString());
+                }
+
             }
 
             return bIsAkidoEncounter;
