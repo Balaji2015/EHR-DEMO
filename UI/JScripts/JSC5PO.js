@@ -765,7 +765,10 @@ function OpenModal(data) {
         $(top.window.document).find("#TabFax").modal({ backdrop: "static", keyboard: false }, 'show');
         $(top.window.document).find("#TabModalEFaxTitle")[0].textContent = "Efax";
         $(top.window.document).find("#TabmdldlgEFax")[0].style.width = "1050px";
-        $(top.window.document).find("#TabmdldlgEFax")[0].style.height = "715px";
+        //CAP-1457
+        $(top.window.document).find("#TabmdldlgEFax")[0].style.height = "auto";
+        $(top.window.document).find("#TabmdldlgEFax")[0].style.position = "";
+        $(top.window.document).find("#TabmdldlgEFax")[0].style.marginLeft = "";
         var sPath = ""
         sPath = "htmlEFAXTabs.html";
         $(top.window.document).find("#TabEFaxFrame")[0].style.height = "500px";
