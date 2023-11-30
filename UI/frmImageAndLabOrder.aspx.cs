@@ -1955,8 +1955,10 @@ namespace Acurus.Capella.UI
         }
         bool IsICDIsCheckedWithOutCPT()
         {
-            if ((!chklstFrequentlyUsedProcedures.Items.Cast<ListItem>().Any(a => a.Selected == true)) && (!chklstAssessment.Items.Cast<ListItem>().Any(a => a.Selected == true)))
             // if (chklstAssessment.Items.Count > 0 && (!chklstAssessment.Items.Cast<ListItem>().Any(a => a.Selected == true)) && chklstAssessment.Items != null && chklstAssessment.Items.Count > 0 && (!chklstFrequentlyUsedProcedures.Items.Cast<ListItem>().Any(a => a.Selected == true)))bugId:39021
+            //CAP-1430
+            //if ((!chklstFrequentlyUsedProcedures.Items.Cast<ListItem>().Any(a => a.Selected == true)) && (!chklstAssessment.Items.Cast<ListItem>().Any(a => a.Selected == true)))
+            if ((!chklstFrequentlyUsedProcedures.Items.Cast<ListItem>().Any(a => a.Selected == true)))
             {
                 errList.Clear();
                 if (OrderType.ToUpper() == "DIAGNOSTIC ORDER")
@@ -3281,7 +3283,8 @@ namespace Acurus.Capella.UI
 
                                 hdnImportResult.Value = "true";
                                 //ScriptManager.RegisterStartupScript(this, this.Page.GetType(), string.Empty, " {sessionStorage.setItem('StartLoading', 'false');StopLoadFromPatChart();}", true);
-
+                                //CAP-1152
+                                hdnCMGAncillarySaveOrder.Value = "true";
                                 ScriptManager.RegisterStartupScript(this, this.Page.GetType(), "ValidateSave", "top.window.document.getElementById('ctl00_Loading').style.display = 'none'; {sessionStorage.setItem('StartLoading', 'false');StopLoadFromPatChart();}", true);
 
                                 return;

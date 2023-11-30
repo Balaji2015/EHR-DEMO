@@ -1998,6 +1998,12 @@ function warningmethodCbolab(isDefaultLab) {
     $("span[mand=Yes]").each(function () {
         $(this).html($(this).html().replace("*", "<span class='manredforstar'>*</span>"));
     });
-    if (isDefaultLab == "False")
+    //CAP-1152
+    if (isDefaultLab == "False" && $('#hdnCMGAncillarySaveOrder').val() == 'false') {
         EnableSaveDiagnosticOrder();
+    }
+    if ($('#hdnCMGAncillarySaveOrder').val() == 'true') {
+        $('#hdnCMGAncillarySaveOrder').val('false');
+        document.getElementById('btnOrderSubmit').disabled = true;
+    }
 }

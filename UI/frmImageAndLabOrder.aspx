@@ -748,6 +748,7 @@
             <asp:HiddenField ID="hdnpaper" runat="server" />
             <asp:HiddenField ID="hdnMovetoNextProcess" runat="server" Value="false" />
             <asp:HiddenField ID="hdnSelectedOrder" runat="server" Value="" />
+            <asp:HiddenField ID="hdnCMGAncillarySaveOrder" runat="server" Value="false" />
         </telerik:RadAjaxPanel>
         <asp:PlaceHolder ID="PlaceHolder1" runat="server">
             <script src="JScripts/jquery-1.11.3.min.js" type="text/javascript"></script>
