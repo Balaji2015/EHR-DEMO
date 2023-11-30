@@ -576,6 +576,8 @@ $(document).ready(function () {
                 $(this).prop('checked', false);
             });
             $('#MyQTable tr').removeClass("highlight");
+            //Jira CAP-1444
+            $('#MovetoNxtProcess')[0].disabled = true;
             return false;
         }
 
@@ -3637,6 +3639,8 @@ $('#btnChangeExamRoom').click(function (evt) {
             $(this).prop('checked', false);
         });
         $('#MyQTable tr').removeClass("highlight");
+        //Jira CAP-1444
+        $('#MovetoNxtProcess')[0].disabled = true;
         return false;
     }
 
@@ -3748,6 +3752,9 @@ function RowClick() {
                 $(this).prop('checked', false);
             });
             $('#MyQTable tr').removeClass("highlight");
+
+            //Jira CAP-1444
+            $('#MovetoNxtProcess')[0].disabled = true;
             return false;
         }
 
