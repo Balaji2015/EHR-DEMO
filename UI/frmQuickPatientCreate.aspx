@@ -94,6 +94,28 @@
         .span1 {
             margin-top: 10px;
         }
+
+                .aspNetDisabled {
+    color: #fff !important;
+    background-color: #5cb85c !important;
+    border-color: #4cae4c !important;
+    display: inline-block !important;
+    margin-bottom: 0 !important;
+    font-weight: 400 !important;
+    text-align: center !important;
+    vertical-align: middle !important;
+    cursor: pointer !important;
+    background-image: none !important;
+    border: 1px solid transparent !important;
+    white-space: nowrap !important;
+    padding: 4px 12px !important;
+    font-size: 14px !important;
+    line-height: 1.42857143 !important;
+    border-radius: 6px !important;
+    font-size: 12px !important;
+    font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
+    height: 25px !important;
+}
     </style>
 
     <%--<link href="CSS/style.css" rel="stylesheet" type="text/css" />
