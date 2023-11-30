@@ -224,6 +224,7 @@ namespace Acurus.Capella.UI
                                     OpenImageEFax(fileGroups[0].Replace(ftpServerIP, UNCPath).Replace(@"/", @"\"));
                             }
                             hdnFileName.Value = file_path;
+                            ScriptManager.RegisterStartupScript(this, this.GetType(), "ERXLoadChange", " { sessionStorage.setItem('StartLoading', 'false'); StopLoadFromPatChart(); }", true);
                             break;
                         }
                     #region "Others"

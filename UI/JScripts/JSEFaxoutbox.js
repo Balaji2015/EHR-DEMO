@@ -149,6 +149,7 @@ function funRetry(e) {
 
 
 function OpenViewerforEFoxoutBox(EFaxId) {
+    { sessionStorage.setItem('StartLoading', 'true'); StartLoadFromPatChart(); }
     var test = $(top.window.document).find('#ProcessModalExam').modal();
     test.modal({ backdrop: 'static', keyboard: false }, 'show');
 

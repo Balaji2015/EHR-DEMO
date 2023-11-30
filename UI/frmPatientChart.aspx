@@ -714,7 +714,7 @@
                         </div>
                             <div id="WaitingMessage" style=" display: none; height: 100%; width: 100%;"> <label style=" font-family: Helvetica Neue,Helvetica,Arial,sans-serif !important;
     font-size: 13px !important;
-    font-weight: bold;"> Summary will be displayed shortly. Please wait.</label>
+    font-weight: bold;"> Summary is loading. Please wait.</label>
                             </div>
                         <div style="height: 100%;">
                             <iframe id="EncounterContainer" runat="server" style="display: block; height: 100%; width: 100%;"></iframe>
