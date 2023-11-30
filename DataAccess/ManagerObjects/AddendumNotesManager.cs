@@ -399,7 +399,8 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
                         else
                             throw new Exception("Data inconsistent on Save in DB and XML. Please contact support");
                     }
-                    else if (!isSave && (updateList != null && updateList.Count > 0))
+                    //CAP-1227
+                    else if (updateList != null && updateList.Count > 0)
                     {
                         //if (!isSave && (updateList != null && updateList.Count > 0))
                         //{
