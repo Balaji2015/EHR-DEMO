@@ -411,6 +411,24 @@ namespace Acurus.Capella.UI
         protected global::System.Web.UI.WebControls.HiddenField hdnSummaryPageFlag;
 
         /// <summary>
+        /// hdnEncDos control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.HiddenField hdnEncDos;
+
+        /// <summary>
+        /// hdnEncCurrentProcess control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.HiddenField hdnEncCurrentProcess;
+
+        /// <summary>
         /// hdnQencounterId control.
         /// </summary>
         /// <remarks>

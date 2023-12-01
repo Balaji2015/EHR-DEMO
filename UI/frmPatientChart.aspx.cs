@@ -142,7 +142,7 @@ namespace Acurus.Capella.UI
                 string sXmlPath = string.Empty;
                 if (File.Exists(Path.Combine(sDirectoryPath, "Base_XML.xml")))
                     sXmlPath = Path.Combine(sDirectoryPath, "Base_XML.xml");
-            loop:
+                loop:
                 XmlDocument itemDoc = new XmlDocument();
                 XmlTextReader XmlText = new XmlTextReader(sXmlPath);
                 try
@@ -178,8 +178,8 @@ namespace Acurus.Capella.UI
                     xmlAgenode[0].ParentNode.RemoveChild(xmlAgenode[0]);
 
                 //itemDoc.Save(strXmlFilePath);
-            //    int trycount = 0;
-            //trytosaveagain:
+                //    int trycount = 0;
+                //trytosaveagain:
                 try
                 {
                     //itemDoc.Save(strXmlFilePath);
@@ -293,12 +293,12 @@ namespace Acurus.Capella.UI
 
                     //UtilityManager.GenerateXML(ClientSession.HumanId.ToString(), "Human");
                     return;
-                    
+
                 }
                 XmlText.Close();
                 //itemDoc.Save(strXmlFilePath1);
-            //    int trycount = 0;
-            //trytosaveagain:
+                //    int trycount = 0;
+                //trytosaveagain:
                 try
                 {
                     //itemDoc.Save(strXmlFilePath1);
@@ -1782,13 +1782,13 @@ namespace Acurus.Capella.UI
             else
             {
                 //Jira #Cap123 - Cel phone num included
-               // sMySummary = LastName + "," + FirstName +
-               //"  " + MI + "  " + Suffix + "   |   " +
-               //DOB.ToString("dd-MMM-yyyy") + "   |   " +
-               //(CalculateAge(DOB)).ToString() +
-               //"  year(s)    |   " + sPatientSex + "   |   Acct #:" + ulHumanID +
-               //"   |   " + "Med Rec #:" + MedRecNo + "   |   " +
-               //"Phone #:" + phoneno + "   |   ";
+                // sMySummary = LastName + "," + FirstName +
+                //"  " + MI + "  " + Suffix + "   |   " +
+                //DOB.ToString("dd-MMM-yyyy") + "   |   " +
+                //(CalculateAge(DOB)).ToString() +
+                //"  year(s)    |   " + sPatientSex + "   |   Acct #:" + ulHumanID +
+                //"   |   " + "Med Rec #:" + MedRecNo + "   |   " +
+                //"Phone #:" + phoneno + "   |   ";
 
                 sMySummary = LastName + "," + FirstName +
              "  " + MI + "  " + Suffix + "   |   " +
@@ -1881,10 +1881,11 @@ namespace Acurus.Capella.UI
         {
             //CAP-1167
             var currentURL = HttpContext.Current.Request.Url;
-           
+
             var urlPattern = @"^https?://[^/]+/frmPatientChart\.aspx\?EncounterID=\d+$";
+            var notificationType = Request["Notification_Type"]?.ToString();
             if (Regex.IsMatch(currentURL.AbsoluteUri, urlPattern) && Request.QueryString["EncounterID"] != null)
-            { 
+            {
                 string encounter_ID = Request.QueryString["EncounterID"];
 
                 string valueToReplace = encounter_ID;
@@ -1900,12 +1901,83 @@ namespace Acurus.Capella.UI
 
                 var humanId = ilstEncounter.FirstOrDefault()?.Human_ID ?? 0;
                 ClientSession.HumanId = humanId;
-
+                //CAP-1086
+                WFObjectManager wfMngr = new WFObjectManager();
+                WFObject encounterwf_object = wfMngr.GetByObjectSystemIdIncludeArchive(ClientSession.EncounterId, "DOCUMENTATION");              
                 if (humanId > 0)
                 {
-                    hdnSummaryEncID.Value = encounter_ID;
-                    hdnSummaryPageFlag.Value = "true";
-                }                   
+                    hdnSummaryEncID.Value = encounter_ID;           
+
+                    if (encounterwf_object != null && encounterwf_object.Current_Owner != "UNKNOWN")
+                    {
+                        if (encounterwf_object != null && encounterwf_object.Current_Owner == ClientSession.UserName)
+                        {
+                            var dateOfService = (ilstEncounter?.FirstOrDefault()?.Date_of_Service != null) ? UtilityManager.ConvertToLocal(ilstEncounter.FirstOrDefault().Date_of_Service).ToString("MM/dd/yyyy hh:mm:ss") : string.Empty;
+                            var appointmentDate = (ilstEncounter?.FirstOrDefault()?.Appointment_Date != null) ? UtilityManager.ConvertToLocal(ilstEncounter.FirstOrDefault().Appointment_Date).ToString("MM/dd/yyyy hh:mm:ss") : string.Empty;
+                            var physicianId = ilstEncounter?.FirstOrDefault()?.Encounter_Provider_ID.ToString() ?? string.Empty;
+                            var facilityName = ilstEncounter?.FirstOrDefault()?.Facility_Name.ToString() ?? string.Empty;
+
+                            var IsProcessEncounterCompleted = AssignCurrentUserAsEncounterOwner(new string[] { humanId.ToString(), encounter_ID.ToString(), facilityName, physicianId, encounterwf_object.Current_Process, encounterwf_object.Obj_Type, dateOfService, DateTime.UtcNow.ToString("MM/dd/yyyy hh:mm:ss"), appointmentDate }, true);
+                            if (IsProcessEncounterCompleted)
+                            {
+                                hdnEncDos.Value = dateOfService;
+                                hdnEncCurrentProcess.Value = encounterwf_object.Current_Process;
+                                hdnSummaryPageFlag.Value = "false";
+                            }
+                            else
+                            {
+                                hdnSummaryPageFlag.Value = "true";
+                            }
+                        }
+                        else if (encounterwf_object != null && encounterwf_object.Current_Owner != ClientSession.UserName)
+                        {
+                            hdnSummaryPageFlag.Value = "true";
+                        }
+                        else
+                        {
+                            hdnSummaryPageFlag.Value = "true";
+                        }
+                    }
+                    else if (encounterwf_object != null && encounterwf_object.Current_Owner == "UNKNOWN")
+                    {
+                        notificationType = "ALL";
+                        ProcUserManager procUserManager = new ProcUserManager();
+                        IList<ProcUser> userProcessList = procUserManager.GetUserProcessListByUserName(ClientSession.UserName);
+
+                        if (encounterwf_object != null && userProcessList.Any(x => x.Process_Name.ToLower() == (encounterwf_object?.Current_Process?.ToLower()??string.Empty)))
+                        {
+                            var dateOfService = (ilstEncounter?.FirstOrDefault()?.Date_of_Service != null) ? UtilityManager.ConvertToLocal(ilstEncounter.FirstOrDefault().Date_of_Service).ToString("MM/dd/yyyy hh:mm:ss") : string.Empty;
+                            var appointmentDate = (ilstEncounter?.FirstOrDefault()?.Appointment_Date != null) ? UtilityManager.ConvertToLocal(ilstEncounter.FirstOrDefault().Appointment_Date).ToString("MM/dd/yyyy hh:mm:ss") : string.Empty;
+                            var physicianId = ilstEncounter?.FirstOrDefault()?.Encounter_Provider_ID.ToString() ?? string.Empty;
+                            var examRoom = ilstEncounter?.FirstOrDefault()?.Exam_Room.ToString() ?? string.Empty;
+
+                            if (ilstEncounter?.FirstOrDefault()?.Date_of_Service != null && ilstEncounter?.FirstOrDefault()?.Date_of_Service == DateTime.MinValue)
+                            {
+                                dateOfService = UtilityManager.ConvertToLocal(DateTime.UtcNow).ToString("MM/dd/yyyy hh:mm:ss");
+                            }
+
+                            var IsProcessEncounterCompleted = AssignCurrentUserAsEncounterOwner(new string[] { humanId.ToString(), encounter_ID.ToString(), physicianId, encounterwf_object.Current_Process, encounterwf_object.Obj_Type, dateOfService, DateTime.UtcNow.ToString("MM/dd/yyyy hh:mm:ss"), "", "Checked",  appointmentDate}, false);
+                            if (IsProcessEncounterCompleted)
+                            {
+                                hdnEncDos.Value = dateOfService;
+                                hdnEncCurrentProcess.Value = encounterwf_object.Current_Process;
+                                hdnSummaryPageFlag.Value = "false";
+                            }
+                            else
+                            {
+                                hdnSummaryPageFlag.Value = "true";
+                            }
+                        }
+                        else
+                        {
+                            hdnSummaryPageFlag.Value = "true";
+                        }
+                    }
+                    else
+                    {
+                        hdnSummaryPageFlag.Value = "true";
+                    }
+                }
             }
             //EncounterManager objUserLookupManager = new EncounterManager();
             //IList<string> userLookup = objUserLookupManager.GetEncounterListArray(ClientSession.HumanId);
@@ -2059,7 +2131,7 @@ namespace Acurus.Capella.UI
                     string sXmlPath = string.Empty;
                     if (File.Exists(Path.Combine(sDirectoryPath, "Base_XML.xml")))
                         sXmlPath = Path.Combine(sDirectoryPath, "Base_XML.xml");
-                loop:
+                    loop:
                     XmlDocument itemDoc = new XmlDocument();
                     XmlTextReader XmlText = new XmlTextReader(sXmlPath);
                     try
@@ -2094,10 +2166,10 @@ namespace Acurus.Capella.UI
                     if (xmlAgenode != null && xmlAgenode.Count > 0)
                         xmlAgenode[0].ParentNode.RemoveChild(xmlAgenode[0]);
 
-                   // itemDoc.Save(strXmlFilePath);
+                    // itemDoc.Save(strXmlFilePath);
 
-                //    int trycount = 0;
-                //trytosaveagain:
+                    //    int trycount = 0;
+                    //trytosaveagain:
                     try
                     {
                         //itemDoc.Save(strXmlFilePath);
@@ -2187,7 +2259,7 @@ namespace Acurus.Capella.UI
                     //throw new Exception("Human XML is not found for Human ID " + ClientSession.HumanId + ". Please contact support.");
                     //GitLab #3960 
                     ScriptManager.RegisterStartupScript(this, typeof(frmEncounter), "ErrorMessage", "RegenerateXML('" + ClientSession.HumanId.ToString() + "','Human','patientchart');", true);
-                    return; 
+                    return;
                     string sDirectoryPath = string.Empty;
                     if (Directory.Exists(HttpContext.Current.Server.MapPath("Template_XML")))
                         sDirectoryPath = HttpContext.Current.Server.MapPath("Template_XML");
@@ -2213,9 +2285,9 @@ namespace Acurus.Capella.UI
                         return;
                     }
                     XmlText.Close();
-                   // itemDoc.Save(strXmlFilePath1);
-                //    int trycount = 0;
-                //trytosaveagain:
+                    // itemDoc.Save(strXmlFilePath1);
+                    //    int trycount = 0;
+                    //trytosaveagain:
                     try
                     {
                         //itemDoc.Save(strXmlFilePath1);
@@ -2685,7 +2757,7 @@ namespace Acurus.Capella.UI
             // ClientSession.ProblemListCodesWithParentCodes = problemListCodesWithParentCodes;
             var facAncillary = from f in ApplicationObject.facilityLibraryList where f.Fac_Name == ClientSession.FacilityName select f;
             IList<FacilityLibrary> ilstFacAncillary = facAncillary.ToList<FacilityLibrary>();
-            
+
             if (Request["OpenACO"] != null)
             {
                 string value = string.Empty;
@@ -2753,7 +2825,7 @@ namespace Acurus.Capella.UI
                 //if (ClientSession.UserCurrentProcess.ToUpper() == "ADDENDUM_CORRECTION")
                 //    RadModalWindow.Height = 800;
             }
-            if (Request["Notification_Type"] != null && Request["Notification_Type"].ToString().ToUpper() == "ALL")
+            if (notificationType != null && notificationType.ToString().ToUpper() == "ALL")
             {
                 ScriptManager.RegisterStartupScript(this, this.GetType(), string.Empty, "RefreshNotification('All');", true);
             }
@@ -2813,7 +2885,7 @@ namespace Acurus.Capella.UI
         }
 
         FillEncounterandWFObject FillClientSession(ulong EncounterID, bool IsLoadFromBD)
-        {
+         {
             UtilityManager.inserttologgingtable(ClientSession.EncounterId.ToString(), ClientSession.HumanId.ToString(), ClientSession.UserName, ClientSession.PhysicianId.ToString(), "Patient Chart - FillClientSession [To load encounter data into Session Memory] : Start", DateTime.Now, sGroup_ID_Log, "frmPatientChart");
             FillEncounterandWFObject fillEncWFObj = null;
             //var ddfdf = UIManager.ULPreviousEnc;
@@ -2831,7 +2903,7 @@ namespace Acurus.Capella.UI
                 return fillEncWFObj;
 
             // }
-            ClientSession.UserCurrentList.Clear();
+             ClientSession.UserCurrentList.Clear();
             if (ClientSession.CurrentObjectType == "ENCOUNTER")
             {
                 ClientSession.UserCurrentProcess = fillEncWFObj.EncounterWFRecord.Current_Process;
@@ -2922,6 +2994,28 @@ namespace Acurus.Capella.UI
         {
 
             //  Patientchartload();
+        }
+
+        public bool AssignCurrentUserAsEncounterOwner(string[] data, bool isEncounter)
+        {
+            bool isSuccess = false;
+            try
+            {
+                if (isEncounter)
+                {
+                    isSuccess = frmMyQueueNew.ProcessEncounter(data);
+                }
+                else
+                {
+                    var resp = frmMyQueueNew.ProcessGenEncounter(data);
+                    isSuccess = (!string.IsNullOrEmpty(resp) && resp != "UNKNOWN");
+                }               
+            }
+            catch (Exception)
+            {
+            }
+
+            return isSuccess;
         }
     }
 

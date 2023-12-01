@@ -283,9 +283,24 @@ $(document).ready(function () {
         DisplayErrorMessage('5001');
     }  
     //CAP-1167
+    //CAP-1086
     var enc_Id = parseInt(document.getElementById(GetClientId('hdnSummaryEncID'))?.value) ?? 0;
     if (document.getElementById(GetClientId('hdnSummaryPageFlag')).value.toUpperCase() == "TRUE" && enc_Id > 0) {
         $('#ctl00_C5POBody_EncounterContainer')[0].src = "frmSummaryNew.aspx?EncounterId=" + enc_Id + "&TabMode=true";
+    }
+    else if (document.getElementById(GetClientId('hdnSummaryPageFlag')).value.toUpperCase() == "FALSE" && enc_Id > 0) {
+        var now = new Date();
+        var then = now.getDay() + '-' + (now.getMonth() + 1) + '-' + now.getFullYear(); then += ' ' + now.getHours() + ':' + now.getMinutes() + ':' + now.getSeconds();
+        var utc = (now.getUTCMonth() + 1) + '/' + now.getUTCDate() + '/' + now.getUTCFullYear(); utc += ' ' + now.getUTCHours() + ':' + now.getUTCMinutes() + ':' + now.getUTCSeconds();
+        document.getElementById(GetClientId("hdnLocalTime")).value = utc;
+
+        sessionStorage.setItem("EnablePFSHMenu", "true");
+        localStorage.setItem("CodingException", enc_Id);
+        localStorage.setItem("CurrentProcess", $("#hdnEncCurrentProcess").val());
+        sessionStorage.setItem("EncId_PatSummaryBar", enc_Id);
+        sessionStorage.setItem("Enc_DOS", $("#hdnEncDos").val());
+
+        $('#ctl00_C5POBody_EncounterContainer')[0].src = "frmEncounter.aspx?Date=" + document.getElementById(GetClientId("hdnLocalTime")).value + "&EncounterID=" + enc_Id;
     }
 });
 
