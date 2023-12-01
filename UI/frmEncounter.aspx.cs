@@ -3062,7 +3062,8 @@ namespace Acurus.Capella.UI
             lstContent.Add("Assessment Treatment Plan");
             lstContent.Add("Assessment GENERAL NOTES");
             lstContent.Add("Plan General");
-            lstContent.Add("Plan Individual Care Plan");
+            //Cap - 1357
+            //lstContent.Add("Plan Individual Care Plan");
             lstContent.Add("Plan Preventive Screening Plan");
             lstContent.Add("Assessment Problem List");
 
