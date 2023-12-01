@@ -162,7 +162,22 @@ namespace Acurus.Capella.UI.WebServices
                         sFacName = EncRcrd.Facility_Name;
                         sCloseVisible = "true";
                     }
-                   
+                    //Cap - 1355, 1181, 1356
+                    else
+                    {
+                        ilstEnc = objEncMngr.GetEncounterByEncounterIDIncludeArchive(ClientSession.EncounterId);
+                        if (ilstEnc.Count > 0)
+                        {
+                            EncRcrd = ilstEnc[0];
+                            EncRcrdDOS = EncRcrd.Date_of_Service;
+                            sBatchStatus = EncRcrd.Batch_Status;
+                            sBillingInstruction = EncRcrd.Billing_Instruction;
+                            sFacName = EncRcrd.Facility_Name;
+                            sCloseVisible = "true";
+                        }
+                    }
+
+
                 }
             }
             bool Is_CMG_Ancillary = false;
