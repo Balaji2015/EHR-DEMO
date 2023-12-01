@@ -572,7 +572,7 @@ button.close {
                                                     <td style="width: 5%;">
                                                         <telerik:RadButton ID="btnAddRefOrder" runat="server" Text="Add" OnClick="btnAddRefOrder_Click"
                                                             OnClientClicked="refOrderValidation" AccessKey="A" Style="text-align: center; position: static; -moz-border-radius: 3px; -webkit-border-radius: 3px; position: relative; margin-top: 10px;" ButtonType="LinkButton" CssClass="greenbutton"
-                                                            Width="62px">
+                                                            Width="75px">
                                                             <ContentTemplate>
                                                                 <span id="SpanAdd" runat="server" >A</span><span id="SpanAdditionalword" runat="server">dd</span>
                                                             </ContentTemplate>
