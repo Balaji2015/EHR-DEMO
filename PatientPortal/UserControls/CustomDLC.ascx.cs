@@ -424,7 +424,8 @@ namespace Acurus.Capella.PatientPortal.UserControls
                     {
                         if (Role.Trim() == "Coder" || ClientSession.UserCurrentProcess == "CHECK_OUT" || (ClientSession.UserCurrentProcess.Trim() == string.Empty && ClientSession.UserCurrentOwner.Trim() == string.Empty))
                         {
-                            pb.ImageUrl = "~/Resources/calenda2_Disable.bmp";
+                            //Bugfix: image issue in Hosp History
+                            pb.ImageUrl = "~/Resources/calenda2_Disabled.bmp";
                             webControl.Enabled = false;
                         }
                     }
