@@ -412,6 +412,8 @@ namespace Acurus.Capella.UI
                 btnSave.Text = "Add";
                 btnClearAll.Text = "Reset";
                 hdnUpdateMode.Value = string.Empty;
+                //CAP-969
+                btnMoveToNextProcess.Disabled = false;
             }
             if (PatientDetails.Text != string.Empty)
             {
