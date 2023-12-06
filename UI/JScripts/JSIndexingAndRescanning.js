@@ -60,6 +60,8 @@ function clearall() {
         $("#txtSelectedPages").val("");
         $("#dtpSpecCollection").val("");
         $("#OrdersPanel :input").attr("disabled", !0);
+        //CAP-969
+        document.getElementById("btnMoveToNextProcess").disabled = false;
         $("#btnClearAll").val("Reset");
         $("#btnSave").val("Add");
         $("#btnSave")[0].disabled = true;

@@ -956,7 +956,7 @@ function btnSave_Clicked() {
     }
 
 
-}
+    }
 function convertDate(inputFormat) {
     var d = new Date(inputFormat);
     return [d.getDate(), d.getMonth() + 1, d.getFullYear()].join('/');
@@ -2582,8 +2582,44 @@ function EnableSaveFocus(event) {
     }
 }
 function btnClose_Clicked() {
-    window.parent.parent.parent.parent.theForm.ctl00_C5POBody_hdnIsSaveEnable.value = "false";
-    parent.window.close();
+    //CAP-967
+    if (document.getElementById('btnSaveVitals').disabled == false) {
+        $("body").append("<div id='dvdialogMenu' style='min-height: 65px !important; width: auto; max-height: none; height: auto; display: none;'>" +
+            "<p style='font-family: Verdana,Arial,sans-serif; font-size: 12.5px;'>There are unsaved changes.Do you want to save them?</p></div>")
+        dvdialog = $('#dvdialogMenu');
+        event.preventDefault();
+        $(dvdialog).dialog({
+            modal: true,
+            title: "Capella EHR",
+            position: {
+                my: 'center center',
+                at: 'center center'
+            },
+            buttons: {
+                "Yes": function () {
+                    $(dvdialog).dialog("close");
+                    $(dvdialog).remove();
+                    btnSave_Clicked();
+                    return false;
+                },
+                "No": function () {
+                    $(dvdialog).dialog("close");
+                    $(dvdialog).remove();
+                    parent.window.close();
+                    window.parent.parent.parent.parent.theForm.ctl00_C5POBody_hdnIsSaveEnable.value = "false";
+                    return false;
+                },
+                "Cancel": function () {
+                    $(dvdialog).dialog("close");
+                    $(dvdialog).remove();
+                    return false;
+                }
+            }
+        });
+    } else {
+        parent.window.close();
+        window.parent.parent.parent.parent.theForm.ctl00_C5POBody_hdnIsSaveEnable.value = "false";
+    }
 }
 function autosavevitals() {
 
