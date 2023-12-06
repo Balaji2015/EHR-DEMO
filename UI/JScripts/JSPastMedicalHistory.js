@@ -304,7 +304,7 @@ function DateDisable(ctrl, Value, ctrlName) {
     var chkValue = Value;
     var FromDateControl = pcontrol.id.replace(chkValue, name);
     document.getElementById(FromDateControl + "_RadButton1").disabled = true;
-    document.getElementById(FromDateControl + "_RadButton1").src = "Resources/calenda2_Disable.bmp";
+    document.getElementById(FromDateControl + "_RadButton1").src = "Resources/calenda2_Disabled.bmp";
     var FromDateYearControl = pcontrol.id.replace(chkValue, name);
     var combo = $find(FromDateControl + "_cboYear");
     combo.disable();

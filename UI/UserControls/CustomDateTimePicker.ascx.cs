@@ -34,7 +34,7 @@ namespace Acurus.Capella.UI.UserControls
                     cboYear.Enabled = false;
                     cboMonth.Enabled = false;
                     RadButton1.Enabled = false;
-                    RadButton1.ImageUrl = "~/Resources/calenda2_Disable.bmp";
+                    RadButton1.ImageUrl = "~/Resources/calenda2_Disabled.bmp";
                 }
                 else
                 {
