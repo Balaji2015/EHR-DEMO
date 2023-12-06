@@ -8,6 +8,8 @@ using NHibernate;
 using Acurus.Capella.Core;
 using Acurus.Capella.Core.DTO;
 using NHibernate.Criterion;
+using static System.Windows.Forms.VisualStyles.VisualStyleElement.StartPanel;
+using System.Diagnostics;
 
 namespace Acurus.Capella.DataAccess.ManagerObjects
 {
@@ -22,6 +24,7 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
         IList<ProcUser> GetProcUserForUpdate(ulong ulProcId);
 
         IList<ProcUser> GetProcUserList(string sProcessName);
+        IList<ProcUser> GetUserProcessListByUserName(string sUserName);
     }
 
     public partial class ProcUserManager : ManagerBase<ProcUser, ulong>, IProcUserManager
@@ -189,7 +192,17 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
             }
             return UserList;
         }
-
+        public IList<ProcUser> GetUserProcessListByUserName(string sUserName)
+        {
+            IList<ProcUser> UserList = new List<ProcUser>();
+            using (ISession iMySession = NHibernateSessionManager.Instance.CreateISession())
+            {
+                ICriteria crit = iMySession.CreateCriteria(typeof(ProcUser)).Add(Expression.Eq("User_Name", sUserName)).Add(Expression.Eq("Status", "A"));
+                UserList = crit.List<ProcUser>();
+                iMySession.Close();
+            }
+            return UserList;
+        }
         #endregion
 
 
