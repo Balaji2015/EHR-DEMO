@@ -2810,7 +2810,14 @@ function loadMailClinicalInfoCount() {
 $(document).ready(function () {
     $('li  div').addClass('navhover');
     $("#falogout").css("display", "block");
-
+    //Jira CAP-1460 - start
+    if ($("#ctl00_ModalWindow")[0]?.baseURI?.indexOf("ScreenName=ERX") != undefined && $("#ctl00_ModalWindow")[0].baseURI.indexOf("ScreenName=ERX") > -1) {
+        $("#ctl00_ModalWindow").show('show', function () {
+            var WindowName = $find('ctl00_ModalWindow');
+            WindowName.add_close(TriggerDownloadRcopia);
+        });
+    }
+    //Jira CAP-1460 - end
     //The given forms include JSC5PO as scripts, to avoid executing the ready function check the URL.
     if (document.URL.indexOf('frmOrderManagement') < 0 && document.URL.indexOf('frmCheckOut') < 0 && document.URL.indexOf('frmLabResult') < 0) {
         StartLoadingImage();
