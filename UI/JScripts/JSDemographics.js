@@ -348,7 +348,8 @@ function Copy(data) {
         if (data == 'Address') { var LastName = document.getElementById(GetClientId("txtPatientAddress")).value; document.getElementById(GetClientId("txtGuarantorAddress")).value = LastName }
         if (data == 'Address Line') { var LastName = document.getElementById(GetClientId("txtPatientAddressLine2")).value; document.getElementById(GetClientId("txtGuarantorAddressLine2")).value = LastName }
         if (data == 'Zipcode') {
-            var LastName = $find(GetClientId("msktxtZipcode"))._text; $find(GetClientId("msktxtGuarantorZipCode")).set_value(LastName);
+            //CAP-1463 
+            var LastName = $find(GetClientId("msktxtZipcode"))._text; $find(GetClientId("msktxtGuarantorZipCode"))?.set_value(LastName);
         }
         if (data == 'HomePhone') { var LastName = document.getElementById(GetClientId("msktxtHomePhno")).value; $find(GetClientId("msktxtGuarantorHomeNo")).set_value(LastName) }
 
@@ -1529,9 +1530,10 @@ function listRaceChange(listId) {
     var ID1;
     ID = listId.id;
     ID1 = ID.replace("_listRace", "_txtRace");
-    var txtbox = document.getElementById(ID1).value;
-    var txtValue = listId[listId.selectedIndex].text;
-    Tag = listId[listId.selectedIndex].value;
+    //CAP-1471
+    var txtbox = document?.getElementById(ID1)?.value;
+    var txtValue = listId[listId.selectedIndex]?.text;
+    Tag = listId[listId.selectedIndex]?.value;
     if (txtValue == "[Empty]") {
         RaceTag = ""
         ClearRace();
@@ -2221,8 +2223,8 @@ function btnaddinsured(e) {
     if (document.getElementById("btnAdd").value == 'Add' || document.getElementById("ctl00_C5POBody_rdStatusactive").checked == true) {
         if (PriChecked == false && SecChecked == false && TerChecked == false) {
             DisplayErrorMessage('410006');
-            //Cap - 1369
-            { sessionStorage.setItem('StartLoading', 'false'); StopLoadFromPatChart(); }
+            //CAP-Demographics loading
+            setTimeout(function () { { sessionStorage.setItem('StartLoading', 'false'); StopLoadFromPatChart(); } }, 1000);
             return false;
         }
     }

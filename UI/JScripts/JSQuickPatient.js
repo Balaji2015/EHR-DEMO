@@ -781,7 +781,8 @@ function ValidatePatientInformation() {
         //    { sessionStorage.setItem('StartLoading', 'false'); StopLoadFromPatChart(); }
         //    return false;
         //}
-        if (document.getElementById("msktxtHomePhno").value.length != 0 && PhNoValid("msktxtHomePhno") == false && document.getElementById("msktxtHomePhno").value != "(___) ___-____") {
+        //CAP-1471
+        if ((document.getElementById("msktxtHomePhno")?.value?.length??0) != 0 && PhNoValid("msktxtHomePhno") == false && document?.getElementById("msktxtHomePhno")?.value != "(___) ___-____") {
 
             DisplayErrorMessage('380032');
             window.setTimeout(function () {
@@ -791,7 +792,7 @@ function ValidatePatientInformation() {
             { sessionStorage.setItem('StartLoading', 'false'); StopLoadFromPatChart(); }
             return false;
         }
-        if (document.getElementById("msktxtHomePhno").RadInputValidationValue.length > 0 && document.getElementById("msktxtHomePhno").RadInputValidationValue.length < 14) {
+        if ((document.getElementById("msktxtHomePhno")?.RadInputValidationValue?.length??0) > 0 && document.getElementById("msktxtHomePhno").RadInputValidationValue.length < 14) {
 
             DisplayErrorMessage('380032');
             window.setTimeout(function () {
@@ -801,7 +802,7 @@ function ValidatePatientInformation() {
             { sessionStorage.setItem('StartLoading', 'false'); StopLoadFromPatChart(); }
             return false;
         }
-        if (document.getElementById("msktxtSSN").value.length != 0 && document.getElementById("msktxtSSN").value != "___-__-____") {
+        if ((document.getElementById("msktxtSSN")?.value?.length??0) != 0 && document.getElementById("msktxtSSN").value != "___-__-____") {
             var str = document.getElementById("msktxtSSN").value;
             if (str.replace(/_/gi, "").length < 11) {
 
@@ -815,7 +816,7 @@ function ValidatePatientInformation() {
             }
         }
 
-        if (document.getElementById("txtMail").value.length != 0) {
+        if ((document.getElementById("txtMail")?.value?.length??0) != 0) {
 
             if (IsEmail(document.getElementById("txtMail").value) == false) {
                 DisplayErrorMessage('320010');
@@ -835,7 +836,7 @@ function ValidatePatientInformation() {
             { sessionStorage.setItem('StartLoading', 'false'); StopLoadFromPatChart(); }
             return false;
         }
-        if (document.getElementById("msktxtZipcode").value.length != 0 && document.getElementById("msktxtZipcode").value != "_____-____") {
+        if ((document.getElementById("msktxtZipcode")?.value?.length??0) != 0 && document.getElementById("msktxtZipcode").value != "_____-____") {
             var str = document.getElementById("msktxtZipcode").value;
             if (str.replace(/_/gi, "").length != 6 && str.replace(/_/gi, "").length != 10) {
 
@@ -848,7 +849,7 @@ function ValidatePatientInformation() {
                 return false;
             }
         }
-        if (document.getElementById("gbPaymentInformation") != null && document.getElementById("txtPaymentAmount").readOnly == false && document.getElementById("txtPaymentAmount").value.length == 0) {
+        if (document.getElementById("gbPaymentInformation") != null && document.getElementById("txtPaymentAmount").readOnly == false && (document.getElementById("txtPaymentAmount")?.value?.length??0) == 0) {
 
 
             DisplayErrorMessage('380020');
@@ -872,7 +873,7 @@ function ValidatePatientInformation() {
             { sessionStorage.setItem('StartLoading', 'false'); StopLoadFromPatChart(); }
             return false;
         }
-        if (document.getElementById("ddlPlanName").value.length == 0) {
+        if ((document.getElementById("ddlPlanName")?.value?.length??0) == 0) {
 
 
             DisplayErrorMessage('380028');
@@ -894,7 +895,7 @@ function ValidatePatientInformation() {
                 { sessionStorage.setItem('StartLoading', 'false'); StopLoadFromPatChart(); }
                 return false;
             }
-            if (document.getElementById("txtOtherPlan").value.length == 0) {
+            if ((document.getElementById("txtOtherPlan")?.value?.length??0) == 0) {
 
                 DisplayErrorMessage('380046');
                 window.setTimeout(function () {
@@ -906,7 +907,7 @@ function ValidatePatientInformation() {
             }
         }
 
-        if (document.getElementById("txtPolicyHolderID").value.length == 0) {
+        if ((document.getElementById("txtPolicyHolderID")?.value?.length??0) == 0) {
 
 
             DisplayErrorMessage('380015');
@@ -1024,7 +1025,7 @@ function ValidatePatientInformation() {
                         { sessionStorage.setItem('StartLoading', 'false'); StopLoadFromPatChart(); }
                         return false;
                     }
-                    if (document.getElementById("txtCheckNo").readOnly == false && document.getElementById("txtCheckNo").value.length == 0) {
+                    if (document.getElementById("txtCheckNo").readOnly == false && (document.getElementById("txtCheckNo")?.value?.length??0) == 0) {
 
                         DisplayErrorMessage('380021');
                         window.setTimeout(function () {
@@ -1035,7 +1036,7 @@ function ValidatePatientInformation() {
                         return false;
                     }
 
-                    if (document.getElementById(GetClientId("txtEmail")).value.length != 0 && IsEmail(document.getElementById(GetClientId("txtEmail")).value) == false) {
+                    if ((document.getElementById(GetClientId("txtEmail"))?.value?.length??0) != 0 && IsEmail(document.getElementById(GetClientId("txtEmail")).value) == false) {
                         DisplayErrorMessage('295014');
                         document.getElementById(GetClientId("txtEmail")).focus();
                         { sessionStorage.setItem('StartLoading', 'false'); StopLoadFromPatChart(); }
@@ -1044,7 +1045,7 @@ function ValidatePatientInformation() {
 
 
                     if (document.getElementById("txtPaymentAmount").readOnly == false) {
-                        if (document.getElementById("txtPaymentAmount").value.length == 0) {
+                        if ((document.getElementById("txtPaymentAmount")?.value?.length??0) == 0) {
                             DisplayErrorMessage('380020');
                             window.setTimeout(function () {
                                 document.getElementById('txtPaymentAmount').focus();
@@ -2113,6 +2114,7 @@ function btnEditName_Click() {
 
 
 function ClickUploadControl() {
+    debugger;
     $("#fileupload").click();
 }
 

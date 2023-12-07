@@ -3578,8 +3578,9 @@ myapp.controller('PhoneEncounterCtrl', function ($scope, $http) {
                         var DeleteArrayTempICD = [];
                         var iindex;
                         for (var i = 0; i < $scope.EandMCodingICDTable.length; i++) {
-                            if (CheckICDValue($('#tblEandMCodingICD tbody tr')[i].children[8].innerText.trim()) == true) {
-                                DeleteArrayTempICD.push($('#tblEandMCodingICD tbody tr')[i].children[8].innerText.trim());
+                            //CAP-1471
+                            if (CheckICDValue($('#tblEandMCodingICD tbody tr')[i]?.children[8]?.innerText?.trim()) == true) {
+                                DeleteArrayTempICD.push($('#tblEandMCodingICD tbody tr')[i]?.children[8]?.innerText?.trim());
                                 iindex = i;
                             }
                         }

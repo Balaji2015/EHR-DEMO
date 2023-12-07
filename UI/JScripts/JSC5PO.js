@@ -1195,7 +1195,9 @@ function OpenModal(data) {
 
         if (document.getElementById(GetClientId("hdnEncounterId")) != null && document.getElementById(GetClientId("hdnEncounterId")).value != "" && document.getElementById(GetClientId("hdnEncounterId")).value != "0") {
             StartLoadingImage();
-            $(top.window.document).find('#ProcessiFrameNotes')[0].contentDocument.location.href = "frmWellnessNotes.aspx?SubMenuName=WELLNESS NOTES" + "&Menu=True";
+            if ($(top.window.document)?.find('#ProcessiFrameNotes')[0]?.contentDocument != undefined && $(top.window.document)?.find('#ProcessiFrameNotes')[0]?.contentDocument != null) {
+                $(top.window.document).find('#ProcessiFrameNotes')[0].contentDocument.location.href = "frmWellnessNotes.aspx?SubMenuName=WELLNESS NOTES" + "&Menu=True";
+            }
             $(top.window.document).find("#ModalTtleNotes")[0].textContent = "Wellness Notes";
             var DateTime = new Date();
             var strYear = DateTime.getFullYear();
@@ -1882,7 +1884,8 @@ function OnClientClickedSubMenu(data) {
                 var result = openModal("frmFindPatient.aspx", 251, 1200, obj, "ctl00_ModalWindow");
                 EMRPhoneEnounter = "Yes";
                 var WindowName = $find('ctl00_ModalWindow');
-                WindowName.add_close(OnClientClosePhoneEncounter);
+                //CAP-1463
+                WindowName?.add_close(OnClientClosePhoneEncounter);
             }
             else {
                 //CAP-601 - validate encounter for phone encounter.
@@ -2859,7 +2862,8 @@ function OnSuccessRCopia(response) {
     var rxValues = "";
 
     if (responseValues == "") {
-        if (document.getElementById("tsRefill") != null && document.getElementById("tsRefill") != undefined)
+        if (document.getElementById("tsRefill") != undefined && document.getElementById("tsRefill") != null)
+        //CAP-1463 
             document.getElementById("tsRefill").style.display = "none";
         if (document.getElementById("ctl00_tsRefill") != null && document.getElementById("ctl00_tsRefill") != undefined)
             document.getElementById("ctl00_tsRefill").style.display = "none";
@@ -3301,7 +3305,11 @@ function OnSuccessSummaryBarEprescription(response) {
         if (response.d[8].replace("Vitals :<br/>", "").length != 0)
             top.window.document.getElementById("Vitals_tooltp").innerText = response.d[8].replace(regex, "\n") + "\n";
         else
-            top.window.document.getElementById("Vitals_tooltp").innerText = "";
+        //CAP-1463
+            if (top?.window?.document?.getElementById("Vitals_tooltp") != undefined && top?.window?.document?.getElementById("Vitals_tooltp") != null) {
+                top.window.document.getElementById("Vitals_tooltp").innerText = "";
+            }
+           
         if (response.d[9].replace("Medication :<br/>", "").length != 0)
             top.window.document.getElementById("Medication_tooltp").innerText = response.d[9].replace(regex, "\n") + "\n";
         else
@@ -3309,7 +3317,8 @@ function OnSuccessSummaryBarEprescription(response) {
         RefreshOverallSummaryTooltip();
 
     }
-    var sDtls = window.parent.parent.document.getElementsByName('lblPatientStrip')[0].innerText;
+    //CAP-1463
+    var sDtls = window?.parent?.parent?.document?.getElementsByName('lblPatientStrip')[0]?.innerText;
     document.cookie = "Human_Details=Last_Name:" + sDtls.split('|')[0].split(',')[0] + "|First_Name:" + sDtls.split('|')[0].split(',')[1].split(' ')[0] +
         "|Middle_Name:" + sDtls.split('|')[0].split(',')[1].split(' ')[1] + "|DOB:" + sDtls.split('|')[1] + "|Sex:" + sDtls.split('|')[3] + "|" +
         window.parent.document.getElementsByTagName('fieldset')[0].innerText.split('|')[1] + "|" + window.parent.parent.document.all("ctl00_C5POBody_lblVitals").innerText.split('\n')[1] + "|" +

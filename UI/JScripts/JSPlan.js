@@ -205,7 +205,7 @@ function LoadDocuments() {
 
     //CAP-285 - null handling for current process variable
     if ((currentprocess ?? "").toUpperCase() != "SCRIBE_PROCESS" && (currentprocess ?? "").toUpperCase() != "AKIDO_SCRIBE_PROCESS" && (currentprocess ?? "").toUpperCase() != "SCRIBE_REVIEW_CORRECTION" && (currentprocess ?? "").toUpperCase() != "SCRIBE_CORRECTION" && (currentprocess ?? "").toUpperCase() != "DICTATION_REVIEW" && (currentprocess ?? "").toUpperCase() != "CODER_REVIEW_CORRECTION" && (currentprocess ?? "").toUpperCase() != "PROVIDER_PROCESS" && (currentprocess ?? "").toUpperCase() != "TECHNICIAN_PROCESS" && (currentprocess ?? "").toUpperCase() != "PROVIDER_REVIEW_CORRECTION") {//CMG Ancilliary
-
+        debugger;
         $('#btnPrint')[0].disabled = true;
         $('#btnClearall')[0].disabled = true;
         $('#btnCopyPreviousEncounter')[0].disabled = true;
@@ -2764,8 +2764,8 @@ function FillEncDataInGenealPLan(EncData) {
                 $("#chkAfterStudies")[0].checked = false;
             }
         }
-
-        if (currentprocess.toUpperCase() != "SCRIBE_PROCESS" && currentprocess.toUpperCase() != "AKIDO_SCRIBE_PROCESS" && currentprocess.toUpperCase() != "SCRIBE_REVIEW_CORRECTION" && currentprocess.toUpperCase() != "DICTATION_REVIEW" && currentprocess.toUpperCase() != "CODER_REVIEW_CORRECTION" && currentprocess.toUpperCase() != "PROVIDER_PROCESS" && currentprocess.toUpperCase() != "TECHNICIAN_PROCESS" && currentprocess.toUpperCase() != "PROVIDER_REVIEW_CORRECTION" && EncData.Return_In_Months != 0) //{//CMG Ancilliary
+        //CAP-1471
+        if (currentprocess?.toUpperCase() != "SCRIBE_PROCESS" && currentprocess?.toUpperCase() != "AKIDO_SCRIBE_PROCESS" && currentprocess?.toUpperCase() != "SCRIBE_REVIEW_CORRECTION" && currentprocess?.toUpperCase() != "DICTATION_REVIEW" && currentprocess?.toUpperCase() != "CODER_REVIEW_CORRECTION" && currentprocess?.toUpperCase() != "PROVIDER_PROCESS" && currentprocess?.toUpperCase() != "TECHNICIAN_PROCESS" && currentprocess?.toUpperCase() != "PROVIDER_REVIEW_CORRECTION" && EncData.Return_In_Months != 0) //{//CMG Ancilliary
         {
 
             $("#txtReturnIn")[0].disabled = false;

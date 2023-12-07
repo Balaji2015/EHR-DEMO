@@ -54,7 +54,8 @@ function ShowResume() {
         var checkedValues = '';
 
         var elementRef = document.getElementById('chklstboxProvider');
-        var checkBoxArray = elementRef.getElementsByTagName('input');
+        //CAP-1463 
+        var checkBoxArray = elementRef?.getElementsByTagName('input');
 
         for (var i = 0; i < checkBoxArray.length; i++) {
             var checkBoxRef = checkBoxArray[i];
@@ -322,7 +323,8 @@ function CloseForBlockDays(sender, args) {
                     document.getElementById(GetClientId('hdnSaveForDlc')).value = "true";
                     document.getElementById(GetClientId('hdnToFindSource')).value = "No";
                     $find('btnSaveForNonRecur').set_enabled(true);
-                    args.set_cancel(true);
+                    //CAP-1471
+                    args?.set_cancel(true);
                 }
             }
             if ((document.getElementById(GetClientId('btnSaveTOF')).disabled == false) && ($find('tabBlockDays').get_selectedTab().get_text() == "Block Type of Visit")) {
@@ -527,7 +529,7 @@ function BlockDaysTabChange(sender, args) {
     else if (TabClick.value == "Block Recurring Days$#$third") {
         if (document.getElementById(GetClientId('btnSaveForNonRecur')).disabled == false) {
             TabClick.value = args._tab._element.textContent + "$#$";
-            args.set_cancel(true);
+            args?.set_cancel(true);
             { sessionStorage.setItem('StartLoading', 'false'); StopLoadFromPatChart(); }
             DisplayErrorMessage('1100000', 'BlockDaysTabClick');
             return false;
@@ -537,7 +539,7 @@ function BlockDaysTabChange(sender, args) {
         if (args._tab._element.textContent == "Block Non-Recurring Days") {
             if (document.getElementById(GetClientId('btnSaveForRecurring')).disabled == false) {
                 TabClick.value = args._tab._element.textContent + "$#$";
-                args.set_cancel(true);
+                args?.set_cancel(true);
                 { sessionStorage.setItem('StartLoading', 'false'); StopLoadFromPatChart(); }
                 DisplayErrorMessage('1100000', 'BlockDaysTabClick');
                 return false;
@@ -546,7 +548,7 @@ function BlockDaysTabChange(sender, args) {
         else {
             if (document.getElementById(GetClientId('btnSaveForNonRecur')).disabled == false) {
                 TabClick.value = args._tab._element.textContent + "$#$";
-                args.set_cancel(true);
+                args?.set_cancel(true);
                 { sessionStorage.setItem('StartLoading', 'false'); StopLoadFromPatChart(); }
                 DisplayErrorMessage('1100000', 'BlockDaysTabClick');
                 return false;
@@ -565,7 +567,7 @@ function BlockDaysTabChange(sender, args) {
                 IDs[0] = 'btnSaveForNonRecur';
             var save_button = $find(IDs[0]);
             if (save_button != undefined || save_button != null) {
-                args.set_cancel(true);
+                args?.set_cancel(true);
                 TabClick.value = clicked_tab + "$#$third";
                 document.getElementById("hdnToFindSource").value = "ToEnable";
                 if (IDs[0] == 'btnSaveForNonRecur') {
@@ -580,7 +582,7 @@ function BlockDaysTabChange(sender, args) {
             clearAllForTabandSave();
         }
         else if (switchcase == "second,cancel") {
-            args.set_cancel(true);
+            args?.set_cancel(true);
             { sessionStorage.setItem('StartLoading', 'false'); StopLoadFromPatChart(); }
         }
         TabClick.value = "first";

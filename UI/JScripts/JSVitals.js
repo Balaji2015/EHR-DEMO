@@ -956,7 +956,7 @@ function btnSave_Clicked() {
     }
 
 
-}
+    }
 function convertDate(inputFormat) {
     var d = new Date(inputFormat);
     return [d.getDate(), d.getMonth() + 1, d.getFullYear()].join('/');
@@ -1100,12 +1100,16 @@ function ConvertFeetInchToInch(s1, s2) {
 }
 
 function SetBMIStatus(sBMI) {
-    var statusLabel = document.getElementById('BMI Status');
-    var BMITextBox = document.getElementById('BMI');
+    var statusLabel = document?.getElementById('BMI Status');
+    var BMITextBox = document?.getElementById('BMI');
     var percentileIncrement = 0;
     var percentileListForBMI = '';
     var ColorListForBMI = '';
-    statusLabel.style.color = "Red";
+    //CAP-1463 
+    if (statusLabel != undefined && statusLabel != null) {
+        statusLabel.style.color = "Red";
+    }
+    
     if (SpercentileIncrement != null) {
         percentileListForBMI = SpercentileIncrement;
     }
@@ -1723,12 +1727,16 @@ function CheckIsBMIIsValid() {
                     //CAP - 282 - Preventing undefined error.
                     if (resason[j]?.split('|')[0]?.indexOf("HEIGHT") != undefined && resason[j]?.split('|')[1] != undefined && heightnotes[i] != undefined) {
                         if (resason[j].split('|')[0].indexOf("HEIGHT") > -1 && resason[j].split('|')[1] == heightnotes[i].trim()) {
-                            if ((heightnotes.length == 0 && i == 0) || i == heightnotes.length - 1)
-                                document.getElementById('txtNotesHeight_txtDLC').value = document.getElementById('txtNotesHeight_txtDLC').value.replace(heightnotes[i].trim(), "");
-                            else
-                                document.getElementById('txtNotesHeight_txtDLC').value = document.getElementById('txtNotesHeight_txtDLC').value.replace(heightnotes[i].trim() + ", ", "");
+                            //CAP-1463
+                            if (document.getElementById('txtNotesHeight_txtDLC') != undefined && document.getElementById('txtNotesHeight_txtDLC') != null) {
+                                if ((heightnotes.length == 0 && i == 0) || i == heightnotes.length - 1)
+                                    document.getElementById('txtNotesHeight_txtDLC').value = document.getElementById('txtNotesHeight_txtDLC').value.replace(heightnotes[i].trim(), "");
+                                else
+                                    document.getElementById('txtNotesHeight_txtDLC').value = document.getElementById('txtNotesHeight_txtDLC').value.replace(heightnotes[i].trim() + ", ", "");
+                            }
                             if (document.getElementById('txtNotesBMI_txtDLC').value != "" && document.getElementById('txtNotesBMI_txtDLC').value.indexOf(heightnotes[i].trim()) > -1 && document.getElementById('txtNotesHeight_txtDLC').value.indexOf(heightnotes[i].trim()) <= -1)
-                                document.getElementById('txtNotesBMI_txtDLC').value = document.getElementById('txtNotesBMI_txtDLC').value.replace(heightnotes[i].trim(), "");
+                            //CAP-1463 
+                                document.getElementById('txtNotesBMI_txtDLC').value = document?.getElementById('txtNotesBMI_txtDLC')?.value?.replace(heightnotes[i]?.trim(), "");
 
                             var notes = document.getElementById('txtNotesBMI_txtDLC').value.split(',');
                             var ref = "";
@@ -1779,7 +1787,8 @@ function savedSuccessfully() {
     localStorage.setItem("bSave", "true");
     SavedSuccessfully_NowProceed('EncounterTabClick');
     DisplayErrorMessage('200008');
-    if (window.parent.parent.parent.parent.theForm.ctl00_C5POBody_hdnIsSaveEnable != undefined){
+    //CAP-1463
+    if (window?.parent?.parent?.parent?.parent?.theForm?.ctl00_C5POBody_hdnIsSaveEnable != undefined && window?.parent?.parent?.parent?.parent?.theForm?.ctl00_C5POBody_hdnIsSaveEnable != null){
         window.parent.parent.parent.parent.theForm.ctl00_C5POBody_hdnIsSaveEnable.value = false;
         localStorage.setItem("bSave", "true");
     }
@@ -2582,8 +2591,44 @@ function EnableSaveFocus(event) {
     }
 }
 function btnClose_Clicked() {
-    window.parent.parent.parent.parent.theForm.ctl00_C5POBody_hdnIsSaveEnable.value = "false";
-    parent.window.close();
+    //CAP-967
+    if (document.getElementById('btnSaveVitals').disabled == false) {
+        $("body").append("<div id='dvdialogMenu' style='min-height: 65px !important; width: auto; max-height: none; height: auto; display: none;'>" +
+            "<p style='font-family: Verdana,Arial,sans-serif; font-size: 12.5px;'>There are unsaved changes.Do you want to save them?</p></div>")
+        dvdialog = $('#dvdialogMenu');
+        event.preventDefault();
+        $(dvdialog).dialog({
+            modal: true,
+            title: "Capella EHR",
+            position: {
+                my: 'center center',
+                at: 'center center'
+            },
+            buttons: {
+                "Yes": function () {
+                    $(dvdialog).dialog("close");
+                    $(dvdialog).remove();
+                    btnSave_Clicked();
+                    return false;
+                },
+                "No": function () {
+                    $(dvdialog).dialog("close");
+                    $(dvdialog).remove();
+                    parent.window.close();
+                    window.parent.parent.parent.parent.theForm.ctl00_C5POBody_hdnIsSaveEnable.value = "false";
+                    return false;
+                },
+                "Cancel": function () {
+                    $(dvdialog).dialog("close");
+                    $(dvdialog).remove();
+                    return false;
+                }
+            }
+        });
+    } else {
+        parent.window.close();
+        window.parent.parent.parent.parent.theForm.ctl00_C5POBody_hdnIsSaveEnable.value = "false";
+    }
 }
 function autosavevitals() {
 

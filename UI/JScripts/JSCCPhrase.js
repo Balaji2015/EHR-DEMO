@@ -126,9 +126,17 @@ function btnClear_Clicked(sender, args) {
         $("#btnAdd")[0].disabled = false;
         localStorage.setItem("bSave", "false");
         window.parent.parent.parent.parent.theForm.ctl00_C5POBody_hdnIsSaveEnable.value = true;
-        drawChart();
+        //drawChart();
+        //CAP-1334
+        setTimeout(function () {
+            drawChart();
+        }, 1000);
     } else {
-        drawChart();
+       //drawChart();
+         //CAP-1334
+        setTimeout(function () {
+            drawChart();
+        }, 1000);
         return false;
     }
 }

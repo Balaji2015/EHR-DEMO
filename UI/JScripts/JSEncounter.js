@@ -1641,14 +1641,15 @@ function tabAutoSave(CurrentTab, sender) {
         }
         else if (CurTab[0].innerText == "PLAN") {
             var subtab = localStorage.getItem("PrevSubTab");
+            //CAP-1463
             if (subtab == "General Plan") {
-                $('.clsIframe').contents()[10].all.namedItem('generalplan').children[0].contentDocument.all.namedItem('btnSave').click();
+                $('.clsIframe').contents()[10]?.all?.namedItem('generalplan')?.children[0]?.contentDocument?.all?.namedItem('btnSave')?.click();
             }
             else if (subtab == "Individualized CarePlan") {
-                $('.clsIframe').contents()[10].all.namedItem('IndividualCarePlan').children[0].contentDocument.all.namedItem('btnSave').click();
+                $('.clsIframe').contents()[10]?.all?.namedItem('IndividualCarePlan')?.children[0]?.contentDocument?.all?.namedItem('btnSave')?.click();
             }
             else if (subtab == "Preventive Screen Plan") {
-                $('.clsIframe').contents()[10].all.namedItem('PreventiveScreen').children[0].contentDocument.all.namedItem('btnSave').click();
+                $('.clsIframe').contents()[10]?.all?.namedItem('PreventiveScreen')?.children[0]?.contentDocument?.all?.namedItem('btnSave')?.click();
             }
             //$(dvdialog).dialog("close");
             disableAutoSave();

@@ -619,10 +619,10 @@ function OpenMedication_dosage() {
 
         if ($('#' + this.id)[0].labels[0].innerText.indexOf('x__') > -1) {
             if (procedure == "")
-
-                procedure = $('#' + this.id)[0].labels[0].innerText + "|" + $('#' + this.id)[0].parentElement.attributes["orderid"].value;
+            //CAP-1471
+                procedure = $('#' + this.id)[0]?.labels[0]?.innerText + "|" + $('#' + this.id)[0]?.parentElement?.attributes["orderid"]?.value;
             else {
-                procedure = procedure + "~" + $('#' + this.id)[0].labels[0].innerText + "|" + $('#' + this.id)[0].parentElement.attributes["orderid"].value;
+                procedure = procedure + "~" + $('#' + this.id)[0]?.labels[0]?.innerText + "|" + $('#' + this.id)[0]?.parentElement?.attributes["orderid"]?.value;
             }
         }
 
@@ -720,13 +720,15 @@ $(top.window.document).find("#ProcessModalMed").on("hidden.bs.modal", function (
                 var quantity = datalist[i].split('|');
                 var orderid = quantity[1];
                 var outputtextQuantity = quantity[0];
-
-                var texquantity = $("span[orderid='" + orderid + "']")[0].childNodes[0].labels[0].innerText.split('x___')
-                if (outputtextQuantity != "" && outputtextQuantity != "0")
-                    $("span[orderid='" + orderid + "']")[0].childNodes[0].labels[0].innerText = texquantity[0] + "x___" + outputtextQuantity + "___"
-                else {
-                    $("span[orderid='" + orderid + "']")[0].childNodes[0].labels[0].innerText = texquantity[0] + "x___" + "___"
-
+                //CAP-1471
+                if ($("span[orderid='" + orderid + "']") != undefined && $("span[orderid='" + orderid + "']") != null && $("span[orderid='" + orderid + "']")[0] != undefined && $("span[orderid='" + orderid + "']")[0] != null)
+                {
+                    var texquantity = $("span[orderid='" + orderid + "']")[0]?.childNodes[0]?.labels[0]?.innerText?.split('x___')??"";
+                    if (outputtextQuantity != "" && outputtextQuantity != "0")
+                        $("span[orderid='" + orderid + "']")[0].childNodes[0].labels[0].innerText = texquantity[0] + "x___" + outputtextQuantity + "___"
+                    else {
+                        $("span[orderid='" + orderid + "']")[0].childNodes[0].labels[0].innerText = texquantity[0] + "x___" + "___"
+                    }
                 }
             }
         }

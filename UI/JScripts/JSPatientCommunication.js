@@ -1352,7 +1352,8 @@ function AfterSaveClear() {
 }
 function chkShowAllChange() {
     var vfacility = $("[id*='ddlFacilityName']");
-    Facility = $("[id*='ddlFacilityName']")[0].selectedOptions[0].innerText;
+    //CAP-1471
+    Facility = $("[id*='ddlFacilityName']")[0]?.selectedOptions[0]?.innerText??"";
     document.getElementById("ddlAssignedTo").options.length = 0;
     var checked = "false";
     var vfacilitys = "";
@@ -1397,7 +1398,7 @@ function EditAssingnmethod(row) {
     document.getElementById("ddlAssignedTo").options.length = 0;
     var checked = "false";
     var vfacilitys = "";
-    var varFacilitys = $("[id*='ddlFacilityName']")[0].selectedOptions[0].innerText;
+    var varFacilitys = $("[id*='ddlFacilityName']")[0]?.selectedOptions[0]?.innerText??"";
     $.ajax({
         type: "POST",
         url: "frmPatientCommunication.aspx/laodAssigned",
