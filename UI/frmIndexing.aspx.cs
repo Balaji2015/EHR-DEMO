@@ -593,7 +593,11 @@ namespace Acurus.Capella.UI
             {
                 btnSave.Enabled = true;
                 txtSelectedPages.Disabled = false;
-                btnMoveToNextProcess.Disabled = true;
+                //CAP-969
+                if (grdIndexing.Items.Count > 0)
+                { btnMoveToNextProcess.Disabled = false; }
+                else
+                { btnMoveToNextProcess.Disabled = true; }
             }
 
             if (hdnHumanID.Value == "" && PatientDetails.Text != "")

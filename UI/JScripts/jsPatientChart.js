@@ -298,7 +298,7 @@ $(document).ready(function () {
         localStorage.setItem("CodingException", enc_Id);
         localStorage.setItem("CurrentProcess", $("#hdnEncCurrentProcess").val());
         sessionStorage.setItem("EncId_PatSummaryBar", enc_Id);
-        sessionStorage.setItem("Enc_DOS", $("#hdnEncDos").val());
+        sessionStorage.setItem("Enc_DOS", document.getElementById(GetClientId('hdnEncDos'))?.value);
 
         $('#ctl00_C5POBody_EncounterContainer')[0].src = "frmEncounter.aspx?Date=" + document.getElementById(GetClientId("hdnLocalTime")).value + "&EncounterID=" + enc_Id;
     }
