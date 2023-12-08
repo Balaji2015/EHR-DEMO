@@ -128,15 +128,15 @@ function btnClear_Clicked(sender, args) {
         window.parent.parent.parent.parent.theForm.ctl00_C5POBody_hdnIsSaveEnable.value = true;
         //drawChart();
         //CAP-1334
-        //setTimeout(function () {
-        //    drawChart();
-        //}, 2000);
+        setTimeout(function () {
+            drawChart();
+        }, 1000);
     } else {
-        //drawChart();
+       //drawChart();
          //CAP-1334
-        //setTimeout(function () {
-        //    drawChart();
-        //}, 2000);
+        setTimeout(function () {
+            drawChart();
+        }, 1000);
         return false;
     }
 }

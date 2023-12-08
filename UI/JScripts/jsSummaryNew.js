@@ -104,7 +104,7 @@ $(document).ready(function () {
     document.title = "Summary";
     { sessionStorage.setItem('StartLoading', 'false'); StopLoadFromPatChart(); }
     //Jira CAP-485
-    if (document.getElementById("btnCancelPhoneEnc") != null && document.getElementById("btnCancelPhoneEnc") != undefined) {
+    if (document.getElementById("btnCancelPhoneEnc") != undefined && document.getElementById("btnCancelPhoneEnc") != null) {
         let url = document.URL.split('?')[1].split("&").indexOf("PhoneEncounter=True");
         if (url <= -1) {
             document.getElementById("btnCancelPhoneEnc").style.visibility = "hidden";
@@ -115,10 +115,12 @@ $(document).ready(function () {
     }
     
      var $target = $('#xslFrame');
-
+     //CAP-1463 
     if (localStorage.getItem("SummaryTab") == "true") {
-        document.getElementById('btnServiceProcedureCode').style.display = "none";
-        document.getElementById('btnServiceProcedureCode').removeAttribute("class");
+        if (document.getElementById('btnServiceProcedureCode') != undefined && document.getElementById('btnServiceProcedureCode') != null) {
+            document.getElementById('btnServiceProcedureCode').style.display = "none";
+            document.getElementById('btnServiceProcedureCode').removeAttribute("class");
+        }
     }
     $("#txtSearch").on('input', function (e) {
 

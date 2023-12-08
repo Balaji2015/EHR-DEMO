@@ -1035,13 +1035,14 @@ function MyQclick() {
 function OnClientCloseWindow() {
     //Jira #CAP-889
     //chkShowAllClick();
+    //CAP-1471
     var removeList = sessionStorage.getItem('MyQRemoveIdList');
     var btnid = '';
     if ($('#btnMyQ')[0].className.indexOf('btncolorMyQ') > -1) {
-        btnid = $('#divMyQTab .btncolorMyQ')[0].id;
+        btnid = $('#divMyQTab .btncolorMyQ')[0]?.id;
     }
     else {
-        btnid = $('#divGeneralQTabs .btncolorMyQ')[0].id;
+        btnid = $('#divGeneralQTabs .btncolorMyQ')[0]?.id;
     }
     
     if (removeList != "") {

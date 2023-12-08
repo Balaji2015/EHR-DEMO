@@ -38,6 +38,12 @@ namespace Acurus.Capella.UI
             if (!IsPostBack)
             {
 
+                //CAP-1311
+                if (HttpContext.Current.Request.Cookies["CUserName"]?.Value == null && HttpContext.Current.Request.Cookies["CFacilityName"]?.Value == null)
+                {
+                    Response.Redirect("~/frmLogin.aspx");
+                }
+
                 Page.ClientScript.GetPostBackEventReference(grdEncounters, "");
                 //lblLogged.Text = "You are logged in as" + " " + ClientSession.UserName + "  " + "in" + "  " + ClientSession.FacilityName;
                 var client = from c in ApplicationObject.ClientList where c.Legal_Org == ClientSession.LegalOrg select c;

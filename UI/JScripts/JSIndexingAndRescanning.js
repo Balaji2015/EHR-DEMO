@@ -1477,17 +1477,31 @@ function GridOpenFile(SelectedFileName, sFilePath, IsPendingCheck, isClick) {
 
                     }
                     StopLoadOnUploadFile();
-                    document.getElementById("_imgBig").src = "ViewImg.aspx?View=1&FilePath=" + sFilePath.replace("%", "%25").replace("#", "%23").replace('"', "%22").replace("<", "%3C").replace(">", "%3E").replace("|", "%7C") + "&Pg=1&Height=650&Width=550";
+                    //CAP-964 //CAP-590
+                    sFilePath = sFilePath.replaceAll("%", "%25");
+                    sFilePath = sFilePath.replaceAll("#", "%23");
+                    sFilePath = sFilePath.replaceAll('"', "%22");
+                    sFilePath = sFilePath.replaceAll("<", "%3C");
+                    sFilePath = sFilePath.replaceAll(">", "%3E");
+                    sFilePath = sFilePath.replaceAll("|", "%7C");
+                    document.getElementById("_imgBig").src = "ViewImg.aspx?View=1&FilePath=" + sFilePath + "&Pg=1&Height=650&Width=550";
                 }
                 else {
                     ViewPDF();
                     StopLoadOnUploadFile();
                     if (sFilePath.indexOf("////") != -1) {
-                        sFilePath = sFilePath.replace(/\/\//g, "/");
+                        sFilePath = sFilePath.replaceAll(/\/\//g, "/");
                     }
-                    sFilePath = sFilePath.replace(document.getElementById("hdnScanningLocal").value.replace(/\\/g, "/"), document.getElementById("hdnPDFurl").value)
+                    //CAP-964 //CAP-590
+                    sFilePath = sFilePath.replaceAll(document.getElementById("hdnScanningLocal").value.replaceAll(/\\/g, "/"), document.getElementById("hdnPDFurl").value)
                     //Url encoding for special characters.
-                    sFilePath = sFilePath.replace("%", "%25").replace("#", "%23").replace('"', "%22").replace("<", "%3C").replace(">", "%3E").replace("|", "%7C");
+                    sFilePath = sFilePath.replaceAll("%", "%25");
+                    sFilePath = sFilePath.replaceAll("#", "%23");
+                    sFilePath = sFilePath.replaceAll('"', "%22");
+                    sFilePath = sFilePath.replaceAll("<", "%3C");
+                    sFilePath = sFilePath.replaceAll(">", "%3E");
+                    sFilePath = sFilePath.replaceAll("|", "%7C");
+
                     document.getElementById("bigImagePDF").src = sFilePath;
                 }
             },

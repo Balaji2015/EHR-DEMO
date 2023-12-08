@@ -387,7 +387,7 @@
 
                                 <div class="tab-pane" id="tbSummary" data-src="frmSummaryNew.aspx?AkidoSummary=N">
                                     <div id="WaitingMessage">  
-                                        <label style=" font-family: Helvetica Neue,Helvetica,Arial,sans-serif !important;font-size: 13px !important;font-weight: bold  !important;"> Summary will be displayed shortly. Please wait.</label>
+                                        <label style=" font-family: Helvetica Neue,Helvetica,Arial,sans-serif !important;font-size: 13px !important;font-weight: bold  !important;"> Summary is loading. Please wait.</label>
                                     </div>
                                     <iframe id="Summaryframe" class="clsIframe" src="" style="display:block; height: 651px; width: 96%;" frameborder="0" allowfullscreen="allowFullScreen"></iframe>
                                 </div>

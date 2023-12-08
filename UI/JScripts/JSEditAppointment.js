@@ -977,13 +977,13 @@ function isNumberKey(evt) {
     return true;
 }
 function DateValidattion(dateToValidate) {
-
+    //CAP-1463
     var datePicker = $find(dateToValidate);
-    var splitdate = datePicker.get_dateInput().get_selectedDate().format("dd-MMM-yyyy");
+    var splitdate = datePicker?.get_dateInput()?.get_selectedDate()?.format("dd-MMM-yyyy");
     var dt1 = new Date();
     var dd = new Date();
     var month = new Array();
-    switch (splitdate.split('-')[1]) {
+    switch (splitdate?.split('-')[1]) {
         case "Jan":
             x = 0;
             break;
@@ -1027,11 +1027,11 @@ function DateValidattion(dateToValidate) {
     }
 
 
-    dd.setFullYear(splitdate.split('-')[2], x, splitdate.split('-')[0]);
+    dd.setFullYear(splitdate?.split('-')[2], x, splitdate?.split('-')[0]);
     if (isNaN(dd)) {
         return false;
     }
-    if (splitdate.split('-')[0] > 31) {
+    if (splitdate?.split('-')[0] > 31) {
         return false;
     }
 }

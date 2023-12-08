@@ -131,7 +131,7 @@ function handleError(evt) {
                 top.window.document.getElementById('ctl00_Loading').style.display = "none";
             if (top.window.document.getElementById('divLoading') != null)
                 top.window.document.getElementById('divLoading').style.display = "none";
-            ScriptErrorLogEntry(evt.message, evt.lineno, evt.colno, evt.filename, evt.error.stack, true);
+            ScriptErrorLogEntry(evt.message, evt.lineno, evt.colno, evt.filename, evt?.error?.stack, true);
             //alert(evt.message.split('$')[1]);
         }
         else if (evt.message.indexOf("To Process is not found") > -1) {//BugID:53884
@@ -141,7 +141,7 @@ function handleError(evt) {
             if (top.window.document.getElementById('divLoading') != null)
                 top.window.document.getElementById('divLoading').style.display = "none";
             //DisplayErrorMessage('000022');
-            ScriptErrorLogEntry(evt.message, evt.lineno, evt.colno, evt.filename, evt.error.stack, true);
+            ScriptErrorLogEntry(evt.message, evt.lineno, evt.colno, evt.filename, evt?.error?.stack, true);
 
         }
         else if (evt.message.indexOf("Cannot read property 'window' of null") > -1) {
@@ -150,7 +150,7 @@ function handleError(evt) {
                 top.window.document.getElementById('ctl00_Loading').style.display = "none";
             if (top.window.document.getElementById('divLoading') != null)
                 top.window.document.getElementById('divLoading').style.display = "none";
-            ScriptErrorLogEntry(evt.message, evt.lineno, evt.colno, evt.filename, evt.error.stack, false);
+            ScriptErrorLogEntry(evt.message, evt.lineno, evt.colno, evt.filename, evt?.error?.stack, false);
         }
         else if (evt.message.indexOf("Uncaught Sys.ParameterCountException: Sys.ParameterCountException: Parameter count mismatch.") > -1) {
             { sessionStorage.setItem('StartLoading', 'false'); StopLoadFromPatChart(); }
@@ -158,7 +158,7 @@ function handleError(evt) {
                 top.window.document.getElementById('ctl00_Loading').style.display = "none";
             if (top.window.document.getElementById('divLoading') != null)
                 top.window.document.getElementById('divLoading').style.display = "none";
-            ScriptErrorLogEntry(evt.message, evt.lineno, evt.colno, evt.filename, evt.error.stack, false);
+            ScriptErrorLogEntry(evt.message, evt.lineno, evt.colno, evt.filename, evt?.error?.stack, false);
         }
         //else if (evt.message.indexOf("Uncaught SyntaxError: Failed to execute 'insertRule' on 'CSSStyleSheet': Failed to parse the rule") > -1) {
         else if (evt.message.indexOf("Failed to execute 'insertRule' on 'CSSStyleSheet': Failed to parse the rule") > -1) {
@@ -167,26 +167,26 @@ function handleError(evt) {
                 top.window.document.getElementById('ctl00_Loading').style.display = "none";
             if (top.window.document.getElementById('divLoading') != null)
                 top.window.document.getElementById('divLoading').style.display = "none";
-            ScriptErrorLogEntry(evt.message, evt.lineno, evt.colno, evt.filename, evt.error.stack, false);
+            ScriptErrorLogEntry(evt.message, evt.lineno, evt.colno, evt.filename, evt?.error?.stack, false);
         }
         else if (evt.message.indexOf("Uncaught Sys.WebForms.PageRequestManagerServerErrorException: Sys.WebForms.PageRequestManagerServerErrorException") > -1) {
             if (top.window.document.getElementById('ctl00_Loading') != null)
                 top.window.document.getElementById('ctl00_Loading').style.display = "none";
             if (top.window.document.getElementById('divLoading') != null)
                 top.window.document.getElementById('divLoading').style.display = "none";
-            ScriptErrorLogEntry(evt.message, evt.lineno, evt.colno, evt.filename, evt.error.stack, false);
+            ScriptErrorLogEntry(evt.message, evt.lineno, evt.colno, evt.filename, evt?.error?.stack, false);
         }
         else if (sessionStorage.getItem('StartLoading') == "true") {
             if (top.window.document.getElementById('ctl00_Loading') != null)
                 top.window.document.getElementById('ctl00_Loading').style.display = "none";
             if (top.window.document.getElementById('divLoading') != null)
                 top.window.document.getElementById('divLoading').style.display = "none";
-            ScriptErrorLogEntry(evt.message, evt.lineno, evt.colno, evt.filename, evt.error.stack, true);
+            ScriptErrorLogEntry(evt.message, evt.lineno, evt.colno, evt.filename, evt?.error?.stack, true);
             //if (evt.message.indexOf("Failed to execute 'insertRule' on 'CSSStyleSheet'") < 0)
             //alert("Something went wrong! \n There seems to be a problem with this page. Please retry and if the problem persists, contact Capella Support with patient and page details.");
         }
         //Jira #CAP-191
-        else if (evt.error.stack.indexOf("Telerik.Web.UI.WebResource.axd") > -1) {
+        else if (evt?.error?.stack.indexOf("Telerik.Web.UI.WebResource.axd") > -1) {
             if (top.window.document.getElementById('ctl00_Loading') != null)
                 top.window.document.getElementById('ctl00_Loading').style.display = "none";
             if (top.window.document.getElementById('divLoading') != null)
@@ -200,14 +200,14 @@ function handleError(evt) {
                 top.window.document.getElementById('ctl00_Loading').style.display = "none";
             if (top.window.document.getElementById('divLoading') != null)
                 top.window.document.getElementById('divLoading').style.display = "none";
-            ScriptErrorLogEntry(evt.message, evt.lineno, evt.colno, evt.filename, evt.error.stack, false);
+            ScriptErrorLogEntry(evt.message, evt.lineno, evt.colno, evt.filename, evt?.error?.stack, false);
         }
         else {
             if (top.window.document.getElementById('ctl00_Loading') != null)
                 top.window.document.getElementById('ctl00_Loading').style.display = "none";
             if (top.window.document.getElementById('divLoading') != null)
                 top.window.document.getElementById('divLoading').style.display = "none";
-            ScriptErrorLogEntry(evt.message, evt.lineno, evt.colno, evt.filename, evt.error.stack, true);
+            ScriptErrorLogEntry(evt.message, evt.lineno, evt.colno, evt.filename, evt?.error?.stack, true);
             //alert("Something went wrong! \n There seems to be a problem with this page. Please retry and if the problem persists, contact Capella Support with patient and page details. \n" + error.message);
         }
 
@@ -216,8 +216,8 @@ function handleError(evt) {
     return true;
 }
 //CAP-450: Error Handler Method
+//CAP-1473 :Javascript Exceptions - Cannot read properties of undefined (reading stack)
 function HandlerAngularjsError(evt) {
-
     if (evt.message) {
 
         if (evt.message.indexOf("Transaction XML") > -1) {
@@ -226,7 +226,7 @@ function HandlerAngularjsError(evt) {
                 top.window.document.getElementById('ctl00_Loading').style.display = "none";
             if (top.window.document.getElementById('divLoading') != null)
                 top.window.document.getElementById('divLoading').style.display = "none";
-            ScriptErrorLogEntry(evt.message, evt.lineno, evt.colno, evt.filename, evt.error.stack, true);
+            ScriptErrorLogEntry(evt.message, evt.lineno, evt.colno, evt.filename, evt?.error?.stack, true);
             //alert(evt.message.split('$')[1]);
         }
         else if (evt.message.indexOf("To Process is not found") > -1) {//BugID:53884
@@ -236,7 +236,7 @@ function HandlerAngularjsError(evt) {
             if (top.window.document.getElementById('divLoading') != null)
                 top.window.document.getElementById('divLoading').style.display = "none";
             //DisplayErrorMessage('000022');
-            ScriptErrorLogEntry(evt.message, evt.lineno, evt.colno, evt.filename, evt.error.stack, true);
+            ScriptErrorLogEntry(evt.message, evt.lineno, evt.colno, evt.filename, evt?.error?.stack, true);
 
         }
         else if (evt.message.indexOf("Cannot read property 'window' of null") > -1) {
@@ -245,7 +245,7 @@ function HandlerAngularjsError(evt) {
                 top.window.document.getElementById('ctl00_Loading').style.display = "none";
             if (top.window.document.getElementById('divLoading') != null)
                 top.window.document.getElementById('divLoading').style.display = "none";
-            ScriptErrorLogEntry(evt.message, evt.lineno, evt.colno, evt.filename, evt.error.stack, false);
+            ScriptErrorLogEntry(evt.message, evt.lineno, evt.colno, evt.filename, evt?.error?.stack, false);
         }
         else if (evt.message.indexOf("Uncaught Sys.ParameterCountException: Sys.ParameterCountException: Parameter count mismatch.") > -1) {
             { sessionStorage.setItem('StartLoading', 'false'); StopLoadFromPatChart(); }
@@ -253,7 +253,7 @@ function HandlerAngularjsError(evt) {
                 top.window.document.getElementById('ctl00_Loading').style.display = "none";
             if (top.window.document.getElementById('divLoading') != null)
                 top.window.document.getElementById('divLoading').style.display = "none";
-            ScriptErrorLogEntry(evt.message, evt.lineno, evt.colno, evt.filename, evt.error.stack, false);
+            ScriptErrorLogEntry(evt.message, evt.lineno, evt.colno, evt.filename, evt?.error?.stack, false);
         }
         //else if (evt.message.indexOf("Uncaught SyntaxError: Failed to execute 'insertRule' on 'CSSStyleSheet': Failed to parse the rule") > -1) {
         else if (evt.message.indexOf("Failed to execute 'insertRule' on 'CSSStyleSheet': Failed to parse the rule") > -1) {
@@ -262,14 +262,14 @@ function HandlerAngularjsError(evt) {
                 top.window.document.getElementById('ctl00_Loading').style.display = "none";
             if (top.window.document.getElementById('divLoading') != null)
                 top.window.document.getElementById('divLoading').style.display = "none";
-            ScriptErrorLogEntry(evt.message, evt.lineno, evt.colno, evt.filename, evt.error.stack, false);
+            ScriptErrorLogEntry(evt.message, evt.lineno, evt.colno, evt.filename, evt?.error?.stack, false);
         }
         else if (evt.message.indexOf("Uncaught Sys.WebForms.PageRequestManagerServerErrorException: Sys.WebForms.PageRequestManagerServerErrorException") > -1) {
             if (top.window.document.getElementById('ctl00_Loading') != null)
                 top.window.document.getElementById('ctl00_Loading').style.display = "none";
             if (top.window.document.getElementById('divLoading') != null)
                 top.window.document.getElementById('divLoading').style.display = "none";
-            ScriptErrorLogEntry(evt.message, evt.lineno, evt.colno, evt.filename, evt.error.stack, false);
+            ScriptErrorLogEntry(evt.message, evt.lineno, evt.colno, evt.filename, evt?.error?.stack, false);
         }
         else if (sessionStorage.getItem('StartLoading') == "true") {
             if (top.window.document.getElementById('ctl00_Loading') != null)
@@ -297,7 +297,7 @@ function HandlerAngularjsError(evt) {
             if (evt.error == undefined)
                 stack = null;
             else
-                stack = evt.error.stack;
+                stack = evt?.error?.stack;
 
             //if (evt.error.stack == undefined)
             //    evt.error.stack = null;
@@ -309,7 +309,7 @@ function HandlerAngularjsError(evt) {
             //alert("Something went wrong! \n There seems to be a problem with this page. Please retry and if the problem persists, contact Capella Support with patient and page details.");
         }
         //Jira #CAP-191
-        else if (evt.error != undefined && evt.error.stack != undefined && evt.error.stack.indexOf("Telerik.Web.UI.WebResource.axd") > -1) {
+        else if (evt.error != undefined && evt?.error?.stack != undefined && evt?.error?.stack.indexOf("Telerik.Web.UI.WebResource.axd") > -1) {
             if (top.window.document.getElementById('ctl00_Loading') != null)
                 top.window.document.getElementById('ctl00_Loading').style.display = "none";
             if (top.window.document.getElementById('divLoading') != null)
@@ -322,15 +322,14 @@ function HandlerAngularjsError(evt) {
                 top.window.document.getElementById('ctl00_Loading').style.display = "none";
             if (top.window.document.getElementById('divLoading') != null)
                 top.window.document.getElementById('divLoading').style.display = "none";
-            ScriptErrorLogEntry(evt.message, evt.lineno, evt.colno, evt.filename, evt.error.stack, false);
+            ScriptErrorLogEntry(evt.message, evt.lineno, evt.colno, evt.filename, evt?.error?.stack, false);
         }
         else {
-            debugger;
             if (top.window.document.getElementById('ctl00_Loading') != null)
                 top.window.document.getElementById('ctl00_Loading').style.display = "none";
             if (top.window.document.getElementById('divLoading') != null)
                 top.window.document.getElementById('divLoading').style.display = "none";
-            ScriptErrorLogEntry(evt.message, evt.lineno, evt.colno, evt.filename, evt.error.stack, true);
+            ScriptErrorLogEntry(evt.message, evt.lineno, evt.colno, evt.filename, evt?.error?.stack, true);
             //alert("Something went wrong! \n There seems to be a problem with this page. Please retry and if the problem persists, contact Capella Support with patient and page details. \n" + error.message);
         }
 
@@ -1676,6 +1675,7 @@ function LoadNotification(Value) {
     if ((window.location.href.indexOf("frmAppointments.aspx") == -1) && (window.parent == null || (window.parent.location.href.indexOf("frmAppointments.aspx") == -1))) {
         if (window.parent.location.href.indexOf("frmMyQueueNew.aspx") == -1 || window.location.href.indexOf("frmMyQueueNew.aspx") == -1) {
             //Jira #CAP-772 - check the undefind and null to the $(top.window.document).find("#divNotifyPullUp")[0]
+            //CAP-1471
             if ($(top.window.document).find("#divNotifyPullUp")[0] != undefined && $(top.window.document).find("#divNotifyPullUp")[0] != null) {
                 $(top.window.document).find("#divNotifyPullUp")[0].style.display = "block";//BugID:48010
             }
@@ -1878,42 +1878,42 @@ function movetotab(ResolveScreen) {
     else if (window.parent.parent.theForm.hdnIsSaveEnable != null && window.parent.parent.theForm.hdnIsSaveEnable != undefined) {
         window.parent.parent.theForm.hdnIsSaveEnable.value = "false";
     }//End For Bug ID: 70350
-
+    //CAP-1471
     if (ResolveScreen == "PFSH-SOCIAL_HISTORY") {
-        $($(window.top.document).find('iframe[id=ctl00_C5POBody_EncounterContainer]')[0].contentDocument).find("ul li a")[0].click();
-        $($(window.top.document).find('iframe[id=ctl00_C5POBody_EncounterContainer]')[0].contentDocument).find("ul li a")[2].click();
+        $($(window.top.document)?.find('iframe[id=ctl00_C5POBody_EncounterContainer]')[0]?.contentDocument)?.find("ul li a")[0]?.click();
+        $($(window.top.document)?.find('iframe[id=ctl00_C5POBody_EncounterContainer]')[0]?.contentDocument)?.find("ul li a")[2]?.click();
         localStorage.setItem("notification", "Social")
     }
     else if (ResolveScreen == "VITALS")
-        $($(window.top.document).find('iframe[id=ctl00_C5POBody_EncounterContainer]')[0].contentDocument).find("ul li a")[4].click();
+        $($(window.top.document)?.find('iframe[id=ctl00_C5POBody_EncounterContainer]')[0]?.contentDocument)?.find("ul li a")[4]?.click();
     else if (ResolveScreen == "ASSESSMENT")
-        $($(window.top.document).find('iframe[id=ctl00_C5POBody_EncounterContainer]')[0].contentDocument).find("ul li a")[7].click();
+        $($(window.top.document)?.find('iframe[id=ctl00_C5POBody_EncounterContainer]')[0]?.contentDocument)?.find("ul li a")[7]?.click();
     else if (ResolveScreen == "ORDER") {
-        $($(window.top.document).find('iframe[id=ctl00_C5POBody_EncounterContainer]')[0].contentDocument).find("ul li a")[0].click();
-        $($(window.top.document).find('iframe[id=ctl00_C5POBody_EncounterContainer]')[0].contentDocument).find("ul li a")[8].click();
+        $($(window.top.document)?.find('iframe[id=ctl00_C5POBody_EncounterContainer]')[0]?.contentDocument)?.find("ul li a")[0]?.click();
+        $($(window.top.document)?.find('iframe[id=ctl00_C5POBody_EncounterContainer]')[0]?.contentDocument)?.find("ul li a")[8]?.click();
     }
     else if (ResolveScreen == "ORDER-IMMUNIZATION") {
-        $($(window.top.document).find('iframe[id=ctl00_C5POBody_EncounterContainer]')[0].contentDocument).find("ul li a")[0].click();
-        $($(window.top.document).find('iframe[id=ctl00_C5POBody_EncounterContainer]')[0].contentDocument).find("ul li a")[8].click();
+        $($(window.top.document)?.find('iframe[id=ctl00_C5POBody_EncounterContainer]')[0]?.contentDocument).find("ul li a")[0]?.click();
+        $($(window.top.document)?.find('iframe[id=ctl00_C5POBody_EncounterContainer]')[0]?.contentDocument).find("ul li a")[8]?.click();
         localStorage.setItem("notification", "Immunizationorder");
     }
     else if (ResolveScreen == "ERX")
-        $($(window.top.document).find('iframe[id=ctl00_C5POBody_EncounterContainer]')[0].contentDocument).find("ul li a")[9].click();
+        $($(window.top.document)?.find('iframe[id=ctl00_C5POBody_EncounterContainer]')[0]?.contentDocument).find("ul li a")[9]?.click();
     else if (ResolveScreen == "SERVICE_AND_PROCEDURE_CODE") {
-        $($(window.top.document).find('iframe[id=ctl00_C5POBody_EncounterContainer]')[0].contentDocument).find("ul li a")[0].click();
-        $($(window.top.document).find('iframe[id=ctl00_C5POBody_EncounterContainer]')[0].contentDocument).find("ul li a")[11].click();
+        $($(window.top.document)?.find('iframe[id=ctl00_C5POBody_EncounterContainer]')[0]?.contentDocument).find("ul li a")[0]?.click();
+        $($(window.top.document)?.find('iframe[id=ctl00_C5POBody_EncounterContainer]')[0]?.contentDocument).find("ul li a")[11]?.click();
     }
     else if (ResolveScreen == "PLAN") {
-        $($(window.top.document).find('iframe[id=ctl00_C5POBody_EncounterContainer]')[0].contentDocument).find("ul li a")[0].click();
-        $($(window.top.document).find('iframe[id=ctl00_C5POBody_EncounterContainer]')[0].contentDocument).find("ul li a")[10].click();
+        $($(window.top.document)?.find('iframe[id=ctl00_C5POBody_EncounterContainer]')[0]?.contentDocument).find("ul li a")[0]?.click();
+        $($(window.top.document)?.find('iframe[id=ctl00_C5POBody_EncounterContainer]')[0]?.contentDocument).find("ul li a")[10]?.click();
     }
     else if (ResolveScreen == "PLAN-CAREPLAN") {
-        $($(window.top.document).find('iframe[id=ctl00_C5POBody_EncounterContainer]')[0].contentDocument).find("ul li a")[0].click();
-        $($(window.top.document).find('iframe[id=ctl00_C5POBody_EncounterContainer]')[0].contentDocument).find("ul li a")[10].click();
+        $($(window.top.document)?.find('iframe[id=ctl00_C5POBody_EncounterContainer]')[0]?.contentDocument).find("ul li a")[0]?.click();
+        $($(window.top.document)?.find('iframe[id=ctl00_C5POBody_EncounterContainer]')[0]?.contentDocument).find("ul li a")[10]?.click();
         localStorage.setItem("notification", "CarePlan")
     }
     else if (ResolveScreen == "DEMOGRAPHICS") {
-        $(top.window.document).find("#ctl00_mnuPatient_smnuDemographics a").click();
+        $(top.window.document)?.find("#ctl00_mnuPatient_smnuDemographics a")?.click();
 
     }
     $(top.window.document).find("#AlertInfo")[0].style.display = "none";

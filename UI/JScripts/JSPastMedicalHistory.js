@@ -304,7 +304,7 @@ function DateDisable(ctrl, Value, ctrlName) {
     var chkValue = Value;
     var FromDateControl = pcontrol.id.replace(chkValue, name);
     document.getElementById(FromDateControl + "_RadButton1").disabled = true;
-    document.getElementById(FromDateControl + "_RadButton1").src = "Resources/calenda2_Disable.bmp";
+    document.getElementById(FromDateControl + "_RadButton1").src = "Resources/calenda2_Disabled.bmp";
     var FromDateYearControl = pcontrol.id.replace(chkValue, name);
     var combo = $find(FromDateControl + "_cboYear");
     combo.disable();
@@ -1922,7 +1922,8 @@ function SelectedNotes(agrulist) {
     EnableSave();
     var value = agrulist.split(",");
      //CAP-804 Syntax error, unrecognized expression
-    var sugglistval = $("#" + value[1]?.trim() + ".actcmpt").val().trim();
+     //CAP-1471
+    var sugglistval = $("#" + value[1]?.trim() + ".actcmpt")?.val()?.trim()??"";
 
     if (sugglistval != " " && sugglistval != "") {
         var subsugglistval = sugglistval.split(",")

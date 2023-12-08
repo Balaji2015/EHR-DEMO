@@ -348,7 +348,8 @@ function Copy(data) {
         if (data == 'Address') { var LastName = document.getElementById(GetClientId("txtPatientAddress")).value; document.getElementById(GetClientId("txtGuarantorAddress")).value = LastName }
         if (data == 'Address Line') { var LastName = document.getElementById(GetClientId("txtPatientAddressLine2")).value; document.getElementById(GetClientId("txtGuarantorAddressLine2")).value = LastName }
         if (data == 'Zipcode') {
-            var LastName = $find(GetClientId("msktxtZipcode"))._text; $find(GetClientId("msktxtGuarantorZipCode")).set_value(LastName);
+            //CAP-1463 
+            var LastName = $find(GetClientId("msktxtZipcode"))._text; $find(GetClientId("msktxtGuarantorZipCode"))?.set_value(LastName);
         }
         if (data == 'HomePhone') { var LastName = document.getElementById(GetClientId("msktxtHomePhno")).value; $find(GetClientId("msktxtGuarantorHomeNo")).set_value(LastName) }
 
@@ -1529,9 +1530,10 @@ function listRaceChange(listId) {
     var ID1;
     ID = listId.id;
     ID1 = ID.replace("_listRace", "_txtRace");
-    var txtbox = document.getElementById(ID1).value;
-    var txtValue = listId[listId.selectedIndex].text;
-    Tag = listId[listId.selectedIndex].value;
+    //CAP-1471
+    var txtbox = document?.getElementById(ID1)?.value;
+    var txtValue = listId[listId.selectedIndex]?.text;
+    Tag = listId[listId.selectedIndex]?.value;
     if (txtValue == "[Empty]") {
         RaceTag = ""
         ClearRace();
@@ -2221,23 +2223,31 @@ function btnaddinsured(e) {
     if (document.getElementById("btnAdd").value == 'Add' || document.getElementById("ctl00_C5POBody_rdStatusactive").checked == true) {
         if (PriChecked == false && SecChecked == false && TerChecked == false) {
             DisplayErrorMessage('410006');
+            //CAP-Demographics loading
+            setTimeout(function () { { sessionStorage.setItem('StartLoading', 'false'); StopLoadFromPatChart(); } }, 1000);
             return false;
         }
     }
 
     if (PlanVal == "0") {
         DisplayErrorMessage('380028');
+        //Cap - 1369
+        { sessionStorage.setItem('StartLoading', 'false'); StopLoadFromPatChart(); }
         return false;
     }
 
 
     if (document.getElementById("ctl00_C5POBody_txtPlanSearch").value == "PAYER NOT FOUND" && document.getElementById("ctl00_C5POBody_txtSpecify").value == "") {
         DisplayErrorMessage('410030');
+        //Cap - 1369
+        { sessionStorage.setItem('StartLoading', 'false'); StopLoadFromPatChart(); }
         return false;
     }
 
     if (PolicyVal == "") {
         DisplayErrorMessage('410031');
+        //Cap - 1369
+        { sessionStorage.setItem('StartLoading', 'false'); StopLoadFromPatChart(); }
         return false;
     }
 
@@ -2245,22 +2255,30 @@ function btnaddinsured(e) {
 
     if (RelationVal.options[RelationVal.selectedIndex].text == "") {
         DisplayErrorMessage('380051');
+        //Cap - 1369
+        { sessionStorage.setItem('StartLoading', 'false'); StopLoadFromPatChart(); }
         return false;
     }
 
 
     if (RelationVal.options[RelationVal.selectedIndex].text.toUpperCase() != "SELF" && insurehumanid == "0") {
         DisplayErrorMessage('420043');
+        //Cap - 1369
+        { sessionStorage.setItem('StartLoading', 'false'); StopLoadFromPatChart(); }
         return false;
     }
 
     if (EffStartDate == "" && EffEndDate != "") {
         DisplayErrorMessage('380016');
+        //Cap - 1369
+        { sessionStorage.setItem('StartLoading', 'false'); StopLoadFromPatChart(); }
         return false;
     }
 
     if (Date.parse(EffStartDate) > Date.parse(EffEndDate)) {
         DisplayErrorMessage('410033');
+        //Cap - 1369
+        { sessionStorage.setItem('StartLoading', 'false'); StopLoadFromPatChart(); }
         return false;
     }
 
@@ -2269,6 +2287,8 @@ function btnaddinsured(e) {
         if (document.getElementById("ctl00_C5POBody_txtStartdate").value != "__-___-____") {
             if (DateValidattion("ctl00_C5POBody_txtStartdate") == false) {
                 DisplayErrorMessage('350010');
+                //Cap - 1369
+                { sessionStorage.setItem('StartLoading', 'false'); StopLoadFromPatChart(); }
                 return false;
             }
         }
@@ -2283,6 +2303,8 @@ function btnaddinsured(e) {
             if (DateValidattion("ctl00_C5POBody_txtEnddate") == false) {
 
                 DisplayErrorMessage('350011');
+                //Cap - 1369
+                { sessionStorage.setItem('StartLoading', 'false'); StopLoadFromPatChart(); }
                 return false;
             }
         }
@@ -2292,6 +2314,8 @@ function btnaddinsured(e) {
     }
     if (vProviderFullName != "" && vPcpId == 0) {
         DisplayErrorMessage('350013');
+        //Cap - 1369
+        { sessionStorage.setItem('StartLoading', 'false'); StopLoadFromPatChart(); }
         return false;
     }
     if (document.getElementById("btnAdd").value == 'Add') {
@@ -2306,6 +2330,8 @@ function btnaddinsured(e) {
                     //if ($('#tbodupolicyinfo tr')[k].getElementsByTagName('td')[2].innerText == planname.trim() && $('#tbodupolicyinfo tr')[k].getElementsByTagName('td')[3].innerText == PolicyVal.trim() && $('#tbodupolicyinfo tr')[k].getElementsByTagName('td')[4].innerText == RelationVal.options[RelationVal.selectedIndex].text) {
                     if ($('#tbodupolicyinfo tr')[k].getElementsByTagName('td')[2].innerText.toUpperCase() == planname.trim().toUpperCase() && $('#tbodupolicyinfo tr')[k].getElementsByTagName('td')[3].innerText.toUpperCase() == PolicyVal.trim().toUpperCase() && $('#tbodupolicyinfo tr')[k].getElementsByTagName('td')[14].innerText.trim() == insurehumanid.trim()) {
                         DisplayErrorMessage('350014');
+                        //Cap - 1369
+                        { sessionStorage.setItem('StartLoading', 'false'); StopLoadFromPatChart(); }
                         return false;
                     }
                 }
@@ -2314,6 +2340,8 @@ function btnaddinsured(e) {
                     //if ($('#tbodupolicyinfo tr')[k].getElementsByTagName('td')[2].innerText == planname.trim() && $('#tbodupolicyinfo tr')[k].getElementsByTagName('td')[3].innerText == PolicyVal.trim() && $('#tbodupolicyinfo tr')[k].getElementsByTagName('td')[4].innerText == RelationVal.options[RelationVal.selectedIndex].text && $('#tbodupolicyinfo tr')[k].getElementsByTagName('td')[5].innerText == insurename.trim()) {
                     if ($('#tbodupolicyinfo tr')[k].getElementsByTagName('td')[2].innerText.toUpperCase() == planname.trim().toUpperCase() && $('#tbodupolicyinfo tr')[k].getElementsByTagName('td')[3].innerText.toUpperCase() == PolicyVal.trim().toUpperCase() && $('#tbodupolicyinfo tr')[k].getElementsByTagName('td')[14].innerText.trim() == insurehumanid.trim()) {
                         DisplayErrorMessage('350014');
+                        //Cap - 1369
+                        { sessionStorage.setItem('StartLoading', 'false'); StopLoadFromPatChart(); }
                         return false;
                     }
                 }
@@ -2462,6 +2490,8 @@ function btnaddinsured(e) {
                     var errmsgnumber = objdata.ValidationError.slice(objdata.ValidationError.indexOf('$@') + 2, objdata.ValidationError.length);
 
                     DisplayErrorMessage('380057', '', errmsgnumber);
+                    //Cap - 1369
+                    { sessionStorage.setItem('StartLoading', 'false'); StopLoadFromPatChart(); }
                 }
 
                 //alert(objdata.ValidationError);

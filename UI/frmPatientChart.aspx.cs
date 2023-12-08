@@ -1912,8 +1912,8 @@ namespace Acurus.Capella.UI
                     {
                         if (encounterwf_object != null && encounterwf_object.Current_Owner == ClientSession.UserName)
                         {
-                            var dateOfService = (ilstEncounter?.FirstOrDefault()?.Date_of_Service != null) ? UtilityManager.ConvertToLocal(ilstEncounter.FirstOrDefault().Date_of_Service).ToString("MM/dd/yyyy hh:mm:ss") : string.Empty;
-                            var appointmentDate = (ilstEncounter?.FirstOrDefault()?.Appointment_Date != null) ? UtilityManager.ConvertToLocal(ilstEncounter.FirstOrDefault().Appointment_Date).ToString("MM/dd/yyyy hh:mm:ss") : string.Empty;
+                            var dateOfService = (ilstEncounter?.FirstOrDefault()?.Date_of_Service != null) ? ilstEncounter.FirstOrDefault().Date_of_Service.ToString("MM/dd/yyyy hh:mm:ss") : string.Empty;
+                            var appointmentDate = (ilstEncounter?.FirstOrDefault()?.Appointment_Date != null) ? ilstEncounter.FirstOrDefault().Appointment_Date.ToString("MM/dd/yyyy hh:mm:ss") : string.Empty;
                             var physicianId = ilstEncounter?.FirstOrDefault()?.Encounter_Provider_ID.ToString() ?? string.Empty;
                             var facilityName = ilstEncounter?.FirstOrDefault()?.Facility_Name.ToString() ?? string.Empty;
 
@@ -1946,14 +1946,14 @@ namespace Acurus.Capella.UI
 
                         if (encounterwf_object != null && userProcessList.Any(x => x.Process_Name.ToLower() == (encounterwf_object?.Current_Process?.ToLower()??string.Empty)))
                         {
-                            var dateOfService = (ilstEncounter?.FirstOrDefault()?.Date_of_Service != null) ? UtilityManager.ConvertToLocal(ilstEncounter.FirstOrDefault().Date_of_Service).ToString("MM/dd/yyyy hh:mm:ss") : string.Empty;
-                            var appointmentDate = (ilstEncounter?.FirstOrDefault()?.Appointment_Date != null) ? UtilityManager.ConvertToLocal(ilstEncounter.FirstOrDefault().Appointment_Date).ToString("MM/dd/yyyy hh:mm:ss") : string.Empty;
+                            var dateOfService = (ilstEncounter?.FirstOrDefault()?.Date_of_Service != null) ? ilstEncounter.FirstOrDefault().Date_of_Service.ToString("MM/dd/yyyy hh:mm:ss") : string.Empty;
+                            var appointmentDate = (ilstEncounter?.FirstOrDefault()?.Appointment_Date != null) ? ilstEncounter.FirstOrDefault().Appointment_Date.ToString("MM/dd/yyyy hh:mm:ss") : string.Empty;
                             var physicianId = ilstEncounter?.FirstOrDefault()?.Encounter_Provider_ID.ToString() ?? string.Empty;
                             var examRoom = ilstEncounter?.FirstOrDefault()?.Exam_Room.ToString() ?? string.Empty;
 
                             if (ilstEncounter?.FirstOrDefault()?.Date_of_Service != null && ilstEncounter?.FirstOrDefault()?.Date_of_Service == DateTime.MinValue)
                             {
-                                dateOfService = UtilityManager.ConvertToLocal(DateTime.UtcNow).ToString("MM/dd/yyyy hh:mm:ss");
+                                dateOfService = DateTime.UtcNow.ToString("MM/dd/yyyy hh:mm:ss");
                             }
 
                             var IsProcessEncounterCompleted = AssignCurrentUserAsEncounterOwner(new string[] { humanId.ToString(), encounter_ID.ToString(), physicianId, encounterwf_object.Current_Process, encounterwf_object.Obj_Type, dateOfService, DateTime.UtcNow.ToString("MM/dd/yyyy hh:mm:ss"), "", "Checked",  appointmentDate}, false);
@@ -1970,7 +1970,14 @@ namespace Acurus.Capella.UI
                         }
                         else
                         {
-                            hdnSummaryPageFlag.Value = "true";
+                            if (ilstEncounter?.FirstOrDefault()?.Date_of_Service != null && ilstEncounter?.FirstOrDefault()?.Date_of_Service == DateTime.MinValue)
+                            {
+                                hdnSummaryPageFlag.Value = "none";
+                            }
+                            else
+                            {
+                                hdnSummaryPageFlag.Value = "true";
+                            }    
                         }
                     }
                     else
@@ -2044,8 +2051,17 @@ namespace Acurus.Capella.UI
                 }
                 if (Request["EncounterID"] != null)
                 {
-                    ClientSession.Selectedencounterid = Convert.ToUInt64(Request["EncounterID"]);
-                    ClientSession.EncounterId = Convert.ToUInt64(Request["EncounterID"]);
+                    if (hdnSummaryPageFlag?.Value != null && hdnSummaryPageFlag?.Value == "none")
+                    {
+                        ClientSession.Selectedencounterid = 0;
+                        ClientSession.EncounterId = 0;
+                    }
+                    else
+                    {
+                        ClientSession.Selectedencounterid = Convert.ToUInt64(Request["EncounterID"]);
+                        ClientSession.EncounterId = Convert.ToUInt64(Request["EncounterID"]);
+                    } 
+                   
                 }
                 if (Request["Source"] != null && Request["Source"] == "WindowItem")
                 {

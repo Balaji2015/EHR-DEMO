@@ -298,7 +298,7 @@ $(document).ready(function () {
         localStorage.setItem("CodingException", enc_Id);
         localStorage.setItem("CurrentProcess", $("#hdnEncCurrentProcess").val());
         sessionStorage.setItem("EncId_PatSummaryBar", enc_Id);
-        sessionStorage.setItem("Enc_DOS", $("#hdnEncDos").val());
+        sessionStorage.setItem("Enc_DOS", document.getElementById(GetClientId('hdnEncDos'))?.value);
 
         $('#ctl00_C5POBody_EncounterContainer')[0].src = "frmEncounter.aspx?Date=" + document.getElementById(GetClientId("hdnLocalTime")).value + "&EncounterID=" + enc_Id;
     }
@@ -1232,9 +1232,17 @@ function tree_add_leaf_example_click(leaf, node, pnode, tree) {
         else {
             //inserLog(leaf[0].id.split('^')[1], "0", "Opening Encounter from Leftside PatientChart");
             //Jira CAP-1379 - start
-            document.getElementById('WaitingMessage').style.display = 'block';
-            document.getElementById('jqxSplitter').style.height = '80px';
-            document.getElementById('ctl00_C5POBody_EncounterContainer').style.display = 'none';
+            //CAP-1463
+            if (document?.getElementById('WaitingMessage') != undefined && document?.getElementById('WaitingMessage') != null) {
+                document.getElementById('WaitingMessage').style.display = 'block';
+            }
+            if (document?.getElementById('jqxSplitter') != undefined && document?.getElementById('jqxSplitter') != null) {
+                document.getElementById('jqxSplitter').style.height = '80px';
+            }
+            if (document?.getElementById('ctl00_C5POBody_EncounterContainer') != undefined && document?.getElementById('ctl00_C5POBody_EncounterContainer') != null) {
+                document.getElementById('ctl00_C5POBody_EncounterContainer').style.display = 'none';
+            }
+           
             //Jira CAP-1379 -end
             $('#ctl00_C5POBody_EncounterContainer')[0].src = "frmSummaryNew.aspx?EncounterId=" + leaf[0].id.split('^')[1]+"&TabMode=true";
             document.getElementById(GetClientId("hdnEncounterId")).value = leaf[0].id.split('^')[1];

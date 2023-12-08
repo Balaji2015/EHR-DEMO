@@ -575,8 +575,20 @@ namespace Acurus.Capella.UI
                         {
                             userCtrl.txtDLC.Text = healthQuestionScreenList[i].Notes;
                         }
-                        else //if (hdnTotalScoreDescription.Value != string.Empty)
-                            userCtrl.txtDLC.Text = hdnTotalScoreDescription.Value;
+                        //Cap - 971
+                        //else //if (hdnTotalScoreDescription.Value != string.Empty)
+                        //    userCtrl.txtDLC.Text = hdnTotalScoreDescription.Value;
+                        else
+                        {
+                            if (healthQuestionScreenList[i].Question.ToUpper() == "TOTAL SCORE")
+                            {
+                                userCtrl.txtDLC.Text = hdnTotalScoreDescription.Value;
+                            }
+                            else
+                            {
+                                userCtrl.txtDLC.Text = healthQuestionScreenList[i].Notes;
+                            }
+                        }
                         //else
                         //    if (hdnTotalScore.Value == string.Empty || hdnTotalScore.Value=="0")
                         //        userCtrl.txtDLC.Text = hdnTotalScoreDescription.Value;

@@ -253,10 +253,11 @@ function EnableSavetxtFeedback(event) {
 
 function EnableSavetxtIssues(event) {
     if (document.getElementById('txtIssues').value != "") {
-        $find('btnAdd').set_enabled(true);
+        $find('btnAdd')?.set_enabled(true);
     }
     else {
-        $find('btnAdd').set_enabled(false);
+        //CAP-1463 
+        $find('btnAdd')?.set_enabled(false);
     }
 }
 function btnCloseClicked(sender, args) {

@@ -2276,7 +2276,8 @@ myapp.controller('EandMCodingCtrl', function ($scope, $http) {
             DeleteArrayICD.push(table.find('tr')[iCheck].children[3].innerText.trim());
             for (var i = 0; i < $scope.EandMCodingICDTable.length; i++) {
                 for (var j = 0; j < DeleteArrayICD.length; j++) {
-                    if (DeleteArrayICD[j].trim() == $scope.EandMCodingICDTable[i].ICDCode.trim()) {
+                    //CAP-1471
+                    if (DeleteArrayICD[j]?.trim() == $scope?.EandMCodingICDTable[i]?.ICDCode?.trim()) {
                         $scope.EandMCodingICDTable.splice(i, 1);
 
                         //Remove diagnosis pointer mapping from CPT table if ICD deleted

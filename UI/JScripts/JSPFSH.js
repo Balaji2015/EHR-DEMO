@@ -262,7 +262,8 @@ $(document).ready(function () {
         $("#txtSourceOfInformation").hide();
         $("#cboSourceOfInformation").hide();
         $("#btnPFSHVerified").hide();
-        var FacilityRole = window.parent.parent.parent.theForm.ctl00_C5POBody_hdnFacilityRole.value;
+        //CAP-1471
+        var FacilityRole = window?.parent?.parent?.parent?.theForm?.ctl00_C5POBody_hdnFacilityRole?.value;
         if (FacilityRole != "") {
             LoadPhysicianList();
 
@@ -583,7 +584,7 @@ function LoadPFSHTabs(event) {
                 sessionStorage.setItem('PFSH_PrevTabText', prevTabtxt);
                 //CAP-537 : PFSH - Family History screen loading for long time
                 $(paneID + " iframe").attr("src", src);
-                $('.clsIframe').contents()[0].all.namedItem('btnSave').click();
+                $('.clsIframe').contents()[0]?.all?.namedItem('btnSave')?.click();
             }
             else if (PrevTab[0].innerText == "Surg./Proc.") {
                 paneID = $(event.target).attr('href');
@@ -606,8 +607,8 @@ function LoadPFSHTabs(event) {
                 sessionStorage.setItem('PFSH_PrevTabText', prevTabtxt);
                 //CAP-537 : PFSH - Family History screen loading for long time
                 $(paneID + " iframe").attr("src", src);
-                if ($('.clsIframe').contents()[2].all.namedItem('btnAdd') != null && $('.clsIframe').contents()[2].all.namedItem('btnAdd') != undefined) {
-                    $('.clsIframe').contents()[2].all.namedItem('btnAdd').click();
+                if ($('.clsIframe').contents()[2]?.all?.namedItem('btnAdd') != null && $('.clsIframe').contents()[2]?.all?.namedItem('btnAdd') != undefined) {
+                    $('.clsIframe').contents()[2]?.all?.namedItem('btnAdd')?.click();
                 }
 
             }
@@ -653,7 +654,8 @@ function LoadPFSHTabs(event) {
                 sessionStorage.setItem('PFSH_PrevTabText', prevTabtxt);
                 //CAP-537 : PFSH - Family History screen loading for long time
                 $(paneID + " iframe").attr("src", src);
-                $('.clsIframe').contents()[5].all.namedItem('btnSave').click();
+                //CAP-1463
+                $('.clsIframe').contents()[5]?.all?.namedItem('btnSave')?.click();
             }
             //else if (PrevTab[0].innerText == "Drug Allergy") {
             //    paneID = $(event.target).attr('href');
@@ -673,7 +675,7 @@ function LoadPFSHTabs(event) {
                 sessionStorage.setItem('PFSH_PrevTabText', prevTabtxt);
                 //CAP-537 : PFSH - Family History screen loading for long time
                 $(paneID + " iframe").attr("src", src);
-                $('.clsIframe').contents()[6].all.namedItem('btnSave').click();
+                $('.clsIframe').contents()[6]?.all?.namedItem('btnSave')?.click();
 
             }
             else if (PrevTab[0].innerText == "AD") {
@@ -685,7 +687,7 @@ function LoadPFSHTabs(event) {
                 sessionStorage.setItem('PFSH_PrevTabText', prevTabtxt);
                 //CAP-537 : PFSH - Family History screen loading for long time
                 $(paneID + " iframe").attr("src", src);
-                $('.clsIframe').contents()[7].all.namedItem('btnPFSHAutoSave').click();
+                $('.clsIframe').contents()[7]?.all?.namedItem('btnPFSHAutoSave')?.click();
             }
 
         }
