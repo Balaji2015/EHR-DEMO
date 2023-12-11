@@ -96,7 +96,7 @@
             </div>--%>
 
             <div class="bluebutton" style="float: right;margin-right:15px">
-                <button type="button"  runat="server" onclick="OpenServiceProcedureCode();" id="btnServiceProcedureCode" class=" aspresizedbluebutton">Edit Service Procedure Code</button>
+                <button type="button"  runat="server" onclick="OpenServiceProcedureCode();" id="btnServiceProcedureCode" class=" aspresizedbluebutton">View Service Procedure Code</button>
             </div>
 
             <asp:Button ID="btntreatment" class="aspresizedbluebutton dropdown-toggle" OnClientClick="PrintTreatmentNote();" style="float: right; margin-right: 15px" Text="Print Treatment Notes" runat="server" />

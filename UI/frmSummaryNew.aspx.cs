@@ -6094,54 +6094,59 @@ margin:0in 0in 0in 9in;
                 HttpContext.Current.Response.StatusDescription = "frmSessionExpired.aspx";
                 return "Session Expired";
             }
+            #region CAP-1355
+            //string sReturn = string.Empty;
 
-            string sReturn = string.Empty;
 
-            WFObjectManager WFMngr = new WFObjectManager();
-            WFObject WFBillingObj = new WFObject();
-            WFBillingObj = WFMngr.GetByObjectSystemId(ClientSession.EncounterId, "BILLING");
+            //WFObjectManager WFMngr = new WFObjectManager();
+            //WFObject WFBillingObj = new WFObject();
+            //WFBillingObj = WFMngr.GetByObjectSystemId(ClientSession.EncounterId, "BILLING");
 
-            if (WFBillingObj.Current_Process == "")
-            {
-                sReturn = "110092";
-                goto ReturnResult;
-            }
+            //if (WFBillingObj.Current_Process == "")
+            //{
+            //    sReturn = "110092";
+            //    goto ReturnResult;
+            //}
 
-            if (WFBillingObj.Current_Process == "BATCHING_COMPLETE")
-            {
-                sReturn = "670002";
-                goto ReturnResult;
-            }
+            //if (WFBillingObj.Current_Process == "BATCHING_COMPLETE")
+            //{
+            //    sReturn = "670002";
+            //    goto ReturnResult;
+            //}
 
-            EncounterManager EncMngr = new EncounterManager();
-            IList<Encounter> EncObj = new List<Encounter>();
-            EncObj = EncMngr.GetEncounterByEncounterID(ClientSession.EncounterId);
+            //EncounterManager EncMngr = new EncounterManager();
+            //IList<Encounter> EncObj = new List<Encounter>();
+            //EncObj = EncMngr.GetEncounterByEncounterID(ClientSession.EncounterId);
 
-            if (EncObj.Count > 0)
-            {
-                if (EncObj[0].Batch_Status == "CLOSED")
-                {
-                    sReturn = "670002";
-                    goto ReturnResult;
-                }
+            //if (EncObj.Count > 0)
+            //{
+            //    if (EncObj[0].Batch_Status == "CLOSED")
+            //    {
+            //        sReturn = "670002";
+            //        goto ReturnResult;
+            //    }
 
-                if (EncObj[0].Assigned_Med_Asst_User_Name == ClientSession.UserName)
-                {
-                    sReturn = "Success";
-                    ClientSession.FillEncounterandWFObject = null;
-                }
-                else if (Convert.ToUInt64(EncObj[0].Encounter_Provider_ID) == ClientSession.CurrentPhysicianId || (EncObj[0].Encounter_Provider_Review_ID != 0 && Convert.ToUInt64(EncObj[0].Encounter_Provider_Review_ID) == ClientSession.CurrentPhysicianId))
-                {
-                    sReturn = "Success";
-                    ClientSession.FillEncounterandWFObject = null;
-                }
-                else
-                    sReturn = "670003";
-            }
-            else
-                sReturn = "110092";
+            //    if (EncObj[0].Assigned_Med_Asst_User_Name == ClientSession.UserName)
+            //    {
+            //        sReturn = "Success";
+            //        ClientSession.FillEncounterandWFObject = null;
+            //    }
+            //    else if (Convert.ToUInt64(EncObj[0].Encounter_Provider_ID) == ClientSession.CurrentPhysicianId || (EncObj[0].Encounter_Provider_Review_ID != 0 && Convert.ToUInt64(EncObj[0].Encounter_Provider_Review_ID) == ClientSession.CurrentPhysicianId))
+            //    {
+            //        sReturn = "Success";
+            //        ClientSession.FillEncounterandWFObject = null;
+            //    }
+            //    else
+            //        sReturn = "670003";
+            //}
+            //else
+            //    sReturn = "110092";
 
-            ReturnResult: var result = new { Return = sReturn };
+            //ReturnResult: var result = new { Return = sReturn };
+            //return JsonConvert.SerializeObject(result);
+            #endregion
+            ClientSession.FillEncounterandWFObject = null;
+            var result = new { Return = "Success" };
             return JsonConvert.SerializeObject(result);
         }
     }
