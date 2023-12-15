@@ -356,6 +356,7 @@
         <asp:HiddenField ID="hdnHeader" Value="" runat="server" />
         <asp:HiddenField ID="birthdate" Value="" runat="server" />
         <asp:HiddenField ID="hdnscript" Value="" runat="server" />
+        <asp:HiddenField ID="hdnType" runat="server" />
           <asp:HiddenField ID="hdnreason" Value="" runat="server" />
         <asp:Button ID="btnMessageType" runat="server" Text="Button" Style="display: none" OnClientClick="return autosavevitals();" />
         <asp:HiddenField ID="hdnRowIndex" runat="server" EnableViewState="false" />
