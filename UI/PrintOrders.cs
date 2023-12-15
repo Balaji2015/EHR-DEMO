@@ -620,7 +620,7 @@ namespace Acurus.Capella.UI
                         if (objFacility.Fac_State != string.Empty)
                             sFacCity += ", " + objFacility.Fac_State + " - " + objFacility.Fac_Zip;
                         if (objFacility.Fac_Telephone != string.Empty)
-                            sFacCity += "\n" + "Phone: "+ objFacility.Fac_Telephone;
+                            sFacCity += "\n" + "Phone: " + objFacility.Fac_Telephone;
                         if (objFacility.Fac_Fax != string.Empty)
                             sFacCity += "\n" + "Fax: " + objFacility.Fac_Fax;
 
@@ -1262,7 +1262,7 @@ namespace Acurus.Capella.UI
                 cb.SetFontAndSize(BaseFont.CreateFont(BaseFont.TIMES_BOLD, BaseFont.CP1252, BaseFont.NOT_EMBEDDED), 10);
                 int i = 380;
                 cb.SetTextMatrix(pageSize.GetRight(i), pageSize.GetTop(40));
-                
+
                 string sFaceSheet = string.Empty;
                 var client = from c in ApplicationObject.ClientList where c.Legal_Org == ClientSession.LegalOrg select c;
                 IList<Client> currentClientList = client.ToList<Client>();
@@ -1273,7 +1273,7 @@ namespace Acurus.Capella.UI
                 }
 
                 //cb.ShowText(ConfigurationManager.AppSettings["ClientName"].ToString());
-                 cb.ShowText(sFaceSheet);
+                cb.ShowText(sFaceSheet);
                 cb.EndText();
             }
 
@@ -1744,12 +1744,30 @@ namespace Acurus.Capella.UI
                         patTable.AddCell(cell);
                         cell = CreateCell("Referred to Facility: \n", objList[0].To_Facility_Name);
                         patTable.AddCell(cell);
-                        cell = CreateCell("Referred to Facility Address: \n", objList[0].To_Facility_Street_Address + "\n" + objList[0].To_Facility_City + "\n" + objList[0].To_Facility_State + "\n" + objList[0].To_Facility_Zip);
+                        //Cap - 1468
+                        string sZipcode;
+                        if(objList[0].To_Facility_Zip.Length > 8)
+                        {
+                            sZipcode = objList[0].To_Facility_Zip.Insert(5, "-");
+                        }
+                        else
+                        {
+                            sZipcode = objList[0].To_Facility_Zip;
+                        }
+                        cell = CreateCell("Referred to Facility Address: \n", objList[0].To_Facility_Street_Address + "\n" + objList[0].To_Facility_City + "\n" + objList[0].To_Facility_State + "\n" + sZipcode);
                         //cell.Colspan = 3;
                         patTable.AddCell(cell);
                         cell = CreateCell("Referred to Facility Phone #: \n", "\n" + objList[0].To_Facility_Phone_Number);
                         patTable.AddCell(cell);
-                        cell = CreateCell("Referred to Facility Fax: \n", "\n" + objList[0].To_Facility_Fax_Number);
+                        //Cap - 1468
+                        if (objList[0].To_Facility_Fax_Number.Length >= 9)
+                        {
+                            cell = CreateCell("Referred to Facility Fax: \n", "\n" + objList[0].To_Facility_Fax_Number.Insert(0, "(").Insert(4, ") ").Insert(9, "-"));
+                        }
+                        else
+                        {
+                            cell = CreateCell("Referred to Facility Fax: \n", "\n" + objList[0].To_Facility_Fax_Number);
+                        }
                         //cell.Colspan = 3;
                         patTable.AddCell(cell);
                         string Address = string.Empty;
@@ -2223,9 +2241,11 @@ namespace Acurus.Capella.UI
 
             switch (objHuman.Ethnicity_No)
             {
-                case 1: ethnicity = "Yes";
+                case 1:
+                    ethnicity = "Yes";
                     break;
-                case 2: ethnicity = "No";
+                case 2:
+                    ethnicity = "No";
                     break;
                 default:
                     ethnicity = "Unknown";
@@ -4958,12 +4978,31 @@ namespace Acurus.Capella.UI
                         patTable.AddCell(cell);
                         cell = CreateCell("Referred to Facility: \n", objList[0].To_Facility_Name);
                         patTable.AddCell(cell);
-                        cell = CreateCell("Referred to Facility Address: \n", objList[0].To_Facility_Street_Address + "\n" + objList[0].To_Facility_City + "\n" + objList[0].To_Facility_State + "\n" + objList[0].To_Facility_Zip);
+                        //Cap - 1468
+                        string sZipcode;
+                        if (objList[0].To_Facility_Zip.Length > 8)
+                        {
+                            sZipcode = objList[0].To_Facility_Zip.Insert(5, "-");
+                        }
+                        else
+                        {
+                            sZipcode = objList[0].To_Facility_Zip;
+                        }
+                        cell = CreateCell("Referred to Facility Address: \n", objList[0].To_Facility_Street_Address + "\n" + objList[0].To_Facility_City + "\n" + objList[0].To_Facility_State + "\n" + sZipcode);
                         //cell.Colspan = 3;
                         patTable.AddCell(cell);
                         cell = CreateCell("Referred to Facility Phone #: \n", "\n" + objList[0].To_Facility_Phone_Number);
                         patTable.AddCell(cell);
-                        cell = CreateCell("Referred to Facility Fax: \n", "\n" + objList[0].To_Facility_Fax_Number);
+                        //Cap - 1547
+                        if (objList[0].To_Facility_Fax_Number.Length >= 9)
+                        {
+                            cell = CreateCell("Referred to Facility Fax: \n", "\n" + objList[0].To_Facility_Fax_Number.Insert(0, "(").Insert(4, ") ").Insert(9, "-"));
+                        }
+                        else
+                        {
+                            cell = CreateCell("Referred to Facility Fax: \n", "\n" + objList[0].To_Facility_Fax_Number);
+                        }
+
                         //cell.Colspan = 3;
                         patTable.AddCell(cell);
                         string Address = string.Empty;
@@ -5108,8 +5147,8 @@ namespace Acurus.Capella.UI
             LabLocation objLabLocation = null;
             IList<Orders> objOrders = null;
             IList<OrdersAssessment> objOrdersAssessment = null;
-            mngrOrders.GetDataforDMEOrders(objOrdersSubmit, out objEncounter, out  objLab, out  objLabLocation,
-            out  objOrders, out  objOrdersAssessment);
+            mngrOrders.GetDataforDMEOrders(objOrdersSubmit, out objEncounter, out objLab, out objLabLocation,
+            out objOrders, out objOrdersAssessment);
             #endregion
 
             #region Variable Declrtns
