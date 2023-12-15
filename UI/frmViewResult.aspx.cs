@@ -3654,7 +3654,9 @@ namespace Acurus.Capella.UI
         {
             if (DLC.txtDLC.Text != "")
             {
-                ScriptManager.RegisterStartupScript(this, this.GetType(), "PrintError", "DisplayErrorMessage('115062');", true);
+                //Cap - 1537
+                //ScriptManager.RegisterStartupScript(this, this.GetType(), "PrintError", "DisplayErrorMessage('115062');", true);
+                ScriptManager.RegisterStartupScript(this, this.GetType(), "PrintError", "DisplayErrorMessage('115062');{sessionStorage.setItem('StartLoading', 'false');StopLoadFromPatChart();StopLoadingImage();}", true);
                 btnSave.Disabled = false;
                 return;
             }
