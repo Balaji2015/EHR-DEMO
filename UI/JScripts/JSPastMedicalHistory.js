@@ -1674,6 +1674,14 @@ $(document).ready(function () {
             EnableSave();
             Addto_ModifiedControls(e);
         });
+        //CAP-1434
+        $("textarea").on('change keyup', function (e) {
+            if (e.key === "Backspace") {
+                $('#btnSave').removeProp('disabled');
+                EnableSave();
+                Addto_ModifiedControls(e);
+            }
+        });
     }
 });
 
@@ -1947,6 +1955,13 @@ function SelectedNotes(agrulist) {
 $("textarea").bind("keypress", function (e) {
     $('#btnSave').removeProp('disabled');
     EnableSave();
+});
+//CAP-1434
+$("textarea").bind("keyup", function (e) {
+    if (e.key === "Backspace") {
+        $('#btnSave').removeProp('disabled');
+        EnableSave();
+    }
 });
 
 

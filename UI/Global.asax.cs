@@ -16,6 +16,7 @@ using log4net;
 using System.Reflection;
 using System.Diagnostics;
 using System.Text.RegularExpressions;
+using Acurus.Capella.UI.Extensions;
 
 [assembly: log4net.Config.XmlConfigurator(Watch = true)]
 
@@ -77,15 +78,13 @@ namespace Acurus.Capella.UI
             //UtilityManager.inserttologgingtable(ClientSession.UserName.ToString(), ClientSession.UserRole.ToString(), ClientSession.FacilityName,
             //     ClientSession.LocalDate + ";" + ClientSession.LocalTime, "Session is starting - Session Timeout limit is - "+Session.Timeout, DateTime.Now, "0", "frmSessionExpires");
             UtilityManager.inserttologgingtableforSessionTimeout("Session is starting", Request.Url.ToString(), string.Empty);
-            //CAP-1167
+            //CAP-1167            
             var currentURL = Request.Url.AbsoluteUri.ToString();
-            var encounterUrlPattern = @"^https?://[^/]+/frmPatientChart\.aspx\?EncounterID=\d+$";
-            var humanUrlPattern = @"^https?://[^/]+/frmPatientChart\.aspx\?(?:HumanID=\d+)?(&ScreenMode=Menu)?(&openingfrom=Menu)?$";
-            if (Regex.IsMatch(currentURL, humanUrlPattern) || Regex.IsMatch(currentURL, encounterUrlPattern))
+            if (DirectURLUtility.IsValidRedirectUrlForLogin(currentURL))
             {
-                Session["currenturl"] = Request.Url.AbsoluteUri;
+                Session["currenturl"] = HttpUtility.UrlEncode(Request.Url.AbsoluteUri);
             }
-            
+
             //Session.Timeout = 1440; o
             //if (HttpContext.Current.Session != null)
             //    log4net.GlobalContext.Properties["SessionID"] = HttpContext.Current.Session.SessionID;
@@ -99,6 +98,7 @@ namespace Acurus.Capella.UI
 
         protected void Application_BeginRequest(object sender, EventArgs e)
         {
+            HttpContext.Current.Response.AddHeader("Access-Control-Allow-Origin", "*");
             UtilityManager.inserttologgingtableforSessionTimeout("Application_BeginRequest - Start", Request.Url.ToString(), string.Empty);
         }
 
@@ -616,9 +616,7 @@ namespace Acurus.Capella.UI
                                 //CAP-1075
                                 //CAP-1167
                                 var currentURL = Request.Url.AbsoluteUri.ToString();
-                                var encounterUrlPattern = @"^https?://[^/]+/frmPatientChart\.aspx\?EncounterID=\d+$";
-                                var humanUrlPattern = @"^https?://[^/]+/frmPatientChart\.aspx\?(?:HumanID=\d+)?(&ScreenMode=Menu)?(&openingfrom=Menu)?$";
-                                if (Regex.IsMatch(currentURL, humanUrlPattern) || Regex.IsMatch(currentURL, encounterUrlPattern))
+                                if (DirectURLUtility.IsValidRedirectUrlForLogin(currentURL))
                                 {
                                     var CurrentUrl = Session["currenturl"]?.ToString();
 

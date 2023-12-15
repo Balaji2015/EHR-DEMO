@@ -127,7 +127,18 @@ namespace Acurus.Capella.UI
                 txtRace.Attributes.Add("ReadOnly", "true");
                 txtGranularity.Attributes.Add("ReadOnly", "true");
                 //Cap - 1394
-                dtpDateOfDeath.Attributes.Add("Readonly", "true");
+                //dtpDateOfDeath.Attributes.Add("Readonly", "true");
+                //Cap - 1529
+                if (ddlPatientStatus.Text.ToUpper() == "ALIVE")
+                {
+                    dtpDateOfDeath.Attributes.Add("readOnly", "true");
+                    dtpDateOfDeath.Text = string.Empty;
+                }
+                else if (ddlPatientStatus.Text.ToUpper() == "DECEASED")
+                {
+                    dtpDateOfDeath.Attributes.Remove("readonly");
+                }
+                   
                 if (chkEnrollOnlineAccess.Checked == false)
                     btnSendEmail.Enabled = false;
                 IList<string> HumanIDList = new List<string>();
@@ -4264,6 +4275,11 @@ namespace Acurus.Capella.UI
             {
                 dtpDateOfDeath.Enabled = false;
             }
+            //Cap - 1529
+            else
+            {
+                dtpDateOfDeath.Enabled = true;
+            }
             //DateTimePickerColorChangeWhite(dtpPatientDOB);
             btnEditName.Enabled = false;
         }
@@ -4337,6 +4353,8 @@ namespace Acurus.Capella.UI
                     ComboBoxColorChange(ddlReasonForDeath, true);
                     dtpDateOfDeath.Enabled = true;
                     dtpDateOfDeath.BackColor = System.Drawing.Color.White;
+                    //Cap - 1529
+                    dtpDateOfDeath.Attributes.Remove("readonly"); 
                     MaskedTextBoxColorChangewhite(dtpDateOfDeath);
                     lblDateOfDeath.Text = "Date of Death*";
                     lblReasonForDeath.Text = "Reason For Death*";
@@ -4638,6 +4656,8 @@ namespace Acurus.Capella.UI
                 ComboBoxColorChange(ddlReasonForDeath, true);
                 //DateTimePickerColorChangeWhite(dtpDateOfDeath);
                 dtpDateOfDeath.Enabled = true;
+                //Cap - 1529
+                dtpDateOfDeath.Attributes.Remove("readonly"); 
                 //dtpDateOfDeath.BackColor = System.Drawing.Color.White;
                 lblDateOfDeath.ForeColor = Color.Red;
                 lblReasonForDeath.ForeColor = Color.Red;

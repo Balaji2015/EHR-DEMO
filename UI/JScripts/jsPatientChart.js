@@ -249,6 +249,12 @@ $(document).ready(function () {
 
     }
     if (summarcheck != undefined && summarcheck.indexOf("viewresult") <= -1) {
+        //CAP-1518
+        var encounter_Id = parseInt(document.getElementById(GetClientId('hdnSummaryEncID'))?.value) ?? 0;
+        if (encounter_Id > 0) {
+            sessionStorage.setItem("EncId_PatSummaryBar", encounter_Id);
+        }
+
         reloadSummary();
     }
     else {
@@ -286,6 +292,7 @@ $(document).ready(function () {
     //CAP-1086
     var enc_Id = parseInt(document.getElementById(GetClientId('hdnSummaryEncID'))?.value) ?? 0;
     if (document.getElementById(GetClientId('hdnSummaryPageFlag')).value.toUpperCase() == "TRUE" && enc_Id > 0) {
+        sessionStorage.setItem("EncId_PatSummaryBar", enc_Id);
         $('#ctl00_C5POBody_EncounterContainer')[0].src = "frmSummaryNew.aspx?EncounterId=" + enc_Id + "&TabMode=true";
     }
     else if (document.getElementById(GetClientId('hdnSummaryPageFlag')).value.toUpperCase() == "FALSE" && enc_Id > 0) {

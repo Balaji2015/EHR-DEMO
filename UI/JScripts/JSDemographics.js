@@ -277,6 +277,8 @@ function ChangeDeathStatus(control) {
             {
                 document.getElementById(GetClientId("btnSave")).disabled = false;
                 document.getElementById(GetClientId("hdnstatus")).value = "";
+                //Cap - 1529
+                document.getElementById(GetClientId("hdncancel")).value = "";
             }
         }
         else {
@@ -287,10 +289,12 @@ function ChangeDeathStatus(control) {
     }
 
     else if (control.value == "DECEASED")
-
+        
         if (document.getElementById(GetClientId("hdnstatus")).value == "True") {
             document.getElementById(GetClientId("btnSave")).disabled = false; var Dt = new Date(); document.getElementById(GetClientId('dtpDateOfDeath')).value = Dt.format("dd-MMM-yyyy");
             document.getElementById(GetClientId("hdnstatus")).value = "";
+            //Cap - 1529
+            document.getElementById(GetClientId("hdncancel")).value = "";
         }
         else {
             document.getElementById(GetClientId("btnSave")).disabled = false;

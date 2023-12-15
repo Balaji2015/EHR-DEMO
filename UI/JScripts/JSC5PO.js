@@ -260,7 +260,9 @@ function OpenModal(data) {
 
         StartLoadingImage();
         var obj = new Array();
-        var result = openModal("frmBlockDays.aspx", 540, 1230, obj, "ctl00_ModalWindow");
+        //Cap - 1547
+        //var result = openModal("frmBlockDays.aspx", 540, 1230, obj, "ctl00_ModalWindow");
+        var result = openModal("frmBlockDays.aspx", 540, 1230, obj, "ctl00_C5POBody_ModalWindow");
         var WindowName = $find('ctl00_ModalWindow');
         WindowName.set_behaviors(-Telerik.Web.UI.WindowAutoSizeBehaviors.Close);
         WindowName?.add_close(function CloseBlockDays(oWindow, args) {

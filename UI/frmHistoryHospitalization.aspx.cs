@@ -1165,7 +1165,12 @@ namespace Acurus.Capella.UI
                 txtDischargePhysician.Text = string.Empty;
 	                txtDischargePhysician.Text = (Item.Cells[9].Text.Trim() == Space_Data) ? string.Empty : Item.Cells[9].Text;
 	                if (Item.Cells[10].Text.Trim() == "Y")
-	                    ddlReadmitted.SelectedIndex = 1;
+                {
+                    ddlReadmitted.SelectedIndex = 1;
+                    //CAP - 1500
+                    dtpReadmissionDate.Enable = true;
+                    dtpReadmissionDate.RadButton1.ImageUrl = "~/Resources/calenda2.bmp";
+                }	                    
 	                else if (Item.Cells[10].Text.Trim() == "N")
 	                    ddlReadmitted.SelectedIndex = 2;
 	                else

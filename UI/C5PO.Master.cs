@@ -23,6 +23,7 @@ using System.IO;
 using System.Web.SessionState;
 using System.Reflection;
 using System.Text.RegularExpressions;
+using Acurus.Capella.UI.Extensions;
 
 namespace Acurus.Capella.UI
 {
@@ -39,14 +40,9 @@ namespace Acurus.Capella.UI
             }
             //CAP-1167
             var currentURL = Request.Url.AbsoluteUri.ToString();
-            var encounterUrlPattern = @"^https?://[^/]+/frmPatientChart\.aspx\?EncounterID=\d+$";
-            var humanUrlPattern = @"^https?://[^/]+/frmPatientChart\.aspx\?(?:HumanID=\d+)?(&ScreenMode=Menu)?(&openingfrom=Menu)?$";
-
-                   
-
-            if (Regex.IsMatch(currentURL, humanUrlPattern) || Regex.IsMatch(currentURL, encounterUrlPattern)) 
+            if (DirectURLUtility.IsValidRedirectUrlForLogin(currentURL)) 
             {
-                Session["currenturl"] = Request.Url.AbsoluteUri;
+                Session["currenturl"] = HttpUtility.UrlEncode(Request.Url.AbsoluteUri);
             }
 
             //CAP-1311
@@ -368,12 +364,12 @@ namespace Acurus.Capella.UI
             if (ClientSession.UserName == "" && ClientSession.FacilityName == "")
             {
                 //CAP-1075
-                if (Regex.IsMatch(currentURL, humanUrlPattern) || Regex.IsMatch(currentURL, encounterUrlPattern))
+                if (DirectURLUtility.IsValidRedirectUrlForLogin(currentURL))
                 {
-                    var CurrentUrl = Session["currenturl"]?.ToString();
-                    if (!string.IsNullOrEmpty(CurrentUrl))
+                    var SessionCurrentUrl = Session["currenturl"]?.ToString();
+                    if (!string.IsNullOrEmpty(SessionCurrentUrl))
                     {
-                        var returnURL = $"~/frmLogin.aspx?redirecturl={HttpUtility.UrlEncode(CurrentUrl)}";
+                        var returnURL = $"~/frmLogin.aspx?redirecturl={HttpUtility.UrlEncode(SessionCurrentUrl)}";
                         Session["currenturl"] = null;
                         Response.Redirect(returnURL);
                     }
@@ -779,8 +775,6 @@ namespace Acurus.Capella.UI
                 Session["ShowAllState"] = null;
                 Session["GeneralQShowAll"] = null;
                 //CAP-1167
-                //
-                
                 Session.Clear();
                 Session.Abandon();
                 //CAP-1311

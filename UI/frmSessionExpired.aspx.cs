@@ -79,7 +79,7 @@ namespace Acurus.Capella.UI
                     {
                         var returnURL = $"~/frmLogin.aspx?redirecturl={HttpUtility.UrlEncode(CurrentUrl)}";
                         Session["currenturl"] = null;
-                        Response.Redirect(returnURL);
+                        Response.Write("<script> window.top.location.href=\"" + returnURL + "\"; </script>");
                     }
                     else
                     {

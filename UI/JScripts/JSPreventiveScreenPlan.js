@@ -401,8 +401,9 @@ function SavePreventiveScreenPlan() {
     var arry = new Array();
     var objPreventiveScreenPlanList = new PreventiveScreenPlanList();
     var rows = $("#mainContainer table label");
-    if ($("#mainContainer div:visible table label") != null && $("#mainContainer div:visible table label")!=undefined && $("#mainContainer div:visible table label").length != 0) {
-        rows = $("#mainContainer div:visible table label")
+    //CAP-1544
+    if ($("#mainContainer div:not([style*='display: none']) div table label") != undefined && $("#mainContainer div:not([style*='display: none']) div table label") != null && $("#mainContainer div:not([style*='display: none']) div table label").length != 0) {
+        rows = $("#mainContainer div:not([style*='display: none']) div table label");
     } 
     for (var pos = 0; pos < rows.length ; pos++) {
         var objPreventiveScreenPlanList = new PreventiveScreenPlanList();

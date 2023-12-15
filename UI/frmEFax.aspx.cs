@@ -199,22 +199,26 @@ namespace Acurus.Capella.UI
             }
             if (PhyId != "" && PhyId != "0")
             {
-                XmlDocument xmldoc1 = new XmlDocument();
-                string strXmlFilePath1 = Path.Combine(System.Web.Hosting.HostingEnvironment.ApplicationPhysicalPath, "ConfigXML\\PhysicianAddressDetails.xml");
-                if (File.Exists(strXmlFilePath1) == true)
+                //Cap - 1548
+                if (sIsConsultation != "Y")
                 {
-                    //logger.Debug("Reading PhysicianAddressDetails.xml");
-                    xmldoc1.Load(System.Web.Hosting.HostingEnvironment.ApplicationPhysicalPath + "ConfigXML\\" + "PhysicianAddressDetails" + ".xml");
-                    XmlNode nodeMatchingPhysicianAddress = xmldoc1.SelectSingleNode("/PhysicianAddress/p" + PhyId);
-                    if (nodeMatchingPhysicianAddress != null)
+                    XmlDocument xmldoc1 = new XmlDocument();
+                    string strXmlFilePath1 = Path.Combine(System.Web.Hosting.HostingEnvironment.ApplicationPhysicalPath, "ConfigXML\\PhysicianAddressDetails.xml");
+                    if (File.Exists(strXmlFilePath1) == true)
                     {
+                        //logger.Debug("Reading PhysicianAddressDetails.xml");
+                        xmldoc1.Load(System.Web.Hosting.HostingEnvironment.ApplicationPhysicalPath + "ConfigXML\\" + "PhysicianAddressDetails" + ".xml");
+                        XmlNode nodeMatchingPhysicianAddress = xmldoc1.SelectSingleNode("/PhysicianAddress/p" + PhyId);
+                        if (nodeMatchingPhysicianAddress != null)
+                        {
 
-                        PhyFax = nodeMatchingPhysicianAddress.Attributes["Physician_Fax"].Value.ToString();
-                        phyEmail = nodeMatchingPhysicianAddress.Attributes["Physician_EMail"].Value.ToString();
-                        //logger.Debug("XML tag '/PhysicianAddress/p" + physician_id + "' found");
+                            PhyFax = nodeMatchingPhysicianAddress.Attributes["Physician_Fax"].Value.ToString();
+                            phyEmail = nodeMatchingPhysicianAddress.Attributes["Physician_EMail"].Value.ToString();
+                            //logger.Debug("XML tag '/PhysicianAddress/p" + physician_id + "' found");
+                        }
+                        //else
+                        //logger.Debug("XML tag '/PhysicianAddress/p" + physician_id + "' not found");
                     }
-                    //else
-                    //logger.Debug("XML tag '/PhysicianAddress/p" + physician_id + "' not found");
                 }
                 if (PhyFax.Trim() != "")
                 {

@@ -809,25 +809,26 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
             OrderTaskDTO OsObj = new OrderTaskDTO();
             foreach (object[] obj in objects)
             {
+                //CAP-1550
                 OsObj = new OrderTaskDTO();
-                OsObj.Order_Submit_ID = Convert.ToUInt64(obj[0]);
-                OsObj.Stat = obj[1].ToString();
-                OsObj.Created_Date_And_Time = Convert.ToDateTime((obj[2]));
-                OsObj.Task = obj[3].ToString();
-                OsObj.Priority = obj[4].ToString();
-                OsObj.Ancillary_Order = obj[5].ToString();
-                OsObj.Created_By = obj[6].ToString();
-                OsObj.Physician_Name = obj[7].ToString();
-                OsObj.Lab_Procedure = obj[8].ToString();
-                OsObj.Lab_Procedure_Description = obj[9].ToString();
-                OsObj.Lab_Name = obj[10].ToString();
-                OsObj.ICD = obj[11].ToString();
-                OsObj.ICD_Description = obj[12].ToString();
-                OsObj.Facility_Name = obj[13].ToString();
-                OsObj.Modified_Date_And_Time = Convert.ToDateTime((obj[14]));
-                OsObj.Current_Process = obj[15].ToString();
-                OsObj.Human_ID = Convert.ToUInt64(obj[16]);
-                OsObj.Current_Arrival_Time = Convert.ToDateTime((obj[17]));
+                OsObj.Order_Submit_ID = obj[0] != null ? Convert.ToUInt64(obj[0]) : 0;
+                OsObj.Stat = obj[1]?.ToString();
+                OsObj.Created_Date_And_Time = obj[2] != null ? Convert.ToDateTime((obj[2])) : DateTime.MinValue;
+                OsObj.Task = obj[3]?.ToString();
+                OsObj.Priority = obj[4]?.ToString();
+                OsObj.Ancillary_Order = obj[5]?.ToString();
+                OsObj.Created_By = obj[6]?.ToString();
+                OsObj.Physician_Name = obj[7]?.ToString();
+                OsObj.Lab_Procedure = obj[8]?.ToString();
+                OsObj.Lab_Procedure_Description = obj[9]?.ToString();
+                OsObj.Lab_Name = obj[10]?.ToString();
+                OsObj.ICD = obj[11]?.ToString();
+                OsObj.ICD_Description = obj[12]?.ToString();
+                OsObj.Facility_Name = obj[13]?.ToString();
+                OsObj.Modified_Date_And_Time = obj[14] != null ? Convert.ToDateTime((obj[14])) : DateTime.MinValue;
+                OsObj.Current_Process = obj[15]?.ToString();
+                OsObj.Human_ID = obj[16] != null ? Convert.ToUInt64(obj[16]) : 0;
+                OsObj.Current_Arrival_Time = obj[17] != null ? Convert.ToDateTime((obj[17])) : DateTime.MinValue;
 
                 OrdersSubmitList.Add(OsObj);
             }
