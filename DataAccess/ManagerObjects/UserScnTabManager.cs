@@ -19,7 +19,7 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
         bool IsNewUser(string userName);
         IList<user_scn_tab> GetAllScreensUsingscreenid(string User_Name);
         IList<user_scn_tab> GetFocusedExamDisableListByID(ulong scanID, string sUserName);
-
+        IList<user_scn_tab> GetUserScreenTabByID(ulong scanID, string sUserName);
     }
 
     public partial class UserScnTabManager : ManagerBase<user_scn_tab, int>, IUserScnTabManager
@@ -88,6 +88,18 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
             using (ISession iMySession = NHibernateSessionManager.Instance.CreateISession())
             {
                 ICriteria crit = iMySession.CreateCriteria(typeof(user_scn_tab)).Add(Expression.Eq("scn_id", scanID)).Add(Expression.Eq("user_name", sUserName)).Add(Expression.Eq("Permission", "R"));
+                listscan = crit.List<user_scn_tab>();
+                iMySession.Close();
+            }
+            return listscan;
+        }
+
+        public IList<user_scn_tab> GetUserScreenTabByID(ulong scanID, string sUserName)
+        {
+            IList<user_scn_tab> listscan = new List<user_scn_tab>();
+            using (ISession iMySession = NHibernateSessionManager.Instance.CreateISession())
+            {
+                ICriteria crit = iMySession.CreateCriteria(typeof(user_scn_tab)).Add(Expression.Eq("scn_id", scanID)).Add(Expression.Eq("user_name", sUserName)).Add(Expression.Eq("Permission", "U"));
                 listscan = crit.List<user_scn_tab>();
                 iMySession.Close();
             }

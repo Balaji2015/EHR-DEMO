@@ -240,6 +240,7 @@
     <Reference Include="System.Data" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="System.Management" />
+    <Reference Include="System.Net.Http" />
     <Reference Include="System.Runtime.Serialization">
       <RequiredTargetFramework>3.0</RequiredTargetFramework>
     </Reference>
@@ -358,6 +359,7 @@
     <Content Include="frmQRCodeGenerator.aspx" />
     <Content Include="frmQuickPatientCreate.aspx" />
     <Content Include="frmResetPassword.aspx" />
+    <Content Include="frmRestrictedAccess.aspx" />
     <Content Include="frmRestrictMultipleTabs.aspx" />
     <Content Include="frmSessionExpiredIndirectAccess.aspx" />
     <Content Include="frmSessionExpiredMultiLogin.aspx" />
@@ -412,6 +414,7 @@
     <Content Include="Resources\multipletab.png" />
     <Content Include="Resources\pbAdd.png" />
     <Content Include="Resources\pbclear.png" />
+    <Content Include="Resources\permission-error.jpg" />
     <Content Include="Resources\person.gif" />
     <Content Include="Resources\plus_new.gif" />
     <Content Include="Resources\plus_new_disabled.gif" />
@@ -640,6 +643,7 @@
       <DependentUpon>DemoGraphicsEmpty.Master</DependentUpon>
     </Compile>
     <Compile Include="DocToPdf.cs" />
+    <Compile Include="Extensions\DirectURLUtility.cs" />
     <Compile Include="Extensions\TIF.cs" />
     <Compile Include="Extensions\UNCAccessWithCredentials.cs" />
     <Compile Include="frmAddPhysician.aspx.cs">
@@ -1462,6 +1466,13 @@
     </Compile>
     <Compile Include="frmResetPassword.aspx.designer.cs">
       <DependentUpon>frmResetPassword.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="frmRestrictedAccess.aspx.cs">
+      <DependentUpon>frmRestrictedAccess.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="frmRestrictedAccess.aspx.designer.cs">
+      <DependentUpon>frmRestrictedAccess.aspx</DependentUpon>
     </Compile>
     <Compile Include="frmRestrictMultipleTabs.aspx.cs">
       <DependentUpon>frmRestrictMultipleTabs.aspx</DependentUpon>

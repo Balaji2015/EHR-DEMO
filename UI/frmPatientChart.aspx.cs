@@ -25,6 +25,8 @@ using System.Threading;
 using MySql.Data.MySqlClient;
 using DocumentFormat.OpenXml.Drawing.Charts;
 using System.Text.RegularExpressions;
+using Telerik.Web.UI.Gauge;
+using Acurus.Capella.UI.Extensions;
 
 namespace Acurus.Capella.UI
 {
@@ -1881,10 +1883,9 @@ namespace Acurus.Capella.UI
         {
             //CAP-1167
             var currentURL = HttpContext.Current.Request.Url;
-
-            var urlPattern = @"^https?://[^/]+/frmPatientChart\.aspx\?EncounterID=\d+$";
             var notificationType = Request["Notification_Type"]?.ToString();
-            if (Regex.IsMatch(currentURL.AbsoluteUri, urlPattern) && Request.QueryString["EncounterID"] != null)
+            //CAP-1167
+            if (DirectURLUtility.IsValidEncounterUrl(currentURL.AbsoluteUri) && Request.QueryString["EncounterID"] != null)
             {
                 string encounter_ID = Request.QueryString["EncounterID"];
 
@@ -1896,6 +1897,7 @@ namespace Acurus.Capella.UI
 
                 // Set the updated value in ClientSession.HumanId
                 ClientSession.EncounterId = Convert.ToUInt64(clientSessionValue);
+                ClientSession.Selectedencounterid = Convert.ToUInt64(clientSessionValue);
                 EncounterManager EncounterMngr = new EncounterManager();
                 IList<Encounter> ilstEncounter = EncounterMngr.GetEncounterByEncounterIDIncludeArchive(ClientSession.EncounterId);
 
@@ -1931,7 +1933,16 @@ namespace Acurus.Capella.UI
                         }
                         else if (encounterwf_object != null && encounterwf_object.Current_Owner != ClientSession.UserName)
                         {
-                            hdnSummaryPageFlag.Value = "true";
+                            if (!string.IsNullOrWhiteSpace(encounterwf_object.Current_Owner) || (ilstEncounter?.FirstOrDefault()?.Date_of_Service != null && ilstEncounter?.FirstOrDefault()?.Date_of_Service == DateTime.MinValue))
+                            {
+                                //CAP-1519
+                                hdnSummaryEncID.Value = "0";
+                                hdnSummaryPageFlag.Value = "none";
+                            }
+                            else
+                            {
+                                hdnSummaryPageFlag.Value = "true";
+                            }
                         }
                         else
                         {
@@ -1986,6 +1997,34 @@ namespace Acurus.Capella.UI
                     }
                 }
             }
+            //CAP-1507, CAP-1506 & CAP-1509
+            if(Request.QueryString["ScreenName"] != null)
+            {
+                if (!DirectURLUtility.IsScnMenuEnabled(ClientSession.UserName, Request.QueryString["ScreenName"]))
+                {
+                    Response.Redirect($"~/frmRestrictedAccess.aspx");
+                }
+            }
+
+            //CAP-1522
+            if((Request["HumanID"] != null && Request["HumanID"] != "undefined") || (ClientSession.HumanId != null && ClientSession.HumanId > 0))
+            {
+                ulong ulHumanId = 0;
+
+                ulong.TryParse(Request["HumanID"].ToString().Replace("?", ""),out ulHumanId);
+
+                if(ulHumanId <= 0)
+                {
+                    ulHumanId = ClientSession.HumanId;
+                }
+
+                if (!DirectURLUtility.IsValidLegalOrg(ClientSession.UserName, ulHumanId))
+                {
+                    Response.Redirect($"~/frmRestrictedAccess.aspx");
+                }
+            }
+
+
             //EncounterManager objUserLookupManager = new EncounterManager();
             //IList<string> userLookup = objUserLookupManager.GetEncounterListArray(ClientSession.HumanId);
             string ChildTabName = string.Empty;
