@@ -1933,7 +1933,7 @@ namespace Acurus.Capella.UI
                         }
                         else if (encounterwf_object != null && encounterwf_object.Current_Owner != ClientSession.UserName)
                         {
-                            if (!string.IsNullOrWhiteSpace(encounterwf_object.Current_Owner) || (ilstEncounter?.FirstOrDefault()?.Date_of_Service != null && ilstEncounter?.FirstOrDefault()?.Date_of_Service == DateTime.MinValue))
+                            if (string.IsNullOrWhiteSpace(encounterwf_object.Current_Owner) || (ilstEncounter?.FirstOrDefault()?.Date_of_Service != null && ilstEncounter?.FirstOrDefault()?.Date_of_Service == DateTime.MinValue))
                             {
                                 //CAP-1519
                                 hdnSummaryEncID.Value = "0";
