@@ -1757,7 +1757,17 @@ namespace Acurus.Capella.UI
                         cell = CreateCell("Referred to Facility Address: \n", objList[0].To_Facility_Street_Address + "\n" + objList[0].To_Facility_City + "\n" + objList[0].To_Facility_State + "\n" + sZipcode);
                         //cell.Colspan = 3;
                         patTable.AddCell(cell);
-                        cell = CreateCell("Referred to Facility Phone #: \n", "\n" + objList[0].To_Facility_Phone_Number);
+                        //Cap - 1468
+                        if(objList[0].To_Facility_Phone_Number.Length > 9)
+                        {
+                            cell = CreateCell("Referred to Facility Phone #: \n", "\n" + objList[0].To_Facility_Phone_Number.Insert(0, "(").Insert(4, ") ").Insert(9, "-"));
+                        }
+                        else
+                        {
+                            cell = CreateCell("Referred to Facility Phone #: \n", "\n" + objList[0].To_Facility_Phone_Number);
+                        }
+
+                       
                         patTable.AddCell(cell);
                         //Cap - 1468
                         if (objList[0].To_Facility_Fax_Number.Length >= 9)
@@ -4991,7 +5001,17 @@ namespace Acurus.Capella.UI
                         cell = CreateCell("Referred to Facility Address: \n", objList[0].To_Facility_Street_Address + "\n" + objList[0].To_Facility_City + "\n" + objList[0].To_Facility_State + "\n" + sZipcode);
                         //cell.Colspan = 3;
                         patTable.AddCell(cell);
-                        cell = CreateCell("Referred to Facility Phone #: \n", "\n" + objList[0].To_Facility_Phone_Number);
+                        //Cap - 1468
+                        if (objList[0].To_Facility_Phone_Number.Length > 9)
+                        {
+                            cell = CreateCell("Referred to Facility Phone #: \n", "\n" + objList[0].To_Facility_Phone_Number.Insert(0, "(").Insert(4, ") ").Insert(9, "-"));
+                        }
+                        else
+                        {
+                            cell = CreateCell("Referred to Facility Phone #: \n", "\n" + objList[0].To_Facility_Phone_Number);
+                        }
+
+                       
                         patTable.AddCell(cell);
                         //Cap - 1547
                         if (objList[0].To_Facility_Fax_Number.Length >= 9)
