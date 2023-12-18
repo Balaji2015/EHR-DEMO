@@ -822,7 +822,9 @@ function LoadCarePlan() {
             if (currentprocess.toUpperCase() != "SCRIBE_PROCESS" && currentprocess.toUpperCase() != "AKIDO_SCRIBE_PROCESS" && currentprocess.toUpperCase() != "SCRIBE_REVIEW_CORRECTION" && currentprocess.toUpperCase() != "SCRIBE_CORRECTION" && currentprocess.toUpperCase() != "DICTATION_REVIEW" && currentprocess.toUpperCase() != "CODER_REVIEW_CORRECTION" && currentprocess.toUpperCase() != "PROVIDER_PROCESS" && currentprocess.toUpperCase() != "MA_REVIEW" && currentprocess.toUpperCase() != "MA_PROCESS" && currentprocess.toUpperCase() != "PROVIDER_REVIEW_CORRECTION") {
                 $('#btnSave')[0].disabled = true;
                 $('#btnClearAll')[0].disabled = true;
-                $('#btnCopyPrevious')[0].disabled = true;
+                if ($('#btnCopyPrevious')[0]?.disabled != undefined) {
+                    $('#btnCopyPrevious')[0].disabled = true;
+                }
                 $('#mainContainer')[0].disabled = true;
                 $('#mainContainer ').find(':input').prop('disabled', true);
                 $('img').css("display", "none");

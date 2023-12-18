@@ -127,24 +127,30 @@ namespace Acurus.Capella.UI.WebServices
             IList<TreatmentPlan> objTreatmentPlan = new List<TreatmentPlan>();
             #region TreatmentPlan Get
 
-            IList<string> ilstplanTagList = new List<string>();
-            ilstplanTagList.Add("TreatmentPlanList");
-          
+            //Jira CAP-1163 - Old Code
+            //IList<string> ilstplanTagList = new List<string>();
+            //ilstplanTagList.Add("TreatmentPlanList");
 
 
-            IList<object> ilstplanlobFinal = new List<object>();
-            ilstplanlobFinal = UtilityManager.ReadBlob(ClientSession.EncounterId, ilstplanTagList);
 
-            if (ilstplanlobFinal != null && ilstplanlobFinal.Count > 0)
-            {
-                if (ilstplanlobFinal[0] != null)
-                {
-                    for (int iCount = 0; iCount < ((IList<object>)ilstplanlobFinal[0]).Count; iCount++)
-                    {
-                        objTreatmentPlan.Add((TreatmentPlan)((IList<object>)ilstplanlobFinal[0])[iCount]);
-                    }
-                }
-            }
+            //IList<object> ilstplanlobFinal = new List<object>();
+            //ilstplanlobFinal = UtilityManager.ReadBlob(ClientSession.EncounterId, ilstplanTagList);
+
+            //if (ilstplanlobFinal != null && ilstplanlobFinal.Count > 0)
+            //{
+            //    if (ilstplanlobFinal[0] != null)
+            //    {
+            //        for (int iCount = 0; iCount < ((IList<object>)ilstplanlobFinal[0]).Count; iCount++)
+            //        {
+            //            objTreatmentPlan.Add((TreatmentPlan)((IList<object>)ilstplanlobFinal[0])[iCount]);
+            //        }
+            //    }
+            //}
+
+            //Jira CAP-1163 - New Code
+            TreatmentPlanManager mngrTreatmentPlan = new TreatmentPlanManager();
+            objTreatmentPlan = mngrTreatmentPlan.GetTreatmentPlan(ClientSession.EncounterId);
+
             //    string FileName = "Encounter" + "_" + ClientSession.EncounterId + ".xml";
             //string strXmlFilePath = Path.Combine(System.Configuration.ConfigurationSettings.AppSettings["XMLPath"], FileName);
             //if (File.Exists(strXmlFilePath) == true)
@@ -221,17 +227,35 @@ namespace Acurus.Capella.UI.WebServices
                 plan_followup_snomed = a.Followup_Plan_Snomed
             }).Where(a => a.Plan_Type != "PLAN" && a.Plan.Replace("*", "").Trim() != string.Empty).OrderBy(a => a.Plan_Type).OrderByDescending(a => a.Plan_Ref);
 
-            IList<TreatmentPlan> tpPlan = objTreatmentPlan.Where(a => a.Plan_Type == "PLAN").ToList<TreatmentPlan>();
-            if (tpPlan != null && tpPlan.Count > 0 && tpPlan[0].Plan != string.Empty)
+            //Jira CAP-1163
+            //IList<TreatmentPlan> tpPlan = objTreatmentPlan.Where(a => a.Plan_Type == "PLAN").ToList<TreatmentPlan>();
+            IList<TreatmentPlan> tpPlan = objTreatmentPlan.Where(a => a.Plan_Type == "PLAN" && a.Amendment_Type == "" && a.Corrections_to_be_made == "").ToList<TreatmentPlan>();
+            if (tpPlan != null && tpPlan.Count > 0)
             {
-                strPlan = tpPlan[0].Plan.Replace("&#xD;&#xA;","\n");
-                if (strPlan.EndsWith(Environment.NewLine))
+                for (int iCount = 0; iCount < tpPlan.Count; iCount++)
                 {
-                    strPlan = strPlan.TrimEnd('\r', '\n');
-                }
-                if (!strPlan.Trim().EndsWith("*"))
-                {
-                    strPlan += Environment.NewLine + "* ";
+                    if (iCount != 0)
+                    {
+                        strPlan += Environment.NewLine + Environment.NewLine;
+                    }
+
+                    if (tpPlan[iCount].Plan != string.Empty)
+                    {
+                        strPlan += tpPlan[iCount].Plan.Replace("&#xD;&#xA;", "\n");
+                        if (strPlan.EndsWith(Environment.NewLine))
+                        {
+                            strPlan = strPlan.TrimEnd('\r', '\n');
+                        }
+                        if (!strPlan.Trim().EndsWith("*"))
+                        {
+                            strPlan += Environment.NewLine + "* ";
+                        }
+                    }
+                    else
+                    {
+                        strPlan += "* ";
+                    }
+
                 }
             }
             else
@@ -239,15 +263,20 @@ namespace Acurus.Capella.UI.WebServices
                 strPlan += "* ";
             }
 
+
             string sTemp = string.Empty;
+            string UserCurrentProcess = string.Empty;
             if (ClientSession.UserCurrentProcess == "PROVIDER_PROCESS")
             {
                 sTemp = "Electronically Signed by" + ClientSession.SummaryList.Split('|')[4].ToString();
             }
             else if (ClientSession.UserCurrentProcess == "PROVIDER_REVIEW")
             {
-                sTemp = "I" + ClientSession.SummaryList.Split('|')[4].ToString() + " have reviewed the chart and agree with the management plan with the changes to the plan as indicated."
-                         + "Electronically Signed by" + ClientSession.SummaryList.Split('|')[4].ToString();
+                //Jira CAP-1451 - Old Code
+                //sTemp = "I" + ClientSession.SummaryList.Split('|')[4].ToString() + " have reviewed the chart and agree with the management plan with the changes to the plan as indicated."
+                //         + "Electronically Signed by" + ClientSession.SummaryList.Split('|')[4].ToString();
+                //Jira CAP-1451 - New Code
+                sTemp = "Electronically Signed by" + ClientSession.SummaryList.Split('|')[4].ToString();
             }
             else
             {
@@ -267,7 +296,6 @@ namespace Acurus.Capella.UI.WebServices
             var DefaultList = String.Join(", ", (from m in lststatic where m.Default_Value == "Y" select m.Value).ToArray());
 
             string JPlan = new JavaScriptSerializer().Serialize(TreatmenPlanList);
-
             var result = new { data = DocumentList, EncRec = EncObj, signtxt = sTemp, PlanOthers = JPlan, Plan = strPlan, defualt_Value = DefaultList };
             return JsonConvert.SerializeObject(result);
         }
@@ -306,9 +334,9 @@ namespace Acurus.Capella.UI.WebServices
             {
                 Dictionary<string, object> dicValues = new Dictionary<string, object>();
                 dicValues = (Dictionary<string, object>)value;
-                EncRecord.Is_Document_Given = dicValues["Is_Document_Given"]==null?string.Empty:dicValues["Is_Document_Given"].ToString();
+                EncRecord.Is_Document_Given = dicValues["Is_Document_Given"] == null ? string.Empty : dicValues["Is_Document_Given"].ToString();
                 // DateTime dtDue_on = Convert.ToDateTime(dicValues["Due_On"]);
-                if (dicValues["Due_On"]!=null && !dicValues["Due_On"].Equals(" "))
+                if (dicValues["Due_On"] != null && !dicValues["Due_On"].Equals(" "))
                 {
 
                     EncRecord.Due_On = Convert.ToDateTime(dicValues["Due_On"]);
@@ -317,7 +345,7 @@ namespace Acurus.Capella.UI.WebServices
                 {
                     EncRecord.Due_On = DateTime.MinValue;
                 }
-                EncRecord.Return_In_Days = dicValues["ReturnDays"]==null?0:Convert.ToInt32(dicValues["ReturnDays"]);
+                EncRecord.Return_In_Days = dicValues["ReturnDays"] == null ? 0 : Convert.ToInt32(dicValues["ReturnDays"]);
                 EncRecord.Return_In_Weeks = dicValues["ReturnWeeks"] == null ? 0 : Convert.ToInt32(dicValues["ReturnWeeks"]);
                 EncRecord.Return_In_Months = dicValues["ReturnMonths"] == null ? 0 : Convert.ToInt32(dicValues["ReturnMonths"]);
                 //BugID:48018
@@ -336,7 +364,7 @@ namespace Acurus.Capella.UI.WebServices
                 EncRecord.Is_After_Studies = dicValues["AfterStudieschecked"] == null ? string.Empty : dicValues["AfterStudieschecked"].ToString();
 
 
-                if (dicValues["ElectronicDeclrChecked"]!=null && dicValues["ElectronicDeclrChecked"].ToString() == "true")
+                if (dicValues["ElectronicDeclrChecked"] != null && dicValues["ElectronicDeclrChecked"].ToString() == "true")
                 {
                     //GitLab - #3974
                     //dtMySignDateTime = DateTime.Now;
@@ -347,7 +375,7 @@ namespace Acurus.Capella.UI.WebServices
                 {
                     EncRecord.Encounter_Provider_Signed_Date = UtilityManager.ConvertToLocal(dtMySignDateTime);
                 }
-                if (dicValues["SurgeryDeclrChecked"]!=null && dicValues["SurgeryDeclrChecked"].ToString() == "true")
+                if (dicValues["SurgeryDeclrChecked"] != null && dicValues["SurgeryDeclrChecked"].ToString() == "true")
                 {
                     EncRecord.Proceed_with_Surgery_Planned = "Y";
                 }
@@ -355,7 +383,7 @@ namespace Acurus.Capella.UI.WebServices
                 {
                     EncRecord.Proceed_with_Surgery_Planned = "N";
                 }
-                SelectedDocItems = dicValues["CheckedDocumnts"]==null?string.Empty:dicValues["CheckedDocumnts"].ToString();
+                SelectedDocItems = dicValues["CheckedDocumnts"] == null ? string.Empty : dicValues["CheckedDocumnts"].ToString();
                 if (SelectedDocItems != null && SelectedDocItems != "")
                 {
                     for (int i = 0; i < SelectedDocItems.Split('-').Count(); i++)
@@ -363,9 +391,9 @@ namespace Acurus.Capella.UI.WebServices
                         SelectedItems.Add(SelectedDocItems.Split('-')[i].ToString());
                     }
                 }
-                strGiven_to = dicValues["Givento"]==null?string.Empty:dicValues["Givento"].ToString();
-                strRelationship = dicValues["Relationship"]==null?string.Empty:dicValues["Relationship"].ToString();
-                strTreatmntPlan = dicValues["TreatmntList"]==null?string.Empty:dicValues["TreatmntList"].ToString();
+                strGiven_to = dicValues["Givento"] == null ? string.Empty : dicValues["Givento"].ToString();
+                strRelationship = dicValues["Relationship"] == null ? string.Empty : dicValues["Relationship"].ToString();
+                strTreatmntPlan = dicValues["TreatmntList"] == null ? string.Empty : dicValues["TreatmntList"].ToString();
                 //IList<string> SelectedItems =
             }
             #region encounter
@@ -444,24 +472,32 @@ namespace Acurus.Capella.UI.WebServices
             }
             #endregion
             #region TreatmentPlan Get
-            IList<string> ilstplanTagList = new List<string>();
-            ilstplanTagList.Add("TreatmentPlanList");
+            //Jira CAP-1163 - Old Code
+            //IList<string> ilstplanTagList = new List<string>();
+            //ilstplanTagList.Add("TreatmentPlanList");
 
 
 
-            IList<object> ilstplanlobFinal = new List<object>();
-            ilstplanlobFinal = UtilityManager.ReadBlob(ClientSession.EncounterId, ilstplanTagList);
+            //IList<object> ilstplanlobFinal = new List<object>();
+            //ilstplanlobFinal = UtilityManager.ReadBlob(ClientSession.EncounterId, ilstplanTagList);
 
-            if (ilstplanlobFinal != null && ilstplanlobFinal.Count > 0)
-            {
-                if (ilstplanlobFinal[0] != null)
-                {
-                    for (int iCount = 0; iCount < ((IList<object>)ilstplanlobFinal[0]).Count; iCount++)
-                    {
-                        objTreatmentPlan.Add((TreatmentPlan)((IList<object>)ilstplanlobFinal[0])[iCount]);
-                    }
-                }
-            }
+            //if (ilstplanlobFinal != null && ilstplanlobFinal.Count > 0)
+            //{
+            //    if (ilstplanlobFinal[0] != null)
+            //    {
+            //        for (int iCount = 0; iCount < ((IList<object>)ilstplanlobFinal[0]).Count; iCount++)
+            //        {
+            //            objTreatmentPlan.Add((TreatmentPlan)((IList<object>)ilstplanlobFinal[0])[iCount]);
+            //        }
+            //    }
+            //}
+
+
+            //Jira CAP-1163 - New Code
+            TreatmentPlanManager mngrTreatmentPlan = new TreatmentPlanManager();
+            objTreatmentPlan = mngrTreatmentPlan.GetTreatmentPlan(ClientSession.EncounterId);
+
+
             //string FileName = "Encounter" + "_" + ClientSession.EncounterId + ".xml";
             //string strXmlFilePath = Path.Combine(System.Configuration.ConfigurationSettings.AppSettings["XMLPath"], FileName);
             //if (File.Exists(strXmlFilePath) == true)
@@ -559,32 +595,42 @@ namespace Acurus.Capella.UI.WebServices
             string sLocalText = string.Empty;
             strTreatmntPlan = strTreatmntPlan.Replace("&amp;", "&").Replace("&lt;", "<").Replace("&gt;", ">");
             strTreatmntPlan = strTreatmntPlan.Replace("\n", "\r\n").Replace("\r\r\n", "\r\n");//BugID:43718,51650 
-            IList<TreatmentPlan> PlanDatainPlan = objTreatmentPlan.Where(a => a.Plan_Type == "PLAN").ToList<TreatmentPlan>();
+            //Jira CAP-1163
+            //IList<TreatmentPlan> PlanDatainPlan = objTreatmentPlan.Where(a => a.Plan_Type == "PLAN").ToList<TreatmentPlan>();
+            IList<TreatmentPlan> PlanDatainPlan = objTreatmentPlan.Where(a => a.Plan_Type == "PLAN" && a.Amendment_Type == "" && a.Corrections_to_be_made == "").ToList<TreatmentPlan>();
+            //Jira CAP-1163 - Old Code
+            //if (PlanDatainPlan != null && PlanDatainPlan.Count > 0)
+            //{
+            //    TreatmentPlan objPlan = PlanDatainPlan[0];
+            //    objPlan.Plan = strTreatmntPlan;
+            //    objPlan.Modified_By = ClientSession.UserName;
+            //    objPlan.Modified_Date_And_Time = UtilityManager.ConvertToUniversal();
+            //    UpdateList.Add(objPlan);
+            //}
+            //else
+            //{
+            //Jira CAP-1163 - New Code
+            //Delete TreatmentPlan
             if (PlanDatainPlan != null && PlanDatainPlan.Count > 0)
             {
-                TreatmentPlan objPlan = PlanDatainPlan[0];
-                objPlan.Plan = strTreatmntPlan;
-                objPlan.Modified_By = ClientSession.UserName;
-                objPlan.Modified_Date_And_Time = UtilityManager.ConvertToUniversal();
-                UpdateList.Add(objPlan);
+                DeleteList = PlanDatainPlan;
             }
-            else
-            {
-                TreatmentPlan objPlannew = new TreatmentPlan();
-                objPlannew.Human_ID = ClientSession.HumanId;
-                objPlannew.Encounter_Id = ClientSession.EncounterId;
-                objPlannew.Physician_Id = ClientSession.PhysicianId;
-                objPlannew.Created_By = ClientSession.UserName;
-                objPlannew.Created_Date_And_Time = UtilityManager.ConvertToUniversal();
-                objPlannew.Local_Time = UtilityManager.ConvertToLocal(objPlannew.Created_Date_And_Time).ToString("yyyy-MM-dd hh:mm:ss tt");
-                objPlannew.Plan_Type = "PLAN";
-                string plan_txt = string.Empty;
-                plan_txt = strTreatmntPlan;
-                objPlannew.Plan = plan_txt;
-                objPlannew.Version = 0;
-                objPlannew.Source_ID = 0;
-                SaveList.Add(objPlannew);
-            }
+            //Insert TreatmentPlan
+            TreatmentPlan objPlannew = new TreatmentPlan();
+            objPlannew.Human_ID = ClientSession.HumanId;
+            objPlannew.Encounter_Id = ClientSession.EncounterId;
+            objPlannew.Physician_Id = ClientSession.PhysicianId;
+            objPlannew.Created_By = ClientSession.UserName;
+            objPlannew.Created_Date_And_Time = UtilityManager.ConvertToUniversal();
+            objPlannew.Local_Time = UtilityManager.ConvertToLocal(objPlannew.Created_Date_And_Time).ToString("yyyy-MM-dd hh:mm:ss tt");
+            objPlannew.Plan_Type = "PLAN";
+            string plan_txt = string.Empty;
+            plan_txt = strTreatmntPlan;
+            objPlannew.Plan = plan_txt;
+            objPlannew.Version = 0;
+            objPlannew.Source_ID = 0;
+            SaveList.Add(objPlannew);
+            //}
 
             #endregion
             FillTreatmentPlan objPlanAfterSave = DocumentMngr.SaveDocumentsandPlanList(EncRecord, SaveDocList.ToArray<Documents>(), UpdateDoclist.ToArray<Documents>(), DeleteDoclist.ToArray<Documents>(), SaveList.ToArray<TreatmentPlan>(), UpdateList.ToArray<TreatmentPlan>(), DeleteList.ToArray<TreatmentPlan>(), ClientSession.EncounterId, ClientSession.UserName, string.Empty);
@@ -957,23 +1003,60 @@ namespace Acurus.Capella.UI.WebServices
             {
 
                 IList<TreatmentPlan> tpPlan = objFillTrtmntPlan.Treatment_Plan_List.Where(a => a.Plan_Type == "PLAN").ToList<TreatmentPlan>();
-                if (tpPlan != null && tpPlan.Count > 0 && tpPlan[0].Plan != string.Empty)
+
+                //Jira CAP-1163 - Old Code
+                //if (tpPlan != null && tpPlan.Count > 0 && tpPlan[0].Plan != string.Empty)
+                //{
+                //    strPlan = tpPlan[0].Plan;
+                //    if (strPlan.EndsWith(Environment.NewLine))
+                //    {
+                //        strPlan = strPlan.TrimEnd('\r', '\n');
+                //    }
+                //    if (!strPlan.Trim().EndsWith("*"))
+                //    {
+                //        strPlan += Environment.NewLine + "* ";
+                //    }
+                //    isFound = true;
+                //}
+                //else
+                //{
+                //    strPlan += "* ";
+                //}
+                //Jira CAP-1163 - New Code 
+                if (tpPlan != null && tpPlan.Count > 0)
                 {
-                    strPlan = tpPlan[0].Plan;
-                    if (strPlan.EndsWith(Environment.NewLine))
+                    for (int iCount = 0; iCount < tpPlan.Count; iCount++)
                     {
-                        strPlan = strPlan.TrimEnd('\r', '\n');
+                        if (iCount != 0)
+                        {
+                            strPlan += Environment.NewLine + Environment.NewLine;
+                        }
+
+                        if (tpPlan[iCount].Plan != string.Empty)
+                        {
+                            strPlan += tpPlan[iCount].Plan;
+                            if (strPlan.EndsWith(Environment.NewLine))
+                            {
+                                strPlan = strPlan.TrimEnd('\r', '\n');
+                            }
+                            if (!strPlan.Trim().EndsWith("*"))
+                            {
+                                strPlan += Environment.NewLine + "* ";
+                            }
+                            isFound = true;
+                        }
+                        else
+                        {
+                            strPlan += "* ";
+                        }
+
                     }
-                    if (!strPlan.Trim().EndsWith("*"))
-                    {
-                        strPlan += Environment.NewLine + "* ";
-                    }
-                    isFound = true;
                 }
                 else
                 {
                     strPlan += "* ";
                 }
+
                 var result = new { PlanOthers = "", Plan = strPlan, PreviousList = objFillTrtmntPlan.PreviousEncounterId, Process = objFillTrtmntPlan.IsPhysicianProcess, PreviousData = isFound };
                 return JsonConvert.SerializeObject(result);
             }
