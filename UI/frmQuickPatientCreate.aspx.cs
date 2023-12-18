@@ -4414,7 +4414,8 @@ namespace Acurus.Capella.UI
                     }
 
                     btnSave.Enabled = false;
-
+                    //CAP-1513 & CAP-1531
+                    btnSave.CssClass = "aspresizedgreenbutton";
 
                 }
 
