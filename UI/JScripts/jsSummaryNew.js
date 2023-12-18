@@ -198,6 +198,8 @@ function OpenPhoneEncounterCancelAppt() {
 }
 
 function OpenServiceProcedureCode() {
+    //CAP-1534
+    { sessionStorage.setItem('StartLoading', 'true'); StartLoadFromPatChart(); }
     $.ajax({
         type: "POST",
         url: "frmSummaryNew.aspx/CheckServiceProcedureCodeStatus",
@@ -250,6 +252,8 @@ function OpenServiceProcedureCode() {
                 });
 
             }
+            //CAP-1534
+            { sessionStorage.setItem('StartLoading', 'false'); StopLoadFromPatChart(); }
         },
         error: function OnError(xhr) {
             AutoSaveUnsuccessful();
