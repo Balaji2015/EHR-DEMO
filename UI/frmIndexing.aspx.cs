@@ -1283,7 +1283,8 @@ namespace Acurus.Capella.UI
             if (hdnHumanID.Value == "")// || PatientDetails.Text == "")
             {
                 divLoading.Style.Add("display", "none");
-                ScriptManager.RegisterStartupScript(this, this.Page.GetType(), "HUmanID", "StopLoadOnUploadFile();DisplayErrorMessage('390006');", true);
+                //CAP-1295
+                ScriptManager.RegisterStartupScript(this, this.Page.GetType(), "HUmanID", "document.getElementById('divLoading').style.display = 'none'; StopLoadOnUploadFile();DisplayErrorMessage('390006');", true);
                 return;
             }
             file_name = new StringBuilder();
@@ -1323,13 +1324,13 @@ namespace Acurus.Capella.UI
                 if (cboOrderPhysician.SelectedIndex == 0)
                 {
                     divLoading.Style.Add("display", "none");
-                    ScriptManager.RegisterStartupScript(this, this.Page.GetType(), "FileChoose", "StopLoadOnUploadFile();DisplayErrorMessage('115065');", true);
+                    ScriptManager.RegisterStartupScript(this, this.Page.GetType(), "FileChoose", "document.getElementById('divLoading').style.display = 'none'; StopLoadOnUploadFile();DisplayErrorMessage('115065');", true);
                     return;
                 }
                 if (cboPhysician.SelectedIndex == 0)
                 {
                     divLoading.Style.Add("display", "none");
-                    ScriptManager.RegisterStartupScript(this, this.Page.GetType(), "FileChoose", "StopLoadOnUploadFile();DisplayErrorMessage('114018');", true);
+                    ScriptManager.RegisterStartupScript(this, this.Page.GetType(), "FileChoose", "document.getElementById('divLoading').style.display = 'none'; StopLoadOnUploadFile();DisplayErrorMessage('114018');", true);
                     return;
                 }
             }
@@ -4453,7 +4454,8 @@ namespace Acurus.Capella.UI
             waitCursor.Update();
 
             //Cap - 1294
-            ScriptManager.RegisterStartupScript(this, this.Page.GetType(), "EditGridupdate", "localStorage.setItem('IsSaveClickedSucessfull','');", true);
+            //CAP-1516
+            //ScriptManager.RegisterStartupScript(this, this.Page.GetType(), "EditGridupdate", "localStorage.setItem('IsSaveClickedSucessfull','');", true);
 
         }
 
@@ -4784,6 +4786,8 @@ namespace Acurus.Capella.UI
                         {
                             Session["LocalUploadFiles"] = lstScanList;
                         }
+                        //CAP-1225
+                        LoadPhysicianCombo();
                     }
                     catch (Exception ex)
                     {

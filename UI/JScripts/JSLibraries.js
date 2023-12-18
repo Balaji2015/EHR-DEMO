@@ -500,6 +500,8 @@ function AddMessage() {
          obj.push("AccountNum=" + svalue);
          var childWindow = oWnd.BrowserWindow.radopen("frmPatientCommunication.aspx?AccountNum=" + svalue, "ModalWndPatientTask");
          setRadWindowProperties(childWindow, 810, 1050);
+            //CAP-1442
+            childWindow.remove_close(RefreshScreen);
          childWindow.add_close(RefreshScreen);
      }, 0);
 
@@ -539,6 +541,8 @@ function OpenAddMessage() {
 
             var childWindow = oWnd.BrowserWindow.radopen("frmPatientCommunication.aspx?AccountNum=" + humanId, "ModalWndViewMessage");
             setRadWindowProperties(childWindow, 810, 1050);
+            //CAP-1442
+            childWindow.remove_close(RefreshScreen);
             childWindow.add_close(RefreshScreen);
         }, 0);
 
@@ -2001,8 +2005,9 @@ function PrintPDF(sFaxSubject) {
     // txtPatientSearch.attributes['data-human-id'].value = document.getElementById('hdnHumanID').value;//For Bug Id 62392
 
     //For Bug Id : 74044
-    document.getElementById("txtPatientSearch").value = "";
-    document.getElementById("txtPatientSearchQuick").value = "";
+    //CAP-1231
+    //document.getElementById("txtPatientSearch").value = "";
+    //document.getElementById("txtPatientSearchQuick").value = "";
 
     if (document.getElementById("txtPatientSearch").value != null && document.getElementById("txtPatientSearch").value != undefined && document.getElementById("txtPatientSearch").value != "") {
 

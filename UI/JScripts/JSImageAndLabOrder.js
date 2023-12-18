@@ -410,6 +410,8 @@ function EnableSaveDiagnosticOrder() {
     if (window.parent.parent.parent.parent.theForm.ctl00_C5POBody_hdnIsSaveEnable != null || window.parent.parent.parent.parent.theForm.ctl00_C5POBody_hdnIsSaveEnable != undefined)
         window.parent.parent.parent.parent.theForm.ctl00_C5POBody_hdnIsSaveEnable.value = "true";
     localStorage.setItem("bSave", "false");
+    //CAP-1501
+    { sessionStorage.setItem('StartLoading', 'false'); StopLoadFromPatChart(); }
 }
 function EnableSaveDiagnosticOrderbilltype() {
     if (document.getElementById('btnOrderSubmit') != undefined) {
@@ -1845,7 +1847,8 @@ function chklstFrequentlyUsedProcedures_Changed() {
     if (document.getElementById("txtQuantity").value != "") {
         if (document.getElementById("lblUnits").innerText.indexOf("*") != -1) {
             var lblUnits = document.getElementById("lblUnits");
-            lblunits.innerHTML += "*";
+            //CAP-1501
+            lblUnits.innerHTML += "*";
             $(lblunits).html($(lblunits).html().replace("*", "<span class='manredforstar'>*</span>"));
             $('#lblUnits').removeClass('spanstyle');
             $('#lblUnits').addClass('MandLabelstyle');

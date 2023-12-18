@@ -53,8 +53,9 @@ namespace Acurus.Capella.UI
                btnViewMessages.Visible = true;
                HttpContext.Current.Session["IsPatientCommunicated"] = false;
            }
-           else
-               btnViewMessages.Visible = false;
+           //CAP-1442
+           //else
+           //    btnViewMessages.Visible = false;
         }
 
        

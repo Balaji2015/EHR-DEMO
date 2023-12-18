@@ -708,8 +708,8 @@ namespace Acurus.Capella.UI
                 }
 
             }
-
-            //if (!IsPostBack)
+            //CAP-1514
+            if (!IsPostBack)
             {
 
                 // if (ScreenMode != null && ScreenMode == Request.QueryString["sMenu"])

@@ -20,7 +20,8 @@ var cptlist;
 var isclosemodal = 0;
 var Esuperbillclicked = "N";
 $(document).ready(function () {
-
+    //CAP-1534
+    { sessionStorage.setItem('StartLoading', 'true'); StartLoadFromPatChart(); }
     $('#txtUnits').val("6");
     localStorage.setItem("CCAndEandMAutosave", "false");
     EnableSaveButton();
@@ -2879,7 +2880,10 @@ myapp.controller('EandMCodingCtrl', function ($scope, $http) {
                 AutoSaveUnsuccessful();
 
                 if (!alert('ICD' + sICDCode + 'has already been added under Assessment ICDs.Please remove it ')) {
-                    $($(window.top.document).find('iframe[id=ctl00_C5POBody_EncounterContainer]')[0].contentDocument).find("ul li a")[0].click();
+                    //CAP-980
+                    localStorage.setItem("bSave", "true");
+                    window.parent.parent.parent.parent.theForm.ctl00_C5POBody_hdnIsSaveEnable.value = "false";
+                    //$($(window.top.document).find('iframe[id=ctl00_C5POBody_EncounterContainer]')[0].contentDocument).find("ul li a")[0].click();
                     $($(window.top.document).find('iframe[id=ctl00_C5POBody_EncounterContainer]')[0].contentDocument).find("ul li a")[7].click();
                     return;
 

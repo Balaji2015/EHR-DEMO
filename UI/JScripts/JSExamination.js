@@ -382,6 +382,10 @@ function Exam_Load() {
     $("textarea").addClass('spanstyle');
     //Jira CAP-1194
     //$("label").addClass('spanstyle');
+    //Jira CAP-1493
+    if (type != "General With Specialty") {
+        $("label").addClass('spanstyle');
+    }
     $("select").addClass('spanstyle');
     $('#tblPlan tr td').addClass('spanstyle');
 

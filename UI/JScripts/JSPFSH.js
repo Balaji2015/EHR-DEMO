@@ -583,7 +583,8 @@ function LoadPFSHTabs(event) {
                 var prevTabtxt = $(PrevTab).text();
                 sessionStorage.setItem('PFSH_PrevTabText', prevTabtxt);
                 //CAP-537 : PFSH - Family History screen loading for long time
-                $(paneID + " iframe").attr("src", src);
+                //CAP-1512
+                //$(paneID + " iframe").attr("src", src);
                 $('.clsIframe').contents()[0]?.all?.namedItem('btnSave')?.click();
             }
             else if (PrevTab[0].innerText == "Surg./Proc.") {
@@ -595,7 +596,8 @@ function LoadPFSHTabs(event) {
                 sessionStorage.setItem('PFSH_PrevTabText', prevTabtxt);
 
                 //CAP-537 : PFSH - Family History screen loading for long time
-                $(paneID + " iframe").attr("src", src);
+                //CAP-1546
+                //$(paneID + " iframe").attr("src", src);
                 $('.clsIframe').contents()[1]?.all?.namedItem('btnAdd')?.click();
             }
             else if (PrevTab[0].innerText == "Hospitalization History") {
@@ -606,7 +608,8 @@ function LoadPFSHTabs(event) {
                 var prevTabtxt = $(PrevTab).text();
                 sessionStorage.setItem('PFSH_PrevTabText', prevTabtxt);
                 //CAP-537 : PFSH - Family History screen loading for long time
-                $(paneID + " iframe").attr("src", src);
+                //CAP-1546
+                //$(paneID + " iframe").attr("src", src);
                 if ($('.clsIframe').contents()[2]?.all?.namedItem('btnAdd') != null && $('.clsIframe').contents()[2]?.all?.namedItem('btnAdd') != undefined) {
                     $('.clsIframe').contents()[2]?.all?.namedItem('btnAdd')?.click();
                 }
@@ -620,7 +623,8 @@ function LoadPFSHTabs(event) {
                 var prevTabtxt = $(PrevTab).text();
                 sessionStorage.setItem('PFSH_PrevTabText', prevTabtxt);
                 //CAP-537 : PFSH - Family History screen loading for long time
-                $(paneID + " iframe").attr("src", src);
+                //CAP-1546
+                //$(paneID + " iframe").attr("src", src);
                 $('.clsIframe').contents()[3]?.all?.namedItem('btnSave')?.click();
             }
             else if (PrevTab[0].innerText == "Social History") {
@@ -631,7 +635,8 @@ function LoadPFSHTabs(event) {
                 var prevTabtxt = $(PrevTab).text();
                 sessionStorage.setItem('PFSH_PrevTabText', prevTabtxt);
                 //CAP-537 : PFSH - Family History screen loading for long time
-                $(paneID + " iframe").attr("src", src);
+                //CAP-1546
+                //$(paneID + " iframe").attr("src", src);
                 // CAP-303 Cannot read properties of null (reading click)
                 $('.clsIframe').contents()[4]?.all?.namedItem('btnSave')?.click();
 
@@ -653,7 +658,8 @@ function LoadPFSHTabs(event) {
                 var prevTabtxt = $(PrevTab).text();
                 sessionStorage.setItem('PFSH_PrevTabText', prevTabtxt);
                 //CAP-537 : PFSH - Family History screen loading for long time
-                $(paneID + " iframe").attr("src", src);
+                //CAP-1546
+                //$(paneID + " iframe").attr("src", src);
                 //CAP-1463
                 $('.clsIframe').contents()[5]?.all?.namedItem('btnSave')?.click();
             }
@@ -674,7 +680,8 @@ function LoadPFSHTabs(event) {
                 var prevTabtxt = $(PrevTab).text();
                 sessionStorage.setItem('PFSH_PrevTabText', prevTabtxt);
                 //CAP-537 : PFSH - Family History screen loading for long time
-                $(paneID + " iframe").attr("src", src);
+                //CAP-1546
+                //$(paneID + " iframe").attr("src", src);
                 $('.clsIframe').contents()[6]?.all?.namedItem('btnSave')?.click();
 
             }
@@ -686,7 +693,8 @@ function LoadPFSHTabs(event) {
                 var prevTabtxt = $(PrevTab).text();
                 sessionStorage.setItem('PFSH_PrevTabText', prevTabtxt);
                 //CAP-537 : PFSH - Family History screen loading for long time
-                $(paneID + " iframe").attr("src", src);
+                //CAP-1546
+                //$(paneID + " iframe").attr("src", src);
                 $('.clsIframe').contents()[7]?.all?.namedItem('btnPFSHAutoSave')?.click();
             }
 

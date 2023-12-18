@@ -4070,6 +4070,11 @@ namespace Acurus.Capella.UI
             //    ScriptManager.RegisterStartupScript(this, this.Page.GetType(), "summaryMsg",
             //        "SetVitalsText('" + vitalText + "','" + lstToolTips[1] + "','" + lstToolTips[0] + "');", true);
             //}
+            //CAP-967
+            if (hdnType.Value == "Yes")
+            {
+                ScriptManager.RegisterStartupScript(this, this.GetType(), "HiddenValue", " closePopup();", true);
+            }
             ScriptManager.RegisterStartupScript(this, this.GetType(), string.Empty, " {sessionStorage.setItem('StartLoading', 'false');StopLoadFromPatChart();}", true);
         }
 

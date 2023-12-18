@@ -1954,7 +1954,7 @@
                  <asp:HiddenField ID="Hdnsortorder" runat="server" EnableViewState="false" />
                 <asp:Button ID="btnFindpatientClick" runat="server" Text="Button" Style="display: none"
                     OnClick="btnFindpatientClick_Click" />
-                <asp:Button ID="btnMessageType" runat="server" Text="Button" Style="display: none" OnClientClick="return NewCloseWindow();" OnClick="btnSave_Click" />
+                <asp:Button ID="btnMessageType" runat="server" Text="Button" Style="display: none" OnClientClick="return NewCloseWindow();" />
                 <asp:HiddenField ID="hdnIsPopUp" runat="server" />
                 <asp:HiddenField ID="hdnstatus" runat="server" />
                 <asp:HiddenField ID="hdncancel" runat="server" />

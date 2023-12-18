@@ -26,7 +26,8 @@ function pageLoad() {
 
 function clearall() {
     var e = $("#btnClearAll").val();
-
+    //CAP-1516
+    localStorage.setItem('IsClearAllClick', 'Yes');
     if ("Reset" == e) {
         if (!DisplayErrorMessage("1105005")) {
             document.getElementById("hdnUpdateMode").value = "";
@@ -162,6 +163,8 @@ function SetRadWindowProperties(e, t, n) {
 
 
 function btnSave_Clicked() {
+    //CAP-1516
+    localStorage.removeItem('IsClearAllClick');
     var e = $("#PatientDetails")[0].className;
     if ("patientPaneEnabled" == e) return DisplayErrorMessage("390006"), $("#hdnPageState").val(""), !1;
     if ($("#tbFilesBody tr.highlight").length == 0) {
@@ -283,10 +286,14 @@ function GetEndLocalTime() {
 }
 
 function btnMoveToNextProcess_Clicked() {
-
+    //CAP-1516
+    if (localStorage.getItem('IsClearAllClick') == null && localStorage.getItem('IsClearAllClick') == "") {
+        localStorage.setItem('IsSaveClickedSucessfull', '');
+    }
+    localStorage.removeItem('IsClearAllClick');
     if (document.getElementById("hdnIsMyScan").value == "" && document.getElementById("grdIndexing").rows.length == 1) {
         var e = $("#PatientDetails")[0].className;
-        if ("patientPaneEnabled" == e) return DisplayErrorMessage("390006"), $("#hdnPageState").val(""), !1;
+        if ("patientPaneEnabled" == e) return DisplayErrorMessage("390006"), document.getElementById('divLoading').style.display = "none", $("#hdnPageState").val(""), !1;
         var t = $("#cboDocumentType :selected").text();
         if ("" == t) return DisplayErrorMessage("115043"), document.getElementById('divLoading').style.display = "none", $("#hdnPageState").val(""), !1;
         var n = $("#cboDocumentSubType :selected").text();

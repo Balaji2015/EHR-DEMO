@@ -2590,6 +2590,12 @@ function EnableSaveFocus(event) {
         }
     }
 }
+//CAP-967
+function closePopup() {
+    parent.window.close();
+    window.parent.parent.parent.parent.theForm.ctl00_C5POBody_hdnIsSaveEnable.value = "false";
+    { sessionStorage.setItem('StartLoading', 'false'); StopLoadFromPatChart(); }
+}
 function btnClose_Clicked() {
     //CAP-967
     if (document.getElementById('btnSaveVitals').disabled == false) {
@@ -2616,6 +2622,7 @@ function btnClose_Clicked() {
                     $(dvdialog).remove();
                     parent.window.close();
                     window.parent.parent.parent.parent.theForm.ctl00_C5POBody_hdnIsSaveEnable.value = "false";
+                    document.getElementById('hdnType').value = "Yes";
                     return false;
                 },
                 "Cancel": function () {

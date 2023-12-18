@@ -832,8 +832,22 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
                         }
                         else
                         {
-                            objPhy.PhyFax = obj[13].ToString();
-                            objPhy.PhyPhone = obj[15].ToString();
+                            //Jira Jira CAP-1535
+                            //objPhy.PhyFax = obj[13].ToString();
+                            //objPhy.PhyPhone = obj[15].ToString();
+
+                            //Jira Jira CAP-1535 - Start
+                            if (obj[7] != null)
+                                objPhy.PhyCity = obj[7].ToString();
+                            if (obj[8] != null)
+                                objPhy.PhyState = obj[8].ToString();
+                            if (obj[9] != null)
+                                objPhy.PhyZip = obj[9].ToString();
+                            if (obj[13] != null)
+                                objPhy.PhyFax = obj[13].ToString();
+                            if (obj[15] != null)
+                                objPhy.PhyPhone = obj[15].ToString();
+                            //Jira Jira CAP-1535 - End
                         }
                         objPhy.PhyEmail = obj[16].ToString();
                         objPhy.PhyCompany = obj[17].ToString();

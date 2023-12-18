@@ -216,19 +216,21 @@ namespace Acurus.Capella.UI
                             {
                                 ClientSession.HumanId = Convert.ToUInt32(Request["HumanID"]);
                             }
-                            ModalWindow.Visible = true;
-                            ModalWindow.VisibleOnPageLoad = true;
-                            ModalWindow.VisibleStatusbar = false;
-                            ModalWindow.ReloadOnShow = true;
-                            ModalWindow.ShowContentDuringLoad = false;
-                            ModalWindow.Height = Unit.Pixel(800);
-                            ModalWindow.Width = Unit.Pixel(1220);
-                            ModalWindow.Top = Unit.Pixel(1);
-                            ModalWindow.Left = Unit.Pixel(72);
-                            ModalWindow.Behaviors = WindowBehaviors.Close;
-                            ModalWindow.NavigateUrl = "HtmlPhoneEncounter.html?openingfrom=" + Convert.ToString(Request["openingfrom"]) + "&MyHumanID=" + Request["HumanID"].ToString();
-                            ModalWindow.Modal = true;
-                            //ModalWindow.NavigateUrl = "frmPhoneEncounter.aspx?MyHumanID=" + Request["HumanID"].ToString() + "&openingfrom=" + Convert.ToString(Request["openingfrom"]);
+                            //CAP-1428
+                            //ModalWindow.Visible = true;
+                            //ModalWindow.VisibleOnPageLoad = true;
+                            //ModalWindow.VisibleStatusbar = false;
+                            //ModalWindow.ReloadOnShow = true;
+                            //ModalWindow.ShowContentDuringLoad = false;
+                            //ModalWindow.Height = Unit.Pixel(800);
+                            //ModalWindow.Width = Unit.Pixel(1220);
+                            //ModalWindow.Top = Unit.Pixel(1);
+                            //ModalWindow.Left = Unit.Pixel(72);
+                            //ModalWindow.Behaviors = WindowBehaviors.Close;
+                            //ModalWindow.NavigateUrl = "HtmlPhoneEncounter.html?openingfrom=" + Convert.ToString(Request["openingfrom"]) + "&MyHumanID=" + Request["HumanID"].ToString();
+                            //ModalWindow.Modal = true;
+                            ////ModalWindow.NavigateUrl = "frmPhoneEncounter.aspx?MyHumanID=" + Request["HumanID"].ToString() + "&openingfrom=" + Convert.ToString(Request["openingfrom"]);
+                            this.Page.ClientScript.RegisterStartupScript(this.Page.GetType(), string.Empty, " window.setTimeout(function () {OpenModal('Phone Encounter');}, 2000);", true);
                         }
                     }
                 }

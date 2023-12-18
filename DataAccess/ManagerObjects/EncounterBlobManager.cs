@@ -71,9 +71,18 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
             IList<Encounter_Blob> ilstEncounterBlob = new List<Encounter_Blob>();
             IList<Human_Blob> ilstHumanBlob = new List<Human_Blob>();
             HumanBlobManager humanBlobManager = new HumanBlobManager();
+            EncounterManager mngrEncounter = new EncounterManager();
+            IList<Encounter> ilstEncounter = new List<Encounter>();
 
             ilstEncounterBlob = GetEncounterBlob(ulEncounterID);
-            ilstHumanBlob = humanBlobManager.GetHumanBlob(ulHumanID);
+            //Jira CAP-1485 - Start
+            //ilstHumanBlob = humanBlobManager.GetHumanBlob(ulHumanID);
+            ilstEncounter = mngrEncounter.GetEncounterByEncounterID(ulEncounterID);
+            if (ilstEncounter != null && ilstEncounter.Count > 0 && ilstEncounter[0].Human_ID != 0)
+            {
+                ilstHumanBlob = humanBlobManager.GetHumanBlob(ilstEncounter[0].Human_ID);
+            }
+            //Jira CAP-1485 - End
 
             if (ilstEncounterBlob.Count > 0 && ilstHumanBlob.Count > 0)
             {
