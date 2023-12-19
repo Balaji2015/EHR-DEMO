@@ -258,6 +258,7 @@
     <Compile Include="ManagerObjects\ProcedureAuthorizationManager.cs" />
     <Compile Include="ManagerObjects\ProcedureCodeLibraryManager.cs" />
     <Compile Include="ManagerObjects\ProcedureCodeRuleMasterManager.cs" />
+    <Compile Include="ManagerObjects\ProcedureModifierLookupManager.cs" />
     <Compile Include="ManagerObjects\ProcessMasterManager.cs" />
     <Compile Include="ManagerObjects\ProcessScnTabManager.cs" />
     <Compile Include="ManagerObjects\ProcUserManager.cs" />

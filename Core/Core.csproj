@@ -239,6 +239,7 @@
     <Compile Include="DomainObjects\ProcedureCodeLibrary.cs" />
     <Compile Include="DomainObjects\ProcedureCodeRuleMaster.cs" />
     <Compile Include="DomainObjects\ProcedureLoincMap.cs" />
+    <Compile Include="DomainObjects\ProcedureModifierLookup.cs" />
     <Compile Include="DomainObjects\ProcessScnTab.cs" />
     <Compile Include="DomainObjects\process_scn_tab.cs" />
     <Compile Include="DomainObjects\ProviderReviewRuleMaster.cs" />
@@ -756,6 +757,7 @@
     <EmbeddedResource Include="HbmMaps\PPLineItemArc.hbm.xml" />
     <EmbeddedResource Include="HbmMaps\ProcessScnTab.hbm.xml" />
     <EmbeddedResource Include="HbmMaps\ResultLookup.hbm.xml" />
+    <EmbeddedResource Include="HbmMaps\ProcedureModifierLookup.hbm.xml" />
     <Content Include="HbmMaps\UserScnTab.hbm.xml" />
     <EmbeddedResource Include="HbmMaps\VisitPaymentArc.hbm.xml" />
     <EmbeddedResource Include="HbmMaps\VisitPaymentHistory.hbm.xml" />

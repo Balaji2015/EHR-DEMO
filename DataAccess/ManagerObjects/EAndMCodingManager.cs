@@ -40,7 +40,7 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
         IList<AllICD> GetShortDescFromAllIcd(string All_ICD);
         IList<InsurancePlan> GetInsuPlanNameAndExternalPlanNum(string InsurPlanId);
         FillEandMCoding LoadEandMCodingNew(ulong ulEncID, ulong ulHumanID, DateTime date_of_service, out bool bSaveEnable, bool Is_CMG_Ancillary);
-        FillEandMCoding SaveUpdateEandMCoding(IList<EAndMCoding> SaveListCPT, IList<EAndMCoding> UpdateListCPT, IList<EandMCodingICD> eandmICDList, string UserName, DateTime DateAndTime, IList<EandMCodingICD> UpdateICDList, Encounter EnRecord, string sBillingInstruction, IList<Immunization> ImmDelList, IList<ImmunizationHistory> ImmHisDelList, CarePlan CareplanUpdate);
+        FillEandMCoding SaveUpdateEandMCoding(IList<EAndMCoding> SaveListCPT, IList<EAndMCoding> UpdateListCPT, IList<EandMCodingICD> eandmICDList, string UserName, DateTime DateAndTime, IList<EandMCodingICD> UpdateICDList, Encounter EnRecord, string sBillingInstruction, IList<Immunization> ImmDelList, IList<ImmunizationHistory> ImmHisDelList, CarePlan CareplanUpdate, IList<EAndMCoding> lstEandDeleteList);
         IList<EAndMCoding> GetDetailsByEncounterID(ulong encid);
         FillEandMCoding SaveUpdateEandMCodingForPhoneEncounter(IList<EAndMCoding> SaveListCPT, IList<EAndMCoding> UpdateListCPT, IList<EandMCodingICD> eandmICDList, string UserName, DateTime DateAndTime, IList<EandMCodingICD> UpdateICDList);
     }
@@ -1063,8 +1063,11 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
                 IList<OrdersAssIcd> OrdersAssICDList = new List<OrdersAssIcd>();
                 bool EMPriICDSet = false;
                 IList<string> Immcptunit = new List<string>();
-                IList<ProcedureCodeLibrary> lstprocedure = new List<ProcedureCodeLibrary>();
-                ProcedureCodeLibraryManager obj = new ProcedureCodeLibraryManager();
+                IList<ProcedureModifierLookup> lstprocedure = new List<ProcedureModifierLookup>();
+                ProcedureModifierLookupManager obj = new ProcedureModifierLookupManager();
+                IList<ProcedureCodeLibrary> lstprocedurelib = new List<ProcedureCodeLibrary>();
+                ProcedureCodeLibraryManager objlib = new ProcedureCodeLibraryManager();
+
                 List<string> InProcCPT = new List<string>();
                 List<string> OrderCPT = new List<string>();
                 List<string> OrderCPT1 = new List<string>();
@@ -1084,7 +1087,7 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
                 ilstEandMTagList.Add("AssessmentList");
                 ilstEandMTagList.Add("EAndMCodingList");
                 ilstEandMTagList.Add("EncounterList");
-                
+
 
                 eandmCode.EandMCodingICDList = new List<EandMCodingICD>();
                 IList<EandMCodingICD> lst = new List<EandMCodingICD>();
@@ -1111,10 +1114,10 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
                         {
                             eandmCode.EncounterList.Add((Encounter)((IList<object>)ilstEandMBlobFinal[3])[iCount]);
                         }
-                       // eandmCode.EandMCodingICDList = (from m in lst where m.Encounter_ID == ulEncID && (m.Is_Delete == "N" || m.Is_Delete == "") select m).ToList<EandMCodingICD>();
+                        // eandmCode.EandMCodingICDList = (from m in lst where m.Encounter_ID == ulEncID && (m.Is_Delete == "N" || m.Is_Delete == "") select m).ToList<EandMCodingICD>();
 
                     }
-                   
+
                     if (!Is_CMG_Ancillary)//BugID:52857
                     {
                         if (ilstEandMBlobFinal[1] != null)
@@ -1147,6 +1150,25 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
                         {
                             lsteandm.Add((EAndMCoding)((IList<object>)ilstEandMBlobFinal[2])[iCount]);
                         }
+
+                        List<string> lsteandmcpt = new List<string>();
+                        for (int i = 0; i < lsteandm.Count; i++)
+                        {
+                            if (lsteandm[i].Encounter_ID == ulEncID)
+                            {
+                                if (EandMCPTs.IndexOf(lsteandm[i].Procedure_Code) == -1)
+                                    EandMCPTs.Add(lsteandm[i].Procedure_Code);//BugID:49118
+                                if (lsteandm[i].Is_Delete == "N" || lsteandm[i].Is_Delete == "")
+                                {
+                                    lsteandmcpt.Add(lsteandm[i].Procedure_Code);
+                                }
+                            }
+                        }
+                        IList<ProcedureModifierLookup> lstcptlib = new List<ProcedureModifierLookup>();
+                        ProcedureModifierLookupManager objmanager = new ProcedureModifierLookupManager();
+
+                        lstcptlib = objmanager.GetProcedureList(lsteandmcpt);
+
                         for (int i = 0; i < lsteandm.Count; i++)
                         {
                             if (lsteandm[i].Encounter_ID == ulEncID)
@@ -1158,7 +1180,21 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
                                     //if (aryAccessCPT.Contains(EAndMCoding.Procedure_Code) == false)
                                     //{
                                     eandmCode.EandMCodingList.Add(lsteandm[i]);
-                                    ProcList.Add(lsteandm[i].Procedure_Code + "~" + lsteandm[i].Procedure_Code_Description + "~" + lsteandm[i].Id + "~" + lsteandm[i].Units + "~" + lsteandm[i].Modifier1 + "~" + lsteandm[i].Modifier2 + "~" + lsteandm[i].Modifier3 + "~" + lsteandm[i].Modifier4 + "~" + string.Empty + "~" + lsteandm[i].Version + "~" + lsteandm[i].Diagnosis_Pointer_1 + "~" + lsteandm[i].Diagnosis_Pointer_2 + "~" + lsteandm[i].Diagnosis_Pointer_3 + "~" + lsteandm[i].Diagnosis_Pointer_4 + "~" + lsteandm[i].Diagnosis_Pointer_5 + "~" + lsteandm[i].Diagnosis_Pointer_6 + "~" + lsteandm[i].Sort_Order);
+                                    IList<ProcedureModifierLookup> lsttempCPT = new List<ProcedureModifierLookup>();
+                                    lsttempCPT = (from m in lstcptlib where m.Procedure_Code == lsteandm[i].Procedure_Code && m.Modifier == lsteandm[i].Modifier1 select m).ToList<ProcedureModifierLookup>();
+                                    if (lsttempCPT.Count > 0)
+                                        ProcList.Add(lsteandm[i].Procedure_Code + "~" + lsteandm[i].Procedure_Code_Description + "~" + lsteandm[i].Id + "~" + lsteandm[i].Units + "~" + lsteandm[i].Modifier1 + "~" + lsteandm[i].Modifier2 + "~" + lsteandm[i].Modifier3 + "~" + lsteandm[i].Modifier4 + "~" + string.Empty + "~" + lsteandm[i].Version + "~" + lsteandm[i].Diagnosis_Pointer_1 + "~" + lsteandm[i].Diagnosis_Pointer_2 + "~" + lsteandm[i].Diagnosis_Pointer_3 + "~" + lsteandm[i].Diagnosis_Pointer_4 + "~" + lsteandm[i].Diagnosis_Pointer_5 + "~" + lsteandm[i].Diagnosis_Pointer_6 + "~" + lsttempCPT[0].Sort_Order + "~" + lsttempCPT[0].RVU);
+
+                                    else
+                                    {
+
+                                        lsttempCPT = (from m in lstcptlib where m.Procedure_Code == lsteandm[i].Procedure_Code && m.Modifier == String.Empty select m).ToList<ProcedureModifierLookup>();
+                                        if (lsttempCPT.Count > 0)
+                                            ProcList.Add(lsteandm[i].Procedure_Code + "~" + lsteandm[i].Procedure_Code_Description + "~" + lsteandm[i].Id + "~" + lsteandm[i].Units + "~" + lsteandm[i].Modifier1 + "~" + lsteandm[i].Modifier2 + "~" + lsteandm[i].Modifier3 + "~" + lsteandm[i].Modifier4 + "~" + string.Empty + "~" + lsteandm[i].Version + "~" + lsteandm[i].Diagnosis_Pointer_1 + "~" + lsteandm[i].Diagnosis_Pointer_2 + "~" + lsteandm[i].Diagnosis_Pointer_3 + "~" + lsteandm[i].Diagnosis_Pointer_4 + "~" + lsteandm[i].Diagnosis_Pointer_5 + "~" + lsteandm[i].Diagnosis_Pointer_6 + "~" + lsttempCPT[0].Sort_Order + "~" + lsttempCPT[0].RVU);
+                                        else
+                                            ProcList.Add(lsteandm[i].Procedure_Code + "~" + lsteandm[i].Procedure_Code_Description + "~" + lsteandm[i].Id + "~" + lsteandm[i].Units + "~" + lsteandm[i].Modifier1 + "~" + lsteandm[i].Modifier2 + "~" + lsteandm[i].Modifier3 + "~" + lsteandm[i].Modifier4 + "~" + string.Empty + "~" + lsteandm[i].Version + "~" + lsteandm[i].Diagnosis_Pointer_1 + "~" + lsteandm[i].Diagnosis_Pointer_2 + "~" + lsteandm[i].Diagnosis_Pointer_3 + "~" + lsteandm[i].Diagnosis_Pointer_4 + "~" + lsteandm[i].Diagnosis_Pointer_5 + "~" + lsteandm[i].Diagnosis_Pointer_6 + "~" + 9 + "~" + 0);
+
+                                    }
                                     //    aryAccessCPT.Add(EAndMCoding.Procedure_Code);
                                     //}
                                 }
@@ -1168,13 +1204,13 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
 
                     }
 
-        
+
 
 
                 }
                 GenerateXml objxml = new GenerateXml();
-                
-               xmlHumandoc = objxml.ReadBlob("Human", ulHumanID);
+
+                xmlHumandoc = objxml.ReadBlob("Human", ulHumanID);
                 xmlEncounterdoc = objxml.ReadBlob("Encounter", ulEncID);
 
                 string sDOSYear = string.Empty;
@@ -1200,8 +1236,12 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
                     bool bMatchingFailed = false;
                     bool bDoNotAdd = false;
                     XmlNodeList xmlPhysicianList = null;
+                    IList<ProcedureModifierLookup> lstProcedurerulemasterCPT = new List<ProcedureModifierLookup>();
+                    ProcedureModifierLookupManager objmanager = new ProcedureModifierLookupManager();
+                    List<string> lstCPTrulemaster = ProcedureList.Select(a => a.Procedure_Code).ToList<string>();
+                    lstProcedurerulemasterCPT = objmanager.GetProcedureList(lstCPTrulemaster);
 
-                    
+
                     for (int iCount = 0; iCount < ProcedureList.Count; iCount++)
                     {
                         var proc = from p in ProcedureList where p.Procedure_Code == ProcedureList[iCount].Procedure_Code select p;
@@ -1236,8 +1276,22 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
 
                         if (xmlPhysicianList.Count > 0 && bDoNotAdd == false && bMatchingFailed == false)
                         {
-                            eandmCode.ProcedureMasterList.Add(ProcedureList[iCount].Procedure_Code + "~" + ProcedureList[iCount].Procedure_Code_Description + "~" + "" + "~" + "1" + "~" + "" + "~" + "" + "~" + "" + "~" + "" + "~" + "6" + "~" + "" + "~" + ProcedureList[iCount].Sort_Order);
-                            TempProcedureList.Add(ProcedureList[iCount].Procedure_Code + "~" + ProcedureList[iCount].Procedure_Code_Description + "~" + "" + "~" + "1" + "~" + "" + "~" + "" + "~" + "" + "~" + "" + "~" + "6" + "~" + "" + "~" + ProcedureList[iCount].Sort_Order);
+                            IList<ProcedureModifierLookup> lsttempCPT = new List<ProcedureModifierLookup>();
+                            lsttempCPT = (from m in lstProcedurerulemasterCPT where m.Procedure_Code == ProcedureList[iCount].Procedure_Code && m.Modifier == String.Empty select m).ToList<ProcedureModifierLookup>();
+
+                            if (lsttempCPT.Count > 0)
+                            {
+
+                                eandmCode.ProcedureMasterList.Add(ProcedureList[iCount].Procedure_Code + "~" + ProcedureList[iCount].Procedure_Code_Description + "~" + "" + "~" + "1" + "~" + "" + "~" + "" + "~" + "" + "~" + "" + "~" + "6" + "~" + "" + "~" + lsttempCPT[0].Sort_Order + "~" + lsttempCPT[0].RVU);
+                                TempProcedureList.Add(ProcedureList[iCount].Procedure_Code + "~" + ProcedureList[iCount].Procedure_Code_Description + "~" + "" + "~" + "1" + "~" + "" + "~" + "" + "~" + "" + "~" + "" + "~" + "6" + "~" + "" + "~" + lsttempCPT[0].Sort_Order + "~" + lsttempCPT[0].RVU);
+                            }
+                            else
+                            {
+
+                                eandmCode.ProcedureMasterList.Add(ProcedureList[iCount].Procedure_Code + "~" + ProcedureList[iCount].Procedure_Code_Description + "~" + "" + "~" + "1" + "~" + "" + "~" + "" + "~" + "" + "~" + "" + "~" + "6" + "~" + "" + "~" + 9 + "~" + 0);
+                                TempProcedureList.Add(ProcedureList[iCount].Procedure_Code + "~" + ProcedureList[iCount].Procedure_Code_Description + "~" + "" + "~" + "1" + "~" + "" + "~" + "" + "~" + "" + "~" + "" + "~" + "6" + "~" + "" + "~" + 9 + "~" + 0);
+
+                            }
                         }
 
                         if (bDoNotAdd == true)
@@ -1658,10 +1712,12 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
                         }
                         if (ImmCPT.Count > 0)
                             lstprocedure = obj.GetProcedureList(ImmCPT);
+                        if (ImmCPT.Count > 0)
+                            lstprocedurelib = objlib.GetProcedureList(ImmCPT);
                         for (int i = 0; i < ImmCPT.Count; i++)
                         {
 
-                            IList<ProcedureCodeLibrary> temp = (from m in lstprocedure
+                            IList<ProcedureCodeLibrary> temp = (from m in lstprocedurelib
                                                                 where
                                                                     m.Procedure_Code == ImmCPT[i].ToString() && m.Default_Dose != ""
                                                                 select m).ToList<ProcedureCodeLibrary>();
@@ -1689,10 +1745,14 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
 
                             if (FinalProcedurelist.Count > 0)
                             {
-                                IList<ProcedureCodeLibrary> tempSort = (from m in lstprocedure where m.Procedure_Code == ImmCPT[i].ToString() select m).ToList<ProcedureCodeLibrary>();
+                                IList<ProcedureModifierLookup> tempSort = (from m in lstprocedure where m.Procedure_Code == ImmCPT[i].ToString() && m.Modifier == String.Empty select m).ToList<ProcedureModifierLookup>();
                                 if (tempSort.Count > 0)
                                 {
-                                    TempProcedureList.Add(FinalProcedurelist[0] + "~" + tempSort[0].Sort_Order);
+                                    TempProcedureList.Add(FinalProcedurelist[0] + "~" + tempSort[0].Sort_Order + "~" + tempSort[0].RVU);
+                                }
+                                else
+                                {
+                                    TempProcedureList.Add(FinalProcedurelist[0] + "~" + 9 + "~" + 0);
                                 }
                             }
                         }
@@ -1718,8 +1778,9 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
 
 
                         //For SortOrder
+                        ProcedureModifierLookupManager objcpt = new ProcedureModifierLookupManager();
                         if (InProcCPT.Count > 0)
-                            lstprocedure = obj.GetProcedureList(InProcCPT);
+                            lstprocedure = objcpt.GetProcedureList(InProcCPT);
                         for (int i = 0; i < InProcCPT.Count; i++)
                         {
                             IList<string> FinalProcedurelist = (from m in TempProcedureListInhousePro where m.Split('~')[0] == InProcCPT[i].ToString() select m).ToList<string>();
@@ -1727,10 +1788,14 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
 
                             if (FinalProcedurelist.Count > 0)
                             {
-                                IList<ProcedureCodeLibrary> tempSort = (from m in lstprocedure where m.Procedure_Code == InProcCPT[i].ToString() select m).ToList<ProcedureCodeLibrary>();
+                                IList<ProcedureModifierLookup> tempSort = (from m in lstprocedure where m.Procedure_Code == InProcCPT[i].ToString() && m.Modifier == string.Empty select m).ToList<ProcedureModifierLookup>();
                                 if (tempSort.Count > 0)
                                 {
-                                    TempProcedureList.Add(FinalProcedurelist[0] + "~" + tempSort[0].Sort_Order);
+                                    TempProcedureList.Add(FinalProcedurelist[0] + "~" + tempSort[0].Sort_Order + "~" + tempSort[0].RVU);
+                                }
+                                if (tempSort.Count > 0)
+                                {
+                                    TempProcedureList.Add(FinalProcedurelist[0] + "~" + 9 + "~" + 0);
                                 }
                             }
                         }
@@ -1781,11 +1846,16 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
 
                                 if (FinalProcedurelist.Count > 0)
                                 {
-                                    IList<ProcedureCodeLibrary> tempSort = (from m in lstprocedure where m.Procedure_Code == OrderCPT[i].ToString() select m).ToList<ProcedureCodeLibrary>();
+                                    IList<ProcedureModifierLookup> tempSort = (from m in lstprocedure where m.Procedure_Code == OrderCPT[i].ToString() && m.Modifier == String.Empty select m).ToList<ProcedureModifierLookup>();
                                     if (tempSort.Count > 0)
                                     {
-                                        TempProcedureList.Add(FinalProcedurelist[0] + "~" + tempSort[0].Sort_Order);
+                                        TempProcedureList.Add(FinalProcedurelist[0] + "~" + tempSort[0].Sort_Order + tempSort[0].RVU);
                                     }
+                                    else
+                                    {
+                                        TempProcedureList.Add(FinalProcedurelist[0] + "~" + 9 + 0);
+                                    }
+
                                 }
                             }
                         }
@@ -1880,10 +1950,14 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
 
                                 if (FinalProcedurelist.Count > 0)
                                 {
-                                    IList<ProcedureCodeLibrary> tempSort = (from m in lstprocedure where m.Procedure_Code == OrderCPT1[i].ToString() select m).ToList<ProcedureCodeLibrary>();
+                                    IList<ProcedureModifierLookup> tempSort = (from m in lstprocedure where m.Procedure_Code == OrderCPT1[i].ToString() && m.Modifier == string.Empty select m).ToList<ProcedureModifierLookup>();
                                     if (tempSort.Count > 0)
                                     {
-                                        TempProcedureList.Add(FinalProcedurelist[0] + "~" + tempSort[0].Sort_Order);
+                                        TempProcedureList.Add(FinalProcedurelist[0] + "~" + tempSort[0].Sort_Order + "~" + tempSort[0].RVU);
+                                    }
+                                    else
+                                    {
+                                        TempProcedureList.Add(FinalProcedurelist[0] + "~" + 9 + "~" + 0);
                                     }
                                 }
                             }
@@ -2554,7 +2628,7 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
                 #endregion
                 IList<EAndMCoding> EMList = eandmCode.EandMCodingList;
                 IList<string> FinalProcedureList = TempProcedureList;
-                IList<string> DistinctProcedureList = FinalProcedureList.Select(a => (a.ToString().Split('~')[0] + "~" + a.ToString().Split('~')[1] + "~" + a.ToString().Split('~')[10])).Distinct().ToList();
+                IList<string> DistinctProcedureList = FinalProcedureList.Select(a => (a.ToString().Split('~')[0] + "~" + a.ToString().Split('~')[1] + "~" + a.ToString().Split('~')[10] + "~" + a.ToString().Split('~')[11])).Distinct().ToList();
 
 
                 for (int iDis = 0; iDis < DistinctProcedureList.Count; iDis++)
@@ -2571,10 +2645,10 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
                                 //BugID:48904 - A CPT which is present in E_M_Coding table will not be autosuggested anymore for the reasons that (Is_delete='Y' - user has deleted it, Is_delete='N' - already present in CPT list)
                                 var check = (from m in Immcptunit where m.Split('~').Contains(DistinctProcedureList[iDis].ToString().Split('~')[0]) select m).ToArray();
                                 if (check.Count() > 0)
-                                    ProcList.Add(DistinctProcedureList[iDis].ToString().Split('~')[0] + "~" + DistinctProcedureList[iDis].ToString().Split('~')[1] + "~" + "" + "~" + check[0].Split('~')[1].ToString() + "~" + "" + "~" + "" + "~" + "" + "~" + "" + "~" + "6" + "~" + "" + "~" + "" + "~" + "" + "~" + "" + "~" + "" + "~" + "" + "~" + "" + "~" + DistinctProcedureList[iDis].ToString().Split('~')[2]);
+                                    ProcList.Add(DistinctProcedureList[iDis].ToString().Split('~')[0] + "~" + DistinctProcedureList[iDis].ToString().Split('~')[1] + "~" + "" + "~" + check[0].Split('~')[1].ToString() + "~" + "" + "~" + "" + "~" + "" + "~" + "" + "~" + "6" + "~" + "" + "~" + "" + "~" + "" + "~" + "" + "~" + "" + "~" + "" + "~" + "" + "~" + DistinctProcedureList[iDis].ToString().Split('~')[2] + "~" + DistinctProcedureList[iDis].ToString().Split('~')[3]);
                                 else
 
-                                    ProcList.Add(DistinctProcedureList[iDis].ToString().Split('~')[0] + "~" + DistinctProcedureList[iDis].ToString().Split('~')[1] + "~" + "" + "~" + "1" + "~" + "" + "~" + "" + "~" + "" + "~" + "" + "~" + "6" + "~" + "" + "~" + "" + "~" + "" + "~" + "" + "~" + "" + "~" + "" + "~" + "" + "~" + DistinctProcedureList[iDis].ToString().Split('~')[2]);
+                                    ProcList.Add(DistinctProcedureList[iDis].ToString().Split('~')[0] + "~" + DistinctProcedureList[iDis].ToString().Split('~')[1] + "~" + "" + "~" + "1" + "~" + "" + "~" + "" + "~" + "" + "~" + "" + "~" + "6" + "~" + "" + "~" + "" + "~" + "" + "~" + "" + "~" + "" + "~" + "" + "~" + "" + "~" + DistinctProcedureList[iDis].ToString().Split('~')[2] + "~" + DistinctProcedureList[iDis].ToString().Split('~')[3]);
                             }
                         }
                     }
@@ -2754,7 +2828,7 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
 
         //    return mpdoproc;
         //}
-        public FillEandMCoding SaveUpdateEandMCoding(IList<EAndMCoding> SaveListCPT, IList<EAndMCoding> UpdateListCPT, IList<EandMCodingICD> SaveListICD, string UserName, DateTime DateAndTime, IList<EandMCodingICD> UpdateListICD, Encounter EnRecord, string sBillingInstruction, IList<Immunization> ImmDelList, IList<ImmunizationHistory> ImmHisDelList, CarePlan CareplanUpdate)
+        public FillEandMCoding SaveUpdateEandMCoding(IList<EAndMCoding> SaveListCPT, IList<EAndMCoding> UpdateListCPT, IList<EandMCodingICD> SaveListICD, string UserName, DateTime DateAndTime, IList<EandMCodingICD> UpdateListICD, Encounter EnRecord, string sBillingInstruction, IList<Immunization> ImmDelList, IList<ImmunizationHistory> ImmHisDelList, CarePlan CareplanUpdate, IList<EAndMCoding> lsteandmDeletelist)
         {
             iTryCount = 0;
             FillEandMCoding DTO = new FillEandMCoding();
@@ -2782,7 +2856,7 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
             if (ImmDelList != null && ImmDelList.Count > 0)
             {
                 ulong Enc_ID = ImmDelList[0].Encounter_Id;
-               
+
                 //BugID:46789
                 #region TPlanGET
                 //string FileName = "Encounter" + "_" + Enc_ID + ".xml";
@@ -2846,7 +2920,7 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
                             EncounterOrHumanId = UpdateListCPT[0].Encounter_ID;
                             humanid = UpdateListCPT[0].Human_ID;
                         }
-                        iResult = SaveUpdateDelete_DBAndXML_WithoutTransaction(ref SaveListCPT, ref UpdateListCPT, null, MySession, string.Empty, true, true, EncounterOrHumanId, string.Empty, ref XMLObj);
+                        iResult = SaveUpdateDelete_DBAndXML_WithoutTransaction(ref SaveListCPT, ref UpdateListCPT, lsteandmDeletelist, MySession, string.Empty, true, true, EncounterOrHumanId, string.Empty, ref XMLObj);
 
                         if (iResult == 2)
                         {
@@ -3480,8 +3554,8 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
 
                         if (bEandMCodingConsistent && bEandMCodingICDConsistent && bEandMCodingICDafterDeleteConsistent && bEncounterConsistent)
                         {
-                           //if (XMLObj != null && XMLObj.strXmlFilePath != null && XMLObj.strXmlFilePath != "")
-                           if(XMLObj!=null)
+                            //if (XMLObj != null && XMLObj.strXmlFilePath != null && XMLObj.strXmlFilePath != "")
+                            if (XMLObj != null)
                             {
                                 // XMLObj.itemDoc.Save(XMLObj.strXmlFilePath);
                                 int trycount = 0;
@@ -3489,7 +3563,7 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
                                 try
                                 {
                                     // XMLObj.itemDoc.Save(XMLObj.strXmlFilePath);
-                                    WriteBlob(EncounterOrHumanId, XMLObj.itemDoc,MySession, SaveListCPT, UpdateListCPT, null, XMLObj, false);
+                                    WriteBlob(EncounterOrHumanId, XMLObj.itemDoc, MySession, SaveListCPT, UpdateListCPT, null, XMLObj, false);
                                 }
                                 catch (Exception xmlexcep)
                                 {
@@ -3544,8 +3618,8 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
                                     }
                                 }
                             }
-                           // if (XMLObjHuman != null && XMLObjHuman.strXmlFilePath != null && XMLObjHuman.strXmlFilePath != "")
-                            if(XMLObjHuman!=null)
+                            // if (XMLObjHuman != null && XMLObjHuman.strXmlFilePath != null && XMLObjHuman.strXmlFilePath != "")
+                            if (XMLObjHuman != null)
                             {
                                 // XMLObjHuman.itemDoc.Save(XMLObjHuman.strXmlFilePath);
                                 int trycount = 0;
@@ -3558,7 +3632,7 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
                                     {
                                         objman.WriteBlob(humanid, XMLObjHuman.itemDoc, MySession, null, null, ImmHisDelList, XMLObjHuman, false);
                                     }
-                                    if (ImmDelList != null && ImmDelList.Count > 0) 
+                                    if (ImmDelList != null && ImmDelList.Count > 0)
                                     {
                                         objmanimm.WriteBlob(humanid, XMLObjHuman.itemDoc, MySession, null, null, ImmDelList, XMLObjHuman, false);
                                     }
@@ -3692,17 +3766,17 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
 
             IList<string> ilstEandMTagList = new List<string>();
             ilstEandMTagList.Add("EandMCodingICDList");
-          
+
             ilstEandMTagList.Add("EAndMCodingList");
             ilstEandMTagList.Add("EncounterList");
 
 
-   
+
             IList<EandMCodingICD> lsticd = new List<EandMCodingICD>();
             IList<EAndMCoding> lsteandm = new List<EAndMCoding>();
             IList<Assessment> lstass = new List<Assessment>();
             IList<object> ilstEandMBlobFinal = new List<object>();
-      
+
             ilstEandMBlobFinal = ReadBlob(EncounterOrHumanId, ilstEandMTagList);
 
             if (ilstEandMBlobFinal != null && ilstEandMBlobFinal.Count > 0)
@@ -3756,15 +3830,15 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
                             {
                                 IList<string> sReomveICDDesc = ICDList.Select(a => a.Split('~')[1]).ToList();
                                 int iIndex = sReomveICDDesc.IndexOf(DTO.EandMCodingICDList[j].ICD);
-                              
+
                             }
                             aryAccessICD.Add(DTO.EandMCodingICDList[j].ICD);
                         }
                     }
                 }
-              
 
-               
+
+
                 if (ilstEandMBlobFinal[1] != null)
                 {
                     for (int iCount = 0; iCount < ((IList<object>)ilstEandMBlobFinal[1]).Count; iCount++)

@@ -71,8 +71,9 @@ namespace Acurus.Capella.UI.WebServices
                 sTodate = ClientSession.FillEncounterandWFObject.EncRecord.Date_of_Service.ToString("yyyy-MM-dd");
             }
             string[] ResultDescpList = objProcedureCodeLibraryMngr.GetCPTDescriptionList(data, type, sTodate).ToArray();
-
-            var ResultRecord1 = ResultDescpList.Select(a => new { label = a.Split('~')[0] + "~" + a.Split('~')[1], value = a.Split('~')[2] + "~" + a.Split('~')[3] });
+            //Cap - 1301
+            //var ResultRecord1 = ResultDescpList.Select(a => new { label = a.Split('~')[0] + "~" + a.Split('~')[1], value = a.Split('~')[2] + "~" + a.Split('~')[3] });
+            var ResultRecord1 = ResultDescpList.Select(a => new { label = a.Split('~')[0] + "~" + a.Split('~')[1], value = a.Split('~')[2] + "~" + a.Split('~')[3] + "~" + a.Split('~')[4] });
             // json = new JavaScriptSerializer().Serialize(ResultRecord1);
             var jsonString = JsonConvert.SerializeObject(ResultRecord1);
             return jsonString;
@@ -311,9 +312,33 @@ namespace Acurus.Capella.UI.WebServices
                 bsaveenable = "true";
             }
             //BugID:46020 - to not enable Save and Save&Submit by default - END -
-
-            var EandMCodingListCPT = ProcedureList.Select(a => new { CPTCode = a.Split('~')[0], CPTDesc = a.Split('~')[1], EandMCPTID = a.Split('~')[2], Units = a.Split('~')[3], Modifier1 = a.Split('~')[4], Modifier2 = a.Split('~')[5], Modifier3 = a.Split('~')[6], Modifier4 = a.Split('~')[7], CPTCheck = a.Split('~')[8], EnableScreen = EnableScreen, CPTVersion = a.Split('~')[9], btnDelete = btnDelete, Order = Convert.ToInt32(a.Split('~')[16]), Amount = (Convert.ToInt32(a.Split('~')[3]) * Convert.ToDouble(a.Split('~')[17])).ToString(), DiaPointer1 = a.Split('~')[10], DiaPointer2 = a.Split('~')[11], DiaPointer3 = a.Split('~')[12], DiaPointer4 = a.Split('~')[13], DiaPointer5 = a.Split('~')[14], DiaPointer6 = a.Split('~')[15] });
-
+            //Cap - 1301
+            //var EandMCodingListCPT = ProcedureList.Select(a => new { CPTCode = a.Split('~')[0], CPTDesc = a.Split('~')[1], EandMCPTID = a.Split('~')[2], Units = a.Split('~')[3], Modifier1 = a.Split('~')[4], Modifier2 = a.Split('~')[5], Modifier3 = a.Split('~')[6], Modifier4 = a.Split('~')[7], CPTCheck = a.Split('~')[8], EnableScreen = EnableScreen, CPTVersion = a.Split('~')[9], btnDelete = btnDelete, Order = Convert.ToInt32(a.Split('~')[16]), Amount = (Convert.ToInt32(a.Split('~')[3]) * Convert.ToDouble(a.Split('~')[17])).ToString(), DiaPointer1 = a.Split('~')[10], DiaPointer2 = a.Split('~')[11], DiaPointer3 = a.Split('~')[12], DiaPointer4 = a.Split('~')[13], DiaPointer5 = a.Split('~')[14], DiaPointer6 = a.Split('~')[15] });
+            var EandMCodingListCPT = ProcedureList.Select(a => new
+            {
+                CPTCode = a.Split('~')[0],
+                CPTDesc = a.Split('~')[1],
+                EandMCPTID = a.Split('~')[2],
+                Units = a.Split('~')[3],
+                Modifier1 = a.Split('~')[4],
+                Modifier2 = a.Split('~')[5],
+                Modifier3 = a.Split('~')[6],
+                Modifier4 = a.Split('~')[7],
+                CPTCheck = a.Split('~')[8],
+                EnableScreen = EnableScreen,
+                CPTVersion = a.Split('~')[9],
+                btnDelete = btnDelete,
+                Order = Convert.ToInt32(a.Split('~')[16]),
+                RVU = Convert.ToDouble(a.Split('~')[17]),
+                Amount = (Convert.ToInt32(a.Split('~')[3]) * Convert.ToDouble(a.Split('~')[18])).ToString(),
+                DiaPointer1 = a.Split('~')[10],
+                DiaPointer2 = a.Split('~')[11],
+                DiaPointer3 = a.Split('~')[12],
+                DiaPointer4 = a.Split('~')[13],
+                DiaPointer5 = a.Split('~')[14],
+                DiaPointer6 = a.Split('~')[15]
+            })
+                .OrderBy(c => c.Order).ThenByDescending(n => n.RVU).ThenBy(o => o.CPTCode);
             //BugID:48668 -- ServProc REVAMP
 
             var EandMCodingListICD = eandmDTO.ICDList.Where(a => a.Split('~')[0] == "EMICD").Select(a => new { ICDCode = a.Split('~')[1], ICDDescription = a.Split('~')[2], ICDVersion = a.Split('~')[3], btnDelete = btnDeleteAdditionalICD, EandMICDID = a.Split('~')[5], Sequence = a.Split('~')[6], ResultCheck = a.Split('~')[7], IsPrimary = a.Split('~')[4], EnableScreen = EnableScreen, EnablePriRbtn = EnablePriRbtn });
@@ -580,25 +605,59 @@ namespace Acurus.Capella.UI.WebServices
 
             if (sFormviewCPT != string.Empty)
             {
-                IList<ProcedureCodeLibrary> ProcedureList = new List<ProcedureCodeLibrary>();
+
+                //IList<ProcedureCodeLibrary> ProcedureList = new List<ProcedureCodeLibrary>();
+                //IList<ProcedureCodeLibrary> ProcedureListchk = new List<ProcedureCodeLibrary>();
+                //List<string> procedurecode = new List<string>();
+                //procedurecode = sFormviewCPT.Split('|').ToArray().Select(a => a.ToString().Split('~')[0]).ToList<string>();
+                //ProcedureCodeLibraryManager obj = new ProcedureCodeLibraryManager();
+                //ProcedureList = obj.GetProcedureList(procedurecode);
+                //IList<string> ProcedureListfinal = new List<String>();
+                //var Record1 = (from b in sFormviewCPT.Split('|').ToArray() where !ProcedureListchk.Any(a => a.Procedure_Code == b.Split('~')[0]) select b).ToList();
+
+                //if (Record1.Count > 0)
+                //{
+                //    for (int i = 0; i < ProcedureList.Count; i++)
+                //    {
+
+                //        // ProcedureListfinal.Add(ProcedureList[i].Procedure_Code + "~" + ProcedureList[i].Procedure_Description + "~" + ProcedureList[i].Procedure_Charge+"~"+ i+1);
+                //        ProcedureListfinal.Add(ProcedureList[i].Procedure_Code + "~" + ProcedureList[i].Procedure_Description + "~" + ProcedureList[i].Procedure_Charge + "~" + ProcedureList[i].Sort_Order);
+                //    }
+
+                //    var ResultRecord1 = ProcedureListfinal.Select(a => new { CPTCode = a.Split('~')[0], CPTDesc = a.Split('~')[1].Replace('$', '\"'), btnDelete = "Resources/Delete-Blue.png", Units = "1", CPTCheck = "6", Order = a.Split('~')[3], Amount = a.Split('~')[2] });
+                //    json = new JavaScriptSerializer().Serialize(ResultRecord1);
+                //}
+                IList<ProcedureModifierLookup> ProcedureList = new List<ProcedureModifierLookup>();
                 IList<ProcedureCodeLibrary> ProcedureListchk = new List<ProcedureCodeLibrary>();
+                IList<ProcedureCodeLibrary> ProcedureListlibrary = new List<ProcedureCodeLibrary>();
                 List<string> procedurecode = new List<string>();
                 procedurecode = sFormviewCPT.Split('|').ToArray().Select(a => a.ToString().Split('~')[0]).ToList<string>();
-                ProcedureCodeLibraryManager obj = new ProcedureCodeLibraryManager();
+                ProcedureModifierLookupManager obj = new ProcedureModifierLookupManager();
+                ProcedureCodeLibraryManager objman = new ProcedureCodeLibraryManager();
                 ProcedureList = obj.GetProcedureList(procedurecode);
+                ProcedureListlibrary = objman.GetProcedureList(procedurecode);
                 IList<string> ProcedureListfinal = new List<String>();
                 var Record1 = (from b in sFormviewCPT.Split('|').ToArray() where !ProcedureListchk.Any(a => a.Procedure_Code == b.Split('~')[0]) select b).ToList();
 
                 if (Record1.Count > 0)
                 {
-                    for (int i = 0; i < ProcedureList.Count; i++)
+                    for (int i = 0; i < ProcedureListlibrary.Count; i++)
                     {
 
-                        // ProcedureListfinal.Add(ProcedureList[i].Procedure_Code + "~" + ProcedureList[i].Procedure_Description + "~" + ProcedureList[i].Procedure_Charge+"~"+ i+1);
-                        ProcedureListfinal.Add(ProcedureList[i].Procedure_Code + "~" + ProcedureList[i].Procedure_Description + "~" + ProcedureList[i].Procedure_Charge + "~" + ProcedureList[i].Sort_Order);
+
+                        IList<ProcedureModifierLookup> tempSort = (from m in ProcedureList where m.Procedure_Code == ProcedureListlibrary[i].Procedure_Code.ToString() && m.Modifier == String.Empty select m).ToList<ProcedureModifierLookup>();
+                        if (tempSort.Count > 0)
+                        {
+                            // ProcedureListfinal.Add(ProcedureList[i].Procedure_Code + "~" + ProcedureList[i].Procedure_Description + "~" + ProcedureList[i].Procedure_Charge+"~"+ i+1);
+                            ProcedureListfinal.Add(ProcedureListlibrary[i].Procedure_Code + "~" + ProcedureListlibrary[i].Procedure_Description + "~" + ProcedureListlibrary[i].Procedure_Charge + "~" + tempSort[0].Sort_Order + "~" + tempSort[0].RVU);
+                        }
+                        else
+                        {
+                            ProcedureListfinal.Add(ProcedureListlibrary[i].Procedure_Code + "~" + ProcedureListlibrary[i].Procedure_Description + "~" + ProcedureListlibrary[i].Procedure_Charge + "~" + 9 + "~" + 0);
+                        }
                     }
 
-                    var ResultRecord1 = ProcedureListfinal.Select(a => new { CPTCode = a.Split('~')[0], CPTDesc = a.Split('~')[1].Replace('$', '\"'), btnDelete = "Resources/Delete-Blue.png", Units = "1", CPTCheck = "6", Order = a.Split('~')[3], Amount = a.Split('~')[2] });
+                    var ResultRecord1 = ProcedureListfinal.Select(a => new { CPTCode = a.Split('~')[0], CPTDesc = a.Split('~')[1].Replace('$', '\"'), btnDelete = "Resources/Delete-Blue.png", Units = "1", CPTCheck = "6", Order = a.Split('~')[3], RVU = a.Split('~')[4], Amount = a.Split('~')[2] });
                     json = new JavaScriptSerializer().Serialize(ResultRecord1);
                 }
             }
@@ -881,7 +940,8 @@ namespace Acurus.Capella.UI.WebServices
             foreach (EAndMCoding cpt in EAndMCPTDeleteList)
             {
                 cpt.Is_Delete = "Y";
-                EAndMCPTUpdateList.Add(cpt);
+                //Cap - 1301
+                //EAndMCPTUpdateList.Add(cpt);
                 if (CPT_ImmDelCodes.IndexOf(cpt.Procedure_Code.Trim()) == -1)
                 {
                     CPT_ImmDelCodes.Add(cpt.Procedure_Code.Trim());
@@ -939,22 +999,77 @@ namespace Acurus.Capella.UI.WebServices
 
 
             //object[] arrTempCPT = arylstCPT.Where(a => a.ToString().Split('~')[8] == string.Empty).ToArray();//SaveList
+            //Cap - 1301
+            List<string> lstCPtlist = new List<string>();
+            List<string> lstCPtsortOrder = new List<string>();
+            foreach (object objCPT in arylstCPT)
+            {
+                lstCPtlist.Add(objCPT.ToString().Split('~')[0]);
+                lstCPtsortOrder.Add(objCPT.ToString().Split('~')[0] + "~" + objCPT.ToString().Split('~')[3]);
+
+            }
+
+            IList<ProcedureModifierLookup> lstcptlib = new List<ProcedureModifierLookup>();
+            IList<ProcedureModifierLookup> lstcptlibtemp = new List<ProcedureModifierLookup>();
+            ProcedureModifierLookupManager objmanager = new ProcedureModifierLookupManager();
+
+            lstcptlib = objmanager.GetProcedureList(lstCPtlist);
+            int isort_order = 1;
+            for (int k = 0; k < lstCPtsortOrder.Count; k++)
+            {
+                IList<ProcedureModifierLookup> lsttempCPT = new List<ProcedureModifierLookup>();
+                lsttempCPT = (from m in lstcptlib where m.Procedure_Code == lstCPtsortOrder[k].Split('~')[0] && m.Modifier == lstCPtsortOrder[k].Split('~')[1] select m).ToList<ProcedureModifierLookup>();
+                if (lsttempCPT.Count > 0)
+                {
+
+                    lstcptlibtemp.Add(lsttempCPT[0]);
+
+
+                }
+                else
+                {
+                    lsttempCPT = new List<ProcedureModifierLookup>();
+                    lsttempCPT = (from m in lstcptlib where m.Procedure_Code == lstCPtsortOrder[k].Split('~')[0] && m.Modifier == String.Empty select m).ToList<ProcedureModifierLookup>();
+                    if (lsttempCPT.Count > 0)
+                    {
+
+                        lstcptlibtemp.Add(lsttempCPT[0]);
+
+
+                    }
+
+                }
+
+
+            }
+
+            lstcptlibtemp = lstcptlibtemp.OrderBy(c => c.Sort_Order).ThenByDescending(n => n.RVU).ThenBy(o => o.Procedure_Code).ToList<ProcedureModifierLookup>();
+
+            for (int k = 0; k < lstcptlibtemp.Count; k++)
+
+            {
+                lstcptlibtemp[k].Sort_Order = k + 1;
+            }
+            isort_order = lstcptlibtemp.Count + 1;
+
+
             foreach (object objCPT in arylstCPT)
             {
                 EAndMCoding objEandMCoding = null;
                 IList<EAndMCoding> eandmCPTList = null;
+                //Cap - 1301
+                //var eandmList = from eandm in EAndMCPTTempList where Convert.ToString(eandm.Id) == objCPT.ToString().Split('~')[8] select eandm;
+                //eandmCPTList = eandmList.ToList<EAndMCoding>();
 
-                var eandmList = from eandm in EAndMCPTTempList where Convert.ToString(eandm.Id) == objCPT.ToString().Split('~')[8] select eandm;
-                eandmCPTList = eandmList.ToList<EAndMCoding>();
-
-                if (eandmCPTList.Count > 0)
-                {
-                    objEandMCoding = eandmCPTList[0];
-                }
-                else
-                {
-                    objEandMCoding = new EAndMCoding();
-                }
+                //if (eandmCPTList.Count > 0)
+                //{
+                //    objEandMCoding = eandmCPTList[0];
+                //}
+                //else
+                //{
+                //    objEandMCoding = new EAndMCoding();
+                //}
+                objEandMCoding = new EAndMCoding();
 
                 objEandMCoding.Encounter_ID = ClientSession.EncounterId;
                 objEandMCoding.Human_ID = ClientSession.HumanId;
@@ -973,66 +1088,92 @@ namespace Acurus.Capella.UI.WebServices
                 objEandMCoding.Diagnosis_Pointer_4 = objCPT.ToString().Split('~')[15];
                 objEandMCoding.Diagnosis_Pointer_5 = objCPT.ToString().Split('~')[16];
                 objEandMCoding.Diagnosis_Pointer_6 = objCPT.ToString().Split('~')[17];
-                objEandMCoding.Sort_Order = Convert.ToInt32(objCPT.ToString().Split('~')[18]);
+                //Cap - 1301
+                //objEandMCoding.Sort_Order = Convert.ToInt32(objCPT.ToString().Split('~')[18]);
+
+                IList<ProcedureModifierLookup> lsttempCPT = new List<ProcedureModifierLookup>();
+                lsttempCPT = (from m in lstcptlibtemp where m.Procedure_Code == objCPT.ToString().Split('~')[0] select m).ToList<ProcedureModifierLookup>();
+
+                if (lsttempCPT.Count > 0)
+                    objEandMCoding.Sort_Order = lsttempCPT[0].Sort_Order;// Convert.ToInt32(objCPT.ToString().Split('~')[18]);
+                else
+                    objEandMCoding.Sort_Order = 0;
 
                 //if (objCPT.ToString().Split('~')[7] != "")
                 //    objEandMCoding.Sequence = Convert.ToInt32(objCPT.ToString().Split('~')[7]);
                 objEandMCoding.Is_Delete = "N";
                 //objEandMCoding.CPT_Order = Convert.ToInt32(objCPT.ToString().Split('~')[10]);
                 objEandMCoding.Charge_Amount = Convert.ToDecimal(objCPT.ToString().Split('~')[11]);
-                if (eandmCPTList.Count > 0)
-                {
-                    if (objCPT.ToString().Split('~')[9] != "")
-                        objEandMCoding.Version = Convert.ToInt32(objCPT.ToString().Split('~')[9]);
-                    objEandMCoding.Modified_By = ClientSession.UserName;
-                    objEandMCoding.Modified_Date_And_Time = UtilityManager.ConvertToUniversal();
-                    EAndMCPTUpdateList.Add(objEandMCoding);
-                }
-                else
-                {
+                //Cap - 1301
+                //if (eandmCPTList.Count > 0)
+                //{
+                //    if (objCPT.ToString().Split('~')[9] != "")
+                //        objEandMCoding.Version = Convert.ToInt32(objCPT.ToString().Split('~')[9]);
+                //    objEandMCoding.Modified_By = ClientSession.UserName;
+                //    objEandMCoding.Modified_Date_And_Time = UtilityManager.ConvertToUniversal();
+                //    EAndMCPTUpdateList.Add(objEandMCoding);
+                //}
+                //else
+                //{
                     objEandMCoding.Created_By = ClientSession.UserName;
                     objEandMCoding.Created_Date_And_Time = UtilityManager.ConvertToUniversal();
                     EAndMCPTSaveList.Add(objEandMCoding);
-                }
+                //}
             }
-            //Added for BugID:49118 - All deleted ICDs even if autosuggested/ entered and deleted will be saved in E_M_Coding table with Is_delete = 'Y'.
-            foreach (object objCPT in arylstDelCPT)
+            //Cap - 1301
+            IList<EAndMCoding> lsttempsave = new List<EAndMCoding>();
+            lsttempsave = (from m in EAndMCPTSaveList where m.Sort_Order == 0 select m).ToList<EAndMCoding>();
+            if (lsttempsave.Count > 0)
             {
-                if (objCPT.ToString().Split('~')[8].Trim() == string.Empty)
+                for (int i = 0; i < EAndMCPTSaveList.Count; i++)
                 {
-                    EAndMCoding objEandMCoding = null;
-
-                    objEandMCoding = new EAndMCoding();
-
-                    objEandMCoding.Encounter_ID = ClientSession.EncounterId;
-                    objEandMCoding.Human_ID = ClientSession.HumanId;
-                    objEandMCoding.Physician_ID = ClientSession.PhysicianId;
-                    objEandMCoding.Procedure_Code = objCPT.ToString().Split('~')[0];
-                    objEandMCoding.Procedure_Code_Description = objCPT.ToString().Split('~')[1];
-                    if (objCPT.ToString().Split('~')[2] != "")
-                        objEandMCoding.Units = Convert.ToInt32(objCPT.ToString().Split('~')[2]);
-                    objEandMCoding.Modifier1 = objCPT.ToString().Split('~')[3];
-                    objEandMCoding.Modifier2 = objCPT.ToString().Split('~')[4];
-                    objEandMCoding.Modifier3 = objCPT.ToString().Split('~')[5];
-                    objEandMCoding.Modifier4 = objCPT.ToString().Split('~')[6];
-                    objEandMCoding.Diagnosis_Pointer_1 = objCPT.ToString().Split('~')[12];
-                    objEandMCoding.Diagnosis_Pointer_2 = objCPT.ToString().Split('~')[13];
-                    objEandMCoding.Diagnosis_Pointer_3 = objCPT.ToString().Split('~')[14];
-                    objEandMCoding.Diagnosis_Pointer_4 = objCPT.ToString().Split('~')[15];
-                    objEandMCoding.Diagnosis_Pointer_5 = objCPT.ToString().Split('~')[16];
-                    objEandMCoding.Diagnosis_Pointer_6 = objCPT.ToString().Split('~')[17];
-                    objEandMCoding.Sort_Order = Convert.ToInt32(objCPT.ToString().Split('~')[18]);
-                    //if (objCPT.ToString().Split('~')[7] != "")
-                    //    objEandMCoding.Sequence = Convert.ToInt32(objCPT.ToString().Split('~')[7]);
-                    objEandMCoding.Is_Delete = "Y";
-                    //objEandMCoding.CPT_Order = Convert.ToInt32(objCPT.ToString().Split('~')[10]);
-                    objEandMCoding.Charge_Amount = Convert.ToDecimal(objCPT.ToString().Split('~')[11]);
-                    objEandMCoding.Created_By = ClientSession.UserName;
-                    objEandMCoding.Created_Date_And_Time = UtilityManager.ConvertToUniversal();
-                    EAndMCPTSaveList.Add(objEandMCoding);
+                    if (EAndMCPTSaveList[i].Sort_Order == 0)
+                    {
+                        EAndMCPTSaveList[i].Sort_Order = isort_order;
+                        isort_order = isort_order + 1;
+                    }
                 }
-
             }
+
+            //Added for BugID:49118 - All deleted ICDs even if autosuggested/ entered and deleted will be saved in E_M_Coding table with Is_delete = 'Y'.
+
+            //foreach (object objCPT in arylstDelCPT)
+            //{
+            //    if (objCPT.ToString().Split('~')[8].Trim() == string.Empty)
+            //    {
+            //        EAndMCoding objEandMCoding = null;
+
+            //        objEandMCoding = new EAndMCoding();
+
+            //        objEandMCoding.Encounter_ID = ClientSession.EncounterId;
+            //        objEandMCoding.Human_ID = ClientSession.HumanId;
+            //        objEandMCoding.Physician_ID = ClientSession.PhysicianId;
+            //        objEandMCoding.Procedure_Code = objCPT.ToString().Split('~')[0];
+            //        objEandMCoding.Procedure_Code_Description = objCPT.ToString().Split('~')[1];
+            //        if (objCPT.ToString().Split('~')[2] != "")
+            //            objEandMCoding.Units = Convert.ToInt32(objCPT.ToString().Split('~')[2]);
+            //        objEandMCoding.Modifier1 = objCPT.ToString().Split('~')[3];
+            //        objEandMCoding.Modifier2 = objCPT.ToString().Split('~')[4];
+            //        objEandMCoding.Modifier3 = objCPT.ToString().Split('~')[5];
+            //        objEandMCoding.Modifier4 = objCPT.ToString().Split('~')[6];
+            //        objEandMCoding.Diagnosis_Pointer_1 = objCPT.ToString().Split('~')[12];
+            //        objEandMCoding.Diagnosis_Pointer_2 = objCPT.ToString().Split('~')[13];
+            //        objEandMCoding.Diagnosis_Pointer_3 = objCPT.ToString().Split('~')[14];
+            //        objEandMCoding.Diagnosis_Pointer_4 = objCPT.ToString().Split('~')[15];
+            //        objEandMCoding.Diagnosis_Pointer_5 = objCPT.ToString().Split('~')[16];
+            //        objEandMCoding.Diagnosis_Pointer_6 = objCPT.ToString().Split('~')[17];
+            //        objEandMCoding.Sort_Order = Convert.ToInt32(objCPT.ToString().Split('~')[18]);
+            //        //if (objCPT.ToString().Split('~')[7] != "")
+            //        //    objEandMCoding.Sequence = Convert.ToInt32(objCPT.ToString().Split('~')[7]);
+            //        objEandMCoding.Is_Delete = "Y";
+            //        //objEandMCoding.CPT_Order = Convert.ToInt32(objCPT.ToString().Split('~')[10]);
+            //        objEandMCoding.Charge_Amount = Convert.ToDecimal(objCPT.ToString().Split('~')[11]);
+            //        objEandMCoding.Created_By = ClientSession.UserName;
+            //        objEandMCoding.Created_Date_And_Time = UtilityManager.ConvertToUniversal();
+            //        EAndMCPTSaveList.Add(objEandMCoding);
+            //    }
+
+            //}
 
 
             //object[] arrTempICD = arylstICD.Where(a => a.ToString().Split('~')[8] == string.Empty).ToArray();//SaveList
@@ -1186,7 +1327,10 @@ namespace Acurus.Capella.UI.WebServices
 
             //CPT
             IList<EAndMCoding> lstInsertUpdateCpt = new List<EAndMCoding>();
-            lstInsertUpdateCpt = EAndMCPTSaveList.Where(a => a.Is_Delete.Trim().ToUpper() != "Y").ToList().Concat(EAndMCPTUpdateList.Where(a => a.Is_Delete.Trim().ToUpper() != "Y").ToList()).ToList();
+            //Cap - 1301
+            // lstInsertUpdateCpt = EAndMCPTSaveList.Where(a => a.Is_Delete.Trim().ToUpper() != "Y").ToList().Concat(EAndMCPTUpdateList.Where(a => a.Is_Delete.Trim().ToUpper() != "Y").ToList()).ToList();
+            lstInsertUpdateCpt = EAndMCPTSaveList.Where(a => a.Is_Delete.Trim().ToUpper() != "Y").ToList();
+
 
             Boolean bGcode = CheckGcodes(lstInsertUpdateICD, lstInsertUpdateCpt);
             string isZcode = "";
@@ -1201,6 +1345,11 @@ namespace Acurus.Capella.UI.WebServices
 
 
             //ClientSession.FillEncounterandWFObject.EncRecord = objencManager.GetEncounterByEncounterID(ClientSession.EncounterId)[0];//BugID:51613
+            //Cap - 1301
+            IList<EAndMCoding> lsteandmcodingDeletelist = new List<EAndMCoding>();
+            EAndMCodingManager objeandm = new EAndMCodingManager();
+            lsteandmcodingDeletelist = objeandm.GetDetailsByEncounterID(ClientSession.EncounterId);
+
             if (ClientSession.FillEncounterandWFObject != null)
             {
                 if (ClientSession.FillEncounterandWFObject.EncRecord == null || ClientSession.FillEncounterandWFObject.EncRecord.Id == 0)
@@ -1223,7 +1372,9 @@ namespace Acurus.Capella.UI.WebServices
                                     EncRecord.Batch_Status = "MODIFIED";
                             }
                         }
-                        eandmDTO = EandMCodingMngr.SaveUpdateEandMCoding(EAndMCPTSaveList, EAndMCPTUpdateList, EAndMICDSaveList, ClientSession.UserName, UtilityManager.ConvertToUniversal(), EAndMICDUpdateList, EncRecord, sBillingInstruction, ImmDelList, ImmHisDelList, CareplanUpdate);
+                        //Cap - 1301
+                        //eandmDTO = EandMCodingMngr.SaveUpdateEandMCoding(EAndMCPTSaveList, EAndMCPTUpdateList, EAndMICDSaveList, ClientSession.UserName, UtilityManager.ConvertToUniversal(), EAndMICDUpdateList, EncRecord, sBillingInstruction, ImmDelList, ImmHisDelList, CareplanUpdate);
+                        eandmDTO = EandMCodingMngr.SaveUpdateEandMCoding(EAndMCPTSaveList, EAndMCPTUpdateList, EAndMICDSaveList, ClientSession.UserName, UtilityManager.ConvertToUniversal(), EAndMICDUpdateList, EncRecord, sBillingInstruction, ImmDelList, ImmHisDelList, CareplanUpdate, lsteandmcodingDeletelist);
 
                     }
 
@@ -1245,7 +1396,9 @@ namespace Acurus.Capella.UI.WebServices
                                 ClientSession.FillEncounterandWFObject.EncRecord.Batch_Status = "MODIFIED";
                         }
                     }
-                    eandmDTO = EandMCodingMngr.SaveUpdateEandMCoding(EAndMCPTSaveList, EAndMCPTUpdateList, EAndMICDSaveList, ClientSession.UserName, UtilityManager.ConvertToUniversal(), EAndMICDUpdateList, ClientSession.FillEncounterandWFObject.EncRecord, sBillingInstruction, ImmDelList, ImmHisDelList, CareplanUpdate);
+                    //Cap -1301
+                    //eandmDTO = EandMCodingMngr.SaveUpdateEandMCoding(EAndMCPTSaveList, EAndMCPTUpdateList, EAndMICDSaveList, ClientSession.UserName, UtilityManager.ConvertToUniversal(), EAndMICDUpdateList, ClientSession.FillEncounterandWFObject.EncRecord, sBillingInstruction, ImmDelList, ImmHisDelList, CareplanUpdate);
+                    eandmDTO = EandMCodingMngr.SaveUpdateEandMCoding(EAndMCPTSaveList, EAndMCPTUpdateList, EAndMICDSaveList, ClientSession.UserName, UtilityManager.ConvertToUniversal(), EAndMICDUpdateList, ClientSession.FillEncounterandWFObject.EncRecord, sBillingInstruction, ImmDelList, ImmHisDelList, CareplanUpdate, lsteandmcodingDeletelist);
                 }
             }
             // ArrayList aryAccessCPT = new ArrayList();
@@ -1420,19 +1573,55 @@ namespace Acurus.Capella.UI.WebServices
             IList<ProcedureCodeLibrary> lst1 = new List<ProcedureCodeLibrary>();
             ProcedureCodeLibraryManager obj1 = new ProcedureCodeLibraryManager();
             lst1 = obj1.GetProcedureList(procedurecode);
+            //Cap - 1301
+            IList<ProcedureModifierLookup> lstorder = new List<ProcedureModifierLookup>();
+            ProcedureModifierLookupManager objorder = new ProcedureModifierLookupManager();
+            lstorder = objorder.GetProcedureList(procedurecode);
+            
+            //for (int j = 0; j < lst1.Count; j++)
+            //{
+            //    for (int i = 0; i < ProcList.Count; i++)
+            //    {
+            //        if (ProcList[i].Contains(lst1[j].Procedure_Code.ToString()))
+            //            ProcedureList.Add(ProcList[i].Split('~')[0] + "~" + ProcList[i].Split('~')[1] + "~" + ProcList[i].Split('~')[2] + "~" + ProcList[i].Split('~')[3] + "~" + ProcList[i].Split('~')[4] + "~" + ProcList[i].Split('~')[5] + "~" + ProcList[i].Split('~')[6] + "~" + ProcList[i].Split('~')[7] + "~" + ProcList[i].Split('~')[8] + "~" + ProcList[i].Split('~')[9] + "~" + lst1[j].Sort_Order + "~" + lst1[j].Procedure_Charge + "~" + ProcList[i].Split('~')[11] + "~" + ProcList[i].Split('~')[12] + "~" + ProcList[i].Split('~')[13] + "~" + ProcList[i].Split('~')[14] + "~" + ProcList[i].Split('~')[15] + "~" + ProcList[i].Split('~')[16]);
+            //        //ProcedureList.Add(ProcList[i].Split('~')[0] + "~" + ProcList[i].Split('~')[1] + "~" + ProcList[i].Split('~')[2] + "~" + ProcList[i].Split('~')[3] + "~" + ProcList[i].Split('~')[4] + "~" + ProcList[i].Split('~')[5] + "~" + ProcList[i].Split('~')[6] + "~" + ProcList[i].Split('~')[7] + "~" + ProcList[i].Split('~')[8] + "~" + ProcList[i].Split('~')[9] + "~" + (Convert.ToInt32(j) + 1).ToString() + "~" + lst1[j].Procedure_Charge + "~" + ProcList[i].Split('~')[11] + "~" + ProcList[i].Split('~')[12] + "~" + ProcList[i].Split('~')[13] + "~" + ProcList[i].Split('~')[14] + "~" + ProcList[i].Split('~')[15] + "~" + ProcList[i].Split('~')[16]);
+            //    }
+            //}
+
             for (int j = 0; j < lst1.Count; j++)
             {
                 for (int i = 0; i < ProcList.Count; i++)
                 {
+
                     if (ProcList[i].Contains(lst1[j].Procedure_Code.ToString()))
-                        ProcedureList.Add(ProcList[i].Split('~')[0] + "~" + ProcList[i].Split('~')[1] + "~" + ProcList[i].Split('~')[2] + "~" + ProcList[i].Split('~')[3] + "~" + ProcList[i].Split('~')[4] + "~" + ProcList[i].Split('~')[5] + "~" + ProcList[i].Split('~')[6] + "~" + ProcList[i].Split('~')[7] + "~" + ProcList[i].Split('~')[8] + "~" + ProcList[i].Split('~')[9] + "~" + lst1[j].Sort_Order + "~" + lst1[j].Procedure_Charge + "~" + ProcList[i].Split('~')[11] + "~" + ProcList[i].Split('~')[12] + "~" + ProcList[i].Split('~')[13] + "~" + ProcList[i].Split('~')[14] + "~" + ProcList[i].Split('~')[15] + "~" + ProcList[i].Split('~')[16]);
-                    //ProcedureList.Add(ProcList[i].Split('~')[0] + "~" + ProcList[i].Split('~')[1] + "~" + ProcList[i].Split('~')[2] + "~" + ProcList[i].Split('~')[3] + "~" + ProcList[i].Split('~')[4] + "~" + ProcList[i].Split('~')[5] + "~" + ProcList[i].Split('~')[6] + "~" + ProcList[i].Split('~')[7] + "~" + ProcList[i].Split('~')[8] + "~" + ProcList[i].Split('~')[9] + "~" + (Convert.ToInt32(j) + 1).ToString() + "~" + lst1[j].Procedure_Charge + "~" + ProcList[i].Split('~')[11] + "~" + ProcList[i].Split('~')[12] + "~" + ProcList[i].Split('~')[13] + "~" + ProcList[i].Split('~')[14] + "~" + ProcList[i].Split('~')[15] + "~" + ProcList[i].Split('~')[16]);
+                    {
+                        IList<ProcedureModifierLookup> tempSort = (from m in lstorder where m.Procedure_Code == lst1[j].Procedure_Code.ToString() && m.Modifier == ProcList[i].Split('~')[4] select m).ToList<ProcedureModifierLookup>();
+                        if (tempSort.Count > 0)
+                        {
+                            ProcedureList.Add(ProcList[i].Split('~')[0] + "~" + ProcList[i].Split('~')[1] + "~" + ProcList[i].Split('~')[2] + "~" + ProcList[i].Split('~')[3] + "~" + ProcList[i].Split('~')[4] + "~" + ProcList[i].Split('~')[5] + "~" + ProcList[i].Split('~')[6] + "~" + ProcList[i].Split('~')[7] + "~" + ProcList[i].Split('~')[8] + "~" + ProcList[i].Split('~')[9] + "~" + tempSort[0].Sort_Order + "~" + lst1[j].Procedure_Charge + "~" + ProcList[i].Split('~')[11] + "~" + ProcList[i].Split('~')[12] + "~" + ProcList[i].Split('~')[13] + "~" + ProcList[i].Split('~')[14] + "~" + ProcList[i].Split('~')[15] + "~" + ProcList[i].Split('~')[16] + "~" + tempSort[0].RVU);
+                        }
+                        else
+                        {
+                            tempSort = (from m in lstorder where m.Procedure_Code == lst1[j].Procedure_Code.ToString() && m.Modifier == string.Empty select m).ToList<ProcedureModifierLookup>();
+                            if (tempSort.Count > 0)
+                            {
+                                ProcedureList.Add(ProcList[i].Split('~')[0] + "~" + ProcList[i].Split('~')[1] + "~" + ProcList[i].Split('~')[2] + "~" + ProcList[i].Split('~')[3] + "~" + ProcList[i].Split('~')[4] + "~" + ProcList[i].Split('~')[5] + "~" + ProcList[i].Split('~')[6] + "~" + ProcList[i].Split('~')[7] + "~" + ProcList[i].Split('~')[8] + "~" + ProcList[i].Split('~')[9] + "~" + tempSort[0].Sort_Order + "~" + lst1[j].Procedure_Charge + "~" + ProcList[i].Split('~')[11] + "~" + ProcList[i].Split('~')[12] + "~" + ProcList[i].Split('~')[13] + "~" + ProcList[i].Split('~')[14] + "~" + ProcList[i].Split('~')[15] + "~" + ProcList[i].Split('~')[16] + "~" + tempSort[0].RVU);
+                            }
+                            else
+                            {
+                                ProcedureList.Add(ProcList[i].Split('~')[0] + "~" + ProcList[i].Split('~')[1] + "~" + ProcList[i].Split('~')[2] + "~" + ProcList[i].Split('~')[3] + "~" + ProcList[i].Split('~')[4] + "~" + ProcList[i].Split('~')[5] + "~" + ProcList[i].Split('~')[6] + "~" + ProcList[i].Split('~')[7] + "~" + ProcList[i].Split('~')[8] + "~" + ProcList[i].Split('~')[9] + "~" + 9 + "~" + lst1[j].Procedure_Charge + "~" + ProcList[i].Split('~')[11] + "~" + ProcList[i].Split('~')[12] + "~" + ProcList[i].Split('~')[13] + "~" + ProcList[i].Split('~')[14] + "~" + ProcList[i].Split('~')[15] + "~" + ProcList[i].Split('~')[16] + "~" + 0);
+                            }
+                           
+                        }
+                    }//ProcedureList.Add(ProcList[i].Split('~')[0] + "~" + ProcList[i].Split('~')[1] + "~" + ProcList[i].Split('~')[2] + "~" + ProcList[i].Split('~')[3] + "~" + ProcList[i].Split('~')[4] + "~" + ProcList[i].Split('~')[5] + "~" + ProcList[i].Split('~')[6] + "~" + ProcList[i].Split('~')[7] + "~" + ProcList[i].Split('~')[8] + "~" + ProcList[i].Split('~')[9] + "~" + (Convert.ToInt32(j) + 1).ToString() + "~" + lst1[j].Procedure_Charge + "~" + ProcList[i].Split('~')[11] + "~" + ProcList[i].Split('~')[12] + "~" + ProcList[i].Split('~')[13] + "~" + ProcList[i].Split('~')[14] + "~" + ProcList[i].Split('~')[15] + "~" + ProcList[i].Split('~')[16]);
                 }
             }
 
 
             //, DiaPointer1 = a.Split('~')[10], DiaPointer2 = a.Split('~')[11], DiaPointer3 = a.Split('~')[12], DiaPointer4 = a.Split('~')[13], DiaPointer5 = a.Split('~')[14], DiaPointer6 = a.Split('~')[15] });
-            var EandMCodingListCPT = ProcedureList.Select(a => new { CPTCode = a.Split('~')[0], CPTDesc = a.Split('~')[1], EandMCPTID = a.Split('~')[2], Units = a.Split('~')[3], Modifier1 = a.Split('~')[4], Modifier2 = a.Split('~')[5], Modifier3 = a.Split('~')[6], Modifier4 = a.Split('~')[7], CPTCheck = a.Split('~')[8], EnableScreen = EnableScreen, CPTVersion = a.Split('~')[9], btnDelete = btnDelete, Order = Convert.ToInt32(a.Split('~')[10]), Amount = a.Split('~')[11], DiaPointer1 = a.Split('~')[12], DiaPointer2 = a.Split('~')[13], DiaPointer3 = a.Split('~')[14], DiaPointer4 = a.Split('~')[15], DiaPointer5 = a.Split('~')[16], DiaPointer6 = a.Split('~')[17] });
+            //Cap - 1301
+            //var EandMCodingListCPT = ProcedureList.Select(a => new { CPTCode = a.Split('~')[0], CPTDesc = a.Split('~')[1], EandMCPTID = a.Split('~')[2], Units = a.Split('~')[3], Modifier1 = a.Split('~')[4], Modifier2 = a.Split('~')[5], Modifier3 = a.Split('~')[6], Modifier4 = a.Split('~')[7], CPTCheck = a.Split('~')[8], EnableScreen = EnableScreen, CPTVersion = a.Split('~')[9], btnDelete = btnDelete, Order = Convert.ToInt32(a.Split('~')[10]), Amount = a.Split('~')[11], DiaPointer1 = a.Split('~')[12], DiaPointer2 = a.Split('~')[13], DiaPointer3 = a.Split('~')[14], DiaPointer4 = a.Split('~')[15], DiaPointer5 = a.Split('~')[16], DiaPointer6 = a.Split('~')[17] });  
+            var EandMCodingListCPT = ProcedureList.Select(a => new { CPTCode = a.Split('~')[0], CPTDesc = a.Split('~')[1], EandMCPTID = a.Split('~')[2], Units = a.Split('~')[3], Modifier1 = a.Split('~')[4], Modifier2 = a.Split('~')[5], Modifier3 = a.Split('~')[6], Modifier4 = a.Split('~')[7], CPTCheck = a.Split('~')[8], EnableScreen = EnableScreen, CPTVersion = a.Split('~')[9], btnDelete = btnDelete, Order = Convert.ToInt32(a.Split('~')[10]), RVU = Convert.ToDouble(a.Split('~')[18]), Amount = a.Split('~')[11], DiaPointer1 = a.Split('~')[12], DiaPointer2 = a.Split('~')[13], DiaPointer3 = a.Split('~')[14], DiaPointer4 = a.Split('~')[15], DiaPointer5 = a.Split('~')[16], DiaPointer6 = a.Split('~')[17] }).OrderBy(c => c.Order).ThenByDescending(n => n.RVU).ThenBy(o => o.CPTCode); 
             var EandMCodingListICD = ICDList.Where(a => a.Split('~')[0] == "EMICD").Select(a => new { ICDCode = a.Split('~')[1], ICDDescription = a.Split('~')[2], ICDVersion = a.Split('~')[3], btnDelete = btnDeleteAdditionalICD, EandMICDID = a.Split('~')[5], Sequence = a.Split('~')[6], ResultCheck = a.Split('~')[7], IsPrimary = a.Split('~')[4], EnableScreen = EnableScreen, EnablePriRbtn = EnablePriRbtn });
             var AssEandMCodingListICD = ICDList.Where(a => a.Split('~')[0] == "ASSESSMENT").Select(a => new { ICDCode = a.Split('~')[1], ICDDescription = a.Split('~')[2], ICDVersion = a.Split('~')[3], IsPrimary = a.Split('~')[4], EandMICDID = a.Split('~')[5], Sequence = a.Split('~')[6], ResultCheck = a.Split('~')[7], EnableScreen = EnableScreen });
             var OrdersAssEandMCodingListICD = ICDList.Where(a => a.Split('~')[0] == "ORDERS_ASSESSMENT").Select(a => new { ICDCode = a.Split('~')[1], ICDDescription = a.Split('~')[2], ICDVersion = a.Split('~')[3], IsPrimary = a.Split('~')[4], EandMICDID = a.Split('~')[5], Sequence = a.Split('~')[6], ResultCheck = a.Split('~')[7], EnableScreen = EnableScreen });

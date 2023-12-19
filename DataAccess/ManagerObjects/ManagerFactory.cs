@@ -550,6 +550,8 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
 
         IMapXMLBlobManager GetMapXMLBlobManager();
         IMapXMLBlobManager GetMapXMLBlobManager(INHibernateSession session);
+        IProcedureModifierLookupManager GetProcedureModifierLookupManager();
+        IProcedureModifierLookupManager GetProcedureModifierLookupManager(INHibernateSession session);
 
     }
 
@@ -2246,6 +2248,14 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
         public IMapXMLBlobManager GetMapXMLBlobManager(INHibernateSession session)
         {
             return new MapXMLBlobManager(session);
+        }
+        public IProcedureModifierLookupManager GetProcedureModifierLookupManager()
+        {
+            return new ProcedureModifierLookupManager();
+        }
+        public IProcedureModifierLookupManager GetProcedureModifierLookupManager(INHibernateSession session)
+        {
+            return new ProcedureModifierLookupManager(session);
         }
         #endregion
     }
