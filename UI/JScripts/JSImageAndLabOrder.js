@@ -1846,9 +1846,9 @@ function chklstFrequentlyUsedProcedures_Changed() {
         document.getElementById("btnOrderSubmit").disabled = false;
     if (document.getElementById("txtQuantity").value != "") {
         if (document.getElementById("lblUnits").innerText.indexOf("*") != -1) {
-            var lblUnits = document.getElementById("lblUnits");
+            var lblunits = document.getElementById("lblUnits");
             //CAP-1501
-            lblUnits.innerHTML += "*";
+            lblunits.innerHTML += "*";
             $(lblunits).html($(lblunits).html().replace("*", "<span class='manredforstar'>*</span>"));
             $('#lblUnits').removeClass('spanstyle');
             $('#lblUnits').addClass('MandLabelstyle');
