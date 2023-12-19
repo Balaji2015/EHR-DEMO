@@ -13449,7 +13449,11 @@ and  w.Obj_Type  in ('DIAGNOSTIC ORDER','INTERNAL ORDER','IMMUNIZATION ORDER','R
 		<![CDATA[SELECT concat(Procedure_Code,'~',Procedure_Code_Description) FROM `procedure_code_library` where Procedure_Code_Description like ? and Procedure_Type=?;]]>
 	</sql-query>
 	<sql-query name="GetAllCPTCode">
-		<![CDATA[SELECT concat(Procedure_Code,'~',Procedure_Code_Description,'~',Procedure_charge ,'~',sort_order) FROM `procedure_code_library` where Procedure_Code like ? and Is_Active='Y' and date_format(from_date,'%Y-%m-%d')<= ? and date_format(to_date,'%Y-%m-%d')>=?;]]>
+		<!--<![CDATA[SELECT concat(Procedure_Code,'~',Procedure_Code_Description,'~',Procedure_charge ,'~',sort_order) FROM `procedure_code_library` where Procedure_Code like ? and Is_Active='Y' and date_format(from_date,'%Y-%m-%d')<= ? and date_format(to_date,'%Y-%m-%d')>=?;]]>-->
+		<![CDATA[SELECT concat(a.Procedure_Code,'~',a.Procedure_Code_Description,'~',a.Procedure_charge ,'~',ifnull(b.sort_order,9),'~',ifnull(b.RVU,0))
+ FROM `procedure_code_library` as a left join  (select * from Procedure_Modifier_Lookup  where modifier='') as b on a.procedure_code= b.procedure_code  where
+            a.Procedure_Code like ?
+            and Is_Active='Y' and date_format(from_date,'%Y-%m-%d')<= ? and date_format(to_date,'%Y-%m-%d')>=?  ;]]>
 	</sql-query>
 	<sql-query name="FindPhysician">
 		<!--<![CDATA[SELECT P.Physician_Library_ID,P.Physician_Prefix,P.Physician_First_Name, P.Physician_Middle_Name,P.Physician_Last_Name,P.Physician_Suffix, S.Specialty,P.Physician_City,P.Physician_State, P.Physician_Zip,P.Physician_NPI,S.physician_specialty_id,M.Facility_Name,P.Physician_Fax,ifnull(f.facility_Address1,''),P.Physician_Telephone FROM `physician_library` P left JOIN map_facility_physician M ON (P.Physician_Library_ID=M.Physician_ID) left join physician_specialty s on (p.Physician_Library_ID=s.Physician_ID)  left join facility_library as f on f.facility_name=m.facility_name WHERE P.Physician_Last_Name LIKE ? OR P.Physician_First_Name LIKE ? or S.Specialty LIKE ? or P.Physician_NPI LIKE ? or M.Facility_Name like ? ;]]>-->

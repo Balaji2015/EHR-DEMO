@@ -199,7 +199,7 @@
                         </tr>
                     </thead>
                     <tbody id="EandMCodingCPTBody" class="Editabletxtbox">
-                        <tr style="width:100%;" ng-repeat="a in EandMCodingCPTTable |  orderObjectBy:'Order'">
+                        <tr style="width:100%;" ng-repeat="a in EandMCodingCPTTable">
                             <td style="width:1.5%;text-align:center;"><img id=" followbutton" title="Delete" ng-src={{a.btnDelete}} ng-click="a.EnableScreen=='disabled'?'return false':CPTDelete($index)" /> </td>
                             <td style="width:6%;">{{ a.CPTCode  }}</td>
                             <td style="width:46%;">{{ a.CPTDesc  }}</td>
@@ -236,6 +236,7 @@
                             <td style="display:none">{{a.CPTVersion}}</td>
                             <td style="display:none">{{a.Order}}</td>
                             <td style="display:none">{{a.Amount}}</td>
+                            <td style="display:none">{{a.RVU}}</td>
                         </tr>
                     </tbody>
                 </table>

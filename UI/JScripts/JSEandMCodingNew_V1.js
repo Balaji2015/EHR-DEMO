@@ -158,7 +158,8 @@ myapp.controller('EandMCodingCtrl', function ($scope, $http) {
             document.getElementById('btnClose').style.display = "none";
             document.getElementById('btnClose').removeAttribute("class");
         }
-
+        //Cap - 1301
+        $scope.RefershGrid();
        { sessionStorage.setItem('StartLoading', 'false'); StopLoadFromPatChart(); }
     })
         .error(function (error, status, headers, config) {
@@ -248,7 +249,9 @@ myapp.controller('EandMCodingCtrl', function ($scope, $http) {
                         response($.map(results, function (item) {
                             return {
                                 label: item.split('~')[0] + '~' + item.split('~')[1],
-                                value: item.split('~')[2] + '~' + item.split('~')[3]
+                                //Cap - 1301
+                                //value: item.split('~')[2] + '~' + item.split('~')[3]
+                                value: item.split('~')[2] + '~' + item.split('~')[3] + '~' + item.split('~')[4]
                             }
                         }));
                     }
@@ -284,23 +287,92 @@ myapp.controller('EandMCodingCtrl', function ($scope, $http) {
                 var iOrder;
 
                 var flag = 0;
-                var iMax = 0
+                var iMax = 0;
+                //Cap - 1301
+                //if ($scope.EandMCodingCPTTable.length != 0) {
+                //    for (iMax = 0; iMax < $scope.EandMCodingCPTTable.length; iMax++) {
+                //        if (parseFloat($scope.EandMCodingCPTTable[iMax].Order) <= parseFloat(ui.item.value.split('~')[1])) {
+
+                //            flag = 1;
+                //            //$scope.EandMCodingCPTTable.splice(iMax, 0, { 'CPTCode': ui.item.label.split('~')[0], 'CPTDesc': ui.item.label.split('~')[1], 'EandMCPTID': '', 'Units': '1', 'Modifier1': Modifier, 'Modifier2': '', 'Modifier3': '', 'Modifier4': '', 'CPTCheck': '6', 'CPTVersion': '', 'btnDelete': 'Resources/Delete-Blue.png', 'Order': parseFloat((iMax + 1)), 'Amount': ui.item.value, 'DiaPointer1': '', 'DiaPointer2': '', 'DiaPointer3': '', 'DiaPointer4': '', 'DiaPointer5': '', 'DiaPointer6': '' });
+                //            $scope.EandMCodingCPTTable.splice(iMax, 0, { 'CPTCode': ui.item.label.split('~')[0], 'CPTDesc': ui.item.label.split('~')[1], 'EandMCPTID': '', 'Units': '1', 'Modifier1': Modifier, 'Modifier2': '', 'Modifier3': '', 'Modifier4': '', 'CPTCheck': '6', 'CPTVersion': '', 'btnDelete': 'Resources/Delete-Blue.png', 'Order': ui.item.value.split('~')[1], 'Amount': ui.item.value.split('~')[0], 'DiaPointer1': '', 'DiaPointer2': '', 'DiaPointer3': '', 'DiaPointer4': '', 'DiaPointer5': '', 'DiaPointer6': '' });
+                //            $scope.EandMCodingCPTTable.join();
+                //            //push({ 'CPTCode': ui.item.label.split('~')[0], 'CPTDesc': ui.item.label.split('~')[1], 'EandMCPTID': '', 'Units': '1', 'Modifier1': Modifier, 'Modifier2': '', 'Modifier3': '', 'Modifier4': '', 'CPTCheck': '6', 'CPTVersion': '', 'btnDelete': 'Resources/Delete-Blue.png', 'Order': iMax + 1, 'Amount': ui.item.label.split('~')[2] });
+                //            break;
+                //        }
+
+                //    }
+
                 if ($scope.EandMCodingCPTTable.length != 0) {
                     for (iMax = 0; iMax < $scope.EandMCodingCPTTable.length; iMax++) {
-                        if (parseFloat($scope.EandMCodingCPTTable[iMax].Order) <= parseFloat(ui.item.value.split('~')[1])) {
+                        iOrder = parseFloat($scope.EandMCodingCPTTable[iMax].Order);
+                        if (parseFloat($scope.EandMCodingCPTTable[iMax].Order) > parseFloat(ui.item.value.split('~')[1])) {
 
                             flag = 1;
-                            //$scope.EandMCodingCPTTable.splice(iMax, 0, { 'CPTCode': ui.item.label.split('~')[0], 'CPTDesc': ui.item.label.split('~')[1], 'EandMCPTID': '', 'Units': '1', 'Modifier1': Modifier, 'Modifier2': '', 'Modifier3': '', 'Modifier4': '', 'CPTCheck': '6', 'CPTVersion': '', 'btnDelete': 'Resources/Delete-Blue.png', 'Order': parseFloat((iMax + 1)), 'Amount': ui.item.value, 'DiaPointer1': '', 'DiaPointer2': '', 'DiaPointer3': '', 'DiaPointer4': '', 'DiaPointer5': '', 'DiaPointer6': '' });
-                            $scope.EandMCodingCPTTable.splice(iMax, 0, { 'CPTCode': ui.item.label.split('~')[0], 'CPTDesc': ui.item.label.split('~')[1], 'EandMCPTID': '', 'Units': '1', 'Modifier1': Modifier, 'Modifier2': '', 'Modifier3': '', 'Modifier4': '', 'CPTCheck': '6', 'CPTVersion': '', 'btnDelete': 'Resources/Delete-Blue.png', 'Order': ui.item.value.split('~')[1], 'Amount': ui.item.value.split('~')[0], 'DiaPointer1': '', 'DiaPointer2': '', 'DiaPointer3': '', 'DiaPointer4': '', 'DiaPointer5': '', 'DiaPointer6': '' });
+                            $scope.EandMCodingCPTTable.splice(iMax, 0, { 'CPTCode': ui.item.label.split('~')[0], 'CPTDesc': ui.item.label.split('~')[1], 'EandMCPTID': '', 'Units': '1', 'Modifier1': Modifier, 'Modifier2': '', 'Modifier3': '', 'Modifier4': '', 'CPTCheck': '6', 'CPTVersion': '', 'btnDelete': 'Resources/Delete-Blue.png', 'Order': ui.item.value.split('~')[1], 'RVU': ui.item.value.split('~')[2], 'Amount': ui.item.value.split('~')[0], 'DiaPointer1': '', 'DiaPointer2': '', 'DiaPointer3': '', 'DiaPointer4': '', 'DiaPointer5': '', 'DiaPointer6': '' });
                             $scope.EandMCodingCPTTable.join();
-                            //push({ 'CPTCode': ui.item.label.split('~')[0], 'CPTDesc': ui.item.label.split('~')[1], 'EandMCPTID': '', 'Units': '1', 'Modifier1': Modifier, 'Modifier2': '', 'Modifier3': '', 'Modifier4': '', 'CPTCheck': '6', 'CPTVersion': '', 'btnDelete': 'Resources/Delete-Blue.png', 'Order': iMax + 1, 'Amount': ui.item.label.split('~')[2] });
+                            $scope.EandMCodingCPTTable = $scope.EandMCodingCPTTable;
                             break;
+                        }
+                        else if (parseFloat($scope.EandMCodingCPTTable[iMax].Order) == parseFloat(ui.item.value.split('~')[1])) {
+
+
+                            if (parseFloat($scope.EandMCodingCPTTable[iMax].RVU) < parseFloat(ui.item.value.split('~')[2])) {
+                                flag = 1;
+                                // $scope.productAttributes.Products.indexOf(site)
+                                $scope.EandMCodingCPTTable.splice(iMax, 0, { 'CPTCode': ui.item.label.split('~')[0], 'CPTDesc': ui.item.label.split('~')[1], 'EandMCPTID': '', 'Units': '1', 'Modifier1': Modifier, 'Modifier2': '', 'Modifier3': '', 'Modifier4': '', 'CPTCheck': '6', 'CPTVersion': '', 'btnDelete': 'Resources/Delete-Blue.png', 'Order': ui.item.value.split('~')[1], 'RVU': ui.item.value.split('~')[2], 'Amount': ui.item.value.split('~')[0], 'DiaPointer1': '', 'DiaPointer2': '', 'DiaPointer3': '', 'DiaPointer4': '', 'DiaPointer5': '', 'DiaPointer6': '' });
+                                $scope.EandMCodingCPTTable.join();
+                                // $scope.$apply();
+                                break;
+
+                            }
+                            else if (parseFloat($scope.EandMCodingCPTTable[iMax].RVU) == parseFloat(ui.item.value.split('~')[2])) {
+
+
+                                if (($scope.EandMCodingCPTTable[iMax].CPTCode) > ui.item.label.split('~')[0]) {
+                                    flag = 1;
+                                    $scope.EandMCodingCPTTable.splice(iMax, 0, { 'CPTCode': ui.item.label.split('~')[0], 'CPTDesc': ui.item.label.split('~')[1], 'EandMCPTID': '', 'Units': '1', 'Modifier1': Modifier, 'Modifier2': '', 'Modifier3': '', 'Modifier4': '', 'CPTCheck': '6', 'CPTVersion': '', 'btnDelete': 'Resources/Delete-Blue.png', 'Order': ui.item.value.split('~')[1], 'RVU': ui.item.value.split('~')[2], 'Amount': ui.item.value.split('~')[0], 'DiaPointer1': '', 'DiaPointer2': '', 'DiaPointer3': '', 'DiaPointer4': '', 'DiaPointer5': '', 'DiaPointer6': '' });
+                                    $scope.EandMCodingCPTTable.join();
+                                    break;
+                                }
+                                else {
+                                    continue;
+                                }
+
+
+
+                            }
+
+                            //else if (parseFloat($scope.EandMCodingCPTTable[iMax].RVU) > parseFloat(ui.item.value.split('~')[2]) &&
+                            //    iMax + 1 < $scope.EandMCodingCPTTable.length && parseFloat($scope.EandMCodingCPTTable[iMax + 1].Order) != iOrder) {
+                            //    flag = 1;
+                            //    $scope.EandMCodingCPTTable.splice(iMax + 1, 0, { 'CPTCode': ui.item.label.split('~')[0], 'CPTDesc': ui.item.label.split('~')[1], 'EandMCPTID': '', 'Units': '1', 'Modifier1': Modifier, 'Modifier2': '', 'Modifier3': '', 'Modifier4': '', 'CPTCheck': '6', 'CPTVersion': '', 'btnDelete': 'Resources/Delete-Blue.png', 'Order': ui.item.value.split('~')[1], 'RVU': ui.item.value.split('~')[2], 'Amount': ui.item.value.split('~')[0], 'DiaPointer1': '', 'DiaPointer2': '', 'DiaPointer3': '', 'DiaPointer4': '', 'DiaPointer5': '', 'DiaPointer6': '' });
+                            //    $scope.EandMCodingCPTTable.join();
+                            //    break;
+
+                            //}
+                        }
+                        else {
+
+                            if (iMax == $scope.EandMCodingCPTTable.length - 1) {
+                                flag = 1;
+                                // $scope.EandMCodingCPTTable.push({ 'CPTCode': ui.item.label.split('~')[0], 'CPTDesc': ui.item.label.split('~')[1], 'EandMCPTID': '', 'Units': '1', 'Modifier1': Modifier, 'Modifier2': '', 'Modifier3': '', 'Modifier4': '', 'CPTCheck': '6', 'CPTVersion': '', 'btnDelete': 'Resources/Delete-Blue.png', 'Order': ui.item.value.split('~')[1], 'RVU': ui.item.value.split('~')[2], 'Amount': ui.item.value.split('~')[0], 'DiaPointer1': '', 'DiaPointer2': '', 'DiaPointer3': '', 'DiaPointer4': '', 'DiaPointer5': '', 'DiaPointer6': '' });
+                                $scope.EandMCodingCPTTable.splice(iMax + 1, 0, { 'CPTCode': ui.item.label.split('~')[0], 'CPTDesc': ui.item.label.split('~')[1], 'EandMCPTID': '', 'Units': '1', 'Modifier1': Modifier, 'Modifier2': '', 'Modifier3': '', 'Modifier4': '', 'CPTCheck': '6', 'CPTVersion': '', 'btnDelete': 'Resources/Delete-Blue.png', 'Order': ui.item.value.split('~')[1], 'RVU': ui.item.value.split('~')[2], 'Amount': ui.item.value.split('~')[0], 'DiaPointer1': '', 'DiaPointer2': '', 'DiaPointer3': '', 'DiaPointer4': '', 'DiaPointer5': '', 'DiaPointer6': '' });
+                                $scope.EandMCodingCPTTable.join();
+                                break;
+                            }
+                            else {
+                                continue;
+                            }
+
                         }
 
                     }
-                    if (flag == 0) {
-                        $scope.EandMCodingCPTTable.push({ 'CPTCode': ui.item.label.split('~')[0], 'CPTDesc': ui.item.label.split('~')[1], 'EandMCPTID': '', 'Units': '1', 'Modifier1': Modifier, 'Modifier2': '', 'Modifier3': '', 'Modifier4': '', 'CPTCheck': '6', 'CPTVersion': '', 'btnDelete': 'Resources/Delete-Blue.png', 'Order': ui.item.value.split('~')[1], 'Amount': ui.item.value.split('~')[0], 'DiaPointer1': '', 'DiaPointer2': '', 'DiaPointer3': '', 'DiaPointer4': '', 'DiaPointer5': '', 'DiaPointer6': '' });
 
+                    if (flag == 0) {
+                        //Cap - 1301
+                        //$scope.EandMCodingCPTTable.push({ 'CPTCode': ui.item.label.split('~')[0], 'CPTDesc': ui.item.label.split('~')[1], 'EandMCPTID': '', 'Units': '1', 'Modifier1': Modifier, 'Modifier2': '', 'Modifier3': '', 'Modifier4': '', 'CPTCheck': '6', 'CPTVersion': '', 'btnDelete': 'Resources/Delete-Blue.png', 'Order': ui.item.value.split('~')[1], 'Amount': ui.item.value.split('~')[0], 'DiaPointer1': '', 'DiaPointer2': '', 'DiaPointer3': '', 'DiaPointer4': '', 'DiaPointer5': '', 'DiaPointer6': '' });
+                        $scope.EandMCodingCPTTable.push({ 'CPTCode': ui.item.label.split('~')[0], 'CPTDesc': ui.item.label.split('~')[1], 'EandMCPTID': '', 'Units': '1', 'Modifier1': Modifier, 'Modifier2': '', 'Modifier3': '', 'Modifier4': '', 'CPTCheck': '6', 'CPTVersion': '', 'btnDelete': 'Resources/Delete-Blue.png', 'Order': ui.item.value.split('~')[1], 'RVU': ui.item.value.split('~')[2], 'Amount': ui.item.value.split('~')[0], 'DiaPointer1': '', 'DiaPointer2': '', 'DiaPointer3': '', 'DiaPointer4': '', 'DiaPointer5': '', 'DiaPointer6': '' });
                     }
                     else {
                         var flagcpt = 0;
@@ -320,8 +392,9 @@ myapp.controller('EandMCodingCtrl', function ($scope, $http) {
 
                 }
                 else {
-                    $scope.EandMCodingCPTTable.push({ 'CPTCode': ui.item.label.split('~')[0], 'CPTDesc': ui.item.label.split('~')[1], 'EandMCPTID': '', 'Units': '1', 'Modifier1': Modifier, 'Modifier2': '', 'Modifier3': '', 'Modifier4': '', 'CPTCheck': '6', 'CPTVersion': '', 'btnDelete': 'Resources/Delete-Blue.png', 'Order': ui.item.value.split('~')[1], 'Amount': ui.item.value.split('~')[0], 'DiaPointer1': '', 'DiaPointer2': '', 'DiaPointer3': '', 'DiaPointer4': '', 'DiaPointer5': '', 'DiaPointer6': '' });
-
+                    //Cap - 1301
+                    //$scope.EandMCodingCPTTable.push({ 'CPTCode': ui.item.label.split('~')[0], 'CPTDesc': ui.item.label.split('~')[1], 'EandMCPTID': '', 'Units': '1', 'Modifier1': Modifier, 'Modifier2': '', 'Modifier3': '', 'Modifier4': '', 'CPTCheck': '6', 'CPTVersion': '', 'btnDelete': 'Resources/Delete-Blue.png', 'Order': ui.item.value.split('~')[1], 'Amount': ui.item.value.split('~')[0], 'DiaPointer1': '', 'DiaPointer2': '', 'DiaPointer3': '', 'DiaPointer4': '', 'DiaPointer5': '', 'DiaPointer6': '' });
+                    $scope.EandMCodingCPTTable.push({ 'CPTCode': ui.item.label.split('~')[0], 'CPTDesc': ui.item.label.split('~')[1], 'EandMCPTID': '', 'Units': '1', 'Modifier1': Modifier, 'Modifier2': '', 'Modifier3': '', 'Modifier4': '', 'CPTCheck': '6', 'CPTVersion': '', 'btnDelete': 'Resources/Delete-Blue.png', 'Order': ui.item.value.split('~')[1], 'RVU': ui.item.value.split('~')[2], 'Amount': ui.item.value.split('~')[0], 'DiaPointer1': '', 'DiaPointer2': '', 'DiaPointer3': '', 'DiaPointer4': '', 'DiaPointer5': '', 'DiaPointer6': '' });
                 }
 
 
@@ -691,7 +764,9 @@ myapp.controller('EandMCodingCtrl', function ($scope, $http) {
                         response($.map(results, function (item) {
                             return {
                                 label: item.split('~')[0] + '~' + item.split('~')[1],
-                                value: item.split('~')[2] + '~' + item.split('~')[3]
+                                //Cap - 1301
+                                //value: item.split('~')[2] + '~' + item.split('~')[3]
+                                value: item.split('~')[2] + '~' + item.split('~')[3] + '~' + item.split('~')[4]
                             }
                         }));
                     }
@@ -731,18 +806,82 @@ myapp.controller('EandMCodingCtrl', function ($scope, $http) {
                 if ($scope.EandMCodingCPTTable.length != 0) {
                     for (iMax = 0; iMax < $scope.EandMCodingCPTTable.length; iMax++) {
                         //if (parseFloat($scope.EandMCodingCPTTable[iMax].Amount) <= parseFloat(ui.item.value)) {
-                        if (parseFloat($scope.EandMCodingCPTTable[iMax].Order) <= parseFloat(ui.item.value.split('~')[1])) {
+                            //Cap - 1301
+                        iOrder = parseFloat($scope.EandMCodingCPTTable[iMax].Order);
+                        //if (parseFloat($scope.EandMCodingCPTTable[iMax].Order) <= parseFloat(ui.item.value.split('~')[1])) {
+
+                        //    flag = 1;
+                        //    $scope.EandMCodingCPTTable.splice(iMax, 0, { 'CPTCode': ui.item.label.split('~')[0], 'CPTDesc': ui.item.label.split('~')[1], 'EandMCPTID': '', 'Units': '1', 'Modifier1': Modifier, 'Modifier2': '', 'Modifier3': '', 'Modifier4': '', 'CPTCheck': '6', 'CPTVersion': '', 'btnDelete': 'Resources/Delete-Blue.png', 'Order': ui.item.value.split('~')[1], 'Amount': ui.item.value.split('~')[0], 'DiaPointer1': '', 'DiaPointer2': '', 'DiaPointer3': '', 'DiaPointer4': '', 'DiaPointer5': '', 'DiaPointer6': '' });
+                        //    $scope.EandMCodingCPTTable.join();
+                        //    //push({ 'CPTCode': ui.item.label.split('~')[0], 'CPTDesc': ui.item.label.split('~')[1], 'EandMCPTID': '', 'Units': '1', 'Modifier1': Modifier, 'Modifier2': '', 'Modifier3': '', 'Modifier4': '', 'CPTCheck': '6', 'CPTVersion': '', 'btnDelete': 'Resources/Delete-Blue.png', 'Order': iMax + 1, 'Amount': ui.item.label.split('~')[2] });
+                        //    break;
+                        //}
+
+                        if (parseFloat($scope.EandMCodingCPTTable[iMax].Order) > parseFloat(ui.item.value.split('~')[1])) {
 
                             flag = 1;
-                            $scope.EandMCodingCPTTable.splice(iMax, 0, { 'CPTCode': ui.item.label.split('~')[0], 'CPTDesc': ui.item.label.split('~')[1], 'EandMCPTID': '', 'Units': '1', 'Modifier1': Modifier, 'Modifier2': '', 'Modifier3': '', 'Modifier4': '', 'CPTCheck': '6', 'CPTVersion': '', 'btnDelete': 'Resources/Delete-Blue.png', 'Order': ui.item.value.split('~')[1], 'Amount': ui.item.value.split('~')[0], 'DiaPointer1': '', 'DiaPointer2': '', 'DiaPointer3': '', 'DiaPointer4': '', 'DiaPointer5': '', 'DiaPointer6': '' });
+                            $scope.EandMCodingCPTTable.splice(iMax, 0, { 'CPTCode': ui.item.label.split('~')[0], 'CPTDesc': ui.item.label.split('~')[1], 'EandMCPTID': '', 'Units': '1', 'Modifier1': Modifier, 'Modifier2': '', 'Modifier3': '', 'Modifier4': '', 'CPTCheck': '6', 'CPTVersion': '', 'btnDelete': 'Resources/Delete-Blue.png', 'Order': ui.item.value.split('~')[1], 'RVU': ui.item.value.split('~')[2], 'Amount': ui.item.value.split('~')[0], 'DiaPointer1': '', 'DiaPointer2': '', 'DiaPointer3': '', 'DiaPointer4': '', 'DiaPointer5': '', 'DiaPointer6': '' });
                             $scope.EandMCodingCPTTable.join();
-                            //push({ 'CPTCode': ui.item.label.split('~')[0], 'CPTDesc': ui.item.label.split('~')[1], 'EandMCPTID': '', 'Units': '1', 'Modifier1': Modifier, 'Modifier2': '', 'Modifier3': '', 'Modifier4': '', 'CPTCheck': '6', 'CPTVersion': '', 'btnDelete': 'Resources/Delete-Blue.png', 'Order': iMax + 1, 'Amount': ui.item.label.split('~')[2] });
-                            break;
+                            $scope.EandMCodingCPTTable = $scope.EandMCodingCPTTable;
+                            break;;
+                        }
+                        else if (parseFloat($scope.EandMCodingCPTTable[iMax].Order) == parseFloat(ui.item.value.split('~')[1])) {
+
+
+                            if (parseFloat($scope.EandMCodingCPTTable[iMax].RVU) < parseFloat(ui.item.value.split('~')[2])) {
+                                flag = 1;
+                                // $scope.productAttributes.Products.indexOf(site)
+                                $scope.EandMCodingCPTTable.splice(iMax, 0, { 'CPTCode': ui.item.label.split('~')[0], 'CPTDesc': ui.item.label.split('~')[1], 'EandMCPTID': '', 'Units': '1', 'Modifier1': Modifier, 'Modifier2': '', 'Modifier3': '', 'Modifier4': '', 'CPTCheck': '6', 'CPTVersion': '', 'btnDelete': 'Resources/Delete-Blue.png', 'Order': ui.item.value.split('~')[1], 'RVU': ui.item.value.split('~')[2], 'Amount': ui.item.value.split('~')[0], 'DiaPointer1': '', 'DiaPointer2': '', 'DiaPointer3': '', 'DiaPointer4': '', 'DiaPointer5': '', 'DiaPointer6': '' });
+                                $scope.EandMCodingCPTTable.join();
+                                // $scope.$apply();
+                                break;
+
+                            }
+                            else if (parseFloat($scope.EandMCodingCPTTable[iMax].RVU) == parseFloat(ui.item.value.split('~')[2])) {
+
+
+                                if (($scope.EandMCodingCPTTable[iMax].CPTCode) > ui.item.label.split('~')[0]) {
+                                    flag = 1;
+                                    $scope.EandMCodingCPTTable.splice(iMax, 0, { 'CPTCode': ui.item.label.split('~')[0], 'CPTDesc': ui.item.label.split('~')[1], 'EandMCPTID': '', 'Units': '1', 'Modifier1': Modifier, 'Modifier2': '', 'Modifier3': '', 'Modifier4': '', 'CPTCheck': '6', 'CPTVersion': '', 'btnDelete': 'Resources/Delete-Blue.png', 'Order': ui.item.value.split('~')[1], 'RVU': ui.item.value.split('~')[2], 'Amount': ui.item.value.split('~')[0], 'DiaPointer1': '', 'DiaPointer2': '', 'DiaPointer3': '', 'DiaPointer4': '', 'DiaPointer5': '', 'DiaPointer6': '' });
+                                    $scope.EandMCodingCPTTable.join();
+                                    break;
+                                }
+                                else {
+                                    continue;
+                                }
+
+
+
+                            }
+
+                            //else if (parseFloat($scope.EandMCodingCPTTable[iMax].RVU) > parseFloat(ui.item.value.split('~')[2]) &&
+                            //    iMax + 1 < $scope.EandMCodingCPTTable.length && parseFloat($scope.EandMCodingCPTTable[iMax + 1].Order) != iOrder) {
+                            //    flag = 1;
+                            //    $scope.EandMCodingCPTTable.splice(iMax + 1, 0, { 'CPTCode': ui.item.label.split('~')[0], 'CPTDesc': ui.item.label.split('~')[1], 'EandMCPTID': '', 'Units': '1', 'Modifier1': Modifier, 'Modifier2': '', 'Modifier3': '', 'Modifier4': '', 'CPTCheck': '6', 'CPTVersion': '', 'btnDelete': 'Resources/Delete-Blue.png', 'Order': ui.item.value.split('~')[1], 'RVU': ui.item.value.split('~')[2], 'Amount': ui.item.value.split('~')[0], 'DiaPointer1': '', 'DiaPointer2': '', 'DiaPointer3': '', 'DiaPointer4': '', 'DiaPointer5': '', 'DiaPointer6': '' });
+                            //    $scope.EandMCodingCPTTable.join();
+                            //    break;
+
+                            //}
+                        }
+                        else {
+
+                            if (iMax == $scope.EandMCodingCPTTable.length - 1) {
+                                flag = 1;
+                                $scope.EandMCodingCPTTable.push({ 'CPTCode': ui.item.label.split('~')[0], 'CPTDesc': ui.item.label.split('~')[1], 'EandMCPTID': '', 'Units': '1', 'Modifier1': Modifier, 'Modifier2': '', 'Modifier3': '', 'Modifier4': '', 'CPTCheck': '6', 'CPTVersion': '', 'btnDelete': 'Resources/Delete-Blue.png', 'Order': ui.item.value.split('~')[1], 'RVU': ui.item.value.split('~')[2], 'Amount': ui.item.value.split('~')[0], 'DiaPointer1': '', 'DiaPointer2': '', 'DiaPointer3': '', 'DiaPointer4': '', 'DiaPointer5': '', 'DiaPointer6': '' });
+
+                                break;
+                            }
+                            else {
+                                continue;
+                            }
+
                         }
 
                     }
                     if (flag == 0) {
-                        $scope.EandMCodingCPTTable.push({ 'CPTCode': ui.item.label.split('~')[0], 'CPTDesc': ui.item.label.split('~')[1], 'EandMCPTID': '', 'Units': '1', 'Modifier1': Modifier, 'Modifier2': '', 'Modifier3': '', 'Modifier4': '', 'CPTCheck': '6', 'CPTVersion': '', 'btnDelete': 'Resources/Delete-Blue.png', 'Order': ui.item.value.split('~')[1], 'Amount': ui.item.value.split('~')[0], 'DiaPointer1': '', 'DiaPointer2': '', 'DiaPointer3': '', 'DiaPointer4': '', 'DiaPointer5': '', 'DiaPointer6': '' });
+                        //Cap - 1301
+                        //$scope.EandMCodingCPTTable.push({ 'CPTCode': ui.item.label.split('~')[0], 'CPTDesc': ui.item.label.split('~')[1], 'EandMCPTID': '', 'Units': '1', 'Modifier1': Modifier, 'Modifier2': '', 'Modifier3': '', 'Modifier4': '', 'CPTCheck': '6', 'CPTVersion': '', 'btnDelete': 'Resources/Delete-Blue.png', 'Order': ui.item.value.split('~')[1], 'Amount': ui.item.value.split('~')[0], 'DiaPointer1': '', 'DiaPointer2': '', 'DiaPointer3': '', 'DiaPointer4': '', 'DiaPointer5': '', 'DiaPointer6': '' });
+                        $scope.EandMCodingCPTTable.push({ 'CPTCode': ui.item.label.split('~')[0], 'CPTDesc': ui.item.label.split('~')[1], 'EandMCPTID': '', 'Units': '1', 'Modifier1': Modifier, 'Modifier2': '', 'Modifier3': '', 'Modifier4': '', 'CPTCheck': '6', 'CPTVersion': '', 'btnDelete': 'Resources/Delete-Blue.png', 'Order': ui.item.value.split('~')[1], 'RVU': ui.item.value.split('~')[2], 'Amount': ui.item.value.split('~')[0], 'DiaPointer1': '', 'DiaPointer2': '', 'DiaPointer3': '', 'DiaPointer4': '', 'DiaPointer5': '', 'DiaPointer6': '' });
 
                     }
                     else {
@@ -763,7 +902,9 @@ myapp.controller('EandMCodingCtrl', function ($scope, $http) {
 
                 }
                 else {
-                    $scope.EandMCodingCPTTable.push({ 'CPTCode': ui.item.label.split('~')[0], 'CPTDesc': ui.item.label.split('~')[1], 'EandMCPTID': '', 'Units': '1', 'Modifier1': Modifier, 'Modifier2': '', 'Modifier3': '', 'Modifier4': '', 'CPTCheck': '6', 'CPTVersion': '', 'btnDelete': 'Resources/Delete-Blue.png', 'Order': ui.item.value.split('~')[1], 'Amount': ui.item.value.split('~')[0], 'DiaPointer1': '', 'DiaPointer2': '', 'DiaPointer3': '', 'DiaPointer4': '', 'DiaPointer5': '', 'DiaPointer6': '' });
+                    //Cap - 1301
+                   // $scope.EandMCodingCPTTable.push({ 'CPTCode': ui.item.label.split('~')[0], 'CPTDesc': ui.item.label.split('~')[1], 'EandMCPTID': '', 'Units': '1', 'Modifier1': Modifier, 'Modifier2': '', 'Modifier3': '', 'Modifier4': '', 'CPTCheck': '6', 'CPTVersion': '', 'btnDelete': 'Resources/Delete-Blue.png', 'Order': ui.item.value.split('~')[1], 'Amount': ui.item.value.split('~')[0], 'DiaPointer1': '', 'DiaPointer2': '', 'DiaPointer3': '', 'DiaPointer4': '', 'DiaPointer5': '', 'DiaPointer6': '' });
+                    $scope.EandMCodingCPTTable.push({ 'CPTCode': ui.item.label.split('~')[0], 'CPTDesc': ui.item.label.split('~')[1], 'EandMCPTID': '', 'Units': '1', 'Modifier1': Modifier, 'Modifier2': '', 'Modifier3': '', 'Modifier4': '', 'CPTCheck': '6', 'CPTVersion': '', 'btnDelete': 'Resources/Delete-Blue.png', 'Order': ui.item.value.split('~')[1], 'RVU': ui.item.value.split('~')[2], 'Amount': ui.item.value.split('~')[0], 'DiaPointer1': '', 'DiaPointer2': '', 'DiaPointer3': '', 'DiaPointer4': '', 'DiaPointer5': '', 'DiaPointer6': '' });
 
                 }
 
@@ -1963,27 +2104,95 @@ myapp.controller('EandMCodingCtrl', function ($scope, $http) {
             if (response.d != "") {
                 var test = JSON.parse(response.d);
 
+                //Cap - 1301
+                //if (test.ListofCPTs.length > 0) {
+
+
+                //    for (var i = 0; i < test.ListofCPTs.length; i++) {
+                //        var flag = 0;
+                //        var iMax = 0
+                //        // $scope.EandMCodingCPTTable.push(test.ListofCPTs[i]);
+
+                //        for (iMax = 0; iMax < $scope.EandMCodingCPTTable.length; iMax++) {
+                //            if (parseFloat($scope.EandMCodingCPTTable[iMax].Order) <= parseFloat(test.ListofCPTs[i].Order)) {
+
+                //                flag = 1;
+                //                $scope.EandMCodingCPTTable.splice(iMax, 0, { 'CPTCode': test.ListofCPTs[i].CPTCode, 'CPTDesc': test.ListofCPTs[i].CPTDesc, 'EandMCPTID': '', 'Units': '1', 'Modifier1': '', 'Modifier2': '', 'Modifier3': '', 'Modifier4': '', 'CPTCheck': '6', 'CPTVersion': '', 'btnDelete': 'Resources/Delete-Blue.png', 'Order': test.ListofCPTs[i].Order, 'Amount': test.ListofCPTs[i].Amount, 'DiaPointer1': '', 'DiaPointer2': '', 'DiaPointer3': '', 'DiaPointer4': '', 'DiaPointer5': '', 'DiaPointer6': '' });
+                //                $scope.EandMCodingCPTTable.join();
+                //                //push({ 'CPTCode': ui.item.label.split('~')[0], 'CPTDesc': ui.item.label.split('~')[1], 'EandMCPTID': '', 'Units': '1', 'Modifier1': Modifier, 'Modifier2': '', 'Modifier3': '', 'Modifier4': '', 'CPTCheck': '6', 'CPTVersion': '', 'btnDelete': 'Resources/Delete-Blue.png', 'Order': iMax + 1, 'Amount': ui.item.label.split('~')[2] });
+                //                break;
+                //            }
+
+                //        }
+
                 if (test.ListofCPTs.length > 0) {
-
-
                     for (var i = 0; i < test.ListofCPTs.length; i++) {
-                        var flag = 0;
-                        var iMax = 0
-                        // $scope.EandMCodingCPTTable.push(test.ListofCPTs[i]);
-
                         for (iMax = 0; iMax < $scope.EandMCodingCPTTable.length; iMax++) {
-                            if (parseFloat($scope.EandMCodingCPTTable[iMax].Order) <= parseFloat(test.ListofCPTs[i].Order)) {
+                            iOrder = parseFloat($scope.EandMCodingCPTTable[iMax].Order);
+                            if (parseFloat($scope.EandMCodingCPTTable[iMax].Order) > parseFloat(test.ListofCPTs[i].Order)) {
 
                                 flag = 1;
-                                $scope.EandMCodingCPTTable.splice(iMax, 0, { 'CPTCode': test.ListofCPTs[i].CPTCode, 'CPTDesc': test.ListofCPTs[i].CPTDesc, 'EandMCPTID': '', 'Units': '1', 'Modifier1': '', 'Modifier2': '', 'Modifier3': '', 'Modifier4': '', 'CPTCheck': '6', 'CPTVersion': '', 'btnDelete': 'Resources/Delete-Blue.png', 'Order': test.ListofCPTs[i].Order, 'Amount': test.ListofCPTs[i].Amount, 'DiaPointer1': '', 'DiaPointer2': '', 'DiaPointer3': '', 'DiaPointer4': '', 'DiaPointer5': '', 'DiaPointer6': '' });
+                                $scope.EandMCodingCPTTable.splice(iMax, 0, { 'CPTCode': test.ListofCPTs[i].CPTCode, 'CPTDesc': test.ListofCPTs[i].CPTDesc, 'EandMCPTID': '', 'Units': '1', 'Modifier1': '', 'Modifier2': '', 'Modifier3': '', 'Modifier4': '', 'CPTCheck': '6', 'CPTVersion': '', 'btnDelete': 'Resources/Delete-Blue.png', 'Order': test.ListofCPTs[i].Order, 'RVU': test.ListofCPTs[i].RVU, 'Amount': test.ListofCPTs[i].Amount, 'DiaPointer1': '', 'DiaPointer2': '', 'DiaPointer3': '', 'DiaPointer4': '', 'DiaPointer5': '', 'DiaPointer6': '' });
                                 $scope.EandMCodingCPTTable.join();
-                                //push({ 'CPTCode': ui.item.label.split('~')[0], 'CPTDesc': ui.item.label.split('~')[1], 'EandMCPTID': '', 'Units': '1', 'Modifier1': Modifier, 'Modifier2': '', 'Modifier3': '', 'Modifier4': '', 'CPTCheck': '6', 'CPTVersion': '', 'btnDelete': 'Resources/Delete-Blue.png', 'Order': iMax + 1, 'Amount': ui.item.label.split('~')[2] });
-                                break;
+                                $scope.EandMCodingCPTTable = $scope.EandMCodingCPTTable;
+                                break;;
+                            }
+                            else if (parseFloat($scope.EandMCodingCPTTable[iMax].Order) == parseFloat(test.ListofCPTs[i].Order)) {
+
+
+                                if (parseFloat($scope.EandMCodingCPTTable[iMax].RVU) < parseFloat(test.ListofCPTs[i].RVU)) {
+                                    flag = 1;
+
+                                    $scope.EandMCodingCPTTable.splice(iMax, 0, { 'CPTCode': test.ListofCPTs[i].CPTCode, 'CPTDesc': test.ListofCPTs[i].CPTDesc, 'EandMCPTID': '', 'Units': '1', 'Modifier1': '', 'Modifier2': '', 'Modifier3': '', 'Modifier4': '', 'CPTCheck': '6', 'CPTVersion': '', 'btnDelete': 'Resources/Delete-Blue.png', 'Order': test.ListofCPTs[i].Order, 'RVU': test.ListofCPTs[i].RVU, 'Amount': test.ListofCPTs[i].Amount, 'DiaPointer1': '', 'DiaPointer2': '', 'DiaPointer3': '', 'DiaPointer4': '', 'DiaPointer5': '', 'DiaPointer6': '' });
+                                    $scope.EandMCodingCPTTable.join();
+                                    // $scope.$apply();
+                                    break;
+
+                                }
+                                else if (parseFloat($scope.EandMCodingCPTTable[iMax].RVU) == parseFloat(test.ListofCPTs[i].RVU)) {
+
+
+                                    if (($scope.EandMCodingCPTTable[iMax].CPTCode) > (test.ListofCPTs[i].CPTCode)) {
+                                        flag = 1;
+                                        $scope.EandMCodingCPTTable.splice(iMax, 0, { 'CPTCode': test.ListofCPTs[i].CPTCode, 'CPTDesc': test.ListofCPTs[i].CPTDesc, 'EandMCPTID': '', 'Units': '1', 'Modifier1': '', 'Modifier2': '', 'Modifier3': '', 'Modifier4': '', 'CPTCheck': '6', 'CPTVersion': '', 'btnDelete': 'Resources/Delete-Blue.png', 'Order': test.ListofCPTs[i].Order, 'RVU': test.ListofCPTs[i].RVU, 'Amount': test.ListofCPTs[i].Amount, 'DiaPointer1': '', 'DiaPointer2': '', 'DiaPointer3': '', 'DiaPointer4': '', 'DiaPointer5': '', 'DiaPointer6': '' });
+                                        $scope.EandMCodingCPTTable.join();
+                                        break;
+                                    }
+                                    else {
+                                        continue;
+                                    }
+
+
+
+                                }
+                                //else if (parseFloat($scope.EandMCodingCPTTable[iMax].RVU) > parseFloat(test.ListofCPTs[i].RVU) &&
+                                //    iMax + 1 < $scope.EandMCodingCPTTable.length && parseFloat($scope.EandMCodingCPTTable[iMax + 1].Order) != iOrder) {
+                                //    flag = 1;
+                                //    $scope.EandMCodingCPTTable.splice(iMax+1, 0, { 'CPTCode': test.ListofCPTs[i].CPTCode, 'CPTDesc': test.ListofCPTs[i].CPTDesc, 'EandMCPTID': '', 'Units': '1', 'Modifier1': '', 'Modifier2': '', 'Modifier3': '', 'Modifier4': '', 'CPTCheck': '6', 'CPTVersion': '', 'btnDelete': 'Resources/Delete-Blue.png', 'Order': test.ListofCPTs[i].Order, 'RVU': test.ListofCPTs[i].RVU, 'Amount': test.ListofCPTs[i].Amount, 'DiaPointer1': '', 'DiaPointer2': '', 'DiaPointer3': '', 'DiaPointer4': '', 'DiaPointer5': '', 'DiaPointer6': '' });
+                                //    $scope.EandMCodingCPTTable.join();
+                                //    break;
+
+                                //}
+                            }
+                            else {
+
+                                if (iMax == $scope.EandMCodingCPTTable.length - 1) {
+                                    flag = 1;
+                                    $scope.EandMCodingCPTTable.splice(iMax, 0, { 'CPTCode': test.ListofCPTs[i].CPTCode, 'CPTDesc': test.ListofCPTs[i].CPTDesc, 'EandMCPTID': '', 'Units': '1', 'Modifier1': '', 'Modifier2': '', 'Modifier3': '', 'Modifier4': '', 'CPTCheck': '6', 'CPTVersion': '', 'btnDelete': 'Resources/Delete-Blue.png', 'Order': test.ListofCPTs[i].Order, 'RVU': test.ListofCPTs[i].RVU, 'Amount': test.ListofCPTs[i].Amount, 'DiaPointer1': '', 'DiaPointer2': '', 'DiaPointer3': '', 'DiaPointer4': '', 'DiaPointer5': '', 'DiaPointer6': '' });
+                                    break;
+                                }
+                                else {
+                                    continue;
+                                }
+
                             }
 
                         }
+
+
                         if (flag == 0) {
-                            $scope.EandMCodingCPTTable.push({ 'CPTCode': test.ListofCPTs[i].CPTCode, 'CPTDesc': test.ListofCPTs[i].CPTDesc, 'EandMCPTID': '', 'Units': '1', 'Modifier1': '', 'Modifier2': '', 'Modifier3': '', 'Modifier4': '', 'CPTCheck': '6', 'CPTVersion': '', 'btnDelete': 'Resources/Delete-Blue.png', 'Order': test.ListofCPTs[i].Order, 'Amount': test.ListofCPTs[i].Amount, 'DiaPointer1': '', 'DiaPointer2': '', 'DiaPointer3': '', 'DiaPointer4': '', 'DiaPointer5': '', 'DiaPointer6': '' });
+                            //$scope.EandMCodingCPTTable.push({ 'CPTCode': test.ListofCPTs[i].CPTCode, 'CPTDesc': test.ListofCPTs[i].CPTDesc, 'EandMCPTID': '', 'Units': '1', 'Modifier1': '', 'Modifier2': '', 'Modifier3': '', 'Modifier4': '', 'CPTCheck': '6', 'CPTVersion': '', 'btnDelete': 'Resources/Delete-Blue.png', 'Order': test.ListofCPTs[i].Order, 'Amount': test.ListofCPTs[i].Amount, 'DiaPointer1': '', 'DiaPointer2': '', 'DiaPointer3': '', 'DiaPointer4': '', 'DiaPointer5': '', 'DiaPointer6': '' });
+                            $scope.EandMCodingCPTTable.splice(iMax, 0, { 'CPTCode': test.ListofCPTs[i].CPTCode, 'CPTDesc': test.ListofCPTs[i].CPTDesc, 'EandMCPTID': '', 'Units': '1', 'Modifier1': '', 'Modifier2': '', 'Modifier3': '', 'Modifier4': '', 'CPTCheck': '6', 'CPTVersion': '', 'btnDelete': 'Resources/Delete-Blue.png', 'Order': test.ListofCPTs[i].Order, 'RVU': test.ListofCPTs[i].RVU, 'Amount': test.ListofCPTs[i].Amount, 'DiaPointer1': '', 'DiaPointer2': '', 'DiaPointer3': '', 'DiaPointer4': '', 'DiaPointer5': '', 'DiaPointer6': '' });
 
 
                         }
@@ -2239,13 +2448,19 @@ myapp.controller('EandMCodingCtrl', function ($scope, $http) {
             var sDiaPointer5 = table.find('tr')[iCheck].cells[5].children[4].value;
             var sDiaPointer6 = table.find('tr')[iCheck].cells[5].children[5].value;
             var sSortOrder = table.find('tr')[iCheck].cells[8].innerText.trim();
+            //Cap - 1301
+            var RVU = table.find('tr')[iCheck].cells[10].innerText.trim();
             //DeleteArray.push(sCPTCode + "~" + sCPTDesc + "~" + sUnits + "~" + sModi1 + "~" + sModi2 + "~" + sModi3 + "~" + sModi4 + "~" + "" + "~" + table.find('tr')[iCheck].children[11].innerText.trim() + "~" + table.find('tr')[iCheck].children[12].innerText.trim() + "~" + table.find('tr')[iCheck].children[13].innerText.trim() + "~" + table.find('tr')[iCheck].children[14].innerText.trim());
-            DeleteArray.push(sCPTCode + "~" + sCPTDesc + "~" + sUnits + "~" + sModi1 + "~" + sModi2 + "~" + sModi3 + "~" + sModi4 + "~" + "" + "~" + table.find('tr')[iCheck].cells[6].innerText.trim() + "~" + table.find('tr')[iCheck].cells[7].innerText.trim() + "~" + table.find('tr')[iCheck].cells[8].innerText.trim() + "~" + table.find('tr')[iCheck].cells[9].innerText.trim() + "~" + sDiaPointer1 + "~" + sDiaPointer2 + "~" + sDiaPointer3 + "~" + sDiaPointer4 + "~" + sDiaPointer5 + "~" + sDiaPointer6 + "~" + sSortOrder);
+            //Cap - 1301
+            //DeleteArray.push(sCPTCode + "~" + sCPTDesc + "~" + sUnits + "~" + sModi1 + "~" + sModi2 + "~" + sModi3 + "~" + sModi4 + "~" + "" + "~" + table.find('tr')[iCheck].cells[6].innerText.trim() + "~" + table.find('tr')[iCheck].cells[7].innerText.trim() + "~" + table.find('tr')[iCheck].cells[8].innerText.trim() + "~" + table.find('tr')[iCheck].cells[9].innerText.trim() + "~" + sDiaPointer1 + "~" + sDiaPointer2 + "~" + sDiaPointer3 + "~" + sDiaPointer4 + "~" + sDiaPointer5 + "~" + sDiaPointer6 + "~" + sSortOrder);
+            DeleteArray.push(sCPTCode + "~" + sCPTDesc + "~" + sUnits + "~" + sModi1 + "~" + sModi2 + "~" + sModi3 + "~" + sModi4 + "~" + "" + "~" + table.find('tr')[iCheck].cells[6].innerText.trim() + "~" + table.find('tr')[iCheck].cells[7].innerText.trim() + "~" + table.find('tr')[iCheck].cells[8].innerText.trim() + "~" + table.find('tr')[iCheck].cells[9].innerText.trim() + "~" + sDiaPointer1 + "~" + sDiaPointer2 + "~" + sDiaPointer3 + "~" + sDiaPointer4 + "~" + sDiaPointer5 + "~" + sDiaPointer6 + "~" + sSortOrder + "~" + RVU);
 
             for (var i = 0; i < $scope.EandMCodingCPTTable.length; i++) {
                 for (var j = 0; j < DeleteArray.length; j++) {
                     if ($scope.EandMCodingCPTTable[i] != null && $scope.EandMCodingCPTTable[i] != undefined) {
-                        if (DeleteArray[j].split('~')[10] == $scope.EandMCodingCPTTable[i].Order) {
+                        //cap - 1301
+                        //if (DeleteArray[j].split('~')[10] == $scope.EandMCodingCPTTable[i].Order) {
+                        if (DeleteArray[j].split('~')[10] == $scope.EandMCodingCPTTable[i].Order && DeleteArray[j].split('~')[19] == $scope.EandMCodingCPTTable[i].RVU && DeleteArray[j].split('~')[0] == $scope.EandMCodingCPTTable[i].CPTCode) {
                             $scope.EandMCodingCPTTable.splice(i, 1);
                         }
                     }
@@ -2727,6 +2942,34 @@ myapp.controller('EandMCodingCtrl', function ($scope, $http) {
             }
         }
 
+        //Cap - 1553
+        var DuplicateModifier = [];
+        DuplicateModifier = new Array();
+
+        if ($('#tblEandMCodingCPT tr').length > 0) {
+            for (var cptlength = 1; cptlength < $('#tblEandMCodingCPT tr').length; cptlength++) {
+
+                DuplicateModifier = new Array();
+                for (var DiaPointer = 0; DiaPointer < 4; DiaPointer++) {
+                    if ($($('#tblEandMCodingCPT tr'))[cptlength].children[4].children[DiaPointer].value.trim() != "") {
+                        if (DuplicateModifier.length == 0) {
+                            DuplicateModifier.push($($('#tblEandMCodingCPT tr'))[cptlength].children[4].children[DiaPointer].value.toUpperCase());
+                        }
+                        else if (DuplicateModifier.indexOf($($('#tblEandMCodingCPT tr'))[cptlength].children[4].children[DiaPointer].value.toUpperCase().trim()) > -1) {
+
+                            DisplayErrorMessage('530029', "", "'" + $($('#tblEandMCodingCPT tr'))[cptlength].children[4].children[DiaPointer].value.toUpperCase().trim() + "'-'" + $($('#tblEandMCodingCPT tr'))[cptlength].children[1].innerText.toUpperCase().trim() + "'-'" + parseInt(DiaPointer + 1) + "'");
+                            bSaveCheck = true;
+                            AutoSaveUnsuccessful();
+                            return;
+                        }
+                        else {
+                            DuplicateModifier.push($($('#tblEandMCodingCPT tr'))[cptlength].children[4].children[DiaPointer].value.toUpperCase());
+                        }
+                    }
+                }
+            }
+        }
+
         var bSerial = false;
         var bSeqValidation = false;
         var iDiaPointerPosition = 0;
@@ -2762,6 +3005,47 @@ myapp.controller('EandMCodingCtrl', function ($scope, $http) {
                     }
                     else {
                         bSeqValidation = true;
+                        // iDiaPointerPosition = parseInt(iDiaPointerPosition) + 1;
+                    }
+                }
+            }
+        }
+
+        //Cap - 1553
+        var bModifiersSerial = false;
+        var bModifiersSeqValidation = false;
+        var iModifiersPosition = 0;
+
+        if ($('#tblEandMCodingCPT tr').length > 0) {
+            for (var cptlength = 1; cptlength < $('#tblEandMCodingCPT tr').length; cptlength++) {
+                bModifiersSerial = false;
+                bModifiersSeqValidation = false;
+                bPosition = false;
+                iModifiersPosition = 0;
+                for (var DiaPointer = 0; DiaPointer < 4; DiaPointer++) {
+                    if ($($('#tblEandMCodingCPT tr'))[cptlength].children[4].children[DiaPointer].value.toUpperCase().trim() == "") {
+                        if (bModifiersSeqValidation != true) {
+                            iModifiersPosition = parseInt(DiaPointer) + 1;
+                        }
+                        if (bPosition == false) {
+                            bPosition = true;
+                            iModifiersPosition = parseInt(DiaPointer) + 1;
+                        }
+
+                        bModifiersSerial = true;
+                    }
+                    if (bModifiersSerial == true && $($('#tblEandMCodingCPT tr'))[cptlength].children[4].children[DiaPointer].value.toUpperCase().trim() != "") {
+                        var Cpt = $($('#tblEandMCodingCPT tr'))[cptlength].children[1].innerText.toUpperCase().trim();
+                        if (iModifiersPosition == 0) {
+                            iModifiersPosition = parseInt(iModifiersPosition) + 1;
+                        }
+                        DisplayErrorMessage('530028', "", "'" + Cpt + "'-'" + (parseInt(DiaPointer) + 1) + "'-'" + iModifiersPosition + "'");
+                        bSaveCheck = true;
+                        AutoSaveUnsuccessful();
+                        return;
+                    }
+                    else {
+                        bModifiersSeqValidation = true;
                         // iDiaPointerPosition = parseInt(iDiaPointerPosition) + 1;
                     }
                 }

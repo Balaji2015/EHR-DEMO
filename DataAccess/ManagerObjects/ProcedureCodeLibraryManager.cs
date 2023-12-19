@@ -453,7 +453,9 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
                 case "txtCPTDescription":
                     string sQuery = string.Empty;
                     string[] sDescription = sDescp.Split(' ');
-                    sQuery = "SELECT concat(Procedure_Code,'~',Procedure_Code_Description,'~',Procedure_Charge,'~',sort_order) FROM `procedure_code_library` where ";
+                    //Cap - 1301    
+                    //sQuery = "SELECT concat(Procedure_Code,'~',Procedure_Code_Description,'~',Procedure_Charge,'~',sort_order) FROM `procedure_code_library` where ";
+                    sQuery = "SELECT concat(a.Procedure_Code,'~',a.Procedure_Code_Description,'~',a.Procedure_charge ,'~',ifnull(b.sort_order,9),'~',ifnull(b.RVU,0)) FROM `procedure_code_library` as a left join  (select * from Procedure_Modifier_Lookup where modifier='')as b on a.procedure_code = b.procedure_code where ";
                     for (int i = 0; i < sDescription.Length; i++)
                     {
                         if(sDescription[i].Contains("'"))

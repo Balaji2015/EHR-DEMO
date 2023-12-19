@@ -979,6 +979,8 @@
 	<Message number="530026" Type="OK" Text="For CPT {1}, ICD Sequence # {0} in Diagnosis Pointer {2} is a duplicate.  Please remove or replace with a new ICD Sequence #."></Message>
 	<!--<Message number="530027" Type="OK" Text="For the CPT {0}, the Diagnosis Pointer {1} is filled without filling the Diagnosis Pointer {2}. Please enter the Diagnosis Pointer in the correct order."></Message>-->
 	<Message number="530027" Type="OK" Text="For CPT {0}, Diagnosis Pointer {2} has been skipped. Please add the Diagnosis Pointers sequentially.."></Message>
+	<Message number="530028" Type="OK" Text="For CPT {0}, Modifiers {2} has been skipped. Please add the Modifiers sequentially.."></Message>
+	<Message number="530029" Type="OK" Text="For CPT {1}, There is a Duplicate Modifier. Please remove or replace with a new Modifier."></Message>
 
 
 	<Message number="580001" Type="OK" Text="To Date cannot be earlier to From Date."></Message>
