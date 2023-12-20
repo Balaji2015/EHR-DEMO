@@ -2062,7 +2062,7 @@ function OpenERXFromMENU() {
 }
 
 function TriggerDownloadRcopia(oWindow, args) {
-
+    { sessionStorage.setItem('StartLoading', 'true'); StartLoadFromPatChart(); }
     $.ajax({
         type: "POST",
         url: "frmEncounter.aspx/DownloadRcoipa",
@@ -2076,6 +2076,8 @@ function TriggerDownloadRcopia(oWindow, args) {
             { sessionStorage.setItem('StartLoading', 'false'); StopLoadFromPatChart(); }
         },
         error: function (result) {
+            //CAP-1506 & CAP-1507 & CAP-1509
+            { sessionStorage.setItem('StartLoading', 'false'); StopLoadFromPatChart(); }
         }
     });
     //loadRcopia();
@@ -2812,6 +2814,14 @@ function loadMailClinicalInfoCount() {
 $(document).ready(function () {
     $('li  div').addClass('navhover');
     $("#falogout").css("display", "block");
+    //CAP-1506 & CAP-1507 & CAP-1509
+    if (document.getElementById(GetClientId("hdnIsDirectLink")).value == "true") {
+        $("#ctl00_pnlScroll").css({
+            'filter': 'blur(10px)',
+            '-webkit-filter': 'blur(10px)',
+            'pointer-events': 'none'
+        });
+    }
     //Jira CAP-1460 - start
     if ($("#ctl00_ModalWindow")[0]?.baseURI?.indexOf("ScreenName=ERX") != undefined && $("#ctl00_ModalWindow")[0].baseURI.indexOf("ScreenName=ERX") > -1) {
         $("#ctl00_ModalWindow").show('show', function () {
@@ -2872,7 +2882,7 @@ function OnSuccessRCopia(response) {
 
     if (responseValues == "") {
         if (document.getElementById("tsRefill") != undefined && document.getElementById("tsRefill") != null)
-        //CAP-1463 
+            //CAP-1463 
             document.getElementById("tsRefill").style.display = "none";
         if (document.getElementById("ctl00_tsRefill") != null && document.getElementById("ctl00_tsRefill") != undefined)
             document.getElementById("ctl00_tsRefill").style.display = "none";
@@ -3032,7 +3042,7 @@ function HideLoadIcdon() {
 }
 
 function openNonModal(fromname, height, width, inputargument) {
-    var Argument = "";       
+    var Argument = "";
 
     var PageName = fromname;
     if (inputargument != undefined) {
@@ -3285,19 +3295,19 @@ function OnSuccessSummaryBarEprescription(response) {
     if (response != null) {
         //CAP-795  Cannot read properties of null
         if (top?.window?.document?.getElementById("ctl00_C5POBody_lblAllergies") != undefined && top?.window?.document?.getElementById("ctl00_C5POBody_lblAllergies") != null) {
-        top.window.document.getElementById("ctl00_C5POBody_lblAllergies").innerHTML = response.d[0];
+            top.window.document.getElementById("ctl00_C5POBody_lblAllergies").innerHTML = response.d[0];
         }
         if (top?.window?.document?.getElementById("ctl00_C5POBody_lblCheifComplaints") != undefined && top?.window?.document?.getElementById("ctl00_C5POBody_lblCheifComplaints") != null) {
-        top.window.document.getElementById("ctl00_C5POBody_lblCheifComplaints").innerHTML = response.d[1];
+            top.window.document.getElementById("ctl00_C5POBody_lblCheifComplaints").innerHTML = response.d[1];
         }
         if (top?.window?.document?.getElementById("ctl00_C5POBody_lblProblemList") != undefined && top?.window?.document?.getElementById("ctl00_C5POBody_lblProblemList") != null) {
-        top.window.document.getElementById("ctl00_C5POBody_lblProblemList").innerHTML = response.d[2];
+            top.window.document.getElementById("ctl00_C5POBody_lblProblemList").innerHTML = response.d[2];
         }
         if (top?.window?.document?.getElementById("ctl00_C5POBody_lblVitals") != undefined && top?.window?.document?.getElementById("ctl00_C5POBody_lblVitals") != null) {
-        top.window.document.getElementById("ctl00_C5POBody_lblVitals").innerHTML = response.d[3];
+            top.window.document.getElementById("ctl00_C5POBody_lblVitals").innerHTML = response.d[3];
         }
         if (top?.window?.document?.getElementById("ctl00_C5POBody_lblMedication") != undefined && top?.window?.document?.getElementById("ctl00_C5POBody_lblMedication") != null) {
-        top.window.document.getElementById("ctl00_C5POBody_lblMedication").innerHTML = response.d[4];
+            top.window.document.getElementById("ctl00_C5POBody_lblMedication").innerHTML = response.d[4];
         }
         if (response.d[5].replace("Allergies :<br/>", "").length != 0)
             top.window.document.getElementById("Allergies_tooltp").innerText = response.d[5].replace(regex, "\n") + "\n";
@@ -3314,11 +3324,11 @@ function OnSuccessSummaryBarEprescription(response) {
         if (response.d[8].replace("Vitals :<br/>", "").length != 0)
             top.window.document.getElementById("Vitals_tooltp").innerText = response.d[8].replace(regex, "\n") + "\n";
         else
-        //CAP-1463
+            //CAP-1463
             if (top?.window?.document?.getElementById("Vitals_tooltp") != undefined && top?.window?.document?.getElementById("Vitals_tooltp") != null) {
                 top.window.document.getElementById("Vitals_tooltp").innerText = "";
             }
-           
+
         if (response.d[9].replace("Medication :<br/>", "").length != 0)
             top.window.document.getElementById("Medication_tooltp").innerText = response.d[9].replace(regex, "\n") + "\n";
         else

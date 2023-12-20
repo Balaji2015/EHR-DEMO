@@ -2614,6 +2614,8 @@ function btnClose_Clicked() {
                 "Yes": function () {
                     $(dvdialog).dialog("close");
                     $(dvdialog).remove();
+                    //CAP-967
+                    document.getElementById('hdnType').value = "Yes";
                     btnSave_Clicked();
                     return false;
                 },
@@ -2622,7 +2624,6 @@ function btnClose_Clicked() {
                     $(dvdialog).remove();
                     parent.window.close();
                     window.parent.parent.parent.parent.theForm.ctl00_C5POBody_hdnIsSaveEnable.value = "false";
-                    document.getElementById('hdnType').value = "Yes";
                     return false;
                 },
                 "Cancel": function () {

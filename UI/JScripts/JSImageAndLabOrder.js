@@ -107,6 +107,8 @@ function OpenPDFImage(FaxSubject) {
     $(top.window.document).find("#PrintPDFmdldlg")[0].style.height = "750px";
     $(top.window.document).find("#PrintPDFFrame")[0].style.height = "685px";
     $(top.window.document).find("#PrintPDFFrame")[0].contentDocument.location.href = "frmPrintPDF.aspx?SI=" + document.getElementById('hdnSelectedItem').value + "&Location=DYNAMIC" + "&FromOrder=Y";
+    //CAP-1498
+    document.getElementById('btnOrderSubmit').disabled = true;
 }
 function OnClientCloseDiagnosis(oWindow, args) {
     if (oWindow != null) {
@@ -1846,9 +1848,9 @@ function chklstFrequentlyUsedProcedures_Changed() {
         document.getElementById("btnOrderSubmit").disabled = false;
     if (document.getElementById("txtQuantity").value != "") {
         if (document.getElementById("lblUnits").innerText.indexOf("*") != -1) {
-            var lblUnits = document.getElementById("lblUnits");
+            var lblunits = document.getElementById("lblUnits");
             //CAP-1501
-            lblUnits.innerHTML += "*";
+            lblunits.innerHTML += "*";
             $(lblunits).html($(lblunits).html().replace("*", "<span class='manredforstar'>*</span>"));
             $('#lblUnits').removeClass('spanstyle');
             $('#lblUnits').addClass('MandLabelstyle');

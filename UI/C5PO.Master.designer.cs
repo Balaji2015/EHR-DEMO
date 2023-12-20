@@ -1347,6 +1347,15 @@ namespace Acurus.Capella.UI
         protected global::System.Web.UI.WebControls.HiddenField hdnMedReconcileURL;
 
         /// <summary>
+        /// hdnIsDirectLink control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.HiddenField hdnIsDirectLink;
+
+        /// <summary>
         /// PlaceHolder1 control.
         /// </summary>
         /// <remarks>

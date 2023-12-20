@@ -809,9 +809,18 @@ namespace Acurus.Capella.UI
 
                 string sDisable = "";
                 if ((ClientSession.UserRole.ToUpper() == "SCRIBE" || ClientSession.UserRole.ToUpper() == "PHYSICIAN" || ClientSession.UserRole.ToUpper() == "PHYSICIAN ASSISTANT") && (ClientSession.UserCurrentProcess != "PROVIDER_REVIEW") && (ClientSession.UserCurrentProcess != "DISABLE"))
+                {
                     sDisable = new JavaScriptSerializer().Serialize("Enable");
+                }
+                //Jira CAP-1260
+                else if (ClientSession.UserCurrentProcess == "AKIDO_REVIEW_CODING")
+                {
+                    sDisable = new JavaScriptSerializer().Serialize("Enable");
+                }
                 else
+                {
                     sDisable = new JavaScriptSerializer().Serialize("Disable");
+                }
 
                 if (strAssessment == "CopyPrevious")
                 {

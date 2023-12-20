@@ -120,6 +120,7 @@ namespace Acurus.Capella.UI
                         fileupload.PostedFile.SaveAs(filename);
                         hdnUploadFile.Value = filename;
                         btnSave.Enabled = true;
+                        btnSave.CssClass = "aspresizedgreenbutton";
                     }
                 }
             }
@@ -230,6 +231,7 @@ namespace Acurus.Capella.UI
                         btnEditName.Visible = false;
                         this.Page.Title = "Authorization & EV" + " - " + ClientSession.UserName;
                         btnSave.Enabled = false;
+                        btnSave.CssClass = "aspresizedgreenbutton";
                         btnUploadDocuments.Style["margin-top"] = "7%";
                         btnUploadDocuments.Style["margin-left"] = "3%";
                         btnSave.Style["margin-top"] = "-6%";
@@ -252,6 +254,7 @@ namespace Acurus.Capella.UI
                         btnUpload.Visible = false;
                         cboPatientSuffix.Enabled = false;
                         btnSave.Enabled = false;
+                        btnSave.CssClass = "aspresizedgreenbutton";
                     }
                     cboMethodOfPayment_SelectedIndexChanged(sender, e);
 
@@ -307,7 +310,7 @@ namespace Acurus.Capella.UI
                     gbExistingPolicies.Visible = false;
                     btnEditName.Enabled = false;
                     btnSave.Enabled = false;
-
+                    btnSave.CssClass = "aspresizedgreenbutton";
                 }
                 EligibilityDisabled();
                 if (MyHumanId != 0)
@@ -317,6 +320,7 @@ namespace Acurus.Capella.UI
                 if (sMyEncStatus.ToUpper() == "MA_PROCESS" || sMyEncStatus.ToUpper() == "CHECK_OUT_WAIT" || sMyEncStatus.ToUpper() == "CHECK_OUT" || sMyEncStatus.ToUpper() == "CHECK_OUT_COMPLETE")
                 {
                     btnSave.Enabled = false;
+                    btnSave.CssClass = "aspresizedgreenbutton";
                     btnEditName.Enabled = false;
                     chkEligibilityVerified.Enabled = false;
                     MaskedTextBoxColorChange(msktxtSSN, false);
@@ -371,7 +375,7 @@ namespace Acurus.Capella.UI
                 {
                     btnEditName.Visible = false;
                     btnSave.Enabled = false;
-
+                    btnSave.CssClass = "aspresizedgreenbutton";
                 }
                 if (hdnScreenMode.Value == "PATIENT SUMMARY")
                 {
@@ -447,8 +451,13 @@ namespace Acurus.Capella.UI
             {
                 this.Page.Title = "Authorization & EV" + " - " + ClientSession.UserName;
             }
+            //CAP-1531
+            if (Request["sScreenMode"] == "PATIENT SUMMARY")
+            {
+                this.Page.Title = "Patient Summary" + " - " + ClientSession.UserName;
+            }
 
-                if (Button1.Visible == true)
+            if (Button1.Visible == true)
             {
                 if (ClientSession.UserPermissionDTO != null && ClientSession.UserPermissionDTO.Scntab != null)
                 {
@@ -532,7 +541,7 @@ namespace Acurus.Capella.UI
 
             SecurityServiceUtility objSecurityServiceUtility = new SecurityServiceUtility();
             objSecurityServiceUtility.ApplyUserPermissions(this);
-
+            btnUploadDocuments.CssClass = "aspresizedgreenbutton";
             ScriptManager.RegisterStartupScript(this, this.GetType(), "closeload", " {sessionStorage.setItem('StartLoading', 'false');StopLoadFromPatChart();}", true);
 
         }
@@ -2227,6 +2236,7 @@ namespace Acurus.Capella.UI
 
                 }
                 btnSave.Enabled = true;
+                btnSave.CssClass = "aspresizedgreenbutton";
             }
             else
             {
@@ -2347,6 +2357,7 @@ namespace Acurus.Capella.UI
                     //}
                 }
                 btnSave.Enabled = true;
+                btnSave.CssClass = "aspresizedgreenbutton";
                 if (ddlauthinsplan.SelectedItem != null && ddlauthinsplan.SelectedItem.Text != null && ddlauthinsplan.SelectedItem.Text != string.Empty)
                 {
                     txtauthnumber.Enabled = true;
@@ -2419,6 +2430,7 @@ namespace Acurus.Capella.UI
 
 
                 btnSave.Enabled = true;
+                btnSave.CssClass = "aspresizedgreenbutton";
             }
             else
             {
@@ -2571,7 +2583,7 @@ namespace Acurus.Capella.UI
                         txtMail.Focus();
                         chkOnlineAccess.Checked = false;
                         btnSave.Enabled = true;
-
+                        btnSave.CssClass = "aspresizedgreenbutton";
                         txtMail.Text = string.Empty;
                         return;
 
@@ -3735,6 +3747,7 @@ namespace Acurus.Capella.UI
                     }
 
                     btnSave.Enabled = false;
+                    btnSave.CssClass = "aspresizedgreenbutton";
                     if (hdnEncounterID.Value != "0" && hdnEncounterID.Value != "")
                     {
                     }
@@ -3949,7 +3962,7 @@ namespace Acurus.Capella.UI
 
 
                     btnSave.Enabled = false;
-
+                    btnSave.CssClass = "aspresizedgreenbutton";
                 }
                 else if (hdnEncounterID.Value != string.Empty && hdnScreenMode.Value.ToUpper() == "EDIT NAME")
                 {
@@ -4130,6 +4143,7 @@ namespace Acurus.Capella.UI
                     }
 
                     btnSave.Enabled = false;
+                    btnSave.CssClass = "aspresizedgreenbutton";
                 }
                 else if (hdnEncounterID.Value == "0" && hdnScreenMode.Value.ToUpper() != "CHECKEDIN" && hdnIsmailsend.Value == "true")
                 {
@@ -4309,6 +4323,7 @@ namespace Acurus.Capella.UI
                     }
 
                     btnSave.Enabled = false;
+                    btnSave.CssClass = "aspresizedgreenbutton";
 
                 }
 
@@ -4560,6 +4575,7 @@ namespace Acurus.Capella.UI
             {
                 ScriptManager.RegisterStartupScript(this, this.Page.GetType(), "showVal", "  {sessionStorage.setItem('StartLoading', 'false');StopLoadFromPatChart();}DisplayErrorMessage('380018');SaveAuthEncounter();RefreshNotification('Demographics');", true);
                 btnSave.Enabled = false;
+                btnSave.CssClass = "aspresizedgreenbutton";
             }
 
         }
@@ -4912,6 +4928,7 @@ namespace Acurus.Capella.UI
             }
 
             btnSave.Enabled = true;
+            btnSave.CssClass = "aspresizedgreenbutton";
             ScriptManager.RegisterStartupScript(this, this.GetType(), "QuickpatientCreate", " {sessionStorage.setItem('StartLoading', 'false');StopLoadFromPatChart();}", true);
         }
         void EligibilityDisabled()
@@ -7264,6 +7281,7 @@ namespace Acurus.Capella.UI
         protected void cboVerificationType_SelectedIndexChanged(object sender, EventArgs e)
         {
             btnSave.Enabled = true;
+            btnSave.CssClass = "aspresizedgreenbutton";
         }
 
 
@@ -8358,6 +8376,7 @@ namespace Acurus.Capella.UI
                 txtMail.CssClass = txtMail.CssClass.Replace("Editabletxtbox", "nonEditabletxtbox");
                 txtMail.Enabled = false;
                 btnSave.Enabled = true;
+                btnSave.CssClass = "aspresizedgreenbutton";
                 txtMail.Text = string.Empty;
             }
             if (hdnScreenMode.Value.ToUpper() == "FIND PATIENT")
@@ -8368,6 +8387,7 @@ namespace Acurus.Capella.UI
                     btnSendMail.Enabled = true;
                     spanemailstar.Visible = true;
                     btnSave.Enabled = true;
+                    btnSave.CssClass = "aspresizedgreenbutton";
                 }
                 else
                 {
@@ -8375,6 +8395,7 @@ namespace Acurus.Capella.UI
                     txtMail.ReadOnly = true;
                     spanemailstar.Visible = false;
                     btnSave.Enabled = true;
+                    btnSave.CssClass = "aspresizedgreenbutton";
                     txtMail.Text = string.Empty;
                 }
             }
@@ -8388,7 +8409,7 @@ namespace Acurus.Capella.UI
                     spanemailstar.Visible = true;
                     btnSendMail.Enabled = true;
                     btnSave.Enabled = true;
-
+                    btnSave.CssClass = "aspresizedgreenbutton";
 
                 }
                 else
@@ -8769,6 +8790,7 @@ namespace Acurus.Capella.UI
             }
 
             btnSave.Enabled = true;
+            btnSave.CssClass = "aspresizedgreenbutton";
             ScriptManager.RegisterStartupScript(this, this.GetType(), "QuickpatientCreate", " {sessionStorage.setItem('StartLoading', 'false');StopLoadFromPatChart();}", true);
         }
 
@@ -8845,6 +8867,7 @@ namespace Acurus.Capella.UI
             }
 
             btnSave.Enabled = true;
+            btnSave.CssClass = "aspresizedgreenbutton";
             ScriptManager.RegisterStartupScript(this, this.GetType(), "QuickpatientCreate", " {sessionStorage.setItem('StartLoading', 'false');StopLoadFromPatChart();}", true);
         }
 
@@ -8902,6 +8925,7 @@ namespace Acurus.Capella.UI
                 }
             }
             btnSave.Enabled = true;
+            btnSave.CssClass = "aspresizedgreenbutton";
             ScriptManager.RegisterStartupScript(this, this.GetType(), "closeload", " {sessionStorage.setItem('StartLoading', 'false');StopLoadFromPatChart();}", true);
         }
 
@@ -8954,6 +8978,7 @@ namespace Acurus.Capella.UI
             }
 
             btnSave.Enabled = true;
+            btnSave.CssClass = "aspresizedgreenbutton";
             ScriptManager.RegisterStartupScript(this, this.GetType(), "closeload", " {sessionStorage.setItem('StartLoading', 'false');StopLoadFromPatChart();}", true);
 
         }
