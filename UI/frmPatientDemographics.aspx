@@ -1043,7 +1043,7 @@
                                 </td>
                                 <td style="width:11%">
                                     <telerik:RadMaskedTextBox ID="dtpDateOfDeath" runat="server" Mask="##-Lll-####" Width="97%"   CssClass="nonEditabletxtbox"
-                                        EnableViewState="true">
+                                        onkeypress="AutoSave();" EnableViewState="true">
                                       
                                         <InvalidStyle Resize="None" />
                                         <FocusedStyle Resize="None" CssClass="Editabletxtbox" />
