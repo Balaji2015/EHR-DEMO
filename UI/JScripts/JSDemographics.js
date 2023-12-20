@@ -834,9 +834,26 @@ function PatientInformationValidation() {
 
     }
     if (document.getElementById(GetClientId("ddlPatientStatus")).value == "DECEASED") {
+        //Cap - 1570
+        var DateDeath = parseMyDate(document.getElementById(GetClientId("dtpDateOfDeath")).value);
+        var dtDeath = new Date();
+
         if (document.getElementById(GetClientId("dtpDateOfDeath")).value == "__-___-____") {
 
             DisplayErrorMessage('420078');
+            document.getElementById(GetClientId("dtpDateOfDeath")).focus();
+            { sessionStorage.setItem('StartLoading', 'false'); StopLoadFromPatChart(); }
+            return false;
+        }       
+        //Cap - 1570
+        if (DateDeath > dtDeath) {
+            DisplayErrorMessage('420080');
+            document.getElementById(GetClientId("dtpDateOfDeath")).focus();
+            { sessionStorage.setItem('StartLoading', 'false'); StopLoadFromPatChart(); }
+            return false;
+        }        
+        if (DOBValidation(GetClientId("dtpDateOfDeath")) == false && document.getElementById(GetClientId("dtpDateOfDeath")).value != "__-___-____") {
+            DisplayErrorMessage('420093');
             document.getElementById(GetClientId("dtpDateOfDeath")).focus();
             { sessionStorage.setItem('StartLoading', 'false'); StopLoadFromPatChart(); }
             return false;
@@ -849,13 +866,10 @@ function PatientInformationValidation() {
             { sessionStorage.setItem('StartLoading', 'false'); StopLoadFromPatChart(); }
             return false;
         }
-        var dtDeath = new Date();
-        if (DOBValidation(GetClientId("dtpDateOfDeath")) == false && document.getElementById(GetClientId("dtpDateOfDeath")).value != "__-___-____") {
-            DisplayErrorMessage('420080');
-            document.getElementById(GetClientId("dtpDateOfDeath")).focus();
-            { sessionStorage.setItem('StartLoading', 'false'); StopLoadFromPatChart(); }
-            return false;
-        }
+        
+
+        
+        
 
     }
     var enterDate = document.getElementById(GetClientId("dtpGuarantorDOB")).value;  // $find(GetClientId("dtpGuarantorDOB"))._value

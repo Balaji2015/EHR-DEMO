@@ -1471,6 +1471,10 @@ function LogTimeString(time_string) {
     document.getElementById('btnQuickPatientCreate').disabled = false;
 }
 function FaceSheetClick() {
+    //CAP-1231
+    if (document.getElementById('hdnDataHumanDetails')?.value != null && document.getElementById('hdnDataHumanDetails').value != undefined && document.getElementById('hdnDataHumanDetails')?.value != undefined) {
+        document.getElementById('hdnDataHumanDetails').value = document.getElementById("txtPatientSearch").attributes["data-human-details"].value;
+    }
     document.getElementById('btnface').click();
 }
 $(document).ready(function () {
@@ -2017,7 +2021,8 @@ function PrintPDF(sFaxSubject) {
 
         txtPatientSearchQuick.attributes['data-human-id'].value = document.getElementById('hdnHumanID').value;
     }
-
-
-
+    //CAP-1231
+    if (document.getElementById('hdnDataHumanDetails').value != null && document.getElementById('hdnDataHumanDetails').value != undefined && document.getElementById('hdnDataHumanDetails').value != "") {
+        document.getElementById("txtPatientSearch").attributes["data-human-details"].value = document.getElementById('hdnDataHumanDetails').value;
+    }
 }

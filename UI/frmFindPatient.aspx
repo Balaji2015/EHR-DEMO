@@ -193,6 +193,7 @@
         <asp:HiddenField ID="hdnHumanID" runat="server" EnableViewState="false" />
         <asp:HiddenField ID="hdnselected" runat="server" EnableViewState="false" />
         <asp:HiddenField ID="hdnFromScreen" runat="server" EnableViewState="false" />
+        <asp:HiddenField ID="hdnDataHumanDetails" runat="server" />
         <asp:HiddenField ID="SelectedItem" runat="server" />
         <asp:Button ID="btnface" runat="server"  style="display:none;" OnClick="btnPrintFaceSheet_ServerClick" CssClass="radPreventDecorate" />
         <asp:PlaceHolder ID="PlaceHolder1" runat="server">
