@@ -83,8 +83,15 @@ namespace Acurus.Capella.UI
                     {
                         local_Date = DateTime.Now.ToString("dd-MMM-yyyy hh:mm:ss");
                     }
-
-
+                    //CAP-1506
+                    if (Request.QueryString["IsDirectURL"] != null)
+                    {
+                        string IsDirectURL = Request.QueryString["IsDirectURL"].ToLower();
+                        if (IsDirectURL == "true")
+                        {
+                            hdnIsDirectLink.Value = "true";
+                        }
+                    }
 
                     if (ClientSession.FillPatientChart != null && ClientSession.FillPatientChart.PatChartList.Count > 0)
                     {
@@ -275,6 +282,14 @@ namespace Acurus.Capella.UI
                                 ModalWindow.Top = Unit.Pixel(0);
                                 ModalWindow.Left = Unit.Pixel(200);
                             }
+                            if (Request.QueryString["IsDirectURL"] != null)
+                            {
+                                string IsDirectURL = Request.QueryString["IsDirectURL"].ToLower();
+                                if (IsDirectURL == "true")
+                                {
+                                    hdnIsDirectLink.Value = "true";
+                                }
+                            }                         
                         }
                     }
                 }
@@ -294,6 +309,15 @@ namespace Acurus.Capella.UI
                             ModalWindow.Width = Unit.Pixel(1200);
                             ModalWindow.Behaviors = WindowBehaviors.None;
                             ModalWindow.NavigateUrl = "frmOrderManagement.aspx";
+                            //CAP-1506
+                            if (Request.QueryString["IsDirectURL"] != null)
+                            {
+                                string IsDirectURL = Request.QueryString["IsDirectURL"].ToLower();
+                                if (IsDirectURL == "true")
+                                {
+                                    hdnIsDirectLink.Value = "true";
+                                }
+                            }
                         }
                     }
                 }

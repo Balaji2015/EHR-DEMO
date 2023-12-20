@@ -869,6 +869,7 @@
 	<Message number="420087" Type="YesNoCancel" Text="There are unsaved changes.&#xD;Would you like to save them?" />
 	<Message number="420088" Type="OK" Text="Please fill the Mother's Maiden Name in Last Name,First Name format." />
 	<Message number="420089" Type="OK" Text="Please fill the Immunization Registry Status."/>
+	<Message number="420093" Type="OK" Text="Invalid Date of Death" />
 
 	<Message number="420101" Type="OKCANCEL" Text="There are unsaved changes.&#xD;Click &apos;OK&apos; to go back &amp; save the changes or&#xD;Click &apos;Cancel&apos; to proceed without saving."></Message>
 	<Message number="420102" Type="YesNoCancel" Text="There are unsaved changes.&#xD;Would you like to save them?"/>

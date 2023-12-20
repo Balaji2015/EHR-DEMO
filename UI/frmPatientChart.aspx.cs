@@ -2018,7 +2018,7 @@ namespace Acurus.Capella.UI
                     ulHumanId = ClientSession.HumanId;
                 }
 
-                if (!DirectURLUtility.IsValidLegalOrg(ClientSession.UserName, ulHumanId))
+                if (!string.IsNullOrEmpty(ClientSession.UserName) && !DirectURLUtility.IsValidLegalOrg(ClientSession.UserName, ulHumanId))
                 {
                     Response.Redirect($"~/frmRestrictedAccess.aspx");
                 }

@@ -2137,6 +2137,7 @@
         <asp:HiddenField ID="hdnProjectIPAddress" Value="" runat="server" EnableViewState="false" />
         <asp:HiddenField ID="hdnEncounterId" runat="server" EnableViewState="false" />
         <asp:HiddenField ID="hdnMedReconcileURL" Value="" runat="server" EnableViewState="false" />
+          <asp:HiddenField ID="hdnIsDirectLink" runat="server" EnableViewState="false" />
         <asp:PlaceHolder ID="PlaceHolder1" runat="server">
             <script src="JScripts/JSC5PO.js?version=<%=ConfigurationManager.AppSettings["VersionConfiguration"].ToString().Replace("Capella - ","") %>"
                 type="text/javascript" enableviewstate="false"></script>
