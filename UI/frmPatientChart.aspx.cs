@@ -2000,7 +2000,7 @@ namespace Acurus.Capella.UI
             //CAP-1507, CAP-1506 & CAP-1509
             if(Request.QueryString["ScreenName"] != null)
             {
-                if (!DirectURLUtility.IsScnMenuEnabled(ClientSession.UserName, Request.QueryString["ScreenName"].ToUpper()))
+                if (!string.IsNullOrEmpty(ClientSession.UserName) && !DirectURLUtility.IsScnMenuEnabled(ClientSession.UserName, Request.QueryString["ScreenName"].ToUpper()))
                 {
                     Response.Redirect($"~/frmRestrictedAccess.aspx");
                 }

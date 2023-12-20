@@ -87,7 +87,7 @@ namespace Acurus.Capella.UI
                     if (Request.QueryString["IsDirectURL"] != null)
                     {
                         string IsDirectURL = Request.QueryString["IsDirectURL"].ToLower();
-                        if (IsDirectURL == "true")
+                        if (IsDirectURL == "Y")
                         {
                             hdnIsDirectLink.Value = "true";
                         }
@@ -285,7 +285,7 @@ namespace Acurus.Capella.UI
                             if (Request.QueryString["IsDirectURL"] != null)
                             {
                                 string IsDirectURL = Request.QueryString["IsDirectURL"].ToLower();
-                                if (IsDirectURL == "true")
+                                if (IsDirectURL == "Y")
                                 {
                                     hdnIsDirectLink.Value = "true";
                                 }
@@ -313,7 +313,7 @@ namespace Acurus.Capella.UI
                             if (Request.QueryString["IsDirectURL"] != null)
                             {
                                 string IsDirectURL = Request.QueryString["IsDirectURL"].ToLower();
-                                if (IsDirectURL == "true")
+                                if (IsDirectURL == "Y")
                                 {
                                     hdnIsDirectLink.Value = "true";
                                 }
