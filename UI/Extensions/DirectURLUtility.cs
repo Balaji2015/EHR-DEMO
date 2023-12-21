@@ -23,7 +23,7 @@ namespace Acurus.Capella.UI.Extensions
                 //CAP - 1306 & 1311
                 if (defaultServerHost.Authority == returnUrlHost.Authority)
                 {
-                    serverRedirectUrl = Default_Server + "?redirecturl=" + HttpUtility.UrlEncode(redirecturl);
+                    serverRedirectUrl = Default_Server + "?redirecturl=" + HttpUtility.UrlEncode(returnURL);
                 }
                 else
                 {
