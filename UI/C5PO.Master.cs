@@ -546,7 +546,7 @@ namespace Acurus.Capella.UI
         {
             try
             {
-                
+               
                 if (ClientSession.Is_RCopia_Notification_Required != "Y" || ClientSession.RCopiaUserName == string.Empty)
                 {
                     tsRefill.Style.Add("display", "none");
@@ -589,7 +589,7 @@ namespace Acurus.Capella.UI
             }
             catch (Exception ex)
             {
-                return "LoadRCopiaNotification :  <br/> <br/> " + ex.Message;
+                return "LoadRCopiaNotification :  " + DateTime.Now.ToString() + "<br/> <br/> "+ex.Message;
             }
             return string.Empty;
         }

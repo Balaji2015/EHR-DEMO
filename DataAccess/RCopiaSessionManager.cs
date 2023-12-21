@@ -1096,7 +1096,8 @@ namespace Acurus.Capella.DataAccess
             //byte[] bytes = Encoding.ASCII.GetBytes (parameters);
             Stream os = null;
             try
-            { // send the Post
+            {
+                // send the Post
                 //webRequest.ContentLength = bytes.Length;   //Count bytes to send
                 //os = webRequest.GetRequestStream();
                 //os.Write (bytes, 0, bytes.Length);         //Send it
@@ -1219,7 +1220,7 @@ namespace Acurus.Capella.DataAccess
                 }
                 else
                 {
-                    return "HttpPostError Request Error : <br/> <br/> " + ex.Message;
+                    return "HttpPostError Request Error : " + DateTime.Now.ToString() + "<br/> <br/>"+ ex.Message;
                 }
             }
             catch (Exception e)
@@ -1314,7 +1315,7 @@ namespace Acurus.Capella.DataAccess
                 }
                 else
                 {
-                    return "HttpPostError Request Error : <br/> <br/>" + e.Message;
+                    return "HttpPostError Request Error : " + DateTime.Now.ToString() + "<br/> <br/>" + e.Message;
                     //HttpPost(uri, 5);
                 }
             }
@@ -1416,7 +1417,7 @@ namespace Acurus.Capella.DataAccess
                 else
                 {
                     //HttpPost(uri, 5);
-                    return "HttpPostError Response Error : <br/> <br/>" + ex.Message;
+                    return "HttpPostError Response Error : " + DateTime.Now.ToString() + "<br/> <br/>" + ex.Message;
                 }
 
                 //MessageBox.Show(ex.Message, "HttpPost: Response error",
@@ -1435,7 +1436,7 @@ namespace Acurus.Capella.DataAccess
                 //    tx.Dispose();
                 //}
                 ////MessageBox.Show(e.InnerException.ToString());
-                return "HttpPostError Response Error : <br/> <br/>" + ex1.Message;
+                return "HttpPostError Response Error : " + DateTime.Now.ToString() + "<br/> <br/>"+ ex1.Message;
             }
             return null;
         }
