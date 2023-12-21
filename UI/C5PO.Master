@@ -549,7 +549,23 @@
             border-radius: 10px;
             opacity: 0.8;
         }
-
+         #RcopiaCheckAlert {
+            display: none;
+            background: #fdfeff;
+            box-shadow: 0 0 10px rgba(0,0,0,0.4);
+            box-sizing: border-box;
+            color: #101010;
+            left: 50%;
+            min-width: 645px;
+            max-width: 700px;
+            padding: 1.875em;
+            position: absolute;
+            top: 7%;
+            transform: translate(-50%, -50%);
+            z-index: 2000000000;
+            border-radius: 10px;
+            opacity: 0.8;
+        }
         #CheckAlertxml {
             display: none;
             background: #fdfeff;
@@ -1167,6 +1183,9 @@
         </div>
          <div id="CheckAlert"  onclick="ToolStripAlertHide();">
             <div id="innerMsgText" style="font-family: Verdana,Arial,sans-serif !important;font-size: 18px;color: #000000;"></div>
+         </div>
+        <div id="RcopiaCheckAlert">
+            <div id="RcopiainnerMsgText" style="font-family: Verdana,Arial,sans-serif !important;font-size: 18px;color: #000000;"></div>
          </div>
          <div id="CheckAlertxml"  class="dvxmlalert">
             <div id="innerMsgTextxml" style="font-family: Verdana,Arial,sans-serif !important;font-size: 18px;color: #000000;"></div>

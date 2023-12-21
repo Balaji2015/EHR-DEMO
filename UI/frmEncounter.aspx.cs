@@ -26,6 +26,7 @@ using System.Threading;
 using DocumentFormat.OpenXml.Wordprocessing;
 using ListItem = System.Web.UI.WebControls.ListItem;
 using static System.Windows.Forms.VisualStyles.VisualStyleElement.StartPanel;
+using Newtonsoft.Json;
 
 namespace Acurus.Capella.UI
 {
@@ -1149,24 +1150,26 @@ namespace Acurus.Capella.UI
 
         }
         [WebMethod(EnableSession = true)]
-        public static void DownloadRcoipa()
+        public static string DownloadRcoipa()
         {
             if (ClientSession.UserName == string.Empty)
             {
                 HttpContext.Current.Response.StatusCode = 999;
                 HttpContext.Current.Response.Status = "999 Session Expired";
                 HttpContext.Current.Response.StatusDescription = "frmSessionExpired.aspx";
-                return;
+                return string.Empty;
             }
+            string sErrorMessage = string.Empty;
             Rcopia_Update_InfoManager objUpdateInfoMngr = new Rcopia_Update_InfoManager();
             RCopiaSessionManager rcopiaSessionMngr = new RCopiaSessionManager(ClientSession.LegalOrg);
             DateTime dtClientDate = localTime;
             if (ClientSession.UserName != null && ClientSession.FacilityName != null && ClientSession.EncounterId != null)
                 //Commented the Patient Level RCopia Download
-                objUpdateInfoMngr.DownloadRCopiaInfo(rcopiaSessionMngr.DownloadAddress, ClientSession.UserName, string.Empty, dtClientDate, ClientSession.FacilityName, ClientSession.EncounterId, ClientSession.HumanId, ClientSession.LegalOrg);
+                sErrorMessage = objUpdateInfoMngr.DownloadRCopiaInfo(rcopiaSessionMngr.DownloadAddress, ClientSession.UserName, string.Empty, dtClientDate, ClientSession.FacilityName, ClientSession.EncounterId, ClientSession.HumanId, ClientSession.LegalOrg);
             //Old 
             //objUpdateInfoMngr.DownloadRCopiaInfo(rcopiaSessionMngr.DownloadAddress, ClientSession.UserName, string.Empty, dtClientDate, ClientSession.FacilityName, ClientSession.EncounterId);
 
+            return JsonConvert.SerializeObject(sErrorMessage);
         }
 
 

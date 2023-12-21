@@ -54,6 +54,10 @@ function tree_add_leaf_example_click(leaf, node, pnode, tree) {
             var prvTab = PrevTab[0].attributes.id.value;
 
             if (prvTab.match("tbEPrescription") != null) {
+
+                //Jira CAP-1366
+                StartRcopiaStrip();
+
                 $.ajax({
                     type: "POST",
                     url: "frmEncounter.aspx/DownloadRcoipa",
@@ -61,9 +65,14 @@ function tree_add_leaf_example_click(leaf, node, pnode, tree) {
                     dataType: "json",
                     async: true,
                     success: function (data) {
+                        //Jira CAP-1366
+                        StopRcopiaStrip();
+                        RcopiaErrorAlert(data.d);
                     },
                     error: function OnError(xhr) {
                         { sessionStorage.setItem('StartLoading', 'false'); StopLoadFromPatChart(); }
+                        //Jira CAP-1366
+                        StopRcopiaStrip();
                         if (xhr.status == 999)
                             window.location = "/frmSessionExpired.aspx";
                         else {

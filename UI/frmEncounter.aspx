@@ -494,6 +494,9 @@
         var prvTab = PrevTab[0].attributes.id.value;
 
         if (prvTab.match("tbEPrescription") != null) {
+            //Jira CAP-1366
+            StartRcopiaStrip();
+
             $.ajax({
                 type: "POST",
                 url: "frmEncounter.aspx/DownloadRcoipa",
@@ -501,8 +504,13 @@
                 dataType: "json",
                 async: true,
                 success: function (data) {
+                    //Jira CAP-1366
+                    StopRcopiaStrip();
+                    RcopiaErrorAlert(data.d);
                 },
-                error: function (result) {
+                    error: function (result) {
+                        //Jira CAP-1366
+                        StopRcopiaStrip();
                     //alert(result.d);
                 }
             });
@@ -1120,6 +1128,9 @@
                     sessionStorage.setItem("Enc_Src", $(paneID).attr('data-src'));
                     var prvTab = PrevTab.attr('href');
                     if (prvTab.match("#tbEPrescription") != null) {
+                        //Jira CAP-1366
+                        StartRcopiaStrip();
+
                         $.ajax({
                             type: "POST",
                             url: "frmEncounter.aspx/DownloadRcoipa",
@@ -1128,8 +1139,13 @@
                             async: true,
                             success: function (data) {
                                 reloadSummary();
+                                //Jira CAP-1366
+                                StopRcopiaStrip();
+                                RcopiaErrorAlert(data.d);
                             },
                             error: function OnError(xhr) {
+                                //Jira CAP-1366
+                                StopRcopiaStrip();
                                 var log = JSON.parse(xhr.responseText);
                                 console.log(log);
                                 if (xhr.status == 999)
@@ -1828,6 +1844,9 @@
 
                 var prvTab = PrevTab.attr('href');
                 if (prvTab.match("#tbEPrescription") != null) {
+                    //Jira CAP-1366
+                    StartRcopiaStrip();
+
                     $.ajax({
                         type: "POST",
                         url: "frmEncounter.aspx/DownloadRcoipa",
@@ -1845,8 +1864,13 @@
                                 bCancel = false;
                                 sessionStorage.setItem("EncCancel", "false");
                             }
+                            //Jira CAP-1366
+                            StopRcopiaStrip();
+                            RcopiaErrorAlert(data.d);
                         },
                         error: function OnError(xhr) {
+                            //Jira CAP-1366
+                            StopRcopiaStrip();
                             var log = JSON.parse(xhr.responseText);
                             console.log(log);
                             if (xhr.status == 999)
