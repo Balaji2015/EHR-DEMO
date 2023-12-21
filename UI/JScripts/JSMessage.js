@@ -49,7 +49,10 @@ function loadRcopiaRxCount() {
         data: '',
         contentType: "application/json; charset=utf-8",
         dataType: "json",
-        success: OnSuccessRCopia,
+        success: function (response) {
+            RcopiaErrorAlert(response.d);
+            OnSuccessRCopia(response);
+        },
         error: function OnError(xhr) {
             if (xhr.status == 999)
                 window.location = "/frmSessionExpired.aspx";

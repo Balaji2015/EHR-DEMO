@@ -1390,6 +1390,7 @@
 	<Message number="100005" Type="OK" Text="Goto Orders tab to create an Order for this encounter."></Message>
 	<Message number="100006" Type="OK" Text="Please select a patient through Open Patient Chart menu and then try to create order."></Message>
 	<Message number="100007" Type="OK" Text="Please select encounter."></Message>
+	<Message number="100008" Type="OK" Text="{0}"></Message>
 
 	<Message number="102001" Type="ToolStrip" Text="Saved successfully." />
 	<Message number="102002" Type="OK" Text="Please enter Flow Sheet Template Name" />

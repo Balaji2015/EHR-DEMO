@@ -1004,7 +1004,7 @@ namespace Acurus.Capella.DataAccess
                     int uInsuranceID = 0;
                     if (sUploadAddress != null)
                     {
-                        sOutputXML = rcopiaSessionMngr.HttpPost(rcopiaSessionMngr.UploadAddress + sInputXML, 1);
+                        sOutputXML = rcopiaSessionMngr.HttpPost(rcopiaSessionMngr.UploadAddress + sInputXML, 1, sUserName);
                         if (sOutputXML != string.Empty && sOutputXML != null)
                         {
                             XmlDocument XMLDocforGetInsurance = new XmlDocument();

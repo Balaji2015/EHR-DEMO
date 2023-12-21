@@ -2063,6 +2063,9 @@ function OpenERXFromMENU() {
 
 function TriggerDownloadRcopia(oWindow, args) {
     { sessionStorage.setItem('StartLoading', 'true'); StartLoadFromPatChart(); }
+    //Jira CAP-1366
+    StartRcopiaStrip();
+
     $.ajax({
         type: "POST",
         url: "frmEncounter.aspx/DownloadRcoipa",
@@ -2074,8 +2077,13 @@ function TriggerDownloadRcopia(oWindow, args) {
             redirectToCCEprescription();
             reloadSummaryEprescription();
             { sessionStorage.setItem('StartLoading', 'false'); StopLoadFromPatChart(); }
+            //Jira CAP-1366
+            StopRcopiaStrip();
+            RcopiaErrorAlert(data.d);
         },
         error: function (result) {
+            //Jira CAP-1366
+            StopRcopiaStrip();
             //CAP-1506 & CAP-1507 & CAP-1509
             { sessionStorage.setItem('StartLoading', 'false'); StopLoadFromPatChart(); }
         }
@@ -2714,7 +2722,10 @@ function loadRcopia() {
         data: '',
         contentType: "application/json; charset=utf-8",
         dataType: "json",
-        success: OnSuccessRCopia,
+        success: function (response) {
+            RcopiaErrorAlert(response.d);
+            OnSuccessRCopia(response);
+        },
         error: function OnError(xhr) {
             if (xhr.status == 999)
                 window.location = "/frmSessionExpired.aspx";

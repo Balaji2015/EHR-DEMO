@@ -23,7 +23,7 @@ namespace Acurus.Capella.UI.Extensions
                 //CAP - 1306 & 1311
                 if (defaultServerHost.Authority == returnUrlHost.Authority)
                 {
-                    serverRedirectUrl = Default_Server + "?redirecturl=" + redirecturl;
+                    serverRedirectUrl = Default_Server + "?redirecturl=" + HttpUtility.UrlEncode(redirecturl);
                 }
                 else
                 {
@@ -38,7 +38,7 @@ namespace Acurus.Capella.UI.Extensions
         public static bool IsValidRedirectUrlForLogin(string currentURL)
         {
             var encounterUrlPattern = @"^https?://[^/]+/frmPatientChart\.aspx\?EncounterID=\d+$";
-            var humanUrlPattern = @"^https?://[^/]+/frmPatientChart\.aspx\?(?:HumanID=\d+)?(&ScreenMode=Menu)?(&openingfrom=Menu)?(&ScreenName=ERX)?(&ScreenName=CreateOrder)?(&ScreenName=OrderManagement)?(&IsDirectURL=true)?$";
+            var humanUrlPattern = @"^https?://[^/]+/frmPatientChart\.aspx\?(?:HumanID=\d+)?(&ScreenMode=Menu)?(&openingfrom=Menu)?(&ScreenName=ERX)?(&ScreenName=CreateOrder)?(&ScreenName=OrderManagement)?(&IsDirectURL=Y)?$";
 
             if (Regex.IsMatch(currentURL, humanUrlPattern) || Regex.IsMatch(currentURL, encounterUrlPattern))
             {

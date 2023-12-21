@@ -53,6 +53,9 @@ function ClickPrescription() {
 }
 
 function TriggerDownloadRcopia(oWindow, args) {
+    { sessionStorage.setItem('StartLoading', 'true'); StartLoadFromPatChart(); }
+    //Jira CAP-1366
+    StartRcopiaStrip();
 
     $.ajax({
         type: "POST",
@@ -61,8 +64,13 @@ function TriggerDownloadRcopia(oWindow, args) {
         dataType: "json",
         async: true,
         success: function (data) {
+            //Jira CAP-1366
+            StopRcopiaStrip();
+            RcopiaErrorAlert(data.d);
         },
         error: function (result) {
+            //Jira CAP-1366
+            StopRcopiaStrip();
         }
     });
     //loadRcopia();
@@ -116,7 +124,10 @@ function loadRcopia() {
         data: '',
         contentType: "application/json; charset=utf-8",
         dataType: "json",
-        success: OnSuccessRCopia,
+        success: function (response) {
+            RcopiaErrorAlert(response.d);
+            OnSuccessRCopia();
+        },
         error: function OnError(xhr) {
             if (xhr.status == 999)
                 window.location = "/frmSessionExpired.aspx";

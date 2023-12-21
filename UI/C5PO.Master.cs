@@ -86,8 +86,8 @@ namespace Acurus.Capella.UI
                     //CAP-1506
                     if (Request.QueryString["IsDirectURL"] != null)
                     {
-                        string IsDirectURL = Request.QueryString["IsDirectURL"].ToLower();
-                        if (IsDirectURL == "true")
+                        string IsDirectURL = Request.QueryString["IsDirectURL"];
+                        if (IsDirectURL.Equals("y",StringComparison.InvariantCultureIgnoreCase))
                         {
                             hdnIsDirectLink.Value = "true";
                         }
@@ -284,8 +284,8 @@ namespace Acurus.Capella.UI
                             }
                             if (Request.QueryString["IsDirectURL"] != null)
                             {
-                                string IsDirectURL = Request.QueryString["IsDirectURL"].ToLower();
-                                if (IsDirectURL == "true")
+                                string IsDirectURL = Request.QueryString["IsDirectURL"];
+                                if (IsDirectURL.Equals("y", StringComparison.InvariantCultureIgnoreCase))
                                 {
                                     hdnIsDirectLink.Value = "true";
                                 }
@@ -312,8 +312,8 @@ namespace Acurus.Capella.UI
                             //CAP-1506
                             if (Request.QueryString["IsDirectURL"] != null)
                             {
-                                string IsDirectURL = Request.QueryString["IsDirectURL"].ToLower();
-                                if (IsDirectURL == "true")
+                                string IsDirectURL = Request.QueryString["IsDirectURL"];
+                                if (IsDirectURL.Equals("y", StringComparison.InvariantCultureIgnoreCase))
                                 {
                                     hdnIsDirectLink.Value = "true";
                                 }
@@ -348,14 +348,14 @@ namespace Acurus.Capella.UI
                 if (hdnMedReconcileURL.Value == string.Empty)
                     hdnMedReconcileURL.Value = System.Configuration.ConfigurationManager.AppSettings["MedReconcileURL"].ToString();
 
-                string username = "", userrole = "", userid = "";
+                //string username = "", userrole = "", userid = "";
 
-                if (ClientSession.UserName != null)
-                    userid = ClientSession.UserName;
-                if (ClientSession.UserRole != null)
-                    userrole = ClientSession.UserRole;
+                //if (ClientSession.UserName != null)
+                //    userid = ClientSession.UserName;
+                //if (ClientSession.UserRole != null)
+                //    userrole = ClientSession.UserRole;
 
-                this.Page.ClientScript.RegisterStartupScript(this.Page.GetType(), string.Empty, "setusername('" + userid + "|" + userrole + "|" + username + "');", true);
+                //this.Page.ClientScript.RegisterStartupScript(this.Page.GetType(), string.Empty, "setusername('" + userid + "|" + userrole + "|" + username + "');", true);
 
 
             }
@@ -437,7 +437,29 @@ namespace Acurus.Capella.UI
                 }
 
                 //To Load RCopia Notification
-                LoadRCopiaNotification();
+                //LoadRCopiaNotification();
+                string sLoadRcopia = string.Empty;
+                sLoadRcopia = LoadRCopiaNotification();
+                if (!IsPostBack)
+                {
+                    string username = "", userrole = "", userid = "";
+
+                    if (ClientSession.UserName != null)
+                        userid = ClientSession.UserName;
+                    if (ClientSession.UserRole != null)
+                        userrole = ClientSession.UserRole;
+                    string ScriptMethod = "setusername('" + userid + "|" + userrole + "|" + username + "'); ";
+                    if (sLoadRcopia != null && (sLoadRcopia.StartsWith("HttpPostError") == true || sLoadRcopia.StartsWith("LoadRCopiaNotification") == true))
+                    {
+                        sLoadRcopia = sLoadRcopia.Replace("'", "");
+                        ScriptMethod += " RcopiaErrorAlert('" + sLoadRcopia + "'); ";
+                    }
+                    this.Page.ClientScript.RegisterStartupScript(this.Page.GetType(), string.Empty, ScriptMethod, true);
+                }
+                else if (sLoadRcopia != null && (sLoadRcopia.StartsWith("HttpPostError") == true || sLoadRcopia.StartsWith("LoadRCopiaNotification") == true))
+                {
+                    this.Page.ClientScript.RegisterStartupScript(this.Page.GetType(), string.Empty, "RcopiaErrorAlert('" + sLoadRcopia + "');", true);
+                }
             }
             //int indexValue = 0;
             //foreach (RadMenuItem menu in mnuC5PO.Items)
@@ -520,43 +542,56 @@ namespace Acurus.Capella.UI
 
         }
 
-        public void LoadRCopiaNotification()
+        public string LoadRCopiaNotification()
         {
-            if (ClientSession.Is_RCopia_Notification_Required != "Y" || ClientSession.RCopiaUserName == string.Empty)
-            {
-                tsRefill.Style.Add("display", "none");
-                tsRx_Change.Style.Add("display", "none");
-                tsRx_Pending.Style.Add("display", "none");
-                tsRx_Need_Signing.Style.Add("display", "none");
-                tsRx_RefreshRcopia.Style.Add("display", "none");
-                return;
-            }
-
-            RCopiaGenerateXML objrcopGenXML = new RCopiaGenerateXML();
-            string sInputXML = string.Empty;
-            //System.Threading.Thread.Sleep(400);
-            sInputXML = objrcopGenXML.CreateGetNotificationCountXML(ClientSession.LegalOrg);
-            string sOutputXML = string.Empty;
-            RCopiaSessionManager rcopiaSessionMngr = new RCopiaSessionManager(ClientSession.LegalOrg);
-            //System.Threading.Thread.Sleep(400);
-            sOutputXML = rcopiaSessionMngr.HttpPost(rcopiaSessionMngr.DownloadAddress + sInputXML, 1);
-            RCopia.RCopiaXMLResponseProcess objRcopResponseXML = new RCopiaXMLResponseProcess();
-            //Jira CAP-1367
-            //RCopia.RCopiaXMLResponseProcess.ilstNotification.Clear();
-            IList<Rcopia_NotificationDTO> ilstNotification;
-            ////System.Threading.Thread.Sleep(400);
-            //Jira CAP-1367
-            //objRcopResponseXML.ReadXMLResponse(sOutputXML);
-            objRcopResponseXML.ReadXMLResponse(sOutputXML,out ilstNotification);
             try
             {
+               
+                if (ClientSession.Is_RCopia_Notification_Required != "Y" || ClientSession.RCopiaUserName == string.Empty)
+                {
+                    tsRefill.Style.Add("display", "none");
+                    tsRx_Change.Style.Add("display", "none");
+                    tsRx_Pending.Style.Add("display", "none");
+                    tsRx_Need_Signing.Style.Add("display", "none");
+                    tsRx_RefreshRcopia.Style.Add("display", "none");
+                    return string.Empty;
+                }
+
+                RCopiaGenerateXML objrcopGenXML = new RCopiaGenerateXML();
+                string sInputXML = string.Empty;
+                //System.Threading.Thread.Sleep(400);
+                sInputXML = objrcopGenXML.CreateGetNotificationCountXML(ClientSession.LegalOrg);
+                string sOutputXML = string.Empty;
+                RCopiaSessionManager rcopiaSessionMngr = new RCopiaSessionManager(ClientSession.LegalOrg);
+                //System.Threading.Thread.Sleep(400);
+                sOutputXML = rcopiaSessionMngr.HttpPost(rcopiaSessionMngr.DownloadAddress + sInputXML, 1);
+                if (sOutputXML != null && sOutputXML.StartsWith("HttpPostError") == true)
+                {
+                    return sOutputXML;
+                }
+                RCopia.RCopiaXMLResponseProcess objRcopResponseXML = new RCopiaXMLResponseProcess();
                 //Jira CAP-1367
-                //FillRCopiaNotification();
-                FillRCopiaNotification(ilstNotification);
+                //RCopia.RCopiaXMLResponseProcess.ilstNotification.Clear();
+                IList<Rcopia_NotificationDTO> ilstNotification;
+                ////System.Threading.Thread.Sleep(400);
+                //Jira CAP-1367
+                //objRcopResponseXML.ReadXMLResponse(sOutputXML);
+                objRcopResponseXML.ReadXMLResponse(sOutputXML, out ilstNotification);
+                try
+                {
+                    //Jira CAP-1367
+                    //FillRCopiaNotification();
+                    FillRCopiaNotification(ilstNotification);
+                }
+                catch
+                {
+                }
             }
-            catch
+            catch (Exception ex)
             {
+                return "LoadRCopiaNotification :  " + DateTime.Now.ToString() + "<br/> <br/> "+ex.Message;
             }
+            return string.Empty;
         }
 
         //Jira CAP-1367

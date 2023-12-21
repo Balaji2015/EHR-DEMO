@@ -18,7 +18,9 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
         IList<Rcopia_Update_info> GetRcopiaUpdateInfo();
         void InsertinToRcopia_Update_info(string sCommand, DateTime dtLastUpdateTime, string sValue, string sMacAddress, string sLegalOrg);
         //void DownloadRCopiaInfo(string sDownloadAddress, string sUserName, string sMACAddress, DateTime dtClientDate, string sFacilityName, ulong EncID);
-        void DownloadRCopiaInfo(string sUploadAddress, string sUserName, string sMACAddress, DateTime dtClientDate, string sFacilityName, ulong EncID, ulong ulHumanID, string sLegalOrg);
+        //Jira CAP-1366
+        //void DownloadRCopiaInfo(string sUploadAddress, string sUserName, string sMACAddress, DateTime dtClientDate, string sFacilityName, ulong EncID, ulong ulHumanID, string sLegalOrg);
+        string DownloadRCopiaInfo(string sUploadAddress, string sUserName, string sMACAddress, DateTime dtClientDate, string sFacilityName, ulong EncID, ulong ulHumanID, string sLegalOrg);
         string GetRcopiaUpdateInfoCommandName(string sCommandName);
     }
 
@@ -221,14 +223,14 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
 
         //        }
         //    }
-           
+
 
         //}
 
-       
+
 
         //Patient Level RCopia Download - Commented
-        public void DownloadRCopiaInfo(string sDownloadAddress, string sUserName, string sMACAddress, DateTime dtClientDate, string sFacilityName, ulong EncID, ulong ulHumanID, string sLegalOrg)
+        public string DownloadRCopiaInfo(string sDownloadAddress, string sUserName, string sMACAddress, DateTime dtClientDate, string sFacilityName, ulong EncID, ulong ulHumanID, string sLegalOrg)
         {
             RCopiaSessionManager rcopiaSessionMngr = new RCopiaSessionManager(sLegalOrg);
             RCopiaGenerateXML rcopiaXML = new RCopiaGenerateXML();
@@ -281,11 +283,16 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
 
             WorkFlowManager obj = new WorkFlowManager();
 
-            sInputXML = rcopiaXML.CreateUpdateAllergyXML(ulHumanID, dtRCopia_Allergy_Last_Updated_Date_Time,sLegalOrg);
+            sInputXML = rcopiaXML.CreateUpdateAllergyXML(ulHumanID, dtRCopia_Allergy_Last_Updated_Date_Time, sLegalOrg);
             if (rcopiaSessionMngr.DownloadAddress != null && sInputXML != string.Empty)
             {
-                sOutputXML = rcopiaSessionMngr.HttpPost(rcopiaSessionMngr.DownloadAddress + sInputXML, 1);
-                rcopiaResponseXML.ReadXMLResponse(sOutputXML, sUserName, sMACAddress, dtClientDate, sFacilityName, EncID,sLegalOrg);
+                sOutputXML = rcopiaSessionMngr.HttpPost(rcopiaSessionMngr.DownloadAddress + sInputXML, 1, sUserName);
+                //Jira CAP-1366
+                if (sOutputXML != null && sOutputXML.StartsWith("HttpPostError") == true)
+                {
+                    return sOutputXML;
+                }
+                rcopiaResponseXML.ReadXMLResponse(sOutputXML, sUserName, sMACAddress, dtClientDate, sFacilityName, EncID, sLegalOrg);
                 XmlDocument XMLDoc = new XmlDocument();
                 if (sOutputXML != null)
                 {
@@ -304,12 +311,17 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
                 }
             }
 
-            sInputXML = rcopiaXML.CreateUpdateMedicationXML(ulHumanID, dtRCopia_Medication_Last_Updated_Date_Time,sLegalOrg);
+            sInputXML = rcopiaXML.CreateUpdateMedicationXML(ulHumanID, dtRCopia_Medication_Last_Updated_Date_Time, sLegalOrg);
 
             if (rcopiaSessionMngr.DownloadAddress != null && sInputXML != string.Empty)
             {
-                sOutputXML = rcopiaSessionMngr.HttpPost(rcopiaSessionMngr.DownloadAddress + sInputXML, 1);
-                rcopiaResponseXML.ReadXMLResponse(sOutputXML, sUserName, sMACAddress, dtClientDate, sFacilityName, EncID,sLegalOrg);
+                sOutputXML = rcopiaSessionMngr.HttpPost(rcopiaSessionMngr.DownloadAddress + sInputXML, 1, sUserName);
+                //Jira CAP-1366
+                if (sOutputXML != null && sOutputXML.StartsWith("HttpPostError") == true)
+                {
+                    return sOutputXML;
+                }
+                rcopiaResponseXML.ReadXMLResponse(sOutputXML, sUserName, sMACAddress, dtClientDate, sFacilityName, EncID, sLegalOrg);
                 XmlDocument XMLDoc = new XmlDocument();
                 if (sOutputXML != null)
                 {
@@ -335,12 +347,17 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
             //}
 
 
-            sInputXML = rcopiaXML.CreateUpdatePrescriptionXML(ulHumanID, dtRCopia_Prescription_Last_Updated_Date_Time,sLegalOrg);
+            sInputXML = rcopiaXML.CreateUpdatePrescriptionXML(ulHumanID, dtRCopia_Prescription_Last_Updated_Date_Time, sLegalOrg);
 
             if (rcopiaSessionMngr.DownloadAddress != null && sInputXML != string.Empty)
             {
-                sOutputXML = rcopiaSessionMngr.HttpPost(rcopiaSessionMngr.DownloadAddress + sInputXML, 1);
-                rcopiaResponseXML.ReadXMLResponse(sOutputXML, sUserName, sMACAddress, dtClientDate, sFacilityName, EncID,sLegalOrg);
+                sOutputXML = rcopiaSessionMngr.HttpPost(rcopiaSessionMngr.DownloadAddress + sInputXML, 1, sUserName);
+                //Jira CAP-1366
+                if (sOutputXML != null && sOutputXML.StartsWith("HttpPostError") == true)
+                {
+                    return sOutputXML;
+                }
+                rcopiaResponseXML.ReadXMLResponse(sOutputXML, sUserName, sMACAddress, dtClientDate, sFacilityName, EncID, sLegalOrg);
                 XmlDocument XMLDoc = new XmlDocument();
                 if (sOutputXML != null)
                 {
@@ -362,6 +379,9 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
             {
                 humanMngr.UpdateToHuman(objHuman, string.Empty);
             }
+
+            return string.Empty;
+
         }
         #endregion
     }
