@@ -86,6 +86,10 @@ namespace Acurus.Capella.UI
             RCopiaSessionManager rcopiaSessionMngr = new RCopiaSessionManager(ClientSession.LegalOrg);
             //System.Threading.Thread.Sleep(400);
             sOutputXML = rcopiaSessionMngr.HttpPost(rcopiaSessionMngr.DownloadAddress + sInputXML, 1);
+            if (sOutputXML != null && sOutputXML.StartsWith("HttpPostError") == true)
+            {
+                return sOutputXML;
+            }
             RCopia.RCopiaXMLResponseProcess objRcopResponseXML = new RCopiaXMLResponseProcess();
             //Jira CAP-1367
             //RCopia.RCopiaXMLResponseProcess.ilstNotification.Clear();

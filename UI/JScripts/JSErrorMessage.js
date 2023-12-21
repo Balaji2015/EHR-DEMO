@@ -2690,3 +2690,25 @@ function RemoveItem(URL, atrName) {
 
     sessionStorage.setItem('MyQRemoveIdList', RemoveItems);
 }
+//Jira CAP-1366
+function StartRcopiaStrip() {
+    if ($(top.window.document).find("#RcopiaCheckAlert") != undefined && $(top.window.document).find("#RcopiaCheckAlert") != null && $(top.window.document).find("#RcopiaCheckAlert")[0] != undefined && $(top.window.document).find("#RcopiaCheckAlert")[0] != null) {
+        $(top.window.document).find("#RcopiaCheckAlert")[0].style.display = "block";
+    }
+    $(top.window.document).find("#RcopiainnerMsgText")[0].innerText = "Data is being downloaded from DrFirst. Please wait.";
+}
+//Jira CAP-1366
+function StopRcopiaStrip() {
+    { sessionStorage.setItem('StartLoading', 'false'); StopLoadFromPatChart(); }
+    if ($(top.window.document).find("#RcopiaCheckAlert") != undefined) {
+        $(top.window.document).find("#RcopiaCheckAlert")[0].style.display = "none";
+    }
+}
+//Jira CAP-1366
+function RcopiaErrorAlert(ErrorMessage) {
+    if (ErrorMessage.indexOf("HttpPostError") > -1 || ErrorMessage.indexOf("LoadRCopiaNotification") > -1) {
+        var errormesg = ErrorMessage.replace("HttpPostError", "HttpPost").replaceAll('"', '');
+        DisplayErrorMessage('100008', '', errormesg);
+    }
+
+}
