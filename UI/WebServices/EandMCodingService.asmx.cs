@@ -1092,7 +1092,7 @@ namespace Acurus.Capella.UI.WebServices
                 //objEandMCoding.Sort_Order = Convert.ToInt32(objCPT.ToString().Split('~')[18]);
 
                 IList<ProcedureModifierLookup> lsttempCPT = new List<ProcedureModifierLookup>();
-                lsttempCPT = (from m in lstcptlibtemp where m.Procedure_Code == objCPT.ToString().Split('~')[0] select m).ToList<ProcedureModifierLookup>();
+                lsttempCPT = (from m in lstcptlibtemp where m.Procedure_Code == objCPT.ToString().Split('~')[0]  && m.Modifier== objCPT.ToString().Split('~')[3] select m).ToList<ProcedureModifierLookup>();
 
                 if (lsttempCPT.Count > 0)
                     objEandMCoding.Sort_Order = lsttempCPT[0].Sort_Order;// Convert.ToInt32(objCPT.ToString().Split('~')[18]);
@@ -1185,7 +1185,7 @@ namespace Acurus.Capella.UI.WebServices
                 EandMCodingICD objEandMCodingICD = null;
                 IList<EandMCodingICD> eandmICDList = null;
 
-                var eandmList = from eandmicd in EAndMICDTempList where Convert.ToString(eandmicd.ICD).Trim() == objICD.ToString().Split('~')[0].Trim() select eandmicd;
+                var eandmList = from eandmicd in EAndMICDTempList where Convert.ToString(eandmicd.ICD).Trim() == objICD.ToString().Split('~')[0].Trim() && Convert.ToString(eandmicd.Source).Trim() == objICD.ToString().Split('~')[11].Trim() select eandmicd;
                 eandmICDList = eandmList.ToList<EandMCodingICD>();
 
                 if (eandmICDList.Count > 0)

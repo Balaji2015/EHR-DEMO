@@ -2628,6 +2628,9 @@ myapp.controller('EandMCodingCtrl', function ($scope, $http) {
     $scope.SaveEandMCoding = function (index) {
         /*Start For Git Lab Id: 1666*/
         var icdcount = false;
+        // CAP  1571;
+        var sICDCode='';
+            //End
         if (index == "Submit") {
             //Save and submit
             Esuperbillclicked = "Y";
@@ -3145,7 +3148,7 @@ myapp.controller('EandMCodingCtrl', function ($scope, $http) {
             //    chkICD6 = '6';
             //}3
             var sSequence = chkICDContainer.cells[2].innerText.trim();
-            var sICDCode = chkICDContainer.cells[3].innerText.trim();
+            sICDCode = chkICDContainer.cells[3].innerText.trim();
             var sICDDesc = chkICDContainer.cells[4].innerText.trim();
             var dupicd = false;
             var icddup = '';
@@ -3160,19 +3163,23 @@ myapp.controller('EandMCodingCtrl', function ($scope, $http) {
             }
 
            else  if (arrlstAssICD.indexOf(sICDCode) != -1) {
-                bSaveCheck = true;
-                AutoSaveUnsuccessful();
+               // bSaveCheck = true;
+               // AutoSaveUnsuccessful();
+                dupicd = true;
+                break;
+                // CAP-1571
 
-                if (!alert('ICD' + sICDCode + 'has already been added under Assessment ICDs.Please remove it ')) {
+             //   if (!alert('ICD' + sICDCode + 'has already been added under Assessment ICDs.Please remove it ')) {
                     //CAP-980
-                    localStorage.setItem("bSave", "true");
-                    window.parent.parent.parent.parent.theForm.ctl00_C5POBody_hdnIsSaveEnable.value = "false";
+                  //  localStorage.setItem("bSave", "true");
+                   // window.parent.parent.parent.parent.theForm.ctl00_C5POBody_hdnIsSaveEnable.value = "false";
                     //$($(window.top.document).find('iframe[id=ctl00_C5POBody_EncounterContainer]')[0].contentDocument).find("ul li a")[0].click();
-                    $($(window.top.document).find('iframe[id=ctl00_C5POBody_EncounterContainer]')[0].contentDocument).find("ul li a")[7].click();
-                    return;
+                    //$($(window.top.document).find('iframe[id=ctl00_C5POBody_EncounterContainer]')[0].contentDocument).find("ul li a")[7].click();
+
+                  //  return;
 
 
-                }
+               // }
             }
            
 
@@ -3262,7 +3269,17 @@ myapp.controller('EandMCodingCtrl', function ($scope, $http) {
 
 
             }
-          
+
+            // CAP-1571
+            if (dupicd) {
+
+                if (!alert('ICD ' + sICDCode + ' has already been added under Assessment ICDs.Please remove it ')) {
+                    $($(window.top.document).find('iframe[id=ctl00_C5POBody_EncounterContainer]')[0].contentDocument).find("ul li a")[0].click();
+                    $($(window.top.document).find('iframe[id=ctl00_C5POBody_EncounterContainer]')[0].contentDocument).find("ul li a")[7].click();
+                    return;
+
+                }
+            }
             //GitLab #3038
             if (test.IsBillableNo == "180045") {
 

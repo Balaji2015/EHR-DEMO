@@ -1793,7 +1793,7 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
                                 {
                                     TempProcedureList.Add(FinalProcedurelist[0] + "~" + tempSort[0].Sort_Order + "~" + tempSort[0].RVU);
                                 }
-                                if (tempSort.Count > 0)
+                                else
                                 {
                                     TempProcedureList.Add(FinalProcedurelist[0] + "~" + 9 + "~" + 0);
                                 }
