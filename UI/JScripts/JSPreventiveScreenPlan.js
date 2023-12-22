@@ -321,8 +321,12 @@ function LoadPage() {
             var currentprocess = objdata.currentProcess;
             if (objdata.PreventiveScreenLst != "[]") {
                 for (var i = 0; i < objdata.PreventiveScreenLst.length; i++) {
+                    //Jira CAP-1543 declare lbl = ""
+                    lbl = "";
                     for (var p = 0; p < rows.length; p++) {
-                        if (rows[p].innerText == objdata.PreventiveScreenLst[i].Preventive_Service_Value) {
+                        //Jira CAP-1543
+                        //if (rows[p].innerText == objdata.PreventiveScreenLst[i].Preventive_Service_Value) {
+                        if (rows[p].innerText.replaceAll(" ", "") == objdata.PreventiveScreenLst[i].Preventive_Service_Value.replaceAll(" ", "")) {
                             lbl = rows[p];
                             break;
                         }
