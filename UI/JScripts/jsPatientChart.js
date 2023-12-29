@@ -332,18 +332,25 @@ function reloadSummary() {
             else {
                 //CAP-792
                 if (isValidJSON(xhr.responseText)) {
-                var log = JSON.parse(xhr.responseText);
-                console.log(log);
-                    if (log.Message.indexOf("Unexpected end of file") > 0 && log.Message.indexOf("There is an unclosed literal string") > 0 &&
-                        log.Message.indexOf("is an unexpected token") > 0) {
-                        alert("USER MESSAGE:\n" +
-                            ". Cannot process request. Please Login again and retry. \nEXCEPTION DETAILS: \n" +
-                            "Message: " + log.Message);
-                    }
-                    else {
-                        alert("USER MESSAGE:\n" +
-                            ". Cannot process request. Please Login again and retry.");
-                    }
+                    var log = JSON.parse(xhr.responseText);
+                    console.log(log);
+                    //Jira CAP-1587
+                    //if (log.Message.indexOf("Unexpected end of file") > 0 && log.Message.indexOf("There is an unclosed literal string") > 0 &&
+                    //    log.Message.indexOf("is an unexpected token") > 0) {
+                    alert("USER MESSAGE:\n" +
+                        ". Cannot process request. Please Login again and retry. \nEXCEPTION DETAILS: \n" +
+                        "Message: " + log.Message);
+                    //}
+                    //Jira CAP-1587
+                    //else {
+                    //    alert("USER MESSAGE:\n" +
+                    //        ". Cannot process request. Please Login again and retry.");
+                    //}
+                }
+                //Jira CAP-1587
+                else {
+                    alert("USER MESSAGE:\n" +
+                        ". Cannot process request. Please Login again and retry.");
                 }
             }
             { sessionStorage.setItem('StartLoading', 'false'); StopLoadFromPatChart(); }
