@@ -3058,7 +3058,7 @@ myapp.controller('assessmentCtrl', function ($scope, $http) {
             var str = response.d;
             var test12 = JSON.parse(str);          
             let AssList = [];
-            var bCheck = false;
+            var bCheck = true;
             if (test12.AssessmentList == '220026') {
                 DisplayErrorMessage('220026');
                 { sessionStorage.setItem('StartLoading', 'false'); StopLoadFromPatChart(); }
