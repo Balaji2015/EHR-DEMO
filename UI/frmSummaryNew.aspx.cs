@@ -2578,7 +2578,7 @@ margin:0in 0in 0in 9in;
                             Y += 10;
                         }
 
-
+                       
                         #endregion
 
 
@@ -5989,9 +5989,13 @@ margin:0in 0in 0in 9in;
                     if (itemDoc.GetElementsByTagName("HumanList")[0].ChildNodes.Count > 0)
                     {
                         if (itemDoc.GetElementsByTagName("HumanList")[0].ChildNodes[0].Attributes.GetNamedItem("First_Name").Value != null)
-                            sFaxFirstname = "_" + itemDoc.GetElementsByTagName("HumanList")[0].ChildNodes[0].Attributes.GetNamedItem("First_Name").Value.ToString();
+                            //Jira CAP-1588
+                            //sFaxFirstname = "_" + itemDoc.GetElementsByTagName("HumanList")[0].ChildNodes[0].Attributes.GetNamedItem("First_Name").Value.ToString();
+                            sFaxFirstname = itemDoc.GetElementsByTagName("HumanList")[0].ChildNodes[0].Attributes.GetNamedItem("First_Name").Value.ToString();
                         if (itemDoc.GetElementsByTagName("HumanList")[0].ChildNodes[0].Attributes.GetNamedItem("Last_Name").Value != null)
-                            sFaxLastName = "_" + itemDoc.GetElementsByTagName("HumanList")[0].ChildNodes[0].Attributes.GetNamedItem("Last_Name").Value.ToString();
+                            //Jira CAP-1588
+                            //sFaxLastName = "_" + itemDoc.GetElementsByTagName("HumanList")[0].ChildNodes[0].Attributes.GetNamedItem("Last_Name").Value.ToString();
+                            sFaxLastName = itemDoc.GetElementsByTagName("HumanList")[0].ChildNodes[0].Attributes.GetNamedItem("Last_Name").Value.ToString();
 
                     }
                 }
@@ -6074,8 +6078,9 @@ margin:0in 0in 0in 9in;
                 //    fs.Dispose();
                 //}
             }
-
-            sFaxSubject = "Consultation Notes" + sFaxLastName + sFaxFirstname + sFaxDOS;//<Patient Name>_<Date_of_service> 
+            //Jira CAP-1588
+            //sFaxSubject = "Consultation Notes" + sFaxLastName + sFaxFirstname + sFaxDOS;//<Patient Name>_<Date_of_service> 
+            sFaxSubject = "Referral for " + sFaxLastName + sFaxFirstname; 
             //Cap - 1414, 1415, 1449
             //ScriptManager.RegisterStartupScript(this, this.GetType(), "EFax", "OpenEfax('" + sFaxSubject + "','" + sRefProvider + "');", true);
             ScriptManager.RegisterStartupScript(this, this.GetType(), "EFax", "OpenEfax('" + sFaxSubject + "','" + sRefProvider + "','Y');", true);
