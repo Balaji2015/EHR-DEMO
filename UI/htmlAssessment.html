@@ -412,7 +412,8 @@
         </div>
         <!--CAP-1350-->
         <div id="divButtonsPanel" style="float: right; padding-right: 98px !important;">
-            <button type="button" ng-disabled="EnableScreen == 'Disable'" ng-click="btnPotentailDiagnosis_Click()" id="btnPotentailDiagnosis" class="btn aspbluebutton aspresizedbluebutton">Potential Diagnosis</button>
+            <button type="button" ng-disabled="EnableScreen == 'Disable'" ng-click="btnProblemList_Click(event)" id="btnProblemList" class="btn aspbluebutton aspresizedbluebutton">Problem List</button>
+            <!--<button type="button" ng-disabled="EnableScreen == 'Disable'" ng-click="btnPotentailDiagnosis_Click()" id="btnPotentailDiagnosis" class="btn aspbluebutton aspresizedbluebutton">Potential Diagnosis</button>-->
             <button id="btnPlan" ng-disabled="EnableScreen == 'Disable'" style="display:none !important;" onclick="OpenPlanScreen()" type="button" class="btn aspbluebutton">Plan</button>
             <button type="button" ng-disabled="EnableScreen == 'Disable'" ng-click="CopyPrevious()" id="btnCopyPrevious" class="btn aspbluebutton aspresizedbluebutton">Copy Previous</button>
             <button type="button" ng-disabled="EnableScreen == 'Disable'" ng-click="SaveAssessment()" id="btnSave" class="btn aspgreenbutton aspresizedgreenbutton">Save</button>

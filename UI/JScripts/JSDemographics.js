@@ -1908,6 +1908,7 @@ $(document).ready(function () {
     else {
         $('#ctl00_C5POBody_dtpDateOfDeath').removeClass('nonEditabletxtbox');
         $('#ctl00_C5POBody_dtpDateOfDeath').addClass('Editabletxtbox');
+        document.getElementById('ctl00_C5POBody_dtpDateOfDeath').disabled = false;
     }
 
 });

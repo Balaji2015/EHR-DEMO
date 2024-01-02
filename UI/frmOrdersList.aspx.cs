@@ -521,9 +521,11 @@ namespace Acurus.Capella.UI
 
 
                 DataTable dt = (DataTable)grdOrders.DataSource;
-                if (e.CommandArgument != null && Convert.ToInt32(e.CommandArgument) != -1)
+                //CAP-1608
+                //if (e.CommandArgument != null && Convert.ToInt32(e.CommandArgument) != -1)
+                if (e.CommandArgument != null && int.TryParse(e.CommandArgument.ToString(), out int intValue) && intValue != -1)
                 {
-                    ulong OrderSubmitID = Convert.ToUInt32(grdOrders.Items[Convert.ToInt32(e.CommandArgument)].Cells[19].Text);
+                    ulong OrderSubmitID = Convert.ToUInt64(grdOrders.Items[intValue].Cells[19].Text);
                     //                    ulong OrderSubmitID = Convert.ToUInt64(dt.Rows[Convert.ToInt32(e.CommandArgument)]["Submit_ID"].ToString());
                     bool temp = objOrdersManager.DeletedOrders(OrderSubmitID, "DIAGNOSTIC ORDER", string.Empty);
                     if (temp)
@@ -563,13 +565,14 @@ namespace Acurus.Capella.UI
             {
                 DataTable dt = (DataTable)grdOrders.DataSource;
 
-                if (e.CommandArgument != null && Convert.ToInt32(e.CommandArgument) != -1)
+                //if (e.CommandArgument != null && Convert.ToInt32(e.CommandArgument) != -1)
+                if (e.CommandArgument != null && int.TryParse(e.CommandArgument.ToString(), out int intValue) && intValue != -1)
                 {
                     hdnPaperForm.Value = "true";
                     //string OrderSubmitID = dt.Rows[Convert.ToInt32(e.CommandArgument)]["Submit_ID"].ToString();
-                    string OrderSubmitID = grdOrders.Items[Convert.ToInt32(e.CommandArgument)].Cells[19].Text;
+                    string OrderSubmitID = grdOrders.Items[intValue].Cells[19].Text;
                     InsertOrderSubmitIDInURL(OrderSubmitID);
-                    if (grdOrders.Items[Convert.ToInt32(e.CommandArgument)].Cells[26].Text != string.Empty)
+                    if (grdOrders.Items[intValue].Cells[26].Text != string.Empty)
                     {
                         Session["ResultExist"] = true;
                     }
@@ -581,13 +584,14 @@ namespace Acurus.Capella.UI
             else if (e.CommandName == "View")
             {
                 DataTable dt = (DataTable)grdOrders.DataSource;
-                if (e.CommandArgument != null && Convert.ToInt32(e.CommandArgument) != -1)
+                //if (e.CommandArgument != null && Convert.ToInt32(e.CommandArgument) != -1)
+                if (e.CommandArgument != null && int.TryParse(e.CommandArgument.ToString(), out int intValue) && intValue != -1)
                 {
                     //if (dt.Rows[Convert.ToInt32(e.CommandArgument)]["FilePath"].ToString() != string.Empty)
-                    if (grdOrders.Items[Convert.ToInt32(e.CommandArgument)].Cells[26].Text != string.Empty)
+                    if (grdOrders.Items[intValue].Cells[26].Text != string.Empty)
                     {
                         //string OrderSubmitID = dt.Rows[Convert.ToInt32(e.CommandArgument)]["Submit_ID"].ToString();
-                        string OrderSubmitID = grdOrders.Items[Convert.ToInt32(e.CommandArgument)].Cells[19].Text;
+                        string OrderSubmitID = grdOrders.Items[intValue].Cells[19].Text;
                         RadResultWindow.Visible = true;
                         RadResultWindow.VisibleOnPageLoad = true;
                         RadResultWindow.Width = 1199;
@@ -597,7 +601,7 @@ namespace Acurus.Capella.UI
                         RadResultWindow.VisibleStatusbar = false;
                         RadResultWindow.OnClientBeforeClose = "CloseResultPage";
                         RadResultWindow.OnClientClose = "RefreshCloseResultPage";
-                        RadResultWindow.NavigateUrl = "frmViewResult.aspx?HumanID=" + HumanID.ToString() + "&OrderSubmitId=" + OrderSubmitID + "&ResultId=" + "0" + "&CurrentProcess=" + grdOrders.Items[Convert.ToInt32(e.CommandArgument)].Cells[17].Text + "&Type=Results&Opening_from=OrdersList";//BugID:43099
+                        RadResultWindow.NavigateUrl = "frmViewResult.aspx?HumanID=" + HumanID.ToString() + "&OrderSubmitId=" + OrderSubmitID + "&ResultId=" + "0" + "&CurrentProcess=" + grdOrders.Items[intValue].Cells[17].Text + "&Type=Results&Opening_from=OrdersList";//BugID:43099
                     }
                     else
                     {

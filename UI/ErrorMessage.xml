@@ -1321,6 +1321,8 @@
 	<Message number="220023" Type="OK" Text="Primary ICD cannot have the status as Suspected." /><!--BugID:49118-->
 	<Message number="220024" Type="OK" Text="Resolved Date can not be less than Diagnosed Date." />
 	<Message number="220025" Type="OK" Text="Please delete or update the following invalid/incomplete ICD codes: {0} ." />
+	<Message number="220026" Type="OK" Text="There is no Problem List found for this Patient." />
+	<Message number="220027" Type="OK" Text="The Assessment is saved, cannot add the ICD from Problem list." />
 
 	<!--frmmanagefrequently-->
 	<Message number="220101" Type="OK" Text="This feature is not currently available. Please contact Administrator." />

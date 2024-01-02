@@ -3496,6 +3496,158 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
             // d: 
             return objFillAssessment;
         }
+
+        public FillAssessment LoadProblemList(ulong encounterID, ulong humanID,  string type)
+        {
+            FillAssessment objFillAssessment = new FillAssessment();           
+
+            IList<Assessment> objAssessment = new List<Assessment>();
+            IList<ProblemList> objProblemList = new List<ProblemList>();
+            
+            using (ISession iMySession = NHibernateSessionManager.Instance.CreateISession())
+            {
+                #region Data fetched from DB
+                ICriteria criteriaAssessment = iMySession.CreateCriteria(typeof(Assessment)).Add(Expression.Eq("Encounter_ID", encounterID)); //.Add(Expression.Eq("Assessment_Type", "Selected"));
+                objAssessment = criteriaAssessment.List<Assessment>();
+
+                #endregion
+
+
+                #region Fetch data from XML
+
+
+                IList<string> ilsAssessmentTagList = new List<string>();
+                ilsAssessmentTagList.Add("ProblemListList");
+                
+
+                IList<object> ilstAsshumanBlobFinal = new List<object>();
+
+                ilstAsshumanBlobFinal = ReadBlob(humanID, ilsAssessmentTagList);
+
+                if (ilstAsshumanBlobFinal != null && ilstAsshumanBlobFinal.Count > 0)
+                {
+                 
+                    if (ilstAsshumanBlobFinal[0] != null)
+                    {
+                        for (int iCount = 0; iCount < ((IList<object>)ilstAsshumanBlobFinal[0]).Count; iCount++)
+                        {
+                            objProblemList.Add((ProblemList)((IList<object>)ilstAsshumanBlobFinal[0])[iCount]);
+                        }
+                    }
+                   
+                }                
+
+                
+                #endregion
+                objFillAssessment.Assessment = objAssessment;
+                
+                IList<AssessmentVitalsLookup> AssessmentVitalsLookupList = new List<AssessmentVitalsLookup>();
+                IList<Assessment> AssesToDelete = new List<Assessment>();
+                IList<ProblemList> ProbLstToUpdate = new List<ProblemList>();
+                IList<ProblemList> ProbLstToUpdateNew = new List<ProblemList>();
+
+                string AssessmentMappingXmlFilePath = Path.Combine(System.Web.Hosting.HostingEnvironment.ApplicationPhysicalPath, "ConfigXML\\AssessmentVitalsLookup.xml");
+                if (File.Exists(AssessmentMappingXmlFilePath) == true)
+                {
+                    using (FileStream fs = new FileStream(AssessmentMappingXmlFilePath, FileMode.Open, FileAccess.Read, FileShare.Read))
+                    {
+                        XmlDocument itemDoc = new XmlDocument();
+                        XmlTextReader xmltxtReader = new XmlTextReader(fs);
+                        itemDoc.Load(xmltxtReader);
+                        xmltxtReader.Close();
+                        XmlNodeList xmlNodeList = itemDoc.GetElementsByTagName("Assessment_vitals_lookupList");
+                        if (xmlNodeList != null && xmlNodeList.Count > 0 && xmlNodeList[0].ChildNodes != null && xmlNodeList[0].ChildNodes.Count > 0)
+                        {
+                            for (int j = 0; j < xmlNodeList[0].ChildNodes.Count; j++)
+                            {
+                                AssessmentVitalsLookup objAssVitalsLookup = new AssessmentVitalsLookup();
+                                objAssVitalsLookup.Description = xmlNodeList[0].ChildNodes[j].Attributes.GetNamedItem("Description").Value;
+                                objAssVitalsLookup.Entity_Name = xmlNodeList[0].ChildNodes[j].Attributes.GetNamedItem("Entity_Name").Value;
+                                objAssVitalsLookup.Field_Name = xmlNodeList[0].ChildNodes[j].Attributes.GetNamedItem("Field_Name").Value;
+                                objAssVitalsLookup.Hirarrchy = xmlNodeList[0].ChildNodes[j].Attributes.GetNamedItem("Hirarrchy").Value;
+                                objAssVitalsLookup.ICD = xmlNodeList[0].ChildNodes[j].Attributes.GetNamedItem("ICD").Value;
+                                objAssVitalsLookup.ICD_10 = xmlNodeList[0].ChildNodes[j].Attributes.GetNamedItem("ICD_10").Value;
+                                objAssVitalsLookup.ICD_10_Description = xmlNodeList[0].ChildNodes[j].Attributes.GetNamedItem("ICD_10_Description").Value;
+                                objAssVitalsLookup.Is_Current_Encounter = xmlNodeList[0].ChildNodes[j].Attributes.GetNamedItem("Is_Current_Encounter").Value;
+                                objAssVitalsLookup.Is_Macra_Field = xmlNodeList[0].ChildNodes[j].Attributes.GetNamedItem("Is_Macra_Field").Value;
+                                objAssVitalsLookup.Is_Mutually_Exclusive = xmlNodeList[0].ChildNodes[j].Attributes.GetNamedItem("Is_Mutually_Exclusive").Value;
+                                objAssVitalsLookup.Sort_Order = Convert.ToInt32(xmlNodeList[0].ChildNodes[j].Attributes.GetNamedItem("Sort_Order").Value);
+                                objAssVitalsLookup.Value = xmlNodeList[0].ChildNodes[j].Attributes.GetNamedItem("Value").Value;
+                                objAssVitalsLookup.Id = Convert.ToUInt32(xmlNodeList[0].ChildNodes[j].Attributes.GetNamedItem("Id").Value);
+                                AssessmentVitalsLookupList.Add(objAssVitalsLookup);
+                            }
+                        }
+                        fs.Close();
+                        fs.Dispose();
+                    }
+                }
+
+
+                objProblemList = (from obj in objProblemList where obj.ICD != "0000" select obj).ToList<ProblemList>();
+
+                IList<ProblemList> ilstVitalsBasedProblem = new List<ProblemList>();
+                for (int iCount = 0; iCount < objProblemList.Count; iCount++)
+                {
+                    var AssessmentVitalsicds = (from obj in AssessmentVitalsLookupList where obj.ICD_10 == objProblemList[iCount].ICD select obj).ToList<AssessmentVitalsLookup>();
+                    if (AssessmentVitalsicds.Count > 0)
+                    {
+                        ilstVitalsBasedProblem.Add(objProblemList[iCount]);
+                    }
+                }
+
+                for (int iCount = 0; iCount < ilstVitalsBasedProblem.Count; iCount++)
+                {
+                    objProblemList.Remove(ilstVitalsBasedProblem[iCount]);
+                }
+
+                objFillAssessment.Problem_List = objProblemList;
+
+
+               
+                IList<string> AssesVitalICD = (from AssVitICD in AssessmentVitalsLookupList where AssVitICD.Is_Mutually_Exclusive == "Y" select AssVitICD.ICD_10).ToArray();//contains only 'BMI' , 'BMI STATUS' and 'BMI PERCENTILE' icds.
+                AssesVitalICD = AssesVitalICD.Except(objFillAssessment.VitalsBasedICD_List).ToList();
+
+                if (objFillAssessment.VitalsBasedICD_List.Count > 0 && type == "load")
+                {
+                    AssesToDelete = (from objAsses in objFillAssessment.Assessment where AssesVitalICD.Any(a => a == objAsses.ICD) select objAsses).ToList();
+                    ProbLstToUpdate = (from objProb in objFillAssessment.Problem_List where AssesVitalICD.Any(b => b == objProb.ICD) select objProb).ToList();
+
+                    objFillAssessment.Assessment = (from objAsses in objFillAssessment.Assessment where !AssesVitalICD.Any(a => a == objAsses.ICD) select objAsses).ToList();
+                    objFillAssessment.Problem_List = (from objProb in objFillAssessment.Problem_List where !AssesVitalICD.Any(b => b == objProb.ICD) select objProb).ToList();
+                }
+
+                foreach (ProblemList prob in ProbLstToUpdate)
+                {
+                    string[] ref_src_lst = prob.Reference_Source.Split('|');
+                    if (ref_src_lst[ref_src_lst.Length - 1].IndexOf("Deleted") == -1)
+                    {
+                        prob.Reference_Source = prob.Reference_Source + "|Deleted";
+                        prob.Is_Active = "N";
+                    }
+
+                    else
+                    {
+                        ProbLstToUpdateNew.Add(prob);
+                    }
+
+                }
+                foreach (ProblemList pb in ProbLstToUpdateNew)
+                {
+                    ProbLstToUpdate.Remove(pb);
+                }
+               
+                    foreach (ProblemList obj in ProbLstToUpdate)
+                    {
+                        objFillAssessment.Problem_List.Add(obj);
+                    }
+                
+                iMySession.Close();
+                
+            }
+            
+            return objFillAssessment;
+        }
+
         //Latha - 11 Aug 2011 - Single Service call - End
 
         //public FillAssessment LoadAssessment(ulong encounterID, ulong humanID)
