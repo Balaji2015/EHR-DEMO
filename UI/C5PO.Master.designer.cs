@@ -393,15 +393,6 @@ namespace Acurus.Capella.UI
         protected global::System.Web.UI.HtmlControls.HtmlGenericControl mnuEMR_smnuAddendum;
 
         /// <summary>
-        /// mnuEMR_smnuPotentialDiagnosis control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.HtmlControls.HtmlGenericControl mnuEMR_smnuPotentialDiagnosis;
-
-        /// <summary>
         /// mnuPatient control.
         /// </summary>
         /// <remarks>

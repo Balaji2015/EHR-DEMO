@@ -874,7 +874,7 @@
                                                     </div>
                                                 </li>
                                                 <li runat="server" id="mnuEMR_smnuAddendum"><a href="#" onclick="OpenModal('Amendment');">Amendment</a></li>
-                                                <li runat="server" id="mnuEMR_smnuPotentialDiagnosis"><a href="#" onclick="OpenModal('Potential Diagnosis');">Manage Potential Diagnosis</a></li>
+                                                <%--<li runat="server" id="mnuEMR_smnuPotentialDiagnosis"><a href="#" onclick="OpenModal('Potential Diagnosis');">Manage Potential Diagnosis</a></li>--%>
                                                 <%--<li runat="server" id="mnuEHR_smnuMYQArchive"><a href="#" onclick="OpenModal('MyQ-Archive');">MyQ - Archive</a></li>--%>
 
                                             </ul>

@@ -1100,8 +1100,21 @@ namespace Acurus.Capella.UI.WebServices
 
                 if (lsttempCPT.Count > 0)
                     objEandMCoding.Sort_Order = lsttempCPT[0].Sort_Order;// Convert.ToInt32(objCPT.ToString().Split('~')[18]);
+               //Cap - 1604
+                //else
+               //    objEandMCoding.Sort_Order = 0;
                 else
-                    objEandMCoding.Sort_Order = 0;
+                {
+                    lsttempCPT = (from m in lstcptlibtemp where m.Procedure_Code == objCPT.ToString().Split('~')[0] && m.Modifier == string.Empty select m).ToList<ProcedureModifierLookup>();
+                    if (lsttempCPT.Count > 0)
+                    {
+                        objEandMCoding.Sort_Order = lsttempCPT[0].Sort_Order;
+                    }
+                    else
+                    {
+                        objEandMCoding.Sort_Order = 0;
+                    }
+                }
 
                 //if (objCPT.ToString().Split('~')[7] != "")
                 //    objEandMCoding.Sequence = Convert.ToInt32(objCPT.ToString().Split('~')[7]);

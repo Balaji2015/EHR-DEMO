@@ -481,7 +481,9 @@ namespace Acurus.Capella.UI
                             string status = string.Empty;
 
                             if (assessmentLoadList.Problem_List.Any(v => v.ICD == allICD9ForVitalsProblemListPFSH[i].ICD_9))
-                                status = "Problem List";
+                               //Cap - 1566
+                                //status = "Problem List";
+                                continue;
                             if (assessmentLoadList.VitalsBasedICD_List.Select(p => p.Split('!')[0]).Any(s => s == allICD9ForVitalsProblemListPFSH[i].ICD_9))
                                 status = "Vitals";
 
@@ -2533,6 +2535,280 @@ namespace Acurus.Capella.UI
             }
             return sAsscoiateICDS;
         }
+        //Cap - 1566
+        [WebMethod(EnableSession = true)]
+        public static string LoadProblemList(string strAssessment)
+        {
+            if (ClientSession.UserName == string.Empty)
+            {
+                HttpContext.Current.Response.StatusCode = 999;
+                HttpContext.Current.Response.Status = "999 Session Expired";
+                HttpContext.Current.Response.StatusDescription = "frmSessionExpired.aspx";
+                return "Session Expired";
+            }
+
+            AssessmentManager objAssessmentManager = new AssessmentManager();
+            FillAssessment assessmentLoadList = new FillAssessment();
+            AllICD_9Manager objAllIcdMgr = new AllICD_9Manager();
+            IList<ProblemList> pblmMedList = new List<ProblemList>();
+            IList<AllICD_9> allICD9ForVitalsProblemListPFSH = new List<AllICD_9>();
+            IList<string> strICDDesc = new List<string>();
+            IList<string> strICD9CodeDesc = new List<string>();
+
+            IList<string> strICD910Code = new List<string>();
+            IList<VitalsAssesment> vitalsproblemList = new List<VitalsAssesment>();
+
+            //BugID:49118
+            #region AssessmentStatusLoad
+            IDictionary<string, string> DefaultStatusList = new Dictionary<string, string>();
+            IList<string> Statuslst = new List<string>();
+            XmlDocument xml_doc = new XmlDocument();
+            bool Default_Ass_Status = false;
+            bool bSuggestProblemIcds = false;
+            string jsons = "";
+
+            assessmentLoadList = objAssessmentManager.LoadProblemList(ClientSession.EncounterId, ClientSession.HumanId,"load");
+
+            if (assessmentLoadList.Assessment != null && assessmentLoadList.Assessment.Count() > 0)
+            {
+                bSuggestProblemIcds = true;
+            }
+            if (bSuggestProblemIcds == false)
+            {
+                if (File.Exists(System.Web.Hosting.HostingEnvironment.ApplicationPhysicalPath + "ConfigXML\\staticlookup.xml"))
+                {
+                    xml_doc.Load(System.Web.Hosting.HostingEnvironment.ApplicationPhysicalPath + "ConfigXML\\staticlookup.xml");
+                    XmlNodeList xml_nodelst = xml_doc.GetElementsByTagName("AssessmentStatus");
+                    if (xml_nodelst != null && xml_nodelst.Count > 0)
+                    {
+                        foreach (XmlNode xml_node in xml_nodelst)
+                        {
+                            if (xml_node.Attributes.GetNamedItem("is_required").Value.ToUpper() == "YES")
+                                Statuslst.Add(xml_node.Attributes.GetNamedItem("value").Value);
+                        }
+                    }
+
+                    XmlNodeList xml_nodeSetDefault = xml_doc.GetElementsByTagName("AssessmentStatusDefaulted");
+                    if (xml_nodeSetDefault != null && xml_nodeSetDefault.Count > 0)
+                    {
+                        if (xml_nodeSetDefault[0].Attributes.GetNamedItem("value").Value.ToUpper() == "YES")
+                            Default_Ass_Status = true;
+                    }
+                    if (Default_Ass_Status)
+                    {
+                        XmlNodeList xml_nodelstDefaultStatus = xml_doc.GetElementsByTagName("AssessmentStatusDefault");
+                        if (xml_nodelstDefaultStatus != null && xml_nodelstDefaultStatus.Count > 0)
+                        {
+                            foreach (XmlNode xml_node in xml_nodelstDefaultStatus)
+                            {
+                                DefaultStatusList.Add(xml_node.Attributes.GetNamedItem("Name").Value, xml_node.Attributes.GetNamedItem("value").Value);
+                            }
+                        }
+                    }
+                    HttpContext.Current.Session["DefaultStatusList"] = DefaultStatusList;
+                }
+                #endregion
+
+                string Ass_Status = string.Empty, Other_Status = string.Empty;
+                bool bSuggestIcds = true;
+                IDictionary<string, string> idicDefaultStatuslst = (Dictionary<string, string>)HttpContext.Current.Session["DefaultStatusList"];
+                if (idicDefaultStatuslst != null && idicDefaultStatuslst.Count > 0)
+                {
+                    if (idicDefaultStatuslst.ContainsKey("OTHERS"))
+                        Other_Status = idicDefaultStatuslst["OTHERS"];
+                    if (idicDefaultStatuslst.ContainsKey("ASSESSMENT"))
+                        Ass_Status = idicDefaultStatuslst["ASSESSMENT"];
+                }
+
+                
+                if (assessmentLoadList.Assessment != null && assessmentLoadList.Assessment.Count > 0)//BugID:53007 
+                    bSuggestIcds = false;
+
+                IList<string> lstParent_ICD = new List<string>();
+                lstParent_ICD = assessmentLoadList.Assessment.Select(a => a.Parent_ICD.Trim()).Distinct().ToList<string>();
+                if (strAssessment == "Load")
+                {
+                    IList<string> problemListCodesWithParentCodesTemp = new List<string>();
+                    IList<string> pblmListParentICD = new List<string>();
+                    IList<string> pblmListCodes = new List<string>();
+                    if (bSuggestIcds)//BugID:54773
+                    {
+                        if (assessmentLoadList.Problem_List != null && assessmentLoadList.Problem_List.Count > 0)
+                        {
+                            // bugId:65363
+                            //   pblmMedList = assessmentLoadList.Problem_List.Where(a => a.Status.ToUpper() == "ACTIVE" && a.Is_Active == "Y" && !a.Reference_Source.Contains("Deleted")).ToList();
+                            pblmMedList = assessmentLoadList.Problem_List.Where(a => a.Status.ToUpper() == "ACTIVE" && a.Is_Active == "Y" || (a.Reference_Source.Contains("Problem List|Deleted"))).ToList();
+                            if (pblmMedList.Count > 0)
+                            {
+                                foreach (ProblemList obj in pblmMedList)
+                                    pblmListCodes.Add(obj.ICD.Trim());
+                            }
+                            string sICD = string.Empty;
+                            for (int i = 0; i < pblmListCodes.Count; i++)
+                            {
+                                if (sICD == string.Empty)
+                                    sICD = pblmListCodes[i].ToString();
+                                else
+                                    sICD += '|' + pblmListCodes[i].ToString();
+
+                            }
+
+                            AllICD_9Manager objAllIcdMngr = new AllICD_9Manager();
+                            foreach (string s in pblmListCodes)
+                                lstParent_ICD.Remove(s);//to prevent removal of Past_medical_history ICDs which need to be reflected in case of change in its status.
+                            pblmListParentICD = objAllIcdMngr.TakeParentICD(sICD);
+                        }
+
+                        //if (assessmentLoadList.VitalsBasedICD_List != null && assessmentLoadList.VitalsBasedICD_List.Count > 0)
+                        //{
+                        //    #region commented
+                        //    //FillPatientSummaryBarDTO objSummaryDTO = new FillPatientSummaryBarDTO();
+                        //    //IList<string> assessVitalsList = new List<string>();
+                        //    //assessVitalsList = assessmentLoadList.VitalsBasedICD_List;
+
+                        //    //for (int i = 0; i < assessVitalsList.Count; i++)
+                        //    //{
+                        //    //    var exist = (from assess in pblmListParentICD where assess.Contains(assessVitalsList[i]) == true select assess);
+                        //    //    if (exist.Count() == 0)
+                        //    //        pblmListParentICD.Add(assessVitalsList[i]);
+                        //    //}
+                        //    #endregion
+                        //    //to find the exact match for ICD(Exists used instead of Contains)
+                        //    IList<string> assessVitalsList = new List<string>();
+                        //    assessVitalsList = assessmentLoadList.VitalsBasedICD_List;
+                        //    List<string> ICDList = new List<string>();
+                        //    for (int y = 0; y < pblmListParentICD.Count; y++)
+                        //    {
+                        //        string[] str = pblmListParentICD[y].Split('!');
+                        //        foreach (string s in str)
+                        //        {
+                        //            ICDList.Add(s);
+                        //        }
+                        //    }
+                        //    for (int i = 0; i < assessVitalsList.Count; i++)
+                        //    {
+                        //        string s = assessVitalsList[i];
+                        //        bool val = (ICDList.Exists(a => a == s));
+                        //        if (val == false)
+                        //            pblmListParentICD.Add(assessVitalsList[i]);
+                        //    }
+                        //}
+
+                        if (pblmListParentICD != null && pblmListParentICD.Count > 0)
+                        {
+                            var distinct = from h in pblmListParentICD group h by new { h } into g select new { g.Key.h };
+
+                            foreach (var code in distinct)
+                            {
+                                var duplicate1 = problemListCodesWithParentCodesTemp.Where(h => h.Contains(code.h)).Select(s => s).ToList();
+                                var duplicate = (from dup in problemListCodesWithParentCodesTemp where dup.Contains(code.h) select dup).ToList();
+
+                                if (duplicate.Count() == 0)
+                                {
+                                    if (code.h != string.Empty)
+                                        problemListCodesWithParentCodesTemp.Add(code.h);
+                                }
+                                else
+                                {
+                                    if (code.h.Split('!')[0] != duplicate.First().Split('!')[0])
+                                        problemListCodesWithParentCodesTemp.Add(code.h);
+                                }
+                            }
+                        }
+                    }
+                    else
+                    {
+                        if (assessmentLoadList.Problem_List != null && assessmentLoadList.Problem_List.Count > 0)
+                        {
+                            pblmMedList = assessmentLoadList.Problem_List.Where(a => a.Status.ToUpper() == "ACTIVE" && a.Is_Active == "Y" && !a.Reference_Source.Contains("Deleted")).ToList();
+
+
+                            if (pblmMedList.Count > 0)
+                            {
+                                foreach (ProblemList obj in pblmMedList)
+                                    pblmListCodes.Add(obj.ICD.Trim());
+                            }
+                        }
+                    }
+
+                    if (problemListCodesWithParentCodesTemp != null && problemListCodesWithParentCodesTemp.Count > 0)
+                    {
+                        allICD9ForVitalsProblemListPFSH = objAllIcdMgr.GetProblemListCodeUsingCode(problemListCodesWithParentCodesTemp.Select(p => p.Split('!')[0]).ToArray<string>());
+                    }
+                    else
+                    {
+                        if (pblmListCodes != null && pblmListCodes.Count > 0)
+                            allICD9ForVitalsProblemListPFSH = objAllIcdMgr.GetProblemListCodeUsingCode(pblmListCodes.Select(p => p).ToArray<string>());
+                    }
+
+
+                    if (allICD9ForVitalsProblemListPFSH != null && allICD9ForVitalsProblemListPFSH.Count > 0)
+                    {
+                        for (int i = 0; i < allICD9ForVitalsProblemListPFSH.Count; i++)
+                        {
+                            if (allICD9ForVitalsProblemListPFSH[i].Leaf_Node != "N" && !assessmentLoadList.Assessment.Any(a => a.ICD == allICD9ForVitalsProblemListPFSH[i].ICD_9) && ((assessmentLoadList.Assessment.Where(s => s.Diagnosis_Source.ToUpper() != "VITALS|DELETED").Count() == 0 ? (assessmentLoadList.Problem_List.Any(a => a.ICD == allICD9ForVitalsProblemListPFSH[i].ICD_9))
+                                : (assessmentLoadList.Problem_List.Any(a => a.ICD == allICD9ForVitalsProblemListPFSH[i].ICD_9))) || assessmentLoadList.VitalsBasedICD_List.Any(a => a.Split('!')[0].ToString() == allICD9ForVitalsProblemListPFSH[i].ICD_9)))//|| currentVitalsBasedICDList.Any(c => c.Split('!')[0].ToString() == allICD9ForVitalsProblemListPFSH[i].ICD_9)                        
+                            {
+                                if (assessmentLoadList.Assessment.Count() > 0 && assessmentLoadList.Assessment.Any(a => a.ICD == allICD9ForVitalsProblemListPFSH[i].ICD_9 && a.Diagnosis_Source.ToUpper() == "VITALS|DELETED"))
+                                    continue;
+                                if (assessmentLoadList.Assessment.Count() > 0 && assessmentLoadList.Assessment.Any(a => a.ICD_9 == allICD9ForVitalsProblemListPFSH[i].ICD_9))
+                                    continue;
+                                VitalsAssesment assMngr = new VitalsAssesment();
+                                assMngr.ICD_9 = allICD9ForVitalsProblemListPFSH[i].ICD_9;
+                                assMngr.Description = allICD9ForVitalsProblemListPFSH[i].ICD_9_Description;
+                                ulong pId = assessmentLoadList.Problem_List.Where(p => p.ICD == allICD9ForVitalsProblemListPFSH[i].ICD_9 && p.Is_Active == "Y" && !p.Reference_Source.Contains("Deleted")).Select(d => d.Id).FirstOrDefault();
+                                string status = string.Empty;
+
+                                if (assessmentLoadList.Problem_List.Any(v => v.ICD == allICD9ForVitalsProblemListPFSH[i].ICD_9))
+                                    status = "Problem List";
+                                if (assessmentLoadList.VitalsBasedICD_List.Select(p => p.Split('!')[0]).Any(s => s == allICD9ForVitalsProblemListPFSH[i].ICD_9))
+                                    continue;
+
+
+                                assMngr.Notes = status;
+                                assMngr.ProblemListId = pId;
+                                assMngr.AssessmentID = 0;
+                                assMngr.sCreatedBy = "";
+                                assMngr.sCreatedDateTime = "";
+                                int pVersion = assessmentLoadList.Problem_List.Where(p => p.ICD == allICD9ForVitalsProblemListPFSH[i].ICD_9 && p.Is_Active == "Y" && !p.Reference_Source.Contains("Deleted")).Select(d => d.Version).FirstOrDefault();
+                                assMngr.iVersion = pVersion;
+                                assMngr.StatusSelected = Other_Status;
+
+                                if (allICD9ForVitalsProblemListPFSH[i].Version_Year == "ICD_9")
+                                    strICD9CodeDesc.Add(allICD9ForVitalsProblemListPFSH[i].ICD_9 + "~" + allICD9ForVitalsProblemListPFSH[i].ICD_9_Description + "~" + status + "~" + "Assessment" + "~" + pId + "~" + pVersion + "~" + 0 + "~" + 0 + "~" + "NONE" + "~" + "" + "~" + Other_Status + "~" + "" + "~" + "");//BugID:47478
+
+                                vitalsproblemList.Add(assMngr);
+                            }
+                        }
+
+                    }
+                    string json;
+                    var ListVitalsProblemList = vitalsproblemList.Select(a => new { ICDCode = a.ICD_9, ICDDescription = a.Description, IsPrimary = a.Primary_Diagnosis, ProblemListID = a.ProblemListId, Notes = a.Notes, AssessmentID = a.AssessmentID, iVersion = a.iVersion, iProblemListVersion = a.iVersion, CheckBoxCheck = a.CheckBoxCheck, StatusSelected = a.StatusSelected, IncompleteICDCode = "", ICD9Code = a.ICD9Code, ICD9Desc = a.ICD9Desc, ParentICD = "", Created_by = a.sCreatedBy, Created_date = a.sCreatedDateTime, Updated = "Y", Orig_Status = a.StatusSelected });
+                    if (vitalsproblemList.Count > 0)
+                    {
+                         json = new JavaScriptSerializer().Serialize(ListVitalsProblemList);
+                    }
+                    else
+                    {
+                         json = new JavaScriptSerializer().Serialize("220026");
+                    }
+                    
+
+                    jsons = "{\"AssessmentList\" :" + json + "}";
+                }
+                
+
+            }
+            else
+            {
+                string json = new JavaScriptSerializer().Serialize("220027");
+                jsons = "{\"AssessmentList\" :" + json + "}";
+            }
+            return jsons;
+        }
+         
+
+
 
     }
 }

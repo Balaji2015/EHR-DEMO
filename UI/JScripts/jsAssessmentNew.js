@@ -403,12 +403,13 @@ myapp.controller('assessmentCtrl', function ($scope, $http) {
                 //$(top.window.document).find("#PotentialFrame")[0].contentDocument.location.href = "htmlPotentialDiagnosis.html?version=" + sessionStorage.getItem("ScriptVersion") + "&Screen=ASSESSMENT";
                 $(top.window.document).find("#PotentialFrame")[0].contentDocument.location.href = "htmlPotentialDiagnosis.html?version=" + localStorage.getItem("ScriptVersion") + "&Screen=ASSESSMENT";
             }
-            if (test12.btnPotentialDiagnosis == true) {
-                $('#btnPotentailDiagnosis')[0].disabled = false;
-            }
-            else {
-                $('#btnPotentailDiagnosis')[0].disabled = true;
-            }
+            //Cap - 1566
+            //if (test12.btnPotentialDiagnosis == true) {
+            //    $('#btnPotentailDiagnosis')[0].disabled = false;
+            //}
+            //else {
+            //    $('#btnPotentailDiagnosis')[0].disabled = true;
+            //}
         }
         $scope.ColorCoding();
         $("textarea").bind("keydown", function (e) {
@@ -3038,6 +3039,70 @@ myapp.controller('assessmentCtrl', function ($scope, $http) {
             });
         }
 
+
+    }
+    //Cap - 1566
+    $scope.btnProblemList_Click = function (event) {
+        { sessionStorage.setItem('StartLoading', 'true'); StartLoadFromPatChart(); }
+
+        $http({
+            url: "frmAssessmentNew.aspx/LoadProblemList",
+            dataType: 'json',
+            method: 'POST',
+            data: '{strAssessment: "Load" }',
+            headers: {
+                "Content-Type": "application/json; charset=utf-8",
+                "X-Requested-With": "XMLHttpRequest"
+            }
+        }).success(function (response, status, headers, config) {
+            var str = response.d;
+            var test12 = JSON.parse(str);          
+            let AssList = [];
+            var bCheck = false;
+            if (test12.AssessmentList == '220026') {
+                DisplayErrorMessage('220026');
+                { sessionStorage.setItem('StartLoading', 'false'); StopLoadFromPatChart(); }
+                return false;
+            }
+            if (test12.AssessmentList == '220027') {
+                DisplayErrorMessage('220027');
+                { sessionStorage.setItem('StartLoading', 'false'); StopLoadFromPatChart(); }
+                return false;
+            }
+            var icd = test12.AssessmentList;
+            var oldicd = $scope.AssessmentTable;
+            for (i = 0; i < icd.length; i++) {
+                for (j = 0; j < oldicd.length; j++) { 
+                    if (icd[i].ICDCode === oldicd[j].ICDCode) {
+                        bCheck = false;
+                        break;
+                    }
+                    else {
+                        bCheck = true;
+                    }
+                }
+                if (bCheck== true)
+                AssList.push(icd[i]);
+            }
+            var AssList1 = $scope.AssessmentTable.concat(AssList);
+            $scope.AssessmentTable = AssList1;
+
+            $scope.orderByField = ['-IsPrimary', 'ICDCode'];
+
+            $scope.reverseSort = false;
+
+            { sessionStorage.setItem('StartLoading', 'false'); StopLoadFromPatChart(); }
+        })
+            .error(function (error, status, headers, config) {
+                { sessionStorage.setItem('StartLoading', 'false'); StopLoadFromPatChart(); }
+                if (status == 999)
+                    window.location = "frmSessionExpired.aspx";
+                else {
+                    window.location = "ErrorPage.aspx?Message=" + error.Message + "|$|" + error.StackTrace;
+                }
+
+                // alert(error.Message + ".Please Contact Support!");
+            });
 
     }
 
