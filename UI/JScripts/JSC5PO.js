@@ -3324,10 +3324,13 @@ function OnSuccessSummaryBarEprescription(response) {
             top.window.document.getElementById("Allergies_tooltp").innerText = response.d[5].replace(regex, "\n") + "\n";
         else
             top.window.document.getElementById("Allergies_tooltp").innerText = "";
+        //CAP-1614
+        if (top?.window?.document?.getElementById("CheifComplaints_tooltp") != undefined && top?.window?.document?.getElementById("CheifComplaints_tooltp") != null) {
         if (response.d[6].replace("Chief Complaints :<br/><br/>", "").length != 0)
             top.window.document.getElementById("CheifComplaints_tooltp").innerText = response.d[6].replace(regex, "\n").split("&#xA;").join("\n") + "\n";
         else
             top.window.document.getElementById("CheifComplaints_tooltp").innerText = "";
+        }
         if (response.d[7].replace("Problem List :<br/>", "").length != 0)
             top.window.document.getElementById("ProblemList_tooltp").innerText = response.d[7].replace(regex, "\n") + "\n";
         else
