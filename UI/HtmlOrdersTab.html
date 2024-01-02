@@ -431,10 +431,11 @@
         CurTab = $(event.target);         // active tab
         PrevTab = $(event.relatedTarget);  // previous tab
         localStorage.setItem("PrevSubTab", CurTab[0].innerText);
+        //CAP-1552
+        { sessionStorage.setItem('StartLoading', 'true'); StartLoadFromPatChart(); }
         if (window.parent.parent.parent.parent.theForm.ctl00_C5POBody_hdnIsSaveEnable.value == "true") {
             event.preventDefault();
             sessionStorage.setItem("AutoSave_Order", "false");
-            { sessionStorage.setItem('StartLoading', 'true'); StartLoadFromPatChart(); }
                 //$(dvdialog).dialog("close");
                 //$(dvdialog).remove();
                 sessionStorage.setItem("AutoSave_Order", "true");
@@ -767,7 +768,8 @@
             }
         }
 
-       { sessionStorage.setItem('StartLoading', 'false'); StopLoadFromPatChart(); }
+        //CAP-1552
+        //{ sessionStorage.setItem('StartLoading', 'false'); StopLoadFromPatChart(); }
     }
 
 </script>
