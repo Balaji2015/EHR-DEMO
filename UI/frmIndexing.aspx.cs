@@ -4824,6 +4824,8 @@ namespace Acurus.Capella.UI
                 //CAP-1225
                 cboDocumentType.SelectedIndex = 0;
                 cboDocumentSubType.SelectedIndex = 0;
+                EncMsg.Visible = false;
+                HideOrders();
             }
             catch (Exception ex)
             {
