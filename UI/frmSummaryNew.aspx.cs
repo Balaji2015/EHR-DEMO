@@ -2350,6 +2350,7 @@ margin:0in 0in 0in 9in;
 
                         else
                             Y += 10;
+                        Boolean bYaxices = false;
                         for (int j = 1; j < Header.Length; j += 4)
                         {
                             con.SetFontAndSize(baseFont1, 10);
@@ -2363,6 +2364,16 @@ margin:0in 0in 0in 9in;
                             {
                                 con.ShowText(": " + (Header[j].Split(':').Length > 1 ? Header[j].Split(':')[1].ToString() + " " : string.Empty) + "\n");
                             }
+                            // Jira CAP-981 for else if (pcp) contion
+                            else if (Header[j].Split(':')[0].ToUpper().Contains("PCP") && (Header[j].Split(':')[1].Length > 29))
+                            {
+                                con.ShowText(": " + (Header[j].Split(':')[1].Substring(0, 28)));
+
+                                con.SetTextMatrix(pageSize.GetLeft(X) - 32, pageSize.GetTop(Y) - 10);
+                                con.ShowText(Header[j].Split(':')[1].Substring(28, Header[j].Split(':')[1].Length - 28));
+                                Y += 10;
+                                bYaxices = true;
+                            }
                             else
                             {
                                 con.ShowText(": " + (Header[j].Split(':').Length > 1 ? Header[j].Split(':')[1].ToString() : string.Empty) + "\n");
@@ -2372,7 +2383,12 @@ margin:0in 0in 0in 9in;
                             Y += 10;
                         }
 
-
+                        // Jira CAP-981 - Start
+                        if (bYaxices == true)
+                        {
+                            Y -= 10;
+                        }
+                        // Jira CAP-981 - End
                         #endregion
 
 
@@ -2556,6 +2572,7 @@ margin:0in 0in 0in 9in;
 
                         else
                             Y += 10;
+                        Boolean bYaxices = false;
                         for (int j = 1; j < Header.Length; j += 4)
                         {
                             con.SetFontAndSize(baseFont1, 10);
@@ -2569,6 +2586,16 @@ margin:0in 0in 0in 9in;
                             {
                                 con.ShowText(": " + (Header[j].Split(':').Length > 1 ? Header[j].Split(':')[1].ToString() + " " : string.Empty) + "\n");
                             }
+                            // Jira CAP-981 for else if (pcp) contion
+                            else if (Header[j].Split(':')[0].ToUpper().Contains("PCP") && (Header[j].Split(':')[1].Length > 29))
+                            {
+                                con.ShowText(": " + (Header[j].Split(':')[1].Substring(0, 28)));
+
+                                con.SetTextMatrix(pageSize.GetLeft(X) - 32, pageSize.GetTop(Y) - 10);
+                                con.ShowText(Header[j].Split(':')[1].Substring(28, Header[j].Split(':')[1].Length - 28));
+                                Y += 10;
+                                bYaxices = true;
+                            }
                             else
                             {
                                 con.ShowText(": " + (Header[j].Split(':').Length > 1 ? Header[j].Split(':')[1].ToString() : string.Empty) + "\n");
@@ -2578,7 +2605,12 @@ margin:0in 0in 0in 9in;
                             Y += 10;
                         }
 
-                       
+                        // Jira CAP-981 - Start
+                        if (bYaxices == true)
+                        {
+                            Y -= 10;
+                        }
+                        // Jira CAP-981 - End
                         #endregion
 
 
@@ -6080,7 +6112,7 @@ margin:0in 0in 0in 9in;
             }
             //Jira CAP-1588
             //sFaxSubject = "Consultation Notes" + sFaxLastName + sFaxFirstname + sFaxDOS;//<Patient Name>_<Date_of_service> 
-            sFaxSubject = "Referral for " + sFaxLastName + sFaxFirstname; 
+            sFaxSubject = "Referral for " + sFaxLastName + " " + sFaxFirstname;
             //Cap - 1414, 1415, 1449
             //ScriptManager.RegisterStartupScript(this, this.GetType(), "EFax", "OpenEfax('" + sFaxSubject + "','" + sRefProvider + "');", true);
             ScriptManager.RegisterStartupScript(this, this.GetType(), "EFax", "OpenEfax('" + sFaxSubject + "','" + sRefProvider + "','Y');", true);

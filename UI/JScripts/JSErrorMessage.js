@@ -2,6 +2,9 @@
 var tab_for_blockdays;
 var x = 0;
 var count = 0;
+//CAP-951
+var unhandeledException = ["is not defined", "$(...)?.mask is not a function", " $(...)?.datetimepicker is not a function", "Internet connection is not detected", "a[b] is not a function", "$scope.RefershGrid is not a function", "Unexpected identifier Window", "$(...).find(...)?.modal is not a function", "is not a function"];
+
 function setusername(data) {
     //Test
     sessionStorage.setItem("UserId", data.split('|')[0]);
@@ -123,8 +126,37 @@ window.onerror = function (message, file, line, column, error) {
 }
 
 function handleError(evt) {
-    if (evt.message) {
+    if (evt.message)
+    {
+        //CAP-951
+        var isUnhandeledException = unhandeledException.some(function (exception) {
+            return evt.message.indexOf(exception) !== -1;
+        });
+        if (isUnhandeledException == true)
+        {
+            { sessionStorage.setItem('StartLoading', 'false'); StopLoadFromPatChart(); }
+            if (top.window.document.getElementById('ctl00_Loading') != null)
+                top.window.document.getElementById('ctl00_Loading').style.display = "none";
+            if (top.window.document.getElementById('divLoading') != null)
+                top.window.document.getElementById('divLoading').style.display = "none";
 
+            var currentDate = new Date();
+
+            var day = ('0' + currentDate.getDate()).slice(-2);
+            var month = new Intl.DateTimeFormat('en-US', { month: 'short' }).format(currentDate);
+            var year = currentDate.getFullYear();
+            var hour = ('0' + currentDate.getHours()).slice(-2);
+            var minute = ('0' + currentDate.getMinutes()).slice(-2);
+            var second = ('0' + currentDate.getSeconds()).slice(-2);
+            var ampm = currentDate.getHours() >= 12 ? 'PM' : 'AM';
+
+            var formattedDate = day + '/' + month + '/' + year + ' ' + hour + ':' + minute + ':' + second + ' ' + ampm;
+
+            var sFriendlyErrorMsg = "Error : " + formattedDate + " : " + "A problem has occurred on this web site. Please try again. If this error continues, please logout and login again.\n\n" + evt.message;
+            alert(sFriendlyErrorMsg);
+        }
+        else
+        {
         if (evt.message.indexOf("Transaction XML") > -1) {
             { sessionStorage.setItem('StartLoading', 'false'); StopLoadFromPatChart(); }
             if (top.window.document.getElementById('ctl00_Loading') != null)
@@ -213,13 +245,43 @@ function handleError(evt) {
 
 
     }
+    }
     return true;
 }
 //CAP-450: Error Handler Method
 //CAP-1473 :Javascript Exceptions - Cannot read properties of undefined (reading stack)
 function HandlerAngularjsError(evt) {
-    if (evt.message) {
+    if (evt.message)
+    {
+        //CAP-951
+        var isUnhandeledException = unhandeledException.some(function (exception) {
+            return evt.message.indexOf(exception) !== -1;
+        });
+        if (isUnhandeledException == true)
+        {
+            { sessionStorage.setItem('StartLoading', 'false'); StopLoadFromPatChart(); }
+            if (top.window.document.getElementById('ctl00_Loading') != null)
+                top.window.document.getElementById('ctl00_Loading').style.display = "none";
+            if (top.window.document.getElementById('divLoading') != null)
+                top.window.document.getElementById('divLoading').style.display = "none";
 
+            var currentDate = new Date();
+
+            var day = ('0' + currentDate.getDate()).slice(-2);
+            var month = new Intl.DateTimeFormat('en-US', { month: 'short' }).format(currentDate);
+            var year = currentDate.getFullYear();
+            var hour = ('0' + currentDate.getHours()).slice(-2);
+            var minute = ('0' + currentDate.getMinutes()).slice(-2);
+            var second = ('0' + currentDate.getSeconds()).slice(-2);
+            var ampm = currentDate.getHours() >= 12 ? 'PM' : 'AM';
+
+            var formattedDate = day + '/' + month + '/' + year + ' ' + hour + ':' + minute + ':' + second + ' ' + ampm;
+
+            var sFriendlyErrorMsg = "Error : " + formattedDate + " : " + "A problem has occurred on this web site. Please try again. If this error continues, please logout and login again.\n\n" + evt.message;
+            alert(sFriendlyErrorMsg);
+        }
+        else
+        {
         if (evt.message.indexOf("Transaction XML") > -1) {
             { sessionStorage.setItem('StartLoading', 'false'); StopLoadFromPatChart(); }
             if (top.window.document.getElementById('ctl00_Loading') != null)
@@ -334,6 +396,7 @@ function HandlerAngularjsError(evt) {
         }
 
 
+    }
     }
     return true;
 }

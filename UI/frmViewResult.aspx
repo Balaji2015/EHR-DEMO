@@ -716,20 +716,26 @@
                                                 <tr>
                                                     <td runat="server" id="DelIndexDiv" ></td>
                                                     <td>
-                                                         <div><asp:UpdatePanel runat="server" UpdateMode="Conditional">
+                                                        <%-- <div><asp:UpdatePanel runat="server" UpdateMode="Conditional">
                                                 <ContentTemplate>
-                                                    <asp:Button ID="btnDeleteIndexing" runat="server" OnClientClick="DeleteFilesIndexing();" Text="Delete Document" CssClass="aspresizedredbutton" Visible="false" />
+                                                    <asp:Button ID="btnDeleteIndexing" runat="server" OnClientClick="DeleteFilesIndexing();" Text="Delete Document" CssClass="aspresizedredbutton" Visible="false"  style="margin-left:145px" />
                                                 </ContentTemplate>
-                                            </asp:UpdatePanel></div>
+                                            </asp:UpdatePanel></div>--%>
                                                     </td>
-                                                    <td><input type="button" id="btnSave" runat="server" value="Save" onclick="return btnSave_ClientClicked();" onserverclick="btnSave_Click1" class="aspresizedgreenbutton" style="height: 26px !important;" />
-                                                    <asp:Button ID="btnTask" runat="server" CssClass="aspresizedbluebutton" Text="Task" OnClientClick="OpenPatientCommunication();" />
+                                                    <td style="display:flex;float:right;">
+                                                        <asp:UpdatePanel runat="server" UpdateMode="Conditional">
+                                                <ContentTemplate>
+                                                    <asp:Button ID="btnDeleteIndexing" runat="server" OnClientClick="DeleteFilesIndexing();" Text="Delete Document" CssClass="aspresizedredbutton" Visible="false"  Style="margin-right: 4px;" />
+                                                </ContentTemplate>
+                                            </asp:UpdatePanel>
+                                                        <input type="button" id="btnSave" runat="server" value="Save" onclick="return btnSave_ClientClicked();" onserverclick="btnSave_Click1" class="aspresizedgreenbutton" style="height: 26px !important;margin-right: 4px;" />
+                                                    <asp:Button ID="btnTask" runat="server" CssClass="aspresizedbluebutton" Text="Task" OnClientClick="OpenPatientCommunication();"  Style="margin-right: 4px;" />
                                                         <asp:Button ID="btnFindAppointments" runat="server" OnClientClick="return OpenFindAllAppointments();"
-                                                Text="Find All Appointments" CssClass="aspresizedbluebutton" />
+                                                Text="Find All Appointments" CssClass="aspresizedbluebutton"  Style="margin-right: 4px;" />
                                                         <asp:Button ID="btnpatientChart1" runat="server" OnClientClick="return btnpatientChart_Click();" Text="OpenPatientChart"
-                                                Visible="false" CssClass="aspresizedbluebutton" />
-                                                        <asp:Button ID="btnePrescribe" runat="server" OnClientClick="return ClickPrescription();" Text="eRx" Width="60px" Visible="false" CssClass="aspresizedbluebutton" />
-                                                        <asp:Button ID="btnEfax" runat="server" Text="Send Fax" OnClientClick="funEFax();" CssClass="aspresizedbluebutton" Style="margin-left: 1px;" />
+                                                Visible="false" CssClass="aspresizedbluebutton"  Style="margin-right: 4px;" />
+                                                        <asp:Button ID="btnePrescribe" runat="server" OnClientClick="return ClickPrescription();" Text="eRx" Width="60px" Visible="false" CssClass="aspresizedbluebutton"  Style="margin-right: 4px;" />
+                                                        <asp:Button ID="btnEfax" runat="server" Text="Send Fax" OnClientClick="funEFax();" CssClass="aspresizedbluebutton" Style="margin-right: 4px;" />
                                                     </td>
                                                </tr></table>
                                         </td>

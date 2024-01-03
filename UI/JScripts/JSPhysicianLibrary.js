@@ -7,9 +7,14 @@ $(document).ready(function () {
 
     { sessionStorage.setItem('StartLoading', 'true'); StartLoadFromPatChart(); }
     //CAP-803
-    $("#txtFax")?.mask("(999)999-9999", { placeholder: "(___)___-____" });
-    $("#txtPhone")?.mask("(999)999-9999", { placeholder: "(___)___-____" });
-    $('#txtZip')?.mask("99999-9999", { placeholder: "_____-____" });
+
+    //CAP-1450
+    setTimeout(function () {
+        $("#txtFax")?.mask("(999)999-9999", { placeholder: "(___)___-____" });
+        $("#txtPhone")?.mask("(999)999-9999", { placeholder: "(___)___-____" });
+        $('#txtZip')?.mask("99999-9999", { placeholder: "_____-____" });
+    }, 2000);
+
     if (IsEFax == "true") {
         if (lblFax.innerText == "Fax#") {
             lblFax.innerText += "*";
