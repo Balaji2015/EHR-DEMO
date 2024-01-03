@@ -1,3 +1,9 @@
+﻿$(document).ready(function () {
+    $(".loaderClass").click(function () {
+        { sessionStorage.setItem('StartLoading', 'true'); StartLoadFromPatChart(); }
+    });
+});
+
 ﻿
 function OpenFindPhysicianOld() {
     var oWnd = GetRadWindow();

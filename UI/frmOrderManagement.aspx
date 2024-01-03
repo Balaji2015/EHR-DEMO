@@ -676,7 +676,7 @@
                                         <asp:Panel ID="pnlReport" runat="server" GroupingText="Search Results" CssClass="Panel LabelStyleBold">
                                             <telerik:RadGrid ID="grdReport" runat="server" Height="235px" AutoGenerateColumns="False"
                                                 CellSpacing="0"  GridLines="None" OnNeedDataSource="grdReport_NeedDataSource"
-                                                OnItemCommand="grdReport_ItemCommand"  onclick="{ sessionStorage.setItem('StartLoading', 'true'); StartLoadFromPatChart();}" CssClass="Gridbodystyle">
+                                                OnItemCommand="grdReport_ItemCommand" CssClass="Gridbodystyle">
                                                 <ClientSettings EnablePostBackOnRowClick="True">
                                                     <ClientEvents OnRowClick="grdReport_OnRowClick"/>
                                                     <Scrolling AllowScroll="True" UseStaticHeaders="True" />
@@ -762,7 +762,7 @@
                                                         <telerik:GridButtonColumn ButtonType="ImageButton" 
                                                             FilterControlAltText="Filter Print Requisition column" Text="Print Requisition"
                                                             UniqueName="PrintEReq" ImageUrl="~/Resources/PrintReq.png" Display="False" HeaderText="Print Req."
-                                                            CommandArgument="PrintRequisition" CommandName="PrintEReq">
+                                                            CommandArgument="PrintRequisition" CommandName="PrintEReq" ButtonCssClass="loaderClass">
                                                             <HeaderStyle Width="3%"  CssClass="Gridheaderstyle"/>
                                                             <ItemStyle Width="2%" />
                                                         </telerik:GridButtonColumn>
@@ -784,7 +784,7 @@
                                                         </telerik:GridBoundColumn>
                                                         <telerik:GridButtonColumn ButtonType="ImageButton" FilterControlAltText="Filter ViewResult column"
                                                             Text="View Result" UniqueName="ViewResult" ImageUrl="~/Resources/Down.bmp" HeaderText="View Result"
-                                                            CommandArgument="ViewResult" CommandName="ViewResults">
+                                                            CommandArgument="ViewResult" CommandName="ViewResults" ButtonCssClass="loaderClass">
                                                             <HeaderStyle Width="3%"  CssClass="Gridheaderstyle"/>
                                                             <ItemStyle Width="3%" />
                                                         </telerik:GridButtonColumn>
