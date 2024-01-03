@@ -2411,7 +2411,7 @@ myapp.controller('EandMCodingCtrl', function ($scope, $http) {
 
     var iIndex = -1;
     $scope.CPTDelete = function (index) {
-       Cap - 1573
+         //Cap - 1573
         //DeleteArray = new Array();
         { sessionStorage.setItem('StartLoading', 'true'); StartLoadFromPatChart(); }
         if (index != undefined) {
