@@ -6863,13 +6863,11 @@ namespace Acurus.Capella.UI
                         //RXA|0|1|20171207||00006-4171-00^ProQuad^NDC|0.5|mL^mL^UCUM||00^New Record^NIP001|4430^ LILY^JACKSON^SUZANNE^^^^^CA-AA-1^L^^^PRN|^^^NIST-Clinic-1||||407453|00010101|MSD^Merck and Co., Inc.^MVX|||CP|A
                         // RXA|0|1|20171207||00006-4171-00^ProQuad^NDC|0.5|mL^mL^UCUM||00^New Record^NIP001|4430^ LILY^JACKSON^SUZANNE^^^^^CA-AA-1^L^^^PRN|^^^NIST-Clinic-1||||407453|00010101|MSD^Merck and Co., Inc.^MVX|||CP|A
                         string sCurd = string.Empty;
-                        //Cap - 1540,1541
-                        //if (ClinicalSummary.ImmunizationList[i].Modified_Date_And_Time.ToString("yyyy-MM-dd hh:mm:ss") != "0001-01-01 12:00:00" && ClinicalSummary.ImmunizationList[i].Is_Deleted == "N")
-                        //    sCurd = "U";
-                        //else if (ClinicalSummary.ImmunizationList[i].Modified_Date_And_Time.ToString("yyyy-MM-dd hh:mm:ss") != "0001-01-01 12:00:00" && ClinicalSummary.ImmunizationList[i].Is_Deleted == "Y")
-                        //    sCurd = "D";
-                        if (ClinicalSummary.ImmunizationList[i].Modified_Date_And_Time.ToString("yyyy-MM-dd hh:mm:ss") != "0001-01-01 12:00:00" && ClinicalSummary.ImmunizationList[i].Is_Deleted == "Y")
-                            continue;
+                       
+                        if (ClinicalSummary.ImmunizationList[i].Modified_Date_And_Time.ToString("yyyy-MM-dd hh:mm:ss") != "0001-01-01 12:00:00" && ClinicalSummary.ImmunizationList[i].Is_Deleted == "N")
+                            sCurd = "U";
+                        else if (ClinicalSummary.ImmunizationList[i].Modified_Date_And_Time.ToString("yyyy-MM-dd hh:mm:ss") != "0001-01-01 12:00:00" && ClinicalSummary.ImmunizationList[i].Is_Deleted == "Y")
+                            sCurd = "D";
                         else
                             sCurd = "A";
                         if (ClinicalSummary.ImmunizationList[i].Is_Administration_Refused.ToUpper() != "Y")
@@ -7072,7 +7070,7 @@ namespace Acurus.Capella.UI
             string PublicitycodeIdentifier = string.Empty;
             string RelationshipIdentifier = string.Empty;
             string AdministrationIdentifier = string.Empty;
-            string ImmunizationInformationIdentifier = string.Empty;
+            string ImmunizationInformationIdentifier = "00";
             string ProtectionstateIdentifier = string.Empty;
             string ObservationIdentifier = string.Empty;
             string EvidenceIdentifier = string.Empty;
@@ -7418,7 +7416,7 @@ namespace Acurus.Capella.UI
                         {
                             sResult = sResult + "\n" + "RXA|" + "0|1|" + ClinicalSummary.ImmunizationList[i].Given_Date.ToString("yyyyMMdd") + "||"
                               + ClinicalSummary.ImmunizationList[i].CVX_Code + "^" +
-                              ClinicalSummary.ImmunizationList[i].Immunization_Description + "^CVX|||" + ImmunizationInformationIdentifier + "^" + ClinicalSummary.ImmunizationList[i].Immunization_Information_Source + "^NIP001|" +
+                              ClinicalSummary.ImmunizationList[i].Immunization_Description + "^CVX||||" + ImmunizationInformationIdentifier + "^" + ClinicalSummary.ImmunizationList[i].Immunization_Information_Source + "^NIP001|" +
                               "" + phyID + "^" + PhyFirstName + "^" + PhyLastName + "^" + PhyMIName + "^^^^^CMS^^^^NPI^^^^^^^^" + PhySuffix + "|^^^" + sRXA11 + "||||" +
                               ClinicalSummary.ImmunizationList[i].Lot_Number + "|" + ClinicalSummary.ImmunizationList[i].Expiry_Date.ToString("yyyyMMdd")
                               + "|" + VaccineCode
