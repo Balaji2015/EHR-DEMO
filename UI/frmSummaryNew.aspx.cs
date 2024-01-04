@@ -6129,7 +6129,7 @@ margin:0in 0in 0in 9in;
             }
             //Jira CAP-1588
             //sFaxSubject = "Consultation Notes" + sFaxLastName + sFaxFirstname + sFaxDOS;//<Patient Name>_<Date_of_service> 
-            sFaxSubject = "Referral for " + sFaxLastName + " " + sFaxFirstname;
+            sFaxSubject = "Referral for " + sFaxFirstname + " " + sFaxLastName;
             //Cap - 1414, 1415, 1449
             //ScriptManager.RegisterStartupScript(this, this.GetType(), "EFax", "OpenEfax('" + sFaxSubject + "','" + sRefProvider + "');", true);
             ScriptManager.RegisterStartupScript(this, this.GetType(), "EFax", "OpenEfax('" + sFaxSubject + "','" + sRefProvider + "','Y');", true);

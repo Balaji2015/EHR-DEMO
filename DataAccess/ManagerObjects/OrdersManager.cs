@@ -216,7 +216,14 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
                             }
                         }
                         WFObjectManager obj_workFlow = new WFObjectManager();
-                        obj_workFlow.MoveToNextProcess(OrderSubmitID, "DIAGNOSTIC ORDER", 9, "UNKNOWN", DateTime.UtcNow, null, null, null);
+                        //Jira CAP-1581
+                        IList<WFObject> ilstWFObject = null;
+                        ICriteria WFObjectCrit = iMySession.CreateCriteria(typeof(WFObject)).Add(Expression.Eq("Obj_System_Id", OrderSubmitID)).Add(Expression.Eq("Obj_Type", "DIAGNOSTIC ORDER"));
+                        ilstWFObject = WFObjectCrit.List<WFObject>();
+                        if (ilstWFObject != null && ilstWFObject.Count > 0 && ilstWFObject[0].Current_Process == "ORDER_GENERATE")
+                        {
+                            obj_workFlow.MoveToNextProcess(OrderSubmitID, "DIAGNOSTIC ORDER", 9, "UNKNOWN", DateTime.UtcNow, null, null, null);
+                        }
                         OrdersManager oj = new OrdersManager();
                         ulOrdersubID = oj.InsertToOrders(ilstord, ilstOrdersSubmitnew, ordAssList, sOrderingProcedure, EncounterId, orderType, MACAddress, ilistOrdersRequiredForms, ref sSelectedOrder, sLocalTime);
                         if (sSelectedOrder != string.Empty)
