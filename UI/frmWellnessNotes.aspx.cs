@@ -417,7 +417,7 @@ namespace Acurus.Capella.UI
         }
         public void DownloadNotes(string xsltFile, string NotesName, string sNotesName)
         {
-           // string xmlDataFile = strXmlEncounterPath1;
+            // string xmlDataFile = strXmlEncounterPath1;
             string WordOutputName = NotesName + ".html";
             string outputDocument = Path.Combine(System.Configuration.ConfigurationSettings.AppSettings["XMLPath"], WordOutputName);
 
@@ -797,7 +797,8 @@ namespace Acurus.Capella.UI
 
                         else
                             Y += 10;
-                        Boolean bYaxices = false;
+                        int iPCPYaxices = 0;
+                        int iOrderingProviderYaxices = 0;
                         for (int j = 1; j < Header.Length; j += 4)
                         {
                             con.SetFontAndSize(baseFont1, 10);
@@ -818,8 +819,18 @@ namespace Acurus.Capella.UI
 
                                 con.SetTextMatrix(pageSize.GetLeft(X) - 32, pageSize.GetTop(Y) - 10);
                                 con.ShowText(Header[j].Split(':')[1].Substring(28, Header[j].Split(':')[1].Length - 28));
-                                Y += 10;
-                                bYaxices = true;
+                                iPCPYaxices = 10;
+                                Y = Y + iPCPYaxices;
+                            }
+                            // Jira CAP-981 for else if (Ordering Provider) contion
+                            else if (Header[j].Split(':')[0].ToUpper().Contains("ORDERING PROVIDER") && (Header[j].Split(':')[1].Length > 29))
+                            {
+                                con.ShowText(": " + (Header[j].Split(':')[1].Substring(0, 28)));
+
+                                con.SetTextMatrix(pageSize.GetLeft(X) - 32, pageSize.GetTop(Y) - 10);
+                                con.ShowText(Header[j].Split(':')[1].Substring(28, Header[j].Split(':')[1].Length - 28));
+                                iOrderingProviderYaxices = 10;
+                                Y = Y + iOrderingProviderYaxices;
                             }
                             else
                             {
@@ -831,10 +842,7 @@ namespace Acurus.Capella.UI
                         }
 
                         // Jira CAP-981 - Start
-                        if (bYaxices == true)
-                        {
-                            Y -= 10;
-                        }
+                        Y = Y - iPCPYaxices - iOrderingProviderYaxices;
                         // Jira CAP-981 - End
 
                         #endregion
@@ -1040,7 +1048,8 @@ namespace Acurus.Capella.UI
 
                         else
                             Y += 10;
-                        Boolean bYaxices = false;
+                        int iPCPYaxices = 0;
+                        int iOrderingProviderYaxices = 0;
                         for (int j = 1; j < Header.Length; j += 4)
                         {
                             con.SetFontAndSize(baseFont1, 10);
@@ -1061,8 +1070,18 @@ namespace Acurus.Capella.UI
 
                                 con.SetTextMatrix(pageSize.GetLeft(X) - 32, pageSize.GetTop(Y) - 10);
                                 con.ShowText(Header[j].Split(':')[1].Substring(28, Header[j].Split(':')[1].Length - 28));
-                                Y += 10;
-                                bYaxices = true;
+                                iPCPYaxices = 10;
+                                Y = Y + iPCPYaxices;
+                            }
+                            // Jira CAP-981 for else if (Ordering Provider) contion
+                            else if (Header[j].Split(':')[0].ToUpper().Contains("ORDERING PROVIDER") && (Header[j].Split(':')[1].Length > 29))
+                            {
+                                con.ShowText(": " + (Header[j].Split(':')[1].Substring(0, 28)));
+
+                                con.SetTextMatrix(pageSize.GetLeft(X) - 32, pageSize.GetTop(Y) - 10);
+                                con.ShowText(Header[j].Split(':')[1].Substring(28, Header[j].Split(':')[1].Length - 28));
+                                iOrderingProviderYaxices = 10;
+                                Y = Y + iOrderingProviderYaxices;
                             }
                             else
                             {
@@ -1074,10 +1093,7 @@ namespace Acurus.Capella.UI
                         }
 
                         // Jira CAP-981 - Start
-                        if (bYaxices == true)
-                        {
-                            Y -= 10;
-                        }
+                        Y = Y - iPCPYaxices - iOrderingProviderYaxices;
                         // Jira CAP-981 - End
                         #endregion
 

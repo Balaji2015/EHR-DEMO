@@ -6863,10 +6863,13 @@ namespace Acurus.Capella.UI
                         //RXA|0|1|20171207||00006-4171-00^ProQuad^NDC|0.5|mL^mL^UCUM||00^New Record^NIP001|4430^ LILY^JACKSON^SUZANNE^^^^^CA-AA-1^L^^^PRN|^^^NIST-Clinic-1||||407453|00010101|MSD^Merck and Co., Inc.^MVX|||CP|A
                         // RXA|0|1|20171207||00006-4171-00^ProQuad^NDC|0.5|mL^mL^UCUM||00^New Record^NIP001|4430^ LILY^JACKSON^SUZANNE^^^^^CA-AA-1^L^^^PRN|^^^NIST-Clinic-1||||407453|00010101|MSD^Merck and Co., Inc.^MVX|||CP|A
                         string sCurd = string.Empty;
-                        if (ClinicalSummary.ImmunizationList[i].Modified_Date_And_Time.ToString("yyyy-MM-dd hh:mm:ss") != "0001-01-01 12:00:00" && ClinicalSummary.ImmunizationList[i].Is_Deleted == "N")
-                            sCurd = "U";
-                        else if (ClinicalSummary.ImmunizationList[i].Modified_Date_And_Time.ToString("yyyy-MM-dd hh:mm:ss") != "0001-01-01 12:00:00" && ClinicalSummary.ImmunizationList[i].Is_Deleted == "Y")
-                            sCurd = "D";
+                        //Cap - 1540,1541
+                        //if (ClinicalSummary.ImmunizationList[i].Modified_Date_And_Time.ToString("yyyy-MM-dd hh:mm:ss") != "0001-01-01 12:00:00" && ClinicalSummary.ImmunizationList[i].Is_Deleted == "N")
+                        //    sCurd = "U";
+                        //else if (ClinicalSummary.ImmunizationList[i].Modified_Date_And_Time.ToString("yyyy-MM-dd hh:mm:ss") != "0001-01-01 12:00:00" && ClinicalSummary.ImmunizationList[i].Is_Deleted == "Y")
+                        //    sCurd = "D";
+                        if (ClinicalSummary.ImmunizationList[i].Modified_Date_And_Time.ToString("yyyy-MM-dd hh:mm:ss") != "0001-01-01 12:00:00" && ClinicalSummary.ImmunizationList[i].Is_Deleted == "Y")
+                            continue;
                         else
                             sCurd = "A";
                         if (ClinicalSummary.ImmunizationList[i].Is_Administration_Refused.ToUpper() != "Y")

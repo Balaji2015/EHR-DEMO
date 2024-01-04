@@ -3072,8 +3072,8 @@ myapp.controller('assessmentCtrl', function ($scope, $http) {
             var icd = test12.AssessmentList;
             var oldicd = $scope.AssessmentTable;
             for (i = 0; i < icd.length; i++) {
-                for (j = 0; j < oldicd.length; j++) { 
-                    if (icd[i].ICDCode === oldicd[j].ICDCode) {
+                for (j = 0; j < oldicd.length; j++) {
+                    if (icd[i].ICDCode.trim() === oldicd[j].ICDCode.trim()) {
                         bCheck = false;
                         break;
                     }
@@ -3090,6 +3090,8 @@ myapp.controller('assessmentCtrl', function ($scope, $http) {
             $scope.orderByField = ['-IsPrimary', 'ICDCode'];
 
             $scope.reverseSort = false;
+            //Cap - 1624
+            $('#btnSave')[0].disabled = false;
 
             { sessionStorage.setItem('StartLoading', 'false'); StopLoadFromPatChart(); }
         })

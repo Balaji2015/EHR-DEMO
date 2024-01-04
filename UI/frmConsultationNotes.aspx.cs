@@ -1813,7 +1813,7 @@ namespace Acurus.Capella.UI
             }
             //Jira CAP-1588
             //sFaxSubject = "Consultation Notes" + sFaxLastName + sFaxFirstname + sFaxDOS;//<Patient Name>_<Date_of_service> 
-            sFaxSubject = "Referral for " + sFaxLastName + " " + sFaxFirstname;
+            sFaxSubject = "Referral for " + sFaxFirstname + " " + sFaxLastName;
             ScriptManager.RegisterStartupScript(this, this.GetType(), "EFax", "OpenEfax('" + sFaxSubject + "','" + sRefProvider + "','Y');", true);
 
             UtilityManager.inserttologgingtable(ClientSession.EncounterId.ToString(), ClientSession.HumanId.ToString(), ClientSession.UserName, ClientSession.PhysicianId.ToString(), "Summary Consultation Send Fax : End", DateTime.Now, sGroup_ID_Log, "frmSummaryNew");
