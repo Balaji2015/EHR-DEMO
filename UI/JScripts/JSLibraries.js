@@ -1475,6 +1475,13 @@ function FaceSheetClick() {
     if (document.getElementById('hdnDataHumanDetails')?.value != null && document.getElementById('hdnDataHumanDetails').value != undefined && document.getElementById('hdnDataHumanDetails')?.value != undefined) {
         document.getElementById('hdnDataHumanDetails').value = document.getElementById("txtPatientSearch").attributes["data-human-details"].value;
     }
+
+    if (window?.parent?.document?.body != undefined && window?.parent?.document?.body != null) {
+        setTimeout(function () {
+            $(window.parent.document.body).css({ overflow: "hidden" });
+        }, 3000);  
+    }
+
     document.getElementById('btnface').click();
 }
 $(document).ready(function () {

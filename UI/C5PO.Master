@@ -1564,7 +1564,7 @@
             <div id="PrintPDFmdldlg" class="modal-dialog" style="overflow: hidden;">
                 <div class=" modal-content" style="height: 100%">
                     <div class="modal-header" style="height: 52px">
-                        <button type="button" class="close" id="btnPrintPDFClose" style="font-size: 30px !important;" data-dismiss="modal" aria-hidden="true">&times;</button>
+                        <button type="button" class="close" id="btnPrintPDFClose" onclick="ToggleScrollBar()"  style="font-size: 30px !important;" data-dismiss="modal" aria-hidden="true">&times;</button>
                         <h3 class="modal-title" style="font-family: sans-serif; font-weight: bold; font-size: medium" id="PrintPDFModalTitle"></h3>
                     </div>
                     <div class="modal-body" style="width: 100%; margin-top: -10px; height: 100%; padding-top: 0px">

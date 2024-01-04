@@ -14,6 +14,10 @@ function btnOK() {
     }
 }
 
+function ToggleScrollBar() {
+    $(window.parent.document.body).css({ overflow: "auto" });
+}
+
 var EMRPhoneEnounter = "";
 function OpenModal(data) {
 
