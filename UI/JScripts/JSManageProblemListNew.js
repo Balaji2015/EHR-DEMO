@@ -1348,7 +1348,8 @@ ProblemApp.controller('ControllerManageProblem', function ($scope, $http) {
         intCPTLength = -1;
         arrCPTs = [];
         $(".ui-autocomplete").hide();
-    }).on("keydown", function (e) {
+        //CAP-1617
+    }).on("keyup", function (e) {
         if (e.which == 8) {
             if (jQuery(top.window.parent.parent.parent.parent.parent.parent.document.body).find('#resultLoading').css('display') == 'block')
             { sessionStorage.setItem('StartLoading', 'false'); StopLoadFromPatChart(); }
@@ -1529,7 +1530,8 @@ ProblemApp.controller('ControllerManageProblem', function ($scope, $http) {
         intCPTLength = -1;
         arrCPTs = [];
         $(".ui-autocomplete").hide();
-    }).on("keydown", function (e) {
+        //CAP-1617
+    }).on("keyup", function (e) {
         if (e.which == 8) {
             if (jQuery(top.window.parent.parent.parent.parent.parent.parent.document.body).find('#resultLoading').css('display') == 'block')
             { sessionStorage.setItem('StartLoading', 'false'); StopLoadFromPatChart(); }
