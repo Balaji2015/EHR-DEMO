@@ -270,6 +270,7 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
 
             HumanManager humanMngr = new HumanManager();
             Human objHuman = null;
+            DateTime dtHumanCreatedDateTime = DateTime.MinValue;
             if (ulHumanID != 0)
             {
                 objHuman = humanMngr.GetHumanFromHumanID(ulHumanID);
@@ -278,12 +279,13 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
                     dtRCopia_Allergy_Last_Updated_Date_Time = objHuman.RCopia_Allergy_Last_Updated_Date_Time;
                     dtRCopia_Medication_Last_Updated_Date_Time = objHuman.RCopia_Medication_Last_Updated_Date_Time;
                     dtRCopia_Prescription_Last_Updated_Date_Time = objHuman.RCopia_Prescription_Last_Updated_Date_Time;
+                    dtHumanCreatedDateTime = objHuman.Created_Date_And_Time;
                 }
             }
 
             WorkFlowManager obj = new WorkFlowManager();
 
-            sInputXML = rcopiaXML.CreateUpdateAllergyXML(ulHumanID, dtRCopia_Allergy_Last_Updated_Date_Time, sLegalOrg);
+            sInputXML = rcopiaXML.CreateUpdateAllergyXML(ulHumanID, dtRCopia_Allergy_Last_Updated_Date_Time, sLegalOrg, dtHumanCreatedDateTime);
             if (rcopiaSessionMngr.DownloadAddress != null && sInputXML != string.Empty)
             {
                 sOutputXML = rcopiaSessionMngr.HttpPost(rcopiaSessionMngr.DownloadAddress + sInputXML, 1, sUserName);
@@ -311,7 +313,7 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
                 }
             }
 
-            sInputXML = rcopiaXML.CreateUpdateMedicationXML(ulHumanID, dtRCopia_Medication_Last_Updated_Date_Time, sLegalOrg);
+            sInputXML = rcopiaXML.CreateUpdateMedicationXML(ulHumanID, dtRCopia_Medication_Last_Updated_Date_Time, sLegalOrg, dtHumanCreatedDateTime);
 
             if (rcopiaSessionMngr.DownloadAddress != null && sInputXML != string.Empty)
             {
@@ -347,7 +349,7 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
             //}
 
 
-            sInputXML = rcopiaXML.CreateUpdatePrescriptionXML(ulHumanID, dtRCopia_Prescription_Last_Updated_Date_Time, sLegalOrg);
+            sInputXML = rcopiaXML.CreateUpdatePrescriptionXML(ulHumanID, dtRCopia_Prescription_Last_Updated_Date_Time, sLegalOrg, dtHumanCreatedDateTime);
 
             if (rcopiaSessionMngr.DownloadAddress != null && sInputXML != string.Empty)
             {

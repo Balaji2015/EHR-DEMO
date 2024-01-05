@@ -1022,7 +1022,7 @@ namespace Acurus.Capella.DataAccess
         //}
 
         //RCopia Patient Level Download - Commented
-        public string CreateUpdatePrescriptionXML(ulong ulHumanID, DateTime dtRCopia_Prescription_Last_Updated_Date_and_Time, string sLegalOrg)
+        public string CreateUpdatePrescriptionXML(ulong ulHumanID, DateTime dtRCopia_Prescription_Last_Updated_Date_and_Time, string sLegalOrg, DateTime dtHumanCreatedDateTime)
         {
             if (ulHumanID == 0)
                 return string.Empty;
@@ -1036,9 +1036,13 @@ namespace Acurus.Capella.DataAccess
 
             if (dtRCopia_Prescription_Last_Updated_Date_and_Time != DateTime.MinValue)
                 xmlWriter.WriteElementString("LastUpdateDate", dtRCopia_Prescription_Last_Updated_Date_and_Time.ToString("MM/dd/yyyy HH:mm:ss").Replace("-", "/"));
+            //Jira CAP-1563
+            //else
+            //    xmlWriter.WriteElementString("LastUpdateDate", DateTime.Now.AddDays(-1).ToString("MM/dd/yyyy HH:mm:ss").Replace("-", "/"));
+            else if (dtHumanCreatedDateTime != DateTime.MinValue)
+                xmlWriter.WriteElementString("LastUpdateDate", dtHumanCreatedDateTime.AddDays(-10).ToString("MM/dd/yyyy HH:mm:ss").Replace("-", "/"));
             else
-                xmlWriter.WriteElementString("LastUpdateDate", DateTime.Now.AddDays(-1).ToString("MM/dd/yyyy HH:mm:ss").Replace("-", "/"));
-
+                xmlWriter.WriteElementString("LastUpdateDate", "01/01/2020 12:00:00");
             xmlWriter.WriteStartElement("Patient");
             xmlWriter.WriteElementString("RcopiaID", string.Empty);
             //xmlWriter.WriteElementString("ExternalID", string.Empty);
@@ -1084,7 +1088,7 @@ namespace Acurus.Capella.DataAccess
         //}
 
         //RCopia Patient Level Download - Commented
-        public string CreateUpdateMedicationXML(ulong ulHumanID, DateTime dtRCopia_Medication_Last_Updated_Date_and_Time, string sLegalOrg)
+        public string CreateUpdateMedicationXML(ulong ulHumanID, DateTime dtRCopia_Medication_Last_Updated_Date_and_Time, string sLegalOrg, DateTime dtHumanCreatedDateTime)
         {
             if (ulHumanID == 0)
                 return string.Empty;
@@ -1099,9 +1103,13 @@ namespace Acurus.Capella.DataAccess
 
             if (dtRCopia_Medication_Last_Updated_Date_and_Time != DateTime.MinValue)
                 xmlWriter.WriteElementString("LastUpdateDate", dtRCopia_Medication_Last_Updated_Date_and_Time.ToString("MM/dd/yyyy HH:mm:ss").Replace("-", "/"));
+            //Jira CAP-1563
+            //else
+            //    xmlWriter.WriteElementString("LastUpdateDate", DateTime.Now.AddDays(-1).ToString("MM/dd/yyyy HH:mm:ss").Replace("-", "/"));
+            else if (dtHumanCreatedDateTime != DateTime.MinValue)
+                xmlWriter.WriteElementString("LastUpdateDate", dtHumanCreatedDateTime.AddDays(-10).ToString("MM/dd/yyyy HH:mm:ss").Replace("-", "/"));
             else
-                xmlWriter.WriteElementString("LastUpdateDate", DateTime.Now.AddDays(-1).ToString("MM/dd/yyyy HH:mm:ss").Replace("-", "/"));
-
+                xmlWriter.WriteElementString("LastUpdateDate", "01/01/2020 12:00:00");
             //if (ilstRcopUpdateInfo.Count > 0)
             //{
             //    Rcopia_Update_info objupdateInfo = (from j in ilstRcopUpdateInfo where j.Command == "update_medication" select j).ToList<Rcopia_Update_info>()[0];
@@ -1205,7 +1213,7 @@ namespace Acurus.Capella.DataAccess
         }
         // new method end
 
-        public string CreateUpdateAllergyXML(ulong ulHumanID, DateTime dtRCopia_Allergy_Last_Updated_Date_and_Time, string sLegalOrg)
+        public string CreateUpdateAllergyXML(ulong ulHumanID, DateTime dtRCopia_Allergy_Last_Updated_Date_and_Time, string sLegalOrg , DateTime dtHumanCreatedDateTime)
         {
             if (ulHumanID == 0)
                 return string.Empty;
@@ -1217,8 +1225,13 @@ namespace Acurus.Capella.DataAccess
             //    xmlWriter.WriteElementString("LastUpdateDate", ilstRcopUpdateInfoDate.Replace("-", "/"));
             if (dtRCopia_Allergy_Last_Updated_Date_and_Time != DateTime.MinValue)
                 xmlWriter.WriteElementString("LastUpdateDate", dtRCopia_Allergy_Last_Updated_Date_and_Time.ToString("MM/dd/yyyy HH:mm:ss").Replace("-", "/"));
+            //Jira CAP-1563
+            //else
+            //    xmlWriter.WriteElementString("LastUpdateDate", DateTime.Now.AddDays(-1).ToString("MM/dd/yyyy HH:mm:ss").Replace("-", "/"));
+            else if (dtHumanCreatedDateTime != DateTime.MinValue)
+                xmlWriter.WriteElementString("LastUpdateDate", dtHumanCreatedDateTime.AddDays(-10).ToString("MM/dd/yyyy HH:mm:ss").Replace("-", "/"));
             else
-                xmlWriter.WriteElementString("LastUpdateDate", DateTime.Now.AddDays(-1).ToString("MM/dd/yyyy HH:mm:ss").Replace("-", "/"));
+                xmlWriter.WriteElementString("LastUpdateDate", "01/01/2020 12:00:00");
             xmlWriter.WriteElementString("ReturnAllNDCIDs", "y");
             xmlWriter.WriteStartElement("Patient");
             xmlWriter.WriteElementString("RcopiaID", string.Empty);

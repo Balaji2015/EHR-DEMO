@@ -62,6 +62,14 @@ namespace Acurus.Capella.ImmunizationSubmission
 
                 if (objImmun != null && objImmun.Count > 0)
                 {
+                    if (objImmun[0].Encounter_Id == 0)
+                    {
+                        //Menu Level Orders are not submitted and moved to next process
+                        DateTime dt = new DateTime();
+                        dt = System.DateTime.Now;
+                        objwfobject.MoveToNextProcess(lstlstwfobject[i].Obj_System_Id, lstlstwfobject[i].Obj_Type, 6, "UNKNOWN", dt, "", null, null);
+                        continue;
+                    }
 
                     ulEncounterId = objImmun[0].Encounter_Id;
                     ulHumanId = objImmun[0].Human_ID;
