@@ -1849,11 +1849,11 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
                                     IList<ProcedureModifierLookup> tempSort = (from m in lstprocedure where m.Procedure_Code == OrderCPT[i].ToString() && m.Modifier == String.Empty select m).ToList<ProcedureModifierLookup>();
                                     if (tempSort.Count > 0)
                                     {
-                                        TempProcedureList.Add(FinalProcedurelist[0] + "~" + tempSort[0].Sort_Order + tempSort[0].RVU);
+                                        TempProcedureList.Add(FinalProcedurelist[0] + "~" + tempSort[0].Sort_Order+"~" + tempSort[0].RVU);
                                     }
                                     else
                                     {
-                                        TempProcedureList.Add(FinalProcedurelist[0] + "~" + 9 + 0);
+                                        TempProcedureList.Add(FinalProcedurelist[0] + "~" + 9 +"~"+ 0);
                                     }
 
                                 }
