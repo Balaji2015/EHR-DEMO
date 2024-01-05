@@ -1208,7 +1208,7 @@ ProblemApp.controller('ControllerManageProblem', function ($scope, $http) {
             if (intCPTLength == 0 && bcheck && bBool == false) {
                 arrCPTs = [];
                 bBool = true;
-
+                { sessionStorage.setItem('StartLoading', 'true'); StartLoadFromPatChart(); }
                 $.ajax({
                     type: "POST",
                     contentType: "application/json; charset=utf-8",
@@ -1236,7 +1236,7 @@ ProblemApp.controller('ControllerManageProblem', function ($scope, $http) {
                         }
 
                         $("#txtICD10").focus();
-                        if (jQuery(top.window.parent.parent.parent.parent.parent.parent.document.body).find('#resultLoading').css('display') == 'block')
+                        //if (jQuery(top.window.parent.parent.parent.parent.parent.parent.document.body).find('#resultLoading').css('display') == 'block')
                         { sessionStorage.setItem('StartLoading', 'false'); StopLoadFromPatChart(); }
                     },
                     error: function OnError(xhr) {
@@ -1349,9 +1349,9 @@ ProblemApp.controller('ControllerManageProblem', function ($scope, $http) {
         arrCPTs = [];
         $(".ui-autocomplete").hide();
         //CAP-1617
-    }).on("keyup", function (e) {
+    }).on("keydown", function (e) {
         if (e.which == 8) {
-            if (jQuery(top.window.parent.parent.parent.parent.parent.parent.document.body).find('#resultLoading').css('display') == 'block')
+            //if (jQuery(top.window.parent.parent.parent.parent.parent.parent.document.body).find('#resultLoading').css('display') == 'block')
             { sessionStorage.setItem('StartLoading', 'false'); StopLoadFromPatChart(); }
             if ($("#txtICD10").val().length <= 3)
                 bBool = false;
@@ -1359,20 +1359,20 @@ ProblemApp.controller('ControllerManageProblem', function ($scope, $http) {
             bcheck = false;
         }
         else {
-            if (jQuery(top.window.parent.parent.parent.parent.parent.parent.document.body).find('#resultLoading').css('display') == 'block')
+            //if (jQuery(top.window.parent.parent.parent.parent.parent.parent.document.body).find('#resultLoading').css('display') == 'block')
             { sessionStorage.setItem('StartLoading', 'false'); StopLoadFromPatChart(); }
             bcheck = true;
         }
 
     }).on("input", function (e) {
         document.getElementById('txtDescription').value = "";
-        if (jQuery(top.window.parent.parent.parent.parent.parent.parent.document.body).find('#resultLoading').css('display') == 'block')
+        //if (jQuery(top.window.parent.parent.parent.parent.parent.parent.document.body).find('#resultLoading').css('display') == 'block')
         { sessionStorage.setItem('StartLoading', 'false'); StopLoadFromPatChart(); }
         if ($("#txtICD10").val().length >= 3) {
-            if (jQuery(top.window.parent.parent.parent.parent.parent.parent.document.body).find('#resultLoading').css('display') == 'block')
+            //if (jQuery(top.window.parent.parent.parent.parent.parent.parent.document.body).find('#resultLoading').css('display') == 'block')
             { sessionStorage.setItem('StartLoading', 'false'); StopLoadFromPatChart(); }
-            if (!bBool)
-            { sessionStorage.setItem('StartLoading', 'true'); StartLoadFromPatChart(); }
+            //if (!bBool)
+            //{ sessionStorage.setItem('StartLoading', 'true'); StartLoadFromPatChart(); }
             intCPTLength = 0;
         }
         else if ($("#txtICD10").val().length != 0 && intCPTLength != -1) {
@@ -1393,7 +1393,7 @@ ProblemApp.controller('ControllerManageProblem', function ($scope, $http) {
             if (intCPTLength == 0 && bcheck && bBool == false) {
                 arrCPTs = [];
                 bBool = true;
-
+                { sessionStorage.setItem('StartLoading', 'true'); StartLoadFromPatChart(); }
                 $.ajax({
                     type: "POST",
                     contentType: "application/json; charset=utf-8",
@@ -1421,7 +1421,7 @@ ProblemApp.controller('ControllerManageProblem', function ($scope, $http) {
                         }
 
                         $("#txtDescription").focus();
-                        if (jQuery(top.window.parent.parent.parent.parent.parent.parent.document.body).find('#resultLoading').css('display') == 'block')
+                        //if (jQuery(top.window.parent.parent.parent.parent.parent.parent.document.body).find('#resultLoading').css('display') == 'block')
                         { sessionStorage.setItem('StartLoading', 'false'); StopLoadFromPatChart(); }
                     },
                     error: function OnError(xhr) {
@@ -1531,9 +1531,9 @@ ProblemApp.controller('ControllerManageProblem', function ($scope, $http) {
         arrCPTs = [];
         $(".ui-autocomplete").hide();
         //CAP-1617
-    }).on("keyup", function (e) {
+    }).on("keydown", function (e) {
         if (e.which == 8) {
-            if (jQuery(top.window.parent.parent.parent.parent.parent.parent.document.body).find('#resultLoading').css('display') == 'block')
+            //if (jQuery(top.window.parent.parent.parent.parent.parent.parent.document.body).find('#resultLoading').css('display') == 'block')
             { sessionStorage.setItem('StartLoading', 'false'); StopLoadFromPatChart(); }
             if ($("#txtDescription").val().length <= 4)
                 bBool = false;
@@ -1541,20 +1541,20 @@ ProblemApp.controller('ControllerManageProblem', function ($scope, $http) {
             bcheck = false;
         }
         else {
-            if (jQuery(top.window.parent.parent.parent.parent.parent.parent.document.body).find('#resultLoading').css('display') == 'block')
+            //if (jQuery(top.window.parent.parent.parent.parent.parent.parent.document.body).find('#resultLoading').css('display') == 'block')
             { sessionStorage.setItem('StartLoading', 'false'); StopLoadFromPatChart(); }
             bcheck = true;
         }
 
     }).on("input", function (e) {
         document.getElementById('txtICD10').value = "";
-        if (jQuery(top.window.parent.parent.parent.parent.parent.parent.document.body).find('#resultLoading').css('display') == 'block')
+        //if (jQuery(top.window.parent.parent.parent.parent.parent.parent.document.body).find('#resultLoading').css('display') == 'block')
         { sessionStorage.setItem('StartLoading', 'false'); StopLoadFromPatChart(); }
         if ($("#txtDescription").val().length >= 4) {
-            if (jQuery(top.window.parent.parent.parent.parent.parent.parent.document.body).find('#resultLoading').css('display') == 'block')
+            //if (jQuery(top.window.parent.parent.parent.parent.parent.parent.document.body).find('#resultLoading').css('display') == 'block')
             { sessionStorage.setItem('StartLoading', 'false'); StopLoadFromPatChart(); }
-            if (!bBool)
-            { sessionStorage.setItem('StartLoading', 'true'); StartLoadFromPatChart(); }
+            //if (!bBool)
+            //{ sessionStorage.setItem('StartLoading', 'true'); StartLoadFromPatChart(); }
             intCPTLength = 0;
         }
         else if ($("#txtDescription").val().length != 0 && intCPTLength != -1) {

@@ -2643,6 +2643,7 @@ myapp.controller('EandMCodingCtrl', function ($scope, $http) {
         var arrlstAssICD = [];
         { sessionStorage.setItem('StartLoading', 'true'); StartLoadFromPatChart(); }
         // if (index == "Submit") {
+        setTimeout(function () { 
         if ($('#tblEandMCodingCPT tr td').length == 0) { //any cpt not mapped
             { sessionStorage.setItem('StartLoading', 'false'); StopLoadFromPatChart(); }
             DisplayErrorMessage('530003');
@@ -3373,6 +3374,7 @@ myapp.controller('EandMCodingCtrl', function ($scope, $http) {
                     window.location = "ErrorPage.aspx?Message=" + error.Message + "|$|" + error.StackTrace;
                 }
             });
+        }, 100);
     }
     /* For Git Lab Id: 1666
     $scope.btnSubAllForSuperbill_Click = function (index) {
