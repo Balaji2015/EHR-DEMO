@@ -2412,7 +2412,11 @@ myapp.controller('assessmentCtrl', function ($scope, $http) {
 
                 //DisplayErrorMessage('220025', "", test.TruncatedICDList.toString());
                 sessionStorage.setItem('StartLoading', 'false'); StopLoadFromPatChart();
-                return;
+                //Jira CAP-976 - Start
+                //return;
+                AutoSaveUnsuccessful();
+                return false;
+                //Jira CAP-976 - End
             }
 
 
