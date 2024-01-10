@@ -3032,7 +3032,13 @@ function PlanSelected(event, ui) {
         document.getElementById("lblSpecifyOther").innerHTML = "Specify Other";
     }
 
-
+    //Cap - 1521
+    if (document.getElementById("ctl00_C5POBody_txtSpecify").disabled == true) {
+        $("#ctl00_C5POBody_txtPolicyholderid").focus();
+    }
+    else {
+        $("#ctl00_C5POBody_txtSpecify").focus();
+    }
 
     return false;
 }
