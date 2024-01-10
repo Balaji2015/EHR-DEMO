@@ -1885,8 +1885,16 @@ namespace Acurus.Capella.UI
             var currentURL = HttpContext.Current.Request.Url;
             var notificationType = Request["Notification_Type"]?.ToString();
             //CAP-1167
-            if (DirectURLUtility.IsValidEncounterUrl(currentURL.AbsoluteUri) && Request.QueryString["EncounterID"] != null)
+            if (DirectURLUtility.IsValidEncounterUrl(currentURL.AbsoluteUri) || DirectURLUtility.IsValidEncounterTabUrl(currentURL.AbsoluteUri)  && Request.QueryString["EncounterID"] != null)
             {
+                //CAP-1511
+                if (!string.IsNullOrEmpty(Request.QueryString["Screen"]))
+                {
+                    (string,string) requestedTab = DirectURLUtility.GetCurrentTabIdByTabName(Request.QueryString["Screen"].ToUpper());                    
+                    hdnScreen.Value = !string.IsNullOrEmpty(requestedTab.Item1) ? requestedTab.Item1 : string.Empty;
+                    hdnSubScreen.Value = !string.IsNullOrEmpty(requestedTab.Item2) ? requestedTab.Item2 : string.Empty;
+                }
+
                 string encounter_ID = Request.QueryString["EncounterID"];
 
                 string valueToReplace = encounter_ID;
@@ -2551,6 +2559,18 @@ namespace Acurus.Capella.UI
                         }
                         if (ClientSession.EncounterId != null && ClientSession.EncounterId != 0 && Request["ScreenName"] != "PFSH")
                         {
+                            //CAP-1511
+                            string encounterURL = "frmEncounter.aspx?tabName=" + refreshTabName + "&ChildTabName=" + ChildTabName + "&cboValue=" + cboSourceOfInformation + "&Date=" + hdnLocalTime.Value + "&currentAddendumId=" + hdnAddendumID.Value;
+                            if (!string.IsNullOrEmpty(Request.QueryString["Screen"]))
+                            {
+                                (string,string) requestedTab = DirectURLUtility.GetCurrentTabIdByTabName(Request.QueryString["Screen"].ToUpper());
+                                string screen = !string.IsNullOrEmpty(requestedTab.Item1) ? requestedTab.Item1 : string.Empty;
+                                string subScreen = !string.IsNullOrEmpty(requestedTab.Item2) ? requestedTab.Item2 : string.Empty;
+                                if (!string.IsNullOrEmpty(screen))
+                                    encounterURL += "&Screen=" + screen;
+                                if (!string.IsNullOrEmpty(subScreen))
+                                    encounterURL += "&SubScreen=" + subScreen;
+                            }
                             //if (Is_CMG)
                             //{
                             //    EncounterContainer.Attributes["src"] = "frmCMGTest.aspx?tabName=Test Details";
@@ -2559,7 +2579,7 @@ namespace Acurus.Capella.UI
                             //else
                             //For Bug ID 74727
                             //EncounterContainer.Attributes["src"] = "frmEncounter.aspx?tabName=" + refreshTabName + "&sMySentToRCopia=" + sSentToRCopia + "&ChildTabName=" + ChildTabName + "&cboValue=" + cboSourceOfInformation + "&Date=" + hdnLocalTime.Value + "&currentAddendumId=" + hdnAddendumID.Value;
-                            EncounterContainer.Attributes["src"] = "frmEncounter.aspx?tabName=" + refreshTabName + "&ChildTabName=" + ChildTabName + "&cboValue=" + cboSourceOfInformation + "&Date=" + hdnLocalTime.Value + "&currentAddendumId=" + hdnAddendumID.Value;
+                            EncounterContainer.Attributes["src"] = encounterURL;
                         }
                     }
                     //else if (Is_CMG)

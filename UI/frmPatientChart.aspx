@@ -744,6 +744,8 @@
     <asp:HiddenField ID="hdnEncCurrentProcess" runat="server" EnableViewState="false" />
     <asp:HiddenField ID="hdnQencounterId" runat="server" Value="" EnableViewState="false" />
     <asp:HiddenField ID="hdnPatientStrip" runat="server" EnableViewState="false" />
+    <asp:HiddenField ID="hdnScreen" runat="server" EnableViewState="false" /><%--//CAP-1511--%>
+    <asp:HiddenField ID="hdnSubScreen" runat="server" EnableViewState="false" /><%--//CAP-1511--%>
     <asp:Button ID="hdnbtngeneratexml" runat="server" OnClick="hdnbtngeneratexml_Click"  style="display:none" />
 
         <script src="JScripts/jquery-2.1.3.js"></script>

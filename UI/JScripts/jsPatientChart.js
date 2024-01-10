@@ -310,8 +310,17 @@ $(document).ready(function () {
         localStorage.setItem("CurrentProcess", $("#hdnEncCurrentProcess").val());
         sessionStorage.setItem("EncId_PatSummaryBar", enc_Id);
         sessionStorage.setItem("Enc_DOS", document.getElementById(GetClientId('hdnEncDos'))?.value);
-
-        $('#ctl00_C5POBody_EncounterContainer')[0].src = "frmEncounter.aspx?Date=" + document.getElementById(GetClientId("hdnLocalTime")).value + "&EncounterID=" + enc_Id;
+        //CAP-1511
+        var encounterURL = "frmEncounter.aspx?Date=" + document.getElementById(GetClientId("hdnLocalTime")).value + "&EncounterID=" + enc_Id;
+        var currentTabNameId = document.getElementById(GetClientId('hdnScreen'))?.value;
+        var currentSubTabNameId = document.getElementById(GetClientId('hdnSubScreen'))?.value;
+        if (currentTabNameId != undefined && currentTabNameId != null && currentTabNameId != "") {
+            encounterURL += "&Screen=" + currentTabNameId;
+        }
+        if (currentSubTabNameId != undefined && currentSubTabNameId != null && currentSubTabNameId != "") {
+            encounterURL += "&SubScreen=" + currentSubTabNameId;
+        }
+        $('#ctl00_C5POBody_EncounterContainer')[0].src = encounterURL;
     }
 });
 
@@ -1252,7 +1261,18 @@ function tree_add_leaf_example_click(leaf, node, pnode, tree) {
         //CAP-778 Cannot read properties of null
         //var sStrinh = (window.frames["ctl00_C5POBody_EncounterContainer"]?.contentDocument?.getElementById('pnlBarGroupTabs') != null) ? window.frames["ctl00_C5POBody_EncounterContainer"]?.contentDocument?.getElementById('pnlBarGroupTabs')?.innerHTML?.split('|')[1]?.trim() : "";
         if (leaf[0].id.split('^')[1] == leaf[0].currentId && leaf[0].From != "Menu") {
-            $('#ctl00_C5POBody_EncounterContainer')[0].src = "frmEncounter.aspx?Date=" + document.getElementById(GetClientId("hdnLocalTime")).value + "&EncounterID=" + leaf[0].id.split('^')[1] + "&leftpane=Y";
+            //CAP-1511
+            var encounterURL = "frmEncounter.aspx?Date=" + document.getElementById(GetClientId("hdnLocalTime")).value + "&EncounterID=" + leaf[0].id.split('^')[1] + "&leftpane=Y";
+            var currentTabNameId = document.getElementById(GetClientId('hdnScreen'))?.value;
+            var currentSubTabNameId = document.getElementById(GetClientId('hdnSubScreen'))?.value;
+            if (currentTabNameId != undefined && currentTabNameId != null && currentTabNameId != "") {
+                encounterURL += "&Screen=" + currentTabNameId;
+            }
+            if (currentSubTabNameId != undefined && currentSubTabNameId != null && currentSubTabNameId != "") {
+                encounterURL += "&SubScreen=" + currentSubTabNameId;
+            }
+
+            $('#ctl00_C5POBody_EncounterContainer')[0].src = encounterURL;
             sessionStorage.setItem("EncId_PatSummaryBar", leaf[0].id.split('^')[1]);
             sessionStorage.setItem("Enc_DOS", leaf[0].innerText.split(' - ')[0]);
             sessionStorage.setItem("EncId_PatSummaryBar_XMl_Regenerate", leaf[0].id.split('^')[1]);

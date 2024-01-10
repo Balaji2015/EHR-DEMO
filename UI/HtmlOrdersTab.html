@@ -141,16 +141,16 @@
             <div class="row">
                 <div class="col-md-12">
                     <ul class="nav nav-tabs" id="myTabs">
-                        <li class="active tabstyle">
+                        <li class="active tabstyle" id="tabOrder_tbDiagnosticOrder">
                             <a href="#DiagnosticOrder" data-toggle="tab" style="color:#6504d0!important;">Diagnostic Order</a>
                         </li>
-                        <li class="tabstyle">
+                        <li class="tabstyle" id="tabOrder_tbReferralOrder">
                             <a href="#ReferralOrder" data-toggle="tab">Referral Order</a>
                         </li>
-                        <li class="tabstyle">
+                        <li class="tabstyle" id="tabOrder_tbImmunization">
                             <a href="#Immunization" data-toggle="tab" style="color:#6504d0!important;">Immunization/Injection</a>
                         </li>
-                        <li class="tabstyle">
+                        <li class="tabstyle" id="tabOrder_tbProcedure">
                             <a href="#InHouseProcedure" data-toggle="tab">Procedures</a>
                         </li>
                         <li class="tabstyle">
@@ -258,6 +258,12 @@
         //if (document.URL.indexOf("ScreenMode=Menu") > -1)
         //$('body').append('<div id="dvdialogMenu" style="min-height: 65px !important; width: auto; max-height: none; height: auto; display: none;">' +
         //    '<p style="font-family: Verdana,Arial,sans-serif; font-size: 13.5px;">There are unsaved changes.Do you want to save the them?</p></div>');
+        //CAP-1511
+        if (parent.$("#hdnSubScreen").length > 0 && parent.$("#hdnSubScreen").val() != undefined && parent.$("#hdnSubScreen").val() != "") {
+            $("#" + parent.$("#hdnSubScreen").val() + " a").click();
+            localStorage.setItem("bSave", "false");
+            localStorage.setItem("PrevSubTab", $("#" + parent.$("#hdnSubScreen").val() + " a").text());
+        }
         if ($("ul#myTabs li.active").length != 0) {
 
             if (localStorage.getItem("bSave") == "true") {
