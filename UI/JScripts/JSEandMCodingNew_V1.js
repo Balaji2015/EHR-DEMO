@@ -2622,6 +2622,8 @@ myapp.controller('EandMCodingCtrl', function ($scope, $http) {
             $('#btnSubAllForSuperbill').removeAttr("disabled");
         }
         localStorage.setItem("bSave", "false");
+        //CAP-1577
+        localStorage.setItem("CCAndEandMAutosave", "false");
         window.parent.parent.parent.parent.theForm.ctl00_C5POBody_hdnIsSaveEnable.value = true;
     }
 
