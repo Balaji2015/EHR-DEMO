@@ -75,7 +75,11 @@ myapp.config(function ($provide) {
 });
 myapp.controller('EandMCodingCtrl', function ($scope, $http) {
     localStorage.setItem("MovetofromEandM", "False");
-     ValEnableScreen =  window.location.search.toString().split('?')[1];
+    ValEnableScreen = window.location.search.toString().split('?')[1];
+    //Cap - 1623
+    if (ValEnableScreen == undefined && ValEnableScreen == null) {
+        ValEnableScreen = "";
+    }
     // $scope.sortColumn = 'Order';
     $http({
         url: "WebServices/EandMCodingService.asmx/LoadEandMCodingCPTTable",
@@ -2103,7 +2107,9 @@ myapp.controller('EandMCodingCtrl', function ($scope, $http) {
         }).success(function (response, status, headers, config) {
             if (response.d != "") {
                 var test = JSON.parse(response.d);
-
+                //Cap - 1634
+                var flag = 0;
+                var iMax = 0
                 //Cap - 1301
                 //if (test.ListofCPTs.length > 0) {
 
@@ -2656,7 +2662,7 @@ myapp.controller('EandMCodingCtrl', function ($scope, $http) {
         else if (($('#tblEandMCodingICD tr td').length == 0 && $('#tblAssEandMCodingICD tr td').length == 0)) { //save service procedure code without icd.
 
             if (UserRole.toUpperCase() != 'MEDICAL ASSISTANT' && UserRole.toUpperCase() != 'OFFICE MANAGER' && UserRole.toUpperCase() != 'CODER' && UserRole.toUpperCase() != 'TECHNICIAN' && ValEnableScreen.indexOf('EnableScreen')<0) {
-                //{ sessionStorage.setItem('StartLoading', 'false'); StopLoadFromPatChart(); }
+              //{ sessionStorage.setItem('StartLoading', 'false'); StopLoadFromPatChart(); }
 
                 icdcount = true;
 
