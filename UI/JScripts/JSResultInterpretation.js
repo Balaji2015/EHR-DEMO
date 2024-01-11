@@ -117,6 +117,8 @@ $("#txtSummary").bind('paste', function () {
         var dataFull = data.replaceAll(";", ",");
         $('#txtSummary').val(dataFull);
     }), '3000';
+    //Cap - 1636
+    document.getElementById("btnSaveInt").disabled = false;
 });
 
 function btnOkClick() {
