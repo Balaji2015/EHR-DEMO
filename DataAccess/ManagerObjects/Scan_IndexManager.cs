@@ -36,6 +36,7 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
         IList<scan_index> GetScanIndexDetailsForOrderID(ulong uScanID);
         IList<scan_index> GetScanIndexDetailsForScanIndexConversionID(ulong uIndexConScanID);
         void SaveUpdateScanIndexforDeleteFiles(IList<scan_index> lstScanIndex);
+        IList<scan_index> GetscanIndexList(List<int> scanid);
     }
 
     public partial class Scan_IndexManager : ManagerBase<scan_index, ulong>, IScan_IndexManager
@@ -801,7 +802,20 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
             IList<scan_index> lstScanIndexnull = null;
             SaveUpdateDelete_DBAndXML_WithTransaction(ref lstScanIndexnull, ref lstScanIndex, null, string.Empty, false, false, 0, string.Empty);
         }
+        public IList<scan_index> GetscanIndexList(List<int> scanid)
+        {
+            IList<scan_index> listscanindex = new List<scan_index>();
+            //.Add(Expression.Eq("Procedure_Type", ProcedureType));
+            using (ISession iMySession = NHibernateSessionManager.Instance.CreateISession())
+            {
+                //ICriteria crit = iMySession.CreateCriteria(typeof(ProcedureCodeLibrary)).Add(Expression.In("Procedure_Code", CPT)).AddOrder(Order.Desc("Procedure_Charge"));
+                ICriteria crit = iMySession.CreateCriteria(typeof(scan_index)).Add(Expression.In("Scan_ID", scanid));
+                listscanindex = crit.List<scan_index>();
+                iMySession.Close();
+            }
+            return listscanindex;
 
+        }
 
         //public IList<scan_index> GetPageNumbersforThumbNailDelete(string filename)
         //{

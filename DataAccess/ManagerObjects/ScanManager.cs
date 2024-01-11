@@ -25,7 +25,7 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
         IList<Scan> GetOnlineDocumentsList(string facility, IList<string> online_document_list, DateTime document_date);
         IList<Scan> GetScanDocumentsByScanFileNameList(List<string> ScnFileName);
         //bool GetOnlineDocumentsList(string facility, string online_document_list);
-        IList<Scan> GetScanDocumentsByScanFilePathDeleteCheck(string ScnFilePath);
+        int GetScanDocumentsByScanFilePathDeleteCheck(string ScnFilePath);
     }
     public partial class ScanManager : ManagerBase<Scan, ulong>, IScanManager
     {
@@ -838,8 +838,9 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
         }
 
 
-        public IList<Scan> GetScanDocumentsByScanFilePathDeleteCheck(string ScnFilePath)
+        public int GetScanDocumentsByScanFilePathDeleteCheck(string ScnFilePath)
         {
+            int flag = 0;
             IList<Scan> listscan = new List<Scan>();
             using (ISession iMySession = NHibernateSessionManager.Instance.CreateISession())
             {
@@ -847,7 +848,29 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
                 listscan = criteria.List<Scan>();
                 iMySession.Close();
             }
-            return listscan;
+            List<int> uscanid = new List<int>();
+            IList<scan_index> lstscanindex = new List<scan_index>();
+            if (listscan.Count > 0)
+            {
+                uscanid = listscan.Select(a => a.Id).ToList<int>();
+                IScan_IndexManager objscanindex = new Scan_IndexManager();
+                lstscanindex = objscanindex.GetscanIndexList(uscanid);
+                if (lstscanindex.Count > 0)
+                {
+                    flag = 1;
+                }
+                else
+                {
+                    flag = 0;
+
+                }
+            }
+            else
+            {
+                flag = 0;
+            }
+            return flag;
+            //return listscan;
         }
 
         //public bool GetOnlineDocumentsList(string facility, string online_document_list)

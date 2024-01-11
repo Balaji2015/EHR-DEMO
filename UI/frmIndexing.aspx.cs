@@ -5098,18 +5098,25 @@ namespace Acurus.Capella.UI
             //string ScnFileName = Path.GetFileName(fileName);
             ScanManager obj = new ScanManager();
             IList<Scan> lstscan = new List<Scan>();
+            //Cap - 1292
+            int flag = 0;
             if (fileName.Contains("/") == true)
             {
                 fileName = fileName.Replace(@"/", @"\");
                 fileName = Regex.Replace(fileName, @"\\", @"\");
-                lstscan = obj.GetScanDocumentsByScanFilePathDeleteCheck(fileName);
+                //Cap - 1292
+                // lstscan = obj.GetScanDocumentsByScanFilePathDeleteCheck(fileName);
+                flag = obj.GetScanDocumentsByScanFilePathDeleteCheck(fileName);
                 //lstscan = obj.GetScanDocumentsByScanFilePathDeleteCheck(fileName.Replace(@"/", @"\").Replace(@"\\", @"\"));
 
             }
             else
-                lstscan = obj.GetScanDocumentsByScanFilePathDeleteCheck(fileName);
-
-            if (lstscan.Count == 0)
+                //Cap - 1292
+                //lstscan = obj.GetScanDocumentsByScanFilePathDeleteCheck(fileName);
+                flag = obj.GetScanDocumentsByScanFilePathDeleteCheck(fileName);
+            //Cap - 1292
+            //if (lstscan.Count == 0)
+            if (flag == 0)
             {
                 status.Append("Success");
             }
