@@ -191,7 +191,9 @@ myapp.controller('EandMCodingCtrl', function ($scope, $http) {
                     type: "POST",
                     contentType: "application/json; charset=utf-8",
                     url: "WebServices/EandMCodingService.asmx/SearchCPTDescrptionText",
-                    data: "{\"text\":\"" + document.getElementById("txtCPT").value + "|" + "txtCPT" + "\"}",
+                    //CAP-1585
+                   // data: "{\"text\":\"" + document.getElementById("txtCPT").value + "|" + "txtCPT" + "\"}",
+                    data: JSON.stringify({ text: document.getElementById("txtCPT").value + "|txtCPT" }),
                     dataType: "json",
                     async: true,
                     success: function (data) {

@@ -570,6 +570,36 @@ function saveorder() {
         }
 
     }
+
+    //Jira CAP-664 - start
+    var OrdersPrcedures = sessionStorage.getItem("OrdersPrcedures").split('~');
+    for (var i = 0; i < OrdersPrcedures.length; i++) {
+        var columns = '';
+        var quantity;
+        for (var j = 0; j < rows.length; j++) {
+            if (rows[j].innerText.split('___')[0].replaceAll(" ", "") == OrdersPrcedures[i].split('___')[0]) {
+                columns = $(rows[j]).find('td');
+                if ($(columns[1])[0]?.childNodes[0]?.value != undefined && $(columns[1])[0]?.childNodes[0]?.value != "") {
+                    quantity = $(columns[1])[0].childNodes[0].value;
+                }
+                else if ($(columns[1])[0]?.childNodes[0]?.value != undefined && $(columns[1])[0]?.childNodes[0]?.value == "") {
+                    quantity = 0;
+                }
+                OrdersPrcedures[i] = OrdersPrcedures[i].split('___')[0] + "___" + parseFloat(quantity).toFixed(2) + "___";
+            }
+        }
+    }
+    var finalOrdersPrcedures = "";
+    for (var x = 0; x < OrdersPrcedures.length; x++) {
+        if (finalOrdersPrcedures == "") {
+            finalOrdersPrcedures = OrdersPrcedures[x];
+        }
+        else {
+            finalOrdersPrcedures = finalOrdersPrcedures + "~" + OrdersPrcedures[x];
+        }
+    }
+    sessionStorage.setItem("OrdersPrcedures", finalOrdersPrcedures);
+    //Jira CAP-664 - End
     { sessionStorage.setItem('StartLoading', 'true'); StartLoadFromPatChart(); }
     if (inputdata != "") {
         $.ajax({
@@ -605,20 +635,21 @@ function saveorder() {
 }
 var OrderIdLst = [];
 function OpenMedication_dosage() {
-    
-    //if (window.parent.parent.parent.parent.theForm.ctl00_C5POBody_hdnIsSaveEnable != null || window.parent.parent.parent.parent.theForm.ctl00_C5POBody_hdnIsSaveEnable != undefined) {
-        //if (window.parent.parent.parent.parent.theForm.ctl00_C5POBody_hdnIsSaveEnable.value == "true") {
-            //document.getElementById("btnOrderSubmit").click();
-            //return true;
-        //}
+
+    //Jira CAP-664 - commented
+    ////if (window.parent.parent.parent.parent.theForm.ctl00_C5POBody_hdnIsSaveEnable != null || window.parent.parent.parent.parent.theForm.ctl00_C5POBody_hdnIsSaveEnable != undefined) {
+    //    //if (window.parent.parent.parent.parent.theForm.ctl00_C5POBody_hdnIsSaveEnable.value == "true") {
+    //        //document.getElementById("btnOrderSubmit").click();
+    //        //return true;
+    //    //}
+    ////}
+    ////if (document.getElementById('btnOrderSubmit').disabled == false) {
+    //if (window.parent.parent.parent.parent.theForm.ctl00_C5POBody_hdnIsSaveEnable != null && window.parent.parent.parent.parent.theForm.ctl00_C5POBody_hdnIsSaveEnable != undefined) {
+    //    if (window.parent.parent.parent.parent.theForm.ctl00_C5POBody_hdnIsSaveEnable.value == "true") {
+    //        DisplayErrorMessage('230145');
+    //        return false;
+    //    }
     //}
-    //if (document.getElementById('btnOrderSubmit').disabled == false) {
-    if (window.parent.parent.parent.parent.theForm.ctl00_C5POBody_hdnIsSaveEnable != null && window.parent.parent.parent.parent.theForm.ctl00_C5POBody_hdnIsSaveEnable != undefined) {
-        if (window.parent.parent.parent.parent.theForm.ctl00_C5POBody_hdnIsSaveEnable.value == "true") {
-            DisplayErrorMessage('230145');
-            return false;
-        }
-    }
     var order_id = 1544140;
     var order_id2 = 1544141;
     OrderIdLst.push(order_id);
@@ -638,12 +669,43 @@ function OpenMedication_dosage() {
 
 
     });
+    //Jira CAP-664 - start
+    var OrdersPrcedures = GetSelectedOrdersFromUI();
+    if (sessionStorage.getItem("OrdersPrcedures") != null && sessionStorage.getItem("OrdersPrcedures") != undefined) {
 
+        if (sessionStorage.getItem("OrdersPrcedures") != OrdersPrcedures) {
+            DisplayErrorMessage('230145');
+            return false;
+        }
+    }
+    //Jira CAP-664 - End
     localStorage.setItem("procedure", procedure);
-    $(top.window.document).find("#ProcessModalMed")[0].style.height = "47%";
-    $(top.window.document).find("#ProcessModalMed")[0].style.width = "800px";
+
+    //Jira CAP-664 - Old Code
+    //$(top.window.document).find("#ProcessModalMed")[0].style.height = "47%";
+    //$(top.window.document).find("#ProcessModalMed")[0].style.width = "800px";
+    //$(top.window.document).find("#ProcessModalMed").modal({ backdrop: 'static', keyboard: false }, 'show');
+    //$(top.window.document).find("#mdldlgMed")[0].style.width = "86%";
+    //$(top.window.document).find("#ProcessFrameMed")[0].style.height = "275px";
+    //$(top.window.document).find("#ModalTitleMed").html("Medication Dosage");
+    //$(top.window.document).find("#ModalTitleMed")[0].textContent = "Medication Dosage";
+    //$(top.window.document).find('#ProcessFrameMed')[0].src = "HtmlMedicineDosage.html?version=" + sessionStorage.getItem("ScriptVersion");
+    //return false;
+
+    //Jira CAP-664 - New Code
+    $(top.window.document).find("#ProcessModalMed")[0].style.height = "100%";
+    $(top.window.document).find("#ProcessModalMed")[0].style.width = "100%";
+    $(top.window.document).find("#ProcessModalMed")[0].style.setProperty("background-color", "rgba(0, 0, 0, 0.13)");
     $(top.window.document).find("#ProcessModalMed").modal({ backdrop: 'static', keyboard: false }, 'show');
-    $(top.window.document).find("#mdldlgMed")[0].style.width = "86%";
+    $(top.window.document).find("#mdldlgMed")[0].style.width = "50%";
+    $(top.window.document).find("#mdldlgMed")[0].style.height = "345px";
+    if ($(top.window.document).find("#mdldlgMed")[0]?.children[0]?.className != undefined && $(top.window.document).find("#mdldlgMed")[0].children[0].className.indexOf("modal-content") > -1) {
+        $(top.window.document).find("#mdldlgMed")[0].children[0].style.setProperty("margin-left", "135px");
+        $(top.window.document).find("#mdldlgMed")[0].children[0].style.setProperty("margin-top", "120px");
+    }
+    $(top.window.document).find("#ProcessModalMed")[0].style.removeProperty("margin-left");
+    $(top.window.document).find("#ProcessModalMed")[0].style.removeProperty("margin-top");
+
     $(top.window.document).find("#ProcessFrameMed")[0].style.height = "275px";
     $(top.window.document).find("#ModalTitleMed").html("Medication Dosage");
     $(top.window.document).find("#ModalTitleMed")[0].textContent = "Medication Dosage";
@@ -790,6 +852,8 @@ function BindMedication() {
     }
 }
 function btnOrderSubmit_Clicked(sender) {
+    //Jira CAP-664
+    sessionStorage.setItem("OrdersPrcedures", '');
     var now = new Date();
     var utc = now.toUTCString();
     document.getElementById("hdnLocalTime").value = utc;
@@ -934,7 +998,10 @@ function btnSelectLocation_Clicked(sender, args) {
     WindowName.add_close(OnClientCloseSelectLabLocation);
 }
 function FormLoad() {
-    
+    //Jira CAP-664
+    var OrdersPrcedures = GetSelectedOrdersFromUI();
+    sessionStorage.setItem("OrdersPrcedures", OrdersPrcedures);
+
     var objgbSpecimenDetails = document.getElementById("gbSpecimenDetails");
     var objgbOrderDetails = document.getElementById("gbOrderDetails");
     objgbOrderDetails.style.height = objgbSpecimenDetails.offsetHeight;
@@ -1439,8 +1506,10 @@ function btnGenerateABN_Clicked(sender, args) {
         }
 }
 function btnClearAll_Clicked(sender, args) {
-
+   
     { sessionStorage.setItem('StartLoading', 'true'); StartLoadFromPatChart();}
+    //Jira CAP-664
+    sessionStorage.setItem("OrdersPrcedures", '');
      if (JSON.parse(sessionStorage.getItem("EncCancel")) == true)
         sessionStorage.setItem("EncCancel", "false");
     var btnSaved;
@@ -1831,7 +1900,9 @@ function EnableWaitCursor() {
 
 
 function EnableWaitCursorcbolab() {
-    { sessionStorage.setItem('StartLoading', 'true'); StartLoadFromPatChart();}
+    //Jira CAP-664
+    { sessionStorage.setItem('StartLoading', 'true'); StartLoadFromPatChart(); }
+    sessionStorage.setItem("OrdersPrcedures", '');
     if (document.getElementById('btnOrderSubmit') != undefined) {
         document.getElementById('btnOrderSubmit').disabled = false;
     }
@@ -2038,4 +2109,19 @@ function warningmethodCbolab(isDefaultLab) {
         $('#hdnCMGAncillarySaveOrder').val('false');
         document.getElementById('btnOrderSubmit').disabled = true;
     }
+}
+//Jira CAP-664
+function GetSelectedOrdersFromUI() {
+    var OrdersPrcedures = "";
+    $("#chklstFrequentlyUsedProcedures input[type=checkbox]:checked").each(function () {
+        if ($('#' + this.id)[0]?.labels[0]?.innerText != undefined) {
+            if (OrdersPrcedures == "") {
+                OrdersPrcedures = $('#' + this.id)[0]?.labels[0]?.innerText.replaceAll(" ", "");;
+            }
+            else {
+                OrdersPrcedures = OrdersPrcedures + "~" + $('#' + this.id)[0]?.labels[0]?.innerText.replaceAll(" ", "");;
+            }
+        }
+    });
+    return OrdersPrcedures;
 }

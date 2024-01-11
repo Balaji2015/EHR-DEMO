@@ -59,7 +59,18 @@ namespace Acurus.Capella.UI.Extensions
 
             return false;
         }
+        //CAP-1511
+        public static bool IsValidEncounterTabUrl(string currentURL)
+        {
+            var urlPattern = @"^https?://[^/]+/frmPatientChart\.aspx\?(EncounterID=\d+)?(&Screen=\w+)$";
 
+            if (Regex.IsMatch(currentURL, urlPattern))
+            {
+                return true;
+            }
+
+            return false;
+        }
         public static bool IsValidLegalOrg(string user_name, ulong humanId)
         {
             HumanManager humanManager = new HumanManager();
@@ -101,6 +112,83 @@ namespace Acurus.Capella.UI.Extensions
             }
 
             return false;
+        }
+
+        //CAP-1511
+        public static (string,string) GetCurrentTabIdByTabName(string tabName)
+        {
+            var currentTabId = string.Empty;
+            var currentChildTabId = string.Empty;
+            switch (tabName)
+            {
+                //case "SCREENING":
+                //    currentTabId = "tabStripEncounter_tbQuestion";
+                //    break;
+                //case "PFSH":
+                //    currentTabId = "tabStripEncounter_tbPFSH";
+                //    break;
+                //case "ROS":
+                //    currentTabId = "tabStripEncounter_tbROS";
+                //    break;
+                case "VITALS":
+                    currentTabId = "tabStripEncounter_tbVitals";
+                    break;
+                //case "EXAM":
+                //    currentTabId = "tabStripEncounter_tbExam";
+                //    break;
+                //case "TEST":
+                //    currentTabId = "tabStripEncounter_tabTest";
+                //    break;
+                case "ASSESSMENT":
+                    currentTabId = "tabStripEncounter_tbAssessment";
+                    break;
+                //case "ORDERS":
+                //    currentTabId = "tabStripEncounter_tbOrders";
+                //    break;
+                case "ERX":
+                    currentTabId = "tabStripEncounter_tbEPrescription";
+                    break;
+                //case "PLAN":
+                //    currentTabId = "tabStripEncounter_tbPlan";
+                //    break;
+                case "EANDM":
+                    currentTabId = "tabStripEncounter_tbEandM";
+                    break;
+                //case "GENERALPLAN":
+                //    currentTabId = "tabStripEncounter_tbPlan";
+                //    currentChildTabId = "tabPlan_tbGeneralPlan";
+                //    break;
+                //case "INDIVIDUALCAREPLAN":
+                //    currentTabId = "tabStripEncounter_tbPlan";
+                //    currentChildTabId = "tabPlan_tbIndividualCarePlan";
+                //    break;
+                //case "PREVENTIVESCREENPLAN":
+                //    currentTabId = "tabStripEncounter_tbPlan";
+                //    currentChildTabId = "tabPlan_tbPreventiveScreen";
+                //    break;
+                case "DIAGNOSTICORDER":
+                    currentTabId = "tabStripEncounter_tbOrders";
+                    currentChildTabId = "tabOrder_tbDiagnosticOrder";
+                    break;
+                case "REFERRALORDER":
+                    currentTabId = "tabStripEncounter_tbOrders";
+                    currentChildTabId = "tabOrder_tbReferralOrder";
+                    break;
+                case "IMMUNIZATION":
+                    currentTabId = "tabStripEncounter_tbOrders";
+                    currentChildTabId = "tabOrder_tbImmunization";
+                    break;
+                case "PROCEDURE":
+                    currentTabId = "tabStripEncounter_tbOrders";
+                    currentChildTabId = "tabOrder_tbProcedure";
+                    break;
+
+                default:
+                    currentTabId = "tabStripEncounter_tbCCHPI";
+                    break;
+            }
+
+            return (currentTabId, currentChildTabId);
         }
     }
 }

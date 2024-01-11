@@ -27,6 +27,7 @@ using DocumentFormat.OpenXml.Wordprocessing;
 using ListItem = System.Web.UI.WebControls.ListItem;
 using static System.Windows.Forms.VisualStyles.VisualStyleElement.StartPanel;
 using Newtonsoft.Json;
+using Acurus.Capella.UI.Extensions;
 
 namespace Acurus.Capella.UI
 {
@@ -72,6 +73,15 @@ namespace Acurus.Capella.UI
             MessageWindow.Visible = false;
             MessageWindow.VisibleOnPageLoad = false;
             hdnUserRole.Value = ClientSession.UserRole.ToString();
+            //CAP-1511
+            if (!string.IsNullOrEmpty(Request.QueryString["Screen"]))
+            {
+                hdnScreen.Value = Request.QueryString["Screen"];
+            }
+            if (!string.IsNullOrEmpty(Request.QueryString["SubScreen"]))
+            {
+                hdnSubScreen.Value = Request.QueryString["SubScreen"];
+            }
 
             int node = 0;
 
@@ -207,7 +217,8 @@ namespace Acurus.Capella.UI
 
 
                 //Encounter> ilstEncounter = EncRecord;// objEncounterManager.GetEncounterByEncounterID(ClientSession.EncounterId);
-                if (EncRecord.Is_PFSH_Verified.Trim() == "Y")
+                //CAP-951
+                if ((EncRecord?.Is_PFSH_Verified?.Trim()??"") == "Y")
                     ClientSession.bPFSHVerified = true;
                 hdnACOValidated.Value = "False";
 

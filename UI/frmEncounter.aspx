@@ -434,6 +434,8 @@
         <asp:HiddenField ID="hdnSelectPhysicianId" runat="server" />
         <%--<asp:HiddenField ID="hdnNotificationOkClicked" runat="server" />--%><%--//BugID:47780--%>
         <asp:HiddenField ID="hdnProvRev" runat="server" />
+        <asp:HiddenField ID="hdnScreen" runat="server" /><%--//CAP-1511--%>
+        <asp:HiddenField ID="hdnSubScreen" runat="server" /><%--//CAP-1511--%>
         <asp:HiddenField ID="hdnEncounterIDSummary" runat="server" EnableViewState="false" />
         <asp:UpdatePanel ID="upPanle" runat="server">
             <ContentTemplate>
@@ -489,6 +491,13 @@
     var bCancel = false;
     sessionStorage.setItem("EncCancel", "false");
     var dvdialog;
+    $(document).ready(function () {
+        //CAP-1511
+        var currentTabNameId = document.getElementById(GetClientId('hdnScreen'))?.value;
+        var currentSubTabNameId = document.getElementById(GetClientId('hdnSubScreen'))?.value;
+        if (currentTabNameId != undefined && currentTabNameId != null && currentTabNameId != "")
+            $("#" + currentTabNameId + " a").click();
+    });
     window.onbeforeunload = function funcUnload() {
         PrevTab = $(window.document).find(".tab-pane.active ");
         var prvTab = PrevTab[0].attributes.id.value;
@@ -526,7 +535,6 @@
     var event_bkup;
     var AspxPages = ["#tbSummary", "#tbEPrescription", "#tbVitals", "#tbROS", "#tbCCHPI"];
     $('.nav-tabs a').on('shown.bs.tab', function (event) {
-
         // {sessionStorage.setItem('StartLoading', 'false');StopLoadFromPatChart();} Commented to Persist Loading Screen till the Child Screen Loads Completely.
         //BugID:46035 - autosave when Codes are checked in Fav.Sheet.
         var evt = event;
