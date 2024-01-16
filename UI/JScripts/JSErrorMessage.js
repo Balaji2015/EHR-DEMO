@@ -3,7 +3,7 @@ var tab_for_blockdays;
 var x = 0;
 var count = 0;
 //CAP-951
-var unhandeledException = ["is not defined", "$(...)?.mask is not a function", " $(...)?.datetimepicker is not a function", "Internet connection is not detected", "a[b] is not a function", "$scope.RefershGrid is not a function", "Unexpected identifier Window", "$(...).find(...)?.modal is not a function"];
+var unhandeledException = ["is not defined", "$(...)?.mask is not a function", " $(...)?.datetimepicker is not a function", "Internet connection is not detected", "a[b] is not a function", "$scope.RefershGrid is not a function", "Unexpected identifier Window", "$(...).find(...)?.modal is not a function", "unrecognized expression: # iframe"];
 
 function setusername(data) {
     //Test
