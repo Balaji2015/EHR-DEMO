@@ -633,11 +633,12 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
 
             using (ISession iMySession = NHibernateSessionManager.Instance.CreateISession())
             {
+                //CAP-1639
                 IQuery query = iMySession.GetNamedQuery("FindPhysician");
                 query.SetParameter(0, "%" + token + "%");
                 query.SetParameter(1, "%" + token + "%");
                 query.SetParameter(2, "%" + token + "%");
-                //query.SetParameter(3, "%" + token + "%");
+                query.SetParameter(3, "%" + token + "%");
                 //query.SetParameter(4, "%" + token + "%");
                 resultList = new ArrayList(query.List());
                 if (resultList.Count > 0)
@@ -647,7 +648,15 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
                         PhysicianFacilityDTO objPhy = new PhysicianFacilityDTO();
                         objPhy.PhyId = Convert.ToUInt64(obj[0]);
                         objPhy.PhyPrefix = obj[1].ToString();
-                        objPhy.PhyFirstName = obj[2].ToString();
+                        if (obj[17] != null && obj[17].ToString().ToUpper() != "ORGANIZATION")
+                        {
+                            objPhy.PhyFirstName = obj[2].ToString();
+                        }
+                        else
+                        {
+                            objPhy.PhyFirstName = obj[16]?.ToString()??string.Empty;
+                        }
+                        
                         objPhy.PhyMiddleName = obj[3].ToString();
                         objPhy.PhyLastName = obj[4].ToString();
                         objPhy.PhySuffix = obj[5].ToString();

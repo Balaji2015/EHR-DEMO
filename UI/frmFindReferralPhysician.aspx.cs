@@ -70,7 +70,7 @@ namespace Acurus.Capella.UI
                                      new
                                      {
                                          label =
-                                       Phy.PhyPrefix + " " + Phy.PhyFirstName + " " + Phy.PhyMiddleName + ", " + Phy.PhyLastName + "(" + Phy.PhySuffix + ")" + " | " +
+                                            Phy.PhyPrefix + " " + Phy.PhyFirstName + " " + Phy.PhyMiddleName + (string.IsNullOrWhiteSpace(Phy.PhyLastName)? " " : ", " + Phy.PhyLastName) + (string.IsNullOrWhiteSpace(Phy.PhySuffix) ? string.Empty : "(" + Phy.PhySuffix + ")") + " | " +
                                                               "NPI:" + Phy.PhyNPI + " | " +
                                                               Phy.PhySpecialtyCode + " | " +
                                                               "FACILITY:" + Phy.PhyFacility + " | " +
