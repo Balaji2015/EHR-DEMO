@@ -107,9 +107,13 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
         {
             using (ISession iMySession = NHibernateSessionManager.Instance.CreateISession())
             {
+                //Jira CAP-1664
+                //ICriteria criteria = iMySession.CreateCriteria(typeof(GeneralNotes))
+                //                    .Add(Expression.Like("Parent_Field", parentField))
+                //                    .Add(Expression.Like("Encounter_ID", encounterId));
                 ICriteria criteria = iMySession.CreateCriteria(typeof(GeneralNotes))
-                                    .Add(Expression.Like("Parent_Field", parentField))
-                                    .Add(Expression.Like("Encounter_ID", encounterId));
+                                    .Add(Expression.Eq("Parent_Field", parentField))
+                                    .Add(Expression.Eq("Encounter_ID", encounterId));
                 IList<GeneralNotes> ilstGeneralNotes = criteria.List<GeneralNotes>();
                 iMySession.Close();
                 return ilstGeneralNotes;
