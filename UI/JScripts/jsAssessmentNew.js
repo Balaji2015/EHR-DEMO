@@ -1508,7 +1508,9 @@ myapp.controller('assessmentCtrl', function ($scope, $http) {
                     type: "POST",
                     contentType: "application/json; charset=utf-8",
                     url: "frmAssessmentNew.aspx/SearchDescrptionText",
-                    data: "{\"text\":\"" + document.getElementById("txtDescription").value + "|" + "txtDescription" + "|" + "ICD_10" + "\"}",
+                    //CAP-1667
+                    data: JSON.stringify({ text: document.getElementById("txtDescription").value + "|txtDescription" + "|ICD_10" }),
+                   /* data: "{\"text\":\"" + document.getElementById("txtDescription").value + "|" + "txtDescription" + "|" + "ICD_10" + "\"}",*/
                     dataType: "json",
                     async: true,
                     success: function (data) {
