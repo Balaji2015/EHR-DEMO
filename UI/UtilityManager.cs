@@ -434,7 +434,21 @@ namespace Acurus.Capella.UI
             TimeSpan difference = now.Subtract(birthDate);
             return (int)difference.TotalDays;
         }
+        public static int CalculateAgeByDOS(DateTime birthDate, DateTime DOS)
+        {
+            // cache the current time
+            DateTime now = DOS; // today is fine, don't need the timestamp from now
+                                // get the difference in years
+            int years = 0;
+            if (birthDate != null)
+                years = now.Year - birthDate.Year;
+            // subtract another year if we're before the
+            // birth day in the current year
+            if (now.Month < birthDate.Month || (now.Month == birthDate.Month && now.Day < birthDate.Day))
+                --years;
 
+            return years;
+        }
         public static string FillPatientSummaryBar(string LastName, string FirstName, string MI, string Suffix, DateTime DOB, ulong ulHumanID, string MedRecNo, string HomePhoneNo, string Sex, string status, string SSN, string sPriPlan, string sPriCarrier, string sSecPlan)
         {
 

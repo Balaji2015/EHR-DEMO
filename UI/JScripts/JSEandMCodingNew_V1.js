@@ -3294,7 +3294,9 @@ myapp.controller('EandMCodingCtrl', function ($scope, $http) {
                 }
             }
             //GitLab #3038
-            if (test.IsBillableNo == "180045") {
+            //Jira CAP-998
+            //if (test.IsBillableNo == "180045") {
+            if (test.IsBillableNo.split('~')[0] == "180045") {
 
                 localStorage.setItem("bSave", "true");
                 window.parent.parent.parent.parent.theForm.ctl00_C5POBody_hdnIsSaveEnable.value = false;
@@ -3304,10 +3306,20 @@ myapp.controller('EandMCodingCtrl', function ($scope, $http) {
                 AutoSaveSuccessful();
                 DeleteArray = [];
                 RefreshNotification('ServiceAndProcedureCode');
-
+                //Jira CAP-998 - Start
+                var alertMessage;
+                if (test.IsBillableNo.split('~')[1] == "180057") {
+                    alertMessage = 'Please select the ICD Z00.121 or Z00.129 for Gcodes G0438 or G0439';
+                }
+                else {
+                    alertMessage = 'Please select the ICD Z00.00 or Z00.01 for Gcodes G0438 or G0439';
+                }
+                //Jira CAP-998 - End
                 if (UserRole.toUpperCase() == 'PHYSICIAN' && ValEnableScreen.indexOf('EnableScreen') < 0) {
 
-                    if (!alert('Please select the ICD Z00.00 or Z00.01 for Gcodes G0438 or G0439'))   {
+                    //Jira CAP-998
+                    //if (!alert('Please select the ICD Z00.00 or Z00.01 for Gcodes G0438 or G0439'))   {
+                    if (!alert(alertMessage)) {
                         if (localStorage.getItem("MovetofromEandM") == "False") {
 
                             $($(window.top.document).find('iframe[id=ctl00_C5POBody_EncounterContainer]')[0].contentDocument).find("ul li a")[0].click();
@@ -3325,7 +3337,7 @@ myapp.controller('EandMCodingCtrl', function ($scope, $http) {
                     }
                 }
                 else {
-                    DisplayErrorMessage('180045');
+                    DisplayErrorMessage(test.IsBillableNo.split('~')[1]);
                 }
             }
             $scope.EandMCodingCPTTable = test.ProcedureList;
@@ -3374,18 +3386,18 @@ myapp.controller('EandMCodingCtrl', function ($scope, $http) {
             }
             return;
         })
-            .error(function (error, status, headers, config) {
+                .error(function (error, status, headers, config) {
 
-                { sessionStorage.setItem('StartLoading', 'false'); StopLoadFromPatChart(); }
-                if (status == 999)
-                    window.location = "frmSessionExpired.aspx";
-                //else
-                //    alert(error.Message + ".Please Contact Support!");
+                    { sessionStorage.setItem('StartLoading', 'false'); StopLoadFromPatChart(); }
+                    if (status == 999)
+                        window.location = "frmSessionExpired.aspx";
+                    //else
+                    //    alert(error.Message + ".Please Contact Support!");
 
-                else {
-                    window.location = "ErrorPage.aspx?Message=" + error.Message + "|$|" + error.StackTrace;
-                }
-            });
+                    else {
+                        window.location = "ErrorPage.aspx?Message=" + error.Message + "|$|" + error.StackTrace;
+                    }
+                });
         }, 100);
     }
     /* For Git Lab Id: 1666

@@ -629,7 +629,7 @@ namespace Acurus.Capella.UI
                 {
                     bool bDuplicateCheck = true;
                     string check = "True";
-                    MoveVerificationDTO objMoveVerifyDTO = EncMngr.PerformMoveVerification(ulMyEncounterID, ulMyPhysicianID, ulMyHumanID, UtilityManager.ConvertToLocal(DateTime.Now), ClientSession.FacilityName, ClientSession.UserName, false, string.Empty, string.Empty, ClientSession.UserCurrentProcess, string.Empty, string.Empty, bDuplicateCheck, ClientSession.UserRole, "btnPhysiciancorrection", bDuplicateCheck, check);
+                    MoveVerificationDTO objMoveVerifyDTO = EncMngr.PerformMoveVerification(ulMyEncounterID, ulMyPhysicianID, ulMyHumanID, UtilityManager.ConvertToLocal(DateTime.Now), ClientSession.FacilityName, ClientSession.UserName, false, string.Empty, string.Empty, ClientSession.UserCurrentProcess, string.Empty, string.Empty, bDuplicateCheck, ClientSession.UserRole, "btnPhysiciancorrection", bDuplicateCheck, check, out string sAlert);
                     if (objMoveVerifyDTO != null)
                     {
                         if (objMoveVerifyDTO.ExceptionCount > 0 && objMoveVerifyDTO.IsFeedBackProvided == false)
@@ -700,7 +700,7 @@ namespace Acurus.Capella.UI
                 //Added by Bala for Duplicate Procedure Check in E&M code on 09-Nov-2012
                 bool bDuplicateCheck = true;
                 string check = "True";
-                MoveVerificationDTO objMoveVerifyDTO = EncMngr.PerformMoveVerification(ulMyEncounterID, ulMyPhysicianID, ulMyHumanID, UtilityManager.ConvertToLocal(DateTime.Now), ClientSession.FacilityName, ClientSession.UserName, false, string.Empty, string.Empty, ClientSession.UserCurrentProcess, string.Empty, string.Empty, bDuplicateCheck, ClientSession.UserRole, "btnPhysiciancorrection", bDuplicateCheck, check);
+                MoveVerificationDTO objMoveVerifyDTO = EncMngr.PerformMoveVerification(ulMyEncounterID, ulMyPhysicianID, ulMyHumanID, UtilityManager.ConvertToLocal(DateTime.Now), ClientSession.FacilityName, ClientSession.UserName, false, string.Empty, string.Empty, ClientSession.UserCurrentProcess, string.Empty, string.Empty, bDuplicateCheck, ClientSession.UserRole, "btnPhysiciancorrection", bDuplicateCheck, check, out string sAlert);
                 if (objMoveVerifyDTO != null)
                 {
                     if (objMoveVerifyDTO.IsWorkflowPushed)

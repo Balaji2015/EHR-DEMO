@@ -231,6 +231,7 @@
 	<Message number="180044" Type="OKCANCEL" Text="The List has duplicate procedure entries. Do you want to move the encounter to Next Process?"></Message>
 	<!--<Message number="180045" Type="OK" Text="Please select the V70.0 ICD for Gcodes G0438 or G0439"></Message>-->
 	<Message number="180045" Type="OK" Text="Please select the ICD Z00.00 or Z00.01 for Gcodes G0438 or G0439"></Message>
+	<Message number="180057" Type="OK" Text="Please select the ICD Z00.121 or Z00.129 for Gcodes G0438 or G0439"></Message>
 
 	<Message number="180301" Type="ToolStrip" Text="Saved successfully."></Message>
 	<Message number="180302" Type="OKCANCEL" Text="Are you sure you want to delete details of '{0}'."></Message>
