@@ -2131,7 +2131,8 @@ namespace Acurus.Capella.UI
                                     ilstProblemListInActive[h].Date_Diagnosed = DateDiagnosed[1] + "-" + DateDiagnosed[0] + "-01";
                                     string smonth = Convert.ToDateTime(ilstProblemListInActive[h].Date_Diagnosed).ToString("dd-MMM-yyyy");
                                     string[] sarrMonth = smonth.Split('-');
-                                    diagnosed = " (" + sarrMonth[1] + "-" + DateDiagnosed[0] + ")";
+                                    //CAP-1662
+                                    diagnosed = " (" + sarrMonth[1] + "-" + DateDiagnosed[1] + ")";
                                 }
                             }
                             else
