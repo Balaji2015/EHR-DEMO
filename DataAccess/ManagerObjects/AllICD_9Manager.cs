@@ -926,6 +926,13 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
                     allTruncatedICDs = new List<string>();
                     allTruncatedICDs = lstICD10Codes.Except(lstallICD).ToList<string>();
                 }
+                //Cap - 1461
+                else
+                {
+                    allTruncatedICDs = new List<string>();
+                    allTruncatedICDs = lstICD10Codes.ToList<string>();
+                }
+
                 iMySessionRecursive.Close();
             }
             return allTruncatedICDs;
