@@ -1389,8 +1389,9 @@ namespace Acurus.Capella.UI.WebServices
             //CPT
             IList<EAndMCoding> lstInsertUpdateCpt = new List<EAndMCoding>();
             //Cap - 1301 
-            // lstInsertUpdateCpt = EAndMCPTSaveList.Where(a => a.Is_Delete.Trim().ToUpper() != "Y").ToList().Concat(EAndMCPTUpdateList.Where(a => a.Is_Delete.Trim().ToUpper() != "Y").ToList()).ToList();
-            lstInsertUpdateCpt = EAndMCPTSaveList.Where(a => a.Is_Delete.Trim().ToUpper() != "Y").ToList();
+            //Cap - 1675 - Uncommended
+            lstInsertUpdateCpt = EAndMCPTSaveList.Where(a => a.Is_Delete.Trim().ToUpper() != "Y").ToList().Concat(EAndMCPTUpdateList.Where(a => a.Is_Delete.Trim().ToUpper() != "Y").ToList()).ToList();
+            //lstInsertUpdateCpt = EAndMCPTSaveList.Where(a => a.Is_Delete.Trim().ToUpper() != "Y").ToList();
 
             //Jira CAP-998
             //Boolean bGcode = CheckGcodes(lstInsertUpdateICD, lstInsertUpdateCpt);
@@ -1400,7 +1401,7 @@ namespace Acurus.Capella.UI.WebServices
             //if (bGcode == false)
             if (sGcode.Split('~')[0] == "false")
             {
-                //   return JsonConvert.SerializeObject("530024");
+                // return JsonConvert.SerializeObject("530024");
                 // var result = new { IsBillableNo = "180045" };
                 // return JsonConvert.SerializeObject(result);
                 //Jira CAP-998
