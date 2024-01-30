@@ -3178,7 +3178,8 @@ namespace Acurus.Capella.UI
                 Session["Notes"] = objResultMaster;
             }
             ScriptManager.RegisterStartupScript(this, this.Page.GetType(), "AutoSave", "SaveViewResults();", true);
-            btnSave.Disabled = true;
+            //Cap - 1635 - commented for this bug
+            //btnSave.Disabled = true;
             hdnSave.Value = "false";
         }       
 

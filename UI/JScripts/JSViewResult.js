@@ -427,6 +427,9 @@ function btnSave_ClientNodeClick() {
 
 
 function SaveViewResults() {
+    //Cap - 1635
+    document.getElementById(GetClientId("btnSave")).disabled = "true";
+
     { sessionStorage.setItem('StartLoading', 'false'); StopLoadFromPatChart(); }
     AutosaveDisable('false');
     DisplayErrorMessage('115009');
