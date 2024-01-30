@@ -299,7 +299,9 @@ namespace Acurus.Capella.UI.WebServices
                             problemlist.Problem_Description = Convert.ToString(oj[3]);
                             problemlist.Human_ID = ClientSession.HumanId;
                             problemlist.Physician_ID = ClientSession.PhysicianId;
-                            problemlist.Encounter_ID = ClientSession.EncounterId;
+                            //CAP-1620
+                            //problemlist.Encounter_ID = ClientSession.EncounterId;
+                            problemlist.Encounter_ID = 0;
                             problemlist.Reference_Source = "Problem List";
                             problemlist.Modified_Date_And_Time = UtilityManager.ConvertToUniversal();
                             problemlist.Is_Active = "Y";
@@ -341,7 +343,9 @@ namespace Acurus.Capella.UI.WebServices
                             problemlist.Problem_Description = Convert.ToString(oj[3]);
                             problemlist.Human_ID = ClientSession.HumanId;
                             problemlist.Physician_ID = ClientSession.PhysicianId;
-                            problemlist.Encounter_ID = ClientSession.EncounterId;
+                            //CAP-1620
+                            //problemlist.Encounter_ID = ClientSession.EncounterId;
+                            problemlist.Encounter_ID = 0;
                             problemlist.Reference_Source = "Problem List";
                             problemlist.Created_Date_And_Time = UtilityManager.ConvertToUniversal();
                             problemlist.Is_Active = "Y";
@@ -424,7 +428,9 @@ namespace Acurus.Capella.UI.WebServices
                             problemlist.Problem_Description = Convert.ToString(oj[3]);
                             problemlist.Human_ID = ClientSession.HumanId;
                             problemlist.Physician_ID = ClientSession.PhysicianId;
-                            problemlist.Encounter_ID = ClientSession.EncounterId;
+                            //CAP-1620
+                            //problemlist.Encounter_ID = ClientSession.EncounterId;
+                            problemlist.Encounter_ID = 0;//ClientSession.EncounterId;
                             problemlist.Date_Diagnosed = diag_date;
                             problemlist.Resolved_Date = rdiag_date;
                             string sReferencesource = problemlist.Reference_Source;
@@ -516,7 +522,9 @@ namespace Acurus.Capella.UI.WebServices
                 probList.Version_Year = "ICD_10";
                 probList.Human_ID = ClientSession.HumanId;
                 probList.Physician_ID = ClientSession.PhysicianId;
-                probList.Encounter_ID = ClientSession.EncounterId;
+                //CAP-1620
+                //probList.Encounter_ID =  ClientSession.EncounterId;
+                probList.Encounter_ID = 0;
                 probList.Reference_Source = "Problem List";
                 probList.Problem_Description = "No known Active Problems";
                 probList.Status = "Active";
