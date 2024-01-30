@@ -2308,6 +2308,8 @@ namespace Acurus.Capella.UI.WebServices
         //public Boolean CheckGcodes(IList<EandMCodingICD> eandmICDList, IList<EAndMCoding> EandMCodingList)
         public string CheckGcodes(IList<EandMCodingICD> eandmICDList, IList<EAndMCoding> EandMCodingList)
         {
+            ulong ulHuman_id = 0;
+            ulong ulEncounter_id = 0;
             bool IsGcodePresent = false; ;
             //bool bGCodeCheck = true; ;
             string sGCodeCheck = "true";
@@ -2321,8 +2323,24 @@ namespace Acurus.Capella.UI.WebServices
             EncounterManager EncounterMngr = new EncounterManager();
             Human objHuman = new Human();
             Encounter objEncounter = new Encounter();
-            objHuman = HumanMngr.GetHumanFromHumanID(EandMCodingList[0].Human_ID);
-            objEncounter = EncounterMngr.GetById(EandMCodingList[0].Encounter_ID);
+            if (EandMCodingList != null && EandMCodingList.Count > 0 && EandMCodingList[0].Human_ID != 0)
+            {
+                ulHuman_id = EandMCodingList[0].Human_ID;
+            }
+            else
+            {
+                ulHuman_id = ClientSession.HumanId;
+            }
+            if (EandMCodingList != null && EandMCodingList.Count > 0 && EandMCodingList[0].Encounter_ID != 0)
+            {
+                ulEncounter_id = EandMCodingList[0].Encounter_ID;
+            }
+            else
+            {
+                ulEncounter_id = ClientSession.EncounterId;
+            }
+            objHuman = HumanMngr.GetHumanFromHumanID(ulHuman_id);
+            objEncounter = EncounterMngr.GetById(ulEncounter_id);
             int iAge = UtilityManager.CalculateAgeByDOS(objHuman.Birth_Date, objEncounter.Date_of_Service);
             if (iAge > 18)
             {
