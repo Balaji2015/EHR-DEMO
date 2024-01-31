@@ -80,6 +80,11 @@ function clearall() {
         $("#cboLab").empty();
         //Cap - 1139
         //document.getElementById("hdnIsEditgrid").value = "";
+        //CAP-1633
+        var currentDate = new Date();
+        var months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+        var formattedDate = currentDate.getDate() + '-' + months[currentDate.getMonth()] + '-' + currentDate.getFullYear();
+        $('#dtpDocumentDate').val(formattedDate)
         $("#dOrder").removeAttr("data-target");
         $("#dOrder").removeClass("panel-headingIndexing");
         $("#dOrder").addClass("panel-headingdisable LabelStyle");
