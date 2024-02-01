@@ -108,9 +108,10 @@ function OpenModal(data) {
 
                                 sessionStorage.setItem("EncAutoSave", "true");
                                 if (vassessment == "ASSESSMENT") {
-
+                                    // CAP-1692
+                                    if ($($(top.window.document).find('#ctl00_C5POBody_EncounterContainer')[0].contentDocument).find('.clsIframe')?.contents()[7]?.all?.namedItem('btnSave') != undefined && $($(top.window.document).find('#ctl00_C5POBody_EncounterContainer')[0].contentDocument).find('.clsIframe')?.contents()[7]?.all?.namedItem('btnSave') != null) {
                                     $($(top.window.document).find('#ctl00_C5POBody_EncounterContainer')[0].contentDocument).find('.clsIframe').contents()[7].all.namedItem('btnSave').click();
-
+                                    }
                                     setTimeout("", 5000)
                                     if (localStorage.getItem("Assauto") == "Y") {
                                         sessionStorage.setItem('TabAssesment', "");
