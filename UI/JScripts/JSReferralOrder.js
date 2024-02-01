@@ -74,10 +74,15 @@ function PrintReferralOrderPDF()
         window.parent.parent.parent.parent.theForm.ctl00_C5POBody_hdnIsSaveEnable.value = "false";
     { sessionStorage.setItem('StartLoading', 'true'); StartLoadFromPatChart();}
     $(top.window.document).find("#PrintPDFModal").modal({ backdrop: "static", keyboard: false }, 'show');
+    //CAP-1689
+    $(top.window.document).find("#PrintPDFModal")[0].style.top = "-30px";
     $(top.window.document).find("#PrintPDFModalTitle")[0].textContent = "Print Referral Orders";
-    $(top.window.document).find("#PrintPDFmdldlg")[0].style.width = "900px";
-    $(top.window.document).find("#PrintPDFmdldlg")[0].style.height = "750px";
-    $(top.window.document).find("#PrintPDFFrame")[0].style.height = "750px";
+    $(top.window.document).find("#PrintPDFmdldlg")[0].style.maxWidth = "900px";
+    $(top.window.document).find("#PrintPDFmdldlg")[0].style.width = "100%";
+    $(top.window.document).find("#PrintPDFmdldlg")[0].style.maxHeight = "680px";
+    $(top.window.document).find("#PrintPDFmdldlg")[0].style.height = "100%";
+    $(top.window.document).find("#PrintPDFFrame")[0].style.height = "100%";
+    $(top.window.document).find("#PrintPDFFrame")[0].style.maxHeight = "600px";
     $(top.window.document).find("#PrintPDFFrame")[0].contentDocument.location.href = "frmPrintPDF.aspx?SI=" + document.getElementById('SelectedItem').value + "&Location=DYNAMIC";
 }
 function GetRadWindow() {

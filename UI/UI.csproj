@@ -376,6 +376,7 @@
     <Content Include="JScripts\jquery.ui.autocomplete.js" />
     <Content Include="JScripts\jQueryAngular.js" />
     <Content Include="JScripts\jsAssessmentNew.js" />
+    <Content Include="JScripts\JSRcopiaWebBrowser.js" />
     <Content Include="JScripts\JsRestrictMultipleTab.js" />
     <Content Include="JScripts\JSDMEOrder.js" />
     <Content Include="JScripts\JSImportCQM.js" />

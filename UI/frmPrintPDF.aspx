@@ -3,7 +3,7 @@
 
 <%@ Register Assembly="Telerik.Web.UI" Namespace="Telerik.Web.UI" TagPrefix="telerik" %>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml">
+<html xmlns="http://www.w3.org/1999/xhtml" style="max-height:540px; height:100%;">
 <head runat="server">
     <style type="text/css" media="print">
         @page
@@ -51,9 +51,9 @@
     <link href="CSS/font-awesome.css" rel="stylesheet" type="text/css" />
     <link href="~/CSS/CommonStyle.css" rel="stylesheet" type="text/css" />
 </head>
-<body onload="PDF_Load()">
-    <form id="form1" runat="server">
-    <div>
+<body onload="PDF_Load()" style="height:100%;">
+    <form id="form1" runat="server" style="height:100%;">
+    <div style="height:100%;">
         <telerik:RadScriptManager ID="RadScriptManager1" runat="server">
         </telerik:RadScriptManager>
         <div>
@@ -61,10 +61,10 @@
             SelectedIndex="0" Width="100%" ScrollChildren="True" AutoPostBack="true" OnTabClick="RadTabStrip2_TabClick">
         </telerik:RadTabStrip>
         </div>
-        <div>
-            <telerik:RadMultiPage ID="RadMultiPage1" runat="server" Width="100%" SelectedIndex="0">
+        <div style="max-height:520px; height:100%;">
+            <telerik:RadMultiPage ID="RadMultiPage1" runat="server" Width="100%" Height="100%" SelectedIndex="0">
             <telerik:RadPageView ID="RadPageView1" runat="server" Height="100%" Width="100%">
-                <iframe id="PDFLOAD" runat="server" width="100%" style="height: 600px;"></iframe>
+                <iframe id="PDFLOAD" runat="server" width="100%"></iframe>
                 
             </telerik:RadPageView>
         </telerik:RadMultiPage>
