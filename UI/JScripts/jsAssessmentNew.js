@@ -983,7 +983,8 @@ myapp.controller('assessmentCtrl', function ($scope, $http) {
     });
 
     $scope.FillFavorite = function () {
-
+        //Jira CAP-1660 and CAP-1656
+        $(top.window.document).find("#btnMinimizeViewResultICD").css({ "display": "none" });
         $(top.window.document).find("#tbFavICDsContainer #dynTr").remove();
         $(top.window.document).find("#ok")[0].disabled = true;
         $(top.window.document).find('#divFormView').modal({ backdrop: 'static', keyboard: false }, 'show');
