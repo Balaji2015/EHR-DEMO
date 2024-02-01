@@ -378,6 +378,8 @@ ProblemApp.controller('ControllerManageProblem', function ($scope, $http) {
         return 1;
     }
     $scope.LoadFavouriteICDS = function () {
+        //Jira CAP-1660 and CAP-1656
+        $(top.window.document).find("#btnMinimizeViewResultICD").css({ "display": "none" });
         { sessionStorage.setItem('StartLoading', 'true'); StartLoadFromPatChart(); }
         var arrListICDs = [];
         $.ajax({
@@ -437,6 +439,8 @@ ProblemApp.controller('ControllerManageProblem', function ($scope, $http) {
 
     }
     $scope.FillFavorite = function () {
+        //Jira CAP-1660 and CAP-1656
+        $(top.window.document).find("#btnMinimizeViewResultICD").css({ "display": "none" });
         bClickcount = false;
         $(top.window.document).find("#tbFavICDsContainer #dynTr").remove();
 
