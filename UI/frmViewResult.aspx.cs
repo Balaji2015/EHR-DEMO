@@ -126,6 +126,7 @@ namespace Acurus.Capella.UI
                     btnTask.Visible = true;
                     btnDeleteIndexing.Visible = false;
                     DelIndexDiv.Attributes.Remove("width");
+                    
                     //btnpatientChart1.Style["display"] = none;
 
                     // btnTask.Style["margin-left"] = "-114px";
@@ -514,7 +515,8 @@ namespace Acurus.Capella.UI
                     ConstructTreeView(human_id, Document_type, Key_id);
                 }
                 #endregion
-
+                //Cap - 1696
+                btnSave.Disabled = true;
             }
             else
             {
@@ -3178,8 +3180,7 @@ namespace Acurus.Capella.UI
                 Session["Notes"] = objResultMaster;
             }
             ScriptManager.RegisterStartupScript(this, this.Page.GetType(), "AutoSave", "SaveViewResults();", true);
-            //Cap - 1635 - commented for this bug
-            //btnSave.Disabled = true;
+            btnSave.Disabled = true;
             hdnSave.Value = "false";
         }       
 
@@ -3411,6 +3412,9 @@ namespace Acurus.Capella.UI
         {
             //Cap - 1374
             btnSave.Disabled = false;
+            //Cap - 1696
+            hdnSave.Value = "true";
+
             FillCombobox();
             ScriptManager.RegisterStartupScript(this, this.Page.GetType(), "ErrmormsgMa", "{sessionStorage.setItem('StartLoading', 'false');StopLoadFromPatChart();}", true);
         }
@@ -3428,6 +3432,10 @@ namespace Acurus.Capella.UI
 
         protected void rdbMA_CheckedChanged(object sender, EventArgs e)
         {
+            //Cap - 1696
+            btnSave.Disabled=false;
+            hdnSave.Value = "true";
+
             FillCombobox();
             btnMoveToMa.Text = "Save & Move To MA";
             //btnSave.Style["margin-left"] = "308px"; //"293px"; //"349px";  //"443px";
@@ -3438,6 +3446,10 @@ namespace Acurus.Capella.UI
 
         protected void rdbProvider_CheckedChanged(object sender, EventArgs e)
         {
+            //Cap - 1696
+            btnSave.Disabled = false;
+            hdnSave.Value = "true";
+
             FillCombobox();
             btnMoveToMa.Text = "Save & Move To Provider";
             // btnSave.Style["margin-left"] = "329px"; //"370px"; //"459px";
@@ -4022,6 +4034,8 @@ namespace Acurus.Capella.UI
             if (DLC.txtDLC.Text != string.Empty)
             {
                 btnSave.Disabled = false;
+                //Cap - 1696
+                hdnSave.Value = "true";
             }
             //ScriptManager.RegisterStartupScript(this, this.Page.GetType(), "Test", "{sessionStorage.setItem('StartLoading', 'false');StopLoadFromPatChart();StopLoadingImage();}", true);
 
