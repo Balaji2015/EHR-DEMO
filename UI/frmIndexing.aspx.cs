@@ -1803,6 +1803,8 @@ namespace Acurus.Capella.UI
             }
             IsClickDirectUpload.Value = "No";
             hdnIsEditgrid.Value = "";
+            //CAP-1633
+            dtpDocumentDate.Value = DateTime.Now.ToString("dd-MMM-yyyy");
 
             //IList<Scan> ilstBrowseScan = ((IList<Scan>)HttpContext.Current.Session["BrowseLoadList"]);
             //IList<Scan> NewScanlst = new List<Scan>();
