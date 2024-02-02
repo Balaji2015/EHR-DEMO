@@ -2268,11 +2268,15 @@ myapp.controller('assessmentCtrl', function ($scope, $http) {
                     Ass_status = statusDefaultLst.ASSESSMENT;
                 }
                 for (var i = 0; i < AddSelectedICD.length; i++) {
+                    //CAP-1694
+                    var icdCode = AddSelectedICD[i].split('~').length > 1 ? AddSelectedICD[i].split('~')[0] : AddSelectedICD[i].split('-')[0];
                     if (JSON.stringify($scope.AssessmentTable).indexOf(AddSelectedICD[i].split('~')[0].trim()) == -1) {
                         if (bSetICD9Code || bProblmCheck)
-                            $scope.AssessmentTable.push({ 'ICDCode': AddSelectedICD[i].split('~')[0], 'ICDDescription': AddSelectedICD[i].split('~')[1].split('|')[0], 'ParentICD': AddSelectedICD[i].split('~')[0], 'AssessmentID': 0, 'iVersion': 0, 'iProblemListVersion': 0, 'ProblemListID': 0, 'Notes': '', 'IncompleteICDCode': ' ', 'Created_by': "", 'Created_date': "", 'Updated': "Y", 'StatusSelected': Ass_status, 'Orig_Status': Ass_status });
+                            $scope.AssessmentTable.push({
+                                'ICDCode': icdCode, 'ICDDescription': (AddSelectedICD[i].split('~').length > 1 ? AddSelectedICD[i].split('~')[1].split('|')[0] : AddSelectedICD[i].split('-')[1].split('|')[0]), 'ParentICD': icdCode, 'AssessmentID': 0, 'iVersion': 0, 'iProblemListVersion': 0, 'ProblemListID': 0, 'Notes': '', 'IncompleteICDCode': ' ', 'Created_by': "", 'Created_date': "", 'Updated': "Y", 'StatusSelected': Ass_status, 'Orig_Status': Ass_status
+                    });
                         else
-                            $scope.AssessmentTable.push({ 'ICDCode': AddSelectedICD[i].split('~')[0], 'ICDDescription': AddSelectedICD[i].split('~')[1].split('|')[0], 'ParentICD': AddSelectedICD[i].split('~')[0], 'AssessmentID': 0, 'iVersion': 0, 'iProblemListVersion': 0, 'ProblemListID': 0, 'Notes': '', 'IncompleteICDCode': AddSelectedICD[i].split('|')[2], 'CheckBoxCheck': 'PROBLEM', 'Created_by': "", 'Created_date': "", 'Updated': "Y", 'StatusSelected': Ass_status, 'Orig_Status': Ass_status });
+                            $scope.AssessmentTable.push({ 'ICDCode': icdCode, 'ICDDescription': (AddSelectedICD[i].split('~').length > 1 ? AddSelectedICD[i].split('~')[1].split('|')[0] : AddSelectedICD[i].split('-')[1].split('|')[0]), 'ParentICD': icdCode, 'AssessmentID': 0, 'iVersion': 0, 'iProblemListVersion': 0, 'ProblemListID': 0, 'Notes': '', 'IncompleteICDCode': AddSelectedICD[i].split('|').length > 2 ? AddSelectedICD[i].split('|')[2] : "", 'CheckBoxCheck': 'PROBLEM', 'Created_by': "", 'Created_date': "", 'Updated': "Y", 'StatusSelected': Ass_status, 'Orig_Status': Ass_status });
 
                         $("textarea").unbind();
                         iRightClickMenuCheck = false;
