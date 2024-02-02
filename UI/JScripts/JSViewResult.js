@@ -338,10 +338,14 @@ function txtProviderNotes_OnValueChanged(evt) {
 function txtMedicalAssistantNotes_OnValueChanged(sender, args) {
     //document.getElementById('btnSave').disabled = false;
     document.getElementById(GetClientId("btnSave")).disabled = false;
+    //Cap - 1696
+    document.getElementById(GetClientId("hdnSave")).value = "true";
 }
 function EnableSave() {
     //document.getElementById('btnSave').disabled = false;
     document.getElementById(GetClientId("btnSave")).disabled = false;
+    //Cap - 1696
+    document.getElementById(GetClientId("hdnSave")).value = "true";
 }
 function ClickMovetoma(sender, args) {
     //For Bug Id 56084-4.9.18
@@ -961,6 +965,9 @@ $(document).on('keypress', '#DLC_txtDLC', function (evt) {
    // document.getElementById("DLC_txtDLC").onkeypress = function (evt) {
 
     document.getElementById(GetClientId("btnSave")).disabled = false;
+    //Cap - 1696
+    document.getElementById(GetClientId("hdnSave")).value = "true";
+
     var val = this.value;
     evt = evt || window.event;
 
@@ -1008,6 +1015,9 @@ $(document).on('keypress', '#DLC_txtDLC', function (evt) {
 
 $(document).on('paste', '#DLC_txtDLC', function () {
     document.getElementById(GetClientId("btnSave")).disabled = false;
+    //Cap - 1696
+    document.getElementById(GetClientId("hdnSave")).value = "true";
+
     setTimeout(function () {
         var data = $('#DLC_txtDLC').val();
         var dataFull = data.replaceAll(";", ",");
@@ -1017,6 +1027,8 @@ $(document).on('paste', '#DLC_txtDLC', function () {
 //Cap - 1268
 $(document).on('paste', '#txtMedicalAssistantNotes', function () {
     document.getElementById(GetClientId("btnSave")).disabled = false;
+    //Cap - 1696
+    document.getElementById(GetClientId("hdnSave")).value = "true";
 });
 
 
