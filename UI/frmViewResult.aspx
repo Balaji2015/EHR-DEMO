@@ -707,7 +707,7 @@
 
                                         </td>
                                         <td height="25%">
-                                            <telerik:RadComboBox ID="cboMoveToMA" Width="307px" Height="150px"
+                                            <telerik:RadComboBox ID="cboMoveToMA" Width="307px" Height="150px" OnClientSelectedIndexChanged="cboMoveToMA_valchange"
                                                 runat="server" />
                                             <asp:CheckBox ID="chkShowAll" runat="server" AutoPostBack="True" OnCheckedChanged="chkShowAll_CheckedChanged" CssClass="spanstyle" onchange="{ sessionStorage.setItem('StartLoading', 'true'); StartLoadFromPatChart();}" Text="Show All" />
                                         </td>

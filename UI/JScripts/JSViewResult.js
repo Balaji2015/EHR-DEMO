@@ -325,13 +325,6 @@ function txtProviderNotes_OnValueChanged(evt) {
     document.getElementById(GetClientId("btnSave")).disabled = false;
     //Cap - 1635
     document.getElementById(GetClientId("hdnSave")).value = "true";
-    if (window.parent.parent.parent.parent.theForm.ctl00_C5POBody_hdnIsSaveEnable != undefined)
-        window.parent.parent.parent.parent.theForm.ctl00_C5POBody_hdnIsSaveEnable.value = "true";
-    if (document.getElementById('btnSave') != null && document.getElementById('btnSave') != undefined)
-        document.getElementById('btnSave').enabled = true;
-
-    if (document.getElementById(GetClientId("btnSave")) != null && document.getElementById(GetClientId("btnSave")) != undefined && document.getElementById(GetClientId("btnSave")).disabled != null && document.getElementById(GetClientId("btnSave")).disabled != undefined)
-        document.getElementById(GetClientId("btnSave")).disabled = "false";
  }
 
 
@@ -1031,6 +1024,10 @@ $(document).on('paste', '#txtMedicalAssistantNotes', function () {
     document.getElementById(GetClientId("hdnSave")).value = "true";
 });
 
-
+//Cap - 1696
+function cboMoveToMA_valchange(){
+    document.getElementById(GetClientId("btnSave")).disabled = false;
+    document.getElementById(GetClientId("hdnSave")).value = "true";
+}
 
 
