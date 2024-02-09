@@ -1023,6 +1023,8 @@ function MyQclick() {
             var prescriptionId = $(currRow)[0].children[7].innerText.trim();
             var Data = [human_id, encounter_id];
             var obj = new Array();
+            //Jira CAP-1567
+            sessionStorage.setItem("eRxHumanID", human_id);
             var Result = openRadWindow("frmRCopiaWebBrowser.aspx?MyType=GENERAL&HumanID=" + human_id + "&EncID=" + encounter_id + "&PrescriptionID=" + prescriptionId +
                 "&IsMoveButton=true&IsMoveCheckbox=false&IsPrescriptiontobePushed=N&openingFrom=Queue&IsSentToRCopia=Y", 630, 1200, obj, 'MessageWindow');
             var windowName = $find('MessageWindow');
@@ -1035,6 +1037,32 @@ function MyQclick() {
         return false;
 }
 function OnClientCloseWindow() {
+    //Jira CAP-1567
+    if (document.getElementById("RefreshMyQ").innerText.indexOf("Refresh My Prescription") > -1 && $('#RefreshMyQ').is(":visible")) {
+        StartRcopiaStrip();
+
+        $.ajax({
+            type: "POST",
+            url: "frmEncounter.aspx/DownloadRcoipaOutSidePatientChart",
+            data: '{sHuman_id: "' + sessionStorage.getItem("eRxHumanID") + '"}',
+            contentType: "application/json;charset=utf-8",
+            dataType: "json",
+            async: true,
+            success: function (data) {
+                document.cookie = "CeRxFlag=false";
+                document.cookie = "CeRxHumanID=";
+                //Jira CAP-1366
+                StopRcopiaStrip();
+                RcopiaErrorAlert(data.d);
+            },
+            error: function (result) {
+                //Jira CAP-1366
+                StopRcopiaStrip();
+                alert(result.d);
+            }
+        });
+    }
+
     //Jira #CAP-889
     //chkShowAllClick();
     //CAP-1471

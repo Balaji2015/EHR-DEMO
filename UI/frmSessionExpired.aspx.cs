@@ -13,6 +13,7 @@ using System.Xml.Linq;
 using Acurus.Capella.Core.DomainObjects;
 using Acurus.Capella.DataAccess.ManagerObjects;
 using System.IO;
+using Acurus.Capella.DataAccess;
 namespace Acurus.Capella.UI
 {
     public partial class frmSessionExpired : System.Web.UI.Page
@@ -20,7 +21,24 @@ namespace Acurus.Capella.UI
         public static bool bFirstTime = false;
         protected void Page_Load(object sender, EventArgs e)
         {
-           
+            //Jira CAP-1567
+            if (Request.Cookies["CeRxFlag"] != null && Request.Cookies["CeRxFlag"].Value == "true" && Request.Cookies["CeRxHumanID"].Value != "" && Request.Cookies["CeRxHumanID"].Value != "0")
+            {
+                string sErrorMessage = string.Empty;
+
+                ulong ulHuman_id = Convert.ToUInt64(Request.Cookies["CeRxHumanID"].Value);
+                string sUserName = Request.Cookies["CUserName"].Value;
+                string sFacilityName = Request.Cookies["CFacilityName"].Value;
+                string sLegalOrg = Request.Cookies["CLegalOrg"].Value;
+                Rcopia_Update_InfoManager objUpdateInfoMngr = new Rcopia_Update_InfoManager();
+                RCopiaSessionManager rcopiaSessionMngr = new RCopiaSessionManager(sLegalOrg);
+                DateTime dtClientDate = DateTime.UtcNow;
+                if (sUserName != null && sFacilityName != null && sUserName != "" && sFacilityName != "")
+                    sErrorMessage = objUpdateInfoMngr.DownloadRCopiaInfo(rcopiaSessionMngr.DownloadAddress, sUserName, string.Empty, dtClientDate, sFacilityName, 0, ulHuman_id, sLegalOrg);
+            }
+            Response.SetCookie(new HttpCookie("CeRxHumanID") { Value = "", HttpOnly = false });
+            Response.SetCookie(new HttpCookie("CeRxFlag") { Value = "false", HttpOnly = false });
+
             UserSessionManager userSessionMngr = new UserSessionManager();
           //  userSessionMngr.DeleteUserSessionAtSessionEnd(HttpContext.Current.Session.SessionID); 
             //Global.ht.Remove(ClientSession.UserName);

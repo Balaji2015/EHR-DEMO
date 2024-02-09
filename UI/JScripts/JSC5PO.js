@@ -2080,6 +2080,9 @@ function TriggerDownloadRcopia(oWindow, args) {
         dataType: "json",
         async: true,
         success: function (data) {
+            //Jira CAP-1567
+            document.cookie = "CeRxFlag=false";
+            document.cookie = "CeRxHumanID=";
             { sessionStorage.setItem('StartLoading', 'true'); StartLoadFromPatChart(); }
             redirectToCCEprescription();
             reloadSummaryEprescription();
@@ -2093,6 +2096,7 @@ function TriggerDownloadRcopia(oWindow, args) {
             StopRcopiaStrip();
             //CAP-1506 & CAP-1507 & CAP-1509
             { sessionStorage.setItem('StartLoading', 'false'); StopLoadFromPatChart(); }
+            alert(result.d);
         }
     });
     //loadRcopia();

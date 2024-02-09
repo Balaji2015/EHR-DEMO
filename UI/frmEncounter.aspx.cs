@@ -1182,7 +1182,32 @@ namespace Acurus.Capella.UI
 
             return JsonConvert.SerializeObject(sErrorMessage);
         }
-
+        //Jira CAP-1567
+        [WebMethod(EnableSession = true)]
+        public static string DownloadRcoipaOutSidePatientChart(string sHuman_id)
+        {
+            if (ClientSession.UserName == string.Empty)
+            {
+                HttpContext.Current.Response.StatusCode = 999;
+                HttpContext.Current.Response.Status = "999 Session Expired";
+                HttpContext.Current.Response.StatusDescription = "frmSessionExpired.aspx";
+                return string.Empty;
+            }
+            string sErrorMessage = string.Empty;
+            if (sHuman_id != null && sHuman_id != "")
+            {
+                ulong ulHuman_id = Convert.ToUInt64(sHuman_id);
+                Rcopia_Update_InfoManager objUpdateInfoMngr = new Rcopia_Update_InfoManager();
+                RCopiaSessionManager rcopiaSessionMngr = new RCopiaSessionManager(ClientSession.LegalOrg);
+                DateTime dtClientDate = DateTime.UtcNow;
+                if (ClientSession.UserName != null && ClientSession.FacilityName != null && ClientSession.EncounterId != null)
+                    //Commented the Patient Level RCopia Download
+                    sErrorMessage = objUpdateInfoMngr.DownloadRCopiaInfo(rcopiaSessionMngr.DownloadAddress, ClientSession.UserName, string.Empty, dtClientDate, ClientSession.FacilityName, 0, ulHuman_id, ClientSession.LegalOrg);
+                //Old 
+                //objUpdateInfoMngr.DownloadRCopiaInfo(rcopiaSessionMngr.DownloadAddress, ClientSession.UserName, string.Empty, dtClientDate, ClientSession.FacilityName, ClientSession.EncounterId);
+            }
+            return JsonConvert.SerializeObject(sErrorMessage);
+        }
 
 
         public Boolean CheckTabSave(string sTabName, string newTabName)

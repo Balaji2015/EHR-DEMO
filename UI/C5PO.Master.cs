@@ -419,7 +419,8 @@ namespace Acurus.Capella.UI
                         Response.Redirect(returnURL);
                     }
                 }
-                else
+                //Jira CAP-1567
+                else if (Request.Cookies["CeRxFlag"] == null || (Request.Cookies["CeRxFlag"] != null && Request.Cookies["CeRxFlag"].Value != "true"))
                 {
                     Response.Redirect("~/frmSessionExpiredIndirectAccess.aspx");
                 }

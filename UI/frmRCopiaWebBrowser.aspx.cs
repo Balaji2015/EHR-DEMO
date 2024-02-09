@@ -63,6 +63,8 @@ namespace Acurus.Capella.UI
                 ulMyHumanID = ClientSession.HumanId;
                 hdnHumanID.Value = ulMyHumanID.ToString();
             }
+            //Jira CAP-1567
+            Response.SetCookie(new HttpCookie("CeRxHumanID") { Value = hdnHumanID.Value.ToString(), HttpOnly = false });
             if ((Convert.ToString(Request["EncID"]) != null) && ((Convert.ToString(Request["EncID"])) != "0"))
             {
                 UInt64.TryParse(Request["EncID"], out ulMyEncID);

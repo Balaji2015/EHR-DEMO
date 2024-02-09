@@ -45,6 +45,8 @@ function ClickPrescription() {
     obj.push("IsSentToRCopia=" + "Y");
     obj.push("LabResult=" + "N");
     obj.push("LocalTime=" + document.getElementById(GetClientId('hdnLocalTime')).value);
+    //Jira CAP-1567
+    sessionStorage.setItem("eRxHumanID", window.location.search.toString().split('?')[1].split("&")[0].split('=')[1]);
     var result = openModal("frmRCopiaWebBrowser.aspx", 635, 1060, obj, 'ctl00_ModalWindow');
     var WindowName = $find('ctl00_ModalWindow');
     WindowName.set_behaviors(Telerik.Web.UI.WindowBehaviors.Close);
@@ -57,13 +59,35 @@ function TriggerDownloadRcopia(oWindow, args) {
     //Jira CAP-1366
     StartRcopiaStrip();
 
+    //Jira CAP-1567
+    //$.ajax({
+    //    type: "POST",
+    //    url: "frmEncounter.aspx/DownloadRcoipa",
+    //    contentType: "application/json;charset=utf-8",
+    //    dataType: "json",
+    //    async: true,
+    //    success: function (data) {
+    //        //Jira CAP-1366
+    //        StopRcopiaStrip();
+    //        RcopiaErrorAlert(data.d);
+    //    },
+    //    error: function (result) {
+    //        //Jira CAP-1366
+    //        StopRcopiaStrip();
+    //    }
+    //});
+
+    //Jira CAP-1567
     $.ajax({
         type: "POST",
-        url: "frmEncounter.aspx/DownloadRcoipa",
+        url: "frmEncounter.aspx/DownloadRcoipaOutSidePatientChart",
+        data: '{sHuman_id: "' + sessionStorage.getItem("eRxHumanID") + '"}',
         contentType: "application/json;charset=utf-8",
         dataType: "json",
         async: true,
         success: function (data) {
+            document.cookie = "CeRxFlag=false";
+            document.cookie = "CeRxHumanID=";
             //Jira CAP-1366
             StopRcopiaStrip();
             RcopiaErrorAlert(data.d);
@@ -71,6 +95,7 @@ function TriggerDownloadRcopia(oWindow, args) {
         error: function (result) {
             //Jira CAP-1366
             StopRcopiaStrip();
+            alert(rsult.d);
         }
     });
     //loadRcopia();

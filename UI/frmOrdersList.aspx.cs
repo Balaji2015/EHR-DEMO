@@ -419,7 +419,9 @@ namespace Acurus.Capella.UI
             //          {
             ulong OrderSubmitID = Convert.ToUInt32(grdOrders.Items[Convert.ToInt32(hdnRowIndex.Value)].Cells[19].Text);
             //                    ulong OrderSubmitID = Convert.ToUInt64(dt.Rows[Convert.ToInt32(e.CommandArgument)]["Submit_ID"].ToString());
-            bool temp = objOrdersManager.DeletedOrders(OrderSubmitID, "DIAGNOSTIC ORDER", string.Empty);
+            //Jira CAP-1095
+            //bool temp = objOrdersManager.DeletedOrders(OrderSubmitID, "DIAGNOSTIC ORDER", string.Empty);
+            bool temp = objOrdersManager.DeletedOrders(OrderSubmitID, "DIAGNOSTIC ORDER", string.Empty, ClientSession.UserName, UtilityManager.ConvertToUniversal());
             if (temp)
             {
                 // ApplicationObject.erroHandler.DisplayErrorMessage("230137", "DIAGNOSTIC ORDER", this);
@@ -527,7 +529,9 @@ namespace Acurus.Capella.UI
                 {
                     ulong OrderSubmitID = Convert.ToUInt64(grdOrders.Items[intValue].Cells[19].Text);
                     //                    ulong OrderSubmitID = Convert.ToUInt64(dt.Rows[Convert.ToInt32(e.CommandArgument)]["Submit_ID"].ToString());
-                    bool temp = objOrdersManager.DeletedOrders(OrderSubmitID, "DIAGNOSTIC ORDER", string.Empty);
+                    //Jira CAP-1095
+                    //bool temp = objOrdersManager.DeletedOrders(OrderSubmitID, "DIAGNOSTIC ORDER", string.Empty);
+                    bool temp = objOrdersManager.DeletedOrders(OrderSubmitID, "DIAGNOSTIC ORDER", string.Empty, ClientSession.UserName, UtilityManager.ConvertToUniversal());
                     if (temp)
                     {
                         // ApplicationObject.erroHandler.DisplayErrorMessage("230137", "DIAGNOSTIC ORDER", this);

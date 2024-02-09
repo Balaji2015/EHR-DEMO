@@ -1146,6 +1146,9 @@
                             dataType: "json",
                             async: true,
                             success: function (data) {
+                                //Jira CAP-1567
+                                document.cookie = "CeRxFlag=false";
+                                document.cookie = "CeRxHumanID=";
                                 reloadSummary();
                                 //Jira CAP-1366
                                 StopRcopiaStrip();
@@ -1862,6 +1865,9 @@
                         dataType: "json",
                         async: true,
                         success: function (data) {
+                            //Jira CAP-1567
+                            document.cookie = "CeRxFlag=false";
+                            document.cookie = "CeRxHumanID=";
                             reloadSummary();
                             if (JSON.parse(sessionStorage.getItem("EncCancel")) == false) {
                                 src = $(paneID).attr('data-src');

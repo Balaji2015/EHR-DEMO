@@ -1233,6 +1233,9 @@ function tree_add_leaf_example_click(leaf, node, pnode, tree) {
                     dataType: "json",
                     async: true,
                     success: function (data) {
+                        //Jira CAP-1567
+                        document.cookie = "CeRxFlag=false";
+                        document.cookie = "CeRxHumanID=";
                         //Jira CAP-1366
                         StopRcopiaStrip();
                         RcopiaErrorAlert(data.d);
