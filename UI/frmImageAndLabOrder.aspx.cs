@@ -1784,7 +1784,8 @@ namespace Acurus.Capella.UI
             //    cboReadingProvider.Focus();
             //    return false;
             //}
-            else if ((!chklstFrequentlyUsedProcedures.Items.Cast<ListItem>().Any(a => a.Selected == true)))
+            //CAP-1638 - Testing and Production : Diagnostic order saved without lab procedure
+            else if ((!chklstFrequentlyUsedProcedures.Items.Cast<ListItem>().Where(a => a.Value != "HEADERROW").Any(a => a.Selected == true)))
             {
                 errList.Clear();
                 string errorMsg = string.Empty;
