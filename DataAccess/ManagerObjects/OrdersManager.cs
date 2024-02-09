@@ -68,7 +68,9 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
         //||||||| 1.131
         //        void DeletedOrders(ulong OrderSubmitID, string objType, string MacAddress);
 
-        bool DeletedOrders(ulong OrderSubmitID, string objType, string MacAddress);
+        //Jira CAP-1095
+        //bool DeletedOrders(ulong OrderSubmitID, string objType, string MacAddress);
+        bool DeletedOrders(ulong OrderSubmitID, string objType, string MacAddress, string sModifiedBy, DateTime dtModifiedDateTime);
         bool IsEditable(ulong OrderSubmitID, string objType);
         OrderSpecimenDTO GetSpecimenDetails(IList<ulong> OrderID);
         OrderSpecimenDTO LoadSpecimen(ulong orderSubmitID, string OrderType);
@@ -6533,7 +6535,9 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
             return new DateTime();
         }
 
-        public bool DeletedOrders(ulong OrderSubmitID, string objType, string MacAddress)
+        //Jira CAP-1095
+        //public bool DeletedOrders(ulong OrderSubmitID, string objType, string MacAddress)
+        public bool DeletedOrders(ulong OrderSubmitID, string objType, string MacAddress, string sModifiedBy, DateTime dtModifiedDateTime)
         {
             WFObjectManager objWFObjectManager = new WFObjectManager();
             WFObject objWFObject = objWFObjectManager.GetByObjectSystemId(OrderSubmitID, objType);
@@ -6841,6 +6845,9 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
                     humanid = ilstOrderSubmitxml[0].Human_ID;
                     ilstOrderSubmitxml[0].Is_Deleted = "Y";
                     ilstOrderSubmitxml[0].Is_Task_Created = "N";
+                    //Jira CAP-1095
+                    ilstOrderSubmitxml[0].Modified_By = sModifiedBy;
+                    ilstOrderSubmitxml[0].Modified_Date_And_Time = dtModifiedDateTime;
 
                     XMLObj = new GenerateXml();
                     IList<OrdersSubmit> ilstOrderSubmitsave = new List<OrdersSubmit>();
