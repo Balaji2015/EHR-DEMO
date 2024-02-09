@@ -140,6 +140,34 @@ namespace Acurus.Capella.UI
                 human_Sex = humanSex;//BugID:51648
                 birthdate.Value = (ClientSession.PatientPaneList[0].Birth_Date).ToString();
             }
+            //CAP-988 -  Enter vitals data not displayed in the grid
+            else
+            {
+                IList<Human> objhuman = new List<Human>();
+                //HumanManager humanMngr = new HumanManager();
+                //objhuman = humanMngr.patientdetails(hdnHumanID.Value);
+
+                IList<string> ilstHumanTagList = new List<string>();
+                ilstHumanTagList.Add("HumanList");
+
+                IList<object> ilstHumanFinal = new List<object>();
+                ilstHumanFinal = UtilityManager.ReadBlob(Convert.ToUInt64(HumanID), ilstHumanTagList);
+
+                if (ilstHumanFinal.Count > 0 && ilstHumanFinal != null)
+                {
+                    if (ilstHumanFinal[0] != null)
+                    {
+                        for (int iCount = 0; iCount < ((IList<object>)ilstHumanFinal[0]).Count; iCount++)
+                        {
+                            objhuman.Add((Human)((IList<object>)ilstHumanFinal[0])[iCount]);
+                        }
+                        BirthDate = objhuman[0].Birth_Date;
+                        humanSex = objhuman[0].Sex;
+                        human_Sex = humanSex;//BugID:51648
+                        birthdate.Value = (objhuman[0].Birth_Date).ToString();
+                    }
+                }
+            }
             Session["BirthDate"] = BirthDate;
 
             humanAgeInMonths = ((VitalTakenDate.Date - BirthDate.Date).TotalDays) / 30.4375;
