@@ -6399,7 +6399,9 @@ namespace Acurus.Capella.UI
             string CityCode = string.Empty;
             string LocalNumber = string.Empty;
             string RaceIdentifier = string.Empty;
+            string RaceValue = string.Empty;
             string EthnicityIdentifier = string.Empty;
+            string EthnicityValue = string.Empty;
             string PublicitycodeIdentifier = string.Empty;
             string RelationshipIdentifier = string.Empty;
             string AdministrationIdentifier = string.Empty;
@@ -6438,14 +6440,20 @@ namespace Acurus.Capella.UI
                 {
                     IList<StaticLookup> iFieldLookupListRace = RaceIdentifierlst.ToList<StaticLookup>();
                     if (iFieldLookupListRace != null && iFieldLookupListRace.Count > 0)
+                    {
                         RaceIdentifier = iFieldLookupListRace[0].Default_Value;
+                        RaceValue = iFieldLookupListRace[0].Doc_Type;
+                    }
                 }
                 var EthnicityIdentifierlst = from d in iFieldLookupList where d.Value == hn.Ethnicity && d.Field_Name == "ETHNICITY" select d;
                 if (EthnicityIdentifierlst != null && EthnicityIdentifierlst.Count() > 0)
                 {
                     IList<StaticLookup> iFieldLookupListEthnicity = EthnicityIdentifierlst.ToList<StaticLookup>();
                     if (iFieldLookupListEthnicity.Count > 0)
+                    {
                         EthnicityIdentifier = iFieldLookupListEthnicity[0].Default_Value;
+                        EthnicityValue = iFieldLookupListEthnicity[0].Doc_Type;
+                    }
                 }
                 var PublicitycodeIdentifierlst = from d in iFieldLookupList where d.Value == hn.Publicity_Code select d;
                 if (PublicitycodeIdentifierlst != null && PublicitycodeIdentifierlst.Count() > 0)
@@ -6587,26 +6595,41 @@ namespace Acurus.Capella.UI
 
             if (EthnicityIdentifier == string.Empty)
             {
+                //CAP-1716,CAP-1719 - Immunization Submission to CAIR Records - To include PI(human_id ) for all  submissions instead of MRN Number 
+                //if (hn.Mothers_Maiden_Name != string.Empty)
+                //    sResult = sResult + "\n" + "PID|1||" + hn.Medical_Record_Number + "^^^NIST-MPI-1&2.16.840.1.113883.3.72.5.40.5&ISO^MR||" + hn.Last_Name + "^" + hn.First_Name + "^" + hn.MI + "^^^^L|" + hn.Mothers_Maiden_Name + "^^^^^^M|" + hn.Birth_Date.ToString("yyyyMMdd") + "|" + sSex + "||" + RaceIdentifier + "^" + hn.Race + "^CDCREC|" + hn.Street_Address1 + "^^" + hn.City + "^" + hn.State + "^" + hn.ZipCode + "^USA^P||^PRN^PH^^^" + CityCode + "^" + LocalNumber + "|||||||||";
+                //else
+                //    sResult = sResult + "\n" + "PID|1||" + hn.Medical_Record_Number + "^^^NIST-MPI-1&2.16.840.1.113883.3.72.5.40.5&ISO^MR||" + hn.Last_Name + "^" + hn.First_Name + "^" + hn.MI + "^^^^L||" + hn.Birth_Date.ToString("yyyyMMdd") + "|" + sSex + "||" + RaceIdentifier + "^" + hn.Race + "^CDCREC|" + hn.Street_Address1 + "^^" + hn.City + "^" + hn.State + "^" + hn.ZipCode + "^USA^P||^PRN^PH^^^" + CityCode + "^" + LocalNumber + "|||||||||";
                 if (hn.Mothers_Maiden_Name != string.Empty)
-                    sResult = sResult + "\n" + "PID|1||" + hn.Medical_Record_Number + "^^^NIST-MPI-1&2.16.840.1.113883.3.72.5.40.5&ISO^MR||" + hn.Last_Name + "^" + hn.First_Name + "^" + hn.MI + "^^^^L|" + hn.Mothers_Maiden_Name + "^^^^^^M|" + hn.Birth_Date.ToString("yyyyMMdd") + "|" + sSex + "||" + RaceIdentifier + "^" + hn.Race + "^CDCREC|" + hn.Street_Address1 + "^^" + hn.City + "^" + hn.State + "^" + hn.ZipCode + "^USA^P||^PRN^PH^^^" + CityCode + "^" + LocalNumber + "|||||||||";
+                    sResult = sResult + "\n" + "PID|1||" + hn.Id + "^^^NIST-MPI-1&2.16.840.1.113883.3.72.5.40.5&ISO^PI||" + hn.Last_Name + "^" + hn.First_Name + "^" + hn.MI + "^^^^L|" + hn.Mothers_Maiden_Name + "^^^^^^M|" + hn.Birth_Date.ToString("yyyyMMdd") + "|" + sSex + "||" + RaceIdentifier + "^" + RaceValue + "^CDCREC|" + hn.Street_Address1 + "^^" + hn.City + "^" + hn.State + "^" + hn.ZipCode + "^USA^P||^PRN^PH^^^" + CityCode + "^" + LocalNumber + "|||||||||";
                 else
-                    sResult = sResult + "\n" + "PID|1||" + hn.Medical_Record_Number + "^^^NIST-MPI-1&2.16.840.1.113883.3.72.5.40.5&ISO^MR||" + hn.Last_Name + "^" + hn.First_Name + "^" + hn.MI + "^^^^L||" + hn.Birth_Date.ToString("yyyyMMdd") + "|" + sSex + "||" + RaceIdentifier + "^" + hn.Race + "^CDCREC|" + hn.Street_Address1 + "^^" + hn.City + "^" + hn.State + "^" + hn.ZipCode + "^USA^P||^PRN^PH^^^" + CityCode + "^" + LocalNumber + "|||||||||";
+                    sResult = sResult + "\n" + "PID|1||" + hn.Id + "^^^NIST-MPI-1&2.16.840.1.113883.3.72.5.40.5&ISO^PI||" + hn.Last_Name + "^" + hn.First_Name + "^" + hn.MI + "^^^^L||" + hn.Birth_Date.ToString("yyyyMMdd") + "|" + sSex + "||" + RaceIdentifier + "^" + RaceValue + "^CDCREC|" + hn.Street_Address1 + "^^" + hn.City + "^" + hn.State + "^" + hn.ZipCode + "^USA^P||^PRN^PH^^^" + CityCode + "^" + LocalNumber + "|||||||||";
             }
             else
             {
                 if (hn.EMail == string.Empty)
                 {
+                    //CAP-1716,CAP-1719 - Immunization Submission to CAIR Records - To include PI(human_id ) for all  submissions instead of MRN Number 
+                    //if (hn.Mothers_Maiden_Name != string.Empty)
+                    //    sResult = sResult + "\n" + "PID|1||" + hn.Medical_Record_Number + "^^^NIST-MPI-1&2.16.840.1.113883.3.72.5.40.5&ISO^MR||" + hn.Last_Name + "^" + hn.First_Name + "^" + hn.MI + "^^^^L|" + hn.Mothers_Maiden_Name + "^^^^^^M|" + hn.Birth_Date.ToString("yyyyMMdd") + "|" + sSex + "||" + RaceIdentifier + "^" + hn.Race + "^CDCREC|" + hn.Street_Address1 + "^^" + hn.City + "^" + hn.State + "^" + hn.ZipCode + "^USA^P||^PRN^PH^^^" + CityCode + "^" + LocalNumber + "|||||||||" + EthnicityIdentifier + "^" + hn.Ethnicity + "^CDCREC" + "||" + hn.Birth_Indicator + "|" + hn.Birth_Order + "|||||" + sDeathIndicator;
+                    //else
+                    //    sResult = sResult + "\n" + "PID|1||" + hn.Medical_Record_Number + "^^^NIST-MPI-1&2.16.840.1.113883.3.72.5.40.5&ISO^MR||" + hn.Last_Name + "^" + hn.First_Name + "^" + hn.MI + "^^^^L||" + hn.Birth_Date.ToString("yyyyMMdd") + "|" + sSex + "||" + RaceIdentifier + "^" + hn.Race + "^CDCREC|" + hn.Street_Address1 + "^^" + hn.City + "^" + hn.State + "^" + hn.ZipCode + "^USA^P||^PRN^PH^^^" + CityCode + "^" + LocalNumber + "|||||||||" + EthnicityIdentifier + "^" + hn.Ethnicity + "^CDCREC" + "||" + hn.Birth_Indicator + "|" + hn.Birth_Order + "|||||" + sDeathIndicator;
                     if (hn.Mothers_Maiden_Name != string.Empty)
-                        sResult = sResult + "\n" + "PID|1||" + hn.Medical_Record_Number + "^^^NIST-MPI-1&2.16.840.1.113883.3.72.5.40.5&ISO^MR||" + hn.Last_Name + "^" + hn.First_Name + "^" + hn.MI + "^^^^L|" + hn.Mothers_Maiden_Name + "^^^^^^M|" + hn.Birth_Date.ToString("yyyyMMdd") + "|" + sSex + "||" + RaceIdentifier + "^" + hn.Race + "^CDCREC|" + hn.Street_Address1 + "^^" + hn.City + "^" + hn.State + "^" + hn.ZipCode + "^USA^P||^PRN^PH^^^" + CityCode + "^" + LocalNumber + "|||||||||" + EthnicityIdentifier + "^" + hn.Ethnicity + "^CDCREC" + "||" + hn.Birth_Indicator + "|" + hn.Birth_Order + "|||||" + sDeathIndicator;
+                        sResult = sResult + "\n" + "PID|1||" + hn.Id + "^^^NIST-MPI-1&2.16.840.1.113883.3.72.5.40.5&ISO^PI||" + hn.Last_Name + "^" + hn.First_Name + "^" + hn.MI + "^^^^L|" + hn.Mothers_Maiden_Name + "^^^^^^M|" + hn.Birth_Date.ToString("yyyyMMdd") + "|" + sSex + "||" + RaceIdentifier + "^" + RaceValue + "^CDCREC|" + hn.Street_Address1 + "^^" + hn.City + "^" + hn.State + "^" + hn.ZipCode + "^USA^P||^PRN^PH^^^" + CityCode + "^" + LocalNumber + "|||||||||" + EthnicityIdentifier + "^" + EthnicityValue + "^CDCREC" + "||" + hn.Birth_Indicator + "|" + hn.Birth_Order + "|||||" + sDeathIndicator;
                     else
-                        sResult = sResult + "\n" + "PID|1||" + hn.Medical_Record_Number + "^^^NIST-MPI-1&2.16.840.1.113883.3.72.5.40.5&ISO^MR||" + hn.Last_Name + "^" + hn.First_Name + "^" + hn.MI + "^^^^L||" + hn.Birth_Date.ToString("yyyyMMdd") + "|" + sSex + "||" + RaceIdentifier + "^" + hn.Race + "^CDCREC|" + hn.Street_Address1 + "^^" + hn.City + "^" + hn.State + "^" + hn.ZipCode + "^USA^P||^PRN^PH^^^" + CityCode + "^" + LocalNumber + "|||||||||" + EthnicityIdentifier + "^" + hn.Ethnicity + "^CDCREC" + "||" + hn.Birth_Indicator + "|" + hn.Birth_Order + "|||||" + sDeathIndicator;
+                        sResult = sResult + "\n" + "PID|1||" + hn.Id + "^^^NIST-MPI-1&2.16.840.1.113883.3.72.5.40.5&ISO^PI||" + hn.Last_Name + "^" + hn.First_Name + "^" + hn.MI + "^^^^L||" + hn.Birth_Date.ToString("yyyyMMdd") + "|" + sSex + "||" + RaceIdentifier + "^" + RaceValue + "^CDCREC|" + hn.Street_Address1 + "^^" + hn.City + "^" + hn.State + "^" + hn.ZipCode + "^USA^P||^PRN^PH^^^" + CityCode + "^" + LocalNumber + "|||||||||" + EthnicityIdentifier + "^" + EthnicityValue + "^CDCREC" + "||" + hn.Birth_Indicator + "|" + hn.Birth_Order + "|||||" + sDeathIndicator;
                 }
-                else
+                else {
+                    //CAP-1716,CAP-1719 - Immunization Submission to CAIR Records - To include PI(human_id ) for all  submissions instead of MRN Number 
+                    //if (hn.Mothers_Maiden_Name != string.Empty)
+                    //    sResult = sResult + "\n" + "PID|1||" + hn.Medical_Record_Number + "^^^NIST-MPI-1&2.16.840.1.113883.3.72.5.40.5&ISO^MR||" + hn.Last_Name + "^" + hn.First_Name + "^" + hn.MI + "^^^^L|" + hn.Mothers_Maiden_Name + "^^^^^^M|" + hn.Birth_Date.ToString("yyyyMMdd") + "|" + sSex + "||" + RaceIdentifier + "^" + hn.Race + "^CDCREC|" + hn.Street_Address1 + "^^" + hn.City + "^" + hn.State + "^" + hn.ZipCode + "^USA^P||^PRN^PH^^^" + CityCode + "^" + LocalNumber + "~^NET^^" + hn.EMail + "|||||||||" + EthnicityIdentifier + "^" + hn.Ethnicity + "^CDCREC" + "||" + hn.Birth_Indicator + "|" + hn.Birth_Order + "|||||" + sDeathIndicator;
+                    //else
+                    //    sResult = sResult + "\n" + "PID|1||" + hn.Medical_Record_Number + "^^^NIST-MPI-1&2.16.840.1.113883.3.72.5.40.5&ISO^MR||" + hn.Last_Name + "^" + hn.First_Name + "^" + hn.MI + "^^^^L||" + hn.Birth_Date.ToString("yyyyMMdd") + "|" + sSex + "||" + RaceIdentifier + "^" + hn.Race + "^CDCREC|" + hn.Street_Address1 + "^^" + hn.City + "^" + hn.State + "^" + hn.ZipCode + "^USA^P||^PRN^PH^^^" + CityCode + "^" + LocalNumber + "~^NET^^" + hn.EMail + "|||||||||" + EthnicityIdentifier + "^" + hn.Ethnicity + "^CDCREC" + "||" + hn.Birth_Indicator + "|" + hn.Birth_Order + "|||||" + sDeathIndicator;
                     if (hn.Mothers_Maiden_Name != string.Empty)
-                        sResult = sResult + "\n" + "PID|1||" + hn.Medical_Record_Number + "^^^NIST-MPI-1&2.16.840.1.113883.3.72.5.40.5&ISO^MR||" + hn.Last_Name + "^" + hn.First_Name + "^" + hn.MI + "^^^^L|" + hn.Mothers_Maiden_Name + "^^^^^^M|" + hn.Birth_Date.ToString("yyyyMMdd") + "|" + sSex + "||" + RaceIdentifier + "^" + hn.Race + "^CDCREC|" + hn.Street_Address1 + "^^" + hn.City + "^" + hn.State + "^" + hn.ZipCode + "^USA^P||^PRN^PH^^^" + CityCode + "^" + LocalNumber + "~^NET^^" + hn.EMail + "|||||||||" + EthnicityIdentifier + "^" + hn.Ethnicity + "^CDCREC" + "||" + hn.Birth_Indicator + "|" + hn.Birth_Order + "|||||" + sDeathIndicator;
+                        sResult = sResult + "\n" + "PID|1||" + hn.Id + "^^^NIST-MPI-1&2.16.840.1.113883.3.72.5.40.5&ISO^PI||" + hn.Last_Name + "^" + hn.First_Name + "^" + hn.MI + "^^^^L|" + hn.Mothers_Maiden_Name + "^^^^^^M|" + hn.Birth_Date.ToString("yyyyMMdd") + "|" + sSex + "||" + RaceIdentifier + "^" + RaceValue + "^CDCREC|" + hn.Street_Address1 + "^^" + hn.City + "^" + hn.State + "^" + hn.ZipCode + "^USA^P||^PRN^PH^^^" + CityCode + "^" + LocalNumber + "~^NET^^" + hn.EMail + "|||||||||" + EthnicityIdentifier + "^" + EthnicityValue + "^CDCREC" + "||" + hn.Birth_Indicator + "|" + hn.Birth_Order + "|||||" + sDeathIndicator;
                     else
-                        sResult = sResult + "\n" + "PID|1||" + hn.Medical_Record_Number + "^^^NIST-MPI-1&2.16.840.1.113883.3.72.5.40.5&ISO^MR||" + hn.Last_Name + "^" + hn.First_Name + "^" + hn.MI + "^^^^L||" + hn.Birth_Date.ToString("yyyyMMdd") + "|" + sSex + "||" + RaceIdentifier + "^" + hn.Race + "^CDCREC|" + hn.Street_Address1 + "^^" + hn.City + "^" + hn.State + "^" + hn.ZipCode + "^USA^P||^PRN^PH^^^" + CityCode + "^" + LocalNumber + "~^NET^^" + hn.EMail + "|||||||||" + EthnicityIdentifier + "^" + hn.Ethnicity + "^CDCREC" + "||" + hn.Birth_Indicator + "|" + hn.Birth_Order + "|||||" + sDeathIndicator;
-
+                        sResult = sResult + "\n" + "PID|1||" + hn.Id + "^^^NIST-MPI-1&2.16.840.1.113883.3.72.5.40.5&ISO^PI||" + hn.Last_Name + "^" + hn.First_Name + "^" + hn.MI + "^^^^L||" + hn.Birth_Date.ToString("yyyyMMdd") + "|" + sSex + "||" + RaceIdentifier + "^" + RaceValue + "^CDCREC|" + hn.Street_Address1 + "^^" + hn.City + "^" + hn.State + "^" + hn.ZipCode + "^USA^P||^PRN^PH^^^" + CityCode + "^" + LocalNumber + "~^NET^^" + hn.EMail + "|||||||||" + EthnicityIdentifier + "^" + EthnicityValue + "^CDCREC" + "||" + hn.Birth_Indicator + "|" + hn.Birth_Order + "|||||" + sDeathIndicator;
+                }
             }
 
             DateTime sImmu_Date = (hn.Modified_Date_And_Time.ToString("yyyy-MM-dd mm:hh:ss") == "0001-01-01 00:00:00" ? hn.Modified_Date_And_Time : hn.Created_Date_And_Time);
@@ -7066,7 +7089,9 @@ namespace Acurus.Capella.UI
             string CityCode = string.Empty;
             string LocalNumber = string.Empty;
             string RaceIdentifier = string.Empty;
+            string RaceValue = string.Empty;
             string EthnicityIdentifier = string.Empty;
+            string EthnicityValue = string.Empty;
             string PublicitycodeIdentifier = string.Empty;
             string RelationshipIdentifier = string.Empty;
             string AdministrationIdentifier = string.Empty;
@@ -7099,14 +7124,20 @@ namespace Acurus.Capella.UI
                 {
                     IList<StaticLookup> iFieldLookupListRace = RaceIdentifierlst.ToList<StaticLookup>();
                     if (iFieldLookupListRace != null && iFieldLookupListRace.Count > 0)
+                    {
                         RaceIdentifier = iFieldLookupListRace[0].Default_Value;
+                        RaceValue = iFieldLookupListRace[0].Doc_Type;
+                    }
                 }
                 var EthnicityIdentifierlst = from d in iFieldLookupList where d.Value == hn.Ethnicity && d.Field_Name == "ETHNICITY" select d;
                 if (EthnicityIdentifierlst != null && EthnicityIdentifierlst.Count() > 0)
                 {
                     IList<StaticLookup> iFieldLookupListEthnicity = EthnicityIdentifierlst.ToList<StaticLookup>();
                     if (iFieldLookupListEthnicity.Count > 0)
+                    {
                         EthnicityIdentifier = iFieldLookupListEthnicity[0].Default_Value;
+                        EthnicityValue = iFieldLookupListEthnicity[0].Doc_Type;
+                    }
                 }
                 var PublicitycodeIdentifierlst = from d in iFieldLookupList where d.Value == hn.Publicity_Code select d;
                 if (PublicitycodeIdentifierlst != null && PublicitycodeIdentifierlst.Count() > 0)
@@ -7211,24 +7242,42 @@ namespace Acurus.Capella.UI
                 sSex = hn.Sex.Substring(0, 1);
             if (hn.Patient_Account_External == string.Empty)
             {
+                //CAP-1716,CAP-1719 - Immunization Submission to CAIR Records - To include PI(human_id ) for all  submissions instead of MRN Number 
+                //if (EthnicityIdentifier == string.Empty)
+                //{
+                //    sResult = sResult + "\n" + "PID|1||" + hn.Id + "^^^ACUR^PI||" + hn.Last_Name + "^" + hn.First_Name + "^" + hn.MI + "^^^^L|" + Mothers_Maiden_First_Name + "^" + Mothers_Maiden_Last_Name + "|" + hn.Birth_Date.ToString("yyyyMMdd") + "|" + sSex + "||" + RaceIdentifier + "^" + hn.Race + "^CDCREC|" + hn.Street_Address1 + "^^" + hn.City + "^" + hn.State + "^" + hn.ZipCode + "^USA^L||^PRN^PH^^^" + CityCode + "^" + LocalNumber + "|||||||||";
+                //}
+                //else
+                //{
+                //    sResult = sResult + "\n" + "PID|1||" + hn.Id + "^^^ACUR^PI||" + hn.Last_Name + "^" + hn.First_Name + "^" + hn.MI + "^^^^L|" + Mothers_Maiden_First_Name + "^" + Mothers_Maiden_Last_Name + "|" + hn.Birth_Date.ToString("yyyyMMdd") + "|" + sSex + "||" + RaceIdentifier + "^" + hn.Race + "^CDCREC|" + hn.Street_Address1 + "^^" + hn.City + "^" + hn.State + "^" + hn.ZipCode + "^USA^L||^PRN^PH^^^" + CityCode + "^" + LocalNumber + "|||||||||" + EthnicityIdentifier + "^" + hn.Ethnicity + "^CDCREC";
+                //}
                 if (EthnicityIdentifier == string.Empty)
                 {
-                    sResult = sResult + "\n" + "PID|1||" + hn.Id + "^^^ACUR^PI||" + hn.Last_Name + "^" + hn.First_Name + "^" + hn.MI + "^^^^L|" + Mothers_Maiden_First_Name + "^" + Mothers_Maiden_Last_Name + "|" + hn.Birth_Date.ToString("yyyyMMdd") + "|" + sSex + "||" + RaceIdentifier + "^" + hn.Race + "^CDCREC|" + hn.Street_Address1 + "^^" + hn.City + "^" + hn.State + "^" + hn.ZipCode + "^USA^L||^PRN^PH^^^" + CityCode + "^" + LocalNumber + "|||||||||";
+                    sResult = sResult + "\n" + "PID|1||" + hn.Id + "^^^ACUR^PI||" + hn.Last_Name + "^" + hn.First_Name + "^" + hn.MI + "^^^^L|" + Mothers_Maiden_First_Name + "^" + Mothers_Maiden_Last_Name + "|" + hn.Birth_Date.ToString("yyyyMMdd") + "|" + sSex + "||" + RaceIdentifier + "^" + RaceValue + "^CDCREC|" + hn.Street_Address1 + "^^" + hn.City + "^" + hn.State + "^" + hn.ZipCode + "^USA^L||^PRN^PH^^^" + CityCode + "^" + LocalNumber + "|||||||||";
                 }
                 else
                 {
-                    sResult = sResult + "\n" + "PID|1||" + hn.Id + "^^^ACUR^PI||" + hn.Last_Name + "^" + hn.First_Name + "^" + hn.MI + "^^^^L|" + Mothers_Maiden_First_Name + "^" + Mothers_Maiden_Last_Name + "|" + hn.Birth_Date.ToString("yyyyMMdd") + "|" + sSex + "||" + RaceIdentifier + "^" + hn.Race + "^CDCREC|" + hn.Street_Address1 + "^^" + hn.City + "^" + hn.State + "^" + hn.ZipCode + "^USA^L||^PRN^PH^^^" + CityCode + "^" + LocalNumber + "|||||||||" + EthnicityIdentifier + "^" + hn.Ethnicity + "^CDCREC";
+                    sResult = sResult + "\n" + "PID|1||" + hn.Id + "^^^ACUR^PI||" + hn.Last_Name + "^" + hn.First_Name + "^" + hn.MI + "^^^^L|" + Mothers_Maiden_First_Name + "^" + Mothers_Maiden_Last_Name + "|" + hn.Birth_Date.ToString("yyyyMMdd") + "|" + sSex + "||" + RaceIdentifier + "^" + RaceValue + "^CDCREC|" + hn.Street_Address1 + "^^" + hn.City + "^" + hn.State + "^" + hn.ZipCode + "^USA^L||^PRN^PH^^^" + CityCode + "^" + LocalNumber + "|||||||||" + EthnicityIdentifier + "^" + EthnicityValue + "^CDCREC";
                 }
             }
             else
             {
+                //CAP-1716,CAP-1719 - Immunization Submission to CAIR Records - To include PI(human_id ) for all  submissions instead of MRN Number 
+                //if (EthnicityIdentifier == string.Empty)
+                //{
+                //    sResult = sResult + "\n" + "PID|1||" + hn.Id + "^^^ACUR^PI~" + hn.Patient_Account_External + "^^^MAA^SS||" + hn.Last_Name + "^" + hn.First_Name + "^" + hn.MI + "^^^^L|" + Mothers_Maiden_First_Name + "^" + Mothers_Maiden_Last_Name + "|" + hn.Birth_Date.ToString("yyyyMMdd") + "|" + sSex + "||" + RaceIdentifier + "^" + hn.Race + "^CDCREC|" + hn.Street_Address1 + "^^" + hn.City + "^" + hn.State + "^" + hn.ZipCode + "^USA^L||^PRN^PH^^^" + CityCode + "^" + LocalNumber + "^~^NET^^" + hn.EMail + "|||||||||";
+                //}
+                //else
+                //{
+                //    sResult = sResult + "\n" + "PID|1||" + hn.Id + "^^^ACUR^PI~" + hn.Patient_Account_External + "^^^MAA^SS||" + hn.Last_Name + "^" + hn.First_Name + "^" + hn.MI + "^^^^L|" + Mothers_Maiden_First_Name + "^" + Mothers_Maiden_Last_Name + "|" + hn.Birth_Date.ToString("yyyyMMdd") + "|" + sSex + "||" + RaceIdentifier + "^" + hn.Race + "^CDCREC|" + hn.Street_Address1 + "^^" + hn.City + "^" + hn.State + "^" + hn.ZipCode + "^USA^L||^PRN^PH^^^" + CityCode + "^" + LocalNumber + "^~^NET^^" + hn.EMail + "|||||||||" + EthnicityIdentifier + "^" + hn.Ethnicity + "^CDCREC";
+                //}
                 if (EthnicityIdentifier == string.Empty)
                 {
-                    sResult = sResult + "\n" + "PID|1||" + hn.Id + "^^^ACUR^PI~" + hn.Patient_Account_External + "^^^MAA^SS||" + hn.Last_Name + "^" + hn.First_Name + "^" + hn.MI + "^^^^L|" + Mothers_Maiden_First_Name + "^" + Mothers_Maiden_Last_Name + "|" + hn.Birth_Date.ToString("yyyyMMdd") + "|" + sSex + "||" + RaceIdentifier + "^" + hn.Race + "^CDCREC|" + hn.Street_Address1 + "^^" + hn.City + "^" + hn.State + "^" + hn.ZipCode + "^USA^L||^PRN^PH^^^" + CityCode + "^" + LocalNumber + "^~^NET^^" + hn.EMail + "|||||||||";
+                    sResult = sResult + "\n" + "PID|1||" + hn.Id + "^^^ACUR^PI~" + hn.Patient_Account_External + "^^^MAA^SS||" + hn.Last_Name + "^" + hn.First_Name + "^" + hn.MI + "^^^^L|" + Mothers_Maiden_First_Name + "^" + Mothers_Maiden_Last_Name + "|" + hn.Birth_Date.ToString("yyyyMMdd") + "|" + sSex + "||" + RaceIdentifier + "^" + RaceValue + "^CDCREC|" + hn.Street_Address1 + "^^" + hn.City + "^" + hn.State + "^" + hn.ZipCode + "^USA^L||^PRN^PH^^^" + CityCode + "^" + LocalNumber + "^~^NET^^" + hn.EMail + "|||||||||";
                 }
                 else
                 {
-                    sResult = sResult + "\n" + "PID|1||" + hn.Id + "^^^ACUR^PI~" + hn.Patient_Account_External + "^^^MAA^SS||" + hn.Last_Name + "^" + hn.First_Name + "^" + hn.MI + "^^^^L|" + Mothers_Maiden_First_Name + "^" + Mothers_Maiden_Last_Name + "|" + hn.Birth_Date.ToString("yyyyMMdd") + "|" + sSex + "||" + RaceIdentifier + "^" + hn.Race + "^CDCREC|" + hn.Street_Address1 + "^^" + hn.City + "^" + hn.State + "^" + hn.ZipCode + "^USA^L||^PRN^PH^^^" + CityCode + "^" + LocalNumber + "^~^NET^^" + hn.EMail + "|||||||||" + EthnicityIdentifier + "^" + hn.Ethnicity + "^CDCREC";
+                    sResult = sResult + "\n" + "PID|1||" + hn.Id + "^^^ACUR^PI~" + hn.Patient_Account_External + "^^^MAA^SS||" + hn.Last_Name + "^" + hn.First_Name + "^" + hn.MI + "^^^^L|" + Mothers_Maiden_First_Name + "^" + Mothers_Maiden_Last_Name + "|" + hn.Birth_Date.ToString("yyyyMMdd") + "|" + sSex + "||" + RaceIdentifier + "^" + RaceValue + "^CDCREC|" + hn.Street_Address1 + "^^" + hn.City + "^" + hn.State + "^" + hn.ZipCode + "^USA^L||^PRN^PH^^^" + CityCode + "^" + LocalNumber + "^~^NET^^" + hn.EMail + "|||||||||" + EthnicityIdentifier + "^" + EthnicityValue + "^CDCREC";
                 }
             }
 
@@ -8510,21 +8559,35 @@ namespace Acurus.Capella.UI
             // sMyHL7 += "PID|1||" + objHuman.Medical_Record_Number + "^^^" + FacilityName + "&" + objFacility.Fac_NPI + "&NPI^MR||^^^^^^~^^^^^^U|||" + sSex + "||" + raceCode + "^" + objHuman.Race + "^CDCREC|^^" + objHuman.City + "^" + sState_Code + "^" + objHuman.ZipCode + "^USA^^^" + sCounty_Code + "|||||||||||" + ethnicityCode + "^" + objHuman.Ethnicity + "^CDCREC" + Environment.NewLine;
             if (isDigitPresent)
             {
+                //CAP-1716,CAP-1719 - Immunization Submission to CAIR Records - To include PI(human_id ) for all  submissions instead of MRN Number 
+                //if (sMSH == "ADT^A03^ADT_A03" && objHuman.Patient_Status == "DECEASED")
+                //{
+                //    sMyHL7 += "PID|1||" + objHuman.Medical_Record_Number + "^^^" + FacilityName + "&" + objFacility.Fac_NPI + "&NPI^MR||^^^^^^~^^^^^^S|||" + sSex + "||" + sTempRace + "|^^" + objHuman.City + "^" + sState_Code + "^" + objHuman.ZipCode + "^USA^^^" + sCounty_Code + "|||||||||||" + sTempEthnicity + "|||||||" + objHuman.Date_Of_Death.ToString("yyyyMMddhhmmss") + "|Y" + Environment.NewLine;
+                //}
+                //else
+                //    sMyHL7 += "PID|1||" + objHuman.Medical_Record_Number + "^^^" + FacilityName + "&" + objFacility.Fac_NPI + "&NPI^MR||^^^^^^~^^^^^^S|||" + sSex + "||" + sTempRace + "|^^" + objHuman.City + "^" + sState_Code + "^" + objHuman.ZipCode + "^USA^^^" + sCounty_Code + "|||||||||||" + sTempEthnicity + Environment.NewLine;
                 if (sMSH == "ADT^A03^ADT_A03" && objHuman.Patient_Status == "DECEASED")
                 {
-                    sMyHL7 += "PID|1||" + objHuman.Medical_Record_Number + "^^^" + FacilityName + "&" + objFacility.Fac_NPI + "&NPI^MR||^^^^^^~^^^^^^S|||" + sSex + "||" + sTempRace + "|^^" + objHuman.City + "^" + sState_Code + "^" + objHuman.ZipCode + "^USA^^^" + sCounty_Code + "|||||||||||" + sTempEthnicity + "|||||||" + objHuman.Date_Of_Death.ToString("yyyyMMddhhmmss") + "|Y" + Environment.NewLine;
+                    sMyHL7 += "PID|1||" + objHuman.Id + "^^^" + FacilityName + "&" + objFacility.Fac_NPI + "&NPI^PI||^^^^^^~^^^^^^S|||" + sSex + "||" + sTempRace + "|^^" + objHuman.City + "^" + sState_Code + "^" + objHuman.ZipCode + "^USA^^^" + sCounty_Code + "|||||||||||" + sTempEthnicity + "|||||||" + objHuman.Date_Of_Death.ToString("yyyyMMddhhmmss") + "|Y" + Environment.NewLine;
                 }
                 else
-                    sMyHL7 += "PID|1||" + objHuman.Medical_Record_Number + "^^^" + FacilityName + "&" + objFacility.Fac_NPI + "&NPI^MR||^^^^^^~^^^^^^S|||" + sSex + "||" + sTempRace + "|^^" + objHuman.City + "^" + sState_Code + "^" + objHuman.ZipCode + "^USA^^^" + sCounty_Code + "|||||||||||" + sTempEthnicity + Environment.NewLine;
+                    sMyHL7 += "PID|1||" + objHuman.Id + "^^^" + FacilityName + "&" + objFacility.Fac_NPI + "&NPI^PI||^^^^^^~^^^^^^S|||" + sSex + "||" + sTempRace + "|^^" + objHuman.City + "^" + sState_Code + "^" + objHuman.ZipCode + "^USA^^^" + sCounty_Code + "|||||||||||" + sTempEthnicity + Environment.NewLine;
             }
             else
             {
+                //CAP-1716,CAP-1719 - Immunization Submission to CAIR Records - To include PI(human_id ) for all  submissions instead of MRN Number 
+                //if (sMSH == "ADT^A03^ADT_A03" && objHuman.Patient_Status == "DECEASED")
+                //{
+                //    sMyHL7 += "PID|1||" + objHuman.Medical_Record_Number + "^^^" + FacilityName + "&" + objFacility.Fac_NPI + "&NPI^MR||^^^^^^~^^^^^^U|||" + sSex + "||" + sTempRace + "|^^" + objHuman.City + "^" + sState_Code + "^" + objHuman.ZipCode + "^USA^^^" + sCounty_Code + "|||||||||||" + sTempEthnicity + "|||||||" + objHuman.Date_Of_Death.ToString("yyyyMMddhhmmss") + "|Y" + Environment.NewLine;
+                //}
+                //else
+                //    sMyHL7 += "PID|1||" + objHuman.Medical_Record_Number + "^^^" + FacilityName + "&" + objFacility.Fac_NPI + "&NPI^MR||^^^^^^~^^^^^^U|||" + sSex + "||" + sTempRace + "|^^" + objHuman.City + "^" + sState_Code + "^" + objHuman.ZipCode + "^USA^^^" + sCounty_Code + "|||||||||||" + sTempEthnicity + Environment.NewLine;
                 if (sMSH == "ADT^A03^ADT_A03" && objHuman.Patient_Status == "DECEASED")
                 {
-                    sMyHL7 += "PID|1||" + objHuman.Medical_Record_Number + "^^^" + FacilityName + "&" + objFacility.Fac_NPI + "&NPI^MR||^^^^^^~^^^^^^U|||" + sSex + "||" + sTempRace + "|^^" + objHuman.City + "^" + sState_Code + "^" + objHuman.ZipCode + "^USA^^^" + sCounty_Code + "|||||||||||" + sTempEthnicity + "|||||||" + objHuman.Date_Of_Death.ToString("yyyyMMddhhmmss") + "|Y" + Environment.NewLine;
+                    sMyHL7 += "PID|1||" + objHuman.Id + "^^^" + FacilityName + "&" + objFacility.Fac_NPI + "&NPI^PI||^^^^^^~^^^^^^U|||" + sSex + "||" + sTempRace + "|^^" + objHuman.City + "^" + sState_Code + "^" + objHuman.ZipCode + "^USA^^^" + sCounty_Code + "|||||||||||" + sTempEthnicity + "|||||||" + objHuman.Date_Of_Death.ToString("yyyyMMddhhmmss") + "|Y" + Environment.NewLine;
                 }
                 else
-                    sMyHL7 += "PID|1||" + objHuman.Medical_Record_Number + "^^^" + FacilityName + "&" + objFacility.Fac_NPI + "&NPI^MR||^^^^^^~^^^^^^U|||" + sSex + "||" + sTempRace + "|^^" + objHuman.City + "^" + sState_Code + "^" + objHuman.ZipCode + "^USA^^^" + sCounty_Code + "|||||||||||" + sTempEthnicity + Environment.NewLine;
+                    sMyHL7 += "PID|1||" + objHuman.Id + "^^^" + FacilityName + "&" + objFacility.Fac_NPI + "&NPI^PI||^^^^^^~^^^^^^U|||" + sSex + "||" + sTempRace + "|^^" + objHuman.City + "^" + sState_Code + "^" + objHuman.ZipCode + "^USA^^^" + sCounty_Code + "|||||||||||" + sTempEthnicity + Environment.NewLine;
             }
 
             // sMyHL7 += "PV1|1||||||||||||||||||" + objEncounter.Id + "^^^^VN|||||||||||||||||||||||||" + objEncounter.Appointment_Date.ToString("yyyyMMddhhmm") + Environment.NewLine;

@@ -16743,7 +16743,7 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
                     //                                     AND    E.IS_PHONE_ENCOUNTER <> 'Y'
                     //                                    AND E.ENCOUNTER_PROVIDER_SIGNED_DATE<>'0001-01-01 00:00:00'";
 
-                    //Jira CAP-1665 - New Code
+                    //Jira CAP-1665,1725 - New Code
                     var querySQL = @"SELECT E.*
                                      FROM   ENCOUNTER E
                                      WHERE  E.HUMAN_ID=:HUMAN_ID
@@ -16772,7 +16772,7 @@ AND E.ENCOUNTER_PROVIDER_SIGNED_DATE<>'0001-01-01 00:00:00'
                                     AND E.ENCOUNTER_PROVIDER_SIGNED_DATE<>'0001-01-01 00:00:00'
                                     AND    E.DATE_OF_SERVICE <
                                             ( SELECT   E.DATE_OF_SERVICE
-                                              FROM     ENCOUNTER_ARC E 
+                                              FROM     ENCOUNTER E 
                                               WHERE    E.ENCOUNTER_ID=:ENCOUNTER_ID )";
 
 
@@ -16807,7 +16807,7 @@ AND E.ENCOUNTER_PROVIDER_SIGNED_DATE<>'0001-01-01 00:00:00'
 									 AND WF.CURRENT_PROCESS = 'DOCUMENT_COMPLETE'
                                      AND    E.DATE_OF_SERVICE <
                                             ( SELECT   E.DATE_OF_SERVICE
-                                              FROM     ENCOUNTER_ARC E 
+                                              FROM     ENCOUNTER E 
                                               WHERE    E.ENCOUNTER_ID=:ENCOUNTER_ID )";
 
 

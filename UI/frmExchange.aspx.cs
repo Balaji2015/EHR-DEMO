@@ -159,7 +159,9 @@ namespace Acurus.Capella.UI
                             {
                                 for (int j = 0; j < xmlNodeList[0].ChildNodes.Count; j++)
                                 {
-                                    ImmLookupList.Add(xmlNodeList[0].ChildNodes[j].Attributes.GetNamedItem("Field_Name").Value, xmlNodeList[0].ChildNodes[j].Attributes.GetNamedItem("value").Value);
+                                    //CAP-1716,CAP-1719 - Immunization Submission to CAIR Records - To include PI(human_id ) for all  submissions instead of MRN Number 
+                                    //ImmLookupList.Add(xmlNodeList[0].ChildNodes[j].Attributes.GetNamedItem("Field_Name").Value, xmlNodeList[0].ChildNodes[j].Attributes.GetNamedItem("value").Value);
+                                    ImmLookupList.Add(xmlNodeList[0].ChildNodes[j].Attributes.GetNamedItem("key").Value, xmlNodeList[0].ChildNodes[j].Attributes.GetNamedItem("value").Value);
                                 }
                             }
                             XmlNodeList xmlErrNodeList = itemDoc.GetElementsByTagName("ImmunizationMsgLookupList");
