@@ -2122,6 +2122,7 @@ function RefreshRcopia() {
 
 function LoadRcopiaCount(oWindow, args) {
     loadRcopia();
+    StopRcopiaStrip();
     oWindow.remove_close(LoadRcopiaCount);
 }
 function OrderDashBoard() {
