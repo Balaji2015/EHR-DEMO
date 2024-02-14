@@ -1055,6 +1055,13 @@ function SelectItemsUnderHeader(controlInstance) {
     }
 }
 function Testw(chkBox) {
+    //CAP-1638
+    var headerRow = $($(chkBox).next()).text();
+    $('span[isheader="false"][respectiveheader="' + headerRow + '"]').each(function (i, obj) {
+        var inputElement = $('input[type="checkbox"]', obj);
+        inputElement.prop('checked', chkBox.checked);
+    });	
+
     if (chkBox.checked)
         EnableSaveDiagnosticOrder();
 }
