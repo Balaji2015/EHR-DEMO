@@ -2746,8 +2746,12 @@ namespace Acurus.Capella.UI
                     {
                         for (int i = 0; i < allICD9ForVitalsProblemListPFSH.Count; i++)
                         {
-                            if (allICD9ForVitalsProblemListPFSH[i].Leaf_Node != "N" && !assessmentLoadList.Assessment.Any(a => a.ICD == allICD9ForVitalsProblemListPFSH[i].ICD_9) && ((assessmentLoadList.Assessment.Where(s => s.Diagnosis_Source.ToUpper() != "VITALS|DELETED").Count() == 0 ? (assessmentLoadList.Problem_List.Any(a => a.ICD == allICD9ForVitalsProblemListPFSH[i].ICD_9))
-                                : (assessmentLoadList.Problem_List.Any(a => a.ICD == allICD9ForVitalsProblemListPFSH[i].ICD_9))) || assessmentLoadList.VitalsBasedICD_List.Any(a => a.Split('!')[0].ToString() == allICD9ForVitalsProblemListPFSH[i].ICD_9)))//|| currentVitalsBasedICDList.Any(c => c.Split('!')[0].ToString() == allICD9ForVitalsProblemListPFSH[i].ICD_9)                        
+                            //Cap - 1713
+                            //if (allICD9ForVitalsProblemListPFSH[i].Leaf_Node != "N" && !assessmentLoadList.Assessment.Any(a => a.ICD == allICD9ForVitalsProblemListPFSH[i].ICD_9) && ((assessmentLoadList.Assessment.Where(s => s.Diagnosis_Source.ToUpper() != "VITALS|DELETED").Count() == 0 ? (assessmentLoadList.Problem_List.Any(a => a.ICD == allICD9ForVitalsProblemListPFSH[i].ICD_9))
+                            //   : (assessmentLoadList.Problem_List.Any(a => a.ICD == allICD9ForVitalsProblemListPFSH[i].ICD_9))) || assessmentLoadList.VitalsBasedICD_List.Any(a => a.Split('!')[0].ToString() == allICD9ForVitalsProblemListPFSH[i].ICD_9)))//|| currentVitalsBasedICDList.Any(c => c.Split('!')[0].ToString() == allICD9ForVitalsProblemListPFSH[i].ICD_9)                        
+
+                                if (allICD9ForVitalsProblemListPFSH[i].Leaf_Node != "N" && !assessmentLoadList.Assessment.Any(a => a.ICD.Trim() == allICD9ForVitalsProblemListPFSH[i].ICD_9.Trim()) && ((assessmentLoadList.Assessment.Where(s => s.Diagnosis_Source.ToUpper() != "VITALS|DELETED").Count() == 0 ? (assessmentLoadList.Problem_List.Any(a => a.ICD.Trim() == allICD9ForVitalsProblemListPFSH[i].ICD_9.Trim()))
+                                : (assessmentLoadList.Problem_List.Any(a => a.ICD.Trim() == allICD9ForVitalsProblemListPFSH[i].ICD_9.Trim()))) || assessmentLoadList.VitalsBasedICD_List.Any(a => a.Split('!')[0].ToString() == allICD9ForVitalsProblemListPFSH[i].ICD_9.Trim())))//|| currentVitalsBasedICDList.Any(c => c.Split('!')[0].ToString() == allICD9ForVitalsProblemListPFSH[i].ICD_9)                        
                             {
                                 if (assessmentLoadList.Assessment.Count() > 0 && assessmentLoadList.Assessment.Any(a => a.ICD == allICD9ForVitalsProblemListPFSH[i].ICD_9 && a.Diagnosis_Source.ToUpper() == "VITALS|DELETED"))
                                     continue;

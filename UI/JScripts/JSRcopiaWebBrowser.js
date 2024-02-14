@@ -56,7 +56,15 @@ function RcopiaDownload() {
         error: function (result) {
             //Jira CAP-1366
             StopRcopiaStrip();
-            alert(result.d);
+            var log = JSON.parse(result.responseText);
+            console.log(log);
+            if (result.status == 999)
+                window.location = "/frmSessionExpired.aspx";
+            else
+                alert("USER MESSAGE:\n" +
+                    ". Cannot process request. Please Login again and retry. \nEXCEPTION DETAILS: \n" +
+                    "Message: " + log.Message);
+            { sessionStorage.setItem('StartLoading', 'false'); StopLoadFromPatChart(); }
         }
     });
 }
@@ -77,7 +85,15 @@ function RcopiaDownloadOutSidePatientChart() {
         error: function (result) {
             //Jira CAP-1366
             StopRcopiaStrip();
-            alert(result.d);
+            var log = JSON.parse(result.responseText);
+            console.log(log);
+            if (result.status == 999)
+                window.location = "/frmSessionExpired.aspx";
+            else
+                alert("USER MESSAGE:\n" +
+                    ". Cannot process request. Please Login again and retry. \nEXCEPTION DETAILS: \n" +
+                    "Message: " + log.Message);
+            { sessionStorage.setItem('StartLoading', 'false'); StopLoadFromPatChart(); }
         }
     });
 }

@@ -6434,8 +6434,9 @@ namespace Acurus.Capella.UI
                 iFieldLookupList = ClinicalSummary.lookupValues.Where(q => q.Field_Name == "RACE" || q.Field_Name == "ETHNICITY" || q.Field_Name == "PUBLICITY CODE" || q.Field_Name == "RELATIONSHIP" || q.Field_Name == "ROUTE OF ADMINISTRATION" || q.Field_Name == "REFUSED_ADMINISTRATION" || q.Field_Name == "VFC STATUS" || q.Field_Name == "IMMUNIZATION_INFORMATION_SOURCE" || q.Field_Name == "REFUSED_ADMINISTRATION" || q.Field_Name == "VACCINE TYPE" || q.Field_Name == "IMMUNIZATION PROTECTION TYPE" || q.Field_Name == "OBSERVATION" || q.Field_Name == "IMMUNIZATION EVIDENCE" || q.Field_Name.ToUpper() == "IMMUNIZATIONLOCATION" || q.Field_Name.ToUpper() == "IMMUNIZATION DOCUMENTATION").ToList();
             }
             if (ClinicalSummary.lookupValues != null && ClinicalSummary.lookupValues.Count > 0)
-            {
-                var RaceIdentifierlst = from d in iFieldLookupList where d.Value == hn.Race select d;
+            {//Cap - 1716,CAP-1719
+                //var RaceIdentifierlst = from d in iFieldLookupList where d.Value == hn.Race select d;
+                var RaceIdentifierlst = from d in iFieldLookupList where d.Value == hn.Race && d.Field_Name == "RACE" select d;
                 if (RaceIdentifierlst.Count() > 0)
                 {
                     IList<StaticLookup> iFieldLookupListRace = RaceIdentifierlst.ToList<StaticLookup>();
@@ -6593,7 +6594,8 @@ namespace Acurus.Capella.UI
             if (hn.Sex != null && hn.Sex != "")
                 sSex = hn.Sex.Substring(0, 1);
 
-            if (EthnicityIdentifier == string.Empty)
+           // if (EthnicityIdentifier == string.Empty)
+           if(EthnicityValue==string.Empty)
             {
                 //CAP-1716,CAP-1719 - Immunization Submission to CAIR Records - To include PI(human_id ) for all  submissions instead of MRN Number 
                 //if (hn.Mothers_Maiden_Name != string.Empty)
@@ -7118,8 +7120,9 @@ namespace Acurus.Capella.UI
                 iFieldLookupList = ClinicalSummary.lookupValues.Where(q => q.Field_Name == "RACE" || q.Field_Name == "ETHNICITY" || q.Field_Name == "PUBLICITY CODE" || q.Field_Name == "RELATIONSHIP" || q.Field_Name == "ROUTE OF ADMINISTRATION" || q.Field_Name == "REFUSED_ADMINISTRATION" || q.Field_Name == "VFC STATUS" || q.Field_Name == "IMMUNIZATION_INFORMATION_SOURCE" || q.Field_Name == "REFUSED_ADMINISTRATION" || q.Field_Name == "VACCINE TYPE" || q.Field_Name == "IMMUNIZATION PROTECTION TYPE" || q.Field_Name == "OBSERVATION" || q.Field_Name == "IMMUNIZATION EVIDENCE" || q.Field_Name.ToUpper() == "IMMUNIZATIONLOCATION").ToList();
             }
             if (ClinicalSummary.lookupValues != null && ClinicalSummary.lookupValues.Count > 0)
-            {
-                var RaceIdentifierlst = from d in iFieldLookupList where d.Value == hn.Race select d;
+            {//Cap - 1716,CAP-1719
+                //var RaceIdentifierlst = from d in iFieldLookupList where d.Value == hn.Race select d;
+                var RaceIdentifierlst = from d in iFieldLookupList where d.Value == hn.Race && d.Field_Name == "RACE" select d;
                 if (RaceIdentifierlst.Count() > 0)
                 {
                     IList<StaticLookup> iFieldLookupListRace = RaceIdentifierlst.ToList<StaticLookup>();
@@ -7251,7 +7254,8 @@ namespace Acurus.Capella.UI
                 //{
                 //    sResult = sResult + "\n" + "PID|1||" + hn.Id + "^^^ACUR^PI||" + hn.Last_Name + "^" + hn.First_Name + "^" + hn.MI + "^^^^L|" + Mothers_Maiden_First_Name + "^" + Mothers_Maiden_Last_Name + "|" + hn.Birth_Date.ToString("yyyyMMdd") + "|" + sSex + "||" + RaceIdentifier + "^" + hn.Race + "^CDCREC|" + hn.Street_Address1 + "^^" + hn.City + "^" + hn.State + "^" + hn.ZipCode + "^USA^L||^PRN^PH^^^" + CityCode + "^" + LocalNumber + "|||||||||" + EthnicityIdentifier + "^" + hn.Ethnicity + "^CDCREC";
                 //}
-                if (EthnicityIdentifier == string.Empty)
+                // if (EthnicityIdentifier == string.Empty)
+                if (EthnicityValue == string.Empty)
                 {
                     sResult = sResult + "\n" + "PID|1||" + hn.Id + "^^^ACUR^PI||" + hn.Last_Name + "^" + hn.First_Name + "^" + hn.MI + "^^^^L|" + Mothers_Maiden_First_Name + "^" + Mothers_Maiden_Last_Name + "|" + hn.Birth_Date.ToString("yyyyMMdd") + "|" + sSex + "||" + RaceIdentifier + "^" + RaceValue + "^CDCREC|" + hn.Street_Address1 + "^^" + hn.City + "^" + hn.State + "^" + hn.ZipCode + "^USA^L||^PRN^PH^^^" + CityCode + "^" + LocalNumber + "|||||||||";
                 }
@@ -7271,7 +7275,8 @@ namespace Acurus.Capella.UI
                 //{
                 //    sResult = sResult + "\n" + "PID|1||" + hn.Id + "^^^ACUR^PI~" + hn.Patient_Account_External + "^^^MAA^SS||" + hn.Last_Name + "^" + hn.First_Name + "^" + hn.MI + "^^^^L|" + Mothers_Maiden_First_Name + "^" + Mothers_Maiden_Last_Name + "|" + hn.Birth_Date.ToString("yyyyMMdd") + "|" + sSex + "||" + RaceIdentifier + "^" + hn.Race + "^CDCREC|" + hn.Street_Address1 + "^^" + hn.City + "^" + hn.State + "^" + hn.ZipCode + "^USA^L||^PRN^PH^^^" + CityCode + "^" + LocalNumber + "^~^NET^^" + hn.EMail + "|||||||||" + EthnicityIdentifier + "^" + hn.Ethnicity + "^CDCREC";
                 //}
-                if (EthnicityIdentifier == string.Empty)
+                //if (EthnicityIdentifier == string.Empty)
+                if (EthnicityValue == string.Empty)
                 {
                     sResult = sResult + "\n" + "PID|1||" + hn.Id + "^^^ACUR^PI~" + hn.Patient_Account_External + "^^^MAA^SS||" + hn.Last_Name + "^" + hn.First_Name + "^" + hn.MI + "^^^^L|" + Mothers_Maiden_First_Name + "^" + Mothers_Maiden_Last_Name + "|" + hn.Birth_Date.ToString("yyyyMMdd") + "|" + sSex + "||" + RaceIdentifier + "^" + RaceValue + "^CDCREC|" + hn.Street_Address1 + "^^" + hn.City + "^" + hn.State + "^" + hn.ZipCode + "^USA^L||^PRN^PH^^^" + CityCode + "^" + LocalNumber + "^~^NET^^" + hn.EMail + "|||||||||";
                 }
