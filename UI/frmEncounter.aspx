@@ -953,7 +953,9 @@
 
                     paneID = $(event.target).attr('href');
                     src = $(paneID).attr('data-src');
-                    $(paneID + " iframe").attr("src", src);
+                    //CAP-1658
+                    setTimeout(function () { $(paneID + " iframe").attr("src", src); }, 1000);
+                    //$(paneID + " iframe").attr("src", src);
                 }
                 else if (PrevTab[0].innerText == "EXAM") {
                     var subtab = localStorage.getItem("PrevSubTab");
@@ -1869,7 +1871,9 @@
                 else {
                     if (JSON.parse(sessionStorage.getItem("EncCancel")) == false) {
                         src = $(paneID).attr('data-src');
-                        $(paneID + " iframe").attr("src", src);
+                        //CAP-1658
+                        setTimeout(function () { $(paneID + " iframe").attr("src", src); }, 1000);  
+                      /*  $(paneID + " iframe").attr("src", src);*/
                         //if ($(paneID + " iframe").attr("src") == "") {
                         //    $(paneID + " iframe").attr("src", src);
                         //}
