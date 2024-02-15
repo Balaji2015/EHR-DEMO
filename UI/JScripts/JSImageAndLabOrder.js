@@ -478,23 +478,98 @@ function cboLab_SelectedIndexChanging(sender, args) {
     ShowLoading();
 }
 
+//Jira CAP-1555 and CAP-1646 - Old Code
+//function MoveToNextProcessClicked(sender, args) {
+//    { sessionStorage.setItem('StartLoading', 'true'); StartLoadFromPatChart();}
+//    if (document.getElementById('btnOrderSubmit').disabled == false) {
+//        event.preventDefault();
+//        event.stopPropagation();
+//        { sessionStorage.setItem('StartLoading', 'true'); StartLoadFromPatChart(); }
+//        sessionStorage.setItem("autoMovetonxtProc", "true");
+//        document.getElementById('hdnType').value = "Yes";
+
+//        top.window.document.getElementById('ctl00_Loading').style.display = 'none';
+//        __doPostBack('btnMoveToNextProcess'); //document.getElementById("btnMoveToNextProcess").click(); //$find('btnMoveToNextProcess').click();
+//        //if ($(dvdialog) != undefined && $(dvdialog)!=null)
+//        //   $(dvdialog).dialog("close");
+
+//        //Jira #CAP-889
+//        RemoveItem(document.URL, "Orders");
+//        return true;
+//        //if (!$($(top.window.document).find('iframe')[0].contentDocument).find("body").is('#dvdialogMenu'))
+//        //    $($(top.window.document).find('iframe')[0].contentDocument).find("body").append('<div id="dvdialogMenu" style="min-height: 65px !important; width: auto; max-height: none; height: auto; display: none;">' +
+//        //    '<p style="font-family: Verdana,Arial,sans-serif; font-size: 13.5px;">There are unsaved changes.Do you want to save the them?</p></div>');
+//        //dvdialog = $($(top.window.document).find('iframe')[0].contentDocument).find("body").find('#dvdialogMenu');
+//        //event.preventDefault();
+//        //event.stopPropagation();
+//        // {sessionStorage.setItem('StartLoading', 'false');StopLoadFromPatChart();}
+
+//        //$(dvdialog).dialog({
+//        //    modal: true,
+//        //    title: "Capella -EHR",
+//        //    position: {
+//        //        my: 'left' + " " + 'center',
+//        //        at: 'center' + " " + 'center + 100px'
+
+//        //    },
+//        //    buttons: {
+//        //        "Yes": function () {
+//        //            { sessionStorage.setItem('StartLoading', 'true'); StartLoadFromPatChart();}
+//        //            sessionStorage.setItem("autoMovetonxtProc", "true");
+//        //            document.getElementById('hdnType').value = "Yes";
+
+//        //            top.window.document.getElementById('ctl00_Loading').style.display = 'none';
+//        //            __doPostBack('btnMoveToNextProcess'); //document.getElementById("btnMoveToNextProcess").click(); //$find('btnMoveToNextProcess').click();
+//        //            $(dvdialog).dialog("close");
+//        //            return true;
+//        //        },
+//        //        "No": function () {
+//        //            document.getElementById('hdnType').value = "";
+//        //            __doPostBack('btnMoveToNextProcess');
+//        //            $(dvdialog).dialog("close");
+//        //            self.close();
+//        //             {sessionStorage.setItem('StartLoading', 'false');StopLoadFromPatChart();}
+//        //        },
+//        //        "Cancel": function () {
+//        //             {sessionStorage.setItem('StartLoading', 'false');StopLoadFromPatChart();}
+//        //            document.getElementById('hdnType').value = "";
+//        //            $(dvdialog).dialog("close");
+
+//        //            return false;
+//        //        }
+//        //    }
+//        //});
+
+
+//    }
+//    else
+//    {
+//        //Jira #CAP-889
+//        RemoveItem(document.URL, "Orders");
+//        return true;
+//    }
+
+//}
+//Jira CAP-1555 and CAP-1646 - New Code
 function MoveToNextProcessClicked(sender, args) {
-    { sessionStorage.setItem('StartLoading', 'true'); StartLoadFromPatChart();}
+    { sessionStorage.setItem('StartLoading', 'true'); StartLoadFromPatChart(); }
     if (document.getElementById('btnOrderSubmit').disabled == false) {
         event.preventDefault();
         event.stopPropagation();
-        { sessionStorage.setItem('StartLoading', 'true'); StartLoadFromPatChart(); }
-        sessionStorage.setItem("autoMovetonxtProc", "true");
-        document.getElementById('hdnType').value = "Yes";
+        //{ sessionStorage.setItem('StartLoading', 'true'); StartLoadFromPatChart(); }
+        //sessionStorage.setItem("autoMovetonxtProc", "true");
+        //document.getElementById('hdnType').value = "Yes";
 
         top.window.document.getElementById('ctl00_Loading').style.display = 'none';
-        __doPostBack('btnMoveToNextProcess'); //document.getElementById("btnMoveToNextProcess").click(); //$find('btnMoveToNextProcess').click();
+        //__doPostBack('btnMoveToNextProcess'); //document.getElementById("btnMoveToNextProcess").click(); //$find('btnMoveToNextProcess').click();
         //if ($(dvdialog) != undefined && $(dvdialog)!=null)
         //   $(dvdialog).dialog("close");
 
         //Jira #CAP-889
-        RemoveItem(document.URL, "Orders");
-        return true;
+        //RemoveItem(document.URL, "Orders");
+        alert("Please update the order before click on Move to next Process.");
+        { sessionStorage.setItem('StartLoading', 'false'); StopLoadFromPatChart(); }
+        return false;
         //if (!$($(top.window.document).find('iframe')[0].contentDocument).find("body").is('#dvdialogMenu'))
         //    $($(top.window.document).find('iframe')[0].contentDocument).find("body").append('<div id="dvdialogMenu" style="min-height: 65px !important; width: auto; max-height: none; height: auto; display: none;">' +
         //    '<p style="font-family: Verdana,Arial,sans-serif; font-size: 13.5px;">There are unsaved changes.Do you want to save the them?</p></div>');
@@ -539,12 +614,22 @@ function MoveToNextProcessClicked(sender, args) {
         //    }
         //});
 
-        
+
     }
-    else
-    {
+    else {
+        if ($("#hdnMovetoOrderSubmitId")[0]?.value != undefined && $("#hdnMovetoOrderSubmitId")[0]?.value != null) {
+            event.preventDefault();
+            event.stopPropagation();
+            { sessionStorage.setItem('StartLoading', 'true'); StartLoadFromPatChart(); }
+            sessionStorage.setItem("autoMovetonxtProc", "true");
+            document.getElementById('hdnType').value = "Yes";
+
+            top.window.document.getElementById('ctl00_Loading').style.display = 'none';
+            //__doPostBack('btnMoveToNextProcess');
+        }
         //Jira #CAP-889
         RemoveItem(document.URL, "Orders");
+
         return true;
     }
 

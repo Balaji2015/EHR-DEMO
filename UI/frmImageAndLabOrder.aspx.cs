@@ -3594,6 +3594,7 @@ namespace Acurus.Capella.UI
             //    }
 
             //}
+            hdnMovetoOrderSubmitId.Value = Session["OrderSubmitId"].ToString();
             //Jira CAP-1628
             Session["OrderSubmitId"] = string.Empty;
         }
@@ -4864,11 +4865,161 @@ namespace Acurus.Capella.UI
 
         protected void btnMoveToNextProcess_Click(object sender, EventArgs e)
         {
+            #region Jira CAP-1555 and CAP-1646Old Code
+            //if (Session["OrderSubmitId"] != null && Session["OrderSubmitId"].ToString() != string.Empty)
+            //{
+            //    hdnTransferVaraible.Value = Convert.ToString(Session["OrderSubmitId"]);
+            //}
+            //string OrdersSubmitIDString = hdnTransferVaraible.Value != null ? hdnTransferVaraible.Value.ToString() : string.Empty;
+            //if (OrdersSubmitIDString != string.Empty)
+            //{
+            //    ulong order_submit_id = 0;
+            //    ulong.TryParse(OrdersSubmitIDString, out order_submit_id);
+            //    int close_type = 0;
+            //    string User_name = string.Empty;
+            //    string sProcess = string.Empty;
+            //    sProcess = ClientSession.UserCurrentProcess;
 
+            //    // Added By Suvarnni M V for Bug id:29140
+            //    ulong uLabID = 0;
+            //    uLabID = Convert.ToUInt64(cboLab.Items[cboLab.SelectedIndex].Value);
+            //    if (uLabID != 32)
+            //    {
+            //        if (!btnOrderSubmit.Disabled)
+            //        {
+            //            if (hdnType.Value != "")
+            //            {
+            //                btnOrderSubmit_Click(sender, e);
+            //                if (hdnMovetoNextProcess.Value == "false")
+            //                    return;
+            //            }
+            //        }
+
+            //        var serializer = new NetDataContractSerializer();
+            //        OrdersDTO objOrderDTO = null;
+            //        object objDTO;
+            //        objDTO = (object)serializer.ReadObject(objOrdersManager.LoadOrders(EncounterID, PhysicianID, HumanID, OrderType, string.Empty, UtilityManager.ConvertToUniversal(DateTime.Now), false));
+            //        objOrderDTO = (OrdersDTO)objDTO;
+            //        if (objOrderDTO.ilstOrderLabDetailsDTO.Count > 0 || objOrderDTO.ilstOrdersSubmitForPartialOrders.Count > 0)
+            //        {
+
+            //            IList<OrdersSubmit> maReviewOrders = (from o in objOrderDTO.ilstOrderLabDetailsDTO where o.OrdersSubmit.Id == order_submit_id && o.ObjOrder.Internal_Property_Current_Process == "MA_REVIEW" select o.OrdersSubmit).Distinct().ToList<OrdersSubmit>();
+            //            int emptyCount = (from o in maReviewOrders where o.Bill_Type == string.Empty select o).ToList<OrdersSubmit>().Count;
+            //            IList<OrdersSubmit> maReviewOrders1 = (from o in objOrderDTO.ilstOrdersSubmitForPartialOrders where o.Id == order_submit_id select o).Distinct().ToList<OrdersSubmit>();
+            //            if (maReviewOrders1 != null && maReviewOrders1.Count > 0)
+            //            {
+            //                ScriptManager.RegisterStartupScript(this, this.Page.GetType(), string.Empty, "DisplayErrorMessage('230126'); {sessionStorage.setItem('StartLoading', 'false');StopLoadFromPatChart();}", true);
+            //                //ApplicationObject.erroHandler.DisplayErrorMessage("230126", OrderType.ToUpper());
+            //                return;
+            //            }
+            //            if (emptyCount == 0)
+            //            {
+            //                WFObjectManager obj_workFlow = new WFObjectManager();
+            //                obj_workFlow.MoveToNextProcess(order_submit_id, "DIAGNOSTIC ORDER", 1, "UNKNOWN", UtilityManager.ConvertToUniversal(DateTime.Now), null, null, null);
+            //                ScriptManager.RegisterStartupScript(this, this.Page.GetType(), "SaveSuccessfully", "DisplayErrorMessage('280013'); {sessionStorage.setItem('StartLoading', 'false');StopLoadFromPatChart();}", true);
+            //                ScriptManager.RegisterStartupScript(this, this.GetType(), string.Empty, "WindowCloseDiagnostics();", true);
+            //                return;
+            //            }
+            //            else if (emptyCount == maReviewOrders.Count)
+            //            {
+            //                ScriptManager.RegisterStartupScript(this, this.Page.GetType(), string.Empty, "DisplayErrorMessage('230126'); {sessionStorage.setItem('StartLoading', 'false');StopLoadFromPatChart();}", true);
+            //                //ApplicationObject.erroHandler.DisplayErrorMessage("230126", OrderType.ToUpper());
+            //                return;
+            //            }
+
+            //        }
+            //    }
+            //    else
+            //    {
+            //        Boolean bReturnValue;
+            //        bReturnValue = CheckForValidation();
+            //        if (!bReturnValue)
+            //            return;
+            //        FileManagementIndexManager objFileManagementMngr = new FileManagementIndexManager();
+            //        IList<FileManagementIndex> lstfilemanage = new List<FileManagementIndex>();
+            //        lstfilemanage = objFileManagementMngr.GetImagesforAnnotations(HumanID, order_submit_id, "ORDER,ABI,SPIROMETRY,SCAN");
+            //        if (lstfilemanage.Count > 0)
+            //        {
+            //            if (sProcess == "ORDER_GENERATE" && ClientSession.UserRole == "Medical Assistant")
+            //            {
+
+            //                PhysicianManager objPhysicianMngr = new PhysicianManager();
+            //                close_type = 8;
+            //                FillPhysicianUser PhyUserList = objPhysicianMngr.GetPhysicianandUser(false, string.Empty, ClientSession.LegalOrg);
+            //                User_name = PhyUserList.UserList.Where(P => P.Physician_Library_ID == PhysicianID).ToList()[0].user_name;
+
+            //            }
+            //            else if (sProcess == "MA_REVIEW" && ClientSession.UserRole == "Medical Assistant")
+            //            {
+            //                close_type = 1;
+            //                User_name = "UNKNOWN";
+
+            //            }
+            //            else if (sProcess == "ORDER_GENERATE" && (ClientSession.UserRole == "Physician" || ClientSession.UserRole == "Physician Assistant"))
+            //            {
+            //                close_type = 9;
+            //                User_name = "UNKNOWN";
+            //            }
+            //            else if (sProcess == "RESULT_REVIEW" && (ClientSession.UserRole == "Physician" || ClientSession.UserRole == "Physician Assistant"))
+            //            {
+            //                close_type = 1;
+            //                User_name = "UNKNOWN";
+            //            }
+            //            if (ClientSession.UserRole == "Physician Assistant" || ClientSession.UserRole == "Physician")
+            //            {
+            //                WFObjectManager obj_workFlow = new WFObjectManager();
+            //                obj_workFlow.MoveToNextProcess(order_submit_id, "DIAGNOSTIC ORDER", close_type, User_name, UtilityManager.ConvertToUniversal(DateTime.Now), null, null, null);
+
+            //                btnMoveToNextProcess.Disabled = true; //btnMoveToNextProcess.Enabled = false;
+
+            //            }
+            //            else if (ClientSession.UserRole == "Medical Assistant")
+            //            {
+            //                WFObjectManager obj_workFlow = new WFObjectManager();
+            //                //if (uLabID != 32)
+            //                //    obj_workFlow.MoveToNextProcess(order_submit_id, "DIAGNOSTIC ORDER", close_type, User_name, UtilityManager.ConvertToUniversal(DateTime.Now), null, null, null);
+            //                ////Response.Write("<script> self.close(); </script>");
+            //                //else
+            //                //{
+            //                obj_workFlow.MoveToNextProcess(order_submit_id, "DIAGNOSTIC ORDER", close_type, User_name, UtilityManager.ConvertToUniversal(DateTime.Now), null, null, null);
+            //                if (sProcess == "MA_REVIEW")
+            //                {
+            //                    PhysicianManager objPhysicianMngr = new PhysicianManager();
+            //                    FillPhysicianUser PhyUserList = objPhysicianMngr.GetPhysicianandUser(false, string.Empty, ClientSession.LegalOrg);
+            //                    User_name = PhyUserList.UserList.Where(P => P.Physician_Library_ID == PhysicianID).ToList()[0].user_name;
+            //                    obj_workFlow.MoveToNextProcess(order_submit_id, "DIAGNOSTIC ORDER", 8, User_name, UtilityManager.ConvertToUniversal(DateTime.Now), null, null, null);
+            //                }
+            //                // }
+            //                ScriptManager.RegisterStartupScript(this, this.Page.GetType(), "SaveSuccessfully", "DisplayErrorMessage('280013'); {sessionStorage.setItem('StartLoading', 'false');StopLoadFromPatChart();}", true);
+            //                ScriptManager.RegisterStartupScript(this, this.GetType(), string.Empty, "WindowCloseDiagnostics();", true);
+            //            }
+            //        }
+            //        else
+            //        {
+            //            ScriptManager.RegisterStartupScript(this, this.GetType(), "ErrorMessage", "DisplayErrorMessage('115039', '',''); {sessionStorage.setItem('StartLoading', 'false');StopLoadFromPatChart();}", true);
+            //            //ApplicationObject.erroHandler.DisplayErrorMessage("115039", this.Text);
+            //            return;
+            //        }
+            //    }
+
+
+
+            //    //ScriptManager.RegisterStartupScript(this, this.Page.GetType(), "SaveSuccessfully", "DisplayErrorMessage('280013');", true);
+            //    //ScriptManager.RegisterStartupScript(this, this.GetType(), string.Empty, "WindowClose();", true);
+            //    Session["OrderSubmitId"] = string.Empty;
+
+            //}
+            #endregion
+            #region Jira CAP-1555 and CAP-1646New Code
             if (Session["OrderSubmitId"] != null && Session["OrderSubmitId"].ToString() != string.Empty)
             {
                 hdnTransferVaraible.Value = Convert.ToString(Session["OrderSubmitId"]);
             }
+            else if (hdnMovetoOrderSubmitId.Value != null && hdnMovetoOrderSubmitId.Value != string.Empty)
+            {
+                hdnTransferVaraible.Value = Convert.ToString(hdnMovetoOrderSubmitId.Value);
+            }
+           
             string OrdersSubmitIDString = hdnTransferVaraible.Value != null ? hdnTransferVaraible.Value.ToString() : string.Empty;
             if (OrdersSubmitIDString != string.Empty)
             {
@@ -4880,19 +5031,19 @@ namespace Acurus.Capella.UI
                 sProcess = ClientSession.UserCurrentProcess;
 
                 // Added By Suvarnni M V for Bug id:29140
-                ulong uLabID = 0;
-                uLabID = Convert.ToUInt64(cboLab.Items[cboLab.SelectedIndex].Value);
-                if (uLabID != 32)
-                {
-                    if (!btnOrderSubmit.Disabled)
-                    {
-                        if (hdnType.Value != "")
-                        {
-                            btnOrderSubmit_Click(sender, e);
-                            if (hdnMovetoNextProcess.Value == "false")
-                                return;
-                        }
-                    }
+                //ulong uLabID = 0;
+                //uLabID = Convert.ToUInt64(cboLab.Items[cboLab.SelectedIndex].Value);
+                //if (uLabID != 32)
+                //{
+                    //if (!btnOrderSubmit.Disabled)
+                    //{
+                        //if (hdnType.Value != "")
+                        //{
+                        //    btnOrderSubmit_Click(sender, e);
+                        //    if (hdnMovetoNextProcess.Value == "false")
+                        //        return;
+                        //}
+                    //}
 
                     var serializer = new NetDataContractSerializer();
                     OrdersDTO objOrderDTO = null;
@@ -4927,87 +5078,89 @@ namespace Acurus.Capella.UI
                         }
 
                     }
-                }
-                else
-                {
-                    Boolean bReturnValue;
-                    bReturnValue = CheckForValidation();
-                    if (!bReturnValue)
-                        return;
-                    FileManagementIndexManager objFileManagementMngr = new FileManagementIndexManager();
-                    IList<FileManagementIndex> lstfilemanage = new List<FileManagementIndex>();
-                    lstfilemanage = objFileManagementMngr.GetImagesforAnnotations(HumanID, order_submit_id, "ORDER,ABI,SPIROMETRY,SCAN");
-                    if (lstfilemanage.Count > 0)
-                    {
-                        if (sProcess == "ORDER_GENERATE" && ClientSession.UserRole == "Medical Assistant")
-                        {
+                //}
+                //else
+                //{
+                //    Boolean bReturnValue;
+                //    bReturnValue = CheckForValidation();
+                //    if (!bReturnValue)
+                //        return;
+                //    FileManagementIndexManager objFileManagementMngr = new FileManagementIndexManager();
+                //    IList<FileManagementIndex> lstfilemanage = new List<FileManagementIndex>();
+                //    lstfilemanage = objFileManagementMngr.GetImagesforAnnotations(HumanID, order_submit_id, "ORDER,ABI,SPIROMETRY,SCAN");
+                //    if (lstfilemanage.Count > 0)
+                //    {
+                //        if (sProcess == "ORDER_GENERATE" && ClientSession.UserRole == "Medical Assistant")
+                //        {
 
-                            PhysicianManager objPhysicianMngr = new PhysicianManager();
-                            close_type = 8;
-                            FillPhysicianUser PhyUserList = objPhysicianMngr.GetPhysicianandUser(false, string.Empty, ClientSession.LegalOrg);
-                            User_name = PhyUserList.UserList.Where(P => P.Physician_Library_ID == PhysicianID).ToList()[0].user_name;
+                //            PhysicianManager objPhysicianMngr = new PhysicianManager();
+                //            close_type = 8;
+                //            FillPhysicianUser PhyUserList = objPhysicianMngr.GetPhysicianandUser(false, string.Empty, ClientSession.LegalOrg);
+                //            User_name = PhyUserList.UserList.Where(P => P.Physician_Library_ID == PhysicianID).ToList()[0].user_name;
 
-                        }
-                        else if (sProcess == "MA_REVIEW" && ClientSession.UserRole == "Medical Assistant")
-                        {
-                            close_type = 1;
-                            User_name = "UNKNOWN";
+                //        }
+                //        else if (sProcess == "MA_REVIEW" && ClientSession.UserRole == "Medical Assistant")
+                //        {
+                //            close_type = 1;
+                //            User_name = "UNKNOWN";
 
-                        }
-                        else if (sProcess == "ORDER_GENERATE" && (ClientSession.UserRole == "Physician" || ClientSession.UserRole == "Physician Assistant"))
-                        {
-                            close_type = 9;
-                            User_name = "UNKNOWN";
-                        }
-                        else if (sProcess == "RESULT_REVIEW" && (ClientSession.UserRole == "Physician" || ClientSession.UserRole == "Physician Assistant"))
-                        {
-                            close_type = 1;
-                            User_name = "UNKNOWN";
-                        }
-                        if (ClientSession.UserRole == "Physician Assistant" || ClientSession.UserRole == "Physician")
-                        {
-                            WFObjectManager obj_workFlow = new WFObjectManager();
-                            obj_workFlow.MoveToNextProcess(order_submit_id, "DIAGNOSTIC ORDER", close_type, User_name, UtilityManager.ConvertToUniversal(DateTime.Now), null, null, null);
+                //        }
+                //        else if (sProcess == "ORDER_GENERATE" && (ClientSession.UserRole == "Physician" || ClientSession.UserRole == "Physician Assistant"))
+                //        {
+                //            close_type = 9;
+                //            User_name = "UNKNOWN";
+                //        }
+                //        else if (sProcess == "RESULT_REVIEW" && (ClientSession.UserRole == "Physician" || ClientSession.UserRole == "Physician Assistant"))
+                //        {
+                //            close_type = 1;
+                //            User_name = "UNKNOWN";
+                //        }
+                //        if (ClientSession.UserRole == "Physician Assistant" || ClientSession.UserRole == "Physician")
+                //        {
+                //            WFObjectManager obj_workFlow = new WFObjectManager();
+                //            obj_workFlow.MoveToNextProcess(order_submit_id, "DIAGNOSTIC ORDER", close_type, User_name, UtilityManager.ConvertToUniversal(DateTime.Now), null, null, null);
 
-                            btnMoveToNextProcess.Disabled = true; //btnMoveToNextProcess.Enabled = false;
+                //            btnMoveToNextProcess.Disabled = true; //btnMoveToNextProcess.Enabled = false;
 
-                        }
-                        else if (ClientSession.UserRole == "Medical Assistant")
-                        {
-                            WFObjectManager obj_workFlow = new WFObjectManager();
-                            //if (uLabID != 32)
-                            //    obj_workFlow.MoveToNextProcess(order_submit_id, "DIAGNOSTIC ORDER", close_type, User_name, UtilityManager.ConvertToUniversal(DateTime.Now), null, null, null);
-                            ////Response.Write("<script> self.close(); </script>");
-                            //else
-                            //{
-                            obj_workFlow.MoveToNextProcess(order_submit_id, "DIAGNOSTIC ORDER", close_type, User_name, UtilityManager.ConvertToUniversal(DateTime.Now), null, null, null);
-                            if (sProcess == "MA_REVIEW")
-                            {
-                                PhysicianManager objPhysicianMngr = new PhysicianManager();
-                                FillPhysicianUser PhyUserList = objPhysicianMngr.GetPhysicianandUser(false, string.Empty, ClientSession.LegalOrg);
-                                User_name = PhyUserList.UserList.Where(P => P.Physician_Library_ID == PhysicianID).ToList()[0].user_name;
-                                obj_workFlow.MoveToNextProcess(order_submit_id, "DIAGNOSTIC ORDER", 8, User_name, UtilityManager.ConvertToUniversal(DateTime.Now), null, null, null);
-                            }
-                            // }
-                            ScriptManager.RegisterStartupScript(this, this.Page.GetType(), "SaveSuccessfully", "DisplayErrorMessage('280013'); {sessionStorage.setItem('StartLoading', 'false');StopLoadFromPatChart();}", true);
-                            ScriptManager.RegisterStartupScript(this, this.GetType(), string.Empty, "WindowCloseDiagnostics();", true);
-                        }
-                    }
-                    else
-                    {
-                        ScriptManager.RegisterStartupScript(this, this.GetType(), "ErrorMessage", "DisplayErrorMessage('115039', '',''); {sessionStorage.setItem('StartLoading', 'false');StopLoadFromPatChart();}", true);
-                        //ApplicationObject.erroHandler.DisplayErrorMessage("115039", this.Text);
-                        return;
-                    }
-                }
+                //        }
+                //        else if (ClientSession.UserRole == "Medical Assistant")
+                //        {
+                //            WFObjectManager obj_workFlow = new WFObjectManager();
+                //            //if (uLabID != 32)
+                //            //    obj_workFlow.MoveToNextProcess(order_submit_id, "DIAGNOSTIC ORDER", close_type, User_name, UtilityManager.ConvertToUniversal(DateTime.Now), null, null, null);
+                //            ////Response.Write("<script> self.close(); </script>");
+                //            //else
+                //            //{
+                //            obj_workFlow.MoveToNextProcess(order_submit_id, "DIAGNOSTIC ORDER", close_type, User_name, UtilityManager.ConvertToUniversal(DateTime.Now), null, null, null);
+                //            if (sProcess == "MA_REVIEW")
+                //            {
+                //                PhysicianManager objPhysicianMngr = new PhysicianManager();
+                //                FillPhysicianUser PhyUserList = objPhysicianMngr.GetPhysicianandUser(false, string.Empty, ClientSession.LegalOrg);
+                //                User_name = PhyUserList.UserList.Where(P => P.Physician_Library_ID == PhysicianID).ToList()[0].user_name;
+                //                obj_workFlow.MoveToNextProcess(order_submit_id, "DIAGNOSTIC ORDER", 8, User_name, UtilityManager.ConvertToUniversal(DateTime.Now), null, null, null);
+                //            }
+                //            // }
+                //            ScriptManager.RegisterStartupScript(this, this.Page.GetType(), "SaveSuccessfully", "DisplayErrorMessage('280013'); {sessionStorage.setItem('StartLoading', 'false');StopLoadFromPatChart();}", true);
+                //            ScriptManager.RegisterStartupScript(this, this.GetType(), string.Empty, "WindowCloseDiagnostics();", true);
+                //        }
+                //    }
+                //    else
+                //    {
+                //        ScriptManager.RegisterStartupScript(this, this.GetType(), "ErrorMessage", "DisplayErrorMessage('115039', '',''); {sessionStorage.setItem('StartLoading', 'false');StopLoadFromPatChart();}", true);
+                //        //ApplicationObject.erroHandler.DisplayErrorMessage("115039", this.Text);
+                //        return;
+                //    }
+                //}
 
 
 
                 //ScriptManager.RegisterStartupScript(this, this.Page.GetType(), "SaveSuccessfully", "DisplayErrorMessage('280013');", true);
                 //ScriptManager.RegisterStartupScript(this, this.GetType(), string.Empty, "WindowClose();", true);
                 Session["OrderSubmitId"] = string.Empty;
+                hdnMovetoOrderSubmitId.Value = string.Empty;
 
             }
+            #endregion
         }
 
 

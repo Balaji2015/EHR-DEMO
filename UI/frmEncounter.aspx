@@ -498,7 +498,40 @@
         if (currentTabNameId != undefined && currentTabNameId != null && currentTabNameId != "")
             $("#" + currentTabNameId + " a").click();
     });
-    
+    window.onbeforeunload = function funcUnload() {
+        PrevTab = $(window.document).find(".tab-pane.active ");
+        var prvTab = PrevTab[0].attributes.id.value;
+
+        if (prvTab.match("tbEPrescription") != null) {
+            //Jira CAP-1366
+            StartRcopiaStrip();
+
+            $.ajax({
+                type: "POST",
+                url: "frmEncounter.aspx/DownloadRcoipa",
+                contentType: "application/json;charset=utf-8",
+                dataType: "json",
+                async: true,
+                success: function (data) {
+                    //Jira CAP-1366
+                    StopRcopiaStrip();
+                    reloadSummary();
+                    RcopiaErrorAlert(data.d);
+                },
+                    error: function (result) {
+                        //Jira CAP-1366
+                        StopRcopiaStrip();
+                    //alert(result.d);
+                }
+            });
+        }
+        //BugID:51562 
+        if (prvTab.match("tbEandM") != null) {
+            if ($(top.window.document)?.find(".in")?.find(".close") != undefined && $(top.window.document)?.find(".in")?.find(".close")?.length > 1)
+                $(top.window.document).find(".in").find(".close")[0].click();
+        }
+
+    }
     var val_set = false;
     var event_bkup;
     var AspxPages = ["#tbSummary", "#tbEPrescription", "#tbVitals", "#tbROS", "#tbCCHPI"];
