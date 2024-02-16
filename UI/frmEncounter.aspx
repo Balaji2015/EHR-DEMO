@@ -1264,9 +1264,8 @@
                         $('.clsIframe').contents()[12].all.namedItem('btnSave').click();
                     }
                     paneID = $(event.target).attr('href');
-                    src = $(paneID).attr('data-src');
-                    //CAP-1658
-                    setTimeout(function () { $(paneID + " iframe").attr("src", src); }, 1000);                   
+                    src = $(paneID).attr('data-src');   
+                    $(paneID + " iframe").attr("src", src);
                 }
 
                 return;
@@ -1901,8 +1900,9 @@
                 }
                 else {
                     if (JSON.parse(sessionStorage.getItem("EncCancel")) == false) {
-                        src = $(paneID).attr('data-src');
+                        src = $(paneID).attr('data-src'); 
                         $(paneID + " iframe").attr("src", src);
+                      /*  $(paneID + " iframe").attr("src", src);*/
                         //if ($(paneID + " iframe").attr("src") == "") {
                         //    $(paneID + " iframe").attr("src", src);
                         //}

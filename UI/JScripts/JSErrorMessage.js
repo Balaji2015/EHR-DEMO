@@ -2737,7 +2737,7 @@ function StartRcopiaStrip() {
 //Jira CAP-1366
 function StopRcopiaStrip() {
     { sessionStorage.setItem('StartLoading', 'false'); StopLoadFromPatChart(); }
-    if ($(top.window.document).find("#RcopiaCheckAlert") != undefined) {
+    if ($(top.window.document).find("#RcopiaCheckAlert") != undefined && $(top.window.document).find("#RcopiaCheckAlert") != null && $(top.window.document).find("#RcopiaCheckAlert")[0]?.style?.display != undefined && $(top.window.document).find("#RcopiaCheckAlert")[0]?.style?.display != null) {
         $(top.window.document).find("#RcopiaCheckAlert")[0].style.display = "none";
     }
 }

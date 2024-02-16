@@ -108,6 +108,7 @@ function OnSuccessRCopia(response) {
 //}
 
 function btnpatientChart_Click() {
+    RcopiaDownload();
     humanid = document.getElementById(GetClientId('hdnHumanID')).value;
     var labResult = document.getElementById(GetClientId('hdnLabResult')).value;
     if (labResult == 'N') {
@@ -158,5 +159,6 @@ function openNonModal(fromname, height, width, inputargument) {
 }
 //Jira #CAP-889
 function btnMoveClientClick() {
+    RcopiaDownload();
     RemoveItem(document.URL, "PrescriptionID");
 }

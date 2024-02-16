@@ -91,7 +91,7 @@
                          <asp:Button ID="btnpatientChart1" runat="server" OnClientClick="return btnpatientChart_Click();" Text="Open Patient Chart"
                                             Width="150px" Visible="true" CssClass="aspresizedbluebutton" />
                              
-                    <button type="button" id="btnMove" runat="server"  style="width:155px;" onserverclick="btnMove_Click" onclick="btnMoveClientClick();" visible="false" >
+                    <button type="button" id="btnMove" runat="server"  style="width:155px;" onserverclick="btnMove_Click" onclick="btnMoveClientClick();" visible="false" class="aspresizedbluebutton" >
                         Move To Next Process</button>
                   
                     &nbsp;

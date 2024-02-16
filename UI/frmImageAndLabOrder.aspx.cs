@@ -3594,7 +3594,10 @@ namespace Acurus.Capella.UI
             //    }
 
             //}
-            hdnMovetoOrderSubmitId.Value = Session["OrderSubmitId"].ToString();
+            if (Session["OrderSubmitId"] != null)
+            {
+                hdnMovetoOrderSubmitId.Value = Session["OrderSubmitId"].ToString();
+            }
             //Jira CAP-1628
             Session["OrderSubmitId"] = string.Empty;
         }
