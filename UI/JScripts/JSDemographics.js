@@ -16,8 +16,6 @@ function OpenGuarantor() {
                 var oWnd = GetRadWindow();
                 var childWindow = oWnd.BrowserWindow.radopen("frmViewGuarantor.aspx?HumanID=" + HumanID + "&Patype=" + PatType, "ctl00_DemographicsModalWindow");
                 SetRadWindowProperties(childWindow, 650, 850);
-                //CAP-1441 - In Testing & Production: Selected Guarantor Information through View guarantor is not displayed in Demographics screen
-                childWindow.add_close(ViewGaurantorClick);
                 childWindow.remove_close(AddGuarantorClick);
                 childWindow.remove_close(OpenPatIns);
                 childWindow.remove_close(OpenAddInsForNewPatient);
