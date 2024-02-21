@@ -176,6 +176,23 @@ function btnSave_Clicked() {
         DisplayErrorMessage("114017");
         return false;
     }
+    //CAP-1654
+    if ($("#tbFilesBody tr.highlight").length > 0) {
+        var success = true;
+        $("#tbFilesBody tr").each(function (index, elm) {
+            var fileName = $(elm).find("td:last").text();
+            if (fileName.indexOf("#") !== -1) {
+                success = false;
+                return;
+            }
+        });
+        if (!success) {
+            alert('The selected file can not be indexed as the file has the special character such as #.Please rename the file and retry again.');
+            document.getElementById('divLoading').style.display = "none";
+            StopLoadOnUploadFile();
+            return false;
+        }
+    }
     var t = $("#cboDocumentType :selected").text();
     if ("" == t) return DisplayErrorMessage("115043"), document.getElementById('divLoading').style.display = "none", $("#hdnPageState").val(""), !1;
     var n = $("#cboDocumentSubType :selected").text();
