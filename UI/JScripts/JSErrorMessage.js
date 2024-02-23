@@ -2749,3 +2749,9 @@ function RcopiaErrorAlert(ErrorMessage) {
     }
 
 }
+
+function AfterOkClick() {
+    { sessionStorage.setItem('StartLoading', 'false'); StopLoadFromPatChart(); }
+    self.close;
+    top.window.location.reload();
+}

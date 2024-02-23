@@ -353,6 +353,7 @@
     <Content Include="frmFindAllAppointments.aspx" />
     <Content Include="frmFindPatient.aspx" />
     <Content Include="frmFindReferralPhysician.aspx" />
+    <Content Include="frmImpersonateUser.aspx" />
     <Content Include="frmImportCQM.aspx" />
     <Content Include="frmLogin.aspx" />
     <Content Include="frmMyQueueNew.aspx" />
@@ -378,6 +379,7 @@
     <Content Include="JScripts\jquery.ui.autocomplete.js" />
     <Content Include="JScripts\jQueryAngular.js" />
     <Content Include="JScripts\jsAssessmentNew.js" />
+    <Content Include="JScripts\JSImpersonateUser.js" />
     <Content Include="JScripts\JSRcopiaWebBrowser.js" />
     <Content Include="JScripts\JsRestrictMultipleTab.js" />
     <Content Include="JScripts\JSDMEOrder.js" />
@@ -1070,6 +1072,13 @@
     </Compile>
     <Compile Include="frmImmunizationRegistry.aspx.designer.cs">
       <DependentUpon>frmImmunizationRegistry.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="frmImpersonateUser.aspx.cs">
+      <DependentUpon>frmImpersonateUser.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="frmImpersonateUser.aspx.designer.cs">
+      <DependentUpon>frmImpersonateUser.aspx</DependentUpon>
     </Compile>
     <Compile Include="frmImplantableDevice.aspx.cs">
       <DependentUpon>frmImplantableDevice.aspx</DependentUpon>

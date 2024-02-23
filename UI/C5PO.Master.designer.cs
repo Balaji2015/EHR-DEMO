@@ -78,6 +78,15 @@ namespace Acurus.Capella.UI
         protected global::Telerik.Web.UI.RadWindow PFSHWindow;
 
         /// <summary>
+        /// ModelWindoImpersonateUser control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::Telerik.Web.UI.RadWindow ModelWindoImpersonateUser;
+
+        /// <summary>
         /// pnlScroll control.
         /// </summary>
         /// <remarks>
@@ -823,6 +832,15 @@ namespace Acurus.Capella.UI
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.HtmlControls.HtmlGenericControl mnuUtilities_smnuAutomation_smnuExamAutomation;
+
+        /// <summary>
+        /// mnuUtilities_smnuImpersonateUser control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlGenericControl mnuUtilities_smnuImpersonateUser;
 
         /// <summary>
         /// mnuReports control.

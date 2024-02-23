@@ -134,15 +134,17 @@ namespace Acurus.Capella.UI
                     {
                         if (Request["HumanID"] != null && Request["HumanID"] != string.Empty)
                         {
-                            ModalWindow.Visible = true;
-                            ModalWindow.VisibleOnPageLoad = true;
-                            ModalWindow.VisibleStatusbar = false;
-                            ModalWindow.ReloadOnShow = true;
-                            ModalWindow.ShowContentDuringLoad = false;
-                            ModalWindow.Height = Unit.Pixel(775);
-                            ModalWindow.Width = Unit.Pixel(1255);
-                            ModalWindow.Behaviors = WindowBehaviors.None;
-                            ModalWindow.NavigateUrl = "frmImportVitals.aspx?MyHumanID=" + Request["HumanID"].ToString() + "&Date=" + Date;
+                            //CAP-1738 - In Testing and Production : Enter vitals screen is partially hidden.
+                            //ModalWindow.Visible = true;
+                            //ModalWindow.VisibleOnPageLoad = true;
+                            //ModalWindow.VisibleStatusbar = false;
+                            //ModalWindow.ReloadOnShow = true;
+                            //ModalWindow.ShowContentDuringLoad = false;
+                            //ModalWindow.Height = Unit.Pixel(775);
+                            //ModalWindow.Width = Unit.Pixel(1255);
+                            //ModalWindow.Behaviors = WindowBehaviors.None;
+                            //ModalWindow.NavigateUrl = "frmImportVitals.aspx?MyHumanID=" + Request["HumanID"].ToString() + "&Date=" + Date;
+                            this.Page.ClientScript.RegisterStartupScript(this.Page.GetType(), string.Empty, " window.setTimeout(function () {OpenModal('Enter Vitals');}, 2000);", true);
                         }
                     }
                 }

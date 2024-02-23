@@ -745,6 +745,10 @@
                     IconUrl="Resources/16_16.ico" Width="1225px" EnableViewState="false" Modal="false"
                     VisibleStatusbar="False">
                 </telerik:RadWindow>
+                <telerik:RadWindow ID="ModelWindoImpersonateUser" runat="server" VisibleOnPageLoad="false" Height="200px"
+                    IconUrl="Resources/16_16.ico" Width="354px" EnableViewState="false" Modal="false"
+                    VisibleStatusbar="False" ShowContentDuringLoad="false">
+                </telerik:RadWindow>
 
             </Windows>
         </telerik:RadWindowManager>
@@ -1024,6 +1028,7 @@
                                                         </ul>
                                                     </div>
                                                 </li>
+                                                <li runat="server" id="mnuUtilities_smnuImpersonateUser"><a href="#" onclick="OpenModal('Impersonate User');">Login As</a></li>
                                                 <%-- <li runat="server" id="mnuUtilities_smnuClinicalReconcillation"><a href="#" onclick="OpenModal('Clinical Reconciliation');">Clinical Reconciliation</a></li>--%>
                                             </ul>
                                         </div>

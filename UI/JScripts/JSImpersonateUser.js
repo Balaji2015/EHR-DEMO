@@ -1,0 +1,167 @@
+﻿$(document).ready(function () {
+    document.getElementById('cboUserName').focus();
+});
+function CheckUserAndPassword() {
+    { sessionStorage.setItem('StartLoading', 'true'); StartLoadFromPatChart(); }
+    var cbouserElement = document.getElementById("cboUserName");
+    var SelectedUserName = cbouserElement.options[cbouserElement.selectedIndex].text;
+    var Password = document.getElementById("txtPassword");
+    if (SelectedUserName == "") {
+        DisplayErrorMessage('10113401');
+        Password.value = "";
+        { sessionStorage.setItem('StartLoading', 'false'); StopLoadFromPatChart(); }
+        return false;
+    }
+    
+    if (Password.value == "") {
+        DisplayErrorMessage('10113402');
+        { sessionStorage.setItem('StartLoading', 'false'); StopLoadFromPatChart(); }
+        return false;
+    }
+    return true;
+}
+function CloseWindow() {
+    self.close();
+}
+function AlertUser() {
+    var Continue = DisplayErrorMessage('010021');
+    if (Continue == true) {
+        document.getElementById("hdnbtnLogOutAndLogIn").click();
+    }
+    else if (Continue == false) {
+        { sessionStorage.setItem('StartLoading', 'false'); StopLoadFromPatChart(); }
+        //window.location.reload();
+    }
+    
+}
+
+function setTimeZone() {
+    var hiddenObj = document.getElementById('hdnLocalTime');
+    hiddenObj.value = showTime().toString();
+
+
+}
+function showTime() {
+    var dt = new Date();
+    var LocalTime = dt.stdTimezoneOffset();
+    var LocalDate = dt.toLocaleDateString("en-US");
+
+    if (LocalDate.indexOf("/") != -1) {
+        var LocalDatenew = LocalDate.split('/');
+        var day = ("0" + (LocalDatenew[1])).slice(-2);
+        LocalDate = LocalDatenew[0] + "/" + day + "/" + LocalDatenew[2];
+    }
+    if (LocalDate.indexOf("-") != -1) {
+        var LocalDatenew = LocalDate.split('-');
+        var day = ("0" + (LocalDatenew[1])).slice(-2);
+        LocalDate = LocalDatenew[0] + "/" + day + "/" + LocalDatenew[2];
+    }
+    document.getElementById('hdnUniversaloffset').value = createOffset(dt);
+    var dt1 = new Date(); var now = new Date(); var then = now.getDay() + '-' + (now.getMonth() + 1) + '-' + now.getFullYear(); then += ' ' + now.getHours() + ':' + now.getMinutes() + ':' + now.getSeconds(); var utc = (now.getUTCMonth() + 1) + '/' + now.getUTCDate() + '/' + now.getUTCFullYear(); utc += ' ' + now.getUTCHours() + ':' + now.getUTCMinutes() + ':' + now.getUTCSeconds(); document.getElementById("hdnLocalDateAndTime").value = dt1.toLocaleTimeString();
+
+    document.getElementById('hdnLocalDate').value = LocalDate;
+    document.getElementById('hdnFollowsDayLightSavings').value = (dt.dst()).toString().toLowerCase();
+    return LocalTime;
+
+}
+function pad(value) {
+    return value < 10 ? '0' + value : value;
+}
+function createOffset(date) {
+    var sign = (date.stdTimezoneOffset() > 0) ? "-" : "+";
+    var offset = Math.abs(date.stdTimezoneOffset());
+    var hours = pad(Math.floor(offset / 60));
+    var minutes = pad(offset % 60);
+    return sign + hours + "." + minutes;
+}
+var input = document.getElementById("cboUserName");
+input.addEventListener("keypress", function (event) {
+    if (event.key === "Enter") {
+        event.preventDefault();
+        document.getElementById("btnOk").click();
+    }
+});
+
+var input = document.getElementById("txtPassword");
+input.addEventListener("keypress", function (event) {
+    if (event.key === "Enter") {
+        event.preventDefault();
+        document.getElementById("btnOk").click();
+    }
+});
+
+function EHRLanding(FileName) {
+    localStorage.removeItem("MyShowAll");
+    localStorage.removeItem("MyOpenTask");
+    localStorage.removeItem("MyTask14");
+    localStorage.removeItem("MyShowAllMyTask");
+    localStorage.removeItem("ShowallGeneralqueue");
+    //localStorage.removeItem("ClientIpAddress");
+    var version = document.getElementById('hdnVersion').value;
+    var ProjectName = document.getElementById('hdnProjectName').value;
+    //Jira - #CAP-80
+    //sessionStorage.setItem("Projname", ProjectName.trim().toUpperCase());
+    if (ProjectName != undefined && ProjectName != null) {
+        localStorage.setItem("Projname", ProjectName.trim().toUpperCase());
+    }
+    var ReportPath = document.getElementById('hdnreportPath').value;
+    sessionStorage.setItem("ReportPath", ReportPath);
+    var LoginHeader = document.getElementById('hdnLoginheader').value;
+
+    var versionkey = document.getElementById('hdnVersionKey').value;
+    sessionStorage.setItem("versionkey", versionkey);
+
+    var vEVServiceLink = document.getElementById('hdnServiceLink').value;
+    sessionStorage.setItem("EVWebServiceLink", vEVServiceLink);
+
+    var vEVProjectName = document.getElementById('hdnEvProjectName').value;
+    sessionStorage.setItem("EVProjectName", vEVProjectName);
+    var ReportPathhttp = document.getElementById('hdnReportPathhttp').value;
+    sessionStorage.setItem("ReportPathhttp", ReportPathhttp);
+    //document.getElementById('lblProduct').innerHTML = "EHR <span style='color:black;font-size:13px;font-weight:500;'> - " + version.replace('Capella - ', '') + "</span>";
+    //Jira - #CAP-80
+    //Use localstorage insted of Sessionstorage and currently use sessionstorage also because of sessionstorage use more page
+    if (version.split('-')[1].trim() != undefined && version.split('-')[1].trim() != null) {
+        sessionStorage.setItem("ScriptVersion", version.split('-')[1].trim());
+        localStorage.setItem("ScriptVersion", version.split('-')[1].trim());
+    }
+
+    //document.getElementById('lblProduct').innerHTML = "EHR <span style='color:black;font-size:13px;font-weight:500;'> - " + version.replace('Capella - ', '') + "</span>";
+   // $($('#ulSystemMessages')[0].parentElement).css('overflow', 'auto');
+    //if (sessionStorage.getItem("MailClinicalCnt") != null && sessionStorage.getItem("MailClinicalCnt") != undefined)//BugID:48547
+    //    sessionStorage.removeItem("MailClinicalCnt");
+    //if (sessionStorage.getItem("importCount") != null && sessionStorage.getItem("importCount") != undefined)
+    //    sessionStorage.removeItem("importCount");
+    //if (sessionStorage.getItem("RxCount") != null && sessionStorage.getItem("RxCount") != undefined)//BugID:48547
+    //    sessionStorage.removeItem("RxCount");
+    //$('[id^=dvpanelheading]').addClass("panel-heading");
+
+    //$('[id^=divpanelsucess]').addClass("Loginboder");
+
+
+    //$('.logocolor').attr('style', sessionStorage.getItem("logocolor"));
+    //sessionStorage.removeItem("logocolor");
+    //$('#lblProduct').addClass("logoEHR");
+    //sessionStorage.removeItem("logoEHR");
+    //$('#spnlogo').addClass("logoLogin");
+
+    //vversion = sessionStorage.getItem("versionkey");
+    //sessionStorage.removeItem("versionkey");
+
+    //$('#imgright').addClass("logoRight");
+    //$('#imgleft').addClass("logoleft");
+    //$('#ulKnowledgecenter').find('a').addClass('Editabletxtbox')
+    //if (vversion != undefined && vversion != "" && vversion.toUpperCase() == "ENABLE") {
+    //    $("#lblProduct").show();
+    //}
+    //else {
+    //    $("#lblProduct").hide();
+    //}
+
+    //localStorage.setItem("PFSHVerified", "");
+
+    top.window.location = FileName;
+
+
+
+}

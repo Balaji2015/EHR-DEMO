@@ -1699,6 +1699,13 @@ function OpenModal(data) {
         var result = openModal("frmPrintPDF.aspx", 750, 900, obj, "ctl00_ModalWindow");
 
     }
+    //Jira CAP-1752
+    else if (itemValue.toUpperCase() == "IMPERSONATE USER") {
+        var obj = new Array();
+        var Result = openModal("frmImpersonateUser.aspx", 200, 354, obj, "ModelWindoImpersonateUser");
+
+
+    }
 
 
 }
@@ -3138,8 +3145,13 @@ function minimizeICD() {
     $(top.window.document).find("#main").css({ "position": "absolute" });
     $(top.window.document).find("#divFormView").css({ "position": "static" });
     //to access backdrop of modal
-    var activeFrame = $($($(top.window.document).find("iframe[id=ctl00_C5POBody_EncounterContainer]")[0].contentDocument.activeElement).find(".tab-pane.active")[0].firstElementChild);
-    $(activeFrame[0].contentDocument.activeElement).find(".modal-backdrop").css({ "position": "static" });
+    if ($($(top?.window?.document)?.find("iframe[id=ctl00_C5POBody_EncounterContainer]")[0]?.contentDocument?.activeElement)?.find(".tab-pane.active")[0]?.firstElementChild != undefined && $($(top?.window?.document)?.find("iframe[id=ctl00_C5POBody_EncounterContainer]")[0]?.contentDocument?.activeElement)?.find(".tab-pane.active")[0]?.firstElementChild != null) {
+        var activeFrame = $($($(top.window.document).find("iframe[id=ctl00_C5POBody_EncounterContainer]")[0].contentDocument.activeElement).find(".tab-pane.active")[0].firstElementChild);
+        $(activeFrame[0].contentDocument.activeElement).find(".modal-backdrop").css({ "position": "static" });
+    }
+    if ($("#ProcessModal") != undefined && $("#ProcessModal")[0] != undefined && $(top?.window?.document?.getElementById("ProcessFrame")?.contentWindow?.document)?.find(".modal-backdrop")?.length != undefined && $(top?.window?.document?.getElementById("ProcessFrame")?.contentWindow?.document)?.find(".modal-backdrop")?.length > 0) {
+        $(top.window.document.getElementById("ProcessFrame").contentWindow.document).find(".modal-backdrop").css({ "position": "static" });
+    }
 }
 function minimizeCPT() {
 

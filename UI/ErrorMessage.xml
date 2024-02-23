@@ -3015,4 +3015,8 @@
 	<Message number="1011199" Type="OK" Text="We have encountered an error retrieving the clinical note.  Try again and if this persists, contact support."></Message>
 	<Message number="1011201" Type="OK" Text="Electronic is not present in EV Type dropdown. Please contact support."></Message>
 
+	<Message number="10113401" Type="OK" Text="Please select a Username."></Message>
+	<Message number="10113402" Type="OK" Text="Please enter a valid Password."></Message>
+	<Message number="10113403" Type="OK" Text="Invalid Password."></Message>
+
 </ErrorMessage>

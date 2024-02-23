@@ -560,7 +560,9 @@ namespace Acurus.Capella.UI
                     if (Session != null)
                         SessionData = ClientSession.UserName;
 
-                    if (SessionData == "" && Link.ToUpper().Contains("FRMLOGIN.ASPX") == false && Link.ToUpper() != "FRMLOGIN.ASPX" && Link.ToUpper().Contains("WEBFRMLOGOUT.ASPX") == false && Link.ToUpper().Contains("WEBFRMLOGIN.ASPX") == false)
+                    //Jira CAP-1752
+                    //if (SessionData == "" && Link.ToUpper().Contains("FRMLOGIN.ASPX") == false && Link.ToUpper() != "FRMLOGIN.ASPX" && Link.ToUpper().Contains("WEBFRMLOGOUT.ASPX") == false && Link.ToUpper().Contains("WEBFRMLOGIN.ASPX") == false)
+                    if (SessionData == "" && Link.ToUpper().Contains("FRMLOGIN.ASPX") == false && Link.ToUpper() != "FRMLOGIN.ASPX" && Link.ToUpper().Contains("WEBFRMLOGOUT.ASPX") == false && Link.ToUpper().Contains("WEBFRMLOGIN.ASPX") == false && Link.ToUpper().Contains("FRMIMPERSONATEUSER.ASPX") == false)
                     {
                         UtilityManager.inserttologgingtableforSessionTimeout("CheckLogin - session is empty and URL is not Login Page", Request.Url.ToString(), string.Empty);
 

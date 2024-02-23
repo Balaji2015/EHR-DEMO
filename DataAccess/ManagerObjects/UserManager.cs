@@ -34,6 +34,11 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
         IList<User> UserPreference();
         LoginDTO CheckUserDetailsWithoutPassword(string UserName, Boolean bIsScnTabLoad);
         void SaveLastSuccessfulyLoginDate(string sUserName, DateTime dtLoginDate);
+        IList<User> CheckImpersonateUserWithPassword(string UserName, string Password, out bool Base64Password);
+        IList<User> getImpersonateUser(string sUserName, string sLegalOrg);
+        LoginDTO CheckImpersonateUserDetails(string UserName, Boolean bIsScnTabLoad);
+        IList<User> CheckImpersonateUser(string UserName);
+
     }
     public partial class UserManager : ManagerBase<User, uint>, ILoginManager
     {
@@ -68,6 +73,21 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
             return UserList;
         }
 
+        public IList<User> getImpersonateUser(string sUserName, string sLegalOrg)
+        {
+            IList<User> UserList = new List<User>();
+            //ISession iMySession = NHibernateSessionManager.Instance.CreateISession();
+            using (ISession iMySession = NHibernateSessionManager.Instance.CreateISession())
+            {
+                ISQLQuery sql = iMySession.CreateSQLQuery("Select * from User u where u.user_name <> :UserName  and u.Status = 'A' and u.Legal_Org = :LegalOrg").AddEntity("u", typeof(User));
+                sql.SetParameter("UserName", sUserName);
+                sql.SetParameter("LegalOrg", sLegalOrg);
+                UserList = sql.List<User>();
+                iMySession.Close();
+            }
+            return UserList;
+        }
+
         public IList<User> CheckUser(string UserName, string Password, out bool Base64Password)
         {
 
@@ -80,8 +100,10 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
             using (ISession iMySession = NHibernateSessionManager.Instance.CreateISession())
             {
                 try
-                {
-                    ISQLQuery sql = iMySession.CreateSQLQuery("Select * from User u where u.user_name= :UserName  and (u.password=sha1(:PassWord) or u.admin_password=sha1(:PassWord))").AddEntity("u", typeof(User));
+                {   
+                    //Jira CAP-1752
+                    //ISQLQuery sql = iMySession.CreateSQLQuery("Select * from User u where u.user_name= :UserName  and (u.password=sha1(:PassWord) or u.admin_password=sha1(:PassWord))").AddEntity("u", typeof(User));
+                    ISQLQuery sql = iMySession.CreateSQLQuery("Select * from User u where u.user_name= :UserName  and (u.password=sha1(:PassWord))").AddEntity("u", typeof(User));
                     sql.SetParameter("UserName", UserName);
                     sql.SetParameter("PassWord", Decryptionbase64Decode(Password));
                     UserList = sql.List<User>();
@@ -102,6 +124,79 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
 
             if (UserList.Count == 0 && Decryptionbase64Decode(Password) == "0")
                 Base64Password = false;
+            return UserList;
+        }
+        //Jira CAP-1752
+        public IList<User> CheckImpersonateUserWithPassword(string UserName, string Password, out bool Base64Password)
+        {
+
+            Base64Password = true;
+            //To refresh the NHibernateSessionUtility
+            NHibernateSessionUtility.Instance.FillInstance();
+            /* Updated by Ponmozhi Vendan T for the Bug ID = 28045 */
+            IList<User> UserList = new List<User>();
+            //ISession iMySession = NHibernateSessionManager.Instance.CreateISession();
+            using (ISession iMySession = NHibernateSessionManager.Instance.CreateISession())
+            {
+                try
+                {
+                    ISQLQuery sql = iMySession.CreateSQLQuery("Select * from User u where u.user_name= :UserName  and  u.admin_password=sha1(:PassWord)").AddEntity("u", typeof(User));
+                    sql.SetParameter("UserName", UserName);
+                    sql.SetParameter("PassWord", Decryptionbase64Decode(Password));
+                    UserList = sql.List<User>();
+                    iMySession.Close();
+                }
+                catch (Exception ex)
+                {
+                    if (ex.InnerException != null && ex.InnerException.Message == "Unable to connect to any of the specified MySQL hosts.")
+                    {
+                        throw new Exception("Unable to connect to Databse.");
+                    }
+                    else
+                    {
+                        throw new Exception(ex.Message); ;
+                    }
+                }
+            }
+
+            if (UserList.Count == 0 && Decryptionbase64Decode(Password) == "0")
+                Base64Password = false;
+            return UserList;
+        }
+        //Jira CAP-1752
+        public IList<User> CheckImpersonateUser(string UserName)
+        {
+
+
+            //To refresh the NHibernateSessionUtility
+            NHibernateSessionUtility.Instance.FillInstance();
+            /* Updated by Ponmozhi Vendan T for the Bug ID = 28045 */
+            IList<User> UserList = new List<User>();
+            //ISession iMySession = NHibernateSessionManager.Instance.CreateISession();
+            using (ISession iMySession = NHibernateSessionManager.Instance.CreateISession())
+            {
+                try
+                {
+                    ISQLQuery sql = iMySession.CreateSQLQuery("Select * from User u where u.user_name= :UserName").AddEntity("u", typeof(User));
+                    sql.SetParameter("UserName", UserName);
+                    UserList = sql.List<User>();
+                    iMySession.Close();
+                }
+                catch (Exception ex)
+                {
+                    if (ex.InnerException != null && ex.InnerException.Message == "Unable to connect to any of the specified MySQL hosts.")
+                    {
+                        throw new Exception("Unable to connect to Databse.");
+                    }
+                    else
+                    {
+                        throw new Exception(ex.Message); ;
+                    }
+                }
+            }
+
+            //if (UserList.Count == 0 && Decryptionbase64Decode(Password) == "0")
+            //    Base64Password = false;
             return UserList;
         }
         public LoginDTO CheckUserDetails(string UserName, string Password, out bool Base64Password, Boolean bIsScnTabLoad)
@@ -148,6 +243,54 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
                 }
 
                 
+            }
+            //End
+            return objLoginDTO;
+        }
+        //Jira CAP-1752
+        public LoginDTO CheckImpersonateUserDetails(string UserName, Boolean bIsScnTabLoad)
+        {
+            LoginDTO objLoginDTO = new LoginDTO();
+            objLoginDTO.User = CheckImpersonateUser(UserName);
+            //Added for BugId : 34193 
+            if (objLoginDTO.User.Count > 0)
+            {
+                if (objLoginDTO.User[0].status == "A" && objLoginDTO.User[0].Default_Server == string.Empty)
+                {
+                    ScnTabManager objScnTabmngr = new ScnTabManager();
+                    objLoginDTO.UserPermissionDTO = objScnTabmngr.GetUserPermisssions(UserName, bIsScnTabLoad);
+                    using (ISession iMySession = NHibernateSessionManager.Instance.CreateISession())
+                    {
+                        ISQLQuery query1 = iMySession.CreateSQLQuery("select distinct Default_Server from user where status='A' and default_server<>''");
+                        objLoginDTO.DefaultServerCount = query1.List().Count;
+                    }
+
+                    //  objLoginDTO.UserSession = userSessionMngr.GetCurrentSessionByUserName(UserName);
+                    // objLoginDTO.UserSession = userSessionMngr.GetUserSessionFromXml(UserName);
+                    //LastModifiedLocalLookupManager lastmodifiedManager = new LastModifiedLocalLookupManager();
+                    //objLoginDTO.lstLookUp = lastmodifiedManager.GetModifiedDates();
+                }
+                UserSessionManager userSessionMngr = new UserSessionManager();
+                using (ISession iMySession = NHibernateSessionManager.Instance.CreateISession())
+                {
+                    ISQLQuery query1 = iMySession.CreateSQLQuery("select Carrier_ID, Facility_Name from map_user_carrier_facility where user_name='" + UserName + "'");
+                    ArrayList ilistObj = new ArrayList(query1.List());
+                    if (ilistObj != null)
+                    {
+                        foreach (object item in ilistObj)
+                        {
+                            object[] obj = (object[])item;
+
+                            if (objLoginDTO.UserCarrier == string.Empty)
+                                objLoginDTO.UserCarrier = obj[0].ToString();
+                            else
+                                objLoginDTO.UserCarrier += "," + obj[0].ToString();
+                        }
+                    }
+
+                }
+
+
             }
             //End
             return objLoginDTO;

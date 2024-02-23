@@ -650,6 +650,12 @@ namespace Acurus.Capella.UI
                 }
                 else if (ehrwfobj.Current_Process.ToUpper() == "PROVIDER_PROCESS" || ehrwfobj.Current_Process.ToUpper() == "PROVIDER_REVIEW" || ehrwfobj.Current_Process.ToUpper() == "PROVIDER_REVIEW_2" || ehrwfobj.Current_Process.ToUpper() == "DICTATION_REVIEW")//else if (ehrwfobj.Current_Process.ToUpper() == "PROVIDER_PROCESS" || ehrwfobj.Current_Process.ToUpper() == "PROVIDER_REVIEW") Comment By ThiyagarajanM 13-06-2013
                 {
+                    //Jira CAP-1743
+                    if (ehrwfobj.Current_Process.ToUpper() == "PROVIDER_REVIEW" || ehrwfobj.Current_Process.ToUpper() == "PROVIDER_REVIEW_2" || ehrwfobj.Current_Process.ToUpper() == "DICTATION_REVIEW")
+                    {
+                        btnCopyPreviousEncounter.Disabled = true;
+                    }
+
                     if (ehrwfobj.Current_Process.ToUpper() == "PROVIDER_PROCESS")
                     {
                         btnMoveToMA.Visible = true;

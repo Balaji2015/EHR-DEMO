@@ -139,38 +139,44 @@ function disable(ctrlId, ctrlName) {
     defaultselectionTobacca(ctrlId);
     
 }
+//CAP-1760 - Tobacco use & exposure - NO but "Light cigrette smoker" status is selected by default
+//function defaultselectionTobacca(ctrlId) {
+//    if(ctrlId == "chkYesTobaccoUseandExposure")
+//    {
+//        //var cmbbx = $find("cboTobaccoUseandExposure");
+//        var cmbbx = document.getElementById("cboTobaccoUseandExposure");
+//        var indexyes = -1;
+//        //var cItem = cmbbx.findItemByValue("TobaccoUseandExposure-230060001-Light cigarette smoker");
+//        for (var i = 0; i < cmbbx.options.length; i++)
+//        {
+
+//            if (cmbbx.options[i].value == "TobaccoUseandExposure-230060001-Light cigarette smoker") {
+//                $("select#cboTobaccoUseandExposure").prop('selectedIndex', i);
+//                }
+
+//        }
+//        //cItem.select();
+
+//    }
+//    else if(ctrlId == "chkNoTobaccoUseandExposure")
+//    {
+//        //var cmbbx = $find("cboTobaccoUseandExposure");
+//        var cmbbx = document.getElementById("cboTobaccoUseandExposure");
+//        var index = -1;
+//        //var cItem = cmbbx.findItemByValue("TobaccoUseandExposure-160618006-Current non-smoker");
+//        //cItem.select();
+//        for (var i = 0; i < cmbbx.options.length; i++) {
+
+//            if (cmbbx.options[i].value == "TobaccoUseandExposure-160618006-Current non-smoker") {
+//                $("select#cboTobaccoUseandExposure").prop('selectedIndex', i);
+//                }
+
+//        }
+//    }
+//}
 function defaultselectionTobacca(ctrlId) {
-    if(ctrlId == "chkYesTobaccoUseandExposure")
-    {
-        //var cmbbx = $find("cboTobaccoUseandExposure");
-        var cmbbx = document.getElementById("cboTobaccoUseandExposure");
-        var indexyes = -1;
-        //var cItem = cmbbx.findItemByValue("TobaccoUseandExposure-230060001-Light cigarette smoker");
-        for (var i = 0; i < cmbbx.options.length; i++)
-        {
-            
-            if (cmbbx.options[i].value == "TobaccoUseandExposure-230060001-Light cigarette smoker") {
-                $("select#cboTobaccoUseandExposure").prop('selectedIndex', i);
-                }
-            
-        }
-        //cItem.select();
-        
-    }
-    else if(ctrlId == "chkNoTobaccoUseandExposure")
-    {
-        //var cmbbx = $find("cboTobaccoUseandExposure");
-        var cmbbx = document.getElementById("cboTobaccoUseandExposure");
-        var index = -1;
-        //var cItem = cmbbx.findItemByValue("TobaccoUseandExposure-160618006-Current non-smoker");
-        //cItem.select();
-        for (var i = 0; i < cmbbx.options.length; i++) {
-            
-            if (cmbbx.options[i].value == "TobaccoUseandExposure-160618006-Current non-smoker") {
-                $("select#cboTobaccoUseandExposure").prop('selectedIndex', i);
-                }
-            
-        }
+    if (ctrlId == "chkYesTobaccoUseandExposure" || ctrlId == "chkNoTobaccoUseandExposure") {
+        $("select#cboTobaccoUseandExposure").prop('selectedIndex', -1);
     }
 }
 function enable(testId, chkName) {
