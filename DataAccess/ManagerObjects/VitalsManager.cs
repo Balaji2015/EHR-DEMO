@@ -1111,17 +1111,27 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
         {
             using (ISession iMySession = NHibernateSessionManager.Instance.CreateISession())
             {
+                //var querystr = @"SELECT V.* 
+                //                 FROM   PATIENT_RESULTS V 
+                //                        INNER JOIN DYNAMIC_SCREEN S 
+                //                                ON ( V.LOINC_OBSERVATION = S.CONTROL_NAME ) 
+                //                 WHERE  V.ENCOUNTER_ID = :ENCOUNTERID  
+                //                        AND V.HUMAN_ID = :HUMANID  
+                //                        AND RESULTS_TYPE = 'VITALS' 
+                //                        AND V.VITALS_GROUP_ID IN(SELECT MAX(VITALS_GROUP_ID) 
+                //                                                 FROM   PATIENT_RESULTS 
+                //                                                 WHERE  HUMAN_ID = V.HUMAN_ID 
+                //                                                        AND ENCOUNTER_ID = V.ENCOUNTER_ID) 
+                //                 GROUP  BY V.LOINC_OBSERVATION 
+                //                 ORDER  BY S.SORT_ORDER";
+
                 var querystr = @"SELECT V.* 
                                  FROM   PATIENT_RESULTS V 
                                         INNER JOIN DYNAMIC_SCREEN S 
                                                 ON ( V.LOINC_OBSERVATION = S.CONTROL_NAME ) 
                                  WHERE  V.ENCOUNTER_ID = :ENCOUNTERID  
                                         AND V.HUMAN_ID = :HUMANID  
-                                        AND RESULTS_TYPE = 'VITALS' 
-                                        AND V.VITALS_GROUP_ID IN(SELECT MAX(VITALS_GROUP_ID) 
-                                                                 FROM   PATIENT_RESULTS 
-                                                                 WHERE  HUMAN_ID = V.HUMAN_ID 
-                                                                        AND ENCOUNTER_ID = V.ENCOUNTER_ID) 
+                                        AND RESULTS_TYPE = 'VITALS'                                         
                                  GROUP  BY V.LOINC_OBSERVATION 
                                  ORDER  BY S.SORT_ORDER";
 
