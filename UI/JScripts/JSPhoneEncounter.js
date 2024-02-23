@@ -1528,8 +1528,6 @@ myapp.controller('PhoneEncounterCtrl', function ($scope, $http) {
 
 
     $scope.OpenFormViewCPT = function () {
-        //Jira CAP-1660 and CAP-1656
-        $(top.window.document).find("#btnMinimizeViewResultCPT").css({ "display": "none" });
         if ($(top.window.document).find('#divCPTFormView.in').length > 0) {
             $(top.window.document).find("#btnMaximizeViewResultCPT").click();
         }
@@ -1832,8 +1830,6 @@ myapp.controller('PhoneEncounterCtrl', function ($scope, $http) {
         { sessionStorage.setItem('StartLoading', 'false'); StopLoadFromPatChart(); }
     }
     $scope.OpenFormViewICD = function () {
-        //Jira CAP-1660 and CAP-1656
-        $(top.window.document).find("#btnMinimizeViewResultICD").css({ "display": "none" });
         if ($(top.window.document).find('#divFormView.in').length > 0) {
             $(top.window.document).find("#btnMaximizeViewResultICD").click();
         }

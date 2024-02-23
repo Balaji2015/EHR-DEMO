@@ -772,7 +772,6 @@ myapp.controller('assessmentCtrl', function ($scope, $http) {
 
     $scope.LoadFavouriteICDS = function () {
         var arrListICDs = [];
-        $(top.window.document).find("#btnMinimizeViewResultICD").css({ "display": "none" });
         { sessionStorage.setItem('StartLoading', 'true'); StartLoadFromPatChart(); }
         $http({
             url: "frmAssessmentNew.aspx/GetFavouriteICDS",
@@ -983,88 +982,41 @@ myapp.controller('assessmentCtrl', function ($scope, $http) {
     });
 
     $scope.FillFavorite = function () {
-        //Jira CAP-1660 and CAP-1656
-        $(top.window.document).find("#btnMinimizeViewResultICD").css({ "display": "none" });
-        $(top.window.document).find("#tbFavICDsContainer #dynTr").remove();
-        $(top.window.document).find("#ok")[0].disabled = true;
-        $(top.window.document).find('#divFormView').modal({ backdrop: 'static', keyboard: false }, 'show');
-        $(top.window.document).find("#chkicd7").click(function () { alert("Hi"); });
-        var PhysicianICDs = localStorage.getItem("PhysicianICD");
-        PhysicianICDs = $.parseJSON(PhysicianICDs);
-        var catlist = [];
-        for (i = 0; i < PhysicianICDs.length; i++) {
-
-            if (catlist.indexOf(PhysicianICDs[i].split('~')[2]) == -1)
-                catlist.push(PhysicianICDs[i].split('~')[2]);
-
+        if ($(top.window.document)?.find('#divFormView.in')?.length != undefined && $(top.window.document).find('#divFormView.in').length > 0) {
+            $(top.window.document).find("#btnMaximizeViewResultICD").click();
         }
-        var table = $(top.window.document).find('#tbFavICDsContainer');
-        var favICDCount = PhysicianICDs.length;
-        favICDCount = favICDCount + catlist.length;
-        var RowCount = parseInt(favICDCount / 3);
-        var EmptyCount = favICDCount % 3;
-        RowCount = EmptyCount != 0 ? RowCount + 1 : RowCount;
-        var catIndex = 0;
-        var icount = 0;
-        var jcount = RowCount;
-        var j = 0;
-        var icase = 0;
-        var switchno = 1;
-        for (k = 0; k < 3; k++) {
-            switch (switchno) {
-                case 1:
-                    for (j = 0; j < jcount; j++) {
-                        var row = $('<tr id="dynTr"></tr>');
-                        if (catlist[catIndex] == PhysicianICDs[j].split('~')[2] && j == 0 && icount == 0) {
-                            var cell1 = $('<td colspan="3" align="center" style="font-weight:bold;"></td>').text(PhysicianICDs[j].split('~')[2]);
-                            var cell2 = $('<td style="display:none;"></td>');
-                            var cell3 = $('<td style="display:none;"></td>');
-                            var cell4 = $('<td align="center"></td>');
-                            var cell5 = $('<td></td>');
-                            var cell6 = $('<td></td>');
-                            var cell7 = $('<td align="center"></td>');
-                            var cell8 = $('<td></td>');
-                            var cell9 = $('<td></td>');
-                            row.append(cell1);
-                            row.append(cell2);
-                            row.append(cell3);
-                            row.append(cell4);
-                            row.append(cell5);
-                            row.append(cell6);
-                            row.append(cell7);
-                            row.append(cell8);
-                            row.append(cell9);
-                            table.append(row);
-                            j--;
-                            jcount--;
-                            icount++;
-                        }
-                        else if (catlist[catIndex] == PhysicianICDs[j].split('~')[2] && icount != 0) {
-                            var id = "chkicd" + (j + 1);
-                            var cell1 = $('<td align="center"></td>');
-                            cell1.append("<input type='checkbox' class='icd' id='" + id + "' onclick='chkFavICD_Click();' />");
-                            var cell2 = $('<td></td>').text(PhysicianICDs[j].split('~')[0]);
-                            var cell3 = $('<td></td>').text(PhysicianICDs[j].split('~')[1]);
-                            var cell4 = $('<td align="center"></td>');
-                            var cell5 = $('<td></td>');
-                            var cell6 = $('<td></td>');
-                            var cell7 = $('<td align="center"></td>');
-                            var cell8 = $('<td></td>');
-                            var cell9 = $('<td></td>');
-                            row.append(cell1);
-                            row.append(cell2);
-                            row.append(cell3);
-                            row.append(cell4);
-                            row.append(cell5);
-                            row.append(cell6);
-                            row.append(cell7);
-                            row.append(cell8);
-                            row.append(cell9);
-                            table.append(row);
-                        }
-                        else if (catlist[catIndex] != PhysicianICDs[j].split('~')[2]) {
-                            ++catIndex;
-                            if (catlist[catIndex] == PhysicianICDs[j].split('~')[2]) {
+        else {
+            $(top.window.document).find("#tbFavICDsContainer #dynTr").remove();
+            $(top.window.document).find("#ok")[0].disabled = true;
+            $(top.window.document).find('#divFormView').modal({ backdrop: 'static', keyboard: false }, 'show');
+            $(top.window.document).find("#chkicd7").click(function () { alert("Hi"); });
+            var PhysicianICDs = localStorage.getItem("PhysicianICD");
+            PhysicianICDs = $.parseJSON(PhysicianICDs);
+            var catlist = [];
+            for (i = 0; i < PhysicianICDs.length; i++) {
+
+                if (catlist.indexOf(PhysicianICDs[i].split('~')[2]) == -1)
+                    catlist.push(PhysicianICDs[i].split('~')[2]);
+
+            }
+            var table = $(top.window.document).find('#tbFavICDsContainer');
+            var favICDCount = PhysicianICDs.length;
+            favICDCount = favICDCount + catlist.length;
+            var RowCount = parseInt(favICDCount / 3);
+            var EmptyCount = favICDCount % 3;
+            RowCount = EmptyCount != 0 ? RowCount + 1 : RowCount;
+            var catIndex = 0;
+            var icount = 0;
+            var jcount = RowCount;
+            var j = 0;
+            var icase = 0;
+            var switchno = 1;
+            for (k = 0; k < 3; k++) {
+                switch (switchno) {
+                    case 1:
+                        for (j = 0; j < jcount; j++) {
+                            var row = $('<tr id="dynTr"></tr>');
+                            if (catlist[catIndex] == PhysicianICDs[j].split('~')[2] && j == 0 && icount == 0) {
                                 var cell1 = $('<td colspan="3" align="center" style="font-weight:bold;"></td>').text(PhysicianICDs[j].split('~')[2]);
                                 var cell2 = $('<td style="display:none;"></td>');
                                 var cell3 = $('<td style="display:none;"></td>');
@@ -1086,108 +1038,158 @@ myapp.controller('assessmentCtrl', function ($scope, $http) {
                                 table.append(row);
                                 j--;
                                 jcount--;
-
+                                icount++;
                             }
-                        }
-
-                    }
-                    icase = jcount;
-                    switchno++;
-                    jcount = RowCount + RowCount;
-                    break;
-                case 2:
-                    table.find('tr').each(function (rowIndex, r) {
-                        if (rowIndex != 0) {
-
-                            var cols = [];
-                            if (catlist[catIndex] == PhysicianICDs[icase].split('~')[2] && j != 0) {
-                                $(this).find('td').each(function (colIndex, c) {
-
-                                    if (colIndex == 3) {
-                                        var id = "chkicd" + (icase + 1);
-                                        c.innerHTML = "<input type='checkbox' class='icd' id='" + id + "' onclick='chkFavICD_Click();' />";
-                                    }
-                                    if (colIndex == 4) {
-                                        c.textContent = PhysicianICDs[icase].split('~')[0];
-                                    }
-                                    if (colIndex == 5) {
-                                        c.textContent = PhysicianICDs[icase].split('~')[1];
-                                    }
-
-                                });
-                                icase++;
+                            else if (catlist[catIndex] == PhysicianICDs[j].split('~')[2] && icount != 0) {
+                                var id = "chkicd" + (j + 1);
+                                var cell1 = $('<td align="center"></td>');
+                                cell1.append("<input type='checkbox' class='icd' id='" + id + "' onclick='chkFavICD_Click();' />");
+                                var cell2 = $('<td></td>').text(PhysicianICDs[j].split('~')[0]);
+                                var cell3 = $('<td></td>').text(PhysicianICDs[j].split('~')[1]);
+                                var cell4 = $('<td align="center"></td>');
+                                var cell5 = $('<td></td>');
+                                var cell6 = $('<td></td>');
+                                var cell7 = $('<td align="center"></td>');
+                                var cell8 = $('<td></td>');
+                                var cell9 = $('<td></td>');
+                                row.append(cell1);
+                                row.append(cell2);
+                                row.append(cell3);
+                                row.append(cell4);
+                                row.append(cell5);
+                                row.append(cell6);
+                                row.append(cell7);
+                                row.append(cell8);
+                                row.append(cell9);
+                                table.append(row);
                             }
-                            else if (catlist[catIndex] != PhysicianICDs[icase].split('~')[2]) {
+                            else if (catlist[catIndex] != PhysicianICDs[j].split('~')[2]) {
                                 ++catIndex;
-                                if (catlist[catIndex] == PhysicianICDs[icase].split('~')[2]) {
+                                if (catlist[catIndex] == PhysicianICDs[j].split('~')[2]) {
+                                    var cell1 = $('<td colspan="3" align="center" style="font-weight:bold;"></td>').text(PhysicianICDs[j].split('~')[2]);
+                                    var cell2 = $('<td style="display:none;"></td>');
+                                    var cell3 = $('<td style="display:none;"></td>');
+                                    var cell4 = $('<td align="center"></td>');
+                                    var cell5 = $('<td></td>');
+                                    var cell6 = $('<td></td>');
+                                    var cell7 = $('<td align="center"></td>');
+                                    var cell8 = $('<td></td>');
+                                    var cell9 = $('<td></td>');
+                                    row.append(cell1);
+                                    row.append(cell2);
+                                    row.append(cell3);
+                                    row.append(cell4);
+                                    row.append(cell5);
+                                    row.append(cell6);
+                                    row.append(cell7);
+                                    row.append(cell8);
+                                    row.append(cell9);
+                                    table.append(row);
+                                    j--;
+                                    jcount--;
+
+                                }
+                            }
+
+                        }
+                        icase = jcount;
+                        switchno++;
+                        jcount = RowCount + RowCount;
+                        break;
+                    case 2:
+                        table.find('tr').each(function (rowIndex, r) {
+                            if (rowIndex != 0) {
+
+                                var cols = [];
+                                if (catlist[catIndex] == PhysicianICDs[icase].split('~')[2] && j != 0) {
                                     $(this).find('td').each(function (colIndex, c) {
+
                                         if (colIndex == 3) {
-                                            c.outerHTML = "<td colspan='3' align='center' style='font-weight:bold;'>" + PhysicianICDs[icase].split('~')[2] + "</td>"
-                                            c.innerHTML = PhysicianICDs[icase].split('~')[2];
+                                            var id = "chkicd" + (icase + 1);
+                                            c.innerHTML = "<input type='checkbox' class='icd' id='" + id + "' onclick='chkFavICD_Click();' />";
                                         }
                                         if (colIndex == 4) {
-                                            c.outerHTML = "<td style='display:none;'></td>";
+                                            c.textContent = PhysicianICDs[icase].split('~')[0];
                                         }
                                         if (colIndex == 5) {
-                                            c.outerHTML = "<td style='display:none;'></td>";
+                                            c.textContent = PhysicianICDs[icase].split('~')[1];
                                         }
+
                                     });
+                                    icase++;
+                                }
+                                else if (catlist[catIndex] != PhysicianICDs[icase].split('~')[2]) {
+                                    ++catIndex;
+                                    if (catlist[catIndex] == PhysicianICDs[icase].split('~')[2]) {
+                                        $(this).find('td').each(function (colIndex, c) {
+                                            if (colIndex == 3) {
+                                                c.outerHTML = "<td colspan='3' align='center' style='font-weight:bold;'>" + PhysicianICDs[icase].split('~')[2] + "</td>"
+                                                c.innerHTML = PhysicianICDs[icase].split('~')[2];
+                                            }
+                                            if (colIndex == 4) {
+                                                c.outerHTML = "<td style='display:none;'></td>";
+                                            }
+                                            if (colIndex == 5) {
+                                                c.outerHTML = "<td style='display:none;'></td>";
+                                            }
+                                        });
+                                    }
                                 }
                             }
-                        }
 
-                    });
-                    switchno++;
-                    jcount = RowCount + RowCount + RowCount;
-                    break;
-                case 3:
+                        });
+                        switchno++;
+                        jcount = RowCount + RowCount + RowCount;
+                        break;
+                    case 3:
 
-                    var max = RowCount - (PhysicianICDs.length - (RowCount + RowCount))
-                    table.find('tr').each(function (rowIndex, r) {
+                        var max = RowCount - (PhysicianICDs.length - (RowCount + RowCount))
+                        table.find('tr').each(function (rowIndex, r) {
 
-                        if (icase < jcount - max && rowIndex != 0) {
-                            var cols = [];
-                            if (catlist[catIndex] == PhysicianICDs[icase].split('~')[2] && j != 0) {
-                                $(this).find('td').each(function (colIndex, c) {
-
-                                    if (colIndex == 6) {
-                                        var id = "chkicd" + (icase + 1);
-                                        c.innerHTML = "<input type='checkbox' class='icd' id='" + id + "' onclick='chkFavICD_Click();' />";
-                                    }
-                                    if (colIndex == 7) {
-                                        c.textContent = PhysicianICDs[icase].split('~')[0];
-                                    }
-                                    if (colIndex == 8) {
-                                        c.textContent = PhysicianICDs[icase].split('~')[1];
-                                    }
-
-                                });
-                                icase++;
-                            }
-                            else if (catlist[catIndex] != PhysicianICDs[icase].split('~')[2]) {
-                                ++catIndex;
-                                if (catlist[catIndex] == PhysicianICDs[icase].split('~')[2]) {
+                            if (icase < jcount - max && rowIndex != 0) {
+                                var cols = [];
+                                if (catlist[catIndex] == PhysicianICDs[icase].split('~')[2] && j != 0) {
                                     $(this).find('td').each(function (colIndex, c) {
+
                                         if (colIndex == 6) {
-                                            c.outerHTML = "<td colspan='3' align='center' style='font-weight:bold;'>" + PhysicianICDs[icase].split('~')[2] + "</td>"
-                                            c.innerHTML = PhysicianICDs[icase].split('~')[2];
+                                            var id = "chkicd" + (icase + 1);
+                                            c.innerHTML = "<input type='checkbox' class='icd' id='" + id + "' onclick='chkFavICD_Click();' />";
                                         }
                                         if (colIndex == 7) {
-                                            c.outerHTML = "<td style='display:none;'></td>";
+                                            c.textContent = PhysicianICDs[icase].split('~')[0];
                                         }
                                         if (colIndex == 8) {
-                                            c.outerHTML = "<td style='display:none;'></td>";
+                                            c.textContent = PhysicianICDs[icase].split('~')[1];
                                         }
+
                                     });
+                                    icase++;
+                                }
+                                else if (catlist[catIndex] != PhysicianICDs[icase].split('~')[2]) {
+                                    ++catIndex;
+                                    if (catlist[catIndex] == PhysicianICDs[icase].split('~')[2]) {
+                                        $(this).find('td').each(function (colIndex, c) {
+                                            if (colIndex == 6) {
+                                                c.outerHTML = "<td colspan='3' align='center' style='font-weight:bold;'>" + PhysicianICDs[icase].split('~')[2] + "</td>"
+                                                c.innerHTML = PhysicianICDs[icase].split('~')[2];
+                                            }
+                                            if (colIndex == 7) {
+                                                c.outerHTML = "<td style='display:none;'></td>";
+                                            }
+                                            if (colIndex == 8) {
+                                                c.outerHTML = "<td style='display:none;'></td>";
+                                            }
+                                        });
+                                    }
                                 }
                             }
-                        }
 
-                    });
-                    break;
+                        });
+                        break;
+                }
             }
+            $(top.window.document).find('#divBody').append(table);
         }
-        $(top.window.document).find('#divBody').append(table);
     }
 
     $scope.OpenFormView = function () {
