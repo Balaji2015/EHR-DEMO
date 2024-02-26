@@ -382,8 +382,15 @@ namespace Acurus.Capella.UI
                     if (login[0].Default_Server != string.Empty && login[0].Default_Server.ToUpper().Contains("FRMLOGIN.ASPX") == true)
                     {
                         //ImpersonateUser - To change the Default Server Login page to the current page
-                        login[0].Default_Server = login[0].Default_Server.Replace("frmLogin.aspx", "frmImpersonateUser.aspx");
-
+                        if (login[0].Default_Server.Contains("frmLogin.aspx") == true)
+                        {
+                            login[0].Default_Server = login[0].Default_Server.Replace("frmLogin.aspx", "frmImpersonateUser.aspx");
+                        }
+                        else
+                        {
+                            this.Page.ClientScript.RegisterStartupScript(this.Page.GetType(), string.Empty, "DisplayErrorMessage('10113404');", true);
+                            return;
+                        }
                         Session["Default_Server"] = login[0].Default_Server;
 
                         NameValueCollection data = new NameValueCollection();

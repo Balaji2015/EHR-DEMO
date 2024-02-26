@@ -3019,5 +3019,6 @@
 	<Message number="10113401" Type="OK" Text="Please select a Username."></Message>
 	<Message number="10113402" Type="OK" Text="Please enter a valid Password."></Message>
 	<Message number="10113403" Type="OK" Text="Invalid Password."></Message>
+	<Message number="10113404" Type="OK" Text="Please check the default server in DB. It does not have frmLogin."></Message>
 
 </ErrorMessage>
