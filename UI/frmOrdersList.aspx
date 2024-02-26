@@ -85,12 +85,12 @@ legend {font-size:13px; font-weight:bold; }
     width: 89px;font-weight:bold;font-family:'Microsoft Sans Serif'; font-size:11.5px;" CssClass="vertiAlign" ID="lnkOrderList" runat="server" NavigateUrl="~/frmOrdersList.aspx"
                                 >Order List</asp:HyperLink>  </p>--%>
                               <p style="height: 90px; margin-top: -16.3em; width: 22px; margin-left: -57px;">
-                                        <asp:HyperLink ID="lnkDiagnosticOrder" Style="position: absolute; width: 105px; font-weight:bold;font-family:'Microsoft Sans Serif'; font-size:11px;"
+                                        <asp:HyperLink ID="lnkDiagnosticOrder" Style="position: absolute; width: 105px; font-weight:bold;font-family:'Microsoft Sans Serif'; font-size:11px;transform: rotate(270deg);"
                                             runat="server" NavigateUrl="~/frmImageAndLabOrder.aspx"
                                             EnableViewState="false">Detailed Order</asp:HyperLink>
                                     </p>
                                     <p style="height: 90px; margin-top: -1em; width: 20px; margin-left: -42px;">
-                                        <asp:HyperLink Style="position: absolute; width: 75px; font-weight:bold;font-family:'Microsoft Sans Serif'; font-size:11px;"
+                                        <asp:HyperLink Style="position: absolute; width: 75px; font-weight:bold;font-family:'Microsoft Sans Serif'; font-size:11px;transform: rotate(270deg);"
                                             ID="lnkOrderList" runat="server" NavigateUrl="~/frmOrdersList.aspx"
                                             EnableViewState="false">Order List</asp:HyperLink>
                                     </p>
