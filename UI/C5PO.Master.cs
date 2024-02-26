@@ -72,7 +72,8 @@ namespace Acurus.Capella.UI
             if (!IsPostBack)
             {
                 //ClientSession.FlushSession();
-                if (Request["ScreenName"] != null && Request["ScreenName"].ToString() == "ERX")
+                //CAP-1768
+                if (Request["ScreenName"] != null && Request["ScreenName"].ToString().Equals("ERX", StringComparison.OrdinalIgnoreCase))
                 {
                     string local_Date = string.Empty;
                     if (hdnLocalDate.Value != string.Empty)
@@ -263,7 +264,8 @@ namespace Acurus.Capella.UI
 
                 //((Label)mnuC5PO.Items.FindItemByValue("UserName").FindControl("lblYouareloggedinas")).Text = "You are logged in as" + " " + ClientSession.UserName + "  " + "in" + "  " + ClientSession.FacilityName;
                 //lblLogged.Text = "You are logged in as" + " " + ClientSession.UserName + "  " + "in" + "  " + ClientSession.FacilityName;
-                if (Request["ScreenName"] != null && Request["ScreenName"].ToString() == "CreateOrder")
+                //CAP-1768
+                if (Request["ScreenName"] != null && Request["ScreenName"].ToString().Equals("CreateOrder", StringComparison.OrdinalIgnoreCase))
                 {
                     if (ClientSession.FillPatientChart != null && ClientSession.FillPatientChart.PatChartList.Count > 0)
                     {
@@ -296,7 +298,8 @@ namespace Acurus.Capella.UI
                     }
                 }
                 //CAP-1506
-                else if (Request["ScreenName"] != null && Request["ScreenName"].ToString() == "OrderManagement")
+                //CAP-1768
+                else if (Request["ScreenName"] != null && Request["ScreenName"].ToString().Equals("OrderManagement", StringComparison.OrdinalIgnoreCase))
                 {
                     if (ClientSession.FillPatientChart != null && ClientSession.FillPatientChart.PatChartList.Count > 0)
                     {
