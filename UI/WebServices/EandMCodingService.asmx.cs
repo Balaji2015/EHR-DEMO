@@ -704,7 +704,7 @@ namespace Acurus.Capella.UI.WebServices
                 {
                     //Cap -1280
                     //var ResultRecord1 = Record1.Select(a => new { ICDCode = a.Split('~')[0], ICDDescription = a.Split('~')[1].Replace('$', '\"'), IsPrimary = a.Split('~')[2], Sequence = 'B' + a.Split('~')[3], ICDVersion = '0', EandMICDID = '0', btnDelete = "Resources/Delete-Blue.png", EnablePriRbtn = HttpContext.Current.Session["EnablePriRbtn"].ToString() });
-                    var ResultRecord1 = Record1.Select(a => new { ICDCode = a.Split('~')[0], ICDDescription = a.Split('~')[1].Replace('$', '\"'), IsPrimary = a.Split('~')[2], Sequence = 'B' + a.Split('~')[3], ICDVersion = '0', EandMICDID = '0', btnDelete = "Resources/Delete-Blue.png", EnablePriRbtn = HttpContext.Current.Session["EnablePriRbtn"].ToString(), ICDSource = "EMICD", HCC = "" });
+                    var ResultRecord1 = Record1.Select(a => new { ICDCode = a.Split('~')[0], ICDDescription = a.Split('~')[1].Replace('$', '\"'), IsPrimary = a.Split('~')[2], Sequence = 'A' + a.Split('~')[3], ICDVersion = '0', EandMICDID = '0', btnDelete = "Resources/Delete-Blue.png", EnablePriRbtn = HttpContext.Current.Session["EnablePriRbtn"].ToString(), ICDSource = "EMICD", HCC = "" });
                     json = new JavaScriptSerializer().Serialize(ResultRecord1);
                 }
             }

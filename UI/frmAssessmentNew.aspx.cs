@@ -1470,6 +1470,7 @@ namespace Acurus.Capella.UI
             if (lstpriamryICDs.Count > 1)
             {
                 lsteanmdprimaryicdICDs = (from m in lstpriamryICDs where m.Source == "EMICD" select m.ICD).ToList<string>();
+
             }
             lstassprimaryicdICDs = (from m in lstpriamryICDs where m.Source != "EMICD" select m.ICD).ToList<string>();
             List<string> lstICDs = (from m in eanmicdoverallicd where m.ICD_Category != "Primary" select m.ICD).ToList<string>();
@@ -1506,11 +1507,12 @@ namespace Acurus.Capella.UI
             //    iListIcdbyorder = iListIcdbyorder.Concat(iListIcdtemp).ToList<AllICD_9>();
             //}
             //iListIcdbyorder = iListIcdbyorder.Concat(iListIcdzerohcc).ToList<AllICD_9>();
-
+            int flag = 0;
             for (int k = 0; k < eanmicdoverallicd.Count; k++)
             {
-                if (eanmicdoverallicd[k].ICD_Category.ToUpper() == "PRIMARY" && eanmicdoverallicd[k].ICD == lstassprimaryicdICDs[0].Trim().ToString().Trim())
+                if (eanmicdoverallicd[k].ICD_Category.ToUpper() == "PRIMARY" && (eanmicdoverallicd[k].ICD == lstassprimaryicdICDs[0].Trim().ToString().Trim()))
                 {
+                    flag = 1;
                     EandMCodingICD obj = new EandMCodingICD();
                     //Cap - 1280
                     //obj.ICD = lstass[k].ICD;
@@ -1533,22 +1535,22 @@ namespace Acurus.Capella.UI
                     obj.Created_Date_And_Time = UtilityManager.ConvertToUniversal();
                     eandmicdinsert.Add(obj);
 
-
+                    break;
 
                 }
 
             }
 
             int SEQ = 2;
-            //Cap - 1280
-            //if (lstPriICDs.Count > 0)
-            //{
-            //    SEQ = 2;
-            //}
-            //else
-            //{
-            //    SEQ = 1;
-            //}
+           
+            if (flag==1)
+            {
+                SEQ = 2;
+            }
+            else
+            {
+                SEQ = 1;
+            }
             for (int k = 0; k < iListIcdbyorder.Count; k++)
             {
                 IList<EandMCodingICD> eanmicdtemp = new List<EandMCodingICD>();

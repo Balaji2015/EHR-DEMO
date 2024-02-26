@@ -2101,7 +2101,7 @@ myapp.controller('EandMCodingCtrl', function ($scope, $http) {
 
         var max = 0;
         $('.maxseq').each(function () {
-            $this = parseInt($(this).text().replace('B', ''));
+            $this = parseInt($(this).text().replace('B', '').replace('A', ''));
             if ($this > max) max = $this;
         });
         max = parseInt(max) + 1;
@@ -2282,7 +2282,7 @@ myapp.controller('EandMCodingCtrl', function ($scope, $http) {
         }
         var max = 0;
         $('.maxseq').each(function () {
-            $this = parseInt($(this).text().replace('B', ''));
+            $this = parseInt($(this).text().replace('B', '').replace('A', ''));
             if ($this > max) max = $this;
         });
         max = parseInt(max) + 1;
