@@ -1296,18 +1296,18 @@ function AddGuarantorClick(oWindow, args) {
 }
 function SelectGaurantorClick(oWindow, args) {
     var Result = args.get_argument();
-    var name = Result.PatientName;
-    var dob = Result.PatientDOB;
-    var sex = Result.PatientGender;
-    var status = Result.Status;
-    var cell_phone = Result.Cell_Phone;
-    var home_phone = Result.Home_Phone;
-    var zipcode = Result.ZipCode;
-    var email = Result.EMail;
-    if (Result.Address != null)
-        var address = Result.Address;
-
+    
     if (Result) {
+        var name = Result.PatientName;
+        var dob = Result.PatientDOB;
+        var sex = Result.PatientGender;
+        var status = Result.Status;
+        var cell_phone = Result.Cell_Phone;
+        var home_phone = Result.Home_Phone;
+        var zipcode = Result.ZipCode;
+        var email = Result.EMail;
+        if (Result.Address != null)
+            var address = Result.Address;
 
         document.getElementById(GetClientId("hdnGuarantorID")).value = Result.HumanId;
         if (name != undefined && name.split(' ')[0].split(',')[1] != undefined)
@@ -1848,27 +1848,39 @@ function parseMyDate(s) {
 var uPatientId = "";
 $(document).ready(function () {
     vRowID = "";
-    if (document.getElementById('ctl00_C5POBody_rdbPRI').disabled == true) {
+    if (document.getElementById('ctl00_C5POBody_rdbPRI')?.disabled == true) {
         document.getElementById('btnAdd').disabled = true;
         document.getElementById('btnClearAll').disabled = true;
     }
-    if (document.getElementById("ctl00_C5POBody_ddlPreferredLanguage").value == "" || document.getElementById("ctl00_C5POBody_ddlPreferredLanguage").value == "Patient Refuses to answer" || document.getElementById("ctl00_C5POBody_ddlPreferredLanguage").value == "Declined to specify" || document.getElementById("ctl00_C5POBody_ddlPreferredLanguage").value == "Preferred Language not indicated") {
+    if (document.getElementById("ctl00_C5POBody_ddlPreferredLanguage")?.value == "" || document.getElementById("ctl00_C5POBody_ddlPreferredLanguage")?.value == "Patient Refuses to answer" || document.getElementById("ctl00_C5POBody_ddlPreferredLanguage")?.value == "Declined to specify" || document.getElementById("ctl00_C5POBody_ddlPreferredLanguage")?.value == "Preferred Language not indicated") {
         document.getElementById("ctl00_C5POBody_chkReqTranslator").checked = false;
         document.getElementById("ctl00_C5POBody_chkReqTranslator").disabled = true;
     }
-    document.getElementById('ctl00_C5POBody_txtSpecify').style.backgroundColor = "#BFDBFF";
+    if (document.getElementById('ctl00_C5POBody_txtSpecify')?.style?.backgroundColor) {
+        document.getElementById('ctl00_C5POBody_txtSpecify').style.backgroundColor = "#BFDBFF";
+    }
     //Jira Cap-634
-    document.getElementById('ctl00_C5POBody_txtSelectinsured').disabled = true; 
-    document.getElementById('imginsuredText').style.visibility = "hidden";
-    document.getElementById('ctl00_C5POBody_txtSpecify').disabled = true;
-    document.getElementById('ctl00_C5POBody_txtPlanSearch').setAttribute("data-plan-id", "0");
-    document.getElementById('ctl00_C5POBody_txtPlanSearch').setAttribute("data-carrier-id", "0");
-    document.getElementById(GetClientId("btnViewUpdateInsurance")).style.display = "none";
-    document.getElementById('ctl00_C5POBody_btnaddins').disabled = true;
-    document.getElementById("ctl00_C5POBody_txtProviderSearch").setAttribute("data-phy-id", "0");
-    document.getElementById('ctl00_C5POBody_txtProviderSearch').setAttribute("data-phy-details", "0");
-    document.getElementById('ctl00_C5POBody_txtProviderSearch').setAttribute("data-phy-gridname", "");
-    document.getElementById('ctl00_C5POBody_txtProviderSearch').setAttribute("data-phy-npi", "");
+    if (document.getElementById('ctl00_C5POBody_txtSelectinsured')?.disabled) {
+        document.getElementById('ctl00_C5POBody_txtSelectinsured').disabled = true;
+    }
+    if (document.getElementById('imginsuredText')?.style?.visibility) {
+        document.getElementById('imginsuredText').style.visibility = "hidden";
+    }
+    if (document.getElementById('ctl00_C5POBody_txtSpecify')?.disabled) {
+        document.getElementById('ctl00_C5POBody_txtSpecify').disabled = true;
+    }
+    document.getElementById('ctl00_C5POBody_txtPlanSearch')?.setAttribute("data-plan-id", "0");
+    document.getElementById('ctl00_C5POBody_txtPlanSearch')?.setAttribute("data-carrier-id", "0");
+    if (document.getElementById(GetClientId("btnViewUpdateInsurance"))?.style?.display) {
+        document.getElementById(GetClientId("btnViewUpdateInsurance")).style.display = "none";
+    }
+    if (document.getElementById('ctl00_C5POBody_btnaddins')?.disabled) {
+        document.getElementById('ctl00_C5POBody_btnaddins').disabled = true;
+    }
+    document.getElementById("ctl00_C5POBody_txtProviderSearch")?.setAttribute("data-phy-id", "0");
+    document.getElementById('ctl00_C5POBody_txtProviderSearch')?.setAttribute("data-phy-details", "0");
+    document.getElementById('ctl00_C5POBody_txtProviderSearch')?.setAttribute("data-phy-gridname", "");
+    document.getElementById('ctl00_C5POBody_txtProviderSearch')?.setAttribute("data-phy-npi", "");
 
     $(document.getElementById(GetClientId("dtpPatientDOB"))).datepicker({
         dateFormat: 'dd-M-yy', changeYear: true, changeMonth: true, maxDate: new Date(), yearRange: "-120:+0",
@@ -1904,19 +1916,21 @@ $(document).ready(function () {
     });
 
     $("[id*=pbDropdown]").addClass('displaynonestyle');
-    uPatientId = document.getElementById("ctl00_C5POBody_HiddenPatientName").value.split('&')[1];
+    uPatientId = document.getElementById("ctl00_C5POBody_HiddenPatientName")?.value?.split('&')[1];
     loadgrid();
     //  scrolify($('#tblpolicyinfo'), 50);
 
     //Cap - 1583
-    if (document.getElementById(GetClientId("ctl00_C5POBody_ddlPatientStatus")).value == "ALIVE") {
+    if (document.getElementById(GetClientId("ctl00_C5POBody_ddlPatientStatus"))?.value == "ALIVE") {
         $('#ctl00_C5POBody_dtpDateOfDeath').removeClass('Editabletxtbox');
         $('#ctl00_C5POBody_dtpDateOfDeath').addClass('nonEditabletxtbox');
     }
     else {
         $('#ctl00_C5POBody_dtpDateOfDeath').removeClass('nonEditabletxtbox');
         $('#ctl00_C5POBody_dtpDateOfDeath').addClass('Editabletxtbox');
-        document.getElementById('ctl00_C5POBody_dtpDateOfDeath').disabled = false;
+        if (document.getElementById('ctl00_C5POBody_dtpDateOfDeath')?.disabled) {
+            document.getElementById('ctl00_C5POBody_dtpDateOfDeath').disabled = false;
+        }
     }
 
 });
