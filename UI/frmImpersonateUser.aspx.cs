@@ -447,7 +447,8 @@ namespace Acurus.Capella.UI
 
                         HttpHelper.RedirectAndPOST(this.Page, serverRedirectUrl, data);
 
-                        ScriptManager.RegisterStartupScript(this, this.Page.GetType(), "Login", "sessionStorage.setItem('StartLoading', 'false');StopLoadFromPatChart();", true);
+                        //ScriptManager.RegisterStartupScript(this, this.Page.GetType(), "Login", "sessionStorage.setItem('StartLoading', 'false');StopLoadFromPatChart();", true);
+                        ScriptManager.RegisterStartupScript(this, this.Page.GetType(), "Login", "sessionStorage.setItem('StartLoading', 'false');StopLoadFromPatChart();AfterOkClick();", true);
                         return;
                     }
                     else if (login[0].Default_Server == string.Empty && objLoginDTO.DefaultServerCount > 0)
