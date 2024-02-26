@@ -2208,12 +2208,18 @@ function GetSelectedOrdersFromUI() {
     $("#chklstFrequentlyUsedProcedures input[type=checkbox]:checked").each(function () {
         if ($('#' + this.id)[0]?.labels[0]?.innerText != undefined) {
             if (OrdersPrcedures == "") {
-                OrdersPrcedures = $('#' + this.id)[0]?.labels[0]?.innerText.replaceAll(" ", "");;
+                OrdersPrcedures = $('#' + this.id)[0]?.labels[0]?.innerText.replaceAll(" ", "").replaceAll("______","___0.00___");
             }
             else {
-                OrdersPrcedures = OrdersPrcedures + "~" + $('#' + this.id)[0]?.labels[0]?.innerText.replaceAll(" ", "");;
+                OrdersPrcedures = OrdersPrcedures + "~" + $('#' + this.id)[0]?.labels[0]?.innerText.replaceAll(" ", "").replaceAll("______", "___0.00___");
             }
         }
     });
     return OrdersPrcedures;
+}
+
+//Jira CAP-1766
+function UpdateOrdersProceduresInEditQuantity() {
+    var OrdersPrcedures = GetSelectedOrdersFromUI();
+    sessionStorage.setItem("OrdersPrcedures", OrdersPrcedures);
 }

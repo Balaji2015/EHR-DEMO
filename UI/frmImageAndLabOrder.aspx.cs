@@ -5733,6 +5733,8 @@ namespace Acurus.Capella.UI
                         //IList<string> ProceduresViewList = new List<string>();
                         //ProceduresViewList = objDiagnosticDTO.OrdersLists.Select(a => a.Lab_Procedure + "-" + (a.Lab_Procedure_Description.Contains("x_") ? (a.Lab_Procedure_Description + "~" + a.Quantity + "|" + a.Id) : a.Lab_Procedure_Description)).ToList<string>();
                         //IList<ListItem> tempList = SetOrderIDForEditQuantity(ProceduresViewList);
+                        //Jira CAP-1766
+                        ScriptManager.RegisterStartupScript(this, this.Page.GetType(), "ValidateSave", "UpdateOrdersProceduresInEditQuantity();", true);
 
                     }
 
