@@ -3140,7 +3140,8 @@ function minimizeICD() {
     $(top.window.document).find("#btnMaximizeViewResultICD").css({ "display": "block" });
     $(top.window.document).find("#divBody").css({ "display": "none" });
     $(top.window.document).find("#divICDFooter").css({ "display": "none" });
-    $(top.window.document).find("#ICDModal").css({ "margin-top": "850px", "margin-left": "0%", "width": "30%", "margin-bottom": "0%" });
+    //CAP-1656, CAP-1660
+    $(top.window.document).find("#ICDModal").css({ "margin-top": "0px", "margin-left": "0%", "width": "30%", "margin-bottom": "1%" });
     //to access main parts of page 
     $(top.window.document).find("#main").css({ "position": "absolute" });
     $(top.window.document).find("#divFormView").css({ "position": "static" });
@@ -3168,7 +3169,8 @@ function minimizeCPT() {
     $(top.window.document).find("#btnMaximizeViewResultCPT").css({ "display": "block" });
     $(top.window.document).find("#divCPTBody").css({ "display": "none" });
     $(top.window.document).find("#divCPTFooter").css({ "display": "none" });
-    $(top.window.document).find("#CPTModal").css({ "margin-top": "850px", "margin-left": "0%", "width": "30%", "margin-bottom": "0%" });
+    //CAP-1656, CAP-1660
+    $(top.window.document).find("#CPTModal").css({ "margin-top": "0px", "margin-left": "4%", "width": "30%", "margin-bottom": "1%" });
     //to access main parts of page 
     $(top.window.document).find("#main").css({ "position": "absolute" });
     $(top.window.document).find("#divCPTFormView").css({ "position": "static", "height": "108%!important" });

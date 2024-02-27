@@ -347,8 +347,8 @@ myapp.config(function ($provide) {
     });
 });
 myapp.controller('assessmentCtrl', function ($scope, $http) {
-
-    $(top.window.document).find("#btnMinimizeViewResultICD").css({ "display": "none" }); //BugID:44399 
+    //CAP-1656, CAP-1660
+    $(top.window.document).find("#btnMinimizeViewResultICD").css({ "display": "block" }); //BugID:44399 
     $(top.window.document).find("#divFormView").css({ "position": "absolute" });
     //Jira - #CAP-80
     //if (sessionStorage.getItem("Projname") != undefined && sessionStorage.getItem("Projname").toUpperCase() == "WISH") {

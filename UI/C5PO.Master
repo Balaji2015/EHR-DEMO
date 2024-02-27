@@ -1257,7 +1257,7 @@
         </div>
           <div id="divFormServiceType" class="modal modal-wide fade" style="z-index: 1058!important;" role="dialog">
             <div class="modal-dialog" style="width: 95%; margin-top: 5%;" id="ServiceTypeModal">
-                <div class="modal-content" style="display:inline-grid">
+                <div class="modal-content">
                     <div class="modal-header" style="height: 46px;" >
                         <div class="row" style="margin-top: -25px;">
                             <div class="col-xs-8">
@@ -1270,7 +1270,7 @@
                             </div>
                         </div>
                     </div>
-                    <div class="modal-body" id="divServiceBody" style="overflow-y: auto;">
+                    <div class="modal-body" id="divServiceBody" style="overflow-y: auto;width:100%;">
 
                         <table id="tbServiceTypeContainer" style="width: 100%; table-layout: fixed;" class="table-bordered favICDTable Gridbodystyle">
                           
@@ -1285,8 +1285,8 @@
         </div>
 
         <div id="divFormView" class="modal modal-wide fade" style="z-index: 5000!important;" role="dialog">
-            <div class="modal-dialog" style="width: 95%; margin-top: 5%;" id="ICDModal">
-                <div class="modal-content" style="display:inline-grid">
+            <div class="modal-dialog" style="width: 95%; margin-top: 5%;z-index:9999;" id="ICDModal">
+                <div class="modal-content">
                     <div class="modal-header" style="height: 46px;" >
                         <div class="row" style="margin-top: -25px;">
                             <div class="col-xs-8">
@@ -1300,7 +1300,7 @@
                             </div>
                         </div>
                     </div>
-                    <div class="modal-body" id="divBody" style="overflow-y: auto;">
+                    <div class="modal-body" id="divBody" style="overflow-y: auto;width:100%;">
 
                         <table id="tbFavICDsContainer" style="width: 100%; table-layout: fixed;" class="table-bordered favICDTable Gridbodystyle">
                             <thead class="header" >
@@ -1332,7 +1332,7 @@
             </div>
         </div>
         <div id="divCPTFormView" class="modal modal-wide fade" role="dialog" style="height:108%!important;">
-            <div class="modal-dialog" style="width: 95%; margin-top: 5%;" id="CPTModal">
+            <div class="modal-dialog" style="width: 95%; margin-top: 5%;z-index:9999;" id="CPTModal">
 
                 <div class="modal-content">
                     <div class="modal-header" style="height: 46px;">
@@ -1395,7 +1395,7 @@
             </div>
         </div>
 
-        <div id="ProcessModal" class="modal fade" style="margin-top: 90px; margin-left: 0px; padding-left: 55px; overflow: hidden; background-color: rgba(0, 0, 0, 0.13)">
+        <div id="ProcessModal" class="modal fade" style="margin-top: 50px; margin-left: 0px; padding-left: 55px; overflow: hidden; background-color: rgba(0, 0, 0, 0.13)">
             <div id="mdldlg" class="modal-dialog ProcessModal" style="width: 95%; margin-left: 100px; margin-top: 1px; position: absolute!important;">
                 <div class=" modal-content" style="height: 101%">
                     <div class="modal-header" style="height: 42px">
