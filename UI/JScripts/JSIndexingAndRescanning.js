@@ -181,7 +181,9 @@ function btnSave_Clicked() {
         var success = true;
         $("#tbFilesBody tr").each(function (index, elm) {
             var fileName = $(elm).find("td:last").text();
-            if (fileName.indexOf("#") !== -1) {
+            var fileNameIndex = fileName.lastIndexOf("\\") + 1;
+            var ffile = fileName.substr(fileNameIndex);
+            if (ffile.indexOf("#") !== -1) {
                 success = false;
                 return;
             }

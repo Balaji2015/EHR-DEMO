@@ -12,11 +12,14 @@ function CheckUserAndPassword() {
         { sessionStorage.setItem('StartLoading', 'false'); StopLoadFromPatChart(); }
         return false;
     }
-    
-    if (Password.value == "") {
+    else if (Password.value == "") {
         DisplayErrorMessage('10113402');
         { sessionStorage.setItem('StartLoading', 'false'); StopLoadFromPatChart(); }
         return false;
+    }
+//Jira CAP-1787
+    else {
+        setTimeZone();
     }
     return true;
 }
@@ -164,4 +167,21 @@ function EHRLanding(FileName) {
 
 
 
+}
+//Jira CAP-1787
+Date.prototype.stdTimezoneOffset = function () {
+    var jan = new Date(this.getFullYear(), 0, 1);
+    var jul = new Date(this.getFullYear(), 6, 1);
+    return Math.max(jan.getTimezoneOffset(), jul.getTimezoneOffset());
+}
+Date.prototype.dst = function () {
+    var jan = new Date(this.getFullYear(), 0, 1);
+    var jul = new Date(this.getFullYear(), 6, 1);
+    var Jan_Offset = jan.getTimezoneOffset();
+    var July_Offset = jul.getTimezoneOffset();
+    var difference = Jan_Offset - July_Offset;
+    if (difference != 0)
+        return true;
+    else
+        return false;
 }
