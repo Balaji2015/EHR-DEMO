@@ -281,7 +281,9 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
                                         PlanDto.Status_Value = Value.Split(',')[0];
                                         PlanDto.Status = Value.Split(',')[1];
 
-                                        PlanDto.Plan_Date = Convert.ToDateTime(Convert.ToString(((object[])ires)[1])).ToString("yyyy-MMM-dd hh:mm:ss");
+                                        //Jira CAP-1771
+                                        //PlanDto.Plan_Date = Convert.ToDateTime(Convert.ToString(((object[])ires)[1])).ToString("yyyy-MMM-dd hh:mm:ss");
+                                        PlanDto.Plan_Date = Convert.ToDateTime(Convert.ToString(((object[])ires)[1])).ToString("yyyy-MMM-dd hh:mm:ss tt");
                                         //For bug Id 55648
                                         if (PlanDto.Status == "Pre-Hypertensive" || PlanDto.Status == "First Hypertensive" || PlanDto.Status == "Second Hypertensive")
                                         {
@@ -326,7 +328,9 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
                                         PlanDto.Status_Value = Value.Split(',')[0];
                                         if (Value.Split(',').Length > 1)
                                             PlanDto.Status = Value.Split(',')[1];
-                                        PlanDto.Plan_Date = Convert.ToDateTime(Convert.ToString(((object[])ires)[1])).ToString("yyyy-MMM-dd hh:mm:ss");
+                                        //Jira CAP-1771
+                                       // PlanDto.Plan_Date = Convert.ToDateTime(Convert.ToString(((object[])ires)[1])).ToString("yyyy-MMM-dd hh:mm:ss");
+                                        PlanDto.Plan_Date = Convert.ToDateTime(Convert.ToString(((object[])ires)[1])).ToString("yyyy-MMM-dd hh:mm:ss tt");
 
                                     }
                                     else if (Convert.ToString(((object[])ires)[3]).ToUpper().Contains("HBA1C"))
