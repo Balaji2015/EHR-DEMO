@@ -71,6 +71,11 @@ namespace Acurus.Capella.UI
         private const string _bFollows_DST = "ClientbFollows_DST";
         private const string _Is_All_Facilities = "ClientIs_All_Facilities";
 
+        private const string _EmailAddress = "ClientEmailAddress";
+        private const string _AccessToken = "ClientAccessToken";
+        private const string _AccessTokenId = "ClientAccessTokenId";
+        private const string _UserAccountType = "ClientUserAccountType";
+
         // private const string _NotificationCount = "ClientNotificationCount";//BugID:47780
         // public static bool bIsMandatoryNotifPresent = false;
         # endregion
@@ -734,6 +739,62 @@ namespace Acurus.Capella.UI
             set
             {
                 HttpContext.Current.Session[_Is_All_Facilities] = value;
+            }
+        }
+
+        public static string EmailAddress
+        {
+            get
+            {
+                return HttpContext.Current != null ? (HttpContext.Current.Session != null ? (HttpContext.Current.Session[_EmailAddress] != null ? Convert.ToString(HttpContext.Current.Session[_EmailAddress]) : string.Empty) : string.Empty) : string.Empty;
+
+            }
+
+            set
+            {
+                HttpContext.Current.Session[_EmailAddress] = value;
+            }
+        }
+
+        public static string AccessToken
+        {
+            get
+            {
+                return HttpContext.Current != null ? (HttpContext.Current.Session != null ? (HttpContext.Current.Session[_AccessToken] != null ? Convert.ToString(HttpContext.Current.Session[_AccessToken]) : string.Empty) : string.Empty) : string.Empty;
+
+            }
+
+            set
+            {
+                HttpContext.Current.Session[_AccessToken] = value;
+            }
+        }
+
+        public static string AccessTokenId
+        {
+            get
+            {
+                return HttpContext.Current != null ? (HttpContext.Current.Session != null ? (HttpContext.Current.Session[_AccessTokenId] != null ? Convert.ToString(HttpContext.Current.Session[_AccessTokenId]) : string.Empty) : string.Empty) : string.Empty;
+
+            }
+
+            set
+            {
+                HttpContext.Current.Session[_AccessTokenId] = value;
+            }
+        }
+
+        public static string UserAccountType
+        {
+            get
+            {
+                return HttpContext.Current != null ? (HttpContext.Current.Session != null ? (HttpContext.Current.Session[_UserAccountType] != null ? Convert.ToString(HttpContext.Current.Session[_UserAccountType]) : string.Empty) : string.Empty) : string.Empty;
+
+            }
+
+            set
+            {
+                HttpContext.Current.Session[_UserAccountType] = value;
             }
         }
         # endregion

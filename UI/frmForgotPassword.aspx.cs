@@ -18,6 +18,7 @@ using System.Text;
 using Acurus.Capella.UI;
 using Telerik.Web.UI;
 using Acurus.Capella.UI.UserControls;
+using System.Configuration;
 
 namespace Acurus.Capella.UI
 {
@@ -29,6 +30,8 @@ namespace Acurus.Capella.UI
         {
             if (!IsPostBack)
             {
+                //CAP-1752
+                hdnIsSSOLogin.Value = ConfigurationSettings.AppSettings["IsSSOLogin"] ?? "N";
                 ClientSession.FlushSession();
                 IList<StaticLookup> QuestionList;
                 StaticLookupManager LookUpMngr = new StaticLookupManager();

@@ -21,10 +21,10 @@
     <OldToolsVersion>3.5</OldToolsVersion>
     <TargetFrameworkProfile />
     <UseIISExpress>true</UseIISExpress>
-    <IISExpressSSLPort />
-    <IISExpressAnonymousAuthentication />
-    <IISExpressWindowsAuthentication />
-    <IISExpressUseClassicPipelineMode />
+    <IISExpressSSLPort>44351</IISExpressSSLPort>
+    <IISExpressAnonymousAuthentication>enabled</IISExpressAnonymousAuthentication>
+    <IISExpressWindowsAuthentication>disabled</IISExpressWindowsAuthentication>
+    <IISExpressUseClassicPipelineMode>false</IISExpressUseClassicPipelineMode>
     <NuGetPackageImportStamp>b19d8d00</NuGetPackageImportStamp>
     <Use64BitIISExpress>
     </Use64BitIISExpress>
@@ -163,6 +163,9 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>Z:\suresh\EHR-CAPELLA3.0\RCM\bin\log4net.dll</HintPath>
     </Reference>
+    <Reference Include="Microsoft.Bcl.AsyncInterfaces, Version=7.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Bcl.AsyncInterfaces.7.0.0\lib\net462\Microsoft.Bcl.AsyncInterfaces.dll</HintPath>
+    </Reference>
     <Reference Include="Microsoft.Office.Interop.Excel, Version=11.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>Z:\suresh\EHR-CAPELLA3.0\RCM\bin\Microsoft.Office.Interop.Excel.dll</HintPath>
@@ -236,16 +239,44 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>bin\QRCoder.dll</HintPath>
     </Reference>
+    <Reference Include="RestSharp, Version=110.2.0.0, Culture=neutral, PublicKeyToken=598062e77f915f75, processorArchitecture=MSIL">
+      <HintPath>..\packages\RestSharp.110.2.0\lib\net471\RestSharp.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
+    <Reference Include="System.Buffers, Version=4.0.3.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Buffers.4.5.1\lib\net461\System.Buffers.dll</HintPath>
+    </Reference>
     <Reference Include="System.Data" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="System.Management" />
+    <Reference Include="System.Memory, Version=4.0.1.2, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Memory.4.5.5\lib\net461\System.Memory.dll</HintPath>
+    </Reference>
     <Reference Include="System.Net.Http" />
+    <Reference Include="System.Numerics" />
+    <Reference Include="System.Numerics.Vectors, Version=4.1.4.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Numerics.Vectors.4.5.0\lib\net46\System.Numerics.Vectors.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Runtime.CompilerServices.Unsafe, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Runtime.CompilerServices.Unsafe.6.0.0\lib\net461\System.Runtime.CompilerServices.Unsafe.dll</HintPath>
+    </Reference>
     <Reference Include="System.Runtime.Serialization">
       <RequiredTargetFramework>3.0</RequiredTargetFramework>
     </Reference>
     <Reference Include="System.ServiceModel">
       <RequiredTargetFramework>3.0</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="System.Text.Encodings.Web, Version=7.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Text.Encodings.Web.7.0.0\lib\net462\System.Text.Encodings.Web.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Text.Json, Version=7.0.0.2, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Text.Json.7.0.2\lib\net462\System.Text.Json.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Threading.Tasks.Extensions, Version=4.2.0.1, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Threading.Tasks.Extensions.4.5.4\lib\net461\System.Threading.Tasks.Extensions.dll</HintPath>
+    </Reference>
+    <Reference Include="System.ValueTuple, Version=4.0.3.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.ValueTuple.4.5.0\lib\net47\System.ValueTuple.dll</HintPath>
     </Reference>
     <Reference Include="System.Web.ApplicationServices" />
     <Reference Include="System.Web.DynamicData" />
@@ -355,7 +386,9 @@
     <Content Include="frmFindReferralPhysician.aspx" />
     <Content Include="frmImpersonateUser.aspx" />
     <Content Include="frmImportCQM.aspx" />
+    <Content Include="frmLandingScreen.aspx" />
     <Content Include="frmLogin.aspx" />
+    <Content Include="frmLoginNew.aspx" />
     <Content Include="frmMyQueueNew.aspx" />
     <Content Include="frmPatientChart.aspx" />
     <Content Include="frmPQRIBirtViewDetail.aspx" />
@@ -364,6 +397,7 @@
     <Content Include="frmResetPassword.aspx" />
     <Content Include="frmRestrictedAccess.aspx" />
     <Content Include="frmRestrictMultipleTabs.aspx" />
+    <Content Include="frmSelectLegalOrg.aspx" />
     <Content Include="frmSessionExpiredIndirectAccess.aspx" />
     <Content Include="frmSessionExpiredMultiLogin.aspx" />
     <Content Include="frmSummaryNew.aspx" />
@@ -380,6 +414,8 @@
     <Content Include="JScripts\jQueryAngular.js" />
     <Content Include="JScripts\jsAssessmentNew.js" />
     <Content Include="JScripts\JSImpersonateUser.js" />
+    <Content Include="JScripts\JSLandingScreen.js" />
+    <Content Include="JScripts\JSLoginNew.js" />
     <Content Include="JScripts\JSRcopiaWebBrowser.js" />
     <Content Include="JScripts\JsRestrictMultipleTab.js" />
     <Content Include="JScripts\JSDMEOrder.js" />
@@ -390,6 +426,7 @@
     <Content Include="JScripts\JSFindReferralPhysician.js" />
     <Content Include="JScripts\JSPatientList.js" />
     <Content Include="JScripts\JSResetPassword.js" />
+    <Content Include="JScripts\JSSelectLegalOrg.js" />
     <Content Include="JScripts\metro.js" />
     <Content Include="Properties\PublishProfiles\FolderProfile.pubxml.user" />
     <Content Include="Resources\1286960053_resultset_first.ico" />
@@ -1157,12 +1194,26 @@
     <Compile Include="frmLabResult.aspx.designer.cs">
       <DependentUpon>frmLabResult.aspx</DependentUpon>
     </Compile>
+    <Compile Include="frmLandingScreen.aspx.cs">
+      <DependentUpon>frmLandingScreen.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="frmLandingScreen.aspx.designer.cs">
+      <DependentUpon>frmLandingScreen.aspx</DependentUpon>
+    </Compile>
     <Compile Include="frmLogin.aspx.cs">
       <DependentUpon>frmLogin.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="frmLogin.aspx.designer.cs">
       <DependentUpon>frmLogin.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="frmLoginNew.aspx.cs">
+      <DependentUpon>frmLoginNew.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="frmLoginNew.aspx.designer.cs">
+      <DependentUpon>frmLoginNew.aspx</DependentUpon>
     </Compile>
     <Compile Include="frmMailBox.aspx.cs">
       <DependentUpon>frmMailBox.aspx</DependentUpon>
@@ -1549,6 +1600,13 @@
     <Compile Include="frmSelectLabLocation.aspx.designer.cs">
       <DependentUpon>frmSelectLabLocation.aspx</DependentUpon>
     </Compile>
+    <Compile Include="frmSelectLegalOrg.aspx.cs">
+      <DependentUpon>frmSelectLegalOrg.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="frmSelectLegalOrg.aspx.designer.cs">
+      <DependentUpon>frmSelectLegalOrg.aspx</DependentUpon>
+    </Compile>
     <Compile Include="frmSelectPayer.aspx.cs">
       <DependentUpon>frmSelectPayer.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -1711,6 +1769,8 @@
     </Compile>
     <Compile Include="HL7Generator.cs" />
     <Compile Include="HttpHelper.cs" />
+    <Compile Include="OktaResponseModel\OktaUserIDPModel.cs" />
+    <Compile Include="OktaResponseModel\OktaUserResponseModel.cs" />
     <Compile Include="PDFGenerator.cs" />
     <Compile Include="PrintOrders.cs">
       <SubType>Code</SubType>
@@ -2421,8 +2481,8 @@
     <None Include="fonts\glyphicons-halflings-regular.woff2" />
     <None Include="fonts\MutantAcademyBB.ttf" />
     <None Include="fonts\MutantAcademyDCBB.ttf" />
+    <None Include="packages.config" />
     <None Include="Properties\PublishProfiles\FolderProfile.pubxml" />
-    <None Include="Properties\Settings.settings" />
     <Content Include="SuperBill_Template\crSuperBill_100.rpt" />
     <None Include="Web References\ImmSubmission_NIST\iisService.wsdl" />
     <None Include="Web References\ImmSubmission_NIST\Reference.map" />
@@ -2559,7 +2619,7 @@
           <AutoAssignPort>True</AutoAssignPort>
           <DevelopmentServerPort>55737</DevelopmentServerPort>
           <DevelopmentServerVPath>/</DevelopmentServerVPath>
-          <IISUrl>http://localhost:56067/</IISUrl>
+          <IISUrl>https://localhost:44351/</IISUrl>
           <NTLMAuthentication>False</NTLMAuthentication>
           <UseCustomServer>False</UseCustomServer>
           <CustomServerUrl>

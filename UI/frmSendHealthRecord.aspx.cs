@@ -34,6 +34,8 @@ namespace Acurus.Capella.UI
 
         protected void Page_Load(object sender, EventArgs e)
         {
+            //CAP-1752
+            hdnIsSSOLogin.Value = ConfigurationSettings.AppSettings["IsSSOLogin"] ?? "N";
             btnSend.Attributes.Add("onclick", "onsendclicked()");
             if (rdbtnProvider.Checked == false)
                 cboProvider.Enabled = false;

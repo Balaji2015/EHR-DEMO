@@ -91,9 +91,9 @@ namespace Acurus.Capella.UI
             //log4net.Config.XmlConfigurator.ConfigureAndWatch(new FileInfo(Server.MapPath("Web.config")));
             ClientSession.UserName = (Request["OpenPatChart"] != null ? Request["UserName"].ToString() : string.Empty);//Changed for CarePointe
 
-          //  UtilityManager.inserttologgingtableforSessionTimeout("Checklogin - Start", Request.Url.ToString(), string.Empty);
+            //  UtilityManager.inserttologgingtableforSessionTimeout("Checklogin - Start", Request.Url.ToString(), string.Empty);
             CheckLogin();
-           // UtilityManager.inserttologgingtableforSessionTimeout("Checklogin - End", Request.Url.ToString(), string.Empty);
+            // UtilityManager.inserttologgingtableforSessionTimeout("Checklogin - End", Request.Url.ToString(), string.Empty);
         }
 
         protected void Application_BeginRequest(object sender, EventArgs e)
@@ -238,7 +238,7 @@ namespace Acurus.Capella.UI
                             //ClientSession.LocalDate + ";" + ClientSession.LocalTime, "Redirecting to Session Expired - Linenumber=170 " + " - " + Request.Url.ToString(), DateTime.Now, "0", "");
                             UtilityManager.inserttologgingtableforSessionTimeout("Redirecting to Session Expired due to Multilogin - Linenumber=170 ", Request.Url.ToString(), string.Empty);
 
-                           // Response.Redirect("~/frmSessionExpired.aspx?Reason=Abandoned&From=Globalasaxcs|Linenumber=170");
+                            // Response.Redirect("~/frmSessionExpired.aspx?Reason=Abandoned&From=Globalasaxcs|Linenumber=170");
                             Response.Redirect("~/frmSessionExpiredMultiLogin.aspx?Reason=Abandoned&From=Globalasaxcs|Linenumber=170");
                             //HttpContext.Current.Response.StatusCode = 999;
                             //HttpContext.Current.Response.Status = "999 Session Expired";
@@ -251,7 +251,7 @@ namespace Acurus.Capella.UI
 
         protected void Application_AuthenticateRequest(object sender, EventArgs e)
         {
-           // UtilityManager.inserttologgingtableforSessionTimeout("Application_AuthenticateRequest - Start", Request.Url.ToString(), string.Empty);
+            // UtilityManager.inserttologgingtableforSessionTimeout("Application_AuthenticateRequest - Start", Request.Url.ToString(), string.Empty);
         }
 
         protected void Application_Error(object sender, EventArgs e)
@@ -271,8 +271,8 @@ namespace Acurus.Capella.UI
                       "TYPE: " + objErr.GetType() + System.Environment.NewLine +
                       "TIME: " + DateTime.Now.ToString() + " . UTC TIME: " + DateTime.UtcNow.ToString() + System.Environment.NewLine +
                       "SOURCE: " + objErr.Source + System.Environment.NewLine +
-                        //"FORM: " + Request.Form.ToString() + System.Environment.NewLine +
-                        //"QUERYSTRING: " + Request.QueryString.ToString() + System.Environment.NewLine +
+                      //"FORM: " + Request.Form.ToString() + System.Environment.NewLine +
+                      //"QUERYSTRING: " + Request.QueryString.ToString() + System.Environment.NewLine +
                       "TARGETSITE: " + objErr.TargetSite + System.Environment.NewLine;  // +
                     // ClientSession.UserName!=null? "CURRENT USER: " + Convert.ToString(ClientSession.UserName)+ System.Environment.NewLine : string.Empty  +
                     // ClientSession.EncounterId!=null? "ENCOUNTER ID: " + Convert.ToString(ClientSession.EncounterId) + System.Environment.NewLine :string.Empty +
@@ -331,7 +331,7 @@ namespace Acurus.Capella.UI
                     {
                         message += System.Environment.NewLine + System.Environment.NewLine + "SIZE OF CURRENT SESSION: Unable to calculate since Session is unavailable in this context." + System.Environment.NewLine;
                     }
-                    
+
                     Exception exc = Server.GetLastError().GetBaseException();
 
                     //Gitlab #3897 - Handling the Unhandled Exception - Start
@@ -560,9 +560,7 @@ namespace Acurus.Capella.UI
                     if (Session != null)
                         SessionData = ClientSession.UserName;
 
-                    //Jira CAP-1752
-                    //if (SessionData == "" && Link.ToUpper().Contains("FRMLOGIN.ASPX") == false && Link.ToUpper() != "FRMLOGIN.ASPX" && Link.ToUpper().Contains("WEBFRMLOGOUT.ASPX") == false && Link.ToUpper().Contains("WEBFRMLOGIN.ASPX") == false)
-                    if (SessionData == "" && Link.ToUpper().Contains("FRMLOGIN.ASPX") == false && Link.ToUpper() != "FRMLOGIN.ASPX" && Link.ToUpper().Contains("WEBFRMLOGOUT.ASPX") == false && Link.ToUpper().Contains("WEBFRMLOGIN.ASPX") == false && Link.ToUpper().Contains("FRMIMPERSONATEUSER.ASPX") == false)
+                    if (SessionData == "" && Link.ToUpper().Contains("FRMLOGIN.ASPX") == false && Link.ToUpper() != "FRMLOGIN.ASPX" && Link.ToUpper().Contains("WEBFRMLOGOUT.ASPX") == false && Link.ToUpper().Contains("WEBFRMLOGIN.ASPX") == false && Link.ToUpper().Contains("FRMIMPERSONATEUSER.ASPX") == false && Link.ToUpper().Contains("FRMSELECTLEGALORG.ASPX") == false && Link.ToUpper().Contains("FRMLANDINGSCREEN.ASPX") == false && Link.ToUpper().Contains("FRMLOGINNEW.ASPX") == false)
                     {
                         UtilityManager.inserttologgingtableforSessionTimeout("CheckLogin - session is empty and URL is not Login Page", Request.Url.ToString(), string.Empty);
 
@@ -600,7 +598,7 @@ namespace Acurus.Capella.UI
                             {
                                 UtilityManager.inserttologgingtableforSessionTimeout("Check Login - Redirecting to Session Expired due to Multilogin - line number 384 in global.asax", Request.Url.ToString(), string.Empty);
                                 // Response.Redirect("~/frmSessionExpired.aspx?Reason=Abandoned&From=Globalasaxcs|Linenumber=384");
-                                 Response.Redirect("~/frmSessionExpiredMultiLogin.aspx?Reason=Abandoned&From=Globalasaxcs|Linenumber=384");
+                                Response.Redirect("~/frmSessionExpiredMultiLogin.aspx?Reason=Abandoned&From=Globalasaxcs|Linenumber=384");
                             }
                             isMultiLogIn = false;
                         }
@@ -624,7 +622,9 @@ namespace Acurus.Capella.UI
 
                                     if (!string.IsNullOrEmpty(CurrentUrl))
                                     {
-                                        var returnURL = string.IsNullOrEmpty(CurrentUrl) ? "~/frmLogin.aspx" : $"~/frmLogin.aspx?redirecturl={HttpUtility.UrlEncode(CurrentUrl)}";
+                                        //CAP-1752
+                                        var loginpage = (ConfigurationSettings.AppSettings["IsSSOLogin"] == "Y" ? "frmLoginNew.aspx" : "frmLogin.aspx");
+                                        var returnURL = string.IsNullOrEmpty(CurrentUrl) ? $"~/{loginpage}" : $"~/{loginpage}?redirecturl={HttpUtility.UrlEncode(CurrentUrl)}";
                                         Session["currenturl"] = null;
                                         Response.Redirect(returnURL);
                                     }
@@ -716,7 +716,7 @@ namespace Acurus.Capella.UI
             return isCallbackRequest || (request["X-Requested-With"] == "XMLHttpRequest") || (request.Headers["X-Requested-With"] == "XMLHttpRequest");
         }
 
-     
+
 
         protected void Application_EndRequest(object sender, EventArgs e)
         {
@@ -733,14 +733,14 @@ namespace Acurus.Capella.UI
             UtilityManager.inserttologgingtableforSessionTimeout("Application_PostRequestHandlerExecute - Start", Request.Url.ToString(), string.Empty);
         }
 
-      
 
-      
 
-      
-      
-       
 
-       
+
+
+
+
+
+
     }
 }

@@ -236,6 +236,7 @@
         <asp:HiddenField ID="hdnScreenMode" runat="server" EnableViewState="false" />
         <asp:HiddenField ID="hdnRole" runat="server" EnableViewState="false" />
           <asp:HiddenField ID="Hdnfilename" runat="server" EnableViewState="false" />
+         <asp:HiddenField ID="hdnIsSSOLogin" runat="server" EnableViewState="false" />
         <asp:PlaceHolder ID="PlaceHolder1" runat="server">
             <script src="JScripts/JSPatientPortal.js?version=<%=ConfigurationManager.AppSettings["VersionConfiguration"].ToString().Replace("Capella - ","") %>" type="text/javascript"></script>
 

@@ -64,6 +64,7 @@
 	<Message number="010021" Type="OKCANCEL" Text="User is already logged in. Would you like to continue?"></Message>
 	<Message number="010022" Type="OK" Text="Please enter Corrections to be made."></Message>
 	<Message number="010024" Type="OK" Text="The default server is not mapped for the user. Please contact support."></Message>
+	<Message number="010025" Type="OK" Text="Server is not reachable for authentication. Please contact support."></Message>
 	
 	<Message number="050001" Type="OK" Text="Please select a line item."></Message>
 	<Message number="050002" Type="ToolStrip" Text="Moved Successfully."></Message>
@@ -3000,7 +3001,7 @@
 	<Message number="1011185" Type="OK" Text="Please Enter FAX"></Message>
 	<Message number="1011186" Type="OKCANCEL" Text="This Fax# is already registered. Do you want to Add?"></Message>
 	<Message number="1011187" Type="OK" Text="There is no Data to export"></Message>
-
+	
 	<!--Find Patient-->
 	<Message number="1011189" Type="OK" Text="Kindly enter the Quick patient search value in the format YYYYLNM (Patient's birth year and atleast first 3 characters of Last Name)"></Message>
 	<!--For number "1011190", Please change the error message text in frmViewResult.aspx also  -->

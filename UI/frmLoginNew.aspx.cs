@@ -1,0 +1,173 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Web;
+using System.Web.UI;
+using System.Web.UI.WebControls;
+using System.Xml;
+using Acurus.Capella.DataAccess.ManagerObjects;
+using Acurus.Capella.Core.DomainObjects;
+using Acurus.Capella.Core.DTO;
+using System.Collections;
+using System.Linq;
+using System.IO;
+using System.Web.Services;
+using System.Collections.Specialized;
+using Newtonsoft.Json;
+using DocumentFormat.OpenXml.Drawing.Charts;
+using Acurus.Capella.UI.Extensions;
+using System.Configuration;
+using RestSharp;
+using Acurus.Capella.UI.OktaResponseModel;
+
+namespace Acurus.Capella.UI
+{
+    public partial class frmLoginNew : System.Web.UI.Page
+    {
+        UserManager UserMngr = new UserManager();
+        protected void Page_Load(object sender, EventArgs e)
+        {
+            DateTime dtStartTime = DateTime.Now;
+
+            if (hdnGroupId != null && hdnGroupId.Value == "")
+            {
+                hdnGroupId.Value = ClientSession.EncounterId.ToString() + "-" + ClientSession.HumanId.ToString() + "-" + ClientSession.PhysicianId.ToString() + "-" + dtStartTime.ToString("yyyy-MM-dd HH:mm:ss:FFF");
+            }
+
+            if (Request["OpenPatChart"] != null && Request["OpenPatChart"] == "true")//Added for CarePointe
+            {
+                UtilityManager.inserttologgingtableforSessionTimeout("Login Page Load - before calling btnOk_Click for redirection", Request.Url.ToString(), string.Empty);
+
+
+                UtilityManager.inserttologgingtableforSessionTimeout("Login Page Load - After calling btnOk_Click for redirection", Request.Url.ToString(), string.Empty);
+
+            }
+            if (!IsPostBack)
+            {
+                if (Request.Form["EHRUserName"] == null)
+                {
+                    UtilityManager.inserttologgingtable(ClientSession.EncounterId.ToString(), ClientSession.HumanId.ToString(), ClientSession.UserName, ClientSession.PhysicianId.ToString(), "Login : Start", dtStartTime, hdnGroupId.Value, "frmLoginNew");
+                    UtilityManager.inserttologgingtable(ClientSession.EncounterId.ToString(), ClientSession.HumanId.ToString(), ClientSession.UserName, ClientSession.PhysicianId.ToString(), "Login PageLoad : Start", DateTime.Now, hdnGroupId.Value, "frmLoginNew");
+                }
+            }
+            if (System.Configuration.ConfigurationSettings.AppSettings["VersionConfiguration"] != null)
+                hdnVersion.Value = System.Configuration.ConfigurationSettings.AppSettings["VersionConfiguration"];
+            if (ClientSession.LegalOrg != null)
+                hdnProjectName.Value = ClientSession.LegalOrg;
+
+            if (System.Configuration.ConfigurationSettings.AppSettings["Reportpath"] != null)
+                hdnreportPath.Value = System.Configuration.ConfigurationSettings.AppSettings["Reportpath"];
+            if (System.Configuration.ConfigurationSettings.AppSettings["LoginHeader"] != null)
+                hdnLoginheader.Value = System.Configuration.ConfigurationSettings.AppSettings["LoginHeader"];
+            if (System.Configuration.ConfigurationSettings.AppSettings["versionkey"] != null)
+                hdnVersionKey.Value = System.Configuration.ConfigurationSettings.AppSettings["versionkey"];
+            if (System.Configuration.ConfigurationSettings.AppSettings["EVServiceLink"] != null)
+                hdnServiceLink.Value = System.Configuration.ConfigurationSettings.AppSettings["EVServiceLink"];
+            if (System.Configuration.ConfigurationSettings.AppSettings["EVProjectName"] != null)
+                hdnEvProjectName.Value = System.Configuration.ConfigurationSettings.AppSettings["EVProjectName"];
+        }
+
+        
+        protected void btnNextLogin_Click(object sender, EventArgs e)
+        {
+            if (txtUserName.Value != null && txtUserName.Value != "")
+            {
+                #region Check User In DB
+                var user = UserMngr.GetUserByEmailAddress(txtUserName.Value);
+                if (user.Count == 0) 
+                {
+                    this.Page.ClientScript.RegisterStartupScript(this.Page.GetType(), string.Empty, "DisplayErrorMessage('000009');", true);
+                    return;
+                }
+                #endregion
+
+                var oktaDomain = ConfigurationSettings.AppSettings["okta:OktaDomain"];
+                var client = new RestClient(oktaDomain);
+                var request = new RestRequest(ConfigurationSettings.AppSettings["okta:WebFinger"], Method.Get);
+                request.AddHeader("Accept", "text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.7");
+                request.AddParameter("resource", $"acct:{txtUserName.Value}");
+                request.AddParameter("rel", "okta:idp");
+                RestResponse response = client.ExecuteAsync(request).Result;
+
+                OktaUserIDPModel result = JsonConvert.DeserializeObject<OktaUserIDPModel>(response.Content);
+
+                if ((result?.links?.Count ?? 0) > 0)
+                {
+                    if ((result.links[0]?.titles?.und ?? string.Empty).Equals("Azure IDP", StringComparison.InvariantCultureIgnoreCase))
+                    {
+                        ClientSession.UserAccountType = "Microsoft";
+                        var redirectURL = GetOktaAuthorizationUrl(txtUserName.Value);
+                        Response.Redirect(redirectURL,
+                            false);
+                    }
+                    else
+                    {
+                        txtUserName.Disabled = true;
+                        txtPassword.Visible = true;
+                        btnSignin.Visible = true;
+                        btnNext.Visible = false;
+                    }
+                }
+                else
+                {
+                    this.Page.ClientScript.RegisterStartupScript(this.Page.GetType(), string.Empty, "DisplayErrorMessage('010025')", true);
+                }
+            }
+            else
+            {
+                this.Page.ClientScript.RegisterStartupScript(this.Page.GetType(), string.Empty, "DisplayErrorMessage('010002');", true);
+            }
+        }
+
+        protected void btnSignin_Click(object sender, EventArgs e)
+        {
+            var options = new RestClientOptions(ConfigurationSettings.AppSettings["okta:OktaDomain"])
+            {
+                MaxTimeout = -1,
+            };
+            var client = new RestClient(options);
+            var request = new RestRequest($"{ConfigurationSettings.AppSettings["okta:Authentication"]}", Method.Post);
+            request.AddHeader("Accept", "application/json");
+            request.AddHeader("Content-Type", "application/json");
+            request.AddHeader("Authorization", $"SSWS {ConfigurationSettings.AppSettings["okta:APIToken"]}");
+            var body = @"{" + "\n" +
+                 @"  ""username"": """ + txtUserName.Value + @"""," + "\n" +
+                 @"  ""password"": """ + txtPassword.Value + @"""," + "\n" +
+                 @"  ""options"": {" + "\n" +
+                 @"    ""multiOptionalFactorEnroll"": true," + "\n" +
+                 @"    ""warnBeforePasswordExpired"": true" + "\n" +
+                 @"  }" + "\n" +
+                 @"}";
+            request.AddStringBody(body, DataFormat.Json);
+            RestResponse response = client.ExecuteAsync(request).Result;
+            if (response.IsSuccessStatusCode)
+            {
+                OktaUserResponseModel result = JsonConvert.DeserializeObject<OktaUserResponseModel>(response.Content);
+                ClientSession.EmailAddress = result?._embedded?.user?.profile?.login ?? string.Empty;
+                ClientSession.UserAccountType = "Okta";
+                Response.Redirect($"~/frmLandingScreen.aspx", false);
+            }
+            else
+            {
+                if(response.StatusCode == System.Net.HttpStatusCode.Unauthorized)
+                {
+                    this.Page.ClientScript.RegisterStartupScript(this.Page.GetType(), string.Empty, "DisplayErrorMessage('010001')", true);
+                }
+                else
+                {
+                    this.Page.ClientScript.RegisterStartupScript(this.Page.GetType(), string.Empty, "DisplayErrorMessage('010025')", true);
+                }
+            }
+        }
+
+        private string GetOktaAuthorizationUrl(string email)
+        {
+            // Replace with your Okta domain and other necessary parameters
+            var oktaDomain = ConfigurationSettings.AppSettings["okta:OktaDomain"];
+            string oktaAuthorizeEndpoint = $"{ConfigurationSettings.AppSettings["okta:AuthorizeURL"]}";
+            string clientId = ConfigurationSettings.AppSettings["okta:ClientId"];
+            string redirectUri = ConfigurationSettings.AppSettings["okta:RedirectUri"];
+            return $"{oktaAuthorizeEndpoint}?client_id={clientId}&response_type=code&redirect_uri={HttpUtility.UrlEncode(redirectUri)}&scope=openid+profile+email&state={HttpUtility.UrlEncode(Guid.NewGuid().ToString())}&login_hint={HttpUtility.UrlEncode(email)}";
+        }
+
+    }
+}

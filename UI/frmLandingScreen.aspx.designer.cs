@@ -11,17 +11,8 @@ namespace Acurus.Capella.UI
 {
 
 
-    public partial class frmForgotPassword
+    public partial class frmLandingScreen
     {
-
-        /// <summary>
-        /// Link1 control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.HtmlControls.HtmlLink Link1;
 
         /// <summary>
         /// form1 control.
@@ -33,228 +24,210 @@ namespace Acurus.Capella.UI
         protected global::System.Web.UI.HtmlControls.HtmlForm form1;
 
         /// <summary>
-        /// WindowMngr control.
+        /// hdnbtnLogin control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::Telerik.Web.UI.RadWindowManager WindowMngr;
+        protected global::System.Web.UI.HtmlControls.HtmlButton hdnbtnLogin;
 
         /// <summary>
-        /// MessageWindow control.
+        /// hdnLocalTime control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::Telerik.Web.UI.RadWindow MessageWindow;
+        protected global::System.Web.UI.WebControls.HiddenField hdnLocalTime;
 
         /// <summary>
-        /// RadWindow1 control.
+        /// hdnLocalDate control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::Telerik.Web.UI.RadWindow RadWindow1;
+        protected global::System.Web.UI.WebControls.HiddenField hdnLocalDate;
 
         /// <summary>
-        /// pnlForgotPassword control.
+        /// hdnUniversaloffset control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::Telerik.Web.UI.RadAjaxPanel pnlForgotPassword;
+        protected global::System.Web.UI.WebControls.HiddenField hdnUniversaloffset;
 
         /// <summary>
-        /// RadScriptManager1 control.
+        /// hdnLocalDateAndTime control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::Telerik.Web.UI.RadScriptManager RadScriptManager1;
+        protected global::System.Web.UI.WebControls.HiddenField hdnLocalDateAndTime;
 
         /// <summary>
-        /// Panel1 control.
+        /// hdnFollowsDayLightSavings control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Panel Panel1;
+        protected global::System.Web.UI.WebControls.HiddenField hdnFollowsDayLightSavings;
 
         /// <summary>
-        /// tblForgotPassword control.
+        /// hdnGroupId control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.HtmlControls.HtmlTable tblForgotPassword;
+        protected global::System.Web.UI.WebControls.HiddenField hdnGroupId;
 
         /// <summary>
-        /// lblUserName control.
+        /// hdnPersonName control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Label lblUserName;
+        protected global::System.Web.UI.WebControls.HiddenField hdnPersonName;
 
         /// <summary>
-        /// txtUserName control.
+        /// hdnVersion control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::Telerik.Web.UI.RadTextBox txtUserName;
+        protected global::System.Web.UI.WebControls.HiddenField hdnVersion;
 
         /// <summary>
-        /// lblSecurityQuestion1 control.
+        /// hdnProjectName control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Label lblSecurityQuestion1;
+        protected global::System.Web.UI.WebControls.HiddenField hdnProjectName;
 
         /// <summary>
-        /// cboSecurityQuestion1 control.
+        /// hdnreportPath control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::Telerik.Web.UI.RadComboBox cboSecurityQuestion1;
+        protected global::System.Web.UI.WebControls.HiddenField hdnreportPath;
 
         /// <summary>
-        /// lblAnswer1 control.
+        /// hdnLoginheader control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Label lblAnswer1;
+        protected global::System.Web.UI.WebControls.HiddenField hdnLoginheader;
 
         /// <summary>
-        /// txtAnswer1 control.
+        /// hdnVersionKey control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::Telerik.Web.UI.RadTextBox txtAnswer1;
+        protected global::System.Web.UI.WebControls.HiddenField hdnVersionKey;
 
         /// <summary>
-        /// lblSecurityQuestion2 control.
+        /// hdnServiceLink control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Label lblSecurityQuestion2;
+        protected global::System.Web.UI.WebControls.HiddenField hdnServiceLink;
 
         /// <summary>
-        /// cboSecurityQuestion2 control.
+        /// HiddenField1 control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::Telerik.Web.UI.RadComboBox cboSecurityQuestion2;
+        protected global::System.Web.UI.WebControls.HiddenField HiddenField1;
 
         /// <summary>
-        /// lblAnswer2 control.
+        /// hdnEvProjectName control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Label lblAnswer2;
+        protected global::System.Web.UI.WebControls.HiddenField hdnEvProjectName;
 
         /// <summary>
-        /// txtAnswer2 control.
+        /// hdnReportPathhttp control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::Telerik.Web.UI.RadTextBox txtAnswer2;
+        protected global::System.Web.UI.WebControls.HiddenField hdnReportPathhttp;
 
         /// <summary>
-        /// btnSave control.
+        /// hdnroleLanding control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.HtmlControls.HtmlInputButton btnSave;
+        protected global::System.Web.UI.WebControls.HiddenField hdnroleLanding;
 
         /// <summary>
-        /// btnClearAll control.
+        /// hdnRCopia_User_NameLanding control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.HtmlControls.HtmlInputButton btnClearAll;
+        protected global::System.Web.UI.WebControls.HiddenField hdnRCopia_User_NameLanding;
 
         /// <summary>
-        /// hdnIsSSOLogin control.
+        /// hdnIs_RCopia_Notification_RequiredLanding control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.HiddenField hdnIsSSOLogin;
+        protected global::System.Web.UI.WebControls.HiddenField hdnIs_RCopia_Notification_RequiredLanding;
 
         /// <summary>
-        /// hdnValidation control.
+        /// hdnPhysician_Library_IDLanding control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.HiddenField hdnValidation;
+        protected global::System.Web.UI.WebControls.HiddenField hdnPhysician_Library_IDLanding;
 
         /// <summary>
-        /// hdnHumanID control.
+        /// hdnLanding_Screen_IDLanding control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.HiddenField hdnHumanID;
+        protected global::System.Web.UI.WebControls.HiddenField hdnLanding_Screen_IDLanding;
 
         /// <summary>
-        /// hdnScreenMode control.
+        /// hdnEMailAddress control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.HiddenField hdnScreenMode;
-
-        /// <summary>
-        /// hdnEmailID control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.HiddenField hdnEmailID;
-
-        /// <summary>
-        /// PlaceHolder1 control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.PlaceHolder PlaceHolder1;
+        protected global::System.Web.UI.WebControls.HiddenField hdnEMailAddress;
     }
 }

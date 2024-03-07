@@ -736,7 +736,10 @@
                     IconUrl="Resources/16_16.ico" Width="1225px" EnableViewState="false" Modal="false"
                     VisibleStatusbar="False" ShowContentDuringLoad="false">
                 </telerik:RadWindow>
-
+                <telerik:RadWindow ID="ChangeLegalOrgModal" runat="server" VisibleOnPageLoad="false" Height="625px"
+                    IconUrl="Resources/16_16.ico" Width="1225px" EnableViewState="false" Modal="false"
+                    VisibleStatusbar="False" ShowContentDuringLoad="false">
+                </telerik:RadWindow>
                 <telerik:RadWindow ID="RadWindow1" runat="server" VisibleOnPageLoad="false" Height="625px"
                     IconUrl="Resources/16_16.ico" Width="1225px" EnableViewState="false" Modal="false"
                     VisibleStatusbar="False" ShowContentDuringLoad="false">
@@ -1058,7 +1061,7 @@
                                         <a href="#" id="ancHelp">Help</a>
                                         <div>
                                             <ul>
-                                                <li runat="server" id="mnuHelp_smnuCashPriceList"><a href="#" onclick="OpenModal('Cash Price List');">Cash Price List</a></li>                                                
+                                                <li runat="server" id="mnuHelp_smnuCashPriceList"><a href="#" onclick="OpenModal('Cash Price List');">Cash Price List</a></li>                                              
                                             </ul>
                                         </div>
                                     </li>
@@ -1070,8 +1073,11 @@
                                      <li runat="server" id="mnuAbout"><a href="#" onclick="OpenModal('About');">About</a>
                                       </li>
                                    
-                                    <li style="position: absolute; right: 52px;">
+                                    <li style="position: absolute; right: 110px;">
                                         <asp:Label ID="lblLogged" runat="server" Style="font-weight: bold; font-style: italic;"></asp:Label>
+                                    </li>
+                                   <li style="position: absolute; right: 52px;">
+                                       <a href="#" onclick="OpenModal('Change Legal Org');" class="change-btn" id="lblChange" style="font-weight: bold; font-style: italic;">Change</a>
                                     </li>
                                    
                                     <li runat="server" id="closebutton" style="position: absolute; right: 35px; ">
@@ -2134,7 +2140,7 @@
         </div>
       
 
-       
+        
         <input id="HiddenForCross" type="hidden" runat="server" />
         <asp:HiddenField ID="ScreenName" runat="server" EnableViewState="false" />
         <asp:HiddenField ID="hdnLocalTime" runat="server" EnableViewState="false" />

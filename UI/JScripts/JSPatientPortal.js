@@ -942,7 +942,14 @@ function CancelForgotPassword() {
             window.location = "webfrmLogin.aspx?PatientID=" + Result + "&Email=" + Email;
         }
         else {
-            window.location = "frmLogin.aspx";
+            //CAP-1752
+            var IsSSOLogin = document.getElementById(GetClientId("hdnIsSSOLogin")).value;
+            if (IsSSOLogin == "Y") {
+                window.location = 'frmloginNew.aspx';
+            }
+            else {
+                window.location = 'frmlogin.aspx';
+            }
         }
     }
 }
@@ -1229,7 +1236,14 @@ function OpenLogin(HumanID, EMailID) {
     else {
         ShowErrorMessageList('010011');
         if (HumanID == "undefined" || HumanID == "" || HumanID == null) {
-            window.location = 'frmLogin.aspx';
+            //CAP-1752
+            var IsSSOLogin = document.getElementById(GetClientId("hdnIsSSOLogin")).value;
+            if (IsSSOLogin == "Y") {
+                window.location = 'frmloginNew.aspx';
+            }
+            else {
+                window.location = 'frmlogin.aspx';
+            }
         }
         else {
             var URL = "WebfrmLogin.aspx?PatientID=" + HumanID + "&Email=" + EMailID;
@@ -1396,7 +1410,14 @@ function EnableForgotPwd() {
     document.getElementById("btnSave").disabled = false;
 }
 function CloseUserCPwd() {
-    window.location = 'frmLogin.aspx';
+    //CAP-1752
+    var IsSSOLogin = document.getElementById(GetClientId("hdnIsSSOLogin")).value;
+    if (IsSSOLogin == "Y") {
+        window.location = 'frmloginNew.aspx';
+    }
+    else {
+        window.location = 'frmlogin.aspx';
+    }
 }
 function getEncounter() {
     var Dropdown = document.getElementById("cboEncounter");

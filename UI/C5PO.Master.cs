@@ -24,6 +24,7 @@ using System.Web.SessionState;
 using System.Reflection;
 using System.Text.RegularExpressions;
 using Acurus.Capella.UI.Extensions;
+using RestSharp;
 
 namespace Acurus.Capella.UI
 {
@@ -40,7 +41,7 @@ namespace Acurus.Capella.UI
             }
             //CAP-1167
             var currentURL = Request.Url.AbsoluteUri.ToString();
-            if (DirectURLUtility.IsValidRedirectUrlForLogin(currentURL)) 
+            if (DirectURLUtility.IsValidRedirectUrlForLogin(currentURL))
             {
                 Session["currenturl"] = HttpUtility.UrlEncode(Request.Url.AbsoluteUri);
             }
@@ -48,15 +49,17 @@ namespace Acurus.Capella.UI
             //CAP-1311
             if (HttpContext.Current.Request.Cookies["CUserName"]?.Value == null && HttpContext.Current.Request.Cookies["CFacilityName"]?.Value == null)
             {
-                if(Session["currenturl"] != null && !string.IsNullOrWhiteSpace(Session["currenturl"].ToString()))
+                //CAP-1752
+                var loginpage = (ConfigurationSettings.AppSettings["IsSSOLogin"] == "Y" ? "frmLoginNew.aspx" : "frmLogin.aspx");
+                if (Session["currenturl"] != null && !string.IsNullOrWhiteSpace(Session["currenturl"].ToString()))
                 {
-                    Response.Redirect($"~/frmLogin.aspx?redirecturl={Session["currenturl"].ToString()}");
+                    Response.Redirect($"~/{loginpage}?redirecturl={Session["currenturl"].ToString()}");
                 }
                 else
                 {
-                    Response.Redirect("~/frmLogin.aspx");
+                    Response.Redirect($"~/{loginpage}");
                 }
-                
+
             }
             //else if (this.Page.AppRelativeVirtualPath.ToUpper().Contains("FRMPATIENTCHART") == true)
             //{
@@ -293,7 +296,7 @@ namespace Acurus.Capella.UI
                                 {
                                     hdnIsDirectLink.Value = "true";
                                 }
-                            }                         
+                            }
                         }
                     }
                 }
@@ -348,7 +351,7 @@ namespace Acurus.Capella.UI
                 //hdnProjectName.Value = System.Configuration.ConfigurationManager.AppSettings["ProjectName"].ToString();
                 if (ClientSession.LegalOrg != null)
                     hdnProjectName.Value = ClientSession.LegalOrg;
-                    if (hdnProjectIPAddress.Value == string.Empty && System.Configuration.ConfigurationManager.AppSettings["ProjectIPAddress"] != null)
+                if (hdnProjectIPAddress.Value == string.Empty && System.Configuration.ConfigurationManager.AppSettings["ProjectIPAddress"] != null)
                     hdnProjectIPAddress.Value = System.Configuration.ConfigurationManager.AppSettings["ProjectIPAddress"].ToString();
                 if (hdnMedReconcileURL.Value == string.Empty)
                     hdnMedReconcileURL.Value = System.Configuration.ConfigurationManager.AppSettings["MedReconcileURL"].ToString();
@@ -416,10 +419,12 @@ namespace Acurus.Capella.UI
                 //CAP-1075
                 if (DirectURLUtility.IsValidRedirectUrlForLogin(currentURL))
                 {
+                    var loginpage = (ConfigurationSettings.AppSettings["IsSSOLogin"] == "Y" ? "frmLoginNew.aspx" : "frmLogin.aspx");
                     var SessionCurrentUrl = Session["currenturl"]?.ToString();
                     if (!string.IsNullOrEmpty(SessionCurrentUrl))
                     {
-                        var returnURL = $"~/frmLogin.aspx?redirecturl={HttpUtility.UrlEncode(SessionCurrentUrl)}";
+                        //CAP-1752
+                        var returnURL = $"~/{loginpage}?redirecturl={HttpUtility.UrlEncode(SessionCurrentUrl)}";
                         Session["currenturl"] = null;
                         Response.Redirect(returnURL);
                     }
@@ -517,11 +522,11 @@ namespace Acurus.Capella.UI
                         if ((Request.QueryString["IsDirectURL"] ?? string.Empty).ToUpper() != "Y")
                         {
                             anchor.Attributes.Add("href", "frmPatientChart.aspx?&HumanID= " + windowLst[iLoop].ToString().Split('~')[1].Split('#')[0].Trim() + "&Source=WindowItem&PSBEncID=" + windowLst[iLoop].ToString().Split('~')[1].Split('#')[1].Split('$')[0].Trim() + "&PSBDos=" + windowLst[iLoop].ToString().Split('^')[1].Trim());
-                        anchor.InnerText = iLoop.ToString() + " - " + windowLst[iLoop].ToString().Split('#')[0];
+                            anchor.InnerText = iLoop.ToString() + " - " + windowLst[iLoop].ToString().Split('#')[0];
 
-                        li.Controls.Add(anchor);
-                    }
-                        
+                            li.Controls.Add(anchor);
+                        }
+
                     }
                     //mnuC5PO.Items[indexValue].Items.Add(new RadMenuItem(iLoop.ToString() + " - " + windowLst[iLoop].ToString().Split('#')[0]));
 
@@ -557,7 +562,7 @@ namespace Acurus.Capella.UI
         {
             try
             {
-               
+
                 if (ClientSession.Is_RCopia_Notification_Required != "Y" || ClientSession.RCopiaUserName == string.Empty)
                 {
                     tsRefill.Style.Add("display", "none");
@@ -664,7 +669,9 @@ namespace Acurus.Capella.UI
             }
             else if (hdnCurrentTab.Value.Contains("LogOut"))
             {
-                Response.Write("<script> window.top.location.href=\" frmLogin.aspx\"; </script>");
+                //CAP-1752
+                var loginpage = (ConfigurationSettings.AppSettings["IsSSOLogin"] == "Y" ? "frmLoginNew.aspx" : "frmLogin.aspx");
+                Response.Write($"<script> window.top.location.href=\"{loginpage}\"; </script>");
                 //string sUser = ClientSession.UserName;
                 //UserSession objUserSession = new UserSession();
                 //objUserSession.User_Name = sUser;
@@ -800,7 +807,11 @@ namespace Acurus.Capella.UI
 
         protected void btnlogout_Click(object sender, EventArgs e)
         {
-            Response.Write("<script> window.top.location.href=\" frmLogin.aspx\"; </script>");
+            //CAP-1752
+            if (ConfigurationSettings.AppSettings["IsSSOLogin"] != "Y")
+            {
+                Response.Write($"<script> window.top.location.href=\"frmLogin.aspx\"; </script>");
+            }
 
             string sUser = ClientSession.UserName;
             UserSessionManager userSessionMngr = new UserSessionManager();
@@ -859,6 +870,50 @@ namespace Acurus.Capella.UI
                     catch { }
                 }
             }
+
+            #region Logout Microsoft SSO
+            if (ConfigurationSettings.AppSettings["IsSSOLogin"] == "Y")
+            {
+                if (ClientSession.UserAccountType == "Microsoft")
+                {
+                    //SSO_Logout
+                    var token = ClientSession.AccessToken;
+                    var id_token = ClientSession.AccessTokenId;
+
+                    //Revoke Token
+                    var oktaDomain = ConfigurationSettings.AppSettings["okta:OktaDomain"];
+                    var options = new RestClientOptions(oktaDomain)
+                    {
+                        MaxTimeout = -1,
+                    };
+
+                    var clientId = ConfigurationSettings.AppSettings["okta:ClientId"];
+                    var clientSecret = ConfigurationSettings.AppSettings["okta:ClientSecret"];
+
+                    var redirectUri = ConfigurationSettings.AppSettings["okta:RedirectUri"];
+                    var postLogoutRedirectUri = ConfigurationSettings.AppSettings["okta:PostLogoutRedirectUri"];
+                    var base64EncodedString = Convert.ToBase64String(Encoding.UTF8.GetBytes($"{clientId}:{clientSecret}"));
+
+                    var client = new RestClient(options);
+                    var request = new RestRequest($"{ConfigurationManager.AppSettings["okta:RevokeURL"]}", Method.Post);
+                    request.AddHeader("accept", "application/json");
+                    request.AddHeader("authorization", $"Basic {base64EncodedString}");
+                    request.AddParameter("token_type_hint", "access_token");
+                    request.AddParameter("token", $"{token}");
+                    RestResponse response = client.ExecuteAsync(request).Result;
+
+
+                    //Redirect To Logout Page
+                    Response.Redirect($"{ConfigurationManager.AppSettings["okta:LogoutURL"]}?id_token_hint={id_token}&post_logout_redirect_uri={postLogoutRedirectUri}", false);
+                }
+                else
+                {
+                    Response.Write($"<script> window.top.location.href=\"frmLoginNew.aspx\"; </script>");
+                }
+            }
+            #endregion
+
+            HttpContext.Current.Session.Abandon();
             try
             {
 
@@ -881,9 +936,8 @@ namespace Acurus.Capella.UI
             }
             catch
             { }
-            //HttpContext.Current.Session.Abandon();
         }
-
+        
         protected void closebutton_Click(object sender, EventArgs e)
         {
             bool bPresent = false;

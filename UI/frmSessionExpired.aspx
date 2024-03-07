@@ -54,7 +54,9 @@
                     jQuery(top.window.parent.parent.parent.parent.parent.parent.document.body).find('#resultLoading').remove();
             }
             function SessionExpired() {
-                window.location.href = "frmLogin.aspx";
+                //CAP-1752
+                var loginpage = <%=ConfigurationSettings.AppSettings["IsSSOLogin"] == "Y" ? "frmLoginNew.aspx" : "frmLogin.aspx"%>;
+                window.location.href = loginpage;
             }
 
         </script>

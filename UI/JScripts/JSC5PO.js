@@ -303,6 +303,12 @@ function OpenModal(data) {
         var result = openModal("frmPrintSuperBill.aspx", 150, 700, null, "ctl00_ModalWindow");
         return false;
     }
+    //CAP-Change Legal Org
+    else if (itemValue == "Change Legal Org") {
+        var obj = new Array();
+        var Result = openModal("frmSelectLegalOrg.aspx", 234, 600, obj, "ctl00_FacilityModel");
+        return false;
+    }
     else if (itemValue == "Find Patient") {
         StartLoadingImage();
         var obj = new Array();

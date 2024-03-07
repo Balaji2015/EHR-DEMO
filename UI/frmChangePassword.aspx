@@ -89,6 +89,7 @@
                     </ContentTemplate>
                 </asp:UpdatePanel>
             </asp:Panel>
+             <asp:HiddenField ID="hdnIsSSOLogin" runat="server" EnableViewState="false" />
             <asp:HiddenField ID="IsLoginOpen" runat="server" />
             <asp:HiddenField ID="hdnToFindPostback" runat="server" />
             <asp:HiddenField ID="hdnScreenMode" runat="server" />

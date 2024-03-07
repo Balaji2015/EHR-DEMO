@@ -1,87 +1,53 @@
-﻿using System;
+﻿using Acurus.Capella.Core.DomainObjects;
+using Acurus.Capella.Core.DTO;
+using Acurus.Capella.DataAccess.ManagerObjects;
+using Acurus.Capella.UI.Extensions;
+using DocumentFormat.OpenXml.Spreadsheet;
+using MySql.Data.MySqlClient.Memcached;
+using Newtonsoft.Json;
+using RestSharp;
+using System;
+using System.Collections;
 using System.Collections.Generic;
+using System.Collections.Specialized;
+using System.Configuration;
+using System.Linq;
+using System.Text;
 using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
-using System.Xml;
-using Acurus.Capella.DataAccess.ManagerObjects;
-using Acurus.Capella.Core.DomainObjects;
-using Acurus.Capella.Core.DTO;
-using System.Collections;
-using System.Linq;
-using System.IO;
-using System.Web.Services;
-using System.Collections.Specialized;
-using Newtonsoft.Json;
-using DocumentFormat.OpenXml.Drawing.Charts;
-using Acurus.Capella.UI.Extensions;
-using System.Configuration;
+using static QRCoder.PayloadGenerator.ShadowSocksConfig;
 
 namespace Acurus.Capella.UI
 {
-    public partial class frmLogin : System.Web.UI.Page
+    public partial class frmLandingScreen : System.Web.UI.Page
     {
         UserManager UserMngr = new UserManager();
         DirectURLUtility directURLUtility = new DirectURLUtility();
+
         protected void Page_Load(object sender, EventArgs e)
         {
-            if (ConfigurationSettings.AppSettings["IsSSOLogin"] == "Y")
+            //Direct URL should be suspended
+            string sUserName = string.Empty;
+
+
+            if (string.IsNullOrEmpty(ClientSession.UserAccountType))
             {
-                Response.Redirect("frmLoginNew.aspx");
+                Response.Redirect("/frmLoginNew.aspx");
                 return;
             }
 
-            DateTime dtStartTime = DateTime.Now;
-
-            if (hdnGroupId != null && hdnGroupId.Value == "")
+            var code = Request.Params["code"];
+            if (!string.IsNullOrEmpty(code))
             {
-                hdnGroupId.Value = ClientSession.EncounterId.ToString() + "-" + ClientSession.HumanId.ToString() + "-" + ClientSession.PhysicianId.ToString() + "-" + dtStartTime.ToString("yyyy-MM-dd HH:mm:ss:FFF");
+                //ClientSession.UserAccountType = "Microsoft";
+                GenerateAccessToken(code);
             }
 
-            if (Request["OpenPatChart"] != null && Request["OpenPatChart"] == "true")//Added for CarePointe
-            {
-                UtilityManager.inserttologgingtableforSessionTimeout("Login Page Load - before calling btnOk_Click for redirection", Request.Url.ToString(), string.Empty);
+            sUserName = ClientSession.EmailAddress;
 
-                btnOk_Click(sender, e);
+            #region Region - Login Page Load
 
-                UtilityManager.inserttologgingtableforSessionTimeout("Login Page Load - After calling btnOk_Click for redirection", Request.Url.ToString(), string.Empty);
-
-            }
-            if (!IsPostBack)
-            {
-                if (Request.Form["EHRUserName"] == null)
-                {
-                    UtilityManager.inserttologgingtable(ClientSession.EncounterId.ToString(), ClientSession.HumanId.ToString(), ClientSession.UserName, ClientSession.PhysicianId.ToString(), "Login : Start", dtStartTime, hdnGroupId.Value, "frmLogin");
-                    UtilityManager.inserttologgingtable(ClientSession.EncounterId.ToString(), ClientSession.HumanId.ToString(), ClientSession.UserName, ClientSession.PhysicianId.ToString(), "Login PageLoad : Start", DateTime.Now, hdnGroupId.Value, "frmLogin");
-
-                    //To identify the request IP address
-                    //this.Form.DefaultButton = this.btnOk.UniqueID;
-                    //string sClientIPAddress = string.Empty;
-                    //sClientIPAddress = Request.ServerVariables["HTTP_X_FORWARDED_FOR"];
-                    //if (sClientIPAddress == null || sClientIPAddress == "")
-                    //{
-                    //    sClientIPAddress = Request.ServerVariables["REMOTE_ADDR"];
-                    //}
-
-                    //To load the facility list from XML
-
-                    //-----Added By nijanthan(17-11-15)
-
-                    //IList<FacilityLibrary> facilityList = ApplicationObject.facilityLibraryList;
-                    //if (facilityList != null && facilityList.Count > 0)
-                    //{
-                    //    for (int iIndex = 0; iIndex < facilityList.Count; iIndex++)
-                    //    {
-                    //        ddlFacility.Items.Add(new ListItem(facilityList[iIndex].Fac_Name));
-
-                    //        if (sClientIPAddress == facilityList[iIndex].Fac_Address1 || sClientIPAddress == facilityList[iIndex].Fac_Address2)
-                    //            ddlFacility.SelectedIndex = ddlFacility.Items.IndexOf(ddlFacility.Items.FindByText(facilityList[iIndex].Fac_Name));
-                    //    }
-
-                    //}
-
-                }
-            }
             if (System.Configuration.ConfigurationSettings.AppSettings["VersionConfiguration"] != null)
                 hdnVersion.Value = System.Configuration.ConfigurationSettings.AppSettings["VersionConfiguration"];
             //if (System.Configuration.ConfigurationSettings.AppSettings["ProjectName"] != null)
@@ -102,138 +68,29 @@ namespace Acurus.Capella.UI
             //if (System.Configuration.ConfigurationSettings.AppSettings["Reportpathhttp"] != null)
             //    hdnReportPathhttp.Value = System.Configuration.ConfigurationSettings.AppSettings["Reportpathhttp"];
 
-            if (hdnOkButton.Value == "true")
-            {
-                UtilityManager.inserttologgingtableforSessionTimeout("Login Page Load - hdnOKButton True - Before Calling btnOk_Click", Request.Url.ToString(), string.Empty);
-
-                hdnOkButton.Value = string.Empty;
-                btnOk_Click(sender, e);
-                UtilityManager.inserttologgingtableforSessionTimeout("Login Page Load - hdnOkButton True - After Calling btnOK_Click", Request.Url.ToString(), string.Empty);
-
-                return;
-            }
-
-
             if (Request.Form["EHRUserName"] != null) //Load Balancer - Automatic Single Sign On
             {
                 ClientSession.SavedSession = "DELETED";
                 UtilityManager.inserttologgingtableforSessionTimeout("Login Page Load - Before Calling LandingintoEHR - Input is" + Request.Form["EHRUserName"], Request.Url.ToString(), string.Empty);
 
-                LandingintoEHR(Request.Form["EHRUserName"], Request.Form["EHRFacilityName"], Request.Form["EHRhdnLocalTime"], Request.Form["EHRhdnLocalDate"], Request.Form["EHRhdnUniversaloffset"], Request.Form["EHRhdnLocalDateAndTime"], Request.Form["EHRhdnFollowsDayLightSavings"], Request.Form["UserRole"], Request.Form["RCopiaUserName"], Request.Form["EMailAddress"], Request.Form["Is_RCopia_Notification_Required"], Request.Form["PhysicianId"], Request.Form["Landing_Screen_ID"], hdnGroupId.Value, Request.Form["PersonName"],Request.Form["LegalOrg"],Request.Form["UserCarrier"], Request.Form["IsFirstTimeCall"], Request.Form["DefaultServer"], Request.Form["IsAllFacilities"]);
+                LandingintoEHR(Request.Form["EHRUserName"], Request.Form["EHRFacilityName"], Request.Form["EHRhdnLocalTime"], Request.Form["EHRhdnLocalDate"], Request.Form["EHRhdnUniversaloffset"], Request.Form["EHRhdnLocalDateAndTime"], Request.Form["EHRhdnFollowsDayLightSavings"], Request.Form["UserRole"], Request.Form["RCopiaUserName"], Request.Form["EMailAddress"], Request.Form["Is_RCopia_Notification_Required"], Request.Form["PhysicianId"], Request.Form["Landing_Screen_ID"], hdnGroupId.Value, Request.Form["PersonName"], Request.Form["LegalOrg"], Request.Form["UserCarrier"], Request.Form["IsFirstTimeCall"], Request.Form["DefaultServer"], Request.Form["IsAllFacilities"]);
 
                 UtilityManager.inserttologgingtableforSessionTimeout("Login Page Load - After Calling LandingintoEHR - Input is", Request.Url.ToString(), string.Empty);
 
+                return;
+
             }
-            else
+            #endregion
+
+            #region btnOK_Click
+
+            DateTime dtStartTime = DateTime.Now;
+
+            if (hdnGroupId != null && hdnGroupId.Value == "")
             {
-                UtilityManager.inserttologgingtable(ClientSession.EncounterId.ToString(), ClientSession.HumanId.ToString(), ClientSession.UserName, ClientSession.PhysicianId.ToString(), "Login PageLoad : End", DateTime.Now, hdnGroupId.Value, "frmLogin");
-                UtilityManager.inserttologgingtable(ClientSession.EncounterId.ToString(), ClientSession.HumanId.ToString(), ClientSession.UserName, ClientSession.PhysicianId.ToString(), "Login : End", DateTime.Now, hdnGroupId.Value, "frmLogin");
-            }
-        }
-        [System.Web.Services.WebMethod()]
-        [System.Web.Script.Services.ScriptMethod()]
-        //To Load the default Facility - Only if the default facility is blank and the tab leave from Username
-        public static string LoadFacility(string UserName)
-        {
-            if (HttpContext.Current.Session == null)
-            {
-                HttpContext.Current.Response.StatusCode = 999;
-                HttpContext.Current.Response.Status = "999 Session Expired";
-                HttpContext.Current.Response.StatusDescription = "frmSessionExpired.aspx";
-                return "Session Expired";
-            }
-            XmlDocument xmldocUser = new XmlDocument();
-            XmlDocument xmldocFac = new XmlDocument();
-            string sFacilityName = string.Empty;
-            string sLegalOrg = string.Empty;
-            IList<string> FacList = new List<string>();
-
-            string strXmlFilePath = Path.Combine(System.Web.Hosting.HostingEnvironment.ApplicationPhysicalPath, "ConfigXML\\User.xml");
-            if (File.Exists(strXmlFilePath) == true)
-            {
-                xmldocUser.Load(System.Web.Hosting.HostingEnvironment.ApplicationPhysicalPath + "ConfigXML\\" + "User" + ".xml");
-
-                XmlNodeList xmlUserList = xmldocUser.GetElementsByTagName("User");
-
-                //-----Added By nijanthan(17-11-15)
-                if (xmlUserList.Count > 0)
-                {
-                    foreach (XmlNode item in xmlUserList)
-                    {
-                        if (UserName.ToUpper() == item.Attributes.GetNamedItem("User_Name").Value.ToUpper())
-                        {
-                            //sFacilityName = item.Attributes.GetNamedItem("Default_Facility").Value;
-                            sLegalOrg = item.Attributes.GetNamedItem("Legal_Org").Value;
-
-                            string strXmlFacFilePath = Path.Combine(System.Web.Hosting.HostingEnvironment.ApplicationPhysicalPath, "ConfigXML\\Facility_Library.xml");
-                            if (File.Exists(strXmlFacFilePath) == true)
-                            {
-                                xmldocFac.Load(System.Web.Hosting.HostingEnvironment.ApplicationPhysicalPath + "ConfigXML\\" + "Facility_Library" + ".xml");
-
-                                XmlNodeList xmlFacList = xmldocFac.GetElementsByTagName("Facility");
-
-                                if (xmlFacList.Count > 0)
-                                {
-                                    foreach (XmlNode itemFac in xmlFacList)
-                                    {
-                                        if (sLegalOrg.ToUpper() == itemFac.Attributes.GetNamedItem("Legal_Org").Value.ToUpper())
-                                        {
-                                            if (itemFac.Attributes.GetNamedItem("Name").Value.ToUpper() == item.Attributes.GetNamedItem("Default_Facility").Value.ToUpper())
-                                            {
-                                                //sFacilityName = itemFac.Attributes.GetNamedItem("Name").Value.ToUpper();
-                                                sFacilityName = itemFac.Attributes.GetNamedItem("Name").Value;
-                                            }
-                                            // FacList.Add(itemFac.Attributes.GetNamedItem("Name").Value.ToUpper());
-                                            FacList.Add(itemFac.Attributes.GetNamedItem("Name").Value);
-                                        }
-                                    }
-                                }
-                            }
-
-                            //Added by Srividhya on 21-Nov-2015                            
-                            ClientSession.FacilityName = sFacilityName;
-
-                            break;
-                        }
-                    }
-                }
+                hdnGroupId.Value = ClientSession.EncounterId.ToString() + "-" + ClientSession.HumanId.ToString() + "-" + ClientSession.PhysicianId.ToString() + "-" + dtStartTime.ToString("yyyy-MM-dd HH:mm:ss:FFF");
             }
 
-            //return sFacilityName;
-            var result = new { FacilityName = sFacilityName, FacilityList = FacList};
-            return JsonConvert.SerializeObject(result);
-        }
-
-        //To encrypt the password
-        public static string Encryptionbase64Encode(string sData)
-        {
-            try
-            {
-                byte[] encData_byte = new byte[sData.Length];
-                encData_byte = System.Text.Encoding.UTF8.GetBytes(sData);
-                string encodedData = Convert.ToBase64String(encData_byte);
-                return encodedData;
-            }
-            catch (Exception ex)
-            {
-                throw new Exception("Error in base64Encode" + ex.Message);
-            }
-        }
-
-        protected void btnOk_Click(object sender, EventArgs e)
-        {
-            //string filepath =HttpContext.Current.Server.MapPath("atala-capture-download/EHR_XML");
-            //System.Configuration.ConfigurationSettings.AppSettings["XMLPath"] = filepath;
-
-            //string sContent = string.Empty;
-            if (Request["OpenPatChart"] != null)//Changed for CarePointe
-            {
-                txtUserName.Value = Request["UserName"].ToString();
-                txtPassword.Value = Request["Pwd"].ToString();
-                ClientSession.FacilityName = Request["FacName"].ToString().ToUpper();
-            }
-
-            ClientSession.UserName = txtUserName.Value.Trim().ToUpper();
             UtilityManager.inserttologgingtableforSessionTimeout("btnLogin_Click - Start", Request.Url.ToString(), string.Empty);
 
             UtilityManager.inserttologgingtable(ClientSession.EncounterId.ToString(), ClientSession.HumanId.ToString(), ClientSession.UserName, ClientSession.PhysicianId.ToString(), "Login btnOk : Start", DateTime.Now, hdnGroupId.Value, "frmLogin");
@@ -241,45 +98,19 @@ namespace Acurus.Capella.UI
             //To check if the login is success
             IList<User> login = new List<User>();
             LoginDTO objLoginDTO = new LoginDTO();
-            bool Base64Pwd = true;
-            if (txtPassword.Value.Trim() != string.Empty)
+
+            UtilityManager.inserttologgingtable(ClientSession.EncounterId.ToString(), ClientSession.HumanId.ToString(), ClientSession.UserName, ClientSession.PhysicianId.ToString(), "Login CheckUserDetails DB call : Start", DateTime.Now, hdnGroupId.Value, "frmLogin");
+
+            if (ApplicationObject.scntab != null)
             {
-                //objLoginDTO = UserMngr.CheckUserDetails(txtUserName.Value.Trim(), Encryptionbase64Encode(txtPassword.Value),out Base64Pwd);
-                if (Request["OpenPatChart"] != null)//Changed for CarePointe
-                {
-
-                    string sDomainName = System.Configuration.ConfigurationSettings.AppSettings["LDAPDomainName"];
-                    string sLDAPUserName = System.Configuration.ConfigurationManager.AppSettings["LDAPUserName"];
-                    if (sLDAPUserName != null)
-                        sLDAPUserName = sLDAPUserName.Replace("?", txtUserName.Value.Trim());
-
-                    if (ApplicationObject.scntab != null)
-                    {
-                        objLoginDTO = UserMngr.CheckUserDetailsCarePointe(txtUserName.Value.Trim(), txtPassword.Value, sLDAPUserName, sDomainName, false);
-                        if (objLoginDTO.UserPermissionDTO != null)
-                            objLoginDTO.UserPermissionDTO.Scntab = ApplicationObject.scntab;
-                    }
-                    else
-                        objLoginDTO = UserMngr.CheckUserDetailsCarePointe(txtUserName.Value.Trim(), txtPassword.Value, sLDAPUserName, sDomainName, true);
-
-                }
-                else
-                {
-
-                    UtilityManager.inserttologgingtable(ClientSession.EncounterId.ToString(), ClientSession.HumanId.ToString(), ClientSession.UserName, ClientSession.PhysicianId.ToString(), "Login CheckUserDetails DB call : Start", DateTime.Now, hdnGroupId.Value, "frmLogin");
-
-                    if (ApplicationObject.scntab != null)
-                    {
-                        objLoginDTO = UserMngr.CheckUserDetails(txtUserName.Value.Trim(), Encryptionbase64Encode(txtPassword.Value), out Base64Pwd, false);
-                        if (objLoginDTO.UserPermissionDTO != null)
-                            objLoginDTO.UserPermissionDTO.Scntab = ApplicationObject.scntab;
-                    }
-                    else
-                        objLoginDTO = UserMngr.CheckUserDetails(txtUserName.Value.Trim(), Encryptionbase64Encode(txtPassword.Value), out Base64Pwd, true);
-
-                    UtilityManager.inserttologgingtable(ClientSession.EncounterId.ToString(), ClientSession.HumanId.ToString(), ClientSession.UserName, ClientSession.PhysicianId.ToString(), "Login CheckUserDetails DB call : End", DateTime.Now, hdnGroupId.Value, "frmLogin");
-                }
+                objLoginDTO = UserMngr.GetUserDetailsByOktaEmailAddress(sUserName, false);
+                if (objLoginDTO.UserPermissionDTO != null)
+                    objLoginDTO.UserPermissionDTO.Scntab = ApplicationObject.scntab;
             }
+            else
+                objLoginDTO = UserMngr.GetUserDetailsByOktaEmailAddress(sUserName, true);
+
+            UtilityManager.inserttologgingtable(ClientSession.EncounterId.ToString(), ClientSession.HumanId.ToString(), ClientSession.UserName, ClientSession.PhysicianId.ToString(), "Login CheckUserDetails DB call : End", DateTime.Now, hdnGroupId.Value, "frmLogin");
 
             //To check if the cache data to be loaded
             //IList<LastModifiedLocalLookup> lstLookUp = new List<LastModifiedLocalLookup>();
@@ -299,9 +130,9 @@ namespace Acurus.Capella.UI
             //}
 
 
-            if (txtPassword.Value.Trim() == "Password1!")
+            if (login != null && login.Count > 0 && login[0].password.Trim() == "Password1!")
             {
-                Response.Redirect("frmForgotPassword.aspx?UserName=" + txtUserName.Value.Trim().ToUpper() + "&ScreenMode=UserRegister");
+                Response.Redirect("frmForgotPassword.aspx?UserName=" + login[0].user_name.Trim().ToUpper() + "&ScreenMode=UserRegister");
             }
 
             //Set the client session variables
@@ -317,15 +148,27 @@ namespace Acurus.Capella.UI
                         return;
                     }
 
-                    //Load Balancer - Redirect to a Default Server for the user                   
-                    if (login[0].Default_Server != string.Empty && login[0].Default_Server.ToUpper().Contains("FRMLOGIN.ASPX") == true)
+                    //Load Balancer - Redirect to a Default Server for the user
+                    ////ImpersonateUser
+                    if (login[0].Default_Server != string.Empty && login[0].Default_Server.ToUpper().Contains("FRMLOGIN.ASPX") == true || login[0].Default_Server.ToUpper().Contains("FRMLOGINNEW.ASPX") == true)
                     {
+                        //ImpersonateUser - To change the Default Server Login page to the current page
+                        if (login[0].Default_Server.Contains("frmLogin.aspx") == true)
+                        {
+                            login[0].Default_Server = login[0].Default_Server.Replace("frmLogin.aspx", "frmLandingScreen.aspx");
+                        }
+                        else
+                        {
+                            this.Page.ClientScript.RegisterStartupScript(this.Page.GetType(), string.Empty, "DisplayErrorMessage('10113404');", true);
+                            return;
+                        }
+
                         Session["Default_Server"] = login[0].Default_Server;
 
                         NameValueCollection data = new NameValueCollection();
-                        data.Add("UserName", txtUserName.Value.ToString().ToUpper());
-                        data.Add("EHRUserName", txtUserName.Value.ToString().ToUpper());
-                        data.Add("EHRFacilityName", hdnFacltyName.Value);
+                        data.Add("UserName", login[0].user_name.ToString().ToUpper());
+                        data.Add("EHRUserName", login[0].user_name.ToString().ToUpper());
+                        data.Add("EHRFacilityName", login[0].Default_Facility);
                         data.Add("EHRhdnLocalTime", hdnLocalTime.Value);
                         data.Add("EHRhdnLocalDate", hdnLocalDate.Value);
                         data.Add("EHRhdnUniversaloffset", hdnUniversaloffset.Value);
@@ -355,7 +198,7 @@ namespace Acurus.Capella.UI
                         ClientSession.CurrentPhysicianId = login[0].Physician_Library_ID;
                         ClientSession.LegalOrg = login[0].Legal_Org;
                         ClientSession.UserCarrier = objLoginDTO.UserCarrier.ToString();
-                        UtilityManager.inserttologgingtableforSessionTimeout("hdnbtnLogin_Click - After setting the parameters for redirection - " + txtUserName.Value, Request.Url.ToString(), string.Empty);
+                        UtilityManager.inserttologgingtableforSessionTimeout("hdnbtnLogin_Click - After setting the parameters for redirection - " + login[0].user_name, Request.Url.ToString(), string.Empty);
                         ClientSession.Is_All_Facilities = login[0].Is_All_Facilities;
                         //IList<string> ilstUser = UtilityManager.FindUserSessionFiles(ClientSession.UserName, string.Empty);
                         //if (ilstUser.Count > 0)
@@ -388,35 +231,15 @@ namespace Acurus.Capella.UI
                         UtilityManager.inserttologgingtable(ClientSession.EncounterId.ToString(), ClientSession.HumanId.ToString(), ClientSession.UserName, ClientSession.PhysicianId.ToString(), "Login btnOk : End", DateTime.Now, hdnGroupId.Value, "frmLogin");
                         return;
                     }
-                    else if(login[0].Default_Server == string.Empty && objLoginDTO.DefaultServerCount>0)
+                    else if (login[0].Default_Server == string.Empty && objLoginDTO.DefaultServerCount > 0)
                     {
                         this.Page.ClientScript.RegisterStartupScript(this.Page.GetType(), string.Empty, "DisplayErrorMessage('010024');", true);
-                        txtUserName.Focus();
                         return;
                     }
-
+                    ClientSession.UserName = login[0].user_name.Trim().ToUpper();
                     ClientSession.UserRole = login[0].role;
-                    // ClientSession.PersonName = login[0].person_name;
                     ClientSession.RCopiaUserName = login[0].RCopia_User_Name;
-                    //Added by Srividhya on 21-Nov-2015
-                    if (hdnFacltyName.Value.Trim() != string.Empty)
-                        ClientSession.FacilityName = hdnFacltyName.Value;
-                    else if (ddlFacility.Value != "" && ddlFacility.Value != "0")
-                        ClientSession.FacilityName = ddlFacility.Value;
-                    //    ClientSession.FacilityName = ddlFacility.Value;
-                    //Commented By Nijanthan(17-11-15)
-                    //IList<FacilityLibrary> ilstFacilityLibrary = new List<FacilityLibrary>();//(List<FacilityLibrary>)ClientSession.FacilityLst.Facility_Library_List;
-                    //ilstFacilityLibrary = (from obj in ilstFacilityLibrary where obj.Fac_Name == ClientSession.FacilityName select obj).ToList<FacilityLibrary>();
-                    //if (ilstFacilityLibrary.Count > 0)
-                    //{
-                    //    ClientSession.POSDescription = ilstFacilityLibrary[0].POS + "|" + ilstFacilityLibrary[0].POS_Description;
-                    //}
-                    //else
-                    //{
-                    //    ClientSession.POSDescription = string.Empty;
-                    //}
-
-                    //ClientSession.FacilityLst = null;
+                    ClientSession.FacilityName = login[0].Default_Facility;
                     if (ClientSession.FacilityName != string.Empty)
                     {
                         Session["Facility"] = ClientSession.FacilityName;
@@ -438,27 +261,10 @@ namespace Acurus.Capella.UI
                     Session["LandingScnID"] = login[0].Landing_Screen_ID;
                     ClientSession.Is_All_Facilities = login[0].Is_All_Facilities;
 
-                    //HttpCookie cookieLocal = new HttpCookie("CurrPhyId", login[0].Physician_Library_ID.ToString());
-                    //cookieLocal.HttpOnly=false;
                     Response.SetCookie(new HttpCookie("CurrPhyId") { Value = login[0].Physician_Library_ID.ToString(), HttpOnly = false });
                     Response.SetCookie(new HttpCookie("UserRoll") { Value = login[0].role.ToString(), HttpOnly = false });
                     ScnTabManager objScnTabmngr = new ScnTabManager();
-                    //ClientSession.UserPermissionDTO = objScnTabmngr.GetUserPermisssions(ClientSession.UserName, ClientSession.UserRole);
                     ClientSession.UserPermissionDTO = objLoginDTO.UserPermissionDTO;
-                    //ClientSession.ListProcEncounter = null;
-                    //ClientSession.EncryptedPassword = UIManager.Encryptionbase64Encode(txtPassword.Value);//BugID:54512
-
-                    //if (ClientSession.UserPermissionDTO.ListProc.Count > 0)
-                    //{
-                    //    ArrayList listProc = new ArrayList();
-
-                    //    for (int proc = 0; proc < ClientSession.UserPermissionDTO.ListProc.Count; proc++)
-                    //    {
-                    //        listProc.Add(ClientSession.UserPermissionDTO.ListProc[proc].Process_Name);
-                    //    }
-
-                    //   // ClientSession.ListProcEncounter = listProc;
-                    //}
                     IList<ScnTab> ScnTabList;
                     ScnTabList = ClientSession.UserPermissionDTO.Scntab;
 
@@ -467,21 +273,19 @@ namespace Acurus.Capella.UI
 
 
                     ClientSession.LocalOffSetTime = hdnLocalTime.Value;
-                    //Session["LocalDate"] = hdnLocalDate.Value;
                     ClientSession.LocalDate = hdnLocalDate.Value;
                     ClientSession.UniversalTime = hdnUniversaloffset.Value;
-                    //Session["LocalDateAndTime"] = hdnLocalDateAndTime.Value;
                     ClientSession.LocalTime = hdnLocalDateAndTime.Value;
                     if (hdnFollowsDayLightSavings.Value.ToLower() == "true")
                         ClientSession.bFollows_DST = true;
                     else
                         ClientSession.bFollows_DST = false;
 
-                    if (txtPassword.Value == "Password1!" || DateTime.Now.Subtract(login[0].Password_Changed_Date).Days == Convert.ToInt32(System.Configuration.ConfigurationSettings.AppSettings["ResetPasswordDaysLimit"]))
-                    {
-                        //frmChangePassword frmChange = new frmChangePassword(true);
-                        //frmChange.ShowDialog();
-                    }
+                    //if (txtPassword.Value == "Password1!" || DateTime.Now.Subtract(login[0].Password_Changed_Date).Days == Convert.ToInt32(System.Configuration.ConfigurationSettings.AppSettings["ResetPasswordDaysLimit"]))
+                    //{
+                    //    //frmChangePassword frmChange = new frmChangePassword(true);
+                    //    //frmChange.ShowDialog();
+                    //}
                     Page.Visible = false;
                     if (ScnTabRecord != null && ScnTabRecord.ToList<ScnTab>().Count > 0)
                     {
@@ -498,29 +302,16 @@ namespace Acurus.Capella.UI
                             ClientSession.WindowList = arrList;
                         }
                     }
-                    //UserSessionManager userSessionMngr = new UserSessionManager();
-                    //IList<UserSession> lstUser = objLoginDTO.UserSession;
-
-                    //if (lstUser.Count > 0)
-                    //{
-                    //    Session["UserSessionList"] = lstUser;
-                    //    Page.Visible = true;
-                    //    ScriptManager.RegisterStartupScript(this, this.Page.GetType(), "MsgLogin", "AlertUser();", true);
-                    //    return;
-                    //}
                     UtilityManager.inserttologgingtable(ClientSession.EncounterId.ToString(), ClientSession.HumanId.ToString(), ClientSession.UserName, ClientSession.PhysicianId.ToString(), "Login btnOk : End", DateTime.Now, hdnGroupId.Value, "frmLogin");
                     String User = ClientSession.UserName;
-                    //Object lstUserID = Global.ht[ClientSession.UserName];
                     IList<string> lstUser = UtilityManager.FindUserSessionFiles(User, string.Empty);
 
+                    
                     if (lstUser.Count > 0)
                     {
                         var objIsActiveSession = (from item in lstUser where item.Contains(Session.SessionID) select item).ToList<string>();
-                        //if (Convert.ToString(lstUserID).Equals(HttpContext.Current.Session.SessionID) == false )
                         if (objIsActiveSession.Count == 0 && Request["OpenPatChart"] == null)//Changed for CarePointe
                         {
-                            //Global.ht[ClientSession.UserName] = HttpContext.Current.Session.SessionID;
-                            //ClientSession.SavedSession = "TRUE";
                             Page.Visible = true;
                             ScriptManager.RegisterStartupScript(this, this.Page.GetType(), "MsgLogin", "AlertUser();", true);
                             return;
@@ -528,14 +319,6 @@ namespace Acurus.Capella.UI
                     }
                     else
                     {
-                        //UserSession objUserSession = new UserSession();
-                        //objUserSession.User_Name = ClientSession.UserName;
-                        //objUserSession.Current_Session_ID = HttpContext.Current.Session.SessionID;
-                        //objUserSession.Last_Logged_Time = DateTime.UtcNow;
-                        //objUserSession.MacAddress = string.Empty;
-                        // userSessionMngr.InsertUserSession(objUserSession, string.Empty);
-                        //Global.ht.Add(ClientSession.UserName, HttpContext.Current.Session.SessionID);
-                        //  userSessionMngr.InsertUpdateDeleteUserSessionXml(objUserSession, string.Empty, "INSERT");
                         UtilityManager.inserttologgingtableforSessionTimeout("btnOK_Click - Before calling CreateUserSessionFile - WithoutLoadBalancerr", Request.Url.ToString(), string.Empty);
 
                         UtilityManager.CreateUserSessionFile(ClientSession.UserName, Session.SessionID);
@@ -543,10 +326,10 @@ namespace Acurus.Capella.UI
                         string LoggedInFacility = string.Empty;
                         if (ClientSession.FacilityName.Trim() != string.Empty)
                             LoggedInFacility = ClientSession.FacilityName;
-                        else if (hdnFacltyName.Value.Trim() != string.Empty)
-                            LoggedInFacility = hdnFacltyName.Value;
-                        else
-                            LoggedInFacility = ddlFacility.Value;
+                        //else if (hdnFacltyName.Value.Trim() != string.Empty)
+                        //    LoggedInFacility = hdnFacltyName.Value;
+                        //else
+                        //    LoggedInFacility = ddlFacility.Value;
                         UtilityManager.WriteApplicationAccessInfo(ClientSession.UserName, LoggedInFacility);//user access log
                     }
                     if (Request["OpenPatChart"] != null && Request["OpenPatChart"] == "true")//Changed for CarePointe
@@ -590,74 +373,18 @@ namespace Acurus.Capella.UI
                 else
                 {
                     this.Page.ClientScript.RegisterStartupScript(this.Page.GetType(), string.Empty, "DisplayErrorMessage('010003');", true);
-                    txtPassword.Value = string.Empty;
-                    txtUserName.Value = string.Empty;
-                    txtUserName.Focus();
                     return;
                 }
             }
-            else if (!Base64Pwd)//BugID:53715
-            {
-                this.Page.ClientScript.RegisterStartupScript(this.Page.GetType(), string.Empty, "DisplayErrorMessage('010023');", true);
-                txtUserName.Focus();
-                txtPassword.Value = string.Empty;
-                txtUserName.Value = string.Empty;
-                return;
-            }
             else
             {
-                this.Page.ClientScript.RegisterStartupScript(this.Page.GetType(), string.Empty, "DisplayErrorMessage('010001');", true);
-                txtUserName.Focus();
-                txtPassword.Value = string.Empty;
-                txtUserName.Value = string.Empty;
+                Response.Redirect("/frmLoginNew.aspx");
+                //this.Page.ClientScript.RegisterStartupScript(this.Page.GetType(), string.Empty, "DisplayErrorMessage('010001');", true);
                 return;
             }
-            // divLoading.Style.Add("display", "none");
-            // ScriptManager.RegisterStartupScript(this, this.Page.GetType(), "CheckLastModified", "CheckLastModified('" + sContent + "');", true);
+            #endregion
         }
 
-
-
-        //   Forgot Password Link    
-
-
-        protected void lnkForgotPassword_Click(object sender, EventArgs e)
-        {
-            IList<User> UserList = new List<User>();
-
-            if (txtUserName.Value.Trim() == string.Empty)
-            {
-                this.Page.ClientScript.RegisterStartupScript(this.Page.GetType(), string.Empty, "DisplayErrorMessage('010002');", true);
-                txtUserName.Focus();
-            }
-            else
-            {
-                UserList = UserMngr.GetUser(txtUserName.Value.Trim());
-                if (UserList.Count > 0)
-                {
-                    if (UserList[0].Security_Question1 == string.Empty || UserList[0].Security_Question2 == string.Empty)
-                    {
-                        //ScriptManager.RegisterStartupScript(this, this.Page.GetType(), string.Empty, "DisplayErrorMessage('010020');", true);
-                        // Response.Redirect("frmForgotPassword.aspx?UserName=" + UserList[0].user_name + "&ScreenMode=UserRegister");
-
-                        Response.Redirect("frmForgotPassword.aspx?UserName=" + UserList[0].user_name + "&ScreenMode=Login");
-                    }
-                    else
-                    {
-                        Response.Redirect("frmForgotPassword.aspx?UserName=" + UserList[0].user_name + "&ScreenMode=Login");
-                    }
-                }
-                else
-                {
-                    this.Page.ClientScript.RegisterStartupScript(this.Page.GetType(), string.Empty, "DisplayErrorMessage('010001');", true);
-                    txtUserName.Focus();
-                }
-            }
-        }
-
-
-
-        //If the same user is logging in different system
         protected void hdnbtnLogin_Click(object sender, EventArgs e)
         {
             if (ClientSession.UserName == string.Empty)
@@ -666,39 +393,15 @@ namespace Acurus.Capella.UI
             UtilityManager.inserttologgingtableforSessionTimeout("hdnbtnLogin_Click - Start", Request.Url.ToString(), string.Empty);
 
             UserSessionManager userSessionMngr = new UserSessionManager();
-            // IList<UserSession> lstUser = userSessionMngr.GetCurrentSessionByUserName(ClientSession.UserName);
-            //IList<UserSession> lstUser = userSessionMngr.GetUserSessionFromXml(ClientSession.UserName);
-            ////IList<UserSession> lstUser = (List<UserSession>)Session["UserSessionList"];
-            //if (lstUser.Count > 0)
-            //{
-            //    UserSession objUserSession = new UserSession();
-            //    objUserSession.User_Name = ClientSession.UserName;
-            //    objUserSession.Current_Session_ID = HttpContext.Current.Session.SessionID;
-            //    objUserSession.Last_Logged_Time = DateTime.UtcNow;
-            //    objUserSession.Version = lstUser[0].Version;
-            //    // userSessionMngr.UpdateUserSession(lstUser[0], ClientSession.UserName, string.Empty);
-            //    userSessionMngr.InsertUpdateDeleteUserSessionXml(objUserSession, string.Empty, "UPDATE");
-            //    ClientSession.SavedSession = "TRUE";
-            //}
             String User = ClientSession.UserName;
-            //Object lstUserID = Global.ht[ClientSession.UserName];
             IList<string> lstUser = UtilityManager.FindUserSessionFiles(User, string.Empty);
             if (lstUser.Count > 0)
             {
-                //if (Convert.ToString(lstUserID).Equals(HttpContext.Current.Session.SessionID) == false)
-                //{
                 var objIsActiveSession = (from item in lstUser where item.Contains(Session.SessionID) select item).ToList<string>();
-                //if (Convert.ToString(lstUserID).Equals(HttpContext.Current.Session.SessionID) == false )//&& Convert.ToString(ht["IsLogin-" + sUser]) == "TRUE")
                 if (objIsActiveSession.Count == 0)
                 {
-                    //Global.ht[ClientSession.UserName] = HttpContext.Current.Session.SessionID;
-                    //UtilityManager.inserttologgingtableforSessionTimeout("hdnbtnLogin_Click - before calling DeleteUserSessionFile", Request.Url.ToString(), string.Empty);
-
-                    //UtilityManager.DeleteUserSessionFile(ClientSession.UserName, string.Empty);
-
-                    //UtilityManager.CreateUserSessionFile(ClientSession.UserName, Session.SessionID);
-
-                    if (Session["Default_Server"] != null && Session["Default_Server"].ToString().ToUpper().Contains("FRMLOGIN.ASPX") == true)
+                    //ImpersonateUser
+                    if (Session["Default_Server"] != null && Session["Default_Server"].ToString().ToUpper().Contains("FRMLOGIN.ASPX") == true || Session["Default_Server"].ToString().ToUpper().Contains("FRMLOGINNEW.ASPX") == true)
                     {
                         ClientSession.SavedSession = "DELETED";
                     }
@@ -715,20 +418,12 @@ namespace Acurus.Capella.UI
                         string LoggedInFacility = string.Empty;
                         if (ClientSession.FacilityName.Trim() != string.Empty)
                             LoggedInFacility = ClientSession.FacilityName;
-                        else if (hdnFacltyName.Value.Trim() != string.Empty)
-                            LoggedInFacility = hdnFacltyName.Value;
-                        else
-                            LoggedInFacility = ddlFacility.Value;
+                        //else if (hdnFacltyName.Value.Trim() != string.Empty)
+                        //    LoggedInFacility = hdnFacltyName.Value;
+                        //else
+                        //    LoggedInFacility = ddlFacility.Value;
                         UtilityManager.WriteApplicationAccessInfo(ClientSession.UserName, LoggedInFacility);//user access log
                     }
-                    //if (Global.ht.ContainsKey("IsLogin-" + ClientSession.UserName))
-                    //{
-                    //    Global.ht["IsLogin-" + ClientSession.UserName] = "TRUE";
-                    //}
-                    //else
-                    //{
-                    //    Global.ht.Add("IsLogin-" + ClientSession.UserName, "TRUE"); 
-                    //}
                 }
 
             }
@@ -736,12 +431,13 @@ namespace Acurus.Capella.UI
             if (ClientSession.UserPermissionDTO != null)
             {
                 //Load Balancer - Redirect to a Default Server for the user
-                if (Session["Default_Server"] != null && Session["Default_Server"].ToString().ToUpper().Contains("FRMLOGIN.ASPX") == true)
+                //ImpersonateUser
+                if (Session["Default_Server"] != null && (Session["Default_Server"].ToString().ToUpper().Contains("FRMLOGIN.ASPX") == true || Session["Default_Server"].ToString().ToUpper().Contains("FRMLANDINGSCREEN.ASPX") == true))
                 {
                     NameValueCollection data = new NameValueCollection();
                     data.Add("UserName", ClientSession.UserName);
                     data.Add("EHRUserName", ClientSession.UserName);
-                    data.Add("EHRFacilityName", hdnFacltyName.Value);
+                    data.Add("EHRFacilityName", ClientSession.FacilityName);
                     data.Add("EHRhdnLocalTime", hdnLocalTime.Value);
                     data.Add("EHRhdnLocalDate", hdnLocalDate.Value);
                     data.Add("EHRhdnUniversaloffset", hdnUniversaloffset.Value);
@@ -770,7 +466,6 @@ namespace Acurus.Capella.UI
                 if (Session["LandingScnID"] != null)
                 {
                     var ScnTabRecord = from s in ScnTabList where s.SCN_ID == (int)Session["LandingScnID"] select s;
-                    //divLoading.Style.Add("display", "none");
                     //CAP-1167
                     var returnURL = Request.QueryString["redirecturl"]?.ToString();
 
@@ -787,7 +482,7 @@ namespace Acurus.Capella.UI
             }
         }
 
-        public string LandingintoEHR(string sUserName, string sFacilityName, string shdnLocalTime, string shdnLocalDate, string shdnUniversaloffset, string shdnLocalDateAndTime, string shdnFollowsDayLightSavings, string sUserRole, string sRCopiaUserName, string sEMailAddress, string sIs_RCopia_Notification_Required, string sPhysicianId, string sLanding_Screen_ID, string shdnGroupId, string sPersonName,string sLegalOrg, string sUserCarrier, string sIsFirstTimeCall, string sDefaultServer,string sIsAllFacilities)
+        public string LandingintoEHR(string sUserName, string sFacilityName, string shdnLocalTime, string shdnLocalDate, string shdnUniversaloffset, string shdnLocalDateAndTime, string shdnFollowsDayLightSavings, string sUserRole, string sRCopiaUserName, string sEMailAddress, string sIs_RCopia_Notification_Required, string sPhysicianId, string sLanding_Screen_ID, string shdnGroupId, string sPersonName, string sLegalOrg, string sUserCarrier, string sIsFirstTimeCall, string sDefaultServer, string sIsAllFacilities)
         {
             UtilityManager.inserttologgingtableforSessionTimeout("LandingintoEHR API - Start - input is - " + sUserName, Request.Url.ToString(), string.Empty);
 
@@ -818,7 +513,7 @@ namespace Acurus.Capella.UI
             //if (System.Configuration.ConfigurationSettings.AppSettings["Reportpathhttp"] != null)
             //    hdnReportPathhttp.Value = System.Configuration.ConfigurationSettings.AppSettings["Reportpathhttp"];
 
-            hdnFacltyName.Value = sFacilityName;
+            //hdnFacltyName.Value = sFacilityName;
             hdnLocalTime.Value = shdnLocalTime;
             hdnLocalDate.Value = shdnLocalDate;
             hdnUniversaloffset.Value = shdnUniversaloffset;
@@ -990,5 +685,68 @@ namespace Acurus.Capella.UI
             return string.Empty;
         }
 
+        protected void GenerateAccessToken(string code)
+        {
+            var clientId = ConfigurationSettings.AppSettings["okta:ClientId"];
+            var clientSecret = ConfigurationSettings.AppSettings["okta:ClientSecret"];
+            var base64EncodedString = Convert.ToBase64String(Encoding.UTF8.GetBytes($"{clientId}:{clientSecret}"));
+
+            var options = new RestClientOptions(ConfigurationSettings.AppSettings["okta:OktaDomain"])
+            {
+                MaxTimeout = -1,
+            };
+            var client = new RestClient(options);
+            var request = new RestRequest($"{ConfigurationSettings.AppSettings["okta:TokenURL"]}", RestSharp.Method.Post);
+            request.AddHeader("accept", "application/json");
+            request.AddHeader("authorization", $"Basic {base64EncodedString}");
+            request.AddHeader("content-type", "application/x-www-form-urlencoded");
+            request.AddParameter("grant_type", "authorization_code");
+            request.AddParameter("redirect_uri", ConfigurationSettings.AppSettings["okta:RedirectUri"]);
+            request.AddParameter("code", $"{code}");
+            RestResponse response = client.ExecuteAsync(request).Result;
+
+            Root myDeserializedClass = JsonConvert.DeserializeObject<TokenResponse>(response.Content);
+
+            //Get User Information
+            var useroptions = new RestClientOptions(ConfigurationSettings.AppSettings["okta:OktaDomain"])
+            {
+                MaxTimeout = -1,
+            };
+            var userclient = new RestClient(useroptions);
+            var userrequest = new RestRequest($"{ConfigurationSettings.AppSettings["okta:UserInfoURL"]}",RestSharp.Method.Get);
+            userrequest.AddHeader("Authorization", $"Bearer {myDeserializedClass.access_token}");
+            RestResponse userresponse = userclient.ExecuteAsync(userrequest).Result;
+
+            UserInfo userInfoResponse = JsonConvert.DeserializeObject<UserInfo>(userresponse.Content);
+
+            ClientSession.EmailAddress =  userInfoResponse?.email??"";
+            ClientSession.AccessToken = myDeserializedClass?.access_token??"";
+            ClientSession.AccessTokenId = myDeserializedClass?.id_token??"";
+
+            Response.SetCookie(new HttpCookie("MicrosoftAccessTokenId") { Value = ClientSession.AccessTokenId });
+        }
+
+        public class TokenResponse
+        {
+            public string token_type { get; set; }
+            public int expires_in { get; set; }
+            public string access_token { get; set; }
+            public string scope { get; set; }
+            public string id_token { get; set; }
+        }
+
+        public class UserInfo
+        {
+            public string sub { get; set; }
+            public string name { get; set; }
+            public string locale { get; set; }
+            public string email { get; set; }
+            public string preferred_username { get; set; }
+            public string given_name { get; set; }
+            public string family_name { get; set; }
+            public string zoneinfo { get; set; }
+            public int updated_at { get; set; }
+            public bool email_verified { get; set; }
+        }
     }
 }

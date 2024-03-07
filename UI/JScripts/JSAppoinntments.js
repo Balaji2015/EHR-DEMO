@@ -897,7 +897,15 @@ function EndRequestHandler(sender, args) {
             alert("Your session has expired");
             args._error.message = "Your session has expired";
             args._errorHandled = true;
-            parent.window.location.href = 'frmlogin.aspx';
+            //CAP-1752
+            var IsSSOLogin = document.getElementById(GetClientId("hdnIsSSOLogin")).value;
+            if (IsSSOLogin == "Y") {
+                parent.window.location.href = 'frmloginNew.aspx';
+            }
+            else {
+                parent.window.location.href = 'frmlogin.aspx';
+            }
+            
             return false;
         } else if (args._error.name == "Sys.WebForms.PageRequestManagerServerErrorException") {
             console.log(args._error.message);
