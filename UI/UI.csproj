@@ -359,6 +359,8 @@
     <Content Include="bin\phimailcon.dll" />
     <Content Include="bin\QRCoder.dll" />
     <Content Include="bin\RCopiaErrorLog.txt" />
+    <Content Include="bin\RestSharp.dll" />
+    <Content Include="bin\RestSharp.xml" />
     <Content Include="bin\TimePicker.dll" />
     <Content Include="bin\VsWebSite.Interop.dll" />
     <Content Include="bin\X12_Envelope.dll" />
