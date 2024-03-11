@@ -7,21 +7,12 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace UI
+namespace Acurus.Capella.UI
 {
 
 
-    public partial class frmChangePassword
+    public partial class frmLandingScreen
     {
-
-        /// <summary>
-        /// Link1 control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.HtmlControls.HtmlLink Link1;
 
         /// <summary>
         /// form1 control.
@@ -33,201 +24,165 @@ namespace UI
         protected global::System.Web.UI.HtmlControls.HtmlForm form1;
 
         /// <summary>
-        /// ToolkitScriptManager2 control.
+        /// hdnbtnLogin control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::AjaxControlToolkit.ToolkitScriptManager ToolkitScriptManager2;
+        protected global::System.Web.UI.HtmlControls.HtmlButton hdnbtnLogin;
 
         /// <summary>
-        /// pnlChangePassword control.
+        /// hdnGroupId control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Panel pnlChangePassword;
+        protected global::System.Web.UI.WebControls.HiddenField hdnGroupId;
 
         /// <summary>
-        /// updtpnl control.
+        /// hdnPersonName control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.UpdatePanel updtpnl;
+        protected global::System.Web.UI.WebControls.HiddenField hdnPersonName;
 
         /// <summary>
-        /// lblUserName control.
+        /// hdnVersion control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Label lblUserName;
+        protected global::System.Web.UI.WebControls.HiddenField hdnVersion;
 
         /// <summary>
-        /// txtUserName control.
+        /// hdnProjectName control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox txtUserName;
+        protected global::System.Web.UI.WebControls.HiddenField hdnProjectName;
 
         /// <summary>
-        /// pnlOldPassword control.
+        /// hdnreportPath control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Panel pnlOldPassword;
+        protected global::System.Web.UI.WebControls.HiddenField hdnreportPath;
 
         /// <summary>
-        /// lblOldPassword control.
+        /// hdnLoginheader control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Label lblOldPassword;
+        protected global::System.Web.UI.WebControls.HiddenField hdnLoginheader;
 
         /// <summary>
-        /// txtOldPassword control.
+        /// hdnVersionKey control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox txtOldPassword;
+        protected global::System.Web.UI.WebControls.HiddenField hdnVersionKey;
 
         /// <summary>
-        /// lblNewPassword control.
+        /// hdnServiceLink control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Label lblNewPassword;
+        protected global::System.Web.UI.WebControls.HiddenField hdnServiceLink;
 
         /// <summary>
-        /// txtNewPassword control.
+        /// HiddenField1 control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox txtNewPassword;
+        protected global::System.Web.UI.WebControls.HiddenField HiddenField1;
 
         /// <summary>
-        /// lblConfirmPassword control.
+        /// hdnEvProjectName control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Label lblConfirmPassword;
+        protected global::System.Web.UI.WebControls.HiddenField hdnEvProjectName;
 
         /// <summary>
-        /// txtConfirmPassword control.
+        /// hdnReportPathhttp control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox txtConfirmPassword;
+        protected global::System.Web.UI.WebControls.HiddenField hdnReportPathhttp;
 
         /// <summary>
-        /// btnOk control.
+        /// hdnroleLanding control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.HtmlControls.HtmlInputButton btnOk;
+        protected global::System.Web.UI.WebControls.HiddenField hdnroleLanding;
 
         /// <summary>
-        /// btnClose control.
+        /// hdnRCopia_User_NameLanding control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.HtmlControls.HtmlInputButton btnClose;
+        protected global::System.Web.UI.WebControls.HiddenField hdnRCopia_User_NameLanding;
 
         /// <summary>
-        /// hdnOld control.
+        /// hdnIs_RCopia_Notification_RequiredLanding control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.HiddenField hdnOld;
+        protected global::System.Web.UI.WebControls.HiddenField hdnIs_RCopia_Notification_RequiredLanding;
 
         /// <summary>
-        /// hdnNew control.
+        /// hdnPhysician_Library_IDLanding control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.HiddenField hdnNew;
+        protected global::System.Web.UI.WebControls.HiddenField hdnPhysician_Library_IDLanding;
 
         /// <summary>
-        /// hdnConfirm control.
+        /// hdnLanding_Screen_IDLanding control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.HiddenField hdnConfirm;
+        protected global::System.Web.UI.WebControls.HiddenField hdnLanding_Screen_IDLanding;
 
         /// <summary>
-        /// hdnIsSSOLogin control.
+        /// hdnEMailAddress control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.HiddenField hdnIsSSOLogin;
-
-        /// <summary>
-        /// IsLoginOpen control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.HiddenField IsLoginOpen;
-
-        /// <summary>
-        /// hdnToFindPostback control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.HiddenField hdnToFindPostback;
-
-        /// <summary>
-        /// hdnScreenMode control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.HiddenField hdnScreenMode;
-
-        /// <summary>
-        /// PlaceHolder1 control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.PlaceHolder PlaceHolder1;
+        protected global::System.Web.UI.WebControls.HiddenField hdnEMailAddress;
     }
 }

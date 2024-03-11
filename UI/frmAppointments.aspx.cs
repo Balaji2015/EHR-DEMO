@@ -97,6 +97,8 @@ namespace Acurus.Capella.UI
 
             if (!IsPostBack)
             {
+                //CAP-1752
+                hdnIsSSOLogin.Value = ConfigurationSettings.AppSettings["IsSSOLogin"]??"N";
                 //logger.Debug("Page Load occuring for the first time");
                 btnClose.Visible = false;
                 System.Diagnostics.Stopwatch LoadTime = new System.Diagnostics.Stopwatch();

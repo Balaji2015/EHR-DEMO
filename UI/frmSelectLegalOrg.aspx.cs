@@ -1,38 +1,75 @@
-﻿using Acurus.Capella.Core.DomainObjects;
-using Acurus.Capella.Core.DTO;
-using Acurus.Capella.DataAccess.ManagerObjects;
-using Acurus.Capella.UI.Extensions;
-using System;
-using System.Collections;
+﻿using System;
 using System.Collections.Generic;
-using System.Collections.Specialized;
-using System.IO;
-using System.Linq;
+using System.ComponentModel;
 using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
+using System.Web.Services;
+using Acurus.Capella.Core.DomainObjects;
+using System.Diagnostics;
+using System.Net;
+using System.IO;
+using Acurus.Capella.Core.DTO;
+using System.Collections;
+using System.Runtime.Serialization;
+using System.Data;
+using System.Drawing;
+using System.Linq;
+using Newtonsoft.Json;
+using Acurus.Capella.DataAccess.ManagerObjects;
+using System.Text;
+using Telerik.Web.UI;
+using System.Data.SqlClient;
+using System.Configuration;
+using System.Xml;
+using DocumentFormat.OpenXml.Drawing;
+using static System.Windows.Forms.VisualStyles.VisualStyleElement.StartPanel;
+using DocumentFormat.OpenXml.Vml.Spreadsheet;
+using Telerik.Web.UI.Chat;
+using Telerik.Web.UI.Skins;
+using Acurus.Capella.UI.Extensions;
+using User = Acurus.Capella.Core.DomainObjects.User;
+using System.Collections.Specialized;
 
 namespace Acurus.Capella.UI
 {
-    public partial class frmImpersonateUser : System.Web.UI.Page
+    public partial class frmSelectLegalOrg : System.Web.UI.Page
     {
         UserManager UserMngr = new UserManager();
         DirectURLUtility directURLUtility = new DirectURLUtility();
+
         protected void Page_Load(object sender, EventArgs e)
         {
             if (!IsPostBack)
             {
-                cboUserName.Items.Clear();
-                UserManager UserMngr = new UserManager();
-                IList<User> ilstUser = new List<User>();
-                ilstUser = UserMngr.getImpersonateUser(ClientSession.UserName, ClientSession.LegalOrg);
+                UserManager userManager = new UserManager();
+                IList<User> ilstUsers = new List<User>();
 
-                cboUserName.Items.Add(new ListItem("", ""));
-                foreach (User user in ilstUser)
+                if (!string.IsNullOrEmpty(ClientSession.EmailAddress))
                 {
-                    cboUserName.Items.Add(new ListItem(user.user_name, user.user_name));
-
+                    ilstUsers = userManager.GetUserByEmailAddress(ClientSession.EmailAddress);
                 }
+
+                if (ilstUsers != null && ilstUsers.Count > 0)
+                {
+                    foreach (var item in ilstUsers)
+                    {
+                        System.Web.UI.WebControls.ListItem listItem = new System.Web.UI.WebControls.ListItem();
+                        listItem.Value = item.user_name;
+                        listItem.Text = item.Legal_Org;
+                        cboLegalOrg.Items.Add(listItem);
+                    }
+                }
+                else
+                {
+                    System.Web.UI.WebControls.ListItem listItem = new System.Web.UI.WebControls.ListItem();
+                    listItem.Value = ClientSession.UserName;
+                    listItem.Text = ClientSession.LegalOrg;
+                    cboLegalOrg.Items.Add(listItem);
+                }
+
+                cboLegalOrg.SelectedValue = ClientSession.UserName;
+                FillFacilityComboBox(ClientSession.LegalOrg);
             }
 
             if (Request.Form["EHRUserName"] != null) //Load Balancer - Automatic Single Sign On
@@ -47,51 +84,99 @@ namespace Acurus.Capella.UI
             }
         }
 
-
-        protected void btnOk_ServerClick(object sender, EventArgs e)
+        private void FillFacilityComboBox(string legal_org)
         {
-            bool Base64Pwd = true;
-            IList<User> ilstChcekUser = new List<User>();
-            ilstChcekUser = UserMngr.CheckImpersonateUserWithPassword(ClientSession.UserName, Encryptionbase64Encode(txtPassword.Value), out Base64Pwd);
-            if (ilstChcekUser.Count > 0)
-            {
-                String User = cboUserName.Items[cboUserName.SelectedIndex].Value.Trim().ToUpper();
-                //Object lstUserID = Global.ht[ClientSession.UserName];
-                IList<string> lstUser = UtilityManager.FindUserSessionFiles(User, string.Empty);
+            cboFacilityName.Items.Clear();
 
-                if (lstUser.Count > 0)
+            XmlDocument xmldoc = new XmlDocument();
+
+            string strXmlFilePath = System.IO.Path.Combine(System.Web.Hosting.HostingEnvironment.ApplicationPhysicalPath, "ConfigXML\\Facility_Library.xml");
+            if (File.Exists(strXmlFilePath) == true)
+            {
+                xmldoc.Load(System.Web.Hosting.HostingEnvironment.ApplicationPhysicalPath + "ConfigXML\\" + "Facility_Library" + ".xml");
+                XmlNodeList xmlFacilityList = xmldoc.GetElementsByTagName("Facility");
+
+                if (xmlFacilityList.Count > 0)
                 {
-                    var objIsActiveSession = (from item in lstUser where item.Contains(Session.SessionID) select item).ToList<string>();
-                    //if (Convert.ToString(lstUserID).Equals(HttpContext.Current.Session.SessionID) == false )
-                    if (objIsActiveSession.Count == 0 && Request["OpenPatChart"] == null)//Changed for CarePointe
+                    foreach (XmlNode item in xmlFacilityList)
                     {
-                        //Global.ht[ClientSession.UserName] = HttpContext.Current.Session.SessionID;
-                        //ClientSession.SavedSession = "TRUE";
-                        Page.Visible = true;
-                        ScriptManager.RegisterStartupScript(this, this.Page.GetType(), "MsgLogin", "AlertUser();", true);
-                        return;
+                        if (item != null && item.Attributes.GetNamedItem("Legal_Org").Value == legal_org)
+                            cboFacilityName.Items.Add(item.Attributes[0].Value);
+                    }
+                    cboFacilityName.Value = ClientSession.FacilityName;
+                }
+            }
+        }
+
+        protected void cboLegalOrg_Change(object sender, EventArgs e)
+        {
+            if (!string.IsNullOrEmpty(cboLegalOrg.SelectedItem.Text))
+            {
+                FillFacilityComboBox(cboLegalOrg.SelectedItem.Text);
+                ClientScript.RegisterStartupScript(this.GetType(), "SelectLegalOrg", " {sessionStorage.setItem('StartLoading', 'false');StopLoadFromPatChart();}", true);
+            }
+            else
+            {
+                ClientScript.RegisterStartupScript(this.GetType(), "SelectLegalOrg", " {sessionStorage.setItem('StartLoading', 'false');StopLoadFromPatChart(); alert('Please select valid legal org.');}", true);
+            }
+        }
+
+        protected void btnOk_Click(object sender, EventArgs e)
+        {
+            if (cboLegalOrg.SelectedItem.Text != ClientSession.LegalOrg)
+            {
+                if (!string.IsNullOrEmpty(cboLegalOrg.SelectedItem.Text) && !string.IsNullOrEmpty(cboFacilityName.Value))
+                {
+                    //ClientSession.FacilityName = cboFacilityName.Value;
+                    //ClientSession.LegalOrg = cboLegalOrg.Text;
+                    hdnEMailAddress.Value = ClientSession.EmailAddress;
+                    hdnChangedFacilityName.Value = cboFacilityName.Value;
+                    hdnChangedLegalOrg.Value = cboLegalOrg.SelectedItem.Text;
+
+
+                    IList<string> lstUser = UtilityManager.FindUserSessionFiles(cboLegalOrg.SelectedValue, string.Empty);
+                    if (lstUser.Count > 0)
+                    {
+                        var objIsActiveSession = (from item in lstUser where item.Contains(Session.SessionID) select item).ToList<string>();
+                        if (objIsActiveSession.Count == 0 && Request["OpenPatChart"] == null)//Changed for CarePointe
+                        {
+                            Page.Visible = true;
+                            ScriptManager.RegisterStartupScript(this, this.Page.GetType(), "MsgLogin", "AlertUser();", true);
+                            return;
+                        }
+                    }
+                    else
+                    {
+                        hdbbtnLogOutAndLogIn_ServerClick(sender, e);
                     }
                 }
                 else
                 {
-                    hdbbtnLogOutAndLogIn_ServerClick(sender, e);
+                    if (string.IsNullOrEmpty(cboLegalOrg.SelectedItem.Text))
+                    {
+                        ClientScript.RegisterStartupScript(this.GetType(), "SelectLegalOrg", "{sessionStorage.setItem('StartLoading', 'false');StopLoadFromPatChart(); DisplayErrorMessage('010026');}", true);
+                    }
+                    else
+                    {
+                        ClientScript.RegisterStartupScript(this.GetType(), "SelectLegalOrg", "{sessionStorage.setItem('StartLoading', 'false');StopLoadFromPatChart(); DisplayErrorMessage('010005');}", true);
+                    }
                 }
-
             }
             else
             {
-                ScriptManager.RegisterStartupScript(this, this.Page.GetType(), string.Empty, "DisplayErrorMessage('10113403'); { sessionStorage.setItem('StartLoading', 'false'); StopLoadFromPatChart(); }", true);
-                return;
+                ClientSession.FacilityName = cboFacilityName.Value;
+                ClientScript.RegisterStartupScript(this.GetType(), "SelectLegalOrg", "{RadWindowClose();changeReload();}", true);
             }
-           
+        }
+        protected void btnClose_Click(object sender, EventArgs e)
+        {
+            ClientScript.RegisterStartupScript(this.GetType(), "SelectLegalOrg", "RadWindowClose();", true);
         }
         protected void hdbbtnLogOutAndLogIn_ServerClick(object sender, EventArgs e)
         {
             LogOut();
             ScriptManager.RegisterStartupScript(this, this.Page.GetType(), string.Empty, "document.getElementById('hdnMultiUserLogin').click();", true);
-
         }
-
         public void LogOut()
         {
             ////Response.Write("<script> window.top.location.href=\" frmLogin.aspx\"; </script>");
@@ -179,8 +264,6 @@ namespace Acurus.Capella.UI
             { }
             //HttpContext.Current.Session.Abandon();
         }
-
-
         protected void hdnbtnLogin_ServerClick(object sender, EventArgs e)
         {
             if (ClientSession.UserName == string.Empty)
@@ -219,8 +302,8 @@ namespace Acurus.Capella.UI
                     //UtilityManager.DeleteUserSessionFile(ClientSession.UserName, string.Empty);
 
                     //UtilityManager.CreateUserSessionFile(ClientSession.UserName, Session.SessionID);
-
-                    if (Session["Default_Server"] != null && (Session["Default_Server"].ToString().ToUpper().Contains("FRMLOGIN.ASPX") == true || Session["Default_Server"].ToString().ToUpper().Contains("FRMIMPERSONATEUSER.ASPX") == true))
+                    //ImpersonateUser
+                    if (Session["Default_Server"] != null && (Session["Default_Server"].ToString().ToUpper().Contains("FRMLOGIN.ASPX") == true || Session["Default_Server"].ToString().ToUpper().Contains("FRMSELECTLEGALORG.ASPX") == true || Session["Default_Server"].ToString().ToUpper().Contains("FRMLOGINNEW.ASPX") == true))
                     {
                         ClientSession.SavedSession = "DELETED";
                     }
@@ -258,7 +341,8 @@ namespace Acurus.Capella.UI
             if (ClientSession.UserPermissionDTO != null)
             {
                 //Load Balancer - Redirect to a Default Server for the user
-                if (Session["Default_Server"] != null && (Session["Default_Server"].ToString().ToUpper().Contains("FRMLOGIN.ASPX") == true || Session["Default_Server"].ToString().ToUpper().Contains("FRMIMPERSONATEUSER.ASPX") == true))
+                //ImpersonateUser
+                if (Session["Default_Server"] != null && (Session["Default_Server"].ToString().ToUpper().Contains("FRMLOGIN.ASPX") == true || Session["Default_Server"].ToString().ToUpper().Contains("FRMSELECTLEGALORG.ASPX") == true || Session["Default_Server"].ToString().ToUpper().Contains("FRMLOGINNEW.ASPX") == true))
                 {
                     NameValueCollection data = new NameValueCollection();
                     data.Add("UserName", ClientSession.UserName);
@@ -307,28 +391,17 @@ namespace Acurus.Capella.UI
                     }
                     ScriptManager.RegisterStartupScript(this, this.Page.GetType(), string.Empty, "AfterOkClick();", true);
                 }
-               
-            }
-        }
-        public static string Encryptionbase64Encode(string sData)
-        {
-            try
-            {
-                byte[] encData_byte = new byte[sData.Length];
-                encData_byte = System.Text.Encoding.UTF8.GetBytes(sData);
-                string encodedData = Convert.ToBase64String(encData_byte);
-                return encodedData;
-            }
-            catch (Exception ex)
-            {
-                throw new Exception("Error in base64Encode" + ex.Message);
+
             }
         }
 
-        protected void hdnMultiUserLogin_ServerClick(object sender, EventArgs e)
+
+        protected void hdnMultiUserLogin_Click(object sender, EventArgs e)
         {
-           
-            ClientSession.UserName = cboUserName.Items[cboUserName.SelectedIndex].Value.Trim().ToUpper();
+            ClientSession.UserName = cboLegalOrg.SelectedValue;
+            ClientSession.LegalOrg = hdnChangedLegalOrg.Value;
+            ClientSession.FacilityName = hdnChangedFacilityName.Value;
+            ClientSession.EmailAddress = hdnEMailAddress.Value;
             UtilityManager.inserttologgingtableforSessionTimeout("btnLogin_Click - Start", Request.Url.ToString(), string.Empty);
 
 
@@ -339,19 +412,18 @@ namespace Acurus.Capella.UI
 
             if (ApplicationObject.scntab != null)
             {
-                objLoginDTO = UserMngr.CheckImpersonateUserDetails(cboUserName.Items[cboUserName.SelectedIndex].Value.Trim(), false);
+                objLoginDTO = UserMngr.CheckUserDetailsLegalOrg(ClientSession.UserName.ToUpper(), false);
                 if (objLoginDTO.UserPermissionDTO != null)
                     objLoginDTO.UserPermissionDTO.Scntab = ApplicationObject.scntab;
             }
             else
-                objLoginDTO = UserMngr.CheckImpersonateUserDetails(cboUserName.Items[cboUserName.SelectedIndex].Value.Trim(), true);
+                objLoginDTO = UserMngr.CheckUserDetailsLegalOrg(ClientSession.UserName.ToUpper(), true);
 
             //To check if the cache data to be loaded
             //IList<LastModifiedLocalLookup> lstLookUp = new List<LastModifiedLocalLookup>();
             if (objLoginDTO != null)// objLoginDTO.lstLookUp != null)
             {
                 login = objLoginDTO.User;
-                ClientSession.EmailAddress = login[0].EMail_Address;
                 //lstLookUp = objLoginDTO.lstLookUp;
             }
             //----Added By Nijanthan(17-11-15)
@@ -379,13 +451,14 @@ namespace Acurus.Capella.UI
                         return;
                     }
 
-                    //Load Balancer - Redirect to a Default Server for the user                   
-                    if (login[0].Default_Server != string.Empty && login[0].Default_Server.ToUpper().Contains("FRMLOGIN.ASPX") == true)
+                    //Load Balancer - Redirect to a Default Server for the user
+                    //ImpersonateUser
+                    if (login[0].Default_Server != string.Empty && login[0].Default_Server.ToUpper().Contains("FRMLOGIN.ASPX") == true || login[0].Default_Server.ToUpper().Contains("FRMLOGINNEW.ASPX"))
                     {
                         //ImpersonateUser - To change the Default Server Login page to the current page
                         if (login[0].Default_Server.Contains("frmLogin.aspx") == true)
                         {
-                            login[0].Default_Server = login[0].Default_Server.Replace("frmLogin.aspx", "frmImpersonateUser.aspx");
+                            login[0].Default_Server = login[0].Default_Server.Replace("frmLogin.aspx", "frmSelectLegalOrg.aspx");
                         }
                         else
                         {
@@ -395,9 +468,9 @@ namespace Acurus.Capella.UI
                         Session["Default_Server"] = login[0].Default_Server;
 
                         NameValueCollection data = new NameValueCollection();
-                        data.Add("UserName", cboUserName.Items[cboUserName.SelectedIndex].Value.Trim().ToString().ToUpper());
-                        data.Add("EHRUserName", cboUserName.Items[cboUserName.SelectedIndex].Value.Trim().ToString().ToUpper());
-                        data.Add("EHRFacilityName", login[0].Default_Facility);
+                        data.Add("UserName", ClientSession.UserName.ToUpper());
+                        data.Add("EHRUserName", ClientSession.UserName.ToUpper());
+                        data.Add("EHRFacilityName", ClientSession.FacilityName);
                         data.Add("EHRhdnLocalTime", hdnLocalTime.Value);
                         data.Add("EHRhdnLocalDate", hdnLocalDate.Value);
                         data.Add("EHRhdnUniversaloffset", hdnUniversaloffset.Value);
@@ -891,7 +964,5 @@ namespace Acurus.Capella.UI
             }
             return string.Empty;
         }
-
-        
     }
 }

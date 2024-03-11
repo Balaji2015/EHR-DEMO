@@ -391,7 +391,9 @@ namespace Acurus.Capella.UI
                 }
                 else
                 {
-                    Response.Write("<script> window.top.location.href=\" frmLogin.aspx\"; </script>");
+                    //CAP-1752
+                    var loginpage = (ConfigurationSettings.AppSettings["IsSSOLogin"] == "Y" ? "frmLoginNew.aspx" : "frmLogin.aspx");
+                    Response.Write($"<script> window.top.location.href=\"{loginpage}\"; </script>");
                 }
             }
         }

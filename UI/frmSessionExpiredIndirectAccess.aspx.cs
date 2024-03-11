@@ -1,6 +1,7 @@
 ﻿using Acurus.Capella.DataAccess.ManagerObjects;
 using System;
 using System.Collections.Generic;
+using System.Configuration;
 using System.IO;
 using System.Linq;
 using System.Web;
@@ -14,6 +15,16 @@ namespace Acurus.Capella.UI
         public static bool bFirstTime = false;
         protected void Page_Load(object sender, EventArgs e)
         {
+            if (Request.Cookies["MicrosoftAccessTokenId"] != null && !string.IsNullOrEmpty(Request.Cookies["MicrosoftAccessTokenId"].Value))
+            {
+                var postLogoutRedirectUri = ConfigurationSettings.AppSettings["okta:PostLogoutSessionIndirectRedirectUri"];
+                Response.Redirect($"{ConfigurationManager.AppSettings["okta:LogoutURL"]}?id_token_hint={Request.Cookies["MicrosoftAccessTokenId"].Value}&post_logout_redirect_uri={postLogoutRedirectUri}", false);
+                HttpCookie cookie = Request.Cookies["MicrosoftAccessTokenId"];
+                cookie.Expires = DateTime.Now.AddMinutes(-5);
+                Response.Cookies.Add(cookie);
+                return;
+            }
+
             UserSessionManager userSessionMngr = new UserSessionManager();
             //  userSessionMngr.DeleteUserSessionAtSessionEnd(HttpContext.Current.Session.SessionID); 
             //Global.ht.Remove(ClientSession.UserName);
@@ -63,7 +74,9 @@ namespace Acurus.Capella.UI
                 }
                 else
                 {
-                    Response.Write("<script> window.top.location.href=\" frmLogin.aspx\"; </script>");
+                    //CAP-1752
+                    var loginpage = (ConfigurationSettings.AppSettings["IsSSOLogin"] == "Y" ? "frmLoginNew.aspx" : "frmLogin.aspx");
+                    Response.Write($"<script> window.top.location.href=\"{loginpage}\"; </script>");
                 }
                 bFirstTime = false;
             }

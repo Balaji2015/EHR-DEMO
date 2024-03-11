@@ -709,7 +709,40 @@ namespace Acurus.Capella.UI
                     //    }
                     //}
                 }
+                //Jira CAP-1807
+                else
+                {
+                    IList<string> lstChkeditem = new List<string>();
+                    if (Session["objDiagnosticDTO"] != null && Session["objDiagnosticDTO"].ToString() != "")
+                    {
+                        DiagnosticDTO objFillDiagnosticDTO = new DiagnosticDTO();
+                        objFillDiagnosticDTO = (DiagnosticDTO)Session["objDiagnosticDTO"];
+                        IList<string> ProceduresViewList = new List<string>();
+                        ProceduresViewList = objFillDiagnosticDTO.OrdersLists.Select(a => a.Lab_Procedure + "-" + (a.Lab_Procedure_Description.Contains("x_") ? ((a.Lab_Procedure_Description.Split(new[] { "x_" }, StringSplitOptions.None).Count() > 1 ? (a.Lab_Procedure_Description.Split(new[] { "x_" }, StringSplitOptions.None)[0].ToString() + "x______") : a.Lab_Procedure_Description) + "~" + a.Quantity + "|" + a.Id) : a.Lab_Procedure_Description)).ToList<string>();
 
+                        for (int iCount = 0; iCount < chklstFrequentlyUsedProcedures.Items.Count; iCount++)
+                        {
+                            if (chklstFrequentlyUsedProcedures.Items[iCount].Selected == true)
+                            {
+                                lstChkeditem.Add(chklstFrequentlyUsedProcedures.Items[iCount].ToString());
+                            }
+                        }
+
+                        for (int icount = 0; icount < lstChkeditem.Count; icount++)
+                        {
+                            for (int iCountY = 0; iCountY < ProceduresViewList.Count; iCountY++)
+                            {
+                                string sCheckiteam = lstChkeditem[icount].Replace("x___", "^");
+                                string sSavedCheckiteam = ProceduresViewList[iCountY].Replace("x___", "^");
+                                if (sCheckiteam.Split('^')[0] == sSavedCheckiteam.Split('^')[0])
+                                {
+                                    lstChkeditem[icount] = ProceduresViewList[iCountY];
+                                }
+                            }
+                        }
+                        IList<ListItem> tempList = SetOrderIDForEditQuantity(lstChkeditem);
+                    }
+                }
                 chkTestDateInWords_CheckedChanged(sender, e);
             }
             //if (ClientSession.UserRole.ToUpper() != "PHYSICIAN")
@@ -6164,6 +6197,11 @@ namespace Acurus.Capella.UI
                 if (ProceduresViewList[i] != string.Empty)
                 {
                     ListItem foundItem = chklstFrequentlyUsedProcedures.Items.FindByText(ProceduresViewList[i].Split('~')[0]);
+                    //Jira CAP-1807
+                    if (foundItem == null)
+                    {
+                        foundItem = chklstFrequentlyUsedProcedures.Items.FindByText(ProceduresViewList[i].Split('~')[0].Replace("x______", "") + "x___" + ProceduresViewList[i].Split('~')[1].Split('|')[0] + "___");
+                    }
                     if (foundItem != null)
                     {
                         foundItem.Selected = true;

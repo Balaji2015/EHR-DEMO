@@ -21,6 +21,16 @@ namespace Acurus.Capella.UI
         public static bool bFirstTime = false;
         protected void Page_Load(object sender, EventArgs e)
         {
+            if(Request.Cookies["MicrosoftAccessTokenId"] != null && !string.IsNullOrEmpty(Request.Cookies["MicrosoftAccessTokenId"].Value))
+            {
+                var postLogoutRedirectUri = ConfigurationSettings.AppSettings["okta:PostLogoutSessionExpiredRedirectUri"];
+                Response.Redirect($"{ConfigurationManager.AppSettings["okta:LogoutURL"]}?id_token_hint={Request.Cookies["MicrosoftAccessTokenId"].Value}&post_logout_redirect_uri={postLogoutRedirectUri}", false);
+                HttpCookie cookie = Request.Cookies["MicrosoftAccessTokenId"];
+                cookie.Expires = DateTime.Now.AddMinutes(-5);
+                Response.Cookies.Add(cookie);
+                return;
+            }
+
             //Jira CAP-1567
             if (Request.Cookies["CeRxFlag"] != null && Request.Cookies["CeRxFlag"].Value == "true" && Request.Cookies["CeRxHumanID"].Value != "" && Request.Cookies["CeRxHumanID"].Value != "0")
             {
@@ -93,15 +103,17 @@ namespace Acurus.Capella.UI
                 {
                     //CAP-1167
                     var CurrentUrl = Session["currenturl"]?.ToString();
+                    //CAP-1752
+                    var loginpage = (ConfigurationSettings.AppSettings["IsSSOLogin"] == "Y" ? "frmLoginNew.aspx" : "frmLogin.aspx");
                     if (!string.IsNullOrEmpty(CurrentUrl))
                     {
-                        var returnURL = $"~/frmLogin.aspx?redirecturl={HttpUtility.UrlEncode(CurrentUrl)}";
+                        var returnURL = $"~/{loginpage}?redirecturl={HttpUtility.UrlEncode(CurrentUrl)}";
                         Session["currenturl"] = null;
                         Response.Write("<script> window.top.location.href=\"" + returnURL + "\"; </script>");
                     }
                     else
                     {
-                        Response.Write("<script> window.top.location.href=\" frmLogin.aspx\"; </script>");
+                        Response.Write($"<script> window.top.location.href=\"{loginpage}\"; </script>");
                     }
                   
                     

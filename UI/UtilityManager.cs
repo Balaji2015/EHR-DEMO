@@ -3060,7 +3060,16 @@ namespace Acurus.Capella.UI
                     if (filesInDir.Count() > 0)
                     {
                         foreach (FileInfo file in filesInDir)
+                        {
+                            var checkUsernameCriteria = (file.Name??string.Empty).Split('_');
+
+                            if(checkUsernameCriteria.Count() > 2 && !sUserName.Contains("_"))
+                            {
+                                continue;
+                            }
+
                             lstFiles.Add(file.Name);
+                        }
                     }
                 }
                 catch (Exception xmlexcep)

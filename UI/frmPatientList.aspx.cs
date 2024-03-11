@@ -41,7 +41,9 @@ namespace Acurus.Capella.UI
                 //CAP-1311
                 if (HttpContext.Current.Request.Cookies["CUserName"]?.Value == null && HttpContext.Current.Request.Cookies["CFacilityName"]?.Value == null)
                 {
-                    Response.Redirect("~/frmLogin.aspx");
+                    //CAP-1752
+                    var loginpage = (ConfigurationSettings.AppSettings["IsSSOLogin"] == "Y" ? "frmLoginNew.aspx" : "frmLogin.aspx");
+                    Response.Redirect($"~/{loginpage}");
                 }
 
                 Page.ClientScript.GetPostBackEventReference(grdEncounters, "");
@@ -209,7 +211,9 @@ namespace Acurus.Capella.UI
 
         protected void btnlogout_Click(object sender, EventArgs e)
         {
-            Response.Write("<script> window.top.location.href=\" frmLogin.aspx\"; </script>");
+            //CAP-1752
+            var loginpage = (ConfigurationSettings.AppSettings["IsSSOLogin"] == "Y" ? "frmLoginNew.aspx" : "frmLogin.aspx");
+            Response.Write($"<script> window.top.location.href=\" {loginpage} \"; </script>t>");
         }
 
         protected void btnOK_Click(object sender, EventArgs e)

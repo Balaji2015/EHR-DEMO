@@ -586,6 +586,7 @@
             <asp:Label ID="lblCalenderClick" runat="server" Style="display: none" EnableViewState="false"></asp:Label>
             <br />
             <asp:Label ID="lblFillAppointments" runat="server" Style="display: none" EnableViewState="false"></asp:Label>
+            <asp:HiddenField ID="hdnIsSSOLogin" runat="server" EnableViewState="false" />
             <asp:HiddenField ID="hdnLocalTime" runat="server" EnableViewState="false" />
             <asp:HiddenField ID="hdnSelectedMenu" runat="server" EnableViewState="false" />
             <asp:HiddenField ID="hdnMyEncounterStatus" runat="server" EnableViewState="false" />

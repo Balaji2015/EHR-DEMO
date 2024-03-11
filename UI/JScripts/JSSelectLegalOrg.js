@@ -1,30 +1,42 @@
-﻿$(document).ready(function () {
-    document.getElementById('cboUserName').focus();
-});
-function CheckUserAndPassword() {
+﻿function changeReload() {
+    window.parent.location.reload();
+}
+
+function cboLegalOrg_SelectedIndexChanged(sender, args) {
     { sessionStorage.setItem('StartLoading', 'true'); StartLoadFromPatChart(); }
-    var cbouserElement = document.getElementById("cboUserName");
-    var SelectedUserName = cbouserElement.options[cbouserElement.selectedIndex].text;
-    var Password = document.getElementById("txtPassword");
-    if (SelectedUserName == "") {
-        DisplayErrorMessage('10113401');
-        Password.value = "";
-        { sessionStorage.setItem('StartLoading', 'false'); StopLoadFromPatChart(); }
+}
+
+function CheckUserFields() {
+    if ($("#cboLegalOrg").val() == undefined || $("#cboLegalOrg").val() == null || $("#cboLegalOrg").val() == "") {
+        DisplayErrorMessage("010026");
         return false;
     }
-    else if (Password.value == "") {
-        DisplayErrorMessage('10113402');
-        { sessionStorage.setItem('StartLoading', 'false'); StopLoadFromPatChart(); }
+
+    if ($("#cboFacilityName :selected").val() == undefined || $("#cboFacilityName :selected").val() == null || $("#cboFacilityName :selected").val() == "")
+    {
+        DisplayErrorMessage("010005");
         return false;
     }
-//Jira CAP-1787
-    else {
-        setTimeZone();
-        ShowLoading();
-        getIpAddress();
-    }
+
+    setTimeZone();
     return true;
 }
+
+function RadWindowClose() {
+    var oWindow = null;
+    if (window.radWindow)
+        oWindow = window.radWindow;
+    else if (window.frameElement.radWindow)
+        oWindow = window.frameElement.radWindow;
+    if (oWindow != null)
+        oWindow.close();
+    return false;
+}
+
+$(document).ready(function () {
+    document.getElementById('cboUserName').focus();
+});
+
 function CloseWindow() {
     self.close();
 }
@@ -37,7 +49,7 @@ function AlertUser() {
         { sessionStorage.setItem('StartLoading', 'false'); StopLoadFromPatChart(); }
         //window.location.reload();
     }
-    
+
 }
 
 function setTimeZone() {
@@ -79,21 +91,21 @@ function createOffset(date) {
     var minutes = pad(offset % 60);
     return sign + hours + "." + minutes;
 }
-var input = document.getElementById("cboUserName");
-input.addEventListener("keypress", function (event) {
-    if (event.key === "Enter") {
-        event.preventDefault();
-        document.getElementById("btnOk").click();
-    }
-});
+//var input = document.getElementById("cboUserName");
+//input.addEventListener("keypress", function (event) {
+//    if (event.key === "Enter") {
+//        event.preventDefault();
+//        document.getElementById("btnOk").click();
+//    }
+//});
 
-var input = document.getElementById("txtPassword");
-input.addEventListener("keypress", function (event) {
-    if (event.key === "Enter") {
-        event.preventDefault();
-        document.getElementById("btnOk").click();
-    }
-});
+//var input = document.getElementById("txtPassword");
+//input.addEventListener("keypress", function (event) {
+//    if (event.key === "Enter") {
+//        event.preventDefault();
+//        document.getElementById("btnOk").click();
+//    }
+//});
 
 function EHRLanding(FileName) {
     localStorage.removeItem("MyShowAll");
@@ -131,45 +143,10 @@ function EHRLanding(FileName) {
         localStorage.setItem("ScriptVersion", version.split('-')[1].trim());
     }
 
-    //document.getElementById('lblProduct').innerHTML = "EHR <span style='color:black;font-size:13px;font-weight:500;'> - " + version.replace('Capella - ', '') + "</span>";
-   // $($('#ulSystemMessages')[0].parentElement).css('overflow', 'auto');
-    //if (sessionStorage.getItem("MailClinicalCnt") != null && sessionStorage.getItem("MailClinicalCnt") != undefined)//BugID:48547
-    //    sessionStorage.removeItem("MailClinicalCnt");
-    //if (sessionStorage.getItem("importCount") != null && sessionStorage.getItem("importCount") != undefined)
-    //    sessionStorage.removeItem("importCount");
-    //if (sessionStorage.getItem("RxCount") != null && sessionStorage.getItem("RxCount") != undefined)//BugID:48547
-    //    sessionStorage.removeItem("RxCount");
-    //$('[id^=dvpanelheading]').addClass("panel-heading");
-
-    //$('[id^=divpanelsucess]').addClass("Loginboder");
-
-
-    //$('.logocolor').attr('style', sessionStorage.getItem("logocolor"));
-    //sessionStorage.removeItem("logocolor");
-    //$('#lblProduct').addClass("logoEHR");
-    //sessionStorage.removeItem("logoEHR");
-    //$('#spnlogo').addClass("logoLogin");
-
-    //vversion = sessionStorage.getItem("versionkey");
-    //sessionStorage.removeItem("versionkey");
-
-    //$('#imgright').addClass("logoRight");
-    //$('#imgleft').addClass("logoleft");
-    //$('#ulKnowledgecenter').find('a').addClass('Editabletxtbox')
-    //if (vversion != undefined && vversion != "" && vversion.toUpperCase() == "ENABLE") {
-    //    $("#lblProduct").show();
-    //}
-    //else {
-    //    $("#lblProduct").hide();
-    //}
-
-    //localStorage.setItem("PFSHVerified", "");
 
     top.window.location = FileName;
-
-
-
 }
+
 //Jira CAP-1787
 Date.prototype.stdTimezoneOffset = function () {
     var jan = new Date(this.getFullYear(), 0, 1);
@@ -186,30 +163,4 @@ Date.prototype.dst = function () {
         return true;
     else
         return false;
-}
-function ShowLoading() {
-    if (localStorage["phyIDList"] != undefined) {
-        var phyIDList = JSON.parse(localStorage["phyIDList"]);
-        var list = Object.keys(phyIDList).map(function (key) { return phyIDList[key] });
-        var strList = "";
-        for (var i = 0; i < list.length; i++) {
-            strList += list[i] + "#";
-        }
-        strList = strList.substr(0, strList.length);
-        document.cookie = "LocalStorage=" + strList + ";path=/;";
-    }
-}
-
-function getIpAddress() {
-    $.ajax({
-        type: "POST",
-        url: "frmRCopiaToolbar.aspx/GetIPAddress",
-        dataType: "json",
-        contentType: "application/json; charset=utf-8",
-        success: function (data) {
-            localStorage.setItem("ClientIpAddress", data.d);
-        },
-        error: function OnError(xhr) {
-        }
-    });
 }

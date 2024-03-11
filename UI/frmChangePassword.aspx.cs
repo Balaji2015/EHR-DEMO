@@ -27,6 +27,9 @@ namespace UI
         {
             if (!IsPostBack)
             {
+                //CAP-1752
+                hdnIsSSOLogin.Value = ConfigurationSettings.AppSettings["IsSSOLogin"] ?? "N";
+
                 this.Title = "Change Password";
                 pnlOldPassword.Visible = true;
                 txtUserName.Text = ClientSession.UserName;

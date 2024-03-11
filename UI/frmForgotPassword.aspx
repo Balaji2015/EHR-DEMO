@@ -171,6 +171,7 @@
                     </tr>
                 </table>
             </asp:Panel>
+         <asp:HiddenField ID="hdnIsSSOLogin" runat="server" EnableViewState="false" />
         <asp:HiddenField ID="hdnValidation" runat="server" EnableViewState="false" />
         <asp:HiddenField ID="hdnHumanID" runat="server" EnableViewState="false" />
         <asp:HiddenField ID="hdnScreenMode" runat="server" EnableViewState="false" />

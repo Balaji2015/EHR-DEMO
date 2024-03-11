@@ -7,66 +7,12 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace UI
+namespace Acurus.Capella.UI
 {
 
 
-    public partial class frmChangePassword
+    public partial class frmLoginNew
     {
-
-        /// <summary>
-        /// Link1 control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.HtmlControls.HtmlLink Link1;
-
-        /// <summary>
-        /// form1 control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.HtmlControls.HtmlForm form1;
-
-        /// <summary>
-        /// ToolkitScriptManager2 control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::AjaxControlToolkit.ToolkitScriptManager ToolkitScriptManager2;
-
-        /// <summary>
-        /// pnlChangePassword control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.Panel pnlChangePassword;
-
-        /// <summary>
-        /// updtpnl control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.UpdatePanel updtpnl;
-
-        /// <summary>
-        /// lblUserName control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.Label lblUserName;
 
         /// <summary>
         /// txtUserName control.
@@ -75,151 +21,160 @@ namespace UI
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox txtUserName;
+        protected global::System.Web.UI.HtmlControls.HtmlInputText txtUserName;
 
         /// <summary>
-        /// pnlOldPassword control.
+        /// txtPassword control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Panel pnlOldPassword;
+        protected global::System.Web.UI.HtmlControls.HtmlInputPassword txtPassword;
 
         /// <summary>
-        /// lblOldPassword control.
+        /// btnNext control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Label lblOldPassword;
+        protected global::System.Web.UI.HtmlControls.HtmlButton btnNext;
 
         /// <summary>
-        /// txtOldPassword control.
+        /// btnSignin control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox txtOldPassword;
+        protected global::System.Web.UI.HtmlControls.HtmlButton btnSignin;
 
         /// <summary>
-        /// lblNewPassword control.
+        /// hdnLocalTime control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Label lblNewPassword;
+        protected global::System.Web.UI.WebControls.HiddenField hdnLocalTime;
 
         /// <summary>
-        /// txtNewPassword control.
+        /// hdnLocalDate control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox txtNewPassword;
+        protected global::System.Web.UI.WebControls.HiddenField hdnLocalDate;
 
         /// <summary>
-        /// lblConfirmPassword control.
+        /// hdnUniversaloffset control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Label lblConfirmPassword;
+        protected global::System.Web.UI.WebControls.HiddenField hdnUniversaloffset;
 
         /// <summary>
-        /// txtConfirmPassword control.
+        /// hdnLocalDateAndTime control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox txtConfirmPassword;
+        protected global::System.Web.UI.WebControls.HiddenField hdnLocalDateAndTime;
 
         /// <summary>
-        /// btnOk control.
+        /// hdnFollowsDayLightSavings control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.HtmlControls.HtmlInputButton btnOk;
+        protected global::System.Web.UI.WebControls.HiddenField hdnFollowsDayLightSavings;
 
         /// <summary>
-        /// btnClose control.
+        /// hdnVersion control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.HtmlControls.HtmlInputButton btnClose;
+        protected global::System.Web.UI.WebControls.HiddenField hdnVersion;
 
         /// <summary>
-        /// hdnOld control.
+        /// hdnProjectName control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.HiddenField hdnOld;
+        protected global::System.Web.UI.WebControls.HiddenField hdnProjectName;
 
         /// <summary>
-        /// hdnNew control.
+        /// hdnreportPath control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.HiddenField hdnNew;
+        protected global::System.Web.UI.WebControls.HiddenField hdnreportPath;
 
         /// <summary>
-        /// hdnConfirm control.
+        /// hdnLoginheader control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.HiddenField hdnConfirm;
+        protected global::System.Web.UI.WebControls.HiddenField hdnLoginheader;
 
         /// <summary>
-        /// hdnIsSSOLogin control.
+        /// hdnVersionKey control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.HiddenField hdnIsSSOLogin;
+        protected global::System.Web.UI.WebControls.HiddenField hdnVersionKey;
 
         /// <summary>
-        /// IsLoginOpen control.
+        /// hdnServiceLink control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.HiddenField IsLoginOpen;
+        protected global::System.Web.UI.WebControls.HiddenField hdnServiceLink;
 
         /// <summary>
-        /// hdnToFindPostback control.
+        /// hdnEvProjectName control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.HiddenField hdnToFindPostback;
+        protected global::System.Web.UI.WebControls.HiddenField hdnEvProjectName;
 
         /// <summary>
-        /// hdnScreenMode control.
+        /// hdnReportPathhttp control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.HiddenField hdnScreenMode;
+        protected global::System.Web.UI.WebControls.HiddenField hdnReportPathhttp;
+
+        /// <summary>
+        /// hdnGroupId control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.HiddenField hdnGroupId;
 
         /// <summary>
         /// PlaceHolder1 control.
