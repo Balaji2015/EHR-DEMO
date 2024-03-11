@@ -8,7 +8,7 @@ function cboLegalOrg_SelectedIndexChanged(sender, args) {
 
 function CheckUserFields() {
     if ($("#cboLegalOrg").val() == undefined || $("#cboLegalOrg").val() == null || $("#cboLegalOrg").val() == "") {
-        DisplayErrorMessage("010005");
+        DisplayErrorMessage("010026");
         return false;
     }
 

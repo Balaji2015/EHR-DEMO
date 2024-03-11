@@ -81,7 +81,7 @@ namespace Acurus.Capella.UI
             {
                 #region Check User In DB
                 var user = UserMngr.GetUserByEmailAddress(txtUserName.Value);
-                if (user.Count == 0) 
+                if (user.Count == 0 || !user.Any(x=> x.Is_Direct_Login.Equals("y", StringComparison.InvariantCultureIgnoreCase))) 
                 {
                     this.Page.ClientScript.RegisterStartupScript(this.Page.GetType(), string.Empty, "DisplayErrorMessage('000009');", true);
                     return;
@@ -158,7 +158,7 @@ namespace Acurus.Capella.UI
             {
                 if(response.StatusCode == System.Net.HttpStatusCode.Unauthorized)
                 {
-                    this.Page.ClientScript.RegisterStartupScript(this.Page.GetType(), string.Empty, "DisplayErrorMessage('010001')", true);
+                    this.Page.ClientScript.RegisterStartupScript(this.Page.GetType(), string.Empty, "DisplayErrorMessage('010001');", true);
                 }
                 else
                 {

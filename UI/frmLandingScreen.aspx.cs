@@ -114,7 +114,7 @@ namespace Acurus.Capella.UI
 
             //To check if the cache data to be loaded
             //IList<LastModifiedLocalLookup> lstLookUp = new List<LastModifiedLocalLookup>();
-            if (objLoginDTO != null)// objLoginDTO.lstLookUp != null)
+            if (objLoginDTO != null && objLoginDTO.User.Count > 0)// objLoginDTO.lstLookUp != null)
             {
                 login = objLoginDTO.User;
                 ClientSession.UserName = login[0].user_name.Trim().ToUpper();
@@ -379,7 +379,7 @@ namespace Acurus.Capella.UI
             else
             {
                 Response.Redirect("/frmLoginNew.aspx");
-                //this.Page.ClientScript.RegisterStartupScript(this.Page.GetType(), string.Empty, "DisplayErrorMessage('010001');", true);
+                //this.Page.ClientScript.RegisterStartupScript(this.Page.GetType(), string.Empty, "DisplayErrorMessage('010001');setTimeout(function(){window.location.href ='/frmLoginNew.aspx'}, 3000);", true);
                 return;
             }
             #endregion

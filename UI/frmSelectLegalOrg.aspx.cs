@@ -43,7 +43,13 @@ namespace Acurus.Capella.UI
             if (!IsPostBack)
             {
                 UserManager userManager = new UserManager();
-                IList<User> ilstUsers = userManager.GetUserByEmailAddress(ClientSession.EmailAddress);
+                IList<User> ilstUsers = new List<User>();
+
+                if (!string.IsNullOrEmpty(ClientSession.EmailAddress))
+                {
+                    ilstUsers = userManager.GetUserByEmailAddress(ClientSession.EmailAddress);
+                }
+
                 if (ilstUsers != null && ilstUsers.Count > 0)
                 {
                     foreach (var item in ilstUsers)
@@ -54,6 +60,14 @@ namespace Acurus.Capella.UI
                         cboLegalOrg.Items.Add(listItem);
                     }
                 }
+                else
+                {
+                    System.Web.UI.WebControls.ListItem listItem = new System.Web.UI.WebControls.ListItem();
+                    listItem.Value = ClientSession.UserName;
+                    listItem.Text = ClientSession.LegalOrg;
+                    cboLegalOrg.Items.Add(listItem);
+                }
+
                 cboLegalOrg.SelectedValue = ClientSession.UserName;
                 FillFacilityComboBox(ClientSession.LegalOrg);
             }
@@ -138,7 +152,14 @@ namespace Acurus.Capella.UI
                 }
                 else
                 {
-                    ClientScript.RegisterStartupScript(this.GetType(), "SelectLegalOrg", "{sessionStorage.setItem('StartLoading', 'false');StopLoadFromPatChart(); alert('Please select Legal org/Facility name');}", true);
+                    if (string.IsNullOrEmpty(cboLegalOrg.SelectedItem.Text))
+                    {
+                        ClientScript.RegisterStartupScript(this.GetType(), "SelectLegalOrg", "{sessionStorage.setItem('StartLoading', 'false');StopLoadFromPatChart(); DisplayErrorMessage('010026');}", true);
+                    }
+                    else
+                    {
+                        ClientScript.RegisterStartupScript(this.GetType(), "SelectLegalOrg", "{sessionStorage.setItem('StartLoading', 'false');StopLoadFromPatChart(); DisplayErrorMessage('010005');}", true);
+                    }
                 }
             }
             else
