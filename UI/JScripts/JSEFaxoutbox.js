@@ -54,7 +54,9 @@
                 tabContents = '';
             $("#divEFaxTable").append("<table id='EFaxTable' class='table table-bordered Gridbodystyle' style='table-layout: fixed;width:990px;'><thead class='header' style='border: 0px;width:96.7%;'><tr class='header'><th style='border: 1px solid #909090;text-align: center;width: 15%;'>Recipient Name</th><th style='border: 1px solid #909090;text-align: center;width: 10%;'>Recipient Company</th><th style='border: 1px solid #909090;text-align: center;width: 11%;'>Recipient Fax</th><th style='border: 1px solid #909090;text-align: center;width: 18%;'>Subject</th><th style='border: 1px solid #909090;text-align: center;width: 13%;'>Sent Date and Time </th><th style='border: 1px solid #909090;text-align: center;width: 15%;'>Status</th><th style='border: 1px solid #909090;text-align: center;width: 17%;'>Description</th><th style='border: 1px solid #909090;text-align: center;width: 5%;'>View</th><th style='border: 1px solid #909090;text-align: center;width: 5%;'>Retry</th></tr></thead><tbody style='word-wrap: break-word;'>" + tabContents + "</tbody></table>");
             $('#EFaxTable th').addClass('header');
-            scrolify($('#EFaxTable'), 635);
+            //CAP - 1802
+            /*scrolify($('#EFaxTable'), 635);*/            
+            scrolify($('#EFaxTable'), 535);
             { sessionStorage.setItem('StartLoading', 'false'); StopLoadFromPatChart(); }
         },
         error: function OnError(xhr) {
@@ -129,7 +131,10 @@ function funRetry(e) {
                 tabContents = '';
             $("#divEFaxTable").append("<table id='EFaxTable' class='table table-bordered Gridbodystyle' style='table-layout: fixed;width:990px;'><thead class='header' style='border: 0px;width:96.7%;'><tr class='header'><th style='border: 1px solid #909090;text-align: center;width: 15%;'>Recipient Name</th><th style='border: 1px solid #909090;text-align: center;width: 10%;'>Recipient Company</th><th style='border: 1px solid #909090;text-align: center;width: 11%;'>Recipient Fax</th><th style='border: 1px solid #909090;text-align: center;width: 18%;'>Subject</th><th style='border: 1px solid #909090;text-align: center;width: 13%;'>Sent Date and Time </th><th style='border: 1px solid #909090;text-align: center;width: 15%;'>Status</th><th style='border: 1px solid #909090;text-align: center;width: 17%;'>Description</th><th style='border: 1px solid #909090;text-align: center;width: 5%;'>View</th><th style='border: 1px solid #909090;text-align: center;width: 5%;'>Retry</th></tr></thead><tbody style='word-wrap: break-word;'>" + tabContents + "</tbody></table>");
             $('#EFaxTable th').addClass('header');
-            scrolify($('#EFaxTable'), 635);
+            
+            //CAP - 1802
+            /*scrolify($('#EFaxTable'), 635);*/           
+            scrolify($('#EFaxTable'), 535);
             { sessionStorage.setItem('StartLoading', 'false'); StopLoadFromPatChart(); }
         },
         error: function OnError(xhr) {
