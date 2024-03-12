@@ -323,8 +323,11 @@ namespace Acurus.Capella.UI
                         Session["Default_Server"] = login[0].Default_Server;
 
                         NameValueCollection data = new NameValueCollection();
-                        data.Add("UserName", txtUserName.Value.ToString().ToUpper());
-                        data.Add("EHRUserName", txtUserName.Value.ToString().ToUpper());
+                        //Jira CAP-1830 
+                        //data.Add("UserName", txtUserName.Value.ToString().ToUpper());
+                        //data.Add("EHRUserName", txtUserName.Value.ToString().ToUpper());
+                        data.Add("UserName", txtUserName.Value.Trim().ToString().ToUpper());
+                        data.Add("EHRUserName", txtUserName.Value.Trim().ToString().ToUpper());
                         data.Add("EHRFacilityName", hdnFacltyName.Value);
                         data.Add("EHRhdnLocalTime", hdnLocalTime.Value);
                         data.Add("EHRhdnLocalDate", hdnLocalDate.Value);
