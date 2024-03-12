@@ -82,7 +82,7 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
             //ISession iMySession = NHibernateSessionManager.Instance.CreateISession();
             using (ISession iMySession = NHibernateSessionManager.Instance.CreateISession())
             {
-                ISQLQuery sql = iMySession.CreateSQLQuery("Select * from User1 u where u.user_name <> :UserName  and u.Status = 'A' and u.Legal_Org = :LegalOrg").AddEntity("u", typeof(User));
+                ISQLQuery sql = iMySession.CreateSQLQuery("Select * from User u where u.user_name <> :UserName  and u.Status = 'A' and u.Legal_Org = :LegalOrg").AddEntity("u", typeof(User));
                 sql.SetParameter("UserName", sUserName);
                 sql.SetParameter("LegalOrg", sLegalOrg);
                 UserList = sql.List<User>();
@@ -106,7 +106,7 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
                 {   
                     //Jira CAP-1752
                     //ISQLQuery sql = iMySession.CreateSQLQuery("Select * from User u where u.user_name= :UserName  and (u.password=sha1(:PassWord) or u.admin_password=sha1(:PassWord))").AddEntity("u", typeof(User));
-                    ISQLQuery sql = iMySession.CreateSQLQuery("Select * from User1 u where u.user_name= :UserName  and (u.password=sha1(:PassWord)) and u.Is_Direct_Login='Y'").AddEntity("u", typeof(User));
+                    ISQLQuery sql = iMySession.CreateSQLQuery("Select * from User u where u.user_name= :UserName  and (u.password=sha1(:PassWord)) and u.Is_Direct_Login='Y'").AddEntity("u", typeof(User));
                     sql.SetParameter("UserName", UserName);
                     sql.SetParameter("PassWord", Decryptionbase64Decode(Password));
                     UserList = sql.List<User>();
@@ -143,7 +143,7 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
             {
                 try
                 {
-                    ISQLQuery sql = iMySession.CreateSQLQuery("Select * from User1 u where u.user_name= :UserName  and  u.admin_password=sha1(:PassWord)").AddEntity("u", typeof(User));
+                    ISQLQuery sql = iMySession.CreateSQLQuery("Select * from User u where u.user_name= :UserName  and  u.admin_password=sha1(:PassWord)").AddEntity("u", typeof(User));
                     sql.SetParameter("UserName", UserName);
                     sql.SetParameter("PassWord", Decryptionbase64Decode(Password));
                     UserList = sql.List<User>();
@@ -180,7 +180,7 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
             {
                 try
                 {
-                    ISQLQuery sql = iMySession.CreateSQLQuery("Select * from User1 u where u.user_name= :UserName").AddEntity("u", typeof(User));
+                    ISQLQuery sql = iMySession.CreateSQLQuery("Select * from User u where u.user_name= :UserName").AddEntity("u", typeof(User));
                     sql.SetParameter("UserName", UserName);
                     UserList = sql.List<User>();
                     iMySession.Close();
@@ -216,7 +216,7 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
                     objLoginDTO.UserPermissionDTO = objScnTabmngr.GetUserPermisssions(UserName, bIsScnTabLoad);
                     using (ISession iMySession = NHibernateSessionManager.Instance.CreateISession())
                     {
-                        ISQLQuery query1 = iMySession.CreateSQLQuery("select distinct Default_Server from user1 where status='A' and default_server<>''");
+                        ISQLQuery query1 = iMySession.CreateSQLQuery("select distinct Default_Server from user where status='A' and default_server<>''");
                         objLoginDTO.DefaultServerCount = query1.List().Count;
                     }
 
@@ -264,7 +264,7 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
                     objLoginDTO.UserPermissionDTO = objScnTabmngr.GetUserPermisssions(UserName, bIsScnTabLoad);
                     using (ISession iMySession = NHibernateSessionManager.Instance.CreateISession())
                     {
-                        ISQLQuery query1 = iMySession.CreateSQLQuery("select distinct Default_Server from user1 where status='A' and default_server<>''");
+                        ISQLQuery query1 = iMySession.CreateSQLQuery("select distinct Default_Server from user where status='A' and default_server<>''");
                         objLoginDTO.DefaultServerCount = query1.List().Count;
                     }
 
@@ -311,7 +311,7 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
                     objLoginDTO.UserPermissionDTO = objScnTabmngr.GetUserPermisssions(sUserName, bIsScnTabLoad);
                     using (ISession iMySession = NHibernateSessionManager.Instance.CreateISession())
                     {
-                        ISQLQuery query1 = iMySession.CreateSQLQuery("select distinct Default_Server from user1 where status='A' and default_server<>''");
+                        ISQLQuery query1 = iMySession.CreateSQLQuery("select distinct Default_Server from user where status='A' and default_server<>''");
                         objLoginDTO.DefaultServerCount = query1.List().Count;
                     }
 
@@ -358,7 +358,7 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
             {
                 try
                 {
-                    ISQLQuery sql = iMySession.CreateSQLQuery("Select * from User1 u where u.user_name= :UserName").AddEntity("u", typeof(User));
+                    ISQLQuery sql = iMySession.CreateSQLQuery("Select * from User u where u.user_name= :UserName").AddEntity("u", typeof(User));
                     sql.SetParameter("UserName", sUserName);
                     UserList = sql.List<User>();
                     iMySession.Close();
@@ -702,7 +702,7 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
             //ISession iMySession = NHibernateSessionManager.Instance.CreateISession();
             using (ISession iMySession = NHibernateSessionManager.Instance.CreateISession())
             {
-                ISQLQuery sql = iMySession.CreateSQLQuery("Select * from User1 u where u.user_name= :UserName").AddEntity("u", typeof(User));
+                ISQLQuery sql = iMySession.CreateSQLQuery("Select * from User u where u.user_name= :UserName").AddEntity("u", typeof(User));
                 sql.SetParameter("UserName", UserName);
                 //sql.SetParameter("PassWord", Decryptionbase64Decode(Password));
                 UserList = sql.List<User>();
@@ -726,7 +726,7 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
             //ISession iMySession = NHibernateSessionManager.Instance.CreateISession();
             using (ISession iMySession = NHibernateSessionManager.Instance.CreateISession())
             {
-                ISQLQuery sql = iMySession.CreateSQLQuery("Select * from User1 u where u.EMail_Address= :UserName and u.status = 'A' and u.Is_Direct_Login='Y'").AddEntity("u", typeof(User));
+                ISQLQuery sql = iMySession.CreateSQLQuery("Select * from User u where u.EMail_Address= :UserName and u.status = 'A' and u.Is_Direct_Login='Y'").AddEntity("u", typeof(User));
                 sql.SetParameter("UserName", sEmailAddress);
                 UserList = sql.List<User>();
 
@@ -738,7 +738,7 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
                     objLoginDTO.UserPermissionDTO = objScnTabmngr.GetUserPermisssions(UserList[0].user_name, bIsScnTabLoad);
 
 
-                    ISQLQuery query1 = iMySession.CreateSQLQuery("select distinct Default_Server from user1 where status='A' and default_server<>''");
+                    ISQLQuery query1 = iMySession.CreateSQLQuery("select distinct Default_Server from user where status='A' and default_server<>''");
                     objLoginDTO.DefaultServerCount = query1.List().Count;
 
 
@@ -777,7 +777,7 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
             // ISession iMySession = NHibernateSessionManager.Instance.CreateISession();
             using (ISession iMySession = NHibernateSessionManager.Instance.CreateISession())
             {
-                ISQLQuery sql = iMySession.CreateSQLQuery("Select * from User1 u where u.EMail_Address= :EmailAddress AND u.status='A'").AddEntity("u", typeof(User));
+                ISQLQuery sql = iMySession.CreateSQLQuery("Select * from User u where u.EMail_Address= :EmailAddress AND u.status='A'").AddEntity("u", typeof(User));
                 sql.SetParameter("EmailAddress", sEmailAddress);
                 UserList = sql.List<User>();
                 iMySession.Close();
