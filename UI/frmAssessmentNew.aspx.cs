@@ -1487,8 +1487,8 @@ namespace Acurus.Capella.UI
             }
             iListIcd = objAllICDMngr.GetICDList(lstICDs);
             //Cap - 1815
-            //iListIcdtemp = (from m in iListIcd where m.HCC_Value > 0 select m).GroupBy(a => a.HCC_Value).Select(x => x.First()).ToList<AllICD_9>();
-            iListIcdtemp = (from m in iListIcd where m.HCC_Value > 0 select m).GroupBy(a => new { a.HCC_Value, a.HCC_Category }).Select(x => x.First()).ToList<AllICD_9>();
+            iListIcdtemp = (from m in iListIcd where m.HCC_Value > 0 select m).GroupBy(a => a.HCC_Value).Select(x => x.First()).ToList<AllICD_9>();
+            //iListIcdtemp = (from m in iListIcd where m.HCC_Value > 0 select m).GroupBy(a => new { a.HCC_Value, a.HCC_Category }).Select(x => x.First()).ToList<AllICD_9>();
 
             iListIcdzerohcc = (from m in iListIcd where m.HCC_Value.ToString() == "0" select m).OrderBy(a => a.ICD_9).ToList<AllICD_9>();
 
@@ -1498,8 +1498,8 @@ namespace Acurus.Capella.UI
             //Cap - 1806
             //iListIcdwithoutzerohcc = iListIcd.Except(iListIcdbyorder).ToList<AllICD_9>().OrderByDescending(m => m.HCC_Value).OrderBy(n => n.ICD_9).ToList<AllICD_9>();
             //Cap - 1815
-            //iListIcdwithoutzerohcc = iListIcd.Except(iListIcdbyorder).ToList<AllICD_9>().OrderByDescending(m => m.HCC_Value).ThenBy(n => n.ICD_9).ToList<AllICD_9>();
-            iListIcdwithoutzerohcc = iListIcd.Except(iListIcdbyorder).ToList<AllICD_9>().OrderByDescending(m => m.HCC_Value).ThenByDescending(m => m.HCC_Category).ThenBy(n => n.ICD_9).ToList<AllICD_9>();
+            iListIcdwithoutzerohcc = iListIcd.Except(iListIcdbyorder).ToList<AllICD_9>().OrderByDescending(m => m.HCC_Value).ThenBy(n => n.ICD_9).ToList<AllICD_9>();
+            //iListIcdwithoutzerohcc = iListIcd.Except(iListIcdbyorder).ToList<AllICD_9>().OrderByDescending(m => m.HCC_Value).ThenByDescending(m => m.HCC_Category).ThenBy(n => n.ICD_9).ToList<AllICD_9>();
             iListIcdbyorder = iListIcdbyorder.Concat(iListIcdwithoutzerohcc).ToList<AllICD_9>();
 
 
