@@ -40,7 +40,7 @@ namespace Acurus.Capella.UI
     {
         public static ulong ulMyFindPatientID;
         public const ulong CASH_CARRIER_ID = 41;
-   
+
         //BugID:53765
         //*Commented for UtilityManager CleanUp*
         /*public static ulong ulAppointmentID;
@@ -1873,7 +1873,7 @@ namespace Acurus.Capella.UI
                             // if (!sVitalsText.Contains(OrderedVitalList[i].Loinc_Observation) && !Text.Contains(OrderedVitalList[i].Loinc_Observation))
                             if (!Text.Contains(OrderedVitalList[i].Loinc_Observation))
                             {
-                            Text = OrderedVitalList[i].Loinc_Observation + " - " + OrderedVitalList[i].Value + AddVitalUnits(OrderedVitalList[i].Loinc_Observation) + "\n";
+                                Text = OrderedVitalList[i].Loinc_Observation + " - " + OrderedVitalList[i].Value + AddVitalUnits(OrderedVitalList[i].Loinc_Observation) + "\n";
                             }
                         }
 
@@ -2753,6 +2753,14 @@ namespace Acurus.Capella.UI
                     IList<PhysicianLibrary> lstMachineTech = new List<PhysicianLibrary>();
                     if (xmlPhysicianList.Count > 0)
                     {
+                        //CAP-1819
+                        XmlDocument xmldocTech = new XmlDocument();
+                        string strXmlFilePathTech = Path.Combine(System.Web.Hosting.HostingEnvironment.ApplicationPhysicalPath, "ConfigXML\\machine_technician.xml");
+                        if (File.Exists(strXmlFilePathTech))
+                        {
+                            xmldocTech.Load(System.Web.Hosting.HostingEnvironment.ApplicationPhysicalPath + "ConfigXML\\" + "machine_technician" + ".xml");
+                        }
+
                         foreach (XmlNode Physician_details in xmlPhysicianList)
                         {
                             if (Physician_details != null && Physician_details.Attributes["Legal_Org"].Value.ToString() == sLegalOrg)
@@ -2768,6 +2776,16 @@ namespace Acurus.Capella.UI
                                 CurrentPhysician.Is_Active = Physician_details.Attributes["status"].Value.ToString();
                                 CurrentPhysician.PhyUserName = Physician_details.Attributes["username"].Value.ToString();
                                 CurrentPhysician.PhyColor = Physician_details.Attributes["machine_technician_id"].Value.ToString();//assinged tech ID
+                                //CAP-1819
+                                XmlNode nodeMatchingFacility = xmldocTech.SelectSingleNode("/MachineTechnician/MachineTechnician" + CurrentPhysician.PhyColor);
+                                if (nodeMatchingFacility != null)
+                                {
+                                    CurrentPhysician.Company = nodeMatchingFacility.Attributes["machine_name"].Value.ToString();
+                                }
+                                else
+                                {
+                                    CurrentPhysician.Company = "";
+                                }
                                 if (CurrentPhysician.PhyColor != "0")
                                     lstMachineTech.Add(CurrentPhysician);
                                 else
@@ -2775,11 +2793,9 @@ namespace Acurus.Capella.UI
                             }
                         }
                     }
-
-                    AllPhysicians = AllPhysicians.Distinct().ToList<PhysicianLibrary>();
                     //CAP-1819
-                    //AllPhysicians = AllPhysicians.Concat(lstMachineTech).Distinct().ToList<PhysicianLibrary>();//BugID:53256
-                    AllPhysicians = AllPhysicians.Concat(lstMachineTech).ToList<PhysicianLibrary>();
+                    AllPhysicians = AllPhysicians.GroupBy(a => new { a.Id, a.Company }).Select(a => a.FirstOrDefault()).ToList<PhysicianLibrary>();
+                    AllPhysicians = AllPhysicians.Concat(lstMachineTech).GroupBy(a => new { a.Id, a.Company }).Select(a => a.FirstOrDefault()).ToList<PhysicianLibrary>();//BugID:53256
                     return AllPhysicians.OrderBy(item => item.PhyLastName).ToList<PhysicianLibrary>();
                     //return AllPhysicians.Distinct().OrderBy(item => item.PhyFirstName).ToList<PhysicianLibrary>();
                 }
@@ -3292,8 +3308,8 @@ namespace Acurus.Capella.UI
             return sSnomedCode;
         }
 
-        
-         class FileErrorList
+
+        class FileErrorList
         {
             public string FileName { get; set; }
             public int TotalErrorCount { get; set; }
@@ -5891,36 +5907,36 @@ namespace Acurus.Capella.UI
             sXMLHumanDoc = string.Empty;
             //if (sTabMode == "true")
             //{
-                WFObjectManager wfObjMngr = new WFObjectManager();
-                WFObject DocumentationWfObject = wfObjMngr.GetByObjectSystemId(ulEncounterID, "DOCUMENTATION");
+            WFObjectManager wfObjMngr = new WFObjectManager();
+            WFObject DocumentationWfObject = wfObjMngr.GetByObjectSystemId(ulEncounterID, "DOCUMENTATION");
 
-                if (DocumentationWfObject != null && DocumentationWfObject.Current_Process == string.Empty)
-                {
-                    DocumentationWfObject = wfObjMngr.GetWfObjArchiveByObjectSystemId(ulEncounterID, "DOCUMENTATION");
-                }
+            if (DocumentationWfObject != null && DocumentationWfObject.Current_Process == string.Empty)
+            {
+                DocumentationWfObject = wfObjMngr.GetWfObjArchiveByObjectSystemId(ulEncounterID, "DOCUMENTATION");
+            }
 
             // jira cap-499
             if (DocumentationWfObject.Current_Process == "DOCUMENT_COMPLETE" || sIsPhone_Encounter.ToUpper()=="Y")
+            {
+                if (ilstEncounterBlob != null && ilstEncounterBlob.Count > 0 && ilstEncounterBlob[0].Human_XML != null)
                 {
-                    if (ilstEncounterBlob != null && ilstEncounterBlob.Count > 0 && ilstEncounterBlob[0].Human_XML != null)
-                    {
-                        sXMLHumanDoc = System.Text.Encoding.UTF8.GetString(ilstEncounterBlob[0].Human_XML);
-                    }
-                    else
-                    {
-                        bAlert = true;
-                    }
+                    sXMLHumanDoc = System.Text.Encoding.UTF8.GetString(ilstEncounterBlob[0].Human_XML);
                 }
                 else
                 {
-                    IList<Human_Blob> ilstHumanBlob = new List<Human_Blob>();
-                    HumanBlobManager HumanBlobMngr = new HumanBlobManager();
-                    ilstHumanBlob = HumanBlobMngr.GetHumanBlob(Convert.ToUInt64(ulHumanID));
-                    if (ilstHumanBlob != null && ilstHumanBlob.Count > 0 && ilstHumanBlob[0].Human_XML != null)
-                    {
-                        sXMLHumanDoc = System.Text.Encoding.UTF8.GetString(ilstHumanBlob[0].Human_XML);
-                    }
+                    bAlert = true;
                 }
+            }
+            else
+            {
+                IList<Human_Blob> ilstHumanBlob = new List<Human_Blob>();
+                HumanBlobManager HumanBlobMngr = new HumanBlobManager();
+                ilstHumanBlob = HumanBlobMngr.GetHumanBlob(Convert.ToUInt64(ulHumanID));
+                if (ilstHumanBlob != null && ilstHumanBlob.Count > 0 && ilstHumanBlob[0].Human_XML != null)
+                {
+                    sXMLHumanDoc = System.Text.Encoding.UTF8.GetString(ilstHumanBlob[0].Human_XML);
+                }
+            }
             //}
             //else
             //{
