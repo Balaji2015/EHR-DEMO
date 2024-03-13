@@ -1478,7 +1478,9 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
             IList<FileManagementIndex> objFileMngIndex = new List<FileManagementIndex>();
             using (ISession mySession = NHibernateSessionManager.Instance.CreateISession())
             {
-                ICriteria crit = mySession.CreateCriteria(typeof(FileManagementIndex)).Add(Expression.Eq("Human_ID", human_id)).Add(Expression.Eq("Source", Source)).Add(Expression.Eq("Is_Delete", "N"));
+                //CAP-461
+                //ICriteria crit = mySession.CreateCriteria(typeof(FileManagementIndex)).Add(Expression.Eq("Human_ID", human_id)).Add(Expression.Eq("Source", Source)).Add(Expression.Eq("Is_Delete", "N"));                
+                ISQLQuery crit = mySession.CreateSQLQuery("select * from file_management_index where human_id ='"+ human_id + "' and source ='"+ Source + "' and Is_Delete<>'Y'").AddEntity("a", typeof(FileManagementIndex));               
                 objFileMngIndex = crit.List<FileManagementIndex>();
                 mySession.Close();
             }
