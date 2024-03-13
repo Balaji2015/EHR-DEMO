@@ -103,10 +103,17 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
             using (ISession iMySession = NHibernateSessionManager.Instance.CreateISession())
             {
                 try
-                {   
+                {
                     //Jira CAP-1752
-                    //ISQLQuery sql = iMySession.CreateSQLQuery("Select * from User u where u.user_name= :UserName  and (u.password=sha1(:PassWord) or u.admin_password=sha1(:PassWord))").AddEntity("u", typeof(User));
-                    ISQLQuery sql = iMySession.CreateSQLQuery("Select * from User u where u.user_name= :UserName  and (u.password=sha1(:PassWord)) and u.Is_Direct_Login='Y'").AddEntity("u", typeof(User));
+                    ISQLQuery sql;
+                    if (System.Configuration.ConfigurationSettings.AppSettings["IsChangeMenu"] != null && System.Configuration.ConfigurationSettings.AppSettings["IsChangeMenu"].ToString() == "Y")
+                    {
+                        sql = iMySession.CreateSQLQuery("Select * from User u where u.user_name= :UserName  and (u.password=sha1(:PassWord)) and u.Is_Direct_Login='Y'").AddEntity("u", typeof(User));
+                    }
+                    else
+                    {
+                        sql = iMySession.CreateSQLQuery("Select * from User u where u.user_name= :UserName  and (u.password=sha1(:PassWord) or u.admin_password=sha1(:PassWord))").AddEntity("u", typeof(User));
+                    }
                     sql.SetParameter("UserName", UserName);
                     sql.SetParameter("PassWord", Decryptionbase64Decode(Password));
                     UserList = sql.List<User>();

@@ -709,40 +709,15 @@ namespace Acurus.Capella.UI
                     //    }
                     //}
                 }
-                //Jira CAP-1807
+                //Jira CAP-1807 - strat
                 else
                 {
-                    IList<string> lstChkeditem = new List<string>();
                     if (Session["objDiagnosticDTO"] != null && Session["objDiagnosticDTO"].ToString() != "")
                     {
-                        DiagnosticDTO objFillDiagnosticDTO = new DiagnosticDTO();
-                        objFillDiagnosticDTO = (DiagnosticDTO)Session["objDiagnosticDTO"];
-                        IList<string> ProceduresViewList = new List<string>();
-                        ProceduresViewList = objFillDiagnosticDTO.OrdersLists.Select(a => a.Lab_Procedure + "-" + (a.Lab_Procedure_Description.Contains("x_") ? ((a.Lab_Procedure_Description.Split(new[] { "x_" }, StringSplitOptions.None).Count() > 1 ? (a.Lab_Procedure_Description.Split(new[] { "x_" }, StringSplitOptions.None)[0].ToString() + "x______") : a.Lab_Procedure_Description) + "~" + a.Quantity + "|" + a.Id) : a.Lab_Procedure_Description)).ToList<string>();
-
-                        for (int iCount = 0; iCount < chklstFrequentlyUsedProcedures.Items.Count; iCount++)
-                        {
-                            if (chklstFrequentlyUsedProcedures.Items[iCount].Selected == true)
-                            {
-                                lstChkeditem.Add(chklstFrequentlyUsedProcedures.Items[iCount].ToString());
-                            }
-                        }
-
-                        for (int icount = 0; icount < lstChkeditem.Count; icount++)
-                        {
-                            for (int iCountY = 0; iCountY < ProceduresViewList.Count; iCountY++)
-                            {
-                                string sCheckiteam = lstChkeditem[icount].Replace("x___", "^");
-                                string sSavedCheckiteam = ProceduresViewList[iCountY].Replace("x___", "^");
-                                if (sCheckiteam.Split('^')[0] == sSavedCheckiteam.Split('^')[0])
-                                {
-                                    lstChkeditem[icount] = ProceduresViewList[iCountY];
-                                }
-                            }
-                        }
-                        IList<ListItem> tempList = SetOrderIDForEditQuantity(lstChkeditem);
+                        SetOrderId((DiagnosticDTO)Session["objDiagnosticDTO"]);
                     }
                 }
+                //Jira CAP-1807 - End
                 chkTestDateInWords_CheckedChanged(sender, e);
             }
             //if (ClientSession.UserRole.ToUpper() != "PHYSICIAN")
@@ -6283,6 +6258,46 @@ namespace Acurus.Capella.UI
                 Ordersvalue = "Disable_Tab=" + "";
             }
             return Ordersvalue;
+        }
+
+        //Jira CAP-1807
+        public void SetOrderId(DiagnosticDTO objDiagnosticDTO)
+        {
+            if (objDiagnosticDTO != null)
+            {
+                DiagnosticDTO objFillDiagnosticDTO = new DiagnosticDTO();
+                objFillDiagnosticDTO = objDiagnosticDTO;
+                IList<string> ProceduresViewList = new List<string>();
+                ProceduresViewList = objFillDiagnosticDTO.OrdersLists.Select(a => a.Lab_Procedure + "-" + (a.Lab_Procedure_Description.Contains("x_") ? ((a.Lab_Procedure_Description.Split(new[] { "x_" }, StringSplitOptions.None).Count() > 1 ? (a.Lab_Procedure_Description.Split(new[] { "x_" }, StringSplitOptions.None)[0].ToString() + "x______") : a.Lab_Procedure_Description) + "~" + a.Quantity + "|" + a.Id) : a.Lab_Procedure_Description)).ToList<string>();
+                if (ProceduresViewList != null && ProceduresViewList.Count > 0)
+                {
+                    for (int iCount = 0; iCount < chklstFrequentlyUsedProcedures.Items.Count; iCount++)
+                    {
+                        if (chklstFrequentlyUsedProcedures.Items[iCount].Selected == true)
+                        {
+                            if (chklstFrequentlyUsedProcedures.Items[iCount].ToString().Contains("x___") == true)
+                            {
+                                IList<string> ilstSetOrderId = ProceduresViewList.Where(a => a.Split('-')[0] == chklstFrequentlyUsedProcedures.Items[iCount].ToString().Split('-')[0]).ToList<string>();
+                                if (ilstSetOrderId.Count > 0)
+                                {
+                                    chklstFrequentlyUsedProcedures.Items[iCount].Attributes.Add("orderid", ilstSetOrderId[0].Split('~')[1].Split('|')[1]);
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+        //Jira CAP-1807
+        protected void hdnbtnSetOrderId_Click(object sender, EventArgs e)
+        {
+            if (Session["objDiagnosticDTO"] != null && Session["objDiagnosticDTO"].ToString() != "")
+            {
+                SetOrderId((DiagnosticDTO)Session["objDiagnosticDTO"]);
+            }
+            ScriptManager.RegisterStartupScript(this, this.GetType(), "OpenMedication_dosage", "OpenMedication_dosage();", true);
+
         }
     }
 }

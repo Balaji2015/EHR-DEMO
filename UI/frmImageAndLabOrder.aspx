@@ -665,8 +665,8 @@
                                                     <input type="button" id="btnMoveToNextProcess" class="aspresizedbluebutton" runat="server" style="margin-right: 2px; font-size: 13px; width: 170px;" value="Move To Next Process" onclick="if (!MoveToNextProcessClicked()) { return false; }" onserverclick="btnMoveToNextProcess_Click" />
                                                 </td>
                                                 <td>
-                                                       <input type="button" id="btnEditQuantity" runat="server" class="aspresizedbluebutton" value="Edit Quantity" onclick="OpenMedication_dosage()" 
-                                                        accesskey="E" style="margin-right: 3px; font-size: 13px; text-align: center; position: relative; width: 100px;" />
+                                                       <input type="button" id="btnEditQuantity" runat="server" class="aspresizedbluebutton" value="Edit Quantity" onclick="SetOrderIdAndOpenMedication_dosage()"
+                                                         accesskey="E" style="margin-right: 3px; font-size: 13px; text-align: center; position: relative; width: 100px;" />
                                                </td>
                                                 <td>
                                                     <input type="button" id="btnImportresult" runat="server" class="aspresizedbluebutton" visible="false" value="Import Result" onclick="btnImportresult_Clicked();" onserverclick="btnImportresult_Click"
@@ -719,6 +719,7 @@
                 </div>
             </div>
 
+             <asp:Button ID="hdnbtnSetOrderId" runat="server" OnClick="hdnbtnSetOrderId_Click" CssClass="displayNone"/>
             <asp:Button ID="hdnbuttonload" runat="server" OnClick="hdnbuttonload_Click" CssClass="displayNone"/>
             <asp:Button ID="btnClear" runat="server" CssClass="displayNone" OnClick="btnClear_Click" />
             <asp:HiddenField ID="hdnForEditErrorMsg" runat="server" />

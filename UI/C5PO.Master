@@ -1076,11 +1076,11 @@
                                      <li runat="server" id="mnuAbout"><a href="#" onclick="OpenModal('About');">About</a>
                                       </li>
                                    
-                                    <li style="position: absolute; right: 110px;">
+                                    <li style="position: absolute; right: 110px;" id="liLogged" runat="server">
                                         <asp:Label ID="lblLogged" runat="server" Style="font-weight: bold; font-style: italic;"></asp:Label>
                                     </li>
                                    <li style="position: absolute; right: 52px;" class="facility-change">
-                                       <a href="#" onclick="OpenModal('Change Legal Org');" class="change-btn" id="lblChange" style="font-weight: bold; font-style: italic;">Change</a>
+                                       <a href="#" onclick="OpenModal('Change Legal Org');" class="change-btn" id="lblChange" runat="server" style="font-weight: bold; font-style: italic;">Change</a>
                                     </li>
                                    
                                     <li runat="server" id="closebutton" style="position: absolute; right: 35px; ">

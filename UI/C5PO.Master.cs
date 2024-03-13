@@ -34,6 +34,15 @@ namespace Acurus.Capella.UI
 
         protected void Page_Load(object sender, EventArgs e)
         {
+            if (System.Configuration.ConfigurationSettings.AppSettings["IsChangeMenu"] != null && System.Configuration.ConfigurationSettings.AppSettings["IsChangeMenu"].ToString() == "Y")
+            {
+                lblChange.Visible = true;
+            }
+            else
+            {
+                lblChange.Visible = false;
+                liLogged.Style.Add("right","52px");
+            }
             string SystemTime = string.Empty;
             if (this.Page.AppRelativeVirtualPath.ToUpper().Contains("FRMMYQUEUE") == true || this.Page.AppRelativeVirtualPath.ToUpper().Contains("FRMPATIENTCHART") == true)
             {

@@ -720,7 +720,7 @@ function saveorder() {
 }
 var OrderIdLst = [];
 function OpenMedication_dosage() {
-
+  
     //Jira CAP-664 - commented
     ////if (window.parent.parent.parent.parent.theForm.ctl00_C5POBody_hdnIsSaveEnable != null || window.parent.parent.parent.parent.theForm.ctl00_C5POBody_hdnIsSaveEnable != undefined) {
     //    //if (window.parent.parent.parent.parent.theForm.ctl00_C5POBody_hdnIsSaveEnable.value == "true") {
@@ -798,6 +798,11 @@ function OpenMedication_dosage() {
     $(top.window.document).find("#ModalTitleMed")[0].textContent = "Medication Dosage";
     $(top.window.document).find('#ProcessFrameMed')[0].src = "HtmlMedicineDosage.html?version=" + sessionStorage.getItem("ScriptVersion");
     return false;
+}
+
+//Jira CAP-1807
+function SetOrderIdAndOpenMedication_dosage() {
+    $("#hdnbtnSetOrderId").click();
 }
 
 function closepopup() {
