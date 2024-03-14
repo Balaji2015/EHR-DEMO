@@ -888,7 +888,8 @@ function PatientInformationValidation() {
     document.getElementById(GetClientId('hdnAge')).value = age;
     if (document.getElementById(GetClientId('hdnAge')).value < 18) {
         document.getElementById(GetClientId("chkGuarantorIsPatient")).checked = false; //false;
-        document.getElementById(GetClientId("btnUncheckGurantor")).click();
+        //CAP-1855
+        //document.getElementById(GetClientId("btnUncheckGurantor")).click();
         document.getElementById(GetClientId("txtGuarantorLastName")).value = "";
         document.getElementById(GetClientId("txtGuarantorFirstName")).value = "";
         document.getElementById(GetClientId("txtGuarantorMiddleName")).value = "";

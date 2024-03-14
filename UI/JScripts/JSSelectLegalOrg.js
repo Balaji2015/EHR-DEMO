@@ -1,5 +1,5 @@
 ﻿function changeReload() {
-    window.parent.location.reload();
+    //window.parent.location.reload();
 }
 
 function cboLegalOrg_SelectedIndexChanged(sender, args) {

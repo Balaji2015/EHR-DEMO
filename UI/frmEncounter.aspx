@@ -336,12 +336,12 @@
                                     <iframe class="clsIframe" src="" style="height: 643px; width: 100%; margin-top: -2px !important" frameborder="0" scrolling="no" marginheight="0" marginwidth="0"></iframe>
                                 </div>
 
-                                <div class="tab-pane" id="tbQuestion" data-src="HtmlQuestionnaireTab.html">
+                                <div class="tab-pane" id="tbQuestion" data-src="HtmlQuestionnaireTab.html?version=<%= ConfigurationManager.AppSettings["VersionConfiguration"].ToString().Replace("Capella - ","") %>">
                                     <iframe class="clsIframe" src="" style="height: 742px; width: 100%;" width="100%" height="100%" frameborder="0" allowfullscreen="allowFullScreen"></iframe>
                                 </div>
 
 
-                                <div class="tab-pane" id="tbPFSH" data-src="htmlPFSH.html">
+                                <div class="tab-pane" id="tbPFSH" data-src="htmlPFSH.html?version=<%= ConfigurationManager.AppSettings["VersionConfiguration"].ToString().Replace("Capella - ","") %>">
                                     <iframe class="clsIframe" src="" id="iframePFSH" style="height: 707px; width: 100%;" frameborder="0" allowfullscreen="allowFullScreen"></iframe>
                                 </div>
                                 <div class="tab-pane" id="tbROS" data-src="frmRos.aspx">
@@ -353,19 +353,19 @@
                                 </div>
 
 
-                                <div class="tab-pane" id="tbExam" data-src="htmlExamTab.html">
+                                <div class="tab-pane" id="tbExam" data-src="htmlExamTab.html?version=<%= ConfigurationManager.AppSettings["VersionConfiguration"].ToString().Replace("Capella - ","") %>">
                                     <iframe class="clsIframe" src="" style="height: 695px; width: 99%;" frameborder="0" allowfullscreen="allowFullScreen"></iframe>
                                 </div>
-                                <div class="tab-pane " id="tbTest" data-src="HtmlTestTab.html">
+                                <div class="tab-pane " id="tbTest" data-src="HtmlTestTab.html?version=<%= ConfigurationManager.AppSettings["VersionConfiguration"].ToString().Replace("Capella - ","") %>">
                                     <iframe class="clsIframe" src="" style="height: 643px; width: 98%; margin-top: -2px !important" frameborder="0" scrolling="no" marginheight="0" marginwidth="0"></iframe>
                                 </div>
 
-                                <div class="tab-pane" id="tbAssessment" data-src="htmlAssessment.html">
+                                <div class="tab-pane" id="tbAssessment" data-src="htmlAssessment.html?version=<%= ConfigurationManager.AppSettings["VersionConfiguration"].ToString().Replace("Capella - ","") %>">
                                     <iframe class="clsIframe" src="" style="height: 643px; width: 97%;margin-left:10px!important;" width="100%" height="100%" frameborder="0" allowfullscreen="allowFullScreen"></iframe>
                                 </div>
 
 
-                                <div class="tab-pane" id="tbOrders" data-src="HtmlOrdersTab.html">
+                                <div class="tab-pane" id="tbOrders" data-src="HtmlOrdersTab.html?version=<%= ConfigurationManager.AppSettings["VersionConfiguration"].ToString().Replace("Capella - ","") %>">
                                     <iframe class="clsIframe" src="" style="height: 745px; width: 100%;" frameborder="0" allowfullscreen="allowFullScreen"></iframe>
                                 </div>
                                 <div class="tab-pane" id="tbEPrescription" data-src="frmRCopiaWebBrowser.aspx?MyType=GENERAL&IsMoveButton=false&IsMoveCheckbox=true&IsPrescriptiontobePushed=&openingFrom=Tab&IsSentToRCopia=''&LocalTime=''">
@@ -378,10 +378,10 @@
                             <iframe class="clsIframe" src="" style=" height: 643px; width: 107%; margin-left: -43px;margin-top:-2px !important" frameborder="0" scrolling="no" marginheight="0" marginwidth="0"></iframe>
                         </div>--%>
 
-                                <div class="tab-pane" id="tbPlan" data-src="HtmlPlanTab.html">
+                                <div class="tab-pane" id="tbPlan" data-src="HtmlPlanTab.html?version=<%= ConfigurationManager.AppSettings["VersionConfiguration"].ToString().Replace("Capella - ","") %>">
                                     <iframe class="clsIframe" src="" style="height: 686px; width: 100%; margin-top: -3px" width="100%" height="100%" frameborder="0" allowfullscreen="allowFullScreen"></iframe>
                                 </div>
-                                <div class="tab-pane " id="tbEandM" data-src="htmlEandMCoding.html">
+                                <div class="tab-pane " id="tbEandM" data-src="htmlEandMCoding.html?version=<%= ConfigurationManager.AppSettings["VersionConfiguration"].ToString().Replace("Capella - ","") %>">
                                     <iframe class="clsIframe" src="" style="height: 675px; width: 92%;margin-left:10px!important; margin-top: -2px !important" frameborder="0" scrolling="no" marginheight="0" marginwidth="0"></iframe>
                                 </div>
 
