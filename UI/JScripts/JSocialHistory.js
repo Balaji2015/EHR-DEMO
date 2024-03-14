@@ -438,12 +438,14 @@ function LoadTobaccoList() {
                 item.style.display = "none";
             else {
                 //if (item.get_attributes()._data.Option == hidden) {
-                if (item.attributes[1].value == hidden) {
+                //CAP-1843
+                if (item.attributes['option'].value == hidden) {
                     //item.set_visible(false);
                     item.style.display = "none";
                 }
                 //else if (item.get_attributes()._data.Option == shown) {
-                else if (item.attributes[1].value == shown) {
+                //CAP-1843
+                else if (item.attributes['option'].value == shown) {
                     //item.set_visible(true);
                     item.style.display = "block";
                 }

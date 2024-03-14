@@ -4513,6 +4513,25 @@ namespace Acurus.Capella.UI
                                         return;
                                     }
                                 }
+                                //CAP-1786 - Vitals data not saved for the Genders listed as 'Unknown' and 'Undifferentiated'.
+                                else if (VitalName.Contains("Hgb Status"))
+                                {
+                                    string egfrvalue = Request.Form["Hgb"].Trim();
+                                    if (egfrvalue != string.Empty)
+                                    {
+
+                                    }
+                                    else
+                                    {
+                                        EnableDisbaleSave(true);
+                                        if (Request["openingfrom"].ToString().ToUpper() == "MENU")
+                                            divLoading.Style.Add("display", "none");
+                                        else
+                                            ScriptManager.RegisterStartupScript(this, this.GetType(), string.Empty, " {sessionStorage.setItem('StartLoading', 'false');StopLoadFromPatChart();}", true);
+                                        // ScriptManager.RegisterStartupScript(this, this.GetType(), string.Empty, "hideLoading();", true);
+                                        return;
+                                    }
+                                }
                                 else
                                 {
                                     EnableDisbaleSave(true);

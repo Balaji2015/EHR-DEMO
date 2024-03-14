@@ -691,17 +691,16 @@ function saveorder() {
             type: "POST",
             url: "frmImageAndLabOrder.aspx/updateOrderQuantity",
             contentType: "application/json;charset=utf-8",
+            async: true,
             data: JSON.stringify({
                 "Quantity": inputdata,
             }),
             datatype: "json",
             success: function success(data) {
                 $('#btnsave').attr("disabled", "disabled");
-                $(top.window.document).find("#btnCloseMed")[0].click();
-             
                 localStorage.setItem("ProcedureQuantity", inputdata);
-                $("#hdnbuttonload").click();
-               
+                localStorage.setItem('IsUpdateOrderQuantity', 'true');
+                $(top.window.document).find("#btnCloseMed")[0].click();
             },
             error: function onerror(xhr) {
                 if (xhr.status == 999)
@@ -827,12 +826,9 @@ function closepopup() {
             },
             buttons: {
                 "Yes": function () {
-                    sessionStorage.setItem('StartLoading', 'true'); StartLoadFromPatChart();
                     saveorder();
-                    sessionStorage.setItem('StartLoading', 'false'); StopLoadFromPatChart();
                     $(dvdialog).dialog("close");
                     $(dvdialog).remove();
-                    $(top.window.document).find("#btnCloseMed").click();
                     return false;
                 },
                 "No": function () {
@@ -876,18 +872,18 @@ function closepopup() {
 }
 $(top.window.document).find("#ProcessModalMed").on("hidden.bs.modal", function () {
     // put your default event here
-  
-    if (localStorage.getItem("ProcedureQuantity") != "") {
-        //CAP-1613
-            var datalist = localStorage?.getItem("ProcedureQuantity")?.split('~')??"";
+    if (localStorage.getItem('IsUpdateOrderQuantity') == 'true') {
+        localStorage.removeItem('IsUpdateOrderQuantity');
+        if (localStorage.getItem("ProcedureQuantity") != "") {
+            //CAP-1613
+            var datalist = localStorage?.getItem("ProcedureQuantity")?.split('~') ?? "";
             for (var i = 0; i < datalist.length; i++) {
                 var quantity = datalist[i].split('|');
                 var orderid = quantity[1];
                 var outputtextQuantity = quantity[0];
                 //CAP-1471
-                if ($("span[orderid='" + orderid + "']") != undefined && $("span[orderid='" + orderid + "']") != null && $("span[orderid='" + orderid + "']")[0] != undefined && $("span[orderid='" + orderid + "']")[0] != null)
-                {
-                    var texquantity = $("span[orderid='" + orderid + "']")[0]?.childNodes[0]?.labels[0]?.innerText?.split('x___')??"";
+                if ($("span[orderid='" + orderid + "']") != undefined && $("span[orderid='" + orderid + "']") != null && $("span[orderid='" + orderid + "']")[0] != undefined && $("span[orderid='" + orderid + "']")[0] != null) {
+                    var texquantity = $("span[orderid='" + orderid + "']")[0]?.childNodes[0]?.labels[0]?.innerText?.split('x___') ?? "";
                     if (outputtextQuantity != "" && outputtextQuantity != "0")
                         $("span[orderid='" + orderid + "']")[0].childNodes[0].labels[0].innerText = texquantity[0] + "x___" + outputtextQuantity + "___"
                     else {
@@ -897,8 +893,9 @@ $(top.window.document).find("#ProcessModalMed").on("hidden.bs.modal", function (
             }
         }
         $("#hdnbuttonload").click();
-        { sessionStorage.setItem('StartLoading', 'false'); StopLoadFromPatChart(); }
-    
+    } else {
+        sessionStorage.setItem('StartLoading', 'false'); StopLoadFromPatChart();
+    }
 });
 function isNumberKey(evt) {
   
