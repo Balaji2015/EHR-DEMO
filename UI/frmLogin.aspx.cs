@@ -310,8 +310,7 @@ namespace Acurus.Capella.UI
 
             //Set the client session variables
             if (login != null && login.Count > 0)
-            {
-                var isChangeMenuFlag = (System.Configuration.ConfigurationSettings.AppSettings["IsChangeMenu"] != null && System.Configuration.ConfigurationSettings.AppSettings["IsChangeMenu"].ToString() == "Y");
+            {                
                 if (login[0].status == "A")
                 {
                     if (login[0].Is_Down_Time == "Y")

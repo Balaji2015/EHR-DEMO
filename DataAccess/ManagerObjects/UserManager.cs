@@ -35,7 +35,6 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
         LoginDTO CheckUserDetailsWithoutPassword(string UserName, Boolean bIsScnTabLoad);
         void SaveLastSuccessfulyLoginDate(string sUserName, DateTime dtLoginDate);
         LoginDTO GetUserDetailsByOktaEmailAddress(string sEmailAddress, bool bIsScnTabLoad);
-        IList<User> GetUserByEmailAddress(string sEmailAddress);
         LoginDTO CheckUserDetailsLegalOrg(string sUserName, Boolean bIsScnTabLoad);
         IList<User> CheckLegalOrgUser(string sUserName);
         IList<User> CheckImpersonateUserWithPassword(string UserName, string Password, out bool Base64Password);
@@ -769,25 +768,6 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
 
             return objLoginDTO;
         }
-
-
-        public IList<User> GetUserByEmailAddress(string sEmailAddress)
-        {
-
-            IList<User> UserList = new List<User>();
-            // ISession iMySession = NHibernateSessionManager.Instance.CreateISession();
-            using (ISession iMySession = NHibernateSessionManager.Instance.CreateISession())
-            {
-                ISQLQuery sql = iMySession.CreateSQLQuery("Select * from User u where u.EMail_Address= :EmailAddress AND u.status='A'").AddEntity("u", typeof(User));
-                sql.SetParameter("EmailAddress", sEmailAddress);
-                UserList = sql.List<User>();
-                iMySession.Close();
-            }
-            return UserList;
-        }
-
-
-
         //End
         #endregion
     }

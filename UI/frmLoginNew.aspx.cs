@@ -18,6 +18,7 @@ using Acurus.Capella.UI.Extensions;
 using System.Configuration;
 using RestSharp;
 using Acurus.Capella.UI.OktaResponseModel;
+using System.Text.RegularExpressions;
 
 namespace Acurus.Capella.UI
 {
@@ -79,15 +80,6 @@ namespace Acurus.Capella.UI
         {
             if (txtUserName.Value != null && txtUserName.Value != "")
             {
-                #region Check User In DB
-                var user = UserMngr.GetUserByEmailAddress(txtUserName.Value);
-                if (user.Count == 0) 
-                {
-                    this.Page.ClientScript.RegisterStartupScript(this.Page.GetType(), string.Empty, "DisplayErrorMessage('000009');", true);
-                    return;
-                }
-                #endregion
-
                 var oktaDomain = ConfigurationSettings.AppSettings["okta:OktaDomain"];
                 var client = new RestClient(oktaDomain);
                 var request = new RestRequest(ConfigurationSettings.AppSettings["okta:WebFinger"], Method.Get);
@@ -102,10 +94,23 @@ namespace Acurus.Capella.UI
                 {
                     if ((result.links[0]?.titles?.und ?? string.Empty).Equals("Azure IDP", StringComparison.InvariantCultureIgnoreCase))
                     {
-                        ClientSession.UserAccountType = "Microsoft";
-                        var redirectURL = GetOktaAuthorizationUrl(txtUserName.Value);
-                        Response.Redirect(redirectURL,
-                            false);
+                        var regexPattern = "^[^\\.\\s][\\w\\-]+(\\.[\\w\\-]+)*@([\\w-]+\\.)+[\\w-]{2,}$";
+                        var isEmail = Regex.IsMatch(txtUserName.Value, regexPattern);
+                        if (isEmail)
+                        {
+                            ClientSession.UserAccountType = "Microsoft";
+                            var redirectURL = GetOktaAuthorizationUrl(txtUserName.Value);
+                            Response.Redirect(redirectURL,
+                                false);
+                        }
+                        else
+                        {
+                            txtUserName.Disabled = true;
+                            txtPassword.Visible = true;
+                            btnSignin.Visible = true;
+                            btnNext.Visible = false;
+                            divpanelsucess.Style.Add("height", "301px");
+                        }
                     }
                     else
                     {
@@ -159,7 +164,28 @@ namespace Acurus.Capella.UI
             {
                 if(response.StatusCode == System.Net.HttpStatusCode.Unauthorized)
                 {
-                    this.Page.ClientScript.RegisterStartupScript(this.Page.GetType(), string.Empty, "DisplayErrorMessage('010001');", true);
+                    IList<User> login = new List<User>();
+                    LoginDTO objLoginDTO = new LoginDTO();
+                    bool Base64Pwd = true;
+                    objLoginDTO = UserMngr.CheckUserDetails(txtUserName.Value.Trim(), Encryptionbase64Encode(txtPassword.Value), out Base64Pwd, true);
+                    if (objLoginDTO != null)// objLoginDTO.lstLookUp != null)
+                    {
+                        login = objLoginDTO.User;
+                        if (objLoginDTO.User.Count > 0)
+                        {
+                            ClientSession.EmailAddress = login[0].EMail_Address;
+                            ClientSession.UserAccountType = "Okta";
+                            Response.Redirect($"~/frmLandingScreen.aspx", false);
+                        }
+                        else
+                        {
+                            this.Page.ClientScript.RegisterStartupScript(this.Page.GetType(), string.Empty, "DisplayErrorMessage('010001');", true);
+                        }
+                    }
+                    else
+                    {
+                        this.Page.ClientScript.RegisterStartupScript(this.Page.GetType(), string.Empty, "DisplayErrorMessage('010001');", true);
+                    }               
                 }
                 else
                 {
@@ -176,6 +202,22 @@ namespace Acurus.Capella.UI
             string clientId = ConfigurationSettings.AppSettings["okta:ClientId"];
             string redirectUri = ConfigurationSettings.AppSettings["okta:RedirectUri"];
             return $"{oktaAuthorizeEndpoint}?client_id={clientId}&response_type=code&redirect_uri={HttpUtility.UrlEncode(redirectUri)}&scope=openid+profile+email&state={HttpUtility.UrlEncode(Guid.NewGuid().ToString())}&login_hint={HttpUtility.UrlEncode(email)}";
+        }
+
+        //To encrypt the password
+        public static string Encryptionbase64Encode(string sData)
+        {
+            try
+            {
+                byte[] encData_byte = new byte[sData.Length];
+                encData_byte = System.Text.Encoding.UTF8.GetBytes(sData);
+                string encodedData = Convert.ToBase64String(encData_byte);
+                return encodedData;
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("Error in base64Encode" + ex.Message);
+            }
         }
 
     }

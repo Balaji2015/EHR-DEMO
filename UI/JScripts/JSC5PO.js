@@ -306,7 +306,7 @@ function OpenModal(data) {
     //CAP-Change Legal Org
     else if (itemValue == "Change Legal Org") {
         var obj = new Array();
-        var Result = openModal("frmSelectLegalOrg.aspx", 234, 600, obj, "ctl00_FacilityModel");
+        var Result = openModal("frmSelectLegalOrg.aspx", 176, 600, obj, "ctl00_FacilityModel");
         return false;
     }
     else if (itemValue == "Find Patient") {
