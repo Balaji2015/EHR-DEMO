@@ -162,12 +162,13 @@ namespace Acurus.Capella.UI
 
                     //Load Balancer - Redirect to a Default Server for the user
                     ////ImpersonateUser
-                    if (login[0].Default_Server != string.Empty && login[0].Default_Server.ToUpper().Contains("FRMLOGIN.ASPX") == true || login[0].Default_Server.ToUpper().Contains("FRMLOGINNEW.ASPX") == true)
+                    if (login[0].Default_Server != string.Empty && login[0].Default_Server.ToUpper().Contains("FRMLOGIN.ASPX") == true || login[0].Default_Server.ToUpper().Contains("FRMLANDINGSCREEN.ASPX") == true)
                     {
                         //ImpersonateUser - To change the Default Server Login page to the current page
                         if (login[0].Default_Server.Contains("frmLogin.aspx") == true)
                         {
                             login[0].Default_Server = login[0].Default_Server.Replace("frmLogin.aspx", "frmLandingScreen.aspx");
+                            this.Page.ClientScript.RegisterStartupScript(this.Page.GetType(), string.Empty, "alert('default server : " + login[0].Default_Server + "')", true);
                         }
                         else
                         {
@@ -416,7 +417,7 @@ namespace Acurus.Capella.UI
                 if (objIsActiveSession.Count == 0)
                 {
                     //ImpersonateUser
-                    if (Session["Default_Server"] != null && (Session["Default_Server"].ToString().ToUpper().Contains("FRMLOGIN.ASPX") == true || Session["Default_Server"].ToString().ToUpper().Contains("FRMLOGINNEW.ASPX") == true))
+                    if (Session["Default_Server"] != null && (Session["Default_Server"].ToString().ToUpper().Contains("FRMLOGIN.ASPX") == true || Session["Default_Server"].ToString().ToUpper().Contains("FRMLANDINGSCREEN.ASPX") == true))
                     {
                         ClientSession.SavedSession = "DELETED";
                     }
