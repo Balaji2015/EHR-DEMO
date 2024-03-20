@@ -215,10 +215,10 @@ Deploy Test Job 10.0.0.11:
   #- xcopy /y /s "F:\Acurus_Web\Deployee\builds\Capella_publish\*.*" "F:\Acurus_Web\capella_cmg_project\capella_cmg_blobimp\"
   #- echo "Deployee CMG BLOBIMP..Completed.."
 
-  - echo "Deployee CMG MT..Start.."
-  - xcopy /y /s "F:\Acurus_Web\Deployee\builds\Capella_publish\*.*" "F:\Acurus_Web\capella_cmg_project\capella_cmg_mt\"
+  #- echo "Deployee CMG MT..Start.."
+  #- xcopy /y /s "F:\Acurus_Web\Deployee\builds\Capella_publish\*.*" "F:\Acurus_Web\capella_cmg_project\capella_cmg_mt\"
   #- xcopy /y /s "F:\Acurus_Web\Deployee\builds\Capella_publish\*.*" "F:\Acurus_Web\capella_cmg_project\capella_cmg_ehr_4_8\"
-  - echo "Deployee CMG MT..Completed.."
+  #- echo "Deployee CMG MT..Completed.."
 
   #- echo "Deployee PATIENT PORTAL..Start.."
   #- xcopy /y /s "F:\Acurus_Web\Deployee\builds\Capella_publish_PatientPortal\*.*" "F:\Acurus_Web\capella_cmg_project\capella_patient_portal_test\"

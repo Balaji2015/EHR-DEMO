@@ -291,6 +291,8 @@ namespace Acurus.Capella.UI
                                 obj.Created_By = ClientSession.UserName;
                                 obj.Created_Date_And_Time = UtilityManager.ConvertToUniversal();
                                 obj.Surgical_History_Master_ID = item.Id;
+                                //CAP-1844
+                                obj.Version = item.Version;
                                 SaveLst.Add(obj);
                             }
 
