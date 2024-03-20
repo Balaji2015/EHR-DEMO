@@ -460,7 +460,85 @@
             left: 0px;
             height: 18px;
         }
+
+        ::-webkit-scrollbar {
+    width: 8px;
+}
+
+::-webkit-scrollbar-track {
+    background-color: #c3bfbf;
+}
+
+::-webkit-scrollbar-thumb {
+    background-color: #707070;
+}
+
+    ::-webkit-scrollbar-thumb:hover {
+        background-color: #3d3c3a;
+    }
+
+      
+
+.ui-dialog-titlebar-close {
+    display: none;
+}
+
+.ui-widget {
+    font-family: Verdana,Arial,sans-serif !important;
+}
+
+.ui-dialog .ui-dialog-buttonpane .ui-dialog-buttonset {
+    float: none !important;
+    margin-left: 45px !important;
+}
+
+.ui-dialog .ui-dialog-buttonpane button {
+    width: 70px !important;
+}
+
+.ui-dialog .ui-dialog-titlebar {
+    padding: 0px !important;
+}
+
+.ui-dialog .ui-dialog-title {
+    font-size: 12px !important;
+    font-family: Verdana,Arial,sans-serif !important;
+}
+
+.ui-dialog ui-widget ui-widget-content ui-corner-all ui-front ui-dialog-buttons ui-draggable ui-resizable {
+    height: 155px;
+    border: 2px solid;
+    border-radius: 13px;
+    top: 504px !important;
+    left: 180px !important;
+}
+
+.ui-dialog .ui-dialog-content {
+    min-height: 0px !important;
+}
+
+.ui-dialog .ui-dialog-buttonpane {
+    margin-top: -10px !important;
+    /*padding: 0px !important ;*/
+}
+
+.ui-widget-content {
+    border: 0px !important;
+}
+
+.ui-widget-header, .ui-state-default, ui-button {
+    font-size: 11px !important;
+    font-family: sans-serif;
+}
+
+
+.ui-widget {
+    border: 1px solid #adadad !important;
+    background-color: #F7F7F7;
+}
     </style>
+    
+    <link href="CSS/jquery-ui.css" rel="Stylesheet" />
     <link href="~/CSS/CommonStyle.css" rel="Stylesheet" type="text/css" />
     <base target="_self" />
 </head>
@@ -658,6 +736,7 @@
         </telerik:RadAjaxPanel>
         <asp:PlaceHolder ID="PlaceHolder1" runat="server">
             <script src="JScripts/jquery-1.11.3.min.js" type="text/javascript"></script>
+            <script src="JScripts/jquery-ui.min1.10.2.js" type="text/javascript"></script>
             <script src="JScripts/bootstrap.min.js" type="text/javascript"></script>
             <script src="JScripts/JSErrorMessage.js?version=<%=ConfigurationManager.AppSettings["VersionConfiguration"].ToString().Replace("Capella - ","") %>" type="text/javascript"></script>
             <script src="JScripts/JSModalWindow.js?version=<%=ConfigurationManager.AppSettings["VersionConfiguration"].ToString().Replace("Capella - ","") %>" type="text/javascript"></script>

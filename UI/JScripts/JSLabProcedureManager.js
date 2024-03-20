@@ -198,13 +198,45 @@ function closeWindow(sender, args) {
     var btnSave = $find('btnSave');
     if (btnSave._enabled == true) {
         if (document.getElementById("hdnMessageType").value == "") {
-            document.getElementById("hdnMessageType").value == "Yes";
-            __doPostBack('btnSave', "true");
-            $find('btnSave').set_enabled(false);
+            //CAP-1770
             document.getElementById("hdnMessageType").value = "";
             document.getElementById('hdnRefresh').value = "true";
-            { sessionStorage.setItem('StartLoading', 'false'); StopLoadFromPatChart(); }
-            return false;
+
+            $("body").append("<div id='dvdialogMenu' style='min-height: 65px !important; width: auto; max-height: none; height: auto; display: none;'> <p style='font-family: Verdana,Arial,sans-serif; font-size: 12.5px;'>There are unsaved changes.Do you want to save them?</p></div>")
+            dvdialog = $('#dvdialogMenu');
+            myPos = "center center";
+            atPos = 'center center';
+
+            $(dvdialog).dialog({
+                modal: true,
+                title: "Capella EHR",
+                position: {
+                    my: myPos,
+                    at: atPos
+                },
+                buttons: {
+                    "Yes": function () {
+                        $find('btnSave').set_enabled(true);
+                        $('#btnSave').trigger('click');
+                        $(dvdialog).dialog("close");
+                        $(dvdialog).remove();
+                        return false;
+                    },
+                    "No": function () {
+                        $find('btnSave').set_enabled(true);
+                        $(dvdialog).dialog("close");
+                        $(dvdialog).remove();
+                        $(top.window.document).find('#btnClosed')[0].click();
+                        return false;
+                    },
+                    "Cancel": function () {
+                        $find('btnSave').set_enabled(true);
+                        $(dvdialog).dialog("close");
+                        $(dvdialog).remove();
+                        return false;
+                    }
+                }
+            });
             //args.set_cancel(true);
             //DisplayErrorMessage('220108');
             // {sessionStorage.setItem('StartLoading', 'false');StopLoadFromPatChart();}
