@@ -2036,7 +2036,8 @@ function chklstFrequentlyUsedProcedures_Changed() {
     if (document.getElementById("txtQuantity").value != "") {
         //CAP-1613 Uncaught ReferenceError: lblunits is not defined
         if (document?.getElementById("lblUnits") != undefined && document?.getElementById("lblUnits") != null) {
-            if (document.getElementById("lblUnits").innerText.indexOf("*") != -1) {
+            //CAP-1801
+            if (document.getElementById("lblUnits").innerText.indexOf("*") == -1) {
                 var lblunits = document.getElementById("lblUnits");
                 //CAP-1501
                 lblunits.innerHTML += "*";
@@ -2044,13 +2045,14 @@ function chklstFrequentlyUsedProcedures_Changed() {
                 $('#lblUnits').removeClass('spanstyle');
                 $('#lblUnits').addClass('MandLabelstyle');
             }
-            else {
-                document.getElementById("lblUnits").innerText = "Units";
-                document.getElementById("lblUnits").innerHTML = "Units";
-                document.getElementById("lblUnits").style.color = "Black";
-                $('#lblUnits').removeClass('MandLabelstyle');
-                $('#lblUnits').addClass('spanstyle');
-            }
+            //CAP-1801
+            //else {
+            //    document.getElementById("lblUnits").innerText = "Units";
+            //    document.getElementById("lblUnits").innerHTML = "Units";
+            //    document.getElementById("lblUnits").style.color = "Black";
+            //    $('#lblUnits').removeClass('MandLabelstyle');
+            //    $('#lblUnits').addClass('spanstyle');
+            //}
         }
     }
 }
