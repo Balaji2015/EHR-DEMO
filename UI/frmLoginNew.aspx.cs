@@ -27,6 +27,13 @@ namespace Acurus.Capella.UI
         UserManager UserMngr = new UserManager();
         protected void Page_Load(object sender, EventArgs e)
         {
+
+            if (ConfigurationSettings.AppSettings["IsSSOLogin"] == null || ConfigurationSettings.AppSettings["IsSSOLogin"] == "N")
+            {
+                Response.Redirect("frmLogin.aspx");
+                return;
+            }
+
             DateTime dtStartTime = DateTime.Now;
 
             if (hdnGroupId != null && hdnGroupId.Value == "")
@@ -181,7 +188,7 @@ namespace Acurus.Capella.UI
                         }
                         else
                         {
-                            this.Page.ClientScript.RegisterStartupScript(this.Page.GetType(), string.Empty, "DisplayErrorMessage('010001');setTimeout(function(){ location.href = location.href;}, 5000);", true);
+                            this.Page.ClientScript.RegisterStartupScript(this.Page.GetType(), string.Empty, "DisplayErrorMessage('010001');setTimeout(function(){ location.href = location.href;}, 3000);", true);
                         }
                     }
                     else

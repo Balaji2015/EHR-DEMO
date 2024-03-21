@@ -136,27 +136,27 @@ Deploy Test Job 10.0.0.4 :
   stage: Deploy TESTING 10.0.0.4
   script:
   
-  - echo "Backup CMG..Start.."
-  - xcopy /y /s "F:\Acurus_Web\capella_cmg_project\capella_cmg_ehr_4_8\*.*" "F:\Acurus_Web\Deployee\Backup-do not delete\Git\CMG"
-  - echo "Backup CMG..Completed.."
+  #- echo "Backup CMG..Start.."
+  #- xcopy /y /s "F:\Acurus_Web\capella_cmg_project\capella_cmg_ehr_4_8\*.*" "F:\Acurus_Web\Deployee\Backup-do not delete\Git\CMG"
+  #- echo "Backup CMG..Completed.."
   
-  - echo "Deployee CMG..Start.."  
-  - xcopy /y /s "F:\Acurus_Web\Deployee\builds\Capella_publish\*.*" "F:\Acurus_Web\capella_cmg_project\capella_cmg_ehr_4_8\"
-  - echo "Deployee CMG..Completed.."
+  #- echo "Deployee CMG..Start.."  
+  #- xcopy /y /s "F:\Acurus_Web\Deployee\builds\Capella_publish\*.*" "F:\Acurus_Web\capella_cmg_project\capella_cmg_ehr_4_8\"
+  #- echo "Deployee CMG..Completed.."
   
   #- echo "Deployee CMG BLOBIMP..Start.."
   #- xcopy /y /s "F:\Acurus_Web\Deployee\builds\Capella_publish\*.*" "F:\Acurus_Web\capella_cmg_project\capella_cmg_blobimp\"
   #- echo "Deployee CMG BLOBIMP..Completed.."
 
-  #- echo "Backup CMG MT..Start.."
-  #- xcopy /y /s "F:\Acurus_Web\capella_cmg_project\capella_cmg_mt\*.*" "F:\Acurus_Web\Deployee\Backup-do not delete\Git\capella_cmg_mt"
+  - echo "Backup CMG MT..Start.."
+  - xcopy /y /s "F:\Acurus_Web\capella_cmg_project\capella_cmg_mt\*.*" "F:\Acurus_Web\Deployee\Backup-do not delete\Git\capella_cmg_mt"
   #- xcopy /y /s "F:\Acurus_Web\capella_cmg_project\capella_cmg_mt\*.*" "F:\Acurus_Web\Deployee\Backup-do not delete\Git\capella_cmg_ehr_4_8"
-  #- echo "Backup CMG MT..Completed.."
+  - echo "Backup CMG MT..Completed.."
 
-  #- echo "Deployee CMG MT..Start.."
-  #- xcopy /y /s "F:\Acurus_Web\Deployee\builds\Capella_publish\*.*" "F:\Acurus_Web\capella_cmg_project\capella_cmg_mt\"
+  - echo "Deployee CMG MT..Start.."
+  - xcopy /y /s "F:\Acurus_Web\Deployee\builds\Capella_publish\*.*" "F:\Acurus_Web\capella_cmg_project\capella_cmg_mt\"
   #- xcopy /y /s "F:\Acurus_Web\Deployee\builds\Capella_publish\*.*" "F:\Acurus_Web\capella_cmg_project\capella_cmg_ehr_4_8\"
-  #- echo "Deployee CMG MT..Completed.."
+  - echo "Deployee CMG MT..Completed.."
 
  
 Deploy Test Job 10.0.0.11:
@@ -170,9 +170,9 @@ Deploy Test Job 10.0.0.11:
   stage: Deploy TESTING 10.0.0.11
   script:
   
-  - echo "Backup CMG..Start.."
-  - xcopy /y /s "F:\Acurus_Web\capella_cmg_project\capella_cmg_ehr_4_8\*.*" "F:\Acurus_Web\Deployee\Backup-do not delete\Git\CMG"
-  - echo "Backup CMG..Completed.."
+  #- echo "Backup CMG..Start.."
+  #- xcopy /y /s "F:\Acurus_Web\capella_cmg_project\capella_cmg_ehr_4_8\*.*" "F:\Acurus_Web\Deployee\Backup-do not delete\Git\CMG"
+  #- echo "Backup CMG..Completed.."
 
   #- echo "Backup WC..Start.."      
   #- xcopy /y /s "F:\Acurus_Web\capella_hca_project\capella_wc\*.*" "F:\Acurus_Web\Deployee\Backup-do not delete\Git\WC"
@@ -190,14 +190,14 @@ Deploy Test Job 10.0.0.11:
   #- xcopy /y /s "F:\Acurus_Web\capella_cmg_project\capella_cmg_blobimp\*.*" "F:\Acurus_Web\Deployee\Backup-do not delete\Git\capella_cmg_blobimp"
   #- echo "Backup CMG blobimp..Completed.."
 
-  #- echo "Backup CMG MT..Start.."
-  #- xcopy /y /s "F:\Acurus_Web\capella_cmg_project\capella_cmg_mt\*.*" "F:\Acurus_Web\Deployee\Backup-do not delete\Git\capella_cmg_mt"
+  - echo "Backup CMG MT..Start.."
+  - xcopy /y /s "F:\Acurus_Web\capella_cmg_project\capella_cmg_mt\*.*" "F:\Acurus_Web\Deployee\Backup-do not delete\Git\capella_cmg_mt"
   #- xcopy /y /s "F:\Acurus_Web\capella_cmg_project\capella_cmg_mt\*.*" "F:\Acurus_Web\Deployee\Backup-do not delete\Git\capella_cmg_ehr_4_8"
-  #- echo "Backup CMG MT..Completed.."
+  - echo "Backup CMG MT..Completed.."
 
-  - echo "Deployee CMG..Start.."
-  - xcopy /y /s "F:\Acurus_Web\Deployee\builds\Capella_publish\*.*" "F:\Acurus_Web\capella_cmg_project\capella_cmg_ehr_4_8\"
-  - echo "Deployee CMG..Completed.."
+  #- echo "Deployee CMG..Start.."
+  #- xcopy /y /s "F:\Acurus_Web\Deployee\builds\Capella_publish\*.*" "F:\Acurus_Web\capella_cmg_project\capella_cmg_ehr_4_8\"
+  #- echo "Deployee CMG..Completed.."
 
   #- echo "Deployee WC..Start.."
   #- xcopy /y /s "F:\Acurus_Web\Deployee\builds\Capella_publish\*.*" "F:\Acurus_Web\capella_hca_project\capella_wc\"
@@ -215,10 +215,10 @@ Deploy Test Job 10.0.0.11:
   #- xcopy /y /s "F:\Acurus_Web\Deployee\builds\Capella_publish\*.*" "F:\Acurus_Web\capella_cmg_project\capella_cmg_blobimp\"
   #- echo "Deployee CMG BLOBIMP..Completed.."
 
-  #- echo "Deployee CMG MT..Start.."
-  #- xcopy /y /s "F:\Acurus_Web\Deployee\builds\Capella_publish\*.*" "F:\Acurus_Web\capella_cmg_project\capella_cmg_mt\"
+  - echo "Deployee CMG MT..Start.."
+  - xcopy /y /s "F:\Acurus_Web\Deployee\builds\Capella_publish\*.*" "F:\Acurus_Web\capella_cmg_project\capella_cmg_mt\"
   #- xcopy /y /s "F:\Acurus_Web\Deployee\builds\Capella_publish\*.*" "F:\Acurus_Web\capella_cmg_project\capella_cmg_ehr_4_8\"
-  #- echo "Deployee CMG MT..Completed.."
+  - echo "Deployee CMG MT..Completed.."
 
   #- echo "Deployee PATIENT PORTAL..Start.."
   #- xcopy /y /s "F:\Acurus_Web\Deployee\builds\Capella_publish_PatientPortal\*.*" "F:\Acurus_Web\capella_cmg_project\capella_patient_portal_test\"
