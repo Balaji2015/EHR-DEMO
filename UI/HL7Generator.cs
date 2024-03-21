@@ -6404,7 +6404,7 @@ namespace Acurus.Capella.UI
             string EthnicityValue = string.Empty;
             string PublicitycodeIdentifier = string.Empty;
             string RelationshipIdentifier = string.Empty;
-            string AdministrationIdentifier = string.Empty;
+            var AdministrationIdentifier = string.Empty;
             string ImmunizationInformationIdentifier = string.Empty;
             string ProtectionstateIdentifier = string.Empty;
             string ObservationIdentifier = string.Empty;
@@ -7001,7 +7001,13 @@ namespace Acurus.Capella.UI
                     if (ClinicalSummary.ImmunizationList[i].Is_Administration_Refused.ToUpper() != "Y")
                     {
                         if (ClinicalSummary.ImmunizationList[i].Route_of_Administration != "")
-                            AdministrationIdentifier = (from p in ilstIdentifier where p.ToString().Split('-')[1] == ClinicalSummary.ImmunizationList[i].Route_of_Administration select p.ToString().Split('-')[0]).FirstOrDefault().ToString();
+                            //Cap - 1817
+                            //AdministrationIdentifier = (from p in ilstIdentifier where p.ToString().Split('-')[1] == ClinicalSummary.ImmunizationList[i].Route_of_Administration select p.ToString().Split('-')[0]).FirstOrDefault().ToString();
+                            AdministrationIdentifier = (from p in ilstIdentifier where p.ToString().Split('-')[1] == ClinicalSummary.ImmunizationList[i].Route_of_Administration select p).FirstOrDefault();
+                        if(AdministrationIdentifier != null)
+                        {
+                            AdministrationIdentifier = AdministrationIdentifier.Split('-')[0].ToString();
+                        }
 
                         var VfcIdentifierlst = from d in iFieldLookupList where d.Field_Name == "VFC STATUS" && d.Value == ClinicalSummary.ImmunizationList[i].Vfc select d;
                         if (VfcIdentifierlst.Count() > 0)
