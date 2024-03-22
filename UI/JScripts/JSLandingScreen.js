@@ -34,7 +34,7 @@ $(document).ready(function () {
         localStorage.setItem("ScriptVersion", version.split('-')[1].trim());
     }
     //document.getElementById('lblProduct').innerHTML = "EHR <span style='color:black;font-size:13px;font-weight:500;'> - " + version.replace('Capella - ', '') + "</span>";
-    $($('#ulSystemMessages')[0].parentElement).css('overflow', 'auto');
+/*    $($('#ulSystemMessages')[0].parentElement).css('overflow', 'auto');*/
     if (sessionStorage.getItem("MailClinicalCnt") != null && sessionStorage.getItem("MailClinicalCnt") != undefined)//BugID:48547
         sessionStorage.removeItem("MailClinicalCnt");
     if (sessionStorage.getItem("importCount") != null && sessionStorage.getItem("importCount") != undefined)
@@ -532,7 +532,7 @@ function AlertUser() {
     if (Continue == true) {
         document.getElementById("hdnbtnLogin").click();
     }
-    else {
+    else if (Continue == false) {
         window.location.href = "frmLoginNew.aspx";
     }
 }
