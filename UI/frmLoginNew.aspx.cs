@@ -82,7 +82,7 @@ namespace Acurus.Capella.UI
                 ClientSession.bFollows_DST = false;
         }
 
-        
+
         protected void btnNextLogin_Click(object sender, EventArgs e)
         {
             if (txtUserName.Value != null && txtUserName.Value != "")
@@ -101,6 +101,8 @@ namespace Acurus.Capella.UI
                 {
                     if ((result.links[0]?.titles?.und ?? string.Empty).Equals("Azure IDP", StringComparison.InvariantCultureIgnoreCase))
                     {
+                        hdnOktaAccountType.Value = "Azure IDP";
+
                         var regexPattern = "^[^\\.\\s][\\w\\-]+(\\.[\\w\\-]+)*@([\\w-]+\\.)+[\\w-]{2,}$";
                         var isEmail = Regex.IsMatch(txtUserName.Value, regexPattern);
                         if (isEmail)
@@ -121,6 +123,7 @@ namespace Acurus.Capella.UI
                     }
                     else
                     {
+                        hdnOktaAccountType.Value = "Okta IDP";
                         txtUserName.Disabled = true;
                         txtPassword.Visible = true;
                         btnSignin.Visible = true;
@@ -141,64 +144,93 @@ namespace Acurus.Capella.UI
 
         protected void btnSignin_Click(object sender, EventArgs e)
         {
-            var options = new RestClientOptions(ConfigurationSettings.AppSettings["okta:OktaDomain"])
+            if (hdnOktaAccountType.Value == "Okta IDP")
             {
-                MaxTimeout = -1,
-            };
-            var client = new RestClient(options);
-            var request = new RestRequest($"{ConfigurationSettings.AppSettings["okta:Authentication"]}", Method.Post);
-            request.AddHeader("Accept", "application/json");
-            request.AddHeader("Content-Type", "application/json");
-            request.AddHeader("Authorization", $"SSWS {ConfigurationSettings.AppSettings["okta:APIToken"]}");
-            var body = @"{" + "\n" +
-                 @"  ""username"": """ + txtUserName.Value + @"""," + "\n" +
-                 @"  ""password"": """ + txtPassword.Value + @"""," + "\n" +
-                 @"  ""options"": {" + "\n" +
-                 @"    ""multiOptionalFactorEnroll"": true," + "\n" +
-                 @"    ""warnBeforePasswordExpired"": true" + "\n" +
-                 @"  }" + "\n" +
-                 @"}";
-            request.AddStringBody(body, DataFormat.Json);
-            RestResponse response = client.ExecuteAsync(request).Result;
-            if (response.IsSuccessStatusCode)
-            {
-                OktaUserResponseModel result = JsonConvert.DeserializeObject<OktaUserResponseModel>(response.Content);
-                ClientSession.EmailAddress = result?._embedded?.user?.profile?.login ?? string.Empty;
-                ClientSession.UserAccountType = "Okta";
-                Response.Redirect($"~/frmLandingScreen.aspx", false);
-
-            }
-            else
-            {
-                if(response.StatusCode == System.Net.HttpStatusCode.Unauthorized)
+                var options = new RestClientOptions(ConfigurationSettings.AppSettings["okta:OktaDomain"])
                 {
-                    IList<User> login = new List<User>();
-                    LoginDTO objLoginDTO = new LoginDTO();
-                    bool Base64Pwd = true;
-                    objLoginDTO = UserMngr.CheckUserDetails(txtUserName.Value.Trim(), Encryptionbase64Encode(txtPassword.Value), out Base64Pwd, true);
-                    if (objLoginDTO != null)// objLoginDTO.lstLookUp != null)
+                    MaxTimeout = -1,
+                };
+                var client = new RestClient(options);
+                var request = new RestRequest($"{ConfigurationSettings.AppSettings["okta:Authentication"]}", Method.Post);
+                request.AddHeader("Accept", "application/json");
+                request.AddHeader("Content-Type", "application/json");
+                request.AddHeader("Authorization", $"SSWS {ConfigurationSettings.AppSettings["okta:APIToken"]}");
+                var body = @"{" + "\n" +
+                     @"  ""username"": """ + txtUserName.Value + @"""," + "\n" +
+                     @"  ""password"": """ + txtPassword.Value + @"""," + "\n" +
+                     @"  ""options"": {" + "\n" +
+                     @"    ""multiOptionalFactorEnroll"": true," + "\n" +
+                     @"    ""warnBeforePasswordExpired"": true" + "\n" +
+                     @"  }" + "\n" +
+                     @"}";
+                request.AddStringBody(body, DataFormat.Json);
+                RestResponse response = client.ExecuteAsync(request).Result;
+                if (response.IsSuccessStatusCode)
+                {
+                    OktaUserResponseModel result = JsonConvert.DeserializeObject<OktaUserResponseModel>(response.Content);
+                    ClientSession.EmailAddress = result?._embedded?.user?.profile?.login ?? string.Empty;
+                    ClientSession.UserAccountType = "Okta";
+                    Response.Redirect($"~/frmLandingScreen.aspx", false);
+
+                }
+                else
+                {
+                    if (response.StatusCode == System.Net.HttpStatusCode.Unauthorized)
                     {
-                        login = objLoginDTO.User;
-                        if (objLoginDTO.User.Count > 0)
+                        IList<User> login = new List<User>();
+                        LoginDTO objLoginDTO = new LoginDTO();
+                        bool Base64Pwd = true;
+                        objLoginDTO = UserMngr.CheckUserDetails(txtUserName.Value.Trim(), Encryptionbase64Encode(txtPassword.Value), out Base64Pwd, true);
+                        if (objLoginDTO != null)// objLoginDTO.lstLookUp != null)
                         {
-                            ClientSession.UserName = login[0].user_name;
-                            ClientSession.EmailAddress = login[0].EMail_Address;
-                            ClientSession.UserAccountType = "Capella";
-                            Response.Redirect($"~/frmLandingScreen.aspx", false);
+                            login = objLoginDTO.User;
+                            if (objLoginDTO.User.Count > 0)
+                            {
+                                ClientSession.UserName = login[0].user_name;
+                                ClientSession.EmailAddress = login[0].EMail_Address;
+                                ClientSession.UserAccountType = "Capella";
+                                Response.Redirect($"~/frmLandingScreen.aspx", false);
+                            }
+                            else
+                            {
+                                this.Page.ClientScript.RegisterStartupScript(this.Page.GetType(), string.Empty, "DisplayErrorMessage('010001');setTimeout(function(){ location.href = location.href;}, 3000);", true);
+                            }
                         }
                         else
                         {
-                            this.Page.ClientScript.RegisterStartupScript(this.Page.GetType(), string.Empty, "DisplayErrorMessage('010001');setTimeout(function(){ location.href = location.href;}, 3000);", true);
+                            this.Page.ClientScript.RegisterStartupScript(this.Page.GetType(), string.Empty, "DisplayErrorMessage('010001');", true);
                         }
                     }
                     else
                     {
-                        this.Page.ClientScript.RegisterStartupScript(this.Page.GetType(), string.Empty, "DisplayErrorMessage('010001');", true);
-                    }               
+                        this.Page.ClientScript.RegisterStartupScript(this.Page.GetType(), string.Empty, "DisplayErrorMessage('010025')", true);
+                    }
+                }
+            }
+            else
+            {
+                IList<User> login = new List<User>();
+                LoginDTO objLoginDTO = new LoginDTO();
+                bool Base64Pwd = true;
+                objLoginDTO = UserMngr.CheckUserDetails(txtUserName.Value.Trim(), Encryptionbase64Encode(txtPassword.Value), out Base64Pwd, true);
+                if (objLoginDTO != null)// objLoginDTO.lstLookUp != null)
+                {
+                    login = objLoginDTO.User;
+                    if (objLoginDTO.User.Count > 0)
+                    {
+                        ClientSession.UserName = login[0].user_name;
+                        ClientSession.EmailAddress = login[0].EMail_Address;
+                        ClientSession.UserAccountType = "Capella";
+                        Response.Redirect($"~/frmLandingScreen.aspx", false);
+                    }
+                    else
+                    {
+                        this.Page.ClientScript.RegisterStartupScript(this.Page.GetType(), string.Empty, "DisplayErrorMessage('010001');setTimeout(function(){ location.href = location.href;}, 3000);", true);
+                    }
                 }
                 else
                 {
-                    this.Page.ClientScript.RegisterStartupScript(this.Page.GetType(), string.Empty, "DisplayErrorMessage('010025')", true);
+                    this.Page.ClientScript.RegisterStartupScript(this.Page.GetType(), string.Empty, "DisplayErrorMessage('010001');", true);
                 }
             }
         }
