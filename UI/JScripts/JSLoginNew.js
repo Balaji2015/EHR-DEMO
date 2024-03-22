@@ -258,3 +258,10 @@ Date.prototype.dst = function () {
     else
         return false;
 }
+
+$(top.window.document).find('#btnErrorOkCancel').unbind("click");
+$(top.window.document).find('#btnErrorOkCancel').on("click", function () {
+    if ($('#pErrorMsg').text() == 'Invalid User Name and/or Password.') {
+        location.href = location.href;
+    }
+});

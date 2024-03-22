@@ -172,7 +172,7 @@ namespace Acurus.Capella.UI
                 {
                     if (login[0].Is_Down_Time == "Y")
                     {
-                        ScriptManager.RegisterStartupScript(this, this.Page.GetType(), string.Empty, "DisplayErrorMessage('010014');setTimeout(function(){ location.href = \"/frmLoginNew.aspx\";}, 3000);", true);
+                        ScriptManager.RegisterStartupScript(this, this.Page.GetType(), string.Empty, "DisplayErrorMessage('010014');", true);
                         UtilityManager.inserttologgingtable(ClientSession.EncounterId.ToString(), ClientSession.HumanId.ToString(), ClientSession.UserName, ClientSession.PhysicianId.ToString(), "Login btnOk : End", DateTime.Now, hdnGroupId.Value, "frmLogin");
 
                         return;
@@ -404,15 +404,15 @@ namespace Acurus.Capella.UI
                 }
                 else
                 {
-                    this.Page.ClientScript.RegisterStartupScript(this.Page.GetType(), string.Empty, "DisplayErrorMessage('010001');setTimeout(function(){ location.href = \"/frmLoginNew.aspx\";}, 3000);", true);
+                    this.Page.ClientScript.RegisterStartupScript(this.Page.GetType(), string.Empty, "DisplayErrorMessage('010001');", true);
                     return;
                 }
             }
             else
             {
-                this.Page.ClientScript.RegisterStartupScript(this.Page.GetType(), string.Empty, "DisplayErrorMessage('010001');setTimeout(function(){ location.href = \"/frmLoginNew.aspx\";}, 3000);", true);
+                this.Page.ClientScript.RegisterStartupScript(this.Page.GetType(), string.Empty, "DisplayErrorMessage('010001');", true);
                 //Response.Redirect("/frmLoginNew.aspx");
-                //this.Page.ClientScript.RegisterStartupScript(this.Page.GetType(), string.Empty, "DisplayErrorMessage('010001');setTimeout(function(){window.location.href ='/frmLoginNew.aspx'}, 3000);", true);
+                //this.Page.ClientScript.RegisterStartupScript(this.Page.GetType(), string.Empty, "DisplayErrorMessage('010001');", true);
                 return;
             }
             #endregion

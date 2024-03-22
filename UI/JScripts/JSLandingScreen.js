@@ -613,3 +613,11 @@ function EHRLanding(FileName) {
 
 
 }
+
+$(top.window.document).find('#btnErrorOkCancel').unbind("click");
+$(top.window.document).find('#btnErrorOkCancel').on("click", function () {
+    if ($('#pErrorMsg').text() == 'Invalid User Name and/or Password.'
+        || $('#pErrorMsg').text() == 'Capella is undergoing scheduled downtime. The application will now exit.') {
+        location.href = 'frmLoginNew.aspx';
+    }
+});
