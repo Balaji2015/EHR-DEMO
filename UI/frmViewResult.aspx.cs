@@ -171,8 +171,9 @@ namespace Acurus.Capella.UI
                 //Cap - 1704
                 Session["Order_Id"] = 0;
                 if (Request["OrderSubmitId"] != null && Request["OrderSubmitId"] != "")
-
+                {
                     Session["Order_Id"] = Request["OrderSubmitId"];
+                }                   
 
                 #region Opening from Patient_Pane
                 if (Request["Opening_from"] != null && Request["Opening_from"] == "Patient_Pane") //Opening from Left side Patient Pane
