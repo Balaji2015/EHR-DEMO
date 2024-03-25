@@ -170,7 +170,7 @@ namespace Acurus.Capella.UI
                     OktaUserResponseModel result = JsonConvert.DeserializeObject<OktaUserResponseModel>(response.Content);
                     ClientSession.EmailAddress = result?._embedded?.user?.profile?.login ?? string.Empty;
                     ClientSession.UserAccountType = "Okta";
-                    Response.Redirect($"~/frmLandingScreen.aspx", false);
+                    Response.Redirect($"~/frmLandingScreen.aspx?UserAccountType=Okta", false);
 
                 }
                 else
@@ -189,7 +189,7 @@ namespace Acurus.Capella.UI
                                 ClientSession.UserName = login[0].user_name;
                                 ClientSession.EmailAddress = login[0].EMail_Address;
                                 ClientSession.UserAccountType = "Capella";
-                                Response.Redirect($"~/frmLandingScreen.aspx", false);
+                                Response.Redirect($"~/frmLandingScreen.aspx?UserAccountType=Capella", false);
                             }
                             else
                             {
@@ -221,7 +221,7 @@ namespace Acurus.Capella.UI
                         ClientSession.UserName = login[0].user_name;
                         ClientSession.EmailAddress = login[0].EMail_Address;
                         ClientSession.UserAccountType = "Capella";
-                        Response.Redirect($"~/frmLandingScreen.aspx", false);
+                        Response.Redirect($"~/frmLandingScreen.aspx?UserAccountType=Capella", false);
                     }
                     else
                     {
