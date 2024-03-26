@@ -32,7 +32,7 @@ namespace Acurus.Capella.UI
 
             //Jira CAP-1893
             //string sUserAccountType = !string.IsNullOrWhiteSpace(ClientSession.UserAccountType) ? ClientSession.UserAccountType : (Request.Form["UserAccountType"] ?? string.Empty);
-            string sUserAccountType = !string.IsNullOrWhiteSpace(ClientSession.UserAccountType) ? ClientSession.UserAccountType : (Request.QueryString["UserAccountType"] ?? string.Empty);
+            string sUserAccountType = !string.IsNullOrWhiteSpace(ClientSession.UserAccountType) ? ClientSession.UserAccountType : (Request.Form["UserAccountType"] ?? Request.QueryString["UserAccountType"] ?? string.Empty);
             
             if (string.IsNullOrEmpty(sUserAccountType))
             {
@@ -56,11 +56,11 @@ namespace Acurus.Capella.UI
 
             if(sUserAccountType == "Capella")
             {
-                sUserName = !string.IsNullOrWhiteSpace(ClientSession.UserName) ? ClientSession.UserName : (Request.Form["UserName"] ?? string.Empty);
+                sUserName = !string.IsNullOrWhiteSpace(ClientSession.UserName) ? ClientSession.UserName : (Request.Form["UserName"] ?? Request.QueryString["RequestedUserName"] ?? string.Empty);
             }
             else
             {
-            sUserName = !string.IsNullOrWhiteSpace(ClientSession.EmailAddress) ? ClientSession.EmailAddress : (Request.Form["EMailAddress"] ?? string.Empty);
+                sUserName = !string.IsNullOrWhiteSpace(ClientSession.EmailAddress) ? ClientSession.EmailAddress : (Request.Form["EMailAddress"] ?? Request.QueryString["EMailAddress"] ?? string.Empty);
             }
 
             #region Region - Login Page Load

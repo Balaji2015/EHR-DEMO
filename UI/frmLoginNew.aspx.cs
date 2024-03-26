@@ -170,7 +170,7 @@ namespace Acurus.Capella.UI
                     OktaUserResponseModel result = JsonConvert.DeserializeObject<OktaUserResponseModel>(response.Content);
                     ClientSession.EmailAddress = result?._embedded?.user?.profile?.login ?? string.Empty;
                     ClientSession.UserAccountType = "Okta";
-                    Response.Redirect($"~/frmLandingScreen.aspx?UserAccountType=Okta", false);
+                    Response.Redirect($"~/frmLandingScreen.aspx?UserAccountType=Okta&EMailAddress={ClientSession.EmailAddress}", false);
 
                 }
                 else
@@ -189,11 +189,11 @@ namespace Acurus.Capella.UI
                                 ClientSession.UserName = login[0].user_name;
                                 ClientSession.EmailAddress = login[0].EMail_Address;
                                 ClientSession.UserAccountType = "Capella";
-                                Response.Redirect($"~/frmLandingScreen.aspx?UserAccountType=Capella", false);
+                                Response.Redirect($"~/frmLandingScreen.aspx?UserAccountType=Capella&RequestedUserName={ClientSession.UserName}", false);
                             }
                             else
                             {
-                                this.Page.ClientScript.RegisterStartupScript(this.Page.GetType(), string.Empty, "DisplayErrorMessage('010001');setTimeout(function(){ location.href = location.href;}, 3000);", true);
+                                this.Page.ClientScript.RegisterStartupScript(this.Page.GetType(), string.Empty, "DisplayErrorMessage('010001');", true);
                             }
                         }
                         else
@@ -221,11 +221,11 @@ namespace Acurus.Capella.UI
                         ClientSession.UserName = login[0].user_name;
                         ClientSession.EmailAddress = login[0].EMail_Address;
                         ClientSession.UserAccountType = "Capella";
-                        Response.Redirect($"~/frmLandingScreen.aspx?UserAccountType=Capella", false);
+                        Response.Redirect($"~/frmLandingScreen.aspx?UserAccountType=Capella&RequestedUserName={ClientSession.UserName}", false);
                     }
                     else
                     {
-                        this.Page.ClientScript.RegisterStartupScript(this.Page.GetType(), string.Empty, "DisplayErrorMessage('010001');setTimeout(function(){ location.href = location.href;}, 3000);", true);
+                        this.Page.ClientScript.RegisterStartupScript(this.Page.GetType(), string.Empty, "DisplayErrorMessage('010001');", true);
                     }
                 }
                 else

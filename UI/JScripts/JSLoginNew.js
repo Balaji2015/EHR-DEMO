@@ -259,6 +259,13 @@ Date.prototype.dst = function () {
         return false;
 }
 
+$(top.window.document).find('#btnErrorCancel').unbind("click");
+$(top.window.document).find('#btnErrorCancel').on("click", function () {
+    if ($('#pErrorMsg').text() == 'Invalid User Name and/or Password.') {
+        location.href = location.href;
+    }
+});
+
 $(top.window.document).find('#btnErrorOkCancel').unbind("click");
 $(top.window.document).find('#btnErrorOkCancel').on("click", function () {
     if ($('#pErrorMsg').text() == 'Invalid User Name and/or Password.') {
