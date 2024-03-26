@@ -406,7 +406,7 @@ namespace Acurus.Capella.UI
                 }
                 else
                 {
-                    ScriptManager.RegisterStartupScript(this, typeof(frmACOValidation), "CancelKeyDefault", "alert('Please check the mandatory items marked in red color in social histroy.');", true);
+                    ScriptManager.RegisterStartupScript(this, typeof(frmACOValidation), "CancelKeyDefault", "alert('Please check the mandatory items marked in red color in social history.');", true);
                 }
 
             }

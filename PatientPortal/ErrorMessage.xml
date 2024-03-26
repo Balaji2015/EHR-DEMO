@@ -2698,7 +2698,7 @@
   <Message number="9091004" Type="OK" Text="Incorrect Doctor Number"></Message>
   <Message number="9091005" Type="OK" Text="Please Enter the Doctor Number"></Message>
   <Message number="9091006" Type="ToolStrip" Text="Saved Successfully."></Message>
-  <Message number="180062" Type="OK" Text="Please check the mandatory items marked in red color in social histroy." />
+  <Message number="180062" Type="OK" Text="Please check the mandatory items marked in red color in social history." />
   <Message number="9091007" Type="OK" Text="Source File Doesn't Exist."></Message>
   <Message number="9091008" Type="OK" Text="Destination File Doesn't Exist."></Message>
   <Message number="9091009" Type="OK" Text="Please select a EOB Files to Open"></Message>
@@ -2728,7 +2728,7 @@
   <Message number="1091011" Type="OK" Text="Please select discussed by."></Message>
   <Message number="1091012" Type="ToolStrip" Text="Saved successfully."></Message>
   <Message number="1091013" Type="OK" Text="Please select the order."></Message>
-  <Message number="1091014" Type="OK" Text="Please check the mandatory items marked in red color in social histroy."></Message>
+  <Message number="1091014" Type="OK" Text="Please check the mandatory items marked in red color in social history."></Message>
 
   <!--Srividhya - Add Diagnosis-->
   <Message number="3080101" Type="OK" Text="Enter Diagnosis."></Message>
