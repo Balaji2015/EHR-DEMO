@@ -30,6 +30,7 @@ namespace Acurus.Capella.UI
             //Direct URL should be suspended
             string sUserName = string.Empty;
 
+            //Jira CAP-1893
             //string sUserAccountType = !string.IsNullOrWhiteSpace(ClientSession.UserAccountType) ? ClientSession.UserAccountType : (Request.Form["UserAccountType"] ?? string.Empty);
             string sUserAccountType = !string.IsNullOrWhiteSpace(ClientSession.UserAccountType) ? ClientSession.UserAccountType : (Request.QueryString["UserAccountType"] ?? string.Empty);
             
