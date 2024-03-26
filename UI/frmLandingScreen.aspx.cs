@@ -32,6 +32,8 @@ namespace Acurus.Capella.UI
 
             string sUserAccountType = !string.IsNullOrWhiteSpace(ClientSession.UserAccountType) ? ClientSession.UserAccountType : (Request.Form["UserAccountType"] ?? string.Empty);
 
+            lblCheck.InnerText = "ClientSession.UserAccountType =" + ClientSession.UserAccountType + ";Request.Form['UserAccountType'] =" + Request.QueryString["UserAccountType"] + ";";
+            return;
             if (string.IsNullOrEmpty(sUserAccountType))
             {
                 Response.Redirect("/frmLoginNew.aspx");
