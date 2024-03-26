@@ -293,9 +293,8 @@ function btnSave_Clicked(sender, args) {
             window.parent.parent.parent.parent.theForm.ctl00_C5POBody_hdnIsSaveEnable.value = false;
         else
             window.parent.theForm.hdnSaveEnable.value = false;
-        sender.set_autoPostBack(true);
-        //CAP-1811
-        $('#btnSave').trigger('click');
+        //CAP-1887
+        __doPostBack('btnSave', "true");
         { sessionStorage.setItem('StartLoading', 'true'); StartLoadFromPatChart();}
     }
 }
