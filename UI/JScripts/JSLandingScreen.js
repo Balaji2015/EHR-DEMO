@@ -618,7 +618,7 @@ $(top.window.document).find('#btnErrorCancel').unbind("click");
 $(top.window.document).find('#btnErrorCancel').on("click", function () {
     if ($('#pErrorMsg').text() == 'Invalid User Name and/or Password.'
         || $('#pErrorMsg').text() == 'Capella is undergoing scheduled downtime. The application will now exit.'
-        || $('#pErrorMsg').text() == 'You are not a permitted user.Please contact the System Administrator.') {
+        || $('#pErrorMsg').text() == 'You are not a permitted user. Please contact the System Administrator.') {
         location.href = 'frmLoginNew.aspx';
     }
 });
@@ -627,7 +627,7 @@ $(top.window.document).find('#btnErrorOkCancel').unbind("click");
 $(top.window.document).find('#btnErrorOkCancel').on("click", function () {
     if ($('#pErrorMsg').text() == 'Invalid User Name and/or Password.'
         || $('#pErrorMsg').text() == 'Capella is undergoing scheduled downtime. The application will now exit.'
-        || $('#pErrorMsg').text() == 'You are not a permitted user.Please contact the System Administrator.') {
+        || $('#pErrorMsg').text() == 'You are not a permitted user. Please contact the System Administrator.') {
         location.href = 'frmLoginNew.aspx';
     }
 });
