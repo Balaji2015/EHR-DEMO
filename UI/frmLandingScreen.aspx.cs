@@ -63,6 +63,12 @@ namespace Acurus.Capella.UI
                 sUserName = !string.IsNullOrWhiteSpace(ClientSession.EmailAddress) ? ClientSession.EmailAddress : (Request.Form["EMailAddress"] ?? Request.QueryString["EMailAddress"] ?? string.Empty);
             }
 
+            if (string.IsNullOrWhiteSpace(sUserName))
+            {
+                this.Page.ClientScript.RegisterStartupScript(this.Page.GetType(), string.Empty, "DisplayErrorMessage('000009');", true);
+                return;
+            }
+
             #region Region - Login Page Load
 
             if (System.Configuration.ConfigurationSettings.AppSettings["VersionConfiguration"] != null)
