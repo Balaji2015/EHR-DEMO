@@ -57,6 +57,8 @@ namespace Acurus.Capella.UI
             if(sUserAccountType == "Capella")
             {
                 sUserName = !string.IsNullOrWhiteSpace(ClientSession.UserName) ? ClientSession.UserName : (Request.Form["UserName"] ?? Request.QueryString["RequestedUserName"] ?? string.Empty);
+                lblcheck.InnerHtml = $"ClientSession.UserName={ClientSession.UserName};Request.Form[UserName]={Request.Form["UserName"]};Request.QueryString[RequestedUserName]={Request.QueryString["RequestedUserName"]};";
+                return;
             }
             else
             {

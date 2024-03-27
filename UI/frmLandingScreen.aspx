@@ -234,6 +234,7 @@
 <body>
     <form id="form1" runat="server">
         <div>
+            <label id="lblcheck" runat="server"></label>
 
              <div id="divErrorMessage" class="modal modal-wide fade" style="z-index: 50000000!important;">
                         <div class="modal-dialog" style="width: 30%; margin-top: 0%;">
