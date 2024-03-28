@@ -40,11 +40,15 @@ namespace Acurus.Capella.UI
             //Jira CAP-1893
             //string sUserAccountType = !string.IsNullOrWhiteSpace(ClientSession.UserAccountType) ? ClientSession.UserAccountType : (Request.Form["UserAccountType"] ?? string.Empty);
             string sUserAccountType = !string.IsNullOrWhiteSpace(ClientSession.UserAccountType) ? ClientSession.UserAccountType : (Request.Form["UserAccountType"] ?? Request.QueryString["UserAccountType"] ?? string.Empty);
-            
+
             if (string.IsNullOrEmpty(sUserAccountType))
             {
                 Response.Redirect("/frmLoginNew.aspx");
                 return;
+            }
+            else
+            {
+                ClientSession.UserAccountType = sUserAccountType;
             }
 
             //var code = Request.Params["code"];
