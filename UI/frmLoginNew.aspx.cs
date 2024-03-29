@@ -109,9 +109,8 @@ namespace Acurus.Capella.UI
                         {
                             ClientSession.UserAccountType = "Microsoft";
                             var redirectURL = GetOktaAuthorizationUrl(txtUserName.Value);
-                            // Response.Redirect(redirectURL,
-                            // false);
-                            Server.Transfer(redirectURL);
+                            Response.Redirect(redirectURL,
+                             false);
                         }
                         else
                         {
