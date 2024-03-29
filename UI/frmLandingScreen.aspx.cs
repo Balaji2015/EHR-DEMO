@@ -29,18 +29,19 @@ namespace Acurus.Capella.UI
         {
             //Direct URL should be suspended
             string sUserName = string.Empty;
-
             var code = Request.Params["code"];
-            if (!string.IsNullOrEmpty(code))
+            if (!IsPostBack)
             {
-                ClientSession.UserAccountType = "Microsoft";
-                GenerateAccessToken(code);
+                if (!string.IsNullOrEmpty(code))
+                {
+                    ClientSession.UserAccountType = "Microsoft";
+                    GenerateAccessToken(code);
+                }
+                else
+                {
+                    ClientSession.UserAccountType = string.Empty;
+                }
             }
-            else
-            {
-                ClientSession.UserAccountType = string.Empty;
-            }
-
             //Jira CAP-1893
             //string sUserAccountType = !string.IsNullOrWhiteSpace(ClientSession.UserAccountType) ? ClientSession.UserAccountType : (Request.Form["UserAccountType"] ?? string.Empty);
             string sUserAccountType = !string.IsNullOrWhiteSpace(ClientSession.UserAccountType) ? ClientSession.UserAccountType : (Request.Form["UserAccountType"] ?? Request.QueryString["UserAccountType"] ?? string.Empty);
