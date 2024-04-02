@@ -950,7 +950,17 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
                             IList<PhysicianLibrary> CheckPhylist = objPhyLibraryManager.GetPhysicianByNPI(CheckORCList[0].ORC_Ordering_Provider_ID);
                             if (CheckPhylist.Count > 0)
                             {
-                                IList<User> checkOwnerDetail = objUserManager.GetUserbyPhysicianLibraryID(CheckPhylist[0].Id);
+                                //IList<User> checkOwnerDetail = objUserManager.GetUserbyPhysicianLibraryID(CheckPhylist[0].Id);
+                                IList<User> checkOwnerDetail = new List<User>();
+                                IList<User> tempUser = new List<User>();
+                                foreach (PhysicianLibrary CheckPhy in CheckPhylist)
+                                {
+                                    tempUser = objUserManager.GetUserbyPhysicianLibraryID(CheckPhy.Id);
+                                    if (tempUser.Count > 0 && tempUser[0].Legal_Org.ToUpper() == "CMG")
+                                    {
+                                        checkOwnerDetail.Add(tempUser[0]);
+                                    }
+                                }
                                 if (checkOwnerDetail.Count == 0)
                                 {
                                     ilstErrorLog[i].Reason_Code = "ACUR_LAB_05";
@@ -1337,7 +1347,17 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
                             //select p).ToList<PhysicianLibrary>();
                             if (OwnerDetailList.Count > 0)
                             {
-                                IList<User> OwnerDetailUser = objUserManager.GetUserbyPhysicianLibraryID(OwnerDetailList[0].Id);
+                                //IList<User> OwnerDetailUser = objUserManager.GetUserbyPhysicianLibraryID(OwnerDetailList[0].Id);
+                                IList<User> OwnerDetailUser = new List<User>();
+                                IList<User> tempUser = new List<User>();
+                                foreach (PhysicianLibrary CheckPhy in OwnerDetailList)
+                                {
+                                    tempUser = objUserManager.GetUserbyPhysicianLibraryID(CheckPhy.Id);
+                                    if (tempUser.Count > 0 && tempUser[0].Legal_Org.ToUpper() == "CMG")
+                                    {
+                                        OwnerDetailUser.Add(tempUser[0]);
+                                    }
+                                }
                                 //(from u in User
                                 // where u.Physician_Library_ID == OwnerDetailList[0].Id
                                 // select u).ToList<User>();
@@ -1529,8 +1549,17 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
 
                             if (PhyLibraryList.Count > 0)
                             {
-                                IList<User> OwnerDetail = objUserManager.GetUserbyPhysicianLibraryID(PhyLibraryList[0].Id);
-
+                                //IList<User> OwnerDetail = objUserManager.GetUserbyPhysicianLibraryID(PhyLibraryList[0].Id);
+                                IList<User> OwnerDetail  = new List<User>();
+                                IList<User> tempUser = new List<User>();
+                                foreach (PhysicianLibrary CheckPhy in PhyLibraryList)
+                                {
+                                    tempUser = objUserManager.GetUserbyPhysicianLibraryID(CheckPhy.Id);
+                                    if (tempUser.Count > 0 && tempUser[0].Legal_Org.ToUpper() == "CMG")
+                                    {
+                                        OwnerDetail.Add(tempUser[0]);
+                                    }
+                                }
                                 if (OwnerDetail.Count() > 0)
 
                                 {
