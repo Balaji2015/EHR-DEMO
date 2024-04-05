@@ -406,8 +406,10 @@ function grdReferralOrders_OnCommand(sender, args) {
             document.getElementById("hdnRowIndex").value = delIndex;
             delIndex = -1;
             {sessionStorage.setItem('StartLoading', 'true'); StartLoadFromPatChart();}
-            //CAP-1436
-            window.parent.parent.parent.parent.theForm.ctl00_C5POBody_hdnIsSaveEnable.value = false;
+            //CAP-1436 //CAP-1777-My-Orders screen getting crashed and closed automatically when click on EDIT button
+            if (window?.parent?.parent?.parent?.parent?.theForm?.ctl00_C5POBody_hdnIsSaveEnable?.value != undefined) {
+                window.parent.parent.parent.parent.theForm.ctl00_C5POBody_hdnIsSaveEnable.value = false;
+            }
             document.getElementById("btnDelete").click();
 
         }
