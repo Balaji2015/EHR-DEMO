@@ -1,5 +1,6 @@
 ﻿function changeReload() {
     window.parent.location.href = window.parent.location.href;
+    RadWindowClose();
 }
 
 
