@@ -232,6 +232,14 @@ namespace Acurus.Capella.UI
             //FillPhysicianUser PhyUserList = objPhysicianManager.GetPhysicianandUser(true, ClientSession.FacilityName);
             IList<PhysicianLibrary> PhyList = GetPhysicianList(ClientSession.FacilityName);
             NotInList = FillComboBox(PhyList);
+            //CAP-1910
+            if (!PhyList.Any(a => a.Id == ClientSession.PhysicianId))
+            {
+                cboPhysician.Items.Clear();
+                chkShowAll.Checked = true;
+                PhyList = GetPhysicianList(string.Empty);
+                NotInList = FillComboBox(PhyList);
+            }
             if (ClientSession.UserRole.ToUpper()=="SCRIBE")
             {
                 cboPhysician.SelectedIndex = 0;
