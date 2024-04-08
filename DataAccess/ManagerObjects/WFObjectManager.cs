@@ -941,7 +941,7 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
             try
             {
                 iTryCount = 0;
-
+                
             TryAgain:
                 int iResult = 0;
 
@@ -1144,16 +1144,22 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
                     {
                         string[] sAlloc = WFobj.Process_Allocation.Split('|');
                         string sEquivalantOwner = string.Empty;
-                        //for (int i = 0; i < sAlloc.Length; i++)
-                        for (int i = sAlloc.Length - 1; i >= 0; i--)
+
+                        if (sAlloc.Length > 0)
                         {
-                            if (sAlloc[i].StartsWith(Proclist[0].Equivalant_Allocation_Process + "-") == true)
+                            string[] sAllocCopy = new string[sAlloc.Length];
+                            Array.Copy(sAlloc, sAllocCopy, sAlloc.Length);
+                            //for (int i = 0; i < sAlloc.Length; i++)
+                            for (int i = sAllocCopy.Length - 1; i >= 0; i--)
                             {
-                                string[] sString = sAlloc[i].Split('-');
-                                sEquivalantOwner = sString[1];
-                                WFobj.Current_Owner = sEquivalantOwner;
-                                sOwner = sEquivalantOwner;
-                                break;
+                                if (sAllocCopy[i].StartsWith(Proclist[0].Equivalant_Allocation_Process + "-") == true)
+                                {
+                                    string[] sString = sAllocCopy[i].Split('-');
+                                    sEquivalantOwner = sString[1];
+                                    WFobj.Current_Owner = sEquivalantOwner;
+                                    sOwner = sEquivalantOwner;
+                                    break;
+                                }
                             }
                         }
                     }
