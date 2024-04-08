@@ -13,6 +13,9 @@ using System.Collections;
 using System.Security.Authentication;
 using Acurus.Capella.UI;
 using System.Net;
+using System.Reflection;
+using System.Xml;
+using System.Configuration;
 
 namespace Acurus.Capella.ImmunizationSubmission
 {
@@ -141,6 +144,7 @@ namespace Acurus.Capella.ImmunizationSubmission
                 string sConnectivityTest = string.Empty;
                 string sHL7Message = string.Empty;
                 HL7Generator hl7Gen = new HL7Generator();
+                string str2 = string.Empty;
                 Console.WriteLine("Generate Immunization result...");
 
                 if (PhysicianList.Count > 0)
@@ -154,16 +158,41 @@ namespace Acurus.Capella.ImmunizationSubmission
                 {
                     try
                     {
+                        string immunizationRegistry = hl7Gen.CreateImmunizationRegistry(hn, PhysicianList[0], lstFillClinicalSummary, "");
+                        //Cap - 1828 - Old Code - Start
+                        //Console.WriteLine("Connect to production server...");
+                        //ImmunizationSubmissionProduction.IS_PortTypeClient objImmunizationServiceProduction = new ImmunizationSubmissionProduction.IS_PortTypeClient();
+                        //////ServicePointManager.SecurityProtocol = (SecurityProtocolType)192 | (SecurityProtocolType)768 | (SecurityProtocolType)3072;
+                        ////ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls;
+                        //const SslProtocols _Tls12 = (SslProtocols)0x00000C00;
+                        //const SecurityProtocolType Tls12 = (SecurityProtocolType)_Tls12;
+                        //ServicePointManager.SecurityProtocol = Tls12;
+                        //sConnectivityTest = objImmunizationServiceProduction.connectivityTest("TestPatientSep9");
+                        //sHL7Message = objImmunizationServiceProduction.submitSingleMessage("SF-008625", "Qbe3iQzm", "CAIR", sResult);
+                        //Console.WriteLine("Submitted Sucessfully...");
+                        //Cap - 1828 - Old Code - End
+                        //Cap - 1828 - New Code - Start
                         Console.WriteLine("Connect to production server...");
-                        ImmunizationSubmissionProduction.IS_PortTypeClient objImmunizationServiceProduction = new ImmunizationSubmissionProduction.IS_PortTypeClient();
-                        ////ServicePointManager.SecurityProtocol = (SecurityProtocolType)192 | (SecurityProtocolType)768 | (SecurityProtocolType)3072;
-                        //ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls;
-                        const SslProtocols _Tls12 = (SslProtocols)0x00000C00;
-                        const SecurityProtocolType Tls12 = (SecurityProtocolType)_Tls12;
-                        ServicePointManager.SecurityProtocol = Tls12;
-                        sConnectivityTest = objImmunizationServiceProduction.connectivityTest("TestPatientSep9");
-                        sHL7Message = objImmunizationServiceProduction.submitSingleMessage("SF-008625", "Qbe3iQzm", "CAIR", sResult);
+                        HttpWebRequest soapWebRequest = ImmunizationUtilityManager.CreateSOAPWebRequest();
+                        string empty3 = string.Empty;
+                        foreach (string readAllLine in System.IO.File.ReadAllLines(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location) + "\\ConfigXML\\SOAPTemplate.txt"))
+                            empty3 += readAllLine;
+                        XmlDocument xmlDocument = new XmlDocument();
+                        string xml = empty3.Replace("ImmunizationHL7Content", immunizationRegistry);
+                        xmlDocument.LoadXml(xml);
+                        using (Stream requestStream = soapWebRequest.GetRequestStream())
+                            xmlDocument.Save(requestStream);
+                        using (WebResponse response = soapWebRequest.GetResponse())
+                        {
+                            using (StreamReader streamReader = new StreamReader(response.GetResponseStream()))
+                            {
+                                string end = streamReader.ReadToEnd();
+                                Console.WriteLine(end);
+                                str2 = end;
+                            }
+                        }
                         Console.WriteLine("Submitted Sucessfully...");
+                        //Cap - 1828 - New Code - End
                     }
                     catch (Exception ex)
                     {
@@ -236,8 +265,8 @@ namespace Acurus.Capella.ImmunizationSubmission
                     }
                 }
 
-                string test = sHL7Message;
-
+                //  string test = sHL7Message;
+                string test = str2;
 
                 string[] resultsplit = test.Split('|');
                 if (test.Contains("MSA|AA|"))
@@ -291,5 +320,15 @@ namespace Acurus.Capella.ImmunizationSubmission
 
             }
         }
+
+        public static HttpWebRequest CreateSOAPWebRequest()
+        {
+            HttpWebRequest soapWebRequest = (HttpWebRequest)WebRequest.Create(ConfigurationSettings.AppSettings["SubmitURL"]);
+            soapWebRequest.ContentType = "application/soap+xml;charset=UTF-8;action=\"urn: cdc: iisb: 2011:submitSingleMessage\"";
+            soapWebRequest.Accept = "text/xml";
+            soapWebRequest.Method = "POST";
+            return soapWebRequest;
+        }
+
     }
 }

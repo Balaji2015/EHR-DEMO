@@ -58,24 +58,27 @@ function OnFormClose() {
 }
 
 function btnClearAll_ClientClicked(button, args) {
-    if (button != undefined) {
-        var text = button.get_text();
-        if (text == "Clear All") {
+    //CAP-1912
+    var btnText = $('#btnClearAll').val();
+    if (btnText != undefined) {
+        if (btnText == "Clear All") {
             if (DisplayErrorMessage('020007') == true) {
                 document.getElementById("isClearAll").value = true;
-                button.set_autoPostBack(true);
+                document.getElementById('btnClear').click();
+                //button.set_autoPostBack(true);
             }
-            else
-                button.set_autoPostBack(false);
+            //else
+            //    button.set_autoPostBack(false);
         }
         else
-            if (text == "Cancel") {
+            if (btnText == "Cancel") {
                 if (DisplayErrorMessage('020008') == true) {
                     document.getElementById("isClearAll").value = true;
-                    button.set_autoPostBack(true);
+                    document.getElementById('btnClear').click();
+                    //button.set_autoPostBack(true);
                 }
-                else
-                    button.set_autoPostBack(false);
+                //else
+                //    button.set_autoPostBack(false);
             }
     }
     else

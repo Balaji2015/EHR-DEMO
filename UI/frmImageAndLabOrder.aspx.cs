@@ -849,6 +849,13 @@ namespace Acurus.Capella.UI
                 btnSelectLocation.Disabled = true;
                 pbSelectICD.Disabled = true;
             }
+            //Jira CAP-1555
+            if (btnOrderSubmit.Attributes["Tag"] != null && btnOrderSubmit.Attributes["Tag"] == "UPDATE")
+            {
+                chkpaperorder.Disabled = true;
+                rbLabOrder.Enabled = false;
+                rbImageOrder.Enabled = false;
+            }
         }
         void SetCollectionDateMand(bool IsMand)
         {
@@ -4193,6 +4200,8 @@ namespace Acurus.Capella.UI
             }
             else
             {
+                //Jira CAP-1749
+                OrdersSubmit objDeleteOrderSubmit = new OrdersSubmit();
                 if (ClientSession.UserCurrentProcess == "MA_REVIEW")
                 {
                     if (objSelectedOrderCode.Lab_ID == UpdateOrderSubmit.Lab_ID)
@@ -4201,13 +4210,27 @@ namespace Acurus.Capella.UI
                     }
                     else
                     {
-                        DelListOrderSubmit.Add(UpdateOrderSubmit);
+                        //Jira CAP-1749
+                        //DelListOrderSubmit.Add(UpdateOrderSubmit);
+                        objDeleteOrderSubmit = UpdateOrderSubmit;
+                        objDeleteOrderSubmit.Is_Deleted = "Y";
+                        objDeleteOrderSubmit.Is_Task_Created = "N";
+                        objDeleteOrderSubmit.Modified_By = ClientSession.UserName;
+                        objDeleteOrderSubmit.Modified_Date_And_Time = UtilityManager.ConvertToUniversal();
+                        DelListOrderSubmit.Add(objDeleteOrderSubmit);
                         UpdateOrdersList = UpdateOrdersList.Except(UpdateOrdersList.Where(a => a.Order_Submit_ID == UpdateOrderSubmit.Id).ToList<Orders>()).ToList<Orders>();
                     }
                 }
                 else
                 {
-                    DelListOrderSubmit.Add(UpdateOrderSubmit);
+                    //Jira CAP-1749
+                    //DelListOrderSubmit.Add(UpdateOrderSubmit);
+                    objDeleteOrderSubmit = UpdateOrderSubmit;
+                    objDeleteOrderSubmit.Is_Deleted = "Y";
+                    objDeleteOrderSubmit.Is_Task_Created = "N";
+                    objDeleteOrderSubmit.Modified_By = ClientSession.UserName;
+                    objDeleteOrderSubmit.Modified_Date_And_Time = UtilityManager.ConvertToUniversal();
+                    DelListOrderSubmit.Add(objDeleteOrderSubmit);
                     UpdateOrdersList = UpdateOrdersList.Except(UpdateOrdersList.Where(a => a.Order_Submit_ID == UpdateOrderSubmit.Id).ToList<Orders>()).ToList<Orders>();
                 }
 

@@ -376,7 +376,7 @@ button.close {
                                                     </td>
                                                     <td style="width: 20%">
                                                         <telerik:RadTextBox ID="txtReferredToFacilityAddress" runat="server" Width="100%" CssClass="Editabletxtbox"
-                                                            Font-Size="Small" MaxLength="50" onkeypress="EnableSaveReferralOrder">
+                                                            Font-Size="Small" MaxLength="1000" onkeypress="EnableSaveReferralOrder">
                                                         </telerik:RadTextBox>
                                                     </td>
                                                 </tr>

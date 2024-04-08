@@ -7096,6 +7096,9 @@ namespace Acurus.Capella.UI
             string sResult = string.Empty;
             string CityCode = string.Empty;
             string LocalNumber = string.Empty;
+            string CellNumber = string.Empty;
+            string CellCityCode = string.Empty;
+            String Phone = string.Empty;
             string RaceIdentifier = string.Empty;
             string RaceValue = string.Empty;
             string EthnicityIdentifier = string.Empty;
@@ -7229,6 +7232,51 @@ namespace Acurus.Capella.UI
                     }
                 }
             }
+            //Cap - 1940
+            if (hn.Cell_Phone_Number != String.Empty)
+            {
+                if (hn.Cell_Phone_Number.Contains(')'))
+                {
+                    string[] Phone_No = hn.Cell_Phone_Number.Split(')');
+                    if (Phone_No.Length > 0)
+                    {
+                        if (hn.Cell_Phone_Number.Contains('('))
+                        {
+                            string[] Code_No = Phone_No[0].ToString().Split('(');
+                            if (Code_No.Length > 0)
+                            {
+                                CellCityCode = Code_No[1].ToString();
+                                if (Phone_No[1].Contains("-"))
+                                    CellNumber = Phone_No[1].Replace("-", "").Trim().ToString();
+                            }
+                        }
+                    }
+                }
+                else
+                {
+                    if (hn.Cell_Phone_Number.Length == 10)
+                    {
+                        CellCityCode = hn.Cell_Phone_Number.Substring(0, 3);
+                        CellNumber = hn.Cell_Phone_Number.Substring(2, 8);
+                    }
+                }
+            }
+
+            if(hn.Home_Phone_No != string.Empty && hn.Cell_Phone_Number != string.Empty)
+            {
+                 Phone = "^PRN^PH^^^" + CityCode + "^" + LocalNumber + "~^PRN^CP^^^" + CellCityCode + "^" + CellNumber;
+            }
+            else if(hn.Home_Phone_No == string.Empty && hn.Cell_Phone_Number != string.Empty)
+            {
+                 Phone = "^PRN^CP^^^" + CellCityCode + "^" + CellNumber;
+            }
+            else if (hn.Cell_Phone_Number == string.Empty && hn.Home_Phone_No != string.Empty)
+            {
+                 Phone = "^PRN^PH^^^" + CityCode + "^" + LocalNumber;
+            }
+            
+
+
             string Mothers_Maiden_First_Name = string.Empty;
             string Mothers_Maiden_Last_Name = string.Empty;
             string Mothers_Maiden_Middle_Name = string.Empty;
@@ -7251,7 +7299,8 @@ namespace Acurus.Capella.UI
                 sSex = hn.Sex.Substring(0, 1);
             if (hn.Patient_Account_External == string.Empty)
             {
-                //CAP-1716,CAP-1719 - Immunization Submission to CAIR Records - To include PI(human_id ) for all  submissions instead of MRN Number 
+                //CAP-1716,CAP-1719 - Immunization Submission to CAIR Records - To include PI(human_id ) for all  submissions instead of MRN Number  
+                //Cap -1940
                 //if (EthnicityIdentifier == string.Empty)
                 //{
                 //    sResult = sResult + "\n" + "PID|1||" + hn.Id + "^^^ACUR^PI||" + hn.Last_Name + "^" + hn.First_Name + "^" + hn.MI + "^^^^L|" + Mothers_Maiden_First_Name + "^" + Mothers_Maiden_Last_Name + "|" + hn.Birth_Date.ToString("yyyyMMdd") + "|" + sSex + "||" + RaceIdentifier + "^" + hn.Race + "^CDCREC|" + hn.Street_Address1 + "^^" + hn.City + "^" + hn.State + "^" + hn.ZipCode + "^USA^L||^PRN^PH^^^" + CityCode + "^" + LocalNumber + "|||||||||";
@@ -7263,16 +7312,17 @@ namespace Acurus.Capella.UI
                 // if (EthnicityIdentifier == string.Empty)
                 if (EthnicityValue == string.Empty)
                 {
-                    sResult = sResult + "\n" + "PID|1||" + hn.Id + "^^^ACUR^PI||" + hn.Last_Name + "^" + hn.First_Name + "^" + hn.MI + "^^^^L|" + Mothers_Maiden_First_Name + "^" + Mothers_Maiden_Last_Name + "|" + hn.Birth_Date.ToString("yyyyMMdd") + "|" + sSex + "||" + RaceIdentifier + "^" + RaceValue + "^CDCREC|" + hn.Street_Address1 + "^^" + hn.City + "^" + hn.State + "^" + hn.ZipCode + "^USA^L||^PRN^PH^^^" + CityCode + "^" + LocalNumber + "|||||||||";
+                    sResult = sResult + "\n" + "PID|1||" + hn.Id + "^^^ACUR^PI||" + hn.Last_Name + "^" + hn.First_Name + "^" + hn.MI + "^^^^L|" + Mothers_Maiden_First_Name + "^" + Mothers_Maiden_Last_Name + "|" + hn.Birth_Date.ToString("yyyyMMdd") + "|" + sSex + "||" + RaceIdentifier + "^" + RaceValue + "^CDCREC|" + hn.Street_Address1 + "^^" + hn.City + "^" + hn.State + "^" + hn.ZipCode + "^USA^L||"+Phone+"|||||||||";
                 }
                 else
                 {
-                    sResult = sResult + "\n" + "PID|1||" + hn.Id + "^^^ACUR^PI||" + hn.Last_Name + "^" + hn.First_Name + "^" + hn.MI + "^^^^L|" + Mothers_Maiden_First_Name + "^" + Mothers_Maiden_Last_Name + "|" + hn.Birth_Date.ToString("yyyyMMdd") + "|" + sSex + "||" + RaceIdentifier + "^" + RaceValue + "^CDCREC|" + hn.Street_Address1 + "^^" + hn.City + "^" + hn.State + "^" + hn.ZipCode + "^USA^L||^PRN^PH^^^" + CityCode + "^" + LocalNumber + "|||||||||" + EthnicityIdentifier + "^" + EthnicityValue + "^CDCREC";
+                    sResult = sResult + "\n" + "PID|1||" + hn.Id + "^^^ACUR^PI||" + hn.Last_Name + "^" + hn.First_Name + "^" + hn.MI + "^^^^L|" + Mothers_Maiden_First_Name + "^" + Mothers_Maiden_Last_Name + "|" + hn.Birth_Date.ToString("yyyyMMdd") + "|" + sSex + "||" + RaceIdentifier + "^" + RaceValue + "^CDCREC|" + hn.Street_Address1 + "^^" + hn.City + "^" + hn.State + "^" + hn.ZipCode + "^USA^L||" + Phone + "|||||||||" + EthnicityIdentifier + "^" + EthnicityValue + "^CDCREC";
                 }
             }
             else
             {
-                //CAP-1716,CAP-1719 - Immunization Submission to CAIR Records - To include PI(human_id ) for all  submissions instead of MRN Number 
+                //CAP-1716,CAP-1719 - Immunization Submission to CAIR Records - To include PI(human_id ) for all  submissions instead of MRN Number
+                //Cap - 1939 & 1940
                 //if (EthnicityIdentifier == string.Empty)
                 //{
                 //    sResult = sResult + "\n" + "PID|1||" + hn.Id + "^^^ACUR^PI~" + hn.Patient_Account_External + "^^^MAA^SS||" + hn.Last_Name + "^" + hn.First_Name + "^" + hn.MI + "^^^^L|" + Mothers_Maiden_First_Name + "^" + Mothers_Maiden_Last_Name + "|" + hn.Birth_Date.ToString("yyyyMMdd") + "|" + sSex + "||" + RaceIdentifier + "^" + hn.Race + "^CDCREC|" + hn.Street_Address1 + "^^" + hn.City + "^" + hn.State + "^" + hn.ZipCode + "^USA^L||^PRN^PH^^^" + CityCode + "^" + LocalNumber + "^~^NET^^" + hn.EMail + "|||||||||";
@@ -7284,11 +7334,11 @@ namespace Acurus.Capella.UI
                 //if (EthnicityIdentifier == string.Empty)
                 if (EthnicityValue == string.Empty)
                 {
-                    sResult = sResult + "\n" + "PID|1||" + hn.Id + "^^^ACUR^PI~" + hn.Patient_Account_External + "^^^MAA^SS||" + hn.Last_Name + "^" + hn.First_Name + "^" + hn.MI + "^^^^L|" + Mothers_Maiden_First_Name + "^" + Mothers_Maiden_Last_Name + "|" + hn.Birth_Date.ToString("yyyyMMdd") + "|" + sSex + "||" + RaceIdentifier + "^" + RaceValue + "^CDCREC|" + hn.Street_Address1 + "^^" + hn.City + "^" + hn.State + "^" + hn.ZipCode + "^USA^L||^PRN^PH^^^" + CityCode + "^" + LocalNumber + "^~^NET^^" + hn.EMail + "|||||||||";
+                    sResult = sResult + "\n" + "PID|1||" + hn.Id + "^^^ACUR^PI~" + hn.Patient_Account_External + "^^^MAA^PT||" + hn.Last_Name + "^" + hn.First_Name + "^" + hn.MI + "^^^^L|" + Mothers_Maiden_First_Name + "^" + Mothers_Maiden_Last_Name + "|" + hn.Birth_Date.ToString("yyyyMMdd") + "|" + sSex + "||" + RaceIdentifier + "^" + RaceValue + "^CDCREC|" + hn.Street_Address1 + "^^" + hn.City + "^" + hn.State + "^" + hn.ZipCode + "^USA^L||" + Phone + "~^NET^^" + hn.EMail + "|||||||||";
                 }
                 else
                 {
-                    sResult = sResult + "\n" + "PID|1||" + hn.Id + "^^^ACUR^PI~" + hn.Patient_Account_External + "^^^MAA^SS||" + hn.Last_Name + "^" + hn.First_Name + "^" + hn.MI + "^^^^L|" + Mothers_Maiden_First_Name + "^" + Mothers_Maiden_Last_Name + "|" + hn.Birth_Date.ToString("yyyyMMdd") + "|" + sSex + "||" + RaceIdentifier + "^" + RaceValue + "^CDCREC|" + hn.Street_Address1 + "^^" + hn.City + "^" + hn.State + "^" + hn.ZipCode + "^USA^L||^PRN^PH^^^" + CityCode + "^" + LocalNumber + "^~^NET^^" + hn.EMail + "|||||||||" + EthnicityIdentifier + "^" + EthnicityValue + "^CDCREC";
+                    sResult = sResult + "\n" + "PID|1||" + hn.Id + "^^^ACUR^PI~" + hn.Patient_Account_External + "^^^MAA^PT||" + hn.Last_Name + "^" + hn.First_Name + "^" + hn.MI + "^^^^L|" + Mothers_Maiden_First_Name + "^" + Mothers_Maiden_Last_Name + "|" + hn.Birth_Date.ToString("yyyyMMdd") + "|" + sSex + "||" + RaceIdentifier + "^" + RaceValue + "^CDCREC|" + hn.Street_Address1 + "^^" + hn.City + "^" + hn.State + "^" + hn.ZipCode + "^USA^L||" + Phone + "~^NET^^" + hn.EMail + "|||||||||" + EthnicityIdentifier + "^" + EthnicityValue + "^CDCREC";
                 }
             }
 

@@ -2162,6 +2162,31 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
                         throw new Exception("Exception occurred. Transaction failed.");
                     }
                 }
+                //Jira CAP-1749 - Start
+                //To Update IsDelete to Y during Lab Change
+                IList<OrdersSubmit> ilstOrdersSubmitTempsave = null;
+                iResult = objOrdersSubmitManager.SaveUpdateDelete_DBAndXML_WithoutTransaction(ref ilstOrdersSubmitTempsave, ref DelOrderSubmit, null, MySession, MACAddress, true, true, uHumanId, string.Empty, ref XMLObj);
+                if (iResult == 2)
+                {
+                    if (iTryCount < 5)
+                    {
+                        iTryCount++;
+                        goto TryAgain;
+                    }
+                    else
+                    {
+                        trans.Rollback();
+                        //MySession.Close();
+                        throw new Exception("Deadlock occurred. Transaction failed.");
+                    }
+                }
+                else if (iResult == 1)
+                {
+                    trans.Rollback();
+                    // MySession.Close();
+                    throw new Exception("Exception occurred. Transaction failed.");
+                }
+                //Jira CAP-1749 - End
                 foreach (OrdersSubmit objSubmit in DelOrderSubmit)
                 {
                     iResult = objWfMnger.MoveToNextProcess(objSubmit.Id, objSubmit.Order_Type, 6, "UNKNOWN", DateTime.Now, MACAddress, null, MySession);
