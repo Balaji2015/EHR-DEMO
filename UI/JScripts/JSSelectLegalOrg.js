@@ -1,6 +1,7 @@
-﻿function changeReload() {
-    window.parent.location.href = window.parent.location.href;
-    RadWindowClose();
+﻿function changeReload() {   
+    //CAP-1911
+    //window.parent.location.href = window.parent.location.href;
+    window.parent.parent.location.reload();
 }
 
 
@@ -20,8 +21,10 @@ function RadWindowClose() {
         oWindow = window.radWindow;
     else if (window.frameElement.radWindow)
         oWindow = window.frameElement.radWindow;
-    if (oWindow != null)
+    if (oWindow != null) {
         oWindow.close();
+        //location.href = location.href;
+    }       
     return false;
 }
 
