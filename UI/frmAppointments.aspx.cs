@@ -2878,7 +2878,8 @@ namespace Acurus.Capella.UI
             }
 
             #region New Code
-
+            //CAP-1857 - Block days is not shown in the appointment scheduler for the technicians in provider's login.
+            hdnSchedulerView.Value = "SwitchToWeekView";
             if (schAppointmentScheduler.SelectedView.ToString().Trim() == "WeekView")
             {
                 hdnSchedulerView.Value = "SwitchToWeekView";
