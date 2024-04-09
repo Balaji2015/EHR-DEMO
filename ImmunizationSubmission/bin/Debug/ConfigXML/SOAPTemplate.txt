@@ -1,0 +1,14 @@
+﻿<soap:Envelope xmlns:soap="http://www.w3.org/2003/05/soap-envelope" xmlns:urn="urn:cdc:iisb:2011">
+<soap:Header/>
+<soap:Body>
+<urn:submitSingleMessage>
+<urn:username>SF-008625</urn:username>
+<urn:password>Qbe3iQzm</urn:password>
+<urn:facilityID>CAIR</urn:facilityID>
+<urn:hl7Message>
+<![CDATA[ImmunizationHL7Content
+]]>
+</urn:hl7Message>
+</urn:submitSingleMessage>
+</soap:Body>
+</soap:Envelope>
