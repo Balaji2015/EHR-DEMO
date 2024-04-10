@@ -2850,6 +2850,18 @@ function loadMailClinicalInfoCount() {
 }
 
 $(document).ready(function () {
+    //CAP-1840 and CAP-1841 and CAP-1846 - Start
+    if (document.URL.indexOf("frmPatientchart.aspx?") > -1 && document.URL.indexOf("ScreenMode=Menu") > -1) {
+        
+        $($("#trmaintab nav")[0]).remove();
+        $("#trmaintab td")[0].classList.add("navstyle");
+        $("#trmaintab td")[0].innerHTML = "<label style='color:White;'>Screen opened for reference only. Kindly close.</label>";
+        $("#trmaintab td")[0].style.textAlign = "center";
+
+        $($("#trgeneral nav ul")[0]).remove();
+        $("#trgeneral").remove();
+    }
+    //CAP-1840 and CAP-1841 and CAP-1846 - End
     $('li  div').addClass('navhover');
     $("#falogout").css("display", "block");
     //CAP-1506 & CAP-1507 & CAP-1509

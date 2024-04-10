@@ -856,6 +856,12 @@ namespace Acurus.Capella.UI
                 rbLabOrder.Enabled = false;
                 rbImageOrder.Enabled = false;
             }
+            else
+            {
+                chkpaperorder.Disabled = false;
+                rbLabOrder.Enabled = false;
+                rbImageOrder.Enabled = false;
+            }
             if (chkpaperorder.Checked == false)
             {
                 rbLabOrder.Enabled = false;
