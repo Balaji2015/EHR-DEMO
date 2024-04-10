@@ -784,7 +784,9 @@ function OpenModal(data) {
         $(top.window.document).find("#TabmdldlgEFax")[0].style.position = "";
         $(top.window.document).find("#TabmdldlgEFax")[0].style.marginLeft = "";
         var sPath = ""
-        sPath = "htmlEFAXTabs.html";
+        //Cap - 1918
+        //sPath = "htmlEFAXTabs.html";
+        sPath = "htmlEFAXTabs.html?version=" + sessionStorage.getItem("ScriptVersion");
         $(top.window.document).find("#TabEFaxFrame")[0].style.height = "500px";
         $(top.window.document).find("#TabEFaxFrame")[0].contentDocument.location.href = sPath;
         $(top.window.document).find("#TabFax").one("hidden.bs.modal", function (e) {

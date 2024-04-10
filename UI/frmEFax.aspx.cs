@@ -32,6 +32,8 @@ namespace Acurus.Capella.UI
         ActivityLogManager objActivityMngr = new ActivityLogManager();
         string spath = string.Empty;
         string sFilePath = "";
+        //Cap - 1918
+        string sMenuLevelEFax = string.Empty;
         protected void Page_Load(object sender, EventArgs e)
         {
 
@@ -92,10 +94,20 @@ namespace Acurus.Capella.UI
 
 
                 }
+                //Cap - 1918
+                if (Request["Mode"] != null)
+                {
+                    sMenuLevelEFax = Request["Mode"].ToString();
+                }
 
-                CreateEmptyHeader();
+                    CreateEmptyHeader();
                 hdnGroupID.Value = objActivityMngr.GetGroupID().ToString();
                 hdnfilePath.Value = sFilePath;
+            }
+            //Cap - 1918
+            if (Request["Mode"] != null)
+            {
+                sMenuLevelEFax = Request["Mode"].ToString();
             }
 
             //if (!IsPostBack)
@@ -344,262 +356,134 @@ namespace Acurus.Capella.UI
             protected void btnSendfax_Click(object sender, EventArgs e)
             {
                 Document doc = new Document();
-                try
+            try
+            {
+                string sAttachFileName = string.Empty;
+
+
+
+                string ftpUserID = System.Configuration.ConfigurationSettings.AppSettings["ftpUserID"];
+                string ftpPassword = System.Configuration.ConfigurationSettings.AppSettings["ftpPassword"];
+                string ftpServerIP = System.Configuration.ConfigurationSettings.AppSettings["ftpServerIP"];
+
+                /*Old code*/
+                //string UNCAuthPath = System.Configuration.ConfigurationSettings.AppSettings["UNCAuthPathFax"];
+                //string UNCPath = System.Configuration.ConfigurationSettings.AppSettings["UNCPathFax"];
+                //string ftpIP = System.Configuration.ConfigurationSettings.AppSettings["ftpServerIPFax"];
+                //string userName = System.Configuration.ConfigurationSettings.AppSettings["UserNameFax"];
+                //string password = System.Configuration.ConfigurationSettings.AppSettings["PasswordFax"];
+                //string domain = System.Configuration.ConfigurationSettings.AppSettings["DomainFax"];
+                //FAXCOMEXLib.FaxServer fs = new FAXCOMEXLib.FaxServer();
+                //fs.Connect(Environment.MachineName);
+                //FAXCOMEXLib.FaxDocument fd = new FAXCOMEXLib.FaxDocument();
+                string sFTPAddress = string.Empty;
+                if (UploadImage.UploadedFiles.Count > 0 || hdnfilePath.Value != string.Empty)
                 {
-                    string sAttachFileName = string.Empty;
+                    //Image Server Uploading
 
-
-
-                    string ftpUserID = System.Configuration.ConfigurationSettings.AppSettings["ftpUserID"];
-                    string ftpPassword = System.Configuration.ConfigurationSettings.AppSettings["ftpPassword"];
-                    string ftpServerIP = System.Configuration.ConfigurationSettings.AppSettings["ftpServerIP"];
-
-                    /*Old code*/
-                    //string UNCAuthPath = System.Configuration.ConfigurationSettings.AppSettings["UNCAuthPathFax"];
-                    //string UNCPath = System.Configuration.ConfigurationSettings.AppSettings["UNCPathFax"];
-                    //string ftpIP = System.Configuration.ConfigurationSettings.AppSettings["ftpServerIPFax"];
-                    //string userName = System.Configuration.ConfigurationSettings.AppSettings["UserNameFax"];
-                    //string password = System.Configuration.ConfigurationSettings.AppSettings["PasswordFax"];
-                    //string domain = System.Configuration.ConfigurationSettings.AppSettings["DomainFax"];
-                    //FAXCOMEXLib.FaxServer fs = new FAXCOMEXLib.FaxServer();
-                    //fs.Connect(Environment.MachineName);
-                    //FAXCOMEXLib.FaxDocument fd = new FAXCOMEXLib.FaxDocument();
-                    string sFTPAddress = string.Empty;
-                    if (UploadImage.UploadedFiles.Count > 0 || hdnfilePath.Value != string.Empty)
+                    // string sDestinationFTPPath = "EFAX\\" + ClientSession.FacilityName + "\\" + DateTime.Now.ToString("yyyyMMdd") + "\\";
+                    string sFacilityPath = ClientSession.FacilityName.Replace(" ", "_").Replace("#", "").Replace(",", "") + System.Configuration.ConfigurationSettings.AppSettings["Faxpathoutput"] + DateTime.Now.ToString("yyyyMMdd") + @"\";
+                    string sDestinationFTPPath = Path.Combine(System.Configuration.ConfigurationSettings.AppSettings["ftpFaxpath"], sFacilityPath);
+                    FTPImageProcess ftpImageProcess = new FTPImageProcess();
+                    DirectoryInfo dir = new DirectoryInfo(Server.MapPath("atala-capture-upload/" + Session.SessionID + "/EFAX/" + ClientSession.FacilityName.Replace(" ", "_").Replace("#", "").Replace(",", "") + "/" + DateTime.Now.ToString("yyyyMMdd") + "/"));
+                    if (!dir.Exists)
                     {
-                        //Image Server Uploading
+                        dir.Create();
+                    }
 
-                        // string sDestinationFTPPath = "EFAX\\" + ClientSession.FacilityName + "\\" + DateTime.Now.ToString("yyyyMMdd") + "\\";
-                        string sFacilityPath = ClientSession.FacilityName.Replace(" ", "_").Replace("#", "").Replace(",", "") + System.Configuration.ConfigurationSettings.AppSettings["Faxpathoutput"] + DateTime.Now.ToString("yyyyMMdd") + @"\";
-                        string sDestinationFTPPath = Path.Combine(System.Configuration.ConfigurationSettings.AppSettings["ftpFaxpath"], sFacilityPath);
-                        FTPImageProcess ftpImageProcess = new FTPImageProcess();
-                        DirectoryInfo dir = new DirectoryInfo(Server.MapPath("atala-capture-upload/" + Session.SessionID + "/EFAX/" + ClientSession.FacilityName.Replace(" ", "_").Replace("#", "").Replace(",", "") + "/" + DateTime.Now.ToString("yyyyMMdd") + "/"));
-                        if (!dir.Exists)
+                    int i = 1;
+                    // if (ftpImageProcess.CreateDirectoryFAX(UNCAuthPath, UNCPath, ftpIP, userName, password, domain, sDestinationFTPPath))
+                    //if (ftpImageProcess.CreateDirectory(sDestinationFTPPath, ftpServerIP, ftpUserID, ftpPassword))
+                    bool bCreateDirectory = ftpImageProcess.CreateDirectory(sDestinationFTPPath, ftpServerIP, ftpUserID, ftpPassword, out string sCheckFileNotFoundException);
+                    if (sCheckFileNotFoundException != "" && sCheckFileNotFoundException.Contains("CheckFileNotFoundException"))
+                    {
+                        ScriptManager.RegisterStartupScript(this, this.GetType(), "Key", "alert(\"" + sCheckFileNotFoundException.Split('~')[1] + "\");", true);
+                        return;
+                    }
+                    if (bCreateDirectory)
+                    {
+                        if (UploadImage.UploadedFiles.Count > 0 || Request["Result"] != null)
                         {
-                            dir.Create();
-                        }
-
-                        int i = 1;
-                        // if (ftpImageProcess.CreateDirectoryFAX(UNCAuthPath, UNCPath, ftpIP, userName, password, domain, sDestinationFTPPath))
-                        //if (ftpImageProcess.CreateDirectory(sDestinationFTPPath, ftpServerIP, ftpUserID, ftpPassword))
-                        bool bCreateDirectory = ftpImageProcess.CreateDirectory(sDestinationFTPPath, ftpServerIP, ftpUserID, ftpPassword, out string sCheckFileNotFoundException);
-                        if (sCheckFileNotFoundException != "" && sCheckFileNotFoundException.Contains("CheckFileNotFoundException"))
-                        {
-                            ScriptManager.RegisterStartupScript(this, this.GetType(), "Key", "alert(\"" + sCheckFileNotFoundException.Split('~')[1] + "\");", true);
-                            return;
-                        }
-                        if (bCreateDirectory)
-                        {
-                            if (UploadImage.UploadedFiles.Count > 0 || Request["Result"] != null)
+                            foreach (UploadedFile file in UploadImage.UploadedFiles)
                             {
-                                foreach (UploadedFile file in UploadImage.UploadedFiles)
+                                string SelectedFilePath = Server.MapPath("~/atala-capture-upload/" + Session.SessionID + "/EFAX/" + ClientSession.FacilityName.Replace(" ", "_").Replace("#", "").Replace(",", "") + "/" + DateTime.Now.ToString("yyyyMMdd") + "/" + Path.GetFileName(file.FileName));
+                                if (File.Exists(SelectedFilePath))
                                 {
-                                    string SelectedFilePath = Server.MapPath("~/atala-capture-upload/" + Session.SessionID + "/EFAX/" + ClientSession.FacilityName.Replace(" ", "_").Replace("#", "").Replace(",", "") + "/" + DateTime.Now.ToString("yyyyMMdd") + "/" + Path.GetFileName(file.FileName));
-                                    if (File.Exists(SelectedFilePath))
-                                    {
-                                        File.Delete(SelectedFilePath);
-                                    }
-                                    file.SaveAs(SelectedFilePath);
-                                    string pdffilepath = "";
-
-                                    if (Path.GetExtension(SelectedFilePath).ToUpper() == ".PNG" || Path.GetExtension(SelectedFilePath).ToUpper() == ".GIF" || Path.GetExtension(SelectedFilePath).ToUpper() == ".JPG" || Path.GetExtension(SelectedFilePath).ToUpper() == ".JPEG")
-                                    {
-                                        pdffilepath = Server.MapPath("~/atala-capture-upload/" + Session.SessionID + "/EFAX/" + ClientSession.FacilityName.Replace(" ", "_").Replace("#", "").Replace(",", "") + "/" + DateTime.Now.ToString("yyyyMMdd") + "/" + "image.pdf");
-
-                                        //Create image in PDF For Bug id: 64259 //Ref:link https://www.mikesdotnetting.com/article/87/itextsharp-working-with-images
-                                        doc = new Document();
-                                        PdfWriter.GetInstance(doc, new FileStream(pdffilepath, FileMode.Create));
-                                        doc.Open();
-                                        iTextSharp.text.Image img = iTextSharp.text.Image.GetInstance(SelectedFilePath);
-                                        img.ScaleToFit(500f, 500f);
-                                        doc.Add(img);
-                                        doc.Close();
-
-                                        //using (var fileStream = new FileStream(pdffilepath, FileMode.Create, FileAccess.Write))
-                                        //{
-                                        //    var document1 = new Document(new Rectangle(625, 975));
-
-                                        //    float X = 80f, Y = 20f;
-                                        //    Rectangle pageSize = new Rectangle(625, 975);
-                                        //    var writerpdf = PdfWriter.GetInstance(document1, fileStream);
-                                        //   // string path = (SelectedFilePath + "/" + Path.GetFileName(spath));
-                                        //    document1.Open();
-                                        //    document1.NewPage();
-                                        //    var con = writerpdf.DirectContent;
-                                        //    con.BeginText();
-                                        //    iTextSharp.text.Image logo = iTextSharp.text.Image.GetInstance(SelectedFilePath);
-                                        //    logo.ScaleAbsolute(500, 500);
-                                        //    logo.SetAbsolutePosition(pageSize.GetLeft(10), 0);
-                                        //    con.AddImage(logo);
-                                        //    con.EndText();
-                                        //    document1.Close();
-                                        //    writerpdf.Close();
-
-                                        //}
-                                    }
-                                    else
-                                    {
-                                        pdffilepath = SelectedFilePath;
-
-                                    }
-                                    // string sStoringFormat = "EFAX_" + ClientSession.HumanId.ToString() + "_" + txtSenderName.Value.Replace("'", "") + "_" + txtRecName.Value.Split('|')[0].Replace("'", "") + "_" + Path.GetFileNameWithoutExtension(file.FileName) + DateTime.Now.ToString("yyyyMMddhhmmss") + Path.GetExtension(file.FileName);
-                                    //  string sStoringFormat = "EFAX_" + ClientSession.HumanId.ToString() + "_"  + Path.GetFileNameWithoutExtension(file.FileName) + DateTime.Now.ToString("yyyyMMddhhmmss") + Path.GetExtension(file.FileName);
-                                    string sStoringFormat = DateTime.Now.ToString("yyyyMMddhhmmss") + "_" + i.ToString() + Path.GetExtension(pdffilepath);
-                                    i++;
-                                    //sFTPAddress = ftpImageProcess.UploadToImageServerFAX(UNCAuthPath, UNCPath, ftpIP, userName, password, domain, sDestinationFTPPath, SelectedFilePath, sStoringFormat);
-                                    sFTPAddress = ftpImageProcess.UploadToImageServer(sDestinationFTPPath, ftpServerIP, ftpUserID, ftpPassword, pdffilepath, sStoringFormat, out string sCheckFileNotFoundExceptions);
-                                    if (sCheckFileNotFoundExceptions != "" && sCheckFileNotFoundExceptions.Contains("CheckFileNotFoundException"))
-                                    {
-                                        ScriptManager.RegisterStartupScript(this, this.GetType(), "Key", "alert(\"" + sCheckFileNotFoundExceptions.Split('~')[1] + "\");", true);
-                                        return;
-                                    }
-                                    // string sFilePath = sFacilityPath + sStoringFormat;
-                                    if (sAttachFileName == string.Empty)
-                                        sAttachFileName = sFTPAddress;
-                                    else
-                                        sAttachFileName += " | " + sFTPAddress;
-                                    // var fax = FaxResource.Create(
-                                    //    from: txtSenderName.Text,
-                                    //    to: txtSenderMaskFax.Text.Replace("-", ""),
-                                    //    mediaUrl: new Uri("https://www.twilio.com/docs/documents/25/justthefaxmaam.pdf")
-                                    //);
-
-
-                                    //fd = new FAXCOMEXLib.FaxDocument();
-                                    //fd.CoverPageType = FAXCOMEXLib.FAX_COVERPAGE_TYPE_ENUM.fcptSERVER;
-                                    //fd.CoverPage = "generic";// "C:\\Users\\administrator\\Desktop\\123.cov";
-                                    //// fd.AttachFaxToReceipt = false;
-
-                                    ////fd.Note = "Here is the info you requested " + i.ToString() + " Page";
-                                    //fd.Body = Server.MapPath("atala-capture-upload/" + Session.SessionID + Path.Combine(sDestinationFTPPath, sStoringFormat));
-                                    //fd.ReceiptAddress = txtRecipientcompany.Text;
-
-                                    //fd.Subject = "Today's fax" + txtCoverpage.txtDLC.Text;
-
-                                    //fd.Sender.Name = txtSenderName.Text;
-
-                                    //fd.Sender.Company = txtSenderCompany.Text;
-                                    //fd.Sender.Email = txtSenderEmail.Text;
-                                    //fd.Sender.FaxNumber = txtSenderMaskFax.Text.Replace("-", "");
-                                    //fd.Sender.SaveDefaultSender();
-                                    //fd.Recipients.Add(txtSenderMaskFax.Text.Replace("-", ""), txtSenderName.Text);
-
-                                    ////This JobID[0] can be used to store the JobID of the fax job for later reference.
-                                    //string[] JobID = (string[])fd.ConnectedSubmit(fs);
+                                    File.Delete(SelectedFilePath);
                                 }
-                            }
-                            if (hdnfilePath.Value != string.Empty)
-                            {
-                                string SelectedFilePath = string.Empty;
-                                if (Request["Result"] != null && hdnfilePath.Value.ToUpper().IndexOf("FTP") >= 0)
+                                file.SaveAs(SelectedFilePath);
+                                string pdffilepath = "";
+
+                                if (Path.GetExtension(SelectedFilePath).ToUpper() == ".PNG" || Path.GetExtension(SelectedFilePath).ToUpper() == ".GIF" || Path.GetExtension(SelectedFilePath).ToUpper() == ".JPG" || Path.GetExtension(SelectedFilePath).ToUpper() == ".JPEG")
                                 {
+                                    pdffilepath = Server.MapPath("~/atala-capture-upload/" + Session.SessionID + "/EFAX/" + ClientSession.FacilityName.Replace(" ", "_").Replace("#", "").Replace(",", "") + "/" + DateTime.Now.ToString("yyyyMMdd") + "/" + "image.pdf");
 
-                                    string localPathre = System.Configuration.ConfigurationSettings.AppSettings["LocalPath"];
-                                    string ftpServerIPre = System.Configuration.ConfigurationSettings.AppSettings["ftpServerIP"];
-                                    string ftpUserNamere = System.Configuration.ConfigurationSettings.AppSettings["ftpUserID"];
-                                    string ftpPasswordre = System.Configuration.ConfigurationSettings.AppSettings["ftpPassword"];
+                                    //Create image in PDF For Bug id: 64259 //Ref:link https://www.mikesdotnetting.com/article/87/itextsharp-working-with-images
+                                    doc = new Document();
+                                    PdfWriter.GetInstance(doc, new FileStream(pdffilepath, FileMode.Create));
+                                    doc.Open();
+                                    iTextSharp.text.Image img = iTextSharp.text.Image.GetInstance(SelectedFilePath);
+                                    img.ScaleToFit(500f, 500f);
+                                    doc.Add(img);
+                                    doc.Close();
 
-                                    //SelectedFilePath = Server.MapPath("~/atala-capture-upload/" + Session.SessionID + "/EFAX/" + ClientSession.FacilityName.Replace(" ", "_").Replace("#", "").Replace(",", "") + "/" + DateTime.Now.ToString("yyyyMMdd"));
-                                    dir = new DirectoryInfo(Server.MapPath("atala-capture-upload/" + Session.SessionID + "/EFAX/" + ClientSession.FacilityName.Replace(" ", "_").Replace("#", "").Replace(",", "") + "/" + DateTime.Now.ToString("yyyyMMdd") + "/"));
-                                    if (!dir.Exists)
-                                    {
-                                        dir.Create();
-                                    }
-                                    SelectedFilePath = Server.MapPath("~/atala-capture-upload/" + Session.SessionID + "/EFAX/" + ClientSession.FacilityName.Replace(" ", "_").Replace("#", "").Replace(",", "") + "/" + DateTime.Now.ToString("yyyyMMdd") + "/" + Path.GetFileName(Request["Result"].ToString().Split('|')[0]));
-                                    string pdffilepath = string.Empty;
+                                    //using (var fileStream = new FileStream(pdffilepath, FileMode.Create, FileAccess.Write))
+                                    //{
+                                    //    var document1 = new Document(new Rectangle(625, 975));
 
+                                    //    float X = 80f, Y = 20f;
+                                    //    Rectangle pageSize = new Rectangle(625, 975);
+                                    //    var writerpdf = PdfWriter.GetInstance(document1, fileStream);
+                                    //   // string path = (SelectedFilePath + "/" + Path.GetFileName(spath));
+                                    //    document1.Open();
+                                    //    document1.NewPage();
+                                    //    var con = writerpdf.DirectContent;
+                                    //    con.BeginText();
+                                    //    iTextSharp.text.Image logo = iTextSharp.text.Image.GetInstance(SelectedFilePath);
+                                    //    logo.ScaleAbsolute(500, 500);
+                                    //    logo.SetAbsolutePosition(pageSize.GetLeft(10), 0);
+                                    //    con.AddImage(logo);
+                                    //    con.EndText();
+                                    //    document1.Close();
+                                    //    writerpdf.Close();
 
-                                    if (File.Exists(SelectedFilePath))
-                                    {
-                                        File.Delete(SelectedFilePath);
-                                    }
-                                    string HumanId = new DirectoryInfo(hdnfilePath.Value.Replace("ftp:", "")).Parent.Name;
-                                    string sLocalPath = Path.GetDirectoryName(SelectedFilePath);
-
-                                    // ftpImageProcess.DownloadFromImageServer(ClientSession.HumanId.ToString(), ftpServerIPre, ftpUserNamere, ftpPasswordre, Path.GetFileName(hdnfilePath.Value), SelectedFilePath);
-                                    //ftpImageProcess.DownloadFromImageServer(HumanId, ftpServerIPre, ftpUserNamere, ftpPasswordre, Path.GetFileName(hdnfilePath.Value), SelectedFilePath);
-
-                                    ftpImageProcess.DownloadFromImageServer(HumanId, ftpServerIPre, ftpUserNamere, ftpPasswordre, Path.GetFileName(hdnfilePath.Value), sLocalPath, out string sCheckFileNotFoundExc);
-                                    if (sCheckFileNotFoundExc != "" && sCheckFileNotFoundExc.Contains("CheckFileNotFoundException"))
-                                    {
-                                        ScriptManager.RegisterStartupScript(this, this.GetType(), "Key", "alert(\"" + sCheckFileNotFoundExc.Split('~')[1] + "\");", true);
-                                        return;
-                                    }
-                                    if (Path.GetExtension(hdnfilePath.Value).ToUpper() == ".PNG" || Path.GetExtension(hdnfilePath.Value).ToUpper() == ".GIF" || Path.GetExtension(hdnfilePath.Value).ToUpper() == ".JPG" || Path.GetExtension(hdnfilePath.Value).ToUpper() == ".JPEG" || Path.GetExtension(hdnfilePath.Value).ToUpper() == ".BMP")
-                                    {
-                                        pdffilepath = Server.MapPath("~/atala-capture-upload/" + Session.SessionID + "/EFAX/" + ClientSession.FacilityName.Replace(" ", "_").Replace("#", "").Replace(",", "") + "/" + DateTime.Now.ToString("yyyyMMdd") + "/" + "image.pdf");
-
-                                        //Create image in PDF For Bug id: 64259 //Ref:link https://www.mikesdotnetting.com/article/87/itextsharp-working-with-images
-                                        doc = new Document();
-                                        PdfWriter.GetInstance(doc, new FileStream(pdffilepath, FileMode.Create));
-                                        doc.Open();
-                                        iTextSharp.text.Image img = iTextSharp.text.Image.GetInstance(SelectedFilePath);
-                                        img.ScaleToFit(500f, 500f);
-                                        doc.Add(img);
-                                        doc.Close();
-
-                                        //using (var fileStream = new FileStream(pdffilepath, FileMode.Create, FileAccess.Write))
-                                        //{
-                                        //    var document1 = new Document(new Rectangle(625, 975));
-                                        //    Rectangle pageSize = new Rectangle(625, 975);
-                                        //    var writerpdf = PdfWriter.GetInstance(document1, fileStream);
-                                        //    string path=(SelectedFilePath + "/" + Path.GetFileName(spath));
-                                        //    document1.Open();
-                                        //    document1.NewPage();
-                                        //    var con = writerpdf.DirectContent;
-                                        //    con.BeginText();
-                                        //    iTextSharp.text.Image logo = iTextSharp.text.Image.GetInstance(path);
-                                        //   logo.ScaleAbsolute(500, 500);
-                                        //   logo.SetAbsolutePosition(pageSize.GetLeft(10) , 0);
-                                        //    con.AddImage(logo);
-                                        //    con.EndText();
-                                        //    document1.Close();
-                                        //    writerpdf.Close();
-                                        //}
-                                    }
-                                    else
-                                    {
-                                        // pdffilepath = Server.MapPath(SelectedFilePath + "/" + Path.GetFileName(hdnfilePath.Value));
-                                        pdffilepath = SelectedFilePath;
-
-                                    }
-                                    string sStoringFormat = DateTime.Now.ToString("yyyyMMddhhmmss") + Path.GetExtension(pdffilepath);
-                                    sFTPAddress = ftpImageProcess.UploadToImageServer(sDestinationFTPPath, ftpServerIP, ftpUserID, ftpPassword, pdffilepath, sStoringFormat, out string sCheckFileNotFoundExceptions);
-                                    if (sCheckFileNotFoundExceptions != "" && sCheckFileNotFoundExceptions.Contains("CheckFileNotFoundException"))
-                                    {
-                                        ScriptManager.RegisterStartupScript(this, this.GetType(), "Key", "alert(\"" + sCheckFileNotFoundExceptions.Split('~')[1] + "\");", true);
-                                        return;
-                                    }
-                                    // string sFilePath = sFacilityPath + sStoringFormat;
-                                    if (sAttachFileName == string.Empty)
-                                        sAttachFileName = sFTPAddress;
-                                    else
-                                        sAttachFileName += " | " + sFTPAddress;
+                                    //}
                                 }
                                 else
                                 {
-                                    SelectedFilePath = hdnfilePath.Value;
-                                    //  string sStoringFormat = "EFAX_" + ClientSession.HumanId.ToString() + "_" + Path.GetFileNameWithoutExtension(spath) + DateTime.Now.ToString("yyyyMMddhhmmss") + Path.GetExtension(spath);
-                                    // string sStoringFormat = "EFAX_" + ClientSession.HumanId.ToString() + "_" + txtSenderName.Value.Replace("'", "") + "_" + txtRecName.Value.Split('|')[0].Replace("'", "") + "_" + Path.GetFileNameWithoutExtension(spath) + DateTime.Now.ToString("yyyyMMddhhmmss") + Path.GetExtension(spath);
-                                    // sFTPAddress = ftpImageProcess.UploadToImageServerFAX(UNCAuthPath, UNCPath, ftpIP, userName, password, domain, sDestinationFTPPath, SelectedFilePath, sStoringFormat);
+                                    pdffilepath = SelectedFilePath;
 
-                                    string sStoringFormat = DateTime.Now.ToString("yyyyMMddhhmmss") + Path.GetExtension(hdnfilePath.Value);
-                                    sFTPAddress = ftpImageProcess.UploadToImageServer(sDestinationFTPPath, ftpServerIP, ftpUserID, ftpPassword, SelectedFilePath, sStoringFormat, out string sCheckFileNotFoundExceptions);
-                                    if (sCheckFileNotFoundExceptions != "" && sCheckFileNotFoundExceptions.Contains("CheckFileNotFoundException"))
-                                    {
-                                        ScriptManager.RegisterStartupScript(this, this.GetType(), "Key", "alert(\"" + sCheckFileNotFoundExceptions.Split('~')[1] + "\");", true);
-                                        return;
-                                    }
-                                    //  sFilePath = sFacilityPath + sStoringFormat;
-                                    if (sAttachFileName == string.Empty)
-                                        sAttachFileName = sFTPAddress;
-                                    else
-                                        sAttachFileName += " | " + sFTPAddress;
                                 }
+                                // string sStoringFormat = "EFAX_" + ClientSession.HumanId.ToString() + "_" + txtSenderName.Value.Replace("'", "") + "_" + txtRecName.Value.Split('|')[0].Replace("'", "") + "_" + Path.GetFileNameWithoutExtension(file.FileName) + DateTime.Now.ToString("yyyyMMddhhmmss") + Path.GetExtension(file.FileName);
+                                //  string sStoringFormat = "EFAX_" + ClientSession.HumanId.ToString() + "_"  + Path.GetFileNameWithoutExtension(file.FileName) + DateTime.Now.ToString("yyyyMMddhhmmss") + Path.GetExtension(file.FileName);
+                                string sStoringFormat = DateTime.Now.ToString("yyyyMMddhhmmss") + "_" + i.ToString() + Path.GetExtension(pdffilepath);
+                                i++;
+                                //sFTPAddress = ftpImageProcess.UploadToImageServerFAX(UNCAuthPath, UNCPath, ftpIP, userName, password, domain, sDestinationFTPPath, SelectedFilePath, sStoringFormat);
+                                sFTPAddress = ftpImageProcess.UploadToImageServer(sDestinationFTPPath, ftpServerIP, ftpUserID, ftpPassword, pdffilepath, sStoringFormat, out string sCheckFileNotFoundExceptions);
+                                if (sCheckFileNotFoundExceptions != "" && sCheckFileNotFoundExceptions.Contains("CheckFileNotFoundException"))
+                                {
+                                    ScriptManager.RegisterStartupScript(this, this.GetType(), "Key", "alert(\"" + sCheckFileNotFoundExceptions.Split('~')[1] + "\");", true);
+                                    return;
+                                }
+                                // string sFilePath = sFacilityPath + sStoringFormat;
+                                if (sAttachFileName == string.Empty)
+                                    sAttachFileName = sFTPAddress;
+                                else
+                                    sAttachFileName += " | " + sFTPAddress;
+                                // var fax = FaxResource.Create(
+                                //    from: txtSenderName.Text,
+                                //    to: txtSenderMaskFax.Text.Replace("-", ""),
+                                //    mediaUrl: new Uri("https://www.twilio.com/docs/documents/25/justthefaxmaam.pdf")
+                                //);
+
+
                                 //fd = new FAXCOMEXLib.FaxDocument();
                                 //fd.CoverPageType = FAXCOMEXLib.FAX_COVERPAGE_TYPE_ENUM.fcptSERVER;
-                                //fd.CoverPage = "generic";
-                                //fd.Body = spath;
+                                //fd.CoverPage = "generic";// "C:\\Users\\administrator\\Desktop\\123.cov";
+                                //// fd.AttachFaxToReceipt = false;
+
+                                ////fd.Note = "Here is the info you requested " + i.ToString() + " Page";
+                                //fd.Body = Server.MapPath("atala-capture-upload/" + Session.SessionID + Path.Combine(sDestinationFTPPath, sStoringFormat));
                                 //fd.ReceiptAddress = txtRecipientcompany.Text;
 
                                 //fd.Subject = "Today's fax" + txtCoverpage.txtDLC.Text;
@@ -614,114 +498,254 @@ namespace Acurus.Capella.UI
 
                                 ////This JobID[0] can be used to store the JobID of the fax job for later reference.
                                 //string[] JobID = (string[])fd.ConnectedSubmit(fs);
-
                             }
                         }
+                        if (hdnfilePath.Value != string.Empty)
+                        {
+                            string SelectedFilePath = string.Empty;
+                            if (Request["Result"] != null && hdnfilePath.Value.ToUpper().IndexOf("FTP") >= 0)
+                            {
+
+                                string localPathre = System.Configuration.ConfigurationSettings.AppSettings["LocalPath"];
+                                string ftpServerIPre = System.Configuration.ConfigurationSettings.AppSettings["ftpServerIP"];
+                                string ftpUserNamere = System.Configuration.ConfigurationSettings.AppSettings["ftpUserID"];
+                                string ftpPasswordre = System.Configuration.ConfigurationSettings.AppSettings["ftpPassword"];
+
+                                //SelectedFilePath = Server.MapPath("~/atala-capture-upload/" + Session.SessionID + "/EFAX/" + ClientSession.FacilityName.Replace(" ", "_").Replace("#", "").Replace(",", "") + "/" + DateTime.Now.ToString("yyyyMMdd"));
+                                dir = new DirectoryInfo(Server.MapPath("atala-capture-upload/" + Session.SessionID + "/EFAX/" + ClientSession.FacilityName.Replace(" ", "_").Replace("#", "").Replace(",", "") + "/" + DateTime.Now.ToString("yyyyMMdd") + "/"));
+                                if (!dir.Exists)
+                                {
+                                    dir.Create();
+                                }
+                                SelectedFilePath = Server.MapPath("~/atala-capture-upload/" + Session.SessionID + "/EFAX/" + ClientSession.FacilityName.Replace(" ", "_").Replace("#", "").Replace(",", "") + "/" + DateTime.Now.ToString("yyyyMMdd") + "/" + Path.GetFileName(Request["Result"].ToString().Split('|')[0]));
+                                string pdffilepath = string.Empty;
+
+
+                                if (File.Exists(SelectedFilePath))
+                                {
+                                    File.Delete(SelectedFilePath);
+                                }
+                                string HumanId = new DirectoryInfo(hdnfilePath.Value.Replace("ftp:", "")).Parent.Name;
+                                string sLocalPath = Path.GetDirectoryName(SelectedFilePath);
+
+                                // ftpImageProcess.DownloadFromImageServer(ClientSession.HumanId.ToString(), ftpServerIPre, ftpUserNamere, ftpPasswordre, Path.GetFileName(hdnfilePath.Value), SelectedFilePath);
+                                //ftpImageProcess.DownloadFromImageServer(HumanId, ftpServerIPre, ftpUserNamere, ftpPasswordre, Path.GetFileName(hdnfilePath.Value), SelectedFilePath);
+
+                                ftpImageProcess.DownloadFromImageServer(HumanId, ftpServerIPre, ftpUserNamere, ftpPasswordre, Path.GetFileName(hdnfilePath.Value), sLocalPath, out string sCheckFileNotFoundExc);
+                                if (sCheckFileNotFoundExc != "" && sCheckFileNotFoundExc.Contains("CheckFileNotFoundException"))
+                                {
+                                    ScriptManager.RegisterStartupScript(this, this.GetType(), "Key", "alert(\"" + sCheckFileNotFoundExc.Split('~')[1] + "\");", true);
+                                    return;
+                                }
+                                if (Path.GetExtension(hdnfilePath.Value).ToUpper() == ".PNG" || Path.GetExtension(hdnfilePath.Value).ToUpper() == ".GIF" || Path.GetExtension(hdnfilePath.Value).ToUpper() == ".JPG" || Path.GetExtension(hdnfilePath.Value).ToUpper() == ".JPEG" || Path.GetExtension(hdnfilePath.Value).ToUpper() == ".BMP")
+                                {
+                                    pdffilepath = Server.MapPath("~/atala-capture-upload/" + Session.SessionID + "/EFAX/" + ClientSession.FacilityName.Replace(" ", "_").Replace("#", "").Replace(",", "") + "/" + DateTime.Now.ToString("yyyyMMdd") + "/" + "image.pdf");
+
+                                    //Create image in PDF For Bug id: 64259 //Ref:link https://www.mikesdotnetting.com/article/87/itextsharp-working-with-images
+                                    doc = new Document();
+                                    PdfWriter.GetInstance(doc, new FileStream(pdffilepath, FileMode.Create));
+                                    doc.Open();
+                                    iTextSharp.text.Image img = iTextSharp.text.Image.GetInstance(SelectedFilePath);
+                                    img.ScaleToFit(500f, 500f);
+                                    doc.Add(img);
+                                    doc.Close();
+
+                                    //using (var fileStream = new FileStream(pdffilepath, FileMode.Create, FileAccess.Write))
+                                    //{
+                                    //    var document1 = new Document(new Rectangle(625, 975));
+                                    //    Rectangle pageSize = new Rectangle(625, 975);
+                                    //    var writerpdf = PdfWriter.GetInstance(document1, fileStream);
+                                    //    string path=(SelectedFilePath + "/" + Path.GetFileName(spath));
+                                    //    document1.Open();
+                                    //    document1.NewPage();
+                                    //    var con = writerpdf.DirectContent;
+                                    //    con.BeginText();
+                                    //    iTextSharp.text.Image logo = iTextSharp.text.Image.GetInstance(path);
+                                    //   logo.ScaleAbsolute(500, 500);
+                                    //   logo.SetAbsolutePosition(pageSize.GetLeft(10) , 0);
+                                    //    con.AddImage(logo);
+                                    //    con.EndText();
+                                    //    document1.Close();
+                                    //    writerpdf.Close();
+                                    //}
+                                }
+                                else
+                                {
+                                    // pdffilepath = Server.MapPath(SelectedFilePath + "/" + Path.GetFileName(hdnfilePath.Value));
+                                    pdffilepath = SelectedFilePath;
+
+                                }
+                                string sStoringFormat = DateTime.Now.ToString("yyyyMMddhhmmss") + Path.GetExtension(pdffilepath);
+                                sFTPAddress = ftpImageProcess.UploadToImageServer(sDestinationFTPPath, ftpServerIP, ftpUserID, ftpPassword, pdffilepath, sStoringFormat, out string sCheckFileNotFoundExceptions);
+                                if (sCheckFileNotFoundExceptions != "" && sCheckFileNotFoundExceptions.Contains("CheckFileNotFoundException"))
+                                {
+                                    ScriptManager.RegisterStartupScript(this, this.GetType(), "Key", "alert(\"" + sCheckFileNotFoundExceptions.Split('~')[1] + "\");", true);
+                                    return;
+                                }
+                                // string sFilePath = sFacilityPath + sStoringFormat;
+                                if (sAttachFileName == string.Empty)
+                                    sAttachFileName = sFTPAddress;
+                                else
+                                    sAttachFileName += " | " + sFTPAddress;
+                            }
+                            else
+                            {
+                                SelectedFilePath = hdnfilePath.Value;
+                                //  string sStoringFormat = "EFAX_" + ClientSession.HumanId.ToString() + "_" + Path.GetFileNameWithoutExtension(spath) + DateTime.Now.ToString("yyyyMMddhhmmss") + Path.GetExtension(spath);
+                                // string sStoringFormat = "EFAX_" + ClientSession.HumanId.ToString() + "_" + txtSenderName.Value.Replace("'", "") + "_" + txtRecName.Value.Split('|')[0].Replace("'", "") + "_" + Path.GetFileNameWithoutExtension(spath) + DateTime.Now.ToString("yyyyMMddhhmmss") + Path.GetExtension(spath);
+                                // sFTPAddress = ftpImageProcess.UploadToImageServerFAX(UNCAuthPath, UNCPath, ftpIP, userName, password, domain, sDestinationFTPPath, SelectedFilePath, sStoringFormat);
+
+                                string sStoringFormat = DateTime.Now.ToString("yyyyMMddhhmmss") + Path.GetExtension(hdnfilePath.Value);
+                                sFTPAddress = ftpImageProcess.UploadToImageServer(sDestinationFTPPath, ftpServerIP, ftpUserID, ftpPassword, SelectedFilePath, sStoringFormat, out string sCheckFileNotFoundExceptions);
+                                if (sCheckFileNotFoundExceptions != "" && sCheckFileNotFoundExceptions.Contains("CheckFileNotFoundException"))
+                                {
+                                    ScriptManager.RegisterStartupScript(this, this.GetType(), "Key", "alert(\"" + sCheckFileNotFoundExceptions.Split('~')[1] + "\");", true);
+                                    return;
+                                }
+                                //  sFilePath = sFacilityPath + sStoringFormat;
+                                if (sAttachFileName == string.Empty)
+                                    sAttachFileName = sFTPAddress;
+                                else
+                                    sAttachFileName += " | " + sFTPAddress;
+                            }
+                            //fd = new FAXCOMEXLib.FaxDocument();
+                            //fd.CoverPageType = FAXCOMEXLib.FAX_COVERPAGE_TYPE_ENUM.fcptSERVER;
+                            //fd.CoverPage = "generic";
+                            //fd.Body = spath;
+                            //fd.ReceiptAddress = txtRecipientcompany.Text;
+
+                            //fd.Subject = "Today's fax" + txtCoverpage.txtDLC.Text;
+
+                            //fd.Sender.Name = txtSenderName.Text;
+
+                            //fd.Sender.Company = txtSenderCompany.Text;
+                            //fd.Sender.Email = txtSenderEmail.Text;
+                            //fd.Sender.FaxNumber = txtSenderMaskFax.Text.Replace("-", "");
+                            //fd.Sender.SaveDefaultSender();
+                            //fd.Recipients.Add(txtSenderMaskFax.Text.Replace("-", ""), txtSenderName.Text);
+
+                            ////This JobID[0] can be used to store the JobID of the fax job for later reference.
+                            //string[] JobID = (string[])fd.ConnectedSubmit(fs);
+
+                        }
                     }
-                    //else
-                    //{
-                    //    fd = new FAXCOMEXLib.FaxDocument();
+                }
+                //else
+                //{
+                //    fd = new FAXCOMEXLib.FaxDocument();
 
-                    //    fd.CoverPageType = FAXCOMEXLib.FAX_COVERPAGE_TYPE_ENUM.fcptSERVER;
-                    //    fd.CoverPage = "generic";// "C:\\Users\\administrator\\Desktop\\123.cov";
+                //    fd.CoverPageType = FAXCOMEXLib.FAX_COVERPAGE_TYPE_ENUM.fcptSERVER;
+                //    fd.CoverPage = "generic";// "C:\\Users\\administrator\\Desktop\\123.cov";
 
-                    //    fd.ReceiptAddress = txtRecipientcompany.Text;
+                //    fd.ReceiptAddress = txtRecipientcompany.Text;
 
-                    //    fd.Subject = "Today's fax" + txtCoverpage.txtDLC.Text;
+                //    fd.Subject = "Today's fax" + txtCoverpage.txtDLC.Text;
 
-                    //    fd.Sender.Name = txtSenderName.Text;
+                //    fd.Sender.Name = txtSenderName.Text;
 
-                    //    fd.Sender.Company = txtSenderCompany.Text;
-                    //    fd.Sender.Email = txtSenderEmail.Text;
-                    //    fd.Sender.FaxNumber = txtSenderMaskFax.Text.Replace("-", "");
-                    //    fd.Sender.SaveDefaultSender();
-                    //    fd.Recipients.Add(txtSenderMaskFax.Text.Replace("-", ""), txtSenderName.Text);
-
-
-                    //    string[] JobID = (string[])fd.ConnectedSubmit(fs);
-                    //}
+                //    fd.Sender.Company = txtSenderCompany.Text;
+                //    fd.Sender.Email = txtSenderEmail.Text;
+                //    fd.Sender.FaxNumber = txtSenderMaskFax.Text.Replace("-", "");
+                //    fd.Sender.SaveDefaultSender();
+                //    fd.Recipients.Add(txtSenderMaskFax.Text.Replace("-", ""), txtSenderName.Text);
 
 
+                //    string[] JobID = (string[])fd.ConnectedSubmit(fs);
+                //}
 
-                    //FAXCOMEXLib.FaxOutgoingQueue foq = fs.Folders.OutgoingQueue;
-                    //foq.Refresh();
-                    //string returnval = "";
 
-                    //foreach (FAXCOMEXLib.FaxOutgoingJob foj in foq.GetJobs())
-                    //{
-                    //    returnval += foj.Id + ": " + foj.SubmissionTime + ": " + foj.Status + "/" + foj.ExtendedStatus + Convert.ToChar(10);
-                    //}
 
-                    //fs.Disconnect();
+                //FAXCOMEXLib.FaxOutgoingQueue foq = fs.Folders.OutgoingQueue;
+                //foq.Refresh();
+                //string returnval = "";
 
-                    //else /*unsupported file*/
-                    //{
-                    //    ScriptManager.RegisterStartupScript(this, this.Page.GetType(), string.Empty, "DisplayErrorMessage('380057'); {sessionStorage.setItem('StartLoading', 'false');StopLoadFromPatChart();}", true);
+                //foreach (FAXCOMEXLib.FaxOutgoingJob foj in foq.GetJobs())
+                //{
+                //    returnval += foj.Id + ": " + foj.SubmissionTime + ": " + foj.Status + "/" + foj.ExtendedStatus + Convert.ToChar(10);
+                //}
 
-                    //}
-                    //AddGrid();
-                    string GridJSON = hdnAddgrid.Value;
-                    DataTable dt = JsonConvert.DeserializeObject<DataTable>(GridJSON);
-                    IList<ActivityLog> lstactivitylog = new List<ActivityLog>();
-                    //for (int r = 0; r < grdEFax.Rows.Count; r++)
-                    for (int r = 0; r < dt.Rows.Count; r++)
+                //fs.Disconnect();
+
+                //else /*unsupported file*/
+                //{
+                //    ScriptManager.RegisterStartupScript(this, this.Page.GetType(), string.Empty, "DisplayErrorMessage('380057'); {sessionStorage.setItem('StartLoading', 'false');StopLoadFromPatChart();}", true);
+
+                //}
+                //AddGrid();
+                string GridJSON = hdnAddgrid.Value;
+                DataTable dt = JsonConvert.DeserializeObject<DataTable>(GridJSON);
+                IList<ActivityLog> lstactivitylog = new List<ActivityLog>();
+                //for (int r = 0; r < grdEFax.Rows.Count; r++)
+                for (int r = 0; r < dt.Rows.Count; r++)
+                {
+                    objactivitylog = new ActivityLog();
+                    //Cap - 1918
+                    //objactivitylog.Human_ID = 0;
+                    //objactivitylog.Encounter_ID = 0;
+                    if (sMenuLevelEFax == string.Empty)
                     {
-                        objactivitylog = new ActivityLog();
+                        objactivitylog.Human_ID = ClientSession.HumanId;
+                        objactivitylog.Encounter_ID = ClientSession.EncounterId;
+                    }
+                    else
+                    {
                         objactivitylog.Human_ID = 0;
                         objactivitylog.Encounter_ID = 0;
-                        objactivitylog.Activity_Type = "EFAX";
-                        objactivitylog.Activity_Date_And_Time = UtilityManager.ConvertToUniversal();
-                        objactivitylog.Subject = txtSubject.Value;//"";
-                        objactivitylog.Role = "";
-                        objactivitylog.Encrypted_Message = "";
-                        objactivitylog.Activity_By = ClientSession.UserName;
-                        //Sender
-                        objactivitylog.Fax_Sender_Name = txtSenderName.Value;
-                        objactivitylog.Fax_Sender_Company = txtSenderCompany.Value;
-                        //balaji
-                        objactivitylog.Fax_Sender_Number = "+1" + txtSenderMaskFax.Value.Replace("-", "").Replace("(", "").Replace(")", "");
-                        objactivitylog.Sent_To = txtSenderEmail.Value;
-                        //Recipient
-                        objactivitylog.Fax_Recipient_Company = dt.Rows[r].ItemArray[2].ToString(); //grdEFax.Rows[r].Cells[3].Text.ToString();//txtRecipientcompany.Value;
-                        objactivitylog.Fax_Recipient_Name = dt.Rows[r].ItemArray[1].ToString(); //grdEFax.Rows[r].Cells[2].Text.ToString();//txtRecName.Value;
-                                                                                                //balaji
-                                                                                                //if (msktxtRecipientFax.Value != "")
-                        objactivitylog.Fax_Recipient_Number = dt.Rows[r].ItemArray[3].ToString(); //grdEFax.Rows[r].Cells[4].Text.ToString();//"+1" + msktxtRecipientFax.Value.Replace("-", "").Replace("(", "").Replace(")", "");
-                        objactivitylog.From_Address = dt.Rows[r].ItemArray[4].ToString();//grdEFax.Rows[r].Cells[5].Text.ToString();//txtRecipientmail.Value;
-
-                        objactivitylog.Message = txtareaCoverpage.Value;
-                        objactivitylog.Fax_Status = "READY TO SEND";
-                        objactivitylog.Fax_File_Path = sAttachFileName.Replace(@"\", @"/");
-                        //if (chkProvider.Checked)
-                        //    objactivitylog.Fax_Recipient_Category = chkProvider.Value;
-                        //else if (chkpatient.Checked)
-                        //    objactivitylog.Fax_Recipient_Category = chkpatient.Value;
-                        objactivitylog.Fax_Recipient_Category = dt.Rows[r].ItemArray[0].ToString();//grdEFax.Rows[r].Cells[1].Text.ToString();
-                        objactivitylog.Group_ID = Convert.ToInt32(hdnGroupID.Value);
-                        objactivitylog.Fax_Priority = hdnpriority.Value.ToString().Split('|')[0]; //DropDwnpriority.Items[DropDwnpriority.SelectedIndex].Value;
-                        objactivitylog.Fax_Cover_Page_Template_Name = hdnpriority.Value.ToString().Split('|')[1];//DropDwncoverpage.Items[DropDwncoverpage.SelectedIndex].Text;
-                        lstactivitylog.Add(objactivitylog);
                     }
 
-                    objActivityMngr.SaveActivityLogManager(lstactivitylog, string.Empty);
-
+                    objactivitylog.Activity_Type = "EFAX";
+                    objactivitylog.Activity_Date_And_Time = UtilityManager.ConvertToUniversal();
+                    objactivitylog.Subject = txtSubject.Value;//"";
+                    objactivitylog.Role = "";
+                    objactivitylog.Encrypted_Message = "";
+                    objactivitylog.Activity_By = ClientSession.UserName;
+                    //Sender
+                    objactivitylog.Fax_Sender_Name = txtSenderName.Value;
+                    objactivitylog.Fax_Sender_Company = txtSenderCompany.Value;
                     //balaji
-                    btnSendfax.Disabled = true;
-                    ClearFields();
-                    CreateEmptyHeader();
-                    hdnGroupID.Value = (Convert.ToInt32(hdnGroupID.Value) + 1).ToString();
-                    ViewState.Remove("dtEFaxGrid");
-                    //ScriptManager.RegisterStartupScript(this, this.GetType(), "SaveSucessfully", "DisplayErrorMessage('1011133');window.close();Closefax();{sessionStorage.setItem('StartLoading', 'false');StopLoadFromPatChart();}", true);
-                    ScriptManager.RegisterStartupScript(this, this.GetType(), "SaveSucessfully", "Efaxsaveend();", true);
-                }
-                catch
-                {
+                    objactivitylog.Fax_Sender_Number = "+1" + txtSenderMaskFax.Value.Replace("-", "").Replace("(", "").Replace(")", "");
+                    objactivitylog.Sent_To = txtSenderEmail.Value;
+                    //Recipient
+                    objactivitylog.Fax_Recipient_Company = dt.Rows[r].ItemArray[2].ToString(); //grdEFax.Rows[r].Cells[3].Text.ToString();//txtRecipientcompany.Value;
+                    objactivitylog.Fax_Recipient_Name = dt.Rows[r].ItemArray[1].ToString(); //grdEFax.Rows[r].Cells[2].Text.ToString();//txtRecName.Value;
+                                                                                            //balaji
+                                                                                            //if (msktxtRecipientFax.Value != "")
+                    objactivitylog.Fax_Recipient_Number = dt.Rows[r].ItemArray[3].ToString(); //grdEFax.Rows[r].Cells[4].Text.ToString();//"+1" + msktxtRecipientFax.Value.Replace("-", "").Replace("(", "").Replace(")", "");
+                    objactivitylog.From_Address = dt.Rows[r].ItemArray[4].ToString();//grdEFax.Rows[r].Cells[5].Text.ToString();//txtRecipientmail.Value;
 
+                    objactivitylog.Message = txtareaCoverpage.Value;
+                    objactivitylog.Fax_Status = "READY TO SEND";
+                    objactivitylog.Fax_File_Path = sAttachFileName.Replace(@"\", @"/");
+                    //if (chkProvider.Checked)
+                    //    objactivitylog.Fax_Recipient_Category = chkProvider.Value;
+                    //else if (chkpatient.Checked)
+                    //    objactivitylog.Fax_Recipient_Category = chkpatient.Value;
+                    objactivitylog.Fax_Recipient_Category = dt.Rows[r].ItemArray[0].ToString();//grdEFax.Rows[r].Cells[1].Text.ToString();
+                    objactivitylog.Group_ID = Convert.ToInt32(hdnGroupID.Value);
+                    objactivitylog.Fax_Priority = hdnpriority.Value.ToString().Split('|')[0]; //DropDwnpriority.Items[DropDwnpriority.SelectedIndex].Value;
+                    objactivitylog.Fax_Cover_Page_Template_Name = hdnpriority.Value.ToString().Split('|')[1];//DropDwncoverpage.Items[DropDwncoverpage.SelectedIndex].Text;
+                    lstactivitylog.Add(objactivitylog);
                 }
-                finally
-                {
-                    doc.Close();
-                }
+
+                objActivityMngr.SaveActivityLogManager(lstactivitylog, string.Empty);
+
+                //balaji
+                btnSendfax.Disabled = true;
+                ClearFields();
+                CreateEmptyHeader();
+                hdnGroupID.Value = (Convert.ToInt32(hdnGroupID.Value) + 1).ToString();
+                ViewState.Remove("dtEFaxGrid");
+                //ScriptManager.RegisterStartupScript(this, this.GetType(), "SaveSucessfully", "DisplayErrorMessage('1011133');window.close();Closefax();{sessionStorage.setItem('StartLoading', 'false');StopLoadFromPatChart();}", true);
+                ScriptManager.RegisterStartupScript(this, this.GetType(), "SaveSucessfully", "Efaxsaveend();", true);
+            }
+            catch
+            {
+
+            }
+            finally
+            {
+                doc.Close();
+            }
             }
 
             void ClearFields()
