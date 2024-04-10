@@ -5210,9 +5210,14 @@ namespace Acurus.Capella.UI
                 hdnMovetoOrderSubmitId.Value = string.Empty;
 
             }
+            else
+            {
+                //CAP-1885
+                ScriptManager.RegisterStartupScript(this, this.Page.GetType(), "AlertMsg", "alert('Please update the order before click on Move to next Process.');", true);
+            }
             #endregion
             //CAP-1885
-            ScriptManager.RegisterStartupScript(this, this.Page.GetType(), "", "{sessionStorage.setItem('StartLoading', 'false');StopLoadFromPatChart();}", true);
+            ScriptManager.RegisterStartupScript(this, this.Page.GetType(), "StopLoad", "{sessionStorage.setItem('StartLoading', 'false');StopLoadFromPatChart();}", true);
         }
 
 
@@ -6048,6 +6053,10 @@ namespace Acurus.Capella.UI
         protected void btnClear_Click(object sender, EventArgs e)
         {
             ClearAll(true);
+            //Jira CAP-1555
+            chkpaperorder.Disabled = false;
+            rbLabOrder.Enabled = false;
+            rbImageOrder.Enabled = false;
             ScriptManager.RegisterStartupScript(this, this.GetType(), string.Empty, "  {sessionStorage.setItem('StartLoading', 'false');StopLoadFromPatChart();};disableAutoSaveNew();", true);
         }
         protected void hdnbuttonload_Click(object sender, EventArgs e)

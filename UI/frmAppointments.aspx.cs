@@ -2873,13 +2873,11 @@ namespace Acurus.Capella.UI
             IList<FacilityLibrary> ilstFacAncillary = new List<FacilityLibrary>();
             if (ApplicationObject.facilityLibraryList != null)
             {
-                var facAncillary = from f in ApplicationObject.facilityLibraryList where f.Fac_Name == cboFacilityName.SelectedItem.Text select f;
-                ilstFacAncillary = facAncillary.ToList<FacilityLibrary>();
-            }
+                    var facAncillary = from f in ApplicationObject.facilityLibraryList where f.Fac_Name == cboFacilityName.SelectedItem.Text select f;
+                    ilstFacAncillary = facAncillary.ToList<FacilityLibrary>();
+                }
 
             #region New Code
-            //CAP-1857 - Block days is not shown in the appointment scheduler for the technicians in provider's login.
-            hdnSchedulerView.Value = "SwitchToWeekView";
             if (schAppointmentScheduler.SelectedView.ToString().Trim() == "WeekView")
             {
                 hdnSchedulerView.Value = "SwitchToWeekView";
@@ -2928,7 +2926,8 @@ namespace Acurus.Capella.UI
                 }
                 else
                 {
-                    Is_Ancillary = false;
+                    //CAP-1857 - Block days is not shown in the appointment scheduler for the technicians in provider's login.
+                    Is_Ancillary = true;
                     LoadApptList = EncMngr.GetAppointmentsByDatePhysicianFacility(StartDateTime, EndDateTime, PhyIDList.ToArray<ulong>(), facilityList.ToArray<string>(), hdnSchedulerView.Value, out time_taken, false, Is_Ancillary);
                 }
                 LoadAppointmentsDBCall.Stop();
