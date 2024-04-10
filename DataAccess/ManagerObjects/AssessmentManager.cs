@@ -2696,7 +2696,11 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
                     {
                         for (int iCount = 0; iCount < ((IList<object>)ilstAsshumanBlobFinal[1]).Count; iCount++)
                         {
-                            objProblemList.Add((ProblemList)((IList<object>)ilstAsshumanBlobFinal[1])[iCount]);
+                            //Cap - 1881
+                            if(((ProblemList)((IList<object>)ilstAsshumanBlobFinal[1])[iCount]).Version_Year!= "ICD_9")
+                            {
+                                objProblemList.Add((ProblemList)((IList<object>)ilstAsshumanBlobFinal[1])[iCount]);
+                            }                            
                         }
                     }
                     if (ilstAsshumanBlobFinal[2] != null)
@@ -3532,10 +3536,13 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
                     {
                         for (int iCount = 0; iCount < ((IList<object>)ilstAsshumanBlobFinal[0]).Count; iCount++)
                         {
-                            objProblemList.Add((ProblemList)((IList<object>)ilstAsshumanBlobFinal[0])[iCount]);
+                            //Cap - 1881
+                            if (((ProblemList)((IList<object>)ilstAsshumanBlobFinal[0])[iCount]).Version_Year!= "ICD_9")
+                            {
+                                objProblemList.Add((ProblemList)((IList<object>)ilstAsshumanBlobFinal[0])[iCount]);
+                            }                            
                         }
-                    }
-                   
+                    }                   
                 }                
 
                 
