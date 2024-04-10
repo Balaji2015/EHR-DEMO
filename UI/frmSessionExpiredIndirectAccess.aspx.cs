@@ -25,6 +25,13 @@ namespace Acurus.Capella.UI
                 return;
             }
 
+            if (Request.Cookies["RedirectUri"] != null && !string.IsNullOrEmpty(Request.Cookies["RedirectUri"].Value))
+            {
+                HttpCookie cookie = Request.Cookies["RedirectUri"];
+                cookie.Expires = DateTime.Now.AddMinutes(-5);
+                Response.Cookies.Add(cookie);
+            }
+
             UserSessionManager userSessionMngr = new UserSessionManager();
             //  userSessionMngr.DeleteUserSessionAtSessionEnd(HttpContext.Current.Session.SessionID); 
             //Global.ht.Remove(ClientSession.UserName);

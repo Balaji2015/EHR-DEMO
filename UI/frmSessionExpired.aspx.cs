@@ -31,8 +31,15 @@ namespace Acurus.Capella.UI
                 return;
             }
 
-            //Jira CAP-1567
-            if (Request.Cookies["CeRxFlag"] != null && Request.Cookies["CeRxFlag"].Value == "true" && Request.Cookies["CeRxHumanID"].Value != "" && Request.Cookies["CeRxHumanID"].Value != "0")
+            if (Request.Cookies["RedirectUri"] != null && !string.IsNullOrEmpty(Request.Cookies["RedirectUri"].Value)) 
+            {
+                HttpCookie cookie = Request.Cookies["RedirectUri"];
+                cookie.Expires = DateTime.Now.AddMinutes(-5);
+                Response.Cookies.Add(cookie);
+            }
+
+                //Jira CAP-1567
+                if (Request.Cookies["CeRxFlag"] != null && Request.Cookies["CeRxFlag"].Value == "true" && Request.Cookies["CeRxHumanID"].Value != "" && Request.Cookies["CeRxHumanID"].Value != "0")
             {
                 string sErrorMessage = string.Empty;
 

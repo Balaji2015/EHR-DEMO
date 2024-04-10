@@ -91,6 +91,20 @@ namespace Acurus.Capella.UI
             Response.SetCookie(new HttpCookie("LocalTime") { Value = hdnLocalDateAndTime.Value, Expires = DateTime.Now.AddDays(1) });
             Response.SetCookie(new HttpCookie("bFollows_DST") { Value = bFollows_DST.ToString(), Expires = DateTime.Now.AddDays(1) });
 
+            if (!string.IsNullOrWhiteSpace(Request.QueryString["redirecturl"]))
+            {
+                var returnUrl = HttpUtility.UrlDecode(Request.QueryString["redirecturl"]);
+                Response.SetCookie(new HttpCookie("RedirectUri") { Value = returnUrl, Expires = DateTime.Now.AddDays(1) });
+            }
+            else
+            {
+                HttpCookie cookie = Request.Cookies["RedirectUri"];
+                if(cookie != null) { 
+                cookie.Expires = DateTime.Now.AddMinutes(-5);
+                Response.Cookies.Add(cookie);
+                    }
+            }
+
         }
 
 
