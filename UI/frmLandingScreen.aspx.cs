@@ -316,7 +316,8 @@ namespace Acurus.Capella.UI
                         //    UtilityManager.CreateUserSessionFile(ClientSession.UserName, HttpContext.Current.Session.SessionID);
                         //}
                         //CAP-1167
-                        var serverRedirectUrl = directURLUtility.GetServerRedirectURLByDirectURL(Request.QueryString["redirecturl"]?.ToString(), login[0].Default_Server);
+                        //CAP-1922
+                        var serverRedirectUrl = directURLUtility.GetServerRedirectURLByDirectURL(Request.Cookies["RedirectUri"]?.Value, login[0].Default_Server);
 
                         //For Bug ID :74036 
                         ScriptManager.RegisterStartupScript(this, this.Page.GetType(), "Login", "sessionStorage.setItem('StartLoading', 'true');StartLoadFromPatChart();", true);
@@ -440,7 +441,8 @@ namespace Acurus.Capella.UI
                         else
                             ClientSession.bFollows_DST = false;
                         //CAP-1167
-                        var returnURL = Request.QueryString["redirecturl"]?.ToString();
+                        //CAP-1922
+                        var returnURL = Request.Cookies["RedirectUri"]?.Value;
                         if (!string.IsNullOrEmpty(returnURL))
                         {
                             Server.Transfer(returnURL);
@@ -453,7 +455,8 @@ namespace Acurus.Capella.UI
                     else
                     {
                         //CAP-1167
-                        var returnURL = Request.QueryString["redirecturl"]?.ToString();
+                        //CAP-1922
+                        var returnURL = Request.Cookies["RedirectUri"]?.Value;
                         if (!string.IsNullOrEmpty(returnURL))
                         {
                             Response.Redirect(returnURL);
@@ -557,7 +560,8 @@ namespace Acurus.Capella.UI
                     data.Add("AccessTokenId", ClientSession.AccessTokenId);
 
                     //CAP-1167
-                    var serverRedirectUrl = directURLUtility.GetServerRedirectURLByDirectURL(Request.QueryString["redirecturl"]?.ToString(), Session["Default_Server"].ToString());
+                    //CAP-1922
+                    var serverRedirectUrl = directURLUtility.GetServerRedirectURLByDirectURL(Request.Cookies["RedirectUri"]?.Value, Session["Default_Server"].ToString());
                     HttpHelper.RedirectAndPOST(this.Page, serverRedirectUrl, data);
                     return;
                 }
@@ -567,7 +571,8 @@ namespace Acurus.Capella.UI
                 {
                     var ScnTabRecord = from s in ScnTabList where s.SCN_ID == (int)Session["LandingScnID"] select s;
                     //CAP-1167
-                    var returnURL = Request.QueryString["redirecturl"]?.ToString();
+                    //CAP-1922
+                    var returnURL = Request.Cookies["RedirectUri"]?.Value;
 
                     if (!string.IsNullOrEmpty(returnURL))
                     {
@@ -751,7 +756,8 @@ namespace Acurus.Capella.UI
                     //Response.Redirect(ScnTabRecord.ToList<ScnTab>()[0].SCN_Name + ".aspx");
                     //CAP-1167
                     string sFileName = ScnTabRecord.ToList<ScnTab>()[0].SCN_Name + ".aspx";
-                    var returnURL = Request.QueryString["redirecturl"]?.ToString();
+                    //CAP-1922
+                    var returnURL = Request.Cookies["RedirectUri"]?.Value;
                     if (!string.IsNullOrEmpty(returnURL))
                     {
                         sFileName = returnURL;

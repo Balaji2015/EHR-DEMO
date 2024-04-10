@@ -6053,6 +6053,10 @@ namespace Acurus.Capella.UI
         protected void btnClear_Click(object sender, EventArgs e)
         {
             ClearAll(true);
+            //Jira CAP-1555
+            chkpaperorder.Disabled = false;
+            rbLabOrder.Enabled = false;
+            rbImageOrder.Enabled = false;
             ScriptManager.RegisterStartupScript(this, this.GetType(), string.Empty, "  {sessionStorage.setItem('StartLoading', 'false');StopLoadFromPatChart();};disableAutoSaveNew();", true);
         }
         protected void hdnbuttonload_Click(object sender, EventArgs e)
