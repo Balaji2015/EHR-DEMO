@@ -387,7 +387,7 @@
                                     <td>
                                         <select style="width: 250px;" class=" riSingle Editabletxtbox" runat="server" id="DropDwncoverpage">
                                         </select>
-                                   <a href="#" onclick="ImageTempalteClick()" style="margin-right: -22%">View Template</a></td>
+                                   <a href="javascript:void(0)" onclick="ImageTempalteClick()" style="margin-right: -22%">View Template</a></td>
                                 </tr>
                                 <tr>
                                     <td><span class="LabelStyle">Subject</span></td>
