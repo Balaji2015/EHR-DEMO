@@ -38,12 +38,15 @@ function showTime(sender, args) {
         if (sender._text == "Move To Next Process") {
             sender.set_autoPostBack(false);
             isReview();
+            { sessionStorage.setItem('StartLoading', 'true'); StartLoadFromPatChart(); }
+            return true;
         }
         else {
             sender.set_autoPostBack(true);
         }
     }
     { sessionStorage.setItem('StartLoading', 'true'); StartLoadFromPatChart(); }
+    return false;
 }
 function refreshChart(encID) {
     //$(top.window.document).find('#ctl00_C5POBody_EncounterContainer')[0].src = "frmSummaryNew.aspx?EncounterId=" + encID;
@@ -136,7 +139,7 @@ function OnbtnSaveAndCloseClick(sender, eventArgs) {
         }
     }
     
-    showTime(sender, eventArgs);
+    var check = showTime(sender, eventArgs);
 //  if (v1 == 0)
 //Jira Cap - 600
    // sender.set_autoPostBack(true);
@@ -147,7 +150,10 @@ function OnbtnSaveAndCloseClick(sender, eventArgs) {
     ////Jira Cap - 600
        // __doPostBack('btnMoveToProviderReview');
     sender.set_autoPostBack(false);
-    __doPostBack('btnMoveToProviderReview', "true");
+//Jira CAP-787 and Jira CAP-748 intriduced the condtion
+    if (check == false) {
+        __doPostBack('btnMoveToProviderReview', "true");
+    }
     //}
 }
 var v = 0;
