@@ -124,6 +124,12 @@ namespace Acurus.Capella.UI
             bool.TryParse(Request.Cookies["bFollows_DST"]?.Value ?? Request.Form["EHRhdnFollowsDayLightSavings"], out bool bFollows_DST);
             ClientSession.bFollows_DST = bFollows_DST;
 
+            //CAP-1922
+            if (!string.IsNullOrWhiteSpace(Request.Form["RedirectURL"]))
+            {
+                Response.SetCookie(new HttpCookie("RedirectUri") { Value = Request.Form["RedirectURL"], Expires = DateTime.Now.AddDays(1) });
+            }
+
             if (string.IsNullOrWhiteSpace(sUserAccountType))
             {
                 if (string.IsNullOrWhiteSpace(sUserName))
@@ -283,6 +289,7 @@ namespace Acurus.Capella.UI
                         data.Add("UserAccountType", sUserAccountType);
                         data.Add("AccessToken", ClientSession.AccessToken);
                         data.Add("AccessTokenId", ClientSession.AccessTokenId);
+                        data.Add("RedirectURL", Request.Cookies["RedirectUri"]?.Value??string.Empty);
                         hdnroleLanding.Value = login[0].role;
                         hdnRCopia_User_NameLanding.Value = login[0].RCopia_User_Name;
                         hdnIs_RCopia_Notification_RequiredLanding.Value = login[0].Is_RCopia_Notification_Required;
@@ -558,6 +565,7 @@ namespace Acurus.Capella.UI
                     data.Add("UserAccountType", ClientSession.UserAccountType);
                     data.Add("AccessToken", ClientSession.AccessToken);
                     data.Add("AccessTokenId", ClientSession.AccessTokenId);
+                    data.Add("RedirectURL", Request.Cookies["RedirectUri"]?.Value ?? string.Empty);
 
                     //CAP-1167
                     //CAP-1922
