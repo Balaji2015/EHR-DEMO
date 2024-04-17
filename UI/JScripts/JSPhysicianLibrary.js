@@ -966,6 +966,13 @@ function scrolify(tblAsJQueryObject, height) {
     }
 }
 function ddlCategory_Change() {
+    //CAP-1676
+    $("#ddlPrefix").prop("disabled", false);
+    $("#txtLastName").prop("disabled", false);
+    $("#txtMI").prop("disabled", false);
+    $("#txtFirstName").prop("disabled", false);
+    $("#txtSuffix").prop("disabled", false);
+
     var lblFirstName = document.getElementById('lblFirstName');
     var lblLastName = document.getElementById('lblLastName');
     var lblNPI = document.getElementById('lblNPI');
@@ -1054,6 +1061,13 @@ function ddlCategory_Change() {
             lblCompany.innerHTML = lblCompany.innerText;
         }
         $('#lblCompany').addClass('MandLabelstyle');
+        //CAP-1676
+        $("#ddlPrefix").prop("disabled", true);
+        $("#txtLastName").prop("disabled", true);
+        $("#txtMI").prop("disabled", true);
+        $("#txtFirstName").prop("disabled", true);
+        $("#txtSuffix").prop("disabled", true);
+
         $(lblCompany).html($(lblCompany).html().replace("*", "<span class='manredforstar'>*</span>"));
         $('#lgndSpecialities').addClass('legendschedulerborderPhysicianNonMand');
         $('#lgndSpecialities').removeClass('legendschedulerborderPhysician');
