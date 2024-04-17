@@ -469,7 +469,11 @@ namespace Acurus.Capella.UI
                                 if (sAttachFileName == string.Empty)
                                     sAttachFileName = sFTPAddress;
                                 else
-                                    sAttachFileName += " | " + sFTPAddress;
+                                {
+                                    //Jira CAP-1950
+                                    //sAttachFileName += " | " + sFTPAddress;
+                                    sAttachFileName += "|" + sFTPAddress;
+                                }
                                 // var fax = FaxResource.Create(
                                 //    from: txtSenderName.Text,
                                 //    to: txtSenderMaskFax.Text.Replace("-", ""),
@@ -586,7 +590,11 @@ namespace Acurus.Capella.UI
                                 if (sAttachFileName == string.Empty)
                                     sAttachFileName = sFTPAddress;
                                 else
-                                    sAttachFileName += " | " + sFTPAddress;
+                                {
+                                    //Jira CAP-1950
+                                    //sAttachFileName += " | " + sFTPAddress;
+                                    sAttachFileName += "|" + sFTPAddress;
+                                }
                             }
                             else
                             {
@@ -606,7 +614,11 @@ namespace Acurus.Capella.UI
                                 if (sAttachFileName == string.Empty)
                                     sAttachFileName = sFTPAddress;
                                 else
-                                    sAttachFileName += " | " + sFTPAddress;
+                                {
+                                    //Jira CAP-1950
+                                    //sAttachFileName += " | " + sFTPAddress;
+                                    sAttachFileName += "|" + sFTPAddress;
+                                }
                             }
                             //fd = new FAXCOMEXLib.FaxDocument();
                             //fd.CoverPageType = FAXCOMEXLib.FAX_COVERPAGE_TYPE_ENUM.fcptSERVER;
