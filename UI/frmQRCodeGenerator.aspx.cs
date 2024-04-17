@@ -197,16 +197,33 @@ namespace Acurus.Capella.UI
                 //dateOfService = UtilityManager.ConvertToLocal(ClientSession.FillEncounterandWFObject.EncRecord.Date_of_Service).ToString("MM/dd/yyyy"),
                 dateOfService = UtilityManager.ConvertToLocal(Date_of_Service).ToString("MM/dd/yyyy"),
             };
-
-            var lstFinalResult = new
+            //Jira CAP-3
+            string code = string.Empty;
+            if (System.Configuration.ConfigurationSettings.AppSettings["Environment"] != null && System.Configuration.ConfigurationSettings.AppSettings["Environment"].ToString() != "")
             {
-                flow = "CAPELLA_ENCOUNTER",
-                patient = lstPatient,
-                physician = lstPhysician,
-                encounter = lstEncounter,
-            };
-
-            string code = JsonConvert.SerializeObject(lstFinalResult, Newtonsoft.Json.Formatting.Indented);
+                var lstFinalResult = new
+                {
+                    flow = "CAPELLA_ENCOUNTER",
+                    patient = lstPatient,
+                    physician = lstPhysician,
+                    encounter = lstEncounter,
+                    environment = System.Configuration.ConfigurationSettings.AppSettings["Environment"].ToString(),
+                };
+                code = JsonConvert.SerializeObject(lstFinalResult, Newtonsoft.Json.Formatting.Indented);
+            }
+            else
+            {
+                var lstFinalResult = new
+                {
+                    flow = "CAPELLA_ENCOUNTER",
+                    patient = lstPatient,
+                    physician = lstPhysician,
+                    encounter = lstEncounter,
+                };
+                code = JsonConvert.SerializeObject(lstFinalResult, Newtonsoft.Json.Formatting.Indented);
+            }
+            //Jira CAP-3
+            //string code = JsonConvert.SerializeObject(lstFinalResult, Newtonsoft.Json.Formatting.Indented);
 
             QRCoder.QRCodeGenerator qrGenerator = new QRCoder.QRCodeGenerator();
             QRCodeData qrCodeData = null;
