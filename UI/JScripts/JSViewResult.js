@@ -725,6 +725,20 @@ function OpenResultInterpretation() {
                 if (dlc.value != '') {
                     $("#DLC_txtDLC").addClass('nonEditabletxtbox');
                     $("#DLC_pbDropdown").addClass('pbDropdownBackgrounddisable');
+
+                    //CAP-1909
+                    var control = document.getElementById("DLC_pbDropdown");
+                    if (control.innerHTML.indexOf("minus") != -1 || control.innerHTML == "-") {
+                        if (control.childNodes[0] != undefined && control.childNodes[0].className != null)
+                            control.childNodes[0].className = "fa fa-plus margin2";
+                        else if (control.childNodes[0] != undefined && control.childNodes[0].nextSibling.className != null)
+                            control.childNodes[0].nextSibling.className = "fa fa-plus margin2";
+                        document.getElementById("DLC_listDLC").style.display = "none";
+
+                        hdnFieldName = null;
+                        document.getElementById("DLC_pbDropdown".replace("pbDropdown", "txtDLC")).focus();
+                    }
+
                     dlc.disabled = true;
                     dlc.setAttribute("style", "resize:none;width:400px;height:55px;overflow-x: hidden;");
                 }
@@ -750,6 +764,20 @@ function OpenResultInterpretation() {
                 if (dlc.value != '') {
                     $("#DLC_txtDLC").addClass('nonEditabletxtbox');
                     $("#DLC_pbDropdown").addClass('pbDropdownBackgrounddisable');
+
+                    //CAP-1909
+                    var control = document.getElementById("DLC_pbDropdown");
+                    if (control.innerHTML.indexOf("minus") != -1 || control.innerHTML == "-") {
+                        if (control.childNodes[0] != undefined && control.childNodes[0].className != null)
+                            control.childNodes[0].className = "fa fa-plus margin2";
+                        else if (control.childNodes[0] != undefined && control.childNodes[0].nextSibling.className != null)
+                            control.childNodes[0].nextSibling.className = "fa fa-plus margin2";
+                        document.getElementById("DLC_listDLC").style.display = "none";
+
+                        hdnFieldName = null;
+                        document.getElementById("DLC_pbDropdown".replace("pbDropdown", "txtDLC")).focus();
+                    }
+
                     dlc.disabled = true;
                     dlc.setAttribute("style", "resize:none;width:400px;height:55px;overflow-x: hidden;");
                 }
