@@ -136,6 +136,9 @@ namespace Acurus.Capella.UI
                 {
                     // ClientSession.FillPatientChart = objEncounterManager.LoadPatientChart(ClientSession.HumanId, ClientSession.EncounterId, UtilityManager.ConvertToLocal(DateTime.ParseExact(hdnLocalTime.Value.Trim(), "M/d/yyyy H:m:s", null)), string.Empty, ClientSession.UserName, true, Convert.ToUInt32(hdnAddendumID.Value), ClientSession.CurrentObjectType, false);// 0);
                     ClientSession.FillPatientChart.Fill_Encounter_and_WFObject = objEncounterManager.GetEncounterandWFObject(ClientSession.EncounterId, 0, ClientSession.CurrentObjectType);
+                    //CAP-1767
+                    ClientSession.UserCurrentProcess = ClientSession.FillPatientChart.Fill_Encounter_and_WFObject?.DocumentationWFRecord?.Current_Process ?? ClientSession.UserCurrentProcess;
+                    ClientSession.UserCurrentOwner = ClientSession.FillPatientChart.Fill_Encounter_and_WFObject?.DocumentationWFRecord?.Current_Owner ?? ClientSession.UserCurrentOwner;
                 }
 
 
