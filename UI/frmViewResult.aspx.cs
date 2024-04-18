@@ -3910,7 +3910,8 @@ namespace Acurus.Capella.UI
                             WFObjectManager obj_workFlow = new WFObjectManager();
                             WFObject DiaOrderWfObject = null;
                             DiaOrderWfObject = obj_workFlow.GetByObjectSystemId(deletelist.ToList()[0].Order_ID, "DIAGNOSTIC ORDER");
-                            if (DiaOrderWfObject != null)
+                            //CAP-1946
+                            if (DiaOrderWfObject != null && DiaOrderWfObject.Id > 0)
                             {
                                 if (DiaOrderWfObject.Current_Process == "BILLING_WAIT")
                                 {
