@@ -4911,7 +4911,9 @@ namespace Acurus.Capella.UI
             hdnHumanID.Value = "";
             btnMoveToNextProcess.Disabled = true;
             rdbAll.Checked = true;
-            if (btnFindPatient.Disabled == false)
+            //CAP-1779 - Patient name not displayed  by default after clicking the Upload button
+            var hid = Request.QueryString["HumanId"];
+            if (btnFindPatient.Disabled == false && Convert.ToUInt64(string.IsNullOrEmpty(hid) ? "0" : hid) == 0)
             {
                 PatientDetails.Text = "";
                 PatientDetails.Attributes.Remove("class");
