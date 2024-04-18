@@ -4016,59 +4016,92 @@ namespace Acurus.Capella.UI
             {
                 foreach (char c in sPolicyHolderID)
                 {
+                    //CAP-1921 - For Medicare carrier - New Policy Holder_id Format to be included
+                    //switch (iPosition)
+                    //{
+                    //    case 0:
+                    //        if (Char.IsLetter(c) == true)
+                    //        {
+                    //            sMyResult = "Fail" + "|1EG4TE5MK73";
+                    //            return sMyResult;
+                    //        }
+                    //        if (c == '0')
+                    //        {
+                    //            sMyResult = "Fail" + "|1EG4TE5MK73";
+                    //            return sMyResult;
+                    //        }
+                    //        break;
+                    //    case 1:
+                    //    case 4:
+                    //    case 7:
+                    //    case 8:
+                    //        if (Char.IsLetter(c) == false)
+                    //        {
+                    //            sMyResult = "Fail" + "|1EG4TE5MK73";
+                    //            return sMyResult;
+                    //        }
+                    //        if (c == 'S' || c == 'L' || c == 'O' || c == 'I' || c == 'B' || c == 'Z')
+                    //        {
+                    //            sMyResult = "Fail" + "|1EG4TE5MK73";
+                    //            return sMyResult;
+                    //        }
+                    //        break;
+                    //    case 2:
+                    //    case 5:
+                    //        if (Char.IsLetterOrDigit(c) == false)
+                    //        {
+                    //            sMyResult = "Fail" + "|1EG4TE5MK73";
+                    //            return sMyResult;
+                    //        }
+                    //        if (c == 'S' || c == 'L' || c == 'O' || c == 'I' || c == 'B' || c == 'Z')
+                    //        {
+                    //            sMyResult = "Fail" + "|1EG4TE5MK73";
+                    //            return sMyResult;
+                    //        }
+                    //        break;
+                    //    case 3:
+                    //    case 6:
+                    //    case 9:
+                    //    case 10:
+                    //        if (Char.IsLetter(c) == true)
+                    //        {
+                    //            sMyResult = "Fail" + "|1EG4TE5MK73";
+                    //            return sMyResult;
+                    //        }
+                    //        break;
+
+                    //}
                     switch (iPosition)
                     {
-                        case 0:
-                            if (Char.IsLetter(c) == true)
-                            {
-                                sMyResult = "Fail" + "|1EG4TE5MK73";
-                                return sMyResult;
-                            }
-                            if (c == '0')
-                            {
-                                sMyResult = "Fail" + "|1EG4TE5MK73";
-                                return sMyResult;
-                            }
-                            break;
                         case 1:
                         case 4:
                         case 7:
-                        case 8:
+                        case 8: //1, 4, 7, 8 = characters
                             if (Char.IsLetter(c) == false)
                             {
                                 sMyResult = "Fail" + "|1EG4TE5MK73";
                                 return sMyResult;
                             }
-                            if (c == 'S' || c == 'L' || c == 'O' || c == 'I' || c == 'B' || c == 'Z')
+                            break;
+                        case 0:
+                        case 3:
+                        case 6:
+                        case 9:
+                        case 10: //0, 3, 6, 9, 10 = numbers
+                            if (Char.IsDigit(c) == false)
                             {
                                 sMyResult = "Fail" + "|1EG4TE5MK73";
                                 return sMyResult;
                             }
                             break;
                         case 2:
-                        case 5:
+                        case 5: //2, 5 = letters or numbers
                             if (Char.IsLetterOrDigit(c) == false)
                             {
                                 sMyResult = "Fail" + "|1EG4TE5MK73";
                                 return sMyResult;
                             }
-                            if (c == 'S' || c == 'L' || c == 'O' || c == 'I' || c == 'B' || c == 'Z')
-                            {
-                                sMyResult = "Fail" + "|1EG4TE5MK73";
-                                return sMyResult;
-                            }
                             break;
-                        case 3:
-                        case 6:
-                        case 9:
-                        case 10:
-                            if (Char.IsLetter(c) == true)
-                            {
-                                sMyResult = "Fail" + "|1EG4TE5MK73";
-                                return sMyResult;
-                            }
-                            break;
-
                     }
                     iPosition += 1;
                 }
