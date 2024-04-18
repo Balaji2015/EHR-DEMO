@@ -124,10 +124,17 @@ namespace Acurus.Capella.UI
             bool.TryParse(Request.Cookies["bFollows_DST"]?.Value ?? Request.Form["EHRhdnFollowsDayLightSavings"], out bool bFollows_DST);
             ClientSession.bFollows_DST = bFollows_DST;
 
-            //CAP-1922
-            if (!string.IsNullOrWhiteSpace(Request.Form["RedirectURL"]))
+            //CAP-1922 & CAP-1955
+            if (!string.IsNullOrWhiteSpace(Request.Form["RedirectURL"]) || !string.IsNullOrWhiteSpace(Request.QueryString["redirecturl"]))
             {
-                var redirectURL = directURLUtility.GetDomainSpecificRedirectURL(Request.Form["RedirectURL"], Request.Form["DefaultServer"]);
+                var returnUrl = Request.Form["RedirectURL"];
+
+                if (!string.IsNullOrWhiteSpace(Request.QueryString["redirecturl"]))
+            {
+                    returnUrl = Request.QueryString["redirecturl"];
+                }
+
+                var redirectURL = directURLUtility.GetDomainSpecificRedirectURL(returnUrl, Request.Form["DefaultServer"]);
                 Response.SetCookie(new HttpCookie("RedirectUri") { Value = redirectURL, Expires = DateTime.Now.AddDays(1) });
             }
 
