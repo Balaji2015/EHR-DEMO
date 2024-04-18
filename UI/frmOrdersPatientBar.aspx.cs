@@ -270,6 +270,13 @@ namespace Acurus.Capella.UI
                 OpenOrdersScreen();
             }
         }
+        //CAP-1949 - User list Alpha sort is missing in Appointment scheduler and Create order when click show All, so its difficult to find the user
+        private void SortPhysician()
+        {
+            List<RadComboBoxItem> comboBoxItems = cboPhysician.Items.Cast<RadComboBoxItem>().ToList();
+            cboPhysician.Items.Clear();
+            cboPhysician.Items.AddRange(comboBoxItems.OrderBy(a => a.Text).ToArray());
+        }
         bool FillComboBox(IList<PhysicianLibrary> PhyList)
         {
             bool NotInList = true;
@@ -330,6 +337,7 @@ namespace Acurus.Capella.UI
                 //GitLab # 2364 - Enabled Menu level Order for Ancillary FO
                 NotInList = false;
             }
+            SortPhysician();
             return NotInList;
         }
         public string FillPatientSummaryBarforPatientChart(string LastName, string FirstName, string MI, string Suffix, DateTime DOB, ulong ulHumanID, string MedRecNo, string HomePhoneNo, string CellPhoneNo, string Sex, string PatientStatus, string SSN, string sPriPlan, string sPriCarrier, string sSecPlan, string sSecCarrier, string PatientType)
@@ -483,6 +491,7 @@ namespace Acurus.Capella.UI
                         j = j + 1;
                     }
                 }
+                SortPhysician();
             }
             else
             {
