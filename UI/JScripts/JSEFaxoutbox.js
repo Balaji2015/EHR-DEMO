@@ -1,14 +1,21 @@
 ﻿$(document).ready(function () {
+    EFaxoutboxload();
+});
+//CAP-1831 - eFax Outbox - Introduce filter 
+$('#chkLast30daysTransactions').change(function () {
+    EFaxoutboxload();
+});
+//CAP-1831 - eFax Outbox - Introduce filter 
+function EFaxoutboxload() {
     $('#divEFaxTable').empty();
     { sessionStorage.setItem('StartLoading', 'true'); StartLoadFromPatChart(); }
-    var recipientname = 
-            
-
+    var last30daysTransaction = $('#chkLast30daysTransactions').prop('checked');
+    last30daysTransaction = last30daysTransaction == undefined ? true : last30daysTransaction;
     $.ajax({
         type: "POST",
         url: "frmEFax.aspx/EFaxoutboxload",
         contentType: "application/json;charset=utf-8",
-        data: '',
+        data: '{last30daysTransaction: "' + last30daysTransaction + '"}',
         datatype: "json",
         success: function success(data) {
             var objdata = $.parseJSON(data.d);
@@ -55,8 +62,8 @@
             $("#divEFaxTable").append("<table id='EFaxTable' class='table table-bordered Gridbodystyle' style='table-layout: fixed;width:990px;'><thead class='header' style='border: 0px;width:96.7%;'><tr class='header'><th style='border: 1px solid #909090;text-align: center;width: 15%;'>Recipient Name</th><th style='border: 1px solid #909090;text-align: center;width: 10%;'>Recipient Company</th><th style='border: 1px solid #909090;text-align: center;width: 11%;'>Recipient Fax</th><th style='border: 1px solid #909090;text-align: center;width: 18%;'>Subject</th><th style='border: 1px solid #909090;text-align: center;width: 13%;'>Sent Date and Time </th><th style='border: 1px solid #909090;text-align: center;width: 15%;'>Status</th><th style='border: 1px solid #909090;text-align: center;width: 17%;'>Description</th><th style='border: 1px solid #909090;text-align: center;width: 5%;'>View</th><th style='border: 1px solid #909090;text-align: center;width: 5%;'>Retry</th></tr></thead><tbody style='word-wrap: break-word;'>" + tabContents + "</tbody></table>");
             $('#EFaxTable th').addClass('header');
             //CAP - 1802
-            /*scrolify($('#EFaxTable'), 635);*/            
-            scrolify($('#EFaxTable'), 535);
+            /*scrolify($('#EFaxTable'), 635);*/
+            scrolify($('#EFaxTable'), 500);
             { sessionStorage.setItem('StartLoading', 'false'); StopLoadFromPatChart(); }
         },
         error: function OnError(xhr) {
@@ -67,12 +74,12 @@
                 var log = JSON.parse(xhr.responseText);
                 console.log(log);
                 alert("USER MESSAGE:\n" +
-                                    ". Cannot process request. Please Login again and retry. \nEXCEPTION DETAILS: \n" +
-                                   "Message: " + log.Message);
+                    ". Cannot process request. Please Login again and retry. \nEXCEPTION DETAILS: \n" +
+                    "Message: " + log.Message);
             }
         }
     });
-});
+}
 
 function funalert(e) {
     alert('ActivityLog Failed id:' + e);
@@ -134,7 +141,7 @@ function funRetry(e) {
             
             //CAP - 1802
             /*scrolify($('#EFaxTable'), 635);*/           
-            scrolify($('#EFaxTable'), 535);
+            scrolify($('#EFaxTable'), 500);
             { sessionStorage.setItem('StartLoading', 'false'); StopLoadFromPatChart(); }
         },
         error: function OnError(xhr) {

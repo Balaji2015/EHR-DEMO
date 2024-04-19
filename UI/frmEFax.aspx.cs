@@ -777,7 +777,7 @@ namespace Acurus.Capella.UI
 
             }
             [WebMethod(EnableSession = true)]
-            public static string EFaxoutboxload()
+            public static string EFaxoutboxload(bool last30daysTransaction)
             {
                 if (ClientSession.UserName == string.Empty)
                 {
@@ -792,7 +792,15 @@ namespace Acurus.Capella.UI
                 ActivityType.Add("EFax");
                 string sActivityLog = string.Empty;
                 IList<ActivityLog> ActivityLogTempList = new List<ActivityLog>();
-                ActivityLogTempList = ActivitylogMngr.GetActivityTypeByusername(ActivityType, ClientSession.UserName.ToString());
+                //CAP-1831 - eFax Outbox - Introduce filter     
+                if (last30daysTransaction)
+                {
+                    ActivityLogTempList = ActivitylogMngr.GetActivityTypeByusername(ActivityType, ClientSession.UserName.ToString(), DateTime.UtcNow.AddDays(-29).Date);
+                }
+                else
+                {
+                    ActivityLogTempList = ActivitylogMngr.GetActivityTypeByusername(ActivityType, ClientSession.UserName.ToString());
+                }
                 ActivityLogList = ActivityLogTempList.OrderByDescending(a => a.Activity_Date_And_Time).ToList();
                 for (int i = 0; i < ActivityLogList.Count; i++)
                 {
