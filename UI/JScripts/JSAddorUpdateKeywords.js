@@ -114,10 +114,10 @@ function btnClose_Clicked() {
     atPos = 'center center';
 
     if (document.getElementById('btnAdd').value != null) {
-        if (document.getElementById('btnAdd').disabled = true) {
+        if (document.getElementById('btnAdd').disabled == true) {
             localStorage.setItem("bSaveAddorUpdate", "true");
         }
-        if (document.getElementById('btnAdd').disabled = false) {
+        if (document.getElementById('btnAdd').disabled == false) {
             localStorage.setItem("bSaveAddorUpdate", "false");
         }
     }
@@ -133,9 +133,10 @@ function btnClose_Clicked() {
                     $(dvdialog).dialog("close");
                     $("[id*='hdnMessageType']")[0].value = "Yes"
                     localStorage.setItem("bSaveAddorUpdate", "true");
-
                     if (document.getElementById('btnAdd').value != null) {
-                        __doPostBack('btnAdd', true);
+                        //Cap - 1913
+                       // __doPostBack('btnAdd', true);
+                        document.getElementById('btnAdd').click();
                     }
                 },
                 "No": function () {

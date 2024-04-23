@@ -9,7 +9,8 @@
     });
     $("#tabfax_Outbox").on('click', function () {      
         var sPath = ""
-        sPath = "HtmlEFaxOutbox.html";
+        //CAP-1831 - eFax Outbox - Introduce filter
+        sPath = "HtmlEFaxOutbox.html?version=" + sessionStorage.getItem("ScriptVersion");
         $("#TabOutboxFrame")[0].contentDocument.location.href = sPath;
     });
 });
