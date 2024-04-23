@@ -109,6 +109,7 @@ namespace Acurus.Capella.UI
                 if (bDuplicateCheck.ToString().ToUpper() == "TRUE")
                 {
                     ScriptManager.RegisterStartupScript(this, this.GetType(), "Status", "DisplayErrorMessage('020005'); {sessionStorage.setItem('StartLoading', 'false');StopLoadFromPatChart();}", true);
+                    btnAdd.Enabled = true;
                     return;
                 }
                 if (objUserLook.Value != string.Empty && bDuplicateCheck.ToString().ToUpper() == "FALSE")
@@ -133,6 +134,7 @@ namespace Acurus.Capella.UI
                 if (bDuplicateCheck.ToString().ToUpper() == "TRUE")
                 {
                     ScriptManager.RegisterStartupScript(this, this.GetType(), "Status", "DisplayErrorMessage('020005'); {sessionStorage.setItem('StartLoading', 'false');StopLoadFromPatChart();}", true);
+                    btnAdd.Enabled = true;
                     return;
                 }
                 else

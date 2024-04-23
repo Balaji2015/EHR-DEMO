@@ -125,17 +125,28 @@ namespace Acurus.Capella.UI
             ClientSession.bFollows_DST = bFollows_DST;
 
             //CAP-1922 & CAP-1955
-            if (!string.IsNullOrWhiteSpace(Request.Form["RedirectURL"]) || !string.IsNullOrWhiteSpace(Request.QueryString["redirecturl"]))
+            if (!string.IsNullOrWhiteSpace(Request.Form["RedirectURL"]))
             {
                 var returnUrl = Request.Form["RedirectURL"];
-
-                if (!string.IsNullOrWhiteSpace(Request.QueryString["redirecturl"]))
-            {
-                    returnUrl = Request.QueryString["redirecturl"];
-                }
-
                 var redirectURL = directURLUtility.GetDomainSpecificRedirectURL(returnUrl, Request.Form["DefaultServer"]);
                 Response.SetCookie(new HttpCookie("RedirectUri") { Value = redirectURL, Expires = DateTime.Now.AddDays(1) });
+            }
+            else
+            {
+                if (!string.IsNullOrWhiteSpace(Request.Url.Query))
+                {
+                    var returnUrl = HttpUtility.ParseQueryString(Request.Url.Query)["redirecturl"]; 
+                    Response.SetCookie(new HttpCookie("RedirectUri") { Value = returnUrl, Expires = DateTime.Now.AddDays(1) });
+                }
+                else
+                {
+                    if (Request.Cookies["RedirectUri"] != null && !string.IsNullOrEmpty(Request.Cookies["RedirectUri"].Value))
+            {
+                        HttpCookie cookie = Request.Cookies["RedirectUri"];
+                        cookie.Expires = DateTime.Now.AddMinutes(-5);
+                        Response.Cookies.Add(cookie);
+                    }
+                }
             }
 
             if (string.IsNullOrWhiteSpace(sUserAccountType))
