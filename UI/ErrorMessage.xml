@@ -3023,4 +3023,6 @@
 	<Message number="10113403" Type="OK" Text="Invalid Password."></Message>
 	<Message number="10113404" Type="OK" Text="Please check the default server in DB. It does not have frmLogin."></Message>
 
+	<Message number="10113405" Type="OK" Text="The selected appointment is {0}. So, this can not be marked as {1}."></Message>
+
 </ErrorMessage>

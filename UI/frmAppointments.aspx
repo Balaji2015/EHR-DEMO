@@ -610,6 +610,7 @@
             <asp:HiddenField ID="hdnRole" runat="server" EnableViewState="false" />
             <asp:HiddenField ID="hdnLocalDate" runat="server" EnableViewState="false" />
             <asp:HiddenField ID="hdnTitle" runat="server" EnableViewState="false" />
+            <asp:HiddenField ID="hdnStopLoading" runat="server" EnableViewState="false" Value="" />
             <asp:PlaceHolder ID="PlaceHolder1" runat="server">
                 <script src="JScripts/jquery-2.1.3.js" type="text/javascript"></script>
                 <script src="JScripts/jquery-ui.min1.10.2.js" type="text/javascript"></script>

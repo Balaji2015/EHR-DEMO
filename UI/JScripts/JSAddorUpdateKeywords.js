@@ -69,6 +69,10 @@ function btnClearAll_ClientClicked(button, args) {
             }
             //else
             //    button.set_autoPostBack(false);
+            //Cap - 1913
+            else {
+                document.getElementById("btnAdd").disabled = false;
+            }
         }
         else
             if (btnText == "Cancel") {
@@ -79,6 +83,11 @@ function btnClearAll_ClientClicked(button, args) {
                 }
                 //else
                 //    button.set_autoPostBack(false);
+                //Cap - 1913
+                else {
+                    document.getElementById("btnAdd").disabled = false;
+                }
+                
             }
     }
     else
