@@ -7,10 +7,12 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace Acurus.Capella.UI {
+namespace Acurus.Capella.UI
+{
 
 
-    public partial class frmAppointments {
+    public partial class frmAppointments
+    {
 
         /// <summary>
         /// ModalWindowMngt control.
@@ -470,6 +472,15 @@ namespace Acurus.Capella.UI {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.HiddenField hdnTitle;
+
+        /// <summary>
+        /// hdnStopLoading control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.HiddenField hdnStopLoading;
 
         /// <summary>
         /// PlaceHolder1 control.

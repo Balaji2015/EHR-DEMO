@@ -914,7 +914,12 @@ function EndRequestHandler(sender, args) {
         }
     }
     StopLoadingImage();
-     {sessionStorage.setItem('StartLoading', 'false');StopLoadFromPatChart();}
+
+    //Jira CAP-1953
+    //{ sessionStorage.setItem('StartLoading', 'false'); StopLoadFromPatChart(); }
+    if ($("#ctl00_C5POBody_hdnStopLoading")[0]?.value != "true") {
+        { sessionStorage.setItem('StartLoading', 'false'); StopLoadFromPatChart(); }
+    }
 }
 
 function AppointmentPastDateValidation(dateToValidate) {
@@ -1282,8 +1287,33 @@ function LoadAppointment() {
 
     $('option').addClass('LabelStyleBold');
     $('label').addClass('LabelStyleBold');
-    
-    { sessionStorage.setItem('StartLoading', 'false'); StopLoadFromPatChart(); }
+
+    //Jira CAP-1953
+    //{ sessionStorage.setItem('StartLoading', 'false'); StopLoadFromPatChart(); }
+    if ($("#ctl00_C5POBody_hdnStopLoading")[0]?.value != "true") {
+        { sessionStorage.setItem('StartLoading', 'false'); StopLoadFromPatChart(); }
+    }
+}
+
+//Jira CAP-1953
+function ProcessMissMatchAlert(sAlertMessage) {
+    //alert(sAlertMessage);
+    var check = DisplayErrorMessage('10113405', '', sAlertMessage);
+    $("#btnErrorOkCancel").click(function () {
+        
+        if ($("#pErrorMsg")[0]?.innerText != undefined && $("#pErrorMsg")[0]?.innerText.indexOf("The selected appointment is") > -1) {
+            { sessionStorage.setItem('StartLoading', 'true'); StartLoadFromPatChart(); }
+            if ($('#ctl00_C5POBody_btnRefresh')[0] != undefined) {
+
+                $("#ctl00_C5POBody_hdnStopLoading")[0].value = "true"
+                $(top.window.document).find("#ctl00_C5POBody_btnRefresh")[0].click();
+            }
+            else {
+                { sessionStorage.setItem('StartLoading', 'false'); StopLoadFromPatChart(); }
+            }
+        }
+       
+    });
 }
 
 
