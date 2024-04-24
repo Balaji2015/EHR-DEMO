@@ -4084,7 +4084,7 @@ namespace Acurus.Capella.UI
                         case 8: //1, 4, 7, 8 = characters
                             if (Char.IsLetter(c) == false)
                             {
-                                sMyResult = "Fail" + "|1EG4TE5MK73";
+                                sMyResult = "Fail" + "|1AA0AA0AA00 or 1A00A00AA00";
                                 return sMyResult;
                             }
                             break;
@@ -4095,7 +4095,7 @@ namespace Acurus.Capella.UI
                         case 10: //0, 3, 6, 9, 10 = numbers
                             if (Char.IsDigit(c) == false)
                             {
-                                sMyResult = "Fail" + "|1EG4TE5MK73";
+                                sMyResult = "Fail" + "|1AA0AA0AA00 or 1A00A00AA00";
                                 return sMyResult;
                             }
                             break;
@@ -4103,7 +4103,7 @@ namespace Acurus.Capella.UI
                         case 5: //2, 5 = letters or numbers
                             if (Char.IsLetterOrDigit(c) == false)
                             {
-                                sMyResult = "Fail" + "|1EG4TE5MK73";
+                                sMyResult = "Fail" + "|1AA0AA0AA00 or 1A00A00AA00";
                                 return sMyResult;
                             }
                             break;
@@ -4115,7 +4115,7 @@ namespace Acurus.Capella.UI
             }
             else
             {
-                sMyResult = "Fail" + "|1EG4TE5MK73";
+                sMyResult = "Fail" + "|1AA0AA0AA00 or 1A00A00AA00";
                 return sMyResult;
             }
 
