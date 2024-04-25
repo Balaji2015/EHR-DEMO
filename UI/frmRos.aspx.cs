@@ -72,7 +72,9 @@ namespace Acurus.Capella.UI
 
                     if (fillRosPastEncounter.Ros_List.Count > 0)
                     {
-                        Session["fillRos"] = fillRosPastEncounter;
+                        //Jira CAP-1923
+                        //Session["fillRos"] = fillRosPastEncounter;
+                        Session["fillPrevRos"] = fillRosPastEncounter;
                         CopyPrevControls(fillRosPastEncounter, true);
                     }
                     else
@@ -81,6 +83,8 @@ namespace Acurus.Capella.UI
                                 objROSManager.GetROSAndGeneralNotesByEncounterId(ClientSession.EncounterId, ClientSession.HumanId, false);
                         CopyPrevControls(fillRos, false);
                         Session["fillRos"] = fillRosPastEncounter;
+                        //Jira CAP-1923
+                        Session["fillPrevRos"] = fillRosPastEncounter;
                     }
                 }
                 else
@@ -371,7 +375,9 @@ namespace Acurus.Capella.UI
                 //groupBoxCreation(fillRosPastEncounter, noOfSymptomRows, symptomMaxHeight);
                 //checkBoxAndOtherControlsCreation(fillRosPastEncounter, noOfSymptomRows, symptomMaxHeight);
                 fillRosPastEncounter = objROSManager.GetRosAndGeneralNotesForPastEncounter(ClientSession.EncounterId, ClientSession.HumanId, ClientSession.PhysicianId);
-                Session["fillRos"] = fillRosPastEncounter;
+                //Jira CAP-1923
+                //Session["fillRos"] = fillRosPastEncounter;
+                Session["fillPrevRos"] = fillRosPastEncounter;
                 CopyPreviousForROS(ClientSession.HumanId, ClientSession.EncounterId, ClientSession.PhysicianId, isAlert);
             }
         }
@@ -1559,22 +1565,31 @@ namespace Acurus.Capella.UI
                                 //Check whether current encounter have ROS data
                                 if (ilst != null && ilst.Count > 0)
                                 {
-                                    if (j >= ilst.Count)
+                                    //Jira CAP-1923
+                                    //if (j >= ilst.Count)
+                                    //{
+                                    //Jira CAP-1923
+                                    //ROS rosToversionUpdate = (from rosChanged in ilst
+                                    //                          where rosChanged.System_Name == rosListOfSystemAndSymptom[j].System_Name &&
+                                    //                          rosChanged.Symptom_Name == rosListOfSystemAndSymptom[j].Symptom_Name
+                                    //                          select rosChanged).ToList()[0];
+                                    IList<ROS> rosToversionUpdate = (from rosChanged in ilst
+                                                                     where rosChanged.System_Name == rosListOfSystemAndSymptom[j].System_Name &&
+                                                                     rosChanged.Symptom_Name == rosListOfSystemAndSymptom[j].Symptom_Name
+                                                                     select rosChanged).ToList();
+                                    //Jira CAP-1923
+                                    if (rosToversionUpdate.Count > 0)
                                     {
-                                        ROS rosToversionUpdate = (from rosChanged in ilst
-                                                                  where rosChanged.System_Name == rosListOfSystemAndSymptom[j].System_Name &&
-                                                                  rosChanged.Symptom_Name == rosListOfSystemAndSymptom[j].Symptom_Name
-                                                                  select rosChanged).ToList()[0];
                                         //rosToUpdate = rosToversionUpdate;
                                         rosToUpdate.Modified_By = ClientSession.UserName;
                                         rosToUpdate.Modified_Date_And_Time = UtilityManager.ConvertToUniversal();
-                                        rosToUpdate.Version = rosToversionUpdate.Version;
+                                        rosToUpdate.Version = rosToversionUpdate[0].Version;
                                         rosToUpdate.Encounter_Id = ClientSession.EncounterId;
-                                        rosToUpdate.Created_By = rosToversionUpdate.Created_By;
-                                        rosToUpdate.Created_Date_And_Time = rosToversionUpdate.Created_Date_And_Time;
+                                        rosToUpdate.Created_By = rosToversionUpdate[0].Created_By;
+                                        rosToUpdate.Created_Date_And_Time = rosToversionUpdate[0].Created_Date_And_Time;
                                         rosToUpdate.Modified_By = ClientSession.UserName;
                                         rosToUpdate.Modified_Date_And_Time = UtilityManager.ConvertToUniversal();
-                                        rosToUpdate.Id = rosToversionUpdate.Id;
+                                        rosToUpdate.Id = rosToversionUpdate[0].Id;
                                         rosListToUpdate.Add(rosToUpdate);
                                     }
                                     else
@@ -1590,6 +1605,21 @@ namespace Acurus.Capella.UI
                                         rosobj.Created_Date_And_Time = UtilityManager.ConvertToUniversal();
                                         rosListToInsert.Add(rosobj);
                                     }
+                                    //Jira CAP-1923
+                                    //}
+                                    //else
+                                    //{
+                                    //    ROS rosobj = new ROS();
+                                    //    rosobj.Encounter_Id = ClientSession.EncounterId;
+                                    //    rosobj.Human_ID = ClientSession.HumanId;
+                                    //    rosobj.Physician_Id = ClientSession.PhysicianId;
+                                    //    rosobj.System_Name = rosListOfSystemAndSymptom[j].System_Name;
+                                    //    rosobj.Symptom_Name = rosListOfSystemAndSymptom[j].Symptom_Name;
+                                    //    rosobj.Status = strStatus;
+                                    //    rosobj.Created_By = ClientSession.UserName;
+                                    //    rosobj.Created_Date_And_Time = UtilityManager.ConvertToUniversal();
+                                    //    rosListToInsert.Add(rosobj);
+                                    //}
 
 
                                 }
@@ -2151,7 +2181,9 @@ namespace Acurus.Capella.UI
 
         public void CopyPreviousForROS(ulong HumanID, ulong EncounterID, ulong PhysicianID, bool isAlert)
         {
-            if (Session["fillRos"] == null)
+            //Jira CAP-1923
+            //if (Session["fillRos"] == null)
+            if (Session["fillPrevRos"] == null)
             {
                 ScriptManager.RegisterStartupScript(this, this.GetType(),
                                                        string.Empty,
@@ -2163,7 +2195,9 @@ namespace Acurus.Capella.UI
             ROSManager objROSManager = new ROSManager();
             FillROS fillRosPastEncounter = new FillROS();
 
-            fillRosPastEncounter = (FillROS)Session["fillRos"];
+            //Jira CAP-1923
+            //fillRosPastEncounter = (FillROS)Session["fillRos"];
+            fillRosPastEncounter = (FillROS)Session["fillPrevRos"];
 
             if (fillRosPastEncounter != null)
             {
