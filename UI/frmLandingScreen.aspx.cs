@@ -70,14 +70,14 @@ namespace Acurus.Capella.UI
             //    GenerateAccessToken(code);
             //}
 
-            if(Request.Form["AccessToken"] != null && Request.Form["AccessTokenId"] != null)
+                if (Request.Form["AccessToken"] != null && Request.Form["AccessTokenId"] != null)
             {
                 ClientSession.AccessToken = Request.Form["AccessToken"];
                 ClientSession.AccessTokenId = Request.Form["AccessTokenId"];
                 Response.SetCookie(new HttpCookie("MicrosoftAccessTokenId") { Value = Request.Form["AccessTokenId"] });
             }
 
-            if(sUserAccountType == "Capella")
+                if (sUserAccountType == "Capella")
             {
                     sUserName = (Request.Form["UserName"] ?? Request.QueryString["RequestedUserName"] ?? string.Empty);
                     ClientSession.UserName = sUserName;
@@ -92,14 +92,7 @@ namespace Acurus.Capella.UI
             {
                 sUserAccountType = ClientSession.UserAccountType;
                 sUserName = ClientSession.UserAccountType == "Capella" ? ClientSession.UserName : ClientSession.EmailAddress;
-
-                if (!string.IsNullOrWhiteSpace(Request.Form["RedirectURL"]))
-                {
-                    var returnUrl = Request.Form["RedirectURL"];
-                    var redirectURL = directURLUtility.GetDomainSpecificRedirectURL(returnUrl, Request.Form["DefaultServer"]);
-                    Response.SetCookie(new HttpCookie("RedirectUri") { Value = redirectURL, Expires = DateTime.Now.AddDays(1) });
                 }
-            }
 
            
             #region Region - Login Page Load
@@ -124,7 +117,7 @@ namespace Acurus.Capella.UI
             //if (System.Configuration.ConfigurationSettings.AppSettings["Reportpathhttp"] != null)
             //    hdnReportPathhttp.Value = System.Configuration.ConfigurationSettings.AppSettings["Reportpathhttp"];
 
-            ClientSession.LocalOffSetTime = Request.Cookies["LocalOffSetTime"]?.Value ?? Request.Form["EHRhdnLocalTime"] ??"";
+            ClientSession.LocalOffSetTime = Request.Cookies["LocalOffSetTime"]?.Value ?? Request.Form["EHRhdnLocalTime"] ?? "";
             ClientSession.LocalDate = Request.Cookies["LocalDate"]?.Value ?? Request.Form["EHRhdnLocalDate"] ?? "";
             ClientSession.UniversalTime = Request.Cookies["UniversalTime"]?.Value ?? Request.Form["EHRhdnUniversaloffset"] ?? "";
             ClientSession.LocalTime = Request.Cookies["LocalTime"]?.Value ?? Request.Form["EHRhdnLocalDateAndTime"] ?? "";
@@ -147,14 +140,9 @@ namespace Acurus.Capella.UI
                 }
                 else
                 {
-                    if (Request.Cookies["RedirectUri"] != null && !string.IsNullOrEmpty(Request.Cookies["RedirectUri"].Value))
-            {
-                        HttpCookie cookie = Request.Cookies["RedirectUri"];
-                        cookie.Expires = DateTime.Now.AddMinutes(-5);
-                        Response.Cookies.Add(cookie);
+                    ExpireRedirectUrlCookie();
                     }
                 }
-            }
 
             if (string.IsNullOrWhiteSpace(sUserAccountType))
             {
@@ -315,7 +303,7 @@ namespace Acurus.Capella.UI
                         data.Add("UserAccountType", sUserAccountType);
                         data.Add("AccessToken", ClientSession.AccessToken);
                         data.Add("AccessTokenId", ClientSession.AccessTokenId);
-                        data.Add("RedirectURL", Request.Cookies["RedirectUri"]?.Value??string.Empty);
+                        data.Add("RedirectURL", Request.Cookies["RedirectUri"]?.Value ?? string.Empty);
                         hdnroleLanding.Value = login[0].role;
                         hdnRCopia_User_NameLanding.Value = login[0].RCopia_User_Name;
                         hdnIs_RCopia_Notification_RequiredLanding.Value = login[0].Is_RCopia_Notification_Required;
@@ -351,7 +339,7 @@ namespace Acurus.Capella.UI
                         //CAP-1167
                         //CAP-1922
                         var serverRedirectUrl = directURLUtility.GetServerRedirectURLByDirectURL(Request.Cookies["RedirectUri"]?.Value, login[0].Default_Server);
-
+                        ExpireRedirectUrlCookie();
                         //For Bug ID :74036 
                         ScriptManager.RegisterStartupScript(this, this.Page.GetType(), "Login", "sessionStorage.setItem('StartLoading', 'true');StartLoadFromPatChart();", true);
 
@@ -476,6 +464,7 @@ namespace Acurus.Capella.UI
                         //CAP-1167
                         //CAP-1922
                         var returnURL = Request.Cookies["RedirectUri"]?.Value;
+                        ExpireRedirectUrlCookie();
                         if (!string.IsNullOrEmpty(returnURL))
                         {
                             Server.Transfer(returnURL);
@@ -490,6 +479,7 @@ namespace Acurus.Capella.UI
                         //CAP-1167
                         //CAP-1922
                         var returnURL = Request.Cookies["RedirectUri"]?.Value;
+                        ExpireRedirectUrlCookie();
                         if (!string.IsNullOrEmpty(returnURL))
                         {
                             Response.Redirect(returnURL);
@@ -596,6 +586,7 @@ namespace Acurus.Capella.UI
                     //CAP-1167
                     //CAP-1922
                     var serverRedirectUrl = directURLUtility.GetServerRedirectURLByDirectURL(Request.Cookies["RedirectUri"]?.Value, Session["Default_Server"].ToString());
+                    ExpireRedirectUrlCookie();
                     HttpHelper.RedirectAndPOST(this.Page, serverRedirectUrl, data);
                     return;
                 }
@@ -607,7 +598,7 @@ namespace Acurus.Capella.UI
                     //CAP-1167
                     //CAP-1922
                     var returnURL = Request.Cookies["RedirectUri"]?.Value;
-
+                    ExpireRedirectUrlCookie();
                     if (!string.IsNullOrEmpty(returnURL))
                     {
                         Response.Redirect(returnURL);
@@ -792,6 +783,7 @@ namespace Acurus.Capella.UI
                     string sFileName = ScnTabRecord.ToList<ScnTab>()[0].SCN_Name + ".aspx";
                     //CAP-1922
                     var returnURL = Request.Cookies["RedirectUri"]?.Value;
+                    ExpireRedirectUrlCookie();
                     if (!string.IsNullOrEmpty(returnURL))
                     {
                         sFileName = returnURL;
@@ -854,7 +846,7 @@ namespace Acurus.Capella.UI
                 MaxTimeout = -1,
             };
             var userclient = new RestClient(useroptions);
-            var userrequest = new RestRequest($"{ConfigurationSettings.AppSettings["okta:UserInfoURL"]}",RestSharp.Method.Get);
+            var userrequest = new RestRequest($"{ConfigurationSettings.AppSettings["okta:UserInfoURL"]}", RestSharp.Method.Get);
             userrequest.AddHeader("Authorization", $"Bearer {myDeserializedClass.access_token}");
             RestResponse userresponse = userclient.ExecuteAsync(userrequest).Result;
 
@@ -867,6 +859,16 @@ namespace Acurus.Capella.UI
             Response.SetCookie(new HttpCookie("MicrosoftAccessTokenId") { Value = ClientSession.AccessTokenId });
 
             return userInfoResponse?.email ?? "";
+        }
+
+        public void ExpireRedirectUrlCookie()
+        {
+            if (Request.Cookies["RedirectUri"] != null && !string.IsNullOrEmpty(Request.Cookies["RedirectUri"].Value))
+            {
+                HttpCookie cookie = Request.Cookies["RedirectUri"];
+                cookie.Expires = DateTime.Now.AddMinutes(-5);
+                Response.Cookies.Add(cookie);
+            }
         }
 
         public class TokenResponse

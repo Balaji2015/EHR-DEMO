@@ -3831,6 +3831,18 @@ O.TestDate_In_Months,O.TestDate_In_Weeks,O.TestDate_In_Days,O.Patient_Instructio
 WHERE O.Human_ID=? AND O.Created_Date_And_Time LIKE ? AND O.Order_Type=? AND O.Encounter_ID=? AND O.Physician_ID=? ORDER BY CAST(O.Modified_Date_And_Time AS CHAR(100)) DESC]]>-->
 
 
+		<!--<![CDATA[SELECT O.Order_ID, O.Encounter_ID,O.Human_ID, O.Physician_ID, OS.Lab_Location_ID, OS.Lab_ID, O.Lab_Procedure, OS.Authorization_Required,
+    CAST(OS.Test_Date AS char(100)), OS.Order_Notes, OS.Specimen_In_House,ifnull(OS.Stat,""), ifnull(OS.Fasting,""), CAST(OS.Created_Date_And_Time AS char(100)),
+    O.Created_By, CAST(O.Created_Date_And_Time AS char(100)),O.Modified_By, CAST(O.Modified_Date_And_Time AS char(100)),
+    O.Version, O.Lab_Procedure_Description, OS.Order_Type, null,OS.Facility_Name,OS.Height,
+    OS.Weight,OS.Order_Code_Type,OS.Bill_Type,OS.Is_ABN_Signed,ifnull(OS.Specimen_Type,""),ifnull(OS.Culture_Location,""),OS.Move_To_MA,L.Lab_Name,LL.Location_Name,W.current_Process,CAST(OS.Specimen_Collection_Date_And_Time AS CHAR(100)),OS.Temperature,OS.Order_Submit_ID,OS.Version
+    FROM orders O
+    LEFT JOIN orders_submit OS ON O.Order_Submit_ID=OS.Order_Submit_ID
+    LEFT JOIN lab L ON (OS.Lab_ID=L.Lab_ID)
+    LEFT JOIN lab_location LL ON (OS.Lab_Location_ID=LL.Lab_Location_ID)
+    LEFT JOIN wf_object W ON(O.Order_ID=W.obj_system_id AND OS.Order_Type=W.obj_type)
+    WHERE O.Order_Submit_ID=? AND O.Human_ID=? AND O.Created_Date_And_Time LIKE ? AND OS.Order_Type=? AND O.Encounter_ID=? AND O.Physician_ID=? ORDER BY CAST(if(O.Modified_Date_And_Time<>'0001-01-01 00:00:00',O.Modified_Date_And_Time,O.Created_date_and_time) AS CHAR(100)) DESC]]>-->
+
 		<![CDATA[SELECT O.Order_ID, O.Encounter_ID,O.Human_ID, O.Physician_ID, OS.Lab_Location_ID, OS.Lab_ID, O.Lab_Procedure, OS.Authorization_Required,
     CAST(OS.Test_Date AS char(100)), OS.Order_Notes, OS.Specimen_In_House,ifnull(OS.Stat,""), ifnull(OS.Fasting,""), CAST(OS.Created_Date_And_Time AS char(100)),
     O.Created_By, CAST(O.Created_Date_And_Time AS char(100)),O.Modified_By, CAST(O.Modified_Date_And_Time AS char(100)),
@@ -3841,9 +3853,7 @@ WHERE O.Human_ID=? AND O.Created_Date_And_Time LIKE ? AND O.Order_Type=? AND O.E
     LEFT JOIN lab L ON (OS.Lab_ID=L.Lab_ID)
     LEFT JOIN lab_location LL ON (OS.Lab_Location_ID=LL.Lab_Location_ID)
     LEFT JOIN wf_object W ON(O.Order_ID=W.obj_system_id AND OS.Order_Type=W.obj_type)
-    WHERE O.Order_Submit_ID=? AND O.Human_ID=? AND O.Created_Date_And_Time LIKE ? AND OS.Order_Type=? AND O.Encounter_ID=? AND O.Physician_ID=? ORDER BY CAST(if(O.Modified_Date_And_Time<>'0001-01-01 00:00:00',O.Modified_Date_And_Time,O.Created_date_and_time) AS CHAR(100)) DESC]]>
-
-
+    WHERE O.Order_Submit_ID=? AND O.Human_ID=? AND OS.Order_Type=? AND O.Encounter_ID=? AND O.Physician_ID=? ORDER BY CAST(if(O.Modified_Date_And_Time<>'0001-01-01 00:00:00',O.Modified_Date_And_Time,O.Created_date_and_time) AS CHAR(100)) DESC]]>
 	</sql-query>
 	<sql-query name="Fill.RXOrder.GetRXOrdersUsingHumanID">
 
