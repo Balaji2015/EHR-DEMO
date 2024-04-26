@@ -1125,6 +1125,9 @@
                                      <li>
                                          <a href="#" class='fontcolorgreen' style="line-height: 25px;" onclick="OnClientClickedSubMenu('UploadDocuments')" id="tsUploadDocuments"  runat="server">Upload Documents</a>
                                      </li>
+                                    <li>
+                                        <a href="#" class='fontcolorgreen' style="line-height: 25px;" title="Demographics" id="tsDemographics" onclick="OpenModal('Demographics');"  runat="server">Demographics</a><%--BugID:48547--%>
+                                    </li>
                                       <li>
                                         <a href="#" class='fontcolorgreen' style="line-height: 25px;" title="MailBox" id="tsMailbox" onclick="OnClientClickedSubMenu('tsMailbox')"  runat="server">Mail</a><%--BugID:48547--%>
                                     </li>

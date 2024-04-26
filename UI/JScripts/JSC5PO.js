@@ -868,7 +868,13 @@ function OpenModal(data) {
             CreateAuditLogEntryForTransactions("ACCESS", "Human", Humanid);//BugID:49685
             var Window = $find('ctl00_ModalWindow');
             Window.add_close(function CloseDemoGraphics(oWindow, args) {
-                window.location.href = "frmPatientChart.aspx";
+                //CAP-1969
+                if (document.getElementById("ctl00_hdnIsOpenPatientChart")?.value != null && document.getElementById("ctl00_hdnIsOpenPatientChart")?.value != undefined && document.getElementById("ctl00_hdnIsOpenPatientChart").value == "Y" && document.URL.indexOf("frmPatientchart.aspx?") > -1 && document.URL.indexOf("ScreenMode=Menu") > -1) {
+                    top.location.reload();
+                }
+                else {
+                    window.location.href = "frmPatientChart.aspx";
+                }
             });
         }
     }
@@ -2858,8 +2864,22 @@ $(document).ready(function () {
         $("#trmaintab td")[0].innerHTML = "<label style='color:White;'>Screen opened for reference only. Kindly close.</label>";
         $("#trmaintab td")[0].style.textAlign = "center";
 
-        $($("#trgeneral nav ul")[0]).remove();
-        $("#trgeneral").remove();
+        //$($("#trgeneral nav ul")[0]).remove();
+        //$("#trgeneral").remove();
+        $("#ctl00_tsMyQ").remove();
+        $("#ctl00_tsAppointments").remove();
+        $("#ctl00_tsMailbox").remove();
+        $("#ctl00_tsbrowse").remove();
+        $("#ctl00_tsRefill").remove();
+        $("#ctl00_tsRx_Change").remove();
+        $("#ctl00_tsRx_Pending").remove();
+        $("#ctl00_tsRx_Need_Signing").remove();
+        $("#ctl00_tsRx_RefreshRcopia").remove();
+        $("#ctl00_tsReviewStatus").remove();
+        $("#ctl00_notificationpopup").remove();
+        $("#ctl00_tsImported").remove();
+        $("#ctl00_Warning_Message").remove();
+
     }
     //CAP-1840 and CAP-1841 and CAP-1846 - End
     $('li  div').addClass('navhover');
