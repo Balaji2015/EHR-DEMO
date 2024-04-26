@@ -4096,23 +4096,25 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
             {
                 if (!LoadQuestionSet)
                 {
-                    ProblemListManager probMgr = new ProblemListManager();
-                    objDTO.MedAdvProblemList = probMgr.GetProblemList(HumanID);
+                    //CAP-1968
+                    //ProblemListManager probMgr = new ProblemListManager();
+                    //objDTO.MedAdvProblemList = probMgr.GetProblemList(HumanID);
 
-                    ICriteria criteria1 = iMySession.CreateCriteria(typeof(Assessment)).Add(Expression.Eq("Encounter_ID", EncounterID)).Add(Expression.Eq("Assessment_Type", "Selected"));
-                    objDTO.AssessmentList = criteria1.List<Assessment>();
+                    //CAP-1968
+                    //ICriteria criteria1 = iMySession.CreateCriteria(typeof(Assessment)).Add(Expression.Eq("Encounter_ID", EncounterID)).Add(Expression.Eq("Assessment_Type", "Selected"));
+                    //objDTO.AssessmentList = criteria1.List<Assessment>();
 
-
-                    ICriteria crit = iMySession.CreateCriteria(typeof(PatientResults)).Add(Expression.Eq("Encounter_ID", EncounterID)).Add(Expression.Eq("Results_Type", "Vitals"))
-                        .SetProjection(Projections.Max("Vitals_Group_ID"));
-                    ulong vitalsId = 0;
-                    if (crit.List<object>().Count > 0)
-                    {
-                        vitalsId = Convert.ToUInt64(crit.List<object>()[0]);
-                    }
-                    IList<string> VitalName = new List<string>();
-                    VitalName.Add("Height");
-                    VitalName.Add("Weight");
+                    //CAP-1968
+                    //ICriteria crit = iMySession.CreateCriteria(typeof(PatientResults)).Add(Expression.Eq("Encounter_ID", EncounterID)).Add(Expression.Eq("Results_Type", "Vitals"))
+                    //    .SetProjection(Projections.Max("Vitals_Group_ID"));
+                    //ulong vitalsId = 0;
+                    //if (crit.List<object>().Count > 0)
+                    //{
+                    //    vitalsId = Convert.ToUInt64(crit.List<object>()[0]);
+                    //}
+                    //IList<string> VitalName = new List<string>();
+                    //VitalName.Add("Height");
+                    //VitalName.Add("Weight");
                     //ICriteria criteriaVital = session.GetISession().CreateCriteria(typeof(PatientResults)).Add(Expression.Eq("Vital_Group_ID", vitalsId)).Add(Expression.In("Loinc_Observation", VitalName.ToArray<string>())).Add(Expression.Eq("Results_Type", "Vitals"));
                     //objDTO.VitalsList = criteriaVital.List<PatientResults>();
 
@@ -4811,18 +4813,18 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
             ulong Order_submit_id = 0;
             using (ISession iMySession = NHibernateSessionManager.Instance.CreateISession())
             {
+                //CAP-1968
                 IQuery query2 = iMySession.GetNamedQuery("Fill.Orders.GetOrdersUsingHumanIDByOrderSubmitID");
                 query2.SetString(0, OrderSubmitId.ToString());
                 query2.SetString(1, HumanID.ToString());
-                query2.SetString(2, "%%");
-                query2.SetString(3, OrderType);
-                query2.SetString(4, "0");
-                query2.SetString(5, PhysicianId.ToString());
+                //CAP-1968
+                //query2.SetString(2, "%%");
+                query2.SetString(2, OrderType);
+                query2.SetString(3, "0");
+                query2.SetString(4, PhysicianId.ToString());
                 orderList = new ArrayList(query2.List());
 
                 IList<ulong> AddedOderSubmitID = new List<ulong>();
-
-
                 //objOrderDetDTO.OrderCount = Convert.ToInt16(orderList.Count); //commented by prabu 23/01/2012
                 if (orderList != null)
                 {
@@ -4899,7 +4901,6 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
                             AddedOderSubmitID.Add(ordLabObj.ObjOrder.Order_Submit_ID);
                         }
 
-
                         ICriteria critOrdSub = iMySession.CreateCriteria(typeof(OrdersSubmit)).Add(Expression.Eq("Id", ordLabObj.ObjOrder.Order_Submit_ID));
                         if (critOrdSub.List<OrdersSubmit>().Count > 0)
                         {
@@ -4944,13 +4945,16 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
                             //{
                             //    ordLabObj.objSpecimen = critSpe.List<Specimen>()[0];
                             //}
-                            ICriteria critWfobj = iMySession.CreateCriteria(typeof(WFObject)).Add(Expression.Eq("Obj_Type", ordLabObj.OrdersSubmit.Order_Type)).Add(Expression.Eq("Obj_System_Id", ordLabObj.OrdersSubmit.Id));
-                            if (critWfobj.List<WFObject>().Count > 0)
-                            {
-                                ordLabObj.ObjOrder.Internal_Property_Current_Process = critWfobj.List<WFObject>()[0].Current_Process;
-                                if (ordLabObj.ObjOrder.Internal_Property_Current_Process.StartsWith("DELETED_"))
-                                    continue;
-                            }
+
+                            //CAP-1968
+                            //ICriteria critWfobj = iMySession.CreateCriteria(typeof(WFObject)).Add(Expression.Eq("Obj_Type", ordLabObj.OrdersSubmit.Order_Type)).Add(Expression.Eq("Obj_System_Id", ordLabObj.OrdersSubmit.Id));
+                            //if (critWfobj.List<WFObject>().Count > 0)
+                            //{
+                            //    ordLabObj.ObjOrder.Internal_Property_Current_Process = critWfobj.List<WFObject>()[0].Current_Process;
+                            //    if (ordLabObj.ObjOrder.Internal_Property_Current_Process.StartsWith("DELETED_"))
+                            //        continue;
+                            //}
+
                             ICriteria critLab = iMySession.CreateCriteria(typeof(Lab)).Add(Expression.Eq("Id", ordLabObj.OrdersSubmit.Lab_ID));
                             if (critLab.List<Lab>().Count > 0)
                             {
@@ -4966,11 +4970,12 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
                             //ulList.Add(ordLabObj.ObjOrder.Id);
                             ulList.Add(ordLabObj.ObjOrder.Order_Submit_ID);
 
-                            ICriteria critOrdersRequiredForms = iMySession.CreateCriteria(typeof(OrdersRequiredForms)).Add(Expression.Eq("Order_Id", ordLabObj.ObjOrder.Id));//Order_ID Change to Order_Id By ThiyagarajanM
-                            if (critOrdersRequiredForms.List<OrdersRequiredForms>().Count > 0)
-                            {
-                                ordLabObj.ilstOrdersRequiredForms = critOrdersRequiredForms.List<OrdersRequiredForms>();
-                            }
+                            //CAP-1968
+                            //ICriteria critOrdersRequiredForms = iMySession.CreateCriteria(typeof(OrdersRequiredForms)).Add(Expression.Eq("Order_Id", ordLabObj.ObjOrder.Id));//Order_ID Change to Order_Id By ThiyagarajanM
+                            //if (critOrdersRequiredForms.List<OrdersRequiredForms>().Count > 0)
+                            //{
+                            //    ordLabObj.ilstOrdersRequiredForms = critOrdersRequiredForms.List<OrdersRequiredForms>();
+                            //}
 
 
                         }
@@ -4980,21 +4985,22 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
                         ordLabList.Add(ordLabObj);
 
                     }
-                }
+                } 
                 AddedOderSubmitID = AddedOderSubmitID.Distinct().ToList<ulong>();
-                ISQLQuery queryId = iMySession.CreateSQLQuery("SELECT OS.*,W.* FROM orders_submit OS , wf_object W  WHERE W.obj_system_id=OS.Order_Submit_Id and  OS.Encounter_ID=0 and W.Current_Process!=\"DELETED_ORDER\" And W.Obj_Type=\"DIAGNOSTIC ORDER\" AND OS.Is_Paper_Order='N' AND OS.Order_Submit_Id="+ OrderSubmitId.ToString() + " AND OS.Human_Id=" + HumanID.ToString() + " and OS.Physician_ID=" + PhysicianId.ToString() + " and OS.Order_Type='" + OrderType + "';").AddEntity("OS", typeof(OrdersSubmit)).AddEntity("W", typeof(WFObject));
-                IList<object[]> tempObjectArray = queryId.List<object[]>();
-                IList<OrdersSubmit> templist = new List<OrdersSubmit>();
-                foreach (object[] obj in tempObjectArray)
-                {
-                    OrdersSubmit tempOrdersSubmit = new OrdersSubmit();
-                    tempOrdersSubmit = (OrdersSubmit)obj[0];
-                    tempOrdersSubmit.Culture_Location = ((WFObject)obj[1]).Current_Process;
-                    templist.Add(tempOrdersSubmit);
+                //CAP-1968
+                //ISQLQuery queryId = iMySession.CreateSQLQuery("SELECT OS.*,W.* FROM orders_submit OS , wf_object W  WHERE W.obj_system_id=OS.Order_Submit_Id AND OS.Order_Submit_Id= "+ OrderSubmitId.ToString() + " and  OS.Encounter_ID=0 and W.Current_Process!=\"DELETED_ORDER\" And W.Obj_Type=\"DIAGNOSTIC ORDER\" AND OS.Is_Paper_Order='N' AND OS.Human_Id=" + HumanID.ToString() + " and OS.Physician_ID=" + PhysicianId.ToString() + " and OS.Order_Type='" + OrderType + "';").AddEntity("OS", typeof(OrdersSubmit)).AddEntity("W", typeof(WFObject));
+                //IList<object[]> tempObjectArray = queryId.List<object[]>();
+                //IList<OrdersSubmit> templist = new List<OrdersSubmit>();
+                //foreach (object[] obj in tempObjectArray)
+                //{
+                //    OrdersSubmit tempOrdersSubmit = new OrdersSubmit();
+                //    tempOrdersSubmit = (OrdersSubmit)obj[0];
+                //    tempOrdersSubmit.Culture_Location = ((WFObject)obj[1]).Current_Process;
+                //    templist.Add(tempOrdersSubmit);
 
-                }
-                objOrdersDTO.ilstOrdersSubmitForPartialOrders = templist;
-                objOrdersDTO.ilstOrdersSubmitForPartialOrders = objOrdersDTO.ilstOrdersSubmitForPartialOrders.Where(a => !AddedOderSubmitID.Contains(a.Id)).ToList<OrdersSubmit>();
+                //}
+                //objOrdersDTO.ilstOrdersSubmitForPartialOrders = templist;
+                //objOrdersDTO.ilstOrdersSubmitForPartialOrders = objOrdersDTO.ilstOrdersSubmitForPartialOrders.Where(a => !AddedOderSubmitID.Contains(a.Id)).ToList<OrdersSubmit>();
 
                 objOrdersDTO.ilstOrderLabDetailsDTO = ordLabList;
                 orderList.Clear();
@@ -5036,19 +5042,19 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
 
 
                 # region In-house view
-
+                //CAP-1968
                 //MOHAN
-                IList<ulong> lstsubmit_id = objOrdersDTO.ilstOrderLabDetailsDTO.Where(q => q.OrdersSubmit != null).Select(A => A.OrdersSubmit.Id).Distinct().ToList<ulong>();
-                for (int k = 0; k < lstsubmit_id.Count; k++)
-                {
-                    ICriteria critMgnt = iMySession.CreateCriteria(typeof(FileManagementIndex)).Add(Expression.Eq("Order_ID", lstsubmit_id[k]));
-                    if (critMgnt.List<FileManagementIndex>().Count > 0)
+                //IList<ulong> lstsubmit_id = objOrdersDTO.ilstOrderLabDetailsDTO.Where(q => q.OrdersSubmit != null).Select(A => A.OrdersSubmit.Id).Distinct().ToList<ulong>();
+                //for (int k = 0; k < lstsubmit_id.Count; k++)
+                //{
+                //    ICriteria critMgnt = iMySession.CreateCriteria(typeof(FileManagementIndex)).Add(Expression.Eq("Order_ID", lstsubmit_id[k]));
+                //    if (critMgnt.List<FileManagementIndex>().Count > 0)
 
-                        foreach (var obj in objOrdersDTO.ilstOrderLabDetailsDTO.Where(Z => Z.OrdersSubmit.Id == lstsubmit_id[k]))
-                        {
-                            objOrdersDTO.ilstOrderLabDetailsDTO[objOrdersDTO.ilstOrderLabDetailsDTO.IndexOf(obj)].OrdersSubmit.Internal_Property_File_Path = "TRUE";
-                        }
-                }
+                //        foreach (var obj in objOrdersDTO.ilstOrderLabDetailsDTO.Where(Z => Z.OrdersSubmit.Id == lstsubmit_id[k]))
+                //        {
+                //            objOrdersDTO.ilstOrderLabDetailsDTO[objOrdersDTO.ilstOrderLabDetailsDTO.IndexOf(obj)].OrdersSubmit.Internal_Property_File_Path = "TRUE";
+                //        }
+                //}
 
                 #endregion
 
