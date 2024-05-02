@@ -16439,16 +16439,31 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
         public Boolean CheckBillableCodes(ulong ulEncID)
         {
             Boolean bCheck = false;
-
-            ISQLQuery sql = session.GetISession().CreateSQLQuery("select count(*) from procedure_code_library where procedure_code in (select procedure_code from e_m_coding where encounter_id='" + ulEncID + "' and is_delete!='Y' and (procedure_code in ('99080','99024','MAVST','NCVST','NO CHARGE','NOBILL','NURSE','TB','WT','BP','A9270','99421','99422','99423') or procedure_charge >=1.00));");
+            //Jira CAP-2001
+            //ISQLQuery sql = session.GetISession().CreateSQLQuery("select count(*) from procedure_code_library where procedure_code in (select procedure_code from e_m_coding where encounter_id='" + ulEncID + "' and is_delete!='Y' and (procedure_code in ('99080','99024','MAVST','NCVST','NO CHARGE','NOBILL','NURSE','TB','WT','BP','A9270','99421','99422','99423') or procedure_charge >=1.00));");
+            ISQLQuery sql = session.GetISession().CreateSQLQuery("select Where_Criteria from cds_rule_master where Clinincal_Decision_Name='Fill the Billable CPTs' and Status='Active';");
 
             ArrayList ilistObj = new ArrayList(sql.List());
             if (ilistObj != null && ilistObj.Count > 0)
             {
-                if (Convert.ToUInt64(ilistObj[0]) >= 1)
-                    bCheck = true;
-                else
+                //Jira CAP-2001
+                ISQLQuery sqlfnl = session.GetISession().CreateSQLQuery(ilistObj[0].ToString().Replace(":Enc", ulEncID.ToString()));
+                ArrayList ilistObjfnl = new ArrayList(sqlfnl.List());
+                //Jira CAP-2001
+                if (ilistObjfnl != null && ilistObjfnl.Count > 0)
+                {
+                    //Jira CAP-2001
+                    //if (Convert.ToUInt64(ilistObjfnl[0]) >= 1)
+                    //    bCheck = true;
+                    //else
+                    //    bCheck = false;
+                    //Jira CAP-2001
                     bCheck = false;
+                }
+                else
+                {
+                    bCheck = true;
+                }
             }
 
             return bCheck;
