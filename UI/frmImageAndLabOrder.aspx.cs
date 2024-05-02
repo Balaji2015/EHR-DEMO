@@ -195,7 +195,8 @@ namespace Acurus.Capella.UI
             IList<FacilityLibrary> ilstFacAncillary = vfacAncillary.ToList<FacilityLibrary>();
 
             //  if (ClientSession.FillEncounterandWFObject.EncRecord.Facility_Name == sFacilityCmg)
-            if (ilstFacAncillary.Count > 0 && ilstFacAncillary[0].Is_Ancillary == "Y")
+            //CAP-1775
+            if (ilstFacAncillary.Count > 0 && ilstFacAncillary[0].Is_Ancillary == "Y" || Request["ScreenMode"] == "MyQ")
             {
                 sCmgorder = "Y";
                 lnkOrderList.Visible = false;
@@ -330,7 +331,8 @@ namespace Acurus.Capella.UI
 
 
                 // if (ClientSession.FillEncounterandWFObject.EncRecord.Facility_Name == sFacilityCmg)
-                if (ilstFacAncillary.Count > 0 && ilstFacAncillary[0].Is_Ancillary == "Y" && EncounterID != 0)
+                //CAP-1775
+                if (ilstFacAncillary.Count > 0 && ilstFacAncillary[0].Is_Ancillary == "Y" && EncounterID != 0 || Request["ScreenMode"] == "MyQ")
                 {
                     //cboReadingProvider.Disabled = false;
                     //lblReadingProvider.InnerText.Replace("*", "");
@@ -871,6 +873,19 @@ namespace Acurus.Capella.UI
             {
                 rbLabOrder.Enabled = true;
                 rbImageOrder.Enabled = true;
+            }
+            //CAP-1976
+            if (cboLab.Disabled)
+            {
+                chkpaperorder.Disabled = true;
+                rbLabOrder.Enabled = false;
+                rbImageOrder.Enabled = false;
+            }
+            //CAP-1775
+            if (Request["ScreenMode"] == "MyQ")
+            {
+                lnkDiagnosticOrder.Visible = false;
+                lnkOrderList.Visible = false;
             }
         }
         void SetCollectionDateMand(bool IsMand)
@@ -3173,7 +3188,8 @@ namespace Acurus.Capella.UI
         }
         public void CancelTextChanged()
         {
-            if (hdnForEditErrorMsg.Value == "Edit")
+            //CAP-1775, CAP-1885
+            if (hdnForEditErrorMsg.Value == "Edit" || Request["ScreenMode"] == "MyQ")
             {
                 btnClearAll.Value = "Cancel";
                 //System.Web.UI.HtmlControls.HtmlGenericControl txtcancel = (System.Web.UI.HtmlControls.HtmlGenericControl)btnClearAll.FindControl("SpanClear");
@@ -3306,7 +3322,8 @@ namespace Acurus.Capella.UI
                     if (LookUpPerRequest.Keys.Contains("CMGLabNameFromLookUp") == true)
                     {
                         //if (cboLab.Items[cboLab.SelectedIndex].Text == LookUpPerRequest["CMGLabNameFromLookUp"].ToString() && (!chkMoveToMA.Checked || ClientSession.UserCurrentProcess == "MA_REVIEW"))
-                        if (LookUpPerRequest["CMGLabNameFromLookUp"].ToString().Contains(cboLab.Items[cboLab.SelectedIndex].Text) == true && (!chkMoveToMA.Checked || ClientSession.UserCurrentProcess == "MA_REVIEW"))
+                        //CAP-1775
+                        if (LookUpPerRequest["CMGLabNameFromLookUp"].ToString().Contains(cboLab.Items[cboLab.SelectedIndex].Text) == true && (!chkMoveToMA.Checked || ClientSession.UserCurrentProcess == "MA_REVIEW") || Request["ScreenMode"] == "MyQ")
                         {
                             if (btnOrderSubmit.Attributes["Tag"] != null && !ShowRequiredDocumnets(btnOrderSubmit.Attributes["Tag"].ToString()))
                             {
@@ -3318,6 +3335,7 @@ namespace Acurus.Capella.UI
                                 //ScriptManager.RegisterStartupScript(this, this.Page.GetType(), string.Empty, " {sessionStorage.setItem('StartLoading', 'false');StopLoadFromPatChart();}", true);
                                 //CAP-1152
                                 hdnCMGAncillarySaveOrder.Value = "true";
+                                btnOrderSubmit.Disabled = true;
                                 ScriptManager.RegisterStartupScript(this, this.Page.GetType(), "ValidateSave", "top.window.document.getElementById('ctl00_Loading').style.display = 'none'; {sessionStorage.setItem('StartLoading', 'false');StopLoadFromPatChart();}", true);
 
                                 return;
@@ -6052,11 +6070,19 @@ namespace Acurus.Capella.UI
         }
         protected void btnClear_Click(object sender, EventArgs e)
         {
-            ClearAll(true);
-            //Jira CAP-1555
-            chkpaperorder.Disabled = false;
-            rbLabOrder.Enabled = false;
-            rbImageOrder.Enabled = false;
+            //CAP-1775, CAP-1885
+            if (btnClearAll.Value != "Cancel")
+            {
+                ClearAll(true);
+                //Jira CAP-1555
+                chkpaperorder.Disabled = false;
+                rbLabOrder.Enabled = false;
+                rbImageOrder.Enabled = false;
+            }
+            else
+            {
+                ScriptManager.RegisterStartupScript(this, this.GetType(), "WindowClose", "WindowCloseDiagnostics();", true);
+            }
             ScriptManager.RegisterStartupScript(this, this.GetType(), string.Empty, "  {sessionStorage.setItem('StartLoading', 'false');StopLoadFromPatChart();};disableAutoSaveNew();", true);
         }
         protected void hdnbuttonload_Click(object sender, EventArgs e)
