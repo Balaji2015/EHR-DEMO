@@ -235,6 +235,8 @@ namespace Acurus.Capella.UI
                             txtGuarantorAddressLine2.Text = txtPatientAddressLine2.Text;
                             txtGuarantorCity.Text = txtCity.Text;
                             msktxtGuarantorZipCode.Text = msktxtZipcode.Text;
+                            //CAP-1975
+                            txtGuaEmail.Text = txtEmail.Text;
                             for (int k = 0; k < ddlGuarantorSex.Items.Count; k++)
                             {
                                 if (ddlGuarantorSex.Items[k].Text == ddlPatientsex.SelectedItem.Text)

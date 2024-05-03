@@ -1125,7 +1125,8 @@ function OpenModal(data) {
         sPath = veportpath + "htmlReportGenerator.htm?CUserRole=" + CUserRole + "&CUserName=" + CUserName + "&CFacilityName=" + CFacilityName + "&ProjectType=" + CLegalOrg + "&CurrPhyId=" + sCurrPhyId + "&UserCarrier=" + CUserCarrier;
         //sPath = veportpath + "htmlReportGenerator.htm?CUserRole=" + CUserRole + "&CUserName=" + CUserName + "&CFacilityName=" + CFacilityName + "&ProjectType=" + sessionStorage.getItem("Projname") + "&CurrPhyId=" + sCurrPhyId;
         //sPath = sessionStorage.getItem("ReportPath") + "htmlReportGenerator.htm?CUserRole=" + CUserRole + "&CUserName=" + CUserName + "&CFacilityName=" + CFacilityName + "&ProjectType=" + sessionStorage.getItem("Projname") + "&CurrPhyId=" + sCurrPhyId;
-
+        //CAP-1966
+        $(top.window.document).find('#ReportFrame')[0].src = "";
         $(top.window.document).find('#ReportFrame')[0].src = sPath;
         $(top.window.document).find("#ReportModalTitle")[0].textContent = "Report Generator";
         $($($(top.window.document).find('#ReportModal ')).find('#ReportMdlDlg')).find('.modal-content').css('overflow-y', 'auto');
