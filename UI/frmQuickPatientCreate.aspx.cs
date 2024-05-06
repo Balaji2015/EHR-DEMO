@@ -4742,8 +4742,9 @@ namespace Acurus.Capella.UI
             else if (dtpPatientDOB.Text.Substring(5, 4) != "" && Convert.ToInt32(dtpPatientDOB.Text.Substring(5, 4)) < 1900) //== "0000" || dtpPatientDOB.Text.Substring(7, 11) == "0001")
                 return "DisplayErrorMessage('380002');";
             HumanDTO CheckHuman = new HumanDTO();
-
-            CheckHuman = HumanMngr.GetPatientDetailsUsingPatientDetails(txtPatientLastName.Text, txtPatientFirstName.Text, Convert.ToDateTime(dtpPatientDOB.Text), cboPatientSex.Text, txtMedicalRecordNo.Text, sAccountExtNo);
+            //Cap -1883
+            //CheckHuman = HumanMngr.GetPatientDetailsUsingPatientDetails(txtPatientLastName.Text, txtPatientFirstName.Text, Convert.ToDateTime(dtpPatientDOB.Text), cboPatientSex.Text, txtMedicalRecordNo.Text, sAccountExtNo);
+            CheckHuman = HumanMngr.GetPatientDetailsUsingPatientDetails(txtPatientLastName.Text, txtPatientFirstName.Text, Convert.ToDateTime(dtpPatientDOB.Text), cboPatientSex.Text, txtMedicalRecordNo.Text, sAccountExtNo, ClientSession.LegalOrg);
             int iSave = 1;
             ulong ulDuplicateID = 0;
             if (hdnHumanID.Value != string.Empty)

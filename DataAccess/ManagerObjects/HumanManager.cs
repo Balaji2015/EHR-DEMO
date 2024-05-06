@@ -45,7 +45,7 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
 
         Human UpdateToHuman(Human objHuman, string MACAddress);
 
-        HumanDTO GetPatientDetailsUsingPatientDetails(string sLastname, string sFirstname, DateTime dtBirthDate, string sSex, string sMedicalRecordNo, string sExternalAccNo);
+        HumanDTO GetPatientDetailsUsingPatientDetails(string sLastname, string sFirstname, DateTime dtBirthDate, string sSex, string sMedicalRecordNo, string sExternalAccNo, string sLegalOrg);
 
         ulong BatchOperationsToQuickPatient(IList<Human> ListToInsertHuman, IList<Human> ListToUpdateHuman, IList<Eligibility_Verification> ListToInserElig, IList<VisitPayment> ListToInsertVisitPayment, IList<Check> SaveCheckList, IList<PPHeader> SavePPHeaderList, IList<PPLineItem> SavePPLineItemList, IList<AccountTransaction> SaveAccountList, IList<PatientNotes> SavePatList, PatientInsuredPlan SavePatInsList, string MACAddress, ulong checkOut_Encounter_Id, IList<VisitPaymentHistory> SaveVisitPaymentHistoryList);
 
@@ -1559,14 +1559,14 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
             }
             return lstHuman;
         }
-        public HumanDTO GetPatientDetailsUsingPatientDetails(string sLastname, string sFirstname, DateTime dtBirthDate, string sSex, string sMedicalRecordNo, string sExternalAccNo)
+        public HumanDTO GetPatientDetailsUsingPatientDetails(string sLastname, string sFirstname, DateTime dtBirthDate, string sSex, string sMedicalRecordNo, string sExternalAccNo, string sLegalOrg)
         {
             HumanDTO CheckhumanDTO = new HumanDTO();
             using (ISession iMySession = NHibernateSessionManager.Instance.CreateISession())
             {
                 if (sLastname != string.Empty)
                 {
-                    ICriteria criteria = iMySession.CreateCriteria(typeof(Human)).Add(Expression.Eq("Last_Name", sLastname)).Add(Expression.Eq("First_Name", sFirstname)).Add(Expression.Eq("Birth_Date", dtBirthDate.Date)).Add(Expression.Eq("Sex", sSex));
+                    ICriteria criteria = iMySession.CreateCriteria(typeof(Human)).Add(Expression.Eq("Last_Name", sLastname)).Add(Expression.Eq("First_Name", sFirstname)).Add(Expression.Eq("Birth_Date", dtBirthDate.Date)).Add(Expression.Eq("Sex", sSex)).Add(Expression.Eq("Legal_Org", sLegalOrg)); 
                     if (criteria.List<Human>().Count > 0)
                     {
                         CheckhumanDTO.HumanDetails = criteria.List<Human>()[0];
