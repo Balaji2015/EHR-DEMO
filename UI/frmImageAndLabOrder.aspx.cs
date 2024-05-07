@@ -197,7 +197,7 @@ namespace Acurus.Capella.UI
 
             //  if (ClientSession.FillEncounterandWFObject.EncRecord.Facility_Name == sFacilityCmg)
             //CAP-1775
-            if (ilstFacAncillary.Count > 0 && ilstFacAncillary[0].Is_Ancillary == "Y" || Request["ScreenMode"] == "MyQ")
+            if (ilstFacAncillary.Count > 0 && ilstFacAncillary[0].Is_Ancillary == "Y")
             {
                 sCmgorder = "Y";
                 lnkOrderList.Visible = false;
@@ -333,7 +333,7 @@ namespace Acurus.Capella.UI
 
                 // if (ClientSession.FillEncounterandWFObject.EncRecord.Facility_Name == sFacilityCmg)
                 //CAP-1775
-                if (ilstFacAncillary.Count > 0 && ilstFacAncillary[0].Is_Ancillary == "Y" && EncounterID != 0 || Request["ScreenMode"] == "MyQ")
+                if (ilstFacAncillary.Count > 0 && ilstFacAncillary[0].Is_Ancillary == "Y" && EncounterID != 0)
                 {
                     //cboReadingProvider.Disabled = false;
                     //lblReadingProvider.InnerText.Replace("*", "");
@@ -5783,14 +5783,16 @@ namespace Acurus.Capella.UI
                 //    TriggerClearAll = true;
                 //}
                 btnImportresult.Disabled = true; //btnImportresult.Enabled = false;
-                if (sCmgorder != "Y")
+                //CAP-1775
+                if (sCmgorder != "Y" && Request["ScreenMode"] != "MyQ")
                 {
                     ClearAll(false);
                     btnClearAll.Value = "Clear All";
                     btnOrderSubmit.Attributes.Add("Tag", "SAVE"); //btnOrderSubmit.Value = "SAVE";
                     hdnsaveEnable.Value = "";
                 }
-                if (sCmgorder == "Y")
+                //CAP-1775
+                if (sCmgorder == "Y" || Request["ScreenMode"] == "MyQ")
                 {
                     if (Session["OrderSubmitId"] != null)
                     {
