@@ -865,10 +865,6 @@ namespace Acurus.Capella.UI
                                     var assessment = objAssessmentManager.GetAssesmentUsingAssesmentId(oldAssementVital.AssessmentID);
                                     assessmentListToDelete.Add(assessment);
                                 }
-                                //else
-                                //{
-                                //    ListVitalsProblemList.Remove(item);
-                                //}
                             }
                             else
                             {
@@ -884,11 +880,39 @@ namespace Acurus.Capella.UI
                        null, new TreatmentPlan(), ClientSession.UserName, ClientSession.EncounterId, ClientSession.HumanId,
                        ClientSession.PhysicianId, new List<string>(), "No", "", ClientSession.LegalOrg, new List<EandMCodingICD>(), new List<EandMCodingICD>());
                     }
+                    else if (assessmentLoadList.VitalsBasedICD_List.Count > 0)
+                    {
+                        AssessmentVitalsLookupManager assessmentVitalsLookupManager = new AssessmentVitalsLookupManager();
+                        var assesmentVitals = assessmentVitalsLookupManager.GetAll();
+                        var copyListVitalsProblemList = assessmentLoadList.VitalsBasedICD_List;
+                        var assessmentListToDelete = new List<Assessment>();
+                        foreach (var item in copyListVitalsProblemList)
+                        {
+                            var lstFieldType = assesmentVitals.FirstOrDefault(x=> x.ICD_10 == item);
+                            var assessmentLookUpType = assesmentVitals.FirstOrDefault(x => ListAssessment.Any(y => y.ICDCode == x.ICD_10) && x.Field_Name == (lstFieldType?.Field_Name ?? ""));
+                            if ((lstFieldType?.Field_Name??"") == (assessmentLookUpType?.Field_Name ?? ""))
+                            {
+                                var oldAssementVital = ListAssessment.FirstOrDefault(x => x.ICDCode == assessmentLookUpType.ICD_10 && x.ICDCode != item);
+                                if(oldAssementVital != null) 
+                                { 
+                                    ListAssessment.Remove(oldAssementVital);
+                                    var assessment = objAssessmentManager.GetAssesmentUsingAssesmentId(oldAssementVital.AssessmentID);
+                                    assessmentListToDelete.Add(assessment);
+                                }
+                            }
+                        }
 
+                        objAssessmentManager.BatchOperationsToAssessment(new List<Assessment>(),
+                        new List<Assessment>(), assessmentListToDelete.ToArray<Assessment>(),
+                        new List<ProblemList>(), new List<ProblemList>(),
+                        new List<ProblemList>(), string.Empty,
+                        null, new TreatmentPlan(), ClientSession.UserName, ClientSession.EncounterId, ClientSession.HumanId,
+                        ClientSession.PhysicianId, new List<string>(), "No", "", ClientSession.LegalOrg, new List<EandMCodingICD>(), new List<EandMCodingICD>());
+                    }
                     ListAssessment = ListAssessment.Concat(ListVitalsProblemList).ToList();
                 }
                 strICDDesc = (from val in strICDDesc where !lstParent_ICD.Any(a => a.Trim() == val.Split('-')[0].Trim()) select val).ToList<string>();//to prevent a previously added and moved(to assessment grid) parentICD from being added to incomplete problem list(ROS,VITALS,RCopia_MEd ICDs)
-                var IncompleteProblemList = strICDDesc.Select(a => new { ICDCODE = a.Split('-')[0], ICDDescription = a.Split('-')[1] });
+                var IncompleteProblemList = new List<string>();//strICDDesc.Select(a => new { ICDCODE = a.Split('-')[0], ICDDescription = a.Split('-')[1] });
                 string json = new JavaScriptSerializer().Serialize(ListAssessment);
                 string jsonIncompleteProblemList = new JavaScriptSerializer().Serialize(IncompleteProblemList);
                 string sICD10Mapping = new JavaScriptSerializer().Serialize(ICD10MutipleMapping);
