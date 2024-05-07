@@ -2,7 +2,7 @@
 var sCategoryPhy = null;
 
 $(document).ready(function () {
-
+    
     var IsEnableGrid = localStorage.getItem("IsEnableGrid");
 
     { sessionStorage.setItem('StartLoading', 'true'); StartLoadFromPatChart(); }
@@ -54,10 +54,20 @@ $(document).ready(function () {
             if (CategoryList.length > 0) {
                 $("#ddlCategory option").remove();
                 var select = document.getElementById("ddlCategory");
+                //Jira CAP-2014
+                var selectCategory = document.getElementById("cboCategory");
                 for (var i = 0; i < CategoryList.length; i++) {
                     var option = document.createElement('option');
                     option.text = option.value = CategoryList[i].Category;
+                    //Jira CAP-2014 - start
+                    var optionCategory = document.createElement('option');
+                    optionCategory.text = optionCategory.value = CategoryList[i].Category;
+                    //Jira CAP-2014 - End
                     select.add(option);
+                    //Jira CAP-2014
+                    selectCategory.add(optionCategory);
+                    selectCategory.selectedIndex = 0;
+                    //Jira CAP-2014 - End
                     if (sCategoryPhy == null)
                         sCategoryPhy =  CategoryList[i].Category.trim() ;
                     else
@@ -150,15 +160,23 @@ $(document).ready(function () {
     if (IsEnableGrid != null && IsEnableGrid != undefined) {
         if (IsEnableGrid == "false") {
             $("#divgrd").hide();
+            //Jira CAP-2014
+            $("#divSearchParameters").hide();
             $("#divMain").css("height", "275px")
         }
         else {
             $("#divgrd").show();
+            //Jira CAP-2014
+            $("#divSearchParameters").show();
             $("#divMain").css("height", "100%")
             LoadGrid();
+            //Jira CAP-2014
+            SearchByTextandCategory();
         }
     }
     ddlCategory_Change();
+    //Jira CAP-2014
+    $(top.window.document).find("#TabmdldlgPhysicianLibrary").find(".modal-content")[0].style.height = $(top.window.document).find("#TabmdldlgPhysicianLibrary")[0].style.height;
     { sessionStorage.setItem('StartLoading', 'false'); StopLoadFromPatChart(); }
     //Input Mask for landline phone number
 
@@ -214,7 +232,9 @@ function LoadGrid() {
                 }
                 $("#tblPhysicianDetails").find('tbody').append(tabContents);
             }
-            scrolify($('#tblPhysicianDetails'), 132);
+            //Jira CAP-2014
+            //scrolify($('#tblPhysicianDetails'), 132);
+            scrolify($('#tblPhysicianDetails'), 150);
         },
         error: function OnError(xhr) {
             { sessionStorage.setItem('StartLoading', 'false'); StopLoadFromPatChart(); }
@@ -495,7 +515,9 @@ function Add(sCheckDuplicatefax) {
                     }
                     $("#tblPhysicianDetails").find('tbody').append(tabContents);
                 }
-                scrolify($('#tblPhysicianDetails'), 132);
+                //Jira CAP-2014
+                //scrolify($('#tblPhysicianDetails'), 132);
+                scrolify($('#tblPhysicianDetails'), 150);
                 DisplayErrorMessage('110020');
                 Aftersave();
             }
@@ -798,11 +820,14 @@ function AddProvider() {
                     }
                     $("#tblPhysicianDetails").find('tbody').append(tabContents);
                 }
-                scrolify($('#tblPhysicianDetails'), 132);
+                //Jira CAP-2014
+                //scrolify($('#tblPhysicianDetails'), 132);
+                scrolify($('#tblPhysicianDetails'), 150);
                 DisplayErrorMessage('110020');
                 Aftersave();
             }
-
+            //Jira CAP-2014
+            SearchByTextandCategory();
             { sessionStorage.setItem('StartLoading', 'false'); StopLoadFromPatChart(); }
         },
         error: function OnError(xhr) {
@@ -1357,4 +1382,32 @@ function Update(item) {
 
     document.getElementById('btnSave').innerText = "Update";
     document.getElementById('btnClearAll').innerText = "Cancel";
+}
+
+//Jira CAP-2014
+function SearchByTextandCategory() {
+    var SearchText = document.getElementById("txtSearch");
+    
+    $("#tblPhysicianDetails tbody tr").each(function () {
+        var row = "";
+        $(this).find("td").each(function () {
+            if ($(this)[0].style.display != "none") {
+                row = row + $(this)[0].innerText + "_";
+            }
+        });
+        if (row.toUpperCase().indexOf(SearchText.value.toUpperCase()) > -1 && ($(this).find("td:eq(1)")[0].innerText == document.getElementById("cboCategory").value || document.getElementById("cboCategory").value == "")) { //
+            $(this)[0].style.display = "";
+        }
+        else {
+            $(this)[0].style.display = "none";
+        }
+
+    });
+
+}
+
+//Jira CAP-2014
+function ClearSearch() {
+    document.getElementById("txtSearch").value = "";
+    SearchByTextandCategory();
 }

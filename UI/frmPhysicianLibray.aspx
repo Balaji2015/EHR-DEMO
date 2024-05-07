@@ -30,7 +30,9 @@
             -webkit-box-shadow: 0px 0px 0px 0px #000;
             box-shadow: 0px 0px 0px 0px #000;
         }
-
+        .reset {
+    all: revert;
+        }
         input:focus::-webkit-input-placeholder {
              opacity: 0;
         }
@@ -193,7 +195,31 @@
                     </tr>
                 </table>
             </div>
-            <div id="divgrd" style="overflow-y: auto; height:100%;">
+            
+            <div id="divSearchParameters" style="width: 783px;">  
+                <fieldset class="reset">
+                    <legend class="reset">Search Parameters</legend>
+                    <table>
+                        <tbody>
+                         <tr>
+                         <td style="padding:8px;">
+                       <label class="Editabletxtbox">Category</label>
+                        <select id="cboCategory" name="Category" onchange="SearchByTextandCategory()" class="Editabletxtbox" style="width: 245px;margin-left:5px;" >
+                            <option value=""></option>
+                        </select>
+                         </td>
+                        <td style="padding:8px;">
+                        <label class="Editabletxtbox" style="margin-left:30px;">Search</label>
+                         <input type="text" id="txtSearch" onkeyup="SearchByTextandCategory()" placeholder="Search by Name or NPI" class="Editabletxtbox" style="width:260px;margin-left:5px;"/>  
+                <img id="imgClearProviderText" runat="server" src="Resources/Delete-Blue.png" alt="X" title="Click to clear the text field." onclick="ClearSearch();" style="position: absolute; margin-left: 10px; top: 312px !important; cursor: pointer; width: 12px; height: 12px;" />
+            </td>
+           </tr>
+        </tbody>
+            </table>
+            </fieldset>
+            
+            </div>
+            <div id="divgrd" style="overflow-y: auto; height:100%; margin-top: 20px;">
                 <table id="tblPhysicianDetails" class='table table-bordered' style="width:781px;">
                     <thead class="Gridheaderstyle" style="width:100%;">
                        <%-- <tr>
@@ -206,12 +232,12 @@
                             <!--<th style="display:none;">Physician Library ID</th> class="table table-sm table-striped table-bordered"-->
                         </tr>--%>
                          <tr>
-                            <th style="width: 5%;">Edit</th>
-                            <th style="width: 16%;">Category</th>
-                            <th style="width: 21%;">Name</th>
-                            <th style="width: 28%; display:none;">Specialty</th>
-                            <th style="width: 11.5%;">NPI</th>
-                            <th style="width: 25%; display:none;">Facility</th>
+                            <th style="width: 5%;text-align: center;">Edit</th>
+                            <th style="width: 16%;text-align: center;">Category</th>
+                            <th style="width: 21%;text-align: center;">Name</th>
+                            <th style="width: 28%;text-align: center; display:none;">Specialty</th>
+                            <th style="width: 11.5%;text-align: center;">NPI</th>
+                            <th style="width: 25%;text-align: center; display:none;">Facility</th>
                         </tr>
                     </thead>
                     <tbody class="Editabletxtbox" style="width:100%;"></tbody>
