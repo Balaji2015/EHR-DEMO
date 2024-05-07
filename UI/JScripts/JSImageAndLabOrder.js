@@ -2019,16 +2019,6 @@ function EnableWaitCursorcbolab() {
     });
 }
 
-//CAP-1985
-function OrdersListClick() {
-    if (window.parent.parent.parent.parent.theForm.ctl00_C5POBody_hdnIsSaveEnable.value == "true") {
-        $('#btnOrderSubmit').trigger('click');
-    } else {
-        $('#lnkOrderList').attr('href', 'frmOrdersList.aspx')
-    }
-    { sessionStorage.setItem('StartLoading', 'true'); StartLoadFromPatChart(); }
-}
-
 function WaitCursor() {
     { sessionStorage.setItem('StartLoading', 'true'); StartLoadFromPatChart();}
 }
