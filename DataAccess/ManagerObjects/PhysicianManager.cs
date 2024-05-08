@@ -53,15 +53,15 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
         IList<PhysicianLibrary> GetRenderingPhyisicianList();
         IList<PhysicianLibrary> Get_PhysicianList(string proviserid);
         IList<PhysicianLibrary> GetphysiciannameByUserName(string sUserName);
-
-        IList<PhysicianLibrary> GetPhysicianByCategory(IList<string> Category);
+        IList<FillPhysicianLibrary> GetPhysicianByCategory(IList<string> Category);
+        IList<PhysicianLibrary> GetPhysicianByFax(string Fax);
         //IList<PhysicianFacilityCompanyCarrier> GetPhyFacCompanyCarrierDetails(ulong ulBillID, ulong ulRendProvID, string sBillingFacility, ulong ulCarrierID);
     }
 
-    public partial class PhysicianManager : ManagerBase<PhysicianLibrary, ulong>
+    public partial class PhysicianManager : ManagerBase<PhysicianLibrary, ulong>, IPhysicianManager
     {
         #region Constructors
-
+        //public IList<FillPhysicianLibrary> ilstPhysicianLibraryCategory = new List<FillPhysicianLibrary>();
         public PhysicianManager()
             : base()
         {
@@ -1111,7 +1111,7 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
         //    }
         //    return listPhyComp;
         //}
-        public static IList<PhysicianLibrary> GetPhysicianByNPI(string NPI)
+        public IList<PhysicianLibrary> GetPhysicianByNPI(string NPI)
         {
             IList<PhysicianLibrary> ilstPhysicianLibrary = new List<PhysicianLibrary>();
             using (ISession iMySession = NHibernateSessionManager.Instance.CreateISession())
@@ -1233,20 +1233,31 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
             //return criteria.List<PhysicianLibrary>();
         }
 
-        public static IList<FillPhysicianLibrary> GetPhysicianByCategory(IList<string> Category)
+        public IList<FillPhysicianLibrary> GetPhysicianByCategory(IList<string> Category)
         {
-            IList<FillPhysicianLibrary> ilstPhysicianLibrary = new List<FillPhysicianLibrary>();
+            ArrayList FavoriteList = null;
+            IList<FillPhysicianLibrary> ilstPhysicianLibraryCategory = new List<FillPhysicianLibrary>();
+            string[] sValue = new string[Category.Count];
+            if (Category.Count > 0)
+            {
+                for (int i = 0; i < Category.Count; i++)
+                {
+                    sValue[i] = Category[i];
+                }
+
+            }
+
             using (ISession iMySession = NHibernateSessionManager.Instance.CreateISession())
             {
-                ISQLQuery PhyList = iMySession.CreateSQLQuery("SELECT pl.Physician_Library_ID,pl.Physician_Address1, pl.Physician_Address2, pl.Physician_City, pl.Physician_State, pl.Physician_Zip,pl.Physician_Telephone, pl.Physician_Fax ,group_concat(distinct ps.Specialty separator ',') as Specialties,pl.Physician_NPI,pl.Physician_EMail as Physician_EMail,pl.Physician_prefix as Physician_prefix,pl.Physician_First_Name as Physician_First_Name,pl.Physician_Last_Name as Physician_Last_Name,pl.Physician_Type as Physician_Type,pl.Physician_Library_ID as Physician_Library_ID,group_concat(distinct m.Facility_Name separator '|') as Facility_Name,pl.Company,pl.Category,pl.Physician_Middle_Name,pl.Physician_Suffix FROM physician_library pl left join physician_specialty ps on (pl.Physician_Library_ID = ps.physician_id)  left join map_facility_physician m on (pl.Physician_Library_ID= m.Physician_ID) where Category='"+ Category + "' group by pl.Physician_Library_ID");
-                //ICriteria PhyList = iMySession.CreateCriteria(typeof(PhysicianLibrary)).Add(Expression.Eq("Category", Category));
-                ilstPhysicianLibrary = PhyList.List<FillPhysicianLibrary>();
-                iMySession.Close();
+                IQuery FillPhysicianLibraryByCategory = iMySession.GetNamedQuery("GetFillPhysicianLibraryByCategory");
+                FillPhysicianLibraryByCategory.SetParameterList("Category", sValue);
+                FavoriteList = new ArrayList(FillPhysicianLibraryByCategory.List());
+                ilstPhysicianLibraryCategory = FillDTO(FavoriteList);
             }
-            return ilstPhysicianLibrary;
+            return ilstPhysicianLibraryCategory;
         }
 
-        public static IList<PhysicianLibrary> GetPhysicianByFax(string Fax)
+        public IList<PhysicianLibrary> GetPhysicianByFax(string Fax)
         {
             IList<PhysicianLibrary> ilstPhysicianLibrary = new List<PhysicianLibrary>();
             using (ISession iMySession = NHibernateSessionManager.Instance.CreateISession())
@@ -1256,6 +1267,43 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
                 iMySession.Close();
             }
             return ilstPhysicianLibrary;
+        }
+
+        private IList<FillPhysicianLibrary> FillDTO(ArrayList FavoriteList)
+        {
+            IList <FillPhysicianLibrary> ilstPhysicianLibraryCategory = new List<FillPhysicianLibrary>();
+            for (int i = 0; i < FavoriteList.Count; i++)
+            {
+
+                object[] oj = (object[])FavoriteList[i];
+
+                FillPhysicianLibrary Phylbr = new FillPhysicianLibrary();
+                Phylbr.Category = oj[0].ToString();
+                Phylbr.Physician_prefix = oj[1].ToString();
+                Phylbr.Physician_First_Name = oj[2].ToString();
+                Phylbr.Physician_Middle_Name = oj[3].ToString();
+                Phylbr.Physician_Last_Name = oj[4].ToString();
+                Phylbr.Physician_Suffix = oj[5].ToString();
+                if (oj[6] != null)
+                    Phylbr.Specialties = oj[6].ToString();
+                Phylbr.Physician_NPI = oj[7].ToString();
+                if (oj[8] != null)
+                    Phylbr.Facility_Name = oj[8].ToString();
+                Phylbr.Physician_Library_ID = oj[9].ToString();
+                Phylbr.Physician_Type = oj[10].ToString();
+                Phylbr.Company = oj[11].ToString();
+                Phylbr.Physician_Address1 = oj[12].ToString();
+                Phylbr.Physician_Address2 = oj[13].ToString();
+                Phylbr.Physician_City = oj[14].ToString();
+                Phylbr.Physician_State = oj[15].ToString();
+                Phylbr.Physician_Zip = oj[16].ToString();
+                Phylbr.Physician_Telephone = oj[17].ToString();
+                Phylbr.Physician_Fax = oj[18].ToString();
+                Phylbr.Physician_EMail = oj[19].ToString();
+                ilstPhysicianLibraryCategory.Add(Phylbr);
+            }
+
+            return ilstPhysicianLibraryCategory;
         }
 
         //public IList<PhysicianFacilityCompanyCarrier> GetPhyFacCompanyCarrierDetails(ulong ulBillID, ulong ulRendProvID, string sBillingFacility, ulong ulCarrierID)

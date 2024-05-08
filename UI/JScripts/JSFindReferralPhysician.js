@@ -104,7 +104,7 @@ function PhNoValid(sphno) {
 }
 
 function ProviderSelected(event, ui) {
-
+    //Cap - 1989
     if (document.getElementById("txtProviderSearch").value != "" && document.getElementById("txtProviderSearch").value != "| NPI: | Facility: | Address:| Phone No:| Fax No:") {
         document.getElementById("txtProviderSearch").disabled = true;
     }
@@ -115,6 +115,7 @@ function ProviderSelected(event, ui) {
 
     var ProviderDetails = JSON.parse(ui.item.val);
     var txtProviderSearch = document.getElementById("txtProviderSearch");
+    //Cap - 1989
     document.getElementById("hdnCategory").value = ProviderDetails.sCategory;
     document.getElementById('hdnEditPhysicianId').value = ProviderDetails.ulPhyId;
     txtProviderSearch.attributes['data-phy-id'].value = ProviderDetails.ulPhyId;
@@ -311,6 +312,7 @@ $(document).ready(function () {
    
 });
 
+//Cap - 1989
 function EditProviderDetails() {
     var EditPhyId = document.getElementById("hdnEditPhysicianId").value;
     var ProviderText = document.getElementById("txtProviderSearch").value;
@@ -324,7 +326,7 @@ function EditProviderDetails() {
         DisplayErrorMessage('380061', '', Category);
     }
     else {
-
+        localStorage.setItem("PhyDetails", ProviderText);
         $(top.window.document).find("#TabPhysicianLibrary").modal({ backdrop: "static", keyboard: false }, 'show');
         $(top.window.document).find("#TabModalPhysicianLibraryTitle")[0].textContent = "Provider Library";
         $(top.window.document).find("#TabmdldlgPhysicianLibrary")[0].style.width = "850px";
@@ -334,10 +336,14 @@ function EditProviderDetails() {
         $(top.window.document).find("#TabPhysicianLibraryFrame")[0].contentDocument.location.href = sPath;
         $(top.window.document).find("#TabPhysicianLibrary").modal("show");
         $(top.window.document).find("#TabPhysicianLibrary").one("hidden.bs.modal", function (e) {
-
             var PhyTextboxName = localStorage.getItem("PhyDetails");
-            document.getElementById("txtProviderSearch").value = PhyTextboxName.split("&")[4];
-
+            if (PhyTextboxName.split("&")[4] != undefined) {
+                document.getElementById("txtProviderSearch").value = PhyTextboxName.split("&")[4];
+                txtProviderSearch.attributes['data-phy-details'].value = JSON.stringify(PhyTextboxName.split("&")[4]);
+            }
+            else {
+                document.getElementById("txtProviderSearch").value = PhyTextboxName;
+            }
         });
 
         return false;

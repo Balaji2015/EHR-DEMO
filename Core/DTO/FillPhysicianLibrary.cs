@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Acurus.Capella.Core.DTO
 {
-   public partial class FillPhysicianLibrary
+    public partial class FillPhysicianLibrary
     {
 
         #region Declarations
@@ -24,7 +24,7 @@ namespace Acurus.Capella.Core.DTO
         private string _Physician_Library_ID = string.Empty;
         private string _Physician_Type = string.Empty;
         private string _Company = string.Empty;
-        private string _Physician_Address1 = string.Empty;        
+        private string _Physician_Address1 = string.Empty;
         private string _Physician_Address2 = string.Empty;
         private string _Physician_City = string.Empty;
         private string _Physician_State = string.Empty;
@@ -75,7 +75,7 @@ namespace Acurus.Capella.Core.DTO
             set { _Physician_Middle_Name = value; }
         }
 
-       
+
         [DataMember]
         public virtual string Physician_Last_Name
         {

@@ -368,6 +368,7 @@
     <Compile Include="DTO\FillOtherHistory.cs" />
     <Compile Include="DTO\FillPatientChart.cs" />
     <Compile Include="DTO\FillPatientSummaryBarDTO.cs" />
+    <Compile Include="DTO\FillPhysicianLibrary.cs" />
     <Compile Include="DTO\FillPhysicianUser.cs" />
     <Compile Include="DTO\FillPrintRecipt.cs" />
     <Compile Include="DTO\FillQuickPatient.cs" />

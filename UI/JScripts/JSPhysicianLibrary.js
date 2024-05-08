@@ -749,11 +749,19 @@ function AddProvider() {
                         $("#btnClose").click();
                         var vProviderName = $("#ddlPrefix")[0].value + ". " + $("#txtFirstName")[0].value + " " + document.getElementById("txtMI").value + " " + $("#txtLastName")[0].value;
                         var vPhyNmae = $("#ddlPrefix")[0].value + $("#txtFirstName")[0].value + " " + document.getElementById("txtMI").value + " " + $("#txtLastName")[0].value + $("#txtSuffix")[0].value;
-                        var vFullName = $("#ddlPrefix")[0].value +" "+ $("#txtFirstName")[0].value + " " + document.getElementById("txtMI").value + " " + $("#txtLastName")[0].value + "(" + $("#txtSuffix")[0].value + ")";
-                        var PCP_PhyDetails = objdata.split("|")[1] + "&" + vProviderName + "&" + vPhyNmae + "&" + $("#txtNPI")[0].value +"&" +vFullName + "|" + "NPI:" + $("#txtNPI")[0].value + "|" + Specialtylist + "|" + "FACILITY:" + FacilityList + "|"
-                            + "ADDR: " +$("#txtAddressLine1")[0].value + "," + $("#txtAddressLine2")[0].value + "," + $("#txtCity")[0].value + ","
-                            + $("#txtState")[0].value + "," + $("#txtZip")[0].value
-                            + "|" + "PH:" + $("#txtPhone")[0].value+ " | FAX:" + $("#txtFax")[0].value ;
+                        //Jira Cap - 1989
+                        //var vFullName = $("#ddlPrefix")[0].value + $("#txtFirstName")[0].value + " " + document.getElementById("txtMI").value + " " + $("#txtLastName")[0].value + "(" + $("#txtSuffix")[0].value + ")";
+                        //var PCP_PhyDetails = objdata.split("|")[1] + "&" + vProviderName + "&" + vPhyNmae + "&" + $("#txtNPI")[0].value + "&" + vFullName + "|" + "NPI:" + $("#txtNPI")[0].value + "|" + Specialtylist + "|" + "FACILITY:" + FacilityList + "|"
+                        //    + "ADDR: " + $("#txtAddressLine1")[0].value + "," + $("#txtAddressLine2")[0].value + "," + $("#txtCity")[0].value + ","
+                        //    + $("#txtState")[0].value + "," + $("#txtZip")[0].value
+                        //    + "|" + "PH:" + $("#txtPhone")[0].value + "FAX:" + $("#txtFax")[0].value;
+
+                        var vFullName = $("#ddlPrefix")[0].value + " " + $("#txtFirstName")[0].value + " " + document.getElementById("txtMI").value + " " + $("#txtLastName")[0].value + "(" + $("#txtSuffix")[0].value + ")";
+                        var PCP_PhyDetails = objdata.split("|")[1] + "&" + vProviderName + "&" + vPhyNmae + "&" + $("#txtNPI")[0].value + "&" + vFullName + "|" + "NPI:" + $("#txtNPI")[0].value + "|" + Specialtylist + "|" + "FACILITY:" + FacilityList + "|"
+                            + "ADDR: " + $("#txtAddressLine1")[0].value + "," + $("#txtCity")[0].value + ","
+                            + $("#txtState")[0].value + " " + $("#txtZip")[0].value
+                            + "|" + "PH:" + $("#txtPhone")[0].value + " | FAX:" + $("#txtFax")[0].value;
+
 
                         localStorage.setItem("PhyDetails", PCP_PhyDetails);
                     }
@@ -780,9 +788,14 @@ function AddProvider() {
                         return;
                     }
 
+                    //Jira Cap - 1989
+                    //var PCP_PhyDetails = objdata[i].Physician_Library_ID + "|" + vName + "|" + objdata[i].NPI + "|" + objdata[i].specialty + "|" + objdata[i].Facility + "|"
+                    //    + objdata[i].Physician_Address1 + "," + objdata[i].Physician_Address2 + "," + objdata[i].Physician_City + "," + objdata[i].Physician_State + "," + objdata[i].Physician_Zip + "|"
+                    //    + objdata[i].Physician_Fax + "|" + objdata[i].Physician_Telephone;
+
                     var PCP_PhyDetails = objdata[i].Physician_Library_ID + "|" + vName + "|" + objdata[i].NPI + "|" + objdata[i].specialty + "|" + objdata[i].Facility + "|"
-                        + objdata[i].Physician_Address1 + "," + objdata[i].Physician_Address2 + "," + objdata[i].Physician_City + "," + objdata[i].Physician_State + "," + objdata[i].Physician_Zip + "|"
-                            + objdata[i].Physician_Fax + "|" + objdata[i].Physician_Telephone ;
+                        + objdata[i].Physician_Address1 + "," + objdata[i].Physician_City + "," + objdata[i].Physician_State + " " + objdata[i].Physician_Zip + "|"
+                        + objdata[i].Physician_Fax + "|" + objdata[i].Physician_Telephone;
 
                     localStorage.setItem("PhyDetails", PCP_PhyDetails);
                    

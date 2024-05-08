@@ -315,8 +315,10 @@ function ProviderSelected(event, ui) {
         JSON.parse(ui.item.val).sPhyZip + " | " +
         "PH:" + JSON.parse(ui.item.val).sPhyPhone + " | " +
         "FAX:" + JSON.parse(ui.item.val).sPhyFax;
+    //Cap - 1989
     document.getElementById("hdnCategory").value = ProviderDetails.sCategory;
     txtProviderSearch.attributes['data-phy-id'].value = ProviderDetails.ulPhyId;
+    //Cap - 1989
     document.getElementById('hdnEditPhysicianId').value = ProviderDetails.ulPhyId;
     txtProviderSearch.attributes['data-phy-details'].value = JSON.stringify(ProviderDetails);
     txtProviderSearch.value = vLableVal;
@@ -1577,6 +1579,47 @@ function EditProviderDetails() {
 
             var PhyTextboxName = localStorage.getItem("PhyDetails");
             document.getElementById("txtProviderSearch").value = PhyTextboxName.split("&")[4];
+
+        });
+
+        return false;
+    }
+
+
+}
+//Cap - 1989
+function EditProviderDetails() {
+    var EditPhyId = document.getElementById("hdnEditPhysicianId").value;
+    var ProviderText = document.getElementById("txtProviderSearch").value;
+
+    var Category = document.getElementById("hdnCategory").value;
+
+    if (EditPhyId == '' || ProviderText == '') {
+        DisplayErrorMessage('380060');
+    }
+    else if (Category != "NON CAPELLA USER(Physician)" && Category != "NON CAPELLA USER" && Category != "ORGANIZATION") {
+        DisplayErrorMessage('380061', '', Category);
+    }
+    else {
+        localStorage.setItem("PhyDetails", ProviderText);
+        $(top.window.document).find("#TabPhysicianLibrary").modal({ backdrop: "static", keyboard: false }, 'show');
+        $(top.window.document).find("#TabModalPhysicianLibraryTitle")[0].textContent = "Provider Library";
+        $(top.window.document).find("#TabmdldlgPhysicianLibrary")[0].style.width = "850px";
+        $(top.window.document).find("#TabmdldlgPhysicianLibrary")[0].style.height = "440px"; //"715px";
+        var sPath = "frmPhysicianLibray.aspx?EditPhyId=" + EditPhyId;
+        $(top.window.document).find("#TabPhysicianLibraryFrame")[0].style.height = "275px"; //"495px";
+        $(top.window.document).find("#TabPhysicianLibraryFrame")[0].contentDocument.location.href = sPath;
+        $(top.window.document).find("#TabPhysicianLibrary").modal("show");
+        $(top.window.document).find("#TabPhysicianLibrary").one("hidden.bs.modal", function (e) {
+            var PhyTextboxName = localStorage.getItem("PhyDetails");
+            if (PhyTextboxName.split("&")[4] != undefined) {
+                document.getElementById("txtProviderSearch").value = PhyTextboxName.split("&")[4];
+                txtProviderSearch.attributes['data-phy-details'].value = JSON.stringify(PhyTextboxName.split("&")[4]);
+            }
+            else {
+                document.getElementById("txtProviderSearch").value = PhyTextboxName;
+            }
+
 
         });
 

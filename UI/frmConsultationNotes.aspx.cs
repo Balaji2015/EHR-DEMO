@@ -1803,7 +1803,7 @@ namespace Acurus.Capella.UI
                             //        }
                             //    }
                             //}
-
+                            //Cap - 1989
                             if (itemDoc.GetElementsByTagName("EncounterList")[0].ChildNodes[0].Attributes.GetNamedItem("Referring_Provider_NPI").Value != "")
                             {
                                 string NpiId = itemDoc.GetElementsByTagName("EncounterList")[0].ChildNodes[0].Attributes.GetNamedItem("Referring_Provider_NPI").Value;

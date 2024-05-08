@@ -17826,7 +17826,18 @@ PQRI_calculation_Method=? and standard_Concept ='Advanced Illness')  and
 
 
 	</sql-query>
+	<sql-query name="GetFillPhysicianLibraryByCategory">
+		<![CDATA[SELECT pl.Category,pl.Physician_prefix as Physician_prefix,pl.Physician_First_Name as Physician_First_Name,pl.Physician_Middle_Name,
+		pl.Physician_Last_Name as Physician_Last_Name,pl.Physician_Suffix,group_concat(distinct ps.Specialty separator ',') as Specialties,
+		pl.Physician_NPI,group_concat(distinct m.Facility_Name separator '|') as Facility_Name,pl.Physician_Library_ID,pl.Physician_Type as Physician_Type,
+		pl.Company,pl.Physician_Address1, pl.Physician_Address2, pl.Physician_City, pl.Physician_State, pl.Physician_Zip,pl.Physician_Telephone, 
+		pl.Physician_Fax ,pl.Physician_EMail as Physician_EMail FROM physician_library pl 
+		left join physician_specialty ps on (pl.Physician_Library_ID = ps.physician_id)  
+		left join map_facility_physician m on (pl.Physician_Library_ID= m.Physician_ID) 
+		where Category in(:Category) group by pl.Physician_Library_ID ;]]>
 
+
+	</sql-query>
 </hibernate-mapping>
 
 
