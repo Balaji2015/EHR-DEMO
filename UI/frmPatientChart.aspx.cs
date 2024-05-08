@@ -1881,6 +1881,12 @@ namespace Acurus.Capella.UI
 
         public void Patientchartload()
         {
+            //CAP-1947
+            if ((Request.QueryString["ScreenName"] ??string.Empty).ToUpper() == "PHONEENCOUNTER" && (Request.QueryString["openingfrom"]??string.Empty).ToUpper() == "MENU")
+            {
+                ClientSession.EncounterId = 0;
+            }
+
             //CAP-1167
             //CAP-1651
             if ((Request.QueryString["IsDirectURL"] ?? string.Empty).ToUpper() == "Y")
