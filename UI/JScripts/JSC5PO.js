@@ -1159,7 +1159,12 @@ function OpenModal(data) {
         $(top.window.document).find("#TabPhysicianLibrary").modal({ backdrop: "static", keyboard: false }, 'show');
         $(top.window.document).find("#TabModalPhysicianLibraryTitle")[0].textContent = "Provider Library";
         $(top.window.document).find("#TabmdldlgPhysicianLibrary")[0].style.width = "850px";
-        $(top.window.document).find("#TabmdldlgPhysicianLibrary")[0].style.height = "95%";
+        //Jira CAP-2014 - Start
+        //$(top.window.document).find("#TabmdldlgPhysicianLibrary")[0].style.height = "95%";
+        $(top.window.document).find("#TabmdldlgPhysicianLibrary")[0].style.height = "100%";
+        $(top.window.document).find("#TabmdldlgPhysicianLibrary").find(".modal-content")[0].style.height = "95%";
+        $(top.window.document).find("#TabPhysicianLibrary")[0].style.marginTop = "12px";
+        //Jira CAP-2014 - End
         var sPath = "frmPhysicianLibray.aspx";
         $(top.window.document).find("#TabPhysicianLibraryFrame")[0].style.height = "95%";
         $(top.window.document).find("#TabPhysicianLibraryFrame")[0].contentDocument.location.href = sPath;

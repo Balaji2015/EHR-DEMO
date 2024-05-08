@@ -205,7 +205,7 @@
                          <td style="padding:8px;">
                        <label class="Editabletxtbox">Category</label>
                         <select id="cboCategory" name="Category" onchange="SearchByTextandCategory()" class="Editabletxtbox" style="width: 245px;margin-left:5px;" >
-                            <option value=""></option>
+                            <option value="ALL">ALL</option>
                         </select>
                          </td>
                         <td style="padding:8px;">

@@ -176,10 +176,6 @@ $(document).ready(function () {
 
     //Jira CAP-2014
     SearchByTextandCategory();
-    $(top.window.document).find("#TabmdldlgPhysicianLibrary")[0].style.height = "100%";
-    $(top.window.document).find("#TabmdldlgPhysicianLibrary").find(".modal-content")[0].style.height = "95%";
-    $(top.window.document).find("#TabPhysicianLibrary")[0].style.marginTop = "12px";
-
     { sessionStorage.setItem('StartLoading', 'false'); StopLoadFromPatChart(); }
     //Input Mask for landline phone number
 
@@ -1399,7 +1395,7 @@ function SearchByTextandCategory() {
                 row = row + $(this)[0].innerText + "_";
             }
         });
-        if (row.toUpperCase().indexOf(SearchText.value.toUpperCase()) > -1 && ($(this).find("td:eq(1)")[0].innerText == document.getElementById("cboCategory").value || document.getElementById("cboCategory").value == "")) { //
+        if (row.toUpperCase().indexOf(SearchText.value.toUpperCase()) > -1 && ($(this).find("td:eq(1)")[0].innerText == document.getElementById("cboCategory").value || document.getElementById("cboCategory").value == "ALL")) { //
             $(this)[0].style.display = "";
         }
         else {
