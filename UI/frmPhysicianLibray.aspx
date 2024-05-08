@@ -63,11 +63,11 @@
                     <tr>
                         <td style="width: 15%; padding-bottom: 0.5%"><span class="MandLabelstyle">Category*</span></td>
                         <td style="width: 35%; padding-bottom: 0.5%">
-                            <select class="Editabletxtbox" name="Category" id="ddlCategory" style="width: 96%" onchange="ddlCategory_Change()"></select></td>
+                            <select class="Editabletxtbox" name="Category" id="ddlCategory" style="width: 96%" onchange="ddlCategory_Change()" runat="server"></select></td>
                         <td style="width: 15%; padding-bottom: 0.5%">
                             <label class="Editabletxtbox" style="display: none;">Physician Type</label></td>
                         <td style="width: 35%; padding-bottom: 0.5%">
-                            <select class="Editabletxtbox" name="PhysicianType" id="ddlPhysicianType" style="width: 96%; display:none;">
+                            <select class="Editabletxtbox" name="PhysicianType" id="ddlPhysicianType" style="width: 96%; display:none;" runat="server">
                                 <option value=""></option>
                                 <option value="RENDERING">RENDERING</option>
                                 <option value="READING">READING</option>
@@ -76,7 +76,7 @@
                     <tr>
                         <td style="width: 15%; padding-bottom: 0.5%">
                             <label class="Editabletxtbox">Prefix.</label>
-                            <select name="Prefix" id="ddlPrefix" class="Editabletxtbox" style="width: 45%">
+                            <select name="Prefix" id="ddlPrefix" class="Editabletxtbox" style="width: 45%" runat="server">
                                 <option value=""></option>
                                 <option value="Dr">Dr</option>
                                 <option value="Mr">Mr</option>
@@ -86,9 +86,9 @@
                         <!--<td style="width: 30%; padding-bottom: 0.5%"></td>-->
                         <td style="width: 35%; padding-bottom: 0.5%">
                             <span id="lblLastName" class="MandLabelstyle">Last Name*</span>
-                            <input type="text" id="txtLastName" maxlength="35" style="width: 45%" value="" onkeypress="AvoidSpecailCharacter(event)" class="Editabletxtbox"/>
+                            <input type="text" id="txtLastName" maxlength="35" style="width: 45%" value="" onkeypress="AvoidSpecailCharacter(event)" class="Editabletxtbox" runat="server"/>
                             <label class="Editabletxtbox">MI</label>
-                            <input type="text" id="txtMI" maxlength="25" style="width: 16%" value="" class="Editabletxtbox" onkeypress="AvoidSpecailCharacter(event)"/>
+                            <input type="text" id="txtMI" maxlength="25" style="width: 16%" value="" class="Editabletxtbox" onkeypress="AvoidSpecailCharacter(event)" runat="server"/>
                         </td>
                         <!--<td style="width: 30%; padding-bottom: 0.5%"></td>-->
                         <td style="width: 15%; padding-bottom: 0.5%">
@@ -96,9 +96,9 @@
                         </td>
                         <!--<td style="width: 30%; padding-bottom: 0.5%"></td>-->
                         <td style="width: 35%; padding-bottom: 0.5%">
-                            <input type="text" id="txtFirstName" maxlength="50" style="width: 58%" value="" onkeypress="AvoidSpecailCharacter(event)" class="Editabletxtbox"/>
+                            <input type="text" id="txtFirstName" maxlength="50" style="width: 58%" value="" onkeypress="AvoidSpecailCharacter(event)" class="Editabletxtbox" runat="server"/>
                             <label id="lblSuffix" class="Editabletxtbox">Suffix</label>
-                            <input type="text" id="txtSuffix" onkeypress="AvoidSpecailCharacter(event)" style="width: 20%" value="" class="Editabletxtbox"/>
+                            <input type="text" id="txtSuffix" onkeypress="AvoidSpecailCharacter(event)" style="width: 20%" value="" class="Editabletxtbox" runat="server"/>
                         </td>
                     </tr>
                     <tr>
@@ -109,51 +109,51 @@
                         <td style="width: 15%; padding-bottom: 0.5%">
                             <span id="lblNPI"  class="Editabletxtbox">NPI</span></td>
                         <td style="width: 35%; padding-bottom: 0.5%">
-                            <input type="text" id="txtNPI" onkeypress="if(!isNumberKey(event)) return false;" maxlength="10" style="width: 96%" value="" class="Editabletxtbox"/></td>
+                            <input type="text" id="txtNPI" onkeypress="if(!isNumberKey(event)) return false;" maxlength="10" style="width: 96%" value="" class="Editabletxtbox" runat="server"/></td>
                         <td style="width: 15%; padding-bottom: 0.5%">
                             <label id="lblCompany" class="Editabletxtbox">Company</label></td>
                         <td style="width: 35%; padding-bottom: 0.5%">
-                            <input type="text" id="txtCompany" onkeypress="AvoidSpecailCharacter(event)" style="width: 96%" value="" class="Editabletxtbox"/></td>
+                            <input type="text" id="txtCompany" onkeypress="AvoidSpecailCharacter(event)" style="width: 96%" value="" class="Editabletxtbox" runat="server"/></td>
                     </tr>
                     <tr>
                         <td style="width: 15%; padding-bottom: 0.5%">
                             <label id="lblAddressLine1" class="Editabletxtbox">Address Line1</label></td>
                         <td style="width: 35%; padding-bottom: 0.5%">
-                            <input type="text" id="txtAddressLine1" style="width: 96%" maxlength="100" value="" class="Editabletxtbox"/></td>
+                            <input type="text" id="txtAddressLine1" style="width: 96%" maxlength="100" value="" class="Editabletxtbox" runat="server"/></td>
                         <td style="width: 15%; padding-bottom: 0.5%">
                             <label id="lblAddressLine2" class="Editabletxtbox">Address Line2</label></td>
                         <td style="width: 35%; padding-bottom: 0.5%">
-                            <input type="text" id="txtAddressLine2" style="width: 96%" maxlength="100"  value="" class="Editabletxtbox"/></td>
+                            <input type="text" id="txtAddressLine2" style="width: 96%" maxlength="100"  value="" class="Editabletxtbox" runat="server"/></td>
                     </tr>
                     <tr>
                         <td style="width: 15%; padding-bottom: 0.5%">
                             <label id="lblCity" class="Editabletxtbox">City</label></td>
                         <td style="width: 35%; padding-bottom: 0.5%">
-                            <input type="text" id="txtCity" onkeypress="AvoidSpecailCharacter(event)" style="width: 96%" value="" maxlength="35" class="Editabletxtbox"/></td>
+                            <input type="text" id="txtCity" onkeypress="AvoidSpecailCharacter(event)" style="width: 96%" value="" maxlength="35" class="Editabletxtbox" runat="server"/></td>
                         <td style="width: 15%; padding-bottom: 0.5%">
                             <label id="lblState" class="Editabletxtbox">State</label></td>
                         <td style="width: 35%; padding-bottom: 0.5%">
-                            <input type="text" id="txtState" onkeypress="AllowCharacter(event)" maxlength="2" style="width: 96%" value="" class="Editabletxtbox"/></td>
+                            <input type="text" id="txtState" onkeypress="AllowCharacter(event)" maxlength="2" style="width: 96%" value="" class="Editabletxtbox" runat="server"/></td>
                     </tr>
                     <tr>
                         <td style="width: 15%; padding-bottom: 0.5%">
                             <label class="Editabletxtbox">Zip</label></td>
                         <td style="width: 35%; padding-bottom: 0.5%">
-                            <input type="text" id="txtZip" placeholder="_____-____" maxlength="11" style="width: 96%" value="" class="Editabletxtbox"/></td>
+                            <input type="text" id="txtZip" placeholder="_____-____" maxlength="11" style="width: 96%" value="" class="Editabletxtbox" runat="server"/></td>
                         <td style="width: 15%; padding-bottom: 0.5%">
                             <label class="Editabletxtbox">Phone#</label></td>
                         <td style="width: 35%; padding-bottom: 0.5%">
-                            <input type="text" id="txtPhone" style="width: 96%" maxlength="20" value="" class="Editabletxtbox"/></td>
+                            <input type="text" id="txtPhone" style="width: 96%" maxlength="20" value="" class="Editabletxtbox" runat="server"/></td>
                     </tr>
                     <tr>
                         <td style="width: 15%; padding-bottom: 0.5%">
                             <label class="Editabletxtbox" id="lblFax">Fax#</label></td>
                         <td style="width: 35%; padding-bottom: 0.5%">
-                            <input type="text" id="txtFax" style="width: 96%" value="" class="Editabletxtbox"/></td>
+                            <input type="text" id="txtFax" style="width: 96%" value="" class="Editabletxtbox" runat="server"/></td>
                         <td style="width: 15%; padding-bottom: 0.5%">
                             <label id="lblEmail" class="Editabletxtbox">Email</label></td>
                         <td style="width: 35%; padding-bottom: 0.5%">
-                            <input type="text" id="txtEmail" onkeypress="AllowMailCharacter(event)" style="width: 96%" maxlength="100" value="" class="Editabletxtbox"/></td>
+                            <input type="text" id="txtEmail" onkeypress="AllowMailCharacter(event)" style="width: 96%" maxlength="100" value="" class="Editabletxtbox" runat="server"/></td>
                     </tr>
                     <tr>
                         <td style="width: 50%; padding-bottom: 0.5%;" colspan="2">
@@ -190,8 +190,8 @@
                         <td style="width: 35%; padding-bottom: 0.5%"></td>
                         <td style="width: 15%; padding-bottom: 0.5%"></td>
                         <td style="width: 35%; padding-bottom: 0.5%; text-align: right;">
-                            <button id="btnSave" style="margin-right: 16px; margin-top: 12px; width: 35%;" class="aspgreenbutton" onclick="AddProvider(); return false;">Add</button>
-                            <button id="btnClearAll" style="margin-right: 16px; margin-top: 12px; width: 35%;" onclick="ClearAll(); return false;" class="aspredbutton">Clear All</button></td>
+                            <button id="btnSave" style="margin-right: 16px; margin-top: 12px; width: 35%;" class="aspgreenbutton" onclick="AddProvider(); return false;" runat="server">Add</button>
+                            <button id="btnClearAll" style="margin-right: 16px; margin-top: 12px; width: 35%;" onclick="ClearAll(); return false;" class="aspredbutton" runat="server">Clear All</button></td>
                     </tr>
                 </table>
             </div>
@@ -244,7 +244,7 @@
                 </table>
             </div>
         </div>
-        <input type="hidden" style="display: none;" id="hdnPhysicianId" value="" />
+        <input type="hidden" style="display: none;" id="hdnPhysicianId" value="" runat="server"/>
          <button type="button" id="btnClose" style="display: none;" class="btn btn-default" onclick="closewindow();" data-dismiss="modal"></button>
         <script type="text/javascript">
             var JSFiles = ["JScripts/JSErrorMessage.js", "JScripts/JSMask.Min.js", "JScripts/JSPhysicianLibrary.js", "JScripts/JSAvoidRightClick.js", "JScripts/JSCustomDLC.js"];

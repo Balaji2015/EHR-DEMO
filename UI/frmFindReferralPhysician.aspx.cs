@@ -96,8 +96,9 @@ namespace Acurus.Capella.UI
                                              sPhyState = Phy.PhyState,
                                              sPhyZip = Phy.PhyZip,
                                              sPhyFax = Phy.PhyFax,
-                                             sPhyPhone = Phy.PhyPhone
-                                            
+                                             sPhyPhone = Phy.PhyPhone,
+                                             sCategory = Phy.Category
+
                                          }
                                      });
                     if (lstResult.Count() == 0)

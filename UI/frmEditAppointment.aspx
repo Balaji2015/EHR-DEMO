@@ -663,12 +663,14 @@
                                                     <td style="width: 8%;">
                                                         <span class="spanstyle">Provider Search</span>
                                                     </td>
-                                                    <td style="width: 82%;">
-                                                        <asp:TextBox ID="txtProviderSearch" runat="server"  data-phy-id="0"  data-phy-details="" Rows="3" TextMode="MultiLine" placeholder="Type minimum 3 characters of Last or First name or Facility and follow it by a space.."  style="width:111.5%;resize:none" ></asp:TextBox> 
-                                                    <td style="width:10%;">
+                                                    <td style="width: 88%;">
+                                                        <asp:TextBox ID="txtProviderSearch" runat="server"  data-phy-id="0"  data-phy-details="" Rows="3" TextMode="MultiLine" placeholder="Type minimum 3 characters of Last or First name or Facility and follow it by a space.."  style="width:110.5%;resize:none" ></asp:TextBox> 
+                                                    <td style="width:3%;">
 
-                                                        <img id="imgClearProviderText" runat="server" src="Resources/Delete-Blue.png" alt="X" title="Click to clear the text field." onclick="return ProviderSearchclear();" style="position: absolute; margin-left: 65px; top: 246px !important; cursor: pointer; width: 10px; height: 10px;" />
-
+                                                        <img id="imgClearProviderText" runat="server" src="Resources/Delete-Blue.png" alt="X" title="Click to clear the text field." onclick="return ProviderSearchclear();" style="position: absolute; margin-left: 65px; top: 246px !important; cursor: pointer; width: 10px; height: 15px;" />
+                                                       </td>
+                                                        <td style="width:12%;">
+                                                        <img id="imgEditProvider" runat="server" src="Resources/edit.gif" alt="X" title="Click to edit the text field." onclick="return EditProviderDetails();" style="position: absolute; margin-left: 65px; top: 235px !important; cursor: pointer; width: 13px; height: 15px;" />
 
 
                                                     </td>
@@ -857,7 +859,8 @@
                         <asp:HiddenField ID="HdnEditVisit" runat="server" />
                         <asp:HiddenField ID="hdnrenprovider" runat="server" />
                         <asp:HiddenField ID="hdnpcpprovider" runat="server" />
-
+                        <asp:HiddenField ID="hdnEditPhysicianId" runat="server" />
+                        <asp:HiddenField ID="hdnCategory" runat="server" />
                            <asp:HiddenField ID="hdnpcpprovidersearch" runat="server" />
                          <asp:HiddenField ID="hdbselref" runat="server" />
                              <asp:HiddenField ID="hdnbtnsave" runat="server" />

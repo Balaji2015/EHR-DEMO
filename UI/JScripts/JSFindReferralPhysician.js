@@ -104,9 +104,19 @@ function PhNoValid(sphno) {
 }
 
 function ProviderSelected(event, ui) {
+
+    if (document.getElementById("txtProviderSearch").value != "" && document.getElementById("txtProviderSearch").value != "| NPI: | Facility: | Address:| Phone No:| Fax No:") {
+        document.getElementById("txtProviderSearch").disabled = true;
+    }
+    else {
+        document.getElementById("txtProviderSearch").disabled = false;//have to change
+        document.getElementById("txtProviderSearch").value = "";
+    }
+
     var ProviderDetails = JSON.parse(ui.item.val);
     var txtProviderSearch = document.getElementById("txtProviderSearch");
-
+    document.getElementById("hdnCategory").value = ProviderDetails.sCategory;
+    document.getElementById('hdnEditPhysicianId').value = ProviderDetails.ulPhyId;
     txtProviderSearch.attributes['data-phy-id'].value = ProviderDetails.ulPhyId;
     txtProviderSearch.attributes['data-phy-details'].value = JSON.stringify(ProviderDetails);
     document.getElementById('btnOk').disabled = false;
@@ -144,8 +154,8 @@ $(document).ready(function () {
     }
     $("#imgClearProviderText").css({
         "position": "absolute",
-        "right": "15px",
-        "top": (curtop + 5).toString() + "px",
+        "right": "40px",
+        "top": "41px",
         "cursor": "pointer",
         "width": "10px",
         "height": "10px"
@@ -157,6 +167,7 @@ $(document).ready(function () {
         txtProviderSearch.attributes['data-phy-id'].value = '';
         txtProviderSearch.attributes['data-phy-details'].value = '';
         document.getElementById('btnOk').disabled = true;
+        document.getElementById("txtProviderSearch").disabled = false;
     });
     $("#txtProviderSearch").autocomplete({
         source: function (request, response) {
@@ -296,5 +307,41 @@ $(document).ready(function () {
                   e.preventDefault();
                   e.stopImmediatePropagation();
               });
-    };
+        };
+   
 });
+
+function EditProviderDetails() {
+    var EditPhyId = document.getElementById("hdnEditPhysicianId").value;
+    var ProviderText = document.getElementById("txtProviderSearch").value;
+
+    var Category = document.getElementById("hdnCategory").value;
+
+    if (EditPhyId == '' || ProviderText == '') {
+        DisplayErrorMessage('380060');
+    }
+    else if (Category != "NON CAPELLA USER(Physician)" && Category != "NON CAPELLA USER" && Category != "ORGANIZATION") {
+        DisplayErrorMessage('380061', '', Category);
+    }
+    else {
+
+        $(top.window.document).find("#TabPhysicianLibrary").modal({ backdrop: "static", keyboard: false }, 'show');
+        $(top.window.document).find("#TabModalPhysicianLibraryTitle")[0].textContent = "Provider Library";
+        $(top.window.document).find("#TabmdldlgPhysicianLibrary")[0].style.width = "850px";
+        $(top.window.document).find("#TabmdldlgPhysicianLibrary")[0].style.height = "440px"; //"715px";
+        var sPath = "frmPhysicianLibray.aspx?EditPhyId=" + EditPhyId;
+        $(top.window.document).find("#TabPhysicianLibraryFrame")[0].style.height = "275px"; //"495px";
+        $(top.window.document).find("#TabPhysicianLibraryFrame")[0].contentDocument.location.href = sPath;
+        $(top.window.document).find("#TabPhysicianLibrary").modal("show");
+        $(top.window.document).find("#TabPhysicianLibrary").one("hidden.bs.modal", function (e) {
+
+            var PhyTextboxName = localStorage.getItem("PhyDetails");
+            document.getElementById("txtProviderSearch").value = PhyTextboxName.split("&")[4];
+
+        });
+
+        return false;
+    }
+
+
+}

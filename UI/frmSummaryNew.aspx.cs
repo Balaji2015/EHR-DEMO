@@ -6101,23 +6101,36 @@ margin:0in 0in 0in 9in;
                         if (itemDoc.GetElementsByTagName("EncounterList")[0].ChildNodes[0].Attributes.GetNamedItem("Referring_Physician").Value != "")
                         {
                             //Jira CAP-1387 - Start
-                            if (File.Exists(System.Web.Hosting.HostingEnvironment.ApplicationPhysicalPath + "\\ConfigXML\\PhysicianAddressDetails.xml"))
-                            {
-                                string sPhysicianXmlPath = System.Web.Hosting.HostingEnvironment.ApplicationPhysicalPath + "\\ConfigXML\\PhysicianAddressDetails.xml";
-                                XmlDocument itemPhysiciandoc = new XmlDocument();
-                                XmlTextReader XmlPhysicianText = new XmlTextReader(sPhysicianXmlPath);
-                                itemPhysiciandoc.Load(XmlPhysicianText);
+                            //if (File.Exists(System.Web.Hosting.HostingEnvironment.ApplicationPhysicalPath + "\\ConfigXML\\PhysicianAddressDetails.xml"))
+                            //{
+                            //    string sPhysicianXmlPath = System.Web.Hosting.HostingEnvironment.ApplicationPhysicalPath + "\\ConfigXML\\PhysicianAddressDetails.xml";
+                            //    XmlDocument itemPhysiciandoc = new XmlDocument();
+                            //    XmlTextReader XmlPhysicianText = new XmlTextReader(sPhysicianXmlPath);
+                            //    itemPhysiciandoc.Load(XmlPhysicianText);
 
-                                XmlNodeList xmlphy = itemPhysiciandoc.ChildNodes[1].ChildNodes;
-                                foreach (XmlNode xmlphyitem in xmlphy)
+                            //    XmlNodeList xmlphy = itemPhysiciandoc.ChildNodes[1].ChildNodes;
+                            //    foreach (XmlNode xmlphyitem in xmlphy)
+                            //    {
+                            //        if (itemDoc.GetElementsByTagName("EncounterList")[0].ChildNodes[0].Attributes.GetNamedItem("Referring_Provider_NPI").Value != "" && xmlphyitem.Attributes[8].Value == itemDoc.GetElementsByTagName("EncounterList")[0].ChildNodes[0].Attributes.GetNamedItem("Referring_Provider_NPI").Value)
+                            //        {
+                            //            sEmailId = xmlphyitem.Attributes[9].Value;
+                            //            break;
+                            //        }
+                            //    }
+                            //}
+
+                            if (itemDoc.GetElementsByTagName("EncounterList")[0].ChildNodes[0].Attributes.GetNamedItem("Referring_Provider_NPI").Value != "")
+                            {
+                                string NpiId = itemDoc.GetElementsByTagName("EncounterList")[0].ChildNodes[0].Attributes.GetNamedItem("Referring_Provider_NPI").Value;
+                                PhysicianManager PhyMngr = new PhysicianManager();
+                                IList<PhysicianLibrary> ilstPhysicianLibrary = new List<PhysicianLibrary>();
+                                ilstPhysicianLibrary = PhyMngr.GetPhysicianByNPI(NpiId);
+                                if (ilstPhysicianLibrary.Count > 0)
                                 {
-                                    if (itemDoc.GetElementsByTagName("EncounterList")[0].ChildNodes[0].Attributes.GetNamedItem("Referring_Provider_NPI").Value != "" && xmlphyitem.Attributes[8].Value == itemDoc.GetElementsByTagName("EncounterList")[0].ChildNodes[0].Attributes.GetNamedItem("Referring_Provider_NPI").Value)
-                                    {
-                                        sEmailId = xmlphyitem.Attributes[9].Value;
-                                        break;
-                                    }
+                                    sEmailId = ilstPhysicianLibrary[0].PhyEMail;
                                 }
                             }
+
                             //Jira CAP-1387 - End
 
                             sRefProvider = itemDoc.GetElementsByTagName("EncounterList")[0].ChildNodes[0].Attributes.GetNamedItem("Referring_Physician").Value +

@@ -5,9 +5,7 @@ function PreventTyping(e) {
     e.preventDefault();
     e.stopImmediatePropagation();
 }
-function chkchange()
-
-{
+function chkchange() {
     if (document.getElementById("chkSelfReferred").checked)
         document.getElementById("hdbselref").value = 'Y';
     else
@@ -51,218 +49,216 @@ $(document).ready(function () {
             curtop += current_element.offsetTop;
         } while (current_element = current_element.offsetParent);
     }
-  
+
     if ($("#txtProviderSearch").length > 0) {
         $("#txtProviderSearch").autocomplete({
-        source: function (request, response) {
-            if ($("#txtProviderSearch").val().trim().length > 2) {
-                if (intProviderlen == 0) {
+            source: function (request, response) {
+                if ($("#txtProviderSearch").val().trim().length > 2) {
+                    if (intProviderlen == 0) {
 
-                    { sessionStorage.setItem('StartLoading', 'true'); StartLoadFromPatChart(); }
-                    this.element.on("keydown", PreventTyping);
+                        { sessionStorage.setItem('StartLoading', 'true'); StartLoadFromPatChart(); }
+                        this.element.on("keydown", PreventTyping);
+                        arrProvider = [];
+                        var strkeyWords = $("#txtProviderSearch").val().split(' ');
+                        var bMoreThanOneKeyword = (strkeyWords.length >= 2 && strkeyWords[1].trim() != "") ? true : false;
+                        var WSData = {
+                            text_searched: strkeyWords[0],
+                        };
+                        $.ajax({
+                            type: "POST",
+                            contentType: "application/json; charset=utf-8",
+                            url: "./frmFindReferralPhysician.aspx/GetProviderDetailsByTokens",
+                            data: JSON.stringify(WSData),
+                            dataType: "json",
+                            success: function (data) {
+                                flag = 0;
+                                { sessionStorage.setItem('StartLoading', 'false'); StopLoadFromPatChart(); }
+                                $("#txtProviderSearch").off("keydown", PreventTyping);
+                                var jsonData = $.parseJSON(data.d);
+                                if (jsonData.Error != undefined) {
+                                    alert(jsonData.Error);
+                                    return;
+                                }
+
+                                if (jsonData.Result != undefined) {
+                                    var no_matches = [];
+                                    no_matches.push(jsonData.Result);
+                                    response($.map(no_matches, function (item) {
+                                        return {
+                                            label: item,
+                                            val: "0"
+                                        }
+                                    }));
+                                }
+                                else {
+                                    var results;
+                                    if (bMoreThanOneKeyword)
+                                        results = Filter(jsonData.Matching_Result, request.term);
+                                    else
+                                        results = jsonData.Matching_Result;
+
+                                    arrProvider = jsonData.Matching_Result;
+                                    response($.map(results, function (item) {
+                                        return {
+                                            label: item.label,
+                                            val: JSON.stringify(item.value),
+                                            value: item.value.ulPhyId
+                                        }
+                                    }));
+                                }
+                            },
+                            error: function OnError(xhr) {
+                                { sessionStorage.setItem('StartLoading', 'false'); StopLoadFromPatChart(); }
+                                if (xhr.status == 999)
+                                    window.location = "/frmSessionExpired.aspx";
+                                else {
+                                    var log = JSON.parse(xhr.responseText);
+                                    console.log(log);
+                                    alert("USER MESSAGE:\n" +
+                                        ". Cannot process request. Please Login again and retry. \nEXCEPTION DETAILS: \n" +
+                                        "Message: " + log.Message);
+                                }
+                            }
+
+                        });
+                    }
+                    else if (intProviderlen != -1) {
+
+                        var results = Filter(arrProvider, request.term);
+                        response($.map(results, function (item) {
+                            return {
+                                label: item.label,
+                                val: JSON.stringify(item.value),
+                                value: item.value.ulPhyId
+                            }
+                        }));
+                    }
+                }
+            },
+            minlength: 0,
+            multiple: true,
+            mustMatch: false,
+            select: ProviderSelected,
+            open: function () {
+                $('.ui-autocomplete.ui-menu.ui-widget').width($('#txtProviderSearch').width());
+                $('.ui-autocomplete.ui-menu.ui-widget').find('li:last').css("border-bottom", "0px");
+                $('#txtProviderSearch').focus();
+            },
+            focus: function () { return false; }
+        }).on("paste", function (e) {
+            intProviderlen = -1;
+            arrProvider = [];
+            $(".ui-autocomplete").hide();
+        }).on("input", function (e) {
+            $("#txtProviderSearch").css("color", "black").attr({ "data-phy-id": "0", "data-phy-details": "" });
+
+            if ($("#txtProviderSearch").val().charCodeAt(e.currentTarget.value.length - 1) == 10) {
+                e.preventDefault();
+                $("#txtProviderSearch").val(e.currentTarget.value.substr(0, e.currentTarget.value.length - 1));
+                return false;
+            }
+            if ($("#txtProviderSearch").val().charAt(e.currentTarget.value.length - 1) == " ") {
+                if (e.currentTarget.value.split(" ").length > 2)
+                    intProviderlen = intProviderlen + 1;
+                else
+                    intProviderlen = 0;
+            }
+            else {
+                if ($("#txtProviderSearch").val().length != 0 && intProviderlen != -1) {
+                    intProviderlen = intProviderlen + 1;
+                }
+
+                if ($("#txtProviderSearch").val().length == 0 || $("#txtProviderSearch").val().indexOf(" ") == -1) {
+                    intProviderlen = -1;
                     arrProvider = [];
-                    var strkeyWords = $("#txtProviderSearch").val().split(' ');
-                    var bMoreThanOneKeyword = (strkeyWords.length >= 2 && strkeyWords[1].trim() != "") ? true : false;
-                    var WSData = {
-                        text_searched: strkeyWords[0],
-                    };
-                    $.ajax({
-                        type: "POST",
-                        contentType: "application/json; charset=utf-8",
-                        url: "./frmFindReferralPhysician.aspx/GetProviderDetailsByTokens",
-                        data: JSON.stringify(WSData),
-                        dataType: "json",
-                        success: function (data) {
-                            flag = 0;
-                            { sessionStorage.setItem('StartLoading', 'false'); StopLoadFromPatChart(); }
-                            $("#txtProviderSearch").off("keydown", PreventTyping);
-                            var jsonData = $.parseJSON(data.d);
-                            if (jsonData.Error != undefined) {
-                                alert(jsonData.Error);
-                                return;
-                            }
-
-                            if (jsonData.Result != undefined) {
-                                var no_matches = [];
-                                no_matches.push(jsonData.Result);
-                                response($.map(no_matches, function (item) {
-                                    return {
-                                        label: item,
-                                        val: "0"
-                                    }
-                                }));
-                            }
-                            else {
-                                var results;
-                                if (bMoreThanOneKeyword)
-                                    results = Filter(jsonData.Matching_Result, request.term);
-                                else
-                                    results = jsonData.Matching_Result;
-
-                                arrProvider = jsonData.Matching_Result;
-                                response($.map(results, function (item) {
-                                    return {
-                                        label: item.label,
-                                        val: JSON.stringify(item.value),
-                                        value: item.value.ulPhyId
-                                    }
-                                }));
-                            }
-                        },
-                        error: function OnError(xhr) {
-                            { sessionStorage.setItem('StartLoading', 'false'); StopLoadFromPatChart(); }
-                            if (xhr.status == 999)
-                                window.location = "/frmSessionExpired.aspx";
-                            else {
-                                var log = JSON.parse(xhr.responseText);
-                                console.log(log);
-                                alert("USER MESSAGE:\n" +
-                                    ". Cannot process request. Please Login again and retry. \nEXCEPTION DETAILS: \n" +
-                                   "Message: " + log.Message);
-                            }
-                        }
-
-                    });
-                }
-                else if (intProviderlen != -1) {
-
-                    var results = Filter(arrProvider, request.term);
-                    response($.map(results, function (item) {
-                        return {
-                            label: item.label,
-                            val: JSON.stringify(item.value),
-                            value: item.value.ulPhyId
-                        }
-                    }));
+                    $(".ui-autocomplete").hide();
                 }
             }
-        },
-        minlength: 0,
-        multiple: true,
-        mustMatch: false,
-        select: ProviderSelected,
-        open: function () {
-            $('.ui-autocomplete.ui-menu.ui-widget').width($('#txtProviderSearch').width());
-            $('.ui-autocomplete.ui-menu.ui-widget').find('li:last').css("border-bottom", "0px");
-            $('#txtProviderSearch').focus();
-        },
-        focus: function () { return false; }
-    }).on("paste", function (e) {
-        intProviderlen = -1;
-        arrProvider = [];
-        $(".ui-autocomplete").hide();
-    }).on("input", function (e) {
-        $("#txtProviderSearch").css("color", "black").attr({ "data-phy-id": "0", "data-phy-details": "" });
+        }).data("ui-autocomplete")._renderItem = function (ul, item) {
+            if (item.label != "No matches found.") {
+                if (flag == 0) {
+                    flag = 1;
+                    $("<li class='alinkstyle'>")
+                        .attr({ "data-value": "Add", "data-val": "Add" }).css({ "border-bottom": "1px solid #ccc", "font-size": "11px", "margin-bottom": "3px", "padding-bottom": "3px" })
+                        .append("Click to add Physician").addClass('alinkstyle').css("font-style", "italic")
+                        .appendTo(ul).on("click", function (e) {
+                            e.preventDefault();
+                            e.stopImmediatePropagation();
+                            var obj = new Array();
+                            obj.push("Title=" + "PROVIDER LIBRARY");
+                            localStorage.removeItem("IsEFax");
+                            localStorage.setItem("IsEnableGrid", "false");
+                            var result = openModal("frmPhysicianLibray.aspx", 330, 750, obj, "MessageWindow");
+                            var WindowName = $find('MessageWindow');
 
-        if ($("#txtProviderSearch").val().charCodeAt(e.currentTarget.value.length - 1) == 10) {
-            e.preventDefault();
-            $("#txtProviderSearch").val(e.currentTarget.value.substr(0, e.currentTarget.value.length - 1));
-            return false;
-        }
-        if ($("#txtProviderSearch").val().charAt(e.currentTarget.value.length - 1) == " ") {
-            if (e.currentTarget.value.split(" ").length > 2)
-                intProviderlen = intProviderlen + 1;
-            else
-                intProviderlen = 0;
-        }
-        else {
-            if ($("#txtProviderSearch").val().length != 0 && intProviderlen != -1) {
-                intProviderlen = intProviderlen + 1;
+                            return false;
+                            //Jira #Cap#193 - Screen Throwing error message
+                        }).on("mouseover", function (e) {
+                            e.preventDefault();
+                            return false;
+                        });;;;
+                    return $("<li>")
+                        .attr({ "data-value": item.value, "data-val": item.val }).css({ "border-bottom": "1px solid #ccc", "font-size": "11px", "margin-bottom": "3px", "padding-bottom": "3px" })
+                        .append(item.label)
+                        .appendTo(ul);
+                }
+                if (flag != 0) {
+                    return $("<li>")
+                        .attr({ "data-value": item.value, "data-val": item.val }).css({ "border-bottom": "1px solid #ccc", "font-size": "11px", "margin-bottom": "3px", "padding-bottom": "3px" })
+                        .append(item.label)
+                        .appendTo(ul);
+                }
             }
-
-            if ($("#txtProviderSearch").val().length == 0 || $("#txtProviderSearch").val().indexOf(" ") == -1) {
-                intProviderlen = -1;
-                arrProvider = [];
-                $(".ui-autocomplete").hide();
+            else {
+                if (flag == 0) {
+                    flag = 1;
+                    $("<li class='alinkstyle'>")
+                        .attr({ "data-value": "Add", "data-val": "Add" }).css({ "border-bottom": "1px solid #ccc", "font-style": "italic", "margin-bottom": "3px", "padding-bottom": "3px" })
+                        .append("Click to add Physician").addClass('alinkstyle')
+                        .appendTo(ul).on("click", function (e) {
+                            var obj = new Array();
+                            obj.push("Title=" + "PROVIDER LIBRARY");
+                            localStorage.removeItem("IsEFax");
+                            localStorage.setItem("IsEnableGrid", "false");
+                            var result = openModal("frmPhysicianLibray.aspx", 330, 750, obj, "RadWindow1");
+                            var WindowName = $find('MessageWindow');
+                            return false;
+                            //Jira #Cap#193 - Screen Throwing error message
+                        }).on("mouseover", function (e) {
+                            e.preventDefault();
+                            return false;
+                        });;;
+                    return $("<li>")
+                        .attr({ "data-value": item.value, "data-val": item.val }).css({ "border-bottom": "1px solid #ccc", "font-size": "11px", "margin-bottom": "3px", "padding-bottom": "3px" })
+                        .addClass("disabled")
+                        .append(item.label)
+                        .appendTo(ul).on("click", function (e) {
+                            e.preventDefault();
+                            e.stopImmediatePropagation();
+                        });
+                }
+                if (flag != 0) {
+                    return $("<li>")
+                        .attr({ "data-value": item.value, "data-val": item.val }).css({ "border-bottom": "1px solid #ccc", "font-size": "11px", "margin-bottom": "3px", "padding-bottom": "3px" })
+                        .addClass("disabled")
+                        .append(item.label)
+                        .appendTo(ul).on("click", function (e) {
+                            e.preventDefault();
+                            e.stopImmediatePropagation();
+                        });
+                }
             }
-        }
-    }).data("ui-autocomplete")._renderItem = function (ul, item) {
-        if (item.label != "No matches found.") {
-            if (flag == 0) {
-                flag = 1;
-                $("<li class='alinkstyle'>")
-                 .attr({ "data-value": "Add", "data-val": "Add" }).css({ "border-bottom": "1px solid #ccc", "font-size": "11px", "margin-bottom": "3px", "padding-bottom": "3px" })
-                 .append("Click to add Physician").addClass('alinkstyle').css( "font-style", "italic")
-                 .appendTo(ul).on("click", function (e) {
-                     e.preventDefault();
-                     e.stopImmediatePropagation();
-                     var obj = new Array();
-                     obj.push("Title=" + "PROVIDER LIBRARY");
-                     localStorage.removeItem("IsEFax");
-                     localStorage.setItem("IsEnableGrid", "false");
-                     var result = openModal("frmPhysicianLibray.aspx", 330, 750, obj, "MessageWindow");
-                     var WindowName = $find('MessageWindow');
-                    
-                     return false;
-                   //Jira #Cap#193 - Screen Throwing error message
-                 }).on("mouseover", function (e) {
-                     e.preventDefault();
-                     return false;
-                 });;;;
-                return $("<li>")
-                 .attr({ "data-value": item.value, "data-val": item.val }).css({ "border-bottom": "1px solid #ccc", "font-size": "11px", "margin-bottom": "3px", "padding-bottom": "3px" })
-                 .append(item.label)
-                 .appendTo(ul);
-            }
-            if (flag != 0) {
-                return $("<li>")
-                  .attr({ "data-value": item.value, "data-val": item.val }).css({ "border-bottom": "1px solid #ccc", "font-size": "11px", "margin-bottom": "3px", "padding-bottom": "3px" })
-                  .append(item.label)
-                  .appendTo(ul);
-            }
-        }
-        else {
-            if (flag == 0) {
-                flag = 1;
-                $("<li class='alinkstyle'>")
-                 .attr({ "data-value": "Add", "data-val": "Add" }).css({ "border-bottom": "1px solid #ccc", "font-style": "italic", "margin-bottom": "3px", "padding-bottom": "3px" })
-                 .append("Click to add Physician").addClass('alinkstyle')
-                 .appendTo(ul).on("click", function (e) {
-                     var obj = new Array();
-                     obj.push("Title=" + "PROVIDER LIBRARY");
-                     localStorage.removeItem("IsEFax");
-                     localStorage.setItem("IsEnableGrid", "false");
-                     var result = openModal("frmPhysicianLibray.aspx", 330, 750, obj, "RadWindow1");
-                     var WindowName = $find('MessageWindow');                    
-                     return false;
-                 //Jira #Cap#193 - Screen Throwing error message
-                 }).on("mouseover", function (e) {
-                        e.preventDefault();
-                        return false;
-                    });;;
-                return $("<li>")
-                 .attr({ "data-value": item.value, "data-val": item.val }).css({ "border-bottom": "1px solid #ccc", "font-size": "11px", "margin-bottom": "3px", "padding-bottom": "3px" })
-                 .addClass("disabled")
-                 .append(item.label)
-                 .appendTo(ul).on("click", function (e) {
-                     e.preventDefault();
-                     e.stopImmediatePropagation();
-                 });
-            }
-            if (flag != 0) {
-                return $("<li>")
-                  .attr({ "data-value": item.value, "data-val": item.val }).css({ "border-bottom": "1px solid #ccc", "font-size": "11px", "margin-bottom": "3px", "padding-bottom": "3px" })
-                  .addClass("disabled")
-                  .append(item.label)
-                  .appendTo(ul).on("click", function (e) {
-                      e.preventDefault();
-                      e.stopImmediatePropagation();
-                  });
-            }
-        }
-    };
-}
+        };
+    }
     if (document.getElementById("chkSelfReferred") != null) {
         if (document.getElementById("hdnrenprovidersearch") != null) {
-            if (document.getElementById("chkSelfReferred").checked == true)
-            {
+            if (document.getElementById("chkSelfReferred").checked == true) {
                 document.getElementById("txtProviderSearch").value = "";
                 document.getElementById("txtProviderSearch").disabled = true;
             }
             else {
                 document.getElementById("txtProviderSearch").value = document.getElementById("hdnrenprovidersearch").value;
-                if (document.getElementById("imgClearProviderText") != null)
-                {
+                if (document.getElementById("imgClearProviderText") != null) {
                     var cLength = document.getElementById("imgClearProviderText").attributes.length;
                     var IsDisabledProviderSearch = "true";
                     for (var i = 0; i < cLength; i++) {
@@ -277,30 +273,28 @@ $(document).ready(function () {
                 }
                 else {
                     //Jira #CAP-158 -  Not able to navigate tab
-                    if (document.getElementById("hdnCurrentProcess").value != "" && document.getElementById("hdnCurrentProcess").value.toUpperCase() == "SCHEDULED") 
-                        {
-                            if (IsDisabledProviderSearch == "true")//change
-                                document.getElementById("txtProviderSearch").disabled = true;
-                            else
-                                document.getElementById("txtProviderSearch").disabled = false;//have to change
-                        }
+                    if (document.getElementById("hdnCurrentProcess").value != "" && document.getElementById("hdnCurrentProcess").value.toUpperCase() == "SCHEDULED") {
+                        if (IsDisabledProviderSearch == "true")//change
+                            document.getElementById("txtProviderSearch").disabled = true;
+                        else
+                            document.getElementById("txtProviderSearch").disabled = false;//have to change
+                    }
                     document.getElementById("txtProviderSearch").value = "";
                 }
             }
-            
+
         }
     }
     else {
         if (document.getElementById("hdnpcpprovidersearch") != null && document.getElementById("hdnrenprovidersearch").value != "| NPI: | Facility: | Address:| Phone No:| Fax No:") {
             document.getElementById("txtProviderSearch").value = document.getElementById("hdnpcpprovidersearch").value;
             //Jira #CAP-158 -  Not able to navigate tab
-            if (document.getElementById("hdnCurrentProcess").value != "" && document.getElementById("hdnCurrentProcess").value.toUpperCase() == "SCHEDULED") 
-            {
-            if (document.getElementById("hdnpcpprovidersearch").value != "") {
-                document.getElementById("txtProviderSearch").disabled = true;
-            }
-            else {
-                document.getElementById("txtProviderSearch").disabled = false;
+            if (document.getElementById("hdnCurrentProcess").value != "" && document.getElementById("hdnCurrentProcess").value.toUpperCase() == "SCHEDULED") {
+                if (document.getElementById("hdnpcpprovidersearch").value != "") {
+                    document.getElementById("txtProviderSearch").disabled = true;
+                }
+                else {
+                    document.getElementById("txtProviderSearch").disabled = false;
                 }
             }
         }
@@ -320,9 +314,10 @@ function ProviderSelected(event, ui) {
         JSON.parse(ui.item.val).sPhyState + " " +
         JSON.parse(ui.item.val).sPhyZip + " | " +
         "PH:" + JSON.parse(ui.item.val).sPhyPhone + " | " +
-        "FAX:" + JSON.parse(ui.item.val).sPhyFax
-
+        "FAX:" + JSON.parse(ui.item.val).sPhyFax;
+    document.getElementById("hdnCategory").value = ProviderDetails.sCategory;
     txtProviderSearch.attributes['data-phy-id'].value = ProviderDetails.ulPhyId;
+    document.getElementById('hdnEditPhysicianId').value = ProviderDetails.ulPhyId;
     txtProviderSearch.attributes['data-phy-details'].value = JSON.stringify(ProviderDetails);
     txtProviderSearch.value = vLableVal;
     var provider = "";
@@ -334,7 +329,7 @@ function ProviderSelected(event, ui) {
         + JSON.parse(ui.item.val).sPhyZip + "| Phone No:" +
         JSON.parse(ui.item.val).sPhyPhone + "| Fax No:" +
         JSON.parse(ui.item.val).sPhyFax
-        
+
 
     if (provider == "| NPI: | Facility: | Address:| Phone No:| Fax No:") {
         provider = "";
@@ -352,11 +347,10 @@ function ProviderSelected(event, ui) {
 
     $("#txtProviderSearch").attr("disabled", "disabled");
     EnableSaveButton(this);
-  
+
     return false;
 }
-function ProviderSearchclear()
-{
+function ProviderSearchclear() {
     //Jira #cap-185 - Auto Save warning message not received in Edit Appointment screen
     EnableSaveButton(this);
 
@@ -370,13 +364,13 @@ function ProviderSearchclear()
         document.getElementById("hdnrenprovider").value = "";
         document.getElementById("hdnrenprovidersearch").value = "";
     }
-   
+
 }
 $('#btnSave').click(function () {
     { sessionStorage.setItem('StartLoading', 'true'); StartLoadFromPatChart(); }
     //CAP-820 Cannot set properties of undefined
     if (window?.parent?.parent?.theForm?.ctl00_hdnAppoinment?.value != undefined && window?.parent?.parent?.theForm?.ctl00_hdnAppoinment?.value != null) {
-    window.parent.parent.theForm.ctl00_hdnAppoinment.value = true;
+        window.parent.parent.theForm.ctl00_hdnAppoinment.value = true;
     }
 
     if (DateValidattion("dtpApptDate")) {
@@ -396,7 +390,7 @@ $('#btnSave').click(function () {
             }
         }
     }
-   
+
     if (DateValidattion("dtpApptDate") == false) {
         DisplayErrorMessage('110074');
         document.getElementById("dtpApptDate").focus();
@@ -454,7 +448,7 @@ $('#btnSave').click(function () {
             return false;
         }
     }
-    
+
     var dt = new Date();
     var now = new Date();
     var utc = (now.getUTCMonth() + 1) + '/' + ("0" + now.getUTCDate()).slice(-2) + '/' + now.getUTCFullYear();
@@ -477,65 +471,62 @@ $('#btnSave').click(function () {
     document.getElementById("hdnLocalTime").value = utc;
     if (AppointmentPastDateValidation("dtpApptDate") == false) {
 
-        if (window.confirm("Do you want to create an appointment in the past?") == true)
-        { return true }
-        else
-        {
+        if (window.confirm("Do you want to create an appointment in the past?") == true) { return true }
+        else {
             { sessionStorage.setItem('StartLoading', 'false'); StopLoadFromPatChart(); }
             return false;
         }
     }
-  
+
 });
 function showTime() {
-    { sessionStorage.setItem('StartLoading', 'true'); StartLoadFromPatChart();}
+    { sessionStorage.setItem('StartLoading', 'true'); StartLoadFromPatChart(); }
     window.parent.parent.theForm.ctl00_hdnAppoinment.value = true;
     if (DateValidattion("dtpApptDate")) {
         DisplayErrorMessage('380006');
-         {sessionStorage.setItem('StartLoading', 'false');StopLoadFromPatChart();}
+        { sessionStorage.setItem('StartLoading', 'false'); StopLoadFromPatChart(); }
         return false;
     }
 
     var txtDuration = document.getElementById("ddlDuration").value;
     var sFacility = document.getElementById("hdnFacility").value;
     if (document.getElementById("ddlDuration").value != "") {
-        if (sFacility != "true")
-        {
+        if (sFacility != "true") {
             if (txtDuration > 480) {
                 DisplayErrorMessage('110078');
-                {sessionStorage.setItem('StartLoading', 'false');StopLoadFromPatChart();}
+                { sessionStorage.setItem('StartLoading', 'false'); StopLoadFromPatChart(); }
                 return false;
             }
         }
     }
     if (document.getElementById("txtPatientDOB").value == "01-Jan-0001") {
         DisplayErrorMessage('110084');
-         {sessionStorage.setItem('StartLoading', 'false');StopLoadFromPatChart();}
+        { sessionStorage.setItem('StartLoading', 'false'); StopLoadFromPatChart(); }
         return false;
     }
 
     if (document.getElementById("txtPatientName").value.length == 0) {
         DisplayErrorMessage('110004');
         document.getElementById("txtPatientName").focus();
-         {sessionStorage.setItem('StartLoading', 'false');StopLoadFromPatChart();}
+        { sessionStorage.setItem('StartLoading', 'false'); StopLoadFromPatChart(); }
         return false;
     }
     if (document.getElementById("txtPatientAccountNumber").value.length == 0) {
         DisplayErrorMessage('110013');
         document.getElementById("txtPatientAccountNumber").focus();
-         {sessionStorage.setItem('StartLoading', 'false');StopLoadFromPatChart();}
+        { sessionStorage.setItem('StartLoading', 'false'); StopLoadFromPatChart(); }
         return false;
     }
     if (document.getElementById("dtpApptDate").value.length == 0) {
         DisplayErrorMessage('110005');
         document.getElementById("dtpApptDate").focus();
-         {sessionStorage.setItem('StartLoading', 'false');StopLoadFromPatChart();}
+        { sessionStorage.setItem('StartLoading', 'false'); StopLoadFromPatChart(); }
         return false;
     }
     if (DateValidattion("dtpApptDate") == false) {
         DisplayErrorMessage('110074');
         document.getElementById("dtpApptDate").focus();
-         {sessionStorage.setItem('StartLoading', 'false');StopLoadFromPatChart();}
+        { sessionStorage.setItem('StartLoading', 'false'); StopLoadFromPatChart(); }
         return false;
     }
     if (document.getElementById("ddlPhysicianName").value == "") {
@@ -547,10 +538,10 @@ function showTime() {
     if (document.getElementById("ddlPhysicianName").value.length == 0) {
         DisplayErrorMessage('110064');
         document.getElementById("ddlPhysicianName").focus();
-         {sessionStorage.setItem('StartLoading', 'false');StopLoadFromPatChart();}
+        { sessionStorage.setItem('StartLoading', 'false'); StopLoadFromPatChart(); }
         return false;
     }
-   
+
     if (sFacility == "true") {
         if (document.getElementById("cboOrder").value.length == 0) {
             DisplayErrorMessage('110086');
@@ -572,24 +563,24 @@ function showTime() {
     if (document.getElementById("ddlVisitType").value.length == 0) {
         DisplayErrorMessage('110006');
         document.getElementById("ddlVisitType").focus();
-         {sessionStorage.setItem('StartLoading', 'false');StopLoadFromPatChart();}
+        { sessionStorage.setItem('StartLoading', 'false'); StopLoadFromPatChart(); }
         return false;
     }
     if (document.getElementById("ddlDuration").value.length == 0) {
         DisplayErrorMessage('110007');
         document.getElementById("ddlDuration").focus();
-         {sessionStorage.setItem('StartLoading', 'false');StopLoadFromPatChart();}
+        { sessionStorage.setItem('StartLoading', 'false'); StopLoadFromPatChart(); }
         return false;
     }
     if (document.getElementById("ddlVisitType").value.toUpperCase() == "CONSULT") {
         if (document.getElementById("txtReferringProvider").value.length == 0) {
             DisplayErrorMessage('110050');
             document.getElementById("ddlVisitType").focus();
-             {sessionStorage.setItem('StartLoading', 'false');StopLoadFromPatChart();}
+            { sessionStorage.setItem('StartLoading', 'false'); StopLoadFromPatChart(); }
             return false;
         }
     }
-   
+
     var dt = new Date();
     var now = new Date();
     var utc = (now.getUTCMonth() + 1) + '/' + ("0" + now.getUTCDate()).slice(-2) + '/' + now.getUTCFullYear();
@@ -612,31 +603,28 @@ function showTime() {
     document.getElementById("hdnLocalTime").value = utc;
     if (AppointmentPastDateValidation("dtpApptDate") == false) {
 
-        if (window.confirm("Do you want to create an appointment in the past?") == true)
-        { return true }
-        else
-        {
-             {sessionStorage.setItem('StartLoading', 'false');StopLoadFromPatChart();}
+        if (window.confirm("Do you want to create an appointment in the past?") == true) { return true }
+        else {
+            { sessionStorage.setItem('StartLoading', 'false'); StopLoadFromPatChart(); }
             return false;
         }
     }
-    
+
 }
 function OpenRereralPhysician() {
 
     setTimeout(
         function () {
             var oWnd = GetRadWindow();
-            { sessionStorage.setItem('StartLoading', 'true'); StartLoadFromPatChart();}
+            { sessionStorage.setItem('StartLoading', 'true'); StartLoadFromPatChart(); }
             var childWindow = oWnd.BrowserWindow.radopen("frmFindReferralPhysician.aspx", "MessageWindow");
             setRadWindowProperties(childWindow, 150, 860);
             childWindow.add_close(function FindReferralPhysicianClick(oWindow, args) {
-                 {sessionStorage.setItem('StartLoading', 'false');StopLoadFromPatChart();}
+                { sessionStorage.setItem('StartLoading', 'false'); StopLoadFromPatChart(); }
                 var Result = args.get_argument();
                 if (Result != null) {
-                    
-                    if (Result.ulPhyId != "")
-                    {
+
+                    if (Result.ulPhyId != "") {
                         document.getElementById("HdnPCPID").value = Result.ulPhyId;
                     }
                     if (Result.ulPhyId != "" && document.getElementById("hdnEditApptPhyID").value == Result.ulPhyId && document.getElementById("chkSelfReferred") != null) {
@@ -653,7 +641,7 @@ function OpenRereralPhysician() {
                     }
 
                     document.getElementById("btnSave").disabled = false;
-                   
+
                 }
                 childWindow.remove_close(FindReferralPhysicianClick);
 
@@ -690,10 +678,8 @@ function EnableSaveButton(ctrl) {
     }
 }
 function ConfirmPastAppointment() {
-    if (window.confirm("Do you want to create an appointment in the past?") == true)
-    { document.getElementById("btnConfirmAppointment").click(); }
-    else
-    { return false; }
+    if (window.confirm("Do you want to create an appointment in the past?") == true) { document.getElementById("btnConfirmAppointment").click(); }
+    else { return false; }
 }
 function OpenFindAuth() {
     var PatientName = document.getElementById("txtPatientName").value;
@@ -789,12 +775,11 @@ function Exits1() {
     CloseWindow();
 }
 
-function ConfirmPreviousAppointment()
-{
+function ConfirmPreviousAppointment() {
     if (window.confirm("You are booking this patient for multiple encounters on the same day. Would you like to continue with this action?") == true) {
-        { sessionStorage.setItem('StartLoading', 'true'); StartLoadFromPatChart();}
+        { sessionStorage.setItem('StartLoading', 'true'); StartLoadFromPatChart(); }
         sessionStorage.setItem('btnConfirmClick', 'true');
-    document.getElementById("btnConfirmAppointment").click();
+        document.getElementById("btnConfirmAppointment").click();
     } else {
         if ($(".ui-dialog").is(":visible")) {
             $(dvdialog).dialog("close");
@@ -803,9 +788,8 @@ function ConfirmPreviousAppointment()
     }
 }
 function ConfirmOverwriteAppointment() {
-    if (window.confirm("The specified Time has an appointment already.Do you want to continue?") == true)
-    {
-        { sessionStorage.setItem('StartLoading', 'true'); StartLoadFromPatChart();}
+    if (window.confirm("The specified Time has an appointment already.Do you want to continue?") == true) {
+        { sessionStorage.setItem('StartLoading', 'true'); StartLoadFromPatChart(); }
         sessionStorage.setItem('btnConfirmClick', 'true');
         document.getElementById("btnConfirmAppointment").click();
     } else {
@@ -817,8 +801,8 @@ function ConfirmBlockAppointment(str) {
     var sType = str;
     if (sType == undefined) {
 
-        if(DisplayErrorMessage('110049')){
-            { sessionStorage.setItem('StartLoading', 'true'); StartLoadFromPatChart();}
+        if (DisplayErrorMessage('110049')) {
+            { sessionStorage.setItem('StartLoading', 'true'); StartLoadFromPatChart(); }
             sessionStorage.setItem('btnConfirmClick', 'true');
             document.getElementById("btnConfirmAppointment").click();
 
@@ -877,8 +861,8 @@ function OpenPatientDemographics() {
                 //document.getElementById("btnHumanDetailUpdate").click();
                 setPAtientDetails(humanId);
                 PcpPrimaryDefault(humanId);
-              //  document.getElementById("txtProviderSearch").value = document.getElementById("hdnrenprovidersearch").value;
-              
+                //  document.getElementById("txtProviderSearch").value = document.getElementById("hdnrenprovidersearch").value;
+
             });
         }, 0);
 
@@ -924,8 +908,8 @@ function PcpPrimaryDefault(humanid) {
             if (TabVal != undefined && TabVal != null && TabVal == "PCP") {
                 document.getElementById("txtProviderSearch").value = objdata;
             }
-            document.getElementById("hdnpcpprovider").value = objdata; 
-            document.getElementById("hdnpcpprovidersearch").value = objdata;   
+            document.getElementById("hdnpcpprovider").value = objdata;
+            document.getElementById("hdnpcpprovidersearch").value = objdata;
         }
     });
 }
@@ -938,20 +922,20 @@ function OpenPatientTask() {
     var Parentscreen = document.getElementById("hdnParentscreen").value;
     var EncounterId = document.getElementById("hdnEncounterID").value;
 
-    
+
     var str = document.getElementById('divPatientstrip').innerHTML;
     var patientdetails = str.split("|");
     var humanid = patientdetails[4].split(":")[1].trim();
 
     setTimeout(
-    function () {
-        var oWnd = GetRadWindow();
-        var childWindow = oWnd.BrowserWindow.radopen("frmViewPatientTask.aspx?patientdob=" + patientdetails[1].trim() + "&AccountNum=" + humanid + "&gender=" + patientdetails[3].trim() + "&status=" + status + "&patientname=" + patientdetails[0].trim() + "&patientType=" + patientdetails[7].split(":")[1].trim() + "&ParentScreen=" + Parentscreen + "&EncounterID=" + EncounterId, "MessageWindow");
-      
-        setRadWindowProperties(childWindow, 940, 1070);
+        function () {
+            var oWnd = GetRadWindow();
+            var childWindow = oWnd.BrowserWindow.radopen("frmViewPatientTask.aspx?patientdob=" + patientdetails[1].trim() + "&AccountNum=" + humanid + "&gender=" + patientdetails[3].trim() + "&status=" + status + "&patientname=" + patientdetails[0].trim() + "&patientType=" + patientdetails[7].split(":")[1].trim() + "&ParentScreen=" + Parentscreen + "&EncounterID=" + EncounterId, "MessageWindow");
+
+            setRadWindowProperties(childWindow, 940, 1070);
 
 
-    },0);
+        }, 0);
 
     return false;
 
@@ -1106,8 +1090,7 @@ function CancelAppointment() {
     returnToParent(null);
 }
 
-function PhoneEncounterCancel()
-{
+function PhoneEncounterCancel() {
     //CAP-892 From Patient communication screen when cancelled a Phone encounter, shows Multiple tab restrict access error but the encounter gets cancelled
     DisplayErrorMessage('110094');
     window.top.location.href = "frmPatientChart.aspx?allowmultipletab=true";// returnToParent(null);
@@ -1255,38 +1238,38 @@ function OpenFindAvailableSlot() {
     var PhysicianID = document.getElementById(GetClientId('hdnPhysicianID')).value;
     var obj = new Array();
     setTimeout(
-    function () {
-        var oWnd = GetRadWindow();
-        var childWindow = oWnd.BrowserWindow.radopen("frmFindAvailableAppointments.aspx?FacilityName=" + FacilityName.get_selectedItem().get_text() + "&AppointmentDate=" + AppointmentDate.get_dateInput()._text + "&AppointmentTime=" + AppointmentTime._timeView.getTime().format("HH:mm tt") + "&SlotLength=" + SlotLength + "&PhysicianID=" + PhysicianID, "MessageWindow");
-        setRadWindowProperties(childWindow, 820, 1180);
-        childWindow.add_close(function FindAvailableSlotClick(oWindow, args) {
-            var Result = args.get_argument();
-            if (Result != "undefined" && Result != null && Result.Screen != "GoTOSlot") {
-                document.getElementById("hdnApptDate").value = Result.Appdate;
-                document.getElementById("hdnApptTime").value = Result.Apptime;
-                document.getElementById("hdnProviderName").value = Result.Provider;
-                document.getElementById("hdnFacilityName").value = Result.facility;
-                document.getElementById(GetClientId("btnAppointmentSlot")).click();
+        function () {
+            var oWnd = GetRadWindow();
+            var childWindow = oWnd.BrowserWindow.radopen("frmFindAvailableAppointments.aspx?FacilityName=" + FacilityName.get_selectedItem().get_text() + "&AppointmentDate=" + AppointmentDate.get_dateInput()._text + "&AppointmentTime=" + AppointmentTime._timeView.getTime().format("HH:mm tt") + "&SlotLength=" + SlotLength + "&PhysicianID=" + PhysicianID, "MessageWindow");
+            setRadWindowProperties(childWindow, 820, 1180);
+            childWindow.add_close(function FindAvailableSlotClick(oWindow, args) {
+                var Result = args.get_argument();
+                if (Result != "undefined" && Result != null && Result.Screen != "GoTOSlot") {
+                    document.getElementById("hdnApptDate").value = Result.Appdate;
+                    document.getElementById("hdnApptTime").value = Result.Apptime;
+                    document.getElementById("hdnProviderName").value = Result.Provider;
+                    document.getElementById("hdnFacilityName").value = Result.facility;
+                    document.getElementById(GetClientId("btnAppointmentSlot")).click();
 
-            }
-            else {
-                if (Result != "undefined" && Result != null) {
-                    var result = new Object();
-                    result.Selecteddate = Result.Appdate;
-                    result.PhyID = Result.PhyID;
-                    result.Facility = Result.facility;
-                    result.Provider = Result.Provider;
                 }
-                if (window.opener) {
-                    window.opener.returnValue = result;
+                else {
+                    if (Result != "undefined" && Result != null) {
+                        var result = new Object();
+                        result.Selecteddate = Result.Appdate;
+                        result.PhyID = Result.PhyID;
+                        result.Facility = Result.facility;
+                        result.Provider = Result.Provider;
+                    }
+                    if (window.opener) {
+                        window.opener.returnValue = result;
+                    }
+                    window.returnValue = result;
+                    returnToParent(result);
+                    return true;
                 }
-                window.returnValue = result;
-                returnToParent(result);
-                return true;
-            }
-        });
-        
-    }, 0);
+            });
+
+        }, 0);
 
 
 }
@@ -1378,36 +1361,34 @@ function EnableDLC(ctrl) {
 
 function btnClose_Clicked() {
     if (document.getElementById("btnSave").disabled == false) {
-         {sessionStorage.setItem('StartLoading', 'false');StopLoadFromPatChart();}
-         if (window.GetRadWindow() != null) {
-             var winName = window.GetRadWindow()._name;
-             if ($(top.window.document).find("iframe[name='" + winName + "']")[0] != undefined) {
-                 if (!$($(top.window.document).find("iframe[name='" + winName + "']")[0].contentDocument).find('body').is('#dvdialogMenu'))
-                     $($(top.window.document).find("iframe[name='" + winName + "']")[0].contentDocument).find('body').append('<div id="dvdialogMenu" style="min-height: 65px !important; width: auto; max-height: none; height: auto; display: none;">' +
+        { sessionStorage.setItem('StartLoading', 'false'); StopLoadFromPatChart(); }
+        if (window.GetRadWindow() != null) {
+            var winName = window.GetRadWindow()._name;
+            if ($(top.window.document).find("iframe[name='" + winName + "']")[0] != undefined) {
+                if (!$($(top.window.document).find("iframe[name='" + winName + "']")[0].contentDocument).find('body').is('#dvdialogMenu'))
+                    $($(top.window.document).find("iframe[name='" + winName + "']")[0].contentDocument).find('body').append('<div id="dvdialogMenu" style="min-height: 65px !important; width: auto; max-height: none; height: auto; display: none;">' +
                         '<p style="font-family: Verdana,Arial,sans-serif; font-size: 13.5px;">There are unsaved changes.Do you want to save the them?</p></div>');
-                 dvdialog = $($(top.window.document).find("iframe[name='" + winName + "']")[0].contentDocument).find('body').find('#dvdialogMenu');
-             }
-             else
-             {
-                 //Jira #CAP-773 - Check undefind and null to the $(top.window.document).find("iframe")[0]
-                 if ($(top.window.document).find("iframe") != undefined && $(top.window.document).find("iframe") != null && $(top.window.document).find("iframe")[0] != undefined && $(top.window.document).find("iframe")[0] != null) {
-                     if (!$($(top.window.document).find("iframe")[0].contentDocument).find('body').is('#dvdialogMenu'))
-                         $($(top.window.document).find("iframe")[0].contentDocument).find('body').append('<div id="dvdialogMenu" style="min-height: 65px !important; width: auto; max-height: none; height: auto; display: none;">' +
-                             '<p style="font-family: Verdana,Arial,sans-serif; font-size: 13.5px;">There are unsaved changes.Do you want to save the them?</p></div>');
-                     dvdialog = $($(top.window.document).find("iframe")[0].contentDocument).find('body').find('#dvdialogMenu');
-                 }
-             }
-         }
-         else
-         {
-             //Jira #CAP-773 - Check undefind and null to the $(top.window.document).find("iframe")[0]
-             if ($(top.window.document).find("iframe") != undefined && $(top.window.document).find("iframe") != null && $(top.window.document).find("iframe")[0] != undefined && $(top.window.document).find("iframe")[0] != null) {
-                 if (!$($(top.window.document).find("iframe")[0].contentDocument).find('body').is('#dvdialogMenu'))
-                     $($(top.window.document).find("iframe")[0].contentDocument).find('body').append('<div id="dvdialogMenu" style="min-height: 65px !important; width: auto; max-height: none; height: auto; display: none;">' +
-                         '<p style="font-family: Verdana,Arial,sans-serif; font-size: 13.5px;">There are unsaved changes.Do you want to save the them?</p></div>');
-                 dvdialog = $($(top.window.document).find("iframe")[0].contentDocument).find('body').find('#dvdialogMenu');
-             }
-         }
+                dvdialog = $($(top.window.document).find("iframe[name='" + winName + "']")[0].contentDocument).find('body').find('#dvdialogMenu');
+            }
+            else {
+                //Jira #CAP-773 - Check undefind and null to the $(top.window.document).find("iframe")[0]
+                if ($(top.window.document).find("iframe") != undefined && $(top.window.document).find("iframe") != null && $(top.window.document).find("iframe")[0] != undefined && $(top.window.document).find("iframe")[0] != null) {
+                    if (!$($(top.window.document).find("iframe")[0].contentDocument).find('body').is('#dvdialogMenu'))
+                        $($(top.window.document).find("iframe")[0].contentDocument).find('body').append('<div id="dvdialogMenu" style="min-height: 65px !important; width: auto; max-height: none; height: auto; display: none;">' +
+                            '<p style="font-family: Verdana,Arial,sans-serif; font-size: 13.5px;">There are unsaved changes.Do you want to save the them?</p></div>');
+                    dvdialog = $($(top.window.document).find("iframe")[0].contentDocument).find('body').find('#dvdialogMenu');
+                }
+            }
+        }
+        else {
+            //Jira #CAP-773 - Check undefind and null to the $(top.window.document).find("iframe")[0]
+            if ($(top.window.document).find("iframe") != undefined && $(top.window.document).find("iframe") != null && $(top.window.document).find("iframe")[0] != undefined && $(top.window.document).find("iframe")[0] != null) {
+                if (!$($(top.window.document).find("iframe")[0].contentDocument).find('body').is('#dvdialogMenu'))
+                    $($(top.window.document).find("iframe")[0].contentDocument).find('body').append('<div id="dvdialogMenu" style="min-height: 65px !important; width: auto; max-height: none; height: auto; display: none;">' +
+                        '<p style="font-family: Verdana,Arial,sans-serif; font-size: 13.5px;">There are unsaved changes.Do you want to save the them?</p></div>');
+                dvdialog = $($(top.window.document).find("iframe")[0].contentDocument).find('body').find('#dvdialogMenu');
+            }
+        }
         myPos = "center center";
         atPos = 'center center';
         $(dvdialog).dialog({
@@ -1420,8 +1401,8 @@ function btnClose_Clicked() {
             },
             buttons: {
                 "Yes": function () {
-                    
-                    { sessionStorage.setItem('StartLoading', 'true'); StartLoadFromPatChart();}
+
+                    { sessionStorage.setItem('StartLoading', 'true'); StartLoadFromPatChart(); }
                     $(dvdialog).dialog("close");
                     sessionStorage.setItem("AutoSave_OrderMenu", "true");
 
@@ -1430,7 +1411,7 @@ function btnClose_Clicked() {
 
                 },
                 "No": function () {
-                    
+
                     $(dvdialog).dialog("close");
                     self.close();
                 },
@@ -1472,12 +1453,11 @@ function tabReferringProvAndPCP_TabSelected(sender, args) {
             document.getElementById("hdnbtnsave").value = true;
 }
 function EditAppointmentLoad() {
-    if(sessionStorage.getItem('btnConfirmClick') == null)
-    { sessionStorage.setItem('StartLoading', 'false'); StopLoadFromPatChart(); }
+    if (sessionStorage.getItem('btnConfirmClick') == null) { sessionStorage.setItem('StartLoading', 'false'); StopLoadFromPatChart(); }
     else
         sessionStorage.removeItem('btnConfirmClick')
 
-   
+
     var stoptransfer = new Date();
     { sessionStorage.setItem('StartLoading', 'false'); StopLoadFromPatChart(); }
 
@@ -1487,7 +1467,7 @@ function EditAppointmentLoad() {
     $("textarea[id *= txtDLC]").addClass('Editabletxtbox');
     $("[id*=pbDropdown]").addClass('pbDropdownBackground');
 }
-function ddlVisitType_onChange(sender,eventArgs) {
+function ddlVisitType_onChange(sender, eventArgs) {
     EnableSaveButton(sender._element);
 }
 function OpenImageAndLaborder() {
@@ -1562,12 +1542,46 @@ function enablecontrol() {
     });
 }
 //View Patient Task Mandatory
-function patienttaskload()
-{
+function patienttaskload() {
     $("span[mand=Yes]").addClass('MandLabelstyle');
 
     $("span[mand=Yes]").each(function () {
         $(this).html($(this).html().replace("*", "<span class='manredforstar'>*</span>"));
     });
+
+}
+
+function EditProviderDetails() {
+    var EditPhyId = document.getElementById("hdnEditPhysicianId").value;
+    var ProviderText = document.getElementById("txtProviderSearch").value;
+
+    var Category = document.getElementById("hdnCategory").value;
+
+    if (EditPhyId == '' || ProviderText == '') {
+        DisplayErrorMessage('380060');
+    }
+    else if (Category != "NON CAPELLA USER(Physician)" && Category != "NON CAPELLA USER" && Category != "ORGANIZATION") {
+        DisplayErrorMessage('380061', '', Category);
+    }
+    else {
+
+        $(top.window.document).find("#TabPhysicianLibrary").modal({ backdrop: "static", keyboard: false }, 'show');
+        $(top.window.document).find("#TabModalPhysicianLibraryTitle")[0].textContent = "Provider Library";
+        $(top.window.document).find("#TabmdldlgPhysicianLibrary")[0].style.width = "850px";
+        $(top.window.document).find("#TabmdldlgPhysicianLibrary")[0].style.height = "440px"; //"715px";
+        var sPath = "frmPhysicianLibray.aspx?EditPhyId=" + EditPhyId;
+        $(top.window.document).find("#TabPhysicianLibraryFrame")[0].style.height = "275px"; //"495px";
+        $(top.window.document).find("#TabPhysicianLibraryFrame")[0].contentDocument.location.href = sPath;
+        $(top.window.document).find("#TabPhysicianLibrary").modal("show");
+        $(top.window.document).find("#TabPhysicianLibrary").one("hidden.bs.modal", function (e) {
+
+            var PhyTextboxName = localStorage.getItem("PhyDetails");
+            document.getElementById("txtProviderSearch").value = PhyTextboxName.split("&")[4];
+
+        });
+
+        return false;
+    }
+
 
 }

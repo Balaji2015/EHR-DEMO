@@ -53,10 +53,12 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
         IList<PhysicianLibrary> GetRenderingPhyisicianList();
         IList<PhysicianLibrary> Get_PhysicianList(string proviserid);
         IList<PhysicianLibrary> GetphysiciannameByUserName(string sUserName);
+
+        IList<PhysicianLibrary> GetPhysicianByCategory(IList<string> Category);
         //IList<PhysicianFacilityCompanyCarrier> GetPhyFacCompanyCarrierDetails(ulong ulBillID, ulong ulRendProvID, string sBillingFacility, ulong ulCarrierID);
     }
 
-    public partial class PhysicianManager : ManagerBase<PhysicianLibrary, ulong>, IPhysicianManager
+    public partial class PhysicianManager : ManagerBase<PhysicianLibrary, ulong>
     {
         #region Constructors
 
@@ -670,6 +672,8 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
                         //objPhy.PhyFax = obj[13].ToString();
                         objPhy.PhyAddrs = obj[14].ToString();
                         //objPhy.PhyPhone = obj[15].ToString();
+                        if (obj[17] != null)
+                            objPhy.Category = obj[17].ToString();
                         if (obj[12] != null)
                         {
                             objPhy.PhyFacility = obj[12].ToString();
@@ -1107,7 +1111,7 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
         //    }
         //    return listPhyComp;
         //}
-        public IList<PhysicianLibrary> GetPhysicianByNPI(string NPI)
+        public static IList<PhysicianLibrary> GetPhysicianByNPI(string NPI)
         {
             IList<PhysicianLibrary> ilstPhysicianLibrary = new List<PhysicianLibrary>();
             using (ISession iMySession = NHibernateSessionManager.Instance.CreateISession())
@@ -1229,6 +1233,31 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
             //return criteria.List<PhysicianLibrary>();
         }
 
+        public static IList<FillPhysicianLibrary> GetPhysicianByCategory(IList<string> Category)
+        {
+            IList<FillPhysicianLibrary> ilstPhysicianLibrary = new List<FillPhysicianLibrary>();
+            using (ISession iMySession = NHibernateSessionManager.Instance.CreateISession())
+            {
+                ISQLQuery PhyList = iMySession.CreateSQLQuery("SELECT pl.Physician_Library_ID,pl.Physician_Address1, pl.Physician_Address2, pl.Physician_City, pl.Physician_State, pl.Physician_Zip,pl.Physician_Telephone, pl.Physician_Fax ,group_concat(distinct ps.Specialty separator ',') as Specialties,pl.Physician_NPI,pl.Physician_EMail as Physician_EMail,pl.Physician_prefix as Physician_prefix,pl.Physician_First_Name as Physician_First_Name,pl.Physician_Last_Name as Physician_Last_Name,pl.Physician_Type as Physician_Type,pl.Physician_Library_ID as Physician_Library_ID,group_concat(distinct m.Facility_Name separator '|') as Facility_Name,pl.Company,pl.Category,pl.Physician_Middle_Name,pl.Physician_Suffix FROM physician_library pl left join physician_specialty ps on (pl.Physician_Library_ID = ps.physician_id)  left join map_facility_physician m on (pl.Physician_Library_ID= m.Physician_ID) where Category='"+ Category + "' group by pl.Physician_Library_ID");
+                //ICriteria PhyList = iMySession.CreateCriteria(typeof(PhysicianLibrary)).Add(Expression.Eq("Category", Category));
+                ilstPhysicianLibrary = PhyList.List<FillPhysicianLibrary>();
+                iMySession.Close();
+            }
+            return ilstPhysicianLibrary;
+        }
+
+        public static IList<PhysicianLibrary> GetPhysicianByFax(string Fax)
+        {
+            IList<PhysicianLibrary> ilstPhysicianLibrary = new List<PhysicianLibrary>();
+            using (ISession iMySession = NHibernateSessionManager.Instance.CreateISession())
+            {
+                ICriteria PhyList = iMySession.CreateCriteria(typeof(PhysicianLibrary)).Add(Expression.Eq("Category", Fax));
+                ilstPhysicianLibrary = PhyList.List<PhysicianLibrary>();
+                iMySession.Close();
+            }
+            return ilstPhysicianLibrary;
+        }
+
         //public IList<PhysicianFacilityCompanyCarrier> GetPhyFacCompanyCarrierDetails(ulong ulBillID, ulong ulRendProvID, string sBillingFacility, ulong ulCarrierID)
         //{
         //    ICriteria criteria;
@@ -1252,5 +1281,6 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
 
         #endregion
     }
+   
 }
 

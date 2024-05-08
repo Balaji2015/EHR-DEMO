@@ -54,13 +54,17 @@
             <div>
                 <table style="width: 100%;">
                     <tr>
-                        <td style="width: 14%;" class="Editabletxtbox">
+                        <td style="width: 13%;" class="Editabletxtbox">
                             <span><b>Provider Search</b></span>
                         </td>
-                        <td style="width: 86%;">
-                            <asp:TextBox ID="txtProviderSearch" runat="server" Width="99%" data-phy-id="0" data-phy-details="" Rows="3" TextMode="MultiLine" placeholder="Type minimum 3 characters of Last or First name or Facility and follow it by a space.." CssClass="Editabletxtbox" style="resize:none"></asp:TextBox>
-
+                        <td style="width: 80%;">
+                            <asp:TextBox ID="txtProviderSearch" runat="server" Width="98%" data-phy-id="0" data-phy-details="" Rows="3" TextMode="MultiLine" placeholder="Type minimum 3 characters of Last or First name or Facility and follow it by a space.." CssClass="Editabletxtbox" style="resize:none"></asp:TextBox>
+                            </td>
+                        <td style="width: 1%;">
                             <img id="imgClearProviderText" src="Resources/Delete-Blue.png" alt="X" title="Click to clear the text field."/>
+                        </td>
+                         <td style="width: 4%;">
+                           <img id="imgEditProvider" runat="server" src="Resources/edit.gif" alt="X" title="Click to edit the text field." onclick="return EditProviderDetails();" style="position: absolute;top: 38px!important;cursor: pointer;width: 15px;height: 15px;" />
                         </td>
                     </tr>
                     <tr>
@@ -85,6 +89,9 @@
             <asp:HiddenField ID="hdnLastPageNo" runat="server" EnableViewState="false" />
             <asp:HiddenField ID="hdnTotalCount" runat="server" EnableViewState="false" />
             <asp:HiddenField ID="hdnAddPhysician" runat="server" EnableViewState="false" />
+            <asp:HiddenField ID="hdnEditPhysicianId" runat="server" EnableViewState="false" />
+
+            <asp:HiddenField ID="hdnCategory" runat="server" EnableViewState="false" />
             <%--<aspx:MaskedEditExtender ID="msktxtZipExtender" TargetControlID="msktxtZip" Mask="99999-9999"
             ClearMaskOnLostFocus="false" runat="server">
         </aspx:MaskedEditExtender>--%>

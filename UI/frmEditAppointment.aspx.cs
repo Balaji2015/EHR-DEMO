@@ -442,6 +442,7 @@ namespace Acurus.Capella.UI
                         imgClearProviderText.Attributes.Remove("onclick");
                         //Jira #CAP-69 - labels are missing
                         imgClearProviderText.Disabled = true;
+                        imgEditProvider.Disabled = true;
 
                     }
                 }
@@ -992,6 +993,7 @@ namespace Acurus.Capella.UI
                         hdnrenprovidersearch.Value = EncRecord.Referring_Physician + "| NPI: " + EncRecord.Referring_Provider_NPI +
                                   "| Facility: " + EncRecord.Referring_Facility + "| Address:" + EncRecord.Referring_Address +
                                   "| Phone No:" + EncRecord.Referring_Phone_No + "| Fax No:" + EncRecord.Referring_Fax_No;
+                        hdnEditPhysicianId.Value = EncRecord.Referring_Physician;
                     }
 
                 }
@@ -1045,7 +1047,7 @@ namespace Acurus.Capella.UI
                                   "| Facility: " + EncRecord.Referring_Facility + "| Address:" + EncRecord.Referring_Address +
                                   "| Phone No:" + EncRecord.Referring_Phone_No + "| Fax No:" + EncRecord.Referring_Fax_No;
 
-
+                        hdnEditPhysicianId.Value = EncRecord.Reading_Provider_ID.ToString();
                         txtProviderSearch.Enabled = false;
                     }
                 }
@@ -1094,7 +1096,7 @@ namespace Acurus.Capella.UI
                         hdnrenprovidersearch.Value = EncRecord.Referring_Physician + "| NPI: " + EncRecord.Referring_Provider_NPI +
                                    "| Facility: " + EncRecord.Referring_Facility + "| Address:" + EncRecord.Referring_Address +
                                    "| Phone No:" + EncRecord.Referring_Phone_No + "| Fax No:" + EncRecord.Referring_Fax_No;
-
+                        hdnEditPhysicianId.Value = EncRecord.Reading_Provider_ID.ToString();
                         txtProviderSearch.Enabled = false;
                     }
 
@@ -1354,7 +1356,7 @@ namespace Acurus.Capella.UI
                     pnlVisit.Enabled = false;
                     txtProviderSearch.Enabled = false;
                     imgClearProviderText.Visible = false;
-
+                    imgEditProvider.Visible = false;
                     btnPatientDemographics.Enabled = false;
                     btnPatientTask.Enabled = false;
                     tabReferringProvAndPCP.Enabled = true;
@@ -2824,6 +2826,7 @@ namespace Acurus.Capella.UI
                 rdoPcp.Checked = false;
                 HdnRefPhy.Value = "|||||||";
                 txtProviderSearch.Text = string.Empty;
+                hdnEditPhysicianId.Value = string.Empty;
 
                 //Commentted for BugId: 56036
                 //if (ddlPhysicianName.Items.Count > 0)
@@ -3741,6 +3744,7 @@ namespace Acurus.Capella.UI
 
                     hdnrenprovidersearch.Value = "";
                     txtProviderSearch.Text = string.Empty;
+                    hdnEditPhysicianId.Value = string.Empty;
                     //txtReferringProvider.ReadOnly = false;
                     //txtProviderNPI.ReadOnly = false;
                     //txtReferringFacility.ReadOnly = false;
@@ -3784,6 +3788,7 @@ namespace Acurus.Capella.UI
                 hdnrenprovidersearch.Value = "";
                 txtProviderSearch.Text = string.Empty;
                 txtProviderSearch.Enabled = true;
+                hdnEditPhysicianId.Value = string.Empty;
             }
             //{
             //    //txtReferringProvider.Text = string.Empty;
@@ -4072,10 +4077,12 @@ namespace Acurus.Capella.UI
                 if (tabReferringProvAndPCP.SelectedIndex == 0)
                 {
                     imgClearProviderText.Visible = false;
+                    imgEditProvider.Visible = false;
                 }
                 if (tabReferringProvAndPCP.SelectedIndex == 1)
                 {
                     imgClearProviderText.Visible = true;
+                    imgEditProvider.Visible = true;
                 }
                 imgClearProviderText.Style.Add("top", "246px !important");
                 lblOrder.ForeColor = Color.Red;
@@ -4223,6 +4230,7 @@ namespace Acurus.Capella.UI
                 if (tabReferringProvAndPCP.SelectedIndex == 0)
                 {
                     imgClearProviderText.Visible = true;
+                    imgEditProvider.Visible = true;
                 }
                 imgClearProviderText.Style.Add("top", "234px !important");
                 cboOrder.Items.Clear();
@@ -4486,10 +4494,12 @@ namespace Acurus.Capella.UI
                 if (ilstFacAncillary.Count > 0 && ilstFacAncillary[0].Is_Ancillary == "Y")
                 {
                     imgClearProviderText.Visible = false;
+                    imgEditProvider.Visible = false;
                 }
                 else
                 {
                     imgClearProviderText.Visible = true;
+                    imgEditProvider.Visible = true;
                 }
 
                 imgClearProviderText.Style.Add("top", "234px !important");
@@ -4571,11 +4581,12 @@ namespace Acurus.Capella.UI
 
                                 txtProviderSearch.Text = Encntlist[0].Referring_Physician + "| NPI: " + Encntlist[0].Referring_Provider_NPI + "| Facility: " + Encntlist[0].Referring_Facility + "| Address:" + Encntlist[0].Referring_Address + "| Phone No:" + Encntlist[0].Referring_Phone_No + "| Fax No:" + Encntlist[0].Referring_Fax_No;
                                 //hdnrenprovider.Value = " |" + Encntlist[0].Referring_Physician + "|" + EncRecord.Referring_Provider_NPI + "|" + "" + "|" + EncRecord.Referring_Facility + "|" + EncRecord.Referring_Address + "|" + EncRecord.Referring_Fax_No + "|" + EncRecord.Referring_Phone_No;
-
+                                hdnEditPhysicianId.Value = Encntlist[0].Referring_Physician;
                             }
                             else
                             {
                                 txtProviderSearch.Text = "";
+                                hdnEditPhysicianId.Value = string.Empty;
                             }
                         }
 
@@ -4583,6 +4594,7 @@ namespace Acurus.Capella.UI
                     else
                     {
                         txtProviderSearch.Text = "";
+                        hdnEditPhysicianId.Value = string.Empty;
                     }
                     if (hdnrenprovidersearch.Value != null && hdnrenprovidersearch.Value != "" && hdnrenprovidersearch.Value != string.Empty && hdnrenprovidersearch.Value != "| NPI: | Facility: | Address:| Phone No:| Fax No:")//Added by Vasanth 04-01-2016
                     {
@@ -4615,6 +4627,7 @@ namespace Acurus.Capella.UI
                 hdnTabRefPcpChange.Value = "PCP";
 
                 imgClearProviderText.Visible = true;
+                imgEditProvider.Visible = true;
                 imgClearProviderText.Style.Add("top", "224px !important");
                 chkSelfReferred.Visible = false;
                 //Jira #CAP-69 - labels are missing
@@ -4695,7 +4708,7 @@ namespace Acurus.Capella.UI
                 pnlVisit.Enabled = false;
                 txtProviderSearch.Enabled = false;
                 imgClearProviderText.Visible = false;
-
+                imgEditProvider.Visible = false;
                 btnPatientDemographics.Enabled = false;
                 btnPatientTask.Enabled = false;
 
@@ -4753,10 +4766,12 @@ namespace Acurus.Capella.UI
                                 hdnpcpprovidersearch.Value = Encntlist[0].PCP_Physician + "| NPI: " + Encntlist[0].PCP_Provider_NPI +
                                  "| Facility: " + Encntlist[0].PCP_Facility + "| Address:" + Encntlist[0].PCP_Address +
                                  "| Phone No:" + Encntlist[0].PCP_Phone_No + "| Fax No:" + Encntlist[0].PCP_Fax_No;
+                                hdnEditPhysicianId.Value = Encntlist[0].Referring_Physician;
                             }
                             else
                             {
                                 txtProviderSearch.Text = "";
+                                hdnEditPhysicianId.Value = string.Empty;
                             }
                         }
                     }
@@ -4789,6 +4804,7 @@ namespace Acurus.Capella.UI
                                                          InsuredList.PhyList[0].PhyZip + " | " +
                                                          ((InsuredList.PhyList[0].PhyPhone.Trim()) != "" ? "Phone No:" + InsuredList.PhyList[0].PhyPhone + " | " : "Phone No: | ") +
                                                          (InsuredList.PhyList[0].PhyFax.Trim() != "" ? "Fax No:" + InsuredList.PhyList[0].PhyFax : "Fax No:");
+                            hdnEditPhysicianId.Value = InsuredList.PhyList[0].PhyId.ToString();
                             //Jira #CAP-156 - Index was outside bounds 
                             //hdnpcpprovider.Value = InsuredList.PhyList[0].PhyPrefix + " " + InsuredList.PhyList[0].PhyFirstName + " " + InsuredList.PhyList[0].PhyMiddleName + " " + InsuredList.PhyList[0].PhyLastName + "(" + InsuredList.PhyList[0].PhySuffix + ")" + " | " +
                             //                          "NPI:" + InsuredList.PhyList[0].PhyNPI + " | " +
@@ -4834,6 +4850,7 @@ namespace Acurus.Capella.UI
                         else
                         {
                             txtProviderSearch.Text = "";
+                            hdnEditPhysicianId.Value = string.Empty;
                         }
 
                     }
@@ -7430,7 +7447,7 @@ namespace Acurus.Capella.UI
         [WebMethod(EnableSession = true)]
         public static string GetHumanDetails(string humanid)
         {
-           
+
             if (ClientSession.UserName == string.Empty)
             {
                 HttpContext.Current.Response.StatusCode = 999;

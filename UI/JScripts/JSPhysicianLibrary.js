@@ -749,11 +749,11 @@ function AddProvider() {
                         $("#btnClose").click();
                         var vProviderName = $("#ddlPrefix")[0].value + ". " + $("#txtFirstName")[0].value + " " + document.getElementById("txtMI").value + " " + $("#txtLastName")[0].value;
                         var vPhyNmae = $("#ddlPrefix")[0].value + $("#txtFirstName")[0].value + " " + document.getElementById("txtMI").value + " " + $("#txtLastName")[0].value + $("#txtSuffix")[0].value;
-                        var vFullName = $("#ddlPrefix")[0].value + $("#txtFirstName")[0].value + " " + document.getElementById("txtMI").value + " " + $("#txtLastName")[0].value + "(" + $("#txtSuffix")[0].value + ")";
+                        var vFullName = $("#ddlPrefix")[0].value +" "+ $("#txtFirstName")[0].value + " " + document.getElementById("txtMI").value + " " + $("#txtLastName")[0].value + "(" + $("#txtSuffix")[0].value + ")";
                         var PCP_PhyDetails = objdata.split("|")[1] + "&" + vProviderName + "&" + vPhyNmae + "&" + $("#txtNPI")[0].value +"&" +vFullName + "|" + "NPI:" + $("#txtNPI")[0].value + "|" + Specialtylist + "|" + "FACILITY:" + FacilityList + "|"
                             + "ADDR: " +$("#txtAddressLine1")[0].value + "," + $("#txtAddressLine2")[0].value + "," + $("#txtCity")[0].value + ","
                             + $("#txtState")[0].value + "," + $("#txtZip")[0].value
-                            + "|" + "PH:" + $("#txtPhone")[0].value+ "FAX:" + $("#txtFax")[0].value ;
+                            + "|" + "PH:" + $("#txtPhone")[0].value+ " | FAX:" + $("#txtFax")[0].value ;
 
                         localStorage.setItem("PhyDetails", PCP_PhyDetails);
                     }

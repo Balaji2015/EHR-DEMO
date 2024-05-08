@@ -41,20 +41,22 @@ namespace Acurus.Capella.UI.WebServices
              ilstCategory = Category.Split(',').ToList();
             }
             XmlDocument xmldoc = new XmlDocument();
-            string strXmlFilePath = Path.Combine(System.Web.Hosting.HostingEnvironment.ApplicationPhysicalPath, "ConfigXML\\PhysicianAddressDetails.xml");
-            if (File.Exists(strXmlFilePath) == true)
-            {
-                xmldoc.Load(System.Web.Hosting.HostingEnvironment.ApplicationPhysicalPath + "ConfigXML\\" + "PhysicianAddressDetails" + ".xml");
-                XmlNodeList xmlPhysicianAddressList = xmldoc.GetElementsByTagName("PhysicianAddress");
+            IList<FillPhysicianLibrary> PhysicianResult = new List<FillPhysicianLibrary>();
+            PhysicianResult = PhysicianManager.GetPhysicianByCategory(ilstCategory);
+            //string strXmlFilePath = Path.Combine(System.Web.Hosting.HostingEnvironment.ApplicationPhysicalPath, "ConfigXML\\PhysicianAddressDetails.xml");
+            //if (File.Exists(strXmlFilePath) == true)
+            //{
+            //    xmldoc.Load(System.Web.Hosting.HostingEnvironment.ApplicationPhysicalPath + "ConfigXML\\" + "PhysicianAddressDetails" + ".xml");
+            //    XmlNodeList xmlPhysicianAddressList = xmldoc.GetElementsByTagName("PhysicianAddress");
 
-                var PhysicianAddressNodes = xmlPhysicianAddressList.Cast<XmlNode>().AsEnumerable().ElementAtOrDefault(0);
-                //var result = from p in PhysicianAddressNodes.ChildNodes.OfType<XmlElement>() select new { Category = "Category", Name = p.Attributes["Physician_First_Name"].Value, Specialty = p.Attributes["Specialties"].Value, NPI = p.Attributes["Physician_NPI"].Value, Facility = p.Attributes["Physician_Address1"].Value };
-                var result = from p in PhysicianAddressNodes.ChildNodes.OfType<XmlElement>() select new { Category = (p.Attributes["Category"] != null ? p.Attributes["Category"].Value : string.Empty), Name = ((p.Attributes["Physician_prefix"] != null ? p.Attributes["Physician_prefix"].Value : string.Empty) + " " + (p.Attributes["Physician_First_Name"] != null ? p.Attributes["Physician_First_Name"].Value : string.Empty) + " " + (p.Attributes["Physician_Middle_Name"] != null ? p.Attributes["Physician_Middle_Name"].Value : string.Empty) + " " + (p.Attributes["Physician_Last_Name"] != null ? p.Attributes["Physician_Last_Name"].Value : string.Empty) + " " + (p.Attributes["Physician_Suffix"] != null ? p.Attributes["Physician_Suffix"].Value : string.Empty)), Specialty = (p.Attributes["Specialties"] != null ? p.Attributes["Specialties"].Value : string.Empty), NPI = (p.Attributes["Physician_NPI"] != null ? p.Attributes["Physician_NPI"].Value : string.Empty), Facility = (p.Attributes["Facility_Name"] != null ? p.Attributes["Facility_Name"].Value : string.Empty), Physician_Library_ID = (p.Attributes["Physician_Library_ID"] != null ? p.Attributes["Physician_Library_ID"].Value : string.Empty), Physician_Type = (p.Attributes["Physician_Type"] != null ? p.Attributes["Physician_Type"].Value : string.Empty), Company = (p.Attributes["Company"] != null ? p.Attributes["Company"].Value : string.Empty), Physician_Address1 = (p.Attributes["Physician_Address1"] != null ? p.Attributes["Physician_Address1"].Value : string.Empty), Physician_Address2 = (p.Attributes["Physician_Address2"] != null ? p.Attributes["Physician_Address2"].Value : string.Empty), Physician_City = (p.Attributes["Physician_City"] != null ? p.Attributes["Physician_City"].Value : string.Empty), Physician_State = (p.Attributes["Physician_State"] != null ? p.Attributes["Physician_State"].Value : string.Empty), Physician_Zip = (p.Attributes["Physician_Zip"] != null ? p.Attributes["Physician_Zip"].Value : string.Empty), Physician_Telephone = (p.Attributes["Physician_Telephone"] != null ? p.Attributes["Physician_Telephone"].Value : string.Empty), Physician_Fax = (p.Attributes["Physician_Fax"] != null ? p.Attributes["Physician_Fax"].Value : string.Empty), Physician_EMail = (p.Attributes["Physician_EMail"] != null ? p.Attributes["Physician_EMail"].Value : string.Empty) };
+            //    var PhysicianAddressNodes = xmlPhysicianAddressList.Cast<XmlNode>().AsEnumerable().ElementAtOrDefault(0);
+            //    //var result = from p in PhysicianAddressNodes.ChildNodes.OfType<XmlElement>() select new { Category = "Category", Name = p.Attributes["Physician_First_Name"].Value, Specialty = p.Attributes["Specialties"].Value, NPI = p.Attributes["Physician_NPI"].Value, Facility = p.Attributes["Physician_Address1"].Value };
+            //    var result = from p in PhysicianAddressNodes.ChildNodes.OfType<XmlElement>() select new { Category = (p.Attributes["Category"] != null ? p.Attributes["Category"].Value : string.Empty), Name = ((p.Attributes["Physician_prefix"] != null ? p.Attributes["Physician_prefix"].Value : string.Empty) + " " + (p.Attributes["Physician_First_Name"] != null ? p.Attributes["Physician_First_Name"].Value : string.Empty) + " " + (p.Attributes["Physician_Middle_Name"] != null ? p.Attributes["Physician_Middle_Name"].Value : string.Empty) + " " + (p.Attributes["Physician_Last_Name"] != null ? p.Attributes["Physician_Last_Name"].Value : string.Empty) + " " + (p.Attributes["Physician_Suffix"] != null ? p.Attributes["Physician_Suffix"].Value : string.Empty)), Specialty = (p.Attributes["Specialties"] != null ? p.Attributes["Specialties"].Value : string.Empty), NPI = (p.Attributes["Physician_NPI"] != null ? p.Attributes["Physician_NPI"].Value : string.Empty), Facility = (p.Attributes["Facility_Name"] != null ? p.Attributes["Facility_Name"].Value : string.Empty), Physician_Library_ID = (p.Attributes["Physician_Library_ID"] != null ? p.Attributes["Physician_Library_ID"].Value : string.Empty), Physician_Type = (p.Attributes["Physician_Type"] != null ? p.Attributes["Physician_Type"].Value : string.Empty), Company = (p.Attributes["Company"] != null ? p.Attributes["Company"].Value : string.Empty), Physician_Address1 = (p.Attributes["Physician_Address1"] != null ? p.Attributes["Physician_Address1"].Value : string.Empty), Physician_Address2 = (p.Attributes["Physician_Address2"] != null ? p.Attributes["Physician_Address2"].Value : string.Empty), Physician_City = (p.Attributes["Physician_City"] != null ? p.Attributes["Physician_City"].Value : string.Empty), Physician_State = (p.Attributes["Physician_State"] != null ? p.Attributes["Physician_State"].Value : string.Empty), Physician_Zip = (p.Attributes["Physician_Zip"] != null ? p.Attributes["Physician_Zip"].Value : string.Empty), Physician_Telephone = (p.Attributes["Physician_Telephone"] != null ? p.Attributes["Physician_Telephone"].Value : string.Empty), Physician_Fax = (p.Attributes["Physician_Fax"] != null ? p.Attributes["Physician_Fax"].Value : string.Empty), Physician_EMail = (p.Attributes["Physician_EMail"] != null ? p.Attributes["Physician_EMail"].Value : string.Empty) };
 
-                var resultFinal = from p in result where ilstCategory.Contains(p.Category) select p;
-
-
-
+            //    var resultFinal = from p in result where ilstCategory.Contains(p.Category) select p;
+            if (PhysicianResult.Count > 0) {
+                var resultFinal = from p in PhysicianResult select new { Category = (p.Category != null ? p.Category : string.Empty), Name = ((p.Physician_prefix != null ? p.Physician_prefix : string.Empty) + " " + (p.Physician_First_Name != null ? p.Physician_First_Name : string.Empty) + " " + (p.Physician_Middle_Name != null ? p.Physician_Middle_Name : string.Empty) + " " + (p.Physician_Last_Name != null ? p.Physician_Last_Name : string.Empty) + " " + (p.Physician_Suffix != null ? p.Physician_Suffix : string.Empty)), Specialty = (p.Specialties != null ? p.Specialties : string.Empty), NPI = (p.Physician_NPI != null ? p.Physician_NPI: string.Empty), Facility = (p.Facility_Name != null ? p.Facility_Name : string.Empty), Physician_Library_ID = (p.Physician_Library_ID != null ? p.Physician_Library_ID : string.Empty), Physician_Type = (p.Physician_Type != null ? p.Physician_Type : string.Empty), Company = (p.Company != null ? p.Company: string.Empty), Physician_Address1 = (p.Physician_Address1 != null ? p.Physician_Address1 : string.Empty), Physician_Address2 = (p.Physician_Address2 != null ? p.Physician_Address2 : string.Empty), Physician_City = (p.Physician_City != null ? p.Physician_City : string.Empty), Physician_State = (p.Physician_State != null ? p.Physician_State : string.Empty), Physician_Zip = (p.Physician_Zip != null ? p.Physician_Zip : string.Empty), Physician_Telephone = (p.Physician_Telephone != null ? p.Physician_Telephone : string.Empty), Physician_Fax = (p.Physician_Fax != null ? p.Physician_Fax : string.Empty), Physician_EMail = (p.Physician_EMail != null ? p.Physician_EMail : string.Empty) };
+                
                 return JsonConvert.SerializeObject(resultFinal);
             }
             else
@@ -119,33 +121,39 @@ namespace Acurus.Capella.UI.WebServices
                 {
                     if (PhyNPI != string.Empty)
                     {
-                        XmlDocument xmldocNPI = new XmlDocument();
-                        string strXmlFilePathNPI = Path.Combine(System.Web.Hosting.HostingEnvironment.ApplicationPhysicalPath, "ConfigXML\\staticlookup.xml");
-                        if (File.Exists(strXmlFilePathNPI) == true)
+                        //XmlDocument xmldocNPI = new XmlDocument();
+                        //string strXmlFilePathNPI = Path.Combine(System.Web.Hosting.HostingEnvironment.ApplicationPhysicalPath, "ConfigXML\\staticlookup.xml");
+                        //if (File.Exists(strXmlFilePathNPI) == true)
+                        //{
+
+                        //    string strPathphysiicanaddress = Path.Combine(System.Web.Hosting.HostingEnvironment.ApplicationPhysicalPath, "ConfigXML\\PhysicianAddressDetails.xml");
+
+                        //    using (FileStream fs = new FileStream(strPathphysiicanaddress, FileMode.Open, FileAccess.Read, FileShare.ReadWrite))
+                        //    {
+                        //        //System.Xml.Linq.XDocument xDocMapFacility = System.Xml.Linq.XDocument.Load(strPath2);
+                        //        XmlDocument xDocMapFacility = new XmlDocument();
+                        //        xmldocNPI.Load(strPathphysiicanaddress);
+
+                        //        //  xmldocNPI.Load(System.Web.Hosting.HostingEnvironment.ApplicationPhysicalPath + "ConfigXML\\" + "PhysicianAddressDetails" + ".xml");
+                        //        XmlNodeList xmlPhysicianAddressList = xmldocNPI.GetElementsByTagName("PhysicianAddress");
+
+                        //        var PhysicianAddressNodes = xmlPhysicianAddressList.Cast<XmlNode>().AsEnumerable().ElementAtOrDefault(0);
+                        //        //var result = from p in PhysicianAddressNodes.ChildNodes.OfType<XmlElement>() select new { Category = "Category", Name = p.Attributes["Physician_First_Name"].Value, Specialty = p.Attributes["Specialties"].Value, NPI = p.Attributes["Physician_NPI"].Value, Facility = p.Attributes["Physician_Address1"].Value };
+                        //        var result = (from p in PhysicianAddressNodes.ChildNodes.OfType<XmlElement>() where p.Attributes["Physician_NPI"].Value == PhyNPI select new { ExistNPI = p.Attributes["Physician_NPI"].Value }).ToList();
+
+                        IList<PhysicianLibrary> ilstPhysicianLibrary = new List<PhysicianLibrary>();
+                        ilstPhysicianLibrary = PhysicianManager.GetPhysicianByNPI(PhyNPI);
+                        var result = (from p in ilstPhysicianLibrary  select new { ExistNPI = p.PhyNPI }).ToList();
+                        if (result.Count > 0)
                         {
-
-                            string strPathphysiicanaddress = Path.Combine(System.Web.Hosting.HostingEnvironment.ApplicationPhysicalPath, "ConfigXML\\PhysicianAddressDetails.xml");
-
-                            using (FileStream fs = new FileStream(strPathphysiicanaddress, FileMode.Open, FileAccess.Read, FileShare.ReadWrite))
-                            {
-                                //System.Xml.Linq.XDocument xDocMapFacility = System.Xml.Linq.XDocument.Load(strPath2);
-                                XmlDocument xDocMapFacility = new XmlDocument();
-                                xmldocNPI.Load(strPathphysiicanaddress);
-
-                                //  xmldocNPI.Load(System.Web.Hosting.HostingEnvironment.ApplicationPhysicalPath + "ConfigXML\\" + "PhysicianAddressDetails" + ".xml");
-                                XmlNodeList xmlPhysicianAddressList = xmldocNPI.GetElementsByTagName("PhysicianAddress");
-
-                                var PhysicianAddressNodes = xmlPhysicianAddressList.Cast<XmlNode>().AsEnumerable().ElementAtOrDefault(0);
-                                //var result = from p in PhysicianAddressNodes.ChildNodes.OfType<XmlElement>() select new { Category = "Category", Name = p.Attributes["Physician_First_Name"].Value, Specialty = p.Attributes["Specialties"].Value, NPI = p.Attributes["Physician_NPI"].Value, Facility = p.Attributes["Physician_Address1"].Value };
-                                var result = (from p in PhysicianAddressNodes.ChildNodes.OfType<XmlElement>() where p.Attributes["Physician_NPI"].Value == PhyNPI select new { ExistNPI = p.Attributes["Physician_NPI"].Value }).ToList();
-                                if (result.Count > 0)
+                            if (result.Count > 0)
                                 {
                                     return JsonConvert.SerializeObject(result);
                                 }
-                                fs.Close();
-                                fs.Dispose();
-                            }
-                        }
+                        //        fs.Close();
+                        //        fs.Dispose();
+                        //    }
+                        //}
                     }
 
                 }
@@ -153,33 +161,36 @@ namespace Acurus.Capella.UI.WebServices
                 {
                     if (Fax != string.Empty && CheckDuplicatefax!="Y")
                     {
-                        XmlDocument xmldocNPI = new XmlDocument();
-                        string strXmlFilePathFax = Path.Combine(System.Web.Hosting.HostingEnvironment.ApplicationPhysicalPath, "ConfigXML\\staticlookup.xml");
-                        if (File.Exists(strXmlFilePathFax) == true)
-                        {
+                        //XmlDocument xmldocNPI = new XmlDocument();
+                        //string strXmlFilePathFax = Path.Combine(System.Web.Hosting.HostingEnvironment.ApplicationPhysicalPath, "ConfigXML\\staticlookup.xml");
+                        //if (File.Exists(strXmlFilePathFax) == true)
+                        //{
 
-                            string strPathphysiicanaddress = Path.Combine(System.Web.Hosting.HostingEnvironment.ApplicationPhysicalPath, "ConfigXML\\PhysicianAddressDetails.xml");
+                                //string strPathphysiicanaddress = Path.Combine(System.Web.Hosting.HostingEnvironment.ApplicationPhysicalPath, "ConfigXML\\PhysicianAddressDetails.xml");
 
-                            using (FileStream fs = new FileStream(strPathphysiicanaddress, FileMode.Open, FileAccess.Read, FileShare.ReadWrite))
-                            {
-                                //System.Xml.Linq.XDocument xDocMapFacility = System.Xml.Linq.XDocument.Load(strPath2);
-                                XmlDocument xDocMapFacility = new XmlDocument();
-                                xmldocNPI.Load(strPathphysiicanaddress);
+                                //using (FileStream fs = new FileStream(strPathphysiicanaddress, FileMode.Open, FileAccess.Read, FileShare.ReadWrite))
+                                //{
+                                //    //System.Xml.Linq.XDocument xDocMapFacility = System.Xml.Linq.XDocument.Load(strPath2);
+                                //    XmlDocument xDocMapFacility = new XmlDocument();
+                                //    xmldocNPI.Load(strPathphysiicanaddress);
 
-                                //  xmldocNPI.Load(System.Web.Hosting.HostingEnvironment.ApplicationPhysicalPath + "ConfigXML\\" + "PhysicianAddressDetails" + ".xml");
-                                XmlNodeList xmlPhysicianAddressList = xmldocNPI.GetElementsByTagName("PhysicianAddress");
+                                //    //  xmldocNPI.Load(System.Web.Hosting.HostingEnvironment.ApplicationPhysicalPath + "ConfigXML\\" + "PhysicianAddressDetails" + ".xml");
+                                //    XmlNodeList xmlPhysicianAddressList = xmldocNPI.GetElementsByTagName("PhysicianAddress");
 
-                                var PhysicianAddressNodes = xmlPhysicianAddressList.Cast<XmlNode>().AsEnumerable().ElementAtOrDefault(0);
-                                //var result = from p in PhysicianAddressNodes.ChildNodes.OfType<XmlElement>() select new { Category = "Category", Name = p.Attributes["Physician_First_Name"].Value, Specialty = p.Attributes["Specialties"].Value, NPI = p.Attributes["Physician_NPI"].Value, Facility = p.Attributes["Physician_Address1"].Value };
-                                var result = (from p in PhysicianAddressNodes.ChildNodes.OfType<XmlElement>() where p.Attributes["Physician_Fax"].Value == Fax select new { ExistFax = p.Attributes["Physician_Fax"].Value }).ToList();
-                                if (result.Count > 0)
+                                //    var PhysicianAddressNodes = xmlPhysicianAddressList.Cast<XmlNode>().AsEnumerable().ElementAtOrDefault(0);
+                                //    //var result = from p in PhysicianAddressNodes.ChildNodes.OfType<XmlElement>() select new { Category = "Category", Name = p.Attributes["Physician_First_Name"].Value, Specialty = p.Attributes["Specialties"].Value, NPI = p.Attributes["Physician_NPI"].Value, Facility = p.Attributes["Physician_Address1"].Value };
+                                //    var result = (from p in PhysicianAddressNodes.ChildNodes.OfType<XmlElement>() where p.Attributes["Physician_Fax"].Value == Fax select new { ExistFax = p.Attributes["Physician_Fax"].Value }).ToList();
+                                IList<PhysicianLibrary> ilstPhysicianLibrary = new List<PhysicianLibrary>();
+                            ilstPhysicianLibrary = PhysicianManager.GetPhysicianByFax(Fax);
+                                if (ilstPhysicianLibrary.Count > 0)
                                 {
-                                    return JsonConvert.SerializeObject(result);
+                                var result = (from p in ilstPhysicianLibrary select new { ExistFax = p.PhyFax }).ToList();
+                                return JsonConvert.SerializeObject(result);
                                 }
-                                fs.Close();
-                                fs.Dispose();
-                            }
-                        }
+                                //fs.Close();
+                                //fs.Dispose();
+                        //    }
+                        //}
                     }
                 }
                 //End
@@ -283,80 +294,87 @@ namespace Acurus.Capella.UI.WebServices
                 PhysicianSpecialty objPhySpec = PhySpecSaveList.Count > 0 ? PhySpecSaveList[0] : null;
                 MapFacilityPhysician objPhyFac = MapFacPhysList.Count > 0 ? MapFacPhysList[0] : null;
                 ProviderID = objPhy.Id;
-                InsertPhysicianIntoXMLs(objPhy, sXmlSpecialty, sXmlFacility);
+                //InsertPhysicianIntoXMLs(objPhy, sXmlSpecialty, sXmlFacility);
                 #endregion
             }
             else if (ButtonType == "Update")
             {
 
-                string strXmlPath = Path.Combine(System.Web.Hosting.HostingEnvironment.ApplicationPhysicalPath, "ConfigXML\\PhysicianAddressDetails.xml");
+                    //string strXmlPath = Path.Combine(System.Web.Hosting.HostingEnvironment.ApplicationPhysicalPath, "ConfigXML\\PhysicianAddressDetails.xml");
 
-                //NPI Check - Bug id 59492 - Included by Selvaraman - In case of Update, NPI is checked only with the providers other than the current request provider
-                if (Category == "NON CAPELLA USER(Physician)")
-                {
-                    if (PhyNPI != string.Empty)
+                    //NPI Check - Bug id 59492 - Included by Selvaraman - In case of Update, NPI is checked only with the providers other than the current request provider
+                    if (Category == "NON CAPELLA USER(Physician)")
                     {
-                        XmlDocument xmldocNPI = new XmlDocument();
-                        string strPathphysiicanaddress = System.Web.Hosting.HostingEnvironment.ApplicationPhysicalPath + "ConfigXML\\" + "PhysicianAddressDetails" + ".xml";
-                        string strXmlFilePathNPI = Path.Combine(System.Web.Hosting.HostingEnvironment.ApplicationPhysicalPath, "ConfigXML\\staticlookup.xml");
-                        if (File.Exists(strXmlFilePathNPI) == true)
+                        if (PhyNPI != string.Empty)
                         {
+                            //XmlDocument xmldocNPI = new XmlDocument();
+                            //string strPathphysiicanaddress = System.Web.Hosting.HostingEnvironment.ApplicationPhysicalPath + "ConfigXML\\" + "PhysicianAddressDetails" + ".xml";
+                            //string strXmlFilePathNPI = Path.Combine(System.Web.Hosting.HostingEnvironment.ApplicationPhysicalPath, "ConfigXML\\staticlookup.xml");
+                            //if (File.Exists(strXmlFilePathNPI) == true)
+                            //{
 
-                            using (FileStream fs = new FileStream(strPathphysiicanaddress, FileMode.Open, FileAccess.Read, FileShare.ReadWrite))
+                            //    using (FileStream fs = new FileStream(strPathphysiicanaddress, FileMode.Open, FileAccess.Read, FileShare.ReadWrite))
+                            //    {
+                            //        //System.Xml.Linq.XDocument xDocMapFacility = System.Xml.Linq.XDocument.Load(strPath2);
+                            //        XmlDocument xDocMapFacility = new XmlDocument();
+                            //        xmldocNPI.Load(strPathphysiicanaddress);
+
+                            //        // xmldocNPI.Load(System.Web.Hosting.HostingEnvironment.ApplicationPhysicalPath + "ConfigXML\\" + "PhysicianAddressDetails" + ".xml");
+                            //        XmlNodeList xmlPhysicianAddressList = xmldocNPI.GetElementsByTagName("PhysicianAddress");
+
+                            //        var PhysicianAddressNodes = xmlPhysicianAddressList.Cast<XmlNode>().AsEnumerable().ElementAtOrDefault(0);
+                            //        //var result = from p in PhysicianAddressNodes.ChildNodes.OfType<XmlElement>() select new { Category = "Category", Name = p.Attributes["Physician_First_Name"].Value, Specialty = p.Attributes["Specialties"].Value, NPI = p.Attributes["Physician_NPI"].Value, Facility = p.Attributes["Physician_Address1"].Value };
+                            //        var result = (from p in PhysicianAddressNodes.ChildNodes.OfType<XmlElement>() where p.Attributes["Physician_NPI"].Value == PhyNPI && p.Attributes["Physician_Library_ID"].Value != PhysicianId select new { ExistNPI = p.Attributes["Physician_NPI"].Value }).ToList();
+
+                            IList<PhysicianLibrary> ilstPhysicianLibrary = new List<PhysicianLibrary>();
+                            ilstPhysicianLibrary = PhysicianManager.GetPhysicianByNPI(PhyNPI);
+                            var result = (from p in ilstPhysicianLibrary where p.PhyId != Convert.ToUInt64(PhysicianId) select new { ExistNPI = p.PhyNPI }).ToList();
+                            if (result.Count > 0)
                             {
-                                //System.Xml.Linq.XDocument xDocMapFacility = System.Xml.Linq.XDocument.Load(strPath2);
-                                XmlDocument xDocMapFacility = new XmlDocument();
-                                xmldocNPI.Load(strPathphysiicanaddress);
-
-                                // xmldocNPI.Load(System.Web.Hosting.HostingEnvironment.ApplicationPhysicalPath + "ConfigXML\\" + "PhysicianAddressDetails" + ".xml");
-                                XmlNodeList xmlPhysicianAddressList = xmldocNPI.GetElementsByTagName("PhysicianAddress");
-
-                                var PhysicianAddressNodes = xmlPhysicianAddressList.Cast<XmlNode>().AsEnumerable().ElementAtOrDefault(0);
-                                //var result = from p in PhysicianAddressNodes.ChildNodes.OfType<XmlElement>() select new { Category = "Category", Name = p.Attributes["Physician_First_Name"].Value, Specialty = p.Attributes["Specialties"].Value, NPI = p.Attributes["Physician_NPI"].Value, Facility = p.Attributes["Physician_Address1"].Value };
-                                var result = (from p in PhysicianAddressNodes.ChildNodes.OfType<XmlElement>() where p.Attributes["Physician_NPI"].Value == PhyNPI && p.Attributes["Physician_Library_ID"].Value != PhysicianId select new { ExistNPI = p.Attributes["Physician_NPI"].Value }).ToList();
-                                if (result.Count > 0)
-                                {
-                                    return JsonConvert.SerializeObject(result);
-                                }
-                                fs.Close();
-                                fs.Dispose();
+                                return JsonConvert.SerializeObject(result);
                             }
+                            //fs.Close();
+                            //fs.Dispose();
+                        }
+                        //}
+                        //}
+                    }
+                    else
+                    {
+                        if (Fax != string.Empty && CheckDuplicatefax != "Y")
+                        {
+                            //XmlDocument xmldocNPI = new XmlDocument();
+                            //string strXmlFilePathFax = Path.Combine(System.Web.Hosting.HostingEnvironment.ApplicationPhysicalPath, "ConfigXML\\staticlookup.xml");
+                            //if (File.Exists(strXmlFilePathFax) == true)
+                            //{
+
+                            //    string strPathphysiicanaddress = Path.Combine(System.Web.Hosting.HostingEnvironment.ApplicationPhysicalPath, "ConfigXML\\PhysicianAddressDetails.xml");
+
+                            //    using (FileStream fs = new FileStream(strPathphysiicanaddress, FileMode.Open, FileAccess.Read, FileShare.ReadWrite))
+                            //    {
+                            //        //System.Xml.Linq.XDocument xDocMapFacility = System.Xml.Linq.XDocument.Load(strPath2);
+                            //        XmlDocument xDocMapFacility = new XmlDocument();
+                            //        xmldocNPI.Load(strPathphysiicanaddress);
+
+                            //        //  xmldocNPI.Load(System.Web.Hosting.HostingEnvironment.ApplicationPhysicalPath + "ConfigXML\\" + "PhysicianAddressDetails" + ".xml");
+                            //        XmlNodeList xmlPhysicianAddressList = xmldocNPI.GetElementsByTagName("PhysicianAddress");
+
+                            //        var PhysicianAddressNodes = xmlPhysicianAddressList.Cast<XmlNode>().AsEnumerable().ElementAtOrDefault(0);
+                            //        //var result = from p in PhysicianAddressNodes.ChildNodes.OfType<XmlElement>() select new { Category = "Category", Name = p.Attributes["Physician_First_Name"].Value, Specialty = p.Attributes["Specialties"].Value, NPI = p.Attributes["Physician_NPI"].Value, Facility = p.Attributes["Physician_Address1"].Value };
+                            //        var result = (from p in PhysicianAddressNodes.ChildNodes.OfType<XmlElement>() where p.Attributes["Physician_Fax"].Value == Fax select new { ExistFax = p.Attributes["Physician_Fax"].Value }).ToList();
+                            IList<PhysicianLibrary> ilstPhysicianLibrary = new List<PhysicianLibrary>();
+                            ilstPhysicianLibrary = PhysicianManager.GetPhysicianByNPI(PhyNPI);
+                            var result = (from p in ilstPhysicianLibrary where p.PhyId != Convert.ToUInt64(PhysicianId) select new { ExistNPI = p.PhyNPI }).ToList();
+                            if (result.Count > 0)
+                            {
+                                return JsonConvert.SerializeObject(result);
+                            }
+                            //fs.Close();
+                            //fs.Dispose();
+                            //    }
+                            //}
                         }
                     }
-                }
-                else
-                {
-                    if (Fax != string.Empty && CheckDuplicatefax != "Y")
-                    {
-                        XmlDocument xmldocNPI = new XmlDocument();
-                        string strXmlFilePathFax = Path.Combine(System.Web.Hosting.HostingEnvironment.ApplicationPhysicalPath, "ConfigXML\\staticlookup.xml");
-                        if (File.Exists(strXmlFilePathFax) == true)
-                        {
-
-                            string strPathphysiicanaddress = Path.Combine(System.Web.Hosting.HostingEnvironment.ApplicationPhysicalPath, "ConfigXML\\PhysicianAddressDetails.xml");
-
-                            using (FileStream fs = new FileStream(strPathphysiicanaddress, FileMode.Open, FileAccess.Read, FileShare.ReadWrite))
-                            {
-                                //System.Xml.Linq.XDocument xDocMapFacility = System.Xml.Linq.XDocument.Load(strPath2);
-                                XmlDocument xDocMapFacility = new XmlDocument();
-                                xmldocNPI.Load(strPathphysiicanaddress);
-
-                                //  xmldocNPI.Load(System.Web.Hosting.HostingEnvironment.ApplicationPhysicalPath + "ConfigXML\\" + "PhysicianAddressDetails" + ".xml");
-                                XmlNodeList xmlPhysicianAddressList = xmldocNPI.GetElementsByTagName("PhysicianAddress");
-
-                                var PhysicianAddressNodes = xmlPhysicianAddressList.Cast<XmlNode>().AsEnumerable().ElementAtOrDefault(0);
-                                //var result = from p in PhysicianAddressNodes.ChildNodes.OfType<XmlElement>() select new { Category = "Category", Name = p.Attributes["Physician_First_Name"].Value, Specialty = p.Attributes["Specialties"].Value, NPI = p.Attributes["Physician_NPI"].Value, Facility = p.Attributes["Physician_Address1"].Value };
-                                var result = (from p in PhysicianAddressNodes.ChildNodes.OfType<XmlElement>() where p.Attributes["Physician_Fax"].Value == Fax select new { ExistFax = p.Attributes["Physician_Fax"].Value }).ToList();
-                                if (result.Count > 0)
-                                {
-                                    return JsonConvert.SerializeObject(result);
-                                }
-                                fs.Close();
-                                fs.Dispose();
-                            }
-                        }
-                    }
-                }
                 //FileStream infile = new FileStream("strXmlPath", FileMode.Open, FileAccess.Read, FileShare.ReadWrite);
                 //FileStream outf = new FileStream("strXmlPath", FileMode.Create);
                 //int a;
@@ -368,8 +386,8 @@ namespace Acurus.Capella.UI.WebServices
                 //infile.Dispose();
                 //outf.Close();
                 //outf.Dispose();
-                if (File.Exists(strXmlPath) == true)
-                {
+                //if (File.Exists(strXmlPath) == true)
+                //{
                     //using (var sr = new StreamReader(strXmlPath))
 
                     PhysicianLibrary objPhyLib = new PhysicianLibrary();
@@ -528,203 +546,203 @@ namespace Acurus.Capella.UI.WebServices
                         }
 
 
-                        using (FileStream fs = new FileStream(strXmlPath, FileMode.Open, FileAccess.Read, FileShare.ReadWrite))
-                        {
-                            XmlDocument itemDoc = new XmlDocument();
-                            XmlTextReader XmlText = new XmlTextReader(strXmlPath);
-                            itemDoc.Load(XmlText);
-                            XmlText.Close();
-                            XmlNode PhysicianAddressNode = itemDoc.SelectSingleNode("/PhysicianAddress");
-                            Boolean bisPhysicianIDAddorNot = false;
-                            //itemDoc.Load(strXmlPath);
-                            for (int i = 0; i < PhysicianAddressNode.ChildNodes.Count; i++)
-                            {
-                                if (PhysicianAddressNode.ChildNodes[i].Attributes["Physician_Library_ID"].Value == PhysicianId)
-                                {
-                                    bisPhysicianIDAddorNot = true;
-                                    XmlNode oldNode = (XmlNode)PhysicianAddressNode.ChildNodes[i];
-                                    XmlNode Newnode = null;
-                                    Newnode = itemDoc.CreateNode(XmlNodeType.Element, "p" + PhysicianId.ToString(), "");
-                                    XmlAttribute attlabel = null;
+                        //using (FileStream fs = new FileStream(strXmlPath, FileMode.Open, FileAccess.ReadWrite, FileShare.ReadWrite))
+                        //{
+                        //    XmlDocument itemDoc = new XmlDocument();
+                        //    XmlTextReader XmlText = new XmlTextReader(strXmlPath);
+                        //    itemDoc.Load(XmlText);
+                        //    XmlText.Close();
+                        //    XmlNode PhysicianAddressNode = itemDoc.SelectSingleNode("/PhysicianAddress");
+                        //    Boolean bisPhysicianIDAddorNot = false;
+                        //    //itemDoc.Load(strXmlPath);
+                        //    for (int i = 0; i < PhysicianAddressNode.ChildNodes.Count; i++)
+                        //    {
+                        //        if (PhysicianAddressNode.ChildNodes[i].Attributes["Physician_Library_ID"].Value == PhysicianId)
+                        //        {
+                        //            bisPhysicianIDAddorNot = true;
+                        //            XmlNode oldNode = (XmlNode)PhysicianAddressNode.ChildNodes[i];
+                        //            XmlNode Newnode = null;
+                        //            Newnode = itemDoc.CreateNode(XmlNodeType.Element, "p" + PhysicianId.ToString(), "");
+                        //            XmlAttribute attlabel = null;
 
-                                    attlabel = itemDoc.CreateAttribute("Physician_Address1");
-                                    attlabel.Value = PhyAddress1.Replace("&", "&amp;").Replace("<", "&lt;").Replace(">", "&gt;").Replace("'", "&apos;").Replace("\"", "&quot;");
-                                    Newnode.Attributes.Append(attlabel);
+                        //            attlabel = itemDoc.CreateAttribute("Physician_Address1");
+                        //            attlabel.Value = PhyAddress1.Replace("&", "&amp;").Replace("<", "&lt;").Replace(">", "&gt;").Replace("'", "&apos;").Replace("\"", "&quot;");
+                        //            Newnode.Attributes.Append(attlabel);
 
-                                    attlabel = itemDoc.CreateAttribute("Physician_Address2");
-                                    attlabel.Value = PhyAddress2.Replace("&", "&amp;").Replace("<", "&lt;").Replace(">", "&gt;").Replace("'", "&apos;").Replace("\"", "&quot;");
-                                    Newnode.Attributes.Append(attlabel);
+                        //            attlabel = itemDoc.CreateAttribute("Physician_Address2");
+                        //            attlabel.Value = PhyAddress2.Replace("&", "&amp;").Replace("<", "&lt;").Replace(">", "&gt;").Replace("'", "&apos;").Replace("\"", "&quot;");
+                        //            Newnode.Attributes.Append(attlabel);
 
-                                    attlabel = itemDoc.CreateAttribute("Physician_City");
-                                    attlabel.Value = PhyCity.Replace("&", "&amp;").Replace("<", "&lt;").Replace(">", "&gt;").Replace("'", "&apos;").Replace("\"", "&quot;");
-                                    Newnode.Attributes.Append(attlabel);
+                        //            attlabel = itemDoc.CreateAttribute("Physician_City");
+                        //            attlabel.Value = PhyCity.Replace("&", "&amp;").Replace("<", "&lt;").Replace(">", "&gt;").Replace("'", "&apos;").Replace("\"", "&quot;");
+                        //            Newnode.Attributes.Append(attlabel);
 
-                                    attlabel = itemDoc.CreateAttribute("Physician_State");
-                                    attlabel.Value = PhyState.Replace("&", "&amp;").Replace("<", "&lt;").Replace(">", "&gt;").Replace("'", "&apos;").Replace("\"", "&quot;");
-                                    Newnode.Attributes.Append(attlabel);
+                        //            attlabel = itemDoc.CreateAttribute("Physician_State");
+                        //            attlabel.Value = PhyState.Replace("&", "&amp;").Replace("<", "&lt;").Replace(">", "&gt;").Replace("'", "&apos;").Replace("\"", "&quot;");
+                        //            Newnode.Attributes.Append(attlabel);
 
-                                    attlabel = itemDoc.CreateAttribute("Physician_Zip");
-                                    attlabel.Value = Zip.Replace("&", "&amp;").Replace("<", "&lt;").Replace(">", "&gt;").Replace("'", "&apos;").Replace("\"", "&quot;");
-                                    Newnode.Attributes.Append(attlabel);
+                        //            attlabel = itemDoc.CreateAttribute("Physician_Zip");
+                        //            attlabel.Value = Zip.Replace("&", "&amp;").Replace("<", "&lt;").Replace(">", "&gt;").Replace("'", "&apos;").Replace("\"", "&quot;");
+                        //            Newnode.Attributes.Append(attlabel);
 
-                                    attlabel = itemDoc.CreateAttribute("Physician_Telephone");
-                                    attlabel.Value = Phone.Replace("&", "&amp;").Replace("<", "&lt;").Replace(">", "&gt;").Replace("'", "&apos;").Replace("\"", "&quot;");
-                                    Newnode.Attributes.Append(attlabel);
+                        //            attlabel = itemDoc.CreateAttribute("Physician_Telephone");
+                        //            attlabel.Value = Phone.Replace("&", "&amp;").Replace("<", "&lt;").Replace(">", "&gt;").Replace("'", "&apos;").Replace("\"", "&quot;");
+                        //            Newnode.Attributes.Append(attlabel);
 
-                                    attlabel = itemDoc.CreateAttribute("Physician_Fax");
-                                    attlabel.Value = Fax.Replace("&", "&amp;").Replace("<", "&lt;").Replace(">", "&gt;").Replace("'", "&apos;").Replace("\"", "&quot;");
-                                    Newnode.Attributes.Append(attlabel);
+                        //            attlabel = itemDoc.CreateAttribute("Physician_Fax");
+                        //            attlabel.Value = Fax.Replace("&", "&amp;").Replace("<", "&lt;").Replace(">", "&gt;").Replace("'", "&apos;").Replace("\"", "&quot;");
+                        //            Newnode.Attributes.Append(attlabel);
 
-                                    attlabel = itemDoc.CreateAttribute("Specialties");
-                                    attlabel.Value = sXmlSpecialty.Replace("&", "&amp;").Replace("<", "&lt;").Replace(">", "&gt;").Replace("'", "&apos;").Replace("\"", "&quot;");
-                                    Newnode.Attributes.Append(attlabel);
+                        //            attlabel = itemDoc.CreateAttribute("Specialties");
+                        //            attlabel.Value = sXmlSpecialty.Replace("&", "&amp;").Replace("<", "&lt;").Replace(">", "&gt;").Replace("'", "&apos;").Replace("\"", "&quot;");
+                        //            Newnode.Attributes.Append(attlabel);
 
-                                    attlabel = itemDoc.CreateAttribute("Physician_NPI");
-                                    attlabel.Value = PhyNPI.Replace("&", "&amp;").Replace("<", "&lt;").Replace(">", "&gt;").Replace("'", "&apos;").Replace("\"", "&quot;");
-                                    Newnode.Attributes.Append(attlabel);
+                        //            attlabel = itemDoc.CreateAttribute("Physician_NPI");
+                        //            attlabel.Value = PhyNPI.Replace("&", "&amp;").Replace("<", "&lt;").Replace(">", "&gt;").Replace("'", "&apos;").Replace("\"", "&quot;");
+                        //            Newnode.Attributes.Append(attlabel);
 
-                                    attlabel = itemDoc.CreateAttribute("Physician_EMail");
-                                    attlabel.Value = Email.Replace("&", "&amp;").Replace("<", "&lt;").Replace(">", "&gt;").Replace("'", "&apos;").Replace("\"", "&quot;");
-                                    Newnode.Attributes.Append(attlabel);
+                        //            attlabel = itemDoc.CreateAttribute("Physician_EMail");
+                        //            attlabel.Value = Email.Replace("&", "&amp;").Replace("<", "&lt;").Replace(">", "&gt;").Replace("'", "&apos;").Replace("\"", "&quot;");
+                        //            Newnode.Attributes.Append(attlabel);
 
-                                    attlabel = itemDoc.CreateAttribute("Physician_prefix");
-                                    attlabel.Value = Prefix.Replace("&", "&amp;").Replace("<", "&lt;").Replace(">", "&gt;").Replace("'", "&apos;").Replace("\"", "&quot;");
-                                    Newnode.Attributes.Append(attlabel);
+                        //            attlabel = itemDoc.CreateAttribute("Physician_prefix");
+                        //            attlabel.Value = Prefix.Replace("&", "&amp;").Replace("<", "&lt;").Replace(">", "&gt;").Replace("'", "&apos;").Replace("\"", "&quot;");
+                        //            Newnode.Attributes.Append(attlabel);
 
-                                    attlabel = itemDoc.CreateAttribute("Physician_First_Name");
-                                    attlabel.Value = PhyFirstName.Replace("&", "&amp;").Replace("<", "&lt;").Replace(">", "&gt;").Replace("'", "&apos;").Replace("\"", "&quot;");
-                                    Newnode.Attributes.Append(attlabel);
+                        //            attlabel = itemDoc.CreateAttribute("Physician_First_Name");
+                        //            attlabel.Value = PhyFirstName.Replace("&", "&amp;").Replace("<", "&lt;").Replace(">", "&gt;").Replace("'", "&apos;").Replace("\"", "&quot;");
+                        //            Newnode.Attributes.Append(attlabel);
 
-                                    attlabel = itemDoc.CreateAttribute("Physician_Last_Name");
-                                    attlabel.Value = PhyLastName.Replace("&", "&amp;").Replace("<", "&lt;").Replace(">", "&gt;").Replace("'", "&apos;").Replace("\"", "&quot;");
-                                    Newnode.Attributes.Append(attlabel);
+                        //            attlabel = itemDoc.CreateAttribute("Physician_Last_Name");
+                        //            attlabel.Value = PhyLastName.Replace("&", "&amp;").Replace("<", "&lt;").Replace(">", "&gt;").Replace("'", "&apos;").Replace("\"", "&quot;");
+                        //            Newnode.Attributes.Append(attlabel);
 
-                                    attlabel = itemDoc.CreateAttribute("Physician_Type");
-                                    attlabel.Value = PhysicianType.Replace("&", "&amp;").Replace("<", "&lt;").Replace(">", "&gt;").Replace("'", "&apos;").Replace("\"", "&quot;");
-                                    Newnode.Attributes.Append(attlabel);
+                        //            attlabel = itemDoc.CreateAttribute("Physician_Type");
+                        //            attlabel.Value = PhysicianType.Replace("&", "&amp;").Replace("<", "&lt;").Replace(">", "&gt;").Replace("'", "&apos;").Replace("\"", "&quot;");
+                        //            Newnode.Attributes.Append(attlabel);
 
-                                    attlabel = itemDoc.CreateAttribute("Physician_Library_ID");
-                                    attlabel.Value = PhysicianId;
-                                    Newnode.Attributes.Append(attlabel);
+                        //            attlabel = itemDoc.CreateAttribute("Physician_Library_ID");
+                        //            attlabel.Value = PhysicianId;
+                        //            Newnode.Attributes.Append(attlabel);
 
-                                    attlabel = itemDoc.CreateAttribute("Facility_Name");
-                                    attlabel.Value = sXmlFacility.ToString().Replace("&", "&amp;").Replace("<", "&lt;").Replace(">", "&gt;").Replace("'", "&apos;").Replace("\"", "&quot;");
-                                    Newnode.Attributes.Append(attlabel);
+                        //            attlabel = itemDoc.CreateAttribute("Facility_Name");
+                        //            attlabel.Value = sXmlFacility.ToString().Replace("&", "&amp;").Replace("<", "&lt;").Replace(">", "&gt;").Replace("'", "&apos;").Replace("\"", "&quot;");
+                        //            Newnode.Attributes.Append(attlabel);
 
-                                    attlabel = itemDoc.CreateAttribute("Company");
-                                    attlabel.Value = Company.ToString().Replace("&", "&amp;").Replace("<", "&lt;").Replace(">", "&gt;").Replace("'", "&apos;").Replace("\"", "&quot;");
-                                    Newnode.Attributes.Append(attlabel);
+                        //            attlabel = itemDoc.CreateAttribute("Company");
+                        //            attlabel.Value = Company.ToString().Replace("&", "&amp;").Replace("<", "&lt;").Replace(">", "&gt;").Replace("'", "&apos;").Replace("\"", "&quot;");
+                        //            Newnode.Attributes.Append(attlabel);
 
-                                    attlabel = itemDoc.CreateAttribute("Category");
-                                    attlabel.Value = Category.ToString().Replace("&", "&amp;").Replace("<", "&lt;").Replace(">", "&gt;").Replace("'", "&apos;").Replace("\"", "&quot;");
-                                    Newnode.Attributes.Append(attlabel);
-
-
-                                    attlabel = itemDoc.CreateAttribute("Physician_Middle_Name");
-                                    attlabel.Value = PhyMI.ToString().Replace("&", "&amp;").Replace("<", "&lt;").Replace(">", "&gt;").Replace("'", "&apos;").Replace("\"", "&quot;");
-                                    Newnode.Attributes.Append(attlabel);
-
-                                    attlabel = itemDoc.CreateAttribute("Physician_Suffix");
-                                    attlabel.Value = Suffix.ToString().Replace("&", "&amp;").Replace("<", "&lt;").Replace(">", "&gt;").Replace("'", "&apos;").Replace("\"", "&quot;");
-                                    Newnode.Attributes.Append(attlabel);
-
-                                    PhysicianAddressNode.ReplaceChild(Newnode, oldNode);
-                                    itemDoc.Save(strXmlPath);
-                                }
-                            }
-                            if (!bisPhysicianIDAddorNot)
-                            {
-                                XmlNode Newnode = null;
-                                Newnode = itemDoc.CreateNode(XmlNodeType.Element, "p" + PhysicianId.ToString(), "");
-                                XmlAttribute attlabel = null;
-
-                                attlabel = itemDoc.CreateAttribute("Physician_Address1");
-                                attlabel.Value = PhyAddress1.Replace("&", "&amp;").Replace("<", "&lt;").Replace(">", "&gt;").Replace("'", "&apos;").Replace("\"", "&quot;");
-                                Newnode.Attributes.Append(attlabel);
-
-                                attlabel = itemDoc.CreateAttribute("Physician_Address2");
-                                attlabel.Value = PhyAddress2.Replace("&", "&amp;").Replace("<", "&lt;").Replace(">", "&gt;").Replace("'", "&apos;").Replace("\"", "&quot;");
-                                Newnode.Attributes.Append(attlabel);
-
-                                attlabel = itemDoc.CreateAttribute("Physician_City");
-                                attlabel.Value = PhyCity.Replace("&", "&amp;").Replace("<", "&lt;").Replace(">", "&gt;").Replace("'", "&apos;").Replace("\"", "&quot;");
-                                Newnode.Attributes.Append(attlabel);
-
-                                attlabel = itemDoc.CreateAttribute("Physician_State");
-                                attlabel.Value = PhyState.Replace("&", "&amp;").Replace("<", "&lt;").Replace(">", "&gt;").Replace("'", "&apos;").Replace("\"", "&quot;");
-                                Newnode.Attributes.Append(attlabel);
-
-                                attlabel = itemDoc.CreateAttribute("Physician_Zip");
-                                attlabel.Value = Zip.Replace("&", "&amp;").Replace("<", "&lt;").Replace(">", "&gt;").Replace("'", "&apos;").Replace("\"", "&quot;");
-                                Newnode.Attributes.Append(attlabel);
-
-                                attlabel = itemDoc.CreateAttribute("Physician_Telephone");
-                                attlabel.Value = Phone.Replace("&", "&amp;").Replace("<", "&lt;").Replace(">", "&gt;").Replace("'", "&apos;").Replace("\"", "&quot;");
-                                Newnode.Attributes.Append(attlabel);
-
-                                attlabel = itemDoc.CreateAttribute("Physician_Fax");
-                                attlabel.Value = Fax.Replace("&", "&amp;").Replace("<", "&lt;").Replace(">", "&gt;").Replace("'", "&apos;").Replace("\"", "&quot;");
-                                Newnode.Attributes.Append(attlabel);
-
-                                attlabel = itemDoc.CreateAttribute("Specialties");
-                                attlabel.Value = sXmlSpecialty.Replace("&", "&amp;").Replace("<", "&lt;").Replace(">", "&gt;").Replace("'", "&apos;").Replace("\"", "&quot;");
-                                Newnode.Attributes.Append(attlabel);
-
-                                attlabel = itemDoc.CreateAttribute("Physician_NPI");
-                                attlabel.Value = PhyNPI.Replace("&", "&amp;").Replace("<", "&lt;").Replace(">", "&gt;").Replace("'", "&apos;").Replace("\"", "&quot;");
-                                Newnode.Attributes.Append(attlabel);
-
-                                attlabel = itemDoc.CreateAttribute("Physician_EMail");
-                                attlabel.Value = Email.Replace("&", "&amp;").Replace("<", "&lt;").Replace(">", "&gt;").Replace("'", "&apos;").Replace("\"", "&quot;");
-                                Newnode.Attributes.Append(attlabel);
-
-                                attlabel = itemDoc.CreateAttribute("Physician_prefix");
-                                attlabel.Value = Prefix.Replace("&", "&amp;").Replace("<", "&lt;").Replace(">", "&gt;").Replace("'", "&apos;").Replace("\"", "&quot;");
-                                Newnode.Attributes.Append(attlabel);
-
-                                attlabel = itemDoc.CreateAttribute("Physician_First_Name");
-                                attlabel.Value = PhyFirstName.Replace("&", "&amp;").Replace("<", "&lt;").Replace(">", "&gt;").Replace("'", "&apos;").Replace("\"", "&quot;");
-                                Newnode.Attributes.Append(attlabel);
-
-                                attlabel = itemDoc.CreateAttribute("Physician_Last_Name");
-                                attlabel.Value = PhyLastName.Replace("&", "&amp;").Replace("<", "&lt;").Replace(">", "&gt;").Replace("'", "&apos;").Replace("\"", "&quot;");
-                                Newnode.Attributes.Append(attlabel);
-
-                                attlabel = itemDoc.CreateAttribute("Physician_Type");
-                                attlabel.Value = PhysicianType.Replace("&", "&amp;").Replace("<", "&lt;").Replace(">", "&gt;").Replace("'", "&apos;").Replace("\"", "&quot;");
-                                Newnode.Attributes.Append(attlabel);
-
-                                attlabel = itemDoc.CreateAttribute("Physician_Library_ID");
-                                attlabel.Value = PhysicianId;
-                                Newnode.Attributes.Append(attlabel);
-
-                                attlabel = itemDoc.CreateAttribute("Facility_Name");
-                                attlabel.Value = sXmlFacility.ToString().Replace("&", "&amp;").Replace("<", "&lt;").Replace(">", "&gt;").Replace("'", "&apos;").Replace("\"", "&quot;");
-                                Newnode.Attributes.Append(attlabel);
-
-                                attlabel = itemDoc.CreateAttribute("Company");
-                                attlabel.Value = Company.ToString().Replace("&", "&amp;").Replace("<", "&lt;").Replace(">", "&gt;").Replace("'", "&apos;").Replace("\"", "&quot;");
-                                Newnode.Attributes.Append(attlabel);
-
-                                attlabel = itemDoc.CreateAttribute("Category");
-                                attlabel.Value = Category.ToString().Replace("&", "&amp;").Replace("<", "&lt;").Replace(">", "&gt;").Replace("'", "&apos;").Replace("\"", "&quot;");
-                                Newnode.Attributes.Append(attlabel);
+                        //            attlabel = itemDoc.CreateAttribute("Category");
+                        //            attlabel.Value = Category.ToString().Replace("&", "&amp;").Replace("<", "&lt;").Replace(">", "&gt;").Replace("'", "&apos;").Replace("\"", "&quot;");
+                        //            Newnode.Attributes.Append(attlabel);
 
 
-                                attlabel = itemDoc.CreateAttribute("Physician_Middle_Name");
-                                attlabel.Value = PhyMI.ToString().Replace("&", "&amp;").Replace("<", "&lt;").Replace(">", "&gt;").Replace("'", "&apos;").Replace("\"", "&quot;");
-                                Newnode.Attributes.Append(attlabel);
+                        //            attlabel = itemDoc.CreateAttribute("Physician_Middle_Name");
+                        //            attlabel.Value = PhyMI.ToString().Replace("&", "&amp;").Replace("<", "&lt;").Replace(">", "&gt;").Replace("'", "&apos;").Replace("\"", "&quot;");
+                        //            Newnode.Attributes.Append(attlabel);
 
-                                attlabel = itemDoc.CreateAttribute("Physician_Suffix");
-                                attlabel.Value = Suffix.ToString().Replace("&", "&amp;").Replace("<", "&lt;").Replace(">", "&gt;").Replace("'", "&apos;").Replace("\"", "&quot;");
-                                Newnode.Attributes.Append(attlabel);
+                        //            attlabel = itemDoc.CreateAttribute("Physician_Suffix");
+                        //            attlabel.Value = Suffix.ToString().Replace("&", "&amp;").Replace("<", "&lt;").Replace(">", "&gt;").Replace("'", "&apos;").Replace("\"", "&quot;");
+                        //            Newnode.Attributes.Append(attlabel);
 
-                                PhysicianAddressNode.AppendChild(Newnode);
-                                itemDoc.Save(strXmlPath);
-                            }
-                            fs.Close();
-                            fs.Dispose();
-                        }
+                        //            PhysicianAddressNode.ReplaceChild(Newnode, oldNode);
+                        //            itemDoc.Save(strXmlPath);
+                        //        }
+                        //    }
+                        //    if (!bisPhysicianIDAddorNot)
+                        //    {
+                        //        XmlNode Newnode = null;
+                        //        Newnode = itemDoc.CreateNode(XmlNodeType.Element, "p" + PhysicianId.ToString(), "");
+                        //        XmlAttribute attlabel = null;
+
+                        //        attlabel = itemDoc.CreateAttribute("Physician_Address1");
+                        //        attlabel.Value = PhyAddress1.Replace("&", "&amp;").Replace("<", "&lt;").Replace(">", "&gt;").Replace("'", "&apos;").Replace("\"", "&quot;");
+                        //        Newnode.Attributes.Append(attlabel);
+
+                        //        attlabel = itemDoc.CreateAttribute("Physician_Address2");
+                        //        attlabel.Value = PhyAddress2.Replace("&", "&amp;").Replace("<", "&lt;").Replace(">", "&gt;").Replace("'", "&apos;").Replace("\"", "&quot;");
+                        //        Newnode.Attributes.Append(attlabel);
+
+                        //        attlabel = itemDoc.CreateAttribute("Physician_City");
+                        //        attlabel.Value = PhyCity.Replace("&", "&amp;").Replace("<", "&lt;").Replace(">", "&gt;").Replace("'", "&apos;").Replace("\"", "&quot;");
+                        //        Newnode.Attributes.Append(attlabel);
+
+                        //        attlabel = itemDoc.CreateAttribute("Physician_State");
+                        //        attlabel.Value = PhyState.Replace("&", "&amp;").Replace("<", "&lt;").Replace(">", "&gt;").Replace("'", "&apos;").Replace("\"", "&quot;");
+                        //        Newnode.Attributes.Append(attlabel);
+
+                        //        attlabel = itemDoc.CreateAttribute("Physician_Zip");
+                        //        attlabel.Value = Zip.Replace("&", "&amp;").Replace("<", "&lt;").Replace(">", "&gt;").Replace("'", "&apos;").Replace("\"", "&quot;");
+                        //        Newnode.Attributes.Append(attlabel);
+
+                        //        attlabel = itemDoc.CreateAttribute("Physician_Telephone");
+                        //        attlabel.Value = Phone.Replace("&", "&amp;").Replace("<", "&lt;").Replace(">", "&gt;").Replace("'", "&apos;").Replace("\"", "&quot;");
+                        //        Newnode.Attributes.Append(attlabel);
+
+                        //        attlabel = itemDoc.CreateAttribute("Physician_Fax");
+                        //        attlabel.Value = Fax.Replace("&", "&amp;").Replace("<", "&lt;").Replace(">", "&gt;").Replace("'", "&apos;").Replace("\"", "&quot;");
+                        //        Newnode.Attributes.Append(attlabel);
+
+                        //        attlabel = itemDoc.CreateAttribute("Specialties");
+                        //        attlabel.Value = sXmlSpecialty.Replace("&", "&amp;").Replace("<", "&lt;").Replace(">", "&gt;").Replace("'", "&apos;").Replace("\"", "&quot;");
+                        //        Newnode.Attributes.Append(attlabel);
+
+                        //        attlabel = itemDoc.CreateAttribute("Physician_NPI");
+                        //        attlabel.Value = PhyNPI.Replace("&", "&amp;").Replace("<", "&lt;").Replace(">", "&gt;").Replace("'", "&apos;").Replace("\"", "&quot;");
+                        //        Newnode.Attributes.Append(attlabel);
+
+                        //        attlabel = itemDoc.CreateAttribute("Physician_EMail");
+                        //        attlabel.Value = Email.Replace("&", "&amp;").Replace("<", "&lt;").Replace(">", "&gt;").Replace("'", "&apos;").Replace("\"", "&quot;");
+                        //        Newnode.Attributes.Append(attlabel);
+
+                        //        attlabel = itemDoc.CreateAttribute("Physician_prefix");
+                        //        attlabel.Value = Prefix.Replace("&", "&amp;").Replace("<", "&lt;").Replace(">", "&gt;").Replace("'", "&apos;").Replace("\"", "&quot;");
+                        //        Newnode.Attributes.Append(attlabel);
+
+                        //        attlabel = itemDoc.CreateAttribute("Physician_First_Name");
+                        //        attlabel.Value = PhyFirstName.Replace("&", "&amp;").Replace("<", "&lt;").Replace(">", "&gt;").Replace("'", "&apos;").Replace("\"", "&quot;");
+                        //        Newnode.Attributes.Append(attlabel);
+
+                        //        attlabel = itemDoc.CreateAttribute("Physician_Last_Name");
+                        //        attlabel.Value = PhyLastName.Replace("&", "&amp;").Replace("<", "&lt;").Replace(">", "&gt;").Replace("'", "&apos;").Replace("\"", "&quot;");
+                        //        Newnode.Attributes.Append(attlabel);
+
+                        //        attlabel = itemDoc.CreateAttribute("Physician_Type");
+                        //        attlabel.Value = PhysicianType.Replace("&", "&amp;").Replace("<", "&lt;").Replace(">", "&gt;").Replace("'", "&apos;").Replace("\"", "&quot;");
+                        //        Newnode.Attributes.Append(attlabel);
+
+                        //        attlabel = itemDoc.CreateAttribute("Physician_Library_ID");
+                        //        attlabel.Value = PhysicianId;
+                        //        Newnode.Attributes.Append(attlabel);
+
+                        //        attlabel = itemDoc.CreateAttribute("Facility_Name");
+                        //        attlabel.Value = sXmlFacility.ToString().Replace("&", "&amp;").Replace("<", "&lt;").Replace(">", "&gt;").Replace("'", "&apos;").Replace("\"", "&quot;");
+                        //        Newnode.Attributes.Append(attlabel);
+
+                        //        attlabel = itemDoc.CreateAttribute("Company");
+                        //        attlabel.Value = Company.ToString().Replace("&", "&amp;").Replace("<", "&lt;").Replace(">", "&gt;").Replace("'", "&apos;").Replace("\"", "&quot;");
+                        //        Newnode.Attributes.Append(attlabel);
+
+                        //        attlabel = itemDoc.CreateAttribute("Category");
+                        //        attlabel.Value = Category.ToString().Replace("&", "&amp;").Replace("<", "&lt;").Replace(">", "&gt;").Replace("'", "&apos;").Replace("\"", "&quot;");
+                        //        Newnode.Attributes.Append(attlabel);
+
+
+                        //        attlabel = itemDoc.CreateAttribute("Physician_Middle_Name");
+                        //        attlabel.Value = PhyMI.ToString().Replace("&", "&amp;").Replace("<", "&lt;").Replace(">", "&gt;").Replace("'", "&apos;").Replace("\"", "&quot;");
+                        //        Newnode.Attributes.Append(attlabel);
+
+                        //        attlabel = itemDoc.CreateAttribute("Physician_Suffix");
+                        //        attlabel.Value = Suffix.ToString().Replace("&", "&amp;").Replace("<", "&lt;").Replace(">", "&gt;").Replace("'", "&apos;").Replace("\"", "&quot;");
+                        //        Newnode.Attributes.Append(attlabel);
+
+                        //        PhysicianAddressNode.AppendChild(Newnode);
+                        //        itemDoc.Save(strXmlPath);
+                        //    }
+                        //    fs.Close();
+                        //    fs.Dispose();
+                        //}
 
 
 
@@ -909,7 +927,7 @@ namespace Acurus.Capella.UI.WebServices
 
                     //SavedPhyList = PhyMngr.SaveUpdateDeletePhysicianLibrary(SavePhyList, null, null, string.Empty);
 
-                }
+                //}
             }
             // XmlDocument xmldoc = new XmlDocument();
 
