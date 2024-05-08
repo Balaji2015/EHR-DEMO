@@ -327,6 +327,89 @@ namespace Acurus.Capella.UI
                 return JsonConvert.SerializeObject(lstFinalResult);
             }
         }
+
+        [System.Web.Script.Services.ScriptMethod()]
+        [System.Web.Services.WebMethod(EnableSession = true)]
+        public static string GetProviderDetailsByPhyId(string vPhyId)
+        {
+           if (ClientSession.UserName == string.Empty)
+            {
+                HttpContext.Current.Response.StatusCode = 999;
+                HttpContext.Current.Response.Status = "999 Session Expired";
+                HttpContext.Current.Response.StatusDescription = "frmSessionExpired.aspx";
+                return "Session Expired";
+            }
+            try
+            {
+                
+                    FindPhysican physician_dto = new FindPhysican();
+                    PhysicianManager objPhysicianManager = new PhysicianManager();
+                    physician_dto = objPhysicianManager.FindPhysicianByID(Convert.ToUInt64(vPhyId));
+
+                    PhysicianFacilityDTO obj1 = new PhysicianFacilityDTO();
+                    //  obj1.PhyFirstName="Click here to add physician";
+                    //physician_dto.PhyList.Add(obj1);
+                    var lstResult = (from Phy in physician_dto.PhyList
+                                     select
+                                     new
+                                     {
+                                         label =
+                                       Phy.PhyPrefix + " " + Phy.PhyFirstName + " " + Phy.PhyMiddleName + " " + Phy.PhyLastName + " " + Phy.PhySuffix + " " + " | " +
+                                                              "NPI:" + Phy.PhyNPI + " | " +
+                                                              "FACILITY:" + Phy.PhyFacility + " | " +
+                                                              "ADDR: " + Phy.PhyAddrs + ", " +
+                                                              Phy.PhyCity + "," +
+                                                              Phy.PhyState + " " +
+                                                              Phy.PhyZip + " | " +
+                                                              ((Phy.PhyPhone.Trim()) != "" ? "PH:" + Phy.PhyPhone + " | " : "") +
+                                                               ((Phy.PhyEmail.Trim()) != "" ? "Email:" + Phy.PhyEmail + " | " : "") +
+                                                                 ((Phy.PhyCompany.Trim()) != "" ? "Company:" + Phy.PhyCompany + " | " : "") +
+                                                              (Phy.PhyFax.Trim() != "" ? "FAX:" + Phy.PhyFax : ""),
+                                         value = new
+                                         {
+                                             ulPhyId = Phy.PhyId,
+                                             //CAP-2008
+                                             sPhyName = Phy.PhyPrefix + " " + Phy.PhyFirstName + " " + Phy.PhyMiddleName + " " + Phy.PhyLastName + " " + Phy.PhySuffix,
+                                             sPhyNPI = Phy.PhyNPI,
+                                             sPhyFacility = Phy.PhyFacility,
+                                             ulPhySplID = Phy.PhySpecialtyID,
+                                             sPhyAddress = Phy.PhyAddrs,
+                                             sPhyFax = Phy.PhyFax,
+                                             sPhyPhone = Phy.PhyPhone,
+                                             sphyEmail = Phy.PhyEmail,
+                                             sPhyCompany = Phy.PhyCompany,
+                                             sCategory = Phy.Category
+                                         }
+                                     });
+                    if (lstResult.Count() == 0)
+                    {
+                        var lstFinalResult = new
+                        {
+                            Result = "No matches found."
+                        };
+                        return JsonConvert.SerializeObject(lstFinalResult);
+                    }
+                    else
+                    {
+                        var lstFinalResult = new
+                        {
+                            Matching_Result = lstResult
+                        };
+                        return JsonConvert.SerializeObject(lstFinalResult);
+                    }
+                
+            }
+            catch (Exception exception)
+            {
+                var lstFinalResult = new
+                {
+                    Error = "The following error occurred :" + exception.Message + ". Please contact support."
+                };
+                return JsonConvert.SerializeObject(lstFinalResult);
+            }
+        }
+
+        
         #endregion
     }
 

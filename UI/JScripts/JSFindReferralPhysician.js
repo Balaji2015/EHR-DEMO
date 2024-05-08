@@ -338,11 +338,61 @@ function EditProviderDetails() {
         $(top.window.document).find("#TabPhysicianLibrary").one("hidden.bs.modal", function (e) {
             var PhyTextboxName = localStorage.getItem("PhyDetails");
             if (PhyTextboxName.split("&")[4] != undefined) {
+                var querystring;
                 document.getElementById("txtProviderSearch").value = PhyTextboxName.split("&")[4];
-                txtProviderSearch.attributes['data-phy-details'].value = JSON.stringify(PhyTextboxName.split("&")[4]);
+                if (EditPhyId != null && EditPhyId != undefined) { 
+                    let dataval = EditPhyId.toString();
+                    $.ajax({
+                        type: "POST",
+                        contentType: "application/json; charset=utf-8",
+                        url: "./frmFindReferralPhysician.aspx/GetProviderDetailsByPhyId",
+                        data: JSON.stringify({ 'vPhyId': dataval }),
+                        dataType: "json",
+                        success: function (data) {
+                           
+                            var jsonData = $.parseJSON(data.d);
+                            if (jsonData.Error != undefined) {
+                                alert(jsonData.Error);
+                                return;
+                            }
+
+                            if (jsonData.Result != undefined) {
+                                var no_matches = [];
+                                no_matches.push(jsonData.Result);
+                                response($.map(no_matches, function (item) {
+                                    return {
+                                        label: item,
+                                        val: "0"
+                                    }
+                                }));
+                            }
+                            else {
+
+                                var  results = jsonData.Matching_Result;
+
+                                txtProviderSearch.attributes['data-phy-details'].value = JSON.stringify(results[0].value);
+
+                            }
+                        },
+                        error: function OnError(xhr) {
+                            { sessionStorage.setItem('StartLoading', 'false'); StopLoadFromPatChart(); }
+                            if (xhr.status == 999)
+                                window.location = "/frmSessionExpired.aspx";
+                            else {
+                                var log = JSON.parse(xhr.responseText);
+                                console.log(log);
+                                alert("USER MESSAGE:\n" +
+                                    ". Cannot process request. Please Login again and retry. \nEXCEPTION DETAILS: \n" +
+                                    "Message: " + log.Message);
+                            }
+                        }
+
+                    });
+                }             
             }
             else {
                 document.getElementById("txtProviderSearch").value = PhyTextboxName;
+                
             }
         });
 
@@ -351,3 +401,5 @@ function EditProviderDetails() {
 
 
 }
+
+

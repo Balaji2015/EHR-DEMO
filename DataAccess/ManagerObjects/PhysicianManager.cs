@@ -791,6 +791,83 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
             }
             return objFindPhy;
         }
+
+        public FindPhysican FindPhysicianByID(ulong token)
+        {
+            IList<PhysicianFacilityDTO> phylst = new List<PhysicianFacilityDTO>();
+            FindPhysican objFindPhy = new FindPhysican();
+            ArrayList resultList = null;
+
+            using (ISession iMySession = NHibernateSessionManager.Instance.CreateISession())
+            {
+                IQuery query = iMySession.GetNamedQuery("Find.PhysicianBy.ID");
+                query.SetParameter(0, token);
+
+                //query.SetParameter(3, "%" + token + "%");
+                //query.SetParameter(4, "%" + token + "%");
+                resultList = new ArrayList(query.List());
+                if (resultList.Count > 0)
+                {
+                    foreach (object[] obj in resultList)
+                    {
+                        PhysicianFacilityDTO objPhy = new PhysicianFacilityDTO();
+                        objPhy.PhyId = Convert.ToUInt64(obj[0]);
+                        objPhy.PhyPrefix = obj[1].ToString();
+                        objPhy.PhyFirstName = obj[2].ToString();
+                        objPhy.PhyMiddleName = obj[3].ToString();
+                        objPhy.PhyLastName = obj[4].ToString();
+                        objPhy.PhySuffix = obj[5].ToString();
+                        objPhy.PhySpecialtyCode = Convert.ToString(obj[6]);
+                        //objPhy.PhyCity = obj[7].ToString();
+                        //objPhy.PhyState = obj[8].ToString();
+                        //objPhy.PhyZip = obj[9].ToString();
+                        objPhy.PhyNPI = obj[10].ToString();
+                        //objPhy.PhySpecialtyID = Convert.ToUInt64(obj[11]);7/2/
+                        objPhy.PhySpecialtyID = Convert.ToString(obj[11]);
+                        //objPhy.PhyFax = obj[13].ToString();
+                        objPhy.PhyAddrs = obj[14].ToString();
+                        //objPhy.PhyPhone = obj[15].ToString();
+                        if (obj[12] != null)
+                        {
+                            objPhy.PhyFacility = obj[12].ToString();
+                            FacilityManager Fmgr = new FacilityManager();
+                            IList<FacilityLibrary> ilstFacilityLibrary = new List<FacilityLibrary>();
+                            ilstFacilityLibrary = Fmgr.GetFacilityByFacilityname(obj[12].ToString());
+                            if (ilstFacilityLibrary != null && ilstFacilityLibrary.Count > 0)
+                            {
+                                objPhy.PhyCity = ilstFacilityLibrary[0].Fac_City.ToString();
+                                objPhy.PhyState = ilstFacilityLibrary[0].Fac_State.ToString();
+                                objPhy.PhyZip = ilstFacilityLibrary[0].Fac_Zip.ToString();
+                                objPhy.PhyFax = ilstFacilityLibrary[0].Fac_Fax.ToString();
+                                objPhy.PhyPhone = ilstFacilityLibrary[0].Fac_Telephone.ToString();
+                            }
+                        }
+                        else
+                        {
+                            if (obj[12] != null)
+                                objPhy.PhyFacility = obj[12].ToString();
+                            if (obj[7] != null)
+                                objPhy.PhyCity = obj[7].ToString();
+                            if (obj[8] != null)
+                                objPhy.PhyState = obj[8].ToString();
+                            if (obj[9] != null)
+                                objPhy.PhyZip = obj[9].ToString();
+                            if (obj[13] != null)
+                                objPhy.PhyFax = obj[13].ToString();
+                            if (obj[15] != null)
+                                objPhy.PhyPhone = obj[15].ToString();
+                        }
+
+                        phylst.Add(objPhy);
+                    }
+                }
+
+                objFindPhy.PhyList = phylst;
+
+                iMySession.Close();
+            }
+            return objFindPhy;
+        }
         public FindPhysican FindPhysicianFax(string token)
         {
             IList<PhysicianFacilityDTO> phylst = new List<PhysicianFacilityDTO>();
