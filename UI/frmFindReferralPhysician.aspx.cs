@@ -377,7 +377,11 @@ namespace Acurus.Capella.UI
                                              sPhyPhone = Phy.PhyPhone,
                                              sphyEmail = Phy.PhyEmail,
                                              sPhyCompany = Phy.PhyCompany,
-                                             sCategory = Phy.Category
+                                             sCategory = Phy.Category,
+                                             sPhySpecialty = Phy.PhySpecialtyCode,
+                                             sPhyCity = Phy.PhyCity,
+                                             sPhyState = Phy.PhyState,
+                                             sPhyZip = Phy.PhyZip
                                          }
                                      });
                     if (lstResult.Count() == 0)

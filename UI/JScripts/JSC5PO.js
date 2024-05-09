@@ -1172,7 +1172,7 @@ function OpenModal(data) {
         //$(top.window.document).find("#TabPhysicianLibrary").one("hidden.bs.modal", function (e) {
         //});
         var obj = new Array();
-        var ResultFindReferralPhysician = openModal("frmFindReferralPhysician.aspx", 150, 860, obj, "RadWindow1");
+        var ResultFindReferralPhysician = openModal("frmFindReferralPhysician.aspx", 256, 930, obj, "RadWindow1");
         var objWindow = $find("RadWindow1");
         $(top.window.document).find("RadWindow1").one("hidden.bs.modal", function (e) {
         });

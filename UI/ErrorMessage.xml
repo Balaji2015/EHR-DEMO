@@ -640,9 +640,8 @@
 	<Message number="380057" Type="OK" Text="Policy Holder ID is Invalid!&#xA;Format Example: {0}" />
 	<Message number="380058" Type="OK" Text="Please Select the Facility-Dos"></Message>
 	<Message number="380059" Type="OK" Text="Please enter a valid $ amount to add payment entry."></Message>
-	<Message number="380060" Type="OK" Text="Please select the provider first."></Message>
-	<Message number="380061" Type="OK" Text="The selected physician is from {0} category. So Edit is not applicable. Please contact support."></Message>
-
+	<Message number="380060" Type="OK" Text="Please select the provider to edit."></Message>
+	<Message number="380061" Type="OK" Text="The selected Physician is a Capella {0}. Please contact support for any updates."></Message>
 
 
 	<Message number="320001" Type="OK" Text="This feature is not currently available. Please contact the System Administrator." />
@@ -2998,7 +2997,7 @@
 	<Message number="1011170" Type="OK" Text="This Physician NPI already exists"></Message>
 	<Message number="1011171" Type="OK" Text="Please Enter First Name or Last Name"></Message>
 	<Message number="1011173" Type="OKCANCEL" Text="Would you like to clear all the values entered?" />
-	<Message number="1011174" Type="OKCANCEL" Text="Are you sure you want to cancel the details?" />
+	<Message number="1011174" Type="OKCANCEL" Text="Would you like to cancel the update?" />
 	<Message number="1011175" Type="OK" Text="Please Enter the 10 digit Valid NPI code"></Message>
 	<Message number="1011179" Type="OK" Text="Please Enter the NPI"></Message>
 	<Message number="1011180" Type="OK" Text="Please Enter the valid {0}."></Message>

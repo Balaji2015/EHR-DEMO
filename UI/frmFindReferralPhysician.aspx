@@ -16,7 +16,7 @@
 
         .ui-autocomplete {
             -webkit-margin-before: 3px !important;
-            max-height: 70px;
+            max-height: 130px;
             overflow-y: auto;
         }
 
@@ -55,17 +55,17 @@
                 <table style="width: 100%;">
                     <tr>
                         <td style="width: 13%;" class="Editabletxtbox">
-                            <span><b>Provider Search</b></span>
+                            <span><b>Provider Search**</b></span>
                         </td>
                         <td style="width: 80%;">
-                            <asp:TextBox ID="txtProviderSearch" runat="server" Width="98%" data-phy-id="0" data-phy-details="" Rows="3" TextMode="MultiLine" placeholder="Type minimum 3 characters of Last or First name or City or Facility or Company and follow it by a space.." CssClass="Editabletxtbox" style="resize:none"></asp:TextBox>
+                            <asp:TextBox ID="txtProviderSearch" runat="server" Width="750px" data-phy-id="0" data-phy-details="" Rows="3" TextMode="MultiLine" placeholder="Type minimum 3 characters of Last or First Name or City or Company or Facility and follow it by a space.." CssClass="Editabletxtbox" style="resize:none"></asp:TextBox>
                             </td>
                         <td style="width: 1%;">
                             <img id="imgClearProviderText" src="Resources/Delete-Blue.png" alt="X" title="Click to clear the text field."/>
                         </td>
-                         <td style="width: 4%;">
+                         <%--<td style="width: 4%;">
                            <img id="imgEditProvider" runat="server" src="Resources/edit.gif" alt="X" title="Click to edit the text field." onclick="return EditProviderDetails();" style="position: absolute;top: 38px!important;cursor: pointer;width: 15px;height: 15px;" />
-                        </td>
+                        </td>--%>
                     </tr>
                     <tr>
                         <td colspan="2">
@@ -74,14 +74,31 @@
                                     <td style="width: 125px !important;">
                                         <input type="button" id="btnAddPhysician" value="Add Provider" onclick="return OpenAddPhysician();" style="width: 120px; left: 2000px !important;" disabled="disabled" class="aspresizedbluebutton" />
                                     </td>
-                                    <td class="style9" style="width:44px !important;">
-                                        <input type="button" id="btnOk" value="Ok" onclick="return closeReferelWindowRadGrid();" style="width: 40px; left: 1000px !important;" disabled="disabled" class="aspresizedgreenbutton" />
-                                    </td>
+                                    <td style="width:27px;"></td>
+                                    <td></td>
                                     <td>
-                                        <input type="button" id="btnCancel" value="Cancel" onclick="cancel();" class="aspresizedredbutton" />
+                                        <input type="button" id="EditProvider" value="Modifiy/View Provider" title="Click to edit the text field." onclick="return EditProviderDetails();" class="aspresizedbluebutton" style="width: 137px;"/>
+                                    </td>
+                                    </tr>
+                                <tr style="height:5px;"></tr>
+                                <tr>
+                                    <td class="style9" style="width:44px !important;">
+                                        <input type="button" id="btnOk" value="Ok" onclick="return closeReferelWindowRadGrid();" style="width: 120px; left: 1000px !important;" disabled="disabled" class="aspresizedgreenbutton" />
+                                    </td>
+                                    <td></td>
+                                    <td></td>
+                                    <td>
+                                        <input type="button" id="btnCancel" value="Cancel" onclick="cancel();" class="aspresizedredbutton" style="width: 137px;"/>
                                     </td>
                                 </tr>
                             </table>
+                        </td>
+                    </tr>
+                    <tr style="height:20px"></tr>
+                    <tr></tr>
+                    <tr>
+                        <td>
+                            <label style="width:626%" class="LabelStyleBold">** Type minimum 3 characters of Last or First Name or City or Company or Facility and follow it by a space..</label>
                         </td>
                     </tr>
                 </table>
