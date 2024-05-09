@@ -757,9 +757,9 @@ function AddProvider() {
             }
             if (vgrd == "none" && Getobjval == "None") {
                 DisplayErrorMessage('110020');
-                var IsEnableGrid = localStorage.getItem("IsEnableGrid");
-                if (IsEnableGrid != null && IsEnableGrid != undefined) {
-                    if (IsEnableGrid == "false") {
+                //var IsEnableGrid = localStorage.getItem("IsEnableGrid");
+                //if (IsEnableGrid != null && IsEnableGrid != undefined) {
+                //    if (IsEnableGrid == "false") {
                         $("#btnClose").click();
                         var vProviderName = $("#ddlPrefix")[0].value + ". " + $("#txtFirstName")[0].value + " " + document.getElementById("txtMI").value + " " + $("#txtLastName")[0].value;
                         var vPhyNmae = $("#ddlPrefix")[0].value + $("#txtFirstName")[0].value + " " + document.getElementById("txtMI").value + " " + $("#txtLastName")[0].value + $("#txtSuffix")[0].value;
@@ -770,16 +770,16 @@ function AddProvider() {
                         //    + $("#txtState")[0].value + "," + $("#txtZip")[0].value
                         //    + "|" + "PH:" + $("#txtPhone")[0].value + "FAX:" + $("#txtFax")[0].value;
 
-                        var vFullName = $("#ddlPrefix")[0].value + " " + $("#txtFirstName")[0].value + " " + document.getElementById("txtMI").value + " " + $("#txtLastName")[0].value + "(" + $("#txtSuffix")[0].value + ")";
-                        var PCP_PhyDetails = objdata.split("|")[1] + "&" + vProviderName + "&" + vPhyNmae + "&" + $("#txtNPI")[0].value + "&" + vFullName + " | " + "NPI: " + $("#txtNPI")[0].value + " | " + "FACILITY: " + FacilityList + " | "
-                            + "ADDR: " + $("#txtAddressLine1")[0].value + ", " + $("#txtCity")[0].value + ", "
+                        var vFullName = $("#ddlPrefix")[0].value + ". " + $("#txtFirstName")[0].value + " " + document.getElementById("txtMI").value + ", " + $("#txtLastName")[0].value + "(" + $("#txtSuffix")[0].value + ")";
+                        var PCP_PhyDetails = objdata.split("|")[1] + "&" + vProviderName + "&" + vPhyNmae + "&" + $("#txtNPI")[0].value + "&" + vFullName + " | " + "NPI: " + $("#txtNPI")[0].value + " | " + "Facility: " + FacilityList + " | "
+                            + "Address: " + $("#txtAddressLine1")[0].value + ", " + $("#txtCity")[0].value + ", "
                             + $("#txtState")[0].value + " " + $("#txtZip")[0].value
-                            + " | " + "PH:" + $("#txtPhone")[0].value + " | FAX:" + $("#txtFax")[0].value ;
+                            + " | " + "Phone No:" + $("#txtPhone")[0].value + " | Fax No:" + $("#txtFax")[0].value ;
 
 
                         localStorage.setItem("PhyDetails", PCP_PhyDetails);
-                    }
-                }
+                //    }
+                //}
                 Aftersave();
             }
             else if (objdata != "" && objdata.length > 0) {

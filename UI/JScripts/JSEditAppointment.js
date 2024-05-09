@@ -336,7 +336,8 @@ function ProviderSelected(event, ui) {
     }
     
     txtProviderSearch.attributes['data-phy-details'].value = JSON.stringify(ProviderDetails);
-    txtProviderSearch.value = vLableVal;
+    //txtProviderSearch.value = vLableVal;
+    txtProviderSearch.value = ui.item.label;
     var provider = "";
 
     provider = JSON.parse(ui.item.val).sPhyName + "|  NPI: " +

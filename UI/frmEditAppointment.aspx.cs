@@ -4241,6 +4241,7 @@ namespace Acurus.Capella.UI
                     imgEditProvider.Visible = true;
                 }
                 imgClearProviderText.Style.Add("top", "234px !important");
+                imgEditProvider.Style.Add("top", "234px !important");
                 cboOrder.Items.Clear();
                 cboOrder.Enabled = false;
                 btnOrder.Enabled = false;

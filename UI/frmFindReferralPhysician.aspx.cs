@@ -71,15 +71,14 @@ namespace Acurus.Capella.UI
                                      {
                                          label =
                                             Phy.PhyPrefix + " " + Phy.PhyFirstName + " " + Phy.PhyMiddleName + (string.IsNullOrWhiteSpace(Phy.PhyLastName)? " " : ", " + Phy.PhyLastName) + (string.IsNullOrWhiteSpace(Phy.PhySuffix) ? string.Empty : "(" + Phy.PhySuffix + ")") + " | " +
-                                                              "NPI:" + Phy.PhyNPI + " | " +
-                                                              Phy.PhySpecialtyCode + " | " +
-                                                              "FACILITY:" + Phy.PhyFacility + " | " +
-                                                              "ADDR: " + Phy.PhyAddrs + ", " +
+                                                              "NPI:" + Phy.PhyNPI +" | " +
+                                                              "Facility:" + Phy.PhyFacility + " | " +
+                                                              "Address: " + Phy.PhyAddrs + ", " +
                                                               Phy.PhyCity + "," +
                                                               Phy.PhyState + " " +
                                                               Phy.PhyZip + " | " +
-                                                              ((Phy.PhyPhone.Trim()) != "" ? "PH:" + Phy.PhyPhone + " | " : "") +
-                                                              (Phy.PhyFax.Trim() != "" ? "FAX:" + Phy.PhyFax : ""),
+                                                              ((Phy.PhyPhone.Trim()) != "" ? "Phone No:" + Phy.PhyPhone + " | " : "") +
+                                                              (Phy.PhyFax.Trim() != "" ? "Fax No:" + Phy.PhyFax : ""),
                                          value = new
                                          {
                                              ulPhyId = Phy.PhyId,
@@ -273,15 +272,15 @@ namespace Acurus.Capella.UI
                                          label =
                                        Phy.PhyPrefix + " " + Phy.PhyFirstName + " " + Phy.PhyMiddleName + " " + Phy.PhyLastName + " " + Phy.PhySuffix + " " + " | " +
                                                               "NPI:" + Phy.PhyNPI + " | " +
-                                                              "FACILITY:" + Phy.PhyFacility + " | " +
-                                                              "ADDR: " + Phy.PhyAddrs + ", " +
+                                                              "Facility:" + Phy.PhyFacility + " | " +
+                                                              "Address: " + Phy.PhyAddrs + ", " +
                                                               Phy.PhyCity + "," +
                                                               Phy.PhyState + " " +
                                                               Phy.PhyZip + " | " +
-                                                              ((Phy.PhyPhone.Trim()) != "" ? "PH:" + Phy.PhyPhone + " | " : "") +
+                                                              ((Phy.PhyPhone.Trim()) != "" ? "Phone No:" + Phy.PhyPhone + " | " : "") +
                                                                ((Phy.PhyEmail.Trim()) != "" ? "Email:" + Phy.PhyEmail + " | " : "") +
                                                                  ((Phy.PhyCompany.Trim()) != "" ? "Company:" + Phy.PhyCompany + " | " : "") +
-                                                              (Phy.PhyFax.Trim() != "" ? "FAX:" + Phy.PhyFax : ""),
+                                                              (Phy.PhyFax.Trim() != "" ? "Fax No:" + Phy.PhyFax : ""),
                                          value = new
                                          {
                                              ulPhyId = Phy.PhyId,
@@ -356,15 +355,15 @@ namespace Acurus.Capella.UI
                                          label =
                                        Phy.PhyPrefix + " " + Phy.PhyFirstName + " " + Phy.PhyMiddleName + " " + Phy.PhyLastName + " " + Phy.PhySuffix + " " + " | " +
                                                               "NPI:" + Phy.PhyNPI + " | " +
-                                                              "FACILITY:" + Phy.PhyFacility + " | " +
-                                                              "ADDR: " + Phy.PhyAddrs + ", " +
+                                                              "Facility:" + Phy.PhyFacility + " | " +
+                                                              "Address: " + Phy.PhyAddrs + ", " +
                                                               Phy.PhyCity + "," +
                                                               Phy.PhyState + " " +
                                                               Phy.PhyZip + " | " +
-                                                              ((Phy.PhyPhone.Trim()) != "" ? "PH:" + Phy.PhyPhone + " | " : "") +
+                                                              ((Phy.PhyPhone.Trim()) != "" ? "Phone No:" + Phy.PhyPhone + " | " : "") +
                                                                ((Phy.PhyEmail.Trim()) != "" ? "Email:" + Phy.PhyEmail + " | " : "") +
                                                                  ((Phy.PhyCompany.Trim()) != "" ? "Company:" + Phy.PhyCompany + " | " : "") +
-                                                              (Phy.PhyFax.Trim() != "" ? "FAX:" + Phy.PhyFax : ""),
+                                                              (Phy.PhyFax.Trim() != "" ? "Fax No:" + Phy.PhyFax : ""),
                                          value = new
                                          {
                                              ulPhyId = Phy.PhyId,
