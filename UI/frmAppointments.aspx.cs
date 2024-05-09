@@ -2899,9 +2899,19 @@ namespace Acurus.Capella.UI
             IList<FacilityLibrary> ilstFacAncillary = new List<FacilityLibrary>();
             if (ApplicationObject.facilityLibraryList != null)
             {
+                //CAP-2025 -  In the provider login, the block days are not shown. In other login, the block days are shown. [ZDT# 194169]
+                if (pnlProvidersHeader.InnerText == "Providers" || pnlProvidersHeader.InnerText == "Machine - Technician")
+                {
                     var facAncillary = from f in ApplicationObject.facilityLibraryList where f.Fac_Name == cboFacilityName.SelectedItem.Text select f;
                     ilstFacAncillary = facAncillary.ToList<FacilityLibrary>();
                 }
+                else
+                {
+                    var providers = chklstProviders.Items.Cast<System.Web.UI.WebControls.ListItem>().Where(li => li.Selected).Select(li => li.Text).ToList<string>();
+                    var facAncillary = from f in ApplicationObject.facilityLibraryList where providers.Contains(f.Fac_Name) select f;
+                    ilstFacAncillary = facAncillary.ToList<FacilityLibrary>();
+                }
+            }
 
             #region New Code
             //CAP-1857 - Block days is not shown in the appointment scheduler for the technicians in provider's login.
