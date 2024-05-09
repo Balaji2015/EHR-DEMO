@@ -77,7 +77,7 @@
                                     <td style="width:27px;"></td>
                                     <td></td>
                                     <td>
-                                        <input type="button" id="EditProvider" value="Modifiy/View Provider" title="Click to edit the text field." onclick="return EditProviderDetails();" class="aspresizedbluebutton" style="width: 137px;"/>
+                                        <input type="button" id="EditProvider" value="Modify/View Provider" title="Click to edit the text field." onclick="return EditProviderDetails();" class="aspresizedbluebutton" style="width: 137px;"/>
                                     </td>
                                     </tr>
                                 <tr style="height:5px;"></tr>
