@@ -291,7 +291,7 @@
                                     </p>
                                     <p class="verti " style="height: 90px; margin-top: -1em; width: 20px; margin-left: -2px;">
                                         <asp:HyperLink Style="position: absolute; width: 75px; font-weight: bold;"
-                                            CssClass="verti" ID="lnkOrderList" runat="server" NavigateUrl="#"
+                                            CssClass="verti" ID="lnkOrderList" runat="server" NavigateUrl="~/frmOrdersList.aspx"
                                             EnableViewState="false">Order List</asp:HyperLink>
                                     </p>
                                 </td>

@@ -147,8 +147,6 @@ namespace Acurus.Capella.UI
                 }
 
                 LoadorderList();
-                //CAP-1985 - In Testing & Production: Referral order screen spinning for long time
-                ScriptManager.RegisterStartupScript(this, this.GetType(), string.Empty, " window.parent.parent.parent.parent.theForm.ctl00_C5POBody_hdnIsSaveEnable.value = 'false';", true);
             }
 
             //grdOrders.MasterGridViewTemplate.EnableSorting = true;

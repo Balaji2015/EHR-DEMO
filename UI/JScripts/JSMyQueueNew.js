@@ -894,13 +894,10 @@ function MyQclick() {
             if (CurrentProcess == "MA_REVIEW" && (orderType == "DIAGNOSTIC ORDER" || orderType == "IMAGE ORDER" || orderType == "DME ORDER")) {
                 var obj = new Array();
                 var Result;
-                //CAP-1775
-                if (orderType == "DIAGNOSTIC ORDER" || orderType == "IMAGE ORDER") {
-                    Result = openRadWindow(`frmImageAndLabOrder.aspx?EditedOrderSubmitID=${$(currRow)[0].children[17].innerText}&ScreenMode=MyQ&Enable=true&hdnForEditErrorMsg=Edit`, 665, 1232, obj, 'MessageWindow');
-                }
-                else if (orderType == "DME ORDER") {
+                if (orderType == "DIAGNOSTIC ORDER" || orderType == "IMAGE ORDER")
+                    Result = openRadWindow("frmOrdersList.aspx?HumanID=" + $(currRow)[0].children[2].innerText + "&EncounterID=" + $(currRow)[0].children[11].innerText + "&PhysicianId=" + $(currRow)[0].children[12].innerText + "&OrderSubmitId=" + $(currRow)[0].children[17].innerText + "&ScreenMode=MyQ&Openingfrom=MyorderQueue", 665, 1232, obj, 'MessageWindow');
+                else if (orderType == "DME ORDER")
                     Result = openRadWindow("frmDMEOrder.aspx?HumanID=" + $(currRow)[0].children[2].innerText + "&EncounterID=" + $(currRow)[0].children[11].innerText + "&PhysicianId=" + $(currRow)[0].children[12].innerText + "&OrderSubmitId=" + $(currRow)[0].children[17].innerText + "&ScreenMode=MyQ&Openingfrom=MyorderQueue", 665, 1232, obj, 'MessageWindow');
-                }
                 var windowName = $find('MessageWindow');
 
                 windowName.add_close(OnClientCloseWindow);
