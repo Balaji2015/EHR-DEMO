@@ -867,6 +867,8 @@
 
                         
                            <asp:HiddenField ID="hdnrenprovidersearch" runat="server" />
+                        <asp:HiddenField ID="hdnRefEditPhyId" runat="server" />
+                        <asp:HiddenField ID="hdnpcpEditPhyId" runat="server" />
                         <br />
                         <asp:HiddenField ID="hdnWillingGridIndex" runat="server" />
                         <asp:Button ID="btnMessageType" runat="server" Text="Button" Style="display: none"

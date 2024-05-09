@@ -255,6 +255,7 @@ $(document).ready(function () {
             if (document.getElementById("chkSelfReferred").checked == true) {
                 document.getElementById("txtProviderSearch").value = "";
                 document.getElementById("txtProviderSearch").disabled = true;
+                document.getElementById("imgEditProvider").style.display = "none";
             }
             else {
                 document.getElementById("txtProviderSearch").value = document.getElementById("hdnrenprovidersearch").value;
@@ -270,14 +271,20 @@ $(document).ready(function () {
                 }
                 if (document.getElementById("txtProviderSearch").value != "" && document.getElementById("hdnrenprovidersearch").value != "| NPI: | Facility: | Address:| Phone No:| Fax No:") {
                     document.getElementById("txtProviderSearch").disabled = true;
+                    document.getElementById("imgEditProvider").style.display = "none";
                 }
                 else {
                     //Jira #CAP-158 -  Not able to navigate tab
                     if (document.getElementById("hdnCurrentProcess").value != "" && document.getElementById("hdnCurrentProcess").value.toUpperCase() == "SCHEDULED") {
                         if (IsDisabledProviderSearch == "true")//change
+                        {
                             document.getElementById("txtProviderSearch").disabled = true;
-                        else
+                            document.getElementById("imgEditProvider").style.display = "none";
+                        }
+                        else {
                             document.getElementById("txtProviderSearch").disabled = false;//have to change
+                            document.getElementById("imgEditProvider").style.display = "block";
+                        }
                     }
                     document.getElementById("txtProviderSearch").value = "";
                 }
@@ -292,9 +299,11 @@ $(document).ready(function () {
             if (document.getElementById("hdnCurrentProcess").value != "" && document.getElementById("hdnCurrentProcess").value.toUpperCase() == "SCHEDULED") {
                 if (document.getElementById("hdnpcpprovidersearch").value != "") {
                     document.getElementById("txtProviderSearch").disabled = true;
+                    document.getElementById("imgEditProvider").style.display = "none";
                 }
                 else {
                     document.getElementById("txtProviderSearch").disabled = false;
+                    document.getElementById("imgEditProvider").style.display = "block";
                 }
             }
         }
@@ -319,7 +328,13 @@ function ProviderSelected(event, ui) {
     document.getElementById("hdnCategory").value = ProviderDetails.sCategory;
     txtProviderSearch.attributes['data-phy-id'].value = ProviderDetails.ulPhyId;
     //Cap - 1989
-    document.getElementById('hdnEditPhysicianId').value = ProviderDetails.ulPhyId;
+    if (document.getElementById("chkSelfReferred") != null && document.getElementById("chkSelfReferred").checked == false) {
+        document.getElementById('hdnRefEditPhyId').value = ProviderDetails.ulPhyId;
+    }
+    else {
+        document.getElementById('hdnpcpEditPhyId').value = ProviderDetails.ulPhyId;
+    }
+    
     txtProviderSearch.attributes['data-phy-details'].value = JSON.stringify(ProviderDetails);
     txtProviderSearch.value = vLableVal;
     var provider = "";
@@ -355,16 +370,18 @@ function ProviderSelected(event, ui) {
 function ProviderSearchclear() {
     //Jira #cap-185 - Auto Save warning message not received in Edit Appointment screen
     EnableSaveButton(this);
-
+    document.getElementById("imgEditProvider").style.display = "block";
     $("#txtProviderSearch").attr("disabled", false);
     $("#txtProviderSearch").val("");
     if (document.getElementById("chkSelfReferred") == null) {
-        document.getElementById("hdnpcpprovidersearch").value = ""
-        document.getElementById("hdnpcpprovider").value = ""
+        document.getElementById("hdnpcpprovidersearch").value = "";
+        document.getElementById("hdnpcpprovider").value = "";
+        document.getElementById("hdnRefEditPhyId").value = "";
     }
     else {
         document.getElementById("hdnrenprovider").value = "";
         document.getElementById("hdnrenprovidersearch").value = "";
+        document.getElementById("hdnpcpEditPhyId").value = "";
     }
 
 }
@@ -912,7 +929,7 @@ function PcpPrimaryDefault(humanid) {
             }
             document.getElementById("hdnpcpprovider").value = objdata.split("&")[1];
             document.getElementById("hdnpcpprovidersearch").value = objdata.split("&")[1];
-            document.getElementById("hdnEditPhysicianId").value = objdata.split("&")[0];
+            document.getElementById("hdnpcpEditPhyId").value = objdata.split("&")[0];
         }
     });
 }
@@ -1554,43 +1571,17 @@ function patienttaskload() {
 
 }
 
-function EditProviderDetails() {
-    var EditPhyId = document.getElementById("hdnEditPhysicianId").value;
-    var ProviderText = document.getElementById("txtProviderSearch").value;
 
-    var Category = document.getElementById("hdnCategory").value;
-
-    if (EditPhyId == '' || ProviderText == '') {
-        DisplayErrorMessage('380060');
-    }
-    else if (Category != "NON CAPELLA USER(Physician)" && Category != "NON CAPELLA USER" && Category != "ORGANIZATION") {
-        DisplayErrorMessage('380061', '', Category);
-    }
-    else {
-
-        $(top.window.document).find("#TabPhysicianLibrary").modal({ backdrop: "static", keyboard: false }, 'show');
-        $(top.window.document).find("#TabModalPhysicianLibraryTitle")[0].textContent = "Provider Library";
-        $(top.window.document).find("#TabmdldlgPhysicianLibrary")[0].style.width = "850px";
-        $(top.window.document).find("#TabmdldlgPhysicianLibrary")[0].style.height = "440px"; //"715px";
-        var sPath = "frmPhysicianLibray.aspx?EditPhyId=" + EditPhyId;
-        $(top.window.document).find("#TabPhysicianLibraryFrame")[0].style.height = "275px"; //"495px";
-        $(top.window.document).find("#TabPhysicianLibraryFrame")[0].contentDocument.location.href = sPath;
-        $(top.window.document).find("#TabPhysicianLibrary").modal("show");
-        $(top.window.document).find("#TabPhysicianLibrary").one("hidden.bs.modal", function (e) {
-
-            var PhyTextboxName = localStorage.getItem("PhyDetails");
-            document.getElementById("txtProviderSearch").value = PhyTextboxName.split("&")[4];
-
-        });
-
-        return false;
-    }
-
-
-}
 //Cap - 1989
 function EditProviderDetails() {
-    var EditPhyId = document.getElementById("hdnEditPhysicianId").value;
+    var EditPhyId;
+    if (document.getElementById("chkSelfReferred") != null && document.getElementById("chkSelfReferred").checked == false) {
+        EditPhyId = document.getElementById('hdnRefEditPhyId').value
+    }
+    else {
+        EditPhyId = document.getElementById('hdnpcpEditPhyId').value;
+    }
+    
     var ProviderText = document.getElementById("txtProviderSearch").value;
 
     var Category = document.getElementById("hdnCategory").value;
@@ -1614,19 +1605,32 @@ function EditProviderDetails() {
         $(top.window.document).find("#TabPhysicianLibrary").one("hidden.bs.modal", function (e) {
             var PhyTextboxName = localStorage.getItem("PhyDetails");
             if (PhyTextboxName.split("&")[4] != undefined) {
-                document.getElementById("txtProviderSearch").value = PhyTextboxName.split("&")[4];                
-                document.getElementById("hdnpcpprovider").value = JSON.stringify(PhyTextboxName.split("&")[4]);
-                document.getElementById("hdnpcpprovidersearch").value = JSON.stringify(PhyTextboxName.split("&")[4]);
-                document.getElementById("hdnrenprovider").value = JSON.stringify(PhyTextboxName.split("&")[4]);
-                documnet.getElementById("hdnrenprovidersearch").value = JSON.stringify(PhyTextboxName.split("&")[4]);
+                document.getElementById("txtProviderSearch").value = PhyTextboxName.split("&")[4];
+
+                if (document.getElementById("chkSelfReferred") != null && document.getElementById("chkSelfReferred").checked == false) {
+                    document.getElementById("hdnrenprovider").value = JSON.stringify(PhyTextboxName.split("&")[4]);
+                    document.getElementById("hdnrenprovidersearch").value = JSON.stringify(PhyTextboxName.split("&")[4]);
+                    document.getElementById("hdnRefEditPhyId").value = EditPhyId; 
+                }
+                else {
+                    document.getElementById("hdnpcpprovider").value = JSON.stringify(PhyTextboxName.split("&")[4]);
+                    document.getElementById("hdnpcpprovidersearch").value = JSON.stringify(PhyTextboxName.split("&")[4]);
+                    document.getElementById("hdnpcpEditPhyId").value = EditPhyId; 
+                }
 
             }
             else {
                 document.getElementById("txtProviderSearch").value = PhyTextboxName;
-                document.getElementById("hdnpcpprovider").value = PhyTextboxName;
-                document.getElementById("hdnpcpprovidersearch").value = PhyTextboxName;
-                document.getElementById("hdnrenprovider").value = PhyTextboxName;
-                documnet.getElementById("hdnrenprovidersearch").value = PhyTextboxName;
+                if (document.getElementById("chkSelfReferred")!= null && document.getElementById("chkSelfReferred").checked == false) {
+                    document.getElementById("hdnrenprovider").value = PhyTextboxName;
+                    document.getElementById("hdnrenprovidersearch").value = PhyTextboxName;
+                    document.getElementById("hdnRefEditPhyId").value = EditPhyId;
+                }
+                else {
+                    document.getElementById("hdnpcpprovider").value = PhyTextboxName;
+                    document.getElementById("hdnpcpprovidersearch").value = PhyTextboxName;
+                    document.getElementById("hdnpcpEditPhyId").value = EditPhyId; 
+                }
             }
 
 
