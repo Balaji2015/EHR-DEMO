@@ -776,7 +776,6 @@ function AddProvider() {
                     else {
                         var vFullName = $("#txtFirstName")[0].value + " " + document.getElementById("txtMI").value + ", " + $("#txtLastName")[0].value + "(" + $("#txtSuffix")[0].value + ")";
                     }
-                    
                     var PCP_PhyDetails = objdata.split("|")[1] + "&" + vProviderName + "&" + vPhyNmae + "&" + $("#txtNPI")[0].value + "&" + vFullName + " | " + "NPI: " + $("#txtNPI")[0].value + " | " + "Facility: " + FacilityList + " | "
                         + "Address: " + $("#txtAddressLine1")[0].value + ", " + $("#txtCity")[0].value + ", "
                         + $("#txtState")[0].value + " " + $("#txtZip")[0].value
@@ -1293,6 +1292,8 @@ function ClearAll() {
     else {
         if (DisplayErrorMessage('1011174') == true) {
             clear();
+            //Cap - 2066
+            $("#btnClose").click();
             return false;
         }
     }
