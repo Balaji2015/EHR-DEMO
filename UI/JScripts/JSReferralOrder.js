@@ -1,7 +1,7 @@
 ﻿function OpenFindReferralPhysician(sender, args) {
     { sessionStorage.setItem('StartLoading', 'true'); StartLoadFromPatChart();}
     var obj = new Array();
-    var ResultFindReferralPhysician = openModal("frmFindReferralPhysician.aspx", 150, 860, obj, "RadWindow1");
+    var ResultFindReferralPhysician = openModal("frmFindReferralPhysician.aspx", 256, 930, obj, "RadWindow1");
     var objWindow = $find("RadWindow1");
     objWindow.add_close(OnclientCloseFindPhysician);
     sender.set_autoPostBack(false);
