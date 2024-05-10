@@ -54,7 +54,7 @@ namespace Acurus.Capella.UI
                                 ddlCategory.SelectedIndex = i;
                             }
                         }
-
+                        hdnPhysicanCategory.Value = Category.ToUpper();
                         hdnPhysicianId.Value = sEditPhyId;
                         txtLastName.Value = ilstPhysicianLibrary[0].PhyLastName;
                         txtMI.Value = ilstPhysicianLibrary[0].PhyMiddleName;
@@ -72,6 +72,10 @@ namespace Acurus.Capella.UI
                         txtEmail.Value = ilstPhysicianLibrary[0].PhyEMail;
                         btnSave.InnerText = "Update";
                         btnClearAll.InnerText = "Cancel";
+                    }
+                    else
+                    {
+                        hdnPhysicanCategory.Value = "";
                     }
                 }
 

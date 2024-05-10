@@ -195,6 +195,15 @@ namespace Acurus.Capella.UI
         protected global::System.Web.UI.HtmlControls.HtmlButton btnClearAll;
 
         /// <summary>
+        /// imgClearProviderText control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlImage imgClearProviderText;
+
+        /// <summary>
         /// hdnPhysicianId control.
         /// </summary>
         /// <remarks>
@@ -204,12 +213,12 @@ namespace Acurus.Capella.UI
         protected global::System.Web.UI.HtmlControls.HtmlInputHidden hdnPhysicianId;
 
         /// <summary>
-        /// imgClearProviderText control.
+        /// hdnPhysicanCategory control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.HtmlControls.HtmlImage imgClearProviderText;
+        protected global::System.Web.UI.HtmlControls.HtmlInputHidden hdnPhysicanCategory;
     }
 }

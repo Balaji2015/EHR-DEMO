@@ -220,7 +220,7 @@
             
             </div>
             <div id="divgrd" style="overflow-y: auto; height:100%; margin-top: 20px;">
-                <table id="tblPhysicianDetails" class='table table-bordered' style="width:781px;">
+                <%--<table id="tblPhysicianDetails" class='table table-bordered' style="width:781px;">
                     <thead class="Gridheaderstyle" style="width:100%;">
                        <%-- <tr>
                             <th style="width: 5%;">Edit</th>
@@ -230,21 +230,22 @@
                             <th style="width: 10%;">NPI</th>
                             <th style="width: 25%; display:none;">Facility</th>
                             <!--<th style="display:none;">Physician Library ID</th> class="table table-sm table-striped table-bordered"-->
-                        </tr>--%>
-                         <tr>
+                        </tr>
+                         <%--<tr>
                             <th style="width: 5%;text-align: center;">Edit</th>
                             <th style="width: 16%;text-align: center;">Category</th>
                             <th style="width: 21%;text-align: center;">Name</th>
                             <th style="width: 28%;text-align: center; display:none;">Specialty</th>
                             <th style="width: 11.5%;text-align: center;">NPI</th>
                             <th style="width: 25%;text-align: center; display:none;">Facility</th>
-                        </tr>
-                    </thead>
-                    <tbody class="Editabletxtbox" style="width:100%;"></tbody>
-                </table>
+                        </tr>--%>
+                    <%--</thead>--%>
+                    <%--<tbody class="Editabletxtbox" style="width:100%;"></tbody>--%>
+                <%--</table>--%>
             </div>
         </div>
         <input type="hidden" style="display: none;" id="hdnPhysicianId" value="" runat="server"/>
+        <input type="hidden" style="display: none;" id="hdnPhysicanCategory" value="" runat="server"/>
          <button type="button" id="btnClose" style="display: none;" class="btn btn-default" onclick="closewindow();" data-dismiss="modal"></button>
         <script type="text/javascript">
             var JSFiles = ["JScripts/JSErrorMessage.js", "JScripts/JSMask.Min.js", "JScripts/JSPhysicianLibrary.js", "JScripts/JSAvoidRightClick.js", "JScripts/JSCustomDLC.js"];

@@ -641,10 +641,15 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
                 query.SetParameter(1, "%" + token + "%");
                 query.SetParameter(2, "%" + token + "%");
                 query.SetParameter(3, "%" + token + "%");
-                //query.SetParameter(4, "%" + token + "%");
+                query.SetParameter(4, "%" + token + "%");
+                query.SetParameter(5, "%" + token + "%");
                 resultList = new ArrayList(query.List());
                 if (resultList.Count > 0)
                 {
+                    FacilityManager Fmgr = new FacilityManager();
+                    IList<FacilityLibrary> ilstFacility = new List<FacilityLibrary>();
+                    ilstFacility = Fmgr.GetFacilityList();
+
                     foreach (object[] obj in resultList)
                     {
                         PhysicianFacilityDTO objPhy = new PhysicianFacilityDTO();
@@ -653,15 +658,16 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
                         if (obj[17] != null && obj[17].ToString().ToUpper() != "ORGANIZATION")
                         {
                             objPhy.PhyFirstName = obj[2].ToString();
+                            objPhy.PhyMiddleName = obj[3].ToString();
+                            objPhy.PhyLastName = obj[4].ToString();
+                            objPhy.PhySuffix = obj[5].ToString();
                         }
                         else
                         {
                             objPhy.PhyFirstName = obj[16]?.ToString()??string.Empty;
                         }
                         
-                        objPhy.PhyMiddleName = obj[3].ToString();
-                        objPhy.PhyLastName = obj[4].ToString();
-                        objPhy.PhySuffix = obj[5].ToString();
+                        
                         objPhy.PhySpecialtyCode = Convert.ToString(obj[6]);
                         //objPhy.PhyCity = obj[7].ToString();
                         //objPhy.PhyState = obj[8].ToString();
@@ -677,9 +683,11 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
                         if (obj[12] != null)
                         {
                             objPhy.PhyFacility = obj[12].ToString();
-                            FacilityManager Fmgr = new FacilityManager();
+                            //FacilityManager Fmgr = new FacilityManager();
                             IList<FacilityLibrary> ilstFacilityLibrary = new List<FacilityLibrary>();
-                            ilstFacilityLibrary = Fmgr.GetFacilityByFacilityname(obj[12].ToString());
+                            //ilstFacilityLibrary = Fmgr.GetFacilityByFacilityname(obj[12].ToString());
+
+                            ilstFacilityLibrary = (from objfac in ilstFacility where objfac.Fac_Name == obj[12].ToString() select objfac).ToList<FacilityLibrary>();
                             if (ilstFacilityLibrary != null && ilstFacilityLibrary.Count > 0)
                             {
                                 objPhy.PhyCity = ilstFacilityLibrary[0].Fac_City.ToString();

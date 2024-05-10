@@ -54,20 +54,23 @@ $(document).ready(function () {
             if (CategoryList.length > 0) {
                 $("#ddlCategory option").remove();
                 var select = document.getElementById("ddlCategory");
-                //Jira CAP-2014
-                var selectCategory = document.getElementById("cboCategory");
+                //Jira CAP-2030
+                ////Jira CAP-2014
+                //var selectCategory = document.getElementById("cboCategory");
                 for (var i = 0; i < CategoryList.length; i++) {
                     var option = document.createElement('option');
                     option.text = option.value = CategoryList[i].Category;
-                    //Jira CAP-2014 - start
-                    var optionCategory = document.createElement('option');
-                    optionCategory.text = optionCategory.value = CategoryList[i].Category;
-                    //Jira CAP-2014 - End
+                    //Jira CAP-2030
+                    ////Jira CAP-2014 - start
+                    //var optionCategory = document.createElement('option');
+                    //optionCategory.text = optionCategory.value = CategoryList[i].Category;
+                    ////Jira CAP-2014 - End
                     select.add(option);
-                    //Jira CAP-2014
-                    selectCategory.add(optionCategory);
-                    selectCategory.selectedIndex = 0;
-                    //Jira CAP-2014 - End
+                    //Jira CAP-2030
+                    ////Jira CAP-2014
+                    //selectCategory.add(optionCategory);
+                    //selectCategory.selectedIndex = 0;
+                    ////Jira CAP-2014 - End
                     if (sCategoryPhy == null)
                         sCategoryPhy =  CategoryList[i].Category.trim() ;
                     else
@@ -75,6 +78,9 @@ $(document).ready(function () {
 
                 }
                 var sCategory = "NON CAPELLA USER(Physician)";
+                if ($("#hdnPhysicanCategory")[0].value != "") {
+                    sCategory = $("#hdnPhysicanCategory")[0].value.toUpperCase();
+                }
                 if (IsEFax == "true") {
                     $("#ddlPhysicianType")[0].disabled = true;
                     DisableorEnableFacility(true);
@@ -83,7 +89,7 @@ $(document).ready(function () {
                     $("#ddlPhysicianType")[0].disabled = false;
                     DisableorEnableFacility(false);
                 }
-                for (var x = 0; x < select.length - 1 ; x++) {
+                for (var x = 0; x < select.length ; x++) {
                     if (select.options[x].text.toUpperCase().split(" (PHYSICIAN / PA / NP)")[0] == sCategory)
                         select.selectedIndex = x;
                 }
@@ -102,154 +108,160 @@ $(document).ready(function () {
             }
         }
     });
-    $('#tblPhysicianDetails thead tr th').click(function () {
-        //grab all header rows
-        $('#tblPhysicianDetails thead tr th').each(function (column) {
-            $(this).addClass('sortable').click(function () {
-                var findSortKey = function ($cell) {
-                    return $cell.find('.sort-key').text().toUpperCase() + ' ' + $cell.text().toUpperCase();
+    //Jira CAP-2030 - Start
+    //$('#tblPhysicianDetails thead tr th').click(function () {
+    //    //grab all header rows
+    //    $('#tblPhysicianDetails thead tr th').each(function (column) {
+    //        $(this).addClass('sortable').click(function () {
+    //            var findSortKey = function ($cell) {
+    //                return $cell.find('.sort-key').text().toUpperCase() + ' ' + $cell.text().toUpperCase();
 
-                };
-                var sortDirection = $(this).is('.sorted-asc') ? -1 : 1;
-                var $rows = $(this).parent().parent().parent().find('tbody tr').get();
-                var bob = 0;
-                //loop through all the rows and find
-                $.each($rows, function (index, row) {
-                    row.sortKey = findSortKey($(row).children('td').eq(column));
-                });
+    //            };
+    //            var sortDirection = $(this).is('.sorted-asc') ? -1 : 1;
+    //            var $rows = $(this).parent().parent().parent().find('tbody tr').get();
+    //            var bob = 0;
+    //            //loop through all the rows and find
+    //            $.each($rows, function (index, row) {
+    //                row.sortKey = findSortKey($(row).children('td').eq(column));
+    //            });
 
-                //compare and sort the rows alphabetically or numerically
-                $rows.sort(function (a, b) {
-                    if (a.sortKey.indexOf('-') == -1 && (!isNaN(a.sortKey) && !isNaN(a.sortKey))) {
-                        //Rough Numeracy check                          
+    //            //compare and sort the rows alphabetically or numerically
+    //            $rows.sort(function (a, b) {
+    //                if (a.sortKey.indexOf('-') == -1 && (!isNaN(a.sortKey) && !isNaN(a.sortKey))) {
+    //                    //Rough Numeracy check
 
-                        if (parseInt(a.sortKey) < parseInt(b.sortKey)) {
-                            return -sortDirection;
-                        }
-                        if (parseInt(a.sortKey) > parseInt(b.sortKey)) {
-                            return sortDirection;
-                        }
+    //                    if (parseInt(a.sortKey) < parseInt(b.sortKey)) {
+    //                        return -sortDirection;
+    //                    }
+    //                    if (parseInt(a.sortKey) > parseInt(b.sortKey)) {
+    //                        return sortDirection;
+    //                    }
 
-                    } else {
-                        if (a.sortKey < b.sortKey) {
-                            return -sortDirection;
-                        }
-                        if (a.sortKey > b.sortKey) {
-                            return sortDirection;
-                        }
-                    }
-                    return 0;
-                });
+    //                } else {
+    //                    if (a.sortKey < b.sortKey) {
+    //                        return -sortDirection;
+    //                    }
+    //                    if (a.sortKey > b.sortKey) {
+    //                        return sortDirection;
+    //                    }
+    //                }
+    //                return 0;
+    //            });
 
-                //add the rows in the correct order to the bottom of the table
-                $.each($rows, function (index, row) {
-                    $('#tblPhysicianDetails tbody').append(row);
-                    row.sortKey = null;
-                });
+    //            //add the rows in the correct order to the bottom of the table
+    //            $.each($rows, function (index, row) {
+    //                $('#tblPhysicianDetails tbody').append(row);
+    //                row.sortKey = null;
+    //            });
 
-                //identify the collumn sort order
-                $('#tblPhysicianDetails thead tr th').removeClass('sorted-asc sorted-desc');
-                var $sortHead = $('#tblPhysicianDetails thead tr th').filter(':nth-child(' + (column + 1) + ')');
-                sortDirection == 1 ? $sortHead.addClass('sorted-asc') : $sortHead.addClass('sorted-desc');
+    //            //identify the collumn sort order
+    //            $('#tblPhysicianDetails thead tr th').removeClass('sorted-asc sorted-desc');
+    //            var $sortHead = $('#tblPhysicianDetails thead tr th').filter(':nth-child(' + (column + 1) + ')');
+    //            sortDirection == 1 ? $sortHead.addClass('sorted-asc') : $sortHead.addClass('sorted-desc');
 
-                //identify the collum to be sorted by
-                $('td').removeClass('sorted').filter(':nth-child(' + (column + 1) + ')').addClass('sorted');
-            });
-        });
-    });
-    if (IsEnableGrid != null && IsEnableGrid != undefined) {
-        if (IsEnableGrid == "false") {
+    //            //identify the collum to be sorted by
+    //            $('td').removeClass('sorted').filter(':nth-child(' + (column + 1) + ')').addClass('sorted');
+    //        });
+    //    });
+    //});
+    //if (IsEnableGrid != null && IsEnableGrid != undefined) {
+        //if (IsEnableGrid == "false") {
+    //Jira CAP-2030 - End
             $("#divgrd").hide();
             //Jira CAP-2014
             $("#divSearchParameters").hide();
             $("#divMain").css("height", "275px")
-        }
-        else {
-            $("#divgrd").show();
-            //Jira CAP-2014
-            $("#divSearchParameters").show();
-            $("#divMain").css("height", "100%")
-            LoadGrid();
-        }
-    }
+    //Jira CAP-2030 - Start
+        //}
+        //else {
+        //    $("#divgrd").show();
+        //    //Jira CAP-2014
+        //    $("#divSearchParameters").show();
+        //    $("#divMain").css("height", "100%")
+        //    LoadGrid();
+        //}
+   // }
+   //Jira CAP-2030 - End
     ddlCategory_Change();
 
-    //Jira CAP-2014
-    SearchByTextandCategory();
+    //Jira CAP-2030 - Start
+    ////Jira CAP-2014
+    //SearchByTextandCategory();
+    //Jira CAP-2030 - End
     { sessionStorage.setItem('StartLoading', 'false'); StopLoadFromPatChart(); }
     //Input Mask for landline phone number
 
 });
+//Jira CAP-2030 - Start
+//function LoadGrid() {
+//    var WSData = JSON.stringify({
+//        Category: sCategoryPhy
+//    });
+//    $.ajax({
+//        type: 'POST',
+//        url: "WebServices/PhysicianLibraryServices.asmx/LoadPhysicianLibrary",
+//        data: WSData,
+//        contentType: "application/json;charset=utf-8",
+//        async: false,
+//        success: function (data) {
 
-function LoadGrid() {
-    var WSData = JSON.stringify({
-        Category: sCategoryPhy
-    });
-    $.ajax({
-        type: 'POST',
-        url: "WebServices/PhysicianLibraryServices.asmx/LoadPhysicianLibrary",
-        data: WSData,
-        contentType: "application/json;charset=utf-8",
-        async: false,
-        success: function (data) {
-
-            var objdata = $.parseJSON(data.d);
-            var tabContents;
-            if (objdata.length > 0) {
-                for (var i = 0; i < objdata.length; i++) {
-                    $('#tblPhysicianDetails tbody tr').remove();
-                    var vName = '';
-                    var vOrganization = '';
-                    if (objdata[i].Category.toUpperCase() == "ORGANIZATION")
-                    {
-                        vName = objdata[i].Company;
-                        vOrganization = objdata[i].Name;
-                    }
-                    else
-                    {
-                        vOrganization = objdata[i].Company;
-                        vName = objdata[i].Name;
-                    }
-                    tabContents += "<tr class='Gridbodystyle'>"
-                       + "<td style='width:5%;'><img src=" + "Resources/edit.gif" + " onclick='Update(this);'" + "/></td>"
-                       + "<td style='width:15%;'>" + objdata[i].Category + "</td>"
-                       + "<td style='width:20%;'>" + vName + "</td>"
-                       + "<td style='width:28%;display:none;'>" + objdata[i].Specialty + "</td>"
-                       + "<td style='width:10%;'>" + objdata[i].NPI + "</td>"
-                       + "<td style='width:25%;display:none;'>" + objdata[i].Facility + "</td>"
-                       + "<td style='display:none;'>" + objdata[i].Physician_Library_ID + "</td>"
-                       + "<td style='display:none;'>" + objdata[i].Physician_Type + "</td>"
-                       + "<td style='display:none;'>" + vOrganization + "</td>"
-                       + "<td style='display:none;'>" + objdata[i].Physician_Address1 + "</td>"
-                       + "<td style='display:none;'>" + objdata[i].Physician_Address2 + "</td>"
-                       + "<td style='display:none;'>" + objdata[i].Physician_City + "</td>"
-                       + "<td style='display:none;'>" + objdata[i].Physician_State + "</td>"
-                       + "<td style='display:none;'>" + objdata[i].Physician_Zip + "</td>"
-                       + "<td style='display:none;'>" + objdata[i].Physician_Telephone + "</td>"
-                       + "<td style='display:none;'>" + objdata[i].Physician_Fax + "</td>"
-                       + "<td style='display:none;'>" + objdata[i].Physician_EMail + "</td></tr>";
-                }
-                $("#tblPhysicianDetails").find('tbody').append(tabContents);
-            }
-            //Jira CAP-2014
-            //scrolify($('#tblPhysicianDetails'), 132);
-            scrolify($('#tblPhysicianDetails'), 150);
-        },
-        error: function OnError(xhr) {
-            { sessionStorage.setItem('StartLoading', 'false'); StopLoadFromPatChart(); }
-            if (xhr.status == 999)
-                window.location = "/frmSessionExpired.aspx";
-            else {
-                var log = JSON.parse(xhr.responseText);
-                console.log(log);
-                alert("USER MESSAGE:\n" +
-                                    ". Cannot process request. Please Login again and retry. \nEXCEPTION DETAILS: \n" +
-                                   "Message: " + log.Message);
-            }
-        }
-    });
-}
-
+//            var objdata = $.parseJSON(data.d);
+//            var tabContents;
+//            if (objdata.length > 0) {
+//                for (var i = 0; i < objdata.length; i++) {
+//                    $('#tblPhysicianDetails tbody tr').remove();
+//                    var vName = '';
+//                    var vOrganization = '';
+//                    if (objdata[i].Category.toUpperCase() == "ORGANIZATION")
+//                    {
+//                        vName = objdata[i].Company;
+//                        vOrganization = objdata[i].Name;
+//                    }
+//                    else
+//                    {
+//                        vOrganization = objdata[i].Company;
+//                        vName = objdata[i].Name;
+//                    }
+//                    tabContents += "<tr class='Gridbodystyle'>"
+//                       + "<td style='width:5%;'><img src=" + "Resources/edit.gif" + " onclick='Update(this);'" + "/></td>"
+//                       + "<td style='width:15%;'>" + objdata[i].Category + "</td>"
+//                       + "<td style='width:20%;'>" + vName + "</td>"
+//                       + "<td style='width:28%;display:none;'>" + objdata[i].Specialty + "</td>"
+//                       + "<td style='width:10%;'>" + objdata[i].NPI + "</td>"
+//                       + "<td style='width:25%;display:none;'>" + objdata[i].Facility + "</td>"
+//                       + "<td style='display:none;'>" + objdata[i].Physician_Library_ID + "</td>"
+//                       + "<td style='display:none;'>" + objdata[i].Physician_Type + "</td>"
+//                       + "<td style='display:none;'>" + vOrganization + "</td>"
+//                       + "<td style='display:none;'>" + objdata[i].Physician_Address1 + "</td>"
+//                       + "<td style='display:none;'>" + objdata[i].Physician_Address2 + "</td>"
+//                       + "<td style='display:none;'>" + objdata[i].Physician_City + "</td>"
+//                       + "<td style='display:none;'>" + objdata[i].Physician_State + "</td>"
+//                       + "<td style='display:none;'>" + objdata[i].Physician_Zip + "</td>"
+//                       + "<td style='display:none;'>" + objdata[i].Physician_Telephone + "</td>"
+//                       + "<td style='display:none;'>" + objdata[i].Physician_Fax + "</td>"
+//                       + "<td style='display:none;'>" + objdata[i].Physician_EMail + "</td></tr>";
+//                }
+//                $("#tblPhysicianDetails").find('tbody').append(tabContents);
+//            }
+//            //Jira CAP-2014
+//            //scrolify($('#tblPhysicianDetails'), 132);
+//            scrolify($('#tblPhysicianDetails'), 150);
+//        },
+//        error: function OnError(xhr) {
+//            { sessionStorage.setItem('StartLoading', 'false'); StopLoadFromPatChart(); }
+//            if (xhr.status == 999)
+//                window.location = "/frmSessionExpired.aspx";
+//            else {
+//                var log = JSON.parse(xhr.responseText);
+//                console.log(log);
+//                alert("USER MESSAGE:\n" +
+//                                    ". Cannot process request. Please Login again and retry. \nEXCEPTION DETAILS: \n" +
+//                                   "Message: " + log.Message);
+//            }
+//        }
+//    });
+//}
+//Jira CAP-2030 - End
 //Check with fax
 function Add(sCheckDuplicatefax) {
     var Specialtylist = '';
@@ -480,48 +492,54 @@ function Add(sCheckDuplicatefax) {
                     return;
                 }
                 if (vgrd != "none") {
-                    for (var i = 0; i < objdata.length; i++) {
-                        $('#tblPhysicianDetails tbody tr').remove();
-                        var vName = '';
-                        var vOrganization = '';
-                        if (objdata[i].Category.toUpperCase() == "ORGANIZATION") {
-                            vName = objdata[i].Company;
-                            vOrganization = objdata[i].Name;
-                        }
-                        else {
-                            vOrganization = objdata[i].Company;
-                            vName = objdata[i].Name;
-                        }
-                        tabContents += "<tr class='Gridbodystyle'>"
-                           + "<td style='width:5%;'><img src=" + "Resources/edit.gif" + " onclick='Update(this);'" + "/></td>"
-                           + "<td style='width:15%;'>" + objdata[i].Category + "</td>"
-                           + "<td style='width:20%;'>" + vName + "</td>"
-                           + "<td style='width:28%;display:none;'>" + objdata[i].Specialty + "</td>"
-                           + "<td style='width:10%;'>" + objdata[i].NPI + "</td>"
-                           + "<td style='width:25%;display:none;'>" + objdata[i].Facility + "</td>"
-                           + "<td style='display:none;'>" + objdata[i].Physician_Library_ID + "</td>"
-                           + "<td style='display:none;'>" + objdata[i].Physician_Type + "</td>"
-                           + "<td style='display:none;'>" + vOrganization + "</td>"
-                           + "<td style='display:none;'>" + objdata[i].Physician_Address1 + "</td>"
-                           + "<td style='display:none;'>" + objdata[i].Physician_Address2 + "</td>"
-                           + "<td style='display:none;'>" + objdata[i].Physician_City + "</td>"
-                           + "<td style='display:none;'>" + objdata[i].Physician_State + "</td>"
-                           + "<td style='display:none;'>" + objdata[i].Physician_Zip + "</td>"
-                           + "<td style='display:none;'>" + objdata[i].Physician_Telephone + "</td>"
-                           + "<td style='display:none;'>" + objdata[i].Physician_Fax + "</td>"
-                           + "<td style='display:none;'>" + objdata[i].Physician_EMail + "</td></tr>";
+                    //Jira CAP-2030 - Start
+                    //for (var i = 0; i < objdata.length; i++) {
+                    //    $('#tblPhysicianDetails tbody tr').remove();
+                    //    var vName = '';
+                    //    var vOrganization = '';
+                    //    if (objdata[i].Category.toUpperCase() == "ORGANIZATION") {
+                    //        vName = objdata[i].Company;
+                    //        vOrganization = objdata[i].Name;
+                    //    }
+                    //    else {
+                    //        vOrganization = objdata[i].Company;
+                    //        vName = objdata[i].Name;
+                    //    }
+                    //    tabContents += "<tr class='Gridbodystyle'>"
+                    //       + "<td style='width:5%;'><img src=" + "Resources/edit.gif" + " onclick='Update(this);'" + "/></td>"
+                    //       + "<td style='width:15%;'>" + objdata[i].Category + "</td>"
+                    //       + "<td style='width:20%;'>" + vName + "</td>"
+                    //       + "<td style='width:28%;display:none;'>" + objdata[i].Specialty + "</td>"
+                    //       + "<td style='width:10%;'>" + objdata[i].NPI + "</td>"
+                    //       + "<td style='width:25%;display:none;'>" + objdata[i].Facility + "</td>"
+                    //       + "<td style='display:none;'>" + objdata[i].Physician_Library_ID + "</td>"
+                    //       + "<td style='display:none;'>" + objdata[i].Physician_Type + "</td>"
+                    //       + "<td style='display:none;'>" + vOrganization + "</td>"
+                    //       + "<td style='display:none;'>" + objdata[i].Physician_Address1 + "</td>"
+                    //       + "<td style='display:none;'>" + objdata[i].Physician_Address2 + "</td>"
+                    //       + "<td style='display:none;'>" + objdata[i].Physician_City + "</td>"
+                    //       + "<td style='display:none;'>" + objdata[i].Physician_State + "</td>"
+                    //       + "<td style='display:none;'>" + objdata[i].Physician_Zip + "</td>"
+                    //       + "<td style='display:none;'>" + objdata[i].Physician_Telephone + "</td>"
+                    //       + "<td style='display:none;'>" + objdata[i].Physician_Fax + "</td>"
+                    //       + "<td style='display:none;'>" + objdata[i].Physician_EMail + "</td></tr>";
 
-                    }
-                    $("#tblPhysicianDetails").find('tbody').append(tabContents);
+                    //}
+                    //$("#tblPhysicianDetails").find('tbody').append(tabContents);
+                    //Jira CAP-2030 - End
                 }
-                //Jira CAP-2014
-                //scrolify($('#tblPhysicianDetails'), 132);
-                scrolify($('#tblPhysicianDetails'), 150);
+                //Jira CAP-2030 - Start
+                ////Jira CAP-2014
+                ////scrolify($('#tblPhysicianDetails'), 132);
+                //scrolify($('#tblPhysicianDetails'), 150);
+                //Jira CAP-2030 - End
                 DisplayErrorMessage('110020');
                 Aftersave();
             }
-            //Jira CAP-2014
-            SearchByTextandCategory();
+            //Jira CAP-2030 - Start
+            ////Jira CAP-2014
+            //SearchByTextandCategory();
+            //Jira CAP-2030 - End
             { sessionStorage.setItem('StartLoading', 'false'); StopLoadFromPatChart(); }
         },
         error: function OnError(xhr) {
@@ -739,9 +757,9 @@ function AddProvider() {
             }
             if (vgrd == "none" && Getobjval == "None") {
                 DisplayErrorMessage('110020');
-                var IsEnableGrid = localStorage.getItem("IsEnableGrid");
-                if (IsEnableGrid != null && IsEnableGrid != undefined) {
-                    if (IsEnableGrid == "false") {
+                //var IsEnableGrid = localStorage.getItem("IsEnableGrid");
+                //if (IsEnableGrid != null && IsEnableGrid != undefined) {
+                //    if (IsEnableGrid == "false") {
                         $("#btnClose").click();
                         var vProviderName = $("#ddlPrefix")[0].value + ". " + $("#txtFirstName")[0].value + " " + document.getElementById("txtMI").value + " " + $("#txtLastName")[0].value;
                         var vPhyNmae = $("#ddlPrefix")[0].value + $("#txtFirstName")[0].value + " " + document.getElementById("txtMI").value + " " + $("#txtLastName")[0].value + $("#txtSuffix")[0].value;
@@ -751,17 +769,23 @@ function AddProvider() {
                         //    + "ADDR: " + $("#txtAddressLine1")[0].value + "," + $("#txtAddressLine2")[0].value + "," + $("#txtCity")[0].value + ","
                         //    + $("#txtState")[0].value + "," + $("#txtZip")[0].value
                         //    + "|" + "PH:" + $("#txtPhone")[0].value + "FAX:" + $("#txtFax")[0].value;
-
-                        var vFullName = $("#ddlPrefix")[0].value + " " + $("#txtFirstName")[0].value + " " + document.getElementById("txtMI").value + " " + $("#txtLastName")[0].value + "(" + $("#txtSuffix")[0].value + ")";
-                        var PCP_PhyDetails = objdata.split("|")[1] + "&" + vProviderName + "&" + vPhyNmae + "&" + $("#txtNPI")[0].value + "&" + vFullName + " | " + "NPI: " + $("#txtNPI")[0].value + " | " + "FACILITY: " + FacilityList + " | "
-                            + "ADDR: " + $("#txtAddressLine1")[0].value + ", " + $("#txtCity")[0].value + ", "
-                            + $("#txtState")[0].value + " " + $("#txtZip")[0].value
-                            + " | " + "PH:" + $("#txtPhone")[0].value + " | FAX:" + $("#txtFax")[0].value ;
-
+                if ($('#ddlCategory')[0].value != 'ORGANIZATION') {
+                    var vFullName = $("#ddlPrefix")[0].value + ". " + $("#txtFirstName")[0].value + " " + document.getElementById("txtMI").value + ", " + $("#txtLastName")[0].value + "(" + $("#txtSuffix")[0].value + ")";
+                    var PCP_PhyDetails = objdata.split("|")[1] + "&" + vProviderName + "&" + vPhyNmae + "&" + $("#txtNPI")[0].value + "&" + vFullName + " | " + "NPI: " + $("#txtNPI")[0].value + " | " + "Facility: " + FacilityList + " | "
+                        + "Address: " + $("#txtAddressLine1")[0].value + ", " + $("#txtCity")[0].value + ", "
+                        + $("#txtState")[0].value + " " + $("#txtZip")[0].value
+                        + " | " + "Phone No:" + $("#txtPhone")[0].value + " | Fax No:" + $("#txtFax")[0].value;
+                }
+                else {
+                    var PCP_PhyDetails = objdata.split("|")[1] + "&" + vProviderName + "&" + vPhyNmae + "&" + $("#txtNPI")[0].value + "&" + $('#txtCompany')[0].value + " | " + "NPI: " + $("#txtNPI")[0].value + " | " + "Facility: " + FacilityList + " | "
+                        + "Address: " + $("#txtAddressLine1")[0].value + ", " + $("#txtCity")[0].value + ", "
+                        + $("#txtState")[0].value + " " + $("#txtZip")[0].value
+                        + " | " + "Phone No:" + $("#txtPhone")[0].value + " | Fax No:" + $("#txtFax")[0].value;
+                }
 
                         localStorage.setItem("PhyDetails", PCP_PhyDetails);
-                    }
-                }
+                //    }
+                //}
                 Aftersave();
             }
             else if (objdata != "" && objdata.length > 0) {
@@ -797,50 +821,56 @@ function AddProvider() {
                    
                 }
                 if (vgrd != "none") {
-                    for (var i = 0; i < objdata.length; i++) {
-                        $('#tblPhysicianDetails tbody tr').remove();
+                    //Jira CAP-2030 - Start
+                    //for (var i = 0; i < objdata.length; i++) {
+                    //    $('#tblPhysicianDetails tbody tr').remove();
 
-                        var vName = '';
-                        var vOrganization = '';
-                        if (objdata[i].Category.toUpperCase() == "ORGANIZATION")
-                        {
-                            vName = objdata[i].Company;
-                            vOrganization = objdata[i].Name;
-                        }
-                        else
-                        {
-                            vOrganization = objdata[i].Company;
-                            vName = objdata[i].Name;
-                        }
-                        tabContents += "<tr class='Gridbodystyle'>"
-                           + "<td style='width:5%;'><img src=" + "Resources/edit.gif" + " onclick='Update(this);'" + "/></td>"
-                           + "<td style='width:15%;'>" + objdata[i].Category + "</td>"
-                           + "<td style='width:20%;'>" + vName + "</td>"
-                           + "<td style='width:28%;display:none;'>" + objdata[i].Specialty + "</td>"
-                           + "<td style='width:10%;'>" + objdata[i].NPI + "</td>"
-                           + "<td style='width:25%;display:none;'>" + objdata[i].Facility + "</td>"
-                           + "<td style='display:none;'>" + objdata[i].Physician_Library_ID + "</td>"
-                           + "<td style='display:none;'>" + objdata[i].Physician_Type + "</td>"
-                           + "<td style='display:none;'>" + vOrganization + "</td>"
-                           + "<td style='display:none;'>" + objdata[i].Physician_Address1 + "</td>"
-                           + "<td style='display:none;'>" + objdata[i].Physician_Address2 + "</td>"
-                           + "<td style='display:none;'>" + objdata[i].Physician_City + "</td>"
-                           + "<td style='display:none;'>" + objdata[i].Physician_State + "</td>"
-                           + "<td style='display:none;'>" + objdata[i].Physician_Zip + "</td>"
-                           + "<td style='display:none;'>" + objdata[i].Physician_Telephone + "</td>"
-                           + "<td style='display:none;'>" + objdata[i].Physician_Fax + "</td>"
-                           + "<td style='display:none;'>" + objdata[i].Physician_EMail + "</td></tr>";
-                    }
-                    $("#tblPhysicianDetails").find('tbody').append(tabContents);
+                    //    var vName = '';
+                    //    var vOrganization = '';
+                    //    if (objdata[i].Category.toUpperCase() == "ORGANIZATION")
+                    //    {
+                    //        vName = objdata[i].Company;
+                    //        vOrganization = objdata[i].Name;
+                    //    }
+                    //    else
+                    //    {
+                    //        vOrganization = objdata[i].Company;
+                    //        vName = objdata[i].Name;
+                    //    }
+                    //    tabContents += "<tr class='Gridbodystyle'>"
+                    //       + "<td style='width:5%;'><img src=" + "Resources/edit.gif" + " onclick='Update(this);'" + "/></td>"
+                    //       + "<td style='width:15%;'>" + objdata[i].Category + "</td>"
+                    //       + "<td style='width:20%;'>" + vName + "</td>"
+                    //       + "<td style='width:28%;display:none;'>" + objdata[i].Specialty + "</td>"
+                    //       + "<td style='width:10%;'>" + objdata[i].NPI + "</td>"
+                    //       + "<td style='width:25%;display:none;'>" + objdata[i].Facility + "</td>"
+                    //       + "<td style='display:none;'>" + objdata[i].Physician_Library_ID + "</td>"
+                    //       + "<td style='display:none;'>" + objdata[i].Physician_Type + "</td>"
+                    //       + "<td style='display:none;'>" + vOrganization + "</td>"
+                    //       + "<td style='display:none;'>" + objdata[i].Physician_Address1 + "</td>"
+                    //       + "<td style='display:none;'>" + objdata[i].Physician_Address2 + "</td>"
+                    //       + "<td style='display:none;'>" + objdata[i].Physician_City + "</td>"
+                    //       + "<td style='display:none;'>" + objdata[i].Physician_State + "</td>"
+                    //       + "<td style='display:none;'>" + objdata[i].Physician_Zip + "</td>"
+                    //       + "<td style='display:none;'>" + objdata[i].Physician_Telephone + "</td>"
+                    //       + "<td style='display:none;'>" + objdata[i].Physician_Fax + "</td>"
+                    //       + "<td style='display:none;'>" + objdata[i].Physician_EMail + "</td></tr>";
+                    //}
+                    //$("#tblPhysicianDetails").find('tbody').append(tabContents);
+                    //Jira CAP-2030 - End
                 }
-                //Jira CAP-2014
-                //scrolify($('#tblPhysicianDetails'), 132);
-                scrolify($('#tblPhysicianDetails'), 150);
+                //Jira CAP-2030 - Start
+                ////Jira CAP-2014
+                ////scrolify($('#tblPhysicianDetails'), 132);
+                //scrolify($('#tblPhysicianDetails'), 150);
+                //Jira CAP-2030 - End
                 DisplayErrorMessage('110020');
                 Aftersave();
             }
-            //Jira CAP-2014
-            SearchByTextandCategory();
+            //Jira CAP-2030 - Start
+            ////Jira CAP-2014
+            //SearchByTextandCategory();
+            //Jira CAP-2030 - End
             { sessionStorage.setItem('StartLoading', 'false'); StopLoadFromPatChart(); }
         },
         error: function OnError(xhr) {
@@ -1399,24 +1429,25 @@ function Update(item) {
 
 //Jira CAP-2014
 function SearchByTextandCategory() {
-    var SearchText = document.getElementById("txtSearch");
-    
-    $("#tblPhysicianDetails tbody tr").each(function () {
-        var row = "";
-        $(this).find("td").each(function () {
-            if ($(this)[0].style.display != "none") {
-                row = row + $(this)[0].innerText + "_";
-            }
-        });
-        if (row.toUpperCase().indexOf(SearchText.value.toUpperCase()) > -1 && ($(this).find("td:eq(1)")[0].innerText == document.getElementById("cboCategory").value || document.getElementById("cboCategory").value == "ALL")) { //
-            $(this)[0].style.display = "";
-        }
-        else {
-            $(this)[0].style.display = "none";
-        }
+    //Jira CAP-2030 - Start
+    //var SearchText = document.getElementById("txtSearch");
 
-    });
+    //$("#tblPhysicianDetails tbody tr").each(function () {
+    //        var row = "";
+    //        $(this).find("td").each(function () {
+    //            if ($(this)[0].style.display != "none") {
+    //                row = row + $(this)[0].innerText + "_";
+    //            }
+    //        });
+    //        if (row.toUpperCase().indexOf(SearchText.value.toUpperCase()) > -1 && ($(this).find("td:eq(1)")[0].innerText == document.getElementById("cboCategory").value || document.getElementById("cboCategory").value == "ALL")) { //
+    //            $(this)[0].style.display = "";
+    //        }
+    //        else {
+    //            $(this)[0].style.display = "none";
+    //        }
 
+    //});
+    //Jira CAP-2030 - End
 }
 
 //Jira CAP-2014

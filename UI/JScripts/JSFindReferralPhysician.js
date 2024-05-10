@@ -155,7 +155,7 @@ $(document).ready(function () {
     }
     $("#imgClearProviderText").css({
         "position": "absolute",
-        "right": "40px",
+        "right": "22px",
         "top": "41px",
         "cursor": "pointer",
         "width": "10px",

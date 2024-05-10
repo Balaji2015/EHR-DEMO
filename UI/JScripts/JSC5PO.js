@@ -1156,20 +1156,25 @@ function OpenModal(data) {
         localStorage.removeItem("IsEFax");
         { sessionStorage.setItem('StartLoading', 'true'); StartLoadFromPatChart(); }
         localStorage.setItem("IsEnableGrid", "true");
-        $(top.window.document).find("#TabPhysicianLibrary").modal({ backdrop: "static", keyboard: false }, 'show');
-        $(top.window.document).find("#TabModalPhysicianLibraryTitle")[0].textContent = "Provider Library";
-        $(top.window.document).find("#TabmdldlgPhysicianLibrary")[0].style.width = "850px";
-        //Jira CAP-2014 - Start
-        //$(top.window.document).find("#TabmdldlgPhysicianLibrary")[0].style.height = "95%";
-        $(top.window.document).find("#TabmdldlgPhysicianLibrary")[0].style.height = "100%";
-        $(top.window.document).find("#TabmdldlgPhysicianLibrary").find(".modal-content")[0].style.height = "95%";
-        $(top.window.document).find("#TabPhysicianLibrary")[0].style.marginTop = "12px";
-        //Jira CAP-2014 - End
-        var sPath = "frmPhysicianLibray.aspx";
-        $(top.window.document).find("#TabPhysicianLibraryFrame")[0].style.height = "95%";
-        $(top.window.document).find("#TabPhysicianLibraryFrame")[0].contentDocument.location.href = sPath;
-        $(top.window.document).find("#TabPhysicianLibrary").modal("show");
-        $(top.window.document).find("#TabPhysicianLibrary").one("hidden.bs.modal", function (e) {
+        //$(top.window.document).find("#TabPhysicianLibrary").modal({ backdrop: "static", keyboard: false }, 'show');
+        //$(top.window.document).find("#TabModalPhysicianLibraryTitle")[0].textContent = "Provider Library";
+        //$(top.window.document).find("#TabmdldlgPhysicianLibrary")[0].style.width = "850px";
+        ////Jira CAP-2014 - Start
+        ////$(top.window.document).find("#TabmdldlgPhysicianLibrary")[0].style.height = "95%";
+        //$(top.window.document).find("#TabmdldlgPhysicianLibrary")[0].style.height = "100%";
+        //$(top.window.document).find("#TabmdldlgPhysicianLibrary").find(".modal-content")[0].style.height = "95%";
+        //$(top.window.document).find("#TabPhysicianLibrary")[0].style.marginTop = "12px";
+        ////Jira CAP-2014 - End
+        //var sPath = "frmPhysicianLibray.aspx";
+        //$(top.window.document).find("#TabPhysicianLibraryFrame")[0].style.height = "95%";
+        //$(top.window.document).find("#TabPhysicianLibraryFrame")[0].contentDocument.location.href = sPath;
+        //$(top.window.document).find("#TabPhysicianLibrary").modal("show");
+        //$(top.window.document).find("#TabPhysicianLibrary").one("hidden.bs.modal", function (e) {
+        //});
+        var obj = new Array();
+        var ResultFindReferralPhysician = openModal("frmFindReferralPhysician.aspx", 256, 930, obj, "RadWindow1");
+        var objWindow = $find("RadWindow1");
+        $(top.window.document).find("RadWindow1").one("hidden.bs.modal", function (e) {
         });
         return false;
     }

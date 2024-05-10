@@ -13473,8 +13473,8 @@ and  w.Obj_Type  in ('DIAGNOSTIC ORDER','INTERNAL ORDER','IMMUNIZATION ORDER','R
  M.Facility_Name,P.Physician_Fax,ifnull(f.facility_Address1,p.Physician_Address1),P.Physician_Telephone,P.Company, P.Category FROM
  `physician_library` P left JOIN map_facility_physician M ON (P.Physician_Library_ID=M.Physician_ID)
  left join physician_specialty s on (p.Physician_Library_ID=s.Physician_ID)  left join facility_library
- as f on f.facility_name=m.facility_name WHERE P.Category in('PROVIDER','NON USER(Physician)','NON CAPELLA USER(Physician)','ORGANIZATION')
- and (P.Physician_Last_Name LIKE ? OR P.Physician_First_Name LIKE ? or M.Facility_Name like ? or P.Company LIKE ?);]]>
+ as f on f.facility_name=m.facility_name WHERE P.Category in('PROVIDER','NON CAPELLA USER','NON CAPELLA USER(Physician)','ORGANIZATION')
+ and (P.Physician_Last_Name LIKE ? OR P.Physician_First_Name LIKE ? or M.Facility_Name like ? or P.Company LIKE ? or f.Facility_City LIKE ? or p.Physician_City LIKE ?);]]>
 	</sql-query>
 	<sql-query name="Find.Physician.by.ID">
 		<!--<![CDATA[SELECT P.Physician_Library_ID,P.Physician_Prefix,P.Physician_First_Name, P.Physician_Middle_Name,P.Physician_Last_Name,P.Physician_Suffix, S.Specialty,P.Physician_City,P.Physician_State, P.Physician_Zip,P.Physician_NPI,S.physician_specialty_id,M.Facility_Name,P.Physician_Fax,ifnull(f.facility_Address1,''),P.Physician_Telephone FROM `physician_library` P left JOIN map_facility_physician M ON (P.Physician_Library_ID=M.Physician_ID) left join physician_specialty s on (p.Physician_Library_ID=s.Physician_ID)  left join facility_library as f on f.facility_name=m.facility_name WHERE P.Physician_Last_Name LIKE ? OR P.Physician_First_Name LIKE ? or S.Specialty LIKE ? or P.Physician_NPI LIKE ? or M.Facility_Name like ? ;]]>-->
@@ -13486,7 +13486,7 @@ and  w.Obj_Type  in ('DIAGNOSTIC ORDER','INTERNAL ORDER','IMMUNIZATION ORDER','R
  M.Facility_Name,P.Physician_Fax,ifnull(f.facility_Address1,p.Physician_Address1),P.Physician_Telephone FROM
  `physician_library` P left JOIN map_facility_physician M ON (P.Physician_Library_ID=M.Physician_ID)
  left join physician_specialty s on (p.Physician_Library_ID=s.Physician_ID)  left join facility_library
- as f on f.facility_name=m.facility_name WHERE P.Category in('PROVIDER','NON USER(Physician)','NON CAPELLA USER(Physician)')
+ as f on f.facility_name=m.facility_name WHERE P.Category in('PROVIDER','NON CAPELLA USER','NON CAPELLA USER(Physician)')
  and Physician_Library_ID in (:PhyIds) group by Physician_Library_ID;]]>
 	</sql-query>
 
@@ -13500,7 +13500,7 @@ and  w.Obj_Type  in ('DIAGNOSTIC ORDER','INTERNAL ORDER','IMMUNIZATION ORDER','R
  M.Facility_Name,P.Physician_Fax,ifnull(f.facility_Address1,p.Physician_Address1),P.Physician_Telephone FROM
  `physician_library` P left JOIN map_facility_physician M ON (P.Physician_Library_ID=M.Physician_ID)
  left join physician_specialty s on (p.Physician_Library_ID=s.Physician_ID)  left join facility_library
- as f on f.facility_name=m.facility_name WHERE P.Category in('PROVIDER','NON USER(Physician)','NON CAPELLA USER(Physician)')
+ as f on f.facility_name=m.facility_name WHERE P.Category in('PROVIDER','NON CAPELLA USER','NON CAPELLA USER(Physician)')
  and Physician_Library_ID=? group by Physician_Library_ID;]]>
 	</sql-query>
 
@@ -13517,7 +13517,7 @@ and  w.Obj_Type  in ('DIAGNOSTIC ORDER','INTERNAL ORDER','IMMUNIZATION ORDER','R
  left JOIN map_facility_physician M ON (P.Physician_Library_ID=M.Physician_ID)
  left join physician_specialty s on (p.Physician_Library_ID=s.Physician_ID)  
  left join facility_library f on f.facility_name=m.facility_name 
- WHERE P.Category in('PROVIDER','NON USER(Physician)','NON CAPELLA USER(Physician)')
+ WHERE P.Category in('PROVIDER','NON CAPELLA USER','NON CAPELLA USER(Physician)')
  and i.Human_ID= ?  and i.Insurance_Type='PRIMARY' and i.Active='Yes'and i.PCP_ID<>0 group by P.Physician_Library_ID;]]>
 	</sql-query>
 	
@@ -13530,7 +13530,7 @@ and  w.Obj_Type  in ('DIAGNOSTIC ORDER','INTERNAL ORDER','IMMUNIZATION ORDER','R
     P.Physician_Fax,ifnull(f.facility_Address1,''),P.Physician_Telephone,
     p.Physician_EMail,p.Company,p.Category 
     FROM `physician_library` P left JOIN map_facility_physician M ON (P.Physician_Library_ID=M.Physician_ID) left join facility_library as f on f.facility_name=m.facility_name 
-    WHERE P.Category in('PROVIDER','NON USER(Physician)','ORGANIZATION','USER','NON CAPELLA USER','NON CAPELLA USER(Physician)') and (P.Physician_Last_Name LIKE ? OR P.Physician_First_Name LIKE ? or M.Facility_Name like ?  or P.Company like ?) ;]]>-->
+    WHERE P.Category in('PROVIDER','NON CAPELLA USER','ORGANIZATION','USER','NON CAPELLA USER','NON CAPELLA USER(Physician)') and (P.Physician_Last_Name LIKE ? OR P.Physician_First_Name LIKE ? or M.Facility_Name like ?  or P.Company like ?) ;]]>-->
 
 		<!--<Jira CAP-1535 - New Query>-->
 		<![CDATA[SELECT P.Physician_Library_ID,P.Physician_Prefix,P.Physician_First_Name, P.Physician_Middle_Name,P.Physician_Last_Name,P.Physician_Suffix, 
@@ -13538,7 +13538,7 @@ and  w.Obj_Type  in ('DIAGNOSTIC ORDER','INTERNAL ORDER','IMMUNIZATION ORDER','R
     P.Physician_Fax,ifnull(f.facility_Address1,ifnull(P.Physician_Address1,'')),P.Physician_Telephone,
     p.Physician_EMail,p.Company,p.Category 
     FROM `physician_library` P left JOIN map_facility_physician M ON (P.Physician_Library_ID=M.Physician_ID) left join facility_library as f on f.facility_name=m.facility_name 
-    WHERE P.Category in('PROVIDER','NON USER(Physician)','ORGANIZATION','USER','NON CAPELLA USER','NON CAPELLA USER(Physician)') and (P.Physician_Last_Name LIKE ? OR P.Physician_First_Name LIKE ? or M.Facility_Name like ?  or P.Company like ?) ;]]>
+    WHERE P.Category in('PROVIDER','NON CAPELLA USER','ORGANIZATION','USER','NON CAPELLA USER','NON CAPELLA USER(Physician)') and (P.Physician_Last_Name LIKE ? OR P.Physician_First_Name LIKE ? or M.Facility_Name like ?  or P.Company like ?) ;]]>
 
 
 	</sql-query>
