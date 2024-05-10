@@ -908,11 +908,12 @@ function PcpPrimaryDefault(humanid) {
             //Cap - 1234
             var TabVal = document.getElementById("hdnTabRefPcpChange").value
             if (TabVal != undefined && TabVal != null && TabVal == "PCP") {
-                document.getElementById("txtProviderSearch").value = objdata.split("&")[1];
+                document.getElementById("txtProviderSearch").value = objdata.split("&")[1] ?? "";
             }
-            document.getElementById("hdnpcpprovider").value = objdata.split("&")[1];
-            document.getElementById("hdnpcpprovidersearch").value = objdata.split("&")[1];
-            document.getElementById("hdnEditPhysicianId").value = objdata.split("&")[0];
+            //CAP-2041
+            document.getElementById("hdnpcpprovider").value = objdata.split("&")[1] ?? "";
+            document.getElementById("hdnpcpprovidersearch").value = objdata.split("&")[1] ?? "";
+            document.getElementById("hdnEditPhysicianId").value = objdata.split("&")[0] ?? "";
         }
     });
 }
