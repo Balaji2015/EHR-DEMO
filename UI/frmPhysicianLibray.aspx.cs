@@ -68,9 +68,13 @@ namespace Acurus.Capella.UI
                         txtAddressLine2.Value = ilstPhysicianLibrary[0].PhyAddress2;
                         txtCity.Value = ilstPhysicianLibrary[0].PhyCity;
                         txtState.Value = ilstPhysicianLibrary[0].PhyState;
-                        txtZip.Value = ilstPhysicianLibrary[0].PhyZip;
-                        txtPhone.Value = ilstPhysicianLibrary[0].PhyTelephone;
-                        txtFax.Value = ilstPhysicianLibrary[0].PhyFax;
+                        //Jira CAP-2064 and CAP-2065
+                        //txtZip.Value = ilstPhysicianLibrary[0].PhyZip;
+                        //txtPhone.Value = ilstPhysicianLibrary[0].PhyTelephone;
+                        //txtFax.Value = ilstPhysicianLibrary[0].PhyFax;
+                        txtZip.Value = ilstPhysicianLibrary[0].PhyZip.Replace(" ", "");
+                        txtPhone.Value = ilstPhysicianLibrary[0].PhyTelephone.Replace(" ","");
+                        txtFax.Value = ilstPhysicianLibrary[0].PhyFax.Replace(" ", "");
                         txtEmail.Value = ilstPhysicianLibrary[0].PhyEMail;
                         btnSave.InnerText = "Update";
                         btnClearAll.InnerText = "Cancel";
