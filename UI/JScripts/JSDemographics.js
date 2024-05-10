@@ -3664,7 +3664,9 @@ function OpenAddPhysician() {
         //CAP-291 - Preventing undefined
         var PhyDetails = localStorage.getItem("PhyDetails") ?? "";
         var PhyID = PhyDetails.split("&")[0];
-        if (PhyID != "") {
+        //Cap - 2071
+        //if (PhyID != ""){
+        if (PhyID != "" && PhyDetails.split("&")[4] != undefined) {
             document.getElementById("ctl00_C5POBody_txtProviderSearch").attributes['data-phy-id'].value = PhyID;
             document.getElementById("ctl00_C5POBody_txtProviderSearch").attributes['data-phy-gridname'].value = PhyDetails.split("&")[1];
             document.getElementById("ctl00_C5POBody_txtProviderSearch").attributes['data-phy-details'].value = PhyDetails.split("&")[2];
