@@ -137,6 +137,10 @@ function OnLoadPhysician() {
 var intProviderlen = -1;
 var arrProvider = [];
 $(document).ready(function () {
+    var IsMenuLevel = "";
+    if (document.URL.indexOf("IsMenuLevel") > -1) {
+        IsMenuLevel = document.URL.slice(document.URL.indexOf("IsMenuLevel"), document.URL.length).split("&")[0].split("=")[1]
+    }
     var curleft = curtop = 0;
     var current_element = document.getElementById('txtPatientSearch');
     if (current_element == null) {
@@ -182,6 +186,7 @@ $(document).ready(function () {
                     var bMoreThanOneKeyword = (strkeyWords.length >= 2 && strkeyWords[1].trim() != "") ? true : false;
                     var WSData = {
                         text_searched: strkeyWords[0],
+                        IsMenulevel: IsMenuLevel,
                     };
                     document.getElementById('btnAddPhysician').disabled = false;
                     $.ajax({

@@ -32,7 +32,7 @@ namespace Acurus.Capella.UI
         #region Web Methods
         [System.Web.Script.Services.ScriptMethod()]
         [System.Web.Services.WebMethod(EnableSession = true)]
-        public static string GetProviderDetailsByTokens(string text_searched)
+        public static string GetProviderDetailsByTokens(string text_searched , string IsMenulevel)
         {
             if (ClientSession.UserName == string.Empty)
             {
@@ -59,7 +59,7 @@ namespace Acurus.Capella.UI
                 {
                     FindPhysican physician_dto = new FindPhysican();
                     PhysicianManager objPhysicianManager = new PhysicianManager();
-                    physician_dto = objPhysicianManager.FindPhysician(text_searched);
+                    physician_dto = objPhysicianManager.FindPhysician(text_searched, IsMenulevel);
                 
                     
                     PhysicianFacilityDTO obj1=new PhysicianFacilityDTO();

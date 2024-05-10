@@ -179,7 +179,7 @@ document.getElementById(GetClientId("txtPatientType")).value=Result.HumanType;
    var oWnd = GetRadWindow();
  
  var childWindow=oWnd.BrowserWindow.radopen("frmFindReferralPhysician.aspx","MessageWindow");
-setRadWindowProperties(childWindow,150,860);
+ setRadWindowProperties(childWindow, 256, 930);
  childWindow.add_close(FindReferralClick)
 
  {
@@ -208,7 +208,7 @@ document.getElementById(GetClientId("hdnRefToPhyID")).value==Result.ulPhyId;
    var oWnd = GetRadWindow();
  var HumanId = document.getElementById(GetClientId('txtPatAccNo')).value;
  var childWindow=oWnd.BrowserWindow.radopen("frmFindReferralPhysician.aspx","MessageWindow");
-setRadWindowProperties(childWindow,150,860);
+ setRadWindowProperties(childWindow, 256, 930);
  childWindow.add_close(FindReferralPhysicianClick)
   childWindow.remove_close(SelectPlanClick);  
   childWindow.remove_close(FindPatientClick);
@@ -277,7 +277,7 @@ document.getElementById("btnPlan").click();
 
         var oWnd = GetRadWindow();
         var childWindow = oWnd.BrowserWindow.radopen("frmFindReferralPhysician.aspx", "CaptureAutnorizationWindow");
-        setRadWindowProperties(childWindow, 150, 850);
+        setRadWindowProperties(childWindow, 256, 930);
         childWindow.add_close(OpenRefFromPhy)
         document.getElementById(GetClientId('btnSave1')).disabled = false;
         childWindow.remove_close(OpenFindRefPhy);
@@ -307,7 +307,7 @@ return;
 
         var oWnd = GetRadWindow();
         var childWindow = oWnd.BrowserWindow.radopen("frmFindReferralPhysician.aspx", "CaptureAutnorizationWindow");
-        setRadWindowProperties(childWindow, 150, 850);
+        setRadWindowProperties(childWindow, 256, 930);
         childWindow.add_close(OpenFindRefPhy)
         document.getElementById(GetClientId('btnSave1')).disabled = false;
         childWindow.remove_close(OpenRefFromPhy);

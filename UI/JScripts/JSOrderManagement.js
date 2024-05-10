@@ -14,7 +14,7 @@ function OpenFindPhysicianOld() {
             oWin.remove_close(OnClientCloseFindProvider);
             oWin.SetModal(true);
             oWin.set_visibleStatusbar(false);
-            oWin.setSize(875, 150);
+            oWin.setSize(930, 256);
             oWin.set_behaviors(Telerik.Web.UI.WindowBehaviors.Close | Telerik.Web.UI.WindowBehaviors.Move);
             oWin.set_iconUrl("Resources/16_16.ico");
             oWin.set_keepInScreenBounds(true);
@@ -30,7 +30,7 @@ function OpenFindPhysician() {
     setTimeout(function () {
         var oWnd = GetRadWindow();
         var childWindow = oWnd.BrowserWindow.radopen("frmFindReferralPhysician.aspx", "OrderManagementWindow");
-        setRadWindowProperties(childWindow, 150, 875);
+        setRadWindowProperties(childWindow, 256, 930);
         childWindow.remove_close(OnClientCloseFindPatient)
         childWindow.add_close(OnClientCloseFindProvider);
     }, 0);

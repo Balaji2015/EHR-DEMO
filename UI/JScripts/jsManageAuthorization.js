@@ -1879,8 +1879,10 @@ $("#txtReferredFrom").autocomplete({
                 arrProviderFrom = [];
                 var strkeyWords = $("#txtReferredFrom").val().split(' ');
                 var bMoreThanOneKeyword = (strkeyWords.length >= 2 && strkeyWords[1].trim() != "") ? true : false;
+                var sIsMenulevel = "";
                 var WSData = {
                     text_searched: strkeyWords[0],
+                    IsMenulevel: sIsMenulevel,
                 };
                 $.ajax({
                     type: "POST",
@@ -2114,8 +2116,10 @@ $("#txtReferredTo").autocomplete({
                 arrProviderTo = [];
                 var strkeyWords = $("#txtReferredTo").val().split(' ');
                 var bMoreThanOneKeyword = (strkeyWords.length >= 2 && strkeyWords[1].trim() != "") ? true : false;
+                var sIsMenulevel = "";
                 var WSData = {
                     text_searched: strkeyWords[0],
+                    IsMenulevel: sIsMenulevel,
                 };
                 $.ajax({
                     type: "POST",

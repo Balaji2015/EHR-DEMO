@@ -53,7 +53,7 @@ $(document).ready(function () {
     if ($("#txtProviderSearch").length > 0) {
         $("#txtProviderSearch").autocomplete({
             source: function (request, response) {
-                if ($("#txtProviderSearch").val().trim().length > 2) {
+                 if ($("#txtProviderSearch").val().trim().length > 2) {
                     if (intProviderlen == 0) {
 
                         { sessionStorage.setItem('StartLoading', 'true'); StartLoadFromPatChart(); }
@@ -61,8 +61,10 @@ $(document).ready(function () {
                         arrProvider = [];
                         var strkeyWords = $("#txtProviderSearch").val().split(' ');
                         var bMoreThanOneKeyword = (strkeyWords.length >= 2 && strkeyWords[1].trim() != "") ? true : false;
+                        var sIsMenuLevel = "";
                         var WSData = {
                             text_searched: strkeyWords[0],
+                            IsMenulevel: sIsMenuLevel,
                         };
                         $.ajax({
                             type: "POST",
@@ -638,7 +640,7 @@ function OpenRereralPhysician() {
             var oWnd = GetRadWindow();
             { sessionStorage.setItem('StartLoading', 'true'); StartLoadFromPatChart(); }
             var childWindow = oWnd.BrowserWindow.radopen("frmFindReferralPhysician.aspx", "MessageWindow");
-            setRadWindowProperties(childWindow, 150, 860);
+            setRadWindowProperties(childWindow, 256, 930);
             childWindow.add_close(function FindReferralPhysicianClick(oWindow, args) {
                 { sessionStorage.setItem('StartLoading', 'false'); StopLoadFromPatChart(); }
                 var Result = args.get_argument();

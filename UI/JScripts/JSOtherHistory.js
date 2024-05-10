@@ -243,7 +243,7 @@ function SavedSuccessfully() {
      {sessionStorage.setItem('StartLoading', 'false');StopLoadFromPatChart();}
 }
 function OpenReferralPhysician(sender,args) {
-    var result = openModal("frmFindReferralPhysician.aspx", 150, 860, null, "MessageWindowAD");
+    var result = openModal("frmFindReferralPhysician.aspx", 256, 930, null, "MessageWindowAD");
     var WindowName = $find('MessageWindowAD');
     WindowName.add_close(OnClientClose);    
 }

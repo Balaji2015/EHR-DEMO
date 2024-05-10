@@ -347,7 +347,7 @@ function OpenRereralPhysician() {
     var oWnd = GetRadWindow();
     var oManager = oWnd.get_windowManager();
     var childWindow = oManager.BrowserWindow.radopen("frmFindReferralPhysician.aspx", "ModalWindow");
-    SetRadWindowProperties(childWindow, 150, 855);
+    SetRadWindowProperties(childWindow, 256, 930);
 
     childWindow.add_close(RereralPhysicianClose)
     {
@@ -557,8 +557,7 @@ function CancelLibrary() {
 }
 
 function openFindPhysician(obj) {
-
-    var Result = window.showModalDialog("frmFindReferralPhysician.aspx", null, "center:yes;resizable:no;dialogHeight:150px;dialogWidth:855px");
+    var Result = window.showModalDialog("frmFindReferralPhysician.aspx", null, "center:yes;resizable:no;dialogHeight:256px;dialogWidth:930px");
     if (Result != null) {
         if (obj.name == "ImgLibSelectProvider") {
             document.getElementById("txtSelectProvider").value = Result.sPhyName;

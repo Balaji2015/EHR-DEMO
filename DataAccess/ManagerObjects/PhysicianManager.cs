@@ -627,16 +627,24 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
             return objFindPhy;
         }
 
-        public FindPhysican FindPhysician(string token)
+        public FindPhysican FindPhysician(string token, string sIsMenulevel)
         {
             IList<PhysicianFacilityDTO> phylst = new List<PhysicianFacilityDTO>();
             FindPhysican objFindPhy = new FindPhysican();
             ArrayList resultList = null;
-
+            IQuery query = null;
             using (ISession iMySession = NHibernateSessionManager.Instance.CreateISession())
             {
                 //CAP-1639
-                IQuery query = iMySession.GetNamedQuery("FindPhysician");
+                if (sIsMenulevel == "true")
+                {
+                    query = iMySession.GetNamedQuery("FindPhysician.MenuLevel");
+                }
+                else
+                {
+                    query = iMySession.GetNamedQuery("FindPhysician");
+                }
+               
                 query.SetParameter(0, "%" + token + "%");
                 query.SetParameter(1, "%" + token + "%");
                 query.SetParameter(2, "%" + token + "%");

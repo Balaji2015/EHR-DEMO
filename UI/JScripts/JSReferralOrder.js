@@ -95,7 +95,7 @@ function GetRadWindow() {
 
 function OpenFindPhysician() {
     var obj = new Array();
-    var ResultFindReferralPhysician = openModal("frmFindReferralPhysician.aspx", 150, 850, obj);
+    var ResultFindReferralPhysician = openModal("frmFindReferralPhysician.aspx", 256, 930, obj);
     if (ResultFindReferralPhysician != undefined) {
         var elementRef = document.getElementById(GetClientId("hdnTransferVaraible"));
         elementRef.value = "sPhyName=" + ResultFindReferralPhysician.sPhyName + "$" + "sPhySpecialty=" + ResultFindReferralPhysician.sPhySpecialty + "$" + "sPhyFacility=" + ResultFindReferralPhysician.sPhyFacility + "$" + "ulPhyId=" + ResultFindReferralPhysician.ulPhyId;

@@ -21,7 +21,7 @@ function Open() {
 
 function OpenRereralPhysician() {
     { sessionStorage.setItem('StartLoading', 'true'); StartLoadFromPatChart(); }
-    var result = openModal("frmFindReferralPhysician.aspx", 150, 860, null, "AddInsuredModalWindow");
+    var result = openModal("frmFindReferralPhysician.aspx", 256, 930, null, "AddInsuredModalWindow");
     var WindowName = $find('AddInsuredModalWindow');
     WindowName.add_close(RereralPhysicianClick);
     WindowName.remove_close(SelectPatientClick);

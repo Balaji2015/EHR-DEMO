@@ -113,7 +113,7 @@ function OpenFindPhysician() {
         oWin.remove_close(OnClientCloseFindPhysician);
         oWin.SetModal(true);
         oWin.set_visibleStatusbar(false);
-        oWin.setSize(875, 150);
+        oWin.setSize(930, 256);
         oWin.set_behaviors(Telerik.Web.UI.WindowBehaviors.Close | Telerik.Web.UI.WindowBehaviors.Move);
         oWin.set_iconUrl("Resources/16_16.ico");
         oWin.set_keepInScreenBounds(true);

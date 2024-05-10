@@ -394,7 +394,7 @@ function change(btn) {
     }
 }
 function OpenRereralPhysician() {
-    openModal("frmFindReferralPhysician.aspx", 150, 860, null, "ctl00_DemographicsModalWindow");
+    openModal("frmFindReferralPhysician.aspx", 256, 930, null, "ctl00_DemographicsModalWindow");
     var WindowName = $find('ctl00_DemographicsModalWindow');
     WindowName.remove_close(OpenPatIns);
     WindowName.remove_close(AddGuarantorClick);
@@ -3448,8 +3448,10 @@ $("#ctl00_C5POBody_txtProviderSearch").autocomplete({
             //var account_status = "ACTIVE"; //document.getElementById('chkIncludeInactive').checked ? "INACTIVE" : "ACTIVE";
             //var patient_status = "ALIVE";//document.getElementById("chkIncludeDeceased").checked ? "DECEASED" : "ALIVE";
             //var patient_type = "REGULAR";//document.getElementById("rdbRegular").checked ? "REGULAR" : (document.getElementById("rdbWC").checked ? "WC" : (document.getElementById("rdbAuto").checked ? "AUTO" : "ALL"));
+            var sIsMenulevel = "";
             var WSData = {
-                text_searched: strkeyWords
+                text_searched: strkeyWords,
+                IsMenulevel: sIsMenulevel,
                 //account_status: account_status,
                 //patient_status: patient_status,
                 //human_type: patient_type
