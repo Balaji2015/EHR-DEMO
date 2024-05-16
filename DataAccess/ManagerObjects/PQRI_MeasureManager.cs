@@ -23788,6 +23788,7 @@ p.snomed_code in (SELECT PQRI_Value FROM cqm_data where nqf_number =?  and PQRI_
 
                 ArrayList Enc_Denominator_lst138_Population3 = new ArrayList(EncounterDenominatorquery138_Population3.List());
                 ArrayList Enc_Denominator_lst138Denoninator_Population3 = null;
+                ArrayList Enc_Denominator_lst138_List2_Population3 = null;
                 IList<ulong> ulEncList138_Population3 = new List<ulong>();
 
                 //Denominator
@@ -23800,7 +23801,7 @@ p.snomed_code in (SELECT PQRI_Value FROM cqm_data where nqf_number =?  and PQRI_
                     EncounterDenominatorquery138_List2_Population3.SetParameter(1, "Denominator");
                     //EncounterDenominatorquery138_List2.SetParameter(2, "CMS138v10");
                     //EncounterDenominatorquery138_List2.SetParameter(3, "Denominator");
-                    ArrayList Enc_Denominator_lst138_List2_Population3 = new ArrayList(EncounterDenominatorquery138_List2_Population3.List());
+                    Enc_Denominator_lst138_List2_Population3 = new ArrayList(EncounterDenominatorquery138_List2_Population3.List());
 
                     //if (Enc_Denominator_lst138_List2_Population3 != null && Enc_Denominator_lst138_List2_Population3.Count > 0)
                     //{
@@ -23945,11 +23946,30 @@ p.snomed_code in (SELECT PQRI_Value FROM cqm_data where nqf_number =?  and PQRI_
                 //Numerator
                 Denominator = Denominator - DenominatorException;
 
-                if (Enc_Denominator_lst138Denoninator_Population3 != null && Enc_Denominator_lst138Denoninator_Population3.Count > 0)
+                if (Enc_Denominator_lst138_List2_Population3 != null && Enc_Denominator_lst138_List2_Population3.Count > 0)
                 {
+                    string sEnconterIDs = string.Join(",", Array.ConvertAll(ulEncList138_Population3.ToArray(), i => i.ToString()));
+                    string sQuery = @"select a.encounter_id,a.human_id,cast(a.created_date_and_time as char(100)),
+	cast(a.modified_date_and_time as char(100)),cast(r.stop_date as char(100)),r.rxnorm_id from  social_history a
+left join care_plan cp on a.encounter_id=cp.encounter_id
+left join rcopia_medication r on A.human_id=r.human_id
+left join e_m_coding em on A.encounter_id=em.encounter_id
+where a.human_id in ("+ sEnconterIDs + @") and  ((a.Is_Present='N' and a.Social_info like '%Tobacco Use and Exposure%' and a.recodes<>'')
+or
+((a.Is_Present='Y' and a.Social_info like '%Tobacco Use and Exposure%' and a.recodes<>'') and ((cp.care_name_value like '%Tobacco%' and  Snomed_Code!=''))) 
+or
+(a.Is_Present='Y' and a.Social_info like '%Tobacco Use and Exposure%' and a.recodes<>''
+and (
+em.procedure_code in (SELECT PQRI_Value FROM cqm_data where nqf_number =?  and 
+PQRI_calculation_Method=? and PQRI_Type ='CPT')
+or
+(r.deleted='N' and
+r.rxnorm_id in(SELECT PQRI_Value FROM cqm_data where nqf_number =?  and 
+PQRI_calculation_Method=? and PQRI_Type ='RXNORM') )))) group by human_id;";
+                    ISQLQuery Encounterumeratorquery138_Population3 = iMySession.CreateSQLQuery(sQuery);
 
-                    IQuery Encounterumeratorquery138_Population3 = iMySession.GetNamedQuery("PQRI.GetNumeratorCMS138v12.Tobacco");
-                    Encounterumeratorquery138_Population3.SetParameterList("EncIds", ulEncList138.ToArray());
+                    //IQuery Encounterumeratorquery138_Population3 = iMySession.GetNamedQuery("PQRI.GetNumeratorCMS138Population3v12.Tobacco");
+                    //Encounterumeratorquery138_Population3.SetParameterList("EncIds", ulEncList138_Population3.ToArray());
                     Encounterumeratorquery138_Population3.SetString(0, "CMS138v12");
                     Encounterumeratorquery138_Population3.SetString(1, "Numerator");
                     Encounterumeratorquery138_Population3.SetString(2, "CMS138v12");
