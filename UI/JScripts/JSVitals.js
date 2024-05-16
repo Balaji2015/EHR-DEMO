@@ -127,6 +127,8 @@ function ClearAll(e) {
     var buttontxt = $("#" + e).attr("value");
     if (buttontxt == undefined || buttontxt == "Clear All") {
         if (DisplayErrorMessage('200005') == true) {
+            //CAP-2022
+            sessionStorage.setItem("EncCancel", "false");
             { sessionStorage.setItem('StartLoading', 'true'); StartLoadFromPatChart(); }
             var ctrl = document.getElementsByTagName('INPUT');
             var element;
@@ -198,6 +200,8 @@ function ClearAll(e) {
     }
     else if (buttontxt == undefined || buttontxt == "Cancel") {
         if (DisplayErrorMessage('180049') == true) {
+            //CAP-2022
+            sessionStorage.setItem("EncCancel", "false");
             { sessionStorage.setItem('StartLoading', 'true'); StartLoadFromPatChart(); }
             var ctrl = document.getElementsByTagName('INPUT');
             var element;
