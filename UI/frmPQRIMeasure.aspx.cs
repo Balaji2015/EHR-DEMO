@@ -1628,7 +1628,7 @@ namespace Acurus.Capella.UI
 
             sMeasureNumber = ilstPqriMsr.Where(a => a.Measurement_No.Contains("CMS68") == true).Select(a => a.Measurement_No).Distinct().ToList()[0].ToString();
             //sbLoad.Append(SubXMLLoadForCQMIIIstage3("CMS68_v11_CAT_III_Header.xml", DenmoniatorList68, NumeratorList68, new List<ulong>(), DEX68List, DCQM["CMS68v11"], "CMS68v11", null).ToString());
-            sbLoad.Append(SubXMLLoadForCQMIIIstage3("CMS68_v11_CAT_III_Header.xml", DenmoniatorList68, NumeratorList68, new List<ulong>(), DEX68List, DCQM[sMeasureNumber], sMeasureNumber, null).ToString());
+            sbLoad.Append(SubXMLLoadForCQMIIIstage3(sMeasureNumber+"_CAT_III_Header.xml", DenmoniatorList68, NumeratorList68, new List<ulong>(), DEX68List, DCQM[sMeasureNumber], sMeasureNumber, null).ToString());
 
 
 
@@ -1643,7 +1643,7 @@ namespace Acurus.Capella.UI
             sMeasureNumber = ilstPqriMsr.Where(a => a.Measurement_No.Contains("CMS69") == true).Select(a => a.Measurement_No).Distinct().ToList()[0].ToString();
 
             //sbLoad.Append(SubXMLLoadForCQMIIIstage3("CMS69_v10_CAT_III_Header.xml", DenmoniatorList69, NumeratorList69, DE69List, DEX69List, DCQM["CMS69v10"], "CMS69v10", null).ToString());
-            sbLoad.Append(SubXMLLoadForCQMIIIstage3("CMS69_v10_CAT_III_Header.xml", DenmoniatorList69, NumeratorList69, DE69List, DEX69List, DCQM[sMeasureNumber], sMeasureNumber, null).ToString());
+            sbLoad.Append(SubXMLLoadForCQMIIIstage3(sMeasureNumber+"_CAT_III_Header.xml", DenmoniatorList69, NumeratorList69, DE69List, DEX69List, DCQM[sMeasureNumber], sMeasureNumber, null).ToString());
 
             StringBuilder cms69 = MeasureHeaderCount(NumeratorList69, DenmoniatorList69, DE69List, DEX69List, "b6ac13e2-beb8-4e4f-94ed-fcc397406cd1");
 
@@ -1680,8 +1680,8 @@ namespace Acurus.Capella.UI
             //    "CMS138v10_Population2", DenmoniatorList138_Population3, NumeratorList138_Population3, DE138List_Population3, DEX138List_Population3,
             //    DCQM["CMS138v10_Population3"], "CMS138v10_Population3", null).ToString());
 
-
-            sbLoad.Append(SubXMLLoadForCQMIIItobaccostage3("CMS138_v10_CAT_III_Header.xml", DenmoniatorList138_Population1,
+            string sMeasureHeaderXML = sMeasureNumber.Split('_')[0];
+            sbLoad.Append(SubXMLLoadForCQMIIItobaccostage3(sMeasureHeaderXML + "_CAT_III_Header.xml", DenmoniatorList138_Population1,
                 NumeratorList138_Population1, DE138List_Population1, DEX138List_Population1,
                 DCQM[sMeasureNumber], sMeasureNumber,
                 DenmoniatorList138_Population2, NumeratorList138_Population2, DE138List_Population2, DEX138List_Population2, DCQM[sMsrToboco2],
@@ -1702,7 +1702,7 @@ namespace Acurus.Capella.UI
             //sbLoad.Append(SubXMLLoadForCQMIIIstage3("CMS127_v10_CAT_III_Header.xml", DenmoniatorList127, NumeratorList127, DE127List, DEX127List, DCQM["CMS127v10"], "CMS127v10", null).ToString());
             //StringBuilder cms127 = MeasureHeaderCount(NumeratorList127, DenmoniatorList127, DE127List, DEX127List, "b6ac13e2-beb8-4e4f-94ed-fcc397406cd7");
 
-            sbLoad.Append(SubXMLLoadForCQMIIIstage3("CMS127_v10_CAT_III_Header.xml", DenmoniatorList127, NumeratorList127, DE127List, DEX127List, DCQM[sMeasureNumber], sMeasureNumber, null).ToString());
+            sbLoad.Append(SubXMLLoadForCQMIIIstage3(sMeasureNumber + "_CAT_III_Header.xml", DenmoniatorList127, NumeratorList127, DE127List, DEX127List, DCQM[sMeasureNumber], sMeasureNumber, null).ToString());
             StringBuilder cms127 = MeasureHeaderCount(NumeratorList127, DenmoniatorList127, DE127List, DEX127List, "b6ac13e2-beb8-4e4f-94ed-fcc397406cd7");
 
 
@@ -1719,7 +1719,7 @@ namespace Acurus.Capella.UI
             //sbLoad.Append(SubXMLLoadForCQMIIIstage3("CMS165_v10_CAT_III_Header.xml", DenmoniatorList165, NumeratorList165, DE165List, DEX165List, DCQM["CMS165v10"], "CMS165v10", null).ToString());
             //StringBuilder cms165 = MeasureHeaderCount(NumeratorList165, DenmoniatorList165, DE165List, DEX165List, "b6ac13e2-beb8-4e4f-94ed-fcc397406cd4");
 
-            sbLoad.Append(SubXMLLoadForCQMIIIstage3("CMS165_v10_CAT_III_Header.xml", DenmoniatorList165, NumeratorList165, DE165List, DEX165List, DCQM[sMeasureNumber], sMeasureNumber, null).ToString());
+            sbLoad.Append(SubXMLLoadForCQMIIIstage3(sMeasureNumber+"_CAT_III_Header.xml", DenmoniatorList165, NumeratorList165, DE165List, DEX165List, DCQM[sMeasureNumber], sMeasureNumber, null).ToString());
             StringBuilder cms165 = MeasureHeaderCount(NumeratorList165, DenmoniatorList165, DE165List, DEX165List, "b6ac13e2-beb8-4e4f-94ed-fcc397406cd4");
 
 
@@ -1734,7 +1734,7 @@ namespace Acurus.Capella.UI
             //sbLoad.Append(SubXMLLoadForCQMIIIstage3("CMS22_v10_CAT_III_Header.xml", DenmoniatorList22, NumeratorList22, DE22List, DEX22List, DCQM["CMS22v10"], "CMS22v10", null).ToString());
             //StringBuilder cms22 = MeasureHeaderCount(NumeratorList22, DenmoniatorList22, DE22List, DEX22List, "b6ac13e2-beb8-4e4f-94ed-fcc397406cd3");
 
-            sbLoad.Append(SubXMLLoadForCQMIIIstage3("CMS22_v10_CAT_III_Header.xml", DenmoniatorList22, NumeratorList22, DE22List, DEX22List, DCQM[sMeasureNumber], sMeasureNumber, null).ToString());
+            sbLoad.Append(SubXMLLoadForCQMIIIstage3(sMeasureNumber+"_CAT_III_Header.xml", DenmoniatorList22, NumeratorList22, DE22List, DEX22List, DCQM[sMeasureNumber], sMeasureNumber, null).ToString());
             StringBuilder cms22 = MeasureHeaderCount(NumeratorList22, DenmoniatorList22, DE22List, DEX22List, "b6ac13e2-beb8-4e4f-94ed-fcc397406cd3");
 
             IList<ulong> NumeratorList125 = PQRIDTO.Where(a => a.MeasureNo == "CMS125N").Select(a => a.HumanID).Distinct().ToList<ulong>();
@@ -1747,7 +1747,7 @@ namespace Acurus.Capella.UI
             //sbLoad.Append(SubXMLLoadForCQMIIIstage3("CMS125_v10_CAT_III_Header.xml", DenmoniatorList125, NumeratorList125, DE125List, DEX125List, DCQM["CMS125v10"], "CMS125v10", null).ToString());
             //StringBuilder cms125 = MeasureHeaderCount(NumeratorList125, DenmoniatorList125, DE125List, DEX125List, "E35791DF-5B25-41BB-B260-673337BC44A8");
 
-            sbLoad.Append(SubXMLLoadForCQMIIIstage3("CMS125_v10_CAT_III_Header.xml", DenmoniatorList125, NumeratorList125, DE125List, DEX125List, DCQM[sMeasureNumber], sMeasureNumber, null).ToString());
+            sbLoad.Append(SubXMLLoadForCQMIIIstage3(sMeasureNumber+"_CAT_III_Header.xml", DenmoniatorList125, NumeratorList125, DE125List, DEX125List, DCQM[sMeasureNumber], sMeasureNumber, null).ToString());
             StringBuilder cms125 = MeasureHeaderCount(NumeratorList125, DenmoniatorList125, DE125List, DEX125List, "E35791DF-5B25-41BB-B260-673337BC44A8");
 
 
@@ -1761,7 +1761,7 @@ namespace Acurus.Capella.UI
             //sbLoad.Append(SubXMLLoadForCQMIIIstage3("CMS147_v11_CAT_III_Header.xml", DenmoniatorList147, NumeratorList147, DE147List, DEX147List, DCQM["CMS147v11"], "CMS147v11", null).ToString());
             //StringBuilder cms147 = MeasureHeaderCount(NumeratorList147, DenmoniatorList147, DE147List, DEX147List, "E35791DF-5B25-41BB-B260-673337BC44A5");
 
-            sbLoad.Append(SubXMLLoadForCQMIIIstage3("CMS147_v11_CAT_III_Header.xml", DenmoniatorList147, NumeratorList147, DE147List, DEX147List, DCQM[sMeasureNumber], sMeasureNumber, null).ToString());
+            sbLoad.Append(SubXMLLoadForCQMIIIstage3(sMeasureNumber+"_CAT_III_Header.xml", DenmoniatorList147, NumeratorList147, DE147List, DEX147List, DCQM[sMeasureNumber], sMeasureNumber, null).ToString());
             StringBuilder cms147 = MeasureHeaderCount(NumeratorList147, DenmoniatorList147, DE147List, DEX147List, "E35791DF-5B25-41BB-B260-673337BC44A5");
 
 
@@ -1775,7 +1775,7 @@ namespace Acurus.Capella.UI
             //sbLoad.Append(SubXMLLoadForCQMIIIstage3("CMS122_v10_CAT_III_Header.xml", DenmoniatorList122, NumeratorList122, DE122List, DEX122List, DCQM["CMS122v10"], "CMS122v10", null).ToString());
             //StringBuilder cms122 = MeasureHeaderCount(NumeratorList122, DenmoniatorList122, DE122List, DEX122List, "b6ac13e2-beb8-4e4f-94ed-fcc397406cd9");
 
-            sbLoad.Append(SubXMLLoadForCQMIIIstage3("CMS122_v10_CAT_III_Header.xml", DenmoniatorList122, NumeratorList122, DE122List, DEX122List, DCQM[sMeasureNumber], sMeasureNumber, null).ToString());
+            sbLoad.Append(SubXMLLoadForCQMIIIstage3(sMeasureNumber+"_CAT_III_Header.xml", DenmoniatorList122, NumeratorList122, DE122List, DEX122List, DCQM[sMeasureNumber], sMeasureNumber, null).ToString());
             StringBuilder cms122 = MeasureHeaderCount(NumeratorList122, DenmoniatorList122, DE122List, DEX122List, "b6ac13e2-beb8-4e4f-94ed-fcc397406cd9");
 
             IList<ulong> NumeratorList130 = PQRIDTO.Where(a => a.MeasureNo == "CMS130N").Select(a => a.HumanID).Distinct().ToList<ulong>();
@@ -1788,7 +1788,7 @@ namespace Acurus.Capella.UI
             //sbLoad.Append(SubXMLLoadForCQMIIIstage3("CMS130v10Stage3_Header.xml", DenmoniatorList130, NumeratorList130, DE130List, DEX130List, DCQM["CMS130v10"], "CMS130v10", null).ToString());
             //StringBuilder cms130 = MeasureHeaderCount(NumeratorList130, DenmoniatorList130, DEX130List, DE130List, "b6ac13e2-beb8-4e4f-94ed-fcc397406cd2");
 
-            sbLoad.Append(SubXMLLoadForCQMIIIstage3("CMS130v10Stage3_Header.xml", DenmoniatorList130, NumeratorList130, DE130List, DEX130List, DCQM[sMeasureNumber], sMeasureNumber, null).ToString());
+            sbLoad.Append(SubXMLLoadForCQMIIIstage3(sMeasureNumber+ "_CAT_III_Header.xml", DenmoniatorList130, NumeratorList130, DE130List, DEX130List, DCQM[sMeasureNumber], sMeasureNumber, null).ToString());
             StringBuilder cms130 = MeasureHeaderCount(NumeratorList130, DenmoniatorList130, DEX130List, DE130List, "b6ac13e2-beb8-4e4f-94ed-fcc397406cd2");
 
             XmlDocument xmlDoc = new XmlDocument();
@@ -5663,7 +5663,7 @@ namespace Acurus.Capella.UI
 
 
                     XmlDocument xmlDoc = new XmlDocument();
-                    xmlDoc.Load(HttpContext.Current.Server.MapPath("SampleXML" + "\\XML Master Template_Stage3Measure_v10.xml"));
+                    xmlDoc.Load(HttpContext.Current.Server.MapPath("SampleXML" + "\\eCQM_CAT_I_Header_PY2024.xml"));
 
                     string FolderName = string.Empty;
 

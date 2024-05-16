@@ -77,7 +77,8 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
             //    iMySession.Close();
             //}
             ISession iMySession = NHibernateSessionManager.Instance.CreateISession();
-            ISQLQuery sqlquery = iMySession.CreateSQLQuery("select e.* from cqm_data e where e.Sort_Order  =3 and e.Section_XML!=''").AddEntity("e", typeof(PQRI_Data));
+            //ISQLQuery sqlquery = iMySession.CreateSQLQuery("select e.* from cqm_data e where e.Sort_Order  =3 and e.Section_XML!=''").AddEntity("e", typeof(PQRI_Data));
+            ISQLQuery sqlquery = iMySession.CreateSQLQuery("select e.* from cqm_data e where e.Section_XML!=''").AddEntity("e", typeof(PQRI_Data));
             listGetPQRI_Lookup = sqlquery.List<PQRI_Data>();
 
 

@@ -14987,17 +14987,17 @@ PQRI_calculation_Method=? and PQRI_Type ='RxNorm') )))) group by human_id;]]>
 left join care_plan cp on a.encounter_id=cp.encounter_id
 left join rcopia_medication r on A.human_id=r.human_id
 left join e_m_coding em on A.encounter_id=em.encounter_id
-where a.human_id in (:EncIds) and ((a.Is_Present='N' and a.Social_info like '%Tobacco Use and Exposure%' and a.recodes<>'')
+where a.human_id in (:EncIds) and ((a.Is_Present='Y' and a.Social_info like '%Tobacco Use and Exposure%' and a.recodes<>'')
 or
 (a.Is_Present='Y' and a.Social_info like '%Tobacco Use and Exposure%' and a.recodes<>''
 and ((cp.care_name_value like '%Tobacco%' and  cp.Snomed_Code!='')
 and
 em.procedure_code in (SELECT PQRI_Value FROM cqm_data where nqf_number =?  and 
-PQRI_calculation_Method=? and PQRI_Type ='CPTPQRI.GetDenominatorCMS122.HBA1c')
+PQRI_calculation_Method=? and PQRI_Type ='CPT')
 or
 (r.deleted='N' and
 r.rxnorm_id in(SELECT PQRI_Value FROM cqm_data where nqf_number =?  and 
-PQRI_calculation_Method=? and PQRI_Type ='RxNorm') )))) group by human_id;]]>
+PQRI_calculation_Method=? and PQRI_Type ='RXNORM') )))) group by human_id;]]>
 	</sql-query>
 	<sql-query name="PQRI.GetNumeratorCMS138_Population1.Tobacco">
 		<![CDATA[select a.encounter_id,a.human_id,cast(a.created_date_and_time as char(100)),
@@ -15019,7 +15019,7 @@ or
 
 	<sql-query name="PQRI.GetNumeratorCMS138_Population1v12.Tobacco">
 		<![CDATA[select a.encounter_id,a.human_id,cast(a.created_date_and_time as char(100)),
-	cast(a.modified_date_and_time as char(100)),cast(r.stop_date as char(100)),r.rxnorm_id from  social_history a
+	cast(a.modified_date_and_time as char(100)),cast(r.stop_date as char(100)),r.rxnorm_id from  social_history a,rcopia_medication r 
 where a.human_id in (:EncIds) and ((a.Is_Present='N' and a.Social_info like '%Tobacco Use and Exposure%' and a.recodes<>'')
 or
 (a.Is_Present='Y' and a.Social_info like '%Tobacco Use and Exposure%' and a.recodes<>'')) group by human_id;]]>
