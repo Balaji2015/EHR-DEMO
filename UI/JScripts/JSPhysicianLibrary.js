@@ -486,7 +486,9 @@ function Add(sCheckDuplicatefax) {
                 }
             }
             else if (objdata != "" && objdata.length > 0) {
-                if (objdata[0].ExistNPI != null) {
+                //Cap - 2082
+                //if (objdata[0].ExistNPI != null)
+                if (objdata[0].ExistNPI != null && $("#ddlCategory")[0].value.toUpperCase() == "NON CAPELLA USER(PHYSICIAN)") {
                     DisplayErrorMessage('1011170');
                     { sessionStorage.setItem('StartLoading', 'false'); StopLoadFromPatChart(); }
                     return;
@@ -794,7 +796,9 @@ function AddProvider() {
                 Aftersave();
             }
             else if (objdata != "" && objdata.length > 0) {
-                if (objdata[0].ExistNPI != null) {
+                //Cap - 2082
+                //if (objdata[0].ExistNPI != null)
+                if (objdata[0].ExistNPI != null && $("#ddlCategory")[0].value.toUpperCase() == "NON CAPELLA USER(PHYSICIAN)") {
                     DisplayErrorMessage('1011170');
                     { sessionStorage.setItem('StartLoading', 'false'); StopLoadFromPatChart(); }
                     return;
