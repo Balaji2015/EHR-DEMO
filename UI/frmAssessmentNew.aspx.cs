@@ -1563,7 +1563,13 @@ namespace Acurus.Capella.UI
             // {
             for (int k = 0; k < lstass.Count; k++)
             {
+                //Jira Cap - 1900,984
+                IList<string> lstStatus_Assessment = new List<string>();
+                if (System.Configuration.ConfigurationSettings.AppSettings["ServProcCodeExclutionStatus"] != null)
+                    lstStatus_Assessment = System.Configuration.ConfigurationSettings.AppSettings["ServProcCodeExclutionStatus"].ToString().Split(',');
 
+                if (!(lstStatus_Assessment.Contains(lstass[k].Assessment_Status)))
+                {
                 EandMCodingICD obj = new EandMCodingICD();
                 obj.ICD = lstass[k].ICD;
                 obj.ICD_Description = lstass[k].ICD_Description;
@@ -1585,6 +1591,7 @@ namespace Acurus.Capella.UI
                 obj.Created_Date_And_Time = UtilityManager.ConvertToUniversal();
                 eanmicdoverallicd.Add(obj);
                 // break;
+                }
 
 
 
