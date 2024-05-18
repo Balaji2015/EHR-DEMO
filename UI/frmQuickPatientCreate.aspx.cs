@@ -26,6 +26,7 @@ using System.Reflection;
 using Newtonsoft.Json;
 using System.Text;
 using MySql.Data.MySqlClient;
+using DocumentFormat.OpenXml.ExtendedProperties;
 
 namespace Acurus.Capella.UI
 {
@@ -2445,7 +2446,7 @@ namespace Acurus.Capella.UI
             ScriptManager.RegisterStartupScript(this, this.GetType(), "closeload", " {sessionStorage.setItem('StartLoading', 'false');StopLoadFromPatChart();}", true);
 
         }
-        public void checkin()
+        public void checkin(bool bCheckInToMa)
         {
 
             //string FileName = "Human" + "_" + txtPatientAccountNo.Text + ".xml";
@@ -3536,10 +3537,8 @@ namespace Acurus.Capella.UI
             {
                 if (hdnEncounterID.Value != string.Empty && hdnScreenMode.Value.ToUpper() == "CHECKEDIN")
                 {
-
-
                     UtilityManager.ulMyFindPatientID = HumanMngr.BatchOperationsToQuickPatient(ListToSaveHuman.ToArray<Human>(), ListToUpdateHuman.ToArray<Human>(), ListToSaveEligibility.ToArray<Eligibility_Verification>(), SaveVisitPaymentList.ToArray<VisitPayment>(), SaveCheckList.ToArray<Check>(),
-                        SavePPHeaderList.ToArray<PPHeader>(), SavePPLineItemList.ToArray<PPLineItem>(), SaveAccountTransactionList.ToArray<AccountTransaction>(), listPatientNotes.ToArray<PatientNotes>(), objPatInsuredPlan, string.Empty, Convert.ToUInt64(hdnEncounterID.Value), SaveVisitPaymenHistoryList);
+                        SavePPHeaderList.ToArray<PPHeader>(), SavePPLineItemList.ToArray<PPLineItem>(), SaveAccountTransactionList.ToArray<AccountTransaction>(), listPatientNotes.ToArray<PatientNotes>(), objPatInsuredPlan, string.Empty, Convert.ToUInt64(hdnEncounterID.Value), SaveVisitPaymenHistoryList, bCheckInToMa);
                     txtPatientAccountNo.Text = UtilityManager.ulMyFindPatientID.ToString();
 
 
@@ -4583,6 +4582,7 @@ namespace Acurus.Capella.UI
         //ma process
         protected void btnSave_Click(object sender, EventArgs e)
         {
+            var bCheckInToMa = ((Button)sender).Text != "Check In to Provider";
             if (ClientSession.UserName == string.Empty)
             {
                 HttpContext.Current.Response.StatusCode = 999;
@@ -4591,7 +4591,7 @@ namespace Acurus.Capella.UI
                 Response.Redirect("~/frmSessionExpired.aspx");
 
             }
-            checkin();
+            checkin(bCheckInToMa);
             ScriptManager.RegisterStartupScript(this, this.Page.GetType(), "EV", "setCPtvalue();", true);
 
         }

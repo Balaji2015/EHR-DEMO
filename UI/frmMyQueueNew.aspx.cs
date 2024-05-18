@@ -708,7 +708,8 @@ namespace Acurus.Capella.UI
             DateTime apptDt = Convert.ToDateTime(data[8].ToString());
             string localTime = data[7];
             string sLocal_Time = UtilityManager.ConvertToLocal(Convert.ToDateTime(localTime)).ToString("yyyy-MM-dd hh:mm:ss tt");
-            if (ClientSession.UserCurrentProcess == "MA_PROCESS" || ClientSession.UserCurrentProcess == "TECHNICIAN_PROCESS")//to update DOS when Technician/MA processes the encounter for the first time -- CMG Ancilliary
+            /*if (ClientSession.UserCurrentProcess == "MA_PROCESS" || ClientSession.UserCurrentProcess == "TECHNICIAN_PROCESS")*///to update DOS when Technician/MA processes the encounter for the first time -- CMG Ancilliary
+            if (ClientSession.UserCurrentProcess == "MA_PROCESS" || ClientSession.UserCurrentProcess == "TECHNICIAN_PROCESS" || ClientSession.UserCurrentProcess == "PROVIDER_PROCESS") //to update DOS when Technician/MA/Provider processes the encounter for the first time -- CMG Ancilliary 
             {
                 if (data[6] == "0001-01-01T00:00:00")
                 {

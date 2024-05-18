@@ -17,6 +17,7 @@ using System.Xml;
 using MySql.Data.MySqlClient;
 using System.Configuration;
 using System.Threading;
+using System.Web.UI.WebControls;
 
 namespace Acurus.Capella.DataAccess.ManagerObjects
 {
@@ -47,7 +48,7 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
 
         HumanDTO GetPatientDetailsUsingPatientDetails(string sLastname, string sFirstname, DateTime dtBirthDate, string sSex, string sMedicalRecordNo, string sExternalAccNo, string sLegalOrg);
 
-        ulong BatchOperationsToQuickPatient(IList<Human> ListToInsertHuman, IList<Human> ListToUpdateHuman, IList<Eligibility_Verification> ListToInserElig, IList<VisitPayment> ListToInsertVisitPayment, IList<Check> SaveCheckList, IList<PPHeader> SavePPHeaderList, IList<PPLineItem> SavePPLineItemList, IList<AccountTransaction> SaveAccountList, IList<PatientNotes> SavePatList, PatientInsuredPlan SavePatInsList, string MACAddress, ulong checkOut_Encounter_Id, IList<VisitPaymentHistory> SaveVisitPaymentHistoryList);
+        ulong BatchOperationsToQuickPatient(IList<Human> ListToInsertHuman, IList<Human> ListToUpdateHuman, IList<Eligibility_Verification> ListToInserElig, IList<VisitPayment> ListToInsertVisitPayment, IList<Check> SaveCheckList, IList<PPHeader> SavePPHeaderList, IList<PPLineItem> SavePPLineItemList, IList<AccountTransaction> SaveAccountList, IList<PatientNotes> SavePatList, PatientInsuredPlan SavePatInsList, string MACAddress, ulong checkOut_Encounter_Id, IList<VisitPaymentHistory> SaveVisitPaymentHistoryList, bool bCheckInToMa = true);
 
         FillQuickPatient LoadQuickPatient(ulong EncounterId);
 
@@ -4455,7 +4456,7 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
         }
 
         //Latha - Branch_52_production_for_Rcopia - Start - 4 Jul 2011.End - 4 Jul 2011
-        public ulong BatchOperationsToQuickPatient(IList<Human> ListToInsertHuman, IList<Human> ListToUpdateHuman, IList<Eligibility_Verification> ListToInserElig, IList<VisitPayment> ListToInsertVisitPayment, IList<Check> SaveCheckList, IList<PPHeader> SavePPHeaderList, IList<PPLineItem> SavePPLineItemList, IList<AccountTransaction> SaveAccountList, IList<PatientNotes> SavePatList, PatientInsuredPlan SavePatInsList, string MACAddress, ulong checkOut_Encounter_Id, IList<VisitPaymentHistory> SaveVisitPaymentHistoryList)
+        public ulong BatchOperationsToQuickPatient(IList<Human> ListToInsertHuman, IList<Human> ListToUpdateHuman, IList<Eligibility_Verification> ListToInserElig, IList<VisitPayment> ListToInsertVisitPayment, IList<Check> SaveCheckList, IList<PPHeader> SavePPHeaderList, IList<PPLineItem> SavePPLineItemList, IList<AccountTransaction> SaveAccountList, IList<PatientNotes> SavePatList, PatientInsuredPlan SavePatInsList, string MACAddress, ulong checkOut_Encounter_Id, IList<VisitPaymentHistory> SaveVisitPaymentHistoryList, bool bCheckInToMa = true)
         {
             iTryCount = 0;
             ulong HumanId = 0;
@@ -5001,8 +5002,24 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
             {
                 WFObjectManager WFMngr = new WFObjectManager();
                 WFObject TempWF = new WFObject();
+                EncounterManager encounterManager = new EncounterManager();
                 TempWF = WFMngr.GetByObjectSystemId(checkOut_Encounter_Id, "ENCOUNTER");
-
+                //CAP-1998
+                string sOwner = string.Empty;
+                if (!bCheckInToMa)
+                {
+                    
+                    IList<Encounter> lstEncounter = encounterManager.GetEncounterByEncounterID(checkOut_Encounter_Id);
+                    if(lstEncounter.Count > 0)
+                    {
+                        UserManager userManager = new UserManager();
+                        IList<User> lstUser = userManager.getUserByPHYID(Convert.ToUInt64(lstEncounter[0].Appointment_Provider_ID));
+                        if(lstUser.Count > 0)
+                        {
+                            sOwner = lstUser[0].user_name;
+                        }
+                    }
+                }
                 //Added by Selvaraman - 20 Aug - To avoid Duplicate Check In
                 if (TempWF.Current_Process == "SCHEDULED" || TempWF.Current_Process == "NO_SHOW" || TempWF.Current_Process == "WALKED_AWAY")
                 {
@@ -5021,9 +5038,24 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
                         objDocumentationWF.Obj_System_Id = TempWF.Obj_System_Id;
                         objDocumentationWF.Current_Process = "START";
                         objDocumentationWF.Current_Arrival_Time = TempWF.Current_Arrival_Time;
-                        objDocumentationWF.Current_Owner = "UNKNOWN";
-
-                        WFMngr.InsertToWorkFlowObject(objDocumentationWF, 1, MACAddress, MyDocumentationWorkflowSession);
+                        //objDocumentationWF.Current_Owner = "UNKNOWN";
+                        //CAP-1998
+                        if (bCheckInToMa)
+                        {
+                            objDocumentationWF.Current_Owner = "UNKNOWN";
+                        }
+                        else
+                        {
+                            objDocumentationWF.Current_Owner = sOwner;
+                        }
+                        if (bCheckInToMa)
+                        {
+                            WFMngr.InsertToWorkFlowObject(objDocumentationWF, 1, MACAddress, MyDocumentationWorkflowSession);
+                        }
+                        else
+                        {
+                            WFMngr.InsertToWorkFlowObject(objDocumentationWF, 2, MACAddress, MyDocumentationWorkflowSession);
+                        }
 
                         transDocumentation.Commit();
                     }
