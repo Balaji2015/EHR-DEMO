@@ -1691,7 +1691,7 @@
                                         <asp:TextBox ID="txtProviderSearch" runat="server"  data-phy-id="0"  data-phy-details="" Rows="2" TextMode="MultiLine" placeholder="Type minimum 3 characters of Last or First name or Facility and follow it by a space.."  style="width:110%;resize:none"  ></asp:TextBox> 
                                         </td>
                                         <td style="width: 1%;text-align: right;">
-                                        <img id="imgClearProviderText" runat="server" src="Resources/Delete-Blue.png" alt="X" title="Click to clear the text field." onclick="return ProviderSearchclear();" style="position: absolute; margin-left: 45px; cursor: pointer; width: 10px; height: 10px;" />
+                                        <img id="imgClearProviderText" runat="server" src="Resources/Delete-Blue.png" alt="X" title="Click to clear the text field." onclick="return ProviderSearchclear();" style="position: absolute; margin-left: 47px; cursor: pointer; width: 10px; height: 12px;margin-top: -6px;" />
                                         </td>
                                          <td style="width: 25%;text-align: left;">
                                             <img id="imgEditProvider" runat="server" src="Resources/edit.gif" alt="X" title="Click to edit the text field." onclick="return EditProviderDetails();" style="position: absolute; margin-left: 60px; margin-top: -8px ; cursor: pointer; width: 13px; height: 15px;" />

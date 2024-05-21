@@ -3764,8 +3764,9 @@ function EditProviderDetails() {
         $(top.window.document).find("#TabPhysicianLibraryFrame")[0].contentDocument.location.href = sPath;
         $(top.window.document).find("#TabPhysicianLibrary").modal("show");
         $(top.window.document).find("#TabPhysicianLibrary").one("hidden.bs.modal", function (e) {
-            var PhyTextboxName = localStorage.getItem("PhyDetails");
-            if (PhyTextboxName.split("&")[4] != undefined) {
+            var PhyDetails = localStorage.getItem("PhyDetails") ?? "";
+            var PhyID = PhyDetails.split("&")[0];
+            if (PhyID != "" && PhyDetails.split("&")[4] != undefined) {
                 document.getElementById("ctl00_C5POBody_txtProviderSearch").attributes['data-phy-id'].value = PhyID;
                 document.getElementById("ctl00_C5POBody_txtProviderSearch").attributes['data-phy-gridname'].value = PhyDetails.split("&")[1];
                 document.getElementById("ctl00_C5POBody_txtProviderSearch").attributes['data-phy-details'].value = PhyDetails.split("&")[2];
