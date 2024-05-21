@@ -316,16 +316,29 @@ $(document).ready(function () {
 function ProviderSelected(event, ui) {
     var ProviderDetails = JSON.parse(ui.item.val);
     var txtProviderSearch = document.getElementById("txtProviderSearch");
-
-    var vLableVal = JSON.parse(ui.item.val).sPhyshortName + "(" + JSON.parse(ui.item.val).sPhySuffix + ")" + " | " +
-        "NPI:" + JSON.parse(ui.item.val).sPhyNPI + " | " +
-        "Facility:" + JSON.parse(ui.item.val).sPhyFacility + " | " +
-        "Address: " + JSON.parse(ui.item.val).sPhyAddress + ", " +
-        JSON.parse(ui.item.val).sPhyCity + "," +
-        JSON.parse(ui.item.val).sPhyState + " " +
-        JSON.parse(ui.item.val).sPhyZip + " | " +
-        "Phone No:" + JSON.parse(ui.item.val).sPhyPhone + " | " +
-        "Fax No:" + JSON.parse(ui.item.val).sPhyFax;
++    var vLableVal;
+    if (JSON.parse(ui.item.val).sPhySuffix != '') {
+        vLableVal = JSON.parse(ui.item.val).sPhyshortName + "(" + JSON.parse(ui.item.val).sPhySuffix + ")" + " | " +
+            "NPI:" + JSON.parse(ui.item.val).sPhyNPI + " | " +
+            "Facility:" + JSON.parse(ui.item.val).sPhyFacility + " | " +
+            "Address: " + JSON.parse(ui.item.val).sPhyAddress + ", " +
+            JSON.parse(ui.item.val).sPhyCity + "," +
+            JSON.parse(ui.item.val).sPhyState + " " +
+            JSON.parse(ui.item.val).sPhyZip + " | " +
+            "Phone No:" + JSON.parse(ui.item.val).sPhyPhone + " | " +
+            "Fax No:" + JSON.parse(ui.item.val).sPhyFax;
+    }
+    else {
+        vLableVal = JSON.parse(ui.item.val).sPhyshortName + " | " +
+            "NPI:" + JSON.parse(ui.item.val).sPhyNPI + " | " +
+            "Facility:" + JSON.parse(ui.item.val).sPhyFacility + " | " +
+            "Address: " + JSON.parse(ui.item.val).sPhyAddress + ", " +
+            JSON.parse(ui.item.val).sPhyCity + "," +
+            JSON.parse(ui.item.val).sPhyState + " " +
+            JSON.parse(ui.item.val).sPhyZip + " | " +
+            "Phone No:" + JSON.parse(ui.item.val).sPhyPhone + " | " +
+            "Fax No:" + JSON.parse(ui.item.val).sPhyFax;
+    }
     //Cap - 1989
     document.getElementById("hdnCategory").value = ProviderDetails.sCategory;
     txtProviderSearch.attributes['data-phy-id'].value = ProviderDetails.ulPhyId;

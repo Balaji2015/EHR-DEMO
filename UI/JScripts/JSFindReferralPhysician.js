@@ -104,6 +104,32 @@ function PhNoValid(sphno) {
 }
 
 function ProviderSelected(event, ui) {
+    var vLableVal;
+    if (JSON.parse(ui.item.val).sPhySuffix != '') {
+            vLableVal = JSON.parse(ui.item.val).sPhyshortName + "(" + JSON.parse(ui.item.val).sPhySuffix + ")" + " | " +
+            "NPI:" + JSON.parse(ui.item.val).sPhyNPI + " | " +
+            "Facility:" + JSON.parse(ui.item.val).sPhyFacility + " | " +
+            "Address: " + JSON.parse(ui.item.val).sPhyAddress + ", " +
+            JSON.parse(ui.item.val).sPhyCity + "," +
+            JSON.parse(ui.item.val).sPhyState + " " +
+            JSON.parse(ui.item.val).sPhyZip + " | " +
+            "Phone No:" + JSON.parse(ui.item.val).sPhyPhone + " | " +
+            "Fax No:" + JSON.parse(ui.item.val).sPhyFax;
+    }
+    else {
+            vLableVal = JSON.parse(ui.item.val).sPhyshortName + " | " +
+            "NPI:" + JSON.parse(ui.item.val).sPhyNPI + " | " +
+            "Facility:" + JSON.parse(ui.item.val).sPhyFacility + " | " +
+            "Address: " + JSON.parse(ui.item.val).sPhyAddress + ", " +
+            JSON.parse(ui.item.val).sPhyCity + "," +
+            JSON.parse(ui.item.val).sPhyState + " " +
+            JSON.parse(ui.item.val).sPhyZip + " | " +
+            "Phone No:" + JSON.parse(ui.item.val).sPhyPhone + " | " +
+            "Fax No:" + JSON.parse(ui.item.val).sPhyFax;
+    }
+
+    
+
     //Cap - 1989
     if (document.getElementById("txtProviderSearch").value != "" && document.getElementById("txtProviderSearch").value != "| NPI: | Facility: | Address:| Phone No:| Fax No:") {
         document.getElementById("txtProviderSearch").disabled = true;
@@ -121,7 +147,8 @@ function ProviderSelected(event, ui) {
     txtProviderSearch.attributes['data-phy-id'].value = ProviderDetails.ulPhyId;
     txtProviderSearch.attributes['data-phy-details'].value = JSON.stringify(ProviderDetails);
     document.getElementById('btnOk').disabled = false;
-    txtProviderSearch.value = ui.item.label;
+    //txtProviderSearch.value = ui.item.label;
+    txtProviderSearch.value = vLableVal
     return false;
 }
 
