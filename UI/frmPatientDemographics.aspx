@@ -1990,9 +1990,9 @@
                                 Text="Button" style="display: none" />
             <asp:PlaceHolder ID="PlaceHolder1" runat="server">
                 
-               <script src="JScripts/jquery-2.1.3.js" type="text/javascript"></script>
-            <script src="JScripts/jquery-ui.min1.11.4.js" type="text/javascript"></script>
-            <link href="CSS/jquery-ui.css" rel="stylesheet" />
+                <script src="JScripts/jquery-2.1.3.js" type="text/javascript"></script>
+                <script src="JScripts/jquery-ui.min1.11.4.js" type="text/javascript"></script>
+                <link href="CSS/jquery-ui.css?version=<%=ConfigurationManager.AppSettings["VersionConfiguration"].ToString().Replace("Capella - ","") %>" rel="stylesheet" />
               <script src="JScripts/bootstrap.min.js" type="text/javascript"></script>
                 <script src="JScripts/JSModalWindow.js?version=<%=ConfigurationManager.AppSettings["VersionConfiguration"].ToString().Replace("Capella - ","") %>" type="text/javascript"></script>
 
