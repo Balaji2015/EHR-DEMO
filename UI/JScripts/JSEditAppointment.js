@@ -316,7 +316,7 @@ $(document).ready(function () {
 function ProviderSelected(event, ui) {
     var ProviderDetails = JSON.parse(ui.item.val);
     var txtProviderSearch = document.getElementById("txtProviderSearch");
-+    var vLableVal;
+    var vLableVal;
     if (JSON.parse(ui.item.val).sPhySuffix != '') {
         vLableVal = JSON.parse(ui.item.val).sPhyshortName + "(" + JSON.parse(ui.item.val).sPhySuffix + ")" + " | " +
             "NPI:" + JSON.parse(ui.item.val).sPhyNPI + " | " +
