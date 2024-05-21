@@ -2873,7 +2873,8 @@ namespace Acurus.Capella.UI
                     }
                     else
                     {
-                        cboPhysicianName.SelectedIndex = cboPhysicianName.Items.IndexOf(cboPhysicianName.Items.FindByValue(ViewState["DefaultPhysicianID"].ToString()));
+                        //CAP-2080
+                        cboPhysicianName.SelectedIndex = cboPhysicianName.Items.IndexOf(cboPhysicianName.Items.FindByValue(ViewState["DefaultPhysicianID"]?.ToString()??""));
                         hdnindex.Value = cboPhysicianName.SelectedValue;
                         if (hdnindex.Value != "0")
                         {
