@@ -3403,6 +3403,31 @@ $("#ctl00_C5POBody_txtPlanSearch").data("ui-autocomplete")._renderItem = functio
 function ProviderSelected(event, ui) {
     AutoSave();
     var ProviderDetails = JSON.parse(ui.item.val);
+
+    var vLableVal;
+    if (JSON.parse(ui.item.val).sPhySuffix != '') {
+        vLableVal = JSON.parse(ui.item.val).sPhyshortName + "(" + JSON.parse(ui.item.val).sPhySuffix + ")" + " | " +
+            "NPI:" + JSON.parse(ui.item.val).sPhyNPI + " | " +
+            "Facility:" + JSON.parse(ui.item.val).sPhyFacility + " | " +
+            "Address: " + JSON.parse(ui.item.val).sPhyAddress + ", " +
+            JSON.parse(ui.item.val).sPhyCity + "," +
+            JSON.parse(ui.item.val).sPhyState + " " +
+            JSON.parse(ui.item.val).sPhyZip + " | " +
+            "Phone No:" + JSON.parse(ui.item.val).sPhyPhone + " | " +
+            "Fax No:" + JSON.parse(ui.item.val).sPhyFax;
+    }
+    else {
+        vLableVal = JSON.parse(ui.item.val).sPhyshortName + " | " +
+            "NPI:" + JSON.parse(ui.item.val).sPhyNPI + " | " +
+            "Facility:" + JSON.parse(ui.item.val).sPhyFacility + " | " +
+            "Address: " + JSON.parse(ui.item.val).sPhyAddress + ", " +
+            JSON.parse(ui.item.val).sPhyCity + "," +
+            JSON.parse(ui.item.val).sPhyState + " " +
+            JSON.parse(ui.item.val).sPhyZip + " | " +
+            "Phone No:" + JSON.parse(ui.item.val).sPhyPhone + " | " +
+            "Fax No:" + JSON.parse(ui.item.val).sPhyFax;
+    }
+
     var txtProviderSearch = document.getElementById("ctl00_C5POBody_txtProviderSearch");
     document.getElementById('ctl00_C5POBody_txtProviderSearch').disabled = true;
     document.getElementById('ctl00_C5POBody_txtProviderSearch').style.backgroundColor = "#BFDBFF";
@@ -3414,7 +3439,8 @@ function ProviderSelected(event, ui) {
     txtProviderSearch.attributes['data-phy-details'].value = ProviderDetails.sPhyName;
     txtProviderSearch.attributes['data-phy-gridname'].value = ProviderDetails.sPhyshortName;
     txtProviderSearch.attributes['data-phy-npi'].value = ProviderDetails.sPhyNPI;
-    txtProviderSearch.value = ui.item.label;
+    //txtProviderSearch.value = ui.item.label;
+    txtProviderSearch.value = vLableVal;
     var provider = "";
 
     provider = JSON.parse(ui.item.val).ulPhyId + "|" +
@@ -3765,9 +3791,9 @@ function EditProviderDetails() {
         $(top.window.document).find("#TabPhysicianLibrary").modal("show");
         $(top.window.document).find("#TabPhysicianLibrary").one("hidden.bs.modal", function (e) {
             var PhyDetails = localStorage.getItem("PhyDetails") ?? "";
-            var PhyID = PhyDetails.split("&")[0];
-            if (PhyID != "" && PhyDetails.split("&")[4] != undefined) {
-                document.getElementById("ctl00_C5POBody_txtProviderSearch").attributes['data-phy-id'].value = PhyID;
+            
+            if ( PhyDetails!= '' && PhyDetails.split("&")[4] != undefined) {
+                document.getElementById("ctl00_C5POBody_txtProviderSearch").attributes['data-phy-id'].value = EditPhyId;
                 document.getElementById("ctl00_C5POBody_txtProviderSearch").attributes['data-phy-gridname'].value = PhyDetails.split("&")[1];
                 document.getElementById("ctl00_C5POBody_txtProviderSearch").attributes['data-phy-details'].value = PhyDetails.split("&")[2];
                 document.getElementById("ctl00_C5POBody_txtProviderSearch").attributes['data-phy-npi'].value = PhyDetails.split("&")[3];
