@@ -7,10 +7,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head runat="server">
     <%--<script src="https://logrocket.acurussolutions.io/LogRocket.js"; crossorigin="anonymous"></script> <script>window.LogRocket && window.LogRocket.init('akido/akido-test', { mergeIframes: true }, { enableVerboseLogging: true });</script>--%>
- <base target="_self"   />
-
-    <script src="JScripts/jQueryAngular.js?version=<%=ConfigurationManager.AppSettings["VersionConfiguration"].ToString().Replace("Capella - ","") %>" type="text/javascript"></script>
-    <script src="JScripts/bootstrap.min.js" type="text/javascript"></script>
+ <base target="_self"   />   
     
    
 <style type="text/css">
@@ -314,6 +311,8 @@ legend {font-size:13px; font-weight:bold; }
 
     <%-- <script src="JScripts/jquery-1.11.3.min.js" type="text/javascript"></script>
      <script src="JScripts/jquery-ui.min1.10.2.js" type="text/javascript"></script>--%>
+    <script src="JScripts/jQueryAngular.js?version=<%=ConfigurationManager.AppSettings["VersionConfiguration"].ToString().Replace("Capella - ","") %>" type="text/javascript"></script>
+    <script src="JScripts/bootstrap.min.js" type="text/javascript"></script>
      <script src="JScripts/jquery.datetimepicker.js" type="text/javascript"></script>  
     <script src="JScripts/JSModalWindow.js?version=<%=ConfigurationManager.AppSettings["VersionConfiguration"].ToString().Replace("Capella - ","") %>" type="text/javascript"></script>
     <script src="JScripts/JSErrorMessage.js?version=<%=ConfigurationManager.AppSettings["VersionConfiguration"].ToString().Replace("Capella - ","") %>" type="text/javascript"></script>

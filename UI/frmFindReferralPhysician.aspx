@@ -35,9 +35,7 @@
     <link href="CSS/style.css" rel="stylesheet" type="text/css" />
     <link href="CSS/font-awesome.css" rel="stylesheet" type="text/css" />
       <link href="CSS/CommonStyle.css" rel="stylesheet" type="text/css" />
-    <script src="JScripts/jquery-2.1.3.js" type="text/javascript"></script>
-    <script src="JScripts/jquery-ui.min1.10.2.js?version=<%=ConfigurationManager.AppSettings["VersionConfiguration"].ToString().Replace("Capella - ","") %>" type="text/javascript"></script>
-    <script src="JScripts/bootstrap.min.js" type="text/javascript"></script>
+   
 </head>
 <body class="bodybackground" style="margin-top: 15px;" onload=" {sessionStorage.setItem('StartLoading', 'false');StopLoadFromPatChart();}">
     <form id="frmFindReferralPhysician" runat="server">
@@ -116,6 +114,9 @@
         <asp:PlaceHolder ID="PlaceHolder1" runat="server">
            <%-- <script src="JScripts/jquery-2.1.3.js" type="text/javascript"></script>--%>
             <script src="JScripts/jquery-ui.min1.11.4.js" type="text/javascript"></script>
+             <script src="JScripts/jquery-2.1.3.js" type="text/javascript"></script>
+             <script src="JScripts/jquery-ui.min1.10.2.js?version=<%=ConfigurationManager.AppSettings["VersionConfiguration"].ToString().Replace("Capella - ","") %>" type="text/javascript"></script>
+             <script src="JScripts/bootstrap.min.js" type="text/javascript"></script>
             <link href="CSS/jquery-ui.css" rel="stylesheet" />
             <script src="JScripts/JSLibraries.js?version=<%=ConfigurationManager.AppSettings["VersionConfiguration"].ToString().Replace("Capella - ","") %>" type="text/javascript"></script>
 
