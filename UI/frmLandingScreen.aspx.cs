@@ -52,8 +52,20 @@ namespace Acurus.Capella.UI
                 else
                 {
                         sUserAccountType = Request.Form["UserAccountType"] ?? Request.QueryString["UserAccountType"] ?? string.Empty;
+
+                        if (string.IsNullOrWhiteSpace(sUserAccountType))
+                        {
+                            if (Request.Cookies["UserAccountType"] != null && !string.IsNullOrEmpty(Request.Cookies["UserAccountType"].Value))
+                            {
+                                sUserAccountType = Request.Cookies["UserAccountType"]?.Value ?? string.Empty;
+                                //expire cookie
+                                HttpCookie cookie = Request.Cookies["UserAccountType"];
+                                cookie.Expires = DateTime.Now.AddMinutes(-5);
+                                Response.Cookies.Add(cookie);
                 }
             }
+                    }
+                }
             
                 //Remove ClientSession.UserAccountType Dependency
                 //sUserAccountType = !string.IsNullOrWhiteSpace(ClientSession.UserAccountType) ? ClientSession.UserAccountType : (Request.Form["UserAccountType"] ?? Request.QueryString["UserAccountType"] ?? string.Empty);
@@ -85,6 +97,18 @@ namespace Acurus.Capella.UI
                 else
                 {
                     sUserName = !string.IsNullOrWhiteSpace(sMSUserEmail) ? sMSUserEmail : (Request.Form["EMailAddress"] ?? Request.QueryString["EMailAddress"] ?? string.Empty);
+                    sUserName = Request.Cookies["EmailAddress"]?.Value ?? string.Empty;
+                    if (string.IsNullOrWhiteSpace(sUserName))
+                    {
+                        if (Request.Cookies["EmailAddress"] != null && !string.IsNullOrEmpty(Request.Cookies["EmailAddress"].Value))
+                        {
+                            sUserAccountType = Request.Cookies["EmailAddress"]?.Value ?? string.Empty;
+                            //expire cookie
+                            HttpCookie cookie = Request.Cookies["EmailAddress"];
+                            cookie.Expires = DateTime.Now.AddMinutes(-5);
+                            Response.Cookies.Add(cookie);
+                        }
+                    }
                     ClientSession.EmailAddress = sUserName;
                 }
             }

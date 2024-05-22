@@ -195,9 +195,13 @@ namespace Acurus.Capella.UI
                     OktaUserResponseModel result = JsonConvert.DeserializeObject<OktaUserResponseModel>(response.Content);
                     //ClientSession.EmailAddress = result?._embedded?.user?.profile?.login ?? string.Empty;
                     var sEmailAddress = result?._embedded?.user?.profile?.login ?? string.Empty;
+                    Response.SetCookie(new HttpCookie("EmailAddress") { Value = sEmailAddress });
+                    Response.SetCookie(new HttpCookie("UserAccountType") { Value = "Okta" });
+                    var oktaURL = GetOktaUrl(result.sessionToken);
+                    Response.Redirect(oktaURL, false);
                     //ClientSession.UserAccountType = "Okta";
                     //Response.Redirect($"~/frmLandingScreen.aspx?UserAccountType=Okta&EMailAddress={ClientSession.EmailAddress}", false);
-                    Server.Transfer($"~/frmLandingScreen.aspx?UserAccountType=Okta&EMailAddress={sEmailAddress}");
+                    //Server.Transfer($"~/frmLandingScreen.aspx?UserAccountType=Okta&EMailAddress={sEmailAddress}");
                 }
                 else
                 {
@@ -271,6 +275,15 @@ namespace Acurus.Capella.UI
             string clientId = ConfigurationSettings.AppSettings["okta:ClientId"];
             string redirectUri = ConfigurationSettings.AppSettings["okta:RedirectUri"];
             return $"{oktaAuthorizeEndpoint}?client_id={clientId}&response_type=code&redirect_uri={HttpUtility.UrlEncode(redirectUri)}&scope=openid+profile+email&state={HttpUtility.UrlEncode(Guid.NewGuid().ToString())}&login_hint={HttpUtility.UrlEncode(email)}";
+        }
+
+        private string GetOktaUrl(string sessionToken)
+        {
+            var oktaDomain = ConfigurationSettings.AppSettings["okta:OktaDomain"];
+            string oktaAuthorizeEndpoint = $"{ConfigurationSettings.AppSettings["okta:AuthorizeURL"]}";
+            string clientId = ConfigurationSettings.AppSettings["okta:ClientId"];
+            string redirectUri = ConfigurationSettings.AppSettings["okta:RedirectUri"];
+            return $"{oktaAuthorizeEndpoint}?client_id={clientId}&response_type=id_token&scope=openid+email&prompt=none&redirect_uri={HttpUtility.UrlEncode(redirectUri)}&state={HttpUtility.UrlEncode(Guid.NewGuid().ToString())}&nonce=n-0S6_WzA2Mj&sessionToken={sessionToken}";
         }
 
         //To encrypt the password

@@ -346,6 +346,8 @@ namespace Acurus.Capella.UI
                     btnEditName.Visible = false;
                     chkOnlineAccess.Enabled = false;
                     btnSave.Visible = false;
+                    //CAP-2102
+                    btnProviderSave.Visible = false;
                     btnUploadDocuments.Visible = false;
                     lblAuthTip.Visible = false;
                     btnAuthorization.Visible = false;
