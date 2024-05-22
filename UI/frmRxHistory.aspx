@@ -290,7 +290,7 @@ option {
         }
     </style>
     <script src="JScripts/jquery-1.11.3.min.js"></script>
-    <script src="JScripts/jquery-ui.min1.10.2.js"></script>
+    <script src="JScripts/jquery-ui.min1.10.2.js?version=<%=ConfigurationManager.AppSettings["VersionConfiguration"].ToString().Replace("Capella - ","") %>"></script>
     <script src="JScripts/bootstrap.min.js"></script>
       <link href="CSS/CommonStyle.css" rel="stylesheet" type="text/css" />
 </head>

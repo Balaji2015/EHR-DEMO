@@ -372,7 +372,7 @@
         </telerik:RadAjaxPanel>
         <asp:PlaceHolder ID="PlaceHolder1" runat="server">
             <script type="text/javascript" src="JScripts/jquery-1.11.3.min.js"></script>
-            <script type="text/javascript" src="JScripts/jquery-ui.min1.10.2.js"></script>
+            <script type="text/javascript" src="JScripts/jquery-ui.min1.10.2.js?version=<%=ConfigurationManager.AppSettings["VersionConfiguration"].ToString().Replace("Capella - ","") %>"></script>
             <script type="text/javascript" src="JScripts/bootstrap.min.js"></script>
             <script type="text/javascript" src="JScripts/jsROS.js?version=<%=ConfigurationManager.AppSettings["VersionConfiguration"].ToString().Replace("Capella - ","") %>"></script>
             <script src="JScripts/JSErrorMessage.js?version=<%=ConfigurationManager.AppSettings["VersionConfiguration"].ToString().Replace("Capella - ","") %>" type="text/javascript"></script>

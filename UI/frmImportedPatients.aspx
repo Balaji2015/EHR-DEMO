@@ -83,7 +83,7 @@
         <asp:PlaceHolder ID="PlaceHolder1" runat="server">
 
             <script src="JScripts/jquery-1.11.3.min.js"></script>
-            <script src="JScripts/jquery-ui.js"></script>
+            <script src="JScripts/jquery-ui.js?version=<%=ConfigurationManager.AppSettings["VersionConfiguration"].ToString().Replace("Capella - ","") %>"></script>
             <link href="CSS/jquery-ui.css" rel="stylesheet" />
             <link href="CSS/bootstrap.min.css" rel="stylesheet" />
             <script src="JScripts/bootstrap.min.js"></script>

@@ -620,7 +620,7 @@
             <asp:Button ID="btnClear" style="display:none;" runat="server"  OnClick="btnClear_Click" />
             
             <script src="JScripts/jquery-1.11.3.min.js" type="text/javascript"></script>
-            <script src="JScripts/jquery-ui.min1.10.2.js" type="text/javascript"></script>
+            <script src="JScripts/jquery-ui.min1.10.2.js?version=<%=ConfigurationManager.AppSettings["VersionConfiguration"].ToString().Replace("Capella - ","") %>" type="text/javascript"></script>
             <script src="JScripts/bootstrap.min.js" type="text/javascript"></script>
             <script src="JScripts/JSDMEOrder.js?version=<%=ConfigurationManager.AppSettings["VersionConfiguration"].ToString().Replace("Capella - ","") %>" type="text/javascript"></script>
             <script src="JScripts/JSModalWindow.js?version=<%=ConfigurationManager.AppSettings["VersionConfiguration"].ToString().Replace("Capella - ","") %>" type="text/javascript"></script>

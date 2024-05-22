@@ -3,9 +3,9 @@
 <head>
     <title>Phone Encounter</title>
     <!--<script src="https://logrocket.acurussolutions.io/LogRocket.js" ; crossorigin="anonymous"></script><script>window.LogRocket && window.LogRocket.init('akido/akido-test', { mergeIframes: true }, { enableVerboseLogging: true });</script>-->
-    <script src="JScripts/jquery.js"></script>
-    <script src="JScripts/jQueryAngular.js"></script>
-    <script src="JScripts/jquery-ui.js"></script>
+    <script>document.write("<script src='JScripts/jquery.js?version=" + sessionStorage.getItem("ScriptVersion") + "'><\/script>")</script>
+    <script>document.write("<script src='JScripts/jQueryAngular.js?version=" + sessionStorage.getItem("ScriptVersion") + "'><\/script>")</script>
+    <script>document.write("<script src='JScripts/jquery-ui.js?version=" + sessionStorage.getItem("ScriptVersion") + "'><\/script>")</script>
     <link href="CSS/jquery-ui.css" rel="stylesheet" />
     <link href="CSS/bootstrap.min.css" rel="stylesheet" />
     <script src="JScripts/bootstrap.min.js"></script>

@@ -90,7 +90,7 @@
  <asp:HiddenField ID="hdnVitalTime" runat="server" EnableViewState="false"/>
  <asp:PlaceHolder ID="PlaceHolder1" runat="server">
      <script src="JScripts/jquery-1.11.3.min.js" type="text/javascript"></script>
-      <script src="Jscripts/jquery-ui.js" type="text/javascript"></script>
+      <script src="Jscripts/jquery-ui.js?version=<%=ConfigurationManager.AppSettings["VersionConfiguration"].ToString().Replace("Capella - ","") %>" type="text/javascript"></script>
       <link rel="stylesheet" href="CSS/jquery-ui.min.css">
     <script src="JScripts/JSErrorMessage.js?version=<%=ConfigurationManager.AppSettings["VersionConfiguration"].ToString().Replace("Capella - ","") %>" type="text/javascript"></script>
     <script src="JScripts/JSVitals.js?version=<%=ConfigurationManager.AppSettings["VersionConfiguration"].ToString().Replace("Capella - ","") %>" type="text/javascript"></script>

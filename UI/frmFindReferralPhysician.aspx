@@ -36,7 +36,7 @@
     <link href="CSS/font-awesome.css" rel="stylesheet" type="text/css" />
       <link href="CSS/CommonStyle.css" rel="stylesheet" type="text/css" />
     <script src="JScripts/jquery-2.1.3.js" type="text/javascript"></script>
-    <script src="JScripts/jquery-ui.min1.10.2.js" type="text/javascript"></script>
+    <script src="JScripts/jquery-ui.min1.10.2.js?version=<%=ConfigurationManager.AppSettings["VersionConfiguration"].ToString().Replace("Capella - ","") %>" type="text/javascript"></script>
     <script src="JScripts/bootstrap.min.js" type="text/javascript"></script>
 </head>
 <body class="bodybackground" style="margin-top: 15px;" onload=" {sessionStorage.setItem('StartLoading', 'false');StopLoadFromPatChart();}">

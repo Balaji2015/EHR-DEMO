@@ -9,7 +9,7 @@
     <%--<script src="https://logrocket.acurussolutions.io/LogRocket.js"; crossorigin="anonymous"></script> <script>window.LogRocket && window.LogRocket.init('akido/akido-test', { mergeIframes: true }, { enableVerboseLogging: true });</script>--%>
  <base target="_self"   />
 
-    <script src="JScripts/jQueryAngular.js" type="text/javascript"></script>
+    <script src="JScripts/jQueryAngular.js?version=<%=ConfigurationManager.AppSettings["VersionConfiguration"].ToString().Replace("Capella - ","") %>" type="text/javascript"></script>
     <script src="JScripts/bootstrap.min.js" type="text/javascript"></script>
     
    

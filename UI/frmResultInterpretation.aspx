@@ -104,7 +104,7 @@
             <script type="text/javascript" src="JScripts/jquery-2.1.3.js"></script>
             <script type="text/javascript" src="JScripts/jquery-ui.min.js"></script>--%>
             <script src="JScripts/jquery-1.11.3.min.js" type="text/javascript"></script>
-            <script src="JScripts/jquery-ui.min1.10.2.js" type="text/javascript"></script>
+            <script src="JScripts/jquery-ui.min1.10.2.js?version=<%=ConfigurationManager.AppSettings["VersionConfiguration"].ToString().Replace("Capella - ","") %>" type="text/javascript"></script>
             <script src="JScripts/bootstrap.min.js" type="text/javascript"></script>
             <script src="JScripts/JSErrorMessage.js?version=<%=ConfigurationManager.AppSettings["VersionConfiguration"].ToString().Replace("Capella - ","") %>" type="text/javascript"></script>
             <script src="JScripts/JSModalWindow.js?version=<%=ConfigurationManager.AppSettings["VersionConfiguration"].ToString().Replace("Capella - ","") %>" type="text/javascript"></script>

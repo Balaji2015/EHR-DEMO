@@ -108,7 +108,7 @@
         <button type="button" id="btnHiddenExam" style="display:none;"></button>
     </div>
     <script src="JScripts/jquery-1.11.3.min.js"></script>
-    <script src="JScripts/jquery-ui.min1.10.2.js"></script>
+    <script>document.write("<script src='JScripts/jquery-ui.min1.10.2.js?version=" + sessionStorage.getItem("ScriptVersion") + "'><\/script>")</script>
     <script src="JScripts/bootstrap.min.js"></script>
     <script type="text/javascript">
     var JSFiles = ["JScripts/JSErrorMessage.js"];

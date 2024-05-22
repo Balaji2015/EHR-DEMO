@@ -121,7 +121,7 @@
     <script src="JScripts/JSAvoidRightClick.js?version=<%=ConfigurationManager.AppSettings["VersionConfiguration"].ToString().Replace("Capella - ","") %>" type="text/javascript"></script>
            <script src="JScripts/jquery-1.11.3.min.js" type="text/javascript"></script>
         <script src="JScripts/JSRcopiaWebBrowser.js?version=<%=ConfigurationManager.AppSettings["VersionConfiguration"].ToString().Replace("Capella - ","") %>" type="text/javascript"></script>
-<script src="JScripts/jquery-ui.min1.10.2.js" type="text/javascript"></script>
+<script src="JScripts/jquery-ui.min1.10.2.js?version=<%=ConfigurationManager.AppSettings["VersionConfiguration"].ToString().Replace("Capella - ","") %>" type="text/javascript"></script>
 <script src="JScripts/jquery-3.2.1.js" type="text/javascript"></script>
    </asp:PlaceHolder>
     </form>

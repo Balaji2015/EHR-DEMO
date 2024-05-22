@@ -114,7 +114,7 @@
         <asp:PlaceHolder ID="placeholderBulkAccess" runat="server">
             <script src="JScripts/jquery-2.2.3.js" type="text/javascript"></script>
             <script src="JScripts/bootstrap.min.js" type="text/javascript"></script>
-            <script src="JScripts/jquery-ui.js" type="text/javascript"></script>
+            <script src="JScripts/jquery-ui.js?version=<%=ConfigurationManager.AppSettings["VersionConfiguration"].ToString().Replace("Capella - ","") %>" type="text/javascript"></script>
             <script src="JScripts/jquery.datetimepicker.js" type="text/javascript"></script>
             <script src="JScripts/JSErrorMessage.js?version=<%=ConfigurationManager.AppSettings["VersionConfiguration"].ToString().Replace("Capella - ","") %>" type="text/javascript"></script>
              <script src="JScripts/JSModalWindow.js?version=<%=ConfigurationManager.AppSettings["VersionConfiguration"].ToString().Replace("Capella - ","") %>" type="text/javascript"></script>

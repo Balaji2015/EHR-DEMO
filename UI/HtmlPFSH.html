@@ -126,7 +126,7 @@
     <link href="CSS/jquery-ui.css" rel="Stylesheet" />
       <link href="CSS/CommonStyle.css" rel="stylesheet" type="text/css" />
     <script src="JScripts/jquery-1.11.3.min.js"></script>
-    <script src="JScripts/jquery-ui.min1.10.2.js"></script>
+    <script>document.write("<script src='JScripts/jquery-ui.min1.10.2.js?version=" + sessionStorage.getItem("ScriptVersion") + "'><\/script>")</script>
     <script src="JScripts/bootstrap.min.js"></script>
 </head>
 <body>

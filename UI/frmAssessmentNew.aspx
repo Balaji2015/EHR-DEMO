@@ -8,7 +8,7 @@
     <%--<script src="https://logrocket.acurussolutions.io/LogRocket.js"; crossorigin="anonymous"></script> <script>window.LogRocket && window.LogRocket.init('akido/akido-test', { mergeIframes: true }, { enableVerboseLogging: true });</script>--%>
      <script src="JScripts/jquery-1.9.1.js"></script>
     <script src="JScripts/jquery-1.8.3.min.js"></script>
-    <script src="JScripts/jquery-ui.js"></script>
+    <script src="JScripts/jquery-ui.js?version=<%=ConfigurationManager.AppSettings["VersionConfiguration"].ToString().Replace("Capella - ","") %>"></script>
 </head>
 <body>
     <form id="form1" runat="server">

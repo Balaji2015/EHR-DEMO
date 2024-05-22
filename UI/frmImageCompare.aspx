@@ -224,7 +224,7 @@
         <asp:PlaceHolder ID="PlaceHolder1" runat="server">
             <!--Certain Files are marked as static files, no need to implement the VersionConfiguration Technology in the pages-->
            <script src="JScripts/jquery-1.11.3.min.js" type="text/javascript"></script>
-            <script src="JScripts/jquery-ui.min1.10.2.js" type="text/javascript"></script>
+            <script src="JScripts/jquery-ui.min1.10.2.js?version=<%=ConfigurationManager.AppSettings["VersionConfiguration"].ToString().Replace("Capella - ","") %>" type="text/javascript"></script>
             <script src="JScripts/bootstrap.min.js" type="text/javascript"></script>
     <link href="CSS/jquery-ui.css" rel="Stylesheet" />
     <script src="JScripts/JSModalWindow.js?version=<%=ConfigurationManager.AppSettings["VersionConfiguration"].ToString().Replace("Capella - ","") %>" type="text/javascript"></script>

@@ -8,7 +8,7 @@
    <%-- <link href="CSS/font-awesome.css" rel="stylesheet" />--%>
     <base target="_self" />
       <script src="JScripts/jquery-1.11.3.min.js"></script>
-    <script src="JScripts/jquery-ui.min1.10.2.js"></script>
+    <script src="JScripts/jquery-ui.min1.10.2.js?version=<%=ConfigurationManager.AppSettings["VersionConfiguration"].ToString().Replace("Capella - ","") %>"></script>
     <link href="CSS/CommonStyle.css" rel="stylesheet" type="text/css" />
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.4.0/css/font-awesome.css" rel="stylesheet" />
 </head>
