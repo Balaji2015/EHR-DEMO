@@ -86,7 +86,7 @@ namespace Acurus.Capella.UI
                                              //CAP-2008
                                              sPhyName = Phy.PhyPrefix + " " + Phy.PhyFirstName + " " + Phy.PhyMiddleName + (string.IsNullOrWhiteSpace(Phy.PhyLastName) ? " " : ", " + Phy.PhyLastName) + " " + Phy.PhySuffix,
                                              sPhySuffix = Phy.PhySuffix,
-                                             sPhyshortName = (string.IsNullOrWhiteSpace(Phy.PhyPrefix)?" ":Phy.PhyPrefix + ". ") + Phy.PhyFirstName + " " + Phy.PhyMiddleName + (string.IsNullOrWhiteSpace(Phy.PhyLastName) ? " " : ", " + Phy.PhyLastName),
+                                             sPhyshortName = (string.IsNullOrWhiteSpace(Phy.PhyPrefix)?"":Phy.PhyPrefix.Replace(".","") + ". ") + Phy.PhyFirstName + " " + Phy.PhyMiddleName + (string.IsNullOrWhiteSpace(Phy.PhyLastName) ? " " : ", " + Phy.PhyLastName),
                                              sPhyNPI = Phy.PhyNPI,
                                              sPhySpecialty = Phy.PhySpecialtyCode,
                                              sPhyFacility = Phy.PhyFacility,
@@ -287,7 +287,7 @@ namespace Acurus.Capella.UI
                                          {
                                              ulPhyId = Phy.PhyId,
                                              //CAP-2008
-                                             sPhyName = (string.IsNullOrWhiteSpace(Phy.PhyPrefix) ? " " : Phy.PhyPrefix + ". ") + Phy.PhyFirstName + " " + Phy.PhyMiddleName + " " + Phy.PhyLastName + " " + Phy.PhySuffix,
+                                             sPhyName = (string.IsNullOrWhiteSpace(Phy.PhyPrefix) ? "" : Phy.PhyPrefix.Replace(".", "") + ". ") + Phy.PhyFirstName + " " + Phy.PhyMiddleName + " " + Phy.PhyLastName + " " + Phy.PhySuffix,
                                              sPhyNPI = Phy.PhyNPI,
                                              sPhyFacility = Phy.PhyFacility,
                                              ulPhySplID = Phy.PhySpecialtyID,
@@ -371,7 +371,7 @@ namespace Acurus.Capella.UI
                                          {
                                              ulPhyId = Phy.PhyId,
                                              //CAP-2008
-                                             sPhyName = (string.IsNullOrWhiteSpace(Phy.PhyPrefix) ? " " : Phy.PhyPrefix + ". ") + Phy.PhyFirstName + " " + Phy.PhyMiddleName + " " + Phy.PhyLastName + " " + Phy.PhySuffix,
+                                             sPhyName = (string.IsNullOrWhiteSpace(Phy.PhyPrefix) ? "" : Phy.PhyPrefix.Replace(".", "") + ". ") + Phy.PhyFirstName + " " + Phy.PhyMiddleName + " " + Phy.PhyLastName + " " + Phy.PhySuffix,
                                              sPhyNPI = Phy.PhyNPI,
                                              sPhyFacility = Phy.PhyFacility,
                                              ulPhySplID = Phy.PhySpecialtyID,

@@ -1585,20 +1585,23 @@ namespace Acurus.Capella.UI
                 cell = CreateCell("Facility Name: \n", objFacility.Fac_Name);
                 phyTable.AddCell(cell);
                 //CAP-2075
-                string City1 = string.Empty;
+                string sFacCity = string.Empty;
                 if (objFacility.Fac_City != string.Empty)
                 {
-                    if (objFacility.Fac_Address1 != string.Empty && objFacility.Fac_Address2 != string.Empty)
-                        City1 = objFacility.Fac_Address1 + "\n" + objFacility.Fac_Address2;
-                    else City1 = objFacility.Fac_Address1;
-                    if (objFacility.Fac_State != string.Empty && objFacility.Fac_City != string.Empty)
-                    {
-                        City1 += "\n" + objFacility.Fac_City + ", " + objFacility.Fac_State + " " + objFacility.Fac_Zip;
-                    }
-                    else
-                        City1 = "\n" + objFacility.Fac_City;
+                    sFacCity = objFacility.Fac_City;
+                    if (objFacility.Fac_State != string.Empty)
+                        sFacCity += ", " + objFacility.Fac_State + " - " + objFacility.Fac_Zip;
+                    if (objFacility.Fac_Telephone != string.Empty)
+                        sFacCity += "\n" + "Phone: " + objFacility.Fac_Telephone;
+                    if (objFacility.Fac_Fax != string.Empty)
+                        sFacCity += "\n" + "Fax: " + objFacility.Fac_Fax;
+
+                    cell = CreateCell("Facility Address: \n", objFacility.Fac_Address1 + "\n" + sFacCity);
                 }
-                cell = CreateCell("Facility Address: \n", City1);
+                else
+                {
+                    cell = CreateCell("Facility Address: \n", objFacility.Fac_Address1);
+                }
                 phyTable.AddCell(cell);
             }
             if (objPhysician != null)

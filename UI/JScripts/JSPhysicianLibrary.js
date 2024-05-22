@@ -762,8 +762,16 @@ function AddProvider() {
                 //var IsEnableGrid = localStorage.getItem("IsEnableGrid");
                 //if (IsEnableGrid != null && IsEnableGrid != undefined) {
                 //    if (IsEnableGrid == "false") {
-                        $("#btnClose").click();
-                        var vProviderName = $("#ddlPrefix")[0].value + ". " + $("#txtFirstName")[0].value + " " + document.getElementById("txtMI").value + " " + $("#txtLastName")[0].value;
+                $("#btnClose").click();
+
+                if ($("#ddlPrefix")[0].value != '')
+                {
+                    var vProviderName = $("#ddlPrefix")[0].value + ". " + $("#txtFirstName")[0].value + " " + document.getElementById("txtMI").value + " " + $("#txtLastName")[0].value;
+                }
+                else
+                {
+                    var vProviderName =  $("#txtFirstName")[0].value + " " + document.getElementById("txtMI").value + " " + $("#txtLastName")[0].value;
+                }
                         var vPhyNmae = $("#ddlPrefix")[0].value + $("#txtFirstName")[0].value + " " + document.getElementById("txtMI").value + " " + $("#txtLastName")[0].value + $("#txtSuffix")[0].value;
                         //Jira Cap - 1989
                         //var vFullName = $("#ddlPrefix")[0].value + $("#txtFirstName")[0].value + " " + document.getElementById("txtMI").value + " " + $("#txtLastName")[0].value + "(" + $("#txtSuffix")[0].value + ")";
@@ -773,11 +781,15 @@ function AddProvider() {
                         //    + "|" + "PH:" + $("#txtPhone")[0].value + "FAX:" + $("#txtFax")[0].value;
                 if ($('#ddlCategory')[0].value != 'ORGANIZATION') {
                     if ($("#ddlPrefix")[0].value != '') {
-                        var vFullName = $("#ddlPrefix")[0].value + ". " + $("#txtFirstName")[0].value + " " + document.getElementById("txtMI").value + ", " + $("#txtLastName")[0].value + "(" + $("#txtSuffix")[0].value + ")";
+                        var vFullName = $("#ddlPrefix")[0].value + ". " + $("#txtFirstName")[0].value + " " + document.getElementById("txtMI").value + ", " + $("#txtLastName")[0].value ;
                     }
                     else {
-                        var vFullName = $("#txtFirstName")[0].value + " " + document.getElementById("txtMI").value + ", " + $("#txtLastName")[0].value + "(" + $("#txtSuffix")[0].value + ")";
+                        var vFullName = $("#txtFirstName")[0].value + " " + document.getElementById("txtMI").value + ", " + $("#txtLastName")[0].value ;
                     }
+                    if ($("#txtSuffix")[0].value != '') {
+                        var vFullName = vFullName + "(" + $("#txtSuffix")[0].value + ")";
+                    }
+
                     var PCP_PhyDetails = objdata.split("|")[1] + "&" + vProviderName + "&" + vPhyNmae + "&" + $("#txtNPI")[0].value + "&" + vFullName + " | " + "NPI: " + $("#txtNPI")[0].value + " | " + "Facility: " + FacilityList + " | "
                         + "Address: " + $("#txtAddressLine1")[0].value + ", " + $("#txtCity")[0].value + ", "
                         + $("#txtState")[0].value + " " + $("#txtZip")[0].value

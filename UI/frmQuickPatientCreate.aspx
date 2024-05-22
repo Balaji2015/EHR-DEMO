@@ -1356,7 +1356,7 @@
                                      OnClientClick ="return OpenUploadDocuments();" style="margin-top: 7%; margin-left: 3%;" />&nbsp;&nbsp;
                             </td>   
                                         <td style="width:10%;text-align:right;">
-    <asp:Button ID="btnProviderSave" runat="server" Text="Check In to Provider" Width="94%" Class="aspresizedgreenbutton" OnClientClick="return ValidatePatientInformation();" AccessKey="S" OnClick="btnSave_Click" style="margin-top:-6%;margin-right: -3%; " />&nbsp;&nbsp;
+    <asp:Button ID="btnProviderSave" runat="server" Text="Check In to Provider" Width="94%" Class="aspresizedgreenbutton" OnClientClick="return ValidatePatientInformation();" AccessKey="S" OnClick="btnSave_Click" style="margin-top:-6%;margin-right: -3%;" Visible="false"/>&nbsp;&nbsp;
 </td>
                             <td style="width:10%;text-align:right;">                                
                                 <asp:Button ID="btnSave" runat="server" Text="Check In to MA" Width="94%" Class="aspresizedgreenbutton" OnClientClick="return ValidatePatientInformation();"
