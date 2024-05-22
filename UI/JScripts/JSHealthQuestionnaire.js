@@ -516,7 +516,7 @@ function btnPrint_Clicked() {
         document.getElementById("hdnPrint").value = "false";
         var QuryString = window.location.search;
         //CAP-2035
-        if (QuryString = '? TabName = PHQ - 9 + Screening') {
+        if (QuryString == '? TabName = PHQ - 9 + Screening') {
             QuryString = "?TabName=PHQ-9%20Screening";
         }
         $.ajax({
