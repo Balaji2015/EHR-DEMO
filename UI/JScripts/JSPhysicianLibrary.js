@@ -762,8 +762,16 @@ function AddProvider() {
                 //var IsEnableGrid = localStorage.getItem("IsEnableGrid");
                 //if (IsEnableGrid != null && IsEnableGrid != undefined) {
                 //    if (IsEnableGrid == "false") {
-                        $("#btnClose").click();
-                        var vProviderName = $("#ddlPrefix")[0].value + ". " + $("#txtFirstName")[0].value + " " + document.getElementById("txtMI").value + " " + $("#txtLastName")[0].value;
+                $("#btnClose").click();
+
+                if ($("#ddlPrefix")[0].value != '')
+                {
+                    var vProviderName = $("#ddlPrefix")[0].value + ". " + $("#txtFirstName")[0].value + " " + document.getElementById("txtMI").value + " " + $("#txtLastName")[0].value;
+                }
+                else
+                {
+                    var vProviderName =  $("#txtFirstName")[0].value + " " + document.getElementById("txtMI").value + " " + $("#txtLastName")[0].value;
+                }
                         var vPhyNmae = $("#ddlPrefix")[0].value + $("#txtFirstName")[0].value + " " + document.getElementById("txtMI").value + " " + $("#txtLastName")[0].value + $("#txtSuffix")[0].value;
                         //Jira Cap - 1989
                         //var vFullName = $("#ddlPrefix")[0].value + $("#txtFirstName")[0].value + " " + document.getElementById("txtMI").value + " " + $("#txtLastName")[0].value + "(" + $("#txtSuffix")[0].value + ")";
