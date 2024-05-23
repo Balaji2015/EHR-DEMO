@@ -375,8 +375,8 @@ namespace Acurus.Capella.UI.WebServices
                         //        var result = (from p in PhysicianAddressNodes.ChildNodes.OfType<XmlElement>() where p.Attributes["Physician_Fax"].Value == Fax select new { ExistFax = p.Attributes["Physician_Fax"].Value }).ToList();
                         PhysicianManager phymngrnpi = new PhysicianManager();
                         IList<PhysicianLibrary> ilstPhysicianLibrary = new List<PhysicianLibrary>();
-                        ilstPhysicianLibrary = phymngrnpi.GetPhysicianByNPI(PhyNPI);
-                        var result = (from p in ilstPhysicianLibrary where p.PhyId != Convert.ToUInt64(PhysicianId) select new { ExistNPI = p.PhyNPI }).ToList();
+                        ilstPhysicianLibrary = phymngrnpi.GetPhysicianByFax(Fax);
+                        var result = (from p in ilstPhysicianLibrary where p.PhyId != Convert.ToUInt64(PhysicianId) select new { ExistFax = p.PhyFax }).ToList();
                         if (result.Count > 0)
                         {
                             return JsonConvert.SerializeObject(result);

@@ -796,7 +796,7 @@ function AddProvider() {
                         + " | " + "Phone No:" + $("#txtPhone")[0].value + " | Fax No:" + $("#txtFax")[0].value;
                 }
                 else {
-                    var PCP_PhyDetails = objdata.split("|")[1] + "&" + vProviderName + "&" + vPhyNmae + "&" + $("#txtNPI")[0].value + "&" + $('#txtCompany')[0].value + " | " + "NPI: " + $("#txtNPI")[0].value + " | " + "Facility: " + FacilityList + " | "
+                    var PCP_PhyDetails = objdata.split("|")[1] + "&" + $('#txtCompany')[0].value + "&" + $('#txtCompany')[0].value + "&" + $("#txtNPI")[0].value + "&" + $('#txtCompany')[0].value + " | " + "NPI: " + $("#txtNPI")[0].value + " | " + "Facility: " + FacilityList + " | "
                         + "Address: " + $("#txtAddressLine1")[0].value + ", " + $("#txtCity")[0].value + ", "
                         + $("#txtState")[0].value + " " + $("#txtZip")[0].value
                         + " | " + "Phone No:" + $("#txtPhone")[0].value + " | Fax No:" + $("#txtFax")[0].value;
@@ -819,8 +819,16 @@ function AddProvider() {
                     vFax = objdata;
                     if (DisplayErrorMessage('1011186') == true) {
                         { sessionStorage.setItem('StartLoading', 'true'); StartLoadFromPatChart(); }
+                        //Cap - 2114
+                        var PCP_PhyDetails = "" + "&" + $('#txtCompany')[0].value + "&" + $('#txtCompany')[0].value + "&" + $("#txtNPI")[0].value + "&" + $('#txtCompany')[0].value + " | " + "NPI: " + $("#txtNPI")[0].value + " | " + "Facility: " + FacilityList + " | "
+                            + "Address: " + $("#txtAddressLine1")[0].value + ", " + $("#txtCity")[0].value + ", "
+                            + $("#txtState")[0].value + " " + $("#txtZip")[0].value
+                            + " | " + "Phone No:" + $("#txtPhone")[0].value + " | Fax No:" + $("#txtFax")[0].value;
+                        localStorage.setItem("PhyDetails", PCP_PhyDetails);
                         Add('Y');
                         //{ sessionStorage.setItem('StartLoading', 'false'); StopLoadFromPatChart(); }
+                      
+                        $("#btnClose").click();
                         return;
                     }
                     else

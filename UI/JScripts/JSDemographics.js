@@ -2715,6 +2715,8 @@ function Edit(e) {
     document.getElementById('imginsuredText').style.visibility = "hidden";
 
     if (e.parentElement.parentElement.childNodes[6].innerText != "") {
+        //Cap - 2113
+        document.getElementById("ctl00_C5POBody_hdnProviderId").value = e.parentElement.parentElement.childNodes[19].innerText;
         document.getElementById("ctl00_C5POBody_txtProviderSearch").attributes['data-phy-id'].value = e.parentElement.parentElement.childNodes[19].innerText;
         document.getElementById('ctl00_C5POBody_txtProviderSearch').attributes['data-phy-gridname'].value = e.parentElement.parentElement.childNodes[6].innerText;
         document.getElementById('ctl00_C5POBody_txtProviderSearch').attributes['data-phy-details'].value = e.parentElement.parentElement.childNodes[20].innerText
@@ -3801,11 +3803,7 @@ function EditProviderDetails() {
                 document.getElementById('ctl00_C5POBody_txtProviderSearch').disabled = true;
                 document.getElementById('ctl00_C5POBody_txtProviderSearch').style.backgroundColor = "#BFDBFF";
                 localStorage.setItem("PhyDetails", "");
-            }
-            else {
-                document.getElementById("ctl00_C5POBody_txtProviderSearch").value = PhyTextboxName;
-
-            }
+            }  
 
 
         });

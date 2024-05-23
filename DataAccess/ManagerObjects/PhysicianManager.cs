@@ -1355,7 +1355,7 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
             IList<PhysicianLibrary> ilstPhysicianLibrary = new List<PhysicianLibrary>();
             using (ISession iMySession = NHibernateSessionManager.Instance.CreateISession())
             {
-                ICriteria PhyList = iMySession.CreateCriteria(typeof(PhysicianLibrary)).Add(Expression.Eq("Category", Fax));
+                ICriteria PhyList = iMySession.CreateCriteria(typeof(PhysicianLibrary)).Add(Expression.Eq("PhyFax", Fax));
                 ilstPhysicianLibrary = PhyList.List<PhysicianLibrary>();
                 iMySession.Close();
             }
