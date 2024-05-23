@@ -1884,6 +1884,8 @@ $(document).ready(function () {
     document.getElementById('ctl00_C5POBody_txtProviderSearch')?.setAttribute("data-phy-details", "0");
     document.getElementById('ctl00_C5POBody_txtProviderSearch')?.setAttribute("data-phy-gridname", "");
     document.getElementById('ctl00_C5POBody_txtProviderSearch')?.setAttribute("data-phy-npi", "");
+    //Cap- 2113
+    document.getElementById('ctl00_C5POBody_txtProviderSearch')?.setAttribute("data-phy-Category", "");
 
     $(document.getElementById(GetClientId("dtpPatientDOB"))).datepicker({
         dateFormat: 'dd-M-yy', changeYear: true, changeMonth: true, maxDate: new Date(), yearRange: "-120:+0",
@@ -1998,8 +2000,8 @@ function loadgrid() {
                         else {
                             vsrc = "Resources/edit.gif";
                         }
-                        var newRow = document.getElementById('tbodupolicyinfo').insertRow();
-                        newRow.innerHTML = "<tr><td style='width: 5%;text-align: center'><img src=" + vsrc + " onclick='Edit(this);'/></td><td style='width: 10%;text-align: center'>" + objdata[i].Insurance_Type + "</td><td style='width: 10 %;text-align: center'>" + objdata[i].Plan_Name + "</td><td style='width: 10 %;text-align: center'>" + objdata[i].Policy_Holder_ID + "</td><td style='width: 5 %;text-align: center'>" + objdata[i].Relationship + "</td ><td style='width: 10 %;text-align: center'>" + objdata[i].Insured_Name + "</td ><td style='width: 10 %;text-align: center'>" + objdata[i].PCP_Grid_Name + "</td><td style='width: 10 %;text-align: center'>" + objdata[i].Specify_Other + "</td><td style='width: 7 %;text-align: center'> " + Effective_Start_Date + "</td><td style='width: 7 %;text-align: center'>" + Termination_Date + "</td><td style='width: 7 %;text-align: center'>" + vFinalStatus + "</td><td style='display:none'>" + objdata[i].Sortorder + "</td><td style='display:none'>" + objdata[i].Plan_ID + "</td><td style='display:none'>" + objdata[i].Id + "</td><td style='display:none'>" + objdata[i].Insured_Human_ID + "</td><td style='display:none'>" + parseInt(j) + "</td><td style='display:none'>" + objdata[i].Relationship_Number + "</td><td style='display:none'>" + objdata[i].Insured_Details + "</td><td style='display:none'>" + objdata[i].CarrierID + "</td><td style='display:none'>" + objdata[i].PCP_ID + "</td><td style='display:none'>" + objdata[i].PCP_Name + "</td><td style='display:none'>" + objdata[i].PCP_Textbox_Name + "</td><td style='display:none'>" + objdata[i].PCP_NPI + "</td><tr>";
+                            var newRow = document.getElementById('tbodupolicyinfo').insertRow();
+                            newRow.innerHTML = "<tr><td style='width: 5%;text-align: center'><img src=" + vsrc + " onclick='Edit(this);'/></td><td style='width: 10%;text-align: center'>" + objdata[i].Insurance_Type + "</td><td style='width: 10 %;text-align: center'>" + objdata[i].Plan_Name + "</td><td style='width: 10 %;text-align: center'>" + objdata[i].Policy_Holder_ID + "</td><td style='width: 5 %;text-align: center'>" + objdata[i].Relationship + "</td ><td style='width: 10 %;text-align: center'>" + objdata[i].Insured_Name + "</td ><td style='width: 10 %;text-align: center'>" + objdata[i].PCP_Grid_Name + "</td><td style='width: 10 %;text-align: center'>" + objdata[i].Specify_Other + "</td><td style='width: 7 %;text-align: center'> " + Effective_Start_Date + "</td><td style='width: 7 %;text-align: center'>" + Termination_Date + "</td><td style='width: 7 %;text-align: center'>" + vFinalStatus + "</td><td style='display:none'>" + objdata[i].Sortorder + "</td><td style='display:none'>" + objdata[i].Plan_ID + "</td><td style='display:none'>" + objdata[i].Id + "</td><td style='display:none'>" + objdata[i].Insured_Human_ID + "</td><td style='display:none'>" + parseInt(j) + "</td><td style='display:none'>" + objdata[i].Relationship_Number + "</td><td style='display:none'>" + objdata[i].Insured_Details + "</td><td style='display:none'>" + objdata[i].CarrierID + "</td><td style='display:none'>" + objdata[i].PCP_ID + "</td><td style='display:none'>" + objdata[i].PCP_Name + "</td><td style='display:none'>" + objdata[i].PCP_Textbox_Name + "</td><td style='display:none'>" + objdata[i].PCP_NPI + "</td><td style='display:none'>" + objdata[i].Category + "</td><tr>";
                         document.getElementById(GetClientId("txtNoofPolicies")).value = $('#tbodupolicyinfo tr').length;
 
                     }
@@ -2303,7 +2305,8 @@ function btnaddinsured(e) {
     else {
         var vProviderName = "";
     }
-
+    //Cap- 2113
+    var vCategory = document.getElementById("ctl00_C5POBody_txtProviderSearch").attributes['data-phy-Category'].value;
     var vProviderFullName = document.getElementById("ctl00_C5POBody_txtProviderSearch").value;
     var planname = document.getElementById("ctl00_C5POBody_txtPlanSearch").value;
     var insurehumanid = document.getElementById("ctl00_C5POBody_txtSelectinsured").attributes['data-human-id'].value;
@@ -2542,7 +2545,7 @@ function btnaddinsured(e) {
                     // }
 
                     var newRow = document.getElementById('tbodupolicyinfo').insertRow();
-                    newRow.innerHTML = "<tr><td style='width: 5%;text-align: center'><img src='Resources/edit.gif' onclick='Edit(this);'/></td><td style='width: 10%;text-align: center'>" + insuranceType + "</td><td style='width: 10 %;text-align: center'>" + planname + "</td><td style='width: 10 %;text-align: center'>" + PolicyVal + "</td><td style='width: 5 %;text-align: center'>" + RelationVal.options[RelationVal.selectedIndex].text + "</td ><td style='width: 10%;text-align: center'>" + insurename + "</td ><td style='width: 10 %;text-align: center'>" + vPCPName + "</td><td style='width: 10 %;text-align: center'>" + SpecificVal + "</td><td style='width: 7 %;text-align: center'> " + EffStartDate + "</td><td style='width: 7 %;text-align: center'>" + EffEndDate + "</td><td style='width: 7 %;text-align: center'>" + status + "</td><td style='display:none'>" + sortordernew + "</td><td style='display:none'>" + PlanVal + "</td><td style='display:none'>" + id + "</td><td style='display:none'>" + insurehumanid + "</td><td style='display:none'>" + parseInt(parseInt(maxvalue) + parseInt("1")) + "</td><td style='display:none'>" + RelationVal.options[RelationVal.selectedIndex].value + "</td><td style='display:none'>" + InsuredFullname + "</td><td style='display:none'>" + carrierVal + "</td><td style='display:none'>" + vPcpId + "</td><td style='display:none'>" + vProviderName + "</td><td style='display:none'>" + vProviderFullName + "</td><td style='display:none'>" + vPcpnpi + "</td><tr>";
+                    newRow.innerHTML = "<tr><td style='width: 5%;text-align: center'><img src='Resources/edit.gif' onclick='Edit(this);'/></td><td style='width: 10%;text-align: center'>" + insuranceType + "</td><td style='width: 10 %;text-align: center'>" + planname + "</td><td style='width: 10 %;text-align: center'>" + PolicyVal + "</td><td style='width: 5 %;text-align: center'>" + RelationVal.options[RelationVal.selectedIndex].text + "</td ><td style='width: 10%;text-align: center'>" + insurename + "</td ><td style='width: 10 %;text-align: center'>" + vPCPName + "</td><td style='width: 10 %;text-align: center'>" + SpecificVal + "</td><td style='width: 7 %;text-align: center'> " + EffStartDate + "</td><td style='width: 7 %;text-align: center'>" + EffEndDate + "</td><td style='width: 7 %;text-align: center'>" + status + "</td><td style='display:none'>" + sortordernew + "</td><td style='display:none'>" + PlanVal + "</td><td style='display:none'>" + id + "</td><td style='display:none'>" + insurehumanid + "</td><td style='display:none'>" + parseInt(parseInt(maxvalue) + parseInt("1")) + "</td><td style='display:none'>" + RelationVal.options[RelationVal.selectedIndex].value + "</td><td style='display:none'>" + InsuredFullname + "</td><td style='display:none'>" + carrierVal + "</td><td style='display:none'>" + vPcpId + "</td><td style='display:none'>" + vProviderName + "</td><td style='display:none'>" + vProviderFullName + "</td><td style='display:none'>" + vPcpnpi + "</td><td style='display:none'>" + vCategory + "</td><tr>";
                     document.getElementById(GetClientId("txtNoofPolicies")).value = $('#tbodupolicyinfo tr').length;
                     //Cap - 1369
                     //btnclearinsured(false);
@@ -2597,6 +2600,7 @@ function btnaddinsured(e) {
                             $('#tbodupolicyinfo tr')[j].childNodes[20].innerText = vProviderName;
                             $('#tbodupolicyinfo tr')[j].childNodes[21].innerText = vProviderFullName;
                             $('#tbodupolicyinfo tr')[j].childNodes[22].innerText = vPcpnpi;
+                            $('#tbodupolicyinfo tr')[j].childNodes[23].innerText = vCategory;
                             //Cap - 1369
                             //btnclearinsured(false);
                             setTimeout(btnclearinsured(false), 1000);
@@ -2659,6 +2663,7 @@ function btnaddinsured(e) {
             document.getElementById('ctl00_C5POBody_txtProviderSearch').setAttribute("data-phy-details", "0");
             document.getElementById('ctl00_C5POBody_txtProviderSearch').setAttribute("data-phy-gridname", "");
             document.getElementById('ctl00_C5POBody_txtProviderSearch').setAttribute("data-phy-npi", "");
+            document.getElementById('ctl00_C5POBody_txtProviderSearch').setAttribute("data-phy-Category", "");
         },
         failure: function (data) {
             alert(data.d);
@@ -2717,6 +2722,7 @@ function Edit(e) {
     if (e.parentElement.parentElement.childNodes[6].innerText != "") {
         //Cap - 2113
         document.getElementById("ctl00_C5POBody_hdnProviderId").value = e.parentElement.parentElement.childNodes[19].innerText;
+        document.getElementById('ctl00_C5POBody_hdnCategory').value = e.parentElement.parentElement.childNodes[23].innerText;
         document.getElementById("ctl00_C5POBody_txtProviderSearch").attributes['data-phy-id'].value = e.parentElement.parentElement.childNodes[19].innerText;
         document.getElementById('ctl00_C5POBody_txtProviderSearch').attributes['data-phy-gridname'].value = e.parentElement.parentElement.childNodes[6].innerText;
         document.getElementById('ctl00_C5POBody_txtProviderSearch').attributes['data-phy-details'].value = e.parentElement.parentElement.childNodes[20].innerText
@@ -2731,6 +2737,7 @@ function Edit(e) {
         document.getElementById('ctl00_C5POBody_txtProviderSearch').attributes['data-phy-gridname'].value = "";
         document.getElementById('ctl00_C5POBody_txtProviderSearch').attributes['data-phy-details'].value = "";
         document.getElementById('ctl00_C5POBody_txtProviderSearch').attributes['data-phy-npi'].value = "";
+        document.getElementById('ctl00_C5POBody_txtProviderSearch').setAttribute("data-phy-Category", "");
         document.getElementById("ctl00_C5POBody_txtProviderSearch").value = "";
         document.getElementById('ctl00_C5POBody_txtProviderSearch').disabled = false;
         document.getElementById('ctl00_C5POBody_txtProviderSearch').style.backgroundColor = "#FFFFFF";
@@ -3441,6 +3448,7 @@ function ProviderSelected(event, ui) {
     txtProviderSearch.attributes['data-phy-details'].value = ProviderDetails.sPhyName;
     txtProviderSearch.attributes['data-phy-gridname'].value = ProviderDetails.sPhyshortName;
     txtProviderSearch.attributes['data-phy-npi'].value = ProviderDetails.sPhyNPI;
+    txtProviderSearch.attributes['data-phy-Category'].value = ProviderDetails.sCategory;
     //txtProviderSearch.value = ui.item.label;
     txtProviderSearch.value = vLableVal;
     var provider = "";
@@ -3588,6 +3596,7 @@ $("#ctl00_C5POBody_txtProviderSearch").autocomplete({
     $("#ctl00_C5POBody_txtProviderSearch").css("color", "black").attr({ "data-phy-details": "0" });
     $("#ctl00_C5POBody_txtProviderSearch").css("color", "black").attr({ "data-phy-gridname": "" });
     $("#ctl00_C5POBody_txtProviderSearch").css("color", "black").attr({ "data-phy-npi": "" });
+    $("#ctl00_C5POBody_txtProviderSearch").css("color", "black").attr({ "data-phy-Category": "" });
 
 }).on("click", function (e) {
     // $('#txtPlanSearch').val('');

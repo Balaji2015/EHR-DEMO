@@ -635,6 +635,7 @@ namespace Acurus.Capella.UI
                     dt.Columns.Add("PCP_Grid_Name", typeof(string));
                     dt.Columns.Add("PCP_Textbox_Name", typeof(string));
                     dt.Columns.Add("PCP_NPI", typeof(string));
+                    dt.Columns.Add("Category", typeof(string)); 
                     IList<ulong> vPhyId = PatInsOrderedList.Select(aa => aa.PCP_ID).Distinct().ToArray();
                     FindPhysican physician_dto = new FindPhysican();
                     PhysicianManager objPhysicianManager = new PhysicianManager();
@@ -713,6 +714,7 @@ namespace Acurus.Capella.UI
                                 dr["PCP_Grid_Name"] = sPcpGridName;
                                 dr["PCP_Textbox_Name"] = sPcpTextboxName;
                                 dr["PCP_NPI"] = ilstCurrentPhyFacDTO[0].PhyNPI;
+                                dr["Category"] = ilstCurrentPhyFacDTO[0].Category;
 
                             }
                             else
