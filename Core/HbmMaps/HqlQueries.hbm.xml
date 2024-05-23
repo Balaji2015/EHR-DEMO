@@ -1074,9 +1074,10 @@ where u.user_name=? and w.current_owner = ? and w.facility_name= ? and (w.Obj_Ty
     left join scan_index_conversion si on (s.Scan_ID= si.Scan_ID)
     left join process_user u on (w.current_process=u.process_name)
     where
-    u.user_name=? and
-    w.current_owner = ? and  w.facility_name=? and
-    w.Obj_Type =?; ]]>
+    w.current_owner = ? and  
+	w.Obj_Type =? and
+	w.facility_name=? and
+     u.user_name=?; ]]>
 	</sql-query>
 
 	<!--<sql-query name="FillMyTaskObjectDetails.WithoutFacility.ShowAllFalse">
@@ -1201,10 +1202,11 @@ where w.Is_Default_MyQ_LineItem=1 and u.user_name=? and w.current_owner = ?  and
     left join process_user u on (w.current_process=u.process_name)
     left join process_master p on (w.current_process=p.process_name)
     where  w.Is_Default_MyQ_LineItem=1 and
-    u.user_name=? and
-    w.current_owner = ? and  w.facility_name=? and
-    w.Obj_Type =?  
-    and p.process_type='assigned'
+    w.current_owner = ? and
+	 w.Obj_Type =?  and
+      w.facility_name=? and
+	u.user_name=? and
+    p.process_type='assigned'
     
    ]]>
 	</sql-query>
@@ -12864,10 +12866,16 @@ where  w.current_owner = ?  and w.Is_Default_MyQ_LineItem=1 and (w.Obj_Type in (
   union all
   (select p.message_id FROM patient_notes p left join wf_object w on (p.message_id=w.obj_system_id and w.obj_type='TASK') 
   where w.Is_Default_MyQ_LineItem=1 and p.created_by = ?  and  w.current_process='OPEN_TASK')) as a;]]>-->
-		<![CDATA[SELECT count(*) FROM wf_object w left join patient_notes n  on (n.Message_Id=w.obj_system_id) 
+		<!--<![CDATA[SELECT count(*) FROM wf_object w left join patient_notes n  on (n.Message_Id=w.obj_system_id) 
 left join human h on (n.Human_id=h.human_id) 
 left join process_master m on (w.current_process=m.process_name) 
-where w.Is_Default_MyQ_LineItem=1 and  w.current_owner = ?  and (w.Obj_Type in (:ObjList)) and m.process_type='ASSIGNED' order by n.Message_Date_And_Time;]]>
+where w.Is_Default_MyQ_LineItem=1 and  w.current_owner = ?  and (w.Obj_Type in (:ObjList)) and m.process_type='ASSIGNED' order by n.Message_Date_And_Time;]]>-->
+	
+	<![CDATA[SELECT count(*) FROM wf_object w  left join process_master m on (w.current_process=m.process_name)  
+	where w.Is_Default_MyQ_LineItem=1 and 
+	w.current_owner = ?  and 
+	(w.Obj_Type in (:ObjList))  and 
+	m.process_type='ASSIGNED';]]>
 	</sql-query>
 
 	<sql-query name="CountFillMyTaskObjectDetails.WithFacility.ShowAllFalse">
@@ -12934,7 +12942,7 @@ and w.Obj_Type ='TASK']]>-->
     and w.Is_Default_MyQ_LineItem=1     
     and (w.Obj_Type in (:ObjList)) ) as c ]]>-->
 		<!--<![CDATA[SELECT count(*) FROM wf_object w where w.Is_Default_MyQ_LineItem=1 and  w.current_owner = ? and w.Obj_Type ='ADDENDUM' ;]]>-->
-		<![CDATA[select SUM(c) from  (SELECT Count(*) as c FROM wf_object w 
+		<!--<![CDATA[select SUM(c) from  (SELECT Count(*) as c FROM wf_object w 
     inner join encounter e on (w.Parent_Obj_System_Id = e.encounter_id) 
     inner join human h on (e.Human_ID = h.Human_ID) 
     inner join addendum_Notes a on (w.Obj_System_Id = a.Addendum_Notes_ID) 
@@ -12950,7 +12958,11 @@ SELECT Count(*) as c FROM wf_object wa
     inner join physician_library p on (ea.Encounter_Provider_ID = p.Physician_Library_ID)  
     where wa.Is_Default_MyQ_LineItem=1 and
      wa.current_owner =  ?     
-    and (wa.Obj_Type in ('ADDENDUM'))) as c;]]>
+    and (wa.Obj_Type in ('ADDENDUM'))) as c;]]>-->
+		<![CDATA[SELECT Count(*) as c FROM wf_object wa    
+where wa.Is_Default_MyQ_LineItem=1 and 
+wa.current_owner = ? and 
+(wa.Obj_Type in ('ADDENDUM'));]]>
 	</sql-query>
 
 	<sql-query name="CountFillMyAddendumObjectDetails.WithFacility.WithAllAppointments">
@@ -13236,9 +13248,10 @@ from WF_Object w left join prescription p  on (w.obj_system_id=p.Prescription_Id
     FROM   wf_object w
     left join process_master u on (w.current_process=u.process_name)
     where  w.Is_Default_MyQ_LineItem=1 and
-    u.user_name=? and
-    w.current_owner = ? and  w.facility_name=? and
-    w.Obj_Type =? and u.process_type='assigned' 
+	 w.current_owner = ? and
+	 w.Obj_Type =? and
+	 w.facility_name=? and
+     u.process_type='assigned' 
     
     union all
 
@@ -13246,12 +13259,13 @@ from WF_Object w left join prescription p  on (w.obj_system_id=p.Prescription_Id
     FROM  wf_object w
     left join process_master u on (w.current_process=u.process_name)
     where  w.Is_Default_MyQ_LineItem=1 and
-    u.user_name=? and
-    w.current_owner =? and  w.facility_name= ? and
-    w.Obj_Type=? and u.process_type='assigned' ) as c]]>
+	w.current_owner =? and
+	w.Obj_Type=? and
+	w.facility_name= ? and
+     u.process_type='assigned' ) as c]]>
 	</sql-query>
 	<sql-query name="CountFillMyResultsObjectDetails">
-		<![CDATA[select count(*) from (select cast(w.Current_Arrival_Time as char(100)),h.human_id,h.Patient_Account_External,h.last_name,h.first_name,h.mi,cast(h.Birth_Date as char(100)),
+		<!--<![CDATA[select count(*) from (select cast(w.Current_Arrival_Time as char(100)),h.human_id,h.Patient_Account_External,h.last_name,h.first_name,h.mi,cast(h.Birth_Date as char(100)),
 w.Current_Process,r.Lab_ID,concat( pl.Physician_Prefix,' ', pl.Physician_First_Name,' ', pl.Physician_Middle_Name,' ',
  pl.Physician_Last_Name,' ', pl.Physician_Suffix),l.Lab_Name,r.Result_Master_ID,w.Obj_Type,pl.Physician_Library_ID
  from Result_Master r left join Wf_Object w on r.Result_Master_Id=w.obj_system_id
@@ -13261,6 +13275,12 @@ left join physician_library pl on pl.Physician_NPI=rc.ORC_Ordering_Provider_ID
 left join lab l on l.Lab_ID=r.Lab_ID
 left join process_user u on w.current_process=u.process_name
  where  w.Is_Default_MyQ_LineItem=1 and w.obj_type=? and w.current_owner=? 
+ group by w.obj_system_id) as c;]]>-->
+
+		<![CDATA[select count(*) from (select * from Wf_Object w
+ where  w.Is_Default_MyQ_LineItem=1 and 
+ w.current_owner=? and
+ w.obj_type=?  
  group by w.obj_system_id) as c;]]>
 	</sql-query>
 

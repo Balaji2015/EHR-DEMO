@@ -378,7 +378,7 @@
             <link href="CSS/bootstrap-datetimepicker.min.css" rel="stylesheet" />
 
             <script src="Jscripts/jquery-ui.js?version=<%=ConfigurationManager.AppSettings["VersionConfiguration"].ToString().Replace("Capella - ","") %>" type="text/javascript"></script>
-            <link rel="stylesheet" href="CSS/jquery-ui.min.css">
+            <link rel="stylesheet" href="CSS/jquery-ui.css?version=<%=ConfigurationManager.AppSettings["VersionConfiguration"].ToString().Replace("Capella - ","") %>">
 
 
             <script src="JScripts/jstat.min.js?version=<%=ConfigurationManager.AppSettings["VersionConfiguration"].ToString().Replace("Capella - ","") %>" type="text/javascript"></script>

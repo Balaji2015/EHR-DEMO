@@ -55,11 +55,20 @@ $(document).ready(function () {
     $("#ProcessModal").modal('hide');
     var MyShowAllmyQueue = localStorage.getItem('MyShowAll');
     var MyShowAll = localStorage.getItem('ShowallGeneralqueue');
-
+    var TabName = "";
+    if (MyShowAllmyQueue == "Checked") {
+        TabName = "MyQueue";
+    }
+    else if (MyShowAll == "Checked") {
+        TabName = "GenQueue";
+    }
     if (MyShowAll == "Checked" || MyShowAllmyQueue == "Checked") {
         $.ajax({
             type: "POST",
             url: "frmMyQueueNew.aspx/AllTabCount",
+            data: JSON.stringify({
+                "sTabName": TabName
+            }),
             contentType: "application/json; charset=utf-8",
             dataType: "json",
             async: true,

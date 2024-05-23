@@ -1981,9 +1981,9 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
                         string[] myObjType = new string[1];
                         myObjType[0] = "DIAGNOSTIC_RESULT";
                         query1 = Mysession.GetNamedQuery("CountFillMyResultsObjectDetails");
-                        query1.SetString(0, "DIAGNOSTIC_RESULT");
+                        query1.SetString(0, UserName);
                         //query1.SetString(1, "RESULT_REVIEW");
-                        query1.SetString(1, UserName);
+                        query1.SetString(1, "DIAGNOSTIC_RESULT");
                         //query1.SetInt32(2, DefaultNoofDays);
                         FavoriteList = new ArrayList(query1.List());
                         myq.My_DiagRslt_Order_Count = Convert.ToInt16(FavoriteList[0]);
@@ -2203,7 +2203,7 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
                         {
                             query1 = Mysession.GetNamedQuery("CountFillMyAddendumObjectDetails.WithoutFacility.WithoutAllAppointments");
                             query1.SetString(0, UserName);
-                            query1.SetString(1, UserName);
+                            //query1.SetString(1, UserName);
                             // query1.SetParameterList("ObjList", myObjType);
                             FavoriteList = new ArrayList(query1.List());
                             myq.My_Amendmnt_Count = Convert.ToInt16(FavoriteList[0]);
@@ -2594,14 +2594,21 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
                         else
                         {
                             query1 = Mysession.GetNamedQuery("CountFillMyScanObjectDetails.WithFacility.No_ofdays");
-                            query1.SetString(0, UserName);
-                            query1.SetString(1, "UNKNOWN");
+                            //query1.SetString(0, UserName);
+                            //query1.SetString(1, "UNKNOWN");
+                            //query1.SetString(2, FacName);
+                            //query1.SetString(3, myObjType[0].ToString());
+                            //query1.SetString(4, UserName);
+                            //query1.SetString(5, "UNKNOWN");
+                            //query1.SetString(6, FacName);
+                            //query1.SetString(7, myObjType[1].ToString());
+
+                            query1.SetString(0, "UNKNOWN");
+                            query1.SetString(1, myObjType[0].ToString());
                             query1.SetString(2, FacName);
-                            query1.SetString(3, myObjType[0].ToString());
-                            query1.SetString(4, UserName);
-                            query1.SetString(5, "UNKNOWN");
-                            query1.SetString(6, FacName);
-                            query1.SetString(7, myObjType[1].ToString());
+                            query1.SetString(3, "UNKNOWN");
+                            query1.SetString(4, myObjType[0].ToString());
+                            query1.SetString(5, FacName);
                             FavoriteList = new ArrayList(query1.List());
                             myq.Scan_Count = Convert.ToInt16(FavoriteList[0]);
                         }
@@ -2612,8 +2619,8 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
                         string[] myObjType = new string[1];
                         myObjType[0] = "DIAGNOSTIC_RESULT";
                         query1 = Mysession.GetNamedQuery("CountFillMyResultsObjectDetails");
-                        query1.SetString(0, "DIAGNOSTIC_RESULT");
-                        query1.SetString(1, UserName);
+                        query1.SetString(0, UserName);
+                        query1.SetString(1, "DIAGNOSTIC_RESULT");
                         FavoriteList = new ArrayList(query1.List());
                         myq.My_DiagRslt_Order_Count = Convert.ToInt16(FavoriteList[0]);
 
@@ -3846,14 +3853,29 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
                             else
                             {
                                 query1 = Mysession.GetNamedQuery("FillMyScanObjectDetails.WithFacility");
-                                query1.SetString(0, UserName);
-                                if (ProcessType == "UNASSIGNED")
-                                    query1.SetString(1, "UNKNOWN");
-                                else
-                                    query1.SetString(1, UserName);
+                                //query1.SetString(0, UserName);
+                                //if (ProcessType == "UNASSIGNED")
+                                //    query1.SetString(1, "UNKNOWN");
+                                //else
+                                //    query1.SetString(1, UserName);
 
+                                //query1.SetString(2, FacName);
+                                //query1.SetString(3, ObjType[0].ToString());
+                                //// query1.SetString(4, UserName);
+                                ////if (ProcessType == "UNASSIGNED")
+                                ////    query1.SetString(5, "UNKNOWN");
+                                ////else
+                                ////    query1.SetString(5, UserName);
+                                ////query1.SetString(6, FacName);
+                                ////query1.SetString(7, ObjType[1].ToString());
+                                
+                                if (ProcessType == "UNASSIGNED")
+                                    query1.SetString(0, "UNKNOWN");
+                                else
+                                    query1.SetString(0, UserName);
+                                query1.SetString(1, ObjType[0].ToString());
                                 query1.SetString(2, FacName);
-                                query1.SetString(3, ObjType[0].ToString());
+                                query1.SetString(3, UserName);
                                 // query1.SetString(4, UserName);
                                 //if (ProcessType == "UNASSIGNED")
                                 //    query1.SetString(5, "UNKNOWN");

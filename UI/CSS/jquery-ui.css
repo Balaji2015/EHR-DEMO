@@ -196,7 +196,7 @@ input.ui-button {
 	margin-top: -8px;
 }
 .ui-button-icon-only .ui-icon {
-	left: 50%;
+	left: 50% !important;
 	margin-left: -8px;
 }
 .ui-button-text-icon-primary .ui-button-icon-primary,
