@@ -708,12 +708,17 @@ namespace Acurus.Capella.UI
             DateTime apptDt = Convert.ToDateTime(data[8].ToString());
             string localTime = data[7];
             string sLocal_Time = UtilityManager.ConvertToLocal(Convert.ToDateTime(localTime)).ToString("yyyy-MM-dd hh:mm:ss tt");
+            bool bIsCheckinProvider = false;
             /*if (ClientSession.UserCurrentProcess == "MA_PROCESS" || ClientSession.UserCurrentProcess == "TECHNICIAN_PROCESS")*///to update DOS when Technician/MA processes the encounter for the first time -- CMG Ancilliary
             if (ClientSession.UserCurrentProcess == "MA_PROCESS" || ClientSession.UserCurrentProcess == "TECHNICIAN_PROCESS" || ClientSession.UserCurrentProcess == "PROVIDER_PROCESS") //to update DOS when Technician/MA/Provider processes the encounter for the first time -- CMG Ancilliary 
             {
                 if (data[6] == "0001-01-01T00:00:00")
                 {
-
+                    //Jira CAP-2129
+                    if (ClientSession.UserCurrentProcess == "PROVIDER_PROCESS")
+                    {
+                        bIsCheckinProvider = true;
+                    }
                     //if (data[7].ToString() != string.Empty && Convert.ToDateTime(data[7].ToString().Split(' ')[0]) == Convert.ToDateTime(apptDt.ToString().Split(' ')[0]))
                     //{
                     //    dt = Convert.ToDateTime(data[7].ToString());
@@ -834,7 +839,9 @@ namespace Acurus.Capella.UI
                 }
             }
             //UtilityManager.inserttologgingtable(ClientSession.EncounterId.ToString(), ClientSession.HumanId.ToString(), ClientSession.UserName, ClientSession.PhysicianId.ToString(), "MyQueue ProcessEncounter : End", DateTime.Now, sGroup_ID_Log, "frmMyQueueNew");
-            if (ClientSession.UserCurrentProcess == "TECHNICIAN_PROCESS")//BugID:52898
+            //Jira CAP-2129
+            //if (ClientSession.UserCurrentProcess == "TECHNICIAN_PROCESS")//BugID:52898
+            if (ClientSession.UserCurrentProcess == "TECHNICIAN_PROCESS" || bIsCheckinProvider)//BugID:52898
                 frmRCopiaToolbar.LoadNotification("All");
             return true;
         }

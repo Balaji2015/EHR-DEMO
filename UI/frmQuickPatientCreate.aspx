@@ -1355,8 +1355,8 @@
                                  <asp:Button ID="btnUploadDocuments" runat="server" Text="Upload Documents" Width="140px" Class="aspresizedbluebutton"
                                      OnClientClick ="return OpenUploadDocuments();" style="margin-top: 7%; margin-left: 3%;" />&nbsp;&nbsp;
                             </td>   
-                                        <td style="width:10%;text-align:right;">
-    <asp:Button ID="btnProviderSave" runat="server" Text="Check In to Provider" Width="94%" Class="aspresizedgreenbutton" OnClientClick="return ValidatePatientInformation();" AccessKey="S" OnClick="btnSave_Click" style="margin-top:-6%;margin-right: -3%;" Visible="false"/>&nbsp;&nbsp;
+                                        <td id="tdProviderSave" style="width:10%;text-align:right;" runat="server">
+    <asp:Button ID="btnProviderSave" runat="server" Text="Check In to Provider" Width="94%" Class="aspresizedbluebutton" OnClientClick="return ValidatePatientInformation();" AccessKey="S" OnClick="btnSave_Click" style="margin-top:-6%;margin-right: -3%;" Visible="false"/>&nbsp;&nbsp;
 </td>
                             <td style="width:10%;text-align:right;">                                
                                 <asp:Button ID="btnSave" runat="server" Text="Check In to MA" Width="94%" Class="aspresizedgreenbutton" OnClientClick="return ValidatePatientInformation();"

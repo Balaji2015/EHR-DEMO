@@ -242,7 +242,9 @@ namespace Acurus.Capella.UI
                         Button1.Style["margin-left"] = "2%";
                         Button1.Style["margin-top"] = "-1%";
                         btnViewUpdateInsurance.Style["margin-left"] = "2%";
-
+                        //Jira CAP-2129
+                        btnProviderSave.Visible = false;
+                        tdProviderSave.Visible = false;
                     }
                     if (ScreenMode == "EVSUMMARY")
                     {
