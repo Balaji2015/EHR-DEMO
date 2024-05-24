@@ -737,8 +737,7 @@ namespace Acurus.Capella.UI
                                 else
                                 {
                                      sPcpTextboxName = ilstCurrentPhyFacDTO[0].PhyPrefix + " " + ilstCurrentPhyFacDTO[0].PhyFirstName + " " + ilstCurrentPhyFacDTO[0].PhyMiddleName + " " + ilstCurrentPhyFacDTO[0].PhyLastName + "(" + ilstCurrentPhyFacDTO[0].PhySuffix + ")" + " | " +
-                                                              "NPI:" + ilstCurrentPhyFacDTO[0].PhyNPI + " | " +
-                                                              ilstCurrentPhyFacDTO[0].PhySpecialtyCode + " | " +
+                                                              "NPI:" + ilstCurrentPhyFacDTO[0].PhyNPI + " | "  +
                                                               "Facility:" + ilstCurrentPhyFacDTO[0].PhyFacility + " | " +
                                                               "Address: " + ilstCurrentPhyFacDTO[0].PhyAddrs + ", " +
                                                               ilstCurrentPhyFacDTO[0].PhyCity + "," +
