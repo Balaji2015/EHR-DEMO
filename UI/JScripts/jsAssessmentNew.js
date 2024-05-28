@@ -1518,6 +1518,8 @@ myapp.controller('assessmentCtrl', function ($scope, $http) {
                     async: true,
                     success: function (data) {
                         var jsonData = $.parseJSON(data.d);
+                        arrCPTs = jsonData;
+                        jsonData = jsonData.slice(0,100);
                         if (jsonData.length == 0) {
                             jsonData.push('No matches found.')
                             response($.map(jsonData, function (item) {
@@ -1528,7 +1530,7 @@ myapp.controller('assessmentCtrl', function ($scope, $http) {
                         }
                         else {
                             response($.map(jsonData, function (item) {
-                                arrCPTs.push(item);
+                                //arrCPTs.push(item);
                                 return {
                                     label: item.split('|')[0]
                                 }
@@ -1557,6 +1559,7 @@ myapp.controller('assessmentCtrl', function ($scope, $http) {
             if ($("#txtDescription").val().length > 3) {
                 if (arrCPTs.length != 0) {
                     var results = $scope.PossibleCombination(arrCPTs, request.term);
+                    results = results.slice(0, 100);
                     if (results.length == 0) {
                         results.push('No matches found.')
                         response($.map(results, function (item) {
