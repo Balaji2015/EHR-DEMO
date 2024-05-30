@@ -141,6 +141,7 @@ namespace Acurus.Capella.ImmunizationSubmission
                 }
 
                 string sResult = string.Empty;
+                string immunizationRegistry;
                 string sConnectivityTest = string.Empty;
                 string sHL7Message = string.Empty;
                 HL7Generator hl7Gen = new HL7Generator();
@@ -148,7 +149,7 @@ namespace Acurus.Capella.ImmunizationSubmission
                 Console.WriteLine("Generate Immunization result...");
 
                 if (PhysicianList.Count > 0)
-                    sResult = hl7Gen.CreateImmunizationRegistry(hn, PhysicianList[0], lstFillClinicalSummary, "");
+                    immunizationRegistry = hl7Gen.CreateImmunizationRegistry(hn, PhysicianList[0], lstFillClinicalSummary, "");
                 else
                     continue;
 
@@ -158,7 +159,7 @@ namespace Acurus.Capella.ImmunizationSubmission
                 {
                     try
                     {
-                        string immunizationRegistry = hl7Gen.CreateImmunizationRegistry(hn, PhysicianList[0], lstFillClinicalSummary, "");
+                        //string immunizationRegistry = hl7Gen.CreateImmunizationRegistry(hn, PhysicianList[0], lstFillClinicalSummary, "");
                         //Cap - 1828 - Old Code - Start
                         //Console.WriteLine("Connect to production server...");
                         //ImmunizationSubmissionProduction.IS_PortTypeClient objImmunizationServiceProduction = new ImmunizationSubmissionProduction.IS_PortTypeClient();

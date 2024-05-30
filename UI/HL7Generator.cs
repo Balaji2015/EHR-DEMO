@@ -7151,19 +7151,24 @@ namespace Acurus.Capella.UI
                         EthnicityValue = iFieldLookupListEthnicity[0].Doc_Type;
                     }
                 }
-                var PublicitycodeIdentifierlst = from d in iFieldLookupList where d.Value == hn.Publicity_Code select d;
-                if (PublicitycodeIdentifierlst != null && PublicitycodeIdentifierlst.Count() > 0)
+
+                //Cap - 1991
+                if (hn.Publicity_Code != string.Empty)
                 {
-                    IList<StaticLookup> iFieldLookupListPublicity = PublicitycodeIdentifierlst.ToList<StaticLookup>();
-                    if (iFieldLookupListPublicity.Count > 0)
-                        PublicitycodeIdentifier = iFieldLookupListPublicity[0].Description;
-                }
-                var RelationshipIdentifierlst = from d in iFieldLookupList where d.Value == hn.Guarantor_Relationship select d;
-                if (RelationshipIdentifierlst != null && RelationshipIdentifierlst.Count() > 0)
-                {
-                    IList<StaticLookup> iFieldLookupListRelationship = RelationshipIdentifierlst.ToList<StaticLookup>();
-                    if (iFieldLookupListRelationship != null && iFieldLookupListRelationship.Count > 0)
-                        RelationshipIdentifier = iFieldLookupListRelationship[0].Default_Value;
+                    var PublicitycodeIdentifierlst = from d in iFieldLookupList where d.Value == hn.Publicity_Code select d;
+                    if (PublicitycodeIdentifierlst != null && PublicitycodeIdentifierlst.Count() > 0)
+                    {
+                        IList<StaticLookup> iFieldLookupListPublicity = PublicitycodeIdentifierlst.ToList<StaticLookup>();
+                        if (iFieldLookupListPublicity.Count > 0)
+                            PublicitycodeIdentifier = iFieldLookupListPublicity[0].Description;
+                    }
+                    var RelationshipIdentifierlst = from d in iFieldLookupList where d.Value == hn.Guarantor_Relationship select d;
+                    if (RelationshipIdentifierlst != null && RelationshipIdentifierlst.Count() > 0)
+                    {
+                        IList<StaticLookup> iFieldLookupListRelationship = RelationshipIdentifierlst.ToList<StaticLookup>();
+                        if (iFieldLookupListRelationship != null && iFieldLookupListRelationship.Count > 0)
+                            RelationshipIdentifier = iFieldLookupListRelationship[0].Default_Value;
+                    }
                 }
 
                 //IList<StaticLookup> iFieldLookupListEthnicity = ClinicalSummary.lookupValues.Where(q => q.Field_Name == "ETHNICITY").ToList();
@@ -7334,22 +7339,58 @@ namespace Acurus.Capella.UI
                 //if (EthnicityIdentifier == string.Empty)
                 if (EthnicityValue == string.Empty)
                 {
-                    sResult = sResult + "\n" + "PID|1||" + hn.Id + "^^^ACUR^PI~" + hn.Patient_Account_External + "^^^MAA^PT||" + hn.Last_Name + "^" + hn.First_Name + "^" + hn.MI + "^^^^L|" + Mothers_Maiden_First_Name + "^" + Mothers_Maiden_Last_Name + "|" + hn.Birth_Date.ToString("yyyyMMdd") + "|" + sSex + "||" + RaceIdentifier + "^" + RaceValue + "^CDCREC|" + hn.Street_Address1 + "^^" + hn.City + "^" + hn.State + "^" + hn.ZipCode + "^USA^L||" + Phone + "~^NET^^" + hn.EMail + "|||||||||";
+                    sResult = sResult + "\n" + "PID|1||" + hn.Id + "^^^ACUR^PI~" + hn.Patient_Account_External + "^^^MAA^PT||" + hn.Last_Name + "^" + hn.First_Name + "^" + hn.MI + "^^^^L|" + Mothers_Maiden_First_Name + "^" + Mothers_Maiden_Last_Name + "|" + hn.Birth_Date.ToString("yyyyMMdd") + "|" + sSex + "||" + RaceIdentifier + "^" + RaceValue + "^CDCREC|" + hn.Street_Address1 + "^^" + hn.City + "^" + hn.State + "^" + hn.ZipCode + "^USA^L||" + Phone + "|||||||||";
                 }
                 else
                 {
-                    sResult = sResult + "\n" + "PID|1||" + hn.Id + "^^^ACUR^PI~" + hn.Patient_Account_External + "^^^MAA^PT||" + hn.Last_Name + "^" + hn.First_Name + "^" + hn.MI + "^^^^L|" + Mothers_Maiden_First_Name + "^" + Mothers_Maiden_Last_Name + "|" + hn.Birth_Date.ToString("yyyyMMdd") + "|" + sSex + "||" + RaceIdentifier + "^" + RaceValue + "^CDCREC|" + hn.Street_Address1 + "^^" + hn.City + "^" + hn.State + "^" + hn.ZipCode + "^USA^L||" + Phone + "~^NET^^" + hn.EMail + "|||||||||" + EthnicityIdentifier + "^" + EthnicityValue + "^CDCREC";
+                    sResult = sResult + "\n" + "PID|1||" + hn.Id + "^^^ACUR^PI~" + hn.Patient_Account_External + "^^^MAA^PT||" + hn.Last_Name + "^" + hn.First_Name + "^" + hn.MI + "^^^^L|" + Mothers_Maiden_First_Name + "^" + Mothers_Maiden_Last_Name + "|" + hn.Birth_Date.ToString("yyyyMMdd") + "|" + sSex + "||" + RaceIdentifier + "^" + RaceValue + "^CDCREC|" + hn.Street_Address1 + "^^" + hn.City + "^" + hn.State + "^" + hn.ZipCode + "^USA^L||" + Phone + "|||||||||" + EthnicityIdentifier + "^" + EthnicityValue + "^CDCREC";
                 }
             }
 
 
-            if (PublicitycodeIdentifier != string.Empty && hn.Immunization_Registry_Status != string.Empty)
+            //Cap - 1991 & 1994
+            if (hn.Data_Sharing_Preference == "N")
             {
-                sResult = sResult + "\n" + "PD1|||||||||||" + PublicitycodeIdentifier + "^" + hn.Publicity_Code + "^HL70215|||||" + hn.Immunization_Registry_Status.Substring(0, 1) + "|" + hn.Created_Date_And_Time.ToString("yyyyMMdd") + "|" + hn.Created_Date_And_Time.ToString("yyyyMMdd");
+                hn.Data_Sharing_Preference = "Y";
+            }
+            else if (hn.Data_Sharing_Preference == "Y")
+            {
+                hn.Data_Sharing_Preference = "N";
+            }
+            DateTime sImmu_Date = hn.Created_Date_And_Time;
+
+            if (PublicitycodeIdentifier != string.Empty && hn.Immunization_Registry_Status != string.Empty && hn.Data_Sharing_Preference != string.Empty)
+            {
+                sResult = sResult + "\n" + "PD1|||||||||||" + PublicitycodeIdentifier + "^" + hn.Publicity_Code + "^HL70215|" + hn.Data_Sharing_Preference + "||||" + hn.Immunization_Registry_Status.Substring(0, 1) + "|" + hn.Created_Date_And_Time.ToString("yyyyMMdd") + "|" + hn.Created_Date_And_Time.ToString("yyyyMMdd");
+            }
+            //Cap - 1991 & 1994
+            else if (PublicitycodeIdentifier != string.Empty && hn.Immunization_Registry_Status == string.Empty && hn.Data_Sharing_Preference == string.Empty)
+            {
+                sResult = sResult + "\n" + "PD1|||||||||||" + PublicitycodeIdentifier + "^" + hn.Publicity_Code + "^HL70215||" + sImmu_Date.ToString("yyyyMMdd") + "||||" + sImmu_Date.ToString("yyyyMMdd") + "|" + sImmu_Date.ToString("yyyyMMdd");
+            }
+            else if (PublicitycodeIdentifier == string.Empty && hn.Immunization_Registry_Status != string.Empty && hn.Data_Sharing_Preference == string.Empty)
+            {
+                sResult = sResult + "\n" + "PD1||||||||||||" + sImmu_Date.ToString("yyyyMMdd") + "|||" + hn.Immunization_Registry_Status.Substring(0, 1) + "|" + sImmu_Date.ToString("yyyyMMdd") + "|" + sImmu_Date.ToString("yyyyMMdd");
+            }
+            else if (PublicitycodeIdentifier == string.Empty && hn.Immunization_Registry_Status == string.Empty && hn.Data_Sharing_Preference != string.Empty)
+            {
+                sResult = sResult + "\n" + "PD1||||||||||||" + hn.Data_Sharing_Preference + "|||" + sImmu_Date.ToString("yyyyMMdd") + "|" + sImmu_Date.ToString("yyyyMMdd");
+            }
+            else if (PublicitycodeIdentifier != string.Empty && hn.Immunization_Registry_Status != string.Empty && hn.Data_Sharing_Preference == string.Empty)
+            {
+                sResult = sResult + "\n" + "PD1|||||||||||" + PublicitycodeIdentifier + "^" + hn.Publicity_Code + "^HL70215||" + sImmu_Date.ToString("yyyyMMdd") + "|||" + hn.Immunization_Registry_Status.Substring(0, 1) + "|" + sImmu_Date.ToString("yyyyMMdd") + "|" + sImmu_Date.ToString("yyyyMMdd");
+            }
+            else if (PublicitycodeIdentifier != string.Empty && hn.Immunization_Registry_Status == string.Empty && hn.Data_Sharing_Preference != string.Empty)
+            {
+                sResult = sResult + "\n" + "PD1|||||||||||" + PublicitycodeIdentifier + "^" + hn.Publicity_Code + "^HL70215|" + hn.Data_Sharing_Preference + "|" + sImmu_Date.ToString("yyyyMMdd") + "||||" + sImmu_Date.ToString("yyyyMMdd") + "|" + sImmu_Date.ToString("yyyyMMdd");
+            }
+            else if (PublicitycodeIdentifier == string.Empty && hn.Immunization_Registry_Status != string.Empty && hn.Data_Sharing_Preference != string.Empty)
+            {
+                sResult = sResult + "\n" + "PD1||||||||||||" + hn.Data_Sharing_Preference + "|" + sImmu_Date.ToString("yyyyMMdd") + "|||" + hn.Immunization_Registry_Status.Substring(0, 1) + "|" + sImmu_Date.ToString("yyyyMMdd") + "|" + sImmu_Date.ToString("yyyyMMdd");
             }
             else
             {
-                sResult = sResult + "\n" + "PD1||||||||||||N||||||";
+                sResult = sResult + "\n" + "PD1||||||||||||||||||";
             }
             //else if (ClinicalSummary.immunhistoryList != null && ClinicalSummary.immunhistoryList.Count > 0)
             //{
