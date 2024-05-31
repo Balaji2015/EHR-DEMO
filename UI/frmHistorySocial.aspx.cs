@@ -2030,7 +2030,20 @@ namespace Acurus.Capella.UI
 
         public void LoadTobacco(bool? bValue, string fieldName)
         {
-            List<string> istaticLookup = null;
+            //CAP-2143
+            List<string> istaticLookup = new List<string>();
+            if (Session["objStaticLookupComboValues"] != null && (IList<StaticLookup>)Session["objStaticLookupComboValues"] != null)
+            {
+                IList<StaticLookup> staticLookupList = (IList<StaticLookup>)Session["objStaticLookupComboValues"];
+                staticLookupList = staticLookupList.Where(a => a.Field_Name.Contains("SOCIAL HISTORY OPTION FOR TOBACCO")).ToList();
+                foreach (var item in staticLookupList)
+                {
+                    string Field_Name = item.Field_Name.Split(' ')[item.Field_Name.Split(' ').Length - 1];
+                    Field_Name = Field_Name == "YES" ? "Yes" : Field_Name == "NO" ? "No" : "";
+                    istaticLookup.Add(string.Format("{0}|{1}|{2}|{3}", item.Value, item.Description, Field_Name, item.Default_Value));
+                }
+            }
+
             //istaticLookup = new List<String>{"Light cigarette smoker|160603005|Yes|Light cigarette smoker","Moderate cigarette smoker|160604004|Yes|Light cigarette smoker","Heavy cigarette smoker|160605003|Yes|Light cigarette smoker","Very heavy cigarette smoker|160606002|Yes|Light cigarette smoker","Rolls own cigarettes|160619003|Yes|Light cigarette smoker",
             //        "Snuff user|228494002|Yes|Light cigarette smoker","User of moist powdered tobacco|228504007|Yes|Light cigarette smoker","Chews plug tobacco|228514003|Yes|Light cigarette smoker","Chews twist tobacco|228515002|Yes|Light cigarette smoker","Chews loose leaf tobacco|228516001|Yes|Light cigarette smoker","Chews fine cut tobacco|228517005|Yes|Light cigarette smoker",
             //        "Chews products containing tobacco|228518000|Yes|Light cigarette smoker","Occasional cigarette smoker|230059006|Yes|Light cigarette smoker","Chain smoker|230065006|Yes|Light cigarette smoker","Trivial cigarette smoker|266920004|Yes|Light cigarette smoker","Occasional tobacco smoker|428041000124106|Yes|Light cigarette smoker","Light tobacco smoker|428061000124105|Yes|Light cigarette smoker","Heavy tobacco smoker|428071000124103|Yes|Light cigarette smoker",
@@ -2042,62 +2055,62 @@ namespace Acurus.Capella.UI
             //        "Aggressive non-smoker|360918006|No|Current non-smoker","Intolerant non-smoker|360929005|No|Current non-smoker","Current non smoker but past smoking history unknown|405746006|No|Current non-smoker","Tolerant ex-smoker|53896009|No|Current non-smoker","Non-smoker|8392000|No|Current non-smoker","Ex-smoker|8517006|No|Current non-smoker","Tolerant non-smoker|87739003|No|Current non-smoker"});
 
 
-            istaticLookup = new List<string>{"Light cigarette smoker|230060001|Yes|Light cigarette smoker",
-"Moderate cigarette smoker|230062009|Yes|Light cigarette smoker",
-"Heavy cigarette smoker|230063004|Yes|Light cigarette smoker",
-"Very heavy cigarette smoker|230064005|Yes|Light cigarette smoker",
-"Rolls own cigarettes|160619003|Yes|Light cigarette smoker",
-"Snuff user|228494002|Yes|Light cigarette smoker",
-"User of moist powdered tobacco|228504007|Yes|Light cigarette smoker",
-"Chews plug tobacco|228514003|Yes|Light cigarette smoker",
-"Chews twist tobacco|228515002|Yes|Light cigarette smoker",
-"Chews loose leaf tobacco|228516001|Yes|Light cigarette smoker",
-"Chews fine cut tobacco|228517005|Yes|Light cigarette smoker",
-"Chews products containing tobacco|228518000|Yes|Light cigarette smoker",
-"Occasional cigarette smoker|230059006|Yes|Light cigarette smoker",
-"Chain smoker|230065006|Yes|Light cigarette smoker",
-"Trivial cigarette smoker|266920004|Yes|Light cigarette smoker",
-"Occasional tobacco smoker|428041000124106|Yes|Light cigarette smoker",
-"Light tobacco smoker|428061000124105|Yes|Light cigarette smoker",
-"Heavy tobacco smoker|428071000124103|Yes|Light cigarette smoker",
-"Smokes tobacco daily|449868002|Yes|Light cigarette smoker",
-"Cigar smoker|59978006|Yes|Light cigarette smoker",
-"Cigarette smoker|65568007|Yes|Light cigarette smoker",
-"Smoker|77176002|Yes|Light cigarette smoker",
-"Chews tobacco|81703003|Yes|Light cigarette smoker",
-"Pipe smoker|82302008|Yes|Light cigarette smoker",
- "Light cigarette smoker (1-9 cigs/day)|160603005|Yes|Light cigarette smoker",
-"Moderate cigarette smoker (10-19 cigs/day)|160604004|Yes|Light cigarette smoker",
-"Heavy cigarette smoker (20-39 cigs/day)|160605003|Yes|Light cigarette smoker",
-"Very heavy cigarette smoker (40+ cigs/day)|160606002|Yes|Light cigarette smoker"};
+//            istaticLookup = new List<string>{"Light cigarette smoker|230060001|Yes|Light cigarette smoker",
+//"Moderate cigarette smoker|230062009|Yes|Light cigarette smoker",
+//"Heavy cigarette smoker|230063004|Yes|Light cigarette smoker",
+//"Very heavy cigarette smoker|230064005|Yes|Light cigarette smoker",
+//"Rolls own cigarettes|160619003|Yes|Light cigarette smoker",
+//"Snuff user|228494002|Yes|Light cigarette smoker",
+//"User of moist powdered tobacco|228504007|Yes|Light cigarette smoker",
+//"Chews plug tobacco|228514003|Yes|Light cigarette smoker",
+//"Chews twist tobacco|228515002|Yes|Light cigarette smoker",
+//"Chews loose leaf tobacco|228516001|Yes|Light cigarette smoker",
+//"Chews fine cut tobacco|228517005|Yes|Light cigarette smoker",
+//"Chews products containing tobacco|228518000|Yes|Light cigarette smoker",
+//"Occasional cigarette smoker|230059006|Yes|Light cigarette smoker",
+//"Chain smoker|230065006|Yes|Light cigarette smoker",
+//"Trivial cigarette smoker|266920004|Yes|Light cigarette smoker",
+//"Occasional tobacco smoker|428041000124106|Yes|Light cigarette smoker",
+//"Light tobacco smoker|428061000124105|Yes|Light cigarette smoker",
+//"Heavy tobacco smoker|428071000124103|Yes|Light cigarette smoker",
+//"Smokes tobacco daily|449868002|Yes|Light cigarette smoker",
+//"Cigar smoker|59978006|Yes|Light cigarette smoker",
+//"Cigarette smoker|65568007|Yes|Light cigarette smoker",
+//"Smoker|77176002|Yes|Light cigarette smoker",
+//"Chews tobacco|81703003|Yes|Light cigarette smoker",
+//"Pipe smoker|82302008|Yes|Light cigarette smoker",
+// "Light cigarette smoker (1-9 cigs/day)|160603005|Yes|Light cigarette smoker",
+//"Moderate cigarette smoker (10-19 cigs/day)|160604004|Yes|Light cigarette smoker",
+//"Heavy cigarette smoker (20-39 cigs/day)|160605003|Yes|Light cigarette smoker",
+//"Very heavy cigarette smoker (40+ cigs/day)|160606002|Yes|Light cigarette smoker"};
 
-            istaticLookup.AddRange(new List<string> {"Non-smoker for personal reasons|105539002|No|Current non-smoker",
-"Non-smoker for religious reasons|105540000|No|Current non-smoker",
-"Non-smoker for medical reasons|105541001|No|Current non-smoker",
-"Current non-smoker|160618006|No|Current non-smoker",
-"Ex-pipe smoker|160620009|No|Current non-smoker",
-"Ex-cigar smoker|160621008|No|Current non-smoker",
-"Does not use moist powdered tobacco|228501004|No|Current non-smoker",
-"Never used moist powdered tobacco|228502006|No|Current non-smoker",
-"Ex-user of moist powdered tobacco|228503001|No|Current non-smoker",
-"Never chewed tobacco|228512004|No|Current non-smoker",
-"Never smoked tobacco|266919005|No|Current non-smoker",
-"Ex-trivial cigarette smoker|266921000|No|Current non-smoker",
-"Ex-light cigarette smoker|266922007|No|Current non-smoker",
-"Ex-moderate cigarette smoker|266923002|No|Current non-smoker",
-"Ex-heavy cigarette smoker|266924008|No|Current non-smoker",
-"Ex-very heavy cigarette smoker|266925009|No|Current non-smoker",
-"Ex-cigarette smoker amount unknown|266928006|No|Current non-smoker",
-"Ex-cigarette smoker|281018007|No|Current non-smoker",
-"Intolerant ex-smoker|360890004|No|Current non-smoker",
-"Aggressive ex-smoker|360900008|No|Current non-smoker",
-"Aggressive non-smoker|360918006|No|Current non-smoker",
-"Intolerant non-smoker|360929005|No|Current non-smoker",
-"Current non smoker but past smoking history unknown|405746006|No|Current non-smoker",
-"Tolerant ex-smoker|53896009|No|Current non-smoker",
-"Non-smoker|8392000|No|Current non-smoker",
-"Ex-smoker|8517006|No|Current non-smoker",
-"Tolerant non-smoker|87739003|No|Current non-smoker"});
+//            istaticLookup.AddRange(new List<string> {"Non-smoker for personal reasons|105539002|No|Current non-smoker",
+//"Non-smoker for religious reasons|105540000|No|Current non-smoker",
+//"Non-smoker for medical reasons|105541001|No|Current non-smoker",
+//"Current non-smoker|160618006|No|Current non-smoker",
+//"Ex-pipe smoker|160620009|No|Current non-smoker",
+//"Ex-cigar smoker|160621008|No|Current non-smoker",
+//"Does not use moist powdered tobacco|228501004|No|Current non-smoker",
+//"Never used moist powdered tobacco|228502006|No|Current non-smoker",
+//"Ex-user of moist powdered tobacco|228503001|No|Current non-smoker",
+//"Never chewed tobacco|228512004|No|Current non-smoker",
+//"Never smoked tobacco|266919005|No|Current non-smoker",
+//"Ex-trivial cigarette smoker|266921000|No|Current non-smoker",
+//"Ex-light cigarette smoker|266922007|No|Current non-smoker",
+//"Ex-moderate cigarette smoker|266923002|No|Current non-smoker",
+//"Ex-heavy cigarette smoker|266924008|No|Current non-smoker",
+//"Ex-very heavy cigarette smoker|266925009|No|Current non-smoker",
+//"Ex-cigarette smoker amount unknown|266928006|No|Current non-smoker",
+//"Ex-cigarette smoker|281018007|No|Current non-smoker",
+//"Intolerant ex-smoker|360890004|No|Current non-smoker",
+//"Aggressive ex-smoker|360900008|No|Current non-smoker",
+//"Aggressive non-smoker|360918006|No|Current non-smoker",
+//"Intolerant non-smoker|360929005|No|Current non-smoker",
+//"Current non smoker but past smoking history unknown|405746006|No|Current non-smoker",
+//"Tolerant ex-smoker|53896009|No|Current non-smoker",
+//"Non-smoker|8392000|No|Current non-smoker",
+//"Ex-smoker|8517006|No|Current non-smoker",
+//"Tolerant non-smoker|87739003|No|Current non-smoker"});
 
             // RadComboBox cmbBox = (RadComboBox)divSocialHistoryControls.FindControl("cbo" + fieldName.Replace(" ", ""));
             HtmlSelect cmbBox = (HtmlSelect)divSocialHistoryControls.FindControl("cbo" + fieldName.Replace(" ", ""));

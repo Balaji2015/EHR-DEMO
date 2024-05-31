@@ -396,6 +396,9 @@ function LoadcboTobacco(sender, args) {
                 else if (item.attributes['option'].value == undefined)
                     //item.show();
                     item.style.display = "block";
+                //CAP-2143
+                else if (item.attributes['option'].value == "")
+                    item.style.display = "none";
             }
            
         }
@@ -438,8 +441,8 @@ function LoadTobaccoList() {
                 item.style.display = "none";
             else {
                 //if (item.get_attributes()._data.Option == hidden) {
-                //CAP-1843
-                if (item.attributes['option'].value == hidden) {
+                //CAP-1843, //CAP-2143
+                if (item.attributes['option'].value == hidden || item.attributes['option'].value == "") {
                     //item.set_visible(false);
                     item.style.display = "none";
                 }
