@@ -1823,6 +1823,9 @@ namespace Acurus.Capella.UI.WebServices
             objCarePlanDTOList = objCarePlanManager.GetCarePlanForPastEncounter(ClientSession.EncounterId,
                                                                                 ClientSession.HumanId,
                                                                                 ClientSession.PhysicianId, sSex, finalYear);
+
+            Hashtable Careplan_master_id = new Hashtable();
+
             if (objCarePlanDTOList.Count > 0)
             {
                 for (int i = 0; i < objCarePlanDTOList.Count; i++)
@@ -1882,7 +1885,7 @@ namespace Acurus.Capella.UI.WebServices
 
                     }
 
-
+                    Careplan_master_id.Add(objCarePlanDTOList[i].Care_Plan_Lookup_ID, objCarePlanDTOList[i].Master_ID);
                     //var planDate = objCarePlanDTOList[i].Plan_Date;
 
                     //if (string.IsNullOrEmpty(planDate))
@@ -1947,7 +1950,9 @@ namespace Acurus.Capella.UI.WebServices
             int careplanlistcount = 0;
             var FinalList = (from m in objCarePlanDTOList where m.Care_Plan_Notes != "" || m.Plan_Date != "" || m.Status != "" select m).ToList();
             careplanlistcount = FinalList.Count();
-            var result = new { objCarePlanList = objCarePlanDTOList, CareplanListcount = careplanlistcount };
+            int[] arrChangedListId = FinalList.Select(x => (int)x.Care_Plan_Lookup_ID).ToArray();
+           
+            var result = new { objCarePlanList = objCarePlanDTOList, CareplanListcount = careplanlistcount, MasterID = Careplan_master_id,ChangedMasterId = arrChangedListId };
             return JsonConvert.SerializeObject(result);
             // return JsonConvert.SerializeObject(objCarePlanDTOList);
         }

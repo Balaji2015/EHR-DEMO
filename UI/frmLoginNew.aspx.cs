@@ -194,9 +194,7 @@ namespace Acurus.Capella.UI
                 {
                     OktaUserResponseModel result = JsonConvert.DeserializeObject<OktaUserResponseModel>(response.Content);
                     //ClientSession.EmailAddress = result?._embedded?.user?.profile?.login ?? string.Empty;
-                    var sEmailAddress = result?._embedded?.user?.profile?.login ?? string.Empty;
-                    Response.SetCookie(new HttpCookie("EmailAddress") { Value = sEmailAddress });
-                    Response.SetCookie(new HttpCookie("UserAccountType") { Value = "Okta" });
+                    //CAP-2142
                     var oktaURL = GetOktaUrl(result.sessionToken);
                     Response.Redirect(oktaURL, false);
                     //ClientSession.UserAccountType = "Okta";
@@ -283,7 +281,8 @@ namespace Acurus.Capella.UI
             string oktaAuthorizeEndpoint = $"{ConfigurationSettings.AppSettings["okta:AuthorizeURL"]}";
             string clientId = ConfigurationSettings.AppSettings["okta:ClientId"];
             string redirectUri = ConfigurationSettings.AppSettings["okta:RedirectUri"];
-            return $"{oktaAuthorizeEndpoint}?client_id={clientId}&response_type=id_token&scope=openid+email&prompt=none&redirect_uri={HttpUtility.UrlEncode(redirectUri)}&state={HttpUtility.UrlEncode(Guid.NewGuid().ToString())}&nonce=n-0S6_WzA2Mj&sessionToken={sessionToken}";
+            //CAP-2142
+            return $"{oktaAuthorizeEndpoint}?client_id={clientId}&response_type=code&scope=openid+profile+email&response_mode=query&prompt=none&redirect_uri={HttpUtility.UrlEncode(redirectUri)}&state={HttpUtility.UrlEncode(Guid.NewGuid().ToString())}&nonce=n-0S6_WzA2Mj&sessionToken={sessionToken}";
         }
 
         //To encrypt the password
