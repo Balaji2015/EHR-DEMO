@@ -3988,30 +3988,30 @@ namespace Acurus.Capella.UI
             {
                 goto MBI;
             }
-            //else if (Char.IsLetter(sPolicyHolderID[0]) == false && Char.IsLetter(sPolicyHolderID[1]) == false && Char.IsLetter(sPolicyHolderID[2]) == false)
-            //{
-            //    goto HCN1;
-            //}
-            //else if (Char.IsLetter(sPolicyHolderID[0]) == true && Char.IsLetter(sPolicyHolderID[1]) == false && Char.IsLetter(sPolicyHolderID[2]) == false)
-            //{
-            //    goto RRB1;
-            //}
-            //else if (Char.IsLetter(sPolicyHolderID[0]) == true && Char.IsLetter(sPolicyHolderID[1]) == true && Char.IsLetter(sPolicyHolderID[2]) == false)
-            //{
-            //    goto RRB2;
-            //}
-            //else if (Char.IsLetter(sPolicyHolderID[0]) == true && Char.IsLetter(sPolicyHolderID[1]) == true && Char.IsLetter(sPolicyHolderID[2]) == true)
-            //{
-            //    goto RRB3;
-            //}
+            else if (Char.IsLetter(sPolicyHolderID[0]) == false && Char.IsLetter(sPolicyHolderID[1]) == false && Char.IsLetter(sPolicyHolderID[2]) == false)
+            {
+                goto HCN1;
+            }
+            else if (Char.IsLetter(sPolicyHolderID[0]) == true && Char.IsLetter(sPolicyHolderID[1]) == false && Char.IsLetter(sPolicyHolderID[2]) == false)
+            {
+                goto RRB1;
+            }
+            else if (Char.IsLetter(sPolicyHolderID[0]) == true && Char.IsLetter(sPolicyHolderID[1]) == true && Char.IsLetter(sPolicyHolderID[2]) == false)
+            {
+                goto RRB2;
+            }
+            else if (Char.IsLetter(sPolicyHolderID[0]) == true && Char.IsLetter(sPolicyHolderID[1]) == true && Char.IsLetter(sPolicyHolderID[2]) == true)
+            {
+                goto RRB3;
+            }
             else if (Char.IsDigit(sPolicyHolderID[0]) && Char.IsLetter(sPolicyHolderID[1]) && Char.IsDigit(sPolicyHolderID[2]))
             {
                 goto MBI;
             }
-            //else if (Char.IsLetter(sPolicyHolderID[0]) == true && Char.IsLetter(sPolicyHolderID[1]) == false && Char.IsLetter(sPolicyHolderID[2]) == true)
-            //{
-            //    goto RRB1;
-            //}
+            else if (Char.IsLetter(sPolicyHolderID[0]) == true && Char.IsLetter(sPolicyHolderID[1]) == false && Char.IsLetter(sPolicyHolderID[2]) == true)
+            {
+                goto RRB1;
+            }
 
             iPosition = 0;
         MBI: if (sPolicyHolderID.Length == 11)
