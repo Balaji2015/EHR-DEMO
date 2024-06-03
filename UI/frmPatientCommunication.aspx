@@ -306,6 +306,13 @@
             background: transparent;
             border: 0;
         }
+        .ui-autocomplete {
+            -webkit-margin-before: 3px !important;
+            max-height: 150px;
+            overflow-y: auto;
+        }
+
+
     </style>
     <link href="CSS/jquery-ui.css" rel="stylesheet" />
     <%-- <link href="CSS/ElementStyles.css" rel="stylesheet" />--%>
@@ -374,7 +381,7 @@
                                             <asp:Label ID="lblCallerName" runat="server" Text="Spoken To" CssClass="spanstyle"></asp:Label>
                                         </td>
                                         <td colspan="2">
-                                            <asp:TextBox ID="txtCallerName" Width="160px" OnKeyPress="AutoSave();" onchange="AutoSave();"
+                                            <asp:TextBox ID="txtCallerName" Width="232px" OnKeyPress="AutoSave();" onchange="AutoSave();"
                                                 runat="server" CssClass="nonEditabletxtbox"></asp:TextBox>
                                         </td>
                                     </tr>
@@ -395,9 +402,13 @@
                                             <asp:Label ID="lblassignedto" runat="server" Text="Assigned To*" mand="Yes"></asp:Label>
                                         </td>
                                         <td>
-                                            <select id="ddlAssignedTo" onchange="EnableAll();" class="Editabletxtbox"></select>
+                                            <%--<select id="ddlAssignedTo" onchange="EnableAll();" class="Editabletxtbox"></select>--%>
+                                            <input id="txtAssignedTo" onchange="EnableAll();" class="Editabletxtbox" style="width: 232px;" />
                                         </td>
                                         <td>
+                                            <img id="imgclearAssignTo" src="Resources/Delete-Blue.png" alt="X" title="Click to clear the text field." style="margin-top:-5px;"/>
+                                        </td>
+                                        <td style="display: none;">
                                             <asp:CheckBox ID="chkshowall" runat="server" Text="Show All" onclick="chkShowAllChange();" Width="70px" CssClass="Editabletxtbox"/>
                                         </td>
                                     </tr>
@@ -418,7 +429,7 @@
                                             <asp:Label ID="lblMessagedatetime" runat="server" Text="Message Date  " Width="85px" CssClass="Editabletxtbox"></asp:Label>
                                         </td>
                                         <td colspan="2">
-                                            <input type="text" id="txtMessageDate" style="width: 150px;" onchange="AutoSave();" class="Editabletxtbox"/>
+                                            <input type="text" id="txtMessageDate" style="width: 232px;" onchange="AutoSave();" class="Editabletxtbox"/>
                                         </td>
                                     </tr>
                                     <tr>
@@ -433,7 +444,7 @@
                                             <asp:Label ID="lblCreatedBy" runat="server" Text="Created By" Width="85px" CssClass="Editabletxtbox"></asp:Label>
                                         </td>
                                         <td colspan="2">
-                                            <asp:TextBox ID="txtCreatedBy" Width="150px" OnKeyPress="AutoSave();" onchange="AutoSave();"
+                                            <asp:TextBox ID="txtCreatedBy" Width="232px" OnKeyPress="AutoSave();" onchange="AutoSave();"
                                                 runat="server" CssClass="nonEditabletxtbox"></asp:TextBox>
                                         </td>
                                     </tr>
@@ -561,7 +572,8 @@
             <script src="JScripts/JSModalWindow.js?version=<%=ConfigurationManager.AppSettings["VersionConfiguration"].ToString().Replace("Capella - ","") %>" type="text/javascript"></script>
 
             <script src="JScripts/JSAvoidRightClick.js?version=<%=ConfigurationManager.AppSettings["VersionConfiguration"].ToString().Replace("Capella - ","") %>" type="text/javascript"></script>
-        </asp:placeholder>
+        
+         </asp:placeholder>
     </form>
 </body>
 </html>

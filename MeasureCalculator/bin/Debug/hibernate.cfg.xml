@@ -34,9 +34,9 @@
       <property name="dialect">NHibernate.Dialect.MySQLDialect</property>
       
       <!--Azure Testing-->
-      <property name="connection.connection_string">Database=capella_cmg_test;Server=capellapoc.mysql.database.azure.com; User ID=dbadmin@capellapoc;Password=KoU6Vty25bdufJeTOBVO;Port=3306;SslMode=Required;Connection Timeout=30;</property>
+      <property name="connection.connection_string">Database=capella_cmg_wc_merge;Server=capellapoc.mysql.database.azure.com; User ID=dbadmin@capellapoc;Password=KoU6Vty25bdufJeTOBVO;Port=3306;SslMode=Required;Connection Timeout=30;</property>
       <!--CMG LOCAL 154 -->
-      <!--<property name="connection.connection_string">Database=capella_cmg_deve;Data Source=172.18.0.154;User Id=root;Password=Capella@20!4;Allow Zero Datetime=True;Connect Timeout=120;Port=3306;</property>-->
+      <!--<property name="connection.connection_string">Database=capella_cmg_deve;Data Source=172.18.0.11;User Id=root;Password=Capella@20!4;Allow Zero Datetime=True;Connect Timeout=120;Port=3306;</property>-->
       <!--CMG LOCAL 11 -->
       <!--<property name="connection.connection_string">Database=capella_cmg_deve;Data Source=172.18.0.11;User Id=dbdeve;Password=acurus;Allow Zero Datetime=True;Connect Timeout=120;Port=3308;</property>-->
       <!--CMG TESTING -->
@@ -45,7 +45,7 @@
       <!--<property name="connection.connection_string">Database=capella_wish;Data Source=192.168.110.5;User Id=dbapp;Password=db@cuPr0d;Allow Zero Datetime=True;Connect Timeout=120;Port=3306;</property>-->
       <!--CMG CPP DEMO -->
       <!--<property name="connection.connection_string">Database=capella_cpp_demo;Data Source=64.91.251.230;User Id=capella;Password=Cap@curus1;Allow Zero Datetime=True;Connect Timeout=120;Port=3306;</property>-->
-	  <!--<property name="connection.connection_string">Database=capella_rjones;Server=prod-db-1-mysql8.mysql.database.azure.com;User ID=dbapp@prod-db-1-mysql8;Password=fdg0ahgZsFaDlC7xwY59;Port=3306;SslMode=Required;Connection Timeout=30;</property>-->
+	  <!--<property name="connection.connection_string">Database=capella_cmg;Server=prod-db-1-mysql8.mysql.database.azure.com;User ID=dbapp@prod-db-1-mysql8;Password=fdg0ahgZsFaDlC7xwY59;Port=3306;SslMode=Required;Connection Timeout=30;</property>-->
 
 		<property name="command_timeout">10000</property>
       <property name="show_sql">false</property>
@@ -298,6 +298,10 @@
 		<mapping resource="Acurus.Capella.Core.HbmMaps.CQMSummary.hbm.xml" assembly="Acurus.Capella.Core" />
 		<mapping resource="Acurus.Capella.Core.HbmMaps.CQMDetail.hbm.xml" assembly="Acurus.Capella.Core" />
 		<mapping resource="Acurus.Capella.Core.HbmMaps.ApplicationAccessLog.hbm.xml" assembly="Acurus.Capella.Core" />
+		<mapping resource="Acurus.Capella.Core.HbmMaps.Human_Blob.hbm.xml" assembly="Acurus.Capella.Core" />
+		<mapping resource="Acurus.Capella.Core.HbmMaps.Encounter_Blob.hbm.xml" assembly="Acurus.Capella.Core" />
+		<mapping resource="Acurus.Capella.Core.HbmMaps.MapXMLBlob.hbm.xml" assembly="Acurus.Capella.Core" />
+		<mapping resource="Acurus.Capella.Core.HbmMaps.ProcedureModifierLookup.hbm.xml" assembly="Acurus.Capella.Core" />
 	</session-factory>
   </hibernate-configuration>
 

@@ -1,0 +1,34 @@
+<ClinicalDocument xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="urn:hl7-org:v3" xmlns:voc="urn:hl7-org:v3/voc" xmlns:sdtc="urn:hl7-org:sdtc">
+<entry typeCode="DRIV">
+<observation classCode="OBS" moodCode="RQO">
+  <!-- Conforms to C-CDA R2.1 Planned Observation (V2) -->
+  <templateId root="2.16.840.1.113883.10.20.22.4.44" extension="2014-06-09"/>
+  <!-- Diagnostic Study Order (V6) -->
+  <templateId root="2.16.840.1.113883.10.20.24.3.17" extension="2021-08-01"/>
+  <id root="e8984ab2-d63f-438b-9b33-8c4ce8a85d54"/>
+  <!-- QDM Attribute: Code -->
+  <code code="{}" codeSystem="2.16.840.1.113883.6.1"
+	displayName="{}" codeSystemName="LOINC"/>
+  <text>"{}"</text>
+  <statusCode code="active"/>
+  <value xsi:type="CD" nullFlavor="NA"/>
+  <!-- QDM Attribute: Author dateTime -->
+  <author>
+	<templateId root="2.16.840.1.113883.10.20.24.3.155" extension="2019-12-01"/>
+	<time value="{}"/>
+	<assignedAuthor>
+	  <id nullFlavor="NA"/>
+	</assignedAuthor>
+  </author>
+  <!-- QDM Attribute: Reason -->
+  <entryRelationship typeCode="RSON">
+	<observation classCode="OBS" moodCode="EVN">
+	  <templateId root="2.16.840.1.113883.10.20.24.3.88" extension="2017-08-01"/>
+	  <code code="77301-0" codeSystem="2.16.840.1.113883.6.1"
+		displayName="Reason care action performed or not" codeSystemName="LOINC"/>
+	  <value xsi:type="CD" code="{}" codeSystem="2.16.840.1.113883.6.96" codeSystemName="SNOMED CT" displayName="{}"/>
+	</observation>
+  </entryRelationship>
+</observation>
+</entry>
+</ClinicalDocument>
