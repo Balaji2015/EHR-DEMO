@@ -444,6 +444,45 @@ namespace Acurus.Capella.UI
             var Result = new { AssignedTo = patientlst };
             return JsonConvert.SerializeObject(Result);
         }
+        //Jira CAP-579
+        [WebMethod(EnableSession = true)]
+        public static string laodAssignedfromgrid(string WfObjectId, string sUserName)
+        {
+            if (ClientSession.UserName == string.Empty)
+            {
+                HttpContext.Current.Response.StatusCode = 999;
+                HttpContext.Current.Response.Status = "999 Session Expired";
+                HttpContext.Current.Response.StatusDescription = "frmSessionExpired.aspx";
+                return "Session Expired";
+            }
+            IList<string> patientlst = new List<string>();
+            PatientNotesManager objPatNotesMngr = new PatientNotesManager();
+            if (WfObjectId != "")
+            {
+                patientlst = objPatNotesMngr.GetAssignedTO(Convert.ToUInt64(WfObjectId), sUserName);
+            }
+            var Result = new { AssignedTo = patientlst };
+            return JsonConvert.SerializeObject(Result);
+        }
+
+        [WebMethod(EnableSession = true)]
+        public static string SearchAssigned(string sUserName)
+        {
+            if (ClientSession.UserName == string.Empty)
+            {
+                HttpContext.Current.Response.StatusCode = 999;
+                HttpContext.Current.Response.Status = "999 Session Expired";
+                HttpContext.Current.Response.StatusDescription = "frmSessionExpired.aspx";
+                return "Session Expired";
+            }
+            IList<string> patientlst = new List<string>();
+            PatientNotesManager objPatNotesMngr = new PatientNotesManager();
+
+            patientlst = objPatNotesMngr.MapPhysicianUserListForFacility("ALL", ClientSession.LegalOrg, sUserName);
+            var Result = new { AssignedTo = patientlst };
+            return JsonConvert.SerializeObject(Result);
+        }
+        //Jira CAP-579 - End
         [WebMethod(EnableSession = true)]
         public static string SaveMenuClick(string AccNo, string AssignedTo, string RelationShip, string FacilityName, string CallerName,
             string MessageOrigin, string Priority, string MessageType, string DLC, string Type, string MessageDate,
