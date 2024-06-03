@@ -2921,3 +2921,30 @@ function SearchAssignedTo() {
 
 }
 //Jira CAP-579 - End
+
+//Jira CAP-579
+function FilterWithdelimiter(array, terms, checkdelimiter, SearchIndex) {
+    var arrayindex = parseInt(SearchIndex);
+    arrayOfTerms = terms.split(" ");
+    if (arrayOfTerms.length > 0 && checkdelimiter != "") {
+        var first_resultant = array;
+        var resultant;
+
+        for (var i = 0; i < arrayOfTerms.length; i++) {
+            resultant = $.grep(first_resultant, function (item) {
+
+                if (item != undefined && checkdelimiter != "") {
+                    return item.split(checkdelimiter)[arrayindex].toLowerCase().indexOf(arrayOfTerms[i].toLowerCase()) > -1;
+                }
+
+            });
+            first_resultant = resultant;
+        }
+
+        return first_resultant;
+    }
+    else {
+        return array;
+    }
+}
+//Jira CAP-579 - End

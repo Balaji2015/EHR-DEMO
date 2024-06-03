@@ -714,6 +714,7 @@ $(document).ready(function () {
     //Jira CAP-579
     SearchAssignedTo();
     //Jira CAP-579 - End
+    document.getElementById("txtAssignedTo").attributes["val"] = "";
     { sessionStorage.setItem('StartLoading', 'true'); StartLoadFromPatChart(); }
     sessionStorage.setItem('MYQ', '');
     sessionStorage.setItem('PatientCommunication', '');
