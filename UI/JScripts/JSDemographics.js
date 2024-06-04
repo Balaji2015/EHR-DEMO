@@ -1937,6 +1937,12 @@ $(document).ready(function () {
             document.getElementById('ctl00_C5POBody_dtpDateOfDeath').disabled = false;
         }
     }
+    //CAP-2062
+    var rpatient = $("#ctl00_C5POBody_ddlPatientRelation");
+    if (rpatient.val() == '1') {
+        debugger;
+        $("#ctl00_C5POBody_txtSelectinsured").prop("disabled", true);
+    }
 
 });
 
@@ -2048,6 +2054,8 @@ function DisplayActiveInsurance() {
 
         }
     }
+    //CAP-2004
+    $('#ctl00_C5POBody_txtNoofPolicies').val($('#tbodupolicyinfo tr:visible').length);
 }
 function chkShowAllChange() {
     Facility = document.getElementById(GetClientId("hdnFacilityName")).value;
