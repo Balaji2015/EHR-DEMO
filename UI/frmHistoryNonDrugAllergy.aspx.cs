@@ -989,7 +989,8 @@ namespace Acurus.Capella.UI
                     }
                     else
                     {
-                        if (objNonDrugAllergy.Is_Present != string.Empty)
+                        //CAP-2063
+                        if (objNonDrugAllergy.Is_Present != string.Empty || !string.IsNullOrEmpty(objNonDrugAllergy.Description))
                         {
                             objNonDrugAllergy.Human_ID = HumanId;
                             objNonDrugAllergy.Non_Drug_Allergy_History_Info = item.Key;

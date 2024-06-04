@@ -2760,3 +2760,191 @@ function AfterOkClick() {
     self.close;
     top.window.location.reload();
 }
+
+//Jira CAP-579
+var arrAssignto = [];
+var bBool = false;
+var bcheck = true;
+var intAssigntoLength = -1;
+function SearchAssignedTo() {
+
+    $("#txtAssignedTo").autocomplete({
+        source: function (request, response) {
+            if (intAssigntoLength == 0 && bcheck && bBool == false) {
+                arrAssignto = [];
+                bBool = true;
+
+                $.ajax({
+                    type: "POST",
+                    contentType: "application/json; charset=utf-8",
+                    url: "frmPatientCommunication.aspx/SearchAssigned",
+                    data: JSON.stringify({
+                        "sUserName": document.getElementById("txtAssignedTo").value,
+                    }),
+                    dataType: "json",
+                    async: true,
+                    success: function (data) {
+                        var jsonData = $.parseJSON(data.d);
+                        //Jira CAP-2140
+                        arrAssignto = jsonData.AssignedTo;
+                        jsonData.AssignedTo = jsonData.AssignedTo.slice(0, 100);
+                        //Jira CAP-2140 End
+                        if (jsonData.AssignedTo.length == 0) {
+                            jsonData.AssignedTo.push('No matches found.')
+                            response($.map(jsonData, function (item) {
+                                return {
+                                    label: item
+                                    
+                                }
+                            }));
+                        }
+                        else {
+                            response($.map(jsonData.AssignedTo, function (item) {
+                                //arrAssignto.push(item);
+                                return {
+                                    label: item.split('|')[1],
+                                    val: item.split('|')[0]
+                                }
+                            }));
+                        }
+
+                        $("#txtAssignedTo").focus();
+                        if (jQuery(top.window.parent.parent.parent.parent.parent.parent.document.body).find('#resultLoading').css('display') == 'block') { sessionStorage.setItem('StartLoading', 'false'); StopLoadFromPatChart(); }
+                    },
+                    error: function OnError(xhr) {
+                        { sessionStorage.setItem('StartLoading', 'false'); StopLoadFromPatChart(); }
+                        if (xhr.status == 999)
+                            window.location = "/frmSessionExpired.aspx";
+                        else {
+                            var log = JSON.parse(xhr.responseText);
+                            console.log(log);
+                            alert("USER MESSAGE:\n" +
+                                ". Cannot process request. Please Login again and retry. \nEXCEPTION DETAILS: \n" +
+                                "Message: " + log.Message);
+                        }
+                    }
+
+                });
+
+            }
+            if ($("#txtAssignedTo").val().length > 2) {
+                if (arrAssignto.length != 0) {
+                    var results = FilterWithdelimiter(arrAssignto, request.term, "|",1);
+                    results = results.slice(0, 100);
+                    if (results.length == 0) {
+                        results.push('No matches found.')
+                        response($.map(results, function (item) {
+                            return {
+                                label: item
+                            }
+                        }));
+                    }
+                    else {
+                        response($.map(results, function (item) {
+                            return {
+                                label: item.split('|')[1],
+                                val: item.split('|')[0]
+                            }
+                        }));
+                    }
+                }
+            }
+        },
+        minlength: 2,
+        multiple: true,
+        mustMatch: false,
+        open: function () {
+            $('.ui-autocomplete.ui-menu.ui-widget').width($('#txtAssignedTo').width());
+            $('.ui-autocomplete.ui-menu.ui-widget').find('li').css({ "border-bottom": "1px solid #ccc", "font-size": "11px", "margin-bottom": "3px", "padding-bottom": "3px" });
+            $('.ui-autocomplete.ui-menu.ui-widget').find('li:last').css("border-bottom", "0px");
+            $(".ui-autocomplete").find('a:contains("No matches found.")').on("click", function (e) {
+                e.preventDefault();
+                e.stopImmediatePropagation();
+            });
+        },
+        select: function (event, ui) {
+            event.preventDefault();
+
+            if (ui.item.label != "No matches found.") {
+                bBool = false;
+                document.getElementById("txtAssignedTo").value = ui.item.label;
+                document.getElementById("txtAssignedTo").attributes["val"] = ui.item.val;
+                document.getElementById("txtAssignedTo").title = ui.item.label;
+                document.getElementById("txtAssignedTo").disabled = true;
+            }
+            else {
+                $('#txtAssignedTo').val("");
+                bBool = false;
+            }
+        }
+    }).on("paste", function (e) {
+        intAssigntoLength = -1;
+        arrAssignto = [];
+        $(".ui-autocomplete").hide();
+    }).on("keydown", function (e) {
+        if (e.which == 8) {
+            if (jQuery(top.window.parent.parent.parent.parent.parent.parent.document.body).find('#resultLoading').css('display') == 'block') { sessionStorage.setItem('StartLoading', 'false'); StopLoadFromPatChart(); }
+            if ($("#txtAssignedTo").val().length <= 4)
+                bBool = false;
+            else
+                bBool = true;
+            $("#txtAssignedTo").focus();
+            bcheck = false;
+        }
+        else if (e.which == 46) {
+            if (jQuery(top.window.parent.parent.parent.parent.parent.parent.document.body).find('#resultLoading').css('display') == 'block') { sessionStorage.setItem('StartLoading', 'false'); StopLoadFromPatChart(); }
+            bBool = false;
+            bcheck = false;
+        }
+        else {
+            if (jQuery(top.window.parent.parent.parent.parent.parent.parent.document.body).find('#resultLoading').css('display') == 'block') { sessionStorage.setItem('StartLoading', 'false'); StopLoadFromPatChart(); }
+            bcheck = true;
+        }
+
+    }).on("input", function (e) {
+        if (jQuery(top.window.parent.parent.parent.parent.parent.parent.document.body).find('#resultLoading').css('display') == 'block') { sessionStorage.setItem('StartLoading', 'false'); StopLoadFromPatChart(); }
+        if ($("#txtAssignedTo").val().length >= 3) {
+            if (jQuery(top.window.parent.parent.parent.parent.parent.parent.document.body).find('#resultLoading').css('display') == 'block') { sessionStorage.setItem('StartLoading', 'false'); StopLoadFromPatChart(); }
+            if (!bBool) { sessionStorage.setItem('StartLoading', 'true'); StartLoadFromPatChart(); }
+            intAssigntoLength = 0;
+        }
+        else if ($("#txtAssignedTo").val().length != 0 && intAssigntoLength != -1) {
+            intAssigntoLength = intAssigntoLength + 1;
+        }
+        if ($("#txtAssignedTo").val().length < 2) {
+            intAssigntoLength = -1;
+            arrAssignto = [];
+            $(".ui-autocomplete").hide();
+            bBool = false;
+        }
+    });
+
+}
+//Jira CAP-579 - End
+
+//Jira CAP-579
+function FilterWithdelimiter(array, terms, checkdelimiter, SearchIndex) {
+    var arrayindex = parseInt(SearchIndex);
+    arrayOfTerms = terms.split(" ");
+    if (arrayOfTerms.length > 0 && checkdelimiter != "") {
+        var first_resultant = array;
+        var resultant;
+
+        for (var i = 0; i < arrayOfTerms.length; i++) {
+            resultant = $.grep(first_resultant, function (item) {
+
+                if (item != undefined && checkdelimiter != "") {
+                    return item.split(checkdelimiter)[arrayindex].toLowerCase().indexOf(arrayOfTerms[i].toLowerCase()) > -1;
+                }
+
+            });
+            first_resultant = resultant;
+        }
+
+        return first_resultant;
+    }
+    else {
+        return array;
+    }
+}
+//Jira CAP-579 - End

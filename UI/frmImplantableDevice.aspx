@@ -351,7 +351,7 @@
             <asp:HiddenField ID="hdnBtnFind" runat="server" />
         </telerik:RadAjaxPanel>
         <asp:PlaceHolder ID="PlaceHolder1" runat="server">
-            <script src="JScripts/jquery-1.11.3.min.js" type="text/javascript"></script>
+            <%--<script src="JScripts/jquery-1.11.3.min.js" type="text/javascript"></script>--%>
             <script src="Jscripts/jquery-ui.js?version=<%=ConfigurationManager.AppSettings["VersionConfiguration"].ToString().Replace("Capella - ","") %>" type="text/javascript"></script>
             <link rel="stylesheet" href="CSS/jquery-ui.min.css">
             <script src="JScripts/JSInhouseProcedure.js?version=<%=ConfigurationManager.AppSettings["VersionConfiguration"].ToString().Replace("Capella - ","") %>" type="text/javascript"></script>

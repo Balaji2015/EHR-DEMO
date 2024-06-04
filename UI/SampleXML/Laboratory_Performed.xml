@@ -1,0 +1,36 @@
+<ClinicalDocument xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="urn:hl7-org:v3" xmlns:voc="urn:hl7-org:v3/voc" xmlns:sdtc="urn:hl7-org:sdtc">
+<entry>
+	<observation classCode="OBS" moodCode="EVN" >
+		<!-- Laboratory Test Performed (V4) -->
+		<templateId root="2.16.840.1.113883.10.20.24.3.38" extension="2021-08-01"/>
+		<id root="1.3.6.1.4.1.115" extension="62d91e1cdfe4bd7825bd3938"/>
+		<!-- QDM Attribute: Code -->
+		<code code="{}" codeSystem="2.16.840.1.113883.6.1" codeSystemName="LOINC" displayName=""/>
+		<text>"{}"</text>
+		<statusCode code="completed"/>
+		<effectiveTime value="{}"/>
+		<!-- QDM Attribute: Author dateTime -->
+		<author>
+			<templateId root="2.16.840.1.113883.10.20.24.3.155" extension="2019-12-01"/>
+			<time value="{}"/>
+			<assignedAuthor>
+				<id nullFlavor="NA"/>
+			</assignedAuthor>
+		</author>
+		<!-- QDM Attribute: Result -->
+		<entryRelationship typeCode="REFR">
+			<observation classCode="OBS" moodCode="EVN">
+				<!-- Conforms to C-CDA R2 Result Observation (V2) -->
+				<templateId root="2.16.840.1.113883.10.20.22.4.2" extension="2015-08-01"/>
+				<!-- Conforms Result (V4) -->
+				<templateId root="2.16.840.1.113883.10.20.24.3.87" extension="2019-12-01"/>
+				<id root="1.3.6.1.4.1.115" extension="9b309b00-eb06-013a-3761-0eca209bc306"/>
+				<code code="{}" codeSystem="2.16.840.1.113883.6.1" codeSystemName="LOINC" displayName="{}"/>
+				<statusCode code="completed"/>
+				<effectiveTime value="{}"/>
+				<value xsi:type="PQ" value="" unit="%"/>
+			</observation>
+		</entryRelationship>
+	</observation>
+</entry>
+</ClinicalDocument>

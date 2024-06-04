@@ -26,7 +26,7 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
         IList<PatientNotes> GetPatientNotesByMsgID(ulong ulMsgID);
         void SavePatientNotes(IList<PatientNotes> SaveList, string MacAddress);
         void UpdatePatientMessage(PatientNotes messages, string ObjType, int CloseType, string owner, DateTime startTime, string MacAddress);
-        IList<string> MapPhysicianUserListForFacility(string sFacilityName, string sLegalOrg);
+        IList<string> MapPhysicianUserListForFacility(string sFacilityName, string sLegalOrg, string sUsername);
         IList<PatientNotes> GetMessageDetails(string MessageDescription, string MessageNotes, string humanid);
         IList<PatientNotes> GetFilteredMessageDetailsByEncounterId(string MessageDescription, string MessageNotes, string EncounterID, string HumanID);
         IList<PatientNotes> GetFilteredLineItemMessages(string MessageDescription, string MessageNotes, string HumanID, string ChargeLineID, string ChargeHeaderID);
@@ -37,6 +37,7 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
         PatientDetailDto GetPopupDetailsNew(string humanid);
         void SavePatientTaskByOrder(PatientNotes messages, WFObject Wfobj, string MacAddress);
         void UpdateAssignTo(ulong ulMessageID, string sUserName);
+        IList<string> GetAssignedTO(ulong WfObjectId, string sUserName);
     }
     public partial class PatientNotesManager : ManagerBase<PatientNotes, ulong>, IPatientNotesManager
     {
@@ -898,11 +899,51 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
             }
 
         }
-        public IList<string> MapPhysicianUserListForFacility(string sFacilityName, string sLegalOrg)
-        {
+        //Jira CAP-579
+        //public IList<string> MapPhysicianUserListForFacility(string sFacilityName, string sLegalOrg)
+        public IList<string> MapPhysicianUserListForFacility(string sFacilityName, string sLegalOrg,string sUsername="")
+        { 
             IList<string> UserList = new List<string>();
             string sPhyName = string.Empty;
-            if (sFacilityName == "SHOW ALL")
+            //Jira CAP-579 - Adding new condition
+            if (sFacilityName == "ALL")
+            {
+                //Old Code
+                //UserManager UserMgr = new UserManager();
+                //IList<User> ListUser = UserMgr.GetUserList(sLegalOrg);
+                //IList<User> lstUserName = (from user in ListUser where user.status.ToUpper() == "A" select user).ToList<User>();
+                //UserList = lstUserName.Select(u => u.user_name + "|" + u.person_name).ToList<string>();
+                //Gitlab# 2485 - Physician Name Display Change
+                using (ISession iMySession = NHibernateSessionManager.Instance.CreateISession())
+                {
+                    
+                    IList<object> objLst = iMySession.CreateSQLQuery("select * from (select u.user_name as UserName,u.person_name as LastName,'' as FirstName,'' as MI,'' as Suffix from user u where status = 'a' and u.Legal_Org='" + sLegalOrg + "' and u.physician_library_id = 0 and u.Person_Name like'%" + sUsername + "%' union all select u.user_name as UserName,p.Physician_Last_Name as LastName, Physician_First_Name as FirstName, Physician_Middle_Name as MI,Physician_Suffix as Suffix from user u, physician_library p where status = 'a' and u.physician_library_id <> 0 and u.Legal_Org='" + sLegalOrg + "' and u.Physician_Library_ID = p.Physician_Library_ID and (p.Physician_Last_Name like'%" + sUsername + "%' or p.Physician_Middle_Name like '%" + sUsername + "%' or p.Physician_First_Name like '%" + sUsername + "%')) as a order by LastName,FirstName").List<object>();
+
+                    for (int i = 0; i < objLst.Count; i++)
+                    {
+                        object[] obj = (object[])objLst[i];
+                        sPhyName = string.Empty;
+
+                        if (obj[1].ToString() != String.Empty)
+                            sPhyName += obj[1].ToString();
+                        if (obj[2].ToString() != String.Empty)
+                        {
+                            if (sPhyName != String.Empty)
+                                sPhyName += "," + obj[2].ToString();
+                            else
+                                sPhyName += obj[2].ToString();
+                        }
+                        if (obj[3].ToString() != String.Empty)
+                            sPhyName += " " + obj[3].ToString();
+                        if (obj[4].ToString() != String.Empty)
+                            sPhyName += "," + obj[4].ToString();
+
+                        UserList.Add(obj[0].ToString() + "|" + sPhyName);
+                    }
+                    iMySession.Close();
+                }
+            }
+            else if (sFacilityName == "SHOW ALL")
             {
                 //Old Code
                 //UserManager UserMgr = new UserManager();
@@ -976,6 +1017,58 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
             }
             return UserList;
 
+        }
+
+        //Jira CAP-579
+        public IList<string> GetAssignedTO(ulong WfObjectId, string sUserName)
+        {
+            IList<string> UserList = new List<string>();
+            string sPhyName = string.Empty;
+
+            //Old Code
+            //UserManager UserMgr = new UserManager();
+            //IList<User> ListUser = UserMgr.GetUserList(sLegalOrg);
+            //IList<User> lstUserName = (from user in ListUser where user.status.ToUpper() == "A" select user).ToList<User>();
+            //UserList = lstUserName.Select(u => u.user_name + "|" + u.person_name).ToList<string>();
+            //Gitlab# 2485 - Physician Name Display Change
+            using (ISession iMySession = NHibernateSessionManager.Instance.CreateISession())
+            {
+                if (WfObjectId > 0)
+                {
+                    IList<object> objLstwfobject = iMySession.CreateSQLQuery("select Current_Owner from wf_object where WF_Object_Id = " + WfObjectId + "; ").List<object>();
+                    sUserName = objLstwfobject[0].ToString();
+                }
+
+                if (sUserName != string.Empty)
+                {
+                    IList<object> objLst = iMySession.CreateSQLQuery("select * from (select u.user_name as UserName,u.person_name as LastName,'' as FirstName,'' as MI,'' as Suffix from user u where status = 'a' and u.Legal_Org='cmg' and u.physician_library_id = 0 and u.User_Name in ('" + sUserName + "') union all select u.user_name as UserName,p.Physician_Last_Name as LastName, Physician_First_Name as FirstName, Physician_Middle_Name as MI,Physician_Suffix as Suffix from user u, physician_library p where status = 'a' and u.physician_library_id <> 0 and u.Legal_Org='cmg' and u.Physician_Library_ID = p.Physician_Library_ID and u.User_Name in ('" + sUserName + "')) as a order by LastName,FirstName;").List<object>();
+
+                    for (int i = 0; i < objLst.Count; i++)
+                    {
+                        object[] obj = (object[])objLst[i];
+                        sPhyName = string.Empty;
+
+                        if (obj[1].ToString() != String.Empty)
+                            sPhyName += obj[1].ToString();
+                        if (obj[2].ToString() != String.Empty)
+                        {
+                            if (sPhyName != String.Empty)
+                                sPhyName += "," + obj[2].ToString();
+                            else
+                                sPhyName += obj[2].ToString();
+                        }
+                        if (obj[3].ToString() != String.Empty)
+                            sPhyName += " " + obj[3].ToString();
+                        if (obj[4].ToString() != String.Empty)
+                            sPhyName += "," + obj[4].ToString();
+
+                        UserList.Add(obj[0].ToString() + "|" + sPhyName);
+                    }
+                    iMySession.Close();
+                }
+            }
+
+            return UserList;
         }
         public IList<PatientNotes> GetMessageDetails(string MessageDescription, string MessageNotes, string humanid)
         {

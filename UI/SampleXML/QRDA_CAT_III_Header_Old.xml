@@ -4,11 +4,9 @@
   <realmCode code="US"/>
   <typeId root="2.16.840.1.113883.1.3" extension="POCD_HD000040"/>
   <!-- US Realm Header Template Id -->
-  <templateId root="2.16.840.1.113883.10.20.27.1.1"/>
+  <templateId root="2.16.840.1.113883.10.20.27.1.1" extension="2017-06-01" />
   <!-- QRDA templateId -->
-  <templateId root="2.16.840.1.113883.10.20.24.1.1"/>
-  <!-- QDM-based QRDA templateId -->
-  <templateId root="2.16.840.1.113883.10.20.24.1.2"/>
+  <templateId root="2.16.840.1.113883.10.20.27.1.2" extension="2017-07-01"/>
   <!-- This is the globally unique identifier for this QRDA document -->
   <id root="5b010313-eff2-432c-9909-6193d8416fac"/>
   <!-- QRDA document type code -->
@@ -18,7 +16,7 @@
   <!--Acurus-Generated Date and Time-->
   <effectiveTime value=""/>
   <confidentialityCode code="N" codeSystem="2.16.840.1.113883.5.25"/>
-  <languageCode code="eng"/>
+  <languageCode code="en"/>
   <!-- reported patient -->
   <recordTarget>
     <patientRole>
@@ -58,10 +56,10 @@
         <telecom use="WP" value="111-111-1111"/>
         <addr>
           <!--Acurus-Address Line 1 of the CMG for testing purpose:-->
-          <streetAddressLine></streetAddressLine>
-          <city></city>
+          <streetAddressLine>1904 N ORANGE GROVE AVE CHAPARRAL MEDICAL GROUP</streetAddressLine>
+          <city>POMONA</city>
           <!--Acurus-City of the CMG for testing purpose:-->
-          <state></state>
+          <state>CA</state>
           <!--Acurus-State of the Provider for testing purpose:-->
           <postalCode></postalCode>
           <!--Acurus-Zip Code of the Provider for testing purpose:-->
@@ -72,7 +70,7 @@
   </custodian>
   <informationRecipient>
     <intendedRecipient>
-      <id root="2.16.840.1.113883.3.249.7" extension="CPC"/>
+      <id root="2.16.840.1.113883.3.249.7" extension="MIPS_INDIV" />
     </intendedRecipient>
   </informationRecipient>
   <legalAuthenticator>
@@ -111,6 +109,18 @@
   <!-- TODO: This is where the provider information will go.
        It is currently hard coded, but should be replaced with the providers
        and the time over which they are performing. -->
+  <participant typeCode="LOC">
+    <!-- Facility Location template -->
+    <templateId root="2.16.840.1.113883.10.20.24.3.100" />
+    <time>
+      <low value="20150203" />
+      <high value="20150206" />
+    </time>
+    <associatedEntity classCode="RGPR">
+      <id root="2.16.840.1.113883.3.249.21" extension="2524180020" />
+      <code code="129465004" displayName="medical record, device" codeSystem="2.16.840.1.113883.6.96" codeSystemName="SNOMED-CT" />
+    </associatedEntity>
+  </participant>
   <documentationOf typeCode="DOC">
     <serviceEvent classCode="PCPR">
       <!-- care provision -->
@@ -131,7 +141,7 @@
         <assignedEntity>
           <!-- This is the provider NPI -->
           <!--Acurus-Provider NPI from Physician library for the Provider chosen in the Measure Calculator screen-->
-          <id root="2.16.840.1.113883.4.6" extension="" />
+          <id root="2.16.840.1.113883.4.6" extension="1" />
           <representedOrganization>
             <!-- This is the organization TIN -->
             <id root="2.16.840.1.113883.4.2" extension="954292617" />
@@ -151,9 +161,9 @@
           <!--Reporting Parameters Section template ID-->
           <templateId root="2.16.840.1.113883.10.20.17.2.1" />
           <!-- QRDA Category III Reporting Parameters Section template ID -->
-          <templateId root="2.16.840.1.113883.10.20.27.2.2" />
+          <!--<templateId root="2.16.840.1.113883.10.20.27.2.2" />-->
           <!--Category III Reporting Parameters (CMS EP) template ID-->
-          <templateId root="2.16.840.1.113883.10.20.27.2.6" />
+          <!--<templateId root="2.16.840.1.113883.10.20.27.2.6" />-->
           <code code="55187-9" codeSystem="2.16.840.1.113883.6.1" />
           <title>Reporting Parameters</title>
           <text>
@@ -186,10 +196,8 @@
         <section>
           <!-- Measure Section template ID -->
           <templateId root="2.16.840.1.113883.10.20.24.2.2" />
-          <!-- QRDA Category III Measure Section template ID -->
-          <templateId root="2.16.840.1.113883.10.20.27.2.1" />
-          <!-- QRDA Category III Measure Section (CMS EP) template ID -->
-          <templateId root="2.16.840.1.113883.10.20.24.2.3" />
+          <templateId root="2.16.840.1.113883.10.20.27.2.1" extension="2017-06-01" />
+          <templateId root="2.16.840.1.113883.10.20.27.2.3" extension="2017-07-01"/>
           <code code="55186-1" codeSystem="2.16.840.1.113883.6.1"/>
           <title>Measure Section</title>
           <text>
@@ -269,8 +277,7 @@
             </table>
           </text>
           <!--acurus- Need to insert the measures-->
-          <CATIIILOAD>
-            
+          <CATIIILOAD>            
           </CATIIILOAD>
         </section>
       </component>

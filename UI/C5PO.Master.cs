@@ -227,6 +227,7 @@ namespace Acurus.Capella.UI
                         }
                     }
                 }
+                //CAP-2055
                 if (Request["ScreenName"] != null && Request["ScreenName"].ToString() == "PhoneEncounter")
                 {
                     if (ClientSession.FillPatientChart.PatChartList.Count > 0)
@@ -237,6 +238,17 @@ namespace Acurus.Capella.UI
                             {
                                 ClientSession.HumanId = Convert.ToUInt32(Request["HumanID"]);
                             }
+
+
+                            if (Request.QueryString["IsDirectURL"] != null)
+                            {
+                                string IsDirectURL = Request.QueryString["IsDirectURL"];
+                                if (IsDirectURL.Equals("y", StringComparison.InvariantCultureIgnoreCase))
+                                {
+                                    hdnIsDirectLink.Value = "true";
+                                }
+                            }
+
                             //CAP-1428
                             //ModalWindow.Visible = true;
                             //ModalWindow.VisibleOnPageLoad = true;
@@ -287,7 +299,7 @@ namespace Acurus.Capella.UI
                             ModalWindow.VisibleStatusbar = false;
                             ModalWindow.ReloadOnShow = true;
                             ModalWindow.ShowContentDuringLoad = true;
-                            ModalWindow.Height = Unit.Pixel(800);
+                            ModalWindow.Height = Unit.Pixel(700);
                             ModalWindow.Width = Unit.Pixel(1224);
                             ModalWindow.Behaviors = WindowBehaviors.None;
                             ModalWindow.NavigateUrl = "frmOrdersPatientBar.aspx";
@@ -355,6 +367,61 @@ namespace Acurus.Capella.UI
                         }
                     }
                 }
+                //CAP-2056
+                else if (Request["ScreenName"] != null && Request["ScreenName"].ToString().Equals("PatientCommunication", StringComparison.OrdinalIgnoreCase))
+                {
+                    if (ClientSession.FillPatientChart != null && ClientSession.FillPatientChart.PatChartList.Count > 0)
+                    {
+                        if (Request["HumanID"] != null && Request["HumanID"] != string.Empty)
+                        {
+                            ModalWindow.Visible = true;
+                            ModalWindow.VisibleOnPageLoad = true;
+                            ModalWindow.VisibleStatusbar = false;
+                            ModalWindow.ReloadOnShow = true;
+                            ModalWindow.ShowContentDuringLoad = true;
+                            ModalWindow.Height = Unit.Pixel(670);
+                            ModalWindow.Width = Unit.Pixel(1050);
+                            ModalWindow.Behaviors = WindowBehaviors.None;
+                            ModalWindow.NavigateUrl = "frmPatientCommunication.aspx";
+                            if (Request.QueryString["IsDirectURL"] != null)
+                            {
+                                string IsDirectURL = Request.QueryString["IsDirectURL"];
+                                if (IsDirectURL.Equals("y", StringComparison.InvariantCultureIgnoreCase))
+                                {
+                                    hdnIsDirectLink.Value = "true";
+                                }
+                            }
+                        }
+                    }
+                }
+                //CAP-2057
+                else if (Request["ScreenName"] != null && Request["ScreenName"].ToString().Equals("Demographics", StringComparison.OrdinalIgnoreCase))
+                {
+                    if (ClientSession.FillPatientChart != null && ClientSession.FillPatientChart.PatChartList.Count > 0)
+                    {
+                        if (Request["HumanID"] != null && Request["HumanID"] != string.Empty)
+                        {
+                            ModalWindow.Visible = true;
+                            ModalWindow.VisibleOnPageLoad = true;
+                            ModalWindow.VisibleStatusbar = false;
+                            ModalWindow.ReloadOnShow = true;
+                            ModalWindow.ShowContentDuringLoad = true;
+                            ModalWindow.Height = Unit.Pixel(700);
+                            ModalWindow.Width = Unit.Pixel(1130);
+                            ModalWindow.Behaviors = WindowBehaviors.None;
+                            ModalWindow.NavigateUrl = "frmPatientDemographics.aspx";
+                            if (Request.QueryString["IsDirectURL"] != null)
+                            {
+                                string IsDirectURL = Request.QueryString["IsDirectURL"];
+                                if (IsDirectURL.Equals("y", StringComparison.InvariantCultureIgnoreCase))
+                                {
+                                    hdnIsDirectLink.Value = "true";
+                                }
+                            }
+                        }
+                    }
+                }
+
                 //if (hdnProjectName.Value == string.Empty && System.Configuration.ConfigurationManager.AppSettings["ProjectName"] != null)
                 //hdnProjectName.Value = System.Configuration.ConfigurationManager.AppSettings["ProjectName"].ToString();
                 if (ClientSession.LegalOrg != null)

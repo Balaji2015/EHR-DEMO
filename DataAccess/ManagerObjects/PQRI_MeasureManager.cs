@@ -25,7 +25,7 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
         IList<PQRI_Measure> GetNewPqriMeasureList(ulong ulPhysician_id, DateTime From_date, DateTime To_date);
         IList<PQRI_Measure> GetPqriMeasureStageThreeList(ulong ulPhysician_id, DateTime Fromdate, DateTime Todate, IList<PQRI_Measure> PQRIMeasureList);
         IList<PQRI_Measure> FillPQRIMeasureCalculator(string sLegalOrg, ulong ulPhysicianID, DateTime Fromdate, DateTime Todate, IList<PQRI_Measure> PQRIMeasureList);
-        void LoadCQMList(string sYear, string sLegalOrg, string sMeasureNumber, ulong ulPhyID, IList<string[]> icdcptListDenominator, IList<string[]> icdcptListDenominatorExclusion, IList<string[]> icdcptListDenominatorException, IList<string[]> icdcptListNumerator, IList<PQRI_Measure> PQRIMeasureList, int Numerator, int Denominator, int Exclusion, int Exception);
+        void LoadCQMList(string sYear, string sLegalOrg, string sMeasureNumber, ulong ulPhyID, IList<string[]> icdcptListDenominator, IList<string[]> icdcptListDenominatorExclusion, IList<string[]> icdcptListDenominatorException, IList<string[]> icdcptListNumerator, IList<PQRI_Measure> PQRIMeasureList, int Numerator, int Denominator, int Exclusion, int Exceptionint, int initialpopulation);
     }
 
     public partial class PQRI_MeasureManager : ManagerBase<PQRI_Measure, int>, IPQRI_MeasureManager
@@ -23578,6 +23578,7 @@ p.snomed_code in (SELECT PQRI_Value FROM cqm_data where nqf_number =?  and PQRI_
 
                 //Preventive Care and Screening: Tobacco Use: Screening and Cessation Intervention
                 #region CMS 138 - Population 2
+                int initailaPopulation = 0;
                 IQuery EncounterDenominatorquery138_Population2 = iMySession.GetNamedQuery("PQRI.GetDenominatorCMS138v12.Tobacco");
                 EncounterDenominatorquery138_Population2.SetString(0, Fromdate.ToString("yyyy-MM-dd"));
                 EncounterDenominatorquery138_Population2.SetString(1, Todate.ToString("yyyy-MM-dd"));
@@ -23585,6 +23586,7 @@ p.snomed_code in (SELECT PQRI_Value FROM cqm_data where nqf_number =?  and PQRI_
                 EncounterDenominatorquery138_Population2.SetString(3, Convert.ToString(ulPhysicianID));
 
                 ArrayList Enc_Denominator_lst138_Population2 = new ArrayList(EncounterDenominatorquery138_Population2.List());
+                initailaPopulation = Enc_Denominator_lst138_Population2.ToArray().Distinct().ToList().Count;
                 ArrayList Enc_Denominator_lst138Denoninator_Population2 = null;
                 IList<ulong> ulEncList138_Population2 = new List<ulong>();
 
@@ -23766,7 +23768,7 @@ p.snomed_code in (SELECT PQRI_Value FROM cqm_data where nqf_number =?  and PQRI_
 
                 PQRIlst.Add(NumeratorandDenominatorCalculationforCMSStageThree(Denominator, Numerator, DenominatorExclusion, DenominatorException, "138v12_Population2", icdcptListNumerator, icdcptListDenominator, icdcptListDenominatorExclusion, icdcptListDenominatorException, PQRIMeasureList));
 
-                LoadCQMList(Fromdate.Year.ToString(), sLegalOrg, "138v12_Population2", ulPhysicianID, icdcptListDenominator, icdcptListDenominatorExclusion, icdcptListDenominatorException, icdcptListNumerator, PQRIMeasureList, Numerator, Denominator, DenominatorExclusion, DenominatorException);
+                LoadCQMList(Fromdate.Year.ToString(), sLegalOrg, "138v12_Population2", ulPhysicianID, icdcptListDenominator, icdcptListDenominatorExclusion, icdcptListDenominatorException, icdcptListNumerator, PQRIMeasureList, Numerator, Denominator, DenominatorExclusion, DenominatorException, initailaPopulation);
                 Numerator = 0;
                 Denominator = 0;
                 DenominatorExclusion = 0;
@@ -26939,7 +26941,7 @@ and b.Encounter_ID in (:EncIds)";
             return PQRIlst;
         }
 
-        public void LoadCQMList(string sYear, string sLegalOrg, string sMeasureNumber, ulong ulPhyID, IList<string[]> icdcptListDenominator, IList<string[]> icdcptListDenominatorExclusion, IList<string[]> icdcptListDenominatorException, IList<string[]> icdcptListNumerator, IList<PQRI_Measure> PQRIMeasureList, int Numerator, int Denominator, int Exclusion, int Exception)
+        public void LoadCQMList(string sYear, string sLegalOrg, string sMeasureNumber, ulong ulPhyID, IList<string[]> icdcptListDenominator, IList<string[]> icdcptListDenominatorExclusion, IList<string[]> icdcptListDenominatorException, IList<string[]> icdcptListNumerator, IList<PQRI_Measure> PQRIMeasureList, int Numerator, int Denominator, int Exclusion, int Exception ,int initialpopulation = 0)
         {
             IList<CQMDetail> ilstCQMDetail = new List<CQMDetail>();
             CQMDetailManager cqmDetailMngr = new CQMDetailManager();
@@ -26977,6 +26979,10 @@ and b.Encounter_ID in (:EncIds)";
             objCQMSummary.Denominator_Exception = Exception;
             objCQMSummary.Numerator = Numerator;
             objCQMSummary.Initial_Population = Denominator + Exception + Exclusion;
+            if (initialpopulation > 0)
+            {
+                objCQMSummary.Initial_Population = initialpopulation;
+            }
             objCQMSummary.Numerator_Exclusion = 0;
             objCQMSummary.Legal_Org = sLegalOrg;
             objCQMSummary.Physician_ID = ulPhyID;

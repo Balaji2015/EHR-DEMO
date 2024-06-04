@@ -2,6 +2,7 @@
 using Acurus.Capella.Core.DTO;
 using Acurus.Capella.DataAccess.ManagerObjects;
 using Acurus.Capella.UI.Extensions;
+using Acurus.Capella.UI.OktaResponseModel;
 using DocumentFormat.OpenXml.Spreadsheet;
 using MySql.Data.MySqlClient.Memcached;
 using Newtonsoft.Json;
@@ -37,8 +38,10 @@ namespace Acurus.Capella.UI
             {
                 if (!string.IsNullOrEmpty(code))
                 {
-                    sUserAccountType = "Microsoft";
-                    sMSUserEmail = GenerateAccessToken(code);
+                    //CAP-2142
+                    var userResponse = GenerateAccessToken(code);
+                    sMSUserEmail = userResponse.Item1;
+                    sUserAccountType = userResponse.Item2;
                 }
 
                 //Jira CAP-1893
@@ -52,20 +55,8 @@ namespace Acurus.Capella.UI
                 else
                 {
                         sUserAccountType = Request.Form["UserAccountType"] ?? Request.QueryString["UserAccountType"] ?? string.Empty;
-
-                        if (string.IsNullOrWhiteSpace(sUserAccountType))
-                        {
-                            if (Request.Cookies["UserAccountType"] != null && !string.IsNullOrEmpty(Request.Cookies["UserAccountType"].Value))
-                            {
-                                sUserAccountType = Request.Cookies["UserAccountType"]?.Value ?? string.Empty;
-                                //expire cookie
-                                HttpCookie cookie = Request.Cookies["UserAccountType"];
-                                cookie.Expires = DateTime.Now.AddMinutes(-5);
-                                Response.Cookies.Add(cookie);
                 }
             }
-                    }
-                }
             
                 //Remove ClientSession.UserAccountType Dependency
                 //sUserAccountType = !string.IsNullOrWhiteSpace(ClientSession.UserAccountType) ? ClientSession.UserAccountType : (Request.Form["UserAccountType"] ?? Request.QueryString["UserAccountType"] ?? string.Empty);
@@ -97,18 +88,6 @@ namespace Acurus.Capella.UI
                 else
                 {
                     sUserName = !string.IsNullOrWhiteSpace(sMSUserEmail) ? sMSUserEmail : (Request.Form["EMailAddress"] ?? Request.QueryString["EMailAddress"] ?? string.Empty);
-                    sUserName = Request.Cookies["EmailAddress"]?.Value ?? string.Empty;
-                    if (string.IsNullOrWhiteSpace(sUserName))
-                    {
-                        if (Request.Cookies["EmailAddress"] != null && !string.IsNullOrEmpty(Request.Cookies["EmailAddress"].Value))
-                        {
-                            sUserAccountType = Request.Cookies["EmailAddress"]?.Value ?? string.Empty;
-                            //expire cookie
-                            HttpCookie cookie = Request.Cookies["EmailAddress"];
-                            cookie.Expires = DateTime.Now.AddMinutes(-5);
-                            Response.Cookies.Add(cookie);
-                        }
-                    }
                     ClientSession.EmailAddress = sUserName;
                 }
             }
@@ -841,8 +820,8 @@ namespace Acurus.Capella.UI
             }
             return string.Empty;
         }
-
-        protected string GenerateAccessToken(string code)
+        //CAP-2142
+        protected Tuple<string, string> GenerateAccessToken(string code)
         {
             var clientId = ConfigurationSettings.AppSettings["okta:ClientId"];
             var clientSecret = ConfigurationSettings.AppSettings["okta:ClientSecret"];
@@ -876,13 +855,20 @@ namespace Acurus.Capella.UI
 
             UserInfo userInfoResponse = JsonConvert.DeserializeObject<UserInfo>(userresponse.Content);
 
+            //CAP-2142
+            var userAccountType = GetOktaIDPType(userInfoResponse?.email ?? "");
+
             //ClientSession.EmailAddress =  userInfoResponse?.email??"";
             ClientSession.AccessToken = myDeserializedClass?.access_token ?? "";
             ClientSession.AccessTokenId = myDeserializedClass?.id_token ?? "";
 
+            //CAP-2142
+            if (userAccountType == "Microsoft")
+            {
             Response.SetCookie(new HttpCookie("MicrosoftAccessTokenId") { Value = ClientSession.AccessTokenId });
-
-            return userInfoResponse?.email ?? "";
+        }
+            //CAP-242
+            return new Tuple<string,string>(userInfoResponse?.email ?? "", userAccountType);
         }
 
         public void ExpireRedirectUrlCookie()
@@ -893,6 +879,41 @@ namespace Acurus.Capella.UI
                 cookie.Expires = DateTime.Now.AddMinutes(-5);
                 Response.Cookies.Add(cookie);
             }
+        }
+        //CAP-2142
+        public string GetOktaIDPType(string emailaddress)
+        {
+            try
+            {
+                if (!string.IsNullOrEmpty(emailaddress))
+                {
+                    var oktaDomain = ConfigurationSettings.AppSettings["okta:OktaDomain"];
+                    var client = new RestClient(oktaDomain);
+                    var request = new RestRequest(ConfigurationSettings.AppSettings["okta:WebFinger"], RestSharp.Method.Get);
+                    request.AddHeader("Accept", "text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.7");
+                    request.AddParameter("resource", $"acct:{emailaddress}");
+                    request.AddParameter("rel", "okta:idp");
+                    RestResponse response = client.ExecuteAsync(request).Result;
+                    OktaUserIDPModel result = JsonConvert.DeserializeObject<OktaUserIDPModel>(response.Content);
+
+                    if ((result?.links?.Count ?? 0) > 0)
+                    {
+                        if ((result.links[0]?.titles?.und ?? string.Empty).Equals("Azure IDP", StringComparison.InvariantCultureIgnoreCase))
+                        {
+                            return "Microsoft";
+                        }
+                        else
+                        {
+                            return "Okta";
+                        }
+                    }
+                }
+            }
+            catch(Exception ex)
+            {
+
+            }
+            return string.Empty;
         }
 
         public class TokenResponse

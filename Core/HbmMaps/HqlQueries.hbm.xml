@@ -3943,8 +3943,8 @@ ifnull(c.control_name,'')  as Control_Name,
 ifnull(c.Measure_Rule_Master_ID,0) as Measure_ID
 
 FROM care_plan_lookup c left join measures_rule_master m on (m.Measures_Rule_ID=c.Measure_Rule_Master_ID)
- left join care_plan p on c.care_plan_lookup_id=p.care_plan_lookup_id and p.Encounter_ID= ?
-where c.field_name='Care_Name_Value' and ? between c.From_Age and c.To_Age and c.Gender in (:Gender) and c.status='Active' order by Parent_Care_Plan_ID,sort_order,Rule_Description desc; ;]]>
+ left join care_plan p on c.care_plan_lookup_id=p.care_plan_lookup_id and p.Encounter_ID= ? and c.Measure_Rule_Master_ID = 0
+where c.field_name='Care_Name_Value' and ? between c.From_Age and c.To_Age and c.Gender in (:Gender) and c.status='Active' order by Parent_Care_Plan_ID,sort_order,Rule_Description desc;]]>
 	</sql-query>
 
 	<sql-query name="Fill.CarePlan.Server.Archive">
@@ -3982,7 +3982,7 @@ ifnull(c.control_name,'')  as Control_Name,
 ifnull(c.Measure_Rule_Master_ID,0) as Measure_ID
 
 FROM care_plan_lookup c left join measures_rule_master m on (m.Measures_Rule_ID=c.Measure_Rule_Master_ID)
- left join care_plan_arc p on c.care_plan_lookup_id=p.care_plan_lookup_id and p.Encounter_ID= ?
+ left join care_plan_arc p on c.care_plan_lookup_id=p.care_plan_lookup_id and p.Encounter_ID= ? and c.Measure_Rule_Master_ID = 0
 where c.field_name='Care_Name_Value' and ? between c.From_Age and c.To_Age and c.Gender in (:Gender) and c.status='Active' order by Parent_Care_Plan_ID,sort_order,Rule_Description desc; ]]>
 	</sql-query>
 

@@ -1698,7 +1698,7 @@ function CarePlanCopyPrevious() {
             }
 
             else {
-
+                FillCarePlanTableForCopyPrevious(objdata.objCarePlanList, objdata.MasterID, objdata.ChangedMasterId);
                 onCopyPrevious('');
                 return;
             }
@@ -1863,3 +1863,210 @@ $(".hasDatepicker").change(function () {
     EnableSave();
 
 });
+
+function FillCarePlanTableForCopyPrevious(objdata, MasterID, ChangedMasterId)
+{
+    $("#mainContainer").find("tr").css("display", "none");
+        if (objdata.length != 0) {
+            for (var i = 0; i < objdata.length; i++) {
+                var isChanged = ChangedMasterId.includes(objdata[i]?.Care_Plan_Lookup_ID);
+                sCareName = objdata[i].Care_Name;
+                if (rCareName != sCareName) {
+                    if (objCareName.indexOf(sCareName) > -1) {
+                        for (var p = objCareName.length - 1; p >= 0; p--) {
+
+                            if (objCareName[p] == sCareName) {
+                                rCareName = objCareName[p];
+                                objCareName.splice(p, 1);
+
+                            }
+
+                        }
+                    }
+                }
+
+                var lbl = $("#mainContainer").find("label[LookUpID ='" + objdata[i].Care_Plan_Lookup_ID + "']");
+                if (lbl != undefined && lbl[0] != undefined) {
+                    if (lbl[0].attributes[0].value == objdata[i].Care_Plan_Lookup_ID) {
+                        $(lbl).parents("tr")[0].style.display = "block";
+                        if ($(lbl).parents("tr").attr("gender") != undefined) {
+                            if ($(lbl).parents("tr").attr("gender").toUpperCase() != objdata[i].Gender) {
+                                $(lbl).parents("tr")[0].style.display = "block";
+                            }
+                            else {
+                                $(lbl).parents("tr")[0].style.display = "none";
+                            }
+                        }
+
+                    }
+
+                    if ($(lbl).parents("tr")[0].style.display != "none") {
+                        //CAP-1396
+                        if (lbl[0].parentNode.nextElementSibling.children[0].className == "combo SelectStyle" || lbl[0].parentNode.nextElementSibling.children[0].className == "combo SelectStyle spanstyle") {
+                            if (isChanged) {
+                                lbl[0].parentNode.nextElementSibling.children[0].value = objdata[i].Status;
+                            }
+                            if (objdata[i].Care_Name_Value.toUpperCase().indexOf("SEXUAL ORIENTATION") > -1) {
+                                if (objdata[i].Status.indexOf("please describe") <= -1)
+                                    $(lbl[0].parentNode.nextElementSibling.nextElementSibling.nextElementSibling).find('textarea')[0].disabled = "true"
+                            }
+                            if (objdata[i].Care_Name_Value.toUpperCase().indexOf("GENDER IDENTITY") > -1) {
+                                if (objdata[i].Status.indexOf("please specify") <= -1)
+                                    $(lbl[0].parentNode.nextElementSibling.nextElementSibling.nextElementSibling).find('textarea')[0].disabled = "true"
+                            }
+
+                            //Jira CAP-447
+                            //else if ((objdata[i].Care_Name_Value.toUpperCase().indexOf("BREAST") > -1)) {
+                            //    lbl[0].parentNode.nextElementSibling.children[0].disabled = "true";
+                            //    lbl[0].parentNode.nextElementSibling.children[0].style.backgroundColor = "rgba(191, 219, 255,1)";
+                            //    $(lbl[0].parentNode.nextElementSibling.nextElementSibling.children[0]).datepicker('disable');
+                            //}
+                            if (isChanged && objdata[i].Status == "") {
+                                lbl[0].parentNode.nextElementSibling.children[0].selectedIndex = 0;
+                            }
+                            else if (isChanged != 0 && objdata[i].Status == "Yes") {
+                                lbl[0].parentNode.nextElementSibling.children[0].selectedIndex = 1;
+                            }
+                            else if (isChanged != 0 && objdata[i].Status == "No") {
+                                lbl[0].parentNode.nextElementSibling.children[0].selectedIndex = 2;
+                            }
+
+                        } else if (lbl[0].parentNode.nextElementSibling.children[0].className.indexOf("stylTxtCtrl") >= 0) {
+
+                            if (objdata[i].Care_Name_Value == "BMI") {
+                                if (isChanged && objdata[i].Vitals_BMI != undefined && objdata[i].Vitals_BMI != "") {
+                                    lbl[0].parentNode.nextElementSibling.children[0].value = objdata[i].Vitals_BMI;
+                                }
+                                else if (isChanged && objdata[i].Status_Value != "") {
+                                    lbl[0].parentNode.nextElementSibling.children[0].value = objdata[i].Status_Value;
+                                }
+                                if (objdata[i].Vitals_BMI_Status_Value != undefined && objdata[i].Vitals_BMI_Status_Value != "") {
+                                    if ($(lbl).parents("tr")[0].nextElementSibling != null) {
+                                        $(lbl).parents("tr")[0].nextElementSibling.style.display = "block";
+                                        $(lbl).parents("tr")[0].nextElementSibling.children[1].firstElementChild.style.display = "block";
+                                        if (isChanged) {
+                                            $(lbl).parents("tr")[0].nextElementSibling.children[1].firstElementChild.value = objdata[i].Vitals_BMI_Status_Value;
+                                        }
+                                    }
+                                }
+
+                                lbl[0].parentNode.nextElementSibling.nextElementSibling.children[0].disabled = "true";
+                                $(lbl[0].parentNode.nextElementSibling.nextElementSibling.children[0]).datepicker('disable');
+                            }
+                            else if (objdata[i].Care_Name_Value.toUpperCase() == "HEMOGLOBIN") { //BugID:51648
+                                if (isChanged) {
+                                    lbl[0].parentNode.nextElementSibling.children[0].value = objdata[i].Status_Value;
+                                }
+                                if (lbl[0].parentNode.nextElementSibling.nextElementSibling.children[0] != undefined)
+                                    lbl[0].parentNode.nextElementSibling.nextElementSibling.children[0].disabled = "true";
+                            }
+
+                            else if (isChanged && objdata[i].Care_Name_Value.toUpperCase().indexOf("TOBACCO") > -1) {
+                                if (objdata[i].Status != undefined && objdata[i].Status != "") {
+                                    if (objdata[i].Status.split('|')[0] != "") {
+                                        lbl[0].parentNode.nextElementSibling.children[0].value = objdata[i].Status.split('|')[0];
+                                        $(lbl[0].parentNode.nextElementSibling.children[0]).attr('title', objdata[i].Status.split('|')[0]);
+                                        if (objdata[i].Status.split('|')[1] != undefined && objdata[i].Status.split('|')[1] != null)
+                                            localStorage.setItem('Tobacco', objdata[i].Status.split('|')[1]);
+                                    }
+
+
+                                }
+
+
+
+                                lbl[0].parentNode.nextElementSibling.nextElementSibling.children[0].disabled = "true";
+                                $(lbl[0].parentNode.nextElementSibling.nextElementSibling.children[0]).datepicker('disable');
+                            }
+
+                            else if (objdata[i].Care_Name_Value.toUpperCase() == "BP SYS/DIA") {
+                                if (isChanged) {
+                                    if (objdata[i].Vitals_BP != undefined && objdata[i].Vitals_BP != "") {
+                                        lbl[0].parentNode.nextElementSibling.children[0].value = objdata[i].Vitals_BP;
+                                    }
+                                    else if (objdata[i].Status_Value != "") {
+                                        lbl[0].parentNode.nextElementSibling.children[0].value = objdata[i].Status_Value;
+                                    }
+                                }
+                                if (objdata[i].Vitals_BP_Status_Value != undefined && objdata[i].Vitals_BP_Status_Value != "") {
+                                    if ($(lbl).parents("tr")[0].nextElementSibling != null) {
+                                        $(lbl).parents("tr")[0].nextElementSibling.style.display = "block";
+                                        $(lbl).parents("tr")[0].nextElementSibling.children[1].firstElementChild.style.display = "block";
+                                        if (isChanged) {
+                                            $(lbl).parents("tr")[0].nextElementSibling.children[1].firstElementChild.value = objdata[i].Vitals_BP_Status_Value;
+                                        }
+                                    }
+                                }
+
+                                lbl[0].parentNode.nextElementSibling.nextElementSibling.children[0].disabled = "true";
+                                $(lbl[0].parentNode.nextElementSibling.nextElementSibling.children[0]).datepicker('disable');
+
+                            }
+                            else {
+                                if (isChanged) {
+                                    lbl[0].parentNode.nextElementSibling.children[0].value = objdata[i].Status_Value;
+                                }
+                            }
+                        }
+                        if (isChanged && lbl[0].parentNode.nextElementSibling.nextElementSibling.children.length != 0) {
+                            lbl[0].parentNode.nextElementSibling.nextElementSibling.children[0].value = objdata[i].Plan_Date.split(" ")[0];
+                            $(lbl[0].parentNode.nextElementSibling.nextElementSibling.nextElementSibling).find('textarea')[0].value = objdata[i].Care_Plan_Notes;
+
+                            if (objdata[i].Id == undefined) {
+                                lbl[0].parentNode.nextElementSibling.nextElementSibling.nextElementSibling.nextElementSibling.children[0].textContent = objdata[i].Version + '-' + "0";
+                            }
+                            else {
+                                lbl[0].parentNode.nextElementSibling.nextElementSibling.nextElementSibling.nextElementSibling.children[0].textContent = objdata[i].Version + '-' + objdata[i].Id;
+                            }
+
+                        }
+                        else {
+                            if (isChanged) {
+                                $(lbl[0].parentNode.nextElementSibling.nextElementSibling.nextElementSibling).find('textarea')[0].value = objdata[i].Care_Plan_Notes;
+                                if (objdata[i].Id == undefined) {
+                                    lbl[0].parentNode.nextElementSibling.nextElementSibling.nextElementSibling.nextElementSibling.children[0].textContent = objdata[i].Version + '-' + "0";
+                                }
+                                else {
+                                    lbl[0].parentNode.nextElementSibling.nextElementSibling.nextElementSibling.nextElementSibling.children[0].textContent = objdata[i].Version + '-' + objdata[i].Id;
+                                }
+                            }
+                        }
+                        //BugID:47880
+                        if (isChanged && objdata[i].Care_Name_Value.toUpperCase().indexOf("TOBACCO") > -1 && objdata[i].Status != undefined && objdata[i].Status != "" && objdata[i].Status.split('|').length == 3) {
+                            if (objdata[i].Care_Plan_Notes.trim() == "") {
+                                $(lbl[0].parentNode.nextElementSibling.nextElementSibling.nextElementSibling).find('textarea')[0].value = objdata[i].Status.split('|')[2];
+                                EnableSave();
+                            }
+
+                        }
+                        //BugID:47887
+                        if (isChanged && objdata[i].Care_Name_Value.toUpperCase() == "BP SYS/DIA" && objdata[i].Status != undefined && objdata[i].Status.trim() != "") {
+                            if (objdata[i].Care_Plan_Notes.trim() == "" && objdata[i].Status.indexOf("|") != -1 && objdata[i].Status.split("|").length == 2) {
+                                $(lbl[0].parentNode.nextElementSibling.nextElementSibling.nextElementSibling).find('textarea')[0].value = objdata[i].Status.split('|')[1];
+                                EnableSave();
+                            }
+                        }
+
+                        //Jira CAP-339
+                        if (MasterID[objdata[i].Care_Plan_Lookup_ID] != 0) {
+                            if (lbl[0].parentNode.nextElementSibling.children[0] != null && lbl[0].parentNode.nextElementSibling.children[0] != undefined && lbl[0].parentNode.nextElementSibling.children[0].disabled == false) {
+                                lbl[0].parentNode.nextElementSibling.children[0].disabled = "true";
+                                lbl[0].parentNode.nextElementSibling.children[0].style.backgroundColor = "rgba(191, 219, 255,1)";
+                            }
+                            if (lbl[0].parentNode.nextElementSibling.nextElementSibling.children[0].disabled != null && lbl[0].parentNode.nextElementSibling.nextElementSibling.children[0].disabled != undefined)
+                                lbl[0].parentNode.nextElementSibling.nextElementSibling.children[0].disabled = "true";
+                            if ($(lbl[0].parentNode.nextElementSibling.nextElementSibling.children[0]) != null && $(lbl[0].parentNode.nextElementSibling.nextElementSibling.children[0]) != undefined)
+                                $(lbl[0].parentNode.nextElementSibling.nextElementSibling.children[0]).datepicker('disable');
+
+                        }
+
+                    }
+
+                }
+            }
+        }
+
+        for (var m = 0; m < objCareName.length; m++) {
+            $("[id*='" + objCareName[m] + "']").css("display", "none");
+        }
+}

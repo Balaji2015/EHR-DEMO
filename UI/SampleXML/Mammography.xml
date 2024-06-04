@@ -1,21 +1,17 @@
-          
-<ClinicalDocument xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
- xmlns="urn:hl7-org:v3"
- xmlns:voc="urn:hl7-org:v3/voc"
- xmlns:sdtc="urn:hl7-org:sdtc">
-		  <entry>
-              <observation classCode="OBS" moodCode="EVN" >
-                <!-- Consolidated Procedure Activity Observation templateId 
-                   (Implied Template) -->
-                <templateId root="2.16.840.1.113883.10.20.22.4.13" extension="2014-06-09"/>
-                <!-- Diagnostic Study, Performed template -->
-                <templateId root="2.16.840.1.113883.10.20.24.3.18" extension="2019-12-01"/>
-                <id root="1.3.6.1.4.1.115" extension="62f09fbbdfe4bd7824361860"/>
-                  <code code="{}" codeSystem="2.16.840.1.113883.6.1" codeSystemName="LOINC"/>
-                <text></text>
-                <statusCode code="completed"/>
-                <effectiveTime value="{}"/>
-                <value nullFlavor="NA" xsi:type="CD" />
-              </observation>
-            </entry>
-			</ClinicalDocument>
+<ClinicalDocument xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="urn:hl7-org:v3" xmlns:voc="urn:hl7-org:v3/voc" xmlns:sdtc="urn:hl7-org:sdtc">
+<entry>
+  <observation classCode="OBS" moodCode="EVN" >
+	<!-- Consolidated Procedure Activity Observation templateId 
+	   (Implied Template) -->
+	<templateId root="2.16.840.1.113883.10.20.22.4.13" extension="2014-06-09"/>
+	<!-- Diagnostic Study, Performed template -->
+	<templateId root="2.16.840.1.113883.10.20.24.3.18" extension="2021-08-01"/>
+	<id root="1.3.6.1.4.1.115" extension="62f09fbbdfe4bd7824361860"/>
+	  <code code="{}" codeSystem="2.16.840.1.113883.6.1" codeSystemName="LOINC"/>
+	<text>"{}"</text>
+	<statusCode code="completed"/>
+	<effectiveTime value="{}"/>
+	<value nullFlavor="NA" xsi:type="CD" />
+  </observation>
+</entry>
+</ClinicalDocument>

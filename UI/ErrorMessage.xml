@@ -2443,7 +2443,8 @@
 	<Message number="7580005" Type="OKCANCEL" Text="Are you sure you want to clear all the selected files?" />
 	<Message number="7580006" Type="ToolStrip" Text="Saved successfully" />
 
-	<Message number="7580007" Type="OK" Text="Please Select Assigned To" />
+	<!--<Message number="7580007" Type="OK" Text="Please Select Assigned To" />-->
+	<Message number="7580007" Type="OK" Text="Please select a valid Assigned To." />
 	<Message number="7580008" Type="OK" Text="Please Select Message Description" />
 	<Message number="7580009" Type="OK" Text="Please Select Message Notes" />
 

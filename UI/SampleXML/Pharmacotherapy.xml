@@ -1,37 +1,32 @@
-		
-<ClinicalDocument xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
- xmlns="urn:hl7-org:v3"
- xmlns:voc="urn:hl7-org:v3/voc"
- xmlns:sdtc="urn:hl7-org:sdtc">
-		<entry>
-              <substanceAdministration classCode="SBADM" moodCode="EVN">
-                <!-- Medication Activity (consolidation) template -->
-                <templateId root="2.16.840.1.113883.10.20.22.4.16" extension="2014-06-09"/>
-                <!-- Medication, Active template -->
-                <templateId root="2.16.840.1.113883.10.20.24.3.41" extension="2019-12-01"/>
-            
-                <id root="1.3.6.1.4.1.115" extension="62e21ad3dfe4bd7826b3995b"/>
-                <text>Tobacco Use Cessation Pharmacotherapy</text>
-                <statusCode code="active"/>
-                    <!-- QDM Attribute: Relevant Period -->
-                    <effectiveTime xsi:type="IVL_TS"><low value=""/><high value=""/></effectiveTime>
-                <!--  QDM Attribute: Frequency -->
-                <effectiveTime xsi:type='PIVL_TS' operator='A'><period value='24' unit='h'/></effectiveTime>
-                  <!--  QDM Attribute: Dosage -->
-                  <doseQuantity value="1.0" unit="1"/>
-                <consumable>
-                  <manufacturedProduct classCode="MANU">
-                    <!-- Medication Information (consolidation) template -->
-                    <templateId root="2.16.840.1.113883.10.20.22.4.23" extension="2014-06-09"/>
-                    <id root="dfd565f0-f061-013a-3762-0eca209bc306"/>
-                    <manufacturedMaterial>
-                        <code code="" codeSystem="2.16.840.1.113883.6.88" codeSystemName="RXNORM"/>
-                    </manufacturedMaterial>
-                    <manufacturerOrganization>
-                      <name>""</name>
-                    </manufacturerOrganization>
-                  </manufacturedProduct>
-                </consumable>
-              </substanceAdministration>
-            </entry>
-			</ClinicalDocument>
+<ClinicalDocument xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="urn:hl7-org:v3" xmlns:voc="urn:hl7-org:v3/voc" xmlns:sdtc="urn:hl7-org:sdtc">
+<entry>
+	<substanceAdministration classCode="SBADM" moodCode="EVN">
+	<!-- Medication Activity (consolidation) template -->
+	<templateId root="2.16.840.1.113883.10.20.22.4.16" extension="2014-06-09"/>
+	<!-- Medication, Active template -->
+	<templateId root="2.16.840.1.113883.10.20.24.3.41" extension="2021-08-01"/>
+	<id root="1.3.6.1.4.1.115" extension="62e21ad3dfe4bd7826b3995b"/>
+	<text>Tobacco Use Cessation Pharmacotherapy</text>
+	<statusCode code="active"/>
+		<!-- QDM Attribute: Relevant Period -->
+		<effectiveTime xsi:type="IVL_TS"><low value="{}"/><high value="{}"/></effectiveTime>
+	<!--  QDM Attribute: Frequency -->
+	<effectiveTime xsi:type='PIVL_TS' operator='A'><period value='24' unit='h'/></effectiveTime>
+	  <!--  QDM Attribute: Dosage -->
+	  <doseQuantity value="1.0" unit="1"/>
+	<consumable>
+	  <manufacturedProduct classCode="MANU">
+		<!-- Medication Information (consolidation) template -->
+		<templateId root="2.16.840.1.113883.10.20.22.4.23" extension="2014-06-09"/>
+		<id root="dfd565f0-f061-013a-3762-0eca209bc306"/>
+		<manufacturedMaterial>
+			<code code="{}" codeSystem="2.16.840.1.113883.6.88" codeSystemName="RXNORM" displayName=""/>
+		</manufacturedMaterial>
+		<manufacturerOrganization>
+		  <name>"{}"</name>
+		</manufacturerOrganization>
+	  </manufacturedProduct>
+	</consumable>
+	</substanceAdministration>
+</entry>
+</ClinicalDocument>

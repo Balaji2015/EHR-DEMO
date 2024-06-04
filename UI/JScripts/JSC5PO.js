@@ -3558,6 +3558,11 @@ window.addEventListener("online", (event) => {
 
 });
 //CAP-1966
-$("#btnReportClose").click(function () {    
-    location.reload();
+$("#btnReportClose").click(function () {
+    //CAP-2123
+    if (window.top.location.pathname.indexOf('frmPatientChart.aspx') > 0) {
+        window.location.href = "frmPatientChart.aspx";
+    } else {
+        location.reload();
+    }
 });

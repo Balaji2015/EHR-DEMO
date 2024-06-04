@@ -1,0 +1,38 @@
+<ClinicalDocument xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="urn:hl7-org:v3" xmlns:voc="urn:hl7-org:v3/voc" xmlns:sdtc="urn:hl7-org:sdtc">
+<entry typeCode="DRIV">
+<observation classCode="OBS" moodCode="EVN" negationInd="true">
+  <!-- Conforms to C-CDA R2 Procedure Activity Observation (V2) -->
+  <templateId root="2.16.840.1.113883.10.20.22.4.13" extension="2014-06-09"/>
+  <!-- Physical Exam Performed (V6) -->
+  <templateId root="2.16.840.1.113883.10.20.24.3.59" extension="2021-08-01"/>
+  <id root="d9a99c33-e751-4d56-982e-bf543e1b8227"/>
+  <!-- QDM Attribute: Code -->
+  <code xsi:type="CD" code="{}" codeSystem="2.16.840.1.113883.6.1"
+	displayName="{}" codeSystemName="LOINC"/>
+  <statusCode code="completed"/>
+  <!-- QDM Attribute: Relevant dateTime -->
+  <effectiveTime value="{}"/>
+  <!-- QDM Attribute: Result -->
+  <value xsi:type="PQ" value="{}" unit="{}"/>
+  <!-- QDM Attribute: Method -->
+  <methodCode nullFlavor="UNK"/>
+  <!-- QDM Attribute: Author dateTime -->
+  <author>
+	<templateId root="2.16.840.1.113883.10.20.24.3.155" extension="2019-12-01"/>
+	<time value="{}"/>
+	<assignedAuthor>
+	  <id nullFlavor="NA"/>
+	</assignedAuthor>
+  </author>	
+  <!-- QDM Attribute: Reason (for exam)-->
+  <entryRelationship typeCode="RSON">
+	<observation classCode="OBS" moodCode="EVN">
+	  <templateId root="2.16.840.1.113883.10.20.24.3.88" extension="2017-08-01"/>
+	  <code code="77301-0" codeSystem="2.16.840.1.113883.6.1"
+		displayName="Reason care action performed or not" codeSystemName="LOINC"/>
+	  <value xsi:type="CD" code="{}" codeSystem="2.16.840.1.113883.6.96" codeSystemName="SNOMED CT" displayName="{}"/>
+	</observation>
+  </entryRelationship>
+</observation>
+</entry>
+</ClinicalDocument>

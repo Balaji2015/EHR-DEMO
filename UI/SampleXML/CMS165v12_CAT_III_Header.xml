@@ -1,0 +1,68 @@
+﻿<ClinicalDocument xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="urn:hl7-org:v3" xmlns:voc="urn:hl7-org:v3/voc" xmlns:sdtc="urn:hl7-org:sdtc">
+  <entry>
+    <!-- Measure Reference and Results (CMS EP) -->
+    <organizer classCode="CLUSTER" moodCode="EVN">
+      <!-- Measure Reference template ID -->
+      <templateId root="2.16.840.1.113883.10.20.24.3.98" />
+      <!-- Measure Reference and Results template ID -->
+      <templateId root="2.16.840.1.113883.10.20.27.3.1" extension="2020-12-01" />
+      <!-- Measure Reference and Results (CMS EP) template ID -->
+      <templateId root="2.16.840.1.113883.10.20.27.3.17" extension="2022-05-01" />
+      <id extension="e50a3b7f-f1e9-4ac1-aad5-bbdbc3deedf1" root="1.3.6.1.4.1.115"/>
+      <statusCode code="completed" />
+      <reference typeCode="REFR">
+        <externalDocument classCode="DOC" moodCode="EVN">
+          <!-- This is the version-specific identifier for eMeasure -->
+          <id root="2.16.840.1.113883.4.738" extension="2C928085-806C-39A2-0180-7092FA9B0145" />
+          <!-- SHOULD: This is the NQF Number, root is an NQF OID and for eMeasure Number and extension is the eMeasure's NQF number >
+          <id root="2.16.840.1.113883.3.560.1" extension="0"/-->
+          <!-- SHOULD: eMeasure Measure Authoring Tool Identifier >
+          <id root="2.16.840.1.113883.3.560.101.2" extension="165"/>
+          <code code="57024-2" displayName="Health Quality Measure Document" codeSystemName="LOINC" codeSystem="2.16.840.1.113883.6.1" /-->
+          <!-- This is the title of the eMeasure -->
+          <text>Controlling High Blood Pressure</text>
+          <!-- SHOULD: setId is the eMeasure version neutral id  -->
+          <setId root="ABDC37CC-BAC6-4156-9B91-D1BE2C8B7268"/>
+          <!-- This is the sequential eMeasure Version number>
+          <versionNumber value="11"/ -->
+        </externalDocument>
+      </reference>
+      <!-- reference typeCode="REFR">
+        <externalObservation -->
+          <!-- SHALL contain id>
+          <id root="b6ac13e2-beb8-4e4f-94ed-fcc397406cd4"/ -->
+          <!-- SHALL single value binding -->
+          <!-- code code="55185-3" displayName="measure set" codeSystem="2.16.840.1.113883.6.1" codeSystemName="LOINC"/ -->
+          <!-- SHALL text which should be the title of the measures set>
+          <text>Clinical Quality Measure Set 2016-2017</text>
+        </externalObservation>
+      </reference -->
+      <component>
+        <observation classCode="OBS" moodCode="EVN">
+          <!-- Performance Rate for Proportion Measure (CMS EP) template ID -->		  
+		  <templateId root="2.16.840.1.113883.10.20.27.3.14" extension="2020-12-01" />
+		  <templateId root="2.16.840.1.113883.10.20.27.3.25" extension="2022-05-01" />
+		  <templateId root="2.16.840.1.113883.10.20.27.3.30" extension="2016-09-01" />
+          <code code="72510-1" codeSystem="2.16.840.1.113883.6.1"
+          displayName="Performance Rate"
+          codeSystemName="2.16.840.1.113883.6.1"/>
+          <statusCode code="completed"/>
+          <!--Acurus- Get the Performance Rate for the measure here-->
+          <value xsi:type="REAL" value=""/>
+          <!-- This is the reference to the Numerator in the eMeasure -->
+          <reference typeCode="REFR">
+            <externalObservation classCode="OBS" moodCode="EVN">
+              <!-- The externalObservationID contains the ID of the numerator in the referenced eMeasure. -->
+              <id root="24803F44-C643-45C7-A2A5-4C58BD540579"/>
+              <code code="NUMER" displayName="Numerator" codeSystem="2.16.840.1.113883.5.4" codeSystemName="ObservationValue"/>
+            </externalObservation>
+          </reference>
+        </observation>
+      </component>
+      <Text>
+
+      </Text>
+      <!--Acurus- IPP, Denominator, Numerator, Denominator Exclusion-->
+    </organizer>
+  </entry>
+</ClinicalDocument>

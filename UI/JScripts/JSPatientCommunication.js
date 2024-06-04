@@ -134,14 +134,22 @@ function SaveMenuClick() {
         { sessionStorage.setItem('StartLoading', 'false'); StopLoadFromPatChart(); }
         return false;
     }
-    else if ($("#ddlType option:selected").text() == "TASK" && $("#ddlAssignedTo option:selected").text() == "") {
+    //Jira CAP-579
+    //else if ($("#ddlType option:selected").text() == "TASK" && $("#ddlAssignedTo option:selected").text() == "") {
+    //    localStorage.setItem("bSaveSuccess", "");
+    //    localStorage.setItem("bSave", "false");
+    //    DisplayErrorMessage('7580007');
+    //    { sessionStorage.setItem('StartLoading', 'false'); StopLoadFromPatChart(); }
+    //    return false;
+    //}
+    //Jira CAP-579
+    else if ($("#ddlType option:selected").text() == "TASK" && document.getElementById("txtAssignedTo").attributes["val"] == "") {
         localStorage.setItem("bSaveSuccess", "");
         localStorage.setItem("bSave", "false");
         DisplayErrorMessage('7580007');
         { sessionStorage.setItem('StartLoading', 'false'); StopLoadFromPatChart(); }
         return false;
     }
-
     else if ($("#ddlMessageType option:selected").text() == "") {
         localStorage.setItem("bSaveSuccess", "");
         localStorage.setItem("bSave", "false");
@@ -187,7 +195,10 @@ function SaveMenuClick() {
             url: "frmPatientCommunication.aspx/SaveMenuClick",
             data: JSON.stringify({
                 "AccNo": document.getElementById("txtAccount").value,
-                "AssignedTo": $("#ddlAssignedTo option:selected").val(),
+                //Jira CAP-579
+                //"AssignedTo": $("#ddlAssignedTo option:selected").val(),
+                //Jira CAP-579
+                "AssignedTo": document.getElementById("txtAssignedTo").attributes["val"],
                 "RelationShip": $("#ddlRelationship option:selected").text(),
                 "FacilityName": $("#ddlFacilityName option:selected").text(),
                 "CallerName": document.getElementById("txtCallerName").value,
@@ -251,7 +262,9 @@ function GetParameterValues(param) {
 }
 function SaveClick(sender) {
     { sessionStorage.setItem('StartLoading', 'true'); StartLoadFromPatChart(); }
-    if ($("#ddlAssignedTo option:selected").text() == "" && sender.defaultValue != "Task Complete") {
+    //Jira CAP-579
+    //if ($("#ddlAssignedTo option:selected").text() == "" && sender.defaultValue != "Task Complete") {
+    if (document.getElementById("txtAssignedTo").attributes["val"] == "" && sender.defaultValue != "Task Complete") {
         DisplayErrorMessage('390009');
         localStorage.setItem("bSaveSuccess", "");
         { sessionStorage.setItem('StartLoading', 'false'); StopLoadFromPatChart(); }
@@ -286,7 +299,10 @@ function SaveClick(sender) {
             url: "frmPatientCommunication.aspx/SaveMyQClick",
             data: JSON.stringify({
                 "AccNo": document.getElementById("txtAccount").value,
-                "AssignedTo": $("#ddlAssignedTo option:selected").val(),
+                //Jira CAP-579
+                //"AssignedTo": $("#ddlAssignedTo option:selected").val(),
+                //Jira CAP-579
+                "AssignedTo": document.getElementById("txtAssignedTo").attributes["val"],
                 "RelationShip": $("#ddlRelationship option:selected").text(),
                 "FacilityName": $("#ddlFacilityName option:selected").text(),
                 "CallerName": document.getElementById("txtCallerName").value,
@@ -444,8 +460,12 @@ function TypeChange() {
         document.getElementById("txtCallerName").style.backgroundColor = 'White !important';
         document.getElementById("ddlMessageOrigin").disabled = false;
         document.getElementById("ddlMessageOrigin").style.backgroundColor = 'White !important';
-        document.getElementById("ddlAssignedTo").disabled = false;
-        document.getElementById("ddlAssignedTo").style.backgroundColor = 'White !important';
+        //Jira CAP-579
+        //document.getElementById("ddlAssignedTo").disabled = false;
+        //document.getElementById("ddlAssignedTo").style.backgroundColor = 'White !important';
+        //Jira CAP-579
+        document.getElementById("txtAssignedTo").disabled = false;
+        document.getElementById("txtAssignedTo").style.backgroundColor = 'White !important';
         document.getElementById("lblassignedto").innerText = "Assigned To*";
         document.getElementById("ddlMessageType").disabled = false;
         document.getElementById("ddlMessageType").style.backgroundColor = 'White !important';
@@ -461,9 +481,15 @@ function TypeChange() {
         $('#ddlRelationship').addClass('nonEditabletxtbox');
         document.getElementById("ddlMessageOrigin").disabled = true;
         $('#txtCallerName').addClass('nonEditabletxtbox');
-        document.getElementById("ddlAssignedTo").disabled = true;
+        //Jira CAP-579
+        //document.getElementById("ddlAssignedTo").disabled = true;
+        document.getElementById("txtAssignedTo").disabled = true;
         $('#ddlMessageOrigin').addClass('nonEditabletxtbox');
-        $('#ddlAssignedTo').addClass('nonEditabletxtbox');
+        //Jira CAP-579
+        //$('#ddlAssignedTo').addClass('nonEditabletxtbox');
+        $('#txtAssignedTo').addClass('nonEditabletxtbox');
+        document.getElementById("imgclearAssignTo").style.display = "none";
+        //Jira CAP-579 - End
         document.getElementById("lblassignedto").innerText = "Assigned To";
         document.getElementById("lblassignedto").style.color = 'Black';
         document.getElementById("ddlMessageType").disabled = true;
@@ -526,79 +552,87 @@ function FacilityLoad() {
 var Facility = "";
 function FacilityChange(sender) {
     Facility = sender.selectedOptions[0].innerText;
-    document.getElementById("ddlAssignedTo").options.length = 0;
-    $('#ddlAssignedTo').append("<option value=''>" + "" + "</option>");
+    //Jira CAP-579
+    //document.getElementById("ddlAssignedTo").options.length = 0;
+    //$('#ddlAssignedTo').append("<option value=''>" + "" + "</option>");
+    //Jira CAP-579
+    document.getElementById("txtAssignedTo").value = "";
+    document.getElementById("txtAssignedTo").attributes["val"] = "";
+    document.getElementById("txtAssignedTo").title = "";
     var checked = "false";
     var vfacilitys = "";
     if (document.getElementById("chkshowall").checked)
         checked = "true";
     var vfacility = $("[id*='ddlFacilityName']");
-    document.getElementById("ddlAssignedTo").options.length = 0;
-    $.ajax({
-        type: "POST",
-        url: "frmPatientCommunication.aspx/laodAssigned",
-        data: JSON.stringify({
-            "chkshowall": checked,
-            "facility": Facility,
-        }),
-        contentType: "application/json; charset=utf-8",
-        dataType: "json",
-        async: true,
-        success: function (data) {
-            var objdata = $.parseJSON(data.d);
-            if (objdata.AssignedTo.length > 0) {
-                var vAssignedTo = objdata.AssignedTo;
-                if (vAssignedTo != null && vAssignedTo.length > 0) {
-                    $('#ddlAssignedTo').append("<option value=''>" + "" + "</option>");
-                    var vddlAssignedTo = document.getElementById("ddlAssignedTo");
-                    var opt = document.createElement("option");
-                    for (var i = 0; i < vAssignedTo.length; i++) {
-                        var opt = document.createElement("option");
-                        opt.text = vAssignedTo[i].split('|')[1];
-                        opt.value = vAssignedTo[i].split('|')[0];
-                        opt.title = vAssignedTo[i].split('|')[1];
-                        vddlAssignedTo.options.add(opt);
-                    }
-                }
-            }
-        },
-        failure: function (data) {
-            alert(data.d);
-        }
-    });
-
+    //Jira CAP-579
+    //document.getElementById("ddlAssignedTo").options.length = 0;
+    //$.ajax({
+    //    type: "POST",
+    //    url: "frmPatientCommunication.aspx/laodAssigned",
+    //    data: JSON.stringify({
+    //        "chkshowall": checked,
+    //        "facility": Facility,
+    //    }),
+    //    contentType: "application/json; charset=utf-8",
+    //    dataType: "json",
+    //    async: true,
+    //    success: function (data) {
+    //        var objdata = $.parseJSON(data.d);
+    //        if (objdata.AssignedTo.length > 0) {
+    //            var vAssignedTo = objdata.AssignedTo;
+    //            if (vAssignedTo != null && vAssignedTo.length > 0) {
+    //                $('#ddlAssignedTo').append("<option value=''>" + "" + "</option>");
+    //                var vddlAssignedTo = document.getElementById("ddlAssignedTo");
+    //                var opt = document.createElement("option");
+    //                for (var i = 0; i < vAssignedTo.length; i++) {
+    //                    var opt = document.createElement("option");
+    //                    opt.text = vAssignedTo[i].split('|')[1];
+    //                    opt.value = vAssignedTo[i].split('|')[0];
+    //                    opt.title = vAssignedTo[i].split('|')[1];
+    //                    vddlAssignedTo.options.add(opt);
+    //                }
+    //            }
+    //        }
+    //    },
+    //    failure: function (data) {
+    //        alert(data.d);
+    //    }
+    //});
+//Jira CAP-579 - End
     document.getElementById("btnSaveMenu").disabled = false;
     localStorage.setItem("bSave", "false");
     return false;
 }
-function FacilityChanges(Facility) {
-    document.getElementById("ddlAssignedTo").options.length = 0;
-    $('#ddlAssignedTo').append("<option value=''>" + "" + "</option>");
-    $.get("ConfigXML/PhysicianFacilityMapping.xml", {}, function (xml) {
-        $("PhyList", xml).each(function (i) {
-            $(this).find("Facility").each(function (l) {
-                if ($(this).attr("name") == Facility) {
-                    $(this).find('Physician').each(function (k) {
-                        if ($(this).attr('username') != undefined)
-                            $('#ddlAssignedTo').append("<option value=''>" + $(this).attr('username') + "</option>");
-                    });
-                }
-            });
-        });
+//Jira CAP-579
+//function FacilityChanges(Facility) {
+//    document.getElementById("ddlAssignedTo").options.length = 0;
+//    $('#ddlAssignedTo').append("<option value=''>" + "" + "</option>");
+//    $.get("ConfigXML/PhysicianFacilityMapping.xml", {}, function (xml) {
+//        $("PhyList", xml).each(function (i) {
+//            $(this).find("Facility").each(function (l) {
+//                if ($(this).attr("name") == Facility) {
+//                    $(this).find('Physician').each(function (k) {
+//                        if ($(this).attr('username') != undefined)
+//                            $('#ddlAssignedTo').append("<option value=''>" + $(this).attr('username') + "</option>");
+//                    });
+//                }
+//            });
+//        });
 
 
-        var vddlAssignedTo = $("[id*='ddlAssignedTo']")[0].options;
-        if (vddlAssignedTo.length > 0) {
-            for (var i = 0; i < vddlAssignedTo.length; i++) {
-                if (vddlAssignedTo[i].innerText == row.cells[7].innerHTML) {
-                    vddlAssignedTo.selectedIndex = i;
-                    break;
-                }
-            }
-        }
-    });
-    document.getElementById("btnSaveMenu").disabled = false;
-}
+//        var vddlAssignedTo = $("[id*='ddlAssignedTo']")[0].options;
+//        if (vddlAssignedTo.length > 0) {
+//            for (var i = 0; i < vddlAssignedTo.length; i++) {
+//                if (vddlAssignedTo[i].innerText == row.cells[7].innerHTML) {
+//                    vddlAssignedTo.selectedIndex = i;
+//                    break;
+//                }
+//            }
+//        }
+//    });
+//    document.getElementById("btnSaveMenu").disabled = false;
+//}
+//Jira CAP-579 - End
 function SearchClick() {
     $.ajax({
         type: "POST",
@@ -677,6 +711,10 @@ function ClearClick() {
     return false;
 }
 $(document).ready(function () {
+    //Jira CAP-579
+    SearchAssignedTo();
+    //Jira CAP-579 - End
+    document.getElementById("txtAssignedTo").attributes["val"] = "";
     { sessionStorage.setItem('StartLoading', 'true'); StartLoadFromPatChart(); }
     sessionStorage.setItem('MYQ', '');
     sessionStorage.setItem('PatientCommunication', '');
@@ -834,28 +872,30 @@ $(document).ready(function () {
                 }
 
                 $("#ddlPriority option:eq(2)").attr('selected', 'selected');
-
-                document.getElementById("ddlAssignedTo").options.length = 0;
-                var vAssignedTo = objdata.AssignedTo;
-                if (vAssignedTo != null && vAssignedTo.length > 0) {
-                    $('#ddlAssignedTo').append("<option value=''>" + "" + "</option>");
-                    var vddlAssignedTo = document.getElementById("ddlAssignedTo");
-                    var opt = document.createElement("option");
-                    for (var i = 0; i < vAssignedTo.length; i++) {
-                        var opt = document.createElement("option");
-                        opt.text = vAssignedTo[i].split('|')[1];
-                        opt.value = vAssignedTo[i].split('|')[0];
-                        opt.title = vAssignedTo[i].split('|')[1];
-                        vddlAssignedTo.options.add(opt);
-                    }
-                    $('#ddlAssignedTo option').each(function () {
-                        if (AssignedTo.indexOf(this.value) > -1) {
-                            option = this;
-                            option.selected = true;
-                        }
-                    });
-                }
-
+                //Jira CAP-579
+                //document.getElementById("ddlAssignedTo").options.length = 0;
+                //var vAssignedTo = objdata.AssignedTo;
+                //if (vAssignedTo != null && vAssignedTo.length > 0) {
+                //    $('#ddlAssignedTo').append("<option value=''>" + "" + "</option>");
+                //    var vddlAssignedTo = document.getElementById("ddlAssignedTo");
+                //    var opt = document.createElement("option");
+                //    for (var i = 0; i < vAssignedTo.length; i++) {
+                //        var opt = document.createElement("option");
+                //        opt.text = vAssignedTo[i].split('|')[1];
+                //        opt.value = vAssignedTo[i].split('|')[0];
+                //        opt.title = vAssignedTo[i].split('|')[1];
+                //        vddlAssignedTo.options.add(opt);
+                //    }
+                //    $('#ddlAssignedTo option').each(function () {
+                //        if (AssignedTo.indexOf(this.value) > -1) {
+                //            option = this;
+                //            option.selected = true;
+                //        }
+                //    });
+                //}
+                { sessionStorage.setItem('StartLoading', 'true'); StartLoadFromPatChart(); }
+                LoadAssignedTo('0', AssignedTo);
+                //Jira CAP-579 - End
                 var cookies = document.cookie.split(';');
                 var CLegalOrg = "";
                 for (var l = 0; l < cookies.length; l++) {
@@ -1021,8 +1061,13 @@ $(document).ready(function () {
                 $("[id*='ddlMessageOrigin']").addClass('nonEditabletxtbox');
                 $("[id*='ddlFacilityName']")[0].disabled = true;
                 $("[id*='ddlFacilityName']").addClass('nonEditabletxtbox');
-                $("[id*='ddlAssignedTo']")[0].disabled = true;
-                $("[id*='ddlAssignedTo']").addClass('nonEditabletxtbox');
+                //Jira CAP-579
+                //$("[id*='ddlAssignedTo']")[0].disabled = true;
+                //$("[id*='ddlAssignedTo']").addClass('nonEditabletxtbox');
+                document.getElementById("txtAssignedTo").disabled = true;
+                $('#txtAssignedTo').addClass('nonEditabletxtbox');
+                document.getElementById("imgclearAssignTo").style.display = "none";
+                //Jira CAP-579 - End
                 $("[id*='ddlPriority']")[0].disabled = true;
                 $("[id*='ddlPriority']").addClass('nonEditabletxtbox');
                 $("[id*='ddlMessageType']")[0].disabled = true;
@@ -1325,7 +1370,9 @@ function AfterSaveClear() {
     document.getElementById("txtmsghistory").value = "";
     document.getElementById("ddlRelationship").disabled = false;
     document.getElementById("ddlMessageOrigin").disabled = false;
-    document.getElementById("ddlAssignedTo").disabled = false;
+    //Jira CAP-579
+    //document.getElementById("ddlAssignedTo").disabled = false;
+    document.getElementById("txtAssignedTo").disabled = false;
     document.getElementById("ChkPatientChart").checked = false;
     $('#btnSaveMenu').val('Add');
     $('#btnClearAll').val('Clear All');
@@ -1353,133 +1400,155 @@ function AfterSaveClear() {
 function chkShowAllChange() {
     var vfacility = $("[id*='ddlFacilityName']");
     //CAP-1471
-    Facility = $("[id*='ddlFacilityName']")[0]?.selectedOptions[0]?.innerText??"";
-    document.getElementById("ddlAssignedTo").options.length = 0;
+    Facility = $("[id*='ddlFacilityName']")[0]?.selectedOptions[0]?.innerText ?? "";
+    //Jira CAP-579
+    //document.getElementById("ddlAssignedTo").options.length = 0;
+    document.getElementById("txtAssignedTo").value = "";
+    document.getElementById("txtAssignedTo").attributes["val"] = "";
+    document.getElementById("txtAssignedTo").title = "";
+    //Jira CAP-579 - End
     var checked = "false";
     var vfacilitys = "";
-    if (document.getElementById("chkshowall").checked)
-        checked = "true";
-    $.ajax({
-        type: "POST",
-        url: "frmPatientCommunication.aspx/laodAssigned",
-        data: JSON.stringify({
-            "chkshowall": checked,
-            "facility": Facility,
-        }),
-        contentType: "application/json; charset=utf-8",
-        dataType: "json",
-        async: true,
-        success: function (data) {
-            var objdata = $.parseJSON(data.d);
-            if (objdata.AssignedTo.length > 0) {
-                var vAssignedTo = objdata.AssignedTo;
-                if (vAssignedTo != null && vAssignedTo.length > 0) {
-                    $('#ddlAssignedTo').append("<option value=''>" + "" + "</option>");
-                    var vddlAssignedTo = document.getElementById("ddlAssignedTo");
-                    var opt = document.createElement("option");
-                    for (var i = 0; i < vAssignedTo.length; i++) {
-                        var opt = document.createElement("option");
-                        opt.text = vAssignedTo[i].split('|')[1];
-                        opt.value = vAssignedTo[i].split('|')[0];
-                        opt.title = vAssignedTo[i].split('|')[1];
-                        vddlAssignedTo.options.add(opt);
-                    }
-                }
-            }
-        },
-        failure: function (data) {
-            alert(data.d);
-        }
-    });
-
+    //Jira CAP-579
+    //if (document.getElementById("chkshowall").checked)
+    //    checked = "true";
+    //$.ajax({
+    //    type: "POST",
+    //    url: "frmPatientCommunication.aspx/laodAssigned",
+    //    data: JSON.stringify({
+    //        "chkshowall": checked,
+    //        "facility": Facility,
+    //    }),
+    //    contentType: "application/json; charset=utf-8",
+    //    dataType: "json",
+    //    async: true,
+    //    success: function (data) {
+    //        var objdata = $.parseJSON(data.d);
+    //        if (objdata.AssignedTo.length > 0) {
+    //            var vAssignedTo = objdata.AssignedTo;
+    //            if (vAssignedTo != null && vAssignedTo.length > 0) {
+    //                $('#ddlAssignedTo').append("<option value=''>" + "" + "</option>");
+    //                var vddlAssignedTo = document.getElementById("ddlAssignedTo");
+    //                var opt = document.createElement("option");
+    //                for (var i = 0; i < vAssignedTo.length; i++) {
+    //                    var opt = document.createElement("option");
+    //                    opt.text = vAssignedTo[i].split('|')[1];
+    //                    opt.value = vAssignedTo[i].split('|')[0];
+    //                    opt.title = vAssignedTo[i].split('|')[1];
+    //                    vddlAssignedTo.options.add(opt);
+    //                }
+    //            }
+    //        }
+    //    },
+    //    failure: function (data) {
+    //        alert(data.d);
+    //    }
+    //});
+    //Jira CAP-579 - End
 }
 function EditAssingnmethod(row) {
-    var vfacility = $("[id*='ddlFacilityName']");
-    document.getElementById("ddlAssignedTo").options.length = 0;
-    var checked = "false";
-    var vfacilitys = "";
-    var varFacilitys = $("[id*='ddlFacilityName']")[0]?.selectedOptions[0]?.innerText??"";
-    $.ajax({
-        type: "POST",
-        url: "frmPatientCommunication.aspx/laodAssigned",
-        data: JSON.stringify({
-            "chkshowall": checked,
-            "facility": varFacilitys,
-        }),
-        contentType: "application/json; charset=utf-8",
-        dataType: "json",
-        async: true,
-        success: function (data) {
-            var objdata = $.parseJSON(data.d);
-            if (objdata.AssignedTo.length > 0) {
-                var vAssignedTo = objdata.AssignedTo;
-                if (vAssignedTo != null && vAssignedTo.length > 0) {
-                    $('#ddlAssignedTo').append("<option value=''>" + "" + "</option>");
-                    var vddlAssignedTo = document.getElementById("ddlAssignedTo");
-                    var opt = document.createElement("option");
-                    for (var i = 0; i < vAssignedTo.length; i++) {
-                        var opt = document.createElement("option");
+    //Jira CAP-579
+    //var vfacility = $("[id*='ddlFacilityName']");
+    //document.getElementById("ddlAssignedTo").options.length = 0;
+    //var checked = "false";
+    //var vfacilitys = "";
+    //var varFacilitys = $("[id*='ddlFacilityName']")[0]?.selectedOptions[0]?.innerText??"";
+    //$.ajax({
+    //    type: "POST",
+    //    url: "frmPatientCommunication.aspx/laodAssigned",
+    //    data: JSON.stringify({
+    //        "chkshowall": checked,
+    //        "facility": varFacilitys,
+    //    }),
+    //    contentType: "application/json; charset=utf-8",
+    //    dataType: "json",
+    //    async: true,
+    //    success: function (data) {
+    //        var objdata = $.parseJSON(data.d);
+    //        if (objdata.AssignedTo.length > 0) {
+    //            var vAssignedTo = objdata.AssignedTo;
+    //            if (vAssignedTo != null && vAssignedTo.length > 0) {
+    //                $('#ddlAssignedTo').append("<option value=''>" + "" + "</option>");
+    //                var vddlAssignedTo = document.getElementById("ddlAssignedTo");
+    //                var opt = document.createElement("option");
+    //                for (var i = 0; i < vAssignedTo.length; i++) {
+    //                    var opt = document.createElement("option");
 
-                        opt.text = vAssignedTo[i].split('|')[1];
-                        opt.value = vAssignedTo[i].split('|')[0];
-                        opt.title = vAssignedTo[i].split('|')[1];
-                        vddlAssignedTo.options.add(opt);
-                    }
-                }
-            }
-            var vvddlAssignedTo = $("[id*='ddlAssignedTo']")[0].options;
-            if (vvddlAssignedTo.length > 0) {
-                for (var i = 0; i < vvddlAssignedTo.length; i++) {
-                    if (vvddlAssignedTo[i].innerText == row.cells[2].innerHTML) {
-                        vvddlAssignedTo.selectedIndex = i;
-                        break;
-                    }
-                }
-            }
-        },
-        failure: function (data) {
-            alert(data.d);
-        }
-    });
+    //                    opt.text = vAssignedTo[i].split('|')[1];
+    //                    opt.value = vAssignedTo[i].split('|')[0];
+    //                    opt.title = vAssignedTo[i].split('|')[1];
+    //                    vddlAssignedTo.options.add(opt);
+    //                }
+    //            }
+    //        }
+    //        var vvddlAssignedTo = $("[id*='ddlAssignedTo']")[0].options;
+    //        if (vvddlAssignedTo.length > 0) {
+    //            for (var i = 0; i < vvddlAssignedTo.length; i++) {
+    //                if (vvddlAssignedTo[i].innerText == row.cells[2].innerHTML) {
+    //                    vvddlAssignedTo.selectedIndex = i;
+    //                    break;
+    //                }
+    //            }
+    //        }
+    //    },
+    //    failure: function (data) {
+    //        alert(data.d);
+    //    }
+    //});
+    { sessionStorage.setItem('StartLoading', 'true'); StartLoadFromPatChart(); }
+    document.getElementById("txtAssignedTo").value = "";
+    document.getElementById("txtAssignedTo").attributes["val"] = "";
+    document.getElementById("txtAssignedTo").title = "";
+    var wfobjectid = row.cells[23].innerHTML;
+    LoadAssignedTo(wfobjectid, "");
+    { sessionStorage.setItem('StartLoading', 'false'); StopLoadFromPatChart(); }
+  //Jira CAP-579 - End
 }
 function Assingnmethod() {
 
     var vfacility = $("[id*='ddlFacilityName']");
-    document.getElementById("ddlAssignedTo").options.length = 0;
+    //Jira CAP-579
+    //document.getElementById("ddlAssignedTo").options.length = 0;
+    document.getElementById("txtAssignedTo").value = "";
+    document.getElementById("txtAssignedTo").attributes["val"] = "";
+    document.getElementById("txtAssignedTo").title = "";
+    //Jira CAP-579 - End
     var checked = "false";
     var vfacilitys = "";
-    $.ajax({
-        type: "POST",
-        url: "frmPatientCommunication.aspx/laodAssigned",
-        data: JSON.stringify({
-            "chkshowall": checked,
-            "facility": vfacilitys,
-        }),
-        contentType: "application/json; charset=utf-8",
-        dataType: "json",
-        async: true,
-        success: function (data) {
-            var objdata = $.parseJSON(data.d);
-            if (objdata.AssignedTo.length > 0) {
-                var vAssignedTo = objdata.AssignedTo;
-                if (vAssignedTo != null && vAssignedTo.length > 0) {
-                    $('#ddlAssignedTo').append("<option value=''>" + "" + "</option>");
-                    var vddlAssignedTo = document.getElementById("ddlAssignedTo");
-                    var opt = document.createElement("option");
-                    for (var i = 0; i < vAssignedTo.length; i++) {
-                        var opt = document.createElement("option");
-                        opt.text = vAssignedTo[i].split('|')[1];
-                        opt.value = vAssignedTo[i].split('|')[0];
-                        opt.title = vAssignedTo[i].split('|')[1];
-                        vddlAssignedTo.options.add(opt);
-                    }
-                }
-            }
-        },
-        failure: function (data) {
-            alert(data.d);
-        }
-    });
+    //Jira CAP-579
+    //$.ajax({
+    //    type: "POST",
+    //    url: "frmPatientCommunication.aspx/laodAssigned",
+    //    data: JSON.stringify({
+    //        "chkshowall": checked,
+    //        "facility": vfacilitys,
+    //    }),
+    //    contentType: "application/json; charset=utf-8",
+    //    dataType: "json",
+    //    async: true,
+    //    success: function (data) {
+    //        var objdata = $.parseJSON(data.d);
+    //        if (objdata.AssignedTo.length > 0) {
+    //            var vAssignedTo = objdata.AssignedTo;
+    //            if (vAssignedTo != null && vAssignedTo.length > 0) {
+    //                $('#ddlAssignedTo').append("<option value=''>" + "" + "</option>");
+    //                var vddlAssignedTo = document.getElementById("ddlAssignedTo");
+    //                var opt = document.createElement("option");
+    //                for (var i = 0; i < vAssignedTo.length; i++) {
+    //                    var opt = document.createElement("option");
+    //                    opt.text = vAssignedTo[i].split('|')[1];
+    //                    opt.value = vAssignedTo[i].split('|')[0];
+    //                    opt.title = vAssignedTo[i].split('|')[1];
+    //                    vddlAssignedTo.options.add(opt);
+    //                }
+    //            }
+    //        }
+    //    },
+    //    failure: function (data) {
+    //        alert(data.d);
+    //    }
+    //});
+    //Jira CAP-579 - End
 
 }
 function ClearAllMenu() {
@@ -1702,3 +1771,60 @@ function OpenFindPatient(AddCloseMethod) {
     var WindowName = $find('ctl00_ModalWindow');
     WindowName.add_close(AddCloseMethod);
 }
+
+//Jira CAP-579
+function LoadAssignedTo(WfobjectId, UserName) {
+   
+    var wfobjectid = WfobjectId;
+    if (wfobjectid != undefined && wfobjectid != null && wfobjectid != "") {
+        WfobjectId;
+
+        $.ajax({
+            type: "POST",
+            url: "frmPatientCommunication.aspx/laodAssignedfromgrid",
+            data: JSON.stringify({
+                "WfObjectId": wfobjectid,
+                "sUserName": UserName
+            }),
+            contentType: "application/json; charset=utf-8",
+            dataType: "json",
+            async: true,
+            success: function (data) {
+                var objdata = $.parseJSON(data.d);
+                if (objdata.AssignedTo.length > 0) {
+                    document.getElementById("txtAssignedTo").value = objdata.AssignedTo[0].split("|")[1];
+                    document.getElementById("txtAssignedTo").attributes["val"] = objdata.AssignedTo[0].split("|")[0];
+                    document.getElementById("txtAssignedTo").title = objdata.AssignedTo[0].split("|")[1];
+                }
+                if (document.getElementById("txtAssignedTo").value != "") {
+                    document.getElementById("txtAssignedTo").disabled = true;
+                }
+                else {
+                    document.getElementById("txtAssignedTo").disabled = false;
+                }
+                { sessionStorage.setItem('StartLoading', 'false'); StopLoadFromPatChart(); }
+            },
+            failure: function (data) {
+                alert(data.d);
+                { sessionStorage.setItem('StartLoading', 'false'); StopLoadFromPatChart(); }
+            }
+        });
+
+    }
+}
+
+$("#imgclearAssignTo").css({
+    "position": "absolute",
+    "right": "30px",
+    "cursor": "pointer",
+    "width": "10px",
+    "height": "10px"
+}).on("click", function () {
+    $('#txtAssignedTo').val('').focus();
+    
+    $(".ui-autocomplete").hide();
+    document.getElementById("txtAssignedTo").value = "";
+    document.getElementById("txtAssignedTo").attributes["val"] = "";
+    document.getElementById("txtAssignedTo").title = "";
+    document.getElementById("txtAssignedTo").disabled = false;
+});

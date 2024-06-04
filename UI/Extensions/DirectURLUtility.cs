@@ -55,10 +55,12 @@ namespace Acurus.Capella.UI.Extensions
         public static bool IsValidRedirectUrlForLogin(string currentURL)
         {
             var encounterUrlPattern = @"^https?://[^/]+/frmPatientChart\.aspx\?EncounterID=\d+$";
-            var humanUrlPattern = @"^https?://[^/]+/frmPatientChart\.aspx\?(?:HumanID=\d+)?(&ScreenMode=Menu)?(&openingfrom=Menu)?(&ScreenName=ERX)?(&ScreenName=CreateOrder)?(&ScreenName=OrderManagement)?(&IsDirectURL=Y)?$";
+            //CAP-2055,CAP-2056,CAP-2057
+            var humanUrlPattern = @"^https?://[^/]+/frmPatientChart\.aspx\?(?:HumanID=\d+)?(&ScreenMode=Menu)?(&openingfrom=Menu)?(&ScreenName=ERX)?(&ScreenName=CreateOrder)?(&ScreenName=OrderManagement)?(&ScreenName=PatientCommunication)?(&ScreenName=PhoneEncounter)?(&ScreenName=Demographics)?(&IsDirectURL=Y)?$";
             var screenUrlPattern = @"^https?://[^/]+/frmPatientChart\.aspx\?EncounterID=\d+&Screen=[a-zA-Z0-9]+$";
             var screenNameUrlPattern = @"https?://[^/]+/frmPatientChart\.aspx\?HumanID=\d+&ScreenName=[A-Za-z0-9_]+&IsDirectUrl=Y+$";
-            if (Regex.IsMatch(currentURL, humanUrlPattern) || Regex.IsMatch(currentURL, encounterUrlPattern) || Regex.IsMatch(currentURL, screenUrlPattern) || Regex.IsMatch(currentURL, screenNameUrlPattern))
+            var schedulerORMyQUrlPattern = @"^https:\/\/(?:[^\/]+)\/(frmMyQueueNew\.aspx|frmAppointments\.aspx)(\?.*)?$"; // CAP-2053
+            if (Regex.IsMatch(currentURL, humanUrlPattern) || Regex.IsMatch(currentURL, encounterUrlPattern) || Regex.IsMatch(currentURL, screenUrlPattern) || Regex.IsMatch(currentURL, screenNameUrlPattern) || Regex.IsMatch(currentURL, schedulerORMyQUrlPattern))
             {
                 return true;
             }
@@ -115,7 +117,10 @@ namespace Acurus.Capella.UI.Extensions
             {
                 {"ERX", 5400 },
                 {"CREATEORDER", 8507},
-                {"ORDERMANAGEMENT", 70900}
+                {"ORDERMANAGEMENT", 70900},
+                {"PATIENTCOMMUNICATION", 4200}, //
+                {"DEMOGRAPHICS", 90970}, //
+                {"PHONEENCOUNTER", 74300} //
             };
 
             var currentScreen = scn_tab_dict.FirstOrDefault(x => x.Key.Equals(scn_name, StringComparison.InvariantCultureIgnoreCase));

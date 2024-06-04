@@ -547,55 +547,128 @@ namespace Acurus.Capella.UI
             patTable.AddCell(cell);
             doc.Add(patTable);
             doc.Add(new Paragraph("\n"));
-            PdfPTable phyTable = new PdfPTable(new float[] { 40, 60 });
+
+            //CAP-2126 -  Insurance information in Diagnostic Order - Print Requisition PDF
+            //PdfPTable phyTable = new PdfPTable(new float[] { 40, 60 });
+            //phyTable.WidthPercentage = 100;
+            //cell = new PdfPCell(new Phrase("Insurance Details", reducedFont));
+            //cell.BackgroundColor = BaseColor.LIGHT_GRAY;
+            //cell.Colspan = 2;
+            //phyTable.AddCell(cell);
+            //if (humanRecord.PatientInsuredBag != null)
+            //{
+            //    if (humanRecord.PatientInsuredBag.Count > 0)
+            //    {
+            //        if (humanRecord.PatientInsuredBag[0].Insured_Human_ID != humanRecord.Human_ID)
+            //        {
+            //            Human insuredHuman = GetHumanByHumanID(humanRecord.PatientInsuredBag[0].Insured_Human_ID);
+            //            if (insuredHuman != null)
+            //            {
+            //                cell = CreateCell("Name of Policy Holder: \n", insuredHuman.Last_Name + "," + insuredHuman.First_Name);// +"\nRelationship to Patient: "+humanRecord.PatientInsuredBag[0].Relationship+ "\nAddress: " + insuredHuman.Street_Address1 + "\nCity: ", normalFont);
+            //                cell.AddElement(new Paragraph("Relationship to Patient: \n", reducedFont));
+            //                cell.AddElement(new Paragraph(humanRecord.PatientInsuredBag[0].Relationship, normalFont));
+            //                phyTable.AddCell(cell);
+            //                string City1 = string.Empty;
+            //                if (insuredHuman.City != string.Empty)
+            //                {
+            //                    if (insuredHuman.Street_Address1 != string.Empty && insuredHuman.Street_Address2 != string.Empty)
+            //                        City1 = insuredHuman.Street_Address1 + "\n" + insuredHuman.Street_Address2;
+            //                    else City1 = insuredHuman.Street_Address1;
+            //                    if (insuredHuman.State != string.Empty && insuredHuman.City != string.Empty)
+            //                    {
+            //                        City1 += "\n" + insuredHuman.City + ", " + insuredHuman.State + " " + insuredHuman.ZipCode;
+            //                    }
+            //                    else
+            //                        City1 = "\n" + insuredHuman.City;
+            //                }
+            //                cell = CreateCell("Insured Human Address: \n", City1);
+            //                phyTable.AddCell(cell);
+            //            }
+
+            //        }
+            //        InsurancePlanManager objInsurancePlanManager = new InsurancePlanManager();
+            //        InsurancePlan objInsPlan = objInsurancePlanManager.GetInsurancebyID(humanRecord.PatientInsuredBag[0].Insurance_Plan_ID)[0];
+            //        if (objInsPlan != null)
+            //        {
+            //            cell = CreateCell("Insurance Plan Name: \n", objInsPlan.Ins_Plan_Name);
+            //            phyTable.AddCell(cell);
+            //            cell = CreateCell("Insurance Address: \n", objInsPlan.Payer_Addrress1 + "\n" + objInsPlan.Payer_City);
+            //            phyTable.AddCell(cell);
+            //        }
+
+            //    }
+            //}
+
+            //CAP-2126 -  Insurance information in Diagnostic Order - Print Requisition PDF
+            IList<string> HeaderList = new List<string>();
+            IList<string> ValueList = new List<string>();
+            PdfPTable phyTable = new PdfPTable(new float[] { 50, 50 });
             phyTable.WidthPercentage = 100;
-            cell = new PdfPCell(new Phrase("Insurance Details", reducedFont));
+            phyTable.TotalWidth = doc.PageSize.Width - doc.LeftMargin - doc.RightMargin;
+            cell = new PdfPCell(new Phrase("Insurance Information", reducedFont));
             cell.BackgroundColor = BaseColor.LIGHT_GRAY;
             cell.Colspan = 2;
             phyTable.AddCell(cell);
+            phyTable.AddCell(new PdfPCell(new Phrase("Primary Insurance", reducedFont)));
+            phyTable.AddCell(new PdfPCell(new Phrase("Secondary Insurance", reducedFont)));
+            HeaderList.Clear();
+            ValueList.Clear();
+
             if (humanRecord.PatientInsuredBag != null)
             {
+                InsurancePlan objPriPlan = new InsurancePlan();
+                InsurancePlan objSecPlan = new InsurancePlan();
+                PatientInsuredPlan objPatInsPri = new PatientInsuredPlan();
+                PatientInsuredPlan objPatInsSec = new PatientInsuredPlan();
+                LabCarrierLookUp objlabCarrierPri = new LabCarrierLookUp();
+                LabCarrierLookUp objLabCarrierSec = new LabCarrierLookUp();
                 if (humanRecord.PatientInsuredBag.Count > 0)
                 {
-                    if (humanRecord.PatientInsuredBag[0].Insured_Human_ID != humanRecord.Human_ID)
-                    {
-                        Human insuredHuman = GetHumanByHumanID(humanRecord.PatientInsuredBag[0].Insured_Human_ID);
-                        if (insuredHuman != null)
-                        {
-                            cell = CreateCell("Name of Policy Holder: \n", insuredHuman.Last_Name + "," + insuredHuman.First_Name);// +"\nRelationship to Patient: "+humanRecord.PatientInsuredBag[0].Relationship+ "\nAddress: " + insuredHuman.Street_Address1 + "\nCity: ", normalFont);
-                            cell.AddElement(new Paragraph("Relationship to Patient: \n", reducedFont));
-                            cell.AddElement(new Paragraph(humanRecord.PatientInsuredBag[0].Relationship, normalFont));
-                            phyTable.AddCell(cell);
-                            string City1 = string.Empty;
-                            if (insuredHuman.City != string.Empty)
-                            {
-                                if (insuredHuman.Street_Address1 != string.Empty && insuredHuman.Street_Address2 != string.Empty)
-                                    City1 = insuredHuman.Street_Address1 + "\n" + insuredHuman.Street_Address2;
-                                else City1 = insuredHuman.Street_Address1;
-                                if (insuredHuman.State != string.Empty && insuredHuman.City != string.Empty)
-                                {
-                                    City1 += "\n" + insuredHuman.City + ", " + insuredHuman.State + " " + insuredHuman.ZipCode;
-                                }
-                                else
-                                    City1 = "\n" + insuredHuman.City;
-                            }
-                            cell = CreateCell("Insured Human Address: \n", City1);
-                            phyTable.AddCell(cell);
-                        }
-
-                    }
+                    LabCarrierLookUpManager objLabCarrierLookUpManager = new LabCarrierLookUpManager();
                     InsurancePlanManager objInsurancePlanManager = new InsurancePlanManager();
-                    InsurancePlan objInsPlan = objInsurancePlanManager.GetInsurancebyID(humanRecord.PatientInsuredBag[0].Insurance_Plan_ID)[0];
-                    if (objInsPlan != null)
+                    foreach (PatientInsuredPlan obj in humanRecord.PatientInsuredBag)
                     {
-                        cell = CreateCell("Insurance Plan Name: \n", objInsPlan.Ins_Plan_Name);
-                        phyTable.AddCell(cell);
-                        cell = CreateCell("Insurance Address: \n", objInsPlan.Payer_Addrress1 + "\n" + objInsPlan.Payer_City);
-                        phyTable.AddCell(cell);
+                        if (obj.Insurance_Type.ToUpper() == "PRIMARY")
+                        {
+                            objPatInsPri = obj;
+                            objPriPlan = objInsurancePlanManager.GetInsurancebyID(obj.Insurance_Plan_ID)[0];
+                            objlabCarrierPri = objLabCarrierLookUpManager.GetLabCarrierDetailsForInsPlanID(obj.Insurance_Plan_ID, ordList[0].OrdersSubmit.Lab_ID);
+
+                        }
+                        else if (obj.Insurance_Type.ToUpper() == "SECONDARY")
+                        {
+                            objPatInsSec = obj;
+                            objSecPlan = objInsurancePlanManager.GetInsurancebyID(obj.Insurance_Plan_ID)[0];
+                            objLabCarrierSec = objLabCarrierLookUpManager.GetLabCarrierDetailsForInsPlanID(obj.Insurance_Plan_ID, ordList[0].OrdersSubmit.Lab_ID);
+                        }
                     }
 
+                    HeaderList.Add("Ins Co Name");
+                    ValueList.Add(objPriPlan.Ins_Plan_Name);
+                    HeaderList.Add("Ins Address 1");
+                    ValueList.Add(objPriPlan.Payer_Addrress1);
+                    HeaderList.Add("Ins City, State Zip");
+                    ValueList.Add(objPriPlan.Payer_City + "," + objPriPlan.Payer_State + " " + objPriPlan.Payer_Zip);
+                    HeaderList.Add("Policy Number");
+                    ValueList.Add(objPatInsPri.Policy_Holder_ID);
+                    cell = CreateCellForDataFromDB(HeaderList, ValueList, 2, false);
+                    phyTable.AddCell(cell);
+                    HeaderList.Clear();
+                    ValueList.Clear();
+
+                    HeaderList.Add("Ins Co Name");
+                    ValueList.Add(objSecPlan.Ins_Plan_Name);
+                    HeaderList.Add("Ins Address 1");
+                    ValueList.Add(objSecPlan.Payer_Addrress1);
+                    HeaderList.Add("Ins City, State Zip");
+                    ValueList.Add(objSecPlan.Payer_City + "," + objSecPlan.Payer_State + " " + objSecPlan.Payer_Zip);
+                    HeaderList.Add("Policy Number");
+                    ValueList.Add(objPatInsSec.Policy_Holder_ID);
+                    cell = CreateCellForDataFromDB(HeaderList, ValueList, 2, false);
+                    phyTable.AddCell(cell);
                 }
             }
+
             doc.Add(phyTable);
             doc.Add(new Paragraph("\n"));
             phyTable = new PdfPTable(new float[] { 40, 60 });
