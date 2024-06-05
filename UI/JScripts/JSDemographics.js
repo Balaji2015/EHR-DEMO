@@ -2055,7 +2055,7 @@ function DisplayActiveInsurance() {
         }
     }
     //CAP-2004
-    $('#ctl00_C5POBody_txtNoofPolicies').val($('#tbodupolicyinfo tr:visible').length);
+    //$('#ctl00_C5POBody_txtNoofPolicies').val($('#tbodupolicyinfo tr:visible').length);
 }
 function chkShowAllChange() {
     Facility = document.getElementById(GetClientId("hdnFacilityName")).value;
