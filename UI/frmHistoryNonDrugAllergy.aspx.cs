@@ -920,7 +920,8 @@ namespace Acurus.Capella.UI
                     if (NonDrugAllergyLoadList != null && NonDrugAllergyLoadList.Count > 0 && NonDrugAllergyLoadList.Any(a => a.Non_Drug_Allergy_History_Info.Trim() == item.Key))
                     {
                         NonDrugAllergy objList = NonDrugAllergyLoadList.Where(a => a.Non_Drug_Allergy_History_Info.Trim() == item.Key).ToList<NonDrugAllergy>()[0];
-                        if (objNonDrugAllergy.Is_Present.Trim() == string.Empty)
+                        //CAP-2063
+                        if (objNonDrugAllergy.Is_Present.Trim() == string.Empty && string.IsNullOrEmpty(objNonDrugAllergy.Description))
                         {
                             if (objList.Encounter_Id == EncounterId)
                                 DeleteList.Add(objList);
