@@ -5,7 +5,7 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head runat="server">
-    <title>Select Facility</title>
+    <title runat="server" id="titleLabel">Select LegalOrg and Facility</title>
     <%--<script src="https://logrocket.acurussolutions.io/LogRocket.js"; crossorigin="anonymous"></script> <script>window.LogRocket && window.LogRocket.init('akido/akido-test', { mergeIframes: true }, { enableVerboseLogging: true });</script>--%>
     <base target="_self" />
     <style type="text/css">
@@ -526,8 +526,21 @@
             </Windows>
         </telerik:RadWindowManager>
         <telerik:RadScriptManager ID="radscriptmngr" runat="server"></telerik:RadScriptManager>
-        <div style="margin-left:15px" class="Editabletxtbox"><span>* Please ensure you have saved your work before proceeding to a different Facility.</span></div>
+        <div style="margin-left: 15px" class="Editabletxtbox"><span runat="server" id="spnNotes">* Please ensure you have saved your work before proceeding to a different LegalOrg and Facility.</span></div>
         <table bgcolor="White " class="flexible-table">
+            <tr runat="server" id="rowLegalOrg">
+                <td style="width: 110px">
+                    <asp:Label ID="lblLegalOrg" runat="server" Text="Organization" Width="100%" CssClass="Editabletxtbox"
+                        EnableViewState="false" mand="Yes"></asp:Label>
+                </td>
+                <td class="" colspan="2">
+                    <%--<select id="cboLegalOrg" runat="server" style="height:28px" width="100%"  class="form-control Editabletxtbox"  onserverchange="cboLegalOrg_Change"  >
+                          <option value="0">Select Organization</option>
+                    </select>--%>
+                    <asp:DropDownList ID="cboLegalOrg" runat="server" Height="28px" Width="100%" CssClass="form-control Editabletxtbox" AutoPostBack="True" OnSelectedIndexChanged="cboLegalOrg_Change">
+                    </asp:DropDownList>
+                </td>
+            </tr>
             <tr>
                 <td style="width: 110px">
                     <asp:Label ID="lblFacilityName" runat="server" Text="Facility Name" Width="110px" CssClass="Editabletxtbox"
@@ -548,10 +561,42 @@
             </tr>
         </table>
 
-       
+
+        <button id="hdnbtnLogin" runat="server" style="display: none;" onserverclick="hdnbtnLogin_ServerClick">hdnLogin</button>
+        <button id="hdnMultiUserLogin" runat="server" style="display: none;" onserverclick="hdnMultiUserLogin_Click">hdnMultiUserLogin</button>
+        <button id="hdnbtnLogOutAndLogIn" runat="server" style="display: none;" onserverclick="hdbbtnLogOutAndLogIn_ServerClick">hdnMultiUserLogin</button>
+        <asp:HiddenField ID="hdnLocalTime" runat="server" EnableViewState="false" />
+        <asp:HiddenField ID="hdnLocalDate" runat="server" EnableViewState="false" />
+        <asp:HiddenField ID="hdnUniversaloffset" runat="server" EnableViewState="false" />
+        <asp:HiddenField ID="hdnLocalDateAndTime" runat="server" EnableViewState="false" />
+        <asp:HiddenField ID="hdnFollowsDayLightSavings" runat="server" Value="false" />
+        <asp:HiddenField ID="hdnroleLanding" runat="server" EnableViewState="false" />
+        <asp:HiddenField ID="hdnRCopia_User_NameLanding" runat="server" EnableViewState="false" />
+        <asp:HiddenField ID="hdnIs_RCopia_Notification_RequiredLanding" runat="server" EnableViewState="false" />
+        <asp:HiddenField ID="hdnPhysician_Library_IDLanding" runat="server" EnableViewState="false" />
+        <asp:HiddenField ID="hdnLanding_Screen_IDLanding" runat="server" Value="false" />
+        <asp:HiddenField ID="hdnEMailAddress" runat="server" Value="false" />
+        <asp:HiddenField ID="hdnPersonName" runat="server" EnableViewState="false" />
+
         <asp:HiddenField ID="hdnChangedFacilityName" runat="server" EnableViewState="false" />
+        <asp:HiddenField ID="hdnVersion" runat="server" EnableViewState="false" />
+        <asp:HiddenField ID="hdnProjectName" runat="server" EnableViewState="false" />
+        <asp:HiddenField ID="hdnreportPath" runat="server" EnableViewState="false" />
+        <asp:HiddenField ID="hdnLoginheader" runat="server" EnableViewState="false" />
+        <asp:HiddenField ID="hdnVersionKey" runat="server" EnableViewState="false" />
+        <asp:HiddenField ID="hdnServiceLink" runat="server" EnableViewState="false" />
+        <asp:HiddenField ID="HiddenField1" runat="server" EnableViewState="false" />
+        <asp:HiddenField ID="hdnEvProjectName" runat="server" EnableViewState="false" />
+        <asp:HiddenField ID="hdnReportPathhttp" runat="server" EnableViewState="false" />
+        <asp:HiddenField ID="hdnGroupId" runat="server" EnableViewState="false" />
+
         <asp:HiddenField ID="hdnFacltyName" runat="server" EnableViewState="false" />
-        <asp:PlaceHolder ID="PlaceHolder1" runat="server">         
+        <asp:HiddenField ID="HiddenField2" runat="server" EnableViewState="false" />
+        <asp:HiddenField ID="hdnChangedLegalOrg" runat="server" EnableViewState="false" />
+        <asp:HiddenField ID="hdnIsLegaLOrgValidation" runat="server" EnableViewState="false" />
+        <%--<asp:HiddenField ID="hdnEmailAddress" runat="server" EnableViewState="false" />--%>
+
+        <asp:PlaceHolder ID="PlaceHolder1" runat="server">
             <script src="JScripts/JSErrorMessage.js?version=<%=ConfigurationManager.AppSettings["VersionConfiguration"].ToString().Replace("Capella - ","") %>" type="text/javascript"></script>
             <script src="JScripts/JSSelectLegalOrg.js?version=<%=ConfigurationManager.AppSettings["VersionConfiguration"].ToString().Replace("Capella - ","") %>" type="text/javascript"></script>
             <script src="JScripts/JSModalWindow.js?version=<%=ConfigurationManager.AppSettings["VersionConfiguration"].ToString().Replace("Capella - ","") %>" type="text/javascript"></script>

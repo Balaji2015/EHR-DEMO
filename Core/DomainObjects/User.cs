@@ -35,6 +35,7 @@ namespace Acurus.Capella.Core.DomainObjects
         private DateTime _Last_Successful_Login_Date_Time = DateTime.MinValue;
         private string _admin_password = string.Empty;
         private string _Is_All_Facilities = string.Empty;
+        private string _Is_Direct_Login = string.Empty;
         #endregion
 
         #region constuctors
@@ -71,6 +72,7 @@ namespace Acurus.Capella.Core.DomainObjects
             sb.Append(_Last_Successful_Login_Date_Time);
             sb.Append(_admin_password);
             sb.Append(_Is_All_Facilities);
+            sb.Append(_Is_Direct_Login);
             return sb.ToString().GetHashCode();
         }
 
@@ -314,7 +316,16 @@ namespace Acurus.Capella.Core.DomainObjects
                 _Is_All_Facilities = value;
             }
         }
-        
+
+        [DataMember]
+        public virtual string Is_Direct_Login
+        {
+            get { return _Is_Direct_Login; }
+            set
+            {
+                _Is_Direct_Login = value;
+            }
+        }
         #endregion
     }
 }

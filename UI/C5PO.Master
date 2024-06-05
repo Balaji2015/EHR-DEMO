@@ -2160,6 +2160,7 @@
         <asp:HiddenField ID="hdnCurrentTab" runat="server" Value="false" EnableViewState="false" />
         <asp:HiddenField ID="hdnSystemTime" runat="server" EnableViewState="false" />
         <asp:HiddenField ID="hdnIsAncillary" runat="server" EnableViewState="false" />
+        <asp:HiddenField ID="hdnCheckLegalOrg" runat="server" EnableViewState="false" />
         <%--  added for medication review --%>
         <asp:HiddenField ID="hdnuserrole" runat="server" EnableViewState="false" />
         <asp:Button ID="Button1" runat="server" Text="Button" OnClick="Button1_Click" CssClass="displayNone" />

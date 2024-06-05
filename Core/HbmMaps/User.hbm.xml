@@ -29,6 +29,7 @@
     <property name="Last_Successful_Login_Date_Time" column="Last_Successful_Login_Date_Time" />
 	<property name="Admin_Password" column="Admin_Password" />
 	<property name="Is_All_Facilities" column="Is_All_Facilities" />
+	<property name="Is_Direct_Login" column="Is_Direct_Login" />
   </class>
 </hibernate-mapping>
 

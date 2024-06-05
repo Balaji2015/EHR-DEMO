@@ -43,6 +43,10 @@ namespace Acurus.Capella.UI
             {
                 ModalWindow.Visible = false;
             }
+
+            //CAP-2007
+            hdnCheckLegalOrg.Value = ConfigurationManager.AppSettings["IsChangeLegalOrg"];
+
             //CAP-1167
             var currentURL = Request.Url.AbsoluteUri.ToString();
             if (DirectURLUtility.IsValidRedirectUrlForLogin(currentURL))

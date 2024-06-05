@@ -264,7 +264,7 @@ namespace Acurus.Capella.UI
             //Set the client session variables
             if (login != null && login.Count > 0)
             {
-                if (login[0].status == "A")
+                if (login[0].status == "A" && login[0].Is_Direct_Login.Equals("Y", StringComparison.InvariantCultureIgnoreCase))
                 {
                     if (login[0].Is_Down_Time == "Y")
                     {
