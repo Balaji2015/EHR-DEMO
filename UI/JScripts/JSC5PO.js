@@ -306,7 +306,10 @@ function OpenModal(data) {
     //CAP-Change Legal Org
     else if (itemValue == "Change Legal Org") {
         var obj = new Array();
-        var Result = openModal("frmSelectLegalOrg.aspx", 176, 600, obj, "ctl00_FacilityModel");
+        //CAP-2007
+        var isShowLegalOrg = document.getElementById(GetClientId("hdnCheckLegalOrg"))?.value ?? "";
+        var popupHeight = (isShowLegalOrg == "Y") ? 234 : 176;
+        var Result = openModal("frmSelectLegalOrg.aspx", popupHeight, 600, obj, "ctl00_FacilityModel");
         return false;
     }
     else if (itemValue == "Find Patient") {
