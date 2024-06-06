@@ -666,6 +666,42 @@ namespace Acurus.Capella.UI
                     ValueList.Add(objPatInsSec.Policy_Holder_ID);
                     cell = CreateCellForDataFromDB(HeaderList, ValueList, 2, false);
                     phyTable.AddCell(cell);
+
+                    //Primary Policy Holder details
+                    phyTable.AddCell(new PdfPCell(new Phrase("Primary Policy Holder / Insured", reducedFont)));
+                    phyTable.AddCell(new PdfPCell(new Phrase("Secondary Policy Holder / Insured", reducedFont)));
+                    HeaderList.Clear();
+                    ValueList.Clear();
+
+                    Human objpatinsuredPrihuman = new Human();
+                    if (objPatInsPri.Insured_Human_ID != humanRecord.Human_ID && objPatInsPri.Insured_Human_ID != 0)
+                    {
+                        objpatinsuredPrihuman = GetHumanByHumanID(objPatInsPri.Insured_Human_ID);
+                    }
+                    HeaderList.Add("Insured Name");
+                    ValueList.Add(objpatinsuredPrihuman.Last_Name + "," + objpatinsuredPrihuman.First_Name);
+                    HeaderList.Add("Insured Address");
+                    ValueList.Add(objpatinsuredPrihuman.Street_Address1);
+                    HeaderList.Add("Insured Relation to Pt");
+                    ValueList.Add(objPatInsPri.Relationship);
+                    cell = CreateCellForDataFromDB(HeaderList, ValueList, 2, false);
+                    phyTable.AddCell(cell);
+                    HeaderList.Clear();
+                    ValueList.Clear();
+
+                    Human objpatinsuredSechuman = new Human();
+                    if (objPatInsSec.Insured_Human_ID != humanRecord.Human_ID && objPatInsSec.Insured_Human_ID != 0)
+                    {
+                        objpatinsuredSechuman = GetHumanByHumanID(objPatInsSec.Insured_Human_ID);
+                    }
+                    HeaderList.Add("Insured Name");
+                    ValueList.Add(objpatinsuredSechuman.Last_Name + "," + objpatinsuredSechuman.First_Name);
+                    HeaderList.Add("Insured Address");
+                    ValueList.Add(objpatinsuredSechuman.Street_Address1);
+                    HeaderList.Add("Insured Relation to Pt");
+                    ValueList.Add(objPatInsSec.Relationship);
+                    cell = CreateCellForDataFromDB(HeaderList, ValueList, 2, false);
+                    phyTable.AddCell(cell);
                 }
             }
 

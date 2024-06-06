@@ -2795,7 +2795,8 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
                         objFillHuman.Last_Name = obj.Last_Name;
                         objFillHuman.MI = obj.MI;
                         //objFillHuman.PatientInsuredBag = obj.PatientInsuredBag;
-                        ilstInsuredPlan = (from pi in obj.PatientInsuredBag where pi.Insurance_Type.ToUpper() == "PRIMARY" && pi.Active.ToUpper() == "YES" select pi).ToList<PatientInsuredPlan>();
+                        //CAP-2126
+                        ilstInsuredPlan = (from pi in obj.PatientInsuredBag where (pi.Insurance_Type.ToUpper() == "PRIMARY" || pi.Insurance_Type.ToUpper() == "SECONDARY") && pi.Active.ToUpper() == "YES" select pi).ToList<PatientInsuredPlan>();
                         objFillHuman.PatientInsuredBag = ilstInsuredPlan;
                         objFillHuman.Prefix = obj.Prefix;
                         objFillHuman.Sex = obj.Sex;
