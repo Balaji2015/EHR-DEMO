@@ -2884,7 +2884,7 @@ function SearchAssignedTo() {
     }).on("keydown", function (e) {
         if (e.which == 8) {
             if (jQuery(top.window.parent.parent.parent.parent.parent.parent.document.body).find('#resultLoading').css('display') == 'block') { sessionStorage.setItem('StartLoading', 'false'); StopLoadFromPatChart(); }
-            if ($("#txtAssignedTo").val().length <= 4)
+            if ($("#txtAssignedTo").val().length <= 3)
                 bBool = false;
             else
                 bBool = true;
