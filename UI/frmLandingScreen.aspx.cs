@@ -34,8 +34,17 @@ namespace Acurus.Capella.UI
             string sMSUserEmail = string.Empty;
 
             var code = Request.Params["code"];
+            var isLoginRequired = !string.IsNullOrWhiteSpace(Request.Params["error"]) && (Request.Params["error"]??"") == "login_required";
             if (!IsPostBack)
             {
+                if (isLoginRequired)
+                {
+                    Response.SetCookie(new HttpCookie("IsOktaUser") { Value = "Y", Expires = DateTime.Now.AddMinutes(60) });
+                    Response.Redirect("/frmLoginNew.aspx");
+                    return;
+                }
+
+
                 if (!string.IsNullOrEmpty(code))
                 {
                     //CAP-2142
@@ -863,10 +872,8 @@ namespace Acurus.Capella.UI
             ClientSession.AccessTokenId = myDeserializedClass?.id_token ?? "";
 
             //CAP-2142
-            if (userAccountType == "Microsoft")
-            {
             Response.SetCookie(new HttpCookie("MicrosoftAccessTokenId") { Value = ClientSession.AccessTokenId });
-        }
+
             //CAP-242
             return new Tuple<string,string>(userInfoResponse?.email ?? "", userAccountType);
         }

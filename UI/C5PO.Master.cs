@@ -951,7 +951,7 @@ namespace Acurus.Capella.UI
             #region Logout Microsoft SSO
             if (ConfigurationSettings.AppSettings["IsSSOLogin"] == "Y")
             {
-                if (ClientSession.UserAccountType == "Microsoft")
+                if (ClientSession.UserAccountType == "Microsoft" || ClientSession.UserAccountType == "Okta")
                 {
                     //string CName = "LogoutVariable" + DateTime.Now.ToString("hh-mm-ss");
                     //Response.SetCookie(new HttpCookie(CName) { Value = "UserAccountType="+ClientSession.UserAccountType.ToString(), HttpOnly = false });

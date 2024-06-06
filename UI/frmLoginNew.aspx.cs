@@ -28,6 +28,13 @@ namespace Acurus.Capella.UI
         protected void Page_Load(object sender, EventArgs e)
         {
 
+            if (Request.Cookies["IsOktaUser"] == null || (Request.Cookies["IsOktaUser"]?.Value??"N") == "N")
+            {
+                var oktaVerificationURL = CheckOktaAuthorizationUrl();
+                Response.Redirect(oktaVerificationURL, false);
+                return;
+            }
+
             if (ConfigurationSettings.AppSettings["IsSSOLogin"] == null || ConfigurationSettings.AppSettings["IsSSOLogin"] == "N")
             {
                 Response.Redirect("frmLogin.aspx");
@@ -274,6 +281,16 @@ namespace Acurus.Capella.UI
             string clientId = ConfigurationSettings.AppSettings["okta:ClientId"];
             string redirectUri = ConfigurationSettings.AppSettings["okta:RedirectUri"];
             return $"{oktaAuthorizeEndpoint}?client_id={clientId}&response_type=code&redirect_uri={HttpUtility.UrlEncode(redirectUri)}&scope=openid+profile+email&state={HttpUtility.UrlEncode(Guid.NewGuid().ToString())}&login_hint={HttpUtility.UrlEncode(email)}";
+        }
+
+        private string CheckOktaAuthorizationUrl()
+        {
+            // Replace with your Okta domain and other necessary parameters
+            var oktaDomain = ConfigurationSettings.AppSettings["okta:OktaDomain"];
+            string oktaAuthorizeEndpoint = $"{ConfigurationSettings.AppSettings["okta:AuthorizeURL"]}";
+            string clientId = ConfigurationSettings.AppSettings["okta:ClientId"];
+            string redirectUri = ConfigurationSettings.AppSettings["okta:RedirectUri"];
+            return $"{oktaAuthorizeEndpoint}?client_id={clientId}&response_type=code&redirect_uri={HttpUtility.UrlEncode(redirectUri)}&prompt=none&scope=openid+profile+email&state={HttpUtility.UrlEncode(Guid.NewGuid().ToString())}";
         }
 
         private string GetOktaUrl(string sessionToken)
