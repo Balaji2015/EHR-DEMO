@@ -190,7 +190,8 @@ namespace Acurus.Capella.UI
                     }
 
                     var userAkidoNote = from u in ClientSession.UserPermissionDTO.Userscntab where u.scn_id == 101132 && u.user_name == ClientSession.UserName select u;
-                    if (userAkidoNote.ToList().Count > 0)
+                    //CAP-2170 - Disable Akido Note button where the primary physician of encounter is not supervising provider
+                    if (userAkidoNote.ToList().Count > 0 && !ClientSession.UserCurrentProcess.Contains("PROVIDER_REVIEW"))
                     {
                         btnAkidoNote.Visible = true;
                         hdnAkidoNote.Value = System.Configuration.ConfigurationSettings.AppSettings["AkidoNoteURL"];
