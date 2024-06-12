@@ -1057,7 +1057,8 @@ namespace Acurus.Capella.UI
                         {
                             tnChildNode.Attributes.Add("OrderSubmitID", rs.Order_Submit_Id.ToString());
                         }
-                        else if (rs.Result_Id != 0)
+                        //CAP-2154
+                        if (rs.Result_Id != 0)
                         {
                             tnChildNode.Attributes.Add("ResultMasterID", rs.Result_Id.ToString());
                         }
@@ -1092,7 +1093,8 @@ namespace Acurus.Capella.UI
                         {
                             tnChildNode.Attributes.Add("OrderSubmitID", rs.Order_Submit_Id.ToString());
                         }
-                        else if (rs.Result_Id != 0)
+                        //CAP-2154
+                        if (rs.Result_Id != 0)
                         {
                             tnChildNode.Attributes.Add("ResultMasterID", rs.Result_Id.ToString());
                         }
@@ -2859,11 +2861,22 @@ namespace Acurus.Capella.UI
             //    return;
             //}
 
-
-            if (Session["Order_Id"] != null && Session["Order_Id"] != string.Empty && Convert.ToUInt32(Session["Order_Id"]) != 0)
-            //if (Request["OrderSubmitId"] != null && Request["OrderSubmitId"] != string.Empty && Convert.ToUInt32(Request["OrderSubmitId"]) != 0)
+            //CAP-2154
+            ulong orderid = 0;
+            ulong resultMasterId = 0;
+            if(tvViewIndex?.SelectedNode != null)
             {
-                lstResultMaster = rsManager.GetResultReviewNotesBasedOnOrderSubmitId(Convert.ToUInt32(Session["Order_Id"]));
+                ulong.TryParse(tvViewIndex.SelectedNode.Attributes["ResultMasterID"], out resultMasterId);
+                ulong.TryParse(tvViewIndex.SelectedNode.Attributes["OrderSubmitId"], out orderid);
+            }
+
+
+            //if ((Session["Order_Id"] != null && Session["Order_Id"] != string.Empty && Convert.ToUInt32(Session["Order_Id"]) != 0))
+            //if (Request["OrderSubmitId"] != null && Request["OrderSubmitId"] != string.Empty && Convert.ToUInt32(Request["OrderSubmitId"]) != 0)
+            //CAP-2154
+            if (orderid > 0)
+            {
+                lstResultMaster = rsManager.GetResultReviewNotesBasedOnOrderSubmitId(orderid);
                 //lstResultMaster = rsManager.GetResultReviewNotesBasedOnOrderSubmitId(Convert.ToUInt32(Request["OrderSubmitId"]));
                 if (lstResultMaster != null && lstResultMaster.Count > 0)
                 {
@@ -2873,7 +2886,8 @@ namespace Acurus.Capella.UI
                     }
                     else if (lstResultMaster.Count > 1)
                     {
-                        if (Session["Result_Master_Id"] != null && UInt64.TryParse(Session["Result_Master_Id"].ToString(), out resMasID))
+                        //CAP-2154
+                        if (resultMasterId > 0)
                         {
                             //    IList<ResultMaster> lstResMaster = new List<ResultMaster>();
                             //    lstResMaster = lstResultMaster.Where(a => a.Id == resMasID).ToList<ResultMaster>();
@@ -2884,7 +2898,7 @@ namespace Acurus.Capella.UI
                             //        ScriptManager.RegisterStartupScript(this, this.Page.GetType(), "ErrmormsgMa", "DisplayErrorMessage('115058'); {sessionStorage.setItem('StartLoading', 'false');StopLoadFromPatChart();StopLoadingImage();}", true);
                             //        return;
                             //    }
-                            objResultMaster = rsManager.GetById(resMasID);
+                            objResultMaster = rsManager.GetById(resultMasterId);
                         }
                         else if (Request["ResultMasterID"] != null && UInt64.TryParse(Request["ResultMasterID"], out resMasID))
                         {
@@ -2918,10 +2932,11 @@ namespace Acurus.Capella.UI
                     objResultMaster.Matching_Patient_Id = Convert.ToUInt32(Request["HumanId"]);
                 }
             }
-            else if (Session["Result_Master_Id"] != null && UInt64.TryParse(Session["Result_Master_Id"].ToString(), out resMasID))
+            //CAP-2154
+            else if (resultMasterId > 0)
             {
                 IList<ResultMaster> lstResMaster = new List<ResultMaster>();
-                objResultMaster = rsManager.GetById(resMasID);
+                objResultMaster = rsManager.GetById(resultMasterId);
                 if (objResultMaster != null && objResultMaster.Id != 0)
                 {
                     objResultMaster.Modified_By = ClientSession.UserName;
@@ -3828,7 +3843,7 @@ namespace Acurus.Capella.UI
                             }
                             catch (Exception ex)
                             {
-                                throw new Exception(ex.Message + " - " + strXmlFilePath1);
+                                throw new Exception(ex.Message + " - " + strXmlFilePath1, ex);
                             }
 
 
