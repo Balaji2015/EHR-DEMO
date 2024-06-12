@@ -249,7 +249,7 @@
                             <td style="width: 5%"></td>
                             <td style="width: 65%">
                                 <label runat="server" id="Paienttrend"  class="clinicltrend">Clinical Trend</label>
-                                <div id="FlowchartDiv" style="display: none; border-style: ridge; width: 128%; padding: 4%; height: 560px; position: sticky;">
+                                <div id="FlowchartDiv" style="border-style: ridge; width: 128%; padding: 4%; height: 560px; position: sticky;">
                                     <div style="height: 5%;">
                                         <table>
                                             <tr style="font-family: Microsoft sans pro; font-size: 13.4px!important;">
@@ -332,6 +332,7 @@
             </script>
             <script type="text/javascript">
                 function drawChart() {
+                    debugger
                     var Value = document.getElementById('cboFlowSheetType').value;
                     var SelectedPeriod = document.getElementById('cboFlowSheetPeriod').value;
                     $.ajax({

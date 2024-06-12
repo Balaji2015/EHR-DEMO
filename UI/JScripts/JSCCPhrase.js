@@ -456,6 +456,8 @@ function chkCurrentMedicationDocumented_changed(){
     }
     var chkCurrentMedicationDocumented = document.getElementById("chkCurrentMedicationDocumented");
     __doPostBack('chkCurrentMedicationDocumented', chkCurrentMedicationDocumented);
+    //CAP-2135
+    drawChart();
 }
 function cboCurrentMedicationDocumented_Changed() {
     $("#btnAdd")[0].disabled = false;
