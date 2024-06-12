@@ -42,6 +42,7 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
         IList<User> getImpersonateUser(string sUserName, string sLegalOrg);
         LoginDTO CheckImpersonateUserDetails(string UserName, Boolean bIsScnTabLoad);
         IList<User> CheckImpersonateUser(string UserName);
+        IList<User> GetUserDetailsByEmailAddressAndLegalOrg(string sEmailAddress, string sLegalOrg);
 
     }
     public partial class UserManager : ManagerBase<User, uint>, ILoginManager
@@ -532,6 +533,19 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
             using (ISession iMySession = NHibernateSessionManager.Instance.CreateISession())
             {
                 ICriteria criteria = iMySession.CreateCriteria(typeof(User)).Add(Expression.Eq("user_name", UserName)).AddOrder(Order.Asc("user_name"));
+                UserList = criteria.List<User>();
+                iMySession.Close();
+            }
+            return UserList;
+        }
+
+        public IList<User> GetUserDetailsByEmailAddressAndLegalOrg(string sEmailAddress, string sLegalOrg)
+        {
+            IList<User> UserList = new List<User>();
+            // ISession iMySession = NHibernateSessionManager.Instance.CreateISession();
+            using (ISession iMySession = NHibernateSessionManager.Instance.CreateISession())
+            {
+                ICriteria criteria = iMySession.CreateCriteria(typeof(User)).Add(Expression.Eq("EMail_Address", sEmailAddress)).Add(Expression.Eq("Legal_Org", sLegalOrg)).Add(Expression.Eq("status", "A"));
                 UserList = criteria.List<User>();
                 iMySession.Close();
             }

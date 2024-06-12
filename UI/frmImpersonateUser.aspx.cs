@@ -174,6 +174,8 @@ namespace Acurus.Capella.UI
                     myCookie.Expires = DateTime.Now.AddYears(-1);// Expire the cookies
                     Response.Cookies.Add(myCookie); // Update the client-side cookie
                 }
+                //CAP-2166
+                Response.SetCookie(new HttpCookie("IsOktaUser") { Value = "Y", Expires = DateTime.Now.AddMinutes(5) });
             }
             catch
             { }
@@ -382,7 +384,7 @@ namespace Acurus.Capella.UI
                         return;
                     }
 
-                    //Load Balancer - Redirect to a Default Server for the user                   
+                    //Load Balancer - Redirect to a Default Server for the user
                     if (login[0].Default_Server != string.Empty && login[0].Default_Server.ToUpper().Contains("FRMLOGIN.ASPX") == true)
                     {
                         //ImpersonateUser - To change the Default Server Login page to the current page

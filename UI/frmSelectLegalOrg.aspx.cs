@@ -111,7 +111,16 @@ namespace Acurus.Capella.UI
                         if (item != null && item.Attributes.GetNamedItem("Legal_Org").Value == legal_org)
                             cboFacilityName.Items.Add(item.Attributes[0].Value);
                     }
-                    cboFacilityName.Value = ClientSession.FacilityName;
+
+                    if (!string.IsNullOrWhiteSpace(ClientSession.EmailAddress))
+                    {
+                        var userDetails = UserMngr.GetUserDetailsByEmailAddressAndLegalOrg(ClientSession.EmailAddress, legal_org);
+                        cboFacilityName.Value = (userDetails?.Count??0) > 0 ? userDetails[0]?.Default_Facility?? ClientSession.FacilityName : ClientSession.FacilityName;
+                    }
+                    else
+                    {
+                        cboFacilityName.Value = ClientSession.FacilityName;
+                    }
                 }
             }
         }
@@ -139,7 +148,7 @@ namespace Acurus.Capella.UI
                 {
                     //ClientSession.FacilityName = cboFacilityName.Value;
                     //ClientSession.LegalOrg = cboLegalOrg.Text;
-                    hdnEMailAddress.Value = ClientSession.EmailAddress;
+                    //hdnEMailAddress.Value = ClientSession.EmailAddress;
                     hdnChangedFacilityName.Value = cboFacilityName.Value;
                     hdnChangedLegalOrg.Value = cboLegalOrg.SelectedItem.Text;
 
@@ -272,6 +281,8 @@ namespace Acurus.Capella.UI
                     myCookie.Expires = DateTime.Now.AddYears(-1);// Expire the cookies
                     Response.Cookies.Add(myCookie); // Update the client-side cookie
                 }
+                //CAP-2166
+                Response.SetCookie(new HttpCookie("IsOktaUser") { Value = "Y", Expires = DateTime.Now.AddMinutes(5) });
             }
             catch
             { }
@@ -413,8 +424,7 @@ namespace Acurus.Capella.UI
         {
             ClientSession.UserName = cboLegalOrg.SelectedValue;
             ClientSession.LegalOrg = hdnChangedLegalOrg.Value;
-            ClientSession.FacilityName = hdnChangedFacilityName.Value;
-            ClientSession.EmailAddress = hdnEMailAddress.Value;
+            ClientSession.FacilityName = hdnChangedFacilityName.Value;            
             UtilityManager.inserttologgingtableforSessionTimeout("btnLogin_Click - Start", Request.Url.ToString(), string.Empty);
 
 
@@ -437,6 +447,7 @@ namespace Acurus.Capella.UI
             if (objLoginDTO != null)// objLoginDTO.lstLookUp != null)
             {
                 login = objLoginDTO.User;
+                ClientSession.EmailAddress = login[0].EMail_Address;
                 //lstLookUp = objLoginDTO.lstLookUp;
             }
             //----Added By Nijanthan(17-11-15)
@@ -466,6 +477,7 @@ namespace Acurus.Capella.UI
 
                     //Load Balancer - Redirect to a Default Server for the user
                     //ImpersonateUser
+                    login[0].Default_Server = "https://localhost:44351/frmLogin.aspx";
                     if (login[0].Default_Server != string.Empty && login[0].Default_Server.ToUpper().Contains("FRMLOGIN.ASPX") == true || login[0].Default_Server.ToUpper().Contains("FRMLOGINNEW.ASPX"))
                     {
                         //ImpersonateUser - To change the Default Server Login page to the current page
