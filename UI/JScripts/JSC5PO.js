@@ -2942,6 +2942,11 @@ $(document).ready(function () {
             StopLoadingImage();
 
     }
+    //CAP-2123
+    if (localStorage.getItem("ClearEncounter") == true || localStorage.getItem("ClearEncounter") == "true") {
+        localStorage.removeItem("ClearEncounter");
+        clearEncounter = true; $('#ctl00_C5POBody_EncounterContainer').attr('src', '');
+    }
 });
 function OnSuccessImport(response) {
     var responseValues = response.d;
@@ -3559,5 +3564,12 @@ window.addEventListener("online", (event) => {
 });
 //CAP-1966
 $("#btnReportClose").click(function () {
-    location.reload();
+    //CAP-2123
+    localStorage.removeItem("ClearEncounter");
+    if (window.top.location.href.indexOf('frmPatientChart.aspx') > 0 && window.top.location.href.indexOf('PhoneEncounter') > 0) {
+        localStorage.setItem("ClearEncounter", "true");
+        window.location.href = "frmPatientChart.aspx";
+    } else {
+        location.reload();
+    }
 });
