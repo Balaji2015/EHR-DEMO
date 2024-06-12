@@ -12,7 +12,7 @@
     <base target="_self" />
     <script type="text/javascript" id="telerikClientEvents1">
 
-
+        
         function txtMedicalAssistantNotes_OnKeyPress(sender, args) {
             //Cap - 1268
             //document.getElementById(GetClientId("hdnSave")).value = "true";
@@ -39,7 +39,8 @@
         }
         function btnMoveToMa_ClientClicked(sender, args) {
 
-            if (document.getElementById('DLC_txtDLC') != null && document.getElementById('DLC_txtDLC').disabled == false && document.getElementById('cboMoveToMA') != null && document.getElementById('cboMoveToMA').value == "") {
+            //if (document.getElementById('DLC_txtDLC') != null && document.getElementById('DLC_txtDLC').disabled == false && document.getElementById('cboMoveToMA') != null && document.getElementById('cboMoveToMA').value == "") {
+            if (document.getElementById('DLC_txtDLC') != null && document.getElementById('DLC_txtDLC').disabled == false && document.getElementById('txtAssignedTo')?.attributes["val"] != null && document.getElementById('txtAssignedTo')?.attributes["val"] != undefined && document.getElementById('txtAssignedTo').attributes["val"] == "") {
                 DisplayErrorMessage('115046');
                 return false;
             }
@@ -504,8 +505,29 @@
         .fa-plus {
             content: "\f067";
         }
-    </style>
+         .ui-dialog ui-widget ui-widget-content ui-corner-all ui-front ui-dialog-buttons ui-draggable ui-resizable {
+            height: 155px !important;
+            border: 2px solid !important;
+            border-radius: 13px !important;
+            top: 504px !important;
+            left: 568px !important;
+        }
+        .ui-menu {
+            list-style: none;
+            padding: 2px;
+            margin: 0;
+            display: block;
+            outline: none;
+        }
+         .ui-autocomplete {
+            -webkit-margin-before: 3px !important;
+            max-height: 150px;
+            overflow-y: auto !important;
+        }
+        
 
+    </style>
+    <link href="CSS/jquery-ui.css" rel="stylesheet" />
     <link href="CSS/style.css" rel="stylesheet" type="text/css" />
     <link href="CSS/font-awesome.css" rel="stylesheet" type="text/css" />
     <link href="CSS/CommonStyle.css" rel="stylesheet" type="text/css" />
@@ -706,10 +728,17 @@
                                             <asp:RadioButton ID="rdbProvider" runat="server" GroupName="MAProvider" Text="Provider" AutoPostBack="true" OnCheckedChanged="rdbProvider_CheckedChanged" CssClass="Editabletxtbox" onchange="{ sessionStorage.setItem('StartLoading', 'true'); StartLoadFromPatChart();}" />
 
                                         </td>
-                                        <td height="25%">
+                                        <td height="25%" style="display: none;">
                                             <telerik:RadComboBox ID="cboMoveToMA" Width="307px" Height="150px" OnClientSelectedIndexChanged="cboMoveToMA_valchange"
                                                 runat="server" />
                                             <asp:CheckBox ID="chkShowAll" runat="server" AutoPostBack="True" OnCheckedChanged="chkShowAll_CheckedChanged" CssClass="spanstyle" onchange="{ sessionStorage.setItem('StartLoading', 'true'); StartLoadFromPatChart();}" Text="Show All" />
+                                        </td>
+                                        <td>
+                                           <input id="txtAssignedTo" onchange="cboMoveToMA_valchange();" class="Editabletxtbox" style="width: 400px;" runat="server" />
+                                           
+                                            </td>
+                                         <td>
+                                            <img id="imgclearAssignTo" src="Resources/Delete-Blue.png" alt="X" title="Click to clear the text field." style="margin-top:-5px;" runat="server"/>
                                         </td>
                                         <td colspan="3" style="text-align: right;">
                                             <table style="width:100% !important">
@@ -835,6 +864,7 @@
             <%--OnClick="hdnSaveEnable_Click"--%>
             <asp:Button ID="btnMessageType" runat="server" Text="Button" Style="display: none"
                 OnClientClick="return ClickClose();" />
+            <asp:HiddenField ID="hdnAssignTo" runat="server" EnableViewState="false" />
         </telerik:RadAjaxPanel>
     </form>
     <asp:PlaceHolder ID="PlaceHolder1" runat="server">

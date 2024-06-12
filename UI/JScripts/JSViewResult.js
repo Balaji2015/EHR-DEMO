@@ -224,6 +224,9 @@ function SelectedIndexChanged() {
 $(document).ready(function () {
     $('#dvpbdropdown').css('display', 'block');
     //pageload();
+    //Jira CAP-2153
+    OnPageLoad();
+   
 })
 
 function pageload() {
@@ -368,8 +371,10 @@ function EnableSave() {
 function ClickMovetoma(sender, args) {
     //For Bug Id 56084-4.9.18
     //StartLoadingImage();
-    //if (document.getElementById('DLC_txtDLC')!=null&&document.getElementById('DLC_txtDLC').disabled == false &&document.getElementById('cboMoveToMA')!=null&& document.getElementById('cboMoveToMA').value == "") {//For Bug Id: 74955 
-    if (document.getElementById('cboMoveToMA') != null && document.getElementById('cboMoveToMA').value == "") {
+    //if (document.getElementById('DLC_txtDLC')!=null&&document.getElementById('DLC_txtDLC').disabled == false &&document.getElementById('cboMoveToMA')!=null&& document.getElementById('cboMoveToMA').value == "") {//For Bug Id: 74955
+    //Jira CAP-2153
+    //if (document.getElementById('cboMoveToMA') != null && document.getElementById('cboMoveToMA').value == "") {
+    if (document.getElementById('txtAssignedTo')?.attributes["val"] != null && document.getElementById('txtAssignedTo')?.attributes["val"] != undefined && document.getElementById('txtAssignedTo').attributes["val"] == "") {
         DisplayErrorMessage('115046');
         return false;
     }
@@ -524,6 +529,8 @@ function funEFax() {
     $(top.window.document).find("#TabEFaxFrame")[0].style.height = "659px";
     $(top.window.document).find("#TabEFaxFrame")[0].contentDocument.location.href = sPath;
     $(top.window.document).find("#TabFax").one("hidden.bs.modal", function (e) {
+        //Jira CAP-2153
+        OnPageLoad();
     });
 }
 
@@ -535,6 +542,10 @@ function OpenPatientCommunication() {
         var result = openModal("frmFindPatient.aspx", 251, 1200, obj, "ctl00_ModalWindow");
         var WindowName = $find('ctl00_ModalWindow');
         WindowName.add_close(OnClientPatientCommunication);
+        //Jira CAP-2153
+        WindowName?.add_close(function (e) {
+            OnPageLoad();
+        });
     }
     else {
         var Id = new Object();
@@ -549,6 +560,10 @@ function OpenPatientCommunication() {
         var result = openModal("frmPatientCommunication.aspx?AccountNum=" + Id + "&IsMYQ=N &PatientName=" + PatientF_name + "," + PatientL_name + " " + PatientM_name + "&PatientDOB=" + Dob + "&HumanType=" + PatientType, 810, 1050, obj, "ctl00_ModalWindow");
         var WindowName = $find('ctl00_ModalWindow');
         WindowName.set_behaviors(-Telerik.Web.UI.WindowAutoSizeBehaviors.Close);
+        //Jira CAP-2153
+        WindowName?.add_close(function (e) {
+            OnPageLoad();
+        });
     }
     return false;
 }
@@ -1082,5 +1097,34 @@ function cboMoveToMA_valchange(){
     document.getElementById(GetClientId("btnSave")).disabled = false;
     document.getElementById(GetClientId("hdnSave")).value = "true";
 }
+//Jira CAP-2153
+function imgclear() {
 
+    $("#imgclearAssignTo").css({
+        "position": "absolute",
+        "right": "796px",
+        "cursor": "pointer",
+        "width": "10px",
+        "height": "10px"
+    }).on("click", function () {
+        $('#txtAssignedTo').val('').focus();
 
+        $(".ui-autocomplete").hide();
+        document.getElementById("txtAssignedTo").value = "";
+        document.getElementById("txtAssignedTo").attributes["val"] = "";
+        document.getElementById("txtAssignedTo").title = "";
+        document.getElementById("txtAssignedTo").disabled = false;
+        document.getElementById("hdnAssignTo").value = "";
+    });
+
+}
+//Jira CAP-2153
+function OnPageLoad() {
+    if (document.getElementById("txtAssignedTo") != null && document.getElementById("txtAssignedTo") != undefined) {
+        document.getElementById("txtAssignedTo").value = "";
+        document.getElementById("txtAssignedTo").attributes["val"] = "";
+        document.getElementById("hdnAssignTo").value = "";
+    }
+    SearchAssignedTo();
+    imgclear();
+}

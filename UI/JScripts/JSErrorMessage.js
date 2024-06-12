@@ -2766,6 +2766,7 @@ var arrAssignto = [];
 var bBool = false;
 var bcheck = true;
 var intAssigntoLength = -1;
+var isViewResultScreen = false;
 function SearchAssignedTo() {
 
     $("#txtAssignedTo").autocomplete({
@@ -2773,13 +2774,30 @@ function SearchAssignedTo() {
             if (intAssigntoLength == 0 && bcheck && bBool == false) {
                 arrAssignto = [];
                 bBool = true;
+                //Jira CAP-2153
+                var sUserRole = "";
+                var sUrl = "";
+                if ($('#rdbMA')[0]?.value != undefined && $('#rdbMA')[0]?.value != null && $('#rdbProvider')[0]?.value != undefined && $('#rdbProvider')[0]?.value != null) {
+                    isViewResultScreen = true;
+                    if ($('#rdbMA')[0].checked == true) {
+                        sUserRole = "MEDICAL ASSISTANT";
+                    }
+                    else if ($('#rdbProvider')[0].checked == true) {
+                        sUserRole = "PHYSICIAN";
+                    }
+                }
+                else {
+                    sUserRole = "";
+                }
 
+                //Jira CAP-2153-End
                 $.ajax({
                     type: "POST",
                     contentType: "application/json; charset=utf-8",
                     url: "frmPatientCommunication.aspx/SearchAssigned",
                     data: JSON.stringify({
                         "sUserName": document.getElementById("txtAssignedTo").value,
+                        "sUserRole": sUserRole,
                     }),
                     dataType: "json",
                     async: true,
@@ -2871,6 +2889,10 @@ function SearchAssignedTo() {
                 document.getElementById("txtAssignedTo").attributes["val"] = ui.item.val;
                 document.getElementById("txtAssignedTo").title = ui.item.label;
                 document.getElementById("txtAssignedTo").disabled = true;
+                //Jira CAP-2153
+                if (isViewResultScreen == true) {
+                    document.getElementById("hdnAssignTo").value = ui.item.val;
+                }
             }
             else {
                 $('#txtAssignedTo').val("");

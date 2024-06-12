@@ -466,7 +466,7 @@ namespace Acurus.Capella.UI
         }
 
         [WebMethod(EnableSession = true)]
-        public static string SearchAssigned(string sUserName)
+        public static string SearchAssigned(string sUserName, string sUserRole)
         {
             if (ClientSession.UserName == string.Empty)
             {
@@ -478,7 +478,7 @@ namespace Acurus.Capella.UI
             IList<string> patientlst = new List<string>();
             PatientNotesManager objPatNotesMngr = new PatientNotesManager();
 
-            patientlst = objPatNotesMngr.MapPhysicianUserListForFacility("ALL", ClientSession.LegalOrg, sUserName);
+            patientlst = objPatNotesMngr.MapPhysicianUserListForFacility("ALL", ClientSession.LegalOrg, sUserName, sUserRole);
             var Result = new { AssignedTo = patientlst };
             return JsonConvert.SerializeObject(Result);
         }

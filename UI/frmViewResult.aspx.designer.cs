@@ -438,6 +438,24 @@ namespace Acurus.Capella.UI
         protected global::System.Web.UI.WebControls.CheckBox chkShowAll;
 
         /// <summary>
+        /// txtAssignedTo control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlInputText txtAssignedTo;
+
+        /// <summary>
+        /// imgclearAssignTo control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlImage imgclearAssignTo;
+
+        /// <summary>
         /// DelIndexDiv control.
         /// </summary>
         /// <remarks>
@@ -841,6 +859,15 @@ namespace Acurus.Capella.UI
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Button btnMessageType;
+
+        /// <summary>
+        /// hdnAssignTo control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.HiddenField hdnAssignTo;
 
         /// <summary>
         /// PlaceHolder1 control.

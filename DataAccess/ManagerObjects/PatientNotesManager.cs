@@ -26,7 +26,7 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
         IList<PatientNotes> GetPatientNotesByMsgID(ulong ulMsgID);
         void SavePatientNotes(IList<PatientNotes> SaveList, string MacAddress);
         void UpdatePatientMessage(PatientNotes messages, string ObjType, int CloseType, string owner, DateTime startTime, string MacAddress);
-        IList<string> MapPhysicianUserListForFacility(string sFacilityName, string sLegalOrg, string sUsername);
+        IList<string> MapPhysicianUserListForFacility(string sFacilityName, string sLegalOrg, string sUsername,string sUserRole);
         IList<PatientNotes> GetMessageDetails(string MessageDescription, string MessageNotes, string humanid);
         IList<PatientNotes> GetFilteredMessageDetailsByEncounterId(string MessageDescription, string MessageNotes, string EncounterID, string HumanID);
         IList<PatientNotes> GetFilteredLineItemMessages(string MessageDescription, string MessageNotes, string HumanID, string ChargeLineID, string ChargeHeaderID);
@@ -901,7 +901,7 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
         }
         //Jira CAP-579
         //public IList<string> MapPhysicianUserListForFacility(string sFacilityName, string sLegalOrg)
-        public IList<string> MapPhysicianUserListForFacility(string sFacilityName, string sLegalOrg,string sUsername="")
+        public IList<string> MapPhysicianUserListForFacility(string sFacilityName, string sLegalOrg,string sUsername="",string sUserRole="")
         { 
             IList<string> UserList = new List<string>();
             string sPhyName = string.Empty;
@@ -916,9 +916,17 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
                 //Gitlab# 2485 - Physician Name Display Change
                 using (ISession iMySession = NHibernateSessionManager.Instance.CreateISession())
                 {
-                    
-                    IList<object> objLst = iMySession.CreateSQLQuery("select * from (select u.user_name as UserName,u.person_name as LastName,'' as FirstName,'' as MI,'' as Suffix from user u where status = 'a' and u.Legal_Org='" + sLegalOrg + "' and u.physician_library_id = 0 and u.Person_Name like'%" + sUsername + "%' union all select u.user_name as UserName,p.Physician_Last_Name as LastName, Physician_First_Name as FirstName, Physician_Middle_Name as MI,Physician_Suffix as Suffix from user u, physician_library p where status = 'a' and u.physician_library_id <> 0 and u.Legal_Org='" + sLegalOrg + "' and u.Physician_Library_ID = p.Physician_Library_ID and (p.Physician_Last_Name like'%" + sUsername + "%' or p.Physician_Middle_Name like '%" + sUsername + "%' or p.Physician_First_Name like '%" + sUsername + "%')) as a order by LastName,FirstName").List<object>();
-
+                    //Jira CAP-2153
+                    IList<object> objLst = new List<object>();
+                    if (sUserRole == "")
+                    {
+                        objLst = iMySession.CreateSQLQuery("select * from (select u.user_name as UserName,u.person_name as LastName,'' as FirstName,'' as MI,'' as Suffix from user u where status = 'a' and u.Legal_Org='" + sLegalOrg + "' and u.physician_library_id = 0 and u.Person_Name like'%" + sUsername + "%' union all select u.user_name as UserName,p.Physician_Last_Name as LastName, Physician_First_Name as FirstName, Physician_Middle_Name as MI,Physician_Suffix as Suffix from user u, physician_library p where status = 'a' and u.physician_library_id <> 0 and u.Legal_Org='" + sLegalOrg + "' and u.Physician_Library_ID = p.Physician_Library_ID and (p.Physician_Last_Name like'%" + sUsername + "%' or p.Physician_Middle_Name like '%" + sUsername + "%' or p.Physician_First_Name like '%" + sUsername + "%')) as a order by LastName,FirstName").List<object>();
+                    }
+                    else
+                    {
+                        objLst = iMySession.CreateSQLQuery("select * from (select u.user_name as UserName,u.person_name as LastName,'' as FirstName,'' as MI,'' as Suffix from user u where status = 'a' and u.Legal_Org='" + sLegalOrg + "' and u.physician_library_id = 0 and u.Person_Name like'%" + sUsername + "%' and u.Role like '%"+sUserRole+"%' union all select u.user_name as UserName,p.Physician_Last_Name as LastName, Physician_First_Name as FirstName, Physician_Middle_Name as MI,Physician_Suffix as Suffix from user u, physician_library p where status = 'a' and u.physician_library_id <> 0 and u.Legal_Org='" + sLegalOrg + "' and u.Physician_Library_ID = p.Physician_Library_ID and (p.Physician_Last_Name like'%" + sUsername + "%' or p.Physician_Middle_Name like '%" + sUsername + "%' or p.Physician_First_Name like '%" + sUsername + "%')and u.Role like '%"+sUserRole+"%' ) as a order by LastName,FirstName").List<object>();
+                    }
+                    //Jira CAP-2153 - End
                     for (int i = 0; i < objLst.Count; i++)
                     {
                         object[] obj = (object[])objLst[i];
