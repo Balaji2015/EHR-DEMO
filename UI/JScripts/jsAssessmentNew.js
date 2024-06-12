@@ -964,6 +964,8 @@ myapp.controller('assessmentCtrl', function ($scope, $http) {
     $scope.cancelClick = function () {
         if ($(top.window.document).find("#ok")[0].disabled == false) {
             if (DisplayErrorMessage('220019') == true) {
+                //CAP-2152
+                window.parent.parent.parent.parent.theForm.ctl00_C5POBody_hdnIsSaveEnable.value = false;
                 $(top.window.document).find('#divFormView').modal('hide');
                 return false;
             }
