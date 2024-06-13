@@ -27,8 +27,8 @@ namespace Acurus.Capella.UI
         UserManager UserMngr = new UserManager();
         protected void Page_Load(object sender, EventArgs e)
         {
-            //CAP - 2171
-            if (Request.Cookies["IsOktaUser"] == null || (Request.Cookies["IsOktaUser"]?.Value??"N") == "N")
+            //CAP-2171
+            if (Request.Url.Authority != (ConfigurationManager.AppSettings["RootURL"] ?? "") && Request.Cookies["IsOktaUser"] == null || (Request.Cookies["IsOktaUser"]?.Value??"N") == "N")
             {
                 var oktaVerificationURL = CheckOktaAuthorizationUrl();
                 Response.Redirect(oktaVerificationURL, false);
@@ -280,10 +280,6 @@ namespace Acurus.Capella.UI
             string oktaAuthorizeEndpoint = $"{ConfigurationSettings.AppSettings["okta:AuthorizeURL"]}";
             string clientId = ConfigurationSettings.AppSettings["okta:ClientId"];
             string redirectUri = ConfigurationSettings.AppSettings["okta:RedirectUri"];
-            if(Request.Url.Authority == (ConfigurationManager.AppSettings["RootURL"] ?? ""))
-            {
-                redirectUri = "https://test.capellaehr.com/frmLandingScreen.aspx";
-            }
             return $"{oktaAuthorizeEndpoint}?client_id={clientId}&response_type=code&redirect_uri={HttpUtility.UrlEncode(redirectUri)}&scope=openid+profile+email&state={HttpUtility.UrlEncode(Guid.NewGuid().ToString())}&login_hint={HttpUtility.UrlEncode(email)}";
         }
 
@@ -294,10 +290,6 @@ namespace Acurus.Capella.UI
             string oktaAuthorizeEndpoint = $"{ConfigurationSettings.AppSettings["okta:AuthorizeURL"]}";
             string clientId = ConfigurationSettings.AppSettings["okta:ClientId"];
             string redirectUri = ConfigurationSettings.AppSettings["okta:RedirectUri"];
-            if (Request.Url.Authority == (ConfigurationManager.AppSettings["RootURL"] ?? ""))
-            {
-                redirectUri = "https://test.capellaehr.com/frmLandingScreen.aspx";
-            }
             return $"{oktaAuthorizeEndpoint}?client_id={clientId}&response_type=code&redirect_uri={HttpUtility.UrlEncode(redirectUri)}&prompt=none&scope=openid+profile+email&state={HttpUtility.UrlEncode(Guid.NewGuid().ToString())}";
         }
 
@@ -308,10 +300,6 @@ namespace Acurus.Capella.UI
             string clientId = ConfigurationSettings.AppSettings["okta:ClientId"];
             string redirectUri = ConfigurationSettings.AppSettings["okta:RedirectUri"];
             //CAP-2142
-            if (Request.Url.Authority == (ConfigurationManager.AppSettings["RootURL"] ?? ""))
-            {
-                redirectUri = "https://test.capellaehr.com/frmLandingScreen.aspx";
-            }
             return $"{oktaAuthorizeEndpoint}?client_id={clientId}&response_type=code&scope=openid+profile+email&response_mode=query&prompt=none&redirect_uri={HttpUtility.UrlEncode(redirectUri)}&state={HttpUtility.UrlEncode(Guid.NewGuid().ToString())}&nonce=n-0S6_WzA2Mj&sessionToken={sessionToken}";
         }
 
