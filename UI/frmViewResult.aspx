@@ -734,12 +734,21 @@
                                             <asp:CheckBox ID="chkShowAll" runat="server" AutoPostBack="True" OnCheckedChanged="chkShowAll_CheckedChanged" CssClass="spanstyle" onchange="{ sessionStorage.setItem('StartLoading', 'true'); StartLoadFromPatChart();}" Text="Show All" />
                                         </td>
                                         <td>
-                                           <input id="txtAssignedTo" onchange="cboMoveToMA_valchange();" class="Editabletxtbox" style="width: 400px;" runat="server" />
+                                            <table>
+                                                <tr>
+                                                    <td>
+                                                        <input id="txtAssignedTo" onchange="cboMoveToMA_valchange();" class="Editabletxtbox" style="width: 400px;" runat="server" />
+                                           
+                                                    </td>
+                                                    <td style="width: 2px;"></td>
+                                                    <td>
+                                                        <img id="imgclearAssignTo" src="Resources/Delete-Blue.png" alt="X" title="Click to clear the text field." style="margin-top:-5px;" runat="server"/>
+                                                    </td>
+                                                </tr>
+                                            </table>
                                            
                                             </td>
-                                         <td>
-                                            <img id="imgclearAssignTo" src="Resources/Delete-Blue.png" alt="X" title="Click to clear the text field." style="margin-top:-5px;" runat="server"/>
-                                        </td>
+                                         
                                         <td colspan="3" style="text-align: right;">
                                             <table style="width:100% !important">
                                                 <tr>
