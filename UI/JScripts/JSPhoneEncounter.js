@@ -397,9 +397,13 @@ myapp.controller('PhoneEncounterCtrl', function ($scope, $http) {
         if (result.HumanDetails[0].First_Name != "")
             patientname += "," + result.HumanDetails[0].First_Name
         if (result.HumanDetails[0].MI != "")
-            patientname += "," + result.HumanDetails[0].MI
+            //CAP-2168
+            //patientname += "," + result.HumanDetails[0].MI
+            patientname += " " + result.HumanDetails[0].MI
         if (result.HumanDetails[0].Suffix != "")
-            patientname += "," + result.HumanDetails[0].Suffix
+            //CAP-2168
+            //patientname += "," + result.HumanDetails[0].Suffix
+            patientname += " " + result.HumanDetails[0].Suffix
         document.getElementById("divPatientstrip").innerText = result.PatientDetails;
 
         var sContactDetails = "Contact Details : ";
