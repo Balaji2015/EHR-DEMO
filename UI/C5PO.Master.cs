@@ -421,7 +421,33 @@ namespace Acurus.Capella.UI
                         }
                     }
                 }
-
+                // CAP-2054
+                else if (Request["ScreenName"] != null && Request["ScreenName"].ToString().Equals("Indexing", StringComparison.OrdinalIgnoreCase))
+                {
+                    if (ClientSession.FillPatientChart != null && ClientSession.FillPatientChart.PatChartList.Count > 0)
+                    {
+                        if (Request["HumanID"] != null && Request["HumanID"] != string.Empty)
+                        {
+                            ModalWindow.Visible = true;
+                            ModalWindow.VisibleOnPageLoad = true;
+                            ModalWindow.VisibleStatusbar = false;
+                            ModalWindow.ReloadOnShow = true;
+                            ModalWindow.ShowContentDuringLoad = true;
+                            ModalWindow.Height = Unit.Pixel(710);
+                            ModalWindow.Width = Unit.Pixel(1200);
+                            ModalWindow.Behaviors = WindowBehaviors.None;
+                            ModalWindow.NavigateUrl = "frmIndexing.aspx?HumanId="+ hdnHumanID.Value+ "&ScreenMode=Bulk Scanning and Fax&Screen=OnlineDocuments";
+                            if (Request.QueryString["IsDirectURL"] != null)
+                            {
+                                string IsDirectURL = Request.QueryString["IsDirectURL"];
+                                if (IsDirectURL.Equals("y", StringComparison.InvariantCultureIgnoreCase))
+                                {
+                                    hdnIsDirectLink.Value = "true";
+                                }
+                            }
+                        }
+                    }
+                }
                 //if (hdnProjectName.Value == string.Empty && System.Configuration.ConfigurationManager.AppSettings["ProjectName"] != null)
                 //hdnProjectName.Value = System.Configuration.ConfigurationManager.AppSettings["ProjectName"].ToString();
                 if (ClientSession.LegalOrg != null)
