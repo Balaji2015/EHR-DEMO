@@ -1102,7 +1102,6 @@ function imgclear() {
 
     $("#imgclearAssignTo").css({
         "position": "absolute",
-        "right": "796px",
         "cursor": "pointer",
         "width": "10px",
         "height": "10px"
