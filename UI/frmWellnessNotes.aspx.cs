@@ -40,7 +40,7 @@ namespace Acurus.Capella.UI
 
 
             //ulong Encounter_Id = 0;
-            
+
             if (Request.QueryString["EncounterId"] != null)
             {
                 Encounter_Id = Convert.ToUInt32(Request.QueryString["EncounterId"].ToString());
@@ -138,7 +138,7 @@ namespace Acurus.Capella.UI
                 return;
             }
 
-           // strXmlEncounterPath1 = Path.Combine(System.Configuration.ConfigurationSettings.AppSettings["XMLPath"], FileName);
+            // strXmlEncounterPath1 = Path.Combine(System.Configuration.ConfigurationSettings.AppSettings["XMLPath"], FileName);
 
             if ((Request.QueryString["Menu"] != null && Request.QueryString["Menu"].Contains("True")) || (sNotesName != null))
             {
@@ -226,7 +226,7 @@ namespace Acurus.Capella.UI
                 {
                     DownloadNotes(xsltFile, NotesName, sNotesName);
                 }
-                
+
             }
 
         }
@@ -301,76 +301,80 @@ namespace Acurus.Capella.UI
                         //string strXmlHumanPath = Path.Combine(System.Configuration.ConfigurationSettings.AppSettings["XMLPath"], human_id);
                         //if (File.Exists(strXmlHumanPath) == true)
                         //{
-                            
-                            //XmlTextReader XmlText = new XmlTextReader(strXmlHumanPath);
-                            //itemDoc.Load(XmlText);
-                            //XmlText.Close();
-                            if (itemDoc.GetElementsByTagName("HumanList")[0] != null)
+
+                        //XmlTextReader XmlText = new XmlTextReader(strXmlHumanPath);
+                        //itemDoc.Load(XmlText);
+                        //XmlText.Close();
+                        if (itemDoc.GetElementsByTagName("HumanList")[0] != null)
+                        {
+                            //if (result.ToUpper().Contains("MEMBER"))
+                            //{
+                            //    sExternalAccNo = itemDoc.GetElementsByTagName("HumanList")[0].ChildNodes[0].Attributes.GetNamedItem("Patient_Account_External").Value.ToString();
+                            //    NotesName = NotesName.Replace("[" + result + "]", sExternalAccNo);
+                            //}
+                            if (result.ToUpper().Contains("LAST"))
                             {
-                                //if (result.ToUpper().Contains("MEMBER"))
-                                //{
-                                //    sExternalAccNo = itemDoc.GetElementsByTagName("HumanList")[0].ChildNodes[0].Attributes.GetNamedItem("Patient_Account_External").Value.ToString();
-                                //    NotesName = NotesName.Replace("[" + result + "]", sExternalAccNo);
-                                //}
-                                if (result.ToUpper().Contains("LAST"))
-                                {
-                                    sLastName = itemDoc.GetElementsByTagName("HumanList")[0].ChildNodes[0].Attributes.GetNamedItem("Last_Name").Value.ToString();
-                                    NotesName = NotesName.Replace("[" + result + "]", sLastName);
-                                }
-                                else if (result.ToUpper().Contains("FIRST"))
-                                {
-                                    sFirstName = itemDoc.GetElementsByTagName("HumanList")[0].ChildNodes[0].Attributes.GetNamedItem("First_Name").Value.ToString();
-                                    NotesName = NotesName.Replace("[" + result + "]", sFirstName);
-                                }
-                                else if (result.ToUpper().Contains("DOB") || (OutputName[i].ToUpper().Contains("DATE") && OutputName[i].ToUpper().Contains("BIRTH")))
-                                {
-                                    sDOB = Convert.ToDateTime(itemDoc.GetElementsByTagName("HumanList")[0].ChildNodes[0].Attributes.GetNamedItem("Birth_Date").Value).ToString("yyyyMMdd");
-                                    NotesName = NotesName.Replace("[" + result + "]", sDOB);
-                                }
+                                sLastName = itemDoc.GetElementsByTagName("HumanList")[0].ChildNodes[0].Attributes.GetNamedItem("Last_Name").Value.ToString();
+                                //CAP-1873
+                                //NotesName = NotesName.Replace("[" + result + "]", sLastName);
+                                NotesName = NotesName.Replace("[" + result + "]", (sLastName.Replace("/", "").Replace(",", "_").Replace(":", "").Replace("<", "").Replace(">", "").Replace("|", "").Replace("*", "").Replace("?", "").Replace(";", "").Replace("\\", "").Replace("\"", "")).Trim());
                             }
-                            if (result.ToUpper().Contains("MEMBER"))
+                            else if (result.ToUpper().Contains("FIRST"))
                             {
-                                if (itemDoc.GetElementsByTagName("PatientInsuredPlanList")[0] != null)
-                                {
+                                sFirstName = itemDoc.GetElementsByTagName("HumanList")[0].ChildNodes[0].Attributes.GetNamedItem("First_Name").Value.ToString();
+                                //CAP-1873
+                                //NotesName = NotesName.Replace("[" + result + "]", sFirstName);
+                                NotesName = NotesName.Replace("[" + result + "]", (sFirstName.Replace("/", "").Replace(",", "_").Replace(":", "").Replace("<", "").Replace(">", "").Replace("|", "").Replace("*", "").Replace("?", "").Replace(";", "").Replace("\\", "").Replace("\"", "")).Trim());
+                            }
+                            else if (result.ToUpper().Contains("DOB") || (OutputName[i].ToUpper().Contains("DATE") && OutputName[i].ToUpper().Contains("BIRTH")))
+                            {
+                                sDOB = Convert.ToDateTime(itemDoc.GetElementsByTagName("HumanList")[0].ChildNodes[0].Attributes.GetNamedItem("Birth_Date").Value).ToString("yyyyMMdd");
+                                NotesName = NotesName.Replace("[" + result + "]", sDOB);
+                            }
+                        }
+                        if (result.ToUpper().Contains("MEMBER"))
+                        {
+                            if (itemDoc.GetElementsByTagName("PatientInsuredPlanList")[0] != null)
+                            {
                                 TextReader HumanXMLContent = new StringReader(sXMLContent);
                                 XDocument xmlInsurance = XDocument.Load(HumanXMLContent);
 
                                 //XDocument xmlInsurance = XDocument.Load(strXmlHumanPath);
-                                    var xmlPatientInsuredPlanList = xmlInsurance.Descendants("PatientInsuredPlanList")
-                                        .Elements("PatientInsuredPlan").Where(aa => aa.Attribute("Insurance_Type").Value.ToString() == "PRIMARY");
-                                    if (xmlPatientInsuredPlanList != null && xmlPatientInsuredPlanList.Count() > 0)
-                                    {
-                                        sExternalAccNo = xmlPatientInsuredPlanList.Attributes("Policy_Holder_ID").First().Value.ToString();
-                                    }
+                                var xmlPatientInsuredPlanList = xmlInsurance.Descendants("PatientInsuredPlanList")
+                                    .Elements("PatientInsuredPlan").Where(aa => aa.Attribute("Insurance_Type").Value.ToString() == "PRIMARY");
+                                if (xmlPatientInsuredPlanList != null && xmlPatientInsuredPlanList.Count() > 0)
+                                {
+                                    sExternalAccNo = xmlPatientInsuredPlanList.Attributes("Policy_Holder_ID").First().Value.ToString();
                                 }
-                                NotesName = NotesName.Replace("[" + result + "]", sExternalAccNo);
                             }
+                            NotesName = NotesName.Replace("[" + result + "]", sExternalAccNo);
+                        }
                         //}
 
                     }
                     if ((result.ToUpper().Contains("DOS")) || (OutputName[i].ToUpper().Contains("DATE")))
                     {
-                       // if (File.Exists(strXmlEncounterPath1) == true)
+                        // if (File.Exists(strXmlEncounterPath1) == true)
                         //{
-                            XmlDocument itemDoc = new XmlDocument();
+                        XmlDocument itemDoc = new XmlDocument();
                         TextReader EncXMLContent = new StringReader(sXMLEncounterDoc);
                         XmlTextReader XmlText = new XmlTextReader(EncXMLContent);
-                            itemDoc.Load(XmlText);
-                            XmlText.Close();
-                            if (itemDoc.GetElementsByTagName("EncounterList")[0] != null)
+                        itemDoc.Load(XmlText);
+                        XmlText.Close();
+                        if (itemDoc.GetElementsByTagName("EncounterList")[0] != null)
+                        {
+                            string sDOS = string.Empty;
+                            if (itemDoc.GetElementsByTagName("EncounterList")[0].ChildNodes[0].Attributes.GetNamedItem("Local_Time").Value != "")
                             {
-                                string sDOS = string.Empty;
-                                if (itemDoc.GetElementsByTagName("EncounterList")[0].ChildNodes[0].Attributes.GetNamedItem("Local_Time").Value != "")
-                                {
-                                    sDOS = Convert.ToDateTime(itemDoc.GetElementsByTagName("EncounterList")[0].ChildNodes[0].Attributes.GetNamedItem("Local_Time").Value).ToString("yyyyMMdd");
-                                }
-                                NotesName = NotesName.Replace("[" + result + "]", sDOS);
+                                sDOS = Convert.ToDateTime(itemDoc.GetElementsByTagName("EncounterList")[0].ChildNodes[0].Attributes.GetNamedItem("Local_Time").Value).ToString("yyyyMMdd");
                             }
-                      //  }
+                            NotesName = NotesName.Replace("[" + result + "]", sDOS);
+                        }
+                        //  }
                     }
                     if (result.ToUpper().Contains("RENDERING"))
                     {
-                       // if (File.Exists(strXmlEncounterPath1) == true)
+                        // if (File.Exists(strXmlEncounterPath1) == true)
                         {
                             XmlDocument itemDoc = new XmlDocument();
                             TextReader EncXMLContent = new StringReader(sXMLEncounterDoc);
