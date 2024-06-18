@@ -3761,6 +3761,7 @@ namespace Acurus.Capella.UI
                 //Cap - 1537
                 //ScriptManager.RegisterStartupScript(this, this.GetType(), "PrintError", "DisplayErrorMessage('115062');", true);
                 ScriptManager.RegisterStartupScript(this, this.GetType(), "PrintError", "DisplayErrorMessage('115062');{sessionStorage.setItem('StartLoading', 'false');StopLoadFromPatChart();StopLoadingImage();}", true);
+                ScriptManager.RegisterStartupScript(this, this.GetType(), "OnPageLoad", "OnPageLoad();", true);
                 btnSave.Disabled = false;
                 return;
             }
