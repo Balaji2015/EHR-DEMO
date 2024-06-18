@@ -924,6 +924,7 @@ function PrintInterpretation() {
     }
     if (!notes.includes("Test Reviewed: ")) {
         DisplayErrorMessage('115059');
+        OnPageLoad();
         return false;
     }
     $(top.window.document).find("#PrintPDFModal").modal({ backdrop: 'static', keyboard: false }, 'show');
@@ -932,6 +933,10 @@ function PrintInterpretation() {
     $(top.window.document).find("#PrintPDFmdldlg")[0].style.height = "750px";
     $(top.window.document).find("#PrintPDFFrame")[0].style.height = "685px";
     $(top.window.document).find("#PrintPDFFrame")[0].contentDocument.location.href = "frmPrintPDF.aspx?&SI=" + document.getElementById("hdnFileName").value + "&Location=DYNAMIC&FaxSubject=''";
+    $(top.window.document).find("#PrintPDFModal").one("hidden.bs.modal", function (e) {
+        //Jira CAP-2153
+        OnPageLoad();
+    });
     return false;
 }
 
