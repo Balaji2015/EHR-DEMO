@@ -27,17 +27,22 @@ namespace Acurus.Capella.UI
         UserManager UserMngr = new UserManager();
         protected void Page_Load(object sender, EventArgs e)
         {
-            //CAP-2171
-            if (Request.Url.Authority != (ConfigurationManager.AppSettings["RootURL"] ?? "") && Request.Cookies["IsOktaUser"] == null || (Request.Cookies["IsOktaUser"]?.Value??"N") == "N")
-            {
-                var oktaVerificationURL = CheckOktaAuthorizationUrl();
-                Response.Redirect(oktaVerificationURL, false);
-                return;
-            }
-
             if (ConfigurationSettings.AppSettings["IsSSOLogin"] == null || ConfigurationSettings.AppSettings["IsSSOLogin"] == "N")
             {
                 Response.Redirect("frmLogin.aspx");
+                return;
+            }
+
+            //CAP-2171
+            if (Request.Url.Authority == (ConfigurationManager.AppSettings["RootURL"] ?? ""))
+            {
+                Response.SetCookie(new HttpCookie("IsOktaUser") { Value = "Y", Expires = DateTime.Now.AddDays(1) });
+            }
+
+            if (Request.Cookies["IsOktaUser"] == null || (Request.Cookies["IsOktaUser"]?.Value ?? "N") == "N")
+            {
+                var oktaVerificationURL = CheckOktaAuthorizationUrl();
+                Response.Redirect(oktaVerificationURL, false);
                 return;
             }
 
