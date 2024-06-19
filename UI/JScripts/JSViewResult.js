@@ -225,7 +225,7 @@ $(document).ready(function () {
     $('#dvpbdropdown').css('display', 'block');
     //pageload();
     //Jira CAP-2153
-    OnPageLoad();
+    OnPageLoad(true);
    
 })
 
@@ -530,7 +530,7 @@ function funEFax() {
     $(top.window.document).find("#TabEFaxFrame")[0].contentDocument.location.href = sPath;
     $(top.window.document).find("#TabFax").one("hidden.bs.modal", function (e) {
         //Jira CAP-2153
-        OnPageLoad();
+        OnPageLoad(false);
     });
 }
 
@@ -544,7 +544,7 @@ function OpenPatientCommunication() {
         WindowName.add_close(OnClientPatientCommunication);
         //Jira CAP-2153
         WindowName?.add_close(function (e) {
-            OnPageLoad();
+            OnPageLoad(false);
         });
     }
     else {
@@ -562,7 +562,7 @@ function OpenPatientCommunication() {
         WindowName.set_behaviors(-Telerik.Web.UI.WindowAutoSizeBehaviors.Close);
         //Jira CAP-2153
         WindowName?.add_close(function (e) {
-            OnPageLoad();
+            OnPageLoad(false);
         });
     }
     return false;
@@ -924,7 +924,7 @@ function PrintInterpretation() {
     }
     if (!notes.includes("Test Reviewed: ")) {
         DisplayErrorMessage('115059');
-        OnPageLoad();
+        OnPageLoad(false);
         return false;
     }
     $(top.window.document).find("#PrintPDFModal").modal({ backdrop: 'static', keyboard: false }, 'show');
@@ -935,7 +935,7 @@ function PrintInterpretation() {
     $(top.window.document).find("#PrintPDFFrame")[0].contentDocument.location.href = "frmPrintPDF.aspx?&SI=" + document.getElementById("hdnFileName").value + "&Location=DYNAMIC&FaxSubject=''";
     $(top.window.document).find("#PrintPDFModal").one("hidden.bs.modal", function (e) {
         //Jira CAP-2153
-        OnPageLoad();
+        OnPageLoad(false);
     });
     return false;
 }
@@ -1123,11 +1123,21 @@ function imgclear() {
 
 }
 //Jira CAP-2153
-function OnPageLoad() {
-    if (document.getElementById("txtAssignedTo") != null && document.getElementById("txtAssignedTo") != undefined) {
-        document.getElementById("txtAssignedTo").value = "";
-        document.getElementById("txtAssignedTo").attributes["val"] = "";
-        document.getElementById("hdnAssignTo").value = "";
+function OnPageLoad(EmptyValues) {
+    if (EmptyValues == true) {
+        if (document.getElementById("txtAssignedTo") != null && document.getElementById("txtAssignedTo") != undefined) {
+            document.getElementById("txtAssignedTo").value = "";
+            document.getElementById("txtAssignedTo").attributes["val"] = "";
+            document.getElementById("hdnAssignTo").value = "";
+        }
+    }
+    else {
+        if (document.getElementById("txtAssignedTo") != null && document.getElementById("txtAssignedTo") != undefined) {
+            if (document.getElementById("hdnAssignTo").value != "") {
+                document.getElementById("txtAssignedTo").attributes["val"] = document.getElementById("hdnAssignTo").value;
+                document.getElementById("txtAssignedTo").disabled = true;
+            }
+        }
     }
     SearchAssignedTo();
     imgclear();
