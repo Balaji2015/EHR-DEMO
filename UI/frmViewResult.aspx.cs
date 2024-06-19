@@ -3263,7 +3263,7 @@ namespace Acurus.Capella.UI
             }
             //Jira CAP-2153
             //ScriptManager.RegisterStartupScript(this, this.Page.GetType(), "AutoSave", "SaveViewResults();", true);
-            ScriptManager.RegisterStartupScript(this, this.Page.GetType(), "AutoSave", "SaveViewResults();OnPageLoad();", true);
+            ScriptManager.RegisterStartupScript(this, this.Page.GetType(), "AutoSave", "SaveViewResults();OnPageLoad(true);", true);
             //Jira CAP-2153 - End
             btnSave.Disabled = true;
             hdnSave.Value = "false";
@@ -3527,7 +3527,7 @@ namespace Acurus.Capella.UI
             //btnSave.Style["margin-top"] = "-56px";
             //Jira CAP-2153
             //ScriptManager.RegisterStartupScript(this, this.Page.GetType(), string.Empty, "{sessionStorage.setItem('StartLoading', 'false');StopLoadFromPatChart();}", true);
-            ScriptManager.RegisterStartupScript(this, this.Page.GetType(), string.Empty, "{sessionStorage.setItem('StartLoading', 'false');StopLoadFromPatChart();OnPageLoad();}", true);
+            ScriptManager.RegisterStartupScript(this, this.Page.GetType(), string.Empty, "{sessionStorage.setItem('StartLoading', 'false');StopLoadFromPatChart();OnPageLoad(true);}", true);
 
         }
 
@@ -3542,7 +3542,7 @@ namespace Acurus.Capella.UI
             // btnSave.Style["margin-left"] = "329px"; //"370px"; //"459px";
             //Jira CAP-2153
             //ScriptManager.RegisterStartupScript(this, this.Page.GetType(), string.Empty, "{sessionStorage.setItem('StartLoading', 'false');StopLoadFromPatChart();}", true);
-            ScriptManager.RegisterStartupScript(this, this.Page.GetType(), string.Empty, "{sessionStorage.setItem('StartLoading', 'false');StopLoadFromPatChart();OnPageLoad();}", true);
+            ScriptManager.RegisterStartupScript(this, this.Page.GetType(), string.Empty, "{sessionStorage.setItem('StartLoading', 'false');StopLoadFromPatChart();OnPageLoad(true);}", true);
 
         }
 
@@ -3761,7 +3761,7 @@ namespace Acurus.Capella.UI
                 //Cap - 1537
                 //ScriptManager.RegisterStartupScript(this, this.GetType(), "PrintError", "DisplayErrorMessage('115062');", true);
                 ScriptManager.RegisterStartupScript(this, this.GetType(), "PrintError", "DisplayErrorMessage('115062');{sessionStorage.setItem('StartLoading', 'false');StopLoadFromPatChart();StopLoadingImage();}", true);
-                ScriptManager.RegisterStartupScript(this, this.GetType(), "OnPageLoad", "OnPageLoad();", true);
+                ScriptManager.RegisterStartupScript(this, this.GetType(), "OnPageLoad", "OnPageLoad(false);", true);
                 btnSave.Disabled = false;
                 return;
             }
