@@ -3084,9 +3084,11 @@ namespace Acurus.Capella.UI
                     {
                         foreach (FileInfo file in filesInDir)
                         {
-                            var checkUsernameCriteria = (file.Name??string.Empty).Split('_');
+                            //Jira CAP-2174
+                            //var checkUsernameCriteria = (file.Name??string.Empty).Split('_');
 
-                            if(checkUsernameCriteria.Count() > 2 && !sUserName.Contains("_"))
+                            //if(checkUsernameCriteria.Count() > 2 && !sUserName.Contains("_"))
+                            if(file.Name.Substring(0, file.Name.LastIndexOf("_")) != sUserName)
                             {
                                 continue;
                             }
