@@ -79,7 +79,7 @@ namespace Acurus.Capella.UI
                     cboLegalOrg.Items.Add(listItem);
                 }
                 cboLegalOrg.SelectedValue = ClientSession.UserName;
-                FillFacilityComboBox(ClientSession.LegalOrg);
+                FillFacilityComboBox(ClientSession.LegalOrg, true);
             }
             if (Request.Form["EHRUserName"] != null) //Load Balancer - Automatic Single Sign On
             {
@@ -92,7 +92,7 @@ namespace Acurus.Capella.UI
 
             }
         }
-        private void FillFacilityComboBox(string legal_org)
+        private void FillFacilityComboBox(string legal_org, bool isPageLoad = false)
         {
             cboFacilityName.Items.Clear();
 
@@ -111,8 +111,8 @@ namespace Acurus.Capella.UI
                         if (item != null && item.Attributes.GetNamedItem("Legal_Org").Value == legal_org)
                             cboFacilityName.Items.Add(item.Attributes[0].Value);
                     }
-
-                    if (!string.IsNullOrWhiteSpace(ClientSession.EmailAddress))
+                    //CAP-2197
+                    if (!string.IsNullOrWhiteSpace(ClientSession.EmailAddress) && !isPageLoad)
                     {
                         var userDetails = UserMngr.GetUserDetailsByEmailAddressAndLegalOrg(ClientSession.EmailAddress, legal_org);
                         cboFacilityName.Value = (userDetails?.Count??0) > 0 ? userDetails[0]?.Default_Facility?? ClientSession.FacilityName : ClientSession.FacilityName;
@@ -282,7 +282,7 @@ namespace Acurus.Capella.UI
                     Response.Cookies.Add(myCookie); // Update the client-side cookie
                 }
                 //CAP-2166
-                Response.SetCookie(new HttpCookie("IsOktaUser") { Value = "Y", Expires = DateTime.Now.AddMinutes(5) });
+                Response.SetCookie(new HttpCookie("IsOktaUser") { Value = "Y", Expires = DateTime.Now.AddSeconds(30) });
             }
             catch
             { }
