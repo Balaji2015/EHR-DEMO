@@ -3296,7 +3296,8 @@ namespace Acurus.Capella.UI
                     {
 
                     }
-                    else if (dtpCollectionDate.Value == string.Empty)
+                    //CAP-1983
+                    else if (dtpCollectionDate.Value == string.Empty && lblCollectionDate?.InnerHtml != null && lblCollectionDate.InnerHtml.Contains("*"))
                     {
                         hdnImportResult.Value = "true";
                         IsCollectionDate = true;
