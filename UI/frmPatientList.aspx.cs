@@ -117,20 +117,27 @@ namespace Acurus.Capella.UI
                 {
                     CarrierManager carrierMngr = new CarrierManager();
                     IList<Carrier> ilstCarrier = carrierMngr.GetAll();
-
+                    //CAP-2186
+                    ddlPayerName.Items.Add(new ListItem() { Text = "ALL", Value = "0" });
+                    string carrierIds = string.Empty;
                     for (int iCount = 0; iCount < ilstCarrier.Count; iCount++)
                     {
                         lst = new ListItem();
                         lst.Text = ilstCarrier[iCount].Carrier_Name;
                         lst.Value = ilstCarrier[iCount].Id.ToString();
+                        carrierIds += lst.Value + ",";
                         ddlPayerName.Items.Add(lst);
                     }
+                    if (!string.IsNullOrEmpty(carrierIds))
+                        ddlPayerName.Items.FindByValue("0").Value = carrierIds.Remove(carrierIds.Length - 1);
                 }
                 else if (ilstUserLookup.Count > 0)
                 {
                     CarrierManager carrierMngr = new CarrierManager();
                     IList<Carrier> ilstCarrier = carrierMngr.GetAll();
-
+                    //CAP-2186
+                    ddlPayerName.Items.Add(new ListItem() { Text = "ALL", Value = "0" });
+                    string carrierIds = string.Empty;
                     for (int iCount = 0; iCount < ilstUserLookup.Count; iCount++)
                     {
                         var carrier = from c in ilstCarrier where c.Id == Convert.ToUInt64(ilstUserLookup[iCount].Value) select c;
@@ -141,9 +148,12 @@ namespace Acurus.Capella.UI
                             lst = new ListItem();
                             lst.Text = lstcarrier[0].Carrier_Name;
                             lst.Value = lstcarrier[0].Id.ToString();
+                            carrierIds += lst.Value + ",";
                             ddlPayerName.Items.Add(lst);
                         }
                     }
+                    if (!string.IsNullOrEmpty(carrierIds))
+                        ddlPayerName.Items.FindByValue("0").Value = carrierIds.Remove(carrierIds.Length - 1);
                 }
                 if (ddlPayerName.Text != "")
                 {
@@ -301,9 +311,9 @@ namespace Acurus.Capella.UI
             if (dob == string.Empty)
                 dob = DateTime.MinValue.ToString();
             if (txtPatientAccNo.Value == string.Empty)
-                dtEncounter = encMngr.GetEncountersbyDOSRange(0, Convert.ToDateTime(dob), txtMemberId.Value, Convert.ToUInt64(ddlPayerName.SelectedValue), Convert.ToDateTime(dtFromDOS.Text), Convert.ToDateTime(dtToDOS.Text), txtPatientLastName.Value, txtPatientFirstName.Value, sPlanId, ClientSession.LegalOrg);
+                dtEncounter = encMngr.GetEncountersbyDOSRange(0, Convert.ToDateTime(dob), txtMemberId.Value, ddlPayerName.SelectedValue, Convert.ToDateTime(dtFromDOS.Text), Convert.ToDateTime(dtToDOS.Text), txtPatientLastName.Value, txtPatientFirstName.Value, sPlanId, ClientSession.LegalOrg);
             else
-                dtEncounter = encMngr.GetEncountersbyDOSRange(Convert.ToUInt64(txtPatientAccNo.Value), Convert.ToDateTime(dob), txtMemberId.Value, Convert.ToUInt64(ddlPayerName.SelectedValue), Convert.ToDateTime(dtFromDOS.Text), Convert.ToDateTime(dtToDOS.Text), txtPatientLastName.Value, txtPatientFirstName.Value, sPlanId, ClientSession.LegalOrg);
+                dtEncounter = encMngr.GetEncountersbyDOSRange(Convert.ToUInt64(txtPatientAccNo.Value), Convert.ToDateTime(dob), txtMemberId.Value, ddlPayerName.SelectedValue, Convert.ToDateTime(dtFromDOS.Text), Convert.ToDateTime(dtToDOS.Text), txtPatientLastName.Value, txtPatientFirstName.Value, sPlanId, ClientSession.LegalOrg);
             Session["PatientListGrid"] = dtEncounter;
 
             loadGrid(dtEncounter);

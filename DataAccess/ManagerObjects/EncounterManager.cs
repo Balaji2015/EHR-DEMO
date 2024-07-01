@@ -158,7 +158,7 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
 
         DataTable GetEncountersbyDOSRange(ulong ulHumanID, DateTime dtPatientDOB, string sMemberID, ulong ulCarrierID, DateTime dtFromDate, DateTime dtToDate, string sLegalOrg);
         IList<string> GetEncounterListForIndexing(ulong ulHuman_ID, string sMonths);
-        DataTable GetEncountersbyDOSRange(ulong ulHumanID, DateTime dtPatientDOB, string sMemberID, ulong ulCarrierID, DateTime dtFromDate, DateTime dtToDate, string sLastName, string sFirstName, string sPlanId, string sLegalOrg);
+        DataTable GetEncountersbyDOSRange(ulong ulHumanID, DateTime dtPatientDOB, string sMemberID, string ulCarrierID, DateTime dtFromDate, DateTime dtToDate, string sLastName, string sFirstName, string sPlanId, string sLegalOrg);
     }
     public partial class EncounterManager : ManagerBase<Encounter, ulong>, IEncounterManager
     {
@@ -17698,7 +17698,7 @@ AND E.ENCOUNTER_PROVIDER_SIGNED_DATE<>'0001-01-01 00:00:00'
             return dtEncounter;
         }
 
-        public DataTable GetEncountersbyDOSRange(ulong ulHumanID, DateTime dtPatientDOB, string sMemberID, ulong ulCarrierID, DateTime dtFromDate, DateTime dtToDate, string sLastName, string sFirstName, string sPlanId, string sLegalOrg)
+        public DataTable GetEncountersbyDOSRange(ulong ulHumanID, DateTime dtPatientDOB, string sMemberID, string ulCarrierID, DateTime dtFromDate, DateTime dtToDate, string sLastName, string sFirstName, string sPlanId, string sLegalOrg)
         {
             DataTable dtEncounter = new DataTable();
             ArrayList arylstEncounter = null;
@@ -17753,7 +17753,8 @@ AND E.ENCOUNTER_PROVIDER_SIGNED_DATE<>'0001-01-01 00:00:00'
                     sWhereCondition += "and pat.policy_holder_id like '" + sMemberID + "%' ";
                 if (dtPatientDOB != DateTime.MinValue)
                     sWhereCondition += "and h.Birth_Date = '" + dtPatientDOB.ToString("yyyy-MM-dd") + "' ";
-                sWhereCondition += "having Carrier_ID =" + ulCarrierID + " ";
+                //CAP-2186
+                sWhereCondition += "having Carrier_ID IN (" + ulCarrierID + ") ";
 
 
                 sQuery = sQuery.Replace(":WhereCondition", sWhereCondition);
