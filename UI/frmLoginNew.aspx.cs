@@ -31,20 +31,7 @@ namespace Acurus.Capella.UI
             {
                 Response.Redirect("frmLogin.aspx");
                 return;
-            }
-
-            //CAP-2171
-            if (Request.Url.Authority == (ConfigurationManager.AppSettings["RootURL"] ?? ""))
-            {
-                Response.SetCookie(new HttpCookie("IsOktaUser") { Value = "Y", Expires = DateTime.Now.AddDays(1) });
-            }
-
-            if (Request.Cookies["IsOktaUser"] == null || (Request.Cookies["IsOktaUser"]?.Value ?? "N") == "N")
-            {
-                var oktaVerificationURL = CheckOktaAuthorizationUrl();
-                Response.Redirect(oktaVerificationURL, false);
-                return;
-            }
+            }         
 
             DateTime dtStartTime = DateTime.Now;
 
@@ -63,6 +50,19 @@ namespace Acurus.Capella.UI
             }
             if (!IsPostBack)
             {
+                //CAP-2171
+                if (Request.Url.Authority == (ConfigurationManager.AppSettings["RootURL"] ?? ""))
+                {
+                    Response.SetCookie(new HttpCookie("IsOktaUser") { Value = "Y", Expires = DateTime.Now.AddDays(1) });
+                }
+
+                if (Request.Cookies["IsOktaUser"] == null || (Request.Cookies["IsOktaUser"]?.Value ?? "N") == "N")
+                {
+                    var oktaVerificationURL = CheckOktaAuthorizationUrl();
+                    Response.Redirect(oktaVerificationURL, false);
+                    return;
+                }
+
                 if (Request.Form["EHRUserName"] == null)
                 {
                     UtilityManager.inserttologgingtable(ClientSession.EncounterId.ToString(), ClientSession.HumanId.ToString(), ClientSession.UserName, ClientSession.PhysicianId.ToString(), "Login : Start", dtStartTime, hdnGroupId.Value, "frmLoginNew");
