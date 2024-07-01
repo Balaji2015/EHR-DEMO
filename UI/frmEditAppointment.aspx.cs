@@ -3206,6 +3206,11 @@ namespace Acurus.Capella.UI
                     }
                 }
             }
+            //CAP-2024
+            var comboBoxItems = ddlPhysicianName.Items.Cast<RadComboBoxItem>().ToList();
+            ddlPhysicianName.Items.Clear();
+            ddlPhysicianName.Items.AddRange(comboBoxItems.OrderBy(a => a.Text).ToArray());
+
             btnSave.Enabled = true;
 
             if (chkSelfReferred.Checked == true)
@@ -3931,7 +3936,6 @@ namespace Acurus.Capella.UI
 
             XmlDocument xmldoc = new XmlDocument();
             ddlPhysicianName.Items.Add(item);
-            ddlPhysicianName.Items.Add(item);
 
 
 
@@ -3981,26 +3985,43 @@ namespace Acurus.Capella.UI
                         //old code
                         // string sPhyName = PhysicianList[i].PhyPrefix + " " + PhysicianList[i].PhyFirstName + " " + PhysicianList[i].PhyLastName;
                         //Gitlab# 2485 - Physician Name Display Change
-                        string sPhyName = string.Empty;
-                        if (PhysicianList[i].PhyLastName != String.Empty)
-                            sPhyName += PhysicianList[i].PhyLastName;
-                        if (PhysicianList[i].PhyFirstName != String.Empty)
+                        string strXmlFilePathTech = Path.Combine(System.Web.Hosting.HostingEnvironment.ApplicationPhysicalPath, "ConfigXML\\machine_technician.xml");
+                        if (File.Exists(strXmlFilePathTech) == true)
                         {
-                            if (sPhyName != String.Empty)
-                                sPhyName += "," + PhysicianList[i].PhyFirstName;
+                            string sPhyName = string.Empty;
+                            string PhyId = string.Empty;
+                            xmldoc = new XmlDocument();
+                            xmldoc.Load(System.Web.Hosting.HostingEnvironment.ApplicationPhysicalPath + "ConfigXML\\" + "machine_technician" + ".xml");
+                            if (PhysicianList[i].PhyColor != "" && PhysicianList[i].PhyColor != "0")
+                            {
+                                XmlNodeList xmlTec = xmldoc.GetElementsByTagName("MachineTechnician" + PhysicianList[i].PhyColor);
+                                if (xmlTec != null)
+                                {
+                                    sPhyName = xmlTec[0].Attributes.GetNamedItem("machine_name").Value + " - " + PhysicianList[i].PhyPrefix + " " + PhysicianList[i].PhyFirstName + " " + PhysicianList[i].PhyMiddleName + " " + PhysicianList[i].PhyLastName;
+                                    PhyId = xmlTec[0].Attributes.GetNamedItem("machine_technician_library_id").Value;
+                                }
+                            }
                             else
-                                sPhyName += PhysicianList[i].PhyFirstName;
+                            {
+                                if (PhysicianList[i].PhyLastName != String.Empty)
+                                    sPhyName += PhysicianList[i].PhyLastName;
+                                if (PhysicianList[i].PhyFirstName != String.Empty)
+                                {
+                                    if (sPhyName != String.Empty)
+                                        sPhyName += "," + PhysicianList[i].PhyFirstName;
+                                    else
+                                        sPhyName += PhysicianList[i].PhyFirstName;
+                                }
+                                if (PhysicianList[i].PhyMiddleName != String.Empty)
+                                    sPhyName += " " + PhysicianList[i].PhyMiddleName;
+                                if (PhysicianList[i].PhySuffix != String.Empty)
+                                    sPhyName += "," + PhysicianList[i].PhySuffix;
+                            }
+                            item = new RadComboBoxItem();
+                            item.Value = PhysicianList[i].Id.ToString();
+                            item.Text = sPhyName;
+                            ddlPhysicianName.Items.Add(item);
                         }
-                        if (PhysicianList[i].PhyMiddleName != String.Empty)
-                            sPhyName += " " + PhysicianList[i].PhyMiddleName;
-                        if (PhysicianList[i].PhySuffix != String.Empty)
-                            sPhyName += "," + PhysicianList[i].PhySuffix;
-
-
-                        item = new RadComboBoxItem();
-                        item.Value = PhysicianList[i].Id.ToString();
-                        item.Text = sPhyName;
-                        ddlPhysicianName.Items.Add(item);
                         //if (ddlPhysicianName.Items[i].Value == hdnPhysicianID.Value)
                         //{
                         //Modified by balaji.Tj
@@ -4030,6 +4051,10 @@ namespace Acurus.Capella.UI
                         }
                     }
                 }
+                //CAP-2024
+                var comboBoxItems = ddlPhysicianName.Items.Cast<RadComboBoxItem>().ToList();
+                ddlPhysicianName.Items.Clear();
+                ddlPhysicianName.Items.AddRange(comboBoxItems.OrderBy(a => a.Text).ToArray());
             }
 
             ClientSession.PhysicianId = ddlPhysicianName.SelectedValue != null && ddlPhysicianName.SelectedValue.Trim() != "" ? Convert.ToUInt64(ddlPhysicianName.SelectedValue) : 0;
