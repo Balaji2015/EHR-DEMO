@@ -828,7 +828,9 @@ namespace Acurus.Capella.UI
                 {
                     if (k != 0)
                     {
-                        sProcedures += "; " + objOrdLab.Procedures.ToList<string>()[k];
+                        //Cap - 2177
+                        //sProcedures += "; " + objOrdLab.Procedures.ToList<string>()[k];
+                         sProcedures += ";\n\n" + objOrdLab.Procedures.ToList<string>()[k];
                     }
                     else
                         sProcedures = objOrdLab.Procedures.ToList<string>()[k];
