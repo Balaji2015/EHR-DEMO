@@ -476,6 +476,8 @@ namespace Acurus.Capella.UI
                     txtMedicalAssistantNotes.ForeColor = System.Drawing.ColorTranslator.FromHtml("Black");
                     btnDeleteIndexing.Visible = false;
                     DelIndexDiv.Attributes.Remove("width");
+                    //Jira CAP-2228
+                    imgCopyPrevious.Visible = false;
                 }
                 #endregion
                 #region Opening from OrdersList
@@ -1358,6 +1360,8 @@ namespace Acurus.Capella.UI
                     //Jira CAP-2153 - End
                     btnMoveToMa.Enabled = true;
                     btnMoveToNextProcess.Enabled = true;
+                    //Jira CAP-2228
+                    imgCopyPrevious.Visible = true;
                     //btnSave.Visible = false;
                 }
                 else
@@ -2168,6 +2172,8 @@ namespace Acurus.Capella.UI
                     hdnLeftPaneCurrentProcess.Value = wfObj.Current_Process;
 
                     btnMoveToNextProcess.Visible = true;
+                    //Jira CAP-2228
+                    imgCopyPrevious.Visible = true;
                     btnMoveToMa.Visible = true;
                     chkShowAll.Visible = true;
                     //Jira CAP-2153
