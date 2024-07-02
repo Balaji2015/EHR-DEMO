@@ -421,6 +421,20 @@ namespace Acurus.Capella.UI
                         }
                     }
                 }
+                //CAP-2059
+                else if (Request["ScreenName"] != null && Request["ScreenName"].ToString() == "Reports")
+                {
+                    this.Page.ClientScript.RegisterStartupScript(this.Page.GetType(), string.Empty, " window.setTimeout(function () {OpenModal('REPORT GENERATOR');}, 2000);", true);
+                    if (Request.QueryString["IsDirectURL"] != null)
+                    {
+                        string IsDirectURL = Request.QueryString["IsDirectURL"];
+                        if (IsDirectURL.Equals("y", StringComparison.InvariantCultureIgnoreCase))
+                        {
+                            hdnIsDirectLink.Value = "true";
+                        }
+                    }
+
+                }
                 // CAP-2054
                 else if (Request["ScreenName"] != null && Request["ScreenName"].ToString().Equals("Indexing", StringComparison.OrdinalIgnoreCase))
                 {

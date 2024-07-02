@@ -277,9 +277,12 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
                                     if (Convert.ToString(((object[])ires)[3]).ToUpper().Contains("BP"))
                                     {
                                         string Value = Convert.ToString(((object[])ires)[2]);
-
-                                        PlanDto.Status_Value = Value.Split(',')[0];
-                                        PlanDto.Status = Value.Split(',')[1];
+                                        //JIra CAP-2200
+                                        if (Value != string.Empty)
+                                        {
+                                            PlanDto.Status_Value = Value.Split(',')[0];
+                                            PlanDto.Status = Value.Split(',')[1];
+                                        }
 
                                         //Jira CAP-1771
                                         //PlanDto.Plan_Date = Convert.ToDateTime(Convert.ToString(((object[])ires)[1])).ToString("yyyy-MMM-dd hh:mm:ss");

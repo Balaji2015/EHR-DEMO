@@ -55,8 +55,8 @@ namespace Acurus.Capella.UI.Extensions
         public static bool IsValidRedirectUrlForLogin(string currentURL)
         {
             var encounterUrlPattern = @"^https?://[^/]+/frmPatientChart\.aspx\?EncounterID=\d+$";
-            //CAP-2055,CAP-2056,CAP-2057
-            var humanUrlPattern = @"^https?://[^/]+/frmPatientChart\.aspx\?(?:HumanID=\d+)?(&ScreenMode=Menu)?(&openingfrom=Menu)?(&ScreenName=ERX)?(&ScreenName=CreateOrder)?(&ScreenName=OrderManagement)?(&ScreenName=PatientCommunication)?(&ScreenName=PhoneEncounter)?(&ScreenName=Demographics)?(&ScreenName=Indexing)?(&IsDirectURL=Y)?$";
+            //CAP-2055,CAP-2056,CAP-2057,CAP-2054,CAP-2059
+            var humanUrlPattern = @"^https?://[^/]+/frmPatientChart\.aspx\?(?:HumanID=\d+)?(&ScreenMode=Menu)?(&openingfrom=Menu)?(&ScreenName=ERX)?(&ScreenName=CreateOrder)?(&ScreenName=OrderManagement)?(&ScreenName=PatientCommunication)?(&ScreenName=PhoneEncounter)?(&ScreenName=Demographics)?(&ScreenName=Indexing)?(&ScreenName=Reports)?(&IsDirectURL=Y)?$";
             var screenUrlPattern = @"^https?://[^/]+/frmPatientChart\.aspx\?EncounterID=\d+&Screen=[a-zA-Z0-9]+$";
             var screenNameUrlPattern = @"https?://[^/]+/frmPatientChart\.aspx\?HumanID=\d+&ScreenName=[A-Za-z0-9_]+&IsDirectUrl=Y+$";
             var schedulerORMyQUrlPattern = @"^https:\/\/(?:[^\/]+)\/(frmMyQueueNew\.aspx|frmAppointments\.aspx)(\?.*)?$"; // CAP-2053

@@ -2948,7 +2948,7 @@ $(document).ready(function () {
     //CAP-2123
     if (localStorage.getItem("ClearEncounter") == true || localStorage.getItem("ClearEncounter") == "true") {
         localStorage.removeItem("ClearEncounter");
-        clearEncounter = true; $('#ctl00_C5POBody_EncounterContainer').attr('src', '');
+        $('#ctl00_C5POBody_EncounterContainer').attr('src', '');
     }
 });
 function OnSuccessImport(response) {
@@ -3055,8 +3055,9 @@ function chkFavCPT_Click() {
 }
 function chkFavICD_Click() {
     $(top.window.document).find("#ok")[0].disabled = false;
-    localStorage.setItem("bSave", "false");
-    window.parent.parent.parent.parent.theForm.ctl00_C5POBody_hdnIsSaveEnable.value = true;
+    //CAP-2196
+    //localStorage.setItem("bSave", "false");
+    //window.parent.parent.parent.parent.theForm.ctl00_C5POBody_hdnIsSaveEnable.value = true;
 }
 
 function CheckEncountersForMenuPFSH(humanID, str) {
