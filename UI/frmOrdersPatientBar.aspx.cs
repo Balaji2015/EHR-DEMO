@@ -275,7 +275,7 @@ namespace Acurus.Capella.UI
         {
             List<RadComboBoxItem> comboBoxItems = cboPhysician.Items.Cast<RadComboBoxItem>().ToList();
             cboPhysician.Items.Clear();
-            cboPhysician.Items.AddRange(comboBoxItems.OrderBy(a => a.Text).ToArray());
+            cboPhysician.Items.AddRange(comboBoxItems.OrderBy(a => a.Text.Trim()).ToArray());
         }
         bool FillComboBox(IList<PhysicianLibrary> PhyList)
         {

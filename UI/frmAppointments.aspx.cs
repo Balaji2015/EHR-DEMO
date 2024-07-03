@@ -4235,13 +4235,13 @@ namespace Acurus.Capella.UI
             {
                 var comboBoxItems = chklstProviders.Items.Cast<System.Web.UI.WebControls.ListItem>().ToList();
                 chklstProviders.Items.Clear();
-                chklstProviders.Items.AddRange(comboBoxItems.OrderBy(a => a.Text).ToArray());
+                chklstProviders.Items.AddRange(comboBoxItems.OrderBy(a => a.Text.Trim()).ToArray());
             }
             else
             {
                 var comboBoxItems = cboFacilityName.Items.Cast<System.Web.UI.WebControls.ListItem>().ToList();
                 cboFacilityName.Items.Clear();
-                cboFacilityName.Items.AddRange(comboBoxItems.OrderBy(a => a.Text).ToArray());
+                cboFacilityName.Items.AddRange(comboBoxItems.OrderBy(a => a.Text.Trim()).ToArray());
             }
         }
         #endregion
