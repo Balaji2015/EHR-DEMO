@@ -371,7 +371,8 @@ function EditProviderDetails() {
             var PhyTextboxName = localStorage.getItem("PhyDetails");
             if (PhyTextboxName.split("&")[4] != undefined) {
                 var querystring;
-                document.getElementById("txtProviderSearch").value = PhyTextboxName.split("&")[4];
+                //Jira cap - 2134
+                document.getElementById("txtProviderSearch").value = PhyTextboxName.split("&")[4].replace("~|", "&");
                 if (EditPhyId != null && EditPhyId != undefined) { 
                     let dataval = EditPhyId.toString();
                     $.ajax({
@@ -423,7 +424,8 @@ function EditProviderDetails() {
                 }             
             }
             else {
-                document.getElementById("txtProviderSearch").value = PhyTextboxName;
+                //Jira cap - 2134
+                document.getElementById("txtProviderSearch").value = PhyTextboxName.replace("~|", "&");
                 
             }
         });

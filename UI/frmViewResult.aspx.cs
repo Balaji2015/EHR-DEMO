@@ -1147,7 +1147,11 @@ namespace Acurus.Capella.UI
                                     if (sNotes != null && sNotes.Count() > 0 && (sNotes.Contains(tvViewIndex.Nodes[0].Nodes[i].Nodes[j].ParentNode.Text.ToUpper())))
                                     {
                                         hdnSubDocumentType.Value = tvViewIndex.Nodes[0].Nodes[i].Nodes[j].ParentNode.Text.ToUpper();
-                                        imgCopyPrevious.Visible = true;
+                                        //Jira Cap - 2228
+                                        if (Request["Opening_from"] != null && Request["Opening_from"] != "OrderManagementScreen")
+                                        {
+                                            imgCopyPrevious.Visible = true;
+                                        }
                                         DLC.txtDLC.Enabled = true;
                                         //DLC.txtDLC.BackColor = System.Drawing.ColorTranslator.FromHtml("#BFDBFF");
                                         //DLC.txtDLC.BorderColor = System.Drawing.ColorTranslator.FromHtml("Black");
@@ -1208,7 +1212,11 @@ namespace Acurus.Capella.UI
                                 if (sNotes != null && sNotes.Count() > 0 && (sNotes.Contains(tvViewIndex.Nodes[0].Nodes[i].Nodes[j].ParentNode.Text.ToUpper())))
                                 {
                                     hdnSubDocumentType.Value = tvViewIndex.Nodes[0].Nodes[i].Nodes[j].ParentNode.Text.ToUpper();
-                                    imgCopyPrevious.Visible = true;
+                                    //Jira Cap - 2228
+                                    if (Request["Opening_from"] != null && Request["Opening_from"] != "OrderManagementScreen")
+                                    {
+                                        imgCopyPrevious.Visible = true;
+                                    }
                                     //DLC.txtDLC.Enabled = false;
                                     //DLC.txtDLC.BackColor = System.Drawing.ColorTranslator.FromHtml("#BFDBFF");
                                     //DLC.txtDLC.BorderColor = System.Drawing.ColorTranslator.FromHtml("Black");
@@ -1361,7 +1369,10 @@ namespace Acurus.Capella.UI
                     btnMoveToMa.Enabled = true;
                     btnMoveToNextProcess.Enabled = true;
                     //Jira CAP-2228
-                    imgCopyPrevious.Visible = true;
+                    if (Request["Opening_from"] != null && Request["Opening_from"] != "OrderManagementScreen")
+                    {
+                        imgCopyPrevious.Visible = true;
+                    }
                     //btnSave.Visible = false;
                 }
                 else
@@ -2173,7 +2184,10 @@ namespace Acurus.Capella.UI
 
                     btnMoveToNextProcess.Visible = true;
                     //Jira CAP-2228
-                    imgCopyPrevious.Visible = true;
+                    if (Request["Opening_from"] != null && Request["Opening_from"] != "OrderManagementScreen")
+                    {
+                        imgCopyPrevious.Visible = true;
+                    }
                     btnMoveToMa.Visible = true;
                     chkShowAll.Visible = true;
                     //Jira CAP-2153
@@ -2249,7 +2263,10 @@ namespace Acurus.Capella.UI
                 if (sNotes != null && sNotes.Count() > 0 && e.Node.ParentNode != null && (sNotes.Contains(e.Node.ParentNode.Text.ToUpper())))
                 {
                     hdnSubDocumentType.Value = e.Node.ParentNode.Text.ToUpper();
-                    imgCopyPrevious.Visible = true;
+                    if (Request["Opening_from"] != null && Request["Opening_from"] != "OrderManagementScreen")
+                    {
+                        imgCopyPrevious.Visible = true;
+                    }
                     //DLC.txtDLC.Enabled = false;
                     //DLC.txtDLC.BackColor = System.Drawing.ColorTranslator.FromHtml("#BFDBFF");
                     //DLC.txtDLC.BorderColor = System.Drawing.ColorTranslator.FromHtml("Black");
