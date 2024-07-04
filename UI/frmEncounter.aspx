@@ -548,14 +548,20 @@
             return;
         }
         PrevTab = $(event.relatedTarget);  // previous tab  
-        if (PrevTab[0].innerText == "SERV./PROC. CODES") {
-            if ($(top.window.document)?.find(".in")?.find(".close") != undefined && $(top.window.document)?.find(".in")?.find(".close")?.length > 1 && ($(top.window.document)?.find("#tbFavCPTsContainer input[type=checkbox]:checked")?.length > 0 || $(top.window.document)?.find("#tbFavICDsContainer input[type=checkbox]:checked")?.length > 0)) {
-                if (event != undefined)
+        if (PrevTab[0].innerText == "SERV./PROC. CODES" || PrevTab[0].innerText == "ASSESSMENT") {
+            if ($(top.window.document)?.find(".in")?.find(".close") != undefined
+                && $(top.window.document)?.find(".in")?.find(".close")?.length > 1
+                && ($(top.window.document)?.find("#tbFavCPTsContainer input[type=checkbox]:checked")?.length > 0
+                    || $(top.window.document)?.find("#tbFavICDsContainer input[type=checkbox]:checked")?.length > 0)) {
+                if (event != undefined) {
                     event_bkup = event;
+                }
+                var popupClose = true;
                 if (DisplayErrorMessage('530020') == true) {
                     //CAP-625: Handle Click event                    
                     if ($(top.window.document)?.find(".in")?.find(".close")[0] != null && $(top.window.document)?.find(".in")?.find(".close")[0] != undefined) {
                         $(top.window.document).find(".in").find(".close")[0].click();
+                        popupClose = false;
                     }
                 }
                 if (evt != undefined) {
@@ -563,13 +569,19 @@
                     return;
                 }
                 else {
-                    val_set = true;
-                    PrevTab.tab('show');
-                    return;
+                    if (popupClose) {
+                        val_set = true;
+                        PrevTab.tab('show');
+                        return;
+                    } else {
+                        //CAP-2196
+                        $(top.window.document).find("#btnICDClose")?.click();
+                        $(top.window.document).find("#btnCPTClose")?.click();
+                    }
                 }
             }
         }
-
+        
         CurTab = $(event.target);         // active tab
         PrevTab = $(event.relatedTarget);  // previous tab   
         sessionStorage.setItem('TabAssesment', CurTab[0].innerText);

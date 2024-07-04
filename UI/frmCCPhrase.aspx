@@ -332,7 +332,6 @@
             </script>
             <script type="text/javascript">
                 function drawChart() {
-                    debugger
                     var Value = document.getElementById('cboFlowSheetType').value;
                     var SelectedPeriod = document.getElementById('cboFlowSheetPeriod').value;
                     $.ajax({
