@@ -22946,10 +22946,12 @@ where pr.encounter_id in ("+ sEnconterIDs + ") and (pr.loinc_observation='BMI' a
                             {
                                 icd = objEnc[2].ToString();
                             }
-
-                            string[] ary = { objEnc[0].ToString(), objEnc[1].ToString(), icd, objEnc[3].ToString(), "", "", "", "CMS69DE", "68v12" };
-                            icdcptListDenominatorExclusion.Add(ary);
-                            lstEncList68.Add(obj);
+                            if (!ilsEnc69.Contains(Convert.ToUInt32(objEnc[1]))) // This condition implemented at 2024
+                            {
+                                string[] ary = { objEnc[0].ToString(), objEnc[1].ToString(), icd, objEnc[3].ToString(), "", "", "", "CMS69DE", "68v12" };
+                                icdcptListDenominatorExclusion.Add(ary);
+                                lstEncList68.Add(obj);
+                            }
 
                         }
 
@@ -26078,13 +26080,14 @@ and b.Encounter_ID in (:EncIds)";
                             loinc = objEnc[3].ToString();
                         if (objEnc[5] != null)
                             creteddate = objEnc[5].ToString();
+                        if (!ilsEnc.Contains(Convert.ToUInt32(objEnc[1].ToString()))) // This condition implemented at 2024
+                        {
+                            string[] ary = { objEnc[0].ToString(), objEnc[1].ToString(), icd, cpt, "", loinc, creteddate, "CMS22DE", "CMS22v12" };
+                            //ulEncListExclusion22.Add(Convert.ToUInt32(objEnc[1].ToString()));
+                            icdcptListDenominatorExclusion.Add(ary);
 
-                        string[] ary = { objEnc[0].ToString(), objEnc[1].ToString(), icd, cpt, "", loinc, creteddate, "CMS22DE", "CMS22v12" };
-                        //ulEncListExclusion22.Add(Convert.ToUInt32(objEnc[1].ToString()));
-                        icdcptListDenominatorExclusion.Add(ary);
-
-                        lstEncList68.Add(obj);
-
+                            lstEncList68.Add(obj);
+                        }
                     }
 
                     if (lstEncList68.Count > 0)

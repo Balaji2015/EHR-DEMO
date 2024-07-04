@@ -1648,26 +1648,37 @@ namespace Acurus.Capella.UI
             StringBuilder cms69 = MeasureHeaderCount(NumeratorList69, DenmoniatorList69, DE69List, DEX69List, "b6ac13e2-beb8-4e4f-94ed-fcc397406cd1");
 
 
-            IList<ulong> NumeratorList138_Population1 = PQRIDTO.Where(a => a.MeasureNo == "CMS138_Population1N").Select(a => a.HumanID).Distinct().ToList<ulong>();
-            IList<ulong> DenmoniatorList138_Population1 = PQRIDTO.Where(a => a.MeasureNo == "CMS138_Population1D").Select(a => a.HumanID).Distinct().ToList<ulong>();
-            //IList<ulong> DE138List = PQRIDTO.Where(a => a.MeasureNo == "CMS69.1DE").Select(a => a.HumanID).ToList<ulong>();
-            IList<ulong> DE138List_Population1 = PQRIDTO.Where(a => a.MeasureNo == "CMS138_Population1DE").Select(a => a.HumanID).Distinct().ToList<ulong>();
-            IList<ulong> DEX138List_Population1 = PQRIDTO.Where(a => a.MeasureNo == "CMS138_Population1DEX").Select(a => a.HumanID).Distinct().ToList<ulong>();
-             StringBuilder cms138_Population1 = MeasureHeaderCount(NumeratorList138_Population1, DenmoniatorList138_Population1, DE138List_Population1, DEX138List_Population1, "E35791DF-5B25-41BB-B260-673337BC44A6");
+            IList<ulong> NumeratorList138_Population1 = PQRIDTO.Where(a => a.MeasureNo == "CMS138N" && a.MeasureName == "CMS138v12_Population1").Select(a => a.HumanID).Distinct().ToList<ulong>();
+            //IList<ulong> DenmoniatorList138_Population1 = PQRIDTO.Where(a => a.MeasureNo == "CMS138_Population1D").Select(a => a.HumanID).Distinct().ToList<ulong>();
+            ////IList<ulong> DE138List = PQRIDTO.Where(a => a.MeasureNo == "CMS69.1DE").Select(a => a.HumanID).ToList<ulong>();
+            IList<ulong> DenmoniatorList138_Population1 = PQRIDTO.Where(a => a.MeasureNo == "CMS138D" && a.MeasureName == "CMS138v12_Population1").Select(a => a.HumanID).Distinct().ToList<ulong>();
+            //IList<ulong> DE138List_Population1 = PQRIDTO.Where(a => a.MeasureNo == "CMS138_Population1DE").Select(a => a.HumanID).Distinct().ToList<ulong>();
+            IList<ulong> DE138List_Population1 = PQRIDTO.Where(a => a.MeasureNo == "CMS138DE" && a.MeasureName == "CMS138v12_Population1").Select(a => a.HumanID).Distinct().ToList<ulong>();
+            //IList<ulong> DEX138List_Population1 = PQRIDTO.Where(a => a.MeasureNo == "CMS138_Population1DEX").Select(a => a.HumanID).Distinct().ToList<ulong>();
+            IList<ulong> DEX138List_Population1 = PQRIDTO.Where(a => a.MeasureNo == "CMS138DEX" && a.MeasureName == "CMS138v12_Population1").Select(a => a.HumanID).Distinct().ToList<ulong>();
+            StringBuilder cms138_Population1 = MeasureHeaderCount(NumeratorList138_Population1, DenmoniatorList138_Population1, DE138List_Population1, DEX138List_Population1, "E35791DF-5B25-41BB-B260-673337BC44A6");
 
-            IList<ulong> NumeratorList138_Population2 = PQRIDTO.Where(a => a.MeasureNo == "CMS138_Population2N").Select(a => a.HumanID).Distinct().ToList<ulong>();
-            IList<ulong> DenmoniatorList138_Population2 = PQRIDTO.Where(a => a.MeasureNo == "CMS138_Population2D").Select(a => a.HumanID).Distinct().ToList<ulong>();
+            //IList<ulong> NumeratorList138_Population2 = PQRIDTO.Where(a => a.MeasureNo == "CMS138_Population2N").Select(a => a.HumanID).Distinct().ToList<ulong>();
+            IList<ulong> NumeratorList138_Population2 = PQRIDTO.Where(a => a.MeasureNo == "CMS138N" && a.MeasureName == "CMS138v12_Population2").Select(a => a.HumanID).Distinct().ToList<ulong>();
+            //IList<ulong> DenmoniatorList138_Population2 = PQRIDTO.Where(a => a.MeasureNo == "CMS138_Population2D").Select(a => a.HumanID).Distinct().ToList<ulong>();
+            IList<ulong> DenmoniatorList138_Population2 = PQRIDTO.Where(a => a.MeasureNo == "CMS138D" && a.MeasureName == "CMS138v12_Population2").Select(a => a.HumanID).Distinct().ToList<ulong>();
             //IList<ulong> DE138List = PQRIDTO.Where(a => a.MeasureNo == "CMS69.1DE").Select(a => a.HumanID).ToList<ulong>();
-            IList<ulong> DE138List_Population2 = PQRIDTO.Where(a => a.MeasureNo == "CMS138_Population2DE").Select(a => a.HumanID).Distinct().ToList<ulong>();
-            IList<ulong> DEX138List_Population2 = PQRIDTO.Where(a => a.MeasureNo == "CMS138_Population2DEX").Select(a => a.HumanID).Distinct().ToList<ulong>();
-           // sbLoad.Append(SubXMLLoadForCQMIIIstage3("CMS138_v10_CAT_III_Header.xml", DenmoniatorList138_Population2, NumeratorList138_Population2, DE138List_Population2, DEX138List_Population2, DCQM["CMS138v10_Population2"], "CMS138v10_Population2", null).ToString());
-          //  StringBuilder cms138_Population2 = MeasureHeaderCount(NumeratorList138_Population2, DenmoniatorList138_Population2, DE138List_Population2, DEX138List_Population2, "E35791DF-5B25-41BB-B260-673337BC44A6");
+            //IList<ulong> DE138List_Population2 = PQRIDTO.Where(a => a.MeasureNo == "CMS138_Population2DE").Select(a => a.HumanID).Distinct().ToList<ulong>();
+            IList<ulong> DE138List_Population2 = PQRIDTO.Where(a => a.MeasureNo == "CMS138DE" && a.MeasureName == "CMS138v12_Population2").Select(a => a.HumanID).Distinct().ToList<ulong>();
+            //IList<ulong> DEX138List_Population2 = PQRIDTO.Where(a => a.MeasureNo == "CMS138_Population2DEX").Select(a => a.HumanID).Distinct().ToList<ulong>();
+            IList<ulong> DEX138List_Population2 = PQRIDTO.Where(a => a.MeasureNo == "CMS138DEX" && a.MeasureName == "CMS138v12_Population2").Select(a => a.HumanID).Distinct().ToList<ulong>();
+            // sbLoad.Append(SubXMLLoadForCQMIIIstage3("CMS138_v10_CAT_III_Header.xml", DenmoniatorList138_Population2, NumeratorList138_Population2, DE138List_Population2, DEX138List_Population2, DCQM["CMS138v10_Population2"], "CMS138v10_Population2", null).ToString());
+            //  StringBuilder cms138_Population2 = MeasureHeaderCount(NumeratorList138_Population2, DenmoniatorList138_Population2, DE138List_Population2, DEX138List_Population2, "E35791DF-5B25-41BB-B260-673337BC44A6");
 
-            IList<ulong> NumeratorList138_Population3 = PQRIDTO.Where(a => a.MeasureNo == "CMS138_Population3N").Select(a => a.HumanID).Distinct().ToList<ulong>();
-            IList<ulong> DenmoniatorList138_Population3 = PQRIDTO.Where(a => a.MeasureNo == "CMS138_Population3D").Select(a => a.HumanID).Distinct().ToList<ulong>();
+            //IList<ulong> NumeratorList138_Population3 = PQRIDTO.Where(a => a.MeasureNo == "CMS138_Population3N").Select(a => a.HumanID).Distinct().ToList<ulong>();
+            IList<ulong> NumeratorList138_Population3 = PQRIDTO.Where(a => a.MeasureNo == "CMS138N" && a.MeasureName == "CMS138v12_Population3").Select(a => a.HumanID).Distinct().ToList<ulong>();
+            //IList<ulong> DenmoniatorList138_Population3 = PQRIDTO.Where(a => a.MeasureNo == "CMS138_Population3D").Select(a => a.HumanID).Distinct().ToList<ulong>();
+            IList<ulong> DenmoniatorList138_Population3 = PQRIDTO.Where(a => a.MeasureNo == "CMS138D" && a.MeasureName == "CMS138v12_Population3").Select(a => a.HumanID).Distinct().ToList<ulong>();
             //IList<ulong> DE138List = PQRIDTO.Where(a => a.MeasureNo == "CMS69.1DE").Select(a => a.HumanID).ToList<ulong>();
-            IList<ulong> DE138List_Population3 = PQRIDTO.Where(a => a.MeasureNo == "CMS138_Population3DE").Select(a => a.HumanID).Distinct().ToList<ulong>();
-            IList<ulong> DEX138List_Population3 = PQRIDTO.Where(a => a.MeasureNo == "CMS138_Population3DEX").Select(a => a.HumanID).Distinct().ToList<ulong>();
+            //IList<ulong> DE138List_Population3 = PQRIDTO.Where(a => a.MeasureNo == "CMS138_Population3DE").Select(a => a.HumanID).Distinct().ToList<ulong>();
+            IList<ulong> DE138List_Population3 = PQRIDTO.Where(a => a.MeasureNo == "CMS138DE" && a.MeasureName == "CMS138v12_Population3").Select(a => a.HumanID).Distinct().ToList<ulong>();
+            //IList<ulong> DEX138List_Population3 = PQRIDTO.Where(a => a.MeasureNo == "CMS138_Population3DEX").Select(a => a.HumanID).Distinct().ToList<ulong>();
+            IList<ulong> DEX138List_Population3 = PQRIDTO.Where(a => a.MeasureNo == "CMS138DEX" && a.MeasureName == "CMS138v12_Population3").Select(a => a.HumanID).Distinct().ToList<ulong>();
 
             sMeasureNumber = ilstPqriMsr.Where(a => a.Measurement_No.Contains("CMS138") == true && a.Measurement_No.Contains("Population1") == true).Select(a => a.Measurement_No).Distinct().ToList()[0].ToString();
             string sMsrToboco2 = ilstPqriMsr.Where(a => a.Measurement_No.Contains("CMS138") == true && a.Measurement_No.Contains("Population2") == true).Select(a => a.Measurement_No).Distinct().ToList()[0].ToString();
@@ -1920,8 +1931,8 @@ namespace Acurus.Capella.UI
             //xmlReqNode = xmlDoc.GetElementsByTagName("textcountVaccine");
             //xmlReqNode[0].InnerXml = cms127.ToString();
 
-            //xmlReqNode = xmlDoc.GetElementsByTagName("textcountobacco");
-            //xmlReqNode[0].InnerXml = cms138_Population1.ToString();
+            xmlReqNode = xmlDoc.GetElementsByTagName("textcountobacco");
+            xmlReqNode[0].InnerXml = cms138_Population1.ToString();
 
             xmlReqNode = xmlDoc.GetElementsByTagName("textcountBP");
             xmlReqNode[0].InnerXml = cms165.ToString();
@@ -4089,7 +4100,8 @@ namespace Acurus.Capella.UI
                     objRCsb.Append(objRacesb);
                     objRCsb.Insert(objRCsb.ToString().IndexOf("2.16.840.1.113883.6.238") - 29, lsdstLookUp.Where(a => a.Value.Trim() == items.Trim()).ToList<StaticLookup>().Count > 0 ? lsdstLookUp.Where(a => a.Value.Trim() == items.Trim()).ToList<StaticLookup>()[0].Default_Value : string.Empty);
                     objRCsb.Insert(objRCsb.ToString().IndexOf("2.16.840.1.113883.6.238") - 14, items);
-                    objRCsb.Insert(objRCsb.ToString().LastIndexOf("value=") + 7, lstHuman.Count(a => a.Race.Trim() == items.Trim()));
+                    //objRCsb.Insert(objRCsb.ToString().LastIndexOf("value=") + 7, lstHuman.Count(a => a.Race.Trim() == items.Trim()));
+                    objRCsb.Insert(objRCsb.ToString().LastIndexOf("value=") + 7, lstHuman.Count(a => a.Race.Trim() != "" && a.Race.Trim() == items.Trim()));
 
                     objFinalRacesb.Append(objRCsb.ToString());
 
@@ -5728,10 +5740,10 @@ namespace Acurus.Capella.UI
                     xmlReqNode[0].InnerText = HumanLst.City;
                     xmlReqNode[1].InnerText = ClientSession.PhysicainDetails[0].PhyCity;
                     xmlReqNode[2].InnerText = ClientSession.PhysicainDetails[0].PhyCity;
-                    xmlReqNode[3].InnerText = ClientSession.PhysicainDetails[0].PhyCity;
-                    xmlReqNode[4].InnerText = lstfacility[0].Fac_City;
-                    xmlReqNode[5].InnerText = ClientSession.PhysicainDetails[0].PhyCity;
-                    xmlReqNode[6].InnerText = HumanLst.City;
+                    //xmlReqNode[3].InnerText = ClientSession.PhysicainDetails[0].PhyCity;
+                    xmlReqNode[3].InnerText = lstfacility[0].Fac_City;
+                    xmlReqNode[4].InnerText = ClientSession.PhysicainDetails[0].PhyCity;
+                    xmlReqNode[5].InnerText = HumanLst.City;
 
 
 
@@ -5739,20 +5751,20 @@ namespace Acurus.Capella.UI
                     xmlReqNode[0].InnerText = HumanLst.State;
                     xmlReqNode[1].InnerText = ClientSession.PhysicainDetails[0].PhyState;
                     xmlReqNode[2].InnerText = ClientSession.PhysicainDetails[0].PhyState;
-                    xmlReqNode[3].InnerText = ClientSession.PhysicainDetails[0].PhyState;
-                    xmlReqNode[4].InnerText = lstfacility[0].Fac_State;
-                    xmlReqNode[5].InnerText = ClientSession.PhysicainDetails[0].PhyState;
-                    xmlReqNode[6].InnerText = HumanLst.State;
+                    //xmlReqNode[3].InnerText = ClientSession.PhysicainDetails[0].PhyState;
+                    xmlReqNode[3].InnerText = lstfacility[0].Fac_State;
+                    xmlReqNode[4].InnerText = ClientSession.PhysicainDetails[0].PhyState;
+                    xmlReqNode[5].InnerText = HumanLst.State;
 
 
                     xmlReqNode = xmlDoc.GetElementsByTagName("postalCode");
                     xmlReqNode[0].InnerText = HumanLst.ZipCode;
                     xmlReqNode[1].InnerText = ClientSession.PhysicainDetails[0].PhyZip;
                     xmlReqNode[2].InnerText = ClientSession.PhysicainDetails[0].PhyZip;
-                    xmlReqNode[3].InnerText = ClientSession.PhysicainDetails[0].PhyZip;
-                    xmlReqNode[4].InnerText = lstfacility[0].Fac_Zip;
-                    xmlReqNode[5].InnerText = ClientSession.PhysicainDetails[0].PhyZip;
-                    xmlReqNode[6].InnerText = HumanLst.ZipCode;
+                    //xmlReqNode[3].InnerText = ClientSession.PhysicainDetails[0].PhyZip;
+                    xmlReqNode[3].InnerText = lstfacility[0].Fac_Zip;
+                    xmlReqNode[4].InnerText = ClientSession.PhysicainDetails[0].PhyZip;
+                    xmlReqNode[5].InnerText = HumanLst.ZipCode;
 
 
                     xmlReqNode = xmlDoc.GetElementsByTagName("telecom");
@@ -5784,23 +5796,24 @@ namespace Acurus.Capella.UI
                     else
                     {
                         xmlReqNode[1].ParentNode.RemoveChild(xmlReqNode[1]);//If middle name not exists delete last given
-                        xmlReqNode[5].ParentNode.RemoveChild(xmlReqNode[5]);
+                        //xmlReqNode[5].ParentNode.RemoveChild(xmlReqNode[5]);
+                        xmlReqNode[4].ParentNode.RemoveChild(xmlReqNode[4]);
                         isDeleteGiven = true;
                     }
                     if (isDeleteGiven == false)
                     {
                         xmlReqNode[2].InnerText = ClientSession.PhysicainDetails[0].PhyFirstName;
-                        xmlReqNode[3].InnerText = ClientSession.PhysicainDetails[0].PhyFirstName;
-                        xmlReqNode[4].InnerText = ClientSession.PhysicainDetails[0].PhyLastName;
-                        xmlReqNode[5].InnerText = HumanLst.First_Name;
+                        //xmlReqNode[3].InnerText = ClientSession.PhysicainDetails[0].PhyFirstName;
+                        xmlReqNode[3].InnerText = ClientSession.PhysicainDetails[0].PhyLastName;
+                        xmlReqNode[4].InnerText = HumanLst.First_Name;
                         //xmlReqNode[6].InnerText = HumanLst.Last_Name;
                     }
                     else
                     {
                         xmlReqNode[1].InnerText = ClientSession.PhysicainDetails[0].PhyFirstName;
                         xmlReqNode[2].InnerText = ClientSession.PhysicainDetails[0].PhyFirstName;
-                        xmlReqNode[3].InnerText = ClientSession.PhysicainDetails[0].PhyLastName;
-                        xmlReqNode[4].InnerText = HumanLst.First_Name;
+                        //xmlReqNode[3].InnerText = ClientSession.PhysicainDetails[0].PhyLastName;
+                        xmlReqNode[3].InnerText = HumanLst.First_Name;
                         //xmlReqNode[5].InnerText = HumanLst.Last_Name;
                     }
 
@@ -5808,8 +5821,8 @@ namespace Acurus.Capella.UI
                     xmlReqNode[0].InnerText = HumanLst.Last_Name;
                     xmlReqNode[1].InnerText = ClientSession.PhysicainDetails[0].PhyLastName;
                     xmlReqNode[2].InnerText = ClientSession.PhysicainDetails[0].PhyLastName;
-                    xmlReqNode[3].InnerText = ClientSession.PhysicainDetails[0].PhyFirstName;
-                    xmlReqNode[4].InnerText = HumanLst.Last_Name;
+                    //xmlReqNode[3].InnerText = ClientSession.PhysicainDetails[0].PhyFirstName;
+                    xmlReqNode[3].InnerText = HumanLst.Last_Name;
 
                     xmlReqNode = xmlDoc.GetElementsByTagName("suffix");
                     xmlReqNode[0].InnerText = ClientSession.PhysicainDetails[0].PhySuffix;
