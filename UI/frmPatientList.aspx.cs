@@ -159,6 +159,8 @@ namespace Acurus.Capella.UI
                 {
                     SelectPlan();
                 }
+                //CAP-2242
+                Session["PatientListGrid"] = null;
             }
         }
 
