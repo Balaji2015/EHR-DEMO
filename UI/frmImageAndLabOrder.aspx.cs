@@ -1378,7 +1378,9 @@ namespace Acurus.Capella.UI
                     //added by balaji.T
                     if (chkMoveToMA.Checked == false)
                     {
-                        lblCollectionDate.InnerText += "*";
+                        //CAP-2239
+                        if (!lblCollectionDate.InnerText.Contains("*"))
+                            lblCollectionDate.InnerText += "*";
                         lblCollectionDate.InnerHtml = lblCollectionDate.InnerText;
                         //lblCollectionDate.Attributes.Add("style", "color:red");
                         lblCollectionDate.InnerHtml = lblCollectionDate.InnerHtml.Replace("*", "<span class='manredforstar'>*</span>");
@@ -1960,7 +1962,9 @@ namespace Acurus.Capella.UI
             {
                 if (chkSpecimenInHouse.Checked)
                 {
-                    lblCollectionDate.InnerText += "*";
+                    //CAP-2239
+                    if (!lblCollectionDate.InnerText.Contains("*"))
+                        lblCollectionDate.InnerText += "*";
                     lblCollectionDate.InnerHtml = lblCollectionDate.InnerText;
                     lblCollectionDate.InnerHtml = lblCollectionDate.InnerHtml.Replace("*", "<span class='manredforstar'>*</span>");
                     //lblCollectionDate.Attributes.Add("style", "color:red");
