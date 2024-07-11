@@ -155,7 +155,7 @@ namespace Acurus.Capella.UI
                     if (!string.IsNullOrEmpty(carrierIds))
                         ddlPayerName.Items.FindByValue("0").Value = carrierIds.Remove(carrierIds.Length - 1);
                 }
-                if (ddlPayerName.Text != "")
+                if (ddlPayerName.Value != "")
                 {
                     SelectPlan();
                 }
@@ -313,9 +313,9 @@ namespace Acurus.Capella.UI
             if (dob == string.Empty)
                 dob = DateTime.MinValue.ToString();
             if (txtPatientAccNo.Value == string.Empty)
-                dtEncounter = encMngr.GetEncountersbyDOSRange(0, Convert.ToDateTime(dob), txtMemberId.Value, ddlPayerName.SelectedValue, Convert.ToDateTime(dtFromDOS.Text), Convert.ToDateTime(dtToDOS.Text), txtPatientLastName.Value, txtPatientFirstName.Value, sPlanId, ClientSession.LegalOrg);
+                dtEncounter = encMngr.GetEncountersbyDOSRange(0, Convert.ToDateTime(dob), txtMemberId.Value, ddlPayerName.Value, Convert.ToDateTime(dtFromDOS.Text), Convert.ToDateTime(dtToDOS.Text), txtPatientLastName.Value, txtPatientFirstName.Value, sPlanId, ClientSession.LegalOrg);
             else
-                dtEncounter = encMngr.GetEncountersbyDOSRange(Convert.ToUInt64(txtPatientAccNo.Value), Convert.ToDateTime(dob), txtMemberId.Value, ddlPayerName.SelectedValue, Convert.ToDateTime(dtFromDOS.Text), Convert.ToDateTime(dtToDOS.Text), txtPatientLastName.Value, txtPatientFirstName.Value, sPlanId, ClientSession.LegalOrg);
+                dtEncounter = encMngr.GetEncountersbyDOSRange(Convert.ToUInt64(txtPatientAccNo.Value), Convert.ToDateTime(dob), txtMemberId.Value, ddlPayerName.Value, Convert.ToDateTime(dtFromDOS.Text), Convert.ToDateTime(dtToDOS.Text), txtPatientLastName.Value, txtPatientFirstName.Value, sPlanId, ClientSession.LegalOrg);
             Session["PatientListGrid"] = dtEncounter;
 
             loadGrid(dtEncounter);
@@ -382,11 +382,11 @@ namespace Acurus.Capella.UI
         void SelectPlan()
         {
             ddlPlan.Items.Clear();
-            if (ddlPayerName.SelectedItem.Text != null)
+            if (ddlPayerName.Value != null)
             {
                 ListItem lst = new ListItem();
                 UserLookupManager userLookupMngr = new UserLookupManager();
-                IList<UserLookup> ilstUserLookup = userLookupMngr.GetFieldLookupListByFieldNameandDescription(ClientSession.UserName, "PLAN LIST", ddlPayerName.SelectedItem.Value);
+                IList<UserLookup> ilstUserLookup = userLookupMngr.GetFieldLookupListByFieldNameandDescription(ClientSession.UserName, "PLAN LIST", ddlPayerName.Value);
                 //CAP-362 : Add All option for primary plan
                 ddlPlan.Items.Add("ALL");
 
@@ -394,9 +394,9 @@ namespace Acurus.Capella.UI
                 {
                     //Load from insurance plan table based on selected payer carrier id
                     InsurancePlanManager insMngr = new InsurancePlanManager();
-                    if (ddlPayerName.SelectedItem.Value.Trim() != "")
+                    if (ddlPayerName.Value.Trim() != "")
                     {
-                        IList<InsurancePlan> ilsIns = insMngr.GetInsurancebyCarrierID(Convert.ToUInt64(ddlPayerName.SelectedItem.Value));
+                        IList<InsurancePlan> ilsIns = insMngr.GetInsurancebyCarrierID(Convert.ToUInt64(ddlPayerName.Value));
                         for (int iCount = 0; iCount < ilsIns.Count; iCount++)
                         {
                                 lst = new ListItem();

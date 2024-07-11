@@ -106,13 +106,28 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
         public IList<InsurancePlan> GetInsurancebyIDAll()
         {
             IList<InsurancePlan> lstInsPln = new List<InsurancePlan>();
+            //CAP-2241
+            //using (ISession iMySession = NHibernateSessionManager.Instance.CreateISession())
+            //{
+            //    //Jira #CAP-516
+            //    //ICriteria crit = iMySession.CreateCriteria(typeof(InsurancePlan));
+            //    ICriteria crit = iMySession.CreateCriteria(typeof(InsurancePlan)).Add(Expression.Eq("Active", "Y"));
+            //    lstInsPln = crit.List<InsurancePlan>();
+            //    iMySession.Close();
+            //}
+            IList<object> ilistInsurancePlan = new List<object>();
             using (ISession iMySession = NHibernateSessionManager.Instance.CreateISession())
             {
-                //Jira #CAP-516
-                //ICriteria crit = iMySession.CreateCriteria(typeof(InsurancePlan));
-                ICriteria crit = iMySession.CreateCriteria(typeof(InsurancePlan)).Add(Expression.Eq("Active", "Y"));
-                lstInsPln = crit.List<InsurancePlan>();
+                ilistInsurancePlan = iMySession.CreateSQLQuery("SELECT Insurance_Plan_ID, Insurance_Plan_Name from insurance_plan where Active='Y'").List<object>();
                 iMySession.Close();
+            }
+            if (ilistInsurancePlan != null && ilistInsurancePlan.Any())
+            {
+                lstInsPln = ilistInsurancePlan.Select(a => new InsurancePlan()
+                {
+                    Id = Convert.ToUInt64(((object[])a)[0]),
+                    Ins_Plan_Name = Convert.ToString(((object[])a)[1])
+                }).ToList();
             }
             return lstInsPln;
         }

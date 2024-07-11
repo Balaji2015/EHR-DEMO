@@ -276,6 +276,12 @@ function parseMyDate(s) {
 function EnableSaveButton(ctrl) {
 
 }
+//CAP-2241
+function PayerNameChange() {
+    var cbolab = document.getElementById("ctl00_C5POBody_ddlPayerName");
+    __doPostBack('ctl00_C5POBody_ddlPayerName', cbolab);
+    { sessionStorage.setItem('StartLoading', 'true'); StartLoadFromPatChart(); }
+}
 
 function LoadingImage() {
     { sessionStorage.setItem('StartLoading', 'true'); StartLoadFromPatChart(); }
