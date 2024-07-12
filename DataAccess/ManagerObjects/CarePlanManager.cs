@@ -2718,8 +2718,10 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
                 IList<CarePlan> Nulllistupd = null;
                 //SaveUpdateDeleteWithTransaction(ref Nulllist, CarePlanLst, null, MacAddress);
                 SaveUpdateDelete_DBAndXML_WithTransaction(ref Nulllist, ref Nulllistupd, CarePlanLst, MacAddress, true, false, CarePlanLst[0].Encounter_ID, string.Empty);
-                if (CarePlanLst.Any(a => a.Care_Name_Value == "Marital Status"))
-                    SocialHistorySaveOrUpdate(CarePlanLst, MacAddress);
+                //CAP-2131
+                //if (CarePlanLst.Any(a => a.Care_Name_Value == "Marital Status"))
+                //    SocialHistorySaveOrUpdate(CarePlanLst, MacAddress);
+
                 //objImmhstryMngr.SaveUpdateDeleteWithTransaction(ref saveImmunizationHistory, ilstUpdateImmunization, null, string.Empty);
                 if (saveImmunizationHistory != null || ilstUpdateImmunization != null)
                 {
