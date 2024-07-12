@@ -160,7 +160,7 @@
 </head>
 <body onload="OpenNotificationPopUp('SERV.PROC/CODES');">
     <div id="AngularDiv" ng-app="EandMCodingapp" ng-controller="EandMCodingCtrl" style="height:730px;">
-        <div id="divCPTPanel" class="panel panel-default" style="padding:0px;height: 340px;">
+        <div id="divCPTPanel" class="panel panel-default" style="padding:0px;height: 360px;">
             <div class="panel-headingserv">
                 <div style="transform: rotate(270deg);margin-left: -124px;display: inline-block;font-size: 13px;width: 245px;font-weight: bold;letter-spacing: 1px;margin-top: 0px;">CPTs</div>
             </div>
@@ -190,19 +190,18 @@
                     <thead id="EandMCodingCPTHead" class="Gridheaderstyle">
                         <tr style="width:100%" class="Gridheaderstyle">
                             <th style="width:1.5%;">Del.</th>
-                            <th style="width:4%;text-align:center">CPT</th>
+                            <th style="width:2%;text-align:center">CPT</th>
                             <th style="width:47%;text-align:center">Description</th>
                             <th style="width:4%;text-align:center">Units</th>
-                            <th style="width:20%;text-align:center">Modifiers</th>
-                            <th style="width:2%;"></th>
-                            <th style="width: 23%; color: blue;">Associated Dx Pointer [for coders]</th>
+                            <th style="width:16%;text-align:center">Modifiers</th>
+                            <th style="width: 13%;color: blue;text-align:center;">Dx Pointer [for coders]</th>
                         </tr>
                     </thead>
                     <tbody id="EandMCodingCPTBody" class="Editabletxtbox">
                         <tr style="width:100%;" ng-repeat="a in EandMCodingCPTTable">
                             <td style="width:1.5%;text-align:center;"><img id=" followbutton" title="Delete" ng-src={{a.btnDelete}} ng-click="a.EnableScreen=='disabled'?'return false':CPTDelete($index)" /> </td>
                             <td style="width:6%;">{{ a.CPTCode  }}</td>
-                            <td style="width:46%;">{{ a.CPTDesc  }}</td>
+                            <td style="width:55%;">{{ a.CPTDesc  }}</td>
                             <td style="width:4%;" align="center">
                                 <input id="txtUnits" style="width:42px;height:20px;" type="text" maxlength="3" ng-keypress="txtUnits_KeyPress(event.keyCode)" ng-keyup="validation(event.keyCode)" ng-disabled="a.EnableScreen=='disabled'?'disabled':''" value="{{a.Units}}" />
                             </td>
@@ -225,12 +224,12 @@
                                 </select>
                             </td>
                             <td style="width:23%;">
-                                <input style="width: 15%;" type="text" maxlength="3" id="txtDiaPointer1${{a.Order}}${{a.CPTCode}}" ng-keypress="txtDiaPointer_KeyPress(event.keyCode)" ng-keyup="validation(event.keyCode)" value="{{a.DiaPointer1}}" ng-disabled="a.EnableScreen=='disabled'?'disabled':''" />
-                                <input style="width: 15%;" type="text" maxlength="3" id="txtDiaPointer2${{a.Order}}${{a.CPTCode}}" ng-keypress="txtDiaPointer_KeyPress(event.keyCode)" ng-keyup="validation(event.keyCode)" value="{{a.DiaPointer2}}" ng-disabled="a.EnableScreen=='disabled'?'disabled':''" />
-                                <input style="width: 15%;" type="text" maxlength="3" id="txtDiaPointer3${{a.Order}}${{a.CPTCode}}" ng-keypress="txtDiaPointer_KeyPress(event.keyCode)" ng-keyup="validation(event.keyCode)" value="{{a.DiaPointer3}}" ng-disabled="a.EnableScreen=='disabled'?'disabled':''" />
-                                <input style="width: 15%;" type="text" maxlength="3" id="txtDiaPointer4${{a.Order}}${{a.CPTCode}}" ng-keypress="txtDiaPointer_KeyPress(event.keyCode)" ng-keyup="validation(event.keyCode)" value="{{a.DiaPointer4}}" ng-disabled="a.EnableScreen=='disabled'?'disabled':''" />
-                                <input style="width: 15%;" type="text" maxlength="3" id="txtDiaPointer5${{a.Order}}${{a.CPTCode}}" ng-keypress="txtDiaPointer_KeyPress(event.keyCode)" ng-keyup="validation(event.keyCode)" value="{{a.DiaPointer5}}" ng-disabled="a.EnableScreen=='disabled'?'disabled':''" />
-                                <input style="width: 15%;" type="text" maxlength="3" id="txtDiaPointer6${{a.Order}}${{a.CPTCode}}" ng-keypress="txtDiaPointer_KeyPress(event.keyCode)" ng-keyup="validation(event.keyCode)" value="{{a.DiaPointer6}}" ng-disabled="a.EnableScreen=='disabled'?'disabled':''" />
+                                <input style="width: 23%;" type="text" maxlength="3" id="txtDiaPointer1${{a.Order}}${{a.CPTCode}}" ng-keypress="txtDiaPointer_KeyPress(event.keyCode)" ng-keyup="validation(event.keyCode)" value="{{a.DiaPointer1}}" ng-disabled="a.EnableScreen=='disabled'?'disabled':''" />
+                                <input style="width: 23%;" type="text" maxlength="3" id="txtDiaPointer2${{a.Order}}${{a.CPTCode}}" ng-keypress="txtDiaPointer_KeyPress(event.keyCode)" ng-keyup="validation(event.keyCode)" value="{{a.DiaPointer2}}" ng-disabled="a.EnableScreen=='disabled'?'disabled':''" />
+                                <input style="width: 23%;" type="text" maxlength="3" id="txtDiaPointer3${{a.Order}}${{a.CPTCode}}" ng-keypress="txtDiaPointer_KeyPress(event.keyCode)" ng-keyup="validation(event.keyCode)" value="{{a.DiaPointer3}}" ng-disabled="a.EnableScreen=='disabled'?'disabled':''" />
+                                <input style="width: 23%;" type="text" maxlength="3" id="txtDiaPointer4${{a.Order}}${{a.CPTCode}}" ng-keypress="txtDiaPointer_KeyPress(event.keyCode)" ng-keyup="validation(event.keyCode)" value="{{a.DiaPointer4}}" ng-disabled="a.EnableScreen=='disabled'?'disabled':''" />
+                                <input style="width: 15%;display:none" type="text" maxlength="3" id="txtDiaPointer5${{a.Order}}${{a.CPTCode}}" ng-keypress="txtDiaPointer_KeyPress(event.keyCode)" ng-keyup="validation(event.keyCode)" value="{{a.DiaPointer5}}" ng-disabled="a.EnableScreen=='disabled'?'disabled':''" />
+                                <input style="width: 15%;display:none" type="text" maxlength="3" id="txtDiaPointer6${{a.Order}}${{a.CPTCode}}" ng-keypress="txtDiaPointer_KeyPress(event.keyCode)" ng-keyup="validation(event.keyCode)" value="{{a.DiaPointer6}}" ng-disabled="a.EnableScreen=='disabled'?'disabled':''" />
                             </td>
                             <td style="display:none">{{a.EandMCPTID}}</td>
                             <td style="display:none">{{a.CPTVersion}}</td>
