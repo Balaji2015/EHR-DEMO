@@ -1377,7 +1377,7 @@ namespace Acurus.Capella.UI
                             activity.Sent_To = ToMailId;
                         HumanManager humanMngr = new HumanManager();
                         Human human = new Human();
-                        human = humanMngr.GetHumanIfDuplicateEMail(ToMailId);
+                        human = humanMngr.GetHumanIfDuplicateEMail(ToMailId, ClientSession.LegalOrg);
                         if (human != null)
                         {
                             //activity.Human_ID = human.Id;

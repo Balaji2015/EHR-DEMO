@@ -65,7 +65,7 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
 
         IList<Human> CheckPatientPortal(string sMail, string sPassword);
 
-        Human GetHumanIfDuplicateEMail(string email);
+        Human GetHumanIfDuplicateEMail(string email, string sLegalOrg);
 
         IList<Human> CheckQuarantorPatientPortal(string sMail, string sPassword);
 
@@ -2650,12 +2650,12 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
             return HumanList;
         }
         //Latha - Branch_52_production_for_Rcopia - Start - 4 Jul 2011. End - 4 Jul 2011.
-        public Human GetHumanIfDuplicateEMail(string email)
+        public Human GetHumanIfDuplicateEMail(string email, string sLegalOrg)
         {
             Human humanObj = new Human();
             using (ISession iMySession = NHibernateSessionManager.Instance.CreateISession())
             {
-                ICriteria crit = iMySession.CreateCriteria(typeof(Human)).Add(Expression.Eq("EMail", email));
+                ICriteria crit = iMySession.CreateCriteria(typeof(Human)).Add(Expression.Eq("EMail", email)).Add(Expression.Eq("Legal_Org", sLegalOrg)) ;
                 IList<Human> humanListObj = crit.List<Human>();
                 if (humanListObj != null && humanListObj.Count != 0)
                 {

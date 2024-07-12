@@ -2952,7 +2952,9 @@ namespace Acurus.Capella.UI
         }
         private bool CheckEmailDuplicate()
         {
-            Human humanRec = HumanMngr.GetHumanIfDuplicateEMail(txtEmail.Text);
+            //Cap - 2033
+            //Human humanRec = HumanMngr.GetHumanIfDuplicateEMail(txtEmail.Text);
+            Human humanRec = HumanMngr.GetHumanIfDuplicateEMail(txtEmail.Text, ClientSession.LegalOrg);
             Human objHuman = new Human();
             ulong ulHumanID = 0;
 
