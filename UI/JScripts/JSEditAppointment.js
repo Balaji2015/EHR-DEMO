@@ -257,7 +257,9 @@ $(document).ready(function () {
             if (document.getElementById("chkSelfReferred").checked == true) {
                 document.getElementById("txtProviderSearch").value = "";
                 document.getElementById("txtProviderSearch").disabled = true;
-                document.getElementById("imgEditProvider").style.display = "none";
+                if (document.getElementById("imgEditProvider")?.style?.display != undefined && document.getElementById("imgEditProvider")?.style?.display != null) {
+                    document.getElementById("imgEditProvider").style.display = "none";
+                }
             }
             else {
                 document.getElementById("txtProviderSearch").value = document.getElementById("hdnrenprovidersearch").value;
@@ -309,6 +311,12 @@ $(document).ready(function () {
                 }
             }
         }
+    }
+    //Jira CAP-2216
+    if (document.getElementById("hdnEnableProviderSearch")?.value != undefined
+        && document.getElementById("hdnEnableProviderSearch")?.value != null
+        && document.getElementById("hdnEnableProviderSearch")?.value != "") {
+        EnableProviderSearch(document.getElementById("hdnEnableProviderSearch").value.toLowerCase());
     }
 
 });
@@ -1662,4 +1670,52 @@ function EditProviderDetails() {
     }
 
 
+}
+
+//Jira CAP-2216
+function EnableProviderSearch(EnablePrvdr)
+{
+    if (EnablePrvdr == 'false') {
+        document.getElementById("txtProviderSearch").disabled = true;
+        if (document.getElementById("imgClearProviderText")?.style?.visibility != undefined && document.getElementById("imgClearProviderText")?.style?.visibility != null) {
+            document.getElementById("imgClearProviderText").style.visibility = false;
+        }
+        if (document.getElementById("imgEditProvider") != undefined && document.getElementById("imgEditProvider") != null) {
+            document.getElementById("imgEditProvider").style.visibility = false;
+            document.getElementById("imgEditProvider").style.display = "none";
+        }
+    }
+    else if (EnablePrvdr == 'true'){
+        if (document.getElementById("txtProviderSearch").value == "") {
+            document.getElementById("txtProviderSearch").disabled = false;
+        }
+        if (document.getElementById("imgClearProviderText")?.style?.visibility != undefined && document.getElementById("imgClearProviderText")?.style?.visibility != null) {
+            document.getElementById("imgClearProviderText").style.visibility = true;
+        }
+        if (document.getElementById("imgEditProvider") != undefined && document.getElementById("imgEditProvider") != null) {
+            document.getElementById("imgEditProvider").style.visibility = true;
+            document.getElementById("imgEditProvider").style.display = "block";
+        }
+    }
+
+    if (document.getElementById("hdnDisableSelfReferred") != undefined
+        && document.getElementById("hdnDisableSelfReferred") != null
+        && document.getElementById("hdnDisableSelfReferred").value != "") {
+
+        if (document.getElementById("hdnDisableSelfReferred").value == 'true') {
+            if (document.getElementById("chkSelfReferred")?.disabled != undefined) {
+                document.getElementById("chkSelfReferred").disabled = true;
+            }
+        }
+        else {
+            if (document.getElementById("chkSelfReferred")?.disabled != undefined) {
+                document.getElementById("chkSelfReferred").disabled = false;
+            }
+            
+        }
+    }
+
+    if (document.getElementById("chkSelfReferred")?.disabled != undefined && document.getElementById("chkSelfReferred")?.checked == true) {
+        document.getElementById("txtProviderSearch").disabled = true;
+    }
 }

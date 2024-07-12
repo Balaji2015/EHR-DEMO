@@ -217,10 +217,12 @@ namespace Acurus.Capella.UI
                     //logger.Debug("GetEncounterAndHumanRecord DB Call Time Taken :" + GetEncounterAndHumanRecordDBCall.Elapsed.Seconds + "." + GetEncounterAndHumanRecordDBCall.Elapsed.Milliseconds + "s");
                     time_taken += "GetEncounterAndHumanRecordDBCall : " + GetEncounterAndHumanRecordDBCall.Elapsed.Seconds + "." + GetEncounterAndHumanRecordDBCall.Elapsed.Milliseconds + "s; ";
                     ulordID = fillneweditappt.EncounterRecord.Order_Submit_ID;
-
-                    if (fillneweditappt.EncounterRecord.Encounter_ID == 0)
+                    //Jira CAP-2216
+                    //if (fillneweditappt.EncounterRecord.Encounter_ID == 0)
+                    if (fillneweditappt.EncounterRecord.Id == 0)
                     {
-
+                        MyStatus = "ARCHIEVE";
+                        hdnCurrentProcess.Value = "ARCHIEVE";
                         EncRecord = EncMngr.GetEncounterByEncounterIDArchive(ulMyEncID);
                         dtpApptDate.Enabled = false;
                         dtpStartTime.Enabled = false;
@@ -247,11 +249,13 @@ namespace Acurus.Capella.UI
                         //TextBoxColorChange(txtReferingAddress, false);
                         //  MaskedTextBoxColorChange(msktxtReferingFaxNo, false);
                         // MaskedTextBoxColorChange(msktxtReferingPhoneNo, false);
-                        chkSelfReferred.Enabled = false;
+                        //Jira CAP-2216
+                        //chkSelfReferred.Enabled = false;
                         //btnFindPhysician.Enabled = false;
                         //   btnFindAuthorization.Enabled = false;
                         chkReschedule.Enabled = false;
-                        chkSelfReferred.Enabled = false;
+                        //Jira CAP-2216
+                        //chkSelfReferred.Enabled = false;
                         chkShowAllPhysicians.Enabled = false;
                         encounterArc = true;
                     }
@@ -434,11 +438,13 @@ namespace Acurus.Capella.UI
                         // TextBoxColorChange(txtReferingAddress, false);
                         //  MaskedTextBoxColorChange(msktxtReferingFaxNo, false);
                         // MaskedTextBoxColorChange(msktxtReferingPhoneNo, false);
-                        chkSelfReferred.Enabled = false;
+                        //Jira CAP-2216
+                        //chkSelfReferred.Enabled = false;
                         //btnFindPhysician.Enabled = false;
                         // btnFindAuthorization.Enabled = false;
                         chkReschedule.Enabled = false;
-                        chkSelfReferred.Enabled = false;
+                        //Jira CAP-2216
+                        //chkSelfReferred.Enabled = false;
                         chkShowAllPhysicians.Enabled = false;
                         imgClearProviderText.Attributes.Remove("onclick");
                         //Jira #CAP-69 - labels are missing
@@ -1174,7 +1180,8 @@ namespace Acurus.Capella.UI
                     btnSave.Enabled = false;
                     chkReschedule.Enabled = false;
                     chkShowAllPhysicians.Enabled = false;
-                    chkSelfReferred.Enabled = false;
+                    //Jira CAP-2216
+                    //chkSelfReferred.Enabled = false;
                     dtpApptDate.Enabled = false;
                     dtpStartTime.Enabled = false;
                     dtpStartTime.Enabled = true;
@@ -1342,7 +1349,8 @@ namespace Acurus.Capella.UI
                 {
                     this.Page.Title = "View Appointment" + "-" + ClientSession.UserName;
                     chkReschedule.Enabled = false;
-                    chkSelfReferred.Enabled = false;
+                    //Jira CAP-2216
+                    //chkSelfReferred.Enabled = false;
                     chkShowAllPhysicians.Enabled = false;
                     btnSave.Enabled = false;
                     txtPurposeofVisit.txtDLC.Enabled = false;
@@ -1351,7 +1359,8 @@ namespace Acurus.Capella.UI
                     DisableTableLayout(pnlReschedule);
                     chkReschedule.Enabled = false;
                     chkShowAllPhysicians.Enabled = false;
-                    chkSelfReferred.Enabled = false;
+                    //Jira CAP-2216
+                    //chkSelfReferred.Enabled = false;
                     btnSave.Enabled = false;
                     DateTimePickerColorChange(this.dtpApptDate, true);
                     TimePickerColorChange(dtpStartTime, true);
@@ -1359,7 +1368,10 @@ namespace Acurus.Capella.UI
                     //Jira #CAP-158 -  Not able to navigate tab 
                     // pnlScheduleAppointment.Enabled = false;
                     pnlAppointmentDetails.Enabled = false;
-                    pnlReferringDetails.Enabled = false;
+                    //Jira CAP-2216
+                    //pnlReferringDetails.Enabled = false;
+                    cboOrder.Enabled = false;
+                    //Jira CAP-2216 - End
                     pnlVisit.Enabled = false;
                     txtProviderSearch.Enabled = false;
                     imgClearProviderText.Visible = false;
@@ -1378,7 +1390,7 @@ namespace Acurus.Capella.UI
                 DisableTableLayout(pnlReschedule);
                 btnFindAvailableSlot.Enabled = false;
             }
-                if (tabReferringProvAndPCP.SelectedIndex == 0)
+            if (tabReferringProvAndPCP.SelectedIndex == 0)
             {
                 if (hdnrenprovider.Value != "")
                 {
@@ -1405,8 +1417,23 @@ namespace Acurus.Capella.UI
                 }
 
             }
+            //Jira CAP-2216 - Start
+            if (Request["EncounterID"] != null && Request["EncounterID"] != string.Empty && hdnCurrentProcess.Value != "ARCHIEVE")
+            {
+                EnablePhytxtBox(Convert.ToUInt64(Request["EncounterID"]));
+            }
+            else if (hdnCurrentProcess.Value == "ARCHIEVE")
+            {
+                chkSelfReferred.Enabled = false;
+                pnlReferringDetails.Enabled = false;
+            }
+            if (chkSelfReferred != null && chkSelfReferred.Visible == true && chkSelfReferred.Checked == true)
+            {
+                imgClearProviderText.Visible = false;
+                imgEditProvider.Visible = false;
+            }
+            //Jira CAP-2216 - End
             //Jira #CAP-69 - labels are missing
-
             OverAllPageLoad.Stop();
             time_taken += "OverAllPageLoad : " + OverAllPageLoad.Elapsed.Seconds + "." + OverAllPageLoad.Elapsed.Milliseconds + "s; ";
             hdnTimeTaken.Value = time_taken;
@@ -1414,6 +1441,59 @@ namespace Acurus.Capella.UI
             ScriptManager.RegisterStartupScript(this, this.Page.GetType(), "Appointment", " {sessionStorage.setItem('StartLoading', 'false');StopLoadFromPatChart();}", true);
 
         }
+        //Jira CAP-2216
+        public void EnablePhytxtBox(ulong ulEncounter_id)
+        {
+            hdnEnableProviderSearch.Value = "";
+            hdnDisableSelfReferred.Value = "";
+            if (tabReferringProvAndPCP.SelectedTab.Text != "Enter Ord provider details")
+            {
+                if (ulEncounter_id > 0 && ApplicationObject.scntab != null)
+                {
+                    WFObject WFObj = null;
+                    WFObj = wfMngr.GetByObjectSystemId(ulEncounter_id, "DOCUMENTATION");
+
+                    var scnid = from sc in ApplicationObject.scntab where sc.SCN_Name == "frmEditAppointment" select sc.SCN_ID;
+                    var userPermission = from u in ClientSession.UserPermissionDTO.Userscntab where u.scn_id == Convert.ToUInt64(scnid.ToList<int>()[0]) && u.user_name == ClientSession.UserName && u.Permission == "U" select u;
+                    
+                    if (userPermission.ToList<user_scn_tab>().Count > 0)
+                    {
+                        bool EnableProviderSearch = false;
+
+
+                        if (WFObj != null && WFObj.Id > 0 && WFObj.Current_Process == "DOCUMENT_COMPLETE")
+                        {
+                            txtProviderSearch.Enabled = false;
+                            imgClearProviderText.Visible = false;
+                            imgEditProvider.Visible = false;
+                            imgEditProvider.Style.Add("display", "none");
+                            imgClearProviderText.Attributes.Remove("onclick");
+                            hdnDisableSelfReferred.Value = "true";
+                            EnableProviderSearch = false;
+                            hdnEnableProviderSearch.Value = "false";
+
+
+                        }
+                        else
+                        {
+                            txtProviderSearch.Enabled = true;
+                            imgClearProviderText.Visible = true;
+                            imgEditProvider.Visible = true;
+                            imgEditProvider.Disabled = false;
+                            imgEditProvider.Style.Add("display", "block");
+                            imgClearProviderText.Attributes.Add("onclick", "return ProviderSearchclear();");
+                            hdnDisableSelfReferred.Value = "false";
+                            EnableProviderSearch = true;
+                            hdnEnableProviderSearch.Value = "true";
+
+                        }
+                        ScriptManager.RegisterStartupScript(this, this.Page.GetType(), "EnableProviderSearch", "EnableProviderSearch('" + EnableProviderSearch.ToString().ToLower() + "');", true);
+                    }
+
+                }
+            }
+        }
+            
         public void hdnbtngeneratexml_Click(object sender, EventArgs e)
         {
 
@@ -3070,6 +3150,21 @@ namespace Acurus.Capella.UI
                 // }
 
                 ScriptManager.RegisterStartupScript(this, this.Page.GetType(), "showVal", "EnableSaveButtononunload(); {sessionStorage.setItem('StartLoading', 'false');StopLoadFromPatChart();}", true);
+            }
+            //Jira CAP-2216 - Start
+            if (Request["EncounterID"] != null && Request["EncounterID"] != string.Empty && hdnCurrentProcess.Value != "ARCHIEVE")
+            {
+                EnablePhytxtBox(Convert.ToUInt64(Request["EncounterID"]));
+            }
+            else if (hdnCurrentProcess.Value == "ARCHIEVE")
+            {
+                chkSelfReferred.Enabled = false;
+                pnlReferringDetails.Enabled = false;
+            }
+            if (chkSelfReferred != null && chkSelfReferred.Visible == true && chkSelfReferred.Checked == true)
+            {
+                imgClearProviderText.Visible = false;
+                imgEditProvider.Visible = false;
             }
         }
 
@@ -4730,7 +4825,8 @@ namespace Acurus.Capella.UI
             {
                 this.Page.Title = "View Appointment" + "-" + ClientSession.UserName;
                 chkReschedule.Enabled = false;
-                chkSelfReferred.Enabled = false;
+                //Jira CAP-2216
+                //chkSelfReferred.Enabled = false;
                 chkShowAllPhysicians.Enabled = false;
                 btnSave.Enabled = false;
                 txtPurposeofVisit.txtDLC.Enabled = false;
@@ -4738,13 +4834,17 @@ namespace Acurus.Capella.UI
                 DisableTableLayout(pnlReschedule);
                 chkReschedule.Enabled = false;
                 chkShowAllPhysicians.Enabled = false;
-                chkSelfReferred.Enabled = false;
+                //Jira CAP-2216
+                //chkSelfReferred.Enabled = false;
                 btnSave.Enabled = false;
                 DateTimePickerColorChange(this.dtpApptDate, true);
                 TimePickerColorChange(dtpStartTime, true);
                 cboFacility.Enabled = false;
                 pnlAppointmentDetails.Enabled = false;
-                pnlReferringDetails.Enabled = false;
+                //Jira CAP-2216 - Start
+                //pnlReferringDetails.Enabled = false;
+                cboOrder.Enabled = false;
+                //Jira CAP-2216 - End
                 pnlVisit.Enabled = false;
                 txtProviderSearch.Enabled = false;
                 imgClearProviderText.Visible = false;
@@ -4753,6 +4853,22 @@ namespace Acurus.Capella.UI
                 btnPatientTask.Enabled = false;
 
             }
+            //Jira CAP-2216 - Start
+            if (Request["EncounterID"] != null && Request["EncounterID"] != string.Empty && hdnCurrentProcess.Value != "ARCHIEVE")
+            {
+                EnablePhytxtBox(Convert.ToUInt64(Request["EncounterID"]));
+            }
+            else if (hdnCurrentProcess.Value == "ARCHIEVE")
+            {
+                chkSelfReferred.Enabled = false;
+                pnlReferringDetails.Enabled = false;
+            }
+            if (chkSelfReferred != null && chkSelfReferred.Visible == true && chkSelfReferred.Checked == true)
+            {
+                imgClearProviderText.Visible = false;
+                imgEditProvider.Visible = false;
+            }
+            //Jira CAP-2216 - End
         }
         //Jira #CAP-69 - labels are missing
         public void pcpDefaultDemographics()

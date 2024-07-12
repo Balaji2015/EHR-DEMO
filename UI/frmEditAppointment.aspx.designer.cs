@@ -1023,6 +1023,24 @@ namespace Acurus.Capella.UI
         protected global::System.Web.UI.WebControls.HiddenField hdnTabRefPcpChange;
 
         /// <summary>
+        /// hdnEnableProviderSearch control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.HiddenField hdnEnableProviderSearch;
+
+        /// <summary>
+        /// hdnDisableSelfReferred control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.HiddenField hdnDisableSelfReferred;
+
+        /// <summary>
         /// btnReferralandPCP control.
         /// </summary>
         /// <remarks>
