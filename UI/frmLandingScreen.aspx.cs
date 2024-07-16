@@ -162,11 +162,11 @@ namespace Acurus.Capella.UI
             //if (System.Configuration.ConfigurationSettings.AppSettings["Reportpathhttp"] != null)
             //    hdnReportPathhttp.Value = System.Configuration.ConfigurationSettings.AppSettings["Reportpathhttp"];
 
-            ClientSession.LocalOffSetTime = Request.Cookies["LocalOffSetTime"]?.Value ?? Request.Form["EHRhdnLocalTime"] ?? "";
-            ClientSession.LocalDate = Request.Cookies["LocalDate"]?.Value ?? Request.Form["EHRhdnLocalDate"] ?? "";
-            ClientSession.UniversalTime = Request.Cookies["UniversalTime"]?.Value ?? Request.Form["EHRhdnUniversaloffset"] ?? "";
-            ClientSession.LocalTime = Request.Cookies["LocalTime"]?.Value ?? Request.Form["EHRhdnLocalDateAndTime"] ?? "";
-            bool.TryParse(Request.Cookies["bFollows_DST"]?.Value ?? Request.Form["EHRhdnFollowsDayLightSavings"], out bool bFollows_DST);
+            ClientSession.LocalOffSetTime = Request.Form["EHRhdnLocalTime"] ?? Request.Cookies["LocalOffSetTime"]?.Value ?? "";
+            ClientSession.LocalDate = Request.Form["EHRhdnLocalDate"] ?? Request.Cookies["LocalDate"]?.Value ?? "";
+            ClientSession.UniversalTime = Request.Form["EHRhdnUniversaloffset"] ?? Request.Cookies["UniversalTime"]?.Value ??  "";
+            ClientSession.LocalTime = Request.Form["EHRhdnLocalDateAndTime"] ?? Request.Cookies["LocalTime"]?.Value ??  "";
+            bool.TryParse(Request.Form["EHRhdnFollowsDayLightSavings"] ?? Request.Cookies["bFollows_DST"]?.Value, out bool bFollows_DST);
             ClientSession.bFollows_DST = bFollows_DST;
 
             //CAP-1922 & CAP-1955
@@ -585,11 +585,11 @@ namespace Acurus.Capella.UI
 
                         //CAP-2250
                         //Date Related Issue
-                        ClientSession.LocalOffSetTime = Request.Cookies["LocalOffSetTime"]?.Value ?? Request.Form["EHRhdnLocalTime"] ?? "";
-                        ClientSession.LocalDate = Request.Cookies["LocalDate"]?.Value ?? Request.Form["EHRhdnLocalDate"] ?? "";
-                        ClientSession.UniversalTime = Request.Cookies["UniversalTime"]?.Value ?? Request.Form["EHRhdnUniversaloffset"] ?? "";
-                        ClientSession.LocalTime = Request.Cookies["LocalTime"]?.Value ?? Request.Form["EHRhdnLocalDateAndTime"] ?? "";
-                        bool.TryParse(Request.Cookies["bFollows_DST"]?.Value ?? Request.Form["EHRhdnFollowsDayLightSavings"], out bool bFollows_DST);
+                        ClientSession.LocalOffSetTime = Request.Form["EHRhdnLocalTime"] ?? Request.Cookies["LocalOffSetTime"]?.Value ?? "";
+                        ClientSession.LocalDate = Request.Form["EHRhdnLocalDate"] ?? Request.Cookies["LocalDate"]?.Value ?? "";
+                        ClientSession.UniversalTime = Request.Form["EHRhdnUniversaloffset"] ?? Request.Cookies["UniversalTime"]?.Value ?? "";
+                        ClientSession.LocalTime = Request.Form["EHRhdnLocalDateAndTime"] ?? Request.Cookies["LocalTime"]?.Value ?? "";
+                        bool.TryParse(Request.Form["EHRhdnFollowsDayLightSavings"] ?? Request.Cookies["bFollows_DST"]?.Value, out bool bFollows_DST);
                         ClientSession.bFollows_DST = bFollows_DST;
 
                         string LoggedInFacility = string.Empty;
