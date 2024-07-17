@@ -2796,7 +2796,7 @@ function SearchAssignedTo() {
                     contentType: "application/json; charset=utf-8",
                     url: "frmPatientCommunication.aspx/SearchAssigned",
                     data: JSON.stringify({
-                        "sUserName": document.getElementById("txtAssignedTo").value,
+                        "sUserName": document.getElementById("txtAssignedTo").value.slice(0, 3),
                         "sUserRole": sUserRole,
                     }),
                     dataType: "json",
@@ -2812,18 +2812,40 @@ function SearchAssignedTo() {
                             response($.map(jsonData, function (item) {
                                 return {
                                     label: item
-                                    
+
                                 }
                             }));
                         }
                         else {
-                            response($.map(jsonData.AssignedTo, function (item) {
-                                //arrAssignto.push(item);
-                                return {
-                                    label: item.split('|')[1],
-                                    val: item.split('|')[0]
+                            if (arrAssignto.length != 0) {
+                                var results = FilterWithdelimiter(arrAssignto, request.term, "|", 1);
+                                results = results.slice(0, 100);
+                                if (results.length == 0) {
+                                    results.push('No matches found.')
+                                    response($.map(results, function (item) {
+                                        return {
+                                            label: item
+                                        }
+                                    }));
                                 }
-                            }));
+                                else {
+                                    response($.map(results, function (item) {
+                                        return {
+                                            label: item.split('|')[1],
+                                            val: item.split('|')[0]
+                                        }
+                                    }));
+                                }
+                            }
+                            else {
+                                response($.map(jsonData.AssignedTo, function (item) {
+                                    //arrAssignto.push(item);
+                                    return {
+                                        label: item.split('|')[1],
+                                        val: item.split('|')[0]
+                                    }
+                                }));
+                            }
                         }
 
                         $("#txtAssignedTo").focus();

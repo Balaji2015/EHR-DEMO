@@ -1476,11 +1476,17 @@ namespace Acurus.Capella.UI
                         }
                         else
                         {
-                            txtProviderSearch.Enabled = true;
+                            if (txtProviderSearch.Text == "")
+                            {
+                                txtProviderSearch.Enabled = true;
+                            }
+                            else {
+                                txtProviderSearch.Enabled = false;
+                            }
                             imgClearProviderText.Visible = true;
                             imgEditProvider.Visible = true;
                             imgEditProvider.Disabled = false;
-                            imgEditProvider.Style.Add("display", "block");
+                            imgEditProvider.Style.Add("display", "none");
                             imgClearProviderText.Attributes.Add("onclick", "return ProviderSearchclear();");
                             hdnDisableSelfReferred.Value = "false";
                             EnableProviderSearch = true;

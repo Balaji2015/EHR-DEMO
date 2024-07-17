@@ -44,14 +44,8 @@ namespace Acurus.Capella.UI
                 if (parts.Length > 1)
                 {
                     state = parts[1];
-
-                    if (!string.IsNullOrWhiteSpace(state))
-                    {
-                        //CAP-2019
-                        Response.SetCookie(new HttpCookie("RedirectUri") { Value = state, Expires = DateTime.Now.AddDays(1) });
                     }
                 }
-            }
             catch (Exception ex)
             {
                 //Console.WriteLine($"Error decoding Base64 string: {ex.Message}");
@@ -169,25 +163,39 @@ namespace Acurus.Capella.UI
             bool.TryParse(Request.Form["EHRhdnFollowsDayLightSavings"] ?? Request.Cookies["bFollows_DST"]?.Value, out bool bFollows_DST);
             ClientSession.bFollows_DST = bFollows_DST;
 
-            //CAP-1922 & CAP-1955
+            //CAP-1922 & CAP-1955,CAP-2171
+            var responseRedirectUrl = string.Empty;
             if (!string.IsNullOrWhiteSpace(Request.Form["RedirectURL"]))
             {
                 var returnUrl = Request.Form["RedirectURL"];
                 var redirectURL = directURLUtility.GetDomainSpecificRedirectURL(returnUrl, Request.Form["DefaultServer"]);
                 Response.SetCookie(new HttpCookie("RedirectUri") { Value = redirectURL, Expires = DateTime.Now.AddDays(1) });
+                responseRedirectUrl = redirectURL;
             }
             else
             {
-                if (!string.IsNullOrWhiteSpace(Request.Url.Query))
+                //CAP-2171
+                if(!string.IsNullOrEmpty(state))
+                {
+                    Response.SetCookie(new HttpCookie("RedirectUri") { Value = state, Expires = DateTime.Now.AddDays(1) });
+                    responseRedirectUrl = state;
+                }
+                else if (!string.IsNullOrWhiteSpace(Request.Url.Query))
                 {
                     var returnUrl = HttpUtility.ParseQueryString(Request.Url.Query)["redirecturl"]; 
                     Response.SetCookie(new HttpCookie("RedirectUri") { Value = returnUrl, Expires = DateTime.Now.AddDays(1) });
+                    responseRedirectUrl = returnUrl;
                 }
                 else
                 {
                     ExpireRedirectUrlCookie();
                     }
                 }
+
+            if (string.IsNullOrWhiteSpace(responseRedirectUrl))
+            {
+                responseRedirectUrl = Request.Cookies["RedirectUri"]?.Value ?? string.Empty;
+            }
 
             if (string.IsNullOrWhiteSpace(sUserAccountType))
             {
@@ -348,7 +356,8 @@ namespace Acurus.Capella.UI
                         data.Add("UserAccountType", sUserAccountType);
                         data.Add("AccessToken", ClientSession.AccessToken);
                         data.Add("AccessTokenId", ClientSession.AccessTokenId);
-                        data.Add("RedirectURL", Request.Cookies["RedirectUri"]?.Value ?? string.Empty);
+                        //CAP-2171
+                        data.Add("RedirectURL", responseRedirectUrl ?? string.Empty);
                         hdnroleLanding.Value = login[0].role;
                         hdnRCopia_User_NameLanding.Value = login[0].RCopia_User_Name;
                         hdnIs_RCopia_Notification_RequiredLanding.Value = login[0].Is_RCopia_Notification_Required;
@@ -585,12 +594,12 @@ namespace Acurus.Capella.UI
 
                         //CAP-2250
                         //Date Related Issue
-                        ClientSession.LocalOffSetTime = Request.Form["EHRhdnLocalTime"] ?? Request.Cookies["LocalOffSetTime"]?.Value ?? "";
-                        ClientSession.LocalDate = Request.Form["EHRhdnLocalDate"] ?? Request.Cookies["LocalDate"]?.Value ?? "";
-                        ClientSession.UniversalTime = Request.Form["EHRhdnUniversaloffset"] ?? Request.Cookies["UniversalTime"]?.Value ?? "";
-                        ClientSession.LocalTime = Request.Form["EHRhdnLocalDateAndTime"] ?? Request.Cookies["LocalTime"]?.Value ?? "";
-                        bool.TryParse(Request.Form["EHRhdnFollowsDayLightSavings"] ?? Request.Cookies["bFollows_DST"]?.Value, out bool bFollows_DST);
-                        ClientSession.bFollows_DST = bFollows_DST;
+                        //ClientSession.LocalOffSetTime = Request.Form["EHRhdnLocalTime"] ?? Request.Cookies["LocalOffSetTime"]?.Value ?? "";
+                        //ClientSession.LocalDate = Request.Form["EHRhdnLocalDate"] ?? Request.Cookies["LocalDate"]?.Value ?? "";
+                        //ClientSession.UniversalTime = Request.Form["EHRhdnUniversaloffset"] ?? Request.Cookies["UniversalTime"]?.Value ?? "";
+                        //ClientSession.LocalTime = Request.Form["EHRhdnLocalDateAndTime"] ?? Request.Cookies["LocalTime"]?.Value ?? "";
+                        //bool.TryParse(Request.Form["EHRhdnFollowsDayLightSavings"] ?? Request.Cookies["bFollows_DST"]?.Value, out bool bFollows_DST);
+                        //ClientSession.bFollows_DST = bFollows_DST;
 
                         string LoggedInFacility = string.Empty;
                         if (ClientSession.FacilityName.Trim() != string.Empty)
