@@ -1625,14 +1625,14 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
 
                 if (order_status == string.Empty)
                     order_status = "%";
-
-                query.SetString(0, fromDate.ToString("yyyy-MM-dd"));
-                query.SetString(1, toDate.ToString("yyyy-MM-dd"));
-                query.SetString(2, physician);
-                query.SetString(3, human);
-                query.SetString(4, FacilityName);
-                query.SetString(5, order_type);
-                query.SetString(6, order_status);
+                //CAP-2299
+                query.SetString(0, FacilityName);
+                query.SetString(1, order_type);
+                query.SetString(2, order_status);
+                query.SetString(3, fromDate.ToString("yyyy-MM-dd"));
+                query.SetString(4, toDate.ToString("yyyy-MM-dd"));
+                query.SetString(5, physician);
+                query.SetString(6, human);
                 arr = new ArrayList(query.List());
                 if (arr != null)
                 {
@@ -1641,10 +1641,10 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
                         objFillOrdersManagementDTO = new FillOrdersManagementDTO();
                         object[] obj = (object[])arr[i];
                         objFillOrdersManagementDTO.Group_ID = Convert.ToUInt64(obj[0]);
-                        objFillOrdersManagementDTO.Order_Type = obj[1].ToString();
-                        objFillOrdersManagementDTO.Facility_Name = obj[2].ToString();
-                        objFillOrdersManagementDTO.Current_Process = obj[3].ToString();
-                        objFillOrdersManagementDTO.Ordered_Date_And_Time = Convert.ToDateTime(obj[4]);
+                        objFillOrdersManagementDTO.Order_Type = obj[1]?.ToString();
+                        objFillOrdersManagementDTO.Facility_Name = obj[2]?.ToString();
+                        objFillOrdersManagementDTO.Current_Process = obj[3]?.ToString();
+                        objFillOrdersManagementDTO.Ordered_Date_And_Time = Convert.ToDateTime(obj[4] ?? DateTime.MinValue);
                         objFillOrdersManagementDTO.Human_Id = (obj[5].ToString());
                         objFillOrdersManagementDTO.Human_Name = obj[6].ToString();
                         objFillOrdersManagementDTO.Date_Of_Birth = Convert.ToDateTime(obj[7]);

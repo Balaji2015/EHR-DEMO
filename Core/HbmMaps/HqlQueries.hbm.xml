@@ -4772,12 +4772,13 @@ R.Physician_ID LIKE ? AND R.Human_ID LIKE ? AND R.Pharmacy_ID LIKE ? AND R.Pharm
 		<![CDATA[SELECT r.referral_order_id,W.Obj_Type,W.Facility_Name,W.Current_Process,cast(W.Current_Arrival_Time as CHAR(100)) as Current_Arrival_Time,R.Human_ID,
   concat(h.Last_Name,", ",h.First_Name," ",h.MI),cast(h.Birth_Date as CHAR(100)) as BirthDate,R.From_Physician_ID,R.Reason_For_Referral,R.From_Physician_ID,R.To_Physician_Name,
   R.To_Facility_Name,R.Referral_order_id,concat(P.Physician_Prefix,' ',P.Physician_First_Name,' ',P.Physician_Middle_Name,' ',P.Physician_Last_Name,' ',P.Physician_Suffix) as Ordering_Provider
-  FROM wf_object w
-  left join REFERRAL_ORDER R on R.REFERRAL_ORDER_GROUP_ID=W.obj_System_Id
+  FROM REFERRAL_ORDER R
+  left join wf_object w on (R.REFERRAL_ORDER_GROUP_ID = W.obj_System_Id 
+  AND W.Facility_Name like ? AND W.Obj_Type=? AND W.Current_Process like ? )
   LEFT JOIN Human H ON H.Human_ID=R.Human_ID
   LEFT JOIN physician_library P ON P.Physician_Library_ID=R.From_Physician_ID
   WHERE (cast(R.Created_Date_And_Time as char(100)) BETWEEN ? AND ?) AND
-  R.From_Physician_ID LIKE ? AND R.Human_ID LIKE ? AND W.Facility_Name like ? AND W.Obj_Type=? AND W.Current_Process like ? ;]]>
+  R.From_Physician_ID LIKE ? AND R.Human_ID LIKE ? ;]]>
 	</sql-query>
 	<sql-query name="Fill.SearchOrderWithReferral.Count">
 		<![CDATA[SELECT W.Obj_System_Id,W.Obj_Type,W.Facility_Name,W.Current_Process,
@@ -6428,12 +6429,12 @@ as Specimen_Collection_Date_And_Time,F.Order_ID as File_Management_Index_Order_I
 		<![CDATA[SELECT W.Obj_System_ID,W.Obj_Type,W.Facility_Name,W.Current_Process,
   cast(W.Current_Arrival_Time as CHAR(100)) as Current_Arrival_Time,O.Human_ID,concat(h.Last_Name,", ",h.First_Name," ",h.MI),cast(h.Birth_Date as CHAR(100)) as BirthDate,O.Physician_ID,
   group_concat(concat(O.Procedure_Code,'-',O.Immunization_Description) separator ';'),concat(P.Physician_Prefix,' ',P.Physician_First_Name,' ',P.Physician_Middle_Name,' ',P.Physician_Last_Name,' ',P.Physician_Suffix) as Ordering_Provider
-  FROM wf_object W
-  LEFT JOIN immunization O  ON(W.Obj_System_ID = O.immunization_group_id)
+  FROM immunization O
+  LEFT JOIN wf_object W ON(W.Obj_System_ID = O.immunization_group_id 
+  AND W.Obj_Type = ? AND W.Facility_Name Like ? AND W.Current_Process LIKE ?)
   LEFT JOIN Human H ON H.Human_ID=O.Human_ID
   LEFT JOIN physician_library P ON P.Physician_Library_ID=O.Physician_ID
-  WHERE W.Obj_Type = ? AND W.Facility_Name Like ? AND W.Current_Process LIKE ?
-  AND (cast(O.Created_Date_And_Time as char(100)) BETWEEN ? AND ?)
+  WHERE (cast(O.Created_Date_And_Time as char(100)) BETWEEN ? AND ?)
   AND O.Physician_ID LIKE ? AND O.Human_ID LIKE ? group by O.immunization_group_id ;]]>
 	</sql-query>
 	<sql-query name="Get.GetImmunizationOrderSearch.Count">
@@ -12418,14 +12419,20 @@ order by H.Human_ID,H.Birth_Date,A.Authorization_id]]>
 
 
 	<sql-query name="Get.GetProcedureOrderSearch">
-		<![CDATA[SELECT e.Facility_Name,cast(O.Created_Date_And_Time as char(100))as Arrivaldate,O.Human_ID,
+		<![CDATA[SELECT '' AS Facility_Name,cast(O.Created_Date_And_Time as char(100))as Arrivaldate,O.Human_ID,
     concat(h.Last_Name,",",h.First_Name," ",h.MI),cast(h.Birth_Date as CHAR(100)) as BirthDate,O.Physician_ID,
     group_concat(concat(O.Procedure_Code,'-',O.Procedure_Code_Description) separator ';'),concat(p.Physician_Prefix,
     "",p.Physician_First_Name,"",p.Physician_Middle_Name,"",p.Physician_Last_Name,"",p.Physician_Suffix),O.in_house_procedure_ID FROM `in_house_procedure` O,Physician_Library p,
-    Human h,encounter e where O.human_id=h.human_id and e.encounter_id=O.encounter_id and
-    O.physician_id=p.Physician_Library_ID and o.human_id LIKE ? and O.Physician_ID LIKE ? And
-    e.facility_name like ? and O.Created_Date_And_Time between ? and ?
-    group by O.In_House_Procedure_Group_ID ;]]>
+    Human h where O.human_id=h.human_id and O.Encounter_ID = 0 AND
+    O.physician_id=p.Physician_Library_ID and o.human_id LIKE ? and O.Physician_ID LIKE ? and O.Created_Date_And_Time between ? and ?
+    group by O.In_House_Procedure_Group_ID
+    UNION ALL
+    SELECT e.Facility_Name,cast(O.Created_Date_And_Time as char(100))as Arrivaldate,O.Human_ID,
+    concat(h.Last_Name,",",h.First_Name," ",h.MI),cast(h.Birth_Date as CHAR(100)) as BirthDate,O.Physician_ID,
+    group_concat(concat(O.Procedure_Code,'-',O.Procedure_Code_Description) separator ';'),concat(p.Physician_Prefix,
+    "",p.Physician_First_Name,"",p.Physician_Middle_Name,"",p.Physician_Last_Name,"",p.Physician_Suffix),O.in_house_procedure_ID FROM `in_house_procedure` O,Physician_Library p,
+    Human h,encounter e where O.human_id=h.human_id and e.encounter_id=O.encounter_id and O.physician_id=p.Physician_Library_ID and o.human_id LIKE ? AND O.Physician_ID LIKE ? and O.Physician_ID LIKE ? and O.Created_Date_And_Time between ? and ?
+    group by O.In_House_Procedure_Group_ID;]]>
 	</sql-query>
 	<sql-query name="Get.GetProcedureOrderSearch.Count">
 		<![CDATA[SELECT e.Facility_Name,cast(O.Created_Date_And_Time as char(100))as Arrivaldate,O.Human_ID,

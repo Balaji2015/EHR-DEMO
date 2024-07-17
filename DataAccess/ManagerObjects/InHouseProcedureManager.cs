@@ -1435,9 +1435,14 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
                 query = iMySession.GetNamedQuery("Get.GetProcedureOrderSearch");
                 query.SetString(0, human);
                 query.SetString(1, physician);
-                query.SetString(2, FacilityName);
-                query.SetString(3, fromDate.ToString("yyyy-MM-dd"));
-                query.SetString(4, toDate.ToString("yyyy-MM-dd"));
+                //CAP-2299
+                query.SetString(2, fromDate.ToString("yyyy-MM-dd"));
+                query.SetString(3, toDate.ToString("yyyy-MM-dd"));
+                query.SetString(4, human);
+                query.SetString(5, physician);
+                query.SetString(6, FacilityName);
+                query.SetString(7, fromDate.ToString("yyyy-MM-dd"));
+                query.SetString(8, toDate.ToString("yyyy-MM-dd"));
                 arr = new ArrayList(query.List());
                 if (arr != null)
                 {

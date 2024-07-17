@@ -1998,11 +1998,12 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
                     {
                         objFillOrdersManagementDTO = new FillOrdersManagementDTO();
                         object[] obj = (object[])arr[i];
-                        objFillOrdersManagementDTO.Group_ID = Convert.ToUInt64(obj[0]);
-                        objFillOrdersManagementDTO.Order_Type = obj[1].ToString();
-                        objFillOrdersManagementDTO.Facility_Name = obj[2].ToString();
-                        objFillOrdersManagementDTO.Current_Process = obj[3].ToString();
-                        objFillOrdersManagementDTO.Ordered_Date_And_Time = Convert.ToDateTime(obj[4]);
+                        //CAP-2299
+                        objFillOrdersManagementDTO.Group_ID = Convert.ToUInt64(obj[0] ?? 0);
+                        objFillOrdersManagementDTO.Order_Type = obj[1]?.ToString();
+                        objFillOrdersManagementDTO.Facility_Name = obj[2]?.ToString();
+                        objFillOrdersManagementDTO.Current_Process = obj[3]?.ToString();
+                        objFillOrdersManagementDTO.Ordered_Date_And_Time = Convert.ToDateTime(obj[4] ?? DateTime.MinValue);
                         objFillOrdersManagementDTO.Human_Id = (obj[5].ToString());
                         objFillOrdersManagementDTO.Human_Name = obj[6].ToString();
                         objFillOrdersManagementDTO.Date_Of_Birth = Convert.ToDateTime(obj[7]);
