@@ -2292,11 +2292,11 @@ function StripNotFilled(args) {
             $(window.top.document).find('#divErrorMessage').modal({ backdrop: 'static', keyboard: false }, 'show');
             $(window.top.document).find('#btnErrorOk').css("display", "none");
             $(window.top.document).find('#btnErrorCancel').css("display", "none");
-            $(window.top.document).find('#btnErrorOkCancel').css("display", "");              
+            $(window.top.document).find('#btnErrorOkStrip').css("display", "");              
     }
 }
 
-$(window.top.document).find('#btnErrorOkCancel').click(function () {
+$(window.top.document).find('#btnErrorOkStrip').click(function () {
     
     { sessionStorage.setItem('StartLoading', 'true'); StartLoadFromPatChart(); }
     window.top.location.href = "frmMyQueueNew.aspx";
