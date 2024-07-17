@@ -1854,7 +1854,14 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
                             for (int i = 0; i < OrderCPT.Count; i++)
                             {
                                 IList<string> FinalProcedurelist = (from m in TempProcedureListOrdersList where m.Split('~')[0] == OrderCPT[i].ToString() select m).ToList<string>();
+                                //Cap - 2112 - Start
+                                if (EandMCPTs.IndexOf(OrderCPT[i]) == 1)
+                                {
+                                    EandMCPTs.Remove(OrderCPT[i]);
+                                }
 
+                               ProcList = (from m in ProcList where m.Split('~')[0] != OrderCPT[i].ToString() select m).ToList<string>();
+                                //Cap - 2112 - End
 
                                 if (FinalProcedurelist.Count > 0)
                                 {
@@ -2670,7 +2677,7 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
                                 else
 
                                     ProcList.Add(DistinctProcedureList[iDis].ToString().Split('~')[0] + "~" + DistinctProcedureList[iDis].ToString().Split('~')[1] + "~" + "" + "~" + "1" + "~" + "" + "~" + "" + "~" + "" + "~" + "" + "~" + "6" + "~" + "" + "~" + "" + "~" + "" + "~" + "" + "~" + "" + "~" + "" + "~" + "" + "~" + DistinctProcedureList[iDis].ToString().Split('~')[2] + "~" + DistinctProcedureList[iDis].ToString().Split('~')[3]);
-                            }
+                            }                                                     
                         }
                     }
                 }
