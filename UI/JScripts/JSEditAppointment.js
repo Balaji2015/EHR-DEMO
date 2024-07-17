@@ -1689,12 +1689,15 @@ function EnableProviderSearch(EnablePrvdr)
         if (document.getElementById("txtProviderSearch").value == "") {
             document.getElementById("txtProviderSearch").disabled = false;
         }
+        else {
+            document.getElementById("txtProviderSearch").disabled = true;
+        }
         if (document.getElementById("imgClearProviderText")?.style?.visibility != undefined && document.getElementById("imgClearProviderText")?.style?.visibility != null) {
             document.getElementById("imgClearProviderText").style.visibility = true;
         }
         if (document.getElementById("imgEditProvider") != undefined && document.getElementById("imgEditProvider") != null) {
             document.getElementById("imgEditProvider").style.visibility = true;
-            document.getElementById("imgEditProvider").style.display = "block";
+            document.getElementById("imgEditProvider").style.display = "none";
         }
     }
 
