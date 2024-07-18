@@ -297,7 +297,7 @@ namespace Acurus.Capella.UI
             string redirectUri = ConfigurationSettings.AppSettings["okta:RedirectUri"];
             //CAP-2019
             var state = Convert.ToBase64String(Encoding.UTF8.GetBytes(Guid.NewGuid().ToString() + "|" + Request.QueryString["redirecturl"] ?? ""));
-            return $"{oktaAuthorizeEndpoint}?client_id={clientId}&response_type=code&redirect_uri={HttpUtility.UrlEncode(redirectUri)}&prompt=none&scope=openid+profile+email&state={HttpUtility.UrlEncode(state)}";
+            return $"{oktaAuthorizeEndpoint}?client_id={clientId}&response_type=code&redirect_uri={HttpUtility.UrlEncode(redirectUri)}&prompt=none&scope=openid+profile+email&state={state}";
         }
 
         private string GetOktaUrl(string sessionToken)
@@ -311,7 +311,7 @@ namespace Acurus.Capella.UI
             var state = Convert.ToBase64String(Encoding.UTF8.GetBytes(Guid.NewGuid().ToString() + "|" + Request.QueryString["redirecturl"] ?? ""));
             
             //CAP-2142,CAP-2019
-            return $"{oktaAuthorizeEndpoint}?client_id={clientId}&response_type=code&scope=openid+profile+email&response_mode=query&prompt=none&redirect_uri={HttpUtility.UrlEncode(redirectUri)}&state={HttpUtility.UrlEncode(state)}&nonce=n-0S6_WzA2Mj&sessionToken={sessionToken}";
+            return $"{oktaAuthorizeEndpoint}?client_id={clientId}&response_type=code&scope=openid+profile+email&response_mode=query&prompt=none&redirect_uri={HttpUtility.UrlEncode(redirectUri)}&state={state}&nonce=n-0S6_WzA2Mj&sessionToken={sessionToken}";
         }
 
         //To encrypt the password
