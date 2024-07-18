@@ -11,6 +11,7 @@ using System.IO;
 using System.Runtime.Serialization;
 using Acurus.Capella.PatientPortal;
 using System.Web.Script.Serialization;
+using log4net.Util.TypeConverters;
 
 namespace PatientPortal
 {
@@ -30,6 +31,17 @@ namespace PatientPortal
        
             if (!IsPostBack)
             {
+                //Cap - 2033
+                if (Request.QueryString["PatientID"]==null)
+                {
+                    UserName.Enabled = false;
+                    Password.Enabled = false;
+                    LoginButton.Disabled = true;
+                    rdbtnPatientLogin.Enabled = false;
+                    rdbtnRepresentativeLogin.Enabled = false;
+                    FailureText.Text = "Please launch the login page from the registration email you received.";
+                }
+
                 this.Page.Title = "Patient Access-Login";
                 if (Request.QueryString["PatientID"] != null)
                 {
@@ -81,7 +93,14 @@ namespace PatientPortal
             }
             else
             {
-                humanList = hnProxy.CheckPatientPortal(UserName.Text, Password.Text);
+                //Cap - 2033
+                if(Request.QueryString["PatientID"] == null)
+                {
+                    FailureText.Text = "Please launch the login page from the registration email you received.";
+                    return;
+                }
+                //humanList = hnProxy.CheckPatientPortal(UserName.Text, Password.Text);
+                humanList = hnProxy.CheckPatientPortal(UserName.Text, Password.Text,Convert.ToUInt64(Request.QueryString["PatientID"]));
             }
 
             if (humanList.Count > 0)

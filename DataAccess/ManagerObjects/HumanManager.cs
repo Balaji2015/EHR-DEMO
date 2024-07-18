@@ -63,7 +63,7 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
 
         HumanDTO GetHumanInuranceAndCarrierDetails(ulong ulHuman_id);
 
-        IList<Human> CheckPatientPortal(string sMail, string sPassword);
+        IList<Human> CheckPatientPortal(string sMail, string sPassword, ulong PatientId);
 
         Human GetHumanIfDuplicateEMail(string email, string sLegalOrg);
 
@@ -2624,12 +2624,14 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
             return objHuman;
         }
 
-        public IList<Human> CheckPatientPortal(string sMail, string sPassword)
+        public IList<Human> CheckPatientPortal(string sMail, string sPassword, ulong PatientId)
         {
             IList<Human> HumanList = null;
             using (ISession iMySession = NHibernateSessionManager.Instance.CreateISession())
             {
-                ICriteria crit = iMySession.CreateCriteria(typeof(Human)).Add(Expression.Eq("EMail", sMail)).Add(Expression.Eq("Password", sPassword));
+                //Cap - 2033    
+                //ICriteria crit = iMySession.CreateCriteria(typeof(Human)).Add(Expression.Eq("EMail", sMail)).Add(Expression.Eq("Password", sPassword));
+                ICriteria crit = iMySession.CreateCriteria(typeof(Human)).Add(Expression.Eq("EMail", sMail)).Add(Expression.Eq("Password", sPassword)).Add(Expression.Eq("Id", PatientId));
                 HumanList = crit.List<Human>();
                 iMySession.Close();
             }
