@@ -164,6 +164,32 @@ namespace Acurus.Capella.UI
             bool.TryParse(Request.Form["EHRhdnFollowsDayLightSavings"] ?? Request.Cookies["bFollows_DST"]?.Value, out bool bFollows_DST);
             ClientSession.bFollows_DST = bFollows_DST;
 
+            if (!string.IsNullOrEmpty(Request.Form["EHRhdnLocalTime"]))
+            {
+                Response.SetCookie(new HttpCookie("LocalOffSetTime") { Value = Request.Form["EHRhdnLocalTime"], Expires = DateTime.Now.AddDays(1) });      
+            }
+            
+            if (!string.IsNullOrEmpty(Request.Form["EHRhdnLocalDate"]))
+            {
+                Response.SetCookie(new HttpCookie("LocalDate") { Value = Request.Form["EHRhdnLocalDate"], Expires = DateTime.Now.AddDays(1) });      
+            }
+            
+            if (!string.IsNullOrEmpty(Request.Form["EHRhdnUniversaloffset"]))
+            {
+                Response.SetCookie(new HttpCookie("UniversalTime") { Value = Request.Form["EHRhdnUniversaloffset"], Expires = DateTime.Now.AddDays(1) });      
+            }
+            
+            if (!string.IsNullOrEmpty(Request.Form["EHRhdnLocalDateAndTime"]))
+            {
+                Response.SetCookie(new HttpCookie("LocalTime") { Value = Request.Form["EHRhdnLocalDateAndTime"], Expires = DateTime.Now.AddDays(1) });      
+            }
+            
+            if (!string.IsNullOrEmpty(Request.Form["EHRhdnFollowsDayLightSavings"]))
+            {
+                Response.SetCookie(new HttpCookie("bFollows_DST") { Value = Request.Form["EHRhdnFollowsDayLightSavings"], Expires = DateTime.Now.AddDays(1) });      
+            }
+
+
             //CAP-1922 & CAP-1955,CAP-2171
             var responseRedirectUrl = string.Empty;
             if (!string.IsNullOrWhiteSpace(Request.Form["RedirectURL"]))
