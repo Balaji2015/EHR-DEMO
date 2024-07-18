@@ -2288,10 +2288,8 @@ $("#tabStripEncounter_tbSummary").click(function () {
 //Cap - 2254
 function StripNotFilled(args) {
     if (args != undefined) {
-        $(window.top.document).find('#pErrorMsg').html(args +" is not filled for this encounter. Please contact support.");
-            $(window.top.document).find('#divErrorMessage').modal({ backdrop: 'static', keyboard: false }, 'show');
-            $(window.top.document).find('#btnErrorOk').css("display", "none");
-            $(window.top.document).find('#btnErrorCancel').css("display", "none");
+        $(window.top.document).find('#pErrorMsgStrip').html(args +" is not filled for this encounter. Please contact support.");
+        $(window.top.document).find('#divErrorMessageStrip').modal({ backdrop: 'static', keyboard: false }, 'show');
             $(window.top.document).find('#btnErrorOkStrip').css("display", "");              
     }
 }

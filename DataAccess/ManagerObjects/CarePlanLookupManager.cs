@@ -277,11 +277,21 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
                                     if (Convert.ToString(((object[])ires)[3]).ToUpper().Contains("BP"))
                                     {
                                         string Value = Convert.ToString(((object[])ires)[2]);
-                                        //JIra CAP-2200
-                                        if (Value != string.Empty)
+                                        //Jira CAP-2293
+                                        ////JIra CAP-2200
+                                        //if (Value != string.Empty)
+                                        if (Value != string.Empty && Value.Contains(','))
                                         {
                                             PlanDto.Status_Value = Value.Split(',')[0];
                                             PlanDto.Status = Value.Split(',')[1];
+                                        }
+                                        else if (Value != string.Empty && Char.IsNumber(Value.Replace("/", ""), 0))
+                                        {
+                                            PlanDto.Status_Value = Value;
+                                        }
+                                        else if (Value != string.Empty)
+                                        {
+                                            PlanDto.Status = Value;
                                         }
 
                                         //Jira CAP-1771
