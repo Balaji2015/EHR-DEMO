@@ -164,6 +164,32 @@ namespace Acurus.Capella.UI
             bool.TryParse(Request.Form["EHRhdnFollowsDayLightSavings"] ?? Request.Cookies["bFollows_DST"]?.Value, out bool bFollows_DST);
             ClientSession.bFollows_DST = bFollows_DST;
 
+            if (!string.IsNullOrEmpty(Request.Form["EHRhdnLocalTime"]))
+            {
+                Response.SetCookie(new HttpCookie("LocalOffSetTime") { Value = Request.Form["EHRhdnLocalTime"], Expires = DateTime.Now.AddDays(1) });      
+            }
+            
+            if (!string.IsNullOrEmpty(Request.Form["EHRhdnLocalDate"]))
+            {
+                Response.SetCookie(new HttpCookie("LocalDate") { Value = Request.Form["EHRhdnLocalDate"], Expires = DateTime.Now.AddDays(1) });      
+            }
+            
+            if (!string.IsNullOrEmpty(Request.Form["EHRhdnUniversaloffset"]))
+            {
+                Response.SetCookie(new HttpCookie("UniversalTime") { Value = Request.Form["EHRhdnUniversaloffset"], Expires = DateTime.Now.AddDays(1) });      
+            }
+            
+            if (!string.IsNullOrEmpty(Request.Form["EHRhdnLocalDateAndTime"]))
+            {
+                Response.SetCookie(new HttpCookie("LocalTime") { Value = Request.Form["EHRhdnLocalDateAndTime"], Expires = DateTime.Now.AddDays(1) });      
+            }
+            
+            if (!string.IsNullOrEmpty(Request.Form["EHRhdnFollowsDayLightSavings"]))
+            {
+                Response.SetCookie(new HttpCookie("bFollows_DST") { Value = Request.Form["EHRhdnFollowsDayLightSavings"], Expires = DateTime.Now.AddDays(1) });      
+            }
+
+
             //CAP-1922 & CAP-1955,CAP-2171
             var responseRedirectUrl = string.Empty;
             if (!string.IsNullOrWhiteSpace(Request.Form["RedirectURL"]))
@@ -568,42 +594,6 @@ namespace Acurus.Capella.UI
 
             UtilityManager.inserttologgingtableforSessionTimeout("hdnbtnLogin_Click - Start", Request.Url.ToString(), string.Empty);
 
-            try
-            {
-                var url = Request.Url?.Authority;
-                var server = string.Empty;
-                if (!string.IsNullOrWhiteSpace(url))
-                {
-                    var urlParts = url.Split('.');
-                    server = urlParts.Length > 2 ? urlParts[0] : string.Empty;
-                }
-
-                string fileName = ClientSession.UserName + "_" + server + "_" + Session.SessionID + ".txt";
-                string logDirectory = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Logs");
-                string logFilePath = Path.Combine(logDirectory, fileName);
-
-                if (!Directory.Exists(logDirectory))
-                {
-                    Directory.CreateDirectory(logDirectory);
-                }
-
-                using(StreamWriter streamWriter = new StreamWriter(logFilePath, true))
-                {
-                    var message = new StringBuilder();
-                    message.AppendLine($"LocalDate : - Session Value: {ClientSession.LocalDate} | Cookie Value: {Request.Cookies["LocalDate"]?.Value ?? ""} | Form Value: {Request.Form["EHRhdnLocalDate"] ?? ""}");
-                    message.AppendLine($"LocalTime : - Session Value: {ClientSession.LocalOffSetTime} | Cookie Value: {Request.Cookies["LocalOffSetTime"]?.Value ?? ""} | Form Value: {Request.Form["EHRhdnLocalTime"] ?? ""}");
-                    message.AppendLine($"Universaloffset : - Session Value: {ClientSession.UniversalTime} | Cookie Value: {Request.Cookies["UniversalTime"]?.Value ?? ""} | Form Value: {Request.Form["EHRhdnUniversaloffset"] ?? ""}");
-                    message.AppendLine($"LocalDateAndTime : - Session Value: {ClientSession.LocalTime} | Cookie Value: {Request.Cookies["LocalTime"]?.Value ?? ""} | Form Value: {Request.Form["EHRhdnLocalDateAndTime"] ?? ""}");
-                    message.AppendLine($"FollowsDayLightSaving : - Session Value: {ClientSession.bFollows_DST.ToString()} | Cookie Value: {Request.Cookies["bFollows_DST"]?.Value ?? ""} | Form Value: {Request.Form["EHRhdnFollowsDayLightSavings"] ?? ""}");
-
-
-                    streamWriter.WriteLine($"{DateTime.Now:yyyy-MM-dd HH:mm:ss} [Info] - \n{message.ToString()}");
-                }
-            }
-            catch(Exception ex)
-            {
-
-            }
 
 
             UserSessionManager userSessionMngr = new UserSessionManager();
@@ -629,14 +619,6 @@ namespace Acurus.Capella.UI
 
                         ClientSession.SavedSession = "TRUE";
 
-                        //CAP-2250
-                        //Date Related Issue
-                        //ClientSession.LocalOffSetTime = Request.Form["EHRhdnLocalTime"] ?? Request.Cookies["LocalOffSetTime"]?.Value ?? "";
-                        //ClientSession.LocalDate = Request.Form["EHRhdnLocalDate"] ?? Request.Cookies["LocalDate"]?.Value ?? "";
-                        //ClientSession.UniversalTime = Request.Form["EHRhdnUniversaloffset"] ?? Request.Cookies["UniversalTime"]?.Value ?? "";
-                        //ClientSession.LocalTime = Request.Form["EHRhdnLocalDateAndTime"] ?? Request.Cookies["LocalTime"]?.Value ?? "";
-                        //bool.TryParse(Request.Form["EHRhdnFollowsDayLightSavings"] ?? Request.Cookies["bFollows_DST"]?.Value, out bool bFollows_DST);
-                        //ClientSession.bFollows_DST = bFollows_DST;
 
                         string LoggedInFacility = string.Empty;
                         if (ClientSession.FacilityName.Trim() != string.Empty)
