@@ -61,7 +61,7 @@ namespace Acurus.Capella.UI
                     Response.SetCookie(new HttpCookie("IsOktaUser") { Value = "Y", Expires = DateTime.Now.AddSeconds(30) });
 
                     var redirectUrl = "/frmLoginNew.aspx?IsLoginRequired=true";
-                    var returnURL = Request.Cookies["RedirectUri"]?.Value;
+                    var returnURL = HttpUtility.UrlDecode(Request.Cookies["RedirectUri"]?.Value);
 
                     if (!string.IsNullOrWhiteSpace(returnURL))
                     {
