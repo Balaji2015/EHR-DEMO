@@ -12084,8 +12084,92 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
                         try
                         {
                             //trans = MySession.BeginTransaction();
-                            GenerateXml XMLObj = null;
-                            iResult = SaveUpdateDelete_DBAndXML_WithoutTransaction(ref EncList, ref EncListupdate, null, MySession, MACAddress, false, false, 0, "", ref XMLObj);
+                            //Cap - 2313 - Start
+                            GenerateXml XMLObj = new GenerateXml(); //null;
+                            //iResult = SaveUpdateDelete_DBAndXML_WithoutTransaction(ref EncList, ref EncListupdate, null, MySession, MACAddress, false, false, 0, "", ref XMLObj);
+                            if (EncounterRecord.Date_of_Service == DateTime.MinValue)
+                            {
+                                iResult = SaveUpdateDelete_DBAndXML_WithoutTransaction(ref EncList, ref EncListupdate, null, MySession, MACAddress, false, false, 0, "", ref XMLObj);
+                            }
+                            else
+                            {
+                                iResult = SaveUpdateDelete_DBAndXML_WithoutTransaction(ref EncList, ref EncListupdate, null, MySession, MACAddress, true, false, EncounterRecord.Id, "", ref XMLObj);
+                               
+                                int trycount = 0;
+                                trytosaveagain:
+                                try
+                                {
+                                    if (XMLObj.itemDoc.InnerXml != null && XMLObj.itemDoc.InnerXml != "")
+                                    {
+                                        try
+                                        {
+
+                                            WriteBlob(EncounterRecord.Id, XMLObj.itemDoc, MySession, EncList, EncListupdate, null, XMLObj, false);
+
+                                        }
+                                        catch (Exception xmlexcep)
+                                        {
+                                            throw xmlexcep;
+
+                                        }
+                                    }
+                                }
+                                catch (Exception xmlexcep)
+                                {
+                                    trycount++;
+                                    if (trycount <= 3)
+                                    {
+                                        int TimeMilliseconds = 0;
+                                        if (System.Configuration.ConfigurationSettings.AppSettings["ThreadSleepTime"] != null)
+                                            TimeMilliseconds = Convert.ToInt32(System.Configuration.ConfigurationSettings.AppSettings["ThreadSleepTime"]);
+
+                                        Thread.Sleep(TimeMilliseconds);
+                                        string sMsg = string.Empty;
+                                        string sExStackTrace = string.Empty;
+
+                                        string version = "";
+                                        if (System.Configuration.ConfigurationSettings.AppSettings["VersionConfiguration"] != null)
+                                            version = System.Configuration.ConfigurationSettings.AppSettings["VersionConfiguration"].ToString();
+
+                                        string[] server = version.Split('|');
+                                        string serverno = "";
+                                        if (server.Length > 1)
+                                            serverno = server[1].Trim();
+
+                                        if (xmlexcep.InnerException != null && xmlexcep.InnerException.Message != null)
+                                            sMsg = xmlexcep.InnerException.Message;
+                                        else
+                                            sMsg = xmlexcep.Message;
+
+                                        if (xmlexcep != null && xmlexcep.StackTrace != null)
+                                            sExStackTrace = xmlexcep.StackTrace;
+
+                                        string insertQuery = "insert into  stats_apperrorlog values(0,'" + sMsg.Replace(@"\\", @"\\\\").Replace(@"\", @"\\").Replace(@"\\\\\\\\", @"\\\\").Replace("'", "") + Environment.NewLine + " Retry: " + trycount + "', '" + serverno + "','" + DateTime.Now + "','','0','0','0','" + sExStackTrace.Replace("'", "") + "','" + DateTime.Now.ToString("yyyy-MM-dd hh:mm:ss") + "')";
+                                        string ConnectionData;
+                                        ConnectionData = ConfigurationManager.ConnectionStrings["con"].ConnectionString;
+                                        using (MySqlConnection con = new MySqlConnection(ConnectionData))
+                                        {
+                                            using (MySqlCommand cmd = new MySqlCommand(insertQuery))
+                                            {
+                                                cmd.Connection = con;
+                                                try
+                                                {
+                                                    con.Open();
+                                                    cmd.ExecuteNonQuery();
+                                                    con.Close();
+                                                }
+                                                catch
+                                                {
+                                                }
+                                            }
+                                        }
+                                        goto trytosaveagain;
+                                    }
+                                }
+
+                            }
+
+                            //Cap - 2313 - End
                             if (iResult == 2)
                             {
                                 if (iTryCount < 5)
