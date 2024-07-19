@@ -408,17 +408,7 @@ namespace Acurus.Capella.UI
             {
                 sDateofService = UtilityManager.ConvertToLocal(EncRecord.Date_of_Service);
             }
-            //Cap - 2254
-            if (sDateofService == null || sDateofService == DateTime.MinValue)
-            {
-                ScriptManager.RegisterStartupScript(this, typeof(frmEncounter), "ErrorMessage", "StripNotFilled('DOS');", true);
-                return issuccess;
-            }
-            if (strPhysicianDetails == null || strPhysicianDetails == string.Empty)
-            {
-                ScriptManager.RegisterStartupScript(this, typeof(frmEncounter), "ErrorMessage", "StripNotFilled('Physician');", true);
-                return issuccess;
-            }
+           
             pnlBarGroupTabs.InnerText = EncRecord.Facility_Name + "   |   " + sDateofService.ToString("dd-MMM-yyyy hh:mm tt") + "   |   " + EncRecord.Visit_Type + "   |   " + strPhysicianDetails + "   |   " + EncRecord.Assigned_Med_Asst_User_Name + "   |   " + EncRecord.Assigned_Scribe_User_Name; // +facList[0].POS_Description + "   |   ";
 
         // UtilityManager.inserttologgingtable(ClientSession.EncounterId.ToString(), ClientSession.HumanId.ToString(), ClientSession.UserName, ClientSession.PhysicianId.ToString(), "OpeningEncounterXMLfromMyQ");

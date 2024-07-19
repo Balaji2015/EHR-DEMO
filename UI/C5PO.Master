@@ -1268,32 +1268,6 @@
             </div>
         </div>
 
-
-         <div id="divErrorMessageStrip" class="modal modal-wide fade" style="z-index: 50000000!important; background-color: transparent!important">
-            <div class="modal-dialog" style="width: 30%; margin-top: 0%;">
-                <div class="modal-content">
-                    <div class="modal-header" style="height: 46px;">
-                        <div class="row" style="margin-top: -25px;">
-                            <div class="col-xs-8">
-                                <h3>Capella -EHR</h3>
-                            </div>
-                            <div class="col-xs-4" style="margin-top: 17px;">
-                                <button type="button" class="close" style="display:none;" onclick="HideLoadIcdon();" data-dismiss="modal" aria-hidden="true">&times;</button>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="modal-body" id="divErrorMsgBodyStrip" ><%--style="overflow-y: auto;"--%>
-                        <p style="font-size: small;" id="pErrorMsgStrip"></p>
-
-                    </div>
-                    <div class="modal-footer" style="height: 50px;">
-                        <button id="btnErrorOkStrip" autofocus="autofocus" data-dismiss="modal" style="margin-top: -10px; border: 1px solid !important;">OK</button>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-
           <div id="divFormServiceType" class="modal modal-wide fade" style="z-index: 1058!important;" role="dialog">
             <div class="modal-dialog" style="width: 95%; margin-top: 5%;" id="ServiceTypeModal">
                 <div class="modal-content">
