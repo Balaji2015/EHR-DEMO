@@ -116,8 +116,16 @@ namespace Acurus.Capella.UI
             {
                 human_id = Convert.ToUInt64(Request["HumanID"].ToString());
             }
+
+            //Cap - 2289
+            if (txtMedicalAssistantNotes.Enabled == true)
+            {
+                imgCopyPrevious.Visible = false;
+            }
+
             if (!IsPostBack)
             {
+               
                 if (Request["Openingfrom"] != null && Request["Openingfrom"] == "MyorderQueue")
                 {
                     btnpatientChart1.Visible = true;
