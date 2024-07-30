@@ -1833,7 +1833,8 @@ namespace Acurus.Capella.UI
 
                         ImmunizationManager immunMngr = new ImmunizationManager();
                         ImmunizationDTO objImmunizationFill = new ImmunizationDTO();
-                        objImmunizationFill.Immunization = immunMngr.GetImmunizationUsingGroupID(Convert.ToUInt64(GridSelectItem["EncounterID"].Text));
+                        //CAP-2310
+                        objImmunizationFill.Immunization = immunMngr.GetImmunizationUsingGroupID(Convert.ToUInt64(GridSelectItem["EncounterID"].Text), Convert.ToUInt64(GridSelectItem["PatientAcc"].Text));
 
                         string sDirPath = Server.MapPath("Documents/" + Session.SessionID);
 
