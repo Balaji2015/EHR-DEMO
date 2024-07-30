@@ -278,37 +278,107 @@ namespace Acurus.Capella.UI
 
         private string GetOktaAuthorizationUrl(string email)
         {
+            string redirectUri = string.Empty;
             // Replace with your Okta domain and other necessary parameters
             var oktaDomain = ConfigurationSettings.AppSettings["okta:OktaDomain"];
             string oktaAuthorizeEndpoint = $"{ConfigurationSettings.AppSettings["okta:AuthorizeURL"]}";
             string clientId = ConfigurationSettings.AppSettings["okta:ClientId"];
-            string redirectUri = ConfigurationSettings.AppSettings["okta:RedirectUri"];
+            //CAP-2337
+            if (Request.Url?.Authority == ConfigurationSettings.AppSettings["AkidoChartDomain"])
+            {
+                string subdomain = string.Empty;
+                string[] parts = Request.Url.AbsoluteUri.Split('/');
+                if (parts.Length > 1)
+                {
+                    subdomain = parts[1];
+                }
+
+                if (string.IsNullOrWhiteSpace(subdomain))
+                {
+                    redirectUri = $"https://{ConfigurationSettings.AppSettings["AkidoChartDomain"]}/frmLandingScreen.aspx";
+                }
+                else
+                {
+                    redirectUri = $"https://{ConfigurationSettings.AppSettings["AkidoChartDomain"]}/{subdomain}/frmLandingScreen.aspx";
+                }
+            }
+            else
+            {
+                redirectUri = ConfigurationSettings.AppSettings["okta:RedirectUri"];
+            }
             //CAP-2019
-            var state = Convert.ToBase64String(Encoding.UTF8.GetBytes(Guid.NewGuid().ToString() + "|" + Request.QueryString["redirecturl"] ?? ""));
-            return $"{oktaAuthorizeEndpoint}?client_id={clientId}&response_type=code&redirect_uri={HttpUtility.UrlEncode(redirectUri)}&scope=openid+profile+email&state={HttpUtility.UrlEncode(state)}&login_hint={HttpUtility.UrlEncode(email)}";
+            var state = Convert.ToBase64String(Encoding.UTF8.GetBytes(Guid.NewGuid().ToString() + "|" + HttpUtility.UrlEncode(Request.QueryString["redirecturl"]) ?? ""));
+            return $"{oktaAuthorizeEndpoint}?client_id={clientId}&response_type=code&redirect_uri={HttpUtility.UrlEncode(redirectUri)}&scope=openid+profile+email&state={state}&login_hint={HttpUtility.UrlEncode(email)}";
         }
 
         private string CheckOktaAuthorizationUrl()
         {
+            string redirectUri = string.Empty;
             // Replace with your Okta domain and other necessary parameters
             var oktaDomain = ConfigurationSettings.AppSettings["okta:OktaDomain"];
             string oktaAuthorizeEndpoint = $"{ConfigurationSettings.AppSettings["okta:AuthorizeURL"]}";
             string clientId = ConfigurationSettings.AppSettings["okta:ClientId"];
-            string redirectUri = ConfigurationSettings.AppSettings["okta:RedirectUri"];
+            //CAP-2337
+            if (Request.Url?.Authority == ConfigurationSettings.AppSettings["AkidoChartDomain"])
+            {
+                string subdomain = string.Empty;
+                string[] parts = Request.Url.AbsoluteUri.Split('/');
+                if (parts.Length > 1)
+                {
+                    subdomain = parts[1];
+                }
+
+                if (string.IsNullOrWhiteSpace(subdomain))
+                {
+                    redirectUri = $"https://{ConfigurationSettings.AppSettings["AkidoChartDomain"]}/frmLandingScreen.aspx";
+                }
+                else
+                {
+                    redirectUri = $"https://{ConfigurationSettings.AppSettings["AkidoChartDomain"]}/{subdomain}/frmLandingScreen.aspx";
+                }
+            }
+            else
+            {
+                redirectUri = ConfigurationSettings.AppSettings["okta:RedirectUri"];
+            }
+
             //CAP-2019
-            var state = Convert.ToBase64String(Encoding.UTF8.GetBytes(Guid.NewGuid().ToString() + "|" + Request.QueryString["redirecturl"] ?? ""));
+            var state = Convert.ToBase64String(Encoding.UTF8.GetBytes(Guid.NewGuid().ToString() + "|" + HttpUtility.UrlEncode(Request.QueryString["redirecturl"]) ?? ""));
             return $"{oktaAuthorizeEndpoint}?client_id={clientId}&response_type=code&redirect_uri={HttpUtility.UrlEncode(redirectUri)}&prompt=none&scope=openid+profile+email&state={state}";
         }
 
         private string GetOktaUrl(string sessionToken)
         {
+            string redirectUri = string.Empty;
             var oktaDomain = ConfigurationSettings.AppSettings["okta:OktaDomain"];
             string oktaAuthorizeEndpoint = $"{ConfigurationSettings.AppSettings["okta:AuthorizeURL"]}";
             string clientId = ConfigurationSettings.AppSettings["okta:ClientId"];
-            string redirectUri = ConfigurationSettings.AppSettings["okta:RedirectUri"];              
+            //CAP-2337
+            if (Request.Url?.Authority == ConfigurationSettings.AppSettings["AkidoChartDomain"])
+            {
+                string subdomain = string.Empty;
+                string[] parts = Request.Url.AbsoluteUri.Split('/');
+                if (parts.Length > 1)
+                {
+                    subdomain = parts[1];
+                }
+
+                if (string.IsNullOrWhiteSpace(subdomain)) 
+                {
+                    redirectUri = $"https://{ConfigurationSettings.AppSettings["AkidoChartDomain"]}/frmLandingScreen.aspx";
+                }
+                else
+                {
+                    redirectUri = $"https://{ConfigurationSettings.AppSettings["AkidoChartDomain"]}/{subdomain}/frmLandingScreen.aspx";
+                }
+            }
+            else
+            {
+                redirectUri = ConfigurationSettings.AppSettings["okta:RedirectUri"];
+            }
             
               //CAP-2019
-            var state = Convert.ToBase64String(Encoding.UTF8.GetBytes(Guid.NewGuid().ToString() + "|" + Request.QueryString["redirecturl"] ?? ""));
+            var state = Convert.ToBase64String(Encoding.UTF8.GetBytes(Guid.NewGuid().ToString() + "|" + HttpUtility.UrlEncode(Request.QueryString["redirecturl"]) ?? ""));
             
             //CAP-2142,CAP-2019
             return $"{oktaAuthorizeEndpoint}?client_id={clientId}&response_type=code&scope=openid+profile+email&response_mode=query&prompt=none&redirect_uri={HttpUtility.UrlEncode(redirectUri)}&state={state}&nonce=n-0S6_WzA2Mj&sessionToken={sessionToken}";
