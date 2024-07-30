@@ -81,8 +81,8 @@ namespace Acurus.Capella.UI
                 }
                 else
                 {
-                    //CAP-1752
-                    var loginpage = (ConfigurationSettings.AppSettings["IsSSOLogin"] == "Y" ? "frmLoginNew.aspx" : "frmLogin.aspx");
+                    //CAP-1752,CAP-2316
+                    var loginpage = (ConfigurationSettings.AppSettings["IsSSOLogin"] == "Y" ? "frmLoginNew.aspx?IsLoginRequired=true" : "frmLogin.aspx");
                     Response.Write($"<script> window.top.location.href=\"{loginpage}\"; </script>");
                 }
                 bFirstTime = false;
