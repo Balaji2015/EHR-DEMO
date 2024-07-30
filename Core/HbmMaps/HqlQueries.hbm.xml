@@ -16008,7 +16008,7 @@ cqm_data where nqf_number =?  and PQRI_calculation_Method=? and PQRI_Type in ('C
 
 	<sql-query name="Get.HumanCountbyCarrierName">
 		<![CDATA[ select distinct a.human_id from pat_insured_plan  as a join insurance_plan as b
-   on a.insurance_plan_id=a.insurance_plan_id
+   on a.insurance_plan_id=b.insurance_plan_id
    where a.human_id in(:human_id) and  a.insurance_type='primary' and b.carrier_id in(select carrier_id from carrier where carrier_name='Medicare');]]>
 	</sql-query>
 	<sql-query name="Get.HumanCountbyCarrierNameMedicaid">

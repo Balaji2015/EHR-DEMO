@@ -116,11 +116,11 @@ namespace Acurus.Capella.UI
                         cookie.Expires = DateTime.Now.AddMinutes(5);
                         Response.Cookies.Add(cookie);
                     }
-                    //CAP-1752
-                    var loginpage = (ConfigurationSettings.AppSettings["IsSSOLogin"] == "Y" ? "frmLoginNew.aspx" : "frmLogin.aspx");
+                    //CAP-1752,CAP-2316
+                    var loginpage = (ConfigurationSettings.AppSettings["IsSSOLogin"] == "Y" ? "frmLoginNew.aspx?IsLoginRequired=true" : "frmLogin.aspx");
                     if (!string.IsNullOrEmpty(CurrentUrl))
                     {
-                        var returnURL = $"{loginpage}?redirecturl={HttpUtility.UrlEncode(CurrentUrl)}";
+                        var returnURL = $"{loginpage}&Isredirecturl={HttpUtility.UrlEncode(CurrentUrl)}";
                         Response.Write("<script> window.top.location.href=\"" + returnURL + "\"; </script>");
                     }
                     else
