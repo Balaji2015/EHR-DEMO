@@ -314,7 +314,9 @@ namespace Acurus.Capella.UI
                     }
                     else
                     {
-                        hdnBPValue.Value = "I10";
+                        //CAP-2307
+                        //hdnBPValue.Value = "I10";
+                        hdnBPValue.Value = "";
                     }
 
                 }
