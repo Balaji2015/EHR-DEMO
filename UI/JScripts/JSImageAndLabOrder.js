@@ -97,9 +97,11 @@ function OpenManagedFrequentlyUsedProcedures() {
     }
 }
 function OpenPDFImage(FaxSubject) {
-
+    
     //Jira CAP-1996 - Start
-    FaxSubject = FaxSubject.replaceAll("$|~|$", "'");
+    //CAP-2329
+    if (FaxSubject != undefined)
+        FaxSubject = FaxSubject.replaceAll("$|~|$", "'");
     //Jira CAP-1996 - End
 
     if(FaxSubject!="")

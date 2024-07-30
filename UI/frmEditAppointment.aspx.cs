@@ -4759,7 +4759,9 @@ namespace Acurus.Capella.UI
                     else
                         chkSelfReferred.Checked = false;
                 }
-                if (Encntlist.Count > 0)
+                //Jira CAP-2338
+                //if (Encntlist.Count > 0)
+                if (Encntlist.Count > 0 && hdnrenprovider.Value == "")
                     hdnrenprovider.Value = Encntlist[0].Referring_Physician + "| NPI: " + Encntlist[0].Referring_Provider_NPI + "|  Facility: " + Encntlist[0].Referring_Facility + "| Address:" + Encntlist[0].Referring_Address + "| Phone No:" + Encntlist[0].Referring_Phone_No + "| Fax No:" + Encntlist[0].Referring_Fax_No;
 
             }
@@ -4836,7 +4838,8 @@ namespace Acurus.Capella.UI
                 //Jira CAP-2216
                 //chkSelfReferred.Enabled = false;
                 chkShowAllPhysicians.Enabled = false;
-                btnSave.Enabled = false;
+                //Jira CAP-2338
+                //btnSave.Enabled = false;
                 txtPurposeofVisit.txtDLC.Enabled = false;
                 txtNotes.txtDLC.Enabled = false;
                 DisableTableLayout(pnlReschedule);
@@ -4844,7 +4847,8 @@ namespace Acurus.Capella.UI
                 chkShowAllPhysicians.Enabled = false;
                 //Jira CAP-2216
                 //chkSelfReferred.Enabled = false;
-                btnSave.Enabled = false;
+                //Jira CAP-2338
+                //btnSave.Enabled = false;
                 DateTimePickerColorChange(this.dtpApptDate, true);
                 TimePickerColorChange(dtpStartTime, true);
                 cboFacility.Enabled = false;

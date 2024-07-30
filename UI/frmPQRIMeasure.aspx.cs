@@ -1801,7 +1801,7 @@ namespace Acurus.Capella.UI
             //StringBuilder cms130 = MeasureHeaderCount(NumeratorList130, DenmoniatorList130, DEX130List, DE130List, "b6ac13e2-beb8-4e4f-94ed-fcc397406cd2");
 
             sbLoad.Append(SubXMLLoadForCQMIIIstage3(sMeasureNumber+ "_CAT_III_Header.xml", DenmoniatorList130, NumeratorList130, DE130List, DEX130List, DCQM[sMeasureNumber], sMeasureNumber, null).ToString());
-            StringBuilder cms130 = MeasureHeaderCount(NumeratorList130, DenmoniatorList130, DEX130List, DE130List, "b6ac13e2-beb8-4e4f-94ed-fcc397406cd2");
+            StringBuilder cms130 = MeasureHeaderCount(NumeratorList130, DenmoniatorList130, DE130List , DEX130List, "b6ac13e2-beb8-4e4f-94ed-fcc397406cd2");
 
             XmlDocument xmlDoc = new XmlDocument();
             xmlDoc.Load(HttpContext.Current.Server.MapPath("SampleXML" + "\\QRDAStage3_CAT_III_Header.xml"));
@@ -2723,7 +2723,7 @@ namespace Acurus.Capella.UI
                 objDenominatorsb.Insert(objDenominatorsb.ToString().IndexOf("value=") + 7, DLst1.Union(DEXLst1).Union(DELst1).ToList<ulong>().Count);
                 // objDenominatorsb.Insert(objDenominatorsb.ToString().IndexOf("extension=") + 11, System.DateTime.Now.ToString("yyyy-MM-dd"));
                 //   objDenominatorsb.Insert(objIPPsb.ToString().IndexOf("root=") + 6, RootID);
-                objDenominatorsb.Insert(objDenominatorsb.ToString().IndexOf("<TextDenominator>") + 17, IPPAndDenametorLoadStage3(DLst, RootID, CMSName).ToString());
+                objDenominatorsb.Insert(objDenominatorsb.ToString().IndexOf("<TextDenominator>") + 17, IPPAndDenametorLoadStage3(DLst1, RootID, CMSName).ToString());
                 //if (CMSName.StartsWith("CMS155"))
                 //    objDenominatorsb.Insert(objDenominatorsb.ToString().IndexOf("</TextDenominator>") + 18, Load155SubXml(DLst155["CMS155(12-17)"][1], DLst155["CMS155(3-11)"][1], RootID).ToString());
 
@@ -2757,7 +2757,7 @@ namespace Acurus.Capella.UI
                 objNumeratorsb.Insert(objNumeratorsb.ToString().IndexOf("value=") + 7, NLst1.Count);
                 //  objNumeratorsb.Insert(objNumeratorsb.ToString().IndexOf("extension=") + 11, System.DateTime.Now.ToString("yyyy-MM-dd"));
                 //  objNumeratorsb.Insert(objIPPsb.ToString().IndexOf("root=") + 6, RootID);
-                objNumeratorsb.Insert(objNumeratorsb.ToString().IndexOf("<TextNumerator>") + 15, IPPAndDenametorLoadStage3(NLst, RootID, CMSName).ToString());
+                objNumeratorsb.Insert(objNumeratorsb.ToString().IndexOf("<TextNumerator>") + 15, IPPAndDenametorLoadStage3(NLst1, RootID, CMSName).ToString());
                 //if (CMSName.StartsWith("CMS155"))
                 //    objNumeratorsb.Insert(objNumeratorsb.ToString().IndexOf("</TextNumerator>") + 16, Load155SubXml(DLst155["CMS155(12-17)"][0], DLst155["CMS155(3-11)"][0], RootID).ToString());
 
@@ -2794,7 +2794,7 @@ namespace Acurus.Capella.UI
                     objDEsb.Insert(objDEsb.ToString().IndexOf("value=") + 7, DELst1.Count);
                     //   objDEsb.Insert(objDEsb.ToString().IndexOf("extension=") + 11, System.DateTime.Now.ToString("yyyy-MM-dd"));
                     //objDEsb.Insert(objIPPsb.ToString().IndexOf("root=") + 6, RootID);
-                    objDEsb.Insert(objDEsb.ToString().IndexOf("<TextDenominatorExclusion>") + 26, IPPAndDenametorLoadStage3(DELst, RootID, CMSName).ToString());
+                    objDEsb.Insert(objDEsb.ToString().IndexOf("<TextDenominatorExclusion>") + 26, IPPAndDenametorLoadStage3(DELst1, RootID, CMSName).ToString());
                     //if (CMSName.StartsWith("CMS155"))
                     //    objDEsb.Insert(objDEsb.ToString().IndexOf("</TextDenominatorExclusion>") + 27, Load155SubXml(DLst155["CMS155(12-17)"][2], DLst155["CMS155(3-11)"][2], RootID).ToString());
 
@@ -2833,7 +2833,7 @@ namespace Acurus.Capella.UI
                     objDEXsb.Insert(objDEXsb.ToString().IndexOf("value=") + 7, DEXLst1.Count);
                     // objDEXsb.Insert(objDEXsb.ToString().IndexOf("extension=") + 11, System.DateTime.Now.ToString("yyyy-MM-dd"));
                     //objDEsb.Insert(objIPPsb.ToString().IndexOf("root=") + 6, RootID);
-                    objDEXsb.Insert(objDEXsb.ToString().IndexOf("<TextDenominatorException>") + 26, IPPAndDenametorLoadStage3(DEXLst, RootID, CMSName).ToString());
+                    objDEXsb.Insert(objDEXsb.ToString().IndexOf("<TextDenominatorException>") + 26, IPPAndDenametorLoadStage3(DEXLst1, RootID, CMSName).ToString());
                     //if (CMSName.StartsWith("CMS155"))
                     //    objDEsb.Insert(objDEsb.ToString().IndexOf("</TextDenominatorExclusion>") + 27, Load155SubXml(DLst155["CMS155(12-17)"][2], DLst155["CMS155(3-11)"][2], RootID).ToString());
 
@@ -2901,7 +2901,7 @@ namespace Acurus.Capella.UI
                 // objIPPsb.Insert(objIPPsb.ToString().IndexOf("extension=") + 11, System.DateTime.Now.ToString("yyyy-MM-dd"));
                 //  objIPPsb.Insert(objIPPsb.ToString().IndexOf("root=") + 6, RootID);
                 //objIPPsb.Insert(objIPPsb.ToString().IndexOf("<TextIPP>") + 9, "Method Returns");
-                objIPPsb.Insert(objIPPsb.ToString().IndexOf("<TextIPP>") + 9, IPPAndDenametorLoadStage3(DLst1.Union(DEXLst1).Union(DELst1).ToList<ulong>(), RootID, CMSName1).ToString());
+                objIPPsb.Insert(objIPPsb.ToString().IndexOf("<TextIPP>") + 9, IPPAndDenametorLoadStage3(DLst2.Union(DEXLst1).Union(DELst1).ToList<ulong>(), RootID, CMSName1).ToString());
 
                 //if (CMSName.StartsWith("CMS155"))
                 //{
@@ -2945,7 +2945,7 @@ namespace Acurus.Capella.UI
                 objDenominatorsb.Insert(objDenominatorsb.ToString().IndexOf("value=") + 7, DLst2.Count);
                 // objDenominatorsb.Insert(objDenominatorsb.ToString().IndexOf("extension=") + 11, System.DateTime.Now.ToString("yyyy-MM-dd"));
                 //   objDenominatorsb.Insert(objIPPsb.ToString().IndexOf("root=") + 6, RootID);
-                objDenominatorsb.Insert(objDenominatorsb.ToString().IndexOf("<TextDenominator>") + 17, IPPAndDenametorLoadStage3(DLst, RootID, CMSName).ToString());
+                objDenominatorsb.Insert(objDenominatorsb.ToString().IndexOf("<TextDenominator>") + 17, IPPAndDenametorLoadStage3(DLst2, RootID, CMSName).ToString());
                 //if (CMSName.StartsWith("CMS155"))
                 //    objDenominatorsb.Insert(objDenominatorsb.ToString().IndexOf("</TextDenominator>") + 18, Load155SubXml(DLst155["CMS155(12-17)"][1], DLst155["CMS155(3-11)"][1], RootID).ToString());
 
@@ -2979,7 +2979,7 @@ namespace Acurus.Capella.UI
                 objNumeratorsb.Insert(objNumeratorsb.ToString().IndexOf("value=") + 7, NLst2.Count);
                 //  objNumeratorsb.Insert(objNumeratorsb.ToString().IndexOf("extension=") + 11, System.DateTime.Now.ToString("yyyy-MM-dd"));
                 //  objNumeratorsb.Insert(objIPPsb.ToString().IndexOf("root=") + 6, RootID);
-                objNumeratorsb.Insert(objNumeratorsb.ToString().IndexOf("<TextNumerator>") + 15, IPPAndDenametorLoadStage3(NLst, RootID, CMSName).ToString());
+                objNumeratorsb.Insert(objNumeratorsb.ToString().IndexOf("<TextNumerator>") + 15, IPPAndDenametorLoadStage3(NLst2, RootID, CMSName).ToString());
                 //if (CMSName.StartsWith("CMS155"))
                 //    objNumeratorsb.Insert(objNumeratorsb.ToString().IndexOf("</TextNumerator>") + 16, Load155SubXml(DLst155["CMS155(12-17)"][0], DLst155["CMS155(3-11)"][0], RootID).ToString());
 
@@ -3016,7 +3016,7 @@ namespace Acurus.Capella.UI
                     objDEsb.Insert(objDEsb.ToString().IndexOf("value=") + 7, DELst2.Count);
                     //   objDEsb.Insert(objDEsb.ToString().IndexOf("extension=") + 11, System.DateTime.Now.ToString("yyyy-MM-dd"));
                     //objDEsb.Insert(objIPPsb.ToString().IndexOf("root=") + 6, RootID);
-                    objDEsb.Insert(objDEsb.ToString().IndexOf("<TextDenominatorExclusion>") + 26, IPPAndDenametorLoadStage3(DELst, RootID, CMSName).ToString());
+                    objDEsb.Insert(objDEsb.ToString().IndexOf("<TextDenominatorExclusion>") + 26, IPPAndDenametorLoadStage3(DELst2, RootID, CMSName).ToString());
                     //if (CMSName.StartsWith("CMS155"))
                     //    objDEsb.Insert(objDEsb.ToString().IndexOf("</TextDenominatorExclusion>") + 27, Load155SubXml(DLst155["CMS155(12-17)"][2], DLst155["CMS155(3-11)"][2], RootID).ToString());
 
@@ -3055,7 +3055,7 @@ namespace Acurus.Capella.UI
                     objDEXsb.Insert(objDEXsb.ToString().IndexOf("value=") + 7, DEXLst2.Count);
                     // objDEXsb.Insert(objDEXsb.ToString().IndexOf("extension=") + 11, System.DateTime.Now.ToString("yyyy-MM-dd"));
                     //objDEsb.Insert(objIPPsb.ToString().IndexOf("root=") + 6, RootID);
-                    objDEXsb.Insert(objDEXsb.ToString().IndexOf("<TextDenominatorException>") + 26, IPPAndDenametorLoadStage3(DEXLst, RootID, CMSName).ToString());
+                    objDEXsb.Insert(objDEXsb.ToString().IndexOf("<TextDenominatorException>") + 26, IPPAndDenametorLoadStage3(DEXLst2, RootID, CMSName).ToString());
                     //if (CMSName.StartsWith("CMS155"))
                     //    objDEsb.Insert(objDEsb.ToString().IndexOf("</TextDenominatorExclusion>") + 27, Load155SubXml(DLst155["CMS155(12-17)"][2], DLst155["CMS155(3-11)"][2], RootID).ToString());
 
@@ -4114,7 +4114,7 @@ namespace Acurus.Capella.UI
                 objPayersb = new StringBuilder(xDox.ToString());
                 objPayersb.Remove(0, 157);
                 objPayersb.Remove(objPayersb.Length - 20, 20);
-
+                    
                 PatientInsuredPlanManager objPatientInsuredPlanManager = new PatientInsuredPlanManager();
                 IList<PatientInsuredPlan> objPatientInsuredPlan = objPatientInsuredPlanManager.GetPatInsPlanDetails(HumanLst);
 
@@ -4129,17 +4129,42 @@ namespace Acurus.Capella.UI
                     //              group p.Insurance_Plan_ID by p.Insurance_Plan_ID into g
                     //              //select new { id = g.ToList() };
 
-
-                    IList<ulong> InsurancePlanID = objPatientInsuredPlan.Select(a => a.Insurance_Plan_ID).Distinct().ToList<ulong>();
+                    IList<ulong> InsurancePlanID = objPatientInsuredPlan.Where(a=> a.Insurance_Type.ToUpper() == "PRIMARY").Select(a => a.Insurance_Plan_ID).Distinct().ToList<ulong>();
+                    
                     InsurancePlanManager objins = new InsurancePlanManager();
                     IList<InsurancePlan> lstplan = objins.GetInsDetails(InsurancePlanID);
 
+                    CarrierManager crmngr = new CarrierManager();
+                    IList<Carrier>  carriertable = crmngr.GetAll();
+                    IList<ulong>  ilstMedicareids = carriertable.Where(a=> a.Carrier_Name.ToUpper() == "MEDICARE").Select(a=> a.Id).ToList<ulong>();
+                    IList<ulong> ilstMedicaidids = carriertable.Where(a => a.Carrier_Name.ToUpper().Contains("MEDICAL") || a.Carrier_Name.ToUpper().Contains("MEDI-CAL")).Select(a => a.Id).ToList<ulong>();
+                    string sCode = string.Empty;
+                    string sdisplayName = string.Empty;
                     for (int i = 0; i < lstplan.Count; i++)
                     {
+                         sCode = string.Empty;
+                         sdisplayName = string.Empty;
+                        if (ilstMedicareids.Contains(Convert.ToUInt64(lstplan[i].Carrier_ID)))
+                        {
+                            sCode = "A";
+                            sdisplayName = "Medicare";
+                        }
+                        else if (ilstMedicaidids.Contains(Convert.ToUInt64(lstplan[i].Carrier_ID)))
+                        {
+                            sCode = "B";
+                            sdisplayName = "Medicaid";
+                        }
+                        else {
+                            sCode = "C";
+                            sdisplayName = "Private Health Insurance";
+                        }
+
                         StringBuilder objPayerNewsb = new StringBuilder();
                         objPayerNewsb.Append(objPayersb);
-                        objPayerNewsb.Insert(objPayerNewsb.ToString().IndexOf("2.16.840.1.113883.3.249.12") - 29, lstplan[i].External_Plan_Number);
-                        objPayerNewsb.Insert(objPayerNewsb.ToString().IndexOf("2.16.840.1.113883.3.249.12") - 14, lstplan[i].Ins_Plan_Name);
+                        //objPayerNewsb.Insert(objPayerNewsb.ToString().IndexOf("2.16.840.1.113883.3.249.12") - 29, lstplan[i].External_Plan_Number);
+                        //objPayerNewsb.Insert(objPayerNewsb.ToString().IndexOf("2.16.840.1.113883.3.249.12") - 14, lstplan[i].Ins_Plan_Name);
+                        objPayerNewsb.Insert(objPayerNewsb.ToString().IndexOf("2.16.840.1.113883.3.249.12") - 29, sCode);
+                        objPayerNewsb.Insert(objPayerNewsb.ToString().IndexOf("2.16.840.1.113883.3.249.12") - 14, sdisplayName);
                         objPayerNewsb.Insert(objPayerNewsb.ToString().IndexOf("value=") + 7, objPatientInsuredPlan.Count(a => a.Insurance_Plan_ID.ToString().Trim() == lstplan[i].Id.ToString().Trim()));
                         objFinalPayersb.Append(objPayerNewsb.ToString());
                         // iCount += objPatientInsuredPlan.Count(a => a.Insurance_Plan_ID.ToString().Trim() == item.PQRI_Value.Trim())
@@ -5884,7 +5909,7 @@ namespace Acurus.Capella.UI
                     xmlReqNode[2].Attributes[0].Value = DateTime.Now.ToString("yyyyMMddhhmmss");
 
                     xmlReqNode = xmlDoc.GetElementsByTagName("id");
-                    xmlReqNode[1].Attributes[0].Value = ClientSession.PhysicainDetails[0].PhyNPI;
+                    //xmlReqNode[1].Attributes[0].Value = ClientSession.PhysicainDetails[0].PhyNPI;
                     xmlReqNode[3].Attributes[0].Value = ClientSession.PhysicainDetails[0].PhyNPI;
                     xmlReqNode[5].Attributes[0].Value = ClientSession.PhysicainDetails[0].PhyNPI;
                     xmlReqNode[6].Attributes[1].Value = lstfacility[0].Fac_NPI;

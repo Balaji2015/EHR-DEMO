@@ -4492,6 +4492,9 @@ namespace Acurus.Capella.UI
                     }
                     lst[0].Valid_From = txtauthValidfrom.Text;
                     lst[0].Valid_To = txtauthvalidTo.Text;
+                    //CAP-2294
+                    lst[0].Modified_Date_and_Time = UtilityManager.ConvertToUniversal();
+                    lst[0].Modified_By = ClientSession.UserName;
 
                     obj.SaveUpdateDelete_DBAndXML_WithTransaction(ref savelst, ref lst, null, string.Empty, false, false, 0, string.Empty);
 

@@ -2400,7 +2400,7 @@ namespace Acurus.Capella.UI
                 //lstvFrequentlyUsedLabProcedures.ForeColor = Color.Black;
                 cboLab.SelectedIndex = 0;
                 cboLab.Items[cboLab.SelectedIndex].Text = string.Empty;
-
+                
                 //cboLab.SelectedValue = "0";
                 txtCenterName.Value = "";
                 txtLocation.Value = "";
@@ -2512,6 +2512,8 @@ namespace Acurus.Capella.UI
             }
             FillLabProcedure(procedureList, new List<string>());
             btnClearAll.Value = "Clear All";
+            //CAP-2264
+            chkStat.Checked = false;
             if (hdnForEditErrorMsg.Value == "Edit")
                 hdnForEditErrorMsg.Value = "";
             btnOrderSubmit.Disabled = true;

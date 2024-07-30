@@ -25833,7 +25833,7 @@ group by em.procedure_code,em.human_id having count(em.procedure_code)>=2;";
                                 cpt = objEnc[3].ToString();
                             }
                             string[] ary = { objEnc[0].ToString(), objEnc[1].ToString(), icd, cpt, "", "", "", "CMS125DEX", "CMS125v12" };
-                            icdcptListDenominatorException.Add(ary);
+                            icdcptListDenominatorExclusion.Add(ary);
 
 
 

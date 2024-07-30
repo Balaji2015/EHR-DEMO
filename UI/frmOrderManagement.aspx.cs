@@ -1025,7 +1025,9 @@ namespace Acurus.Capella.UI
 
                         row = dt.NewRow();
                         row["Temp_Property"] = FillOrderManagementSearch[i].Temp_Property;
-                        row["Arrival Date"] = UtilityManager.ConvertToLocal(FillOrderManagementSearch[i].Ordered_Date_And_Time).ToString("dd-MMM-yyyy");
+                        //CAP-2318
+                        string ordered_Date_And_Time = UtilityManager.ConvertToLocal(FillOrderManagementSearch[i].Ordered_Date_And_Time).ToString("dd-MMM-yyyy");
+                        row["Arrival Date"] = ordered_Date_And_Time == "01-Jan-0001" ? "" : ordered_Date_And_Time;
                         row["Order Type"] = cboOrderType.Text;
                         row["Order Status"] = FillOrderManagementSearch[i].Current_Process;
                         row["Patient Acc"] = FillOrderManagementSearch[i].Human_Id;
@@ -1074,7 +1076,9 @@ namespace Acurus.Capella.UI
                         row = dt.NewRow();
 
                         row["Temp_Property"] = FillOrderManagementSearch[i].Temp_Property;
-                        row["Arrival Date"] = UtilityManager.ConvertToLocal(FillOrderManagementSearch[i].Ordered_Date_And_Time).ToString("dd-MMM-yyyy");
+                        //CAP-2318
+                        string ordered_Date_And_Time = UtilityManager.ConvertToLocal(FillOrderManagementSearch[i].Ordered_Date_And_Time).ToString("dd-MMM-yyyy");
+                        row["Arrival Date"] = ordered_Date_And_Time == "01-Jan-0001" ? "" : ordered_Date_And_Time;
                         row["Order Type"] = cboOrderType.Text;
                         row["Patient Acc"] = FillOrderManagementSearch[i].Human_Id;
                         row["Patient Name"] = FillOrderManagementSearch[i].Human_Name;
@@ -1829,7 +1833,8 @@ namespace Acurus.Capella.UI
 
                         ImmunizationManager immunMngr = new ImmunizationManager();
                         ImmunizationDTO objImmunizationFill = new ImmunizationDTO();
-                        objImmunizationFill.Immunization = immunMngr.GetImmunizationUsingGroupID(Convert.ToUInt64(GridSelectItem["EncounterID"].Text));
+                        //CAP-2310
+                        objImmunizationFill.Immunization = immunMngr.GetImmunizationUsingGroupID(Convert.ToUInt64(GridSelectItem["EncounterID"].Text), Convert.ToUInt64(GridSelectItem["PatientAcc"].Text));
 
                         string sDirPath = Server.MapPath("Documents/" + Session.SessionID);
 
