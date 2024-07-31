@@ -23,7 +23,32 @@ namespace Acurus.Capella.UI
         {
             if(Request.Cookies["MicrosoftAccessTokenId"] != null && !string.IsNullOrEmpty(Request.Cookies["MicrosoftAccessTokenId"].Value))
             {
-                var postLogoutRedirectUri = ConfigurationSettings.AppSettings["okta:PostLogoutSessionExpiredRedirectUri"];
+                var postLogoutRedirectUri = string.Empty;
+                //CAP-2337
+                if (Request.Url?.Authority == ConfigurationSettings.AppSettings["AkidoChartDomain"])
+                {
+                    string subdomain = string.Empty;
+                    string[] parts = Request.Url.AbsoluteUri.Split('/');
+                    if (parts.Length > 1)
+                    {
+                        subdomain = parts[1];
+                    }
+
+                    if (string.IsNullOrWhiteSpace(subdomain))
+                    {
+                        postLogoutRedirectUri = $"https://{ConfigurationSettings.AppSettings["AkidoChartDomain"]}/frmSessionExpired.aspx";
+
+                    }
+                    else
+                    {
+                        postLogoutRedirectUri = $"https://{ConfigurationSettings.AppSettings["AkidoChartDomain"]}/{subdomain}/frmSessionExpired.aspx";
+
+                    }
+                }
+                else
+                {
+                    postLogoutRedirectUri = ConfigurationSettings.AppSettings["okta:PostLogoutSessionExpiredRedirectUri"];
+                }
                 Response.Redirect($"{ConfigurationManager.AppSettings["okta:LogoutURL"]}?id_token_hint={Request.Cookies["MicrosoftAccessTokenId"].Value}&post_logout_redirect_uri={postLogoutRedirectUri}", false);
                 HttpCookie cookie = Request.Cookies["MicrosoftAccessTokenId"];
                 cookie.Expires = DateTime.Now.AddMinutes(-5);
