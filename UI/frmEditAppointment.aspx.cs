@@ -827,19 +827,33 @@ namespace Acurus.Capella.UI
                                     //old code
                                     //item.Text = PhysicianList[i].PhyPrefix + " " + PhysicianList[i].PhyFirstName + " " + PhysicianList[i].PhyMiddleName + " " + PhysicianList[i].PhyLastName;
                                     //Gitlab# 2485 - Physician Name Display Change
-                                    if (PhysicianList[i].PhyLastName != String.Empty)
-                                        item.Text += PhysicianList[i].PhyLastName;
+                                    //CAP-2317
+                                    //if (PhysicianList[i].PhyLastName != String.Empty)
+                                    //    item.Text += PhysicianList[i].PhyLastName;
+                                    //if (PhysicianList[i].PhyFirstName != String.Empty)
+                                    //{
+                                    //    if (item.Text != String.Empty)
+                                    //        item.Text += "," + PhysicianList[i].PhyFirstName;
+                                    //    else
+                                    //        item.Text += PhysicianList[i].PhyFirstName;
+                                    //}
+                                    //if (PhysicianList[i].PhyMiddleName != String.Empty)
+                                    //    item.Text += " " + PhysicianList[i].PhyMiddleName;
+                                    //if (PhysicianList[i].PhySuffix != String.Empty)
+                                    //    item.Text += "," + PhysicianList[i].PhySuffix;
                                     if (PhysicianList[i].PhyFirstName != String.Empty)
-                                    {
-                                        if (item.Text != String.Empty)
-                                            item.Text += "," + PhysicianList[i].PhyFirstName;
-                                        else
-                                            item.Text += PhysicianList[i].PhyFirstName;
-                                    }
+                                        item.Text += PhysicianList[i].PhyFirstName;
                                     if (PhysicianList[i].PhyMiddleName != String.Empty)
                                         item.Text += " " + PhysicianList[i].PhyMiddleName;
+                                    if (PhysicianList[i].PhyLastName != String.Empty)
+                                    {
+                                        if (item.Text != String.Empty)
+                                            item.Text += " " + PhysicianList[i].PhyLastName;
+                                        else
+                                            item.Text += PhysicianList[i].PhyLastName;
+                                    }
                                     if (PhysicianList[i].PhySuffix != String.Empty)
-                                        item.Text += "," + PhysicianList[i].PhySuffix;
+                                        item.Text += ", " + PhysicianList[i].PhySuffix;
                                     item.Value = PhysicianList[i].Id.ToString();
                                 }
 
@@ -859,20 +873,34 @@ namespace Acurus.Capella.UI
                             //old code
                             // sPhyName = PhysicianList[i].PhyPrefix + " " + PhysicianList[i].PhyFirstName + " " + PhysicianList[i].PhyLastName;
                             //Gitlab# 2485 - Physician Name Display Change
+                            //CAP-2317
                             {
-                                if (PhysicianList[i].PhyLastName != String.Empty)
-                                    sPhyName += PhysicianList[i].PhyLastName;
+                                //if (PhysicianList[i].PhyLastName != String.Empty)
+                                //    sPhyName += PhysicianList[i].PhyLastName;
+                                //if (PhysicianList[i].PhyFirstName != String.Empty)
+                                //{
+                                //    if (sPhyName != String.Empty)
+                                //        sPhyName += "," + PhysicianList[i].PhyFirstName;
+                                //    else
+                                //        sPhyName += PhysicianList[i].PhyFirstName;
+                                //}
+                                //if (PhysicianList[i].PhyMiddleName != String.Empty)
+                                //    sPhyName += " " + PhysicianList[i].PhyMiddleName;
+                                //if (PhysicianList[i].PhySuffix != String.Empty)
+                                //    sPhyName += "," + PhysicianList[i].PhySuffix;
                                 if (PhysicianList[i].PhyFirstName != String.Empty)
-                                {
-                                    if (sPhyName != String.Empty)
-                                        sPhyName += "," + PhysicianList[i].PhyFirstName;
-                                    else
-                                        sPhyName += PhysicianList[i].PhyFirstName;
-                                }
+                                    sPhyName += PhysicianList[i].PhyFirstName;
                                 if (PhysicianList[i].PhyMiddleName != String.Empty)
                                     sPhyName += " " + PhysicianList[i].PhyMiddleName;
+                                if (PhysicianList[i].PhyLastName != String.Empty)
+                                {
+                                    if (sPhyName != String.Empty)
+                                        sPhyName += " " + PhysicianList[i].PhyLastName;
+                                    else
+                                        sPhyName += PhysicianList[i].PhyLastName;
+                                }
                                 if (PhysicianList[i].PhySuffix != String.Empty)
-                                    sPhyName += "," + PhysicianList[i].PhySuffix;
+                                    sPhyName += ", " + PhysicianList[i].PhySuffix;
                             }
 
                             RadComboBoxItem item1 = new RadComboBoxItem();

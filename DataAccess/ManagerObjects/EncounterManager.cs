@@ -1485,9 +1485,12 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
                             string Physician_Middle_Name = xmlPhysicianNode.Attributes.GetNamedItem("middlename").Value.ToString();
                             string Physician_Suffix = xmlPhysicianNode.Attributes.GetNamedItem("suffix").Value.ToString();
                             objPatPane.Assigned_Physician_User_Name = xmlPhysicianNode.Attributes.GetNamedItem("username").Value.ToString();
-                            objPatPane.Assigned_Physician = xmlPhysicianNode.Attributes.GetNamedItem("prefix").Value.ToString() + " " +
-                                                            Physician_First_Name + " " + Physician_Middle_Name +
-                                                            " " + Physician_Last_Name + " " + Physician_Suffix;
+                            //CAP-2317
+                            //objPatPane.Assigned_Physician = xmlPhysicianNode.Attributes.GetNamedItem("prefix").Value.ToString() + " " +
+                            //                                Physician_First_Name + " " + Physician_Middle_Name +
+                            //                                " " + Physician_Last_Name + " " + Physician_Suffix;
+                            //CAP-2317
+                            objPatPane.Assigned_Physician = Physician_First_Name + " " + Physician_Middle_Name + " " + Physician_Last_Name + ", " + Physician_Suffix;
                         }
                     }
                     catch (Exception e)
