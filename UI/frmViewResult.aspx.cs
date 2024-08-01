@@ -1377,9 +1377,12 @@ namespace Acurus.Capella.UI
                     btnMoveToMa.Enabled = true;
                     btnMoveToNextProcess.Enabled = true;
                     //Jira CAP-2228
-                    if (Request["Opening_from"] != null && Request["Opening_from"] != "OrderManagementScreen")
+                    if (sNotes != null && sNotes.Count() > 0 &&(sNotes.Contains(hdnSubDocumentType.Value.ToUpper())))
                     {
-                        imgCopyPrevious.Visible = true;
+                        if (Request["Opening_from"] != null && Request["Opening_from"] != "OrderManagementScreen")
+                        {
+                            imgCopyPrevious.Visible = true;
+                        }
                     }
                     //btnSave.Visible = false;
                 }
@@ -2192,9 +2195,12 @@ namespace Acurus.Capella.UI
 
                     btnMoveToNextProcess.Visible = true;
                     //Jira CAP-2228
-                    if (Request["Opening_from"] != null && Request["Opening_from"] != "OrderManagementScreen")
+                    if (sNotes != null && sNotes.Count() > 0 && (sNotes.Contains(hdnSubDocumentType.Value.ToUpper())))
                     {
-                        imgCopyPrevious.Visible = true;
+                        if (Request["Opening_from"] != null && Request["Opening_from"] != "OrderManagementScreen")
+                        {
+                            imgCopyPrevious.Visible = true;
+                        }
                     }
                     btnMoveToMa.Visible = true;
                     chkShowAll.Visible = true;
