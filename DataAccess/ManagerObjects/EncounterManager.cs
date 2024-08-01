@@ -1485,9 +1485,12 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
                             string Physician_Middle_Name = xmlPhysicianNode.Attributes.GetNamedItem("middlename").Value.ToString();
                             string Physician_Suffix = xmlPhysicianNode.Attributes.GetNamedItem("suffix").Value.ToString();
                             objPatPane.Assigned_Physician_User_Name = xmlPhysicianNode.Attributes.GetNamedItem("username").Value.ToString();
-                            objPatPane.Assigned_Physician = xmlPhysicianNode.Attributes.GetNamedItem("prefix").Value.ToString() + " " +
-                                                            Physician_First_Name + " " + Physician_Middle_Name +
-                                                            " " + Physician_Last_Name + " " + Physician_Suffix;
+                            //CAP-2317
+                            //objPatPane.Assigned_Physician = xmlPhysicianNode.Attributes.GetNamedItem("prefix").Value.ToString() + " " +
+                            //                                Physician_First_Name + " " + Physician_Middle_Name +
+                            //                                " " + Physician_Last_Name + " " + Physician_Suffix;
+                            //CAP-2317
+                            objPatPane.Assigned_Physician = Physician_First_Name + " " + Physician_Middle_Name + " " + Physician_Last_Name + ", " + Physician_Suffix;
                         }
                     }
                     catch (Exception e)
@@ -17160,19 +17163,26 @@ AND E.ENCOUNTER_PROVIDER_SIGNED_DATE<>'0001-01-01 00:00:00'
                                 //FillApptList.PhysicianName.Add(oj[11].ToString() + " " + oj[12].ToString() + " " + oj[13].ToString() + " " + oj[14].ToString());
                                 //Gitlab# 2485 - Physician Name Display Change
                                 sPhyName = string.Empty;
-                                if (oj[14].ToString() != String.Empty)
-                                    sPhyName += oj[14].ToString();
+                                //CAP-2317
                                 if (oj[12].ToString() != String.Empty)
-                                {
-                                    if (sPhyName != String.Empty)
-                                        sPhyName += "," + oj[12].ToString();
-                                    else
-                                        sPhyName += oj[12].ToString();
+                                {  
+                                   sPhyName += oj[12].ToString();
                                 }
+
+
                                 if (oj[13].ToString() != String.Empty)
                                     sPhyName += " " + oj[13].ToString();
+
+                                if (oj[14].ToString() != String.Empty)
+                                {
+                                    if (sPhyName != String.Empty)
+                                        sPhyName += " " + oj[14].ToString();
+                                    else
+                                        sPhyName += oj[14].ToString();
+                                }
+
                                 if (oj[15].ToString() != String.Empty)
-                                    sPhyName += "," + oj[15].ToString();
+                                    sPhyName += ", " + oj[15].ToString();
                                 FillApptList.PhysicianName.Add(sPhyName);
                             }
 

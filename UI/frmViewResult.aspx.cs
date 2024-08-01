@@ -116,12 +116,7 @@ namespace Acurus.Capella.UI
             {
                 human_id = Convert.ToUInt64(Request["HumanID"].ToString());
             }
-
-            //Cap - 2289
-            if (txtMedicalAssistantNotes.Enabled == true)
-            {
-                imgCopyPrevious.Visible = false;
-            }
+           
 
             if (!IsPostBack)
             {
@@ -562,6 +557,11 @@ namespace Acurus.Capella.UI
                     txtPatientInformation.Value = sPatientstrip;
                     //Cap - 1193
                     hdnHumanText.Value = sPatientstrip;
+                }
+                //Cap - 2289
+                if (txtMedicalAssistantNotes.Enabled == true)
+                {
+                    imgCopyPrevious.Visible = false;
                 }
             }
             catch (Exception Ex)

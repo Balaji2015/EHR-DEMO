@@ -482,6 +482,25 @@ namespace Acurus.Capella.UI
                         //ImpersonateUser - To change the Default Server Login page to the current page
                         if (login[0].Default_Server.Contains("frmLogin.aspx") == true)
                         {
+                            if (Request.Url?.Authority == ConfigurationSettings.AppSettings["AkidoChartDomain"])
+                            {
+                                string subdomain = string.Empty;
+                                string[] parts = Request.Url.AbsoluteUri.Split('/');
+                                if (parts.Length > 1)
+                                {
+                                    subdomain = parts[1];
+                                }
+
+                                if (!string.IsNullOrWhiteSpace(subdomain))
+                                {
+                                    login[0].Default_Server = $"https://{ConfigurationSettings.AppSettings["AkidoChartDomain"]}/{subdomain}/frmLogin.aspx";
+                                }
+                                else
+                                {
+                                    login[0].Default_Server = $"https://{ConfigurationSettings.AppSettings["AkidoChartDomain"]}/frmLogin.aspx";
+                                }
+                            }
+
                             login[0].Default_Server = login[0].Default_Server.Replace("frmLogin.aspx", "frmSelectLegalOrg.aspx");
                         }
                         else

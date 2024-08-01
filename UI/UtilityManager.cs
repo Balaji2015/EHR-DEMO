@@ -2288,7 +2288,8 @@ namespace Acurus.Capella.UI
             //var strMedlst = string.Empty;
             if (MedicationList.Count != 0 && MedicationList != null)
             {
-
+                //Jira - Cap - 2351
+                bool bMedicationFilled = false;
                 for (int i = 0; i < MedicationList.Count; i++)
                 {
                     string sColor = Color.Black.Name;
@@ -2391,6 +2392,8 @@ namespace Acurus.Capella.UI
                     }
                     if (strMedicationlist != string.Empty && !(strMedlst.Contains(strMedicationlist)))
                     {
+                        //Jira - Cap - 2351
+                        bMedicationFilled = true;
                         strMedlst += strMedicationlist;
                         sb_Medication.Append("<span class=\"BlockObjects\" style=");
 
@@ -2403,7 +2406,36 @@ namespace Acurus.Capella.UI
                         sb_Medication.Append(strMedicationlist.Trim());
                         sb_Medication.Append("</span><br/>");
                     }
+                   
                 }
+                //Jira - Cap - 2351
+                if(!bMedicationFilled)
+                {
+                    string sColor = Color.Black.Name;
+                    sb_Medication.Append("<span class=\"BlockObjects\" style=");
+
+                    sb_Medication.Append(sColor == Color.Black.Name ?
+                            "\"color:Black;\">" : "\"color:Red;\">");
+
+                    sb_Medication.Append("No Known Active Medications");
+
+                    sb_Medication.Append("</span><br/>");
+                }
+            }
+            //Jira - Cap - 2351
+            else
+            {
+                string sColor = Color.Black.Name;
+                sb_Medication.Append("<span class=\"BlockObjects\" style=");
+
+                sb_Medication.Append(sColor == Color.Black.Name ?
+                        "\"color:Black;\">" : "\"color:Red;\">");
+
+                sb_Medication.Append("No Known Active Medications");
+
+                sb_Medication.Append("</span><br/>");
+
+
             }
             //}
 

@@ -347,6 +347,25 @@ namespace Acurus.Capella.UI
                         //ImpersonateUser - To change the Default Server Login page to the current page
                         if (login[0].Default_Server.Contains("frmLogin.aspx") == true)
                         {
+                            if (Request.Url?.Authority == ConfigurationSettings.AppSettings["AkidoChartDomain"])
+                            {
+                                string subdomain = string.Empty;
+                                string[] parts = Request.Url.AbsoluteUri.Split('/');
+                                if (parts.Length > 1)
+                                {
+                                    subdomain = parts[1];
+                                }
+
+                                if (!string.IsNullOrWhiteSpace(subdomain))
+                                {
+                                    login[0].Default_Server = $"https://{ConfigurationSettings.AppSettings["AkidoChartDomain"]}/{subdomain}/frmLogin.aspx";
+                                }
+                                else
+                                {
+                                    login[0].Default_Server = $"https://{ConfigurationSettings.AppSettings["AkidoChartDomain"]}/frmLogin.aspx";
+                                }
+                            }
+
                             login[0].Default_Server = login[0].Default_Server.Replace("frmLogin.aspx", "frmLandingScreen.aspx");
                         }
                         else
@@ -903,6 +922,7 @@ namespace Acurus.Capella.UI
         //CAP-2142
         protected Tuple<string, string> GenerateAccessToken(string code)
         {
+            string redirectUri = string.Empty;
             var clientId = ConfigurationSettings.AppSettings["okta:ClientId"];
             var clientSecret = ConfigurationSettings.AppSettings["okta:ClientSecret"];
             var base64EncodedString = Convert.ToBase64String(Encoding.UTF8.GetBytes($"{clientId}:{clientSecret}"));
@@ -917,7 +937,30 @@ namespace Acurus.Capella.UI
             request.AddHeader("authorization", $"Basic {base64EncodedString}");
             request.AddHeader("content-type", "application/x-www-form-urlencoded");
             request.AddParameter("grant_type", "authorization_code");
-            request.AddParameter("redirect_uri", ConfigurationSettings.AppSettings["okta:RedirectUri"]);
+            //CAP-2337
+            if (Request.Url?.Authority == ConfigurationSettings.AppSettings["AkidoChartDomain"])
+            {
+                string subdomain = string.Empty;
+                string[] parts = Request.Url.AbsoluteUri.Split('/');
+                if (parts.Length > 1)
+                {
+                    subdomain = parts[1];
+                }
+
+                if (string.IsNullOrWhiteSpace(subdomain))
+                {
+                    redirectUri = $"https://{ConfigurationSettings.AppSettings["AkidoChartDomain"]}/frmLandingScreen.aspx";
+                }
+                else
+                {
+                    redirectUri = $"https://{ConfigurationSettings.AppSettings["AkidoChartDomain"]}/{subdomain}/frmLandingScreen.aspx";
+                }
+            }
+            else
+            {
+                redirectUri = ConfigurationSettings.AppSettings["okta:RedirectUri"];
+            }
+            request.AddParameter("redirect_uri", redirectUri);
             request.AddParameter("code", $"{code}");
             RestResponse response = client.ExecuteAsync(request).Result;
 

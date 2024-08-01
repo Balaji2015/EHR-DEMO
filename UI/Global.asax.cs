@@ -615,24 +615,25 @@ namespace Acurus.Capella.UI
                                 UtilityManager.inserttologgingtableforSessionTimeout("Check Login - Redirecting to Session Expired due to Timeout or Unknown reason - line number 395 in global.asax", Request.Url.ToString(), string.Empty);
                                 //CAP-1075
                                 //CAP-1167
-                                var currentURL = Request.Url.AbsoluteUri.ToString();
-                                if (DirectURLUtility.IsValidRedirectUrlForLogin(currentURL))
-                                {
-                                    var CurrentUrl = Session["currenturl"]?.ToString();
+                                //CAP-2316
+                                //var currentURL = Request.Url.AbsoluteUri.ToString();
+                                //if (DirectURLUtility.IsValidRedirectUrlForLogin(currentURL))
+                                //{
+                                //    var CurrentUrl = Session["currenturl"]?.ToString();
 
-                                    if (!string.IsNullOrEmpty(CurrentUrl))
-                                    {
-                                        //CAP-1752
-                                        var loginpage = (ConfigurationSettings.AppSettings["IsSSOLogin"] == "Y" ? "frmLoginNew.aspx" : "frmLogin.aspx");
-                                        var returnURL = string.IsNullOrEmpty(CurrentUrl) ? $"~/{loginpage}" : $"~/{loginpage}?redirecturl={HttpUtility.UrlEncode(CurrentUrl)}";
-                                        Session["currenturl"] = null;
-                                        Response.Redirect(returnURL);
-                                    }
-                                }
-                                else
-                                {
+                                //    if (!string.IsNullOrEmpty(CurrentUrl))
+                                //    {
+                                //        //CAP-1752
+                                //        var loginpage = (ConfigurationSettings.AppSettings["IsSSOLogin"] == "Y" ? "frmLoginNew.aspx" : "frmLogin.aspx");
+                                //        var returnURL = string.IsNullOrEmpty(CurrentUrl) ? $"~/{loginpage}" : $"~/{loginpage}?redirecturl={HttpUtility.UrlEncode(CurrentUrl)}";
+                                //        Session["currenturl"] = null;
+                                //        Response.Redirect(returnURL);
+                                //    }
+                                //}
+                                //else
+                                //{
                                     Response.Redirect("~/frmSessionExpired.aspx?From=Globalasaxcs|Linenumber=395");
-                                }
+                                //}
 
                             }
                             //if ( SessionData == "")

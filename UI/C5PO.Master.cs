@@ -1010,9 +1010,36 @@ namespace Acurus.Capella.UI
 
                     var clientId = ConfigurationSettings.AppSettings["okta:ClientId"];
                     var clientSecret = ConfigurationSettings.AppSettings["okta:ClientSecret"];
+                    //CAP-2337
+                    var redirectUri = string.Empty;
+                    var postLogoutRedirectUri = string.Empty;
+                    if(Request.Url?.Authority == ConfigurationSettings.AppSettings["AkidoChartDomain"])
+                    {
+                        string subdomain = string.Empty;
+                        string[] parts = Request.Url.AbsoluteUri.Split('/');
+                        if (parts.Length > 1)
+                        {
+                            subdomain = parts[1];
+                        }
 
-                    var redirectUri = ConfigurationSettings.AppSettings["okta:RedirectUri"];
-                    var postLogoutRedirectUri = ConfigurationSettings.AppSettings["okta:PostLogoutRedirectUri"];
+                        if (string.IsNullOrWhiteSpace(subdomain))
+                        {
+                            redirectUri = $"https://{ConfigurationSettings.AppSettings["AkidoChartDomain"]}/frmLandingScreen.aspx";
+                            postLogoutRedirectUri = $"https://{ConfigurationSettings.AppSettings["AkidoChartDomain"]}/frmLoginNew.aspx";
+
+                        }
+                        else
+                        {
+                            redirectUri = $"https://{ConfigurationSettings.AppSettings["AkidoChartDomain"]}/{subdomain}/frmLandingScreen.aspx";
+                            postLogoutRedirectUri = $"https://{ConfigurationSettings.AppSettings["AkidoChartDomain"]}/{subdomain}/frmLoginNew.aspx";
+
+                        }
+                    }
+                    else
+                    {
+                        redirectUri = ConfigurationSettings.AppSettings["okta:RedirectUri"];
+                        postLogoutRedirectUri = ConfigurationSettings.AppSettings["okta:PostLogoutRedirectUri"];
+                    }
                     var base64EncodedString = Convert.ToBase64String(Encoding.UTF8.GetBytes($"{clientId}:{clientSecret}"));
 
                     var client = new RestClient(options);
