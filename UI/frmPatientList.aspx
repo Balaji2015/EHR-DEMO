@@ -210,7 +210,7 @@
     <script src="JScripts/JsRestrictMultipleTab.js?version=<%=ConfigurationManager.AppSettings["VersionConfiguration"].ToString().Replace("Capella - ","") %>" type="text/javascript"></script>
 </head>
 <body>
-    <script id="ze-snippet" src="https://static.zdassets.com/ekr/snippet.js?key=115b8368-0fd6-4f41-bd95-8c6eddfd7ba7"> </script>
+        <script id="ze-snippet" src="<%=ConfigurationManager.AppSettings["ZendeskWidgetURL"].ToString()%>"> </script>
     <script type="text/javascript">
         window.zESettings = {
             webWidget: {
