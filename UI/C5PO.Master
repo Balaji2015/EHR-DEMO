@@ -829,7 +829,17 @@
                                                         </ul>
                                                     </div>
                                                 </li>
-                                                <li runat="server" id="mnuEMR_smnuEPrescription"><a href="#" onclick="OpenModal('E-Prescription');">E-Prescription</a></li>
+                                                <%--<li runat="server" id="mnuEMR_smnuEPrescription"><a href="#" onclick="OpenModal('E-Prescription');">E-Prescription</a></li>--%>
+                                                <li runat="server" id="mnuEMR_smnuEPrescription">
+                                                    <a href="#" onclick="OpenModal('E-Prescription');">E-Prescription <span class="caret"></span></a>
+                                                    <div>
+                                                        <ul>
+                                                            <li runat="server" id="mnuEMR_smnuEPrescription_smnuCreateErx"><a href="#" onclick="OpenModal('E-Prescription');">Create Erx</a></li>
+                                                            <li runat="server" id="mnuEMR_smnuEPrescription_smnuPatientMerge" ><a href="#" onclick="OpenModal('Patient Merge');">Patient Merge</a></li>
+                                                            <li runat="server" id="mnuEMR_smnuEPrescription_smnuReviewErxData" ><a href="#" onclick="OpenModal('Review Erx Data');">Review Erx Data</a></li>
+                                                        </ul>
+                                                    </div>
+                                                </li>
                                                 <li runat="server" id="mnuEMR_smnuMyQ"><a href="frmMyQueueNew.aspx">MyQ</a></li>
                                                 <li runat="server" id="mnuEMR_smnuNotes">
                                                     <a href="#">Notes <span class="caret"></span></a>
@@ -2142,6 +2152,20 @@
                     </div>
                     <input type="text" id="txtResultInterpretationsInformation" value="" style="display: none;" />
                     <input type="text" id="txtDeletedInterpretationsInformation" value="" style="display: none;" />
+                </div>
+            </div>
+        </div>
+
+         <div id="TabPatientMerge" class="modal fade" style="display: none; margin-top: 0px; margin-left: 0px; padding-left: 5%; background-color: rgba(0, 0, 0, 0.13);">
+            <div id="TabmdldlgPatientMerge" class="modal-dialog" style="width: 95%; margin-left: 4%; margin-top: 1%; position: absolute!important;">
+                <div class=" modal-content" style="height: 680px">
+                    <div class="modal-header" style="height: 52px">
+                        <button type="button" class="close" id="btnPatientMergeClose" onclick="btnPatientMergeClose_Click();" style="font-size: 30px !important;" data-dismiss="modal" aria-hidden="true">&times;</button>
+                        <h3 class="modal-title" style="font-family: sans-serif; font-weight: bold; font-size: medium" id="TabModalPatientMergeTitle"></h3>
+                    </div>
+                    <div class="modal-body" style="width: 100%; margin-top: -10px; padding-top: 0px; height: 95%" >
+                        <iframe style="width: 100%; border: none; height: 100%;" id="TabPatientMergeFrame"></iframe>
+                    </div>
                 </div>
             </div>
         </div>

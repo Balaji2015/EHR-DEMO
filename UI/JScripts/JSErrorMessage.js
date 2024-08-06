@@ -2623,6 +2623,10 @@ function btnQuickPatientClose_Click() {
     $("#TabQuickPatient").hide();
 }
 
+function btnPatientMergeClose_Click() {
+    $("#TabPatientMerge").hide();
+}
+
 function btnSearchProcedureClose_Click() {
     $("#TabSearchProcedure").hide();
 }

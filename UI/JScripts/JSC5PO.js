@@ -1058,6 +1058,42 @@ function OpenModal(data) {
         }
 
     }
+    else if (itemValue == "Patient Merge")
+    {
+        
+
+    }
+    else if (itemValue == "Review Erx Data")
+    {
+        StartLoadingImage();
+        var obj = new Array();
+        var ID = new Object();
+        if ($find("ctl00_C5POBody_grdPatientQueue") != null) {
+            document.getElementById(GetClientId("hdnHumanID")).value = ""
+            ID = document.getElementById(GetClientId("hdnHumanID")).value;
+        }
+        else {
+            ID = document.getElementById(GetClientId("hdnHumanID")).value;
+        }
+        if (ID == undefined || ID == "") {
+            var result = openModal("frmFindPatient.aspx", 251, 1200, obj, "ctl00_ERXWindow");
+            //$find('ctl00_ERXWindow').add_close(OnClientCloseEPRES);
+        }
+        else {
+            $(top.window.document).find("#TabPatientMerge").modal({ backdrop: "static", keyboard: false }, 'show');
+            $(top.window.document).find("#TabModalPatientMergeTitle")[0].textContent = "Quick Patient Create";
+            $(top.window.document).find("#TabmdldlgPatientMerge")[0].style.width = "1430px";
+            $(top.window.document).find("#TabmdldlgPatientMerge")[0].style.height = "653px";
+            var sPath = ""
+            sPath = "frmRCopiaMergePatientBar.aspx?HumanID="+ID;
+            //$(top.window.document).find("#TabPatientMergeFrame")[0].style.height = "360px";
+            $(top.window.document).find("#TabPatientMergeFrame")[0].contentDocument.location.href = sPath;
+            $(top.window.document).find("#TabPatientMerge").on('hide.bs.modal', function (e) {
+
+                $(top.window.document).find("#TabPatientMerge").modal({ backdrop: "", keyboard: false }, 'hide');
+            });
+        }
+    }
     else if (itemValue == "Order Management") {
         StartLoadingImage();
         var obj = new Array();

@@ -396,6 +396,8 @@
     <Content Include="frmPQRIBirtViewDetail.aspx" />
     <Content Include="frmQRCodeGenerator.aspx" />
     <Content Include="frmQuickPatientCreate.aspx" />
+    <Content Include="frmRCopiaDuplicateMediations.aspx" />
+    <Content Include="frmRCopiaMergePatientBar.aspx" />
     <Content Include="frmResetPassword.aspx" />
     <Content Include="frmRestrictedAccess.aspx" />
     <Content Include="frmRestrictMultipleTabs.aspx" />
@@ -418,6 +420,7 @@
     <Content Include="JScripts\JSImpersonateUser.js" />
     <Content Include="JScripts\JSLandingScreen.js" />
     <Content Include="JScripts\JSLoginNew.js" />
+    <Content Include="JScripts\JsRCopiaMergePatientBar.js" />
     <Content Include="JScripts\JSRcopiaWebBrowser.js" />
     <Content Include="JScripts\JsRestrictMultipleTab.js" />
     <Content Include="JScripts\JSDMEOrder.js" />
@@ -1534,6 +1537,20 @@
     </Compile>
     <Compile Include="frmQuickPatientCreate.aspx.designer.cs">
       <DependentUpon>frmQuickPatientCreate.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="frmRCopiaDuplicateMediations.aspx.cs">
+      <DependentUpon>frmRCopiaDuplicateMediations.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="frmRCopiaDuplicateMediations.aspx.designer.cs">
+      <DependentUpon>frmRCopiaDuplicateMediations.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="frmRCopiaMergePatientBar.aspx.cs">
+      <DependentUpon>frmRCopiaMergePatientBar.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="frmRCopiaMergePatientBar.aspx.designer.cs">
+      <DependentUpon>frmRCopiaMergePatientBar.aspx</DependentUpon>
     </Compile>
     <Compile Include="frmRCopiaToolbar.aspx.cs">
       <DependentUpon>frmRCopiaToolbar.aspx</DependentUpon>
