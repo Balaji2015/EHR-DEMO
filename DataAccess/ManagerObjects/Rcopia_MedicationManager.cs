@@ -482,7 +482,7 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
             }
             for (int iCount = 0; iCount < rcopiaMedicationList.Count; iCount++)
             {
-                IList<Rcopia_Medication> ilstCountOfrcopiaMedication = rcopiaMedicationList.Where(x => x.Brand_Name == rcopiaMedicationList[iCount].Brand_Name
+                int iDuplicateSetCount = ilstrcopiaMedicationReturn.Where(x => x.Brand_Name == rcopiaMedicationList[iCount].Brand_Name
                 && x.Strength == rcopiaMedicationList[iCount].Strength
                 && x.Form == rcopiaMedicationList[iCount].Form
                 && x.Dose == rcopiaMedicationList[iCount].Dose
@@ -492,16 +492,31 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
                 && x.Start_Date == rcopiaMedicationList[iCount].Start_Date
                 && x.Stop_Date == rcopiaMedicationList[iCount].Stop_Date
                 && x.Patient_Notes == rcopiaMedicationList[iCount].Patient_Notes
-                && x.Other_Notes == rcopiaMedicationList[iCount].Other_Notes).ToList<Rcopia_Medication>();
+                && x.Other_Notes == rcopiaMedicationList[iCount].Other_Notes).ToList<Rcopia_Medication>().Count();
 
-
-
-                if (ilstCountOfrcopiaMedication.Count > 1 && !ilstrcopiaMedicationReturn.Contains(rcopiaMedicationList[iCount]))
+                if (iDuplicateSetCount == 0)
                 {
-                    ilstCountOfrcopiaMedication.RemoveAt(0);
-                    ilstrcopiaMedicationReturn = ilstrcopiaMedicationReturn.Concat(ilstCountOfrcopiaMedication).ToList<Rcopia_Medication>();
-                }
 
+                    IList<Rcopia_Medication> ilstCountOfrcopiaMedication = rcopiaMedicationList.Where(x => x.Brand_Name == rcopiaMedicationList[iCount].Brand_Name
+                    && x.Strength == rcopiaMedicationList[iCount].Strength
+                    && x.Form == rcopiaMedicationList[iCount].Form
+                    && x.Dose == rcopiaMedicationList[iCount].Dose
+                    && x.Dose_Unit == rcopiaMedicationList[iCount].Dose_Unit
+                    && x.Route == rcopiaMedicationList[iCount].Route
+                    && x.Dose_Timing == rcopiaMedicationList[iCount].Dose_Timing
+                    && x.Start_Date == rcopiaMedicationList[iCount].Start_Date
+                    && x.Stop_Date == rcopiaMedicationList[iCount].Stop_Date
+                    && x.Patient_Notes == rcopiaMedicationList[iCount].Patient_Notes
+                    && x.Other_Notes == rcopiaMedicationList[iCount].Other_Notes).ToList<Rcopia_Medication>();
+
+
+
+                    if (ilstCountOfrcopiaMedication.Count > 1)
+                    {
+                        ilstCountOfrcopiaMedication.RemoveAt(0);
+                        ilstrcopiaMedicationReturn = ilstrcopiaMedicationReturn.Concat(ilstCountOfrcopiaMedication).ToList<Rcopia_Medication>();
+                    }
+                }
 
             }
 
@@ -542,8 +557,12 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
             return ilstrcopiaMedicationReturn;
         }
 
-        public string UpdateRcopiaMedication(IList<ulong> ilstRcopiaID, ulong ulHumanID, string sLegalOrg, string sUserName)
+        public string UpdateRcopiaMedication(IList<ulong> ilstRcopiaID, ulong ulHumanID,string sFacilityName , string sLegalOrg, string sUserName)
         {
+            if (ilstRcopiaID.Count == 0)
+            {
+                return "Success";
+            }
             RCopiaGenerateXML rcopiaXML = new RCopiaGenerateXML();
             string sInputXML = string.Empty;
             string sOutputXML = string.Empty;
@@ -590,6 +609,7 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
 
                     sRequestXML = rCopiaTransactionManager.createSendMedicationXml(ulHumanID, sLegalOrg, sRequestXML);
 
+                    // To update the medication data in DrFirst
                     if (rcopiaSessionMngr.UploadAddress != null && sRequestXML != string.Empty && sRequestXML.ToUpper().Contains("<DELETED>N</DELETED>") == true)
                     {
                         sRequestXML = sRequestXML.Replace("<Deleted>n</Deleted>", "<Deleted>y</Deleted>");
@@ -610,7 +630,7 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
 
                             sStatus = XMLResponse.SelectSingleNode("RCExtResponse/Response/MedicationList/Medication[" + iCont + "]/Status")?.InnerText;
                             sTemp = XMLResponse.SelectSingleNode("RCExtResponse/Response/MedicationList/Medication[" + iCont + "]/RcopiaID")?.InnerText;
-                            if (sTemp != null && sStatus != null && sStatus != "updated")
+                            if (sTemp != null && sStatus != null && sStatus != "deleted")
                             {
                                 sErrorRcopiaID = sErrorRcopiaID + ((sErrorRcopiaID != string.Empty) ? "," : "RCopia ID : ") + sTemp + " : " + sStatus;
                             }
@@ -633,7 +653,20 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
                     }
                 }
 
+
+                //Download Rcopia Data from the DrFirst
+                string sErrorMessage = string.Empty;
+                Rcopia_Update_InfoManager objUpdateInfoMngr = new Rcopia_Update_InfoManager();
+                DateTime dtClientDate = DateTime.UtcNow;
+                if (sUserName != null && sFacilityName != null)
+                    //Commented the Patient Level RCopia Download
+                    sErrorMessage = objUpdateInfoMngr.DownloadRCopiaInfo(rcopiaSessionMngr.DownloadAddress, sUserName, string.Empty, dtClientDate, sFacilityName, 0, ulHumanID, sLegalOrg);
+                if (sErrorMessage != string.Empty)
+                {
+                    return "DownloadRCopiaInfo-" + sErrorMessage;
+                }
             }
+            
             return "Success";
         }
     }
