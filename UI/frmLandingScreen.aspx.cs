@@ -349,7 +349,7 @@ namespace Acurus.Capella.UI
                         {
                             if ((Request?.Headers["X-Forwarded-Host"] ?? "") == ConfigurationSettings.AppSettings["AkidoChartDomain"])
                             {
-                                string subdomain = Request.Url.Authority.Contains("test6") ? "cpaella6" : "";
+                                string subdomain = Request.Url.Authority.Contains("test6") ? "capella6" : "";
 
                                 if (!string.IsNullOrWhiteSpace(subdomain))
                                 {
@@ -935,7 +935,7 @@ namespace Acurus.Capella.UI
             //CAP-2337
             if ((Request?.Headers["X-Forwarded-Host"] ?? "") == ConfigurationSettings.AppSettings["AkidoChartDomain"])
             {
-                string subdomain = Request.Url.Authority.Contains("test6") ? "cpaella6" : "";
+                string subdomain = Request.Url.Authority.Contains("test6") ? "capella6" : "";
 
                 if (string.IsNullOrWhiteSpace(subdomain))
                 {

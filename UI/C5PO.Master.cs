@@ -1015,7 +1015,7 @@ namespace Acurus.Capella.UI
                     var postLogoutRedirectUri = string.Empty;
                     if((Request?.Headers["X-Forwarded-Host"] ?? "") == ConfigurationSettings.AppSettings["AkidoChartDomain"])
                     {
-                        string subdomain = Request.Url.Authority.Contains("test6") ? "cpaella6" : "";
+                        string subdomain = Request.Url.Authority.Contains("test6") ? "capella6" : "";
 
                         if (string.IsNullOrWhiteSpace(subdomain))
                         {

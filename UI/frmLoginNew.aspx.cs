@@ -294,7 +294,7 @@ namespace Acurus.Capella.UI
             //CAP-2337
             if ((Request?.Headers["X-Forwarded-Host"] ?? "") == ConfigurationSettings.AppSettings["AkidoChartDomain"])
             {
-                string subdomain = Request.Url.Authority.Contains("test6") ? "cpaella6" : "";
+                string subdomain = Request.Url.Authority.Contains("test6") ? "capella6" : "";
                 //string[] parts = Request.Url.AbsoluteUri.Split('/');
                 //if (parts.Length > 1)
                 //{
@@ -329,7 +329,7 @@ namespace Acurus.Capella.UI
             //CAP-2337
             if ((Request?.Headers["X-Forwarded-Host"]??"") == ConfigurationSettings.AppSettings["AkidoChartDomain"])
             {
-                string subdomain = Request.Url.Authority.Contains("test6") ? "cpaella6" : "";
+                string subdomain = Request.Url.Authority.Contains("test6") ? "capella6" : "";
                 //string[] parts = Request.Url.AbsoluteUri.Split('/');
                 //if (parts.Length > 1)
                 //{
@@ -364,7 +364,7 @@ namespace Acurus.Capella.UI
             //CAP-2337
             if ((Request?.Headers["X-Forwarded-Host"] ?? "") == ConfigurationSettings.AppSettings["AkidoChartDomain"])
             {
-                string subdomain = Request.Url.Authority.Contains("test6") ? "cpaella6" : "";
+                string subdomain = Request.Url.Authority.Contains("test6") ? "capella6" : "";
                 //string[] parts = Request.Url.AbsoluteUri.Split('/');
                 //if (parts.Length > 1)
                 //{
