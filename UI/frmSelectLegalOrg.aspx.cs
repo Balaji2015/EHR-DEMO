@@ -484,12 +484,7 @@ namespace Acurus.Capella.UI
                         {
                             if ((Request?.Headers["X-Forwarded-Host"] ?? "") == ConfigurationSettings.AppSettings["AkidoChartDomain"])
                             {
-                                string subdomain = string.Empty;
-                                string[] parts = Request.Url.AbsoluteUri.Split('/');
-                                if (parts.Length > 1)
-                                {
-                                    subdomain = parts[3];
-                                }
+                                string subdomain = Request.Url.Authority.Contains("test6") ? "cpaella6" : "";
 
                                 if (!string.IsNullOrWhiteSpace(subdomain))
                                 {
