@@ -6,6 +6,7 @@ using Acurus.Capella.Core.DTO;
 using NHibernate;
 using NHibernate.Criterion;
 using System.Linq;
+using System.Xml;
 
 namespace Acurus.Capella.DataAccess.ManagerObjects
 {
@@ -19,6 +20,8 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
         IList<Rcopia_Medication> GetRxNormByHumanID(ulong ulHumanID);
         IList<Rcopia_Medication> GetRmedicationByHumanID(string ulHumanID);
         IList<Rcopia_Medication> GetMedicationByHumanID(ulong ulHumanID);
+        IList<Rcopia_Medication> GetMedicationWithExactDuplicates(ulong ulHumanID);
+        IList<Rcopia_Medication> GetMedicationWithPartialDuplicates(ulong ulHumanID);
     }
 
     public partial class Rcopia_MedicationManager : ManagerBase<Rcopia_Medication, ulong>, IRcopia_MedicationManager
@@ -143,7 +146,7 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
         //                    XMLObj.GenerateXmlSaveRCopia(lstObj, uHuman_id, string.Empty, true, false, false, true);
         //            }
 
-               
+
         //        //if (Rcopia_MedicationList.Count > 0)
         //        //{
         //        //    for (int i = 0; i < Rcopia_MedicationList.Count; i++)
@@ -256,7 +259,7 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
                     EncounterORHumanId = Rcopia_MedicationList[0].Human_ID;
                 else if (Rcopia_MedicationUpdateList.Count > 0)
                     EncounterORHumanId = Rcopia_MedicationUpdateList[0].Human_ID;
-                if (EncounterORHumanId !=0)
+                if (EncounterORHumanId != 0)
                     SaveUpdateDelete_DBAndXML_WithTransaction(ref Rcopia_MedicationList, ref Rcopia_MedicationUpdateList, null, MACAddress, true, true, EncounterORHumanId, string.Empty);
                 //SaveUpdateDeleteWithTransaction(ref Rcopia_MedicationList, Rcopia_MedicationUpdateList, null, MACAddress);
 
@@ -465,5 +468,173 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
             return rcopiaMedicationList;
         }
         #endregion
+
+        public IList<Rcopia_Medication> GetMedicationWithExactDuplicates(ulong ulHumanID)
+        {
+            IList<Rcopia_Medication> rcopiaMedicationList = new List<Rcopia_Medication>();
+            IList<Rcopia_Medication> ilstrcopiaMedicationReturn = new List<Rcopia_Medication>();
+            using (ISession mySession = NHibernateSessionManager.Instance.CreateISession())
+            {
+                ISQLQuery sql = session.GetISession().CreateSQLQuery("select * from rcopia_medication as a where Human_ID=" + ulHumanID + " and status='Active' and Deleted <> 'Y' order by Brand_Name,Strength,Form,Dose,Dose_Unit,Route,Dose_Timing,Start_Date,Stop_Date,Patient_Notes,Other_Notes;").AddEntity("m", typeof(Rcopia_Medication));
+
+                rcopiaMedicationList = sql.List<Rcopia_Medication>();
+                mySession.Close();
+            }
+            for (int iCount = 0; iCount < rcopiaMedicationList.Count; iCount++)
+            {
+                IList<Rcopia_Medication> ilstCountOfrcopiaMedication = rcopiaMedicationList.Where(x => x.Brand_Name == rcopiaMedicationList[iCount].Brand_Name
+                && x.Strength == rcopiaMedicationList[iCount].Strength
+                && x.Form == rcopiaMedicationList[iCount].Form
+                && x.Dose == rcopiaMedicationList[iCount].Dose
+                && x.Dose_Unit == rcopiaMedicationList[iCount].Dose_Unit
+                && x.Route == rcopiaMedicationList[iCount].Route
+                && x.Dose_Timing == rcopiaMedicationList[iCount].Dose_Timing
+                && x.Start_Date == rcopiaMedicationList[iCount].Start_Date
+                && x.Stop_Date == rcopiaMedicationList[iCount].Stop_Date
+                && x.Patient_Notes == rcopiaMedicationList[iCount].Patient_Notes
+                && x.Other_Notes == rcopiaMedicationList[iCount].Other_Notes).ToList<Rcopia_Medication>();
+
+
+
+                if (ilstCountOfrcopiaMedication.Count > 1 && !ilstrcopiaMedicationReturn.Contains(rcopiaMedicationList[iCount]))
+                {
+                    ilstCountOfrcopiaMedication.RemoveAt(0);
+                    ilstrcopiaMedicationReturn = ilstrcopiaMedicationReturn.Concat(ilstCountOfrcopiaMedication).ToList<Rcopia_Medication>();
+                }
+
+
+            }
+
+            return ilstrcopiaMedicationReturn;
+        }
+
+        public IList<Rcopia_Medication> GetMedicationWithPartialDuplicates(ulong ulHumanID)
+        {
+            IList<Rcopia_Medication> rcopiaMedicationList = new List<Rcopia_Medication>();
+            IList<Rcopia_Medication> ilstrcopiaMedicationReturn = new List<Rcopia_Medication>();
+            using (ISession mySession = NHibernateSessionManager.Instance.CreateISession())
+            {
+                ISQLQuery sql = session.GetISession().CreateSQLQuery("select * from rcopia_medication as a where Human_ID=" + ulHumanID + " and status='Active' and Deleted <> 'Y' group by Brand_Name,Strength,Form,Dose,Dose_Unit,Route,Dose_Timing,Start_Date,Stop_Date,Patient_Notes,Other_Notes;").AddEntity("m", typeof(Rcopia_Medication));
+
+                rcopiaMedicationList = sql.List<Rcopia_Medication>();
+                mySession.Close();
+            }
+            for (int iCount = 0; iCount < rcopiaMedicationList.Count; iCount++)
+            {
+                IList<Rcopia_Medication> ilstCountOfrcopiaMedication = rcopiaMedicationList.Where(x => x.Brand_Name == rcopiaMedicationList[iCount].Brand_Name
+                && x.Strength == rcopiaMedicationList[iCount].Strength
+                && x.Form == rcopiaMedicationList[iCount].Form
+                && x.Dose == rcopiaMedicationList[iCount].Dose
+                && x.Dose_Unit == rcopiaMedicationList[iCount].Dose_Unit
+                && x.Route == rcopiaMedicationList[iCount].Route
+                && x.Dose_Timing == rcopiaMedicationList[iCount].Dose_Timing).ToList<Rcopia_Medication>();
+
+
+
+                if (ilstCountOfrcopiaMedication.Count > 1)
+                {
+                    ilstrcopiaMedicationReturn.Add(rcopiaMedicationList[iCount]);
+                }
+
+
+            }
+
+            return ilstrcopiaMedicationReturn;
+        }
+
+        public string UpdateRcopiaMedication(IList<ulong> ilstRcopiaID, ulong ulHumanID, string sLegalOrg, string sUserName)
+        {
+            RCopiaGenerateXML rcopiaXML = new RCopiaGenerateXML();
+            string sInputXML = string.Empty;
+            string sOutputXML = string.Empty;
+            string sRequestXML = string.Empty;
+            IList<ulong> ilstMedicationId = new List<ulong>();
+            DateTime dtRCopia_Medication_Last_Updated_Date_Time = new DateTime(2001, 01, 01);
+            RCopiaSessionManager rcopiaSessionMngr = new RCopiaSessionManager(sLegalOrg);
+            RCopiaTransactionManager rCopiaTransactionManager = new RCopiaTransactionManager();
+
+            //To get the Medication list from DrFirst
+            sInputXML = rcopiaXML.CreateUpdateMedicationXML(ulHumanID, dtRCopia_Medication_Last_Updated_Date_Time, sLegalOrg, DateTime.MinValue);
+
+            if (rcopiaSessionMngr.DownloadAddress != null && sInputXML != string.Empty)
+            {
+                sOutputXML = rcopiaSessionMngr.HttpPost(rcopiaSessionMngr.DownloadAddress + sInputXML, 1, sUserName);
+                //Jira CAP-1366
+                if (sOutputXML != null && sOutputXML.StartsWith("HttpPostError") == true)
+                {
+                    return "Error during getting the medication records for the patient - "+sOutputXML;
+                }
+
+                XmlDocument XMLDoc = new XmlDocument();
+                if (sOutputXML != null)
+                {
+                    XMLDoc.LoadXml(sOutputXML);
+                    int iMedicationListCount = XMLDoc.SelectNodes("RCExtResponse/Response/MedicationList/Medication").Count;
+                    int iResopnseMedicationCount = 0;
+                    for (int iCont = 1; iCont <= iMedicationListCount; iCont++)
+                    {
+
+                        ilstMedicationId = ilstRcopiaID.Where(x => x.ToString() == XMLDoc.SelectSingleNode("RCExtResponse/Response/MedicationList/Medication[" + iCont + "]/RcopiaID").InnerText).ToList<ulong>();
+
+                        if (ilstMedicationId.Count > 0)
+                        {
+                            sRequestXML = sRequestXML + XMLDoc.SelectSingleNode("RCExtResponse/Response/MedicationList/Medication[" + iCont + "]").OuterXml;
+                            iResopnseMedicationCount++;
+                        }
+                    }
+                    if (ilstRcopiaID.Count != iResopnseMedicationCount)
+                    {
+                        return "Medication record is not found in DrFirst for RCopia ID : " + string.Join(",", ilstRcopiaID);
+                    }
+                    sRequestXML = "<MedicationList>" + sRequestXML + "</MedicationList>";
+
+                    sRequestXML = rCopiaTransactionManager.createSendMedicationXml(ulHumanID, sLegalOrg, sRequestXML);
+
+                    if (rcopiaSessionMngr.UploadAddress != null && sRequestXML != string.Empty && sRequestXML.ToUpper().Contains("<DELETED>N</DELETED>") == true)
+                    {
+                        sRequestXML = sRequestXML.Replace("<Deleted>n</Deleted>", "<Deleted>y</Deleted>");
+                        sOutputXML = rcopiaSessionMngr.HttpPost(rcopiaSessionMngr.UploadAddress + sRequestXML, 1, sUserName);
+                        //Jira CAP-1366
+                        if (sOutputXML != null && sOutputXML.StartsWith("HttpPostError") == true)
+                        {
+                            return "Error during updating the medication record - "+sOutputXML;
+                        }
+                        XmlDocument XMLResponse = new XmlDocument();
+                        XMLResponse.LoadXml(sOutputXML);
+                        int iResponseMedicationListCount = XMLResponse.SelectNodes("RCExtResponse/Response/MedicationList/Medication").Count;
+                        string sStatus = string.Empty;
+                        string sTemp = string.Empty;
+                        string sErrorRcopiaID = string.Empty;
+                        for (int iCont = 1; iCont <= iResponseMedicationListCount; iCont++)
+                        {
+
+                            sStatus = XMLResponse.SelectSingleNode("RCExtResponse/Response/MedicationList/Medication[" + iCont + "]/Status")?.InnerText;
+                            sTemp = XMLResponse.SelectSingleNode("RCExtResponse/Response/MedicationList/Medication[" + iCont + "]/RcopiaID")?.InnerText;
+                            if (sTemp != null && sStatus != null && sStatus != "updated")
+                            {
+                                sErrorRcopiaID = sErrorRcopiaID + ((sErrorRcopiaID != string.Empty) ? "," : "RCopia ID : ") + sTemp + " : " + sStatus;
+                            }
+                            else if(sStatus == null || sTemp == null)
+                            {
+                                sErrorRcopiaID = sErrorRcopiaID + ((sErrorRcopiaID != string.Empty) ? "," : "")
+                                    + ((sStatus == null && sTemp != null) ? "RCopia ID : "+sTemp + " Status is null" :
+                                    (sStatus != null && sTemp == null) ? "RCopia ID is null " + sStatus : "RCopia ID and Status are null");
+                            }
+                        }
+                        if (sErrorRcopiaID != string.Empty)
+                        {
+                           return "Medication is not updated in DrFirst. \n For refernce : " + sErrorRcopiaID;
+                        }
+
+                    }
+                    else
+                    {
+                        return (rcopiaSessionMngr.UploadAddress == null) ? "rcopiaSessionMngr.UploadAddress is null":(sRequestXML == string.Empty)? "sRequestXML is Empty" : "There is no DELETED tag in Response or DELETED is in 'Y'";
+                    }
+                }
+
+            }
+            return "Success";
+        }
     }
 }

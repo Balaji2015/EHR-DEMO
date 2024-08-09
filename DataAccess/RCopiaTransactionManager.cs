@@ -877,7 +877,44 @@ namespace Acurus.Capella.DataAccess
         }
 
 
+        public string createSendMedicationXml(ulong MyhumanID, string sLegalOrg ,string sRequestXML)
+        {
 
+            FillRequiredInfo("send_medication", sLegalOrg);
+            if (objRcopSettings == null)
+            {
+                return string.Empty;
+            }
+            
+            xmlWriter.WriteEndElement();
+            xmlWriter.WriteEndElement();
+            // Close the document
+            xmlWriter.WriteEndDocument();
+            // Flush the write
+            xmlWriter.Flush();
+            Byte[] buffer = new Byte[ms.Length];
+            buffer = ms.ToArray();
+            string xmlOutput = System.Text.Encoding.UTF8.GetString(buffer);
+            xmlOutput = xmlOutput.Replace("</Request>", "").Replace("</RCExtRequest>", "");
+            xmlOutput = xmlOutput + sRequestXML + "</Request> </RCExtRequest>";
+            xmlOutput = @"<?xml version=""1.0"" encoding=""utf-8""?>" + xmlOutput.Substring(xmlOutput.IndexOf("<RCExtRequest"));
+            XmlDocument xmlDocument = new XmlDocument();
+
+            xmlDocument.LoadXml(xmlOutput);
+
+            int iMedicationListCount = xmlDocument.SelectNodes("RCExtRequest/Request/MedicationList/Medication").Count;
+            for (int iCont = 1; iCont <= iMedicationListCount; iCont++)
+            {
+                xmlDocument.SelectSingleNode("RCExtRequest/Request/MedicationList/Medication[" + iCont + "]/Sig/Drug/FirstDataBankMedID")?.RemoveAll();
+                xmlDocument.SelectSingleNode("RCExtRequest/Request/MedicationList/Medication[" + iCont + "]/Sig/Drug/RcopiaID")?.RemoveAll();
+                xmlDocument.SelectSingleNode("RCExtRequest/Request/MedicationList/Medication[" + iCont + "]/Sig/Drug/RxnormID")?.RemoveAll();
+                xmlDocument.SelectSingleNode("RCExtRequest/Request/MedicationList/Medication[" + iCont + "]/Sig/Drug/RxnormIDType")?.RemoveAll();
+
+            }
+            xmlOutput = xmlDocument.InnerXml;
+
+            return xmlOutput;
+        }
         public void FillRequiredInfo(string sXMLName, string sLegalOrg)
         {
 
