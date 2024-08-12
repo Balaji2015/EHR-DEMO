@@ -915,6 +915,47 @@ namespace Acurus.Capella.DataAccess
 
             return xmlOutput;
         }
+
+        public string createSendAllergyXml(ulong MyhumanID, string sLegalOrg, string sRequestXML)
+        {
+
+            FillRequiredInfo("send_allergy", sLegalOrg);
+            if (objRcopSettings == null)
+            {
+                return string.Empty;
+            }
+
+            xmlWriter.WriteEndElement();
+            xmlWriter.WriteEndElement();
+            // Close the document
+            xmlWriter.WriteEndDocument();
+            // Flush the write
+            xmlWriter.Flush();
+            Byte[] buffer = new Byte[ms.Length];
+            buffer = ms.ToArray();
+            string xmlOutput = System.Text.Encoding.UTF8.GetString(buffer);
+            xmlOutput = xmlOutput.Replace("</Request>", "").Replace("</RCExtRequest>", "");
+            xmlOutput = xmlOutput + sRequestXML + "</Request> </RCExtRequest>";
+            xmlOutput = @"<?xml version=""1.0"" encoding=""utf-8""?>" + xmlOutput.Substring(xmlOutput.IndexOf("<RCExtRequest"));
+            XmlDocument xmlDocument = new XmlDocument();
+
+            xmlDocument.LoadXml(xmlOutput);
+
+            int iAllergyListCount = xmlDocument.SelectNodes("RCExtRequest/Request/AllergyList/Allergy").Count;
+            for (int iCont = 1; iCont <= iAllergyListCount; iCont++)
+            {
+                xmlDocument.SelectSingleNode("RCExtRequest/Request/AllergyList/Allergy[" + iCont + "]/Allergen/Drug/NDCID")?.RemoveAll();
+                xmlDocument.SelectSingleNode("RCExtRequest/Request/AllergyList/Allergy[" + iCont + "]/Allergen/Drug/FirstDataBankMedID")?.RemoveAll();
+                xmlDocument.SelectSingleNode("RCExtRequest/Request/AllergyList/Allergy[" + iCont + "]/Allergen/Drug/RxnormID")?.RemoveAll();
+                xmlDocument.SelectSingleNode("RCExtRequest/Request/AllergyList/Allergy[" + iCont + "]/Allergen/Drug/RxnormIDType")?.RemoveAll();
+                xmlDocument.SelectSingleNode("RCExtRequest/Request/AllergyList/Allergy[" + iCont + "]/Status/Active")?.RemoveAll();               
+
+            }
+            xmlOutput = xmlDocument.InnerXml;
+
+            return xmlOutput;
+        }
+
         public void FillRequiredInfo(string sXMLName, string sLegalOrg)
         {
 

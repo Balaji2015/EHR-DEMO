@@ -6,6 +6,7 @@ using Acurus.Capella.Core.DTO;
 using NHibernate;
 using NHibernate.Criterion;
 using System.Linq;
+using System.Xml;
 
 namespace Acurus.Capella.DataAccess.ManagerObjects
 {
@@ -192,6 +193,143 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
             }
             return rcopiaMedicationList;
         }
+
+        public IList<Rcopia_Allergy> GetAllergyListByIdStatus(ulong ulhumanID,string Status)
+        {
+            IList<Rcopia_Allergy> ilstRcopia_Allergy = new List<Rcopia_Allergy>();
+            //ISession mySession = NHibernateSessionManager.Instance.CreateISession();
+            using (ISession iMySession = NHibernateSessionManager.Instance.CreateISession())
+            {
+                ICriteria crit;
+                if (Status.ToUpper() == "ACTIVE")
+                {
+                     crit = iMySession.CreateCriteria(typeof(Rcopia_Allergy)).Add(Expression.Eq("Human_ID", ulhumanID)).Add(Expression.Eq("Deleted", "N")).Add(Expression.Eq("Status", Status));
+                }
+                else
+                {
+                     crit = iMySession.CreateCriteria(typeof(Rcopia_Allergy)).Add(Expression.Eq("Human_ID", ulhumanID)).Add(Expression.Eq("Deleted", "N"));
+                }
+               
+                ilstRcopia_Allergy = crit.List<Rcopia_Allergy>();
+                iMySession.Close();
+            }
+            return ilstRcopia_Allergy;
+        }
+
+
+        public string UpdateRcopiaAllergy(IList<ulong> ilstRcopiaID, ulong ulHumanID, string sFacilityName, string sLegalOrg, string sUserName)
+        {
+            if (ilstRcopiaID.Count == 0)
+            {
+                return "Success";
+            }
+            RCopiaGenerateXML rcopiaXML = new RCopiaGenerateXML();
+            string sInputXML = string.Empty;
+            string sOutputXML = string.Empty;
+            string sRequestXML = string.Empty;
+            IList<ulong> ilstAllergyId = new List<ulong>();
+            DateTime dtRCopia_Allergy_Last_Updated_Date_and_Time = new DateTime(2001, 01, 01);
+            RCopiaSessionManager rcopiaSessionMngr = new RCopiaSessionManager(sLegalOrg);
+            RCopiaTransactionManager rCopiaTransactionManager = new RCopiaTransactionManager();
+
+            //To get the Medication list from DrFirst
+            sInputXML = rcopiaXML.CreateUpdateAllergyXML(ulHumanID, dtRCopia_Allergy_Last_Updated_Date_and_Time, sLegalOrg, DateTime.MinValue);
+
+            if (rcopiaSessionMngr.DownloadAddress != null && sInputXML != string.Empty)
+            {
+                sOutputXML = rcopiaSessionMngr.HttpPost(rcopiaSessionMngr.DownloadAddress + sInputXML, 1, sUserName);
+                //Jira CAP-1366
+                if (sOutputXML != null && sOutputXML.StartsWith("HttpPostError") == true)
+                {
+                    return "Error during getting the allergy records for the patient - " + sOutputXML;
+                }
+
+                XmlDocument XMLDoc = new XmlDocument();
+                if (sOutputXML != null)
+                {
+                    XMLDoc.LoadXml(sOutputXML);
+                    int iAllergyListCount = XMLDoc.SelectNodes("RCExtResponse/Response/AllergyList/Allergy").Count;
+                    int iResopnseAllergyCount = 0;
+                    for (int iCont = 1; iCont <= iAllergyListCount; iCont++)
+                    {
+
+                        ilstAllergyId = ilstRcopiaID.Where(x => x.ToString() == XMLDoc.SelectSingleNode("RCExtResponse/Response/AllergyList/Allergy[" + iCont + "]/RcopiaID").InnerText).ToList<ulong>();
+
+                        if (ilstAllergyId.Count > 0)
+                        {
+                            sRequestXML = sRequestXML + XMLDoc.SelectSingleNode("RCExtResponse/Response/AllergyList/Allergy[" + iCont + "]").OuterXml;
+                            iResopnseAllergyCount++;
+                        }
+                    }
+                    if (ilstRcopiaID.Count != iResopnseAllergyCount)
+                    {
+                        return "Allergy record is not found in DrFirst for RCopia ID : " + string.Join(",", ilstRcopiaID);
+                    }
+                    sRequestXML = "<AllergyList>" + sRequestXML + "</AllergyList>";
+
+                    sRequestXML = rCopiaTransactionManager.createSendAllergyXml(ulHumanID, sLegalOrg, sRequestXML);
+
+                    // To update the medication data in DrFirst
+                    if (rcopiaSessionMngr.UploadAddress != null && sRequestXML != string.Empty && sRequestXML.ToUpper().Contains("<DELETED>N</DELETED>") == true)
+                    {
+                        sRequestXML = sRequestXML.Replace("<Deleted>n</Deleted>", "<Deleted>y</Deleted>").Replace("<Status><Active /></Status>", "<Status><Deleted /></Status>");
+                        sOutputXML = rcopiaSessionMngr.HttpPost(rcopiaSessionMngr.UploadAddress + sRequestXML, 1, sUserName);
+                        //Jira CAP-1366
+                        if (sOutputXML != null && sOutputXML.StartsWith("HttpPostError") == true)
+                        {
+                            return "Error during updating the allergy record - " + sOutputXML;
+                        }
+                        XmlDocument XMLResponse = new XmlDocument();
+                        XMLResponse.LoadXml(sOutputXML);
+                        int iResponseAllergyListCount = XMLResponse.SelectNodes("RCExtResponse/Response/AllergyList/Allergy").Count;
+                        string sStatus = string.Empty;
+                        string sTemp = string.Empty;
+                        string sErrorRcopiaID = string.Empty;
+                        for (int iCont = 1; iCont <= iResponseAllergyListCount; iCont++)
+                        {
+
+                            sStatus = XMLResponse.SelectSingleNode("RCExtResponse/Response/AllergyList/Allergy[" + iCont + "]/Status")?.InnerText;
+                            sTemp = XMLResponse.SelectSingleNode("RCExtResponse/Response/AllergyList/Allergy[" + iCont + "]/RcopiaID")?.InnerText;
+                            if (sTemp != null && sStatus != null && sStatus != "deleted")
+                            {
+                                sErrorRcopiaID = sErrorRcopiaID + ((sErrorRcopiaID != string.Empty) ? "," : "RCopia ID : ") + sTemp + " : " + sStatus;
+                            }
+                            else if (sStatus == null || sTemp == null)
+                            {
+                                sErrorRcopiaID = sErrorRcopiaID + ((sErrorRcopiaID != string.Empty) ? "," : "")
+                                    + ((sStatus == null && sTemp != null) ? "RCopia ID : " + sTemp + " Status is null" :
+                                    (sStatus != null && sTemp == null) ? "RCopia ID is null " + sStatus : "RCopia ID and Status are null");
+                            }
+                        }
+                        if (sErrorRcopiaID != string.Empty)
+                        {
+                            return "Allergy is not updated in DrFirst. \n For refernce : " + sErrorRcopiaID;
+                        }
+
+                    }
+                    else
+                    {
+                        return (rcopiaSessionMngr.UploadAddress == null) ? "rcopiaSessionMngr.UploadAddress is null" : (sRequestXML == string.Empty) ? "sRequestXML is Empty" : "There is no DELETED tag in Response or DELETED is in 'Y'";
+                    }
+                }
+
+
+                //Download Rcopia Data from the DrFirst
+                string sErrorMessage = string.Empty;
+                Rcopia_Update_InfoManager objUpdateInfoMngr = new Rcopia_Update_InfoManager();
+                DateTime dtClientDate = DateTime.UtcNow;
+                if (sUserName != null && sFacilityName != null)
+                    //Commented the Patient Level RCopia Download
+                    sErrorMessage = objUpdateInfoMngr.DownloadRCopiaInfo(rcopiaSessionMngr.DownloadAddress, sUserName, string.Empty, dtClientDate, sFacilityName, 0, ulHumanID, sLegalOrg);
+                if (sErrorMessage != string.Empty)
+                {
+                    return "DownloadRCopiaInfo-" + sErrorMessage;
+                }
+            }
+
+            return "Success";
+        }
+
 
         #endregion
 
