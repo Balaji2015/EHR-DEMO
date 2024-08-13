@@ -398,6 +398,7 @@
     <Content Include="frmQuickPatientCreate.aspx" />
     <Content Include="frmRCopiaDuplicateMediations.aspx" />
     <Content Include="frmRCopiaMergePatientBar.aspx" />
+    <Content Include="frmRCopiaPatientMerge.aspx" />
     <Content Include="frmResetPassword.aspx" />
     <Content Include="frmRestrictedAccess.aspx" />
     <Content Include="frmRestrictMultipleTabs.aspx" />
@@ -417,6 +418,7 @@
     <Content Include="JScripts\jquery.ui.autocomplete.js" />
     <Content Include="JScripts\jQueryAngular.js" />
     <Content Include="JScripts\jsAssessmentNew.js" />
+    <Content Include="JScripts\JSRCopiaPatientMerge.js" />
     <Content Include="JScripts\JSImpersonateUser.js" />
     <Content Include="JScripts\JSLandingScreen.js" />
     <Content Include="JScripts\JSLoginNew.js" />
@@ -1551,6 +1553,13 @@
     </Compile>
     <Compile Include="frmRCopiaMergePatientBar.aspx.designer.cs">
       <DependentUpon>frmRCopiaMergePatientBar.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="frmRCopiaPatientMerge.aspx.cs">
+      <DependentUpon>frmRCopiaPatientMerge.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="frmRCopiaPatientMerge.aspx.designer.cs">
+      <DependentUpon>frmRCopiaPatientMerge.aspx</DependentUpon>
     </Compile>
     <Compile Include="frmRCopiaToolbar.aspx.cs">
       <DependentUpon>frmRCopiaToolbar.aspx</DependentUpon>

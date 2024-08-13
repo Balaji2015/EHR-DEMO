@@ -1060,8 +1060,11 @@ function OpenModal(data) {
     }
     else if (itemValue == "Patient Merge")
     {
-        
-
+        //CAP-2226
+        $(top.window.document).find('#RCopiaPatientMergeModal').modal({ backdrop: 'static', keyboard: false }, 'show');
+        var sPath = "frmRCopiaPatientMerge.aspx?version=" + sessionStorage.getItem("ScriptVersion");
+        $(top.window.document).find('#RCopiaPatientMergeFrame')[0].src = sPath;
+        $($($(top.window.document).find('#RCopiaPatientMergeModal')).find('#RCopiaPatientMergeMdlDlg')).find('.modal-content').css('overflow-y', 'auto');
     }
     else if (itemValue == "Review Erx Data")
     {
@@ -1772,8 +1775,6 @@ function OpenModal(data) {
 
 
     }
-
-
 }
 
 

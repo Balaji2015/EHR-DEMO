@@ -3028,4 +3028,8 @@
 
 	<Message number="10113405" Type="OK" Text="The selected appointment is {0}. So, this can not be marked as {1}."></Message>
 
+	<Message number="10113601" Type="OK" Text="Please select the keep account."></Message>
+	<Message number="10113602" Type="OK" Text="Please select the merge account."></Message>
+	<Message number="10113603" Type="ToolStrip" Text="Keep and Merge account are cleaned up and downloaded successfully." />
+	<Message number="10113604" Type="OK" Text="You have merged the records. Please click on the download."></Message>
 </ErrorMessage>
