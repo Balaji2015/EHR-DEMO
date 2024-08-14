@@ -26,7 +26,7 @@
 </head>
 <body>
     <form id="frmRCopiaDuplicateMediations" runat="server" style="margin-top:4px;">
-        <div>&emsp;<label class="patientchartfontfamily">Drug Name</label> &emsp; <input type="text" id="txtSearcMedication" onkeyup="SearchMedication()" /> <img id="imgClearProviderText" onclick="ClearAllSearch()" src="Resources/Delete-Blue.png" alt="X" title="Click to clear the text field." style="position: absolute; left: 295px; top: 12px; cursor: pointer; width: 12px; height: 12px;" /></div>
+        <div>&emsp;<label  style="all: revert;" class="patientchartfontfamily">Medication </label> &emsp; <input type="text" id="txtSearcMedication" onkeyup="SearchMedication()" placeholder="Type your Medication here" style="width:433px;" /> <img id="imgClearProviderText" onclick="ClearAllSearch()" src="Resources/Delete-Blue.png" alt="X" title="Click to clear the text field." style="position: absolute; left: 545px; top: 12px; cursor: pointer; width: 12px; height: 12px;" /></div>
         <div id="divRCopiaDuplicateMediations" style="overflow:auto; height:450px;">
             <table id="RCopiaDuplicateMediationsTable" class='table table-bordered Gridbodystyle' style='table-layout: fixed;'>
               <thead>

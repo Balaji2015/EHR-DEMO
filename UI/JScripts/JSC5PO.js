@@ -1089,7 +1089,7 @@ function OpenModal(data) {
         }
         else {
             $(top.window.document).find("#TabPatientMerge").modal({ backdrop: "static", keyboard: false }, 'show');
-            $(top.window.document).find("#TabModalPatientMergeTitle")[0].textContent = "Quick Patient Create";
+            $(top.window.document).find("#TabModalPatientMergeTitle")[0].textContent = "Review eRx Data";
             $(top.window.document).find("#TabmdldlgPatientMerge")[0].style.width = "1430px";
             $(top.window.document).find("#TabmdldlgPatientMerge")[0].style.height = "653px";
             var sPath = ""
@@ -2544,7 +2544,7 @@ function onClientCloseReviewofErx(oWindow, args) {
 }
 function OpenOnClientCloseReviewofErx() {
     $(top.window.document).find("#TabPatientMerge").modal({ backdrop: "static", keyboard: false }, 'show');
-    $(top.window.document).find("#TabModalPatientMergeTitle")[0].textContent = "Quick Patient Create";
+    $(top.window.document).find("#TabModalPatientMergeTitle")[0].textContent = "Review eRx Data";
     $(top.window.document).find("#TabmdldlgPatientMerge")[0].style.width = "1430px";
     $(top.window.document).find("#TabmdldlgPatientMerge")[0].style.height = "653px";
     var sPath = ""

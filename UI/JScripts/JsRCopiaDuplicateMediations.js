@@ -22,12 +22,22 @@
                         MedicationName = checkMedicationName;
                         colorIndex = colorIndex + 1;
                     }
+                    var start_date = ConvertDate(result[iCount].Start_Date.replace("T", " "));
+                    if (start_date.indexOf("0001-01-01") > -1) {
+                        start_date = "";
+                    }
+                    var Stop_date = ConvertDate(result[iCount].Stop_Date.replace("T", " "));
+                    if (Stop_date.indexOf("0001-01-01") > -1) {
+                        Stop_date = "";
+                    }
+                    var Created_date_time = ConvertDate(result[iCount].Created_Date_And_Time.replace("T", " "));
+                    
 
                     if (result[iCount].Status == "ACTIVE") {
-                        TableContent = TableContent + "<tr style='color: " + ColorList[colorIndex] + ";'><td style='width:65px;'><input type='checkbox'/></td><td style='width: 335px;'>"
+                        TableContent = TableContent + "<tr style='color: " + ColorList[colorIndex] + ";'><td style='width:65px;'><input type='checkbox' onclick='EnableSave()' /></td><td style='width: 335px;'>"
                             + MedicationName + "</td><td>" + result[iCount].Patient_Notes + "</td><td>"
-                            + result[iCount].Other_Notes + "</td><td>" + ConvertDate(result[iCount].Start_Date.replace("T", " ")) + "</td><td>" + ConvertDate(result[iCount].Stop_Date.replace("T", " "))
-                            + "</td><td>" + result[iCount].Created_By + "</td><td>" + ConvertDate(result[iCount].Created_Date_And_Time.replace("T", " ")) + "</td><td>" + result[iCount].Status
+                            + result[iCount].Other_Notes + "</td><td>" + start_date + "</td><td>" + Stop_date
+                            + "</td><td>" + result[iCount].Created_By + "</td><td>" + Created_date_time + "</td><td>" + result[iCount].Status
                             + "</td><td style='display:none' RcopiaMedicationId=" + result[iCount].Id + " >" + result[iCount].Id + "</td></tr>";
                     }
                     else {
@@ -73,6 +83,7 @@
         }
 
     });
+    $("#btnDelete")[0].disabled = true;
 }
 
 function DeleteMedication() {
@@ -83,7 +94,7 @@ function DeleteMedication() {
     }
     else {
         var SelectMedicationCount = $('#RCopiaDuplicateMediationsTable  td').find('input[type=checkbox]:checked').length;
-        var check = confirm("There are " + SelectMedicationCount +" medications selected for delete. Do you want to remove duplicates?");
+        var check = confirm("There are " + SelectMedicationCount +" medication(s) selected for delete. Do you want to remove duplicates?");
         if (check == true) {
             var RcopiamedicationIds = [];
             $('#RCopiaDuplicateMediationsTable  td').find('input[type=checkbox]:checked').each(function () {
@@ -175,7 +186,7 @@ function SearchMedication() {
     var bCheckShowall = document.getElementById("chkShowAll").checked;
     $("#RCopiaDuplicateMediationsTableBody tr").find("td:nth-child(2)").each(function () {
 
-        if ($(this)[0].innerText.indexOf(MedicationName) > -1) {
+        if ($(this)[0].innerText.toLowerCase().indexOf(MedicationName.toLowerCase()) > -1 && (bCheckShowall == true || (bCheckShowall == false && $(this).parent().find("td:nth-child(9)")[0].innerText == 'ACTIVE'))) {
             $(this).parent()[0].style.display = "";
         }
         else {
@@ -193,5 +204,11 @@ function VisibleAllRows() {
 function ClearAllSearch() {
     document.getElementById("txtSearcMedication").value = "";
     VisibleAllRows();
+}
+
+function EnableSave() {
+    if ($("#btnDelete")[0]?.disabled != undefined && $("#btnDelete")[0]?.disabled != null) {
+        $("#btnDelete")[0].disabled = false;
+    }
 }
               

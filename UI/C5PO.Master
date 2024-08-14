@@ -851,9 +851,9 @@
                                                     <a href="#" >E-Prescription <span class="caret"></span></a>
                                                     <div>
                                                         <ul>
-                                                            <li runat="server" id="mnuEMR_smnuEPrescription_smnuCreateErx"><a href="#" onclick="OpenModal('E-Prescription');">Create Erx</a></li>
+                                                            <li runat="server" id="mnuEMR_smnuEPrescription_smnuCreateErx"><a href="#" onclick="OpenModal('E-Prescription');">Create eRx</a></li>
                                                             <li runat="server" id="mnuEMR_smnuEPrescription_smnuPatientMerge" ><a href="#" onclick="OpenModal('Patient Merge');">Patient Merge</a></li>
-                                                            <li runat="server" id="mnuEMR_smnuEPrescription_smnuReviewErxData" ><a href="#" onclick="OpenModal('Review Erx Data');">Review Erx Data</a></li>
+                                                            <li runat="server" id="mnuEMR_smnuEPrescription_smnuReviewErxData" ><a href="#" onclick="OpenModal('Review Erx Data');">Review eRx Data</a></li>
                                                         </ul>
                                                     </div>
                                                 </li>

@@ -2624,13 +2624,17 @@ function btnQuickPatientClose_Click() {
 }
 
 function btnPatientMergeClose_Click(event) {
-    $("#btnPatientMergeClose").removeAttr("data-dismiss");
-    $("#btnPatientMergeClose").removeAttr("aria-hidden");
-    var bcheck = confirm("Are you sure you want to close?");
-    if (bcheck == true) {
-        $("#btnPatientMergeClose").attr("aria-hidden", "true");
-        $("#btnPatientMergeClose").attr("data-dismiss", "modal");
-        $("#TabPatientMerge").hide();
+    if (top.window.document.getElementById("TabPatientMergeFrame").contentWindow.document.getElementById("ifrmRcopiaDuplicateScreen").contentWindow.document.getElementById("btnDelete").disabled == false) {
+        $("#btnPatientMergeClose").removeAttr("data-dismiss");
+        $("#btnPatientMergeClose").removeAttr("aria-hidden");
+
+        var bcheck = confirm("Are you sure you want to close?");
+
+        if (bcheck == true) {
+            $("#btnPatientMergeClose").attr("aria-hidden", "true");
+            $("#btnPatientMergeClose").attr("data-dismiss", "modal");
+            $("#TabPatientMerge").hide();
+        }
     }
     
 }

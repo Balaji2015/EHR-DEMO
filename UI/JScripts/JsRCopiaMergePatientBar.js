@@ -30,7 +30,7 @@ function ConvertDate(utcDate) {
     var now = new Date(utcDate + ' UTC');
     var then = '';
     if (utcDate == '0001-01-01 00:00:00')
-        then = '01-01-0001';
+        then = utcDate;
     else
         then = ('0' + now.getDate()).slice(-2) + '-' + monthNames[now.getMonth()] + '-' + now.getFullYear();
     var hours = now.getHours();

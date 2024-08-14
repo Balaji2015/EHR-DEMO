@@ -1184,7 +1184,8 @@ namespace Acurus.Capella.UI
             string sErrorMessage = string.Empty;
             Rcopia_Update_InfoManager objUpdateInfoMngr = new Rcopia_Update_InfoManager();
             RCopiaSessionManager rcopiaSessionMngr = new RCopiaSessionManager(ClientSession.LegalOrg);
-            DateTime dtClientDate = localTime;
+            //DateTime dtClientDate = localTime;
+            DateTime dtClientDate = (localTime != DateTime.MinValue)? localTime: DateTime.UtcNow;
             if (ClientSession.UserName != null && ClientSession.FacilityName != null && ClientSession.EncounterId != null)
                 //Commented the Patient Level RCopia Download
                 sErrorMessage = objUpdateInfoMngr.DownloadRCopiaInfo(rcopiaSessionMngr.DownloadAddress, ClientSession.UserName, string.Empty, dtClientDate, ClientSession.FacilityName, ClientSession.EncounterId, ClientSession.HumanId, ClientSession.LegalOrg);
