@@ -89,7 +89,11 @@ function CheckMaxValue(minvalue, maxvalue, id) {
             else
                 ctrl.value = maxvalue;
 
-            DisplayErrorMessage('200030', '', minvalue + "-" + maxvalue + "-" + "BP SittingSys/Dia");
+            if (id.indexOf('Diastolic') > 0) {
+                DisplayErrorMessage('200030', '', minvalue + "-" + maxvalue + "-" + "BP Sitting Dia");
+            } else {
+                DisplayErrorMessage('200030', '', minvalue + "-" + maxvalue + "-" + "BP Sitting Sys");
+            }
         }
     }
 }
