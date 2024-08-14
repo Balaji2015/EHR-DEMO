@@ -24,7 +24,7 @@
         <label id="lblPatientStrip" runat="server" class="newStyle1 pnlBarGroup" style="width: 100%; height: 11px;" ></label>
         <div>
             <input type="button" id="btnMedication" onclick="OnTabClick();" class="btn btn-default btncolorMyQ" value="Medication" />
-            <input type="button" id="btnAllergies" onclick="OnTabClick();" class="btn btn-default" value="Allergies" />
+            <input type="button" id="btnAllergies" onclick="OnTabClick();" class="btn btn-default" value="Allergies" style="display:none;" />
         </div>
         <div style="background-color: #bfdbff; height: 25px; width: 100%; margin-top: 5px; border: 1px solid #909090;">
             <label id ="lblScreenDis" runat="server"></label>

@@ -1,0 +1,17 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<hibernate-mapping xmlns="urn:nhibernate-mapping-2.2" namespace="Acurus.Capella.Core.DomainObjects" assembly="Acurus.Capella">
+	<class name="Acurus.Capella.Core.DomainObjects.RCopiaDeduplicateLog, Acurus.Capella.Core" table="rcopia_deduplicate_log" lazy="true">
+		<id name="Id" column="RCopia_DeDuplicate_Log_ID">
+			<generator class="identity" />
+		</id>
+		<version name="Version"></version>
+		<property name="Human_ID" column="Human_ID" />
+		<property name="RCopia_ID" column="RCopia_ID" />
+		<property name="Entity_Name" column="Entity_Name" />
+		<property name="Duplicate_Type" column="Duplicate_Type" />
+		<property name="Created_By" column="Created_By" />
+		<property name="Created_Date_and_Time" column="Created_Date_and_Time" />
+		<property name="Modified_By" column="Modified_By" />
+		<property name="Modified_Date_and_Time" column="Modified_Date_and_Time" />
+	</class>
+</hibernate-mapping>

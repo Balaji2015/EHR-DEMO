@@ -100,7 +100,7 @@ namespace Acurus.Capella.UI
                     if (Request.QueryString["IsDirectURL"] != null)
                     {
                         string IsDirectURL = Request.QueryString["IsDirectURL"];
-                        if (IsDirectURL.Equals("y",StringComparison.InvariantCultureIgnoreCase))
+                        if (IsDirectURL.Equals("y", StringComparison.InvariantCultureIgnoreCase))
                         {
                             hdnIsDirectLink.Value = "true";
                         }
@@ -130,6 +130,10 @@ namespace Acurus.Capella.UI
                             //   + "&LocalTime=" + local_Date;
                         }
                     }
+                }
+                else if (Request["ScreenName"] != null && Request["ScreenName"].ToString() == "ReviewOfErx")
+                {
+                    this.Page.ClientScript.RegisterStartupScript(this.Page.GetType(), "OpenOnClientCloseReviewofErx", " window.setTimeout(function () {OpenOnClientCloseReviewofErx();}, 2000);", true);
                 }
                 else if (Request["ScreenName"] != null && Request["ScreenName"].ToString() == "Enter Vitals")
                 {
@@ -1136,6 +1140,19 @@ namespace Acurus.Capella.UI
             if (lstphy_PhyAsst != null && lstphy_PhyAsst.Count > 0)
                 revStatusApplicable = true;
             return revStatusApplicable;
+        }
+
+        protected void hdnbtnReviewOfErx_Click(object sender, EventArgs e)
+        {
+            ulong uHumanId = 0;
+            if (ulong.TryParse(hdnERXHumanId.Value, out uHumanId))
+            {
+                ClientSession.HumanId = Convert.ToUInt32(hdnERXHumanId.Value);
+                ClientSession.EncounterId = 0;
+                Response.Write("<script> window.top.location.href=\"frmPatientChart.aspx?HumanID=" + hdnERXHumanId.Value + "&ScreenName=ReviewOfErx\"; </script>");
+            }
+            else
+                ScriptManager.RegisterClientScriptBlock(this, this.GetType(), "AlertNoPatient", "DisplayErrorMessage('7200042');", true);
         }
     }
 }

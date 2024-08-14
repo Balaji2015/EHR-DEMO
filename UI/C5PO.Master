@@ -566,6 +566,23 @@
             border-radius: 10px;
             opacity: 0.8;
         }
+         #GenericStrip {
+            display: none;
+            background: #fdfeff;
+            box-shadow: 0 0 10px rgba(0,0,0,0.4);
+            box-sizing: border-box;
+            color: #101010;
+            left: 50%;
+            min-width: 645px;
+            max-width: 700px;
+            padding: 1.875em;
+            position: absolute;
+            top: 7%;
+            transform: translate(-50%, -50%);
+            z-index: 2000000000;
+            border-radius: 10px;
+            opacity: 0.8;
+        }
         #CheckAlertxml {
             display: none;
             background: #fdfeff;
@@ -831,7 +848,7 @@
                                                 </li>
                                                 <%--<li runat="server" id="mnuEMR_smnuEPrescription"><a href="#" onclick="OpenModal('E-Prescription');">E-Prescription</a></li>--%>
                                                 <li runat="server" id="mnuEMR_smnuEPrescription">
-                                                    <a href="#" onclick="OpenModal('E-Prescription');">E-Prescription <span class="caret"></span></a>
+                                                    <a href="#" >E-Prescription <span class="caret"></span></a>
                                                     <div>
                                                         <ul>
                                                             <li runat="server" id="mnuEMR_smnuEPrescription_smnuCreateErx"><a href="#" onclick="OpenModal('E-Prescription');">Create Erx</a></li>
@@ -1213,6 +1230,9 @@
          </div>
         <div id="RcopiaCheckAlert">
             <div id="RcopiainnerMsgText" style="font-family: Verdana,Arial,sans-serif !important;font-size: 18px;color: #000000;"></div>
+         </div>
+        <div id="GenericStrip">
+            <div id="GenericStripinnerMsgText" style="font-family: Verdana,Arial,sans-serif !important;font-size: 18px;color: #000000;"></div>
          </div>
          <div id="CheckAlertxml"  class="dvxmlalert">
             <div id="innerMsgTextxml" style="font-family: Verdana,Arial,sans-serif !important;font-size: 18px;color: #000000;"></div>
@@ -2177,7 +2197,7 @@
             <div id="TabmdldlgPatientMerge" class="modal-dialog" style="width: 95%; margin-left: 4%; margin-top: 1%; position: absolute!important;">
                 <div class=" modal-content" style="height: 680px">
                     <div class="modal-header" style="height: 52px">
-                        <button type="button" class="close" id="btnPatientMergeClose" onclick="btnPatientMergeClose_Click();" style="font-size: 30px !important;" data-dismiss="modal" aria-hidden="true">&times;</button>
+                        <button type="button" class="close" id="btnPatientMergeClose" onclick="btnPatientMergeClose_Click(this);" style="font-size: 22px !important;" data-dismiss="modal" aria-hidden="true">Close</button>
                         <h3 class="modal-title" style="font-family: sans-serif; font-weight: bold; font-size: medium" id="TabModalPatientMergeTitle"></h3>
                     </div>
                     <div class="modal-body" style="width: 100%; margin-top: -10px; padding-top: 0px; height: 95%" >
@@ -2210,6 +2230,7 @@
         <asp:Button ID="Button3" runat="server" Text="Button" OnClick="Button3_Click" CssClass="displayNone" />
         <asp:Button ID="btnlogout" runat="server" Text="Button" OnClick="btnlogout_Click" CssClass="displayNone" />
         <asp:Button ID="btnMRE" runat="server" Text="MRE" OnClick="btnMRE_Click" CssClass="displayNone" />
+        <asp:Button ID="hdnbtnReviewOfErx" runat="server" Text="Button" OnClick="hdnbtnReviewOfErx_Click" CssClass="displayNone" />
         <asp:HiddenField ID="hdnHumanID" runat="server" EnableViewState="false" />
         <asp:HiddenField ID="hdnERXHumanId" runat="server" />
         <asp:HiddenField ID="hdnProjectName" Value="" runat="server" EnableViewState="false" />

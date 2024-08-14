@@ -2623,8 +2623,16 @@ function btnQuickPatientClose_Click() {
     $("#TabQuickPatient").hide();
 }
 
-function btnPatientMergeClose_Click() {
-    $("#TabPatientMerge").hide();
+function btnPatientMergeClose_Click(event) {
+    $("#btnPatientMergeClose").removeAttr("data-dismiss");
+    $("#btnPatientMergeClose").removeAttr("aria-hidden");
+    var bcheck = confirm("Are you sure you want to close?");
+    if (bcheck == true) {
+        $("#btnPatientMergeClose").attr("aria-hidden", "true");
+        $("#btnPatientMergeClose").attr("data-dismiss", "modal");
+        $("#TabPatientMerge").hide();
+    }
+    
 }
 
 function btnSearchProcedureClose_Click() {
@@ -2758,7 +2766,20 @@ function RcopiaErrorAlert(ErrorMessage) {
     }
 
 }
-
+function StartGenericStrip(sStripMessage) {
+    if ($(top.window.document).find("#GenericStrip") != undefined && $(top.window.document).find("#GenericStrip") != null && $(top.window.document).find("#GenericStrip")[0] != undefined && $(top.window.document).find("#GenericStrip")[0] != null) {
+        $(top.window.document).find("#GenericStrip")[0].style.display = "block";
+    }
+    if ($(top.window?.document)?.find("#GenericStripinnerMsgText")[0]?.innerText != undefined && $(top.window?.document)?.find("#GenericStripinnerMsgText")[0]?.innerText != null) {
+        $(top.window.document).find("#GenericStripinnerMsgText")[0].innerText = sStripMessage;
+    }
+}
+function StopGenericStrip() {
+    { sessionStorage.setItem('StartLoading', 'false'); StopLoadFromPatChart(); }
+    if ($(top.window.document).find("#GenericStrip") != undefined && $(top.window.document).find("#GenericStrip") != null && $(top.window.document).find("#GenericStrip")[0]?.style?.display != undefined && $(top.window.document).find("#GenericStrip")[0]?.style?.display != null) {
+        $(top.window.document).find("#GenericStrip")[0].style.display = "none";
+    }
+}
 function AfterOkClick() {
     { sessionStorage.setItem('StartLoading', 'false'); StopLoadFromPatChart(); }
     self.close;

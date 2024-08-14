@@ -473,6 +473,8 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
         {
             IList<Rcopia_Medication> rcopiaMedicationList = new List<Rcopia_Medication>();
             IList<Rcopia_Medication> ilstrcopiaMedicationReturn = new List<Rcopia_Medication>();
+            DateTime sTodayDate = DateTime.Now.Date;
+            string sMedicationStatus = "";
             using (ISession mySession = NHibernateSessionManager.Instance.CreateISession())
             {
                 ISQLQuery sql = session.GetISession().CreateSQLQuery("select * from rcopia_medication as a where Human_ID=" + ulHumanID + " and status='Active' and Deleted <> 'Y' order by Brand_Name,Strength,Form,Dose,Dose_Unit,Route,Dose_Timing,Start_Date,Stop_Date,Patient_Notes,Other_Notes;").AddEntity("m", typeof(Rcopia_Medication));
@@ -482,7 +484,33 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
             }
             for (int iCount = 0; iCount < rcopiaMedicationList.Count; iCount++)
             {
-                int iDuplicateSetCount = ilstrcopiaMedicationReturn.Where(x => x.Brand_Name == rcopiaMedicationList[iCount].Brand_Name
+                //Fill Active or InActive Medication in status
+                if ((rcopiaMedicationList[iCount].Start_Date.Date == DateTime.MinValue.Date && rcopiaMedicationList[iCount].Stop_Date.Date == DateTime.MinValue.Date) ||
+                   (rcopiaMedicationList[iCount].Start_Date.Date <= sTodayDate.Date && rcopiaMedicationList[iCount].Stop_Date.Date == DateTime.MinValue.Date) ||
+                   (rcopiaMedicationList[iCount].Start_Date.Date <= sTodayDate.Date && rcopiaMedicationList[iCount].Stop_Date.Date > sTodayDate.Date) ||
+                   (rcopiaMedicationList[iCount].Start_Date.Date == DateTime.MinValue.Date && rcopiaMedicationList[iCount].Stop_Date.Date > sTodayDate.Date))
+                {
+                    sMedicationStatus = "ACTIVE";
+                }
+                else
+                {
+                    sMedicationStatus = "INACTIVE";
+                }
+
+                if (ilstrcopiaMedicationReturn.Contains(rcopiaMedicationList[iCount]))
+                {
+                    int iIndexofselectmedication = ilstrcopiaMedicationReturn.IndexOf(rcopiaMedicationList[iCount]);
+
+                    ilstrcopiaMedicationReturn[iIndexofselectmedication].Status = sMedicationStatus;
+                }
+                else
+                {
+                    rcopiaMedicationList[iCount].Status = sMedicationStatus;
+                }
+
+
+                //Get duplicate count
+                    int iDuplicateSetCount = ilstrcopiaMedicationReturn.Where(x => x.Brand_Name == rcopiaMedicationList[iCount].Brand_Name
                 && x.Strength == rcopiaMedicationList[iCount].Strength
                 && x.Form == rcopiaMedicationList[iCount].Form
                 && x.Dose == rcopiaMedicationList[iCount].Dose
@@ -494,6 +522,7 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
                 && x.Patient_Notes == rcopiaMedicationList[iCount].Patient_Notes
                 && x.Other_Notes == rcopiaMedicationList[iCount].Other_Notes).ToList<Rcopia_Medication>().Count();
 
+                //get duplicate medications
                 if (iDuplicateSetCount == 0)
                 {
 
@@ -527,6 +556,8 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
         {
             IList<Rcopia_Medication> rcopiaMedicationList = new List<Rcopia_Medication>();
             IList<Rcopia_Medication> ilstrcopiaMedicationReturn = new List<Rcopia_Medication>();
+            DateTime sTodayDate = DateTime.Now.Date;
+            string sMedicationStatus = "";
             using (ISession mySession = NHibernateSessionManager.Instance.CreateISession())
             {
                 ISQLQuery sql = session.GetISession().CreateSQLQuery("select * from rcopia_medication as a where Human_ID=" + ulHumanID + " and status='Active' and Deleted <> 'Y' group by Brand_Name,Strength,Form,Dose,Dose_Unit,Route,Dose_Timing,Start_Date,Stop_Date,Patient_Notes,Other_Notes;").AddEntity("m", typeof(Rcopia_Medication));
@@ -536,6 +567,23 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
             }
             for (int iCount = 0; iCount < rcopiaMedicationList.Count; iCount++)
             {
+
+                //Fill Active or InActive Medication in status
+                if ((rcopiaMedicationList[iCount].Start_Date.Date == DateTime.MinValue.Date && rcopiaMedicationList[iCount].Stop_Date.Date == DateTime.MinValue.Date) ||
+                   (rcopiaMedicationList[iCount].Start_Date.Date <= sTodayDate.Date && rcopiaMedicationList[iCount].Stop_Date.Date == DateTime.MinValue.Date) ||
+                   (rcopiaMedicationList[iCount].Start_Date.Date <= sTodayDate.Date && rcopiaMedicationList[iCount].Stop_Date.Date > sTodayDate.Date) ||
+                   (rcopiaMedicationList[iCount].Start_Date.Date == DateTime.MinValue.Date && rcopiaMedicationList[iCount].Stop_Date.Date > sTodayDate.Date))
+                {
+                    sMedicationStatus = "ACTIVE";
+                }
+                else
+                {
+                    sMedicationStatus = "INACTIVE";
+                }
+
+                rcopiaMedicationList[iCount].Status = sMedicationStatus;
+
+                //Get partial duplicates of medication
                 IList<Rcopia_Medication> ilstCountOfrcopiaMedication = rcopiaMedicationList.Where(x => x.Brand_Name == rcopiaMedicationList[iCount].Brand_Name
                 && x.Strength == rcopiaMedicationList[iCount].Strength
                 && x.Form == rcopiaMedicationList[iCount].Form
@@ -571,7 +619,7 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
             DateTime dtRCopia_Medication_Last_Updated_Date_Time = new DateTime(2001, 01, 01);
             RCopiaSessionManager rcopiaSessionMngr = new RCopiaSessionManager(sLegalOrg);
             RCopiaTransactionManager rCopiaTransactionManager = new RCopiaTransactionManager();
-
+            IList<RCopiaDeduplicateLog> ilstrcopia_deduplicate_log = new List<RCopiaDeduplicateLog>();
             //To get the Medication list from DrFirst
             sInputXML = rcopiaXML.CreateUpdateMedicationXML(ulHumanID, dtRCopia_Medication_Last_Updated_Date_Time, sLegalOrg, DateTime.MinValue);
 
@@ -612,7 +660,26 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
                     // To update the medication data in DrFirst
                     if (rcopiaSessionMngr.UploadAddress != null && sRequestXML != string.Empty && sRequestXML.ToUpper().Contains("<DELETED>N</DELETED>") == true)
                     {
-                        sRequestXML = sRequestXML.Replace("<Deleted>n</Deleted>", "<Deleted>y</Deleted>");
+                        XmlDocument UpdateXMLDoc = new XmlDocument();
+                        UpdateXMLDoc.LoadXml(sRequestXML);
+
+                        int iUpdateMedicationCount = UpdateXMLDoc.SelectNodes("RCExtRequest/Request/MedicationList/Medication").Count;
+                        for (int i = 1; i <=iUpdateMedicationCount; i++)
+                        {
+                            //Delete Tag
+                            if (UpdateXMLDoc?.SelectSingleNode("RCExtRequest/Request/MedicationList/Medication[" + i + "]/Deleted")?.InnerText != null)
+                            {
+                                UpdateXMLDoc.SelectSingleNode("RCExtRequest/Request/MedicationList/Medication[" + i + "]/Deleted").InnerText = "y";
+                            }
+                            else {
+                                XmlNode UpdateDeleteTag = UpdateXMLDoc.CreateElement("Deleted");
+                                UpdateDeleteTag.InnerText = "y";
+                                UpdateXMLDoc.SelectSingleNode("RCExtRequest/Request/MedicationList/Medication[" + i + "]").AppendChild(UpdateDeleteTag);
+                            }
+
+                        
+                        }
+                        sRequestXML = UpdateXMLDoc.OuterXml;
                         sOutputXML = rcopiaSessionMngr.HttpPost(rcopiaSessionMngr.UploadAddress + sRequestXML, 1, sUserName);
                         //Jira CAP-1366
                         if (sOutputXML != null && sOutputXML.StartsWith("HttpPostError") == true)
@@ -625,12 +692,26 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
                         string sStatus = string.Empty;
                         string sTemp = string.Empty;
                         string sErrorRcopiaID = string.Empty;
+                        
+                        RCopiaDeduplicateLog rcopiaDuplicatelog = new RCopiaDeduplicateLog();
                         for (int iCont = 1; iCont <= iResponseMedicationListCount; iCont++)
                         {
 
                             sStatus = XMLResponse.SelectSingleNode("RCExtResponse/Response/MedicationList/Medication[" + iCont + "]/Status")?.InnerText;
                             sTemp = XMLResponse.SelectSingleNode("RCExtResponse/Response/MedicationList/Medication[" + iCont + "]/RcopiaID")?.InnerText;
-                            if (sTemp != null && sStatus != null && sStatus != "deleted")
+
+                            if (sTemp != null && sStatus != null && sStatus == "deleted")
+                            {
+                                rcopiaDuplicatelog = new RCopiaDeduplicateLog();
+                                rcopiaDuplicatelog.RCopia_ID = Convert.ToUInt64(sTemp);
+                                rcopiaDuplicatelog.Human_ID = ulHumanID;
+                                rcopiaDuplicatelog.Entity_Name = "Medication";
+                                rcopiaDuplicatelog.Duplicate_Type = "Partial Duplicate";
+                                rcopiaDuplicatelog.Created_Date_and_Time = DateTime.Now.ToUniversalTime();
+                                rcopiaDuplicatelog.Created_By = sUserName;
+                                ilstrcopia_deduplicate_log.Add(rcopiaDuplicatelog);
+                            }
+                            else if (sTemp != null && sStatus != null && sStatus != "deleted")
                             {
                                 sErrorRcopiaID = sErrorRcopiaID + ((sErrorRcopiaID != string.Empty) ? "," : "RCopia ID : ") + sTemp + " : " + sStatus;
                             }
@@ -665,8 +746,17 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
                 {
                     return "DownloadRCopiaInfo-" + sErrorMessage;
                 }
+
+                //Loging the deleted iteams in ilstRcopia_deduplicate_log
+                if (ilstrcopia_deduplicate_log.Count > 0)
+                {
+                    RCopiaDeduplicateLogManager mngrRCopiaDeduplicateLog = new RCopiaDeduplicateLogManager();
+                    mngrRCopiaDeduplicateLog.SaveRcopia_deduplicate_logWithTransaction(ilstrcopia_deduplicate_log, null, string.Empty);
+                }
+
+
             }
-            
+
             return "Success";
         }
     }

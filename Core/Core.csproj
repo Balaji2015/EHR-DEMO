@@ -250,6 +250,7 @@
     <Compile Include="DomainObjects\Questionnaire_Lookup.cs" />
     <Compile Include="DomainObjects\Quest_Lab_Response_Log.cs" />
     <Compile Include="DomainObjects\Rcopia_Allergy.cs" />
+    <Compile Include="DomainObjects\RCopiaDeduplicateLog.cs" />
     <Compile Include="DomainObjects\Rcopia_Medication.cs" />
     <Compile Include="DomainObjects\Rcopia_Prescription_List.cs" />
     <Compile Include="DomainObjects\Rcopia_Settings.cs" />
@@ -759,6 +760,7 @@
     <EmbeddedResource Include="HbmMaps\ProcessScnTab.hbm.xml" />
     <EmbeddedResource Include="HbmMaps\ResultLookup.hbm.xml" />
     <EmbeddedResource Include="HbmMaps\ProcedureModifierLookup.hbm.xml" />
+    <EmbeddedResource Include="HbmMaps\RCopiaDeduplicateLog.hbm.xml" />
     <Content Include="HbmMaps\UserScnTab.hbm.xml" />
     <EmbeddedResource Include="HbmMaps\VisitPaymentArc.hbm.xml" />
     <EmbeddedResource Include="HbmMaps\VisitPaymentHistory.hbm.xml" />

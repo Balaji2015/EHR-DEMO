@@ -1,9 +1,12 @@
-﻿using System;
+﻿using Acurus.Capella.Core.DomainObjects;
+using Acurus.Capella.DataAccess.ManagerObjects;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
+using Acurus.Capella.UI.RCopia;
 
 namespace Acurus.Capella.UI
 {
@@ -23,6 +26,20 @@ namespace Acurus.Capella.UI
                 lblPatientStrip.InnerText = sPatientStrip;
                 ifrmRcopiaDuplicateScreen.Src = "frmRCopiaDuplicateMediations.aspx?HumanID=" + ulHuman_id;
                 lblScreenDis.InnerText = "List of Duplicate Medications in Keep Account";
+
+                //Remove the ExactDuplicates
+                Rcopia_MedicationManager mngrRcpiaMedi = new Rcopia_MedicationManager();
+                IList<Rcopia_Medication> ilstExactDuplicateRcopiaMedication = mngrRcpiaMedi.GetMedicationWithExactDuplicates(ulHuman_id);
+
+                //Delete RCopia
+                if (ilstExactDuplicateRcopiaMedication.Count > 0)
+                {
+                    IList<ulong> ilstRcopiaID = new List<ulong>();
+                    ilstRcopiaID = ilstExactDuplicateRcopiaMedication.Select(x => x.Id).ToList<ulong>();
+
+                    string sStatus = mngrRcpiaMedi.UpdateRcopiaMedication(ilstRcopiaID, ClientSession.HumanId, ClientSession.FacilityName, ClientSession.LegalOrg, ClientSession.UserName);
+
+                }
             }
                 ScriptManager.RegisterStartupScript(this, this.Page.GetType(), string.Empty, "{ sessionStorage.setItem('StartLoading', 'false'); StopLoadFromPatChart(); }", true);
             
