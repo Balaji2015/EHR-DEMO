@@ -422,6 +422,7 @@
     <Content Include="JScripts\JSImpersonateUser.js" />
     <Content Include="JScripts\JSLandingScreen.js" />
     <Content Include="JScripts\JSLoginNew.js" />
+    <Content Include="JScripts\JsRCopiaDuplicateMediations.js" />
     <Content Include="JScripts\JsRCopiaMergePatientBar.js" />
     <Content Include="JScripts\JSRcopiaWebBrowser.js" />
     <Content Include="JScripts\JsRestrictMultipleTab.js" />

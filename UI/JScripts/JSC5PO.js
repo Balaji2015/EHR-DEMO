@@ -2,6 +2,11 @@
     //CAP 312 cannot read properties of undefined (reading style) SOURCE
     if ($(top.window.document).find("#CheckAlert") != undefined && $(top.window.document).find("#CheckAlert") != null && $(top.window.document).find("#CheckAlert")[0] != undefined && $(top.window.document).find("#CheckAlert")[0] != null)
         $(top.window.document).find("#CheckAlert")[0].style.display = "none";
+
+    if ($(top.window.document).find("#GenericStrip") != undefined && $(top.window.document).find("#GenericStrip") != null && $(top.window.document).find("#GenericStrip")[0]?.style?.display != undefined && $(top.window.document).find("#GenericStrip")[0]?.style?.display != null) {
+        $(top.window.document).find("#GenericStrip")[0].style.display = "none";
+    }
+
 }, 5000);
 
 var popup;
@@ -1080,7 +1085,7 @@ function OpenModal(data) {
         }
         if (ID == undefined || ID == "") {
             var result = openModal("frmFindPatient.aspx", 251, 1200, obj, "ctl00_ERXWindow");
-            //$find('ctl00_ERXWindow').add_close(OnClientCloseEPRES);
+            $find('ctl00_ERXWindow').add_close(onClientCloseReviewofErx);
         }
         else {
             $(top.window.document).find("#TabPatientMerge").modal({ backdrop: "static", keyboard: false }, 'show');
@@ -2525,6 +2530,31 @@ function OnClientCloseEPRES(oWindow, args) {
         }
 
     }
+}
+function onClientCloseReviewofErx(oWindow, args) {
+    var Result = args.get_argument();
+    if (Result) {
+        var HumanId = Result.HumanId;
+        if (HumanId != "0") {
+            document.getElementById(GetClientId("hdnERXHumanId")).value = HumanId;
+            document.getElementById(GetClientId("hdnbtnReviewOfErx")).click();
+        }
+
+    }
+}
+function OpenOnClientCloseReviewofErx() {
+    $(top.window.document).find("#TabPatientMerge").modal({ backdrop: "static", keyboard: false }, 'show');
+    $(top.window.document).find("#TabModalPatientMergeTitle")[0].textContent = "Quick Patient Create";
+    $(top.window.document).find("#TabmdldlgPatientMerge")[0].style.width = "1430px";
+    $(top.window.document).find("#TabmdldlgPatientMerge")[0].style.height = "653px";
+    var sPath = ""
+    sPath = "frmRCopiaMergePatientBar.aspx?HumanID=" + document.URL.slice(document.URL.indexOf("HumanID")).split("&")[0].split("=")[1];
+    //$(top.window.document).find("#TabPatientMergeFrame")[0].style.height = "360px";
+    $(top.window.document).find("#TabPatientMergeFrame")[0].contentDocument.location.href = sPath;
+    $(top.window.document).find("#TabPatientMerge").on('hide.bs.modal', function (e) {
+
+        $(top.window.document).find("#TabPatientMerge").modal({ backdrop: "", keyboard: false }, 'hide');
+    });
 }
 function OnClientCloseCreateOrder(oWindow, args) {
     var Result = args.get_argument();

@@ -553,6 +553,9 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
         IProcedureModifierLookupManager GetProcedureModifierLookupManager();
         IProcedureModifierLookupManager GetProcedureModifierLookupManager(INHibernateSession session);
 
+        IRCopiaDeduplicateLogManager GetRCopiaDeduplicateLogManager();
+        IRCopiaDeduplicateLogManager GetRCopiaDeduplicateLogManager(INHibernateSession session);
+
     }
 
     public class ManagerFactory : IManagerFactory
@@ -2256,6 +2259,14 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
         public IProcedureModifierLookupManager GetProcedureModifierLookupManager(INHibernateSession session)
         {
             return new ProcedureModifierLookupManager(session);
+        }
+        public IRCopiaDeduplicateLogManager GetRCopiaDeduplicateLogManager()
+        {
+            return new RCopiaDeduplicateLogManager();
+        }
+        public IRCopiaDeduplicateLogManager GetRCopiaDeduplicateLogManager(INHibernateSession session)
+        {
+            return new RCopiaDeduplicateLogManager(session);
         }
         #endregion
     }
