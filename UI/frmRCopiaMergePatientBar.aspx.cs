@@ -25,7 +25,7 @@ namespace Acurus.Capella.UI
                 sPatientStrip = UtilityManager.FillPatientStrip(ulHuman_id);
                 lblPatientStrip.InnerText = sPatientStrip;
                 ifrmRcopiaDuplicateScreen.Src = "frmRCopiaDuplicateMediations.aspx?HumanID=" + ulHuman_id;
-                lblScreenDis.InnerText = "List of Duplicate Medications in Keep Account";
+                lblScreenDis.InnerText = "List of Duplicate Medications";
 
                 //Remove the ExactDuplicates
                 Rcopia_MedicationManager mngrRcpiaMedi = new Rcopia_MedicationManager();

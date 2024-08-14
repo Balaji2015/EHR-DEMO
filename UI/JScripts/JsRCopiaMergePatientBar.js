@@ -5,7 +5,7 @@
         if (event?.currentTarget?.id == "btnMedication") {
             $("#btnAllergies").removeClass("btncolorMyQ");
             $("#btnMedication").addClass("btncolorMyQ");
-            $("#lblScreenDis")[0].innerText = "List of Duplicate Medications in Keep Account";
+            $("#lblScreenDis")[0].innerText = "List of Duplicate Medications";
             $("#ifrmRcopiaDuplicateScreen")[0].src = "";
             $("#ifrmRcopiaDuplicateScreen")[0].src = "frmRCopiaDuplicateMediations.aspx?HumanID=" + human_id;
         }

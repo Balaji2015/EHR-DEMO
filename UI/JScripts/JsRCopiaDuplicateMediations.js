@@ -90,12 +90,13 @@ function DeleteMedication() {
     
     var SelectedMedication = $('#RCopiaDuplicateMediationsTable  td').find('input[type=checkbox]:checked').length;
     if (SelectedMedication == 0) {
-        alert("Please select a row to delete");
+        DisplayErrorMessage('10113605');
     }
     else {
         var SelectMedicationCount = $('#RCopiaDuplicateMediationsTable  td').find('input[type=checkbox]:checked').length;
-        var check = confirm("There are " + SelectMedicationCount +" medication(s) selected for delete. Do you want to remove duplicates?");
-        if (check == true) {
+
+        if (DisplayErrorMessage('10113606', '', SelectMedicationCount.toString()) == true) {
+            { sessionStorage.setItem('StartLoading', 'true'); StartLoadFromPatChart(); }
             var RcopiamedicationIds = [];
             $('#RCopiaDuplicateMediationsTable  td').find('input[type=checkbox]:checked').each(function () {
                 if ($($(this)?.parent()?.parent())?.find("td[RcopiaMedicationId]")[0]?.innerText != undefined && $($(this)?.parent()?.parent())?.find("td[RcopiaMedicationId]")[0]?.innerText != null) {
@@ -126,7 +127,7 @@ function DeleteMedication() {
                             RcopiaErrorAlert(result.replace("DownloadRCopiaInfo-"));
                         }
                         else {
-                            alert(result);
+                            DisplayErrorMessage('10113607','', result);
                         }
                     }
 

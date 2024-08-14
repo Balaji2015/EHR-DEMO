@@ -2,9 +2,13 @@
     //CAP 312 cannot read properties of undefined (reading style) SOURCE
     if ($(top.window.document).find("#CheckAlert") != undefined && $(top.window.document).find("#CheckAlert") != null && $(top.window.document).find("#CheckAlert")[0] != undefined && $(top.window.document).find("#CheckAlert")[0] != null)
         $(top.window.document).find("#CheckAlert")[0].style.display = "none";
+    if ($(top.window?.document)?.find("#GenericStripinnerMsgText")[0]?.innerText != undefined
+        && $(top.window?.document)?.find("#GenericStripinnerMsgText")[0]?.innerText != null &&
+        $(top.window.document).find("#GenericStripinnerMsgText")[0].innerText == "Deleted Successfully.") {
 
-    if ($(top.window.document).find("#GenericStrip") != undefined && $(top.window.document).find("#GenericStrip") != null && $(top.window.document).find("#GenericStrip")[0]?.style?.display != undefined && $(top.window.document).find("#GenericStrip")[0]?.style?.display != null) {
-        $(top.window.document).find("#GenericStrip")[0].style.display = "none";
+        if ($(top.window.document).find("#GenericStrip") != undefined && $(top.window.document).find("#GenericStrip") != null && $(top.window.document).find("#GenericStrip")[0]?.style?.display != undefined && $(top.window.document).find("#GenericStrip")[0]?.style?.display != null) {
+            $(top.window.document).find("#GenericStrip")[0].style.display = "none";
+        }
     }
 
 }, 5000);

@@ -3032,4 +3032,11 @@
 	<Message number="10113602" Type="OK" Text="Please select the merge account."></Message>
 	<Message number="10113603" Type="ToolStrip" Text="Keep and Merge account are cleaned up and downloaded successfully." />
 	<Message number="10113604" Type="OK" Text="You have merged the records. Please click on the download."></Message>
+	
+	<Message number="10113605" Type="OK" Text="Please select a row to delete."></Message>
+	<Message number="10113606" Type="OKCANCEL" Text="There are {0} medication(s) selected for delete. Do you want to remove duplicates?"></Message>
+	<Message number="10113607" Type="OK" Text="{0}"></Message>
+	<Message number="10113608" Type="OKCANCEL" Text="Are you sure you want to close?" />
+	
+	
 </ErrorMessage>
