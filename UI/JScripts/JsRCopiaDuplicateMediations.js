@@ -159,8 +159,11 @@ function ShowAllMedication() {
         if (bCheckShowall == true) {
             $(this).parent()[0].style.display = "";
         }
-        else if ($(this)[0].innerText == "INACTIVE"){
+        else if ($(this)[0].innerText == "INACTIVE") {
             $(this).parent()[0].style.display = "none";
+        }
+        else if (bCheckShowall == false && $(this)[0].innerText == "ACTIVE") {
+            $(this).parent()[0].style.display = "";
         }
 
     });
@@ -169,6 +172,7 @@ function ShowAllMedication() {
 
 function SearchMedication() {
     var MedicationName = document.getElementById("txtSearcMedication").value;
+    var bCheckShowall = document.getElementById("chkShowAll").checked;
     $("#RCopiaDuplicateMediationsTableBody tr").find("td:nth-child(2)").each(function () {
 
         if ($(this)[0].innerText.indexOf(MedicationName) > -1) {
