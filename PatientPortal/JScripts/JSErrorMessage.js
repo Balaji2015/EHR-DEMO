@@ -2,8 +2,7 @@
 var tab_for_blockdays;
 var x = 0;
 var count = 0;
-window.onerror = function (msg, url, lineNo, columnNo, error) {
-    debugger;   
+window.onerror = function (msg, url, lineNo, columnNo, error) {  
     if (msg.indexOf("Transaction XML") > -1) {
         { sessionStorage.setItem('StartLoading', 'false'); StopLoadFromPatChart(); }
         if (top.window.document.getElementById('ctl00_Loading') != null)

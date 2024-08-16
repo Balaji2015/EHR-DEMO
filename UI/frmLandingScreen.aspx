@@ -250,7 +250,7 @@
                                     </div>
                                 </div>
                                 <div class="modal-body" id="divErrorMsgBody">
-                                    <p style="font-size: small;" id="pErrorMsg"></p>
+                                    <p style="font-size: small;word-wrap: break-word;" id="pErrorMsg"></p>
 
                                 </div>
                                 <div class="modal-footer" style="height: 50px;">

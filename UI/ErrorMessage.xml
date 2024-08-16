@@ -8,7 +8,7 @@
 	<Message number="000006" Type="OK" Text="Local Database Schema is not found. Please contact the System Administrator. The application will now exit."></Message>
 	<Message number="000007" Type="OK" Text="An unknown error has occured. Please contact the System Administrator."></Message>
 	<Message number="000010" Type="OK" Text="An Error was returned from the server. Please contact Capella Support at 714 221 6311 for further assistance."></Message>
-	<Message number="000009" Type="OK" Text="You are not a permitted user. Please contact the System Administrator. UserName: {0}, UserAccountType: {1}, Requested URL: {2}"></Message>
+	<Message number="000009" Type="OK" Text="You are not a permitted user. Please contact the System Administrator.&lt;br/&gt; &lt;br/&gt; Additional Information: &lt;br/&gt; &lt;br/&gt;&lt;b&gt;UserName:&lt;/b&gt; {0}&lt;br/&gt; &lt;b&gt;UserAccountType:&lt;/b&gt; {1}&lt;br/&gt; &lt;b&gt;Requested URL:&lt;/b&gt; {2}"></Message>
 	<Message number="000011" Type="OK" Text="Unauthorized Client Installation. Please contact Capella Support at 714 221 6311 for further assistance."></Message>
 	<Message number="000012" Type="OK" Text="Session Expired. Please login again."></Message>
 	<Message number="000013" Type="OK" Text="Method {0} is not found in the Local Database."></Message>
