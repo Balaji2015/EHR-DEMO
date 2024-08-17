@@ -104,7 +104,7 @@ namespace Acurus.Capella.UI
             RCopiaSessionManager rcopiaSessionMngr = new RCopiaSessionManager(ClientSession.LegalOrg);
             if (ClientSession.UserName != null && ClientSession.FacilityName != null)
             {
-                sErrorMessage = objUpdateInfoMngr.DownloadRCopiaInfo(rcopiaSessionMngr.DownloadAddress, ClientSession.UserName, string.Empty, dtClientDate, ClientSession.FacilityName, 0, ulHumanIDMerge, ClientSession.LegalOrg);
+                sErrorMessage = objUpdateInfoMngr.DownloadRCopiaInfo(rcopiaSessionMngr.DownloadAddress, ClientSession.UserName, string.Empty, dtClientDate, ClientSession.FacilityName, 0, ulHumanIDKeep, ClientSession.LegalOrg);
             }
 
 
