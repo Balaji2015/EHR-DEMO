@@ -447,6 +447,10 @@ function download() {
                     $("#imgClearKeepAccount").click();
                     $("#imgCleartxtMergeAccount").click();
                     $('#btnDownload').prop('disabled', true);
+                } else if (data.d == "") {
+                    $("#imgClearKeepAccount").click();
+                    $("#imgCleartxtMergeAccount").click();
+                    $('#btnDownload').prop('disabled', true);
                 } else if (data.d != "") {
                     alert(data.d);
                 }
