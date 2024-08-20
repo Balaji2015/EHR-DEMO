@@ -430,6 +430,7 @@
             <asp:HiddenField ID="hdnReportPathhttp" runat="server" EnableViewState="false" />
             <asp:HiddenField ID="hdnGroupId" runat="server" EnableViewState="false" />
             <asp:HiddenField ID="hdnOktaAccountType" runat="server" EnableViewState="false" />
+            <asp:HiddenField ID="hdnOktaSharedSessionURL" runat="server" EnableViewState="false" />
 
             <asp:PlaceHolder ID="PlaceHolder1" runat="server">
                 <link href="CSS/bootstrap.min3.1.1.css" rel="stylesheet" />

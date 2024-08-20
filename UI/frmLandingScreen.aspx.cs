@@ -37,15 +37,49 @@ namespace Acurus.Capella.UI
             var code = Request.Params["code"];
             var stateParm = string.Empty;
             var state = string.Empty;
+            //CAP-2041
+            var localtime = string.Empty;
+            var localdate = string.Empty;
+            var universaloffset = string.Empty;
+            var localDateAndTime = string.Empty;
+            var bDayLightSavings = string.Empty;
             //CAP-2019
             try
             {
+                //CAP-2041
+                #region Retrieve Params From State
                 stateParm = Encoding.UTF8.GetString(Convert.FromBase64String(Request.Params["state"] ?? ""));
                 string[] parts = stateParm.Split('|');
                 if (parts.Length > 1)
                 {
                     state = parts[1];
                 }
+
+                if(parts.Length > 2)
+                {
+                    localtime = parts[2];
+            }
+
+                if (parts.Length > 3)
+                {
+                    localdate = parts[3];
+                }
+
+                if (parts.Length > 4)
+                {
+                    universaloffset = parts[4];
+                }
+
+                if (parts.Length > 5)
+                {
+                    localDateAndTime = parts[5];
+                }
+
+                if (parts.Length > 6)
+                {
+                    bDayLightSavings = parts[6];
+                }
+                #endregion
             }
             catch (Exception ex)
             {
@@ -156,35 +190,35 @@ namespace Acurus.Capella.UI
                 hdnEvProjectName.Value = System.Configuration.ConfigurationSettings.AppSettings["EVProjectName"];
             //if (System.Configuration.ConfigurationSettings.AppSettings["Reportpathhttp"] != null)
             //    hdnReportPathhttp.Value = System.Configuration.ConfigurationSettings.AppSettings["Reportpathhttp"];
-
-            ClientSession.LocalOffSetTime = Request.Form["EHRhdnLocalTime"] ?? Request.Cookies["LocalOffSetTime"]?.Value ?? "";
-            ClientSession.LocalDate = Request.Form["EHRhdnLocalDate"] ?? Request.Cookies["LocalDate"]?.Value ?? "";
-            ClientSession.UniversalTime = Request.Form["EHRhdnUniversaloffset"] ?? Request.Cookies["UniversalTime"]?.Value ??  "";
-            ClientSession.LocalTime = Request.Form["EHRhdnLocalDateAndTime"] ?? Request.Cookies["LocalTime"]?.Value ??  "";
-            bool.TryParse(Request.Form["EHRhdnFollowsDayLightSavings"] ?? Request.Cookies["bFollows_DST"]?.Value, out bool bFollows_DST);
+            //CAP-2041
+            ClientSession.LocalOffSetTime = Request.Form["EHRhdnLocalTime"] ?? Request.Cookies["LocalOffSetTime"]?.Value ?? localtime ??  "";
+            ClientSession.LocalDate = Request.Form["EHRhdnLocalDate"] ?? Request.Cookies["LocalDate"]?.Value ?? localdate ?? "";
+            ClientSession.UniversalTime = Request.Form["EHRhdnUniversaloffset"] ?? Request.Cookies["UniversalTime"]?.Value ?? universaloffset ?? "";
+            ClientSession.LocalTime = Request.Form["EHRhdnLocalDateAndTime"] ?? Request.Cookies["LocalTime"]?.Value ?? localDateAndTime ?? "";
+            bool.TryParse(Request.Form["EHRhdnFollowsDayLightSavings"] ?? Request.Cookies["bFollows_DST"]?.Value ?? bDayLightSavings, out bool bFollows_DST);
             ClientSession.bFollows_DST = bFollows_DST;
 
-            if (!string.IsNullOrEmpty(Request.Form["EHRhdnLocalTime"]))
+            if (!string.IsNullOrEmpty(Request.Form["EHRhdnLocalTime"]??localtime))
             {
                 Response.SetCookie(new HttpCookie("LocalOffSetTime") { Value = Request.Form["EHRhdnLocalTime"], Expires = DateTime.Now.AddDays(1) });      
             }
             
-            if (!string.IsNullOrEmpty(Request.Form["EHRhdnLocalDate"]))
+            if (!string.IsNullOrEmpty(Request.Form["EHRhdnLocalDate"]??localdate))
             {
                 Response.SetCookie(new HttpCookie("LocalDate") { Value = Request.Form["EHRhdnLocalDate"], Expires = DateTime.Now.AddDays(1) });      
             }
             
-            if (!string.IsNullOrEmpty(Request.Form["EHRhdnUniversaloffset"]))
+            if (!string.IsNullOrEmpty(Request.Form["EHRhdnUniversaloffset"]??universaloffset))
             {
                 Response.SetCookie(new HttpCookie("UniversalTime") { Value = Request.Form["EHRhdnUniversaloffset"], Expires = DateTime.Now.AddDays(1) });      
             }
             
-            if (!string.IsNullOrEmpty(Request.Form["EHRhdnLocalDateAndTime"]))
+            if (!string.IsNullOrEmpty(Request.Form["EHRhdnLocalDateAndTime"]??localDateAndTime))
             {
                 Response.SetCookie(new HttpCookie("LocalTime") { Value = Request.Form["EHRhdnLocalDateAndTime"], Expires = DateTime.Now.AddDays(1) });      
             }
             
-            if (!string.IsNullOrEmpty(Request.Form["EHRhdnFollowsDayLightSavings"]))
+            if (!string.IsNullOrEmpty(Request.Form["EHRhdnFollowsDayLightSavings"]??bDayLightSavings))
             {
                 Response.SetCookie(new HttpCookie("bFollows_DST") { Value = Request.Form["EHRhdnFollowsDayLightSavings"], Expires = DateTime.Now.AddDays(1) });      
             }

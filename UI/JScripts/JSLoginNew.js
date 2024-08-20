@@ -79,6 +79,12 @@ $(document).ready(function () {
     setTimeZone();
     ShowLoading();
     getIpAddress();
+
+    //CAP-2041
+    var sharedSessionUrl = document.getElementById('hdnOktaSharedSessionURL');
+    if (sharedSessionUrl?.value ?? "" != "") {
+        location.href = sharedSessionUrl.value;
+    }
 });
 
 function LoadSystemMessagesKnowledgeCenterdetails() {
