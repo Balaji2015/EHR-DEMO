@@ -82,8 +82,15 @@ $(document).ready(function () {
 
     //CAP-2041
     var sharedSessionUrl = document.getElementById('hdnOktaSharedSessionURL');
+    var stateParams = document.getElementById('hdnStateParam');
+    var localTimeParams = document.getElementById('hdnLocalTime');
+    var localDateParams = document.getElementById('hdnLocalDate');
+    var universaloffsetParams = document.getElementById('hdnUniversaloffset');
+    var localDateAndTimeParams = document.getElementById('hdnLocalDateAndTime');
+    var dayLightSavingsParams = document.getElementById('hdnFollowsDayLightSavings');
+    var dateParams = (localTimeParams?.value ?? "") + "|" + (localDateParams?.value ?? "") + "|" + (universaloffsetParams?.value ?? "") + "|" + (localDateAndTimeParams?.value ?? "") + "|" + (dayLightSavingsParams?.value??"false");
     if (sharedSessionUrl?.value ?? "" != "") {
-        location.href = sharedSessionUrl.value;
+        location.href = sharedSessionUrl.value + "" + btoa(((stateParams?.value??"") + "" + dateParams));
     }
 });
 

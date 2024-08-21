@@ -30,6 +30,8 @@ namespace Acurus.Capella.UI
         {
             //CAP-2041
             hdnOktaSharedSessionURL.Value = "";
+            hdnStateParam.Value = "";
+
             if (ConfigurationSettings.AppSettings["IsSSOLogin"] == null || ConfigurationSettings.AppSettings["IsSSOLogin"] == "N")
             {
                 Response.Redirect("frmLogin.aspx");
@@ -351,11 +353,12 @@ namespace Acurus.Capella.UI
             }
 
             //CAP-2041
-            var bDayLightSavings = (hdnFollowsDayLightSavings?.Value ?? "").Equals("true", StringComparison.InvariantCultureIgnoreCase);
+            //var bDayLightSavings = (hdnFollowsDayLightSavings?.Value ?? "").Equals("true", StringComparison.InvariantCultureIgnoreCase);
 
             //CAP-2019
-            var state = Convert.ToBase64String(Encoding.UTF8.GetBytes(Guid.NewGuid().ToString() + "|" + (HttpUtility.UrlEncode(Request.QueryString["redirecturl"]) ?? "") + "|" + hdnLocalTime.Value + "|" + hdnLocalDate.Value + "|" + hdnUniversaloffset.Value + "|" + hdnLocalDateAndTime.Value + "|" + bDayLightSavings));
-            return $"{oktaAuthorizeEndpoint}?client_id={clientId}&response_type=code&redirect_uri={HttpUtility.UrlEncode(redirectUri)}&prompt=none&scope=openid+profile+email&state={state}";
+            //var state = Convert.ToBase64String(Encoding.UTF8.GetBytes(Guid.NewGuid().ToString() + "|" + (HttpUtility.UrlEncode(Request.QueryString["redirecturl"]) ?? "") + "|" + hdnLocalTime.Value + "|" + hdnLocalDate.Value + "|" + hdnUniversaloffset.Value + "|" + hdnLocalDateAndTime.Value + "|" + bDayLightSavings));
+            hdnStateParam.Value = Guid.NewGuid().ToString() + "|" + (HttpUtility.UrlEncode(Request.QueryString["redirecturl"]) ?? "") + "|";
+            return $"{oktaAuthorizeEndpoint}?client_id={clientId}&response_type=code&redirect_uri={HttpUtility.UrlEncode(redirectUri)}&prompt=none&scope=openid+profile+email&state=";
         }
 
         private string GetOktaUrl(string sessionToken)
