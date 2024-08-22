@@ -7,6 +7,7 @@ using NHibernate;
 using NHibernate.Criterion;
 using System.Linq;
 using System.Xml;
+using System.Reflection;
 
 namespace Acurus.Capella.DataAccess.ManagerObjects
 {
@@ -512,17 +513,17 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
 
 
                 //Get duplicate count
-                    int iDuplicateSetCount = ilstrcopiaMedicationReturn.Where(x => x.Brand_Name == rcopiaMedicationList[iCount].Brand_Name
-                && x.Strength == rcopiaMedicationList[iCount].Strength
-                && x.Form == rcopiaMedicationList[iCount].Form
-                && x.Dose == rcopiaMedicationList[iCount].Dose
-                && x.Dose_Unit == rcopiaMedicationList[iCount].Dose_Unit
-                && x.Route == rcopiaMedicationList[iCount].Route
-                && x.Dose_Timing == rcopiaMedicationList[iCount].Dose_Timing
-                && x.Start_Date == rcopiaMedicationList[iCount].Start_Date
-                && x.Stop_Date == rcopiaMedicationList[iCount].Stop_Date
-                && x.Patient_Notes == rcopiaMedicationList[iCount].Patient_Notes
-                && x.Other_Notes == rcopiaMedicationList[iCount].Other_Notes).ToList<Rcopia_Medication>().Count();
+                int iDuplicateSetCount = ilstrcopiaMedicationReturn.Where(x => x.Brand_Name == rcopiaMedicationList[iCount].Brand_Name
+            && x.Strength == rcopiaMedicationList[iCount].Strength
+            && x.Form == rcopiaMedicationList[iCount].Form
+            && x.Dose == rcopiaMedicationList[iCount].Dose
+            && x.Dose_Unit == rcopiaMedicationList[iCount].Dose_Unit
+            && x.Route == rcopiaMedicationList[iCount].Route
+            && x.Dose_Timing == rcopiaMedicationList[iCount].Dose_Timing
+            && x.Start_Date == rcopiaMedicationList[iCount].Start_Date
+            && x.Stop_Date == rcopiaMedicationList[iCount].Stop_Date
+            && x.Patient_Notes == rcopiaMedicationList[iCount].Patient_Notes
+            && x.Other_Notes == rcopiaMedicationList[iCount].Other_Notes).ToList<Rcopia_Medication>().Count();
 
                 //get duplicate medications
                 if (iDuplicateSetCount == 0)
@@ -607,7 +608,7 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
             return ilstrcopiaMedicationReturn;
         }
 
-        public string UpdateRcopiaMedication(IList<ulong> ilstRcopiaID, ulong ulHumanID,string sFacilityName , string sLegalOrg, string sUserName)
+        public string UpdateRcopiaMedication(IList<ulong> ilstRcopiaID, ulong ulHumanID, string sFacilityName, string sLegalOrg, string sUserName)
         {
             if (ilstRcopiaID.Count == 0)
             {
@@ -631,7 +632,7 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
                 //Jira CAP-1366
                 if (sOutputXML != null && sOutputXML.StartsWith("HttpPostError") == true)
                 {
-                    return "Error during getting the medication records for the patient - "+sOutputXML;
+                    return "Error during getting the medication records for the patient - " + sOutputXML;
                 }
 
                 XmlDocument XMLDoc = new XmlDocument();
@@ -666,27 +667,28 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
                         UpdateXMLDoc.LoadXml(sRequestXML);
 
                         int iUpdateMedicationCount = UpdateXMLDoc.SelectNodes("RCExtRequest/Request/MedicationList/Medication").Count;
-                        for (int i = 1; i <=iUpdateMedicationCount; i++)
+                        for (int i = 1; i <= iUpdateMedicationCount; i++)
                         {
                             //Delete Tag
                             if (UpdateXMLDoc?.SelectSingleNode("RCExtRequest/Request/MedicationList/Medication[" + i + "]/Deleted")?.InnerText != null)
                             {
                                 UpdateXMLDoc.SelectSingleNode("RCExtRequest/Request/MedicationList/Medication[" + i + "]/Deleted").InnerText = "y";
                             }
-                            else {
+                            else
+                            {
                                 XmlNode UpdateDeleteTag = UpdateXMLDoc.CreateElement("Deleted");
                                 UpdateDeleteTag.InnerText = "y";
                                 UpdateXMLDoc.SelectSingleNode("RCExtRequest/Request/MedicationList/Medication[" + i + "]").AppendChild(UpdateDeleteTag);
                             }
 
-                        
+
                         }
                         sRequestXML = UpdateXMLDoc.OuterXml;
                         sOutputXML = rcopiaSessionMngr.HttpPost(rcopiaSessionMngr.UploadAddress + sRequestXML, 1, sUserName);
                         //Jira CAP-1366
                         if (sOutputXML != null && sOutputXML.StartsWith("HttpPostError") == true)
                         {
-                            return "Error during updating the medication record - "+sOutputXML;
+                            return "Error during updating the medication record - " + sOutputXML;
                         }
                         XmlDocument XMLResponse = new XmlDocument();
                         XMLResponse.LoadXml(sOutputXML);
@@ -694,7 +696,7 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
                         string sStatus = string.Empty;
                         string sTemp = string.Empty;
                         string sErrorRcopiaID = string.Empty;
-                        
+
                         RCopiaDeduplicateLog rcopiaDuplicatelog = new RCopiaDeduplicateLog();
                         for (int iCont = 1; iCont <= iResponseMedicationListCount; iCont++)
                         {
@@ -717,22 +719,22 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
                             {
                                 sErrorRcopiaID = sErrorRcopiaID + ((sErrorRcopiaID != string.Empty) ? "," : "RCopia ID : ") + sTemp + " : " + sStatus;
                             }
-                            else if(sStatus == null || sTemp == null)
+                            else if (sStatus == null || sTemp == null)
                             {
                                 sErrorRcopiaID = sErrorRcopiaID + ((sErrorRcopiaID != string.Empty) ? "," : "")
-                                    + ((sStatus == null && sTemp != null) ? "RCopia ID : "+sTemp + " Status is null" :
+                                    + ((sStatus == null && sTemp != null) ? "RCopia ID : " + sTemp + " Status is null" :
                                     (sStatus != null && sTemp == null) ? "RCopia ID is null " + sStatus : "RCopia ID and Status are null");
                             }
                         }
                         if (sErrorRcopiaID != string.Empty)
                         {
-                           return "Medication is not updated in DrFirst. \n For refernce : " + sErrorRcopiaID;
+                            return "Medication is not updated in DrFirst. \n For refernce : " + sErrorRcopiaID;
                         }
 
                     }
                     else
                     {
-                        return (rcopiaSessionMngr.UploadAddress == null) ? "rcopiaSessionMngr.UploadAddress is null":(sRequestXML == string.Empty)? "sRequestXML is Empty" : "There is no DELETED tag in Response or DELETED is in 'Y'";
+                        return (rcopiaSessionMngr.UploadAddress == null) ? "rcopiaSessionMngr.UploadAddress is null" : (sRequestXML == string.Empty) ? "sRequestXML is Empty" : "There is no DELETED tag in Response or DELETED is in 'Y'";
                     }
                 }
 
@@ -760,6 +762,107 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
             }
 
             return "Success";
+        }
+
+        public string UpdateMedicationInHumanBlob(IList<ulong> ilstHumanID)
+        {
+            HumanBlobManager HumanBlobMngr = new HumanBlobManager();
+            Rcopia_MedicationManager rcopiaMngr = new Rcopia_MedicationManager();
+            IList<Human_Blob> ilstHumanBlob = new List<Human_Blob>();
+            Human_Blob objHumanblobKeepAndMerge = new Human_Blob();
+            byte[] bytesKeep = null;
+            XmlDocument xmlHumanDocKeepAndMerge = new XmlDocument();
+            IList<Rcopia_Medication> ilstKeepAndMergeMedication = new List<Rcopia_Medication>();
+            XmlNode newnode = null;
+            Rcopia_Medication Properties = new Rcopia_Medication();
+            try
+            {
+                for (int iCount = 0; iCount < ilstHumanID.Count; iCount++)
+                {
+
+                    ilstKeepAndMergeMedication = rcopiaMngr.GetMedicationByHumanID(ilstHumanID[iCount]);
+
+
+                    objHumanblobKeepAndMerge = HumanBlobMngr.GetHumanBlob(ilstHumanID[iCount])[0];
+
+                    xmlHumanDocKeepAndMerge.LoadXml(System.Text.Encoding.UTF8.GetString(objHumanblobKeepAndMerge.Human_XML));
+
+                    string sKeepMedications = GenerateTag(ilstKeepAndMergeMedication);
+
+                    if (sKeepMedications != string.Empty)
+                    {
+                        if (xmlHumanDocKeepAndMerge.GetElementsByTagName(Properties.GetType().Name + "List").Count > 0)
+                        {
+                            xmlHumanDocKeepAndMerge.GetElementsByTagName(Properties.GetType().Name + "List")[0].InnerXml = sKeepMedications;
+                        }
+                        else
+                        {
+                            newnode = xmlHumanDocKeepAndMerge.CreateNode(XmlNodeType.Element, Properties.GetType().Name + "List", "");
+                            newnode.InnerXml = sKeepMedications;
+                            xmlHumanDocKeepAndMerge.GetElementsByTagName("Modules")[0].AppendChild(newnode);
+                        }
+                    }
+                    else if (xmlHumanDocKeepAndMerge.GetElementsByTagName(Properties.GetType().Name + "List").Count > 0)
+                    {
+                        xmlHumanDocKeepAndMerge.GetElementsByTagName(Properties.GetType().Name + "List")[0].RemoveAll();
+                    }
+
+
+                    try
+                    {
+                        bytesKeep = System.Text.Encoding.Default.GetBytes(xmlHumanDocKeepAndMerge.OuterXml);
+                    }
+                    catch (Exception ex)
+                    {
+                        return "Error : " + ex?.Message;
+                    }
+                    objHumanblobKeepAndMerge.Human_XML = bytesKeep;
+                    ilstHumanBlob.Add(objHumanblobKeepAndMerge);
+
+                }
+                HumanBlobMngr.SaveHumanBlobWithTransaction(ilstHumanBlob, string.Empty);
+            }
+            catch (Exception ex)
+            {
+                return "Error : " + ex?.Message;
+            }
+            return "Success";
+        }
+
+        public string GenerateTag(IList<Rcopia_Medication> ilstKeepAndMergeMedication)
+        {
+            string sObjectTags = string.Empty;
+            IEnumerable<PropertyInfo> propInfo = null;
+            XmlDocument itemDoc = new XmlDocument();
+            XmlAttribute attlabel = null;
+            XmlNode Newnode = null;
+            Rcopia_Medication Properties = new Rcopia_Medication();
+            
+                propInfo = from obji in (Properties).GetType().GetProperties() select obji;
+
+
+                foreach (Rcopia_Medication rcopiamedication in ilstKeepAndMergeMedication)
+                {
+                    Newnode = null;
+                    Newnode = itemDoc.CreateNode(XmlNodeType.Element, rcopiamedication.GetType().Name, "");
+                    foreach (PropertyInfo property in propInfo)
+                    {
+                        attlabel = null;
+                        attlabel = itemDoc.CreateAttribute(property.Name);
+                        if (property.PropertyType.Name.ToUpper() == "DATETIME")
+                        {
+                            attlabel.Value = Convert.ToDateTime(property.GetValue(rcopiamedication, null)).ToString("yyyy-MM-dd hh:mm:ss tt");
+                        }
+                        else
+                        {
+                            attlabel.Value = property.GetValue(rcopiamedication, null).ToString();
+                        }
+                        Newnode.Attributes.Append(attlabel);
+                    }
+                    sObjectTags = sObjectTags + Newnode.OuterXml;
+                }
+            
+            return sObjectTags;
         }
     }
 }

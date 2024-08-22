@@ -102,43 +102,57 @@ namespace Acurus.Capella.UI
             string sErrorMessage = string.Empty;
             Rcopia_Update_InfoManager objUpdateInfoMngr = new Rcopia_Update_InfoManager();
             RCopiaSessionManager rcopiaSessionMngr = new RCopiaSessionManager(ClientSession.LegalOrg);
+            Rcopia_MedicationManager rcopia_MedicationManager = new Rcopia_MedicationManager();
+            Rcopia_AllergyManager rcopia_AllergyManager = new Rcopia_AllergyManager();
+            
             if (ClientSession.UserName != null && ClientSession.FacilityName != null)
             {
                 sErrorMessage = objUpdateInfoMngr.DownloadRCopiaInfo(rcopiaSessionMngr.DownloadAddress, ClientSession.UserName, string.Empty, dtClientDate, ClientSession.FacilityName, 0, ulHumanIDKeep, ClientSession.LegalOrg);
             }
 
-
-            Rcopia_MedicationManager rcopia_MedicationManager = new Rcopia_MedicationManager();
-            IList<Rcopia_Medication> ilstRcopiaMedicationKeep = new List<Rcopia_Medication>();
-            IList<ulong> ilstMedicationIDKeep = new List<ulong>();
-            ilstRcopiaMedicationKeep = rcopia_MedicationManager.GetMedicationWithExactDuplicates(ulHumanIDKeep);
-            ilstMedicationIDKeep = ilstRcopiaMedicationKeep.Select(a => a.Id).ToList();
-            if (ilstMedicationIDKeep.Any())
-            {
-                responceMsg = rcopia_MedicationManager.UpdateRcopiaMedication(ilstMedicationIDKeep, ulHumanIDKeep, ClientSession.FacilityName, ClientSession.LegalOrg, ClientSession.UserName);
-            }
-
+            //Update in human_blob
+            IList<ulong> ilstHuman = new List<ulong>();
+            ilstHuman.Add(ulHumanIDKeep);
+            ilstHuman.Add(ulHumanIDMerge);
+            responceMsg = rcopia_MedicationManager.UpdateMedicationInHumanBlob(ilstHuman);
             if (responceMsg == "Success" || string.IsNullOrEmpty(responceMsg))
             {
-                Rcopia_AllergyManager rcopia_AllergyManager = new Rcopia_AllergyManager();
-                IList<Rcopia_Allergy> ilstRcopiaAllergyKeep = new List<Rcopia_Allergy>();
-                IList<ulong> ilstAllergyIDKeep = new List<ulong>();
-                ilstRcopiaAllergyKeep = rcopia_AllergyManager.GetAllergyWithExactDuplicates(ulHumanIDKeep, "Active");
-                ilstAllergyIDKeep = ilstRcopiaAllergyKeep.Select(a => a.Id).ToList();
-                if (ilstAllergyIDKeep.Any())
-                {
-                    responceMsg = rcopia_AllergyManager.UpdateRcopiaAllergy(ilstAllergyIDKeep, ulHumanIDKeep, ClientSession.FacilityName, ClientSession.LegalOrg, ClientSession.UserName);
-                }
+                responceMsg = rcopia_AllergyManager.UpdateAllergyInHumanBlob(ilstHuman);
             }
+            if (responceMsg == "Success" || string.IsNullOrEmpty(responceMsg))
+            {
+                //Remove Duplicates
+                IList<Rcopia_Medication> ilstRcopiaMedicationKeep = new List<Rcopia_Medication>();
+                IList<ulong> ilstMedicationIDKeep = new List<ulong>();
+                ilstRcopiaMedicationKeep = rcopia_MedicationManager.GetMedicationWithExactDuplicates(ulHumanIDKeep);
+                ilstMedicationIDKeep = ilstRcopiaMedicationKeep.Select(a => a.Id).ToList();
+                if (ilstMedicationIDKeep.Any())
+                {
+                    responceMsg = rcopia_MedicationManager.UpdateRcopiaMedication(ilstMedicationIDKeep, ulHumanIDKeep, ClientSession.FacilityName, ClientSession.LegalOrg, ClientSession.UserName);
+                }
 
-            //string sErrorMessage = string.Empty;
-            //Rcopia_Update_InfoManager objUpdateInfoMngr = new Rcopia_Update_InfoManager();
-            //RCopiaSessionManager rcopiaSessionMngr = new RCopiaSessionManager(ClientSession.LegalOrg);
-            //if (ClientSession.UserName != null && ClientSession.FacilityName != null)
-            //{
-            //    //Commented the Patient Level RCopia Download
-            //    sErrorMessage = objUpdateInfoMngr.DownloadRCopiaInfo(rcopiaSessionMngr.DownloadAddress, ClientSession.UserName, string.Empty, dtClientDate, ClientSession.FacilityName, 0, ulHumanIDMerge, ClientSession.LegalOrg);
-            //}
+                if (responceMsg == "Success" || string.IsNullOrEmpty(responceMsg))
+                {
+
+                    IList<Rcopia_Allergy> ilstRcopiaAllergyKeep = new List<Rcopia_Allergy>();
+                    IList<ulong> ilstAllergyIDKeep = new List<ulong>();
+                    ilstRcopiaAllergyKeep = rcopia_AllergyManager.GetAllergyWithExactDuplicates(ulHumanIDKeep, "Active");
+                    ilstAllergyIDKeep = ilstRcopiaAllergyKeep.Select(a => a.Id).ToList();
+                    if (ilstAllergyIDKeep.Any())
+                    {
+                        responceMsg = rcopia_AllergyManager.UpdateRcopiaAllergy(ilstAllergyIDKeep, ulHumanIDKeep, ClientSession.FacilityName, ClientSession.LegalOrg, ClientSession.UserName);
+                    }
+                }
+
+                //string sErrorMessage = string.Empty;
+                //Rcopia_Update_InfoManager objUpdateInfoMngr = new Rcopia_Update_InfoManager();
+                //RCopiaSessionManager rcopiaSessionMngr = new RCopiaSessionManager(ClientSession.LegalOrg);
+                //if (ClientSession.UserName != null && ClientSession.FacilityName != null)
+                //{
+                //    //Commented the Patient Level RCopia Download
+                //    sErrorMessage = objUpdateInfoMngr.DownloadRCopiaInfo(rcopiaSessionMngr.DownloadAddress, ClientSession.UserName, string.Empty, dtClientDate, ClientSession.FacilityName, 0, ulHumanIDMerge, ClientSession.LegalOrg);
+                //}
+            }
             return responceMsg;
         }
     }

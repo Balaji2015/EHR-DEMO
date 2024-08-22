@@ -7,6 +7,7 @@ using NHibernate;
 using NHibernate.Criterion;
 using System.Linq;
 using System.Xml;
+using System.Reflection;
 
 namespace Acurus.Capella.DataAccess.ManagerObjects
 {
@@ -306,7 +307,57 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
                     // To update the medication data in DrFirst
                     if (rcopiaSessionMngr.UploadAddress != null && sRequestXML != string.Empty && sRequestXML.ToUpper().Contains("<DELETED>N</DELETED>") == true)
                     {
-                        sRequestXML = sRequestXML.Replace("<Deleted>n</Deleted>", "<Deleted>y</Deleted>").Replace("<Status><Active /></Status>", "<Status><Deleted /></Status>");
+
+                        //sRequestXML = sRequestXML.Replace("<Deleted>n</Deleted>", "<Deleted>y</Deleted>").Replace("<Status><Active /></Status>", "<Status><Deleted /></Status>");
+                        XmlDocument UpdateXMLDoc = new XmlDocument();
+                        UpdateXMLDoc.LoadXml(sRequestXML);
+                        int iUpdateMedicationCount = UpdateXMLDoc.SelectNodes("RCExtRequest/Request/AllergyList/Allergy").Count;
+                        for (int i = 1; i <= iUpdateMedicationCount; i++)
+                        {
+                            //Delete Tag
+                            if (UpdateXMLDoc?.SelectSingleNode("RCExtRequest/Request/AllergyList/Allergy[" + i + "]/Deleted")?.InnerText != null)
+                            {
+                                UpdateXMLDoc.SelectSingleNode("RCExtRequest/Request/AllergyList/Allergy[" + i + "]/Deleted").InnerText = "y";
+                            }
+                            else
+                            {
+                                XmlNode UpdateDeleteTag = UpdateXMLDoc.CreateElement("Deleted");
+                                UpdateDeleteTag.InnerText = "y";
+                                UpdateXMLDoc.SelectSingleNode("RCExtRequest/Request/AllergyList/Allergy[" + i + "]").AppendChild(UpdateDeleteTag);
+                            }
+
+                            //Status Tag
+                            if (UpdateXMLDoc?.SelectSingleNode("RCExtRequest/Request/AllergyList/Allergy[" + i + "]/Status")?.InnerText != null)
+                            {
+                                UpdateXMLDoc.SelectSingleNode("RCExtRequest/Request/AllergyList/Allergy[" + i + "]/Status").InnerXml = "<Deleted />";
+                            }
+                            else
+                            {
+                                XmlNode UpdateDeleteTag = UpdateXMLDoc.CreateElement("Status");
+                                UpdateDeleteTag.InnerXml = "<Deleted />";
+                                UpdateXMLDoc.SelectSingleNode("RCExtRequest/Request/AllergyList/Allergy[" + i + "]").AppendChild(UpdateDeleteTag);
+                            }
+
+                            //RxnormId Tag
+                            if (UpdateXMLDoc?.SelectSingleNode("RCExtRequest/Request/AllergyList/Allergy[" + i + "]/Allergen/Ingredient")?.InnerText == null)
+                            {
+                                XmlNode UpdateIngredientTag = UpdateXMLDoc.CreateElement("Ingredient");
+                                XmlNode UpdateDeleteTag = UpdateXMLDoc.CreateElement("RxnormID");
+                                UpdateDeleteTag.InnerText = "0";
+                                UpdateIngredientTag.AppendChild(UpdateDeleteTag);
+                                UpdateXMLDoc.SelectSingleNode("RCExtRequest/Request/AllergyList/Allergy[" + i + "]/Allergen").AppendChild(UpdateIngredientTag);
+                            }
+                            else if (UpdateXMLDoc?.SelectSingleNode("RCExtRequest/Request/AllergyList/Allergy[" + i + "]/Allergen/Ingredient")?.InnerText != null && UpdateXMLDoc?.SelectSingleNode("RCExtRequest/Request/AllergyList/Allergy[" + i + "]/Allergen/Ingredient/RxnormID")?.InnerText == null)
+                            {
+                                XmlNode UpdateDeleteTag = UpdateXMLDoc.CreateElement("RxnormID");
+                                UpdateDeleteTag.InnerText = "0";
+                                UpdateXMLDoc.SelectSingleNode("RCExtRequest/Request/AllergyList/Allergy[" + i + "]/Allergen/Ingredient").AppendChild(UpdateDeleteTag);
+                            }
+
+                        }
+                        sRequestXML = UpdateXMLDoc.OuterXml;
+
+
                         sOutputXML = rcopiaSessionMngr.HttpPost(rcopiaSessionMngr.UploadAddress + sRequestXML, 1, sUserName);
                         //Jira CAP-1366
                         if (sOutputXML != null && sOutputXML.StartsWith("HttpPostError") == true)
@@ -364,7 +415,102 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
             return "Success";
         }
 
+        public string UpdateAllergyInHumanBlob(IList<ulong> ilstHumanID)
+        {
+            HumanBlobManager HumanBlobMngr = new HumanBlobManager();
+            Rcopia_AllergyManager rcopiaMngr = new Rcopia_AllergyManager();
+            IList<Human_Blob> ilstHumanBlob = new List<Human_Blob>();
+            Human_Blob objHumanblobKeepAndMerge = new Human_Blob();
+            byte[] bytesKeepAndMerge = null;
+            XmlDocument xmlHumanDocKeepAndMerge = new XmlDocument();
+            IList<Rcopia_Allergy> ilstKeepAndMergeAllergy = new List<Rcopia_Allergy>();
+            XmlNode newnode = null;
+            Rcopia_Allergy Properties = new Rcopia_Allergy();
+            try
+            {
+                for (int iCount = 0; iCount < ilstHumanID.Count; iCount++)
+                {
+                    ilstKeepAndMergeAllergy = rcopiaMngr.GetRAllergyByHumanID(ilstHumanID[iCount].ToString());
 
+                    objHumanblobKeepAndMerge = HumanBlobMngr.GetHumanBlob(ilstHumanID[iCount])[0];
+
+                    xmlHumanDocKeepAndMerge.LoadXml(System.Text.Encoding.UTF8.GetString(objHumanblobKeepAndMerge.Human_XML));
+
+                    string sKeepAndMergeAllergy = GenerateTag(ilstKeepAndMergeAllergy);
+
+                    if (sKeepAndMergeAllergy != string.Empty)
+                    {
+                        if (xmlHumanDocKeepAndMerge.GetElementsByTagName(Properties.GetType().Name + "List").Count > 0)
+                        {
+                            xmlHumanDocKeepAndMerge.GetElementsByTagName(Properties.GetType().Name + "List")[0].InnerXml = sKeepAndMergeAllergy;
+                        }
+                        else
+                        {
+                            newnode = xmlHumanDocKeepAndMerge.CreateNode(XmlNodeType.Element, Properties.GetType().Name + "List", "");
+                            newnode.InnerXml = sKeepAndMergeAllergy;
+                            xmlHumanDocKeepAndMerge.GetElementsByTagName("Modules")[0].AppendChild(newnode);
+                        }
+                    }
+                    else if (xmlHumanDocKeepAndMerge.GetElementsByTagName(Properties.GetType().Name + "List").Count > 0)
+                    {
+                        xmlHumanDocKeepAndMerge.GetElementsByTagName(Properties.GetType().Name + "List")[0].RemoveAll();
+                    }
+
+                    try
+                    {
+                        bytesKeepAndMerge = System.Text.Encoding.Default.GetBytes(xmlHumanDocKeepAndMerge.OuterXml);
+                    }
+                    catch (Exception ex)
+                    {
+                        return "Error : " + ex?.Message;
+                    }
+                    objHumanblobKeepAndMerge.Human_XML = bytesKeepAndMerge;
+                    ilstHumanBlob.Add(objHumanblobKeepAndMerge);
+
+                }
+                HumanBlobMngr.SaveHumanBlobWithTransaction(ilstHumanBlob, string.Empty);
+            }
+            catch (Exception ex)
+            {
+                return "Error : " + ex?.Message;
+            }
+            return "Success";
+        }
+
+        public string GenerateTag(IList<Rcopia_Allergy> ilstKeepAndMergeAllergy)
+        {
+            string sObjectTags = string.Empty;
+            IEnumerable<PropertyInfo> propInfo = null;
+            XmlDocument itemDoc = new XmlDocument();
+            XmlAttribute attlabel = null;
+            XmlNode Newnode = null;
+            Rcopia_Allergy Properties = new Rcopia_Allergy();
+
+            propInfo = from obji in (Properties).GetType().GetProperties() select obji;
+
+
+            foreach (Rcopia_Allergy rcopiaAllergy in ilstKeepAndMergeAllergy)
+            {
+                Newnode = null;
+                Newnode = itemDoc.CreateNode(XmlNodeType.Element, rcopiaAllergy.GetType().Name, "");
+                foreach (PropertyInfo property in propInfo)
+                {
+                    attlabel = null;
+                    attlabel = itemDoc.CreateAttribute(property.Name);
+                    if (property.PropertyType.Name.ToUpper() == "DATETIME")
+                    {
+                        attlabel.Value = Convert.ToDateTime(property.GetValue(rcopiaAllergy, null)).ToString("yyyy-MM-dd hh:mm:ss tt");
+                    }
+                    else
+                    {
+                        attlabel.Value = property.GetValue(rcopiaAllergy, null).ToString();
+                    }
+                    Newnode.Attributes.Append(attlabel);
+                }
+                sObjectTags = sObjectTags + Newnode.OuterXml;
+            }
+            return sObjectTags;
+        }
         #endregion
 
     }

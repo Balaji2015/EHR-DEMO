@@ -38,11 +38,11 @@ namespace Acurus.Capella.UI
             var stateParm = string.Empty;
             var state = string.Empty;
             //CAP-2041
-            var localtime = string.Empty;
-            var localdate = string.Empty;
-            var universaloffset = string.Empty;
-            var localDateAndTime = string.Empty;
-            var bDayLightSavings = string.Empty;
+            string localtime = null;
+            string localdate = null;
+            string universaloffset = null;
+            string localDateAndTime = null;
+            string bDayLightSavings = null;
             //CAP-2019
             try
             {
@@ -191,36 +191,36 @@ namespace Acurus.Capella.UI
             //if (System.Configuration.ConfigurationSettings.AppSettings["Reportpathhttp"] != null)
             //    hdnReportPathhttp.Value = System.Configuration.ConfigurationSettings.AppSettings["Reportpathhttp"];
             //CAP-2041
-            ClientSession.LocalOffSetTime = Request.Form["EHRhdnLocalTime"] ?? Request.Cookies["LocalOffSetTime"]?.Value ?? localtime ??  "";
-            ClientSession.LocalDate = Request.Form["EHRhdnLocalDate"] ?? Request.Cookies["LocalDate"]?.Value ?? localdate ?? "";
-            ClientSession.UniversalTime = Request.Form["EHRhdnUniversaloffset"] ?? Request.Cookies["UniversalTime"]?.Value ?? universaloffset ?? "";
-            ClientSession.LocalTime = Request.Form["EHRhdnLocalDateAndTime"] ?? Request.Cookies["LocalTime"]?.Value ?? localDateAndTime ?? "";
-            bool.TryParse(Request.Form["EHRhdnFollowsDayLightSavings"] ?? Request.Cookies["bFollows_DST"]?.Value ?? bDayLightSavings, out bool bFollows_DST);
+            ClientSession.LocalOffSetTime = Request.Form["EHRhdnLocalTime"] ?? localtime ?? Request.Cookies["LocalOffSetTime"]?.Value ??  "";
+            ClientSession.LocalDate = Request.Form["EHRhdnLocalDate"] ?? localdate ?? Request.Cookies["LocalDate"]?.Value ?? "";
+            ClientSession.UniversalTime = Request.Form["EHRhdnUniversaloffset"] ?? universaloffset ?? Request.Cookies["UniversalTime"]?.Value ?? "";
+            ClientSession.LocalTime = Request.Form["EHRhdnLocalDateAndTime"] ?? localDateAndTime ?? Request.Cookies["LocalTime"]?.Value ?? "";
+            bool.TryParse(Request.Form["EHRhdnFollowsDayLightSavings"] ?? bDayLightSavings ?? Request.Cookies["bFollows_DST"]?.Value, out bool bFollows_DST);
             ClientSession.bFollows_DST = bFollows_DST;
 
             if (!string.IsNullOrEmpty(Request.Form["EHRhdnLocalTime"]??localtime))
             {
-                Response.SetCookie(new HttpCookie("LocalOffSetTime") { Value = Request.Form["EHRhdnLocalTime"], Expires = DateTime.Now.AddDays(1) });      
+                Response.SetCookie(new HttpCookie("LocalOffSetTime") { Value = Request.Form["EHRhdnLocalTime"]?? localtime, Expires = DateTime.Now.AddDays(1) });      
             }
             
             if (!string.IsNullOrEmpty(Request.Form["EHRhdnLocalDate"]??localdate))
             {
-                Response.SetCookie(new HttpCookie("LocalDate") { Value = Request.Form["EHRhdnLocalDate"], Expires = DateTime.Now.AddDays(1) });      
+                Response.SetCookie(new HttpCookie("LocalDate") { Value = Request.Form["EHRhdnLocalDate"] ?? localdate, Expires = DateTime.Now.AddDays(1) });      
             }
             
             if (!string.IsNullOrEmpty(Request.Form["EHRhdnUniversaloffset"]??universaloffset))
             {
-                Response.SetCookie(new HttpCookie("UniversalTime") { Value = Request.Form["EHRhdnUniversaloffset"], Expires = DateTime.Now.AddDays(1) });      
+                Response.SetCookie(new HttpCookie("UniversalTime") { Value = Request.Form["EHRhdnUniversaloffset"] ?? universaloffset, Expires = DateTime.Now.AddDays(1) });      
             }
             
             if (!string.IsNullOrEmpty(Request.Form["EHRhdnLocalDateAndTime"]??localDateAndTime))
             {
-                Response.SetCookie(new HttpCookie("LocalTime") { Value = Request.Form["EHRhdnLocalDateAndTime"], Expires = DateTime.Now.AddDays(1) });      
+                Response.SetCookie(new HttpCookie("LocalTime") { Value = Request.Form["EHRhdnLocalDateAndTime"] ?? localDateAndTime, Expires = DateTime.Now.AddDays(1) });      
             }
             
             if (!string.IsNullOrEmpty(Request.Form["EHRhdnFollowsDayLightSavings"]??bDayLightSavings))
             {
-                Response.SetCookie(new HttpCookie("bFollows_DST") { Value = Request.Form["EHRhdnFollowsDayLightSavings"], Expires = DateTime.Now.AddDays(1) });      
+                Response.SetCookie(new HttpCookie("bFollows_DST") { Value = Request.Form["EHRhdnFollowsDayLightSavings"] ?? localDateAndTime, Expires = DateTime.Now.AddDays(1) });      
             }
 
 
@@ -288,7 +288,7 @@ namespace Acurus.Capella.UI
                 ClientSession.SavedSession = "DELETED";
                 UtilityManager.inserttologgingtableforSessionTimeout("Login Page Load - Before Calling LandingintoEHR - Input is" + Request.Form["EHRUserName"], Request.Url.ToString(), string.Empty);
 
-                LandingintoEHR(Request.Form["EHRUserName"], Request.Form["EHRFacilityName"], Request.Form["EHRhdnLocalTime"], Request.Form["EHRhdnLocalDate"], Request.Form["EHRhdnUniversaloffset"], Request.Form["EHRhdnLocalDateAndTime"], Request.Form["EHRhdnFollowsDayLightSavings"], Request.Form["UserRole"], Request.Form["RCopiaUserName"], Request.Form["EMailAddress"], Request.Form["Is_RCopia_Notification_Required"], Request.Form["PhysicianId"], Request.Form["Landing_Screen_ID"], hdnGroupId.Value, Request.Form["PersonName"], Request.Form["LegalOrg"], Request.Form["UserCarrier"], Request.Form["IsFirstTimeCall"], Request.Form["DefaultServer"], Request.Form["IsAllFacilities"]);
+                LandingintoEHR(Request.Form["EHRUserName"], Request.Form["EHRFacilityName"], Request.Form["EHRhdnLocalTime"]??localtime, Request.Form["EHRhdnLocalDate"]??localdate, Request.Form["EHRhdnUniversaloffset"]??universaloffset, Request.Form["EHRhdnLocalDateAndTime"]??localDateAndTime, Request.Form["EHRhdnFollowsDayLightSavings"]??bDayLightSavings, Request.Form["UserRole"], Request.Form["RCopiaUserName"], Request.Form["EMailAddress"], Request.Form["Is_RCopia_Notification_Required"], Request.Form["PhysicianId"], Request.Form["Landing_Screen_ID"], hdnGroupId.Value, Request.Form["PersonName"], Request.Form["LegalOrg"], Request.Form["UserCarrier"], Request.Form["IsFirstTimeCall"], Request.Form["DefaultServer"], Request.Form["IsAllFacilities"]);
 
                 UtilityManager.inserttologgingtableforSessionTimeout("Login Page Load - After Calling LandingintoEHR - Input is", Request.Url.ToString(), string.Empty);
 
