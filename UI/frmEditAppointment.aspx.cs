@@ -1114,7 +1114,11 @@ namespace Acurus.Capella.UI
 
 
                 }
-
+                //CAP-2373
+                if (EncRecord != null)
+                {
+                    hdbselref.Value = EncRecord.Is_Self_Referred ?? "";
+                }
                 // commented by valli
 
                 //if (txtReferringProvider.Text.Trim() != string.Empty && txtReferringProvider.Text.Contains(ddlPhysicianName.SelectedItem.Text))
