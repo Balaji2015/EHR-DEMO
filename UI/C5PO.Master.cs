@@ -62,7 +62,8 @@ namespace Acurus.Capella.UI
                 //CAP-2019
                 if (Request.Cookies["RedirectUri"] != null && !string.IsNullOrWhiteSpace(Request.Cookies["RedirectUri"]?.Value))
                 {
-                    Response.Redirect($"~/{loginpage}?redirecturl={Request.Cookies["RedirectUri"].Value}");
+                    var directUrl = HttpUtility.UrlDecode(Request.Url.AbsoluteUri);
+                    Response.Redirect($"~/{loginpage}?redirecturl={HttpUtility.UrlEncode(directUrl)}");
                 }
                 else
                 {

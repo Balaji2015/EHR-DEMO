@@ -619,7 +619,7 @@ namespace Acurus.Capella.UI
                                 var currentURL = Request.Url.AbsoluteUri.ToString();
                                 if (DirectURLUtility.IsValidRedirectUrlForLogin(currentURL))
                                 {
-                                    var CurrentUrl = Session["currenturl"]?.ToString();
+                                    var CurrentUrl = HttpUtility.UrlDecode(Session["currenturl"]?.ToString());
 
                                     if (!string.IsNullOrEmpty(CurrentUrl))
                                     {
