@@ -275,6 +275,11 @@ myapp.controller('EandMCodingCtrl', function ($scope, $http) {
                 e.stopImmediatePropagation();
             });
         },
+        //CAP-2382
+        focus: function (event, ui) {
+            $("#txtCPT").val(ui.item.label);
+            return false;
+        },
         select: function (event, ui) {
             event.preventDefault();
             if (ui.item.label != "No matches found.") {
@@ -542,7 +547,6 @@ myapp.controller('EandMCodingCtrl', function ($scope, $http) {
         arrCPTs = [];
         $(".ui-autocomplete").hide();
     }).on("keydown", function (e) {
-
         if (e.which == 8) {
             if (jQuery(top.window.parent.parent.parent.parent.parent.parent.document.body).find('#resultLoading').css('display') == 'block') { sessionStorage.setItem('StartLoading', 'false'); StopLoadFromPatChart(); }
             if ($("#txtCPT").val().length <= 1)
@@ -791,6 +795,11 @@ myapp.controller('EandMCodingCtrl', function ($scope, $http) {
                 e.preventDefault();
                 e.stopImmediatePropagation();
             });
+        },
+        //CAP-2382
+        focus: function (event, ui) {
+            $("#txtCPTDescription").val(ui.item.label);
+            return false;
         },
         select: function (event, ui) {
             event.preventDefault();
@@ -1160,6 +1169,11 @@ myapp.controller('EandMCodingCtrl', function ($scope, $http) {
         minlength: 2,
         multiple: true,
         mustMatch: false,
+        //CAP-2382
+        focus: function (event, ui) {
+            $("#txtICD10").val(ui.item.label);
+            return false;
+        },
         open: function () {
             $('.ui-autocomplete.ui-menu.ui-widget').width($('#txtICD10').width());
             $(".ui-autocomplete").find('a:contains("No matches found.")').on("click", function (e) {
@@ -1313,6 +1327,11 @@ myapp.controller('EandMCodingCtrl', function ($scope, $http) {
         minlength: 2,
         multiple: true,
         mustMatch: false,
+        //CAP-2382
+        focus: function (event, ui) {
+            $("#txtDescription").val(ui.item.label);
+            return false;
+        },
         open: function () {
             $('.ui-autocomplete.ui-menu.ui-widget').width($('#txtDescription').width());
             $(".ui-autocomplete").find('a:contains("No matches found.")').on("click", function (e) {

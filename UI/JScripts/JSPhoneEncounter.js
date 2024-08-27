@@ -646,6 +646,11 @@ myapp.controller('PhoneEncounterCtrl', function ($scope, $http) {
                 e.stopImmediatePropagation();
             });
         },
+        //CAP-2382
+        focus: function (event, ui) {
+            $("#txtCPT").val(ui.item.label);
+            return false;
+        },
         select: function (event, ui) {
             event.preventDefault();
             if (ui.item.label != "No matches found.") {
@@ -994,6 +999,11 @@ myapp.controller('PhoneEncounterCtrl', function ($scope, $http) {
                 e.stopImmediatePropagation();
             });
         },
+        //CAP-2382
+        focus: function (event, ui) {
+            $("#txtCPTDescription").val(ui.item.label);
+            return false;
+        },
         select: function (event, ui) {
             event.preventDefault();
 
@@ -1222,6 +1232,11 @@ myapp.controller('PhoneEncounterCtrl', function ($scope, $http) {
                 e.stopImmediatePropagation();
             });
         },
+        //CAP-2382
+        focus: function (event, ui) {
+            $("#txtICD10").val(ui.item.label);
+            return false;
+        },
         select: function (event, ui) {
             event.preventDefault();
             if (ui.item.label != "No matches found.") {
@@ -1374,6 +1389,11 @@ myapp.controller('PhoneEncounterCtrl', function ($scope, $http) {
                 e.preventDefault();
                 e.stopImmediatePropagation();
             });
+        },
+        //CAP-2382
+        focus: function (event, ui) {
+            $("#txtDescription").val(ui.item.label);
+            return false;
         },
         select: function (event, ui) {
             event.preventDefault();
