@@ -1447,7 +1447,9 @@ namespace Acurus.Capella.UI
                     }
                     if (xmlLocation != null && xmlLocation.Count() > 0)
                     {
-                        txtLocation.Value = xmlLocation.Attributes("city").First().Value.ToString();
+                        //CAP-2385
+                        //txtLocation.Value = xmlLocation.Attributes("city").First().Value.ToString();
+                        txtLocation.Value = xmlLocation.Attributes("locationname").First().Value.ToString();
                         if (!LookUpPerRequest.ContainsKey("labLocID"))
                             LookUpPerRequest.Add("labLocID", xmlLocation.Attributes("id").First().Value.ToString());
                         else
