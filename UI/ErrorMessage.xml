@@ -3037,7 +3037,7 @@
 	<Message number="10113606" Type="OKCANCEL" Text="There are {0} medication(s) selected for delete. Do you want to remove duplicates?"></Message>
 	<Message number="10113607" Type="OK" Text="{0}"></Message>
 	<Message number="10113608" Type="OKCANCEL" Text="Are you sure you want to close?" />
-	<Message number="10113609" Type="OKCANCEL" Text="There are {0} selected for delete. Do you want to remove duplicates?"></Message>
+	<Message number="10113609" Type="OKCANCEL" Text="There are {0} Allergy(s) selected for delete. Do you want to remove duplicates?"></Message>
 	<Message number="10113610" Type="ToolStrip" Text="Deleted successfully."></Message>
 	
 	

@@ -32,13 +32,6 @@ myapp.controller('AllergieCtrl', function ($scope, $http) {
             $scope.AllergieList = test;
             AllergieListnew = test;
         }
-        if (test != undefined && test.length <= 0) {
-            document.getElementById("btnDelete").disabled = true;
-        }
-        else {
-            document.getElementById("btnDelete").disabled = false;
-        }
-
     })
 
 
@@ -53,9 +46,9 @@ myapp.controller('AllergieCtrl', function ($scope, $http) {
 
         if (CheckboxList != undefined && CheckboxList != '') {
 
-            var Checkboxcount = checkboxValues.length + " Allergy(s)";
+            var Checkboxcount = checkboxValues.length;
 
-            var DeleteCheck = DisplayErrorMessage('10113609', '', Checkboxcount);
+            var DeleteCheck = DisplayErrorMessage('10113609', '', Checkboxcount.toString());
             if (DeleteCheck != undefined && DeleteCheck) {
 
                 { sessionStorage.setItem('StartLoading', 'true'); StartLoadFromPatChart(); }
@@ -92,13 +85,6 @@ myapp.controller('AllergieCtrl', function ($scope, $http) {
                             $scope.AllergieList = test;
                             AllergieListnew = test;
                         }
-                        if (test != undefined && test.length <= 0) {
-                            document.getElementById("btnDelete").disabled = true;
-                        }
-                        else {
-                            document.getElementById("btnDelete").disabled = false;
-                        }
-
                     })
 
                         { sessionStorage.setItem('StartLoading', 'false'); StopLoadFromPatChart(); }
@@ -108,9 +94,6 @@ myapp.controller('AllergieCtrl', function ($scope, $http) {
                         { sessionStorage.setItem('StartLoading', 'false'); StopLoadFromPatChart(); }
                         DisplayErrorMessage('10113607', '', successmsg);
                     }
-
-
-
                 })
             }
             else {
@@ -153,13 +136,6 @@ myapp.controller('AllergieCtrl', function ($scope, $http) {
             if (test != undefined && test != "") {
                 $scope.AllergieList = test;
             }
-            if (test != undefined && test.length <= 0) {
-                document.getElementById("btnDelete").disabled = true;
-            }
-            else {
-                document.getElementById("btnDelete").disabled = false;
-            }
-
         })
 
     }
@@ -186,12 +162,52 @@ myapp.controller('AllergieCtrl', function ($scope, $http) {
 
     }
 
+    $scope.AllergySearchDown = function () {
+
+        var Indexval = document.getElementById("txtAllergy").value;
+        var FinalList = [];
+        if (Indexval != undefined && Indexval != "") {
+
+            var list = $scope.AllergieList;
+
+            for (var i = 0; i < list.length; i++) {
+                if (list[i].AlergyName.toUpperCase().indexOf(Indexval.toUpperCase()) == 0) {
+                    FinalList.push(list[i]);
+                }
+            }
+
+            $scope.AllergieList = FinalList;
+        }
+        else {
+            $scope.AllergieList = AllergieListnew;
+        }
+
+    }
+
+
     $scope.AllergyClear = function () {
 
         document.getElementById("txtAllergy").value = "";
         $scope.AllergieList = AllergieListnew;
     }
 
+    $scope.CheckChange = function () {
+
+        var checkboxValues = [];
+        var CheckboxList;
+        $('input[name="DeleteCheck"]:checked').each(function () {
+            checkboxValues.push(this.value);
+            CheckboxList = checkboxValues.join(',');
+        });
+
+        if (CheckboxList != undefined && CheckboxList.length > 0) {
+            document.getElementById("btnDelete").disabled = false;
+        }
+        else {
+            document.getElementById("btnDelete").disabled = true;
+        }
+
+    }
 
 
 });

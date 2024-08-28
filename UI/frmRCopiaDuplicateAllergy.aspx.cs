@@ -146,7 +146,7 @@ namespace Acurus.Capella.UI
                     Reaction = a.Reaction,
                     OnsetDate = a.OnsetDate != DateTime.MinValue ? a.OnsetDate.ToString("dd-MMM-yyyy") : "",
                     Createdby = a.Created_By,
-                    CreatedDate = a.Created_Date_And_Time.ToString("dd-MMM-yyyy HH:mm:ss"),
+                    CreatedDate = a.Created_Date_And_Time.ToString("dd-MMM-yyyy HH:mm:ss tt"),
                     RcopiaId = a.Id,
                     Status = a.Status.Split('~')[0],
                     Colour = a.Status.Split('~')[1]

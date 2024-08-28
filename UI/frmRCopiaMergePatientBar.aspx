@@ -21,7 +21,9 @@
 </head>
 <body style="height:100%">
     <form id="frmRCopiaMergePatientBar" runat="server" style="height:100%" >
+        <div style="margin-bottom: 0.6%;"">
         <label id="lblPatientStrip" runat="server" class="newStyle1 pnlBarGroup" style="width: 100%; height: 11px;" ></label>
+            </div>
         <div>
             <input type="button" id="btnMedication" onclick="OnTabClick();" class="btn btn-default btncolorMyQ" value="Medication" />
             <input type="button" id="btnAllergies" onclick="OnTabClick();" class="btn btn-default" value="Allergies" />

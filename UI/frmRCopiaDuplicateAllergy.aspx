@@ -99,7 +99,7 @@
                         <td style="width:0px;font-size: 14px;text-align:center">Allergy
                         </td>
                         <td style="width:550px;">
-                            <input type="text" style="height: 30px;width: 433px;border: 1px solid;" id="txtAllergy" ng-keypress="AllergySearch()"  ng-keyup="AllergySearchDown()" class="Editabletxtbox" placeholder="Type your Allergy here" /><!--ng-keyup="LoadCPTDescription()"-->
+                            <input type="text" style="height: 30px;width: 433px;border: 1px solid;" id="txtAllergy" ng-keypress="AllergySearch()" ng-keydown="AllergySearchDown()" ng-keyup="AllergySearchDown()" class="Editabletxtbox" placeholder="Type your Allergy here" autocomplete="off" /><!--ng-keyup="LoadCPTDescription()"-->
 
                             <img id="imgClearAllergyText" runat="server" src="Resources/Delete-Blue.png" alt="X" title="Click to clear the text field." ng-click="AllergyClear();" style="position: absolute; margin-left: 10px; cursor: pointer; width: 13px; height: 15px;margin-top: 7px;" />
                         </td>
@@ -123,7 +123,7 @@
                     </thead>
                     <tbody id="AllergieGrid" class="Editabletxtbox">
                         <tr  ng-repeat="a in AllergieList" style="width:100%;color:{{a.Colour}}">
-                            <td style="width:5%;text-align:center;"><input type="checkbox" name="DeleteCheck" value="{{a.RcopiaId}}" /></td>
+                            <td style="width:5%;text-align:center;"><input type="checkbox" ng-click="CheckChange()" name="DeleteCheck" value="{{a.RcopiaId}}" /></td>
                             <td style="width:25%;text-align:center">{{a.AlergyName}}</td>
                             <td style="width:25%;text-align:center">{{a.Reaction}}</td>
                             <td style="width:15%;text-align:center">{{a.OnsetDate}}</td>
@@ -136,12 +136,12 @@
                 </table>
                 </div>
             <div id="divcheckbox" style="float:left;margin-left: 2%;">
-                <input type="checkbox" id="ShowAll" ng-click="ShowActive()"  style="font-size: 14px;display:none" value=""  />
-                  <lable style="font-size: 14px;font-weight: bold;display:none">Check for all status</lable>
+                <input type="checkbox" id="ShowAll" ng-click="ShowActive()"  style="font-size: 14px;" value=""  />
+                  <lable style="font-size: 14px;font-weight: bold;">Check for all status</lable>
                 </div>
               <div id="divButtonsPanelClose" style="float:right;margin-right: 2%;">
                  
-             <button type="button"  id="btnDelete" ng-click="DeleteClick()" class="btn aspredbutton aspresizedredbutton" style="width: 75px;" runat="server">Delete</button>
+             <button type="button"  id="btnDelete" ng-click="DeleteClick()" class="btn aspredbutton aspresizedredbutton" style="width: 75px;" runat="server" disabled="disabled">Delete</button>
         </div>
             </div>
         <asp:HiddenField  id="hdnDeleteIdList" runat="server" EnableViewState="false"/>     
