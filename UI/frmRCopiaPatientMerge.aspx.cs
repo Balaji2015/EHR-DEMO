@@ -124,7 +124,7 @@ namespace Acurus.Capella.UI
                 //Remove Duplicates
                 IList<Rcopia_Medication> ilstRcopiaMedicationKeep = new List<Rcopia_Medication>();
                 IList<ulong> ilstMedicationIDKeep = new List<ulong>();
-                ilstRcopiaMedicationKeep = rcopia_MedicationManager.GetMedicationWithExactDuplicates(ulHumanIDKeep);
+                ilstRcopiaMedicationKeep = rcopia_MedicationManager.GetMedicationWithExactDuplicates(ulHumanIDKeep,"ALL");
                 ilstMedicationIDKeep = ilstRcopiaMedicationKeep.Select(a => a.Id).ToList();
                 if (ilstMedicationIDKeep.Any())
                 {

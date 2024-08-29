@@ -45,8 +45,8 @@
                 </tbody>
             </table>
         </div>
-        <input type="checkbox" name="ShowAll" id="chkShowAll" onclick='ShowAllMedication();' style="display:none" />
-        <label for="ShowAll" style="display:none">ShowAll</label>
+        <input type="checkbox" name="ShowAll" id="chkShowAll" onclick='ShowAllMedication();' runat="server" />
+        <label for="ShowAll">ShowAll</label>
         <input type="button" id="btnDelete" onclick="DeleteMedication();" class="aspresizedredbutton" value="Delete" style="width:85px;float: right;" />
 
         <asp:PlaceHolder ID="PlaceHolder1" runat="server">

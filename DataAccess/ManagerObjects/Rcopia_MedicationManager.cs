@@ -21,8 +21,8 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
         IList<Rcopia_Medication> GetRxNormByHumanID(ulong ulHumanID);
         IList<Rcopia_Medication> GetRmedicationByHumanID(string ulHumanID);
         IList<Rcopia_Medication> GetMedicationByHumanID(ulong ulHumanID);
-        IList<Rcopia_Medication> GetMedicationWithExactDuplicates(ulong ulHumanID);
-        IList<Rcopia_Medication> GetMedicationWithPartialDuplicates(ulong ulHumanID);
+        IList<Rcopia_Medication> GetMedicationWithExactDuplicates(ulong ulHumanID, string sShowall);
+        IList<Rcopia_Medication> GetMedicationWithPartialDuplicates(ulong ulHumanID, string sStatus);
     }
 
     public partial class Rcopia_MedicationManager : ManagerBase<Rcopia_Medication, ulong>, IRcopia_MedicationManager
@@ -472,7 +472,7 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
         }
         #endregion
 
-        public IList<Rcopia_Medication> GetMedicationWithExactDuplicates(ulong ulHumanID)
+        public IList<Rcopia_Medication> GetMedicationWithExactDuplicates(ulong ulHumanID, string sShowall)
         {
             IList<Rcopia_Medication> rcopiaMedicationList = new List<Rcopia_Medication>();
             IList<Rcopia_Medication> ilstrcopiaMedicationReturn = new List<Rcopia_Medication>();
@@ -480,50 +480,27 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
             string sMedicationStatus = "";
             using (ISession mySession = NHibernateSessionManager.Instance.CreateISession())
             {
-                ISQLQuery sql = session.GetISession().CreateSQLQuery("select * from rcopia_medication as a where Human_ID=" + ulHumanID + " and status='Active' and Deleted <> 'Y' order by Brand_Name,Strength,Form,Dose,Dose_Unit,Route,Dose_Timing,Start_Date,Stop_Date,Patient_Notes,Other_Notes;").AddEntity("m", typeof(Rcopia_Medication));
+                ISQLQuery sql = session.GetISession().CreateSQLQuery("select * from rcopia_medication as a where Human_ID=" + ulHumanID + " and Deleted <> 'Y' order by Brand_Name,Strength,Form,Dose,Dose_Unit,Route,Dose_Timing,Start_Date,Stop_Date,Patient_Notes,Other_Notes;").AddEntity("m", typeof(Rcopia_Medication));
 
                 rcopiaMedicationList = sql.List<Rcopia_Medication>();
                 mySession.Close();
             }
             for (int iCount = 0; iCount < rcopiaMedicationList.Count; iCount++)
             {
-                //Fill Active or InActive Medication in status
-                if ((rcopiaMedicationList[iCount].Start_Date.Date == DateTime.MinValue.Date && rcopiaMedicationList[iCount].Stop_Date.Date == DateTime.MinValue.Date) ||
-                   (rcopiaMedicationList[iCount].Start_Date.Date <= sTodayDate.Date && rcopiaMedicationList[iCount].Stop_Date.Date == DateTime.MinValue.Date) ||
-                   (rcopiaMedicationList[iCount].Start_Date.Date <= sTodayDate.Date && rcopiaMedicationList[iCount].Stop_Date.Date > sTodayDate.Date) ||
-                   (rcopiaMedicationList[iCount].Start_Date.Date == DateTime.MinValue.Date && rcopiaMedicationList[iCount].Stop_Date.Date > sTodayDate.Date))
-                {
-                    sMedicationStatus = "ACTIVE";
-                }
-                else
-                {
-                    sMedicationStatus = "INACTIVE";
-                }
-
-                if (ilstrcopiaMedicationReturn.Contains(rcopiaMedicationList[iCount]))
-                {
-                    int iIndexofselectmedication = ilstrcopiaMedicationReturn.IndexOf(rcopiaMedicationList[iCount]);
-
-                    ilstrcopiaMedicationReturn[iIndexofselectmedication].Status = sMedicationStatus;
-                }
-                else
-                {
-                    rcopiaMedicationList[iCount].Status = sMedicationStatus;
-                }
-
-
                 //Get duplicate count
-                int iDuplicateSetCount = ilstrcopiaMedicationReturn.Where(x => x.Brand_Name == rcopiaMedicationList[iCount].Brand_Name
-            && x.Strength == rcopiaMedicationList[iCount].Strength
-            && x.Form == rcopiaMedicationList[iCount].Form
-            && x.Dose == rcopiaMedicationList[iCount].Dose
-            && x.Dose_Unit == rcopiaMedicationList[iCount].Dose_Unit
-            && x.Route == rcopiaMedicationList[iCount].Route
-            && x.Dose_Timing == rcopiaMedicationList[iCount].Dose_Timing
-            && x.Start_Date == rcopiaMedicationList[iCount].Start_Date
-            && x.Stop_Date == rcopiaMedicationList[iCount].Stop_Date
-            && x.Patient_Notes == rcopiaMedicationList[iCount].Patient_Notes
-            && x.Other_Notes == rcopiaMedicationList[iCount].Other_Notes).ToList<Rcopia_Medication>().Count();
+                IList<Rcopia_Medication> ilstMedicationDuplicateSet = ilstrcopiaMedicationReturn.Where(x => x.Brand_Name == rcopiaMedicationList[iCount].Brand_Name
+                && x.Strength == rcopiaMedicationList[iCount].Strength
+                && x.Form == rcopiaMedicationList[iCount].Form
+                && x.Dose == rcopiaMedicationList[iCount].Dose
+                && x.Dose_Unit == rcopiaMedicationList[iCount].Dose_Unit
+                && x.Route == rcopiaMedicationList[iCount].Route
+                && x.Dose_Timing == rcopiaMedicationList[iCount].Dose_Timing
+                && x.Start_Date == rcopiaMedicationList[iCount].Start_Date
+                && x.Stop_Date == rcopiaMedicationList[iCount].Stop_Date
+                && x.Patient_Notes == rcopiaMedicationList[iCount].Patient_Notes
+                && x.Other_Notes == rcopiaMedicationList[iCount].Other_Notes).ToList<Rcopia_Medication>();
+
+                int iDuplicateSetCount = ilstMedicationDuplicateSet.Count();
 
                 //get duplicate medications
                 if (iDuplicateSetCount == 0)
@@ -541,7 +518,10 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
                     && x.Patient_Notes == rcopiaMedicationList[iCount].Patient_Notes
                     && x.Other_Notes == rcopiaMedicationList[iCount].Other_Notes).ToList<Rcopia_Medication>();
 
-
+                    ilstCountOfrcopiaMedication = SeparateMedicationByStatus(ilstCountOfrcopiaMedication, sShowall.ToUpper());
+                    
+                    //Sorting
+                    ilstCountOfrcopiaMedication = ilstCountOfrcopiaMedication.OrderBy(x => x.Status).ThenByDescending(y => y.Id).ToList<Rcopia_Medication>();
 
                     if (ilstCountOfrcopiaMedication.Count > 1)
                     {
@@ -555,37 +535,31 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
             return ilstrcopiaMedicationReturn;
         }
 
-        public IList<Rcopia_Medication> GetMedicationWithPartialDuplicates(ulong ulHumanID)
+        public IList<Rcopia_Medication> GetMedicationWithPartialDuplicates(ulong ulHumanID, string sStatus)
         {
             IList<Rcopia_Medication> rcopiaMedicationList = new List<Rcopia_Medication>();
             IList<Rcopia_Medication> ilstrcopiaMedicationReturn = new List<Rcopia_Medication>();
+            Rcopia_Medication rcopia_Medication = new Rcopia_Medication();
             DateTime sTodayDate = DateTime.Now.Date;
             string sMedicationStatus = "";
             using (ISession mySession = NHibernateSessionManager.Instance.CreateISession())
             {
-                ISQLQuery sql = session.GetISession().CreateSQLQuery("select * from rcopia_medication as a where Human_ID=" + ulHumanID + " and status='Active' and Deleted <> 'Y' group by Brand_Name,Strength,Form,Dose,Dose_Unit,Route,Dose_Timing,Start_Date,Stop_Date,Patient_Notes,Other_Notes;").AddEntity("m", typeof(Rcopia_Medication));
+                //ISQLQuery sql = session.GetISession().CreateSQLQuery("select * from rcopia_medication as a where Human_ID=" + ulHumanID + " and Deleted <> 'Y' group by Brand_Name,Strength,Form,Dose,Dose_Unit,Route,Dose_Timing,Start_Date,Stop_Date,Patient_Notes,Other_Notes;").AddEntity("m", typeof(Rcopia_Medication));
+                ISQLQuery sql = session.GetISession().CreateSQLQuery("select * from rcopia_medication as a where Human_ID=" + ulHumanID + " and Deleted <> 'Y';").AddEntity("m", typeof(Rcopia_Medication));
 
                 rcopiaMedicationList = sql.List<Rcopia_Medication>();
                 mySession.Close();
             }
+
+            IList<Rcopia_Medication> ilstExactDuplicatesOfMedication = GetMedicationWithExactDuplicates(ulHumanID, sStatus);
+            if (ilstExactDuplicatesOfMedication.Count > 0)
+            {
+                rcopiaMedicationList = rcopiaMedicationList.Except(ilstExactDuplicatesOfMedication).ToList<Rcopia_Medication>();
+            }
+
             for (int iCount = 0; iCount < rcopiaMedicationList.Count; iCount++)
             {
-
-                //Fill Active or InActive Medication in status
-                if ((rcopiaMedicationList[iCount].Start_Date.Date == DateTime.MinValue.Date && rcopiaMedicationList[iCount].Stop_Date.Date == DateTime.MinValue.Date) ||
-                   (rcopiaMedicationList[iCount].Start_Date.Date <= sTodayDate.Date && rcopiaMedicationList[iCount].Stop_Date.Date == DateTime.MinValue.Date) ||
-                   (rcopiaMedicationList[iCount].Start_Date.Date <= sTodayDate.Date && rcopiaMedicationList[iCount].Stop_Date.Date > sTodayDate.Date) ||
-                   (rcopiaMedicationList[iCount].Start_Date.Date == DateTime.MinValue.Date && rcopiaMedicationList[iCount].Stop_Date.Date > sTodayDate.Date))
-                {
-                    sMedicationStatus = "ACTIVE";
-                }
-                else
-                {
-                    sMedicationStatus = "INACTIVE";
-                }
-
-                rcopiaMedicationList[iCount].Status = sMedicationStatus;
-
+                rcopia_Medication = new Rcopia_Medication();
                 //Get partial duplicates of medication
                 IList<Rcopia_Medication> ilstCountOfrcopiaMedication = rcopiaMedicationList.Where(x => x.Brand_Name == rcopiaMedicationList[iCount].Brand_Name
                 && x.Strength == rcopiaMedicationList[iCount].Strength
@@ -595,17 +569,58 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
                 && x.Route == rcopiaMedicationList[iCount].Route
                 && x.Dose_Timing == rcopiaMedicationList[iCount].Dose_Timing).ToList<Rcopia_Medication>();
 
-
+                ilstCountOfrcopiaMedication = SeparateMedicationByStatus(ilstCountOfrcopiaMedication, sStatus.ToUpper());
 
                 if (ilstCountOfrcopiaMedication.Count > 1)
                 {
-                    ilstrcopiaMedicationReturn.Add(rcopiaMedicationList[iCount]);
+                    ilstCountOfrcopiaMedication = ilstCountOfrcopiaMedication.Where(x=> x.Id == rcopiaMedicationList[iCount].Id).ToList<Rcopia_Medication>();
+                    if (ilstCountOfrcopiaMedication.Count > 0)
+                    {
+                        ilstrcopiaMedicationReturn.Add(ilstCountOfrcopiaMedication[0]);
+                    }
                 }
 
 
             }
 
+            //Sorting
+            ilstrcopiaMedicationReturn = SortingMedicationListForPartialDuplicate(ilstrcopiaMedicationReturn);
+
             return ilstrcopiaMedicationReturn;
+        }
+
+        public IList<Rcopia_Medication> SortingMedicationListForPartialDuplicate(IList<Rcopia_Medication> ilstParticalDuplicateSort)
+        {
+            ilstParticalDuplicateSort = ilstParticalDuplicateSort.OrderBy(rcopia => rcopia.Brand_Name).
+                ThenBy(rcopia => rcopia.Strength).ThenBy(rcopia => rcopia.Form).ThenBy(rcopia => rcopia.Dose).
+                ThenBy(rcopia => rcopia.Dose_Unit).ThenBy(rcopia => rcopia.Route).ThenBy(rcopia => rcopia.Dose_Timing).
+                ThenBy(rcopia => rcopia.Start_Date).ThenBy(rcopia => rcopia.Stop_Date).ToList<Rcopia_Medication>() ;
+            return ilstParticalDuplicateSort;
+        }
+
+        public IList<Rcopia_Medication> SeparateMedicationByStatus(IList<Rcopia_Medication> rcopiaMedicationList, string sStatus)
+        {
+            DateTime sTodayDate = DateTime.Now.Date;
+            for (int iCount = 0; iCount < rcopiaMedicationList.Count; iCount++)
+            {
+                if ((rcopiaMedicationList[iCount].Start_Date.Date == DateTime.MinValue.Date && rcopiaMedicationList[iCount].Stop_Date.Date == DateTime.MinValue.Date) ||
+                       (rcopiaMedicationList[iCount].Start_Date.Date <= sTodayDate.Date && rcopiaMedicationList[iCount].Stop_Date.Date == DateTime.MinValue.Date) ||
+                       (rcopiaMedicationList[iCount].Start_Date.Date <= sTodayDate.Date && rcopiaMedicationList[iCount].Stop_Date.Date > sTodayDate.Date) ||
+                       (rcopiaMedicationList[iCount].Start_Date.Date == DateTime.MinValue.Date && rcopiaMedicationList[iCount].Stop_Date.Date > sTodayDate.Date))
+                {
+                    rcopiaMedicationList[iCount].Status = "ACTIVE";
+                }
+                else
+                {
+                    rcopiaMedicationList[iCount].Status = "INACTIVE";
+                }
+            }
+
+            if (sStatus == "ACTIVE")
+            {
+                rcopiaMedicationList = rcopiaMedicationList.Where(x => x.Status == sStatus).ToList<Rcopia_Medication>();
+            }
+            return rcopiaMedicationList;
         }
 
         public string UpdateRcopiaMedication(IList<ulong> ilstRcopiaID, ulong ulHumanID, string sFacilityName, string sLegalOrg, string sUserName)

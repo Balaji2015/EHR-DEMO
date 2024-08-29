@@ -20,15 +20,23 @@ namespace Acurus.Capella.UI
                 if (Request["HumanID"] != null)
                 {
                     ulong ulHuman_id = Convert.ToUInt64(Request["HumanID"]);
-
-                    ScriptManager.RegisterStartupScript(this, this.GetType(), "LoadPartialDuplicatesMedicationGrid", "{ sessionStorage.setItem('StartLoading', 'true'); StartLoadFromPatChart(); } LoadPartialDuplicatesMedicationGrid(" + ulHuman_id + ");", true);
+                    string sShowAll = string.Empty;
+                    if (chkShowAll.Checked)
+                    {
+                        sShowAll = "ALL";
+                    }
+                    else
+                    {
+                        sShowAll = "ACTIVE";
+                    }
+                    ScriptManager.RegisterStartupScript(this, this.GetType(), "LoadPartialDuplicatesMedicationGrid", "{ sessionStorage.setItem('StartLoading', 'true'); StartLoadFromPatChart(); } LoadPartialDuplicatesMedicationGrid(" + ulHuman_id + ",\""+ sShowAll + "\");", true);
                 }
             }
 
         }
 
         [WebMethod(EnableSession = true)]
-        public static string LoadMedicationGrid(ulong ulHuman_id)
+        public static string LoadMedicationGrid(ulong ulHuman_id, string sShowAll)
         {
             if (ClientSession.UserName == string.Empty)
             {
@@ -38,7 +46,7 @@ namespace Acurus.Capella.UI
                 return "Session Expired";
             }
             Rcopia_MedicationManager RCopiaMedicationMngr = new Rcopia_MedicationManager();
-            IList<Rcopia_Medication> ilstPartialDuplicateRcopiaMedication = RCopiaMedicationMngr.GetMedicationWithPartialDuplicates(ulHuman_id);
+            IList<Rcopia_Medication> ilstPartialDuplicateRcopiaMedication = RCopiaMedicationMngr.GetMedicationWithPartialDuplicates(ulHuman_id, sShowAll);
 
             var result = new { PartialDupicateMedications = ilstPartialDuplicateRcopiaMedication };
             return JsonConvert.SerializeObject(result);

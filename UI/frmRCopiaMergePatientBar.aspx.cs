@@ -29,7 +29,7 @@ namespace Acurus.Capella.UI
 
                 //Remove the ExactDuplicates
                 Rcopia_MedicationManager mngrRcpiaMedi = new Rcopia_MedicationManager();
-                IList<Rcopia_Medication> ilstExactDuplicateRcopiaMedication = mngrRcpiaMedi.GetMedicationWithExactDuplicates(ulHuman_id);
+                IList<Rcopia_Medication> ilstExactDuplicateRcopiaMedication = mngrRcpiaMedi.GetMedicationWithExactDuplicates(ulHuman_id,"ALL");
 
                 //Delete RCopia
                 if (ilstExactDuplicateRcopiaMedication.Count > 0)

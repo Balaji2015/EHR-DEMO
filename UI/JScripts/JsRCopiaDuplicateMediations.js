@@ -1,5 +1,6 @@
-﻿function LoadPartialDuplicatesMedicationGrid(humanID) {
-    var ID = { ulHuman_id: humanID };
+﻿function LoadPartialDuplicatesMedicationGrid(humanID, ShowAll) {
+    $("#RCopiaDuplicateMediationsTableBody").children().remove();
+    var ID = { ulHuman_id: humanID, sShowAll: ShowAll };
     $.ajax({
         type: "POST",
         url: "frmRCopiaDuplicateMediations.aspx/LoadMedicationGrid",
@@ -17,11 +18,13 @@
                 for (iCount = 0; iCount < result.length; iCount++) {
                     var checkMedicationName = result[iCount].Brand_Name + " " + result[iCount].Strength + " : " + result[iCount].Form + " "
                         + result[iCount].Dose + " " + result[iCount].Dose_Unit + " " + result[iCount].Route + " " + result[iCount].Dose_Timing;
+                    //Set colour for Pairs
                     if (MedicationName != checkMedicationName) {
 
                         MedicationName = checkMedicationName;
                         colorIndex = colorIndex + 1;
                     }
+
                     var start_date = ConvertDate(result[iCount].Start_Date.replace("T", " "));
                     if (start_date.indexOf("0001-01-01") > -1) {
                         start_date = "";
@@ -31,22 +34,14 @@
                         Stop_date = "";
                     }
                     var Created_date_time = ConvertDate(result[iCount].Created_Date_And_Time.replace("T", " "));
-                    
 
-                    if (result[iCount].Status == "ACTIVE") {
-                        TableContent = TableContent + "<tr style='color: " + ColorList[colorIndex] + ";'><td style='width:65px;'><input type='checkbox' onclick='EnableSave()' /></td><td style='width: 335px;'>"
-                            + MedicationName + "</td><td>" + result[iCount].Patient_Notes + "</td><td>"
-                            + result[iCount].Other_Notes + "</td><td>" + start_date + "</td><td>" + Stop_date
-                            + "</td><td>" + result[iCount].Created_By + "</td><td>" + Created_date_time + "</td><td>" + result[iCount].Status
-                            + "</td><td style='display:none' RcopiaMedicationId=" + result[iCount].Id + " >" + result[iCount].Id + "</td></tr>";
-                    }
-                    else {
-                        TableContent = TableContent + "<tr style='display:none; color: " + ColorList[colorIndex] + ";'><td style='width:65px;'><input type='checkbox'/></td><td style='width: 335px;'>"
-                            + MedicationName + "</td><td>" + result[iCount].Patient_Notes + "</td><td>"
-                            + result[iCount].Other_Notes + "</td><td>" + ConvertDate(result[iCount].Start_Date.replace("T", " ")) + "</td><td>" + ConvertDate(result[iCount].Stop_Date.replace("T", " "))
-                            + "</td><td>" + result[iCount].Created_By + "</td><td>" + ConvertDate(result[iCount].Created_Date_And_Time.replace("T", " ")) + "</td><td>" + result[iCount].Status
-                            + "</td><td style='display:none' RcopiaMedicationId=" + result[iCount].Id + " >" + result[iCount].Id + "</td></tr>";
-                    }
+
+                    TableContent = TableContent + "<tr style='color: " + ColorList[colorIndex] + ";'><td style='width:65px;'><input type='checkbox' onclick='EnableSave()' /></td><td style='width: 335px;'>"
+                        + MedicationName + "</td><td>" + result[iCount].Patient_Notes + "</td><td>"
+                        + result[iCount].Other_Notes + "</td><td>" + start_date + "</td><td>" + Stop_date
+                        + "</td><td>" + result[iCount].Created_By + "</td><td>" + Created_date_time + "</td><td>" + result[iCount].Status
+                        + "</td><td style='display:none' RcopiaMedicationId=" + result[iCount].Id + " >" + result[iCount].Id + "</td></tr>";
+
                 }
                 $("#RCopiaDuplicateMediationsTableBody").append(TableContent);
             }
@@ -94,7 +89,7 @@ function DeleteMedication() {
     }
     else {
         var SelectMedicationCount = $('#RCopiaDuplicateMediationsTable  td').find('input[type=checkbox]:checked').length;
-
+        var isInActive = false;
         if (DisplayErrorMessage('10113606', '', SelectMedicationCount.toString()) == true) {
             { sessionStorage.setItem('StartLoading', 'true'); StartLoadFromPatChart(); }
             var RcopiamedicationIds = [];
@@ -102,7 +97,16 @@ function DeleteMedication() {
                 if ($($(this)?.parent()?.parent())?.find("td[RcopiaMedicationId]")[0]?.innerText != undefined && $($(this)?.parent()?.parent())?.find("td[RcopiaMedicationId]")[0]?.innerText != null) {
                     RcopiamedicationIds.push(parseInt($($(this).parent().parent()).find("td[RcopiaMedicationId]")[0].innerText));
                 }
+                if ($($(this)?.parent()?.parent())?.find("td:nth-child(9)")[0]?.innerText != null && $($(this)?.parent()?.parent())?.find("td:nth-child(9)")[0]?.innerText != undefined) {
+                    if ($($(this).parent().parent()).find("td:nth-child(9)")[0].innerText.toUpperCase() == "INACTIVE") {
+                        isInActive = true;
+                    }
+                }
             });
+            if (isInActive) {
+                if (DisplayErrorMessage('10113611') == false) { return true; }
+
+            }
             var DeleteList = { MedicationIds: RcopiamedicationIds };
             StartGenericStrip("Data is being deleted in DrFirst. Please wait.");
             $.ajax({
@@ -165,20 +169,17 @@ function DeleteMedication() {
 
 }
 function ShowAllMedication() {
+    document.getElementById("txtSearcMedication").value = "";
     var bCheckShowall = document.getElementById("chkShowAll").checked;
-    $("#RCopiaDuplicateMediationsTableBody tr").find("td:nth-child(9)").each(function () {
+    if (bCheckShowall) {
+        showllchk = "ALL";
+    }
+    else {
+        showllchk = "ACTIVE";
+    }
+    var human_id = document.URL.slice(document.URL.indexOf("HumanID")).split("&")[0].split("=")[1];
 
-        if (bCheckShowall == true) {
-            $(this).parent()[0].style.display = "";
-        }
-        else if ($(this)[0].innerText == "INACTIVE") {
-            $(this).parent()[0].style.display = "none";
-        }
-        else if (bCheckShowall == false && $(this)[0].innerText == "ACTIVE") {
-            $(this).parent()[0].style.display = "";
-        }
-
-    });
+    LoadPartialDuplicatesMedicationGrid(human_id, showllchk)
 
 }
 
@@ -204,7 +205,9 @@ function VisibleAllRows() {
 
 function ClearAllSearch() {
     document.getElementById("txtSearcMedication").value = "";
-    VisibleAllRows();
+    $("#RCopiaDuplicateMediationsTableBody tr").each(function () {
+        $(this)[0].style.display = "";
+    });
 }
 
 function EnableSave() {
