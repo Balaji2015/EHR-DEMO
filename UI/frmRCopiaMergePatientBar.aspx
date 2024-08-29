@@ -23,7 +23,7 @@
     <form id="frmRCopiaMergePatientBar" runat="server" style="height:100%" >
         <label id="lblPatientStrip" runat="server" class="newStyle1 pnlBarGroup" style="width: 100%; height: 11px;margin-bottom: 0.7%;" ></label>
         <div>
-            <input type="button" id="btnMedication" onclick="OnTabClick();" class="btn btn-default btncolorMyQ" value="Medication" />
+            <input type="button" id="btnMedication" onclick="OnTabClick();" class="btn btn-default btncolorMyQ" value="Medications" />
             <input type="button" id="btnAllergies" onclick="OnTabClick();" class="btn btn-default" value="Allergies" />
         </div>
         <div style="background-color: #bfdbff; height: 25px; width: 100%; margin-top: 5px; border: 1px solid #909090;">

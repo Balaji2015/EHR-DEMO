@@ -121,7 +121,11 @@ function DeleteMedication() {
                     var result = $.parseJSON(data.d).status;
                     if (result == "Success") {
                         StopGenericStrip();
-                        top.window.document.getElementById("TabPatientMergeFrame").contentWindow.document.getElementById("btnMedication").click();
+                        //top.window.document.getElementById("TabPatientMergeFrame").contentWindow.document.getElementById("btnMedication").click();
+                        document.getElementById("txtSearcMedication").value = "";
+                        document.getElementById("chkShowAll").checked = false;
+                        var human_id = document.URL.slice(document.URL.indexOf("HumanID")).split("&")[0].split("=")[1];
+                        LoadPartialDuplicatesMedicationGrid(human_id, "ACTIVE");
                         StartGenericStrip("Deleted Successfully.");
                         
                     }

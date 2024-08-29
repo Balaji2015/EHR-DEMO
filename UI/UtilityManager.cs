@@ -2390,7 +2390,8 @@ namespace Acurus.Capella.UI
                             sColor = Color.Black.Name;
                         }
                     }
-                    if (strMedicationlist != string.Empty && !(strMedlst.Contains(strMedicationlist)))
+                    //if (strMedicationlist != string.Empty  && !(strMedlst.Contains(strMedicationlist)))
+                    if (strMedicationlist != string.Empty )
                     {
                         //Jira - Cap - 2351
                         bMedicationFilled = true;
@@ -5996,7 +5997,7 @@ namespace Acurus.Capella.UI
                 ds = null;
             }
         }
-
+       
         public Boolean LoadBlobHumanXML(ulong ulHumanID, ulong ulEncounterID, IList<Encounter_Blob> ilstEncounterBlob,string sTabMode, out string sXMLHumanDoc,string sIsPhone_Encounter="N")
         {
             Boolean bAlert = false;
