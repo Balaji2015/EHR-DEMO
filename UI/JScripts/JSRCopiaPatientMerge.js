@@ -477,4 +477,8 @@ function patientMergeClose() {
     else {
         $(top.window.document).find("#btnRCopiaPatientMergeClose").click();
     }
+    //CAP-2449
+    if (window.top.location.href.toLocaleLowerCase().indexOf('frmmyqueuenew.aspx') == -1) {
+        parent.location.reload();
+    }
 };
