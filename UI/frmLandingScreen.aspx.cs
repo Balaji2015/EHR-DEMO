@@ -4,7 +4,6 @@ using Acurus.Capella.DataAccess.ManagerObjects;
 using Acurus.Capella.UI.Extensions;
 using Acurus.Capella.UI.OktaResponseModel;
 using DocumentFormat.OpenXml.Spreadsheet;
-using MySql.Data.MySqlClient.Memcached;
 using Newtonsoft.Json;
 using RestSharp;
 using System;
