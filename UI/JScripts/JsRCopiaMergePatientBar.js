@@ -54,13 +54,19 @@ function GetColors() {
     return ColorList;
 }
 
-function ConvertDate(utcDate) {
+function ConvertDate(utcDate,WantTime) {
     var monthNames = ["Jan", "Feb", "Mar", "Apr", "May", "Jun",
         "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
-    var now = new Date(utcDate + ' UTC');
+    //var now = new Date(utcDate + ' UTC');
+    var now = new Date(utcDate);
     var then = '';
     if (utcDate == '0001-01-01 00:00:00')
-        then = utcDate;
+        if (WantTime == "WithTime") {
+            then = utcDate;
+        }
+        else {
+            then = "0001-01-01";
+        }
     else
         then = ('0' + now.getDate()).slice(-2) + '-' + monthNames[now.getMonth()] + '-' + now.getFullYear();
     var hours = now.getHours();
@@ -70,7 +76,10 @@ function ConvertDate(utcDate) {
     hours = hours ? hours : 12; // the hour '0' should be '12'
     minutes = minutes < 10 ? '0' + minutes : minutes;
     var strTime = ('0' + hours).slice(-2) + ':' + minutes + ' ' + ampm;
-    if (utcDate != '0001-01-01 00:00:00')
+    //Add time in date
+    if (WantTime == "WithTime") {
+        if (utcDate != '0001-01-01 00:00:00')
         then += ' ' + strTime;
+    }
     return then;
 }

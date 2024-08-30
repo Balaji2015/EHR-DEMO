@@ -25,15 +25,15 @@
                         colorIndex = colorIndex + 1;
                     }
 
-                    var start_date = ConvertDate(result[iCount].Start_Date.replace("T", " "));
+                    var start_date = ConvertDate(result[iCount].Start_Date.replace("T", " "),"WithOutTime");
                     if (start_date.indexOf("0001-01-01") > -1) {
                         start_date = "";
                     }
-                    var Stop_date = ConvertDate(result[iCount].Stop_Date.replace("T", " "));
+                    var Stop_date = ConvertDate(result[iCount].Stop_Date.replace("T", " "), "WithOutTime");
                     if (Stop_date.indexOf("0001-01-01") > -1) {
                         Stop_date = "";
                     }
-                    var Created_date_time = ConvertDate(result[iCount].Created_Date_And_Time.replace("T", " "));
+                    var Created_date_time = ConvertDate(result[iCount].Created_Date_And_Time.replace("T", " "), "WithTime");
 
 
                     TableContent = TableContent + "<tr style='color: " + ColorList[colorIndex] + ";'><td style='width:65px;'><input type='checkbox' onclick='EnableSave()' /></td><td style='width: 335px;'>"
@@ -104,7 +104,10 @@ function DeleteMedication() {
                 }
             });
             if (isInActive) {
-                if (DisplayErrorMessage('10113611') == false) { return true; }
+                if (DisplayErrorMessage('10113611') == false) {
+                    { sessionStorage.setItem('StartLoading', 'false'); StopLoadFromPatChart(); }
+                    return true;
+                }
 
             }
             var DeleteList = { MedicationIds: RcopiamedicationIds };
