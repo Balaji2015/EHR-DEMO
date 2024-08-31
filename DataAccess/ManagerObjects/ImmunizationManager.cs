@@ -31,6 +31,7 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
         void SaveImmunizationforSummary(IList<Immunization> lstimmunization);
         IList<Immunization> GetImmunizationUsingHumanIDEncID(ulong HumanId, ulong EncounterID);
         IList<Immunization> GetImmunizationUsingGroupID(ulong ulImmunGroupID, ulong HumanId);
+        IList<Immunization> GetImmunizationUsingGroupID(ulong ulImmunGroupID);
     }
     public partial class ImmunizationManager : ManagerBase<Immunization, ulong>, IImmunizationManager
     {
@@ -2240,6 +2241,18 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
             using (ISession iMySession = NHibernateSessionManager.Instance.CreateISession())
             {
                 ICriteria immunCrit = iMySession.CreateCriteria(typeof(Immunization)).Add(Expression.Eq("Immunization_Group_ID", ulImmunGroupID)).Add(Expression.Eq("Human_ID", HumanId));
+                objImmunization = immunCrit.List<Immunization>();
+                iMySession.Close();
+            }
+            return objImmunization;
+        }
+
+        public IList<Immunization> GetImmunizationUsingGroupID(ulong ulImmunGroupID)
+        {
+            IList<Immunization> objImmunization = new List<Immunization>();
+            using (ISession iMySession = NHibernateSessionManager.Instance.CreateISession())
+            {
+                ICriteria immunCrit = iMySession.CreateCriteria(typeof(Immunization)).Add(Expression.Eq("Immunization_Group_ID", ulImmunGroupID));
                 objImmunization = immunCrit.List<Immunization>();
                 iMySession.Close();
             }

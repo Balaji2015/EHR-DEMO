@@ -301,6 +301,8 @@
 		<mapping resource="Acurus.Capella.Core.HbmMaps.Human_Blob.hbm.xml" assembly="Acurus.Capella.Core" />
 		<mapping resource="Acurus.Capella.Core.HbmMaps.Encounter_Blob.hbm.xml" assembly="Acurus.Capella.Core" />
 		<mapping resource="Acurus.Capella.Core.HbmMaps.MapXMLBlob.hbm.xml" assembly="Acurus.Capella.Core" />
+		<mapping resource="Acurus.Capella.Core.HbmMaps.ProcedureModifierLookup.hbm.xml" assembly="Acurus.Capella.Core" />
+		<mapping resource="Acurus.Capella.Core.HbmMaps.RCopiaDeduplicateLog.hbm.xml" assembly="Acurus.Capella.Core" />
 	</session-factory>
   </hibernate-configuration>
 
