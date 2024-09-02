@@ -4192,7 +4192,7 @@ namespace Acurus.Capella.UI
             }
             else
             {
-                if (btnMoveToMa.Visible)
+                if (btnMoveToMa.Visible && imgCopyPrevious.Visible)
                 {
                     var userAkidoNote = from u in ClientSession.UserPermissionDTO.Userscntab where u.scn_id == 101140 && u.user_name == ClientSession.UserName select u;
                     //CAP-2170 - Disable Akido Note button where the primary physician of encounter is not supervising provider
