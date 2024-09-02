@@ -1103,6 +1103,11 @@ function OpenModal(data) {
             $(top.window.document).find("#TabPatientMerge").on('hide.bs.modal', function (e) {
 
                 $(top.window.document).find("#TabPatientMerge").modal({ backdrop: "", keyboard: false }, 'hide');
+                //Jira CAP-2449
+                if (top?.document?.location?.href != undefined && top?.document?.URL != undefined) {
+                    top.document.location.href = top.document.URL.replaceAll(top.document.URL.slice(top.document.URL.indexOf("&ScreenName=ReviewOfErx")), "");
+                }
+
             });
         }
     }
