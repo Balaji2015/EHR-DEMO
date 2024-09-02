@@ -1,0 +1,19 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<hibernate-mapping xmlns="urn:nhibernate-mapping-2.2" namespace="Acurus.Capella.Core.DomainObjects" assembly="Acurus.Capella">
+	<class name="Acurus.Capella.Core.DomainObjects.Blob_Progress_Note, Acurus.Capella.Core" table="Blob_Progress_Note" lazy="true">
+		<id name="Id" column="Encounter_ID">
+			<generator class="assigned" />
+		</id>
+		<version name="Version"/>
+
+		<property name="Human_ID" column="Human_ID" />
+		<property name="Progress_Note_Json" column="Progress_Note_Json" />
+		<property name="Status" column="Status" />
+		<property name="Error_Description" column="Error_Description" />
+		<property name="Created_By" column="Created_By" />
+		<property name="Created_Date_And_Time" column="Created_Date_And_Time" />
+		<property name="Modified_By" column="Modified_By" />
+		<property name="Modified_Date_And_Time" column="Modified_Date_And_Time" />
+
+	</class>
+</hibernate-mapping>

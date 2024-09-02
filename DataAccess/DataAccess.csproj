@@ -140,6 +140,7 @@
     <Compile Include="ManagerObjects\AuthorizationICDManager.cs" />
     <Compile Include="ManagerObjects\AuthorizationManager.cs" />
     <Compile Include="ManagerObjects\AuthorizationProcedureManager.cs" />
+    <Compile Include="ManagerObjects\BlobProgressNoteManager.cs" />
     <Compile Include="ManagerObjects\BlockdaysManager.cs" />
     <Compile Include="ManagerObjects\CarePlanLookupManager.cs" />
     <Compile Include="ManagerObjects\CarePlanManager.cs">

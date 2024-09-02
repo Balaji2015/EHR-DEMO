@@ -125,6 +125,7 @@
     <Compile Include="DomainObjects\Batch.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="DomainObjects\Blob_Progress_Note.cs" />
     <Compile Include="DomainObjects\Blockdays.cs" />
     <Compile Include="DomainObjects\BodyImageAnnotations.cs" />
     <Compile Include="DomainObjects\CallLog.cs" />
@@ -736,6 +737,7 @@
     <EmbeddedResource Include="HbmMaps\CQMSummary.hbm.xml" />
     <EmbeddedResource Include="HbmMaps\ApplicationAccessLog.hbm.xml" />
     <EmbeddedResource Include="HbmMaps\Encounter_Blob.hbm.xml" />
+    <EmbeddedResource Include="HbmMaps\Blob_Progress_Note.hbm.xml" />
     <Content Include="HbmMaps\ErrorLog.hbm.xml" />
     <EmbeddedResource Include="HbmMaps\ModifierLibrary.hbm.xml" />
     <EmbeddedResource Include="HbmMaps\Human_Token.hbm.xml" />

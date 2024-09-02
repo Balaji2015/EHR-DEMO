@@ -1945,6 +1945,10 @@
       <DependentUpon>PotentialDiagnosisService.asmx</DependentUpon>
       <SubType>Component</SubType>
     </Compile>
+    <Compile Include="WebServices\ProgressNotesService.asmx.cs">
+      <DependentUpon>ProgressNotesService.asmx</DependentUpon>
+      <SubType>Component</SubType>
+    </Compile>
     <Compile Include="WebServices\QuestionnaireService.asmx.cs">
       <DependentUpon>QuestionnaireService.asmx</DependentUpon>
       <SubType>Component</SubType>
@@ -2642,6 +2646,7 @@
     <Content Include="WebServices\PhysicianLibraryServices.asmx" />
     <Content Include="WebServices\PlanService.asmx" />
     <Content Include="WebServices\PotentialDiagnosisService.asmx" />
+    <Content Include="WebServices\ProgressNotesService.asmx" />
     <Content Include="WebServices\QuestionnaireService.asmx" />
     <Content Include="WebServices\ReportService.asmx" />
     <Content Include="WebServices\TestService.asmx" />
