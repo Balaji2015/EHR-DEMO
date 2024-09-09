@@ -468,6 +468,34 @@ namespace Acurus.Capella.UI
                         }
                     }
                 }
+                //CAP-2457
+                else if (Request["ScreenName"] != null && Request["ScreenName"].ToString() == "Refill")
+                {
+                    this.Page.ClientScript.RegisterStartupScript(this.Page.GetType(), string.Empty, " window.setTimeout(function () {OpenERX('MESSAGE');}, 2000);", true);
+                    if (Request.QueryString["IsDirectURL"] != null)
+                    {
+                        string IsDirectURL = Request.QueryString["IsDirectURL"];
+                        if (IsDirectURL.Equals("y", StringComparison.InvariantCultureIgnoreCase))
+                        {
+                            hdnIsDirectLink.Value = "true";
+                        }
+                    }
+
+                }
+                //CAP-2457
+                else if (Request["ScreenName"] != null && Request["ScreenName"].ToString() == "RXPending")
+                {
+                    this.Page.ClientScript.RegisterStartupScript(this.Page.GetType(), string.Empty, " window.setTimeout(function () {OpenERX('REPORT');}, 2000);", true);
+                    if (Request.QueryString["IsDirectURL"] != null)
+                    {
+                        string IsDirectURL = Request.QueryString["IsDirectURL"];
+                        if (IsDirectURL.Equals("y", StringComparison.InvariantCultureIgnoreCase))
+                        {
+                            hdnIsDirectLink.Value = "true";
+                        }
+                    }
+
+                }
                 //if (hdnProjectName.Value == string.Empty && System.Configuration.ConfigurationManager.AppSettings["ProjectName"] != null)
                 //hdnProjectName.Value = System.Configuration.ConfigurationManager.AppSettings["ProjectName"].ToString();
                 if (ClientSession.LegalOrg != null)
