@@ -16,35 +16,36 @@ namespace Acurus.Capella.UI
         public static bool bFirstTime = false;
         protected void Page_Load(object sender, EventArgs e)
         {
-            if (Request.Cookies["MicrosoftAccessTokenId"] != null && !string.IsNullOrEmpty(Request.Cookies["MicrosoftAccessTokenId"].Value))
-            {
-                //CAP-2337
-                var postLogoutRedirectUri = string.Empty;
-                if ((Request?.Headers["X-Forwarded-Host"] ?? "") == ConfigurationSettings.AppSettings["AkidoChartDomain"])
-                {
-                    string subdomain = Request.Url.Authority.Contains("test6") ? "" : "";
+            //CAP-2475
+            //if (Request.Cookies["MicrosoftAccessTokenId"] != null && !string.IsNullOrEmpty(Request.Cookies["MicrosoftAccessTokenId"].Value))
+            //{
+            //    //CAP-2337
+            //    var postLogoutRedirectUri = string.Empty;
+            //    if ((Request?.Headers["X-Forwarded-Host"] ?? "") == ConfigurationSettings.AppSettings["AkidoChartDomain"])
+            //    {
+            //        string subdomain = Request.Url.Authority.Contains("test6") ? "" : "";
 
-                    if (string.IsNullOrWhiteSpace(subdomain))
-                    {
-                        postLogoutRedirectUri = $"https://{ConfigurationSettings.AppSettings["AkidoChartDomain"]}/frmSessionExpiredMultiLogin.aspx";
+            //        if (string.IsNullOrWhiteSpace(subdomain))
+            //        {
+            //            postLogoutRedirectUri = $"https://{ConfigurationSettings.AppSettings["AkidoChartDomain"]}/frmSessionExpiredMultiLogin.aspx";
 
-                    }
-                    else
-                    {
-                        postLogoutRedirectUri = $"https://{ConfigurationSettings.AppSettings["AkidoChartDomain"]}/{subdomain}/frmSessionExpiredMultiLogin.aspx";
+            //        }
+            //        else
+            //        {
+            //            postLogoutRedirectUri = $"https://{ConfigurationSettings.AppSettings["AkidoChartDomain"]}/{subdomain}/frmSessionExpiredMultiLogin.aspx";
 
-                    }
-                }
-                else
-                {
-                    postLogoutRedirectUri = ConfigurationSettings.AppSettings["okta:PostLogoutSessionMultiLoginRedirectUri"];
-                }
-                Response.Redirect($"{ConfigurationManager.AppSettings["okta:LogoutURL"]}?id_token_hint={Request.Cookies["MicrosoftAccessTokenId"].Value}&post_logout_redirect_uri={postLogoutRedirectUri}", false);
-                HttpCookie cookie = Request.Cookies["MicrosoftAccessTokenId"];
-                cookie.Expires = DateTime.Now.AddMinutes(-5);
-                Response.Cookies.Add(cookie);
-                return;
-            }
+            //        }
+            //    }
+            //    else
+            //    {
+            //        postLogoutRedirectUri = ConfigurationSettings.AppSettings["okta:PostLogoutSessionMultiLoginRedirectUri"];
+            //    }
+            //    Response.Redirect($"{ConfigurationManager.AppSettings["okta:LogoutURL"]}?id_token_hint={Request.Cookies["MicrosoftAccessTokenId"].Value}&post_logout_redirect_uri={postLogoutRedirectUri}", false);
+            //    HttpCookie cookie = Request.Cookies["MicrosoftAccessTokenId"];
+            //    cookie.Expires = DateTime.Now.AddMinutes(-5);
+            //    Response.Cookies.Add(cookie);
+            //    return;
+            //}
 
             if (Request.Cookies["RedirectUri"] != null && !string.IsNullOrEmpty(Request.Cookies["RedirectUri"].Value))
             {
