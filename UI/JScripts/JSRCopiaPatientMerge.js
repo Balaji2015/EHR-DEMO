@@ -479,6 +479,7 @@ function patientMergeClose() {
     }
     //CAP-2449
     if (window.top.location.href.toLocaleLowerCase().indexOf('frmmyqueuenew.aspx') == -1) {
-        parent.location.reload();
+        //parent.location.reload();
+        window.top.location.reload();
     }
 };
