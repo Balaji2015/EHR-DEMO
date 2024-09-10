@@ -2290,6 +2290,8 @@ namespace Acurus.Capella.UI
             {
                 //Jira - Cap - 2351
                 bool bMedicationFilled = false;
+                //CAP-2420
+                MedicationList = MedicationList.OrderBy(a => a.Brand_Name).ThenBy(a => a.Generic_Name).ToList();
                 for (int i = 0; i < MedicationList.Count; i++)
                 {
                     string sColor = Color.Black.Name;
