@@ -173,14 +173,26 @@ namespace Acurus.Capella.UI
             //CAP-1715
             else
                 if (fieldName == "CHECK OUT NOTES" || (fieldName == "VITALS NOTES" && ClientSession.PhysicianId == 0 && ClientSession.UserRole == "Medical Assistant") || fieldName == "FOLLOW_UP_REASON_NOTES" || fieldName == "PROVIDER NOTES")// || fieldName == "HPI_NOTES")Commented The condition for Bug Id: 30293
+            {
+                userLookup = objUserLookupManager.GetFieldLookupList(ClientSession.UserName, fieldName.ToUpper());
+            }
+            else
+            {
+                //if(ClientSession.PhysicianId!=0 && ClientSession.UserRole!="Medical Assistant")
+                //CAP-2429
+                //userLookup = objUserLookupManager.GetFieldLookupList(ClientSession.PhysicianId, fieldName.ToUpper());
+                if(fieldName.ToUpper() == "MESSAGE NOTES")
                 {
-                    userLookup = objUserLookupManager.GetFieldLookupList(ClientSession.UserName, fieldName.ToUpper());
+                    if (ClientSession.PhysicianId != 0)
+                    { userLookup = objUserLookupManager.GetFieldLookupList(ClientSession.PhysicianId, fieldName.ToUpper()); }
+                    else
+                    { userLookup = objUserLookupManager.GetFieldLookupList(ClientSession.UserName, fieldName.ToUpper(), ""); }
                 }
                 else
                 {
-                    //if(ClientSession.PhysicianId!=0 && ClientSession.UserRole!="Medical Assistant")
                     userLookup = objUserLookupManager.GetFieldLookupList(ClientSession.PhysicianId, fieldName.ToUpper());
                 }
+            }
 
             //else
             //    userLookup = objUserLookupManager.GetFieldLookupList(ClientSession.UserName, fieldName.ToUpper());
