@@ -27,7 +27,7 @@ channel.addEventListener('message', (msg) => {
     //    window.location.replace("frmRestrictMultipleTabs.aspx");
     //}
     if (msg.data === 'already-open') {
-        if (window.top.location.href.indexOf('IsLoginRequired') > 0) {
+        if (window.top.location.href.indexOf('IsLoginRequired') > 0 || window.top.location.href.indexOf('frmLogin') == -1) {
             setTimeout(function () {
                 var yesOrNo = DisplayErrorMessage('010027');
                 if (yesOrNo == false) {
