@@ -855,6 +855,7 @@
             <asp:HiddenField ID="hdnLeftPaneCurrentProcess" runat="server" EnableViewState="false" />
             <asp:HiddenField ID="hdnLeftPaneObjType" runat="server" EnableViewState="false" />
             <asp:HiddenField ID="hdnSubDocumentType" runat="server" EnableViewState="false" />
+            <asp:HiddenField ID="hdnAkidoOrderSubmitID" runat="server" EnableViewState="false" />
 
              <asp:HiddenField ID="hdnNewProviderNotes" runat="server" EnableViewState="false" />
             <asp:HiddenField ID="hdnNewProviderNotesHistory" runat="server" EnableViewState="false" />

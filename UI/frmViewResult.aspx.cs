@@ -116,7 +116,7 @@ namespace Acurus.Capella.UI
             {
                 human_id = Convert.ToUInt64(Request["HumanID"].ToString());
             }
-           
+
 
             if (!IsPostBack)
             {
@@ -150,7 +150,7 @@ namespace Acurus.Capella.UI
                 }
                 if (Request["OrderSubmitId"] != null && Request["OrderSubmitId"] != "")
                     uOrderID = Convert.ToUInt64(Request["OrderSubmitId"].ToString());
-
+                
 
                 DLC.DName = "pbDropDown";
                 //DLC.txtDLC.Attributes.Add("onkeypress", "txtProviderNotes_OnKeyPress(event);");
@@ -721,7 +721,7 @@ namespace Acurus.Capella.UI
             else
                 btnEfax.Enabled = false;
 
-            FillAkidoInterpretationNoteButton();
+            FillAkidoInterpretationNoteButton(uOrderID.ToString());
         }
         private string ConstructTreeView(ulong humanId, string Doc_type, ulong KeyID)
         {
@@ -1313,6 +1313,8 @@ namespace Acurus.Capella.UI
 
         public void TabLoad(string KeyValue, string TargetValue, string OrderSubID, string IDName)//added OrderSubmitID in list for BugID:45708
         {
+            //CAP-2478, CAP-2485
+            string NewOrderSubmitID = OrderSubID;
             //Session["Order_Id"] = 0;
             Session["Notes"] = null;//BugID:46316- by default its given a value null.
             ulong order_id = 0;
@@ -1626,6 +1628,8 @@ namespace Acurus.Capella.UI
                     objresultmaster = masterProxy.GetReviewCommentsForViewIndexedImages(Convert.ToUInt64(Session["human_id"]), (IDName + OrderSubID));
                     if (objresultmaster != null && objresultmaster.Id != 0)
                     {
+                        //CAP-2478, CAP-2485
+                        NewOrderSubmitID = IDName == "ResultMasterID" ? objresultmaster.Order_ID.ToString() : NewOrderSubmitID;
                         //BugID:46221 -- Prov Notes History and Med Notes History
                         txtMedicalAssistantNotes.Text = string.Empty;
                         DLC.txtDLC.Text = string.Empty;
@@ -2272,7 +2276,7 @@ namespace Acurus.Capella.UI
                 }
             }
             
-            FillAkidoInterpretationNoteButton();
+            FillAkidoInterpretationNoteButton(NewOrderSubmitID);
         }
 
         protected void tvViewIndex_NodeClick1(object sender, RadTreeNodeEventArgs e)
@@ -4177,13 +4181,15 @@ namespace Acurus.Capella.UI
 
         }
 
-        private void FillAkidoInterpretationNoteButton()
-        {
+        private void FillAkidoInterpretationNoteButton(string OrderSubID)
+        {   
+            //CAP-2478, CAP-2485
+            hdnAkidoOrderSubmitID.Value = OrderSubID;
             //CAP-1987
             string sIsAkidoInterpretationNote = "false";
             string sExMessage = "";
             string sStatus = "";
-            sIsAkidoInterpretationNote = UtilityManager.IsAkidoInterpretationNote(uOrderID.ToString(), out sExMessage, out sStatus);
+            sIsAkidoInterpretationNote = UtilityManager.IsAkidoInterpretationNote(OrderSubID, out sExMessage, out sStatus);
             if (Request.QueryString["Menu"] == null && ConfigurationSettings.AppSettings["IsAkidoInterpretationNote"] == "Y" && sIsAkidoInterpretationNote == "true")
             {
                 btnAkidoInterpretationNote.InnerHtml = "Signed Interpretation Report <i class=\"bi bi-box-arrow-up-right\" aria-hidden=\"true\" style=\"margin-left: 3px;\"></i>";
@@ -4198,6 +4204,7 @@ namespace Acurus.Capella.UI
                     //CAP-2170 - Disable Akido Note button where the primary physician of encounter is not supervising provider
                     if (userAkidoNote.ToList().Count > 0)
                     {
+                        btnAkidoInterpretationNote.InnerHtml = "Akido Interpretation Report <i class=\"bi bi-box-arrow-up-right\" aria-hidden=\"true\" style=\"margin-left: 3px;\"></i>";
                         btnAkidoInterpretationNote.Visible = true;
                         hdnAkidoInterpretationNote.Value = ConfigurationSettings.AppSettings["AkidoInterpretationNoteURL"];
                     }

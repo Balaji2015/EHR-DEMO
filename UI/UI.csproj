@@ -401,6 +401,7 @@
     <Content Include="frmRCopiaDuplicateMediations.aspx" />
     <Content Include="frmRCopiaMergePatientBar.aspx" />
     <Content Include="frmRCopiaPatientMerge.aspx" />
+    <Content Include="frmRCopiaStatusBar.aspx" />
     <Content Include="frmResetPassword.aspx" />
     <Content Include="frmRestrictedAccess.aspx" />
     <Content Include="frmRestrictMultipleTabs.aspx" />
@@ -1572,6 +1573,13 @@
     <Compile Include="frmRCopiaPatientMerge.aspx.designer.cs">
       <DependentUpon>frmRCopiaPatientMerge.aspx</DependentUpon>
     </Compile>
+    <Compile Include="frmRCopiaStatusBar.aspx.cs">
+      <DependentUpon>frmRCopiaStatusBar.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="frmRCopiaStatusBar.aspx.designer.cs">
+      <DependentUpon>frmRCopiaStatusBar.aspx</DependentUpon>
+    </Compile>
     <Compile Include="frmRCopiaToolbar.aspx.cs">
       <DependentUpon>frmRCopiaToolbar.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -2694,7 +2702,7 @@
           <AutoAssignPort>True</AutoAssignPort>
           <DevelopmentServerPort>55737</DevelopmentServerPort>
           <DevelopmentServerVPath>/</DevelopmentServerVPath>
-          <IISUrl>https://localhost:44352/</IISUrl>
+          <IISUrl>https://localhost:44351/</IISUrl>
           <NTLMAuthentication>False</NTLMAuthentication>
           <UseCustomServer>False</UseCustomServer>
           <CustomServerUrl>

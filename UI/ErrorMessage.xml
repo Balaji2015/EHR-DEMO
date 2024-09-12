@@ -3040,6 +3040,6 @@
 	<Message number="10113609" Type="OKCANCEL" Text="There are {0} Allergy(s) selected for delete. Do you want to remove duplicates?"></Message>
 	<Message number="10113610" Type="ToolStrip" Text="Deleted successfully."></Message>
 	<Message number="10113611" Type="OKCANCEL" Text="Do you want to delete Inactive medication?"></Message>
-	
-	
+
+	<Message number="010027" Type="OKCANCEL" Text="You have another Capella window open. Loading this page may result in loss of any unsaved data in the previous window.  Please save before proceeding.  Press Cancel or OK to proceed."></Message>
 </ErrorMessage>

@@ -1159,7 +1159,7 @@ function AkidoInterpretationNoteClick() {
         if (cookies[l].indexOf("CLegalOrg") > -1)
             CLegalOrg = cookies[l].split("=")[1].toLowerCase();
     }
-    var AkidoNoteURL = document.getElementById('hdnAkidoInterpretationNote').value.replace("[CapellaResourceID]", document.getElementById('hdnLeftPaneOrderSubmitID').value).replace("[ClientName]", CLegalOrg).replace("[CapellaResourceType]", 'capella_order_submit_id');
+    var AkidoNoteURL = document.getElementById('hdnAkidoInterpretationNote').value.replace("[CapellaResourceID]", document.getElementById('hdnAkidoOrderSubmitID').value).replace("[ClientName]", CLegalOrg).replace("[CapellaResourceType]", 'capella_order_submit_id');
     $('#resultLoading').css("display", "none");
     event.preventDefault();
     sessionStorage.setItem('StartLoading', 'false'); StopLoadFromPatChart();

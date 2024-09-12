@@ -569,11 +569,13 @@ namespace Acurus.Capella.UI
                 if (DirectURLUtility.IsValidRedirectUrlForLogin(currentURL))
                 {
                     var loginpage = (ConfigurationSettings.AppSettings["IsSSOLogin"] == "Y" ? "frmLoginNew.aspx" : "frmLogin.aspx");
-                    var SessionCurrentUrl = Session["currenturl"]?.ToString();
-                    if (!string.IsNullOrEmpty(SessionCurrentUrl))
+                    //CAP-2469
+                    //var SessionCurrentUrl = Session["currenturl"]?.ToString();
+                    if (!string.IsNullOrEmpty(currentURL))
                     {
                         //CAP-1752
-                        var returnURL = $"~/{loginpage}?redirecturl={HttpUtility.UrlEncode(SessionCurrentUrl)}";
+                        //CAP-2469
+                        var returnURL = $"~/{loginpage}?redirecturl={HttpUtility.UrlEncode(currentURL)}";
                         Session["currenturl"] = null;
                         Response.Redirect(returnURL);
                     }

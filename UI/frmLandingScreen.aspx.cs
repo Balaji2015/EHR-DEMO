@@ -476,7 +476,8 @@ namespace Acurus.Capella.UI
                         //}
                         //CAP-1167
                         //CAP-1922
-                        var serverRedirectUrl = directURLUtility.GetServerRedirectURLByDirectURL(Request.Cookies["RedirectUri"]?.Value, login[0].Default_Server);
+                        //CAP-2469
+                        var serverRedirectUrl = directURLUtility.GetServerRedirectURLByDirectURL(responseRedirectUrl??string.Empty, login[0].Default_Server);
                         ExpireRedirectUrlCookie();
                         //For Bug ID :74036 
                         ScriptManager.RegisterStartupScript(this, this.Page.GetType(), "Login", "sessionStorage.setItem('StartLoading', 'true');StartLoadFromPatChart();", true);
@@ -601,7 +602,8 @@ namespace Acurus.Capella.UI
                             ClientSession.bFollows_DST = false;
                         //CAP-1167
                         //CAP-1922
-                        var returnURL = Request.Cookies["RedirectUri"]?.Value;
+                        //CAP-2469
+                        var returnURL = responseRedirectUrl;
                         ExpireRedirectUrlCookie();
                         if (!string.IsNullOrEmpty(returnURL))
                         {
@@ -616,7 +618,8 @@ namespace Acurus.Capella.UI
                     {
                         //CAP-1167
                         //CAP-1922
-                        var returnURL = Request.Cookies["RedirectUri"]?.Value;
+                        //CAP-2469
+                        var returnURL = responseRedirectUrl;
                         ExpireRedirectUrlCookie();
                         if (!string.IsNullOrEmpty(returnURL))
                         {
