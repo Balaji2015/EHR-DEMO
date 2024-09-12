@@ -4,6 +4,7 @@ using NHibernate;
 using NHibernate.Criterion;
 using System.Collections;
 using System;
+using System.Linq;
 
 namespace Acurus.Capella.DataAccess.ManagerObjects
 {
@@ -107,13 +108,14 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
         public IList<StaticLookup> getStaticLookupByFieldName(string[] Field_Name, string sOrder)
         {
            // ISession iMySession = NHibernateSessionManager.Instance.CreateISession();
-               IList<StaticLookup> staticList = new List<StaticLookup>();
-               using (ISession iMySession = NHibernateSessionManager.Instance.CreateISession())
-               {
-                   ICriteria criteria = iMySession.CreateCriteria(typeof(StaticLookup)).Add(Expression.In("Field_Name", Field_Name)).AddOrder(Order.Asc(sOrder));
-                   staticList = criteria.List<StaticLookup>();
-                   iMySession.Close();
-               }
+            IList<StaticLookup> staticList = new List<StaticLookup>();
+            using (ISession iMySession = NHibernateSessionManager.Instance.CreateISession())
+            {
+             //CAP-2498
+                ICriteria criteria = iMySession.CreateCriteria(typeof(StaticLookup)).Add(Expression.In("Field_Name", Field_Name.Where(x=>x != null).ToArray())).AddOrder(Order.Asc(sOrder));
+                staticList = criteria.List<StaticLookup>();
+                iMySession.Close();
+            }
             return staticList;
         }
 
