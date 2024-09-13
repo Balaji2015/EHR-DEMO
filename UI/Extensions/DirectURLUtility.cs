@@ -60,7 +60,8 @@ namespace Acurus.Capella.UI.Extensions
             var screenUrlPattern = @"^https?://[^/]+/frmPatientChart\.aspx\?EncounterID=\d+&Screen=[a-zA-Z0-9]+$";
             var screenNameUrlPattern = @"https?://[^/]+/frmPatientChart\.aspx\?HumanID=\d+&ScreenName=[A-Za-z0-9_]+&IsDirectUrl=Y+$";
             var schedulerORMyQUrlPattern = @"^https:\/\/(?:[^\/]+)\/(frmMyQueueNew\.aspx|frmAppointments\.aspx)?(ScreenName=(Refill|RXPending))?(&IsDirectUrl=Y)?(\?.*)?$"; // CAP-2053,CAP-2457
-            if (Regex.IsMatch(currentURL, humanUrlPattern) || Regex.IsMatch(currentURL, encounterUrlPattern) || Regex.IsMatch(currentURL, screenUrlPattern) || Regex.IsMatch(currentURL, screenNameUrlPattern) || Regex.IsMatch(currentURL, schedulerORMyQUrlPattern))
+            var rcopiaUrl = @"^https:\/\/(?:[^\/]+)\/(frmRCopiaStatusBar\.aspx)?(\?.*)?$"; // CAP-2053,CAP-2457
+            if (Regex.IsMatch(currentURL, humanUrlPattern) || Regex.IsMatch(currentURL, encounterUrlPattern) || Regex.IsMatch(currentURL, screenUrlPattern) || Regex.IsMatch(currentURL, screenNameUrlPattern) || Regex.IsMatch(currentURL, schedulerORMyQUrlPattern) || Regex.IsMatch(currentURL, rcopiaUrl))
             {
                 return true;
             }

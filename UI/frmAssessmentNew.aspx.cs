@@ -172,6 +172,8 @@ namespace Acurus.Capella.UI
             {
                 assessmentLoadList = objAssessmentManager.LoadAssessment(ClientSession.EncounterId, ClientSession.HumanId, "N", ClientSession.UserName, "load");
 
+                //CAP-2128
+                assessmentLoadList.Problem_List = new List<ProblemList>();
                 if (assessmentLoadList.Assessment != null && assessmentLoadList.Assessment.Count() > 0)
                 {
                     //string FileName = "Encounter" + "_" + ClientSession.EncounterId + ".xml";
@@ -919,7 +921,7 @@ namespace Acurus.Capella.UI
                     ListAssessment = ListAssessment.Concat(ListVitalsProblemList).ToList();
                 }
                 strICDDesc = (from val in strICDDesc where !lstParent_ICD.Any(a => a.Trim() == val.Split('-')[0].Trim()) select val).ToList<string>();//to prevent a previously added and moved(to assessment grid) parentICD from being added to incomplete problem list(ROS,VITALS,RCopia_MEd ICDs)
-                var IncompleteProblemList = new List<string>();//strICDDesc.Select(a => new { ICDCODE = a.Split('-')[0], ICDDescription = a.Split('-')[1] });
+                var IncompleteProblemList = strICDDesc.Select(a => new { ICDCODE = a.Split('-')[0], ICDDescription = a.Split('-')[1] });
                 string json = new JavaScriptSerializer().Serialize(ListAssessment);
                 string jsonIncompleteProblemList = new JavaScriptSerializer().Serialize(IncompleteProblemList);
                 string sICD10Mapping = new JavaScriptSerializer().Serialize(ICD10MutipleMapping);

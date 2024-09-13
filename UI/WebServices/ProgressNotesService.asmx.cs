@@ -12,6 +12,12 @@ using System.Xml;
 using Org.BouncyCastle.Asn1.Ocsp;
 using System.Net;
 using System.Web.Services.Protocols;
+using MySql.Data.MySqlClient;
+using System.Configuration;
+using System.Data;
+using System.Threading.Tasks;
+using System.Text.RegularExpressions;
+using System.Reflection;
 
 namespace Acurus.Capella.UI.WebServices
 {
@@ -319,9 +325,9 @@ namespace Acurus.Capella.UI.WebServices
                                 XmlNode AdditionalParentElelemnt = doc.CreateElement("tr");
                                 XmlNode AdditionalElement = null;
                                 IList<string> AdditionalValues = new List<string>();
-                                AdditionalValues.Add("EncounterID : " + sEncounterIDForPatientDetails);
-                                AdditionalValues.Add("PhysicianID : " + sPhysicianID);
-                                AdditionalValues.Add("Physician EMail Address : " + sUserEmailAddr);
+                                AdditionalValues.Add("EncounterID :" + sEncounterIDForPatientDetails);
+                                AdditionalValues.Add("PhysicianID :" + sPhysicianID);
+                                AdditionalValues.Add("Physician EMail Address :" + sUserEmailAddr);
                                 for (int iCount = 0; iCount < AdditionalValues.Count; iCount++)
                                 {
                                     AdditionalElement = doc.CreateElement("td");
@@ -506,13 +512,20 @@ namespace Acurus.Capella.UI.WebServices
                             {
                                 if (sectopns[i].IndexOf("AddendumReviewProviderID") > -1)
                                 {
-                                    string sNotesName = sectopns[i].Split(new string[] { "AM:", "PM:" }, System.StringSplitOptions.RemoveEmptyEntries)[1];
-                                    string sCreatedAt = sectopns[i].Split(new string[] { "on" }, System.StringSplitOptions.RemoveEmptyEntries)[1].Replace(":" + sNotesName, "");
-                                    string sProviderUserID = sectopns[i].Substring(sectopns[i].IndexOf("<AddendumProviderID>"), sectopns[i].IndexOf("</AddendumProviderID>") + "</AddendumProviderID>".Length);
-                                    string UserID = string.Empty;
+                                    string[] sTempNotesName = sectopns[i].Split(new string[] { "AM:", "PM:" }, System.StringSplitOptions.RemoveEmptyEntries);
+                                    string sNotesName = sTempNotesName.Length > 1 ? sTempNotesName[1] : "";
+                                    string[] sTempCreatedAt = sectopns[i].Split(new string[] { "on" }, System.StringSplitOptions.RemoveEmptyEntries);
+                                    string sCreatedAt = sTempCreatedAt.Length > 1 ? sTempCreatedAt[1].Replace(":" + sNotesName, "") : "";
+
+                                    string sProviderUserID = string.Empty;
+                                    if (sectopns[i].IndexOf("<AddendumProviderID>") > -1)
+                                    {
+                                        sProviderUserID = sectopns[i].Substring(sectopns[i].IndexOf("<AddendumProviderID>"), sectopns[i].IndexOf("</AddendumProviderID>") + "</AddendumProviderID>".Length);
                                     sectopns[i] = sectopns[i].Replace(sProviderUserID, "");
                                     sProviderUserID = sProviderUserID.Replace("<AddendumProviderID>", "").Replace("</AddendumProviderID>", "");
                                     ilstUser = usermngr.getUserByPHYID(Convert.ToUInt64(sProviderUserID));
+                                    }
+                                    string UserID = string.Empty;
                                     UserID = ilstUser[0].EMail_Address;
                                     string sReviewProviderUserID = string.Empty;
                                     string sPAandPhysicianName = string.Empty;
@@ -523,13 +536,23 @@ namespace Acurus.Capella.UI.WebServices
                                     {
                                         sReviewProviderUserID = sectopns[i].Substring(sectopns[i].IndexOf("<AddendumReviewProviderID>"), sectopns[i].IndexOf("</AddendumReviewProviderID>") + "</AddendumReviewProviderID>".Length);
                                         sectopns[i] = sectopns[i].Replace(sReviewProviderUserID, "");
-                                        sReviewProviderUserID = sReviewProviderUserID.Replace("<AddendumReviewProviderID>", "").Replace("</AddendumReviewProviderID>", "");
+                                        //sReviewProviderUserID = sReviewProviderUserID.Replace("<AddendumReviewProviderID>", "").Replace("</AddendumReviewProviderID>", "");
+                                        Match matchProviderID = Regex.Match(sReviewProviderUserID, @"<AddendumReviewProviderID>(\d+)</AddendumReviewProviderID>");
+                                        if (matchProviderID.Success)
+                                        {
+                                            sReviewProviderUserID = matchProviderID.Groups[1].Value;
                                         ilstUser = usermngr.getUserByPHYID(Convert.ToUInt64(sReviewProviderUserID));
+                                        }
                                         sReviewPhysicianEmailID = ilstUser[0].EMail_Address;
 
-                                        sPAandPhysicianName = sectopns[i].Split(new string[] { "on" }, System.StringSplitOptions.RemoveEmptyEntries)[0].Replace("Signed by", "");
-                                        sPAname = sPAandPhysicianName.Split(new string[] { "and reviewed by" }, System.StringSplitOptions.RemoveEmptyEntries)[0];
-                                        sPhysician = sPAandPhysicianName.Split(new string[] { "and reviewed by" }, System.StringSplitOptions.RemoveEmptyEntries)[1];
+                                        string[] sTempPAandPhysicianName = sectopns[i].Split(new string[] { "on" }, System.StringSplitOptions.RemoveEmptyEntries);
+                                        sPAandPhysicianName = sTempPAandPhysicianName.Length > 1 ? sTempPAandPhysicianName[1].Replace("Signed by", "") : "";
+                                        if (!string.IsNullOrEmpty(sPAandPhysicianName))
+                                        {
+                                            string[] sTempPAname = sPAandPhysicianName.Split(new string[] { "and reviewed by" }, System.StringSplitOptions.RemoveEmptyEntries);
+                                            sPAname = sTempPAname.Length > 0 ? sTempPAname[0] : "";
+                                            sPhysician = sTempPAname.Length > 1 ? sTempPAname[1] : "";
+                                        }
                                     }
 
                                     sFormationJson = sFormationJson + ((sFormationJson[sFormationJson.Length - 1] == '}') ? "," : "")
@@ -545,17 +568,27 @@ namespace Acurus.Capella.UI.WebServices
                                 else
                                 {
                                     string sProviderEmailID = string.Empty;
-                                    string sProviderUserID = sectopns[i].Substring(sectopns[i].IndexOf("<AddendumProviderID>"), sectopns[i].IndexOf("</AddendumProviderID>") + "</AddendumProviderID>".Length);
+                                    string sProviderUserID = string.Empty;
+                                    if(sectopns[i].IndexOf("<AddendumProviderID>") > -1)
+                                    {
+                                        sProviderUserID = sectopns[i].Substring(sectopns[i].IndexOf("<AddendumProviderID>"), sectopns[i].IndexOf("</AddendumProviderID>") + "</AddendumProviderID>".Length);
                                     sectopns[i] = sectopns[i].Replace(sProviderUserID, "");
                                     sProviderUserID = sProviderUserID.Replace("<AddendumProviderID>", "").Replace("</AddendumProviderID>", "");
                                     ilstUser = usermngr.getUserByPHYID(Convert.ToUInt64(sProviderUserID));
+                                    }
                                     sProviderEmailID = ilstUser[0].EMail_Address;
 
-                                    string sNotesName = sectopns[i].Split(new string[] { "AM:", "PM:" }, System.StringSplitOptions.RemoveEmptyEntries)[1];
-                                    string sCreatedAt = sectopns[i].Split(new string[] { "on" }, System.StringSplitOptions.RemoveEmptyEntries)[1].Replace(":" + sNotesName, "");
+                                    string[] sTempNotesName = sectopns[i].Split(new string[] { "AM:", "PM:" }, System.StringSplitOptions.RemoveEmptyEntries);
+                                    string sNotesName = sTempNotesName.Length > 1 ? sTempNotesName[1] : "";
+                                    string[] sTempCreatedAt = sectopns[i].Split(new string[] { "on" }, System.StringSplitOptions.RemoveEmptyEntries);
+                                    string sCreatedAt = sTempCreatedAt.Length > 1 ? sTempCreatedAt[1].Replace(":" + sNotesName, "") : "";
+
+                                    string[] tempCreatedBy = sectopns[i].Split(new string[] { "on" }, System.StringSplitOptions.RemoveEmptyEntries);
+                                    string createdBy = tempCreatedBy.Length > 0 ? tempCreatedBy[0].Replace("Signed by", "") : "";
+
                                     sFormationJson = sFormationJson + ((sFormationJson[sFormationJson.Length - 1] == '}') ? "," : "")
                                         + "{\"" + "text" + "\":\"" + sNotesName + "\"," +
-                                        "\"" + "createdBy" + "\":\"" + sectopns[i].Split(new string[] { "on" }, System.StringSplitOptions.RemoveEmptyEntries)[0].Replace("Signed by", "") + "\"," +
+                                        "\"" + "createdBy" + "\":\"" + createdBy + "\"," +
                                         "\"" + "UserID" + "\":\"" + sProviderEmailID + "\"," +
                                          "\"" + "ProviderID" + "\":\"" + sProviderUserID + "\"," +
                                         "\"" + "createdAt" + "\":\"" + sCreatedAt + "\"}";
@@ -623,7 +656,7 @@ namespace Acurus.Capella.UI.WebServices
                                                 }
                                                 else
                                                 {
-                                                    sSectioncontent = sSectioncontent + ((sSectioncontent.Substring(sSectioncontent.LastIndexOf(":[")) == ":[") ? "" : ",") + "\"" + iSectionValuesplit[iSectionValueCount] + "\"";
+                                                    sSectioncontent = sSectioncontent + ((sSectioncontent != string.Empty && sSectioncontent.Substring(sSectioncontent.LastIndexOf(":[")) == ":[") ? "" : ",") + "\"" + iSectionValuesplit[iSectionValueCount] + "\"";
                                                 }
 
                                             }
@@ -780,6 +813,8 @@ namespace Acurus.Capella.UI.WebServices
                                     if (doc.SelectSingleNode("content/table/thead/tr[" + iCount + "]/td[" + iCounttd + "]")?.InnerText != null)
                                     {
                                         value = doc.SelectSingleNode("content/table/thead/tr[" + iCount + "]/td[" + iCounttd + "]").InnerText.Replace("#$%", "");
+                                        if (!value.EndsWith(": "))
+                                        { value = value.Replace(": ", ":"); }
                                     }
                                     if (value != "")
                                     {
@@ -788,7 +823,7 @@ namespace Acurus.Capella.UI.WebServices
                                 }
                             }
                         }
-                        sPatientDetails = "\"" + "PatientDetails" + "\":{" + sPatientDetails + "}";
+                        sPatientDetails = "\"" + "Patient Details" + "\":{" + sPatientDetails + "}";
                         return sPatientDetails;
                     }
             }

@@ -3358,10 +3358,11 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
                     }
                 }
 
-                for (int iCount = 0; iCount < ilstVitalsBasedProblem.Count; iCount++)
-                {
-                    objProblemList.Remove(ilstVitalsBasedProblem[iCount]);
-                }
+                //CAP-2128
+                //for (int iCount = 0; iCount < ilstVitalsBasedProblem.Count; iCount++)
+                //{
+                //    objProblemList.Remove(ilstVitalsBasedProblem[iCount]);
+                //}
 
                 objFillAssessment.Problem_List = objProblemList;
 
@@ -3609,10 +3610,11 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
                     }
                 }
 
-                for (int iCount = 0; iCount < ilstVitalsBasedProblem.Count; iCount++)
-                {
-                    objProblemList.Remove(ilstVitalsBasedProblem[iCount]);
-                }
+                //CAP-2128
+                //for (int iCount = 0; iCount < ilstVitalsBasedProblem.Count; iCount++)
+                //{
+                //    objProblemList.Remove(ilstVitalsBasedProblem[iCount]);
+                //}
 
                 objFillAssessment.Problem_List = objProblemList;
 
