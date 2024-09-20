@@ -17,6 +17,7 @@ using System.Reflection;
 using System.Diagnostics;
 using System.Text.RegularExpressions;
 using Acurus.Capella.UI.Extensions;
+using System.Web.Http;
 
 [assembly: log4net.Config.XmlConfigurator(Watch = true)]
 
@@ -69,7 +70,7 @@ namespace Acurus.Capella.UI
 
             ElementManager objElementManager = new ElementManager();
             ApplicationObject.elementList = objElementManager.GetAllElement(string.Empty);
-
+            GlobalConfiguration.Configure(WebAPIConfig.Register);
             //log4net.Config.XmlConfigurator.Configure();
         }
 

@@ -1,51 +1,47 @@
 ﻿using Acurus.Capella.Core.DomainObjects;
 using Acurus.Capella.DataAccess.ManagerObjects;
+using MySql.Data.MySqlClient;
 using System;
 using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Text;
-using System.Web;
-using System.Web.Services;
-using System.Xml.Linq;
-using System.Xml;
-using Org.BouncyCastle.Asn1.Ocsp;
-using System.Net;
-using System.Web.Services.Protocols;
-using MySql.Data.MySqlClient;
 using System.Configuration;
 using System.Data;
-using System.Threading.Tasks;
-using System.Text.RegularExpressions;
+using System.IO;
+using System.Linq;
 using System.Reflection;
+using System.Text;
+using System.Text.RegularExpressions;
+using System.Threading.Tasks;
+using System.Web.Http;
+using System.Xml;
+using System.Xml.Linq;
 
-namespace Acurus.Capella.UI.WebServices
+namespace Acurus.Capella.UI.WebServices.API
 {
-    /// <summary>
-    /// Summary description for ProgressNotesJsonService
-    /// </summary>
-    [WebService(Namespace = "http://tempuri.org/")]
-    [WebServiceBinding(ConformsTo = WsiProfiles.BasicProfile1_1)]
-    [System.ComponentModel.ToolboxItem(false)]
-    // To allow this Web Service to be called from script, using ASP.NET AJAX, uncomment the following line. 
-    // [System.Web.Script.Services.ScriptService]
-    public class ProgressNotesService : System.Web.Services.WebService
+    public class ProgressNotesServiceController : ApiController
     {
-        [WebMethod]
-        public string LoadCapellaHistoryData(string sHumanID, string sCategory = "")
+        [HttpGet]
+        public IHttpActionResult LoadCapellaHistoryData(string sHumanID, string sCategory = "")
         {
             try
             {
-                if (sHumanID == "")
+                if (!VerifyToken())
                 {
-                    return "{\"HumanID\":" + sHumanID + ",\"status\":\"ValidationError\",\"ErrorDescription\":\"HumanID is not valid. Cannot generate progress note.\"}";
+                    return Json(new { status = "Unauthorized", ErrorDescription = "The remote server returned an error: (403) Forbidden." });
                 }
 
-                if (sCategory.ToUpper() == "" || sCategory.ToUpper() == "Encounters")
+                if (sHumanID == "")
                 {
-                    string encounterByHumanIDQury = "SELECT enc.Encounter_ID FROM encounter enc JOIN wf_object wf ON wf.Obj_System_Id = enc.Encounter_ID WHERE enc.Human_ID = " + sHumanID + " AND wf.Current_Process = 'DOCUMENT_COMPLETE' UNION ALL SELECT enc.Encounter_ID FROM encounter_arc enc JOIN wf_object_arc wf ON wf.Obj_System_Id = enc.Encounter_ID WHERE enc.Human_ID = " + sHumanID + " AND wf.Current_Process = 'DOCUMENT_COMPLETE';";
+                    return Json(new { HumanID = sHumanID, status = "ValidationError", ErrorDescription = "HumanID is not valid. Cannot generate progress note. " });
+                }
 
-                    DataSet result = DBConnector.ReadData(encounterByHumanIDQury);
+                if (string.IsNullOrEmpty(sCategory) || sCategory.ToUpper() == "ENCOUNTERS")
+                {
+                    var releaseDate = ConfigurationSettings.AppSettings["ReleaseDate"] ?? "";
+                    var thresholdDate = ConfigurationSettings.AppSettings["ThresholdDate"] ?? "";
+
+                    string encounterByHumanIDQury = "SELECT enc.Encounter_ID FROM encounter enc JOIN wf_object wf ON enc.Encounter_ID = wf.Obj_System_Id  WHERE enc.Human_ID = {0} AND  DATE(enc.Date_of_Service) >= '{1}' AND DATE(enc.Date_of_Service) <= '{2}' and wf.Obj_Type = 'DOCUMENTATION' and wf.Current_Process = 'DOCUMENT_COMPLETE' UNION ALL SELECT enc.Encounter_ID FROM encounter_arc enc JOIN wf_object_arc wf ON enc.Encounter_ID = wf.Obj_System_Id WHERE enc.Human_ID = {0} AND  DATE(enc.Date_of_Service) >= '{1}' AND DATE(enc.Date_of_Service) <= '{2}' and wf.Obj_Type = 'DOCUMENTATION' and wf.Current_Process = 'DOCUMENT_COMPLETE';";
+
+                    DataSet result = DBConnector.ReadData(string.Format(encounterByHumanIDQury, sHumanID, thresholdDate, releaseDate));
 
                     if (result.Tables.Count > 0 && result.Tables[0].Rows.Count > 0)
                     {
@@ -55,63 +51,65 @@ namespace Acurus.Capella.UI.WebServices
                             Task.Run(() => { GenerateJsonNotes(sHumanID, encounter_ID); });
                         }
                     }
-                    //EncounterManager encounterManager = new EncounterManager();
-                    //IList<Encounter> lstEncounter = encounterManager.GetEncounterByHumanIDIncludeArchive(Convert.ToUInt64(sHumanID));
+                    else
+                    {
+                        return Json(new { HumanID = sHumanID, status = "ValidationError", ErrorDescription = "Encounter is not present in DB. Cannot generate progress note." });
+                    }
                 }
 
-                if (sCategory.ToUpper() == "" || sCategory.ToUpper() == "Files")
+                if (string.IsNullOrEmpty(sCategory) || sCategory.ToUpper() == "FILES")
                 {
 
                 }
 
-                if (sCategory.ToUpper() == "" || sCategory.ToUpper() == "LabResults")
+                if (string.IsNullOrEmpty(sCategory) || sCategory.ToUpper() == "LABRESULTS")
                 {
 
                 }
             }
             catch (Exception ex)
             {
-                return "{\"HumanID\":" + sHumanID + ",\"status\":\"Error\",\"ErrorDescription\":\"Error in processing the request. " + ex.Message + "\"}";
+                return Json(new { HumanID = sHumanID, status = "Error", ErrorDescription = "Error in processing the request. " + ex.Message });
             }
-            return "{\"HumanID\":" + sHumanID + ",\"status\":\"Acknowledged\"}";
+            return Json(new { HumanID = sHumanID, status = "Acknowledged" });
         }
 
-        [WebMethod]
-        public string LoadProgressNotes(string sHumanID, string sEncounterID)
+        [HttpGet]
+        public IHttpActionResult LoadProgressNotes(string sHumanID, string sEncounterID)
         {
-            WFObjectManager wfObjMngr = new WFObjectManager();
             try
             {
+                if (!VerifyToken())
+                { return Unauthorized(); }
+
                 if (sEncounterID == "")
                 {
-                    return "{\"EncounterID\":" + sEncounterID + ",\"status\":\"ValidationError\",\"ErrorDescription\":\"EncounterID is not valid. Cannot generate progress note.\"}";
+                    return Json(new { HumanID = sHumanID, EncounterID = sEncounterID, status = "ValidationError", ErrorDescription = "EncounterID is not valid. Cannot generate progress note." });
                 }
-                WFObject DocumentationWfObject = wfObjMngr.GetByObjectSystemId(Convert.ToUInt64(sEncounterID), "DOCUMENTATION");
+                string encounterByHumanIDQury = "SELECT enc.Encounter_ID, wf.Current_Process FROM encounter enc JOIN wf_object wf ON enc.Encounter_ID = wf.Obj_System_Id WHERE enc.Encounter_ID = " + sEncounterID + " AND wf.Obj_Type = 'DOCUMENTATION' UNION ALL SELECT enc.Encounter_ID, wf.Current_Process FROM encounter_arc enc JOIN wf_object_arc wf ON enc.Encounter_ID = wf.Obj_System_Id WHERE enc.Encounter_ID = " + sEncounterID + " AND wf.Obj_Type = 'DOCUMENTATION';";
 
-                if (DocumentationWfObject != null && DocumentationWfObject.Current_Process == string.Empty)
-                {
-                    DocumentationWfObject = wfObjMngr.GetWfObjArchiveByObjectSystemId(Convert.ToUInt64(sEncounterID), "DOCUMENTATION");
-                }
+                DataSet result = DBConnector.ReadData(encounterByHumanIDQury);
 
-                if (DocumentationWfObject == null)
+                if (result?.Tables == null && result.Tables[0].Rows.Count == 0)
                 {
-                    return "{\"EncounterID\":" + sEncounterID + ",\"status\":\"ValidationError\",\"ErrorDescription\":\"EncounterID is not present in DB. Cannot generate progress note.\"}";
+                    return Json(new { HumanID = sHumanID, EncounterID = sEncounterID, status = "ValidationError", ErrorDescription = "EncounterID is not present in DB. Cannot generate progress note." });
                 }
 
-                if (DocumentationWfObject.Current_Process != "DOCUMENT_COMPLETE")
+                string current_Process = result.Tables[0].Rows[0]["Current_Process"].ToString();
+                if (current_Process != "DOCUMENT_COMPLETE")
                 {
-                    return "{\"EncounterID\":" + sEncounterID + ",\"status\":\"ValidationError\",\"ErrorDescription\":\"Encounter is not in DOCUMENT_COMPLETE. Cannot generate progress note.\"}";
+                    return Json(new { HumanID = sHumanID, EncounterID = sEncounterID, status = "ValidationError", ErrorDescription = "Encounter is not in DOCUMENT_COMPLETE. Cannot generate progress note." });
                 }
                 Task.Run(() => { GenerateJsonNotes(sHumanID, sEncounterID); });
             }
             catch (Exception ex)
             {
-                return "{\"EncounterID\":" + sEncounterID + ",\"status\":\"Error\",\"ErrorDescription\":\"Error in processing the request. " + ex.Message + "\"}";
+                return Json(new { HumanID = sHumanID, EncounterID = sEncounterID, status = "Error", ErrorDescription = "Error in processing the request. " + ex.Message });
             }
-            return "{\"HumanID\":" + sHumanID + ",\"EncounterID\":" + sEncounterID + ",\"status\":\"Acknowledged\"}";
+            return Json(new { HumanID = sHumanID, EncounterID = sEncounterID, status = "Acknowledged" });
         }
 
-        public void GenerateJsonNotes(string sHumanID, string sEncounterID)
+        private void GenerateJsonNotes(string sHumanID, string sEncounterID)
         {
             IList<Blob_Progress_Note> ilstBlob_Progress_Note = new List<Blob_Progress_Note>();
             BlobProgressNoteManager BlobProgressNoteMngr = new BlobProgressNoteManager();
@@ -125,12 +123,22 @@ namespace Acurus.Capella.UI.WebServices
             string blobProgressNotesQry = "SELECT Encounter_ID AS Id, Human_ID, Progress_Note_Json, Status, Error_Description, Created_By, Created_Date_And_Time, Modified_By, Modified_Date_And_Time, Version FROM blob_progress_note WHERE Encounter_ID = {0};";
             DataSet BlobProgressNotesResult = DBConnector.ReadData(string.Format(blobProgressNotesQry, sEncounterID));
             ilstBlob_Progress_Note = DBConnector.DataTableToList<Blob_Progress_Note>(BlobProgressNotesResult.Tables[0]) ?? new List<Blob_Progress_Note>();
+            bool isModified = false;
             try
             {
                 //Initiate save call
                 if (ilstBlob_Progress_Note.Count == 0)
                 {
                     ilstBlob_Progress_Note.Add(objBlobProgressNotesInitiated);
+                    ilstBlob_Progress_Note[0].Created_By = "";
+                    ilstBlob_Progress_Note[0].Created_Date_And_Time = DateTime.UtcNow;
+                    isModified = false;
+                }
+                else
+                {
+                    ilstBlob_Progress_Note[0].Modified_By = "";
+                    ilstBlob_Progress_Note[0].Modified_Date_And_Time = DateTime.UtcNow;
+                    isModified = true;
                 }
 
                 ilstBlob_Progress_Note[0].Id = Convert.ToUInt64(sEncounterID);
@@ -138,8 +146,6 @@ namespace Acurus.Capella.UI.WebServices
                 ilstBlob_Progress_Note[0].Progress_Note_Json = null;
                 ilstBlob_Progress_Note[0].Status = "Initiated";
                 ilstBlob_Progress_Note[0].Error_Description = string.Empty;
-                ilstBlob_Progress_Note[0].Created_By = "";
-                ilstBlob_Progress_Note[0].Created_Date_And_Time = DateTime.UtcNow;
 
                 BlobProgressNoteMngr.SaveBlobProgressNotesWithTransaction(ilstBlob_Progress_Note, string.Empty);
                 //End
@@ -176,378 +182,378 @@ namespace Acurus.Capella.UI.WebServices
 
                 sIsPhoneEncounter = xmlEncounterDoc.SelectSingleNode("notes/Modules/EncounterList/Encounter").Attributes.GetNamedItem("Is_Phone_Encounter").Value.ToUpper();
 
-                string objectSystemIdQry = "SELECT Current_Process FROM WF_Object WHERE Obj_System_Id = {0} AND Obj_Type = 'DOCUMENTATION' UNION ALL SELECT Current_Process FROM WF_Object_arc WHERE Obj_System_Id = {0} AND Obj_Type = 'DOCUMENTATION';";
-                DataSet ObjectSystemResult = DBConnector.ReadData(string.Format(objectSystemIdQry, sEncounterID));
-                WFObject DocumentationWfObject = new WFObject();
-                DocumentationWfObject = DBConnector.DataTableToList<WFObject>(ObjectSystemResult.Tables[0]).FirstOrDefault() ?? new WFObject();
+                //string objectSystemIdQry = "SELECT Current_Process FROM WF_Object WHERE Obj_System_Id = {0} AND Obj_Type = 'DOCUMENTATION' UNION ALL SELECT Current_Process FROM WF_Object_arc WHERE Obj_System_Id = {0} AND Obj_Type = 'DOCUMENTATION';";
+                //DataSet ObjectSystemResult = DBConnector.ReadData(string.Format(objectSystemIdQry, sEncounterID));
+                //WFObject DocumentationWfObject = new WFObject();
+                //DocumentationWfObject = DBConnector.DataTableToList<WFObject>(ObjectSystemResult.Tables[0]).FirstOrDefault() ?? new WFObject();
 
-                if (DocumentationWfObject.Current_Process == "DOCUMENT_COMPLETE" || sIsPhoneEncounter.ToUpper() == "Y")
+                //if (DocumentationWfObject.Current_Process == "DOCUMENT_COMPLETE" || sIsPhoneEncounter.ToUpper() == "Y")
+                //{
+                if (ilstEncounterBlob != null && ilstEncounterBlob.Count > 0 && ilstEncounterBlob[0].Human_XML != null)
                 {
-                    if (ilstEncounterBlob != null && ilstEncounterBlob.Count > 0 && ilstEncounterBlob[0].Human_XML != null)
+                    sXMLHumanDoc = System.Text.Encoding.UTF8.GetString(ilstEncounterBlob[0].Human_XML);
+                }
+                else
+                {
+                    string qryHumanBlob = "SELECT * FROM blob_human where Human_ID = {0};";
+                    DataSet HumanBlobResult = DBConnector.ReadData(string.Format(qryHumanBlob, sHumanID));
+                    ilstHumanBlob = DBConnector.DataTableToList<Human_Blob>(HumanBlobResult.Tables[0]);
+                    //ilstHumanBlob = HumanBlobMngr.GetHumanBlob(Convert.ToUInt64(sHumanID));
+                    if (ilstHumanBlob != null && ilstHumanBlob.Count > 0 && ilstHumanBlob[0].Human_XML != null)
                     {
-                        sXMLHumanDoc = System.Text.Encoding.UTF8.GetString(ilstEncounterBlob[0].Human_XML);
+                        sXMLHumanDoc = System.Text.Encoding.UTF8.GetString(ilstHumanBlob[0].Human_XML);
                     }
-                    else
+                }
+
+
+
+
+                if (sXMLHumanDoc != null && sXMLHumanDoc != "" && sXMLHumanDoc != string.Empty)
+                {
+                    //sXMLHumanDoc = System.Text.Encoding.UTF8.GetString(ilstHumanBlob[0].Human_XML);
+                    if (sXMLHumanDoc.Substring(0, 1) != "<")
+                        sXMLHumanDoc = sXMLHumanDoc.Substring(1, sXMLHumanDoc.Length - 1);
+                    //Jira #CAP-115
+                    sXMLHumanDoc = UtilityManager.ReplaceSpecialCharaters(sXMLHumanDoc);
+                    xmlHumanDoc.LoadXml(sXMLHumanDoc);
+                }
+
+                string xsltFile = string.Empty;
+                if (sIsPhoneEncounter != null && sIsPhoneEncounter == "Y")
+                {// jira cap-499
+                    sIsPhoneEncounter = "Y";
+                    xsltFile = Path.Combine(System.Configuration.ConfigurationSettings.AppSettings["XMLPath"], "EHR_Phone_Encounter_Notes.xsl");
+                }
+                else
+                {
+                    xsltFile = Path.Combine(System.Configuration.ConfigurationSettings.AppSettings["XMLPath"], "EHR_Progress_Notes.xsl");
+                }
+
+                string WordOutputName = sEncounterID + "_" + DateTime.Now.ToString("yyyyMMddhhmmss") + ".html";
+                string outputDocument = Path.Combine(System.Configuration.ConfigurationSettings.AppSettings["XMLPath"], WordOutputName);
+
+                UtilityManager.PrintPDFUsingXSLT(sXMLEncounterDoc, sXMLHumanDoc, xsltFile, outputDocument, "");
+                System.IO.FileInfo file = new System.IO.FileInfo(outputDocument);
+
+
+
+                string Encounter_signedDate = "";
+                string Encounter_signed_UserId = "";
+                string Encounter_Provider_Name = "";
+                string Encounter_Reviewed_signedDate = "";
+                string Encounter_Reviewed_Name = "";
+                string Encounter_Reviewed_Id = "";
+                string sIsphoneEncounter = "";
+                string sCreatedBy = "";
+
+                TextReader EncXMLContent = new StringReader(sXMLEncounterDoc);
+                XDocument xmlDocumentType = XDocument.Load(EncXMLContent);
+                foreach (XElement elements in xmlDocumentType.Descendants("EncounterList"))
+                {
+                    foreach (XElement Encounter in elements.Elements())
                     {
-                        string qryHumanBlob = "SELECT * FROM blob_human where Human_ID = {0};";
-                        DataSet HumanBlobResult = DBConnector.ReadData(string.Format(qryHumanBlob, sHumanID));
-                        ilstHumanBlob = DBConnector.DataTableToList<Human_Blob>(HumanBlobResult.Tables[0]);
-                        //ilstHumanBlob = HumanBlobMngr.GetHumanBlob(Convert.ToUInt64(sHumanID));
-                        if (ilstHumanBlob != null && ilstHumanBlob.Count > 0 && ilstHumanBlob[0].Human_XML != null)
+                        Encounter_Reviewed_signedDate = Encounter.Attribute("Encounter_Provider_Review_Signed_Date").Value;
+                        if (Encounter_Reviewed_signedDate != "0001-01-01 12:00:00 AM")
                         {
-                            sXMLHumanDoc = System.Text.Encoding.UTF8.GetString(ilstHumanBlob[0].Human_XML);
+                            Encounter_Reviewed_signedDate = ConvertToLocal(Encounter_Reviewed_signedDate);
                         }
-                    }
-
-
-
-
-                    if (sXMLHumanDoc != null && sXMLHumanDoc != "" && sXMLHumanDoc != string.Empty)
-                    {
-                        //sXMLHumanDoc = System.Text.Encoding.UTF8.GetString(ilstHumanBlob[0].Human_XML);
-                        if (sXMLHumanDoc.Substring(0, 1) != "<")
-                            sXMLHumanDoc = sXMLHumanDoc.Substring(1, sXMLHumanDoc.Length - 1);
-                        //Jira #CAP-115
-                        sXMLHumanDoc = UtilityManager.ReplaceSpecialCharaters(sXMLHumanDoc);
-                        xmlHumanDoc.LoadXml(sXMLHumanDoc);
-                    }
-
-                    string xsltFile = string.Empty;
-                    if (sIsPhoneEncounter != null && sIsPhoneEncounter == "Y")
-                    {// jira cap-499
-                        sIsPhoneEncounter = "Y";
-                        xsltFile = Path.Combine(System.Configuration.ConfigurationSettings.AppSettings["XMLPath"], "EHR_Phone_Encounter_Notes.xsl");
-                    }
-                    else
-                    {
-                        xsltFile = Path.Combine(System.Configuration.ConfigurationSettings.AppSettings["XMLPath"], "EHR_Progress_Notes.xsl");
-                    }
-
-                    string WordOutputName = sHumanID + "_" + DateTime.Now.ToString("yyyyMMddhhmmss") + ".html";
-                    string outputDocument = Path.Combine(System.Configuration.ConfigurationSettings.AppSettings["XMLPath"], WordOutputName);
-
-                    UtilityManager.PrintPDFUsingXSLT(sXMLEncounterDoc, sXMLHumanDoc, xsltFile, outputDocument, "");
-                    System.IO.FileInfo file = new System.IO.FileInfo(outputDocument);
-
-
-
-                    string Encounter_signedDate = "";
-                    string Encounter_signed_UserId = "";
-                    string Encounter_Provider_Name = "";
-                    string Encounter_Reviewed_signedDate = "";
-                    string Encounter_Reviewed_Name = "";
-                    string Encounter_Reviewed_Id = "";
-                    string sIsphoneEncounter = "";
-                    string sCreatedBy = "";
-
-                    TextReader EncXMLContent = new StringReader(sXMLEncounterDoc);
-                    XDocument xmlDocumentType = XDocument.Load(EncXMLContent);
-                    foreach (XElement elements in xmlDocumentType.Descendants("EncounterList"))
-                    {
-                        foreach (XElement Encounter in elements.Elements())
+                        Encounter_signedDate = Encounter.Attribute("Encounter_Provider_Signed_Date").Value;
+                        if (Encounter_signedDate != "0001-01-01 12:00:00 AM")
                         {
-                            Encounter_Reviewed_signedDate = Encounter.Attribute("Encounter_Provider_Review_Signed_Date").Value;
-                            if (Encounter_Reviewed_signedDate != "0001-01-01 12:00:00 AM")
-                            {
-                                Encounter_Reviewed_signedDate = ConvertToLocal(Encounter_Reviewed_signedDate);
-                            }
-                            Encounter_signedDate = Encounter.Attribute("Encounter_Provider_Signed_Date").Value;
-                            if (Encounter_signedDate != "0001-01-01 12:00:00 AM")
-                            {
-                                Encounter_signedDate = ConvertToLocal(Encounter_signedDate);
-                            }
-
-                            Encounter_Reviewed_Id = Encounter.Attribute("Encounter_Provider_Review_ID").Value;
-                            sIsphoneEncounter = Encounter.Attribute("Is_Phone_Encounter").Value;
-                            sCreatedBy = Encounter.Attribute("Created_By").Value;
-                            Encounter_signed_UserId = Encounter.Attribute("Encounter_Provider_ID").Value;
+                            Encounter_signedDate = ConvertToLocal(Encounter_signedDate);
                         }
 
-                        //if (Encounter_signedDate == "" || Encounter_signedDate == "01-Jan-0001 12:00:00 AM")
-                        //{
-                        //    foreach (XElement Encounter in elements.Elements())
-                        //    {
-                        //        Encounter_signedDate = ConvertToLocal(Encounter.Attribute("Encounter_Provider_Signed_Date").Value).ToString("dd-MMM-yyyy hh:mm:ss tt");
-                        //    }
-                        //}
+                        Encounter_Reviewed_Id = Encounter.Attribute("Encounter_Provider_Review_ID").Value;
+                        sIsphoneEncounter = Encounter.Attribute("Is_Phone_Encounter").Value;
+                        sCreatedBy = Encounter.Attribute("Created_By").Value;
+                        Encounter_signed_UserId = Encounter.Attribute("Encounter_Provider_ID").Value;
                     }
-                    //Provider Name 
-                    foreach (XElement elements in xmlDocumentType.Descendants("EncounterDetails"))
+
+                    //if (Encounter_signedDate == "" || Encounter_signedDate == "01-Jan-0001 12:00:00 AM")
+                    //{
+                    //    foreach (XElement Encounter in elements.Elements())
+                    //    {
+                    //        Encounter_signedDate = ConvertToLocal(Encounter.Attribute("Encounter_Provider_Signed_Date").Value).ToString("dd-MMM-yyyy hh:mm:ss tt");
+                    //    }
+                    //}
+                }
+                //Provider Name 
+                foreach (XElement elements in xmlDocumentType.Descendants("EncounterDetails"))
+                {
+                    foreach (XElement Encounter in elements.Elements())
                     {
-                        foreach (XElement Encounter in elements.Elements())
-                        {
-                            Encounter_Provider_Name = Encounter.Value;
-                            break;
-                        }
+                        Encounter_Provider_Name = Encounter.Value;
                         break;
                     }
-                    //Provider Reviewed Name 
-                    if (Encounter_Reviewed_Id != "")
+                    break;
+                }
+                //Provider Reviewed Name 
+                if (Encounter_Reviewed_Id != "")
+                {
+                    string xmlFilepathUser = Path.Combine(System.Web.Hosting.HostingEnvironment.ApplicationPhysicalPath, "ConfigXML\\User.xml");
+                    if (File.Exists(xmlFilepathUser))
                     {
-                        string xmlFilepathUser = Path.Combine(System.Web.Hosting.HostingEnvironment.ApplicationPhysicalPath, "ConfigXML\\User.xml");
-                        if (File.Exists(xmlFilepathUser))
+                        XmlDocument xdoc = new XmlDocument();
+                        XmlTextReader itext = new XmlTextReader(xmlFilepathUser);
+                        xdoc.Load(itext);
+                        itext.Close();
+                        XmlNodeList xnodelst = xdoc.GetElementsByTagName("User");
+                        if (xnodelst != null && xnodelst.Count > 0)
                         {
-                            XmlDocument xdoc = new XmlDocument();
-                            XmlTextReader itext = new XmlTextReader(xmlFilepathUser);
-                            xdoc.Load(itext);
-                            itext.Close();
-                            XmlNodeList xnodelst = xdoc.GetElementsByTagName("User");
-                            if (xnodelst != null && xnodelst.Count > 0)
+                            foreach (XmlNode xnode in xnodelst)
                             {
-                                foreach (XmlNode xnode in xnodelst)
+                                if (xnode.Attributes.GetNamedItem("Physician_Library_ID").Value.ToString() != "0" && xnode.Attributes.GetNamedItem("Physician_Library_ID").Value.ToString() == Encounter_Reviewed_Id)
                                 {
-                                    if (xnode.Attributes.GetNamedItem("Physician_Library_ID").Value.ToString() != "0" && xnode.Attributes.GetNamedItem("Physician_Library_ID").Value.ToString() == Encounter_Reviewed_Id)
-                                    {
-                                        Encounter_Reviewed_Name = xnode.Attributes.GetNamedItem("person_name").Value;
-                                    }
+                                    Encounter_Reviewed_Name = xnode.Attributes.GetNamedItem("person_name").Value;
                                 }
                             }
                         }
                     }
+                }
 
-                    XmlDocument xmldoc = new XmlDocument();
-                    xmldoc.LoadXml(sXMLEncounterDoc);
+                XmlDocument xmldoc = new XmlDocument();
+                xmldoc.LoadXml(sXMLEncounterDoc);
 
-                    string sPhysicianID = xmldoc.SelectSingleNode("notes/Modules/EncounterList/Encounter").Attributes.GetNamedItem("Encounter_Provider_ID").Value;
-                    string sEncounterIDForPatientDetails = (xmldoc.SelectSingleNode("notes/Modules/EncounterList/Encounter")?.Attributes?.GetNamedItem("Id")?.Value != null) ?
-                        xmldoc.SelectSingleNode("notes/Modules/EncounterList/Encounter")?.Attributes?.GetNamedItem("Id")?.Value :
-                        (xmldoc.SelectSingleNode("notes/Modules/EncounterList/Encounter")?.Attributes?.GetNamedItem("Encounter_ID")?.Value != null) ?
-                        xmldoc.SelectSingleNode("notes/Modules/EncounterList/Encounter")?.Attributes?.GetNamedItem("Encounter_ID")?.Value : "";
-                    UserManager Usermngr = new UserManager();
-                    IList<User> ilstUser = new List<User>();
+                string sPhysicianID = xmldoc.SelectSingleNode("notes/Modules/EncounterList/Encounter").Attributes.GetNamedItem("Encounter_Provider_ID").Value;
+                string sEncounterIDForPatientDetails = (xmldoc.SelectSingleNode("notes/Modules/EncounterList/Encounter")?.Attributes?.GetNamedItem("Id")?.Value != null) ?
+                    xmldoc.SelectSingleNode("notes/Modules/EncounterList/Encounter")?.Attributes?.GetNamedItem("Id")?.Value :
+                    (xmldoc.SelectSingleNode("notes/Modules/EncounterList/Encounter")?.Attributes?.GetNamedItem("Encounter_ID")?.Value != null) ?
+                    xmldoc.SelectSingleNode("notes/Modules/EncounterList/Encounter")?.Attributes?.GetNamedItem("Encounter_ID")?.Value : "";
+                UserManager Usermngr = new UserManager();
+                IList<User> ilstUser = new List<User>();
 
-                    ilstUser = getUserByPHYID(sPhysicianID);
-                    //ilstUser = Usermngr.getUserByPHYID(Convert.ToUInt64(sPhysicianID));
-                    string sUserEmailAddr = (ilstUser.Count > 0) ? ilstUser[0].EMail_Address : "";
+                ilstUser = getUserByPHYID(sPhysicianID);
+                //ilstUser = Usermngr.getUserByPHYID(Convert.ToUInt64(sPhysicianID));
+                string sUserEmailAddr = (ilstUser.Count > 0) ? ilstUser[0].EMail_Address : "";
 
-                    //Generate Json
-                    string htmlString = System.IO.File.ReadAllText(outputDocument);
-                    string xmls = htmlString.Replace("&nbsp;", "").Replace("&bull;", "").Replace("&amp;", "");
-                    xmls = "<?xml version=\"1.0\" encoding=\"utf-8\"?> <content>" + xmls + "</content>";
-                    htmlString = htmlString.Replace("<subtab>", "").Replace("</subtab>", "").Replace("<plan>", "").Replace("</plan>", "");
-                    //Cap - 2508
-                    while (htmlString.Contains("<AddendumProviderID>"))
+                //Generate Json
+                string htmlString = System.IO.File.ReadAllText(outputDocument);
+                string xmls = htmlString.Replace("&nbsp;", "").Replace("&bull;", "").Replace("&amp;", "");
+                xmls = "<?xml version=\"1.0\" encoding=\"utf-8\"?> <content>" + xmls + "</content>";
+                htmlString = htmlString.Replace("<subtab>", "").Replace("</subtab>", "").Replace("<plan>", "").Replace("</plan>", "");
+                //Cap - 2508
+                while (htmlString.Contains("<AddendumProviderID>"))
+                {
+                    string NewInput = htmlString.Substring(htmlString.IndexOf("<AddendumProviderID>"), (htmlString.IndexOf("</AddendumProviderID>") - htmlString.IndexOf("<AddendumProviderID>") + 21));
+                    string NewInput2 = htmlString.Substring(htmlString.IndexOf("<AddendumPhysicianEMailAddress>"), (htmlString.IndexOf("</AddendumPhysicianEMailAddress>") - htmlString.IndexOf("<AddendumPhysicianEMailAddress>") + 32));
+                    htmlString = htmlString.Replace(NewInput, "").Replace(NewInput2, "");
+                }
+                while (htmlString.Contains("<AddendumReviewProviderID>"))
+                {
+                    string NewInput = htmlString.Substring(htmlString.IndexOf("<AddendumReviewProviderID>"), (htmlString.IndexOf("</AddendumReviewProviderID>") - htmlString.IndexOf("<AddendumReviewProviderID>") + 27));
+                    string NewInput2 = htmlString.Substring(htmlString.IndexOf("<AddendumReviewPhysicianEMailAddress>"), (htmlString.IndexOf("</AddendumReviewPhysicianEMailAddress>") - htmlString.IndexOf("<AddendumReviewPhysicianEMailAddress>") + 38));
+                    htmlString = htmlString.Replace(NewInput, "").Replace(NewInput2, "");
+                }
+                //Cap - 2508 End
+                //Jira CAP-1015
+                htmlString = htmlString.Replace("amp;", "");
+                XmlDocument doc = new XmlDocument();
+                doc.LoadXml(xmls);
+                string sTyepeOfPattern = string.Empty;
+                string sSection = string.Empty;
+                sFinalOutPut = "{";
+                for (int i = 0; i < doc.SelectNodes("content/p").Count; i++)
+                {
+                    sTyepeOfPattern = string.Empty;
+                    sSection = string.Empty;
+                    if (doc.SelectSingleNode("content/p[" + i + "]")?.InnerXml != null && doc.SelectSingleNode("content/p[" + i + "]").InnerXml != "")
                     {
-                        string NewInput = htmlString.Substring(htmlString.IndexOf("<AddendumProviderID>"), (htmlString.IndexOf("</AddendumProviderID>") - htmlString.IndexOf("<AddendumProviderID>") + 21));
-                        string NewInput2 = htmlString.Substring(htmlString.IndexOf("<AddendumPhysicianEMailAddress>"), (htmlString.IndexOf("</AddendumPhysicianEMailAddress>") - htmlString.IndexOf("<AddendumPhysicianEMailAddress>") + 32));
-                        htmlString = htmlString.Replace(NewInput, "").Replace(NewInput2, "");
-                    }
-                    while (htmlString.Contains("<AddendumReviewProviderID>"))
-                    {
-                        string NewInput = htmlString.Substring(htmlString.IndexOf("<AddendumReviewProviderID>"), (htmlString.IndexOf("</AddendumReviewProviderID>") - htmlString.IndexOf("<AddendumReviewProviderID>") + 27));
-                        string NewInput2 = htmlString.Substring(htmlString.IndexOf("<AddendumReviewPhysicianEMailAddress>"), (htmlString.IndexOf("</AddendumReviewPhysicianEMailAddress>") - htmlString.IndexOf("<AddendumReviewPhysicianEMailAddress>") + 38));
-                        htmlString = htmlString.Replace(NewInput, "").Replace(NewInput2, "");
-                    }
-                    //Cap - 2508 End
-                    //Jira CAP-1015
-                    htmlString = htmlString.Replace("amp;", "");
-                    XmlDocument doc = new XmlDocument();
-                    doc.LoadXml(xmls);
-                    string sTyepeOfPattern = string.Empty;
-                    string sSection = string.Empty;
-                    sFinalOutPut = "{";
-                    for (int i = 0; i < doc.SelectNodes("content/p").Count; i++)
-                    {
-                        sTyepeOfPattern = string.Empty;
-                        sSection = string.Empty;
-                        if (doc.SelectSingleNode("content/p[" + i + "]")?.InnerXml != null && doc.SelectSingleNode("content/p[" + i + "]").InnerXml != "")
+                        // This patern for normal screen like CC - Content is present under Secion Name directly
+                        if (doc.SelectSingleNode("content/p[" + i + "]/b")?.InnerXml != null
+                            && doc.SelectSingleNode("content/p[" + i + "]/i")?.InnerXml == null
+                            && doc.SelectSingleNode("content/p[" + i + "]/b/i")?.InnerXml == null
+                            && doc.SelectSingleNode("content/p[" + i + "]/table")?.InnerXml == null
+                            && doc.SelectSingleNode("content/p[" + i + "]/font/b/i")?.InnerXml == null)
                         {
-                            // This patern for normal screen like CC - Content is present under Secion Name directly
-                            if (doc.SelectSingleNode("content/p[" + i + "]/b")?.InnerXml != null
-                                && doc.SelectSingleNode("content/p[" + i + "]/i")?.InnerXml == null
-                                && doc.SelectSingleNode("content/p[" + i + "]/b/i")?.InnerXml == null
-                                && doc.SelectSingleNode("content/p[" + i + "]/table")?.InnerXml == null
-                                && doc.SelectSingleNode("content/p[" + i + "]/font/b/i")?.InnerXml == null)
-                            {
 
-                                sTyepeOfPattern = "1";
-                                sSection = doc.SelectSingleNode("content/p[" + i + "]").InnerXml;
-                            }
-                            //// This patern Only for Screening and prev screening - Content is present under Section and multiple level sub sections & heading
-                            else if (doc.SelectSingleNode("content/p[" + i + "]/i")?.InnerXml != null || doc.SelectSingleNode("content/p[" + i + "]/b/i")?.InnerXml != null)
-                            {
-                                sTyepeOfPattern = "2";
-                                sSection = doc.SelectSingleNode("content/p[" + i + "]").InnerXml;
-                            }
-                            // This patern Only for Individualized Care Plan - Content is present under Section and multiple level sub sections & heading. But content has exta tags like font
-                            else if (doc.SelectSingleNode("content/p[" + i + "]/font/b/i")?.InnerXml != null)
-                            {
-                                sTyepeOfPattern = "3";
-                                sSection = doc.SelectSingleNode("content/p[" + i + "]").InnerXml;
-                            }
-                            // This pattern for table formate in the progress note - Content is in Table format
-                            else if (i != 1 && doc.SelectSingleNode("content/p[" + i + "]/table")?.InnerXml != null)
-                            {
-                                sTyepeOfPattern = "4";
-                                sSection = doc.SelectSingleNode("content/p[" + i + "]").InnerXml;
-                            }
-                            // This patern for Patient Details - Content is Progress Note header
-                            else if (i == 1
-                                && doc.SelectSingleNode("content/p[" + i + "]/table/thead/tr/td")?.InnerXml != null
-                                && doc.SelectSingleNode("content/p[" + i + "]/table/thead/tr/td").InnerText.Contains("Patient Name"))
-                            {
+                            sTyepeOfPattern = "1";
+                            sSection = doc.SelectSingleNode("content/p[" + i + "]").InnerXml;
+                        }
+                        //// This patern Only for Screening and prev screening - Content is present under Section and multiple level sub sections & heading
+                        else if (doc.SelectSingleNode("content/p[" + i + "]/i")?.InnerXml != null || doc.SelectSingleNode("content/p[" + i + "]/b/i")?.InnerXml != null)
+                        {
+                            sTyepeOfPattern = "2";
+                            sSection = doc.SelectSingleNode("content/p[" + i + "]").InnerXml;
+                        }
+                        // This patern Only for Individualized Care Plan - Content is present under Section and multiple level sub sections & heading. But content has exta tags like font
+                        else if (doc.SelectSingleNode("content/p[" + i + "]/font/b/i")?.InnerXml != null)
+                        {
+                            sTyepeOfPattern = "3";
+                            sSection = doc.SelectSingleNode("content/p[" + i + "]").InnerXml;
+                        }
+                        // This pattern for table formate in the progress note - Content is in Table format
+                        else if (i != 1 && doc.SelectSingleNode("content/p[" + i + "]/table")?.InnerXml != null)
+                        {
+                            sTyepeOfPattern = "4";
+                            sSection = doc.SelectSingleNode("content/p[" + i + "]").InnerXml;
+                        }
+                        // This patern for Patient Details - Content is Progress Note header
+                        else if (i == 1
+                            && doc.SelectSingleNode("content/p[" + i + "]/table/thead/tr/td")?.InnerXml != null
+                            && doc.SelectSingleNode("content/p[" + i + "]/table/thead/tr/td").InnerText.Contains("Patient Name"))
+                        {
 
-                                XmlNode AdditionalParentElelemnt = doc.CreateElement("tr");
-                                XmlNode AdditionalElement = null;
-                                IList<string> AdditionalValues = new List<string>();
-                                AdditionalValues.Add("EncounterID :" + sEncounterIDForPatientDetails);
-                                AdditionalValues.Add("PhysicianID :" + sPhysicianID);
-                                AdditionalValues.Add("Physician EMail Address :" + sUserEmailAddr);
-                                for (int iCount = 0; iCount < AdditionalValues.Count; iCount++)
-                                {
-                                    AdditionalElement = doc.CreateElement("td");
-                                    AdditionalElement.InnerText = AdditionalValues[iCount];
-                                    AdditionalParentElelemnt.AppendChild(AdditionalElement);
-                                }
-
-                                sTyepeOfPattern = "5";
-                                doc.SelectSingleNode("content/p[" + i + "]/table/thead").AppendChild(AdditionalParentElelemnt);
-                                sSection = doc.SelectSingleNode("content/p[" + i + "]").InnerXml;
+                            XmlNode AdditionalParentElelemnt = doc.CreateElement("tr");
+                            XmlNode AdditionalElement = null;
+                            IList<string> AdditionalValues = new List<string>();
+                            AdditionalValues.Add("EncounterID :" + sEncounterIDForPatientDetails);
+                            AdditionalValues.Add("PhysicianID :" + sPhysicianID);
+                            AdditionalValues.Add("Physician EMail Address :" + sUserEmailAddr);
+                            for (int iCount = 0; iCount < AdditionalValues.Count; iCount++)
+                            {
+                                AdditionalElement = doc.CreateElement("td");
+                                AdditionalElement.InnerText = AdditionalValues[iCount];
+                                AdditionalParentElelemnt.AppendChild(AdditionalElement);
                             }
 
-                            //Final Json formation
-                            string sSectionOutPut = string.Empty;
-                            if (sSection != string.Empty)
-                            {
-                                sSectionOutPut = GenerateJson(sSection, sTyepeOfPattern);
-                            }
-                            if (sSectionOutPut != string.Empty)
-                            {
-                                sFinalOutPut = sFinalOutPut + ((sFinalOutPut.Length > 1) ? "," : "") + sSectionOutPut;
-                            }
+                            sTyepeOfPattern = "5";
+                            doc.SelectSingleNode("content/p[" + i + "]/table/thead").AppendChild(AdditionalParentElelemnt);
+                            sSection = doc.SelectSingleNode("content/p[" + i + "]").InnerXml;
+                        }
+
+                        //Final Json formation
+                        string sSectionOutPut = string.Empty;
+                        if (sSection != string.Empty)
+                        {
+                            sSectionOutPut = GenerateJson(sSection, sTyepeOfPattern);
+                        }
+                        if (sSectionOutPut != string.Empty)
+                        {
+                            sFinalOutPut = sFinalOutPut + ((sFinalOutPut.Length > 1) ? "," : "") + sSectionOutPut;
                         }
                     }
+                }
 
-                    string strfooterProvider = "";
-                    string strSignedBy = "";
-                    string strSignedAt = "";
-                    string strSignedUserId = Encounter_signed_UserId;
-                    string strReviewedBy = "";
-                    string strReviewedAt = "";
-                    string strProviderUserId = Encounter_Reviewed_Id;
-                    string strSignedUserEmail = "";
-                    string strReviewedUserEmail = "";
+                string strfooterProvider = "";
+                string strSignedBy = "";
+                string strSignedAt = "";
+                string strSignedUserId = Encounter_signed_UserId;
+                string strReviewedBy = "";
+                string strReviewedAt = "";
+                string strProviderUserId = Encounter_Reviewed_Id;
+                string strSignedUserEmail = "";
+                string strReviewedUserEmail = "";
 
-                    if (!string.IsNullOrWhiteSpace(strSignedUserId))
+                if (!string.IsNullOrWhiteSpace(strSignedUserId))
+                {
+                    strSignedUserEmail = getUserByPHYID(strSignedUserId).FirstOrDefault()?.EMail_Address ?? "";
+                }
+
+                if (!string.IsNullOrWhiteSpace(strProviderUserId) && strProviderUserId != "0")
+                {
+                    strReviewedUserEmail = getUserByPHYID(strProviderUserId).FirstOrDefault()?.EMail_Address ?? "";
+                }
+
+                strProviderUserId = !string.IsNullOrWhiteSpace(strReviewedUserEmail) ? strProviderUserId : "";
+
+                if (Encounter_signedDate != "" && Encounter_signedDate != "01-Jan-0001 12:00 AM" && sIsphoneEncounter != "Y")
+                {
+                    strSignedAt = Encounter_signedDate;
+                    strSignedBy = Encounter_Provider_Name;
+                    strfooterProvider = "Electronically Signed by " + Encounter_Provider_Name + " at " + Encounter_signedDate;
+                }
+                else if (Encounter_signedDate != "" && Encounter_signedDate != "01-Jan-0001 12:00 AM" && sIsphoneEncounter == "Y")
+                {
+                    strSignedAt = Encounter_signedDate;
+                    if (Encounter_Provider_Name != "")
                     {
-                        strSignedUserEmail = getUserByPHYID(strSignedUserId).FirstOrDefault()?.EMail_Address ?? "";
-                    }
-
-                    if (!string.IsNullOrWhiteSpace(strProviderUserId) && strProviderUserId != "0")
-                    {
-                        strReviewedUserEmail = getUserByPHYID(strProviderUserId).FirstOrDefault()?.EMail_Address ?? "";
-                    }
-
-                    strProviderUserId = !string.IsNullOrWhiteSpace(strReviewedUserEmail) ? strProviderUserId : "";
-
-                    if (Encounter_signedDate != "" && Encounter_signedDate != "01-Jan-0001 12:00 AM" && sIsphoneEncounter != "Y")
-                    {
-                        strSignedAt = Encounter_signedDate;
                         strSignedBy = Encounter_Provider_Name;
                         strfooterProvider = "Electronically Signed by " + Encounter_Provider_Name + " at " + Encounter_signedDate;
                     }
-                    else if (Encounter_signedDate != "" && Encounter_signedDate != "01-Jan-0001 12:00 AM" && sIsphoneEncounter == "Y")
-                    {
-                        strSignedAt = Encounter_signedDate;
-                        if (Encounter_Provider_Name != "")
-                        {
-                            strSignedBy = Encounter_Provider_Name;
-                            strfooterProvider = "Electronically Signed by " + Encounter_Provider_Name + " at " + Encounter_signedDate;
-                        }
-                        else
-                        {
-                            strSignedBy = sCreatedBy;
-                            strfooterProvider = "Electronically Signed by " + sCreatedBy + " at " + Encounter_signedDate;
-                        }
-                    }
-                    //string strfooterProviderReviewed = "I " + Encounter_Reviewed_Name + " at " + Encounter_Reviewed_signedDate +
-                    //     " have reviewed the chart and agree with the management plan with the changes to the plan as indicated.";
-
-                    //string[] StaticLookupValues = new string[] { "WELLNESS NOTE FOR PROVIDER SIGN WITH CHANGES" };
-                    //StaticLookupManager staticMngr = new StaticLookupManager();
-                    string strfooterProviderReviewed = string.Empty;
-
-                    string qryStaticLookupByFieldName = "SELECT * FROM static_lookup WHERE Field_Name = 'WELLNESS NOTE FOR PROVIDER SIGN WITH CHANGES';";
-                    DataSet StaticLookupByFieldNameResult = DBConnector.ReadData(qryStaticLookupByFieldName);
-                    IList<StaticLookup> CommonList = DBConnector.DataTableToList<StaticLookup>(StaticLookupByFieldNameResult.Tables[0]) ?? new List<StaticLookup>();
-                    //IList<StaticLookup> CommonList = staticMngr.getStaticLookupByFieldName(StaticLookupValues);
-                    if (CommonList.Count > 0)
-                    {
-                        strfooterProviderReviewed = CommonList[0].Value.Replace("<Physician>", Encounter_Reviewed_Name + " at " + Encounter_Reviewed_signedDate).Replace("|", "");
-                    }
-
-
-                    if (file.Exists)
-                    {
-                        File.Delete(outputDocument);
-                    }
-                    var strBody = new StringBuilder();
-
-                    string sbTop = "";
-
-                    sbTop = sbTop + htmlString;
-
-
-
-                    string strfooterF = "";
-
-                    string strfooterPA = "";
-                    string strfooterP = "";
-                    string strFooterJson = "";
-
-                    if (Encounter_signedDate != "" && Encounter_signedDate != "01-Jan-0001 12:00 AM" && Encounter_Reviewed_signedDate != "" && Encounter_Reviewed_signedDate != "01-Jan-0001 12:00 AM" && Encounter_Reviewed_signedDate != "0001-01-01 12:00:00 AM")
-                    {
-                        strReviewedAt = Encounter_Reviewed_signedDate;
-                        strReviewedBy = Encounter_Reviewed_Name;
-
-                        strfooterPA = strfooterProvider;
-
-                        strfooterP = strfooterProviderReviewed;
-                        strfooterF = " ";
-                        //  strfooterProvider = strfooterProvider + "<br/>" + strfooterProviderReviewed;
-                    }
-                    else if (Encounter_signedDate != "" && Encounter_signedDate != "01-Jan-0001 12:00 AM" && Encounter_signedDate != "0001-01-01 12:00:00 AM")
-                    {
-                        strfooterF = strfooterProvider;
-                    }
                     else
                     {
-
-
-                        strfooterF = "";
-
+                        strSignedBy = sCreatedBy;
+                        strfooterProvider = "Electronically Signed by " + sCreatedBy + " at " + Encounter_signedDate;
                     }
-                    string sFooter = string.Empty;
-                    string sFooterNode = ",\"Footer" + "\":[";
-                    if (strfooterF == "")
-                    {
-                        sFooter = "";
-                        //sFinalOutPut = sFinalOutPut + sFooter;
-                    }
-                    else if (strfooterPA != "" && strfooterP != "")
-                    {
-                        sFooter = strfooterPA + "  " + strfooterP;
-                        //sFinalOutPut = sFinalOutPut + sFooter;
-                    }
-                    else
-                    {
-                        sFooter = strfooterF;
-                        //sFinalOutPut = sFinalOutPut + sFooter;
-                    }
-
-
-                    sFinalOutPut = sFinalOutPut + sFooterNode
-                                        + "{\"" + "text" + "\":\"" + (sFooter?.Trim() ?? "") + "\"," +
-                                        "\"" + "signedBy" + "\":\"" + (strSignedBy?.Trim() ?? "") + "\"," +
-                                        "\"" + "UserID" + "\":\"" + (strSignedUserEmail ?? "") + "\"," +
-                                        "\"" + "ProviderID" + "\":\"" + (strSignedUserId ?? "") + "\"," +
-                                        "\"" + "ReviewedBy" + "\":\"" + (strReviewedBy ?? "") + "\"," +
-                                        "\"" + "ReviewedUserID" + "\":\"" + (strReviewedUserEmail ?? "") + "\"," +
-                                        "\"" + "ReviewedProviderID" + "\":\"" + (strProviderUserId ?? "") + "\"," +
-                                        "\"" + "signedAt" + "\":\"" + (strSignedAt?.Trim() ?? "") + "\"}]";
-
-                    sFinalOutPut = sFinalOutPut + "}";
                 }
+                //string strfooterProviderReviewed = "I " + Encounter_Reviewed_Name + " at " + Encounter_Reviewed_signedDate +
+                //     " have reviewed the chart and agree with the management plan with the changes to the plan as indicated.";
+
+                //string[] StaticLookupValues = new string[] { "WELLNESS NOTE FOR PROVIDER SIGN WITH CHANGES" };
+                //StaticLookupManager staticMngr = new StaticLookupManager();
+                string strfooterProviderReviewed = string.Empty;
+
+                string qryStaticLookupByFieldName = "SELECT * FROM static_lookup WHERE Field_Name = 'WELLNESS NOTE FOR PROVIDER SIGN WITH CHANGES';";
+                DataSet StaticLookupByFieldNameResult = DBConnector.ReadData(qryStaticLookupByFieldName);
+                IList<StaticLookup> CommonList = DBConnector.DataTableToList<StaticLookup>(StaticLookupByFieldNameResult.Tables[0]) ?? new List<StaticLookup>();
+                //IList<StaticLookup> CommonList = staticMngr.getStaticLookupByFieldName(StaticLookupValues);
+                if (CommonList.Count > 0)
+                {
+                    strfooterProviderReviewed = CommonList[0].Value.Replace("<Physician>", Encounter_Reviewed_Name + " at " + Encounter_Reviewed_signedDate).Replace("|", "");
+                }
+
+
+                if (file.Exists)
+                {
+                    File.Delete(outputDocument);
+                }
+                var strBody = new StringBuilder();
+
+                string sbTop = "";
+
+                sbTop = sbTop + htmlString;
+
+
+
+                string strfooterF = "";
+
+                string strfooterPA = "";
+                string strfooterP = "";
+                string strFooterJson = "";
+
+                if (Encounter_signedDate != "" && Encounter_signedDate != "01-Jan-0001 12:00 AM" && Encounter_Reviewed_signedDate != "" && Encounter_Reviewed_signedDate != "01-Jan-0001 12:00 AM" && Encounter_Reviewed_signedDate != "0001-01-01 12:00:00 AM")
+                {
+                    strReviewedAt = Encounter_Reviewed_signedDate;
+                    strReviewedBy = Encounter_Reviewed_Name;
+
+                    strfooterPA = strfooterProvider;
+
+                    strfooterP = strfooterProviderReviewed;
+                    strfooterF = " ";
+                    //  strfooterProvider = strfooterProvider + "<br/>" + strfooterProviderReviewed;
+                }
+                else if (Encounter_signedDate != "" && Encounter_signedDate != "01-Jan-0001 12:00 AM" && Encounter_signedDate != "0001-01-01 12:00:00 AM")
+                {
+                    strfooterF = strfooterProvider;
+                }
+                else
+                {
+
+
+                    strfooterF = "";
+
+                }
+                string sFooter = string.Empty;
+                string sFooterNode = ",\"Footer" + "\":[";
+                if (strfooterF == "")
+                {
+                    sFooter = "";
+                    //sFinalOutPut = sFinalOutPut + sFooter;
+                }
+                else if (strfooterPA != "" && strfooterP != "")
+                {
+                    sFooter = strfooterPA + "  " + strfooterP;
+                    //sFinalOutPut = sFinalOutPut + sFooter;
+                }
+                else
+                {
+                    sFooter = strfooterF;
+                    //sFinalOutPut = sFinalOutPut + sFooter;
+                }
+
+
+                sFinalOutPut = sFinalOutPut + sFooterNode
+                                    + "{\"" + "text" + "\":\"" + (sFooter?.Trim() ?? "") + "\"," +
+                                    "\"" + "signedBy" + "\":\"" + (strSignedBy?.Trim() ?? "") + "\"," +
+                                    "\"" + "UserID" + "\":\"" + (strSignedUserEmail ?? "") + "\"," +
+                                    "\"" + "ProviderID" + "\":\"" + (strSignedUserId ?? "") + "\"," +
+                                    "\"" + "ReviewedBy" + "\":\"" + (strReviewedBy ?? "") + "\"," +
+                                    "\"" + "ReviewedUserID" + "\":\"" + (strReviewedUserEmail ?? "") + "\"," +
+                                    "\"" + "ReviewedProviderID" + "\":\"" + (strProviderUserId ?? "") + "\"," +
+                                    "\"" + "signedAt" + "\":\"" + (strSignedAt?.Trim() ?? "") + "\"}]";
+
+                sFinalOutPut = sFinalOutPut + "}";
+                //}
 
 
 
@@ -567,10 +573,16 @@ namespace Acurus.Capella.UI.WebServices
                     ilstBlob_Progress_Note[0].Status = "Completed";
                     ilstBlob_Progress_Note[0].Progress_Note_Json = bytesKeep;
                     ilstBlob_Progress_Note[0].Error_Description = string.Empty;
-                    ilstBlob_Progress_Note[0].Created_By = "";
-                    ilstBlob_Progress_Note[0].Created_Date_And_Time = DateTime.UtcNow;
-
-
+                    if (isModified)
+                    {
+                        ilstBlob_Progress_Note[0].Modified_By = "";
+                        ilstBlob_Progress_Note[0].Modified_Date_And_Time = DateTime.UtcNow;
+                    }
+                    else
+                    {
+                        ilstBlob_Progress_Note[0].Created_By = "";
+                        ilstBlob_Progress_Note[0].Created_Date_And_Time = DateTime.UtcNow;
+                    }
                     BlobProgressNoteMngr.SaveBlobProgressNotesWithTransaction(ilstBlob_Progress_Note, string.Empty);
                 }
                 //return "{\"EncounterID\":" + sEncounterID + ",\"status\":\"Completed\",\"Description\":\"Request is available in Blob Progress Note table\"}";
@@ -584,8 +596,16 @@ namespace Acurus.Capella.UI.WebServices
                     ilstBlob_Progress_Note[0].Progress_Note_Json = null;
                     ilstBlob_Progress_Note[0].Status = "Error";
                     ilstBlob_Progress_Note[0].Error_Description = "Message : " + eex?.Message + "Stack Trace : " + eex?.StackTrace;
-                    ilstBlob_Progress_Note[0].Created_By = "";
-                    ilstBlob_Progress_Note[0].Created_Date_And_Time = DateTime.UtcNow;
+                    if (isModified)
+                    {
+                        ilstBlob_Progress_Note[0].Modified_By = "";
+                        ilstBlob_Progress_Note[0].Modified_Date_And_Time = DateTime.UtcNow;
+                    }
+                    else
+                    {
+                        ilstBlob_Progress_Note[0].Created_By = "";
+                        ilstBlob_Progress_Note[0].Created_Date_And_Time = DateTime.UtcNow;
+                    }
                     BlobProgressNoteMngr.SaveBlobProgressNotesWithTransaction(ilstBlob_Progress_Note, string.Empty);
                     throw new Exception("Error : " + eex?.Message);
                 }
@@ -593,7 +613,7 @@ namespace Acurus.Capella.UI.WebServices
             }
         }
 
-        public string GenerateJson(string sSection, string sType)
+        private string GenerateJson(string sSection, string sType)
         {
             string[] heading = { "<br />" };
             string[] PlanTag = { "<plan>" };
@@ -982,6 +1002,18 @@ namespace Acurus.Capella.UI.WebServices
             return DateTime.MinValue.ToString("dd-MMM-yyyy hh:mm tt");
         }
 
+        private bool VerifyToken()
+        {
+            var authorization = Request.Headers.GetValues("Authorization");
+            string token = authorization.Any() ? authorization.FirstOrDefault() : "";
+            var endPointToken = ConfigurationSettings.AppSettings["EndPointToken"] ?? "";
+            if (token == null || string.IsNullOrEmpty(token.ToString()) || string.IsNullOrEmpty(endPointToken) || token.ToString() != endPointToken)
+            {
+                return false;
+            }
+            return true;
+        }
+
         private IList<User> getUserByPHYID(string sProviderUserID)
         {
             string qryUserByPHYID = "SELECT EMail_Address FROM User WHERE Physician_Library_ID = {0};";
@@ -993,12 +1025,14 @@ namespace Acurus.Capella.UI.WebServices
     public static class DBConnector
     {
         static MySqlDataAdapter MyDataAdap = null;
+
         private static string ReadConnection()
         {
             string ConnectionData;
             ConnectionData = ConfigurationManager.ConnectionStrings["con"].ConnectionString;
             return ConnectionData;
         }
+
         public static DataSet ReadData(string Query)
         {
             DataSet dsReturn = new DataSet();
@@ -1052,7 +1086,20 @@ namespace Acurus.Capella.UI.WebServices
                                     if (row[property.Name] == DBNull.Value)
                                         property.SetValue(item, null, null);
                                     else
-                                        property.SetValue(item, row[property.Name], null);
+                                    {
+                                        var value = row[property.Name];
+                                        if (value is MySql.Data.Types.MySqlDateTime mysqlDateTime)
+                                        {
+                                            if (!mysqlDateTime.IsValidDateTime)
+                                                property.SetValue(item, null, null);
+                                            else
+                                                property.SetValue(item, mysqlDateTime.GetDateTime(), null);
+                                        }
+                                        else
+                                        {
+                                            property.SetValue(item, value, null);
+                                        }
+                                    }
                                 }
                             }
                         }
