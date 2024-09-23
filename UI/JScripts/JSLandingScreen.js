@@ -528,6 +528,11 @@ function CheckLastModified(sDates) {
 }
 
 function AlertUser() {
+    //CAP-2504
+    if ((window.location?.origin??"") == "https://chart-stage.akidolabs.com") {
+        document.getElementById("hdnbtnLogin").click();
+    }
+    else {
     var Continue = DisplayErrorMessage('010021');
     if (Continue == true) {
         document.getElementById("hdnbtnLogin").click();
@@ -535,6 +540,7 @@ function AlertUser() {
     else if (Continue == false) {
         window.location.href = "frmLoginNew.aspx";
     }
+}
 }
 
 
