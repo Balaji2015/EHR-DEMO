@@ -556,6 +556,11 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
         IRCopiaDeduplicateLogManager GetRCopiaDeduplicateLogManager();
         IRCopiaDeduplicateLogManager GetRCopiaDeduplicateLogManager(INHibernateSession session);
 
+        IBlobProgressNoteManager GetBlobProgressNoteManager();
+        IBlobProgressNoteManager GetBlobProgressNoteManager(INHibernateSession session);
+
+        ICDCEventTrackerManager GetCDCEventTrackerManager();
+        ICDCEventTrackerManager GetCDCEventTrackerManager(INHibernateSession session);
     }
 
     public class ManagerFactory : IManagerFactory
@@ -2267,6 +2272,22 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
         public IRCopiaDeduplicateLogManager GetRCopiaDeduplicateLogManager(INHibernateSession session)
         {
             return new RCopiaDeduplicateLogManager(session);
+        }
+        public IBlobProgressNoteManager GetBlobProgressNoteManager()
+        {
+            return new BlobProgressNoteManager();
+        }
+        public IBlobProgressNoteManager GetBlobProgressNoteManager(INHibernateSession session)
+        {
+            return new BlobProgressNoteManager(session);
+        }
+        public ICDCEventTrackerManager GetCDCEventTrackerManager()
+        {
+            return new CDCEventTrackerManager();
+        }
+        public ICDCEventTrackerManager GetCDCEventTrackerManager(INHibernateSession session)
+        {
+            return new CDCEventTrackerManager(session);
         }
         #endregion
     }

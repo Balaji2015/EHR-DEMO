@@ -1,19 +1,20 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <hibernate-mapping xmlns="urn:nhibernate-mapping-2.2" namespace="Acurus.Capella.Core.DomainObjects" assembly="Acurus.Capella">
-	<class name="Acurus.Capella.Core.DomainObjects.Blob_Progress_Note, Acurus.Capella.Core" table="cdc_progress_note" lazy="true">
-		<id name="Id" column="Encounter_ID">
-			<generator class="assigned" />
+	<class name="Acurus.Capella.Core.DomainObjects.CDCEventTracker, Acurus.Capella.Core" table="cdc_entity_tracker" lazy="true">
+		<id name="Id" column="CDC_Entity_Tracker_ID">
+			<generator class="identity" />
 		</id>
 		<version name="Version"/>
 
 		<property name="Human_ID" column="Human_ID" />
-		<property name="Progress_Note_Json" column="Progress_Note_Json" />
+		<property name="Entity_ID" column="Entity_ID" />
+		<property name="Entity_Name" column="Entity_Name" />
 		<property name="Status" column="Status" />
 		<property name="Error_Description" column="Error_Description" />
 		<property name="Created_By" column="Created_By" />
 		<property name="Created_Date_And_Time" column="Created_Date_And_Time" />
 		<property name="Modified_By" column="Modified_By" />
 		<property name="Modified_Date_And_Time" column="Modified_Date_And_Time" />
-
 	</class>
 </hibernate-mapping>
+

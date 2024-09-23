@@ -132,6 +132,7 @@
     <Compile Include="DomainObjects\CarePlan.cs" />
     <Compile Include="DomainObjects\CarePlanLookup.cs" />
     <Compile Include="DomainObjects\Carrier.cs" />
+    <Compile Include="DomainObjects\CDCEventTracker.cs" />
     <Compile Include="DomainObjects\CDSRuleMaster.cs" />
     <Compile Include="DomainObjects\ChargeHeader.cs">
       <SubType>Code</SubType>
@@ -737,6 +738,7 @@
     <EmbeddedResource Include="HbmMaps\CQMSummary.hbm.xml" />
     <EmbeddedResource Include="HbmMaps\ApplicationAccessLog.hbm.xml" />
     <EmbeddedResource Include="HbmMaps\Encounter_Blob.hbm.xml" />
+    <EmbeddedResource Include="HbmMaps\CDCEventTracker.hbm.xml" />
     <EmbeddedResource Include="HbmMaps\Blob_Progress_Note.hbm.xml" />
     <Content Include="HbmMaps\ErrorLog.hbm.xml" />
     <EmbeddedResource Include="HbmMaps\ModifierLibrary.hbm.xml" />

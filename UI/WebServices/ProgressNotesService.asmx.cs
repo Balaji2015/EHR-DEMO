@@ -31,19 +31,60 @@ namespace Acurus.Capella.UI.WebServices
     // [System.Web.Script.Services.ScriptService]
     public class ProgressNotesService : System.Web.Services.WebService
     {
+        [WebMethod]
+        public string LoadCapellaHistoryData(string sHumanID, string sCategory = "")
+        {
+            try
+            {
+                if (sHumanID == "")
+                {
+                    return "{\"HumanID\":" + sHumanID + ",\"status\":\"ValidationError\",\"ErrorDescription\":\"HumanID is not valid. Cannot generate progress note.\"}";
+                }
 
-        
+                if (sCategory.ToUpper() == "" || sCategory.ToUpper() == "Encounters")
+                {
+                    string encounterByHumanIDQury = "SELECT enc.Encounter_ID FROM encounter enc JOIN wf_object wf ON wf.Obj_System_Id = enc.Encounter_ID WHERE enc.Human_ID = " + sHumanID + " AND wf.Current_Process = 'DOCUMENT_COMPLETE' UNION ALL SELECT enc.Encounter_ID FROM encounter_arc enc JOIN wf_object_arc wf ON wf.Obj_System_Id = enc.Encounter_ID WHERE enc.Human_ID = " + sHumanID + " AND wf.Current_Process = 'DOCUMENT_COMPLETE';";
+
+                    DataSet result = DBConnector.ReadData(encounterByHumanIDQury);
+
+                    if (result.Tables.Count > 0 && result.Tables[0].Rows.Count > 0)
+                    {
+                        foreach (DataRow row in result.Tables[0].Rows)
+                        {
+                            string encounter_ID = row["Encounter_ID"].ToString();
+                            Task.Run(() => { GenerateJsonNotes(sHumanID, encounter_ID); });
+                        }
+                    }
+                    //EncounterManager encounterManager = new EncounterManager();
+                    //IList<Encounter> lstEncounter = encounterManager.GetEncounterByHumanIDIncludeArchive(Convert.ToUInt64(sHumanID));
+                }
+
+                if (sCategory.ToUpper() == "" || sCategory.ToUpper() == "Files")
+                {
+
+                }
+
+                if (sCategory.ToUpper() == "" || sCategory.ToUpper() == "LabResults")
+                {
+
+                }
+            }
+            catch (Exception ex)
+            {
+                return "{\"HumanID\":" + sHumanID + ",\"status\":\"Error\",\"ErrorDescription\":\"Error in processing the request. " + ex.Message + "\"}";
+            }
+            return "{\"HumanID\":" + sHumanID + ",\"status\":\"Acknowledged\"}";
+        }
+
         [WebMethod]
         public string LoadProgressNotes(string sHumanID, string sEncounterID)
         {
-            string sJson = string.Empty;
             WFObjectManager wfObjMngr = new WFObjectManager();
             try
             {
                 if (sEncounterID == "")
                 {
-                    sJson = "{\"EncounterID\":" + sEncounterID + ",\"status\":\"ValidationError\",\"ErrorDescription\":\"EncounterID is not valid. Cannot generate progress note.\"}";
-                    return sJson;
+                    return "{\"EncounterID\":" + sEncounterID + ",\"status\":\"ValidationError\",\"ErrorDescription\":\"EncounterID is not valid. Cannot generate progress note.\"}";
                 }
                 WFObject DocumentationWfObject = wfObjMngr.GetByObjectSystemId(Convert.ToUInt64(sEncounterID), "DOCUMENTATION");
 
@@ -54,28 +95,24 @@ namespace Acurus.Capella.UI.WebServices
 
                 if (DocumentationWfObject == null)
                 {
-                    sJson = "{\"EncounterID\":" + sEncounterID + ",\"status\":\"ValidationError\",\"ErrorDescription\":\"EncounterID is not present in DB. Cannot generate progress note.\"}";
-                    return sJson;
+                    return "{\"EncounterID\":" + sEncounterID + ",\"status\":\"ValidationError\",\"ErrorDescription\":\"EncounterID is not present in DB. Cannot generate progress note.\"}";
                 }
 
                 if (DocumentationWfObject.Current_Process != "DOCUMENT_COMPLETE")
                 {
-                    sJson = "{\"EncounterID\":" + sEncounterID + ",\"status\":\"ValidationError\",\"ErrorDescription\":\"Encounter is not in DOCUMENT_COMPLETE. Cannot generate progress note.\"}";
-                    return sJson;
+                    return "{\"EncounterID\":" + sEncounterID + ",\"status\":\"ValidationError\",\"ErrorDescription\":\"Encounter is not in DOCUMENT_COMPLETE. Cannot generate progress note.\"}";
                 }
-                sJson = GenerateJsonNotes(sHumanID, sEncounterID);
+                Task.Run(() => { GenerateJsonNotes(sHumanID, sEncounterID); });
             }
             catch (Exception ex)
             {
-                sJson = "{\"EncounterID\":" + sEncounterID + ",\"status\":\"Error\",\"ErrorDescription\":\"Error in processing the request. " + ex.Message + "\"}";
-                return sJson;
+                return "{\"EncounterID\":" + sEncounterID + ",\"status\":\"Error\",\"ErrorDescription\":\"Error in processing the request. " + ex.Message + "\"}";
             }
-            return sJson;
+            return "{\"HumanID\":" + sHumanID + ",\"EncounterID\":" + sEncounterID + ",\"status\":\"Acknowledged\"}";
         }
-        [WebMethod]
-        public string GenerateJsonNotes(string sHumanID, string sEncounterID)
-        {
 
+        public void GenerateJsonNotes(string sHumanID, string sEncounterID)
+        {
             IList<Blob_Progress_Note> ilstBlob_Progress_Note = new List<Blob_Progress_Note>();
             BlobProgressNoteManager BlobProgressNoteMngr = new BlobProgressNoteManager();
             EncounterBlobManager EncounterBlobMngr = new EncounterBlobManager();
@@ -84,7 +121,10 @@ namespace Acurus.Capella.UI.WebServices
             HumanBlobManager HumanBlobMngr = new HumanBlobManager();
             IList<Human_Blob> ilstHumanBlob = new List<Human_Blob>();
             Blob_Progress_Note objBlobProgressNotesInitiated = new Blob_Progress_Note();
-            ilstBlob_Progress_Note = BlobProgressNoteMngr.GetBlobProgressNotes(Convert.ToUInt64(sEncounterID));
+            //ilstBlob_Progress_Note = BlobProgressNoteMngr.GetBlobProgressNotes(Convert.ToUInt64(sEncounterID));
+            string blobProgressNotesQry = "SELECT Encounter_ID AS Id, Human_ID, Progress_Note_Json, Status, Error_Description, Created_By, Created_Date_And_Time, Modified_By, Modified_Date_And_Time, Version FROM blob_progress_note WHERE Encounter_ID = {0};";
+            DataSet BlobProgressNotesResult = DBConnector.ReadData(string.Format(blobProgressNotesQry, sEncounterID));
+            ilstBlob_Progress_Note = DBConnector.DataTableToList<Blob_Progress_Note>(BlobProgressNotesResult.Tables[0]) ?? new List<Blob_Progress_Note>();
             try
             {
                 //Initiate save call
@@ -106,7 +146,10 @@ namespace Acurus.Capella.UI.WebServices
 
                 if (sEncounterID != "")
                 {
-                    ilstEncounterBlob = EncounterBlobMngr.GetEncounterBlob(Convert.ToUInt64(sEncounterID));
+                    //ilstEncounterBlob = EncounterBlobMngr.GetEncounterBlob(Convert.ToUInt64(sEncounterID));
+                    string encounterBlobQry = "SELECT Encounter_XML,Human_XML FROM blob_encounter WHERE Encounter_ID = {0};";
+                    DataSet encounterBlobResult = DBConnector.ReadData(string.Format(encounterBlobQry, sEncounterID));
+                    ilstEncounterBlob = DBConnector.DataTableToList<Encounter_Blob>(encounterBlobResult.Tables[0]);
                 }
                 //if (sHumanID != "")
                 //{
@@ -133,13 +176,10 @@ namespace Acurus.Capella.UI.WebServices
 
                 sIsPhoneEncounter = xmlEncounterDoc.SelectSingleNode("notes/Modules/EncounterList/Encounter").Attributes.GetNamedItem("Is_Phone_Encounter").Value.ToUpper();
 
-                WFObjectManager wfObjMngr = new WFObjectManager();
-                WFObject DocumentationWfObject = wfObjMngr.GetByObjectSystemId(Convert.ToUInt64(sEncounterID), "DOCUMENTATION");
-
-                if (DocumentationWfObject != null && DocumentationWfObject.Current_Process == string.Empty)
-                {
-                    DocumentationWfObject = wfObjMngr.GetWfObjArchiveByObjectSystemId(Convert.ToUInt64(sEncounterID), "DOCUMENTATION");
-                }
+                string objectSystemIdQry = "SELECT Current_Process FROM WF_Object WHERE Obj_System_Id = {0} AND Obj_Type = 'DOCUMENTATION' UNION ALL SELECT Current_Process FROM WF_Object_arc WHERE Obj_System_Id = {0} AND Obj_Type = 'DOCUMENTATION';";
+                DataSet ObjectSystemResult = DBConnector.ReadData(string.Format(objectSystemIdQry, sEncounterID));
+                WFObject DocumentationWfObject = new WFObject();
+                DocumentationWfObject = DBConnector.DataTableToList<WFObject>(ObjectSystemResult.Tables[0]).FirstOrDefault() ?? new WFObject();
 
                 if (DocumentationWfObject.Current_Process == "DOCUMENT_COMPLETE" || sIsPhoneEncounter.ToUpper() == "Y")
                 {
@@ -149,7 +189,10 @@ namespace Acurus.Capella.UI.WebServices
                     }
                     else
                     {
-                        ilstHumanBlob = HumanBlobMngr.GetHumanBlob(Convert.ToUInt64(sHumanID));
+                        string qryHumanBlob = "SELECT * FROM blob_human where Human_ID = {0};";
+                        DataSet HumanBlobResult = DBConnector.ReadData(string.Format(qryHumanBlob, sHumanID));
+                        ilstHumanBlob = DBConnector.DataTableToList<Human_Blob>(HumanBlobResult.Tables[0]);
+                        //ilstHumanBlob = HumanBlobMngr.GetHumanBlob(Convert.ToUInt64(sHumanID));
                         if (ilstHumanBlob != null && ilstHumanBlob.Count > 0 && ilstHumanBlob[0].Human_XML != null)
                         {
                             sXMLHumanDoc = System.Text.Encoding.UTF8.GetString(ilstHumanBlob[0].Human_XML);
@@ -189,6 +232,7 @@ namespace Acurus.Capella.UI.WebServices
 
 
                     string Encounter_signedDate = "";
+                    string Encounter_signed_UserId = "";
                     string Encounter_Provider_Name = "";
                     string Encounter_Reviewed_signedDate = "";
                     string Encounter_Reviewed_Name = "";
@@ -202,24 +246,29 @@ namespace Acurus.Capella.UI.WebServices
                     {
                         foreach (XElement Encounter in elements.Elements())
                         {
-                            DateTime dt = Convert.ToDateTime(Encounter.Attribute("Encounter_Provider_Review_Signed_Date").Value);
-                            Encounter_Reviewed_signedDate = UtilityManager.ConvertToLocal(dt).ToString("dd-MMM-yyyy hh:mm tt");
-
-                            DateTime dtPro = Convert.ToDateTime(Encounter.Attribute("Encounter_Provider_Signed_Date").Value);
-                            Encounter_signedDate = UtilityManager.ConvertToLocal(dtPro).ToString("dd-MMM-yyyy hh:mm tt");
+                            Encounter_Reviewed_signedDate = Encounter.Attribute("Encounter_Provider_Review_Signed_Date").Value;
+                            if (Encounter_Reviewed_signedDate != "0001-01-01 12:00:00 AM")
+                            {
+                                Encounter_Reviewed_signedDate = ConvertToLocal(Encounter_Reviewed_signedDate);
+                            }
+                            Encounter_signedDate = Encounter.Attribute("Encounter_Provider_Signed_Date").Value;
+                            if (Encounter_signedDate != "0001-01-01 12:00:00 AM")
+                            {
+                                Encounter_signedDate = ConvertToLocal(Encounter_signedDate);
+                            }
 
                             Encounter_Reviewed_Id = Encounter.Attribute("Encounter_Provider_Review_ID").Value;
                             sIsphoneEncounter = Encounter.Attribute("Is_Phone_Encounter").Value;
                             sCreatedBy = Encounter.Attribute("Created_By").Value;
+                            Encounter_signed_UserId = Encounter.Attribute("Encounter_Provider_ID").Value;
                         }
 
                         //if (Encounter_signedDate == "" || Encounter_signedDate == "01-Jan-0001 12:00:00 AM")
                         //{
-                        // foreach (XElement Encounter in elements.Elements())
-                        // {
-                        //     DateTime dt = Convert.ToDateTime(Encounter.Attribute("Encounter_Provider_Signed_Date").Value);
-                        //     Encounter_signedDate = UtilityManager.ConvertToLocal(dt).ToString("dd-MMM-yyyy hh:mm:ss tt");
-                        //}
+                        //    foreach (XElement Encounter in elements.Elements())
+                        //    {
+                        //        Encounter_signedDate = ConvertToLocal(Encounter.Attribute("Encounter_Provider_Signed_Date").Value).ToString("dd-MMM-yyyy hh:mm:ss tt");
+                        //    }
                         //}
                     }
                     //Provider Name 
@@ -266,7 +315,9 @@ namespace Acurus.Capella.UI.WebServices
                         xmldoc.SelectSingleNode("notes/Modules/EncounterList/Encounter")?.Attributes?.GetNamedItem("Encounter_ID")?.Value : "";
                     UserManager Usermngr = new UserManager();
                     IList<User> ilstUser = new List<User>();
-                    ilstUser = Usermngr.getUserByPHYID(Convert.ToUInt64(sPhysicianID));
+
+                    ilstUser = getUserByPHYID(sPhysicianID);
+                    //ilstUser = Usermngr.getUserByPHYID(Convert.ToUInt64(sPhysicianID));
                     string sUserEmailAddr = (ilstUser.Count > 0) ? ilstUser[0].EMail_Address : "";
 
                     //Generate Json
@@ -274,7 +325,6 @@ namespace Acurus.Capella.UI.WebServices
                     string xmls = htmlString.Replace("&nbsp;", "").Replace("&bull;", "").Replace("&amp;", "");
                     xmls = "<?xml version=\"1.0\" encoding=\"utf-8\"?> <content>" + xmls + "</content>";
                     htmlString = htmlString.Replace("<subtab>", "").Replace("</subtab>", "").Replace("<plan>", "").Replace("</plan>", "");
-
                     //Cap - 2508
                     while (htmlString.Contains("<AddendumProviderID>"))
                     {
@@ -282,7 +332,6 @@ namespace Acurus.Capella.UI.WebServices
                         string NewInput2 = htmlString.Substring(htmlString.IndexOf("<AddendumPhysicianEMailAddress>"), (htmlString.IndexOf("</AddendumPhysicianEMailAddress>") - htmlString.IndexOf("<AddendumPhysicianEMailAddress>") + 32));
                         htmlString = htmlString.Replace(NewInput, "").Replace(NewInput2, "");
                     }
-
                     while (htmlString.Contains("<AddendumReviewProviderID>"))
                     {
                         string NewInput = htmlString.Substring(htmlString.IndexOf("<AddendumReviewProviderID>"), (htmlString.IndexOf("</AddendumReviewProviderID>") - htmlString.IndexOf("<AddendumReviewProviderID>") + 27));
@@ -290,7 +339,6 @@ namespace Acurus.Capella.UI.WebServices
                         htmlString = htmlString.Replace(NewInput, "").Replace(NewInput2, "");
                     }
                     //Cap - 2508 End
-
                     //Jira CAP-1015
                     htmlString = htmlString.Replace("amp;", "");
                     XmlDocument doc = new XmlDocument();
@@ -309,26 +357,26 @@ namespace Acurus.Capella.UI.WebServices
                                 && doc.SelectSingleNode("content/p[" + i + "]/i")?.InnerXml == null
                                 && doc.SelectSingleNode("content/p[" + i + "]/b/i")?.InnerXml == null
                                 && doc.SelectSingleNode("content/p[" + i + "]/table")?.InnerXml == null
-                                && doc.SelectSingleNode("content/p[" + i + "]/font/b/i")?.InnerXml == null) 
+                                && doc.SelectSingleNode("content/p[" + i + "]/font/b/i")?.InnerXml == null)
                             {
 
                                 sTyepeOfPattern = "1";
                                 sSection = doc.SelectSingleNode("content/p[" + i + "]").InnerXml;
                             }
                             //// This patern Only for Screening and prev screening - Content is present under Section and multiple level sub sections & heading
-                            else if (doc.SelectSingleNode("content/p[" + i + "]/i")?.InnerXml != null || doc.SelectSingleNode("content/p[" + i + "]/b/i")?.InnerXml != null) 
+                            else if (doc.SelectSingleNode("content/p[" + i + "]/i")?.InnerXml != null || doc.SelectSingleNode("content/p[" + i + "]/b/i")?.InnerXml != null)
                             {
                                 sTyepeOfPattern = "2";
                                 sSection = doc.SelectSingleNode("content/p[" + i + "]").InnerXml;
                             }
                             // This patern Only for Individualized Care Plan - Content is present under Section and multiple level sub sections & heading. But content has exta tags like font
-                            else if (doc.SelectSingleNode("content/p[" + i + "]/font/b/i")?.InnerXml != null) 
+                            else if (doc.SelectSingleNode("content/p[" + i + "]/font/b/i")?.InnerXml != null)
                             {
                                 sTyepeOfPattern = "3";
                                 sSection = doc.SelectSingleNode("content/p[" + i + "]").InnerXml;
                             }
                             // This pattern for table formate in the progress note - Content is in Table format
-                            else if (i != 1 && doc.SelectSingleNode("content/p[" + i + "]/table")?.InnerXml != null) 
+                            else if (i != 1 && doc.SelectSingleNode("content/p[" + i + "]/table")?.InnerXml != null)
                             {
                                 sTyepeOfPattern = "4";
                                 sSection = doc.SelectSingleNode("content/p[" + i + "]").InnerXml;
@@ -371,30 +419,62 @@ namespace Acurus.Capella.UI.WebServices
                     }
 
                     string strfooterProvider = "";
+                    string strSignedBy = "";
+                    string strSignedAt = "";
+                    string strSignedUserId = Encounter_signed_UserId;
+                    string strReviewedBy = "";
+                    string strReviewedAt = "";
+                    string strProviderUserId = Encounter_Reviewed_Id;
+                    string strSignedUserEmail = "";
+                    string strReviewedUserEmail = "";
+
+                    if (!string.IsNullOrWhiteSpace(strSignedUserId))
+                    {
+                        strSignedUserEmail = getUserByPHYID(strSignedUserId).FirstOrDefault()?.EMail_Address ?? "";
+                    }
+
+                    if (!string.IsNullOrWhiteSpace(strProviderUserId) && strProviderUserId != "0")
+                    {
+                        strReviewedUserEmail = getUserByPHYID(strProviderUserId).FirstOrDefault()?.EMail_Address ?? "";
+                    }
+
+                    strProviderUserId = !string.IsNullOrWhiteSpace(strReviewedUserEmail) ? strProviderUserId : "";
+
                     if (Encounter_signedDate != "" && Encounter_signedDate != "01-Jan-0001 12:00 AM" && sIsphoneEncounter != "Y")
                     {
+                        strSignedAt = Encounter_signedDate;
+                        strSignedBy = Encounter_Provider_Name;
                         strfooterProvider = "Electronically Signed by " + Encounter_Provider_Name + " at " + Encounter_signedDate;
                     }
                     else if (Encounter_signedDate != "" && Encounter_signedDate != "01-Jan-0001 12:00 AM" && sIsphoneEncounter == "Y")
                     {
+                        strSignedAt = Encounter_signedDate;
                         if (Encounter_Provider_Name != "")
                         {
+                            strSignedBy = Encounter_Provider_Name;
                             strfooterProvider = "Electronically Signed by " + Encounter_Provider_Name + " at " + Encounter_signedDate;
                         }
                         else
                         {
+                            strSignedBy = sCreatedBy;
                             strfooterProvider = "Electronically Signed by " + sCreatedBy + " at " + Encounter_signedDate;
                         }
                     }
                     //string strfooterProviderReviewed = "I " + Encounter_Reviewed_Name + " at " + Encounter_Reviewed_signedDate +
                     //     " have reviewed the chart and agree with the management plan with the changes to the plan as indicated.";
 
-                    string[] StaticLookupValues = new string[] { "WELLNESS NOTE FOR PROVIDER SIGN WITH CHANGES" };
-                    StaticLookupManager staticMngr = new StaticLookupManager();
+                    //string[] StaticLookupValues = new string[] { "WELLNESS NOTE FOR PROVIDER SIGN WITH CHANGES" };
+                    //StaticLookupManager staticMngr = new StaticLookupManager();
                     string strfooterProviderReviewed = string.Empty;
-                    IList<StaticLookup> CommonList = staticMngr.getStaticLookupByFieldName(StaticLookupValues);
+
+                    string qryStaticLookupByFieldName = "SELECT * FROM static_lookup WHERE Field_Name = 'WELLNESS NOTE FOR PROVIDER SIGN WITH CHANGES';";
+                    DataSet StaticLookupByFieldNameResult = DBConnector.ReadData(qryStaticLookupByFieldName);
+                    IList<StaticLookup> CommonList = DBConnector.DataTableToList<StaticLookup>(StaticLookupByFieldNameResult.Tables[0]) ?? new List<StaticLookup>();
+                    //IList<StaticLookup> CommonList = staticMngr.getStaticLookupByFieldName(StaticLookupValues);
                     if (CommonList.Count > 0)
+                    {
                         strfooterProviderReviewed = CommonList[0].Value.Replace("<Physician>", Encounter_Reviewed_Name + " at " + Encounter_Reviewed_signedDate).Replace("|", "");
+                    }
 
 
                     if (file.Exists)
@@ -413,15 +493,20 @@ namespace Acurus.Capella.UI.WebServices
 
                     string strfooterPA = "";
                     string strfooterP = "";
-                    if (Encounter_signedDate != "" && Encounter_signedDate != "01-Jan-0001 12:00 AM" && Encounter_Reviewed_signedDate != "" && Encounter_Reviewed_signedDate != "01-Jan-0001 12:00 AM")
+                    string strFooterJson = "";
+
+                    if (Encounter_signedDate != "" && Encounter_signedDate != "01-Jan-0001 12:00 AM" && Encounter_Reviewed_signedDate != "" && Encounter_Reviewed_signedDate != "01-Jan-0001 12:00 AM" && Encounter_Reviewed_signedDate != "0001-01-01 12:00:00 AM")
                     {
+                        strReviewedAt = Encounter_Reviewed_signedDate;
+                        strReviewedBy = Encounter_Reviewed_Name;
+
                         strfooterPA = strfooterProvider;
 
                         strfooterP = strfooterProviderReviewed;
                         strfooterF = " ";
                         //  strfooterProvider = strfooterProvider + "<br/>" + strfooterProviderReviewed;
                     }
-                    else if (Encounter_signedDate != "" && Encounter_signedDate != "01-Jan-0001 12:00 AM")
+                    else if (Encounter_signedDate != "" && Encounter_signedDate != "01-Jan-0001 12:00 AM" && Encounter_signedDate != "0001-01-01 12:00:00 AM")
                     {
                         strfooterF = strfooterProvider;
                     }
@@ -433,24 +518,38 @@ namespace Acurus.Capella.UI.WebServices
 
                     }
                     string sFooter = string.Empty;
+                    string sFooterNode = ",\"Footer" + "\":[";
                     if (strfooterF == "")
                     {
-                        sFooter = ",\"Footer" + "\":[]";
-                        sFinalOutPut = sFinalOutPut + sFooter;
+                        sFooter = "";
+                        //sFinalOutPut = sFinalOutPut + sFooter;
                     }
                     else if (strfooterPA != "" && strfooterP != "")
                     {
-                        sFooter = ",\"Footer" + "\":[\"" + strfooterPA + "  " + strfooterP + "\"]";
-                        sFinalOutPut = sFinalOutPut + sFooter;
+                        sFooter = strfooterPA + "  " + strfooterP;
+                        //sFinalOutPut = sFinalOutPut + sFooter;
                     }
                     else
                     {
-                        sFooter = ",\"Footer" + "\":[\"" + strfooterF + "\"]";
-                        sFinalOutPut = sFinalOutPut + sFooter;
+                        sFooter = strfooterF;
+                        //sFinalOutPut = sFinalOutPut + sFooter;
                     }
+
+
+                    sFinalOutPut = sFinalOutPut + sFooterNode
+                                        + "{\"" + "text" + "\":\"" + (sFooter?.Trim() ?? "") + "\"," +
+                                        "\"" + "signedBy" + "\":\"" + (strSignedBy?.Trim() ?? "") + "\"," +
+                                        "\"" + "UserID" + "\":\"" + (strSignedUserEmail ?? "") + "\"," +
+                                        "\"" + "ProviderID" + "\":\"" + (strSignedUserId ?? "") + "\"," +
+                                        "\"" + "ReviewedBy" + "\":\"" + (strReviewedBy ?? "") + "\"," +
+                                        "\"" + "ReviewedUserID" + "\":\"" + (strReviewedUserEmail ?? "") + "\"," +
+                                        "\"" + "ReviewedProviderID" + "\":\"" + (strProviderUserId ?? "") + "\"," +
+                                        "\"" + "signedAt" + "\":\"" + (strSignedAt?.Trim() ?? "") + "\"}]";
 
                     sFinalOutPut = sFinalOutPut + "}";
                 }
+
+
 
                 if (sFinalOutPut != string.Empty)
                 {
@@ -474,8 +573,7 @@ namespace Acurus.Capella.UI.WebServices
 
                     BlobProgressNoteMngr.SaveBlobProgressNotesWithTransaction(ilstBlob_Progress_Note, string.Empty);
                 }
-
-                return "{\"EncounterID\":" + sEncounterID + ",\"status\":\"Completed\",\"Description\":\"Request is available in Blob Progress Note table\"}";
+                //return "{\"EncounterID\":" + sEncounterID + ",\"status\":\"Completed\",\"Description\":\"Request is available in Blob Progress Note table\"}";
             }
             catch (Exception eex)
             {
@@ -493,8 +591,8 @@ namespace Acurus.Capella.UI.WebServices
                 }
                 catch { throw new Exception("Error : " + eex?.Message); }
             }
-            return string.Empty;
         }
+
         public string GenerateJson(string sSection, string sType)
         {
             string[] heading = { "<br />" };
@@ -529,69 +627,88 @@ namespace Acurus.Capella.UI.WebServices
                             {
                                 if (sectopns[i].IndexOf("AddendumReviewProviderID") > -1)
                                 {
+                                    //Get Notes
                                     string[] sTempNotesName = sectopns[i].Split(new string[] { "AM:", "PM:" }, System.StringSplitOptions.RemoveEmptyEntries);
                                     string sNotesName = sTempNotesName.Length > 1 ? sTempNotesName[1] : "";
+                                    sectopns[i] = sectopns[i].Replace(":" + sNotesName, "");
+
+                                    //Get CreatedAt
                                     string[] sTempCreatedAt = sectopns[i].Split(new string[] { "on" }, System.StringSplitOptions.RemoveEmptyEntries);
                                     string sCreatedAt = sTempCreatedAt.Length > 1 ? sTempCreatedAt[1].Replace(":" + sNotesName, "") : "";
 
+                                    //Get ProviderUserID
                                     string sProviderUserID = string.Empty;
                                     if (sectopns[i].IndexOf("<AddendumProviderID>") > -1)
                                     {
-                                        sProviderUserID = sectopns[i].Substring(sectopns[i].IndexOf("<AddendumProviderID>"), sectopns[i].IndexOf("</AddendumProviderID>") + "</AddendumProviderID>".Length);
-                                    sectopns[i] = sectopns[i].Replace(sProviderUserID, "");
-                                    sProviderUserID = sProviderUserID.Replace("<AddendumProviderID>", "").Replace("</AddendumProviderID>", "");
-                                    ilstUser = usermngr.getUserByPHYID(Convert.ToUInt64(sProviderUserID));
+                                        Match matchProviderID = Regex.Match(sectopns[i], @"<AddendumProviderID>(\d+)</AddendumProviderID>");
+                                        if (matchProviderID.Success)
+                                        {
+                                            sProviderUserID = matchProviderID.Groups[1].Value;
+                                            ilstUser = getUserByPHYID(sProviderUserID);
+                                        }
                                     }
-                                    string UserID = string.Empty;
-                                    UserID = ilstUser[0].EMail_Address;
+
+                                    string UserID = ilstUser[0].EMail_Address;
                                     string sReviewProviderUserID = string.Empty;
-                                    string sPAandPhysicianName = string.Empty;
-                                    string sPAname = string.Empty;
-                                    string sPhysician = string.Empty;
                                     string sReviewPhysicianEmailID = string.Empty;
                                     if (sectopns[i].IndexOf("<AddendumReviewProviderID>") > -1 && sectopns[i].IndexOf("</AddendumReviewProviderID>") > -1)
                                     {
-                                        sReviewProviderUserID = sectopns[i].Substring(sectopns[i].IndexOf("<AddendumReviewProviderID>"), sectopns[i].IndexOf("</AddendumReviewProviderID>") + "</AddendumReviewProviderID>".Length);
-                                        sectopns[i] = sectopns[i].Replace(sReviewProviderUserID, "");
-                                        //sReviewProviderUserID = sReviewProviderUserID.Replace("<AddendumReviewProviderID>", "").Replace("</AddendumReviewProviderID>", "");
-                                        Match matchProviderID = Regex.Match(sReviewProviderUserID, @"<AddendumReviewProviderID>(\d+)</AddendumReviewProviderID>");
+                                        Match matchProviderID = Regex.Match(sectopns[i], @"<AddendumReviewProviderID>(\d+)</AddendumReviewProviderID>");
                                         if (matchProviderID.Success)
                                         {
                                             sReviewProviderUserID = matchProviderID.Groups[1].Value;
-                                        ilstUser = usermngr.getUserByPHYID(Convert.ToUInt64(sReviewProviderUserID));
-                                        }
-                                        sReviewPhysicianEmailID = ilstUser[0].EMail_Address;
-
-                                        string[] sTempPAandPhysicianName = sectopns[i].Split(new string[] { "on" }, System.StringSplitOptions.RemoveEmptyEntries);
-                                        sPAandPhysicianName = sTempPAandPhysicianName.Length > 1 ? sTempPAandPhysicianName[1].Replace("Signed by", "") : "";
-                                        if (!string.IsNullOrEmpty(sPAandPhysicianName))
-                                        {
-                                            string[] sTempPAname = sPAandPhysicianName.Split(new string[] { "and reviewed by" }, System.StringSplitOptions.RemoveEmptyEntries);
-                                            sPAname = sTempPAname.Length > 0 ? sTempPAname[0] : "";
-                                            sPhysician = sTempPAname.Length > 1 ? sTempPAname[1] : "";
+                                            ilstUser = getUserByPHYID(sReviewProviderUserID);
+                                            sReviewPhysicianEmailID = ilstUser[0].EMail_Address;
                                         }
                                     }
 
+
+                                    string[] sTempOtherDetails = sectopns[i].Split(new string[] { "Signed by" }, System.StringSplitOptions.RemoveEmptyEntries);
+                                    string sOtherDetails = sTempOtherDetails.Length > 0 ? sTempOtherDetails[1] : "";
+                                    sTempOtherDetails = sOtherDetails.Split(new string[] { "on" }, System.StringSplitOptions.RemoveEmptyEntries);
+
+                                    string sPAname = string.Empty;
+                                    string sPhysician = string.Empty;
+                                    if (sOtherDetails.IndexOf("and reviewed by") > 0)
+                                    {
+                                        sTempOtherDetails = sTempOtherDetails[0].Split(new string[] { "and reviewed by" }, System.StringSplitOptions.RemoveEmptyEntries);
+                                        sPAname = sTempOtherDetails[0];
+                                        sPhysician = sTempOtherDetails[1];
+                                    }
+                                    else
+                                    {
+                                        sPAname = sOtherDetails.Split(new string[] { "on" }, System.StringSplitOptions.RemoveEmptyEntries)[0];
+                                    }
+
+
                                     sFormationJson = sFormationJson + ((sFormationJson[sFormationJson.Length - 1] == '}') ? "," : "")
-                                        + "{\"" + "text" + "\":\"" + sNotesName + "\"," +
-                                        "\"" + "createdBy" + "\":\"" + sPAname + "\"," +
+                                        + "{\"" + "text" + "\":\"" + sNotesName.Trim() + "\"," +
+                                        "\"" + "createdBy" + "\":\"" + sPAname.Trim() + "\"," +
                                         "\"" + "UserID" + "\":\"" + UserID + "\"," +
                                         "\"" + "ProviderID" + "\":\"" + sProviderUserID + "\"," +
                                         "\"" + "ReviewedBy" + "\":\"" + sPhysician + "\"," +
                                         "\"" + "ReviewedUserID" + "\":\"" + sReviewPhysicianEmailID + "\"," +
                                         "\"" + "ReviewedProviderID" + "\":\"" + sReviewProviderUserID + "\"," +
-                                        "\"" + "createdAt" + "\":\"" + sCreatedAt + "\"}";
+                                        "\"" + "createdAt" + "\":\"" + sCreatedAt.Trim() + "\"}";
                                 }
                                 else
                                 {
                                     string sProviderEmailID = string.Empty;
                                     string sProviderUserID = string.Empty;
-                                    if(sectopns[i].IndexOf("<AddendumProviderID>") > -1)
+                                    if (sectopns[i].IndexOf("<AddendumProviderID>") > -1)
                                     {
-                                        sProviderUserID = sectopns[i].Substring(sectopns[i].IndexOf("<AddendumProviderID>"), sectopns[i].IndexOf("</AddendumProviderID>") + "</AddendumProviderID>".Length);
-                                    sectopns[i] = sectopns[i].Replace(sProviderUserID, "");
-                                    sProviderUserID = sProviderUserID.Replace("<AddendumProviderID>", "").Replace("</AddendumProviderID>", "");
-                                    ilstUser = usermngr.getUserByPHYID(Convert.ToUInt64(sProviderUserID));
+                                        Match matchProviderID = Regex.Match(sectopns[i], @"<AddendumProviderID>(\d+)</AddendumProviderID>");
+                                        if (matchProviderID.Success)
+                                        {
+                                            sProviderUserID = matchProviderID.Groups[1].Value;
+                                            ilstUser = getUserByPHYID(sProviderUserID);
+                                        }
+
+                                        //sProviderUserID = sectopns[i].Substring(sectopns[i].IndexOf("<AddendumProviderID>"), sectopns[i].IndexOf("</AddendumProviderID>") + "</AddendumProviderID>".Length);
+                                        //sectopns[i] = sectopns[i].Replace(sProviderUserID, "");
+                                        //sProviderUserID = sProviderUserID.Replace("<AddendumProviderID>", "").Replace("</AddendumProviderID>", "");
+                                        //ilstUser = usermngr.getUserByPHYID(Convert.ToUInt64(sProviderUserID));
+                                        //ilstUser = getUserByPHYID(sProviderUserID);
                                     }
                                     sProviderEmailID = ilstUser[0].EMail_Address;
 
@@ -600,14 +717,21 @@ namespace Acurus.Capella.UI.WebServices
                                     string[] sTempCreatedAt = sectopns[i].Split(new string[] { "on" }, System.StringSplitOptions.RemoveEmptyEntries);
                                     string sCreatedAt = sTempCreatedAt.Length > 1 ? sTempCreatedAt[1].Replace(":" + sNotesName, "") : "";
 
-                                    string[] tempCreatedBy = sectopns[i].Split(new string[] { "on" }, System.StringSplitOptions.RemoveEmptyEntries);
-                                    string createdBy = tempCreatedBy.Length > 0 ? tempCreatedBy[0].Replace("Signed by", "") : "";
+                                    string[] tempCreatedByFinal = sectopns[i].Split(new string[] { "Signed by" }, System.StringSplitOptions.RemoveEmptyEntries);
+
+                                    string tempCreatedBy = tempCreatedByFinal.Length > 1 ? tempCreatedByFinal[1].Split(new string[] { "on" }, System.StringSplitOptions.RemoveEmptyEntries)[0] : "";
+
+
+                                    string createdBy = tempCreatedBy ?? string.Empty;
 
                                     sFormationJson = sFormationJson + ((sFormationJson[sFormationJson.Length - 1] == '}') ? "," : "")
                                         + "{\"" + "text" + "\":\"" + sNotesName + "\"," +
                                         "\"" + "createdBy" + "\":\"" + createdBy + "\"," +
                                         "\"" + "UserID" + "\":\"" + sProviderEmailID + "\"," +
-                                         "\"" + "ProviderID" + "\":\"" + sProviderUserID + "\"," +
+                                        "\"" + "ProviderID" + "\":\"" + sProviderUserID + "\"," +
+                                        "\"" + "ReviewedBy" + "\":\"" + string.Empty + "\"," +
+                                        "\"" + "ReviewedUserID" + "\":\"" + string.Empty + "\"," +
+                                        "\"" + "ReviewedProviderID" + "\":\"" + string.Empty + "\"," +
                                         "\"" + "createdAt" + "\":\"" + sCreatedAt + "\"}";
                                 }
                             }
@@ -847,5 +971,100 @@ namespace Acurus.Capella.UI.WebServices
             return string.Empty;
         }
 
+        private string ConvertToLocal(string review_Signed_Date)
+        {
+            string convertToLocalQry = "SELECT convert_tz('{0}','Gmt','Us/Pacific') AS PSTTime;";
+            DataSet convertToLocalResult = DBConnector.ReadData(string.Format(convertToLocalQry, review_Signed_Date));
+            if (convertToLocalResult != null && convertToLocalResult.Tables != null && convertToLocalResult.Tables.Count > 0)
+            {
+                return Convert.ToDateTime(convertToLocalResult.Tables[0].Rows[0]["PSTTime"]).ToString("dd-MMM-yyyy hh:mm tt");
+            }
+            return DateTime.MinValue.ToString("dd-MMM-yyyy hh:mm tt");
+        }
+
+        private IList<User> getUserByPHYID(string sProviderUserID)
+        {
+            string qryUserByPHYID = "SELECT EMail_Address FROM User WHERE Physician_Library_ID = {0};";
+            DataSet UserByPHYIDResult = DBConnector.ReadData(string.Format(qryUserByPHYID, sProviderUserID));
+            return DBConnector.DataTableToList<User>(UserByPHYIDResult.Tables[0]) ?? new List<User>();
+        }
+    }
+
+    public static class DBConnector
+    {
+        static MySqlDataAdapter MyDataAdap = null;
+        private static string ReadConnection()
+        {
+            string ConnectionData;
+            ConnectionData = ConfigurationManager.ConnectionStrings["con"].ConnectionString;
+            return ConnectionData;
+        }
+        public static DataSet ReadData(string Query)
+        {
+            DataSet dsReturn = new DataSet();
+            MyDataAdap = new MySqlDataAdapter(Query, ReadConnection());
+            MyDataAdap.Fill(dsReturn);
+            return dsReturn;
+        }
+
+        public static int WriteData(string Query)
+        {
+            int iReturn = 0;
+            using (MySqlConnection con = new MySqlConnection(ReadConnection()))
+            {
+                using (MySqlCommand cmd = new MySqlCommand(Query))
+                {
+                    cmd.Connection = con;
+                    try
+                    {
+                        con.Open();
+                        cmd.ExecuteNonQuery();
+                        con.Close();
+                        iReturn = 1;
+                    }
+                    catch
+                    {
+                        iReturn = 2;
+                    }
+                }
+            }
+            return iReturn;
+        }
+
+        public static List<T> DataTableToList<T>(this DataTable table) where T : new()
+        {
+            List<T> result = new List<T>();
+            try
+            {
+                if (table != null
+                    && table.Rows.Count > 0)
+                {
+                    IList<PropertyInfo> properties = typeof(T).GetProperties().ToList();
+                    foreach (DataRow row in table.Rows)
+                    {
+                        T item = new T();
+                        if (row != null && properties != null && properties.Count > 0)
+                        {
+                            foreach (var property in properties)
+                            {
+                                if (table.Columns.Contains(property.Name))
+                                {
+                                    if (row[property.Name] == DBNull.Value)
+                                        property.SetValue(item, null, null);
+                                    else
+                                        property.SetValue(item, row[property.Name], null);
+                                }
+                            }
+                        }
+                        result.Add(item);
+                    }
+                }
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+            return result;
+        }
     }
 }
