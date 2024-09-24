@@ -14,7 +14,7 @@
 
     <style>
         .akidoboxstyle {
-            padding: 10px;
+            /*padding: 10px;*/
             /*border: 1px solid #E0E0E0;*/
             font-size: 14px;
             font-family: 'Inter', sans-serif;
