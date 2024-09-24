@@ -236,6 +236,7 @@ namespace Acurus.Capella.UI
             if (!string.IsNullOrWhiteSpace(Request.Form["RedirectURL"]))
             {
                 var returnUrl = Request.Form["RedirectURL"];
+                responseRedirectUrl = Request.Form["RedirectURL"];
                 var redirectURL = directURLUtility.GetDomainSpecificRedirectURL(returnUrl, Request.Form["DefaultServer"]);
                 Response.SetCookie(new HttpCookie("RedirectUri") { Value = redirectURL, Expires = DateTime.Now.AddDays(1) });
             }
@@ -250,6 +251,7 @@ namespace Acurus.Capella.UI
                 else if (!string.IsNullOrWhiteSpace(Request.Url.Query))
                 {
                     var returnUrl = HttpUtility.ParseQueryString(Request.Url.Query)["redirecturl"]; 
+                    responseRedirectUrl = returnUrl;
                     Response.SetCookie(new HttpCookie("RedirectUri") { Value = returnUrl, Expires = DateTime.Now.AddDays(1) });
                 }
                 else
