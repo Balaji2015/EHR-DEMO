@@ -489,7 +489,7 @@ namespace Acurus.Capella.LabAgent
                                 else
                                     logmsg.Append("Error : " + e.ToString() + Environment.NewLine);
 
-
+                                logmsg.Append("Stack Trace : " + e.StackTrace.ToString() + Environment.NewLine);
                                 using (TextWriter tx = new StreamWriter(Program.LabAgentLog, true))
                                 {
                                     tx.WriteLine(logmsg);
@@ -511,7 +511,7 @@ namespace Acurus.Capella.LabAgent
                                 else
                                     logmsg.Append("Error : " + e.ToString() + Environment.NewLine);
 
-
+                                logmsg.Append("Stack Trace : " + e.StackTrace.ToString() + Environment.NewLine);
                                 using (TextWriter tx = new StreamWriter(Program.LabAgentLog, true))
                                 {
                                     tx.WriteLine(logmsg);

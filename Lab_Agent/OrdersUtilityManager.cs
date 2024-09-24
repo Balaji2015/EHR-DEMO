@@ -303,6 +303,8 @@ namespace Acurus.Capella.LabAgent
                     logmsg.Append(e.InnerException.Message != null ? "InnerException Message : " + e.InnerException.Message.ToString() + Environment.NewLine : "");
                 else
                     logmsg.Append("Error : " + e.ToString() + Environment.NewLine);
+
+                logmsg.Append("Stack Trace : " + e.StackTrace.ToString() + Environment.NewLine);
                 using (TextWriter tx = new StreamWriter(Program.LabAgentLog, true))
                 {
                     tx.WriteLine(logmsg);
@@ -322,6 +324,8 @@ namespace Acurus.Capella.LabAgent
                     logmsg.Append(e.InnerException.Message != null ? "InnerException Message : " + e.InnerException.Message.ToString() + Environment.NewLine : "");
                 else
                     logmsg.Append("Error : " + e.ToString() + Environment.NewLine);
+
+                logmsg.Append("Stack Trace : " + e.StackTrace.ToString() + Environment.NewLine);
                 using (TextWriter tx = new StreamWriter(Program.LabAgentLog, true))
                 {
                     tx.WriteLine(logmsg);

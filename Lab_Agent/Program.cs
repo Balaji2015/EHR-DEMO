@@ -106,6 +106,8 @@ namespace Acurus.Capella.LabAgent
                     logmsg.Append(e.InnerException.Message != null ? "InnerException Message : " + e.InnerException.Message.ToString() + " - " : "");
                 else
                     logmsg.Append("Error : " + e.ToString() + Environment.NewLine);
+
+                logmsg.Append("Stack Trace : " + e.StackTrace.ToString() + Environment.NewLine);
                 Console.WriteLine(e.Message);
                 using (TextWriter tx = new StreamWriter(LabAgentLog, true))
                 {
