@@ -68,9 +68,14 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
 
         public string sPreferred_ReadingPhysician(ulong OrdersSubmitID)
         {
-           
+            //Cap - 2505
+            string sPhysician_id ="";
+            if (OrdersSubmitID == 0)
+            {
+                return sPhysician_id;
+            }
             IList<OrdersSubmit> objOrders = new List<OrdersSubmit>();
-            string sPhysician_id;
+            
             using (ISession iMySession = NHibernateSessionManager.Instance.CreateISession())
             {
                 ISQLQuery sqlquery = iMySession.CreateSQLQuery("Select O.* from orders_submit O where O.order_submit_ID='" + OrdersSubmitID + "'").AddEntity("O", typeof(OrdersSubmit));

@@ -22,7 +22,7 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
     public partial interface IOrdersManager : IManagerBase<Orders, ulong>
     {
         //ulong InsertToOrders(IList<Orders> saveList, IList<OrdersSubmit> objOrderSubmit, IList<OrdersAssessment> ordAssList, IList<string> sOrderingProcedure, ulong EncounterID, string orderType, string MACAddress);
-        ulong InsertToOrders(IList<Orders> saveList, IList<OrdersSubmit> objOrderSubmit, IList<OrdersAssessment> ordAssList, IList<string> sOrderingProcedure, ulong EncounterID, string orderType, string MACAddress, IList<OrdersRequiredForms> ilistOrdersRequiredForms, ref string sSelectedOrder, string sLocalTime);
+        ulong InsertToOrders(IList<Orders> saveList, IList<OrdersSubmit> objOrderSubmit, IList<OrdersAssessment> ordAssList, IList<string> sOrderingProcedure, ulong EncounterID, string orderType, string MACAddress, IList<OrdersRequiredForms> ilistOrdersRequiredForms, ref string sSelectedOrder, string sLocalTime,bool IsEncounterUpdateForAkidoOrder);
         Stream GetOrdersUsingEncounterID(ulong EncounterID, string orderType, bool LoadQuestionSets);
         Stream LoadOrders(ulong EncounterID, ulong PhysicianID, ulong HumanID, string orderType, string procedureType, DateTime todaysDate, bool LoadQuestionSets);
         Stream LoadOrdersByOrdersSubmitedId(ulong OrderSubmitId, ulong EncounterID, ulong PhysicianID, ulong HumanID, string orderType, string procedureType, DateTime todaysDate, bool LoadQuestionSet);
@@ -220,7 +220,9 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
                         WFObjectManager obj_workFlow = new WFObjectManager();
                         obj_workFlow.MoveToNextProcess(OrderSubmitID, "DIAGNOSTIC ORDER", 9, "UNKNOWN", DateTime.UtcNow, null, null, null);
                         OrdersManager oj = new OrdersManager();
-                        ulOrdersubID = oj.InsertToOrders(ilstord, ilstOrdersSubmitnew, ordAssList, sOrderingProcedure, EncounterId, orderType, MACAddress, ilistOrdersRequiredForms, ref sSelectedOrder, sLocalTime);
+                        //Cap - 2505
+                        // ulOrdersubID = oj.InsertToOrders(ilstord, ilstOrdersSubmitnew, ordAssList, sOrderingProcedure, EncounterId, orderType, MACAddress, ilistOrdersRequiredForms, ref sSelectedOrder, sLocalTime);
+                        ulOrdersubID = oj.InsertToOrders(ilstord, ilstOrdersSubmitnew, ordAssList, sOrderingProcedure, EncounterId, orderType, MACAddress, ilistOrdersRequiredForms, ref sSelectedOrder, sLocalTime,false);
                         if (sSelectedOrder != string.Empty)
                         {
                             ulOrdersubID = Convert.ToUInt32(sSelectedOrder.Split('|')[0]);
@@ -235,7 +237,7 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
 
             return ulOrdersubID;
         }
-        public ulong InsertToOrders(IList<Orders> saveList, IList<OrdersSubmit> objOrderSubmit, IList<OrdersAssessment> ordAssList, IList<string> sOrderingProcedure, ulong EncounterID, string orderType, string MACAddress, IList<OrdersRequiredForms> ilistOrdersRequiredForms, ref string sSelectedOrder, string sLocalTime)
+        public ulong InsertToOrders(IList<Orders> saveList, IList<OrdersSubmit> objOrderSubmit, IList<OrdersAssessment> ordAssList, IList<string> sOrderingProcedure, ulong EncounterID, string orderType, string MACAddress, IList<OrdersRequiredForms> ilistOrdersRequiredForms, ref string sSelectedOrder, string sLocalTime,bool IsEncounterUpdateForAkidoOrder)
         {
             string Height = string.Empty;
             string Weight = string.Empty;
@@ -248,6 +250,10 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
             IList<TreatmentPlan> Insert_Tplan = new List<TreatmentPlan>();
             IList<TreatmentPlan> Update_Tplan = null;
             TreatmentPlanManager objTreatmentPlanManager = new TreatmentPlanManager();
+            //Cap - 2505
+            IList<Encounter> EncList = new List<Encounter>();
+            Encounter currentEncounter = new Encounter();
+            EncounterManager objEncounterManager = new EncounterManager();
 
             ulong ulHumanid = 0;
             if (objOrderSubmit.Count > 0)
@@ -303,6 +309,16 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
                     os.Weight = Weight;
                     os.Is_Task_Created = "N";
                 }
+                //Cap - 2505
+                if (IsEncounterUpdateForAkidoOrder)
+                {
+                    EncList = objEncounterManager.GetEncounterByEncounterID(EncounterID);
+                    if (EncList != null && EncList.Count > 0)
+                    {
+                        currentEncounter = EncList[0];
+                    }
+                }
+
                 iMySession.Close();
             }
         #endregion
@@ -414,6 +430,12 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
                                         sTestDate = Convert.ToDateTime(objOrderSubmit[0].Test_Date).ToString("dd-MMM-yyyy");
                                     sSelectedOrder = objOrderSubmit[0].Id.ToString() + " | " + sTestDate;
                                     ulSubmitID = objOrderSubmit[0].Id;
+                                    //Cap - 2505
+                                    if (ulSubmitID != 0)
+                                    {
+                                        currentEncounter.Order_Submit_ID = Convert.ToInt32(ulSubmitID);
+                                        objEncounterManager.UpdateEncounterList(currentEncounter, string.Empty);
+                                    }
                                 }
 
                                 if (iResult == 2)
@@ -7026,6 +7048,12 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
         //=======
         public bool IsEditable(ulong OrderSubmit, string objType)
         {
+            //Cap - 2505
+            if(OrderSubmit==0)
+            {
+                return true;
+            }
+
             WFObjectManager objWFObjectManager = new WFObjectManager();
             WFObject objWFObject = objWFObjectManager.GetByObjectSystemId(OrderSubmit, objType);
             if (objWFObject.Current_Process != "MA_REVIEW" && objWFObject.Current_Process != "ORDER_GENERATE" && objWFObject.Current_Process != "ORDER_SEND")

@@ -2528,15 +2528,27 @@ namespace Acurus.Capella.UI
             if (OrdersSubmitIDString != string.Empty)
             {
                 ulong OrdersSubmitId = Convert.ToUInt32(OrdersSubmitIDString);
+                //Cap - 2505
+                if (OrdersSubmitId == 0)
+                {
+                    hdnIsEncounterUpdate.Value = "true";
+                }
+
                 if (objDiagnosticDTO == null && (LookUpPerRequest.Keys.Contains("procedureType") == true))
                 {
                     //DiagnosticDTO objDiagnosticDTO = new DiagnosticDTO();
                     objDiagnosticDTO = objOrdersManager.FillDiagnosticDTO(OrdersSubmitId, EncounterID, HumanID, PhysicianID, LookUpPerRequest["procedureType"].ToUpper(), ClientSession.FacilityName, ClientSession.LegalOrg);
                 }
                 OrdersSubmit subtempobj = objDiagnosticDTO.objOrdersSubmit;
-                HumanID = subtempobj.Human_ID;
-                EncounterID = subtempobj.Encounter_ID;
-                PhysicianID = subtempobj.Physician_ID;
+                if(subtempobj.Human_ID !=0)
+                    HumanID = subtempobj.Human_ID;
+
+                if(subtempobj.Encounter_ID !=0)
+                    EncounterID = subtempobj.Encounter_ID;
+
+                if(subtempobj.Physician_ID !=0)
+                    PhysicianID = subtempobj.Physician_ID;
+
                 IsEditable = objOrdersManager.IsEditable(subtempobj.Id, subtempobj.Order_Type);
                 if (!IsEditable)
                 {
@@ -2754,7 +2766,10 @@ namespace Acurus.Capella.UI
 
                 IList<string> ProceduresViewList = new List<string>();
                 ProceduresViewList = objDiagnosticDTO.OrdersLists.Select(a => a.Lab_Procedure + "-" + (a.Lab_Procedure_Description.Contains("x_") ? ((a.Lab_Procedure_Description.Split(new[] { "x_" }, StringSplitOptions.None).Count() > 1 ? (a.Lab_Procedure_Description.Split(new[] { "x_" }, StringSplitOptions.None)[0].ToString() + "x______") : a.Lab_Procedure_Description) + "~" + a.Quantity + "|" + a.Id) : a.Lab_Procedure_Description)).ToList<string>();
+                //Cap - 2505
+                if (objDiagnosticDTO.OrdersLists.Count > 0)
                 Session["ProcEditID"] = objDiagnosticDTO.OrdersLists[0].Order_Submit_ID;
+
                 IList<ListItem> tempList = SetOrderIDForEditQuantity(ProceduresViewList);
                 //moved to sperate method
                 //IList<ListItem> tempList = new List<ListItem>();
@@ -2843,7 +2858,16 @@ namespace Acurus.Capella.UI
                         }
                     }
                 }
-                btnOrderSubmit.Attributes.Add("Tag", "UPDATE"); //btnOrderSubmit.Value = "UPDATE";
+                //Cap - 2505
+                if (objDiagnosticDTO.objOrdersSubmit.Id !=0)
+                {
+                    btnOrderSubmit.Attributes.Add("Tag", "UPDATE"); //btnOrderSubmit.Value = "UPDATE";
+                }
+                else
+                {
+                    btnOrderSubmit.Attributes.Add("Tag", "SAVE");//btnOrderSubmit.Value = "SAVE";
+                }
+                
                 //the following line has been added for BugID:26470 -Pujhitha
                 btnClearAll.Value = "Cancel";
                 //-------------------------------------------------------
@@ -3530,7 +3554,7 @@ namespace Acurus.Capella.UI
                         ClearAll(false);
                     }
 
-
+                   
 
                     //ScriptManager.RegisterStartupScript(this, GetType(), "showalert", "var warning_message_label = top.window.document.getElementById('ctl00_tbGeneral').control.findItemByValue('Warning_Message')._element;warning_message_label.textContent = 'Submitted Successfully.';warning_message_label.style.display = 'inline-block'; warning_message_label.style.color = 'red'; warning_message_label.style.position = 'absolute'; warning_message_label.style.top = '40px'; warning_message_label.style.right = '10px'; top.window.setTimeout(function () { warning_message_label.style.display = 'none'; }, 5000); ", true);
                     //if (TriggerClearAll)
@@ -4056,7 +4080,17 @@ namespace Acurus.Capella.UI
             var serializer = new NetDataContractSerializer();
             objOrdersManager = new OrdersManager();
             string sSelectedOrder = string.Empty;
-            objOrdersManager.InsertToOrders(SaveOrderList.ToArray<Orders>(), SaveOrdersSubmitList, SaveOrdersAssList.ToArray<OrdersAssessment>(), orderingProcedure.ToArray<string>(), EncounterID, OrderType, string.Empty, ilstRequiredForms, ref sSelectedOrder, sLocalTime);
+            //Cap - 2505
+            if (hdnIsEncounterUpdate.Value == "true")
+            {
+                objOrdersManager.InsertToOrders(SaveOrderList.ToArray<Orders>(), SaveOrdersSubmitList, SaveOrdersAssList.ToArray<OrdersAssessment>(), orderingProcedure.ToArray<string>(), EncounterID, OrderType, string.Empty, ilstRequiredForms, ref sSelectedOrder, sLocalTime, true);
+                hdnIsEncounterUpdate.Value = "false";
+                btnOrderSubmit.Attributes.Add("Tag", "UPDATE");
+            }
+            else
+            {
+                objOrdersManager.InsertToOrders(SaveOrderList.ToArray<Orders>(), SaveOrdersSubmitList, SaveOrdersAssList.ToArray<OrdersAssessment>(), orderingProcedure.ToArray<string>(), EncounterID, OrderType, string.Empty, ilstRequiredForms, ref sSelectedOrder, sLocalTime, false);
+            }
             if (sSelectedOrder != string.Empty)
             {
                 if (sAppointment == "Y")
@@ -4064,7 +4098,7 @@ namespace Acurus.Capella.UI
                     hdnSelectedOrder.Value = sSelectedOrder;
                 }
 
-            }
+            }           
 
 
         }

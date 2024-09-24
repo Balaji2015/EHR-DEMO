@@ -742,6 +742,7 @@
             <asp:HiddenField ID="hdnUserName" runat="server" />
             <asp:HiddenField ID="hdnsaveEnable" runat="server" />
             <asp:HiddenField ID="hdnImportResult" Value="false" runat="server" />
+            <asp:HiddenField ID="hdnIsEncounterUpdate" Value="false" runat="server" />
             <%--Added for import result --%>
             <asp:Button ID="btnMessageType" AutoPostBack="false" runat="server" Text="Button"
                 Style="display: none" OnClientClick="btnClose_Clicked();" />

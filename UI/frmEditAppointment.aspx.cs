@@ -2045,7 +2045,9 @@ namespace Acurus.Capella.UI
 
                 }
                 EncRecord.Notes = txtNotes.txtDLC.Text;
-                if (cboOrder.SelectedItem != null && cboOrder.SelectedItem.Text != string.Empty)
+                //Cap - 2505
+                //if (cboOrder.SelectedItem != null && cboOrder.SelectedItem.Text != string.Empty)
+                if (cboOrder.SelectedItem != null && cboOrder.SelectedItem.Text != string.Empty && cboOrder.SelectedItem.Text != "Akido Order")
                 {
 
                     EncRecord.Order_Submit_ID = Convert.ToInt32(cboOrder.SelectedItem.Text.Split('|')[0]);
@@ -2507,7 +2509,9 @@ namespace Acurus.Capella.UI
                     NewEnc.Is_Physician_Asst_Process = "N";
                     NewEnc.Notes = txtNotes.txtDLC.Text;
                     NewEnc.Is_Encounter_SuperBill = "N";
-                    if (cboOrder.SelectedItem != null && cboOrder.SelectedItem.Text != string.Empty)
+                    //Cap - 2505
+                    // if (cboOrder.SelectedItem != null && cboOrder.SelectedItem.Text != string.Empty)
+                    if (cboOrder.SelectedItem != null && cboOrder.SelectedItem.Text != string.Empty && cboOrder.SelectedItem.Text != "Akido Order")
                     {
 
                         EncRecord.Order_Submit_ID = Convert.ToInt32(cboOrder.SelectedItem.Text.Split('|')[0]);
@@ -2745,7 +2749,9 @@ namespace Acurus.Capella.UI
 
                 EncRecord.Notes = txtNotes.txtDLC.Text;
                 EncRecord.Is_Encounter_SuperBill = "N";
-                if (cboOrder.SelectedItem != null && cboOrder.SelectedItem.Text != string.Empty)
+                //Cap - 2505
+                //(cboOrder.SelectedItem != null && cboOrder.SelectedItem.Text != string.Empty)
+                if (cboOrder.SelectedItem != null && cboOrder.SelectedItem.Text != string.Empty && cboOrder.SelectedItem.Text != "Akido Order")
                 {
 
                     EncRecord.Order_Submit_ID = Convert.ToInt32(cboOrder.SelectedItem.Text.Split('|')[0]);
@@ -3796,7 +3802,9 @@ namespace Acurus.Capella.UI
         {
             ulordID = 0;
             btnSave.Enabled = true;
-            if (cboOrder.SelectedItem != null && cboOrder.SelectedItem.Text != string.Empty)
+            //Cap - 2505
+            //if (cboOrder.SelectedItem != null && cboOrder.SelectedItem.Text != string.Empty)
+            if (cboOrder.SelectedItem != null && cboOrder.SelectedItem.Text != string.Empty && cboOrder.SelectedItem.Text != "Akido Order")
             {
                 string[] str = cboOrder.SelectedItem.Value.Split('@');
 
@@ -4267,11 +4275,19 @@ namespace Acurus.Capella.UI
                             xmlValue = LabElement.Attribute("id").Value;
                         }
                     }
-
-                    ilstOrder = objorder.GetOrderByHuman(ulHuman, cboFacility.SelectedItem.Text, Convert.ToUInt64(xmlValue));
-                    if (ilstOrder != null && ilstOrder.Count() > 0)
+                    //Cap - 2505
+                    if (ConfigurationSettings.AppSettings["IsAkidoOrder"] != null && ConfigurationSettings.AppSettings["IsAkidoOrder"] == "Y")
                     {
                         cboOrder.Items.Add(new RadComboBoxItem());
+                        cboOrder.Items.Add("Akido Order");
+                    }
+                    ilstOrder = objorder.GetOrderByHuman(ulHuman, cboFacility.SelectedItem.Text, Convert.ToUInt64(xmlValue));                    
+                    if (ilstOrder != null && ilstOrder.Count() > 0)
+                    {
+                        //Cap - 2505
+                        if(cboOrder.Items.Count==0)
+                         cboOrder.Items.Add(new RadComboBoxItem());
+
                         for (int i = 0; i < ilstOrder.Count; i++)
                         {
                             string[] str = ilstOrder[i].ToString().Split('^');
@@ -6068,7 +6084,9 @@ namespace Acurus.Capella.UI
                 }
                 //}
                 EncRecord.Modified_By = ClientSession.UserName;
-                if (cboOrder.SelectedItem != null && cboOrder.SelectedItem.Text != string.Empty)
+                //Cap - 2505
+                // if (cboOrder.SelectedItem != null && cboOrder.SelectedItem.Text != string.Empty)
+                if (cboOrder.SelectedItem != null && cboOrder.SelectedItem.Text != string.Empty && cboOrder.SelectedItem.Text != "Akido Order")
                 {
 
                     EncRecord.Order_Submit_ID = Convert.ToInt32(cboOrder.SelectedItem.Text.Split('|')[0]);
@@ -6161,7 +6179,9 @@ namespace Acurus.Capella.UI
                 EncRecord.Reschedule_Reason_Text = txtReasonCode.Text;
                 EncRecord.Notes = txtNotes.txtDLC.Text;
                 EncRecord.Visit_Type = ddlVisitType.Text;
-                if (cboOrder.SelectedItem != null && cboOrder.SelectedItem.Text != string.Empty)
+                //Cap - 2505
+                // if (cboOrder.SelectedItem != null && cboOrder.SelectedItem.Text != string.Empty)
+                if (cboOrder.SelectedItem != null && cboOrder.SelectedItem.Text != string.Empty && cboOrder.SelectedItem.Text != "Akido Order")
                 {
 
                     EncRecord.Order_Submit_ID = Convert.ToInt32(cboOrder.SelectedItem.Text.Split('|')[0]);
@@ -6271,7 +6291,9 @@ namespace Acurus.Capella.UI
                     //logger.Debug("Conversion of Human_ID of value='" + txtPatientAccountNumber.Text + "' to UInt threw an error.", exp);
                     throw (exp);
                 }
-                if (cboOrder.SelectedItem != null && cboOrder.SelectedItem.Text != string.Empty)
+                //Cap - 2505
+                //if (cboOrder.SelectedItem != null && cboOrder.SelectedItem.Text != string.Empty)
+                if (cboOrder.SelectedItem != null && cboOrder.SelectedItem.Text != string.Empty && cboOrder.SelectedItem.Text != "Akido Order")
                 {
 
                     NewEnc.Order_Submit_ID = Convert.ToInt32(cboOrder.SelectedItem.Text.Split('|')[0]);
@@ -6908,7 +6930,9 @@ namespace Acurus.Capella.UI
                     EncRecord.Created_By = ClientSession.UserName;
                     EncRecord.Is_Physician_Asst_Process = "N";
                     EncRecord.Notes = txtNotes.txtDLC.Text;
-                    if (cboOrder.SelectedItem != null && cboOrder.SelectedItem.Text != string.Empty)
+                    //Cap - 2505
+                    //if (cboOrder.SelectedItem != null && cboOrder.SelectedItem.Text != string.Empty)
+                    if (cboOrder.SelectedItem != null && cboOrder.SelectedItem.Text != string.Empty && cboOrder.SelectedItem.Text != "Akido Order")
                     {
 
                         EncRecord.Order_Submit_ID = Convert.ToInt32(cboOrder.SelectedItem.Text.Split('|')[0]);
