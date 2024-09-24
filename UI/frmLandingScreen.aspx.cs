@@ -297,7 +297,7 @@ namespace Acurus.Capella.UI
                 ClientSession.SavedSession = "DELETED";
                 UtilityManager.inserttologgingtableforSessionTimeout("Login Page Load - Before Calling LandingintoEHR - Input is" + Request.Form["EHRUserName"], Request.Url.ToString(), string.Empty);
                 //CAP-2469
-                LandingintoEHR(Request.Form["EHRUserName"], Request.Form["EHRFacilityName"], Request.Form["EHRhdnLocalTime"]??localtime, Request.Form["EHRhdnLocalDate"]??localdate, Request.Form["EHRhdnUniversaloffset"]??universaloffset, Request.Form["EHRhdnLocalDateAndTime"]??localDateAndTime, Request.Form["EHRhdnFollowsDayLightSavings"]??bDayLightSavings, Request.Form["UserRole"], Request.Form["RCopiaUserName"], Request.Form["EMailAddress"], Request.Form["Is_RCopia_Notification_Required"], Request.Form["PhysicianId"], Request.Form["Landing_Screen_ID"], hdnGroupId.Value, Request.Form["PersonName"], Request.Form["LegalOrg"], Request.Form["UserCarrier"], Request.Form["IsFirstTimeCall"], Request.Form["DefaultServer"], Request.Form["IsAllFacilities"], Request.Form["RedirectURL"]);
+                LandingintoEHR(Request.Form["EHRUserName"], Request.Form["EHRFacilityName"], Request.Form["EHRhdnLocalTime"] ?? localtime, Request.Form["EHRhdnLocalDate"] ?? localdate, Request.Form["EHRhdnUniversaloffset"] ?? universaloffset, Request.Form["EHRhdnLocalDateAndTime"] ?? localDateAndTime, Request.Form["EHRhdnFollowsDayLightSavings"] ?? bDayLightSavings, Request.Form["UserRole"], Request.Form["RCopiaUserName"], Request.Form["EMailAddress"], Request.Form["Is_RCopia_Notification_Required"], Request.Form["PhysicianId"], Request.Form["Landing_Screen_ID"], hdnGroupId.Value, Request.Form["PersonName"], Request.Form["LegalOrg"], Request.Form["UserCarrier"], Request.Form["IsFirstTimeCall"], Request.Form["DefaultServer"], Request.Form["IsAllFacilities"]);
 
                 UtilityManager.inserttologgingtableforSessionTimeout("Login Page Load - After Calling LandingintoEHR - Input is", Request.Url.ToString(), string.Empty);
 
@@ -763,7 +763,7 @@ namespace Acurus.Capella.UI
             }
         }
 
-        public string LandingintoEHR(string sUserName, string sFacilityName, string shdnLocalTime, string shdnLocalDate, string shdnUniversaloffset, string shdnLocalDateAndTime, string shdnFollowsDayLightSavings, string sUserRole, string sRCopiaUserName, string sEMailAddress, string sIs_RCopia_Notification_Required, string sPhysicianId, string sLanding_Screen_ID, string shdnGroupId, string sPersonName, string sLegalOrg, string sUserCarrier, string sIsFirstTimeCall, string sDefaultServer, string sIsAllFacilities, string sRedirectURL)
+        public string LandingintoEHR(string sUserName, string sFacilityName, string shdnLocalTime, string shdnLocalDate, string shdnUniversaloffset, string shdnLocalDateAndTime, string shdnFollowsDayLightSavings, string sUserRole, string sRCopiaUserName, string sEMailAddress, string sIs_RCopia_Notification_Required, string sPhysicianId, string sLanding_Screen_ID, string shdnGroupId, string sPersonName, string sLegalOrg, string sUserCarrier, string sIsFirstTimeCall, string sDefaultServer, string sIsAllFacilities)
         {
             UtilityManager.inserttologgingtableforSessionTimeout("LandingintoEHR API - Start - input is - " + sUserName, Request.Url.ToString(), string.Empty);
 
@@ -810,8 +810,6 @@ namespace Acurus.Capella.UI
             hdnPersonName.Value = sPersonName;
             Session["Default_Server"] = sDefaultServer;
             Session["LandingScnID"] = sLanding_Screen_ID;
-            //CAP-2469
-            var redirectURL = sRedirectURL;
 
             UtilityManager.inserttologgingtableforSessionTimeout("LandingintoEHR - Before CreateUserSessionFile - Start - input is - " + sUserName, Request.Url.ToString(), string.Empty);
 
@@ -935,18 +933,8 @@ namespace Acurus.Capella.UI
                     //CAP-1167
                     string sFileName = ScnTabRecord.ToList<ScnTab>()[0].SCN_Name + ".aspx";
                     //CAP-1922
-                    //CAP-2469
-                    var returnURL = string.Empty;
                     //CAP-2308,CAP-2469
-                    if (!string.IsNullOrEmpty(redirectURL))
-                    {
-                        returnURL = HttpUtility.UrlDecode(redirectURL);
-                    }
-                    else
-                    {
-                        returnURL = HttpUtility.UrlDecode(Request.Cookies["RedirectUri"]?.Value);
-                    }
-                    //var returnURL = HttpUtility.UrlDecode(Request.Cookies["RedirectUri"]?.Value);
+                    var returnURL = HttpUtility.UrlDecode(Request.Cookies["RedirectUri"]?.Value);
                     ExpireRedirectUrlCookie();
                     if (!string.IsNullOrEmpty(returnURL))
                     {
