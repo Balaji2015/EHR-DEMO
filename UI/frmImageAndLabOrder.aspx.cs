@@ -6002,7 +6002,7 @@ namespace Acurus.Capella.UI
                     AddOrder();
                 }
                 btnImportresult.Disabled = true; //btnImportresult.Enabled = false;
-                if (hdnIsEncounterUpdate.Value != "false")
+                if (hdnIsEncounterUpdate.Value == "")
                 {
                     ClearAll(false);
                 }       
