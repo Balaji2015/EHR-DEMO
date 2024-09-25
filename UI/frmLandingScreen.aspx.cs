@@ -938,6 +938,8 @@ namespace Acurus.Capella.UI
                     //CAP-1922
                     //CAP-2308,CAP-2469
                     var returnURL = string.Empty;
+                    if (!string.IsNullOrWhiteSpace(Request.Cookies["RedirectUri"]?.Value))
+                    {
                     if (!string.IsNullOrWhiteSpace(redirectURL))
                     {
                         returnURL = HttpUtility.UrlDecode(redirectURL);
@@ -945,6 +947,7 @@ namespace Acurus.Capella.UI
                     else
                     {
                         returnURL = HttpUtility.UrlDecode(Request.Cookies["RedirectUri"]?.Value);
+                    }
                     }
                     ExpireRedirectUrlCookie();
 
