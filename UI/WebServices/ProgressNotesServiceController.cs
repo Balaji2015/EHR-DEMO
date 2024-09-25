@@ -1121,6 +1121,7 @@ namespace Acurus.Capella.UI.WebServices.API
         {
             var authorization = Request.Headers.GetValues("Authorization");
             string token = authorization.Any() ? authorization.FirstOrDefault() : "";
+            token = token.Replace("Bearer ", "");
             var endPointToken = ConfigurationSettings.AppSettings["EndPointToken"] ?? "";
             if (token == null || string.IsNullOrEmpty(token.ToString()) || string.IsNullOrEmpty(endPointToken) || token.ToString() != endPointToken)
             {

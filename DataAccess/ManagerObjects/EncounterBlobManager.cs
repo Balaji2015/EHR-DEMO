@@ -11,6 +11,9 @@ using System.Web.Mail;
 using System.Data;
 using System.Linq;
 using System.Xml;
+using System.Net;
+using System.Text;
+using System.Configuration;
 
 namespace Acurus.Capella.DataAccess.ManagerObjects
 {
@@ -94,7 +97,72 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
                 }
                 SaveEncounterBlobWithTransaction(ilstEncounterBlob, string.Empty);
 
+                //CAP-2522
+                if ((ConfigurationSettings.AppSettings["IsAkidoNoteCDC"]?.ToString()?.ToUpper() ?? "") == "Y" && ulEncounterID != 0)
+                {
+                    IsAkidoCDC(ulHumanID.ToString(), ulEncounterID.ToString(), sUserName, dtModifiedDateTime.ToString("yyyy-MM-dd HH:mm:ss"));
+                }
             }
+        }
+
+        //CAP-2522
+        public static void IsAkidoCDC(string sHumanID, string sEncounterID, string sTransactionBy, string sTransactionDateTime)
+        {
+            //Jira CAP-1379
+            int iRetryCount = 0;
+
+        retry:
+            try
+            {
+                iRetryCount = iRetryCount + 1;
+                string akidoNoteCDCURL = System.Configuration.ConfigurationSettings.AppSettings["AkidoNoteCDCURL"].ToString();
+                akidoNoteCDCURL = akidoNoteCDCURL.Replace("[CapellaHumanID]", sHumanID).Replace("[CapellaEncounterID]", sEncounterID).Replace("[CapellaTransactionBy]", sTransactionBy).Replace("[CapellaTransactionDateTime]", sTransactionDateTime);
+                var myUri = new Uri(akidoNoteCDCURL);
+                string AccessToken = System.Configuration.ConfigurationSettings.AppSettings["AkidoNoteCDCURLToken"].ToString();
+                var myWebRequest = WebRequest.Create(myUri);
+                var myHttpWebRequest = (HttpWebRequest)myWebRequest;
+                myHttpWebRequest.PreAuthenticate = true;
+                myHttpWebRequest.Headers.Add("Authorization", "Bearer " + AccessToken);
+                myHttpWebRequest.Accept = "application/json";
+
+                var myWebResponse = myWebRequest.GetResponse();
+                var responseStream = myWebResponse.GetResponseStream();
+
+                var myStreamReader = new StreamReader(responseStream, Encoding.Default);
+                var json = myStreamReader.ReadToEnd();
+                responseStream.Close();
+                myWebResponse.Close();
+
+                //if (json.ToString() != "[]")
+                //{
+                //    bIsAkidoEncounter = "true";
+                //    //Jira CAP-1990
+                //    string sPJason = json.Substring(1, json.Length - 2);
+                //    var jsonObject = JObject.Parse(sPJason);
+                //}
+            }
+            catch (Exception ex)
+            {
+                //Jira CAP-1379
+                //bIsAkidoEncounter = "Exception";
+                //sExMessage = ex.Message;
+                //Console.WriteLine(ex.ToString());
+
+                //Jira CAP-1379
+                //if (iRetryCount < 3)
+                //{
+                //    Console.WriteLine("Retrying Count : " + iRetryCount + " -> " + ex.ToString());
+                //    System.Threading.Thread.Sleep(new TimeSpan(0, 0, 2));
+                //    goto retry;
+                //}
+                //else
+                //{
+                //    Console.WriteLine(ex.ToString());
+                //}
+
+            }
+
+            //return bIsAkidoEncounter;
         }
         #endregion
     }

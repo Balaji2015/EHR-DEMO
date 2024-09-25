@@ -10,6 +10,8 @@ using System.Threading;
 using MySql.Data.MySqlClient;
 using System.Configuration;
 using System.Runtime.CompilerServices;
+using System.IO;
+using System.Net;
 
 namespace Acurus.Capella.DataAccess.ManagerObjects
 {
@@ -234,7 +236,7 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
             iTryCount = 0;
         TryAgain:
             int iResult = 0;
-
+            ulong encID = 0;
             ISession MySession = Session.GetISession();
             ITransaction trans = null;
             try
@@ -243,7 +245,6 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
 
                 if ((saveList != null && saveList.Count > 0) || (updateList != null && updateList.Count > 0))
                 {
-                    ulong encID = 0;
                     EncounterManager encounterMngr = new EncounterManager();
                     if (saveList != null && saveList.Count > 0)
                         encID = saveList[0].Encounter_ID;
@@ -253,6 +254,7 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
                     GenerateXml XMLObj = new GenerateXml();
                     //iResult = SaveUpdateDeleteWithoutTransaction(ref saveList, updateList, null, MySession, macAddress);
                     iResult = SaveUpdateDelete_DBAndXML_WithoutTransaction(ref saveList, ref updateList, null, MySession, macAddress, true, true, encID, string.Empty, ref XMLObj);
+                       
                     bool bAddendumSaved = false;
                     if (saveList != null && saveList.Count > 0)
                         bAddendumSaved = XMLObj.CheckDataConsistency(saveList.Cast<object>().ToList(), true, string.Empty);
@@ -628,6 +630,28 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
             //            XMLObj.GenerateXmlSaveStatic(updateList.Cast<object>().ToList(), updateList[0].Encounter_ID, string.Empty);
             //        }
             //}
+
+            //CAP-2523
+            if ((ConfigurationSettings.AppSettings["IsAkidoNoteCDC"]?.ToString()?.ToUpper() ?? "") == "Y" && encID != 0)
+            {
+                string sHumanID = string.Empty;
+                string sTransactionBy = string.Empty;
+                string sTransactionDateTime = string.Empty;
+
+                if (updateList != null && updateList.Any())
+                {
+                    sHumanID = updateList[0].Human_ID.ToString();
+                    sTransactionBy = updateList[0].Modified_By;
+                    sTransactionDateTime = updateList[0].Modified_Date_And_Time.ToString("yyyy-MM-dd HH:mm:ss");
+                }
+                else
+                {
+                    sHumanID = saveList[0].Human_ID.ToString();
+                    sTransactionBy = saveList[0].Created_By;
+                    sTransactionDateTime = saveList[0].Created_Date_And_Time.ToString("yyyy-MM-dd HH:mm:ss");
+                }
+                IsAkidoCDC(sHumanID, encID.ToString(), sTransactionBy, sTransactionDateTime);
+            }
         }
 
         public IList<AddendumNotes> getAddendumNotesForPhysician(ulong addendumID, ulong encounterID)
@@ -743,6 +767,58 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
             {
                 MySession.Close();
             }
+        }
+
+        public static void IsAkidoCDC(string sHumanID, string sEncounterID, string sTransactionBy, string sTransactionDateTime)
+        {
+            //Jira CAP-1379
+            int iRetryCount = 0;
+
+        retry:
+            try
+            {
+                iRetryCount = iRetryCount + 1;
+
+                string akidoNoteCDCURL = System.Configuration.ConfigurationSettings.AppSettings["AkidoNoteCDCURL"].ToString();
+                akidoNoteCDCURL = akidoNoteCDCURL.Replace("[CapellaHumanID]", sHumanID).Replace("[CapellaEncounterID]", sEncounterID).Replace("[CapellaTransactionBy]", sTransactionBy).Replace("[CapellaTransactionDateTime]", sTransactionDateTime);
+                var myUri = new Uri(akidoNoteCDCURL);
+                string AccessToken = System.Configuration.ConfigurationSettings.AppSettings["AkidoNoteCDCURLToken"].ToString();
+                var myWebRequest = WebRequest.Create(myUri);
+                var myHttpWebRequest = (HttpWebRequest)myWebRequest;
+                myHttpWebRequest.PreAuthenticate = true;
+                myHttpWebRequest.Headers.Add("Authorization", "Bearer " + AccessToken);
+                myHttpWebRequest.Accept = "application/json";
+
+                var myWebResponse = myWebRequest.GetResponse();
+                var responseStream = myWebResponse.GetResponseStream();
+
+                var myStreamReader = new StreamReader(responseStream, Encoding.Default);
+                var json = myStreamReader.ReadToEnd();
+                responseStream.Close();
+                myWebResponse.Close();
+            }
+            catch (Exception ex)
+            {
+                //Jira CAP-1379
+                //bIsAkidoEncounter = "Exception";
+                //sExMessage = ex.Message;
+                //Console.WriteLine(ex.ToString());
+
+                //Jira CAP-1379
+                //if (iRetryCount < 3)
+                //{
+                //    Console.WriteLine("Retrying Count : " + iRetryCount + " -> " + ex.ToString());
+                //    System.Threading.Thread.Sleep(new TimeSpan(0, 0, 2));
+                //    goto retry;
+                //}
+                //else
+                //{
+                //    Console.WriteLine(ex.ToString());
+                //}
+
+            }
+
+            //return bIsAkidoEncounter;
         }
         #endregion
     }
