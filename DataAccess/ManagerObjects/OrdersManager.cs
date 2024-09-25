@@ -22,7 +22,7 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
     public partial interface IOrdersManager : IManagerBase<Orders, ulong>
     {
         //ulong InsertToOrders(IList<Orders> saveList, IList<OrdersSubmit> objOrderSubmit, IList<OrdersAssessment> ordAssList, IList<string> sOrderingProcedure, ulong EncounterID, string orderType, string MACAddress);
-        ulong InsertToOrders(IList<Orders> saveList, IList<OrdersSubmit> objOrderSubmit, IList<OrdersAssessment> ordAssList, IList<string> sOrderingProcedure, ulong EncounterID, string orderType, string MACAddress, IList<OrdersRequiredForms> ilistOrdersRequiredForms, ref string sSelectedOrder, string sLocalTime,bool IsEncounterUpdateForAkidoOrder);
+        ulong InsertToOrders(IList<Orders> saveList, IList<OrdersSubmit> objOrderSubmit, IList<OrdersAssessment> ordAssList, IList<string> sOrderingProcedure, ulong EncounterID, string orderType, string MACAddress, IList<OrdersRequiredForms> ilistOrdersRequiredForms, ref string sSelectedOrder, string sLocalTime,bool IsEncounterUpdateForAkidoOrder, out Encounter currentEncounter);
         Stream GetOrdersUsingEncounterID(ulong EncounterID, string orderType, bool LoadQuestionSets);
         Stream LoadOrders(ulong EncounterID, ulong PhysicianID, ulong HumanID, string orderType, string procedureType, DateTime todaysDate, bool LoadQuestionSets);
         Stream LoadOrdersByOrdersSubmitedId(ulong OrderSubmitId, ulong EncounterID, ulong PhysicianID, ulong HumanID, string orderType, string procedureType, DateTime todaysDate, bool LoadQuestionSet);
@@ -220,9 +220,10 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
                         WFObjectManager obj_workFlow = new WFObjectManager();
                         obj_workFlow.MoveToNextProcess(OrderSubmitID, "DIAGNOSTIC ORDER", 9, "UNKNOWN", DateTime.UtcNow, null, null, null);
                         OrdersManager oj = new OrdersManager();
+                        Encounter NewEnc = new Encounter();
                         //Cap - 2505
                         // ulOrdersubID = oj.InsertToOrders(ilstord, ilstOrdersSubmitnew, ordAssList, sOrderingProcedure, EncounterId, orderType, MACAddress, ilistOrdersRequiredForms, ref sSelectedOrder, sLocalTime);
-                        ulOrdersubID = oj.InsertToOrders(ilstord, ilstOrdersSubmitnew, ordAssList, sOrderingProcedure, EncounterId, orderType, MACAddress, ilistOrdersRequiredForms, ref sSelectedOrder, sLocalTime,false);
+                        ulOrdersubID = oj.InsertToOrders(ilstord, ilstOrdersSubmitnew, ordAssList, sOrderingProcedure, EncounterId, orderType, MACAddress, ilistOrdersRequiredForms, ref sSelectedOrder, sLocalTime,false,out NewEnc);
                         if (sSelectedOrder != string.Empty)
                         {
                             ulOrdersubID = Convert.ToUInt32(sSelectedOrder.Split('|')[0]);
@@ -237,7 +238,7 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
 
             return ulOrdersubID;
         }
-        public ulong InsertToOrders(IList<Orders> saveList, IList<OrdersSubmit> objOrderSubmit, IList<OrdersAssessment> ordAssList, IList<string> sOrderingProcedure, ulong EncounterID, string orderType, string MACAddress, IList<OrdersRequiredForms> ilistOrdersRequiredForms, ref string sSelectedOrder, string sLocalTime,bool IsEncounterUpdateForAkidoOrder)
+        public ulong InsertToOrders(IList<Orders> saveList, IList<OrdersSubmit> objOrderSubmit, IList<OrdersAssessment> ordAssList, IList<string> sOrderingProcedure, ulong EncounterID, string orderType, string MACAddress, IList<OrdersRequiredForms> ilistOrdersRequiredForms, ref string sSelectedOrder, string sLocalTime,bool IsEncounterUpdateForAkidoOrder, out Encounter currentEncounter)
         {
             string Height = string.Empty;
             string Weight = string.Empty;
@@ -252,9 +253,9 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
             TreatmentPlanManager objTreatmentPlanManager = new TreatmentPlanManager();
             //Cap - 2505
             IList<Encounter> EncList = new List<Encounter>();
-            Encounter currentEncounter = new Encounter();
+            currentEncounter = new Encounter();
             EncounterManager objEncounterManager = new EncounterManager();
-
+            ulong ulSubmitID = 0;
             ulong ulHumanid = 0;
             if (objOrderSubmit.Count > 0)
                 ulHumanid = objOrderSubmit[0].Human_ID;
@@ -422,7 +423,7 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
                                     humanid = saveList[0].Human_ID;
                                 //iResult = objOrdersSubmitManager.SaveUpdateDeleteWithoutTransaction(ref objOrderSubmit, null, null, MySession, MACAddress);
                                 iResult = objOrdersSubmitManager.SaveUpdateDelete_DBAndXML_WithoutTransaction(ref objOrderSubmit, ref objOrderSubmitnull, null, MySession, MACAddress, true, true, humanid, string.Empty, ref XMLObj);
-                                ulong ulSubmitID = 0;
+                                
                                 if (objOrderSubmit.Count > 0)
                                 {
                                     string sTestDate = "";
@@ -430,12 +431,7 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
                                         sTestDate = Convert.ToDateTime(objOrderSubmit[0].Test_Date).ToString("dd-MMM-yyyy");
                                     sSelectedOrder = objOrderSubmit[0].Id.ToString() + " | " + sTestDate;
                                     ulSubmitID = objOrderSubmit[0].Id;
-                                    //Cap - 2505
-                                    if (ulSubmitID != 0)
-                                    {
-                                        currentEncounter.Order_Submit_ID = Convert.ToInt32(ulSubmitID);
-                                        objEncounterManager.UpdateEncounterList(currentEncounter, string.Empty);
-                                    }
+                                    
                                 }
 
                                 if (iResult == 2)
@@ -1122,6 +1118,14 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
             //{
             //    return GetOrdersUsingHumanID(saveList[0].Human_ID, saveList[0].Created_Date_And_Time, orderType, saveList[0].Physician_ID, false);
             //}
+
+            //Cap - 2505
+            if (ulSubmitID != 0 && IsEncounterUpdateForAkidoOrder)
+            {
+                currentEncounter.Order_Submit_ID = Convert.ToInt32(ulSubmitID);
+                currentEncounter =  objEncounterManager.UpdateEncounterList(currentEncounter, string.Empty);                
+            }
+
             return 0;
         }
 
