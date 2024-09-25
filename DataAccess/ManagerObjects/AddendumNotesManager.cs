@@ -634,7 +634,23 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
             //CAP-2523
             if ((ConfigurationSettings.AppSettings["IsAkidoNoteCDC"]?.ToString()?.ToUpper() ?? "") == "Y" && encID != 0)
             {
-                IsAkidoCDC(encID.ToString());
+                string sHumanID = string.Empty;
+                string sTransactionBy = string.Empty;
+                string sTransactionDateTime = string.Empty;
+
+                if (updateList != null && updateList.Any())
+                {
+                    sHumanID = updateList[0].Human_ID.ToString();
+                    sTransactionBy = updateList[0].Modified_By;
+                    sTransactionDateTime = updateList[0].Modified_Date_And_Time.ToString("yyyy-MM-dd HH:mm:ss");
+                }
+                else
+                {
+                    sHumanID = saveList[0].Human_ID.ToString();
+                    sTransactionBy = saveList[0].Created_By;
+                    sTransactionDateTime = saveList[0].Created_Date_And_Time.ToString("yyyy-MM-dd HH:mm:ss");
+                }
+                IsAkidoCDC(sHumanID, encID.ToString(), sTransactionBy, sTransactionDateTime);
             }
         }
 
@@ -753,7 +769,7 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
             }
         }
 
-        public static void IsAkidoCDC(string sEncounterID)
+        public static void IsAkidoCDC(string sHumanID, string sEncounterID, string sTransactionBy, string sTransactionDateTime)
         {
             //Jira CAP-1379
             int iRetryCount = 0;
@@ -763,7 +779,9 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
             {
                 iRetryCount = iRetryCount + 1;
 
-                var myUri = new Uri(System.Configuration.ConfigurationSettings.AppSettings["AkidoNoteCDCURL"].ToString().Replace("[CapellaEncounterID]", sEncounterID));
+                string akidoNoteCDCURL = System.Configuration.ConfigurationSettings.AppSettings["AkidoNoteCDCURL"].ToString();
+                akidoNoteCDCURL = akidoNoteCDCURL.Replace("[CapellaHumanID]", sHumanID).Replace("[CapellaEncounterID]", sEncounterID).Replace("[CapellaTransactionBy]", sTransactionBy).Replace("[CapellaTransactionDateTime]", sTransactionDateTime);
+                var myUri = new Uri(akidoNoteCDCURL);
                 string AccessToken = System.Configuration.ConfigurationSettings.AppSettings["AkidoNoteCDCURLToken"].ToString();
                 var myWebRequest = WebRequest.Create(myUri);
                 var myHttpWebRequest = (HttpWebRequest)myWebRequest;

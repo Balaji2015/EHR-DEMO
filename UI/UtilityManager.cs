@@ -6182,7 +6182,7 @@ namespace Acurus.Capella.UI
 
             return bIsAkidoInterpretationNote;
         }
-        public static void IsAkidoCDC(string sEncounterID)
+        public static void IsAkidoCDC(string sHumanID, string sEncounterID, string sTransactionBy, string sTransactionDateTime)
         {
             string bIsAkidoEncounter = "false";
             //Jira CAP-1379
@@ -6193,7 +6193,9 @@ namespace Acurus.Capella.UI
             {
                 iRetryCount = iRetryCount + 1;
 
-                var myUri = new Uri(System.Configuration.ConfigurationSettings.AppSettings["AkidoNoteCDCURL"].ToString().Replace("[CapellaEncounterID]", sEncounterID));
+                string akidoNoteCDCURL = System.Configuration.ConfigurationSettings.AppSettings["AkidoNoteCDCURL"].ToString();
+                akidoNoteCDCURL = akidoNoteCDCURL.Replace("[CapellaHumanID]", sHumanID).Replace("[CapellaEncounterID]", sEncounterID).Replace("[CapellaTransactionBy]", sTransactionBy).Replace("[CapellaTransactionDateTime]", sTransactionDateTime);
+                var myUri = new Uri(akidoNoteCDCURL);
                 string AccessToken = System.Configuration.ConfigurationSettings.AppSettings["AkidoNoteCDCURLToken"].ToString();
                 var myWebRequest = WebRequest.Create(myUri);
                 var myHttpWebRequest = (HttpWebRequest)myWebRequest;

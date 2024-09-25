@@ -100,13 +100,13 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
                 //CAP-2522
                 if ((ConfigurationSettings.AppSettings["IsAkidoNoteCDC"]?.ToString()?.ToUpper() ?? "") == "Y" && ulEncounterID != 0)
                 {
-                    IsAkidoCDC(ulEncounterID.ToString());
+                    IsAkidoCDC(ulHumanID.ToString(), ulEncounterID.ToString(), sUserName, dtModifiedDateTime.ToString("yyyy-MM-dd HH:mm:ss"));
                 }
             }
         }
 
         //CAP-2522
-        public static void IsAkidoCDC(string sEncounterID)
+        public static void IsAkidoCDC(string sHumanID, string sEncounterID, string sTransactionBy, string sTransactionDateTime)
         {
             //Jira CAP-1379
             int iRetryCount = 0;
@@ -115,8 +115,9 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
             try
             {
                 iRetryCount = iRetryCount + 1;
-
-                var myUri = new Uri(System.Configuration.ConfigurationSettings.AppSettings["AkidoNoteCDCURL"].ToString().Replace("[CapellaEncounterID]", sEncounterID));
+                string akidoNoteCDCURL = System.Configuration.ConfigurationSettings.AppSettings["AkidoNoteCDCURL"].ToString();
+                akidoNoteCDCURL = akidoNoteCDCURL.Replace("[CapellaHumanID]", sHumanID).Replace("[CapellaEncounterID]", sEncounterID).Replace("[CapellaTransactionBy]", sTransactionBy).Replace("[CapellaTransactionDateTime]", sTransactionDateTime);
+                var myUri = new Uri(akidoNoteCDCURL);
                 string AccessToken = System.Configuration.ConfigurationSettings.AppSettings["AkidoNoteCDCURLToken"].ToString();
                 var myWebRequest = WebRequest.Create(myUri);
                 var myHttpWebRequest = (HttpWebRequest)myWebRequest;
