@@ -937,17 +937,15 @@ namespace Acurus.Capella.UI
                     string sFileName = ScnTabRecord.ToList<ScnTab>()[0].SCN_Name + ".aspx";
                     //CAP-1922
                     //CAP-2308,CAP-2469
+                    DirectURLUtility directURLUtility = new DirectURLUtility();
                     var returnURL = string.Empty;
-                    if (!string.IsNullOrWhiteSpace(Request.Cookies["RedirectUri"]?.Value))
-                    {
                     if (!string.IsNullOrWhiteSpace(redirectURL))
                     {
-                        returnURL = HttpUtility.UrlDecode(redirectURL);
+                        returnURL = directURLUtility.GetServerRedirectURLByDirectURL(HttpUtility.UrlDecode(redirectURL), sDefaultServer);
                     }
                     else
                     {
                         returnURL = HttpUtility.UrlDecode(Request.Cookies["RedirectUri"]?.Value);
-                    }
                     }
                     ExpireRedirectUrlCookie();
 
