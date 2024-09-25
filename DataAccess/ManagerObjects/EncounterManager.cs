@@ -130,7 +130,7 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
         //IList<Encounter> GetEncounterUsingHumanIDlist(IList<ulong> lstHumanID);
         IList<Encounter> GetEncoutnerListByPhyID(int Phy_ID);
         IList<Encounter> GetEncounterList(IList<ulong> EncLst);
-        void UpdateEncounterList(Encounter EncRecord, string MacAddress);
+        Encounter UpdateEncounterList(Encounter EncRecord, string MacAddress);
         string SaveSummaryOfCare(SummaryOfCareDTO SummaryDTOList, string UserName, string FacilityName, ulong EncID, string sLegalOrg);
         HumanDTO GetHumanDetailsbyApptDate(string FacilityName, string EncounterProviderId, string ApptDate);
         IList<string> GetEncounterListArray(ulong ulHuman_ID, string sCategory, string sInterpretationSubDocType);
@@ -14499,7 +14499,7 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
             return sreturn;
         }
 
-        public void UpdateEncounterList(Encounter EncRecord, string MacAddress)
+        public Encounter UpdateEncounterList(Encounter EncRecord, string MacAddress)
         {
             IList<Encounter> EncSaveList = null;
             IList<Encounter> EncUpdateList = new List<Encounter>();
@@ -14509,6 +14509,7 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
                 // SaveUpdateDeleteWithTransaction(ref EncSaveList, EncUpdateList, null, MacAddress);
                 SaveUpdateDelete_DBAndXML_WithTransaction(ref EncSaveList, ref EncUpdateList, null, MacAddress, true, false, EncRecord.Id, string.Empty);
             }
+            return EncUpdateList[0];
         }
 
         public HumanDTO GetHumanDetailsbyApptDate(string FacilityName, string EncounterProviderId, string ApptDate)

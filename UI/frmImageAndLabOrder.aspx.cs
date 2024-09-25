@@ -2530,8 +2530,8 @@ namespace Acurus.Capella.UI
                 ulong OrdersSubmitId = Convert.ToUInt32(OrdersSubmitIDString);
                 //Cap - 2505
                 if (OrdersSubmitId == 0)
-                {
-                    hdnIsEncounterUpdate.Value = "true";
+                {                    
+                        hdnIsEncounterUpdate.Value = "true";
                 }
 
                 if (objDiagnosticDTO == null && (LookUpPerRequest.Keys.Contains("procedureType") == true))
@@ -2875,6 +2875,22 @@ namespace Acurus.Capella.UI
                 {
                     gbCenterDetail.Enabled = false;
                 }
+
+                //Cap - 2505
+                if (objDiagnosticDTO.objOrdersSubmit.Id == 0)
+                {
+                    var vfacAncillary = from f in ApplicationObject.facilityLibraryList where f.Fac_Name == ClientSession.FacilityName select f;
+                    IList<FacilityLibrary> ilstFacAncillary = vfacAncillary.ToList<FacilityLibrary>();
+
+                    if (ilstFacAncillary.Count > 0)
+                    {
+                        int selectedIndex = cboLab.Items.IndexOf(cboLab.Items.FindByText(ilstFacAncillary[0].Short_Name));
+                        cboLab.SelectedIndex = selectedIndex;
+                        cboLab_SelectedIndexChanged(new object(), new EventArgs());
+                        cboLab.Disabled = true;
+                    }
+                }
+
             }
         }
         int FindInsertStartIndex()
@@ -4081,15 +4097,17 @@ namespace Acurus.Capella.UI
             objOrdersManager = new OrdersManager();
             string sSelectedOrder = string.Empty;
             //Cap - 2505
+            Encounter NewEnc = new Encounter();            
             if (hdnIsEncounterUpdate.Value == "true")
             {
-                objOrdersManager.InsertToOrders(SaveOrderList.ToArray<Orders>(), SaveOrdersSubmitList, SaveOrdersAssList.ToArray<OrdersAssessment>(), orderingProcedure.ToArray<string>(), EncounterID, OrderType, string.Empty, ilstRequiredForms, ref sSelectedOrder, sLocalTime, true);
+                objOrdersManager.InsertToOrders(SaveOrderList.ToArray<Orders>(), SaveOrdersSubmitList, SaveOrdersAssList.ToArray<OrdersAssessment>(), orderingProcedure.ToArray<string>(), EncounterID, OrderType, string.Empty, ilstRequiredForms, ref sSelectedOrder, sLocalTime, true,out NewEnc);
+                ClientSession.FillEncounterandWFObject.EncRecord = NewEnc;  
                 hdnIsEncounterUpdate.Value = "false";
                 btnOrderSubmit.Attributes.Add("Tag", "UPDATE");
             }
             else
             {
-                objOrdersManager.InsertToOrders(SaveOrderList.ToArray<Orders>(), SaveOrdersSubmitList, SaveOrdersAssList.ToArray<OrdersAssessment>(), orderingProcedure.ToArray<string>(), EncounterID, OrderType, string.Empty, ilstRequiredForms, ref sSelectedOrder, sLocalTime, false);
+                objOrdersManager.InsertToOrders(SaveOrderList.ToArray<Orders>(), SaveOrdersSubmitList, SaveOrdersAssList.ToArray<OrdersAssessment>(), orderingProcedure.ToArray<string>(), EncounterID, OrderType, string.Empty, ilstRequiredForms, ref sSelectedOrder, sLocalTime, false,out NewEnc);
             }
             if (sSelectedOrder != string.Empty)
             {
@@ -5984,8 +6002,10 @@ namespace Acurus.Capella.UI
                     AddOrder();
                 }
                 btnImportresult.Disabled = true; //btnImportresult.Enabled = false;
-
-                ClearAll(false);
+                if (hdnIsEncounterUpdate.Value == "")
+                {
+                    ClearAll(false);
+                }       
             }
             btnOrderSubmit.Disabled = true; //btnOrderSubmit.Enabled = false;
             Session["IsSaved"] = "true";
