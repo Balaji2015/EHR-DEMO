@@ -3817,20 +3817,7 @@ namespace Acurus.Capella.UI
                 //}
                 //else
                 //{
-                //Cap - 2542
-                if (hdnIsEncounterUpdate.Value == "true")
-                {
-                    PhysicianManager objPhysicianMngr = new PhysicianManager();
-                    var lstPhysician = objPhysicianMngr.GetPhysicianIdByPhysicianName(ClientSession.FillEncounterandWFObject.EncRecord.Referring_Physician);
-                    if (lstPhysician != null && lstPhysician.Count > 0)
-                    {
-                        objOrder.Physician_ID = Convert.ToUInt64(lstPhysician[0]);
-                    }
-                }
-                else
-                {
-                    objOrder.Physician_ID = PhysicianID;
-                }
+                objOrder.Physician_ID = PhysicianID;
                 //}
 
                 objOrder.Human_ID = HumanID;
@@ -4131,14 +4118,6 @@ namespace Acurus.Capella.UI
                 ClientSession.FillEncounterandWFObject.EncRecord = NewEnc;  
                 hdnIsEncounterUpdate.Value = "false";
                 btnOrderSubmit.Attributes.Add("Tag", "UPDATE");
-                DiagnosticDTO objDiagnosticDTO = new DiagnosticDTO();
-                if (LookUpPerRequest.Keys.Contains("procedureType") == true)
-                {
-                    objDiagnosticDTO = objOrdersManager.FillDiagnosticDTO(Convert.ToUInt64(NewEnc.Order_Submit_ID), EncounterID, HumanID, PhysicianID, LookUpPerRequest["procedureType"].ToUpper(), ClientSession.FacilityName, ClientSession.LegalOrg);
-                }
-                LoadScreenFromOrderList(objDiagnosticDTO);
-                Session["objDiagnosticDTO"] = objDiagnosticDTO;
-                hdnOrderSubmitID.Value = NewEnc.Order_Submit_ID.ToString();
             }
             else
             {
