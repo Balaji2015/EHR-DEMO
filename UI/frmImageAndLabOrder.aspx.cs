@@ -2402,7 +2402,7 @@ namespace Acurus.Capella.UI
                 //lstvFrequentlyUsedLabProcedures.ForeColor = Color.Black;
                 cboLab.SelectedIndex = 0;
                 cboLab.Items[cboLab.SelectedIndex].Text = string.Empty;
-                
+
                 //cboLab.SelectedValue = "0";
                 txtCenterName.Value = "";
                 txtLocation.Value = "";
@@ -2530,8 +2530,8 @@ namespace Acurus.Capella.UI
                 ulong OrdersSubmitId = Convert.ToUInt32(OrdersSubmitIDString);
                 //Cap - 2505
                 if (OrdersSubmitId == 0)
-                {                    
-                        hdnIsEncounterUpdate.Value = "true";
+                {
+                    hdnIsEncounterUpdate.Value = "true";
                 }
 
                 if (objDiagnosticDTO == null && (LookUpPerRequest.Keys.Contains("procedureType") == true))
@@ -2540,13 +2540,13 @@ namespace Acurus.Capella.UI
                     objDiagnosticDTO = objOrdersManager.FillDiagnosticDTO(OrdersSubmitId, EncounterID, HumanID, PhysicianID, LookUpPerRequest["procedureType"].ToUpper(), ClientSession.FacilityName, ClientSession.LegalOrg);
                 }
                 OrdersSubmit subtempobj = objDiagnosticDTO.objOrdersSubmit;
-                if(subtempobj.Human_ID !=0)
+                if (subtempobj.Human_ID != 0)
                     HumanID = subtempobj.Human_ID;
 
-                if(subtempobj.Encounter_ID !=0)
+                if (subtempobj.Encounter_ID != 0)
                     EncounterID = subtempobj.Encounter_ID;
 
-                if(subtempobj.Physician_ID !=0)
+                if (subtempobj.Physician_ID != 0)
                     PhysicianID = subtempobj.Physician_ID;
 
                 IsEditable = objOrdersManager.IsEditable(subtempobj.Id, subtempobj.Order_Type);
@@ -2768,7 +2768,7 @@ namespace Acurus.Capella.UI
                 ProceduresViewList = objDiagnosticDTO.OrdersLists.Select(a => a.Lab_Procedure + "-" + (a.Lab_Procedure_Description.Contains("x_") ? ((a.Lab_Procedure_Description.Split(new[] { "x_" }, StringSplitOptions.None).Count() > 1 ? (a.Lab_Procedure_Description.Split(new[] { "x_" }, StringSplitOptions.None)[0].ToString() + "x______") : a.Lab_Procedure_Description) + "~" + a.Quantity + "|" + a.Id) : a.Lab_Procedure_Description)).ToList<string>();
                 //Cap - 2505
                 if (objDiagnosticDTO.OrdersLists.Count > 0)
-                Session["ProcEditID"] = objDiagnosticDTO.OrdersLists[0].Order_Submit_ID;
+                    Session["ProcEditID"] = objDiagnosticDTO.OrdersLists[0].Order_Submit_ID;
 
                 IList<ListItem> tempList = SetOrderIDForEditQuantity(ProceduresViewList);
                 //moved to sperate method
@@ -2859,7 +2859,7 @@ namespace Acurus.Capella.UI
                     }
                 }
                 //Cap - 2505
-                if (objDiagnosticDTO.objOrdersSubmit.Id !=0)
+                if (objDiagnosticDTO.objOrdersSubmit.Id != 0)
                 {
                     btnOrderSubmit.Attributes.Add("Tag", "UPDATE"); //btnOrderSubmit.Value = "UPDATE";
                 }
@@ -2867,7 +2867,7 @@ namespace Acurus.Capella.UI
                 {
                     btnOrderSubmit.Attributes.Add("Tag", "SAVE");//btnOrderSubmit.Value = "SAVE";
                 }
-                
+
                 //the following line has been added for BugID:26470 -Pujhitha
                 btnClearAll.Value = "Cancel";
                 //-------------------------------------------------------
@@ -3570,7 +3570,7 @@ namespace Acurus.Capella.UI
                         ClearAll(false);
                     }
 
-                   
+
 
                     //ScriptManager.RegisterStartupScript(this, GetType(), "showalert", "var warning_message_label = top.window.document.getElementById('ctl00_tbGeneral').control.findItemByValue('Warning_Message')._element;warning_message_label.textContent = 'Submitted Successfully.';warning_message_label.style.display = 'inline-block'; warning_message_label.style.color = 'red'; warning_message_label.style.position = 'absolute'; warning_message_label.style.top = '40px'; warning_message_label.style.right = '10px'; top.window.setTimeout(function () { warning_message_label.style.display = 'none'; }, 5000); ", true);
                     //if (TriggerClearAll)
@@ -3817,7 +3817,20 @@ namespace Acurus.Capella.UI
                 //}
                 //else
                 //{
-                objOrder.Physician_ID = PhysicianID;
+                //Cap - 2542
+                if (hdnIsEncounterUpdate.Value == "true")
+                {
+                    PhysicianManager objPhysicianMngr = new PhysicianManager();
+                    var lstPhysician = objPhysicianMngr.GetPhysicianIdByPhysicianName(ClientSession.FillEncounterandWFObject.EncRecord.Referring_Physician);
+                    if (lstPhysician != null && lstPhysician.Count > 0)
+                    {
+                        objOrder.Physician_ID = Convert.ToUInt64(lstPhysician[0]);
+                    }
+                }
+                else
+                {
+                    objOrder.Physician_ID = PhysicianID;
+                }
                 //}
 
                 objOrder.Human_ID = HumanID;
@@ -3922,7 +3935,21 @@ namespace Acurus.Capella.UI
                 //}
                 //else
                 //{
-                objOrderSubmit.Physician_ID = PhysicianID;
+                //CAP-2505
+                if (hdnIsEncounterUpdate.Value == "true")
+                {
+                    PhysicianManager objPhysicianMngr = new PhysicianManager();
+                    var lstPhysician = objPhysicianMngr.GetPhysicianIdByPhysicianName(ClientSession.FillEncounterandWFObject.EncRecord.Referring_Physician);
+                    if (lstPhysician != null && lstPhysician.Count > 0)
+                    {
+                        objOrderSubmit.Physician_ID = Convert.ToUInt64(lstPhysician[0]);
+                    }
+                }
+                else
+                {
+                    objOrderSubmit.Physician_ID = PhysicianID;
+                }
+
                 //}
 
                 //objOrderSubmit.Facility_Name = ClientSession.FacilityName;
@@ -4097,17 +4124,25 @@ namespace Acurus.Capella.UI
             objOrdersManager = new OrdersManager();
             string sSelectedOrder = string.Empty;
             //Cap - 2505
-            Encounter NewEnc = new Encounter();            
+            Encounter NewEnc = new Encounter();
             if (hdnIsEncounterUpdate.Value == "true")
             {
-                objOrdersManager.InsertToOrders(SaveOrderList.ToArray<Orders>(), SaveOrdersSubmitList, SaveOrdersAssList.ToArray<OrdersAssessment>(), orderingProcedure.ToArray<string>(), EncounterID, OrderType, string.Empty, ilstRequiredForms, ref sSelectedOrder, sLocalTime, true,out NewEnc);
-                ClientSession.FillEncounterandWFObject.EncRecord = NewEnc;  
+                objOrdersManager.InsertToOrders(SaveOrderList.ToArray<Orders>(), SaveOrdersSubmitList, SaveOrdersAssList.ToArray<OrdersAssessment>(), orderingProcedure.ToArray<string>(), EncounterID, OrderType, string.Empty, ilstRequiredForms, ref sSelectedOrder, sLocalTime, true, out NewEnc);
+                ClientSession.FillEncounterandWFObject.EncRecord = NewEnc;
                 hdnIsEncounterUpdate.Value = "false";
                 btnOrderSubmit.Attributes.Add("Tag", "UPDATE");
+                DiagnosticDTO objDiagnosticDTO = new DiagnosticDTO();
+                if (LookUpPerRequest.Keys.Contains("procedureType") == true)
+                {
+                    objDiagnosticDTO = objOrdersManager.FillDiagnosticDTO(Convert.ToUInt64(NewEnc.Order_Submit_ID), EncounterID, HumanID, PhysicianID, LookUpPerRequest["procedureType"].ToUpper(), ClientSession.FacilityName, ClientSession.LegalOrg);
+                }
+                LoadScreenFromOrderList(objDiagnosticDTO);
+                Session["objDiagnosticDTO"] = objDiagnosticDTO;
+                hdnOrderSubmitID.Value = NewEnc.Order_Submit_ID.ToString();
             }
             else
             {
-                objOrdersManager.InsertToOrders(SaveOrderList.ToArray<Orders>(), SaveOrdersSubmitList, SaveOrdersAssList.ToArray<OrdersAssessment>(), orderingProcedure.ToArray<string>(), EncounterID, OrderType, string.Empty, ilstRequiredForms, ref sSelectedOrder, sLocalTime, false,out NewEnc);
+                objOrdersManager.InsertToOrders(SaveOrderList.ToArray<Orders>(), SaveOrdersSubmitList, SaveOrdersAssList.ToArray<OrdersAssessment>(), orderingProcedure.ToArray<string>(), EncounterID, OrderType, string.Empty, ilstRequiredForms, ref sSelectedOrder, sLocalTime, false, out NewEnc);
             }
             if (sSelectedOrder != string.Empty)
             {
@@ -4116,7 +4151,7 @@ namespace Acurus.Capella.UI
                     hdnSelectedOrder.Value = sSelectedOrder;
                 }
 
-            }           
+            }
 
 
         }
@@ -5138,7 +5173,7 @@ namespace Acurus.Capella.UI
             {
                 hdnTransferVaraible.Value = Convert.ToString(hdnMovetoOrderSubmitId.Value);
             }
-           
+
             string OrdersSubmitIDString = hdnTransferVaraible.Value != null ? hdnTransferVaraible.Value.ToString() : string.Empty;
             if (OrdersSubmitIDString != string.Empty)
             {
@@ -5154,49 +5189,49 @@ namespace Acurus.Capella.UI
                 //uLabID = Convert.ToUInt64(cboLab.Items[cboLab.SelectedIndex].Value);
                 //if (uLabID != 32)
                 //{
-                    //if (!btnOrderSubmit.Disabled)
-                    //{
-                        //if (hdnType.Value != "")
-                        //{
-                        //    btnOrderSubmit_Click(sender, e);
-                        //    if (hdnMovetoNextProcess.Value == "false")
-                        //        return;
-                        //}
-                    //}
+                //if (!btnOrderSubmit.Disabled)
+                //{
+                //if (hdnType.Value != "")
+                //{
+                //    btnOrderSubmit_Click(sender, e);
+                //    if (hdnMovetoNextProcess.Value == "false")
+                //        return;
+                //}
+                //}
 
-                    var serializer = new NetDataContractSerializer();
-                    OrdersDTO objOrderDTO = null;
-                    object objDTO;
-                    objDTO = (object)serializer.ReadObject(objOrdersManager.LoadOrders(EncounterID, PhysicianID, HumanID, OrderType, string.Empty, UtilityManager.ConvertToUniversal(DateTime.Now), false));
-                    objOrderDTO = (OrdersDTO)objDTO;
-                    if (objOrderDTO.ilstOrderLabDetailsDTO.Count > 0 || objOrderDTO.ilstOrdersSubmitForPartialOrders.Count > 0)
+                var serializer = new NetDataContractSerializer();
+                OrdersDTO objOrderDTO = null;
+                object objDTO;
+                objDTO = (object)serializer.ReadObject(objOrdersManager.LoadOrders(EncounterID, PhysicianID, HumanID, OrderType, string.Empty, UtilityManager.ConvertToUniversal(DateTime.Now), false));
+                objOrderDTO = (OrdersDTO)objDTO;
+                if (objOrderDTO.ilstOrderLabDetailsDTO.Count > 0 || objOrderDTO.ilstOrdersSubmitForPartialOrders.Count > 0)
+                {
+
+                    IList<OrdersSubmit> maReviewOrders = (from o in objOrderDTO.ilstOrderLabDetailsDTO where o.OrdersSubmit.Id == order_submit_id && o.ObjOrder.Internal_Property_Current_Process == "MA_REVIEW" select o.OrdersSubmit).Distinct().ToList<OrdersSubmit>();
+                    int emptyCount = (from o in maReviewOrders where o.Bill_Type == string.Empty select o).ToList<OrdersSubmit>().Count;
+                    IList<OrdersSubmit> maReviewOrders1 = (from o in objOrderDTO.ilstOrdersSubmitForPartialOrders where o.Id == order_submit_id select o).Distinct().ToList<OrdersSubmit>();
+                    if (maReviewOrders1 != null && maReviewOrders1.Count > 0)
                     {
-
-                        IList<OrdersSubmit> maReviewOrders = (from o in objOrderDTO.ilstOrderLabDetailsDTO where o.OrdersSubmit.Id == order_submit_id && o.ObjOrder.Internal_Property_Current_Process == "MA_REVIEW" select o.OrdersSubmit).Distinct().ToList<OrdersSubmit>();
-                        int emptyCount = (from o in maReviewOrders where o.Bill_Type == string.Empty select o).ToList<OrdersSubmit>().Count;
-                        IList<OrdersSubmit> maReviewOrders1 = (from o in objOrderDTO.ilstOrdersSubmitForPartialOrders where o.Id == order_submit_id select o).Distinct().ToList<OrdersSubmit>();
-                        if (maReviewOrders1 != null && maReviewOrders1.Count > 0)
-                        {
-                            ScriptManager.RegisterStartupScript(this, this.Page.GetType(), string.Empty, "DisplayErrorMessage('230126'); {sessionStorage.setItem('StartLoading', 'false');StopLoadFromPatChart();}", true);
-                            //ApplicationObject.erroHandler.DisplayErrorMessage("230126", OrderType.ToUpper());
-                            return;
-                        }
-                        if (emptyCount == 0)
-                        {
-                            WFObjectManager obj_workFlow = new WFObjectManager();
-                            obj_workFlow.MoveToNextProcess(order_submit_id, "DIAGNOSTIC ORDER", 1, "UNKNOWN", UtilityManager.ConvertToUniversal(DateTime.Now), null, null, null);
-                            ScriptManager.RegisterStartupScript(this, this.Page.GetType(), "SaveSuccessfully", "DisplayErrorMessage('280013'); {sessionStorage.setItem('StartLoading', 'false');StopLoadFromPatChart();}", true);
-                            ScriptManager.RegisterStartupScript(this, this.GetType(), string.Empty, "WindowCloseDiagnostics();", true);
-                            return;
-                        }
-                        else if (emptyCount == maReviewOrders.Count)
-                        {
-                            ScriptManager.RegisterStartupScript(this, this.Page.GetType(), string.Empty, "DisplayErrorMessage('230126'); {sessionStorage.setItem('StartLoading', 'false');StopLoadFromPatChart();}", true);
-                            //ApplicationObject.erroHandler.DisplayErrorMessage("230126", OrderType.ToUpper());
-                            return;
-                        }
-
+                        ScriptManager.RegisterStartupScript(this, this.Page.GetType(), string.Empty, "DisplayErrorMessage('230126'); {sessionStorage.setItem('StartLoading', 'false');StopLoadFromPatChart();}", true);
+                        //ApplicationObject.erroHandler.DisplayErrorMessage("230126", OrderType.ToUpper());
+                        return;
                     }
+                    if (emptyCount == 0)
+                    {
+                        WFObjectManager obj_workFlow = new WFObjectManager();
+                        obj_workFlow.MoveToNextProcess(order_submit_id, "DIAGNOSTIC ORDER", 1, "UNKNOWN", UtilityManager.ConvertToUniversal(DateTime.Now), null, null, null);
+                        ScriptManager.RegisterStartupScript(this, this.Page.GetType(), "SaveSuccessfully", "DisplayErrorMessage('280013'); {sessionStorage.setItem('StartLoading', 'false');StopLoadFromPatChart();}", true);
+                        ScriptManager.RegisterStartupScript(this, this.GetType(), string.Empty, "WindowCloseDiagnostics();", true);
+                        return;
+                    }
+                    else if (emptyCount == maReviewOrders.Count)
+                    {
+                        ScriptManager.RegisterStartupScript(this, this.Page.GetType(), string.Empty, "DisplayErrorMessage('230126'); {sessionStorage.setItem('StartLoading', 'false');StopLoadFromPatChart();}", true);
+                        //ApplicationObject.erroHandler.DisplayErrorMessage("230126", OrderType.ToUpper());
+                        return;
+                    }
+
+                }
                 //}
                 //else
                 //{
@@ -6005,7 +6040,7 @@ namespace Acurus.Capella.UI
                 if (hdnIsEncounterUpdate.Value == "")
                 {
                     ClearAll(false);
-                }       
+                }
             }
             btnOrderSubmit.Disabled = true; //btnOrderSubmit.Enabled = false;
             Session["IsSaved"] = "true";

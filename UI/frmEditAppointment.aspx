@@ -661,7 +661,7 @@
                                                 </tr>--%>
                                                 <tr>
                                                     <td style="width: 8%;">
-                                                        <span class="spanstyle">Provider Search</span>
+                                                        <asp:Label ID="lblProviderSearch" runat="server" ForeColor="Black" Text="Provider Search" CssClass="Editabletxtbox"></asp:Label>
                                                     </td>
                                                     <td style="width: 88%;">
                                                         <asp:TextBox ID="txtProviderSearch" runat="server"  data-phy-id="0"  data-phy-details="" Rows="3" TextMode="MultiLine" placeholder="Type minimum 3 characters of Last or First name or Facility and follow it by a space.."  style="width:110.5%;resize:none" ></asp:TextBox> 

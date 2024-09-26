@@ -463,7 +463,9 @@ $('#btnSave').click(function () {
     }
     if (sFacility == "true") {
         if (document.getElementById("cboOrder").value.length > 0) {
-            if (document.getElementById("txtProviderSearch").value.trim() == "") {
+            //Cap - 2505
+            //if (document.getElementById("txtProviderSearch").value.trim() == "") {
+            if (document.getElementById("txtProviderSearch").value.trim() == "" || document.getElementById("hdnrenprovidersearch").value.trim()=="") {
                 DisplayErrorMessage('110087');
                 document.getElementById("cboOrder").focus();
                 { sessionStorage.setItem('StartLoading', 'false'); StopLoadFromPatChart(); }
@@ -595,7 +597,9 @@ function showTime() {
     }
     if (sFacility == "true") {
         if (document.getElementById("cboOrder").value.length > 0) {
-            if (document.getElementById("txtReferringProvider").value.length == 0) {
+            //Cap - 2505
+            //if (document.getElementById("txtReferringProvider").value.length == 0) {
+            if (document.getElementById("txtReferringProvider").value.length == 0 || document.getElementById("hdnrenprovidersearch").value.trim() == "") {
                 DisplayErrorMessage('110087');
                 document.getElementById("cboOrder").focus();
                 { sessionStorage.setItem('StartLoading', 'false'); StopLoadFromPatChart(); }

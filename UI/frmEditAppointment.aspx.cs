@@ -3909,17 +3909,23 @@ namespace Acurus.Capella.UI
                     //msktxtReferingPhoneNo.Text = string.Empty;
                     //msktxtReferingFaxNo.Text = string.Empty;
                 }
+                lblProviderSearch.ForeColor = Color.Black;
+                lblProviderSearch.Text = lblProviderSearch.Text.Replace("*", "");
 
             }
             //Cap - 1179
             else
             {
                 hdnrenprovider.Value = "";
-
                 hdnrenprovidersearch.Value = "";
                 txtProviderSearch.Text = string.Empty;
                 txtProviderSearch.Enabled = true;
                 hdnRefEditPhyId.Value = string.Empty;
+                if (cboOrder.SelectedItem.Text == "Akido Order")
+                {
+                    lblProviderSearch.ForeColor = Color.Red;
+                    lblProviderSearch.Text += "*";
+                }
             }
             //{
             //    //txtReferringProvider.Text = string.Empty;
@@ -4315,6 +4321,17 @@ namespace Acurus.Capella.UI
                             }
                         }
                         cboOrder.SelectedIndex = selectorder;
+                        //Cap - 2505
+                        if(ulordID!=0 && cboOrder.SelectedIndex==0)
+                        {
+                            cboOrder.SelectedIndex = 1;
+                        }
+
+                    }
+                    //Cap - 2505
+                    if(ulMyEncID !=0 && ulordID==0)
+                    {
+                        cboOrder.SelectedIndex = 1;
                     }
                     //if (cboOrder.Items.Count > 0)
                     //    btnOrder.Enabled = true;

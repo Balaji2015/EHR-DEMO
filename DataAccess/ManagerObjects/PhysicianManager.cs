@@ -55,6 +55,7 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
         IList<PhysicianLibrary> GetphysiciannameByUserName(string sUserName);
         IList<FillPhysicianLibrary> GetPhysicianByCategory(IList<string> Category);
         IList<PhysicianLibrary> GetPhysicianByFax(string Fax);
+        ArrayList GetPhysicianIdByPhysicianName(string sPhysicianName);
         //IList<PhysicianFacilityCompanyCarrier> GetPhyFacCompanyCarrierDetails(ulong ulBillID, ulong ulRendProvID, string sBillingFacility, ulong ulCarrierID);
     }
 
@@ -1399,6 +1400,18 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
             }
 
             return ilstPhysicianLibraryCategory;
+        }
+        //CAP-2505
+        public ArrayList GetPhysicianIdByPhysicianName(string sPhysicianName)
+        {
+            ArrayList ilstPhysicianLibrary = new ArrayList();
+            using (ISession iMySession = NHibernateSessionManager.Instance.CreateISession())
+            {
+                ISQLQuery sq1 = iMySession.CreateSQLQuery("select u.Physician_Library_ID from physician_library p, user u where concat(p.physician_prefix,' ',p.physician_First_Name,' ',p.physician_Middle_Name,', ',p.physician_Last_Name, ' ',p.Physician_suffix)='"+ sPhysicianName + "' and p.Physician_Library_ID=u.Physician_Library_ID and u.status='A';");
+                ilstPhysicianLibrary = new ArrayList(sq1.List());
+                iMySession.Close();
+            }
+            return ilstPhysicianLibrary;
         }
 
         //public IList<PhysicianFacilityCompanyCarrier> GetPhyFacCompanyCarrierDetails(ulong ulBillID, ulong ulRendProvID, string sBillingFacility, ulong ulCarrierID)

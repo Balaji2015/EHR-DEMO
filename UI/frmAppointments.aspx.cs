@@ -2924,6 +2924,11 @@ namespace Acurus.Capella.UI
             {
                 hdnSchedulerView.Value = "SwitchToMonthView";
             }
+            //CAP-2430
+            else
+            {
+                hdnSchedulerView.Value = "SwitchToDayView";
+            }
             #region Physician Login
             if (hdnSourceScreen.Value == "AppointmentFacility")
             {
