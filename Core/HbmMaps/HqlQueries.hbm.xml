@@ -13919,7 +13919,7 @@ from encounter a
 left join wf_object w on (a.Encounter_ID = w.Obj_System_Id and w.Obj_Type = 'ENCOUNTER' and a.human_id<>0)
 left join human h on (a.human_id=h.human_id)
 left join  physician_library p on (a.Appointment_Provider_ID=p.Physician_Library_ID)
-where (cast(a.Appointment_Date as char(100)) between :fromdate and :todate) and a.Appointment_Provider_ID in(:PhyList)
+where (a.Appointment_Date between :fromdate and :todate) and a.Appointment_Provider_ID in(:PhyList)
 and w.Facility_Name in (:FacList)
 and w.Current_Process<>'CANCELLED' and h.Human_ID is not NULL) as main left join checks c on main.Encounter_ID = c.Encounter_ID group by main.encounter_id 
 union all 
@@ -13932,7 +13932,7 @@ from encounter_arc a
 left join wf_object_arc w on (a.Encounter_ID = w.Obj_System_Id and w.Obj_Type = 'ENCOUNTER' and a.human_id<>0)
 left join human h on (a.human_id=h.human_id)
 left join  physician_library p on (a.Appointment_Provider_ID=p.Physician_Library_ID)
-where (cast(a.Appointment_Date as char(100)) between :fromdate and :todate) and a.Appointment_Provider_ID in(:PhyList)
+where (a.Appointment_Date between :fromdate and :todate) and a.Appointment_Provider_ID in(:PhyList)
 and w.Facility_Name in (:FacList)
 and w.Current_Process<>'CANCELLED' and h.Human_ID is not NULL) as main left join checks_arc c on main.Encounter_ID = c.Encounter_ID group by main.encounter_id;
   ]]>
@@ -13996,7 +13996,7 @@ left join human h on (a.human_id=h.human_id)
 left join Machine_Technician_Library m on (a.Machine_Technician_Library_ID=m.Machine_Technician_Library_id)
 left join  physician_library p on (m.Physician_Library_ID=p.Physician_Library_ID)
 
-where (cast(a.Appointment_Date as char(100)) between :fromdate and :todate) and a.Machine_Technician_Library_ID in(:PhyList)
+where (a.Appointment_Date between :fromdate and :todate) and a.Machine_Technician_Library_ID in(:PhyList)
 and w.Facility_Name in (:FacList)
 and w.Current_Process<>'CANCELLED' and h.Human_ID is not NULL) as main left join checks c on main.Encounter_ID = c.Encounter_ID group by main.encounter_id
 union all  
@@ -14013,7 +14013,7 @@ left join wf_object_arc w on (a.Encounter_ID = w.Obj_System_Id and w.Obj_Type = 
 left join human h on (a.human_id=h.human_id)
 left join Machine_Technician_Library m on (a.Machine_Technician_Library_ID=m.Machine_Technician_Library_id)
 left join  physician_library p on (m.Physician_Library_ID=p.Physician_Library_ID)
-where (cast(a.Appointment_Date as char(100)) between :fromdate and :todate) and a.Machine_Technician_Library_ID in(:PhyList)
+where (a.Appointment_Date between :fromdate and :todate) and a.Machine_Technician_Library_ID in(:PhyList)
 and w.Facility_Name in (:FacList)
 and w.Current_Process<>'CANCELLED' and h.Human_ID is not NULL) as main left join checks_arc c on main.Encounter_ID = c.Encounter_ID group by main.encounter_id;]]>
 	</sql-query>
