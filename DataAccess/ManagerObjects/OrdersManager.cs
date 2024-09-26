@@ -4010,17 +4010,17 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
                     ICriteria criteria1 = iMySession.CreateCriteria(typeof(Assessment)).Add(Expression.Eq("Encounter_ID", EncounterID)).Add(Expression.Eq("Assessment_Type", "Selected"));
                     objDTO.AssessmentList = criteria1.List<Assessment>();
 
-
-                    ICriteria crit = iMySession.CreateCriteria(typeof(PatientResults)).Add(Expression.Eq("Encounter_ID", EncounterID)).Add(Expression.Eq("Results_Type", "Vitals"))
-                        .SetProjection(Projections.Max("Vitals_Group_ID"));
-                    ulong vitalsId = 0;
-                    if (crit.List<object>().Count > 0)
-                    {
-                        vitalsId = Convert.ToUInt64(crit.List<object>()[0]);
-                    }
-                    IList<string> VitalName = new List<string>();
-                    VitalName.Add("Height");
-                    VitalName.Add("Weight");
+                    //Cap - 2497
+                   // ICriteria crit = iMySession.CreateCriteria(typeof(PatientResults)).Add(Expression.Eq("Encounter_ID", EncounterID)).Add(Expression.Eq("Results_Type", "Vitals"))
+                    //    .SetProjection(Projections.Max("Vitals_Group_ID"));
+                    //ulong vitalsId = 0;
+                    //if (crit.List<object>().Count > 0)
+                    //{
+                    //    vitalsId = Convert.ToUInt64(crit.List<object>()[0]);
+                    //}
+                    //IList<string> VitalName = new List<string>();
+                    //VitalName.Add("Height");
+                    //VitalName.Add("Weight");
                     //ICriteria criteriaVital = session.GetISession().CreateCriteria(typeof(PatientResults)).Add(Expression.Eq("Vital_Group_ID", vitalsId)).Add(Expression.In("Loinc_Observation", VitalName.ToArray<string>())).Add(Expression.Eq("Results_Type", "Vitals"));
                     //objDTO.VitalsList = criteriaVital.List<PatientResults>();
 
