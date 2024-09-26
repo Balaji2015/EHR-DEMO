@@ -3922,7 +3922,21 @@ namespace Acurus.Capella.UI
                 //}
                 //else
                 //{
-                objOrderSubmit.Physician_ID = PhysicianID;
+                //CAP-2505
+                if (hdnIsEncounterUpdate.Value == "true")
+                {
+                    PhysicianManager objPhysicianMngr = new PhysicianManager();
+                    var lstPhysician = objPhysicianMngr.GetPhysicianIdByPhysicianName(ClientSession.FillEncounterandWFObject.EncRecord.Referring_Physician);
+                    if(lstPhysician != null && lstPhysician.Count > 0)
+                    {
+                        objOrderSubmit.Physician_ID = Convert.ToUInt64(lstPhysician[0]);
+                    }
+                }
+                else
+                {
+                    objOrderSubmit.Physician_ID = PhysicianID;
+                }
+                    
                 //}
 
                 //objOrderSubmit.Facility_Name = ClientSession.FacilityName;
