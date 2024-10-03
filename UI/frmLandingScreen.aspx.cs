@@ -100,10 +100,11 @@ namespace Acurus.Capella.UI
                     {
                         returnURL = HttpUtility.UrlDecode(state);
                     }
-                    else
-                    {
-                        returnURL = HttpUtility.UrlDecode(Request.Cookies["RedirectUri"]?.Value);
-                    }
+                    //CAP-2549
+                    //else
+                    //{
+                    //    returnURL = HttpUtility.UrlDecode(Request.Cookies["RedirectUri"]?.Value);
+                    //}
                     if (!string.IsNullOrWhiteSpace(returnURL))
                     {
                         redirectUrl += $"&redirecturl={HttpUtility.UrlEncode(returnURL)}";
@@ -261,10 +262,11 @@ namespace Acurus.Capella.UI
                 }
             }
 
-            if (string.IsNullOrWhiteSpace(responseRedirectUrl))
-            {
-                responseRedirectUrl = Request.Cookies["RedirectUri"]?.Value ?? string.Empty;
-            }
+            //CAP-2549
+            //if (string.IsNullOrWhiteSpace(responseRedirectUrl))
+            //{
+            //    responseRedirectUrl = Request.Cookies["RedirectUri"]?.Value ?? string.Empty;
+            //}
 
             if (string.IsNullOrWhiteSpace(sUserAccountType))
             {
