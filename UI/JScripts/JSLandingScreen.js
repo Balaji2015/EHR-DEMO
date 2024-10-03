@@ -618,7 +618,7 @@ function EHRLanding(FileName) {
         console.log("origin :" + window.location?.origin);
         console.log("iframe :" + $("iframe")?.contentWindow);
         console.log("FileName :" + FileName);
-        $("iframe").src = FileName;
+        setTimeout(function () { $("iframe").src = FileName; }, 1000);
     }
     else {
         top.window.location = FileName;
