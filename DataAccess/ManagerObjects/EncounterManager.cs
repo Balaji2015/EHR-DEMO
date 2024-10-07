@@ -16521,10 +16521,38 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
             }
 
             //Jira #CAP-707
-            if (objDocWfobj.Current_Process == "AKIDO_SCRIBE_PROCESS")
+            if (objDocWfobj.Current_Process == "AKIDO_SCRIBE_PROCESS" || objDocWfobj.Current_Process == "TRANSCRIPT_PROCESS")
             {
+                WFObjectManager WFObjMngr = new WFObjectManager();
+                WFObjMngr.MoveToNextProcess(ulMyEncounterID, "DOCUMENTATION", 1, "UNKNOWN", Convert.ToDateTime(currentDate), string.Empty, null, null);
+            }
+            else if (objDocWfobj.Current_Process == "TRANSCRIPT_QC_PROCESS")
+            {
+                WFObject objDocWfObject = new WFObject();
+                string sEquivalantOwner = string.Empty;
+                WFObjectManager WFObjMngr = new WFObjectManager();
+
+                objDocWfObject = WFObjMngr.GetByObjectSystemId(ulMyEncounterID, "DOCUMENTATION");
+
+                //To get the equivalant allocation process to get the owner
+                if (objDocWfObject.Process_Allocation != string.Empty)
+                {
+                    if (objDocWfObject.Process_Allocation.Contains("PROVIDER_PROCESS") == true)
+                    {
+                        string[] sAlloc = objDocWfObject.Process_Allocation.Split('|');
+                        for (int i = sAlloc.Length-1; i >= 0; i--)
+                        {
+                            if (sAlloc[i].StartsWith("PROVIDER_PROCESS" + "-") == true)
+                            {
+                                string[] sString = sAlloc[i].Split('-');
+                                sEquivalantOwner = sString[1];
+                                break;
+                            }
+                        }
+                    }
+                }
                 WFObjectManager objenco = new WFObjectManager();
-                objenco.MoveToNextProcess(ulMyEncounterID, "DOCUMENTATION", 1, "UNKNOWN", Convert.ToDateTime(currentDate), string.Empty, null, null);
+                objenco.MoveToNextProcess(ulMyEncounterID, "DOCUMENTATION", 1, sEquivalantOwner, Convert.ToDateTime(currentDate), string.Empty, null, null);
             }
 
             return objMoveVerifyDTO;

@@ -587,7 +587,7 @@ namespace Acurus.Capella.UI
                     FillCboPhysician(EncRecord.Facility_Name);
                 }
                 //Jira #CAP-707 - strat
-                else if (ehrwfobj.Current_Process.ToUpper() == "AKIDO_SCRIBE_PROCESS")
+                else if (ehrwfobj.Current_Process.ToUpper() == "AKIDO_SCRIBE_PROCESS" || ehrwfobj.Current_Process.ToUpper() == "TRANSCRIPT_PROCESS" || ehrwfobj.Current_Process.ToUpper() == "TRANSCRIPT_QC_PROCESS")
                 {
                     if (ehrwfobj.Current_Owner.ToUpper() == ClientSession.UserName.ToUpper())
                     {
@@ -1915,7 +1915,7 @@ namespace Acurus.Capella.UI
             }
             #endregion
             //Jira #CAP-707
-            if (btnMove.Value.ToUpper() == "MOVE TO NEXT PROCESS" && ehrwfobj.Current_Process == "AKIDO_SCRIBE_PROCESS")
+            if (btnMove.Value.ToUpper() == "MOVE TO NEXT PROCESS" && (ehrwfobj.Current_Process == "AKIDO_SCRIBE_PROCESS" || ehrwfobj.Current_Process == "TRANSCRIPT_PROCESS" || ehrwfobj.Current_Process == "TRANSCRIPT_QC_PROCESS"))
             {
                 //Added by Selvaraman - for Workflow
                 Response.Write("<script> window.top.location.href=\" frmMyQueueNew.aspx\"; </script>");

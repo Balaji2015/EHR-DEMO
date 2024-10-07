@@ -26,7 +26,7 @@ function HistoryDrug_Load() {
                 var DrugAllergylst = objdata.DrugAllergyList;
                 var currProcess = objdata.CurrentProcess;
 
-                if (currProcess != "SCRIBE_PROCESS" && currProcess != "AKIDO_SCRIBE_PROCESS" && currentprocess.toUpperCase() != "SCRIBE_REVIEW_CORRECTION" && currentprocess.toUpperCase() != "SCRIBE_CORRECTION" && currProcess != "DICTATION_REVIEW" && currProcess != "PHYSICIAN_CORRECTION" && currProcess != "PROVIDER_PROCESS" && currProcess != "MA_REVIEW" && currProcess != "MA_PROCESS" && currProcess != "") {//BugID:44637
+                if (currProcess != "SCRIBE_PROCESS" && currProcess != "AKIDO_SCRIBE_PROCESS" && currentprocess.toUpperCase() != "SCRIBE_REVIEW_CORRECTION" && currentprocess.toUpperCase() != "SCRIBE_CORRECTION" && currProcess != "DICTATION_REVIEW" && currProcess != "PHYSICIAN_CORRECTION" && currProcess != "PROVIDER_PROCESS" && currProcess != "MA_REVIEW" && currProcess != "MA_PROCESS" && currProcess != "TRANSCRIPT_PROCESS" && currProcess != "TRANSCRIPT_QC_PROCESS" && currProcess != "") {//BugID:44637
                     $('#btnAdd')[0].disabled = true;
                     $('#btnclear')[0].disabled = true;
                     $('#mainContainer ').find(':input').prop('disabled', true);

@@ -962,7 +962,7 @@ function SuccessFn(data) {
         }
 
     }    
-    if (currentprocess != "SCRIBE_PROCESS" && currentprocess != "AKIDO_SCRIBE_PROCESS" && currentprocess.toUpperCase() != "SCRIBE_CORRECTION" && currentprocess.toUpperCase() != "SCRIBE_REVIEW_CORRECTION" && currentprocess != "DICTATION_REVIEW" && currentprocess != "CODER_REVIEW_CORRECTION" && currentprocess != "PROVIDER_PROCESS" && currentprocess != "MA_REVIEW" && currentprocess != "MA_PROCESS" && currentprocess != "PROVIDER_REVIEW_CORRECTION" && currentprocess != "") {
+    if (currentprocess != "SCRIBE_PROCESS" && currentprocess != "AKIDO_SCRIBE_PROCESS" && currentprocess.toUpperCase() != "SCRIBE_CORRECTION" && currentprocess.toUpperCase() != "SCRIBE_REVIEW_CORRECTION" && currentprocess != "DICTATION_REVIEW" && currentprocess != "CODER_REVIEW_CORRECTION" && currentprocess != "PROVIDER_PROCESS" && currentprocess != "MA_REVIEW" && currentprocess != "MA_PROCESS" && currentprocess != "PROVIDER_REVIEW_CORRECTION" && currentprocess != "TRANSCRIPT_PROCESS" && currentprocess != "TRANSCRIPT_QC_PROCESS" && currentprocess != "") {
         $('#btnSave')[0].disabled = true;
         $('#btnClearAll')[0].disabled = true;
         $('#mainContainer')[0].disabled = true;
