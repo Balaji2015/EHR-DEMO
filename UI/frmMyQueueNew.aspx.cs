@@ -1406,7 +1406,7 @@ namespace Acurus.Capella.UI
             }
 
 
-            if (ClientSession.UserCurrentProcess == "SCRIBE_PROCESS" || ClientSession.UserCurrentProcess == "AKIDO_SCRIBE_PROCESS" || ClientSession.UserCurrentProcess == "MA_PROCESS" || ClientSession.UserCurrentProcess == "TECHNICIAN_PROCESS" || ClientSession.UserCurrentProcess == "TRANSCRIPT_PROCESS" || ClientSession.UserCurrentProcess == "TRANSCRIPT_QC_PROCESS")//to update DOS when Technician/MA processes the encounter for the first time -- CMG Ancilliary
+            if (ClientSession.UserCurrentProcess == "SCRIBE_PROCESS" || ClientSession.UserCurrentProcess == "AKIDO_SCRIBE_PROCESS" || ClientSession.UserCurrentProcess == "MA_PROCESS" || ClientSession.UserCurrentProcess == "TECHNICIAN_PROCESS" || ClientSession.UserCurrentProcess == "AKIDO_SCRIBE_QC_PROCESS" || ClientSession.UserCurrentProcess == "TRANSCRIPT_PROCESS" || ClientSession.UserCurrentProcess == "TRANSCRIPT_QC_PROCESS")//to update DOS when Technician/MA processes the encounter for the first time -- CMG Ancilliary
             {
 
                 if (data[5] == "0001-01-01T00:00:00")

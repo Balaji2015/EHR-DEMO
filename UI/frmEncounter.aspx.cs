@@ -587,7 +587,7 @@ namespace Acurus.Capella.UI
                     FillCboPhysician(EncRecord.Facility_Name);
                 }
                 //Jira #CAP-707 - strat
-                else if (ehrwfobj.Current_Process.ToUpper() == "AKIDO_SCRIBE_PROCESS" || ehrwfobj.Current_Process.ToUpper() == "TRANSCRIPT_PROCESS" || ehrwfobj.Current_Process.ToUpper() == "TRANSCRIPT_QC_PROCESS")
+                else if (ehrwfobj.Current_Process.ToUpper() == "AKIDO_SCRIBE_PROCESS" || ehrwfobj.Current_Process.ToUpper() == "TRANSCRIPT_PROCESS" || ehrwfobj.Current_Process.ToUpper() == "TRANSCRIPT_QC_PROCESS" || ehrwfobj.Current_Process.ToUpper() == "AKIDO_SCRIBE_QC_PROCESS")
                 {
                     if (ehrwfobj.Current_Owner.ToUpper() == ClientSession.UserName.ToUpper())
                     {
@@ -689,7 +689,7 @@ namespace Acurus.Capella.UI
                 //Jira #CAP-707
                 //else if (ehrwfobj.Current_Process.ToUpper() == "PROVIDER_REVIEW_CORRECTION" || ehrwfobj.Current_Process.ToUpper() == "CODER_REVIEW_CORRECTION" || ehrwfobj.Current_Process.ToUpper() == "REVIEW_CODING_2" || ehrwfobj.Current_Process.ToUpper() == "REVIEW_CODING")
                 //{
-                else if (ehrwfobj.Current_Process.ToUpper() == "PROVIDER_REVIEW_CORRECTION" || ehrwfobj.Current_Process.ToUpper() == "CODER_REVIEW_CORRECTION" || ehrwfobj.Current_Process.ToUpper() == "REVIEW_CODING_2" || ehrwfobj.Current_Process.ToUpper() == "REVIEW_CODING" || ehrwfobj.Current_Process.ToUpper() == "AKIDO_REVIEW_CODING")
+                else if (ehrwfobj.Current_Process.ToUpper() == "PROVIDER_REVIEW_CORRECTION" || ehrwfobj.Current_Process.ToUpper() == "CODER_REVIEW_CORRECTION" || ehrwfobj.Current_Process.ToUpper() == "REVIEW_CODING_2" || ehrwfobj.Current_Process.ToUpper() == "REVIEW_CODING" || ehrwfobj.Current_Process.ToUpper() == "AKIDO_REVIEW_CODING" || ehrwfobj.Current_Process.ToUpper() == "AKIDO_REVIEW_CODING_QC")
                 {
                     if (ehrwfobj.Current_Owner.ToUpper() == ClientSession.UserName.ToUpper())
                     {
@@ -745,7 +745,7 @@ namespace Acurus.Capella.UI
                 //Jira #CAP-707
                 //if ((TempWFRecord.Current_Process.ToUpper() == "CHECK_OUT" || TempWFRecord.Current_Process.ToUpper() == "CHECK_OUT_COMPLETE") && ehrwfobj.Current_Process.ToUpper() != "CODER_REVIEW_CORRECTION" && ehrwfobj.Current_Process.ToUpper() != "PROVIDER_REVIEW_CORRECTION" && ehrwfobj.Current_Process.ToUpper() != "REVIEW_CODING_2" && ehrwfobj.Current_Process.ToUpper() != "REVIEW_CODING")
                 //{
-                if ((TempWFRecord.Current_Process.ToUpper() == "CHECK_OUT" || TempWFRecord.Current_Process.ToUpper() == "CHECK_OUT_COMPLETE") && ehrwfobj.Current_Process.ToUpper() != "CODER_REVIEW_CORRECTION" && ehrwfobj.Current_Process.ToUpper() != "PROVIDER_REVIEW_CORRECTION" && ehrwfobj.Current_Process.ToUpper() != "REVIEW_CODING_2" && ehrwfobj.Current_Process.ToUpper() != "REVIEW_CODING" && ehrwfobj.Current_Process.ToUpper() != "AKIDO_REVIEW_CODING")
+                if ((TempWFRecord.Current_Process.ToUpper() == "CHECK_OUT" || TempWFRecord.Current_Process.ToUpper() == "CHECK_OUT_COMPLETE") && ehrwfobj.Current_Process.ToUpper() != "CODER_REVIEW_CORRECTION" && ehrwfobj.Current_Process.ToUpper() != "PROVIDER_REVIEW_CORRECTION" && ehrwfobj.Current_Process.ToUpper() != "REVIEW_CODING_2" && ehrwfobj.Current_Process.ToUpper() != "REVIEW_CODING" && ehrwfobj.Current_Process.ToUpper() != "AKIDO_REVIEW_CODING" && ehrwfobj.Current_Process.ToUpper() != "AKIDO_REVIEW_CODING_QC")
                 {
                     btnPhysiciancorrection.Disabled = true;
                     ViewState["Chkoutbtn"] = false;
@@ -1915,7 +1915,7 @@ namespace Acurus.Capella.UI
             }
             #endregion
             //Jira #CAP-707
-            if (btnMove.Value.ToUpper() == "MOVE TO NEXT PROCESS" && (ehrwfobj.Current_Process == "AKIDO_SCRIBE_PROCESS" || ehrwfobj.Current_Process == "TRANSCRIPT_PROCESS" || ehrwfobj.Current_Process == "TRANSCRIPT_QC_PROCESS"))
+            if (btnMove.Value.ToUpper() == "MOVE TO NEXT PROCESS" && (ehrwfobj.Current_Process == "AKIDO_SCRIBE_PROCESS" || ehrwfobj.Current_Process == "TRANSCRIPT_PROCESS" || ehrwfobj.Current_Process == "TRANSCRIPT_QC_PROCESS" || ehrwfobj.Current_Process == "AKIDO_SCRIBE_QC_PROCESS"))
             {
                 //Added by Selvaraman - for Workflow
                 Response.Write("<script> window.top.location.href=\" frmMyQueueNew.aspx\"; </script>");
@@ -1932,7 +1932,7 @@ namespace Acurus.Capella.UI
             #region EnableNotificationAlert
             if (btnPhysiciancorrection.Value.ToUpper() == "MOVE TO CHECKOUT" && (ehrwfobj != null && ehrwfobj.Current_Process == "MA_PROCESS") && hdnChkOut.Value == "true")
                 enableNotifAlert = true;
-            else if (btnPhysiciancorrection.Value.ToUpper() != "MOVE TO CHECKOUT" && ehrwfobj != null && ((ehrwfobj.Current_Process == "PROVIDER_PROCESS" || ehrwfobj.Current_Process == "CODER_REVIEW_CORRECTION" || ehrwfobj.Current_Process == "PROVIDER_REVIEW_CORRECTION") || (ehrwfobj.Current_Process == "REVIEW_CODING" || ehrwfobj.Current_Process == "REVIEW_CODING_2" || ehrwfobj.Current_Process == "AKIDO_REVIEW_CODING")))
+            else if (btnPhysiciancorrection.Value.ToUpper() != "MOVE TO CHECKOUT" && ehrwfobj != null && ((ehrwfobj.Current_Process == "PROVIDER_PROCESS" || ehrwfobj.Current_Process == "CODER_REVIEW_CORRECTION" || ehrwfobj.Current_Process == "PROVIDER_REVIEW_CORRECTION") || (ehrwfobj.Current_Process == "REVIEW_CODING" || ehrwfobj.Current_Process == "REVIEW_CODING_2" || ehrwfobj.Current_Process == "AKIDO_REVIEW_CODING" || ehrwfobj.Current_Process == "AKIDO_REVIEW_CODING_QC")))
                 enableNotifAlert = true;
             #endregion
 
@@ -2161,7 +2161,7 @@ namespace Acurus.Capella.UI
                     //}
                     //Jira Cap- 740
                     // if (ehrwfobj.Current_Process == "REVIEW_CODING" || ehrwfobj.Current_Process == "REVIEW_CODING_2" )
-                    if (ehrwfobj.Current_Process == "REVIEW_CODING" || ehrwfobj.Current_Process == "REVIEW_CODING_2" || ehrwfobj.Current_Process == "AKIDO_REVIEW_CODING")
+                    if (ehrwfobj.Current_Process == "REVIEW_CODING" || ehrwfobj.Current_Process == "REVIEW_CODING_2" || ehrwfobj.Current_Process == "AKIDO_REVIEW_CODING" || ehrwfobj.Current_Process == "AKIDO_REVIEW_CODING_QC")
                     {
 
                         bool IsPrimaryFilled = objMoveVerifyDTO.EAndMIsPrimaryFilled;

@@ -8770,7 +8770,7 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
                     //if ((objDocWfObject.Current_Process == "REVIEW_CODING" || objDocWfObject.Current_Process == "REVIEW_CODING_2") && userCurrentProcess == objDocWfObject.Current_Process)
                     //Jira #CAP-740
                     //if ((objDocWfObject.Current_Process == "REVIEW_CODING" || objDocWfObject.Current_Process == "REVIEW_CODING_2") && userCurrentProcess == objDocWfObject.Current_Process && (btnID == "btnPhysiciancorrection"))
-                    if ((objDocWfObject.Current_Process == "REVIEW_CODING" || objDocWfObject.Current_Process == "REVIEW_CODING_2" || objDocWfObject.Current_Process == "AKIDO_REVIEW_CODING") && userCurrentProcess == objDocWfObject.Current_Process && (btnID == "btnPhysiciancorrection" || objDocWfObject.Current_Process == "REVIEW_CODING" || objDocWfObject.Current_Process == "REVIEW_CODING_2" || objDocWfObject.Current_Process == "AKIDO_REVIEW_CODING"))
+                    if ((objDocWfObject.Current_Process == "REVIEW_CODING" || objDocWfObject.Current_Process == "REVIEW_CODING_2" || objDocWfObject.Current_Process == "AKIDO_REVIEW_CODING" || objDocWfObject.Current_Process == "AKIDO_REVIEW_CODING_QC") && userCurrentProcess == objDocWfObject.Current_Process && (btnID == "btnPhysiciancorrection" || objDocWfObject.Current_Process == "REVIEW_CODING" || objDocWfObject.Current_Process == "REVIEW_CODING_2" || objDocWfObject.Current_Process == "AKIDO_REVIEW_CODING"))
                     {
                         /***  added for perfomance tuning 
                          * objMoveVerifyDTO.EAndMIsPrimaryFilled  is required only for REVIEW_CODING process
@@ -16540,7 +16540,7 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
             }
 
             //Jira #CAP-707
-            if (objDocWfobj.Current_Process == "AKIDO_SCRIBE_PROCESS" || objDocWfobj.Current_Process == "TRANSCRIPT_PROCESS")
+            if (objDocWfobj.Current_Process == "AKIDO_SCRIBE_PROCESS" || objDocWfobj.Current_Process == "AKIDO_SCRIBE_QC_PROCESS" || objDocWfobj.Current_Process == "TRANSCRIPT_PROCESS")
             {
                 WFObjectManager WFObjMngr = new WFObjectManager();
                 WFObjMngr.MoveToNextProcess(ulMyEncounterID, "DOCUMENTATION", 1, "UNKNOWN", Convert.ToDateTime(currentDate), string.Empty, null, null);
