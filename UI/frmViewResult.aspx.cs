@@ -1384,7 +1384,9 @@ namespace Acurus.Capella.UI
                     //Jira CAP-2228
                     if (sNotes != null && sNotes.Count() > 0 &&(sNotes.Contains(hdnSubDocumentType.Value.ToUpper())))
                     {
-                        if (Request["Opening_from"] != null && Request["Opening_from"] != "OrderManagementScreen")
+                        //Jira CAP-2369
+                        //if (Request["Opening_from"] != null && Request["Opening_from"] != "OrderManagementScreen")
+                        if (Request["Opening_from"] != null && Request["Opening_from"] != "OrderManagementScreen" && txtMedicalAssistantNotes.Enabled != true)
                         {
                             imgCopyPrevious.Visible = true;
                         }
