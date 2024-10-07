@@ -140,13 +140,77 @@ namespace Acurus.Capella.UI
                 Encounter_Id = ClientSession.EncounterId;
                 Human_ID = ClientSession.HumanId;
             }
+
+            //Jira CAP-2491 - Start
+            string sXMLContent = string.Empty;
+            ilstEncounterBlob = EncounterBlobMngr.GetEncounterBlob(Encounter_Id);
+            if (ilstEncounterBlob.Count > 0)
+            {
+                
+                XmlDocument xmlDoc = new XmlDocument();
+                try
+                {
+                    sXMLContent = System.Text.Encoding.UTF8.GetString(ilstEncounterBlob[0].Encounter_XML);
+                    if (sXMLContent.Substring(0, 1) != "<")
+                        sXMLContent = sXMLContent.Substring(1, sXMLContent.Length - 1);
+                    xmlDoc.LoadXml(sXMLContent);
+
+                    XmlNodeList xmlNodeList = xmlDoc.GetElementsByTagName("EncounterList");
+                    if (xmlNodeList.Count > 0)
+                    {
+                        for (int j = 0; j < xmlNodeList[0].ChildNodes.Count; j++)
+                        {
+                            HumanID = xmlNodeList[0].ChildNodes[j].Attributes["Human_ID"].Value;
+                            break;
+                        }
+                    }
+                    else
+                    {
+                        ScriptManager.RegisterStartupScript(this, typeof(frmEncounter), "SummaryAlert", "SummaryHumanIDAlert('EncounterList Tag is not found. Please contact support team to regenerate the XML.');", true);
+                        return;
+                    }
+
+                }
+                catch
+                {
+                    if (Encounter_Id != 0)
+                    {
+                        ScriptManager.RegisterStartupScript(this, typeof(frmEncounter), "ErrorMessage", "RegenerateXML('" + Encounter_Id.ToString() + "','Encounter','summary');", true);
+
+                    }
+                    else if (ClientSession.EncounterId != 0)
+                    {
+                        ScriptManager.RegisterStartupScript(this, typeof(frmEncounter), "ErrorMessage", "RegenerateXML('" + ClientSession.EncounterId.ToString() + "','Encounter','summary');", true);
+                    }
+                    else
+                    {
+                        ScriptManager.RegisterStartupScript(this, typeof(frmEncounter), "SummaryAlert", "SummaryAlert();", true);
+                    }
+                    return;
+                    //throw new Exception("Encounter XML is invalid");
+                }
+            }
+            else
+            {
+                ScriptManager.RegisterStartupScript(this, typeof(frmEncounter), "SummaryAlert", "SummaryAlert();", true);
+                return;
+            }
+
+            //Jira CAP-2491 - End
+
             //Jira #CAP-855
             string sIsAkidoEncounter = "false";
             string sExMessage = "";
             string sStatus = "";
+            string sIsCapellaEncounter = string.Empty;
             //Jira CAP-1990
             //sIsAkidoEncounter = UtilityManager.IsAkidoEncounter(Encounter_Id.ToString(), out sExMessage);
-            sIsAkidoEncounter = UtilityManager.IsAkidoEncounter(Encounter_Id.ToString(), out sExMessage, out sStatus);
+            //Jira CAP-2491
+            sIsCapellaEncounter = UtilityManager.IsCapellaEncounter(sXMLContent, Encounter_Id);
+            if (sIsCapellaEncounter != "Y")
+            {
+                sIsAkidoEncounter = UtilityManager.IsAkidoEncounter(Encounter_Id.ToString(), out sExMessage, out sStatus);
+            }
             if (Request.QueryString["Menu"] == null && System.Configuration.ConfigurationSettings.AppSettings["IsAkidoNoteSummary"] == "Y" && sIsAkidoEncounter == "true")
             {
                 xslFrame.Visible = false;
@@ -265,59 +329,61 @@ namespace Acurus.Capella.UI
 
                 //EncounterBlobManager EncounterBlobMngr = new EncounterBlobManager();
                 //IList<Encounter_Blob> ilstEncounterBlob = EncounterBlobMngr.GetEncounterBlob(Encounter_Id);
-                ilstEncounterBlob = EncounterBlobMngr.GetEncounterBlob(Encounter_Id);
-                if (ilstEncounterBlob.Count > 0)
-                {
-                    string sXMLContent = string.Empty;
-                    XmlDocument xmlDoc = new XmlDocument();
-                    try
-                    {
-                        sXMLContent = System.Text.Encoding.UTF8.GetString(ilstEncounterBlob[0].Encounter_XML);
-                        if (sXMLContent.Substring(0, 1) != "<")
-                            sXMLContent = sXMLContent.Substring(1, sXMLContent.Length - 1);
-                        xmlDoc.LoadXml(sXMLContent);
 
-                        XmlNodeList xmlNodeList = xmlDoc.GetElementsByTagName("EncounterList");
-                        if (xmlNodeList.Count > 0)
-                        {
-                            for (int j = 0; j < xmlNodeList[0].ChildNodes.Count; j++)
-                            {
-                                HumanID = xmlNodeList[0].ChildNodes[j].Attributes["Human_ID"].Value;
-                                break;
-                            }
-                        }
-                        else
-                        {
-                             ScriptManager.RegisterStartupScript(this, typeof(frmEncounter), "SummaryAlert", "SummaryHumanIDAlert('EncounterList Tag is not found. Please contact support team to regenerate the XML.');", true);
-                            return;  
-                        }
+                //Jira CAP-2491 - Start
+                //ilstEncounterBlob = EncounterBlobMngr.GetEncounterBlob(Encounter_Id);
+                //if (ilstEncounterBlob.Count > 0)
+                //{
+                //    string sXMLContent = string.Empty;
+                //    XmlDocument xmlDoc = new XmlDocument();
+                //    try
+                //    {
+                //        sXMLContent = System.Text.Encoding.UTF8.GetString(ilstEncounterBlob[0].Encounter_XML);
+                //        if (sXMLContent.Substring(0, 1) != "<")
+                //            sXMLContent = sXMLContent.Substring(1, sXMLContent.Length - 1);
+                //        xmlDoc.LoadXml(sXMLContent);
 
-                    }
-                    catch
-                    {
-                        if (Encounter_Id != 0)
-                        {
-                            ScriptManager.RegisterStartupScript(this, typeof(frmEncounter), "ErrorMessage", "RegenerateXML('" + Encounter_Id.ToString() + "','Encounter','summary');", true);
+                //        XmlNodeList xmlNodeList = xmlDoc.GetElementsByTagName("EncounterList");
+                //        if (xmlNodeList.Count > 0)
+                //        {
+                //            for (int j = 0; j < xmlNodeList[0].ChildNodes.Count; j++)
+                //            {
+                //                HumanID = xmlNodeList[0].ChildNodes[j].Attributes["Human_ID"].Value;
+                //                break;
+                //            }
+                //        }
+                //        else
+                //        {
+                //             ScriptManager.RegisterStartupScript(this, typeof(frmEncounter), "SummaryAlert", "SummaryHumanIDAlert('EncounterList Tag is not found. Please contact support team to regenerate the XML.');", true);
+                //            return;  
+                //        }
 
-                        }
-                        else if (ClientSession.EncounterId != 0)
-                        {
-                            ScriptManager.RegisterStartupScript(this, typeof(frmEncounter), "ErrorMessage", "RegenerateXML('" + ClientSession.EncounterId.ToString() + "','Encounter','summary');", true);
-                        }
-                        else
-                        {
-                            ScriptManager.RegisterStartupScript(this, typeof(frmEncounter), "SummaryAlert", "SummaryAlert();", true);
-                        }
-                        return;
-                        //throw new Exception("Encounter XML is invalid");
-                    }
-                }
-                else
-                {
-                    ScriptManager.RegisterStartupScript(this, typeof(frmEncounter), "SummaryAlert", "SummaryAlert();", true);
-                    return;
-                }
+                //    }
+                //    catch
+                //    {
+                //        if (Encounter_Id != 0)
+                //        {
+                //            ScriptManager.RegisterStartupScript(this, typeof(frmEncounter), "ErrorMessage", "RegenerateXML('" + Encounter_Id.ToString() + "','Encounter','summary');", true);
 
+                //        }
+                //        else if (ClientSession.EncounterId != 0)
+                //        {
+                //            ScriptManager.RegisterStartupScript(this, typeof(frmEncounter), "ErrorMessage", "RegenerateXML('" + ClientSession.EncounterId.ToString() + "','Encounter','summary');", true);
+                //        }
+                //        else
+                //        {
+                //            ScriptManager.RegisterStartupScript(this, typeof(frmEncounter), "SummaryAlert", "SummaryAlert();", true);
+                //        }
+                //        return;
+                //        //throw new Exception("Encounter XML is invalid");
+                //    }
+                //}
+                //else
+                //{
+                //    ScriptManager.RegisterStartupScript(this, typeof(frmEncounter), "SummaryAlert", "SummaryAlert();", true);
+                //    return;
+                //}
+                //Jira CAP-2491 - End
                 //IList<object> ilstSummaryBlob_Final = new List<object>();
                 //try
                 //{
@@ -4534,9 +4600,14 @@ margin:0in 0in 0in 9in;
             
             string sExMessage = "";
             string sStatus = "";
+            string sIsCapellaEncounter = string.Empty;
             //Jira CAP-1990
             //sIsAkidoEncounter = UtilityManager.IsAkidoEncounter(ClientSession.EncounterId.ToString(), out sExMessage);
-            sIsAkidoEncounter = UtilityManager.IsAkidoEncounter(ClientSession.EncounterId.ToString(), out sExMessage, out sStatus);
+            sIsCapellaEncounter = UtilityManager.IsCapellaEncounter(sXMLEncounterDoc, ClientSession.EncounterId);
+            if (sIsCapellaEncounter != "Y")
+            {
+                sIsAkidoEncounter = UtilityManager.IsAkidoEncounter(ClientSession.EncounterId.ToString(), out sExMessage, out sStatus);
+            }
             if (System.Configuration.ConfigurationSettings.AppSettings["IsAkidoNoteSummary"] == "Y" && sIsAkidoEncounter == "true")
             {
                 ScriptManager.RegisterStartupScript(this, this.GetType(), string.Empty, "alert('The Notes can not be generated for this encounter, as this encounter is part of the Akido Note.'); {sessionStorage.setItem('StartLoading', 'false');StopLoadFromPatChart();}", true);

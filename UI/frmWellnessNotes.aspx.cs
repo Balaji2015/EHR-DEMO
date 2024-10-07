@@ -65,10 +65,14 @@ namespace Acurus.Capella.UI
                 string sIsAkidoEncounter = "false";
                 string sExMessage = "";
                 string sStatus = "";
+                string sIsCapellaEncounter = string.Empty;
                 //Jira CAP-1990
                 //sIsAkidoEncounter = UtilityManager.IsAkidoEncounter(Encounter_Id.ToString(), out sExMessage);
-                sIsAkidoEncounter = UtilityManager.IsAkidoEncounter(Encounter_Id.ToString(), out sExMessage, out sStatus);
-
+                sIsCapellaEncounter = UtilityManager.IsCapellaEncounter(sXMLEncounterDoc, Encounter_Id);
+                if (sIsCapellaEncounter != "Y")
+                {
+                    sIsAkidoEncounter = UtilityManager.IsAkidoEncounter(Encounter_Id.ToString(), out sExMessage, out sStatus);
+                }
                 if (Request.QueryString["Menu"] != null && System.Configuration.ConfigurationSettings.AppSettings["IsAkidoNoteSummary"] == "Y" && sIsAkidoEncounter == "true")
                 {
                     ScriptManager.RegisterStartupScript(this, this.GetType(), string.Empty, "DisplayErrorMessage('1011197'); {sessionStorage.setItem('StartLoading', 'false');StopLoadFromPatChart();}", true);
@@ -116,10 +120,14 @@ namespace Acurus.Capella.UI
                 string sIsAkidoEncounter = "false";
                 string sExMessage = "";
                 string sStatus = "";
+                string sIsCapellaEncounter = string.Empty;
                 //Jira CAP-1990
                 //sIsAkidoEncounter = UtilityManager.IsAkidoEncounter(ClientSession.EncounterId.ToString(), out sExMessage);
-                sIsAkidoEncounter = UtilityManager.IsAkidoEncounter(ClientSession.EncounterId.ToString(), out sExMessage, out sStatus);
-
+                sIsCapellaEncounter = UtilityManager.IsCapellaEncounter(sXMLEncounterDoc, ClientSession.EncounterId);
+                if (sIsCapellaEncounter != "Y")
+                {
+                    sIsAkidoEncounter = UtilityManager.IsAkidoEncounter(ClientSession.EncounterId.ToString(), out sExMessage, out sStatus);
+                }
                 if (Request.QueryString["Menu"] != null && System.Configuration.ConfigurationSettings.AppSettings["IsAkidoNoteSummary"] == "Y" && sIsAkidoEncounter == "true")
                 {
                     ScriptManager.RegisterStartupScript(this, this.GetType(), string.Empty, "DisplayErrorMessage('1011197'); {sessionStorage.setItem('StartLoading', 'false');StopLoadFromPatChart();}", true);
@@ -155,10 +163,14 @@ namespace Acurus.Capella.UI
             string sIsAkidoEncounter = "false";
             string sExMessage = "";
             string sStatus = "";
+            string sIsCapellaEncounter = string.Empty;
             //Jira CAP-1990
             //sIsAkidoEncounter = UtilityManager.IsAkidoEncounter(ClientSession.EncounterId.ToString(), out sExMessage);
-            sIsAkidoEncounter = UtilityManager.IsAkidoEncounter(ClientSession.EncounterId.ToString(), out sExMessage, out sStatus);
-
+            sIsCapellaEncounter = UtilityManager.IsCapellaEncounter(sXMLEncounterDoc, ClientSession.EncounterId);
+            if (sIsCapellaEncounter != "Y")
+            {
+                sIsAkidoEncounter = UtilityManager.IsAkidoEncounter(ClientSession.EncounterId.ToString(), out sExMessage, out sStatus);
+            }
             if (System.Configuration.ConfigurationSettings.AppSettings["IsAkidoNoteSummary"] == "Y" && sIsAkidoEncounter == "true")
             {
                 ScriptManager.RegisterStartupScript(this, this.GetType(), string.Empty, "alert('The Notes can not be generated for this encounter, as this encounter is part of the Akido Note.'); {sessionStorage.setItem('StartLoading', 'false');StopLoadFromPatChart();}", true);

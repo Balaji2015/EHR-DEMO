@@ -49,20 +49,23 @@ namespace Acurus.Capella.UI
 
             //CAP-1167
             var currentURL = Request.Url.AbsoluteUri.ToString();
-            if (DirectURLUtility.IsValidRedirectUrlForLogin(currentURL))
-            {
-                Response.SetCookie(new HttpCookie("RedirectUri") { Value = HttpUtility.UrlEncode(Request.Url.AbsoluteUri), Expires = DateTime.Now.AddDays(1) });
-            }
+            
 
             //CAP-1311
             if (HttpContext.Current.Request.Cookies["CUserName"]?.Value == null && HttpContext.Current.Request.Cookies["CFacilityName"]?.Value == null)
             {
+                //CAP-2549
+                var directUrl = HttpUtility.UrlEncode(Request.Cookies["RedirectUri"]?.Value??"");
+                if (DirectURLUtility.IsValidRedirectUrlForLogin(currentURL))
+                {
+                    directUrl = currentURL;
+                    Response.SetCookie(new HttpCookie("RedirectUri") { Value = HttpUtility.UrlEncode(currentURL), Expires = DateTime.Now.AddDays(1) });
+                }
                 //CAP-1752
                 var loginpage = (ConfigurationSettings.AppSettings["IsSSOLogin"] == "Y" ? "frmLoginNew.aspx" : "frmLogin.aspx");
                 //CAP-2019
-                if (Request.Cookies["RedirectUri"] != null && !string.IsNullOrWhiteSpace(Request.Cookies["RedirectUri"]?.Value))
+                if (!string.IsNullOrWhiteSpace(directUrl))
                 {
-                    var directUrl = HttpUtility.UrlDecode(Request.Url.AbsoluteUri);
                     Response.Redirect($"~/{loginpage}?redirecturl={HttpUtility.UrlEncode(directUrl)}");
                 }
                 else

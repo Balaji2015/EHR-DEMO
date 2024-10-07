@@ -453,6 +453,8 @@ function DisplayErrorMessage(ErrorNo, NotificationName, Messagelist) {
                     $(window.top.document).find('#btnErrorCancel').css("display", "");
                     $(window.top.document).find('#btnErrorOk').css("display", "");
                     $(window.top.document).find('#btnErrorOkCancel').css("display", "none");
+                    //CAP-2539
+                    $($('#divErrorMessage').find('.close')).css("display", "none")
                     localStorage.__proto__.localStorageSave = arguments.callee.caller;
 
                     $(window.top.document).find('#btnErrorOk').click(function () {

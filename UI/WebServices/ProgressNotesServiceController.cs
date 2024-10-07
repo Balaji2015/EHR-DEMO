@@ -142,7 +142,16 @@ namespace Acurus.Capella.UI.WebServices.API
 
                 DataSet result = DBConnector.ReadData(encounterByHumanIDQury);
 
-                if (result?.Tables == null && result.Tables[0].Rows.Count == 0)
+                if (result?.Tables != null && result.Tables[0].Rows.Count == 0)
+                {
+                    //For Archive encounter
+                    string encounterByHumanIDQury_arc = "SELECT enc.Encounter_ID, wf.Current_Process FROM encounter_arc enc JOIN wf_object_arc wf ON enc.Encounter_ID = wf.Obj_System_Id WHERE enc.Encounter_ID = " + sEncounterID + " AND wf.Obj_Type = 'DOCUMENTATION';";
+
+                    result = DBConnector.ReadData(encounterByHumanIDQury_arc);
+                }
+
+
+                if (result?.Tables == null || result.Tables[0].Rows.Count == 0)
                 {
                     return Json(new { HumanID = sHumanID, EncounterID = sEncounterID, status = "ValidationError", ErrorDescription = "EncounterID is not present in DB. Cannot generate progress note." });
                 }
@@ -593,7 +602,11 @@ namespace Acurus.Capella.UI.WebServices.API
                     //sFinalOutPut = sFinalOutPut + sFooter;
                 }
 
-
+                if (strSignedAt != "")
+                {
+                    strSignedAt = Convert.ToDateTime(strSignedAt).ToString("o");
+                }
+                
                 sFinalOutPut = sFinalOutPut + sFooterNode
                                     + "{\"" + "text" + "\":\"" + (sFooter?.Trim() ?? "") + "\"," +
                                     "\"" + "signedBy" + "\":\"" + (strSignedBy?.Trim() ?? "") + "\"," +
@@ -604,7 +617,7 @@ namespace Acurus.Capella.UI.WebServices.API
                                     "\"" + "ReviewedProviderID" + "\":\"" + (strProviderUserId ?? "") + "\"," +
                                     "\"" + "signedAt" + "\":\"" + (strSignedAt?.Trim() ?? "") + "\"}]";
 
-                sFinalOutPut = sFinalOutPut + "}";
+                sFinalOutPut = sFinalOutPut.Replace("<plan />", "").Replace("</plan>", "").Replace("<br />", "").Replace("<br/>", "").Replace("</subtab>","").Replace("<subtab />", "") + "}";
                 //}
 
 
@@ -752,6 +765,10 @@ namespace Acurus.Capella.UI.WebServices.API
                                         sPAname = sOtherDetails.Split(new string[] { "on" }, System.StringSplitOptions.RemoveEmptyEntries)[0];
                                     }
 
+                                    if (sCreatedAt != "")
+                                    {
+                                        sCreatedAt = Convert.ToDateTime(sCreatedAt).ToString("o");
+                                    }
 
                                     sFormationJson = sFormationJson + ((sFormationJson[sFormationJson.Length - 1] == '}') ? "," : "")
                                         + "{\"" + "text" + "\":\"" + sNotesName.Trim() + "\"," +
@@ -795,7 +812,10 @@ namespace Acurus.Capella.UI.WebServices.API
 
 
                                     string createdBy = tempCreatedBy ?? string.Empty;
-
+                                    if (sCreatedAt != "")
+                                    {
+                                        sCreatedAt = Convert.ToDateTime(sCreatedAt).ToString("o");
+                                    }
                                     sFormationJson = sFormationJson + ((sFormationJson[sFormationJson.Length - 1] == '}') ? "," : "")
                                         + "{\"" + "text" + "\":\"" + sNotesName + "\"," +
                                         "\"" + "createdBy" + "\":\"" + createdBy + "\"," +
@@ -810,7 +830,11 @@ namespace Acurus.Capella.UI.WebServices.API
                             else
                             {
                                 //value
-                                sFormationJson = sFormationJson + "\"" + sectopns[i].Replace("</b>", "").TrimStart().TrimEnd() + "\"" + ((sectopns.Length - 1 == i) ? string.Empty : ",");
+                                sectopns[i] = sectopns[i].Replace("\"", "'").Replace("</b>", "").TrimStart().TrimEnd().Replace("<plan />", "").Replace("</plan>", "").Replace("<br />", "").Replace("<br/>", "");
+                                if (sectopns[i] != string.Empty && sectopns[i] != "")
+                                {
+                                    sFormationJson = sFormationJson + "\"" + sectopns[i] + "\"" + ((sectopns.Length - 1 == i) ? string.Empty : ",");
+                                }
                             }
                         }
                         sFormationJson = sFormationJson + "]";
@@ -865,10 +889,11 @@ namespace Acurus.Capella.UI.WebServices.API
                                                 if (iSectionValuesplit[iSectionValueCount].Contains("</i>"))
                                                 {
                                                     sSectioncontent = sSectioncontent + ((sSectioncontent != string.Empty && sSectioncontent.Substring(sSectioncontent.LastIndexOf("],")) != "],") ? "]," : "");
-                                                    sSectioncontent = sSectioncontent + "\"" + iSectionValuesplit[iSectionValueCount].Replace("</i>", "").Replace("</b>", "").Replace(":", "") + "\"" + ":["; ;
+                                                    sSectioncontent = sSectioncontent + "\"" + iSectionValuesplit[iSectionValueCount].Replace("\"", "'").Replace("</i>", "").Replace("</b>", "").Replace(":", "") + "\"" + ":["; ;
                                                 }
                                                 else
                                                 {
+                                                    iSectionValuesplit[iSectionValueCount] = iSectionValuesplit[iSectionValueCount].Replace("\"", "'").Replace("</b>", "").TrimStart().TrimEnd().Replace("<br />", "").Replace("<br/>", "");
                                                     sSectioncontent = sSectioncontent + ((sSectioncontent != string.Empty && sSectioncontent.Substring(sSectioncontent.LastIndexOf(":[")) == ":[") ? "" : ",") + "\"" + iSectionValuesplit[iSectionValueCount] + "\"";
                                                 }
 
@@ -937,7 +962,7 @@ namespace Acurus.Capella.UI.WebServices.API
                             }
                             else if (doc.SelectSingleNode("content/font[2]")?.ChildNodes[iCount].Name == "ul")
                             {
-                                string value = doc.SelectSingleNode("content/font[2]")?.ChildNodes[iCount].InnerText;
+                                string value = doc.SelectSingleNode("content/font[2]")?.ChildNodes[iCount].InnerText.Replace("\"", "'");
                                 sBody = sBody + ((sBody.Substring(sBody.LastIndexOf(":[")) == ":[") ? "" : ",") + "\"" + value + "\"";
                             }
 
@@ -975,7 +1000,7 @@ namespace Acurus.Capella.UI.WebServices.API
                             sTableRow = string.Empty;
                             if (isSubtabOccure)
                             {
-                                sSubtabContent = doc.SelectSingleNode("content/subtab[" + iCountSubtab + "]").InnerText.Replace(":", "");
+                                sSubtabContent = doc.SelectSingleNode("content/subtab[" + iCountSubtab + "]").InnerText.Replace(":", "").Replace("\"", "'");
                             }
                             else
                             {
@@ -987,7 +1012,7 @@ namespace Acurus.Capella.UI.WebServices.API
                                 int rowcount = doc.SelectNodes("content/table[" + iCountSubtab + "]/tr[" + iCountRow + "]/td").Count;
                                 for (int iCounttd = 1; iCounttd <= rowcount; iCounttd++)
                                 {
-                                    sTablecolumn = sTablecolumn + ((sTablecolumn != string.Empty) ? "," : "") + "\"" + doc.SelectSingleNode("content/table[" + iCountSubtab + "]/thead/tr/td[" + iCounttd + "]").InnerText + "\"" + ":" + "\"" + doc.SelectSingleNode("content/table[" + iCountSubtab + "]/tr[" + iCountRow + "]/td[" + iCounttd + "]").InnerText + "\"";
+                                    sTablecolumn = sTablecolumn + ((sTablecolumn != string.Empty) ? "," : "") + "\"" + doc.SelectSingleNode("content/table[" + iCountSubtab + "]/thead/tr/td[" + iCounttd + "]").InnerText.Replace("\"", "'") + "\"" + ":" + "\"" + doc.SelectSingleNode("content/table[" + iCountSubtab + "]/tr[" + iCountRow + "]/td[" + iCounttd + "]").InnerText.Replace("\"", "'") + "\"";
                                 }
 
                                 sTableRow = sTableRow + ((sTableRow != string.Empty) ? "," : "") + "{" + sTablecolumn + "}";

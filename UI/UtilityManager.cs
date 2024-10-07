@@ -6117,6 +6117,35 @@ namespace Acurus.Capella.UI
 
             return bIsAkidoEncounter;
         }
+        public static string IsCapellaEncounter(string sEncounterXml,ulong ulEncounterID)
+        {
+            string sCapellaEncounter = string.Empty;
+            if (sEncounterXml != string.Empty)
+            {
+                XmlDocument xmlDoc = new XmlDocument();
+                xmlDoc.LoadXml(sEncounterXml);
+
+
+                sCapellaEncounter = xmlDoc.SelectSingleNode("notes/Modules/EncounterList/Encounter").Attributes.GetNamedItem("Encounter_Provider_Signed_Date").Value;
+            }
+            else
+            {
+                EncounterManager encounterManager = new EncounterManager();
+                IList<Encounter> ilstEncounter = new List<Encounter>();
+                ilstEncounter = encounterManager.GetEncounterByEncounterIDIncludeArc(ulEncounterID);
+                if (ilstEncounter.Count > 0)
+                {
+
+                    sCapellaEncounter = ilstEncounter[0].Encounter_Provider_Signed_Date.ToString("yyyy-MM-dd hh:mm:ss");
+                }
+            }
+
+            if (sCapellaEncounter != string.Empty && !sCapellaEncounter.Contains("0001-01-01"))
+            {
+                sCapellaEncounter = "Y";
+            }
+            return sCapellaEncounter;
+        }
         //CAP-1987
         public static string IsAkidoInterpretationNote(string sOrderSubmitID, out string sExMessage, out string sStatus)
         {

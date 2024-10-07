@@ -1197,9 +1197,15 @@ namespace Acurus.Capella.UI
                     //Jira #CAP-855
                     string sExMessage = "";
                     string sStatus = "";
+                    string sIsAkidoEncounter = "false";
+                    string sIsCapellaEncounter = string.Empty;
                     //Jira CAP-1990
                     //sIsAkidoEncounter = UtilityManager.IsAkidoEncounter(grdAdminModule.SelectedItems[0].Cells[2].Text.ToString(), out sExMessage);
-                    string sIsAkidoEncounter = UtilityManager.IsAkidoEncounter(grdAdminModule.SelectedItems[0].Cells[2].Text.ToString(), out sExMessage, out sStatus);
+                    sIsCapellaEncounter = UtilityManager.IsCapellaEncounter(string.Empty, Convert.ToUInt64(grdAdminModule.SelectedItems[0].Cells[2].Text));
+                    if (sIsCapellaEncounter != "Y")
+                    {
+                        sIsAkidoEncounter = UtilityManager.IsAkidoEncounter(grdAdminModule.SelectedItems[0].Cells[2].Text.ToString(), out sExMessage, out sStatus);
+                    }
                     //Jira CAP-1990
                     //if (System.Configuration.ConfigurationSettings.AppSettings["IsAkidoEncounterCheck"] == "Y" && cboPreviousProcess.SelectedItem.Text == "AKIDO_SCRIBE_PROCESS" && sIsAkidoEncounter == "false")
                     if (System.Configuration.ConfigurationSettings.AppSettings["IsAkidoEncounterCheck"] == "Y" && cboPreviousProcess.SelectedItem.Text == "AKIDO_SCRIBE_PROCESS" && sStatus != System.Configuration.ConfigurationSettings.AppSettings["AkidoSignedStatus"].ToString())

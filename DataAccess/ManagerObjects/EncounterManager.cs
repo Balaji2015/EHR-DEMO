@@ -224,6 +224,25 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
             return ilstEncounter;
             // return crit.List<Encounter>();
         }
+        public IList<Encounter> GetEncounterByEncounterIDIncludeArc(ulong EncounterID)
+        {
+            IList<Encounter> ilstEncounter = new List<Encounter>();
+            // ISession iMySession = NHibernateSessionManager.Instance.CreateISession();
+            using (ISession iMySession = NHibernateSessionManager.Instance.CreateISession())
+            {
+                ISQLQuery sqlquery = iMySession.CreateSQLQuery("SELECT enc.* FROM encounter enc where enc.encounter_id=" + EncounterID.ToString()+ ";").AddEntity("e", typeof(Encounter));
+                ilstEncounter = sqlquery.List<Encounter>();
+
+                if (ilstEncounter.Count == 0)
+                {
+                    sqlquery = iMySession.CreateSQLQuery("SELECT enc.* FROM encounter_arc enc where enc.encounter_id=" + EncounterID.ToString() + ";").AddEntity("e", typeof(Encounter));
+                    ilstEncounter = sqlquery.List<Encounter>();
+                }
+                iMySession.Close();
+            }
+            return ilstEncounter;
+            // return crit.List<Encounter>();
+        }
         public IList<Encounter> GetrecentEncounterByhumanandProcess(ulong HumanID, string obj, string process)
         {
             IList<Encounter> ilstEncounter = new List<Encounter>();

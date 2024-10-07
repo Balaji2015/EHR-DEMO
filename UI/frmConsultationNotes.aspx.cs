@@ -74,11 +74,16 @@ namespace Acurus.Capella.UI
                 FileNames = "Encounter" + "_" + Encounter_Id + ".xml";
                 //Jira #CAP-855
                 string sIsAkidoEncounter = "false";
+                string sIsCapellaEncounter = string.Empty;
                 string sExMessage = "";
                 string sStatus = "";
                 //Jira CAP-1990
                 //sIsAkidoEncounter = UtilityManager.IsAkidoEncounter(Encounter_Id.ToString(), out sExMessage);
-                sIsAkidoEncounter = UtilityManager.IsAkidoEncounter(Encounter_Id.ToString(), out sExMessage ,out sStatus);
+                sIsCapellaEncounter = UtilityManager.IsCapellaEncounter(sXMLEncounterDoc, Encounter_Id);
+                if (sIsCapellaEncounter != "Y")
+                {
+                    sIsAkidoEncounter = UtilityManager.IsAkidoEncounter(Encounter_Id.ToString(), out sExMessage, out sStatus);
+                }
                 if (Request.QueryString["Menu"] != null && System.Configuration.ConfigurationSettings.AppSettings["IsAkidoNoteSummary"] == "Y" && sIsAkidoEncounter == "true")
                 {
                     ScriptManager.RegisterStartupScript(this, this.GetType(), string.Empty, "DisplayErrorMessage('1011197'); {sessionStorage.setItem('StartLoading', 'false');StopLoadFromPatChart();}", true);
@@ -106,12 +111,16 @@ namespace Acurus.Capella.UI
                     sXMLEncounterDoc = UtilityManager.ReplaceSpecialCharaters(sXMLEncounterDoc);
                 }
                 //Jira #CAP-855
-                
+                string sIsCapellaEncounter = string.Empty;
                 string sExMessage = "";
                 string sStatus = "";
                 //Jira CAP-1990
                 //sIsAkidoEncounter = UtilityManager.IsAkidoEncounter(ClientSession.EncounterId.ToString(), out sExMessage);
-                sIsAkidoEncounter = UtilityManager.IsAkidoEncounter(ClientSession.EncounterId.ToString(), out sExMessage,out sStatus);
+                sIsCapellaEncounter = UtilityManager.IsCapellaEncounter(sXMLEncounterDoc, ClientSession.EncounterId);
+                if (sIsCapellaEncounter != "Y")
+                {
+                    sIsAkidoEncounter = UtilityManager.IsAkidoEncounter(ClientSession.EncounterId.ToString(), out sExMessage, out sStatus);
+                }
                 //Cap - 1414, 1415, 1449
                 //if (Request.QueryString["Menu"] != null && System.Configuration.ConfigurationSettings.AppSettings["IsAkidoNoteSummary"] == "Y" && sIsAkidoEncounter == "true"
                 if (Request.QueryString["Menu"] != null && System.Configuration.ConfigurationSettings.AppSettings["IsAkidoNoteSummary"] == "Y" && sIsAkidoEncounter == "true"  && !Request.QueryString["Menu"].Contains("FAX"))
