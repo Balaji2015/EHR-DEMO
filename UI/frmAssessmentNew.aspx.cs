@@ -948,7 +948,7 @@ namespace Acurus.Capella.UI
                     sDisable = new JavaScriptSerializer().Serialize("Enable");
                 }
                 //Jira CAP-1260
-                else if (ClientSession.UserCurrentProcess == "AKIDO_REVIEW_CODING")
+                else if (ClientSession.UserCurrentProcess == "AKIDO_REVIEW_CODING" || ClientSession.UserCurrentProcess == "AKIDO_REVIEW_CODING_QC")
                 {
                     sDisable = new JavaScriptSerializer().Serialize("Enable");
                 }

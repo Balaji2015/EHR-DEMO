@@ -429,7 +429,7 @@ function SetPhysicianSpecificFocusedVisibility() {
             if ($.inArray(physician_id, arry) < 0) {
                 rows[i].style.display = "none";
             }
-            if (Process.toUpperCase() != 'SCRIBE_PROCESS' && Process.toUpperCase() != 'AKIDO_SCRIBE_PROCESS' && Process.toUpperCase() != "SCRIBE_REVIEW_CORRECTION" && Process.toUpperCase() != "SCRIBE_CORRECTION" && Process.toUpperCase() != 'DICTATION_REVIEW' && Process.toUpperCase() != 'CODER_REVIEW_CORRECTION' && Process.toUpperCase() != 'PROVIDER_PROCESS' && Process.toUpperCase() != "PROVIDER_REVIEW_CORRECTION" && Process.toUpperCase() != 'TRANSCRIPT_PROCESS' && Process.toUpperCase() != 'TRANSCRIPT_QC_PROCESS') {
+            if (Process.toUpperCase() != 'SCRIBE_PROCESS' && Process.toUpperCase() != 'AKIDO_SCRIBE_PROCESS' && Process.toUpperCase() != "SCRIBE_REVIEW_CORRECTION" && Process.toUpperCase() != "SCRIBE_CORRECTION" && Process.toUpperCase() != 'DICTATION_REVIEW' && Process.toUpperCase() != 'CODER_REVIEW_CORRECTION' && Process.toUpperCase() != 'PROVIDER_PROCESS' && Process.toUpperCase() != "PROVIDER_REVIEW_CORRECTION" && Process.toUpperCase() != 'TRANSCRIPT_PROCESS' && Process.toUpperCase() != 'TRANSCRIPT_QC_PROCESS' && Process.toUpperCase() != 'AKIDO_SCRIBE_QC_PROCESS') {
                 $('select').attr('disabled', 'disabled');
                 $('select').css('backgroundColor', '#ebebe4');
                 var len = $("#tblExam").find("textarea").length;
@@ -508,7 +508,7 @@ function SetPhysicianSpecificVisibility() {
             if ($.inArray(physician_id, arry) < 0) {
                 rows[i].style.display = "none";
             }
-            if (Process.toUpperCase() != 'SCRIBE_PROCESS' && Process.toUpperCase() != 'AKIDO_SCRIBE_PROCESS' && Process != "SCRIBE_REVIEW_CORRECTION" && Process.toUpperCase() != "SCRIBE_REVIEW_CORRECTION" && Process.toUpperCase() != "SCRIBE_CORRECTION" && Process.toUpperCase() != 'DICTATION_REVIEW' && Process.toUpperCase() != 'CODER_REVIEW_CORRECTION' && Process.toUpperCase() != 'PROVIDER_PROCESS' && Process.toUpperCase() != 'PROVIDER_REVIEW_CORRECTION' && Process.toUpperCase() != 'TRANSCRIPT_PROCESS' && Process.toUpperCase() != 'TRANSCRIPT_QC_PROCESS') {
+            if (Process.toUpperCase() != 'SCRIBE_PROCESS' && Process.toUpperCase() != 'AKIDO_SCRIBE_PROCESS' && Process != "SCRIBE_REVIEW_CORRECTION" && Process.toUpperCase() != "SCRIBE_REVIEW_CORRECTION" && Process.toUpperCase() != "SCRIBE_CORRECTION" && Process.toUpperCase() != 'DICTATION_REVIEW' && Process.toUpperCase() != 'CODER_REVIEW_CORRECTION' && Process.toUpperCase() != 'PROVIDER_PROCESS' && Process.toUpperCase() != 'PROVIDER_REVIEW_CORRECTION' && Process.toUpperCase() != 'TRANSCRIPT_PROCESS' && Process.toUpperCase() != 'TRANSCRIPT_QC_PROCESS' && Process.toUpperCase() != 'AKIDO_SCRIBE_QC_PROCESS') {
                 $('select').attr('disabled', 'disabled');
                 $('select').css('backgroundColor', '#ebebe4');
                 $('input').attr('disabled', true);

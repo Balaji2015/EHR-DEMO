@@ -684,6 +684,7 @@ namespace Acurus.Capella.UI.WebServices.API
             string[] PlanTag = { "<plan>" };
             string[] subtab = { "<subtab>" };
             string[] section = { "<i>" };
+            string[] AmendmentSplit = { "<AddendumDelimiter />" };
             switch (sType)
             {
                 case "1":
@@ -693,14 +694,34 @@ namespace Acurus.Capella.UI.WebServices.API
                         IList<User> ilstUser = new List<User>();
                         string[] PlanTagcontent = sSection.Split(PlanTag, System.StringSplitOptions.RemoveEmptyEntries);
 
-                        IList<string> ilstsection = PlanTagcontent[0].Split(heading, System.StringSplitOptions.RemoveEmptyEntries).ToList();
+                        IList<string> ilstsection = new List<string>();
+                        if (PlanTagcontent[0].Contains("Amendment Notes"))
+                        {
+                            ilstsection = PlanTagcontent[0].Split(AmendmentSplit, System.StringSplitOptions.RemoveEmptyEntries).ToList();
+                        }
+                        else
+                        {
+                            ilstsection = PlanTagcontent[0].Split(heading, System.StringSplitOptions.RemoveEmptyEntries).ToList();
+                        }
 
                         if (PlanTagcontent.Length > 1)
                         {
                             ilstsection.Add(PlanTagcontent[1].Replace("</plan>", "").Replace("<br />", "").Replace("<br/>", ""));
                         }
+                        if (ilstsection[0].Contains("Amendment Notes"))
+                        {
+                            ilstsection.Insert(0, ilstsection[0].Substring(ilstsection[0].IndexOf("<b>"), ilstsection[0].IndexOf("</b>")));
+                        }
+                        if (ilstsection.Count >= 2)
+                        {
+                            ilstsection[1] = ilstsection[1].Replace(ilstsection[0]+ "</b>", "");
+                        }
+
                         string[] sectopns = ilstsection.ToArray();
                         string sFormationJson = string.Empty;
+
+                        
+
                         for (int i = 0; i < sectopns.Length; i++)
                         {
                             if (i == 0 && sectopns[i].Contains("<b>"))
@@ -769,10 +790,12 @@ namespace Acurus.Capella.UI.WebServices.API
                                     {
                                         sCreatedAt = Convert.ToDateTime(sCreatedAt).ToString("o");
                                     }
+                                    sNotesName = sNotesName.Replace("<br />", @"\n").Replace("<br/>", @"\n");
+                                    sNotesName = sNotesName.Substring(0, sNotesName.Length - @"\n".Length);
 
                                     sFormationJson = sFormationJson + ((sFormationJson[sFormationJson.Length - 1] == '}') ? "," : "")
-                                        + "{\"" + "text" + "\":\"" + sNotesName.Trim() + "\"," +
-                                        "\"" + "createdBy" + "\":\"" + sPAname.Trim() + "\"," +
+                                        + "{\"" + "text" + "\":\"" + sNotesName + "\"," +
+                                        "\"" + "createdBy" + "\":\"" + sPAname.TrimEnd() + "\"," +
                                         "\"" + "UserID" + "\":\"" + UserID + "\"," +
                                         "\"" + "ProviderID" + "\":\"" + sProviderUserID + "\"," +
                                         "\"" + "ReviewedBy" + "\":\"" + sPhysician + "\"," +
@@ -780,11 +803,11 @@ namespace Acurus.Capella.UI.WebServices.API
                                         "\"" + "ReviewedProviderID" + "\":\"" + sReviewProviderUserID + "\"," +
                                         "\"" + "createdAt" + "\":\"" + sCreatedAt.Trim() + "\"}";
                                 }
-                                else
+                                else if (sectopns[i].IndexOf("<AddendumProviderID>") > -1)
                                 {
                                     string sProviderEmailID = string.Empty;
                                     string sProviderUserID = string.Empty;
-                                    if (sectopns[i].IndexOf("<AddendumProviderID>") > -1)
+                                    //if (sectopns[i].IndexOf("<AddendumProviderID>") > -1)
                                     {
                                         Match matchProviderID = Regex.Match(sectopns[i], @"<AddendumProviderID>(\d+)</AddendumProviderID>");
                                         if (matchProviderID.Success)
@@ -816,9 +839,12 @@ namespace Acurus.Capella.UI.WebServices.API
                                     {
                                         sCreatedAt = Convert.ToDateTime(sCreatedAt).ToString("o");
                                     }
+
+                                    sNotesName = sNotesName.Replace("<br />", @"\n").Replace("<br/>", @"\n");
+                                    sNotesName = sNotesName.Substring(0, sNotesName.Length - @"\n".Length);
                                     sFormationJson = sFormationJson + ((sFormationJson[sFormationJson.Length - 1] == '}') ? "," : "")
                                         + "{\"" + "text" + "\":\"" + sNotesName + "\"," +
-                                        "\"" + "createdBy" + "\":\"" + createdBy + "\"," +
+                                        "\"" + "createdBy" + "\":\"" + createdBy.TrimEnd() + "\"," +
                                         "\"" + "UserID" + "\":\"" + sProviderEmailID + "\"," +
                                         "\"" + "ProviderID" + "\":\"" + sProviderUserID + "\"," +
                                         "\"" + "ReviewedBy" + "\":\"" + string.Empty + "\"," +

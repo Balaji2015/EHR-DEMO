@@ -204,7 +204,7 @@ function LoadDocuments() {
     });
 
     //CAP-285 - null handling for current process variable
-    if ((currentprocess ?? "").toUpperCase() != "SCRIBE_PROCESS" && (currentprocess ?? "").toUpperCase() != "AKIDO_SCRIBE_PROCESS" && (currentprocess ?? "").toUpperCase() != "SCRIBE_REVIEW_CORRECTION" && (currentprocess ?? "").toUpperCase() != "SCRIBE_CORRECTION" && (currentprocess ?? "").toUpperCase() != "DICTATION_REVIEW" && (currentprocess ?? "").toUpperCase() != "CODER_REVIEW_CORRECTION" && (currentprocess ?? "").toUpperCase() != "PROVIDER_PROCESS" && (currentprocess ?? "").toUpperCase() != "TECHNICIAN_PROCESS" && (currentprocess ?? "").toUpperCase() != "PROVIDER_REVIEW_CORRECTION" && (currentprocess ?? "").toUpperCase() != "TRANSCRIPT_PROCESS" && (currentprocess ?? "").toUpperCase() != "TRANSCRIPT_QC_PROCESS") {//CMG Ancilliary
+    if ((currentprocess ?? "").toUpperCase() != "SCRIBE_PROCESS" && (currentprocess ?? "").toUpperCase() != "AKIDO_SCRIBE_PROCESS" && (currentprocess ?? "").toUpperCase() != "SCRIBE_REVIEW_CORRECTION" && (currentprocess ?? "").toUpperCase() != "SCRIBE_CORRECTION" && (currentprocess ?? "").toUpperCase() != "DICTATION_REVIEW" && (currentprocess ?? "").toUpperCase() != "CODER_REVIEW_CORRECTION" && (currentprocess ?? "").toUpperCase() != "PROVIDER_PROCESS" && (currentprocess ?? "").toUpperCase() != "TECHNICIAN_PROCESS" && (currentprocess ?? "").toUpperCase() != "PROVIDER_REVIEW_CORRECTION" && (currentprocess ?? "").toUpperCase() != "TRANSCRIPT_PROCESS" && (currentprocess ?? "").toUpperCase() != "TRANSCRIPT_QC_PROCESS" && (currentprocess ?? "").toUpperCase() != "AKIDO_SCRIBE_QC_PROCESS") {//CMG Ancilliary
         debugger;
         $('#btnPrint')[0].disabled = true;
         $('#btnClearall')[0].disabled = true;
@@ -231,7 +231,7 @@ function LoadDocuments() {
         $("#chkAfterStudies")[0].disabled = true;
     }
 
-    if ((currentprocess ?? "").toUpperCase() == "SCRIBE_PROCESS" || (currentprocess ?? "").toUpperCase() == "AKIDO_SCRIBE_PROCESS" || (currentprocess ?? "").toUpperCase() == "SCRIBE_CORRECTION" || (currentprocess ?? "").toUpperCase() == "SCRIBE_REVIEW_CORRECTION" || (currentprocess ?? "").toUpperCase() == "TRANSCRIPT_PROCESS" || (currentprocess ?? "").toUpperCase() == "TRANSCRIPT_QC_PROCESS")
+    if ((currentprocess ?? "").toUpperCase() == "SCRIBE_PROCESS" || (currentprocess ?? "").toUpperCase() == "AKIDO_SCRIBE_PROCESS" || (currentprocess ?? "").toUpperCase() == "SCRIBE_CORRECTION" || (currentprocess ?? "").toUpperCase() == "SCRIBE_REVIEW_CORRECTION" || (currentprocess ?? "").toUpperCase() == "TRANSCRIPT_PROCESS" || (currentprocess ?? "").toUpperCase() == "TRANSCRIPT_QC_PROCESS" || (currentprocess ?? "").toUpperCase() == "AKIDO_SCRIBE_QC_PROCESS")
         $('#pnlElectronicSignature ').find(':input').prop('disabled', true);
     $('#btnSave')[0].disabled = true;
     window.parent.parent.parent.parent.theForm.ctl00_C5POBody_hdnIsSaveEnable.value = "false";
@@ -444,7 +444,7 @@ function LoadDocuments() {
             $('#txtPlan')[0].value = Plan;
             if (ChkboxDocument_Checked)
 
-                if (currentprocess.toUpperCase() != "SCRIBE_PROCESS" && currentprocess.toUpperCase() != "AKIDO_SCRIBE_PROCESS" && currentprocess.toUpperCase() != "SCRIBE_REVIEW_CORRECTION" && currentprocess.toUpperCase() != "SCRIBE_CORRECTION" && currentprocess.toUpperCase() != "DICTATION_REVIEW" && currentprocess.toUpperCase() != "CODER_REVIEW_CORRECTION" && currentprocess.toUpperCase() != "PROVIDER_PROCESS" && currentprocess.toUpperCase() != "TECHNICIAN_PROCESS" && currentprocess.toUpperCase() != "PROVIDER_REVIEW_CORRECTION" && currentprocess.toUpperCase() != "TRANSCRIPT_PROCESS" && currentprocess.toUpperCase() != "TRANSCRIPT_QC_PROCESS") {//CMG Ancilliary
+                if (currentprocess.toUpperCase() != "SCRIBE_PROCESS" && currentprocess.toUpperCase() != "AKIDO_SCRIBE_PROCESS" && currentprocess.toUpperCase() != "SCRIBE_REVIEW_CORRECTION" && currentprocess.toUpperCase() != "SCRIBE_CORRECTION" && currentprocess.toUpperCase() != "DICTATION_REVIEW" && currentprocess.toUpperCase() != "CODER_REVIEW_CORRECTION" && currentprocess.toUpperCase() != "PROVIDER_PROCESS" && currentprocess.toUpperCase() != "TECHNICIAN_PROCESS" && currentprocess.toUpperCase() != "PROVIDER_REVIEW_CORRECTION" && currentprocess.toUpperCase() != "TRANSCRIPT_PROCESS" && currentprocess.toUpperCase() != "TRANSCRIPT_QC_PROCESS" && currentprocess.toUpperCase() != "AKIDO_SCRIBE_QC_PROCESS") {//CMG Ancilliary
                     $("a").attr('disabled', true);
                     $("a").attr('onclick', false);
                     $("a").css('backgroundColor', '#6D7777');
@@ -2765,7 +2765,7 @@ function FillEncDataInGenealPLan(EncData) {
             }
         }
         //CAP-1471
-        if (currentprocess?.toUpperCase() != "SCRIBE_PROCESS" && currentprocess?.toUpperCase() != "AKIDO_SCRIBE_PROCESS" && currentprocess?.toUpperCase() != "SCRIBE_REVIEW_CORRECTION" && currentprocess?.toUpperCase() != "DICTATION_REVIEW" && currentprocess?.toUpperCase() != "CODER_REVIEW_CORRECTION" && currentprocess?.toUpperCase() != "PROVIDER_PROCESS" && currentprocess?.toUpperCase() != "TECHNICIAN_PROCESS" && currentprocess?.toUpperCase() != "PROVIDER_REVIEW_CORRECTION" && currentprocess?.toUpperCase() != "TRANSCRIPT_PROCESS" && currentprocess?.toUpperCase() != "TRANSCRIPT_QC_PROCESS" && EncData.Return_In_Months != 0) //{//CMG Ancilliary
+        if (currentprocess?.toUpperCase() != "SCRIBE_PROCESS" && currentprocess?.toUpperCase() != "AKIDO_SCRIBE_PROCESS" && currentprocess?.toUpperCase() != "SCRIBE_REVIEW_CORRECTION" && currentprocess?.toUpperCase() != "DICTATION_REVIEW" && currentprocess?.toUpperCase() != "CODER_REVIEW_CORRECTION" && currentprocess?.toUpperCase() != "PROVIDER_PROCESS" && currentprocess?.toUpperCase() != "TECHNICIAN_PROCESS" && currentprocess?.toUpperCase() != "PROVIDER_REVIEW_CORRECTION" && currentprocess?.toUpperCase() != "TRANSCRIPT_PROCESS" && currentprocess?.toUpperCase() != "TRANSCRIPT_QC_PROCESS" && currentprocess?.toUpperCase() != "AKIDO_SCRIBE_QC_PROCESS" && EncData.Return_In_Months != 0) //{//CMG Ancilliary
         {
 
             $("#txtReturnIn")[0].disabled = false;

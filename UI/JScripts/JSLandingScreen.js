@@ -615,10 +615,8 @@ function EHRLanding(FileName) {
     //localStorage.setItem("PFSHVerified", "");
     //CAP-2504
     if ((window.location?.origin ?? "") == "https://chart-stage.akidolabs.com") {
-        console.log("origin :" + window.location?.origin);
-        console.log("iframe :" + $("iframe")?.contentWindow);
-        console.log("FileName :" + FileName);
-        setTimeout(function () { $("iframe").src = FileName; }, 1000);
+        StopLoadFromPatChart();
+        setTimeout(function () { window.top.document.querySelector('iframe').src = FileName; }, 1000);
     }
     else {
         top.window.location = FileName;

@@ -357,7 +357,7 @@ function LoadPage() {
 
             var len = $("#mainContainer").find("textarea").length;
            
-            if (currentprocess.toUpperCase() != "SCRIBE_PROCESS" && currentprocess.toUpperCase() != "AKIDO_SCRIBE_PROCESS" && currentprocess.toUpperCase() != "SCRIBE_REVIEW_CORRECTION" && currentprocess.toUpperCase() != "SCRIBE_CORRECTION" && currentprocess.toUpperCase() != "DICTATION_REVIEW" && currentprocess.toUpperCase() != "CODER_REVIEW_CORRECTION" && currentprocess.toUpperCase() != "PROVIDER_PROCESS" && currentprocess.toUpperCase() != "MA_REVIEW" && currentprocess.toUpperCase() != "MA_PROCESS" && currentprocess.toUpperCase() != "PROVIDER_REVIEW_CORRECTION" && currentprocess.toUpperCase() != "TRANSCRIPT_PROCESS" && currentprocess.toUpperCase() != "TRANSCRIPT_QC_PROCESS") {
+            if (currentprocess.toUpperCase() != "SCRIBE_PROCESS" && currentprocess.toUpperCase() != "AKIDO_SCRIBE_PROCESS" && currentprocess.toUpperCase() != "SCRIBE_REVIEW_CORRECTION" && currentprocess.toUpperCase() != "SCRIBE_CORRECTION" && currentprocess.toUpperCase() != "DICTATION_REVIEW" && currentprocess.toUpperCase() != "CODER_REVIEW_CORRECTION" && currentprocess.toUpperCase() != "PROVIDER_PROCESS" && currentprocess.toUpperCase() != "MA_REVIEW" && currentprocess.toUpperCase() != "MA_PROCESS" && currentprocess.toUpperCase() != "PROVIDER_REVIEW_CORRECTION" && currentprocess.toUpperCase() != "TRANSCRIPT_PROCESS" && currentprocess.toUpperCase() != "TRANSCRIPT_QC_PROCESS" && currentprocess.toUpperCase() != "AKIDO_SCRIBE_QC_PROCESS") {
                 $('#btnSave')[0].disabled = true;
                 $('#btnClearAll')[0].disabled = true;
                 $('#btnCopyPrevious')[0].disabled = true;

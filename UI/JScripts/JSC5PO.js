@@ -579,7 +579,7 @@ function OpenModal(data) {
         var Physiain = document.getElementById(GetClientId("pnlBarGroupTabs")).value;
         var AddendumID = document.getElementById(GetClientId("hdnAddendumID")).value;
         //Jira #CAP-709
-        if (curprocess.toUpperCase() == "AKIDO_REVIEW_CODING") {
+        if (curprocess.toUpperCase() == "AKIDO_REVIEW_CODING" || curprocess.toUpperCase() == "AKIDO_REVIEW_CODING_QC") {
             StopLoadingImage();
             DisplayErrorMessage('1011195');
             return false;
