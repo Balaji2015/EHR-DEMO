@@ -1930,6 +1930,10 @@ namespace Acurus.Capella.UI
 
         public string GetAllergyInfo(IList<NonDrugAllergy> NonDrugAllergyList, IList<Rcopia_Allergy> DrugAllergyList, out string toolTipText)
         {
+            //Cap - 2552
+            NonDrugAllergyList = NonDrugAllergyList.OrderBy(a => a.Non_Drug_Allergy_History_Info).ThenBy(a => a.Description).ToList();
+            DrugAllergyList = DrugAllergyList.OrderBy(a => a.Allergy_Name).ToList();
+
             StringBuilder sbAllergy = new StringBuilder("Allergies :<br/>Drug Allergy:<br/>");
             StringBuilder sbNDA = new StringBuilder("<br/>Non Drug Allergy:<br/>");
             string d = string.Empty;
