@@ -17303,6 +17303,8 @@ AND E.ENCOUNTER_PROVIDER_SIGNED_DATE<>'0001-01-01 00:00:00'
                             }
 
                             //FillApptList.Document_Type.Add(oj[22].ToString());
+                            if (oj[27] != null)
+                                FillApptList.Is_General_Queue_Appoinment.Add(oj[27].ToString());
 
                         }
                     }

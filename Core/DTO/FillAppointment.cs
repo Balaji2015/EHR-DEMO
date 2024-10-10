@@ -31,6 +31,7 @@ namespace Acurus.Capella.Core.DTO
         //private  IList<string> _EVMode= new List<string>();
         private IList<string> _Is_ACO_Eligible = new List<string>();
         private IList<string> _Preferred_Language = new List<string>();
+        private IList<string> _Is_General_Queue_Appoinment = new List<string>();
         #region Constructors
 
         public FillAppointment()
@@ -193,6 +194,15 @@ namespace Acurus.Capella.Core.DTO
             set
             {
                 _Preferred_Language = value;
+            }
+        }
+        [DataMember]
+        public virtual IList<string> Is_General_Queue_Appoinment
+        {
+            get { return _Is_General_Queue_Appoinment; }
+            set
+            {
+                _Is_General_Queue_Appoinment = value;
             }
         }
         #endregion

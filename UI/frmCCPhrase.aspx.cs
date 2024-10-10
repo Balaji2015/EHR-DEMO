@@ -223,7 +223,7 @@ namespace Acurus.Capella.UI
                     }
                     else
                     {
-                        if (objEncounter[0].Is_Medication_Reviewed == "" && ClientSession.UserCurrentProcess != "PROVIDER_REVIEW" && ClientSession.UserRole.ToUpper() != "CODER" && ClientSession.UserRole.ToUpper() != "TECHNICIAN")//BugID:47790 - added UserRole and Current_process Check//CMG Ancilliary
+                        if (objEncounter[0].Is_Medication_Reviewed == "" && ClientSession.UserCurrentProcess != "PROVIDER_REVIEW" && ClientSession.UserRole.ToUpper() != "CODER" && ClientSession.UserRole.ToUpper() != "TECHNICIAN" && ClientSession.UserCurrentProcess != "TECHNICIAN_PROCESS")//BugID:47790 - added UserRole and Current_process Check//CMG Ancilliary
                         {
                             chkCurrentMedicationDocumented.Checked = true;
                             CheckSave.Value = "true";
@@ -263,7 +263,7 @@ namespace Acurus.Capella.UI
             {
                 fldsetMedDocumentation.Attributes.Add("disabled", "true");
             }
-            if (ClientSession.UserRole.ToUpper() == "CODER" || ClientSession.UserRole.ToUpper() == "TECHNICIAN")//CMG Ancilliary
+            if (ClientSession.UserRole.ToUpper() == "CODER" || ClientSession.UserRole.ToUpper() == "TECHNICIAN" || ClientSession.UserCurrentProcess == "TECHNICIAN_PROCESS")//CMG Ancilliary
             {
                 btnCopyCC.Attributes.Add("disabled", "true");
                 btnAdd.Attributes.Add("disabled", "true");

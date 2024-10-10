@@ -588,7 +588,9 @@ myapp.controller('PhoneEncounterCtrl', function ($scope, $http) {
                         else {
                             response($.map(jsonData, function (item) {
                                 // arrCPTs.push(item);
-                                arrCPTs.push(item.label);
+                                //CAP-2405
+                                //arrCPTs.push(item.label);
+                                arrCPTs.push(item.label + "~" + item.value);
                                 return {
                                     label: item.label,
                                     value: item.value
@@ -628,8 +630,11 @@ myapp.controller('PhoneEncounterCtrl', function ($scope, $http) {
                     else {
                         response($.map(results, function (item) {
                             return {
-                                label: item.label,
-                                value: item.value
+                                //CAP-2405
+                                //label: item.label,
+                                //value: item.value
+                                label: item.split('~')[0] + '~' + item.split('~')[1],
+                                value: item.split('~')[2] + '~' + item.split('~')[3] + '~' + item.split('~')[4]
                             }
                         }));
                     }

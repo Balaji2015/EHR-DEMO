@@ -3061,7 +3061,7 @@ namespace Acurus.Capella.UI
                         {
                             appt.Resources.Add(new Resource("Facility", matchingFacility[0], matchingFacility[0]));
                         }
-
+                        appt.Attributes.Add("Is_General_Queue_Appoinment", (LoadApptList.Is_General_Queue_Appoinment.Count > 0) ? LoadApptList.Is_General_Queue_Appoinment[i] : "".ToString());
                         if (proclist.Count > 0)
                         {
                             var Choose = from c in proclist where c.Process_Name == appt.Description select c;
@@ -3307,7 +3307,7 @@ namespace Acurus.Capella.UI
                         appt.Font.Size = 9;
                         //appt.Resources.Add(new Resource("Physician", "4", "Quinton -  Pererras Ernie"));
                         appt.Resources.Add(new Resource("Physician", LoadApptList.Appointment_Provider_ID[i].ToString(), LoadApptList.PhysicianName[i]));
-
+                        appt.Attributes.Add("Is_General_Queue_Appoinment", (LoadApptList.Is_General_Queue_Appoinment.Count > 0 )? LoadApptList.Is_General_Queue_Appoinment[i] : "".ToString());
                         IList<ProcessMaster> TempProcList;
                         TempProcList = ApplicationObject.processMasterList;
                         if (TempProcList.Count > 0)

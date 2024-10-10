@@ -1,36 +1,50 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <MachineTechnician>
-<MachineTechnician1 machine_technician_library_id="1" machine_name="Philips - Ultrasound / Vascular studies" Physician_Library_ID="2871" status="A" />
-<MachineTechnician2 machine_technician_library_id="2" machine_name="Philips - Ultrasound / Vascular studies" Physician_Library_ID="4510" status="A" />
-<MachineTechnician3 machine_technician_library_id="3" machine_name="GE Healthcare - Cardiology" Physician_Library_ID="4509" status="A" />
-<MachineTechnician4 machine_technician_library_id="4" machine_name="GE Healthcare - Cardiology" Physician_Library_ID="4510" status="A" />
-<MachineTechnician5 machine_technician_library_id="5" machine_name="GE Healthcare - Cardiology" Physician_Library_ID="4511" status="A" />
-<MachineTechnician6 machine_technician_library_id="6" machine_name="Lunar - Bone Density" Physician_Library_ID="2869" status="A" />
-<MachineTechnician7 machine_technician_library_id="7" machine_name="Lunar - Bone Density" Physician_Library_ID="2877" status="A" />
-<MachineTechnician8 machine_technician_library_id="8" machine_name="Burdick - Holter monitor" Physician_Library_ID="2869" status="A" />
-<MachineTechnician9 machine_technician_library_id="9" machine_name="Gamma - Nuclear" Physician_Library_ID="4512" status="A" />
-<MachineTechnician11 machine_technician_library_id="11" machine_name="Philips - Ultrasound / Vascular studies" Physician_Library_ID="4521" status="A" />
-<MachineTechnician12 machine_technician_library_id="12" machine_name="GE Healthcare - Cardiology" Physician_Library_ID="2878" status="A" />
-<MachineTechnician13 machine_technician_library_id="13" machine_name="Lunar - Bone Density" Physician_Library_ID="4705" status="A" />
-<MachineTechnician14 machine_technician_library_id="14" machine_name="Burdick - Holter monitor" Physician_Library_ID="4732" status="A" />
-<MachineTechnician15 machine_technician_library_id="15" machine_name="Burdick - Holter monitor" Physician_Library_ID="4762" status="A" />
-<MachineTechnician16 machine_technician_library_id="16" machine_name="Lunar - Bone Density" Physician_Library_ID="4773" status="A" />
-<MachineTechnician17 machine_technician_library_id="17" machine_name="Burdick - Holter monitor" Physician_Library_ID="4774" status="A" />
-<MachineTechnician18 machine_technician_library_id="18" machine_name="GE Healthcare - Cardiology" Physician_Library_ID="4920" status="A" />
-<MachineTechnician19 machine_technician_library_id="19" machine_name="Monitors - Mtech" Physician_Library_ID="4933" status="A" />
-<MachineTechnician20 machine_technician_library_id="20" machine_name="ECHO Tech" Physician_Library_ID="4949" status="A" />
-<MachineTechnician21 machine_technician_library_id="21" machine_name="Nuclear Tech" Physician_Library_ID="4972" status="A" />
-<MachineTechnician23 machine_technician_library_id="23" machine_name="ECHO Tech" Physician_Library_ID="4510" status="A" />
-<MachineTechnician24 machine_technician_library_id="24" machine_name="ECHO Tech" Physician_Library_ID="4509" status="A" />
-<MachineTechnician25 machine_technician_library_id="25" machine_name="Vascular Tech" Physician_Library_ID="4521" status="A" />
-<MachineTechnician26 machine_technician_library_id="26" machine_name="Monitor Tech" Physician_Library_ID="4933" status="A" />
-<MachineTechnician27 machine_technician_library_id="27" machine_name="Ultrasound / Vascular studies" Physician_Library_ID="4510" status="A" />
-<MachineTechnician28 machine_technician_library_id="28" machine_name="Cardiology" Physician_Library_ID="4510" status="A" />
-<MachineTechnician29 machine_technician_library_id="29" machine_name="Cardiology" Physician_Library_ID="4509" status="A" />
-<MachineTechnician31 machine_technician_library_id="31" machine_name="ECHO Tech" Physician_Library_ID="4949" status="A" />
-<MachineTechnician32 machine_technician_library_id="32" machine_name="ECHO Tech" Physician_Library_ID="4920" status="A" />
-<MachineTechnician33 machine_technician_library_id="33" machine_name="Nuclear Tech" Physician_Library_ID="4972" status="A" />
-<MachineTechnician34 machine_technician_library_id="34" machine_name="Burdwick - Holter Monitor" Physician_Library_ID="2875" status="A" />
-<MachineTechnician35 machine_technician_library_id="35" machine_name="GE Healthcare - Cardiology" Physician_Library_ID="5198" status="A" />
+<MachineTechnician1 machine_technician_library_id="1" machine_name="Philips - Ultrasound / Vascular studies" Physician_Library_ID="2871" status="A" Is_General_Queue_Appoinment=""/>
+<MachineTechnician2 machine_technician_library_id="2" machine_name="Philips - Ultrasound / Vascular studies" Physician_Library_ID="4510" status="A" Is_General_Queue_Appoinment=""/>
+<MachineTechnician3 machine_technician_library_id="3" machine_name="GE Healthcare - Cardiology" Physician_Library_ID="4509" status="A" Is_General_Queue_Appoinment=""/>
+<MachineTechnician4 machine_technician_library_id="4" machine_name="GE Healthcare - Cardiology" Physician_Library_ID="4510" status="A" Is_General_Queue_Appoinment=""/>
+<MachineTechnician5 machine_technician_library_id="5" machine_name="GE Healthcare - Cardiology" Physician_Library_ID="4511" status="A" Is_General_Queue_Appoinment=""/>
+<MachineTechnician6 machine_technician_library_id="6" machine_name="Lunar - Bone Density" Physician_Library_ID="2869" status="A" Is_General_Queue_Appoinment=""/>
+<MachineTechnician7 machine_technician_library_id="7" machine_name="Lunar - Bone Density" Physician_Library_ID="2877" status="A" Is_General_Queue_Appoinment=""/>
+<MachineTechnician8 machine_technician_library_id="8" machine_name="Burdick - Holter monitor" Physician_Library_ID="2869" status="A" Is_General_Queue_Appoinment=""/>
+<MachineTechnician9 machine_technician_library_id="9" machine_name="Gamma - Nuclear" Physician_Library_ID="4512" status="A" Is_General_Queue_Appoinment=""/>
+<MachineTechnician11 machine_technician_library_id="11" machine_name="Philips - Ultrasound / Vascular studies" Physician_Library_ID="4521" status="A" Is_General_Queue_Appoinment=""/>
+<MachineTechnician12 machine_technician_library_id="12" machine_name="GE Healthcare - Cardiology" Physician_Library_ID="2878" status="A" Is_General_Queue_Appoinment=""/>
+<MachineTechnician13 machine_technician_library_id="13" machine_name="Lunar - Bone Density" Physician_Library_ID="4705" status="A" Is_General_Queue_Appoinment=""/>
+<MachineTechnician14 machine_technician_library_id="14" machine_name="Burdick - Holter monitor" Physician_Library_ID="4732" status="A" Is_General_Queue_Appoinment=""/>
+<MachineTechnician15 machine_technician_library_id="15" machine_name="Burdick - Holter monitor" Physician_Library_ID="4762" status="A" Is_General_Queue_Appoinment=""/>
+<MachineTechnician16 machine_technician_library_id="16" machine_name="Lunar - Bone Density" Physician_Library_ID="4773" status="A" Is_General_Queue_Appoinment=""/>
+<MachineTechnician17 machine_technician_library_id="17" machine_name="Burdick - Holter monitor" Physician_Library_ID="4774" status="A" Is_General_Queue_Appoinment=""/>
+<MachineTechnician18 machine_technician_library_id="18" machine_name="GE Healthcare - Cardiology" Physician_Library_ID="4920" status="A" Is_General_Queue_Appoinment=""/>
+<MachineTechnician19 machine_technician_library_id="19" machine_name="Monitors - Mtech" Physician_Library_ID="4933" status="A" Is_General_Queue_Appoinment="Y"/>
+<MachineTechnician20 machine_technician_library_id="20" machine_name="ECHO Tech" Physician_Library_ID="4949" status="A" Is_General_Queue_Appoinment=""/>
+<MachineTechnician21 machine_technician_library_id="21" machine_name="Nuclear Tech" Physician_Library_ID="4972" status="A" Is_General_Queue_Appoinment=""/>
+<MachineTechnician23 machine_technician_library_id="23" machine_name="ECHO Tech" Physician_Library_ID="4510" status="A" Is_General_Queue_Appoinment=""/>
+<MachineTechnician24 machine_technician_library_id="24" machine_name="ECHO Tech" Physician_Library_ID="4509" status="A" Is_General_Queue_Appoinment=""/>
+<MachineTechnician25 machine_technician_library_id="25" machine_name="Vascular Tech" Physician_Library_ID="4521" status="A" Is_General_Queue_Appoinment=""/>
+<MachineTechnician26 machine_technician_library_id="26" machine_name="Monitor Tech" Physician_Library_ID="4933" status="A" Is_General_Queue_Appoinment=""/>
+<MachineTechnician27 machine_technician_library_id="27" machine_name="Ultrasound / Vascular studies" Physician_Library_ID="4510" status="A" Is_General_Queue_Appoinment=""/>
+<MachineTechnician28 machine_technician_library_id="28" machine_name="Cardiology" Physician_Library_ID="4510" status="A" Is_General_Queue_Appoinment=""/>
+<MachineTechnician29 machine_technician_library_id="29" machine_name="Cardiology" Physician_Library_ID="4509" status="A" Is_General_Queue_Appoinment=""/>
+<MachineTechnician31 machine_technician_library_id="31" machine_name="ECHO Tech" Physician_Library_ID="4949" status="A" Is_General_Queue_Appoinment=""/>
+<MachineTechnician32 machine_technician_library_id="32" machine_name="ECHO Tech" Physician_Library_ID="4920" status="A" Is_General_Queue_Appoinment=""/>
+<MachineTechnician33 machine_technician_library_id="33" machine_name="Nuclear Tech" Physician_Library_ID="4972" status="A" Is_General_Queue_Appoinment=""/>
+<MachineTechnician34 machine_technician_library_id="34" machine_name="Burdwick - Holter Monitor" Physician_Library_ID="2875" status="A" Is_General_Queue_Appoinment=""/>
+<MachineTechnician35 machine_technician_library_id="35" machine_name="GE Healthcare - Cardiology" Physician_Library_ID="5198" status="A" Is_General_Queue_Appoinment=""/>
+<MachineTechnician36 machine_technician_library_id="36" machine_name="Vascular studies" Physician_Library_ID="10295" status="A" Is_General_Queue_Appoinment=""/>
+<MachineTechnician37 machine_technician_library_id="37" machine_name="ECHO Tech" Physician_Library_ID="10296" status="A" Is_General_Queue_Appoinment=""/>
+<MachineTechnician38 machine_technician_library_id="38" machine_name="ECHO Tech" Physician_Library_ID="10297" status="A" Is_General_Queue_Appoinment=""/>
+<MachineTechnician39 machine_technician_library_id="39" machine_name="Vascular Tech" Physician_Library_ID="10298" status="A" Is_General_Queue_Appoinment=""/>
+<MachineTechnician40 machine_technician_library_id="40" machine_name="Nuclear Tech" Physician_Library_ID="10299" status="A" Is_General_Queue_Appoinment=""/>
+<MachineTechnician41 machine_technician_library_id="41" machine_name="ECHO Tech" Physician_Library_ID="10347" status="A" Is_General_Queue_Appoinment=""/>
+<MachineTechnician42 machine_technician_library_id="42" machine_name="ECHO Tech" Physician_Library_ID="10347" status="A" Is_General_Queue_Appoinment=""/>
+<MachineTechnician43 machine_technician_library_id="43" machine_name="ECHO Tech" Physician_Library_ID="10429" status="A" Is_General_Queue_Appoinment=""/>
+<MachineTechnician44 machine_technician_library_id="44" machine_name="ECHO Tech" Physician_Library_ID="10429" status="A" Is_General_Queue_Appoinment=""/>
+<MachineTechnician45 machine_technician_library_id="45" machine_name="ECHO Tech" Physician_Library_ID="10429" status="A" Is_General_Queue_Appoinment=""/>
+<MachineTechnician46 machine_technician_library_id="46" machine_name="Monitors - Mtech" Physician_Library_ID="4933" status="A" Is_General_Queue_Appoinment=""/>
+<MachineTechnician47 machine_technician_library_id="47" machine_name="ECHO Tech" Physician_Library_ID="4510" status="A" Is_General_Queue_Appoinment=""/>
+<MachineTechnician48 machine_technician_library_id="48" machine_name="Test Machine" Physician_Library_ID="13172" status="A" Is_General_Queue_Appoinment=""/>
+<MachineTechnician49 machine_technician_library_id="49" machine_name="Test Machine" Physician_Library_ID="13173" status="A" Is_General_Queue_Appoinment=""/>
 
 </MachineTechnician>

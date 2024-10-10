@@ -223,6 +223,7 @@ function schAppointmentScheduler_AppointmentContextMenuItemClicked(sender, args)
             obj.push("EncounterID=" + Appointment._id.toString().split('-')[0]);
             obj.push("humanID=" + Appointment._toolTip.split('-')[0]);
             obj.push("EncStatus=" + Appointment._description);
+            obj.push("Is_General_Queue_Appoinment=" + Appointment._attributes._data.Is_General_Queue_Appoinment);
             obj.push("Facility=" + document.getElementById("ctl00_C5POBody_cboFacilityName").value);
          
             obj.push("bShowPat=false");
@@ -462,6 +463,7 @@ function schAppointmentScheduler_AppointmentContextMenuItemClicked(sender, args)
             obj.push("EncStatus=" + Appointment._description);
             obj.push("bShowPat=false");
             obj.push("sScreenMode=CheckedIn");
+            obj.push("Is_General_Queue_Appoinment=" + Appointment._attributes._data.Is_General_Queue_Appoinment);
             obj.push("Facility=" + document.getElementById("ctl00_C5POBody_cboFacilityName").value);
            
             openModal("frmQuickpatientcreate.aspx", 920, 1020, obj, "ctl00_ModalWindow");

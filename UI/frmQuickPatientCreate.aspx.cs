@@ -2468,7 +2468,7 @@ namespace Acurus.Capella.UI
             //string FileName = "Human" + "_" + txtPatientAccountNo.Text + ".xml";
             //string strXmlFilePath = Path.Combine(System.Configuration.ConfigurationSettings.AppSettings["XMLPath"], FileName);
 
-           
+
 
             //if (File.Exists(strXmlFilePath) == true)
             //{
@@ -2490,8 +2490,14 @@ namespace Acurus.Capella.UI
             //    }
             //}
 
+            string sIs_General_Queue_Appoinment = string.Empty;
 
-            
+            if (Request["Is_General_Queue_Appoinment"] != null)
+            {
+                sIs_General_Queue_Appoinment= Request["Is_General_Queue_Appoinment"].ToString();
+            }
+
+
             if (cboMethodOfPayment.Text != string.Empty)
             {
                 if (cboRelation.Text == string.Empty)
@@ -4517,21 +4523,21 @@ namespace Acurus.Capella.UI
             {
                 //if (System.Configuration.ConfigurationManager.AppSettings["AncillaryTestClinic"] != null)
                 //{
-                    IList<User> lstnew = new List<User>();
-                    UserManager objnew = new UserManager();
-                    lstnew = objnew.getUserByPHYID(Convert.ToUInt32(lst[0].Encounter_Provider_ID));
-                    if (lstnew.Count > 0)
+                IList<User> lstnew = new List<User>();
+                UserManager objnew = new UserManager();
+                lstnew = objnew.getUserByPHYID(Convert.ToUInt32(lst[0].Encounter_Provider_ID));
+                if (lstnew.Count > 0)
+                {
+                    //if (txttestappear.Text!=string.Empty)
+                    //if (System.Configuration.ConfigurationManager.AppSettings["AncillaryTestClinic"].ToUpper().Trim() == lst[0].Facility_Name.ToUpper().Trim())
+                    var facAncillary = from f in ApplicationObject.facilityLibraryList where f.Fac_Name == lst[0].Facility_Name select f;
+                    IList<FacilityLibrary> ilstFacAncillary = facAncillary.ToList<FacilityLibrary>();
+                    if (ilstFacAncillary.Count > 0 && ilstFacAncillary[0].Is_Ancillary == "Y" && sIs_General_Queue_Appoinment != "Y")
                     {
-                        //if (txttestappear.Text!=string.Empty)
-                        //if (System.Configuration.ConfigurationManager.AppSettings["AncillaryTestClinic"].ToUpper().Trim() == lst[0].Facility_Name.ToUpper().Trim())
-                        var facAncillary = from f in ApplicationObject.facilityLibraryList where f.Fac_Name == lst[0].Facility_Name select f;
-                        IList<FacilityLibrary> ilstFacAncillary = facAncillary.ToList<FacilityLibrary>();
-                        if (ilstFacAncillary.Count > 0 && ilstFacAncillary[0].Is_Ancillary == "Y")
-                        {
-                            WFObjectManager WFMngr = new WFObjectManager();
-                            WFMngr.UpdateOwner(Convert.ToUInt32(hdnEncounterID.Value), "DOCUMENTATION", lstnew[0].user_name, string.Empty);
-                        }
+                        WFObjectManager WFMngr = new WFObjectManager();
+                        WFMngr.UpdateOwner(Convert.ToUInt32(hdnEncounterID.Value), "DOCUMENTATION", lstnew[0].user_name, string.Empty);
                     }
+                }
                 //}
             }
             bFormclose = false;
