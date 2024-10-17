@@ -103,7 +103,7 @@ table.dataTable > thead > tr > td {
     word-break: break-all;
 }
     </style>
-    <link href="https://cdn.datatables.net/1.13.6/css/jquery.dataTables.min.css" rel="stylesheet" />
+    <link href="https://cdn.datatables.net/1.12.1/css/jquery.dataTables.min.css" rel="stylesheet" />
     <link href="CSS/fontawesomenew.css" rel="stylesheet" />
     <link href="CSS/fontawesome.min.css" rel="stylesheet" type="text/css" />
     <link href="CSS/CommonStyle.css" rel="stylesheet" type="text/css" />
@@ -243,7 +243,7 @@ table.dataTable > thead > tr > td {
     </telerik:RadScriptManager>
   
 
-    <script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdn.datatables.net/1.12.1/js/jquery.dataTables.min.js"></script>
     <script src="JScripts/JSMyQueueNew.js?version=<%=ConfigurationManager.AppSettings["VersionConfiguration"].ToString().Replace("Capella - ","") %>" type="text/javascript"></script>
     <script src="JScripts/JSErrorMessage.js?version=<%=ConfigurationManager.AppSettings["VersionConfiguration"].ToString().Replace("Capella - ","") %>" type="text/javascript"></script>
     <script src="JScripts/JSModalWindow.js?version=<%=ConfigurationManager.AppSettings["VersionConfiguration"].ToString().Replace("Capella - ","") %>" type="text/javascript"></script>
