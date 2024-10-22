@@ -1777,7 +1777,7 @@ function loadMyorder() {
     $("#chkMyShowAll")[0].checked ? Showall = "Checked" : Showall = "Unchecked";
 
     var dataTable = new DataTable('#EncounterTable', {
-        serverSide: true,
+        serverSide: false,
         lengthChange: false,
         searching: true,
         processing: false,
