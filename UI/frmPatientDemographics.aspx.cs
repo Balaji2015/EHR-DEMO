@@ -578,6 +578,17 @@ namespace Acurus.Capella.UI
             {
                 fileupload.Enabled = false;
             }
+            //CAP-2540
+            if (txtAccountNo.Text == "")
+            {
+                txtNotes.txtDLC.Enabled = false;
+                txtNotes.txtDLC.CssClass = "nonEditabletxtbox";
+                ComboBoxColorChange(ddlMessageDescription);
+                ComboBoxColorChange(ddlAssignedTo);
+                chkshowall.Checked = false;
+                chkshowall.Enabled = false;
+
+            }
 
             this.Page.ClientScript.RegisterStartupScript(this.Page.GetType(), "Stoploadcursor", " {sessionStorage.setItem('StartLoading', 'false');StopLoadFromPatChart();}", true);
         }

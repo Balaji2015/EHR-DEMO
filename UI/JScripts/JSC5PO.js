@@ -3650,13 +3650,21 @@ $("#btnReportClose").click(function () {
     if (window.top.location.href.indexOf('frmPatientChart.aspx') > 0 && window.top.location.href.indexOf('PhoneEncounter') > 0) {
         localStorage.setItem("ClearEncounter", "true");
         window.location.href = "frmPatientChart.aspx";
-    } else {
-        //CAP-2248
-        var urlParam = new URLSearchParams((window?.location?.href??"").toLowerCase());
-        isDirectURLParam = urlParam?.get("isdirecturl");
-        if (isDirectURLParam.toUpperCase() != "Y" ) {
-        location.reload();
     }
+    else {
+        //CAP-2248
+        var urlParam = new URLSearchParams((window?.location?.href ?? "").toLowerCase());
+        isDirectURLParam = urlParam?.get("isdirecturl");
+        //if (isDirectURLParam.toUpperCase() != "Y") {
+        //    location.reload();
+        //}
+        if (isDirectURLParam != null && isDirectURLParam.toUpperCase() != "Y") {
+            location.reload();
+        }
+        //CAP-2600
+        else if ($(top.window.document).find("#ReportModalTitle")[0].textContent == "Report Generator") {
+            location.reload();
+        }
     }
 });
 //CAP-2202
