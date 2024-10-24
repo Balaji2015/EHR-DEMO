@@ -1205,7 +1205,9 @@ namespace Acurus.Capella.DataAccess
                     }
                     xmlWriter.WriteEndElement();
                     xmlWriter.WriteElementString("RcopiaID", string.Empty);
-                    xmlWriter.WriteElementString("ExternalID", "Prob" + ilstProblem[0].Id.ToString());
+                    //Jira CAP-2612
+                    //xmlWriter.WriteElementString("ExternalID", "Prob" + ilstProblem[0].Id.ToString());
+                    xmlWriter.WriteElementString("ExternalID", string.Empty);
                     xmlWriter.WriteStartElement("Patient");
                     xmlWriter.WriteElementString("RcopiaID", string.Empty);
                     xmlWriter.WriteElementString("ExternalID", ilstProblem[0].Human_ID.ToString());
@@ -1267,7 +1269,9 @@ namespace Acurus.Capella.DataAccess
 
             xmlWriter.WriteEndElement();
             xmlWriter.WriteElementString("RcopiaID", string.Empty);
-            xmlWriter.WriteElementString("ExternalID", "ASS" + objAssesment.Id.ToString());
+            //Jira CAP-2612
+            //xmlWriter.WriteElementString("ExternalID", "ASS" + objAssesment.Id.ToString());
+            xmlWriter.WriteElementString("ExternalID", string.Empty);
             xmlWriter.WriteStartElement("Patient");
             xmlWriter.WriteElementString("RcopiaID", string.Empty);
             xmlWriter.WriteElementString("ExternalID", objAssesment.Human_ID.ToString());
