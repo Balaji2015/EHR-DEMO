@@ -631,8 +631,15 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
             //        }
             //}
 
+            //CAP-2623
+            IList<Encounter> ilstEncounter = new List<Encounter>();
+            EncounterManager encounterManager = new EncounterManager();
+            if (encID != 0) {
+                ilstEncounter = encounterManager.GetEncounterByEncounterIDIncludeArchive(encID);
+            }
+
             //CAP-2523
-            if ((ConfigurationSettings.AppSettings["IsAkidoNoteCDC"]?.ToString()?.ToUpper() ?? "") == "Y" && encID != 0)
+            if ((ConfigurationSettings.AppSettings["IsAkidoNoteCDC"]?.ToString()?.ToUpper() ?? "") == "Y" && encID != 0 && ilstEncounter.Any(x => !x.Is_Signed_in_Akido_Note.Equals("Y", StringComparison.InvariantCultureIgnoreCase)))
             {
                 string sHumanID = string.Empty;
                 string sTransactionBy = string.Empty;
