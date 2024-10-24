@@ -75,7 +75,7 @@ function ViewNextResult() {
            StopLoadingImage();
            return;
        }
-       var currRow = $($(top.window.document).find("table[id=EncounterTable] tbody")[1]).find("tr:eq('" + result_index + "')");
+       var currRow = $($(top.window.document).find("table[id=EncounterTable] tbody")[0]).find("tr:eq('" + result_index + "')");
         if ($(currRow).length > 0) {
             var CurrentProcess = $(currRow)[0].children[8].innerText.trim().trim();
             var orderType = $(currRow)[0].children[14].innerText.trim().replace("INTERNAL", "").trim();
@@ -190,7 +190,7 @@ function GetNextViewResult(next_index) {
         trlength = $($(top.window.document).find("table[id=EncounterTable] tbody")).find("tr").length;
         
         for (var i = next_index; i < trlength; i++) {
-            var currRow = $($(top.window.document).find("table[id=EncounterTable] tbody")[1]).find("tr:eq('" + i + "')");
+            var currRow = $($(top.window.document).find("table[id=EncounterTable] tbody")[0]).find("tr:eq('" + i + "')");
             if ($(currRow).length > 0) {
                 var CurrentProcess = $(currRow)[0].children[8].innerText.trim();
                 var orderType = $(currRow)[0].children[15].innerText.replace("INTERNAL", "").trim();

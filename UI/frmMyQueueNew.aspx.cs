@@ -1075,26 +1075,27 @@ namespace Acurus.Capella.UI
                 //LoadOrders();
 
 
-                //For Refresh Movetomyorder
-                bool bValue = false;
-                if (dataMove[3].ToString() == "Checked")
-                    bValue = true;
-                string[] ProcessType = new string[2];
-                ProcessType[0] = "UNASSIGNED";
+                ////For Refresh Movetomyorder
+                //bool bValue = false;
+                //if (dataMove[3].ToString() == "Checked")
+                //    bValue = true;
+                //string[] ProcessType = new string[2];
+                //ProcessType[0] = "UNASSIGNED";
 
-                string[] ObjType = new string[6];
-                ObjType[0] = "DIAGNOSTIC ORDER";
-                ObjType[1] = "DME ORDER";
-                // ObjType[1] = "IMAGE ORDER";
-                // ObjType[2] = "INTERNAL ORDER";//For Bug Id 54510
-                ObjType[3] = "IMMUNIZATION ORDER";
-                ObjType[4] = "REFERRAL ORDER";
-                ObjType[5] = "DME ORDER";
+                //string[] ObjType = new string[6];
+                //ObjType[0] = "DIAGNOSTIC ORDER";
+                //ObjType[1] = "DME ORDER";
+                //// ObjType[1] = "IMAGE ORDER";
+                //// ObjType[2] = "INTERNAL ORDER";//For Bug Id 54510
+                //ObjType[3] = "IMMUNIZATION ORDER";
+                //ObjType[4] = "REFERRAL ORDER";
+                //ObjType[5] = "DME ORDER";
                 
-                OrdersQ = wfMngr.GetListObjects(ClientSession.FacilityName, ObjType, ProcessType, ClientSession.UserName, bValue, iDefaultDays, string.Empty);// ClientSession.DefaultNoofDays);
-                OrdersQ = OrdersQ.Where(a => a.Current_Owner == "UNKNOWN").ToList<MyQ>();
+                //OrdersQ = wfMngr.GetListObjects(ClientSession.FacilityName, ObjType, ProcessType, ClientSession.UserName, bValue, iDefaultDays, string.Empty);// ClientSession.DefaultNoofDays);
+                //OrdersQ = OrdersQ.Where(a => a.Current_Owner == "UNKNOWN").ToList<MyQ>();
             }
-            return JsonConvert.SerializeObject(OrdersQ.ToList<MyQ>());
+            //return JsonConvert.SerializeObject(OrdersQ.ToList<MyQ>());
+            return "true";
         }
 
         [WebMethod(EnableSession = true)]
