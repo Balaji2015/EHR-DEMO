@@ -533,7 +533,8 @@ namespace Acurus.Capella.UI
             return JsonConvert.SerializeObject(MyScanList.ToList<MyQ>());
         }
         [WebMethod(EnableSession = true)]
-        public static string LoadMyPrescription(string sShowall)
+        [ScriptMethod(ResponseFormat = ResponseFormat.Json, UseHttpGet = true)]
+        public static object LoadMyPrescription()
         {
             if (ClientSession.UserName == string.Empty)
             {
@@ -544,6 +545,7 @@ namespace Acurus.Capella.UI
             }
             string sGroup_ID_Log = ClientSession.EncounterId.ToString() + "-" + ClientSession.HumanId.ToString() + "-" + ClientSession.PhysicianId.ToString() + "-" + DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss:FFF");
             UtilityManager.inserttologgingtable(ClientSession.EncounterId.ToString(), ClientSession.HumanId.ToString(), ClientSession.UserName, ClientSession.PhysicianId.ToString(), "MyQueue LoadMyPrescription : Start", DateTime.Now, sGroup_ID_Log, "frmMyQueueNew");
+            string sShowall = HttpContext.Current.Request.Params["extra_search"];
             bool bValue = false;
             if (sShowall == "Checked")
                 bValue = true;
@@ -560,7 +562,11 @@ namespace Acurus.Capella.UI
             var MyPrescList = from g in MyHome where g.Current_Owner != "UNKNOWN" select g;
             MyPrescList = MyPrescList.OrderByDescending(a => a.Prescription_Date);
             UtilityManager.inserttologgingtable(ClientSession.EncounterId.ToString(), ClientSession.HumanId.ToString(), ClientSession.UserName, ClientSession.PhysicianId.ToString(), "MyQueue LoadMyPrescription : End", DateTime.Now, sGroup_ID_Log, "frmMyQueueNew");
-            return JsonConvert.SerializeObject(MyPrescList.ToList<MyQ>());
+            var resultNew = new
+            {
+                data = Compress(JsonConvert.SerializeObject(MyPrescList.ToList<MyQ>())),
+            };
+            return resultNew;
         }
 
         [WebMethod(EnableSession = true)]
