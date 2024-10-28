@@ -234,6 +234,7 @@ table.dataTable > thead > tr > td {
             </div>
         </div>
     </div>
+    <asp:HiddenField ID="hdnAncillary" runat="server" Value="" EnableViewState="false" />
     <telerik:RadScriptManager ID="RadScriptManager1" runat="server" EnableViewState="false" EnableScriptCombine="true">
         <Scripts>
             <asp:ScriptReference Assembly="Telerik.Web.UI" Name="Telerik.Web.UI.Common.Core.js"></asp:ScriptReference>
