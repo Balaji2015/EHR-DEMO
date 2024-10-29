@@ -159,7 +159,7 @@ table.dataTable > thead > tr > td {
                                         <label id="lbl14days" for="chkMyTask14" class="checkbox-inline Editabletxtbox" style="padding-left: 4px; padding-right: 10px;display:none;">Completed Last 14 days</label>
                                      </td>
                                     <td>
-                                        <input type="checkbox" id="chkMyShowAll" class="Editabletxtbox" onclick="chkShowAllClick(this)" /></td>
+                                        <input type="checkbox" runat="server" id="chkMyShowAll" class="Editabletxtbox" onclick="chkShowAllClick(this)" /></td>
                                     <td>
                                         <label for="chkMyShowAll" class="checkbox-inline Editabletxtbox" style="padding-left: 4px; padding-right: 10px">ShowAll</label></td>
                                     <td>

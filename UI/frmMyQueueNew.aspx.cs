@@ -18,6 +18,7 @@ using System.Web.Script.Services;
 using System.Xml.Linq;
 using System.Text;
 using System.IO.Compression;
+using System.Configuration;
 
 namespace Acurus.Capella.UI
 {
@@ -77,6 +78,10 @@ namespace Acurus.Capella.UI
             else
             { hdnAncillary.Value = "false"; }
             iDefaultDays = DefaultDays();
+
+
+
+
         }
         public int DefaultDays()
         {
@@ -427,9 +432,13 @@ namespace Acurus.Capella.UI
             var searchData = JsonConvert.DeserializeObject<Dictionary<string, string>>(extra_search);
             string sShowall = searchData["sShowall"];
             string sOpenTask = searchData["sOpenTask"];
-
-
-            if (sShowall == "Checked")
+            //if (ConfigurationSettings.AppSettings["IsAkidoOrder"] != null && ConfigurationSettings.AppSettings["IsAkidoOrder"] == "Y")
+            //{
+            //    sShowall = "Checked";
+            //    chkMyShowAll.Checked = true;
+            //    chkMyShowAll.Disabled = true;
+            //}
+                if (sShowall == "Checked")
                 bValue = true;
             string[] ProcessType = new string[1];
             ProcessType[0] = "ASSIGNED";
@@ -673,7 +682,12 @@ namespace Acurus.Capella.UI
             MyQ = (MyQ.OrderByDescending(a => a.Appt_Date_Time)).ToList<MyQ>();
             UtilityManager.inserttologgingtable(ClientSession.EncounterId.ToString(), ClientSession.HumanId.ToString(), ClientSession.UserName, ClientSession.PhysicianId.ToString(), "MyQueue LoadMyAmendment : End", DateTime.Now, sGroup_ID_Log, "frmMyQueueNew");
             //return JsonConvert.SerializeObject(MyQ.ToList<MyQ>());
-            return MyQ.ToList<MyQ>();
+            
+            var resultNew = new
+            {
+                data = Compress(JsonConvert.SerializeObject(MyQ.ToList<MyQ>())),
+            };
+            return resultNew;   
         }
         [WebMethod(EnableSession = true)]
         public static string chkShowAllMyEncounter(string sShowall)

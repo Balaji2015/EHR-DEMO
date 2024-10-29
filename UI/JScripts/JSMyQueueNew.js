@@ -54,7 +54,7 @@ $(document).ready(function () {
     if (sessionStorage.getItem('bCCSave') != undefined) { sessionStorage.removeItem('bCCSave'); }
     { sessionStorage.setItem('StartLoading', 'true'); StartLoadFromPatChart(); }
     document.getElementById("divMyQ").style.display = "";
-    $("#chkMyShowAll")[0].checked ? Showall = "Checked" : Showall = "Unchecked";
+    $("#ctl00_C5POBody_chkMyShowAll")[0].checked ? Showall = "Checked" : Showall = "Unchecked";
     $('#MyQTable').empty();
     $("#ProcessModal").modal('hide');
     var MyShowAllmyQueue = localStorage.getItem('MyShowAll');
@@ -112,7 +112,7 @@ $(document).ready(function () {
 
     }
     if (MyShowAllmyQueue == "Checked") {
-        $("#chkMyShowAll")[0].checked = true;
+        $("#ctl00_C5POBody_chkMyShowAll")[0].checked = true;
         Showall = "Checked";
         LoadMyEncounter();
     }
@@ -952,19 +952,19 @@ function MyQLoad() {
     var MyShowAll = localStorage.getItem('MyShowAll');
     if (MyShowAll == "Checked") {
         Showall = "Checked";
-        $("#chkMyShowAll")[0].checked = true;
+        $("#ctl00_C5POBody_chkMyShowAll")[0].checked = true;
         LoadMyEncounter();
     }
     else {
         Showall = "Unchecked";
-        $("#chkMyShowAll")[0].checked = false;
+        $("#ctl00_C5POBody_chkMyShowAll")[0].checked = false;
         LoadMyEncounter();
     }
 
 
 }
 function ShowMyQTabs(sender) {
-    $("#chkMyShowAll")[0].checked = false;
+    $("#ctl00_C5POBody_chkMyShowAll")[0].checked = false;
     $("#chkShowAll")[0].checked = false;
     $(":button:not(#btnGeneralQcount):not(#btnMyQcount)").css("background-color", "transparent");
     if (sender.innerText == "General Q") {
@@ -1010,7 +1010,7 @@ function ShowMyQTabs(sender) {
     else {
         document.getElementById("divGeneralQ").style.display = "none";
         document.getElementById("divMyQ").style.display = "";
-        $("#chkMyShowAll")[0].checked ? Showall = "Checked" : Showall = "Unchecked";
+        $("#ctl00_C5POBody_chkMyShowAll")[0].checked ? Showall = "Checked" : Showall = "Unchecked";
 
         $('#Processenctr').css("background-color", "");
         $('#Processenctr')[0].innerText = "Process Encounter";
@@ -1086,8 +1086,8 @@ function LoadMyEncounter() {
         $("#ctl00_C5POBody_chkViewAllFacilities")[0].checked ? ViewAllFacilities = "Checked" : ViewAllFacilities = "Unchecked";
     }
 
-    $("#chkMyShowAll")[0].disabled = false;
-    $("#chkMyShowAll")[0].checked ? Showall = "Checked" : Showall = "Unchecked";
+    $("#ctl00_C5POBody_chkMyShowAll")[0].disabled = false;
+    $("#ctl00_C5POBody_chkMyShowAll")[0].checked ? Showall = "Checked" : Showall = "Unchecked";
     var Ancillary = $('#ctl00_C5POBody_hdnAncillary').val();
     var dataTable = new DataTable('#EncounterTable', {
         serverSide: false,
@@ -1148,7 +1148,7 @@ function LoadMyEncounter() {
                     }
                 }
                 else {
-                    $("#chkMyShowAll")[0].checked = false;
+                    $("#ctl00_C5POBody_chkMyShowAll")[0].checked = false;
                     $("#chkShowAll")[0].checked = false;
                     var ShowAll = localStorage.getItem('ShowallGeneralqueue');
                     if (ShowAll == "Checked") {
@@ -1156,12 +1156,12 @@ function LoadMyEncounter() {
                     }
                     var MyShowAll = localStorage.getItem('MyShowAll');
                     if (MyShowAll == "Checked") {
-                        $("#chkMyShowAll")[0].checked = true;
+                        $("#ctl00_C5POBody_chkMyShowAll")[0].checked = true;
                     }
-                    document.getElementById("divGeneralQ").style.display = "";
-                    document.getElementById("divMyQ").style.display = "none";
-                    $('#MyQTable').empty();
-                    $('#GeneralQTable').empty();
+                    //document.getElementById("divGeneralQ").style.display = "";
+                    //document.getElementById("divMyQ").style.display = "none";
+                    //$('#MyQTable').empty();
+                    //$('#GeneralQTable').empty();
                     $('#RefreshQ').css("background-color", "");
                     $('#btnChkOut').css("background-color", "");
                     $('#MoveTo').css("background-color", "");
@@ -1376,9 +1376,9 @@ function loadMytask() {
     var myTask14 = localStorage.getItem('MyTask14');
     if (myTask14 == "Checked") {
         $("#chkMyTask14")[0].checked = true;
-        $("#chkMyShowAll")[0].checked = false;
+        $("#ctl00_C5POBody_chkMyShowAll")[0].checked = false;
         $("#chkOpenTask")[0].checked = false;
-        $("#chkMyShowAll")[0].disabled = true;
+        $("#ctl00_C5POBody_chkMyShowAll")[0].disabled = true;
         $("#chkOpenTask")[0].disabled = true;
         url = "LoadMyTaskCompleted";
         data = JSON.stringify({ "sShowall": Showall });
@@ -1389,15 +1389,15 @@ function loadMytask() {
 //Jira #CAP-1051 
     //if (showallchecked == "Checked") {
     //    Showall = "Checked";
-    //    $("#chkMyShowAll")[0].checked = true;
+    //    $("#ctl00_C5POBody_chkMyShowAll")[0].checked = true;
     //    $("#chkMyTask14")[0].checked = false;
     //    $("#chkMyTask14")[0].disabled = true;
     //} else {
     //    Showall = "Unchecked"
     //}
-    if ($("#chkMyShowAll")[0].checked == true) {
+    if ($("#ctl00_C5POBody_chkMyShowAll")[0].checked == true) {
         Showall = "Checked";
-        $("#chkMyShowAll")[0].checked = true;
+        $("#ctl00_C5POBody_chkMyShowAll")[0].checked = true;
         $("#chkMyTask14")[0].checked = false;
         $("#chkMyTask14")[0].disabled = true;
     }
@@ -1502,7 +1502,7 @@ function LoadMyTask() {
     </thead>
 </table>`); 
     SortTableHeader('MyQTask');
-    $("#chkMyShowAll")[0].checked ? Showall = "Checked" : Showall = "Unchecked";
+    $("#ctl00_C5POBody_chkMyShowAll")[0].checked ? Showall = "Checked" : Showall = "Unchecked";
     if ($("#chkMyTask14")[0].checked) {
         var url = "LoadMyTaskCompleted";
     }
@@ -1557,7 +1557,7 @@ function LoadMyTask() {
             error: function (xhr, error, code) {
                 { sessionStorage.setItem('StartLoading', 'false'); StopLoadFromPatChart(); }
                 if (xhr.status == 999)
-                    window.location = xhr.statusText;
+                    window.location = "ErrorPage.aspx";
                 else {
                     var log = JSON.parse(xhr.responseText);
                     console.log(log);
@@ -1626,7 +1626,7 @@ function LoadMyTask() {
     $('#EncounterTable tbody').on('dblclick', 'tr', function () {
         $('#EncounterTable tr').removeClass("odd");
         $('#EncounterTable tr').removeClass("even");
-        $('#EncounterTable tr').removeClass("highlight");
+        dataTable.$('tr.highlight').removeClass('highlight');
         $(this)[0].classList.add('highlight');
         MyQclick();   
     });
@@ -1634,7 +1634,7 @@ function LoadMyTask() {
     $('#EncounterTable tbody').on('click', 'tr', function () {
         $('#EncounterTable tr').removeClass("odd");
         $('#EncounterTable tr').removeClass("even");
-        $('#EncounterTable tr').removeClass("highlight");
+        dataTable.$('tr.highlight').removeClass('highlight');
         $(this)[0].classList.add('highlight');        
     });
     $("#EncounterTable_filter").children("label").children("input").css("width", "300px")
@@ -1727,6 +1727,7 @@ function LoadMyTaskTemp() {
         'float': 'left',
         'text-align': 'left',
         'margin-left': '30px',
+        'width': '500px',
     });
 
     $('#EncounterTable_info').css({
@@ -1738,7 +1739,7 @@ function LoadMyTaskTemp() {
     $('#EncounterTable tbody').on('dblclick', 'tr', function () {
         $('#EncounterTable tr').removeClass("odd");
         $('#EncounterTable tr').removeClass("even");
-        $('#EncounterTable tr').removeClass("highlight");
+        dataTable.$('tr.highlight').removeClass('highlight');
         $(this)[0].classList.add('highlight');
         MyQclick();
     });
@@ -1746,35 +1747,10 @@ function LoadMyTaskTemp() {
     $('#EncounterTable tbody').on('click', 'tr', function () {
         $('#EncounterTable tr').removeClass("odd");
         $('#EncounterTable tr').removeClass("even");
-        $('#EncounterTable tr').removeClass("highlight");
+        dataTable.$('tr.highlight').removeClass('highlight');
         $(this)[0].classList.add('highlight');
     });
-    $('#EncounterTable_filter').css({
-        'float': 'left',
-        'text-align': 'left',
-        'margin-left': '30px',
-    });
-
-    $('#EncounterTable_info').css({
-        'min-width': '180px'
-    });
-
-    $('#EncounterTable_filter input').unbind();
-
-    $('#EncounterTable_filter input').on('keyup', function () {
-        dataTable.column(2).search(this.value).draw();
-    });
-
-    $('#EncounterTable tbody').on('dblclick', 'tr', function () {
-        $('#EncounterTable tr').removeClass("highlight");
-        $(this).addClass("highlight");
-        RowClick();
-    });
-
-    $('#EncounterTable tbody').on('click', 'tr', function () {
-        $('#EncounterTable tr').removeClass("highlight");
-        $(this).addClass("highlight");
-    });
+    $("#EncounterTable_filter").children("label").children("input").css("width", "300px")
 
 }
 
@@ -1813,8 +1789,8 @@ function loadMyorder() {
     </thead>
     </table>`);
 
-    $("#chkMyShowAll")[0].disabled = false;
-    $("#chkMyShowAll")[0].checked ? Showall = "Checked" : Showall = "Unchecked";
+    $("#ctl00_C5POBody_chkMyShowAll")[0].disabled = false;
+    $("#ctl00_C5POBody_chkMyShowAll")[0].checked ? Showall = "Checked" : Showall = "Unchecked";
 
     var dataTable = new DataTable('#EncounterTable', {
         serverSide: false,
@@ -2042,8 +2018,8 @@ function loadMyorder() {
     });
 }
 function loadMyscan() {
-    $("#chkMyShowAll")[0].disabled = false;
-    $("#chkMyShowAll")[0].checked ? Showall = "Checked" : Showall = "Unchecked";
+    $("#ctl00_C5POBody_chkMyShowAll")[0].disabled = false;
+    $("#ctl00_C5POBody_chkMyShowAll")[0].checked ? Showall = "Checked" : Showall = "Unchecked";
     $.ajax({
         type: "POST",
         url: "frmMyQueueNew.aspx/LoadMyScan",
@@ -2099,8 +2075,8 @@ function loadMyscan() {
 
 }
 function loadMyprescription() {
-    $("#chkMyShowAll")[0].disabled = false;
-    $("#chkMyShowAll")[0].checked ? Showall = "Checked" : Showall = "Unchecked";
+    $("#ctl00_C5POBody_chkMyShowAll")[0].disabled = false;
+    $("#ctl00_C5POBody_chkMyShowAll")[0].checked ? Showall = "Checked" : Showall = "Unchecked";
     $.ajax({
         type: "POST",
         url: "frmMyQueueNew.aspx/LoadMyPrescription",
@@ -2153,8 +2129,8 @@ function loadMyprescription() {
 
 }
 function loadMyAmendment() {
-    $("#chkMyShowAll")[0].disabled = false;
-    $("#chkMyShowAll")[0].checked ? Showall = "Checked" : Showall = "Unchecked";
+    $("#ctl00_C5POBody_chkMyShowAll")[0].disabled = false;
+    $("#ctl00_C5POBody_chkMyShowAll")[0].checked ? Showall = "Checked" : Showall = "Unchecked";
 
     $('#GeneralQTable').empty();
     $("#MyQTable").append(`
@@ -2188,7 +2164,7 @@ function loadMyAmendment() {
         pageLength: 25,
         language: {
             search: "Patient Name",
-            searchPlaceholder: "Type to search...",
+            searchPlaceholder: "Search by Name or Acct. #",
             infoFiltered: ""
         },
         dom: '<"top"ipf>rt<"bottom"l><"clear">', // Counter (i) and Pagination (p) at the top
@@ -2203,20 +2179,23 @@ function loadMyAmendment() {
                 return d;
             },
             dataSrc: function (json) {
+                //var objdata = json.d;
                 var objdata = json.d;
-                $("#btnMyAmendmnt")[0].innerText = "My Amendment " + "(" + objdata.length + ")";
+                objdata.data = Decompress(objdata.data);
+                tempObjectMyQTask = objdata.data;
+                $("#btnMyAmendmnt")[0].innerText = "My Amendment " + "(" + objdata.data.length + ")";
                 if (Showall != "Checked") {
-                    sessionStorage.setItem("My_Amendmnt_Count", objdata.length);
+                    sessionStorage.setItem("My_Amendmnt_Count", objdata.data.length);
                 }
-                localStorage.setItem("Myorderscount", objdata.length);
+                localStorage.setItem("Myorderscount", objdata.data.length);
                 $("#ctl00_C5POBody_lblcount")[0].innerHTML = "";
                 { sessionStorage.setItem('StartLoading', 'false'); StopLoadFromPatChart(); }
-                return objdata;
+                return objdata.data;
             },
             error: function (xhr, error, code) {
                 { sessionStorage.setItem('StartLoading', 'false'); StopLoadFromPatChart(); }
                 if (xhr.status == 999)
-                    window.location = xhr.statusText;
+                    window.location = "ErrorPage.aspx";
                 else {
                     var log = JSON.parse(xhr.responseText);
                     console.log(log);
@@ -2229,38 +2208,44 @@ function loadMyAmendment() {
         columns: [
             {
                 data: 'Appt_Date_Time', render: function (data, type, row) {
-                    var dt1 = data.replaceAll("/", "").replaceAll("Date(", "").replaceAll(")", "");
-                    return ConvertDate(new Date(parseInt(dt1)));
-                },
+                    if (row.Appt_Date_Time == "0001-01-01T00:00:00")
+                        return "";
+                    else
+                        return ConvertDate(row.Appt_Date_Time.replace("T", " ")).split(' ')[0];
+                }, searchable: false
             },
             {
                 data: 'Addendum_Created_Date_Time', render: function (data, type, row) {
-                    var dt1 = data.replaceAll("/", "").replaceAll("Date(", "").replaceAll(")", "");
-                    return ConvertDate(new Date(parseInt(dt1)));
-                },
+                    if (row.Addendum_Created_Date_Time == "0001-01-01T00:00:00")
+                        return "";
+                    else
+                        return ConvertDate(row.Addendum_Created_Date_Time.replace("T", " ")).split(' ')[0];
+                }, searchable: false
             },
             { data: 'Human_ID' },
-            { data: 'External_Account_Number' },
+            { data: 'External_Account_Number', searchable: false },
             {
                 data: 'Last_Name', render: function (data, type, row) {
                     return row.Last_Name + "," + row.First_Name + " " + row.MI;
-                },
+                }, 
                 sClass: 'word-break-all'
             },
-            { data: 'Current_Process' },
+            { data: 'Current_Process', searchable: false },
             {
                 data: 'Addendum_Created_Date_Time', render: function (data, type, row) {
-                    var dt1 = data.replaceAll("/", "").replaceAll("Date(", "").replaceAll(")", "");
-                    return ConvertDate(new Date(parseInt(dt1)));
-                },
+                    if (row.Addendum_Created_Date_Time == "0001-01-01T00:00:00")
+                        return "";
+                    else
+                        return ConvertDate(row.Addendum_Created_Date_Time.replace("T", " ")).split(' ')[0];
+                }, searchable: false
             },
-            { data: 'Addendum_Created_By' },
-            { data: 'Addendum_Signed_By' },
-            { data: 'Encounter_ID', visible: 'false', sClass: "hide_column" },
-            { data: 'Physician_ID', visible: 'false', sClass: "hide_column" },
-            { data: 'EHR_Obj_Type', visible: 'false', sClass: "hide_column" },
-            { data: 'Addendum_ID', visible: 'false', sClass: "hide_column" },
-            { data: 'Current_Owner', visible: 'false', sClass: "hide_column" },
+            { data: 'Addendum_Created_By', searchable: false },
+            { data: 'Addendum_Signed_By', searchable: false },
+            { data: 'Encounter_ID', sClass: "hide_column", searchable: false },
+            { data: 'Physician_ID', sClass: "hide_column", searchable: false },
+            { data: 'EHR_Obj_Type', sClass: "hide_column", searchable: false },
+            { data: 'Addendum_ID', sClass: "hide_column", searchable: false },
+            { data: 'Current_Owner', sClass: "hide_column", searchable: false },
         ],
 
     });
@@ -2269,28 +2254,24 @@ function loadMyAmendment() {
         'float': 'left',
         'text-align': 'left',
         'margin-left': '30px',
+        'width': '500px',
     });
 
     $('#EncounterTable_info').css({
         'min-width': '180px'
     });
 
-    $('#EncounterTable_filter input').unbind();
-
-    $('#EncounterTable_filter input').on('keyup', function () {
-        dataTable.column(4).search(this.value).draw();
-    });
-
     $('#EncounterTable tbody').on('dblclick', 'tr', function () {
-        $('#EncounterTable tr').removeClass("highlight");
+        dataTable.$('tr.highlight').removeClass('highlight');
         $(this).addClass("highlight");
-        RowClick();
+        MyQclick();
     });
 
     $('#EncounterTable tbody').on('click', 'tr', function () {
-        $('#EncounterTable tr').removeClass("highlight");
+        dataTable.$('tr.highlight').removeClass('highlight');
         $(this).addClass("highlight");
     });
+    $("#EncounterTable_filter").children("label").children("input").css("width", "300px")
 
     //$.ajax({
     //    type: "POST",
@@ -2372,7 +2353,7 @@ function LoadGeneralEncounter() {
     </thead>
     </table>`);
 
-    $("#chkMyShowAll")[0].disabled = false;
+    $("#ctl00_C5POBody_chkMyShowAll")[0].disabled = false;
     var sShowall = '';
     var MyShowAll = localStorage.getItem('ShowallGeneralqueue');
     if (MyShowAll == "Checked") {
@@ -2865,8 +2846,8 @@ function loadGeneralTaskTemp() {
 
 
 function LoadGeneralQOrder() {
-    $("#chkMyShowAll")[0].disabled = false;
-    $("#chkMyShowAll")[0].checked ? Showall = "Checked" : Showall = "Unchecked";
+    $("#ctl00_C5POBody_chkMyShowAll")[0].disabled = false;
+    $("#ctl00_C5POBody_chkMyShowAll")[0].checked ? Showall = "Checked" : Showall = "Unchecked";
     $('#GeneralQTable').empty();
     $("#GeneralQTable").append(`
     <table id="EncounterTable" class="table table-bordered Gridbodystyle" style="table-layout: fixed;">
@@ -3098,17 +3079,17 @@ function LoadGeneralQOrder() {
 }
 function chkMyTask14Click(sender) {
     $("#chkOpenTask")[0].checked = false;
-    $("#chkMyShowAll")[0].checked = false;
+    $("#ctl00_C5POBody_chkMyShowAll")[0].checked = false;
     localStorage.setItem('MyOpenTask', "");
     localStorage.setItem('MyShowAllMyTask', "");
     localStorage.setItem('MyTask14', $("#chkMyTask14")[0].checked ? "Checked" : "Unchecked");
 
     LoadMyTask();
 
-    //if ($("#chkMyShowAll") != null) {
+    //if ($("#ctl00_C5POBody_chkMyShowAll") != null) {
     //    if ($("#chkMyTask14")[0].checked) {
     //        $("#chkOpenTask")[0].disabled = true;
-    //        $("#chkMyShowAll")[0].disabled = true;
+    //        $("#ctl00_C5POBody_chkMyShowAll")[0].disabled = true;
     //        $.ajax({
     //            type: "POST",
     //            url: "frmMyQueueNew.aspx/LoadMyTaskCompleted",
@@ -3173,7 +3154,7 @@ function chkMyTask14Click(sender) {
     //    }
     //    else {
     //        $("#chkOpenTask")[0].disabled = false;
-    //        $("#chkMyShowAll")[0].disabled = false;
+    //        $("#ctl00_C5POBody_chkMyShowAll")[0].disabled = false;
     //        $.ajax({
     //            type: "POST",
     //            url: "frmMyQueueNew.aspx/LoadMyTask",
@@ -3374,7 +3355,7 @@ function chkMyTask14Click(sender) {
     });
 }
 function loadamend() {
-    $("#chkMyShowAll")[0].disabled = false;
+    $("#ctl00_C5POBody_chkMyShowAll")[0].disabled = false;
     //$.ajax({
     //    type: "POST",
     //    url: "frmMyQueueNew.aspx/LoadAmend",
@@ -3578,17 +3559,17 @@ function loadamend() {
 }
 function chkMyTask14Click(sender) {
     $("#chkOpenTask")[0].checked = false;
-    $("#chkMyShowAll")[0].checked = false;
+    $("#ctl00_C5POBody_chkMyShowAll")[0].checked = false;
     localStorage.setItem('MyOpenTask', "");
     localStorage.setItem('MyShowAllMyTask', "");
     localStorage.setItem('MyTask14', $("#chkMyTask14")[0].checked ? "Checked" : "Unchecked");
 
     LoadMyTask();
 
-    //if ($("#chkMyShowAll") != null) {
+    //if ($("#ctl00_C5POBody_chkMyShowAll") != null) {
     //    if ($("#chkMyTask14")[0].checked) {
     //        $("#chkOpenTask")[0].disabled = true;
-    //        $("#chkMyShowAll")[0].disabled = true;
+    //        $("#ctl00_C5POBody_chkMyShowAll")[0].disabled = true;
     //        $.ajax({
     //            type: "POST",
     //            url: "frmMyQueueNew.aspx/LoadMyTaskCompleted",
@@ -3653,7 +3634,7 @@ function chkMyTask14Click(sender) {
     //    }
     //    else {
     //        $("#chkOpenTask")[0].disabled = false;
-    //        $("#chkMyShowAll")[0].disabled = false;
+    //        $("#ctl00_C5POBody_chkMyShowAll")[0].disabled = false;
     //        $.ajax({
     //            type: "POST",
     //            url: "frmMyQueueNew.aspx/LoadMyTask",
@@ -3731,7 +3712,7 @@ function chkOpenTaskClick() {
         $("#chkMyTask14")[0].disabled = true;
     }
 
-    var Showall = $("#chkMyShowAll")[0].checked ? "Checked" : "Unchecked";
+    var Showall = $("#ctl00_C5POBody_chkMyShowAll")[0].checked ? "Checked" : "Unchecked";
     var OpenTask = $("#chkOpenTask")[0].checked ? "Checked" : "Unchecked";
     LoadMyTask();
 
@@ -3810,9 +3791,9 @@ function ChangeTableForTabs(sender) {
     //$("#btnAmendmnt")[0].innerText = "Amendment Q" + "(*)";
     $(":button:not(#btnGeneralQcount):not(#btnMyQcount)").css("background-color", "transparent");
     var Showall = "";
-    $("#chkMyShowAll")[0].checked = false;
+    $("#ctl00_C5POBody_chkMyShowAll")[0].checked = false;
     $("#chkShowAll")[0].checked = false;
-    $("#chkMyShowAll")[0].checked ? Showall = "Checked" : Showall = "Unchecked";
+    $("#ctl00_C5POBody_chkMyShowAll")[0].checked ? Showall = "Checked" : Showall = "Unchecked";
     $('#RefreshMyQ').css("background-color", "");
     $('#Processenctr').css("background-color", "");
     $('#btnChangeExamRoom').css("display", "none");
@@ -4095,7 +4076,7 @@ function shwllclck() {
     $(":button:not(#btnGeneralQcount):not(#btnMyQcount)").css("background-color", "transparent");
     $('#btnChangeExamRoom').css("display", "none");
     $("#chkMyTask14")[0].checked = false;
-    $("#chkMyShowAll")[0].disabled = false;
+    $("#ctl00_C5POBody_chkMyShowAll")[0].disabled = false;
     if (document.getElementById("RefreshMyQ").innerText.indexOf("Refresh My Encounters") > -1 && $('#RefreshMyQ').is(":visible")) {
 
         document.getElementById("divMyQ").style.display = "";
@@ -4117,7 +4098,7 @@ function shwllclck() {
         if ($("#MovetoNxtProcess") != null)
             $("#MovetoNxtProcess")[0].disabled = true;
         var Showall = "";
-        $("#chkMyShowAll")[0].checked ? Showall = "Checked" : Showall = "Unchecked";
+        $("#ctl00_C5POBody_chkMyShowAll")[0].checked ? Showall = "Checked" : Showall = "Unchecked";
         localStorage.setItem("MyShowAll", Showall);
         LoadMyEncounter();
 
@@ -4138,7 +4119,7 @@ function shwllclck() {
         $('#Processenctr')[0].innerText = "Process Task";
         $('#RefreshMyQ').css("background-color", "");
         var Showall = "";
-        $("#chkMyShowAll")[0].checked ? Showall = "Checked" : Showall = "Unchecked";
+        $("#ctl00_C5POBody_chkMyShowAll")[0].checked ? Showall = "Checked" : Showall = "Unchecked";
         localStorage.setItem('MyShowAllMyTask', Showall);
 
         var myOpenTask = localStorage.getItem('MyOpenTask');
@@ -4148,7 +4129,7 @@ function shwllclck() {
 
         var OpenTask = $("#chkOpenTask")[0].checked ? "Checked" : "Unchecked";
 
-        if ($("#chkMyShowAll")[0].checked) {
+        if ($("#ctl00_C5POBody_chkMyShowAll")[0].checked) {
             $("#chkMyTask14")[0].checked = false;
             $("#chkMyTask14")[0].disabled = true;
         } else {
@@ -4239,7 +4220,7 @@ function shwllclck() {
         $('#Processenctr').css("background-color", "");
         $('#Processenctr')[0].innerText = "Process Scan";
         var Showall = "";
-        $("#chkMyShowAll")[0].checked ? Showall = "Checked" : Showall = "Unchecked";
+        $("#ctl00_C5POBody_chkMyShowAll")[0].checked ? Showall = "Checked" : Showall = "Unchecked";
         $('#RefreshMyQ').css("background-color", "");
         $.ajax({
             type: "POST",
@@ -4309,7 +4290,7 @@ function shwllclck() {
         $('#Processenctr')[0].innerText = "Process Order";
         $('#RefreshMyQ').css("background-color", "");
         var Showall = "";
-        $("#chkMyShowAll")[0].checked ? Showall = "Checked" : Showall = "Unchecked";
+        $("#ctl00_C5POBody_chkMyShowAll")[0].checked ? Showall = "Checked" : Showall = "Unchecked";
         loadMyorder();
 
     }
@@ -4327,7 +4308,7 @@ function shwllclck() {
         $('#Processenctr')[0].innerText = "Process Amendment";
         $('#RefreshMyQ').css("background-color", "");
         var Showall = "";
-        $("#chkMyShowAll")[0].checked ? Showall = "Checked" : Showall = "Unchecked";
+        $("#ctl00_C5POBody_chkMyShowAll")[0].checked ? Showall = "Checked" : Showall = "Unchecked";
         loadMyAmendment();
         //$.ajax({
         //    type: "POST",
@@ -4398,7 +4379,7 @@ function shwllclck() {
         $('#Processenctr')[0].innerText = "Process Prescription";
         $('#RefreshMyQ').css("background-color", "");
         var Showall = "";
-        $("#chkMyShowAll")[0].checked ? Showall = "Checked" : Showall = "Unchecked";
+        $("#ctl00_C5POBody_chkMyShowAll")[0].checked ? Showall = "Checked" : Showall = "Unchecked";
         $.ajax({
             type: "POST",
             url: "frmMyQueueNew.aspx/LoadMyPrescription",
@@ -5342,7 +5323,7 @@ function SortTableHeader(s) {
     for (var i = 0; i < Header.length; i++)
         Header[i].title = "Click here to sort";
 
-    scrolify($('#EncounterTable'), 600);
+    scrolify($('#EncounterTable'), 100);
     $("#MyQTable th").click(function () {
         var table = document.createElement("table");
         switch (s) {
