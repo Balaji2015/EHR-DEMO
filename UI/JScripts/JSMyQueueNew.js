@@ -122,7 +122,12 @@ $(document).ready(function () {
         loadGeneralQueue();
     }
     else {
-        LoadMyEncounter();
+        var role = $('#ctl00_hdnuserrole').val();
+        if (role != "Medical Assistant" && role != "Front Office" && role != "Surgery Coordinator" && role != "Scribe") {
+            LoadMyEncounter('MyEncounterLoad');
+        } else {
+            loadGeneralQueue();
+        }
     }
 
     $('#btnChkOut').click(function () {
@@ -957,7 +962,7 @@ function MyQLoad() {
     }
     else {
         Showall = "Unchecked";
-        $("#ctl00_C5POBody_chkMyShowAll")[0].checked = false;
+        $("#chkMyShowAll")[0].checked = false;
         LoadMyEncounter();
     }
 
@@ -1050,7 +1055,7 @@ function ShowMyQTabs(sender) {
     }
 }
 
-function LoadMyEncounter() {
+function LoadMyEncounter(ajaxUrl) {
     $('#MyQTable').empty();
     $('#GeneralQTable').empty();
     $("#MyQTable").append(`
@@ -1089,6 +1094,10 @@ function LoadMyEncounter() {
     $("#ctl00_C5POBody_chkMyShowAll")[0].disabled = false;
     $("#ctl00_C5POBody_chkMyShowAll")[0].checked ? Showall = "Checked" : Showall = "Unchecked";
     var Ancillary = $('#ctl00_C5POBody_hdnAncillary').val();
+    ajaxUrl = ajaxUrl == '' || ajaxUrl == undefined ? 'chkShowAllMyEncounter' : ajaxUrl;
+    var extra_search = ajaxUrl == 'MyEncounterLoad' ? ViewAllFacilities : '';
+    extra_search = ajaxUrl == 'chkShowAllMyEncounter' ? Showall : '';
+    
     var dataTable = new DataTable('#EncounterTable', {
         serverSide: false,
         lengthChange: false,
@@ -1104,16 +1113,13 @@ function LoadMyEncounter() {
         },
         dom: '<"top"ipf>rt<"bottom"l><"clear">',
         ajax: {
-            url: '/frmMyQueueNew.aspx/MyEncounterLoad',
+            url: '/frmMyQueueNew.aspx/' + ajaxUrl,
             contentType: "application/json",
             type: "GET",
             dataType: "JSON",
             deferRender: true,
             data: function (d) {
-                d.extra_search = JSON.stringify({
-                    "sShowall": Showall,
-                    "sViewAllFacilities": ViewAllFacilities
-                });
+                d.extra_search = extra_search;
                 return d;
             },
             dataSrc: function (json) {
@@ -1148,7 +1154,7 @@ function LoadMyEncounter() {
                     }
                 }
                 else {
-                    $("#ctl00_C5POBody_chkMyShowAll")[0].checked = false;
+                    $("#chkMyShowAll")[0].checked = false;
                     $("#chkShowAll")[0].checked = false;
                     var ShowAll = localStorage.getItem('ShowallGeneralqueue');
                     if (ShowAll == "Checked") {
@@ -1156,12 +1162,12 @@ function LoadMyEncounter() {
                     }
                     var MyShowAll = localStorage.getItem('MyShowAll');
                     if (MyShowAll == "Checked") {
-                        $("#ctl00_C5POBody_chkMyShowAll")[0].checked = true;
+                        $("#chkMyShowAll")[0].checked = true;
                     }
-                    //document.getElementById("divGeneralQ").style.display = "";
-                    //document.getElementById("divMyQ").style.display = "none";
-                    //$('#MyQTable').empty();
-                    //$('#GeneralQTable').empty();
+                    document.getElementById("divGeneralQ").style.display = "";
+                    document.getElementById("divMyQ").style.display = "none";
+                    $('#MyQTable').empty();
+                    $('#GeneralQTable').empty();
                     $('#RefreshQ').css("background-color", "");
                     $('#btnChkOut').css("background-color", "");
                     $('#MoveTo').css("background-color", "");
@@ -1198,7 +1204,6 @@ function LoadMyEncounter() {
                 sessionStorage.setItem("Amendmnt_Count", objdata.count[0].Amendmnt_Count);
                 sessionStorage.setItem("Task_Count", objdata.count[0].Task_Count);
                 { sessionStorage.setItem('StartLoading', 'false'); StopLoadFromPatChart(); }
-
                 json.data = objdata.data;
                 return json.data;
             },
@@ -1328,7 +1333,6 @@ function LoadMyEncounter() {
     });
 
     $('#EncounterTable tbody').on('dblclick', 'tr', function () {
-        debugger
         if ($('#MyQTable').children().find('.highlight').length > 1) {
             alert("Please select one encounter to process");
             { sessionStorage.setItem('StartLoading', 'false'); StopLoadFromPatChart(); }
@@ -1359,6 +1363,122 @@ function LoadMyEncounter() {
     });
 }
 
+function MyQBind1(objdata) {
+    //MyEncounterLoad
+    let disableOverallSelect = true;
+    if (objdata.role != "Medical Assistant" && objdata.role != "Front Office" && objdata.role != "Surgery Coordinator" && objdata.role != "Scribe") {
+        for (var i = 0; i < objdata.data.length; i++) {
+            if (objdata.data[i].Current_Process.toUpperCase() == "PROVIDER_REVIEW" || objdata.data[i].Current_Process.toUpperCase() == "PROVIDER_REVIEW_2") {
+                disableOverallSelect = false;
+            }
+        }
+
+        $("#btnMyEnc")[0].innerText = "My Encounters " + "(" + objdata.data.length + ")";
+        $("#btnMyTask")[0].innerText = "My Tasks " + "(" + objdata.count[0].My_Task_Count + ")";
+        $("#btnMyOrder")[0].innerText = "My Orders " + "(" + objdata.count[0].My_Order_Count + ")";
+        $("#btnMyScan")[0].innerText = "My Scan " + "(" + objdata.count[0].My_Scan_Count + ")";
+        $("#btnMyPres")[0].innerText = "My Prescription " + "(" + objdata.count[0].My_Presc_Count + ")";
+        $("#btnMyAmendmnt")[0].innerText = "My Amendment " + "(" + objdata.count[0].My_Amendmnt_Count + ")";
+
+        localStorage.setItem("Myorderscount", objdata.count[0].My_Order_Count);
+        if (objdata.EncounterCount != null && objdata.EncounterCount != undefined) {
+            $("#ctl00_C5POBody_lblcount").css('font-size', '11px');
+            $("#ctl00_C5POBody_lblcount")[0].innerHTML = 'Total encounters to be signed are<span style="color:red;"> ' + objdata.EncounterCount + '</span>. To view current as well as more than 21 days old encounters, click on "ShowAll".'
+        }
+        else
+            $("#ctl00_C5POBody_lblcount")[0].innerHTML = "";
+
+        $("#btnMyEnc").removeClass("default");
+        $("#btnMyEnc").addClass("btncolorMyQ");
+        $("#btnMyQ").removeClass("default");
+        $("#btnMyQ").addClass("btncolorMyQ");
+        $("#MovetoNxtProcess").css("display", "inline-block");
+        if (disableOverallSelect) {
+            disableSelectAllMove();
+        }
+    }
+    sessionStorage.setItem("My_Task_Count", objdata.count[0].My_Task_Count);
+    sessionStorage.setItem("My_Order_Count", objdata.count[0].My_Order_Count);
+    sessionStorage.setItem("My_Scan_Count", objdata.count[0].My_Scan_Count);
+    sessionStorage.setItem("My_Presc_Count", objdata.count[0].My_Presc_Count);
+    sessionStorage.setItem("My_Amendmnt_Count", objdata.count[0].My_Amendmnt_Count);
+    sessionStorage.setItem("Order_Count", objdata.count[0].Order_Count);
+    sessionStorage.setItem("Amendmnt_Count", objdata.count[0].Amendmnt_Count);
+    sessionStorage.setItem("Task_Count", objdata.count[0].Task_Count);
+}
+
+function MyQBind2(objdata) {
+    //EncounterLoad
+    let disableOverallSelect = true;
+    for (var i = 0; i < objdata.data.length; i++) {
+        if (objdata.data[i].Current_Process.toUpperCase() == "PROVIDER_REVIEW" || objdata.data[i].Current_Process.toUpperCase() == "PROVIDER_REVIEW_2") {
+            disableOverallSelect = false;
+        }
+    }
+    $("#btnMyEnc")[0].innerText = "My Encounters " + "(" + objdata.data.length + ")";
+    $("#btnMyTask")[0].innerText = "My Tasks " + "(" + objdata.count[0].My_Task_Count + ")";
+    $("#btnMyOrder")[0].innerText = "My Orders " + "(" + objdata.count[0].My_Order_Count + ")";
+    $("#btnMyScan")[0].innerText = "My Scan " + "(" + objdata.count[0].My_Scan_Count + ")";
+    $("#btnMyPres")[0].innerText = "My Prescription " + "(" + objdata.count[0].My_Presc_Count + ")";
+    $("#btnMyAmendmnt")[0].innerText = "My Amendment " + "(" + objdata.count[0].My_Amendmnt_Count + ")";
+
+    sessionStorage.setItem("My_Task_Count", objdata.count[0].My_Task_Count);
+    sessionStorage.setItem("My_Order_Count", objdata.count[0].My_Order_Count);
+    sessionStorage.setItem("My_Scan_Count", objdata.count[0].My_Scan_Count);
+    sessionStorage.setItem("My_Presc_Count", objdata.count[0].My_Presc_Count);
+    sessionStorage.setItem("My_Amendmnt_Count", objdata.count[0].My_Amendmnt_Count);
+
+    localStorage.setItem("Myorderscount", objdata.count[0].My_Order_Count);
+    if (objdata.EncounterCount != null && objdata.EncounterCount != undefined) {
+        $("#ctl00_C5POBody_lblcount").css('font-size', '11px');
+        $("#ctl00_C5POBody_lblcount")[0].innerHTML = 'Total encounters to be signed are <span style="color:red;">' + objdata.EncounterCount + '</span>. To view current as well as more than 21 days old encounters, click on "ShowAll".'
+    }
+    else
+        $("#ctl00_C5POBody_lblcount")[0].innerHTML = "";
+    $("#btnMyEnc").removeClass("default");
+    $("#btnMyEnc").addClass("btncolorMyQ");
+    $("#btnMyQ").removeClass("default");
+    $("#btnMyQ").addClass("btncolorMyQ");
+    if (disableOverallSelect) {
+        disableSelectAllMove();
+    }
+}
+
+function MyQBind3(objdata) {
+    //chkShowAllMyEncounter
+    let disableOverallSelect = true;
+    for (var i = 0; i < objdata.data.length; i++) {
+        if (objdata.data[i].Current_Process.toUpperCase() == "PROVIDER_REVIEW" || objdata.data[i].Current_Process.toUpperCase() == "PROVIDER_REVIEW_2") {
+            disableOverallSelect = false;
+        }
+    }
+    $("#btnMyEnc")[0].innerText = "My Encounters " + "(" + objdata.data.length + ")";
+    if (sessionStorage.getItem("My_Task_Count") != null && sessionStorage.getItem("My_Task_Count") != undefined) {
+        $("#btnMyTask")[0].innerText = "My Tasks " + "(" + sessionStorage.getItem("My_Task_Count") + ")";
+    }
+    if (sessionStorage.getItem("My_Order_Count") != null && sessionStorage.getItem("My_Order_Count") != undefined) {
+        $("#btnMyOrder")[0].innerText = "My Orders " + "(" + sessionStorage.getItem("My_Order_Count") + ")";
+    }
+    if (sessionStorage.getItem("My_Scan_Count") != null && sessionStorage.getItem("My_Scan_Count") != undefined) {
+        $("#btnMyScan")[0].innerText = "My Scan " + "(" + sessionStorage.getItem("My_Scan_Count") + ")";
+    }
+    if (sessionStorage.getItem("My_Presc_Count") != null && sessionStorage.getItem("My_Presc_Count") != undefined) {
+        $("#btnMyPres")[0].innerText = "My Prescription " + "(" + sessionStorage.getItem("My_Presc_Count") + ")";
+    }
+    if (sessionStorage.getItem("My_Amendmnt_Count") != null && sessionStorage.getItem("My_Amendmnt_Count") != undefined) {
+        $("#btnMyAmendmnt")[0].innerText = "My Amendment " + "(" + sessionStorage.getItem("My_Amendmnt_Count") + ")";
+    }
+
+    if (objdata.EncounterCount != null && objdata.EncounterCount != undefined) {
+        $("#ctl00_C5POBody_lblcount").css('font-size', '11px');
+        $("#ctl00_C5POBody_lblcount")[0].innerHTML = 'Total encounters to be signed are <span style="color:red;">' + objdata.EncounterCount + '</span>. To view current as well as more than 21 days old encounters, click on "ShowAll".'
+    }
+    else
+        $("#ctl00_C5POBody_lblcount")[0].innerHTML = "";
+    if (disableOverallSelect) {
+        disableSelectAllMove();
+    }
+}
 function loadMytask() {
     var myOpenTask = localStorage.getItem('MyOpenTask');
     if (myOpenTask == "Checked") {
@@ -2128,6 +2248,178 @@ function loadMyprescription() {
     });
 
 }
+function loadMyprescriptionNew() {
+    $("#chkMyShowAll")[0].disabled = false;
+    $("#chkMyShowAll")[0].checked ? Showall = "Checked" : Showall = "Unchecked";
+    $('#MyQTable').empty();
+    $('#GeneralQTable').empty();
+    $("#MyQTable").append(`
+    <table id="EncounterTable" class="table table-bordered Gridbodystyle" style="table-layout: fixed;">
+    <thead class="header" style="border: 0px;width:96.7%;">
+        <tr class="header">
+            <th style="border: 1px solid #909090;text-align: center;width:20%">Prescription Date & Time</th>
+            <th style="border: 1px solid #909090;text-align: center;width:6%">Acct. #</th>
+            <th style="border: 1px solid #909090;text-align: center;width:7%">Ext. Acct. #</th>
+            <th style="border: 1px solid #909090;text-align: center;width:20%">Patient Name</th>
+            <th style="border: 1px solid #909090;text-align: center;width:20%">Patient DOB</th>
+            <th style="border: 1px solid #909090;text-align: center;width:20%">Current Process</th>
+            <th style="border: 1px solid #909090;display:none;">EncounterID</th>
+            <th style="border: 1px solid #909090;display:none;">PrescriptionID</th>
+            <th style="border: 1px solid #909090;display:none;">ObjType</th>
+        </tr>
+    </thead>
+</table>`);
+    var dataTable = new DataTable('#EncounterTable', {
+        serverSide: false,
+        lengthChange: false,
+        searching: true,
+        processing: false,
+        ordering: true,
+        order: [],
+        pageLength: 25,
+        language: {
+            search: "Patient Search",
+            searchPlaceholder: "Search by Name or Acct. #",
+            infoFiltered: ""
+        },
+        dom: '<"top"ipf>rt<"bottom"l><"clear">',
+        ajax: {
+            url: '/frmMyQueueNew.aspx/LoadMyPrescription',
+            contentType: "application/json",
+            type: "GET",
+            dataType: "JSON",
+            deferRender: true,
+            data: function (d) {
+                d.extra_search = Showall;
+                return d;
+            },
+            dataSrc: function (json) {
+                var objdata = json.d;
+                objdata.data = Decompress(objdata.data);
+
+                $("#ctl00_C5POBody_lblcount")[0].innerHTML = "";
+                $("#btnMyPres")[0].innerText = "My Prescription " + "(" + objdata.data.length + ")";
+                if (Showall != "Checked") {
+                    sessionStorage.setItem("My_Presc_Count", objdata.data.length);
+                }
+
+                { sessionStorage.setItem('StartLoading', 'false'); StopLoadFromPatChart(); }
+                json.data = objdata.data;
+                return json.data;
+            },
+            error: function (xhr, error, code) {
+                { sessionStorage.setItem('StartLoading', 'false'); StopLoadFromPatChart(); }
+                if (xhr.status == 999)
+                    window.location = xhr.statusText;
+                else {
+                    var log = JSON.parse(xhr.responseText);
+                    console.log(log);
+                    alert("USER MESSAGE:\n" +
+                        ". Cannot process request. Please Login again and retry. \nEXCEPTION DETAILS: \n" +
+                        "Message: " + log.Message);
+                }
+            }
+        },
+        columns: [
+            {
+                data: 'Prescription_Date', render: function (data, type, row) {
+                    return ConvertDate(data.replace("T", " "));
+                },
+                searchable: false
+            },
+            { data: 'Human_ID' },
+            { data: 'External_Account_Number', searchable: false },
+            {
+                data: 'Last_Name', render: function (data, type, row) {
+                    return row.Last_Name + "," + row.First_Name + " " + row.MI;
+                },
+                sClass: 'word-break-all'
+            },
+            {
+                data: 'DOB', render: function (data, type, row) {
+                    return ConvertDate(data.replace("T", " "));
+                },
+                searchable: false
+            },
+            { data: 'Current_Process', searchable: false },
+            { data: 'Encounter_ID', sClass: 'hide_column', searchable: false },
+            { data: 'Physician_ID', sClass: 'hide_column', searchable: false },
+            { data: 'EHR_Obj_Type', sClass: 'hide_column', searchable: false },
+        ]
+    });
+
+    $('#EncounterTable_filter').css({
+        'float': 'left',
+        'text-align': 'left',
+        'margin-left': '30px',
+    });
+
+    $('#EncounterTable_info').css({
+        'min-width': '180px'
+    });
+
+    $('#EncounterTable tbody').on('click', 'tr', function () {
+        dataTable.$('tr.highlight').removeClass('highlight');
+        var existingSelectedItem = $("#MyQTable tr.highlight");
+        for (var i = 0; i < existingSelectedItem.length; i++) {
+            var processes = "NoCurrentProcess";
+            if (existingSelectedItem[i]?.children[8]?.childNodes[0]?.data != undefined && existingSelectedItem[i]?.children[8]?.childNodes[0]?.data != null) {
+                processes = existingSelectedItem[i].children[8].childNodes[0].data;
+            }
+            var isproviderReviewMyQ = processes;
+            if (isproviderReviewMyQ != "PROVIDER_REVIEW" && isproviderReviewMyQ != "PROVIDER_REVIEW_2") {
+                existingSelectedItem[i].classList.remove("highlight");
+            }
+        }
+
+        $(this)[0].classList.add('highlight');
+        var NewRowprocesses = "NoCurrentProcess";
+        if ($(this)[0]?.children[8]?.childNodes[0]?.data != undefined && $(this)[0]?.children[8]?.childNodes[0]?.data != null) {
+            NewRowprocesses = $(this)[0].children[8].childNodes[0].data;
+        }
+        var isproviderReviewMyQNewRow = NewRowprocesses;
+        if (isproviderReviewMyQNewRow == "PROVIDER_REVIEW" || isproviderReviewMyQNewRow == "PROVIDER_REVIEW_2") {
+            if ($(this)[0].children[0].children[0].checked == false) {
+                $(this)[0].children[0].children[0].checked = true;
+            }
+            else {
+                $(this)[0].children[0].children[0].checked = false;
+                $(this).removeClass("highlight");
+            }
+            MyQcheckboxclickAction($(this)[0].children[0].children[0]);
+        }
+    });
+
+    $('#EncounterTable tbody').on('dblclick', 'tr', function () {
+        if ($('#MyQTable').children().find('.highlight').length > 1) {
+            alert("Please select one encounter to process");
+            { sessionStorage.setItem('StartLoading', 'false'); StopLoadFromPatChart(); }
+            $('#MyQTable td').find('input[type=checkbox]:checked').each(function () {
+                $(this).prop('checked', false);
+            });
+            $('#MyQTable th').find('input[type=checkbox]:checked').each(function () {
+                $(this).prop('checked', false);
+            });
+            $('#MyQTable tr').removeClass("highlight");
+
+            if ($('#MovetoNxtProcess') != undefined && $('#MovetoNxtProcess')[0]?.disabled != undefined) {
+                $('#MovetoNxtProcess')[0].disabled = true;
+            }
+            return false;
+        }
+
+        if (event.target.tagName != 'TH' && event.target.type != 'checkbox') {
+            { sessionStorage.setItem('StartLoading', 'true'); StartLoadFromPatChart(); }
+
+            if ($(this)[0]?.children[0]?.children[0]?.checked != undefined) {
+                $(this)[0].children[0].children[0].checked = true;
+                $(this)[0].classList.add('highlight');
+            }
+            MyQclick();
+        }
+        sessionStorage.setItem('MyQRemoveIdList', '');
+    });
+}
 function loadMyAmendment() {
     $("#ctl00_C5POBody_chkMyShowAll")[0].disabled = false;
     $("#ctl00_C5POBody_chkMyShowAll")[0].checked ? Showall = "Checked" : Showall = "Unchecked";
@@ -2876,179 +3168,152 @@ function LoadGeneralQOrder() {
         </tr>
     </thead>
     </table>`);
-    //$.ajax({
-    //    type: "POST",
-    //    url: "frmMyQueueNew.aspx/LoadAmend",
-    //    data: JSON.stringify({
-    //        "sShowall": "Unchecked",
-    //    }),
-    //    contentType: "application/json; charset=utf-8",
-    //    dataType: "json",
-    //    async: true,
-    //    success: function (data) {
-    //        $('#GeneralQTable').empty();
-    //        var tabContents;
-    //        var objdata = $.parseJSON(data.d);
-    //        if (data.d != "[]") {
-    //            for (var i = 0; i < objdata.length; i++) {
-    //                if (i == 0) {
-    //                    //GitLab#2246
-    //                    //tabContents = "<tr><td style='width:9%'>" + ConvertDate(objdata[i].Appt_Date_Time.replace("T", " ")) + "</td><td style='width:9%'>" + ConvertDate(objdata[i].Addendum_Created_Date_Time.replace("T", " ")) + "</td><td style='width:6%'>" + objdata[i].Human_ID + "</td><td style='width:7%'>" + objdata[i].External_Account_Number + "</td><td style='width:9%'>" + objdata[i].Last_Name + "," + objdata[i].First_Name + " " + objdata[i].MI + "</td><td style='width:9%'>" + objdata[i].Current_Process + "</td><td style='width:9%'>" + ConvertDate(objdata[i].Addendum_Created_Date_Time.replace("T", " ")) + "</td><td style='width:9%'>" + objdata[i].Addendum_Created_By + "</td><td style='width:9%'>" + objdata[i].Addendum_Signed_By + "</td><td style='display:none;' >" + objdata[i].Encounter_ID + "</td><td style='display:none;'>" + objdata[i].Physician_ID + "</td><td style='display:none;'>" + objdata[i].EHR_Obj_Type + "</td><td style='display:none;'>" + objdata[i].Addendum_ID + "</td><td style='display:none;'>" + objdata[i].Current_Owner + "</td></tr>";
-    //                    tabContents = "<tr><td style='width:56px'><input type='checkbox' onclick='checkboxclick(this)'/></td><td style='width:9%'>" + ConvertDate(objdata[i].Appt_Date_Time.replace("T", " ")) + "</td><td style='width:9%'>" + ConvertDate(objdata[i].Addendum_Created_Date_Time.replace("T", " ")) + "</td><td style='width:6%'>" + objdata[i].Human_ID + "</td><td style='width:7%'>" + objdata[i].External_Account_Number + "</td><td style='width:9%'>" + objdata[i].Last_Name + "," + objdata[i].First_Name + " " + objdata[i].MI + "</td><td style='width:9%'>" + objdata[i].Current_Process + "</td><td style='width:9%'>" + ConvertDate(objdata[i].Addendum_Created_Date_Time.replace("T", " ")) + "</td><td style='width:9%'>" + objdata[i].Addendum_Created_By + "</td><td style='width:9%'>" + objdata[i].Addendum_Signed_By + "</td><td style='display:none;' >" + objdata[i].Encounter_ID + "</td><td style='display:none;'>" + objdata[i].Physician_ID + "</td><td style='display:none;'>" + objdata[i].EHR_Obj_Type + "</td><td style='display:none;'>" + objdata[i].Addendum_ID + "</td><td style='display:none;'>" + objdata[i].Current_Owner + "</td></tr>";
-    //                } else {
-    //                    //GitLab#2246
-    //                    //tabContents = tabContents + "<tr><td style='width:9%'>" + ConvertDate(objdata[i].Appt_Date_Time.replace("T", " ")) + "</td><td style='width:9%'>" + ConvertDate(objdata[i].Addendum_Created_Date_Time.replace("T", " ")) + "</td><td style='width:6%'>" + objdata[i].Human_ID + "</td><td style='width:7%'>" + objdata[i].External_Account_Number + "</td><td style='width:9%'>" + objdata[i].Last_Name + "," + objdata[i].First_Name + " " + objdata[i].MI + "</td><td style='width:9%'>" + objdata[i].Current_Process + "</td><td style='width:9%'>" + ConvertDate(objdata[i].Addendum_Created_Date_Time.replace("T", " ")) + "</td><td style='width:9%'>" + objdata[i].Addendum_Created_By + "</td><td style='width:9%'>" + objdata[i].Addendum_Signed_By + "</td><td  style='display:none;'>" + objdata[i].Encounter_ID + "</td><td style='display:none;'>" + objdata[i].Physician_ID + "</td><td style='display:none;'>" + objdata[i].EHR_Obj_Type + "</td><td style='display:none;'>" + objdata[i].Addendum_ID + "</td><td style='display:none;'>" + objdata[i].Current_Owner + "</td></tr>";
-    //                    tabContents = tabContents + "<tr><td style='width:56px'><input type='checkbox' onclick='checkboxclick(this)'/></td><td style='width:9%'>" + ConvertDate(objdata[i].Appt_Date_Time.replace("T", " ")) + "</td><td style='width:9%'>" + ConvertDate(objdata[i].Addendum_Created_Date_Time.replace("T", " ")) + "</td><td style='width:6%'>" + objdata[i].Human_ID + "</td><td style='width:7%'>" + objdata[i].External_Account_Number + "</td><td style='width:9%'>" + objdata[i].Last_Name + "," + objdata[i].First_Name + " " + objdata[i].MI + "</td><td style='width:9%'>" + objdata[i].Current_Process + "</td><td style='width:9%'>" + ConvertDate(objdata[i].Addendum_Created_Date_Time.replace("T", " ")) + "</td><td style='width:9%'>" + objdata[i].Addendum_Created_By + "</td><td style='width:9%'>" + objdata[i].Addendum_Signed_By + "</td><td  style='display:none;'>" + objdata[i].Encounter_ID + "</td><td style='display:none;'>" + objdata[i].Physician_ID + "</td><td style='display:none;'>" + objdata[i].EHR_Obj_Type + "</td><td style='display:none;'>" + objdata[i].Addendum_ID + "</td><td style='display:none;'>" + objdata[i].Current_Owner + "</td></tr>";
-    //                }
-    //            }
-    //            //GitLab#2246
-    //            /// $("#GeneralQTable").append("<table id=EncounterTable class='table table-bordered Gridbodystyle' ' style='table-layout: fixed;'><thead class='header' style='border: 0px;width:96.7%;'><tr class='header' ><th style='border: 1px solid #909090;text-align: center;width:9%'>Appt. Date</th><th style='border: 1px solid #909090;text-align: center;width:9%'>Addendum Date</th><th style='border: 1px solid #909090;text-align: center;width:6%;'>Acct. #</th><th style='border: 1px solid #909090;text-align: center;width:7%;'>Ext. Acct. #</th><th style='border: 1px solid #909090;text-align: center;width:9%'>Patient Name</th><th style='border: 1px solid #909090;text-align: center;width:9%'>Current Process</th><th style='border: 1px solid #909090;text-align: center;width:9%'>Created Date</th><th style='border: 1px solid #909090;text-align: center;width:9%'>Created By</th><th style='border: 1px solid #909090;text-align: center;width:9%'>Signed By</th><th style='border: 1px solid #909090;display:none;'>EncounterID</th><th style='border: 1px solid #909090;display:none;'>PhysicianID</th><th style='border: 1px solid #909090;display:none;'>ObjType</th><th style='border: 1px solid #909090;display:none;'>AddendumID</th><th style='border: 1px solid #909090;display:none;'>Current Owner</th></tr></thead><tbody style='word-wrap: break-word;'>" + tabContents + "</tbody></table>");
-    //            $("#GeneralQTable").append("<table id=EncounterTable class='table table-bordered Gridbodystyle' ' style='table-layout: fixed;'><thead class='header' style='border: 0px;width:96.7%;'><tr class='header' ><th style='border: 1px solid #909090;text-align: center;width: 3%;'>Select<input type='checkbox'  onclick='selectAll(this)'/></th><th style='border: 1px solid #909090;text-align: center;width:9%'>Appt. Date</th><th style='border: 1px solid #909090;text-align: center;width:9%'>Addendum Date</th><th style='border: 1px solid #909090;text-align: center;width:6%;'>Acct. #</th><th style='border: 1px solid #909090;text-align: center;width:7%;'>Ext. Acct. #</th><th style='border: 1px solid #909090;text-align: center;width:9%'>Patient Name</th><th style='border: 1px solid #909090;text-align: center;width:9%'>Current Process</th><th style='border: 1px solid #909090;text-align: center;width:9%'>Created Date</th><th style='border: 1px solid #909090;text-align: center;width:9%'>Created By</th><th style='border: 1px solid #909090;text-align: center;width:9%'>Signed By</th><th style='border: 1px solid #909090;display:none;'>EncounterID</th><th style='border: 1px solid #909090;display:none;'>PhysicianID</th><th style='border: 1px solid #909090;display:none;'>ObjType</th><th style='border: 1px solid #909090;display:none;'>AddendumID</th><th style='border: 1px solid #909090;display:none;'>Current Owner</th></tr></thead><tbody style='word-wrap: break-word;'>" + tabContents + "</tbody></table>");
-    //        }
-    //        else
-    //            $("#GeneralQTable").append("<table id=EncounterTable class='table table-bordered Gridbodystyle' ' style='table-layout: fixed;'><thead class='header' style='border: 0px;width:96.7%;'><tr class='header' ><th style='border: 1px solid #909090;text-align: center;width: 3%;'>Select<input type='checkbox'  onclick='selectAll(this)'/></th><th style='border: 1px solid #909090;text-align: center;width:9%'>Appt. Date</th><th style='border: 1px solid #909090;text-align: center;width:9%'>Addendum Date</th><th style='border: 1px solid #909090;text-align: center;width:6%'>Acct. #</th><th style='border: 1px solid #909090;text-align: center;width:7%'>Ext. Acct. #</th><th style='border: 1px solid #909090;text-align: center;width:9%'>Patient Name</th><th style='border: 1px solid #909090;text-align: center;width:9%'>Current Process</th><th style='border: 1px solid #909090;text-align: center;width:9%'>Created Date</th><th style='border: 1px solid #909090;text-align: center;width:9%'>Created By</th><th style='border: 1px solid #909090;text-align: center;width:9%'>Signed By</th><th style='border: 1px solid #909090;display:none;'>EncounterID</th><th style='border: 1px solid #909090;display:none;'>PhysicianID</th><th style='border: 1px solid #909090;display:none;'>ObjType</th><th style='border: 1px solid #909090;display:none;'>AddendumID</th><th style='border: 1px solid #909090;display:none;'>Current Owner</th></tr></thead></table>");
-    //        //GitLab#2246
-    //        //$("#GeneralQTable").append("<table id=EncounterTable class='table table-bordered Gridbodystyle' ' style='table-layout: fixed;'><thead class='header' style='border: 0px;width:96.7%;'><tr class='header' ><th style='border: 1px solid #909090;text-align: center;width:9%'>Appt. Date</th><th style='border: 1px solid #909090;text-align: center;width:9%'>Addendum Date</th><th style='border: 1px solid #909090;text-align: center;width:6%'>Acct. #</th><th style='border: 1px solid #909090;text-align: center;width:7%'>Ext. Acct. #</th><th style='border: 1px solid #909090;text-align: center;width:9%'>Patient Name</th><th style='border: 1px solid #909090;text-align: center;width:9%'>Current Process</th><th style='border: 1px solid #909090;text-align: center;width:9%'>Created Date</th><th style='border: 1px solid #909090;text-align: center;width:9%'>Created By</th><th style='border: 1px solid #909090;text-align: center;width:9%'>Signed By</th><th style='border: 1px solid #909090;display:none;'>EncounterID</th><th style='border: 1px solid #909090;display:none;'>PhysicianID</th><th style='border: 1px solid #909090;display:none;'>ObjType</th><th style='border: 1px solid #909090;display:none;'>AddendumID</th><th style='border: 1px solid #909090;display:none;'>Current Owner</th></tr></thead></table>");
-    //        //$("#btnAmendmnt")[0].innerText = "Amendment Q " + "(*)";
-    //        $("#btnAmendmnt")[0].innerText = "Amendment Q " + "(" + objdata.length + ")";
 
-    //        sessionStorage.setItem("Amendmnt_Count", objdata.length);
-
-    //        SortTableHeader('GeneralQAmendment');
-    //        //$('#EncounterTable th').addClass('header');
-    //        RowClick();
-    //        { sessionStorage.setItem('StartLoading', 'false'); StopLoadFromPatChart(); }
-    //    },
-    //    error: function OnError(xhr) {
-    //        { sessionStorage.setItem('StartLoading', 'false'); StopLoadFromPatChart(); }
-    //        if (xhr.status == 999)
-    //            window.location = "/frmSessionExpired.aspx";
-    //        else {
-    //            var log = JSON.parse(xhr.responseText);
-    //            console.log(log);
-    //            alert("USER MESSAGE:\n" +
-    //                ". Cannot process request. Please Login again and retry. \nEXCEPTION DETAILS: \n" +
-    //                "Message: " + log.Message);
-    //        }
-    //    }
-    //});
-
-    $("#chkShowAll")[0].checked ? sShowall = "Checked" : sShowall = "Unchecked";
-
-    $("#GeneralQTable").append(`
-    <table id=EncounterTable class='table table-bordered Gridbodystyle' ' style='table-layout: fixed;'>
-    <thead class='header' style='border: 0px;width:96.7%;'>
-    <tr class='header' >
-    <th style='border: 1px solid #909090;text-align: center;width: 3%;'>Select<input type='checkbox'  onclick='selectAll(this)'/></th>
-    <th style='border: 1px solid #909090;text-align: center;width:9%'>Appt. Date</th>
-    <th style='border: 1px solid #909090;text-align: center;width:9%'>Addendum Date</th>
-    <th style='border: 1px solid #909090;text-align: center;width:6%;'>Acct. #</th>
-    <th style='border: 1px solid #909090;text-align: center;width:7%;'>Ext. Acct. #</th>
-    <th style='border: 1px solid #909090;text-align: center;width:9%'>Patient Name</th>
-    <th style='border: 1px solid #909090;text-align: center;width:9%'>Current Process</th>
-    <th style='border: 1px solid #909090;text-align: center;width:9%'>Created Date</th>
-    <th style='border: 1px solid #909090;text-align: center;width:9%'>Created By</th>
-    <th style='border: 1px solid #909090;text-align: center;width:9%'>Signed By</th>
-    <th style='border: 1px solid #909090;display:none;'>EncounterID</th>
-    <th style='border: 1px solid #909090;display:none;'>PhysicianID</th>
-    <th style='border: 1px solid #909090;display:none;'>ObjType</th>
-    <th style='border: 1px solid #909090;display:none;'>AddendumID</th>
-    <th style='border: 1px solid #909090;display:none;'>Current Owner</th>
-    </tr>
-    </thead>
-    </table>`);
-
-    data = JSON.stringify({ "sShowall": Showall });
-    var dataTable =
-        new DataTable('#EncounterTable', {
-            serverSide: false,
-            lengthChange: false,
-            searching: true,
-            processing: false,
-            ordering: true,
-            order: [],
-            pageLength: 25,
-            language: {
-                search: "Patient Name",
-                searchPlaceholder: "Type to search...",
-                infoFiltered: ""
+    var dataTable = new DataTable('#EncounterTable', {
+        serverSide: false,
+        lengthChange: false,
+        searching: true,
+        processing: false,
+        ordering: true,
+        order: [],
+        pageLength: 25,
+        language: {
+            search: "Patient Search",
+            searchPlaceholder: "Search by Name or Acct. #",
+            infoFiltered: ""
+        },
+        dom: '<"top"ipf>rt<"bottom"l><"clear">',
+        ajax: {
+            url: '/frmMyQueueNew.aspx/LoadOrder',
+            contentType: "application/json",
+            type: "GET",
+            dataType: "JSON",
+            deferRender: true,
+            data: function (d) {
+                d.extra_search = Showall;
+                return d;
             },
-            dom: '<"top"ipf>rt<"bottom"l><"clear">', // Counter (i) and Pagination (p) at the top
-            ajax: {
-                url: '/frmMyQueueNew.aspx/LoadAmend',
-                contentType: "application/json",
-                type: "GET",
-                dataType: "JSON",
-                deferRender: true,
-                data: function (d) {
-                    d.extra_search = data;
-                    return d;
-                },
-                dataSrc: function (json) {
-                    var objdata = json.d;
-                    $("#btnAmendmnt")[0].innerText = "Amendment Q " + "(" + objdata.length + ")";
-                    if (Showall != "Checked") {
-                        sessionStorage.setItem("Amendmnt_Count", objdata.length);
-                    }
-                    $("#ctl00_C5POBody_lblcount")[0].innerHTML = "";
-                    { sessionStorage.setItem('StartLoading', 'false'); StopLoadFromPatChart(); }
-                    return objdata;
-                },
-                error: function (xhr, error, code) {
-                    { sessionStorage.setItem('StartLoading', 'false'); StopLoadFromPatChart(); }
-                    if (xhr.status == 999)
-                        window.location = xhr.statusText;
-                    else {
-                        var log = JSON.parse(xhr.responseText);
-                        console.log(log);
-                        alert("USER MESSAGE:\n" +
-                            ". Cannot process request. Please Login again and retry. \nEXCEPTION DETAILS: \n" +
-                            "Message: " + log.Message);
-                    }
+            dataSrc: function (json) {
+                var objdata = json.d;
+                objdata.data = Decompress(objdata.data);
+                $("#btnOrder")[0].innerText = "Orders Q " + "(" + objdata.data.length + ")";
+                sessionStorage.setItem("Order_Count", objdata.data.length);
+                localStorage.setItem("GenralOrderCount", objdata.data.length);
+                { sessionStorage.setItem('StartLoading', 'false'); StopLoadFromPatChart(); }
+                return objdata.data;
+            },
+            error: function (xhr, error, code) {
+                { sessionStorage.setItem('StartLoading', 'false'); StopLoadFromPatChart(); }
+                if (xhr.status == 999)
+                    //window.location = xhr.statusText;
+                    window.location = "ErrorPage.aspx";
+                else {
+                    var log = JSON.parse(xhr.responseText);
+                    console.log(log);
+                    alert("USER MESSAGE:\n" +
+                        ". Cannot process request. Please Login again and retry. \nEXCEPTION DETAILS: \n" +
+                        "Message: " + log.Message);
                 }
+            }
+        },
+        columns: [
+            {
+                data: '', render: function (data, type, row) {
+                    return "<input type='checkbox' onclick='checkboxclick(this)'/>";
+                },
+                sWidth: '4%',
+                sClass: "text-align-center",
+                searchable: false
             },
-            columns: [
-                {
-                    data: '', render: function (data, type, row) {
-                        return "input type = 'checkbox' onclick = 'checkboxclick(this)' /></td > <td style='width:7%'";
-                    },
+            {
+                data: 'Created_Date_And_Time', render: function (data, type, row) {
+                    return ConvertDate(data.replace("T", " "));
                 },
-                {
-                    data: 'Appt_Date_Time', render: function (data, type, row) {
-                        var dt1 = data.replaceAll("/", "").replaceAll("Date(", "").replaceAll(")", "");
-                        return ConvertDate(new Date(parseInt(dt1)));
-                    },
+                searchable: false
+            },
+            { data: 'Test_Date', sClass: 'hide_column', searchable: false },
+            { data: 'Human_ID' },
+            { data: 'External_Account_Number', searchable: false },
+            {
+                data: 'Last_Name', render: function (data, type, row) {
+                    return row.Last_Name + "," + row.First_Name + " " + row.MI;
                 },
-                {
-                    data: 'Addendum_Created_Date_Time', render: function (data, type, row) {
-                        var dt1 = data.replaceAll("/", "").replaceAll("Date(", "").replaceAll(")", "");
-                        return ConvertDate(new Date(parseInt(dt1)));
-                    },
+                sClass: 'word-break-all'
+            },
+            {
+                data: 'DOB', render: function (data, type, row) {
+                    return DOBConvert(data.replace("T00:00:00", ""))
                 },
-                { data: 'Human_ID' },
-                { data: 'External_Account_Number' },
-                {
-                    data: 'Last_Name', render: function (data, type, row) {
-                        return row.Last_Name + "," + row.First_Name + " " + row.MI;
-                    },
-                    sClass: 'word-break-all'
+                searchable: false
+            },
+            {
+                data: 'Reason_For_Referral', render: function (data, type, row) {
+                    var description = "";
+                    if (row.Reason_For_Referral != "") {
+                        if (row.Referred_to != "") {
+                            if (row.Is_Abnormal == "Yes")
+                                description = row.Reason_For_Referral
+                            else
+                                description = row.Reason_For_Referral
+                        }
+                        else {
+                            if (row.Is_Abnormal == "Yes")
+                                description = row.Reason_For_Referral
+                            else
+                                description = row.Reason_For_Referral
+                        }
+                    }
+                    else {
+                        if (row.Referred_to != "") {
+                            if (row.Is_Abnormal == "Yes")
+                                description = row.Procedure_Ordered
+                            else
+                                description = row.Procedure_Ordered
+                        }
+                        else {
+                            if (row.Is_Abnormal == "Yes")
+                                description = row.Procedure_Ordered
+                            else
+                                description = row.Procedure_Ordered
+                        }
+                    }
+                    return description;
                 },
-                { data: 'Current_Process' },
-                {
-                    data: 'Addendum_Created_Date_Time', render: function (data, type, row) {
-                        var dt1 = data.replaceAll("/", "").replaceAll("Date(", "").replaceAll(")", "");
-                        return ConvertDate(new Date(parseInt(dt1)));
-                    },
+                searchable: false
+            },
+            { data: 'PhyName', searchable: false },
+            { data: 'Current_Process', searchable: false },
+            {
+                data: 'Referred_to', render: function (data, type, row) {
+                    var referredTo = "";
+                    if (row.Referred_to != "") {
+                        if (row.Is_Abnormal == "Yes")
+                            referredTo = row.Referred_to
+                        else
+                            referredTo = row.Referred_to
+                    }
+                    else {
+                        if (row.Is_Abnormal == "Yes")
+                            referredTo = row.Lab_Name
+                        else
+                            referredTo = row.Lab_Name
+                    }
+                    return referredTo;
                 },
-                { data: 'Addendum_Created_By' },
-                { data: 'Addendum_Signed_By' },
-                { data: 'Encounter_ID', visible: 'false', sClass: "hide_column" },
-                { data: 'Physician_ID', visible: 'false', sClass: "hide_column" },
-                { data: 'EHR_Obj_Type', visible: 'false', sClass: "hide_column" },
-                { data: 'Addendum_ID', visible: 'false', sClass: "hide_column" },
-                { data: 'Current_Owner', visible: 'false', sClass: "hide_column" },
-            ],
-        });
+                searchable: false
+            },
+            { data: 'Lab_Loc_Name', sClass: 'hide_column', searchable: false },
+            { data: 'Encounter_ID', sClass: 'hide_column', searchable: false },
+            { data: 'Physician_ID', sClass: 'hide_column', searchable: false },
+            { data: 'Order_ID', sClass: 'hide_column', searchable: false },
+            { data: 'EHR_Obj_Type', sClass: 'hide_column', searchable: false },
+            { data: 'Lab_ID', sClass: 'hide_column', searchable: false },
+            { data: 'Lab_Location_ID', sClass: 'hide_column', searchable: false },
+            { data: 'Order_Submit_ID', sClass: 'hide_column', searchable: false },
+            { data: 'Referred_to_Facility', sClass: 'hide_column', searchable: false },
+        ],
+    });
+
     $('#EncounterTable_filter').css({
         'float': 'left',
         'text-align': 'left',
@@ -3059,23 +3324,18 @@ function LoadGeneralQOrder() {
         'min-width': '180px'
     });
 
-    $('#EncounterTable_filter input').unbind();
-
-    $('#EncounterTable_filter input').on('keyup', function () {
-        dataTable.column(3).search(this.value).draw();
-    });
-
-    $('#EncounterTable tbody').on('dblclick', 'tr', function () {
-        $('#EncounterTable tr').removeClass("highlight");
-        $(this).addClass("highlight");
-        RowClick();
-    });
-
     $('#EncounterTable tbody').on('click', 'tr', function () {
-        $('#EncounterTable tr').removeClass("highlight");
-        $(this).addClass("highlight");
+        if (event.target.tagName != 'INPUT') {
+            if ($(this)[0].children[0].children[0].checked) {
+                $(this).removeClass("highlight");
+                $(this)[0].children[0].children[0].checked = false;
+            }
+            else {
+                $(this).addClass("highlight");
+                $(this)[0].children[0].children[0].checked = true;
+            }
+        }
     });
-
 }
 function chkMyTask14Click(sender) {
     $("#chkOpenTask")[0].checked = false;
@@ -3918,7 +4178,7 @@ function ChangeTableForTabs(sender) {
         $('#RefreshMyQ')[0].innerText = "Refresh My Prescription";
         $('#RefreshMyQ').css("background-color", "");
         $('#Processenctr')[0].innerText = "Process Prescription";
-        window.setTimeout(loadMyprescription, 300);
+        window.setTimeout(loadMyprescriptionNew, 300);
     }
     else if (sender.innerText.indexOf("My Amendment") > -1) {
         { sessionStorage.setItem('StartLoading', 'true'); StartLoadFromPatChart(); }
@@ -4379,7 +4639,7 @@ function shwllclck() {
         $('#Processenctr')[0].innerText = "Process Prescription";
         $('#RefreshMyQ').css("background-color", "");
         var Showall = "";
-        $("#ctl00_C5POBody_chkMyShowAll")[0].checked ? Showall = "Checked" : Showall = "Unchecked";
+        $("#chkMyShowAll")[0].checked ? Showall = "Checked" : Showall = "Unchecked";
         $.ajax({
             type: "POST",
             url: "frmMyQueueNew.aspx/LoadMyPrescription",
@@ -5582,7 +5842,6 @@ function QRCodeClick(evt) {
     var DOS = "";
     var Physician_id = "";
 
-    debugger
     var node = evt?.parentElement?.parentElement?.childNodes;
     if (node[6] != undefined && node[6] != null && node[6].innerText.trim() == 'TECHNICIAN_PROCESS') {
 
