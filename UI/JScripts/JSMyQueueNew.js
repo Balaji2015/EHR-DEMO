@@ -2554,12 +2554,16 @@ function loadMyAmendment() {
     });
 
     $('#EncounterTable tbody').on('dblclick', 'tr', function () {
+        $('#EncounterTable tr').removeClass("odd");
+        $('#EncounterTable tr').removeClass("even");
         dataTable.$('tr.highlight').removeClass('highlight');
         $(this).addClass("highlight");
         MyQclick();
     });
 
     $('#EncounterTable tbody').on('click', 'tr', function () {
+        $('#EncounterTable tr').removeClass("odd");
+        $('#EncounterTable tr').removeClass("even");
         dataTable.$('tr.highlight').removeClass('highlight');
         $(this).addClass("highlight");
     });
