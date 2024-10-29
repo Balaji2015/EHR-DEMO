@@ -54,7 +54,7 @@ $(document).ready(function () {
     if (sessionStorage.getItem('bCCSave') != undefined) { sessionStorage.removeItem('bCCSave'); }
     { sessionStorage.setItem('StartLoading', 'true'); StartLoadFromPatChart(); }
     document.getElementById("divMyQ").style.display = "";
-    $("#ctl00_C5POBody_chkMyShowAll")[0].checked ? Showall = "Checked" : Showall = "Unchecked";
+    $("#chkMyShowAll")[0].checked ? Showall = "Checked" : Showall = "Unchecked";
     $('#MyQTable').empty();
     $("#ProcessModal").modal('hide');
     var MyShowAllmyQueue = localStorage.getItem('MyShowAll');
@@ -112,7 +112,7 @@ $(document).ready(function () {
 
     }
     if (MyShowAllmyQueue == "Checked") {
-        $("#ctl00_C5POBody_chkMyShowAll")[0].checked = true;
+        $("#chkMyShowAll")[0].checked = true;
         Showall = "Checked";
         LoadMyEncounter();
     }
@@ -957,19 +957,19 @@ function MyQLoad() {
     var MyShowAll = localStorage.getItem('MyShowAll');
     if (MyShowAll == "Checked") {
         Showall = "Checked";
-        $("#ctl00_C5POBody_chkMyShowAll")[0].checked = true;
+        $("#chkMyShowAll")[0].checked = true;
         LoadMyEncounter();
     }
     else {
         Showall = "Unchecked";
         $("#chkMyShowAll")[0].checked = false;
-        LoadMyEncounter();
+        LoadMyEncounter('EncounterLoad');
     }
 
 
 }
 function ShowMyQTabs(sender) {
-    $("#ctl00_C5POBody_chkMyShowAll")[0].checked = false;
+    $("#chkMyShowAll")[0].checked = false;
     $("#chkShowAll")[0].checked = false;
     $(":button:not(#btnGeneralQcount):not(#btnMyQcount)").css("background-color", "transparent");
     if (sender.innerText == "General Q") {
@@ -1015,7 +1015,7 @@ function ShowMyQTabs(sender) {
     else {
         document.getElementById("divGeneralQ").style.display = "none";
         document.getElementById("divMyQ").style.display = "";
-        $("#ctl00_C5POBody_chkMyShowAll")[0].checked ? Showall = "Checked" : Showall = "Unchecked";
+        $("#chkMyShowAll")[0].checked ? Showall = "Checked" : Showall = "Unchecked";
 
         $('#Processenctr').css("background-color", "");
         $('#Processenctr')[0].innerText = "Process Encounter";
@@ -1056,6 +1056,11 @@ function ShowMyQTabs(sender) {
 }
 
 function LoadMyEncounter(ajaxUrl) {
+    if ($('#hdnIsShowAllMyEncounterQueue').val() == 'Y') {
+        $('#chkMyShowAll,#lblMyShowAll').css("display", "none");
+    } else {
+        $('#chkMyShowAll,#lblMyShowAll').css("display", "");
+    }
     $('#MyQTable').empty();
     $('#GeneralQTable').empty();
     $("#MyQTable").append(`
@@ -1091,8 +1096,8 @@ function LoadMyEncounter(ajaxUrl) {
         $("#ctl00_C5POBody_chkViewAllFacilities")[0].checked ? ViewAllFacilities = "Checked" : ViewAllFacilities = "Unchecked";
     }
 
-    $("#ctl00_C5POBody_chkMyShowAll")[0].disabled = false;
-    $("#ctl00_C5POBody_chkMyShowAll")[0].checked ? Showall = "Checked" : Showall = "Unchecked";
+    $("#chkMyShowAll")[0].disabled = false;
+    $("#chkMyShowAll")[0].checked ? Showall = "Checked" : Showall = "Unchecked";
     var Ancillary = $('#ctl00_C5POBody_hdnAncillary').val();
     ajaxUrl = ajaxUrl == '' || ajaxUrl == undefined ? 'chkShowAllMyEncounter' : ajaxUrl;
     var extra_search = ajaxUrl == 'MyEncounterLoad' ? ViewAllFacilities : '';
@@ -1125,84 +1130,17 @@ function LoadMyEncounter(ajaxUrl) {
             dataSrc: function (json) {
                 var objdata = json.d;
                 objdata.data = Decompress(objdata.data);
-                Role = objdata.role;
-                let disableOverallSelect = true;
-                if (objdata.role != "Medical Assistant" && objdata.role != "Front Office" && objdata.role != "Surgery Coordinator" && objdata.role != "Scribe") {
-                    $("#btnMyEnc")[0].innerText = "My Encounters " + "(" + objdata.data.length + ")";
-                    $("#btnMyTask")[0].innerText = "My Tasks " + "(" + objdata.count[0].My_Task_Count + ")";
-                    $("#btnMyOrder")[0].innerText = "My Orders " + "(" + objdata.count[0].My_Order_Count + ")";
-                    $("#btnMyScan")[0].innerText = "My Scan " + "(" + objdata.count[0].My_Scan_Count + ")";
-                    $("#btnMyPres")[0].innerText = "My Prescription " + "(" + objdata.count[0].My_Presc_Count + ")";
-                    $("#btnMyAmendmnt")[0].innerText = "My Amendment " + "(" + objdata.count[0].My_Amendmnt_Count + ")";
 
-                    localStorage.setItem("Myorderscount", objdata.count[0].My_Order_Count);
-                    if (objdata.EncounterCount != null && objdata.EncounterCount != undefined) {
-                        $("#ctl00_C5POBody_lblcount").css('font-size', '11px');
-                        $("#ctl00_C5POBody_lblcount")[0].innerHTML = 'Total encounters to be signed are<span style="color:red;"> ' + objdata.EncounterCount + '</span>. To view current as well as more than 21 days old encounters, click on "ShowAll".'
-                    }
-                    else
-                        $("#ctl00_C5POBody_lblcount")[0].innerHTML = "";
-
-                    $("#btnMyEnc").removeClass("default");
-                    $("#btnMyEnc").addClass("btncolorMyQ");
-                    $("#btnMyQ").removeClass("default");
-                    $("#btnMyQ").addClass("btncolorMyQ");
-                    $("#MovetoNxtProcess").css("display", "inline-block");
-                    //RowClick();
-                    if (disableOverallSelect) {
-                        disableSelectAllMove();
-                    }
+                if (ajaxUrl == 'MyEncounterLoad') {
+                    MyQBind1(objdata)
                 }
-                else {
-                    $("#chkMyShowAll")[0].checked = false;
-                    $("#chkShowAll")[0].checked = false;
-                    var ShowAll = localStorage.getItem('ShowallGeneralqueue');
-                    if (ShowAll == "Checked") {
-                        $("#chkShowAll")[0].checked = true;
-                    }
-                    var MyShowAll = localStorage.getItem('MyShowAll');
-                    if (MyShowAll == "Checked") {
-                        $("#chkMyShowAll")[0].checked = true;
-                    }
-                    document.getElementById("divGeneralQ").style.display = "";
-                    document.getElementById("divMyQ").style.display = "none";
-                    $('#MyQTable').empty();
-                    $('#GeneralQTable').empty();
-                    $('#RefreshQ').css("background-color", "");
-                    $('#btnChkOut').css("background-color", "");
-                    $('#MoveTo').css("background-color", "");
-                    $('#Processenc').css("background-color", "");
-                    $('#RefreshQ')[0].innerText = "Refresh Encounters Q";
-                    $('#lblEr')[0].style.visibility = "visible";
-                    $('#Exam')[0].style.visibility = "visible";
-                    $('#btnChkOut')[0].style.visibility = "visible";
-                    $('#Processenc')[0].style.visibility = "visible";
-                    $('#Processenc')[0].style.width = "134px";
-                    $("#chkShowAll")[0].checked ? Showall = "Checked" : Showall = "Unchecked";
-                    $('#GeneralQTable').empty();
-                    var tabContents; var eRoomList;
-
-                    $("#btnEnc")[0].innerText = "Encounters Q " + "(" + objdata.data.length + ")";
-                    $("#btnOrder")[0].innerText = "Orders Q " + "(" + objdata.count[0].Order_Count + ")";
-                    $("#btnAmendmnt")[0].innerText = "Amendment Q " + "(" + objdata.count[0].Amendmnt_Count + ")";
-                    $("#btnTask")[0].innerText = "Tasks Q " + "(" + objdata.count[0].Task_Count + ")";
-                    localStorage.setItem("GenralOrderCount", objdata.count[0].Order_Count);
-                    $("#btnEnc").addClass("btncolorMyQ");
-                    $("#btnGeneral").addClass("btncolorMyQ");
-                    if (objdata.dataEroom != undefined && objdata.dataEroom.length > 0) {
-                        if ($('select#Exam option').length == 0) { $.each(objdata.dataEroom, function (i, item) { $('#Exam').append($('<option>', { value: objdata.dataEroom[i], text: objdata.dataEroom[i] })); }); }
-                    }
-                    //RowClick();
+                if (ajaxUrl == 'EncounterLoad') {
+                    MyQBind2(objdata)
+                }
+                if (ajaxUrl == 'chkShowAllMyEncounter') {
+                    MyQBind3(objdata)
                 }
 
-                sessionStorage.setItem("My_Task_Count", objdata.count[0].My_Task_Count);
-                sessionStorage.setItem("My_Order_Count", objdata.count[0].My_Order_Count);
-                sessionStorage.setItem("My_Scan_Count", objdata.count[0].My_Scan_Count);
-                sessionStorage.setItem("My_Presc_Count", objdata.count[0].My_Presc_Count);
-                sessionStorage.setItem("My_Amendmnt_Count", objdata.count[0].My_Amendmnt_Count);
-                sessionStorage.setItem("Order_Count", objdata.count[0].Order_Count);
-                sessionStorage.setItem("Amendmnt_Count", objdata.count[0].Amendmnt_Count);
-                sessionStorage.setItem("Task_Count", objdata.count[0].Task_Count);
                 { sessionStorage.setItem('StartLoading', 'false'); StopLoadFromPatChart(); }
                 json.data = objdata.data;
                 return json.data;
@@ -1229,7 +1167,7 @@ function LoadMyEncounter(ajaxUrl) {
                         disableOverallSelect = false;
                     }
                     if (Role != "Medical Assistant" && Role != "Front Office" && Role != "Surgery Coordinator" && Role != "Scribe") {
-                        return "<input type='checkbox' onclick='MyQcheckboxclick(this)' class='myQChkbx' " + disabled + "/>";
+                        return "<input type='checkbox' class='myQChkbx' " + disabled + "/>";
                     } else {
                         return "<input type='checkbox' onclick='checkboxclick(this)' />";
                     }
@@ -1496,9 +1434,9 @@ function loadMytask() {
     var myTask14 = localStorage.getItem('MyTask14');
     if (myTask14 == "Checked") {
         $("#chkMyTask14")[0].checked = true;
-        $("#ctl00_C5POBody_chkMyShowAll")[0].checked = false;
+        $("#chkMyShowAll")[0].checked = false;
         $("#chkOpenTask")[0].checked = false;
-        $("#ctl00_C5POBody_chkMyShowAll")[0].disabled = true;
+        $("#chkMyShowAll")[0].disabled = true;
         $("#chkOpenTask")[0].disabled = true;
         url = "LoadMyTaskCompleted";
         data = JSON.stringify({ "sShowall": Showall });
@@ -1506,18 +1444,18 @@ function loadMytask() {
     }
 
     var showallchecked = localStorage.getItem('MyShowAllMyTask');
-//Jira #CAP-1051 
+//Jira #CAP-1051
     //if (showallchecked == "Checked") {
     //    Showall = "Checked";
-    //    $("#ctl00_C5POBody_chkMyShowAll")[0].checked = true;
+    //    $("#chkMyShowAll")[0].checked = true;
     //    $("#chkMyTask14")[0].checked = false;
     //    $("#chkMyTask14")[0].disabled = true;
     //} else {
     //    Showall = "Unchecked"
     //}
-    if ($("#ctl00_C5POBody_chkMyShowAll")[0].checked == true) {
+    if ($("#chkMyShowAll")[0].checked == true) {
         Showall = "Checked";
-        $("#ctl00_C5POBody_chkMyShowAll")[0].checked = true;
+        $("#chkMyShowAll")[0].checked = true;
         $("#chkMyTask14")[0].checked = false;
         $("#chkMyTask14")[0].disabled = true;
     }
@@ -1622,7 +1560,7 @@ function LoadMyTask() {
     </thead>
 </table>`); 
     SortTableHeader('MyQTask');
-    $("#ctl00_C5POBody_chkMyShowAll")[0].checked ? Showall = "Checked" : Showall = "Unchecked";
+    $("#chkMyShowAll")[0].checked ? Showall = "Checked" : Showall = "Unchecked";
     if ($("#chkMyTask14")[0].checked) {
         var url = "LoadMyTaskCompleted";
     }
@@ -1877,6 +1815,11 @@ function LoadMyTaskTemp() {
 
 
 function loadMyorder() {
+    if ($('#hdnIsShowAllMyOrderQueue').val() == 'Y') {
+        $('#chkMyShowAll,#lblMyShowAll').css("display", "none");
+    } else {
+        $('#chkMyShowAll,#lblMyShowAll').css("display", "");
+    }
     $('#MyQTable').empty();
     $('#GeneralQTable').empty();
     $("#MyQTable").append(`
@@ -1909,8 +1852,8 @@ function loadMyorder() {
     </thead>
     </table>`);
 
-    $("#ctl00_C5POBody_chkMyShowAll")[0].disabled = false;
-    $("#ctl00_C5POBody_chkMyShowAll")[0].checked ? Showall = "Checked" : Showall = "Unchecked";
+    $("#chkMyShowAll")[0].disabled = false;
+    $("#chkMyShowAll")[0].checked ? Showall = "Checked" : Showall = "Unchecked";
 
     var dataTable = new DataTable('#EncounterTable', {
         serverSide: false,
@@ -2138,8 +2081,8 @@ function loadMyorder() {
     });
 }
 function loadMyscan() {
-    $("#ctl00_C5POBody_chkMyShowAll")[0].disabled = false;
-    $("#ctl00_C5POBody_chkMyShowAll")[0].checked ? Showall = "Checked" : Showall = "Unchecked";
+    $("#chkMyShowAll")[0].disabled = false;
+    $("#chkMyShowAll")[0].checked ? Showall = "Checked" : Showall = "Unchecked";
     $.ajax({
         type: "POST",
         url: "frmMyQueueNew.aspx/LoadMyScan",
@@ -2195,60 +2138,11 @@ function loadMyscan() {
 
 }
 function loadMyprescription() {
-    $("#ctl00_C5POBody_chkMyShowAll")[0].disabled = false;
-    $("#ctl00_C5POBody_chkMyShowAll")[0].checked ? Showall = "Checked" : Showall = "Unchecked";
-    $.ajax({
-        type: "POST",
-        url: "frmMyQueueNew.aspx/LoadMyPrescription",
-        data: JSON.stringify({
-            "sShowall": Showall,
-        }),
-        contentType: "application/json; charset=utf-8",
-        dataType: "json",
-        async: true,
-        success: function (data) {
-            $('#MyQTable').empty();
-            var tabContents;
-            var objdata = $.parseJSON(data.d);
-            if (data.d != "[]") {
-                for (var i = 0; i < objdata.length; i++) {
-                    if (i == 0)
-                        tabContents = "<tr><td style='width:20%'>" + ConvertDate(objdata[i].Prescription_Date.replace("T", " ")) + "</td><td style='width:6%'>" + objdata[i].Human_ID + "</td><td style='width:7%'>" + objdata[i].External_Account_Number + "</td><td style='width:20%'>" + objdata[i].Last_Name + "," + objdata[i].First_Name + " " + objdata[i].MI + "</td><td style='width:20%'>" + DOBConvert(objdata[i].DOB.replace("T00:00:00", "")) + "</td><td style='width:20%'>" + objdata[i].Current_Process + "</td><td  style='display:none;'>" + objdata[i].Encounter_ID + "</td><td  style='display:none;'>" + objdata[i].Prescription_Id + "</td><td  style='display:none;'>" + objdata[i].EHR_Obj_Type + "</td></tr>";
-                    else
-                        tabContents = tabContents + "<tr><td style='width:20%'>" + ConvertDate(objdata[i].Prescription_Date.replace("T", " ")) + "</td><td style='width:6%'>" + objdata[i].Human_ID + "</td><td style='width:7%'>" + objdata[i].External_Account_Number + "</td><td style='width:20%'>" + objdata[i].Last_Name + "," + objdata[i].First_Name + " " + objdata[i].MI + "</td><td style='width:20%'>" + DOBConvert(objdata[i].DOB.replace("T00:00:00", "")) + "</td><td style='width:20%'>" + objdata[i].Current_Process + "</td><td style='display:none;'>" + objdata[i].Encounter_ID + "</td><td  style='display:none;'>" + objdata[i].Prescription_Id + "</td><td style='display:none;'>" + objdata[i].EHR_Obj_Type + "</td></tr>";
-                }
-                $("#MyQTable").append("<table id=EncounterTable class='table table-bordered Gridbodystyle' ' style='table-layout: fixed;'><thead class='header' style='border: 0px;width:96.7%;'><tr class='header' ><th style='border: 1px solid #909090;text-align: center;width:20%'>Prescription Date & Time</th><th style='border: 1px solid #909090;text-align: center;width:6%'>Acct. #</th><th style='border: 1px solid #909090;text-align: center;width:7%'>Ext. Acct. #</th><th style='border: 1px solid #909090;text-align: center;width:20%'>Patient Name</th><th style='border: 1px solid #909090;text-align: center;width:20%'>Patient DOB</th><th style='border: 1px solid #909090;text-align: center;width:20%'>Current Process</th><th style='border: 1px solid #909090;display:none;'>EncounterID</th><th style='border: 1px solid #909090;display:none;'>PrescriptionID</th><th style='border: 1px solid #909090;display:none;'>ObjType</th></tr></thead><tbody style='word-wrap: break-word;'>" + tabContents + "</tbody></table>");
-            }
-            else
-                $("#MyQTable").append("<table id=EncounterTable class='table table-bordered Gridbodystyle' ' style='table-layout: fixed;'><thead class='header' style='border: 0px;width:96.7%;'><tr class='header' ><th style='border: 1px solid #909090;text-align: center;width:20%'>Prescription Date & Time</th><th style='border: 1px solid #909090;text-align: center;width:6%'>Acct. #</th><th style='border: 1px solid #909090;text-align: center;width:7%'>Ext. Acct. #</th><th style='border: 1px solid #909090;text-align: center;width:20%'>Patient Name</th><th style='border: 1px solid #909090;text-align: center;width:20%'>Patient DOB</th><th style='border: 1px solid #909090;text-align: center;width:20%'>Current Process</th><th style='border: 1px solid #909090;display:none;'>EncounterID</th><th style='border: 1px solid #909090;display:none;'>PrescriptionID</th><th style='border: 1px solid #909090;display:none;'>ObjType</th><tr></thead></table>");
-            $("#ctl00_C5POBody_lblcount")[0].innerHTML = "";
-            //$("#btnMyPres")[0].innerText = "My Prescription " + "(*)";
-            $("#btnMyPres")[0].innerText = "My Prescription " + "(" + objdata.length + ")";
-            if (Showall != "Checked") {
-                sessionStorage.setItem("My_Presc_Count", objdata.length);
-            }
-
-            SortTableHeader('MyQPrescription');
-            RowClick();
-            //$('#EncounterTable th').addClass('header');
-            { sessionStorage.setItem('StartLoading', 'false'); StopLoadFromPatChart(); }
-        },
-        error: function OnError(xhr) {
-            { sessionStorage.setItem('StartLoading', 'false'); StopLoadFromPatChart(); }
-            if (xhr.status == 999)
-                window.location = "/frmSessionExpired.aspx";
-            else {
-                var log = JSON.parse(xhr.responseText);
-                console.log(log);
-                alert("USER MESSAGE:\n" +
-                    ". Cannot process request. Please Login again and retry. \nEXCEPTION DETAILS: \n" +
-                    "Message: " + log.Message);
-            }
-        }
-    });
-
-}
-function loadMyprescriptionNew() {
+    if ($('#hdnIsShowAllMyPrescriptionQueue').val() == 'Y') {
+        $('#chkMyShowAll,#lblMyShowAll').css("display", "none");
+    } else {
+        $('#chkMyShowAll,#lblMyShowAll').css("display", "");
+    }
     $("#chkMyShowAll")[0].disabled = false;
     $("#chkMyShowAll")[0].checked ? Showall = "Checked" : Showall = "Unchecked";
     $('#MyQTable').empty();
@@ -2421,8 +2315,8 @@ function loadMyprescriptionNew() {
     });
 }
 function loadMyAmendment() {
-    $("#ctl00_C5POBody_chkMyShowAll")[0].disabled = false;
-    $("#ctl00_C5POBody_chkMyShowAll")[0].checked ? Showall = "Checked" : Showall = "Unchecked";
+    $("#chkMyShowAll")[0].disabled = false;
+    $("#chkMyShowAll")[0].checked ? Showall = "Checked" : Showall = "Unchecked";
 
     $('#GeneralQTable').empty();
     $("#MyQTable").append(`
@@ -2622,6 +2516,11 @@ function loadMyAmendment() {
 
 }
 function LoadGeneralEncounter() {
+    if ($('#hdnIsShowAllGeneralEncounterQueue').val() == 'Y') {
+        $('#lblShowAll,#chkShowAll').css("display", "none");
+    } else {
+        $('#lblShowAll,#chkShowAll').css("display", "");
+    }
     $('#MyQTable').empty();
     $('#GeneralQTable').empty();
     $("#GeneralQTable").append(`
@@ -2649,7 +2548,7 @@ function LoadGeneralEncounter() {
     </thead>
     </table>`);
 
-    $("#ctl00_C5POBody_chkMyShowAll")[0].disabled = false;
+    $("#chkMyShowAll")[0].disabled = false;
     var sShowall = '';
     var MyShowAll = localStorage.getItem('ShowallGeneralqueue');
     if (MyShowAll == "Checked") {
@@ -3142,8 +3041,14 @@ function loadGeneralTaskTemp() {
 
 
 function LoadGeneralQOrder() {
-    $("#ctl00_C5POBody_chkMyShowAll")[0].disabled = false;
-    $("#ctl00_C5POBody_chkMyShowAll")[0].checked ? Showall = "Checked" : Showall = "Unchecked";
+    if ($('#hdnIsShowAllGeneralOrderQueue').val() == 'Y') {
+        $('#lblShowAll,#chkShowAll').css("display", "none");
+    } else {
+
+        $('#lblShowAll,#chkShowAll').css("display", "");
+    }
+    $("#chkMyShowAll")[0].disabled = false;
+    $("#chkMyShowAll")[0].checked ? Showall = "Checked" : Showall = "Unchecked";
     $('#GeneralQTable').empty();
     $("#GeneralQTable").append(`
     <table id="EncounterTable" class="table table-bordered Gridbodystyle" style="table-layout: fixed;">
@@ -3343,17 +3248,17 @@ function LoadGeneralQOrder() {
 }
 function chkMyTask14Click(sender) {
     $("#chkOpenTask")[0].checked = false;
-    $("#ctl00_C5POBody_chkMyShowAll")[0].checked = false;
+    $("#chkMyShowAll")[0].checked = false;
     localStorage.setItem('MyOpenTask', "");
     localStorage.setItem('MyShowAllMyTask', "");
     localStorage.setItem('MyTask14', $("#chkMyTask14")[0].checked ? "Checked" : "Unchecked");
 
     LoadMyTask();
 
-    //if ($("#ctl00_C5POBody_chkMyShowAll") != null) {
+    //if ($("#chkMyShowAll") != null) {
     //    if ($("#chkMyTask14")[0].checked) {
     //        $("#chkOpenTask")[0].disabled = true;
-    //        $("#ctl00_C5POBody_chkMyShowAll")[0].disabled = true;
+    //        $("#chkMyShowAll")[0].disabled = true;
     //        $.ajax({
     //            type: "POST",
     //            url: "frmMyQueueNew.aspx/LoadMyTaskCompleted",
@@ -3418,7 +3323,7 @@ function chkMyTask14Click(sender) {
     //    }
     //    else {
     //        $("#chkOpenTask")[0].disabled = false;
-    //        $("#ctl00_C5POBody_chkMyShowAll")[0].disabled = false;
+    //        $("#chkMyShowAll")[0].disabled = false;
     //        $.ajax({
     //            type: "POST",
     //            url: "frmMyQueueNew.aspx/LoadMyTask",
@@ -3619,7 +3524,7 @@ function chkMyTask14Click(sender) {
     });
 }
 function loadamend() {
-    $("#ctl00_C5POBody_chkMyShowAll")[0].disabled = false;
+    $("#chkMyShowAll")[0].disabled = false;
     //$.ajax({
     //    type: "POST",
     //    url: "frmMyQueueNew.aspx/LoadAmend",
@@ -3823,17 +3728,17 @@ function loadamend() {
 }
 function chkMyTask14Click(sender) {
     $("#chkOpenTask")[0].checked = false;
-    $("#ctl00_C5POBody_chkMyShowAll")[0].checked = false;
+    $("#chkMyShowAll")[0].checked = false;
     localStorage.setItem('MyOpenTask', "");
     localStorage.setItem('MyShowAllMyTask', "");
     localStorage.setItem('MyTask14', $("#chkMyTask14")[0].checked ? "Checked" : "Unchecked");
 
     LoadMyTask();
 
-    //if ($("#ctl00_C5POBody_chkMyShowAll") != null) {
+    //if ($("#chkMyShowAll") != null) {
     //    if ($("#chkMyTask14")[0].checked) {
     //        $("#chkOpenTask")[0].disabled = true;
-    //        $("#ctl00_C5POBody_chkMyShowAll")[0].disabled = true;
+    //        $("#chkMyShowAll")[0].disabled = true;
     //        $.ajax({
     //            type: "POST",
     //            url: "frmMyQueueNew.aspx/LoadMyTaskCompleted",
@@ -3898,7 +3803,7 @@ function chkMyTask14Click(sender) {
     //    }
     //    else {
     //        $("#chkOpenTask")[0].disabled = false;
-    //        $("#ctl00_C5POBody_chkMyShowAll")[0].disabled = false;
+    //        $("#chkMyShowAll")[0].disabled = false;
     //        $.ajax({
     //            type: "POST",
     //            url: "frmMyQueueNew.aspx/LoadMyTask",
@@ -3976,7 +3881,7 @@ function chkOpenTaskClick() {
         $("#chkMyTask14")[0].disabled = true;
     }
 
-    var Showall = $("#ctl00_C5POBody_chkMyShowAll")[0].checked ? "Checked" : "Unchecked";
+    var Showall = $("#chkMyShowAll")[0].checked ? "Checked" : "Unchecked";
     var OpenTask = $("#chkOpenTask")[0].checked ? "Checked" : "Unchecked";
     LoadMyTask();
 
@@ -4055,9 +3960,9 @@ function ChangeTableForTabs(sender) {
     //$("#btnAmendmnt")[0].innerText = "Amendment Q" + "(*)";
     $(":button:not(#btnGeneralQcount):not(#btnMyQcount)").css("background-color", "transparent");
     var Showall = "";
-    $("#ctl00_C5POBody_chkMyShowAll")[0].checked = false;
+    $("#chkMyShowAll")[0].checked = false;
     $("#chkShowAll")[0].checked = false;
-    $("#ctl00_C5POBody_chkMyShowAll")[0].checked ? Showall = "Checked" : Showall = "Unchecked";
+    $("#chkMyShowAll")[0].checked ? Showall = "Checked" : Showall = "Unchecked";
     $('#RefreshMyQ').css("background-color", "");
     $('#Processenctr').css("background-color", "");
     $('#btnChangeExamRoom').css("display", "none");
@@ -4182,7 +4087,7 @@ function ChangeTableForTabs(sender) {
         $('#RefreshMyQ')[0].innerText = "Refresh My Prescription";
         $('#RefreshMyQ').css("background-color", "");
         $('#Processenctr')[0].innerText = "Process Prescription";
-        window.setTimeout(loadMyprescriptionNew, 300);
+        window.setTimeout(loadMyprescription, 300);
     }
     else if (sender.innerText.indexOf("My Amendment") > -1) {
         { sessionStorage.setItem('StartLoading', 'true'); StartLoadFromPatChart(); }
@@ -4340,7 +4245,7 @@ function shwllclck() {
     $(":button:not(#btnGeneralQcount):not(#btnMyQcount)").css("background-color", "transparent");
     $('#btnChangeExamRoom').css("display", "none");
     $("#chkMyTask14")[0].checked = false;
-    $("#ctl00_C5POBody_chkMyShowAll")[0].disabled = false;
+    $("#chkMyShowAll")[0].disabled = false;
     if (document.getElementById("RefreshMyQ").innerText.indexOf("Refresh My Encounters") > -1 && $('#RefreshMyQ').is(":visible")) {
 
         document.getElementById("divMyQ").style.display = "";
@@ -4362,7 +4267,7 @@ function shwllclck() {
         if ($("#MovetoNxtProcess") != null)
             $("#MovetoNxtProcess")[0].disabled = true;
         var Showall = "";
-        $("#ctl00_C5POBody_chkMyShowAll")[0].checked ? Showall = "Checked" : Showall = "Unchecked";
+        $("#chkMyShowAll")[0].checked ? Showall = "Checked" : Showall = "Unchecked";
         localStorage.setItem("MyShowAll", Showall);
         LoadMyEncounter();
 
@@ -4383,7 +4288,7 @@ function shwllclck() {
         $('#Processenctr')[0].innerText = "Process Task";
         $('#RefreshMyQ').css("background-color", "");
         var Showall = "";
-        $("#ctl00_C5POBody_chkMyShowAll")[0].checked ? Showall = "Checked" : Showall = "Unchecked";
+        $("#chkMyShowAll")[0].checked ? Showall = "Checked" : Showall = "Unchecked";
         localStorage.setItem('MyShowAllMyTask', Showall);
 
         var myOpenTask = localStorage.getItem('MyOpenTask');
@@ -4393,7 +4298,7 @@ function shwllclck() {
 
         var OpenTask = $("#chkOpenTask")[0].checked ? "Checked" : "Unchecked";
 
-        if ($("#ctl00_C5POBody_chkMyShowAll")[0].checked) {
+        if ($("#chkMyShowAll")[0].checked) {
             $("#chkMyTask14")[0].checked = false;
             $("#chkMyTask14")[0].disabled = true;
         } else {
@@ -4484,7 +4389,7 @@ function shwllclck() {
         $('#Processenctr').css("background-color", "");
         $('#Processenctr')[0].innerText = "Process Scan";
         var Showall = "";
-        $("#ctl00_C5POBody_chkMyShowAll")[0].checked ? Showall = "Checked" : Showall = "Unchecked";
+        $("#chkMyShowAll")[0].checked ? Showall = "Checked" : Showall = "Unchecked";
         $('#RefreshMyQ').css("background-color", "");
         $.ajax({
             type: "POST",
@@ -4554,7 +4459,7 @@ function shwllclck() {
         $('#Processenctr')[0].innerText = "Process Order";
         $('#RefreshMyQ').css("background-color", "");
         var Showall = "";
-        $("#ctl00_C5POBody_chkMyShowAll")[0].checked ? Showall = "Checked" : Showall = "Unchecked";
+        $("#chkMyShowAll")[0].checked ? Showall = "Checked" : Showall = "Unchecked";
         loadMyorder();
 
     }
@@ -4572,7 +4477,7 @@ function shwllclck() {
         $('#Processenctr')[0].innerText = "Process Amendment";
         $('#RefreshMyQ').css("background-color", "");
         var Showall = "";
-        $("#ctl00_C5POBody_chkMyShowAll")[0].checked ? Showall = "Checked" : Showall = "Unchecked";
+        $("#chkMyShowAll")[0].checked ? Showall = "Checked" : Showall = "Unchecked";
         loadMyAmendment();
         //$.ajax({
         //    type: "POST",
@@ -4644,57 +4549,7 @@ function shwllclck() {
         $('#RefreshMyQ').css("background-color", "");
         var Showall = "";
         $("#chkMyShowAll")[0].checked ? Showall = "Checked" : Showall = "Unchecked";
-        $.ajax({
-            type: "POST",
-            url: "frmMyQueueNew.aspx/LoadMyPrescription",
-            data: JSON.stringify({
-                "sShowall": Showall,
-            }),
-            contentType: "application/json; charset=utf-8",
-            dataType: "json",
-            async: true,
-            success: function (data) {
-                $('#MyQTable').empty();
-                var tabContents;
-                var objdata = $.parseJSON(data.d);
-                if (data.d != "[]") {
-                    for (var i = 0; i < objdata.length; i++) {
-                        if (i == 0)
-                            tabContents = "<tr><td style='width:20%'>" + ConvertDate(objdata[i].Prescription_Date.replace("T", " ")) + "</td><td style='width:6%'>" + objdata[i].Human_ID + "</td><td style='width:7%'>" + objdata[i].External_Account_Number + "</td><td style='width:20%'>" + objdata[i].Last_Name + "," + objdata[i].First_Name + " " + objdata[i].MI + "</td><td style='width:20%'>" + DOBConvert(objdata[i].DOB.replace("T00:00:00", "")) + "</td><td style='width:20%'>" + objdata[i].Current_Process + "</td><td  style='display:none;'>" + objdata[i].Encounter_ID + "</td><td  style='display:none;'>" + objdata[i].Prescription_Id + "</td><td  style='display:none;'>" + objdata[i].EHR_Obj_Type + "</td></tr>";
-                        else
-                            tabContents = tabContents + "<tr><td style='width:20%'>" + ConvertDate(objdata[i].Prescription_Date.replace("T", " ")) + "</td><td style='width:6%'>" + objdata[i].Human_ID + "</td><td style='width:7%'>" + objdata[i].External_Account_Number + "</td><td style='width:20%'>" + objdata[i].Last_Name + "," + objdata[i].First_Name + " " + objdata[i].MI + "</td><td style='width:20%'>" + DOBConvert(objdata[i].DOB.replace("T00:00:00", "")) + "</td><td style='width:20%'>" + objdata[i].Current_Process + "</td><td style='display:none;'>" + objdata[i].Encounter_ID + "</td><td  style='display:none;'>" + objdata[i].Prescription_Id + "</td><td style='display:none;'>" + objdata[i].EHR_Obj_Type + "</td></tr>";
-                    }
-                    $("#MyQTable").append("<table id=EncounterTable class='table table-bordered Gridbodystyle' style='table-layout: fixed;'><thead class='header' style='border: 0px;width:96.7%;'><tr class='header' ><th style='border: 1px solid #909090;text-align: center;width:20%'>Prescription Date & Time</th><th style='border: 1px solid #909090;text-align: center;width:6%'>Acct. #</th><th style='border: 1px solid #909090;text-align: center;width:7%'>Ext. Acct. #</th><th style='border: 1px solid #909090;text-align: center;width:20%'>Patient Name</th><th style='border: 1px solid #909090;text-align: center;width:20%'>Patient DOB</th><th style='border: 1px solid #909090;text-align: center;width:20%'>Current Process</th><th style='border: 1px solid #909090;display:none;'>EncounterID</th><th style='border: 1px solid #909090;display:none;'>PrescriptionID</th><th style='border: 1px solid #909090;display:none;'>ObjType</th></tr></thead><tbody style='word-wrap: break-word;'>" + tabContents + "</tbody></table>");
-                    //Jira #CAP-938
-                    //$("#btnMyPres")[0].innerText = "My Prescription " + "(" + objdata.length + ")";
-                }
-                else
-                    $("#MyQTable").append("<table id=EncounterTable class='table table-bordered Gridbodystyle' style='table-layout: fixed;'><thead class='header' style='border: 0px;width:96.7%;'><tr class='header' ><th style='border: 1px solid #909090;text-align: center;width:20%'>Prescription Date & Time</th><th style='border: 1px solid #909090;text-align: center;width:6%'>Acct. #</th><th style='border: 1px solid #909090;text-align: center;width:7%'>Ext. Acct. #</th><th style='border: 1px solid #909090;text-align: center;width:20%'>Patient Name</th><th style='border: 1px solid #909090;text-align: center;width:20%'>Patient DOB</th><th style='border: 1px solid #909090;text-align: center;width:20%'>Current Process</th><th style='border: 1px solid #909090;display:none;'>EncounterID</th><th style='border: 1px solid #909090;display:none;'>PrescriptionID</th><th style='border: 1px solid #909090;display:none;'>ObjType</th><tr></thead></table>");
-                // $("#btnMyPres")[0].innerText = "My Prescription " + "(*)";
-                //Jira #CAP-938
-                $("#btnMyPres")[0].innerText = "My Prescription " + "(" + objdata.length + ")";
-                if (Showall != "Checked") {
-                    sessionStorage.setItem("My_Presc_Count", objdata.length);
-                }
-                $("#ctl00_C5POBody_lblcount")[0].innerHTML = "";
-                SortTableHeader('MyQPrescription');
-                //$('#EncounterTable th').addClass('header');
-                RowClick();
-                { sessionStorage.setItem('StartLoading', 'false'); StopLoadFromPatChart(); }
-            },
-            error: function OnError(xhr) {
-                { sessionStorage.setItem('StartLoading', 'false'); StopLoadFromPatChart(); }
-                if (xhr.status == 999)
-                    window.location = "/frmSessionExpired.aspx";
-                else {
-                    var log = JSON.parse(xhr.responseText);
-                    console.log(log);
-                    alert("USER MESSAGE:\n" +
-                        ". Cannot process request. Please Login again and retry. \nEXCEPTION DETAILS: \n" +
-                        "Message: " + log.Message);
-                }
-            }
-        });
+        loadMyprescription();
 
     }
     else if (document.getElementById("RefreshQ").innerText.indexOf("Refresh Encounters Q") > -1 && $('#RefreshQ').is(":visible")) {

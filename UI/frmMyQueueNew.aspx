@@ -159,9 +159,9 @@ table.dataTable > thead > tr > td {
                                         <label id="lbl14days" for="chkMyTask14" class="checkbox-inline Editabletxtbox" style="padding-left: 4px; padding-right: 10px;display:none;">Completed Last 14 days</label>
                                      </td>
                                     <td>
-                                        <input type="checkbox" runat="server" id="chkMyShowAll" class="Editabletxtbox" onclick="chkShowAllClick(this)" /></td>
+                                        <input type="checkbox" id="chkMyShowAll" class="Editabletxtbox" onclick="chkShowAllClick(this)" /></td>
                                     <td>
-                                        <label for="chkMyShowAll" class="checkbox-inline Editabletxtbox" style="padding-left: 4px; padding-right: 10px">ShowAll</label></td>
+                                        <label for="chkMyShowAll" id="lblMyShowAll" class="checkbox-inline Editabletxtbox" style="padding-left: 4px; padding-right: 10px">ShowAll</label></td>
                                     <td>
                                         <button type="button" class="btn btn-primary btncolor" id="btnChangeExamRoom" style="background-color: none;">Change Exam Room</button>
                                     </td>
@@ -203,7 +203,7 @@ table.dataTable > thead > tr > td {
                             <label id="lblEr" for="Exam" style="font-weight: normal">Exam Room</label>
                             <select id="Exam">
                             </select>
-                            <label for="chkShowAll" class="checkbox-inline Editabletxtbox">
+                            <label for="chkShowAll" id="lblShowAll" class="checkbox-inline Editabletxtbox">
                                 <input type="checkbox" id="chkShowAll" class="Editabletxtbox" onclick="chkShowAllClick(this)" />Show All</label>
                             <button type="button" class="btn btn-primary btncolor" id="btnChkOut" style="background-color: none;">Check Out</button>
                             <button type="button" class="btn btn-primary btncolor" onclick="chkShowAllClick(this)" id="RefreshQ" style="background-color: none;">Refresh Encounters Q</button>
@@ -235,6 +235,11 @@ table.dataTable > thead > tr > td {
         </div>
     </div>
     <asp:HiddenField ID="hdnAncillary" runat="server" Value="" EnableViewState="false" />
+    <input type="hidden" id="hdnIsShowAllMyEncounterQueue" value="<%=ConfigurationManager.AppSettings["IsShowAllMyEncounterQueue"]%>" />
+    <input type="hidden" id="hdnIsShowAllGeneralEncounterQueue" value="<%=ConfigurationManager.AppSettings["IsShowAllGeneralEncounterQueue"]%>" />
+    <input type="hidden" id="hdnIsShowAllMyOrderQueue" value="<%=ConfigurationManager.AppSettings["IsShowAllMyOrderQueue"]%>" />
+    <input type="hidden" id="hdnIsShowAllGeneralOrderQueue" value="<%=ConfigurationManager.AppSettings["IsShowAllGeneralOrderQueue"]%>" />
+    <input type="hidden" id="hdnIsShowAllMyPrescriptionQueue" value="<%=ConfigurationManager.AppSettings["IsShowAllMyPrescriptionQueue"]%>" />
     <telerik:RadScriptManager ID="RadScriptManager1" runat="server" EnableViewState="false" EnableScriptCombine="true">
         <Scripts>
             <asp:ScriptReference Assembly="Telerik.Web.UI" Name="Telerik.Web.UI.Common.Core.js"></asp:ScriptReference>
