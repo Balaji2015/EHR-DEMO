@@ -911,6 +911,16 @@ function OnClientCloseWindow() {
             } else {
                 $('#EncounterTable_info').text(`Showing 1 to ${updatedCount} of ${updatedCount} entries`);
             }
+        } else if (btnid == "btnMyPres") {
+            var myPresCount = $('#btnMyPres').text();
+            myPresCount = parseInt(myPresCount.match(/\d+/)[0]);
+            var updatedCount = myPresCount - removearry.length;
+            numberofEncounters = updatedCount;
+            if (updatedCount > 25) {
+                $('#EncounterTable_info').text(`Showing 1 to 25 of ${updatedCount} entries`);
+            } else {
+                $('#EncounterTable_info').text(`Showing 1 to ${updatedCount} of ${updatedCount} entries`);
+            }
         } else {
             numberofEncounters = 0;
         }
@@ -1202,7 +1212,8 @@ function LoadMyEncounter(ajaxUrl) {
                 searchable: false,
                 type: 'date'
             },
-            { data: 'Type_Of_Visit', visible: (Ancillary == 'false'), searchable: false },
+            //{ data: 'Type_Of_Visit', visible: (Ancillary == 'false'), searchable: false },
+            { data: 'Type_Of_Visit', sClass: (Ancillary == 'false' ? 'hide_column' : ''), searchable: false },
             { data: 'Current_Process', searchable: false },
             { data: 'Facility_Name', visible: (Ancillary == 'false'), searchable: false },
             { data: 'PhyName', visible: (Ancillary == 'false'), searchable: false },
@@ -1245,13 +1256,21 @@ function LoadMyEncounter(ajaxUrl) {
         'min-width': '180px'
     });
 
-    $('#EncounterTable tbody').on('click', 'tr', function () {
+    dataTable.on('page.dt', function () {
         dataTable.$('tr.highlight').removeClass('highlight');
+        $('.myQChkbx').prop('checked', false);
+    });
+    dataTable.on('search.dt', function () {
+        dataTable.$('tr.highlight').removeClass('highlight');
+        $('.myQChkbx').prop('checked', false);
+    });
+
+    $('#EncounterTable tbody').on('click', 'tr', function () {
         var existingSelectedItem = $("#MyQTable tr.highlight");
         for (var i = 0; i < existingSelectedItem.length; i++) {
             var processes = "NoCurrentProcess";
-            if (existingSelectedItem[i]?.children[8]?.childNodes[0]?.data != undefined && existingSelectedItem[i]?.children[8]?.childNodes[0]?.data != null) {
-                processes = existingSelectedItem[i].children[8].childNodes[0].data;
+            if (existingSelectedItem[i]?.children[7]?.childNodes[0]?.data != undefined && existingSelectedItem[i]?.children[7]?.childNodes[0]?.data != null) {
+                processes = existingSelectedItem[i].children[7].childNodes[0].data;
             }
             var isproviderReviewMyQ = processes;
             if (isproviderReviewMyQ != "PROVIDER_REVIEW" && isproviderReviewMyQ != "PROVIDER_REVIEW_2") {
@@ -1261,8 +1280,8 @@ function LoadMyEncounter(ajaxUrl) {
 
         $(this)[0].classList.add('highlight');
         var NewRowprocesses = "NoCurrentProcess";
-        if ($(this)[0]?.children[8]?.childNodes[0]?.data != undefined && $(this)[0]?.children[8]?.childNodes[0]?.data != null) {
-            NewRowprocesses = $(this)[0].children[8].childNodes[0].data;
+        if ($(this)[0]?.children[7]?.childNodes[0]?.data != undefined && $(this)[0]?.children[7]?.childNodes[0]?.data != null) {
+            NewRowprocesses = $(this)[0].children[7].childNodes[0].data;
         }
         var isproviderReviewMyQNewRow = NewRowprocesses;
         if (isproviderReviewMyQNewRow == "PROVIDER_REVIEW" || isproviderReviewMyQNewRow == "PROVIDER_REVIEW_2") {
@@ -2036,12 +2055,14 @@ function loadMyorder() {
         'min-width': '180px'
     });
     
-    //dataTable.on('page.dt', function () {
-    //    dataTable.$('tr.highlight').removeClass('highlight');
-    //});
+    dataTable.on('page.dt', function () {
+        dataTable.$('tr.highlight').removeClass('highlight');
+    });
+    dataTable.on('search.dt', function () {
+        dataTable.$('tr.highlight').removeClass('highlight');
+    });
 
     $('#EncounterTable tbody').on('click', 'tr', function () {
-        dataTable.$('tr.highlight').removeClass('highlight');
         var existingSelectedItem = $("#MyQTable tr.highlight");
         for (var i = 0; i < existingSelectedItem.length; i++) {
             var processes = "NoCurrentProcess";
@@ -2261,7 +2282,7 @@ function loadMyprescription() {
             },
             { data: 'Current_Process', searchable: false },
             { data: 'Encounter_ID', sClass: 'hide_column', searchable: false },
-            { data: 'Physician_ID', sClass: 'hide_column', searchable: false },
+            { data: 'Prescription_Id', sClass: 'hide_column', searchable: false },
             { data: 'EHR_Obj_Type', sClass: 'hide_column', searchable: false },
         ]
     });
@@ -2276,13 +2297,19 @@ function loadMyprescription() {
         'min-width': '180px'
     });
 
-    $('#EncounterTable tbody').on('click', 'tr', function () {
+    dataTable.on('page.dt', function () {
         dataTable.$('tr.highlight').removeClass('highlight');
+    });
+    dataTable.on('search.dt', function () {
+        dataTable.$('tr.highlight').removeClass('highlight');
+    });
+
+    $('#EncounterTable tbody').on('click', 'tr', function () {
         var existingSelectedItem = $("#MyQTable tr.highlight");
         for (var i = 0; i < existingSelectedItem.length; i++) {
             var processes = "NoCurrentProcess";
-            if (existingSelectedItem[i]?.children[8]?.childNodes[0]?.data != undefined && existingSelectedItem[i]?.children[8]?.childNodes[0]?.data != null) {
-                processes = existingSelectedItem[i].children[8].childNodes[0].data;
+            if (existingSelectedItem[i]?.children[5]?.childNodes[0]?.data != undefined && existingSelectedItem[i]?.children[5]?.childNodes[0]?.data != null) {
+                processes = existingSelectedItem[i].children[5].childNodes[0].data;
             }
             var isproviderReviewMyQ = processes;
             if (isproviderReviewMyQ != "PROVIDER_REVIEW" && isproviderReviewMyQ != "PROVIDER_REVIEW_2") {
@@ -2292,8 +2319,8 @@ function loadMyprescription() {
 
         $(this)[0].classList.add('highlight');
         var NewRowprocesses = "NoCurrentProcess";
-        if ($(this)[0]?.children[8]?.childNodes[0]?.data != undefined && $(this)[0]?.children[8]?.childNodes[0]?.data != null) {
-            NewRowprocesses = $(this)[0].children[8].childNodes[0].data;
+        if ($(this)[0]?.children[5]?.childNodes[0]?.data != undefined && $(this)[0]?.children[5]?.childNodes[0]?.data != null) {
+            NewRowprocesses = $(this)[0].children[5].childNodes[0].data;
         }
         var isproviderReviewMyQNewRow = NewRowprocesses;
         if (isproviderReviewMyQNewRow == "PROVIDER_REVIEW" || isproviderReviewMyQNewRow == "PROVIDER_REVIEW_2") {
