@@ -397,6 +397,10 @@ $(document).ready(function () {
                 $('#MyQTable tr').removeClass("highlight");
                 return false;
             }
+            else if ($('#EncounterTable tr.highlight')[0].innerText == "No data available in table")
+            {
+                return false;
+            }
             else {
                 MyQclick();
             }
@@ -1540,6 +1544,13 @@ function loadMytask() {
 
 function LoadMyTask() {
 
+    if ($('#hdnIsShowAllMyTasksQueue').val() == 'Y') {
+        $('#chkMyShowAll,#lblMyShowAll').css("display", "none");
+        $("#chkMyShowAll").prop('checked', true);
+    } else {
+        $('#chkMyShowAll,#lblMyShowAll').css("display", "");
+    }
+
     $('#MyQTable').empty();
     $('#GeneralQTable').empty();
     $("#MyQTable").append(`
@@ -1559,7 +1570,6 @@ function LoadMyTask() {
     </tr>
     </thead>
 </table>`); 
-    SortTableHeader('MyQTask');
     $("#chkMyShowAll")[0].checked ? Showall = "Checked" : Showall = "Unchecked";
     if ($("#chkMyTask14")[0].checked) {
         var url = "LoadMyTaskCompleted";
@@ -1686,7 +1696,11 @@ function LoadMyTask() {
         $('#EncounterTable tr').removeClass("even");
         dataTable.$('tr.highlight').removeClass('highlight');
         $(this)[0].classList.add('highlight');
-        MyQclick();   
+        if ($('#EncounterTable tr.highlight')[0].innerText == "No data available in table") {
+            return false;
+        } else {
+            MyQclick();   
+        }        
     });
 
     $('#EncounterTable tbody').on('click', 'tr', function () {
@@ -1720,7 +1734,6 @@ function LoadMyTaskTemp() {
     </tr>
     </thead>
 </table>`);
-    SortTableHeader('MyQTask');
     var titleval;
     var dataTable = new DataTable('#EncounterTable', {
         serverSide: false,
@@ -1736,8 +1749,7 @@ function LoadMyTaskTemp() {
             infoFiltered: ""
         },
         dom: '<"top"ipf>rt<"bottom"l><"clear">', // Counter (i) and Pagination (p) at the top
-        data: tempObjectMyQTask,  
-        
+        data: tempObjectMyQTask,          
         columns: [
             { data: 'Priority', searchable: false },
             { data: 'Human_ID' },
@@ -2315,6 +2327,14 @@ function loadMyprescription() {
     });
 }
 function loadMyAmendment() {
+
+    if ($('#hdnIsShowAllMyOrderQueue').val() == 'Y') {
+        $('#chkMyShowAll,#lblMyShowAll').css("display", "none");
+        $("#chkMyShowAll").prop('checked', true);
+    } else {
+        $('#chkMyShowAll,#lblMyShowAll').css("display", "");
+    }    
+
     $("#chkMyShowAll")[0].disabled = false;
     $("#chkMyShowAll")[0].checked ? Showall = "Checked" : Showall = "Unchecked";
 
@@ -2397,7 +2417,7 @@ function loadMyAmendment() {
                     if (row.Appt_Date_Time == "0001-01-01T00:00:00")
                         return "";
                     else
-                        return ConvertDate(row.Appt_Date_Time.replace("T", " ")).split(' ')[0];
+                        return ConvertDate(row.Appt_Date_Time.replace("T", " "));
                 }, searchable: false
             },
             {
@@ -2405,7 +2425,7 @@ function loadMyAmendment() {
                     if (row.Addendum_Created_Date_Time == "0001-01-01T00:00:00")
                         return "";
                     else
-                        return ConvertDate(row.Addendum_Created_Date_Time.replace("T", " ")).split(' ')[0];
+                        return ConvertDate(row.Addendum_Created_Date_Time.replace("T", " "));
                 }, searchable: false
             },
             { data: 'Human_ID' },
@@ -2422,7 +2442,7 @@ function loadMyAmendment() {
                     if (row.Addendum_Created_Date_Time == "0001-01-01T00:00:00")
                         return "";
                     else
-                        return ConvertDate(row.Addendum_Created_Date_Time.replace("T", " ")).split(' ')[0];
+                        return ConvertDate(row.Addendum_Created_Date_Time.replace("T", " "));
                 }, searchable: false
             },
             { data: 'Addendum_Created_By', searchable: false },
@@ -2452,7 +2472,11 @@ function loadMyAmendment() {
         $('#EncounterTable tr').removeClass("even");
         dataTable.$('tr.highlight').removeClass('highlight');
         $(this).addClass("highlight");
-        MyQclick();
+        if ($('#EncounterTable tr.highlight')[0].innerText == "No data available in table") {
+            return false;
+        } else {
+            MyQclick();
+        }
     });
 
     $('#EncounterTable tbody').on('click', 'tr', function () {
@@ -3635,18 +3659,19 @@ function loadamend() {
                 },
                 dataSrc: function (json) {
                     var objdata = json.d;
-                    $("#btnAmendmnt")[0].innerText = "Amendment Q " + "(" + objdata.length + ")";
+                    objdata.data = Decompress(objdata.data);
+                    $("#btnAmendmnt")[0].innerText = "Amendment Q " + "(" + objdata.data.length + ")";
                     if (Showall != "Checked") {
-                        sessionStorage.setItem("Amendmnt_Count", objdata.length);
+                        sessionStorage.setItem("Amendmnt_Count", objdata.data.length);
                     }
                     $("#ctl00_C5POBody_lblcount")[0].innerHTML = "";
                     { sessionStorage.setItem('StartLoading', 'false'); StopLoadFromPatChart(); }
-                    return objdata;
+                    return objdata.data;
                 },
                 error: function (xhr, error, code) {
                     { sessionStorage.setItem('StartLoading', 'false'); StopLoadFromPatChart(); }
                     if (xhr.status == 999)
-                        window.location = xhr.statusText;
+                        window.location = "ErrorPage.aspx";
                     else {
                         var log = JSON.parse(xhr.responseText);
                         console.log(log);
@@ -3659,71 +3684,77 @@ function loadamend() {
             columns: [
                 {
                     data: '', render: function (data, type, row) {
-                        return "input type = 'checkbox' onclick = 'checkboxclick(this)' /></td > <td style='width:7%'";
+                        return " <td style='width:4%'><input type = 'checkbox' onclick = 'checkboxclick(this)' /></td >";
                     },
                 },
                 {
                     data: 'Appt_Date_Time', render: function (data, type, row) {
-                        var dt1 = data.replaceAll("/", "").replaceAll("Date(", "").replaceAll(")", "");
-                        return ConvertDate(new Date(parseInt(dt1)));
-                    },
+                        if (row.Appt_Date_Time == "0001-01-01T00:00:00")
+                            return "";
+                        else
+                            return ConvertDate(row.Appt_Date_Time.replace("T", " "));
+                    }, searchable: false
                 },
                 {
                     data: 'Addendum_Created_Date_Time', render: function (data, type, row) {
-                        var dt1 = data.replaceAll("/", "").replaceAll("Date(", "").replaceAll(")", "");
-                        return ConvertDate(new Date(parseInt(dt1)));
-                    },
+                        if (row.Addendum_Created_Date_Time == "0001-01-01T00:00:00")
+                            return "";
+                        else
+                            return ConvertDate(row.Addendum_Created_Date_Time.replace("T", " "));
+                    }, searchable: false
                 },
                 { data: 'Human_ID' },
-                { data: 'External_Account_Number' },
+                { data: 'External_Account_Number', searchable: false },
                 {
                     data: 'Last_Name', render: function (data, type, row) {
                         return row.Last_Name + "," + row.First_Name + " " + row.MI;
                     },
                     sClass: 'word-break-all'
                 },
-                { data: 'Current_Process' },
+                { data: 'Current_Process', searchable: false },
                 {
                     data: 'Addendum_Created_Date_Time', render: function (data, type, row) {
-                        var dt1 = data.replaceAll("/", "").replaceAll("Date(", "").replaceAll(")", "");
-                        return ConvertDate(new Date(parseInt(dt1)));
-                    },
+                        if (row.Addendum_Created_Date_Time == "0001-01-01T00:00:00")
+                            return "";
+                        else
+                            return ConvertDate(row.Addendum_Created_Date_Time.replace("T", " "));
+                    }, searchable: false
                 },
-                { data: 'Addendum_Created_By' },
-                { data: 'Addendum_Signed_By' },
-                { data: 'Encounter_ID', visible: 'false', sClass: "hide_column" },
-                { data: 'Physician_ID', visible: 'false', sClass: "hide_column" },
-                { data: 'EHR_Obj_Type', visible: 'false', sClass: "hide_column" },
-                { data: 'Addendum_ID', visible: 'false', sClass: "hide_column" },
-                { data: 'Current_Owner', visible: 'false', sClass: "hide_column" },
+                { data: 'Addendum_Created_By', searchable: false },
+                { data: 'Addendum_Signed_By', searchable: false },
+                { data: 'Encounter_ID', sClass: "hide_column", searchable: false },
+                { data: 'Physician_ID', sClass: "hide_column", searchable: false },
+                { data: 'EHR_Obj_Type', sClass: "hide_column", searchable: false },
+                { data: 'Addendum_ID', sClass: "hide_column", searchable: false },
+                { data: 'Current_Owner', sClass: "hide_column", searchable: false },
             ],
         });
     $('#EncounterTable_filter').css({
         'float': 'left',
         'text-align': 'left',
         'margin-left': '30px',
+        'width': '500px',
     });
 
     $('#EncounterTable_info').css({
         'min-width': '180px'
     });
 
-    $('#EncounterTable_filter input').unbind();
-
-    $('#EncounterTable_filter input').on('keyup', function () {
-        dataTable.column(3).search(this.value).draw();
-    });
-
     $('#EncounterTable tbody').on('dblclick', 'tr', function () {
-        $('#EncounterTable tr').removeClass("highlight");
+        $('#EncounterTable tr').removeClass("odd");
+        $('#EncounterTable tr').removeClass("even");
+        dataTable.$('tr.highlight').removeClass('highlight');
         $(this).addClass("highlight");
         RowClick();
     });
 
     $('#EncounterTable tbody').on('click', 'tr', function () {
-        $('#EncounterTable tr').removeClass("highlight");
+        $('#EncounterTable tr').removeClass("odd");
+        $('#EncounterTable tr').removeClass("even");
+        dataTable.$('tr.highlight').removeClass('highlight');
         $(this).addClass("highlight");
     });
+    $("#EncounterTable_filter").children("label").children("input").css("width", "300px")
 
 }
 function chkMyTask14Click(sender) {

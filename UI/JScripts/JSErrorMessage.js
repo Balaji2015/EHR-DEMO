@@ -2745,7 +2745,7 @@ function RemoveItem(URL, atrName) {
             RemoveItems = idlist + "," + URL.substring(URL.indexOf(sURLAtr), URL.length).split("&")[0].split("=")[1] + "~" + sTagAtr;
         }
     }
-
+    sessionStorage.setItem('MyQRemoveIdList', "");
     sessionStorage.setItem('MyQRemoveIdList', RemoveItems);
 }
 //Jira CAP-1366
