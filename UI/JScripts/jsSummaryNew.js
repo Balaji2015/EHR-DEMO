@@ -346,11 +346,15 @@ function AkidoNoteClickSum(sAkidoURL) {
     //Result = openNonModal(sAkidoURL, 780, 1250, obj);
     //if (Result == null)
     //    return false;
+    //CAP-2636
     $('#resultLoading').css("display", "none");
-    window.open(sAkidoURL, '_blank');
-
-   
-    
-
+    var isduplicate = localStorage.getItem("isduplicatetab")??"";
+    if (isduplicate == "true") {
+        localStorage.setItem("akidosummaryurl", sAkidoURL);
+        localStorage.removeItem("isduplicatetab");
+    }
+    else {    
+        window.open(sAkidoURL, '_blank');
+    }
     return false;
 }

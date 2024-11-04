@@ -2976,14 +2976,14 @@ $(document).ready(function () {
     //CAP-1840 and CAP-1841 and CAP-1846 - End
     $('li  div').addClass('navhover');
     $("#falogout").css("display", "block");
-    //CAP-1506 & CAP-1507 & CAP-1509
-    if (document.getElementById(GetClientId("hdnIsDirectLink")).value == "true") {
-        $("#ctl00_pnlScroll").css({
-            'filter': 'blur(10px)',
-            '-webkit-filter': 'blur(10px)',
-            'pointer-events': 'none'
-        });
-    }
+    //CAP-1506 & CAP-1507 & CAP-1509,CAP-2629
+    //if (document.getElementById(GetClientId("hdnIsDirectLink")).value == "true") {
+    //    $("#ctl00_pnlScroll").css({
+    //        'filter': 'blur(10px)',
+    //        '-webkit-filter': 'blur(10px)',
+    //        'pointer-events': 'none'
+    //    });
+    //}
     //Jira CAP-1460 - start
     if ($("#ctl00_ModalWindow")[0]?.baseURI?.indexOf("ScreenName=ERX") != undefined && $("#ctl00_ModalWindow")[0].baseURI.indexOf("ScreenName=ERX") > -1) {
         $("#ctl00_ModalWindow").show('show', function () {

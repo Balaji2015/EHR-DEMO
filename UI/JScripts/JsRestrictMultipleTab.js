@@ -26,17 +26,29 @@ channel.addEventListener('message', (msg) => {
     //    // replace this with whatever logic you need
     //    window.location.replace("frmRestrictMultipleTabs.aspx");
     //}
+   
     if (msg.data === 'already-open') {
         if (window.top.location.href.indexOf('IsLoginRequired') > 0 || window.top.location.href.indexOf('frmLogin') == -1) {
             setTimeout(function () {
                 var yesOrNo = DisplayErrorMessage('010027');
+                localStorage.setItem("isduplicatetab","true");
                 if (yesOrNo == false) {
                     isOriginal = false;
                     // message received from original tab
                     // replace this with whatever logic you need
+                    //CAP-2636
+                    localStorage.removeItem("akidosummaryurl");
+                    localStorage.removeItem("isduplicatetab");
                     window.location.replace("frmRestrictMultipleTabs.aspx");
                 } else if (yesOrNo) {
                     channel.postMessage('close-old-tab');
+                    //CAP-2636
+                    var akidoSummaryUrl = localStorage.getItem("akidosummaryurl") ?? "";
+                    localStorage.removeItem("akidosummaryurl");
+                    localStorage.removeItem("isduplicatetab");
+                    if (akidoSummaryUrl != "") { 
+                        window.open(akidoSummaryUrl, '_blank');
+                    }
                 }
             }, 500)
         }
