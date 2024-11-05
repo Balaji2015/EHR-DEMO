@@ -1892,60 +1892,189 @@ function loadMyorder() {
     });
 }
 function loadMyscan() {
-    $("#chkMyShowAll")[0].disabled = false;
-    $("#chkMyShowAll")[0].checked ? Showall = "Checked" : Showall = "Unchecked";
-    $.ajax({
-        type: "POST",
-        url: "frmMyQueueNew.aspx/LoadMyScan",
-        data: JSON.stringify({
-            "sShowall": Showall,
-        }),
-        contentType: "application/json; charset=utf-8",
-        dataType: "json",
-        async: true,
-        success: function (data) {
-            $('#MyQTable').empty();
-            var tabContents;
-            var objdata = $.parseJSON(data.d);
-            if (data.d != "[]") {
-                for (var i = 0; i < objdata.length; i++) {
-                    if (i == 0)
-                        tabContents = "<tr><td style='width:16%'>" + objdata[i].Scanned_File_Name + "</td><td style='width:16%'>" + objdata[i].No_of_Pages + "</td><td style='width:16%'>" + ConvertDate(objdata[i].Scanned_Date.replace("T", " ")) + "</td><td style='width:16%'>" + objdata[i].Facility_Name + "</td><td style='width:16%'>" + objdata[i].Current_Process + "</td><td style='display:none;'>" + objdata[i].Scan_ID + "</td><td style='display:none;'>" + objdata[i].Human_ID + + "</td></tr>";
-                    else
-                        tabContents = tabContents + "<tr><td style='width:16%'>" + objdata[i].Scanned_File_Name + "</td><td style='width:16%'>" + objdata[i].No_of_Pages + "</td><td style='width:16%'>" + ConvertDate(objdata[i].Scanned_Date.replace("T", " ")) + "</td><td style='width:16%'>" + objdata[i].Facility_Name + "</td><td style='width:16%'>" + objdata[i].Current_Process + "</td><td style='display:none;'>" + objdata[i].Scan_ID + "</td><td style='display:none;'>" + objdata[i].Human_ID + "</td></tr>";
-                }
-                $("#MyQTable").append("<table id=EncounterTable class='table table-bordered Gridbodystyle' ' style='table-layout: fixed;'><thead class='header' style='border: 0px;width:96.7%;'><tr class='header' ><th style='border: 1px solid #909090;text-align: center;width:16%'>File Name</th><th style='border: 1px solid #909090;text-align: center;width:16%'>No of Pages</th><th style='border: 1px solid #909090;text-align: center;width:16%'>Scan Date</th><th style='border: 1px solid #909090;text-align: center;width:16%'>Facility Name</th><th style='border: 1px solid #909090;text-align: center;width:16%'>Current Process</th><th style='border: 1px solid #909090;display:none;'>Scan_ID</th><th style='border: 1px solid #909090;display:none;'>Human_ID</th></tr></thead><tbody style='word-wrap: break-word;'>" + tabContents + "</tbody></table>");
-                //Jira #CAP-938
-                //$("#btnMyScan")[0].innerText = "My Scan " + "(" + objdata.length + ")";
-            }
-            else
-                $("#MyQTable").append("<table id=EncounterTable class='table table-bordered Gridbodystyle' ' style='table-layout: fixed;'><thead class='header' style='border: 0px;width:96.7%;'><tr class='header' ><th style='border: 1px solid #909090;text-align: center;width:16%'>File Name</th><th style='border: 1px solid #909090;text-align: center;width:16%'>No of Pages</th><th style='border: 1px solid #909090;text-align: center;width:16%'>Scan Date</th><th style='border: 1px solid #909090;text-align: center;width:16%'>Facility Name</th><th style='border: 1px solid #909090;text-align: center;width:16%'>Current Process</th><th style='border: 1px solid #909090;display:none;'>Scan_ID</th><th style='border: 1px solid #909090;display:none;'>Human_ID</th></tr></thead></table>");
-            //Jira #CAP-938
-            $("#btnMyScan")[0].innerText = "My Scan " + "(" + objdata.length + ")";
+    if ($("#hdnIsShowAllMyScanQueue")[0].value == "Y") {
+        Showall = "Checked";
+        document.getElementById("chkMyShowAll").style.display = "none";
+        $("label[for|='chkMyShowAll']")[0].style.display = "none"
+    }
+    else {
+        $("#chkMyShowAll")[0].disabled = false;
+        $("#chkMyShowAll")[0].checked ? Showall = "Checked" : Showall = "Unchecked";
 
-            if (Showall != "Checked") {
-                sessionStorage.setItem("My_Scan_Count", objdata.length);
-            }
-            //$("#btnMyScan")[0].innerText = "My Scan " + "(*)";
-            $("#ctl00_C5POBody_lblcount")[0].innerHTML = "";
-            SortTableHeader('MyQScan');
-            RowClick();
-            //$('#EncounterTable th').addClass('header');
-            { sessionStorage.setItem('StartLoading', 'false'); StopLoadFromPatChart(); }
+    }
+    //$.ajax({
+    //    type: "POST",
+    //    url: "frmMyQueueNew.aspx/LoadMyScan",
+    //    data: JSON.stringify({
+    //        "sShowall": Showall,
+    //    }),
+    //    contentType: "application/json; charset=utf-8",
+    //    dataType: "json",
+    //    async: true,
+    //    success: function (data) {
+    //        $('#MyQTable').empty();
+    //        var tabContents;
+    //        var objdata = $.parseJSON(data.d);
+    //        if (data.d != "[]") {
+    //            for (var i = 0; i < objdata.length; i++) {
+    //                if (i == 0)
+    //                    tabContents = "<tr><td style='width:16%'>" + objdata[i].Scanned_File_Name + "</td><td style='width:16%'>" + objdata[i].No_of_Pages + "</td><td style='width:16%'>" + ConvertDate(objdata[i].Scanned_Date.replace("T", " ")) + "</td><td style='width:16%'>" + objdata[i].Facility_Name + "</td><td style='width:16%'>" + objdata[i].Current_Process + "</td><td style='display:none;'>" + objdata[i].Scan_ID + "</td><td style='display:none;'>" + objdata[i].Human_ID + + "</td></tr>";
+    //                else
+    //                    tabContents = tabContents + "<tr><td style='width:16%'>" + objdata[i].Scanned_File_Name + "</td><td style='width:16%'>" + objdata[i].No_of_Pages + "</td><td style='width:16%'>" + ConvertDate(objdata[i].Scanned_Date.replace("T", " ")) + "</td><td style='width:16%'>" + objdata[i].Facility_Name + "</td><td style='width:16%'>" + objdata[i].Current_Process + "</td><td style='display:none;'>" + objdata[i].Scan_ID + "</td><td style='display:none;'>" + objdata[i].Human_ID + "</td></tr>";
+    //            }
+    //            $("#MyQTable").append("<table id=EncounterTable class='table table-bordered Gridbodystyle' ' style='table-layout: fixed;'><thead class='header' style='border: 0px;width:96.7%;'><tr class='header' ><th style='border: 1px solid #909090;text-align: center;width:16%'>File Name</th><th style='border: 1px solid #909090;text-align: center;width:16%'>No of Pages</th><th style='border: 1px solid #909090;text-align: center;width:16%'>Scan Date</th><th style='border: 1px solid #909090;text-align: center;width:16%'>Facility Name</th><th style='border: 1px solid #909090;text-align: center;width:16%'>Current Process</th><th style='border: 1px solid #909090;display:none;'>Scan_ID</th><th style='border: 1px solid #909090;display:none;'>Human_ID</th></tr></thead><tbody style='word-wrap: break-word;'>" + tabContents + "</tbody></table>");
+    //            //Jira #CAP-938
+    //            //$("#btnMyScan")[0].innerText = "My Scan " + "(" + objdata.length + ")";
+    //        }
+    //        else
+    //            $("#MyQTable").append("<table id=EncounterTable class='table table-bordered Gridbodystyle' ' style='table-layout: fixed;'><thead class='header' style='border: 0px;width:96.7%;'><tr class='header' ><th style='border: 1px solid #909090;text-align: center;width:16%'>File Name</th><th style='border: 1px solid #909090;text-align: center;width:16%'>No of Pages</th><th style='border: 1px solid #909090;text-align: center;width:16%'>Scan Date</th><th style='border: 1px solid #909090;text-align: center;width:16%'>Facility Name</th><th style='border: 1px solid #909090;text-align: center;width:16%'>Current Process</th><th style='border: 1px solid #909090;display:none;'>Scan_ID</th><th style='border: 1px solid #909090;display:none;'>Human_ID</th></tr></thead></table>");
+    //        //Jira #CAP-938
+    //        $("#btnMyScan")[0].innerText = "My Scan " + "(" + objdata.length + ")";
+
+    //        if (Showall != "Checked") {
+    //            sessionStorage.setItem("My_Scan_Count", objdata.length);
+    //        }
+    //        //$("#btnMyScan")[0].innerText = "My Scan " + "(*)";
+    //        $("#ctl00_C5POBody_lblcount")[0].innerHTML = "";
+    //        SortTableHeader('MyQScan');
+    //        RowClick();
+    //        //$('#EncounterTable th').addClass('header');
+    //        { sessionStorage.setItem('StartLoading', 'false'); StopLoadFromPatChart(); }
+    //    },
+    //    error: function OnError(xhr) {
+    //        { sessionStorage.setItem('StartLoading', 'false'); StopLoadFromPatChart(); }
+    //        if (xhr.status == 999)
+    //            window.location = "/frmSessionExpired.aspx";
+    //        else {
+    //            var log = JSON.parse(xhr.responseText);
+    //            console.log(log);
+    //            alert("USER MESSAGE:\n" +
+    //                ". Cannot process request. Please Login again and retry. \nEXCEPTION DETAILS: \n" +
+    //                "Message: " + log.Message);
+    //        }
+    //    }
+    //});
+    $('#MyQTable').empty();
+    $("#MyQTable").append("<table id=EncounterTable class='table table-bordered Gridbodystyle' ' style='table-layout: fixed;'><thead class='header' style='border: 0px;width:96.7%;'><tr class='header' ><th style='border: 1px solid #909090;text-align: center;width:16%'>File Name</th><th style='border: 1px solid #909090;text-align: center;width:16%'>No of Pages</th><th style='border: 1px solid #909090;text-align: center;width:16%'>Scan Date</th><th style='border: 1px solid #909090;text-align: center;width:16%'>Facility Name</th><th style='border: 1px solid #909090;text-align: center;width:16%'>Current Process</th><th style='border: 1px solid #909090;display:none;'>Scan_ID</th><th style='border: 1px solid #909090;display:none;'>Human_ID</th></tr></thead></table>");
+
+    var dataTable = new DataTable('#EncounterTable', {
+        serverSide: false,
+        lengthChange: false,
+        searching: true,
+        processing: false,
+        ordering: true,
+        order: [],
+        pageLength: 25,
+        language: {
+            search: "File Name Search",
+            searchPlaceholder: "Search by File Name",
+            infoFiltered: ""
         },
-        error: function OnError(xhr) {
-            { sessionStorage.setItem('StartLoading', 'false'); StopLoadFromPatChart(); }
-            if (xhr.status == 999)
-                window.location = "/frmSessionExpired.aspx";
-            else {
-                var log = JSON.parse(xhr.responseText);
-                console.log(log);
-                alert("USER MESSAGE:\n" +
-                    ". Cannot process request. Please Login again and retry. \nEXCEPTION DETAILS: \n" +
-                    "Message: " + log.Message);
+        dom: '<"top"ipf>rt<"bottom"l><"clear">',
+        ajax: {
+            url: "frmMyQueueNew.aspx/LoadMyScan",
+            contentType: "application/json",
+            type: "GET",
+            dataType: "JSON",
+            deferRender: true,
+            data: function (d) {
+                d.extra_search = JSON.stringify({
+                    "sShowall": Showall
+                });
+                return d;
+            },
+            dataSrc: function (json) {
+                var objdata = json.d;
+                objdata.data = Decompress(objdata.data);
+
+                $("#btnMyScan")[0].innerText = "My Scan " + "(" + objdata.data.length + ")";
+
+                if (Showall != "Checked") {
+                    sessionStorage.setItem("My_Scan_Count", objdata.data.length);
+                }
+                $("#ctl00_C5POBody_lblcount")[0].innerHTML = "";
+
+                json.draw = objdata.draw;
+                json.recordsTotal = objdata.recordsTotal;
+                json.recordsFiltered = objdata.recordsFiltered;
+                json.data = objdata.data;
+
+
+                { sessionStorage.setItem('StartLoading', 'false'); StopLoadFromPatChart(); }
+
+
+                return json.data;
+
+            },
+            error: function (xhr, error, code) {
+                { sessionStorage.setItem('StartLoading', 'false'); StopLoadFromPatChart(); }
+                if (xhr.status == 999)
+                    window.location = xhr.statusText;
+                else {
+                    var log = JSON.parse(xhr.responseText);
+                    console.log(log);
+                    alert("USER MESSAGE:\n" +
+                        ". Cannot process request. Please Login again and retry. \nEXCEPTION DETAILS: \n" +
+                        "Message: " + log.Message);
+                }
             }
+        },
+        columns: [
+            {
+                data: 'Scanned_File_Name',
+                sWidth: '16%',
+                sClass: "word-break-all text-align-center"
+
+            },
+            {
+                data: 'No_of_Pages', sWidth: '16%', sClass: "text-align-center", searchable: false
+            },
+            {
+                data: 'Scanned_Date', render: function (data, type, row) {
+                    var dt1 = data.replaceAll("/", "").replaceAll("Date(", "").replaceAll(")", "");
+                    dt1 = ConvertDate(dt1.replaceAll("T", " "));
+                    var dt2 = dt1.split(' ');
+                    if (dt2.length > 0) {
+                        if (dt2.indexOf("01-01-0001") > -1) {
+                            return "";
+                        }
+                    }
+                    return dt1;
+                }, sWidth: '16%', sClass: "text-align-center", searchable: false
+            },
+            { data: 'Facility_Name', sWidth: '16%', sClass: "word-break-all text-align-center", searchable: false },
+            { data: 'Current_Process', sWidth: '16%', sClass: "text-align-center", searchable: false },
+            { data: 'Scan_ID', sClass: "hide_column", sWidth: '5%', searchable: false },
+            { data: 'Human_ID', sClass: "hide_column", sWidth: '5%', searchable: false }
+
+        ],
+        createdRow: function (row, data, dataIndex) {
+
+        },
+        "fnDrawCallback": function (oSettings) {
+            RowClick();
         }
+
     });
+
+    $('#EncounterTable_filter').css({
+        'float': 'left',
+        'text-align': 'left',
+        'margin-left': '30px',
+    });
+
+    $('#EncounterTable_info').css({
+        'min-width': '180px'
+    });
+
+    dataTable.on('page.dt', function () {
+        dataTable.$('tr.highlight').removeClass('highlight');
+    });
+    dataTable.on('search.dt', function () {
+        dataTable.$('tr.highlight').removeClass('highlight');
+    });
+
+
 
 }
 function loadMyprescription() {
@@ -3148,57 +3277,58 @@ function shwllclck() {
         var Showall = "";
         $("#chkMyShowAll")[0].checked ? Showall = "Checked" : Showall = "Unchecked";
         $('#RefreshMyQ').css("background-color", "");
-        $.ajax({
-            type: "POST",
-            url: "frmMyQueueNew.aspx/LoadMyScan",
-            data: JSON.stringify({
-                "sShowall": Showall,
-            }),
-            contentType: "application/json; charset=utf-8",
-            dataType: "json",
-            async: true,
-            success: function (data) {
-                $('#MyQTable').empty();
-                var tabContents;
-                var objdata = $.parseJSON(data.d);
-                if (data.d != "[]") {
-                    for (var i = 0; i < objdata.length; i++) {
-                        if (i == 0)
-                            tabContents = "<tr><td style='width:16%'>" + objdata[i].Scanned_File_Name + "</td><td style='width:16%'>" + objdata[i].No_of_Pages + "</td><td style='width:16%'>" + ConvertDate(objdata[i].Scanned_Date.replace("T", " ")) + "</td><td style='width:16%'>" + objdata[i].Facility_Name + "</td><td style='width:16%'>" + objdata[i].Current_Process + "</td><td style='display:none;'>" + objdata[i].Scan_ID + "</td><td style='display:none;'>" + objdata[i].Human_ID + + "</td></tr>";
-                        else
-                            tabContents = tabContents + "<tr><td style='width:16%'>" + objdata[i].Scanned_File_Name + "</td><td style='width:16%'>" + objdata[i].No_of_Pages + "</td><td style='width:16%'>" + ConvertDate(objdata[i].Scanned_Date.replace("T", " ")) + "</td><td style='width:16%'>" + objdata[i].Facility_Name + "</td><td style='width:16%'>" + objdata[i].Current_Process + "</td><td style='display:none;'>" + objdata[i].Scan_ID + "</td><td style='display:none;'>" + objdata[i].Human_ID + "</td></tr>";
-                    }
-                    $("#MyQTable").append("<table id=EncounterTable class='table table-bordered Gridbodystyle' style='table-layout: fixed;'><thead class='header' style='border: 0px;width:96.7%;'><tr class='header' ><th style='border: 1px solid #909090;text-align: center;width:16%'>File Name</th><th style='border: 1px solid #909090;text-align: center;width:16%'>No of Pages</th><th style='border: 1px solid #909090;text-align: center;width:16%'>Scan Date</th><th style='border: 1px solid #909090;text-align: center;width:16%'>Facility Name</th><th style='border: 1px solid #909090;text-align: center;width:16%'>Current Process</th><th style='border: 1px solid #909090;display:none;'>Scan_ID</th><th style='border: 1px solid #909090;display:none;'>Human_ID</th></tr></thead><tbody style='word-wrap: break-word;'>" + tabContents + "</tbody></table>");
-                    //Jira #CAP-938
-                    //$("#btnMyScan")[0].innerText = "My Scan " + "(" + objdata.length + ")";
-                }
-                else
-                    $("#MyQTable").append("<table id=EncounterTable class='table table-bordered Gridbodystyle'style='table-layout: fixed;'><thead class='header' style='border: 0px;width:96.7%;'><tr class='header' ><th style='border: 1px solid #909090;text-align: center;width:16%'>File Name</th><th style='border: 1px solid #909090;text-align: center;width:16%'>No of Pages</th><th style='border: 1px solid #909090;text-align: center;width:16%'>Scan Date</th><th style='border: 1px solid #909090;text-align: center;width:16%'>Facility Name</th><th style='border: 1px solid #909090;text-align: center;width:16%'>Current Process</th><th style='border: 1px solid #909090;display:none;'>Scan_ID</th><th style='border: 1px solid #909090;display:none;'>Human_ID</th></tr></thead></table>");
-                //Jira #CAP-938
-                $("#btnMyScan")[0].innerText = "My Scan " + "(" + objdata.length + ")";
-                if (Showall != "Checked") {
-                    sessionStorage.setItem("My_Scan_Count", objdata.length);
-                }
-                //$("#btnMyScan")[0].innerText = "My Scan " + "(*)";
-                $("#ctl00_C5POBody_lblcount")[0].innerHTML = "";
-                SortTableHeader('MyQScan');
-                //$('#EncounterTable th').addClass('header');
-                RowClick();
-                { sessionStorage.setItem('StartLoading', 'false'); StopLoadFromPatChart(); }
-            },
-            error: function OnError(xhr) {
-                { sessionStorage.setItem('StartLoading', 'false'); StopLoadFromPatChart(); }
-                if (xhr.status == 999)
-                    window.location = "/frmSessionExpired.aspx";
-                else {
-                    var log = JSON.parse(xhr.responseText);
-                    console.log(log);
-                    alert("USER MESSAGE:\n" +
-                        ". Cannot process request. Please Login again and retry. \nEXCEPTION DETAILS: \n" +
-                        "Message: " + log.Message);
-                }
-            }
-        });
+        //$.ajax({
+        //    type: "POST",
+        //    url: "frmMyQueueNew.aspx/LoadMyScan",
+        //    data: JSON.stringify({
+        //        "sShowall": Showall,
+        //    }),
+        //    contentType: "application/json; charset=utf-8",
+        //    dataType: "json",
+        //    async: true,
+        //    success: function (data) {
+        //        $('#MyQTable').empty();
+        //        var tabContents;
+        //        var objdata = $.parseJSON(data.d);
+        //        if (data.d != "[]") {
+        //            for (var i = 0; i < objdata.length; i++) {
+        //                if (i == 0)
+        //                    tabContents = "<tr><td style='width:16%'>" + objdata[i].Scanned_File_Name + "</td><td style='width:16%'>" + objdata[i].No_of_Pages + "</td><td style='width:16%'>" + ConvertDate(objdata[i].Scanned_Date.replace("T", " ")) + "</td><td style='width:16%'>" + objdata[i].Facility_Name + "</td><td style='width:16%'>" + objdata[i].Current_Process + "</td><td style='display:none;'>" + objdata[i].Scan_ID + "</td><td style='display:none;'>" + objdata[i].Human_ID + + "</td></tr>";
+        //                else
+        //                    tabContents = tabContents + "<tr><td style='width:16%'>" + objdata[i].Scanned_File_Name + "</td><td style='width:16%'>" + objdata[i].No_of_Pages + "</td><td style='width:16%'>" + ConvertDate(objdata[i].Scanned_Date.replace("T", " ")) + "</td><td style='width:16%'>" + objdata[i].Facility_Name + "</td><td style='width:16%'>" + objdata[i].Current_Process + "</td><td style='display:none;'>" + objdata[i].Scan_ID + "</td><td style='display:none;'>" + objdata[i].Human_ID + "</td></tr>";
+        //            }
+        //            $("#MyQTable").append("<table id=EncounterTable class='table table-bordered Gridbodystyle' style='table-layout: fixed;'><thead class='header' style='border: 0px;width:96.7%;'><tr class='header' ><th style='border: 1px solid #909090;text-align: center;width:16%'>File Name</th><th style='border: 1px solid #909090;text-align: center;width:16%'>No of Pages</th><th style='border: 1px solid #909090;text-align: center;width:16%'>Scan Date</th><th style='border: 1px solid #909090;text-align: center;width:16%'>Facility Name</th><th style='border: 1px solid #909090;text-align: center;width:16%'>Current Process</th><th style='border: 1px solid #909090;display:none;'>Scan_ID</th><th style='border: 1px solid #909090;display:none;'>Human_ID</th></tr></thead><tbody style='word-wrap: break-word;'>" + tabContents + "</tbody></table>");
+        //            //Jira #CAP-938
+        //            //$("#btnMyScan")[0].innerText = "My Scan " + "(" + objdata.length + ")";
+        //        }
+        //        else
+        //            $("#MyQTable").append("<table id=EncounterTable class='table table-bordered Gridbodystyle'style='table-layout: fixed;'><thead class='header' style='border: 0px;width:96.7%;'><tr class='header' ><th style='border: 1px solid #909090;text-align: center;width:16%'>File Name</th><th style='border: 1px solid #909090;text-align: center;width:16%'>No of Pages</th><th style='border: 1px solid #909090;text-align: center;width:16%'>Scan Date</th><th style='border: 1px solid #909090;text-align: center;width:16%'>Facility Name</th><th style='border: 1px solid #909090;text-align: center;width:16%'>Current Process</th><th style='border: 1px solid #909090;display:none;'>Scan_ID</th><th style='border: 1px solid #909090;display:none;'>Human_ID</th></tr></thead></table>");
+        //        //Jira #CAP-938
+        //        $("#btnMyScan")[0].innerText = "My Scan " + "(" + objdata.length + ")";
+        //        if (Showall != "Checked") {
+        //            sessionStorage.setItem("My_Scan_Count", objdata.length);
+        //        }
+        //        //$("#btnMyScan")[0].innerText = "My Scan " + "(*)";
+        //        $("#ctl00_C5POBody_lblcount")[0].innerHTML = "";
+        //        SortTableHeader('MyQScan');
+        //        //$('#EncounterTable th').addClass('header');
+        //        RowClick();
+        //        { sessionStorage.setItem('StartLoading', 'false'); StopLoadFromPatChart(); }
+        //    },
+        //    error: function OnError(xhr) {
+        //        { sessionStorage.setItem('StartLoading', 'false'); StopLoadFromPatChart(); }
+        //        if (xhr.status == 999)
+        //            window.location = "/frmSessionExpired.aspx";
+        //        else {
+        //            var log = JSON.parse(xhr.responseText);
+        //            console.log(log);
+        //            alert("USER MESSAGE:\n" +
+        //                ". Cannot process request. Please Login again and retry. \nEXCEPTION DETAILS: \n" +
+        //                "Message: " + log.Message);
+        //        }
+        //    }
+        //});
+        loadMyscan();
 
     }
     else if (document.getElementById("RefreshMyQ").innerText.indexOf("Refresh My Orders") > -1 && $('#RefreshMyQ').is(":visible")) {

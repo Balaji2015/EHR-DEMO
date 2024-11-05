@@ -485,7 +485,9 @@ namespace Acurus.Capella.UI
             return resultNew;
         }
         [WebMethod(EnableSession = true)]
-        public static string LoadMyScan(string sShowall)
+        [ScriptMethod(ResponseFormat = ResponseFormat.Json, UseHttpGet = true)]
+        //public static string LoadMyScan(string sShowall)
+        public static object LoadMyScan()
         {
             if (ClientSession.UserName == string.Empty)
             {
@@ -494,6 +496,9 @@ namespace Acurus.Capella.UI
                 HttpContext.Current.Response.StatusDescription = "frmSessionExpired.aspx";
                 return "Session Expired";
             }
+            string extra_search = HttpContext.Current.Request.Params["extra_search"];
+            var searchData = JsonConvert.DeserializeObject<Dictionary<string, string>>(extra_search);
+            string sShowall = searchData["sShowall"];
 
             string sGroup_ID_Log = ClientSession.EncounterId.ToString() + "-" + ClientSession.HumanId.ToString() + "-" + ClientSession.PhysicianId.ToString() + "-" + DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss:FFF");
             UtilityManager.inserttologgingtable(ClientSession.EncounterId.ToString(), ClientSession.HumanId.ToString(), ClientSession.UserName, ClientSession.PhysicianId.ToString(), "MyQueue LoadMyScan : Start", DateTime.Now, sGroup_ID_Log, "frmMyQueueNew");
@@ -512,7 +517,14 @@ namespace Acurus.Capella.UI
             UtilityManager.inserttologgingtable(ClientSession.EncounterId.ToString(), ClientSession.HumanId.ToString(), ClientSession.UserName, ClientSession.PhysicianId.ToString(), "MyQueue LoadMyScan GetListObjects DB call: End", DateTime.Now, sGroup_ID_Log, "frmMyQueueNew");
             var MyScanList = from g in MyHome where g.Current_Owner != "UNKNOWN" orderby g.Scanned_Date descending select g;
             UtilityManager.inserttologgingtable(ClientSession.EncounterId.ToString(), ClientSession.HumanId.ToString(), ClientSession.UserName, ClientSession.PhysicianId.ToString(), "MyQueue LoadMyScan : End", DateTime.Now, sGroup_ID_Log, "frmMyQueueNew");
-            return JsonConvert.SerializeObject(MyScanList.ToList<MyQ>());
+            //return JsonConvert.SerializeObject(MyScanList.ToList<MyQ>());
+
+            var result = new
+            {
+                data = Compress(JsonConvert.SerializeObject(MyScanList.ToList<MyQ>()))
+            };
+
+            return result;
         }
         [WebMethod(EnableSession = true)]
         [ScriptMethod(ResponseFormat = ResponseFormat.Json, UseHttpGet = true)]

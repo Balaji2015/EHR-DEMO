@@ -243,6 +243,7 @@ table.dataTable > thead > tr > td {
     <input type="hidden" id="hdnIsShowAllMyOrderQueue" value="<%=ConfigurationManager.AppSettings["IsShowAllMyOrderQueue"]%>" />
     <input type="hidden" id="hdnIsShowAllGeneralOrderQueue" value="<%=ConfigurationManager.AppSettings["IsShowAllGeneralOrderQueue"]%>" />
     <input type="hidden" id="hdnIsShowAllMyPrescriptionQueue" value="<%=ConfigurationManager.AppSettings["IsShowAllMyPrescriptionQueue"]%>" />
+     <input type="hidden" id="hdnIsShowAllMyScanQueue" value="<%=ConfigurationManager.AppSettings["IsShowAllMyScanQueue"]%>" />
     <telerik:RadScriptManager ID="RadScriptManager1" runat="server" EnableViewState="false" EnableScriptCombine="true">
         <Scripts>
             <asp:ScriptReference Assembly="Telerik.Web.UI" Name="Telerik.Web.UI.Common.Core.js"></asp:ScriptReference>
