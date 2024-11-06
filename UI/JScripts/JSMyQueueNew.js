@@ -1195,6 +1195,7 @@ function LoadMyEncounter(ajaxUrl) {
         searching: true,
         processing: false,
         ordering: true,
+        autoWidth: false,
         order: [],
         pageLength: 15,
         language: {
@@ -2440,6 +2441,7 @@ function loadMyprescription() {
         searching: true,
         processing: false,
         ordering: true,
+        autoWidth: false,
         order: [],
         pageLength: 15,
         language: {
