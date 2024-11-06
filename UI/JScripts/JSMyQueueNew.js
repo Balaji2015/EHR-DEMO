@@ -375,7 +375,7 @@ $(document).ready(function () {
         }
 
 
-        if ($('#MyQTable').children().find('.highlight').length > 0 && $('#MyQTable').children().find('.highlight')[0].classList.length == 1) {
+        if ($('#MyQTable').children().find('.highlight').length > 0 && $('#MyQTable').children().find('.highlight')[0].classList.length == 2) {
             var currentProcessscnt = 0;
             $('#MyQTable tr.highlight').each(function (i, row) {
                 var $row = $(row);
@@ -475,8 +475,8 @@ function MyQclick() {
             var encounter_id = '';
             var objtype = '';
             //CAP 314  Uncaught Type Error: Cannot read properties of undefined (reading inner Text)    
-            if ($(currRow)[0]?.children[6]?.innerText.trim() == 'TECHNICIAN_PROCESS' && $(currRow)[0]?.children[6]?.innerText.trim() != undefined && $(currRow)[0]?.children[6]?.innerText.trim() != null) {
-                Curprocess = $(currRow)[0]?.children[6]?.innerText.trim()
+            if ($(currRow)[0]?.children[7]?.innerText.trim() == 'TECHNICIAN_PROCESS' && $(currRow)[0]?.children[7]?.innerText.trim() != undefined && $(currRow)[0]?.children[7]?.innerText.trim() != null) {
+                Curprocess = $(currRow)[0]?.children[7]?.innerText.trim()
                 PhyID = $(currRow)[0]?.children[11]?.innerText.trim();
                 date = $(currRow)[0]?.children[13]?.innerText.trim();
                 encounter_id = $(currRow)[0]?.children[10]?.innerText.trim();
@@ -965,7 +965,6 @@ function GenQLoad() {
         if ($("#ctl00_C5POBody_chkViewAllFacilities")[0] != undefined && $("#ctl00_C5POBody_chkViewAllFacilities")[0] != null) {
             $("#ctl00_C5POBody_chkViewAllFacilities")[0].checked ? ViewAllFacilities = "Checked" : ViewAllFacilities = "Unchecked";
         }
-        debugger
         $.ajax({
             type: "POST",
             url: "frmMyQueueNew.aspx/LoadEncounter",
@@ -1154,7 +1153,7 @@ function LoadMyEncounter(ajaxUrl) {
     $('#MyQTable').empty();
     $('#GeneralQTable').empty();
     $("#MyQTable").append(`
-    <table id="EncounterTable" class="table table-bordered Gridbodystyle" style="table-layout: fixed;">
+    <table id="EncounterTable" class="table table-bordered Gridbodystyle" style="table-layout: fixed;width:100%;">
     <thead class="header" style="border: 0px;width:96.7%;">
         <tr class="header">
             <th style="border: 1px solid #909090;text-align: center;width: 4%;">Select<input type="checkbox" class="myQChkbxAll" onclick="MyQselectAll(this)"></th>
@@ -1199,6 +1198,7 @@ function LoadMyEncounter(ajaxUrl) {
         searching: true,
         processing: false,
         ordering: true,
+        autoWidth: false,
         order: [],
         pageLength: 15,
         language: {
@@ -1257,14 +1257,15 @@ function LoadMyEncounter(ajaxUrl) {
                         disableOverallSelect = false;
                     }
                     if (Role != "Medical Assistant" && Role != "Front Office" && Role != "Surgery Coordinator" && Role != "Scribe") {
-                        return "<input type='checkbox' class='myQChkbx' " + disabled + "/>";
+                        return "<input type='checkbox' onclick='MyQcheckboxclick(this)' class='myQChkbx' " + disabled + "/>";
                     } else {
                         return "<input type='checkbox' onclick='checkboxclick(this)' />";
                     }
                 },
                 sClass: "text-align-center",
                 searchable: false,
-                sWidth: '30px',
+                orderable: false,
+                sWidth: '3%',
             },
             {
                 data: 'Appt_Date_Time', render: function (data, type, row) {
@@ -1272,16 +1273,16 @@ function LoadMyEncounter(ajaxUrl) {
                 },
                 searchable: false,
                 type: 'date',
-                sWidth: '118px'
+                sWidth: '12%'
             },
-            { data: 'Human_ID', sWidth: '49px' },
-            { data: 'External_Account_Number', searchable: false, sWidth: '62px' },
+            { data: 'Human_ID', sWidth: '6%' },
+            { data: 'External_Account_Number', searchable: false, sWidth: '7%' },
             {
                 data: 'Last_Name', render: function (data, type, row) {
                     return row.Last_Name + "," + row.First_Name + " " + row.MI;
                 },
                 sClass: 'word-break-all',
-                sWidth: '85px'
+                sWidth: '10%'
             },
             {
                 data: 'DOB', render: function (data, type, row) {
@@ -1289,23 +1290,24 @@ function LoadMyEncounter(ajaxUrl) {
                 },
                 searchable: false,
                 type: 'date',
-                sWidth: '77px'
+                sWidth: '8%'
             },
-            { data: 'Type_Of_Visit', sClass: (Ancillary == 'false' ? '' : 'hide_column'), searchable: false, sWidth: '77px' },
-            { data: 'Current_Process', searchable: false, sWidth: '108px' },
-            { data: 'Facility_Name', visible: (Ancillary == 'false'), searchable: false, sWidth: '80px' },
-            { data: 'PhyName', visible: (Ancillary == 'false'), searchable: false, sWidth: '124px' },
-            { data: 'Carrier_Name', visible: (Ancillary == 'false'), searchable: false },
-            { data: 'Insurance_Plan_Name', visible: (Ancillary == 'false'), searchable: false },
+            { data: 'Type_Of_Visit', sClass: (Ancillary == 'false' ? '' : 'hide_column'), searchable: false, sWidth: '8%' },
+            { data: 'Current_Process', searchable: false, sWidth: '12%' },
+            { data: 'Facility_Name', visible: (Ancillary == 'false'), searchable: false, sWidth: '8%' },
+            { data: 'PhyName', visible: (Ancillary == 'false'), searchable: false, sWidth: '12%' },
+            { data: 'Carrier_Name', visible: (Ancillary == 'false'), searchable: false, sWidth: '8%' },
+            { data: 'Insurance_Plan_Name', visible: (Ancillary == 'false'), searchable: false, sWidth: '8%' },
             {
                 data: 'Is_EandM_Submitted', render: function (data, type, row) {
                     return data.toUpperCase() == 'Y' ? "Submitted" : "Not Submitted";
                 },
                 searchable: false,
+                sWidth: '11%'
             },
-            { data: 'Test_Details', visible: (Ancillary == 'true'), searchable: false },
-            { data: 'Ordering_Physician', visible: (Ancillary == 'true'), searchable: false },
-            { data: 'Encounter_ID', searchable: false },
+            { data: 'Test_Details', visible: (Ancillary == 'true'), searchable: false, sWidth: '12%' },
+            { data: 'Ordering_Physician', visible: (Ancillary == 'true'), searchable: false, sWidth: '12%' },
+            { data: 'Encounter_ID', searchable: false, sWidth: '7%' },
             { data: 'Physician_ID', sClass: 'hide_column', searchable: false },
             { data: 'EHR_Obj_Type', sClass: 'hide_column', searchable: false },
             { data: 'Date_of_Service', sClass: 'hide_column', searchable: false },
@@ -1318,8 +1320,9 @@ function LoadMyEncounter(ajaxUrl) {
                 },
                 sClass: "text-align-center",
                 searchable: false,
+                orderable: false,
                 visible: (sessionStorage.getItem('IsAkidoPhysician') != null && sessionStorage.getItem('IsAkidoPhysician') == "YES"),
-                sWidth: '50px'
+                sWidth: '6%'
             },
         ]
     });
@@ -1985,6 +1988,7 @@ function loadMyorder() {
         searching: true,
         processing: false,
         ordering: true,
+        autoWidth: false,
         order: [],
         pageLength: 15,
         language: {
@@ -2425,6 +2429,7 @@ function loadMyprescription() {
         searching: true,
         processing: false,
         ordering: true,
+        autoWidth: false,
         order: [],
         pageLength: 15,
         language: {
@@ -5115,7 +5120,7 @@ function MyQselectAll(chkbxAll) {
         $("#MovetoNxtProcess")[0].disabled = false;
         isproviderReview = true;
 
-        return false;
+        //return false;
     }
     else {
         //$("input:checkbox[class=myQChkbx]:enabled").removeProp("checked");

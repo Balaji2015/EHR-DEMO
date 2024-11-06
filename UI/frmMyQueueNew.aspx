@@ -108,6 +108,9 @@ table.dataTable > thead > tr > td {
 .dataTables_filter input {
     width: 330px !important;
 }
+.dataTables_wrapper th {
+    padding: 8px !important;
+}
     </style>
     <link href="CSS/jquery.dataTables.min.css" rel="stylesheet" />
     <link href="CSS/fontawesomenew.css" rel="stylesheet" />
