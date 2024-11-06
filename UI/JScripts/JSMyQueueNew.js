@@ -881,10 +881,12 @@ function OnClientCloseWindow() {
                 $('#GeneralQTable tr').find('td:eq(8):contains(' + removearry[i].split("~")[0] + ')').parent().remove();
             }
             else if (btnid == "btnMyScan") {
-                $('#MyQTable tr').find('td:eq(5):contains(' + removearry[i].split("~")[0] + ')').parent().remove();
+                var table = new DataTable('#EncounterTable');
+                table.row($('#MyQTable tr').find('td:eq(5):contains(' + removearry[i].split("~")[0] + ')').parent()).remove().draw();
+                //$('#MyQTable tr').find('td:eq(5):contains(' + removearry[i].split("~")[0] + ')').parent().remove();
+
             }
-            else if (btnid =='btnMyPres')
-            {
+            else if (btnid == 'btnMyPres') {
                 $('#MyQTable tr').find('td:eq(7):contains(' + removearry[i].split("~")[0] + ')').parent().remove();
             }
             else {
@@ -2291,7 +2293,7 @@ function loadMyscan() {
         order: [],
         pageLength: 15,
         language: {
-            search: "File Name Search",
+            search: "File Search",
             searchPlaceholder: "Search by File Name",
             infoFiltered: ""
         },
@@ -2348,11 +2350,11 @@ function loadMyscan() {
             {
                 data: 'Scanned_File_Name',
                 sWidth: '16%',
-                sClass: "word-break-all text-align-center"
+                sClass: "word-break-all"
 
             },
             {
-                data: 'No_of_Pages', sWidth: '16%', sClass: "text-align-center", searchable: false
+                data: 'No_of_Pages', sWidth: '16%', searchable: false
             },
             {
                 data: 'Scanned_Date', render: function (data, type, row) {
@@ -2365,10 +2367,10 @@ function loadMyscan() {
                         }
                     }
                     return dt1;
-                }, sWidth: '16%', sClass: "text-align-center", searchable: false
+                }, sWidth: '16%', searchable: false
             },
-            { data: 'Facility_Name', sWidth: '16%', sClass: "word-break-all text-align-center", searchable: false },
-            { data: 'Current_Process', sWidth: '16%', sClass: "text-align-center", searchable: false },
+            { data: 'Facility_Name', sWidth: '16%', sClass: "word-break-all", searchable: false },
+            { data: 'Current_Process', sWidth: '16%', searchable: false },
             { data: 'Scan_ID', sClass: "hide_column", sWidth: '5%', searchable: false },
             { data: 'Human_ID', sClass: "hide_column", sWidth: '5%', searchable: false }
 
@@ -2390,6 +2392,10 @@ function loadMyscan() {
 
     $('#EncounterTable_info').css({
         'min-width': '180px'
+    });
+
+    $("#EncounterTable thead").click(function () {
+        $("#EncounterTable thead tr").removeClass('highlight');
     });
 
     dataTable.on('page.dt', function () {
@@ -4244,6 +4250,8 @@ function RefreshMyQueue() {
 }
 
 function RowClick() {
+    $('#EncounterTable tr').removeClass("odd");
+    $('#EncounterTable tr').removeClass("even");
 
     $("#MyQTable tr").click(function () {
         //Jira CAP-1201
