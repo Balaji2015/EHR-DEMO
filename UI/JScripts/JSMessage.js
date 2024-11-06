@@ -159,6 +159,7 @@ function openNonModal(fromname, height, width, inputargument) {
 }
 //Jira #CAP-889
 function btnMoveClientClick() {
+    { sessionStorage.setItem('StartLoading', 'true'); StartLoadFromPatChart(); }
     RcopiaDownload();
     RemoveItem(document.URL, "PrescriptionID");
 }

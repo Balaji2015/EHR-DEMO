@@ -903,16 +903,16 @@ function OnClientCloseWindow() {
              numberofEncounters = $('#dvAdd').find("#EncounterTable tbody").children().length;
         }
         //Cap - 2589
-        else if ($('#MyQTable').find("#EncounterTable tbody").length > 0) {
-            numberofEncounters = $('#MyQTable').find("#EncounterTable tbody").children().length;
-        }
+        //else if ($('#MyQTable').find("#EncounterTable tbody").length > 0) {
+        //    numberofEncounters = $('#MyQTable').find("#EncounterTable tbody").children().length;
+        //}
         else if (btnid == "btnMyOrder") {
             var myOrderCount = $('#btnMyOrder').text();
             myOrderCount = parseInt(myOrderCount.match(/\d+/)[0]);
             var updatedCount = myOrderCount - removearry.length;
             numberofEncounters = updatedCount;
-            if (updatedCount > 25) {
-                $('#EncounterTable_info').text(`Showing 1 to 25 of ${updatedCount} entries`);
+            if (updatedCount > 15) {
+                $('#EncounterTable_info').text(`Showing 1 to 15 of ${updatedCount} entries`);
             } else {
                 $('#EncounterTable_info').text(`Showing 1 to ${updatedCount} of ${updatedCount} entries`);
             }
@@ -921,28 +921,27 @@ function OnClientCloseWindow() {
             myPresCount = parseInt(myPresCount.match(/\d+/)[0]);
             var updatedCount = myPresCount - removearry.length;
             numberofEncounters = updatedCount;
-            if (updatedCount > 25) {
-                $('#EncounterTable_info').text(`Showing 1 to 25 of ${updatedCount} entries`);
+            if (updatedCount > 15) {
+                $('#EncounterTable_info').text(`Showing 1 to 15 of ${updatedCount} entries`);
             } else {
                 $('#EncounterTable_info').text(`Showing 1 to ${updatedCount} of ${updatedCount} entries`);
+            }
+        } else if (btnid == "btnMyTask") {
+            //Cap - 2589
+            var finalcount = 0;
+            for (let i = 0; i < removearry.length; i++) {
+                tempObjectMyQTask = $.grep(tempObjectMyQTask, function (element) {
+                    return element.Message_ID != removearry[i].split("~")[0];
+                });
+                finalcount = tempObjectMyQTask.length;
+                LoadMyTaskTemp();
+                numberofEncounters = finalcount;
             }
         } else {
             numberofEncounters = 0;
         }
         if (btnid != undefined && numberofEncounters != undefined) {
             document.getElementById(btnid).innerText = document.getElementById(btnid).innerText.split("(")[0] + " (" + numberofEncounters + ")";
-        }
-        //Cap - 2589
-        var finalcount = 0;
-        for (let i = 0; i < removearry.length; i++) {
-            if (btnid == "btnMyTask") {
-                tempObjectMyQTask = $.grep(tempObjectMyQTask, function (element) {
-                    return element.Message_ID != removearry[i].split("~")[0];
-                });
-                finalcount = tempObjectMyQTask.length;
-                    LoadMyTaskTemp();
-            }           
-            document.getElementById(btnid).innerText = document.getElementById(btnid).innerText.split("(")[0] + " (" + finalcount + ")";
         }
     }
    
