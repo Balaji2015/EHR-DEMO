@@ -1,8 +1,6 @@
 ﻿var Role;
 
 var isproviderReview = false;
-var tempObjectMyTask;
-var tempObjectMyQTask;
 var dataTable;
 
 function loadGeneralQueue() {
@@ -881,7 +879,8 @@ function OnClientCloseWindow() {
                 });
             }
             else if (btnid == "btnMyTask") {
-                $('#MyQTable tr').find('td:eq(8):contains(' + removearry[i].split("~")[0] + ')').parent().remove();
+                var table = new DataTable('#EncounterTable');
+                table.row($('#MyQTable tr').find('td:eq(8):contains(' + removearry[i].split("~")[0] + ')').parent()).remove().draw(false);
             }
             else if (btnid == "btnTask") {
                 $('#GeneralQTable tr').find('td:eq(8):contains(' + removearry[i].split("~")[0] + ')').parent().remove();
@@ -931,16 +930,8 @@ function OnClientCloseWindow() {
             //myPresCount = parseInt(myPresCount.match(/\d+/)[0]);
             //numberofEncounters = myPresCount - removearry.length;
         } else if (btnid == "btnMyTask") {
-            //Cap - 2589
-            var finalcount = 0;
-            for (let i = 0; i < removearry.length; i++) {
-                tempObjectMyQTask = $.grep(tempObjectMyQTask, function (element) {
-                    return element.Message_ID != removearry[i].split("~")[0];
-                });
-                finalcount = tempObjectMyQTask.length;
-                LoadMyTaskTemp();
-                numberofEncounters = finalcount;
-            }
+            var table = new DataTable('#EncounterTable');
+            numberofEncounters = table.data().count();
         }
         else if (btnid == "btnMyScan")
         {
@@ -1730,7 +1721,6 @@ function LoadMyTask() {
                 //var objdata = json.d;
                 var objdata = json.d;
                 objdata.data = Decompress(objdata.data);
-                tempObjectMyQTask = objdata.data;
                 $("#btnMyTask")[0].innerText = "My Tasks  " + "(" + objdata.data.length + ")";
                 if (Showall != "Checked") {
                     sessionStorage.setItem("My_Task_Count", objdata.data.length);
@@ -1832,126 +1822,6 @@ function LoadMyTask() {
         $(this)[0].classList.add('highlight');
     });
 }
-
-
-function LoadMyTaskTemp() {
-    if ($('#hdnIsShowAllMyTasksQueue').val() == 'Y') {
-        $('#chkMyShowAll,#lblMyShowAll').css("display", "none");
-        $("#chkMyShowAll").prop('checked', true);
-    } else {
-        $('#chkMyShowAll,#lblMyShowAll').css("display", "");
-    }
-
-    $('#MyQTable').empty();
-    $('#GeneralQTable').empty();
-    $("#MyQTable").append(`
-    <table id=EncounterTable class='table table-bordered Gridbodystyle' ' style='table-layout: fixed;'>
-    <thead class='header' style='border: 0px;width:96.7%;'>
-    <tr class='header' >
-    <th style='border: 1px solid #909090;text-align: center;width:6%'>Priority</th>
-    <th style='border: 1px solid #909090;text-align: center;width:7%'>Acct. #</th>
-    <th style='border: 1px solid #909090;text-align: center;width:10%'>Patient Name</th>
-    <th style='border: 1px solid #909090;text-align: center;width:11%'>Message Date</th>
-    <th style='border: 1px solid #909090;text-align: center;width:11%'>Message Description</th>
-    <th style='border: 1px solid #909090;text-align: center;width:11%'>Assigned To</th>
-    <th style='border: 1px solid #909090;text-align: center;width:11%'>Owner</th>
-    <th style='border: 1px solid #909090;text-align: center;width:11%'>Completed Date Time</th>
-    <th style='border: 1px solid #909090;display:none;'>TaskID</th>
-    <th style='border: 1px solid #909090;display:none;'>Version</th>
-    </tr>
-    </thead>
-</table>`);
-    var titleval;
-    var dataTable = new DataTable('#EncounterTable', {
-        serverSide: false,
-        lengthChange: false,
-        searching: true,
-        processing: false,
-        ordering: true,
-        autowidth: false,
-        order: [],
-        pageLength: 15,
-        language: {
-            search: "Patient Name",
-            searchPlaceholder: "Search by Name or Acct. #",
-            infoFiltered: ""
-        },
-        dom: '<"top"ipf>rt<"bottom"l><"clear">', // Counter (i) and Pagination (p) at the top
-        data: tempObjectMyQTask,
-        columns: [
-            { data: 'Priority', searchable: false },
-            { data: 'Human_ID' },
-            {
-                data: 'Last_Name', render: function (data, type, row) {
-                    return row.Last_Name + "," + row.First_Name + " " + row.MI;
-                },
-                sClass: 'word-break-all'
-            },
-            {
-                data: 'Msg_Date_And_Time', render: function (data, type, row) {
-                    if (row.Msg_Date_And_Time == "0001-01-01T00:00:00")
-                        return "";
-                    else
-                        return ConvertDate(row.Msg_Date_And_Time.replace("T", " ")).split(' ')[0];
-                }, searchable: false,
-                type: 'date'
-            },
-            {
-                data: 'Message_Description', render: function (data, type, row) {
-                    if (row.Message_Notes != "") {
-                        titleval = row.Message_Notes.replace(/[\r\n]+/gm, "&#013;").replace(/'/g, "").replace(/'/g, "");
-                    }
-                    else {
-                        titleval = "";
-                    }
-                    return `<span title="${titleval}">${row.Message_Description}</span>`;
-                }, searchable: false
-            },
-            { data: 'Assigned_To', searchable: false },
-            { data: 'Created_By', searchable: false },
-            {
-                data: 'Modified_Date_Time', render: function (data, type, row) {
-                    if (row.Modified_Date_Time == "0001-01-01T00:00:00" || !$("#chkMyTask14")[0].checked)
-                        return "";
-                    else
-                        return ConvertDate(row.Modified_Date_Time.replace("T", " "));
-                }, searchable: false,
-                type: 'date'
-            },
-            { data: 'Message_ID', sClass: "hide_column", searchable: false },
-            { data: 'Version', sClass: "hide_column", searchable: false },
-        ],
-
-    });
-    $('#EncounterTable_filter').css({
-        'float': 'left',
-        'text-align': 'left',
-        'margin-left': '30px',
-        'width': '500px',
-    });
-
-    $('#EncounterTable_info').css({
-        'min-width': '180px'
-    });
-
-    //$('#EncounterTable_filter input').unbind();
-
-    $('#EncounterTable tbody').on('dblclick', 'tr', function () {
-        $('#EncounterTable tr').removeClass("odd");
-        $('#EncounterTable tr').removeClass("even");
-        dataTable.$('tr.highlight').removeClass('highlight');
-        $(this)[0].classList.add('highlight');
-        MyQclick();
-    });
-
-    $('#EncounterTable tbody').on('click', 'tr', function () {
-        $('#EncounterTable tr').removeClass("odd");
-        $('#EncounterTable tr').removeClass("even");
-        dataTable.$('tr.highlight').removeClass('highlight');
-        $(this)[0].classList.add('highlight');
-    });
-}
-
 
 function loadMyorder() {
     if ($('#hdnIsShowAllMyOrdersQueue').val() == 'Y') {
