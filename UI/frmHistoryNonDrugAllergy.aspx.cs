@@ -943,6 +943,9 @@ namespace Acurus.Capella.UI
                                 objList.Encounter_Id = ClientSession.EncounterId;
                                 objList.Version = 0;
                                 objList.Id = 0;
+                                //CAP-2538
+                                objList.Created_By = ClientSession.UserName;
+                                objList.Created_Date_And_Time = UtilityManager.ConvertToUniversal();
                                 SaveList.Add(objList);
                             }
 
@@ -982,6 +985,9 @@ namespace Acurus.Capella.UI
                                 objList.Encounter_Id = ClientSession.EncounterId;
                                 objList.Version = 0;
                                 objList.Id = 0;
+                                //CAP-2538
+                                objList.Created_By = ClientSession.UserName;
+                                objList.Created_Date_And_Time = UtilityManager.ConvertToUniversal();
                                 SaveList.Add(objList);
                             }
 
