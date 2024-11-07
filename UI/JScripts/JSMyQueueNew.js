@@ -882,7 +882,7 @@ function OnClientCloseWindow() {
             }
             else if (btnid == "btnMyScan") {
                 var table = new DataTable('#EncounterTable');
-                table.row($('#MyQTable tr').find('td:eq(5):contains(' + removearry[i].split("~")[0] + ')').parent()).remove().draw();
+                table.row($('#MyQTable tr').find('td:eq(5):contains(' + removearry[i].split("~")[0] + ')').parent()).remove().draw(false);
                 //$('#MyQTable tr').find('td:eq(5):contains(' + removearry[i].split("~")[0] + ')').parent().remove();
 
             }
