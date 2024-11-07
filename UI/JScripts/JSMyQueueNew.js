@@ -937,7 +937,13 @@ function OnClientCloseWindow() {
                 LoadMyTaskTemp();
                 numberofEncounters = finalcount;
             }
-        } else {
+        }
+        else if (btnid == "btnMyScan")
+        {
+            var table = new DataTable('#EncounterTable');
+            numberofEncounters = table.data().count();
+        }
+        else {
             numberofEncounters = 0;
         }
         if (btnid != undefined && numberofEncounters != undefined) {
