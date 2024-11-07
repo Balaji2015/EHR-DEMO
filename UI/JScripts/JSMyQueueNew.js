@@ -3,6 +3,7 @@
 var isproviderReview = false;
 var tempObjectMyTask;
 var tempObjectMyQTask;
+var dataTable;
 
 function loadGeneralQueue() {
     document.getElementById("divGeneralQ").style.display = "";
@@ -871,8 +872,13 @@ function OnClientCloseWindow() {
         var removearry = removeList.split(",");
         for (let i = 0; i < removearry.length; i++) {
             if (btnid.indexOf("Order") > -1) {
-                //$('#MyQTable tr td#' + removearry[i].split("~")[1] + ':contains(' + removearry[i].split("~")[0] + ')').parent().remove();
-                $('#MyQTable tr').find('td:eq(' + removearry[i].split("~")[1] + '):contains(' + removearry[i].split("~")[0] + ')').parent().remove();
+                $('#EncounterTable tr').each(function (rowIndex) {
+                    var lengthOfRow = $(this).find('td:eq(' + removearry[i].split("~")[1] + '):contains(' + removearry[i].split("~")[0] + ')')?.parent()?.length;
+                    if (lengthOfRow != undefined && lengthOfRow == 1) {
+                        dataTable.row((rowIndex - 1)).remove();
+                        return false;
+                    }
+                });
             }
             else if (btnid == "btnMyTask") {
                 $('#MyQTable tr').find('td:eq(8):contains(' + removearry[i].split("~")[0] + ')').parent().remove();
@@ -887,7 +893,13 @@ function OnClientCloseWindow() {
 
             }
             else if (btnid == 'btnMyPres') {
-                $('#MyQTable tr').find('td:eq(7):contains(' + removearry[i].split("~")[0] + ')').parent().remove();
+                $('#EncounterTable tr').each(function (rowIndex) {
+                    var lengthOfRow = $(this).find('td:eq(7):contains(' + removearry[i].split("~")[0] + ')')?.parent()?.length;
+                    if (lengthOfRow != undefined && lengthOfRow == 1) {
+                        dataTable.row((rowIndex - 1)).remove();
+                        return false;
+                    }
+                });
             }
             else {
                 chkShowAllClick();
@@ -907,25 +919,17 @@ function OnClientCloseWindow() {
         //    numberofEncounters = $('#MyQTable').find("#EncounterTable tbody").children().length;
         //}
         else if (btnid == "btnMyOrder") {
-            var myOrderCount = $('#btnMyOrder').text();
-            myOrderCount = parseInt(myOrderCount.match(/\d+/)[0]);
-            var updatedCount = myOrderCount - removearry.length;
-            numberofEncounters = updatedCount;
-            if (updatedCount > 15) {
-                $('#EncounterTable_info').text(`Showing 1 to 15 of ${updatedCount} entries`);
-            } else {
-                $('#EncounterTable_info').text(`Showing 1 to ${updatedCount} of ${updatedCount} entries`);
-            }
+            dataTable.search('').draw();
+            numberofEncounters = dataTable.data().count();
+            //var myOrderCount = $('#btnMyOrder').text();
+            //myOrderCount = parseInt(myOrderCount.match(/\d+/)[0]);
+            //numberofEncounters = myOrderCount - removearry.length;
         } else if (btnid == "btnMyPres") {
-            var myPresCount = $('#btnMyPres').text();
-            myPresCount = parseInt(myPresCount.match(/\d+/)[0]);
-            var updatedCount = myPresCount - removearry.length;
-            numberofEncounters = updatedCount;
-            if (updatedCount > 15) {
-                $('#EncounterTable_info').text(`Showing 1 to 15 of ${updatedCount} entries`);
-            } else {
-                $('#EncounterTable_info').text(`Showing 1 to ${updatedCount} of ${updatedCount} entries`);
-            }
+            dataTable.search('').draw();
+            numberofEncounters = dataTable.data().count();
+            //var myPresCount = $('#btnMyPres').text();
+            //myPresCount = parseInt(myPresCount.match(/\d+/)[0]);
+            //numberofEncounters = myPresCount - removearry.length;
         } else if (btnid == "btnMyTask") {
             //Cap - 2589
             var finalcount = 0;
@@ -1990,7 +1994,7 @@ function loadMyorder() {
     $("#chkMyShowAll")[0].disabled = false;
     $("#chkMyShowAll")[0].checked ? Showall = "Checked" : Showall = "Unchecked";
 
-    var dataTable = new DataTable('#EncounterTable', {
+    dataTable = new DataTable('#EncounterTable', {
         serverSide: false,
         lengthChange: false,
         searching: true,
@@ -2440,7 +2444,7 @@ function loadMyprescription() {
         </tr>
     </thead>
 </table>`);
-    var dataTable = new DataTable('#EncounterTable', {
+    dataTable = new DataTable('#EncounterTable', {
         serverSide: false,
         lengthChange: false,
         searching: true,
@@ -2521,7 +2525,7 @@ function loadMyprescription() {
             { data: 'EHR_Obj_Type', sClass: 'hide_column', searchable: false },
         ]
     });
-
+    
     $('#EncounterTable_filter').css({
         'float': 'left',
         'text-align': 'left',

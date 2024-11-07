@@ -30,6 +30,7 @@ namespace Acurus.Capella.UI
             set;
 
         }
+        private static List<string> ShowAllObjType { get; set; }
         protected void Page_Load(object sender, EventArgs e)
         {
             //Jira CAP-953
@@ -71,6 +72,20 @@ namespace Acurus.Capella.UI
             ClientSession.CurrentObjectType = string.Empty;
             ClientSession.FillEncounterandWFObject = null;
             ClientSession.FillPatientChart.Fill_Encounter_and_WFObject = null;
+
+            ShowAllObjType = new List<string>
+            {
+                ConfigurationManager.AppSettings["IsShowAllMyTasksQueue"] == "Y" ? "TASK" : "",
+                ConfigurationManager.AppSettings["IsShowAllMyOrdersQueue"] == "Y" ? "ORDER" : "",
+                ConfigurationManager.AppSettings["IsShowAllMyScanQueue"] == "Y" ? "SCAN" : "",
+                ConfigurationManager.AppSettings["IsShowAllMyPrescriptionQueue"] == "Y" ? "E-PRESCRIBE" : "",
+                ConfigurationManager.AppSettings["IsShowAllMyAmendmentQueue"] == "Y" ? "ADDENDUM" : "",
+
+                //ConfigurationManager.AppSettings["IsShowAllGeneralTasksQueue"] == "Y" ? "GEN_TASK" : "",
+                //ConfigurationManager.AppSettings["IsShowAllGeneralOrdersQueue"] == "Y" ? "GEN_ORDER" : "",
+                //ConfigurationManager.AppSettings["IsShowAllGeneralAmendmentQueue"] == "Y" ? "GEN_ADDENDUM" : ""
+            };
+
             var facAncillary = from f in ApplicationObject.facilityLibraryList where f.Fac_Name == ClientSession.FacilityName select f;
             IList<FacilityLibrary> ilstFacAncillary = facAncillary.ToList<FacilityLibrary>();
             if (ilstFacAncillary.Count > 0 && ilstFacAncillary[0].Is_Ancillary == "Y")
@@ -145,7 +160,7 @@ namespace Acurus.Capella.UI
             IList<MyQueueCountDTO> QCount = new List<MyQueueCountDTO>();
             UtilityManager.inserttologgingtable(ClientSession.EncounterId.ToString(), ClientSession.HumanId.ToString(), ClientSession.UserName, ClientSession.PhysicianId.ToString(), "MyQueue EncounterLoad : LoadMyQHashTable DB call Start", DateTime.Now, sGroup_ID_Log, "frmMyQueueNew");
             bool flgShowAll = ConfigurationSettings.AppSettings["IsShowAllMyEncountersQueue"] == "Y" ? true : false;
-            LoadMyQ = wfMngr.LoadMyQHashTable("ALL", ObjType, ProcessType, ClientSession.UserName, flgShowAll, iDefaultDays, ClientSession.FacilityName);//ClientSession.DefaultNoofDays);
+            LoadMyQ = wfMngr.LoadMyQHashTable("ALL", ObjType, ProcessType, ClientSession.UserName, flgShowAll, iDefaultDays, ClientSession.FacilityName, ShowAllObjType);//ClientSession.DefaultNoofDays);
             UtilityManager.inserttologgingtable(ClientSession.EncounterId.ToString(), ClientSession.HumanId.ToString(), ClientSession.UserName, ClientSession.PhysicianId.ToString(), "MyQueue EncounterLoad : LoadMyQHashTable DB call End", DateTime.Now, sGroup_ID_Log, "frmMyQueueNew");
             PatientQ = (IList<MyQ>)LoadMyQ["MyQ"];
             var pat = new List<MyQ>();
@@ -244,7 +259,7 @@ namespace Acurus.Capella.UI
                 IList<MyQueueCountDTO> QCount = new List<MyQueueCountDTO>();
                 UtilityManager.inserttologgingtable(ClientSession.EncounterId.ToString(), ClientSession.HumanId.ToString(), ClientSession.UserName, ClientSession.PhysicianId.ToString(), "MyQueue MyEncounterLoad LoadMyQHashTable DB call: Start", DateTime.Now, sGroup_ID_Log, "frmMyQueueNew");
                 bool flgShowAll = ConfigurationSettings.AppSettings["IsShowAllMyEncountersQueue"] == "Y" ? true : false;
-                LoadMyQ = wfMngr.LoadMyQHashTable("ALL", ObjType, ProcessType, ClientSession.UserName, flgShowAll, iDefaultDays, ClientSession.FacilityName);//ClientSession.DefaultNoofDays);
+                LoadMyQ = wfMngr.LoadMyQHashTable("ALL", ObjType, ProcessType, ClientSession.UserName, flgShowAll, iDefaultDays, ClientSession.FacilityName, ShowAllObjType);//ClientSession.DefaultNoofDays);
                 UtilityManager.inserttologgingtable(ClientSession.EncounterId.ToString(), ClientSession.HumanId.ToString(), ClientSession.UserName, ClientSession.PhysicianId.ToString(), "MyQueue MyEncounterLoad LoadMyQHashTable DB call: End", DateTime.Now, sGroup_ID_Log, "frmMyQueueNew");
 
                 PatientQ = (IList<MyQ>)LoadMyQ["MyQ"];
@@ -311,11 +326,11 @@ namespace Acurus.Capella.UI
                 bool flgShowAll = ConfigurationSettings.AppSettings["IsShowAllGeneralEncountersQueue"] == "Y" ? true : false;
                 if (sViewAllFacilities == "Checked")
                 {
-                    LoadMyQ = wfMngr.LoadMyQHashTable("ViewAllFacilities~" + ClientSession.FacilityName, ObjType, ProcessType, ClientSession.UserName, flgShowAll, iDefaultDays, "");//ClientSession.DefaultNoofDays);
+                    LoadMyQ = wfMngr.LoadMyQHashTable("ViewAllFacilities~" + ClientSession.FacilityName, ObjType, ProcessType, ClientSession.UserName, flgShowAll, iDefaultDays, "", ShowAllObjType);//ClientSession.DefaultNoofDays);
                 }
                 else
                 {
-                    LoadMyQ = wfMngr.LoadMyQHashTable(ClientSession.FacilityName, ObjType, ProcessType, ClientSession.UserName, flgShowAll, iDefaultDays, "");//ClientSession.DefaultNoofDays);
+                    LoadMyQ = wfMngr.LoadMyQHashTable(ClientSession.FacilityName, ObjType, ProcessType, ClientSession.UserName, flgShowAll, iDefaultDays, "", ShowAllObjType);//ClientSession.DefaultNoofDays);
                 }
                 UtilityManager.inserttologgingtable(ClientSession.EncounterId.ToString(), ClientSession.HumanId.ToString(), ClientSession.UserName, ClientSession.PhysicianId.ToString(), "MyQueue MyEncounterLoad LoadMyQHashTable DB call: Start", DateTime.Now, sGroup_ID_Log, "frmMyQueueNew");
                 PatientQ = (IList<MyQ>)LoadMyQ["MyQ"];
@@ -1080,11 +1095,11 @@ namespace Acurus.Capella.UI
             UtilityManager.inserttologgingtable(ClientSession.EncounterId.ToString(), ClientSession.HumanId.ToString(), ClientSession.UserName, ClientSession.PhysicianId.ToString(), "MyQueue LoadEncounter LoadMyQHashTable DB call : Start", DateTime.Now, sGroup_ID_Log, "frmMyQueueNew");
             if (sViewAllFacilities == "Checked")
             {
-                LoadMyQ = wfMngr.LoadMyQHashTable("ViewAllFacilities~" + ClientSession.FacilityName, ObjType, ProcessType, ClientSession.UserName, false, iDefaultDays, "");// ClientSession.DefaultNoofDays);
+                LoadMyQ = wfMngr.LoadMyQHashTable("ViewAllFacilities~" + ClientSession.FacilityName, ObjType, ProcessType, ClientSession.UserName, false, iDefaultDays, "", ShowAllObjType);// ClientSession.DefaultNoofDays);
             }
             else
             {
-                LoadMyQ = wfMngr.LoadMyQHashTable(ClientSession.FacilityName, ObjType, ProcessType, ClientSession.UserName, false, iDefaultDays, "");// ClientSession.DefaultNoofDays);
+                LoadMyQ = wfMngr.LoadMyQHashTable(ClientSession.FacilityName, ObjType, ProcessType, ClientSession.UserName, false, iDefaultDays, "", ShowAllObjType);// ClientSession.DefaultNoofDays);
             }
             UtilityManager.inserttologgingtable(ClientSession.EncounterId.ToString(), ClientSession.HumanId.ToString(), ClientSession.UserName, ClientSession.PhysicianId.ToString(), "MyQueue LoadEncounter LoadMyQHashTable DB call : End", DateTime.Now, sGroup_ID_Log, "frmMyQueueNew");
             PatientQ = (IList<MyQ>)LoadMyQ["MyQ"];
@@ -1761,14 +1776,14 @@ namespace Acurus.Capella.UI
             {
                 string[] ProcessTypeMyQ = new string[2];
                 ProcessTypeMyQ[0] = "ASSIGNED";
-                MyQCount = wfMngr.AllTabCount("ALL", ProcessTypeMyQ, ClientSession.UserName, iDefaultDays);
+                MyQCount = wfMngr.AllTabCount("ALL", ProcessTypeMyQ, ClientSession.UserName, iDefaultDays, ShowAllObjType);
             }
             else if (sTabName == "GenQueue")
             {
 
                 string[] ProcessType = new string[2];
                 ProcessType[0] = "UNASSIGNED";
-                GenQCount = wfMngr.AllTabCount(ClientSession.FacilityName, ProcessType, ClientSession.UserName, iDefaultDays);
+                GenQCount = wfMngr.AllTabCount(ClientSession.FacilityName, ProcessType, ClientSession.UserName, iDefaultDays, ShowAllObjType);
             }
 
             //Adding GenQ Count

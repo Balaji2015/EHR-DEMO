@@ -2103,10 +2103,11 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
             }
             return EncounterCount;
         }
-        public IList<MyQueueCountDTO> ObjectCount(string FacName, string[] ObjType, string UserName, int DefaultNoofDays)
+        public IList<MyQueueCountDTO> ObjectCount(string FacName, string[] ObjType, string UserName, int DefaultNoofDays, List<string> ShowAllObjType = null)
         {
-
-
+            if(ShowAllObjType == null)
+                ShowAllObjType = new List<string>();
+            
             if (FacName.Contains("ViewAllFacilities"))
             {
                 FacName = FacName.Split('~')[1];
@@ -2139,6 +2140,11 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
                         if (FacName == "ALL")
                         {
                             query1 = Mysession.GetNamedQuery("CountFillMyTaskObjectDetails.WithoutFacility.ShowAllFalse");
+                            if (ShowAllObjType.Contains("TASK"))
+                            {
+                                string hqlQueryWithOrder = query1.QueryString.Replace("w.Is_Default_MyQ_LineItem=1 and", "");
+                                query1 = Mysession.CreateSQLQuery(hqlQueryWithOrder);
+                            }
                             query1.SetString(0, UserName);
                             //Jira #CAP-939 -start
                             //query1.SetString(1, UserName);
@@ -2154,6 +2160,11 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
                         {
 
                             query1 = Mysession.GetNamedQuery("CountFillMyTaskObjectDetails.WithFacility.ShowAllFalse");
+                            if (ShowAllObjType.Contains("GEN_TASK"))
+                            {
+                                string hqlQueryWithOrder = query1.QueryString.Replace("w.Is_Default_MyQ_LineItem=1 and", "");
+                                query1 = Mysession.CreateSQLQuery(hqlQueryWithOrder);
+                            }
                             //query1.SetString(2, FacName);
                             //query1.SetString(0, UserName);
                             //query1.SetString(1, "UNKNOWN");
@@ -2202,6 +2213,11 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
                         if (FacName == "ALL")
                         {
                             query1 = Mysession.GetNamedQuery("CountFillMyAddendumObjectDetails.WithoutFacility.WithoutAllAppointments");
+                            if (ShowAllObjType.Contains("ADDENDUM"))
+                            {
+                                string hqlQueryWithOrder = query1.QueryString.Replace("wa.Is_Default_MyQ_LineItem=1 and", "");
+                                query1 = Mysession.CreateSQLQuery(hqlQueryWithOrder);
+                            }
                             query1.SetString(0, UserName);
                             //query1.SetString(1, UserName);
                             // query1.SetParameterList("ObjList", myObjType);
@@ -2211,6 +2227,11 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
                         else
                         {
                             query1 = Mysession.GetNamedQuery("CountFillMyAddendumObjectDetails.WithFacility.WithoutAllAppointments");
+                            if (ShowAllObjType.Contains("GEN_ADDENDUM"))
+                            {
+                                string hqlQueryWithOrder = query1.QueryString.Replace("w.Is_Default_MyQ_LineItem=1 and", "");
+                                query1 = Mysession.CreateSQLQuery(hqlQueryWithOrder);
+                            }
                             query1.SetString(2, FacName);
                             query1.SetString(0, UserName);
                             query1.SetString(1, "UNKNOWN");
@@ -2279,6 +2300,11 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
                         if (FacName == "ALL")
                         {
                             query1 = Mysession.GetNamedQuery("Count.MyOrders");
+                            if (ShowAllObjType.Contains("ORDER"))
+                            {
+                                string hqlQueryWithOrder = query1.QueryString.Replace("w.Is_Default_MyQ_LineItem=1 and", "");
+                                query1 = Mysession.CreateSQLQuery(hqlQueryWithOrder);
+                            }
                             query1.SetString(0, UserName);
                             query1.SetString(1, UserName);
                             // query1.SetParameterList("ObjList", myObjType);
@@ -2292,6 +2318,11 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
                             //if (sAncillary.Trim().ToUpper() != FacName && FacName != "ALL")
                             //{
                             query1 = Mysession.GetNamedQuery("Count.Orders");
+                            if (ShowAllObjType.Contains("GEN_ORDER"))
+                            {
+                                string hqlQueryWithOrder = query1.QueryString.Replace("w.Is_Default_MyQ_LineItem=1 and", "");
+                                query1 = Mysession.CreateSQLQuery(hqlQueryWithOrder);
+                            }
                             query1.SetString(2, FacName);
                             query1.SetString(0, UserName);
                             query1.SetString(1, "UNKNOWN");
@@ -2302,6 +2333,11 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
                         else if (FacName != "ALL")
                         {
                             query1 = Mysession.GetNamedQuery("CountFillMyOrderObjectDetails.WithFacility.ShowAllFalse.CMG");
+                            if (ShowAllObjType.Contains("GEN_ORDER"))
+                            {
+                                string hqlQueryWithOrder = query1.QueryString.Replace("w.Is_Default_MyQ_LineItem=1 and", "");
+                                query1 = Mysession.CreateSQLQuery(hqlQueryWithOrder);
+                            }
                             query1.SetString(0, UserName);
                             query1.SetString(1, "UNKNOWN");
                             query1.SetString(2, FacName);
@@ -2558,6 +2594,11 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
                         if (FacName == "ALL")
                         {
                             query1 = Mysession.GetNamedQuery("CountFillMyE-PrescriptionObjectDetails.WithoutFacility.ShowAllFalse");
+                            if (ShowAllObjType.Contains("E-PRESCRIBE"))
+                            {
+                                string hqlQueryWithOrder = query1.QueryString.Replace("w.Is_Default_MyQ_LineItem=1 and", "");
+                                query1 = Mysession.CreateSQLQuery(hqlQueryWithOrder);
+                            }
                             query1.SetString(0, UserName);
                             // query1.SetParameterList("ObjList", myObjType);
                             FavoriteList = new ArrayList(query1.List());
@@ -2566,6 +2607,11 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
                         else
                         {
                             query1 = Mysession.GetNamedQuery("CountFillMyE-PrescriptionObjectDetails.WithFacility.ShowAllFalse");
+                            if (ShowAllObjType.Contains("GEN_E-PRESCRIBE"))
+                            {
+                                string hqlQueryWithOrder = query1.QueryString.Replace("w.Is_Default_MyQ_LineItem=1 and", "");
+                                query1 = Mysession.CreateSQLQuery(hqlQueryWithOrder);
+                            }
                             query1.SetString(2, FacName);
                             query1.SetString(0, UserName);
                             query1.SetString(1, "UNKNOWN");
@@ -2583,6 +2629,11 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
                         if (FacName == "ALL")
                         {
                             query1 = Mysession.GetNamedQuery("CountFillMyScanObjectDetails.WithoutFacility.No_ofdays");
+                            if (ShowAllObjType.Contains("SCAN"))
+                            {
+                                string hqlQueryWithOrder = query1.QueryString.Replace("w.Is_Default_MyQ_LineItem=1 and", "");
+                                query1 = Mysession.CreateSQLQuery(hqlQueryWithOrder);
+                            }
                             query1.SetString(0, UserName);
                             query1.SetString(1, myObjType[0].ToString());
                             //query1.SetString(2, UserName);
@@ -2594,6 +2645,11 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
                         else
                         {
                             query1 = Mysession.GetNamedQuery("CountFillMyScanObjectDetails.WithFacility.No_ofdays");
+                            if (ShowAllObjType.Contains("GEN_SCAN"))
+                            {
+                                string hqlQueryWithOrder = query1.QueryString.Replace("w.Is_Default_MyQ_LineItem=1 and", "");
+                                query1 = Mysession.CreateSQLQuery(hqlQueryWithOrder);
+                            }
                             //query1.SetString(0, UserName);
                             //query1.SetString(1, "UNKNOWN");
                             //query1.SetString(2, FacName);
