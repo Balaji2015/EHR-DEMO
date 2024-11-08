@@ -676,14 +676,14 @@ namespace Acurus.Capella.UI
                     {
                         HtmlGenericControl anchor = new HtmlGenericControl("a");
                         //anchor.Attributes.Add("href", "frmPatientChart.aspx?hdnLocalTime= " + hdnLocalTime.Value + " &HumanId= " + windowLst[iLoop].ToString().Split('-')[2].Split('#')[0] + "&EncounterId=" + windowLst[iLoop].ToString().Split('-')[2].Split('#')[1].Split('$')[0]);
-                        //CAP-1651
-                        if ((Request.QueryString["IsDirectURL"] ?? string.Empty).ToUpper() != "Y")
-                        {
+                        //CAP-1651, CAP-2672
+                        //if ((Request.QueryString["IsDirectURL"] ?? string.Empty).ToUpper() != "Y")
+                        //{
                             anchor.Attributes.Add("href", "frmPatientChart.aspx?&HumanID= " + windowLst[iLoop].ToString().Split('~')[1].Split('#')[0].Trim() + "&Source=WindowItem&PSBEncID=" + windowLst[iLoop].ToString().Split('~')[1].Split('#')[1].Split('$')[0].Trim() + "&PSBDos=" + windowLst[iLoop].ToString().Split('^')[1].Trim());
                             anchor.InnerText = iLoop.ToString() + " - " + windowLst[iLoop].ToString().Split('#')[0];
 
                             li.Controls.Add(anchor);
-                        }
+                        //}
 
                     }
                     //mnuC5PO.Items[indexValue].Items.Add(new RadMenuItem(iLoop.ToString() + " - " + windowLst[iLoop].ToString().Split('#')[0]));
