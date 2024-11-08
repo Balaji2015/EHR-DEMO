@@ -3412,7 +3412,7 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
 
         }
      
-        public Hashtable LoadMyQHashTable(string FacName, string[] ObjectType, string[] ProcessType, string UserName, Boolean bShowAll, int DefaultNoofDays, string facilityName)
+        public Hashtable LoadMyQHashTable(string FacName, string[] ObjectType, string[] ProcessType, string UserName, Boolean bShowAll, int DefaultNoofDays, string facilityName, List<string> ShowAllObjType = null)
         {
 
 
@@ -3479,7 +3479,7 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
             }
             ulong encountercount = 0;
             encountercount = objMngr.GetEncountershowallcount(ProcessType[0], UserName, ObjTypeshowall, FacName);
-            GenQCount = objMngr.ObjectCount(FacName, ObjType, UserName, DefaultNoofDays);
+            GenQCount = objMngr.ObjectCount(FacName, ObjType, UserName, DefaultNoofDays, ShowAllObjType);
             Hashtable ht = new Hashtable();
             if (myqList.Count > 0)
             {
@@ -4195,7 +4195,7 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
 
 
 
-        public IList<MyQueueCountDTO> AllTabCount(string FacName, string[] ProcessType, string UserName,int DefaultNoofDays)
+        public IList<MyQueueCountDTO> AllTabCount(string FacName, string[] ProcessType, string UserName,int DefaultNoofDays, List<string> ShowAllObjType = null)
         {
 
             ObjectManager objMngr = new ObjectManager();
@@ -4233,7 +4233,7 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
 
             IList<MyQueueCountDTO> GenQCount = new List<MyQueueCountDTO>();
             
-            GenQCount = objMngr.ObjectCount(FacName, ObjType, UserName, DefaultNoofDays);
+            GenQCount = objMngr.ObjectCount(FacName, ObjType, UserName, DefaultNoofDays, ShowAllObjType);
             
             return GenQCount;
 
