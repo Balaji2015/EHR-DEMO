@@ -735,14 +735,15 @@ namespace Acurus.Capella.UI.WebServices.API
                                 if (sectopns[i].IndexOf("AddendumReviewProviderID") > -1)
                                 {
                                     //Get Notes
-                                    string[] sTempNotesName = sectopns[i].Split(new string[] { "AM:", "PM:" }, System.StringSplitOptions.RemoveEmptyEntries);
+                                    string[] sTempNotesName = sectopns[i].Split(new string[] { " AM: ", " PM: " }, System.StringSplitOptions.RemoveEmptyEntries);
                                     string sNotesName = sTempNotesName.Length > 1 ? sTempNotesName[1] : "";
                                     sectopns[i] = sectopns[i].Replace(":" + sNotesName, "");
 
                                     //Get CreatedAt
-                                    string[] sTempCreatedAt = sectopns[i].Split(new string[] { "on" }, System.StringSplitOptions.RemoveEmptyEntries);
-                                    string sCreatedAt = sTempCreatedAt.Length > 1 ? sTempCreatedAt[1].Replace(":" + sNotesName, "") : "";
-
+                                    string[] sTempCreatedAt = sectopns[i].Split(new string[] { " on " }, System.StringSplitOptions.RemoveEmptyEntries);
+                                    string sCreatedAt = sTempCreatedAt.Length > 1 ? sTempCreatedAt[1].Replace(":" + sNotesName, "").Replace(": " + sNotesName, "") : "";
+                                    sCreatedAt = (sCreatedAt.IndexOf(" PM: ") > -1) ? sCreatedAt.Replace(sCreatedAt.Substring(sCreatedAt.IndexOf(" PM: ")), "") : sCreatedAt;
+                                    sCreatedAt = (sCreatedAt.IndexOf(" AM: ") > -1) ? sCreatedAt.Replace(sCreatedAt.Substring(sCreatedAt.IndexOf(" AM: ")), "") : sCreatedAt;
                                     //Get ProviderUserID
                                     string sProviderUserID = string.Empty;
                                     if (sectopns[i].IndexOf("<AddendumProviderID>") > -1)
@@ -772,7 +773,7 @@ namespace Acurus.Capella.UI.WebServices.API
 
                                     string[] sTempOtherDetails = sectopns[i].Split(new string[] { "Signed by" }, System.StringSplitOptions.RemoveEmptyEntries);
                                     string sOtherDetails = sTempOtherDetails.Length > 0 ? sTempOtherDetails[1] : "";
-                                    sTempOtherDetails = sOtherDetails.Split(new string[] { "on" }, System.StringSplitOptions.RemoveEmptyEntries);
+                                    sTempOtherDetails = sOtherDetails.Split(new string[] { " on " }, System.StringSplitOptions.RemoveEmptyEntries);
 
                                     string sPAname = string.Empty;
                                     string sPhysician = string.Empty;
@@ -784,7 +785,7 @@ namespace Acurus.Capella.UI.WebServices.API
                                     }
                                     else
                                     {
-                                        sPAname = sOtherDetails.Split(new string[] { "on" }, System.StringSplitOptions.RemoveEmptyEntries)[0];
+                                        sPAname = sOtherDetails.Split(new string[] { " on " }, System.StringSplitOptions.RemoveEmptyEntries)[0];
                                     }
 
                                     if (sCreatedAt != "")
@@ -827,14 +828,15 @@ namespace Acurus.Capella.UI.WebServices.API
                                     }
                                     sProviderEmailID = ilstUser[0].EMail_Address;
 
-                                    string[] sTempNotesName = sectopns[i].Split(new string[] { "AM:", "PM:" }, System.StringSplitOptions.RemoveEmptyEntries);
+                                    string[] sTempNotesName = sectopns[i].Split(new string[] { " AM: ", " PM: " }, System.StringSplitOptions.RemoveEmptyEntries);
                                     string sNotesName = sTempNotesName.Length > 1 ? sTempNotesName[1] : "";
-                                    string[] sTempCreatedAt = sectopns[i].Split(new string[] { "on" }, System.StringSplitOptions.RemoveEmptyEntries);
-                                    string sCreatedAt = sTempCreatedAt.Length > 1 ? sTempCreatedAt[1].Replace(":" + sNotesName, "") : "";
+                                    string[] sTempCreatedAt = sectopns[i].Split(new string[] { " on " }, System.StringSplitOptions.RemoveEmptyEntries);
+                                    string sCreatedAt = sTempCreatedAt.Length > 1 ? sTempCreatedAt[1].Replace(":" + sNotesName, "").Replace(": " + sNotesName, "") : "";
+                                    sCreatedAt = (sCreatedAt.IndexOf(" PM: ") > -1)? sCreatedAt.Replace(sCreatedAt.Substring(sCreatedAt.IndexOf(" PM: ")), ""): sCreatedAt;
+                                    sCreatedAt = (sCreatedAt.IndexOf(" AM: ") > -1) ? sCreatedAt.Replace(sCreatedAt.Substring(sCreatedAt.IndexOf(" AM: ")), "") : sCreatedAt;
+                                    string[] tempCreatedByFinal = sectopns[i].Split(new string[] { " Signed by " }, System.StringSplitOptions.RemoveEmptyEntries);
 
-                                    string[] tempCreatedByFinal = sectopns[i].Split(new string[] { "Signed by" }, System.StringSplitOptions.RemoveEmptyEntries);
-
-                                    string tempCreatedBy = tempCreatedByFinal.Length > 1 ? tempCreatedByFinal[1].Split(new string[] { "on" }, System.StringSplitOptions.RemoveEmptyEntries)[0] : "";
+                                    string tempCreatedBy = tempCreatedByFinal.Length > 1 ? tempCreatedByFinal[1].Split(new string[] { " on " }, System.StringSplitOptions.RemoveEmptyEntries)[0] : "";
 
 
                                     string createdBy = tempCreatedBy ?? string.Empty;
