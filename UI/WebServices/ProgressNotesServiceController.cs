@@ -56,7 +56,7 @@ namespace Acurus.Capella.UI.WebServices.API
                 var thresholdDate = ConfigurationSettings.AppSettings["ThresholdDate"] ?? "";
                 if (string.IsNullOrEmpty(sCategory) || sCategory.ToUpper() == "ENCOUNTERS")
                 {
-                    string encounterByHumanIDQury = "SELECT enc.Encounter_ID FROM encounter enc JOIN wf_object wf ON enc.Encounter_ID = wf.Obj_System_Id  WHERE enc.Human_ID = {0} AND  DATE(enc.Date_of_Service) >= '{1}' AND DATE(enc.Date_of_Service) <= '{2}' and wf.Obj_Type = 'DOCUMENTATION' and wf.Current_Process = 'DOCUMENT_COMPLETE' UNION ALL SELECT enc.Encounter_ID FROM encounter_arc enc JOIN wf_object_arc wf ON enc.Encounter_ID = wf.Obj_System_Id WHERE enc.Human_ID = {0} AND  DATE(enc.Date_of_Service) >= '{1}' AND DATE(enc.Date_of_Service) <= '{2}' and wf.Obj_Type = 'DOCUMENTATION' and wf.Current_Process = 'DOCUMENT_COMPLETE';";
+                    string encounterByHumanIDQury = "SELECT enc.Encounter_ID FROM encounter enc JOIN wf_object wf ON enc.Encounter_ID = wf.Obj_System_Id  WHERE enc.Human_ID = {0} AND  DATE(enc.Date_of_Service) >= '{1}' AND DATE(enc.Date_of_Service) <= '{2}' and wf.Obj_Type = 'DOCUMENTATION' and wf.Current_Process = 'DOCUMENT_COMPLETE' and date(enc.Encounter_Provider_Signed_Date) <> '0001-01-01' UNION ALL SELECT enc.Encounter_ID FROM encounter_arc enc JOIN wf_object_arc wf ON enc.Encounter_ID = wf.Obj_System_Id WHERE enc.Human_ID = {0} AND  DATE(enc.Date_of_Service) >= '{1}' AND DATE(enc.Date_of_Service) <= '{2}' and wf.Obj_Type = 'DOCUMENTATION' and wf.Current_Process = 'DOCUMENT_COMPLETE' and date(enc.Encounter_Provider_Signed_Date) <> '0001-01-01';";
 
                     DataSet result = DBConnector.ReadData(string.Format(encounterByHumanIDQury, sHumanID, thresholdDate, releaseDate));
 
@@ -157,9 +157,14 @@ namespace Acurus.Capella.UI.WebServices.API
                 }
 
                 string current_Process = result.Tables[0].Rows[0]["Current_Process"].ToString();
+                string Encounter_Provider_SignDate = result.Tables[0].Rows[0]["Encounter_Provider_Signed_Date"].ToString();
                 if (current_Process != "DOCUMENT_COMPLETE")
                 {
                     return Json(new { HumanID = sHumanID, EncounterID = sEncounterID, status = "ValidationError", ErrorDescription = "Encounter is not in DOCUMENT_COMPLETE. Cannot generate progress note." });
+                }
+                else if (Encounter_Provider_SignDate.Contains("0001-01-01"))
+                {
+                    return Json(new { HumanID = sHumanID, EncounterID = sEncounterID, status = "ValidationError", ErrorDescription = "Encounter is not Signed in Capella. Cannot generate progress note." });
                 }
                 Task.Run(() => { GenerateJsonNotes(sHumanID, sEncounterID, transactionBy, transactionDateTime); });
             }
