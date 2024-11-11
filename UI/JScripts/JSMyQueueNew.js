@@ -865,7 +865,7 @@ function OnClientCloseWindow() {
         btnid = $('#divGeneralQTabs .btncolorMyQ')[0]?.id;
     }
     
-    if (removeList != "") {
+    if (removeList != "" && removeList !=null) {
         var removearry = removeList.split(",");
         for (let i = 0; i < removearry.length; i++) {
             if (btnid.indexOf("Order") > -1) {
@@ -1792,6 +1792,7 @@ function LoadMyTask() {
         } else {
             MyQclick();
         }
+        sessionStorage.setItem('MyQRemoveIdList', '');
     });
 
     $('#EncounterTable tbody').on('click', 'tr', function () {
