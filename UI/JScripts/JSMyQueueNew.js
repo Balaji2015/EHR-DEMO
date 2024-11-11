@@ -1201,7 +1201,7 @@ function LoadMyEncounter(ajaxUrl) {
             error: function (xhr, error, code) {
                 { sessionStorage.setItem('StartLoading', 'false'); StopLoadFromPatChart(); }
                 if (xhr.status == 999)
-                    window.location = "ErrorPage.aspx";
+                    window.location = "frmSessionExpired.aspx";
                 else {
                     var log = JSON.parse(xhr.responseText);
                     console.log(log);
@@ -1714,7 +1714,7 @@ function LoadMyTask() {
             error: function (xhr, error, code) {
                 { sessionStorage.setItem('StartLoading', 'false'); StopLoadFromPatChart(); }
                 if (xhr.status == 999)
-                    window.location = "ErrorPage.aspx";
+                    window.location = "frmSessionExpired.aspx";
                 else {
                     var log = JSON.parse(xhr.responseText);
                     console.log(log);
@@ -1884,7 +1884,7 @@ function loadMyorder() {
             error: function (xhr, error, code) {
                 { sessionStorage.setItem('StartLoading', 'false'); StopLoadFromPatChart(); }
                 if (xhr.status == 999)
-                    window.location = "ErrorPage.aspx";
+                    window.location = "frmSessionExpired.aspx";
                 else {
                     var log = JSON.parse(xhr.responseText);
                     console.log(log);
@@ -2195,7 +2195,7 @@ function loadMyscan() {
             error: function (xhr, error, code) {
                 { sessionStorage.setItem('StartLoading', 'false'); StopLoadFromPatChart(); }
                 if (xhr.status == 999)
-                    window.location = "ErrorPage.aspx";
+                    window.location = "frmSessionExpired.aspx";
                 else {
                     var log = JSON.parse(xhr.responseText);
                     console.log(log);
@@ -2335,7 +2335,7 @@ function loadMyprescription() {
             error: function (xhr, error, code) {
                 { sessionStorage.setItem('StartLoading', 'false'); StopLoadFromPatChart(); }
                 if (xhr.status == 999)
-                    window.location = "ErrorPage.aspx";
+                    window.location = "frmSessionExpired.aspx";
                 else {
                     var log = JSON.parse(xhr.responseText);
                     console.log(log);
@@ -2533,7 +2533,7 @@ function loadMyAmendment() {
             error: function (xhr, error, code) {
                 { sessionStorage.setItem('StartLoading', 'false'); StopLoadFromPatChart(); }
                 if (xhr.status == 999)
-                    window.location = "ErrorPage.aspx";
+                    window.location = "frmSessionExpired.aspx";
                 else {
                     var log = JSON.parse(xhr.responseText);
                     console.log(log);
