@@ -1896,44 +1896,44 @@ namespace Acurus.Capella.UI
 
             //CAP-1167
             //CAP-1651, CAP-2672
-            if ((Request.QueryString["IsDirectURL"] ?? string.Empty).ToUpper() == "Y")
-            {
-                bool bIsArchive = false;
-                if (ClientSession.CurrentObjectType.ToUpper() == "ADDENDUM")
-                    bIsArchive = true;
-                DateTime tempDate = DateTime.MinValue;
-                try
-                {
-                    if (Request.QueryString["hdnLocalTime"] != null)
-                    {
-                        hdnLocalTime.Value = Request.QueryString["hdnLocalTime"].ToString();
-                    }
-                    ClientSession.HumanId = Convert.ToUInt64(Request["HumanID"].ToString());
-                    if (Request.QueryString["currentAddendumId"] != null)
-                        hdnAddendumID.Value = Request.QueryString["currentAddendumId"].ToString();
-                    else
-                        hdnAddendumID.Value = "0";
-                    //ClientSession.EncounterId = Convert.ToUInt64(Request["EncounterID"].ToString());
+            //if ((Request.QueryString["IsDirectURL"] ?? string.Empty).ToUpper() == "Y")
+            //{
+            //    bool bIsArchive = false;
+            //    if (ClientSession.CurrentObjectType.ToUpper() == "ADDENDUM")
+            //        bIsArchive = true;
+            //    DateTime tempDate = DateTime.MinValue;
+            //    try
+            //    {
+            //        if (Request.QueryString["hdnLocalTime"] != null)
+            //        {
+            //            hdnLocalTime.Value = Request.QueryString["hdnLocalTime"].ToString();
+            //        }
+            //        ClientSession.HumanId = Convert.ToUInt64(Request["HumanID"].ToString());
+            //        if (Request.QueryString["currentAddendumId"] != null)
+            //            hdnAddendumID.Value = Request.QueryString["currentAddendumId"].ToString();
+            //        else
+            //            hdnAddendumID.Value = "0";
+            //        //ClientSession.EncounterId = Convert.ToUInt64(Request["EncounterID"].ToString());
 
-                    UtilityManager.inserttologgingtable(ClientSession.EncounterId.ToString(), ClientSession.HumanId.ToString(), ClientSession.UserName, ClientSession.PhysicianId.ToString(), "Patient Chart - LoadSummaryFromOtherForms API - Call LoadPatientChart Manager API : Start", DateTime.Now, sGroup_ID_Log, "frmPatientChart");
-                    if (hdnLocalTime.Value != null && hdnLocalTime.Value.Trim() == string.Empty || DateTime.TryParseExact(hdnLocalTime.Value.Trim(), "M/d/yyyy H:m:s", null, System.Globalization.DateTimeStyles.None, out tempDate) == false)
-                        ClientSession.FillPatientChart = objEncounterManager.LoadPatientChart(ClientSession.HumanId, ClientSession.EncounterId, UtilityManager.ConvertToLocal(DateTime.UtcNow), string.Empty, ClientSession.UserName, true, Convert.ToUInt32(hdnAddendumID.Value), ClientSession.CurrentObjectType, bIsArchive);//0);
-                    else
-                    {
-                        ClientSession.FillPatientChart = objEncounterManager.LoadPatientChart(ClientSession.HumanId, ClientSession.EncounterId, UtilityManager.ConvertToLocal(DateTime.ParseExact(hdnLocalTime.Value.Trim(), "M/d/yyyy H:m:s", null)), string.Empty, ClientSession.UserName, true, Convert.ToUInt32(hdnAddendumID.Value), ClientSession.CurrentObjectType, bIsArchive);// 0);
-                    }
+            //        UtilityManager.inserttologgingtable(ClientSession.EncounterId.ToString(), ClientSession.HumanId.ToString(), ClientSession.UserName, ClientSession.PhysicianId.ToString(), "Patient Chart - LoadSummaryFromOtherForms API - Call LoadPatientChart Manager API : Start", DateTime.Now, sGroup_ID_Log, "frmPatientChart");
+            //        if (hdnLocalTime.Value != null && hdnLocalTime.Value.Trim() == string.Empty || DateTime.TryParseExact(hdnLocalTime.Value.Trim(), "M/d/yyyy H:m:s", null, System.Globalization.DateTimeStyles.None, out tempDate) == false)
+            //            ClientSession.FillPatientChart = objEncounterManager.LoadPatientChart(ClientSession.HumanId, ClientSession.EncounterId, UtilityManager.ConvertToLocal(DateTime.UtcNow), string.Empty, ClientSession.UserName, true, Convert.ToUInt32(hdnAddendumID.Value), ClientSession.CurrentObjectType, bIsArchive);//0);
+            //        else
+            //        {
+            //            ClientSession.FillPatientChart = objEncounterManager.LoadPatientChart(ClientSession.HumanId, ClientSession.EncounterId, UtilityManager.ConvertToLocal(DateTime.ParseExact(hdnLocalTime.Value.Trim(), "M/d/yyyy H:m:s", null)), string.Empty, ClientSession.UserName, true, Convert.ToUInt32(hdnAddendumID.Value), ClientSession.CurrentObjectType, bIsArchive);// 0);
+            //        }
 
-                    UtilityManager.inserttologgingtable(ClientSession.EncounterId.ToString(), ClientSession.HumanId.ToString(), ClientSession.UserName, ClientSession.PhysicianId.ToString(), "Patient Chart - LoadSummaryFromOtherForms API - Call LoadPatientChart Manager API : End", DateTime.Now, sGroup_ID_Log, "frmPatientChart");
-                }
-                catch (Exception ex)
-                {
-                    {
-                        ScriptManager.RegisterStartupScript(this, typeof(frmEncounter), "ErrorMessage", "RegenerateXML('" + ClientSession.HumanId.ToString() + "','Human','patientchart');", true);
-                        return;
-                    }
-                }
-                return;
-            } 
+            //        UtilityManager.inserttologgingtable(ClientSession.EncounterId.ToString(), ClientSession.HumanId.ToString(), ClientSession.UserName, ClientSession.PhysicianId.ToString(), "Patient Chart - LoadSummaryFromOtherForms API - Call LoadPatientChart Manager API : End", DateTime.Now, sGroup_ID_Log, "frmPatientChart");
+            //    }
+            //    catch (Exception ex)
+            //    {
+            //        {
+            //            ScriptManager.RegisterStartupScript(this, typeof(frmEncounter), "ErrorMessage", "RegenerateXML('" + ClientSession.HumanId.ToString() + "','Human','patientchart');", true);
+            //            return;
+            //        }
+            //    }
+            //    return;
+            //} 
 
             var currentURL = HttpContext.Current.Request.Url;
             var notificationType = Request["Notification_Type"]?.ToString();
