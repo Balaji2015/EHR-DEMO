@@ -433,7 +433,17 @@ namespace Acurus.Capella.UI
                 //CAP-2059
                 else if (Request["ScreenName"] != null && Request["ScreenName"].ToString() == "Reports")
                 {
-                    this.Page.ClientScript.RegisterStartupScript(this.Page.GetType(), string.Empty, " window.setTimeout(function () {OpenModal('REPORT GENERATOR');}, 2000);", true);
+                    //CAP-2669
+                    string scriptVersion = string.Empty, reportPath = string.Empty, httpReportPath = string.Empty;
+                    if (ConfigurationSettings.AppSettings["VersionConfiguration"] != null)
+                        scriptVersion = ConfigurationSettings.AppSettings["VersionConfiguration"];
+                    if (ConfigurationSettings.AppSettings["Reportpath"] != null)
+                        reportPath = ConfigurationSettings.AppSettings["Reportpath"];
+                    if (ConfigurationSettings.AppSettings["Reportpathhttp"] != null)
+                        httpReportPath = ConfigurationSettings.AppSettings["Reportpathhttp"];
+
+                    //CAP-2669
+                    this.Page.ClientScript.RegisterStartupScript(this.Page.GetType(), string.Empty, " window.setTimeout(function () {OpenModal('REPORT GENERATOR');}, 2000);sessionStorage.setItem('ScriptVersion', '" + scriptVersion + "');sessionStorage.setItem('ReportPath', ' " + reportPath + "');sessionStorage.setItem('ReportPathhttp','" + httpReportPath + "');", true);
                     if (Request.QueryString["IsDirectURL"] != null)
                     {
                         string IsDirectURL = Request.QueryString["IsDirectURL"];
