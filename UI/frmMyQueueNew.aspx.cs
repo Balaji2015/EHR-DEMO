@@ -1174,30 +1174,32 @@ namespace Acurus.Capella.UI
                 //LoadOrders();
 
 
-                //For Refresh Movetomyorder
-                bool bValue = false;
-                if (dataMove[3].ToString() == "Checked")
-                    bValue = true;
-                string[] ProcessType = new string[2];
-                ProcessType[0] = "UNASSIGNED";
+                ////For Refresh Movetomyorder
+                //bool bValue = false;
+                //if (dataMove[3].ToString() == "Checked")
+                //    bValue = true;
+                //string[] ProcessType = new string[2];
+                //ProcessType[0] = "UNASSIGNED";
 
-                string[] ObjType = new string[6];
-                ObjType[0] = "DIAGNOSTIC ORDER";
-                ObjType[1] = "DME ORDER";
-                // ObjType[1] = "IMAGE ORDER";
-                // ObjType[2] = "INTERNAL ORDER";//For Bug Id 54510
-                ObjType[3] = "IMMUNIZATION ORDER";
-                ObjType[4] = "REFERRAL ORDER";
-                ObjType[5] = "DME ORDER";
+                //string[] ObjType = new string[6];
+                //ObjType[0] = "DIAGNOSTIC ORDER";
+                //ObjType[1] = "DME ORDER";
+                //// ObjType[1] = "IMAGE ORDER";
+                //// ObjType[2] = "INTERNAL ORDER";//For Bug Id 54510
+                //ObjType[3] = "IMMUNIZATION ORDER";
+                //ObjType[4] = "REFERRAL ORDER";
+                //ObjType[5] = "DME ORDER";
                 
-                OrdersQ = wfMngr.GetListObjects(ClientSession.FacilityName, ObjType, ProcessType, ClientSession.UserName, bValue, iDefaultDays, string.Empty);// ClientSession.DefaultNoofDays);
-                OrdersQ = OrdersQ.Where(a => a.Current_Owner == "UNKNOWN").ToList<MyQ>();
+                //OrdersQ = wfMngr.GetListObjects(ClientSession.FacilityName, ObjType, ProcessType, ClientSession.UserName, bValue, iDefaultDays, string.Empty);// ClientSession.DefaultNoofDays);
+                //OrdersQ = OrdersQ.Where(a => a.Current_Owner == "UNKNOWN").ToList<MyQ>();
             }
             return JsonConvert.SerializeObject(OrdersQ.ToList<MyQ>());
         }
 
         [WebMethod(EnableSession = true)]
-        public static string LoadOrder(string sShowall)
+        [ScriptMethod(ResponseFormat = ResponseFormat.Json, UseHttpGet = true)]
+        //public static string LoadOrder(string sShowall)
+        public static object LoadOrder()
         {
             if (ClientSession.UserName == string.Empty)
             {
@@ -1206,6 +1208,11 @@ namespace Acurus.Capella.UI
                 HttpContext.Current.Response.StatusDescription = "frmSessionExpired.aspx";
                 return "Session Expired";
             }
+
+            string extra_search = HttpContext.Current.Request.Params["extra_search"];
+            var searchData = JsonConvert.DeserializeObject<Dictionary<string, string>>(extra_search);
+            string sShowall = searchData["sShowall"];
+
             string sGroup_ID_Log = ClientSession.EncounterId.ToString() + "-" + ClientSession.HumanId.ToString() + "-" + ClientSession.PhysicianId.ToString() + "-" + DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss:FFF");
             UtilityManager.inserttologgingtable(ClientSession.EncounterId.ToString(), ClientSession.HumanId.ToString(), ClientSession.UserName, ClientSession.PhysicianId.ToString(), "MyQueue LoadOrder : Start", DateTime.Now, sGroup_ID_Log, "frmMyQueueNew");
             bool bValue = false;
@@ -1231,8 +1238,15 @@ namespace Acurus.Capella.UI
             OrdersQ = OrdersQ.Where(a => a.Current_Owner == "UNKNOWN").ToList<MyQ>();
             OrdersQ = OrdersQ.OrderByDescending(a => a.Created_Date_And_Time).ToList<MyQ>();
             UtilityManager.inserttologgingtable(ClientSession.EncounterId.ToString(), ClientSession.HumanId.ToString(), ClientSession.UserName, ClientSession.PhysicianId.ToString(), "MyQueue LoadOrder : End", DateTime.Now, sGroup_ID_Log, "frmMyQueueNew");
-            return JsonConvert.SerializeObject(OrdersQ.ToList<MyQ>());
+            //return JsonConvert.SerializeObject(OrdersQ.ToList<MyQ>());
+            var result = new
+            {
+                data = Compress(JsonConvert.SerializeObject(OrdersQ.ToList<MyQ>()))
+            };
+
+            return result;
         }
+
         //Commented for BugId:36500
         //[WebMethod(EnableSession = true)]
         //public static string LoadScan(string sShowall)

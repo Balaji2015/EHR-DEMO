@@ -655,7 +655,7 @@ obj.PatientDOB = document.getElementById(GetClientId('txtPatientDOB')).value;
 obj.HumanID = document.getElementById(GetClientId('txtPatAccNo')).value;   
 
  var childWindow=oWnd.BrowserWindow.radopen("frmFindAllAppointments.aspx?PatientName="+obj.PatientName+"&PatientDOB="+obj.PatientDOB+"&HumanID="+obj.HumanID,"CaptureAutnorizationWindow");
-setRadWindowProperties(childWindow,600,900);
+setRadWindowProperties(childWindow,625,910);
  childWindow.add_close(OpenSelectAppointment)
  },0);
  return false;

@@ -77,6 +77,16 @@ where a.Appointment_Date between ? and ? and w.Facility_Name in (:FacList) and a
     w.Obj_Type='ENCOUNTER') and w.current_process=pm.process_name and a.Appointment_Provider_ID=p.Physician_Library_ID
     and a.Human_ID=? and a.appointment_date>? and w.current_process<>'' order by a.Appointment_Date desc limit ?,? ]]>-->
 
+		<!--<![CDATA[SELECT a.Encounter_ID as encid,a.Appointment_Provider_ID,cast(a.Appointment_Date as char(100)) as Appointment_Date,
+    w.Current_Process,a.Facility_Name,concat(ifnull(p.Physician_Prefix,''),' ',ifnull(p.Physician_First_Name,''),' ',
+    ifnull(p.Physician_Middle_Name,''),' ',ifnull(p.Physician_Last_Name,''),' ',ifnull(p.Physician_Suffix,'')),a.Machine_Technician_Library_ID,
+    (select group_concat(concat(lab_procedure,' - ',lab_procedure_description)) from orders where order_submit_id=a.order_submit_id),
+    (select cast(e1.Appointment_Date as char(100)) as Rescheduled_Appointment_Date from encounter e1 where file_reference_number=encid limit 1),
+    a.Reason_for_Cancelation, 'Main' 
+    from encounter a,wf_object w,process_master pm,physician_library p where (a.Encounter_ID = w.Obj_System_Id and
+    w.Obj_Type='ENCOUNTER') and w.current_process=pm.process_name and a.Appointment_Provider_ID=p.Physician_Library_ID
+    and a.Human_ID=? and a.appointment_date>? and w.current_process<>'' order by a.Appointment_Date desc limit ?,? ]]>-->
+
 		<![CDATA[SELECT a.Encounter_ID as encid,a.Appointment_Provider_ID,cast(a.Appointment_Date as char(100)) as Appointment_Date,
     w.Current_Process,a.Facility_Name,concat(ifnull(p.Physician_Prefix,''),' ',ifnull(p.Physician_First_Name,''),' ',
     ifnull(p.Physician_Middle_Name,''),' ',ifnull(p.Physician_Last_Name,''),' ',ifnull(p.Physician_Suffix,'')),a.Machine_Technician_Library_ID,
@@ -85,7 +95,7 @@ where a.Appointment_Date between ? and ? and w.Facility_Name in (:FacList) and a
     a.Reason_for_Cancelation, 'Main' 
     from encounter a,wf_object w,process_master pm,physician_library p where (a.Encounter_ID = w.Obj_System_Id and
     w.Obj_Type='ENCOUNTER') and w.current_process=pm.process_name and a.Appointment_Provider_ID=p.Physician_Library_ID
-    and a.Human_ID=? and a.appointment_date>? and w.current_process<>'' order by a.Appointment_Date desc limit ?,? ]]>
+    and a.Human_ID=? and a.appointment_date>? and w.current_process<>'' order by a.Appointment_Date desc ]]>
 
 	</sql-query>
 	<sql-query name="SP.Assessment.GetParentICD">
@@ -104,6 +114,16 @@ where a.Appointment_Date between ? and ? and w.Facility_Name in (:FacList) and a
     w.Obj_Type='ENCOUNTER') and w.current_process=pm.process_name and a.Appointment_Provider_ID=p.Physician_Library_ID
     and a.Human_ID=? and a.appointment_date>? and w.current_process<>'' order by a.Appointment_Date desc limit ?,? ]]>-->
 
+		<!--<![CDATA[SELECT a.Encounter_ID as encid ,a.Appointment_Provider_ID,cast(a.Appointment_Date as char(100)) as Appointment_Date,
+    w.Current_Process,a.Facility_Name,concat(ifnull(p.Physician_Prefix,''),' ',ifnull(p.Physician_First_Name,''),' ',
+    ifnull(p.Physician_Middle_Name,''),' ',ifnull(p.Physician_Last_Name,''),' ',ifnull(p.Physician_Suffix,'')),a.Machine_Technician_Library_ID,
+    (select group_concat(concat(lab_procedure,' - ',lab_procedure_description)) from orders where order_submit_id=a.order_submit_id),
+   (select cast(e1.Appointment_Date as char(100)) as Rescheduled_Appointment_Date from encounter e1 where file_reference_number=encid limit 1),
+   a.Reason_for_Cancelation, 'Arc'
+    from encounter_arc a,wf_object_arc w,process_master pm,physician_library p where (a.Encounter_ID = w.Obj_System_Id and
+    w.Obj_Type='ENCOUNTER') and w.current_process=pm.process_name and a.Appointment_Provider_ID=p.Physician_Library_ID
+    and a.Human_ID=? and a.appointment_date>? and w.current_process<>'' order by a.Appointment_Date desc limit ?,? ]]>-->
+
 		<![CDATA[SELECT a.Encounter_ID as encid ,a.Appointment_Provider_ID,cast(a.Appointment_Date as char(100)) as Appointment_Date,
     w.Current_Process,a.Facility_Name,concat(ifnull(p.Physician_Prefix,''),' ',ifnull(p.Physician_First_Name,''),' ',
     ifnull(p.Physician_Middle_Name,''),' ',ifnull(p.Physician_Last_Name,''),' ',ifnull(p.Physician_Suffix,'')),a.Machine_Technician_Library_ID,
@@ -112,7 +132,7 @@ where a.Appointment_Date between ? and ? and w.Facility_Name in (:FacList) and a
    a.Reason_for_Cancelation, 'Arc'
     from encounter_arc a,wf_object_arc w,process_master pm,physician_library p where (a.Encounter_ID = w.Obj_System_Id and
     w.Obj_Type='ENCOUNTER') and w.current_process=pm.process_name and a.Appointment_Provider_ID=p.Physician_Library_ID
-    and a.Human_ID=? and a.appointment_date>? and w.current_process<>'' order by a.Appointment_Date desc limit ?,? ]]>
+    and a.Human_ID=? and a.appointment_date>? and w.current_process<>'' order by a.Appointment_Date desc ]]>
 
 
 	</sql-query>

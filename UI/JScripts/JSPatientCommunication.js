@@ -1731,7 +1731,7 @@ function OpenFindAllAppointments() {
         var obj = new Array();
         obj.push("HumanID=" + FindHumanID);
         obj.push("IsFindPatientRequired=N");
-        openModal("frmFindAllAppointments.aspx", 460, 900, obj, "ctl00_ModalWindow");
+        openModal("frmFindAllAppointments.aspx", 625, 910, obj, "ctl00_ModalWindow");
         var WindowName = $find('ctl00_ModalWindow');
         WindowName.add_close(FindAllAppointmentClick);//checked
     }
@@ -1750,7 +1750,7 @@ function TimeSlotFindAllAppointmentsClick(oWindow, args) {
         obj.push("HumanID=" + Result.HumanId);
         obj.push("IsFindPatientRequired=N");
         window.setTimeout(function () {
-            openModal("frmFindAllAppointments.aspx", 460, 900, obj, "ctl00_ModalWindow");
+            openModal("frmFindAllAppointments.aspx", 625, 910, obj, "ctl00_ModalWindow");
             var WindowName = $find('ctl00_ModalWindow');
             WindowName.add_close(FindAllAppointmentClick);
         }, 50);

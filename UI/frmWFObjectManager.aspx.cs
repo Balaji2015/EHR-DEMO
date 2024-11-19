@@ -992,6 +992,8 @@ namespace Acurus.Capella.UI
             pnlUpdateProcess.Enabled = true;
             pnlUpdateOwner.Enabled = false;
 
+            //Jira CAP-2660
+            cboPreviousProcess.Items.Clear();
 
             GridDataItem grdSelectedItem = (GridDataItem)grdAdminModule.SelectedItems[0];
 

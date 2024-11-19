@@ -32,7 +32,7 @@ function OpenFindAllAppointments() {
     else {
         var obj = new Array();
         obj.push("HumanID=" + FindHumanID);
-        openModal("frmFindAllAppointments.aspx", 460, 900, obj, "ctl00_ModalWindow");
+        openModal("frmFindAllAppointments.aspx", 625, 910, obj, "ctl00_ModalWindow");
         var WindowName = $find('ctl00_ModalWindow');
         //CAP-775 Cannot read properties of null - jsAppointments
         WindowName?.add_close(FindAllAppointmentClick);//checked
@@ -1241,7 +1241,7 @@ function TimeSlotFindAllAppointmentsClick(oWindow, args) {
         var obj = new Array();
         obj.push("HumanID=" + Result.HumanId);
         window.setTimeout(function () {
-            openModal("frmFindAllAppointments.aspx", 460, 900, obj, "ctl00_ModalWindow");
+            openModal("frmFindAllAppointments.aspx", 625, 910, obj, "ctl00_ModalWindow");
             var WindowName = $find('ctl00_ModalWindow');
             WindowName.add_close(FindAllAppointmentClick);
         }, 50);

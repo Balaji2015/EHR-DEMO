@@ -1729,11 +1729,11 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
                     query.SetString(0, ulHumanID.ToString());
                     query.SetString(1, "1111-11-11");
                     PageNumber = PageNumber - 1;
-                    query.SetInt32(2, PageNumber * MaxResultSet);
+                    //query.SetInt32(2, PageNumber * MaxResultSet);
                     //if (FillApptList.ApptCount < 25)
                     //    query.SetInt32(3, FillApptList.ApptCount);
                     //else
-                    query.SetInt32(3, MaxResultSet);
+                    //query.SetInt32(3, MaxResultSet);
                     aryAppointmentList = new ArrayList(query.List());
                     if (aryAppointmentList == null || aryAppointmentList.Count < 25)
                     {
@@ -1741,18 +1741,18 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
                         query1.SetString(0, ulHumanID.ToString());
                         query1.SetString(1, "1111-11-11");
                         //if (aryAppointmentList == null || aryAppointmentList.Count == 0)
-                        if (PageNumber * MaxResultSet != 0)
-                        {
-                            int total = (PageNumber * MaxResultSet) - CountPaging;
-                            if (total < 0)
-                                total = (-1) * total;
-                            query1.SetInt32(2, total);
-                        }
-                        else
-                            query1.SetInt32(2, PageNumber * MaxResultSet);
+                        //if (PageNumber * MaxResultSet != 0)
+                        //{
+                        //    int total = (PageNumber * MaxResultSet) - CountPaging;
+                        //    if (total < 0)
+                        //        total = (-1) * total;
+                        //    query1.SetInt32(2, total);
+                        //}
                         //else
-                        //    query1.SetInt32(2, aryAppointmentList.Count);
-                        query1.SetInt32(3, MaxResultSet);
+                        //    query1.SetInt32(2, PageNumber * MaxResultSet);
+                        ////else
+                        ////    query1.SetInt32(2, aryAppointmentList.Count);
+                        //query1.SetInt32(3, MaxResultSet);
                         aryArcApptList = new ArrayList(query1.List());
                         aryAppointmentList.AddRange(aryArcApptList);
                     }
@@ -1763,11 +1763,12 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
                     query.SetString(0, ulHumanID.ToString());
                     query.SetString(1, DateTime.Now.Date.ToString("yyyy-MM-dd"));
                     PageNumber = PageNumber - 1;
-                    query.SetInt32(2, PageNumber * MaxResultSet);
-                    query.SetInt32(3, MaxResultSet);
+                    //query.SetInt32(2, PageNumber * MaxResultSet);
+                    //query.SetInt32(3, MaxResultSet);
                     aryAppointmentList = new ArrayList(query.List());
-                }
 
+                    IList<FillWillingonCancel> ilstfillwill = new List<FillWillingonCancel>();
+                }
                 // added by Ginu on 2-Aug-2010
                 if (aryAppointmentList != null)
                 {
