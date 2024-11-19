@@ -249,13 +249,15 @@ table.dataTable > thead > tr > td {
     </div>
     <asp:HiddenField ID="hdnAncillary" runat="server" Value="" EnableViewState="false" />
     <input type="hidden" id="hdnIsShowAllMyEncountersQueue" value="<%=ConfigurationManager.AppSettings["IsShowAllMyEncountersQueue"]%>" />
-    <input type="hidden" id="hdnIsShowAllGeneralEncountersQueue" value="<%=ConfigurationManager.AppSettings["IsShowAllGeneralEncountersQueue"]%>" />
-    <input type="hidden" id="hdnIsShowAllMyOrdersQueue" value="<%=ConfigurationManager.AppSettings["IsShowAllMyOrdersQueue"]%>" />
-    <input type="hidden" id="hdnIsShowAllGeneralOrdersQueue" value="<%=ConfigurationManager.AppSettings["IsShowAllGeneralOrdersQueue"]%>" />
-    <input type="hidden" id="hdnIsShowAllMyPrescriptionQueue" value="<%=ConfigurationManager.AppSettings["IsShowAllMyPrescriptionQueue"]%>" />
-     <input type="hidden" id="hdnIsShowAllMyScanQueue" value="<%=ConfigurationManager.AppSettings["IsShowAllMyScanQueue"]%>" />    
     <input type="hidden" id="hdnIsShowAllMyTasksQueue" value="<%=ConfigurationManager.AppSettings["IsShowAllMyTasksQueue"]%>" />
+    <input type="hidden" id="hdnIsShowAllMyOrdersQueue" value="<%=ConfigurationManager.AppSettings["IsShowAllMyOrdersQueue"]%>" />
+    <input type="hidden" id="hdnIsShowAllMyScanQueue" value="<%=ConfigurationManager.AppSettings["IsShowAllMyScanQueue"]%>" />  
+    <input type="hidden" id="hdnIsShowAllMyPrescriptionQueue" value="<%=ConfigurationManager.AppSettings["IsShowAllMyPrescriptionQueue"]%>" />
     <input type="hidden" id="hdnIsShowAllMyAmendmentQueue" value="<%=ConfigurationManager.AppSettings["IsShowAllMyAmendmentQueue"]%>" />
+    <input type="hidden" id="hdnIsShowAllGeneralEncountersQueue" value="<%=ConfigurationManager.AppSettings["IsShowAllGeneralEncountersQueue"]%>" />
+    <input type="hidden" id="hdnIsShowAllGeneralTasksQueue" value="<%=ConfigurationManager.AppSettings["IsShowAllGeneralTasksQueue"]%>" />
+    <input type="hidden" id="hdnIsShowAllGeneralOrdersQueue" value="<%=ConfigurationManager.AppSettings["IsShowAllGeneralOrdersQueue"]%>" />
+    <input type="hidden" id="hdnIsShowAllGeneralAmendmentQueue" value="<%=ConfigurationManager.AppSettings["IsShowAllGeneralAmendmentQueue"]%>" />
 
     <telerik:RadScriptManager ID="RadScriptManager1" runat="server" EnableViewState="false" EnableScriptCombine="true">
         <Scripts>

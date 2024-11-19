@@ -7,11 +7,13 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace Acurus.Capella.UI {
-    
-    
-    public partial class frmFindAllAppointments {
-        
+namespace Acurus.Capella.UI
+{
+
+
+    public partial class frmFindAllAppointments
+    {
+
         /// <summary>
         /// ModalWindowMngt control.
         /// </summary>
@@ -20,7 +22,7 @@ namespace Acurus.Capella.UI {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::Telerik.Web.UI.RadWindowManager ModalWindowMngt;
-        
+
         /// <summary>
         /// ModalWindowAppmnt control.
         /// </summary>
@@ -29,7 +31,7 @@ namespace Acurus.Capella.UI {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::Telerik.Web.UI.RadWindow ModalWindowAppmnt;
-        
+
         /// <summary>
         /// ToolkitScriptManager2 control.
         /// </summary>
@@ -38,7 +40,7 @@ namespace Acurus.Capella.UI {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::AjaxControlToolkit.ToolkitScriptManager ToolkitScriptManager2;
-        
+
         /// <summary>
         /// updatepanel control.
         /// </summary>
@@ -47,16 +49,7 @@ namespace Acurus.Capella.UI {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.UpdatePanel updatepanel;
-        
-        /// <summary>
-        /// pnlPatientInfo control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.Panel pnlPatientInfo;
-        
+
         /// <summary>
         /// lblPatientName control.
         /// </summary>
@@ -64,8 +57,8 @@ namespace Acurus.Capella.UI {
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Label lblPatientName;
-        
+        protected global::System.Web.UI.HtmlControls.HtmlGenericControl lblPatientName;
+
         /// <summary>
         /// txtPatientName control.
         /// </summary>
@@ -73,8 +66,8 @@ namespace Acurus.Capella.UI {
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox txtPatientName;
-        
+        protected global::System.Web.UI.HtmlControls.HtmlInputText txtPatientName;
+
         /// <summary>
         /// lblPatientAccNO control.
         /// </summary>
@@ -82,8 +75,8 @@ namespace Acurus.Capella.UI {
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Label lblPatientAccNO;
-        
+        protected global::System.Web.UI.HtmlControls.HtmlGenericControl lblPatientAccNO;
+
         /// <summary>
         /// txtPatientAccountNO control.
         /// </summary>
@@ -91,8 +84,8 @@ namespace Acurus.Capella.UI {
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox txtPatientAccountNO;
-        
+        protected global::System.Web.UI.HtmlControls.HtmlInputText txtPatientAccountNO;
+
         /// <summary>
         /// lblPatientDOB control.
         /// </summary>
@@ -100,8 +93,8 @@ namespace Acurus.Capella.UI {
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Label lblPatientDOB;
-        
+        protected global::System.Web.UI.HtmlControls.HtmlGenericControl lblPatientDOB;
+
         /// <summary>
         /// txtPatientDOB control.
         /// </summary>
@@ -109,8 +102,8 @@ namespace Acurus.Capella.UI {
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox txtPatientDOB;
-        
+        protected global::System.Web.UI.HtmlControls.HtmlInputText txtPatientDOB;
+
         /// <summary>
         /// btnFindPatient control.
         /// </summary>
@@ -118,17 +111,8 @@ namespace Acurus.Capella.UI {
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Button btnFindPatient;
-        
-        /// <summary>
-        /// lblSearchResult control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.Label lblSearchResult;
-        
+        protected global::System.Web.UI.HtmlControls.HtmlInputButton btnFindPatient;
+
         /// <summary>
         /// chkShowOldAppointments control.
         /// </summary>
@@ -136,26 +120,8 @@ namespace Acurus.Capella.UI {
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.CheckBox chkShowOldAppointments;
-        
-        /// <summary>
-        /// pnlAppointmentInfo control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.Panel pnlAppointmentInfo;
-        
-        /// <summary>
-        /// grdAppointment control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::Telerik.Web.UI.RadGrid grdAppointment;
-        
+        protected global::System.Web.UI.HtmlControls.HtmlInputCheckBox chkShowOldAppointments;
+
         /// <summary>
         /// pnlButtons control.
         /// </summary>
@@ -164,52 +130,7 @@ namespace Acurus.Capella.UI {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Panel pnlButtons;
-        
-        /// <summary>
-        /// btnFirst control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.LinkButton btnFirst;
-        
-        /// <summary>
-        /// btnPrevious control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.LinkButton btnPrevious;
-        
-        /// <summary>
-        /// btnNext control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.LinkButton btnNext;
-        
-        /// <summary>
-        /// btnLast control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.LinkButton btnLast;
-        
-        /// <summary>
-        /// lblShowing control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.Label lblShowing;
-        
+
         /// <summary>
         /// btnFindPatientRefresh control.
         /// </summary>
@@ -217,8 +138,8 @@ namespace Acurus.Capella.UI {
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Button btnFindPatientRefresh;
-        
+        protected global::System.Web.UI.HtmlControls.HtmlInputButton btnFindPatientRefresh;
+
         /// <summary>
         /// btnCancelAppointment control.
         /// </summary>
@@ -226,8 +147,8 @@ namespace Acurus.Capella.UI {
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Button btnCancelAppointment;
-        
+        protected global::System.Web.UI.HtmlControls.HtmlInputButton btnCancelAppointment;
+
         /// <summary>
         /// btnEditAppointment control.
         /// </summary>
@@ -235,8 +156,8 @@ namespace Acurus.Capella.UI {
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Button btnEditAppointment;
-        
+        protected global::System.Web.UI.HtmlControls.HtmlInputButton btnEditAppointment;
+
         /// <summary>
         /// btnCancel control.
         /// </summary>
@@ -244,8 +165,8 @@ namespace Acurus.Capella.UI {
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Button btnCancel;
-        
+        protected global::System.Web.UI.HtmlControls.HtmlInputButton btnCancel;
+
         /// <summary>
         /// hdnSelectedIndex control.
         /// </summary>
@@ -254,7 +175,7 @@ namespace Acurus.Capella.UI {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.HiddenField hdnSelectedIndex;
-        
+
         /// <summary>
         /// hdnHumanID control.
         /// </summary>
@@ -263,7 +184,7 @@ namespace Acurus.Capella.UI {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.HiddenField hdnHumanID;
-        
+
         /// <summary>
         /// hdnLastPageNo control.
         /// </summary>
@@ -272,7 +193,7 @@ namespace Acurus.Capella.UI {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.HiddenField hdnLastPageNo;
-        
+
         /// <summary>
         /// hdnTotalCount control.
         /// </summary>
@@ -281,7 +202,7 @@ namespace Acurus.Capella.UI {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.HiddenField hdnTotalCount;
-        
+
         /// <summary>
         /// btnRefresh control.
         /// </summary>
@@ -289,8 +210,8 @@ namespace Acurus.Capella.UI {
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Button btnRefresh;
-        
+        protected global::System.Web.UI.HtmlControls.HtmlInputButton btnRefresh;
+
         /// <summary>
         /// PlaceHolder1 control.
         /// </summary>
