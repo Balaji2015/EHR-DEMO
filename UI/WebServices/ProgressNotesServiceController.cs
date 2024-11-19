@@ -1179,6 +1179,8 @@ namespace Acurus.Capella.UI.WebServices.API
 
         private string ConvertToLocal(string review_Signed_Date)
         {
+            //Jira CAP-2711
+            review_Signed_Date = Convert.ToDateTime(review_Signed_Date).ToString("yyyy-MM-dd HH:mm");
             string convertToLocalQry = "SELECT convert_tz('{0}','Gmt','Us/Pacific') AS PSTTime;";
             DataSet convertToLocalResult = DBConnector.ReadData(string.Format(convertToLocalQry, review_Signed_Date));
             if (convertToLocalResult != null && convertToLocalResult.Tables != null && convertToLocalResult.Tables.Count > 0)
