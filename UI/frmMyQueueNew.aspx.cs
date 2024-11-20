@@ -80,10 +80,9 @@ namespace Acurus.Capella.UI
                 ConfigurationManager.AppSettings["IsShowAllMyScanQueue"] == "Y" ? "SCAN" : "",
                 ConfigurationManager.AppSettings["IsShowAllMyPrescriptionQueue"] == "Y" ? "E-PRESCRIBE" : "",
                 ConfigurationManager.AppSettings["IsShowAllMyAmendmentQueue"] == "Y" ? "ADDENDUM" : "",
-
-                //ConfigurationManager.AppSettings["IsShowAllGeneralTasksQueue"] == "Y" ? "GEN_TASK" : "",
-                //ConfigurationManager.AppSettings["IsShowAllGeneralOrdersQueue"] == "Y" ? "GEN_ORDER" : "",
-                //ConfigurationManager.AppSettings["IsShowAllGeneralAmendmentQueue"] == "Y" ? "GEN_ADDENDUM" : ""
+                ConfigurationManager.AppSettings["IsShowAllGeneralTasksQueue"] == "Y" ? "GEN_TASK" : "",
+                ConfigurationManager.AppSettings["IsShowAllGeneralOrdersQueue"] == "Y" ? "GEN_ORDER" : "",
+                ConfigurationManager.AppSettings["IsShowAllGeneralAmendmentQueue"] == "Y" ? "GEN_ADDENDUM" : ""
             };
 
             var facAncillary = from f in ApplicationObject.facilityLibraryList where f.Fac_Name == ClientSession.FacilityName select f;
