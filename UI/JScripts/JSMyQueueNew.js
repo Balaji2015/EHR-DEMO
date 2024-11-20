@@ -452,7 +452,7 @@ function selectAll(evt) {
         if ($("#EncounterTable tbody tr").length == 1 && $("#EncounterTable tbody tr td").length == 1 && $("#EncounterTable tbody tr td.dataTables_empty").length == 1) {
             $("#EncounterTable tbody tr").removeClass("highlight");
         }
-        return false;
+        //return false;       
     }
     else {
         $('#GeneralQTable td').find('input[type=checkbox]:checked').each(function () {
@@ -2888,7 +2888,7 @@ function loadTask() {
         <table id=EncounterTable class= 'table table-bordered Gridbodystyle' style = 'table-layout: fixed;' >
         <thead class='header' style='border: 0px;width:96.7%;'>
         <tr class='header'>
-        <th style='border: 1px solid #909090;text-align: center;width: 2%;'>Select<input type='checkbox' onclick='selectAll(this)'/></th>
+        <th style='border: 1px solid #909090;text-align: center;width: 2%;'>Select<input type='checkbox' class='myQChkbxAll' onclick='selectAll(this)'/></th>
         <th style='border: 1px solid #909090;text-align: center;width: 7%;'>Priority</th>
         <th style='border: 1px solid #909090;text-align: center;width: 5%;'>Acct. #</th>
         <th style='border: 1px solid #909090;text-align: center;width: 7%;'>Patient Name</th>
@@ -2946,7 +2946,7 @@ function loadTask() {
                 error: function (xhr, error, code) {
                     { sessionStorage.setItem('StartLoading', 'false'); StopLoadFromPatChart(); }
                     if (xhr.status == 999)
-                        window.location = xhr.statusText;
+                        window.location = "frmSessionExpired.aspx";
                     else {
                         var log = JSON.parse(xhr.responseText);
                         console.log(log);
@@ -2959,8 +2959,9 @@ function loadTask() {
             columns: [
                 {
                     data: '', render: function (data, type, row) {
-                        return " <td style='width:7%'><input type = 'checkbox' onclick = 'checkboxclick(this)' /></td >";
+                        return " <td style='width:7%'><input type = 'checkbox' class='myQChkbx' onclick = 'checkboxclick(this)' /></td >";
                     },
+                    orderable: false
                 },
                 { data: 'Priority', searchable: false },
                 { data: 'Human_ID' },
@@ -3008,7 +3009,15 @@ function loadTask() {
         'min-width': '180px'
     });
 
-    $('#EncounterTable_filter input').unbind();
+  
+    dataTable.on('page.dt', function () {
+        dataTable.$('tr.highlight').removeClass('highlight');
+        $('.myQChkbx,.myQChkbxAll').prop('checked', false);
+    });
+    dataTable.on('search.dt', function () {
+        dataTable.$('tr.highlight').removeClass('highlight');
+        $('.myQChkbx').prop('checked', false);
+    });
 
     $('#EncounterTable tbody').on('dblclick', 'tr', function () {
         $('#EncounterTable tr').removeClass("odd");
@@ -3490,7 +3499,7 @@ function loadamend() {
                 error: function (xhr, error, code) {
                     { sessionStorage.setItem('StartLoading', 'false'); StopLoadFromPatChart(); }
                     if (xhr.status == 999)
-                        window.location = "ErrorPage.aspx";
+                        window.location = "/frmSessionExpired.aspx";
                     else {
                         var log = JSON.parse(xhr.responseText);
                         console.log(log);
