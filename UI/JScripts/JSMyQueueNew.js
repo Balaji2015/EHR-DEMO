@@ -932,7 +932,7 @@ function GenQLoad() {
     var MyShowAll = localStorage.getItem('ShowallGeneralqueue');
     if (MyShowAll == "Checked") {
         $("#chkShowAll")[0].checked = true;
-        loadenc();
+        LoadGeneralEncounter();
     }
     else {
         $("#chkShowAll")[0].checked = false;
@@ -941,81 +941,7 @@ function GenQLoad() {
         if ($("#ctl00_C5POBody_chkViewAllFacilities")[0] != undefined && $("#ctl00_C5POBody_chkViewAllFacilities")[0] != null) {
             $("#ctl00_C5POBody_chkViewAllFacilities")[0].checked ? ViewAllFacilities = "Checked" : ViewAllFacilities = "Unchecked";
         }
-        $.ajax({
-            type: "POST",
-            url: "frmMyQueueNew.aspx/LoadEncounter",
-            data: JSON.stringify({
-                "sViewAllFacilities": ViewAllFacilities
-            }),
-            contentType: "application/json; charset=utf-8",
-            dataType: "json",
-            async: true,
-            success: function (data) {
-                $('#GeneralQTable').empty();
-                var tabContents; var eRoomList;
-                var objdata = $.parseJSON(data.d);
-                //Jira CAP-1593 - Encounte ID Column is displayed in UI 
-                if (objdata.data.length > 0) {
-                    for (var i = 0; i < objdata.data.length; i++) {
-                        var is_submitted = (objdata.data[i].Is_EandM_Submitted.toUpperCase() == 'Y') ? "Submitted" : "Not Submitted";
-                        if (i == 0)
-                            tabContents = "<tr><td style='width:5%'><input type='checkbox' onclick='checkboxclick(this)'/></td><td style='width:11%'>" + ConvertDate(objdata.data[i].Appt_Date_Time.replace("T", " ")) + "</td><td style='width:6%'>" + objdata.data[i].Human_ID + "</td><td style='width:7%'>" + objdata.data[i].External_Account_Number + "</td><td style='width:10%'>" + objdata.data[i].Last_Name + "," + objdata.data[i].First_Name + " " + objdata.data[i].MI + "</td><td style='width:7%'>" + DOBConvert(objdata.data[i].DOB.replace("T00:00:00", "")) + "</td><td style='width:8%'>" + objdata.data[i].Type_Of_Visit + "</td><td style='width:13%'>" + objdata.data[i].Current_Process + "</td><td style='width:8%'>" + objdata.data[i].Facility_Name + "</td><td style='width:12%'>" + objdata.data[i].PhyName + "</td><td style='width:7%'>" + objdata.data[i].Carrier_Name + "</td><td style='width:7%'>" + objdata.data[i].Insurance_Plan_Name + "</td><td style='width:9%;vertical-align: middle;padding-left:25px;'>" + is_submitted + "</td><td style='width:7%'>" + objdata.data[i].Encounter_ID + "</td><td style='display:none'>" + objdata.data[i].Physician_ID + "</td><td style='display:none'>" + objdata.data[i].EHR_Obj_Type + "</td><td style='display:none'>" + objdata.data[i].Date_of_Service + "</td></tr>";
-                        else
-                            tabContents = tabContents + "<tr><td style='width:5%'><input type='checkbox' onclick='checkboxclick(this)'/></td><td style='width:11%'>" + ConvertDate(objdata.data[i].Appt_Date_Time.replace("T", " ")) + "</td><td style='width:6%'>" + objdata.data[i].Human_ID + "</td><td style='width:7%'>" + objdata.data[i].External_Account_Number + "</td><td style='width:10%'>" + objdata.data[i].Last_Name + "," + objdata.data[i].First_Name + " " + objdata.data[i].MI + "</td><td style='width:7%'>" + DOBConvert(objdata.data[i].DOB.replace("T00:00:00", "")) + "</td><td style='width:8%'>" + objdata.data[i].Type_Of_Visit + "</td><td style='width:13%'>" + objdata.data[i].Current_Process + "</td><td style='width:8%'>" + objdata.data[i].Facility_Name + "</td><td style='width:12%'>" + objdata.data[i].PhyName + "</td><td style='width:7%'>" + objdata.data[i].Carrier_Name + "</td><td style='width:7%'>" + objdata.data[i].Insurance_Plan_Name + "</td><td style='width:9%;vertical-align: middle;padding-left:25px;'>" + is_submitted + "</td><td style='width:7%'>" + objdata.data[i].Encounter_ID + "</td><td style='display:none'>" + objdata.data[i].Physician_ID + "</td><td style='display:none'>" + objdata.data[i].EHR_Obj_Type + "</td><td style='display:none'>" + objdata.data[i].Date_of_Service + "</td></tr>";
-                    }
-
-                    $("#GeneralQTable").append("<table id=EncounterTable class='table table-bordered Gridbodystyle' style='table-layout: fixed;'><thead class='header' style='border: 0px;width:96.7%;'><tr class='header'><th style='border: 1px solid #909090;text-align: center;width: 5%;'>Select<input type='checkbox'  onclick='selectAll(this)'/></th><th style='border: 1px solid #909090;text-align: center;width: 11%;'>Appt. Date & Time</th><th style='border: 1px solid #909090;text-align: center;width: 6%;'>Acct. #</th><th style='border: 1px solid #909090;text-align: center;width: 7%;'>Ext. Acct. #</th><th style='border: 1px solid #909090;text-align: center;width: 10%;'>Patient Name</th><th style='border: 1px solid #909090;text-align: center;width: 7%;'>Patient DOB</th><th style='border: 1px solid #909090;text-align: center;width: 8%;'>Type of Visit</th><th style='border: 1px solid #909090;text-align: center;width: 11%;'>Current Process</th><th style='border: 1px solid #909090;text-align: center;width: 8%;'>Facility Name</th><th style='border: 1px solid #909090;text-align: center;width: 11%;'>Assigned Physician</th><th style='border: 1px solid #909090;text-align: center;width: 7%;'>Pri. Carrier</th><th style='border: 1px solid #909090;text-align: center;width: 7%;'>Pri. Plan</th><th style='border: 1px solid #909090;text-align: center;width: 9%;'>eSuperbill Status</th><th style='border: 1px solid #909090;text-align: center;width: 7%;'>Encounter ID</th></tr></thead><tbody style='word-wrap: break-word;'>" + tabContents + "</tbody></table>");
-                }
-                else {
-                    $("#GeneralQTable").append("<table id=EncounterTable class='table table-bordered Gridbodystyle' style='table-layout: fixed;'><thead class='header' style='border: 0px;width:96.7%;'><tr class='header'><th style='border: 1px solid #909090;text-align: center;width: 5%;'>Select<input type='checkbox'  onclick='selectAll(this)'/></th><th style='border: 1px solid #909090;text-align: center;width: 11%;'>Appt. Date & Time</th><th style='border: 1px solid #909090;text-align: center;width: 6%;'>Acct. #</th><th style='border: 1px solid #909090;text-align: center;width: 7%;'>Ext. Acct. #</th><th style='border: 1px solid #909090;text-align: center;width: 10%;'>Patient Name</th><th style='border: 1px solid #909090;text-align: center;width: 7%;'>Patient DOB</th><th style='border: 1px solid #909090;text-align: center;width: 8%;'>Type of Visit</th><th style='border: 1px solid #909090;text-align: center;width: 11%;'>Current Process</th><th style='border: 1px solid #909090;text-align: center;width: 8%;'>Facility Name</th><th style='border: 1px solid #909090;text-align: center;width: 11%;'>Assigned Physician</th><th style='border: 1px solid #909090;text-align: center;width: 7%;'>Pri. Carrier</th><th style='border: 1px solid #909090;text-align: center;width: 7%;'>Pri. Plan</th><th style='border: 1px solid #909090;text-align: center;width: 9%;'>eSuperbill Status</th><th style='border: 1px solid #909090;text-align: center;width: 7%;'>Encounter ID</th></tr></thead></table>");
-                }
-                if (objdata.role == 'Medical Assistant' || objdata.role == 'Physician' || objdata.role == 'Coder' || objdata.role == 'Office Manager') {
-                    $('#Processenc').css("background-color", "");
-                    $('#Processenc')[0].style.display = "inline-block";
-                    $('#Processenc')[0].style.visibility = "visible";
-                }
-                $("#btnEnc")[0].innerText = "Encounters Q " + "(" + objdata.data.length + ")";
-
-                $("#btnOrder")[0].innerText = "Orders Q " + "(" + objdata.count[0].Order_Count + ")";
-
-                $("#btnAmendmnt")[0].innerText = "Amendment Q " + "(" + objdata.count[0].Amendmnt_Count + ")";
-
-                $("#btnTask")[0].innerText = "Tasks Q " + "(" + objdata.count[0].Task_Count + ")";
-
-
-                sessionStorage.setItem("Order_Count", objdata.count[0].Order_Count);
-                sessionStorage.setItem("Amendmnt_Count", objdata.count[0].Amendmnt_Count);
-                sessionStorage.setItem("Task_Count", objdata.count[0].Task_Count);
-
-
-                localStorage.setItem("GenralOrderCount", objdata.count[0].Order_Count);
-
-                $("#btnEnc").addClass("btncolorMyQ");
-                $("#btnGeneral").addClass("btncolorMyQ");
-                if (objdata.dataEroom.length > 0) {
-                    if ($('select#Exam option').length == 0) { $.each(objdata.dataEroom, function (i, item) { $('#Exam').append($('<option>', { value: objdata.dataEroom[i], text: objdata.dataEroom[i] })); }); }
-                }
-                else {
-                    { sessionStorage.setItem('StartLoading', 'false'); StopLoadFromPatChart(); }
-                }
-                SortTableHeader('GeneralQ');
-                //$('#EncounterTable th').addClass('header');
-                RowClick();
-                { sessionStorage.setItem('StartLoading', 'false'); StopLoadFromPatChart(); }
-            },
-            error: function OnError(xhr) {
-                { sessionStorage.setItem('StartLoading', 'false'); StopLoadFromPatChart(); }
-                if (xhr.status == 999)
-                    window.location = "/frmSessionExpired.aspx";
-                else {
-                    var log = JSON.parse(xhr.responseText);
-                    console.log(log);
-                    alert("USER MESSAGE:\n" +
-                        ". Cannot process request. Please Login again and retry. \nEXCEPTION DETAILS: \n" +
-                        "Message: " + log.Message);
-                }
-            }
-        });
+        LoadGeneralEncounter('LoadEncounter');
     }
 }
 function MyQLoad() {
@@ -2684,7 +2610,39 @@ function loadMyAmendment() {
     //});
 
 }
-function loadenc() {
+function LoadGeneralEncounter(ajaxUrl) {
+    if ($('#hdnIsShowAllGeneralEncountersQueue').val() == 'Y') {
+        $('#lblShowAll,#chkShowAll').css("display", "none");
+    } else {
+        $('#lblShowAll,#chkShowAll').css("display", "");
+    }
+    $('#MyQTable').empty();
+    $('#GeneralQTable').empty();
+    $("#GeneralQTable").append(`
+    <table id="EncounterTable" class="table table-bordered Gridbodystyle" style="table-layout: fixed;">
+    <thead class="header" style="border: 0px;width:96.7%;">
+        <tr class="header">
+            <th style="border: 1px solid #909090;text-align: center;">Select<input type="checkbox" onclick="selectAll(this)" class="myQChkbxAll" /></th>
+            <th style="border: 1px solid #909090;text-align: center;">Appt. Date & Time</th>
+            <th style="border: 1px solid #909090;text-align: center;">Acct. #</th>
+            <th style="border: 1px solid #909090;text-align: center;">Ext. Acct. #</th>
+            <th style="border: 1px solid #909090;text-align: center;">Patient Name</th>
+            <th style="border: 1px solid #909090;text-align: center;">Patient DOB</th>
+            <th style="border: 1px solid #909090;text-align: center;">Type of Visit</th>
+            <th style="border: 1px solid #909090;text-align: center;">Current Process</th>
+            <th style="border: 1px solid #909090;text-align: center;">Facility Name</th>
+            <th style="border: 1px solid #909090;text-align: center;">Assigned Physician</th>
+            <th style="border: 1px solid #909090;text-align: center;">Pri. Carrier</th>
+            <th style="border: 1px solid #909090;text-align: center;">Pri. Plan</th>
+            <th style="border: 1px solid #909090;text-align: center;">eSuperbill Status</th>
+            <th style="border: 1px solid #909090;text-align: center;">Encounter ID</th>
+            <th style="display:none;">Physician_ID</th>
+            <th style="display:none;">EHR_Obj_Type</th>
+            <th style="display:none;">Date_of_Service</th>
+        </tr>
+    </thead>
+    </table>`);
+
     $("#chkMyShowAll")[0].disabled = false;
     var sShowall = '';
     var MyShowAll = localStorage.getItem('ShowallGeneralqueue');
@@ -2700,75 +2658,189 @@ function loadenc() {
     if ($("#ctl00_C5POBody_chkViewAllFacilities")[0] != undefined && $("#ctl00_C5POBody_chkViewAllFacilities")[0] != null) {
         $("#ctl00_C5POBody_chkViewAllFacilities")[0].checked ? ViewAllFacilities = "Checked" : ViewAllFacilities = "Unchecked";
     }
-    $.ajax({
-        type: "POST",
-        url: "frmMyQueueNew.aspx/LoadEncounterTabClick",
-        data: JSON.stringify({
-            "sShowall": sShowall,
-            "sViewAllFacilities": ViewAllFacilities
-        }),
-        contentType: "application/json; charset=utf-8",
-        dataType: "json",
-        async: true,
-        success: function (data) {
-            { sessionStorage.setItem('StartLoading', 'true'); StartLoadFromPatChart(); }
-            $('#GeneralQTable').empty();
-            var tabContents;
-            var objdata = $.parseJSON(data.d);
-
-            //Jira CAP-1593 - Encounte ID Column is displayed in UI 
-            if (objdata.data.length > 0) {
-                for (var i = 0; i < objdata.data.length; i++) {
-                    var is_submitted = (objdata.data[i].Is_EandM_Submitted.toUpperCase() == 'Y') ? "Submitted" : "Not Submitted";
-                    if (i == 0)
-                        tabContents = "<tr><td style='width:5%'><input type='checkbox' onclick='checkboxclick(this)'/></td><td style='width:11%'>" + ConvertDate(objdata.data[i].Appt_Date_Time.replace("T", " ")) + "</td><td style='width:6%'>" + objdata.data[i].Human_ID + "</td><td style='width:7%'>" + objdata.data[i].External_Account_Number + "</td><td style='width:10%'>" + objdata.data[i].Last_Name + "," + objdata.data[i].First_Name + " " + objdata.data[i].MI + "</td><td style='width:7%'>" + DOBConvert(objdata.data[i].DOB.replace("T00:00:00", "")) + "</td><td style='width:8%'>" + objdata.data[i].Type_Of_Visit + "</td><td style='width:11%'>" + objdata.data[i].Current_Process + "</td><td style='width:8%'>" + objdata.data[i].Facility_Name + "</td><td style='width:11%'>" + objdata.data[i].PhyName + "</td><td style='width:7%'>" + objdata.data[i].Carrier_Name + "</td><td style='width:7%'>" + objdata.data[i].Insurance_Plan_Name + "</td><td style='width:9%;vertical-align: middle;padding-left:25px;'>" + is_submitted + "</td><td  style='width:7%'>" + objdata.data[i].Encounter_ID + "</td><td style='display:none'>" + objdata.data[i].Physician_ID + "</td><td style='display:none'>" + objdata.data[i].EHR_Obj_Type + "</td><td style='display:none'>" + objdata.data[i].Date_of_Service + "</td></tr>";
-                    else
-                        tabContents = tabContents + "<tr><td style='width:5%'><input type='checkbox' onclick='checkboxclick(this)'/></td><td style='width:11%'>" + ConvertDate(objdata.data[i].Appt_Date_Time.replace("T", " ")) + "</td><td style='width:6%'>" + objdata.data[i].Human_ID + "</td><td style='width:7%'>" + objdata.data[i].External_Account_Number + "</td><td style='width:10%'>" + objdata.data[i].Last_Name + "," + objdata.data[i].First_Name + " " + objdata.data[i].MI + "</td><td style='width:7%'>" + DOBConvert(objdata.data[i].DOB.replace("T00:00:00", "")) + "</td><td style='width:8%'>" + objdata.data[i].Type_Of_Visit + "</td><td style='width:11%'>" + objdata.data[i].Current_Process + "</td><td style='width:8%'>" + objdata.data[i].Facility_Name + "</td><td style='width:11%'>" + objdata.data[i].PhyName + "</td><td style='width:7%'>" + objdata.data[i].Carrier_Name + "</td><td style='width:7%'>" + objdata.data[i].Insurance_Plan_Name + "</td><td style='width:9%;vertical-align: middle;padding-left:25px;'>" + is_submitted + "</td><td  style='width:7%'>" + objdata.data[i].Encounter_ID + "</td><td style='display:none'>" + objdata.data[i].Physician_ID + "</td><td style='display:none'>" + objdata.data[i].EHR_Obj_Type + "</td><td style='display:none'>" + objdata.data[i].Date_of_Service + "</td></tr>";
-                }
-
-                $("#GeneralQTable").append("<table id=EncounterTable class='table table-bordered Gridbodystyle' style='table-layout: fixed;'><thead class='header' style='border: 0px;width:96.7%;'><tr class='header'><th style='border: 1px solid #909090;text-align: center;width: 5%;'>Select<input type='checkbox'  onclick='selectAll(this)'/></th><th style='border: 1px solid #909090;text-align: center;width: 11%;'>Appt. Date & Time</th><th style='border: 1px solid #909090;text-align: center;width: 6%;'>Acct. #</th><th style='border: 1px solid #909090;text-align: center;width: 7%;'>Ext. Acct. #</th><th style='border: 1px solid #909090;text-align: center;width: 10%;'>Patient Name</th><th style='border: 1px solid #909090;text-align: center;width: 7%;'>Patient DOB</th><th style='border: 1px solid #909090;text-align: center;width: 8%;'>Type of Visit</th><th style='border: 1px solid #909090;text-align: center;width: 11%;'>Current Process</th><th style='border: 1px solid #909090;text-align: center;width: 8%;'>Facility Name</th><th style='border: 1px solid #909090;text-align: center;width: 11%;'>Assigned Physician</th><th style='border: 1px solid #909090;text-align: center;width: 7%;'>Pri. Carrier</th><th style='border: 1px solid #909090;text-align: center;width: 7%;'>Pri. Plan</th><th style='border: 1px solid #909090;text-align: center;width: 9%;'>eSuperbill Status</th><th style='border: 1px solid #909090;text-align: center;width: 7%;'>Encounter ID</th></tr></thead><tbody style='word-wrap: break-word;'>" + tabContents + "</tbody></table>");
-            }
-            else {
-                $("#GeneralQTable").append("<table id=EncounterTable class='table table-bordered Gridbodystyle' style='table-layout: fixed;'><thead class='header' style='border: 0px;width:96.7%;'><tr class='header'><th style='border: 1px solid #909090;text-align: center;width: 5%;'>Select<input type='checkbox'  onclick='selectAll(this)'/></th><th style='border: 1px solid #909090;text-align: center;width: 11%;'>Appt. Date & Time</th><th style='border: 1px solid #909090;text-align: center;width: 6%;'>Acct. #</th><th style='border: 1px solid #909090;text-align: center;width: 7%;'>Ext. Acct. #</th><th style='border: 1px solid #909090;text-align: center;width: 10%;'>Patient Name</th><th style='border: 1px solid #909090;text-align: center;width: 7%;'>Patient DOB</th><th style='border: 1px solid #909090;text-align: center;width: 8%;'>Type of Visit</th><th style='border: 1px solid #909090;text-align: center;width: 11%;'>Current Process</th><th style='border: 1px solid #909090;text-align: center;width: 8%;'>Facility Name</th><th style='border: 1px solid #909090;text-align: center;width: 11%;'>Assigned Physician</th><th style='border: 1px solid #909090;text-align: center;width: 7%;'>Pri. Carrier</th><th style='border: 1px solid #909090;text-align: center;width: 7%;'>Pri. Plan</th><th style='border: 1px solid #909090;text-align: center;width: 9%;'>eSuperbill Status</th><th style='border: 1px solid #909090;text-align: center;width: 7%;'>Encounter ID</th></tr></thead></table>");
-            }
-            $("#btnEnc")[0].innerText = "Encounters Q " + "(" + objdata.data.length + ")";
-
-            if (sessionStorage.getItem("Task_Count") != null && sessionStorage.getItem("Task_Count") != undefined) {
-                $("#btnTask")[0].innerText = "Tasks Q " + "(" + sessionStorage.getItem("Task_Count") + ")";
-            }
-
-            if (sessionStorage.getItem("Order_Count") != null && sessionStorage.getItem("Order_Count") != undefined) {
-                $("#btnOrder")[0].innerText = "Orders Q " + "(" + sessionStorage.getItem("Order_Count") + ")";
-            }
-
-            if (sessionStorage.getItem("Amendmnt_Count") != null && sessionStorage.getItem("Amendmnt_Count") != undefined) {
-                $("#btnAmendmnt")[0].innerText = "Amendment Q" + "(" + sessionStorage.getItem("Amendmnt_Count") +")";
-            }
-
-            if (objdata.role == 'Medical Assistant' || objdata.role == 'Physician' || objdata.role == 'Coder') {
-                $('#Processenc').css("background-color", "");
-                $('#Processenc')[0].style.display = "inline-block";
-                $('#Processenc')[0].style.visibility = "visible";
-            }
-            //$('#EncounterTable th').addClass('header');
-            SortTableHeader('GeneralQ');
-            RowClick();
-            { sessionStorage.setItem('StartLoading', 'false'); StopLoadFromPatChart(); }
+    ajaxUrl = ajaxUrl == '' || ajaxUrl == undefined ? 'LoadEncounterTabClick' : ajaxUrl;
+    var dataTable = new DataTable('#EncounterTable', {
+        serverSide: false,
+        lengthChange: false,
+        searching: true,
+        processing: false,
+        ordering: true,
+        autoWidth: false,
+        order: [],
+        pageLength: 15,
+        language: {
+            search: "Patient Search",
+            searchPlaceholder: "Search by Name or Acct. # or Encounter ID",
+            infoFiltered: ""
         },
-        error: function OnError(xhr) {
-            { sessionStorage.setItem('StartLoading', 'false'); StopLoadFromPatChart(); }
-            if (xhr.status == 999)
-                window.location = "/frmSessionExpired.aspx";
+        dom: '<"top"ipf>rt<"bottom"l><"clear">',
+        ajax: {
+            url: '/frmMyQueueNew.aspx/' + ajaxUrl,
+            contentType: "application/json",
+            type: "GET",
+            dataType: "JSON",
+            deferRender: true,
+            data: function (d) {
+                d.extra_search = JSON.stringify({
+                    "sShowall": sShowall,
+                    "sViewAllFacilities": ViewAllFacilities
+                });
+                return d;
+            },
+            dataSrc: function (json) {
+                var objdata = json.d;
+                objdata.data = Decompress(objdata.data);
+                if (objdata.role == 'Medical Assistant' || objdata.role == 'Physician' || objdata.role == 'Coder' || objdata.role == 'Office Manager') {
+                    $('#Processenc').css("background-color", "");
+                    $('#Processenc')[0].style.display = "inline-block";
+                    $('#Processenc')[0].style.visibility = "visible";
+                }
+                $("#btnEnc")[0].innerText = "Encounters Q " + "(" + objdata.data.length + ")";
+                if (ajaxUrl == 'LoadEncounter') {
+                    $("#btnOrder")[0].innerText = "Orders Q " + "(" + objdata.count[0].Order_Count + ")";
+                    $("#btnAmendmnt")[0].innerText = "Amendment Q " + "(" + objdata.count[0].Amendmnt_Count + ")";
+                    $("#btnTask")[0].innerText = "Tasks Q " + "(" + objdata.count[0].Task_Count + ")";
+
+                    sessionStorage.setItem("Order_Count", objdata.count[0].Order_Count);
+                    sessionStorage.setItem("Amendmnt_Count", objdata.count[0].Amendmnt_Count);
+                    sessionStorage.setItem("Task_Count", objdata.count[0].Task_Count);
+                    localStorage.setItem("GenralOrderCount", objdata.count[0].Order_Count);
+
+                    $("#btnEnc").addClass("btncolorMyQ");
+                    $("#btnGeneral").addClass("btncolorMyQ");
+                    if (objdata.dataEroom.length > 0) {
+                        if ($('select#Exam option').length == 0) { $.each(objdata.dataEroom, function (i, item) { $('#Exam').append($('<option>', { value: objdata.dataEroom[i], text: objdata.dataEroom[i] })); }); }
+                    }
+                }
+                { sessionStorage.setItem('StartLoading', 'false'); StopLoadFromPatChart(); }
+
+                json.data = objdata.data;
+                return json.data;
+            },
+            error: function (xhr, error, code) {
+                { sessionStorage.setItem('StartLoading', 'false'); StopLoadFromPatChart(); }
+                if (xhr.status == 999)
+                    window.location = "frmSessionExpired.aspx";
+                else {
+                    var log = JSON.parse(xhr.responseText);
+                    console.log(log);
+                    alert("USER MESSAGE:\n" +
+                        ". Cannot process request. Please Login again and retry. \nEXCEPTION DETAILS: \n" +
+                        "Message: " + log.Message);
+                }
+            }
+        },
+        columns: [
+            {
+                data: '', render: function (data, type, row) {
+                    return "<input type='checkbox' class='myQChkbx' onclick='checkboxclick(this)' />";
+                },
+                sClass: "text-align-center",
+                searchable: false,
+                orderable: false,
+                sWidth: '4%',
+            },
+            {
+                data: 'Appt_Date_Time', render: function (data, type, row) {
+                    return ConvertDate(data.replace("T", " "));
+                },
+                searchable: false,
+                type: 'date',
+                sWidth: '11.5%'
+            },
+            { data: 'Human_ID', sWidth: '6%' },
+            { data: 'External_Account_Number', searchable: false, sWidth: '7%' },
+            {
+                data: 'Last_Name', render: function (data, type, row) {
+                    return row.Last_Name + "," + row.First_Name + " " + row.MI;
+                },
+                sClass: 'word-break-all process-word-wrap',
+                sWidth: '10%'
+            },
+            {
+                data: 'DOB', render: function (data, type, row) {
+                    return DOBConvert(data.replace("T00:00:00", ""))
+                },
+                searchable: false,
+                type: 'date',
+                sWidth: '6.7%'
+            },
+            { data: 'Type_Of_Visit', searchable: false, sWidth: '8%' },
+            { data: 'Current_Process', searchable: false, sWidth: '11%', sClass: 'process-word-wrap' },
+            {
+                data: 'Facility_Name', searchable: false, sWidth: '8%'
+            },
+            { data: 'PhyName', searchable: false, sWidth: '12%' },
+            { data: 'Carrier_Name', searchable: false, sWidth: '7%' },
+            { data: 'Insurance_Plan_Name', searchable: false, sWidth: '7%' },
+            {
+                data: 'Is_EandM_Submitted', render: function (data, type, row) {
+                    return data.toUpperCase() == 'Y' ? "Submitted" : "Not Submitted";
+                },
+                searchable: false,
+                sWidth: '9%'
+            },
+            { data: 'Encounter_ID', sWidth: '7%' },
+            { data: 'Physician_ID', sClass: 'hide_column', searchable: false },
+            { data: 'EHR_Obj_Type', sClass: 'hide_column', searchable: false },
+            { data: 'Date_of_Service', sClass: 'hide_column', searchable: false },
+        ]
+    });
+
+    $('#EncounterTable_filter').css({
+        'float': 'left',
+        'text-align': 'left',
+        'margin-left': '30px',
+    });
+
+    $('#EncounterTable_info').css({
+        'min-width': '180px'
+    });
+
+    dataTable.on('page.dt', function () {
+        dataTable.$('tr.highlight').removeClass('highlight');
+        $('.myQChkbx,.myQChkbxAll').prop('checked', false);
+    });
+
+    dataTable.on('search.dt', function () {
+        dataTable.$('tr.highlight').removeClass('highlight');
+        $('.myQChkbx,.myQChkbxAll').prop('checked', false);
+    });
+
+    $('#EncounterTable tbody').on('dblclick', 'tr', function () {
+        if (event?.target?.tagName != undefined && document.getElementById("RefreshQ")?.innerText?.indexOf("Refresh Encounters Q") != undefined) {
+            if (event.target.tagName != 'TH' && document.getElementById("RefreshQ").innerText.indexOf("Refresh Encounters Q") > -1) {
+                { sessionStorage.setItem('StartLoading', 'true'); StartLoadFromPatChart(); }
+                if ($(this)[0]?.children[0]?.children[0]?.checked != undefined) {
+                    $(this)[0].children[0].children[0].checked = true;
+                    checkboxclick($(this)[0].children[0].children[0]);
+                }
+                $('#Processenc').click();
+            }
+            else if (event.target.tagName != 'TH' && document.getElementById("RefreshQ").innerText.indexOf("Refresh Task Q") > -1) {
+                { sessionStorage.setItem('StartLoading', 'true'); StartLoadFromPatChart(); }
+                if ($(this)[0]?.children[0]?.children[0]?.checked != undefined) {
+                    $(this)[0].children[0].children[0].checked = true;
+                    checkboxclick($(this)[0].children[0].children[0]);
+                }
+                $('#Processenc').click();
+            }
+        }
+        sessionStorage.setItem('MyQRemoveIdList', '');
+    });
+
+    $('#EncounterTable tbody').on('click', 'tr', function () {
+        if (event.target.tagName != 'INPUT') {
+            if ($(this)[0].children[0].children[0].checked) {
+                $(this).removeClass("highlight");
+                $(this)[0].children[0].children[0].checked = false;
+            }
             else {
-                var log = JSON.parse(xhr.responseText);
-                console.log(log);
-                alert("USER MESSAGE:\n" +
-                    ". Cannot process request. Please Login again and retry. \nEXCEPTION DETAILS: \n" +
-                    "Message: " + log.Message);
+                $(this).toggleClass("highlight");
+                $(this)[0].children[0].children[0].checked = true;
             }
         }
     });
-
 }
 function loadTask() {
     $("#chkShowAll")[0].disabled = false;
@@ -3973,7 +4045,7 @@ function ChangeTableForTabs(sender) {
         $('#MoveTo')[0].innerText = "Move To My Encounters";
         $('#Processenc')[0].style.display = "none";
         $('#Processenc')[0].innerText = "Process Encounter";
-        window.setTimeout(loadenc, 300);
+        window.setTimeout(LoadGeneralEncounter, 300);
     }
     else if (sender.innerText.indexOf("Task") > -1) {
         { sessionStorage.setItem('StartLoading', 'true'); StartLoadFromPatChart(); }
@@ -4401,61 +4473,7 @@ function shwllclck() {
         if ($("#ctl00_C5POBody_chkViewAllFacilities")[0] != undefined && $("#ctl00_C5POBody_chkViewAllFacilities")[0] != null) {
             $("#ctl00_C5POBody_chkViewAllFacilities")[0].checked ? ViewAllFacilities = "Checked" : ViewAllFacilities = "Unchecked";
         }
-        $.ajax({
-            type: "POST",
-            url: "frmMyQueueNew.aspx/LoadEncounterTabClick",
-            data: JSON.stringify({
-                "sShowall": ShowallGeneral,
-                "sViewAllFacilities": ViewAllFacilities
-            }),
-            contentType: "application/json; charset=utf-8",
-            dataType: "json",
-            async: true,
-            success: function (data) {
-                $('#GeneralQTable').empty();
-                var tabContents;
-                var objdata = $.parseJSON(data.d);
-                //Jira CAP-1593 - Encounte ID Column is displayed in UI 
-                if (objdata.data.length > 0) {
-                    for (var i = 0; i < objdata.data.length; i++) {
-                        var is_submitted = (objdata.data[i].Is_EandM_Submitted.toUpperCase() == 'Y') ? "Submitted" : "Not Submitted";
-                        if (i == 0)
-                            tabContents = "<tr><td style='width:5%'><input type='checkbox' onclick='checkboxclick(this)'/></td><td style='width:11%'>" + ConvertDate(objdata.data[i].Appt_Date_Time.replace("T", " ")) + "</td><td style='width:6%'>" + objdata.data[i].Human_ID + "</td><td style='width:7%'>" + objdata.data[i].External_Account_Number + "</td><td style='width:10%'>" + objdata.data[i].Last_Name + "," + objdata.data[i].First_Name + " " + objdata.data[i].MI + "</td><td style='width:7%'>" + DOBConvert(objdata.data[i].DOB.replace("T00:00:00", "")) + "</td><td style='width:8%'>" + objdata.data[i].Type_Of_Visit + "</td><td style='width:11%'>" + objdata.data[i].Current_Process + "</td><td style='width:8%'>" + objdata.data[i].Facility_Name + "</td><td style='width:11%'>" + objdata.data[i].PhyName + "</td><td style='width:7%'>" + objdata.data[i].Carrier_Name + "</td><td style='width:7%'>" + objdata.data[i].Insurance_Plan_Name + "</td><td style='width:9%;vertical-align: middle;padding-left:25px;'>" + is_submitted + "</td><td  style='width:7%'>" + objdata.data[i].Encounter_ID + "</td><td style='display:none'>" + objdata.data[i].Physician_ID + "</td><td style='display:none'>" + objdata.data[i].EHR_Obj_Type + "</td><td style='display:none'>" + objdata.data[i].Date_of_Service + "</td></tr>";
-                        else
-                            tabContents = tabContents + "<tr><td style='width:5%'><input type='checkbox' onclick='checkboxclick(this)'/></td><td style='width:11%'>" + ConvertDate(objdata.data[i].Appt_Date_Time.replace("T", " ")) + "</td><td style='width:6%'>" + objdata.data[i].Human_ID + "</td><td style='width:7%'>" + objdata.data[i].External_Account_Number + "</td><td style='width:10%'>" + objdata.data[i].Last_Name + "," + objdata.data[i].First_Name + " " + objdata.data[i].MI + "</td><td style='width:7%'>" + DOBConvert(objdata.data[i].DOB.replace("T00:00:00", "")) + "</td><td style='width:8%'>" + objdata.data[i].Type_Of_Visit + "</td><td style='width:11%'>" + objdata.data[i].Current_Process + "</td><td style='width:8%'>" + objdata.data[i].Facility_Name + "</td><td style='width:11%'>" + objdata.data[i].PhyName + "</td><td style='width:7%'>" + objdata.data[i].Carrier_Name + "</td><td style='width:7%'>" + objdata.data[i].Insurance_Plan_Name + "</td><td style='width:9%;vertical-align: middle;padding-left:25px;'>" + is_submitted + "</td><td  style='width:7%'>" + objdata.data[i].Encounter_ID + "</td><td style='display:none'>" + objdata.data[i].Physician_ID + "</td><td style='display:none'>" + objdata.data[i].EHR_Obj_Type + "</td><td style='display:none'>" + objdata.data[i].Date_of_Service + "</td></tr>";
-                    }
-
-                    $("#GeneralQTable").append("<table id=EncounterTable class='table table-bordered Gridbodystyle' style='table-layout: fixed;'><thead class='header' style='border: 0px;width:96.7%;'><tr class='header'><th style='border: 1px solid #909090;text-align: center;width: 5%;'>Select<input type='checkbox'  onclick='selectAll(this)'/></th><th style='border: 1px solid #909090;text-align: center;width: 11%;'>Appt. Date & Time</th><th style='border: 1px solid #909090;text-align: center;width: 6%;'>Acct. #</th><th style='border: 1px solid #909090;text-align: center;width: 7%;'>Ext. Acct. #</th><th style='border: 1px solid #909090;text-align: center;width: 10%;'>Patient Name</th><th style='border: 1px solid #909090;text-align: center;width: 7%;'>Patient DOB</th><th style='border: 1px solid #909090;text-align: center;width: 8%;'>Type of Visit</th><th style='border: 1px solid #909090;text-align: center;width: 11%;'>Current Process</th><th style='border: 1px solid #909090;text-align: center;width: 8%;'>Facility Name</th><th style='border: 1px solid #909090;text-align: center;width: 11%;'>Assigned Physician</th><th style='border: 1px solid #909090;text-align: center;width: 7%;'>Pri. Carrier</th><th style='border: 1px solid #909090;text-align: center;width: 7%;'>Pri. Plan</th><th style='border: 1px solid #909090;text-align: center;width: 9%;'>eSuperbill Status</th><th style='border: 1px solid #909090;text-align: center;width: 7%;'>Encounter ID</th></tr></thead><tbody style='word-wrap: break-word;'>" + tabContents + "</tbody></table>");
-                }
-                else {
-                    $("#GeneralQTable").append("<table id=EncounterTable class='table table-bordered Gridbodystyle' style='table-layout: fixed;'><thead class='header' style='border: 0px;width:96.7%;'><tr class='header'><th style='border: 1px solid #909090;text-align: center;width: 5%;'>Select<input type='checkbox'  onclick='selectAll(this)'/></th><th style='border: 1px solid #909090;text-align: center;width: 11%;'>Appt. Date & Time</th><th style='border: 1px solid #909090;text-align: center;width: 6%;'>Acct. #</th><th style='border: 1px solid #909090;text-align: center;width: 7%;'>Ext. Acct. #</th><th style='border: 1px solid #909090;text-align: center;width: 10%;'>Patient Name</th><th style='border: 1px solid #909090;text-align: center;width: 7%;'>Patient DOB</th><th style='border: 1px solid #909090;text-align: center;width: 8%;'>Type of Visit</th><th style='border: 1px solid #909090;text-align: center;width: 11%;'>Current Process</th><th style='border: 1px solid #909090;text-align: center;width: 8%;'>Facility Name</th><th style='border: 1px solid #909090;text-align: center;width: 11%;'>Assigned Physician</th><th style='border: 1px solid #909090;text-align: center;width: 7%;'>Pri. Carrier</th><th style='border: 1px solid #909090;text-align: center;width: 7%;'>Pri. Plan</th><th style='border: 1px solid #909090;text-align: center;width: 9%;'>eSuperbill Status</th><th style='border: 1px solid #909090;text-align: center;width: 7%;'>Encounter ID</th></tr></thead></table>");
-                }
-                $("#btnEnc")[0].innerText = "Encounters Q " + "(" + objdata.data.length + ")";
-
-
-                if (objdata.role == 'Medical Assistant' || objdata.role == 'Physician' || objdata.role == 'Coder' || objdata.role == 'Office Manager') {
-                    $('#Processenc').css("background-color", "");
-                    $('#Processenc')[0].style.display = "inline-block";
-                    $('#Processenc')[0].style.visibility = "visible";
-                }
-                //$('#EncounterTable th').addClass('header');
-                RowClick();
-                SortTableHeader('GeneralQ');
-                { sessionStorage.setItem('StartLoading', 'false'); StopLoadFromPatChart(); }
-            },
-            error: function OnError(xhr) {
-                { sessionStorage.setItem('StartLoading', 'false'); StopLoadFromPatChart(); }
-                if (xhr.status == 999)
-                    window.location = "/frmSessionExpired.aspx";
-                else {
-                    var log = JSON.parse(xhr.responseText);
-                    console.log(log);
-                    alert("USER MESSAGE:\n" +
-                        ". Cannot process request. Please Login again and retry. \nEXCEPTION DETAILS: \n" +
-                        "Message: " + log.Message);
-                }
-            }
-        });
+        LoadGeneralEncounter();
 
     }
     else if (document.getElementById("RefreshQ").innerText.indexOf("Refresh Orders Q") > -1 && $('#RefreshQ').is(":visible")) {
@@ -4920,43 +4938,7 @@ function movetoEnc() {
                 dataType: "json",
                 async: true,
                 success: function (data) {
-                    
-                    var sShowall = '';
-                    var MyShowAll = localStorage.getItem('ShowallGeneralqueue');
-                    if (MyShowAll == "Checked") {
-                        $("#chkShowAll")[0].checked = true;
-                        loadenc();
-                    }
-                    else {
-                        { sessionStorage.setItem('StartLoading', 'true'); StartLoadFromPatChart(); }
-                        $('#GeneralQTable').empty();
-                        var tabContents;
-                        var objdata = $.parseJSON(data.d);
-
-                        //Jira CAP-1593 - Encounte ID Column is displayed in UI 
-                        if (objdata.length > 0) {
-                            for (var i = 0; i < objdata.length; i++) {
-                                var is_submitted = (objdata[i].Is_EandM_Submitted.toUpperCase() == 'Y') ? "Submitted" : "Not Submitted";
-                                if (i == 0)
-                                    tabContents = "<tr><td style='width:5%'><input type='checkbox' onclick='checkboxclick(this)'/></td><td style='width:11%'>" + ConvertDate(objdata[i].Appt_Date_Time.replace("T", " ")) + "</td><td style='width:6%'>" + objdata[i].Human_ID + "</td><td style='width:7%'>" + objdata[i].External_Account_Number + "</td><td style='width:10%'>" + objdata[i].Last_Name + "," + objdata[i].First_Name + " " + objdata[i].MI + "</td><td style='width:7%'>" + DOBConvert(objdata[i].DOB.replace("T00:00:00", "")) + "</td><td style='width:8%'>" + objdata[i].Type_Of_Visit + "</td><td style='width:11%'>" + objdata[i].Current_Process + "</td><td style='width:8%'>" + objdata[i].Facility_Name + "</td><td style='width:11%'>" + objdata[i].PhyName + "</td><td style='width:7%'>" + objdata[i].Carrier_Name + "</td><td style='width:7%'>" + objdata[i].Insurance_Plan_Name + "</td><td style='width:9%;vertical-align: middle;padding-left:25px;'>" + is_submitted + "</td><td  style='width:7%'>" + objdata[i].Encounter_ID + "</td><td style='display:none'>" + objdata[i].Physician_ID + "</td><td style='display:none'>" + objdata[i].EHR_Obj_Type + "</td><td style='display:none'>" + objdata[i].Date_of_Service + "</td></tr>";
-                                else
-                                    tabContents = tabContents + "<tr><td style='width:5%'><input type='checkbox' onclick='checkboxclick(this)'/></td><td style='width:11%'>" + ConvertDate(objdata[i].Appt_Date_Time.replace("T", " ")) + "</td><td style='width:6%'>" + objdata[i].Human_ID + "</td><td style='width:7%'>" + objdata[i].External_Account_Number + "</td><td style='width:10%'>" + objdata[i].Last_Name + "," + objdata[i].First_Name + " " + objdata[i].MI + "</td><td style='width:7%'>" + DOBConvert(objdata[i].DOB.replace("T00:00:00", "")) + "</td><td style='width:8%'>" + objdata[i].Type_Of_Visit + "</td><td style='width:11%'>" + objdata[i].Current_Process + "</td><td style='width:8%'>" + objdata[i].Facility_Name + "</td><td style='width:11%'>" + objdata[i].PhyName + "</td><td style='width:7%'>" + objdata[i].Carrier_Name + "</td><td style='width:7%'>" + objdata[i].Insurance_Plan_Name + "</td><td style='width:9%;vertical-align: middle;padding-left:25px;'>" + is_submitted + "</td><td  style='width:7%'>" + objdata[i].Encounter_ID + "</td><td style='display:none'>" + objdata[i].Physician_ID + "</td><td style='display:none'>" + objdata[i].EHR_Obj_Type + "</td><td style='display:none'>" + objdata[i].Date_of_Service + "</td></tr>";
-                            }
-
-                            $("#GeneralQTable").append("<table id=EncounterTable class='table table-bordered Gridbodystyle' style='table-layout: fixed;'><thead class='header' style='border: 0px;width:96.7%;'><tr class='header'><th style='border: 1px solid #909090;text-align: center;width: 5%;'>Select<input type='checkbox' onclick='selectAll(this)'/></th><th style='border: 1px solid #909090;text-align: center;width: 11%;'>Appt. Date & Time</th><th style='border: 1px solid #909090;text-align: center;width: 6%;'>Acct. #</th><th style='border: 1px solid #909090;text-align: center;width: 7%;'>Ext. Acct. #</th><th style='border: 1px solid #909090;text-align: center;width: 10%;'>Patient Name</th><th style='border: 1px solid #909090;text-align: center;width: 7%;'>Patient DOB</th><th style='border: 1px solid #909090;text-align: center;width: 8%;'>Type of Visit</th><th style='border: 1px solid #909090;text-align: center;width: 11%;'>Current Process</th><th style='border: 1px solid #909090;text-align: center;width: 8%;'>Facility Name</th><th style='border: 1px solid #909090;text-align: center;width: 11%;'>Assigned Physician</th><th style='border: 1px solid #909090;text-align: center;width: 7%;'>Pri. Carrier</th><th style='border: 1px solid #909090;text-align: center;width: 7%;'>Pri. Plan</th><th style='border: 1px solid #909090;text-align: center;width: 9%;'>eSuperbill Status</th><th style='border: 1px solid #909090;text-align: center;width: 7%;'>Encounter ID</th></tr></thead><tbody style='word-wrap: break-word;'>" + tabContents + "</tbody></table>");
-                        }
-                        else {
-                            $("#GeneralQTable").append("<table id=EncounterTable class='table table-bordered Gridbodystyle' style='table-layout: fixed;'><thead class='header' style='border: 0px;width:96.7%;'><tr class='header'><th style='border: 1px solid #909090;text-align: center;width: 5%;'>Select<input type='checkbox' onclick='selectAll(this)'/></th><th style='border: 1px solid #909090;text-align: center;width: 11%;'>Appt. Date & Time</th><th style='border: 1px solid #909090;text-align: center;width: 6%;'>Acct. #</th><th style='border: 1px solid #909090;text-align: center;width: 7%;'>Ext. Acct. #</th><th style='border: 1px solid #909090;text-align: center;width: 10%;'>Patient Name</th><th style='border: 1px solid #909090;text-align: center;width: 7%;'>Patient DOB</th><th style='border: 1px solid #909090;text-align: center;width: 8%;'>Type of Visit</th><th style='border: 1px solid #909090;text-align: center;width: 11%;'>Current Process</th><th style='border: 1px solid #909090;text-align: center;width: 8%;'>Facility Name</th><th style='border: 1px solid #909090;text-align: center;width: 11%;'>Assigned Physician</th><th style='border: 1px solid #909090;text-align: center;width: 7%;'>Pri. Carrier</th><th style='border: 1px solid #909090;text-align: center;width: 7%;'>Pri. Plan</th><th style='border: 1px solid #909090;text-align: center;width: 9%;'>eSuperbill Status</th><th style='border: 1px solid #909090;text-align: center;width: 7%;'>Encounter ID</th></tr></thead></table>");
-                        }
-                        $("#btnEnc")[0].innerText = "Encounters Q " + "(" + objdata.length + ")";
-
-                        SortTableHeader('GeneralQ');
-                        //$('#EncounterTable th').addClass('header');
-                        RowClick();
-                        { sessionStorage.setItem('StartLoading', 'false'); StopLoadFromPatChart(); }
-                    }
-                    
-
+                    LoadGeneralEncounter();
                 },
                 error: function OnError(xhr) {
                     { sessionStorage.setItem('StartLoading', 'false'); StopLoadFromPatChart(); }
