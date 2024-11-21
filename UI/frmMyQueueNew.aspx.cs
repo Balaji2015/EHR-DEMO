@@ -514,9 +514,9 @@ namespace Acurus.Capella.UI
             MyHome = wfMngr.GetListObjects("ALL", ObjType, ProcessType, ClientSession.UserName, bValue, iDefaultDays, string.Empty);//ClientSession.DefaultNoofDays);
             UtilityManager.inserttologgingtable(ClientSession.EncounterId.ToString(), ClientSession.HumanId.ToString(), ClientSession.UserName, ClientSession.PhysicianId.ToString(), "MyQueue LoadMyOrder GetListObjects DB call : End", DateTime.Now, sGroup_ID_Log, "frmMyQueueNew");
             var MyOrdersQ = from g in MyHome where g.Current_Owner != "UNKNOWN" orderby g.Created_Date_And_Time descending select g;
+            MyOrdersQ = from g in MyOrdersQ orderby g.Is_Abnormal descending select g;
             //Cap- 2684
-            //MyOrdersQ = from g in MyOrdersQ orderby g.Is_Abnormal descending select g;
-            MyOrdersQ = (from g in MyOrdersQ  select g).OrderByDescending(a => a.Created_Date_And_Time).ThenByDescending(b => b.Is_Abnormal);
+            //MyOrdersQ = (from g in MyOrdersQ  select g).OrderByDescending(a => a.Created_Date_And_Time).ThenByDescending(b => b.Is_Abnormal);
             UtilityManager.inserttologgingtable(ClientSession.EncounterId.ToString(), ClientSession.HumanId.ToString(), ClientSession.UserName, ClientSession.PhysicianId.ToString(), "MyQueue LoadMyOrder : End", DateTime.Now, sGroup_ID_Log, "frmMyQueueNew");
             var result = MyOrdersQ.ToList<MyQ>();
             var resultNew = new
