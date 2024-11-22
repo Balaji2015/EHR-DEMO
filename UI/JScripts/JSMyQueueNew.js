@@ -1782,6 +1782,7 @@ function loadMyorder() {
             <th style="border: 1px solid #909090;display:none;" title="Click here to sort">Result_Master_ID</th>
             <th style="border: 1px solid #909090;display:none;" title="Click here to sort">File_Reference_No</th>
             <th style="border: 1px solid #909090;text-align: center;width:10%" title="Click here to sort">Narrative Interpretation</th>
+            <th style="border: 1px solid #909090;text-align: center;width:4%" title="Click here to sort">Abnormal</th>
         </tr>
     </thead>
     </table>`);
@@ -1932,6 +1933,7 @@ function loadMyorder() {
             { data: 'ResultMasterID', sClass: 'hide_column', searchable: false },
             { data: 'File_Reference_No', sClass: 'hide_column', searchable: false },
             { data: 'Is_Narrative', searchable: false },
+            { data: 'Is_Abnormal', render: function (data, type, row) { if (data != "") { return data.toUpperCase(); } else { return "NO"; } }, searchable: false },
         ],
         createdRow: function (row, data, dataIndex) {
             if (data.Is_Abnormal == "Yes") {
