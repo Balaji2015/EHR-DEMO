@@ -3526,7 +3526,8 @@ function loadamend() {
                             return "";
                         else
                             return ConvertDate(row.Appt_Date_Time.replace("T", " "));
-                    }, searchable: false
+                    }, searchable: false,
+                    type: 'date'
                 },
                 {
                     data: 'Addendum_Created_Date_Time', render: function (data, type, row) {
@@ -3534,7 +3535,8 @@ function loadamend() {
                             return "";
                         else
                             return ConvertDate(row.Addendum_Created_Date_Time.replace("T", " "));
-                    }, searchable: false
+                    }, searchable: false,
+                    type: 'date'
                 },
                 { data: 'Human_ID' },
                 { data: 'External_Account_Number', searchable: false },
@@ -3551,7 +3553,8 @@ function loadamend() {
                             return "";
                         else
                             return ConvertDate(row.Addendum_Created_Date_Time.replace("T", " "));
-                    }, searchable: false
+                    }, searchable: false,
+                    type: 'date'
                 },
                 { data: 'Addendum_Created_By', searchable: false },
                 { data: 'Addendum_Signed_By', searchable: false },
