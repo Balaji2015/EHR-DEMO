@@ -1782,6 +1782,7 @@ function loadMyorder() {
             <th style="border: 1px solid #909090;display:none;" title="Click here to sort">Result_Master_ID</th>
             <th style="border: 1px solid #909090;display:none;" title="Click here to sort">File_Reference_No</th>
             <th style="border: 1px solid #909090;text-align: center;width:10%" title="Click here to sort">Narrative Interpretation</th>
+            <th style="border: 1px solid #909090;text-align: center;width:4%" title="Click here to sort">Abnormal</th>
         </tr>
     </thead>
     </table>`);
@@ -1932,6 +1933,7 @@ function loadMyorder() {
             { data: 'ResultMasterID', sClass: 'hide_column', searchable: false },
             { data: 'File_Reference_No', sClass: 'hide_column', searchable: false },
             { data: 'Is_Narrative', searchable: false },
+            { data: 'Is_Abnormal', render: function (data, type, row) { if (data != "") { return data.toUpperCase(); } else { return "NO"; } }, searchable: false },
         ],
         createdRow: function (row, data, dataIndex) {
             if (data.Is_Abnormal == "Yes") {
@@ -2505,7 +2507,8 @@ function loadMyAmendment() {
                         return "";
                     else
                         return ConvertDate(row.Appt_Date_Time.replace("T", " "));
-                }, searchable: false
+                }, searchable: false,
+                type: 'date'
             },
             {
                 data: 'Addendum_Created_Date_Time', render: function (data, type, row) {
@@ -2513,7 +2516,8 @@ function loadMyAmendment() {
                         return "";
                     else
                         return ConvertDate(row.Addendum_Created_Date_Time.replace("T", " "));
-                }, searchable: false
+                }, searchable: false,
+                type: 'date'
             },
             { data: 'Human_ID' },
             { data: 'External_Account_Number', searchable: false },
@@ -2530,7 +2534,8 @@ function loadMyAmendment() {
                         return "";
                     else
                         return ConvertDate(row.Addendum_Created_Date_Time.replace("T", " "));
-                }, searchable: false
+                }, searchable: false,
+                type: 'date'
             },
             { data: 'Addendum_Created_By', searchable: false },
             { data: 'Addendum_Signed_By', searchable: false },
@@ -2888,12 +2893,12 @@ function loadTask() {
         <table id=EncounterTable class= 'table table-bordered Gridbodystyle' style = 'table-layout: fixed;' >
         <thead class='header' style='border: 0px;width:96.7%;'>
         <tr class='header'>
-        <th style='border: 1px solid #909090;text-align: center;width: 2%;'>Select<input type='checkbox' class='myQChkbxAll' onclick='selectAll(this)'/></th>
+        <th style='border: 1px solid #909090;text-align: center;width: 1%;'>Select<input type='checkbox' class='myQChkbxAll' onclick='selectAll(this)'/></th>
         <th style='border: 1px solid #909090;text-align: center;width: 7%;'>Priority</th>
         <th style='border: 1px solid #909090;text-align: center;width: 5%;'>Acct. #</th>
         <th style='border: 1px solid #909090;text-align: center;width: 7%;'>Patient Name</th>
-        <th style='border: 1px solid #909090;text-align: center;width: 8%;'>Message Date</th>
-        <th style='border: 1px solid #909090;text-align: center;width: 7%;'>Message Description</th>
+        <th style='border: 1px solid #909090;text-align: center;width: 7%;'>Message Date</th>
+        <th style='border: 1px solid #909090;text-align: center;width: 8%;'>Message Description</th>
         <th style='border: 1px solid #909090;text-align: center;width: 7%;'>Facility Name</th>
         <th style='border: 1px solid #909090;text-align: center;width: 7%;'>Created By</th>
         <th style='border: 1px solid #909090; display: none;'>Message_ID</th></tr>
@@ -2909,6 +2914,7 @@ function loadTask() {
             searching: true,
             processing: false,
             ordering: true,
+            autoWidth: false,
             order: [],
             pageLength: 15,
             language: {
@@ -2959,8 +2965,9 @@ function loadTask() {
             columns: [
                 {
                     data: '', render: function (data, type, row) {
-                        return " <td style='width:7%'><input type = 'checkbox' class='myQChkbx' onclick = 'checkboxclick(this)' /></td >";
+                        return " <td style='width:5%'><input type = 'checkbox' class='myQChkbx' onclick = 'checkboxclick(this)' /></td >";
                     },
+                    searchable: false,
                     orderable: false
                 },
                 { data: 'Priority', searchable: false },
@@ -3440,7 +3447,7 @@ function loadamend() {
     <table id=EncounterTable class='table table-bordered Gridbodystyle' ' style='table-layout: fixed;'>
     <thead class='header' style='border: 0px;width:96.7%;'>
     <tr class='header' >
-    <th style='border: 1px solid #909090;text-align: center;width: 3%;'>Select<input type='checkbox'  onclick='selectAll(this)'/></th>
+    <th style='border: 1px solid #909090;text-align: center;width:3%;'>Select<input type='checkbox'  onclick='selectAll(this)'/></th>
     <th style='border: 1px solid #909090;text-align: center;width:9%'>Appt. Date</th>
     <th style='border: 1px solid #909090;text-align: center;width:9%'>Addendum Date</th>
     <th style='border: 1px solid #909090;text-align: center;width:6%;'>Acct. #</th>
@@ -3467,8 +3474,9 @@ function loadamend() {
             searching: true,
             processing: false,
             ordering: true,
+            autoWidth: false,
             order: [],
-            pageLength: 25,
+            pageLength: 15,
             language: {
                 search: "",
                 searchPlaceholder: "Search by Name or Acct. #",
@@ -3512,8 +3520,10 @@ function loadamend() {
             columns: [
                 {
                     data: '', render: function (data, type, row) {
-                        return " <td style='width:4%'><input type = 'checkbox' onclick = 'checkboxclick(this)' /></td >";
-                    },
+                        return " <td style='width:3%'><input type = 'checkbox' onclick = 'checkboxclick(this)' /></td >";
+                    }, 
+                    searchable: false,
+                    orderable: false
                 },
                 {
                     data: 'Appt_Date_Time', render: function (data, type, row) {
@@ -3521,7 +3531,8 @@ function loadamend() {
                             return "";
                         else
                             return ConvertDate(row.Appt_Date_Time.replace("T", " "));
-                    }, searchable: false
+                    }, searchable: false,
+                    type: 'date'
                 },
                 {
                     data: 'Addendum_Created_Date_Time', render: function (data, type, row) {
@@ -3529,7 +3540,8 @@ function loadamend() {
                             return "";
                         else
                             return ConvertDate(row.Addendum_Created_Date_Time.replace("T", " "));
-                    }, searchable: false
+                    }, searchable: false,
+                    type: 'date'
                 },
                 { data: 'Human_ID' },
                 { data: 'External_Account_Number', searchable: false },
@@ -3546,7 +3558,8 @@ function loadamend() {
                             return "";
                         else
                             return ConvertDate(row.Addendum_Created_Date_Time.replace("T", " "));
-                    }, searchable: false
+                    }, searchable: false,
+                    type: 'date'
                 },
                 { data: 'Addendum_Created_By', searchable: false },
                 { data: 'Addendum_Signed_By', searchable: false },
