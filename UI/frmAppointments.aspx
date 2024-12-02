@@ -419,7 +419,7 @@
                                                 ShowNavigationPane="False" OnClientAppointmentInserting="schAppointmentScheduler_TimeSlotClick"
                                                 CssClass="rsAptPai" OnTimeSlotCreated="schAppointmentScheduler_TimeSlotCreated"
                                                 OnNavigationCommand="schAppointmentScheduler_NavigationCommand" OnClientNavigationCommand="schAppoinmentScheduler_NavigationCommand" OnClientAppointmentDoubleClick="schAppoinmentScheduler_DoubleClick"
-                                                Skin="Default" TimeLabelRowSpan="1">
+                                                Skin="Default" TimeLabelRowSpan="1" EnableExactTimeRendering="true">
                                                 <TimelineView UserSelectable="False" />
                                                 <TimeSlotContextMenus>
                                                     <telerik:RadSchedulerContextMenu ID="RadSchedulerContextMenu0" runat="server">
