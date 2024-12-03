@@ -53,8 +53,15 @@ namespace Acurus.Capella.UI
                 UtilityManager.inserttologgingtableforSessionTimeout("Login Page Load - After calling btnOk_Click for redirection", Request.Url.ToString(), string.Empty);
 
             }
-            if (!IsPostBack)
+
+            //CAP-2730
+            if((Request.QueryString["IsLoginRequired"]?.ToLower() ?? "") != "true")
             {
+                ScriptManager.RegisterStartupScript(this, this.Page.GetType(), string.Empty, " {sessionStorage.setItem('StartLoading', 'true');StartLoadFromPatChart();}", true);
+            }
+
+            if (!IsPostBack)
+               {
                 //CAP-2171,CAP-2019,CAP-2141
                 if ((Request.QueryString["IsLoginRequired"]?.ToLower() ?? "") != "true" && string.IsNullOrWhiteSpace(Request.QueryString["state"]))
                 {

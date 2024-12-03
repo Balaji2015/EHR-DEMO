@@ -19,5 +19,6 @@
     <property name="Is_Active" column="Is_Active" />
     <property name="Type_Of_Visit" column="Type_Of_Visit" />
     <property name="Legal_Org" column="Legal_Org" />
+    <property name="Is_Selection_Enabled" column="Is_Selection_Enabled" />
   </class>
 </hibernate-mapping>

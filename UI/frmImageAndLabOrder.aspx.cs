@@ -1579,18 +1579,19 @@ namespace Acurus.Capella.UI
             IList<PhysicianProcedure> templst = new List<PhysicianProcedure>();
             templst = labProList.Where(a => a.Sort_Order == 0).ToList<PhysicianProcedure>();
             labProList = (labProList.Where(a => a.Sort_Order != 0).OrderBy(a => a.Sort_Order).ToList<PhysicianProcedure>()).Concat(templst).ToList<PhysicianProcedure>();
-            IList<string> groupedProce = (from rec in labProList select rec.Order_Group_Name).Distinct().ToList<string>();
+              //CAP-2683           
+            var groupedProce = (from rec in labProList select new { rec.Order_Group_Name, rec.Is_Selection_Enabled }).Distinct().ToList();
             IList<string> ItemsToBeAdded = new List<string>();
-            foreach (string str in groupedProce)
+            foreach (var str in groupedProce)
             {
-                ItemsToBeAdded.Add("!!" + str);
+                ItemsToBeAdded.Add("!!" + str.Order_Group_Name + "~" + str.Is_Selection_Enabled);
 
                 //ListViewItem objRadListViewItem;
                 ////objRadListViewItem = new ListViewItem(ListViewItemType.);
                 //objRadListViewItem.ForeColor = Color.Blue;
                 //objRadListViewItem.Font = new Font("Arial", 10, FontStyle.Bold);
                 //lstvFrequentlyUsedLabProcedures.Items.Add(objRadListViewItem);
-                var underthisgroup = (from rec in labProList where rec.Order_Group_Name.ToUpper() == str.ToUpper() select rec).ToList<PhysicianProcedure>();
+                var underthisgroup = (from rec in labProList where rec.Order_Group_Name.ToUpper() == str.Order_Group_Name.ToUpper() select rec).ToList<PhysicianProcedure>();
                 foreach (var phypro in underthisgroup)
                 {
                     ItemsToBeAdded.Add(phypro.Physician_Procedure_Code + "-" + phypro.Procedure_Description);
@@ -1621,13 +1622,24 @@ namespace Acurus.Capella.UI
 
                 if (ItemsToBeAdded[i].StartsWith("!!"))
                 {
-                    tempItem.Text = ItemsToBeAdded[i].ToString().Replace("!!", "");
+                    var procHeaderText = ItemsToBeAdded[i].Split('~');
+                    var headerText = procHeaderText[0].ToString().Replace("!!", "");
+                    var isEnabled = procHeaderText[1];
+                    tempItem.Text = headerText;
                     //tempItem.Attributes.Add("Criteria","!!");
                     tempItem.Value = "HEADERROW";
                     //tempItem.Attributes.Add("IsHeader", "true");
                     HeaderText = tempItem.Text;
-                    ListViewHeader.Add("IsHeader-true;RespectiveHeader-" + HeaderText);
-
+                    ListViewHeader.Add("IsHeader-true;RespectiveHeader-" + HeaderText );
+                   
+                    if (isEnabled == "N")
+                    {
+                         tempItem.Enabled = false;
+                    }
+                    else
+                    {
+                         tempItem.Enabled = true;
+                    }
                 }
                 else
                 {
@@ -5561,7 +5573,7 @@ namespace Acurus.Capella.UI
             foreach (ListItem lstitem in chklstFrequentlyUsedProcedures.Items)
             {
 
-                lstitem.Attributes.Add("onclick", "Testw(this);");
+                    lstitem.Attributes.Add("onclick", "Testw(this);");
 
             }
         }

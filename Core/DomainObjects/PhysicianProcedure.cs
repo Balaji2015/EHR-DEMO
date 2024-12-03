@@ -24,6 +24,7 @@ namespace Acurus.Capella.Core.DomainObjects
         private string _Is_Active = string.Empty;
         private string _type_of_visit = string.Empty;
         private string _Legal_Org = string.Empty;
+        private string _Is_Selection_Enabled = string.Empty;
         #endregion
 
 
@@ -53,6 +54,7 @@ namespace Acurus.Capella.Core.DomainObjects
             sb.Append(_Order_Group_Name);
             sb.Append(_Is_Active);
             sb.Append(_Legal_Org);
+            sb.Append(_Is_Selection_Enabled);
             return sb.ToString().GetHashCode();
         }
 
@@ -161,6 +163,13 @@ namespace Acurus.Capella.Core.DomainObjects
         {
             get { return _Legal_Org; }
             set { _Legal_Org = value; }
+        }
+
+        [DataMember]
+        public virtual string Is_Selection_Enabled
+        {
+            get { return _Is_Selection_Enabled; }
+            set { _Is_Selection_Enabled = value; }
         }
         #endregion
     }

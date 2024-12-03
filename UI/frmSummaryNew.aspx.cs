@@ -6278,6 +6278,11 @@ margin:0in 0in 0in 9in;
             //ScriptManager.RegisterStartupScript(this, this.GetType(), "EFax", "OpenEfax('" + sFaxSubject + "','" + sRefProvider + "');", true);
             //Jira CAP-1996
             //ScriptManager.RegisterStartupScript(this, this.GetType(), "EFax", "OpenEfax('" + sFaxSubject + "','" + sRefProvider + "','Y');", true);
+
+            //CAP-2738
+            sFaxSubject = Regex.Replace(sFaxSubject, @"\r\n?|\n", " ");
+            sRefProvider = Regex.Replace(sRefProvider, @"\r\n?|\n", " ");
+
             ScriptManager.RegisterStartupScript(this, this.GetType(), "EFax", "OpenEfax('" + sFaxSubject.Replace(@"'","$|~|$") + "','" + sRefProvider.Replace(@"'", "$|~|$") + "','Y');", true);
 
             UtilityManager.inserttologgingtable(ClientSession.EncounterId.ToString(), ClientSession.HumanId.ToString(), ClientSession.UserName, ClientSession.PhysicianId.ToString(), "Summary Consultation Send Fax : End", DateTime.Now, sGroup_ID_Log, "frmSummaryNew");
