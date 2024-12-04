@@ -554,8 +554,13 @@ namespace Acurus.Capella.UI
                 txtCorrectionToPlan.Enabled = false;
                 btnClose.Text = "Close";
             }
-            radbtnCorrection.Enabled = false;
-            txtCorrectionToPlan.Enabled= false;
+
+            //Jira CAP-2581
+            if (ClientSession.LegalOrg.ToUpper() == "CMG")
+            {
+                radbtnCorrection.Enabled = false;
+                txtCorrectionToPlan.Enabled = false;
+            }
             
         }
         #region
