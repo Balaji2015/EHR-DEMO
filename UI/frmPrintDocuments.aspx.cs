@@ -554,6 +554,9 @@ namespace Acurus.Capella.UI
                 txtCorrectionToPlan.Enabled = false;
                 btnClose.Text = "Close";
             }
+            radbtnCorrection.Enabled = false;
+            txtCorrectionToPlan.Enabled= false;
+            
         }
         #region
         //protected void Page_Load(object sender, EventArgs e)

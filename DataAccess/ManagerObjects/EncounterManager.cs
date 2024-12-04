@@ -9285,7 +9285,13 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
 
                                 //Jira CAP-340
                                 EncounterBlobManager objEncblobmngr = new EncounterBlobManager();
-                                objEncblobmngr.LockEncounter(ulEncounterID, ulHumanID, sUserName, dtCurrentDateTime);
+                                IList<Encounter_Blob> ilstEncBlob = new List<Encounter_Blob>(); 
+                                ilstEncBlob = objEncblobmngr.GetEncounterBlob(ulEncounterID);
+                                // Jira CAP-2581 Add only if condition
+                                if (ilstEncBlob.Count > 0 && ilstEncBlob[0].Human_XML == null)
+                                {
+                                    objEncblobmngr.LockEncounter(ulEncounterID, ulHumanID, sUserName, dtCurrentDateTime);
+                                }
                             }
                         }
                     }
@@ -10772,6 +10778,14 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
                                             wfObjMngr.UpdateOwner(DocumentationWfObject.Obj_System_Id, DocumentationWfObject.Obj_Type, sCurrentOwner, string.Empty);
                                         }
                                     }
+                                    // Jira CAP-2581 - Start
+                                    BillingWfObject = wfObjMngr.GetByObjectSystemId(ulEncounterID, "BILLING");
+                                    if (BillingWfObject.Current_Process == "BATCHING_WAIT")
+                                        wfObjMngr.MoveToNextProcess(BillingWfObject.Obj_System_Id, BillingWfObject.Obj_Type, 1, "UNKNOWN", dtCurrentDateTime, sMacAddress, null, null);
+
+                                    EncounterBlobManager objEncblobmngr = new EncounterBlobManager();
+                                    objEncblobmngr.LockEncounter(ulEncounterID, ulHumanID, sUserName, dtCurrentDateTime);
+                                    // Jira CAP-2581 - End
                                 }
                             }
                             else
