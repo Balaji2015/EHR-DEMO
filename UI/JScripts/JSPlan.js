@@ -11,7 +11,8 @@ function EnableSave() {
     if (document.getElementById('btnPrint').disabled == true) {
         return;
     }
-    if (document.getElementById("radbtnCorrection") != undefined && document.getElementById("radbtnCorrection").checked == true && document.getElementById("radbtnCorrection").disabled == false) {
+    //if (document.getElementById("radbtnCorrection") != undefined && document.getElementById("radbtnCorrection").checked == true && document.getElementById("radbtnCorrection").disabled == false) {
+    if (document.getElementById("radbtnCorrection") != undefined && document.getElementById("radbtnCorrection").checked == true) {
         if (document.getElementById('btnSave') != null)
             document.getElementById('btnSave').disabled = true;
         if (document.getElementById('btnMovetoPhyAsst') != null)
@@ -2643,7 +2644,8 @@ function ChangeRadio() {
             document.getElementById("btnSave").disabled = false;
         document.getElementById("chkElectronicDeclaration").disabled = false;
     }
-    if (document.getElementById("radbtnCorrection").checked == true && document.getElementById("radbtnCorrection").disabled == false) {
+    //if (document.getElementById("radbtnCorrection").checked == true && document.getElementById("radbtnCorrection").disabled == false) {
+    if (document.getElementById("radbtnCorrection").checked == true) { 
         document.getElementById("txtCorrectionToPlan").disabled = false;
         document.getElementById("txtAddendumToPlan").disabled = true;
         $('#txtCorrectionToPlan').removeClass('nonEditabletxtbox');
@@ -2893,7 +2895,8 @@ function DisableButtons() {
         document.getElementById('btnSave').disabled = true;
     if (document.getElementById('btnMovetoPhyAsst') != null)
         document.getElementById('btnMovetoPhyAsst').disabled = true;
-    if (document.getElementById("radbtnCorrection").checked == true && document.getElementById("radbtnCorrection").disabled == false) {
+    //if (document.getElementById("radbtnCorrection").checked == true && document.getElementById("radbtnCorrection").disabled == false) {
+    if (document.getElementById("radbtnCorrection").checked == true) {
         document.getElementById("chkElectronicDeclaration").disabled = true;
         document.getElementById("chkElectronicDeclaration").checked = false;
     }

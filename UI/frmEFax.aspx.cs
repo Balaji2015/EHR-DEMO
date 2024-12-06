@@ -23,6 +23,9 @@ using iTextSharp.text.html;
 using System.Data;
 using iTextSharp.text.html.simpleparser;
 using System.Text.RegularExpressions;
+using System.Web.Script.Services;
+using System.Text;
+using System.IO.Compression;
 
 namespace Acurus.Capella.UI
 {
@@ -776,43 +779,54 @@ namespace Acurus.Capella.UI
                 txtSubject.Value = string.Empty;
 
             }
-            [WebMethod(EnableSession = true)]
-            public static string EFaxoutboxload(bool last30daysTransaction)
+        [WebMethod(EnableSession = true)]
+        [ScriptMethod(ResponseFormat = ResponseFormat.Json, UseHttpGet = true)]
+        //public static string EFaxoutboxload(bool last30daysTransaction)
+        public static object EFaxoutboxload()
+        {
+            if (ClientSession.UserName == string.Empty)
             {
-                if (ClientSession.UserName == string.Empty)
-                {
-                    HttpContext.Current.Response.StatusCode = 999;
-                    HttpContext.Current.Response.Status = "999 Session Expired";
-                    HttpContext.Current.Response.StatusDescription = "frmSessionExpired.aspx";
-                    return "Session Expired";
-                }
-                IList<ActivityLog> ActivityLogList = new List<ActivityLog>();
-                ActivityLogManager ActivitylogMngr = new ActivityLogManager();
-                List<string> ActivityType = new List<string>();
-                ActivityType.Add("EFax");
-                string sActivityLog = string.Empty;
-                IList<ActivityLog> ActivityLogTempList = new List<ActivityLog>();
-                //CAP-1831 - eFax Outbox - Introduce filter     
-                if (last30daysTransaction)
-                {
-                    ActivityLogTempList = ActivitylogMngr.GetActivityTypeByusername(ActivityType, ClientSession.UserName.ToString(), DateTime.UtcNow.AddDays(-29).Date);
-                }
-                else
-                {
-                    ActivityLogTempList = ActivitylogMngr.GetActivityTypeByusername(ActivityType, ClientSession.UserName.ToString());
-                }
-                ActivityLogList = ActivityLogTempList.OrderByDescending(a => a.Activity_Date_And_Time).ToList();
-                for (int i = 0; i < ActivityLogList.Count; i++)
-                {
-                    ActivityLogList[i].Activity_Date_And_Time = UtilityManager.ConvertToLocal(ActivityLogList[i].Activity_Date_And_Time);
-                }
-
-                //IActivityLogList = ActivityLogList.Select(a => new { a.Activity_By });
-                var vEFaxoutboxload = new { ActivityLogList = ActivityLogList };
-
-                return JsonConvert.SerializeObject(vEFaxoutboxload);
-                //return JsonConvert.SerializeObject(ActivityLogList);
+                HttpContext.Current.Response.StatusCode = 999;
+                HttpContext.Current.Response.Status = "999 Session Expired";
+                HttpContext.Current.Response.StatusDescription = "frmSessionExpired.aspx";
+                return "Session Expired";
             }
+            string extra_search = HttpContext.Current.Request.Params["extra_search"];
+            var searchData = JsonConvert.DeserializeObject<Dictionary<string, string>>(extra_search);
+            string last30daysTransaction = searchData["last30daysTransaction"];
+            IList<ActivityLog> ActivityLogList = new List<ActivityLog>();
+            ActivityLogManager ActivitylogMngr = new ActivityLogManager();
+            List<string> ActivityType = new List<string>();
+            ActivityType.Add("EFax");
+            string sActivityLog = string.Empty;
+            IList<ActivityLog> ActivityLogTempList = new List<ActivityLog>();
+            //CAP-1831 - eFax Outbox - Introduce filter     
+            if (last30daysTransaction == "true")
+            {
+                ActivityLogTempList = ActivitylogMngr.GetActivityTypeByusername(ActivityType, ClientSession.UserName.ToString(), DateTime.UtcNow.AddDays(-29).Date);
+            }
+            else
+            {
+                ActivityLogTempList = ActivitylogMngr.GetActivityTypeByusername(ActivityType, ClientSession.UserName.ToString());
+            }
+            ActivityLogList = ActivityLogTempList.OrderByDescending(a => a.Activity_Date_And_Time).ToList();
+            for (int i = 0; i < ActivityLogList.Count; i++)
+            {
+                ActivityLogList[i].Activity_Date_And_Time = UtilityManager.ConvertToLocal(ActivityLogList[i].Activity_Date_And_Time);
+            }
+
+            //IActivityLogList = ActivityLogList.Select(a => new { a.Activity_By });
+            var vEFaxoutboxload = new { ActivityLogList = ActivityLogList };
+
+            //return JsonConvert.SerializeObject(vEFaxoutboxload);
+            ////return JsonConvert.SerializeObject(ActivityLogList);
+
+            var resultNew = new
+            {
+                data = Compress(JsonConvert.SerializeObject(ActivityLogList)),
+            };
+            return resultNew;
+        }
             [WebMethod(EnableSession = true)]
             public static string GetActivities(string FieldValue)
             {
@@ -994,5 +1008,23 @@ namespace Acurus.Capella.UI
                 }
                 ScriptManager.RegisterStartupScript(this, this.GetType(), "SaveSucessfully", "{sessionStorage.setItem('StartLoading', 'false');StopLoadFromPatChart();}", true);
             }
+
+        private static string Compress(string input)
+        {
+            if (string.IsNullOrEmpty(input))
+            {
+                return string.Empty;
+            }
+
+            byte[] inputBytes = Encoding.UTF8.GetBytes(input);
+            using (var outputStream = new MemoryStream())
+            {
+                using (var gzipStream = new GZipStream(outputStream, CompressionMode.Compress))
+                {
+                    gzipStream.Write(inputBytes, 0, inputBytes.Length);
+                }
+                return Convert.ToBase64String(outputStream.ToArray());
+            }
         }
+    }
     }

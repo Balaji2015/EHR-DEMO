@@ -74,7 +74,7 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
         void SubmitOrdersAndPrescriptions(ulong ulMyEncounterID, ulong ulMyHumanID, ulong ulMyPhysicianID, string UserName, string MACAddress, string FacilityName, DateTime currentDateTime);
         //Added  by Janani on 8-09-11
         // MoveVerificationDTO PerformMoveVerification(ulong ulMyEncounterID, ulong selectedPhysicianID, ulong ulMyHumanID, DateTime currentDate, string FacilityName, string UserName, bool VerifyPFSH, string Source, string SourceOtherInfo, string userCurrentProcess, string MACAddress, string btnPhyCorrectionText, bool bDuplicateCheck, string UserRole);
-        MoveVerificationDTO PerformMoveVerification(ulong ulMyEncounterID, ulong selectedPhysicianID, ulong ulMyHumanID, DateTime currentDate, string FacilityName, string UserName, bool VerifyPFSH, string Source, string SourceOtherInfo, string userCurrentProcess, string MACAddress, string btnPhyCorrectionText, bool bDuplicateCheck, string UserRole, string btnID, bool breview, string IsACOValid, out string sAlert);
+        MoveVerificationDTO PerformMoveVerification(ulong ulMyEncounterID, ulong selectedPhysicianID, ulong ulMyHumanID, DateTime currentDate, string FacilityName, string UserName, bool VerifyPFSH, string Source, string SourceOtherInfo, string userCurrentProcess, string MACAddress, string btnPhyCorrectionText, bool bDuplicateCheck, string UserRole, string btnID, bool breview, string IsACOValid,string sLegalOrg, out string sAlert);
         //Added by Latha on 8-sep-2011 - performance tuning - Start
         void MoveToNextProcessFromPrintDocuments(Encounter encounterRecord, ulong ulEncounterID, ulong ulHumanID, ulong ulSelectedPhyID, string sUserName, string sButtonName, string sFacilityName, string sMacAddress, DateTime dtCurrentDateTime, bool bMovetoReview, string UserRole, int CloseType);
         //Added by Latha on 8-sep-2011 - performance tuning - End
@@ -96,7 +96,7 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
         void UpdateEncounterforMedAsst(ulong ulEncID, string sMedAsstName, string sModifiedBy, DateTime dtModifiedDateandTime, string MACAddress);
         void UpdateDateOfService(ulong ulEncID, DateTime dtDateOfService, string MACAddress, string sLocal_Time);
         //void MoveToNextProcessFromAfterPlan(Encounter encounterRecord, ulong ulEncounterID, ulong ulHumanID, ulong ulSelectedPhyID, string sUserName, string sButtonName, string sFacilityName, string sMacAddress, DateTime dtCurrentDateTime, bool bMovetoReview);
-        void MoveToNextProcessFromAfterPlan(Encounter encounterRecord, ulong ulEncounterID, ulong ulHumanID, ulong ulSelectedPhyID, string sUserName, string sButtonName, string sFacilityName, string sMacAddress, DateTime dtCurrentDateTime, bool bMovetoReview, WFObject objEncWfObj, WFObject objDocWfObject, WFObject objDocReviewWfObj, string UserRole);
+        void MoveToNextProcessFromAfterPlan(Encounter encounterRecord, ulong ulEncounterID, ulong ulHumanID, ulong ulSelectedPhyID, string sUserName, string sButtonName, string sFacilityName, string sMacAddress, DateTime dtCurrentDateTime, bool bMovetoReview, WFObject objEncWfObj, WFObject objDocWfObject, WFObject objDocReviewWfObj, string UserRole,string sLegalOrg);
         //Added by manimozhi -End
 
         DataSet DtblOfficeManagerSummaryReport(DateTime From_date, DateTime To_Date, string CurrentProcess, string CurrentOwner);
@@ -139,7 +139,7 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
         string ExamRoom, string FacName, string objtype, string[] processtype, Boolean bShowall, int DefaultNoofDays, string MACAddress, string sCurrentProcess);
 
         //MoveVerificationDTO PerformMovetoProvider(ulong ulMyEncounterID, ulong selectedPhysicianID, ulong ulMyHumanID, DateTime currentDate, string FacilityName, string UserName, bool VerifyPFSH, string Source, string SourceOtherInfo, string userCurrentProcess, string MACAddress, string btnPhyCorrectionText, bool bDuplicateCheck, string UserRole, string btnID, bool breview, string IsACOValid, WFObject objEncWfObj, Encounter EncRecord, string IsPatientDiscussed, ulong IsDiscussedBy, bool bAcoCheck, string sRoleName, string sUsername);
-        MoveVerificationDTO PerformMovetoNextProcess(ulong ulMyEncounterID, ulong selectedPhysicianID, ulong ulMyHumanID, DateTime currentDate, string FacilityName, string UserName, bool VerifyPFSH, string Source, string SourceOtherInfo, string userCurrentProcess, string MACAddress, string btnPhyCorrectionText, bool bDuplicateCheck, string UserRole, string btnID, bool breview, string IsACOValid, WFObject objEncWfObj, Encounter EncRecord, WFObject objDocWfobj, WFObject objDocReviewWfobj, string IsPatientDiscussed, ulong IsDiscussedBy, out string sAlert);
+        MoveVerificationDTO PerformMovetoNextProcess(ulong ulMyEncounterID, ulong selectedPhysicianID, ulong ulMyHumanID, DateTime currentDate, string FacilityName, string UserName, bool VerifyPFSH, string Source, string SourceOtherInfo, string userCurrentProcess, string MACAddress, string btnPhyCorrectionText, bool bDuplicateCheck, string UserRole, string btnID, bool breview, string IsACOValid, WFObject objEncWfObj, Encounter EncRecord, WFObject objDocWfobj, WFObject objDocReviewWfobj, string IsPatientDiscussed, ulong IsDiscussedBy,string sLegalOrg, out string sAlert);
         IList<Encounter> GetBillingInstructions(ulong EncounterID, string Keyword);
 
         void UpdateEncounterList(IList<Encounter> EncounterList, string MACAddress, object[] IsCMGOrders);
@@ -8437,7 +8437,7 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
             return ilstEncounter;
             // return sqlquery.List<Encounter>();
         }
-        public MoveVerificationDTO PerformMoveVerification(ulong ulMyEncounterID, ulong selectedPhysicianID, ulong ulMyHumanID, DateTime currentDate, string FacilityName, string UserName, bool VerifyPFSH, string Source, string SourceOtherInfo, string userCurrentProcess, string MACAddress, string btnPhyCorrectionText, bool bDuplicateCheck, string UserRole, string btnID, bool breview, string IsACOValid, out string sAlert)
+        public MoveVerificationDTO PerformMoveVerification(ulong ulMyEncounterID, ulong selectedPhysicianID, ulong ulMyHumanID, DateTime currentDate, string FacilityName, string UserName, bool VerifyPFSH, string Source, string SourceOtherInfo, string userCurrentProcess, string MACAddress, string btnPhyCorrectionText, bool bDuplicateCheck, string UserRole, string btnID, bool breview, string IsACOValid,string sLegalOrg, out string sAlert)
         {
             sAlert = string.Empty;
             // ISession iMySession = NHibernateSessionManager.Instance.CreateISession();
@@ -8967,7 +8967,7 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
                             }
                             else
                             {
-                                MoveToNextProcessFromAfterPlan(EncRecord, ulMyEncounterID, ulMyHumanID, selectedPhysicianID, UserName, btnPhyCorrectionText, FacilityName, string.Empty, Convert.ToDateTime(currentDate), breview, objEncWfObj, objDocWfObject, objDocReviewWfObj, UserRole);
+                                MoveToNextProcessFromAfterPlan(EncRecord, ulMyEncounterID, ulMyHumanID, selectedPhysicianID, UserName, btnPhyCorrectionText, FacilityName, string.Empty, Convert.ToDateTime(currentDate), breview, objEncWfObj, objDocWfObject, objDocReviewWfObj, UserRole, sLegalOrg);
                                 objMoveVerifyDTO.IsWorkflowPushed = true;
                             }
                         }
@@ -8980,7 +8980,7 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
                             }
                             else
                             {
-                                MoveToNextProcessFromAfterPlan(EncRecord, ulMyEncounterID, ulMyHumanID, selectedPhysicianID, UserName, btnPhyCorrectionText, FacilityName, string.Empty, Convert.ToDateTime(currentDate), breview, objEncWfObj, objDocWfObject, objDocReviewWfObj, UserRole);
+                                MoveToNextProcessFromAfterPlan(EncRecord, ulMyEncounterID, ulMyHumanID, selectedPhysicianID, UserName, btnPhyCorrectionText, FacilityName, string.Empty, Convert.ToDateTime(currentDate), breview, objEncWfObj, objDocWfObject, objDocReviewWfObj, UserRole, sLegalOrg);
                                 objMoveVerifyDTO.IsWorkflowPushed = true;
                             }
                         }
@@ -9285,7 +9285,13 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
 
                                 //Jira CAP-340
                                 EncounterBlobManager objEncblobmngr = new EncounterBlobManager();
-                                objEncblobmngr.LockEncounter(ulEncounterID, ulHumanID, sUserName, dtCurrentDateTime);
+                                IList<Encounter_Blob> ilstEncBlob = new List<Encounter_Blob>(); 
+                                ilstEncBlob = objEncblobmngr.GetEncounterBlob(ulEncounterID);
+                                // Jira CAP-2581 Add only if condition
+                                if (ilstEncBlob.Count > 0 && ilstEncBlob[0].Human_XML == null)
+                                {
+                                    objEncblobmngr.LockEncounter(ulEncounterID, ulHumanID, sUserName, dtCurrentDateTime);
+                                }
                             }
                         }
                     }
@@ -10592,7 +10598,7 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
             return dsResultSummary;
         }
 
-        public void MoveToNextProcessFromAfterPlan(Encounter encounterRecord, ulong ulEncounterID, ulong ulHumanID, ulong ulSelectedPhyID, string sUserName, string sButtonName, string sFacilityName, string sMacAddress, DateTime dtCurrentDateTime, bool bMovetoReview, WFObject objEncWfObj, WFObject objDocWfObject, WFObject objDocReviewWfObj, string UserRole)
+        public void MoveToNextProcessFromAfterPlan(Encounter encounterRecord, ulong ulEncounterID, ulong ulHumanID, ulong ulSelectedPhyID, string sUserName, string sButtonName, string sFacilityName, string sMacAddress, DateTime dtCurrentDateTime, bool bMovetoReview, WFObject objEncWfObj, WFObject objDocWfObject, WFObject objDocReviewWfObj, string UserRole, string sLegalOrg)
         {
             WFObject EncounterWfObject = null;
             WFObject DocumentationWfObject = null;
@@ -10708,12 +10714,24 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
                             //else
                             //    objEncounter.Is_EandM_Submitted = "N";
 
-                            //GitLab #3240
-                            if (!bMovetoReview)
+                            // Jira CAP-2581 - Start
+                            ////GitLab #3240
+                            //if (!bMovetoReview)
+                            //{
+                            //    objEncounter.Is_EandM_Submitted = "Y";
+                            //    objEncounter.E_M_Submitted_Date_And_Time = DateTime.Now;
+                            //}
+                            if (sLegalOrg.ToUpper() == "CMG")
                             {
                                 objEncounter.Is_EandM_Submitted = "Y";
                                 objEncounter.E_M_Submitted_Date_And_Time = DateTime.Now;
                             }
+                            else if (!bMovetoReview)
+                            {
+                                objEncounter.Is_EandM_Submitted = "Y";
+                                objEncounter.E_M_Submitted_Date_And_Time = DateTime.Now;
+                            }
+                            // Jira CAP-2581 - End
                             if (bMovetoReview == true)
                                 objEncounter.Encounter_Provider_Review_ID = Convert.ToInt32(ulSelectedPhyID);
                             else
@@ -10772,6 +10790,17 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
                                             wfObjMngr.UpdateOwner(DocumentationWfObject.Obj_System_Id, DocumentationWfObject.Obj_Type, sCurrentOwner, string.Empty);
                                         }
                                     }
+                                    // Jira CAP-2581 - Start
+                                    if (sLegalOrg.ToUpper() == "CMG")
+                                    {
+                                        BillingWfObject = wfObjMngr.GetByObjectSystemId(ulEncounterID, "BILLING");
+                                        if (BillingWfObject.Current_Process == "BATCHING_WAIT")
+                                            wfObjMngr.MoveToNextProcess(BillingWfObject.Obj_System_Id, BillingWfObject.Obj_Type, 1, "UNKNOWN", dtCurrentDateTime, sMacAddress, null, null);
+
+                                        EncounterBlobManager objEncblobmngr = new EncounterBlobManager();
+                                        objEncblobmngr.LockEncounter(ulEncounterID, ulHumanID, sUserName, dtCurrentDateTime);
+                                    }
+                                    // Jira CAP-2581 - End
                                 }
                             }
                             else
@@ -16355,7 +16384,7 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
             return objMoveVerifyDTO;
         }
 
-        public MoveVerificationDTO PerformMovetoNextProcess(ulong ulMyEncounterID, ulong selectedPhysicianID, ulong ulMyHumanID, DateTime currentDate, string FacilityName, string UserName, bool VerifyPFSH, string Source, string SourceOtherInfo, string userCurrentProcess, string MACAddress, string btnPhyCorrectionText, bool bDuplicateCheck, string UserRole, string btnID, bool breview, string IsACOValid, WFObject objEncWfObj, Encounter EncRecord, WFObject objDocWfobj, WFObject objDocReviewWfobj, string IsPatientDiscussed, ulong IsDiscussedBy, out string sAlert)
+        public MoveVerificationDTO PerformMovetoNextProcess(ulong ulMyEncounterID, ulong selectedPhysicianID, ulong ulMyHumanID, DateTime currentDate, string FacilityName, string UserName, bool VerifyPFSH, string Source, string SourceOtherInfo, string userCurrentProcess, string MACAddress, string btnPhyCorrectionText, bool bDuplicateCheck, string UserRole, string btnID, bool breview, string IsACOValid, WFObject objEncWfObj, Encounter EncRecord, WFObject objDocWfobj, WFObject objDocReviewWfobj, string IsPatientDiscussed, ulong IsDiscussedBy,string sLegalOrg, out string sAlert)
         {
             sAlert = string.Empty;
             MoveVerificationDTO objMoveVerifyDTO = new MoveVerificationDTO();
@@ -16523,7 +16552,7 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
                     else
                     {
 
-                        MoveToNextProcessFromAfterPlan(EncRecord, ulMyEncounterID, ulMyHumanID, selectedPhysicianID, UserName, btnPhyCorrectionText, FacilityName, string.Empty, Convert.ToDateTime(currentDate), breview, objEncWfObj, objDocWfobj, objDocReviewWfobj, UserRole);
+                        MoveToNextProcessFromAfterPlan(EncRecord, ulMyEncounterID, ulMyHumanID, selectedPhysicianID, UserName, btnPhyCorrectionText, FacilityName, string.Empty, Convert.ToDateTime(currentDate), breview, objEncWfObj, objDocWfobj, objDocReviewWfobj, UserRole, sLegalOrg);
                         objMoveVerifyDTO.IsWorkflowPushed = true;
                     }
                 }
@@ -16536,7 +16565,7 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
                     }
                     else
                     {
-                        MoveToNextProcessFromAfterPlan(EncRecord, ulMyEncounterID, ulMyHumanID, selectedPhysicianID, UserName, btnPhyCorrectionText, FacilityName, string.Empty, Convert.ToDateTime(currentDate), breview, objEncWfObj, objDocWfobj, objDocReviewWfobj, UserRole);
+                        MoveToNextProcessFromAfterPlan(EncRecord, ulMyEncounterID, ulMyHumanID, selectedPhysicianID, UserName, btnPhyCorrectionText, FacilityName, string.Empty, Convert.ToDateTime(currentDate), breview, objEncWfObj, objDocWfobj, objDocReviewWfobj, UserRole, sLegalOrg);
                         objMoveVerifyDTO.IsWorkflowPushed = true;
                     }
                 }

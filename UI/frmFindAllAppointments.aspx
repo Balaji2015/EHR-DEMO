@@ -37,11 +37,13 @@
     display:none;
 }
 
-.dataTable > thead > tr > th[class*="sort"]:before,
+/*.dataTable > thead > tr > th[class*="sort"]:before,
 .dataTable > thead > tr > th[class*="sort"]:after {
     content: "" !important;
-    }
-
+    }*/
+table.dataTable thead>tr>th.sorting:before,table.dataTable thead>tr>th.sorting:after{
+            width: 0% !important;
+        }
 table.dataTable > thead > tr > th,
 table.dataTable > thead > tr > td {
     padding-right: 10px !important;

@@ -310,9 +310,7 @@ function loadFillResult() {
             { data: 'Physician_Name', sWidth: '8%', sClass: 'TableCellBorder process-word-wrap' },
             { data: 'Facility_Name', sWidth: '7%', sClass: 'TableCellBorder process-word-wrap' },
             { data: 'Encounter_ID', sClass: "hide_column", sWidth: '6%' },
-            {
-                data: 'Current_Process', sWidth:'11%', sClass: 'TableCellBorder process-word-wrap'
-},
+            {data: 'Current_Process', sWidth:'11%', sClass: 'TableCellBorder process-word-wrap' },
             {
                 data: 'Physician_ID', render: function (data, type, row) {
                     var fac = facilityLibrary.filter(fl => fl.Fac_Name == row.Facility_Name);
@@ -360,6 +358,11 @@ function loadFillResult() {
                 && $("#grdAppointment thead th:eq(5)")[0].style.width != "6%") {
 
                 $("#grdAppointment thead th:eq(5)")[0].style.width = "6%";
+            }
+
+            //Always select first iteam
+            if ($("#grdAppointment tbody tr").length > 0 && $("#grdAppointment tbody tr td").length > 1) {
+                $($("#grdAppointment tbody tr")[0]).click();
             }
         }
     });

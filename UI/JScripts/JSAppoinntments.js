@@ -230,7 +230,11 @@ function schAppointmentScheduler_AppointmentContextMenuItemClicked(sender, args)
             obj.push("bShowPat=false");
             obj.push("sScreenMode=CheckedIn");
             //CAP-2619
-            obj.push("PhysicianID=" + Appointment.get_resources()._array[0]._key);
+            if (/^[0-9]+$/.test(Appointment.get_resources()._array[0]._key)) {
+                obj.push("PhysicianID=" + Appointment.get_resources()._array[0]._key);
+            } else {
+                obj.push("PhysicianID=" + ApptPhyID);
+            }
             openModal("frmQuickpatientcreate.aspx", 920, 1020, obj, "ctl00_ModalWindow");
             var WindowName = $find('ctl00_ModalWindow');
             WindowName.add_close(RefreshSchedular);
@@ -470,7 +474,11 @@ function schAppointmentScheduler_AppointmentContextMenuItemClicked(sender, args)
             //CAP-2601
             obj.push("Facility=" + encodeURIComponent(document.getElementById("ctl00_C5POBody_cboFacilityName").value));
             //CAP-2619
-            obj.push("PhysicianID=" + Appointment.get_resources()._array[0]._key);
+            if (/^[0-9]+$/.test(Appointment.get_resources()._array[0]._key)) {
+                obj.push("PhysicianID=" + Appointment.get_resources()._array[0]._key);
+            } else {
+                obj.push("PhysicianID=" + ApptPhyID);
+            }
            
             openModal("frmQuickpatientcreate.aspx", 920, 1020, obj, "ctl00_ModalWindow");
             var WindowName = $find('ctl00_ModalWindow');

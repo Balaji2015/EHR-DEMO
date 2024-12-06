@@ -1025,23 +1025,25 @@ function IsSaveEnabled(sender) {
             sessionStorage.setItem("EncPrevTabText", CurrentTab[0].innerText);
         }
         if ((CurrentTab[0].innerText == "CC / HPI" || CurrentTab[0].innerText == "SERV./PROC. CODES") && (val != null && val != undefined && val != "")) {
-            if (val != "true")
+            if (val != "true") {
                 tabAutoSave(CurrentTab, sender);
+            }
             else {
                 disableAutoSave();//to prevent repeated enabling of autosave functionality - from Notification screen 
                 { sessionStorage.setItem('StartLoading', 'true'); StartLoadFromPatChart(); }
                 return true;
-                 }
+            }
         }
-        else
+        else {
             tabAutoSave(CurrentTab, sender);
+        }
         return false;
     }
     else {
         disableAutoSave();//to prevent repeated enabling of autosave functionality - from Notification screen 
         { sessionStorage.setItem('StartLoading', 'true'); StartLoadFromPatChart(); }
         return true;
-       
+
     }
 }
 

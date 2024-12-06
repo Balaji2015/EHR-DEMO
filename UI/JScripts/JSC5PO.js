@@ -790,7 +790,7 @@ function OpenModal(data) {
         localStorage.setItem("IsMenuEFax", "Y");
         $(top.window.document).find("#TabFax").modal({ backdrop: "static", keyboard: false }, 'show');
         $(top.window.document).find("#TabModalEFaxTitle")[0].textContent = "Efax";
-        $(top.window.document).find("#TabmdldlgEFax")[0].style.width = "1050px";
+        $(top.window.document).find("#TabmdldlgEFax")[0].style.width = "1065px";
         //CAP-1457
         $(top.window.document).find("#TabmdldlgEFax")[0].style.height = "auto";
         $(top.window.document).find("#TabmdldlgEFax")[0].style.position = "";
