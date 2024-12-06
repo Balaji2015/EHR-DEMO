@@ -314,16 +314,7 @@ namespace Acurus.Capella.UI
                     //UtilityManager.GenerateXML(ClientSession.HumanId.ToString(), "Human");
                     return;
                 }
-                //CAP-2619
-                string techVisitPhyIDs = System.Configuration.ConfigurationManager.AppSettings["TechVisitPhyIDs"].ToString();
-                if (!string.IsNullOrEmpty(techVisitPhyIDs))
-                {
-                    var aryTechVisitPhyIDs = techVisitPhyIDs.Split('|').ToList();
-                    if (aryTechVisitPhyIDs.Any(a => a == ClientSession.PhysicianId.ToString()))
-                    {
-                        btnMove.Visible = false;
-                    }
-                }
+                
             }
             else
             {
@@ -384,6 +375,17 @@ namespace Acurus.Capella.UI
             //    btnPhysiciancorrection_Click(new object(), new EventArgs());
             //}
 
+            //Jira CAP-2763
+            //CAP-2619
+            string techVisitPhyIDs = System.Configuration.ConfigurationManager.AppSettings["TechVisitPhyIDs"].ToString();
+            if (!string.IsNullOrEmpty(techVisitPhyIDs))
+            {
+                var aryTechVisitPhyIDs = techVisitPhyIDs.Split('|').ToList();
+                if (aryTechVisitPhyIDs.Any(a => a == ClientSession.PhysicianId.ToString()))
+                {
+                    btnMove.Visible = false;
+                }
+            }
         }
 
         HumanManager objHumanManagerACO = new HumanManager();
