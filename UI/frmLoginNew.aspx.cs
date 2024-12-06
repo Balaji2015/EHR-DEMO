@@ -55,7 +55,7 @@ namespace Acurus.Capella.UI
             }
 
             //CAP-2730
-            if((Request.QueryString["IsLoginRequired"]?.ToLower() ?? "") != "true")
+            if((Request.QueryString["state"] == null && (Request.QueryString["IsLoginRequired"]?.ToLower() ?? "") != "true") || (Request.QueryString["IsLoginRequired"] == null && (Request.QueryString["state"]?.ToLower() ?? "") == ""))
             {
                 ScriptManager.RegisterStartupScript(this, this.Page.GetType(), string.Empty, " {sessionStorage.setItem('StartLoading', 'true');StartLoadFromPatChart();}", true);
             }
