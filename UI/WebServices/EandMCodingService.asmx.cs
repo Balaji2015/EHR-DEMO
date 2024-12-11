@@ -212,12 +212,13 @@ namespace Acurus.Capella.UI.WebServices
             if ((sCurrentProcess != "ADDENDUM_CODING" && sCurrentProcess != "ADDENDUM_CODING_2" && sCurrentProcess != "ADDENDUM_CORRECTION" && sCurrentProcess != "ADDENDUM_PROCESS" && sCurrentProcess != "DICTATION_REVIEW" && sCurrentProcess != "MA_PROCESS" && sCurrentProcess != "MA_REVIEW" && sCurrentProcess != "CODER_REVIEW_CORRECTION" && sCurrentProcess != "PROVIDER_PROCESS" &&
               sCurrentProcess != "READING_PROVIDER_PROCESS" && sCurrentProcess != "SCRIBE_REVIEW_CORRECTION" && sCurrentProcess != "SCRIBE_PROCESS" && sCurrentProcess != "SCRIBE_CORRECTION" && sCurrentProcess != "REVIEW_CODING" && sCurrentProcess != "REVIEW_CODING_2" && sCurrentProcess != "TECHNICIAN_PROCESS" && sCurrentProcess != "" && sCurrentProcess != "AKIDO_SCRIBE_PROCESS" && sCurrentProcess != "AKIDO_REVIEW_CODING" && sCurrentProcess != "TRANSCRIPT_PROCESS" && sCurrentProcess != "TRANSCRIPT_QC_PROCESS" && sCurrentProcess != "AKIDO_SCRIBE_QC_PROCESS" && sCurrentProcess != "AKIDO_REVIEW_CODING_QC") || sBatchStatus == "CLOSED" || eandmDTO.BillingWFObjCurrentProcess == "BATCHING_COMPLETE")
             {
-                if (ClientSession.UserRole.ToUpper() != "PHYSICIAN ASSISTANT")//Added for Provider_Review PhysicianAssistant WorkFlow Change. Implementation of CA Rule for Provider Review
-                {
+                //Jira cap - 2795
+                //if (ClientSession.UserRole.ToUpper() != "PHYSICIAN ASSISTANT")//Added for Provider_Review PhysicianAssistant WorkFlow Change. Implementation of CA Rule for Provider Review
+                //{
                     EnableScreen = "disabled";
                     btnDelete = "Resources/Delete-Grey.png";
                     btnDeleteAdditionalICD = "Resources/Delete-Grey.png";
-                }
+                //}
             }
 
             if (sEnableScreen == "EnableScreen=False")
