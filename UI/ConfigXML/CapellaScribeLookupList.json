@@ -1,0 +1,249 @@
+{
+  "CapellaScribeLookup": [
+    {
+      "ProviderUserName": "EKONCA",
+      "ProviderID": "102",
+      "ScribeUserName": "SCRIBE_1",
+      "ScribeID": "4664",
+      "Legal_Org": "CMG"
+    },
+    {
+      "ProviderUserName": "HALLA",
+      "ProviderID": "179",
+      "ScribeUserName": "SCRIBE1_ALLA",
+      "ScribeID": "4928",
+      "Legal_Org": "CMG"
+    },
+    {
+      "ProviderUserName": "RGERONIMO",
+      "ProviderID": "203",
+      "ScribeUserName": "SCRIBE_1",
+      "ScribeID": "4664",
+      "Legal_Org": "CMG"
+    },
+    {
+      "ProviderUserName": "NGUPTA",
+      "ProviderID": "204",
+      "ScribeUserName": "SCRIBE_1",
+      "ScribeID": "4664",
+      "Legal_Org": "CMG"
+    },
+    {
+      "ProviderUserName": "GLERCEL",
+      "ProviderID": "222",
+      "ScribeUserName": "SCRIBE_1",
+      "ScribeID": "4664",
+      "Legal_Org": "CMG"
+    },
+    {
+      "ProviderUserName": "MMUTHIAH",
+      "ProviderID": "234",
+      "ScribeUserName": "SCRIBE_1",
+      "ScribeID": "4664",
+      "Legal_Org": "CMG"
+    },
+    {
+      "ProviderUserName": "DROBLES",
+      "ProviderID": "252",
+      "ScribeUserName": "SCRIBE_1",
+      "ScribeID": "4664",
+      "Legal_Org": "CMG"
+    },
+    {
+      "ProviderUserName": "RSINHA",
+      "ProviderID": "265",
+      "ScribeUserName": "SCRIBE_1",
+      "ScribeID": "4664",
+      "Legal_Org": "CMG"
+    },
+    {
+      "ProviderUserName": "SREDDY",
+      "ProviderID": "2377",
+      "ScribeUserName": "SCRIBE_1",
+      "ScribeID": "4664",
+      "Legal_Org": "CMG"
+    },
+    {
+      "ProviderUserName": "PA_1",
+      "ProviderID": "2853",
+      "ScribeUserName": "SCRIBE_1",
+      "ScribeID": "4664",
+      "Legal_Org": "CMG"
+    },
+    {
+      "ProviderUserName": "PHY_1",
+      "ProviderID": "2854",
+      "ScribeUserName": "SCRIBE_1",
+      "ScribeID": "4664",
+      "Legal_Org": "CMG"
+    },
+    {
+      "ProviderUserName": "DRAPTIS",
+      "ProviderID": "2855",
+      "ScribeUserName": "SCRIBE_1",
+      "ScribeID": "4664",
+      "Legal_Org": "CMG"
+    },
+    {
+      "ProviderUserName": "NFLAZCANO",
+      "ProviderID": "4279",
+      "ScribeUserName": "SCRIBE_1",
+      "ScribeID": "4664",
+      "Legal_Org": "CMG"
+    },
+    {
+      "ProviderUserName": "GPARIKH",
+      "ProviderID": "4296",
+      "ScribeUserName": "SCRIBE1_PARIKH",
+      "ScribeID": "4932",
+      "Legal_Org": "CMG"
+    },
+    {
+      "ProviderUserName": "NATINT",
+      "ProviderID": "4323",
+      "ScribeUserName": "SCRIBE_1",
+      "ScribeID": "4664",
+      "Legal_Org": "CMG"
+    },
+    {
+      "ProviderUserName": "PHY_7",
+      "ProviderID": "4328",
+      "ScribeUserName": "SCRIBE_1",
+      "ScribeID": "4664",
+      "Legal_Org": "CMG"
+    },
+    {
+      "ProviderUserName": "SRASANIA",
+      "ProviderID": "4516",
+      "ScribeUserName": "SCRIBE_1",
+      "ScribeID": "4664",
+      "Legal_Org": "CMG"
+    },
+    {
+      "ProviderUserName": "UVB_DROBLES",
+      "ProviderID": "4649",
+      "ScribeUserName": "SCRIBE_1",
+      "ScribeID": "4664",
+      "Legal_Org": "CMG"
+    },
+    {
+      "ProviderUserName": "ZMARINA",
+      "ProviderID": "4738",
+      "ScribeUserName": "SCRIBE_1",
+      "ScribeID": "4664",
+      "Legal_Org": "CMG"
+    },
+    {
+      "ProviderUserName": "ABERBERYAN",
+      "ProviderID": "4779",
+      "ScribeUserName": "SCRIBE_1",
+      "ScribeID": "4664",
+      "Legal_Org": "CMG"
+    },
+    {
+      "ProviderUserName": "JGORDON",
+      "ProviderID": "4781",
+      "ScribeUserName": "SCRIBE_1",
+      "ScribeID": "4664",
+      "Legal_Org": "CMG"
+    },
+    {
+      "ProviderUserName": "CMONTESA",
+      "ProviderID": "4792",
+      "ScribeUserName": "SCRIBE_1",
+      "ScribeID": "4664",
+      "Legal_Org": "CMG"
+    },
+    {
+      "ProviderUserName": "HCOHEN",
+      "ProviderID": "4814",
+      "ScribeUserName": "SCRIBE_1",
+      "ScribeID": "4664",
+      "Legal_Org": "CMG"
+    },
+    {
+      "ProviderUserName": "PHY_5",
+      "ProviderID": "4844",
+      "ScribeUserName": "SCRIBE_1",
+      "ScribeID": "4664",
+      "Legal_Org": "CMG"
+    },
+    {
+      "ProviderUserName": "PA_5",
+      "ProviderID": "4845",
+      "ScribeUserName": "SCRIBE_1",
+      "ScribeID": "4664",
+      "Legal_Org": "CMG"
+    },
+    {
+      "ProviderUserName": "AGAN",
+      "ProviderID": "4858",
+      "ScribeUserName": "SCRIBE_1",
+      "ScribeID": "4664",
+      "Legal_Org": "CMG"
+    },
+    {
+      "ProviderUserName": "KPULUMATI",
+      "ProviderID": "4951",
+      "ScribeUserName": "SCRIBE_1",
+      "ScribeID": "4664",
+      "Legal_Org": "CMG"
+    },
+    {
+      "ProviderUserName": "JWOODSON",
+      "ProviderID": "5005",
+      "ScribeUserName": "SCRIBE_1",
+      "ScribeID": "4664",
+      "Legal_Org": "CMG"
+    },
+    {
+      "ProviderUserName": "BPANDYA",
+      "ProviderID": "5038",
+      "ScribeUserName": "SCRIBE_1",
+      "ScribeID": "4664",
+      "Legal_Org": "CMG"
+    },
+    {
+      "ProviderUserName": "RPATEL",
+      "ProviderID": "10181",
+      "ScribeUserName": "SCRIBE_1",
+      "ScribeID": "4664",
+      "Legal_Org": "CMG"
+    },
+    {
+      "ProviderUserName": "PTUMMALA",
+      "ProviderID": "10182",
+      "ScribeUserName": "SCRIBE_1",
+      "ScribeID": "4664",
+      "Legal_Org": "CMG"
+    },
+    {
+      "ProviderUserName": "PKARIYANNA",
+      "ProviderID": "10201",
+      "ScribeUserName": "SCRIBE_1",
+      "ScribeID": "4664",
+      "Legal_Org": "CMG"
+    },
+    {
+      "ProviderUserName": "AQADIR",
+      "ProviderID": "10369",
+      "ScribeUserName": "SCRIBE_1",
+      "ScribeID": "4664",
+      "Legal_Org": "CMG"
+    },
+    {
+      "ProviderUserName": "HSTEVEN",
+      "ProviderID": "10584",
+      "ScribeUserName": "SCRIBE_1",
+      "ScribeID": "4664",
+      "Legal_Org": "CMG"
+    },
+    {
+      "ProviderUserName": "KBRUGGIERO",
+      "ProviderID": "12666",
+      "ScribeUserName": "SCRIBE_1",
+      "ScribeID": "4664",
+      "Legal_Org": "CMG"
+    }
+  ]
+}

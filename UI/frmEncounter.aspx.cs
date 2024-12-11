@@ -28,6 +28,7 @@ using ListItem = System.Web.UI.WebControls.ListItem;
 using static System.Windows.Forms.VisualStyles.VisualStyleElement.StartPanel;
 using Newtonsoft.Json;
 using Acurus.Capella.UI.Extensions;
+using Acurus.Capella.UI.ConfigObjects;
 
 namespace Acurus.Capella.UI
 {
@@ -343,30 +344,28 @@ namespace Acurus.Capella.UI
                 btnCorrections.Visible = false;
             //Cap - 2535
             //if (ClientSession.UserRole != null && ClientSession.UserCurrentProcess != null && ClientSession.UserRole.ToUpper() == "MEDICAL ASSISTANT" && ClientSession.UserCurrentProcess == "MA_PROCESS")
-            if (ClientSession.UserCurrentProcess != null  && ClientSession.UserCurrentProcess == "MA_PROCESS")
+            if (ClientSession.UserCurrentProcess != null && ClientSession.UserCurrentProcess == "MA_PROCESS")
             {
+                //Jira CAP-2766
+                //XmlDocument xmldocUser = new XmlDocument();
+                //if (File.Exists(System.Web.Hosting.HostingEnvironment.ApplicationPhysicalPath + "ConfigXML\\" + "CapellaScribeLookupList" + ".xml"))
+                //xmldocUser.Load(System.Web.Hosting.HostingEnvironment.ApplicationPhysicalPath + "ConfigXML\\" + "CapellaScribeLookupList" + ".xml");
+                //XmlNode nodeMatchingFacility = xmldocUser.SelectSingleNode("/CapellaScribeLookupList/CapellaScribeLookup[@ProviderID='" + ClientSession.FillEncounterandWFObject.EncRecord.Appointment_Provider_ID.ToString() + "' and @Legal_Org='" + ClientSession.LegalOrg + "']");
+                //if (nodeMatchingFacility != null)
 
-                XmlDocument xmldocUser = new XmlDocument();
-                if (File.Exists(System.Web.Hosting.HostingEnvironment.ApplicationPhysicalPath + "ConfigXML\\" + "CapellaScribeLookupList" + ".xml"))
-                    xmldocUser.Load(System.Web.Hosting.HostingEnvironment.ApplicationPhysicalPath + "ConfigXML\\" + "CapellaScribeLookupList" + ".xml");
-
-
-
-                XmlNode nodeMatchingFacility = xmldocUser.SelectSingleNode("/CapellaScribeLookupList/CapellaScribeLookup[@ProviderID='" + ClientSession.FillEncounterandWFObject.EncRecord.Appointment_Provider_ID.ToString() + "' and @Legal_Org='" + ClientSession.LegalOrg + "']");
-                if (nodeMatchingFacility != null)
-
+                //Jira CAP-2766
+                CapellascribelookupList ilstCapellascribelookupList = new CapellascribelookupList();
+                List<Capellascribelookup> ilstCapellascribelookups = new List<Capellascribelookup>();
+                ilstCapellascribelookupList = ConfigureBase<CapellascribelookupList>.ReadJson("CapellaScribeLookupList.json");
+                if (ilstCapellascribelookupList != null)
+                {
+                    ilstCapellascribelookups = ilstCapellascribelookupList.CapellaScribeLookup.Where(x => x.ProviderID == ClientSession.FillEncounterandWFObject.EncRecord.Appointment_Provider_ID.ToString() && x.Legal_Org == ClientSession.LegalOrg).ToList();
+                }
+                if ((ilstCapellascribelookups?.Count ?? 0) > 0)
                     btnmovetoscribe.Style.Add("display", "block");//.Visible = true;
                 else
-
                     btnmovetoscribe.Style.Add("display", "none");
-
-
             }
-
-
-
-
-
 
             // hdnIsACOValid.Value = (objHumanManagerACO.IsACOValid(ClientSession.HumanId) || ClientSession.bPFSHVerified == false).ToString();
 
@@ -2337,7 +2336,7 @@ namespace Acurus.Capella.UI
         {
             if (EncRecord != null && EncRecord.Facility_Name != "")
                 FillCboPhysician(EncRecord.Facility_Name);
-            ScriptManager.RegisterStartupScript(this, typeof(frmEncounter), "WaitCursorStop", " {sessionStorage.setItem('StartLoading', 'false');StopLoadFromPatChart();}", true);
+            ScriptManager.RegisterStartupScript(this, typeof(frmEncounter), "WaitCursorStop", "getDropdownListSelectedText(); {sessionStorage.setItem('StartLoading', 'false');StopLoadFromPatChart();}", true);
         }
 
         public void FillCboPhysician(string sFacility_Name)

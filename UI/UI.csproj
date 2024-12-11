@@ -375,7 +375,6 @@
     <Content Include="bin\TimePicker.dll" />
     <Content Include="bin\VsWebSite.Interop.dll" />
     <Content Include="bin\X12_Envelope.dll" />
-    <Content Include="ConfigXML\CapellaScribeLookupList.xml" />
     <Content Include="ConfigXML\ImmztnRegistry_Lookup.xml" />
     <Content Include="ConfigXML\Insurance_Plan.xml" />
     <Content Include="CSS\bootstrap-icons.css" />
@@ -733,6 +732,8 @@
     </Content>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ConfigObjects\CapellaScribeLookupList.cs" />
+    <Compile Include="ConfigObjects\ConfigureBase.cs" />
     <Compile Include="WebAPIConfig.cs" />
     <Compile Include="CernerUtility.cs" />
     <Compile Include="CryptoFunctions.cs" />
@@ -2440,6 +2441,7 @@
     <Content Include="Documents\KnowledgeCentre\MACRA Knowledge Center.pdf" />
     <Content Include="bin\Acurus.Capella.DataAccess.dll.config" />
     <Content Include="bin\Acurus.Capella.UI.dll.config" />
+    <Content Include="ConfigXML\CapellaScribeLookupList.json" />
     <None Include="Documents\Physician_Specific_Documents\Patient Education\2011-02-17 %281%29.pdf" />
     <None Include="Documents\Physician_Specific_Documents\Patient Education\2011-02-17 %2810%29.pdf" />
     <None Include="Documents\Physician_Specific_Documents\Patient Education\2011-02-17 %2811%29.pdf" />

@@ -586,30 +586,50 @@ function getDropdownListSelectedText() {
     //if (document.getElementById('hdnUserRole').value.toUpperCase() == "MEDICAL ASSISTANT") {
     if (document.getElementById('hdnCurrentProcess').value != undefined && document.getElementById('hdnCurrentProcess').value != null && document.getElementById('hdnCurrentProcess').value.toUpperCase() == "MA_PROCESS") {
 
-        $.ajax({
-            type: "GET",
-            url: "ConfigXML/CapellaScribeLookupList.xml",
-            dataType: "xml",
-            async: false,
-            cache: false,
-            success: function (xml) {
-                var cookies = document.cookie.split(';');
-                var CLegalOrg = "";
-                for (var l = 0; l < cookies.length; l++) {
-                    if (cookies[l].indexOf("CLegalOrg") > -1)
-                        CLegalOrg = cookies[l].split("=")[1];
-                }
-                $(xml).find('CapellaScribeLookup').each(function () {
+        //Jira CAP-2766
+        //$.ajax({
+        //    type: "GET",
+        //    url: "ConfigXML/CapellaScribeLookupList.xml",
+        //    dataType: "xml",
+        //    async: false,
+        //    cache: false,
+        //    success: function (xml) {
+        //        var cookies = document.cookie.split(';');
+        //        var CLegalOrg = "";
+        //        for (var l = 0; l < cookies.length; l++) {
+        //            if (cookies[l].indexOf("CLegalOrg") > -1)
+        //                CLegalOrg = cookies[l].split("=")[1];
+        //        }
+        //        $(xml).find('CapellaScribeLookup').each(function () {
 
-                    if ($(this)[0].getAttribute("ProviderID") == DropdownList.selectedOptions[0].value.toString() && $(this)[0].getAttribute("Legal_Org") == CLegalOrg) {
-                        document.getElementById('btnmovetoscribe').style.display = "block";
+        //            if ($(this)[0].getAttribute("ProviderID") == DropdownList.selectedOptions[0].value.toString() && $(this)[0].getAttribute("Legal_Org") == CLegalOrg) {
+        //                document.getElementById('btnmovetoscribe').style.display = "block";
 
-                    }
-                })
+        //            }
+        //        })
+        //    }
+        //});
+
+        //Jira CAP-2766
+        $.get("ConfigXML/CapellaScribeLookupList.json", {}, function (xml) {
+            var cookies = document.cookie.split(';');
+            var CLegalOrg = "";
+            var CapellaScribeLookupList = null;
+            for (var l = 0; l < cookies.length; l++) {
+                if (cookies[l].indexOf("CLegalOrg") > -1)
+                    CLegalOrg = cookies[l].split("=")[1];
+            }
+            if (xml != null) {
+                CapellaScribeLookupList = xml.CapellaScribeLookup.filter(g => g.ProviderID == DropdownList.selectedOptions[0].value.toString() && g.Legal_Org == CLegalOrg);
+            }
+            if ((CapellaScribeLookupList?.length ?? 0) > 0) {
+                document.getElementById('btnmovetoscribe').style.display = "block";
+            }
+            else {
+                document.getElementById('btnmovetoscribe').style.display = "none";
             }
         });
     }
-
 }
 
 function DuplicateWarningMessage() {
