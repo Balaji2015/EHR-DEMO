@@ -611,7 +611,7 @@ function getDropdownListSelectedText() {
         //});
 
         //Jira CAP-2766
-        $.get("ConfigXML/CapellaScribeLookupList.json", {}, function (xml) {
+        $.get("ConfigXML/CapellaScribeLookupList.json", {}, function (jsonobject) {
             var cookies = document.cookie.split(';');
             var CLegalOrg = "";
             var CapellaScribeLookupList = null;
@@ -619,8 +619,8 @@ function getDropdownListSelectedText() {
                 if (cookies[l].indexOf("CLegalOrg") > -1)
                     CLegalOrg = cookies[l].split("=")[1];
             }
-            if (xml != null) {
-                CapellaScribeLookupList = xml.CapellaScribeLookup.filter(g => g.ProviderID == DropdownList.selectedOptions[0].value.toString() && g.Legal_Org == CLegalOrg);
+            if (jsonobject != null) {
+                CapellaScribeLookupList = jsonobject.CapellaScribeLookup.filter(g => g.ProviderID == DropdownList.selectedOptions[0].value.toString() && g.Legal_Org == CLegalOrg);
             }
             if ((CapellaScribeLookupList?.length ?? 0) > 0) {
                 document.getElementById('btnmovetoscribe').style.display = "block";
