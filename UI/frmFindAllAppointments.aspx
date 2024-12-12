@@ -76,6 +76,30 @@ table.dataTable > thead > tr > td {
 .TableCellBorder {
             border: 1px solid #9090904d;
  }
+ .dataTables_scrollHead table thead th:nth-child(1), #grdAppointment tr td:nth-child(1) {
+            width: 91px !important;
+        }
+ .dataTables_scrollHead table thead th:nth-child(3), #grdAppointment tr td:nth-child(3) {
+            width: 119px !important;
+        }
+ .dataTables_scrollHead table thead th:nth-child(4), #grdAppointment tr td:nth-child(4) {
+            width: 106px !important;
+        }
+ .dataTables_scrollHead table thead th:nth-child(6), #grdAppointment tr td:nth-child(6) {
+            width: 159px !important;
+        }
+  .dataTables_scrollHead table thead th:nth-child(8), #grdAppointment tr td:nth-child(8) {
+            width: 87px !important;
+        }
+ .dataTables_scrollHead table thead th:nth-child(9), #grdAppointment tr td:nth-child(9) {
+            width: 119px !important;
+        }
+ .dataTables_scrollHead table thead th:nth-child(10), #grdAppointment tr td:nth-child(10) {
+            width: 132px !important;
+        }
+ #grdAppointment thead {
+            display:none !important;
+        }
     </style>
     <%--<link href="CSS/ElementStyles.css" rel="stylesheet" type="text/css" />--%>
     <link href="CSS/jquery.dataTables.min.css" rel="stylesheet" />
@@ -162,7 +186,7 @@ table.dataTable > thead > tr > td {
                        
                     </div>
                     <div style="width: 875px">
-                        <div class="table-responsive" style="overflow-x:auto;overflow-y:auto;width:100%;height:405px;" id="divTable">                            
+                        <div class="table-responsive" style="width:100%;height:405px;" id="divTable">                            
                     </div>
                     <div>
                         <asp:Panel ID="pnlButtons" runat="server" Font-Size="Small" Width="818px" Height="33px">

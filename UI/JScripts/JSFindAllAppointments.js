@@ -208,19 +208,19 @@ function loadFillResult() {
     $("#divTable").empty();
     $("#divTable").append(`
      <table id="grdAppointment" runat="server" class="table table-bordered Gridbodystyle" style="width:100%;table-layout:fixed;empty-cells:show;">
-    <thead class="header" style="border: 0px;width:96.7%;position: sticky;top: 0;">
+    <thead class="header" style="border: 0px;width:96.7%;">
         <tr class="header">
             <th style="border: 1px solid #909090;text-align: center;width: 6%;">Appointment Date Time</th>
-            <th style="border: 1px solid #909090;text-align: center;width: 6%;display:none;">AppointmentTime</th>
+            <th style="border: 1px solid #909090;text-align: center;display:none;">AppointmentTime</th>
             <th style="border: 1px solid #909090;text-align: center;width: 8%;">Provider Name</th>
             <th style="border: 1px solid #909090;text-align: center;width: 7%;">Facility Name</th>
-            <th style="border: 1px solid #909090;text-align: center;width: 6%;display:none;">Appt ID</th>
+            <th style="border: 1px solid #909090;text-align: center;display:none;">Appt ID</th>
             <th style="border: 1px solid #909090;text-align: center;width: 11%;">Current Process</th>
-            <th style="border: 1px solid #909090;text-align: center;width: 6%;display:none;">Appt Provider Id</th>
-            <th style="border: 1px solid #909090;text-align: center;width: 6%;display:none;">Test Ordered</th>
+            <th style="border: 1px solid #909090;text-align: center;display:none;">Appt Provider Id</th>
+            <th style="border: 1px solid #909090;text-align: center;display:none;">Test Ordered</th>
             <th style="border: 1px solid #909090;text-align: center;width: 8%;">Rescheduled Appointment Date</th>
             <th style="border: 1px solid #909090;text-align: center;width: 9%;">Reason for Cancelation</th>
-            <th style="border: 1px solid #909090;text-align: center;width: 5%;display:none;">Is Archieve</th>
+            <th style="border: 1px solid #909090;text-align: center;display:none;">Is Archieve</th>
         </tr>
     </thead>
     </table>`);
@@ -232,6 +232,8 @@ function loadFillResult() {
         serverSide: false,
         lengthChange: false,
         searching: false,
+        scrollCollapse: true,
+        scrollY: '331px',
         processing: false,
         ordering: true,
         autoWidth: false,
@@ -263,13 +265,11 @@ function loadFillResult() {
                 }
                 isAncilaryOfLoginFacility = facilityLibrary.filter(fl => fl.Fac_Name == LoginfacilityName);
                 isAncilaryOfLoginFacility = isAncilaryOfLoginFacility[0].Is_Ancillary;
-                if (isAncilaryOfLoginFacility != "Y") {
-                    $("#grdAppointment thead tr th:nth-child(8)")[0].style.display = "none";
+                if (isAncilaryOfLoginFacility == 'Y') {
+                    $(top.window.document).find('#RadWindowWrapper_ctl00_ModalWindow')[0].style.width = "1010px";
+                    $("#divTable").parent()[0].style.width = "983px";
+                    $("#pnlButtons")[0].style.width = "935px";
                 }
-                else {
-                    $("#grdAppointment thead tr th:nth-child(8)")[0].style.display = "";
-                }
-
                 json.draw = objdata.draw;
                 json.recordsTotal = objdata.recordsTotal;
                 json.recordsFiltered = objdata.recordsFiltered;
@@ -301,16 +301,16 @@ function loadFillResult() {
                     var dt1 = data.replaceAll("/", "").replaceAll("Date(", "").replaceAll(")", "");
                     return ConvertDate(dt1.replaceAll("T", " "));
                 },
-                sWidth: '6%', type: 'date', sClass:'TableCellBorder process-word-wrap'
+                sWidth: '6% !important', type: 'date', sClass:'TableCellBorder process-word-wrap'
             },
             {
-                data: 'Appointment_Date_Time', render: function (data, type, row) { return ""; }, sWidth: '6%',
+                data: 'Appointment_Date_Time', render: function (data, type, row) { return ""; },
                 type:'date', sClass: "hide_column"
             },
-            { data: 'Physician_Name', sWidth: '8%', sClass: 'TableCellBorder process-word-wrap' },
-            { data: 'Facility_Name', sWidth: '7%', sClass: 'TableCellBorder process-word-wrap' },
-            { data: 'Encounter_ID', sClass: "hide_column", sWidth: '6%' },
-            {data: 'Current_Process', sWidth:'11%', sClass: 'TableCellBorder process-word-wrap' },
+            { data: 'Physician_Name', sWidth: '8% !important', sClass: 'TableCellBorder process-word-wrap' },
+            { data: 'Facility_Name', sWidth: '7% !important', sClass: 'TableCellBorder process-word-wrap' },
+            { data: 'Encounter_ID', sClass: "hide_column",  },
+            { data: 'Current_Process', sWidth:'11% !important', sClass: 'TableCellBorder process-word-wrap' },
             {
                 data: 'Physician_ID', render: function (data, type, row) {
                     var fac = facilityLibrary.filter(fl => fl.Fac_Name == row.Facility_Name);
@@ -320,10 +320,10 @@ function loadFillResult() {
                     else {
                         return row.Machine_Technician_Library_ID;
                     }
-                }, sClass: "hide_column", sWidth: '6%'
+                }, sClass: "hide_column", 
             },
             {
-                data: 'Test_Ordered', sWidth: '6%', sClass: 'TableCellBorder process-word-wrap'
+                data: 'Test_Ordered', sWidth: '6% !important', sClass: 'TableCellBorder process-word-wrap'
             },
             {
                 data: 'Rescheduled_Appointment_Date', render: function (data, type, row) {
@@ -336,10 +336,10 @@ function loadFillResult() {
                         }
                     }
                     return dt1;
-                }, sWidth: '8%', type: 'date', sClass: 'TableCellBorder process-word-wrap'
+                }, sWidth: '8% !important', type: 'date', sClass: 'TableCellBorder process-word-wrap'
             },
-            { data: 'Reason_for_Cancelation', sWidth: '9%', sClass: 'TableCellBorder process-word-wrap' },
-            { data: 'Human_Type', sClass: "hide_column", sWidth: '5%' }
+            { data: 'Reason_for_Cancelation', sWidth: '9% !important', sClass: 'TableCellBorder process-word-wrap' },
+            { data: 'Human_Type', sClass: "hide_column" }
                 
         ],
         createdRow: function (row, data, dataIndex) {
@@ -353,11 +353,12 @@ function loadFillResult() {
             }
         },
         initComplete: function (settings, json) {
-            if (isAncilaryOfLoginFacility == "Y"
-                && $("#grdAppointment thead th:eq(5)")[0]?.style?.width != undefined
-                && $("#grdAppointment thead th:eq(5)")[0].style.width != "6%") {
 
-                $("#grdAppointment thead th:eq(5)")[0].style.width = "6%";
+            if (isAncilaryOfLoginFacility != "Y") {
+                $(".dataTables_scrollHead thead tr th:nth-child(8)")[0].style.display = "none";
+            }
+            else {
+                $(".dataTables_scrollHead thead tr th:nth-child(8)")[0].style.display = "";
             }
 
             //Always select first iteam
@@ -373,7 +374,7 @@ function loadFillResult() {
         document.getElementById("btnCancelAppointment").disabled = true;
     });
 
-    $("#grdAppointment thead tr").on('click', function () {
+    $(".dataTables_scrollHead thead tr").on('click', function () {
         $('#grdAppointment tr').removeClass("rgSelectedRow");
         document.getElementById("btnCancelAppointment").disabled = true;
         document.getElementById("divTable").scrollTop = 0;
