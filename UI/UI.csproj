@@ -732,8 +732,6 @@
     </Content>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="ConfigObjects\CapellaScribeLookupList.cs" />
-    <Compile Include="ConfigObjects\ConfigureBase.cs" />
     <Compile Include="WebAPIConfig.cs" />
     <Compile Include="CernerUtility.cs" />
     <Compile Include="CryptoFunctions.cs" />
@@ -2442,6 +2440,7 @@
     <Content Include="bin\Acurus.Capella.DataAccess.dll.config" />
     <Content Include="bin\Acurus.Capella.UI.dll.config" />
     <Content Include="ConfigXML\CapellaScribeLookupList.json" />
+    <Content Include="ConfigXML\Master_Vitals.json" />
     <None Include="Documents\Physician_Specific_Documents\Patient Education\2011-02-17 %281%29.pdf" />
     <None Include="Documents\Physician_Specific_Documents\Patient Education\2011-02-17 %2810%29.pdf" />
     <None Include="Documents\Physician_Specific_Documents\Patient Education\2011-02-17 %2811%29.pdf" />

@@ -28,7 +28,7 @@ using ListItem = System.Web.UI.WebControls.ListItem;
 using static System.Windows.Forms.VisualStyles.VisualStyleElement.StartPanel;
 using Newtonsoft.Json;
 using Acurus.Capella.UI.Extensions;
-using Acurus.Capella.UI.ConfigObjects;
+using Acurus.Capella.Core.DTOJson;
 
 namespace Acurus.Capella.UI
 {
