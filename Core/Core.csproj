@@ -731,6 +731,7 @@
     <Content Include="bin\Debug\K4os.Hash.xxHash.dll" />
     <Content Include="bin\Debug\log4net.dll" />
     <Content Include="bin\Debug\mysql.data.dll" />
+    <Content Include="bin\Debug\Newtonsoft.Json.dll" />
     <Content Include="bin\Debug\System.Buffers.dll" />
     <Content Include="bin\Debug\System.Memory.dll" />
     <Content Include="bin\Debug\System.Runtime.CompilerServices.Unsafe.dll" />
