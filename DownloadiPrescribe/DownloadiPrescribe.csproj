@@ -64,6 +64,10 @@
     <Reference Include="System" />
     <Reference Include="System.Configuration" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Runtime.CompilerServices.Unsafe, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>bin\Debug\System.Runtime.CompilerServices.Unsafe.dll</HintPath>
+    </Reference>
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -99,6 +103,7 @@
     <Content Include="bin\Debug\Acurus.Capella.Core.pdb" />
     <Content Include="bin\Debug\Acurus.Capella.DataAccess.dll" />
     <Content Include="bin\Debug\Acurus.Capella.DataAccess.pdb" />
+    <Content Include="bin\Debug\Antlr3.Runtime.dll" />
     <Content Include="bin\Debug\BouncyCastle.Crypto.dll" />
     <Content Include="bin\Debug\CapellaAgent.exe" />
     <Content Include="bin\Debug\CapellaAgent.pdb" />
@@ -107,15 +112,21 @@
     <Content Include="bin\Debug\HbmMaps\Request_Sent_Log.hbm.xml" />
     <Content Include="bin\Debug\HbmMaps\Response_Received_Log.hbm.xml" />
     <Content Include="bin\Debug\hibernate.cfg.xml" />
+    <Content Include="bin\Debug\Iesi.Collections.dll" />
     <Content Include="bin\Debug\K4os.Compression.LZ4.dll" />
     <Content Include="bin\Debug\K4os.Compression.LZ4.Streams.dll" />
     <Content Include="bin\Debug\K4os.Hash.xxHash.dll" />
+    <Content Include="bin\Debug\LinFu.DynamicProxy.dll" />
     <Content Include="bin\Debug\log4net.dll" />
     <Content Include="bin\Debug\MySql.Data.dll" />
+    <Content Include="bin\Debug\Newtonsoft.Json.dll" />
+    <Content Include="bin\Debug\NHibernate.ByteCode.LinFu.dll" />
+    <Content Include="bin\Debug\NHibernate.dll" />
     <Content Include="bin\Debug\System.Buffers.dll" />
     <Content Include="bin\Debug\System.Memory.dll" />
     <Content Include="bin\Debug\System.Numerics.Vectors.dll" />
     <Content Include="bin\Debug\System.Runtime.CompilerServices.Unsafe.dll" />
+    <Content Include="bin\Debug\System.Threading.Tasks.Extensions.dll" />
     <Content Include="bin\Debug\Ubiety.Dns.Core.dll" />
     <Content Include="bin\Debug\Zstandard.Net.dll" />
   </ItemGroup>
