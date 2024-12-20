@@ -17,6 +17,7 @@ using System.Web.UI;
 using System.Web.UI.WebControls;
 using System.Xml;
 using System.Xml.Linq;
+using Acurus.Capella.Core.DTOJson;
 using System.Xml.Serialization;
 using MySql.Data.MySqlClient;
 using System.Threading;
@@ -2636,22 +2637,45 @@ namespace Acurus.Capella.UI
             if (ilstInsurancePlan.Count > 0)
             {
                 Boolean bCarrier = false;
-                if (File.Exists(System.Web.Hosting.HostingEnvironment.ApplicationPhysicalPath + "ConfigXML\\Insurance_Plan.xml"))
-                {
-                    XDocument xmlFacility = XDocument.Load(System.Web.Hosting.HostingEnvironment.ApplicationPhysicalPath + "ConfigXML\\" + "Insurance_Plan.xml");
 
-                    for (int i = 0; i < ilstInsurancePlan.Count; i++)
+                //Jira cap - 2772 - XML to Json
+                //if (File.Exists(System.Web.Hosting.HostingEnvironment.ApplicationPhysicalPath + "ConfigXML\\Insurance_Plan.xml"))
+                //{
+                //    XDocument xmlFacility = XDocument.Load(System.Web.Hosting.HostingEnvironment.ApplicationPhysicalPath + "ConfigXML\\" + "Insurance_Plan.xml");
+
+                //    for (int i = 0; i < ilstInsurancePlan.Count; i++)
+                //    {
+                //        IEnumerable<XElement> xmlFac = xmlFacility.Element("InsurancePlanList")
+                //        .Elements("insuranceplan").Where(aa => aa.Attribute("insurance_plan_id").Value.ToString() == ilstInsurancePlan[i].ToString() && aa.Attribute("active").Value.ToString().ToUpper() == "Y" && aa.Attribute("carrier_id").Value.ToString().ToUpper() == sMedicareID);
+                //        if (xmlFac != null && xmlFac.Count() > 0)
+                //        {
+                //            bCarrier = true;
+                //            sInsurance_Plan_ID = xmlFac.Attributes("carrier_id").First().Value.ToString();
+                //            break;
+                //        }
+                //    }
+                //}
+
+                List<Insurance_Plan> ilistInsurancePlan = new List<Insurance_Plan>();
+                Insurance_PlanList ilistInsurance_PlanList = new Insurance_PlanList();
+
+                ilistInsurance_PlanList = ConfigureBase<Insurance_PlanList>.ReadJson("Insurance_Plan.json");
+                if (ilistInsurance_PlanList != null)
+                {
+                    ilistInsurancePlan = ilistInsurance_PlanList.InsurancePlan;
+                }
+                for (int i = 0; i < ilstInsurancePlan.Count; i++)
+                {
+                    List<Insurance_Plan> newlist = ilistInsurancePlan.Where(a => a.insurance_plan_id == ilstInsurancePlan[i] && a.active == "Y" && a.carrier_id == sMedicareID).ToList();
+                    if (newlist != null && newlist.Count() > 0)
                     {
-                        IEnumerable<XElement> xmlFac = xmlFacility.Element("InsurancePlanList")
-                        .Elements("insuranceplan").Where(aa => aa.Attribute("insurance_plan_id").Value.ToString() == ilstInsurancePlan[i].ToString() && aa.Attribute("active").Value.ToString().ToUpper() == "Y" && aa.Attribute("carrier_id").Value.ToString().ToUpper() == sMedicareID);
-                        if (xmlFac != null && xmlFac.Count() > 0)
-                        {
-                            bCarrier = true;
-                            sInsurance_Plan_ID = xmlFac.Attributes("carrier_id").First().Value.ToString();
-                            break;
-                        }
+                        bCarrier = true;
+                        sInsurance_Plan_ID = newlist[0].carrier_id;
+                        break;
                     }
                 }
+
+
                 if (bCarrier)
                 {
                     sOutPut += "~" + "sCarrierID" + ":" + sInsurance_Plan_ID;
