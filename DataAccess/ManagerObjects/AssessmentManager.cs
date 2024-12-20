@@ -13,6 +13,7 @@ using System.Xml.Serialization;
 using System.Reflection;
 using System.Threading;
 using System.Configuration;
+using Acurus.Capella.Core.DTOJson;
 
 namespace Acurus.Capella.DataAccess.ManagerObjects
 {
@@ -166,41 +167,71 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
             // AssessmentVitalsLookupManager objAssessVitalsMngr = new AssessmentVitalsLookupManager();
             // AssessmentVitalsLookupList = objAssessVitalsMngr.GetByCriteria(Restrictions.Eq("Is_Macra_Field", "Y"));
 
-            string AssessmentMappingXmlFilePath = Path.Combine(System.Web.Hosting.HostingEnvironment.ApplicationPhysicalPath, "ConfigXML\\AssessmentVitalsLookup.xml");
-            if (File.Exists(AssessmentMappingXmlFilePath) == true)
+            //Jira cap - 2765 - Xml to Json
+            //string AssessmentMappingXmlFilePath = Path.Combine(System.Web.Hosting.HostingEnvironment.ApplicationPhysicalPath, "ConfigXML\\AssessmentVitalsLookup.xml");
+            //if (File.Exists(AssessmentMappingXmlFilePath) == true)
+            //{
+            //    using (FileStream fs = new FileStream(AssessmentMappingXmlFilePath, FileMode.Open, FileAccess.Read, FileShare.Read))
+            //    {
+            //        XmlDocument itemDoc = new XmlDocument();
+            //        XmlTextReader xmltxtReader = new XmlTextReader(fs);
+            //        itemDoc.Load(xmltxtReader);
+            //        xmltxtReader.Close();
+            //        XmlNodeList xmlNodeList = itemDoc.GetElementsByTagName("Assessment_vitals_lookupList");
+            //        if (xmlNodeList != null && xmlNodeList.Count > 0 && xmlNodeList[0].ChildNodes != null && xmlNodeList[0].ChildNodes.Count > 0)
+            //        {
+            //            for (int j = 0; j < xmlNodeList[0].ChildNodes.Count; j++)
+            //            {
+            //                AssessmentVitalsLookup objAssVitalsLookup = new AssessmentVitalsLookup();
+            //                objAssVitalsLookup.Description = xmlNodeList[0].ChildNodes[j].Attributes.GetNamedItem("Description").Value;
+            //                objAssVitalsLookup.Entity_Name = xmlNodeList[0].ChildNodes[j].Attributes.GetNamedItem("Entity_Name").Value;
+            //                objAssVitalsLookup.Field_Name = xmlNodeList[0].ChildNodes[j].Attributes.GetNamedItem("Field_Name").Value;
+            //                objAssVitalsLookup.Hirarrchy = xmlNodeList[0].ChildNodes[j].Attributes.GetNamedItem("Hirarrchy").Value;
+            //                objAssVitalsLookup.ICD = xmlNodeList[0].ChildNodes[j].Attributes.GetNamedItem("ICD").Value;
+            //                objAssVitalsLookup.ICD_10 = xmlNodeList[0].ChildNodes[j].Attributes.GetNamedItem("ICD_10").Value;
+            //                objAssVitalsLookup.ICD_10_Description = xmlNodeList[0].ChildNodes[j].Attributes.GetNamedItem("ICD_10_Description").Value;
+            //                objAssVitalsLookup.Is_Current_Encounter = xmlNodeList[0].ChildNodes[j].Attributes.GetNamedItem("Is_Current_Encounter").Value;
+            //                objAssVitalsLookup.Is_Macra_Field = xmlNodeList[0].ChildNodes[j].Attributes.GetNamedItem("Is_Macra_Field").Value;
+            //                objAssVitalsLookup.Is_Mutually_Exclusive = xmlNodeList[0].ChildNodes[j].Attributes.GetNamedItem("Is_Mutually_Exclusive").Value;
+            //                objAssVitalsLookup.Sort_Order = Convert.ToInt32(xmlNodeList[0].ChildNodes[j].Attributes.GetNamedItem("Sort_Order").Value);
+            //                objAssVitalsLookup.Value = xmlNodeList[0].ChildNodes[j].Attributes.GetNamedItem("Value").Value;
+            //                objAssVitalsLookup.Id = Convert.ToUInt32(xmlNodeList[0].ChildNodes[j].Attributes.GetNamedItem("Id").Value);
+            //                AssessmentVitalsLookupList.Add(objAssVitalsLookup);
+            //            }
+            //        }
+            //        fs.Close();
+            //        fs.Dispose();
+            //    }
+            //}
+
+            IList<Assessment_vitals_lookup> ilistAssessmentvitalslookup = new List<Assessment_vitals_lookup>();
+            AssessmentVitalsLookupList ilistAssessmentVitalsLookupList = new AssessmentVitalsLookupList();
+            ilistAssessmentVitalsLookupList = ConfigureBase<AssessmentVitalsLookupList>.ReadJson("AssessmentVitalsLookup.json");
+            if (ilistAssessmentVitalsLookupList != null)
             {
-                using (FileStream fs = new FileStream(AssessmentMappingXmlFilePath, FileMode.Open, FileAccess.Read, FileShare.Read))
-                {
-                    XmlDocument itemDoc = new XmlDocument();
-                    XmlTextReader xmltxtReader = new XmlTextReader(fs);
-                    itemDoc.Load(xmltxtReader);
-                    xmltxtReader.Close();
-                    XmlNodeList xmlNodeList = itemDoc.GetElementsByTagName("Assessment_vitals_lookupList");
-                    if (xmlNodeList != null && xmlNodeList.Count > 0 && xmlNodeList[0].ChildNodes != null && xmlNodeList[0].ChildNodes.Count > 0)
-                    {
-                        for (int j = 0; j < xmlNodeList[0].ChildNodes.Count; j++)
-                        {
-                            AssessmentVitalsLookup objAssVitalsLookup = new AssessmentVitalsLookup();
-                            objAssVitalsLookup.Description = xmlNodeList[0].ChildNodes[j].Attributes.GetNamedItem("Description").Value;
-                            objAssVitalsLookup.Entity_Name = xmlNodeList[0].ChildNodes[j].Attributes.GetNamedItem("Entity_Name").Value;
-                            objAssVitalsLookup.Field_Name = xmlNodeList[0].ChildNodes[j].Attributes.GetNamedItem("Field_Name").Value;
-                            objAssVitalsLookup.Hirarrchy = xmlNodeList[0].ChildNodes[j].Attributes.GetNamedItem("Hirarrchy").Value;
-                            objAssVitalsLookup.ICD = xmlNodeList[0].ChildNodes[j].Attributes.GetNamedItem("ICD").Value;
-                            objAssVitalsLookup.ICD_10 = xmlNodeList[0].ChildNodes[j].Attributes.GetNamedItem("ICD_10").Value;
-                            objAssVitalsLookup.ICD_10_Description = xmlNodeList[0].ChildNodes[j].Attributes.GetNamedItem("ICD_10_Description").Value;
-                            objAssVitalsLookup.Is_Current_Encounter = xmlNodeList[0].ChildNodes[j].Attributes.GetNamedItem("Is_Current_Encounter").Value;
-                            objAssVitalsLookup.Is_Macra_Field = xmlNodeList[0].ChildNodes[j].Attributes.GetNamedItem("Is_Macra_Field").Value;
-                            objAssVitalsLookup.Is_Mutually_Exclusive = xmlNodeList[0].ChildNodes[j].Attributes.GetNamedItem("Is_Mutually_Exclusive").Value;
-                            objAssVitalsLookup.Sort_Order = Convert.ToInt32(xmlNodeList[0].ChildNodes[j].Attributes.GetNamedItem("Sort_Order").Value);
-                            objAssVitalsLookup.Value = xmlNodeList[0].ChildNodes[j].Attributes.GetNamedItem("Value").Value;
-                            objAssVitalsLookup.Id = Convert.ToUInt32(xmlNodeList[0].ChildNodes[j].Attributes.GetNamedItem("Id").Value);
-                            AssessmentVitalsLookupList.Add(objAssVitalsLookup);
-                        }
-                    }
-                    fs.Close();
-                    fs.Dispose();
-                }
+                ilistAssessmentvitalslookup = ilistAssessmentVitalsLookupList.Assessment_vitals_lookup;
             }
+            if ((ilistAssessmentvitalslookup?.Count ?? 0) > 0)
+            {
+                for (int j = 0; j < ilistAssessmentvitalslookup.Count; j++)
+                {
+                    AssessmentVitalsLookup objAssVitalsLookup = new AssessmentVitalsLookup();
+                    objAssVitalsLookup.Description = ilistAssessmentvitalslookup[j].Description;
+                    objAssVitalsLookup.Entity_Name = ilistAssessmentvitalslookup[j].Entity_Name;
+                    objAssVitalsLookup.Field_Name = ilistAssessmentvitalslookup[j].Field_Name;
+                    objAssVitalsLookup.Hirarrchy = ilistAssessmentvitalslookup[j].Hirarrchy;
+                    objAssVitalsLookup.ICD = ilistAssessmentvitalslookup[j].ICD;
+                    objAssVitalsLookup.ICD_10 = ilistAssessmentvitalslookup[j].ICD_10;
+                    objAssVitalsLookup.ICD_10_Description = ilistAssessmentvitalslookup[j].ICD_10_Description;
+                    objAssVitalsLookup.Is_Current_Encounter = ilistAssessmentvitalslookup[j].Is_Current_Encounter;
+                    objAssVitalsLookup.Is_Macra_Field = ilistAssessmentvitalslookup[j].Is_Macra_Field;
+                    objAssVitalsLookup.Is_Mutually_Exclusive = ilistAssessmentvitalslookup[j].Is_Mutually_Exclusive;
+                    objAssVitalsLookup.Sort_Order = Convert.ToInt32(ilistAssessmentvitalslookup[j].Sort_Order);
+                    objAssVitalsLookup.Value = ilistAssessmentvitalslookup[j].Value;
+                    objAssVitalsLookup.Id = Convert.ToUInt32(ilistAssessmentvitalslookup[j].Id);
+                    AssessmentVitalsLookupList.Add(objAssVitalsLookup);
+                }
+            }  
             AssessmentVitalsLookupList = AssessmentVitalsLookupList.Where(a => a.Is_Macra_Field == "Y").ToList<AssessmentVitalsLookup>();
 
             IList<string> MacraICDlst = AssessmentVitalsLookupList.Select(a => a.ICD_10).ToList<string>();
@@ -3308,42 +3339,72 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
                 IList<ProblemList> ProbLstToUpdate = new List<ProblemList>();
                 IList<ProblemList> ProbLstToUpdateNew = new List<ProblemList>();
 
+                //Jira cap - 2765 - Xml to Json
                 //BugID:54773 -- Load AssessmentMappingLookup  from ConfigXML 
-                string AssessmentMappingXmlFilePath = Path.Combine(System.Web.Hosting.HostingEnvironment.ApplicationPhysicalPath, "ConfigXML\\AssessmentVitalsLookup.xml");
-                if (File.Exists(AssessmentMappingXmlFilePath) == true)
+                //string AssessmentMappingXmlFilePath = Path.Combine(System.Web.Hosting.HostingEnvironment.ApplicationPhysicalPath, "ConfigXML\\AssessmentVitalsLookup.xml");
+                //if (File.Exists(AssessmentMappingXmlFilePath) == true)
+                //{
+                //    using (FileStream fs = new FileStream(AssessmentMappingXmlFilePath, FileMode.Open, FileAccess.Read, FileShare.Read))
+                //    {
+                //        XmlDocument itemDoc = new XmlDocument();
+                //        XmlTextReader xmltxtReader = new XmlTextReader(fs);
+                //        itemDoc.Load(xmltxtReader);
+                //        xmltxtReader.Close();
+                //        XmlNodeList xmlNodeList = itemDoc.GetElementsByTagName("Assessment_vitals_lookupList");
+                //        if (xmlNodeList != null && xmlNodeList.Count > 0 && xmlNodeList[0].ChildNodes != null && xmlNodeList[0].ChildNodes.Count > 0)
+                //        {
+                //            for (int j = 0; j < xmlNodeList[0].ChildNodes.Count; j++)
+                //            {
+                //                AssessmentVitalsLookup objAssVitalsLookup = new AssessmentVitalsLookup();
+                //                objAssVitalsLookup.Description = xmlNodeList[0].ChildNodes[j].Attributes.GetNamedItem("Description").Value;
+                //                objAssVitalsLookup.Entity_Name = xmlNodeList[0].ChildNodes[j].Attributes.GetNamedItem("Entity_Name").Value;
+                //                objAssVitalsLookup.Field_Name = xmlNodeList[0].ChildNodes[j].Attributes.GetNamedItem("Field_Name").Value;
+                //                objAssVitalsLookup.Hirarrchy = xmlNodeList[0].ChildNodes[j].Attributes.GetNamedItem("Hirarrchy").Value;
+                //                objAssVitalsLookup.ICD = xmlNodeList[0].ChildNodes[j].Attributes.GetNamedItem("ICD").Value;
+                //                objAssVitalsLookup.ICD_10 = xmlNodeList[0].ChildNodes[j].Attributes.GetNamedItem("ICD_10").Value;
+                //                objAssVitalsLookup.ICD_10_Description = xmlNodeList[0].ChildNodes[j].Attributes.GetNamedItem("ICD_10_Description").Value;
+                //                objAssVitalsLookup.Is_Current_Encounter = xmlNodeList[0].ChildNodes[j].Attributes.GetNamedItem("Is_Current_Encounter").Value;
+                //                objAssVitalsLookup.Is_Macra_Field = xmlNodeList[0].ChildNodes[j].Attributes.GetNamedItem("Is_Macra_Field").Value;
+                //                objAssVitalsLookup.Is_Mutually_Exclusive = xmlNodeList[0].ChildNodes[j].Attributes.GetNamedItem("Is_Mutually_Exclusive").Value;
+                //                objAssVitalsLookup.Sort_Order = Convert.ToInt32(xmlNodeList[0].ChildNodes[j].Attributes.GetNamedItem("Sort_Order").Value);
+                //                objAssVitalsLookup.Value = xmlNodeList[0].ChildNodes[j].Attributes.GetNamedItem("Value").Value;
+                //                objAssVitalsLookup.Id = Convert.ToUInt32(xmlNodeList[0].ChildNodes[j].Attributes.GetNamedItem("Id").Value);
+                //                AssessmentVitalsLookupList.Add(objAssVitalsLookup);
+                //            }
+                //        }
+                //        fs.Close();
+                //        fs.Dispose();
+                //    }
+                //}
+                IList<Assessment_vitals_lookup> ilistAssessmentvitalslookup = new List<Assessment_vitals_lookup>();
+                AssessmentVitalsLookupList ilistAssessmentVitalsLookupList = new AssessmentVitalsLookupList();
+                ilistAssessmentVitalsLookupList = ConfigureBase<AssessmentVitalsLookupList>.ReadJson("AssessmentVitalsLookup.json");
+                if (ilistAssessmentVitalsLookupList != null)
                 {
-                    using (FileStream fs = new FileStream(AssessmentMappingXmlFilePath, FileMode.Open, FileAccess.Read, FileShare.Read))
+                    ilistAssessmentvitalslookup = ilistAssessmentVitalsLookupList.Assessment_vitals_lookup;
+                }
+                if((ilistAssessmentvitalslookup?.Count??0)>0)
+                {
+                    for(int j = 0; j < ilistAssessmentvitalslookup.Count;j++)
                     {
-                        XmlDocument itemDoc = new XmlDocument();
-                        XmlTextReader xmltxtReader = new XmlTextReader(fs);
-                        itemDoc.Load(xmltxtReader);
-                        xmltxtReader.Close();
-                        XmlNodeList xmlNodeList = itemDoc.GetElementsByTagName("Assessment_vitals_lookupList");
-                        if (xmlNodeList != null && xmlNodeList.Count > 0 && xmlNodeList[0].ChildNodes != null && xmlNodeList[0].ChildNodes.Count > 0)
-                        {
-                            for (int j = 0; j < xmlNodeList[0].ChildNodes.Count; j++)
-                            {
-                                AssessmentVitalsLookup objAssVitalsLookup = new AssessmentVitalsLookup();
-                                objAssVitalsLookup.Description = xmlNodeList[0].ChildNodes[j].Attributes.GetNamedItem("Description").Value;
-                                objAssVitalsLookup.Entity_Name = xmlNodeList[0].ChildNodes[j].Attributes.GetNamedItem("Entity_Name").Value;
-                                objAssVitalsLookup.Field_Name = xmlNodeList[0].ChildNodes[j].Attributes.GetNamedItem("Field_Name").Value;
-                                objAssVitalsLookup.Hirarrchy = xmlNodeList[0].ChildNodes[j].Attributes.GetNamedItem("Hirarrchy").Value;
-                                objAssVitalsLookup.ICD = xmlNodeList[0].ChildNodes[j].Attributes.GetNamedItem("ICD").Value;
-                                objAssVitalsLookup.ICD_10 = xmlNodeList[0].ChildNodes[j].Attributes.GetNamedItem("ICD_10").Value;
-                                objAssVitalsLookup.ICD_10_Description = xmlNodeList[0].ChildNodes[j].Attributes.GetNamedItem("ICD_10_Description").Value;
-                                objAssVitalsLookup.Is_Current_Encounter = xmlNodeList[0].ChildNodes[j].Attributes.GetNamedItem("Is_Current_Encounter").Value;
-                                objAssVitalsLookup.Is_Macra_Field = xmlNodeList[0].ChildNodes[j].Attributes.GetNamedItem("Is_Macra_Field").Value;
-                                objAssVitalsLookup.Is_Mutually_Exclusive = xmlNodeList[0].ChildNodes[j].Attributes.GetNamedItem("Is_Mutually_Exclusive").Value;
-                                objAssVitalsLookup.Sort_Order = Convert.ToInt32(xmlNodeList[0].ChildNodes[j].Attributes.GetNamedItem("Sort_Order").Value);
-                                objAssVitalsLookup.Value = xmlNodeList[0].ChildNodes[j].Attributes.GetNamedItem("Value").Value;
-                                objAssVitalsLookup.Id = Convert.ToUInt32(xmlNodeList[0].ChildNodes[j].Attributes.GetNamedItem("Id").Value);
-                                AssessmentVitalsLookupList.Add(objAssVitalsLookup);
-                            }
-                        }
-                        fs.Close();
-                        fs.Dispose();
+                        AssessmentVitalsLookup objAssVitalsLookup = new AssessmentVitalsLookup();
+                        objAssVitalsLookup.Description = ilistAssessmentvitalslookup[j].Description;
+                        objAssVitalsLookup.Entity_Name = ilistAssessmentvitalslookup[j].Entity_Name;
+                        objAssVitalsLookup.Field_Name = ilistAssessmentvitalslookup[j].Field_Name;
+                        objAssVitalsLookup.Hirarrchy = ilistAssessmentvitalslookup[j].Hirarrchy;
+                        objAssVitalsLookup.ICD = ilistAssessmentvitalslookup[j].ICD;
+                        objAssVitalsLookup.ICD_10 = ilistAssessmentvitalslookup[j].ICD_10;
+                        objAssVitalsLookup.ICD_10_Description = ilistAssessmentvitalslookup[j].ICD_10_Description;
+                        objAssVitalsLookup.Is_Current_Encounter = ilistAssessmentvitalslookup[j].Is_Current_Encounter;
+                        objAssVitalsLookup.Is_Macra_Field = ilistAssessmentvitalslookup[j].Is_Macra_Field;
+                        objAssVitalsLookup.Is_Mutually_Exclusive = ilistAssessmentvitalslookup[j].Is_Mutually_Exclusive;
+                        objAssVitalsLookup.Sort_Order = Convert.ToInt32(ilistAssessmentvitalslookup[j].Sort_Order);
+                        objAssVitalsLookup.Value = ilistAssessmentvitalslookup[j].Value;
+                        objAssVitalsLookup.Id = Convert.ToUInt32(ilistAssessmentvitalslookup[j].Id);
+                        AssessmentVitalsLookupList.Add(objAssVitalsLookup);
                     }
                 }
+
 
 
                 objProblemList = (from obj in objProblemList where obj.ICD != "0000" select obj).ToList<ProblemList>();
@@ -3561,39 +3622,69 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
                 IList<ProblemList> ProbLstToUpdate = new List<ProblemList>();
                 IList<ProblemList> ProbLstToUpdateNew = new List<ProblemList>();
 
-                string AssessmentMappingXmlFilePath = Path.Combine(System.Web.Hosting.HostingEnvironment.ApplicationPhysicalPath, "ConfigXML\\AssessmentVitalsLookup.xml");
-                if (File.Exists(AssessmentMappingXmlFilePath) == true)
+                //Jira cap - 2765 - Xml to Json
+                //string AssessmentMappingXmlFilePath = Path.Combine(System.Web.Hosting.HostingEnvironment.ApplicationPhysicalPath, "ConfigXML\\AssessmentVitalsLookup.xml");
+                //if (File.Exists(AssessmentMappingXmlFilePath) == true)
+                //{
+                //    using (FileStream fs = new FileStream(AssessmentMappingXmlFilePath, FileMode.Open, FileAccess.Read, FileShare.Read))
+                //    {
+                //        XmlDocument itemDoc = new XmlDocument();
+                //        XmlTextReader xmltxtReader = new XmlTextReader(fs);
+                //        itemDoc.Load(xmltxtReader);
+                //        xmltxtReader.Close();
+                //        XmlNodeList xmlNodeList = itemDoc.GetElementsByTagName("Assessment_vitals_lookupList");
+                //        if (xmlNodeList != null && xmlNodeList.Count > 0 && xmlNodeList[0].ChildNodes != null && xmlNodeList[0].ChildNodes.Count > 0)
+                //        {
+                //            for (int j = 0; j < xmlNodeList[0].ChildNodes.Count; j++)
+                //            {
+                //                AssessmentVitalsLookup objAssVitalsLookup = new AssessmentVitalsLookup();
+                //                objAssVitalsLookup.Description = xmlNodeList[0].ChildNodes[j].Attributes.GetNamedItem("Description").Value;
+                //                objAssVitalsLookup.Entity_Name = xmlNodeList[0].ChildNodes[j].Attributes.GetNamedItem("Entity_Name").Value;
+                //                objAssVitalsLookup.Field_Name = xmlNodeList[0].ChildNodes[j].Attributes.GetNamedItem("Field_Name").Value;
+                //                objAssVitalsLookup.Hirarrchy = xmlNodeList[0].ChildNodes[j].Attributes.GetNamedItem("Hirarrchy").Value;
+                //                objAssVitalsLookup.ICD = xmlNodeList[0].ChildNodes[j].Attributes.GetNamedItem("ICD").Value;
+                //                objAssVitalsLookup.ICD_10 = xmlNodeList[0].ChildNodes[j].Attributes.GetNamedItem("ICD_10").Value;
+                //                objAssVitalsLookup.ICD_10_Description = xmlNodeList[0].ChildNodes[j].Attributes.GetNamedItem("ICD_10_Description").Value;
+                //                objAssVitalsLookup.Is_Current_Encounter = xmlNodeList[0].ChildNodes[j].Attributes.GetNamedItem("Is_Current_Encounter").Value;
+                //                objAssVitalsLookup.Is_Macra_Field = xmlNodeList[0].ChildNodes[j].Attributes.GetNamedItem("Is_Macra_Field").Value;
+                //                objAssVitalsLookup.Is_Mutually_Exclusive = xmlNodeList[0].ChildNodes[j].Attributes.GetNamedItem("Is_Mutually_Exclusive").Value;
+                //                objAssVitalsLookup.Sort_Order = Convert.ToInt32(xmlNodeList[0].ChildNodes[j].Attributes.GetNamedItem("Sort_Order").Value);
+                //                objAssVitalsLookup.Value = xmlNodeList[0].ChildNodes[j].Attributes.GetNamedItem("Value").Value;
+                //                objAssVitalsLookup.Id = Convert.ToUInt32(xmlNodeList[0].ChildNodes[j].Attributes.GetNamedItem("Id").Value);
+                //                AssessmentVitalsLookupList.Add(objAssVitalsLookup);
+                //            }
+                //        }
+                //        fs.Close();
+                //        fs.Dispose();
+                //    }
+                //}
+
+                IList<Assessment_vitals_lookup> ilistAssessmentvitalslookup = new List<Assessment_vitals_lookup>();
+                AssessmentVitalsLookupList ilistAssessmentVitalsLookupList = new AssessmentVitalsLookupList();
+                ilistAssessmentVitalsLookupList = ConfigureBase<AssessmentVitalsLookupList>.ReadJson("AssessmentVitalsLookup.json");
+                if (ilistAssessmentVitalsLookupList != null)
                 {
-                    using (FileStream fs = new FileStream(AssessmentMappingXmlFilePath, FileMode.Open, FileAccess.Read, FileShare.Read))
+                    ilistAssessmentvitalslookup = ilistAssessmentVitalsLookupList.Assessment_vitals_lookup;
+                }
+                if ((ilistAssessmentvitalslookup?.Count ?? 0) > 0)
+                {
+                    for (int j = 0; j < ilistAssessmentvitalslookup.Count; j++)
                     {
-                        XmlDocument itemDoc = new XmlDocument();
-                        XmlTextReader xmltxtReader = new XmlTextReader(fs);
-                        itemDoc.Load(xmltxtReader);
-                        xmltxtReader.Close();
-                        XmlNodeList xmlNodeList = itemDoc.GetElementsByTagName("Assessment_vitals_lookupList");
-                        if (xmlNodeList != null && xmlNodeList.Count > 0 && xmlNodeList[0].ChildNodes != null && xmlNodeList[0].ChildNodes.Count > 0)
-                        {
-                            for (int j = 0; j < xmlNodeList[0].ChildNodes.Count; j++)
-                            {
-                                AssessmentVitalsLookup objAssVitalsLookup = new AssessmentVitalsLookup();
-                                objAssVitalsLookup.Description = xmlNodeList[0].ChildNodes[j].Attributes.GetNamedItem("Description").Value;
-                                objAssVitalsLookup.Entity_Name = xmlNodeList[0].ChildNodes[j].Attributes.GetNamedItem("Entity_Name").Value;
-                                objAssVitalsLookup.Field_Name = xmlNodeList[0].ChildNodes[j].Attributes.GetNamedItem("Field_Name").Value;
-                                objAssVitalsLookup.Hirarrchy = xmlNodeList[0].ChildNodes[j].Attributes.GetNamedItem("Hirarrchy").Value;
-                                objAssVitalsLookup.ICD = xmlNodeList[0].ChildNodes[j].Attributes.GetNamedItem("ICD").Value;
-                                objAssVitalsLookup.ICD_10 = xmlNodeList[0].ChildNodes[j].Attributes.GetNamedItem("ICD_10").Value;
-                                objAssVitalsLookup.ICD_10_Description = xmlNodeList[0].ChildNodes[j].Attributes.GetNamedItem("ICD_10_Description").Value;
-                                objAssVitalsLookup.Is_Current_Encounter = xmlNodeList[0].ChildNodes[j].Attributes.GetNamedItem("Is_Current_Encounter").Value;
-                                objAssVitalsLookup.Is_Macra_Field = xmlNodeList[0].ChildNodes[j].Attributes.GetNamedItem("Is_Macra_Field").Value;
-                                objAssVitalsLookup.Is_Mutually_Exclusive = xmlNodeList[0].ChildNodes[j].Attributes.GetNamedItem("Is_Mutually_Exclusive").Value;
-                                objAssVitalsLookup.Sort_Order = Convert.ToInt32(xmlNodeList[0].ChildNodes[j].Attributes.GetNamedItem("Sort_Order").Value);
-                                objAssVitalsLookup.Value = xmlNodeList[0].ChildNodes[j].Attributes.GetNamedItem("Value").Value;
-                                objAssVitalsLookup.Id = Convert.ToUInt32(xmlNodeList[0].ChildNodes[j].Attributes.GetNamedItem("Id").Value);
-                                AssessmentVitalsLookupList.Add(objAssVitalsLookup);
-                            }
-                        }
-                        fs.Close();
-                        fs.Dispose();
+                        AssessmentVitalsLookup objAssVitalsLookup = new AssessmentVitalsLookup();
+                        objAssVitalsLookup.Description = ilistAssessmentvitalslookup[j].Description;
+                        objAssVitalsLookup.Entity_Name = ilistAssessmentvitalslookup[j].Entity_Name;
+                        objAssVitalsLookup.Field_Name = ilistAssessmentvitalslookup[j].Field_Name;
+                        objAssVitalsLookup.Hirarrchy = ilistAssessmentvitalslookup[j].Hirarrchy;
+                        objAssVitalsLookup.ICD = ilistAssessmentvitalslookup[j].ICD;
+                        objAssVitalsLookup.ICD_10 = ilistAssessmentvitalslookup[j].ICD_10;
+                        objAssVitalsLookup.ICD_10_Description = ilistAssessmentvitalslookup[j].ICD_10_Description;
+                        objAssVitalsLookup.Is_Current_Encounter = ilistAssessmentvitalslookup[j].Is_Current_Encounter;
+                        objAssVitalsLookup.Is_Macra_Field = ilistAssessmentvitalslookup[j].Is_Macra_Field;
+                        objAssVitalsLookup.Is_Mutually_Exclusive = ilistAssessmentvitalslookup[j].Is_Mutually_Exclusive;
+                        objAssVitalsLookup.Sort_Order = Convert.ToInt32(ilistAssessmentvitalslookup[j].Sort_Order);
+                        objAssVitalsLookup.Value = ilistAssessmentvitalslookup[j].Value;
+                        objAssVitalsLookup.Id = Convert.ToUInt32(ilistAssessmentvitalslookup[j].Id);
+                        AssessmentVitalsLookupList.Add(objAssVitalsLookup);
                     }
                 }
 
