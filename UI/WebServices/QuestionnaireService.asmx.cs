@@ -14,6 +14,7 @@ using Acurus.Capella.Core.DTO;
 using Acurus.Capella.DataAccess.ManagerObjects;
 using Newtonsoft.Json;
 using System.Xml.Linq;
+using Acurus.Capella.Core.DTOJson;
 
 namespace Acurus.Capella.UI.WebServices
 {
@@ -43,71 +44,133 @@ namespace Acurus.Capella.UI.WebServices
             string sCategory = string.Empty;
 
             //Added for Performance
-            if (File.Exists(System.Web.Hosting.HostingEnvironment.ApplicationPhysicalPath + "ConfigXML\\QuestionnaireTab_Lookup.xml"))
-            {
-            XDocument xmlQuestionnaireLookup = XDocument.Load(System.Web.Hosting.HostingEnvironment.ApplicationPhysicalPath+"ConfigXML\\QuestionnaireTab_Lookup.xml");
+            //if (File.Exists(System.Web.Hosting.HostingEnvironment.ApplicationPhysicalPath + "ConfigXML\\QuestionnaireTab_Lookup.xml"))
+            //{
+            //XDocument xmlQuestionnaireLookup = XDocument.Load(System.Web.Hosting.HostingEnvironment.ApplicationPhysicalPath+"ConfigXML\\QuestionnaireTab_Lookup.xml");
            
-                IEnumerable<XElement> ilstQuestionnaire = xmlQuestionnaireLookup.Element("questionnairelookuplist")
-                    .Elements("questionnaire").Where(aa => aa.Attribute("user_name").Value.ToString() == ClientSession.PhysicianUserName);
-                if (ilstQuestionnaire != null && ilstQuestionnaire.Count() > 0)
+            //    IEnumerable<XElement> ilstQuestionnaire = xmlQuestionnaireLookup.Element("questionnairelookuplist")
+            //        .Elements("questionnaire").Where(aa => aa.Attribute("user_name").Value.ToString() == ClientSession.PhysicianUserName);
+            //    if (ilstQuestionnaire != null && ilstQuestionnaire.Count() > 0)
+            //    {
+            //        string[] sQuestionnaire_Category = ilstQuestionnaire.Attributes("Questionnaire_category").First().Value.ToString().Split(',');
+            //        for (int i = 0; i < sQuestionnaire_Category.Count(); i++)
+            //        {
+            //            if (sQuestionnaire_Category[i].Split('|').Count() > 0)
+            //            {
+            //                if (sQuestionnaire_Category[i].Split('|')[1].ToUpper() == "Y")
+            //                {
+            //                    if (i == 0)
+            //                    {
+            //                        sCategory = sQuestionnaire_Category[i].Split('|')[0].ToString().Replace("/", "") + "$Y";
+            //                    }
+            //                    else
+            //                    {
+            //                        sCategory = sCategory + "^" + sQuestionnaire_Category[i].Split('|')[0].ToString().Replace("/", "") + "$Y";
+            //                    }
+            //                }
+            //                else
+            //                {
+            //                    if (i == 0)
+            //                    {
+            //                        sCategory = sQuestionnaire_Category[i].Split('|')[0].ToString().Replace("/", "") + "$N";
+            //                    }
+            //                    else
+            //                    {
+            //                        sCategory = sCategory + "^" + sQuestionnaire_Category[i].Split('|')[0].ToString().Replace("/", "") + "$N";
+            //                    }
+            //                }
+            //            }
+            //        }
+            //    }
+            //}
+
+
+            //CAP-2784
+            QuestionnaireList objques = new QuestionnaireList();
+            objques = ConfigureBase<QuestionnaireList>.ReadJson("QuestionnaireTab_Lookup.json");
+
+            if (objques != null)
+            {
+                if (objques.questionnaire != null && objques.questionnaire.Count > 0)
                 {
-                    string[] sQuestionnaire_Category = ilstQuestionnaire.Attributes("Questionnaire_category").First().Value.ToString().Split(',');
-                    for (int i = 0; i < sQuestionnaire_Category.Count(); i++)
+                    List<Questionnaire> listquestionnaire = new List<Questionnaire>();
+                    listquestionnaire = objques.questionnaire.Where(a => a.user_name == ClientSession.PhysicianUserName).ToList();
+                    if (listquestionnaire != null && listquestionnaire.Count() > 0)
                     {
-                        if (sQuestionnaire_Category[i].Split('|').Count() > 0)
+                        string[] sQuestionnaire_Category = listquestionnaire.Select(s => s.Questionnaire_category).First().ToString().Split(',');
+                        for (int i = 0; i < sQuestionnaire_Category.Count(); i++)
                         {
-                            if (sQuestionnaire_Category[i].Split('|')[1].ToUpper() == "Y")
+                            if (sQuestionnaire_Category[i].Split('|').Count() > 0)
                             {
-                                if (i == 0)
+                                if (sQuestionnaire_Category[i].Split('|')[1].ToUpper() == "Y")
                                 {
-                                    sCategory = sQuestionnaire_Category[i].Split('|')[0].ToString().Replace("/", "") + "$Y";
+                                    if (i == 0)
+                                    {
+                                        sCategory = sQuestionnaire_Category[i].Split('|')[0].ToString().Replace("/", "") + "$Y";
+                                    }
+                                    else
+                                    {
+                                        sCategory = sCategory + "^" + sQuestionnaire_Category[i].Split('|')[0].ToString().Replace("/", "") + "$Y";
+                                    }
                                 }
                                 else
                                 {
-                                    sCategory = sCategory + "^" + sQuestionnaire_Category[i].Split('|')[0].ToString().Replace("/", "") + "$Y";
-                                }
-                            }
-                            else
-                            {
-                                if (i == 0)
-                                {
-                                    sCategory = sQuestionnaire_Category[i].Split('|')[0].ToString().Replace("/", "") + "$N";
-                                }
-                                else
-                                {
-                                    sCategory = sCategory + "^" + sQuestionnaire_Category[i].Split('|')[0].ToString().Replace("/", "") + "$N";
+                                    if (i == 0)
+                                    {
+                                        sCategory = sQuestionnaire_Category[i].Split('|')[0].ToString().Replace("/", "") + "$N";
+                                    }
+                                    else
+                                    {
+                                        sCategory = sCategory + "^" + sQuestionnaire_Category[i].Split('|')[0].ToString().Replace("/", "") + "$N";
+                                    }
                                 }
                             }
                         }
                     }
                 }
             }
-            //for (int i = 0; i < categoryList.Count; i++)
-            //{
-            //    if (categoryList[i].Is_Ros_Type == "Y")
-            //    {
-            //        if (i == 0)
-            //        {
-            //            sCategory = categoryList[i].Questionnaire_Category.Replace("/", "") + "$Y";
-            //        }
-            //        else
-            //        {
-            //            sCategory = sCategory + "^" + categoryList[i].Questionnaire_Category.Replace("/", "") + "$Y";
-            //        }
-            //    }
-            //    else
-            //    {
-            //        if (i == 0)
-            //        {
-            //            sCategory = categoryList[i].Questionnaire_Category.Replace("/", "") + "$N";
-            //        }
-            //        else
-            //        {
-            //            sCategory = sCategory + "^" + categoryList[i].Questionnaire_Category.Replace("/", "") + "$N";
-            //        }
-            //    }
-            //}
-            return sCategory;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                //for (int i = 0; i < categoryList.Count; i++)
+                //{
+                //    if (categoryList[i].Is_Ros_Type == "Y")
+                //    {
+                //        if (i == 0)
+                //        {
+                //            sCategory = categoryList[i].Questionnaire_Category.Replace("/", "") + "$Y";
+                //        }
+                //        else
+                //        {
+                //            sCategory = sCategory + "^" + categoryList[i].Questionnaire_Category.Replace("/", "") + "$Y";
+                //        }
+                //    }
+                //    else
+                //    {
+                //        if (i == 0)
+                //        {
+                //            sCategory = categoryList[i].Questionnaire_Category.Replace("/", "") + "$N";
+                //        }
+                //        else
+                //        {
+                //            sCategory = sCategory + "^" + categoryList[i].Questionnaire_Category.Replace("/", "") + "$N";
+                //        }
+                //    }
+                //}
+                return sCategory;
         }
     }
 }

@@ -339,7 +339,9 @@
     <Compile Include="DomainObjects\WorkFlow.cs" />
     <Compile Include="DomainObjects\WorkFlowTypeMaster.cs" />
     <Compile Include="DomainObjects\workset_proc_alloc.cs" />
+    <Compile Include="DTOJson\Doctype.cs" />
     <Compile Include="DTOJson\ImmztnRegistry_LookupList.cs" />
+    <Compile Include="DTOJson\QuestionnaireTab_Lookup.cs" />
     <Compile Include="DTO\ABIResultsDTO.cs" />
     <Compile Include="DTO\AuthorizationDTO.cs" />
     <Compile Include="DTO\CallQcExceptionDto.cs" />
