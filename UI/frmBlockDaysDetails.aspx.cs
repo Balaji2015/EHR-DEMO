@@ -18,6 +18,7 @@ using Telerik.Web.UI;
 using System.IO;
 using System.Xml;
 using DocumentFormat.OpenXml.Presentation;
+using Acurus.Capella.Core.DTOJson;
 
 namespace Acurus.Capella.UI
 {
@@ -273,20 +274,37 @@ namespace Acurus.Capella.UI
                 lblProvider.Text = "Machine - Technician*";
                 PhysicianList = new List<PhysicianLibrary>();
                 PhysicianList = UtilityManager.GetPhysicianList(ddlFacilityName.SelectedItem.Text.Trim(),ClientSession.LegalOrg);
-                XmlDocument xmldoc = new XmlDocument();
-                xmldoc = new XmlDocument();
-                xmldoc.Load(System.Web.Hosting.HostingEnvironment.ApplicationPhysicalPath + "ConfigXML\\" + "machine_technician" + ".xml");
-                string strXmlFilePathTech = Path.Combine(System.Web.Hosting.HostingEnvironment.ApplicationPhysicalPath, "ConfigXML\\machine_technician.xml");
+                //Jira CAP-2777
+                //XmlDocument xmldoc = new XmlDocument();
+                //xmldoc = new XmlDocument();
+                //xmldoc.Load(System.Web.Hosting.HostingEnvironment.ApplicationPhysicalPath + "ConfigXML\\" + "machine_technician" + ".xml");
+                //string strXmlFilePathTech = Path.Combine(System.Web.Hosting.HostingEnvironment.ApplicationPhysicalPath, "ConfigXML\\machine_technician.xml");
                 for (int i = 0; i < PhysicianList.Count; i++)
                 {
                     ListItem item = new ListItem();
-                    if (File.Exists(strXmlFilePathTech) == true)
+                    //Jira CAP-2777
+                    //if (File.Exists(strXmlFilePathTech) == true)
                     {
                         if (PhysicianList[i].PhyColor != "0")
                         {
-                            XmlNodeList xmlTec = xmldoc.GetElementsByTagName("MachineTechnician" + PhysicianList[i].PhyColor);
-                            item.Text = xmlTec[0].Attributes.GetNamedItem("machine_name").Value + " - " + PhysicianList[i].PhyPrefix + " " + PhysicianList[i].PhyFirstName + " " + PhysicianList[i].PhyMiddleName + " " + PhysicianList[i].PhyLastName + " " + PhysicianList[i].PhySuffix;
-                            item.Value = PhysicianList[i].PhyColor.ToString();//MachineTechnicianID
+                            //Jira CAP-2777
+                            //XmlNodeList xmlTec = xmldoc.GetElementsByTagName("MachineTechnician" + PhysicianList[i].PhyColor);
+                            //item.Text = xmlTec[0].Attributes.GetNamedItem("machine_name").Value + " - " + PhysicianList[i].PhyPrefix + " " + PhysicianList[i].PhyFirstName + " " + PhysicianList[i].PhyMiddleName + " " + PhysicianList[i].PhyLastName + " " + PhysicianList[i].PhySuffix;
+                            //item.Value = PhysicianList[i].PhyColor.ToString();//MachineTechnicianID
+                            //Jira CAP-2777
+                            MachinetechnicianList machinetechnicianList = new MachinetechnicianList();
+                            machinetechnicianList = ConfigureBase<MachinetechnicianList>.ReadJson("machine_technician.json");
+                            if (machinetechnicianList?.MachineTechnician != null)
+                            {
+                                List<Machinetechnician> machinetechnicians = new List<Machinetechnician>();
+                                machinetechnicians = machinetechnicianList.MachineTechnician.Where(x => x.machine_technician_library_id == PhysicianList[i].PhyColor).ToList();
+                                if (machinetechnicians.Count > 0)
+                                {
+                                    item.Text = machinetechnicians[0].machine_name + " - " + PhysicianList[i].PhyPrefix + " " + PhysicianList[i].PhyFirstName + " " + PhysicianList[i].PhyMiddleName + " " + PhysicianList[i].PhyLastName + " " + PhysicianList[i].PhySuffix;
+                                    item.Value = PhysicianList[i].PhyColor.ToString();
+                                }
+                            }
+
                         }
                         else
                         {

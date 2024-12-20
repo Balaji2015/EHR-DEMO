@@ -30,6 +30,7 @@ using System.Xml.XPath;
 using Ionic.Zip;
 using MySql.Data.MySqlClient;
 using System.Threading;
+using Acurus.Capella.Core.DTOJson;
 
 namespace Acurus.Capella.UI
 {
@@ -319,21 +320,41 @@ namespace Acurus.Capella.UI
                                     cboItem.Value = PhyList1[i].Id.ToString();
                                     this.cboFacilityName.Items.Add(cboItem);*/
 
-                                    string strXmlFilePathTech = Path.Combine(System.Web.Hosting.HostingEnvironment.ApplicationPhysicalPath, "ConfigXML\\machine_technician.xml");
-                                    if (File.Exists(strXmlFilePathTech) == true)
+                                    //Jira CAP-2777
+                                    //string strXmlFilePathTech = Path.Combine(System.Web.Hosting.HostingEnvironment.ApplicationPhysicalPath, "ConfigXML\\machine_technician.xml");
+                                    //if (File.Exists(strXmlFilePathTech) == true)
                                     {
-                                        XmlDocument xmldoc = new XmlDocument();
-                                        xmldoc.Load(System.Web.Hosting.HostingEnvironment.ApplicationPhysicalPath + "ConfigXML\\" + "machine_technician" + ".xml");
+                                        //Jira CAP-2777
+                                        //XmlDocument xmldoc = new XmlDocument();
+                                        //xmldoc.Load(System.Web.Hosting.HostingEnvironment.ApplicationPhysicalPath + "ConfigXML\\" + "machine_technician" + ".xml");
                                         if (PhyList1[i].PhyColor != "" && PhyList1[i].PhyColor != "0")
                                         {
-                                            XmlNodeList xmlTec = xmldoc.GetElementsByTagName("MachineTechnician" + PhyList1[i].PhyColor);
+                                            //Jira CAP-2777
+                                            //XmlNodeList xmlTec = xmldoc.GetElementsByTagName("MachineTechnician" + PhyList1[i].PhyColor);
 
-                                            if (xmlTec != null && xmlTec[0] != null)
+                                            //if (xmlTec != null && xmlTec[0] != null)
+                                            //{
+                                            //    cboItem.Text = xmlTec[0].Attributes.GetNamedItem("machine_name").Value + " - " + PhyList1[i].PhyFirstName + " " + PhyList1[i].PhyLastName; //PhysicianList[i].PhyPrefix + " " + PhysicianList[i].PhyFirstName + " " + PhysicianList[i].PhyMiddleName + " " + PhysicianList[i].PhyLastName;
+                                            //    cboItem.Value = xmlTec[0].Attributes.GetNamedItem("machine_technician_library_id").Value;
+                                            //    cboItem.Attributes.Add("title", cboItem.Text);
+                                            //}
+
+                                            //Jira CAP-2777
+                                            MachinetechnicianList machinetechnicianList = new MachinetechnicianList();
+                                            machinetechnicianList = ConfigureBase<MachinetechnicianList>.ReadJson("machine_technician.json");
+                                            if (machinetechnicianList?.MachineTechnician != null)
                                             {
-                                                cboItem.Text = xmlTec[0].Attributes.GetNamedItem("machine_name").Value + " - " + PhyList1[i].PhyFirstName + " " + PhyList1[i].PhyLastName; //PhysicianList[i].PhyPrefix + " " + PhysicianList[i].PhyFirstName + " " + PhysicianList[i].PhyMiddleName + " " + PhysicianList[i].PhyLastName;
-                                                cboItem.Value = xmlTec[0].Attributes.GetNamedItem("machine_technician_library_id").Value;
-                                                cboItem.Attributes.Add("title", cboItem.Text);
+                                                List<Machinetechnician> machinetechnicians = new List<Machinetechnician>();
+                                                machinetechnicians = machinetechnicianList.MachineTechnician.Where(x => x.machine_technician_library_id == PhyList1[i].PhyColor).ToList();
+                                                if ((machinetechnicians?.Count ?? 0) > 0)
+                                                {
+                                                    cboItem.Text = machinetechnicians[0].machine_name + " - " + PhyList1[i].PhyFirstName + " " + PhyList1[i].PhyLastName;
+                                                    cboItem.Value = machinetechnicians[0].machine_technician_library_id;
+                                                    cboItem.Attributes.Add("title", cboItem.Text);
+                                                }
                                             }
+
+
                                         }
                                         else
                                         {
@@ -1475,16 +1496,33 @@ namespace Acurus.Capella.UI
                         {
                             pnlProvidersHeader.InnerText = "Providers";
                         }
-                        string strXmlFilePathTech = Path.Combine(System.Web.Hosting.HostingEnvironment.ApplicationPhysicalPath, "ConfigXML\\machine_technician.xml");
-                        if (File.Exists(strXmlFilePathTech) == true)
+                        //Jira CAP-2777
+                        //string strXmlFilePathTech = Path.Combine(System.Web.Hosting.HostingEnvironment.ApplicationPhysicalPath, "ConfigXML\\machine_technician.xml");
+                        //if (File.Exists(strXmlFilePathTech) == true)
                         {
-                            XmlDocument xmldoc = new XmlDocument();
-                            xmldoc.Load(System.Web.Hosting.HostingEnvironment.ApplicationPhysicalPath + "ConfigXML\\" + "machine_technician" + ".xml");
+                            //Jira CAP-2777
+                            //XmlDocument xmldoc = new XmlDocument();
+                            //xmldoc.Load(System.Web.Hosting.HostingEnvironment.ApplicationPhysicalPath + "ConfigXML\\" + "machine_technician" + ".xml");
                             if (PhysicianList[i].PhyColor != "" && PhysicianList[i].PhyColor != "0")
                             {
-                                XmlNodeList xmlTec = xmldoc.GetElementsByTagName("MachineTechnician" + PhysicianList[i].PhyColor);
-                                item.Text = xmlTec[0].Attributes.GetNamedItem("machine_name").Value + " - " + PhysicianList[i].PhyFirstName + " " + PhysicianList[i].PhyLastName; //PhysicianList[i].PhyPrefix + " " + PhysicianList[i].PhyFirstName + " " + PhysicianList[i].PhyMiddleName + " " + PhysicianList[i].PhyLastName;
-                                item.Value = xmlTec[0].Attributes.GetNamedItem("machine_technician_library_id").Value;
+                                //Jira CAP-2777
+                                //XmlNodeList xmlTec = xmldoc.GetElementsByTagName("MachineTechnician" + PhysicianList[i].PhyColor);
+                                //item.Text = xmlTec[0].Attributes.GetNamedItem("machine_name").Value + " - " + PhysicianList[i].PhyFirstName + " " + PhysicianList[i].PhyLastName; //PhysicianList[i].PhyPrefix + " " + PhysicianList[i].PhyFirstName + " " + PhysicianList[i].PhyMiddleName + " " + PhysicianList[i].PhyLastName;
+                                //item.Value = xmlTec[0].Attributes.GetNamedItem("machine_technician_library_id").Value;
+
+                                MachinetechnicianList machinetechnicianList = new MachinetechnicianList();
+                                machinetechnicianList = ConfigureBase<MachinetechnicianList>.ReadJson("machine_technician.json");
+                                if (machinetechnicianList?.MachineTechnician != null)
+                                {
+                                    List<Machinetechnician> machinetechnicians = new List<Machinetechnician>();
+                                    machinetechnicians = machinetechnicianList.MachineTechnician.Where(x => x.machine_technician_library_id == PhysicianList[i].PhyColor).ToList();
+                                    if ((machinetechnicians?.Count ?? 0) > 0)
+                                    {
+                                        item.Text = machinetechnicians[0].machine_name + " - " + PhysicianList[i].PhyFirstName + " " + PhysicianList[i].PhyLastName; //PhysicianList[i].PhyPrefix + " " + PhysicianList[i].PhyFirstName + " " + PhysicianList[i].PhyMiddleName + " " + PhysicianList[i].PhyLastName;
+                                        item.Value = machinetechnicians[0].machine_technician_library_id;
+                                    }
+                                }
+
                             }
                             else
                             {
@@ -2071,16 +2109,32 @@ namespace Acurus.Capella.UI
                     //this.cboFacilityName.Items.Add(cboItem);
                     System.Web.UI.WebControls.ListItem item = new System.Web.UI.WebControls.ListItem();
                     //BugID:53256
-                    string strXmlFilePathTech = Path.Combine(System.Web.Hosting.HostingEnvironment.ApplicationPhysicalPath, "ConfigXML\\machine_technician.xml");
-                    if (File.Exists(strXmlFilePathTech) == true)
+                    //Jira CAP-2777
+                    //string strXmlFilePathTech = Path.Combine(System.Web.Hosting.HostingEnvironment.ApplicationPhysicalPath, "ConfigXML\\machine_technician.xml");
+                    //if (File.Exists(strXmlFilePathTech) == true)
                     {
-                        XmlDocument xmldoc = new XmlDocument();
-                        xmldoc.Load(System.Web.Hosting.HostingEnvironment.ApplicationPhysicalPath + "ConfigXML\\" + "machine_technician" + ".xml");
+                        //Jira CAP-2777
+                        //XmlDocument xmldoc = new XmlDocument();
+                        //xmldoc.Load(System.Web.Hosting.HostingEnvironment.ApplicationPhysicalPath + "ConfigXML\\" + "machine_technician" + ".xml");
                         if (PhysicianList[i].PhyColor != "" && PhysicianList[i].PhyColor != "0")
                         {
-                            XmlNodeList xmlTec = xmldoc.GetElementsByTagName("MachineTechnician" + PhysicianList[i].PhyColor);
-                            item.Text = xmlTec[0].Attributes.GetNamedItem("machine_name").Value + " - " + PhysicianList[i].PhyFirstName + " " + PhysicianList[i].PhyLastName; //PhysicianList[i].PhyPrefix + " " + PhysicianList[i].PhyFirstName + " " + PhysicianList[i].PhyMiddleName + " " + PhysicianList[i].PhyLastName;
-                            item.Value = xmlTec[0].Attributes.GetNamedItem("machine_technician_library_id").Value;
+                            //Jira CAP-2777
+                            //XmlNodeList xmlTec = xmldoc.GetElementsByTagName("MachineTechnician" + PhysicianList[i].PhyColor);
+                            //item.Text = xmlTec[0].Attributes.GetNamedItem("machine_name").Value + " - " + PhysicianList[i].PhyFirstName + " " + PhysicianList[i].PhyLastName; //PhysicianList[i].PhyPrefix + " " + PhysicianList[i].PhyFirstName + " " + PhysicianList[i].PhyMiddleName + " " + PhysicianList[i].PhyLastName;
+                            //item.Value = xmlTec[0].Attributes.GetNamedItem("machine_technician_library_id").Value;
+                            //Jira CAP-2777
+                            MachinetechnicianList machinetechnicianList = new MachinetechnicianList();
+                            machinetechnicianList = ConfigureBase<MachinetechnicianList>.ReadJson("machine_technician.json");
+                            if (machinetechnicianList?.MachineTechnician != null)
+                            {
+                                List<Machinetechnician> machinetechnicians = new List<Machinetechnician>();
+                                machinetechnicians = machinetechnicianList.MachineTechnician.Where(x => x.machine_technician_library_id == PhysicianList[i].PhyColor).ToList();
+                                if (machinetechnicians.Count > 0)
+                                {
+                                    item.Text = machinetechnicians[0].machine_name + " - " + PhysicianList[i].PhyFirstName + " " + PhysicianList[i].PhyLastName; //PhysicianList[i].PhyPrefix + " " + PhysicianList[i].PhyFirstName + " " + PhysicianList[i].PhyMiddleName + " " + PhysicianList[i].PhyLastName;
+                                    item.Value = machinetechnicians[0].machine_technician_library_id;
+                                }
+                            }
                         }
                         else
                         {
@@ -4185,18 +4239,34 @@ namespace Acurus.Capella.UI
                     {
                         pnlProvidersHeader.InnerText = "Providers";
                     }
-                    string strXmlFilePathTech = Path.Combine(System.Web.Hosting.HostingEnvironment.ApplicationPhysicalPath, "ConfigXML\\machine_technician.xml");
-                    if (File.Exists(strXmlFilePathTech) == true)
+
+                    //Jira CAP-2777
+                    //string strXmlFilePathTech = Path.Combine(System.Web.Hosting.HostingEnvironment.ApplicationPhysicalPath, "ConfigXML\\machine_technician.xml");
+                    //if (File.Exists(strXmlFilePathTech) == true)
                     {
-                        xmldoc = new XmlDocument();
-                        xmldoc.Load(System.Web.Hosting.HostingEnvironment.ApplicationPhysicalPath + "ConfigXML\\" + "machine_technician" + ".xml");
+                        //Jira CAP-2777
+                        //xmldoc = new XmlDocument();
+                        //xmldoc.Load(System.Web.Hosting.HostingEnvironment.ApplicationPhysicalPath + "ConfigXML\\" + "machine_technician" + ".xml");
                         if (PhysicianList[i].PhyColor != "" && PhysicianList[i].PhyColor != "0")
                         {
-                            XmlNodeList xmlTec = xmldoc.GetElementsByTagName("MachineTechnician" + PhysicianList[i].PhyColor);
-                            if (xmlTec != null && xmlTec[0] != null)
+                            //Jira CAP-2777
+                            //XmlNodeList xmlTec = xmldoc.GetElementsByTagName("MachineTechnician" + PhysicianList[i].PhyColor);
+                            //if (xmlTec != null && xmlTec[0] != null)
+                            //{
+                            //    item.Text = xmlTec[0].Attributes.GetNamedItem("machine_name").Value + " - " + PhysicianList[i].PhyFirstName + " " + PhysicianList[i].PhyLastName; //PhysicianList[i].PhyPrefix + " " + PhysicianList[i].PhyFirstName + " " + PhysicianList[i].PhyMiddleName + " " + PhysicianList[i].PhyLastName;
+                            //    item.Value = xmlTec[0].Attributes.GetNamedItem("machine_technician_library_id").Value;
+                            //}
+                            MachinetechnicianList machinetechnicianList = new MachinetechnicianList();
+                            machinetechnicianList = ConfigureBase<MachinetechnicianList>.ReadJson("machine_technician.json");
+                            if (machinetechnicianList?.MachineTechnician != null)
                             {
-                                item.Text = xmlTec[0].Attributes.GetNamedItem("machine_name").Value + " - " + PhysicianList[i].PhyFirstName + " " + PhysicianList[i].PhyLastName; //PhysicianList[i].PhyPrefix + " " + PhysicianList[i].PhyFirstName + " " + PhysicianList[i].PhyMiddleName + " " + PhysicianList[i].PhyLastName;
-                                item.Value = xmlTec[0].Attributes.GetNamedItem("machine_technician_library_id").Value;
+                                List<Machinetechnician> machinetechnicians = new List<Machinetechnician>();
+                                machinetechnicians = machinetechnicianList.MachineTechnician.Where(x => x.machine_technician_library_id == PhysicianList[i].PhyColor).ToList();
+                                if (machinetechnicians.Count > 0)
+                                {
+                                    item.Text = machinetechnicians[0].machine_name + " - " + PhysicianList[i].PhyFirstName + " " + PhysicianList[i].PhyLastName; //PhysicianList[i].PhyPrefix + " " + PhysicianList[i].PhyFirstName + " " + PhysicianList[i].PhyMiddleName + " " + PhysicianList[i].PhyLastName;
+                                    item.Value = machinetechnicians[0].machine_technician_library_id;
+                                }
                             }
                         }
                         else

@@ -34,6 +34,7 @@ using System.Xml.XPath;
 using System.Security.RightsManagement;
 using System.Net;
 using Newtonsoft.Json.Linq;
+using Acurus.Capella.Core.DTOJson;
 
 namespace Acurus.Capella.UI
 {
@@ -2794,13 +2795,17 @@ namespace Acurus.Capella.UI
                     if (xmlPhysicianList.Count > 0)
                     {
                         //CAP-1819
-                        XmlDocument xmldocTech = new XmlDocument();
-                        string strXmlFilePathTech = Path.Combine(System.Web.Hosting.HostingEnvironment.ApplicationPhysicalPath, "ConfigXML\\machine_technician.xml");
-                        if (File.Exists(strXmlFilePathTech))
-                        {
-                            xmldocTech.Load(System.Web.Hosting.HostingEnvironment.ApplicationPhysicalPath + "ConfigXML\\" + "machine_technician" + ".xml");
-                        }
-
+                        //Jira CAP-2777
+                        //XmlDocument xmldocTech = new XmlDocument();
+                        //string strXmlFilePathTech = Path.Combine(System.Web.Hosting.HostingEnvironment.ApplicationPhysicalPath, "ConfigXML\\machine_technician.xml");
+                        //if (File.Exists(strXmlFilePathTech))
+                        //{
+                        //    xmldocTech.Load(System.Web.Hosting.HostingEnvironment.ApplicationPhysicalPath + "ConfigXML\\" + "machine_technician" + ".xml");
+                        //}
+                        //Jira CAP-2777
+                        MachinetechnicianList machinetechnicianList = new MachinetechnicianList();
+                        machinetechnicianList = ConfigureBase<MachinetechnicianList>.ReadJson("machine_technician.json");
+                        List<Machinetechnician> machinetechnicians = new List<Machinetechnician>();
                         foreach (XmlNode Physician_details in xmlPhysicianList)
                         {
                             if (Physician_details != null && Physician_details.Attributes["Legal_Org"].Value.ToString() == sLegalOrg)
@@ -2817,10 +2822,26 @@ namespace Acurus.Capella.UI
                                 CurrentPhysician.PhyUserName = Physician_details.Attributes["username"].Value.ToString();
                                 CurrentPhysician.PhyColor = Physician_details.Attributes["machine_technician_id"].Value.ToString();//assinged tech ID
                                 //CAP-1819
-                                XmlNode nodeMatchingFacility = xmldocTech.SelectSingleNode("/MachineTechnician/MachineTechnician" + CurrentPhysician.PhyColor);
-                                if (nodeMatchingFacility != null)
+                                //Jira CAP-2777
+                                //XmlNode nodeMatchingFacility = xmldocTech.SelectSingleNode("/MachineTechnician/MachineTechnician" + CurrentPhysician.PhyColor);
+                                //if (nodeMatchingFacility != null)
+                                //{
+                                //    CurrentPhysician.Company = nodeMatchingFacility.Attributes["machine_name"].Value.ToString();
+                                //}
+                                //else
+                                //{
+                                //    CurrentPhysician.Company = "";
+                                //}
+
+                                //Jira CAP-2777
+                                machinetechnicians = new List<Machinetechnician>();
+                                if (machinetechnicianList?.MachineTechnician != null)
                                 {
-                                    CurrentPhysician.Company = nodeMatchingFacility.Attributes["machine_name"].Value.ToString();
+                                    machinetechnicians = machinetechnicianList.MachineTechnician.Where(x => x.machine_technician_library_id == CurrentPhysician.PhyColor.ToString()).ToList();
+                                }
+                                if (machinetechnicians.Count > 0)
+                                {
+                                    CurrentPhysician.Company = machinetechnicians[0].machine_name.ToString();
                                 }
                                 else
                                 {

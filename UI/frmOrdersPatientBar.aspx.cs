@@ -21,6 +21,7 @@ using System.Xml;
 using System.Xml.Serialization;
 using System.Reflection;
 using System.IO;
+using Acurus.Capella.Core.DTOJson;
 
 namespace Acurus.Capella.UI
 {
@@ -284,21 +285,38 @@ namespace Acurus.Capella.UI
             cboPhysician.Items[0].Value = "0";
             cboPhysician.Items[0].Selected = false;
             //CAP-1897
-            string strXmlFilePathTech = Path.Combine(System.Web.Hosting.HostingEnvironment.ApplicationPhysicalPath, "ConfigXML\\machine_technician.xml");
-            XmlDocument xmldoc = new XmlDocument();
-            if (File.Exists(strXmlFilePathTech))
-            {
-                xmldoc.Load(System.Web.Hosting.HostingEnvironment.ApplicationPhysicalPath + "ConfigXML\\" + "machine_technician" + ".xml");
-            }
+            //Jira CAP-2777
+            //string strXmlFilePathTech = Path.Combine(System.Web.Hosting.HostingEnvironment.ApplicationPhysicalPath, "ConfigXML\\machine_technician.xml");
+            //XmlDocument xmldoc = new XmlDocument();
+            //if (File.Exists(strXmlFilePathTech))
+            //{
+            //    xmldoc.Load(System.Web.Hosting.HostingEnvironment.ApplicationPhysicalPath + "ConfigXML\\" + "machine_technician" + ".xml");
+            //}
+            MachinetechnicianList machinetechnicianList = new MachinetechnicianList();
+            machinetechnicianList = ConfigureBase<MachinetechnicianList>.ReadJson("machine_technician.json");
             for (int i = 0; i < PhyList.Count; i++)
             {
                 string sPhyName = string.Empty;
-                if (PhyList[i].PhyColor != "" && PhyList[i].PhyColor != "0" && File.Exists(strXmlFilePathTech))
+                //Jira CAP-2777
+                //if (PhyList[i].PhyColor != "" && PhyList[i].PhyColor != "0" && File.Exists(strXmlFilePathTech))
+                if (PhyList[i].PhyColor != "" && PhyList[i].PhyColor != "0")
                 {
-                    XmlNodeList xmlTec = xmldoc.GetElementsByTagName("MachineTechnician" + PhyList[i].PhyColor);
-                    if (xmlTec != null && xmlTec[0] != null)
+                    //Jira CAP-2777
+                    //XmlNodeList xmlTec = xmldoc.GetElementsByTagName("MachineTechnician" + PhyList[i].PhyColor);
+                    //if (xmlTec != null && xmlTec[0] != null)
+                    //{
+                    //    sPhyName = xmlTec[0].Attributes.GetNamedItem("machine_name").Value + " - " + PhyList[i].PhyFirstName + " " + PhyList[i].PhyLastName;
+                    //}
+
+                    //Jira CAP-2777
+                    if (machinetechnicianList?.MachineTechnician != null)
                     {
-                        sPhyName = xmlTec[0].Attributes.GetNamedItem("machine_name").Value + " - " + PhyList[i].PhyFirstName + " " + PhyList[i].PhyLastName;
+                        List<Machinetechnician> machinetechnicians = new List<Machinetechnician>();
+                        machinetechnicians = machinetechnicianList.MachineTechnician.Where(x => x.machine_technician_library_id == PhyList[i].PhyColor).ToList();
+                        if (machinetechnicians.Count > 0)
+                        {
+                            sPhyName = machinetechnicians[0].machine_name + " - " + PhyList[i].PhyFirstName + " " + PhyList[i].PhyLastName;
+                        }
                     }
                 }
                 else
@@ -437,22 +455,39 @@ namespace Acurus.Capella.UI
                 IList<PhysicianLibrary> PhyList = UtilityManager.GetPhysicianList(string.Empty, ClientSession.LegalOrg);               
                 IList<string> tempPhyList = templist.Where(a => a.Category.ToUpper() == "MACHINE").Select(a => a.PhyPrefix + " " + a.PhyFirstName + " " + a.PhyMiddleName + " " + a.PhyLastName + " " + a.PhySuffix).ToList<string>();
                 //CAP-1897
-                string strXmlFilePathTech = Path.Combine(System.Web.Hosting.HostingEnvironment.ApplicationPhysicalPath, "ConfigXML\\machine_technician.xml");
-                XmlDocument xmldoc = new XmlDocument();
-                if (File.Exists(strXmlFilePathTech))
-                {
-                    xmldoc.Load(System.Web.Hosting.HostingEnvironment.ApplicationPhysicalPath + "ConfigXML\\" + "machine_technician" + ".xml");
-                }
+                //Jira CAP-2777
+                //string strXmlFilePathTech = Path.Combine(System.Web.Hosting.HostingEnvironment.ApplicationPhysicalPath, "ConfigXML\\machine_technician.xml");
+                //XmlDocument xmldoc = new XmlDocument();
+                //if (File.Exists(strXmlFilePathTech))
+                //{
+                //    xmldoc.Load(System.Web.Hosting.HostingEnvironment.ApplicationPhysicalPath + "ConfigXML\\" + "machine_technician" + ".xml");
+                //}
+                MachinetechnicianList machinetechnicianList = new MachinetechnicianList();
+                machinetechnicianList = ConfigureBase<MachinetechnicianList>.ReadJson("machine_technician.json");
                 int j = 1;
                 for (int i = 0; i < PhyList.Count; i++)
                 {
                     string sPhyName = string.Empty;
-                    if (PhyList[i].PhyColor != "" && PhyList[i].PhyColor != "0" && File.Exists(strXmlFilePathTech))
+                    //Jira CAP-2777
+                    //if (PhyList[i].PhyColor != "" && PhyList[i].PhyColor != "0" && File.Exists(strXmlFilePathTech))
+                    if (PhyList[i].PhyColor != "" && PhyList[i].PhyColor != "0")
                     {
-                        XmlNodeList xmlTec = xmldoc.GetElementsByTagName("MachineTechnician" + PhyList[i].PhyColor);
-                        if (xmlTec != null && xmlTec[0] != null)
+                        //Jira CAP-2777
+                        //XmlNodeList xmlTec = xmldoc.GetElementsByTagName("MachineTechnician" + PhyList[i].PhyColor);
+                        //if (xmlTec != null && xmlTec[0] != null)
+                        //{
+                        //    sPhyName = xmlTec[0].Attributes.GetNamedItem("machine_name").Value + " - " + PhyList[i].PhyFirstName + " " + PhyList[i].PhyLastName;
+                        //}
+
+                        //Jira CAP-2777
+                        if (machinetechnicianList?.MachineTechnician != null)
                         {
-                            sPhyName = xmlTec[0].Attributes.GetNamedItem("machine_name").Value + " - " + PhyList[i].PhyFirstName + " " + PhyList[i].PhyLastName;
+                            List<Machinetechnician> machinetechnicians = new List<Machinetechnician>();
+                            machinetechnicians = machinetechnicianList.MachineTechnician.Where(x => x.machine_technician_library_id == PhyList[i].PhyColor).ToList();
+                            if (machinetechnicians.Count > 0)
+                            {
+                                sPhyName = machinetechnicians[0].machine_name + " - " + PhyList[i].PhyFirstName + " " + PhyList[i].PhyLastName;
+                            }
                         }
                     }
                     else

@@ -22,7 +22,7 @@ using System.Diagnostics;
 using System.Xml.Serialization;
 using DocumentFormat.OpenXml.Vml.Spreadsheet;
 using DYMO.DLS.Runtime;
-
+using Acurus.Capella.Core.DTOJson;
 
 namespace Acurus.Capella.UI.WebServices
 {
@@ -2052,27 +2052,41 @@ namespace Acurus.Capella.UI.WebServices
                 HttpContext.Current.Response.StatusDescription = "frmSessionExpired.aspx";
                 return "Session Expired";
             }
-            string povphysicianId = "P" + ClientSession.PhysicianId.ToString();
-            XmlDocument xmldocUser = new XmlDocument();
-            if (File.Exists(HttpContext.Current.Request.PhysicalApplicationPath + @"ConfigXML\Physician_POV.xml"))
-                xmldocUser.Load(HttpContext.Current.Request.PhysicalApplicationPath + @"ConfigXML\Physician_POV.xml");
-            XmlNodeList xmlUserList = xmldocUser.GetElementsByTagName(povphysicianId);
-            ArrayList _temp = new ArrayList();
-            string[] type_of_visit = new string[xmlUserList.Count];
-            int index = 0;
-            if (xmlUserList.Count > 0)
-            {
-                foreach (XmlNode item in xmlUserList)
-                {
-                    if (item.Attributes[5].Value == ClientSession.LegalOrg)
-                    {
 
-                        type_of_visit[index] = item.Attributes[0].Value.ToUpper();
-                    }
-                    index++;
-                }
+            //Jira CAP-2779
+            //string povphysicianId = "P" + ClientSession.PhysicianId.ToString();
+            //XmlDocument xmldocUser = new XmlDocument();
+            //if (File.Exists(HttpContext.Current.Request.PhysicalApplicationPath + @"ConfigXML\Physician_POV.xml"))
+            //    xmldocUser.Load(HttpContext.Current.Request.PhysicalApplicationPath + @"ConfigXML\Physician_POV.xml");
+            //XmlNodeList xmlUserList = xmldocUser.GetElementsByTagName(povphysicianId);
+            //ArrayList _temp = new ArrayList();
+            //string[] type_of_visit = new string[xmlUserList.Count];
+            //int index = 0;
+            //if (xmlUserList.Count > 0)
+            //{
+            //    foreach (XmlNode item in xmlUserList)
+            //    {
+            //        if (item.Attributes[5].Value == ClientSession.LegalOrg)
+            //        {
+
+            //            type_of_visit[index] = item.Attributes[0].Value.ToUpper();
+            //        }
+            //        index++;
+            //    }
+            //}
+
+            //Jira CAP-2779
+            ArrayList _temp = new ArrayList();
+            List<string> listPhysPov = new List<string>();
+            Physician_POVList physician_POVList = new Physician_POVList();
+            physician_POVList = ConfigureBase<Physician_POVList>.ReadJson("Physician_POV.json");
+            if (physician_POVList != null)
+            {
+                listPhysPov = physician_POVList.Physician_POV.Where(x=>x.Physician_Library_ID == ClientSession.PhysicianId.ToString() && x.Legal_Org == ClientSession.LegalOrg).Select(y => y.Purpose_of_Visit).ToList();
             }
-            _temp.Add(type_of_visit);
+
+            //_temp.Add(type_of_visit);
+            _temp.Add(listPhysPov);
             _temp.Add(ClientSession.FillEncounterandWFObject.EncRecord.Visit_Type);
             return JsonConvert.SerializeObject(_temp);
         }
