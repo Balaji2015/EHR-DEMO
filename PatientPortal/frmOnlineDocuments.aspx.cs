@@ -39,8 +39,7 @@ using iTextSharp.text.pdf;
 using System.Web.Services;
 using Newtonsoft.Json;
 using System.Threading;
-
-
+using Acurus.Capella.Core.DTOJson;
 
 
 namespace Acurus.Capella.PatientPortal
@@ -1137,30 +1136,48 @@ namespace Acurus.Capella.PatientPortal
 
         public void LoadDocType()
         {
+            //IList<StaticLookup> docSublist = new List<StaticLookup>();
+            //XDocument xmlDocumentType = XDocument.Load(Server.MapPath(@"ConfigXML\Doctype.xml"));
+            //StaticLookup objStatics = null;
+            //ListItem liDropdown = null;
+            //foreach (XElement elements in xmlDocumentType.Descendants("DocElement"))
+            //{
+            //    string xmlValue = elements.Attribute("name").Value;               
+            //    liDropdown = new ListItem(xmlValue, xmlValue);
+            //    cboDocumentType.Items.Add(liDropdown);
+            //    int sortOrder = 0;
+            //    foreach (XElement subDocs in elements.Elements())
+            //    {
+            //        string subDoc = subDocs.Attribute("name").Value;
+            //        sortOrder++;
+            //        objStatics = new StaticLookup();
+            //        objStatics.Field_Name = xmlValue;
+            //        objStatics.Value = subDoc;
+            //        objStatics.Sort_Order = sortOrder;
+            //        docSublist.Add(objStatics);
+            //    }               
+            //}
+
+            //CAP-2767
             IList<StaticLookup> docSublist = new List<StaticLookup>();
-            XDocument xmlDocumentType = XDocument.Load(Server.MapPath(@"ConfigXML\Doctype.xml"));
+            doctypeList objDoctypeList = new doctypeList();
+            objDoctypeList = ConfigureBase<doctypeList>.ReadJson("Doctype.json");
             StaticLookup objStatics = null;
             ListItem liDropdown = null;
-            foreach (XElement elements in xmlDocumentType.Descendants("DocElement"))
+            foreach (Acurus.Capella.Core.DTOJson.Doctype dt in objDoctypeList.DocType)
             {
-                string xmlValue = elements.Attribute("name").Value;
-                //if (xmlValue.ToUpper() != "RESULTS")
-                //{
-                liDropdown = new ListItem(xmlValue, xmlValue);
+                liDropdown = new ListItem(dt.name, dt.name);
                 cboDocumentType.Items.Add(liDropdown);
                 int sortOrder = 0;
-                foreach (XElement subDocs in elements.Elements())
+                foreach (subDoc sb in dt.subDoc)
                 {
-                    string subDoc = subDocs.Attribute("name").Value;
                     sortOrder++;
                     objStatics = new StaticLookup();
-                    objStatics.Field_Name = xmlValue;
-                    objStatics.Value = subDoc;
+                    objStatics.Field_Name = dt.name;
+                    objStatics.Value = sb.name;
                     objStatics.Sort_Order = sortOrder;
                     docSublist.Add(objStatics);
-
                 }
-                // }
             }
 
             cboDocumentType.Items.Insert(0, "");

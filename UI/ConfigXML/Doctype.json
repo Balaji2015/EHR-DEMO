@@ -1,0 +1,1035 @@
+{
+  "DocType": [
+    {
+      "subDoc": [
+        {
+          "name": "Encounter Forms",
+          "Default_Value": "Demo Sheet"
+        },
+        {
+          "name": "Health Questionnaire",
+          "Default_Value": "Demo Sheet"
+        },
+        {
+          "name": "Instruction",
+          "Default_Value": "Demo Sheet"
+        },
+        {
+          "name": "Patient Log",
+          "Default_Value": "Demo Sheet"
+        },
+        {
+          "name": "Physical Examination",
+          "Default_Value": "Demo Sheet"
+        },
+        {
+          "name": "Progress Notes",
+          "Default_Value": "Demo Sheet"
+        },
+        {
+          "name": "Procedure Notes",
+          "Default_Value": "Demo Sheet"
+        },
+        {
+          "name": "Urgent Care Notes",
+          "Default_Value": "Demo Sheet"
+        },
+        {
+          "name": "Hospice",
+          "Default_Value": "Demo Sheet"
+        },
+        {
+          "name": "Nursing Home",
+          "Default_Value": "Demo Sheet"
+        },
+        {
+          "name": "Assisting Living",
+          "Default_Value": "Demo Sheet"
+        },
+        {
+          "name": "Abstraction",
+          "Default_Value": "Demo Sheet"
+        },
+        {
+          "name": "Medical Records",
+          "Default_Value": "Demo Sheet"
+        },
+        {
+          "name": "Billing",
+          "Default_Value": "Demo Sheet"
+        }
+      ],
+      "name": "Encounters",
+      "Sort": "1",
+      "Default_Value": "Patient Documents"
+    },
+    {
+      "subDoc": [
+        {
+          "name": "Growth Charts",
+          "Default_Value": "Demo Sheet"
+        },
+        {
+          "name": "Patient history form",
+          "Default_Value": "Demo Sheet"
+        }
+      ],
+      "name": "History and Physical",
+      "Sort": "3",
+      "Default_Value": "Patient Documents"
+    },
+    {
+      "subDoc": [
+        {
+          "name": "Clinical Notes",
+          "Default_Value": "Demo Sheet"
+        },
+        {
+          "name": "Devices-Procedure",
+          "Default_Value": "Demo Sheet"
+        },
+        {
+          "name": "Discharge summary report",
+          "Default_Value": "Demo Sheet"
+        },
+        {
+          "name": "ER",
+          "Default_Value": "Demo Sheet"
+        },
+        {
+          "name": "HPI",
+          "Default_Value": "Demo Sheet"
+        },
+        {
+          "name": "Hospitalization Images",
+          "Default_Value": "Demo Sheet"
+        },
+        {
+          "name": "Operative Reports",
+          "Default_Value": "Demo Sheet"
+        },
+        {
+          "name": "Procedure report",
+          "Default_Value": "Demo Sheet"
+        },
+        {
+          "name": "Physicial Therapy",
+          "Default_Value": "Demo Sheet"
+        }
+      ],
+      "name": "Hospital Reports",
+      "Sort": "4",
+      "Default_Value": "Patient Documents"
+    },
+    {
+      "subDoc": [
+        {
+          "name": "Coverage details",
+          "Default_Value": "Demo Sheet"
+        },
+        {
+          "name": "Denial notice",
+          "Default_Value": "Demo Sheet"
+        },
+        {
+          "name": "Insurance eligibility sheet",
+          "Default_Value": "Demo Sheet"
+        },
+        {
+          "name": "Insurance card copy",
+          "Default_Value": "Demo Sheet"
+        },
+        {
+          "name": "Website screenshot",
+          "Default_Value": "Demo Sheet"
+        }
+      ],
+      "name": "Insurance",
+      "Sort": "5",
+      "Default_Value": "Patient Documents"
+    },
+    {
+      "subDoc": [
+        {
+          "name": "Attorney Correspondence",
+          "Default_Value": "Demo Sheet"
+        },
+        {
+          "name": "Birth Plan",
+          "Default_Value": "Demo Sheet"
+        },
+        {
+          "name": "Advance Directive",
+          "Default_Value": "Demo Sheet"
+        },
+        {
+          "name": "Arbitration",
+          "Default_Value": "Demo Sheet"
+        },
+        {
+          "name": "Consent to treat general",
+          "Default_Value": "Demo Sheet"
+        },
+        {
+          "name": "Death Cert",
+          "Default_Value": "Demo Sheet"
+        },
+        {
+          "name": "Eligibility waiver form",
+          "Default_Value": "Demo Sheet"
+        },
+        {
+          "name": "Financial Responsibility Policy",
+          "Default_Value": "Demo Sheet"
+        },
+        {
+          "name": "Medical Release form",
+          "Default_Value": "Demo Sheet"
+        },
+        {
+          "name": "Other Correspondence",
+          "Default_Value": "Demo Sheet"
+        },
+        {
+          "name": "Partnership Plan",
+          "Default_Value": "Demo Sheet"
+        },
+        {
+          "name": "Patient Acknowledgement form",
+          "Default_Value": "Demo Sheet"
+        }
+      ],
+      "name": "Legal Documents",
+      "Sort": "7",
+      "Default_Value": "Patient Documents"
+    },
+    {
+      "subDoc": [
+        {
+          "name": "Medication Log",
+          "Default_Value": "Demo Sheet"
+        },
+        {
+          "name": "Medication/Allergy list",
+          "Default_Value": "Demo Sheet"
+        },
+        {
+          "name": "Others",
+          "Default_Value": "Demo Sheet"
+        },
+        {
+          "name": "Pharmacy Records",
+          "Default_Value": "Demo Sheet"
+        },
+        {
+          "name": "Prescription",
+          "Default_Value": "Demo Sheet"
+        }
+      ],
+      "name": "Medication",
+      "Sort": "8",
+      "Default_Value": "Patient Documents"
+    },
+    {
+      "subDoc": [
+        {
+          "name": "Education Material",
+          "Default_Value": "Demo Sheet"
+        },
+        {
+          "name": "Messages",
+          "Default_Value": "Demo Sheet"
+        },
+        {
+          "name": "Others",
+          "Default_Value": "Demo Sheet"
+        }
+      ],
+      "name": "Miscellaneous",
+      "Sort": "9",
+      "Default_Value": "Patient Documents"
+    },
+    {
+      "subDoc": [
+        {
+          "name": "Blood Tests",
+          "Default_Value": "Demo Sheet"
+        },
+        {
+          "name": "Stool Tests",
+          "Default_Value": "Demo Sheet"
+        },
+        {
+          "name": "Urine Tests",
+          "Default_Value": "Demo Sheet"
+        },
+        {
+          "name": "Micro Biology",
+          "Default_Value": "Demo Sheet"
+        },
+        {
+          "name": "Montior",
+          "Default_Value": "Demo Sheet"
+        },
+        {
+          "name": "Pathology",
+          "Default_Value": "Demo Sheet"
+        },
+        {
+          "name": "Other Tests",
+          "Default_Value": "Demo Sheet"
+        },
+        {
+          "name": "Xrays",
+          "Default_Value": "Demo Sheet"
+        },
+        {
+          "name": "UltraSound",
+          "Default_Value": "Demo Sheet"
+        },
+        {
+          "name": "MRI",
+          "Default_Value": "Demo Sheet"
+        },
+        {
+          "name": "Other Scans",
+          "Default_Value": "Demo Sheet"
+        },
+        {
+          "name": "CT",
+          "Default_Value": "Demo Sheet"
+        },
+        {
+          "name": "ECHO",
+          "Default_Value": "Demo Sheet"
+        },
+        {
+          "name": "EKG",
+          "Default_Value": "Demo Sheet"
+        },
+        {
+          "name": "Imaging Test",
+          "Default_Value": "Demo Sheet"
+        },
+        {
+          "name": "Immunization Order form",
+          "Default_Value": "Demo Sheet"
+        },
+        {
+          "name": "Lab Order",
+          "Default_Value": "Demo Sheet"
+        },
+        {
+          "name": "Nuclear Medicine",
+          "Default_Value": "Demo Sheet"
+        },
+        {
+          "name": "PFT",
+          "Default_Value": "Demo Sheet"
+        },
+        {
+          "name": "PSG ORDER FORM",
+          "Default_Value": "Demo Sheet"
+        },
+        {
+          "name": "Mammogram",
+          "Default_Value": "Demo Sheet"
+        },
+        {
+          "name": "Bone Density",
+          "Default_Value": "Demo Sheet"
+        },
+        {
+          "name": "Fecal Occult Blood Test",
+          "Default_Value": "Demo Sheet"
+        },
+        {
+          "name": "Physical Therapy",
+          "Default_Value": "Demo Sheet"
+        },
+        {
+          "name": "Pulmonary Rehab Orders",
+          "Default_Value": "Demo Sheet"
+        },
+        {
+          "name": "DME",
+          "Default_Value": "Demo Sheet"
+        },
+        {
+          "name": "Surgery",
+          "Default_Value": "Demo Sheet"
+        }
+      ],
+      "name": "Orders",
+      "Sort": "10",
+      "Default_Value": "Patient Documents"
+    },
+    {
+      "subDoc": [
+        {
+          "name": "Authorization form",
+          "Default_Value": "Demo Sheet"
+        },
+        {
+          "name": "Demo Sheet",
+          "Default_Value": "Demo Sheet"
+        },
+        {
+          "name": "Driving License",
+          "Default_Value": "Demo Sheet"
+        },
+        {
+          "name": "General Consent",
+          "Default_Value": "Demo Sheet"
+        },
+        {
+          "name": "Identity Document",
+          "Default_Value": "Demo Sheet"
+        },
+        {
+          "name": "New Patient Packet",
+          "Default_Value": "Demo Sheet"
+        },
+        {
+          "name": "SSN Card Copy",
+          "Default_Value": "Demo Sheet"
+        }
+      ],
+      "name": "Patient Documents",
+      "Sort": "11",
+      "Default_Value": "Patient Documents"
+    },
+    {
+      "subDoc": [
+        {
+          "name": "Nutritionist",
+          "Default_Value": "Demo Sheet"
+        },
+        {
+          "name": "Allergist",
+          "Default_Value": "Demo Sheet"
+        },
+        {
+          "name": "Authorization Sheet",
+          "Default_Value": "Demo Sheet"
+        },
+        {
+          "name": "Cardio",
+          "Default_Value": "Demo Sheet"
+        },
+        {
+          "name": "Endocrine",
+          "Default_Value": "Demo Sheet"
+        },
+        {
+          "name": "Dermatology",
+          "Default_Value": "Demo Sheet"
+        },
+        {
+          "name": "ENT",
+          "Default_Value": "Demo Sheet"
+        },
+        {
+          "name": "G.I",
+          "Default_Value": "Demo Sheet"
+        },
+        {
+          "name": "HEM/ONC",
+          "Default_Value": "Demo Sheet"
+        },
+        {
+          "name": "Home Health",
+          "Default_Value": "Demo Sheet"
+        },
+        {
+          "name": "I.D",
+          "Default_Value": "Demo Sheet"
+        },
+        {
+          "name": "Letter from other Doctors",
+          "Default_Value": "Demo Sheet"
+        },
+        {
+          "name": "Nephrology",
+          "Default_Value": "Demo Sheet"
+        },
+        {
+          "name": "Neuro",
+          "Default_Value": "Demo Sheet"
+        },
+        {
+          "name": "NeuroSurgeon",
+          "Default_Value": "Demo Sheet"
+        },
+        {
+          "name": "OB/GYN",
+          "Default_Value": "Demo Sheet"
+        },
+        {
+          "name": "Opthl",
+          "Default_Value": "Demo Sheet"
+        },
+        {
+          "name": "Ortho",
+          "Default_Value": "Demo Sheet"
+        },
+        {
+          "name": "Pain",
+          "Default_Value": "Demo Sheet"
+        },
+        {
+          "name": "Podiatry",
+          "Default_Value": "Demo Sheet"
+        },
+        {
+          "name": "Provider Referral Form",
+          "Default_Value": "Demo Sheet"
+        },
+        {
+          "name": "Psych",
+          "Default_Value": "Demo Sheet"
+        },
+        {
+          "name": "Pulm",
+          "Default_Value": "Demo Sheet"
+        },
+        {
+          "name": "Radiology",
+          "Default_Value": "Demo Sheet"
+        },
+        {
+          "name": "Referral",
+          "Default_Value": "Demo Sheet"
+        },
+        {
+          "name": "Referral Form",
+          "Default_Value": "Demo Sheet"
+        },
+        {
+          "name": "Rheum",
+          "Default_Value": "Demo Sheet"
+        },
+        {
+          "name": "Speciality Consult",
+          "Default_Value": "Demo Sheet"
+        },
+        {
+          "name": "Surgeon",
+          "Default_Value": "Demo Sheet"
+        },
+        {
+          "name": "Urgent Care",
+          "Default_Value": "Demo Sheet"
+        },
+        {
+          "name": "Urology",
+          "Default_Value": "Demo Sheet"
+        },
+        {
+          "name": "Vascular Surgeon",
+          "Default_Value": "Demo Sheet"
+        },
+        {
+          "name": "Wellness Visit",
+          "Default_Value": "Demo Sheet"
+        },
+        {
+          "name": "Denial",
+          "Default_Value": "Demo Sheet"
+        },
+        {
+          "name": "Physical Therapy",
+          "Default_Value": "Demo Sheet"
+        },
+        {
+          "name": "Hospice",
+          "Default_Value": "Demo Sheet"
+        }
+      ],
+      "name": "Referral",
+      "Sort": "12",
+      "Default_Value": "Patient Documents"
+    },
+    {
+      "subDoc": [
+        {
+          "name": "Allergist",
+          "Default_Value": "Demo Sheet"
+        },
+        {
+          "name": "Authorization Sheet",
+          "Default_Value": "Demo Sheet"
+        },
+        {
+          "name": "Cardio",
+          "Default_Value": "Demo Sheet"
+        },
+        {
+          "name": "Endocrine",
+          "Default_Value": "Demo Sheet"
+        },
+        {
+          "name": "Dermatology",
+          "Default_Value": "Demo Sheet"
+        },
+        {
+          "name": "ENT",
+          "Default_Value": "Demo Sheet"
+        },
+        {
+          "name": "G.I",
+          "Default_Value": "Demo Sheet"
+        },
+        {
+          "name": "HEM/ONC",
+          "Default_Value": "Demo Sheet"
+        },
+        {
+          "name": "Hepatology",
+          "Default_Value": "Demo Sheet"
+        },
+        {
+          "name": "Home Health",
+          "Default_Value": "Demo Sheet"
+        },
+        {
+          "name": "I.D",
+          "Default_Value": "Demo Sheet"
+        },
+        {
+          "name": "Letter from other Doctors",
+          "Default_Value": "Demo Sheet"
+        },
+        {
+          "name": "Nephrology",
+          "Default_Value": "Demo Sheet"
+        },
+        {
+          "name": "Neuro",
+          "Default_Value": "Demo Sheet"
+        },
+        {
+          "name": "NeuroSurgeon",
+          "Default_Value": "Demo Sheet"
+        },
+        {
+          "name": "OB/GYN",
+          "Default_Value": "Demo Sheet"
+        },
+        {
+          "name": "Opthl",
+          "Default_Value": "Demo Sheet"
+        },
+        {
+          "name": "Ortho",
+          "Default_Value": "Demo Sheet"
+        },
+        {
+          "name": "Pain",
+          "Default_Value": "Demo Sheet"
+        },
+        {
+          "name": "Podiatry",
+          "Default_Value": "Demo Sheet"
+        },
+        {
+          "name": "Provider Referral Form",
+          "Default_Value": "Demo Sheet"
+        },
+        {
+          "name": "Psych",
+          "Default_Value": "Demo Sheet"
+        },
+        {
+          "name": "Pulm",
+          "Default_Value": "Demo Sheet"
+        },
+        {
+          "name": "Referral",
+          "Default_Value": "Demo Sheet"
+        },
+        {
+          "name": "Referral Form",
+          "Default_Value": "Demo Sheet"
+        },
+        {
+          "name": "Rheum",
+          "Default_Value": "Demo Sheet"
+        },
+        {
+          "name": "Speciality Consult",
+          "Default_Value": "Demo Sheet"
+        },
+        {
+          "name": "Surgeon",
+          "Default_Value": "Demo Sheet"
+        },
+        {
+          "name": "Urgent Care",
+          "Default_Value": "Demo Sheet"
+        },
+        {
+          "name": "Urology",
+          "Default_Value": "Demo Sheet"
+        },
+        {
+          "name": "Vascular Surgeon",
+          "Default_Value": "Demo Sheet"
+        },
+        {
+          "name": "Wellness Visit",
+          "Default_Value": "Demo Sheet"
+        },
+        {
+          "name": "Physical Therapy",
+          "Default_Value": "Demo Sheet"
+        }
+      ],
+      "name": "Consultation",
+      "Sort": "13",
+      "Default_Value": "Patient Documents"
+    },
+    {
+      "subDoc": [
+        {
+          "name": "ABI",
+          "Default_Value": "Demo Sheet"
+        },
+        {
+          "name": "Angio",
+          "Default_Value": "Demo Sheet"
+        },
+        {
+          "name": "Biopsy Report",
+          "Default_Value": "Demo Sheet"
+        },
+        {
+          "name": "Blood Tests",
+          "Default_Value": "Demo Sheet"
+        },
+        {
+          "name": "Bone Density",
+          "Default_Value": "Demo Sheet"
+        },
+        {
+          "name": "CARDIOVERSION",
+          "Default_Value": "Demo Sheet"
+        },
+        {
+          "name": "CATH",
+          "Default_Value": "Demo Sheet"
+        },
+        {
+          "name": "CGMs",
+          "Default_Value": "Demo Sheet"
+        },
+        {
+          "name": "CT Scan",
+          "Default_Value": "Demo Sheet"
+        },
+        {
+          "name": "Colonoscopy",
+          "Default_Value": "Demo Sheet"
+        },
+        {
+          "name": "ECHO",
+          "Default_Value": "Demo Sheet"
+        },
+        {
+          "name": "EKG",
+          "Default_Value": "Demo Sheet"
+        },
+        {
+          "name": "EMG/NCV",
+          "Default_Value": "Demo Sheet"
+        },
+        {
+          "name": "Fecal Occult Blood Test",
+          "Default_Value": "Demo Sheet"
+        },
+        {
+          "name": "Followup results",
+          "Default_Value": "Demo Sheet"
+        },
+        {
+          "name": "Holter",
+          "Default_Value": "Demo Sheet"
+        },
+        {
+          "name": "Laboratory",
+          "Default_Value": "Demo Sheet"
+        },
+        {
+          "name": "Mammogram",
+          "Default_Value": "Demo Sheet"
+        },
+        {
+          "name": "Micro Biology",
+          "Default_Value": "Demo Sheet"
+        },
+        {
+          "name": "Monitor",
+          "Default_Value": "Demo Sheet"
+        },
+        {
+          "name": "MRI",
+          "Default_Value": "Demo Sheet"
+        },
+        {
+          "name": "Nuclear Medicine",
+          "Default_Value": "Demo Sheet"
+        },
+        {
+          "name": "Other Scans",
+          "Default_Value": "Demo Sheet"
+        },
+        {
+          "name": "Other Tests",
+          "Default_Value": "Demo Sheet"
+        },
+        {
+          "name": "Others",
+          "Default_Value": "Demo Sheet"
+        },
+        {
+          "name": "Pathology Culture",
+          "Default_Value": "Demo Sheet"
+        },
+        {
+          "name": "PAP",
+          "Default_Value": "Demo Sheet"
+        },
+        {
+          "name": "PFT",
+          "Default_Value": "Demo Sheet"
+        },
+        {
+          "name": "Pap Smear",
+          "Default_Value": "Demo Sheet"
+        },
+        {
+          "name": "PPD Skin Test",
+          "Default_Value": "Demo Sheet"
+        },
+        {
+          "name": "Retinal Scan",
+          "Default_Value": "Demo Sheet"
+        },
+        {
+          "name": "Sleep Study",
+          "Default_Value": "Demo Sheet"
+        },
+        {
+          "name": "Stool Tests",
+          "Default_Value": "Demo Sheet"
+        },
+        {
+          "name": "Stress Test",
+          "Default_Value": "Demo Sheet"
+        },
+        {
+          "name": "Ultrasound",
+          "Default_Value": "Demo Sheet"
+        },
+        {
+          "name": "Urine Tests",
+          "Default_Value": "Demo Sheet"
+        },
+        {
+          "name": "Vascular Studies",
+          "Default_Value": "Demo Sheet"
+        },
+        {
+          "name": "Xrays",
+          "Default_Value": "Demo Sheet"
+        },
+        {
+          "name": "X ray and ECG",
+          "Default_Value": "Demo Sheet"
+        },
+        {
+          "name": "6min Walk",
+          "Default_Value": "Demo Sheet"
+        },
+        {
+          "name": "Barium Swallow Study",
+          "Default_Value": "Demo Sheet"
+        },
+        {
+          "name": "Speech Pathology",
+          "Default_Value": "Demo Sheet"
+        },
+        {
+          "name": "INR",
+          "Default_Value": "Demo Sheet"
+        }
+      ],
+      "name": "Results",
+      "Sort": "14",
+      "Default_Value": "Patient Documents"
+    },
+    {
+      "subDoc": [
+        {
+          "name": "Biopsy",
+          "Default_Value": "Demo Sheet"
+        },
+        {
+          "name": "Bronchoscopy",
+          "Default_Value": "Demo Sheet"
+        },
+        {
+          "name": "Cardiac Cath",
+          "Default_Value": "Demo Sheet"
+        },
+        {
+          "name": "Colonoscopies",
+          "Default_Value": "Demo Sheet"
+        },
+        {
+          "name": "Colonscopy",
+          "Default_Value": "Demo Sheet"
+        },
+        {
+          "name": "CT Guided Biopsy",
+          "Default_Value": "Demo Sheet"
+        },
+        {
+          "name": "EGD",
+          "Default_Value": "Demo Sheet"
+        },
+        {
+          "name": "Endoscopy",
+          "Default_Value": "Demo Sheet"
+        },
+        {
+          "name": "Parathyroid Scintigraphy",
+          "Default_Value": "Demo Sheet"
+        },
+        {
+          "name": "Surgeries",
+          "Default_Value": "Demo Sheet"
+        },
+        {
+          "name": "Ultrasound Guided Biopsy",
+          "Default_Value": "Demo Sheet"
+        },
+        {
+          "name": "Ultrasound Guided Injection",
+          "Default_Value": "Demo Sheet"
+        },
+        {
+          "name": "Other",
+          "Default_Value": "Demo Sheet"
+        }
+      ],
+      "name": "Procedures",
+      "Sort": "15",
+      "Default_Value": "Patient Documents"
+    },
+    {
+      "subDoc": [
+        {
+          "name": "After Care Instructions",
+          "Default_Value": "Demo Sheet"
+        },
+        {
+          "name": "Disability Forms",
+          "Default_Value": "Demo Sheet"
+        },
+        {
+          "name": "DMV Forms",
+          "Default_Value": "Demo Sheet"
+        },
+        {
+          "name": "Employer Form / Correspondence",
+          "Default_Value": "Demo Sheet"
+        },
+        {
+          "name": "Nursing HM",
+          "Default_Value": "Demo Sheet"
+        },
+        {
+          "name": "Nursing Home Forms",
+          "Default_Value": "Demo Sheet"
+        },
+        {
+          "name": "Pain Management Contract",
+          "Default_Value": "Demo Sheet"
+        },
+        {
+          "name": "Physical Fitness",
+          "Default_Value": "Demo Sheet"
+        },
+        {
+          "name": "Work Notes",
+          "Default_Value": "Demo Sheet"
+        },
+        {
+          "name": "Surgical/Med Clearance",
+          "Default_Value": "Demo Sheet"
+        },
+        {
+          "name": "Others",
+          "Default_Value": "Demo Sheet"
+        }
+      ],
+      "name": "Forms",
+      "Sort": "16",
+      "Default_Value": "Patient Documents"
+    },
+    {
+      "subDoc": [
+        {
+          "name": "Emails",
+          "Default_Value": "Demo Sheet"
+        }
+      ],
+      "name": "Patient Correspondence",
+      "Sort": "17",
+      "Default_Value": "Patient Documents"
+    },
+    {
+      "subDoc": [
+        {
+          "name": "Nuclear Medicine",
+          "Default_Value": "Demo Sheet"
+        },
+        {
+          "name": "Cardiology",
+          "Default_Value": "Demo Sheet"
+        },
+        {
+          "name": "Ultrasound",
+          "Default_Value": "Demo Sheet"
+        },
+        {
+          "name": "Vascular Studies",
+          "Default_Value": "Demo Sheet"
+        },
+        {
+          "name": "Bone Density Studies",
+          "Default_Value": "Demo Sheet"
+        }
+      ],
+      "name": "Transcripts",
+      "Sort": "18",
+      "Default_Value": "Patient Documents"
+    },
+    {
+      "subDoc": [
+        {
+          "name": "Immunizations",
+          "Default_Value": "Demo Sheet"
+        },
+        {
+          "name": "Medical Records",
+          "Default_Value": "Demo Sheet"
+        }
+      ],
+      "name": "Records",
+      "Sort": "19",
+      "Default_Value": "Patient Documents"
+    }
+  ]
+}

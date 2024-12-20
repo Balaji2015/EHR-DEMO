@@ -1576,31 +1576,55 @@ function HidePdf() {
 }
 
 function LoadSubDocType() {
-    $.ajax({
-        type: "GET",
-        url: "ConfigXML/Doctype.xml",
-        dataType: "xml",
-        async: false,
-        cache: false,
-        success: function (xml) {
+    //$.ajax({
+    //    type: "GET",
+    //    url: "ConfigXML/Doctype.xml",
+    //    dataType: "xml",
+    //    async: false,
+    //    cache: false,
+    //    success: function (xml) {
 
-            $(xml).find('DocElement').each(function () {
-                var name_text = $(this)[0].attributes[0].nodeValue;
-                if (name_text == "Patient Documents") {
+    //        $(xml).find('DocElement').each(function () {
+    //            var name_text = $(this)[0].attributes[0].nodeValue;
+    //            if (name_text == "Patient Documents") {
+    //                var PhyEmptyOption = document.createElement("option");
+    //                PhyEmptyOption.text = "";
+    //                PhyEmptyOption.value = "0";
+    //                $("#cboDocumentSubType")[0].options.add(PhyEmptyOption);
+    //                var description = $(this)[0];
+    //                for (var i = 0; i < description.children.length; i++) {
+    //                    var PhyOption = document.createElement("option");
+    //                    PhyOption.text = description.children[i].attributes[0].value;
+    //                    PhyOption.value = description.children[i].attributes[0].value;
+    //                    $("#cboDocumentSubType")[0].options.add(PhyOption);
+    //                }
+    //                document.getElementById("cboDocumentSubType").selectedIndex = 5;
+    //            }
+    //        });
+    //    }
+    //});
+
+    //CAP-2767
+    $.get("ConfigXML/Doctype.json", {}, function (jsonobject) {
+        debugger;
+        if (jsonobject != null) {
+            for (var i = 0; i < jsonobject.DocType.length; i++) {
+                var vdoctype = jsonobject.DocType[i];
+                if (vdoctype.name == "Patient Documents") {
                     var PhyEmptyOption = document.createElement("option");
                     PhyEmptyOption.text = "";
                     PhyEmptyOption.value = "0";
                     $("#cboDocumentSubType")[0].options.add(PhyEmptyOption);
-                    var description = $(this)[0];
-                    for (var i = 0; i < description.children.length; i++) {
+                    var description = vdoctype.subDoc;
+                    for (var j = 0; j < description.length; j++) {
                         var PhyOption = document.createElement("option");
-                        PhyOption.text = description.children[i].attributes[0].value;
-                        PhyOption.value = description.children[i].attributes[0].value;
+                        PhyOption.text = description[j].name;
+                        PhyOption.value = description[j].name;
                         $("#cboDocumentSubType")[0].options.add(PhyOption);
                     }
                     document.getElementById("cboDocumentSubType").selectedIndex = 5;
                 }
-            });
+            }
         }
     });
 }

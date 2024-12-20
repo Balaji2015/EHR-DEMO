@@ -3,6 +3,7 @@
 **********************************************************************************************************************************/
 using Acurus.Capella.Core.DomainObjects;
 using Acurus.Capella.Core.DTO;
+using Acurus.Capella.Core.DTOJson;
 using Acurus.Capella.DataAccess.ManagerObjects;
 using Acurus.Capella.UI;
 using Acurus.Capella.UI.Extensions;
@@ -3822,43 +3823,70 @@ namespace Acurus.Capella.UI
         }
         public void LoadDocType()
         {
+            //cboDocumentType.Items.Clear();
+            //IList<StaticLookup> docSublist = new List<StaticLookup>();
+            //XDocument xmlDocumentType = XDocument.Load(Server.MapPath(@"ConfigXML\Doctype.xml"));
+            //StaticLookup objStatics = null;
+            //ListItem liDropdown = null;            
+            //StringBuilder DefDoctype = new StringBuilder();
+            //foreach (XElement elements in xmlDocumentType.Descendants("DocElement"))
+            //{                
+            //    if (elements.Attribute("name").Value.ToUpper() == "RESULTS")
+            //    {
+            //        liDropdown = new ListItem(elements.Attribute("name").Value, "DIAGNOSTIC ORDER");
+            //    }
+            //    else
+            //    {
+            //        liDropdown = new ListItem(elements.Attribute("name").Value, elements.Attribute("name").Value);
+            //    }
+            //    cboDocumentType.Items.Add(liDropdown);               
+            //    if (elements.Attribute("Default_Value").Value != null && elements.Attribute("Default_Value").Value.Trim() != "" && DefDoctype.Length == 0)
+            //    {
+            //        DefDoctype.Append(elements.Attribute("Default_Value").Value);
+            //    }
+
+            //    int sortOrder = 0;
+            //    foreach (XElement subDocs in elements.Elements())
+            //    {                    
+            //        sortOrder++;
+            //        objStatics = new StaticLookup();
+            //        objStatics.Field_Name = elements.Attribute("name").Value;
+            //        objStatics.Value = subDocs.Attribute("name").Value;
+            //        objStatics.Sort_Order = sortOrder;
+            //        objStatics.Default_Value = subDocs.Attribute("Default_Value").Value;
+            //        docSublist.Add(objStatics);
+
+            //    }
+            //}
+
+            //CAP-2767
             cboDocumentType.Items.Clear();
             IList<StaticLookup> docSublist = new List<StaticLookup>();
-            XDocument xmlDocumentType = XDocument.Load(Server.MapPath(@"ConfigXML\Doctype.xml"));
+            doctypeList objDoctypeList = new doctypeList();
+            objDoctypeList = ConfigureBase<doctypeList>.ReadJson("Doctype.json");
             StaticLookup objStatics = null;
             ListItem liDropdown = null;
-            //string DefDoctype = string.Empty;
             StringBuilder DefDoctype = new StringBuilder();
-            foreach (XElement elements in xmlDocumentType.Descendants("DocElement"))
+            foreach (Doctype dt in objDoctypeList.DocType)
             {
-                //string xmlValue = elements.Attribute("name").Value;
-                if (elements.Attribute("name").Value.ToUpper() == "RESULTS")
-                {
-                    liDropdown = new ListItem(elements.Attribute("name").Value, "DIAGNOSTIC ORDER");
-                }
+                if (dt.name.ToUpper() == "RESULTS")
+                    liDropdown = new ListItem(dt.name, "DIAGNOSTIC ORDER");
                 else
-                {
-                    liDropdown = new ListItem(elements.Attribute("name").Value, elements.Attribute("name").Value);
-                }
+                    liDropdown = new ListItem(dt.name, dt.name);
                 cboDocumentType.Items.Add(liDropdown);
-                // string xmlDefault = elements.Attribute("Default_Value").Value;
-                if (elements.Attribute("Default_Value").Value != null && elements.Attribute("Default_Value").Value.Trim() != "" && DefDoctype.Length == 0)
-                {
-                    DefDoctype.Append(elements.Attribute("Default_Value").Value);
-                }
-
+                if (dt.Default_Value != null && dt.Default_Value.Trim() != "" && DefDoctype.Length == 0)
+                    DefDoctype.Append(dt.Default_Value);
                 int sortOrder = 0;
-                foreach (XElement subDocs in elements.Elements())
+
+                foreach (subDoc sb in dt.subDoc)
                 {
-                    //string subDoc = subDocs.Attribute("name").Value;
                     sortOrder++;
                     objStatics = new StaticLookup();
-                    objStatics.Field_Name = elements.Attribute("name").Value;
-                    objStatics.Value = subDocs.Attribute("name").Value;
+                    objStatics.Field_Name = dt.name;
+                    objStatics.Value = sb.name;
                     objStatics.Sort_Order = sortOrder;
-                    objStatics.Default_Value = subDocs.Attribute("Default_Value").Value;
+                    objStatics.Default_Value = sb.Default_Value;
                     docSublist.Add(objStatics);
-
                 }
             }
 
