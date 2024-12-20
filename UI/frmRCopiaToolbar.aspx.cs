@@ -30,6 +30,7 @@ using Newtonsoft.Json;
 using log4net;
 using System.Xml.XPath;
 using System.Xml.Xsl;
+using Acurus.Capella.Core.DTOJson;
 
 namespace Acurus.Capella.UI
 {
@@ -1859,48 +1860,94 @@ namespace Acurus.Capella.UI
                 HttpContext.Current.Response.StatusDescription = "frmSessionExpired.aspx";
                 return "Session Expired";
             }
-            string sPhysicianXmlPath = System.Web.Hosting.HostingEnvironment.ApplicationPhysicalPath + "ConfigXML\\PhysicianReviewProtocols.xml";
-            XElement root = XElement.Load(sPhysicianXmlPath);
+
+            //Jira CAP-2782
+            //string sPhysicianXmlPath = System.Web.Hosting.HostingEnvironment.ApplicationPhysicalPath + "ConfigXML\\PhysicianReviewProtocols.xml";
+            //XElement root = XElement.Load(sPhysicianXmlPath);
+            //IList<ReviewProtocols> lstProtocols = new List<ReviewProtocols>();
+            //if (UserRole.ToUpper() == "PHYSICIAN ASSISTANT")
+            //{
+            //    IEnumerable<XElement> xPhyAsstList =
+            //         from el in root.Elements("PhyAsstSpecificProtocol")
+            //         where el.Attribute("id").Value.Equals(UserID)
+            //         select el;
+            //    foreach (XElement elPhyAsst in xPhyAsstList)
+            //    {
+            //        IEnumerable<XElement> xPhyList =
+            //         from el in xPhyAsstList.Elements("PhysicianList").Elements("Physician")
+            //         orderby el.Attribute("id").Value
+            //         select el;
+            //        foreach (XElement elPhy in xPhyList)
+            //        {
+            //            ReviewProtocols objProtocol = new ReviewProtocols();
+            //            objProtocol.UserID = elPhy.Attribute("id").Value.ToString();
+            //            objProtocol.UserName = elPhy.Attribute("value").Value.ToString();
+            //            objProtocol.Protocol = elPhy.Attribute("rule").Value.ToString();
+            //            lstProtocols.Add(objProtocol);
+            //        }
+            //    }
+            //}
+            //else if (UserRole.ToUpper() == "PHYSICIAN")
+            //{
+            //    IEnumerable<XElement> xPhyList =
+            //        from el in root.Elements("PhyAsstSpecificProtocol").Elements("PhysicianList").Elements("Physician")
+            //        where el.Attribute("id").Value.Equals(UserID)
+            //        orderby el.Attribute("id").Value
+            //        select el;
+            //    xPhyList = xPhyList.GroupBy(a => a.Attribute("rule").Value).Select(a => a.First()).ToArray();
+            //    foreach (XElement elPhy in xPhyList)
+            //    {
+            //        ReviewProtocols objProtocol = new ReviewProtocols();
+            //        objProtocol.UserID = elPhy.Attribute("id").Value.ToString();
+            //        objProtocol.UserName = elPhy.Attribute("value").Value.ToString();
+            //        objProtocol.Protocol = elPhy.Attribute("rule").Value.ToString();
+            //        lstProtocols.Add(objProtocol);
+            //    }
+            //}
+
+            //Jira CAP-2782
+            PhyAsstSpecificProtocolsList phyAsstSpecificProtocolList = new PhyAsstSpecificProtocolsList();
+            phyAsstSpecificProtocolList = ConfigureBase<PhyAsstSpecificProtocolsList>.ReadJson("PhysicianReviewProtocols.json");
+            List<PhyAsstSpecificProtocols> ilstPhysAsslist = new List<PhyAsstSpecificProtocols>();
             IList<ReviewProtocols> lstProtocols = new List<ReviewProtocols>();
-            if (UserRole.ToUpper() == "PHYSICIAN ASSISTANT")
+            if (ilstPhysAsslist != null)
             {
-                IEnumerable<XElement> xPhyAsstList =
-                     from el in root.Elements("PhyAsstSpecificProtocol")
-                     where el.Attribute("id").Value.Equals(UserID)
-                     select el;
-                foreach (XElement elPhyAsst in xPhyAsstList)
+                if (UserRole.ToUpper() == "PHYSICIAN ASSISTANT")
                 {
-                    IEnumerable<XElement> xPhyList =
-                     from el in xPhyAsstList.Elements("PhysicianList").Elements("Physician")
-                     orderby el.Attribute("id").Value
-                     select el;
-                    foreach (XElement elPhy in xPhyList)
+                    ilstPhysAsslist = phyAsstSpecificProtocolList.PhyAsstSpecificProtocol.Where(x => x.Physician_Assiatant_id == UserID).OrderBy(y => y.Physician.id).ToList();
+                    if ((ilstPhysAsslist?.Count ?? 0) > 0)
                     {
-                        ReviewProtocols objProtocol = new ReviewProtocols();
-                        objProtocol.UserID = elPhy.Attribute("id").Value.ToString();
-                        objProtocol.UserName = elPhy.Attribute("value").Value.ToString();
-                        objProtocol.Protocol = elPhy.Attribute("rule").Value.ToString();
-                        lstProtocols.Add(objProtocol);
+                        foreach (PhyAsstSpecificProtocols phyass in ilstPhysAsslist)
+                        {
+                            ReviewProtocols objProtocol = new ReviewProtocols();
+                            objProtocol.UserID = phyass.Physician.id;
+                            objProtocol.UserName = phyass.Physician.value;
+                            objProtocol.Protocol = phyass.Physician.rule;
+                            lstProtocols.Add(objProtocol);
+                        }
+                    }
+
+                }
+                else if (UserRole.ToUpper() == "PHYSICIAN")
+                {
+                    ilstPhysAsslist = phyAsstSpecificProtocolList.PhyAsstSpecificProtocol.Where(x => x.Physician.id == UserID).OrderBy(y => y.Physician.id).ToList();
+
+                    if ((ilstPhysAsslist?.Count ?? 0) > 0)
+                    {
+
+                        foreach (PhyAsstSpecificProtocols phyass in ilstPhysAsslist)
+                        {
+                            ReviewProtocols objProtocol = new ReviewProtocols();
+                            objProtocol.UserID = phyass.Physician.id;
+                            objProtocol.UserName = phyass.Physician.value;
+                            objProtocol.Protocol = phyass.Physician.rule;
+                            lstProtocols.Add(objProtocol);
+                        }
                     }
                 }
             }
-            else if (UserRole.ToUpper() == "PHYSICIAN")
-            {
-                IEnumerable<XElement> xPhyList =
-                    from el in root.Elements("PhyAsstSpecificProtocol").Elements("PhysicianList").Elements("Physician")
-                    where el.Attribute("id").Value.Equals(UserID)
-                    orderby el.Attribute("id").Value
-                    select el;
-                xPhyList = xPhyList.GroupBy(a => a.Attribute("rule").Value).Select(a => a.First()).ToArray();
-                foreach (XElement elPhy in xPhyList)
-                {
-                    ReviewProtocols objProtocol = new ReviewProtocols();
-                    objProtocol.UserID = elPhy.Attribute("id").Value.ToString();
-                    objProtocol.UserName = elPhy.Attribute("value").Value.ToString();
-                    objProtocol.Protocol = elPhy.Attribute("rule").Value.ToString();
-                    lstProtocols.Add(objProtocol);
-                }
-            }
+
+
             var returnList = JsonConvert.SerializeObject(lstProtocols);
             return returnList;
         }

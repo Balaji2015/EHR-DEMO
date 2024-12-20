@@ -2018,7 +2018,6 @@
     <Content Include="ConfigXML\LookupList_CCDAErrors.xml" />
     <Content Include="ConfigXML\PhysicianAddressDetails.xml" />
     <Content Include="ConfigXML\PhysicianFacilityMapping.xml" />
-    <Content Include="ConfigXML\PhysicianReviewProtocols.xml" />
     <Content Include="ConfigXML\PhysicianSpecificBodyImageTemplates.xml" />
     <Content Include="ConfigXML\pqri.xml" />
     <Content Include="ConfigXML\QuestionnaireTab_Lookup.xml" />
@@ -2440,6 +2439,7 @@
     <Content Include="ConfigXML\Dynamic_Screen.json" />
     <Content Include="ConfigXML\Physician_POV.json" />
     <Content Include="ConfigXML\machine_technician.json" />
+    <Content Include="ConfigXML\PhysicianReviewProtocols.json" />
     <None Include="Documents\Physician_Specific_Documents\Patient Education\2011-02-17 %281%29.pdf" />
     <None Include="Documents\Physician_Specific_Documents\Patient Education\2011-02-17 %2810%29.pdf" />
     <None Include="Documents\Physician_Specific_Documents\Patient Education\2011-02-17 %2811%29.pdf" />

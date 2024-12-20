@@ -1,0 +1,994 @@
+{
+  "PhyAsstSpecificProtocols": [
+    {
+      "Physician": [
+        {
+          "id": "4199",
+          "value": "Dr. Christopher Harper M.D.",
+          "rule": "CMG Rule - 100% of the charts"
+        }
+      ],
+      "Physician_Assiatant_id": "4154",
+      "Physician_Assiatant_value": "Brian Hughes PA-C"
+    },
+    {
+      "Physician": [
+        {
+          "id": "102",
+          "value": "Dr. Ewa H Konca M.D.",
+          "rule": "CMG Rule - 100% of the charts"
+        }
+      ],
+      "Physician_Assiatant_id": "4904",
+      "Physician_Assiatant_value": "Brianda Ulloa, PA-C"
+    },
+    {
+      "Physician": [
+        {
+          "id": "102",
+          "value": "Dr. Ewa H Konca M.D.",
+          "rule": "CMG Rule - 100% of the charts"
+        }
+      ],
+      "Physician_Assiatant_id": "4905",
+      "Physician_Assiatant_value": "David Cao, PA-C"
+    },
+    {
+      "Physician": [
+        {
+          "id": "102",
+          "value": "Dr. Ewa H Konca M.D.",
+          "rule": "CMG Rule - 100% of the charts"
+        }
+      ],
+      "Physician_Assiatant_id": "5024",
+      "Physician_Assiatant_value": "Nancy Si Jia Meng, NP"
+    },
+    {
+      "Physician": [
+        {
+          "id": "102",
+          "value": "Dr. Ewa H Konca M.D.",
+          "rule": "CMG Rule - 100% of the charts"
+        }
+      ],
+      "Physician_Assiatant_id": "109",
+      "Physician_Assiatant_value": "Vanessa Pedrego PA-C"
+    },
+    {
+      "Physician": [
+        {
+          "id": "4296",
+          "value": "Dr. Gaurav Parikh MD",
+          "rule": "CMG Rule - 100% of the charts"
+        }
+      ],
+      "Physician_Assiatant_id": "4821",
+      "Physician_Assiatant_value": "Rohan Bassi, NP-C"
+    },
+    {
+      "Physician": [
+        {
+          "id": "179",
+          "value": "Dr. Haritha R. Alla MD, FACC",
+          "rule": "CMG Rule - 100% of the charts"
+        }
+      ],
+      "Physician_Assiatant_id": "4962",
+      "Physician_Assiatant_value": "Brooke Heying, PA"
+    },
+    {
+      "Physician": [
+        {
+          "id": "4814",
+          "value": "Dr. Harvey D Cohen M.D.",
+          "rule": "CMG Rule - 100% of the charts"
+        }
+      ],
+      "Physician_Assiatant_id": "4963",
+      "Physician_Assiatant_value": "Carolyn Marie Dreyer, NP"
+    },
+    {
+      "Physician": [
+        {
+          "id": "4814",
+          "value": "Dr. Harvey D Cohen M.D.",
+          "rule": "CMG Rule - 100% of the charts"
+        }
+      ],
+      "Physician_Assiatant_id": "3077",
+      "Physician_Assiatant_value": "Velma D Yep NP-C"
+    },
+    {
+      "Physician": [
+        {
+          "id": "106",
+          "value": "Dr. Jaffar A Tremazi M.D.",
+          "rule": "CMG Rule - 100% of the charts"
+        }
+      ],
+      "Physician_Assiatant_id": "4841",
+      "Physician_Assiatant_value": "Peter Carreon, FNP"
+    },
+    {
+      "Physician": [
+        {
+          "id": "2841",
+          "value": "Dr. Khader K Abounasr M.D.",
+          "rule": "CMG Rule - 100% of the charts"
+        }
+      ],
+      "Physician_Assiatant_id": "4906",
+      "Physician_Assiatant_value": "Jessica Garner, FNP-C"
+    },
+    {
+      "Physician": [
+        {
+          "id": "4844",
+          "value": "Dr. PHY_5 TEST M.D",
+          "rule": "CMG Rule - 100% of the charts"
+        }
+      ],
+      "Physician_Assiatant_id": "2853",
+      "Physician_Assiatant_value": "PA_1"
+    },
+    {
+      "Physician": [
+        {
+          "id": "4328",
+          "value": "PHY_7 TEST",
+          "rule": "CMG Rule - 100% of the charts"
+        }
+      ],
+      "Physician_Assiatant_id": "4845",
+      "Physician_Assiatant_value": "PA_5"
+    },
+    {
+      "Physician": [
+        {
+          "id": "3075",
+          "value": "Dr. Ramanna Merla M.D.",
+          "rule": "CMG Rule - 100% of the charts"
+        }
+      ],
+      "Physician_Assiatant_id": "4523",
+      "Physician_Assiatant_value": "Meghna Patel PA-C"
+    },
+    {
+      "Physician": [
+        {
+          "id": "2377",
+          "value": "Dr. Sudhir Reddy, MD",
+          "rule": "CMG Rule - 100% of the charts"
+        }
+      ],
+      "Physician_Assiatant_id": "4828",
+      "Physician_Assiatant_value": "Jalpa Chaudhari, NP"
+    },
+    {
+      "Physician": [
+        {
+          "id": "2377",
+          "value": "Dr. Sudhir Reddy, MD",
+          "rule": "CMG Rule - 100% of the charts"
+        }
+      ],
+      "Physician_Assiatant_id": "4064",
+      "Physician_Assiatant_value": "Leslie Vanessa Theroith FNP"
+    },
+    {
+      "Physician": [
+        {
+          "id": "4982",
+          "value": "Dr. Weera Sukhumthammarat, M.D.",
+          "rule": "CMG Rule - 100% of the charts"
+        }
+      ],
+      "Physician_Assiatant_id": "4840",
+      "Physician_Assiatant_value": "Louis Sithu, FNP"
+    },
+    {
+      "Physician": [
+        {
+          "id": "4982",
+          "value": "Dr. Weera Sukhumthammarat, M.D.",
+          "rule": "CMG Rule - 100% of the charts"
+        }
+      ],
+      "Physician_Assiatant_id": "3108",
+      "Physician_Assiatant_value": "Melissa C Williams NP"
+    },
+    {
+      "Physician": [
+        {
+          "id": "165",
+          "value": "Dr. Praveena Jeereddi M.D",
+          "rule": "CMG Rule - 100% of the charts"
+        }
+      ],
+      "Physician_Assiatant_id": "691",
+      "Physician_Assiatant_value": "Jehan Goubran PA-C"
+    },
+    {
+      "Physician": [
+        {
+          "id": "165",
+          "value": "Dr. Praveena Jeereddi M.D",
+          "rule": "CMG Rule - 100% of the charts"
+        }
+      ],
+      "Physician_Assiatant_id": "1244",
+      "Physician_Assiatant_value": "Aman Sircar DNP, FNP-C"
+    },
+    {
+      "Physician": [
+        {
+          "id": "165",
+          "value": "Dr. Praveena Jeereddi M.D",
+          "rule": "CMG Rule - 100% of the charts"
+        }
+      ],
+      "Physician_Assiatant_id": "1317",
+      "Physician_Assiatant_value": "Rhodabelle Braga, FNP-C"
+    },
+    {
+      "Physician": [
+        {
+          "id": "165",
+          "value": "Dr. Praveena Jeereddi M.D",
+          "rule": "CMG Rule - 100% of the charts"
+        }
+      ],
+      "Physician_Assiatant_id": "1340",
+      "Physician_Assiatant_value": "Marie Antonette Boluso Badua, FNP-C"
+    },
+    {
+      "Physician": [
+        {
+          "id": "165",
+          "value": "Dr. Praveena Jeereddi M.D",
+          "rule": "CMG Rule - 100% of the charts"
+        }
+      ],
+      "Physician_Assiatant_id": "1648",
+      "Physician_Assiatant_value": "Parmida Behmardi PA-C"
+    },
+    {
+      "Physician": [
+        {
+          "id": "165",
+          "value": "Dr. Praveena Jeereddi M.D",
+          "rule": "CMG Rule - 100% of the charts"
+        }
+      ],
+      "Physician_Assiatant_id": "1649",
+      "Physician_Assiatant_value": "Gaynelle De Guzman FNP-C"
+    },
+    {
+      "Physician": [
+        {
+          "id": "165",
+          "value": "Dr. Praveena Jeereddi M.D",
+          "rule": "CMG Rule - 100% of the charts"
+        }
+      ],
+      "Physician_Assiatant_id": "1656",
+      "Physician_Assiatant_value": "Micah Weller FNP-C"
+    },
+    {
+      "Physician": [
+        {
+          "id": "515",
+          "value": "Phy Well",
+          "rule": "CMG Rule - 100% of the charts"
+        }
+      ],
+      "Physician_Assiatant_id": "1323",
+      "Physician_Assiatant_value": "PA_WELL"
+    },
+    {
+      "Physician": [
+        {
+          "id": "165",
+          "value": "Dr. Praveena Jeereddi M.D",
+          "rule": "CMG Rule - 100% of the charts"
+        }
+      ],
+      "Physician_Assiatant_id": "1874",
+      "Physician_Assiatant_value": "Nhi Nguyen Le, FNP-C"
+    },
+    {
+      "Physician": [
+        {
+          "id": "165",
+          "value": "Dr. Praveena Jeereddi M.D",
+          "rule": "CMG Rule - 100% of the charts"
+        }
+      ],
+      "Physician_Assiatant_id": "1277",
+      "Physician_Assiatant_value": "Frances O Corsino FNP-C"
+    },
+    {
+      "Physician": [
+        {
+          "id": "165",
+          "value": "Dr. Praveena Jeereddi M.D",
+          "rule": "CMG Rule - 100% of the charts"
+        }
+      ],
+      "Physician_Assiatant_id": "2024",
+      "Physician_Assiatant_value": "Victoria Chavez, FNP-C"
+    },
+    {
+      "Physician": [
+        {
+          "id": "165",
+          "value": "Dr. Praveena Jeereddi M.D",
+          "rule": "CMG Rule - 100% of the charts"
+        }
+      ],
+      "Physician_Assiatant_id": "2125",
+      "Physician_Assiatant_value": "Charlene Chua, FNP-C"
+    },
+    {
+      "Physician": [
+        {
+          "id": "165",
+          "value": "Dr. Praveena Jeereddi M.D",
+          "rule": "CMG Rule - 100% of the charts"
+        }
+      ],
+      "Physician_Assiatant_id": "2127",
+      "Physician_Assiatant_value": "Ramonette Parayno, FNP-C"
+    },
+    {
+      "Physician": [
+        {
+          "id": "179",
+          "value": "Dr. Haritha R. Alla MD, FACC",
+          "rule": "CMG Rule - 100% of the charts"
+        }
+      ],
+      "Physician_Assiatant_id": "10217",
+      "Physician_Assiatant_value": "Jordyn Ramey, FNP"
+    },
+    {
+      "Physician": [
+        {
+          "id": "10181",
+          "value": "Dr. Rishi Patel, M.D.",
+          "rule": "CMG Rule - 100% of the charts"
+        }
+      ],
+      "Physician_Assiatant_id": "10288",
+      "Physician_Assiatant_value": "Jocelyn Flores, CM"
+    },
+    {
+      "Physician": [
+        {
+          "id": "10181",
+          "value": "Dr. Rishi Patel, M.D.",
+          "rule": "CMG Rule - 100% of the charts"
+        }
+      ],
+      "Physician_Assiatant_id": "10289",
+      "Physician_Assiatant_value": "Luisa Guzman Gomez, CHW"
+    },
+    {
+      "Physician": [
+        {
+          "id": "10181",
+          "value": "Dr. Rishi Patel, M.D.",
+          "rule": "CMG Rule - 100% of the charts"
+        }
+      ],
+      "Physician_Assiatant_id": "10327",
+      "Physician_Assiatant_value": "Dheer Patel, CHW"
+    },
+    {
+      "Physician": [
+        {
+          "id": "10181",
+          "value": "Dr. Rishi Patel, M.D.",
+          "rule": "CMG Rule - 100% of the charts"
+        }
+      ],
+      "Physician_Assiatant_id": "10365",
+      "Physician_Assiatant_value": "Karla Tejeda, CHW"
+    },
+    {
+      "Physician": [
+        {
+          "id": "10181",
+          "value": "Dr. Rishi Patel, M.D.",
+          "rule": "CMG Rule - 100% of the charts"
+        }
+      ],
+      "Physician_Assiatant_id": "10366",
+      "Physician_Assiatant_value": "Angelica Gaxiola, CHW"
+    },
+    {
+      "Physician": [
+        {
+          "id": "10181",
+          "value": "Dr. Rishi Patel, M.D.",
+          "rule": "CMG Rule - 100% of the charts"
+        }
+      ],
+      "Physician_Assiatant_id": "10367",
+      "Physician_Assiatant_value": "Emmanuel Njoku, CHW"
+    },
+    {
+      "Physician": [
+        {
+          "id": "165",
+          "value": "Dr. Praveena Jeereddi M.D",
+          "rule": "CMG Rule - 100% of the charts"
+        }
+      ],
+      "Physician_Assiatant_id": "10390",
+      "Physician_Assiatant_value": "Shaina Abenojar, FNP-C"
+    },
+    {
+      "Physician": [
+        {
+          "id": "106",
+          "value": "Dr. Jaffar A Tremazi M.D.",
+          "rule": "CMG Rule - 100% of the charts"
+        }
+      ],
+      "Physician_Assiatant_id": "10453",
+      "Physician_Assiatant_value": "Sonia de la Garza RN"
+    },
+    {
+      "Physician": [
+        {
+          "id": "106",
+          "value": "Dr. Jaffar A Tremazi M.D.",
+          "rule": "CMG Rule - 100% of the charts"
+        }
+      ],
+      "Physician_Assiatant_id": "10454",
+      "Physician_Assiatant_value": "Ellen Choe RN"
+    },
+    {
+      "Physician": [
+        {
+          "id": "10181",
+          "value": "Dr. Rishi Patel, M.D.",
+          "rule": "CMG Rule - 100% of the charts"
+        }
+      ],
+      "Physician_Assiatant_id": "10476",
+      "Physician_Assiatant_value": "Kristine Mendez CHW"
+    },
+    {
+      "Physician": [
+        {
+          "id": "10181",
+          "value": "Dr. Rishi Patel, M.D.",
+          "rule": "CMG Rule - 100% of the charts"
+        }
+      ],
+      "Physician_Assiatant_id": "10512",
+      "Physician_Assiatant_value": "Heather Popejoy CHW"
+    },
+    {
+      "Physician": [
+        {
+          "id": "10181",
+          "value": "Dr. Rishi Patel, M.D.",
+          "rule": "CMG Rule - 100% of the charts"
+        }
+      ],
+      "Physician_Assiatant_id": "10530",
+      "Physician_Assiatant_value": "Jay Espinoza CHW"
+    },
+    {
+      "Physician": [
+        {
+          "id": "179",
+          "value": "Dr. Haritha R. Alla MD, FACC",
+          "rule": "CMG Rule - 100% of the charts"
+        }
+      ],
+      "Physician_Assiatant_id": "10534",
+      "Physician_Assiatant_value": "Annie Nguyen NP"
+    },
+    {
+      "Physician": [
+        {
+          "id": "10181",
+          "value": "Dr. Rishi Patel, M.D.",
+          "rule": "CMG Rule - 100% of the charts"
+        }
+      ],
+      "Physician_Assiatant_id": "10544",
+      "Physician_Assiatant_value": "Tracy Lynne Collier CHW"
+    },
+    {
+      "Physician": [
+        {
+          "id": "165",
+          "value": "Dr. Praveena Jeereddi M.D",
+          "rule": "CMG Rule - 100% of the charts"
+        }
+      ],
+      "Physician_Assiatant_id": "10629",
+      "Physician_Assiatant_value": "Christine McCabe, FNP-C"
+    },
+    {
+      "Physician": [
+        {
+          "id": "165",
+          "value": "Dr. Praveena Jeereddi M.D",
+          "rule": "CMG Rule - 100% of the charts"
+        }
+      ],
+      "Physician_Assiatant_id": "10652",
+      "Physician_Assiatant_value": "Michelle Pelagio, FNP-C"
+    },
+    {
+      "Physician": [
+        {
+          "id": "10181",
+          "value": "Dr. Rishi Patel, M.D.",
+          "rule": "CMG Rule - 100% of the charts"
+        }
+      ],
+      "Physician_Assiatant_id": "10667",
+      "Physician_Assiatant_value": "Karla Gutierrez CHW"
+    },
+    {
+      "Physician": [
+        {
+          "id": "10181",
+          "value": "Dr. Rishi Patel, M.D.",
+          "rule": "CMG Rule - 100% of the charts"
+        }
+      ],
+      "Physician_Assiatant_id": "12603",
+      "Physician_Assiatant_value": "Jennifer Lynn Bearup CHW"
+    },
+    {
+      "Physician": [
+        {
+          "id": "10328",
+          "value": "Dr. Hedy Cecilia Loa MD",
+          "rule": "CMG Rule - 100% of the charts"
+        }
+      ],
+      "Physician_Assiatant_id": "2802",
+      "Physician_Assiatant_value": "Dr.Venkata S. R. Pulakanti M.D."
+    },
+    {
+      "Physician": [
+        {
+          "id": "10181",
+          "value": "Dr. Rishi Patel, M.D.",
+          "rule": "CMG Rule - 100% of the charts"
+        }
+      ],
+      "Physician_Assiatant_id": "12660",
+      "Physician_Assiatant_value": "Lillian Portillo CHW"
+    },
+    {
+      "Physician": [
+        {
+          "id": "10328",
+          "value": "Dr. Hedy Cecilia Loa MD",
+          "rule": "CMG Rule - 100% of the charts"
+        }
+      ],
+      "Physician_Assiatant_id": "12661",
+      "Physician_Assiatant_value": "Michael Gonzalez, FNP-BC"
+    },
+    {
+      "Physician": [
+        {
+          "id": "10181",
+          "value": "Dr. Rishi Patel, M.D.",
+          "rule": "CMG Rule - 100% of the charts"
+        }
+      ],
+      "Physician_Assiatant_id": "12666",
+      "Physician_Assiatant_value": "Kelsy Babbitt Ruggiero PA-C"
+    },
+    {
+      "Physician": [
+        {
+          "id": "10181",
+          "value": "Dr. Rishi Patel, M.D.",
+          "rule": "CMG Rule - 100% of the charts"
+        }
+      ],
+      "Physician_Assiatant_id": "12719",
+      "Physician_Assiatant_value": "Itzel Veliz CHW"
+    },
+    {
+      "Physician": [
+        {
+          "id": "10181",
+          "value": "Dr. Rishi Patel, M.D.",
+          "rule": "CMG Rule - 100% of the charts"
+        }
+      ],
+      "Physician_Assiatant_id": "12736",
+      "Physician_Assiatant_value": "Rebecca Luna CHW"
+    },
+    {
+      "Physician": [
+        {
+          "id": "10181",
+          "value": "Dr. Rishi Patel, M.D.",
+          "rule": "CMG Rule - 100% of the charts"
+        }
+      ],
+      "Physician_Assiatant_id": "12737",
+      "Physician_Assiatant_value": "Nathaly Escobar CHW"
+    },
+    {
+      "Physician": [
+        {
+          "id": "10181",
+          "value": "Dr. Rishi Patel, M.D.",
+          "rule": "CMG Rule - 100% of the charts"
+        }
+      ],
+      "Physician_Assiatant_id": "12739",
+      "Physician_Assiatant_value": "Karlo Krisson Miro Gines CHW"
+    },
+    {
+      "Physician": [
+        {
+          "id": "10328",
+          "value": "Dr. Hedy Cecilia Loa MD",
+          "rule": "CMG Rule - 100% of the charts"
+        }
+      ],
+      "Physician_Assiatant_id": "12807",
+      "Physician_Assiatant_value": "Dr. Usha Mantha MD"
+    },
+    {
+      "Physician": [
+        {
+          "id": "10584",
+          "value": "Dr. Steven Daniel Hochman, M.D.",
+          "rule": "CMG Rule - 100% of the charts"
+        }
+      ],
+      "Physician_Assiatant_id": "12818",
+      "Physician_Assiatant_value": "Virginia Eck CHW"
+    },
+    {
+      "Physician": [
+        {
+          "id": "165",
+          "value": "Dr. Praveena Jeereddi M.D",
+          "rule": "CMG Rule - 100% of the charts"
+        }
+      ],
+      "Physician_Assiatant_id": "12859",
+      "Physician_Assiatant_value": "Patrick Alonzo,  FNP"
+    },
+    {
+      "Physician": [
+        {
+          "id": "10181",
+          "value": "Dr. Rishi Patel, M.D.",
+          "rule": "CMG Rule - 100% of the charts"
+        }
+      ],
+      "Physician_Assiatant_id": "12915",
+      "Physician_Assiatant_value": "Angelica Gaxiola, ECM"
+    },
+    {
+      "Physician": [
+        {
+          "id": "10181",
+          "value": "Dr. Rishi Patel, M.D.",
+          "rule": "CMG Rule - 100% of the charts"
+        }
+      ],
+      "Physician_Assiatant_id": "12916",
+      "Physician_Assiatant_value": "Dheer Patel, ECM"
+    },
+    {
+      "Physician": [
+        {
+          "id": "10181",
+          "value": "Dr. Rishi Patel, M.D.",
+          "rule": "CMG Rule - 100% of the charts"
+        }
+      ],
+      "Physician_Assiatant_id": "12917",
+      "Physician_Assiatant_value": "Hanorah Michelle Shellgren, ECM"
+    },
+    {
+      "Physician": [
+        {
+          "id": "10181",
+          "value": "Dr. Rishi Patel, M.D.",
+          "rule": "CMG Rule - 100% of the charts"
+        }
+      ],
+      "Physician_Assiatant_id": "12918",
+      "Physician_Assiatant_value": "Itzel Veliz, ECM"
+    },
+    {
+      "Physician": [
+        {
+          "id": "10181",
+          "value": "Dr. Rishi Patel, M.D.",
+          "rule": "CMG Rule - 100% of the charts"
+        }
+      ],
+      "Physician_Assiatant_id": "12919",
+      "Physician_Assiatant_value": "Kirk McGowan, ECM"
+    },
+    {
+      "Physician": [
+        {
+          "id": "10181",
+          "value": "Dr. Rishi Patel, M.D.",
+          "rule": "CMG Rule - 100% of the charts"
+        }
+      ],
+      "Physician_Assiatant_id": "12920",
+      "Physician_Assiatant_value": "Tracy Lynne Collier, ECM"
+    },
+    {
+      "Physician": [
+        {
+          "id": "10584",
+          "value": "Dr. Steven Daniel Hochman, M.D.",
+          "rule": "CMG Rule - 100% of the charts"
+        }
+      ],
+      "Physician_Assiatant_id": "12921",
+      "Physician_Assiatant_value": "Tamisha Reve Mann, ECM"
+    },
+    {
+      "Physician": [
+        {
+          "id": "10584",
+          "value": "Dr. Steven Daniel Hochman, M.D.",
+          "rule": "CMG Rule - 100% of the charts"
+        }
+      ],
+      "Physician_Assiatant_id": "12922",
+      "Physician_Assiatant_value": "Nathaly Escobar, ECM"
+    },
+    {
+      "Physician": [
+        {
+          "id": "10584",
+          "value": "Dr. Steven Daniel Hochman, M.D.",
+          "rule": "CMG Rule - 100% of the charts"
+        }
+      ],
+      "Physician_Assiatant_id": "12923",
+      "Physician_Assiatant_value": "Virginia Eck, ECM"
+    },
+    {
+      "Physician": [
+        {
+          "id": "10584",
+          "value": "Dr. Steven Daniel Hochman, M.D.",
+          "rule": "CMG Rule - 100% of the charts"
+        }
+      ],
+      "Physician_Assiatant_id": "12940",
+      "Physician_Assiatant_value": "Jennifer Kacy, ECM"
+    },
+    {
+      "Physician": [
+        {
+          "id": "10584",
+          "value": "Dr. Steven Daniel Hochman, M.D.",
+          "rule": "CMG Rule - 100% of the charts"
+        }
+      ],
+      "Physician_Assiatant_id": "13026",
+      "Physician_Assiatant_value": "Felicia M Munasinghe, ECM"
+    },
+    {
+      "Physician": [
+        {
+          "id": "10584",
+          "value": "Dr. Steven Daniel Hochman, M.D.",
+          "rule": "CMG Rule - 100% of the charts"
+        }
+      ],
+      "Physician_Assiatant_id": "13027",
+      "Physician_Assiatant_value": "Giovanni A Ayala, ECM"
+    },
+    {
+      "Physician": [
+        {
+          "id": "165",
+          "value": "Dr. Praveena Jeereddi M.D",
+          "rule": "CMG Rule - 100% of the charts"
+        }
+      ],
+      "Physician_Assiatant_id": "13074",
+      "Physician_Assiatant_value": "Suzette Barsoum FNP-C"
+    },
+    {
+      "Physician": [
+        {
+          "id": "10181",
+          "value": "Dr. Rishi Patel, M.D.",
+          "rule": "CMG Rule - 100% of the charts"
+        }
+      ],
+      "Physician_Assiatant_id": "13100",
+      "Physician_Assiatant_value": "Birnisha Latrice Knox ECM"
+    },
+    {
+      "Physician": [
+        {
+          "id": "10584",
+          "value": "Dr. Steven Daniel Hochman, M.D.",
+          "rule": "CMG Rule - 100% of the charts"
+        }
+      ],
+      "Physician_Assiatant_id": "13129",
+      "Physician_Assiatant_value": "Amber-Gale Helphingstine, ECM"
+    },
+    {
+      "Physician": [
+        {
+          "id": "10181",
+          "value": "Dr. Rishi Patel, M.D.",
+          "rule": "CMG Rule - 100% of the charts"
+        }
+      ],
+      "Physician_Assiatant_id": "13194",
+      "Physician_Assiatant_value": "Sai Kommireddy, ECM"
+    },
+    {
+      "Physician": [
+        {
+          "id": "4323",
+          "value": "Dr. Nyein Aye Tint M.D.",
+          "rule": "CMG Rule - 100% of the charts"
+        }
+      ],
+      "Physician_Assiatant_id": "17576",
+      "Physician_Assiatant_value": "Laura Louise Rigby NP"
+    },
+    {
+      "Physician": [
+        {
+          "id": "165",
+          "value": "Dr. Praveena Jeereddi M.D",
+          "rule": "CMG Rule - 100% of the charts"
+        }
+      ],
+      "Physician_Assiatant_id": "17577",
+      "Physician_Assiatant_value": "Palestine Green FNP-C"
+    },
+    {
+      "Physician": [
+        {
+          "id": "165",
+          "value": "Dr. Praveena Jeereddi M.D",
+          "rule": "CMG Rule - 100% of the charts"
+        }
+      ],
+      "Physician_Assiatant_id": "17722",
+      "Physician_Assiatant_value": "Bianca Brown FNP-C"
+    },
+    {
+      "Physician": [
+        {
+          "id": "10584",
+          "value": "Dr. Steven Daniel Hochman, M.D.",
+          "rule": "CMG Rule - 100% of the charts"
+        }
+      ],
+      "Physician_Assiatant_id": "17847",
+      "Physician_Assiatant_value": "Melisa Chavez, ECM"
+    },
+    {
+      "Physician": [
+        {
+          "id": "10584",
+          "value": "Dr. Steven Daniel Hochman, M.D.",
+          "rule": "CMG Rule - 100% of the charts"
+        }
+      ],
+      "Physician_Assiatant_id": "17868",
+      "Physician_Assiatant_value": "Monica Lynn Tracey, CHW"
+    },
+    {
+      "Physician": [
+        {
+          "id": "10181",
+          "value": "Dr. Rishi Patel, M.D.",
+          "rule": "CMG Rule - 100% of the charts"
+        }
+      ],
+      "Physician_Assiatant_id": "17873",
+      "Physician_Assiatant_value": "Kael Rios, CHW"
+    },
+    {
+      "Physician": [
+        {
+          "id": "165",
+          "value": "Dr. Praveena Jeereddi M.D",
+          "rule": "CMG Rule - 100% of the charts"
+        }
+      ],
+      "Physician_Assiatant_id": "17894",
+      "Physician_Assiatant_value": "Cinzia Leon FNP-C"
+    },
+    {
+      "Physician": [
+        {
+          "id": "179",
+          "value": "Dr. Haritha R. Alla MD, FACC",
+          "rule": "CMG Rule - 100% of the charts"
+        }
+      ],
+      "Physician_Assiatant_id": "17902",
+      "Physician_Assiatant_value": "Sabina Singh, PA-C"
+    },
+    {
+      "Physician": [
+        {
+          "id": "10181",
+          "value": "Dr. Rishi Patel, M.D.",
+          "rule": "CMG Rule - 100% of the charts"
+        }
+      ],
+      "Physician_Assiatant_id": "17929",
+      "Physician_Assiatant_value": "Murali, Karthik, ECM"
+    },
+    {
+      "Physician": [
+        {
+          "id": "17946",
+          "value": "Dr. Chandru Mani TEST",
+          "rule": "CMG Rule - 100% of the charts"
+        }
+      ],
+      "Physician_Assiatant_id": "17944",
+      "Physician_Assiatant_value": "Sowmiya Rajamani"
+    },
+    {
+      "Physician": [
+        {
+          "id": "10181",
+          "value": "Dr. Rishi Patel, M.D.",
+          "rule": "CMG Rule - 100% of the charts"
+        }
+      ],
+      "Physician_Assiatant_id": "17952",
+      "Physician_Assiatant_value": "Patrick Grissom, ECM"
+    },
+    {
+      "Physician": [
+        {
+          "id": "10584",
+          "value": "Dr. Steven Daniel Hochman, M.D.",
+          "rule": "CMG Rule - 100% of the charts"
+        }
+      ],
+      "Physician_Assiatant_id": "17961",
+      "Physician_Assiatant_value": "Hector Antonio Sideos, CHW"
+    },
+    {
+      "Physician": [
+        {
+          "id": "10181",
+          "value": "Dr. Rishi Patel, M.D.",
+          "rule": "CMG Rule - 100% of the charts"
+        }
+      ],
+      "Physician_Assiatant_id": "17971",
+      "Physician_Assiatant_value": "Francisco Gomez, CHW"
+    }
+  ]
+}

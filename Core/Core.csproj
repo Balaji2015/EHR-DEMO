@@ -342,6 +342,7 @@
     <Compile Include="DTOJson\Dynamic_Screen.cs" />
     <Compile Include="DTOJson\ImmztnRegistry_LookupList.cs" />
     <Compile Include="DTOJson\machine_technician.cs" />
+    <Compile Include="DTOJson\PhysicianReviewProtocols.cs" />
     <Compile Include="DTOJson\Physician_POV.cs" />
     <Compile Include="DTO\ABIResultsDTO.cs" />
     <Compile Include="DTO\AuthorizationDTO.cs" />
