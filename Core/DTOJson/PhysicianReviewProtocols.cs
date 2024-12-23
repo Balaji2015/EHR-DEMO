@@ -10,9 +10,9 @@ namespace Acurus.Capella.Core.DTOJson
     {
         public PhyAsstSpecificProtocolsList()
         {
-            PhyAsstSpecificProtocol = new List<PhyAsstSpecificProtocols>();
+            PhyAsstSpecificProtocols = new List<PhyAsstSpecificProtocols>();
         }
-        public List<PhyAsstSpecificProtocols> PhyAsstSpecificProtocol { get; set; }
+        public List<PhyAsstSpecificProtocols> PhyAsstSpecificProtocols { get; set; }
     }
     
 
@@ -24,7 +24,11 @@ namespace Acurus.Capella.Core.DTOJson
     }
     public class PhyAsstSpecificProtocols
     {
-        public Physician Physician { get; set; }
+        public PhyAsstSpecificProtocols()
+        {
+            Physician = new List<Physician>();
+        }
+        public List<Physician> Physician { get; set; }
         public string Physician_Assiatant_id { get; set; }
         public string Physician_Assiatant_value { get; set; }
     }

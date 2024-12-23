@@ -31,6 +31,7 @@ using log4net;
 using System.Xml.XPath;
 using System.Xml.Xsl;
 using Acurus.Capella.Core.DTOJson;
+using iTextSharp.text;
 
 namespace Acurus.Capella.UI
 {
@@ -1914,33 +1915,38 @@ namespace Acurus.Capella.UI
             {
                 if (UserRole.ToUpper() == "PHYSICIAN ASSISTANT")
                 {
-                    ilstPhysAsslist = phyAsstSpecificProtocolList.PhyAsstSpecificProtocol.Where(x => x.Physician_Assiatant_id == UserID).OrderBy(y => y.Physician.id).ToList();
+                    ilstPhysAsslist = phyAsstSpecificProtocolList.PhyAsstSpecificProtocols.Where(x => x.Physician_Assiatant_id == UserID).ToList();
                     if ((ilstPhysAsslist?.Count ?? 0) > 0)
                     {
                         foreach (PhyAsstSpecificProtocols phyass in ilstPhysAsslist)
                         {
-                            ReviewProtocols objProtocol = new ReviewProtocols();
-                            objProtocol.UserID = phyass.Physician.id;
-                            objProtocol.UserName = phyass.Physician.value;
-                            objProtocol.Protocol = phyass.Physician.rule;
-                            lstProtocols.Add(objProtocol);
+                            foreach (var item in phyass.Physician.OrderBy(a => a.id).ToList())
+                            {
+                                ReviewProtocols objProtocol = new ReviewProtocols();
+                                objProtocol.UserID = item.id;
+                                objProtocol.UserName = item.value;
+                                objProtocol.Protocol = item.rule;
+                                lstProtocols.Add(objProtocol);
+                            }
                         }
                     }
-
                 }
                 else if (UserRole.ToUpper() == "PHYSICIAN")
                 {
-                    ilstPhysAsslist = phyAsstSpecificProtocolList.PhyAsstSpecificProtocol.Where(x => x.Physician.id == UserID).OrderBy(y => y.Physician.id).ToList();
-
+                    ilstPhysAsslist = phyAsstSpecificProtocolList.PhyAsstSpecificProtocols.Where(x => x.Physician.Any(a=>a.id == UserID)).ToList();
+                    List<Physician> physicians = new List<Physician>(); 
                     if ((ilstPhysAsslist?.Count ?? 0) > 0)
                     {
-
                         foreach (PhyAsstSpecificProtocols phyass in ilstPhysAsslist)
                         {
+                            physicians.AddRange(phyass.Physician);
+                        }
+                        foreach (var item in physicians.GroupBy(a => a.rule).Select(x => x.OrderBy(a => a.id).FirstOrDefault()).ToList())
+                        {
                             ReviewProtocols objProtocol = new ReviewProtocols();
-                            objProtocol.UserID = phyass.Physician.id;
-                            objProtocol.UserName = phyass.Physician.value;
-                            objProtocol.Protocol = phyass.Physician.rule;
+                            objProtocol.UserID = item.id;
+                            objProtocol.UserName = item.value;
+                            objProtocol.Protocol = item.rule;
                             lstProtocols.Add(objProtocol);
                         }
                     }
