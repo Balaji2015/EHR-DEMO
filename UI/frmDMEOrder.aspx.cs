@@ -19,6 +19,7 @@ using System.Xml.Linq;
 using Telerik.Web.UI;
 using System.Web.UI.HtmlControls;
 using System.Configuration;
+using Acurus.Capella.Core.DTOJson;
 
 namespace Acurus.Capella.UI
 {
@@ -184,16 +185,36 @@ namespace Acurus.Capella.UI
                 cboItem.Text = " ";
                 cboItem.Value = "0";
                 cboLab.Items.Add(cboItem);
-                XDocument xmlLab = XDocument.Load(Server.MapPath(@"ConfigXML\LabList.xml"));
-                IEnumerable<XElement> xml = xmlLab.Element("LabList")
-                   .Elements("Lab").Where(a => a.Attribute("type").Value.ToString() == "DME")
-                   .OrderBy(s => (int)s.Attribute("sort_order"));
-                if (xml != null)
+
+                //XDocument xmlLab = XDocument.Load(Server.MapPath(@"ConfigXML\LabList.xml"));
+                //IEnumerable<XElement> xml = xmlLab.Element("LabList")
+                //   .Elements("Lab").Where(a => a.Attribute("type").Value.ToString() == "DME")
+                //   .OrderBy(s => (int)s.Attribute("sort_order"));
+                //if (xml != null)
+                //{
+                //    foreach (XElement LabElement in xml)
+                //    {
+                //        string xmlValue = LabElement.Attribute("name").Value;
+                //        string xmlLabId = LabElement.Attribute("id").Value;
+                //        cboItem = new ListItem();
+                //        cboItem.Text = xmlValue;
+                //        cboItem.Value = xmlLabId;
+                //        cboItem.Attributes.Add("title", xmlValue);
+                //        cboLab.Items.Add(cboItem);
+                //    }
+                //}
+
+                //CAP-2773
+                Lablist objlablist = new Lablist();
+                objlablist = ConfigureBase<Lablist>.ReadJson("LabList.json");
+                List<Labs> listLabList = new List<Labs>();
+                listLabList = objlablist.Lab.Where(a => a.type == "DME").OrderBy(s => (int)Convert.ToInt32(s.sort_order)).ToList();
+                if (listLabList != null && listLabList.Count > 0)
                 {
-                    foreach (XElement LabElement in xml)
+                    foreach (Labs objlab in listLabList)
                     {
-                        string xmlValue = LabElement.Attribute("name").Value;
-                        string xmlLabId = LabElement.Attribute("id").Value;
+                        string xmlValue = objlab.name;
+                        string xmlLabId = objlab.id;
                         cboItem = new ListItem();
                         cboItem.Text = xmlValue;
                         cboItem.Value = xmlLabId;
@@ -201,9 +222,10 @@ namespace Acurus.Capella.UI
                         cboLab.Items.Add(cboItem);
                     }
                 }
+
                 //if(objOrderDTO.objHuman.Lab_Id!="0")
                 //{
-                    AssignDefaultValueToLab(Convert.ToInt32(objOrderDTO.objHuman.Lab_Id));
+                AssignDefaultValueToLab(Convert.ToInt32(objOrderDTO.objHuman.Lab_Id));
                     Session["cboLab"] = objOrderDTO.objHuman.Lab_Id;
                 //}
                
@@ -415,39 +437,64 @@ namespace Acurus.Capella.UI
                 LookUpPerRequest.Add("FacilityCity", xmlFac.Attributes("City").First().Value.ToString());
             }
 
-            XDocument xmlLabLocation = XDocument.Load(Server.MapPath(@"ConfigXML\LabLocationList.xml"));
+            //XDocument xmlLabLocation = XDocument.Load(Server.MapPath(@"ConfigXML\LabLocationList.xml"));
 
-            if (xmlLabLocation != null && LookUpPerRequest["FacilityCity"] != null)
+            //if (xmlLabLocation != null && LookUpPerRequest["FacilityCity"] != null)
+            //{
+            //    if (LookUpPerRequest["FacilityCity"] != string.Empty)
+            //    {
+            //        IEnumerable<XElement> xmlLocation = null;
+            //        try
+            //        {
+            //            xmlLocation = xmlLabLocation.Element("LabLocationList")
+            // .Elements("LabLocation").Where(xx => xx.Attribute("labid").Value == (cboLab.Items[cboLab.SelectedIndex].Value) && xx.Attribute("city").Value.ToUpper() == (LookUpPerRequest["FacilityCity"].ToUpper()));
+
+            //        }
+
+            //        catch (Exception)
+            //        {
+            //            xmlLocation = null;
+            //        }
+            //        if (xmlLocation != null && xmlLocation.Count() > 0)
+            //        {
+            //            txtLocation.Value = xmlLocation.Attributes("city").First().Value.ToString();
+            //            if (!LookUpPerRequest.ContainsKey("labLocID"))
+            //                LookUpPerRequest.Add("labLocID", xmlLocation.Attributes("id").First().Value.ToString());
+            //            else
+            //                LookUpPerRequest["labLocID"] = xmlLocation.Attributes("id").First().Value.ToString();                        
+            //        }
+            //    }
+            //}
+
+            //CAP-2774
+            LabLocationList objlabLocation = new LabLocationList();
+            objlabLocation = ConfigureBase<LabLocationList>.ReadJson("LabLocationList.json");
+            if (objlabLocation != null && LookUpPerRequest["FacilityCity"] != null)
             {
                 if (LookUpPerRequest["FacilityCity"] != string.Empty)
                 {
-                    IEnumerable<XElement> xmlLocation = null;
+                    List<LabLocations> listLabLocation = new List<LabLocations>();
                     try
                     {
-                        xmlLocation = xmlLabLocation.Element("LabLocationList")
-             .Elements("LabLocation").Where(xx => xx.Attribute("labid").Value == (cboLab.Items[cboLab.SelectedIndex].Value) && xx.Attribute("city").Value.ToUpper() == (LookUpPerRequest["FacilityCity"].ToUpper()));
-
+                        listLabLocation = objlabLocation.LabLocation.Where(a => a.labid == cboLab.Items[cboLab.SelectedIndex].Value.ToString() && a.city.ToUpper() == LookUpPerRequest["FacilityCity"].ToUpper().ToString()).ToList();
                     }
-
                     catch (Exception)
                     {
-                        xmlLocation = null;
+                        listLabLocation = null;
                     }
-                    if (xmlLocation != null && xmlLocation.Count() > 0)
+                    if (listLabLocation != null && listLabLocation.Count() > 0)
                     {
-                        txtLocation.Value = xmlLocation.Attributes("city").First().Value.ToString();
+                        txtLocation.Value = listLabLocation[0].city.ToString();
                         if (!LookUpPerRequest.ContainsKey("labLocID"))
-                            LookUpPerRequest.Add("labLocID", xmlLocation.Attributes("id").First().Value.ToString());
+                            LookUpPerRequest.Add("labLocID", listLabLocation[0].id.ToString());
                         else
-                            LookUpPerRequest["labLocID"] = xmlLocation.Attributes("id").First().Value.ToString();
-                        //txtLocation.Text = xmlLocation.Attributes("city").SingleOrDefault().Value.ToString();
-                        //if (!LookUpPerRequest.ContainsKey("labLocID"))
-                        //    LookUpPerRequest.Add("labLocID", xmlLocation.Attributes("id").SingleOrDefault().Value.ToString());
-                        //else
-                        //    LookUpPerRequest["labLocID"] = xmlLocation.Attributes("id").SingleOrDefault().Value.ToString();
+                            LookUpPerRequest["labLocID"] = listLabLocation[0].id.ToString();
                     }
                 }
             }
+
+
+
             procedureList = objEAndMCodingManager.GetPhysicianProcedure(PhysicianID, "DME PROCEDURE", selectedLabID, ClientSession.LegalOrg);
             FillLabProcedure(procedureList, new List<string>());
         }
@@ -816,31 +863,54 @@ namespace Acurus.Capella.UI
         }
         public void AddDMEOrder()
         {
-            XDocument xmlLabLocation = XDocument.Load(Server.MapPath(@"ConfigXML\LabLocationList.xml"));
+            //XDocument xmlLabLocation = XDocument.Load(Server.MapPath(@"ConfigXML\LabLocationList.xml"));
+            //string sLocation = string.Empty;
+            //if (txtLocation.Value != "")
+            //{
+            //    if (txtLocation.Value != string.Empty)
+            //    {
+            //        IEnumerable<XElement> xmlLocation = null;
+            //        try
+            //        {
+            //            xmlLocation = xmlLabLocation.Element("LabLocationList")
+            // .Elements("LabLocation").Where(xx => xx.Attribute("labid").Value == (cboLab.Items[cboLab.SelectedIndex].Value) && xx.Attribute("city").Value.ToUpper() == (txtLocation.Value.ToUpper()));
+
+            //        }
+
+            //        catch (Exception)
+            //        {
+            //            xmlLocation = null;
+            //        }
+            //        if (xmlLocation != null && xmlLocation.Count() > 0)
+            //        {
+            //            txtLocation.Value = xmlLocation.Attributes("city").First().Value.ToString();
+            //            sLocation = xmlLocation.Attributes("id").First().Value.ToString();
+            //        }
+            //    }
+            //}
+
+            //CAP-2774
+            LabLocationList objlabLocation = new LabLocationList();
+            objlabLocation = ConfigureBase<LabLocationList>.ReadJson("LabLocationList.json");
             string sLocation = string.Empty;
-            if (txtLocation.Value != "")
+            if (txtLocation.Value != "" && txtLocation.Value != string.Empty)
             {
-                if (txtLocation.Value != string.Empty)
+                List<LabLocations> listLabLocation = new List<LabLocations>();
+                try
                 {
-                    IEnumerable<XElement> xmlLocation = null;
-                    try
-                    {
-                        xmlLocation = xmlLabLocation.Element("LabLocationList")
-             .Elements("LabLocation").Where(xx => xx.Attribute("labid").Value == (cboLab.Items[cboLab.SelectedIndex].Value) && xx.Attribute("city").Value.ToUpper() == (txtLocation.Value.ToUpper()));
-
-                    }
-
-                    catch (Exception)
-                    {
-                        xmlLocation = null;
-                    }
-                    if (xmlLocation != null && xmlLocation.Count() > 0)
-                    {
-                        txtLocation.Value = xmlLocation.Attributes("city").First().Value.ToString();
-                        sLocation = xmlLocation.Attributes("id").First().Value.ToString();
-                    }
+                    listLabLocation = objlabLocation.LabLocation.Where(a => a.labid == cboLab.Items[cboLab.SelectedIndex].Value.ToString() && a.city.ToUpper() == (txtLocation.Value.ToUpper())).ToList();
+                }
+                catch (Exception)
+                {
+                    listLabLocation = null;
+                }
+                if (listLabLocation != null && listLabLocation.Count() > 0)
+                {
+                    txtLocation.Value = listLabLocation[0].city.ToString();
+                    sLocation = listLabLocation[0].id.ToString();
                 }
             }
+
             IList<string> SelectedProcedure = new List<string>();
             IList<string> SelectedAssessment = new List<string>();
             IList<Orders> SaveOrderList = new List<Orders>();
@@ -1008,31 +1078,54 @@ namespace Acurus.Capella.UI
         }
         public void UpdateDMEOrder()
         {
-            XDocument xmlLabLocation = XDocument.Load(Server.MapPath(@"ConfigXML\LabLocationList.xml"));
+            //XDocument xmlLabLocation = XDocument.Load(Server.MapPath(@"ConfigXML\LabLocationList.xml"));
+            //string sLocation = string.Empty;
+            //if (txtLocation.Value != "")
+            //{
+            //    if (txtLocation.Value != string.Empty)
+            //    {
+            //        IEnumerable<XElement> xmlLocation = null;
+            //        try
+            //        {
+            //            xmlLocation = xmlLabLocation.Element("LabLocationList")
+            // .Elements("LabLocation").Where(xx => xx.Attribute("labid").Value == (cboLab.Items[cboLab.SelectedIndex].Value) && xx.Attribute("city").Value.ToUpper() == (txtLocation.Value.ToUpper()));
+
+            //        }
+
+            //        catch (Exception)
+            //        {
+            //            xmlLocation = null;
+            //        }
+            //        if (xmlLocation != null && xmlLocation.Count() > 0)
+            //        {
+            //            txtLocation.Value = xmlLocation.Attributes("city").First().Value.ToString();
+            //            sLocation = xmlLocation.Attributes("id").First().Value.ToString();
+            //        }
+            //    }
+            //}
+
+            //CAP-2774
+            LabLocationList objlabLocation = new LabLocationList();
+            objlabLocation = ConfigureBase<LabLocationList>.ReadJson("LabLocationList.json");
             string sLocation = string.Empty;
-            if (txtLocation.Value != "")
+            if (txtLocation.Value != "" && txtLocation.Value != string.Empty)
             {
-                if (txtLocation.Value != string.Empty)
+                List<LabLocations> listLabLocation = new List<LabLocations>();
+                try
                 {
-                    IEnumerable<XElement> xmlLocation = null;
-                    try
-                    {
-                        xmlLocation = xmlLabLocation.Element("LabLocationList")
-             .Elements("LabLocation").Where(xx => xx.Attribute("labid").Value == (cboLab.Items[cboLab.SelectedIndex].Value) && xx.Attribute("city").Value.ToUpper() == (txtLocation.Value.ToUpper()));
-
-                    }
-
-                    catch (Exception)
-                    {
-                        xmlLocation = null;
-                    }
-                    if (xmlLocation != null && xmlLocation.Count() > 0)
-                    {
-                        txtLocation.Value = xmlLocation.Attributes("city").First().Value.ToString();
-                        sLocation = xmlLocation.Attributes("id").First().Value.ToString();
-                    }
+                    listLabLocation = objlabLocation.LabLocation.Where(a => a.labid == cboLab.Items[cboLab.SelectedIndex].Value.ToString() && a.city.ToUpper() == (txtLocation.Value.ToUpper())).ToList();
+                }
+                catch (Exception)
+                {
+                    listLabLocation = null;
+                }
+                if (listLabLocation != null && listLabLocation.Count() > 0)
+                {
+                    txtLocation.Value = listLabLocation[0].city.ToString();
+                    sLocation = listLabLocation[0].id.ToString();
                 }
             }
+
             OrdersDTO objOrderDTO = new OrdersDTO();
             if (Session["objDMEDTO"] != null)
                 objOrderDTO = (OrdersDTO)Session["objDMEDTO"];

@@ -2010,8 +2010,6 @@
     <Content Include="CarePlan.html" />
     <Content Include="ConfigXML\Facility_Library.xml" />
     <Content Include="ConfigXML\icd_9_10_mapping.xml" />
-    <Content Include="ConfigXML\LabList.xml" />
-    <Content Include="ConfigXML\LabLocationList.xml" />
     <Content Include="ConfigXML\LookupList_CCDAErrors.xml" />
     <Content Include="ConfigXML\PhysicianAddressDetails.xml" />
     <Content Include="ConfigXML\PhysicianFacilityMapping.xml" />
@@ -2439,6 +2437,8 @@
     <Content Include="ConfigXML\QuestionnaireTab_Lookup.json" />
     <Content Include="ConfigXML\AssessmentVitalsLookup.json" />
     <Content Include="ConfigXML\Insurance_Plan.json" />
+    <Content Include="ConfigXML\LabList.json" />
+    <Content Include="ConfigXML\LabLocationList.json" />
     <None Include="Documents\Physician_Specific_Documents\Patient Education\2011-02-17 %281%29.pdf" />
     <None Include="Documents\Physician_Specific_Documents\Patient Education\2011-02-17 %2810%29.pdf" />
     <None Include="Documents\Physician_Specific_Documents\Patient Education\2011-02-17 %2811%29.pdf" />

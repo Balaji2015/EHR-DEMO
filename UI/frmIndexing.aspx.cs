@@ -759,19 +759,32 @@ namespace Acurus.Capella.UI
                 IDictionary<string, string> ilstOrdersubmitParentorder = new Dictionary<string, string>();
                 if (IscheckCMGAncillary.Count > 0)
                 {
-                    XDocument xmlLab = XDocument.Load(Server.MapPath(@"ConfigXML\LabList.xml"));
 
-                    IEnumerable<XElement> xml = xmlLab.Element("LabList")
-                       .Elements("Lab").Where(a => a.Attribute("type").Value.ToString() != "DME" && a.Attribute("name").Value.ToString() == facLabList[0].Short_Name)
-                       .OrderBy(s => (int)s.Attribute("sort_order"));
+                    //XDocument xmlLab = XDocument.Load(Server.MapPath(@"ConfigXML\LabList.xml"));
+                    //IEnumerable<XElement> xml = xmlLab.Element("LabList")
+                    //   .Elements("Lab").Where(a => a.Attribute("type").Value.ToString() != "DME" && a.Attribute("name").Value.ToString() == facLabList[0].Short_Name)
+                    //   .OrderBy(s => (int)s.Attribute("sort_order"));
+                    //string xmlValue = string.Empty;                    
+                    //if (xml != null)
+                    //{
+                    //    foreach (XElement LabElement in xml)
+                    //    {
+                    //        xmlValue = LabElement.Attribute("id").Value;
+                    //    }
+                    //}
 
+                    //CAP-2773
+                    Lablist objlablist = new Lablist();
+                    objlablist = ConfigureBase<Lablist>.ReadJson("LabList.json");
+                    List<Labs> listLabList = new List<Labs>();
+                    listLabList = objlablist.Lab.Where(a => a.type != "DME" && a.name == facLabList[0].Short_Name)
+                        .OrderBy(s => (int)Convert.ToInt32(s.sort_order)).ToList();
                     string xmlValue = string.Empty;
-
-                    if (xml != null)
+                    if (listLabList != null)
                     {
-                        foreach (XElement LabElement in xml)
+                        foreach (Labs objlab in listLabList)
                         {
-                            xmlValue = LabElement.Attribute("id").Value;
+                            xmlValue = objlab.id;
                         }
                     }
 
@@ -2749,19 +2762,35 @@ namespace Acurus.Capella.UI
             cboLab.Items.Clear();
             /* Code Block to populate Lab list */
 
-            XDocument xmlDocumentType = XDocument.Load(Server.MapPath(@"ConfigXML\LabList.xml"));
+            //XDocument xmlDocumentType = XDocument.Load(Server.MapPath(@"ConfigXML\LabList.xml"));
+            //ListItem liDropdown = null;
+            //IList<ListItem> liComboItems = new List<ListItem>();
+            //foreach (XElement elements in xmlDocumentType.Elements("LabList").Elements())
+            //{
+            //    //string username = elements.Attribute("name").Value;
+            //    //string id = elements.Attribute("id").Value;
+            //    //liDropdown = new ListItem(username, id);
+            //    liDropdown = new ListItem(elements.Attribute("name").Value, elements.Attribute("id").Value);
+            //    liComboItems.Add(liDropdown);
+            //}
 
+            //CAP-2773
+            Lablist objlablist = new Lablist();
+            objlablist = ConfigureBase<Lablist>.ReadJson("LabList.json");
+            List<Labs> listLabList = new List<Labs>();
+            listLabList = objlablist.Lab.ToList();
             ListItem liDropdown = null;
             IList<ListItem> liComboItems = new List<ListItem>();
-            foreach (XElement elements in xmlDocumentType.Elements("LabList").Elements())
+            if (listLabList != null)
             {
-
-                //string username = elements.Attribute("name").Value;
-                //string id = elements.Attribute("id").Value;
-                //liDropdown = new ListItem(username, id);
-                liDropdown = new ListItem(elements.Attribute("name").Value, elements.Attribute("id").Value);
-                liComboItems.Add(liDropdown);
+                foreach (Labs objlab in listLabList)
+                {
+                    liDropdown = new ListItem(objlab.name, objlab.id);
+                    liComboItems.Add(liDropdown);
+                }
             }
+
+
             IList<ListItem> sortlst = liComboItems.OrderBy(x => x.Text).ToList();
             cboLab.Items.AddRange(sortlst.ToArray());
             ListItem phyEmptyItem = new ListItem("", "0");
@@ -4083,19 +4112,31 @@ namespace Acurus.Capella.UI
                     IDictionary<string, string> ilstOrdersubmitParentorder = new Dictionary<string, string>();
                     if (IscheckCMGAncillary.Count > 0)
                     {
-                        XDocument xmlLab = XDocument.Load(Server.MapPath(@"ConfigXML\LabList.xml"));
 
-                        IEnumerable<XElement> xml = xmlLab.Element("LabList")
-                           .Elements("Lab").Where(a => a.Attribute("type").Value.ToString() != "DME" && a.Attribute("name").Value.ToString() == facLabList[0].Short_Name)
-                           .OrderBy(s => (int)s.Attribute("sort_order"));
-
+                        //XDocument xmlLab = XDocument.Load(Server.MapPath(@"ConfigXML\LabList.xml"));
+                        //IEnumerable<XElement> xml = xmlLab.Element("LabList")
+                        //   .Elements("Lab").Where(a => a.Attribute("type").Value.ToString() != "DME" && a.Attribute("name").Value.ToString() == facLabList[0].Short_Name)
+                        //   .OrderBy(s => (int)s.Attribute("sort_order"));
+                        //string xmlValue = string.Empty;
+                        //if (xml != null)
+                        //{
+                        //    foreach (XElement LabElement in xml)
+                        //    {
+                        //        xmlValue = LabElement.Attribute("id").Value;
+                        //    }
+                        //}
+                        //CAP-2773
+                        Lablist objlablist = new Lablist();
+                        objlablist = ConfigureBase<Lablist>.ReadJson("LabList.json");
+                        List<Labs> listLabList = new List<Labs>();
+                        listLabList = objlablist.Lab.Where(a => a.type != "DME" && a.name == facLabList[0].Short_Name)
+                            .OrderBy(s => (int)Convert.ToInt32(s.sort_order)).ToList();
                         string xmlValue = string.Empty;
-
-                        if (xml != null)
+                        if (listLabList != null)
                         {
-                            foreach (XElement LabElement in xml)
+                            foreach (Labs objlab in listLabList)
                             {
-                                xmlValue = LabElement.Attribute("id").Value;
+                                xmlValue = objlab.id;
                             }
                         }
 

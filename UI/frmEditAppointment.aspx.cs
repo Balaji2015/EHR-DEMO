@@ -4352,21 +4352,34 @@ namespace Acurus.Capella.UI
                     var ancillary = from f in ApplicationObject.facilityLibraryList where f.Fac_Name == cboFacility.SelectedItem.Text select f;
                     IList<FacilityLibrary> ilstAncillaryFacility = ancillary.ToList<FacilityLibrary>();
 
-                    XDocument xmlLab = XDocument.Load(Server.MapPath(@"ConfigXML\LabList.xml"));
+                    //XDocument xmlLab = XDocument.Load(Server.MapPath(@"ConfigXML\LabList.xml"));
+                    //IEnumerable<XElement> xml = xmlLab.Element("LabList")
+                    //   .Elements("Lab").Where(a => a.Attribute("type").Value.ToString() != "DME" && a.Attribute("name").Value.ToString() == ilstAncillaryFacility[0].Short_Name)
+                    //   .OrderBy(s => (int)s.Attribute("sort_order"));
+                    //string xmlValue = string.Empty;
+                    //if (xml != null)
+                    //{
+                    //    foreach (XElement LabElement in xml)
+                    //    {
+                    //        xmlValue = LabElement.Attribute("id").Value;
+                    //    }
+                    //}
 
-                    IEnumerable<XElement> xml = xmlLab.Element("LabList")
-                       .Elements("Lab").Where(a => a.Attribute("type").Value.ToString() != "DME" && a.Attribute("name").Value.ToString() == ilstAncillaryFacility[0].Short_Name)
-                       .OrderBy(s => (int)s.Attribute("sort_order"));
-
+                    //CAP-2773
+                    Lablist objlablist = new Lablist();
+                    objlablist = ConfigureBase<Lablist>.ReadJson("LabList.json");
+                    List<Labs> listLabList = new List<Labs>();
+                    listLabList = objlablist.Lab.Where(a => a.type != "DME" && a.name == ilstAncillaryFacility[0].Short_Name)
+                        .OrderBy(s => (int)Convert.ToInt32(s.sort_order)).ToList();
                     string xmlValue = string.Empty;
-
-                    if (xml != null)
+                    if (listLabList != null)
                     {
-                        foreach (XElement LabElement in xml)
+                        foreach (Labs objlab in listLabList)
                         {
-                            xmlValue = LabElement.Attribute("id").Value;
+                            xmlValue = objlab.id;
                         }
                     }
+
                     //Cap - 2505
                     if (ConfigurationSettings.AppSettings["IsAkidoOrder"] != null && ConfigurationSettings.AppSettings["IsAkidoOrder"] == "Y")
                     {

@@ -24,7 +24,7 @@ using System.Text;
 using System.Drawing;
 using System.Globalization;
 using System.Xml;
-
+using Acurus.Capella.Core.DTOJson;
 
 namespace Acurus.Capella.UI
 {
@@ -201,26 +201,46 @@ namespace Acurus.Capella.UI
                 //    }
                 //}
 
-                //Get Lab from xml
-                XDocument xmlLab = XDocument.Load(Server.MapPath(@"ConfigXML\LabList.xml"));
 
+
+                ////Get Lab from xml
+                //XDocument xmlLab = XDocument.Load(Server.MapPath(@"ConfigXML\LabList.xml"));
+
+                ////IEnumerable<XElement> xml = xmlLab.Element("LabList")
+                ////    .Elements("Lab")
+                ////    .OrderBy(s => (string)s.Attribute("name"));
                 //IEnumerable<XElement> xml = xmlLab.Element("LabList")
-                //    .Elements("Lab")
-                //    .OrderBy(s => (string)s.Attribute("name"));
-                IEnumerable<XElement> xml = xmlLab.Element("LabList")
-                   .Elements("Lab").Where(a => a.Attribute("type").Value.ToString() == labType)
-                   .OrderBy(s => (int)s.Attribute("sort_order"));
-                if (xml != null)
+                //   .Elements("Lab").Where(a => a.Attribute("type").Value.ToString() == labType)
+                //   .OrderBy(s => (int)s.Attribute("sort_order"));
+                //if (xml != null)
+                //{
+                //    cboLabCenter.Items.Add(new RadComboBoxItem(""));
+                //    foreach (XElement LabElement in xml)
+                //    {
+                //        RadComboBoxItem Item = new RadComboBoxItem();
+                //        Item.Text = LabElement.Attribute("name").Value;
+                //        Item.Value = LabElement.Attribute("id").Value;
+                //        cboLabCenter.Items.Add(Item);
+                //    }
+                //}
+                //CAP-2773
+                Lablist objlablist = new Lablist();
+                objlablist = ConfigureBase<Lablist>.ReadJson("LabList.json");
+                List<Labs> listLabList = new List<Labs>();
+                listLabList = objlablist.Lab.Where(a => a.type == labType)
+                    .OrderBy(s => (int)Convert.ToInt32(s.sort_order)).ToList();
+                if (listLabList != null && listLabList.Count > 0)
                 {
                     cboLabCenter.Items.Add(new RadComboBoxItem(""));
-                    foreach (XElement LabElement in xml)
+                    foreach (Labs objlab in listLabList)
                     {
                         RadComboBoxItem Item = new RadComboBoxItem();
-                        Item.Text = LabElement.Attribute("name").Value;
-                        Item.Value = LabElement.Attribute("id").Value;
+                        Item.Text = objlab.name;
+                        Item.Value = objlab.id;
                         cboLabCenter.Items.Add(Item);
                     }
                 }
+
             }
         }
 

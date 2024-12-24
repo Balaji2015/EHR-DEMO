@@ -344,6 +344,8 @@
     <Compile Include="DTOJson\Dynamic_Screen.cs" />
     <Compile Include="DTOJson\ImmztnRegistry_LookupList.cs" />
     <Compile Include="DTOJson\Insurance_Plan.cs" />
+    <Compile Include="DTOJson\LabList.cs" />
+    <Compile Include="DTOJson\LabLocationList.cs" />
     <Compile Include="DTOJson\machine_technician.cs" />
     <Compile Include="DTOJson\PhysicianReviewProtocols.cs" />
     <Compile Include="DTOJson\Physician_POV.cs" />
