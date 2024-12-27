@@ -343,6 +343,7 @@
     <Compile Include="DTOJson\Doctype.cs" />
     <Compile Include="DTOJson\UserList.cs" />
     <Compile Include="DTOJson\Dynamic_Screen.cs" />
+    <Compile Include="DTOJson\icd_9_10_mapping.cs" />
     <Compile Include="DTOJson\ImmztnRegistry_LookupList.cs" />
     <Compile Include="DTOJson\Insurance_Plan.cs" />
     <Compile Include="DTOJson\LabList.cs" />

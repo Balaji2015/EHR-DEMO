@@ -443,16 +443,13 @@ function Load() {
                 }, 10);
         });
 
-        dataTable.on('click', 'thead', function () {
+        dataTable.on('search.dt', function () {
+            dataTable.$('tr.highlight').removeClass('highlight');
+            $('.myQChkbx').prop('checked', false);
             setTimeout(
                 function () {
                     $(".dataTables_scrollBody").find(".header").hide();
                 }, 10);
-        });
-        
-        dataTable.on('search.dt', function () {
-            dataTable.$('tr.highlight').removeClass('highlight');
-            $('.myQChkbx').prop('checked', false);
         });
         dataTable.on('page.dt', function () {
             dataTable.$('tr.highlight').removeClass('highlight');
@@ -636,7 +633,7 @@ function Load() {
                         async: true,
                         success: function (data) {
                             var result = $.parseJSON(data.d);
-                            if (result.split("~")[0] = "OpenPDFImage") {
+                            if (result.split("~")[0] == "OpenPDFImage") {
                                 document.getElementById('SelectedItem').value = result.split("~")[1]
                                 OpenPDF();
                                 { sessionStorage.setItem('StartLoading', 'false'); StopLoadFromPatChart(); }
@@ -824,6 +821,10 @@ function Load() {
         dataTable.on('search.dt', function () {
             dataTable.$('tr.highlight').removeClass('highlight');
             $('.myQChkbx').prop('checked', false);
+            setTimeout(
+                function () {
+                    $(".dataTables_scrollBody").find(".header").hide();
+                }, 10);
         });
         dataTable.on('page.dt', function () {
             dataTable.$('tr.highlight').removeClass('highlight');
@@ -932,7 +933,7 @@ function Load() {
                         async: true,
                         success: function (data) {
                             var result = $.parseJSON(data.d);
-                            if (result.split("~")[0] = "OpenPDFImage") {
+                            if (result.split("~")[0] == "OpenPDFImage") {
                                 document.getElementById('SelectedItem').value = result.split("~")[1]
                                 OpenPDF();
                                 { sessionStorage.setItem('StartLoading', 'false'); StopLoadFromPatChart(); }
@@ -1113,6 +1114,10 @@ function Load() {
         dataTable.on('search.dt', function () {
             dataTable.$('tr.highlight').removeClass('highlight');
             $('.myQChkbx').prop('checked', false);
+            setTimeout(
+                function () {
+                    $(".dataTables_scrollBody").find(".header").hide();
+                }, 10);
         });
         dataTable.on('page.dt', function () {
             dataTable.$('tr.highlight').removeClass('highlight');
@@ -1229,7 +1234,7 @@ function Load() {
                         async: true,
                         success: function (data) {
                             var result = $.parseJSON(data.d);
-                            if (result.split("~")[0] = "OpenPDFImage") {
+                            if (result.split("~")[0] == "OpenPDFImage") {
                                 document.getElementById('SelectedItem').value = result.split("~")[1]
                                 OpenPDF();
                                 { sessionStorage.setItem('StartLoading', 'false'); StopLoadFromPatChart(); }
@@ -1405,6 +1410,10 @@ function Load() {
         dataTable.on('search.dt', function () {
             dataTable.$('tr.highlight').removeClass('highlight');
             $('.myQChkbx').prop('checked', false);
+            setTimeout(
+                function () {
+                    $(".dataTables_scrollBody").find(".header").hide();
+                }, 10);
         });
         dataTable.on('page.dt', function () {
             dataTable.$('tr.highlight').removeClass('highlight');

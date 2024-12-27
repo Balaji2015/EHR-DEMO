@@ -235,24 +235,6 @@ namespace Acurus.Capella.UI
                 //        cboLabCenter.Items.Add(Item);
                 //    }
                 //}
-                //CAP-2773
-                Lablist objlablist = new Lablist();
-                objlablist = ConfigureBase<Lablist>.ReadJson("LabList.json");
-                List<Labs> listLabList = new List<Labs>();
-                listLabList = objlablist.Lab.Where(a => a.type == labType)
-                    .OrderBy(s => (int)Convert.ToInt32(s.sort_order)).ToList();
-                if (listLabList != null && listLabList.Count > 0)
-                {
-                    cboLabCenter.Items.Add(new RadComboBoxItem(""));
-                    foreach (Labs objlab in listLabList)
-                    {
-                        RadComboBoxItem Item = new RadComboBoxItem();
-                        Item.Text = objlab.name;
-                        Item.Value = objlab.id;
-                        cboLabCenter.Items.Add(Item);
-                    }
-                }
-
             }
         }
 
