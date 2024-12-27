@@ -215,6 +215,11 @@ function Load() {
     var cboOrderStatus = document.getElementById('cboOrderStatus').value;
     var dtpFromDateNew = $find("dtpFromDate");
     var dtpToDateNew = $find("dtpToDate");
+    var cbolabItem = 0;
+    if ($find("cboLabCenter").get_selectedItem()!= null) {
+        cbolabItem = $find("cboLabCenter").get_selectedItem().get_value();
+    }
+    
     var FacilityName;
     setTimeout(
         function () {
@@ -305,7 +310,7 @@ function Load() {
             "todate": dtpToDateNew.get_dateInput()._text,
             "sHumanID": hdnPatientVal,
             "tagProviderName": hdnTransferVal,
-            "labItem": 0
+            "labItem": cbolabItem
 
         });
         var dataTable = new DataTable('#EncounterTable', {
@@ -693,7 +698,7 @@ function Load() {
             "todate": dtpToDateNew.get_dateInput()._text,
             "sHumanID": hdnPatientVal,
             "tagProviderName": hdnTransferVal,
-            "labItem": 0
+            "labItem": cbolabItem
 
         });
         var dataTable = new DataTable('#EncounterTable', {
@@ -994,7 +999,7 @@ function Load() {
             "todate": dtpToDateNew.get_dateInput()._text,
             "sHumanID": hdnPatientVal,
             "tagProviderName": hdnTransferVal,
-            "labItem": 0
+            "labItem": cbolabItem
 
         });
         var dataTable = new DataTable('#EncounterTable', {
@@ -1292,7 +1297,7 @@ function Load() {
             "todate": dtpToDateNew.get_dateInput()._text,
             "sHumanID": hdnPatientVal,
             "tagProviderName": hdnTransferVal,
-            "labItem": 0
+            "labItem": cbolabItem
 
         });
         var dataTable = new DataTable('#EncounterTable', {
