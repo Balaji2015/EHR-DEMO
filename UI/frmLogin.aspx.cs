@@ -16,6 +16,7 @@ using Newtonsoft.Json;
 using DocumentFormat.OpenXml.Drawing.Charts;
 using Acurus.Capella.UI.Extensions;
 using System.Configuration;
+using Acurus.Capella.Core.DTOJson;
 
 namespace Acurus.Capella.UI
 {
@@ -148,54 +149,42 @@ namespace Acurus.Capella.UI
             string sLegalOrg = string.Empty;
             IList<string> FacList = new List<string>();
 
-            string strXmlFilePath = Path.Combine(System.Web.Hosting.HostingEnvironment.ApplicationPhysicalPath, "ConfigXML\\User.xml");
-            if (File.Exists(strXmlFilePath) == true)
+            //CAP-2788
+            UserList ilstUserList = ConfigureBase<UserList>.ReadJson("User.json");
+            if (ilstUserList?.User != null)
             {
-                xmldocUser.Load(System.Web.Hosting.HostingEnvironment.ApplicationPhysicalPath + "ConfigXML\\" + "User" + ".xml");
-
-                XmlNodeList xmlUserList = xmldocUser.GetElementsByTagName("User");
-
-                //-----Added By nijanthan(17-11-15)
-                if (xmlUserList.Count > 0)
+                var filteredData = ilstUserList?.User.FirstOrDefault(a => a.User_Name.ToUpper() == UserName.ToUpper());
+                if (filteredData != null)
                 {
-                    foreach (XmlNode item in xmlUserList)
+                    sLegalOrg = filteredData.Legal_Org;
+
+                    string strXmlFacFilePath = Path.Combine(System.Web.Hosting.HostingEnvironment.ApplicationPhysicalPath, "ConfigXML\\Facility_Library.xml");
+                    if (File.Exists(strXmlFacFilePath) == true)
                     {
-                        if (UserName.ToUpper() == item.Attributes.GetNamedItem("User_Name").Value.ToUpper())
+                        xmldocFac.Load(System.Web.Hosting.HostingEnvironment.ApplicationPhysicalPath + "ConfigXML\\" + "Facility_Library" + ".xml");
+
+                        XmlNodeList xmlFacList = xmldocFac.GetElementsByTagName("Facility");
+
+                        if (xmlFacList.Count > 0)
                         {
-                            //sFacilityName = item.Attributes.GetNamedItem("Default_Facility").Value;
-                            sLegalOrg = item.Attributes.GetNamedItem("Legal_Org").Value;
-
-                            string strXmlFacFilePath = Path.Combine(System.Web.Hosting.HostingEnvironment.ApplicationPhysicalPath, "ConfigXML\\Facility_Library.xml");
-                            if (File.Exists(strXmlFacFilePath) == true)
+                            foreach (XmlNode itemFac in xmlFacList)
                             {
-                                xmldocFac.Load(System.Web.Hosting.HostingEnvironment.ApplicationPhysicalPath + "ConfigXML\\" + "Facility_Library" + ".xml");
-
-                                XmlNodeList xmlFacList = xmldocFac.GetElementsByTagName("Facility");
-
-                                if (xmlFacList.Count > 0)
+                                if (sLegalOrg.ToUpper() == itemFac.Attributes.GetNamedItem("Legal_Org").Value.ToUpper())
                                 {
-                                    foreach (XmlNode itemFac in xmlFacList)
+                                    if (itemFac.Attributes.GetNamedItem("Name").Value.ToUpper() == filteredData.Default_Facility.ToUpper())
                                     {
-                                        if (sLegalOrg.ToUpper() == itemFac.Attributes.GetNamedItem("Legal_Org").Value.ToUpper())
-                                        {
-                                            if (itemFac.Attributes.GetNamedItem("Name").Value.ToUpper() == item.Attributes.GetNamedItem("Default_Facility").Value.ToUpper())
-                                            {
-                                                //sFacilityName = itemFac.Attributes.GetNamedItem("Name").Value.ToUpper();
-                                                sFacilityName = itemFac.Attributes.GetNamedItem("Name").Value;
-                                            }
-                                            // FacList.Add(itemFac.Attributes.GetNamedItem("Name").Value.ToUpper());
-                                            FacList.Add(itemFac.Attributes.GetNamedItem("Name").Value);
-                                        }
+                                        //sFacilityName = itemFac.Attributes.GetNamedItem("Name").Value.ToUpper();
+                                        sFacilityName = itemFac.Attributes.GetNamedItem("Name").Value;
                                     }
+                                    // FacList.Add(itemFac.Attributes.GetNamedItem("Name").Value.ToUpper());
+                                    FacList.Add(itemFac.Attributes.GetNamedItem("Name").Value);
                                 }
                             }
-
-                            //Added by Srividhya on 21-Nov-2015                            
-                            ClientSession.FacilityName = sFacilityName;
-
-                            break;
                         }
                     }
+
+                    //Added by Srividhya on 21-Nov-2015                            
+                    ClientSession.FacilityName = sFacilityName;
                 }
             }
 

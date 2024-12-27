@@ -97,39 +97,13 @@ namespace Acurus.Capella.UI
         public int DefaultDays()
         {
             int iDefaultDays = 0;
-            string xmlFilepathUser = Path.Combine(System.Web.Hosting.HostingEnvironment.ApplicationPhysicalPath, "ConfigXML\\User.xml");
-            if (File.Exists(xmlFilepathUser))
+            //CAP-2788
+            UserList ilstUserList = ConfigureBase<UserList>.ReadJson("User.json");
+            if (ilstUserList?.User != null)
             {
-                // XmlDocument xdoc = new XmlDocument();
-                // XmlTextReader itext = new XmlTextReader(xmlFilepathUser);
-                // xdoc.Load(itext);
-                // itext.Close();
-                // XmlNodeList xnodelst = xdoc.GetElementsByTagName("User");
-
-                ////var att= from m in xnodelst where m.Attributes.GetNamedItem("Physician_Library_ID").Value.ToString() != "0" && m.Attributes.GetNamedItem("Physician_Library_ID").Value.ToString() != ClientSession.PhysicianId.ToString
-                // if (xnodelst != null && xnodelst.Count > 0)
-                // {
-                //     foreach (XmlNode xnode in xnodelst)
-                //     {
-                //         if (xnode.Attributes.GetNamedItem("Physician_Library_ID").Value.ToString() != "0" && xnode.Attributes.GetNamedItem("Physician_Library_ID").Value.ToString() == ClientSession.PhysicianId.ToString())
-                //         {
-                //             if (xnode.Attributes.GetNamedItem("Default_MyQ_Days").Value != "")
-                //                 iDefaultDays = Convert.ToInt32(xnode.Attributes.GetNamedItem("Default_MyQ_Days").Value);
-                //         }
-                //     }
-                // }
-
-                XDocument xmluserdoc = XDocument.Load(xmlFilepathUser);
-
-                IEnumerable<XElement> xmluser = xmluserdoc.Element("UserList")
-                    .Elements("User").Where(aa => aa.Attribute("Physician_Library_ID").Value.ToString() != "0" && aa.Attribute("Physician_Library_ID").Value.ToString() == ClientSession.PhysicianId.ToString());
-
-                if (xmluser != null && xmluser.Count() > 0)
-                {
-                    iDefaultDays = Convert.ToInt32(xmluser.Attributes("Default_MyQ_Days").First().Value);
-                }
-
-
+                var filteredData = ilstUserList?.User.FirstOrDefault(a => a.Physician_Library_ID.ToString() == ClientSession.PhysicianId.ToString() && a.Physician_Library_ID.ToString() == "0");
+                if (filteredData != null && !string.IsNullOrEmpty(filteredData.Default_MyQ_Days))
+                { iDefaultDays = Convert.ToInt32(filteredData.Default_MyQ_Days); }
             }
             return iDefaultDays;
         }

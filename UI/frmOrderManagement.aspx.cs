@@ -28,6 +28,8 @@ using System.Web.Services;
 using System.Web.Script.Services;
 using Newtonsoft.Json;
 using System.IO.Compression;
+using Acurus.Capella.Core.DTOJson;
+
 namespace Acurus.Capella.UI
 {
     public partial class frmOrder : System.Web.UI.Page
@@ -115,13 +117,13 @@ namespace Acurus.Capella.UI
                         {
 
                             string PersonName = string.Empty;
-                            XDocument xmluser = XDocument.Load(HttpContext.Current.Server.MapPath(@"ConfigXML\User.xml"));
-                            IEnumerable<XElement> xmluserid = xmluser.Element("UserList")
-                                .Elements("User").Where(aa => aa.Attribute("User_Name").Value.ToString() == ClientSession.UserName);
-                            if (xmluserid != null && xmluserid.Count() > 0)
+                            //CAP-2788
+                            UserList ilstUserList = ConfigureBase<UserList>.ReadJson("User.json");
+                            if (ilstUserList?.User != null)
                             {
-                                if (xmluserid.Attributes("person_name") != null)
-                                    PersonName = xmluserid.Attributes("person_name").First().Value.ToString();
+                                var filteredData = ilstUserList?.User.FirstOrDefault(a => a.User_Name == ClientSession.UserName);
+                                if (filteredData != null)
+                                { PersonName = filteredData.person_name; }
                             }
 
                             txtProviderName.Text = PersonName;
