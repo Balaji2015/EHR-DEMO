@@ -4089,26 +4089,13 @@ namespace Acurus.Capella.UI
 
                 if (Request["ScreenMode"] != null && Request["ScreenMode"].ToString().ToUpper() == "MENU" && ilstFacAncillary.Count > 0 && ilstFacAncillary[0].Is_Ancillary == "Y")
                 {
-                    string strXmlFilePath1 = Path.Combine(System.Web.Hosting.HostingEnvironment.ApplicationPhysicalPath, "ConfigXML\\User.xml");
-                    if (File.Exists(strXmlFilePath1) == true)
+                    //CAP-2788
+                    UserList ilstUserList = ConfigureBase<UserList>.ReadJson("User.json");
+                    if (ilstUserList?.User != null)
                     {
-                        XmlDocument xmldocUser = new XmlDocument();
-                        xmldocUser.Load(System.Web.Hosting.HostingEnvironment.ApplicationPhysicalPath + "ConfigXML\\" + "User" + ".xml");
-
-                        XmlNodeList xmlUserList = xmldocUser.GetElementsByTagName("User");
-
-
-                        if (xmlUserList.Count > 0)
-                        {
-                            foreach (XmlNode item in xmlUserList)
-                            {
-                                if (PhysicianID.ToString() == item.Attributes["Physician_Library_ID"].Value)
-                                {
-                                    objOrderSubmit.Facility_Name = item.Attributes["Default_Facility"].Value;
-                                    break;
-                                }
-                            }
-                        }
+                        var filteredData = ilstUserList?.User.FirstOrDefault(a => a.Physician_Library_ID.ToString() == PhysicianID.ToString());
+                        if (filteredData != null)
+                        { objOrderSubmit.Facility_Name = filteredData.Default_Facility; }
                     }
                 }
                 else

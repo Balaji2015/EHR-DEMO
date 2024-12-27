@@ -26,6 +26,7 @@ using System.Text.RegularExpressions;
 using System.Web.Script.Services;
 using System.Text;
 using System.IO.Compression;
+using Acurus.Capella.Core.DTOJson;
 
 namespace Acurus.Capella.UI
 {
@@ -183,7 +184,8 @@ namespace Acurus.Capella.UI
                     sPatientName = objhuman.First_Name +" "+ objhuman.Last_Name;
                 }
             }
-            XDocument xmluser = XDocument.Load(HttpContext.Current.Server.MapPath(@"ConfigXML\User.xml"));
+            //CAP-2788
+            UserList ilstUserList = ConfigureBase<UserList>.ReadJson("User.json");
             if (sIsConsultation == "Y")
             {
 
@@ -192,24 +194,24 @@ namespace Acurus.Capella.UI
                 {
                     PhyId = objEncounter.Encounter_Provider_ID.ToString();
                 }
-                IEnumerable<XElement> xmluserid = xmluser.Element("UserList")
-                    .Elements("User").Where(aa => aa.Attribute("Physician_Library_ID").Value.ToString() == PhyId);
-                if (xmluserid != null && xmluserid.Count() > 0)
+                if (ilstUserList?.User != null)
                 {
-                    if (xmluserid.Attributes("person_name") != null)
-                        PersonName = xmluserid.Attributes("person_name").First().Value.ToString();
+                    var filteredData = ilstUserList?.User.FirstOrDefault(a => a.Physician_Library_ID.ToString() == PhyId && a.person_name != null);
+                    if (filteredData != null)
+                    {
+                        PersonName = filteredData.person_name;
+                    }
                 }
             }
             else
             {
-                IEnumerable<XElement> xmluserid = xmluser.Element("UserList")
-                    .Elements("User").Where(aa => aa.Attribute("User_Name").Value.ToString() == ClientSession.UserName);
-                if (xmluserid != null && xmluserid.Count() > 0)
+                if (ilstUserList?.User != null)
                 {
-                    if (xmluserid.Attributes("Physician_Library_ID") != null)
-                        PhyId = xmluserid.Attributes("Physician_Library_ID").First().Value.ToString();
-                    if (xmluserid.Attributes("person_name") != null)
-                        PersonName = xmluserid.Attributes("person_name").First().Value.ToString();
+                    var filteredData = ilstUserList?.User.FirstOrDefault(a => a.User_Name == ClientSession.UserName);
+                    if (filteredData != null && filteredData.Physician_Library_ID != null)
+                    { PhyId = filteredData.Physician_Library_ID; }
+                    if (filteredData != null && filteredData.person_name != null)
+                    { PersonName = filteredData.person_name; }
                 }
             }
             if (PhyId != "" && PhyId != "0")
