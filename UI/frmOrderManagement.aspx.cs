@@ -24,7 +24,7 @@ using System.Text;
 using System.Drawing;
 using System.Globalization;
 using System.Xml;
-
+using Acurus.Capella.Core.DTOJson;
 
 namespace Acurus.Capella.UI
 {
@@ -1853,27 +1853,48 @@ namespace Acurus.Capella.UI
                         PhysicianLibrary objPhyLib = new PhysicianLibrary();
                         XmlDocument xmldoc = new XmlDocument();
 
-                        string strXmlFilePath = Path.Combine(System.Web.Hosting.HostingEnvironment.ApplicationPhysicalPath, "ConfigXML\\PhysicianAddressDetails.xml");
-                        if (File.Exists(strXmlFilePath) == true)
+                        //string strXmlFilePath = Path.Combine(System.Web.Hosting.HostingEnvironment.ApplicationPhysicalPath, "ConfigXML\\PhysicianAddressDetails.xml");
+                        //if (File.Exists(strXmlFilePath) == true)
+                        //{
+                        //    //logger.Debug("Reading PhysicianAddressDetails.xml");
+                        //    xmldoc.Load(System.Web.Hosting.HostingEnvironment.ApplicationPhysicalPath + "ConfigXML\\" + "PhysicianAddressDetails" + ".xml");
+                        //    XmlNode nodeMatchingPhysicianAddress = xmldoc.SelectSingleNode("/PhysicianAddress/p" + objImmunizationFill.Immunization[0].Physician_Id);
+                        //    if (nodeMatchingPhysicianAddress != null)
+                        //    {
+                        //        objPhyLib.PhyAddress1 = nodeMatchingPhysicianAddress.Attributes["Physician_Address1"].Value.ToString();
+                        //        objPhyLib.PhyAddress2 = nodeMatchingPhysicianAddress.Attributes["Physician_Address2"].Value.ToString();
+                        //        objPhyLib.PhyCity = nodeMatchingPhysicianAddress.Attributes["Physician_City"].Value.ToString();
+                        //        objPhyLib.PhyState = nodeMatchingPhysicianAddress.Attributes["Physician_State"].Value.ToString();
+                        //        objPhyLib.PhyZip = nodeMatchingPhysicianAddress.Attributes["Physician_Zip"].Value.ToString();
+                        //        objPhyLib.PhyTelephone = nodeMatchingPhysicianAddress.Attributes["Physician_Telephone"].Value.ToString();
+                        //        objPhyLib.PhyFax = nodeMatchingPhysicianAddress.Attributes["Physician_Fax"].Value.ToString();
+                        //        objPhyLib.PhyNPI = nodeMatchingPhysicianAddress.Attributes["Physician_NPI"].Value.ToString();
+                        //        //logger.Debug("XML tag '/PhysicianAddress/p" + physician_id + "' found");
+                        //    }
+                        //    //else
+                        //    //logger.Debug("XML tag '/PhysicianAddress/p" + physician_id + "' not found");
+                        //}
+                        //CAP-2780
+                        PhysicianAddressDetailsList physicianAddressDetailsList = ConfigureBase<PhysicianAddressDetailsList>.ReadJson("PhysicianAddressDetails.json");
+
+                        if (physicianAddressDetailsList != null)
                         {
-                            //logger.Debug("Reading PhysicianAddressDetails.xml");
-                            xmldoc.Load(System.Web.Hosting.HostingEnvironment.ApplicationPhysicalPath + "ConfigXML\\" + "PhysicianAddressDetails" + ".xml");
-                            XmlNode nodeMatchingPhysicianAddress = xmldoc.SelectSingleNode("/PhysicianAddress/p" + objImmunizationFill.Immunization[0].Physician_Id);
-                            if (nodeMatchingPhysicianAddress != null)
+                            var matchingAddress = physicianAddressDetailsList.PhysicianAddress
+                                .FirstOrDefault(address => address.Physician_Library_ID == objImmunizationFill.Immunization[0].Physician_Id.ToString());
+
+                            if (matchingAddress != null)
                             {
-                                objPhyLib.PhyAddress1 = nodeMatchingPhysicianAddress.Attributes["Physician_Address1"].Value.ToString();
-                                objPhyLib.PhyAddress2 = nodeMatchingPhysicianAddress.Attributes["Physician_Address2"].Value.ToString();
-                                objPhyLib.PhyCity = nodeMatchingPhysicianAddress.Attributes["Physician_City"].Value.ToString();
-                                objPhyLib.PhyState = nodeMatchingPhysicianAddress.Attributes["Physician_State"].Value.ToString();
-                                objPhyLib.PhyZip = nodeMatchingPhysicianAddress.Attributes["Physician_Zip"].Value.ToString();
-                                objPhyLib.PhyTelephone = nodeMatchingPhysicianAddress.Attributes["Physician_Telephone"].Value.ToString();
-                                objPhyLib.PhyFax = nodeMatchingPhysicianAddress.Attributes["Physician_Fax"].Value.ToString();
-                                objPhyLib.PhyNPI = nodeMatchingPhysicianAddress.Attributes["Physician_NPI"].Value.ToString();
-                                //logger.Debug("XML tag '/PhysicianAddress/p" + physician_id + "' found");
+                                objPhyLib.PhyAddress1 = matchingAddress?.Physician_Address1 ?? "";
+                                objPhyLib.PhyAddress2 = matchingAddress?.Physician_Address2 ?? "";
+                                objPhyLib.PhyCity = matchingAddress?.Physician_City ?? "";
+                                objPhyLib.PhyState = matchingAddress?.Physician_State ?? "";
+                                objPhyLib.PhyZip = matchingAddress?.Physician_Zip ?? "";
+                                objPhyLib.PhyTelephone = matchingAddress?.Physician_Telephone ?? "";
+                                objPhyLib.PhyFax = matchingAddress?.Physician_Fax ?? "";
+                                objPhyLib.PhyNPI = matchingAddress?.Physician_NPI ?? "";
                             }
-                            //else
-                            //logger.Debug("XML tag '/PhysicianAddress/p" + physician_id + "' not found");
                         }
+
 
                         if (objImmunizationFill.Immunization.Count > 0)
                         {

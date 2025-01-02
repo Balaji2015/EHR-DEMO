@@ -20,6 +20,7 @@ using Acurus.Capella.Core.DomainObjects;
 
 using Acurus.Capella.DataAccess.ManagerObjects;
 using System.Text.RegularExpressions;
+using Acurus.Capella.Core.DTOJson;
 
 namespace Acurus.Capella.UI
 {
@@ -402,15 +403,27 @@ namespace Acurus.Capella.UI
                                     sRenderingProviderID = itemDoc.GetElementsByTagName("EncounterList")[0].ChildNodes[0].Attributes.GetNamedItem("Encounter_Provider_ID").Value;
                                     if (sRenderingProviderID != "")
                                     {
-                                        XmlDocument xmldoc = new XmlDocument();
-                                        string xmlFilepathUser = Path.Combine(System.Web.Hosting.HostingEnvironment.ApplicationPhysicalPath, "ConfigXML\\PhysicianAddressDetails.xml");
-                                        if (File.Exists(xmlFilepathUser))
+                                        //XmlDocument xmldoc = new XmlDocument();
+                                        //string xmlFilepathUser = Path.Combine(System.Web.Hosting.HostingEnvironment.ApplicationPhysicalPath, "ConfigXML\\PhysicianAddressDetails.xml");
+                                        //if (File.Exists(xmlFilepathUser))
+                                        //{
+                                        //    xmldoc.Load(System.Web.Hosting.HostingEnvironment.ApplicationPhysicalPath + "ConfigXML\\" + "PhysicianAddressDetails" + ".xml");
+                                        //    XmlNode nodeMatchingPhysicianAddress = xmldoc.SelectSingleNode("/PhysicianAddress/p" + sRenderingProviderID);
+                                        //    if (nodeMatchingPhysicianAddress != null)
+                                        //    {
+                                        //        sRenderingProviderNPI = nodeMatchingPhysicianAddress.Attributes["Physician_NPI"].Value.ToString();
+                                        //    }
+                                        //}
+                                        //CAP-2780
+                                        PhysicianAddressDetailsList physicianAddressDetailsList = ConfigureBase<PhysicianAddressDetailsList>.ReadJson("PhysicianAddressDetails.json");
+                                        if (physicianAddressDetailsList != null)
                                         {
-                                            xmldoc.Load(System.Web.Hosting.HostingEnvironment.ApplicationPhysicalPath + "ConfigXML\\" + "PhysicianAddressDetails" + ".xml");
-                                            XmlNode nodeMatchingPhysicianAddress = xmldoc.SelectSingleNode("/PhysicianAddress/p" + sRenderingProviderID);
-                                            if (nodeMatchingPhysicianAddress != null)
+                                            var matchingAddress = physicianAddressDetailsList.PhysicianAddress
+                                                                             .FirstOrDefault(address => address.Physician_Library_ID == sRenderingProviderID);
+
+                                            if (matchingAddress != null)
                                             {
-                                                sRenderingProviderNPI = nodeMatchingPhysicianAddress.Attributes["Physician_NPI"].Value.ToString();
+                                                sRenderingProviderNPI = matchingAddress?.Physician_NPI ?? "";
                                             }
                                         }
                                     }

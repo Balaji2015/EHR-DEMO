@@ -22,6 +22,7 @@ using System.IO;
 using Acurus.Capella.DataAccess.com.labcorp.www4;
 using Newtonsoft.Json;
 using System.Xml;
+using Acurus.Capella.Core.DTOJson;
 
 //using Acurus.Capella.LabAgent;
 
@@ -349,21 +350,43 @@ namespace Acurus.Capella.UI
                     id = objOrdMngr.InsertToOutstandingOrders(sCmgorderSubmitId, EncounterID, OrderType, string.Empty, ilstRequiredForms, ref sSelectedOrder, ClientSession.UserName, ilstFacAncillary[0].Fac_Name, sLocalTime);
                     IList<PhysicianLibrary> PhyListAll = new List<PhysicianLibrary>();
                     //  PhyListAll = UtilityManager.GetPhysicianList("");
-                    string sPhysicianXmlPath = System.Web.Hosting.HostingEnvironment.ApplicationPhysicalPath + "\\ConfigXML\\PhysicianAddressDetails.xml";
-                    XmlDocument itemPhysiciandoc = new XmlDocument();
-                    XmlTextReader XmlPhysicianText = new XmlTextReader(sPhysicianXmlPath);
-                    itemPhysiciandoc.Load(XmlPhysicianText);
-                    IList<ListItem> liComboItems = new List<ListItem>();
-                    for (int i = 0; i < itemPhysiciandoc.ChildNodes[1].ChildNodes.Count; i++)
+                    //string sPhysicianXmlPath = System.Web.Hosting.HostingEnvironment.ApplicationPhysicalPath + "\\ConfigXML\\PhysicianAddressDetails.xml";
+                    //XmlDocument itemPhysiciandoc = new XmlDocument();
+                    //XmlTextReader XmlPhysicianText = new XmlTextReader(sPhysicianXmlPath);
+                    //itemPhysiciandoc.Load(XmlPhysicianText);
+                    //IList<ListItem> liComboItems = new List<ListItem>();
+                    //for (int i = 0; i < itemPhysiciandoc.ChildNodes[1].ChildNodes.Count; i++)
+                    //{
+                    //    if (itemPhysiciandoc.ChildNodes[1].ChildNodes[i].Attributes[13].Value.ToUpper() == "RENDERING" || itemPhysiciandoc.ChildNodes[1].ChildNodes[i].Attributes[13].Value.ToUpper() == "READING")
+                    //    {
+                    //        string sPhyName = itemPhysiciandoc.ChildNodes[1].ChildNodes[i].Attributes[10].Value + " " + itemPhysiciandoc.ChildNodes[1].ChildNodes[i].Attributes[11].Value + " " + itemPhysiciandoc.ChildNodes[1].ChildNodes[i].Attributes[12].Value;
+                    //        ListItem item = new ListItem();
+                    //        item.Value = itemPhysiciandoc.ChildNodes[1].ChildNodes[i].Attributes[14].Value;
+                    //        item.Text = sPhyName;
+                    //        liComboItems.Add(item);
+                    //        //cboReadingProvider.Items.Add(item);
+                    //    }
+                    //}
+                    //CAP-2780
+                    PhysicianAddressDetailsList physicianAddressDetailsList = ConfigureBase<PhysicianAddressDetailsList>.ReadJson("PhysicianAddressDetails.json");
+                    if (physicianAddressDetailsList != null)
                     {
-                        if (itemPhysiciandoc.ChildNodes[1].ChildNodes[i].Attributes[13].Value.ToUpper() == "RENDERING" || itemPhysiciandoc.ChildNodes[1].ChildNodes[i].Attributes[13].Value.ToUpper() == "READING")
+                        IList<ListItem> liComboItems = new List<ListItem>();
+
+                        foreach (var address in physicianAddressDetailsList.PhysicianAddress)
                         {
-                            string sPhyName = itemPhysiciandoc.ChildNodes[1].ChildNodes[i].Attributes[10].Value + " " + itemPhysiciandoc.ChildNodes[1].ChildNodes[i].Attributes[11].Value + " " + itemPhysiciandoc.ChildNodes[1].ChildNodes[i].Attributes[12].Value;
-                            ListItem item = new ListItem();
-                            item.Value = itemPhysiciandoc.ChildNodes[1].ChildNodes[i].Attributes[14].Value;
-                            item.Text = sPhyName;
-                            liComboItems.Add(item);
-                            //cboReadingProvider.Items.Add(item);
+                            if (address.Physician_Type.ToUpper() == "RENDERING" || address.Physician_Type.ToUpper() == "READING")
+                            {
+                                string sPhyName = $"{address.Physician_prefix} {address.Physician_First_Name} {address.Physician_Middle_Name} {address.Physician_Last_Name} {address.Physician_Suffix}";
+
+                                ListItem item = new ListItem
+                                {
+                                    Value = address.Physician_Library_ID,
+                                    Text = sPhyName
+                                };
+
+                                liComboItems.Add(item);
+                            }
                         }
                     }
                     //IList<ListItem> sortlst = liComboItems.OrderBy(x => x.Text.Split(new string[] { "Dr." }, StringSplitOptions.None).Length > 1 ? x.Text.Split(new string[] { "Dr." }, StringSplitOptions.None)[1] : x.Text).ToList();

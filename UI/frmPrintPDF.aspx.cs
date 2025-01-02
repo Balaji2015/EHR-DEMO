@@ -17,6 +17,7 @@ using System.Xml;
 using Acurus.Capella.Core.DomainObjects;
 using System.Collections.Generic;
 using Acurus.Capella.DataAccess.ManagerObjects;
+using Acurus.Capella.Core.DTOJson;
 
 namespace Acurus.Capella.UI
 {
@@ -226,19 +227,40 @@ namespace Acurus.Capella.UI
                                 //Cap - 854
                                 else if (SelectedItems.Value == "Cash Price List")
                                 {
-                                   XmlDocument xml_doc = new XmlDocument();
-                                    if (File.Exists(System.Web.Hosting.HostingEnvironment.ApplicationPhysicalPath + "ConfigXML\\staticlookup.xml"))
+                                    //XmlDocument xml_doc = new XmlDocument();
+                                    // if (File.Exists(System.Web.Hosting.HostingEnvironment.ApplicationPhysicalPath + "ConfigXML\\staticlookup.xml"))
+                                    // {
+                                    //     xml_doc.Load(System.Web.Hosting.HostingEnvironment.ApplicationPhysicalPath + "ConfigXML\\staticlookup.xml");
+                                    //     XmlNodeList xml_nodelst = xml_doc.GetElementsByTagName("HelpMenu");
+                                    //     foreach (XmlNode xml_node in xml_nodelst)
+                                    //     {
+                                    //         if (xml_node.Attributes.GetNamedItem("Name").Value != "" && xml_node.Attributes.GetNamedItem("Name").Value== "Cash Price List" && xml_node.Attributes.GetNamedItem("ReferenceLink").Value!="")
+                                    //         {
+                                    //             string sPath = xml_node.Attributes.GetNamedItem("ReferenceLink").Value;
+                                    //             PDFLOAD.Attributes.Add("src", "frmPrintPDF.aspx?pdf=" + Server.MapPath(sPath) + "&SI=" + SelectedItems.Value.ToString() + "#zoom=100" + "&Location=" + Request["Location"].ToString());
+                                    //             FaxCurrentFileName.Value = Server.MapPath(sPath);
+                                    //         }
+                                    //     }
+                                    // }
+                                    //CAP-2787
+                                    StaticLookupList staticLookupList = ConfigureBase<StaticLookupList>.ReadJson("staticlookup.json");
+                                    if (staticLookupList != null)
                                     {
-                                        xml_doc.Load(System.Web.Hosting.HostingEnvironment.ApplicationPhysicalPath + "ConfigXML\\staticlookup.xml");
-                                        XmlNodeList xml_nodelst = xml_doc.GetElementsByTagName("HelpMenu");
-                                        foreach (XmlNode xml_node in xml_nodelst)
+                                        var HelpMenu = staticLookupList.HelpMenuList.HelpMenu;
+                                        if (HelpMenu != null)
                                         {
-                                            if (xml_node.Attributes.GetNamedItem("Name").Value != "" && xml_node.Attributes.GetNamedItem("Name").Value== "Cash Price List" && xml_node.Attributes.GetNamedItem("ReferenceLink").Value!="")
+                                            foreach (var hospitalizationHistory in HelpMenu.ReferenceLink)
                                             {
-                                                string sPath = xml_node.Attributes.GetNamedItem("ReferenceLink").Value;
-                                                PDFLOAD.Attributes.Add("src", "frmPrintPDF.aspx?pdf=" + Server.MapPath(sPath) + "&SI=" + SelectedItems.Value.ToString() + "#zoom=100" + "&Location=" + Request["Location"].ToString());
-                                                FaxCurrentFileName.Value = Server.MapPath(sPath);
+                                                if (!string.IsNullOrEmpty(HelpMenu.Name) && HelpMenu.Name == "Cash Price List" && !string.IsNullOrEmpty(HelpMenu.ReferenceLink))
+                                                {
+                                                    string sPath = HelpMenu.ReferenceLink;
+
+                                                    PDFLOAD.Attributes.Add("src",$"frmPrintPDF.aspx?pdf={Server.MapPath(sPath)}&SI={SelectedItems.Value}&zoom=100&Location={Request["Location"].ToString()}");
+                                                    FaxCurrentFileName.Value = Server.MapPath(sPath);
+                                                }
+
                                             }
+
                                         }
                                     }
                                     btnSendfax.Visible = false;

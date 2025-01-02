@@ -8,6 +8,7 @@ using System.Web.UI;
 using System.Web.UI.WebControls;
 using System.Xml;
 using Acurus.Capella.Core.DomainObjects;
+using Acurus.Capella.Core.DTOJson;
 using Newtonsoft.Json;
 using QRCoder;
 
@@ -151,20 +152,33 @@ namespace Acurus.Capella.UI
             }
 
             //To Get Physician Details
-            XmlDocument xmldoc1 = new XmlDocument();
+            //XmlDocument xmldoc1 = new XmlDocument();
             string sPhyFirstName = string.Empty;
             string sPhyLastName = string.Empty;
-            string strXmlFilePath1 = Path.Combine(System.Web.Hosting.HostingEnvironment.ApplicationPhysicalPath, "ConfigXML\\PhysicianAddressDetails.xml");
-            if (File.Exists(strXmlFilePath1) == true)
+            //string strXmlFilePath1 = Path.Combine(System.Web.Hosting.HostingEnvironment.ApplicationPhysicalPath, "ConfigXML\\PhysicianAddressDetails.xml");
+            //if (File.Exists(strXmlFilePath1) == true)
+            //{
+            //    xmldoc1.Load(System.Web.Hosting.HostingEnvironment.ApplicationPhysicalPath + "ConfigXML\\" + "PhysicianAddressDetails" + ".xml");
+            //    //Jira CAP-953
+            //    //XmlNode nodeMatchingPhysicianAddress = xmldoc1.SelectSingleNode("/PhysicianAddress/p" + ClientSession.PhysicianId);
+            //    XmlNode nodeMatchingPhysicianAddress = xmldoc1.SelectSingleNode("/PhysicianAddress/p" + ulPhysicanID);
+            //    if (nodeMatchingPhysicianAddress != null)
+            //    {
+            //        sPhyFirstName = nodeMatchingPhysicianAddress.Attributes["Physician_First_Name"].Value.ToString();
+            //        sPhyLastName = nodeMatchingPhysicianAddress.Attributes["Physician_Last_Name"].Value.ToString();
+            //    }
+            //}
+            //CAP-2780
+            PhysicianAddressDetailsList physicianAddressDetailsList = ConfigureBase<PhysicianAddressDetailsList>.ReadJson("PhysicianAddressDetails.json");
+            if (physicianAddressDetailsList != null)
             {
-                xmldoc1.Load(System.Web.Hosting.HostingEnvironment.ApplicationPhysicalPath + "ConfigXML\\" + "PhysicianAddressDetails" + ".xml");
-                //Jira CAP-953
-                //XmlNode nodeMatchingPhysicianAddress = xmldoc1.SelectSingleNode("/PhysicianAddress/p" + ClientSession.PhysicianId);
-                XmlNode nodeMatchingPhysicianAddress = xmldoc1.SelectSingleNode("/PhysicianAddress/p" + ulPhysicanID);
-                if (nodeMatchingPhysicianAddress != null)
+                var matchingAddress = physicianAddressDetailsList.PhysicianAddress
+                                                 .FirstOrDefault(address => address.Physician_Library_ID == ulPhysicanID.ToString());
+
+                if (matchingAddress != null)
                 {
-                    sPhyFirstName = nodeMatchingPhysicianAddress.Attributes["Physician_First_Name"].Value.ToString();
-                    sPhyLastName = nodeMatchingPhysicianAddress.Attributes["Physician_Last_Name"].Value.ToString();
+                    sPhyFirstName = matchingAddress?.Physician_First_Name ?? string.Empty;
+                    sPhyLastName = matchingAddress?.Physician_Last_Name ?? string.Empty;
                 }
             }
 

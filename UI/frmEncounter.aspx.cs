@@ -463,32 +463,52 @@ namespace Acurus.Capella.UI
                     XmlNodeList xmlPhysicianAddress = itemDoc.GetElementsByTagName("Physician_Address");
                     if (xmlPhysicianAddress != null)
                     {
-                        string sPhysicianXmlPath = string.Empty;
-                        if (File.Exists(System.Web.Hosting.HostingEnvironment.ApplicationPhysicalPath + "\\ConfigXML\\PhysicianAddressDetails.xml"))
-                            sPhysicianXmlPath = System.Web.Hosting.HostingEnvironment.ApplicationPhysicalPath + "\\ConfigXML\\PhysicianAddressDetails.xml";
-                        XmlDocument itemPhysiciandoc = new XmlDocument();
-                        XmlTextReader XmlPhysicianText = new XmlTextReader(sPhysicianXmlPath);
-                        itemPhysiciandoc.Load(XmlPhysicianText);
 
-                        XmlNodeList xmlphy = itemPhysiciandoc.GetElementsByTagName("p" + sPhysicianid);
-                        if (xmlphy != null && xmlphy.Count > 0)
+                        //string sPhysicianXmlPath = string.Empty;
+                        //if (File.Exists(System.Web.Hosting.HostingEnvironment.ApplicationPhysicalPath + "\\ConfigXML\\PhysicianAddressDetails.xml"))
+                        //    sPhysicianXmlPath = System.Web.Hosting.HostingEnvironment.ApplicationPhysicalPath + "\\ConfigXML\\PhysicianAddressDetails.xml";
+                        //XmlDocument itemPhysiciandoc = new XmlDocument();
+                        //XmlTextReader XmlPhysicianText = new XmlTextReader(sPhysicianXmlPath);
+                        //itemPhysiciandoc.Load(XmlPhysicianText);
+
+                        //XmlNodeList xmlphy = itemPhysiciandoc.GetElementsByTagName("p" + sPhysicianid);
+                        //    if (xmlphy != null && xmlphy.Count > 0)
+                        //{
+                        //    if (xmlphy[0].Attributes[0].Value != null)
+                        //        xmlPhysicianAddress[0].Attributes[0].Value = xmlphy[0].Attributes[0].Value;
+                        //    if (xmlphy[0].Attributes[1].Value != null)
+                        //        xmlPhysicianAddress[0].Attributes[1].Value = xmlphy[0].Attributes[1].Value;
+                        //    if (xmlphy[0].Attributes[2].Value != null)
+                        //        xmlPhysicianAddress[0].Attributes[2].Value = xmlphy[0].Attributes[2].Value;
+                        //    if (xmlphy[0].Attributes[3].Value != null)
+                        //        xmlPhysicianAddress[0].Attributes[3].Value = xmlphy[0].Attributes[3].Value;
+                        //    if (xmlphy[0].Attributes[4].Value != null)
+                        //        xmlPhysicianAddress[0].Attributes[4].Value = xmlphy[0].Attributes[4].Value;
+                        //    if (xmlphy[0].Attributes[5].Value != null)
+                        //        xmlPhysicianAddress[0].Attributes[5].Value = xmlphy[0].Attributes[5].Value;
+                        //    if (xmlphy[0].Attributes[6].Value != null)
+                        //        xmlPhysicianAddress[0].Attributes[6].Value = xmlphy[0].Attributes[6].Value;
+                        //    if (xmlphy[0].Attributes[7].Value != null)
+                        //        xmlPhysicianAddress[0].Attributes[7].Value = xmlphy[0].Attributes[7].Value;
+                        //}
+                        //CAP-2780
+                        PhysicianAddressDetailsList physicianAddressDetailsList = ConfigureBase<PhysicianAddressDetailsList>.ReadJson("PhysicianAddressDetails.json");
+                        if (physicianAddressDetailsList != null)
                         {
-                            if (xmlphy[0].Attributes[0].Value != null)
-                                xmlPhysicianAddress[0].Attributes[0].Value = xmlphy[0].Attributes[0].Value;
-                            if (xmlphy[0].Attributes[1].Value != null)
-                                xmlPhysicianAddress[0].Attributes[1].Value = xmlphy[0].Attributes[1].Value;
-                            if (xmlphy[0].Attributes[2].Value != null)
-                                xmlPhysicianAddress[0].Attributes[2].Value = xmlphy[0].Attributes[2].Value;
-                            if (xmlphy[0].Attributes[3].Value != null)
-                                xmlPhysicianAddress[0].Attributes[3].Value = xmlphy[0].Attributes[3].Value;
-                            if (xmlphy[0].Attributes[4].Value != null)
-                                xmlPhysicianAddress[0].Attributes[4].Value = xmlphy[0].Attributes[4].Value;
-                            if (xmlphy[0].Attributes[5].Value != null)
-                                xmlPhysicianAddress[0].Attributes[5].Value = xmlphy[0].Attributes[5].Value;
-                            if (xmlphy[0].Attributes[6].Value != null)
-                                xmlPhysicianAddress[0].Attributes[6].Value = xmlphy[0].Attributes[6].Value;
-                            if (xmlphy[0].Attributes[7].Value != null)
-                                xmlPhysicianAddress[0].Attributes[7].Value = xmlphy[0].Attributes[7].Value;
+                            var matchingAddress = physicianAddressDetailsList.PhysicianAddress
+                                .FirstOrDefault(address => address.Physician_Library_ID == sPhysicianid);
+
+                            if (matchingAddress != null)
+                            {
+                                xmlPhysicianAddress[0].Attributes[0].Value = matchingAddress.Physician_Address1;
+                                xmlPhysicianAddress[0].Attributes[1].Value = matchingAddress.Physician_Address2;
+                                xmlPhysicianAddress[0].Attributes[2].Value = matchingAddress.Physician_City;
+                                xmlPhysicianAddress[0].Attributes[3].Value = matchingAddress.Physician_State;
+                                xmlPhysicianAddress[0].Attributes[4].Value = matchingAddress.Physician_Zip;
+                                xmlPhysicianAddress[0].Attributes[5].Value = matchingAddress.Physician_Telephone;
+                                xmlPhysicianAddress[0].Attributes[6].Value = matchingAddress.Physician_Fax;
+                                xmlPhysicianAddress[0].Attributes[7].Value = matchingAddress.Specialties;
+                            }
                         }
                     }
                     //itemDoc.Save(strXmlFilePath);
@@ -1304,16 +1324,29 @@ namespace Acurus.Capella.UI
                 lstCDSRules = lstCDSRules.Where(a => a.Classification.Trim().ToUpper() == "MANDATORY ALERT").ToList<CDSRuleMaster>();
                 bool isMandatoryYes = false;
 
-                string sPhysicianXmlPath = System.Web.Hosting.HostingEnvironment.ApplicationPhysicalPath + "\\ConfigXML\\PhysicianAddressDetails.xml";
-                XmlDocument itemPhysiciandoc = new XmlDocument();
-                XmlTextReader XmlPhysicianText = new XmlTextReader(sPhysicianXmlPath);
-                itemPhysiciandoc.Load(XmlPhysicianText);
-                string sPhysicianSpecialty = string.Empty;
+                //string sPhysicianXmlPath = System.Web.Hosting.HostingEnvironment.ApplicationPhysicalPath + "\\ConfigXML\\PhysicianAddressDetails.xml";
+                //XmlDocument itemPhysiciandoc = new XmlDocument();
+                //XmlTextReader XmlPhysicianText = new XmlTextReader(sPhysicianXmlPath);
+                //itemPhysiciandoc.Load(XmlPhysicianText);
+                //string sPhysicianSpecialty = string.Empty;
 
-                XmlNodeList xmlphy = itemPhysiciandoc.GetElementsByTagName("p" + ClientSession.FillEncounterandWFObject.EncRecord.Encounter_Provider_ID.ToString());
-                if (xmlphy != null && xmlphy.Count > 0)
+                //XmlNodeList xmlphy = itemPhysiciandoc.GetElementsByTagName("p" + ClientSession.FillEncounterandWFObject.EncRecord.Encounter_Provider_ID.ToString());
+                //if (xmlphy != null && xmlphy.Count > 0)
+                //{
+                //    sPhysicianSpecialty = xmlphy[0].Attributes[7].Value;
+                //}
+                //CAP-2780
+                string sPhysicianSpecialty = string.Empty;
+                PhysicianAddressDetailsList physicianAddressDetailsList = ConfigureBase<PhysicianAddressDetailsList>.ReadJson("PhysicianAddressDetails.json");
+                if (physicianAddressDetailsList != null)
                 {
-                    sPhysicianSpecialty = xmlphy[0].Attributes[7].Value;
+                    var matchingAddress = physicianAddressDetailsList.PhysicianAddress
+                        .FirstOrDefault(address => address.Physician_Library_ID == ClientSession.FillEncounterandWFObject.EncRecord.Encounter_Provider_ID.ToString());
+
+                    if (matchingAddress != null)
+                    {
+                        sPhysicianSpecialty = matchingAddress.Specialties;
+                    }
                 }
 
                 foreach (Notification item in lstNotification)
@@ -1972,16 +2005,29 @@ namespace Acurus.Capella.UI
                 lstCDSRules = lstCDSRules.Where(a => a.Classification.Trim().ToUpper() == "MANDATORY ALERT").ToList<CDSRuleMaster>();
                 bool isMandatoryYes = false;
 
-                string sPhysicianXmlPath = System.Web.Hosting.HostingEnvironment.ApplicationPhysicalPath + "\\ConfigXML\\PhysicianAddressDetails.xml";
-                XmlDocument itemPhysiciandoc = new XmlDocument();
-                XmlTextReader XmlPhysicianText = new XmlTextReader(sPhysicianXmlPath);
-                itemPhysiciandoc.Load(XmlPhysicianText);
-                string sPhysicianSpecialty = string.Empty;
+                //string sPhysicianXmlPath = System.Web.Hosting.HostingEnvironment.ApplicationPhysicalPath + "\\ConfigXML\\PhysicianAddressDetails.xml";
+                //XmlDocument itemPhysiciandoc = new XmlDocument();
+                //XmlTextReader XmlPhysicianText = new XmlTextReader(sPhysicianXmlPath);
+                //itemPhysiciandoc.Load(XmlPhysicianText);
+                //string sPhysicianSpecialty = string.Empty;
 
-                XmlNodeList xmlphy = itemPhysiciandoc.GetElementsByTagName("p" + ClientSession.FillEncounterandWFObject.EncRecord.Encounter_Provider_ID.ToString());
-                if (xmlphy.Count > 0)
+                //XmlNodeList xmlphy = itemPhysiciandoc.GetElementsByTagName("p" + ClientSession.FillEncounterandWFObject.EncRecord.Encounter_Provider_ID.ToString());
+                //if (xmlphy.Count > 0)
+                //{
+                //    sPhysicianSpecialty = xmlphy[0].Attributes[7].Value;
+                //}
+                //CAP-2780
+                string sPhysicianSpecialty = string.Empty;
+                PhysicianAddressDetailsList physicianAddressDetailsList = ConfigureBase<PhysicianAddressDetailsList>.ReadJson("PhysicianAddressDetails.json");
+                if (physicianAddressDetailsList != null)
                 {
-                    sPhysicianSpecialty = xmlphy[0].Attributes[7].Value;
+                    var matchingAddress = physicianAddressDetailsList.PhysicianAddress
+                        .FirstOrDefault(address => address.Physician_Library_ID == ClientSession.FillEncounterandWFObject.EncRecord.Encounter_Provider_ID.ToString());
+
+                    if (matchingAddress != null)
+                    {
+                        sPhysicianSpecialty = matchingAddress.Specialties;
+                    }
                 }
 
                 foreach (Notification item in lstNotification)

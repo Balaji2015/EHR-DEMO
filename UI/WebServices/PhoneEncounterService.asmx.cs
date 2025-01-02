@@ -19,6 +19,7 @@ using System.Web.Script.Services;
 using System.Threading;
 using static System.Windows.Forms.VisualStyles.VisualStyleElement.StartPanel;
 using System.Xml.Linq;
+using Acurus.Capella.Core.DTOJson;
 
 namespace Acurus.Capella.UI.WebServices
 {
@@ -963,19 +964,33 @@ objFillHuman.Birth_Date.ToString("dd-MMM-yyyy") + " | " +
                 string sApptPrividerID = lstEncounter[j].Encounter_Provider_ID.ToString();
                 if (lstEncounter[j].Encounter_Provider_ID != 0)
                 {
-                    XmlDocument xmldoc1 = new XmlDocument();
-                    string strXmlFilePath1 = Path.Combine(System.Web.Hosting.HostingEnvironment.ApplicationPhysicalPath, "ConfigXML\\PhysicianAddressDetails.xml");
-                    if (File.Exists(strXmlFilePath1) == true)
+                    //XmlDocument xmldoc1 = new XmlDocument();
+                    //string strXmlFilePath1 = Path.Combine(System.Web.Hosting.HostingEnvironment.ApplicationPhysicalPath, "ConfigXML\\PhysicianAddressDetails.xml");
+                    //if (File.Exists(strXmlFilePath1) == true)
+                    //{
+                    //    xmldoc1.Load(System.Web.Hosting.HostingEnvironment.ApplicationPhysicalPath + "ConfigXML\\" + "PhysicianAddressDetails" + ".xml");
+                    //    XmlNode nodeMatchingPhysicianAddress = xmldoc1.SelectSingleNode("/PhysicianAddress/p" + lstEncounter[j].Encounter_Provider_ID);
+                    //    if (nodeMatchingPhysicianAddress != null)
+                    //    {
+                    //        sPhysicianName = nodeMatchingPhysicianAddress.Attributes["Physician_prefix"].Value.ToString() + " " +
+                    //        nodeMatchingPhysicianAddress.Attributes["Physician_First_Name"].Value.ToString() + " " +
+                    //        nodeMatchingPhysicianAddress.Attributes["Physician_Middle_Name"].Value.ToString() + " " +
+                    //        nodeMatchingPhysicianAddress.Attributes["Physician_Last_Name"].Value.ToString() + " " +
+                    //        nodeMatchingPhysicianAddress.Attributes["Physician_Suffix"].Value.ToString();
+                    //    }
+                    //}
+                    //CAP-2780
+                    PhysicianAddressDetailsList physicianAddressDetailsList = ConfigureBase<PhysicianAddressDetailsList>.ReadJson("PhysicianAddressDetails.json");
+                    if (physicianAddressDetailsList != null)
                     {
-                        xmldoc1.Load(System.Web.Hosting.HostingEnvironment.ApplicationPhysicalPath + "ConfigXML\\" + "PhysicianAddressDetails" + ".xml");
-                        XmlNode nodeMatchingPhysicianAddress = xmldoc1.SelectSingleNode("/PhysicianAddress/p" + lstEncounter[j].Encounter_Provider_ID);
-                        if (nodeMatchingPhysicianAddress != null)
+                        var matchingAddress = physicianAddressDetailsList.PhysicianAddress
+                                                         .FirstOrDefault(address => address.Physician_Library_ID == lstEncounter[j].Encounter_Provider_ID.ToString());
+
+                        if (matchingAddress != null)
                         {
-                            sPhysicianName = nodeMatchingPhysicianAddress.Attributes["Physician_prefix"].Value.ToString() + " " +
-                            nodeMatchingPhysicianAddress.Attributes["Physician_First_Name"].Value.ToString() + " " +
-                            nodeMatchingPhysicianAddress.Attributes["Physician_Middle_Name"].Value.ToString() + " " +
-                            nodeMatchingPhysicianAddress.Attributes["Physician_Last_Name"].Value.ToString() + " " +
-                            nodeMatchingPhysicianAddress.Attributes["Physician_Suffix"].Value.ToString();
+                            sPhysicianName = $"{matchingAddress.Physician_prefix} {matchingAddress.Physician_First_Name} " +
+                                             $"{matchingAddress.Physician_Middle_Name} {matchingAddress.Physician_Last_Name} " +
+                                             $"{matchingAddress.Physician_Suffix}";
                         }
                     }
                 }

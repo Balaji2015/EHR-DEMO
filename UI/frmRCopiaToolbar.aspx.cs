@@ -188,23 +188,31 @@ namespace Acurus.Capella.UI
             if (ClientSession.PhysicianId != 0)
             {
                 // ilstPhysicianLibrary = activityMngr.ilstPhysicianLibraryforGetMailID(ClientSession.PhysicianId);
-                XmlDocument xmldoc1 = new XmlDocument();
-                string sPhysicianXmlPath = System.Web.Hosting.HostingEnvironment.ApplicationPhysicalPath + "\\ConfigXML\\PhysicianAddressDetails.xml";
-                XmlDocument itemPhysiciandoc = new XmlDocument();
-                XmlTextReader XmlPhysicianText = new XmlTextReader(sPhysicianXmlPath);
-                itemPhysiciandoc.Load(XmlPhysicianText);
+                //XmlDocument xmldoc1 = new XmlDocument();
+                //string sPhysicianXmlPath = System.Web.Hosting.HostingEnvironment.ApplicationPhysicalPath + "\\ConfigXML\\PhysicianAddressDetails.xml";
+                //XmlDocument itemPhysiciandoc = new XmlDocument();
+                //XmlTextReader XmlPhysicianText = new XmlTextReader(sPhysicianXmlPath);
+                //itemPhysiciandoc.Load(XmlPhysicianText);
 
-                XmlNodeList xmlphy = itemPhysiciandoc.GetElementsByTagName("p" + ClientSession.PhysicianId);
-                if (xmlphy.Count > 0)
-                {
-
-                    emailId = xmlphy[0].Attributes[9].Value;
-
-                }
-                //if (ilstPhysicianLibrary.Count > 0)
+                //XmlNodeList xmlphy = itemPhysiciandoc.GetElementsByTagName("p" + ClientSession.PhysicianId);
+                //if (xmlphy.Count > 0)
                 //{
-                //    emailId = ilstPhysicianLibrary[0].PhyEMail.ToString();
+
+                //    emailId = xmlphy[0].Attributes[9].Value;
+
                 //}
+                //CAP-2780
+                PhysicianAddressDetailsList physicianAddressDetailsList = ConfigureBase<PhysicianAddressDetailsList>.ReadJson("PhysicianAddressDetails.json");
+                if (physicianAddressDetailsList != null)
+                {
+                    var matchingAddress = physicianAddressDetailsList.PhysicianAddress
+                                                     .FirstOrDefault(address => address.Physician_Library_ID == ClientSession.PhysicianId.ToString());
+
+                    if (matchingAddress != null)
+                    {
+                        emailId = matchingAddress?.Physician_EMail ?? string.Empty;
+            }
+                }
 
             }
             activityLog = activityMngr.GetInboxEntries(emailId);
@@ -1224,18 +1232,29 @@ namespace Acurus.Capella.UI
                 }
 
                 //Bug id 48027
-                string sPhysicianXmlPath = System.Web.Hosting.HostingEnvironment.ApplicationPhysicalPath + "\\ConfigXML\\PhysicianAddressDetails.xml";
-                XmlDocument itemPhysiciandoc = new XmlDocument();
-                XmlTextReader XmlPhysicianText = new XmlTextReader(sPhysicianXmlPath);
-                itemPhysiciandoc.Load(XmlPhysicianText);
+                //string sPhysicianXmlPath = System.Web.Hosting.HostingEnvironment.ApplicationPhysicalPath + "\\ConfigXML\\PhysicianAddressDetails.xml";
+                //XmlDocument itemPhysiciandoc = new XmlDocument();
+                //XmlTextReader XmlPhysicianText = new XmlTextReader(sPhysicianXmlPath);
+                //itemPhysiciandoc.Load(XmlPhysicianText);
                 string sPhysicianSpecialty = string.Empty;
 
-                XmlNodeList xmlphy = itemPhysiciandoc.GetElementsByTagName("p" + ClientSession.FillEncounterandWFObject.EncRecord.Encounter_Provider_ID.ToString());
-                if (xmlphy.Count > 0)
+                //XmlNodeList xmlphy = itemPhysiciandoc.GetElementsByTagName("p" + ClientSession.FillEncounterandWFObject.EncRecord.Encounter_Provider_ID.ToString());
+                //if (xmlphy.Count > 0)
+                //{
+                //    sPhysicianSpecialty = xmlphy[0].Attributes[7].Value;
+                //}
+                //CAP-2780
+                PhysicianAddressDetailsList physicianAddressDetailsList = ConfigureBase<PhysicianAddressDetailsList>.ReadJson("PhysicianAddressDetails.json");
+                if (physicianAddressDetailsList != null)
                 {
-                    sPhysicianSpecialty = xmlphy[0].Attributes[7].Value;
-                }
+                    var matchingAddress = physicianAddressDetailsList.PhysicianAddress
+                                                     .FirstOrDefault(address => address.Physician_Library_ID == ClientSession.FillEncounterandWFObject.EncRecord.Encounter_Provider_ID.ToString());
 
+                    if (matchingAddress != null)
+                    {
+                        sPhysicianSpecialty = matchingAddress?.Specialties ?? string.Empty;
+                    }
+                }
                 if (ScreenName.Trim().ToUpper() == "NOTIFY")
                 {
                     if (lstNotification.Count > 0)

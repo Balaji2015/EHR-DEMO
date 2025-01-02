@@ -25,6 +25,7 @@ using CrystalDecisions.Web;
 using DocumentFormat.OpenXml.Tools.ClassExplorer;
 using System.Net;
 using System.Text;
+using Acurus.Capella.Core.DTOJson;
 
 namespace Acurus.Capella.UI
 {
@@ -738,25 +739,48 @@ namespace Acurus.Capella.UI
                         }
 
                         string sPhysicianid = enc.Encounter_Provider_ID.ToString();
+                        //XmlNodeList xmlPhysicianAddress = itemDoc.GetElementsByTagName("Physician_Address");
+                        //if (xmlPhysicianAddress != null)
+                        //{
+                        //    string sPhysicianXmlPath = System.Web.Hosting.HostingEnvironment.ApplicationPhysicalPath + "\\ConfigXML\\PhysicianAddressDetails.xml";
+                        //    XmlDocument itemPhysiciandoc = new XmlDocument();
+                        //    XmlTextReader XmlPhysicianText = new XmlTextReader(sPhysicianXmlPath);
+                        //    itemPhysiciandoc.Load(XmlPhysicianText);
+
+                        //    XmlNodeList xmlphy = itemPhysiciandoc.GetElementsByTagName("p" + sPhysicianid);
+                        //    if (xmlphy.Count > 0)
+                        //    {
+                        //        xmlPhysicianAddress[0].Attributes[0].Value = xmlphy[0].Attributes[0].Value;
+                        //        xmlPhysicianAddress[0].Attributes[1].Value = xmlphy[0].Attributes[1].Value;
+                        //        xmlPhysicianAddress[0].Attributes[2].Value = xmlphy[0].Attributes[2].Value;
+                        //        xmlPhysicianAddress[0].Attributes[3].Value = xmlphy[0].Attributes[3].Value;
+                        //        xmlPhysicianAddress[0].Attributes[4].Value = xmlphy[0].Attributes[4].Value;
+                        //        xmlPhysicianAddress[0].Attributes[5].Value = xmlphy[0].Attributes[5].Value;
+                        //        xmlPhysicianAddress[0].Attributes[6].Value = xmlphy[0].Attributes[6].Value;
+                        //        xmlPhysicianAddress[0].Attributes[7].Value = xmlphy[0].Attributes[7].Value;
+                        //    }
+                        //}
+                        //CAP-2780
                         XmlNodeList xmlPhysicianAddress = itemDoc.GetElementsByTagName("Physician_Address");
                         if (xmlPhysicianAddress != null)
                         {
-                            string sPhysicianXmlPath = System.Web.Hosting.HostingEnvironment.ApplicationPhysicalPath + "\\ConfigXML\\PhysicianAddressDetails.xml";
-                            XmlDocument itemPhysiciandoc = new XmlDocument();
-                            XmlTextReader XmlPhysicianText = new XmlTextReader(sPhysicianXmlPath);
-                            itemPhysiciandoc.Load(XmlPhysicianText);
-
-                            XmlNodeList xmlphy = itemPhysiciandoc.GetElementsByTagName("p" + sPhysicianid);
-                            if (xmlphy.Count > 0)
+                            PhysicianAddressDetailsList physicianAddressDetailsList = ConfigureBase<PhysicianAddressDetailsList>.ReadJson("PhysicianAddressDetails.json");
+                            if (physicianAddressDetailsList != null)
                             {
-                                xmlPhysicianAddress[0].Attributes[0].Value = xmlphy[0].Attributes[0].Value;
-                                xmlPhysicianAddress[0].Attributes[1].Value = xmlphy[0].Attributes[1].Value;
-                                xmlPhysicianAddress[0].Attributes[2].Value = xmlphy[0].Attributes[2].Value;
-                                xmlPhysicianAddress[0].Attributes[3].Value = xmlphy[0].Attributes[3].Value;
-                                xmlPhysicianAddress[0].Attributes[4].Value = xmlphy[0].Attributes[4].Value;
-                                xmlPhysicianAddress[0].Attributes[5].Value = xmlphy[0].Attributes[5].Value;
-                                xmlPhysicianAddress[0].Attributes[6].Value = xmlphy[0].Attributes[6].Value;
-                                xmlPhysicianAddress[0].Attributes[7].Value = xmlphy[0].Attributes[7].Value;
+                                var matchingAddress = physicianAddressDetailsList.PhysicianAddress
+                                .FirstOrDefault(address => address.Physician_Library_ID == sPhysicianid.ToString());
+
+                                if (matchingAddress != null)
+                            {
+                                    xmlPhysicianAddress[0].Attributes[0].Value = matchingAddress?.Physician_Address1 ?? "";
+                                    xmlPhysicianAddress[0].Attributes[1].Value = matchingAddress?.Physician_Address2 ?? "";
+                                    xmlPhysicianAddress[0].Attributes[2].Value = matchingAddress?.Physician_City ?? "";
+                                    xmlPhysicianAddress[0].Attributes[3].Value = matchingAddress?.Physician_State ?? "";
+                                    xmlPhysicianAddress[0].Attributes[4].Value = matchingAddress?.Physician_Zip ?? "";
+                                    xmlPhysicianAddress[0].Attributes[5].Value = matchingAddress?.Physician_Telephone ?? "";
+                                    xmlPhysicianAddress[0].Attributes[6].Value = matchingAddress?.Physician_Fax ?? "";
+                                    xmlPhysicianAddress[0].Attributes[7].Value = matchingAddress?.Specialties ?? "";
+                                }
                             }
                         }
                         //itemDoc.Save(strXmlFilePath);
@@ -1332,12 +1356,12 @@ namespace Acurus.Capella.UI
                         }
 
                         XDocument xmlUser = null;
-                        XDocument xmlPhysician = null;
+                        //XDocument xmlPhysician = null;
                         SortedDictionary<string, string> hashUserList = new SortedDictionary<string, string>();
                         if (File.Exists(Server.MapPath(@"ConfigXML\User.xml")))
                             xmlUser = XDocument.Load(Server.MapPath(@"ConfigXML\User.xml"));
-                        if (File.Exists(Server.MapPath(@"ConfigXML\PhysicianAddressDetails.xml")))
-                            xmlPhysician = XDocument.Load(Server.MapPath(@"ConfigXML\PhysicianAddressDetails.xml"));
+                        //if (File.Exists(Server.MapPath(@"ConfigXML\PhysicianAddressDetails.xml")))
+                        //    xmlPhysician = XDocument.Load(Server.MapPath(@"ConfigXML\PhysicianAddressDetails.xml"));
                         MapFacilityPhysicianManager mapfacphymnge = new MapFacilityPhysicianManager();
                         IList<string> NonPhysician = new List<string>();
                         IList<MapFacilityPhysician> Physician = new List<MapFacilityPhysician>();
@@ -1358,9 +1382,6 @@ namespace Acurus.Capella.UI
 
 
                         }
-
-
-
 
                         for (int iCount = 0; iCount < userOldList.Count; iCount++)
                         {
@@ -1403,56 +1424,44 @@ namespace Acurus.Capella.UI
                                             }
                                             else
                                             {
-                                                foreach (XElement element in xmlPhysician.Descendants("p" + UserElement.Attribute("Physician_Library_ID").Value))
+                                                //CAP-2780
+                                                PhysicianAddressDetailsList physicianAddressDetailsList = ConfigureBase<PhysicianAddressDetailsList>.ReadJson("PhysicianAddressDetails.json");
+                                                if (physicianAddressDetailsList != null)
+                                                
                                                 {
-                                                    string phyName = string.Empty;
-                                                    string prefix = string.Empty;
-                                                    string firstname = string.Empty;
-                                                    string middlename = string.Empty;
-                                                    string lastname = string.Empty;
-                                                    string suffix = string.Empty;
-
-                                                    if (element.Attribute("Physician_prefix").Value != null)
-                                                        prefix = element.Attribute("Physician_prefix").Value;
-                                                    if (element.Attribute("Physician_First_Name").Value != null)
-                                                        firstname = element.Attribute("Physician_First_Name").Value;
-                                                    if (element.Attribute("Physician_Middle_Name").Value != null)
-                                                        middlename = element.Attribute("Physician_Middle_Name").Value;
-                                                    if (element.Attribute("Physician_Last_Name").Value != null)
-                                                        lastname = element.Attribute("Physician_Last_Name").Value;
-                                                    if (element.Attribute("Physician_Suffix").Value != null)
-                                                        suffix = element.Attribute("Physician_Suffix").Value;
-
-                                                    //Gitlab# 2485 - Physician Name Display Change
-                                                    if (lastname != String.Empty)
-                                                        phyName += lastname;
-                                                    if (firstname != String.Empty)
+                                                    foreach (var physician in physicianAddressDetailsList.PhysicianAddress)
                                                     {
-                                                        if (phyName != String.Empty)
-                                                            phyName += "," + firstname;
+                                                    string phyName = string.Empty;
+                                                        string prefix = physician.Physician_prefix ?? string.Empty;
+                                                        string firstname = physician.Physician_First_Name ?? string.Empty;
+                                                        string middlename = physician.Physician_Middle_Name ?? string.Empty;
+                                                        string lastname = physician.Physician_Last_Name ?? string.Empty;
+                                                        string suffix = physician.Physician_Suffix ?? string.Empty;
+
+                                                        if (!string.IsNullOrEmpty(lastname))
+                                                        phyName += lastname;
+
+                                                        if (!string.IsNullOrEmpty(firstname))
+                                                    {
+                                                            if (!string.IsNullOrEmpty(phyName))
+                                                                phyName += ", " + firstname;
                                                         else
                                                             phyName += firstname;
                                                     }
-                                                    if (middlename != String.Empty)
+
+                                                        if (!string.IsNullOrEmpty(middlename))
                                                         phyName += " " + middlename;
-                                                    if (suffix != String.Empty)
-                                                        phyName += "," + suffix;
 
+                                                        if (!string.IsNullOrEmpty(suffix))
+                                                            phyName += ", " + suffix;
 
-                                                    //userList.Add(phyName);
-                                                    //cboUpdateOwner.Items.Add(new RadComboBoxItem(phyName, UserElement.Attribute("User_Name").Value));
-
-                                                    //if (hashUserList.ContainsKey(phyName) == false)
-                                                    //{
-                                                    //    hashUserList.Add(phyName, UserElement.Attribute("User_Name").Value);
-                                                    //}
-                                                    if (hashUserList.ContainsKey(phyName) == false)
+                                                        if (!hashUserList.ContainsKey(phyName))
                                                     {
-                                                        if (checkkShowAllOwner.Checked == false)
+                                                            if (!checkkShowAllOwner.Checked)
                                                         {
                                                             if (Physician != null && Physician.Count > 0)
                                                             {
-                                                                var user = from u in Physician where u.Phy_Rec_ID == Convert.ToUInt64(element.Attribute("Physician_Library_ID").Value) select u.Phy_Rec_ID;
+                                                                    var user = from u in Physician where u.Phy_Rec_ID == Convert.ToUInt64(physician.Physician_Library_ID) select u.Phy_Rec_ID;
                                                                 IList<ulong> selectedUsers = user.ToList<ulong>();
                                                                 if (selectedUsers.Count > 0)
                                                                 {
@@ -1465,8 +1474,72 @@ namespace Acurus.Capella.UI
                                                             hashUserList.Add(phyName, UserElement.Attribute("User_Name").Value);
                                                         }
                                                     }
-
+                                                    }
                                                 }
+                                                //foreach (XElement element in xmlPhysician.Descendants("p" + UserElement.Attribute("Physician_Library_ID").Value))
+                                                //{
+                                                //    string phyName = string.Empty;
+                                                //    string prefix = string.Empty;
+                                                //    string firstname = string.Empty;
+                                                //    string middlename = string.Empty;
+                                                //    string lastname = string.Empty;
+                                                //    string suffix = string.Empty;
+
+                                                //    if (element.Attribute("Physician_prefix").Value != null)
+                                                //        prefix = element.Attribute("Physician_prefix").Value;
+                                                //    if (element.Attribute("Physician_First_Name").Value != null)
+                                                //        firstname = element.Attribute("Physician_First_Name").Value;
+                                                //    if (element.Attribute("Physician_Middle_Name").Value != null)
+                                                //        middlename = element.Attribute("Physician_Middle_Name").Value;
+                                                //    if (element.Attribute("Physician_Last_Name").Value != null)
+                                                //        lastname = element.Attribute("Physician_Last_Name").Value;
+                                                //    if (element.Attribute("Physician_Suffix").Value != null)
+                                                //        suffix = element.Attribute("Physician_Suffix").Value;
+
+                                                //    //Gitlab# 2485 - Physician Name Display Change
+                                                //    if (lastname != String.Empty)
+                                                //        phyName += lastname;
+                                                //    if (firstname != String.Empty)
+                                                //    {
+                                                //        if (phyName != String.Empty)
+                                                //            phyName += "," + firstname;
+                                                //        else
+                                                //            phyName += firstname;
+                                                //    }
+                                                //    if (middlename != String.Empty)
+                                                //        phyName += " " + middlename;
+                                                //    if (suffix != String.Empty)
+                                                //        phyName += "," + suffix;
+
+
+                                                //    //userList.Add(phyName);
+                                                //    //cboUpdateOwner.Items.Add(new RadComboBoxItem(phyName, UserElement.Attribute("User_Name").Value));
+
+                                                //    //if (hashUserList.ContainsKey(phyName) == false)
+                                                //    //{
+                                                //    //    hashUserList.Add(phyName, UserElement.Attribute("User_Name").Value);
+                                                //    //}
+                                                //    if (hashUserList.ContainsKey(phyName) == false)
+                                                //    {
+                                                //        if (checkkShowAllOwner.Checked == false)
+                                                //        {
+                                                //            if (Physician != null && Physician.Count > 0)
+                                                //            {
+                                                //                var user = from u in Physician where u.Phy_Rec_ID == Convert.ToUInt64(element.Attribute("Physician_Library_ID").Value) select u.Phy_Rec_ID;
+                                                //                IList<ulong> selectedUsers = user.ToList<ulong>();
+                                                //                if (selectedUsers.Count > 0)
+                                                //                {
+                                                //                    hashUserList.Add(phyName, UserElement.Attribute("User_Name").Value);
+                                                //                }
+                                                //            }
+                                                //        }
+                                                //        else
+                                                //        {
+                                                //            hashUserList.Add(phyName, UserElement.Attribute("User_Name").Value);
+                                                //        }
+                                                //    }
+
+                                                //}
                                             }
                                         }
                                     }

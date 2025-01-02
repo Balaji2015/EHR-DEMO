@@ -26,6 +26,7 @@ using System.Text.RegularExpressions;
 using System.Web.Script.Services;
 using System.Text;
 using System.IO.Compression;
+using Acurus.Capella.Core.DTOJson;
 
 namespace Acurus.Capella.UI
 {
@@ -217,22 +218,35 @@ namespace Acurus.Capella.UI
                 //Cap - 1548
                 if (sIsConsultation != "Y")
                 {
-                    XmlDocument xmldoc1 = new XmlDocument();
-                    string strXmlFilePath1 = Path.Combine(System.Web.Hosting.HostingEnvironment.ApplicationPhysicalPath, "ConfigXML\\PhysicianAddressDetails.xml");
-                    if (File.Exists(strXmlFilePath1) == true)
-                    {
-                        //logger.Debug("Reading PhysicianAddressDetails.xml");
-                        xmldoc1.Load(System.Web.Hosting.HostingEnvironment.ApplicationPhysicalPath + "ConfigXML\\" + "PhysicianAddressDetails" + ".xml");
-                        XmlNode nodeMatchingPhysicianAddress = xmldoc1.SelectSingleNode("/PhysicianAddress/p" + PhyId);
-                        if (nodeMatchingPhysicianAddress != null)
-                        {
+                    //XmlDocument xmldoc1 = new XmlDocument();
+                    //string strXmlFilePath1 = Path.Combine(System.Web.Hosting.HostingEnvironment.ApplicationPhysicalPath, "ConfigXML\\PhysicianAddressDetails.xml");
+                    //if (File.Exists(strXmlFilePath1) == true)
+                    //{
+                    //    //logger.Debug("Reading PhysicianAddressDetails.xml");
+                    //    xmldoc1.Load(System.Web.Hosting.HostingEnvironment.ApplicationPhysicalPath + "ConfigXML\\" + "PhysicianAddressDetails" + ".xml");
+                    //    XmlNode nodeMatchingPhysicianAddress = xmldoc1.SelectSingleNode("/PhysicianAddress/p" + PhyId);
+                    //    if (nodeMatchingPhysicianAddress != null)
+                    //    {
 
-                            PhyFax = nodeMatchingPhysicianAddress.Attributes["Physician_Fax"].Value.ToString();
-                            phyEmail = nodeMatchingPhysicianAddress.Attributes["Physician_EMail"].Value.ToString();
-                            //logger.Debug("XML tag '/PhysicianAddress/p" + physician_id + "' found");
+                    //        PhyFax = nodeMatchingPhysicianAddress.Attributes["Physician_Fax"].Value.ToString();
+                    //        phyEmail = nodeMatchingPhysicianAddress.Attributes["Physician_EMail"].Value.ToString();
+                    //        //logger.Debug("XML tag '/PhysicianAddress/p" + physician_id + "' found");
+                    //    }
+                    //    //else
+                    //    //logger.Debug("XML tag '/PhysicianAddress/p" + physician_id + "' not found");
+                    //}
+                    //CAP-2780
+                    PhysicianAddressDetailsList physicianAddressDetailsList = ConfigureBase<PhysicianAddressDetailsList>.ReadJson("PhysicianAddressDetails.json");
+                    if (physicianAddressDetailsList != null)
+                    {
+                        var matchingAddress = physicianAddressDetailsList.PhysicianAddress
+                                                         .FirstOrDefault(address => address.Physician_Library_ID == ClientSession.PhysicianId.ToString());
+
+                        if (matchingAddress != null)
+                        {
+                            PhyFax = matchingAddress?.Physician_Fax?? "";
+                            phyEmail = matchingAddress?.Physician_EMail ?? "";
                         }
-                        //else
-                        //logger.Debug("XML tag '/PhysicianAddress/p" + physician_id + "' not found");
                     }
                 }
                 if (PhyFax.Trim() != "")

@@ -17,6 +17,7 @@ using System.Collections.Generic;
 using Acurus.Capella.DataAccess.ManagerObjects;
 using System.IO;
 using Acurus.Capella.Core.DTOJson;
+using Newtonsoft.Json;
 
 namespace Acurus.Capella.UI
 {
@@ -365,97 +366,126 @@ namespace Acurus.Capella.UI
             if (objPhy != null)
             {
                 #region Save into PhysicianAddressDetails.xml
-                string strPath1 = Path.Combine(System.Web.Hosting.HostingEnvironment.ApplicationPhysicalPath, "ConfigXML\\PhysicianAddressDetails.xml");
-                if (File.Exists(strPath1))
-                {
-                    try
+                //string strPath1 = Path.Combine(System.Web.Hosting.HostingEnvironment.ApplicationPhysicalPath, "ConfigXML\\PhysicianAddressDetails.xml");
+                //if (File.Exists(strPath1))
+                //{
+                //    try
+                //    {
+                //        XmlDocument itemDoc = new XmlDocument();
+                //        XmlTextReader XmlText = new XmlTextReader(strPath1);
+                //        itemDoc.Load(XmlText);
+                //        XmlText.Close();
+                //        XmlNode PhysicianAddressNode = itemDoc.SelectSingleNode("/PhysicianAddress");
+
+                //        if (PhysicianAddressNode != null)
+                //        {
+                //            XmlNode Newnode = null;
+                //            Newnode = itemDoc.CreateNode(XmlNodeType.Element, "p" + objPhy.Id.ToString(), "");
+                //            XmlAttribute attlabel = null;
+
+                //            attlabel = itemDoc.CreateAttribute("Physician_Address1");
+                //            attlabel.Value = objPhy.PhyAddress1;
+                //            Newnode.Attributes.Append(attlabel);
+
+                //            attlabel = itemDoc.CreateAttribute("Physician_Address2");
+                //            attlabel.Value = objPhy.PhyAddress2;
+                //            Newnode.Attributes.Append(attlabel);
+
+                //            attlabel = itemDoc.CreateAttribute("Physician_City");
+                //            attlabel.Value = objPhy.PhyCity;
+                //            Newnode.Attributes.Append(attlabel);
+
+                //            attlabel = itemDoc.CreateAttribute("Physician_State");
+                //            attlabel.Value = objPhy.PhyState;
+                //            Newnode.Attributes.Append(attlabel);
+
+                //            attlabel = itemDoc.CreateAttribute("Physician_Zip");
+                //            attlabel.Value = objPhy.PhyZip;
+                //            Newnode.Attributes.Append(attlabel);
+
+                //            attlabel = itemDoc.CreateAttribute("Physician_Telephone");
+                //            attlabel.Value = objPhy.PhyTelephone;
+                //            Newnode.Attributes.Append(attlabel);
+
+                //            attlabel = itemDoc.CreateAttribute("Physician_Fax");
+                //            attlabel.Value = objPhy.PhyFax;
+                //            Newnode.Attributes.Append(attlabel);
+
+                //            attlabel = itemDoc.CreateAttribute("Specialties");
+                //            attlabel.Value = objPhySpec != null ? objPhySpec.Specialty : "";
+                //            Newnode.Attributes.Append(attlabel);
+
+                //            //attlabel = itemDoc.CreateAttribute("NPI");//Commented for bugID: 48345
+                //            attlabel = itemDoc.CreateAttribute("Physician_NPI");
+                //            attlabel.Value = objPhy.PhyNPI;
+                //            Newnode.Attributes.Append(attlabel);
+
+                //            attlabel = itemDoc.CreateAttribute("Physician_EMail");
+                //            attlabel.Value = objPhy.PhyEMail;
+                //            Newnode.Attributes.Append(attlabel);
+
+                //            attlabel = itemDoc.CreateAttribute("Physician_prefix");
+                //            attlabel.Value = objPhy.PhyPrefix;
+                //            Newnode.Attributes.Append(attlabel);
+
+                //            attlabel = itemDoc.CreateAttribute("Physician_First_Name");
+                //            attlabel.Value = objPhy.PhyFirstName;
+                //            Newnode.Attributes.Append(attlabel);
+
+                //            attlabel = itemDoc.CreateAttribute("Physician_Last_Name");
+                //            attlabel.Value = objPhy.PhyLastName;
+                //            Newnode.Attributes.Append(attlabel);
+
+                //            attlabel = itemDoc.CreateAttribute("Physician_Type");
+                //            attlabel.Value = objPhy.PhyType;
+                //            Newnode.Attributes.Append(attlabel);
+
+                //            attlabel = itemDoc.CreateAttribute("Physician_Library_ID");
+                //            attlabel.Value = objPhy.Id.ToString();
+                //            Newnode.Attributes.Append(attlabel);
+
+                //            PhysicianAddressNode.AppendChild(Newnode);
+                //            itemDoc.Save(strPath1);
+                //        }
+                //    }
+                //    catch 
+                //    {
+                //        iCount = iCount + 1;
+                //        if (iCount <= 8)
+                //        {
+                //            InsertPhysicianIntoXMLs(objPhy, objPhySpec, objPhyFac);
+                //        }
+                //    }
+                //}
+                //CAP-2780
+                PhysicianAddressDetailsList addressList = ConfigureBase<PhysicianAddressDetailsList>.ReadJson("PhysicianAddressDetails.json"); ;
+
+                if (addressList != null)
                     {
-                        XmlDocument itemDoc = new XmlDocument();
-                        XmlTextReader XmlText = new XmlTextReader(strPath1);
-                        itemDoc.Load(XmlText);
-                        XmlText.Close();
-                        XmlNode PhysicianAddressNode = itemDoc.SelectSingleNode("/PhysicianAddress");
-
-                        if (PhysicianAddressNode != null)
+                    var newAddress = new PhysicianAddress
                         {
-                            XmlNode Newnode = null;
-                            Newnode = itemDoc.CreateNode(XmlNodeType.Element, "p" + objPhy.Id.ToString(), "");
-                            XmlAttribute attlabel = null;
+                        Physician_Address1 = objPhy.PhyAddress1,
+                        Physician_Address2 = objPhy.PhyAddress2,
+                        Physician_City = objPhy.PhyCity,
+                        Physician_State = objPhy.PhyState,
+                        Physician_Zip = objPhy.PhyZip,
+                        Physician_Telephone = objPhy.PhyTelephone,
+                        Physician_Fax = objPhy.PhyFax,
+                        Specialties = objPhySpec != null ? objPhySpec.Specialty : "",
+                        Physician_NPI = objPhy.PhyNPI,
+                        Physician_EMail = objPhy.PhyEMail,
+                        Physician_prefix = objPhy.PhyPrefix,
+                        Physician_First_Name = objPhy.PhyFirstName,
+                        Physician_Last_Name = objPhy.PhyLastName,
+                        Physician_Type = objPhy.PhyType,
+                        Physician_Library_ID = objPhy.Id.ToString()
+                    };
 
-                            attlabel = itemDoc.CreateAttribute("Physician_Address1");
-                            attlabel.Value = objPhy.PhyAddress1;
-                            Newnode.Attributes.Append(attlabel);
+                    addressList.PhysicianAddress.Add(newAddress);
 
-                            attlabel = itemDoc.CreateAttribute("Physician_Address2");
-                            attlabel.Value = objPhy.PhyAddress2;
-                            Newnode.Attributes.Append(attlabel);
-
-                            attlabel = itemDoc.CreateAttribute("Physician_City");
-                            attlabel.Value = objPhy.PhyCity;
-                            Newnode.Attributes.Append(attlabel);
-
-                            attlabel = itemDoc.CreateAttribute("Physician_State");
-                            attlabel.Value = objPhy.PhyState;
-                            Newnode.Attributes.Append(attlabel);
-
-                            attlabel = itemDoc.CreateAttribute("Physician_Zip");
-                            attlabel.Value = objPhy.PhyZip;
-                            Newnode.Attributes.Append(attlabel);
-
-                            attlabel = itemDoc.CreateAttribute("Physician_Telephone");
-                            attlabel.Value = objPhy.PhyTelephone;
-                            Newnode.Attributes.Append(attlabel);
-
-                            attlabel = itemDoc.CreateAttribute("Physician_Fax");
-                            attlabel.Value = objPhy.PhyFax;
-                            Newnode.Attributes.Append(attlabel);
-
-                            attlabel = itemDoc.CreateAttribute("Specialties");
-                            attlabel.Value = objPhySpec != null ? objPhySpec.Specialty : "";
-                            Newnode.Attributes.Append(attlabel);
-
-                            //attlabel = itemDoc.CreateAttribute("NPI");//Commented for bugID: 48345
-                            attlabel = itemDoc.CreateAttribute("Physician_NPI");
-                            attlabel.Value = objPhy.PhyNPI;
-                            Newnode.Attributes.Append(attlabel);
-
-                            attlabel = itemDoc.CreateAttribute("Physician_EMail");
-                            attlabel.Value = objPhy.PhyEMail;
-                            Newnode.Attributes.Append(attlabel);
-
-                            attlabel = itemDoc.CreateAttribute("Physician_prefix");
-                            attlabel.Value = objPhy.PhyPrefix;
-                            Newnode.Attributes.Append(attlabel);
-
-                            attlabel = itemDoc.CreateAttribute("Physician_First_Name");
-                            attlabel.Value = objPhy.PhyFirstName;
-                            Newnode.Attributes.Append(attlabel);
-
-                            attlabel = itemDoc.CreateAttribute("Physician_Last_Name");
-                            attlabel.Value = objPhy.PhyLastName;
-                            Newnode.Attributes.Append(attlabel);
-
-                            attlabel = itemDoc.CreateAttribute("Physician_Type");
-                            attlabel.Value = objPhy.PhyType;
-                            Newnode.Attributes.Append(attlabel);
-
-                            attlabel = itemDoc.CreateAttribute("Physician_Library_ID");
-                            attlabel.Value = objPhy.Id.ToString();
-                            Newnode.Attributes.Append(attlabel);
-
-                            PhysicianAddressNode.AppendChild(Newnode);
-                            itemDoc.Save(strPath1);
+                    var updatedAddressContent = JsonConvert.SerializeObject(addressList);
+                    ConfigureBase<PhysicianAddressDetailsList>.SaveJson("PhysicianAddressDetails.json", updatedAddressContent);
                         }
-                    }
-                    catch 
-                    {
-                        iCount = iCount + 1;
-                        if (iCount <= 8)
-                        {
-                            InsertPhysicianIntoXMLs(objPhy, objPhySpec, objPhyFac);
-                        }
-                    }
-                }
                 #endregion
                 #region Save into PhysicianFacilityMapping.xml
 

@@ -22,6 +22,7 @@ using Newtonsoft.Json.Linq;
 using Newtonsoft.Json;
 using System.Web.Script.Serialization;
 using Org.BouncyCastle.Asn1.Ocsp;
+using Acurus.Capella.Core.DTOJson;
 
 namespace Acurus.Capella.UI
 {
@@ -371,19 +372,34 @@ namespace Acurus.Capella.UI
                         sSignDate = UtilityManager.ConvertToLocal(lstresultmaster[0].Created_Date_And_Time).ToString("dd-MMM-yyyy");
                     }
 
-                    XmlDocument xmldoc1 = new XmlDocument();
-                    string strXmlFilePath1 = Path.Combine(System.Web.Hosting.HostingEnvironment.ApplicationPhysicalPath, "ConfigXML\\PhysicianAddressDetails.xml");
-                    if (File.Exists(strXmlFilePath1) == true)
+                    //XmlDocument xmldoc1 = new XmlDocument();
+                    //string strXmlFilePath1 = Path.Combine(System.Web.Hosting.HostingEnvironment.ApplicationPhysicalPath, "ConfigXML\\PhysicianAddressDetails.xml");
+                    //if (File.Exists(strXmlFilePath1) == true)
+                    //{
+                    //    xmldoc1.Load(System.Web.Hosting.HostingEnvironment.ApplicationPhysicalPath + "ConfigXML\\" + "PhysicianAddressDetails" + ".xml");
+                    //    XmlNode nodeMatchingPhysicianAddress = xmldoc1.SelectSingleNode("/PhysicianAddress/p" + iSignedPhysicianId);
+                    //    if (nodeMatchingPhysicianAddress != null)
+                    //    {
+                    //        sSignedPhysicianName = nodeMatchingPhysicianAddress.Attributes["Physician_prefix"].Value.ToString() + " " +
+                    //        nodeMatchingPhysicianAddress.Attributes["Physician_First_Name"].Value.ToString() + " " +
+                    //        nodeMatchingPhysicianAddress.Attributes["Physician_Middle_Name"].Value.ToString() + " " +
+                    //        nodeMatchingPhysicianAddress.Attributes["Physician_Last_Name"].Value.ToString() + " " +
+                    //        nodeMatchingPhysicianAddress.Attributes["Physician_Suffix"].Value.ToString();
+                    //    }
+                    //}
+                    //CAP-2780
+                    PhysicianAddressDetailsList physicianAddressDetailsList = ConfigureBase<PhysicianAddressDetailsList>.ReadJson("PhysicianAddressDetails.json");
+                    if (physicianAddressDetailsList != null)
                     {
-                        xmldoc1.Load(System.Web.Hosting.HostingEnvironment.ApplicationPhysicalPath + "ConfigXML\\" + "PhysicianAddressDetails" + ".xml");
-                        XmlNode nodeMatchingPhysicianAddress = xmldoc1.SelectSingleNode("/PhysicianAddress/p" + iSignedPhysicianId);
-                        if (nodeMatchingPhysicianAddress != null)
+                        var matchingAddress = physicianAddressDetailsList.PhysicianAddress
+                                                         .FirstOrDefault(address => address.Physician_Library_ID == iSignedPhysicianId.ToString());
+
+                        if (matchingAddress != null)
                         {
-                            sSignedPhysicianName = nodeMatchingPhysicianAddress.Attributes["Physician_prefix"].Value.ToString() + " " +
-                            nodeMatchingPhysicianAddress.Attributes["Physician_First_Name"].Value.ToString() + " " +
-                            nodeMatchingPhysicianAddress.Attributes["Physician_Middle_Name"].Value.ToString() + " " +
-                            nodeMatchingPhysicianAddress.Attributes["Physician_Last_Name"].Value.ToString() + " " +
-                            nodeMatchingPhysicianAddress.Attributes["Physician_Suffix"].Value.ToString();
+                            sSignedPhysicianName = $"{matchingAddress.Physician_prefix} {matchingAddress.Physician_First_Name} " +
+                                                   $"{matchingAddress.Physician_Middle_Name} {matchingAddress.Physician_Last_Name} " +
+                                                   $"{matchingAddress.Physician_Suffix}";
+
                         }
                     }
                 }

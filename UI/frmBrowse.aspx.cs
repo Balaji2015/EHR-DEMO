@@ -27,6 +27,7 @@ using Telerik.Web.UI;
 using System.Text.RegularExpressions;
 using System.Security.Cryptography.X509Certificates;
 using System.Net;
+using Acurus.Capella.Core.DTOJson;
 
 namespace Acurus.Capella.UI
 {
@@ -335,15 +336,27 @@ namespace Acurus.Capella.UI
                 string sUser = string.Empty;
                 string sPassword = null;
 
-                XmlDocument xmldoc1 = new XmlDocument();
-                string strXmlFilePath1 = Path.Combine(System.Web.Hosting.HostingEnvironment.ApplicationPhysicalPath, "ConfigXML\\PhysicianAddressDetails.xml");
-                if (File.Exists(strXmlFilePath1) == true)
+                //XmlDocument xmldoc1 = new XmlDocument();
+                //string strXmlFilePath1 = Path.Combine(System.Web.Hosting.HostingEnvironment.ApplicationPhysicalPath, "ConfigXML\\PhysicianAddressDetails.xml");
+                //if (File.Exists(strXmlFilePath1) == true)
+                //{
+                //    xmldoc1.Load(System.Web.Hosting.HostingEnvironment.ApplicationPhysicalPath + "ConfigXML\\" + "PhysicianAddressDetails" + ".xml");
+                //    XmlNode nodeMatchingPhysicianAddress = xmldoc1.SelectSingleNode("/PhysicianAddress/p" + ClientSession.PhysicianId);
+                //    if (nodeMatchingPhysicianAddress != null)
+                //    {
+                //        sUser = nodeMatchingPhysicianAddress.Attributes["Physician_EMail"].Value.ToString();
+                //    }
+                //}
+                //CAP-2780
+                PhysicianAddressDetailsList physicianAddressDetailsList = ConfigureBase<PhysicianAddressDetailsList>.ReadJson("PhysicianAddressDetails.json");
+                if (physicianAddressDetailsList != null && physicianAddressDetailsList.PhysicianAddress.Count > 0)
                 {
-                    xmldoc1.Load(System.Web.Hosting.HostingEnvironment.ApplicationPhysicalPath + "ConfigXML\\" + "PhysicianAddressDetails" + ".xml");
-                    XmlNode nodeMatchingPhysicianAddress = xmldoc1.SelectSingleNode("/PhysicianAddress/p" + ClientSession.PhysicianId);
-                    if (nodeMatchingPhysicianAddress != null)
+                    var matchingAddress = physicianAddressDetailsList.PhysicianAddress
+                                                     .FirstOrDefault(address => address.Physician_Library_ID == ClientSession.PhysicianId.ToString());
+
+                    if (matchingAddress != null)
                     {
-                        sUser = nodeMatchingPhysicianAddress.Attributes["Physician_EMail"].Value.ToString();
+                        sUser = matchingAddress?.Physician_EMail ?? "";
                     }
                 }
 
@@ -880,15 +893,27 @@ namespace Acurus.Capella.UI
                 string sUser = string.Empty;
                 string sPassword = null;
 
-                XmlDocument xmldoc1 = new XmlDocument();
-                string strXmlFilePath1 = Path.Combine(System.Web.Hosting.HostingEnvironment.ApplicationPhysicalPath, "ConfigXML\\PhysicianAddressDetails.xml");
-                if (File.Exists(strXmlFilePath1) == true)
+                //XmlDocument xmldoc1 = new XmlDocument();
+                //string strXmlFilePath1 = Path.Combine(System.Web.Hosting.HostingEnvironment.ApplicationPhysicalPath, "ConfigXML\\PhysicianAddressDetails.xml");
+                //if (File.Exists(strXmlFilePath1) == true)
+                //{
+                //    xmldoc1.Load(System.Web.Hosting.HostingEnvironment.ApplicationPhysicalPath + "ConfigXML\\" + "PhysicianAddressDetails" + ".xml");
+                //    XmlNode nodeMatchingPhysicianAddress = xmldoc1.SelectSingleNode("/PhysicianAddress/p" + ClientSession.PhysicianId);
+                //    if (nodeMatchingPhysicianAddress != null)
+                //    {
+                //        sUser = nodeMatchingPhysicianAddress.Attributes["Physician_EMail"].Value.ToString();
+                //    }
+                //}
+                //CAP-2780
+                PhysicianAddressDetailsList physicianAddressDetailsList = ConfigureBase<PhysicianAddressDetailsList>.ReadJson("PhysicianAddressDetails.json");
+                if (physicianAddressDetailsList != null)
                 {
-                    xmldoc1.Load(System.Web.Hosting.HostingEnvironment.ApplicationPhysicalPath + "ConfigXML\\" + "PhysicianAddressDetails" + ".xml");
-                    XmlNode nodeMatchingPhysicianAddress = xmldoc1.SelectSingleNode("/PhysicianAddress/p" + ClientSession.PhysicianId);
-                    if (nodeMatchingPhysicianAddress != null)
+                    var matchingAddress = physicianAddressDetailsList.PhysicianAddress
+                                                     .FirstOrDefault(address => address.Physician_Library_ID == ClientSession.PhysicianId.ToString());
+
+                    if (matchingAddress != null)
                     {
-                        sUser = nodeMatchingPhysicianAddress.Attributes["Physician_EMail"].Value.ToString();
+                        sUser = matchingAddress?.Physician_EMail??"";
                     }
                 }
 

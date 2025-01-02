@@ -11,6 +11,7 @@ using System.Web.UI;
 using System.Web.UI.WebControls;
 using System.Xml;
 using System.Configuration;
+using Acurus.Capella.Core.DTOJson;
 
 namespace Acurus.Capella.UI
 {
@@ -541,20 +542,35 @@ namespace Acurus.Capella.UI
                 }
                 else if (sProjectName != null && sProjectName.ToUpper() == "NSI")
                 {
-                    XmlDocument xmldoc = new XmlDocument();
-                    string strXmlFilePath1 = Path.Combine(System.Web.Hosting.HostingEnvironment.ApplicationPhysicalPath, "ConfigXML\\PhysicianAddressDetails.xml");
-                    //if (File.Exists(strXmlFilePath) == true)
-                    {
-                        xmldoc.Load(System.Web.Hosting.HostingEnvironment.ApplicationPhysicalPath + "ConfigXML\\" + "PhysicianAddressDetails" + ".xml");
-                        XmlNode nodeMatchingPhysicianAddress = xmldoc.SelectSingleNode("/PhysicianAddress/p" + "230");//Dr mesiwala ID
-                        if (nodeMatchingPhysicianAddress != null)
-                        {
-                            objPhyLib.PhyFirstName = nodeMatchingPhysicianAddress.Attributes["Physician_First_Name"].Value.ToString();
-                            objPhyLib.PhyMiddleName = nodeMatchingPhysicianAddress.Attributes["Physician_Middle_Name"].Value.ToString();
-                            objPhyLib.PhySuffix = nodeMatchingPhysicianAddress.Attributes["Physician_Suffix"].Value.ToString();
-                        }
+                    //XmlDocument xmldoc = new XmlDocument();
+                    //string strXmlFilePath1 = Path.Combine(System.Web.Hosting.HostingEnvironment.ApplicationPhysicalPath, "ConfigXML\\PhysicianAddressDetails.xml");
+                    ////if (File.Exists(strXmlFilePath) == true)
+                    //{
+                    //    xmldoc.Load(System.Web.Hosting.HostingEnvironment.ApplicationPhysicalPath + "ConfigXML\\" + "PhysicianAddressDetails" + ".xml");
+                    //    XmlNode nodeMatchingPhysicianAddress = xmldoc.SelectSingleNode("/PhysicianAddress/p" + "230");//Dr mesiwala ID
+                    //    if (nodeMatchingPhysicianAddress != null)
+                    //    {
+                    //        objPhyLib.PhyFirstName = nodeMatchingPhysicianAddress.Attributes["Physician_First_Name"].Value.ToString();
+                    //        objPhyLib.PhyMiddleName = nodeMatchingPhysicianAddress.Attributes["Physician_Middle_Name"].Value.ToString();
+                    //        objPhyLib.PhySuffix = nodeMatchingPhysicianAddress.Attributes["Physician_Suffix"].Value.ToString();
+                    //    }
 
+                    //}
+                    //CAP-2780
+                    PhysicianAddressDetailsList physicianAddressDetailsList = ConfigureBase<PhysicianAddressDetailsList>.ReadJson("PhysicianAddressDetails.json");
+                    if (physicianAddressDetailsList != null)
+                    {
+                        var matchingAddress = physicianAddressDetailsList.PhysicianAddress
+                                                         .FirstOrDefault(address => address.Physician_Library_ID == ClientSession.PhysicianId.ToString());
+
+                        if (matchingAddress != null)
+                        {
+                            objPhyLib.PhyFirstName = matchingAddress?.Physician_First_Name ?? "";
+                            objPhyLib.PhyMiddleName = matchingAddress?.Physician_Last_Name ?? "";
+                            objPhyLib.PhySuffix = matchingAddress?.Physician_Suffix ?? "";
+                        }
                     }
+
                 } string sUserName = string.Empty;
                 sUserName = ClientSession.UserName;
                 var result = new { HumanDetails = lstHuman, InsuredHumanDetails = lstInsHuman, InsDetails = InsurancePlanList, PhysicianDetails = objPhyLib, Payerid_NAIC_ID = carrierList.NAIC_ID.ToString(), InsuredRelationship = patInsList[0].Relationship, ProjectName = sProjectName, PolicyHolderID = patInsList[0].Policy_Holder_ID, CurrentUserName = sUserName };
