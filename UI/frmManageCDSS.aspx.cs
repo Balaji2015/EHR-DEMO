@@ -20,6 +20,7 @@ using System.Xml;
 using System.IO;
 using System.Xml.Serialization;
 using System.Reflection;
+using Acurus.Capella.Core.DTOJson;
 
 
 namespace Acurus.Capella.UI
@@ -39,53 +40,10 @@ namespace Acurus.Capella.UI
             if (!IsPostBack)
             {
                 string cboValue = string.Empty;
-                IList<User> lstUser = new List<User>();
-                XmlDocument xmldocUser = new XmlDocument();
-                string strXmlFilePath = Path.Combine(System.Web.Hosting.HostingEnvironment.ApplicationPhysicalPath, "ConfigXML\\User.xml");
-                if (File.Exists(strXmlFilePath) == true)
-                {
-                    xmldocUser.Load(System.Web.Hosting.HostingEnvironment.ApplicationPhysicalPath + "ConfigXML\\" + "User" + ".xml");
-                    XmlNodeList xmlUserList = xmldocUser.GetElementsByTagName("User");
-                    if (xmlUserList.Count > 0)
-                    {
-                        foreach (XmlNode item in xmlUserList)
-                        {
-                            XmlSerializer xmlserializer = new XmlSerializer(typeof(User));
-                            User UserList = xmlserializer.Deserialize(new XmlNodeReader(item)) as User;
-                            IEnumerable<PropertyInfo> propInfo = null;
-                            if (UserList != null)
-                            {
-                                propInfo = from obji in ((User)UserList).GetType().GetProperties() select obji;
-
-                                for (int i = 0; i < item.Attributes.Count; i++)
-                                {
-                                    XmlNode nodevalue = item.Attributes[i];
-                                    {
-                                        foreach (PropertyInfo property in propInfo)
-                                        {
-                                            if (property.Name.ToLower() == nodevalue.Name.ToLower())
-                                            {
-                                                if (property.PropertyType.Name.ToUpper() == "UINT64")
-                                                    property.SetValue(UserList, Convert.ToUInt64(nodevalue.Value), null);
-                                                else if (property.PropertyType.Name.ToUpper() == "STRING")
-                                                    property.SetValue(UserList, Convert.ToString(nodevalue.Value), null);
-                                                else if (property.PropertyType.Name.ToUpper() == "DATETIME")
-                                                    property.SetValue(UserList, Convert.ToDateTime(nodevalue.Value), null);
-                                                else if (property.PropertyType.Name.ToUpper() == "INT32")
-                                                    property.SetValue(UserList, Convert.ToInt32(nodevalue.Value), null);
-                                                else
-                                                    property.SetValue(UserList, nodevalue.Value, null);
-                                            }
-                                        }
-                                    }
-                                }
-                                lstUser.Add(UserList);
-                            }
-                        }
-                    }
-                }
-                IList<User> cboLst = null;
-                if (lstUser == null || lstUser.Count == 0)
+                //CAP-2788
+                UserList ilstUserList = ConfigureBase<UserList>.ReadJson("User.json");
+                IList<UserData> cboLst = null;
+                if (ilstUserList?.User == null || ilstUserList?.User.Count == 0)
                 {
                     ScriptManager.RegisterStartupScript(this, this.Page.GetType(), "SavedSuccessfully", "DisplayErrorMessage('1007012');", true);
                     divLoading.Style.Add("display", "none");
@@ -93,16 +51,16 @@ namespace Acurus.Capella.UI
                 }
                 else
                 {
-                    cboLst = lstUser.Where(a => a.role.Trim() == "Medical Assistant" || a.role.Trim() == "Physician Assistant" || a.role.Trim() == "Physician" || a.role.Trim() == "Coder" || a.role.Trim() == "Front Office").ToList<User>();
+                    cboLst = ilstUserList?.User.Where(a => a.Role.Trim() == "Medical Assistant" || a.Role.Trim() == "Physician Assistant" || a.Role.Trim() == "Physician" || a.Role.Trim() == "Coder" || a.Role.Trim() == "Front Office").ToList<UserData>();
                     if (cboLst != null && cboLst.Count > 0)
                     {
                         cboPhysicianName.Items.Add(new RadComboBoxItem(""));
                         foreach (var item in cboLst)
                         {
                             if (item.person_name.Trim() != string.Empty)
-                                cboPhysicianName.Items.Add(new RadComboBoxItem(item.user_name + " - " + item.person_name));
+                                cboPhysicianName.Items.Add(new RadComboBoxItem(item.User_Name + " - " + item.person_name));
                             else
-                                cboPhysicianName.Items.Add(new RadComboBoxItem(item.user_name));
+                                cboPhysicianName.Items.Add(new RadComboBoxItem(item.User_Name));
                         }
                     }
                     else

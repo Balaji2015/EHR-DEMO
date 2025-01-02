@@ -32,6 +32,7 @@ namespace Acurus.Capella.UI
 
         }
 
+        private const int V = 0;
         static int isval = 0;
         static IDictionary<string, IList<AllICDColorCoding>> temp = new Dictionary<string, IList<AllICDColorCoding>>();
 
@@ -681,21 +682,45 @@ namespace Acurus.Capella.UI
                 for (int i = 0; i < strICD9CodeDesc.Count; i++)
                 {
                     bool bcheck = false;
-                    XmlDocument xmldoc = new XmlDocument();
-                    if (File.Exists(System.Web.Hosting.HostingEnvironment.ApplicationPhysicalPath + "ConfigXML\\icd_9_10_mapping.xml"))
-                    {
-                        xmldoc.Load(System.Web.Hosting.HostingEnvironment.ApplicationPhysicalPath + "ConfigXML\\icd_9_10_mapping.xml");
-                        XmlNodeList xmlMappingList = xmldoc.GetElementsByTagName("icd_9_10_mapping");
-                        foreach (XmlNode item in xmlMappingList)
-                        {
-                            if (item != null)
-                            {
+                    //Jira cap - 2770 - XML to JSON
+                    //XmlDocument xmldoc = new XmlDocument();
+                    //if (File.Exists(System.Web.Hosting.HostingEnvironment.ApplicationPhysicalPath + "ConfigXML\\icd_9_10_mapping.xml"))
+                    //{
+                    //    xmldoc.Load(System.Web.Hosting.HostingEnvironment.ApplicationPhysicalPath + "ConfigXML\\icd_9_10_mapping.xml");
+                    //    XmlNodeList xmlMappingList = xmldoc.GetElementsByTagName("icd_9_10_mapping");
+                    //    foreach (XmlNode item in xmlMappingList)
+                    //    {
+                    //        if (item != null)
+                    //        {
 
-                                if (item.Attributes[0].Value == strICD9CodeDesc[i].Split('~')[0])
-                                {
-                                    ICD10MutipleMapping.Add(strICD9CodeDesc[i] + "^" + item.Attributes[1].Value);
-                                    bcheck = true;
-                                }
+                    //            if (item.Attributes[0].Value == strICD9CodeDesc[i].Split('~')[0])
+                    //            {
+                    //                ICD10MutipleMapping.Add(strICD9CodeDesc[i] + "^" + item.Attributes[1].Value);
+                    //                bcheck = true;
+                    //            }
+                    //        }
+                    //    }
+                    //    if (!bcheck)
+                    //    {
+                    //        ICD9singleMapping.Add(strICD9CodeDesc[i]);
+                    //    }
+                    //}
+
+                    IList<Icd_9_10_Mapping> iListIcd_9_10_Mapping = new List<Icd_9_10_Mapping>();
+                    icd_9_10_mapping ilisticd_9_10_mapping = new icd_9_10_mapping();
+                    ilisticd_9_10_mapping = ConfigureBase<icd_9_10_mapping>.ReadJson("icd_9_10_mapping.json");
+                    if (ilisticd_9_10_mapping != null)
+                    {
+                        iListIcd_9_10_Mapping = ilisticd_9_10_mapping.Icd_9_10_Mapping;
+                    }
+                    if ((iListIcd_9_10_Mapping?.Count ?? 0) > 0)
+                    {
+                        for (int j = 0; j < iListIcd_9_10_Mapping.Count; j++)
+                        {
+                            if (iListIcd_9_10_Mapping[j].icd_9 == strICD9CodeDesc[i].Split('~')[0])
+                            {
+                                ICD10MutipleMapping.Add(strICD9CodeDesc[i] + "^" + iListIcd_9_10_Mapping[j].icd_choices);
+                                bcheck = true;
                             }
                         }
                         if (!bcheck)
@@ -2746,21 +2771,45 @@ namespace Acurus.Capella.UI
             for (int i = 0; i < ICD9CodeDescList.Count; i++)
             {
                 bool bcheck = false;
-                XmlDocument xmldoc = new XmlDocument();
-                if (File.Exists(System.Web.Hosting.HostingEnvironment.ApplicationPhysicalPath + "ConfigXML\\icd_9_10_mapping.xml"))
-                {
-                    xmldoc.Load(System.Web.Hosting.HostingEnvironment.ApplicationPhysicalPath + "ConfigXML\\" + "icd_9_10_mapping" + ".xml");
-                    XmlNodeList xmlMappingList = xmldoc.GetElementsByTagName("icd_9_10_mapping");
-                    foreach (XmlNode item in xmlMappingList)
-                    {
-                        if (item != null)
-                        {
+                //Jira cap - 2770 - XML to JSON
+                //XmlDocument xmldoc = new XmlDocument();
+                //if (File.Exists(System.Web.Hosting.HostingEnvironment.ApplicationPhysicalPath + "ConfigXML\\icd_9_10_mapping.xml"))
+                //{
+                //    xmldoc.Load(System.Web.Hosting.HostingEnvironment.ApplicationPhysicalPath + "ConfigXML\\" + "icd_9_10_mapping" + ".xml");
+                //    XmlNodeList xmlMappingList = xmldoc.GetElementsByTagName("icd_9_10_mapping");
+                //    foreach (XmlNode item in xmlMappingList)
+                //    {
+                //        if (item != null)
+                //        {
 
-                            if (item.Attributes[0].Value == ICD9CodeDescList[i].Split('~')[0])
-                            {
-                                PDICD10MutipleMapping.Add(ICD9CodeDescList[i] + "^" + item.Attributes[1].Value);
-                                bcheck = true;
-                            }
+                //            if (item.Attributes[0].Value == ICD9CodeDescList[i].Split('~')[0])
+                //            {
+                //                PDICD10MutipleMapping.Add(ICD9CodeDescList[i] + "^" + item.Attributes[1].Value);
+                //                bcheck = true;
+                //            }
+                //        }
+                //    }
+                //    if (!bcheck)
+                //    {
+                //        PDICD9singleMapping.Add(ICD9CodeDescList[i]);
+                //    }
+                //}
+
+                IList<Icd_9_10_Mapping> iListIcd_9_10_Mapping = new List<Icd_9_10_Mapping>();
+                icd_9_10_mapping ilisticd_9_10_mapping = new icd_9_10_mapping();
+                ilisticd_9_10_mapping = ConfigureBase<icd_9_10_mapping>.ReadJson("icd_9_10_mapping.json");
+                if(ilisticd_9_10_mapping != null)
+                {
+                    iListIcd_9_10_Mapping = ilisticd_9_10_mapping.Icd_9_10_Mapping;
+                }
+                if ((iListIcd_9_10_Mapping?.Count ?? 0) > 0)
+                {
+                    for (int j = 0; j < iListIcd_9_10_Mapping.Count; j++)
+                    {
+                        if (iListIcd_9_10_Mapping[j].icd_9 == ICD9CodeDescList[i].Split('~')[0])
+                        {
+                            PDICD10MutipleMapping.Add(ICD9CodeDescList[i] + "^" + iListIcd_9_10_Mapping[j].icd_choices);
+                            bcheck = true;
                         }
                     }
                     if (!bcheck)
@@ -2768,6 +2817,8 @@ namespace Acurus.Capella.UI
                         PDICD9singleMapping.Add(ICD9CodeDescList[i]);
                     }
                 }
+
+
             }
             IList<ICD9ICD10Mapping> ICD10ICDDescList = new List<ICD9ICD10Mapping>();
             if (PDICD9singleMapping != null)

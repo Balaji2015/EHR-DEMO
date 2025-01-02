@@ -2207,7 +2207,23 @@
             </div>
         </div>
       
-
+         <div id="TabAddResult" class="modal modal-wide fade" style="z-index: 5000; background-color: rgba(0, 0, 0, 0.13)">
+            <div id="TabAddResultdlg" class="modal-dialog" style="margin-top: 5%; overflow: hidden;">
+                <%--BugID:45808--%>
+                <div class=" modal-content" style="height: 100%">
+                    <div class="modal-header">
+                        <button type="button" class="close" id="btnCloseAddResult" onclick="btnCloseViewResult_Click();" data-dismiss="modal" aria-hidden="true">&times;</button>
+                        <%--style="font-size: 30px !important;"--%>
+                        <h3 class="modal-title" style="font-family: sans-serif; font-weight: bold; font-size: medium" id="TabAddResultTitle"></h3>
+                    </div>
+                    <div class="modal-body" style="width: 100%; height: 100%; margin-top: -2%">
+                        <div style="width: 100%; height: 100%;">
+                            <iframe style="width: 100%; height: 100%; border: none" id="TabAddResultFrame"></iframe>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
         
         <input id="HiddenForCross" type="hidden" runat="server" />
         <asp:HiddenField ID="ScreenName" runat="server" EnableViewState="false" />

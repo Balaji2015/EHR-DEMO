@@ -356,13 +356,15 @@ objFillHuman.Birth_Date.ToString("dd-MMM-yyyy") + " | " +
             //var result = new { ProcedureList = EandMCodingListCPT, ICDList = EandMCodingListICD, AssICDlist = AssEandMCodingListICD, UserRole = ClientSession.UserRole, EnableScreen = string.Empty, SaveEnable = bsaveenable, EnablePriRbtn = EnablePriRbtn, ModifierList = modifierlst, HumanDetails = lstHuman, FacilityName = ClientSession.FacilityName, ApptProvIDORLoginID = sApptproviderID, Birth_Date = sBirth_Date, FacilityDOS = sFacilityDOS, StaticCallDuration = lstStaticCallDuration };
             //CAP-713 - Get Person Name
             string PersonName = string.Empty;
-            XDocument xmluser = XDocument.Load(Path.Combine(HttpContext.Current.Server.MapPath(".."), @"ConfigXML\User.xml"));
-            IEnumerable<XElement> xmluserid = xmluser.Element("UserList")
-                .Elements("User").Where(aa => aa.Attribute("User_Name").Value.ToString() == ClientSession.UserName);
-            if (xmluserid != null && xmluserid.Count() > 0)
+            //CAP-2788
+            UserList ilstUserList = ConfigureBase<UserList>.ReadJson("User.json");
+            if (ilstUserList?.User != null)
             {
-                if (xmluserid.Attributes("person_name") != null)
-                    PersonName = xmluserid.Attributes("person_name").First().Value.ToString();
+                var filteredData = ilstUserList?.User.FirstOrDefault(a => a.User_Name == ClientSession.UserName);
+                if (filteredData != null && !string.IsNullOrEmpty(filteredData.person_name))
+                {
+                    PersonName = filteredData.person_name;
+                }
             }
             var result = new { ProcedureList = EandMCodingListCPT, ICDList = AssEandMCodingListICD, AssICDlist = AssEandMCodingListICD, UserRole = ClientSession.UserRole, EnableScreen = string.Empty, SaveEnable = bsaveenable, EnablePriRbtn = EnablePriRbtn, ModifierList = modifierlst, HumanDetails = lstHuman, FacilityName = ClientSession.FacilityName, Birth_Date = sBirth_Date, StaticCallDuration = lstStaticCallDuration, EncDOSPhyIDList = lstEncDOSPhyName, PatientDetails = sPatientstrip, PersonName };
             return JsonConvert.SerializeObject(result);

@@ -27,7 +27,8 @@ namespace Acurus.Capella.UI
         {
             if (!IsPostBack)
             {
-                txtLabName.Text = Request["LabName"];
+                //CAP-2834
+                txtLabName.Text = HttpUtility.UrlDecode(Request["LabName"]);
                 mpnLabLocation.Reset();
                 btnSearch.Enabled = false;
                 btnOk.Enabled = false;

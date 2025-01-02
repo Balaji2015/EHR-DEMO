@@ -1,7 +1,7 @@
 ﻿var procedure = "";
 function OpenLabLocationScreen(LabID, LabName) {
     var objSelectLabLocation = new Array();
-    objSelectLabLocation.push("LabName=" + LabName);
+    objSelectLabLocation.push("LabName=" + encodeURIComponent(LabName));
     objSelectLabLocation.push("LabID=" + LabID);
     var SelectLabLocationResult = openModal("frmSelectLabLocation.aspx", 590, 720, objSelectLabLocation, 'MessageWindow');
     var WindowName = $find('MessageWindow');
@@ -1085,7 +1085,7 @@ function btnSelectLocation_Clicked(sender, args) {
     var cboLab = document.getElementById("cboLab");// $find("cboLab");
     var selectedLabID = cboLab.value;// cboLab.get_selectedItem().get_value();
     var objSelectLabLocation = new Array();
-    objSelectLabLocation.push("LabName=" + cboLab.options[cboLab.selectedIndex].text);//cboLab.get_selectedItem().get_text()
+    objSelectLabLocation.push("LabName=" + encodeURIComponent(cboLab.options[cboLab.selectedIndex].text));//cboLab.get_selectedItem().get_text()
     objSelectLabLocation.push("LabID=" + selectedLabID);
     var SelectLabLocationResult = openModal("frmSelectLabLocation.aspx", 618, 691, objSelectLabLocation, 'MessageWindow');
     var WindowName = $find('MessageWindow');
@@ -2117,7 +2117,7 @@ function btnSelectLocations(sender, args) {
     { sessionStorage.setItem('StartLoading', 'true'); StartLoadFromPatChart(); }
     var cboLab = document.getElementById("cboLab");
     var objSelectLabLocation = new Array();
-    objSelectLabLocation.push("LabName=" + cboLab.options[cboLab.selectedIndex].text);//cboLab.get_selectedItem().get_text()
+    objSelectLabLocation.push("LabName=" + encodeURIComponent(cboLab.options[cboLab.selectedIndex].text));//cboLab.get_selectedItem().get_text()
     objSelectLabLocation.push("LabID=" + cboLab.options[cboLab.selectedIndex].value);
     var SelectLabLocationResult = openModal("frmSelectLabLocation.aspx", 590, 720, objSelectLabLocation, 'MessageWindow');
     var WindowName = $find('MessageWindow');

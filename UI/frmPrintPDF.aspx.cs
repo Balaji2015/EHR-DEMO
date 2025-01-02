@@ -829,28 +829,49 @@ namespace Acurus.Capella.UI
                             //    }
                             //}
 
-                            xmldoc1 = new XmlDocument();
-                            strXmlFilePath1 = Path.Combine(System.Web.Hosting.HostingEnvironment.ApplicationPhysicalPath, "ConfigXML\\User.xml");
-                            if (File.Exists(strXmlFilePath1) == true)
+                            //xmldoc1 = new XmlDocument();
+                            //strXmlFilePath1 = Path.Combine(System.Web.Hosting.HostingEnvironment.ApplicationPhysicalPath, "ConfigXML\\User.xml");
+                            //if (File.Exists(strXmlFilePath1) == true)
+                            //{
+                            //    xmldoc1.Load(strXmlFilePath1);
+                            //    if (NotesHistory.StartsWith("@") == true && NotesHistory.Contains("(") == true)
+                            //    //if (sNotes.Contains("@") == true && sNotes.Contains("(") == true)
+                            //    {
+                            //        //    string[] sPhyName = txtProvNoteshistory.Text.Split(new string[] { "\n" }, StringSplitOptions.None);
+                            //        string[] sPhyName = NotesHistory.Split(new string[] { "\n" }, StringSplitOptions.None);
+                            //        for (int j = 0; j < sPhyName.Length; j++)
+                            //        {
+                            //            //Cap - 1230
+                            //            //if (sPhyName[j].Contains(sInterpretationTitle) == true)
+                            //            if (sPhyName[j] == sInterpretationTitle)
+                            //            {
+                            //                XmlNode nodeMatchingPhysicianAddress = xmldoc1.SelectSingleNode("/UserList/User[@User_Name='" + sPhyName[j].Substring(1, sPhyName[j].IndexOf(sInterpretationTitle) - 25) + "']"); // + ClientSession.CurrentPhysicianId);
+                            //                if (nodeMatchingPhysicianAddress != null)
+                            //                {
+                            //                    sPhysicianName = nodeMatchingPhysicianAddress.Attributes["person_name"].Value.ToString();
+                            //                    // sSignDate = sPhyName[j].Substring(sPhyName[j].IndexOf(sInterpretationTitle) - 23, sPhyName[j].IndexOf(sInterpretationTitle) - 12);
+                            //                    //sSignDate = ExtractBetween(sPhyName[j], "(", ")");
+                            //                }
+                            //            }
+                            //        }
+                            //    }
+                            //}
+                            //CAP-2788
+                            UserList ilstUserList = ConfigureBase<UserList>.ReadJson("User.json");
+                            if (ilstUserList?.User != null)
                             {
-                                xmldoc1.Load(strXmlFilePath1);
                                 if (NotesHistory.StartsWith("@") == true && NotesHistory.Contains("(") == true)
-                                //if (sNotes.Contains("@") == true && sNotes.Contains("(") == true)
                                 {
-                                    //    string[] sPhyName = txtProvNoteshistory.Text.Split(new string[] { "\n" }, StringSplitOptions.None);
                                     string[] sPhyName = NotesHistory.Split(new string[] { "\n" }, StringSplitOptions.None);
                                     for (int j = 0; j < sPhyName.Length; j++)
                                     {
-                                        //Cap - 1230
-                                        //if (sPhyName[j].Contains(sInterpretationTitle) == true)
                                         if (sPhyName[j] == sInterpretationTitle)
                                         {
-                                            XmlNode nodeMatchingPhysicianAddress = xmldoc1.SelectSingleNode("/UserList/User[@User_Name='" + sPhyName[j].Substring(1, sPhyName[j].IndexOf(sInterpretationTitle) - 25) + "']"); // + ClientSession.CurrentPhysicianId);
-                                            if (nodeMatchingPhysicianAddress != null)
+                                            string user_Name = sPhyName[j].Substring(1, sPhyName[j].IndexOf(sInterpretationTitle) - 25);
+                                            var filteredData = ilstUserList?.User.FirstOrDefault(a => a.User_Name != "0" && a.Physician_Library_ID.ToString() == user_Name);
+                                            if (filteredData != null)
                                             {
-                                                sPhysicianName = nodeMatchingPhysicianAddress.Attributes["person_name"].Value.ToString();
-                                                // sSignDate = sPhyName[j].Substring(sPhyName[j].IndexOf(sInterpretationTitle) - 23, sPhyName[j].IndexOf(sInterpretationTitle) - 12);
-                                                //sSignDate = ExtractBetween(sPhyName[j], "(", ")");
+                                                sPhysicianName = filteredData.person_name.ToString();
                                             }
                                         }
                                     }

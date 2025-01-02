@@ -463,8 +463,110 @@
         .TextWrapAll
         {
             overflow-wrap: break-word !important;
+        } .rowspace {
+            margin-top: 0.5%;
+            margin-bottom: 0.5%;
         }
+
+        th {
+            margin: 1%;
+            color: black;
+        }
+
+        div .inlineArrangement {
+            display: inline-block;
+        }
+
+        .rgSortedAsc {
+            background: url(../Resources/GridSortDown.png);
+            background-repeat: no-repeat;
+            background-color: #bfdbff;
+        }
+
+        .rgSortedDesc {
+            background: url(../Resources/GridUpSort.png);
+            background-repeat: no-repeat;
+            background-color: #bfdbff;
+        }
+
+        .btn-default:hover {
+            color: darkseagreen !important;
+            background-color: white !important;
+        }
+
+        label {
+            font-weight: 500;
+        }
+
+        td {
+            font: 12px/16px "segoe ui",arial,sans-serif;
+        }
+
+            td .selected {
+                background-color: #FFFFFF;
+            }
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background-color: #c3bfbf;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background-color: #707070;
+        }
+
+            ::-webkit-scrollbar-thumb:hover {
+                background-color: #3d3c3a;
+            }
+            .referralorder{
+                left:15px;
+                top:80px;
+            }.hide_column{
+    display:none;
+}
+    table.dataTable thead>tr>th.sorting:before,table.dataTable thead>tr>th.sorting:after{
+            width: 0% !important;
+        }
+table.dataTable > thead > tr > th,
+table.dataTable > thead > tr > td {
+    padding-right: 10px !important;
+    }
+
+.text-align-center{
+    text-align:center;
+}
+
+.word-break-all{
+    word-break: break-all;
+}
+.dataTables_empty {
+    display: none;
+}
+.dataTables_filter input {
+    width: 330px !important;
+    font-weight: bold;
+}
+.dataTables_wrapper th {
+    padding: 8px !important;
+}
+.process-word-wrap {
+    word-wrap: break-word;
+}
+.searchicon {
+        background-image: url(../Resources/SearchIcon.png);
+    background-repeat: no-repeat;
+        padding-left: 26px !important;
+}.TableCellBorder {
+            border: 1px solid #9090904d;
+ }
+
     </style>
+       
+    <link href="CSS/jquery.dataTables.min.css" rel="stylesheet" />
+    <link href="CSS/fontawesomenew.css" rel="stylesheet" />
+    <link href="CSS/fontawesome.min.css" rel="stylesheet" type="text/css" />
      <link href="~/CSS/CommonStyle.css" rel="Stylesheet" type="text/css" />
 </head>
 <body class="bodybackground" onload="OrderMgmtLoad();">
@@ -496,8 +598,8 @@
                                                             EnableViewState="false"  mand="Yes"></asp:Label>
                                                     </td>
                                                     <td class="style10" colspan="2">
-                                                        <telerik:RadComboBox ID="cboOrderType" runat="server" AutoPostBack="True" Height="75px" CssClass="Editabletxtbox"
-                                                            OnSelectedIndexChanged="cboOrderType_SelectedIndexChanged" Width="100%" OnClientSelectedIndexChanged="cboOrderType_SelectedIndexChanged">
+                                                        <telerik:RadComboBox ID="cboOrderType" runat="server" Height="75px" CssClass="Editabletxtbox" AutoPostBack="false"
+                                                         Width="100%" OnClientSelectedIndexChanged="cboOrderType_SelectedIndexChanged">
                                                         </telerik:RadComboBox>
                                                     </td>
                                                     <td class="style11">
@@ -590,7 +692,7 @@
                                                     </td>
                                                     <td class="style8">
                                                         <asp:ImageButton ID="pbClearPatientName" runat="server" ImageUrl="~/Resources/close_small_pressed.png"
-                                                            OnClick="pbClearPatientName_Click" OnClientClick="LoadIcon();" />
+                                                            OnClick="pbClearPatientName_Click" OnClientClick="LoadIconPatient(); return false;" />
                                                     </td>
                                                     <td class="style9">
                                                         <asp:Button ID="btnFindPatient" runat="server" OnClientClick="return FindPatient();"
@@ -601,14 +703,14 @@
                                                             EnableViewState="false"  CssClass="Editabletxtbox"></asp:Label>
                                                     </td>
                                                     <td class="style15">
-                                                        <telerik:RadTextBox ID="txtProviderName" runat="server" Height="20px" Style="margin-left: 0px"
+                                                         <telerik:RadTextBox ID="txtProviderName" runat="server" Height="20px" Style="margin-left: 0px"
                                                             tag="tagProviderName" Width="100%"  BorderWidth="1px"
                                                             EnableViewState="false" CssClass="nonEditabletxtbox">
                                                         </telerik:RadTextBox>
                                                     </td>
                                                     <td class="style13">
                                                         <asp:ImageButton ID="pbClearProviderName" runat="server" ImageUrl="~/Resources/close_small_pressed.png"
-                                                            OnClick="pbClearProviderName_Click" OnClientClick="LoadIcon();" />
+                                                            OnClick="pbClearProviderName_Click" OnClientClick="LoadIconProvider(); return false;" />
                                                     </td>
                                                     <td class="style14">
                                                         <asp:Button ID="btnFindProvider" runat="server" OnClientClick="return OpenFindPhysician();"
@@ -636,12 +738,18 @@
                                                     </td>
                                                     <td>
                                                     </td>
-                                                    <td>
+                                                    <td class="style14">
+                                                       <%-- <asp:Button ID="btnSearch" runat="server" OnClick="btnSearch_Click" OnClientClick="Load();"
+                                                            Text="Search" Width="100px" CssClass="aspresizedbluebutton" />--%>
+                                                         <asp:Button ID="btnSearch" runat="server" OnClientClick="return Load();"
+                                                            Text="Search" Width="100px" CssClass="aspresizedbluebutton" AutoPostBack="True" />
                                                     </td>
                                                     <td>
+                                                        <asp:Button ID="btnClearAll" runat="server" OnClientClick="return Clear();" Text="Clear All"
+                                                            Width="100px" CssClass="aspresizedredbutton"/>
                                                     </td>
                                                 </tr>
-                                                <tr>
+                                              <%--  <tr>
                                                     <td class="style27" colspan="3">
                                                         <asp:Label ID="lblResultsFound" runat="server" Text="Results" Width="100%" Font-Bold="true"
                                                             EnableViewState="false"  CssClass="Editabletxtbox"></asp:Label>
@@ -658,15 +766,8 @@
                                                     <td>
                                                         &nbsp;
                                                     </td>
-                                                    <td class="style14">
-                                                        <asp:Button ID="btnSearch" runat="server" OnClick="btnSearch_Click" OnClientClick="Load();"
-                                                            Text="Search" Width="100px" CssClass="aspresizedbluebutton" />
-                                                    </td>
-                                                    <td>
-                                                        <asp:Button ID="btnClearAll" runat="server" OnClientClick="return Clear();" Text="Clear All"
-                                                            Width="100px" CssClass="aspresizedredbutton"/>
-                                                    </td>
-                                                </tr>
+                                                    
+                                                </tr>--%>
                                             </table>
                                         </asp:Panel>
                                     </td>
@@ -674,7 +775,12 @@
                                 <tr>
                                     <td>
                                         <asp:Panel ID="pnlReport" runat="server" GroupingText="Search Results" CssClass="Panel LabelStyleBold">
-                                            <telerik:RadGrid ID="grdReport" runat="server" Height="235px" AutoGenerateColumns="False"
+                                             <div class="col-md-12 rowspace" style="height: 85%; width: 100%; padding: 0px;" id="scrollID">
+                                              <div class="table-responsive" style="width: 100%;height: 300px;" runat="server"
+                                                  id="ResultTableNew">
+                                              </div>
+                                                </div>
+                                            <%--<telerik:RadGrid ID="grdReport" runat="server" Height="235px" AutoGenerateColumns="False"
                                                 CellSpacing="0"  GridLines="None" OnNeedDataSource="grdReport_NeedDataSource"
                                                 OnItemCommand="grdReport_ItemCommand" CssClass="Gridbodystyle">
                                                 <ClientSettings EnablePostBackOnRowClick="True">
@@ -800,7 +906,7 @@
                                                         </telerik:GridBoundColumn>
                                                     </Columns>
                                                 </MasterTableView>
-                                            </telerik:RadGrid>
+                                            </telerik:RadGrid>--%>
                                         </asp:Panel>
                                     </td>
                                 </tr>
@@ -810,7 +916,7 @@
                 </tr>
                 <tr>
                     <td class="Editabletxtbox">
-                        <PageNavigator:PageNavigator ID="mpnOrderManagement" runat="server" OnFirst="FirstPageNavigator" />
+                        <%--<PageNavigator:PageNavigator ID="mpnOrderManagement" runat="server" OnFirst="FirstPageNavigator" />--%>
                     </td>
                     <td align="right">
                         <asp:Panel ID="pan" runat="server">
@@ -826,12 +932,11 @@
                                         &nbsp;
                                     </td>
                                     <td>
-                                        <asp:Button ID="btnAddResult" runat="server" OnClick="btnAddResult_Click" Text="Import Result"
-                                            Width="100px" CssClass="aspresizedbluebutton"/>
-                                    </td>
+                                       <asp:Button ID="btnAddResult" runat="server" OnClientClick="ResultsNew();return false;" Text="Import Result" Width="100px" CssClass="aspresizedbluebutton" />
+                                        
+                                     </td>
                                     <td>
-                                        <asp:Button ID="btnPrintToPDF" runat="server" OnClientClick="return btnExcelClick();"
-                                            OnClick="btnPrintToPDF_Click" Text="Print To PDF" Width="100px" CssClass="aspresizedbluebutton"/>
+                                        <asp:Button ID="btnPrintToPDF" runat="server" OnClientClick="PrintToPDF(); return false;" Text="Print To PDF" Width="100px" CssClass="aspresizedbluebutton"/>
                                     </td>
                                     <td>
                                         <asp:Button ID="btnExportToExcel" runat="server" OnClick="btnExportToExcel_Click"
@@ -860,6 +965,11 @@
     <asp:HiddenField ID="hdnResultsLabel" runat="server" EnableViewState="false" />
     <asp:HiddenField ID="hdnCurrentProcess" runat="server" />
      <asp:HiddenField ID="hdnOrder" runat="server" />
+        <asp:HiddenField ID="hdnOrderSubId" runat="server" />
+        <asp:HiddenField ID="hdnCurrentProc" runat="server" />
+        <asp:HiddenField ID="hdnIndexOrderID" runat="server" />
+        <asp:HiddenField ID="hdnElectronicSign" runat="server" />
+        <asp:HiddenField ID="hdnPostback" runat="server" />
     <br />
     <asp:HiddenField ID="hdnOrderStatus" runat="server" EnableViewState="false" />
     <div id="divLoading" class="modal" runat="server" style="text-align: center; display: none">
@@ -881,6 +991,8 @@
      <script src="JScripts/jquery-1.11.3.min.js"></script>
              <script src="JScripts/jquery-ui.js?version=<%=ConfigurationManager.AppSettings["VersionConfiguration"].ToString().Replace("Capella - ","") %>"></script>
             <script src="JScripts/bootstrap.min.js"></script>
+         <script src="JScripts/pako.min.js"></script>
+        <script src="JScripts/jquery.dataTables.min.js"></script>
     <script src="JScripts/JSModalWindow.js?version=<%=ConfigurationManager.AppSettings["VersionConfiguration"].ToString().Replace("Capella - ","") %>" type="text/javascript"></script>
     <script src="JScripts/JSC5PO.js?version=<%=ConfigurationManager.AppSettings["VersionConfiguration"].ToString().Replace("Capella - ","") %>" type="text/javascript"></script>
     <script src="JScripts/JSErrorMessage.js?version=<%=ConfigurationManager.AppSettings["VersionConfiguration"].ToString().Replace("Capella - ","") %>" type="text/javascript"></script>

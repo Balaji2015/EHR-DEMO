@@ -17,6 +17,7 @@ using System.Xml;
 using System.Xml.Serialization;
 using System.Reflection;
 using System.IO;
+using Acurus.Capella.Core.DTOJson;
 
 namespace Acurus.Capella.UI.WebServices
 {
@@ -86,27 +87,60 @@ namespace Acurus.Capella.UI.WebServices
                 if (prblmLst[i].Version_Year == "ICD_9")
                 {
                     bool bcheck = false;
-                    XmlDocument xmldoc = new XmlDocument();
-                    xmldoc.Load(System.Web.Hosting.HostingEnvironment.ApplicationPhysicalPath + "ConfigXML\\" + "icd_9_10_mapping" + ".xml");
-                    XmlNodeList xmlMappingList = xmldoc.GetElementsByTagName("icd_9_10_mapping");
-                    foreach (XmlNode item in xmlMappingList)
-                    {
-                        if (item != null)
-                        {
+                    //Jira cap - 2770 - XML to JSON
+                    //XmlDocument xmldoc = new XmlDocument();
+                    //xmldoc.Load(System.Web.Hosting.HostingEnvironment.ApplicationPhysicalPath + "ConfigXML\\" + "icd_9_10_mapping" + ".xml");
+                    //XmlNodeList xmlMappingList = xmldoc.GetElementsByTagName("icd_9_10_mapping");
+                    //foreach (XmlNode item in xmlMappingList)
+                    //{
+                    //    if (item != null)
+                    //    {
 
-                            if (item.Attributes[0].Value == prblmLst[i].ICD)
+                    //        if (item.Attributes[0].Value == prblmLst[i].ICD)
+                    //        {
+                    //            ICD10MutipleMapping.Add(prblmLst[i].ICD+"~"+prblmLst[i].Problem_Description+"~"+prblmLst[i].Id+"~"+prblmLst[i].Version+"~"+prblmLst[i].Status+ "^" + item.Attributes[1].Value);
+                    //            ResultLoadproblemListGrid.Remove(prblmLst[i]);
+                    //            bcheck = true;
+                    //        }
+                    //    }
+                    //}
+                    //if (!bcheck)
+                    //{
+                    //    ICD9singleMapping.Add(prblmLst[i].ICD);
+                    //    ResultLoadproblemListGrid.Remove(prblmLst[i]);
+                    //}
+
+
+                    IList<Icd_9_10_Mapping> iListIcd_9_10_Mapping = new List<Icd_9_10_Mapping>();
+                    icd_9_10_mapping ilisticd_9_10_mapping = new icd_9_10_mapping();
+                    ilisticd_9_10_mapping = ConfigureBase<icd_9_10_mapping>.ReadJson("icd_9_10_mapping.json");
+                    if (ilisticd_9_10_mapping != null)
+                    {
+                        iListIcd_9_10_Mapping = ilisticd_9_10_mapping.Icd_9_10_Mapping;
+                    }
+                    if ((iListIcd_9_10_Mapping?.Count ?? 0) > 0)
+                    {
+                        for (int j = 0; j < iListIcd_9_10_Mapping.Count; j++)
+                        {
+                            if (iListIcd_9_10_Mapping != null)
                             {
-                                ICD10MutipleMapping.Add(prblmLst[i].ICD+"~"+prblmLst[i].Problem_Description+"~"+prblmLst[i].Id+"~"+prblmLst[i].Version+"~"+prblmLst[i].Status+ "^" + item.Attributes[1].Value);
-                                ResultLoadproblemListGrid.Remove(prblmLst[i]);
-                                bcheck = true;
+
+                                if (iListIcd_9_10_Mapping[j].icd_9 == prblmLst[i].ICD)
+                                {
+                                    ICD10MutipleMapping.Add(prblmLst[i].ICD + "~" + prblmLst[i].Problem_Description + "~" + prblmLst[i].Id + "~" + prblmLst[i].Version + "~" + prblmLst[i].Status + "^" + iListIcd_9_10_Mapping[j].icd_choices);
+                                    ResultLoadproblemListGrid.Remove(prblmLst[i]);
+                                    bcheck = true;
+                                }
                             }
                         }
+                        if (!bcheck)
+                        {
+                            ICD9singleMapping.Add(prblmLst[i].ICD);
+                            ResultLoadproblemListGrid.Remove(prblmLst[i]);
+                        }
                     }
-                    if (!bcheck)
-                    {
-                        ICD9singleMapping.Add(prblmLst[i].ICD);
-                        ResultLoadproblemListGrid.Remove(prblmLst[i]);
-                    }
+
+
                 }
 
             }

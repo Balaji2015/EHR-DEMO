@@ -1617,8 +1617,9 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
                 physician = physicianID.ToString();
             }
             IQuery query;
-            int startIndex = 0;
-            startIndex = ((pageNumber - 1) * maxResults);
+            //Cap - 2622
+            //int startIndex = 0;
+            //startIndex = ((pageNumber - 1) * maxResults);
             using (ISession iMySession = NHibernateSessionManager.Instance.CreateISession())
             {
                 query = iMySession.GetNamedQuery("Fill.SearchOrderWithReferral");

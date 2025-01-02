@@ -1982,8 +1982,9 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
             using (ISession iMySession = NHibernateSessionManager.Instance.CreateISession())
             {
                 IQuery query;
-                int startIndex = 0;
-                startIndex = ((pageNumber - 1) * maxResults);
+                //Cap - 2622
+                //int startIndex = 0;                
+                //startIndex = ((pageNumber - 1) * maxResults);
                 query = iMySession.GetNamedQuery("Get.GetImmunizationOrderSearch");
                 query.SetString(0, orderType);
                 query.SetString(1, FacilityName);

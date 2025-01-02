@@ -349,3 +349,242 @@ function GetUTCTime() {
     var utc = (now.getUTCMonth() + 1) + '/' + now.getUTCDate() + '/' + now.getUTCFullYear(); utc += ' ' + now.getUTCHours() + ':' + now.getUTCMinutes() + ':' + now.getUTCSeconds();
     document.getElementById("hdnLocalTime").value = utc;
 }
+
+function LoadPatientList() {
+    { sessionStorage.setItem('StartLoading', 'true'); StartLoadFromPatChart(); }
+    $('#PatientListTable').empty();
+    $("#PatientListTable").append(`
+    <table id="PatientTable" class="table table-bordered Gridbodystyle" style="table-layout: fixed;width:100%;">
+    <thead class="header" style="border: 0px;width:96.7%;">
+        <tr class="header">
+            <th style="border: 1px solid #909090;text-align: center;">Patient Name</th>
+            <th style="border: 1px solid #909090;text-align: center;">DOB</th>
+            <th style="border: 1px solid #909090;text-align: center;">Pt. Acc. #</th>
+            <th style="border: 1px solid #909090;text-align: center;">Member ID</th>
+            <th style="border: 1px solid #909090;text-align: center;">DOS</th>
+            <th style="border: 1px solid #909090;text-align: center;">Enc. Provider</th>
+            <th style="border: 1px solid #909090;text-align: center;">Pri. Carrier</th>
+            <th style="border: 1px solid #909090;text-align: center;">Pri. Plan</th>
+            <th style="border: 1px solid #909090;text-align: center;">Type of Visit</th>
+            <th style="border: 1px solid #909090;text-align: center;">Facility</th>
+            <th style="border: 1px solid #909090;text-align: center;">Encounter ID</th>
+            <th style="border: 1px solid #909090;text-align: center;">View</th>
+        </tr>
+    </thead>
+</table>`);
+
+    var dataTable = new DataTable('#PatientTable', {
+        serverSide: false,
+        lengthChange: false,
+        searching: true,
+        processing: false,
+        ordering: true,
+        autoWidth: false,
+        order: [],
+        pageLength: 30,
+        language: {
+            search: "",
+            searchPlaceholder: "Search by Patient Name or Acct # or Member ID",
+            infoFiltered: ""
+        },
+        dom: '<"top"ipf>rt<"bottom"l><"clear">',
+        ajax: {
+            url: '/frmPatientList.aspx/LoadPatientList',
+            contentType: "application/json",
+            type: "GET",
+            dataType: "JSON",
+            deferRender: true,
+            data: function (d) {
+                d.extra_search = JSON.stringify({
+                    "dtFromDOS": $('#ctl00_C5POBody_dtFromDOS').val(),
+                    "dtToDOS": $('#ctl00_C5POBody_dtToDOS').val(),
+                    "dtpPatientDOB": $('#ctl00_C5POBody_dtpPatientDOB').val(),
+                    "ddlPayerName": $('#ctl00_C5POBody_ddlPayerName').val(),
+                    "sPlanId": $('#ctl00_C5POBody_ddlPlan').val(),
+                    "txtPatientAccNo": $('#ctl00_C5POBody_txtPatientAccNo').val(),
+                    "txtMemberId": $('#ctl00_C5POBody_txtMemberId').val(),
+                    "txtPatientLastName": $('#ctl00_C5POBody_txtPatientLastName').val(),
+                    "txtPatientFirstName": $('#ctl00_C5POBody_txtPatientFirstName').val(),
+                });
+                return d;
+            },
+            dataSrc: function (json) {
+                var objdata = json.d;
+                if (objdata.errorCode) {
+                    DisplayErrorMessage(objdata.errorCode);
+                } else {
+                    objdata.data = Decompress(objdata.data);
+                }
+
+                if (objdata?.data?.length > 0) {
+                    $('#ctl00_C5POBody_lblNoofResults').text(objdata?.data?.length + ' record(s) found.');
+                } else {
+                    $('#ctl00_C5POBody_lblNoofResults').text('No record(s) found.');
+                }
+
+                { sessionStorage.setItem('StartLoading', 'false'); StopLoadFromPatChart(); }
+                json.data = objdata.data;
+                return json.data;
+            },
+            error: function (xhr, error, code) {
+                { sessionStorage.setItem('StartLoading', 'false'); StopLoadFromPatChart(); }
+                if (xhr.status == 999)
+                    window.location = "frmSessionExpired.aspx";
+                else {
+                    var log = JSON.parse(xhr.responseText);
+                    console.log(log);
+                    alert("USER MESSAGE:\n" +
+                        ". Cannot process request. Please Login again and retry. \nEXCEPTION DETAILS: \n" +
+                        "Message: " + log.Message);
+                }
+            }
+        },
+        columns: [
+            { data: 'Patient Name', sWidth: '9%' },
+            {
+                data: 'DOB', render: function (data, type, row) {
+                    return DOBConvert(data.replace("T00:00:00", ""))
+                },
+                searchable: false,
+                type: 'date',
+                sWidth: '6%'
+            },
+            { data: 'Patient_Account_Number', sWidth: '5%' },
+            { data: 'Member ID', sWidth: '7%' },
+            {
+                data: 'DOS', render: function (data, type, row) {
+                    return ConvertDate(data.replace("T", " "));
+                },
+                searchable: false,
+                type: 'date',
+                sWidth: '7%'
+            },
+            { data: 'Provider_Name', searchable: false, sWidth: '9%' },
+            { data: 'Payer', searchable: false, sWidth: '9%' },
+            { data: 'Plan_Name', searchable: false, sWidth: '9%' },
+            { data: 'Type of Visit', searchable: false, sWidth: '7%' },
+            { data: 'Facility', searchable: false, sWidth: '7%' },
+            { data: 'Encounter ID', searchable: false, sClass: 'hide_column', sWidth: '7%' },
+            {
+                data: 'Carrier ID', render: function (data, type, row) {
+                    var encounterId = row["Encounter ID"];
+                    var humanId = row["Patient_Account_Number"];
+                    return `<span style="cursor: pointer;" title="View" onclick="viewSummary(${encounterId},${humanId});"> <img src="Resources/Down.bmp" alt="View"> </span>`;
+                },
+                searchable: false,
+                orderable: false,
+                sClass: 'text-align-center',
+                sWidth: '2%'
+            },
+        ],
+        initComplete: function (settings, json) {
+            $("#PatientTable_filter input")[0].classList.add('searchicon');
+        }
+    });
+
+    $('#PatientTable_filter').css({
+        'float': 'left',
+        'text-align': 'left',
+        'margin-left': '30px',
+        'font-size': '13px',
+    });
+
+    $('#PatientTable_info').css({
+        'min-width': '180px'
+    });
+
+    dataTable.on('page.dt', function () {
+        dataTable.$('tr.highlight').removeClass('highlight');
+    });
+
+    dataTable.on('search.dt', function () {
+        dataTable.$('tr.highlight').removeClass('highlight');
+    });
+
+    $('#PatientTable tbody').on('click', 'tr', function () {
+        $('#PatientTable tr').removeClass("odd");
+        $('#PatientTable tr').removeClass("even");
+        $('#PatientTable tbody tr').removeClass('highlight');
+        $(this)[0].classList.add('highlight');
+    });
+}
+
+function viewSummary(encounterId, humanId) {
+    { sessionStorage.setItem('StartLoading', 'true'); StartLoadFromPatChart(); }
+
+    $.ajax({
+        type: "POST",
+        url: "frmPatientList.aspx/ViewSummary",
+        data: JSON.stringify({
+            "humanId": humanId,
+            "encounterId": encounterId,
+        }),
+        contentType: "application/json;charset=utd-8",
+        dataType: "json",
+        async: false,
+        success: function (data) {
+            var sPath = `frmSummaryNew.aspx?IsPatientList=Y&EncounterID=${encounterId}&HumanID=${humanId}&TabMode=true`;
+            $(top.window.document).find('#ProcessModal').modal({ backdrop: 'static', keyboard: false }, 'show');
+            //$(top.window.document).find("#mdldlg")[0].style.width = "1050px";
+            $(top.window.document).find("#ProcessModal")[0].style.width = "";
+            $(top.window.document).find('#ProcessFrame')[0].contentDocument.location.href = sPath;
+            $(top.window.document).find("#ModalTitle")[0].textContent = "Summary";
+        },
+        error: function OnError(xhr) {
+            AutoSaveUnsuccessful();
+            if (xhr.status == 999)
+                window.location = "/frmSessionExpired.aspx";
+            else {
+                var log = JSON.parse(xhr.responseText);
+                console.log(log);
+                window.location = "ErrorPage.aspx?Message=" + log.Message + "|$|" + log.StackTrace;;
+
+            }
+            { sessionStorage.setItem('StartLoading', 'false'); StopLoadFromPatChart(); }
+        }
+
+    });
+}
+
+function Decompress(data) {
+    // Decode the Base64 string
+    const binaryString = window.atob(data);
+    // Convert binary string to byte array
+    const len = binaryString.length;
+    const bytes = new Uint8Array(len);
+    for (let i = 0; i < len; i++) {
+        bytes[i] = binaryString.charCodeAt(i);
+    }
+    // Use pako to decompress the byte array
+    const decompressed = pako.inflate(bytes, { to: 'string' });
+    return JSON.parse(decompressed);
+}
+
+function DOBConvert(DOB) {
+    var SplitDOB = DOB.split('-');
+    if (SplitDOB[1].substring(0, 1) == "0")
+        SplitDOB[1] = SplitDOB[1].slice(-1);
+    return SplitDOB[0] + "-" + (SplitDOB[1]).toString().padStart(2, '0') + "-" + SplitDOB[2];
+}
+
+function ConvertDate(utcDate) {
+    var monthNames = ["Jan", "Feb", "Mar", "Apr", "May", "Jun",
+        "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+    var now = new Date(utcDate + ' UTC');
+    var then = '';
+    var month = (now.getMonth() + 1).toString().padStart(2, '0'); 
+    if (utcDate == '0001-01-01 00:00:00')
+        then = '01-01-0001';
+    else
+        then = (now.getFullYear() + '-' + month + '-' + now.getDate().format("dd").slice(-2).toString().padStart(2, '0'));
+    var hours = now.getHours();
+    var minutes = now.getMinutes();
+    var ampm = hours >= 12 ? 'PM' : 'AM';
+    hours = hours % 12;
+    hours = hours ? hours : 12; // the hour '0' should be '12'
+    minutes = minutes < 10 ? '0' + minutes : minutes;
+    var strTime = ('0' + hours).slice(-2) + ':' + minutes + ' ' + ampm;
+    if (utcDate != '0001-01-01 00:00:00')
+        then += ' ' + strTime;
+    return then;
+}

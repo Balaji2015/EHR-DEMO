@@ -341,9 +341,14 @@
     <Compile Include="DomainObjects\workset_proc_alloc.cs" />
     <Compile Include="DTOJson\AssessmentVitalsLookupList.cs" />
     <Compile Include="DTOJson\Doctype.cs" />
+    <Compile Include="DTOJson\PhysicianAddressDetailsList.cs" />
+    <Compile Include="DTOJson\UserList.cs" />
     <Compile Include="DTOJson\Dynamic_Screen.cs" />
+    <Compile Include="DTOJson\icd_9_10_mapping.cs" />
     <Compile Include="DTOJson\ImmztnRegistry_LookupList.cs" />
     <Compile Include="DTOJson\Insurance_Plan.cs" />
+    <Compile Include="DTOJson\LabList.cs" />
+    <Compile Include="DTOJson\LabLocationList.cs" />
     <Compile Include="DTOJson\machine_technician.cs" />
     <Compile Include="DTOJson\PhysicianReviewProtocols.cs" />
     <Compile Include="DTOJson\Physician_POV.cs" />

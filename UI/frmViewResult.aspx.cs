@@ -3951,14 +3951,11 @@ namespace Acurus.Capella.UI
                             //    }
                             //}
 
-                            xmldoc1 = new XmlDocument();
-                            string strXmlFilePath1 = Path.Combine(System.Web.Hosting.HostingEnvironment.ApplicationPhysicalPath, "ConfigXML\\User.xml");
-
                             try
                             {
-                                if (File.Exists(strXmlFilePath1) == true)
+                                UserList ilstUserList = ConfigureBase<UserList>.ReadJson("User.json");
+                                if (ilstUserList?.User != null)
                                 {
-                                    xmldoc1.Load(strXmlFilePath1);
                                     if (txtProvNoteshistory.Text.StartsWith("@") == true && txtProvNoteshistory.Text.Contains("(") == true)
                                     {
                                         string[] sPhyName = txtProvNoteshistory.Text.Split(new string[] { "\n" }, StringSplitOptions.None);
@@ -3966,12 +3963,11 @@ namespace Acurus.Capella.UI
                                         {
                                             if (sPhyName[j].Contains(sInterpretationTitle) == true)
                                             {
-                                                XmlNode nodeMatchingPhysicianAddress = xmldoc1.SelectSingleNode("/UserList/User[@User_Name='" + sPhyName[j].Substring(1, sPhyName[j].IndexOf(sInterpretationTitle) - 25) + "']"); // + ClientSession.CurrentPhysicianId);
-                                                if (nodeMatchingPhysicianAddress != null)
+                                                string username = sPhyName[j].Substring(1, sPhyName[j].IndexOf(sInterpretationTitle) - 25);
+                                                var userFilteredData = ilstUserList?.User.FirstOrDefault(a => a.User_Name == username);
+                                                if (userFilteredData != null)
                                                 {
-                                                    sPhysicianName = nodeMatchingPhysicianAddress.Attributes["person_name"].Value.ToString();
-                                                    // sSignDate = sPhyName[j].Substring(sPhyName[j].IndexOf(sInterpretationTitle) - 23, sPhyName[j].IndexOf(sInterpretationTitle) - 12);
-                                                    //sSignDate = ExtractBetween(sPhyName[j], "(", ")");
+                                                    sPhysicianName = userFilteredData.person_name;
                                                 }
                                             }
                                         }
@@ -3980,7 +3976,7 @@ namespace Acurus.Capella.UI
                             }
                             catch (Exception ex)
                             {
-                                throw new Exception(ex.Message + " - " + strXmlFilePath1, ex);
+                                throw new Exception(ex.Message + " - " + "User.json", ex);
                             }
 
 

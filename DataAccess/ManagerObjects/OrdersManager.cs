@@ -5449,8 +5449,9 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
                     query.SetString(7, physician);
                     query.SetString(8, human);
                     query.SetString(9, orderType);
-                    query.SetInt32(10, ((pageNumber - 1) * maxResults));
-                    query.SetInt32(11, maxResults);
+                    //Cap - 2622
+                    //query.SetInt32(10, ((pageNumber - 1) * maxResults));
+                    //query.SetInt32(11, maxResults);
                     arr = new ArrayList(query.List());
                 }
 

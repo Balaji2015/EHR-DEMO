@@ -25,7 +25,9 @@ using System.Drawing;
 using Acurus.Capella.UI.Extensions;
 using Telerik.Web.UI;
 using System.Text;
-
+using System.IO.Compression;
+using Newtonsoft.Json;
+using System.Web.Script.Services;
 
 
 namespace Acurus.Capella.UI
@@ -33,6 +35,7 @@ namespace Acurus.Capella.UI
     public partial class frmPatientList : System.Web.UI.Page
     {
         DataTable dtEncounter;
+        static List<ListItem> ListPlan { get; set; }
         protected void Page_Load(object sender, EventArgs e)
         {
             if (!IsPostBack)
@@ -46,7 +49,6 @@ namespace Acurus.Capella.UI
                     Response.Redirect($"~/{loginpage}");
                 }
 
-                Page.ClientScript.GetPostBackEventReference(grdEncounters, "");
                 //lblLogged.Text = "You are logged in as" + " " + ClientSession.UserName + "  " + "in" + "  " + ClientSession.FacilityName;
                 var client = from c in ApplicationObject.ClientList where c.Legal_Org == ClientSession.LegalOrg select c;
                 IList<Client> currentClientList = client.ToList<Client>();
@@ -97,11 +99,10 @@ namespace Acurus.Capella.UI
                     if (DateTime.Now.Month.ToString() == "1")
                     {
                         dtToDOS.Text = DateTime.Now.Day.ToString() + "-" + "JAN" + "-" + DateTime.Now.Year.ToString();
-                        CreateEmptyGrid();
                     }
                     else
                     {
-                        dtToDOS.Text = DateTime.Now.Day.ToString() + "-" + ListofMonth[DateTime.Now.AddMonths(-1).Month] + "-" + DateTime.Now.Year.ToString(); CreateEmptyGrid();
+                        dtToDOS.Text = DateTime.Now.Day.ToString() + "-" + ListofMonth[DateTime.Now.AddMonths(-1).Month] + "-" + DateTime.Now.Year.ToString();
                     }
 
                 }
@@ -164,62 +165,62 @@ namespace Acurus.Capella.UI
             }
         }
 
-        public void loadGrid(DataTable dtEncounter)
-        {
+        //public void loadGrid(DataTable dtEncounter)
+        //{
 
-            for (int iCount = 0; iCount < dtEncounter.Rows.Count; iCount++)
-            {
-                DateTime dtTime = Convert.ToDateTime(dtEncounter.Rows[iCount]["DOS"].ToString());
-                string strDate = UtilityManager.ConvertToLocal(dtTime).ToString("yyyy-MM-dd hh:mm tt"); //dd-MMM-yyyy hh:mm tt");
-                dtEncounter.Rows[iCount]["DOS"] = strDate;
-            }
-            grdEncounters.DataSource = dtEncounter;
-            grdEncounters.DataBind();
+        //    for (int iCount = 0; iCount < dtEncounter.Rows.Count; iCount++)
+        //    {
+        //        DateTime dtTime = Convert.ToDateTime(dtEncounter.Rows[iCount]["DOS"].ToString());
+        //        string strDate = UtilityManager.ConvertToLocal(dtTime).ToString("yyyy-MM-dd hh:mm tt"); //dd-MMM-yyyy hh:mm tt");
+        //        dtEncounter.Rows[iCount]["DOS"] = strDate;
+        //    }
+        //    grdEncounters.DataSource = dtEncounter;
+        //    grdEncounters.DataBind();
 
-            if (dtEncounter.Rows.Count == 0)
-            {
-                lblNoofResults.Text = "No record(s) found.";
-                CreateEmptyGrid();
-            }
-            else
-            {
-                lblNoofResults.Text = dtEncounter.Rows.Count.ToString() + " record(s) found.";
+        //    if (dtEncounter.Rows.Count == 0)
+        //    {
+        //        lblNoofResults.Text = "No record(s) found.";
+        //        CreateEmptyGrid();
+        //    }
+        //    else
+        //    {
+        //        lblNoofResults.Text = dtEncounter.Rows.Count.ToString() + " record(s) found.";
 
-                //GridSortExpression sort = new GridSortExpression();
-                //sort.FieldName = "Date of Service";
-                //sort.SortOrder = GridSortOrder.Ascending;
-                //grdEncounters.MasterTableView.SortExpressions.AddSortExpression(sort);
-                //grdEncounters.MasterTableView.Rebind();
-            }
-        }
+        //        //GridSortExpression sort = new GridSortExpression();
+        //        //sort.FieldName = "Date of Service";
+        //        //sort.SortOrder = GridSortOrder.Ascending;
+        //        //grdEncounters.MasterTableView.SortExpressions.AddSortExpression(sort);
+        //        //grdEncounters.MasterTableView.Rebind();
+        //    }
+        //}
 
-        private void CreateEmptyGrid()
-        {
-            DataTable dtHuman = new DataTable();
-            dtHuman.Columns.Add("Patient Name", typeof(string));
-            dtHuman.Columns.Add("DOB", typeof(string));
-            dtHuman.Columns.Add("Pt. Acc. #", typeof(string));
-            dtHuman.Columns.Add("Member ID", typeof(string));
-            dtHuman.Columns.Add("DOS", typeof(DateTime));
-            //Jira CAP-1014
-            //dtHuman.Columns.Add("Provider Name", typeof(string));
-            dtHuman.Columns.Add("Enc. Provider", typeof(string));
-            dtHuman.Columns.Add("Pri. Carrier", typeof(string));
-            dtHuman.Columns.Add("Pri. Plan", typeof(string));
-            dtHuman.Columns.Add("Type of Visit", typeof(string));
-            dtHuman.Columns.Add("Facility", typeof(string));
-            dtHuman.Columns.Add("Encounter ID", typeof(string));
-            DataRow dr = dtHuman.NewRow();
-            dtHuman.Rows.Add(dr);
-            grdEncounters.DataSource = dtHuman;
-            grdEncounters.DataBind();
-            GridDataItem item = (GridDataItem)grdEncounters.MasterTableView.Items[0];
-            item["View"].Visible = false;
+        //private void CreateEmptyGrid()
+        //{
+        //    DataTable dtHuman = new DataTable();
+        //    dtHuman.Columns.Add("Patient Name", typeof(string));
+        //    dtHuman.Columns.Add("DOB", typeof(string));
+        //    dtHuman.Columns.Add("Pt. Acc. #", typeof(string));
+        //    dtHuman.Columns.Add("Member ID", typeof(string));
+        //    dtHuman.Columns.Add("DOS", typeof(DateTime));
+        //    //Jira CAP-1014
+        //    //dtHuman.Columns.Add("Provider Name", typeof(string));
+        //    dtHuman.Columns.Add("Enc. Provider", typeof(string));
+        //    dtHuman.Columns.Add("Pri. Carrier", typeof(string));
+        //    dtHuman.Columns.Add("Pri. Plan", typeof(string));
+        //    dtHuman.Columns.Add("Type of Visit", typeof(string));
+        //    dtHuman.Columns.Add("Facility", typeof(string));
+        //    dtHuman.Columns.Add("Encounter ID", typeof(string));
+        //    DataRow dr = dtHuman.NewRow();
+        //    dtHuman.Rows.Add(dr);
+        //    grdEncounters.DataSource = dtHuman;
+        //    grdEncounters.DataBind();
+        //    GridDataItem item = (GridDataItem)grdEncounters.MasterTableView.Items[0];
+        //    item["View"].Visible = false;
 
-            dtEncounter = new DataTable();
+        //    dtEncounter = new DataTable();
 
-            Session["PatientListGrid"] = null;
-        }
+        //    Session["PatientListGrid"] = null;
+        //}
 
         protected void btnlogout_Click(object sender, EventArgs e)
         {
@@ -228,99 +229,191 @@ namespace Acurus.Capella.UI
             Response.Write($"<script> window.top.location.href=\" {loginpage} \"; </script>t>");
         }
 
-        protected void btnOK_Click(object sender, EventArgs e)
+        //protected void btnOK_Click(object sender, EventArgs e)
+        //{
+        //    //if (dtpPatientDOB.DateInput.SelectedDate == null)
+        //    //{
+        //    //    ScriptManager.RegisterStartupScript(this, this.Page.GetType(), string.Empty, "DisplayErrorMessage('103012'); {sessionStorage.setItem('StartLoading', 'false');StopLoadFromPatChart();}", true);
+        //    //    dtToDOS.Focus();
+        //    //    return;
+        //    //}
+        //    if (dtFromDOS.Text == string.Empty)
+        //    {
+        //        ScriptManager.RegisterStartupScript(this, this.Page.GetType(), string.Empty, "DisplayErrorMessage('103010'); {sessionStorage.setItem('StartLoading', 'false');StopLoadFromPatChart();}", true);
+        //        dtFromDOS.Focus();
+        //        lblNoofResults.Text = "No record(s) found.";
+        //        CreateEmptyGrid();
+        //        return;
+        //    }
+        //    if (dtToDOS.Text== string.Empty)
+        //    {
+        //        ScriptManager.RegisterStartupScript(this, this.Page.GetType(), string.Empty, "DisplayErrorMessage('103011'); {sessionStorage.setItem('StartLoading', 'false');StopLoadFromPatChart();}", true);
+        //        dtToDOS.Focus();
+        //        lblNoofResults.Text = "No record(s) found.";
+        //        CreateEmptyGrid();
+        //        return;
+        //    }
+        //    if (Convert.ToDateTime(dtFromDOS.Text) > Convert.ToDateTime(dtToDOS.Text))
+        //    {
+        //        ScriptManager.RegisterStartupScript(this, this.Page.GetType(), string.Empty, "DisplayErrorMessage('103005'); {sessionStorage.setItem('StartLoading', 'false');StopLoadFromPatChart();}", true);
+        //        dtFromDOS.Focus();
+        //        lblNoofResults.Text = "No record(s) found.";
+        //        CreateEmptyGrid();
+        //        return;
+        //    }
+        //    if (Convert.ToDateTime(dtFromDOS.Text) > DateTime.Now)
+        //    {
+        //        ScriptManager.RegisterStartupScript(this, this.Page.GetType(), string.Empty, "DisplayErrorMessage('103008'); {sessionStorage.setItem('StartLoading', 'false');StopLoadFromPatChart();}", true);
+        //        dtFromDOS.Focus();
+        //        lblNoofResults.Text = "No record(s) found.";
+        //        CreateEmptyGrid();
+        //        return;
+        //    }
+        //    if (Convert.ToDateTime(dtToDOS.Text) > DateTime.Now)
+        //    {
+        //        ScriptManager.RegisterStartupScript(this, this.Page.GetType(), string.Empty, "DisplayErrorMessage('103009'); {sessionStorage.setItem('StartLoading', 'false');StopLoadFromPatChart();}", true);
+        //        dtToDOS.Focus();
+        //        lblNoofResults.Text = "No record(s) found.";
+        //        CreateEmptyGrid();
+        //        return;
+        //    }
+        //    if (dtpPatientDOB.Text!=string.Empty && Convert.ToDateTime(dtpPatientDOB.Text) > DateTime.Now)
+        //    {
+        //        ScriptManager.RegisterStartupScript(this, this.Page.GetType(), string.Empty, "DisplayErrorMessage('103013'); {sessionStorage.setItem('StartLoading', 'false');StopLoadFromPatChart();}", true);
+        //        dtpPatientDOB.Focus();
+        //        lblNoofResults.Text = "No record(s) found.";
+        //        CreateEmptyGrid();
+        //        return;
+        //    }
+
+
+        //    EncounterManager encMngr = new EncounterManager();
+        //    DataTable dtEncounter = null;
+        //    string sPlanId = string.Empty;
+        //    if (ddlPlan.SelectedItem.Text == "ALL")
+        //    {
+        //        for (int iCount = 0; iCount < ddlPlan.Items.Count; iCount++)
+        //        {
+        //            if (ddlPlan.Items[iCount].Text != "ALL")
+        //            {
+        //                if (sPlanId == string.Empty)
+        //                    sPlanId = "'" + ddlPlan.Items[iCount].Value + "'";
+        //                else
+        //                    sPlanId += ",'" + ddlPlan.Items[iCount].Value + "'";
+        //            }
+
+        //        }
+        //    }
+        //    else
+        //    {
+        //        if (ddlPlan.SelectedItem.Value.Trim() != "ALL")
+        //            sPlanId = "'" + ddlPlan.SelectedItem.Value + "'";
+        //    }
+
+        //    string dob = dtpPatientDOB.Text;
+        //    if (dob == string.Empty)
+        //        dob = DateTime.MinValue.ToString();
+        //    if (txtPatientAccNo.Value == string.Empty)
+        //        dtEncounter = encMngr.GetEncountersbyDOSRange(0, Convert.ToDateTime(dob), txtMemberId.Value, ddlPayerName.Value, Convert.ToDateTime(dtFromDOS.Text), Convert.ToDateTime(dtToDOS.Text), txtPatientLastName.Value, txtPatientFirstName.Value, sPlanId, ClientSession.LegalOrg);
+        //    else
+        //        dtEncounter = encMngr.GetEncountersbyDOSRange(Convert.ToUInt64(txtPatientAccNo.Value), Convert.ToDateTime(dob), txtMemberId.Value, ddlPayerName.Value, Convert.ToDateTime(dtFromDOS.Text), Convert.ToDateTime(dtToDOS.Text), txtPatientLastName.Value, txtPatientFirstName.Value, sPlanId, ClientSession.LegalOrg);
+        //    Session["PatientListGrid"] = dtEncounter;
+
+        //    loadGrid(dtEncounter);
+        //    ScriptManager.RegisterStartupScript(this, this.GetType(), "closeload", " {sessionStorage.setItem('StartLoading', 'false');StopLoadFromPatChart();}", true);
+
+        //}
+
+        [WebMethod(EnableSession = true)]
+        [ScriptMethod(ResponseFormat = ResponseFormat.Json, UseHttpGet = true)]
+        public static object LoadPatientList()
         {
-            //if (dtpPatientDOB.DateInput.SelectedDate == null)
-            //{
-            //    ScriptManager.RegisterStartupScript(this, this.Page.GetType(), string.Empty, "DisplayErrorMessage('103012'); {sessionStorage.setItem('StartLoading', 'false');StopLoadFromPatChart();}", true);
-            //    dtToDOS.Focus();
-            //    return;
-            //}
-            if (dtFromDOS.Text == string.Empty)
+            string errorCode = "";
+            string extra_search = HttpContext.Current.Request.Params["extra_search"];
+            var searchData = JsonConvert.DeserializeObject<Dictionary<string, string>>(extra_search);
+            string dtFromDOS = searchData["dtFromDOS"] ?? "";
+            dtFromDOS = dtFromDOS.Replace("__-___-____", "");
+            string dtToDOS = searchData["dtToDOS"] ?? "";
+            dtToDOS = dtToDOS.Replace("__-___-____", "");
+            string dtpPatientDOB = searchData["dtpPatientDOB"] ?? "";
+            dtpPatientDOB = dtpPatientDOB.Replace("__-___-____", "");
+            string ddlPayerName = searchData["ddlPayerName"];
+            string sPlanId = searchData["sPlanId"];
+            string txtPatientAccNo = searchData["txtPatientAccNo"];
+            string txtMemberId = searchData["txtMemberId"];
+            string txtPatientLastName = searchData["txtPatientLastName"];
+            string txtPatientFirstName = searchData["txtPatientFirstName"];
+
+            if (dtFromDOS == string.Empty)
             {
-                ScriptManager.RegisterStartupScript(this, this.Page.GetType(), string.Empty, "DisplayErrorMessage('103010'); {sessionStorage.setItem('StartLoading', 'false');StopLoadFromPatChart();}", true);
-                dtFromDOS.Focus();
-                lblNoofResults.Text = "No record(s) found.";
-                CreateEmptyGrid();
-                return;
+                errorCode = "103010";
+                return new { data = "", errorCode };
             }
-            if (dtToDOS.Text== string.Empty)
+            if (dtToDOS == string.Empty)
             {
-                ScriptManager.RegisterStartupScript(this, this.Page.GetType(), string.Empty, "DisplayErrorMessage('103011'); {sessionStorage.setItem('StartLoading', 'false');StopLoadFromPatChart();}", true);
-                dtToDOS.Focus();
-                lblNoofResults.Text = "No record(s) found.";
-                CreateEmptyGrid();
-                return;
+                errorCode = "103011";
+                return new { data = "", errorCode };
             }
-            if (Convert.ToDateTime(dtFromDOS.Text) > Convert.ToDateTime(dtToDOS.Text))
+            if (Convert.ToDateTime(dtFromDOS) > Convert.ToDateTime(dtToDOS))
             {
-                ScriptManager.RegisterStartupScript(this, this.Page.GetType(), string.Empty, "DisplayErrorMessage('103005'); {sessionStorage.setItem('StartLoading', 'false');StopLoadFromPatChart();}", true);
-                dtFromDOS.Focus();
-                lblNoofResults.Text = "No record(s) found.";
-                CreateEmptyGrid();
-                return;
+                errorCode = "103005";
+                return new { data = "", errorCode };
             }
-            if (Convert.ToDateTime(dtFromDOS.Text) > DateTime.Now)
+            if (Convert.ToDateTime(dtFromDOS) > DateTime.Now)
             {
-                ScriptManager.RegisterStartupScript(this, this.Page.GetType(), string.Empty, "DisplayErrorMessage('103008'); {sessionStorage.setItem('StartLoading', 'false');StopLoadFromPatChart();}", true);
-                dtFromDOS.Focus();
-                lblNoofResults.Text = "No record(s) found.";
-                CreateEmptyGrid();
-                return;
+                errorCode = "103008";
+                return new { data = "", errorCode };
             }
-            if (Convert.ToDateTime(dtToDOS.Text) > DateTime.Now)
+            if (Convert.ToDateTime(dtToDOS) > DateTime.Now)
             {
-                ScriptManager.RegisterStartupScript(this, this.Page.GetType(), string.Empty, "DisplayErrorMessage('103009'); {sessionStorage.setItem('StartLoading', 'false');StopLoadFromPatChart();}", true);
-                dtToDOS.Focus();
-                lblNoofResults.Text = "No record(s) found.";
-                CreateEmptyGrid();
-                return;
+                errorCode = "103009";
+                return new { data = "", errorCode };
             }
-            if (dtpPatientDOB.Text!=string.Empty && Convert.ToDateTime(dtpPatientDOB.Text) > DateTime.Now)
+            if (dtpPatientDOB != string.Empty && Convert.ToDateTime(dtpPatientDOB) > DateTime.Now)
             {
-                ScriptManager.RegisterStartupScript(this, this.Page.GetType(), string.Empty, "DisplayErrorMessage('103013'); {sessionStorage.setItem('StartLoading', 'false');StopLoadFromPatChart();}", true);
-                dtpPatientDOB.Focus();
-                lblNoofResults.Text = "No record(s) found.";
-                CreateEmptyGrid();
-                return;
+                errorCode = "103013";
+                return new { data = "", errorCode };
             }
 
+            if (sPlanId == "ALL" && !string.IsNullOrEmpty(ddlPayerName) && ddlPayerName.Split(',').Count() == 1 && ListPlan != null)
+            {
+                sPlanId = string.Join(",", ListPlan.Where(a => a.Text != "ALL").Select(a => a.Value));
+            }
+            sPlanId = sPlanId.Replace("ALL", "");
 
             EncounterManager encMngr = new EncounterManager();
             DataTable dtEncounter = null;
-            string sPlanId = string.Empty;
-            if (ddlPlan.SelectedItem.Text == "ALL")
-            {
-                for (int iCount = 0; iCount < ddlPlan.Items.Count; iCount++)
-                {
-                    if (ddlPlan.Items[iCount].Text != "ALL")
-                    {
-                        if (sPlanId == string.Empty)
-                            sPlanId = "'" + ddlPlan.Items[iCount].Value + "'";
-                        else
-                            sPlanId += ",'" + ddlPlan.Items[iCount].Value + "'";
-                    }
-
-                }
-            }
+            if (dtpPatientDOB == string.Empty)
+                dtpPatientDOB = DateTime.MinValue.ToString();
+            if (txtPatientAccNo == string.Empty)
+                dtEncounter = encMngr.GetEncountersbyDOSRange(0, Convert.ToDateTime(dtpPatientDOB), txtMemberId, ddlPayerName, Convert.ToDateTime(dtFromDOS), Convert.ToDateTime(dtToDOS), txtPatientLastName, txtPatientFirstName, sPlanId, ClientSession.LegalOrg);
             else
+                dtEncounter = encMngr.GetEncountersbyDOSRange(Convert.ToUInt64(txtPatientAccNo), Convert.ToDateTime(dtpPatientDOB), txtMemberId, ddlPayerName, Convert.ToDateTime(dtFromDOS), Convert.ToDateTime(dtToDOS), txtPatientLastName, txtPatientFirstName, sPlanId, ClientSession.LegalOrg);
+
+            HttpContext.Current.Session["PatientListGrid"] = dtEncounter;
+            dtEncounter.Columns["Pt. Acc. #"].ColumnName = "Patient_Account_Number";
+            dtEncounter.Columns["Enc. Provider"].ColumnName = "Provider_Name";
+            dtEncounter.Columns["Pri. Carrier"].ColumnName = "Payer";
+            dtEncounter.Columns["Pri. Plan"].ColumnName = "Plan_Name";
+
+            var result = new
             {
-                if (ddlPlan.SelectedItem.Value.Trim() != "ALL")
-                    sPlanId = "'" + ddlPlan.SelectedItem.Value + "'";
+                data = Compress(JsonConvert.SerializeObject(dtEncounter)),
+                errorCode
+            };
+            return result;
+        }
+
+        [WebMethod(EnableSession = true)]
+        [ScriptMethod(ResponseFormat = ResponseFormat.Json)]
+        public static object ViewSummary(string humanId, string encounterId)
+        {
+            if (!string.IsNullOrEmpty(humanId))
+            {
+                ClientSession.HumanId = Convert.ToUInt64(humanId);
             }
-
-            string dob = dtpPatientDOB.Text;
-            if (dob == string.Empty)
-                dob = DateTime.MinValue.ToString();
-            if (txtPatientAccNo.Value == string.Empty)
-                dtEncounter = encMngr.GetEncountersbyDOSRange(0, Convert.ToDateTime(dob), txtMemberId.Value, ddlPayerName.Value, Convert.ToDateTime(dtFromDOS.Text), Convert.ToDateTime(dtToDOS.Text), txtPatientLastName.Value, txtPatientFirstName.Value, sPlanId, ClientSession.LegalOrg);
-            else
-                dtEncounter = encMngr.GetEncountersbyDOSRange(Convert.ToUInt64(txtPatientAccNo.Value), Convert.ToDateTime(dob), txtMemberId.Value, ddlPayerName.Value, Convert.ToDateTime(dtFromDOS.Text), Convert.ToDateTime(dtToDOS.Text), txtPatientLastName.Value, txtPatientFirstName.Value, sPlanId, ClientSession.LegalOrg);
-            Session["PatientListGrid"] = dtEncounter;
-
-            loadGrid(dtEncounter);
-            ScriptManager.RegisterStartupScript(this, this.GetType(), "closeload", " {sessionStorage.setItem('StartLoading', 'false');StopLoadFromPatChart();}", true);
-
+            ClientSession.EncounterId = Convert.ToUInt64(encounterId);
+            return "";
         }
 
         protected void btnClear_Click(object sender, EventArgs e)
@@ -342,35 +435,34 @@ namespace Acurus.Capella.UI
             else
                 dtToDOS.Text = DateTime.Now.Day.ToString() + "-" + ListofMonth[DateTime.Now.AddMonths(-1).Month] + "-" + DateTime.Now.Year.ToString();
             dtpPatientDOB.Text = string.Empty;
-            CreateEmptyGrid();
             lblNoofResults.Text = "No record(s) found.";
         }
 
-        protected void grdEncounters_ItemCommand(object sender, GridCommandEventArgs e)
-        {
-            if (e.CommandName == "ViewSummary")
-            {
-                hdnEncID.Value = grdEncounters.MasterTableView.Items[0].Cells[9].Text;
+        //protected void grdEncounters_ItemCommand(object sender, GridCommandEventArgs e)
+        //{
+        //    if (e.CommandName == "ViewSummary")
+        //    {
+        //        hdnEncID.Value = grdEncounters.MasterTableView.Items[0].Cells[9].Text;
 
-                GridDataItem GridSelectItem = (GridDataItem)e.Item;
-                if (GridSelectItem["PatientAcc"].Text != null && GridSelectItem["PatientAcc"].Text != string.Empty)
-                {
-                    ClientSession.HumanId = Convert.ToUInt64(GridSelectItem["PatientAcc"].Text.ToString());
-                }
-                ClientSession.EncounterId = Convert.ToUInt64(GridSelectItem["EncID"].Text);
+        //        GridDataItem GridSelectItem = (GridDataItem)e.Item;
+        //        if (GridSelectItem["PatientAcc"].Text != null && GridSelectItem["PatientAcc"].Text != string.Empty)
+        //        {
+        //            ClientSession.HumanId = Convert.ToUInt64(GridSelectItem["PatientAcc"].Text.ToString());
+        //        }
+        //        ClientSession.EncounterId = Convert.ToUInt64(GridSelectItem["EncID"].Text);
 
-                PatListModalWindow.Visible = true;
-                PatListModalWindow.VisibleOnPageLoad = true;
-                PatListModalWindow.Width = 1018;
-                PatListModalWindow.Height = 600;
-                PatListModalWindow.VisibleStatusbar = false;
-                PatListModalWindow.OnClientBeforeClose = "CloseResultPage";
-                PatListModalWindow.OnClientClose = "RefreshCloseResultPage";
-                //PatListModalWindow.NavigateUrl = "frmSummaryNew.aspx?IsPatientList=Y" + "&EncounterID=" + ClientSession.EncounterId.ToString() + "&HumanID=" + ClientSession.HumanId.ToString();
-                PatListModalWindow.NavigateUrl = "frmSummaryNew.aspx?IsPatientList=Y" + "&EncounterID=" + ClientSession.EncounterId.ToString() + "&HumanID=" + ClientSession.HumanId.ToString()+"&TabMode=true";
+        //        PatListModalWindow.Visible = true;
+        //        PatListModalWindow.VisibleOnPageLoad = true;
+        //        PatListModalWindow.Width = 1018;
+        //        PatListModalWindow.Height = 600;
+        //        PatListModalWindow.VisibleStatusbar = false;
+        //        PatListModalWindow.OnClientBeforeClose = "CloseResultPage";
+        //        PatListModalWindow.OnClientClose = "RefreshCloseResultPage";
+        //        //PatListModalWindow.NavigateUrl = "frmSummaryNew.aspx?IsPatientList=Y" + "&EncounterID=" + ClientSession.EncounterId.ToString() + "&HumanID=" + ClientSession.HumanId.ToString();
+        //        PatListModalWindow.NavigateUrl = "frmSummaryNew.aspx?IsPatientList=Y" + "&EncounterID=" + ClientSession.EncounterId.ToString() + "&HumanID=" + ClientSession.HumanId.ToString()+"&TabMode=true";
 
-            }
-        }
+        //    }
+        //}
 
         protected void ddlPayerName_SelectedIndexChanged(object sender, EventArgs e)
         {
@@ -428,21 +520,22 @@ namespace Acurus.Capella.UI
                         }
                     }
                 }
+                ListPlan = ddlPlan.Items.Cast<ListItem>().ToList();
             }
         }
 
-        protected void grdEncounters_NeedDataSource(object sender, GridNeedDataSourceEventArgs e)
-        {
-            dtEncounter = (DataTable)Session["PatientListGrid"];
+        //protected void grdEncounters_NeedDataSource(object sender, GridNeedDataSourceEventArgs e)
+        //{
+        //    dtEncounter = (DataTable)Session["PatientListGrid"];
 
-            //for (int iCount = 0; iCount < dtEncounter.Rows.Count; iCount++)
-            //{
-            //    DateTime dtTime = Convert.ToDateTime(dtEncounter.Rows[iCount]["DOS"].ToString());
-            //    string strDate = UtilityManager.ConvertToLocal(dtTime).ToString("yyyy-MM-dd hh:mm tt"); //"dd-MMM-yyyy hh:mm tt");
-            //    dtEncounter.Rows[iCount]["DOS"] = strDate;
-            //}
-            grdEncounters.DataSource = dtEncounter;
-        }
+        //    //for (int iCount = 0; iCount < dtEncounter.Rows.Count; iCount++)
+        //    //{
+        //    //    DateTime dtTime = Convert.ToDateTime(dtEncounter.Rows[iCount]["DOS"].ToString());
+        //    //    string strDate = UtilityManager.ConvertToLocal(dtTime).ToString("yyyy-MM-dd hh:mm tt"); //"dd-MMM-yyyy hh:mm tt");
+        //    //    dtEncounter.Rows[iCount]["DOS"] = strDate;
+        //    //}
+        //    grdEncounters.DataSource = dtEncounter;
+        //}
 
         protected void btnExporttoExcel_Click(object sender, EventArgs e)
         {
@@ -457,6 +550,16 @@ namespace Acurus.Capella.UI
             }
 
             dtNew = ((DataTable)Session["PatientListGrid"]).Copy();
+            for (int iCount = 0; iCount < dtNew.Rows.Count; iCount++)
+            {
+                DateTime dtTime = Convert.ToDateTime(dtNew.Rows[iCount]["DOS"].ToString());
+                string strDate = UtilityManager.ConvertToLocal(dtTime).ToString("yyyy-MM-dd hh:mm tt"); //dd-MMM-yyyy hh:mm tt");
+                dtNew.Rows[iCount]["DOS"] = strDate;
+            }
+            dtNew.Columns["Patient_Account_Number"].ColumnName = "Pt. Acc. #";
+            dtNew.Columns["Provider_Name"].ColumnName = "Enc. Provider";
+            dtNew.Columns["Payer"].ColumnName = "Pri. Carrier";
+            dtNew.Columns["Plan_Name"].ColumnName = "Pri. Plan";
 
             dsreport.Tables.Add(dtNew);
             
@@ -522,7 +625,7 @@ namespace Acurus.Capella.UI
                 sResponseMessage.Append("<tr align=\"center\" >");
                 for (col = 0; col < dv.Table.Columns.Count - 1; col++)
                 {
-                    if (grdEncounters.Columns[col].Display == true)
+                    if (dv.Table.Columns[col].ColumnName != "Encounter ID")
                     {
 
                         sResponseMessage.Append("<td width=\"20%\"><strong>" + dv.Table.Columns[col].ColumnName + "</strong></td>");
@@ -535,7 +638,7 @@ namespace Acurus.Capella.UI
                     sResponseMessage.Append("<tr>");
                     for (col = 0; col < dv.Table.Columns.Count - 1; col++)
                     {
-                        if (grdEncounters.Columns[col].Display == true)
+                        if (dv.Table.Columns[col].ColumnName != "Encounter ID")
                         {
                             sResponseMessage.Append("<td width='50%' align=\"Left\">" + drv[col].ToString() + "</td>");
                         }
@@ -546,6 +649,24 @@ namespace Acurus.Capella.UI
                 Response.Write(sResponseMessage);
                 Response.Flush();
                 Response.End();
+            }
+        }
+
+        private static string Compress(string input)
+        {
+            if (string.IsNullOrEmpty(input))
+            {
+                return string.Empty;
+            }
+
+            byte[] inputBytes = Encoding.UTF8.GetBytes(input);
+            using (var outputStream = new MemoryStream())
+            {
+                using (var gzipStream = new GZipStream(outputStream, CompressionMode.Compress))
+                {
+                    gzipStream.Write(inputBytes, 0, inputBytes.Length);
+                }
+                return Convert.ToBase64String(outputStream.ToArray());
             }
         }
     }

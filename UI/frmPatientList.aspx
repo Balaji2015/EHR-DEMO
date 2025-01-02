@@ -195,8 +195,57 @@
         {
             text-align:center !important;
         }
-    </style>
+        .hide_column{
+    display:none;
+}
 
+/*.dataTable > thead > tr > th[class*="sort"]:before,
+.dataTable > thead > tr > th[class*="sort"]:after {
+    content: "" !important;
+    }*/
+
+        table.dataTable thead>tr>th.sorting:before,table.dataTable thead>tr>th.sorting:after{
+            width: 0% !important;
+        }
+
+table.dataTable > thead > tr > th,
+table.dataTable > thead > tr > td {
+    padding-right: 10px !important;
+    }
+
+.text-align-center{
+    text-align:center;
+}
+
+.word-break-all{
+    word-break: break-all;
+}
+.dataTables_empty {
+    display: none;
+}
+.dataTables_filter input {
+    width: 335px !important;
+}
+.dataTables_wrapper th {
+    padding: 8px !important;
+}
+.process-word-wrap {
+    word-wrap: break-word;
+}
+.searchicon {
+        background-image: url(../Resources/SearchIcon.png);
+    background-repeat: no-repeat;
+        padding-left: 26px !important;
+        padding-top: 3px !important;
+        padding-bottom: 3px !important;
+}
+.dataTables_info{
+    font: 12px / 16px "segoe ui", arial, sans-serif;
+}
+
+    </style>
+    <link href="CSS/bootstrap.min.css" rel="stylesheet" type="text/css" />
+    <link href="CSS/jquery.dataTables.min.css" rel="stylesheet" />
      <link href="~/CSS/style.css" rel="stylesheet" type="text/css" />
        
         <link href="CSS/jquery-ui.min.css" rel="stylesheet" />
@@ -278,7 +327,7 @@
                 <asp:ScriptReference Assembly="Telerik.Web.UI" Name="Telerik.Web.UI.Common.jQueryInclude.js"></asp:ScriptReference>
             </Scripts>
         </telerik:RadScriptManager>
-        <div>
+        <div style="margin: 15px;">
             <table>
                 <tr>
                     <td style="width: 100%;text-align: end;">
@@ -295,7 +344,7 @@
             <div style="margin-top: 15px; margin-left: -11px;">
                 <table style="width: 100%">
                     <tr>
-                        <td style="width: 8%">
+                        <td style="width: 8%;font-family: initial;">
                             <asp:Label ID="lblPayerName" class="MandLabelstyle" runat="server" Text="Pri. Carrier*" Style="font-size: 15px; font-weight: 400; font-family: inherit;margin-left:13px;"></asp:Label>
                         </td>
 
@@ -306,7 +355,7 @@
                             <%-- OnSelectedIndexChanged="ddlPayerName_SelectedIndexChanged"--%>
                         </td>
 
-                        <td style="width: 8%">
+                        <td style="width: 8%;font-family: initial;">
                             <asp:Label ID="lblPlan" class="MandLabelstyle" runat="server" Text="Pri. Plan*" Style="font-size: 15px; font-weight: 400; font-family: inherit;"></asp:Label>
                         </td>
 
@@ -316,16 +365,16 @@
                         </td>
 
 
-                        <td style="width: 8%">
+                        <td style="width: 8%;font-family: initial;">
                             <asp:Label ID="lblMemberId" runat="server" Text="Member ID" Style="font-size: 15px; font-weight: 400; font-family: inherit; white-space: nowrap;"></asp:Label>
                         </td>
 
                         <td style="width: 18%">
-                            <input type="text" id="txtMemberId" class="form-control" runat="server" maxlength="25" style="width: 70%; border-color: black; height: 8px; margin-left: 19px;" />
+                            <input type="text" id="txtMemberId" class="form-control" runat="server" maxlength="25" style="width: 77%; border-color: black; height: 23px; margin-left: 19px;" />
                         </td>
 
                         <td style="width: 8%">
-                            <asp:Button runat="server" ID="btnOK" CssClass="aspresizedgreenbutton" Text="Generate" OnClick="btnOK_Click" OnClientClick="LoadingImage();" Width="100px" Style="margin-left: 10px;" />
+                            <input type="button" id="btnOK" class="aspresizedgreenbutton" value="Generate" onclick="LoadPatientList();" style="margin-left: 10px;width:100px;"/>
                         </td>
                         <%--<td align="left">
                          <asp:Label ID="lblMatchFound" runat="server" Text="Match Found!" style="font-size: 15px; font-weight: 400;color:#5cb85c !important;;font-family: inherit;white-space: nowrap; margin-left: 30px;"></asp:Label>
@@ -335,21 +384,21 @@
                         </td>
                     </tr>
                     <tr>
-                        <td style="width: 8%">
+                        <td style="width: 8%;font-family: initial;">
                             <asp:Label ID="lblLastName" runat="server" Text="Pt. Last Name" Style="font-size: 15px; margin-left: 13px; font-weight: 400; font-family: inherit; white-space: nowrap;"></asp:Label>
                         </td>
 
                         <td style="width: 18%">
-                            <input type="text" id="txtPatientLastName" class="form-control" runat="server" maxlength="50" style="width: 65%; border-color: black; height: 8px; margin-left: 15px;"/>
+                            <input type="text" id="txtPatientLastName" class="form-control" runat="server" maxlength="50" style="width: 74%; border-color: black; height: 23px; margin-left: 15px;"/>
                         </td>
-                        <td style="width: 8%">
+                        <td style="width: 8%;font-family: initial;">
                             <asp:Label ID="lblFirstName" runat="server" Text="Pt. First Name" Style="font-size: 15px; margin-left: 0px; font-weight: 400; font-family: inherit; white-space: nowrap;"></asp:Label>
                         </td>
 
                         <td style="width: 18%">
-                            <input type="text" id="txtPatientFirstName" class="form-control" runat="server" maxlength="50" style="width: 65%; border-color: black; height: 8px; margin-left: 11px;"/>
+                            <input type="text" id="txtPatientFirstName" class="form-control" runat="server" maxlength="50" style="width: 73%; border-color: black; height: 23px; margin-left: 11px;"/>
                         </td>
-                        <td style="width: 8%">
+                        <td style="width: 8%;font-family: initial;">
                             <asp:Label ID="lblDOB" runat="server" Text="DOB(Format: 01-Jan-1987)" Style="font-size: 15px; font-weight: 400; font-family: inherit;"></asp:Label>
                         </td>
 
@@ -378,7 +427,7 @@
                                 <ClientEvents OnPopupOpening="EnableSaveButton" OnDateSelected="ValidateDate" />
                             </telerik:RadDatePicker>--%>
 
-                             <telerik:RadMaskedTextBox ID="dtpPatientDOB" runat="server" Mask="##-Lll-####" Width="210" style="margin-left:7%"  CssClass="form-control">
+                             <telerik:RadMaskedTextBox ID="dtpPatientDOB" runat="server" Mask="##-Lll-####" Width="210" style="margin-left:6%"  CssClass="form-control">
                                                     <ClientEvents OnValueChanged="QPCDateValidation" />
                                                     <InvalidStyle Resize="None" />
                                                     <FocusedStyle Resize="None" BackColor="White" />
@@ -395,15 +444,15 @@
 
                     </tr>
                     <tr>
-                        <td style="width: 8%">
+                        <td style="width: 8%;font-family: initial;">
                             <asp:Label ID="lblPatientAccNo" runat="server" Text="Pt. Acc. #" onkeypress="return isNumberKey(event)" Style="font-size: 15px; margin-left: 13px; font-weight: 400; font-family: inherit; white-space: nowrap;"></asp:Label>
                         </td>
 
                         <td style="width: 18%">
-                            <input type="text" id="txtPatientAccNo" class="form-control" runat="server" maxlength="10" style="width: 65%; border-color: black; height: 8px; margin-left: 15px;" onkeypress="return isNumberKey(this);" />
+                            <input type="text" id="txtPatientAccNo" class="form-control" runat="server" maxlength="10" style="width: 74%; border-color: black; height: 23px; margin-left: 15px;" onkeypress="return isNumberKey(this);" />
                         </td>
 
-                        <td style="width: 8%">
+                        <td style="width: 8%;font-family: initial;">
                             <asp:Label ID="lblFromDOS" class="MandLabelstyle" runat="server" Text="DOS - From*" Style="font-size: 15px; font-weight: 400; font-family: inherit; white-space: nowrap; "></asp:Label>
                         </td>
 
@@ -431,7 +480,7 @@
                                 </DateInput>
                                 <%--<ClientEvents OnPopupOpening="EnableSaveButton" OnDateSelected="EnableSaveButton" />
                             </telerik:RadDatePicker>--%>
-                             <telerik:RadMaskedTextBox ID="dtFromDOS" runat="server" Mask="##-Lll-####" Width="201px" style="margin-left:4%" CssClass="form-control" >
+                             <telerik:RadMaskedTextBox ID="dtFromDOS" runat="server" Mask="##-Lll-####" Width="74%" style="margin-left:3%" CssClass="form-control" >
                                                    
                                   <ClientEvents OnValueChanged="QPCDateValidation" />
                                                     <InvalidStyle Resize="None" />
@@ -445,7 +494,7 @@
                         </td>
                         
 
-                        <td style="width: 8%">
+                        <td style="width: 8%;font-family: initial;">
                             <asp:Label ID="lblToDOS" class="MandLabelstyle" runat="server" Text="DOS - To*" Style="font-size: 15px; font-weight: 400; font-family: inherit; white-space: nowrap; margin-left: 0px;"></asp:Label>
                         </td>
 
@@ -501,87 +550,9 @@
             </div>
 
             <div style="margin-top: 22px;">
-                <hr style="width: 100%; text-align: left; margin-left: 0">
+                <hr style="width: 100%; text-align: left; margin-left: 0;border-top: 1px solid #505050 !important;">
             </div>
-            <div>
-                <table style="margin-top: 10px;">
-                    <tr>
-                        <td style="height: 50%;">
-                            <telerik:RadGrid ID="grdEncounters" runat="server" AutoGenerateColumns="False" CellSpacing="0"
-                                GridLines="None" Width="1326px"
-                                ClientSettings-EnablePostBackOnRowClick="false" AutoGenerateSelectButton="True"
-                                EmptyDataText="No Records" Font-Size="Small"  EnableTheming="False"  EnableViewState="true" HeaderStyle-Font-Bold="true"
-                                CellPadding="3"
-                                OnItemCommand="grdEncounters_ItemCommand"
-                               AllowSorting="true" CssClass="Gridbodystyle" MasterTableView-AllowNaturalSort="false" OnNeedDataSource="grdEncounters_NeedDataSource">
-                               
-                                
-                                <HeaderStyle Font-Bold="true" CssClass="Gridheaderstyle"  />
-                                 <ClientSettings AllowKeyboardNavigation="true" Scrolling-UseStaticHeaders="true"
-                                    EnablePostBackOnRowClick="false">
-                                    <Selecting AllowRowSelect="True" />
-                                    <Scrolling AllowScroll="True" ScrollHeight="440px" UseStaticHeaders="True" />
-                                    <KeyboardNavigationSettings EnableKeyboardShortcuts="true"></KeyboardNavigationSettings>
-                                </ClientSettings>
-                                <MasterTableView Width="100%">
-                                    <Columns>
-                                        <telerik:GridBoundColumn DataField="Patient Name" HeaderText="Patient Name">
-                                            <HeaderStyle Width="30px" />
-                                            <ItemStyle HorizontalAlign="Center" />
-                                        </telerik:GridBoundColumn>
-                                        <telerik:GridBoundColumn DataField="DOB" HeaderText="DOB">
-                                            <HeaderStyle Width="15px" />
-                                            <ItemStyle HorizontalAlign="Center" />
-                                        </telerik:GridBoundColumn>
-                                        <telerik:GridBoundColumn DataField="Pt. Acc. #" HeaderText="Pt. Acc. #" UniqueName="PatientAcc">
-                                            <HeaderStyle Width="15px" />
-                                            <ItemStyle HorizontalAlign="Center" />
-                                        </telerik:GridBoundColumn>
-                                        <telerik:GridBoundColumn DataField="Member ID" HeaderText="Member ID">
-                                            <HeaderStyle Width="15px" />
-                                            <ItemStyle HorizontalAlign="Center" />
-                                        </telerik:GridBoundColumn>
-                                        <telerik:GridBoundColumn DataField="DOS" HeaderText="DOS" DataType="System.DateTime">
-                                            <HeaderStyle Width="20px" />
-
-                                        </telerik:GridBoundColumn>
-                                        <telerik:GridBoundColumn DataField="Enc. Provider" HeaderText="Enc. Provider">
-                                            <HeaderStyle Width="30px" />
-                                            <ItemStyle HorizontalAlign="Center" />
-                                        </telerik:GridBoundColumn>
-                                        <telerik:GridBoundColumn DataField="Pri. Carrier" HeaderText="Pri. Carrier">
-                                            <HeaderStyle Width="30px" />
-                                            <ItemStyle HorizontalAlign="Center" />
-                                        </telerik:GridBoundColumn>
-                                        <telerik:GridBoundColumn DataField="Pri. Plan" HeaderText="Pri. Plan">
-                                            <HeaderStyle Width="30px" />
-                                            <ItemStyle HorizontalAlign="Center" />
-                                        </telerik:GridBoundColumn>
-                                        <telerik:GridBoundColumn DataField="Type of Visit" HeaderText="Type of Visit">
-                                            <HeaderStyle Width="20px" />
-                                            <ItemStyle HorizontalAlign="Center" />
-                                        </telerik:GridBoundColumn>
-                                        <telerik:GridBoundColumn DataField="Facility" HeaderText="Facility">
-                                            <HeaderStyle Width="20px" />
-                                            <ItemStyle HorizontalAlign="Center" />
-                                        </telerik:GridBoundColumn>
-                                        <telerik:GridBoundColumn DataField="Encounter ID" HeaderText="Encounter ID" UniqueName="EncID" Display="false" FilterControlAltText="Filter column10 column">
-                                            <%-- <HeaderStyle Width="1px" />
-                                            <ItemStyle HorizontalAlign="Center" CssClass="displayNone" />--%>
-                                        </telerik:GridBoundColumn>
-                                        <telerik:GridButtonColumn ButtonType="ImageButton" CommandName="ViewSummary" Text="View"
-                                            HeaderText="View" FilterControlAltText="Filter View column" UniqueName="View"
-                                            ImageUrl="~/Resources/Down.bmp">
-                                            <HeaderStyle Width="10px" />
-                                            <ItemStyle HorizontalAlign="Center" />
-                                        </telerik:GridButtonColumn>
-                                    </Columns>
-                                </MasterTableView>
-                            </telerik:RadGrid>
-                        </td>
-                    </tr>
-                </table>
-            </div>
+            <div id="PatientListTable"></div>
 
 
             <div id="ModalProgressNotes" class="modal fade">
@@ -597,7 +568,19 @@
                     </div>
                 </div>
             </div>
-
+            <div id="ProcessModal" class="modal fade" style="margin-top: 50px; margin-left: 0px; padding-left: 55px; overflow: hidden; background-color: rgba(0, 0, 0, 0.13)">
+                <div id="mdldlg" class="modal-dialog ProcessModal" style="width: 60%; margin-left: 21%; margin-top: 1px; position: absolute!important;">
+                    <div class=" modal-content" style="height: 101%">
+                        <div class="modal-header" style="height: 42px">
+                            <button type="button" class="close" id="btnClose" style="font-size: 30px !important;" data-dismiss="modal" aria-hidden="true">&times;</button>
+                            <h3 class="modal-title" style="font-family: sans-serif; font-weight: bold; font-size: medium" id="ModalTitle"></h3>
+                        </div>
+                        <div class="modal-body ProcessModalCnt" style="width: 102.5%; padding-top: 0px">
+                            <iframe style="width: 100%;height: 500px; margin-left: -15px; border: none" id="ProcessFrame" class="ProcessModalCnt"></iframe>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
 
         <asp:Button ID="btnlogout" runat="server" Text="Button" OnClick="btnlogout_Click" style="display:none;" CssClass="displayNone" />
@@ -606,6 +589,9 @@
 
         <asp:PlaceHolder ID="PlaceHolder1" runat="server">
          <%--   <script src="JScripts/jquery.datetimepicker.js?version=<%=ConfigurationManager.AppSettings["VersionConfiguration"].ToString().Replace("Capella - ","") %>" type="text/javascript"></script>--%>
+            <script src="JScripts/pako.min.js" type="text/javascript"></script>
+            <script src="Jscripts/bootstrap.min.js" type="text/javascript"></script>
+            <script src="JScripts/jquery.dataTables.min.js" type="text/javascript"></script>
             <script src="JScripts/JSPatientList.js?version=<%=ConfigurationManager.AppSettings["VersionConfiguration"].ToString().Replace("Capella - ","") %>" type="text/javascript"></script>
             <script src="JScripts/JSModalWindow.js?version=<%=ConfigurationManager.AppSettings["VersionConfiguration"].ToString().Replace("Capella - ","") %>" type="text/javascript"></script>
             <script src="JScripts/JSErrorMessage.js?version=<%=ConfigurationManager.AppSettings["VersionConfiguration"].ToString().Replace("Capella - ","") %>" type="text/javascript"></script>

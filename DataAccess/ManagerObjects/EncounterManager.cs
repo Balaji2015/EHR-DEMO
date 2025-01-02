@@ -1290,7 +1290,7 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
             IList<PatientPane> objPatientPane = new List<PatientPane>();
             PatientPane objPatPane = new PatientPane();
             ulong EncProviderId = 0;
-
+            
             GenerateXml objGenerateXML = new GenerateXml();
             XmlDocument xmlDoc = new XmlDocument();
             xmlDoc = objGenerateXML.ReadBlob("Human", Humanid);
@@ -1320,7 +1320,7 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
 
 
 
-
+                
                 XmlNodeList xmlNodelst = xmlDoc.GetElementsByTagName("HumanList");
                 if (xmlNodelst != null && xmlNodelst.Count > 0 && xmlNodelst[0].ChildNodes.Count > 0)
                 {
@@ -1507,6 +1507,23 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
                             objPatPane.Assigned_Physician = xmlPhysicianNode.Attributes.GetNamedItem("prefix").Value.ToString() + " " +
                                                             Physician_First_Name + " " + Physician_Middle_Name +
                                                             " " + Physician_Last_Name + " " + Physician_Suffix;
+                        }
+                        else
+                        {
+                            //CAP-2328
+                            UserManager userManager = new UserManager();
+                            IList<User> lstUser = userManager.getUserByPHYID(EncProviderId);
+                            if (lstUser != null && lstUser.Any())
+                            {
+                                PhysicianManager physicianManager = new PhysicianManager();
+                                IList<PhysicianLibrary> lstPhysician = new List<PhysicianLibrary>();
+                                lstPhysician = physicianManager.GetphysiciannameByPhyID(EncProviderId);
+                                if(lstPhysician != null && lstPhysician.Any())
+                                {
+                                    objPatPane.Assigned_Physician_User_Name = lstUser[0].user_name;
+                                    objPatPane.Assigned_Physician = lstPhysician[0].PhyPrefix + " " + lstPhysician[0].PhyFirstName + " " + lstPhysician[0].PhyMiddleName + " " + lstPhysician[0].PhyLastName + " " + lstPhysician[0].PhySuffix;
+                                }
+                            }
                         }
                     }
                     catch (Exception e)

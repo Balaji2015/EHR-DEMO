@@ -25,6 +25,7 @@ using System.Threading;
 using System.Configuration;
 using MySql.Data.MySqlClient;
 using DocumentFormat.OpenXml.Spreadsheet;
+using Acurus.Capella.Core.DTOJson;
 
 namespace Acurus.Capella.UI
 {
@@ -1340,23 +1341,14 @@ namespace Acurus.Capella.UI
                 //Provider Reviewed Name 
                 if (Encounter_Reviewed_Id != "")
                 {
-                    string xmlFilepathUser = Path.Combine(System.Web.Hosting.HostingEnvironment.ApplicationPhysicalPath, "ConfigXML\\User.xml");
-                    if (File.Exists(xmlFilepathUser))
+                    //CAP-2788
+                    UserList ilstUserList = ConfigureBase<UserList>.ReadJson("User.json");
+                    if (ilstUserList?.User != null)
                     {
-                        XmlDocument xdoc = new XmlDocument();
-                        XmlTextReader itext = new XmlTextReader(xmlFilepathUser);
-                        xdoc.Load(itext);
-                        itext.Close();
-                        XmlNodeList xnodelst = xdoc.GetElementsByTagName("User");
-                        if (xnodelst != null && xnodelst.Count > 0)
+                        var filteredData = ilstUserList?.User.FirstOrDefault(a => a.Physician_Library_ID.ToString() != "0" && a.Physician_Library_ID.ToString() == Encounter_Reviewed_Id);
+                        if (filteredData != null)
                         {
-                            foreach (XmlNode xnode in xnodelst)
-                            {
-                                if (xnode.Attributes.GetNamedItem("Physician_Library_ID").Value.ToString() != "0" && xnode.Attributes.GetNamedItem("Physician_Library_ID").Value.ToString() == Encounter_Reviewed_Id)
-                                {
-                                    Encounter_Reviewed_Name = xnode.Attributes.GetNamedItem("person_name").Value;
-                                }
-                            }
+                            Encounter_Reviewed_Name = filteredData.person_name;
                         }
                     }
                 }
@@ -2212,23 +2204,14 @@ namespace Acurus.Capella.UI
             //Provider Reviewed Name 
             if (Encounter_Reviewed_Id != "")
             {
-                string xmlFilepathUser = Path.Combine(System.Web.Hosting.HostingEnvironment.ApplicationPhysicalPath, "ConfigXML\\User.xml");
-                if (File.Exists(xmlFilepathUser))
+                //CAP-2788
+                UserList ilstUserList = ConfigureBase<UserList>.ReadJson("User.json");
+                if (ilstUserList?.User != null)
                 {
-                    XmlDocument xdoc = new XmlDocument();
-                    XmlTextReader itext = new XmlTextReader(xmlFilepathUser);
-                    xdoc.Load(itext);
-                    itext.Close();
-                    XmlNodeList xnodelst = xdoc.GetElementsByTagName("User");
-                    if (xnodelst != null && xnodelst.Count > 0)
+                    var filteredData = ilstUserList?.User.FirstOrDefault(a => a.Physician_Library_ID.ToString() != "0" && a.Physician_Library_ID.ToString() == Encounter_Reviewed_Id);
+                    if (filteredData != null)
                     {
-                        foreach (XmlNode xnode in xnodelst)
-                        {
-                            if (xnode.Attributes.GetNamedItem("Physician_Library_ID").Value.ToString() != "0" && xnode.Attributes.GetNamedItem("Physician_Library_ID").Value.ToString() == Encounter_Reviewed_Id)
-                            {
-                                Encounter_Reviewed_Name = xnode.Attributes.GetNamedItem("person_name").Value;
-                            }
-                        }
+                        Encounter_Reviewed_Name = filteredData.person_name;
                     }
                 }
             }
@@ -2891,26 +2874,16 @@ margin:0in 0in 0in 9in;
             //Provider Reviewed Name 
             if (Encounter_Reviewed_Id != "")
             {
-                string xmlFilepathUser = Path.Combine(System.Web.Hosting.HostingEnvironment.ApplicationPhysicalPath, "ConfigXML\\User.xml");
-                if (File.Exists(xmlFilepathUser))
+                //CAP-2788
+                UserList ilstUserList = ConfigureBase<UserList>.ReadJson("User.json");
+                if (ilstUserList?.User != null)
                 {
-                    XmlDocument xdoc = new XmlDocument();
-                    XmlTextReader itext = new XmlTextReader(xmlFilepathUser);
-                    xdoc.Load(itext);
-                    itext.Close();
-                    XmlNodeList xnodelst = xdoc.GetElementsByTagName("User");
-                    if (xnodelst != null && xnodelst.Count > 0)
+                    var filteredData = ilstUserList?.User.FirstOrDefault(a => a.Physician_Library_ID.ToString() != "0" && a.Physician_Library_ID.ToString() == Encounter_Reviewed_Id);
+                    if (filteredData != null)
                     {
-                        foreach (XmlNode xnode in xnodelst)
-                        {
-                            if (xnode.Attributes.GetNamedItem("Physician_Library_ID").Value.ToString() != "0" && xnode.Attributes.GetNamedItem("Physician_Library_ID").Value.ToString() == Encounter_Reviewed_Id)
-                            {
-                                Encounter_Reviewed_Name = xnode.Attributes.GetNamedItem("person_name").Value;
-                            }
-                        }
+                        Encounter_Reviewed_Name = filteredData.person_name;
                     }
                 }
-
             }
 
 

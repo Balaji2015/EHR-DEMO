@@ -105,15 +105,6 @@ namespace Acurus.Capella.UI
         protected global::System.Web.UI.HtmlControls.HtmlInputText txtMemberId;
 
         /// <summary>
-        /// btnOK control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.Button btnOK;
-
-        /// <summary>
         /// lblLastName control.
         /// </summary>
         /// <remarks>
@@ -247,15 +238,6 @@ namespace Acurus.Capella.UI
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Label lblNoofResults;
-
-        /// <summary>
-        /// grdEncounters control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::Telerik.Web.UI.RadGrid grdEncounters;
 
         /// <summary>
         /// btnlogout control.

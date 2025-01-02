@@ -1,0 +1,334 @@
+{
+  "Lab": [
+    {
+      "id": "1",
+      "name": "LabCorp",
+      "type": "LAB",
+      "sort_order": "1"
+    },
+    {
+      "id": "2",
+      "name": "Quest Diagnostics",
+      "type": "LAB",
+      "sort_order": "2"
+    },
+    {
+      "id": "4",
+      "name": "CentreLake Imaging & Oncology",
+      "type": "IMAGE",
+      "sort_order": "13"
+    },
+    {
+      "id": "5",
+      "name": "Grove Diagnostic Imaging",
+      "type": "IMAGE",
+      "sort_order": "20"
+    },
+    {
+      "id": "6",
+      "name": "WestCliff Medical Laboratories Inc",
+      "type": "LAB",
+      "sort_order": "53"
+    },
+    {
+      "id": "7",
+      "name": "CMG Pulmonary",
+      "type": "LAB",
+      "sort_order": "16"
+    },
+    {
+      "id": "8",
+      "name": "AMA Laboratory",
+      "type": "LAB",
+      "sort_order": "6"
+    },
+    {
+      "id": "9",
+      "name": "Casa Colina",
+      "type": "LAB",
+      "sort_order": "10"
+    },
+    {
+      "id": "10",
+      "name": "Palm Imaging",
+      "type": "IMAGE",
+      "sort_order": "25"
+    },
+    {
+      "id": "11",
+      "name": "Whitefield Medical Lab",
+      "type": "LAB",
+      "sort_order": "54"
+    },
+    {
+      "id": "12",
+      "name": "PVHMC-Image",
+      "type": "IMAGE",
+      "sort_order": "34"
+    },
+    {
+      "id": "13",
+      "name": "SACH-Lab",
+      "type": "LAB",
+      "sort_order": "45"
+    },
+    {
+      "id": "14",
+      "name": "Queen Of The Valley Medical Centre",
+      "type": "LAB",
+      "sort_order": "40"
+    },
+    {
+      "id": "15",
+      "name": "Millennium Imaging Medical Center",
+      "type": "IMAGE",
+      "sort_order": "23"
+    },
+    {
+      "id": "16",
+      "name": "CMG Anc.-1866 #101",
+      "type": "LAB",
+      "sort_order": "4"
+    },
+    {
+      "id": "17",
+      "name": "Quest Diagnostics-Image",
+      "type": "IMAGE",
+      "sort_order": "41"
+    },
+    {
+      "id": "18",
+      "name": "Foundation Laboratory",
+      "type": "LAB",
+      "sort_order": "18"
+    },
+    {
+      "id": "19",
+      "name": "PVHMC Lab",
+      "type": "LAB",
+      "sort_order": "35"
+    },
+    {
+      "id": "20",
+      "name": "SACH-Image",
+      "type": "IMAGE",
+      "sort_order": "44"
+    },
+    {
+      "id": "21",
+      "name": "Haven Urgent Care",
+      "type": "LAB",
+      "sort_order": "21"
+    },
+    {
+      "id": "22",
+      "name": "PVHMC SteadHeart & Vascular Center - Non-Invasive Cardiology Request Form",
+      "type": "LAB",
+      "sort_order": "32"
+    },
+    {
+      "id": "23",
+      "name": "PVHMC SteadHeart & Vascular Center - Vascular laboratory order form",
+      "type": "LAB",
+      "sort_order": "33"
+    },
+    {
+      "id": "24",
+      "name": "PVHMC - Cardiac Rehabilitation Initial Out-Patient Orders",
+      "type": "LAB",
+      "sort_order": "28"
+    },
+    {
+      "id": "25",
+      "name": "Valley Imaging Partners",
+      "type": "IMAGE",
+      "sort_order": "51"
+    },
+    {
+      "id": "26",
+      "name": "Foot Hill Hospital",
+      "type": "LAB",
+      "sort_order": "17"
+    },
+    {
+      "id": "27",
+      "name": "Atherotech Diagnostics Lab",
+      "type": "LAB",
+      "sort_order": "7"
+    },
+    {
+      "id": "28",
+      "name": "PVHMC - Pulmonology",
+      "type": "LAB",
+      "sort_order": "30"
+    },
+    {
+      "id": "29",
+      "name": "Loma Linda University Medical Center",
+      "type": "LAB",
+      "sort_order": "22"
+    },
+    {
+      "id": "30",
+      "name": "Others",
+      "type": "LAB",
+      "sort_order": "24"
+    },
+    {
+      "id": "32",
+      "name": "CMG Anc.-In House",
+      "type": "LAB",
+      "sort_order": "15"
+    },
+    {
+      "id": "33",
+      "name": "Berkeley Heart Lab",
+      "type": "LAB",
+      "sort_order": "8"
+    },
+    {
+      "id": "34",
+      "name": "Southern California Center for Neuroscience and Spine-Lab",
+      "type": "LAB",
+      "sort_order": "50"
+    },
+    {
+      "id": "35",
+      "name": "Southern California Center for Neuroscience and Spine-Image",
+      "type": "IMAGE",
+      "sort_order": "49"
+    },
+    {
+      "id": "37",
+      "name": "Pomona Valley Hospital - Radiology",
+      "type": "IMAGE",
+      "sort_order": "27"
+    },
+    {
+      "id": "38",
+      "name": "Pomona Valley Hospital - GI lab procedures",
+      "type": "IMAGE",
+      "sort_order": "26"
+    },
+    {
+      "id": "39",
+      "name": "GI for Archibald Surgery Ctr",
+      "type": "IMAGE",
+      "sort_order": "19"
+    },
+    {
+      "id": "40",
+      "name": "Casa Colina - Outpatient Radiology Referral",
+      "type": "IMAGE",
+      "sort_order": "11"
+    },
+    {
+      "id": "41",
+      "name": "Casa Colina - Referral to Outpatient Therapy",
+      "type": "IMAGE",
+      "sort_order": "12"
+    },
+    {
+      "id": "42",
+      "name": "PVHMC-Physical Theraphy",
+      "type": "IMAGE",
+      "sort_order": "37"
+    },
+    {
+      "id": "43",
+      "name": "RadNet Imaging",
+      "type": "IMAGE",
+      "sort_order": "42"
+    },
+    {
+      "id": "44",
+      "name": "Rozina & Smith Physical Therapy",
+      "type": "IMAGE",
+      "sort_order": "43"
+    },
+    {
+      "id": "45",
+      "name": "San Antonio Imaging",
+      "type": "IMAGE",
+      "sort_order": "46"
+    },
+    {
+      "id": "46",
+      "name": "San Antonio Cath Lab",
+      "type": "LAB",
+      "sort_order": "47"
+    },
+    {
+      "id": "47",
+      "name": "San Antonio Outpatient Services",
+      "type": "IMAGE",
+      "sort_order": "48"
+    },
+    {
+      "id": "48",
+      "name": "West Pacific Lab",
+      "type": "LAB",
+      "sort_order": "52"
+    },
+    {
+      "id": "49",
+      "name": "Chino Valley Medical Center",
+      "type": "LAB",
+      "sort_order": "14"
+    },
+    {
+      "id": "50",
+      "name": "BioCorp Clinical Laboratory",
+      "type": "LAB",
+      "sort_order": "9"
+    },
+    {
+      "id": "51",
+      "name": "CMG Anc. - 8330 RedOak",
+      "type": "LAB",
+      "sort_order": "5"
+    },
+    {
+      "id": "52",
+      "name": "Ancillary 914 Foothill Blvd",
+      "type": "LAB",
+      "sort_order": "3"
+    },
+    {
+      "id": "53",
+      "name": "PVHMC – Respiratory Outpatient Order",
+      "type": "IMAGE",
+      "sort_order": "38"
+    },
+    {
+      "id": "54",
+      "name": "PVHMC Cath Lab",
+      "type": "LAB",
+      "sort_order": "36"
+    },
+    {
+      "id": "55",
+      "name": "Red Oak procedures",
+      "type": "LAB",
+      "sort_order": "55"
+    },
+    {
+      "id": "56",
+      "name": "PVHMC Sleep Study",
+      "type": "LAB",
+      "sort_order": "39"
+    },
+    {
+      "id": "57",
+      "name": "PVHMC - Pulmonary Rehab Out-Patient Referral",
+      "type": "LAB",
+      "sort_order": "31"
+    },
+    {
+      "id": "58",
+      "name": "PVHMC - Cardiovascular Rehab Out-Patient Referral",
+      "type": "LAB",
+      "sort_order": "29"
+    }
+  ]
+}

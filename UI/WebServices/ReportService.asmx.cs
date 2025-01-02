@@ -13,6 +13,7 @@ using System.Xml.Linq;
 using System.IO;
 using System.Diagnostics;
 using System.Web.Script.Serialization;
+using Acurus.Capella.Core.DTOJson;
 
 namespace Acurus.Capella.UI.WebServices
 {
@@ -60,13 +61,11 @@ namespace Acurus.Capella.UI.WebServices
             FacilityList = FacilityMngr.GetFacilityList();
             FillPhysicianUser PhyUserList = PhysicianMngr.GetPhysicianandUser(true, sFacilityName,ClientSession.LegalOrg);
             FillPhysicianUser AllPhyUserList = PhysicianMngr.GetPhysicianandUser(false, string.Empty, ClientSession.LegalOrg);
-            XDocument xmlUser = XDocument.Load(Path.Combine(System.Web.Hosting.HostingEnvironment.ApplicationPhysicalPath, "ConfigXML\\User.xml"));
-            foreach (XElement elements in xmlUser.Descendants("UserList"))
+            //CAP-2788
+            UserList ilstUserList = ConfigureBase<UserList>.ReadJson("User.json");
+            if (ilstUserList?.User != null)
             {
-                foreach (XElement UserElement in elements.Elements())
-                {
-                    CurrentOwnerList.Add(UserElement.Attribute("User_Name").Value);
-                }
+                CurrentOwnerList = ilstUserList?.User.Select(a => a.User_Name).ToList();
             }
             CurrentProcessList = EncounterMngr.GetWorkFlowMapListForReports();
 
