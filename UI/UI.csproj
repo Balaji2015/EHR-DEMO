@@ -2010,10 +2010,7 @@
     <Content Include="CarePlan.html" />
     <Content Include="ConfigXML\Facility_Library.xml" />
     <Content Include="ConfigXML\LookupList_CCDAErrors.xml" />
-    <Content Include="ConfigXML\PhysicianAddressDetails.xml" />
-    <Content Include="ConfigXML\PhysicianFacilityMapping.xml" />
     <Content Include="ConfigXML\PhysicianSpecificBodyImageTemplates.xml" />
-    <Content Include="ConfigXML\staticlookup.xml" />
     <Content Include="ConfigXML\Vaccine_Procedure_Mapping.xml" />
     <Content Include="CSS\bootstrap-datetimepicker.min.css" />
     <Content Include="CSS\bootstrap.min.js" />
