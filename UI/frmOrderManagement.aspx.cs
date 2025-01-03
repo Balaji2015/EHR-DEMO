@@ -98,6 +98,7 @@ namespace Acurus.Capella.UI
 
                 if (ClientSession.HumanId != 0)
                 {
+                    hdnPatientValues.Value = ClientSession.HumanId.ToString();
                     if (ClientSession.PatientPaneList != null && ClientSession.PatientPaneList.Count > 0)
                     {
                         txtPatientName.Text = ClientSession.PatientPaneList[0].Last_Name + "," + ClientSession.PatientPaneList[0].First_Name + ClientSession.PatientPaneList[0].MI + ClientSession.PatientPaneList[0].Suffix;
@@ -128,6 +129,7 @@ namespace Acurus.Capella.UI
 
                             txtProviderName.Text = PersonName;
                             txtProviderName.Attributes["tagProviderName"] = ClientSession.PhysicianId.ToString();
+                            hdnTransferVaraible.Value = ClientSession.PhysicianId.ToString();
                         }
                     }
                 }
