@@ -139,15 +139,8 @@ namespace Acurus.Capella.UI
                 //grdReport.DataBind();
                 //Cap - 1007
                // RadComboBoxSelectedIndexChangedEventArgs e1 = new RadComboBoxSelectedIndexChangedEventArgs("DIAGNOSTIC ORDER", string.Empty, "DIAGNOSTIC ORDER", string.Empty);
-              //  cboOrderType_SelectedIndexChanged(sender, e1);
-                //Cap - 2622
-                hdnPostback.Value = "False";
-            }
-            else
-            {
-                //Cap - 2622
-                hdnPostback.Value = "True";
-            }
+              //  cboOrderType_SelectedIndexChanged(sender, e1);                
+            }            
 
             txtPatientName.ReadOnly = true;
             txtProviderName.ReadOnly = true;

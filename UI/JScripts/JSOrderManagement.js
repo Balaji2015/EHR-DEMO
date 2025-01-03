@@ -3,11 +3,7 @@
     //    { sessionStorage.setItem('StartLoading', 'true'); StartLoadFromPatChart(); }
     //});
     document.getElementById("btnAddResult").disabled = true;
-    cboOrderType_SelectedIndexChanged();
-    if (document.getElementById('hdnPostback').value == "True") {
-        //Load();
-    }
-    else {
+    cboOrderType_SelectedIndexChanged();   
         $("#ResultTableNew").empty();
         $("#ResultTableNew").append(`
     <table id=EncounterTable class='table table-bordered Gridbodystyle' ' style='table-layout: fixed;'>
@@ -36,7 +32,7 @@
     </tr>
     </thead>
 </table>`);
-    }
+    
 
     { sessionStorage.setItem('StartLoading', 'false'); StopLoadFromPatChart(); }
 
@@ -280,7 +276,7 @@ function Load() {
     <tr class='header' >
     <th style='border: 1px solid #909090;text-align: left;width:6%'>Control#</th>
     <th style='border: 1px solid #909090;text-align: center;width:5%'>Arrival Date</th>
-    <th style='border: 1px solid #909090;text-align: center;width:6%'>Order Type</th>
+    <th style='border: 1px solid #909090;text-align: center;width:7%'>Order Type</th>
     <th style='border: 1px solid #909090;text-align: center;width:6%'>Order Status</th>
     <th style='border: 1px solid #909090;text-align: center;width:4%'>Patient Acc</th>
     <th style='border: 1px solid #909090;text-align: center;width:5%'>Patient Name</th>
@@ -313,15 +309,19 @@ function Load() {
             "labItem": cbolabItem
 
         });
+        $(document).on('shown.bs.tab', 'a[data-toggle="tab"]', function (e) {
+            $.fn.dataTable.tables({ visible: true, api: true }).columns.adjust();
+        });
+
         var dataTable = new DataTable('#EncounterTable', {
             serverSide: false,
             lengthChange: false,
             searching: true,
             processing: false,
-            ordering: true,
-            autoWidth: false,
-            scrollCollapse: true,
+            ordering: true,           
+            scrollCollapse: false,
             scrollY: '180px',
+            autoWidth: false,
             order: [],
             pageLength: 15,
             language: {
@@ -347,10 +347,7 @@ function Load() {
                     var objdata = json.d;   
                     objdata.data = Decompress(objdata.data);
                     json.data = objdata.data;                   
-                    setTimeout(
-                        function () {
-                            $(".dataTables_scrollBody").find(".header").hide();
-                        }, 10);
+                    
                     { sessionStorage.setItem('StartLoading', 'false'); StopLoadFromPatChart(); }
                     return json.data;
                 },
@@ -375,7 +372,7 @@ function Load() {
                             return "ACUR" + row.Group_ID;
                         else
                             return "";
-                    }, sClass: 'TableCellBorder word-break-all', searchable: false
+                    }, sClass: 'TableCellBorder word-break-all', searchable: false, sWidth: '8% !important'
                 },
                 {
                     data: 'Ordered_Date_And_Time', render: function (data, type, row) {
@@ -383,43 +380,43 @@ function Load() {
                             return "";
                         else
                             return ConvertDate(row.Ordered_Date_And_Time.replace("T", " ")).split(' ')[0];
-                    }, sClass: 'TableCellBorder', searchable: false,
+                    }, sClass: 'TableCellBorder', searchable: false, sWidth: '5% !important',
                     type: 'date'
                 },
                 {
                     date: '', render: function (data, type, row) {
                         return cboOrderType;
-                    }, sClass: 'TableCellBorder word-break-all', searchable: false
+                    }, sClass: 'TableCellBorder word-break-all', searchable: false, sWidth:'7% !important',
                 },
-                { data: 'Current_Process', sClass: 'TableCellBorder', searchable: false },
-                { data: 'Human_Id', sClass: 'TableCellBorder' },
-                { data: 'Human_Name', sClass: 'TableCellBorder' },
+                { data: 'Current_Process', sClass: 'TableCellBorder', searchable: false, sWidth:'6% !important' },
+                { data: 'Human_Id', sClass: 'TableCellBorder', sWidth:'4% !important' },
+                { data: 'Human_Name', sClass: 'TableCellBorder', sWidth:'5% !important' },
                 {
                     data: 'Date_Of_Birth', render: function (data, type, row) {
                         return DOBConvert(data.replace("T00:00:00", ""))
                     }, sClass: 'TableCellBorder', searchable: false,
-                    type: 'date'
+                    type: 'date', sWidth:'5% !important',
 
                 },
-                { data: 'Procedures', sClass: 'TableCellBorder word-break-all' },
-                { data: 'Assessment', sClass: 'TableCellBorder word-break-all', searchable: false },
-                { data: 'Ordering_Provider', sClass: 'TableCellBorder word-break-all', searchable: false },
+                { data: 'Procedures', sClass: 'TableCellBorder word-break-all', sWidth:'9% !important' },
+                { data: 'Assessment', sClass: 'TableCellBorder word-break-all', searchable: false, sWidth:'4% !important' },
+                { data: 'Ordering_Provider', sClass: 'TableCellBorder word-break-all', searchable: false, sWidth:'6% !important' },
                 {
                     data: '', render: function (data, type, row) {
                         return "";
-                    }, sClass: 'TableCellBorder', searchable: false
+                    }, sClass: 'TableCellBorder', searchable: false, sWidth:'5% !important',
                 },
-                { data: 'Facility_Name', sClass: 'TableCellBorder', searchable: false },
-                { data: 'Lab_Name', sClass: 'TableCellBorder', searchable: false },
+                { data: 'Facility_Name', sClass: 'TableCellBorder', searchable: false, sWidth:'5% !important' },
+                { data: 'Lab_Name', sClass: 'TableCellBorder', searchable: false, sWidth:'6% !important' },
                 {
                     data: '', render: function (data, type, row) {
                         return "<td style='width:2%'><input type = 'image' name='grdPrintEReq' id='grdPrintEReq' src = '/Resources/PrintReq.png' class= 'loaderClass'  style = 'border-width:0px;'/></td>";
-                    }, sClass: 'TableCellBorder text-align-center', searchable: false
+                    }, sClass: 'TableCellBorder', searchable: false, sWidth:'3% !important'
                 },
                 {
                     data: '', render: function (data, type, row) {
                         return "<td style='width:2%'><input type = 'image' name='grdViewResult' id ='grdViewResult' src = '/Resources/Down.bmp' class= 'loaderClass'  style = 'border-width:0px;'/></td>";
-                    }, sClass: 'TableCellBorder text-align-center', searchable: false
+                    }, sClass: 'TableCellBorder', searchable: false, sWidth:'3% !important'
                 },
                 { data: 'Encounter_ID', sClass: "hide_column", searchable: false },
                 { data: 'Physician_ID', sClass: "hide_column", searchable: false },
@@ -431,6 +428,7 @@ function Load() {
                 $("#EncounterTable_filter input")[0].classList.add('searchicon');
             }
         });
+        
         $('#EncounterTable_filter').css({
             'float': 'left',
             'text-align': 'left',
@@ -440,33 +438,14 @@ function Load() {
         $('#EncounterTable_info').css({
             'min-width': '180px'
         });
-
-        $(".dataTables_scrollHeadInner").find(".header").on('click', function () {
-            setTimeout(
-                function () {
-                    $(".dataTables_scrollBody").find(".header").hide();
-                }, 10);
-        });
-
         dataTable.on('search.dt', function () {
             dataTable.$('tr.highlight').removeClass('highlight');
-            $('.myQChkbx').prop('checked', false);
-            setTimeout(
-                function () {
-                    $(".dataTables_scrollBody").find(".header").hide();
-                }, 10);
+            $('.myQChkbx').prop('checked', false);           
         });
         dataTable.on('page.dt', function () {
-            dataTable.$('tr.highlight').removeClass('highlight');
-            setTimeout(
-                function () {
-                    $(".dataTables_scrollBody").find(".header").hide();
-                }, 10);
+            dataTable.$('tr.highlight').removeClass('highlight');            
         });
-        setTimeout(
-            function () {
-                $(".dataTables_scrollBody").find(".header").hide();
-            }, 10);
+        
         dataTable.on('click', 'tr', function () {
             $('#EncounterTable tr').removeClass("odd");
             $('#EncounterTable tr').removeClass("even");
@@ -735,10 +714,7 @@ function Load() {
                     var objdata = json.d;
                     objdata.data = Decompress(objdata.data);
                     json.data = objdata.data;
-                    setTimeout(
-                        function () {
-                            $(".dataTables_scrollBody").find(".header").hide();
-                        }, 10);
+                   
                     { sessionStorage.setItem('StartLoading', 'false'); StopLoadFromPatChart(); }
                     return json.data;
                 },
@@ -762,45 +738,45 @@ function Load() {
                             return "";
                         else
                             return ConvertDate(row.Ordered_Date_And_Time.replace("T", " ")).split(' ')[0];
-                    }, searchable: false, sClass: 'TableCellBorder word-break-all',
+                    }, searchable: false, sClass: 'TableCellBorder word-break-all', sWidth: '5% !important',
                     type: 'date'
                 },
                 {
                     date: '', render: function (data, type, row) {
                         return cboOrderType;
-                    }, sClass: 'TableCellBorder word-break-all', searchable: false
+                    }, sClass: 'TableCellBorder word-break-all', searchable: false, sWidth: '7% !important'
                 },
-                { data: 'Current_Process', sClass: 'TableCellBorder word-break-all', searchable: false },
-                { data: 'Human_Id', sClass: 'TableCellBorder word-break-all' },
-                { data: 'Human_Name', sClass: 'TableCellBorder word-break-all' },
+                { data: 'Current_Process', sClass: 'TableCellBorder word-break-all', searchable: false, sWidth: '8% !important' },
+                { data: 'Human_Id', sClass: 'TableCellBorder word-break-all', sWidth: '4% !important' },
+                { data: 'Human_Name', sClass: 'TableCellBorder word-break-all', sWidth: '6% !important' },
                 {
                     data: 'Date_Of_Birth', render: function (data, type, row) {
                         return DOBConvert(data.replace("T00:00:00", ""))
                     }, searchable: false, sClass: 'TableCellBorder word-break-all',
-                    type: 'date'
+                    type: 'date', sWidth: '5% !important'
                 },
-                { data: 'Procedures', sClass: 'TableCellBorder word-break-all' },
+                { data: 'Procedures', sClass: 'TableCellBorder word-break-all', sWidth: '11% !important' },
                 {
                     data: '', render: function (data, type, row) {
                         return "";
-                    }, sClass: 'TableCellBorder word-break-all', searchable: false
+                    }, sClass: 'TableCellBorder word-break-all', searchable: false, sWidth: '5% !important'
                 },
-                { data: 'Ordering_Provider', sClass: 'TableCellBorder word-break-all', searchable: false },
+                { data: 'Ordering_Provider', sClass: 'TableCellBorder word-break-all', searchable: false, sWidth: '6% !important' },
                 {
                     data: '', render: function (data, type, row) {
                         return "";
-                    }, sClass: 'TableCellBorder word-break-all', searchable: false
+                    }, sClass: 'TableCellBorder word-break-all', searchable: false, sWidth: '5% !important'
                 },
-                { data: 'Facility_Name', sClass: 'TableCellBorder word-break-all', searchable: false },
+                { data: 'Facility_Name', sClass: 'TableCellBorder word-break-all', searchable: false, sWidth: '5% !important' },
                 {
                     data: '', render: function (data, type, row) {
                         return "";
-                    }, sClass: 'TableCellBorder word-break-all', searchable: false
+                    }, sClass: 'TableCellBorder word-break-all', searchable: false, sWidth: '6% !important'
                 },
                 {
                     data: '', render: function (data, type, row) {
                         return "<td style='width:2%'><input type = 'image' name = 'grdPrintEReq' id = 'grdPrintEReq' src = '/Resources/PrintReq.png' class= 'loaderClass'  style = 'border-width:0px;'/></td>";
-                    }, sClass: 'TableCellBorder word-break-all text-align-center', searchable: false
+                    }, sClass: 'TableCellBorder word-break-all text-align-center', searchable: false, sWidth: '3% !important'
                 },
                 { data: 'Group_ID', sClass: "hide_column", searchable: false },
             ],
@@ -817,31 +793,15 @@ function Load() {
         $('#EncounterTable_info').css({
             'min-width': '180px'
         });
-        $(".dataTables_scrollHeadInner").find(".header").on('click', function () {
-            setTimeout(
-                function () {
-                    $(".dataTables_scrollBody").find(".header").hide();
-                }, 10);
-        });
+       
         dataTable.on('search.dt', function () {
             dataTable.$('tr.highlight').removeClass('highlight');
-            $('.myQChkbx').prop('checked', false);
-            setTimeout(
-                function () {
-                    $(".dataTables_scrollBody").find(".header").hide();
-                }, 10);
+            $('.myQChkbx').prop('checked', false);           
         });
         dataTable.on('page.dt', function () {
             dataTable.$('tr.highlight').removeClass('highlight');
-            setTimeout(
-                function () {
-                    $(".dataTables_scrollBody").find(".header").hide();
-                }, 10);
         });
-        setTimeout(
-            function () {
-                $(".dataTables_scrollBody").find(".header").hide();
-            }, 10);
+        
         dataTable.on('click', 'tr', function () {
             $('#EncounterTable tr').removeClass("odd");
             $('#EncounterTable tr').removeClass("even");
@@ -1036,10 +996,7 @@ function Load() {
                     var objdata = json.d;
                     objdata.data = Decompress(objdata.data);
                     json.data = objdata.data;
-                    setTimeout(
-                        function () {
-                            $(".dataTables_scrollBody").find(".header").hide();
-                        }, 10);
+                    
                     { sessionStorage.setItem('StartLoading', 'false'); StopLoadFromPatChart(); }
                     return json.data;
                 },
@@ -1064,36 +1021,36 @@ function Load() {
                         else
                             return ConvertDate(row.Ordered_Date_And_Time.replace("T", " ")).split(' ')[0];
                     }, searchable: false, sClass: 'TableCellBorder word-break-all',
-                    type: 'date'
+                    type: 'date', sWidth: '5% !important'
                 },
                 {
                     date: '', render: function (data, type, row) {
                         return cboOrderType;
-                    }, sClass: 'TableCellBorder word-break-all', searchable: false
+                    }, sClass: 'TableCellBorder word-break-all', searchable: false, sWidth: '7% !important'
                 },
-                { data: 'Current_Process', sClass: 'TableCellBorder word-break-all', searchable: false },
-                { data: 'Human_Id', sClass: 'TableCellBorder word-break-all' },
-                { data: 'Human_Name', sClass: 'TableCellBorder word-break-all' },
+                { data: 'Current_Process', sClass: 'TableCellBorder word-break-all', searchable: false, sWidth: '8% !important' },
+                { data: 'Human_Id', sClass: 'TableCellBorder word-break-all', sWidth: '4% !important' },
+                { data: 'Human_Name', sClass: 'TableCellBorder word-break-all', sWidth: '6% !important' },
                 {
                     data: 'Date_Of_Birth', render: function (data, type, row) {
                         return DOBConvert(data.replace("T00:00:00", ""))
                     }, searchable: false, sClass: 'TableCellBorder word-break-all',
-                    type: 'date'
+                    type: 'date', sWidth: '5% !important'
                 },
-                { data: 'Procedures', sClass: 'TableCellBorder word-break-all' },
-                { data: 'Assessment', sClass: 'TableCellBorder word-break-all', searchable: false },
-                { data: 'Ordering_Provider', sClass: 'TableCellBorder word-break-all', searchable: false },
-                { data: 'To_Physician_Name', sClass: 'TableCellBorder word-break-all', searchable: false },
+                { data: 'Procedures', sClass: 'TableCellBorder word-break-all', sWidth: '11% !important' },
+                { data: 'Assessment', sClass: 'TableCellBorder word-break-all', searchable: false, sWidth: '5% !important' },
+                { data: 'Ordering_Provider', sClass: 'TableCellBorder word-break-all', searchable: false, sWidth: '6% !important' },
+                { data: 'To_Physician_Name', sClass: 'TableCellBorder word-break-all', searchable: false, sWidth: '5% !important' },
                 {
                     data: '', render: function (data, type, row) {
                         return "";
-                    }, sClass: 'TableCellBorder word-break-all', searchable: false
+                    }, sClass: 'TableCellBorder word-break-all', searchable: false, sWidth: '5% !important'
                 },
-                { data: 'To_Facility_Name', sClass: 'TableCellBorder word-break-all', searchable: false },
+                { data: 'To_Facility_Name', sClass: 'TableCellBorder word-break-all', searchable: false, sWidth: '6% !important' },
                 {
                     data: '', render: function (data, type, row) {
                         return "<td style='width:2%'><input type = 'image' name = 'grdPrintEReq' id = 'grdPrintEReq' src = '/Resources/PrintReq.png' class= 'loaderClass'  style = 'border-width:0px;'/></td>";
-                    }, sClass: 'TableCellBorder word-break-all text-align-center', searchable: false
+                    }, sClass: 'TableCellBorder word-break-all text-align-center', searchable: false, sWidth: '3% !important'
                 },
                 { data: 'Group_ID', sClass: "hide_column", searchable: false },
             ],
@@ -1110,31 +1067,17 @@ function Load() {
         $('#EncounterTable_info').css({
             'min-width': '180px'
         });
-        $(".dataTables_scrollHeadInner").find(".header").on('click', function () {
-            setTimeout(
-                function () {
-                    $(".dataTables_scrollBody").find(".header").hide();
-                }, 10);
-        });
+       
         dataTable.on('search.dt', function () {
             dataTable.$('tr.highlight').removeClass('highlight');
             $('.myQChkbx').prop('checked', false);
-            setTimeout(
-                function () {
-                    $(".dataTables_scrollBody").find(".header").hide();
-                }, 10);
+            
         });
         dataTable.on('page.dt', function () {
             dataTable.$('tr.highlight').removeClass('highlight');
-            setTimeout(
-                function () {
-                    $(".dataTables_scrollBody").find(".header").hide();
-                }, 10);
+            
         });
-        setTimeout(
-            function () {
-                $(".dataTables_scrollBody").find(".header").hide();
-            }, 10);
+        
         dataTable.on('click', 'tr', function () {
             $('#EncounterTable tr').removeClass("odd");
             $('#EncounterTable tr').removeClass("even");
@@ -1277,9 +1220,9 @@ function Load() {
     <th style='border: 1px solid #909090;text-align: center;width:6%'>Order Type</th>
     <th style='border: 1px solid #909090;text-align: center;width:7%'>Order Status</th>
     <th style='border: 1px solid #909090;text-align: center;width:4%'>Patient Acc</th>
-    <th style='border: 1px solid #909090;text-align: center;width:4%'>Patient Name</th>
+    <th style='border: 1px solid #909090;text-align: center;width:7%'>Patient Name</th>
     <th style='border: 1px solid #909090;text-align: center;width:4%'>Patient DOB</th>
-    <th style='border: 1px solid #909090;text-align: center;width:11%'>Procedure/Rx/ Reason for referral</th>
+    <th style='border: 1px solid #909090;text-align: center;width:9%'>Procedure/Rx/ Reason for referral</th>
     <th style='border: 1px solid #909090;text-align: center;width:4%'>ICD</th>
     <th style='border: 1px solid #909090;text-align: center;width:4%'>Ordering Provider</th>
     <th style='border: 1px solid #909090;text-align: center;width:5%'>Attending Provider</th>
@@ -1334,10 +1277,7 @@ function Load() {
                     var objdata = json.d;
                     objdata.data = Decompress(objdata.data);
                     json.data = objdata.data;
-                    setTimeout(
-                        function () {
-                            $(".dataTables_scrollBody").find(".header").hide();
-                        }, 10);
+                    
                     { sessionStorage.setItem('StartLoading', 'false'); StopLoadFromPatChart(); }
                     return json.data;
                 },
@@ -1362,35 +1302,35 @@ function Load() {
                         else
                             return ConvertDate(row.Ordered_Date_And_Time.replace("T", " ")).split(' ')[0];
                     }, searchable: false, sClass: 'TableCellBorder word-break-all',
-                    type: 'date'
+                    type: 'date', sWidth: '5% !important'
                 },
                 {
                     date: '', render: function (data, type, row) {
                         return cboOrderType;
-                    }, sClass: 'TableCellBorder word-break-all', searchable: false
+                    }, sClass: 'TableCellBorder word-break-all', searchable: false, sWidth: '7% !important'
                 },
-                { data: 'Current_Process', sClass: 'TableCellBorder word-break-all', searchable: false },
-                { data: 'Human_Id', sClass: 'TableCellBorder word-break-all' },
-                { data: 'Human_Name', sClass: 'TableCellBorder word-break-all' },
+                { data: 'Current_Process', sClass: 'TableCellBorder word-break-all', searchable: false, sWidth: '8% !important' },
+                { data: 'Human_Id', sClass: 'TableCellBorder word-break-all', sWidth: '3.5% !important' },
+                { data: 'Human_Name', sClass: 'TableCellBorder word-break-all', sWidth: '6% !important' },
                 {
                     data: 'Date_Of_Birth', render: function (data, type, row) {
                         return DOBConvert(data.replace("T00:00:00", ""))
                     }, searchable: false, sClass: 'TableCellBorder word-break-all',
-                    type: 'date'
+                    type: 'date', sWidth: '5% !important'
                 },
-                { data: 'Procedures', sClass: 'TableCellBorder word-break-all' },
-                { data: 'Assessment', sClass: 'TableCellBorder word-break-all', searchable: false },
-                { data: 'To_Physician_Name', sClass: 'TableCellBorder word-break-all', searchable: false },
+                { data: 'Procedures', sClass: 'TableCellBorder word-break-all', sWidth: '9% !important' },
+                { data: 'Assessment', sClass: 'TableCellBorder word-break-all', searchable: false, sWidth: '5% !important' },
+                { data: 'To_Physician_Name', sClass: 'TableCellBorder word-break-all', searchable: false, sWidth: '6% !important' },
                 {
                     data: '', render: function (data, type, row) {
                         return "";
-                    }, sClass: 'TableCellBorder word-break-all', searchable: false
+                    }, sClass: 'TableCellBorder word-break-all', searchable: false, sWidth: '5% !important'
                 },
-                { data: 'Facility_Name', sClass: 'TableCellBorder word-break-all', searchable: false },
+                { data: 'Facility_Name', sClass: 'TableCellBorder word-break-all', searchable: false, sWidth: '5% !important' },
                 {
                     data: '', render: function (data, type, row) {
                         return "";
-                    }, sClass: 'TableCellBorder word-break-all', searchable: false
+                    }, sClass: 'TableCellBorder word-break-all', searchable: false, sWidth: '6% !important'
                 },
             ],
             initComplete: function (settings, json) {
@@ -1406,31 +1346,17 @@ function Load() {
         $('#EncounterTable_info').css({
             'min-width': '180px'
         });
-        $(".dataTables_scrollHeadInner").find(".header").on('click', function () {
-            setTimeout(
-                function () {
-                    $(".dataTables_scrollBody").find(".header").hide();
-                }, 10);
-        });
+       
         dataTable.on('search.dt', function () {
             dataTable.$('tr.highlight').removeClass('highlight');
             $('.myQChkbx').prop('checked', false);
-            setTimeout(
-                function () {
-                    $(".dataTables_scrollBody").find(".header").hide();
-                }, 10);
+            
         });
         dataTable.on('page.dt', function () {
             dataTable.$('tr.highlight').removeClass('highlight');
-            setTimeout(
-                function () {
-                    $(".dataTables_scrollBody").find(".header").hide();
-                }, 10);
+            
         });
-        setTimeout(
-            function () {
-                $(".dataTables_scrollBody").find(".header").hide();
-            }, 10);
+       
         dataTable.on('click', 'tr', function () {
             $('#EncounterTable tr').removeClass("odd");
             $('#EncounterTable tr').removeClass("even");
@@ -1686,8 +1612,6 @@ function CloseImportResult() {
 }
 function OrderMgmtLoad() {
     { sessionStorage.setItem('StartLoading', 'false'); StopLoadFromPatChart(); }
-
-
     $("span[mand=Yes]").addClass('MandLabelstyle');
     $("span[mand=Yes]").each(function () {
         $(this).html($(this).html().replace("*", "<span class='manredforstar'>*</span>"));

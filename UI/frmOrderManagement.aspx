@@ -561,6 +561,9 @@ table.dataTable > thead > tr > td {
 }.TableCellBorder {
             border: 1px solid #9090904d;
  }
+ .dataTables_scrollBody>table > thead > tr {
+     visibility: collapse;
+ }
 
     </style>
        
@@ -969,7 +972,6 @@ table.dataTable > thead > tr > td {
         <asp:HiddenField ID="hdnCurrentProc" runat="server" />
         <asp:HiddenField ID="hdnIndexOrderID" runat="server" />
         <asp:HiddenField ID="hdnElectronicSign" runat="server" />
-        <asp:HiddenField ID="hdnPostback" runat="server" />
     <br />
     <asp:HiddenField ID="hdnOrderStatus" runat="server" EnableViewState="false" />
     <div id="divLoading" class="modal" runat="server" style="text-align: center; display: none">
