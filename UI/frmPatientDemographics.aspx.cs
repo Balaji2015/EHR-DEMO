@@ -2364,17 +2364,17 @@ namespace Acurus.Capella.UI
 
                 foreach (var demographics in demographicsList)
                 {
-                    if (demographics.value == "SEXUAL ORIENTATION")
+                    if (demographics.Field_Name == "SEXUAL ORIENTATION")
                     {
                         dictSEXUALORIENTATION.Add(demographics.value, demographics.value);
                     }
 
-                    if (demographics.value == "GENDER IDENTITY")
+                    if (demographics.Field_Name == "GENDER IDENTITY")
                     {
                         dictGenderIdentity.Add(demographics.value, demographics.value);
                     }
 
-                    if (demographics.value == "PATIENT SUFFIX")
+                    if (demographics.Field_Name == "PATIENT SUFFIX")
                     {
                         dictPaitentSuffix.Add(demographics.value, demographics.value);
                     }
