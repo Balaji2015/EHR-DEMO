@@ -1519,7 +1519,7 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
                 PhysicianFacilityMappingList physicianFacilityMappingList = ConfigureBase<PhysicianFacilityMappingList>.ReadJson("PhysicianFacilityMapping.json");
                 if (physicianFacilityMappingList != null)
                 {
-                    var physicanList = physicianFacilityMappingList.PhysicianFacility.Select(x => x.Physician.FirstOrDefault(y => y.ID == EncProviderId.ToString())).FirstOrDefault();
+                    var physicanList = physicianFacilityMappingList.PhysicianFacility.SelectMany(x => x.Physician).Where(y=>y.ID == EncProviderId.ToString()).FirstOrDefault();
                     if (physicanList != null)
                     {
                         string Physician_Last_Name = physicanList.lastname;

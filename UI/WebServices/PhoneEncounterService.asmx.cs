@@ -258,10 +258,16 @@ objFillHuman.Birth_Date.ToString("dd-MMM-yyyy") + " | " +
             //BugID:51570
             #region Modifiers
             IList<string> ModifiersList = new List<string>();
-            XmlDocument xmldocModifier = new XmlDocument();
-            xmldocModifier.Load(System.Web.Hosting.HostingEnvironment.ApplicationPhysicalPath + "ConfigXML\\" + "staticlookup" + ".xml");
-            XmlNodeList xmlNodeModifierList = xmldocModifier.GetElementsByTagName("StaticLookUp");
-            ModifiersList = xmlNodeModifierList.Cast<XmlNode>().Where(a => a.Attributes["Name"].Value.ToUpper() == "MODIFIER").OrderBy(a => Convert.ToInt16(a.Attributes["Sort_order"].Value.ToString())).Select(a => a.Attributes["value"].Value.ToString()).ToList<string>();
+            //XmlDocument xmldocModifier = new XmlDocument();
+            //xmldocModifier.Load(System.Web.Hosting.HostingEnvironment.ApplicationPhysicalPath + "ConfigXML\\" + "staticlookup" + ".xml");
+            //XmlNodeList xmlNodeModifierList = xmldocModifier.GetElementsByTagName("StaticLookUp");
+            //ModifiersList = xmlNodeModifierList.Cast<XmlNode>().Where(a => a.Attributes["Name"].Value.ToUpper() == "MODIFIER").OrderBy(a => Convert.ToInt16(a.Attributes["Sort_order"].Value.ToString())).Select(a => a.Attributes["value"].Value.ToString()).ToList<string>();
+
+            StaticLookupList staticLookupList = ConfigureBase<StaticLookupList>.ReadJson("staticlookup.json");
+            if (staticLookupList != null)
+            {
+                ModifiersList = staticLookupList.StaticLookUpList.StaticLookUp.Where(x=>x.Name.ToUpper() == "MODIFIER").OrderBy(a => Convert.ToInt16(a.Sort_Order)).Select(a => a.value.ToString()).ToList<string>();
+            }
             #endregion
 
             IList<string> EMDTOIcdlst = new List<string>();

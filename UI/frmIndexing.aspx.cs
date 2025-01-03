@@ -2389,7 +2389,7 @@ namespace Acurus.Capella.UI
             //if (File.Exists(Server.MapPath(@"ConfigXML\PhysicianFacilityMapping.xml")))
             //    xmlDocumentType = XDocument.Load(Server.MapPath(@"ConfigXML\PhysicianFacilityMapping.xml"));
             //CAP-2781
-            PhysicianFacilityMappingList physicianFacilityMappingList = ConfigureBase<PhysicianFacilityMappingList>.ReadJson("PhysicianFacilityMapping.jsonn");
+            PhysicianFacilityMappingList physicianFacilityMappingList = ConfigureBase<PhysicianFacilityMappingList>.ReadJson("PhysicianFacilityMapping.json");
             ListItem liDropdown = null;
             IList<ListItem> liComboItems = new List<ListItem>();
             if (physicianFacilityMappingList != null)

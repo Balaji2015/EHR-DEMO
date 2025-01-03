@@ -2885,31 +2885,50 @@ namespace Acurus.Capella.UI
                 }
                 else
                 {
-                    XmlNode nodeMatchingFacility = xmldoc.SelectSingleNode("/ROOT/PhyList/Facility[@name='" + facility_name.Trim() + "']");
+                    //XmlNode nodeMatchingFacility = xmldoc.SelectSingleNode("/ROOT/PhyList/Facility[@name='" + facility_name.Trim() + "']");
+                    PhysicianFacility phyFac = physicianFacilityMappingList.PhysicianFacility.Where(x => x.name == facility_name.Trim()).FirstOrDefault();
                     string sDefaultPhysicians = "";
-                    if (nodeMatchingFacility != null)
+                    //if (nodeMatchingFacility != null)
+                    //{
+                    //    sDefaultPhysicians = nodeMatchingFacility.Attributes["default-physician-id"].Value.ToString();
+                    //}
+                    if (phyFac != null)
                     {
-                        sDefaultPhysicians = nodeMatchingFacility.Attributes["default-physician-id"].Value.ToString();
+                        sDefaultPhysicians = phyFac.defaultphysicianid.ToString();
                     }
                     string[] lstDefaultPhysicians = sDefaultPhysicians.Split(',');
-                    XmlNodeList xmlPhysicianList = nodeMatchingFacility != null ? nodeMatchingFacility.ChildNodes : (null);
-                    if (xmlPhysicianList != null && xmlPhysicianList.Count > 0)
-                    {
-                        foreach (XmlNode Physician_details in xmlPhysicianList)
-                        {
+                    //XmlNodeList xmlPhysicianList = nodeMatchingFacility != null ? nodeMatchingFacility.ChildNodes : (null);
+                    //if (xmlPhysicianList != null && xmlPhysicianList.Count > 0)
+                    if (phyFac?.Physician != null && phyFac.Physician.Count > 0)
+                    { 
+                        //foreach (XmlNode Physician_details in xmlPhysicianList)
+                            foreach (var Physician_details in phyFac.Physician)
+                            {
                             if (Physician_details != null)
                             {
                                 CurrentPhysician = new PhysicianLibrary();
-                                CurrentPhysician.PhyPrefix = Physician_details.Attributes["prefix"].Value.ToString();
-                                CurrentPhysician.PhyFirstName = Physician_details.Attributes["firstname"].Value.ToString();
-                                CurrentPhysician.PhyMiddleName = Physician_details.Attributes["middlename"].Value.ToString();
-                                CurrentPhysician.PhyLastName = Physician_details.Attributes["lastname"].Value.ToString();
-                                CurrentPhysician.PhySuffix = Physician_details.Attributes["suffix"].Value.ToString();
-                                CurrentPhysician.PhyId = Convert.ToUInt32(Physician_details.Attributes["ID"].Value.ToString());
-                                CurrentPhysician.Id = Convert.ToUInt32(Physician_details.Attributes["ID"].Value.ToString());
-                                CurrentPhysician.Is_Active = Physician_details.Attributes["status"].Value.ToString();
-                                CurrentPhysician.PhyUserName = Physician_details.Attributes["username"].Value.ToString();
-                                CurrentPhysician.PhyColor = Physician_details.Attributes["machine_technician_id"].Value.ToString();//assinged tech ID
+                                //CurrentPhysician.PhyPrefix = Physician_details.Attribut[es"prefix"].Value.ToString();
+                                //CurrentPhysician.PhyFirstName = Physician_details.Attributes["firstname"].Value.ToString();
+                                //CurrentPhysician.PhyMiddleName = Physician_details.Attributes["middlename"].Value.ToString();
+                                //CurrentPhysician.PhyLastName = Physician_details.Attributes["lastname"].Value.ToString();
+                                //CurrentPhysician.PhySuffix = Physician_details.Attributes["suffix"].Value.ToString();
+                                //CurrentPhysician.PhyId = Convert.ToUInt32(Physician_details.Attributes["ID"].Value.ToString());
+                                //CurrentPhysician.Id = Convert.ToUInt32(Physician_details.Attributes["ID"].Value.ToString());
+                                //CurrentPhysician.Is_Active = Physician_details.Attributes["status"].Value.ToString();
+                                //CurrentPhysician.PhyUserName = Physician_details.Attributes["username"].Value.ToString();
+                                //CurrentPhysician.PhyColor = Physician_details.Attributes["machine_technician_id"].Value.ToString();//assinged tech ID
+
+                                CurrentPhysician.PhyPrefix = Physician_details.prefix.ToString();
+                                CurrentPhysician.PhyFirstName = Physician_details.firstname.ToString();
+                                CurrentPhysician.PhyMiddleName = Physician_details.middlename.ToString();
+                                CurrentPhysician.PhyLastName = Physician_details.lastname.ToString();
+                                CurrentPhysician.PhySuffix = Physician_details.suffix.ToString();
+                                CurrentPhysician.PhyId = Convert.ToUInt32(Physician_details.ID.ToString());
+                                CurrentPhysician.Id = Convert.ToUInt32(Physician_details.ID.ToString());
+                                CurrentPhysician.Is_Active = Physician_details.status.ToString();
+                                CurrentPhysician.PhyUserName = Physician_details.username.ToString();
+                                CurrentPhysician.PhyColor = Physician_details.machine_technician_id.ToString();
+
                                 if (lstDefaultPhysicians.Count() > 0 && lstDefaultPhysicians[0].Trim() != string.Empty)
                                 {
                                     if (CurrentPhysician.PhyId == Convert.ToUInt64(lstDefaultPhysicians[0]))

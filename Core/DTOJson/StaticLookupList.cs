@@ -171,7 +171,7 @@ namespace Acurus.Capella.Core.DTOJson
             ServiceTypeList = new List<ServiceTypeList>();
             ServiceTypeSelectionList = new List<ServiceTypeSelectionList>();
 
-            //StaticLookUpList = new StaticLookUpList();
+            StaticLookUpList = new StaticLookUplst();
             HelpMenuList = new HelpMenuList();
             FollowupForBPStatusList = new FollowupForBPStatusList();            FaxFolderNameList = new List<FaxFolderNameList>();
         }
@@ -193,7 +193,7 @@ namespace Acurus.Capella.Core.DTOJson
         public List<BulkExportSchedulerpath> BulkExportSchedulerpath { get; set; }
         public List<string> ErrorFileNamesList { get; set; }
         public List<RxHistoryList> RxHistoryList { get; set; }
-        //public StaticLookUpList StaticLookUpList { get; set; }
+        public StaticLookUplst StaticLookUpList { get; set; }
         public List<MedicationReasonNotPerformedList> MedicationReasonNotPerformedList { get; set; }
         public FollowupForBPStatusList FollowupForBPStatusList { get; set; }
         public List<SpecialtyList> SpecialtyList { get; set; }
@@ -246,13 +246,13 @@ namespace Acurus.Capella.Core.DTOJson
         public string Sort_Order { get; set; }
     }
 
-    //public class StaticLookUpList
-    //{
-    //    public List<StaticLookUp> StaticLookUp { get; set; }
+    public class StaticLookUplst
+    {
+        public List<StaticLookUp> StaticLookUp { get; set; }
 
-    //    //[JsonProperty("#text")]
-    //    public string text { get; set; }
-    //}
+        //[JsonProperty("#text")]
+        public string text { get; set; }
+    }
 
     public class VitalList
     {

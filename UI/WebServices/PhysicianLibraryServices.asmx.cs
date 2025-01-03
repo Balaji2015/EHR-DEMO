@@ -108,9 +108,8 @@ namespace Acurus.Capella.UI.WebServices
             StaticLookupList staticLookupList = ConfigureBase<StaticLookupList>.ReadJson("staticlookup.json");
             if (staticLookupList != null)
             {
-                var Specialty = staticLookupList?.SpecialtyList?.FirstOrDefault()?.value ?? "";
-                var Category = staticLookupList?.CategoryList?.FirstOrDefault()?.value ?? "";
-
+                var Specialty = staticLookupList?.SpecialtyList?.Select(x => new { Specialty = x.value ?? "" });
+                var Category = staticLookupList?.CategoryList?.Select(x => new { Category = x.value ?? "" });
                 xmldoc.Load(System.Web.Hosting.HostingEnvironment.ApplicationPhysicalPath + "ConfigXML\\" + "Facility_Library" + ".xml");
                 XmlNodeList xmlPhysicianAddressList = xmldoc.GetElementsByTagName("FacilityList");
                 var PhysicianFacilityList = xmlPhysicianAddressList.Cast<XmlNode>().AsEnumerable().ElementAtOrDefault(0);
