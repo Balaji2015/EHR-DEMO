@@ -182,7 +182,7 @@ function LoadDocuments() {
     // bug Id:57266
     //CAP-2781
     $.get("ConfigXML/PhysicianFacilityMapping.json", {}, function (xml) {
-        xml.PhysicianFacility.each(function (i) {
+        xml.PhysicianFacility.forEach((i) => {
                 if (i.name.toUpperCase().indexOf("SURGERY-") >= 0) {
                     $(this).Physician.each(function (k) {
                         if (k.username == physician_Name) {
