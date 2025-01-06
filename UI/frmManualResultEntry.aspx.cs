@@ -3069,7 +3069,7 @@ namespace Acurus.Capella.UI
             {
                 //xmldoc.Load(System.Web.Hosting.HostingEnvironment.ApplicationPhysicalPath + "ConfigXML\\" + "PhysicianFacilityMapping" + ".xml");
                 //XmlNode nodeMatchingPhysician = xmldoc.SelectSingleNode("/ROOT/PhyList/Facility/Physician[@ID='" + hdnPhyID.Value.Trim() + "']");
-                var matchingPhysician = physicianFacilityMappingList.PhysicianFacility.Select(x=> x.Physician.FirstOrDefault(y=>y.ID == hdnPhyID.Value.Trim())).FirstOrDefault();
+                var matchingPhysician = physicianFacilityMappingList.PhysicianFacility.SelectMany(x=> x.Physician).FirstOrDefault(y => y.ID == hdnPhyID.Value.Trim());
                 if (matchingPhysician != null)
                 {
                     objPhysician.PhyPrefix = matchingPhysician.prefix;

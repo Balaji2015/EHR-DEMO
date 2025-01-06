@@ -1336,9 +1336,9 @@ function LoadServiceType() {
 
 
                             for (var i = 0; i < ServiceTypeSelectionList.length; i++) {
-                                if (localStorage.getItem("ServiceTypeCode") == ServiceTypeSelectionList[i].getAttribute("ServiceTypeCode") && ServiceTypeSelectionList[i].getAttribute("Payer").indexOf(localStorage.getItem("NaicCode")) >= 0) {
-                                    $('#chk' + ServiceTypeSelectionList[i].getAttribute("Code")).attr("checked", false);
-                                    $('#chk' + ServiceTypeSelectionList[i].getAttribute("Code")).attr("disabled", true);
+                                if (localStorage.getItem("ServiceTypeCode") == ServiceTypeSelectionList[i].ServiceTypeCode && ServiceTypeSelectionList[i].Payer.indexOf(localStorage.getItem("NaicCode")) >= 0) {
+                                    $('#chk' + ServiceTypeSelectionList[i].Code).attr("checked", false);
+                                    $('#chk' + ServiceTypeSelectionList[i].Code).attr("disabled", true);
                                 }
 
                             }
@@ -1388,9 +1388,9 @@ function checkboxchange(e) {
                 $('input:checkbox').attr("disabled", false);
 
                 for (var i = 0; i < ServiceTypeSelectionList.length; i++) {
-                    if (e.checked && localStorage.getItem("NaicCode") != "" && ServiceTypeSelectionList[i].getAttribute("Payer").indexOf(localStorage.getItem("NaicCode")) >= 0) {
-                        $('#chk' + ServiceTypeSelectionList[i].getAttribute("Code")).attr("checked", false);
-                        $('#chk' + ServiceTypeSelectionList[i].getAttribute("Code")).attr("disabled", true);
+                    if (e.checked && localStorage.getItem("NaicCode") != "" && ServiceTypeSelectionList[i].Payer.indexOf(localStorage.getItem("NaicCode")) >= 0) {
+                        $('#chk' + ServiceTypeSelectionList[i].Code).attr("checked", false);
+                        $('#chk' + ServiceTypeSelectionList[i].Code).attr("disabled", true);
                     }
 
                 }

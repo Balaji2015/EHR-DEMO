@@ -10000,7 +10000,7 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
                     PhysicianFacilityMappingList physicianFacilityMappingList = ConfigureBase<PhysicianFacilityMappingList>.ReadJson("PhysicianFacilityMapping.json");
                     if (physicianFacilityMappingList != null)
                     {
-                        var ilstPhysician = physicianFacilityMappingList.PhysicianFacility.Select(x => x.Physician.FirstOrDefault(y => y.ID == SaveEncounter[0].Encounter_Provider_ID.ToString())).FirstOrDefault();//xmlPhysician.Element("ROOT").Element("PhyList").Elements("Facility").Elements("Physician").Where(aa => aa.Attribute("ID").Value.ToString() == SaveEncounter[0].Encounter_Provider_ID.ToString());
+                        var ilstPhysician = physicianFacilityMappingList.PhysicianFacility.SelectMany(x => x.Physician).FirstOrDefault(y => y.ID == SaveEncounter[0].Encounter_Provider_ID.ToString());//xmlPhysician.Element("ROOT").Element("PhyList").Elements("Facility").Elements("Physician").Where(aa => aa.Attribute("ID").Value.ToString() == SaveEncounter[0].Encounter_Provider_ID.ToString());
                         if (ilstPhysician != null)
                         {
                             //CAP-2150

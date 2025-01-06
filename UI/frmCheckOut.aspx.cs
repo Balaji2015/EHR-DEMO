@@ -135,7 +135,7 @@ namespace Acurus.Capella.UI
 
             if (physicianFacilityMappingList != null && physicianFacilityMappingList.PhysicianFacility != null)
             {
-                var physician = physicianFacilityMappingList.PhysicianFacility.Select(x=> x.Physician.FirstOrDefault(y => y.ID == ClientSession.PhysicianId.ToString())).FirstOrDefault();
+                var physician = physicianFacilityMappingList.PhysicianFacility.SelectMany(x=> x.Physician).FirstOrDefault(y => y.ID == ClientSession.PhysicianId.ToString());
                 if (physician != null)
                 {
 

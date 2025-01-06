@@ -464,7 +464,7 @@ function loadRx_History() {
             $("#selTotQuantity").append("<option> </option>");
             $("#selDayssupply").append("<option> </option>");
 
-            $(xml.RxHistoryList).each(function () {
+            $(xml.RxHistoryList).forEach(function () {
 
                 if ($(this)[0].Field_Name == "RxHistory_Quantity") {
                     $("#selquantity").append("<option value='" + $(this)[0].value + "'>" + $(this)[0].value + "</option>");

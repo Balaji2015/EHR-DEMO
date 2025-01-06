@@ -738,7 +738,7 @@ namespace Acurus.Capella.UI
                         PhysicianFacilityMappingList physicianFacilityMappingList = ConfigureBase<PhysicianFacilityMappingList>.ReadJson("PhysicianFacilityMapping.json");
                         if (physicianFacilityMappingList != null)
                         {
-                            var lstPhysician = physicianFacilityMappingList.PhysicianFacility.Select(x => x.Physician.FirstOrDefault(y => y.ID == enc.Encounter_Provider_ID.ToString())).FirstOrDefault();
+                            var lstPhysician = physicianFacilityMappingList.PhysicianFacility.SelectMany(x => x.Physician).FirstOrDefault(y => y.ID == enc.Encounter_Provider_ID.ToString());
                             if (lstPhysician != null)
                             {
                                 xmlMember_ID[0].InnerText = lstPhysician.prefix + " " + lstPhysician.firstname + " " + lstPhysician.middlename + " " + lstPhysician.lastname;
