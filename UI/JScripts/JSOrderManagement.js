@@ -1542,6 +1542,9 @@ function PrintToPDF(sender, args) {
     var cboLabCenter = document.getElementById('cboLabCenter').value;
     var chkDate = document.getElementById('chkDate').checked;
 
+    var dtpFromDateNew = $find("dtpFromDate");
+    var dtpToDateNew = $find("dtpToDate");
+
     var table = new DataTable('#EncounterTable');
     if (table.row($('#ResultTableNew tr')).length == 0) {
         DisplayErrorMessage('7090007');
@@ -1555,8 +1558,8 @@ function PrintToPDF(sender, args) {
                 "cboOrderType": cboOrderType,
                 "hdnLocalTime": utc,
                 "cboOrderStatus": cboOrderStatus,
-                "dtpFromDate": dtpFromDate,
-                "dtpToDate": dtpToDate,
+                "dtpFromDate": new Date(dtpFromDateNew.get_dateInput()._text).format("dd/MM/yyyy"),
+                "dtpToDate": new Date(dtpToDateNew.get_dateInput()._text).format("dd/MM/yyyy"),
                 "cboFacilityName": cboFacilityName,
                 "txtPatientName": txtPatientName,
                 "txtProviderName": txtProviderName,
