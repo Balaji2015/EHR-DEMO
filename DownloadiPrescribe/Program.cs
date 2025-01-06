@@ -12,6 +12,8 @@ using static Acurus.Capella.DataAccess.RCopiaXMLResponseProcess;
 using System.Configuration;
 using Acurus.Capella.Core.DTO;
 using System.Timers;
+using System.IO;
+using System.Net;
 
 namespace DownloadiPrescribe
 {
@@ -31,6 +33,11 @@ namespace DownloadiPrescribe
                     Console.WriteLine("Order Task Creation Started.");
                     CreateLabOrderTask();
                     Console.WriteLine("Order Task Creation Method Invoked.");
+                    break;
+                case "ImageResultsAgent":
+                    Console.WriteLine("ImageResultsAgent Started.");
+                    ImportImageResultsAgent();
+                    Console.WriteLine("ImageResultsAgent Method Invoked.");
                     break;
             }
             //Console.WriteLine("Order Task Creation Started.");
@@ -287,6 +294,422 @@ namespace DownloadiPrescribe
             }
 
             return new Tuple<string, string>(labMessage, ICDMessage);
+        }
+
+        public static void ImportImageResultsAgent()
+        {
+            string sFacility = ConfigurationManager.AppSettings["FacilityNameForResults"];
+            string sIncoming_StudiesFilePath = string.Empty;
+            string sImported_StudiesFilePath = string.Empty;
+            string sErrored_StudiesFilePath = string.Empty;
+            bool bIsErroredFile = false;
+            string sFile = string.Empty;
+            ulong ulOrderSubmitId = 0;
+            HumanManager MngrHuman = new HumanManager();
+            Human objHuman = new Human();
+            IList<FileManagementIndex> fileManagementIndexList = new List<FileManagementIndex>();
+            IList<Scan> ilstScan = new List<Scan>();
+            IList<scan_index> ilstscan_index = new List<scan_index>();
+            IList<OrdersSubmit> insertordersubmitList = new List<OrdersSubmit>();
+            IList<Orders> insertOrderList = new List<Orders>();
+            IList<FileManagementIndex> UpdatefileManagementIndexList = null;
+            IList<Scan> UpdateScanList = null;
+            IList<scan_index> UpdateScan_indexList = null;
+            FileManagementIndexManager fileManagementIndexmanager = new FileManagementIndexManager();
+            ScanManager scanManager = new ScanManager();
+            Scan_IndexManager scanindexmanager = new Scan_IndexManager();
+            OrdersManager ordersManager = new OrdersManager();
+
+            sIncoming_StudiesFilePath = ConfigurationManager.AppSettings["Incoming_StudiesFilePath"];
+            sImported_StudiesFilePath = ConfigurationManager.AppSettings["Imported_StudiesFilePath"];
+            sErrored_StudiesFilePath = ConfigurationManager.AppSettings["Errored_StudiesFilePath"];
+            DirectoryInfo[] Directorys = new DirectoryInfo(sIncoming_StudiesFilePath).GetDirectories();
+            foreach (DirectoryInfo dir in Directorys)
+            {
+                sIncoming_StudiesFilePath = sIncoming_StudiesFilePath + @"\" + dir.Name;
+                sImported_StudiesFilePath = sImported_StudiesFilePath + @"\" + dir.Name;
+                sErrored_StudiesFilePath = sErrored_StudiesFilePath + @"\" + dir.Name;
+
+                if (Directory.Exists(sIncoming_StudiesFilePath) && Directory.Exists(sImported_StudiesFilePath) && Directory.Exists(sErrored_StudiesFilePath))
+                {
+                    FileInfo[] sFiles = new DirectoryInfo(sIncoming_StudiesFilePath).GetFiles("*.pdf");
+                    foreach (FileInfo finfFile in sFiles)
+                    {
+                        sFile = finfFile.Name;
+                        bIsErroredFile = FileValidation(sFile);
+                        if (!bIsErroredFile)
+                        {
+                            objHuman = MngrHuman.GetHumanFromHumanIDAndLastNameFirstName(Convert.ToUInt64(sFile.ToUpper().Split('_')[0].Replace("ID", "")), sFile.ToUpper().Split('_')[1], sFile.ToUpper().Split('_')[2]);
+                            if (objHuman?.Id != null && objHuman.Id > 0)
+                            {
+                                Console.WriteLine("FTP started");
+                                #region FTP Transfer
+                                string ftpServerIP = ConfigurationManager.AppSettings["ftpServerIP"];
+                                bool bCreateDirectory = CreateDirectory(objHuman.Id.ToString(), ftpServerIP, string.Empty, string.Empty, out string sCheckFileNotFoundException);
+                                if (sCheckFileNotFoundException != "" && sCheckFileNotFoundException.Contains("CheckFileNotFoundException"))
+                                {
+                                    //ScriptManager.RegisterStartupScript(this, this.GetType(), "Key", "alert(\"" + sCheckFileNotFoundException.Split('~')[1] + "\");", true);
+                                    //return;
+                                }
+                                if (bCreateDirectory)
+                                {
+                                    string serverPath = string.Empty;
+                                    serverPath = UploadToImageServer(objHuman.Id.ToString(), ftpServerIP, string.Empty, string.Empty, sIncoming_StudiesFilePath + "//" + sFile, string.Empty, out string sCheckFileNotFoundExceptions);
+                                    if (sCheckFileNotFoundException != "" && sCheckFileNotFoundException.Contains("CheckFileNotFoundException"))
+                                    {
+                                        //ScriptManager.RegisterStartupScript(this, this.GetType(), "Key", "alert(\"" + sCheckFileNotFoundException.Split('~')[1] + "\");", true);
+                                        //return;
+                                    }
+
+                                    if (serverPath != string.Empty)
+                                    {
+
+                                        OrdersSubmit objOrdersSubmit = new OrdersSubmit();
+                                        objOrdersSubmit.Human_ID = objHuman.Id;
+                                        objOrdersSubmit.Created_By = "ImageResultsAgent";
+                                        objOrdersSubmit.Created_Date_And_Time = DateTime.UtcNow;
+                                        objOrdersSubmit.Facility_Name = sFacility;
+                                        objOrdersSubmit.Specimen_Collection_Date_And_Time = Convert.ToDateTime(DateTime.ParseExact(sFile.Split('_')[3].ToUpper().Replace(".PDF", ""), "yyyyMMdd", CultureInfo.InvariantCulture).ToString("yyyy-MM-dd"));
+                                        objOrdersSubmit.Order_Type = "DIAGNOSTIC ORDER";
+                                        insertordersubmitList.Add(objOrdersSubmit);
+
+
+                                        Orders objOrder = new Orders();
+                                        objOrder.Lab_Procedure = "Paper Order";
+                                        objOrder.Human_ID = objHuman.Id;
+                                        objOrder.Created_By = "ImageResultsAgent";
+                                        objOrder.Created_Date_And_Time = DateTime.UtcNow;
+                                        insertOrderList.Add(objOrder);
+
+                                        ulOrderSubmitId = ordersManager.InsertDummyOrder(insertordersubmitList, insertOrderList, "DIAGNOSTIC ORDER", sFacility, string.Empty);
+
+                                        Scan scan = new Scan();
+                                        scan.Scanned_File_Path = sImported_StudiesFilePath + "//" + sFile;
+                                        scan.Scanned_Date = Convert.ToDateTime(DateTime.ParseExact(sFile.Split('_')[3].ToUpper().Replace(".PDF", ""), "yyyyMMdd", CultureInfo.InvariantCulture).ToString("yyyy-MM-dd"));
+                                        scan.Facility_Name = sFacility;
+                                        scan.No_of_Pages = 1;
+                                        scan.Scanned_File_Name = sFile;
+                                        scan.Scan_Type = "Online Chart - LOCAL";
+                                        scan.Created_By = "ImageResultsAgent";
+                                        scan.Created_Date_And_Time = DateTime.UtcNow;
+                                        ilstScan.Add(scan);
+                                        scanManager.SaveUpdateDelete_DBAndXML_WithTransaction(ref ilstScan, ref UpdateScanList, null, string.Empty, false, false, objHuman.Id, string.Empty);
+
+                                        scan_index scan_Index = new scan_index();
+                                        scan_Index.Human_ID = objHuman.Id;
+                                        scan_Index.Scan_ID = Convert.ToUInt64(ilstScan.FirstOrDefault().Id);
+                                        scan_Index.Document_Date = Convert.ToDateTime(DateTime.ParseExact(sFile.Split('_')[3].ToUpper().Replace(".PDF", ""), "yyyyMMdd", CultureInfo.InvariantCulture).ToString("yyyy-MM-dd"));
+                                        scan_Index.Document_Type = "Results";
+                                        scan_Index.Document_Sub_Type = "ECHO";
+                                        scan_Index.Order_ID = ulOrderSubmitId;
+                                        scan_Index.Indexed_File_Path = sImported_StudiesFilePath + "//" + sFile;
+                                        scan_Index.Page_Selected = "1";
+                                        scan_Index.Created_By = "ImageResultsAgent";
+                                        scan_Index.Created_Date_And_Time = DateTime.UtcNow;
+                                        scan_Index.Is_Manually_Reviewed_And_Signed = "Y";
+                                        ilstscan_index.Add(scan_Index);
+
+                                        scanindexmanager.SaveUpdateDelete_DBAndXML_WithTransaction(ref ilstscan_index, ref UpdateScan_indexList, null, string.Empty, false, false, objHuman.Id, string.Empty);
+
+                                        FileManagementIndex filemanagementIndex = new FileManagementIndex();
+                                        filemanagementIndex.Created_By = "ImageResultsAgent";
+                                        filemanagementIndex.Created_Date_And_Time = DateTime.UtcNow;
+                                        filemanagementIndex.Document_Date = Convert.ToDateTime(DateTime.ParseExact(sFile.Split('_')[3].ToUpper().Replace(".PDF", ""), "yyyyMMdd", CultureInfo.InvariantCulture).ToString("yyyy-MM-dd"));
+                                        filemanagementIndex.Document_Type = "Results";
+                                        filemanagementIndex.Document_Sub_Type = "ECHO";
+                                        filemanagementIndex.Source = "SCAN";
+                                        filemanagementIndex.Order_ID = ulOrderSubmitId;
+                                        filemanagementIndex.Human_ID = objHuman.Id;
+                                        filemanagementIndex.Scan_Index_Conversion_ID = ilstscan_index.FirstOrDefault().Id;
+                                        filemanagementIndex.File_Path = serverPath;
+                                        filemanagementIndex.Is_Delete = "N";
+                                        filemanagementIndex.Facility_Name = sFacility;
+
+                                        fileManagementIndexList.Add(filemanagementIndex);
+                                        ulong[] uScanID = { 0 };
+
+                                        fileManagementIndexmanager.SaveUpdateDelete_DBAndXML_WithTransaction(ref fileManagementIndexList, ref UpdatefileManagementIndexList, null, string.Empty, true, true, objHuman.Id, string.Empty);
+                                        Console.WriteLine(sFile + " - Import to Imported_Studies Folder");
+                                    }
+                                }
+                                Console.WriteLine("FTP Ended");
+                                #endregion
+                                File.Move(sIncoming_StudiesFilePath + "//" + sFile, sImported_StudiesFilePath + "//" + sFile);
+                            }
+                            else
+                            {
+                                File.Move(sIncoming_StudiesFilePath + "//" + sFile, sErrored_StudiesFilePath + "//" + sFile);
+                                Console.WriteLine(sFile + " - Import to Errored_Studies Folder");
+                            }
+                        }
+                        else
+                        {
+                            File.Move(sIncoming_StudiesFilePath + "//" + sFile, sErrored_StudiesFilePath + "//" + sFile);
+                            Console.WriteLine(sFile + " - Import to Errored_Studies Folder");
+                        }
+                    }
+                }
+            }
+        }
+        public static bool FileValidation(string sFile) {
+            DateTime dateValue;
+            if (!sFile.ToUpper().StartsWith("ID"))
+            {
+                return true;
+            }
+            else if (!sFile.ToUpper().EndsWith(".PDF"))
+            {
+                return true;
+            }
+            else if (sFile.Split('_').Length != 4)
+            {
+                return true;
+            }
+            else if (sFile.Split('_').Length == 4 && sFile.Split('_')[0].ToUpper().Replace("ID", "").Any(a=>char.IsLetter(a)))
+            {
+                return true;
+            }
+            else if (sFile.Split('_').Length == 4 
+                && sFile.Split('_')[3].ToUpper().Replace(".PDF", "").Length == 8
+                && !sFile.Split('_')[3].ToUpper().Replace(".PDF", "").Any(a => char.IsLetter(a))
+                && !DateTime.TryParse(DateTime.ParseExact(sFile.Split('_')[3].ToUpper().Replace(".PDF", ""), "yyyyMMdd", CultureInfo.InvariantCulture).ToString("yyyy-MM-dd"), out dateValue))
+            {
+                return true;
+            }
+            return false;
+        }
+        public static string UploadToImageServer(string HumanID, string serverIP, string UserName, string Password, string SelectedFilePath, string File_Name_Convention, out string sCheckFileNotFoundException)
+        {
+            string uri = string.Empty;
+            FtpWebRequest reqFTP;
+            FtpWebResponse responseFTP;
+
+            sCheckFileNotFoundException = "";
+            #region "Ftp Operations"
+            //bool result = true;
+            string serverPath = string.Empty;
+
+
+            FileInfo fileInf = new FileInfo(SelectedFilePath);
+            //    if (File_Name_Convention != string.Empty)
+            //    {
+            //        reqFTP = (FtpWebRequest)FtpWebRequest.Create(new Uri(uri + File_Name_Convention));
+            //    }
+            //    else
+            //    {
+            //        reqFTP = (FtpWebRequest)FtpWebRequest.Create(new Uri(uri + fileInf.Name));
+            //    }
+            //    reqFTP.Credentials = new NetworkCredential(UserName, Password);
+            //    reqFTP.KeepAlive = false;
+            //    reqFTP.UsePassive = false;
+            //    reqFTP.Method = WebRequestMethods.Ftp.UploadFile;
+            //    reqFTP.UseBinary = true;
+            //    reqFTP.ContentLength = fileInf.Length;
+            //    int buffLength = 1;
+            //    byte[] buff = new byte[fileInf.Length];
+            //    int contentLen;
+            //    FileStream fs = fileInf.OpenRead();
+            //    try
+            //    {
+            //        Stream strm = reqFTP.GetRequestStream();
+            //        contentLen = fs.Read(buff, 0, buffLength);
+            //        while (contentLen != 0)
+            //        {
+            //            strm.Write(buff, 0, contentLen);
+            //            contentLen = fs.Read(buff, 0, buffLength);
+            //        }
+            //        strm.Close();
+            //        fs.Close();
+            //    }
+            //    catch (Exception ex)
+            //    {
+            //        result = false;
+            //    }
+
+            //    if (result)
+            //    {
+            //        if (File_Name_Convention != string.Empty)
+            //        {
+            //            serverPath = uri + File_Name_Convention;
+            //        }
+            //        else
+            //        {
+            //            serverPath = uri + fileInf.Name;
+            //        }
+            //    }  
+
+            //return serverPath;
+
+            #endregion
+
+            /* Credential To Access NAS Server */
+            string UNCAuthPath = System.Configuration.ConfigurationSettings.AppSettings["UNCAuthPath"];
+            string UNCPath = System.Configuration.ConfigurationSettings.AppSettings["UNCPath"];
+            string ftpIP = System.Configuration.ConfigurationSettings.AppSettings["ftpServerIP"];
+            string userName = System.Configuration.ConfigurationSettings.AppSettings["UserName"];
+            string password = System.Configuration.ConfigurationSettings.AppSettings["Password"];
+            string domain = System.Configuration.ConfigurationSettings.AppSettings["Domain"];
+            bool result = false;
+            if (!HumanID.ToString().ToUpper().Contains("EFAX"))
+                uri = serverIP + HumanID + "/";
+            else
+                uri = serverIP + HumanID;
+
+            if (File_Name_Convention != string.Empty)
+            {
+                uri = ((uri + File_Name_Convention));
+            }
+            else
+            {
+                uri = ((uri + fileInf.Name));
+            }
+            //Jira #CAP-39
+            int iTrycount = 1;
+        TryAgain:
+            try
+            {
+                using (UNCAccessWithCredentials unc = new UNCAccessWithCredentials())
+                {
+                    if (unc.NetUseWithCredentials(UNCAuthPath, userName, domain, password))
+                    {
+                        {
+                            System.IO.File.Copy(SelectedFilePath, uri.Replace(ftpIP, UNCPath), true);
+                            Console.WriteLine("File moved to the serever");
+                            result = true;
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("Erroed - "+ex.ToString());
+                string sErrorMessage = "";
+                if (CheckFileNotFoundException(ex, out sErrorMessage))
+                {
+                    //ScriptManager.RegisterStartupScript(this, this.GetType(), "Key", "alert('" + sErrorMessage + "');", true);
+                    sCheckFileNotFoundException = "CheckFileNotFoundException ~" + sErrorMessage;
+                    return string.Empty;
+                }
+                else
+                {
+                    //Jira #CAP-39
+                    if (iTrycount <= 3)
+                    {
+                        iTrycount++;
+                        System.Threading.Thread.Sleep(1500);
+                        goto TryAgain;
+                    }
+                    else
+                    {
+                        //UtilityManager.RetryExecptionLog(ex, iTrycount);
+                        //UtilityManager.inserttologgingtable(ClientSession.EncounterId.ToString(), ClientSession.HumanId.ToString(), ClientSession.UserName, ClientSession.PhysicianId.ToString(), "FtpImageProcess,cs Line No - 113 - " + ex.Message + " - Username is " + userName + " -  Password " + password + " - UNCAuthPath " + UNCAuthPath + " - UNCPAth" + UNCPath + " - Selected Path - " + SelectedFilePath + " - URI - " + uri.Replace(ftpIP, UNCPath), DateTime.Now, "0", "frmimageviewer");
+
+                        result = false;
+                    }
+                }
+            }
+
+
+            if (result)
+            {
+                serverPath = uri;
+            }
+
+            return serverPath;
+
+
+        }
+
+        public static bool CreateDirectory(string HumanID, string serverIP, string UserName, string Password, out string sCheckFileNotFoundException)
+        {
+            string uri = string.Empty;
+            FtpWebRequest reqFTP;
+            FtpWebResponse responseFTP;
+
+            sCheckFileNotFoundException = "";
+            uri = serverIP + HumanID + "/";
+
+            string UNCAuthPath = System.Configuration.ConfigurationSettings.AppSettings["UNCAuthPath"];
+            string UNCPath = System.Configuration.ConfigurationSettings.AppSettings["UNCPath"];
+            string ftpIP = System.Configuration.ConfigurationSettings.AppSettings["ftpServerIP"];
+            string userName = System.Configuration.ConfigurationSettings.AppSettings["UserName"];
+            string password = System.Configuration.ConfigurationSettings.AppSettings["Password"];
+            string domain = System.Configuration.ConfigurationSettings.AppSettings["Domain"];
+            //Jira #CAP-39
+            int iTrycount = 1;
+        TryAgain:
+            try
+            {
+                using (UNCAccessWithCredentials unc = new UNCAccessWithCredentials())
+                {
+                    if (unc.NetUseWithCredentials(UNCAuthPath, userName, domain, password))
+                    {
+                        {
+                            Directory.CreateDirectory(uri.Replace(ftpIP, UNCPath));
+                            Console.WriteLine("Directory Created sucessfully for "+ HumanID);
+                        }
+
+                    }
+
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("Errored - "+ex.ToString());
+                string sErrorMessage = "";
+                if (CheckFileNotFoundException(ex, out sErrorMessage))
+                {
+                    //ScriptManager.RegisterStartupScript(this, this.GetType(), "Key", "alert('" + sErrorMessage + "');", true);
+                    sCheckFileNotFoundException = "CheckFileNotFoundException ~" + sErrorMessage;
+                    return false;
+                }
+                else
+                {
+                    //Jira #CAP-39
+                    if (iTrycount <= 3)
+                    {
+                        iTrycount++;
+                        System.Threading.Thread.Sleep(1500);
+                        goto TryAgain;
+                    }
+                    else
+                    {
+                        //UtilityManager.RetryExecptionLog(ex, iTrycount);
+                        //UtilityManager.inserttologgingtable(ClientSession.EncounterId.ToString(), ClientSession.HumanId.ToString(), ClientSession.UserName, ClientSession.PhysicianId.ToString(), "FTpImageProcess.cs Line No - 155 - " + ex.Message + " - Username is " + userName + " -  Password " + password + " - UNCAuthPath " + UNCAuthPath + " - UNCPAth" + UNCPath + " - URI - " + uri.Replace(ftpIP, UNCPath), DateTime.Now, "0", "frmimageviewer");
+                    }
+                }
+            }
+            return true;
+        }
+
+        public static bool CheckFileNotFoundException(Exception ex, out string sErrorMessage)
+        {
+            sErrorMessage = string.Empty;
+            bool bCheckFileNotFoundException = false;
+            if (ex.Message != null)
+            {
+                sErrorMessage = "MESSAGE: " + ex.Message + "\\n\\n";
+            }
+            if (ex.InnerException != null && ex.InnerException.Message != null)
+            {
+                sErrorMessage += "INNER EXCEPTION: " + ex.InnerException.Message + "\\n\\n";
+            }
+            if (ex.StackTrace != null)
+            {
+                sErrorMessage += "STACK TRACE: " + ex.StackTrace.ToString();
+            }
+            sErrorMessage = sErrorMessage.Replace("'", "");
+            sErrorMessage = sErrorMessage.Replace(System.Environment.NewLine, "");
+            bCheckFileNotFoundException = (sErrorMessage.Contains("Could not find file") ||
+                                           sErrorMessage.Contains("Access to the path") ||
+                                           sErrorMessage.Contains("Specific file is not present in the location") ||
+                                           sErrorMessage.Contains("The process cannot access the file") ||
+                                           sErrorMessage.Contains("Could not find a part of the path") ||
+                                           sErrorMessage.Contains("pdf not found as file or resource") ||
+                                           sErrorMessage.Contains("Invalid page number") ||
+                                           sErrorMessage.Contains("trailer not found"));
+            return bCheckFileNotFoundException;
+
         }
     }
 }
