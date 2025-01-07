@@ -64,7 +64,9 @@ namespace Acurus.Capella.UI
                         {
                               dictFlowSheet.Add(flowSheet.value,flowSheet.Field_Name);
                         }
-                        cboFlowSheetType.DataSource = flowSheetList;
+                        //CAP-2787 - Reopen
+                        //cboFlowSheetType.DataSource = flowSheetList;
+                        cboFlowSheetType.DataSource = dictFlowSheet;
                         cboFlowSheetType.DataTextField = "Key";
                         cboFlowSheetType.DataValueField = "Value";
                         cboFlowSheetType.DataBind();

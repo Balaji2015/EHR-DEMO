@@ -4358,7 +4358,18 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
         //    ilstEncounter = sqlquery.List<Encounter>();
         //    return ilstEncounter;
         //}
+        public Human GetHumanFromHumanIDAndLastNameFirstName(ulong HumanID,string sFirstName, string sLastName)
+        {
+            ISession iMySession = NHibernateSessionManager.Instance.CreateISession();
+            Human MatchingHuman = new Human();
 
+            ICriteria crit = iMySession.CreateCriteria(typeof(Human)).Add(Expression.Eq("Id", HumanID)).Add(Expression.Eq("Last_Name", sLastName)).Add(Expression.Eq("First_Name", sFirstName));
+            IList<Human> lstHuman = crit.List<Human>();
+            MatchingHuman = lstHuman.Count > 0 ? lstHuman[0] : MatchingHuman;
+            iMySession.Close();
+
+            return MatchingHuman;
+        }
         #endregion
 
         #endregion

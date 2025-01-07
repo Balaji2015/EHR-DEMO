@@ -996,7 +996,8 @@ function makeUL(array, MenuName) {
                         //if (resltDatearr[l].split('^').length == 9)
                         //    spaninner.title = resltDatearr[l].split('^')[8];
                     }
-                    spaninner.innerHTML = resltDatearr[l].split('^')[2].replace("07:30 AM", "00:00 AM");
+                    // To show the time as 00:00:00 in the left side patient chart when time is either (Nov-Mar) 7:30 AM or (Apr-Oct) 8:30 AM  for daylight savings
+                    spaninner.innerHTML = resltDatearr[l].split('^')[2].replace("07:30 AM", "00:00 AM").replace("08:30 AM", "00:00 AM");
 
                     item1sub.appendChild(spaninner);
                     list1sub.appendChild(item1sub);

@@ -1972,6 +1972,8 @@
 	<Message number="110809" Type="OK" Text="Document not available for Printing. contact Capella Support at 714 221 6311 for further assistance. with Document details" />
 	<Message number="110810" Type="YesNoCancel" Text="There are unsaved changes.&#xD;Would you like to save them?"/>
 	<Message number="110811" Type="YesNoCancel" Text="There are unsaved changes.&#xD;Would you like to save them?"/>
+	<Message number="110812" Type="OK" Text="There’s an Akido Chart Note for this encounter.  To sign in Capella, please delete the Akido Note."/>
+	<Message number="110813" Type="OK" Text="{0}_1011199: We have encountered an error retrieving the clinical note.  Try again and if this persists, contact support. &lt;br/&gt; &lt;br/&gt; Exception Message:{1}"/>
 
 	<Message number="7200000" Type="OKCANCEL" Text="Are you sure you want to delete?"></Message>
 	<Message number="7200001" Type="OKCANCEL" Text="Would you like to{0} without saving?"></Message>

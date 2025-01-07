@@ -678,6 +678,20 @@ function SavePlan() {
         async: true,
         success: function (data) {
             var result = $.parseJSON(data.d);
+            //Jira CAP-2830
+            var ValidationMessage = result.ValidationMessage ?? "";
+            if (ValidationMessage != "" && ValidationMessage.indexOf("_") > -1) {
+                var message = ValidationMessage.split("_");
+                DisplayErrorMessage(message[0], '',message[1] + "-" + message[2].replaceAll("-",""));
+                AutoSaveUnsuccessful();
+                return;
+            }
+            else if (ValidationMessage != "") {
+                DisplayErrorMessage(ValidationMessage);
+                AutoSaveUnsuccessful();
+                return;
+            }
+            //Jira CAP-2830 - End
             var EncRecord = result.EncRecord;
             if (EncRecord != null) {
                 FillEncDataInGenealPLan(EncRecord);

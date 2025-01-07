@@ -569,15 +569,36 @@ namespace Acurus.Capella.UI
                 humanRecord = (FillHumanDTO)Session["humanRecord"];
             CheckOutPrintOrdersDTO checkOutPrintOrdersDTO = new CheckOutPrintOrdersDTO();
             //Added for BugID:37287 
-            if (ilstPhysician != null && ilstPhysician.Count() > 0)
+
+            //Commented for XML to JSON
+            //if (ilstPhysician != null && ilstPhysician.Count() > 0)
+            //{
+            //    objPhysician = new PhysicianLibrary();
+            //    objPhysician.Id = Convert.ToUInt32(ilstPhysician.Attributes("ID").First().Value.ToString());
+            //    objPhysician.PhyPrefix = ilstPhysician.Attributes("prefix").First().Value.ToString();
+            //    objPhysician.PhyFirstName = ilstPhysician.Attributes("firstname").First().Value.ToString();
+            //    objPhysician.PhyMiddleName = ilstPhysician.Attributes("middlename").First().Value.ToString();
+            //    objPhysician.PhyLastName = ilstPhysician.Attributes("lastname").First().Value.ToString();
+            //    objPhysician.PhySuffix = ilstPhysician.Attributes("suffix").First().Value.ToString();
+            //}
+
+            PhysicianFacilityMappingList physicianFacilityMappingList = new PhysicianFacilityMappingList();
+            physicianFacilityMappingList = ConfigureBase<PhysicianFacilityMappingList>.ReadJson("PhysicianFacilityMapping.json");
+
+            if (physicianFacilityMappingList != null && physicianFacilityMappingList.PhysicianFacility != null)
             {
-                objPhysician = new PhysicianLibrary();
-                objPhysician.Id = Convert.ToUInt32(ilstPhysician.Attributes("ID").First().Value.ToString());
-                objPhysician.PhyPrefix = ilstPhysician.Attributes("prefix").First().Value.ToString();
-                objPhysician.PhyFirstName = ilstPhysician.Attributes("firstname").First().Value.ToString();
-                objPhysician.PhyMiddleName = ilstPhysician.Attributes("middlename").First().Value.ToString();
-                objPhysician.PhyLastName = ilstPhysician.Attributes("lastname").First().Value.ToString();
-                objPhysician.PhySuffix = ilstPhysician.Attributes("suffix").First().Value.ToString();
+                var physician = physicianFacilityMappingList.PhysicianFacility.SelectMany(x => x.Physician).FirstOrDefault(y => y.ID == ClientSession.PhysicianId.ToString());
+                if (physician != null)
+                {
+                    objPhysician = new PhysicianLibrary();
+                    objPhysician.Id = Convert.ToUInt32(physician.ID.ToString());
+                    objPhysician.PhyPrefix = physician.prefix ?? "".First().ToString();
+                    objPhysician.PhyFirstName = physician.firstname ?? "".First().ToString();
+                    objPhysician.PhyMiddleName = physician.middlename ?? "".First().ToString();
+                    objPhysician.PhyLastName = physician.lastname ?? "".First().ToString();
+                    objPhysician.PhySuffix = physician.suffix ?? "".First().ToString();
+
+                }
             }
             //End
             //objPhysician = phyMngr.GetphysiciannameByPhyID(ClientSession.PhysicianId)[0];
