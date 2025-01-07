@@ -389,7 +389,7 @@ namespace DownloadiPrescribe
 
                                         Scan scan = new Scan();
                                         scan.Scanned_File_Path = sImported_StudiesFilePath + "\\" + sFile;
-                                        scan.Scanned_Date = TimeZoneInfo.ConvertTimeFromUtc(Convert.ToDateTime(DateTime.ParseExact(sFile.Split('_')[3].ToUpper().Replace(".PDF", ""), "yyyyMMdd", CultureInfo.InvariantCulture).ToString("yyyy-MM-dd") + " 07:30:00"), timeInfo);
+                                        scan.Scanned_Date = Convert.ToDateTime(DateTime.ParseExact(sFile.Split('_')[3].ToUpper().Replace(".PDF", ""), "yyyyMMdd", CultureInfo.InvariantCulture).ToString("yyyy-MM-dd") + " 15:30:00");
                                         scan.Facility_Name = sFacility;
                                         scan.No_of_Pages = 1;
                                         scan.Scanned_File_Name = sFile;
@@ -402,7 +402,7 @@ namespace DownloadiPrescribe
                                         scan_index scan_Index = new scan_index();
                                         scan_Index.Human_ID = objHuman.Id;
                                         scan_Index.Scan_ID = Convert.ToUInt64(ilstScan.FirstOrDefault().Id);
-                                        scan_Index.Document_Date = TimeZoneInfo.ConvertTimeFromUtc(Convert.ToDateTime(DateTime.ParseExact(sFile.Split('_')[3].ToUpper().Replace(".PDF", ""), "yyyyMMdd", CultureInfo.InvariantCulture).ToString("yyyy-MM-dd") + " 07:30:00"), timeInfo);
+                                        scan_Index.Document_Date = Convert.ToDateTime(DateTime.ParseExact(sFile.Split('_')[3].ToUpper().Replace(".PDF", ""), "yyyyMMdd", CultureInfo.InvariantCulture).ToString("yyyy-MM-dd") + " 15:30:00");
                                         scan_Index.Document_Type = "Results";
                                         scan_Index.Document_Sub_Type = "ECHO";
                                         scan_Index.Order_ID = ulOrderSubmitId;
@@ -418,7 +418,7 @@ namespace DownloadiPrescribe
                                         FileManagementIndex filemanagementIndex = new FileManagementIndex();
                                         filemanagementIndex.Created_By = "ImageResultsAgent";
                                         filemanagementIndex.Created_Date_And_Time = DateTime.UtcNow;
-                                        filemanagementIndex.Document_Date = TimeZoneInfo.ConvertTimeFromUtc(Convert.ToDateTime(DateTime.ParseExact(sFile.Split('_')[3].ToUpper().Replace(".PDF", ""), "yyyyMMdd", CultureInfo.InvariantCulture).ToString("yyyy-MM-dd") + " 07:30:00"), timeInfo);
+                                        filemanagementIndex.Document_Date = Convert.ToDateTime(DateTime.ParseExact(sFile.Split('_')[3].ToUpper().Replace(".PDF", ""), "yyyyMMdd", CultureInfo.InvariantCulture).ToString("yyyy-MM-dd") + " 15:30:00");
                                         filemanagementIndex.Document_Type = "Results";
                                         filemanagementIndex.Document_Sub_Type = "ECHO";
                                         filemanagementIndex.Source = "SCAN";
