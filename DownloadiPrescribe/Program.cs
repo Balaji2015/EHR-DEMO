@@ -467,17 +467,35 @@ namespace DownloadiPrescribe
             {
                 return true;
             }
-            else if (sFile.Split('_').Length == 4 && sFile.Split('_')[0].ToUpper().Replace("ID", "").Any(a=>char.IsLetter(a)))
+            else if (sFile.Split('_').Length == 4 && sFile.Split('_')[0].ToUpper().Replace("ID", "").Any(a => char.IsLetter(a)))
             {
                 return true;
             }
-            else if (sFile.Split('_').Length == 4 
-                && sFile.Split('_')[3].ToUpper().Replace(".PDF", "").Length == 8
-                && !sFile.Split('_')[3].ToUpper().Replace(".PDF", "").Any(a => char.IsLetter(a))
-                && !DateTime.TryParse(DateTime.ParseExact(sFile.Split('_')[3].ToUpper().Replace(".PDF", ""), "yyyyMMdd", CultureInfo.InvariantCulture).ToString("yyyy-MM-dd"), out dateValue))
+            else if (sFile.Split('_')[3].ToUpper().Replace(".PDF", "").Length != 8)
             {
                 return true;
             }
+            else if (sFile.Split('_')[3].ToUpper().Replace(".PDF", "").Any(a => char.IsLetter(a)))
+            {
+                return true;
+            }
+            else if (sFile.Split('_').Length == 4
+                && sFile.Split('_')[3].ToUpper().Replace(".PDF", "").Length == 8)
+            {
+                try
+                {
+                    if (!DateTime.TryParse(DateTime.ParseExact(sFile.Split('_')[3].ToUpper().Replace(".PDF", ""), "yyyyMMdd", CultureInfo.InvariantCulture).ToString("yyyy-MM-dd"), out dateValue))
+                    {
+                        return true;
+                    }
+                }
+                catch(Exception ex)
+                {
+                    return true;
+
+                }
+            }
+            
             return false;
         }
         public static string UploadToImageServer(string HumanID, string serverIP, string UserName, string Password, string SelectedFilePath, string File_Name_Convention, out string sCheckFileNotFoundException)
