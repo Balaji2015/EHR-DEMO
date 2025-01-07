@@ -438,22 +438,38 @@ namespace DownloadiPrescribe
                                 }
                                 Console.WriteLine("FTP Ended");
                                 #endregion
-                                File.Move(sIncoming_StudiesFilePath + "//" + sFile, sImported_StudiesFilePath + "//" + sFile);
+
+                                MoveAndReplace(sIncoming_StudiesFilePath + "//" + sFile, sImported_StudiesFilePath + "//" + sFile);
                             }
                             else
                             {
-                                File.Move(sIncoming_StudiesFilePath + "//" + sFile, sErrored_StudiesFilePath + "//" + sFile);
+                                MoveAndReplace(sIncoming_StudiesFilePath + "//" + sFile, sErrored_StudiesFilePath + "//" + sFile);
                                 Console.WriteLine(sFile + " - Import to Errored_Studies Folder");
                             }
                         }
                         else
                         {
-                            File.Move(sIncoming_StudiesFilePath + "//" + sFile, sErrored_StudiesFilePath + "//" + sFile);
+                            MoveAndReplace(sIncoming_StudiesFilePath + "//" + sFile, sErrored_StudiesFilePath + "//" + sFile);
                             Console.WriteLine(sFile + " - Import to Errored_Studies Folder");
                         }
                     }
                 }
             }
+        }
+
+        public static bool MoveAndReplace(string sSourceFile, string sDestinationFile)
+        {
+            if (File.Exists(sDestinationFile))
+            {
+                File.Delete(sDestinationFile);
+                File.Move(sSourceFile, sDestinationFile);
+            }
+            else
+            {
+                File.Move(sSourceFile, sDestinationFile);
+            }
+
+            return true;
         }
         public static bool FileValidation(string sFile) {
             DateTime dateValue;
