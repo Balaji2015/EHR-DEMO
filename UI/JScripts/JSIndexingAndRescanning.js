@@ -943,7 +943,8 @@ function rdbDirectoryChange() {
 
 function PageRangeAllchange() {
     if ($('#rdbAll')[0].checked == true) {
-        document.getElementById("btnSave").disabled = true;
+        //CAP-1294
+        document.getElementById("btnSave").disabled = false;
         document.getElementById("txtSelectedPages").disabled = true;
         $("#txtSelectedPages").val("");
         document.getElementById("btnMoveToNextProcess").disabled = false;
