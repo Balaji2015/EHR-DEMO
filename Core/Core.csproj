@@ -341,6 +341,7 @@
     <Compile Include="DomainObjects\workset_proc_alloc.cs" />
     <Compile Include="DTOJson\AssessmentVitalsLookupList.cs" />
     <Compile Include="DTOJson\Doctype.cs" />
+    <Compile Include="DTOJson\Facility_Library.cs" />
     <Compile Include="DTOJson\PhysicianAddressDetailsList.cs" />
     <Compile Include="DTOJson\UserList.cs" />
     <Compile Include="DTOJson\Dynamic_Screen.cs" />
