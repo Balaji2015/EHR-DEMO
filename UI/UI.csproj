@@ -2008,7 +2008,6 @@
   <ItemGroup>
     <Content Include="bin\Ionic.Zip.Reduced.dll" />
     <Content Include="CarePlan.html" />
-    <Content Include="ConfigXML\LookupList_CCDAErrors.xml" />
     <Content Include="ConfigXML\PhysicianSpecificBodyImageTemplates.xml" />
     <Content Include="CSS\bootstrap-datetimepicker.min.css" />
     <Content Include="CSS\bootstrap.min.js" />
@@ -2438,6 +2437,7 @@
     <Content Include="ConfigXML\icd_9_10_mapping.json" />
     <Content Include="ConfigXML\LabList.json" />
     <Content Include="ConfigXML\LabLocationList.json" />
+    <Content Include="ConfigXML\LookupList_CCDAErrors.json" />
     <None Include="Documents\Physician_Specific_Documents\Patient Education\2011-02-17 %281%29.pdf" />
     <None Include="Documents\Physician_Specific_Documents\Patient Education\2011-02-17 %2810%29.pdf" />
     <None Include="Documents\Physician_Specific_Documents\Patient Education\2011-02-17 %2811%29.pdf" />

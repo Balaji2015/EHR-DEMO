@@ -342,6 +342,7 @@
     <Compile Include="DTOJson\AssessmentVitalsLookupList.cs" />
     <Compile Include="DTOJson\Doctype.cs" />
     <Compile Include="DTOJson\Facility_Library.cs" />
+    <Compile Include="DTOJson\LookupList_CCDAErrors.cs" />
     <Compile Include="DTOJson\PhysicianAddressDetailsList.cs" />
     <Compile Include="DTOJson\UserList.cs" />
     <Compile Include="DTOJson\Dynamic_Screen.cs" />

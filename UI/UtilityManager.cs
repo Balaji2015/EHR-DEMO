@@ -3947,82 +3947,187 @@ namespace Acurus.Capella.UI
         private static void FillLookupList()
         {
 
-            XmlDocument xmldoc = new XmlDocument();
-            string strXmlFilePath = Path.Combine(System.Web.Hosting.HostingEnvironment.ApplicationPhysicalPath, "ConfigXML\\LookupList_CCDAErrors.xml");
+            // Cap - 2776 - XML to JSON
+            //XmlDocument xmldoc = new XmlDocument();
+            //string strXmlFilePath = Path.Combine(System.Web.Hosting.HostingEnvironment.ApplicationPhysicalPath, "ConfigXML\\LookupList_CCDAErrors.xml");
 
-            if (File.Exists(strXmlFilePath) == true)
+            //if (File.Exists(strXmlFilePath) == true)
+            //{
+            //    xmldoc.Load(strXmlFilePath);
+            //    XmlNodeList xmlCodesList = xmldoc.GetElementsByTagName("CodeList");
+            //    if (xmlCodesList != null && xmlCodesList.Count > 0 && xmlCodesList[0].ChildNodes != null && xmlCodesList[0].ChildNodes.Count > 0)
+            //    {
+            //        foreach (XmlNode CodeNode in xmlCodesList[0].ChildNodes)
+            //        {
+            //            InValidCodeList.Add(CodeNode.Attributes.GetNamedItem("value").Value.ToString());
+            //        }
+            //    }
+            //    XmlNodeList xmlValueCodesList = xmldoc.GetElementsByTagName("ValueCodeList");
+            //    if (xmlValueCodesList != null && xmlValueCodesList.Count > 0 && xmlValueCodesList[0].ChildNodes != null && xmlValueCodesList[0].ChildNodes.Count > 0)
+            //    {
+            //        foreach (XmlNode CodeNode in xmlValueCodesList[0].ChildNodes)
+            //        {
+            //            InValidValueCodeList.Add(CodeNode.Attributes.GetNamedItem("value").Value.ToString());
+            //        }
+            //    }
+            //    XmlNodeList xmlRouteCodesList = xmldoc.GetElementsByTagName("RouteCodeList");
+            //    if (xmlRouteCodesList != null && xmlRouteCodesList.Count > 0 && xmlRouteCodesList[0].ChildNodes != null && xmlRouteCodesList[0].ChildNodes.Count > 0)
+            //    {
+            //        foreach (XmlNode CodeNode in xmlRouteCodesList[0].ChildNodes)
+            //        {
+            //            InValidRouteCodeList.Add(CodeNode.Attributes.GetNamedItem("value").Value.ToString());
+            //        }
+            //    }
+            //    XmlNodeList xmlUnitList = xmldoc.GetElementsByTagName("UnitList");
+            //    if (xmlUnitList != null && xmlUnitList.Count > 0 && xmlUnitList[0].ChildNodes != null && xmlUnitList[0].ChildNodes.Count > 0)
+            //    {
+            //        foreach (XmlNode CodeNode in xmlUnitList[0].ChildNodes)
+            //        {
+            //            InValidUnitList.Add(CodeNode.Attributes.GetNamedItem("value").Value.ToString());
+            //        }
+            //    }
+            //    XmlNodeList xmlConfidCodesList = xmldoc.GetElementsByTagName("ConfidentialityCodeList");
+            //    if (xmlConfidCodesList != null && xmlConfidCodesList.Count > 0 && xmlConfidCodesList[0].ChildNodes != null && xmlConfidCodesList[0].ChildNodes.Count > 0)
+            //    {
+            //        foreach (XmlNode CodeNode in xmlConfidCodesList[0].ChildNodes)
+            //        {
+            //            ValidConfidentialityCodeList.Add(CodeNode.Attributes.GetNamedItem("value").Value.ToString());
+            //        }
+            //    }
+            //    XmlNodeList xmlLangCodesList = xmldoc.GetElementsByTagName("LanguageCodeList");
+            //    if (xmlLangCodesList != null && xmlLangCodesList.Count > 0 && xmlLangCodesList[0].ChildNodes != null && xmlLangCodesList[0].ChildNodes.Count > 0)
+            //    {
+            //        foreach (XmlNode CodeNode in xmlLangCodesList[0].ChildNodes)
+            //        {
+            //            ValidLanguageCodeList.Add(CodeNode.Attributes.GetNamedItem("value").Value.ToString());
+            //        }
+            //    }
+            //    XmlNodeList xmlAdminCodesList = xmldoc.GetElementsByTagName("AdministrativeGenderCodeList");
+            //    if (xmlAdminCodesList != null && xmlAdminCodesList.Count > 0 && xmlAdminCodesList[0].ChildNodes != null && xmlAdminCodesList[0].ChildNodes.Count > 0)
+            //    {
+            //        foreach (XmlNode CodeNode in xmlAdminCodesList[0].ChildNodes)
+            //        {
+            //            ValidAdministrativeGenderCodeList.Add(CodeNode.Attributes.GetNamedItem("value").Value.ToString());
+            //        }
+            //    }
+            //    XmlNodeList xmlRaceCodesList = xmldoc.GetElementsByTagName("RaceCodeList");
+            //    if (xmlRaceCodesList != null && xmlRaceCodesList.Count > 0 && xmlRaceCodesList[0].ChildNodes != null && xmlRaceCodesList[0].ChildNodes.Count > 0)
+            //    {
+            //        foreach (XmlNode CodeNode in xmlRaceCodesList[0].ChildNodes)
+            //        {
+            //            ValidRaceCodeList.Add(CodeNode.Attributes.GetNamedItem("value").Value.ToString());
+            //        }
+            //    }
+            //    XmlNodeList xmlEthnicGroupCodesList = xmldoc.GetElementsByTagName("EthnicGroupCodeList");
+            //    if (xmlEthnicGroupCodesList != null && xmlEthnicGroupCodesList.Count > 0 && xmlEthnicGroupCodesList[0].ChildNodes != null && xmlEthnicGroupCodesList[0].ChildNodes.Count > 0)
+            //    {
+            //        foreach (XmlNode CodeNode in xmlEthnicGroupCodesList[0].ChildNodes)
+            //        {
+            //            ValidEthnicGroupCodeList.Add(CodeNode.Attributes.GetNamedItem("value").Value.ToString());
+            //        }
+            //    }
+            //}
+
+
+            LookupList_CCDAErrors ilistLookupList_CCDAErrors = ConfigureBase<LookupList_CCDAErrors>.ReadJson("LookupList_CCDAErrors.json");
+
+            if (ilistLookupList_CCDAErrors != null && ilistLookupList_CCDAErrors.InvalidList != null)
             {
-                xmldoc.Load(strXmlFilePath);
-                XmlNodeList xmlCodesList = xmldoc.GetElementsByTagName("CodeList");
-                if (xmlCodesList != null && xmlCodesList.Count > 0 && xmlCodesList[0].ChildNodes != null && xmlCodesList[0].ChildNodes.Count > 0)
+                if (ilistLookupList_CCDAErrors.InvalidList.CodeList != null)
                 {
-                    foreach (XmlNode CodeNode in xmlCodesList[0].ChildNodes)
+                    List<Code> Getcodelist = ilistLookupList_CCDAErrors.InvalidList.CodeList.Code;
+                    if (Getcodelist.Count > 0)
                     {
-                        InValidCodeList.Add(CodeNode.Attributes.GetNamedItem("value").Value.ToString());
+                        for (int i = 0; i < Getcodelist.Count; i++)
+                        {
+                            InValidCodeList.Add(Getcodelist[i].value);
+                        }
                     }
                 }
-                XmlNodeList xmlValueCodesList = xmldoc.GetElementsByTagName("ValueCodeList");
-                if (xmlValueCodesList != null && xmlValueCodesList.Count > 0 && xmlValueCodesList[0].ChildNodes != null && xmlValueCodesList[0].ChildNodes.Count > 0)
+                if (ilistLookupList_CCDAErrors.InvalidList.ValueCodeList != null)
                 {
-                    foreach (XmlNode CodeNode in xmlValueCodesList[0].ChildNodes)
+                    List<Code> Getcodelist = ilistLookupList_CCDAErrors.InvalidList.ValueCodeList.Code;
+                    if (Getcodelist.Count > 0)
                     {
-                        InValidValueCodeList.Add(CodeNode.Attributes.GetNamedItem("value").Value.ToString());
+                        for (int i = 0; i < Getcodelist.Count; i++)
+                        {
+                            InValidValueCodeList.Add(Getcodelist[i].value);
+                        }
                     }
                 }
-                XmlNodeList xmlRouteCodesList = xmldoc.GetElementsByTagName("RouteCodeList");
-                if (xmlRouteCodesList != null && xmlRouteCodesList.Count > 0 && xmlRouteCodesList[0].ChildNodes != null && xmlRouteCodesList[0].ChildNodes.Count > 0)
+                if (ilistLookupList_CCDAErrors.InvalidList.RouteCodeList != null)
                 {
-                    foreach (XmlNode CodeNode in xmlRouteCodesList[0].ChildNodes)
+                    string Getcodelist = ilistLookupList_CCDAErrors.InvalidList.RouteCodeList.Code.value;
+                    InValidRouteCodeList.Add(Getcodelist);
+                }
+                if (ilistLookupList_CCDAErrors.InvalidList.ValueCodeList != null)
+                {
+                    List<Units> GetUnits = ilistLookupList_CCDAErrors.InvalidList.UnitList.Unit;
+                    if (GetUnits.Count > 0)
                     {
-                        InValidRouteCodeList.Add(CodeNode.Attributes.GetNamedItem("value").Value.ToString());
+                        for (int i = 0; i < GetUnits.Count; i++)
+                        {
+                            InValidUnitList.Add(GetUnits[i].value);
+                        }
                     }
                 }
-                XmlNodeList xmlUnitList = xmldoc.GetElementsByTagName("UnitList");
-                if (xmlUnitList != null && xmlUnitList.Count > 0 && xmlUnitList[0].ChildNodes != null && xmlUnitList[0].ChildNodes.Count > 0)
+            }
+            if (ilistLookupList_CCDAErrors != null && ilistLookupList_CCDAErrors.ValidList != null)
+            {
+                if (ilistLookupList_CCDAErrors.ValidList.ConfidentialityCodeList != null)
                 {
-                    foreach (XmlNode CodeNode in xmlUnitList[0].ChildNodes)
+                    List<Code> Getcodelist = ilistLookupList_CCDAErrors.ValidList.ConfidentialityCodeList.Code;
+                    if (Getcodelist.Count > 0)
                     {
-                        InValidUnitList.Add(CodeNode.Attributes.GetNamedItem("value").Value.ToString());
+                        for (int i = 0; i < Getcodelist.Count; i++)
+                        {
+                            ValidConfidentialityCodeList.Add(Getcodelist[i].value);
+                        }
                     }
                 }
-                XmlNodeList xmlConfidCodesList = xmldoc.GetElementsByTagName("ConfidentialityCodeList");
-                if (xmlConfidCodesList != null && xmlConfidCodesList.Count > 0 && xmlConfidCodesList[0].ChildNodes != null && xmlConfidCodesList[0].ChildNodes.Count > 0)
+                if (ilistLookupList_CCDAErrors.ValidList.LanguageCodeList != null)
                 {
-                    foreach (XmlNode CodeNode in xmlConfidCodesList[0].ChildNodes)
+                    List<Code> Getcodelist = ilistLookupList_CCDAErrors.ValidList.LanguageCodeList.Code;
+                    if (Getcodelist.Count > 0)
                     {
-                        ValidConfidentialityCodeList.Add(CodeNode.Attributes.GetNamedItem("value").Value.ToString());
+                        for (int i = 0; i < Getcodelist.Count; i++)
+                        {
+                            ValidLanguageCodeList.Add(Getcodelist[i].value);
+                        }
                     }
                 }
-                XmlNodeList xmlLangCodesList = xmldoc.GetElementsByTagName("LanguageCodeList");
-                if (xmlLangCodesList != null && xmlLangCodesList.Count > 0 && xmlLangCodesList[0].ChildNodes != null && xmlLangCodesList[0].ChildNodes.Count > 0)
+                if (ilistLookupList_CCDAErrors.ValidList.AdministrativeGenderCodeList != null)
                 {
-                    foreach (XmlNode CodeNode in xmlLangCodesList[0].ChildNodes)
+                    List<Code> Getcodelist = ilistLookupList_CCDAErrors.ValidList.AdministrativeGenderCodeList.Code;
+                    if (Getcodelist.Count > 0)
                     {
-                        ValidLanguageCodeList.Add(CodeNode.Attributes.GetNamedItem("value").Value.ToString());
+                        for (int i = 0; i < Getcodelist.Count; i++)
+                        {
+                            ValidAdministrativeGenderCodeList.Add(Getcodelist[i].value);
+                        }
                     }
                 }
-                XmlNodeList xmlAdminCodesList = xmldoc.GetElementsByTagName("AdministrativeGenderCodeList");
-                if (xmlAdminCodesList != null && xmlAdminCodesList.Count > 0 && xmlAdminCodesList[0].ChildNodes != null && xmlAdminCodesList[0].ChildNodes.Count > 0)
+                if (ilistLookupList_CCDAErrors.ValidList.RaceCodeList != null)
                 {
-                    foreach (XmlNode CodeNode in xmlAdminCodesList[0].ChildNodes)
+                    List<Code> Getcodelist = ilistLookupList_CCDAErrors.ValidList.RaceCodeList.Code;
+                    if (Getcodelist.Count > 0)
                     {
-                        ValidAdministrativeGenderCodeList.Add(CodeNode.Attributes.GetNamedItem("value").Value.ToString());
+                        for (int i = 0; i < Getcodelist.Count; i++)
+                        {
+                            ValidRaceCodeList.Add(Getcodelist[i].value);
+                        }
                     }
                 }
-                XmlNodeList xmlRaceCodesList = xmldoc.GetElementsByTagName("RaceCodeList");
-                if (xmlRaceCodesList != null && xmlRaceCodesList.Count > 0 && xmlRaceCodesList[0].ChildNodes != null && xmlRaceCodesList[0].ChildNodes.Count > 0)
+
+                if (ilistLookupList_CCDAErrors.ValidList.EthnicGroupCodeList != null)
                 {
-                    foreach (XmlNode CodeNode in xmlRaceCodesList[0].ChildNodes)
+                    List<Code> Getcodelist = ilistLookupList_CCDAErrors.ValidList.EthnicGroupCodeList.Code;
+                    if (Getcodelist.Count > 0)
                     {
-                        ValidRaceCodeList.Add(CodeNode.Attributes.GetNamedItem("value").Value.ToString());
-                    }
-                }
-                XmlNodeList xmlEthnicGroupCodesList = xmldoc.GetElementsByTagName("EthnicGroupCodeList");
-                if (xmlEthnicGroupCodesList != null && xmlEthnicGroupCodesList.Count > 0 && xmlEthnicGroupCodesList[0].ChildNodes != null && xmlEthnicGroupCodesList[0].ChildNodes.Count > 0)
-                {
-                    foreach (XmlNode CodeNode in xmlEthnicGroupCodesList[0].ChildNodes)
-                    {
-                        ValidEthnicGroupCodeList.Add(CodeNode.Attributes.GetNamedItem("value").Value.ToString());
+                        for (int i = 0; i < Getcodelist.Count; i++)
+                        {
+                            ValidEthnicGroupCodeList.Add(Getcodelist[i].value);
+                        }
                     }
                 }
             }
