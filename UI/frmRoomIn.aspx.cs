@@ -83,11 +83,20 @@ namespace Acurus.Capella.UI
                     }
                 }
 
-                if (cboExamRoom.Items.Count > 0 && ExamRoom!=string.Empty)
+                //Jira CAP-2842
+                Encounter encounter = new Encounter();
+                EncounterManager encounterManager = new EncounterManager();
+                encounter = encounterManager.GetById(Convert.ToUInt64(Request["EnounterID"]!= null? Request["EnounterID"]:"0"));
+
+                //Jira CAP-2842
+                //if (cboExamRoom.Items.Count > 0 && ExamRoom!=string.Empty)
+                if (cboExamRoom.Items.Count > 0 && encounter != null)
                 {
                     for (int i = 0; i < cboExamRoom.Items.Count; i++)
                     {
-                        if (cboExamRoom.Items[i].Text.ToString().ToUpper() == ExamRoom.ToUpper())
+                        //Jira CAP-2842
+                        //if (cboExamRoom.Items[i].Text.ToString().ToUpper() == ExamRoom.ToUpper())
+                        if (cboExamRoom.Items[i].Text.ToString().ToUpper() == (encounter.Exam_Room??"").ToUpper())
                         {
                             cboExamRoom.SelectedIndex = i;
                             break;
