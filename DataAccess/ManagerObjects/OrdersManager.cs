@@ -7584,7 +7584,9 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
             {
                 ISQLQuery sql;
 
-                sql = iMySession.CreateSQLQuery("select os.order_submit_id from orders_submit os, encounter e,wf_object wf where os.Order_Submit_ID=wf.obj_system_id and wf.Current_process='" + CurrentProcess + "' and os.encounter_id= e.encounter_id and wf.obj_type ='" + ObjectType + "'and os.lab_id='" + ulLabID + "' and e.order_submit_id<>0 and os.human_id=" + Human_id);
+                //CAP-2833
+                //sql = iMySession.CreateSQLQuery("select os.order_submit_id from orders_submit os, encounter e,wf_object wf where os.Order_Submit_ID=wf.obj_system_id and wf.Current_process='" + CurrentProcess + "' and os.encounter_id= e.encounter_id and wf.obj_type ='" + ObjectType + "'and os.lab_id='" + ulLabID + "' and e.order_submit_id<>0 and os.human_id=" + Human_id);
+                sql = iMySession.CreateSQLQuery("select os.order_submit_id from orders_submit os, encounter e,wf_object wf where os.Order_Submit_ID=wf.obj_system_id and wf.Current_process='" + CurrentProcess + "' and os.encounter_id= e.encounter_id and wf.obj_type ='" + ObjectType + "'and os.lab_id='" + ulLabID + "' and e.order_submit_id<>0 and os.human_id=" + Human_id + " UNION ALL select os.order_submit_id from orders_submit os, encounter_arc e,wf_object wf where os.Order_Submit_ID=wf.obj_system_id and wf.Current_process='" + CurrentProcess + "' and os.encounter_id= e.encounter_id and wf.obj_type ='" + ObjectType + "'and os.lab_id='" + ulLabID + "' and e.order_submit_id<>0 and os.human_id=" + Human_id);
 
                 ArrayList arr = new ArrayList(sql.List());
                 if (arr.Count > 0)
@@ -7634,7 +7636,9 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
 
                 if (sordersubmitID.Count > 0)
                 {
-                    sql = iMySession.CreateSQLQuery("select o.order_submit_id,o.encounter_id as encid,(select e.order_submit_id from encounter e where e. encounter_id =encid) as ordid ,(select o2.physician_id as phyid from orders_submit o2 where o2.order_submit_id=ordid) as phyid from orders_submit o where o.order_submit_id in (" + svalue + ")");
+                    //CAP-2833
+                    //sql = iMySession.CreateSQLQuery("select o.order_submit_id,o.encounter_id as encid,(select e.order_submit_id from encounter e where e. encounter_id =encid) as ordid ,(select o2.physician_id as phyid from orders_submit o2 where o2.order_submit_id=ordid) as phyid from orders_submit o where o.order_submit_id in (" + svalue + ")");
+                    sql = iMySession.CreateSQLQuery("select o.order_submit_id,o.encounter_id as encid,(select e.order_submit_id from encounter e where e. encounter_id =encid UNION ALL select e.order_submit_id from encounter_arc e where e. encounter_id =encid) as ordid ,(select o2.physician_id as phyid from orders_submit o2 where o2.order_submit_id=ordid) as phyid from orders_submit o where o.order_submit_id in (" + svalue + ")");
 
                     ArrayList arr = new ArrayList(sql.List());
                     if (arr.Count > 0)
