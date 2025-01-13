@@ -295,7 +295,8 @@
                                                             <td style="width: 90px;">
                                                                 <asp:CheckBox ID="chkShowAll" runat="server"  onchange="showAllPhy(this);" Text="Show All" CssClass="Editabletxtbox" />
                                                             </td>
-                                                            <td style="width: 120px;">                                                                
+                                                            <td style="width: 166px;">                                                                
+                                                                <asp:CheckBox ID="chkExternalMedicalRecord" runat="server"  onchange="ChangeExternalMedicalRecord();" Text="External Medical Record" CssClass="Editabletxtbox" />
                                                             </td>
                                                         </tr>
                                                         <tr style="height: 5%; width: 590px;">

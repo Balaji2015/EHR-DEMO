@@ -510,6 +510,15 @@ namespace Acurus.Capella.UI
         protected global::System.Web.UI.WebControls.CheckBox chkShowAll;
 
         /// <summary>
+        /// chkExternalMedicalRecord control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.CheckBox chkExternalMedicalRecord;
+
+        /// <summary>
         /// cboIs_Interperated control.
         /// </summary>
         /// <remarks>

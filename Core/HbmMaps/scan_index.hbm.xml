@@ -26,5 +26,6 @@
 		<property name="Document_To_Date" column="Document_To_Date" />
 		<property name="Is_Narrative_Interpretation" column="Is_Narrative_Interpretation" />
 		<property name="Is_Manually_Reviewed_And_Signed" column="Is_Manually_Reviewed_And_Signed" />
+		<property name="Is_External_Medical_Record" column="Is_External_Medical_Record" />
 	</class>
 </hibernate-mapping>

@@ -39,6 +39,7 @@ namespace Acurus.Capella.Core.DomainObjects
         private DateTime _Document_To_Date = DateTime.MinValue;
         private string _Is_Narrative_Interpretation = string.Empty;
         private string _Is_Manually_Reviewed_And_Signed ="N";
+        private string _Is_External_Medical_Record = "N";
 
 
         #endregion
@@ -75,6 +76,7 @@ namespace Acurus.Capella.Core.DomainObjects
             sb.Append(_Document_To_Date);
             sb.Append(_Is_Narrative_Interpretation);
             sb.Append(_Is_Manually_Reviewed_And_Signed);
+            sb.Append(_Is_External_Medical_Record);
 
             return sb.ToString().GetHashCode();
         }
@@ -265,6 +267,12 @@ namespace Acurus.Capella.Core.DomainObjects
         {
             get { return _Is_Manually_Reviewed_And_Signed; }
             set { _Is_Manually_Reviewed_And_Signed = value; }
+        }
+        [DataMember]
+        public virtual string Is_External_Medical_Record
+        {
+            get { return _Is_External_Medical_Record; }
+            set { _Is_External_Medical_Record = value; }
         }
 
 

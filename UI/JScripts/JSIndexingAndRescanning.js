@@ -723,6 +723,23 @@ function showAllPhy(e) {
         "true" == e.attr("default") || "" == e.attr("default") ? e.css("display", "block") : e.css("display", "none")
     })
 }
+//CAP-2847
+function ChangeExternalMedicalRecord() {
+    if ($('#chkExternalMedicalRecord').prop("checked")) {
+        localStorage.setItem("StandingOrderSelectedValue", $('#cboStandingOrders').val());
+        $('#chkOrderingPhyShowAll,#chkShowAll,#chkReviewandSign').prop("checked", true);
+        $('#cboStandingOrders').val("Paper Order");
+        $('#cboPhysician').val(4387);//NON_CAPELLA,PHY_LAB
+        $('#cboOrderPhysician').val(4387);//NON_CAPELLA,PHY_LAB
+        $('#cboStandingOrders,#cboPhysician,#cboOrderPhysician,#chkReviewandSign,#chkOrderingPhyShowAll,#chkShowAll').prop('disabled', true);
+    } else {
+        $('#cboStandingOrders').val(localStorage.getItem("StandingOrderSelectedValue"));
+        $('#chkOrderingPhyShowAll,#chkShowAll,#chkReviewandSign').prop("checked", false);
+        $('#cboPhysician').val("");
+        $('#cboOrderPhysician').val("");
+        $('#cboStandingOrders,#cboPhysician,#cboOrderPhysician,#chkReviewandSign,#chkOrderingPhyShowAll,#chkShowAll').prop('disabled', false);
+    }
+}
 
 function showAllOrderingPhy(e) {
     e.firstChild.checked ? $("#cboOrderPhysician > option").each(function () {
