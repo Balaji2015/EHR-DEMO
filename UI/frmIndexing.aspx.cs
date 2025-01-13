@@ -3690,7 +3690,11 @@ namespace Acurus.Capella.UI
                     scanIndexObject.Is_Manually_Reviewed_And_Signed = "Y";
                 else
                     scanIndexObject.Is_Manually_Reviewed_And_Signed = "N";
-
+                //CAP-2847
+                if (chkExternalMedicalRecord.Checked)
+                    scanIndexObject.Is_External_Medical_Record = "Y";
+                else
+                    scanIndexObject.Is_External_Medical_Record = "N";
                 if (cboDocumentType.SelectedValue.ToUpper() != "ENCOUNTERS")
                     scanIndexObject.Document_Date = UtilityManager.ConvertToUniversal(Convert.ToDateTime(dtpDocumentDate.Value + " 07:30:00"));// + DateTime.Now.TimeOfDay));
                 else
@@ -3711,7 +3715,11 @@ namespace Acurus.Capella.UI
                         scanIndexObject.Is_Manually_Reviewed_And_Signed = "Y";
                     else
                         scanIndexObject.Is_Manually_Reviewed_And_Signed = "N";
-
+                    //CAP-2847
+                    if (chkExternalMedicalRecord.Checked)
+                        scanIndexObject.Is_External_Medical_Record = "Y";
+                    else
+                        scanIndexObject.Is_External_Medical_Record = "N";
                     scanIndexObject.Modified_By = ClientSession.UserName;
                     scanIndexObject.Modified_Date_And_Time = UtilityManager.ConvertToUniversal();
                 }
@@ -3967,6 +3975,11 @@ namespace Acurus.Capella.UI
                     chkReviewandSign.Checked = true;
                 else
                     chkReviewandSign.Checked = false;
+                //CAP-2847
+                if (temp_lst[0].Is_External_Medical_Record == "Y")
+                    chkExternalMedicalRecord.Checked = true;
+                else
+                    chkExternalMedicalRecord.Checked = false;
 
                 IList<Scan> temp_Scan_lst = new List<Scan>();
                 ScanManager objScnmngr = new ScanManager();
@@ -4460,7 +4473,7 @@ namespace Acurus.Capella.UI
 
                     if (sPaperOrder.ToString() != "Paper Order")
                     {
-                        cboLab.SelectedValue = OrderedLab.ToString();
+                        cboLab.SelectedValue = string.IsNullOrEmpty(OrderedLab.ToString()) ? "0" : OrderedLab.ToString();
                         ListItem CheckSelectedValue = cboStandingOrders.Items.FindByValue(selectedValue.ToString());
                         if (CheckSelectedValue != null && CheckSelectedValue.Value != "")
                         {
@@ -4526,6 +4539,19 @@ namespace Acurus.Capella.UI
                     spnOrderPhy.Attributes.Add("class", "MandLabelstyle");
                     spnOrderPhyStar.Visible = true;
                 }
+            }
+            //CAP-2847
+            if (chkExternalMedicalRecord.Checked == true)
+            {
+                chkOrderingPhyShowAll.Checked = true;
+                chkShowAll.Checked = true;
+                chkReviewandSign.Checked = true;
+                cboStandingOrders.Enabled = false;
+                cboPhysician.Enabled = false;
+                cboOrderPhysician.Enabled = false;
+                chkReviewandSign.Enabled = false;
+                chkOrderingPhyShowAll.Enabled = false;
+                chkShowAll.Enabled = false;
             }
             cboIs_Interperated.Enabled = true;
             updateOrders.Update();
