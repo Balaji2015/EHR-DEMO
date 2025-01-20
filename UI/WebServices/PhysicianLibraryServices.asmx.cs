@@ -952,7 +952,8 @@ namespace Acurus.Capella.UI.WebServices
                     //}
                     //CAP-2781
                     var physicianFacilityMapping = ConfigureBase<PhysicianFacilityMappingList>.ReadJson("PhysicianFacilityMapping.json");
-                    using (FileStream fs = new FileStream(physicianFacilityMapping.ToString(), FileMode.Open, FileAccess.Read, FileShare.ReadWrite))
+                    string strPath2 = Path.Combine(System.Web.Hosting.HostingEnvironment.ApplicationPhysicalPath, "ConfigXML\\PhysicianFacilityMapping.json");
+                    using (FileStream fs = new FileStream(strPath2, FileMode.Open, FileAccess.Read, FileShare.ReadWrite))
                     {
                         IList<string> finallist = new List<string>();
                         for (int k = 0; k < ilstFacility.Count; k++)
