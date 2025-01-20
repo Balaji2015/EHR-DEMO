@@ -727,17 +727,15 @@ function showAllPhy(e) {
 function ChangeExternalMedicalRecord() {
     if ($('#chkExternalMedicalRecord').prop("checked")) {
         localStorage.setItem("StandingOrderSelectedValue", $('#cboStandingOrders').val());
+        $('#cboStandingOrders').val("Paper Order").trigger('change');
         $('#chkOrderingPhyShowAll,#chkShowAll,#chkReviewandSign').prop("checked", true);
-        $('#cboStandingOrders').val("Paper Order");
         $('#cboPhysician').val(4387);//NON_CAPELLA,PHY_LAB
         $('#cboOrderPhysician').val(4387);//NON_CAPELLA,PHY_LAB
         $('#cboStandingOrders,#cboPhysician,#cboOrderPhysician,#chkReviewandSign,#chkOrderingPhyShowAll,#chkShowAll').prop('disabled', true);
     } else {
-        $('#cboStandingOrders').val(localStorage.getItem("StandingOrderSelectedValue"));
-        $('#chkOrderingPhyShowAll,#chkShowAll,#chkReviewandSign').prop("checked", false);
-        $('#cboPhysician').val("");
-        $('#cboOrderPhysician').val("");
-        $('#cboStandingOrders,#cboPhysician,#cboOrderPhysician,#chkReviewandSign,#chkOrderingPhyShowAll,#chkShowAll').prop('disabled', false);
+        $('#cboStandingOrders').val(localStorage.getItem("StandingOrderSelectedValue")).trigger('change');
+        $('#chkShowAll,#chkReviewandSign').prop("checked", false);
+        $('#cboPhysician,#chkReviewandSign,#chkShowAll').prop('disabled', false);
     }
 }
 

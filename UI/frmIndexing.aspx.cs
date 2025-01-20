@@ -1196,6 +1196,7 @@ namespace Acurus.Capella.UI
             divLoading.Style.Add("display", "none");
             waitCursor.Update();
             upIndexingDetails.Update();
+            chkExternalMedicalRecord.Checked = false;
             //if (btnSave.Text == "Update")
             //{
             //    btnSave.Text = "Update";
