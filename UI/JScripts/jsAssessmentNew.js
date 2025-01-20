@@ -466,6 +466,7 @@ myapp.controller('assessmentCtrl', function ($scope, $http) {
 
             //CAP-2598
             var test = Decompress(response.d);
+            var originalResponse = JSON.stringify(test);
 
             var table = $('#tblCurrICDs');
             table.find('tr').each(function (rowIndex, r) {
@@ -476,7 +477,7 @@ myapp.controller('assessmentCtrl', function ($scope, $http) {
 
 
                         if (colIndex == "4") {
-                            if (response.d.indexOf(c.textContent.replace(" ", "")) > -1) {
+                            if (originalResponse.indexOf(c.textContent.replace(" ", "")) > -1) {
                                 for (var k = 0; k < test.ColorCoding.length; k++) {
                                     if (test.ColorCoding[k].ICDCode.replace(" ", "") == c.textContent.replace(" ", "")) {
                                         c.style.color = test.ColorCoding[k].Color;

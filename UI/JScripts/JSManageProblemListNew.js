@@ -1069,6 +1069,7 @@ ProblemApp.controller('ControllerManageProblem', function ($scope, $http) {
 
             //CAP-2598
             var test = Decompress(response.d);
+            var originalResponse = JSON.stringify(test);
 
             var table = $('#tblProblemList');
             table.find('tr').each(function (rowIndex, r) {
@@ -1079,7 +1080,7 @@ ProblemApp.controller('ControllerManageProblem', function ($scope, $http) {
 
 
                         if (colIndex == "1") {
-                            if (response.d.indexOf(c.textContent) > -1) {
+                            if (originalResponse.indexOf(c.textContent) > -1) {
                                 for (var k = 0; k < test.ColorCoding.length; k++) {
                                     if (test.ColorCoding[k].ICDCode == c.textContent) {
                                         c.style.color = test.ColorCoding[k].Color;
