@@ -10272,8 +10272,22 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
             encupdateList[0].Modified_By = ModifiedBy;
             encupdateList[0].Modified_Date_and_Time = ModifiedDateandTime;
             IList<Encounter> encAddList = null;
+
             //SaveUpdateDeleteWithTransaction(ref encAddList, encupdateList, null, MACAddress);
-            SaveUpdateDelete_DBAndXML_WithTransaction(ref encAddList, ref encupdateList, null, MACAddress, true, false, EncID, string.Empty);
+            //Jira CAP-2842
+            //SaveUpdateDelete_DBAndXML_WithTransaction(ref encAddList, ref encupdateList, null, MACAddress, true, false, EncID, string.Empty);
+            IList<Encounter_Blob> ilstEncBlob = new List<Encounter_Blob>();
+            EncounterBlobManager mngrEncounterBlob = new EncounterBlobManager();
+            ilstEncBlob = mngrEncounterBlob.GetEncounterBlob(EncID);
+            if (ilstEncBlob != null && ilstEncBlob.Count > 0)
+            {
+                SaveUpdateDelete_DBAndXML_WithTransaction(ref encAddList, ref encupdateList, null, MACAddress, true, false, EncID, string.Empty);
+            }
+            else
+            {
+                SaveUpdateDelete_DBAndXML_WithTransaction(ref encAddList, ref encupdateList, null, MACAddress, false, false, EncID, string.Empty);
+            }
+            //Jira CAP-2842 - End
             //Added By Saravanakumar
             //WFObjectManager objWFObjectManager = new WFObjectManager();
             //objWFObjectManager.UpdateOwner(Convert.ToUInt64(EncID), ObjType, ModifiedBy, string.Empty);
