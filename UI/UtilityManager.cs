@@ -3313,7 +3313,7 @@ namespace Acurus.Capella.UI
                             //CAP-2869
                             switch (sReasonOrFollowup){
                                 case "MammogramTypeList":
-                                    var MammogramType = staticLookupList.MammogramTypeList.FirstOrDefault(item => item.Field_Name.ToUpper().Contains(sFieldName.ToUpper()) && item.Description.ToUpper() == ilstItem[i].ToString().ToUpper());
+                                    var MammogramType = staticLookupList.MammogramTypeList.FirstOrDefault(item => item.Field_Name.ToUpper().Contains(sFieldName.ToUpper()) && item.value.ToUpper() == ilstItem[i].ToString().ToUpper());
 
                                     if (MammogramType != null)
                                     {
@@ -3329,7 +3329,7 @@ namespace Acurus.Capella.UI
 
                                     break;
                                 case "FoodAllergySnomedList":
-                                    var FoodAllergySnomed = staticLookupList.FoodAllergySnomedList.FirstOrDefault(item => item.Field_Name.ToUpper().Contains(sFieldName.ToUpper()) && item.Description.ToUpper() == ilstItem[i].ToString().ToUpper());
+                                    var FoodAllergySnomed = staticLookupList.FoodAllergySnomedList.FirstOrDefault(item => item.Field_Name.ToUpper().Contains(sFieldName.ToUpper()) && item.value.ToUpper() == ilstItem[i].ToString().ToUpper());
 
                                     if (FoodAllergySnomed != null)
                                     {
@@ -3344,7 +3344,7 @@ namespace Acurus.Capella.UI
                                     }
                                     break;
                                 case "ReasonNotPerformedList":
-                                    var ReasonNotPerformed = staticLookupList.ReasonNotPerformedList.FirstOrDefault(item => item.Field_Name.ToUpper().Contains(sFieldName.ToUpper()) && item.Description.ToUpper() == ilstItem[i].ToString().ToUpper());
+                                    var ReasonNotPerformed = staticLookupList.ReasonNotPerformedList.FirstOrDefault(item => item.Field_Name.ToUpper().Contains(sFieldName.ToUpper()) && item.value.ToUpper() == ilstItem[i].ToString().ToUpper());
 
                                     if (ReasonNotPerformed != null)
                                     {
@@ -3359,7 +3359,7 @@ namespace Acurus.Capella.UI
                                     }
                                     break;
                                 case "FollowupList":
-                                    var Followup = staticLookupList.FollowupList.FirstOrDefault(item => item.Field_Name.ToUpper().Contains(sFieldName.ToUpper()) && item.Description.ToUpper() == ilstItem[i].ToString().ToUpper());
+                                    var Followup = staticLookupList.FollowupList.FirstOrDefault(item => item.Field_Name.ToUpper().Contains(sFieldName.ToUpper()) && item.value.ToUpper() == ilstItem[i].ToString().ToUpper());
 
                                     if (Followup != null)
                                     {
@@ -3374,7 +3374,7 @@ namespace Acurus.Capella.UI
                                     }
                                     break;
                                 case "FollowupReasonnotperformedList":
-                                    var FollowupReasonnotperformed = staticLookupList.FollowupReasonnotperformedList.FirstOrDefault(item => item.Field_Name.ToUpper().Contains(sFieldName.ToUpper()) && item.Description.ToUpper() == ilstItem[i].ToString().ToUpper());
+                                    var FollowupReasonnotperformed = staticLookupList.FollowupReasonnotperformedList.FirstOrDefault(item => item.Field_Name.ToUpper().Contains(sFieldName.ToUpper()) && item.Value.ToUpper() == ilstItem[i].ToString().ToUpper());
 
                                     if (FollowupReasonnotperformed != null)
                                     {
@@ -3453,7 +3453,7 @@ namespace Acurus.Capella.UI
                         for (int i = 0; i < ilstItem.Count; i++)
                         {
                             var matchingItems = staticLookupList.ReasonNotPerformedList
-                            .Where(item => item.Description.ToUpper() == ilstItem[i].ToString().ToUpper())
+                            .Where(item => item.Field_Name.ToUpper().Contains(sFieldName.ToUpper()) && item.value.ToUpper() == ilstItem[i].ToString().ToUpper())
                             .ToList();
 
                             foreach (var match in matchingItems)

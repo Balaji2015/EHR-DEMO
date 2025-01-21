@@ -2470,7 +2470,7 @@ namespace Acurus.Capella.PatientPortal
                         for (int i = 0; i < ilstItem.Count; i++)
                         {
                             var matchingItems = staticLookupList.MammogramTypeList
-                            .Where(item => item.Description.ToUpper() == ilstItem[i].ToString().ToUpper())
+                            .Where(item => item.Field_Name.ToUpper().Contains(sFieldName.ToUpper()) && item.value.ToUpper() ==  ilstItem[i].ToString().ToUpper())
                             .ToList();
 
                             foreach (var match in matchingItems)
