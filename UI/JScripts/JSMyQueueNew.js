@@ -1231,6 +1231,7 @@ function LoadMyEncounter(ajaxUrl) {
         ],
         initComplete: function (settings, json) {
             $("#EncounterTable_filter input")[0].classList.add('searchicon');
+            SetHeightForTabelBasedOnScreenSize();
         }
     });
 
@@ -1715,6 +1716,7 @@ function LoadMyTask() {
         ],
         initComplete: function (settings, json) {
             $("#EncounterTable_filter input")[0].classList.add('searchicon');
+            SetHeightForTabelBasedOnScreenSize();
         }
 
     });
@@ -1948,6 +1950,7 @@ function loadMyorder() {
         },
         initComplete: function (settings, json) {
             $("#EncounterTable_filter input")[0].classList.add('searchicon');
+            SetHeightForTabelBasedOnScreenSize();
         }
     });
 
@@ -2201,6 +2204,7 @@ function loadMyscan() {
         },
         initComplete: function (settings, json) {
             $("#EncounterTable_filter input")[0].classList.add('searchicon');
+            SetHeightForTabelBasedOnScreenSize();
         }
 
     });
@@ -2339,6 +2343,7 @@ function loadMyprescription() {
         ],
         initComplete: function (settings, json) {
             $("#EncounterTable_filter input")[0].classList.add('searchicon');
+            SetHeightForTabelBasedOnScreenSize();
         }
     });
     
@@ -2559,6 +2564,7 @@ function loadMyAmendment() {
         ],
         initComplete: function (settings, json) {
             $("#EncounterTable_filter input")[0].classList.add('searchicon');
+            SetHeightForTabelBasedOnScreenSize();
         }
 
     });
@@ -2830,6 +2836,7 @@ function LoadGeneralEncounter(ajaxUrl) {
         ],
         initComplete: function (settings, json) {
             $("#EncounterTable_filter input")[0].classList.add('searchicon');
+            SetHeightForTabelBasedOnScreenSize();
         }
     });
 
@@ -3020,6 +3027,7 @@ function loadTask() {
             ],
             initComplete: function (settings, json) {
                 $("#EncounterTable_filter input")[0].classList.add('searchicon');
+                SetHeightForTabelBasedOnScreenSize();
             }
         });
     $('#EncounterTable_filter').css({
@@ -3400,6 +3408,7 @@ function loadorder() {
         },
         initComplete: function (settings, json) {
             $("#EncounterTable_filter input")[0].classList.add('searchicon');
+            SetHeightForTabelBasedOnScreenSize();
         }
 
     });
@@ -3591,6 +3600,7 @@ function loadamend() {
             ],
             initComplete: function (settings, json) {
                 $("#EncounterTable_filter input")[0].classList.add('searchicon');
+                SetHeightForTabelBasedOnScreenSize();
             }
         });
     $('#EncounterTable_filter').css({
@@ -5762,4 +5772,15 @@ function Decompress(data) {
     // Use pako to decompress the byte array
     const decompressed = pako.inflate(bytes, { to: 'string' });
     return JSON.parse(decompressed);
+}
+
+function SetHeightForTabelBasedOnScreenSize() {
+    var MaxHeightTable = (document.getElementById("launcher").getBoundingClientRect().top - document.getElementsByClassName("dataTables_scrollBody")[0].getBoundingClientRect().top)
+        + (document.getElementById("launcher").getBoundingClientRect().height - 10);
+    if (MaxHeightTable != undefined) {
+        if ($(".dataTables_scrollBody")?.css("max-height") != undefined
+            && parseInt($(".dataTables_scrollBody").css("max-height")) < MaxHeightTable) {
+            $(".dataTables_scrollBody").css({ "max-height": MaxHeightTable + "px" });
+        }
+    }
 }
