@@ -568,6 +568,7 @@ function SelectOrders() {
 
     if (l == "Paper Order") {
         orpsa.disabled = false;
+        orpsa.checked = false;
         $("#slabMandatory").removeClass("manredforstar");
         $("#Labspan").removeClass("MandLabelstyle");
         // if (CFacilityName == "CMG LAB AND ANCILLARY 1866 #101")
@@ -726,7 +727,6 @@ function showAllPhy(e) {
 //CAP-2847
 function ChangeExternalMedicalRecord() {
     if ($('#chkExternalMedicalRecord').prop("checked")) {
-        localStorage.setItem("StandingOrderSelectedValue", $('#cboStandingOrders').val());
         $('#cboStandingOrders').val("Paper Order").trigger('change');
         $('#chkOrderingPhyShowAll,#chkShowAll,#chkReviewandSign').prop("checked", true);
         $('#cboPhysician').val(4387);//NON_CAPELLA,PHY_LAB

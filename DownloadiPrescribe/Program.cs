@@ -337,6 +337,12 @@ namespace DownloadiPrescribe
                     FileInfo[] sFiles = new DirectoryInfo(sIncoming_StudiesFilePath).GetFiles("*.*");
                     foreach (FileInfo finfFile in sFiles)
                     {
+                        insertordersubmitList = new List<OrdersSubmit>();
+                        insertOrderList = new List<Orders>();
+                        ilstScan = new List<Scan>();
+                        ilstscan_index = new List<scan_index>();
+                        fileManagementIndexList = new List<FileManagementIndex>();
+
                         sFile = finfFile.Name;
                         bIsErroredFile = FileValidation(sFile);
                         if (!bIsErroredFile)
@@ -404,7 +410,7 @@ namespace DownloadiPrescribe
                                         scan_Index.Scan_ID = Convert.ToUInt64(ilstScan.FirstOrDefault().Id);
                                         scan_Index.Document_Date = Convert.ToDateTime(DateTime.ParseExact(sFile.Split('_')[3].ToUpper().Replace(".PDF", ""), "yyyyMMdd", CultureInfo.InvariantCulture).ToString("yyyy-MM-dd") + " 15:30:00");
                                         scan_Index.Document_Type = "Results";
-                                        scan_Index.Document_Sub_Type = "ECHO";
+                                        scan_Index.Document_Sub_Type = dir.Name.ToUpper();
                                         scan_Index.Order_ID = ulOrderSubmitId;
                                         scan_Index.Indexed_File_Path = sImported_StudiesFilePath + "\\" + sFile;
                                         scan_Index.Page_Selected = "1";
@@ -420,7 +426,7 @@ namespace DownloadiPrescribe
                                         filemanagementIndex.Created_Date_And_Time = DateTime.UtcNow;
                                         filemanagementIndex.Document_Date = Convert.ToDateTime(DateTime.ParseExact(sFile.Split('_')[3].ToUpper().Replace(".PDF", ""), "yyyyMMdd", CultureInfo.InvariantCulture).ToString("yyyy-MM-dd") + " 15:30:00");
                                         filemanagementIndex.Document_Type = "Results";
-                                        filemanagementIndex.Document_Sub_Type = "ECHO";
+                                        filemanagementIndex.Document_Sub_Type = dir.Name.ToUpper();
                                         filemanagementIndex.Source = "SCAN";
                                         filemanagementIndex.Order_ID = ulOrderSubmitId;
                                         filemanagementIndex.Human_ID = objHuman.Id;

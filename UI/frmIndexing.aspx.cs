@@ -1197,6 +1197,7 @@ namespace Acurus.Capella.UI
             waitCursor.Update();
             upIndexingDetails.Update();
             chkExternalMedicalRecord.Checked = false;
+            ScriptManager.RegisterStartupScript(this, this.Page.GetType(), "StandingOrderSelectedValue", "localStorage.setItem('StandingOrderSelectedValue', $('#cboStandingOrders').val());", true);
             //if (btnSave.Text == "Update")
             //{
             //    btnSave.Text = "Update";
