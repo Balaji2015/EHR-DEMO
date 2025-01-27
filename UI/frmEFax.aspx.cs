@@ -882,7 +882,44 @@ namespace Acurus.Capella.UI
             };
             return resultNew;
         }
-            [WebMethod(EnableSession = true)]
+        [WebMethod(EnableSession = true)]
+        [ScriptMethod(ResponseFormat = ResponseFormat.Json, UseHttpGet = true)]
+        public static object EFaxManagementload()
+        {
+            if (ClientSession.UserName == string.Empty)
+            {
+                HttpContext.Current.Response.StatusCode = 999;
+                HttpContext.Current.Response.Status = "999 Session Expired";
+                HttpContext.Current.Response.StatusDescription = "frmSessionExpired.aspx";
+                return "Session Expired";
+            }
+            IList<ActivityLog> ActivityLogList = new List<ActivityLog>();
+            List<string> ActivityType = new List<string>();
+            ActivityLogManager ActivitylogMngr = new ActivityLogManager();
+            IList<ActivityLog> ActivityLogTempList = new List<ActivityLog>();
+            ActivityType.Add("\"EFax\"");
+            string extra_search = HttpContext.Current.Request.Params["extra_search"];
+            var searchData = JsonConvert.DeserializeObject<Dictionary<string, string>>(extra_search);
+            string FaxStatus = searchData["FaxStatus"];
+            string sHumanId = searchData["HumanId"];
+            string sRecipiantName = searchData["RecipiantName"];
+            string sSenderName = searchData["SenderName"];
+            string sFromDate = searchData["FromDate"];
+            string sToDate = searchData["ToDate"];
+            ulong ulHumanID = 0;
+            if (sHumanId != string.Empty)
+            {
+                ulHumanID = Convert.ToUInt64(sHumanId);
+            }
+            ActivityLogTempList = ActivitylogMngr.GetActivityLogForEFaxManagement(ActivityType, ulHumanID, FaxStatus, sRecipiantName, sSenderName,Convert.ToDateTime(sFromDate).ToString("yyyy-MM-dd"), Convert.ToDateTime(sToDate).ToString("yyyy-MM-dd"));
+            ActivityLogList = ActivityLogTempList.OrderByDescending(a => a.Activity_Date_And_Time).ToList();
+            var resultNew = new
+            {
+                data = Compress(JsonConvert.SerializeObject(ActivityLogList)),
+            };
+            return resultNew;
+        }
+        [WebMethod(EnableSession = true)]
             public static string GetActivities(string FieldValue)
             {
                 if (ClientSession.UserName == string.Empty)

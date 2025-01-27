@@ -23,6 +23,7 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
         IList<ActivityLog> GetActivityByActivityTypeandSubject(string ActivityType, string Subject);
         IList<ActivityLog> GetFaxActivityTypeByStatus();
         IList<ActivityLog> GetFaxActivity(string ActivityLogId);
+        IList<ActivityLog> GetActivityLogForEFaxManagement(List<string> ActivityType, ulong uHumanID, string sFaxStatus, string sRecipiantName, string sSenderName, string sFromDate, string sToDate);
     }
 
 
@@ -240,6 +241,42 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
                     criteria.Add(Expression.Ge("Activity_Date_And_Time", activityDateTime));
                 }
                 ilstActivitylog = criteria.List<ActivityLog>();
+                iMySession.Close();
+            }
+            return ilstActivitylog;
+        }
+        public IList<ActivityLog> GetActivityLogForEFaxManagement(List<string> ActivityType ,ulong uHumanID,string sFaxStatus, string sRecipiantName, string sSenderName, string sFromDate, string sToDate)
+        {
+            IList<ActivityLog> ilstActivitylog = new List<ActivityLog>();
+            using (ISession iMySession = NHibernateSessionManager.Instance.CreateISession())
+            {
+                string query = "Select a.* from activity_log a where a.Activity_Type in (" + string.Join(",", ActivityType.ToArray()) + ") and date(a.Activity_Date_And_Time) between'" + sFromDate + "' and '" + sToDate + "'" + ((sFaxStatus == "ALL") ? "" : "and a.Fax_Status='" + sFaxStatus + "'");
+                if (uHumanID != 0)
+                {
+                    query = query + "and a.Human_ID = '" + uHumanID + "'";
+                }
+
+                if (sRecipiantName != "" && sRecipiantName.Split(',').Length <= 1)
+                {
+                    query = query + "and a.Fax_Recipient_Name like'%"+ sRecipiantName.Split(',')[0] + "%'";
+                }
+                if (sRecipiantName != "" && sRecipiantName.Split(',').Length > 1)
+                {
+                    query = query + "and a.Fax_Recipient_Name like'%" + sRecipiantName.Split(',')[0] + "%' and a.Fax_Recipient_Name like'%" + sRecipiantName.Split(',')[1].Replace(".","") + "%'";
+                }
+
+                //SenderName
+                if (sSenderName != "" && sSenderName.Split(',').Length <= 1)
+                {
+                    query = query + "and a.Fax_Sender_Name like'%" + sSenderName.Split(',')[0] + "%'";
+                }
+                if (sSenderName != "" && sSenderName.Split(',').Length > 1)
+                {
+                    query = query + "and a.Fax_Sender_Name like'%" + sSenderName.Split(',')[0] + "%' and a.Fax_Sender_Name like'%" + sSenderName.Split(',')[1].Replace(".", "") + "%'";
+                }
+
+                ISQLQuery sql = iMySession.CreateSQLQuery(query).AddEntity("a", typeof(ActivityLog));
+                ilstActivitylog = sql.List<ActivityLog>();
                 iMySession.Close();
             }
             return ilstActivitylog;

@@ -807,6 +807,20 @@ function OpenModal(data) {
 
 
     }
+    else if (itemValue == "EFaxManagement") {
+        $(top.window.document).find("#TabFaxManagement").modal({ backdrop: "static", keyboard: false }, 'show');
+        $(top.window.document).find("#TabModalEFaxManagementTitle")[0].textContent = "E-FAX Management";
+        $(top.window.document).find("#TabmdldlgEFaxManagement")[0].style.width = "1170px";
+        $(top.window.document).find("#TabmdldlgEFaxManagement")[0].style.height = "675px";
+        $(top.window.document).find("#TabmdldlgEFaxManagement")[0].style.position = "";
+        $(top.window.document).find("#TabmdldlgEFaxManagement")[0].style.marginLeft = "";
+        var sPath = ""
+        sPath = "HtmlEFaxManagement.html?version=" + sessionStorage.getItem("ScriptVersion");
+        $(top.window.document).find("#TabEFaxManagementFrame")[0].style.height = "620px";
+        $(top.window.document).find("#TabEFaxManagementFrame")[0].contentDocument.location.href = sPath;
+        $(top.window.document).find("#TabFaxManagement").one("hidden.bs.modal", function (e) {
+        });
+    }
     else if (itemValue == "Reset Password") {
         StartLoadingImage();
         var obj = new Array();

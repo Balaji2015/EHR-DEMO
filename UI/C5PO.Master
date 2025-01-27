@@ -974,7 +974,20 @@
                                                     </div>
                                                 </li>
                                                 <li runat="server" id="mnuExchange_smnuMailbox"><a href="#" onclick="OpenModal('Mail box');">Mail </a></li>
-                                                <li runat="server" id="mnuExchange_smnuEFax"><a href="#" onclick="OpenModal('EFax');">E-Fax </a></li>
+                                                <li runat="server" id="mnuExchange_smnuEFax">
+                                                    <a href="#" >E-Fax <span class="caret"></span> </a>
+                                                    <div>
+                                                        <ul>
+                                                            <li runat="server" id="mnuExchange_smnuEFax_smnuEfax">
+                                                                <a href="#" onclick="OpenModal('EFax');">E-Fax</a>
+                                                            </li>
+                                                            <li runat="server" id="mnuExchange_smnuEFax_smnuEFaxManagement">
+                                                                <a href="#" onclick="OpenModal('EFaxManagement');">EFaxManagement</a>
+                                                            </li>
+                                                        </ul>
+                                                    </div>
+
+                                                </li>
                                                 <li runat="server" id="mnuExchange_smnuClinicalExchange">
                                                     <a href="#">CCD <span class="caret"></span></a>
                                                     <div>
@@ -2068,6 +2081,19 @@
                     </div>
                     <div class="modal-body" style="width: 100%; margin-top: -10px; padding-top: 0px">
                         <iframe style="width: 100%; border: none;height:560px;" id="TabEFaxFrame"></iframe>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div id="TabFaxManagement" class="modal fade" style="margin-top: 20px; margin-left: 0px; padding-left: 55px;background-color: rgba(0, 0, 0, 0.13);z-index: 8888;">
+            <div id="TabmdldlgEFaxManagement" class="modal-dialog" style="width: 95%; margin-left:150px; margin-top: 10px; position: absolute!important;">
+                <div class=" modal-content" style="height: 100%">
+                    <div class="modal-header" style="height: 32px; padding:5px;">
+                        <button type="button" class="close" id="btnFaxManagementClose" style="font-size: 30px !important;" data-dismiss="modal" aria-hidden="true">&times;</button>
+                        <h3 class="modal-title" style="font-family: sans-serif; font-weight: bold; font-size: medium" id="TabModalEFaxManagementTitle"></h3>
+                    </div>
+                    <div class="modal-body" style="width: 100%; margin-top: -10px; padding-top: 0px;padding: 10px !important;">
+                        <iframe style="width: 100%; border: none;height:620px;" id="TabEFaxManagementFrame"></iframe>
                     </div>
                 </div>
             </div>

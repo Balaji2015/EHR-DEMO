@@ -636,6 +636,24 @@ namespace Acurus.Capella.UI
         protected global::System.Web.UI.HtmlControls.HtmlGenericControl mnuExchange_smnuEFax;
 
         /// <summary>
+        /// mnuExchange_smnuEFax_smnuEfax control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlGenericControl mnuExchange_smnuEFax_smnuEfax;
+
+        /// <summary>
+        /// mnuExchange_smnuEFax_smnuEFaxManagement control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlGenericControl mnuExchange_smnuEFax_smnuEFaxManagement;
+
+        /// <summary>
         /// mnuExchange_smnuClinicalExchange control.
         /// </summary>
         /// <remarks>
