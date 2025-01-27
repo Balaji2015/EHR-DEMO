@@ -3501,7 +3501,9 @@ namespace Acurus.Capella.UI
             {
                 RadWindowImportResult.VisibleOnPageLoad = false;
                 Session["IsSaved"] = "false";
-                if (IsEditable && cboLab.Items[cboLab.SelectedIndex].Text.Trim() != string.Empty && Convert.ToUInt64(cboLab.Items[cboLab.SelectedIndex].Value) == 32)
+                //CAP-1983
+                //if (IsEditable && cboLab.Items[cboLab.SelectedIndex].Text.Trim() != string.Empty && Convert.ToUInt64(cboLab.Items[cboLab.SelectedIndex].Value) == 32)
+                if (IsEditable && cboLab.Items[cboLab.SelectedIndex].Text.Trim() != string.Empty)
                 {
                     SetCollectionDateMand(true);
                     if (chkSpecimenInHouse.Checked == true && chkMoveToMA.Checked == true)

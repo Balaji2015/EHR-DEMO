@@ -379,17 +379,17 @@ namespace Acurus.Capella.UI
                         if (Convert.ToUInt32(assessmentLoadList.PEncID) == 0)
                         {
                             jsons = "Message-" + "210010";
-                            return jsons;
+                            return Compress(jsons);
                         }
                         else if (!Convert.ToBoolean(assessmentLoadList.Physician_Process))
                         {
                             jsons = "Message-" + "210016";
-                            return jsons;
+                            return Compress(jsons);
                         }
                         else if (assessmentLoadList.Assessment != null && assessmentLoadList.Assessment.Count == 0)
                         {
                             jsons = "Message-" + "170014";
-                            return jsons;
+                            return Compress(jsons);
                         }
                         else
                         {
