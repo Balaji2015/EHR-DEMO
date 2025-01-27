@@ -1042,8 +1042,9 @@ namespace Acurus.Capella.UI
                 }               
             ClientSession.UserCurrentList.Add(ClientSession.UserName);
             ClientSession.UserCurrentOwner = ClientSession.UserName;
-            if (data[0] != "")
-                ClientSession.HumanId = Convert.ToUInt32(data[0]);
+            //Cap - 2893 -commented ClientSession.HumanId
+            //if (data[0] != "")
+            //ClientSession.HumanId = Convert.ToUInt32(data[0]);
             // ClientSession.FacilityName = data[1];
             return true;
         }
