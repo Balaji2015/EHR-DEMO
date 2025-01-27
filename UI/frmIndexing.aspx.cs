@@ -2180,7 +2180,21 @@ namespace Acurus.Capella.UI
             }
             divLoading.Style.Add("display", "none");
             waitCursor.Update();
-
+            //CAP-2880
+            if (chkExternalMedicalRecord.Checked == true)
+            {
+                chkOrderingPhyShowAll.Checked = true;
+                chkShowAll.Checked = true;
+                chkReviewandSign.Checked = true;
+                cboStandingOrders.Enabled = false;
+                cboPhysician.Enabled = false;
+                cboOrderPhysician.Enabled = false;
+                chkReviewandSign.Enabled = false;
+                chkOrderingPhyShowAll.Enabled = false;
+                chkShowAll.Enabled = false;
+                if (cboPhysician.Items.FindByValue(4387.ToString()) != null)
+                    cboPhysician.SelectedValue = 4387.ToString();
+            }
         }
 
         #endregion

@@ -574,11 +574,11 @@ function SelectOrders() {
         // if (CFacilityName == "CMG LAB AND ANCILLARY 1866 #101")
         if (CFacilityName ==$("#hdnIsAncillary").val())
         {
-            $('#chkShowAll')[0].checked = true;
+            $('#chkShowAll').prop('checked', true).trigger('change');
         }
         else
         {
-            $('#chkShowAll')[0].checked = false;
+            $('#chkShowAll').prop('checked', false).trigger('change');
         }
        
         if ($("#slabMandatory")[0] != undefined)
@@ -594,10 +594,10 @@ function SelectOrders() {
         // if (CFacilityName == "CMG LAB AND ANCILLARY 1866 #101")
         if (CFacilityName == $("#hdnIsAncillary").val())
         {
-            $('#chkShowAll')[0].checked = true;
+            $('#chkShowAll').prop('checked', true).trigger('change');
         }
         else {
-            $('#chkShowAll')[0].checked = false;
+            $('#chkShowAll').prop('checked', false).trigger('change');
         }
 
     }
@@ -735,7 +735,7 @@ function ChangeExternalMedicalRecord() {
     } else {
         $('#cboStandingOrders').val(localStorage.getItem("StandingOrderSelectedValue")).trigger('change');
         $('#chkShowAll,#chkReviewandSign').prop("checked", false);
-        $('#cboPhysician,#chkReviewandSign,#chkShowAll').prop('disabled', false);
+        $('#cboStandingOrders,#cboPhysician,#chkReviewandSign,#chkShowAll').prop('disabled', false);
     }
 }
 
@@ -1034,6 +1034,7 @@ function deletefiles(filename) {
             }
             else {
                 if (confirm("Are you sure you want to delete the file Permanently?")) {
+                    $('#chkExternalMedicalRecord').prop("checked", false);
                     { sessionStorage.setItem('StartLoading', 'true'); StartLoadFromPatChart(); }
                     document.getElementById("hdnfilenamedelete").value = filename;
                     document.getElementById("btnhdnloadfile").click();
