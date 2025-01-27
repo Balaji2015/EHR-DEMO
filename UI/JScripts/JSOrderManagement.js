@@ -490,6 +490,7 @@ function Load() {
 
             }
             else {
+                document.getElementById('btnAddResult').disabled = true;
                 $.ajax({
                     type: "POST",
                     url: "./frmOrderManagement.aspx/LoadImportResult",
@@ -810,7 +811,13 @@ function Load() {
 
             if (data.Lab_ID != undefined && data.Lab_ID == "32" && data.Current_Process != undefined && data.Current_Process.ToUpper() != "BILLING_WAIT" && data.Current_Process.ToUpper() != "RESULT_REVIEW") {
 
-                document.getElementById('btnAddResult').disabled = true;
+                document.getElementById('btnAddResult').disabled = false;
+                //Jira cap - 2863
+                document.getElementById('hdnOrderSubId').value = data.Group_ID;
+                document.getElementById('hdnCurrentProc').value = data.Current_Process;
+                document.getElementById('hdnIndexOrderID').value = data.File_Management_Index_Order_ID;
+                document.getElementById('hdnElectronicSign').value = data.Is_Electronic_Result_Available;
+
                 $.ajax({
                     type: "POST",
                     url: "./frmOrderManagement.aspx/LoadImportResult",
@@ -839,7 +846,7 @@ function Load() {
                 });
             }
             else {
-                document.getElementById('btnAddResult').disabled = false;
+                document.getElementById('btnAddResult').disabled = true;
                 $.ajax({
                     type: "POST",
                     url: "./frmOrderManagement.aspx/LoadImportResult",
@@ -1085,7 +1092,7 @@ function Load() {
             $(this)[0].classList.add('highlight');
 
             if (data.Lab_ID != undefined && data.Lab_ID == "32" && data.Current_Process != undefined && data.Current_Process.ToUpper() != "BILLING_WAIT" && data.Current_Process.ToUpper() != "RESULT_REVIEW") {
-                document.getElementById('btnAddResult').disabled = true;
+                document.getElementById('btnAddResult').disabled = false;
                 document.getElementById('hdnOrderSubId').value = data.Group_ID;
                 document.getElementById('hdnCurrentProc').value = data.Current_Process;
                 document.getElementById('hdnIndexOrderID').value = data.File_Management_Index_Order_ID;
@@ -1120,7 +1127,7 @@ function Load() {
 
             }
             else {
-                document.getElementById('btnAddResult').disabled = false;
+                document.getElementById('btnAddResult').disabled = true;
 
                 $.ajax({
                     type: "POST",
@@ -1364,7 +1371,7 @@ function Load() {
             $(this)[0].classList.add('highlight');
 
             if (data.Lab_ID != undefined && data.Lab_ID == "32" && data.Current_Process != undefined && data.Current_Process.ToUpper() != "BILLING_WAIT" && data.Current_Process.ToUpper() != "RESULT_REVIEW") {
-                document.getElementById('btnAddResult').disabled = true;
+                document.getElementById('btnAddResult').disabled = false;
                 document.getElementById('hdnOrderSubId').value = data.Group_ID;
                 document.getElementById('hdnCurrentProc').value = data.Current_Process;
                 document.getElementById('hdnIndexOrderID').value = data.File_Management_Index_Order_ID;
@@ -1398,7 +1405,7 @@ function Load() {
                 });
             }
             else {
-                document.getElementById('btnAddResult').disabled = false;
+                document.getElementById('btnAddResult').disabled = true;
                 $.ajax({
                     type: "POST",
                     url: "./frmOrderManagement.aspx/LoadImportResult",
