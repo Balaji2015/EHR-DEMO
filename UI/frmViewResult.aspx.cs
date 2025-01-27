@@ -2695,6 +2695,9 @@ namespace Acurus.Capella.UI
                 //Jira CAP-2153
                 //cboMoveToMA.Visible = false;
                 txtAssignedTo.Visible = false;
+                //cap - 2368
+                txtAssignedTo.Value = "";
+                txtAssignedTo.Attributes.Clear();
                 imgclearAssignTo.Visible= false;
                 //Jira CAP-2153 - End
                 Label1.Visible = false;
@@ -2939,6 +2942,9 @@ namespace Acurus.Capella.UI
                 chkPhyName.Visible = false;
                 rdbMA.Visible = false;
                 rdbProvider.Visible = false;
+                //cap - 2368
+                txtAssignedTo.Value = "";
+                txtAssignedTo.Attributes.Clear();
                 //btnSave.Style["margin-left"] = "440px";
                 // btnSave.Style["margin-left"] = "455px";
                 //btnSave.Style["margin-left"] = "20.5%";    //"278px"; //"278px";   //"370px";
