@@ -5784,5 +5784,5 @@ function SetHeightForTabelBasedOnScreenSize() {
                 $(".dataTables_scrollBody").css({ "max-height": MaxHeightTable + "px" });
             }
         }
-    }, 500);
+    }, 1000);
 }
