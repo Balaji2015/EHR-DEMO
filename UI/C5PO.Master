@@ -979,10 +979,10 @@
                                                     <div>
                                                         <ul>
                                                             <li runat="server" id="mnuExchange_smnuEFax_smnuEfax">
-                                                                <a href="#" onclick="OpenModal('EFax');">E-Fax</a>
+                                                                <a href="#" onclick="OpenModal('EFax');">e-Fax</a>
                                                             </li>
                                                             <li runat="server" id="mnuExchange_smnuEFax_smnuEFaxManagement">
-                                                                <a href="#" onclick="OpenModal('EFaxManagement');">EFaxManagement</a>
+                                                                <a href="#" onclick="OpenModal('EFaxManagement');">e-Fax Management</a>
                                                             </li>
                                                         </ul>
                                                     </div>

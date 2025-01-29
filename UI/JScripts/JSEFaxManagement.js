@@ -1,11 +1,23 @@
 ﻿
 var intPatientlen = -1;
 var arrPatient = [];
+var getDate = new Date();
+var beforeOneMonthFromCurrentDate = new Date();
+beforeOneMonthFromCurrentDate.setMonth(beforeOneMonthFromCurrentDate.getMonth() - 1);
+var beforedate = beforeOneMonthFromCurrentDate.getFullYear() + "-" + beforeOneMonthFromCurrentDate.toLocaleString('default', { month: 'short' })
+    + "-" + beforeOneMonthFromCurrentDate.getDate().toLocaleString('en-US', { minimumIntegerDigits: 2, useGrouping: false });
+
+var todayDate = getDate.getFullYear() + "-" + getDate.toLocaleString('default', { month: 'short' })
+    + "-" + getDate.getDate().toLocaleString('en-US', { minimumIntegerDigits: 2, useGrouping: false });
+
 $(document).ready(function () {
     SetAutoSearchRecipientName();
     SetAutoSearchFaxSenderName();
     SetAutoSearchPatientDetails();
-    $("#dtFaxSentDateFrom").datetimepicker({ closeOnDateSelect: true, timepicker: false, format: 'Y-M-d', maxDate: 0 });
+    
+    $("#dtFaxSentDateFrom").val(beforedate);
+    $("#dtFaxSentDateTo").val(todayDate);
+    $("#dtFaxSentDateFrom").datetimepicker({closeOnDateSelect: true, timepicker: false, format: 'Y-M-d', maxDate: 0 });
     $("#dtFaxSentDateTo").datetimepicker({ closeOnDateSelect: true, timepicker: false, format: 'Y-M-d', maxDate: 0 });
     var currentdate = new Date();
     var datetime = currentdate.getFullYear() + "-" + String((currentdate.getMonth() + 1)).padStart(2, '0') + "-" + String(currentdate.getDate()).padStart(2, '0');
@@ -30,7 +42,7 @@ function SetTabelHeader() {
             pageLength: 30,
             language: {
                 search: "",
-                searchPlaceholder: "Search by Subject or Status or Description",
+                searchPlaceholder: "Search by Ecounter ID or Sent By or Reason",
                 infoFiltered: ""
             },
             dom: '<"top"ipf>rt<"bottom"l><"clear">',
@@ -124,7 +136,7 @@ function ValidateDate(fromDate, toDate) {
     //Select between one month validation
     var numberofdays = Math.round((new Date(toDate) - new Date(fromDate)) / (1000 * 3600 * 24));
     if (numberofdays > 31)  {
-        alert("Please select Todate beteween one month.");
+        alert("Please select From Date and To Date between one month.");
         return false;
     }
 
@@ -154,7 +166,7 @@ function EFaxManagementload() {
         pageLength: 30,
         language: {
             search: "",
-            searchPlaceholder: "Search by Subject or Status or Description",
+            searchPlaceholder: "Search by Ecounter ID or Sent By or Reason",
             infoFiltered: ""
         },
         dom: '<"top"ipf>rt<"bottom"l><"clear">',
@@ -202,7 +214,7 @@ function EFaxManagementload() {
         },
         columns: [
             {
-                data: 'Encounter_ID', searchable: false, sWidth: '15%' },
+                data: 'Encounter_ID', sWidth: '15%' },
             {
                 data: 'Human_ID', searchable: false, sWidth: '10%' },
             {
@@ -210,7 +222,7 @@ function EFaxManagementload() {
                     return ""
                 }, searchable: false, sWidth: '11%' },
             {
-                data: 'Fax_Sender_Name', searchable: false, sWidth: '18%'
+                data: 'Fax_Sender_Name', sWidth: '18%'
             },
             {
                 data: 'Fax_Sender_Company', render: function (data, type, row) {
@@ -229,17 +241,17 @@ function EFaxManagementload() {
             {
                 data: 'Fax_Recipient_Number', searchable: false, sWidth: '12%'
             },
-            { data: 'Subject', sWidth: '15%' },
-            { data: 'Fax_Status', sWidth: '10%' },
+            { data: 'Subject', sWidth: '15%', searchable: false },
+            { data: 'Fax_Status', sWidth: '10%', searchable: false },
             { data: 'Error_Description', sWidth: '11%' },
             {
                 data: "Activity_Date_And_Time", render: function (data, type, row) {
-                    var date = data.replace("T", " ");
+                    var date = ConvertDate(data.replace("T", " "));
                     return date;
                 },
                 type: 'date', searchable: false, sWidth: '18%'
             },
-            { data: 'Activity_By', sWidth: '13%' },
+            { data: 'Activity_By', sWidth: '15%' },
             {
                 data: "", render: function (data, type, row) {
                     if (row.Fax_File_Path == '' && row.Fax_Sent_File_Path == '') {
@@ -249,7 +261,7 @@ function EFaxManagementload() {
                         return "<i onclick='OpenViewerforEFoxoutBox(" + row.Id + ");' title='View' class='glyphicon glyphicon-eye-open'></i>"
                     }
 
-                }, searchable: false, sWidth: '7%'
+                }, searchable: false, sWidth: '6%', sClass: "text-align-center"
             },
             {
                 data: "", render: function (data, type, row) {
@@ -257,7 +269,7 @@ function EFaxManagementload() {
                         return "<i onclick='funRetryForEfaxManagement(" + row.Id + ");' class='glyphicon glyphicon-refresh'/>"
                     }
                     else { return "<i></i>"; }
-                }, searchable: false, sWidth: '7%'
+                }, searchable: false, sWidth: '6%', sClass: "text-align-center"
             }
         ], createdRow: function (row, data, dataIndex) {
             $(row)[0].id = data.Id;
@@ -278,7 +290,26 @@ function EFaxManagementload() {
         'min-width': '180px'
     });
 }
-
+function ConvertDate(utcDate) {
+    var monthNames = ["Jan", "Feb", "Mar", "Apr", "May", "Jun",
+        "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+    var now = new Date(utcDate + ' UTC');
+    var then = '';
+    if (utcDate == '0001-01-01 00:00:00')
+        then = '01-01-0001';
+    else
+        then = ('0' + now.getDate().toLocaleString('en-US', { minimumIntegerDigits: 2, useGrouping: false })).slice(-2) + '-' + monthNames[now.getMonth()] + '-' + now.getFullYear();
+    var hours = now.getHours();
+    var minutes = now.getMinutes();
+    var ampm = hours >= 12 ? 'PM' : 'AM';
+    hours = hours % 12;
+    hours = hours ? hours : 12; // the hour '0' should be '12'
+    minutes = minutes < 10 ? '0' + minutes : minutes;
+    var strTime = ('0' + hours).slice(-2) + ':' + minutes + ' ' + ampm;
+    if (utcDate != '0001-01-01 00:00:00')
+        then += ' ' + strTime;
+    return then;
+}
 function funRetryForEfaxManagement(e) {
     { sessionStorage.setItem('StartLoading', 'true'); StartLoadFromPatChart(); }
     $.ajax({
@@ -336,8 +367,8 @@ function clearAll() {
     document.getElementById("txtPatientName").value = "";
     document.getElementById("imgClearPatientNameText").click();
 
-    document.getElementById("dtFaxSentDateFrom").value = ""
-    document.getElementById("dtFaxSentDateTo").value = ""
+    $("#dtFaxSentDateFrom").val(beforedate);
+    $("#dtFaxSentDateTo").val(todayDate);
 
     document.getElementById("cboFaxStatus").selectedIndex = 0;
     $("#divEFAXManagement")[0].innerHTML = "";
@@ -357,11 +388,13 @@ function ExportToExcel() {
         //Create header
         var tabelHeading = document.createElement("thead").appendChild(document.createElement("tr"));
         rawtableHeading.each(function (iteam) {
-            var d = document.createElement("b");
-            d.innerText = $(this)[0].innerHTML;
-            var th = document.createElement("td");
-            th.appendChild(d);
-            tabelHeading.appendChild(th);
+            if ($(this)[0].innerHTML.indexOf("View") == -1 && $(this)[0].innerHTML.indexOf("Retry") == -1) {
+                var d = document.createElement("b");
+                d.innerText = $(this)[0].innerHTML;
+                var th = document.createElement("td");
+                th.appendChild(d);
+                tabelHeading.appendChild(th);
+            }
         });
 
 
@@ -381,9 +414,35 @@ function ExportToExcel() {
         var searchparametertabel = document.createElement("table");
         var searchparameterdatebody = document.createElement("tbody");
 
+
+        var reportheadingtr = document.createElement("tr");
+        var reportheadingtd1 = document.createElement("td");
+        reportheadingtr.appendChild(reportheadingtd1);
+        var reportheadingtd2 = document.createElement("td");
+        reportheadingtr.appendChild(reportheadingtd2);
+        var reportheadingtd3 = document.createElement("td");
+        reportheadingtr.appendChild(reportheadingtd3);
+        var reportheadingtd4 = document.createElement("td");
+        reportheadingtr.appendChild(reportheadingtd4);
+        var reportheadingtd5 = document.createElement("td");
+        reportheadingtr.appendChild(reportheadingtd5);
+        var reportheadingtd6 = document.createElement("td");
+        reportheadingtr.appendChild(reportheadingtd6);
+        var reportheadingtd7 = document.createElement("td");
+        reportheadingtr.appendChild(reportheadingtd7);
+        var reportheadingtd8 = document.createElement("td");
+        reportheadingtr.appendChild(reportheadingtd8);
+        var reportheadingtd9 = document.createElement("td");
+        reportheadingtd9.innerHTML = "<b>E-FAX</b>";
+        reportheadingtr.appendChild(reportheadingtd9);
+        searchparameterdatebody.appendChild(reportheadingtr);
+
+        var emptyrow = document.createElement("tr");
+        searchparameterdatebody.appendChild(emptyrow);
+
         var r1 = document.createElement("tr");
         var d1 = document.createElement("td");
-        d1.innerHTML = "<b>Fax Status</b>";
+        d1.innerHTML = "<b>Fax Status:</b>";
         r1.appendChild(d1);
         var d2 = document.createElement("td");
         d2.innerHTML = document.getElementById("cboFaxStatus").value;
@@ -392,7 +451,7 @@ function ExportToExcel() {
 
         
         var d3 = document.createElement("td");
-        d3.innerHTML = "<b>FAX Sent Date (From)</b>";
+        d3.innerHTML = "<b>FAX Sent Date (From):</b>";
         r1.appendChild(d3);
         var d4 = document.createElement("td");
         d4.innerHTML = document.getElementById("dtFaxSentDateFrom").value;
@@ -400,7 +459,7 @@ function ExportToExcel() {
         searchparameterdatebody.appendChild(r1);
 
         var d5 = document.createElement("td");
-        d5.innerHTML = "<b>FAX Sent Date (To)</b>";
+        d5.innerHTML = "<b>FAX Sent Date (To):</b>";
         r1.appendChild(d5);
         var d6 = document.createElement("td");
         d6.innerHTML = document.getElementById("dtFaxSentDateTo").value;
@@ -409,7 +468,7 @@ function ExportToExcel() {
 
         var r2 = document.createElement("tr");
         var r2d1 = document.createElement("td");
-        r2d1.innerHTML = "<b>Recipient Name</b>";
+        r2d1.innerHTML = "<b>Recipient Name:</b>";
         r2.appendChild(r2d1);
         var r2d2 = document.createElement("td");
         r2d2.innerHTML = document.getElementById("txtRecipientName").value;
@@ -417,7 +476,7 @@ function ExportToExcel() {
         searchparameterdatebody.appendChild(r2);
 
         var r2d3 = document.createElement("td");
-        r2d3.innerHTML = "<b>FAX Sender Name</b>";
+        r2d3.innerHTML = "<b>FAX Sender Name:</b>";
         r2.appendChild(r2d3);
         var r2d4 = document.createElement("td");
         r2d4.innerHTML = document.getElementById("txtFaxSenderName").value;
@@ -426,7 +485,7 @@ function ExportToExcel() {
 
         var r3 = document.createElement("tr");
         var r3d1 = document.createElement("td");
-        r3d1.innerHTML = "<b>Patient Name</b>";
+        r3d1.innerHTML = "<b>Patient Name:</b>";
         r3.appendChild(r3d1);
         var r3d2 = document.createElement("td");
         r3d2.innerHTML = (document?.getElementById("txtPatientName")?.getAttribute("data-human-details") != undefined
@@ -434,9 +493,6 @@ function ExportToExcel() {
             ? JSON.parse(document.getElementById("txtPatientName").getAttribute("data-human-details")).PatientName : "";
         r3.appendChild(r3d2);
         searchparameterdatebody.appendChild(r3);
-
-        var r4 = document.createElement("tr");
-        searchparameterdatebody.appendChild(r4);
 
         searchparametertabel.appendChild(searchparameterdatebody);
 
@@ -447,7 +503,12 @@ function ExportToExcel() {
 
         var nowdate = new Date();
         $(divtag).table2excel({
-            filename: "EFax_Search_Report_" + nowdate.getDate() + nowdate.getMonth() + nowdate.getFullYear() + " " + nowdate.getHours() + " " + nowdate.getMinutes() + " " + nowdate.getSeconds() + " " + nowdate.getTimezone() + ".xls",
+            filename: "EFax_Search_Report_" + nowdate.getFullYear() + nowdate.getMonth() + 1
+                + nowdate.getDate().toLocaleString('en-US', { minimumIntegerDigits: 2, useGrouping: false }) + " "
+                + nowdate.getHours().toLocaleString('en-US', { minimumIntegerDigits: 2, useGrouping: false }) + " "
+                + nowdate.getMinutes().toLocaleString('en-US', { minimumIntegerDigits: 2, useGrouping: false }) + " "
+                + nowdate.getSeconds().toLocaleString('en-US', { minimumIntegerDigits: 2, useGrouping: false }) + " "
+                + nowdate.toLocaleString('en-US', { hour: 'numeric', hour12: true }).split(" ")[1] + ".xls",
             preserveColors: true
         });
 
