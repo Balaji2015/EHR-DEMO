@@ -613,7 +613,8 @@ function btnClose_Clicked(sender, args) {
                     window.parent.parent.parent.parent.theForm.ctl00_C5POBody_hdnIsSaveEnable.value = "false";
                     $(dvdialog).dialog("close");
                     self.close();
-                    if (window.parent.parent.location.href.indexOf('Encounter') < 0) {
+                    //CAP-2407
+                    if (window.parent.parent.location.href.indexOf('Encounter') < 0 || window.parent.parent.location.href.indexOf('PhoneEncounter') > 0) {
                         return false;
                     }
                     else {
@@ -635,7 +636,8 @@ function btnClose_Clicked(sender, args) {
         }
         sessionStorage.setItem("AutoSave_OrderMenu", "false");
         self.close();
-        if (window.parent.parent.location.href.indexOf('Encounter') < 0) {
+      //CAP-2407
+      if (window.parent.parent.location.href.indexOf('Encounter') < 0 || window.parent.parent.location.href.indexOf('PhoneEncounter') > 0) {
             return false;
         }
         else {
