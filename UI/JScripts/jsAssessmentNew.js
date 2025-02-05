@@ -2400,8 +2400,10 @@ myapp.controller('assessmentCtrl', function ($scope, $http) {
         }
 
         if (bcolorcoding) {
-            localStorage.setItem("Assauto", "N");
-            if (!DisplayErrorMessage('220016')) {
+            //CAP-2431 & CAP-2873
+            var data1 = DisplayErrorMessage('220016');
+            if (data1 == false) {
+                localStorage.setItem("Assauto", "N");
                 //CAP-2230
                 { sessionStorage.setItem('StartLoading', 'false'); StopLoadFromPatChart(); }
                 AutoSaveUnsuccessful();
