@@ -209,6 +209,8 @@ function btnClearAll_Clicked(sender, args) {
 
 function RefreshImmunization() {
     document.getElementById("btnRefreshImm_proce").click();
+    //CAP-2930
+    disableAutoSave();
 }
 
 function GetRadWindow() {
