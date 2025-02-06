@@ -2402,12 +2402,17 @@ myapp.controller('assessmentCtrl', function ($scope, $http) {
         if (bcolorcoding) {
             //CAP-2431 & CAP-2873
             var data1 = DisplayErrorMessage('220016');
-            if (data1 == false) {
-                localStorage.setItem("Assauto", "N");
+            if (!data1) {
                 //CAP-2230
                 { sessionStorage.setItem('StartLoading', 'false'); StopLoadFromPatChart(); }
+                localStorage.setItem("Assauto", "N");
                 AutoSaveUnsuccessful();
                 return "false";
+            } else if (data1 == true) {
+                { sessionStorage.setItem('StartLoading', 'false'); StopLoadFromPatChart(); }
+                localStorage.setItem("bSave", "true");
+                window.parent.parent.parent.parent.theForm.ctl00_C5POBody_hdnIsSaveEnable.value = "false";
+                localStorage.setItem("Assauto", "Y");
             }
         }
 
@@ -2464,7 +2469,7 @@ myapp.controller('assessmentCtrl', function ($scope, $http) {
 
             DeleteArray = [];
             DisplayErrorMessage('220005');
-
+            sessionStorage.setItem("EncCancel", false);
             AutoSaveSuccessful();
             $scope.SaveEnableDisable(true);
             DisableChartLevelAutoSave();//BugID:52795
