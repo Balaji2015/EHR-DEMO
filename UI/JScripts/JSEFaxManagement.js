@@ -27,6 +27,7 @@ $(document).ready(function () {
     
 });
 function SetTabelHeader() {
+    { sessionStorage.setItem('StartLoading', 'true'); StartLoadFromPatChart(); }
     window.setTimeout(function () {
         $("#divEFAXManagement")[0].innerHTML = "";
         $("#divEFAXManagement").append("<table id='EFaxManagementTable' class='table table-bordered Gridbodystyle' style='table-layout: fixed;'><thead class='header' style='border: 0px;'><tr class='header'><th style='border: 1px solid #909090;text-align: center;width: 15%;'>Encounter ID</th><th style='border: 1px solid #909090;text-align: center;width: 10%;'>Patient Acc#</th><th style='border: 1px solid #909090;text-align: center;width: 11%;'>Patient Name</th><th style='border: 1px solid #909090;text-align: center;width: 18%;'> Sender Name</th><th style='border: 1px solid #909090;text-align: center;width: 13%;'> Sender Facility</th><th style='border: 1px solid #909090;text-align: center;width: 15%;'>Sender Fax #</th><th style='border: 1px solid #909090;text-align: center;width: 17%;'>Recipient Name</th><th style='border: 1px solid #909090;text-align: center;width: 9%;'>Recipient Fax #</th><th style='border: 1px solid #909090;text-align: center;width: 15%;'>Subject</th><th style='border: 1px solid #909090;text-align: center;width: 10%;'> Status</th><th style='border: 1px solid #909090;text-align: center;width: 11%;'>Reason</th><th style='border: 1px solid #909090;text-align: center;width: 18%;'> Sent Date</th><th style='border: 1px solid #909090;text-align: center;width: 13%;'> Sent By</th><th style='border: 1px solid #909090;text-align: center;width: 7%;'>View</th><th style='border: 1px solid #909090;text-align: center;width: 7%;'>Retry</th></tr></thead><tbody style='word-wrap: break-word;'/></table>");
@@ -49,6 +50,7 @@ function SetTabelHeader() {
             dom: '<"top"ipf>rt<"bottom"l><"clear">',
             initComplete: function (settings, data, json) {
                 $("#EFaxManagementTable_filter input")[0].classList.add('searchicon');
+                { sessionStorage.setItem('StartLoading', 'false'); StopLoadFromPatChart(); }
             }
         });
     }, 1000);
@@ -431,18 +433,8 @@ function ExportToExcel() {
         var reportheadingtd3 = document.createElement("td");
         reportheadingtr.appendChild(reportheadingtd3);
         var reportheadingtd4 = document.createElement("td");
+        reportheadingtd4.innerHTML = "<b>E-FAX</b>";
         reportheadingtr.appendChild(reportheadingtd4);
-        var reportheadingtd5 = document.createElement("td");
-        reportheadingtr.appendChild(reportheadingtd5);
-        var reportheadingtd6 = document.createElement("td");
-        reportheadingtr.appendChild(reportheadingtd6);
-        var reportheadingtd7 = document.createElement("td");
-        reportheadingtr.appendChild(reportheadingtd7);
-        var reportheadingtd8 = document.createElement("td");
-        reportheadingtr.appendChild(reportheadingtd8);
-        var reportheadingtd9 = document.createElement("td");
-        reportheadingtd9.innerHTML = "<b>E-FAX</b>";
-        reportheadingtr.appendChild(reportheadingtd9);
         searchparameterdatebody.appendChild(reportheadingtr);
 
         var emptyrow = document.createElement("tr");
@@ -479,7 +471,10 @@ function ExportToExcel() {
         r2d1.innerHTML = "<b>Recipient Name:</b>";
         r2.appendChild(r2d1);
         var r2d2 = document.createElement("td");
-        r2d2.innerHTML = document.getElementById("txtRecipientName").value;
+        r2d2.innerHTML = (document?.getElementById("txtRecipientName")?.getAttribute("data-phy-details") != undefined
+            && document?.getElementById("txtRecipientName")?.getAttribute("data-phy-details") != "")
+            ? JSON.parse(document.getElementById("txtRecipientName").getAttribute("data-phy-details")).sPhyName : "";
+
         r2.appendChild(r2d2);
         searchparameterdatebody.appendChild(r2);
 
@@ -729,7 +724,7 @@ function SetAutoSearchRecipientName() {
     //    }
     //});
     //}OldCode End
-
+    $("#txtRecipientName").attr({ "data-phy-id": "0", "data-phy-details": "", "data-category": "" });
     $('#txtRecipientName').keydown(
         function (event) {
             if (event.which == '13') {

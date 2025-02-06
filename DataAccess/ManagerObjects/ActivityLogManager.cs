@@ -259,15 +259,18 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
                     query = query + "and a.Human_ID = '" + uHumanID + "'";
                 }
 
-                if (sRecipiantName != "" && sRecipiantName.Split(',').Length <= 1)
+                //if (sRecipiantName != "" && sRecipiantName.Split(',').Length <= 1)
+                //{
+                //    query = query + "and a.Fax_Recipient_Name like'%" + sRecipiantName.Split(',')[0] + "%'";
+                //}
+                //if (sRecipiantName != "" && sRecipiantName.Split(',').Length > 1)
+                //{
+                //    query = query + "and a.Fax_Recipient_Name like'%" + sRecipiantName.Split(',')[0] + "%' and a.Fax_Recipient_Name like'%" + sRecipiantName.Split(',')[1].Replace(".", "") + "%'";
+                //}
+                if (sRecipiantName != "")
                 {
-                    query = query + "and a.Fax_Recipient_Name like'%" + sRecipiantName.Split(',')[0] + "%'";
+                    query = query + "and a.Fax_Recipient_Name = '" + sRecipiantName + "'";
                 }
-                if (sRecipiantName != "" && sRecipiantName.Split(',').Length > 1)
-                {
-                    query = query + "and a.Fax_Recipient_Name like'%" + sRecipiantName.Split(',')[0] + "%' and a.Fax_Recipient_Name like'%" + sRecipiantName.Split(',')[1].Replace(".", "") + "%'";
-                }
-
                 //SenderName
                 if (sSenderName != "" && sSenderName.Split(',').Length <= 1)
                 {

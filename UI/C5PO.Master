@@ -2093,7 +2093,7 @@
                         <h3 class="modal-title" style="font-family: sans-serif; font-weight: bold; font-size: medium" id="TabModalEFaxManagementTitle"></h3>
                     </div>
                     <div class="modal-body" style="width: 100%; margin-top: -10px; padding-top: 0px;padding: 10px !important;">
-                        <iframe style="width: 100%; border: none;height:620px;" id="TabEFaxManagementFrame"></iframe>
+                        <iframe style="width: 100%; border: none;height:635px;" id="TabEFaxManagementFrame"></iframe>
                     </div>
                 </div>
             </div>

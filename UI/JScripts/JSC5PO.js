@@ -816,7 +816,7 @@ function OpenModal(data) {
         $(top.window.document).find("#TabmdldlgEFaxManagement")[0].style.marginLeft = "";
         var sPath = ""
         sPath = "HtmlEFaxManagement.html?version=" + sessionStorage.getItem("ScriptVersion");
-        $(top.window.document).find("#TabEFaxManagementFrame")[0].style.height = "620px";
+        $(top.window.document).find("#TabEFaxManagementFrame")[0].style.height = "635px";
         $(top.window.document).find("#TabEFaxManagementFrame")[0].contentDocument.location.href = sPath;
         $(top.window.document).find("#TabFaxManagement").one("hidden.bs.modal", function (e) {
         });
