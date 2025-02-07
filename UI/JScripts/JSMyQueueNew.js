@@ -5776,12 +5776,14 @@ function Decompress(data) {
 
 function SetHeightForTabelBasedOnScreenSize() {
     window.setTimeout(function () {
-        var MaxHeightTable = (document.getElementById("launcher").getBoundingClientRect().top - document.getElementsByClassName("dataTables_scrollBody")[0].getBoundingClientRect().top)
-            + (document.getElementById("launcher").getBoundingClientRect().height - 10);
-        if (MaxHeightTable != undefined) {
-            if ($(".dataTables_scrollBody")?.css("max-height") != undefined
-                && parseInt($(".dataTables_scrollBody").css("max-height")) < MaxHeightTable) {
-                $(".dataTables_scrollBody").css({ "max-height": MaxHeightTable + "px" });
+        if (document?.getElementById("launcher")?.getBoundingClientRect()?.top != undefined && document?.getElementsByClassName("dataTables_scrollBody")[0]?.getBoundingClientRect()?.top != undefined) {
+            var MaxHeightTable = (document.getElementById("launcher").getBoundingClientRect().top - document.getElementsByClassName("dataTables_scrollBody")[0].getBoundingClientRect().top)
+                + (document.getElementById("launcher").getBoundingClientRect().height - 10);
+            if (MaxHeightTable != undefined) {
+                if ($(".dataTables_scrollBody")?.css("max-height") != undefined
+                    && parseInt($(".dataTables_scrollBody").css("max-height")) < MaxHeightTable) {
+                    $(".dataTables_scrollBody").css({ "max-height": MaxHeightTable + "px" });
+                }
             }
         }
     }, 1000);
