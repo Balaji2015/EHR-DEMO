@@ -91,13 +91,13 @@ $(document).ready(function () {
     var dateParams = (localTimeParams?.value ?? "") + "|" + (localDateParams?.value ?? "") + "|" + (universaloffsetParams?.value ?? "") + "|" + (localDateAndTimeParams?.value ?? "") + "|" + (dayLightSavingsParams?.value??"false");
     if (sharedSessionUrl?.value ?? "" != "") {
             //CAP-2921
-            var iframe = window.document.createElement("iframe");
-            iframe.src = sharedSessionUrl.value + "" + btoa(((stateParams?.value ?? "") + "" + dateParams));
-            iframe.style.display = "none"; 
-            window.document.body.appendChild(iframe);
-            console.log("✅ Iframe added:", iframe);
+            //var iframe = window.document.createElement("iframe");
+            //iframe.src = sharedSessionUrl.value + "" + btoa(((stateParams?.value ?? "") + "" + dateParams));
+            //iframe.style.display = "none"; 
+            //window.document.body.appendChild(iframe);
+            //console.log("✅ Iframe added:", iframe);
 
-            //location.href = sharedSessionUrl.value + "" + btoa(((stateParams?.value ?? "") + "" + dateParams));
+            location.href = sharedSessionUrl.value + "" + btoa(((stateParams?.value ?? "") + "" + dateParams));
     }
 });
 
