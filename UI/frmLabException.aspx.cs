@@ -129,6 +129,8 @@ namespace Acurus.Capella.UI
                 int count = 0;
                 cboLabName.Items.Add(new RadComboBoxItem(""));
                 cboLabName.Items[count].Value = "0";
+                //CAP-2923
+                count++;
                 if (listLabList != null && listLabList.Count > 0)
                 {
                     foreach (Labs objlab in listLabList)

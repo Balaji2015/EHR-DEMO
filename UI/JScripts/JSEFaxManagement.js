@@ -5,11 +5,11 @@ var arrPatient = [];
 var getDate = new Date();
 var beforeOneMonthFromCurrentDate = new Date();
 beforeOneMonthFromCurrentDate.setMonth(beforeOneMonthFromCurrentDate.getMonth() - 1);
-var beforedate = beforeOneMonthFromCurrentDate.getFullYear() + "-" + beforeOneMonthFromCurrentDate.toLocaleString('default', { month: 'short' })
-    + "-" + beforeOneMonthFromCurrentDate.getDate().toLocaleString('en-US', { minimumIntegerDigits: 2, useGrouping: false });
+var beforedate = beforeOneMonthFromCurrentDate.getDate().toLocaleString('en-US', { minimumIntegerDigits: 2, useGrouping: false }) + "-" + beforeOneMonthFromCurrentDate.toLocaleString('default', { month: 'short' })
+    + "-" + beforeOneMonthFromCurrentDate.getFullYear();
 
-var todayDate = getDate.getFullYear() + "-" + getDate.toLocaleString('default', { month: 'short' })
-    + "-" + getDate.getDate().toLocaleString('en-US', { minimumIntegerDigits: 2, useGrouping: false });
+var todayDate = getDate.getDate().toLocaleString('en-US', { minimumIntegerDigits: 2, useGrouping: false }) + "-" + getDate.toLocaleString('default', { month: 'short' })
+    + "-" + getDate.getFullYear();
 
 $(document).ready(function () {
     SetAutoSearchRecipientName();
@@ -18,8 +18,8 @@ $(document).ready(function () {
     
     $("#dtFaxSentDateFrom").val(beforedate);
     $("#dtFaxSentDateTo").val(todayDate);
-    $("#dtFaxSentDateFrom").datetimepicker({closeOnDateSelect: true, timepicker: false, format: 'Y-M-d', maxDate: 0 });
-    $("#dtFaxSentDateTo").datetimepicker({ closeOnDateSelect: true, timepicker: false, format: 'Y-M-d', maxDate: 0 });
+    $("#dtFaxSentDateFrom").datetimepicker({closeOnDateSelect: true, timepicker: false, format: 'd-M-Y', maxDate: 0 });
+    $("#dtFaxSentDateTo").datetimepicker({ closeOnDateSelect: true, timepicker: false, format: 'd-M-Y', maxDate: 0 });
     var currentdate = new Date();
     var datetime = currentdate.getFullYear() + "-" + String((currentdate.getMonth() + 1)).padStart(2, '0') + "-" + String(currentdate.getDate()).padStart(2, '0');
     document.getElementById("dtFaxSentDateFrom").setAttribute("max", datetime);
@@ -30,12 +30,12 @@ function SetTabelHeader() {
     { sessionStorage.setItem('StartLoading', 'true'); StartLoadFromPatChart(); }
     window.setTimeout(function () {
         $("#divEFAXManagement")[0].innerHTML = "";
-        $("#divEFAXManagement").append("<table id='EFaxManagementTable' class='table table-bordered Gridbodystyle' style='table-layout: fixed;'><thead class='header' style='border: 0px;'><tr class='header'><th style='border: 1px solid #909090;text-align: center;width: 15%;'>Encounter ID</th><th style='border: 1px solid #909090;text-align: center;width: 10%;'>Patient Acc#</th><th style='border: 1px solid #909090;text-align: center;width: 11%;'>Patient Name</th><th style='border: 1px solid #909090;text-align: center;width: 18%;'> Sender Name</th><th style='border: 1px solid #909090;text-align: center;width: 13%;'> Sender Facility</th><th style='border: 1px solid #909090;text-align: center;width: 15%;'>Sender Fax #</th><th style='border: 1px solid #909090;text-align: center;width: 17%;'>Recipient Name</th><th style='border: 1px solid #909090;text-align: center;width: 9%;'>Recipient Fax #</th><th style='border: 1px solid #909090;text-align: center;width: 15%;'>Subject</th><th style='border: 1px solid #909090;text-align: center;width: 10%;'> Status</th><th style='border: 1px solid #909090;text-align: center;width: 11%;'>Reason</th><th style='border: 1px solid #909090;text-align: center;width: 18%;'> Sent Date</th><th style='border: 1px solid #909090;text-align: center;width: 13%;'> Sent By</th><th style='border: 1px solid #909090;text-align: center;width: 7%;'>View</th><th style='border: 1px solid #909090;text-align: center;width: 7%;'>Retry</th></tr></thead><tbody style='word-wrap: break-word;'/></table>");
+        $("#divEFAXManagement").append("<table id='EFaxManagementTable' class='table table-bordered Gridbodystyle' style='table-layout: fixed;'><thead class='header' style='border: 0px;'><tr class='header'><th style='border: 1px solid #909090;text-align: center;width: 15%;'>Encounter ID</th><th style='border: 1px solid #909090;text-align: center;width: 10%;'>Patient Acct #</th><th style='border: 1px solid #909090;text-align: center;width: 11%;'>Patient Name</th><th style='border: 1px solid #909090;text-align: center;width: 18%;'> Sender Name</th><th style='border: 1px solid #909090;text-align: center;width: 13%;'> Sender Facility</th><th style='border: 1px solid #909090;text-align: center;width: 15%;'>Sender Fax #</th><th style='border: 1px solid #909090;text-align: center;width: 17%;'>Recipient Name</th><th style='border: 1px solid #909090;text-align: center;width: 9%;'>Recipient Fax #</th><th style='border: 1px solid #909090;text-align: center;width: 15%;'>Subject</th><th style='border: 1px solid #909090;text-align: center;width: 10%;'> Status</th><th style='border: 1px solid #909090;text-align: center;width: 11%;'>Reason</th><th style='border: 1px solid #909090;text-align: center;width: 18%;'> Sent Date</th><th style='border: 1px solid #909090;text-align: center;width: 13%;'> Sent By</th><th style='border: 1px solid #909090;text-align: center;width: 7%;'>View</th><th style='border: 1px solid #909090;text-align: center;width: 7%;'>Retry</th></tr></thead><tbody style='word-wrap: break-word;'/></table>");
         var datatable = new DataTable('#EFaxManagementTable', {
             serverSide: false,
             lengthChange: false,
             scrollCollapse: true,
-            scrollY: '243px',
+            scrollY: '270px',
             searching: true,
             processing: false,
             ordering: true,
@@ -155,12 +155,12 @@ function EFaxManagementload() {
     var FromDate = document.getElementById("dtFaxSentDateFrom").value;
     var ToDate = document.getElementById("dtFaxSentDateTo").value;
 
-    $("#divEFAXManagement").append("<table id='EFaxManagementTable' class='table table-bordered Gridbodystyle' style='table-layout: fixed;'><thead class='header' style='border: 0px;'><tr class='header'><th style='border: 1px solid #909090;text-align: center;width: 15%;'>Encounter ID</th><th style='border: 1px solid #909090;text-align: center;width: 10%;'>Patient Acc#</th><th style='border: 1px solid #909090;text-align: center;width: 11%;'>Patient Name</th><th style='border: 1px solid #909090;text-align: center;width: 18%;'> Sender Name</th><th style='border: 1px solid #909090;text-align: center;width: 13%;'> Sender Facility</th><th style='border: 1px solid #909090;text-align: center;width: 15%;'>Sender Fax #</th><th style='border: 1px solid #909090;text-align: center;width: 17%;'>Recipient Name</th><th style='border: 1px solid #909090;text-align: center;width: 9%;'>Recipient Fax #</th><th style='border: 1px solid #909090;text-align: center;width: 15%;'>Subject</th><th style='border: 1px solid #909090;text-align: center;width: 10%;'> Status</th><th style='border: 1px solid #909090;text-align: center;width: 11%;'>Reason</th><th style='border: 1px solid #909090;text-align: center;width: 18%;'> Sent Date</th><th style='border: 1px solid #909090;text-align: center;width: 13%;'> Sent By</th><th style='border: 1px solid #909090;text-align: center;width: 7%;'>View</th><th style='border: 1px solid #909090;text-align: center;width: 7%;'>Retry</th></tr></thead><tbody style='word-wrap: break-word;'/></table>");
+    $("#divEFAXManagement").append("<table id='EFaxManagementTable' class='table table-bordered Gridbodystyle' style='table-layout: fixed;'><thead class='header' style='border: 0px;'><tr class='header'><th style='border: 1px solid #909090;text-align: center;width: 15%;'>Encounter ID</th><th style='border: 1px solid #909090;text-align: center;width: 10%;'>Patient Acct #</th><th style='border: 1px solid #909090;text-align: center;width: 11%;'>Patient Name</th><th style='border: 1px solid #909090;text-align: center;width: 18%;'> Sender Name</th><th style='border: 1px solid #909090;text-align: center;width: 13%;'> Sender Facility</th><th style='border: 1px solid #909090;text-align: center;width: 15%;'>Sender Fax #</th><th style='border: 1px solid #909090;text-align: center;width: 17%;'>Recipient Name</th><th style='border: 1px solid #909090;text-align: center;width: 9%;'>Recipient Fax #</th><th style='border: 1px solid #909090;text-align: center;width: 15%;'>Subject</th><th style='border: 1px solid #909090;text-align: center;width: 10%;'> Status</th><th style='border: 1px solid #909090;text-align: center;width: 11%;'>Reason</th><th style='border: 1px solid #909090;text-align: center;width: 18%;'> Sent Date</th><th style='border: 1px solid #909090;text-align: center;width: 13%;'> Sent By</th><th style='border: 1px solid #909090;text-align: center;width: 7%;'>View</th><th style='border: 1px solid #909090;text-align: center;width: 7%;'>Retry</th></tr></thead><tbody style='word-wrap: break-word;'/></table>");
     var datatable = new DataTable('#EFaxManagementTable', {
         serverSide: false,
         lengthChange: false,
         scrollCollapse: true,
-        scrollY: '243px',
+        scrollY: '270px',
         searching: true,
         processing: false,
         ordering: true,

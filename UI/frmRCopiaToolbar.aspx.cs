@@ -734,56 +734,77 @@ namespace Acurus.Capella.UI
             IList<object> ilstHumanBlobFinal = new List<object>();
             ilstHumanBlobFinal = UtilityManager.ReadBlob(ClientSession.HumanId, ilstPatientSummaryBarTagHumanList);
 
+            //CAP-2906
             if (ilstHumanBlobFinal != null && ilstHumanBlobFinal.Count > 0)
             {
-                if (ilstHumanBlobFinal[0] != null)
+                //if (ilstHumanBlobFinal[0] != null)
+                if (ilstHumanBlobFinal[0] != null && ((IList<object>)ilstHumanBlobFinal[0]).Count > 0)
                 {
-                    for (int iCount = 0; iCount < ((IList<object>)ilstHumanBlobFinal[0]).Count; iCount++)
+                    if ((((IList<object>)ilstHumanBlobFinal[0])[0]) != null && (((IList<object>)ilstHumanBlobFinal[0])[0]).GetType().Name == "ProblemList")
                     {
-                        objFillPatientChart.PblmMedList.Add((ProblemList)((IList<object>)ilstHumanBlobFinal[0])[iCount]);
-                    }
-                }
-
-                if (ilstHumanBlobFinal[1] != null)
-                {
-                    for (int iCount = 0; iCount < ((IList<object>)ilstHumanBlobFinal[1]).Count; iCount++)
-                    {
-                        if (((PatientResults)((IList<object>)ilstHumanBlobFinal[1])[iCount]).Encounter_ID == ClientSession.EncounterId && ((PatientResults)((IList<object>)ilstHumanBlobFinal[1])[iCount]).Results_Type == "Vitals")
+                        for (int iCount = 0; iCount < ((IList<object>)ilstHumanBlobFinal[0]).Count; iCount++)
                         {
-                            objFillPatientChart.VitalsList.Add((PatientResults)((IList<object>)ilstHumanBlobFinal[1])[iCount]);
+                            objFillPatientChart.PblmMedList.Add((ProblemList)((IList<object>)ilstHumanBlobFinal[0])[iCount]);
                         }
                     }
                 }
 
-                if (ilstHumanBlobFinal[2] != null)
+                //if (ilstHumanBlobFinal[1] != null)
+                if (ilstHumanBlobFinal[1] != null && ((IList<object>)ilstHumanBlobFinal[1]).Count > 0)
                 {
-                    for (int iCount = 0; iCount < ((IList<object>)ilstHumanBlobFinal[2]).Count; iCount++)
+                    if ((((IList<object>)ilstHumanBlobFinal[1])[0]) != null && (((IList<object>)ilstHumanBlobFinal[1])[0]).GetType().Name == "PatientResults")
                     {
-                        if (((Rcopia_Medication)((IList<object>)ilstHumanBlobFinal[2])[iCount]).Human_ID == ClientSession.HumanId && ((Rcopia_Medication)((IList<object>)ilstHumanBlobFinal[2])[iCount]).Deleted == "N")
+                        for (int iCount = 0; iCount < ((IList<object>)ilstHumanBlobFinal[1]).Count; iCount++)
                         {
-                            objFillPatientChart.MedicationList.Add((Rcopia_Medication)((IList<object>)ilstHumanBlobFinal[2])[iCount]);
+                            if (((PatientResults)((IList<object>)ilstHumanBlobFinal[1])[iCount]).Encounter_ID == ClientSession.EncounterId && ((PatientResults)((IList<object>)ilstHumanBlobFinal[1])[iCount]).Results_Type == "Vitals")
+                            {
+                                objFillPatientChart.VitalsList.Add((PatientResults)((IList<object>)ilstHumanBlobFinal[1])[iCount]);
+                            }
                         }
                     }
                 }
 
-                if (ilstHumanBlobFinal[3] != null)
+                //if (ilstHumanBlobFinal[2] != null)
+                if (ilstHumanBlobFinal[2] != null && ((IList<object>)ilstHumanBlobFinal[2]).Count > 0)
                 {
-                    for (int iCount = 0; iCount < ((IList<object>)ilstHumanBlobFinal[3]).Count; iCount++)
+                    if ((((IList<object>)ilstHumanBlobFinal[2])[0]) != null && ((IList<object>)ilstHumanBlobFinal[2]).Count > 0 && (((IList<object>)ilstHumanBlobFinal[2])[0]).GetType().Name == "Rcopia_Medication")
                     {
-                        if (((Rcopia_Allergy)((IList<object>)ilstHumanBlobFinal[3])[iCount]).Human_ID == ClientSession.HumanId && ((Rcopia_Allergy)((IList<object>)ilstHumanBlobFinal[3])[iCount]).Deleted == "N")
+                        for (int iCount = 0; iCount < ((IList<object>)ilstHumanBlobFinal[2]).Count; iCount++)
                         {
-                            objFillPatientChart.AllergyList.Add((Rcopia_Allergy)((IList<object>)ilstHumanBlobFinal[3])[iCount]);
+                            if (((Rcopia_Medication)((IList<object>)ilstHumanBlobFinal[2])[iCount]).Human_ID == ClientSession.HumanId && ((Rcopia_Medication)((IList<object>)ilstHumanBlobFinal[2])[iCount]).Deleted == "N")
+                            {
+                                objFillPatientChart.MedicationList.Add((Rcopia_Medication)((IList<object>)ilstHumanBlobFinal[2])[iCount]);
+                            }
                         }
                     }
                 }
 
-                if (ilstHumanBlobFinal[4] != null)
+                //if (ilstHumanBlobFinal[3] != null)
+                if (ilstHumanBlobFinal[3] != null && ((IList<object>)ilstHumanBlobFinal[3]).Count > 0)
                 {
-                    for (int iCount = 0; iCount < ((IList<object>)ilstHumanBlobFinal[4]).Count; iCount++)
+                    if ((((IList<object>)ilstHumanBlobFinal[3])[0]) != null && (((IList<object>)ilstHumanBlobFinal[3])[0]).GetType().Name == "Rcopia_Allergy")
                     {
-                        if (((NonDrugAllergy)((IList<object>)ilstHumanBlobFinal[4])[iCount]).Is_Present == "Y")
+                        for (int iCount = 0; iCount < ((IList<object>)ilstHumanBlobFinal[3]).Count; iCount++)
                         {
-                            objFillPatientChart.NonDrugAllergyList.Add((NonDrugAllergy)((IList<object>)ilstHumanBlobFinal[4])[iCount]);
+                            if (((Rcopia_Allergy)((IList<object>)ilstHumanBlobFinal[3])[iCount]).Human_ID == ClientSession.HumanId && ((Rcopia_Allergy)((IList<object>)ilstHumanBlobFinal[3])[iCount]).Deleted == "N")
+                            {
+                                objFillPatientChart.AllergyList.Add((Rcopia_Allergy)((IList<object>)ilstHumanBlobFinal[3])[iCount]);
+                            }
+                        }
+                    }
+                }
+
+                //if (ilstHumanBlobFinal[4] != null)
+                if (ilstHumanBlobFinal[4] != null && ((IList<object>)ilstHumanBlobFinal[4]).Count > 0)
+                {
+                    if ((((IList<object>)ilstHumanBlobFinal[4])[0]) != null && (((IList<object>)ilstHumanBlobFinal[4])[0]).GetType().Name == "NonDrugAllergy")
+                    {
+                        for (int iCount = 0; iCount < ((IList<object>)ilstHumanBlobFinal[4]).Count; iCount++)
+                        {
+                            if (((NonDrugAllergy)((IList<object>)ilstHumanBlobFinal[4])[iCount]).Is_Present == "Y")
+                            {
+                                objFillPatientChart.NonDrugAllergyList.Add((NonDrugAllergy)((IList<object>)ilstHumanBlobFinal[4])[iCount]);
+                            }
                         }
                     }
 

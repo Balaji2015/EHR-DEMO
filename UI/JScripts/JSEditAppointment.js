@@ -1418,6 +1418,16 @@ function btnClose_Clicked() {
                         '<p style="font-family: Verdana,Arial,sans-serif; font-size: 13.5px;">There are unsaved changes.Do you want to save the them?</p></div>');
                 dvdialog = $($(top.window.document).find("iframe[name='" + winName + "']")[0].contentDocument).find('body').find('#dvdialogMenu');
             }
+            //Jira CAP-2895
+            if ($(top.window.document)?.find("iframe[name='ModalWindow']")[0]?.contentWindow?.document != undefined
+                && $($(top.window.document).find("iframe[name='ModalWindow']")[0].contentWindow.document)?.find("iframe[name='ModalWindowMngt']") != undefined
+                && $($(top.window.document).find("iframe[name='ModalWindow']")[0].contentWindow.document).find("iframe[name='ModalWindowMngt']")[0]?.contentWindow != undefined)
+            {
+                $($($(top.window.document).find("iframe[name='ModalWindow']")[0].contentWindow.document).find("iframe[name='ModalWindowMngt']")[0]?.contentWindow.document).find("body").append('<div id="dvdialogMenu" style="min-height: 65px !important; width: auto; max-height: none; height: auto; display: none;">' +
+                    '<p style="font-family: Verdana,Arial,sans-serif; font-size: 13.5px;">There are unsaved changes.Do you want to save the them?</p></div>');
+                dvdialog = $($($(top.window.document).find("iframe[name='ModalWindow']")[0].contentWindow.document).find("iframe[name='ModalWindowMngt']")[0]?.contentWindow.document).find("body").find('#dvdialogMenu');
+            }
+            //Jira CAP-2895 - End
             else {
                 //Jira #CAP-773 - Check undefind and null to the $(top.window.document).find("iframe")[0]
                 if ($(top.window.document).find("iframe") != undefined && $(top.window.document).find("iframe") != null && $(top.window.document).find("iframe")[0] != undefined && $(top.window.document).find("iframe")[0] != null) {
