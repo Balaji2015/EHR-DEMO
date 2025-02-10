@@ -6444,6 +6444,7 @@ namespace Acurus.Capella.UI
             string bIsAkidoEncounter = "false";
             string IsAkidoNoteURLVersion = System.Configuration.ConfigurationSettings.AppSettings["IsAkidoNoteStatusURLVersion"].ToString();
             string sUri = string.Empty;
+            string AccessToken = string.Empty;
             //Jira CAP-1379
             int iRetryCount = 0;
 
@@ -6458,14 +6459,14 @@ namespace Acurus.Capella.UI
                 if (IsAkidoNoteURLVersion.ToUpper() == "V1")
                 {
                     sUri = System.Configuration.ConfigurationSettings.AppSettings["AkidoNoteStatusURL"].ToString().Replace("[CapellaEncounterID]", sEncounterID);
+                    AccessToken = System.Configuration.ConfigurationSettings.AppSettings["AkidoNoteStatusURLToken"].ToString();
                 }
                 else if (IsAkidoNoteURLVersion.ToUpper() == "V2")
                 {
-                    sUri = System.Configuration.ConfigurationSettings.AppSettings["AkidoNoteStatusURL"].ToString().Replace("[CapellaResourceID]", sEncounterID).Replace("[CapellaResourceType]", "capella_encounter_id");
-                 
+                    sUri = System.Configuration.ConfigurationSettings.AppSettings["AkidoInterpretationNoteStatusURL"].ToString().Replace("[CapellaResourceID]", sEncounterID).Replace("[CapellaResourceType]", "capella_encounter_id");
+                    AccessToken = System.Configuration.ConfigurationSettings.AppSettings["AkidoInterpretationNoteStatusURLToken"].ToString();
                 }
                 var myUri = new Uri(sUri);
-                string AccessToken = System.Configuration.ConfigurationSettings.AppSettings["AkidoNoteStatusURLToken"].ToString();
                 var myWebRequest = WebRequest.Create(myUri);
                 var myHttpWebRequest = (HttpWebRequest)myWebRequest;
                 myHttpWebRequest.PreAuthenticate = true;
