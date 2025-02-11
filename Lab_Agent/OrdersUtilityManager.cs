@@ -12,7 +12,7 @@ using System.Diagnostics;
 using Acurus.Capella.DataAccess.ManagerObjects;
 using Acurus.Capella.DataAccess.QuestResultService;
 using Mapping;
-
+using System.Configuration;
 
 namespace Acurus.Capella.LabAgent
 {
@@ -28,6 +28,13 @@ namespace Acurus.Capella.LabAgent
             //IList<LabSettings> ObjLabsettings = new List<LabSettings>();
             //ObjLabsettings = ObjResulMasterProxy.GetLabcorpSettings(2);
             //QuestProxy ObjQuestProxy = new QuestProxy();
+
+            //CAP-2300
+            if (ConfigurationSettings.AppSettings["IsAkidoOrdersAndResults"].Equals("Y", StringComparison.InvariantCultureIgnoreCase))
+            {
+                MoveAkidoUnsendOrders();
+            }
+
             string ResultURL = string.Empty;
             WFObjectManager WFProxy = new WFObjectManager();
             IList<FillLabAgentDTO> ilstFillLabAgentDTO = new List<FillLabAgentDTO>();
@@ -227,6 +234,73 @@ namespace Acurus.Capella.LabAgent
                     }
                 }
 
+                //CAP-2300
+                #region Send Akido Orders for Quest
+                if (ConfigurationSettings.AppSettings["IsAkidoOrdersAndResults"].Equals("Y", StringComparison.InvariantCultureIgnoreCase))
+                {
+                    string[] questAkidoFiles = Directory.GetFiles(filepathQuest, "Akido*");
+                    foreach (var file in questAkidoFiles)
+                    {
+                        var sAkidoOrderFileName = Path.GetFileName(file);
+                        var sAkidoOrderCheckSend = filepathQuest + "\\Send\\" + sAkidoOrderFileName;
+
+                        //Altova.IO.Output ORM_O01Target1 = new Altova.IO.FileOutput(sAkidoOrderFileName);
+                        //try
+                        //{
+                        //    if (File.Exists(sAkidoOrderCheckSend) == false)
+                        //    {
+                        //        MappingMapToORM_O01_Quest_Object.Run(ConnectionStringForQuest, Altova.CoreTypes.CastToInt((int)0), ORM_O01Target1);
+                        //    }
+                        //}
+                        //catch (Exception e)
+                        //{
+                        //    StringBuilder logmsg = new StringBuilder();
+                        //    logmsg.Append("Error : Quest Diagnostics Date and Time : " + DateTime.Now.ToString() + Environment.NewLine);
+                        //    logmsg.Append("Move to Next Process for file name : " + sAkidoOrderFileName + Environment.NewLine);
+                        //    logmsg.Append("Error Message : " + e.Message.ToString() + Environment.NewLine);
+                        //    if (e.InnerException != null)
+                        //        logmsg.Append(e.InnerException.Message != null ? "InnerException Message : " + e.InnerException.Message.ToString() + Environment.NewLine : "");
+                        //    else
+                        //        logmsg.Append("Error : " + e.ToString() + Environment.NewLine);
+                        //    Console.WriteLine(e.Message);
+                        //    using (TextWriter tx = new StreamWriter(Program.LabAgentLog, true))
+                        //    {
+                        //        tx.WriteLine(logmsg);
+                        //    }
+                        //}
+
+                        if (File.Exists(sAkidoOrderCheckSend) == false)
+                        {
+                            os.ORDER_MESSAGE = GetBytesFromFileReturnString(sAkidoOrderFileName);
+                            string ContentToBeWritenInHL7File = os.FormatedHl7File();
+                            File.WriteAllText(sAkidoOrderFileName, ContentToBeWritenInHL7File);
+
+                            os.ORDER_MESSAGE = GetBytesFromFileReturnString(sAkidoOrderFileName);
+                            if (sQuestService != null && sQuestService.ToString().ToUpper() == "PRODUCTION")
+                            {
+                                object[] objWebResult = os.sendOrder(true, false, sAkidoOrderFileName);
+                                Console.WriteLine(objWebResult[0].ToString());
+                                if (objWebResult[0].ToString() == "SUCCESS")
+                                {
+                                    File.Move(sAkidoOrderFileName, filepathQuest + "\\Send" + sAkidoOrderFileName.Substring(filepathQuest.Length));
+
+                                }
+                                else
+                                {
+                                    StringBuilder logmsg = new StringBuilder();
+                                    logmsg.Append("Error :Order Web Service Send Failed Detalis : " + DateTime.Now.ToString() + Environment.NewLine);
+                                    logmsg.Append(objWebResult[0].ToString() + " - " + objWebResult[1].ToString() + " - " + objWebResult[2].ToString() + Environment.NewLine);
+                                    using (TextWriter tx = new StreamWriter(Program.LabAgentLog, true))
+                                    {
+                                        tx.WriteLine(logmsg);
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+                #endregion
+
 
                 Console.WriteLine("Hypersend Agent Running\n");
                 ProcessStartInfo objProcessStartInfo = new ProcessStartInfo("schtasks", "/run /tn outbox");
@@ -290,7 +364,10 @@ namespace Acurus.Capella.LabAgent
                 //        }
                 //    }
                 //}
-                RetriveResults(os.USERNAME, os.PASSWORD, ResultURL);
+                if (sQuestService != null && sQuestService.ToString().ToUpper() == "PRODUCTION")
+                {
+                    RetriveResults(os.USERNAME, os.PASSWORD, ResultURL);
+                }
             }
             catch (Altova.UserException e)
             {
@@ -551,6 +628,92 @@ namespace Acurus.Capella.LabAgent
         //    ConvertBase64(path, encodedData);
         //}
 
+        #endregion
+
+        //CAP-2300
+        #region Move Akido Unsend Orders To Lab Orders
+        public void MoveAkidoUnsendOrders()
+        {
+            string filepathQuest = System.Configuration.ConfigurationSettings.AppSettings["QuestSenderFilePathName"];
+            string filepathLabCorp = System.Configuration.ConfigurationSettings.AppSettings["LabCorpSenderFilePathName"];
+            string filepathUnsendAkidoOrdersQuest = System.Configuration.ConfigurationSettings.AppSettings["QuestUnsendAkidoOrdersFilePathName"];
+            string filepathUnsendAkidoOrdersLabCorp = System.Configuration.ConfigurationSettings.AppSettings["LabCorpUnsendAkidoOrdersFilePathName"];
+
+            try
+            {
+                // Ensure the destination directory exists
+                if (!Directory.Exists(filepathQuest))
+                {
+                    Directory.CreateDirectory(filepathQuest);
+                }
+
+                if (!Directory.Exists(filepathUnsendAkidoOrdersQuest))
+                {
+                    Directory.CreateDirectory(filepathUnsendAkidoOrdersQuest);
+                }
+
+                // Get all files from the source directory
+                string[] files = Directory.GetFiles(filepathUnsendAkidoOrdersQuest);
+
+                // Move each file to the destination directory
+                foreach (string filePath in files)
+                {
+                    // Get the file name
+                    string fileName = Path.GetFileName(filePath);
+
+                    // Create the destination file path
+                    string destFilePath = Path.Combine(filepathQuest, fileName);
+
+                    // Move the file
+                    File.Move(filePath, destFilePath);
+                }
+
+                Console.WriteLine("Akido Quest Orders moved for send.");
+
+                // Ensure the destination directory exists
+                if (!Directory.Exists(filepathLabCorp))
+                {
+                    Directory.CreateDirectory(filepathLabCorp);
+                }
+
+                if (!Directory.Exists(filepathUnsendAkidoOrdersLabCorp))
+                {
+                    Directory.CreateDirectory(filepathUnsendAkidoOrdersLabCorp);
+                }
+
+                // Get all files from the source directory
+                string[] labcorpfiles = Directory.GetFiles(filepathUnsendAkidoOrdersLabCorp);
+
+                // Move each file to the destination directory
+                foreach (string filePath in labcorpfiles)
+                {
+                    // Get the file name
+                    string fileName = Path.GetFileName(filePath);
+
+                    // Create the destination file path
+                    string destFilePath = Path.Combine(filepathLabCorp, fileName);
+
+                    // Move the file
+                    File.Move(filePath, destFilePath);
+                }
+
+                Console.WriteLine("Akido Lab Corp Orders moved for send.");
+            }
+            catch (Exception ex)
+            {
+                StringBuilder logmsg = new StringBuilder();
+                logmsg.Append("Error : Create Orders Altova Date and Time : " + DateTime.Now.ToString() + Environment.NewLine);
+                logmsg.Append("Error Message : " + ex.Message.ToString() + Environment.NewLine);
+                if (ex.InnerException != null)
+                    logmsg.Append(ex.InnerException.Message != null ? "InnerException Message : " + ex.InnerException.Message.ToString() + Environment.NewLine : "");
+                else
+                    logmsg.Append("Error : " + ex.ToString() + Environment.NewLine);
+                using (TextWriter tx = new StreamWriter(Program.LabAgentLog, true))
+                {
+                    tx.WriteLine(logmsg);
+                }
+            }
+        }
         #endregion
     }
 

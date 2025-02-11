@@ -9,6 +9,7 @@ using System.Reflection;
 using System.IO;
 using System.Collections;
 using Acurus.Capella.DataAccess.ManagerObjects;
+using System.Configuration;
 
 namespace Acurus.Capella.LabAgent
 {
@@ -115,6 +116,87 @@ namespace Acurus.Capella.LabAgent
                                     }
                                 }
                             }
+
+                            //CAP-2301
+                            #region Move Akido Results To UnSendTransfered Akido Results
+                            if (ConfigurationSettings.AppSettings["IsAkidoOrdersAndResults"].Equals("Y", StringComparison.InvariantCultureIgnoreCase))
+                            {
+                                bool isAkidoResult = false;
+                                bool isCapellaResult = false;
+                                for (int k = 0; k < myResults.Count; k++)
+                                {
+                                    var segmentname1 = string.Empty;
+
+                                    string[] line1 = myResults[k].ToString().Split('\r');
+                                    if (line1.Length > 0)
+                                    {
+                                        for (int l = 0; l < line1.Length; l++)
+                                        {
+                                            string[] segments1 = line1[l].Split('|');
+                                            if (segments1[0] != string.Empty)
+                                            {
+                                                if (char.IsLetter(segments1[0], 0) == true)
+                                                {
+                                                    segmentname1 = segments1[0];
+                                                }
+                                            }
+
+                                            if (segmentname1.ToUpper() == "ORC")
+                                            {
+                                                isAkidoResult = !isAkidoResult ? segments1[2].Contains("AKIDO") : isAkidoResult;
+                                                isCapellaResult = !isCapellaResult ? segments1[2].Contains("ACUR") : isCapellaResult;
+                                            }
+
+                                            if (segmentname1.ToUpper() == "OBR")// && !isAkidoResult)
+                                            {
+                                                isAkidoResult = !isAkidoResult ? segments1[2].Contains("AKIDO") : isAkidoResult;
+                                                isCapellaResult = !isCapellaResult ? segments1[2].Contains("ACUR") : isCapellaResult;
+                                            }
+
+                                            //if (isAkidoResult)
+                                            //{
+                                            //    break;
+                                            //}
+                                        }
+                                    }
+
+                                    //if (isAkidoResult)
+                                    //{
+                                    //    break;
+                                    //}
+                                }
+
+                                try
+                                {
+                                    if (isAkidoResult)
+                                    {
+                                        var unsendAkidoResultDirectory = fi.DirectoryName + "\\Untransfered_Akido_Results";
+                                        if (!Directory.Exists(unsendAkidoResultDirectory))
+                                        {
+                                            Directory.CreateDirectory(unsendAkidoResultDirectory);
+                                        }
+
+                                        if (!File.Exists(unsendAkidoResultDirectory + "\\" + fi.Name))
+                                        {
+                                            if (isCapellaResult)
+                                            {
+                                                File.Copy(fi.FullName, unsendAkidoResultDirectory + "\\" + fi.Name, overwrite: true);
+                                            }
+                                            else
+                                            {
+                                                File.Move(fi.FullName, unsendAkidoResultDirectory + "\\" + fi.Name);
+                                            }
+                                        }
+                                    }
+                                }
+                                catch (Exception ex)
+                                {
+
+                                }
+                            }
+                            #endregion
+
+                            //continue;
 
                             for (int k = 0; k < myResults.Count; k++)
                             {

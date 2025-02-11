@@ -265,6 +265,9 @@
     <Content Include="bin\Debug\Open_Xml.dll" />
     <Content Include="bin\Debug\ORM_O01.dll" />
     <Content Include="bin\Debug\ORM_O01_Quest.dll" />
+    <Content Include="bin\Debug\System.Buffers.dll" />
+    <Content Include="bin\Debug\System.Memory.dll" />
+    <Content Include="bin\Debug\System.Runtime.CompilerServices.Unsafe.dll" />
     <Content Include="RCopiaErrorLog.txt" />
   </ItemGroup>
   <ItemGroup>
