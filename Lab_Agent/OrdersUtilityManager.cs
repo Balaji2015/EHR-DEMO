@@ -271,7 +271,7 @@ namespace Acurus.Capella.LabAgent
 
                         if (File.Exists(sAkidoOrderCheckSend) == false)
                         {
-                            os.ORDER_MESSAGE = GetBytesFromFileReturnString(sAkidoOrderFileName);
+                            os.ORDER_MESSAGE = GetBytesFromFileReturnString(filepathQuest + "\\" + sAkidoOrderFileName);
                             string ContentToBeWritenInHL7File = os.FormatedHl7File();
                             File.WriteAllText(sAkidoOrderFileName, ContentToBeWritenInHL7File);
 
