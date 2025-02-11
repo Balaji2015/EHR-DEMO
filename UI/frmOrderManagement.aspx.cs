@@ -115,8 +115,9 @@ namespace Acurus.Capella.UI
                     }
                 }
 
-
-                if (ClientSession.HumanId != 0)
+                //Jira Cap - 2919
+                //if (ClientSession.HumanId != 0)
+                if (ClientSession.HumanId != 0 && Request.UrlReferrer.ToString().Contains("frmPatientChart"))
                 {
                     hdnPatientValues.Value = ClientSession.HumanId.ToString();
                     if (ClientSession.PatientPaneList != null && ClientSession.PatientPaneList.Count > 0)
