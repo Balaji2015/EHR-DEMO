@@ -5836,13 +5836,15 @@ namespace Acurus.Capella.UI
                                     }
 
                                 }
-
+                                //CAP-2906
+                                ilstResult.Add((object)ilstEntity);
                             }
                             else
                             {
                                 ilstResult.Add(null);
                             }
-                            ilstResult.Add((object)ilstEntity);
+                            //CAP-2906
+                            //ilstResult.Add((object)ilstEntity);
                         }
                         else
                         {
@@ -6440,6 +6442,9 @@ namespace Acurus.Capella.UI
             sStatus = "";
             sExMessage = "";
             string bIsAkidoEncounter = "false";
+            string IsAkidoNoteURLVersion = System.Configuration.ConfigurationSettings.AppSettings["IsAkidoNoteStatusURLVersion"].ToString();
+            string sUri = string.Empty;
+            string AccessToken = string.Empty;
             //Jira CAP-1379
             int iRetryCount = 0;
 
@@ -6448,8 +6453,20 @@ namespace Acurus.Capella.UI
             {
                 iRetryCount = iRetryCount + 1;
 
-                var myUri = new Uri(System.Configuration.ConfigurationSettings.AppSettings["AkidoNoteStatusURL"].ToString().Replace("[CapellaEncounterID]", sEncounterID));
-                string AccessToken = System.Configuration.ConfigurationSettings.AppSettings["AkidoNoteStatusURLToken"].ToString();
+                //Jira CAP-2435
+                //var myUri = new Uri(System.Configuration.ConfigurationSettings.AppSettings["AkidoNoteStatusURL"].ToString().Replace("[CapellaEncounterID]", sEncounterID));
+
+                if (IsAkidoNoteURLVersion.ToUpper() == "V1")
+                {
+                    sUri = System.Configuration.ConfigurationSettings.AppSettings["AkidoNoteStatusURL"].ToString().Replace("[CapellaEncounterID]", sEncounterID);
+                    AccessToken = System.Configuration.ConfigurationSettings.AppSettings["AkidoNoteStatusURLToken"].ToString();
+                }
+                else if (IsAkidoNoteURLVersion.ToUpper() == "V2")
+                {
+                    sUri = System.Configuration.ConfigurationSettings.AppSettings["AkidoInterpretationNoteStatusURL"].ToString().Replace("[CapellaResourceID]", sEncounterID).Replace("[CapellaResourceType]", "capella_encounter_id");
+                    AccessToken = System.Configuration.ConfigurationSettings.AppSettings["AkidoInterpretationNoteStatusURLToken"].ToString();
+                }
+                var myUri = new Uri(sUri);
                 var myWebRequest = WebRequest.Create(myUri);
                 var myHttpWebRequest = (HttpWebRequest)myWebRequest;
                 myHttpWebRequest.PreAuthenticate = true;
@@ -6464,14 +6481,27 @@ namespace Acurus.Capella.UI
                 responseStream.Close();
                 myWebResponse.Close();
 
+                //Jira CAP-2435 - End
+
                 if (json.ToString() != "[]")
                 {
-                    bIsAkidoEncounter = "true";
-                    //Jira CAP-1990
-                    string sPJason = json.Substring(1, json.Length - 2);
-                    var jsonObject = JObject.Parse(sPJason);
-                    sStatus = (string)jsonObject["status"];
+                    //Jira CAP-2435
+                    //bIsAkidoEncounter = "true";
+                    ////Jira CAP-1990
+                    //string sPJason = json.Substring(1, json.Length - 2);
+                    //var jsonObject = JObject.Parse(sPJason);
+                    //sStatus = (string)jsonObject["status"];
 
+                    json = "{\"Capella\":" + json + "}";
+                    var jsonObject = JObject.Parse(json);
+                    IList<JToken> listJson = jsonObject.First.FirstOrDefault().Where(a => a["resourceId"].ToString() == sEncounterID).ToList();
+
+                    if (listJson.Count > 0)
+                    {
+                        bIsAkidoEncounter = "true";
+                        sStatus = (string)listJson.FirstOrDefault()["status"].ToString();
+                    }
+                    //Jira CAP-2435 - End
                 }
             }
             catch (Exception ex)

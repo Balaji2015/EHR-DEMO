@@ -592,8 +592,8 @@ namespace Acurus.Capella.DataAccess
                     }
                     else
                     {
-                    NHibernateSessionUtility.Instance.MyAuditLogList.Add(audit);
-                }
+                        NHibernateSessionUtility.Instance.MyAuditLogList.Add(audit);
+                    }
                 }
 
                 //    }
@@ -699,8 +699,6 @@ namespace Acurus.Capella.DataAccess
                             }
                             //AuditLogList.Add(audit);
 
-                            audit = null;
-
                             //CAP-2891
                             if (audit == null)
                             {
@@ -721,10 +719,10 @@ namespace Acurus.Capella.DataAccess
                             }
                             else
                             {
-                            NHibernateSessionUtility.Instance.MyAuditLogList.Add(audit);
-                        }
+                                NHibernateSessionUtility.Instance.MyAuditLogList.Add(audit);
+                            }
 
-                    }
+                        }
 
                     }
                     //auditLogManager.AppendToAuditLog(AuditLogList, NHibernateSessionUtility.Instance.MACAddress);
