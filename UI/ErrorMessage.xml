@@ -285,6 +285,7 @@
 	<Message number="1400011" Type="OK" Text="Message log cannot be created for selected order."></Message>
 	<Message number="1400012" Type="OK" Text="The selected file was already processed by {0}"/>
 	<Message number="1400013" Type="OK" Text="You are making changes to an encounter that has already been updated. Please refresh this page to view latest updates."></Message>
+	<Message number="1400014" Type="OK" Text="Please login to Ancillary facility for processing the Ancillary appointment."></Message>
 
 
 	<Message number="150001" Type="OK" Text="Please enter the search parameters."></Message>

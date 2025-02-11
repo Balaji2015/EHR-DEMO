@@ -486,7 +486,16 @@ function MyQclick() {
                 Curprocess = $(currRow)[0]?.children[7]?.innerText.trim()
                 PhyID = $(currRow)[0]?.children[12]?.innerText.trim();
                 date = $(currRow)[0]?.children[14]?.innerText.trim();
-                encounter_id = $(currRow)[0]?.children[11]?.innerText.trim();
+                //Jira CAP-2809
+                //encounter_id = $(currRow)[0]?.children[11]?.innerText.trim();
+                if ($("#EncounterTable thead tr")[0]?.children[11]?.children[0]?.innerHTML != undefined && $("#EncounterTable thead tr")[0]?.children[11]?.children[0]?.innerHTML == "Encounter ID") {
+                    encounter_id = $(currRow)[0]?.children[11]?.innerText.trim();
+                } else if ($("#EncounterTable thead tr")[0]?.children[11]?.children[0]?.innerHTML != undefined && $("#EncounterTable thead tr")[0]?.children[11]?.children[0]?.innerHTML != "Encounter ID") {
+                    DisplayErrorMessage('1400014');
+                    { sessionStorage.setItem('StartLoading', 'false'); StopLoadFromPatChart(); }
+                    return false;
+                }
+                //Jira CAP-2809 - End
                 objtype = $(currRow)[0]?.children[13]?.innerText.trim();
             }
             else {
