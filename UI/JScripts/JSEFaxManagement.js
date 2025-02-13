@@ -138,7 +138,7 @@ function ValidateDate(fromDate, toDate) {
 
     //Select between one month validation
     var numberofdays = Math.round((new Date(toDate) - new Date(fromDate)) / (1000 * 3600 * 24));
-    if (numberofdays > 31)  {
+    if (numberofdays > 30)  {
         alert("Please select From Date and To Date between one month.");
         return false;
     }
@@ -479,7 +479,7 @@ function ExportToExcel() {
         searchparameterdatebody.appendChild(r2);
 
         var r2d3 = document.createElement("td");
-        r2d3.innerHTML = "<b>FAX Sender Name:</b>";
+        r2d3.innerHTML = "<b>Sender Name:</b>";
         r2.appendChild(r2d3);
         var r2d4 = document.createElement("td");
         r2d4.innerHTML = document.getElementById("txtFaxSenderName").value;
@@ -506,7 +506,7 @@ function ExportToExcel() {
 
         var nowdate = new Date();
         $(divtag).table2excel({
-            filename: "EFax_Search_Report_" + nowdate.getFullYear() + nowdate.getMonth() + 1
+            filename: "EFax_Search_Report_" + nowdate.getFullYear() + (nowdate.getMonth() + 1)
                 + nowdate.getDate().toLocaleString('en-US', { minimumIntegerDigits: 2, useGrouping: false }) + " "
                 + nowdate.getHours().toLocaleString('en-US', { minimumIntegerDigits: 2, useGrouping: false }) + " "
                 + nowdate.getMinutes().toLocaleString('en-US', { minimumIntegerDigits: 2, useGrouping: false }) + " "
