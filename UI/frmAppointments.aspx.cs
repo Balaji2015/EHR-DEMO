@@ -1289,8 +1289,20 @@ namespace Acurus.Capella.UI
                 //CAP-1275
                 if (hdnSelectedMenu.Value == WalkedAwayMenuText && lstencounter.Count > 0)
                 {
+                    //Jira CAP-2956
+                    bool bIsWriteinBlob = false;
+                    if (lstencounter.FirstOrDefault().Date_of_Service.ToString().Contains("0001-01-01"))
+                    {
+                        bIsWriteinBlob = false;
+                    }
+                    else
+                    {
+                        bIsWriteinBlob = true;
+                    }
                     lstencounter[0].Date_of_Service = DateTime.MinValue;
-                    obj.UpdateEncounter(lstencounter[0], string.Empty, new object[] { "false" });
+                    //Jira CAP-2956
+                    //obj.UpdateEncounter(lstencounter[0], string.Empty, new object[] { "false" });
+                    obj.UpdateEncounter(lstencounter[0], string.Empty, new object[] { "false" }, bIsWriteinBlob);
                 }
                 if (lstencounter.Count == 0)
                 {
