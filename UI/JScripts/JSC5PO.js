@@ -3677,7 +3677,9 @@ $("#btnReportClose").click(function () {
         //if (isDirectURLParam.toUpperCase() != "Y") {
         //    location.reload();
         //}
-        if (isDirectURLParam != null && isDirectURLParam.toUpperCase() != "Y") {
+        //Jira CAP-2970
+        //if (isDirectURLParam != null && isDirectURLParam.toUpperCase() != "Y") {
+        if (isDirectURLParam != undefined && isDirectURLParam != null && isDirectURLParam.toUpperCase() != "Y") {
             location.reload();
         }
         //CAP-2600
