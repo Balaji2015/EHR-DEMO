@@ -181,7 +181,14 @@ namespace Acurus.Capella.LabAgent
                                         {
                                             if (isCapellaResult)
                                             {
-                                                File.Copy(fi.FullName, unsendAkidoResultDirectory + "\\" + fi.Name, overwrite: true);
+                                                if (myResults.Count == indexToBeRemoved.Count) {
+                                                    File.Move(fi.FullName, unsendAkidoResultDirectory + "\\" + fi.Name);
+                                                    continue;
+                                                }
+                                                else
+                                                {
+                                                    File.Copy(fi.FullName, unsendAkidoResultDirectory + "\\" + fi.Name, overwrite: true);
+                                                }
                                             }
                                             else
                                             {
