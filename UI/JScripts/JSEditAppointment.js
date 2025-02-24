@@ -275,7 +275,7 @@ $(document).ready(function () {
                 }
                 if (document.getElementById("txtProviderSearch").value != "" && document.getElementById("hdnrenprovidersearch").value != "| NPI: | Facility: | Address:| Phone No:| Fax No:") {
                     document.getElementById("txtProviderSearch").disabled = true;
-                    document.getElementById("imgEditProvider").style.display = "none";
+                    if (document?.getElementById("imgEditProvider")?.style != undefined && document?.getElementById("imgEditProvider")?.style != null) { document.getElementById("imgEditProvider").style.display = "none"; }
                 }
                 else {
                     //Jira #CAP-158 -  Not able to navigate tab
@@ -283,11 +283,11 @@ $(document).ready(function () {
                         if (IsDisabledProviderSearch == "true")//change
                         {
                             document.getElementById("txtProviderSearch").disabled = true;
-                            document.getElementById("imgEditProvider").style.display = "none";
+                            if (document?.getElementById("imgEditProvider")?.style != undefined && document?.getElementById("imgEditProvider")?.style != null) { document.getElementById("imgEditProvider").style.display = "none"; }
                         }
                         else {
                             document.getElementById("txtProviderSearch").disabled = false;//have to change
-                            document.getElementById("imgEditProvider").style.display = "block";
+                            if (document?.getElementById("imgEditProvider")?.style != undefined && document?.getElementById("imgEditProvider")?.style != null) { document.getElementById("imgEditProvider").style.display = "block"; }
                         }
                     }
                     document.getElementById("txtProviderSearch").value = "";
@@ -303,11 +303,11 @@ $(document).ready(function () {
             if (document.getElementById("hdnCurrentProcess").value != "" && document.getElementById("hdnCurrentProcess").value.toUpperCase() == "SCHEDULED") {
                 if (document.getElementById("hdnpcpprovidersearch").value != "") {
                     document.getElementById("txtProviderSearch").disabled = true;
-                    document.getElementById("imgEditProvider").style.display = "none";
+                    if (document?.getElementById("imgEditProvider")?.style != undefined && document?.getElementById("imgEditProvider")?.style != null) { document.getElementById("imgEditProvider").style.display = "none"; }
                 }
                 else {
                     document.getElementById("txtProviderSearch").disabled = false;
-                    document.getElementById("imgEditProvider").style.display = "block";
+                    if (document?.getElementById("imgEditProvider")?.style != undefined && document?.getElementById("imgEditProvider")?.style != null) { document.getElementById("imgEditProvider").style.display = "block"; }
                 }
             }
         }

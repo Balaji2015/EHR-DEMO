@@ -1116,24 +1116,26 @@ function schAppoinmentScheduler_DoubleClick(sender, args) {
         else {
             Faclity = str
         }
-        var obj = new Array();
-        obj.push("Human_id=" + Appointment._toolTip.split('-')[0]);
-        obj.push("EncounterID=" + Appointment._id.toString().split('-')[0]);
-        obj.push("facility=" + Faclity);
-        obj.push("PhysicianName=" + Appointment.get_resources()._array[0]._text);
-        obj.push("PhysicianID=" + Appointment.get_resources()._array[0]._key);
-        obj.push("SelectedDate=" + Appointment._start.format("dd-MMM-yyyy hh:mm:ss tt"));
-        obj.push("CurrentProcess=" + Appointment._description);
-        { sessionStorage.setItem('StartLoading', 'true'); StartLoadFromPatChart();}
-        sessionStorage.setItem("EditAppointmentTransfer", new Date());
+        if (Appointment?._id != undefined && Appointment?._id != null) {
+            var obj = new Array();
+            obj.push("Human_id=" + Appointment._toolTip.split('-')[0]);
+            obj.push("EncounterID=" + Appointment._id.toString().split('-')[0]);
+            obj.push("facility=" + Faclity);
+            obj.push("PhysicianName=" + Appointment.get_resources()._array[0]._text);
+            obj.push("PhysicianID=" + Appointment.get_resources()._array[0]._key);
+            obj.push("SelectedDate=" + Appointment._start.format("dd-MMM-yyyy hh:mm:ss tt"));
+            obj.push("CurrentProcess=" + Appointment._description);
+            { sessionStorage.setItem('StartLoading', 'true'); StartLoadFromPatChart(); }
+            sessionStorage.setItem("EditAppointmentTransfer", new Date());
 
-        openModal("frmEditAppointment.aspx", 750, 840, obj, "ctl00_ModalWindow");
+            openModal("frmEditAppointment.aspx", 750, 840, obj, "ctl00_ModalWindow");
 
-        openModal("frmEditAppointment.aspx", 720, 840, obj, "ctl00_ModalWindow");
+            openModal("frmEditAppointment.aspx", 720, 840, obj, "ctl00_ModalWindow");
 
 
-        var WindowName = $find('ctl00_ModalWindow');
-        WindowName.add_close(TimeSlotEditAppointment2Click);
+            var WindowName = $find('ctl00_ModalWindow');
+            WindowName.add_close(TimeSlotEditAppointment2Click);
+        }
     }
 }
 function CloseAppointmentModal() {
