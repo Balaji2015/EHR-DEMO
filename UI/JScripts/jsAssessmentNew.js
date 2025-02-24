@@ -2488,6 +2488,8 @@ myapp.controller('assessmentCtrl', function ($scope, $http) {
             if (test.IsAssessmentRAFUpdate == "Y") {
                 RAFRefreshCLick();
             }
+            //CAP-2678
+            localStorage.setItem("IsSaveCompleted", true);
         })
             .error(function (error, status, headers, config) {
                 { sessionStorage.setItem('StartLoading', 'false'); StopLoadFromPatChart(); }

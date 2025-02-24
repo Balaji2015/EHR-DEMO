@@ -1440,6 +1440,8 @@ function tabAutoSave(CurrentTab, sender) {
         event.preventDefault();
         bCancel = true;
         sessionStorage.setItem("EncAutoSave", "true");
+        //CAP-2678
+        autoSaveAndMoveToNextProcess(sender);
         if (CurTab[0].innerText == "CC / HPI") {
             $('.clsIframe').contents()[0].all.namedItem('btnAdd').click();
             //$(dvdialog).dialog("close");
@@ -1584,6 +1586,9 @@ function tabAutoSave(CurrentTab, sender) {
             }
             else if (subtab == "AUA BPH Symptom") {
                 $('.clsIframe').contents()[1].all.namedItem('AUABPHSymptom').children[0].contentDocument.all.namedItem('btnSave').click();
+            }
+            else if (subtab == "Home Safety") {
+                $('.clsIframe').contents()[1].all.namedItem('HomeSafety').children[0].contentDocument.all.namedItem('btnSave').click();
             }
             //$(dvdialog).dialog("close");
             enableAutoSave();
@@ -2350,3 +2355,16 @@ $("#tabStripEncounter_tbSummary").click(function () {
     }
 });
 
+//CAP-2678
+function autoSaveAndMoveToNextProcess(sender) {
+    const intervalId = setInterval(function () {
+        const isSaveCompleted = localStorage.getItem("IsSaveCompleted");
+        if (isSaveCompleted === "true" || isSaveCompleted == true) {
+            clearInterval(intervalId);
+            setTimeout(function () {
+                __doPostBack(sender.id, 'OnClick');
+            },500);
+        }
+        localStorage.setItem("IsSaveCompleted", false);
+    }, 500);
+}

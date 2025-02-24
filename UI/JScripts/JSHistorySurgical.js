@@ -274,4 +274,6 @@ function SavedSuccessfully() {
     $('#lstSurgeryName').find('li').addClass('Editabletxtbox');
     $("[id*=pbDropdown]").addClass('pbDropdownBackground');
     $("textarea[id *= txtDLC]").addClass('Editabletxtbox');
+    //CAP-2678
+    localStorage.setItem("IsSaveCompleted", true);
 }

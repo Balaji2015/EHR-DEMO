@@ -408,6 +408,8 @@ function SavedSuccessfully() {
     AutoSaveSuccessful();
     $("textarea[id *= txtDLC]").removeClass('DlcClass');
     $("textarea[id *= txtDLC]").addClass('Editabletxtbox');
+    //CAP-2678
+    localStorage.setItem("IsSaveCompleted", true);
 }
 
 function chkCheckedChange(NormalQuestionStatus) {

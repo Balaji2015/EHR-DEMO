@@ -762,6 +762,8 @@ function SaveExam() {
                 SavedSuccessfully();
                 { sessionStorage.setItem('StartLoading', 'false'); StopLoadFromPatChart(); }
                 AutoSaveSuccessful();
+                //CAP-2678
+                localStorage.setItem("IsSaveCompleted", true);
             },
             error: function OnError(xhr) {
                 AutoSaveUnsuccessful();
@@ -896,6 +898,8 @@ function SaveExam() {
                 SavedSuccessfully();
                 { sessionStorage.setItem('StartLoading', 'false'); StopLoadFromPatChart(); }
                 AutoSaveSuccessful();
+                //CAP-2678
+                localStorage.setItem("IsSaveCompleted", true);
             },
             error: function OnError(xhr) {
                 if (xhr.status == 999)

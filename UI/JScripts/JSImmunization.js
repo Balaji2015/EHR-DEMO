@@ -559,6 +559,8 @@ function SavedSuccessfully() {
     Order_AfterAutoSave();
     { sessionStorage.setItem('StartLoading', 'false'); StopLoadFromPatChart(); }
     RefreshNotification('ImmunizationOrder');
+    //CAP-2678
+    localStorage.setItem("IsSaveCompleted", true);
 }
 
 function DeleteSuccessfully() {

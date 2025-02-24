@@ -702,6 +702,8 @@ function SavePlan() {
             localStorage.setItem("bSave", "true");
             RefreshNotification('GeneralPlan');
             AutoSaveSuccessful();
+            //CAP-2678
+            localStorage.setItem("IsSaveCompleted", true);
         },
         error: function OnError(xhr) {
             AutoSaveUnsuccessful();

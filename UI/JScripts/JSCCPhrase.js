@@ -76,6 +76,8 @@ function SavedSuccessfully() {
     DisableChartLevelAutoSave(); //BugID:52795
     if (JSON.parse(sessionStorage.getItem("EncCancel")) == true)
         sessionStorage.setItem("EncCancel", "false");
+    //CAP-2678
+    localStorage.setItem("IsSaveCompleted", true);
 }
 function PurposeOfVisit() {
     //CAP-783 Cannot read properties of null

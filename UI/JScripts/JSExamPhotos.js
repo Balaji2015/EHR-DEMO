@@ -366,6 +366,8 @@ function SavedSuccessfully() {
     DisplayErrorMessage('270001');
     window.parent.parent.parent.parent.theForm.ctl00_C5POBody_hdnIsSaveEnable.value = false;
     SavedSuccessfully_NowProceed(screen_name);
+    //CAP-2678
+    localStorage.setItem("IsSaveCompleted", true);
 }
 var IsMove = false;
 function MoveToNextProcess(sender, args) {

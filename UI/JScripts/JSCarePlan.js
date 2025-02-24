@@ -1365,6 +1365,8 @@ function SaveCarePlan() {
                 AutoSaveSuccessful();
                 { sessionStorage.setItem('StartLoading', 'false'); StopLoadFromPatChart(); }
                 RefreshNotification('Careplan');
+                //CAP-2678
+                localStorage.setItem("IsSaveCompleted", true);
             },
             error: function OnError(xhr) {
                 AutoSaveUnsuccessful();

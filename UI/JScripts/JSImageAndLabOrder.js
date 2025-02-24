@@ -2088,7 +2088,9 @@ function LabOrder_SavedSuccessfully() {
         window.parent.parent.parent.parent.theForm.ctl00_C5POBody_hdnIsSaveEnable.value = "false";
     Order_AfterAutoSave();
     checksdates();
-     {sessionStorage.setItem('StartLoading', 'false');StopLoadFromPatChart();}
+    { sessionStorage.setItem('StartLoading', 'false'); StopLoadFromPatChart(); }
+    //CAP-2678
+    localStorage.setItem("IsSaveCompleted", true);
 }
 
 

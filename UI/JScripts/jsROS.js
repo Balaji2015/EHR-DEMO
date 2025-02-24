@@ -318,6 +318,8 @@ function savedSuccessfully() {
     top.window.document.getElementById('ctl00_C5POBody_hdnIsSaveEnable').value = "false";
     localStorage.setItem("bSave", "true");
     AutoSaveSuccessful();
+    //CAP-2678
+    localStorage.setItem("IsSaveCompleted", true);
 }
 
 function RefreshFloatingSummary() {

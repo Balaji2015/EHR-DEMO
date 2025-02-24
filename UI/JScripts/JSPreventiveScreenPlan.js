@@ -473,7 +473,9 @@ function SavePreventiveScreenPlan() {
             $('#btnSave')[0].disabled = true;
             savedSuccessfully();
             AutoSaveSuccessful();
-             {sessionStorage.setItem('StartLoading', 'false');StopLoadFromPatChart();}
+            { sessionStorage.setItem('StartLoading', 'false'); StopLoadFromPatChart(); }
+            //CAP-2678
+            localStorage.setItem("IsSaveCompleted", true);
         },
         error: function OnError(xhr) {
             AutoSaveUnsuccessful();
