@@ -1,66 +1,66 @@
 ﻿var vversion;
 
 $(document).ready(function () {
-    localStorage.removeItem("MyShowAll");
-    localStorage.removeItem("MyOpenTask");
-    localStorage.removeItem("MyTask14");
-    localStorage.removeItem("MyShowAllMyTask");
-    localStorage.removeItem("ShowallGeneralqueue");
-    //localStorage.removeItem("ClientIpAddress");
-    var version = document.getElementById('hdnVersion').value;
-    var ProjectName = document.getElementById('hdnProjectName').value;
-    //Jira - #CAP-80
-    //sessionStorage.setItem("Projname", ProjectName.trim().toUpperCase());
-    localStorage.setItem("Projname", ProjectName.trim().toUpperCase());
-    var ReportPath = document.getElementById('hdnreportPath').value;
-    sessionStorage.setItem("ReportPath", ReportPath);
-    var LoginHeader = document.getElementById('hdnLoginheader').value;
+        localStorage.removeItem("MyShowAll");
+        localStorage.removeItem("MyOpenTask");
+        localStorage.removeItem("MyTask14");
+        localStorage.removeItem("MyShowAllMyTask");
+        localStorage.removeItem("ShowallGeneralqueue");
+        //localStorage.removeItem("ClientIpAddress");
+        var version = document.getElementById('hdnVersion').value;
+        var ProjectName = document.getElementById('hdnProjectName').value;
+        //Jira - #CAP-80
+        //sessionStorage.setItem("Projname", ProjectName.trim().toUpperCase());
+        localStorage.setItem("Projname", ProjectName.trim().toUpperCase());
+        var ReportPath = document.getElementById('hdnreportPath').value;
+        sessionStorage.setItem("ReportPath", ReportPath);
+        var LoginHeader = document.getElementById('hdnLoginheader').value;
 
-    var versionkey = document.getElementById('hdnVersionKey').value;
-    sessionStorage.setItem("versionkey", versionkey);
+        var versionkey = document.getElementById('hdnVersionKey').value;
+        sessionStorage.setItem("versionkey", versionkey);
 
-    var vEVServiceLink = document.getElementById('hdnServiceLink').value;
-    sessionStorage.setItem("EVWebServiceLink", vEVServiceLink);
+        var vEVServiceLink = document.getElementById('hdnServiceLink').value;
+        sessionStorage.setItem("EVWebServiceLink", vEVServiceLink);
 
-    var vEVProjectName = document.getElementById('hdnEvProjectName').value;
-    sessionStorage.setItem("EVProjectName", vEVProjectName);
-    var ReportPathhttp = document.getElementById('hdnReportPathhttp').value;
-    sessionStorage.setItem("ReportPathhttp", ReportPathhttp);
-    if (document.getElementById('lblProduct') != undefined && document.getElementById('lblProduct') != null) {
-        document.getElementById('lblProduct').innerHTML = "EHR <span style='color:black;font-size:13px;font-weight:500;'> - " + version.replace('Capella - ', '') + "</span>";
-    }
-   //Jira - #CAP-80
-    //Use localstorage insted of Sessionstorage and currently use sessionstorage also because of sessionstorage use more page
-    if (version?.split('-')[1]?.trim() != undefined && version?.split('-')[1]?.trim() != null){
-    sessionStorage.setItem("ScriptVersion", version.split('-')[1].trim());
-    localStorage.setItem("ScriptVersion", version.split('-')[1].trim());
-    }
-    if (document.getElementById('lblProduct') != undefined && document.getElementById('lblProduct') != null) {
-        document.getElementById('lblProduct').innerHTML = "EHR <span style='color:black;font-size:13px;font-weight:500;'> - " + version.replace('Capella - ', '') + "</span>";
-    }
+        var vEVProjectName = document.getElementById('hdnEvProjectName').value;
+        sessionStorage.setItem("EVProjectName", vEVProjectName);
+        var ReportPathhttp = document.getElementById('hdnReportPathhttp').value;
+        sessionStorage.setItem("ReportPathhttp", ReportPathhttp);
+        if (document.getElementById('lblProduct') != undefined && document.getElementById('lblProduct') != null) {
+            document.getElementById('lblProduct').innerHTML = "EHR <span style='color:black;font-size:13px;font-weight:500;'> - " + version.replace('Capella - ', '') + "</span>";
+        }
+        //Jira - #CAP-80
+        //Use localstorage insted of Sessionstorage and currently use sessionstorage also because of sessionstorage use more page
+        if (version?.split('-')[1]?.trim() != undefined && version?.split('-')[1]?.trim() != null) {
+            sessionStorage.setItem("ScriptVersion", version.split('-')[1].trim());
+            localStorage.setItem("ScriptVersion", version.split('-')[1].trim());
+        }
+        if (document.getElementById('lblProduct') != undefined && document.getElementById('lblProduct') != null) {
+            document.getElementById('lblProduct').innerHTML = "EHR <span style='color:black;font-size:13px;font-weight:500;'> - " + version.replace('Capella - ', '') + "</span>";
+        }
 
-    if ($('#ulSystemMessages')[0] != undefined) {
-        $($('#ulSystemMessages')[0].parentElement).css('overflow', 'auto');
-    }
-    
-    if (sessionStorage.getItem("MailClinicalCnt") != null && sessionStorage.getItem("MailClinicalCnt") != undefined)//BugID:48547
-        sessionStorage.removeItem("MailClinicalCnt");
-    if (sessionStorage.getItem("importCount") != null && sessionStorage.getItem("importCount") != undefined)
-        sessionStorage.removeItem("importCount");
-    if (sessionStorage.getItem("RxCount") != null && sessionStorage.getItem("RxCount") != undefined)//BugID:48547
-        sessionStorage.removeItem("RxCount");
-    LoadSystemMessagesKnowledgeCenterdetails();
-    $('[id^=dvpanelheading]').addClass("panel-heading");
+        if ($('#ulSystemMessages')[0] != undefined) {
+            $($('#ulSystemMessages')[0].parentElement).css('overflow', 'auto');
+        }
 
-    $('[id^=divpanelsucess]').addClass("Loginboder");
+        if (sessionStorage.getItem("MailClinicalCnt") != null && sessionStorage.getItem("MailClinicalCnt") != undefined)//BugID:48547
+            sessionStorage.removeItem("MailClinicalCnt");
+        if (sessionStorage.getItem("importCount") != null && sessionStorage.getItem("importCount") != undefined)
+            sessionStorage.removeItem("importCount");
+        if (sessionStorage.getItem("RxCount") != null && sessionStorage.getItem("RxCount") != undefined)//BugID:48547
+            sessionStorage.removeItem("RxCount");
+        LoadSystemMessagesKnowledgeCenterdetails();
+        $('[id^=dvpanelheading]').addClass("panel-heading");
 
-        
-    $('.logocolor').attr('style', sessionStorage.getItem("logocolor"));
-    sessionStorage.removeItem("logocolor");
+        $('[id^=divpanelsucess]').addClass("Loginboder");
+
+
+        $('.logocolor').attr('style', sessionStorage.getItem("logocolor"));
+        sessionStorage.removeItem("logocolor");
     if ($('#lblProduct').val() != undefined)
     {
-        $('#lblProduct').addClass("logoEHR");
-    }
+            $('#lblProduct').addClass("logoEHR");
+        }
         sessionStorage.removeItem("logoEHR");
         $('#spnlogo').addClass("logoLogin");
 
@@ -75,30 +75,37 @@ $(document).ready(function () {
         }
         else {
             $("#lblProduct").hide();
-    }
-    setTimeZone();
-    ShowLoading();
-    getIpAddress();
+        }
+        setTimeZone();
+        ShowLoading();
+        getIpAddress();
 
-    //CAP-2041
-    var sharedSessionUrl = document.getElementById('hdnOktaSharedSessionURL');
-    var stateParams = document.getElementById('hdnStateParam');
-    var localTimeParams = document.getElementById('hdnLocalTime');
-    var localDateParams = document.getElementById('hdnLocalDate');
-    var universaloffsetParams = document.getElementById('hdnUniversaloffset');
-    var localDateAndTimeParams = document.getElementById('hdnLocalDateAndTime');
-    var dayLightSavingsParams = document.getElementById('hdnFollowsDayLightSavings');
-    var dateParams = (localTimeParams?.value ?? "") + "|" + (localDateParams?.value ?? "") + "|" + (universaloffsetParams?.value ?? "") + "|" + (localDateAndTimeParams?.value ?? "") + "|" + (dayLightSavingsParams?.value??"false");
-    if (sharedSessionUrl?.value ?? "" != "") {
+        //CAP-2041
+        var sharedSessionUrl = document.getElementById('hdnOktaSharedSessionURL');
+        var stateParams = document.getElementById('hdnStateParam');
+        var localTimeParams = document.getElementById('hdnLocalTime');
+        var localDateParams = document.getElementById('hdnLocalDate');
+        var universaloffsetParams = document.getElementById('hdnUniversaloffset');
+        var localDateAndTimeParams = document.getElementById('hdnLocalDateAndTime');
+        var dayLightSavingsParams = document.getElementById('hdnFollowsDayLightSavings');
+        var dateParams = (localTimeParams?.value ?? "") + "|" + (localDateParams?.value ?? "") + "|" + (universaloffsetParams?.value ?? "") + "|" + (localDateAndTimeParams?.value ?? "") + "|" + (dayLightSavingsParams?.value ?? "false");
+        if (sharedSessionUrl?.value ?? "" != "") {
             //CAP-2921
-            //var iframe = window.document.createElement("iframe");
-            //iframe.src = sharedSessionUrl.value + "" + btoa(((stateParams?.value ?? "") + "" + dateParams));
-            //iframe.style.display = "none"; 
-            //window.document.body.appendChild(iframe);
-            //console.log("✅ Iframe added:", iframe);
+            var iframe = window.document.createElement("iframe");
+            iframe.id = "ifrmLogin";
+            iframe.src = sharedSessionUrl.value + "" + btoa(((stateParams?.value ?? "") + "" + dateParams));
+            iframe.style.display = "none";
+            iframe.onload = function () {
+                sessionStorage.setItem('StartLoading', 'false');
+                StopLoadFromPatChart();
+                if ($('#ifrmLogin')[0]?.contentWindow?.location?.href != null && $('#ifrmLogin')[0]?.contentWindow?.location?.href.includes("frmLoginNew.aspx")) {
+                    location.href = $('#ifrmLogin')[0].contentWindow.location.href;
+                }
+            };
+            window.document.body.appendChild(iframe);
 
-            location.href = sharedSessionUrl.value + "" + btoa(((stateParams?.value ?? "") + "" + dateParams));
-    }
+            //location.href = sharedSessionUrl.value + "" + btoa(((stateParams?.value ?? "") + "" + dateParams));
+        }
 });
 
 function LoadSystemMessagesKnowledgeCenterdetails() {
