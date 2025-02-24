@@ -437,7 +437,8 @@ $(document).ready(function () {
                         $("#hdntxtOthersValue").val("");
                     var PFSHVerified = localStorage.getItem("PFSHVerified");
                     var Verified = "";
-                    if (PFSHVerified != "") {
+                    //CAP-2989
+                    if (PFSHVerified != null && PFSHVerified != undefined && PFSHVerified != "") {
                         var PFSH = PFSHVerified.split('|');
                         for (var i = 0; i < PFSH.length; i++) {
                             if (PFSH[i].split('-')[0] == Sessionvalues.split('~')[4].split('&')[0]) {
@@ -512,7 +513,8 @@ $(document).ready(function () {
                         $("#hdntxtOthersValue").val("");
                     var PFSHVerified = localStorage.getItem("PFSHVerified");
                     var Verified = "";
-                    if (PFSHVerified != "") {
+                    //CAP-2989
+                    if (PFSHVerified != null && PFSHVerified != undefined && PFSHVerified != "") {
                         var PFSH = PFSHVerified.split('|');
                         for (var i = 0; i < PFSH.length; i++) {
                             if (PFSH[i].split('-')[0] == Sessionvalues.split('~')[4].split('&')[0]) {
@@ -785,7 +787,8 @@ $("#btnPFSHVerified").click(function () {
                 }
             var bValue = true;
             var PFSHVerified = localStorage.getItem("PFSHVerified");
-            if (PFSHVerified != "") {
+            //CAP-2989
+            if (PFSHVerified != null && PFSHVerified != undefined && PFSHVerified != "") {
                 var PFSH = PFSHVerified.split('|');
                 for (var i = 0; i < PFSH.length; i++) {
                     if (PFSH[i].split('-')[0] == Sessionvalues.split('~')[4].split('&')[0]) {
@@ -1450,7 +1453,8 @@ function LoadPFSHTab(control) {
                             $("#hdntxtOthersValue").val("");
                         var PFSHVerified = localStorage.getItem("PFSHVerified");
                         var Verified = "";
-                        if (PFSHVerified != "") {
+                        //CAP-2989
+                        if (PFSHVerified != null && PFSHVerified != undefined && PFSHVerified != "") {
                             var PFSH = PFSHVerified.split('|');
                             for (var i = 0; i < PFSH.length; i++) {
                                 if (PFSH[i].split('-')[0] == Sessionvalues.split('~')[4].split('&')[0]) {
