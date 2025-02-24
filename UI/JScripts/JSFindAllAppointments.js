@@ -266,7 +266,7 @@ function loadFillResult() {
                 isAncilaryOfLoginFacility = facilityLibrary.filter(fl => fl.Fac_Name == LoginfacilityName);
                 isAncilaryOfLoginFacility = isAncilaryOfLoginFacility[0].Is_Ancillary;
                 if (isAncilaryOfLoginFacility == 'Y') {
-                    if ($(top?.window?.document)?.find('#RadWindowWrapper_ctl00_ModalWindow')[0] != undefined) {
+                    if ($(top?.window?.document)?.find('#RadWindowWrapper_ctl00_ModalWindow')?.[0] != undefined) {
                         $(top.window.document).find('#RadWindowWrapper_ctl00_ModalWindow')[0].style.width = "1010px";
                         $("#divTable").parent()[0].style.width = "983px";
                         $("#pnlButtons")[0].style.width = "935px";
