@@ -1002,7 +1002,12 @@ objFillHuman.Birth_Date.ToString("dd-MMM-yyyy") + " | " +
                         }
                     }
                 }
-                string sFinal = sEncID + "|" + sDOS + " - " + sPhysicianName + "|" + sApptPrividerID;
+                //Jira cap - 2967
+                string sFinal = string.Empty;
+                if (sPhysicianName != "")
+                {
+                    sFinal = sEncID + "|" + sDOS + " - " + sPhysicianName + "|" + sApptPrividerID;
+                }                 
                 lstDetails.Add(sFinal);
             }
             return lstDetails;
