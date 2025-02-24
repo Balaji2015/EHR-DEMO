@@ -748,8 +748,8 @@ namespace Acurus.Capella.DataAccess
             string serverno = "";
             if (server.Length > 1)
                 serverno = server[1].Trim();
-
-            string insertQuery = "insert into stats_apperrorlog values(0,'" + logMessage + ", Method Name: " + methodName + "','" + serverno + "','" + DateTime.Now + "','','0','0','0','" + lineNumber + "','" + DateTime.Now.ToString("yyyy-MM-dd hh:mm:ss") + "')";
+            //CAP-2966
+            string insertQuery = "insert into stats_apperrorlog values(0,'" + logMessage.Replace("'","") + ", Method Name: " + methodName.Replace("'", "") + "','" + serverno.Replace("'", "") + "','" + DateTime.Now + "','','0','0','0','" + lineNumber.Replace("'", "") + "','" + DateTime.Now.ToString("yyyy-MM-dd hh:mm:ss") + "')";
 
             string ConnectionData;
             ConnectionData = ConfigurationManager.ConnectionStrings["con"].ConnectionString;

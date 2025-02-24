@@ -5255,7 +5255,8 @@ namespace Acurus.Capella.UI
                         serverno = server[1].Trim();
                     using (MySqlTransaction DBTransaction = DBConnection.BeginTransaction())
                     {
-                        string sQuery = "insert into  stats_apperrorlog values(0,'" + smessage + "', '" + serverno + "','" + DateTime.Now + "','" + ClientSession.UserName + "','" + ClientSession.EncounterId + "','" + ClientSession.HumanId + "','" + ClientSession.PhysicianId + "',' ','" + DateTime.Now.ToString("yyyy-MM-dd hh:mm:ss") + "')";
+                        //CAP-2966
+                        string sQuery = "insert into  stats_apperrorlog values(0,'" + smessage.Replace("'", "") + "', '" + serverno.Replace("'", "") + "','" + DateTime.Now + "','" + ClientSession.UserName + "','" + ClientSession.EncounterId + "','" + ClientSession.HumanId + "','" + ClientSession.PhysicianId + "',' ','" + DateTime.Now.ToString("yyyy-MM-dd hh:mm:ss") + "')";
                         using (MySqlCommand cmdInsert = new MySqlCommand(sQuery, DBConnection, DBTransaction))
                         {
                             cmdInsert.CommandText = sQuery;
