@@ -163,6 +163,9 @@ namespace Acurus.Capella.UI
                 //CAP-2242
                 Session["PatientListGrid"] = null;
             }
+
+            //CAP-2978
+            hdnCheckLegalOrg.Value = ConfigurationManager.AppSettings["IsChangeLegalOrg"];
         }
 
         //public void loadGrid(DataTable dtEncounter)

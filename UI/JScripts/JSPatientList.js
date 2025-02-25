@@ -125,6 +125,14 @@ function OpenModal(data) {
         }
         document.getElementById(GetClientId("btnlogout")).click();
     }
+    //CAP-2978
+    else if (itemValue == "Change Legal Org") {
+        var obj = new Array();
+        var isShowLegalOrg = document.getElementById(GetClientId("hdnCheckLegalOrg"))?.value ?? "";
+        var popupHeight = (isShowLegalOrg == "Y") ? 234 : 176;
+        var Result = openModal("frmSelectLegalOrg.aspx", popupHeight, 600, obj, "ctl00_FacilityModel");
+        return false;
+    }
 }
 
 function ValidateDate(sender, args) {

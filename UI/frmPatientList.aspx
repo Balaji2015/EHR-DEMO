@@ -331,10 +331,13 @@ table.dataTable > thead > tr > td {
             <table>
                 <tr>
                     <td style="width: 100%;text-align: end;">
-                        <div style="margin-top: -5px;"> <%--margin-left: 1170px; --%>
+                        <div> <%--margin-left: 1170px; --%>
                             <asp:Label ID="lblLogged" runat="server" Style="text-align:right; font-weight: bold; font-style: italic; white-space: nowrap;font-family: Segoe UI, Arial, Helvetica, sans-serif;
     font-size: 12px;"></asp:Label>
                         </div>
+                    </td>
+                    <td>                            
+                        <a href="javascript:void(0)" onclick="OpenModal('Change Legal Org');" class="change-btn" id="lblChange" style="font-weight: bold; font-style: italic;margin: 0px 5px; font-size: 12px;">Change</a>
                     </td>
                     <td style="width: 0%;">
                         <i class="fa fa-power-off" style="font-size: 23px; color: #fe5c00; " onclick="OpenModal('Logout');" title="Logout" id="falogout"></i> <%--margin-left: 321px; margin-top: -19px;--%>
@@ -586,6 +589,7 @@ table.dataTable > thead > tr > td {
         <asp:Button ID="btnlogout" runat="server" Text="Button" OnClick="btnlogout_Click" style="display:none;" CssClass="displayNone" />
         <asp:HiddenField ID="hdnEncID" runat="server" />
         <asp:HiddenField ID="hdnLocalTime" runat="server" EnableViewState="false" />
+        <asp:HiddenField ID="hdnCheckLegalOrg" runat="server" EnableViewState="false" />
 
         <asp:PlaceHolder ID="PlaceHolder1" runat="server">
          <%--   <script src="JScripts/jquery.datetimepicker.js?version=<%=ConfigurationManager.AppSettings["VersionConfiguration"].ToString().Replace("Capella - ","") %>" type="text/javascript"></script>--%>
