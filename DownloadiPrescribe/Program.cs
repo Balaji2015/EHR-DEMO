@@ -19,6 +19,11 @@ namespace DownloadiPrescribe
 {
     public class Program
     {
+        //Jira CAP-2977
+        static string sSub_Type = ConfigurationManager.AppSettings["Document_Sub_Type"].ToUpper();
+        static string[] sDocument_Sub_Type = sSub_Type.Split(',');
+        //Jira CAP-2977 - End
+
         //static async Task Main(string[] args)
         static void Main(string[] args)
         {
@@ -323,135 +328,135 @@ namespace DownloadiPrescribe
             sIncoming_StudiesFilePath = ConfigurationManager.AppSettings["Incoming_StudiesFilePath"];
             sImported_StudiesFilePath = ConfigurationManager.AppSettings["Imported_StudiesFilePath"];
             sErrored_StudiesFilePath = ConfigurationManager.AppSettings["Errored_StudiesFilePath"];
-            DirectoryInfo[] Directorys = new DirectoryInfo(sIncoming_StudiesFilePath).GetDirectories();
+            //Jira CAP-2977
+            //DirectoryInfo[] Directorys = new DirectoryInfo(sIncoming_StudiesFilePath).GetDirectories();
             TimeZoneInfo timeInfo = TimeZoneInfo.FindSystemTimeZoneById("Pacific Standard Time");
-            
-            foreach (DirectoryInfo dir in Directorys)
+
+            //Jira CAP-2977
+            //foreach (DirectoryInfo dir in Directorys)
+            //{
+            //sIncoming_StudiesFilePath = sIncoming_StudiesFilePath + @"\" + dir.Name;
+            //sImported_StudiesFilePath = sImported_StudiesFilePath + @"\" + dir.Name;
+            //sErrored_StudiesFilePath = sErrored_StudiesFilePath + @"\" + dir.Name;
+            //Jira CAP-2977 - End
+            if (Directory.Exists(sIncoming_StudiesFilePath) && Directory.Exists(sImported_StudiesFilePath) && Directory.Exists(sErrored_StudiesFilePath))
             {
-                sIncoming_StudiesFilePath = sIncoming_StudiesFilePath + @"\" + dir.Name;
-                sImported_StudiesFilePath = sImported_StudiesFilePath + @"\" + dir.Name;
-                sErrored_StudiesFilePath = sErrored_StudiesFilePath + @"\" + dir.Name;
-
-                if (Directory.Exists(sIncoming_StudiesFilePath) && Directory.Exists(sImported_StudiesFilePath) && Directory.Exists(sErrored_StudiesFilePath))
+                FileInfo[] sFiles = new DirectoryInfo(sIncoming_StudiesFilePath).GetFiles("*.*");
+                foreach (FileInfo finfFile in sFiles)
                 {
-                    FileInfo[] sFiles = new DirectoryInfo(sIncoming_StudiesFilePath).GetFiles("*.*");
-                    foreach (FileInfo finfFile in sFiles)
-                    {
-                        insertordersubmitList = new List<OrdersSubmit>();
-                        insertOrderList = new List<Orders>();
-                        ilstScan = new List<Scan>();
-                        ilstscan_index = new List<scan_index>();
-                        fileManagementIndexList = new List<FileManagementIndex>();
+                    insertordersubmitList = new List<OrdersSubmit>();
+                    insertOrderList = new List<Orders>();
+                    ilstScan = new List<Scan>();
+                    ilstscan_index = new List<scan_index>();
+                    fileManagementIndexList = new List<FileManagementIndex>();
 
-                        sFile = finfFile.Name;
-                        bIsErroredFile = FileValidation(sFile);
-                        if (!bIsErroredFile)
+                    sFile = finfFile.Name;
+                    bIsErroredFile = FileValidation(sFile);
+                    if (!bIsErroredFile)
+                    {
+                        objHuman = MngrHuman.GetHumanFromHumanIDAndLastNameFirstName(Convert.ToUInt64(sFile.ToUpper().Split('_')[0].Replace("ID", "")), sFile.ToUpper().Split('_')[1], sFile.ToUpper().Split('_')[2]);
+                        if (objHuman?.Id != null && objHuman.Id > 0)
                         {
-                            objHuman = MngrHuman.GetHumanFromHumanIDAndLastNameFirstName(Convert.ToUInt64(sFile.ToUpper().Split('_')[0].Replace("ID", "")), sFile.ToUpper().Split('_')[1], sFile.ToUpper().Split('_')[2]);
-                            if (objHuman?.Id != null && objHuman.Id > 0)
+                            Console.WriteLine("FTP started");
+                            #region FTP Transfer
+                            string ftpServerIP = ConfigurationManager.AppSettings["ftpServerIP"];
+                            bool bCreateDirectory = CreateDirectory(objHuman.Id.ToString(), ftpServerIP, string.Empty, string.Empty, out string sCheckFileNotFoundException);
+                            if (sCheckFileNotFoundException != "" && sCheckFileNotFoundException.Contains("CheckFileNotFoundException"))
                             {
-                                Console.WriteLine("FTP started");
-                                #region FTP Transfer
-                                string ftpServerIP = ConfigurationManager.AppSettings["ftpServerIP"];
-                                bool bCreateDirectory = CreateDirectory(objHuman.Id.ToString(), ftpServerIP, string.Empty, string.Empty, out string sCheckFileNotFoundException);
+                                //ScriptManager.RegisterStartupScript(this, this.GetType(), "Key", "alert(\"" + sCheckFileNotFoundException.Split('~')[1] + "\");", true);
+                                //return;
+                            }
+                            if (bCreateDirectory)
+                            {
+                                string serverPath = string.Empty;
+                                serverPath = UploadToImageServer(objHuman.Id.ToString(), ftpServerIP, string.Empty, string.Empty, sIncoming_StudiesFilePath + "//" + sFile, string.Empty, out string sCheckFileNotFoundExceptions);
                                 if (sCheckFileNotFoundException != "" && sCheckFileNotFoundException.Contains("CheckFileNotFoundException"))
                                 {
                                     //ScriptManager.RegisterStartupScript(this, this.GetType(), "Key", "alert(\"" + sCheckFileNotFoundException.Split('~')[1] + "\");", true);
                                     //return;
                                 }
-                                if (bCreateDirectory)
+
+                                if (serverPath != string.Empty)
                                 {
-                                    string serverPath = string.Empty;
-                                    serverPath = UploadToImageServer(objHuman.Id.ToString(), ftpServerIP, string.Empty, string.Empty, sIncoming_StudiesFilePath + "//" + sFile, string.Empty, out string sCheckFileNotFoundExceptions);
-                                    if (sCheckFileNotFoundException != "" && sCheckFileNotFoundException.Contains("CheckFileNotFoundException"))
+
+                                    OrdersSubmit objOrdersSubmit = new OrdersSubmit();
+                                    objOrdersSubmit.Human_ID = objHuman.Id;
+                                    objOrdersSubmit.Created_By = "ImageResultsAgent";
+                                    objOrdersSubmit.Created_Date_And_Time = DateTime.UtcNow;
+                                    objOrdersSubmit.Facility_Name = sFacility;
+                                    objOrdersSubmit.Specimen_Collection_Date_And_Time = Convert.ToDateTime(DateTime.ParseExact(sFile.Split('_')[3].ToUpper().Replace(".PDF", ""), "yyyyMMdd", CultureInfo.InvariantCulture).ToString("yyyy-MM-dd"));
+                                    objOrdersSubmit.Order_Type = "DIAGNOSTIC ORDER";
+                                    insertordersubmitList.Add(objOrdersSubmit);
+
+
+                                    Orders objOrder = new Orders
                                     {
-                                        //ScriptManager.RegisterStartupScript(this, this.GetType(), "Key", "alert(\"" + sCheckFileNotFoundException.Split('~')[1] + "\");", true);
-                                        //return;
-                                    }
+                                        Lab_Procedure = "Paper Order",
+                                        Human_ID = objHuman.Id,
+                                        Created_By = "ImageResultsAgent",
+                                        Created_Date_And_Time = DateTime.UtcNow
+                                    };
+                                    insertOrderList.Add(objOrder);
 
-                                    if (serverPath != string.Empty)
-                                    {
+                                    ulOrderSubmitId = ordersManager.InsertDummyOrder(insertordersubmitList, insertOrderList, "DIAGNOSTIC ORDER", sFacility, string.Empty);
 
-                                        OrdersSubmit objOrdersSubmit = new OrdersSubmit();
-                                        objOrdersSubmit.Human_ID = objHuman.Id;
-                                        objOrdersSubmit.Created_By = "ImageResultsAgent";
-                                        objOrdersSubmit.Created_Date_And_Time = DateTime.UtcNow;
-                                        objOrdersSubmit.Facility_Name = sFacility;
-                                        objOrdersSubmit.Specimen_Collection_Date_And_Time = Convert.ToDateTime(DateTime.ParseExact(sFile.Split('_')[3].ToUpper().Replace(".PDF", ""), "yyyyMMdd", CultureInfo.InvariantCulture).ToString("yyyy-MM-dd"));
-                                        objOrdersSubmit.Order_Type = "DIAGNOSTIC ORDER";
-                                        insertordersubmitList.Add(objOrdersSubmit);
+                                    Scan scan = new Scan();
+                                    scan.Scanned_File_Path = sImported_StudiesFilePath + "\\" + sFile;
+                                    scan.Scanned_Date = Convert.ToDateTime(DateTime.ParseExact(sFile.Split('_')[3].ToUpper().Replace(".PDF", ""), "yyyyMMdd", CultureInfo.InvariantCulture).ToString("yyyy-MM-dd") + " 15:30:00");
+                                    scan.Facility_Name = sFacility;
+                                    scan.No_of_Pages = 1;
+                                    scan.Scanned_File_Name = sFile;
+                                    scan.Scan_Type = "Online Chart - LOCAL";
+                                    scan.Created_By = "ImageResultsAgent";
+                                    scan.Created_Date_And_Time = DateTime.UtcNow;
+                                    ilstScan.Add(scan);
+                                    scanManager.SaveUpdateDelete_DBAndXML_WithTransaction(ref ilstScan, ref UpdateScanList, null, string.Empty, false, false, objHuman.Id, string.Empty);
 
+                                    scan_index scan_Index = new scan_index();
+                                    scan_Index.Human_ID = objHuman.Id;
+                                    scan_Index.Scan_ID = Convert.ToUInt64(ilstScan.FirstOrDefault().Id);
+                                    scan_Index.Document_Date = Convert.ToDateTime(DateTime.ParseExact(sFile.Split('_')[3].ToUpper().Replace(".PDF", ""), "yyyyMMdd", CultureInfo.InvariantCulture).ToString("yyyy-MM-dd") + " 15:30:00");
+                                    scan_Index.Document_Type = "Results";
+                                    //Jira CAP-2977
+                                    //scan_Index.Document_Sub_Type = dir.Name.ToUpper();
+                                    scan_Index.Document_Sub_Type = sFile.Split('_')[4].ToUpper().Replace(".PDF", "").ToUpper();
+                                    scan_Index.Order_ID = ulOrderSubmitId;
+                                    scan_Index.Indexed_File_Path = sImported_StudiesFilePath + "\\" + sFile;
+                                    scan_Index.Page_Selected = "1";
+                                    scan_Index.Created_By = "ImageResultsAgent";
+                                    scan_Index.Created_Date_And_Time = DateTime.UtcNow;
+                                    scan_Index.Is_Manually_Reviewed_And_Signed = "Y";
+                                    ilstscan_index.Add(scan_Index);
 
-                                        Orders objOrder = new Orders
-                                        {
-                                            Lab_Procedure = "Paper Order",
-                                            Human_ID = objHuman.Id,
-                                            Created_By = "ImageResultsAgent",
-                                            Created_Date_And_Time = DateTime.UtcNow
-                                        };
-                                        insertOrderList.Add(objOrder);
+                                    scanindexmanager.SaveUpdateDelete_DBAndXML_WithTransaction(ref ilstscan_index, ref UpdateScan_indexList, null, string.Empty, false, false, objHuman.Id, string.Empty);
 
-                                        ulOrderSubmitId = ordersManager.InsertDummyOrder(insertordersubmitList, insertOrderList, "DIAGNOSTIC ORDER", sFacility, string.Empty);
+                                    FileManagementIndex filemanagementIndex = new FileManagementIndex();
+                                    filemanagementIndex.Created_By = "ImageResultsAgent";
+                                    filemanagementIndex.Created_Date_And_Time = DateTime.UtcNow;
+                                    filemanagementIndex.Document_Date = Convert.ToDateTime(DateTime.ParseExact(sFile.Split('_')[3].ToUpper().Replace(".PDF", ""), "yyyyMMdd", CultureInfo.InvariantCulture).ToString("yyyy-MM-dd") + " 15:30:00");
+                                    filemanagementIndex.Document_Type = "Results";
+                                    //Jira CAP-2977
+                                    //filemanagementIndex.Document_Sub_Type = dir.Name.ToUpper();
+                                    filemanagementIndex.Document_Sub_Type = sFile.Split('_')[4].ToUpper().Replace(".PDF", "").ToUpper();
+                                    filemanagementIndex.Source = "SCAN";
+                                    filemanagementIndex.Order_ID = ulOrderSubmitId;
+                                    filemanagementIndex.Human_ID = objHuman.Id;
+                                    filemanagementIndex.Scan_Index_Conversion_ID = ilstscan_index.FirstOrDefault().Id;
+                                    filemanagementIndex.File_Path = serverPath;
+                                    filemanagementIndex.Is_Delete = "N";
+                                    filemanagementIndex.Facility_Name = sFacility;
 
-                                        Scan scan = new Scan();
-                                        scan.Scanned_File_Path = sImported_StudiesFilePath + "\\" + sFile;
-                                        scan.Scanned_Date = Convert.ToDateTime(DateTime.ParseExact(sFile.Split('_')[3].ToUpper().Replace(".PDF", ""), "yyyyMMdd", CultureInfo.InvariantCulture).ToString("yyyy-MM-dd") + " 15:30:00");
-                                        scan.Facility_Name = sFacility;
-                                        scan.No_of_Pages = 1;
-                                        scan.Scanned_File_Name = sFile;
-                                        scan.Scan_Type = "Online Chart - LOCAL";
-                                        scan.Created_By = "ImageResultsAgent";
-                                        scan.Created_Date_And_Time = DateTime.UtcNow;
-                                        ilstScan.Add(scan);
-                                        scanManager.SaveUpdateDelete_DBAndXML_WithTransaction(ref ilstScan, ref UpdateScanList, null, string.Empty, false, false, objHuman.Id, string.Empty);
+                                    fileManagementIndexList.Add(filemanagementIndex);
+                                    ulong[] uScanID = { 0 };
 
-                                        scan_index scan_Index = new scan_index();
-                                        scan_Index.Human_ID = objHuman.Id;
-                                        scan_Index.Scan_ID = Convert.ToUInt64(ilstScan.FirstOrDefault().Id);
-                                        scan_Index.Document_Date = Convert.ToDateTime(DateTime.ParseExact(sFile.Split('_')[3].ToUpper().Replace(".PDF", ""), "yyyyMMdd", CultureInfo.InvariantCulture).ToString("yyyy-MM-dd") + " 15:30:00");
-                                        scan_Index.Document_Type = "Results";
-                                        scan_Index.Document_Sub_Type = dir.Name.ToUpper();
-                                        scan_Index.Order_ID = ulOrderSubmitId;
-                                        scan_Index.Indexed_File_Path = sImported_StudiesFilePath + "\\" + sFile;
-                                        scan_Index.Page_Selected = "1";
-                                        scan_Index.Created_By = "ImageResultsAgent";
-                                        scan_Index.Created_Date_And_Time = DateTime.UtcNow;
-                                        scan_Index.Is_Manually_Reviewed_And_Signed = "Y";
-                                        ilstscan_index.Add(scan_Index);
-
-                                        scanindexmanager.SaveUpdateDelete_DBAndXML_WithTransaction(ref ilstscan_index, ref UpdateScan_indexList, null, string.Empty, false, false, objHuman.Id, string.Empty);
-
-                                        FileManagementIndex filemanagementIndex = new FileManagementIndex();
-                                        filemanagementIndex.Created_By = "ImageResultsAgent";
-                                        filemanagementIndex.Created_Date_And_Time = DateTime.UtcNow;
-                                        filemanagementIndex.Document_Date = Convert.ToDateTime(DateTime.ParseExact(sFile.Split('_')[3].ToUpper().Replace(".PDF", ""), "yyyyMMdd", CultureInfo.InvariantCulture).ToString("yyyy-MM-dd") + " 15:30:00");
-                                        filemanagementIndex.Document_Type = "Results";
-                                        filemanagementIndex.Document_Sub_Type = dir.Name.ToUpper();
-                                        filemanagementIndex.Source = "SCAN";
-                                        filemanagementIndex.Order_ID = ulOrderSubmitId;
-                                        filemanagementIndex.Human_ID = objHuman.Id;
-                                        filemanagementIndex.Scan_Index_Conversion_ID = ilstscan_index.FirstOrDefault().Id;
-                                        filemanagementIndex.File_Path = serverPath;
-                                        filemanagementIndex.Is_Delete = "N";
-                                        filemanagementIndex.Facility_Name = sFacility;
-
-                                        fileManagementIndexList.Add(filemanagementIndex);
-                                        ulong[] uScanID = { 0 };
-
-                                        fileManagementIndexmanager.SaveUpdateDelete_DBAndXML_WithTransaction(ref fileManagementIndexList, ref UpdatefileManagementIndexList, null, string.Empty, true, true, objHuman.Id, string.Empty);
-                                        Console.WriteLine(sFile + " - Import to Imported_Studies Folder");
-                                    }
+                                    fileManagementIndexmanager.SaveUpdateDelete_DBAndXML_WithTransaction(ref fileManagementIndexList, ref UpdatefileManagementIndexList, null, string.Empty, true, true, objHuman.Id, string.Empty);
+                                    Console.WriteLine(sFile + " - Import to Imported_Studies Folder");
                                 }
-                                Console.WriteLine("FTP Ended");
-                                #endregion
+                            }
+                            Console.WriteLine("FTP Ended");
+                            #endregion
 
-                                MoveAndReplace(sIncoming_StudiesFilePath + "//" + sFile, sImported_StudiesFilePath + "//" + sFile);
-                            }
-                            else
-                            {
-                                MoveAndReplace(sIncoming_StudiesFilePath + "//" + sFile, sErrored_StudiesFilePath + "//" + sFile);
-                                Console.WriteLine(sFile + " - Import to Errored_Studies Folder");
-                            }
+                            MoveAndReplace(sIncoming_StudiesFilePath + "//" + sFile, sImported_StudiesFilePath + "//" + sFile);
                         }
                         else
                         {
@@ -459,8 +464,15 @@ namespace DownloadiPrescribe
                             Console.WriteLine(sFile + " - Import to Errored_Studies Folder");
                         }
                     }
+                    else
+                    {
+                        MoveAndReplace(sIncoming_StudiesFilePath + "//" + sFile, sErrored_StudiesFilePath + "//" + sFile);
+                        Console.WriteLine(sFile + " - Import to Errored_Studies Folder");
+                    }
                 }
             }
+            //Jira CAP-2977
+            //}
         }
 
         public static bool MoveAndReplace(string sSourceFile, string sDestinationFile)
@@ -477,7 +489,8 @@ namespace DownloadiPrescribe
 
             return true;
         }
-        public static bool FileValidation(string sFile) {
+        public static bool FileValidation(string sFile)
+        {
             DateTime dateValue;
             if (!sFile.ToUpper().StartsWith("ID"))
             {
@@ -487,11 +500,15 @@ namespace DownloadiPrescribe
             {
                 return true;
             }
-            else if (sFile.Split('_').Length != 4)
+            //Jira CAP-2977
+            //else if (sFile.Split('_').Length != 4)
+            else if (sFile.Split('_').Length != 5)
             {
                 return true;
             }
-            else if (sFile.Split('_').Length == 4 && sFile.Split('_')[0].ToUpper().Replace("ID", "").Any(a => char.IsLetter(a)))
+            //Jira CAP-2977
+            //else if (sFile.Split('_').Length == 4 && sFile.Split('_')[0].ToUpper().Replace("ID", "").Any(a => char.IsLetter(a)))
+            else if (sFile.Split('_').Length == 5 && sFile.Split('_')[0].ToUpper().Replace("ID", "").Any(a => char.IsLetter(a)))
             {
                 return true;
             }
@@ -503,7 +520,10 @@ namespace DownloadiPrescribe
             {
                 return true;
             }
-            else if (sFile.Split('_').Length == 4
+            //Jira CAP-2977
+            //else if (sFile.Split('_').Length == 4
+            //  && sFile.Split('_')[3].ToUpper().Replace(".PDF", "").Length == 8)
+            else if (sFile.Split('_').Length == 5
                 && sFile.Split('_')[3].ToUpper().Replace(".PDF", "").Length == 8)
             {
                 try
@@ -513,13 +533,18 @@ namespace DownloadiPrescribe
                         return true;
                     }
                 }
-                catch(Exception ex)
+                catch (Exception ex)
                 {
                     return true;
 
                 }
             }
-            
+            //Jira CAP-2977
+            else if (!sDocument_Sub_Type.Contains(sFile.Split('_')[4].ToUpper()))
+            {
+                return true;
+            }
+
             return false;
         }
         public static string UploadToImageServer(string HumanID, string serverIP, string UserName, string Password, string SelectedFilePath, string File_Name_Convention, out string sCheckFileNotFoundException)

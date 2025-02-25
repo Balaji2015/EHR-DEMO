@@ -163,8 +163,11 @@ function OnClientClose(oWnd, args) {
             else
                 $find("txtSpecialty").set_value(arg.sPhySpecialty);
         }
-        if (arg.sPhyPhone != undefined)
-            $find("msktxtTelephone").set_value(arg.sPhyPhone);
+        if (arg.sPhyPhone != undefined) {
+            //Jira cap - 2718
+            //$find("msktxtTelephone").set_value(arg.sPhyPhone);
+            $find("msktxtTelephone").set_value(arg.sPhyPhone.replace(/[^0-9]/g, ''));
+        }        
         $find('btnAdd').set_enabled(true);
         document.getElementById('hdnAddEnable').value = "true";
         if (window.parent.parent.parent.parent.theForm.ctl00_C5POBody_hdnIsSaveEnable != null && window.parent.parent.parent.parent.theForm.ctl00_C5POBody_hdnIsSaveEnable != undefined)
