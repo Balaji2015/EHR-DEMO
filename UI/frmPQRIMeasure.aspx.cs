@@ -214,6 +214,14 @@ namespace Acurus.Capella.UI
                 dtpToDate.SelectedDate = Convert.ToDateTime(DateTime.Now.Year.ToString() + "-12-31");
                 dtpFromDate.SelectedDate = Convert.ToDateTime(DateTime.Now.Year.ToString() + "-01-01");
             }
+            //CAP-2751
+            else
+            {
+                if (Session["PQRI_LST"] != null)
+                {
+                    LoadGrid((IList<PQRI_Measure>)Session["PQRI_LST"]);
+                }
+            }
         }
 
         protected void btnGenerateReport_Click(object sender, EventArgs e)
@@ -508,6 +516,7 @@ namespace Acurus.Capella.UI
             if (PQRIlist != null && PQRIlist.Count > 0)
             {
                 grdPQRIMeasure.DataSource = null;
+                Session["PQRI_LST"] = PQRIlist;
                 LoadGrid(PQRIlist);
                 btnCQM.Enabled = true;
                 btnCATIZIP.Enabled = true;
@@ -1585,8 +1594,12 @@ namespace Acurus.Capella.UI
             {
                 CQMCATLoad();
             }
-            ScriptManager.RegisterStartupScript(this, this.GetType(), "Download", "DownloadFile();", true);
-
+            //CAP-2751
+            string path = DownLoadZIPFormateCATII(Server.MapPath("Documents/" + Session.SessionID + "/CQMIII"));
+            if (!string.IsNullOrEmpty(path))
+            {
+                ScriptManager.RegisterStartupScript(this, this.GetType(), "Download", "DownloadFile('" + path.Replace("\\", "/") + "','" + Path.GetFileName(path) + "');", true);
+            }
             btnCQM.Enabled = false;
 
         }
@@ -4495,7 +4508,7 @@ namespace Acurus.Capella.UI
         }
 
 
-        public void DownLoadZIPFormate(string DirName)
+        public string DownLoadZIPFormate(string DirName)
         {
 
 
@@ -4595,44 +4608,41 @@ namespace Acurus.Capella.UI
                             Directory.Delete(subFolder, true);
                         }
                     }
+                    //CAP-2751
+                    string path = folder_Name.Substring(folder_Name.IndexOf(@"\Documents\"));
+                    string zipName = $"Zip_{DateTime.Now:yyyy-MMM-dd-HHmmss}.zip";
+
+                    //Remove old ZIP files
+                    foreach (string file in Directory.GetFiles(folder_Name, "Zip_*.zip"))
+                    { File.Delete(file); }
+
                     using (ZipFile zip = new ZipFile())
                     {
                         zip.AddDirectory(folder_Name);
-                        Response.Clear();
-                        Response.BufferOutput = false;
-                        string zipName = String.Format("Zip_{0}.zip", DateTime.Now.ToString("yyyy-MMM-dd-HHmmss"));
-                        Response.ContentType = "application/zip";
-                        Response.AddHeader("content-disposition", "attachment; filename=" + zipName);
-                        zip.Save(Response.OutputStream);
-                        Response.Flush();
-                        Response.End();
-                        //zip.Save(folder_Name + ".zip");
-                        //Directory.Delete(folder_Name, true);
+                        zip.Save(Path.Combine(folder_Name, zipName));
                     }
+                    return Path.Combine(path, zipName);
                 }
             }
             //}
+            return string.Empty;
         }
 
 
-        public void DownLoadZIPFormateCATII(string DirName)
+        public string DownLoadZIPFormateCATII(string DirName)
         {
+            //CAP-2751
+            string fileName = "CQMCATIII.xml";
+            string filePath = Server.MapPath("~/Documents/" + Session.SessionID + "/CQMIII/");
+            string zipName = "CATIII.zip";
             using (ZipFile zip = new ZipFile())
             {
                 zip.AlternateEncodingUsage = ZipOption.AsNecessary;
-                DirectoryInfo directorySelected = new DirectoryInfo(DirName);
-                string fileName = "CQMCATIII.xml";
-                string filePath = Server.MapPath("~/Documents/" + Session.SessionID + "/CQMIII/" + fileName); //fileToCompress.FullName;
-                zip.AddFile(filePath, "");
-                Response.Clear();
-                Response.BufferOutput = false;
-                string zipName = "CATIII.zip";
-                Response.ContentType = "application/zip";
-                Response.AddHeader("content-disposition", "attachment; filename=" + zipName);
-                zip.Save(Response.OutputStream);
-                Response.Flush();
-                Response.End();
+                zip.AddFile(Path.Combine(filePath, fileName), "");
+                zip.Save(Path.Combine(filePath, zipName));
             }
+            string path = filePath.Substring(filePath.IndexOf(@"\Documents\"));
+            return Path.Combine(path, zipName);
         }
 
 
@@ -4677,8 +4687,11 @@ namespace Acurus.Capella.UI
             if (cboStage.Text == "Stage 3")//Stage 3 Measure
                 LoadXMLCATIStageThreeMeasure(ResultPqri);
             //this part moved to btndownloadcat1 buttonexclusi
-            //DownLoadZIPFormate(Server.MapPath("Documents/" + Session.SessionID + "/CQMI"));
-            ScriptManager.RegisterStartupScript(this, this.GetType(), "Download", "DownloadCaTIFile();", true);
+            string path = DownLoadZIPFormate(Server.MapPath("Documents/" + Session.SessionID + "/CQMI"));
+            if (!string.IsNullOrEmpty(path))
+            {
+                ScriptManager.RegisterStartupScript(this, this.GetType(), "Download", "DownloadCaTIFile('" + path.Replace("\\", "/") + "','" + Path.GetFileName(path) + "');", true);
+            }
             btnCATIZIP.Enabled = false;
             ScriptManager.RegisterStartupScript(this, this.GetType(), "StopLoading", " {sessionStorage.setItem('StartLoading', 'false');StopLoadFromPatChart();}", true);
         }

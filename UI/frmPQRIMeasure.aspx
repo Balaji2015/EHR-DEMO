@@ -127,15 +127,27 @@
                 $("#btnGenerate").click();
                 return true;
             }
-            function DownloadFile() {
+            function DownloadFile(path, file) {
+                //CAP-2751
                 { sessionStorage.setItem('StartLoading', 'false'); StopLoadFromPatChart(); }
-                $("#btndownload").click();
+                const link = document.createElement('a');
+                link.href = path;
+                link.download = file;
+                document.body.appendChild(link);
+                link.click();
+                document.body.removeChild(link);
                 return true;
             }
 
-            function DownloadCaTIFile() {
+            function DownloadCaTIFile(path, file) {
+                //CAP-2751
                 { sessionStorage.setItem('StartLoading', 'false'); StopLoadFromPatChart(); }
-                $("#btndownloadCATI").click();
+                const link = document.createElement('a');
+                link.href = path;
+                link.download = file;
+                document.body.appendChild(link);
+                link.click();
+                document.body.removeChild(link);
                 return true;
             }
 
