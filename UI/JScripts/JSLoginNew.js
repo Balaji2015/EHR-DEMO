@@ -91,20 +91,7 @@ $(document).ready(function () {
         var dateParams = (localTimeParams?.value ?? "") + "|" + (localDateParams?.value ?? "") + "|" + (universaloffsetParams?.value ?? "") + "|" + (localDateAndTimeParams?.value ?? "") + "|" + (dayLightSavingsParams?.value ?? "false");
         if (sharedSessionUrl?.value ?? "" != "") {
             //CAP-2921
-            var iframe = window.document.createElement("iframe");
-            iframe.id = "ifrmLogin";
-            iframe.src = sharedSessionUrl.value + "" + btoa(((stateParams?.value ?? "") + "" + dateParams));
-            iframe.style.display = "none";
-            iframe.onload = function () {
-                sessionStorage.setItem('StartLoading', 'false');
-                StopLoadFromPatChart();
-                if ($('#ifrmLogin')[0]?.contentWindow?.location?.href != null && $('#ifrmLogin')[0]?.contentWindow?.location?.href.includes("frmLoginNew.aspx")) {
-                    location.href = $('#ifrmLogin')[0].contentWindow.location.href;
-                }
-            };
-            window.document.body.appendChild(iframe);
-
-            //location.href = sharedSessionUrl.value + "" + btoa(((stateParams?.value ?? "") + "" + dateParams));
+            location.href = sharedSessionUrl.value + "" + btoa(((stateParams?.value ?? "") + "" + dateParams));
         }
 });
 
