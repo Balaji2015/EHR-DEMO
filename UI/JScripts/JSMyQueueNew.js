@@ -5785,13 +5785,19 @@ function Decompress(data) {
 
 function SetHeightForTabelBasedOnScreenSize() {
     window.setTimeout(function () {
-        if (document?.getElementById("launcher")?.getBoundingClientRect()?.top != undefined && document?.getElementsByClassName("dataTables_scrollBody")[0]?.getBoundingClientRect()?.top != undefined) {
-            var MaxHeightTable = (document.getElementById("launcher").getBoundingClientRect().top - document.getElementsByClassName("dataTables_scrollBody")[0].getBoundingClientRect().top)
-                + (document.getElementById("launcher").getBoundingClientRect().height - 10);
-            if (MaxHeightTable != undefined) {
-                if ($(".dataTables_scrollBody")?.css("max-height") != undefined
-                    && parseInt($(".dataTables_scrollBody").css("max-height")) < MaxHeightTable) {
-                    $(".dataTables_scrollBody").css({ "max-height": MaxHeightTable + "px" });
+        //CAP-2990
+        var launcher = document?.getElementById("launcher");
+        var dataTableBody = document?.getElementsByClassName("dataTables_scrollBody")[0];
+        if (launcher && dataTableBody) {
+            var launcherRect = launcher?.getBoundingClientRect();
+            var dataTableRect = dataTableBody?.getBoundingClientRect();
+            if (launcherRect?.top != undefined && launcherRect?.height != undefined && dataTableRect?.top != undefined) {
+                var MaxHeightTable = (launcherRect.top - dataTableRect.top) + (launcherRect.height - 10);
+                if (MaxHeightTable != undefined) {
+                    if ($(".dataTables_scrollBody")?.css("max-height") != undefined
+                        && parseInt($(".dataTables_scrollBody").css("max-height")) < MaxHeightTable) {
+                        $(".dataTables_scrollBody").css({ "max-height": MaxHeightTable + "px" });
+                    }
                 }
             }
         }
