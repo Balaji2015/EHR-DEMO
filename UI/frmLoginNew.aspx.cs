@@ -241,8 +241,8 @@ namespace Acurus.Capella.UI
                             login = objLoginDTO.User;
                             //!objLoginDTO.Any(x => x.Is_Direct_Login.Equals("y", StringComparison.InvariantCultureIgnoreCase))
                             //if (objLoginDTO.User.Count > 0 && objLoginDTO.User.Any(x => x.Is_Direct_Login.Equals("Y", StringComparison.InvariantCultureIgnoreCase)))
-                                if (objLoginDTO.User.Count > 0)
-                                {
+                            if (objLoginDTO.User.Count > 0)
+                            {
                                 //ClientSession.UserName = login[0].user_name;
                                 //ClientSession.EmailAddress = login[0].EMail_Address;
                                 //ClientSession.UserAccountType = "Capella";
@@ -251,12 +251,12 @@ namespace Acurus.Capella.UI
                             }
                             else
                             {
-                                this.Page.ClientScript.RegisterStartupScript(this.Page.GetType(), string.Empty, "DisplayErrorMessage('010001');", true);
+                                //this.Page.ClientScript.RegisterStartupScript(this.Page.GetType(), string.Empty, "DisplayErrorMessage('010001');", true);
                             }
                         }
                         else
                         {
-                            this.Page.ClientScript.RegisterStartupScript(this.Page.GetType(), string.Empty, "DisplayErrorMessage('010001');", true);
+                            //this.Page.ClientScript.RegisterStartupScript(this.Page.GetType(), string.Empty, "DisplayErrorMessage('010001');", true);
                         }
                     }
                     else
@@ -363,7 +363,7 @@ namespace Acurus.Capella.UI
             //var bDayLightSavings = (hdnFollowsDayLightSavings?.Value ?? "").Equals("true", StringComparison.InvariantCultureIgnoreCase);
 
             //CAP-2019
-            //var state = Convert.ToBase64String(Encoding.UTF8.GetBytes(Guid.NewGuid().ToString() + "|" + (HttpUtility.UrlEncode(Request.QueryString["redirecturl"]) ?? "") + "|" + hdnLocalTime.Value + "|" + hdnLocalDate.Value + "|" + hdnUniversaloffset.Value + "|" + hdnLocalDateAndTime.Value + "|" + bDayLightSavings));
+            //var state = Convert.ToBase64String(Encoding.UTF8.GetBytes(Guid.NewGuid().ToString() + "|" + (HttpUtility.UrlEncode(Request.QueryString["redirecturl"]) ?? "") + "|" + hdnLocalTime.Value + "|" + hdnLocalDate.Value + "|" + hdnUniversaloffset.Value + "|" + hdnLocalDateAndTime.Value + "|" + bDayLightSavings));          
             hdnStateParam.Value = Guid.NewGuid().ToString() + "|" + (HttpUtility.UrlEncode(Request.QueryString["redirecturl"]) ?? "") + "|";
             return $"{oktaAuthorizeEndpoint}?client_id={clientId}&response_type=code&redirect_uri={HttpUtility.UrlEncode(redirectUri)}&prompt=none&scope=openid+profile+email&state=";
         }

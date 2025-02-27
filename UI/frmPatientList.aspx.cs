@@ -28,7 +28,7 @@ using System.Text;
 using System.IO.Compression;
 using Newtonsoft.Json;
 using System.Web.Script.Services;
-
+using RestSharp;
 
 namespace Acurus.Capella.UI
 {
@@ -230,6 +230,182 @@ namespace Acurus.Capella.UI
             //CAP-1752
             var loginpage = (ConfigurationSettings.AppSettings["IsSSOLogin"] == "Y" ? "frmLoginNew.aspx" : "frmLogin.aspx");
             Response.Write($"<script> window.top.location.href=\" {loginpage} \"; </script>t>");
+            //Cap - 2981
+            string sUser = ClientSession.UserName;
+            UserSessionManager userSessionMngr = new UserSessionManager();
+            UserSession objUserSession = new UserSession();
+            objUserSession.User_Name = sUser;
+            // userSessionMngr.DeleteUserSessionUsingUserSessionIED(sUser);
+            //if (sUser != "" && sUser != string.Empty)
+            //{
+            //if (Global.ht[ClientSession.UserName]!=null)
+            //Global.ht.Remove(ClientSession.UserName);
+            //userSessionMngr.InsertUpdateDeleteUserSessionXml(objUserSession, "", "DELETE");
+            //}
+            //else
+            //{
+            // userSessionMngr.DeleteUserSessionFromXml(Session.SessionID);
+            //}
+            UtilityManager.DeleteUserSessionFile(string.Empty, Session.SessionID);
+            ClientSession.SavedSession = "DELETED";
+            ClientSession.WindowList = new ArrayList();
+            if (Session != null && Session.SessionID != "")
+            {
+                if (Directory.Exists(Server.MapPath("Documents\\" + Session.SessionID)) == true) // Handled To Delete Isolated Temp directory Created For Logged in users
+                {
+                    try
+                    {
+                        System.IO.Directory.Delete(Server.MapPath("Documents\\" + Session.SessionID), true);
+
+                    }
+                    catch
+                    {
+                    }
+                }
+
+                if (Directory.Exists(Server.MapPath("atala-capture-download\\" + Session.SessionID)))
+                {
+                    try
+                    {
+                        System.IO.Directory.Delete(Server.MapPath("atala-capture-download\\" + Session.SessionID), true);
+                        foreach (string filename in Directory.GetFiles(Server.MapPath("atala-capture-download")))
+                        {
+                            FileInfo file = new FileInfo(filename);
+                            if (file.Name.StartsWith(Session.SessionID))
+                            {
+                                file.Delete();
+                            }
+                        }
+                    }
+                    catch { }
+                }
+                if (Directory.Exists(Server.MapPath("atala-capture-upload\\" + Session.SessionID)))
+                {
+                    try
+                    {
+                        System.IO.Directory.Delete(Server.MapPath("atala-capture-upload\\" + Session.SessionID), true);
+                    }
+                    catch { }
+                }
+            }
+            //string CBeforeIfName = "BeforeIfLogoutVariable" + DateTime.Now.ToString("hh-mm-ss");
+            //Response.SetCookie(new HttpCookie(CBeforeIfName) { Value = "UserAccountType=" + ClientSession.UserAccountType.ToString(), HttpOnly = false });
+
+            #region Logout Microsoft SSO
+            if (ConfigurationSettings.AppSettings["IsSSOLogin"] == "Y")
+            {
+                if (ClientSession.UserAccountType == "Microsoft" || ClientSession.UserAccountType == "Okta")
+                {
+
+                    //string CName = "LogoutVariable" + DateTime.Now.ToString("hh-mm-ss");
+                    //Response.SetCookie(new HttpCookie(CName) { Value = "UserAccountType="+ClientSession.UserAccountType.ToString(), HttpOnly = false });
+                    //SSO_Logout
+                    var token = ClientSession.AccessToken;
+                    var id_token = ClientSession.AccessTokenId;
+
+                    //Revoke Token
+                    var oktaDomain = ConfigurationSettings.AppSettings["okta:OktaDomain"];
+                    var options = new RestClientOptions(oktaDomain)
+                    {
+                        MaxTimeout = -1,
+                    };
+
+                    var clientId = ConfigurationSettings.AppSettings["okta:ClientId"];
+                    var clientSecret = ConfigurationSettings.AppSettings["okta:ClientSecret"];
+                    //CAP-2337
+                    var redirectUri = string.Empty;
+                    var postLogoutRedirectUri = string.Empty;
+                    if ((Request?.Headers["X-Forwarded-Host"] ?? "") == ConfigurationSettings.AppSettings["AkidoChartDomain"])
+                    {
+                        string subdomain = Request.Url.Authority.Contains("test6") ? "" : "";
+
+                        if (string.IsNullOrWhiteSpace(subdomain))
+                        {
+                            redirectUri = $"https://{ConfigurationSettings.AppSettings["AkidoChartDomain"]}/frmLandingScreen.aspx";
+                            postLogoutRedirectUri = $"https://{ConfigurationSettings.AppSettings["AkidoChartDomain"]}/frmLoginNew.aspx";
+
+                        }
+                        else
+                        {
+                            redirectUri = $"https://{ConfigurationSettings.AppSettings["AkidoChartDomain"]}/{subdomain}/frmLandingScreen.aspx";
+                            postLogoutRedirectUri = $"https://{ConfigurationSettings.AppSettings["AkidoChartDomain"]}/{subdomain}/frmLoginNew.aspx";
+
+                        }
+                    }
+                    else
+                    {
+                        redirectUri = ConfigurationSettings.AppSettings["okta:RedirectUri"];
+                        postLogoutRedirectUri = ConfigurationSettings.AppSettings["okta:PostLogoutRedirectUri"];
+                    }
+                    var base64EncodedString = Convert.ToBase64String(Encoding.UTF8.GetBytes($"{clientId}:{clientSecret}"));
+
+                    var client = new RestClient(options);
+                    var request = new RestRequest($"{ConfigurationManager.AppSettings["okta:RevokeURL"]}", Method.Post);
+                    request.AddHeader("accept", "application/json");
+                    request.AddHeader("authorization", $"Basic {base64EncodedString}");
+                    request.AddParameter("token_type_hint", "access_token");
+                    request.AddParameter("token", $"{token}");
+                    RestResponse response = client.ExecuteAsync(request).Result;
+
+                    //New code
+                    HttpContext.Current.Session.Abandon();
+                    try
+                    {
+
+                        HttpContext.Current.Application.Remove("user");
+                        Session["ShowAllState"] = null;
+                        Session["GeneralQShowAll"] = null;
+                        //CAP-1167
+                        Session.Clear();
+                        Session.Abandon();
+                        //CAP-1311
+                        ClientSession.FlushSession();
+                        foreach (string cookieName in Request.Cookies.AllKeys)
+                        {
+                            HttpCookie myCookie = Request.Cookies[cookieName];
+                            myCookie.Value = ""; // Clear the cookie's value
+                            myCookie.Secure = true;
+                            myCookie.Expires = DateTime.Now.AddYears(-1);// Expire the cookies
+                            Response.Cookies.Add(myCookie); // Update the client-side cookie
+                        }
+                    }
+                    catch
+                    { }
+                    //New code end
+
+                    //Redirect To Logout Page
+                    Response.Redirect($"{ConfigurationManager.AppSettings["okta:LogoutURL"]}?id_token_hint={id_token}&post_logout_redirect_uri={postLogoutRedirectUri}&state=true", false);
+                }
+                else
+                { //CAP-2019
+                    Response.Write($"<script> window.top.location.href=\"frmLoginNew.aspx?IsLoginRequired=true\"; </script>");
+                }
+            }
+            #endregion
+
+            HttpContext.Current.Session.Abandon();
+            try
+            {
+
+                HttpContext.Current.Application.Remove("user");
+                Session["ShowAllState"] = null;
+                Session["GeneralQShowAll"] = null;
+                //CAP-1167
+                Session.Clear();
+                Session.Abandon();
+                //CAP-1311
+                ClientSession.FlushSession();
+                foreach (string cookieName in Request.Cookies.AllKeys)
+                {
+                    HttpCookie myCookie = Request.Cookies[cookieName];
+                    myCookie.Value = ""; // Clear the cookie's value
+                    myCookie.Secure = true;
+                    myCookie.Expires = DateTime.Now.AddYears(-1);// Expire the cookies
+                    Response.Cookies.Add(myCookie); // Update the client-side cookie
+                }
+            }
+            catch
+            { }
         }
 
         //protected void btnOK_Click(object sender, EventArgs e)

@@ -19,7 +19,7 @@ using System.IO;
 using System.Runtime.Serialization;
 using System.Diagnostics;
 using System.Xml;
-
+using Acurus.Capella.Core.DTOJson;
 
 namespace Acurus.Capella.PatientPortal
 {
@@ -2967,22 +2967,61 @@ namespace Acurus.Capella.PatientPortal
 
                         if (chkShowAll.Visible == true)
                         {
-                            XDocument xmlUser = null;
-                            if (File.Exists(Server.MapPath(@"ConfigXML\User.xml")))
-                                xmlUser = XDocument.Load(Server.MapPath(@"ConfigXML\User.xml"));
-                            cboMoveToMA.Items.Clear();
-                            cboMoveToMA.Items.Add(new RadComboBoxItem(""));
-                            if (xmlUser != null)
+                            //CAP-2953
+                            //XDocument xmlUser = null;
+                            //if (File.Exists(Server.MapPath(@"ConfigXML\User.xml")))
+                            //    xmlUser = XDocument.Load(Server.MapPath(@"ConfigXML\User.xml"));
+                            //cboMoveToMA.Items.Clear();
+                            //cboMoveToMA.Items.Add(new RadComboBoxItem(""));
+                            //if (xmlUser != null)
+                            //{
+                            //    if (chkShowAll.Checked)
+                            //    {
+                            //        foreach (XElement elements in xmlUser.Descendants("UserList"))
+                            //        {
+                            //            foreach (XElement UserElement in elements.Elements())
+                            //            {
+                            //                if (UserElement.Attribute("Role").Value.ToUpper() == "MEDICAL ASSISTANT")
+                            //                {
+                            //                    string xmlValue = UserElement.Attribute("User_Name").Value + "-" + UserElement.Attribute("person_name").Value;
+                            //                    cboMoveToMA.Items.Add(new RadComboBoxItem(xmlValue, xmlValue));
+                            //                }
+                            //            }
+                            //        }
+                            //    }
+                            //    else
+                            //    {
+                            //        foreach (XElement elements in xmlUser.Descendants("UserList"))
+                            //        {
+                            //            foreach (XElement UserElement in elements.Elements())
+                            //            {
+                            //                if (UserElement.Attribute("Default_Facility").Value.ToUpper() == ClientSession.FacilityName.ToUpper() && UserElement.Attribute("Role").Value.ToUpper() == "MEDICAL ASSISTANT")
+                            //                {
+                            //                    string xmlValue = UserElement.Attribute("User_Name").Value + "-" + UserElement.Attribute("person_name").Value;
+                            //                    cboMoveToMA.Items.Add(new RadComboBoxItem(xmlValue, xmlValue));
+                            //                }
+                            //            }
+                            //        }
+                            //    }
+                            //}
+
+                            UserList objUser = new UserList();
+                            var ilstUserList = ConfigureBase<UserList>.ReadJson("User.json");
+                            if (ilstUserList?.User != null)
                             {
+                                objUser.User = ilstUserList.User;
+                                cboMoveToMA.Items.Clear();
+                                cboMoveToMA.Items.Add(new RadComboBoxItem(""));
                                 if (chkShowAll.Checked)
                                 {
-                                    foreach (XElement elements in xmlUser.Descendants("UserList"))
+                                    if (objUser.User != null && objUser.User.Count() > 0)
                                     {
-                                        foreach (XElement UserElement in elements.Elements())
+                                        var vuser = objUser.User.Where(a => a.Role.ToString().ToUpper() == "MEDICAL ASSISTANT").ToList();
+                                        if (vuser != null && vuser.Count() > 0)
                                         {
-                                            if (UserElement.Attribute("Role").Value.ToUpper() == "MEDICAL ASSISTANT")
+                                            for (int i = 0; i < vuser.Count(); i++)
                                             {
-                                                string xmlValue = UserElement.Attribute("User_Name").Value + "-" + UserElement.Attribute("person_name").Value;
+                                                string xmlValue = vuser[i].User_Name + "-" + vuser[i].person_name;
                                                 cboMoveToMA.Items.Add(new RadComboBoxItem(xmlValue, xmlValue));
                                             }
                                         }
@@ -2990,20 +3029,20 @@ namespace Acurus.Capella.PatientPortal
                                 }
                                 else
                                 {
-                                    foreach (XElement elements in xmlUser.Descendants("UserList"))
+                                    if (objUser.User != null && objUser.User.Count() > 0)
                                     {
-                                        foreach (XElement UserElement in elements.Elements())
+                                        var vdefaultuser = objUser.User.Where(a => a.Default_Facility == ClientSession.FacilityName.ToUpper() && a.Role.ToString().ToUpper() == "MEDICAL ASSISTANT").ToList();
+                                        if (vdefaultuser != null && vdefaultuser.Count() > 0)
                                         {
-                                            if (UserElement.Attribute("Default_Facility").Value.ToUpper() == ClientSession.FacilityName.ToUpper() && UserElement.Attribute("Role").Value.ToUpper() == "MEDICAL ASSISTANT")
+                                            for (int i = 0; i < vdefaultuser.Count(); i++)
                                             {
-                                                string xmlValue = UserElement.Attribute("User_Name").Value + "-" + UserElement.Attribute("person_name").Value;
+                                                string xmlValue = vdefaultuser[i].User_Name + "-" + vdefaultuser[i].person_name;
                                                 cboMoveToMA.Items.Add(new RadComboBoxItem(xmlValue, xmlValue));
                                             }
                                         }
                                     }
                                 }
                             }
-
                             btnPrintEducatnMaterial.Visible = true;
 
                         }
@@ -4080,7 +4119,7 @@ namespace Acurus.Capella.PatientPortal
             UserManager objPhy = new UserManager();
             string sPhysicianName = string.Empty;
 
-            IList<User> PhyUserList = objPhy.getUserByPHYID(ClientSession.PhysicianId);
+            IList<Core.DomainObjects.User> PhyUserList = objPhy.getUserByPHYID(ClientSession.PhysicianId);
             if (PhyUserList != null && PhyUserList.Count > 0)
             {
                 sPhysicianName = PhyUserList[0].user_name;
@@ -4188,7 +4227,7 @@ namespace Acurus.Capella.PatientPortal
                     string sPhyName = string.Empty;
                     UserManager objPhyMngr = new UserManager();
 
-                    IList<User> PhyList = objPhyMngr.getUserByPHYID(ClientSession.PhysicianId);
+                    IList<Core.DomainObjects.User> PhyList = objPhyMngr.getUserByPHYID(ClientSession.PhysicianId);
                     if (PhyList != null && PhyList.Count > 0)
                         sPhyName = PhyList[0].user_name;
                     string[] current_proc = new string[] { "ORDER_GENERATE" };
@@ -4642,39 +4681,82 @@ namespace Acurus.Capella.PatientPortal
 
         protected void chkShowAll_CheckedChanged(object sender, EventArgs e)
         {
-            XDocument xmlUser = null;
-            if (File.Exists(Server.MapPath(@"ConfigXML\User.xml")))
-                xmlUser = XDocument.Load(Server.MapPath(@"ConfigXML\User.xml"));
-            cboMoveToMA.Items.Clear();
-            cboMoveToMA.Items.Add(new RadComboBoxItem(""));
-            if (chkShowAll.Checked)
+
+
+            //CAP-2953
+            //XDocument xmlUser = null;
+            //if (File.Exists(Server.MapPath(@"ConfigXML\User.xml")))
+            //    xmlUser = XDocument.Load(Server.MapPath(@"ConfigXML\User.xml"));
+            //cboMoveToMA.Items.Clear();
+            //cboMoveToMA.Items.Add(new RadComboBoxItem(""));
+            //if (chkShowAll.Checked)
+            //{
+            //    foreach (XElement elements in xmlUser.Descendants("UserList"))
+            //    {
+            //        foreach (XElement UserElement in elements.Elements())
+            //        {
+            //            if (UserElement.Attribute("Role").Value.ToUpper() == "MEDICAL ASSISTANT")
+            //            {
+            //                string xmlValue = UserElement.Attribute("User_Name").Value + "-" + UserElement.Attribute("person_name").Value;
+            //                cboMoveToMA.Items.Add(new RadComboBoxItem(xmlValue, xmlValue));
+            //            }
+            //        }
+            //    }
+            //}
+            //else
+            //{
+            //    foreach (XElement elements in xmlUser.Descendants("UserList"))
+            //    {
+            //        foreach (XElement UserElement in elements.Elements())
+            //        {
+            //            if (UserElement.Attribute("Default_Facility").Value.ToUpper() == ClientSession.FacilityName.ToUpper() && UserElement.Attribute("Role").Value.ToUpper() == "MEDICAL ASSISTANT")
+            //            {
+            //                string xmlValue = UserElement.Attribute("User_Name").Value + "-" + UserElement.Attribute("person_name").Value;
+            //                cboMoveToMA.Items.Add(new RadComboBoxItem(xmlValue, xmlValue));
+            //            }
+            //        }
+            //    }
+            //}
+
+            UserList objUser = new UserList();
+            var ilstUserList = ConfigureBase<UserList>.ReadJson("User.json");
+            if (ilstUserList?.User != null)
             {
-                foreach (XElement elements in xmlUser.Descendants("UserList"))
+                objUser.User = ilstUserList.User;
+                cboMoveToMA.Items.Clear();
+                cboMoveToMA.Items.Add(new RadComboBoxItem(""));
+                if (chkShowAll.Checked)
                 {
-                    foreach (XElement UserElement in elements.Elements())
+                    if (objUser.User != null && objUser.User.Count() > 0)
                     {
-                        if (UserElement.Attribute("Role").Value.ToUpper() == "MEDICAL ASSISTANT")
+                        var vuser = objUser.User.Where(a => a.Role.ToString().ToUpper() == "MEDICAL ASSISTANT").ToList();
+                        if (vuser != null && vuser.Count() > 0)
                         {
-                            string xmlValue = UserElement.Attribute("User_Name").Value + "-" + UserElement.Attribute("person_name").Value;
-                            cboMoveToMA.Items.Add(new RadComboBoxItem(xmlValue, xmlValue));
+                            for (int i = 0; i < vuser.Count(); i++)
+                            {
+                                string xmlValue = vuser[i].User_Name + "-" + vuser[i].person_name;
+                                cboMoveToMA.Items.Add(new RadComboBoxItem(xmlValue, xmlValue));
+                            }
+                        }
+                    }
+                }
+                else
+                {
+                    if (objUser.User != null && objUser.User.Count() > 0)
+                    {
+                        var vdefaultuser = objUser.User.Where(a => a.Default_Facility == ClientSession.FacilityName.ToUpper() && a.Role.ToString().ToUpper() == "MEDICAL ASSISTANT").ToList();
+                        if (vdefaultuser != null && vdefaultuser.Count() > 0)
+                        {
+                            for (int i = 0; i < vdefaultuser.Count(); i++)
+                            {
+                                string xmlValue = vdefaultuser[i].User_Name + "-" + vdefaultuser[i].person_name;
+                                cboMoveToMA.Items.Add(new RadComboBoxItem(xmlValue, xmlValue));
+                            }
                         }
                     }
                 }
             }
-            else
-            {
-                foreach (XElement elements in xmlUser.Descendants("UserList"))
-                {
-                    foreach (XElement UserElement in elements.Elements())
-                    {
-                        if (UserElement.Attribute("Default_Facility").Value.ToUpper() == ClientSession.FacilityName.ToUpper() && UserElement.Attribute("Role").Value.ToUpper() == "MEDICAL ASSISTANT")
-                        {
-                            string xmlValue = UserElement.Attribute("User_Name").Value + "-" + UserElement.Attribute("person_name").Value;
-                            cboMoveToMA.Items.Add(new RadComboBoxItem(xmlValue, xmlValue));
-                        }
-                    }
-                }
-            }
+
             ScriptManager.RegisterStartupScript(this, this.Page.GetType(), "ErrmormsgMa", "{sessionStorage.setItem('StartLoading', 'false');StopLoadFromPatChart();}", true);
         }
         protected void btnSave_Click(object sender, EventArgs e)
