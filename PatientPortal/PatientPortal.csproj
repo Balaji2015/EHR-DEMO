@@ -168,10 +168,12 @@
     <Content Include="bin\Telerik.Web.Design.dll" />
     <Content Include="bin\Telerik.Web.UI.dll" />
     <Content Include="bin\Telerik.Web.UI.Skins.dll" />
-    <Content Include="ConfigXML\Facility_Library.xml" />
-    <Content Include="ConfigXML\PhysicianAddressDetails.xml" />
-    <Content Include="ConfigXML\PhysicianFacilityMapping.xml" />
-    <Content Include="ConfigXML\staticlookup.xml" />
+    <Content Include="ConfigXML1\Doctype.xml" />
+    <Content Include="ConfigXML1\Facility_Library.xml" />
+    <Content Include="ConfigXML1\PhysicianAddressDetails.xml" />
+    <Content Include="ConfigXML1\PhysicianFacilityMapping.xml" />
+    <Content Include="ConfigXML1\staticlookup.xml" />
+    <Content Include="ConfigXML\Doctype.json" />
     <Content Include="CSS\bootstrap-datetimepicker.min.css" />
     <Content Include="CSS\bootstrap.min.css" />
     <Content Include="CSS\bootstrap.min.js" />
@@ -690,7 +692,11 @@
     <Content Include="Documents\mz5zm3drzbgplxqlsrd4bzdp\Summary Of Care\20220830\CheckAAA_Acurus__1904 N OG AVE_582783_878005_20220830041343_SummaryOfCare.pdf" />
     <Content Include="Documents\mz5zm3drzbgplxqlsrd4bzdp\Summary Of Care\20220830\CheckAAA_Acurus__1904 N OG AVE_582783_878005_20220830042622_SummaryOfCare.pdf" />
     <Content Include="Documents\mz5zm3drzbgplxqlsrd4bzdp\Summary Of Care\20220830\CheckAAA_Acurus__1904 N OG AVE_582783_878005_20220830043158_SummaryOfCare.pdf" />
-    <Content Include="ConfigXML\Doctype.json" />
+    <Content Include="ConfigXML\Facility_Library.json" />
+    <Content Include="ConfigXML\LookupList_CCDAErrors.json" />
+    <Content Include="ConfigXML\PhysicianFacilityMapping.json" />
+    <Content Include="ConfigXML\staticlookup.json" />
+    <Content Include="ConfigXML\User.json" />
     <None Include="Properties\PublishProfiles\FolderProfile.pubxml" />
     <None Include="Service References\PatientPortalServiceReference\PatientPortalWebService.wsdl" />
   </ItemGroup>
