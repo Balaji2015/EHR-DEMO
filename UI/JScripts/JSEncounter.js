@@ -1441,6 +1441,7 @@ function tabAutoSave(CurrentTab, sender) {
         bCancel = true;
         sessionStorage.setItem("EncAutoSave", "true");
         //CAP-2678
+        localStorage.setItem("IsSaveCompleted", false);
         autoSaveAndMoveToNextProcess(sender);
         if (CurTab[0].innerText == "CC / HPI") {
             $('.clsIframe').contents()[0].all.namedItem('btnAdd').click();
@@ -2363,7 +2364,10 @@ function autoSaveAndMoveToNextProcess(sender) {
             clearInterval(intervalId);
             setTimeout(function () {
                 __doPostBack(sender.id, 'OnClick');
-            },500);
+            }, 500);
+        } else if (localStorage.getItem("SaveUnsuccessful") == "true") {
+            clearInterval(intervalId);
+            localStorage.setItem("SaveUnsuccessful", "false");
         }
         localStorage.setItem("IsSaveCompleted", false);
     }, 500);
