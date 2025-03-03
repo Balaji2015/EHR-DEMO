@@ -93,6 +93,14 @@ $(document).ready(function () {
             //CAP-2921
             location.href = sharedSessionUrl.value + "" + btoa(((stateParams?.value ?? "") + "" + dateParams));
         }
+
+    var urlParams = new URLSearchParams(window.location.search);
+    if (urlParams != undefined && urlParams != null) {
+        var displayErrorMessageCode = urlParams.get("ErrorCode");
+        if (displayErrorMessageCode != undefined && displayErrorMessageCode != null && displayErrorMessageCode != '') {
+            DisplayErrorMessage(displayErrorMessageCode);
+        }
+    }
 });
 
 function LoadSystemMessagesKnowledgeCenterdetails() {
@@ -335,13 +343,17 @@ Date.prototype.dst = function () {
 $(top.window.document).find('#btnErrorCancel').unbind("click");
 $(top.window.document).find('#btnErrorCancel').on("click", function () {
     if ($('#pErrorMsg').text() == 'Invalid User Name and/or Password.') {
-        location.href = location.href;
+        var url = new URL(location.href);
+        url.searchParams.delete("ErrorCode");
+        location.href = url.toString();
     }
 });
 
 $(top.window.document).find('#btnErrorOkCancel').unbind("click");
 $(top.window.document).find('#btnErrorOkCancel').on("click", function () {
     if ($('#pErrorMsg').text() == 'Invalid User Name and/or Password.') {
-        location.href = location.href;
+        var url = new URL(location.href);
+        url.searchParams.delete("ErrorCode");
+        location.href = url.toString();
     }
 });

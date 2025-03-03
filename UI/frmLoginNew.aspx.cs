@@ -251,11 +251,13 @@ namespace Acurus.Capella.UI
                             }
                             else
                             {
+                                Response.Redirect($"~/frmLoginNew.aspx?IsLoginRequired=true&ErrorCode=010001");
                                 //this.Page.ClientScript.RegisterStartupScript(this.Page.GetType(), string.Empty, "DisplayErrorMessage('010001');", true);
                             }
                         }
                         else
                         {
+                            Response.Redirect($"~/frmLoginNew.aspx?IsLoginRequired=true&ErrorCode=010001");
                             //this.Page.ClientScript.RegisterStartupScript(this.Page.GetType(), string.Empty, "DisplayErrorMessage('010001');", true);
                         }
                     }
