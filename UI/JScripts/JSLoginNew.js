@@ -94,6 +94,7 @@ $(document).ready(function () {
             location.href = sharedSessionUrl.value + "" + btoa(((stateParams?.value ?? "") + "" + dateParams));
         }
 
+    //CAP-2921
     var urlParams = new URLSearchParams(window.location.search);
     if (urlParams != undefined && urlParams != null) {
         var displayErrorMessageCode = urlParams.get("ErrorCode");
@@ -344,6 +345,7 @@ $(top.window.document).find('#btnErrorCancel').unbind("click");
 $(top.window.document).find('#btnErrorCancel').on("click", function () {
     if ($('#pErrorMsg').text() == 'Invalid User Name and/or Password.') {
         var url = new URL(location.href);
+        //CAP-2921
         url.searchParams.delete("ErrorCode");
         location.href = url.toString();
     }
@@ -353,6 +355,7 @@ $(top.window.document).find('#btnErrorOkCancel').unbind("click");
 $(top.window.document).find('#btnErrorOkCancel').on("click", function () {
     if ($('#pErrorMsg').text() == 'Invalid User Name and/or Password.') {
         var url = new URL(location.href);
+        //CAP-2921
         url.searchParams.delete("ErrorCode");
         location.href = url.toString();
     }
