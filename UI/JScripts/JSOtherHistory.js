@@ -243,7 +243,9 @@ function SavedSuccessfully() {
         window.parent.theForm.hdnSaveEnable.value = false;
     PFSH_AfterAutoSave();
     DisplayErrorMessage('180601');
-     {sessionStorage.setItem('StartLoading', 'false');StopLoadFromPatChart();}
+    { sessionStorage.setItem('StartLoading', 'false'); StopLoadFromPatChart(); }
+    //CAP-2678
+    localStorage.setItem("IsSaveCompleted", true);
 }
 function OpenReferralPhysician(sender,args) {
     var result = openModal("frmFindReferralPhysician.aspx", 256, 930, null, "MessageWindowAD");

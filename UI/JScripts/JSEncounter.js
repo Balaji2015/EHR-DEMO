@@ -2070,9 +2070,11 @@ function SummaryXMlAlert() {
 }
 
 function disableAutoSave() {
-    localStorage.setItem("bSave", "true");
-    sessionStorage.setItem("bCCSave", "false");//BugID:48506
-    window.parent.parent.parent.parent.theForm.ctl00_C5POBody_hdnIsSaveEnable.value = "false";
+    if (localStorage.getItem("SaveUnsuccessful") != "true") {
+        localStorage.setItem("bSave", "true");
+        sessionStorage.setItem("bCCSave", "false");//BugID:48506
+        window.parent.parent.parent.parent.theForm.ctl00_C5POBody_hdnIsSaveEnable.value = "false";
+    }
 }
 function enableAutoSave() {
     localStorage.setItem("bSave", "false");
@@ -2360,12 +2362,16 @@ $("#tabStripEncounter_tbSummary").click(function () {
 function autoSaveAndMoveToNextProcess(sender) {
     const intervalId = setInterval(function () {
         const isSaveCompleted = localStorage.getItem("IsSaveCompleted");
+        console.log(`IsSaveCompleted = ${isSaveCompleted} | SaveUnsuccessful = ${localStorage.getItem("SaveUnsuccessful")}`);
+        console.log("START");
         if (isSaveCompleted === "true" || isSaveCompleted == true) {
+            console.log("STOP-1");
             clearInterval(intervalId);
             setTimeout(function () {
                 __doPostBack(sender.id, 'OnClick');
             }, 500);
         } else if (localStorage.getItem("SaveUnsuccessful") == "true") {
+            console.log("STOP-2");
             clearInterval(intervalId);
             localStorage.setItem("SaveUnsuccessful", "false");
         }

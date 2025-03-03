@@ -42,11 +42,13 @@ Telerik.Web.UI.RadButton.prototype._click = Telerik.Web.UI.RadButton.prototype.c
 function dtpTestTakenDate_OnPopupClosing(sender, args) {
     if (window.parent.parent.parent.parent.theForm.ctl00_C5POBody_hdnIsSaveEnable != null && window.parent.parent.parent.parent.theForm.ctl00_C5POBody_hdnIsSaveEnable != undefined)
         window.parent.parent.parent.parent.theForm.ctl00_C5POBody_hdnIsSaveEnable.value = "true";
+    localStorage.setItem("bSave", "false");
     $find('btnSave').set_enabled(true);
 }
 function cboGroupType_DropDownClosed(sender, args) {
     if (window.parent.parent.parent.parent.theForm.ctl00_C5POBody_hdnIsSaveEnable != null && window.parent.parent.parent.parent.theForm.ctl00_C5POBody_hdnIsSaveEnable != undefined)
         window.parent.parent.parent.parent.theForm.ctl00_C5POBody_hdnIsSaveEnable.value = "true";
+    localStorage.setItem("bSave", "false");
     $find('btnSave').set_enabled(true);
 }
 function OnCommand(sender, args) {
@@ -331,6 +333,7 @@ function WinClose() {
 function UploadImage_FileUploading(sender, args) {
     if (window.parent.parent.parent.parent.theForm.ctl00_C5POBody_hdnIsSaveEnable != null && window.parent.parent.parent.parent.theForm.ctl00_C5POBody_hdnIsSaveEnable != undefined) {
         window.parent.parent.parent.parent.theForm.ctl00_C5POBody_hdnIsSaveEnable.value = "true";
+        localStorage.setItem("bSave", "false");
         $find('btnSave').set_enabled(true);
     }
     else {
