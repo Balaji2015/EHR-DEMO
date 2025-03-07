@@ -307,6 +307,7 @@ namespace DownloadiPrescribe
             string sIncoming_StudiesFilePath = string.Empty;
             string sImported_StudiesFilePath = string.Empty;
             string sErrored_StudiesFilePath = string.Empty;
+            string sScanned_Location = string.Empty;
             bool bIsErroredFile = false;
             string sFile = string.Empty;
             ulong ulOrderSubmitId = 0;
@@ -330,6 +331,7 @@ namespace DownloadiPrescribe
             sIncoming_StudiesFilePath = ConfigurationManager.AppSettings["Incoming_StudiesFilePath"];
             sImported_StudiesFilePath = ConfigurationManager.AppSettings["Imported_StudiesFilePath"];
             sErrored_StudiesFilePath = ConfigurationManager.AppSettings["Errored_StudiesFilePath"];
+            sScanned_Location = ConfigurationManager.AppSettings["Scanned_Location"];
             //Jira CAP-2977
             //DirectoryInfo[] Directorys = new DirectoryInfo(sIncoming_StudiesFilePath).GetDirectories();
             TimeZoneInfo timeInfo = TimeZoneInfo.FindSystemTimeZoneById("Pacific Standard Time");
@@ -415,7 +417,7 @@ namespace DownloadiPrescribe
                                     ulOrderSubmitId = ordersManager.InsertDummyOrder(insertordersubmitList, insertOrderList, "DIAGNOSTIC ORDER", sFacility, string.Empty);
 
                                     Scan scan = new Scan();
-                                    scan.Scanned_File_Path = sImported_StudiesFilePath + "\\" + sFile;
+                                    scan.Scanned_File_Path = sScanned_Location + "\\" + sFile;
                                     scan.Scanned_Date = Convert.ToDateTime(DateTime.ParseExact(sFile.Split('_')[3].ToUpper().Replace(".PDF", ""), "yyyyMMdd", CultureInfo.InvariantCulture).ToString("yyyy-MM-dd") + " 15:30:00");
                                     scan.Facility_Name = sFacility;
                                     scan.No_of_Pages = 1;
@@ -436,7 +438,7 @@ namespace DownloadiPrescribe
                                     scan_Index.Document_Sub_Type = sFile.Split('_')[4].ToUpper().Replace(".PDF", "").ToUpper();
                                     scan_Index.Order_ID = ulOrderSubmitId;
                                     //scan_Index.Indexed_File_Path = sImported_StudiesFilePath + "\\" + sFile;
-                                    scan_Index.Indexed_File_Path = serverPath;
+                                    scan_Index.Indexed_File_Path = serverPath.Replace("ftp:", "").Replace(@"//", @"\\").Replace(@"/", @"\"); ;
                                     scan_Index.Page_Selected = "1";
                                     scan_Index.Created_By = "ImageResultsAgent";
                                     scan_Index.Created_Date_And_Time = DateTime.UtcNow;
