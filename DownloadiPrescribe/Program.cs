@@ -523,7 +523,7 @@ namespace DownloadiPrescribe
             }
             //Jira CAP-2977
             //else if (sFile.Split('_').Length == 4 && sFile.Split('_')[0].ToUpper().Replace("ID", "").Any(a => char.IsLetter(a)))
-            else if (sFile.Split('_').Length == 5 && sFile.Split('_')[0].ToUpper().Replace("ID", "").Any(a => char.IsLetter(a)))
+            else if (sFile.Split('_').Length == 5 && (sFile.Split('_')[0].ToUpper().Replace("ID", "").Any(a => char.IsLetter(a)) || (sFile.Split('_')[0].ToUpper().Replace("ID", "") == "")))
             {
                 return true;
             }
@@ -531,13 +531,17 @@ namespace DownloadiPrescribe
             {
                 return true;
             }
-            else if (sFile.Split('_')[3].ToUpper().Replace(".PDF", "").Any(a => char.IsLetter(a)))
+            else if (sFile.Split('_')[3].ToUpper().Replace(".PDF", "").Any(a => char.IsLetter(a)) || sFile.Split('_')[3].ToUpper().Replace(".PDF", "") == "")
             {
                 return true;
             }
             //Jira CAP-3035
             ////Jira CAP-2977
             else if (!sDocument_Sub_Type.Contains(sFile.Split('_')[4].ToUpper().Replace(".PDF", "")))
+            {
+                return true;
+            }
+            else if (sFile.Contains("__"))
             {
                 return true;
             }
