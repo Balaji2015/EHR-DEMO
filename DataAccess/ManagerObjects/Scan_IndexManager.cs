@@ -37,6 +37,7 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
         IList<scan_index> GetScanIndexDetailsForScanIndexConversionID(ulong uIndexConScanID);
         void SaveUpdateScanIndexforDeleteFiles(IList<scan_index> lstScanIndex);
         IList<scan_index> GetscanIndexList(List<int> scanid);
+        IList<scan_index> GetLastTransactionByHuman(ulong Human_Id);
     }
 
     public partial class Scan_IndexManager : ManagerBase<scan_index, ulong>, IScan_IndexManager
@@ -769,6 +770,21 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
             {
                 ICriteria criteria = iMySession.CreateCriteria(typeof(scan_index)).Add(Expression.Eq("Human_ID", Human_Id));
                 ilstScanIndex = criteria.List<scan_index>();
+                iMySession.Close();
+            }
+            return ilstScanIndex;
+
+        }
+
+        //Jira CAP-3035
+        public IList<scan_index> GetLastTransactionByHuman(ulong Human_Id)
+        {
+            IList<scan_index> ilstScanIndex = new List<scan_index>();
+            using (ISession iMySession = NHibernateSessionManager.Instance.CreateISession())
+            {
+                ISQLQuery sq = iMySession.CreateSQLQuery("select o.* from scan_index_conversion o where o.Human_ID="+ Human_Id + " order by o.Scan_Index_Conversion_ID  desc limit 1 ;")
+                      .AddEntity("o", typeof(scan_index));
+                ilstScanIndex = sq.List<scan_index>();
                 iMySession.Close();
             }
             return ilstScanIndex;

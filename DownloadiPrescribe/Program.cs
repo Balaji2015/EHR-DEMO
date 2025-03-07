@@ -325,6 +325,8 @@ namespace DownloadiPrescribe
             Scan_IndexManager scanindexmanager = new Scan_IndexManager();
             OrdersManager ordersManager = new OrdersManager();
 
+            IList<scan_index> ilstScanForFileNumber = new List<scan_index>();
+
             sIncoming_StudiesFilePath = ConfigurationManager.AppSettings["Incoming_StudiesFilePath"];
             sImported_StudiesFilePath = ConfigurationManager.AppSettings["Imported_StudiesFilePath"];
             sErrored_StudiesFilePath = ConfigurationManager.AppSettings["Errored_StudiesFilePath"];
@@ -369,7 +371,19 @@ namespace DownloadiPrescribe
                             if (bCreateDirectory)
                             {
                                 string serverPath = string.Empty;
-                                serverPath = UploadToImageServer(objHuman.Id.ToString(), ftpServerIP, string.Empty, string.Empty, sIncoming_StudiesFilePath + "//" + sFile, string.Empty, out string sCheckFileNotFoundExceptions);
+                                //Jira CAP-3035
+                                int iNumberOfFile = 1;
+                                ilstScanForFileNumber = scanindexmanager.GetLastTransactionByHuman(Convert.ToUInt64(sFile.ToUpper().Split('_')[0].Replace("ID", "")));
+                                string sIndexed_File_Path = (ilstScanForFileNumber != null && ilstScanForFileNumber.Count > 0) ? ilstScanForFileNumber.FirstOrDefault().Indexed_File_Path : string.Empty;
+                                if (sIndexed_File_Path != string.Empty)
+                                {
+                                    iNumberOfFile = Convert.ToInt32(sIndexed_File_Path.ToString().Substring(sIndexed_File_Path.ToString().LastIndexOf("_") + 1, (sIndexed_File_Path.ToString().LastIndexOf(".") - 1) - sIndexed_File_Path.ToString().LastIndexOf("_"))) + 1;
+                                }
+                                sIndexed_File_Path = sFile.Replace(".pdf", "") + "_" + ((iNumberOfFile.ToString().Length == 1) ? "0" + iNumberOfFile.ToString() : iNumberOfFile.ToString()) + ".pdf";
+                               
+                                //serverPath = UploadToImageServer(objHuman.Id.ToString(), ftpServerIP, string.Empty, string.Empty, sIncoming_StudiesFilePath + "//" + sFile, string.Empty, out string sCheckFileNotFoundExceptions);
+                                serverPath = UploadToImageServer(objHuman.Id.ToString(), ftpServerIP, string.Empty, string.Empty, sIncoming_StudiesFilePath + "//" + sFile, sIndexed_File_Path, out string sCheckFileNotFoundExceptions);
+                                //Jira CAP-3035 - End
                                 if (sCheckFileNotFoundException != "" && sCheckFileNotFoundException.Contains("CheckFileNotFoundException"))
                                 {
                                     //ScriptManager.RegisterStartupScript(this, this.GetType(), "Key", "alert(\"" + sCheckFileNotFoundException.Split('~')[1] + "\");", true);
@@ -421,7 +435,8 @@ namespace DownloadiPrescribe
                                     //scan_Index.Document_Sub_Type = dir.Name.ToUpper();
                                     scan_Index.Document_Sub_Type = sFile.Split('_')[4].ToUpper().Replace(".PDF", "").ToUpper();
                                     scan_Index.Order_ID = ulOrderSubmitId;
-                                    scan_Index.Indexed_File_Path = sImported_StudiesFilePath + "\\" + sFile;
+                                    //scan_Index.Indexed_File_Path = sImported_StudiesFilePath + "\\" + sFile;
+                                    scan_Index.Indexed_File_Path = serverPath;
                                     scan_Index.Page_Selected = "1";
                                     scan_Index.Created_By = "ImageResultsAgent";
                                     scan_Index.Created_Date_And_Time = DateTime.UtcNow;
@@ -520,10 +535,17 @@ namespace DownloadiPrescribe
             {
                 return true;
             }
-            //Jira CAP-2977
+            //Jira CAP-3035
+            ////Jira CAP-2977
+            else if (!sDocument_Sub_Type.Contains(sFile.Split('_')[4].ToUpper().Replace(".PDF", "")))
+            {
+                return true;
+            }
+            //Jira CAP-3035
+            ////Jira CAP-2977
             //else if (sFile.Split('_').Length == 4
             //  && sFile.Split('_')[3].ToUpper().Replace(".PDF", "").Length == 8)
-            else if (sFile.Split('_').Length == 5
+            if (sFile.Split('_').Length == 5
                 && sFile.Split('_')[3].ToUpper().Replace(".PDF", "").Length == 8)
             {
                 try
@@ -539,11 +561,12 @@ namespace DownloadiPrescribe
 
                 }
             }
-            //Jira CAP-2977
-            else if (!sDocument_Sub_Type.Contains(sFile.Split('_')[4].ToUpper()))
-            {
-                return true;
-            }
+            //Jira CAP-3035
+            ////Jira CAP-2977
+            //else if (!sDocument_Sub_Type.Contains(sFile.Split('_')[4].ToUpper()))
+            //{
+            //    return true;
+            //}
 
             return false;
         }
