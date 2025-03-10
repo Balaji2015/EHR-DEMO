@@ -535,7 +535,9 @@ function viewSummary(encounterId, humanId) {
             $(top.window.document).find('#ProcessModal').modal({ backdrop: 'static', keyboard: false }, 'show');
             //$(top.window.document).find("#mdldlg")[0].style.width = "1050px";
             $(top.window.document).find("#ProcessModal")[0].style.width = "";
-            $(top.window.document).find('#ProcessFrame')[0].contentDocument.location.href = sPath;
+            //Jira cap - 3020
+            $(top.window.document).find('#ProcessFrame')[0].contentDocument.write("Summary is loading. Please wait.");
+            $(top.window.document).find('#ProcessFrame')[0].contentDocument.location.href = sPath;            
             $(top.window.document).find("#ModalTitle")[0].textContent = "Summary";
         },
         error: function OnError(xhr) {
