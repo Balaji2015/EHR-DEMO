@@ -2420,7 +2420,15 @@ namespace Acurus.Capella.UI
                 else if (tablelayout.Controls[i].GetType().ToString().Contains("DropDownList"))
                 {
                     DropDownList combobox = (DropDownList)tablelayout.Controls[i];
-                    ComboBoxColorChange(combobox);
+                    //CAP-3022
+                    if (combobox.ID == "ddlGuarantorRelationship" && chkGuarantorIsPatient.Checked == false)
+                    {
+                        ComboBoxColorChange(combobox, true);
+                    }
+                    else
+                    {
+                        ComboBoxColorChange(combobox);
+                    }
                 }
                 else if (tablelayout.Controls[i].GetType().ToString().Contains("CheckBox"))
                 {
