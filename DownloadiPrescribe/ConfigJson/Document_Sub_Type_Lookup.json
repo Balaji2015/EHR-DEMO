@@ -1,0 +1,40 @@
+{
+  "Document_Sub_Type_Lookup": [
+    {
+      "File_Report_Type": "Venous Insufficiency",
+      "Document_Sub_Type": "Vascular Studies"
+    },
+    {
+      "File_Report_Type": "Venous Lower",
+      "Document_Sub_Type": "Vascular Studies"
+    },
+    {
+      "File_Report_Type": "Venous Upper",
+      "Document_Sub_Type": "Vascular Studies"
+    },
+    {
+      "File_Report_Type": "Arterial Upper",
+      "Document_Sub_Type": "Vascular Studies"
+    },
+    {
+      "File_Report_Type": "Arterial Lower",
+      "Document_Sub_Type": "Vascular Studies"
+    },
+    {
+      "File_Report_Type": "Carotid",
+      "Document_Sub_Type": "Vascular Studies"
+    },
+    {
+      "File_Report_Type": "Abdominal Aorta",
+      "Document_Sub_Type": "Vascular Studies"
+    },
+    {
+      "File_Report_Type": "Echo",
+      "Document_Sub_Type": "ECHO"
+    },
+    {
+      "File_Report_Type": "Stress Echo",
+      "Document_Sub_Type": "Stress Test"
+    }
+  ]
+}
