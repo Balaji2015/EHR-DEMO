@@ -3966,10 +3966,22 @@ namespace Acurus.Capella.UI
                 lblProviderSearch.ForeColor = Color.Black;
                 lblProviderSearch.Text = lblProviderSearch.Text.Replace("*", "");
 
+                //Cap - 2594
+                imgClearProviderText.Visible = false;
+                txtProviderSearch.Enabled = false;
+                imgEditProvider.Visible = false;
+
             }
             //Cap - 1179
             else
             {
+                //Cap - 2594
+                imgClearProviderText.Visible = true;
+                txtProviderSearch.Enabled = true;
+                imgEditProvider.Visible = true;
+                imgEditProvider.Style.Add("display", "block");
+
+
                 hdnrenprovider.Value = "";
                 hdnrenprovidersearch.Value = "";
                 txtProviderSearch.Text = string.Empty;
@@ -4317,16 +4329,6 @@ namespace Acurus.Capella.UI
                     btnOrder.Enabled = false;
                 }
 
-                if (tabReferringProvAndPCP.SelectedIndex == 0)
-                {
-                    imgClearProviderText.Visible = false;
-                    imgEditProvider.Visible = false;
-                }
-                if (tabReferringProvAndPCP.SelectedIndex == 1)
-                {
-                    imgClearProviderText.Visible = true;
-                    imgEditProvider.Visible = true;
-                }
                 imgClearProviderText.Style.Add("top", "246px !important");
                 imgEditProvider.Style.Add("top", "246px !important");
                 lblOrder.ForeColor = Color.Red;
@@ -4432,6 +4434,24 @@ namespace Acurus.Capella.UI
                     {
                         cboOrder.SelectedIndex = 1;
                     }
+                    //Cap - 3045
+                    if (tabReferringProvAndPCP.SelectedIndex == 0 && cboOrder != null && cboOrder.SelectedItem.Text != "Akido Order")
+                    {
+                        imgClearProviderText.Visible = false;
+                        imgEditProvider.Visible = false;
+                    }
+                    else if (tabReferringProvAndPCP.SelectedIndex == 0 && cboOrder != null && cboOrder.SelectedItem.Text == "Akido Order")
+                    {
+                        imgClearProviderText.Visible = true;
+                        imgEditProvider.Visible = true;
+                    }
+                    if (tabReferringProvAndPCP.SelectedIndex == 1)
+                    {
+                        imgClearProviderText.Visible = true;
+                        imgEditProvider.Visible = true;
+                    }
+
+
                     //if (cboOrder.Items.Count > 0)
                     //    btnOrder.Enabled = true;
                     //else
@@ -4768,10 +4788,17 @@ namespace Acurus.Capella.UI
 
                 var facAncillary = from f in ApplicationObject.facilityLibraryList where f.Fac_Name == cboFacility.SelectedItem.Text select f;
                 IList<FacilityLibrary> ilstFacAncillary = facAncillary.ToList<FacilityLibrary>();
-                if (ilstFacAncillary.Count > 0 && ilstFacAncillary[0].Is_Ancillary == "Y")
+                //Cap - 2594
+                //if (ilstFacAncillary.Count > 0 && ilstFacAncillary[0].Is_Ancillary == "Y")
+                if (ilstFacAncillary.Count > 0 && ilstFacAncillary[0].Is_Ancillary == "Y" && cboOrder.SelectedItem.Text != "Akido Order")
                 {
                     imgClearProviderText.Visible = false;
                     imgEditProvider.Visible = false;
+                } //Cap - 2594
+                else if(ilstFacAncillary.Count > 0 && ilstFacAncillary[0].Is_Ancillary == "Y" && cboOrder.SelectedItem.Text == "Akido Order")
+                {
+                    imgClearProviderText.Visible = true;
+                    imgEditProvider.Visible = true;
                 }
                 else
                 {

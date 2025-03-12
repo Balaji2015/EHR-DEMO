@@ -21,7 +21,7 @@ namespace Acurus.Capella.UI.WebServices.API
     public class ProgressNotesServiceController : ApiController
     {
         [HttpGet]
-        public IHttpActionResult LoadCapellaHistoryData(string sHumanID, string sCategory = "")
+        public IHttpActionResult LoadCapellaHistoryData(string sHumanID, string sCategory = "", bool bIsForce = false)
         {
             try
             {
@@ -40,7 +40,8 @@ namespace Acurus.Capella.UI.WebServices.API
                     return Json(new { HumanID = sHumanID, status = "ValidationError", ErrorDescription = "Category is not valid. Cannot load Capella history data." });
                 }
 
-                Task.Run(() => GenerateCapellaHistoryData(sHumanID, sCategory));
+                //Task.Run(() => GenerateCapellaHistoryData(sHumanID,sCategory));
+                Task.Run(() => GenerateCapellaHistoryData(sHumanID, bIsForce, sCategory));
             }
             catch (Exception ex)
             {
@@ -49,7 +50,7 @@ namespace Acurus.Capella.UI.WebServices.API
             return Json(new { HumanID = sHumanID, status = "Acknowledged" });
         }
 
-        private void GenerateCapellaHistoryData(string sHumanID, string sCategory = "")
+        private void GenerateCapellaHistoryData(string sHumanID, bool bIsForce, string sCategory = "")
         {
             try
             {
@@ -63,9 +64,22 @@ namespace Acurus.Capella.UI.WebServices.API
 
                     if (result.Tables.Count > 0 && result.Tables[0].Rows.Count > 0)
                     {
+                        IList<string> lstEncounterIDs = new List<string>();
+                        if (bIsForce == false)
+                        {
+                            string CheckCDCTabel = "select group_concat(Encounter_id) as Encounter_IDs from cdc_progress_note where Human_id = {0};";
+                            DataSet Checkresult = DBConnector.ReadData(string.Format(CheckCDCTabel, sHumanID));
+                            string sEncounterIDs = (Checkresult.Tables[0].Rows.Count > 0) ? Checkresult.Tables[0].Rows[0]["Encounter_IDs"].ToString() : "";
+                            lstEncounterIDs = sEncounterIDs.Split(',').ToList();
+                        }
+
                         foreach (DataRow row in result.Tables[0].Rows)
                         {
                             string encounter_ID = row["Encounter_ID"].ToString();
+                            if (lstEncounterIDs.Contains(encounter_ID))
+                            {
+                                continue;
+                            }
                             Task.Run(() => { GenerateJsonNotes(sHumanID, encounter_ID, "Acurus", DateTime.UtcNow); });
                             //GenerateJsonNotes(sHumanID, encounter_ID, "Acurus", DateTime.UtcNow);
                         }
@@ -84,9 +98,23 @@ namespace Acurus.Capella.UI.WebServices.API
 
                     if (result.Tables.Count > 0 && result.Tables[0].Rows.Count > 0)
                     {
+                        IList<string> lstEntityIDs = new List<string>();
+                        if (bIsForce == false)
+                        {
+                            string CheckCDCTabel = "select group_concat(Entity_ID) as EntityIDs  from cdc_entity_tracker where Human_ID = {0} and Entity_Name = 'Files';";
+                            DataSet Checkresult = DBConnector.ReadData(string.Format(CheckCDCTabel, sHumanID));
+                            string sEntityIDs = (Checkresult.Tables[0].Rows.Count > 0) ? Checkresult.Tables[0].Rows[0]["EntityIDs"].ToString() : "";
+                            lstEntityIDs = sEntityIDs.Split(',').ToList();
+                        }
+
                         foreach (DataRow row in result.Tables[0].Rows)
                         {
                             string file_Management_Index_ID = row["File_Management_Index_ID"].ToString();
+
+                            if (lstEntityIDs.Contains(file_Management_Index_ID))
+                            {
+                                continue;
+                            }
                             //Task.Run(() => { GenerateCDCEntity(sHumanID, file_Management_Index_ID, "Files", "Acurus", DateTime.UtcNow); });
                             GenerateCDCEntity(sHumanID, file_Management_Index_ID, "Files", "Acurus", DateTime.UtcNow);
                         }
@@ -105,9 +133,24 @@ namespace Acurus.Capella.UI.WebServices.API
 
                     if (result.Tables.Count > 0 && result.Tables[0].Rows.Count > 0)
                     {
+                        IList<string> lstEntityIDs = new List<string>();
+                        if (bIsForce == false)
+                        {
+                            string CheckCDCTabel = "select group_concat(Entity_ID) as EntityIDs from cdc_entity_tracker where Human_ID = {0} and Entity_Name = 'LabResults';";
+                            DataSet Checkresult = DBConnector.ReadData(string.Format(CheckCDCTabel, sHumanID));
+                            string sEntityIDs = (Checkresult.Tables[0].Rows.Count > 0) ? Checkresult.Tables[0].Rows[0]["EntityIDs"].ToString() : "";
+                            lstEntityIDs = sEntityIDs.Split(',').ToList();
+                        }
+
                         foreach (DataRow row in result.Tables[0].Rows)
                         {
                             string result_Master_Id = row["Result_Master_ID"].ToString();
+
+                            if (lstEntityIDs.Contains(result_Master_Id))
+                            {
+                                continue;
+                            }
+
                             //Task.Run(() => { GenerateCDCEntity(sHumanID, result_Master_Id, "LabResults", "Acurus", DateTime.UtcNow); });
                             GenerateCDCEntity(sHumanID, result_Master_Id, "LabResults", "Acurus", DateTime.UtcNow);
                         }
