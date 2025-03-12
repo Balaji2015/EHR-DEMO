@@ -14,15 +14,21 @@ using Acurus.Capella.Core.DTO;
 using System.Timers;
 using System.IO;
 using System.Net;
+using Acurus.Capella.Core.DTOJson;
+using Newtonsoft.Json;
 
 namespace DownloadiPrescribe
 {
     public class Program
     {
-        //Jira CAP-2977
-        static string sSub_Type = ConfigurationManager.AppSettings["Document_Sub_Type"].ToUpper();
-        static string[] sDocument_Sub_Type = sSub_Type.Split(',');
-        //Jira CAP-2977 - End
+        //Jira CAP-3038
+        ////Jira CAP-2977
+        //static string sSub_Type = ConfigurationManager.AppSettings["Document_Sub_Type"].ToUpper();
+        //static string[] sDocument_Sub_Type = sSub_Type.Split(',');
+        ////Jira CAP-2977 - End
+        
+        //Jira CAP-3038
+        static Document_Sub_Type_Lookup_List ilstDocument_Sub_type = new Document_Sub_Type_Lookup_List();
 
         //static async Task Main(string[] args)
         static void Main(string[] args)
@@ -303,6 +309,9 @@ namespace DownloadiPrescribe
 
         public static void ImportImageResultsAgent()
         {
+            var str = System.IO.File.ReadAllText(System.AppDomain.CurrentDomain.BaseDirectory + "ConfigJson\\Document_Sub_Type_Lookup.json");
+            ilstDocument_Sub_type = JsonConvert.DeserializeObject<Document_Sub_Type_Lookup_List>(str);
+
             string sFacility = ConfigurationManager.AppSettings["FacilityNameForResults"];
             string sIncoming_StudiesFilePath = string.Empty;
             string sImported_StudiesFilePath = string.Empty;
@@ -435,7 +444,9 @@ namespace DownloadiPrescribe
                                     scan_Index.Document_Type = "Results";
                                     //Jira CAP-2977
                                     //scan_Index.Document_Sub_Type = dir.Name.ToUpper();
-                                    scan_Index.Document_Sub_Type = sFile.Split('_')[4].ToUpper().Replace(".PDF", "").ToUpper();
+                                    //Jira CAP-3038
+                                    //scan_Index.Document_Sub_Type = sFile.Split('_')[4].ToUpper().Replace(".PDF", "").ToUpper();
+                                    scan_Index.Document_Sub_Type = ilstDocument_Sub_type.Document_Sub_Type_Lookup.Where(x => x.File_Report_Type.ToUpper() == sFile.Split('_')[4].ToUpper().Replace(".PDF", "")).FirstOrDefault().Document_Sub_Type;
                                     scan_Index.Order_ID = ulOrderSubmitId;
                                     //scan_Index.Indexed_File_Path = sImported_StudiesFilePath + "\\" + sFile;
                                     scan_Index.Indexed_File_Path = serverPath.Replace("ftp:", "").Replace(@"//", @"\\").Replace(@"/", @"\"); ;
@@ -454,7 +465,9 @@ namespace DownloadiPrescribe
                                     filemanagementIndex.Document_Type = "Results";
                                     //Jira CAP-2977
                                     //filemanagementIndex.Document_Sub_Type = dir.Name.ToUpper();
-                                    filemanagementIndex.Document_Sub_Type = sFile.Split('_')[4].ToUpper().Replace(".PDF", "").ToUpper();
+                                    //Jira CAP-3038
+                                    //filemanagementIndex.Document_Sub_Type = sFile.Split('_')[4].ToUpper().Replace(".PDF", "").ToUpper();
+                                    filemanagementIndex.Document_Sub_Type = ilstDocument_Sub_type.Document_Sub_Type_Lookup.Where(x => x.File_Report_Type.ToUpper() == sFile.Split('_')[4].ToUpper().Replace(".PDF", "")).FirstOrDefault().Document_Sub_Type;
                                     filemanagementIndex.Source = "SCAN";
                                     filemanagementIndex.Order_ID = ulOrderSubmitId;
                                     filemanagementIndex.Human_ID = objHuman.Id;
@@ -537,9 +550,15 @@ namespace DownloadiPrescribe
             {
                 return true;
             }
-            //Jira CAP-3035
-            ////Jira CAP-2977
-            else if (!sDocument_Sub_Type.Contains(sFile.Split('_')[4].ToUpper().Replace(".PDF", "")))
+            //Jira CAP-3038
+            ////Jira CAP-3035
+            //////Jira CAP-2977
+            //else if (!sDocument_Sub_Type.Contains(sFile.Split('_')[4].ToUpper().Replace(".PDF", "")))
+            //{
+            //    return true;
+            //}
+
+            else if (ilstDocument_Sub_type != null && ilstDocument_Sub_type.Document_Sub_Type_Lookup.Where(x => x.File_Report_Type.ToUpper() == sFile.Split('_')[4].ToUpper().Replace(".PDF", "")).ToList().Count == 0)
             {
                 return true;
             }
