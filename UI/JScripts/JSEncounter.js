@@ -2362,16 +2362,12 @@ function autoSaveAndMoveToNextProcess(sender) {
     bCancel = false;
     const intervalId = setInterval(function () {
         const isSaveCompleted = localStorage.getItem('IsSaveCompleted');
-        console.log("START1");
         if (isSaveCompleted === "true" || isSaveCompleted == true) {
-            console.log("STOP-1");
             clearInterval(intervalId);
-            //setTimeout(function () {
-            console.log(sender.id);
+            setTimeout(function () {
                 __doPostBack(sender.id, 'OnClick');
-            //}, 500);
+            }, 500);
         } else if (localStorage.getItem('SaveUnsuccessful') == "true") {
-            console.log("STOP-2");
             clearInterval(intervalId);
             localStorage.setItem('SaveUnsuccessful', 'false');
         }

@@ -1660,7 +1660,7 @@ function focusTab(textbox, event) {
 }
 function Notification_Popup(triggeredBy) {
 
-    if (window.top.document.getElementById("notificationpopup").innerText != "NOTIFICATION : Loading...") {
+    if (window.top.document.getElementById("notificationpopup").innerText != "NOTIFICATION : Loading..." || triggeredBy != '') {
         if ($(top.window.document).find("#AlertInfo") != undefined) {
             var locatn = "HtmlNotification.html?version=" + sessionStorage.getItem("ScriptVersion");
             $(top.window.document).find('#Alert_Modal')[0].contentDocument.location.href = locatn;
