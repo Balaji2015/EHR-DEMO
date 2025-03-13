@@ -29,6 +29,7 @@ namespace Acurus.Capella.UI
         {
             if (!IsPostBack)
             {
+                hdnErroredFilePath.Value = ConfigurationManager.AppSettings["ErroredFilePathURL"];
                 PageLabel.InnerText = "/0";
                 PageBox.Value = "0";
             }
@@ -91,7 +92,7 @@ namespace Acurus.Capella.UI
 
             IList<string> lstDocuments = new List<string>();
             
-            string path = ConfigurationManager.AppSettings["Errored_Signed_Reports"];
+            string path = ConfigurationManager.AppSettings["ErroredFilePath_Local"];
             if (Directory.Exists(path))
             {
                 lstDocuments = Directory.GetFiles(path).ToList();
@@ -117,23 +118,23 @@ namespace Acurus.Capella.UI
             {
                 if (File.Exists(sFullPath.ToString()))
                 {
-                    IList<ActivityLog> ActivityLogList = new List<ActivityLog>();
-                    ActivityLog activity = new ActivityLog
-                    {
-                        Human_ID = ClientSession.HumanId,
-                        Encounter_ID = 0,
-                        Sent_To = string.Empty,
-                        Activity_Date_And_Time = Convert.ToDateTime(ClientSession.LocalTime),
-                        Role = ClientSession.UserRole,
-                        Subject = string.Empty,
-                        Message = string.Empty,
-                        Activity_Type = "View Errored Signed Reports",
-                        Activity_By = ClientSession.UserName,
-                        Fax_File_Path = sFullPath.ToString()
-                    };
-                    ActivityLogList.Add(activity);
-                    ActivityLogManager ActivitylogMngr = new ActivityLogManager();
-                    ActivitylogMngr.SaveActivityLogManager(ActivityLogList, string.Empty);
+                    //IList<ActivityLog> ActivityLogList = new List<ActivityLog>();
+                    //ActivityLog activity = new ActivityLog
+                    //{
+                    //    Human_ID = ClientSession.HumanId,
+                    //    Encounter_ID = 0,
+                    //    Sent_To = string.Empty,
+                    //    Activity_Date_And_Time = Convert.ToDateTime(ClientSession.LocalTime),
+                    //    Role = ClientSession.UserRole,
+                    //    Subject = string.Empty,
+                    //    Message = string.Empty,
+                    //    Activity_Type = "View Errored Signed Reports",
+                    //    Activity_By = ClientSession.UserName,
+                    //    Fax_File_Path = sFullPath.ToString()
+                    //};
+                    //ActivityLogList.Add(activity);
+                    //ActivityLogManager ActivitylogMngr = new ActivityLogManager();
+                    //ActivitylogMngr.SaveActivityLogManager(ActivityLogList, string.Empty);
 
                     if (Path.GetExtension(filename).ToLower() == ".pdf")
                     {

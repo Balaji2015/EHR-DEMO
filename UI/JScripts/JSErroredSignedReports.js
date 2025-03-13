@@ -183,6 +183,10 @@ function GridOpenFile(SelectedFileName, sFilePath, isClick) {
             else {
                 ViewPDF();
                 StopLoadOnUploadFile();
+                var erroredFilePath = document.getElementById("hdnErroredFilePath").value;
+                var fileName = sFilePath.split('\\').pop().split('/').pop();
+                sFilePath = erroredFilePath + fileName;
+
                 if (sFilePath.indexOf("////") != -1) {
                     sFilePath = sFilePath.replaceAll(/\/\//g, "/");
                 }

@@ -168,6 +168,7 @@
         </div>
 
         <asp:HiddenField ID="hdnPagecount" runat="server" EnableViewState="false" />
+        <asp:HiddenField ID="hdnErroredFilePath" runat="server" EnableViewState="false" />
 
         <asp:PlaceHolder ID="PlaceHolder1" runat="server">
             <script src="JScripts/jquery-1.11.3.min.js" type="text/javascript"></script>
