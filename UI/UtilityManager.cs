@@ -6495,7 +6495,17 @@ namespace Acurus.Capella.UI
 
                     json = "{\"Capella\":" + json + "}";
                     var jsonObject = JObject.Parse(json);
-                    IList<JToken> listJson = jsonObject.First.FirstOrDefault().Where(a => a["resourceId"].ToString() == sEncounterID).ToList();
+                    //Jira CAP-3046
+                    // IList<JToken> listJson = jsonObject.First.FirstOrDefault().Where(a => a["resourceId"].ToString() == sEncounterID).ToList();
+                    IList<JToken> listJson = new List<JToken>();
+                    if (IsAkidoNoteURLVersion.ToUpper() == "V1")
+                    {
+                        listJson = jsonObject.First.FirstOrDefault().Where(a => a["encounterId"].ToString() == sEncounterID).ToList();
+                    }
+                    else if (IsAkidoNoteURLVersion.ToUpper() == "V2")
+                    {
+                        listJson = jsonObject.First.FirstOrDefault().Where(a => a["resourceId"].ToString() == sEncounterID).ToList();
+                    }
 
                     if (listJson.Count > 0)
                     {
