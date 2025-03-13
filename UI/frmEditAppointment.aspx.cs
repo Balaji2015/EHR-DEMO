@@ -4329,16 +4329,6 @@ namespace Acurus.Capella.UI
                     btnOrder.Enabled = false;
                 }
 
-                if (tabReferringProvAndPCP.SelectedIndex == 0)
-                {
-                        imgClearProviderText.Visible = false;
-                        imgEditProvider.Visible = false;
-                    }
-                if (tabReferringProvAndPCP.SelectedIndex == 1)
-                {
-                    imgClearProviderText.Visible = true;
-                    imgEditProvider.Visible = true;
-                }
                 imgClearProviderText.Style.Add("top", "246px !important");
                 imgEditProvider.Style.Add("top", "246px !important");
                 lblOrder.ForeColor = Color.Red;
@@ -4444,6 +4434,24 @@ namespace Acurus.Capella.UI
                     {
                         cboOrder.SelectedIndex = 1;
                     }
+                    //Cap - 3045
+                    if (tabReferringProvAndPCP.SelectedIndex == 0 && cboOrder != null && cboOrder.SelectedItem.Text != "Akido Order")
+                    {
+                        imgClearProviderText.Visible = false;
+                        imgEditProvider.Visible = false;
+                    }
+                    else if (tabReferringProvAndPCP.SelectedIndex == 0 && cboOrder != null && cboOrder.SelectedItem.Text == "Akido Order")
+                    {
+                        imgClearProviderText.Visible = true;
+                        imgEditProvider.Visible = true;
+                    }
+                    if (tabReferringProvAndPCP.SelectedIndex == 1)
+                    {
+                        imgClearProviderText.Visible = true;
+                        imgEditProvider.Visible = true;
+                    }
+
+
                     //if (cboOrder.Items.Count > 0)
                     //    btnOrder.Enabled = true;
                     //else

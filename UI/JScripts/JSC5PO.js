@@ -3400,7 +3400,11 @@ function OpenIndexing(Mode) {
     }
 
 }
-
+function OpenErroredSignedReports(Mode) {
+    StartLoadingImage();
+    var obj = new Array();
+    openModal("frmErroredSignedReports.aspx", 710, 1200, obj, "ctl00_ModalWindow");
+}
 function OnOpenAuthorizationClick(oWindow, args) {
 
     var HumanId = "";

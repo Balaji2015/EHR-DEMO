@@ -393,6 +393,7 @@
     <Content Include="frmBlockDaysDetails.aspx" />
     <Content Include="frmCancelAppointment.aspx" />
     <Content Include="frmCarrierLibrary.aspx" />
+    <Content Include="frmErroredSignedReports.aspx" />
     <Content Include="frmExchange.aspx" />
     <Content Include="frmFindAllAppointments.aspx" />
     <Content Include="frmFindPatient.aspx" />
@@ -434,6 +435,7 @@
     <Content Include="JScripts\jquery.ui.autocomplete.js" />
     <Content Include="JScripts\jQueryAngular.js" />
     <Content Include="JScripts\jsAssessmentNew.js" />
+    <Content Include="JScripts\JSErroredSignedReports.js" />
     <Content Include="JScripts\JSEFaxManagement.js" />
     <Content Include="JScripts\JSRCopiaDuplicateAllergy.js" />
     <Content Include="JScripts\JSRCopiaPatientMerge.js" />
@@ -734,6 +736,13 @@
     </Content>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="frmErroredSignedReports.aspx.cs">
+      <DependentUpon>frmErroredSignedReports.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="frmErroredSignedReports.aspx.designer.cs">
+      <DependentUpon>frmErroredSignedReports.aspx</DependentUpon>
+    </Compile>
     <Compile Include="WebAPIConfig.cs" />
     <Compile Include="CernerUtility.cs" />
     <Compile Include="CryptoFunctions.cs" />

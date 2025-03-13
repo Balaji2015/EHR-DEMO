@@ -813,6 +813,7 @@
                                                              <%-- remove temporary --%>
                                                             <%--<li runat="server" id="mnuFile_smnuTransactionalScan"><a href="#" onclick="OpenIndexing('Transactional Scanning');">Transactional Scanning</a></li>--%>
                                                             <li runat="server" id="mnuFile_smnuBulkScanning"><a href="#" onclick="OpenIndexing('Bulk Scanning and Fax');">Upload Scanned Documents</a></li> <%--Bulk Scanning & Fax--%>
+                                                            <li runat="server" id="mnuFile_smnuErroredSignedReports"><a href="#" onclick="OpenErroredSignedReports('Errored Signed Reports');">Errored Signed Reports</a></li>
                                                            <%-- </li>--%>
                                                         </ul>
                                                     </div>
