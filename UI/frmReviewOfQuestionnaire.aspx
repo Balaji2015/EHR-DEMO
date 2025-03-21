@@ -90,7 +90,7 @@
                                         </td>
                                         <td style="width: 6%;" align="left">
                                             <telerik:RadButton ID="btnClearAll" AutoPostBack="false" CssClass="redbutton" runat="server" Text="Clear All"
-                                                EnableViewState="false" OnClientClicked="ClearAllRoq" AccessKey="c" Style="-moz-border-radius: 3px; -webkit-border-radius: 3px; width: 60px; text-align: center">
+                                                EnableViewState="false" OnClientClicked="ClearAllRoq" AccessKey="c" Style="-moz-border-radius: 3px; -webkit-border-radius: 3px; width: 80px; text-align: center">
                                                 <ContentTemplate>
                                                     <span class="underline">C</span>lear All                                             
                                                 </ContentTemplate>
