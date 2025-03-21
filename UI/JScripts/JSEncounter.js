@@ -1443,6 +1443,8 @@ function tabAutoSave(CurrentTab, sender) {
         event.preventDefault();
         bCancel = true;
         sessionStorage.setItem("EncAutoSave", "true");
+        //CAP-3065
+        localStorage.setItem("SaveUnsuccessful", "false");
         //CAP-2678
         localStorage.setItem('IsSaveCompleted', false);
         autoSaveAndMoveToNextProcess(sender);
