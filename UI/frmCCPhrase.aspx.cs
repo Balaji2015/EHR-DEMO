@@ -173,7 +173,9 @@ namespace Acurus.Capella.UI
                    if (medicationReasonNotPerformedList != null)
                    {
                        ListItem lstMedicationDocumented = null;
-                       foreach (var medicationReasonNotPerformed in medicationReasonNotPerformedList)
+                        //Cap - 3069
+                        cboCurrentMedicationDocumented.Items.Add("");
+                        foreach (var medicationReasonNotPerformed in medicationReasonNotPerformedList)
                        {
                            if (medicationReasonNotPerformed != null)
                            {

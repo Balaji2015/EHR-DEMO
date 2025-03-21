@@ -1067,14 +1067,23 @@ namespace Acurus.Capella.UI
                         //    "|" + EncRecord.PCP_Address + "|"
                         //    + EncRecord.PCP_Fax_No + "|" + EncRecord.PCP_Phone_No;
 
+                        //Jira cap - 3068
+                        //hdnpcpprovider.Value = EncRecord.Referring_Physician + "| NPI: " + EncRecord.Referring_Provider_NPI +
+                        //        "| Facility: " + EncRecord.Referring_Facility + "| Address:" + EncRecord.Referring_Address +
+                        //        "| Phone No:" + EncRecord.Referring_Phone_No + "| Fax No:" + EncRecord.Referring_Fax_No;
 
-                        hdnpcpprovider.Value = EncRecord.Referring_Physician + "| NPI: " + EncRecord.Referring_Provider_NPI +
-                                "| Facility: " + EncRecord.Referring_Facility + "| Address:" + EncRecord.Referring_Address +
-                                "| Phone No:" + EncRecord.Referring_Phone_No + "| Fax No:" + EncRecord.Referring_Fax_No;
+                        //hdnpcpprovidersearch.Value = EncRecord.Referring_Physician + "| NPI: " + EncRecord.Referring_Provider_NPI +
+                        //          "| Facility: " + EncRecord.Referring_Facility + "| Address:" + EncRecord.Referring_Address +
+                        //          "| Phone No:" + EncRecord.Referring_Phone_No + "| Fax No:" + EncRecord.Referring_Fax_No;
 
-                        hdnpcpprovidersearch.Value = EncRecord.Referring_Physician + "| NPI: " + EncRecord.Referring_Provider_NPI +
-                                  "| Facility: " + EncRecord.Referring_Facility + "| Address:" + EncRecord.Referring_Address +
-                                  "| Phone No:" + EncRecord.Referring_Phone_No + "| Fax No:" + EncRecord.Referring_Fax_No;
+                        hdnpcpprovider.Value = EncRecord.PCP_Physician + "| NPI: " + EncRecord.PCP_Provider_NPI +
+                                  "| Facility: " + EncRecord.PCP_Facility + "| Address:" + EncRecord.PCP_Address +
+                                  "| Phone No:" + EncRecord.PCP_Phone_No + "| Fax No:" + EncRecord.PCP_Fax_No;
+
+                        hdnpcpprovidersearch.Value = EncRecord.PCP_Physician + "| NPI: " + EncRecord.PCP_Provider_NPI +
+                                  "| Facility: " + EncRecord.PCP_Facility + "| Address:" + EncRecord.PCP_Address +
+                                  "| Phone No:" + EncRecord.PCP_Phone_No + "| Fax No:" + EncRecord.PCP_Fax_No;
+
 
                         hdnpcpEditPhyId.Value = EncRecord.Reading_Provider_ID.ToString();
                         txtProviderSearch.Enabled = false;
