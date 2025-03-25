@@ -37,6 +37,12 @@ namespace Acurus.Capella.UI
         Hashtable HashHealthQuestionnaireID = new Hashtable();
         string sMyCategory = string.Empty;
         IList<Panel> groupBox = new List<Panel>();
+        //Cap - 3059
+        DateTime PatientDOB = DateTime.MinValue;
+        DateTime dtpAppointmentDate = DateTime.MinValue;
+        IList<int> noOfSymptomRows = new List<int>();
+        IList<int> symptomMaxHeight = new List<int>();
+
 
         //protected void Page_PreInit(object sender, EventArgs e)
         //{
@@ -58,10 +64,12 @@ namespace Acurus.Capella.UI
 
         protected void Page_Load(object sender, EventArgs e)
         {
-            DateTime PatientDOB = DateTime.MinValue;
-            DateTime dtpAppointmentDate = DateTime.MinValue;
-            IList<int> noOfSymptomRows = new List<int>();
-            IList<int> symptomMaxHeight = new List<int>();
+            //Cap - 3059
+            //DateTime PatientDOB = DateTime.MinValue;
+            //DateTime dtpAppointmentDate = DateTime.MinValue;
+            //IList<int> noOfSymptomRows = new List<int>();
+            //IList<int> symptomMaxHeight = new List<int>();
+
             if (Request["TabName"] != null)
                 sMyCategory = Request["TabName"].ToString();
             if (!IsPostBack)
@@ -293,6 +301,198 @@ namespace Acurus.Capella.UI
                         }
 
                         this.pnlReviewOfQuestionnaire.Controls.Add(objPanelTable);
+                        Session["ScreenControls"] = objPanelTable;
+                        Session["Version"] = HashVersion;
+                        Session["HealthQuestionnaireID"] = HashHealthQuestionnaireID;
+                        Session["QuestionnaireLookupID"] = HashQuestionnaireLookupID;
+                    }
+                    if (currentSystemNumber > 0)
+                        groupBox.Clear();
+                }
+            }
+        }
+
+        public void groupBoxCreationCopyPrevious(IList<FillHealthcareQuestionnaire> fillQuestion, IList<int> noOfSymptomRows, IList<int> symptomMaxHeight)
+        {
+            IList<string> symptomCountList = new List<string>();
+            IList<int> symptomHeight = new List<int>();
+            IList<string> systemListString = new List<string>();
+            IList<string> symptomListString = new List<string>();
+
+            QuestionnaireLookupManager RoqMngr = new QuestionnaireLookupManager();
+
+            Table objPanelTable = new Table();
+
+            string sPatientSex = "";
+
+            if (ClientSession.PatientPaneList != null && ClientSession.PatientPaneList.Count > 0)
+            {
+                sPatientSex = ClientSession.PatientPaneList[0].Sex;
+            }
+
+            symptomNamesLookUp = new List<FillHealthcareQuestionnaire>();
+
+            int noOfSymptoms = 0;
+            int currentSystemNumber = 0;
+
+            if (fillQuestion != null && fillQuestion.Count > 0)
+            {
+                roqList = fillQuestion;
+                for (int k = 0; k < fillQuestion.Count; k++)
+                {
+                    HashHealthQuestionnaireID[fillQuestion[k].Question.ToString() + "-" + fillQuestion[k].Questionnaire_Type.ToString()] = fillQuestion[k].HealthCare_Questionnaire_ID;
+                    HashQuestionnaireLookupID[fillQuestion[k].Question.ToString() + "-" + fillQuestion[k].Questionnaire_Type.ToString()] = fillQuestion[k].Questionnaire_Lookup_ID;
+                    HashVersion[fillQuestion[k].Question.ToString() + "-" + fillQuestion[k].Questionnaire_Type.ToString()] = fillQuestion[k].Version;
+                }
+            }
+
+            if (fillQuestion != null && fillQuestion.Count == 0)
+            {
+                systemNames = RoqMngr.GetHealthQuestionLookupListFromLocal(sMyCategory, DateTime.MinValue, DateTime.MinValue, ClientSession.PhysicianUserName, ClientSession.EncounterId, false);
+                for (int k = 0; k < systemNames.Count; k++)
+                {
+
+                    HashHealthQuestionnaireID[systemNames[k].Question.ToString() + "-" + systemNames[k].Questionnaire_Type.ToString()] = systemNames[k].HealthCare_Questionnaire_ID;
+                    HashQuestionnaireLookupID[systemNames[k].Question.ToString() + "-" + systemNames[k].Questionnaire_Type.ToString()] = systemNames[k].Questionnaire_Lookup_ID;
+                    HashVersion[systemNames[k].Question.ToString() + "-" + systemNames[k].Questionnaire_Type.ToString()] = systemNames[k].Version;
+                }
+            }
+            if (roqList != null)
+            {
+                if (roqList.Count == 0)
+                {
+                    string sex = sPatientSex.ToUpper() == "MALE" ? "FEMALE" : "MALE";
+
+                    systemNamesForEvent = arrayListToString(systemNames.Select(s => s.Questionnaire_Type).Distinct().ToArray());
+
+
+                    if (systemNames != null)
+                    {
+                        string[] systemNameListString = systemNames.Select(s => (s.Questionnaire_Type)).ToArray();
+                        symptomNamesLookUp = systemNames;
+                        questionNames = systemNames.Select(a => a.Questionnaire_Type).Distinct().ToList<string>();
+
+                        for (int i = 0; i < questionNames.Count; i++)
+                        {
+
+                            noOfSymptoms = symptomNamesLookUp.Count(c => c.Questionnaire_Type == questionNames[i]);
+                            if (noOfSymptoms == 0)
+                                continue;
+                            systemGroupBoxCreation(questionNames[i]);
+                            symptomCountList.Add(noOfSymptoms.ToString());
+                            currentSystemNumber++;
+
+                            int tempNoOfSymptoms = noOfSymptoms % 2 == 0 ? (int)(noOfSymptoms / 2) : (int)(noOfSymptoms / 2) + 1;
+                            noOfSymptomRows.Add(tempNoOfSymptoms);
+
+                            symptomListString = symptomNamesLookUp.Where(n => n.Questionnaire_Type == (questionNames[i])).Select(s => s.Question).ToList();
+
+                            foreach (var item in symptomListString)
+                            {
+                                string txt = item;
+                                Font f = new Font(FontFamily.GenericSansSerif, 8.2f, FontStyle.Regular);
+                                Bitmap bp = new Bitmap(1, 1);
+                                Graphics gp = Graphics.FromImage(bp);
+                                int height = (int)gp.MeasureString(txt, f, symptomWidth).Height;
+                                symptomHeight.Add(height - 15);
+                            }
+
+
+                            if (currentSystemNumber != 0 && currentSystemNumber % 3 == 0)
+                            {
+                                if (symptomHeight.Count > 0)
+                                    symptomMaxHeight.Add(symptomHeight.Max());
+
+                                objPanelTable.Controls.Add(objPanelTableRow);
+                                objPanelTableRow = new TableRow();
+
+                                groupBox.Clear();
+                                symptomCountList.Clear();
+                                currentSystemNumber = 0;
+                            }
+
+
+                        }
+
+                        if (currentSystemNumber < 3)
+                        {
+                            if (symptomHeight.Count > 0)
+                                symptomMaxHeight.Add(symptomHeight.Max());
+
+                            symptomHeight.Clear();
+                            currentSystemNumber = 0;
+                            objPanelTable.Controls.Add(objPanelTableRow);
+                        }
+                        //this.pnlReviewOfQuestionnaire.Controls.Add(objPanelTable);
+                        Session["ScreenControls"] = objPanelTable;
+                        Session["Version"] = HashVersion;
+                        Session["HealthQuestionnaireID"] = HashHealthQuestionnaireID;
+                        Session["QuestionnaireLookupID"] = HashQuestionnaireLookupID;
+                        if (currentSystemNumber > 0)
+                            groupBox.Clear();
+
+
+                    }
+                }
+                else
+                {
+                    systemListString = roqList.Select(s => s.Questionnaire_Type).Distinct().ToList();
+
+                    if (sPatientSex.ToUpper() == "MALE")
+                        systemListString = systemListString.Where(a => a.ToUpper() != "GYNECOLOGICAL FEMALE").ToList<string>();
+                    systemNamesForEvent = arrayListToString(systemListString.ToArray());
+
+
+                    if (systemListString != null)
+                    {
+                        for (int i = 0; i < systemListString.Count; i++)
+                        {
+
+                            symptomListString = roqList.Where(s => s.Questionnaire_Type == systemListString[i]).Select(s => s.Question).ToList();
+
+                            noOfSymptoms = symptomListString.Count;
+                            systemGroupBoxCreation(systemListString[i]);
+                            symptomCountList.Add(noOfSymptoms.ToString());
+                            currentSystemNumber++;
+
+                            int tempNoOfSymptoms = noOfSymptoms % 2 == 0 ? (int)(noOfSymptoms / 2) : (int)(noOfSymptoms / 2) + 1;
+                            noOfSymptomRows.Add(tempNoOfSymptoms);
+
+                            foreach (var item in symptomListString)
+                            {
+                                string txt = item;
+                                Font f = new Font(FontFamily.GenericSansSerif, 8.2f, FontStyle.Regular);
+                                Bitmap bp = new Bitmap(1, 1);
+                                Graphics gp = Graphics.FromImage(bp);
+                                int height = (int)gp.MeasureString(txt, f, symptomWidth).Height;
+                                symptomHeight.Add(height - 15);
+                            }
+
+                            if (currentSystemNumber != 0 && currentSystemNumber % 3 == 0)
+                            {
+                                if (symptomHeight.Count > 0)
+                                    symptomMaxHeight.Add(symptomHeight.Max());
+
+                                objPanelTable.Controls.Add(objPanelTableRow);
+                                objPanelTableRow = new TableRow();
+
+                                groupBox.Clear();
+                                symptomCountList.Clear();
+                                symptomHeight.Clear();
+                                currentSystemNumber = 0;
+                            }
+
+                        }
+
+                        if (currentSystemNumber < 3)
+                        {
+                            if (symptomHeight.Count > 0)
+                                symptomMaxHeight.Add(symptomHeight.Max());
+                            symptomHeight.Clear();
+                            currentSystemNumber = 0;
+                            objPanelTable.Controls.Add(objPanelTableRow);
+                        }
+                        // this.pnlReviewOfQuestionnaire.Controls.Add(objPanelTable);
                         Session["ScreenControls"] = objPanelTable;
                         Session["Version"] = HashVersion;
                         Session["HealthQuestionnaireID"] = HashHealthQuestionnaireID;
@@ -1012,5 +1212,102 @@ namespace Acurus.Capella.UI
                 }
             }
         }
+
+        protected void CopyPreviousEncounter(bool bsaved)
+        {
+            QuestionnaireLookupManager RoqMngr = new QuestionnaireLookupManager();
+            HealthcareQuestionnaireManager questionnaireManager = new HealthcareQuestionnaireManager();
+            IList<FillHealthcareQuestionnaire> questionnaireDTO = new List<FillHealthcareQuestionnaire>();
+            bool isPhysicianProcess = false;
+            bool isPrevEncQuestionnairePresent = false;
+            bool isPrevEncPresent = false;
+            bool isFromArchive = false;
+            ulong prevEncID = 0;
+            bool isAlert = false;
+            noOfSymptomRows.Clear();
+
+            if (Request["TabName"] != null)
+                sMyCategory = Request["TabName"].ToString();
+
+            if (ClientSession.PatientPaneList != null && ClientSession.PatientPaneList.Count > 0)
+            {
+                IList<PatientPane> PatientPaneList = ClientSession.PatientPaneList.Where(a => a.Encounter_ID == ClientSession.EncounterId).ToList<PatientPane>();
+                if (PatientPaneList.Count > 0)
+                {
+                    dtpAppointmentDate = PatientPaneList[0].Date_of_Service;
+                    PatientDOB = PatientPaneList[0].Birth_Date;
+                }
+            }
+            
+            questionnaireManager.GetQuestionnaireforPastEncounter(ClientSession.HumanId, ClientSession.EncounterId, ClientSession.PhysicianId, sMyCategory, out isPrevEncPresent, out isPhysicianProcess, out isPrevEncQuestionnairePresent, out prevEncID, out isFromArchive);
+
+            if (!isPrevEncPresent)
+            {
+                if (bsaved)
+                    ScriptManager.RegisterStartupScript(this, this.Page.GetType(), "PrevEncMissing", "savedSuccessfully(); onCopyPrevious('210010');", true);
+                else
+                    ScriptManager.RegisterStartupScript(this, this.Page.GetType(), "PrevEncMissing", "onCopyPrevious('210010'); ", true);
+                isAlert = true;
+            }
+            else if (!isPhysicianProcess)
+            {
+                if (bsaved)
+                    ScriptManager.RegisterStartupScript(this, this.Page.GetType(), "PrevEncNotPhysicianProcess", "savedSuccessfully(); onCopyPrevious('210016');", true);
+                else
+                    ScriptManager.RegisterStartupScript(this, this.Page.GetType(), "PrevEncNotPhysicianProcess", "onCopyPrevious('210016');", true);
+                isAlert = true;
+            }
+            if (!isPrevEncQuestionnairePresent)
+            {
+                if (bsaved)
+                    ScriptManager.RegisterStartupScript(this, this.Page.GetType(), "PrevEncQDataNotPresent", "savedSuccessfully(); onCopyPrevious('170014');", true);
+                else
+                    ScriptManager.RegisterStartupScript(this, this.Page.GetType(), "PrevEncQDataNotPresent", "onCopyPrevious('170014');", true);
+                isAlert = true;
+            }
+            if (isAlert)
+            {
+                roqList = (IList<FillHealthcareQuestionnaire>)Session["fillRoq"];
+
+                groupBoxCreation(roqList, noOfSymptomRows, symptomMaxHeight);
+
+                checkBoxAndOtherControlsCreation(noOfSymptomRows, symptomMaxHeight);
+
+                chkAllOtherSystemsNormal.Attributes.Add("OnClick", "chkAllOtherSystemsNormalClick('" + systemNamesForEvent + "')");
+
+                for (int k = 0; k < roqList.Count; k++)
+                {
+                    HashHealthQuestionnaireID[roqList[k].Question.ToString() + "-" + roqList[k].Questionnaire_Type.ToString()] = roqList[k].HealthCare_Questionnaire_ID;
+                    HashQuestionnaireLookupID[roqList[k].Question.ToString() + "-" + roqList[k].Questionnaire_Type.ToString()] = roqList[k].Questionnaire_Lookup_ID;
+                    HashVersion[roqList[k].Question.ToString() + "-" + roqList[k].Questionnaire_Type.ToString()] = roqList[k].Version;
+                }
+            }
+            else
+            {
+                roqList = RoqMngr.GetHealthQuestionLookupListFromServer(sMyCategory, PatientDOB, dtpAppointmentDate, ClientSession.PhysicianUserName, prevEncID, false);
+
+                groupBoxCreationCopyPrevious(roqList, noOfSymptomRows, symptomMaxHeight);
+
+                checkBoxAndOtherControlsCreation(noOfSymptomRows, symptomMaxHeight);
+
+                chkAllOtherSystemsNormal.Attributes.Add("OnClick", "chkAllOtherSystemsNormalClick('" + systemNamesForEvent + "')");
+
+                for (int k = 0; k < roqList.Count; k++)
+                {
+                    HashHealthQuestionnaireID[roqList[k].Question.ToString() + "-" + roqList[k].Questionnaire_Type.ToString()] = roqList[k].HealthCare_Questionnaire_ID;
+                    HashQuestionnaireLookupID[roqList[k].Question.ToString() + "-" + roqList[k].Questionnaire_Type.ToString()] = roqList[k].Questionnaire_Lookup_ID;
+                    HashVersion[roqList[k].Question.ToString() + "-" + roqList[k].Questionnaire_Type.ToString()] = roqList[k].Version;
+                }
+                btnSave.Enabled = true;
+            }
+
+            ScriptManager.RegisterStartupScript(this, this.Page.GetType(), "Login", "sessionStorage.setItem('StartLoading', 'false');StopLoadFromPatChart();", true);
+        }
+        protected void btnCopyPrevious_Click(object sender, EventArgs e)
+        {
+            CopyPreviousEncounter(false);
+        }
+
+
     }
 }

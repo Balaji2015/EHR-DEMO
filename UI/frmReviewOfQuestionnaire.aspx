@@ -80,6 +80,11 @@
                                         <td style="width: 75%">
                                             <asp:CheckBox ID="chkAllOtherSystemsNormal" runat="server" CssClass="Editabletxtbox" Text="All other systems are Negative except for the problems presented." />
                                         </td>
+                                        <td align="center">
+
+                                <input type="button" runat="server" class="btn aspresizedbluebutton" id="btnCopyPrevious" accesskey="p" value="Copy Previous Screening"
+                                    onclick="if (!btnCopyPrevious_Clicked()) return;" onserverclick="btnCopyPrevious_Click" />
+                            </td>
                                         <td style="width: 6%;" align="right">
                                             <telerik:RadButton ID="btnSave" runat="server" Text="Save" Width="80px" OnClick="btnSave_Click"
                                                 OnClientClicked="SaveEnabled" AccessKey="s" Style="-moz-border-radius: 3px; -webkit-border-radius: 3px; width: 60px; text-align: center" CssClass="greenbutton">
@@ -129,6 +134,7 @@
             </asp:Panel>
         </div>--%>
         </telerik:RadAjaxPanel>
+        <asp:HiddenField ID="HdnCopyButton" runat="server" Value="false" />
         <input id="Hidden1" type="hidden" enableviewstate="false" runat="server" />
         <input id="hdnPrint" type="hidden" enableviewstate="false" runat="server" />
         <asp:PlaceHolder ID="PlaceHolder1" runat="server">
