@@ -1299,7 +1299,9 @@ function OpenModal(data) {
     else if (itemValue.toUpperCase() == "WELLNESS NOTES") {
 
         if (document.getElementById(GetClientId("hdnEncounterId")) != null && document.getElementById(GetClientId("hdnEncounterId")).value != "" && document.getElementById(GetClientId("hdnEncounterId")).value != "0") {
-            StartLoadingImage();
+            //Jira CAP-3075
+            //StartLoadingImage();
+            { sessionStorage.setItem('StartLoading', 'true'); StartLoadFromPatChart(); }
             if ($(top.window.document)?.find('#ProcessiFrameNotes')[0]?.contentDocument != undefined && $(top.window.document)?.find('#ProcessiFrameNotes')[0]?.contentDocument != null) {
                 $(top.window.document).find('#ProcessiFrameNotes')[0].contentDocument.location.href = "frmWellnessNotes.aspx?SubMenuName=WELLNESS NOTES" + "&Menu=True";
             }
@@ -1328,7 +1330,8 @@ function OpenModal(data) {
             document.getElementById(GetClientId("hdnLocalTime")).value = strYear + "" + strMonth + "" + strDay + " " + timeString.replace(":", "").replace(":", "");
             var obj = new Array();
             obj.push("Date=" + document.getElementById(GetClientId("hdnLocalTime")).value);//document.getElementById(GetClientId("hdnLocalTime")).value
-            StopLoadingImage();
+            //Jira CAP-3075
+            //StopLoadingImage();
         }
         else {
             StopLoadingImage();
@@ -1337,7 +1340,9 @@ function OpenModal(data) {
 
     } else if (itemValue == "Care Note") {
         if (document.getElementById(GetClientId("hdnEncounterId")) != null && document.getElementById(GetClientId("hdnEncounterId")).value != "" && document.getElementById(GetClientId("hdnEncounterId")).value != "0") {
-            StartLoadingImage();
+            //Jira CAP-3075
+            //StartLoadingImage();
+            { sessionStorage.setItem('StartLoading', 'true'); StartLoadFromPatChart(); }
             $(top.window.document).find('#ProcessiFrameNotes')[0].contentDocument.location.href = "frmWellnessNotes.aspx?SubMenuName=CARE NOTE" + "&Menu=True";
             $(top.window.document).find("#ModalTtleNotes")[0].textContent = "Care Notes";
             var DateTime = new Date();
@@ -1364,8 +1369,8 @@ function OpenModal(data) {
             document.getElementById(GetClientId("hdnLocalTime")).value = strYear + "" + strMonth + "" + strDay + " " + timeString.replace(":", "").replace(":", "");
             var obj = new Array();
             obj.push("Date=" + document.getElementById(GetClientId("hdnLocalTime")).value);//document.getElementById(GetClientId("hdnLocalTime")).value
-
-            StopLoadingImage();
+            //Jira CAP-3075
+            //StopLoadingImage();
         }
         else {
             StopLoadingImage();
@@ -1374,7 +1379,9 @@ function OpenModal(data) {
     }
     else if (itemValue == "Treatment Notes") {
         if (document.getElementById(GetClientId("hdnEncounterId")) != null && document.getElementById(GetClientId("hdnEncounterId")).value != "" && document.getElementById(GetClientId("hdnEncounterId")).value != "0") {
-            StartLoadingImage();
+            //Jira CAP-3075
+            //StartLoadingImage();
+            { sessionStorage.setItem('StartLoading', 'true'); StartLoadFromPatChart(); }
             $(top.window.document).find('#ProcessiFrameNotes')[0].contentDocument.location.href = "frmWellnessNotes.aspx?SubMenuName=TREATMENT NOTES" + "&Menu=True";
             $(top.window.document).find("#ModalTtleNotes")[0].textContent = "Treatment Notes";
             var DateTime = new Date();
@@ -1401,8 +1408,8 @@ function OpenModal(data) {
             document.getElementById(GetClientId("hdnLocalTime")).value = strYear + "" + strMonth + "" + strDay + " " + timeString.replace(":", "").replace(":", "");
             var obj = new Array();
             obj.push("Date=" + document.getElementById(GetClientId("hdnLocalTime")).value);//document.getElementById(GetClientId("hdnLocalTime")).value
-
-            StopLoadingImage();
+            //Jira CAP-3075
+            //StopLoadingImage();
         }
         else {
             StopLoadingImage();
@@ -1496,13 +1503,14 @@ function OpenModal(data) {
     else if (itemValue.toUpperCase() == "PROGRESS NOTES PDF") {
 
         if (document.getElementById(GetClientId("hdnEncounterId")) != null && document.getElementById(GetClientId("hdnEncounterId")).value != "" && document.getElementById(GetClientId("hdnEncounterId")).value != "0") {
-
-            StartLoadingImage();
+            //Jira CAP-3075
+            //StartLoadingImage();
+            { sessionStorage.setItem('StartLoading', 'true'); StartLoadFromPatChart(); }
             $(top.window.document).find('#ProcessiFrameNotes')[0].contentDocument.location.href = "frmSummaryNew.aspx?Menu=PDF&TabMode=true";
             $(top.window.document).find("#ModalTtleNotes")[0].textContent = "Progress Notes";
 
-
-            StopLoadingImage();
+            //Jira CAP-3075
+            //StopLoadingImage();
         }
         else {
             StopLoadingImage();
@@ -1545,8 +1553,8 @@ function OpenModal(data) {
     }
     else if (itemValue.toUpperCase() == "CONSULTATION NOTES PDF") {
         if (document.getElementById(GetClientId("hdnEncounterId")) != null && document.getElementById(GetClientId("hdnEncounterId")).value != "" && document.getElementById(GetClientId("hdnEncounterId")).value != "0") {
-
-
+            //Jira CAP-3075
+            StartLoadingForNotes();
             var obj = new Array();
             obj.push("Date=" + document.getElementById(GetClientId('hdnLocalTime')).value);
             obj.push("Menu=" + "PDF");

@@ -109,7 +109,7 @@
                 </button>
                 <ul class="dropdown-menu">
                     <%--<li><a href="#" runat="server" onserverclick="btnWordconsult_Click" id="btnconword">Export as Doc</a></li>--%>
-                    <li><a href="#" runat="server" onserverclick="btnPDFconsult_Click" id="btnconpdf">Export as pdf</a></li>
+                    <li><a href="#" runat="server"  onclick="StartLoadingForNotes();" onserverclick="btnPDFconsult_Click" id="btnconpdf">Export as pdf</a></li>
                     <li><a href="#" runat="server" onserverclick="btnsendFaxconsult_Click" id="btnconfax">Send as Fax </a></li>
                 </ul>
             </div>
@@ -120,7 +120,7 @@
                 </button>
                 <ul class="dropdown-menu">
                     <%--<li><a href="#" runat="server" onserverclick="btnWord_Click" id="btnword">Export as Doc</a></li>--%>
-                    <li><a href="#" runat="server" onserverclick="btnPDF_Click" id="btnpdf">Export as pdf</a></li>
+                    <li><a href="#" runat="server" onclick="StartLoadingForNotes();" onserverclick="btnPDF_Click" id="btnpdf">Export as pdf</a></li>
                     <li><a href="#" runat="server" onserverclick="btnsendFax_Click" id="btnFax">Send as Fax </a></li>
                 </ul>
             </div>
@@ -160,7 +160,7 @@
         <asp:HiddenField runat="server" ID="hdnEncounterId" />
         <asp:HiddenField runat="server" ID="hdnBatchStatus" />
         <asp:Button ID="hdnbtngeneratexmlsummary" runat="server" OnClick="hdnbtngeneratexmlsummary_Click"  style="display:none" />
-
+ 
         <asp:PlaceHolder ID="PlaceHolder1" runat="server">
              <script src="JScripts/jquery-1.11.3.min.js" type="text/javascript"></script>
             <script src="JScripts/jquery-ui.min1.10.2.js?version=<%=ConfigurationManager.AppSettings["VersionConfiguration"].ToString().Replace("Capella - ","") %>" type="text/javascript"></script>
