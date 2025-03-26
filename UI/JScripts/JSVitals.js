@@ -534,6 +534,8 @@ function btnSave_Clicked() {
                     ChangeStatusLabel();
                     AutoSaveUnsuccessful();
                     { sessionStorage.setItem('StartLoading', 'false'); StopLoadFromPatChart(); }
+                    //CAP-3082
+                    sessionStorage.setItem("MandatoryCheck", "true");
                     alert("Please Fill both the values of " + idname);
                     return false;
 
