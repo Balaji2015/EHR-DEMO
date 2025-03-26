@@ -981,7 +981,8 @@ namespace Acurus.Capella.UI.WebServices
                                     physician.machine_technician_id = "0";
 
                                     var updatedFacilityMappingContent = JsonConvert.SerializeObject(physician);
-                                    ConfigureBase<PhysicianList>.SaveJson("PhysicianFacilityMapping.json", updatedFacilityMappingContent);
+                                    //Cap - 3094
+                                   //ConfigureBase<PhysicianList>.SaveJson("PhysicianFacilityMapping.json", updatedFacilityMappingContent);
                                 }
                             }
                         }
@@ -1005,7 +1006,8 @@ namespace Acurus.Capella.UI.WebServices
                                     physician.machine_technician_id = "0";
 
                                     var updatedFacilityMappingContent = JsonConvert.SerializeObject(physician);
-                                    ConfigureBase<PhysicianList>.SaveJson("PhysicianFacilityMapping.json", updatedFacilityMappingContent);
+                                    //Cap - 3094
+                                    //ConfigureBase<PhysicianList>.SaveJson("PhysicianFacilityMapping.json", updatedFacilityMappingContent);
                                 }
                             }
                         }
@@ -1396,7 +1398,8 @@ namespace Acurus.Capella.UI.WebServices
                                         physicianFacilityMappingList.PhysicianFacility.FirstOrDefault(x => x.name == ilstFacility[i].ToString().ToUpper()).Physician.Add(physician);
 
                                         var updatedFacilityMappingContent = JsonConvert.SerializeObject(physicianFacilityMappingList);
-                                        ConfigureBase<PhysicianList>.SaveJson("PhysicianFacilityMapping.json", updatedFacilityMappingContent);
+                                        //Cap - 3094
+                                        //ConfigureBase<PhysicianList>.SaveJson("PhysicianFacilityMapping.json", updatedFacilityMappingContent);
                                     }
                                 }
                             }
@@ -1419,7 +1422,8 @@ namespace Acurus.Capella.UI.WebServices
                         physicianFacilityMappingList.UnmappedPhysician.Add(unmappedPhysician);
 
                         var updatedFacilityMappingContent = JsonConvert.SerializeObject(physicianFacilityMappingList);
-                        ConfigureBase<PhysicianList>.SaveJson("PhysicianFacilityMapping.json", updatedFacilityMappingContent);
+                        //Cap - 3094
+                        //ConfigureBase<PhysicianList>.SaveJson("PhysicianFacilityMapping.json", updatedFacilityMappingContent);
 
                     }
                 }

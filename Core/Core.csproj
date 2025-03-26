@@ -358,7 +358,6 @@
     <Compile Include="DTOJson\QuestionnaireTab_Lookup.cs" />
     <Compile Include="DTOJson\Room_in_lookup.cs" />
     <Compile Include="DTOJson\Speciality.cs" />
-    <Compile Include="DTOJson\PhysicianAddressDetailsList.cs" />
     <Compile Include="DTOJson\PhysicianFacilityMappingList.cs" />
     <Compile Include="DTOJson\StaticLookupList.cs" />
     <Compile Include="DTO\ABIResultsDTO.cs" />
