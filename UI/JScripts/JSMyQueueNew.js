@@ -96,9 +96,10 @@ $(document).ready(function () {
                     if (isValidJSON(xhr.responseText)) {
                         var log = JSON.parse(xhr.responseText);
                         console.log(log);
-                        alert("USER MESSAGE:\n" +
-                            ". Cannot process request. Please Login again and retry. \nEXCEPTION DETAILS: \n" +
-                            "Message: " + log.Message);
+                        //alert("USER MESSAGE:\n" +
+                        //    ". Cannot process request. Please Login again and retry. \nEXCEPTION DETAILS: \n" +
+                        //    "Message: " + log.Message);
+                        ScriptErrorLogEntry(log.Message, "", "", document.URL, log.StackTrace, true);
                     }
                     else {
                         alert("USER MESSAGE:\n" +
@@ -244,9 +245,10 @@ $(document).ready(function () {
                                 if (isValidJSON(xhr.responseText)) {
                                     var log = JSON.parse(xhr.responseText);
                                     console.log(log);
-                                    alert("USER MESSAGE:\n" +
-                                        ". Cannot process request. Please Login again and retry. \nEXCEPTION DETAILS: \n" +
-                                        "Message: " + log.Message);
+                                    //alert("USER MESSAGE:\n" +
+                                    //    ". Cannot process request. Please Login again and retry. \nEXCEPTION DETAILS: \n" +
+                                    //    "Message: " + log.Message);
+                                    ScriptErrorLogEntry(log.Message, "", "", document.URL, log.StackTrace, true);
                                 }
                                 else {
                                     alert("USER MESSAGE:\n" +
@@ -322,9 +324,10 @@ $(document).ready(function () {
                                 else {
                                     var log = JSON.parse(xhr.responseText);
                                     console.log(log);
-                                    alert("USER MESSAGE:\n" +
-                                        ". Cannot process request. Please Login again and retry. \nEXCEPTION DETAILS: \n" +
-                                        "Message: " + log.Message);
+                                    //alert("USER MESSAGE:\n" +
+                                    //    ". Cannot process request. Please Login again and retry. \nEXCEPTION DETAILS: \n" +
+                                    //    "Message: " + log.Message);
+                                    ScriptErrorLogEntry(log.Message, "", "", document.URL, log.StackTrace, true);
                                 }
                             }
                         });
@@ -575,9 +578,10 @@ function MyQclick() {
                     else {
                         var log = JSON.parse(xhr.responseText);
                         console.log(log);
-                        alert("USER MESSAGE:\n" +
-                            ". Cannot process request. Please Login again and retry. \nEXCEPTION DETAILS: \n" +
-                            "Message: " + log.Message);
+                        //alert("USER MESSAGE:\n" +
+                        //    ". Cannot process request. Please Login again and retry. \nEXCEPTION DETAILS: \n" +
+                        //    "Message: " + log.Message);
+                        ScriptErrorLogEntry(log.Message, "", "", document.URL, log.StackTrace, true);
                     }
                 }
             });
@@ -629,9 +633,10 @@ function MyQclick() {
                     else {
                         var log = JSON.parse(xhr.responseText);
                         console.log(log);
-                        alert("USER MESSAGE:\n" +
-                            ". Cannot process request. Please Login again and retry. \nEXCEPTION DETAILS: \n" +
-                            "Message: " + log.Message);
+                        //alert("USER MESSAGE:\n" +
+                        //    ". Cannot process request. Please Login again and retry. \nEXCEPTION DETAILS: \n" +
+                        //    "Message: " + log.Message);
+                        ScriptErrorLogEntry(log.Message, "", "", document.URL, log.StackTrace, true);
                     }
                 }
             });
@@ -673,9 +678,10 @@ function MyQclick() {
                     else {
                         var log = JSON.parse(xhr.responseText);
                         console.log(log);
-                        alert("USER MESSAGE:\n" +
-                            ". Cannot process request. Please Login again and retry. \nEXCEPTION DETAILS: \n" +
-                            "Message: " + log.Message);
+                        //alert("USER MESSAGE:\n" +
+                        //    ". Cannot process request. Please Login again and retry. \nEXCEPTION DETAILS: \n" +
+                        //    "Message: " + log.Message);
+                        ScriptErrorLogEntry(log.Message, "", "", document.URL, log.StackTrace, true);
                     }
                 }
             });
@@ -817,9 +823,10 @@ function MyQclick() {
                     else {
                         var log = JSON.parse(xhr.responseText);
                         console.log(log);
-                        alert("USER MESSAGE:\n" +
-                            ". Cannot process request. Please Login again and retry. \nEXCEPTION DETAILS: \n" +
-                            "Message: " + log.Message);
+                        //alert("USER MESSAGE:\n" +
+                        //    ". Cannot process request. Please Login again and retry. \nEXCEPTION DETAILS: \n" +
+                        //    "Message: " + log.Message);
+                        ScriptErrorLogEntry(log.Message, "", "", document.URL, log.StackTrace, true);
                     }
                 }
             });
@@ -1155,9 +1162,10 @@ function LoadMyEncounter(ajaxUrl) {
                 else {
                     var log = JSON.parse(xhr.responseText);
                     console.log(log);
-                    alert("USER MESSAGE:\n" +
-                        ". Cannot process request. Please Login again and retry. \nEXCEPTION DETAILS: \n" +
-                        "Message: " + log.Message);
+                    //alert("USER MESSAGE:\n" +
+                    //    ". Cannot process request. Please Login again and retry. \nEXCEPTION DETAILS: \n" +
+                    //    "Message: " + log.Message);
+                    ScriptErrorLogEntry(log.Message, "", "", document.URL, log.StackTrace, true);
                 }
             }
         },
@@ -1674,9 +1682,10 @@ function LoadMyTask() {
                 else {
                     var log = JSON.parse(xhr.responseText);
                     console.log(log);
-                    alert("USER MESSAGE:\n" +
-                        ". Cannot process request. Please Login again and retry. \nEXCEPTION DETAILS: \n" +
-                        "Message: " + log.Message);
+                    //alert("USER MESSAGE:\n" +
+                    //    ". Cannot process request. Please Login again and retry. \nEXCEPTION DETAILS: \n" +
+                    //    "Message: " + log.Message);
+                    ScriptErrorLogEntry(log.Message, "", "", document.URL, log.StackTrace, true);
                 }
             }
         },
@@ -1852,9 +1861,10 @@ function loadMyorder() {
                 else {
                     var log = JSON.parse(xhr.responseText);
                     console.log(log);
-                    alert("USER MESSAGE:\n" +
-                        ". Cannot process request. Please Login again and retry. \nEXCEPTION DETAILS: \n" +
-                        "Message: " + log.Message);
+                    //alert("USER MESSAGE:\n" +
+                    //    ". Cannot process request. Please Login again and retry. \nEXCEPTION DETAILS: \n" +
+                    //    "Message: " + log.Message);
+                    ScriptErrorLogEntry(log.Message, "", "", document.URL, log.StackTrace, true);
                 }
             }
         },
@@ -2170,9 +2180,10 @@ function loadMyscan() {
                 else {
                     var log = JSON.parse(xhr.responseText);
                     console.log(log);
-                    alert("USER MESSAGE:\n" +
-                        ". Cannot process request. Please Login again and retry. \nEXCEPTION DETAILS: \n" +
-                        "Message: " + log.Message);
+                    //alert("USER MESSAGE:\n" +
+                    //    ". Cannot process request. Please Login again and retry. \nEXCEPTION DETAILS: \n" +
+                    //    "Message: " + log.Message);
+                    ScriptErrorLogEntry(log.Message, "", "", document.URL, log.StackTrace, true);
                 }
             }
         },
@@ -2316,9 +2327,10 @@ function loadMyprescription() {
                 else {
                     var log = JSON.parse(xhr.responseText);
                     console.log(log);
-                    alert("USER MESSAGE:\n" +
-                        ". Cannot process request. Please Login again and retry. \nEXCEPTION DETAILS: \n" +
-                        "Message: " + log.Message);
+                    //alert("USER MESSAGE:\n" +
+                    //    ". Cannot process request. Please Login again and retry. \nEXCEPTION DETAILS: \n" +
+                    //    "Message: " + log.Message);
+                    ScriptErrorLogEntry(log.Message, "", "", document.URL, log.StackTrace, true);
                 }
             }
         },
@@ -2520,9 +2532,10 @@ function loadMyAmendment() {
                 else {
                     var log = JSON.parse(xhr.responseText);
                     console.log(log);
-                    alert("USER MESSAGE:\n" +
-                        ". Cannot process request. Please Login again and retry. \nEXCEPTION DETAILS: \n" +
-                        "Message: " + log.Message);
+                    //alert("USER MESSAGE:\n" +
+                    //    ". Cannot process request. Please Login again and retry. \nEXCEPTION DETAILS: \n" +
+                    //    "Message: " + log.Message);
+                    ScriptErrorLogEntry(log.Message, "", "", document.URL, log.StackTrace, true);
                 }
             }
         },
@@ -2782,9 +2795,10 @@ function LoadGeneralEncounter(ajaxUrl) {
                 else {
                     var log = JSON.parse(xhr.responseText);
                     console.log(log);
-                    alert("USER MESSAGE:\n" +
-                        ". Cannot process request. Please Login again and retry. \nEXCEPTION DETAILS: \n" +
-                        "Message: " + log.Message);
+                    //alert("USER MESSAGE:\n" +
+                    //    ". Cannot process request. Please Login again and retry. \nEXCEPTION DETAILS: \n" +
+                    //    "Message: " + log.Message);
+                    ScriptErrorLogEntry(log.Message, "", "", document.URL, log.StackTrace, true);
                 }
             }
         },
@@ -2988,9 +3002,10 @@ function loadTask() {
                     else {
                         var log = JSON.parse(xhr.responseText);
                         console.log(log);
-                        alert("USER MESSAGE:\n" +
-                            ". Cannot process request. Please Login again and retry. \nEXCEPTION DETAILS: \n" +
-                            "Message: " + log.Message);
+                        //alert("USER MESSAGE:\n" +
+                        //    ". Cannot process request. Please Login again and retry. \nEXCEPTION DETAILS: \n" +
+                        //    "Message: " + log.Message);
+                        ScriptErrorLogEntry(log.Message, "", "", document.URL, log.StackTrace, true);
                     }
                 }
             },
@@ -3319,9 +3334,10 @@ function loadorder() {
                 else {
                     var log = JSON.parse(xhr.responseText);
                     console.log(log);
-                    alert("USER MESSAGE:\n" +
-                        ". Cannot process request. Please Login again and retry. \nEXCEPTION DETAILS: \n" +
-                        "Message: " + log.Message);
+                    //alert("USER MESSAGE:\n" +
+                    //    ". Cannot process request. Please Login again and retry. \nEXCEPTION DETAILS: \n" +
+                    //    "Message: " + log.Message);
+                    ScriptErrorLogEntry(log.Message, "", "", document.URL, log.StackTrace, true);
                 }
             }
         },
@@ -3549,9 +3565,10 @@ function loadamend() {
                     else {
                         var log = JSON.parse(xhr.responseText);
                         console.log(log);
-                        alert("USER MESSAGE:\n" +
-                            ". Cannot process request. Please Login again and retry. \nEXCEPTION DETAILS: \n" +
-                            "Message: " + log.Message);
+                        //alert("USER MESSAGE:\n" +
+                        //    ". Cannot process request. Please Login again and retry. \nEXCEPTION DETAILS: \n" +
+                        //    "Message: " + log.Message);
+                        ScriptErrorLogEntry(log.Message, "", "", document.URL, log.StackTrace, true);
                     }
                 }
             },
@@ -5042,9 +5059,10 @@ function movetoEnc() {
                     else {
                         var log = JSON.parse(xhr.responseText);
                         console.log(log);
-                        alert("USER MESSAGE:\n" +
-                            ". Cannot process request. Please Login again and retry. \nEXCEPTION DETAILS: \n" +
-                            "Message: " + log.Message);
+                        //alert("USER MESSAGE:\n" +
+                        //    ". Cannot process request. Please Login again and retry. \nEXCEPTION DETAILS: \n" +
+                        //    "Message: " + log.Message);
+                        ScriptErrorLogEntry(log.Message, "", "", document.URL, log.StackTrace, true);
                     }
                 }
             });
@@ -5126,9 +5144,10 @@ function movetoamend() {
             else {
                 var log = JSON.parse(xhr.responseText);
                 console.log(log);
-                alert("USER MESSAGE:\n" +
-                    ". Cannot process request. Please Login again and retry. \nEXCEPTION DETAILS: \n" +
-                    "Message: " + log.Message);
+                //alert("USER MESSAGE:\n" +
+                //    ". Cannot process request. Please Login again and retry. \nEXCEPTION DETAILS: \n" +
+                //    "Message: " + log.Message);
+                ScriptErrorLogEntry(log.Message, "", "", document.URL, log.StackTrace, true);
             }
         }
     });
@@ -5220,9 +5239,10 @@ function movetoorder() {
                 else {
                     var log = JSON.parse(xhr.responseText);
                     console.log(log);
-                    alert("USER MESSAGE:\n" +
-                        ". Cannot process request. Please Login again and retry. \nEXCEPTION DETAILS: \n" +
-                        "Message: " + log.Message);
+                    //alert("USER MESSAGE:\n" +
+                    //    ". Cannot process request. Please Login again and retry. \nEXCEPTION DETAILS: \n" +
+                    //    "Message: " + log.Message);
+                    ScriptErrorLogEntry(log.Message, "", "", document.URL, log.StackTrace, true);
                 }
             }
 
@@ -5262,9 +5282,10 @@ function movetotask() {
             else {
                 var log = JSON.parse(xhr.responseText);
                 console.log(log);
-                alert("USER MESSAGE:\n" +
-                    ". Cannot process request. Please Login again and retry. \nEXCEPTION DETAILS: \n" +
-                    "Message: " + log.Message);
+                //alert("USER MESSAGE:\n" +
+                //    ". Cannot process request. Please Login again and retry. \nEXCEPTION DETAILS: \n" +
+                //    "Message: " + log.Message);
+                ScriptErrorLogEntry(log.Message, "", "", document.URL, log.StackTrace, true);
             }
         }
     });
@@ -5714,9 +5735,10 @@ function PerformMovetoNextProcess() {
                 else {
                     var log = JSON.parse(xhr.responseText);
                     console.log(log);
-                    alert("USER MESSAGE:\n" +
-                        ". Cannot process request. Please Login again and retry. \nEXCEPTION DETAILS: \n" +
-                        "Message: " + log.Message);
+                    //alert("USER MESSAGE:\n" +
+                    //    ". Cannot process request. Please Login again and retry. \nEXCEPTION DETAILS: \n" +
+                    //    "Message: " + log.Message);
+                    ScriptErrorLogEntry(log.Message, "", "", document.URL, log.StackTrace, true);
                 }
             }
         });

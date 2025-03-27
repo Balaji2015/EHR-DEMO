@@ -3036,3 +3036,21 @@ function FilterWithdelimiter(array, terms, checkdelimiter, SearchIndex) {
     }
 }
 //Jira CAP-579 - End
+
+//Jira CAP-3075
+function StopIntervalAndStopLoading(intervalId) {
+    { sessionStorage.setItem('StartLoading', 'false'); StopLoadFromPatChart(); }
+    document.cookie = "StopLoadingForNotes = false";
+    clearInterval(intervalId);
+}
+
+function StartLoadingForNotes() {
+    document.cookie = "StopLoadingForNotes = false";
+    { sessionStorage.setItem('StartLoading', 'true'); StartLoadFromPatChart(); }
+    let intervalId = setInterval(function () {
+        var i = document.cookie.slice(document.cookie.indexOf("StopLoadingForNotes")).split("=")[1];
+        if (i == "true") {
+            StopIntervalAndStopLoading(intervalId);
+        }
+    }, 1000);
+}
