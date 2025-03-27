@@ -767,7 +767,9 @@ namespace Acurus.Capella.UI.WebServices.API
 
                         if (PlanTagcontent.Length > 1)
                         {
-                            ilstsection.Add(PlanTagcontent[1].Replace("</plan>", "").Replace("<br />", @"\n").Replace("<br/>", @"\n").Replace("\t", ""));
+                            //Jira CAP-3108
+                            //ilstsection.Add(PlanTagcontent[1].Replace("</plan>", "").Replace("<br />", @"\n").Replace("<br/>", @"\n").Replace("\t", ""));
+                            ilstsection.Add(PlanTagcontent[1].Replace("</plan>", "").Replace("<br />", @"\n").Replace("<br/>", @"\n").Replace("\t", "").Replace("\"", "'").Replace('"', '\"').Replace("\r\n", @"\n").Replace("\n", @"\n"));
                         }
                         if (ilstsection[0].Contains("Amendment Notes"))
                         {
@@ -1058,7 +1060,9 @@ namespace Acurus.Capella.UI.WebServices.API
                             }
                             else if (doc.SelectSingleNode("content/font[2]")?.ChildNodes[iCount].Name == "ul")
                             {
-                                string value = doc.SelectSingleNode("content/font[2]")?.ChildNodes[iCount].InnerText.Replace("\"", "'").Replace('"', '\"');
+                                //Jira CAP-3108
+                                //string value = doc.SelectSingleNode("content/font[2]")?.ChildNodes[iCount].InnerText.Replace("\"", "'").Replace('"', '\"');
+                                string value = doc.SelectSingleNode("content/font[2]")?.ChildNodes[iCount].InnerText.Replace("\"", "'").Replace('"', '\"').Replace("<br />", @"\n").Replace("<br/>", @"\n").Replace("\r\n", @"\n").Replace("\n", @"\n").Replace("\t", "");
                                 sBody = sBody + ((sBody.Substring(sBody.LastIndexOf(":[")) == ":[") ? "" : ",") + "\"" + value + "\"";
                             }
 
@@ -1108,7 +1112,9 @@ namespace Acurus.Capella.UI.WebServices.API
                                 int rowcount = doc.SelectNodes("content/table[" + iCountSubtab + "]/tr[" + iCountRow + "]/td").Count;
                                 for (int iCounttd = 1; iCounttd <= rowcount; iCounttd++)
                                 {
-                                    sTablecolumn = sTablecolumn + ((sTablecolumn != string.Empty) ? "," : "") + "\"" + doc.SelectSingleNode("content/table[" + iCountSubtab + "]/thead/tr/td[" + iCounttd + "]").InnerText.Replace("\"", "'").Replace('"', '\"') + "\"" + ":" + "\"" + doc.SelectSingleNode("content/table[" + iCountSubtab + "]/tr[" + iCountRow + "]/td[" + iCounttd + "]").InnerText.Replace("\"", "'").Replace('"', '\"') + "\"";
+                                    //Jira CAP-3108
+                                    //sTablecolumn = sTablecolumn + ((sTablecolumn != string.Empty) ? "," : "") + "\"" + doc.SelectSingleNode("content/table[" + iCountSubtab + "]/thead/tr/td[" + iCounttd + "]").InnerText.Replace("\"", "'").Replace('"', '\"') + "\"" + ":" + "\"" + doc.SelectSingleNode("content/table[" + iCountSubtab + "]/tr[" + iCountRow + "]/td[" + iCounttd + "]").InnerText.Replace("\"", "'").Replace('"', '\"') + "\"";
+                                    sTablecolumn = sTablecolumn + ((sTablecolumn != string.Empty) ? "," : "") + "\"" + doc.SelectSingleNode("content/table[" + iCountSubtab + "]/thead/tr/td[" + iCounttd + "]").InnerText.Replace("\"", "'").Replace('"', '\"') + "\"" + ":" + "\"" + doc.SelectSingleNode("content/table[" + iCountSubtab + "]/tr[" + iCountRow + "]/td[" + iCounttd + "]").InnerText.Replace("\"", "'").Replace('"', '\"').Replace("<br />", @"\n").Replace("<br/>", @"\n").Replace("\r\n", @"\n").Replace("\n", @"\n").Replace("\t", "") + "\"";
                                 }
 
                                 sTableRow = sTableRow + ((sTableRow != string.Empty) ? "," : "") + "{" + sTablecolumn + "}";
