@@ -128,9 +128,10 @@ function EFaxoutboxload() {
                 else {
                     var log = JSON.parse(xhr.responseText);
                     console.log(log);
-                    alert("USER MESSAGE:\n" +
-                        ". Cannot process request. Please Login again and retry. \nEXCEPTION DETAILS: \n" +
-                        "Message: " + log.Message);
+                    //alert("USER MESSAGE:\n" +
+                    //    ". Cannot process request. Please Login again and retry. \nEXCEPTION DETAILS: \n" +
+                    //    "Message: " + log.Message);
+                    ScriptErrorLogEntry(log.Message, "", "", document.URL, log.StackTrace, true);
                 }
             }
         },
@@ -281,9 +282,10 @@ function funRetry(e) {
             else {
                 var log = JSON.parse(xhr.responseText);
                 console.log(log);
-                alert("USER MESSAGE:\n" +
-                                    ". Cannot process request. Please Login again and retry. \nEXCEPTION DETAILS: \n" +
-                                   "Message: " + log.Message);
+                //alert("USER MESSAGE:\n" +
+                //                    ". Cannot process request. Please Login again and retry. \nEXCEPTION DETAILS: \n" +
+                //                   "Message: " + log.Message);
+                ScriptErrorLogEntry(log.Message, "", "", document.URL, log.StackTrace, true);
             }
         }
     });

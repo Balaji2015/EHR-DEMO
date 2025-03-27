@@ -1269,7 +1269,7 @@ namespace Acurus.Capella.UI
             {
                 roqList = (IList<FillHealthcareQuestionnaire>)Session["fillRoq"];
 
-                groupBoxCreation(roqList, noOfSymptomRows, symptomMaxHeight);
+                groupBoxCreationCopyPrevious(roqList, noOfSymptomRows, symptomMaxHeight);
 
                 checkBoxAndOtherControlsCreation(noOfSymptomRows, symptomMaxHeight);
 

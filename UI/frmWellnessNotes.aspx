@@ -15,11 +15,11 @@
                 type="text/javascript" enableviewstate="false"></script>
     <script src="JScripts/JSErrorMessage.js?version=<%=ConfigurationManager.AppSettings["VersionConfiguration"].ToString().Replace("Capella - ","") %>" type="text/javascript"></script>
 </head>
-<body>
+<body onload="{ sessionStorage.setItem('StartLoading', 'true'); StartLoadFromPatChart(); }" >
     <form id="form1" runat="server">
     <div>
      <%--<button type="button" class="btn btn-primary btn-md" runat="server" onserverclick="btnWord_Click" id="btnword" style="display:none">Print Wellness Note</button>--%>
-   <button type="button" class="btn btn-primary btn-md" runat="server" onserverclick="btnWordwellness_Click" style="display:none" id="btnWellness">Print Wellness Note</button>
+   <button type="button" class="btn btn-primary btn-md" runat="server" onclick="StartLoadingForNotes();" onserverclick="btnWordwellness_Click" style="display:none" id="btnWellness">Print Wellness Note</button>
         
          </div>
     </form>

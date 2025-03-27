@@ -55,6 +55,7 @@ namespace Acurus.Capella.UI.WebServices.API
             try
             {
                 var releaseDate = ConfigurationSettings.AppSettings["ReleaseDate"] ?? "";
+                var TriggerReleaseDate = ConfigurationSettings.AppSettings["TriggerReleaseDate"] ?? "";
                 var thresholdDate = ConfigurationSettings.AppSettings["ThresholdDate"] ?? "";
                 if (string.IsNullOrEmpty(sCategory) || sCategory.ToUpper() == "ENCOUNTERS")
                 {
@@ -97,9 +98,13 @@ namespace Acurus.Capella.UI.WebServices.API
 
                     //DataSet result = DBConnector.ReadData(string.Format(fileManagementIndexQury, sHumanID, thresholdDate, releaseDate));
 
-                    string fileManagementIndexQury = "SELECT File_Management_Index_ID FROM file_management_index WHERE Human_ID = {0} AND Is_Delete != 'Y';";
+                    //string fileManagementIndexQury = "SELECT File_Management_Index_ID FROM file_management_index WHERE Human_ID = {0} AND Is_Delete != 'Y';";
 
-                    DataSet result = DBConnector.ReadData(string.Format(fileManagementIndexQury, sHumanID));
+                    //DataSet result = DBConnector.ReadData(string.Format(fileManagementIndexQury, sHumanID));
+
+                    string fileManagementIndexQury = "SELECT File_Management_Index_ID FROM file_management_index WHERE Human_ID = {0} AND Is_Delete != 'Y' AND DATE(Created_Date_And_Time) >= '{1}' AND DATE(Created_Date_And_Time) <= '{2}';";
+
+                    DataSet result = DBConnector.ReadData(string.Format(fileManagementIndexQury, sHumanID, thresholdDate, TriggerReleaseDate));
 
 
                     if (result.Tables.Count > 0 && result.Tables[0].Rows.Count > 0)
@@ -138,9 +143,13 @@ namespace Acurus.Capella.UI.WebServices.API
 
                     //DataSet result = DBConnector.ReadData(string.Format(resultMasterQury, sHumanID, thresholdDate, releaseDate));
 
-                    string resultMasterQury = "SELECT Result_Master_ID FROM result_master WHERE Matching_Patient_ID = {0} and File_Name != '';";
+                    //string resultMasterQury = "SELECT Result_Master_ID FROM result_master WHERE Matching_Patient_ID = {0} and File_Name != '';";
 
-                    DataSet result = DBConnector.ReadData(string.Format(resultMasterQury, sHumanID));
+                    //DataSet result = DBConnector.ReadData(string.Format(resultMasterQury, sHumanID));
+
+                    string resultMasterQury = "SELECT Result_Master_ID FROM result_master WHERE Matching_Patient_ID = {0} and File_Name != '' AND DATE(Created_Date_And_Time) >= '{1}' AND DATE(Created_Date_And_Time) <= '{2}';";
+
+                    DataSet result = DBConnector.ReadData(string.Format(resultMasterQury, sHumanID, thresholdDate, TriggerReleaseDate));
 
                     if (result.Tables.Count > 0 && result.Tables[0].Rows.Count > 0)
                     {
@@ -758,7 +767,9 @@ namespace Acurus.Capella.UI.WebServices.API
 
                         if (PlanTagcontent.Length > 1)
                         {
-                            ilstsection.Add(PlanTagcontent[1].Replace("</plan>", "").Replace("<br />", @"\n").Replace("<br/>", @"\n").Replace("\t", ""));
+                            //Jira CAP-3108
+                            //ilstsection.Add(PlanTagcontent[1].Replace("</plan>", "").Replace("<br />", @"\n").Replace("<br/>", @"\n").Replace("\t", ""));
+                            ilstsection.Add(PlanTagcontent[1].Replace("</plan>", "").Replace("<br />", @"\n").Replace("<br/>", @"\n").Replace("\t", "").Replace("\"", "'").Replace('"', '\"').Replace("\r\n", @"\n").Replace("\n", @"\n"));
                         }
                         if (ilstsection[0].Contains("Amendment Notes"))
                         {
@@ -1049,7 +1060,9 @@ namespace Acurus.Capella.UI.WebServices.API
                             }
                             else if (doc.SelectSingleNode("content/font[2]")?.ChildNodes[iCount].Name == "ul")
                             {
-                                string value = doc.SelectSingleNode("content/font[2]")?.ChildNodes[iCount].InnerText.Replace("\"", "'").Replace('"', '\"');
+                                //Jira CAP-3108
+                                //string value = doc.SelectSingleNode("content/font[2]")?.ChildNodes[iCount].InnerText.Replace("\"", "'").Replace('"', '\"');
+                                string value = doc.SelectSingleNode("content/font[2]")?.ChildNodes[iCount].InnerText.Replace("\"", "'").Replace('"', '\"').Replace("<br />", @"\n").Replace("<br/>", @"\n").Replace("\r\n", @"\n").Replace("\n", @"\n").Replace("\t", "");
                                 sBody = sBody + ((sBody.Substring(sBody.LastIndexOf(":[")) == ":[") ? "" : ",") + "\"" + value + "\"";
                             }
 
@@ -1099,7 +1112,9 @@ namespace Acurus.Capella.UI.WebServices.API
                                 int rowcount = doc.SelectNodes("content/table[" + iCountSubtab + "]/tr[" + iCountRow + "]/td").Count;
                                 for (int iCounttd = 1; iCounttd <= rowcount; iCounttd++)
                                 {
-                                    sTablecolumn = sTablecolumn + ((sTablecolumn != string.Empty) ? "," : "") + "\"" + doc.SelectSingleNode("content/table[" + iCountSubtab + "]/thead/tr/td[" + iCounttd + "]").InnerText.Replace("\"", "'").Replace('"', '\"') + "\"" + ":" + "\"" + doc.SelectSingleNode("content/table[" + iCountSubtab + "]/tr[" + iCountRow + "]/td[" + iCounttd + "]").InnerText.Replace("\"", "'").Replace('"', '\"') + "\"";
+                                    //Jira CAP-3108
+                                    //sTablecolumn = sTablecolumn + ((sTablecolumn != string.Empty) ? "," : "") + "\"" + doc.SelectSingleNode("content/table[" + iCountSubtab + "]/thead/tr/td[" + iCounttd + "]").InnerText.Replace("\"", "'").Replace('"', '\"') + "\"" + ":" + "\"" + doc.SelectSingleNode("content/table[" + iCountSubtab + "]/tr[" + iCountRow + "]/td[" + iCounttd + "]").InnerText.Replace("\"", "'").Replace('"', '\"') + "\"";
+                                    sTablecolumn = sTablecolumn + ((sTablecolumn != string.Empty) ? "," : "") + "\"" + doc.SelectSingleNode("content/table[" + iCountSubtab + "]/thead/tr/td[" + iCounttd + "]").InnerText.Replace("\"", "'").Replace('"', '\"') + "\"" + ":" + "\"" + doc.SelectSingleNode("content/table[" + iCountSubtab + "]/tr[" + iCountRow + "]/td[" + iCounttd + "]").InnerText.Replace("\"", "'").Replace('"', '\"').Replace("<br />", @"\n").Replace("<br/>", @"\n").Replace("\r\n", @"\n").Replace("\n", @"\n").Replace("\t", "") + "\"";
                                 }
 
                                 sTableRow = sTableRow + ((sTableRow != string.Empty) ? "," : "") + "{" + sTablecolumn + "}";

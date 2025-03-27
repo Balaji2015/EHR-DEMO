@@ -996,9 +996,9 @@ namespace Acurus.Capella.UI
 
                 //objXSLTransform.Transform(xmlr, null, htmlWriter);
                 //ltlDownloadFrame.Text = htmlWriter.ToString();
-               
+                
                 ltlDownloadFrame.Text = UtilityManager.PrintSummaryUsingXSLT(strTransformSource, xmlr).ToString();
-
+                
                 //
                 string Encounter_signedDate = "";
                 string Encounter_Provider_Name = "";
@@ -2801,12 +2801,12 @@ margin:0in 0in 0in 9in;
             }
 
 
-
+            
 
             Response.ContentType = "application/x-download";
             Response.AddHeader("Content-Disposition", string.Format("attachment; filename=\"{0}\"", NotesName + ".pdf"));
             Response.WriteFile(pdfFileNamewithHeader);
-
+            Response.SetCookie(new HttpCookie("StopLoadingForNotes") { Value = "true", HttpOnly = false });
             Response.Flush();
             System.IO.File.Delete(pdfFileNamewithHeader);
             Response.End();
@@ -5330,7 +5330,7 @@ margin:0in 0in 0in 9in;
             Response.ContentType = "application/x-download";
             Response.AddHeader("Content-Disposition", string.Format("attachment; filename=\"{0}\"", NotesName + ".pdf"));
             Response.WriteFile(pdfFileNamewithHeader);
-
+            Response.SetCookie(new HttpCookie("StopLoadingForNotes") { Value = "true", HttpOnly = false });
             Response.Flush();
             System.IO.File.Delete(pdfFileNamewithHeader);
             Response.End();

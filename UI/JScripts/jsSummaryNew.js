@@ -276,7 +276,8 @@ function OpenServiceProcedureCode() {
 }
 
 function PrintWellnessNote() {
-    StartLoadingImage();
+    //StartLoadingImage();
+    { sessionStorage.setItem('StartLoading', 'true'); StartLoadFromPatChart(); }
     $(top.window.document).find('#ProcessiFrameNotes')[0].contentDocument.location.href = "frmWellnessNotes.aspx?SubMenuName=WELLNESS NOTES" + "&Menu=True";
     $(top.window.document).find("#ModalTtleNotes")[0].textContent = "Wellness Notes";
     var DateTime = new Date();
@@ -306,11 +307,12 @@ function PrintWellnessNote() {
     // obj.push("Date=" + document.getElementById(GetClientId("hdnLocalTime")).value);//document.getElementById(GetClientId("hdnLocalTime")).value
     obj.push("Date=" + strYear + "" + strMonth + "" + strDay + " " + timeString.replace(":", "").replace(":", ""));
 
-    StopLoadingImage();
+    //StopLoadingImage();
 }
 
 function PrintTreatmentNote() {
-    StartLoadingImage();
+    //StartLoadingImage();
+    { sessionStorage.setItem('StartLoading', 'true'); StartLoadFromPatChart(); }
     $(top.window.document).find('#ProcessiFrameNotes')[0].contentDocument.location.href = "frmWellnessNotes.aspx?SubMenuName=TREATMENT NOTES" + "&Menu=True";
     $(top.window.document).find("#ModalTtleNotes")[0].textContent = "Treatment Notes";
     var DateTime = new Date();
@@ -339,7 +341,7 @@ function PrintTreatmentNote() {
     var obj = new Array();
     //obj.push("Date=" + document.getElementById(GetClientId("hdnLocalTime")).value);//document.getElementById(GetClientId("hdnLocalTime")).value
     obj.push("Date=" + strYear + "" + strMonth + "" + strDay + " " + timeString.replace(":", "").replace(":", ""));
-    StopLoadingImage();
+    //StopLoadingImage();
 }
 function AkidoNoteClickSum(sAkidoURL) {
     //Jira #CAP - 735

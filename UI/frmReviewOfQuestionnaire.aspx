@@ -86,23 +86,23 @@
                                     onclick="if (!btnCopyPrevious_Clicked()) return;" onserverclick="btnCopyPrevious_Click" />
                             </td>
                                         <td style="width: 6%;" align="right">
-                                            <telerik:RadButton ID="btnSave" runat="server" Text="Save" Width="80px" OnClick="btnSave_Click"
-                                                OnClientClicked="SaveEnabled" AccessKey="s" Style="-moz-border-radius: 3px; -webkit-border-radius: 3px; width: 60px; text-align: center" CssClass="greenbutton">
+                                            <telerik:RadButton ID="btnSave" runat="server" Text="Save" Width="80px" Height="25px" OnClick="btnSave_Click"
+                                                OnClientClicked="SaveEnabled" AccessKey="s" Style="-moz-border-radius: 3px; -webkit-border-radius: 3px; width: 60px; text-align: center;padding:3px 12px !important;" CssClass="greenbutton">
                                                 <ContentTemplate>
                                                     <span class="underline">S</span>ave
                                                 </ContentTemplate>
                                             </telerik:RadButton>
                                         </td>
                                         <td style="width: 6%;" align="left">
-                                            <telerik:RadButton ID="btnClearAll" AutoPostBack="false" CssClass="redbutton" runat="server" Text="Clear All"
-                                                EnableViewState="false" OnClientClicked="ClearAllRoq" AccessKey="c" Style="-moz-border-radius: 3px; -webkit-border-radius: 3px; width: 80px; text-align: center">
+                                            <telerik:RadButton ID="btnClearAll" AutoPostBack="false" CssClass="redbutton" runat="server" Text="Clear All"  Height="25px"
+                                                EnableViewState="false" OnClientClicked="ClearAllRoq" AccessKey="c" Style="-moz-border-radius: 3px; -webkit-border-radius: 3px; width: 80px; text-align: center;padding:3px 12px !important;">
                                                 <ContentTemplate>
                                                     <span class="underline">C</span>lear All                                             
                                                 </ContentTemplate>
                                             </telerik:RadButton>
                                         </td>
                                         <td align="center" style="width: 6%;">
-                                            <telerik:RadButton ID="btnPrint" runat="server" CssClass="bluebutton" Text="Print" Width="80px" OnClientClicked="btnPrint_Clicked" Style="position: relative; -moz-border-radius: 3px; -webkit-border-radius: 3px;">
+                                            <telerik:RadButton ID="btnPrint" runat="server" CssClass="bluebutton" Text="Print" Width="80px"  Height="25px" OnClientClicked="btnPrint_Clicked" Style="position: relative; -moz-border-radius: 3px; -webkit-border-radius: 3px;padding:3px 12px !important;">
                                                 <ContentTemplate>
                                                     <span class="underline">P</span>rint		
                                                 </ContentTemplate>
