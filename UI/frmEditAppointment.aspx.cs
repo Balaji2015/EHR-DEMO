@@ -182,7 +182,7 @@ namespace Acurus.Capella.UI
                 FillNewEditAppointment fillneweditappt = null;
                 chkReschedule.Enabled = false;
                 //  btnFindPhysician.Enabled = true;
-                //FillPOV();
+                FillPOV();
 
                 //  txtReferringProvider.BackColor = System.Drawing.Color.FromArgb(191, 219, 255);
                 //  txtReferringFacility.BackColor = System.Drawing.Color.FromArgb(191, 219, 255);
@@ -1169,8 +1169,8 @@ namespace Acurus.Capella.UI
                 //    chkSelfReferred.Checked = false;
                 //    //    btnFindPhysician.Enabled = true;
                 //} //Commentted for BugID:56036
-                //Cap - 3100
-                FillPOV();
+
+
                 DisableTableLayout(pnlReschedule);
 
                 // FillReasonCode();                
@@ -7294,27 +7294,7 @@ namespace Acurus.Capella.UI
             if (physicianPOVList != null)
             {
                 List<Physician_POV> ilstPhyPov = new List<Physician_POV>();
-                //Cap - 3100
-                IList<FacilityLibrary> ilstFacAncillary = new List<FacilityLibrary>();
-                if (cboFacility.SelectedItem != null)
-                {
-                    var facAncillary = from f in ApplicationObject.facilityLibraryList where f.Fac_Name == cboFacility.SelectedItem.Text select f;
-                    ilstFacAncillary = facAncillary.ToList<FacilityLibrary>();
-                }
-                if (ilstFacAncillary.Count > 0 && ilstFacAncillary[0].Is_Ancillary == "Y")
-                {
-                    if (ddlPhysicianName.Items[ddlPhysicianName.SelectedIndex].Value != null)
-                    {
-                        int Machine_Technician_Library_ID = Convert.ToInt32(ddlPhysicianName.Items[ddlPhysicianName.SelectedIndex].Value);
-                        int Appointment_Provider_ID = GetPhysicianLibIDByTechID(Machine_Technician_Library_ID);
-                        ilstPhyPov = physicianPOVList.Physician_POV.Where(x => x.Physician_Library_ID == Appointment_Provider_ID.ToString()).ToList();
-                    }
-                }
-                else
-                {
-                    ilstPhyPov = physicianPOVList.Physician_POV.Where(x => x.Physician_Library_ID == ClientSession.PhysicianId.ToString()).ToList();
-                }
-               
+                ilstPhyPov = physicianPOVList.Physician_POV.Where(x => x.Physician_Library_ID == ClientSession.PhysicianId.ToString()).ToList();
                 duration = new int[ilstPhyPov.Count];
                 description = new string[ilstPhyPov.Count];
                 string DefaultValue = "";
