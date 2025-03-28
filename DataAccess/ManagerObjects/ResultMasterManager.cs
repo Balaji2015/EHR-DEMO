@@ -640,7 +640,8 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
                                 else if (MatchedOrdersList != null && MatchedOrdersList.Count == 0)
                                 {
                                     ulong Human_ID;
-                                    Human_ID = GetHumanIdbyname(resultMasterList[i].PID_Patient_First_Name, resultMasterList[i].PID_Patient_Last_Name, resultMasterList[i].PID_Patient_Date_Of_Birth, resultMasterList[i].PID_Patient_Gender);
+                                    //CAP-2901
+                                    Human_ID = GetHumanIdbyname(resultMasterList[i].PID_Patient_First_Name, resultMasterList[i].PID_Patient_Last_Name, resultMasterList[i].PID_Patient_Date_Of_Birth, resultMasterList[i].PID_Patient_Gender, MySession);
                                     if (Human_ID == 0)
                                     {
                                         //ACUR_LAB_01
@@ -680,7 +681,8 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
                             else
                             {
                                 ulong Human_ID;
-                                Human_ID = GetHumanIdbyname(resultMasterList[i].PID_Patient_First_Name, resultMasterList[i].PID_Patient_Last_Name, resultMasterList[i].PID_Patient_Date_Of_Birth, resultMasterList[i].PID_Patient_Gender);
+                                //CAP-2901
+                                Human_ID = GetHumanIdbyname(resultMasterList[i].PID_Patient_First_Name, resultMasterList[i].PID_Patient_Last_Name, resultMasterList[i].PID_Patient_Date_Of_Birth, resultMasterList[i].PID_Patient_Gender, MySession);
                                 if (Human_ID == 0)
                                 {
                                     //ACUR_LAB_02
@@ -3460,8 +3462,8 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
         }
 
 
-
-        public ulong GetHumanIdbyname(string sFirstname, string sLastname, string sDob, string sSex)
+        //CAP-2901
+        public ulong GetHumanIdbyname(string sFirstname, string sLastname, string sDob, string sSex, ISession MySession)
         {
             ulong ulHumanId = 0;
             if (sDob.Length == 8)
@@ -3470,25 +3472,27 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
                 sDob = sDob.Insert(4, "-").Insert(6, "-");
 
             //ArrayList aryHuman_List = null;
-            using (ISession iMySession = NHibernateSessionManager.Instance.CreateISession())
-            {
-                //IQuery query1 = iMySession.GetNamedQuery("Get.HumanIdFromResult");
-                //query1.SetString(0, sFirstname);
-                //query1.SetString(1, sLastname);
-                //query1.SetString(2, sDob);
-                //query1.SetString(3, sSex + "%");
+            //CAP-2901
+            //using (ISession iMySession = NHibernateSessionManager.Instance.CreateISession())
+            //{
+            //IQuery query1 = iMySession.GetNamedQuery("Get.HumanIdFromResult");
+            //query1.SetString(0, sFirstname);
+            //query1.SetString(1, sLastname);
+            //query1.SetString(2, sDob);
+            //query1.SetString(3, sSex + "%");
 
-                //aryHuman_List = new ArrayList(query1.List());
-                //if (aryHuman_List.Count > 0)
-                //    ulHumanId = Convert.ToUInt32(aryHuman_List[0]);
+            //aryHuman_List = new ArrayList(query1.List());
+            //if (aryHuman_List.Count > 0)
+            //    ulHumanId = Convert.ToUInt32(aryHuman_List[0]);
 
-                //iMySession.Close();
+            //iMySession.Close();
 
 
-                IList<Human> objHuman = new List<Human>();
+            IList<Human> objHuman = new List<Human>();
                 //ISQLQuery sql = iMySession.CreateSQLQuery("select h.*  from Human h  where h.First_Name ='" + sFirstname + "' and h.Last_Name='" + sLastname + "' and h.Birth_Date='" + sDob + "' and h.Sex like '" + sSex + "%' and h.account_status='active';").AddEntity("h", typeof(Human));
                 //For bug Id: 71296
-                ISQLQuery sql = iMySession.CreateSQLQuery("select h.*  from Human h  where h.First_Name =:Firstname and h.Last_Name=:Lastname and h.Birth_Date=:Dob and h.Sex like '" + sSex + "%' and h.account_status='active';").AddEntity("h", typeof(Human));
+                //CAP-3071
+                ISQLQuery sql = MySession.CreateSQLQuery("select h.Human_Id, version from Human h  where h.First_Name =:Firstname and h.Last_Name=:Lastname and h.Birth_Date=:Dob and h.Sex like '" + sSex + "%' and h.account_status='active';").AddEntity("h", typeof(Human));
                 sql.SetParameter("Firstname", sFirstname.Replace("'", "''"));
                 sql.SetParameter("Lastname", sLastname.Replace("'", "''"));
                 sql.SetParameter("Dob", sDob);
@@ -3505,8 +3509,9 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
                     //        ulHumanId = objHuman[0].Id;
                     //}
                 }
-                iMySession.Close();
-            }
+            //CAP-2901
+            //    iMySession.Close();
+            //}
             return ulHumanId;
 
         }
