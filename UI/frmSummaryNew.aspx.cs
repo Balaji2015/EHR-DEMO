@@ -987,18 +987,21 @@ namespace Acurus.Capella.UI
                 //Jira #CAP-344 - OldCode
                 //StringBuilder htmlOutput = new StringBuilder();
                 //TextWriter htmlWriter = new StringWriter(htmlOutput);
-
-                XmlReader xmlr = XmlReader.Create(new StringReader(sb.ToString()));
-
+                //Jira CAP-3092
+                //XmlReader xmlr = XmlReader.Create(new StringReader(sb.ToString()));
+                //Jira CAP-3092 - End
                 //XslCompiledTransform objXSLTransform = new XslCompiledTransform();
                 //XsltSettings settingsxsl = new XsltSettings(true, false);
                 //objXSLTransform.Load(strTransformSource, settingsxsl, new XmlUrlResolver());
 
                 //objXSLTransform.Transform(xmlr, null, htmlWriter);
                 //ltlDownloadFrame.Text = htmlWriter.ToString();
-                
-                ltlDownloadFrame.Text = UtilityManager.PrintSummaryUsingXSLT(strTransformSource, xmlr).ToString();
-                
+
+                //Jira CAP-3092
+                //ltlDownloadFrame.Text = UtilityManager.PrintSummaryUsingXSLT(strTransformSource, xmlr).ToString();
+                UtilityManager utlMngr = new UtilityManager();
+                ltlDownloadFrame.Text = utlMngr.SplitSummaryXsltTransform(sb, strTransformSource, true);
+                //Jira CAP-3092 - End
                 //
                 string Encounter_signedDate = "";
                 string Encounter_Provider_Name = "";

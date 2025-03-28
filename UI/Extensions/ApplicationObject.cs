@@ -17,6 +17,7 @@ using System.IO;
 using log4net.Config;
 using System.Threading;
 using Acurus.Capella.DataAccess.ManagerObjects;
+using Acurus.Capella.Core.DTOJson;
 
 namespace Acurus.Capella.UI
 {
@@ -31,5 +32,6 @@ namespace Acurus.Capella.UI
         public static IList<ScnTab> scntab = null;
 
         public static IList<MapXMLBlob> ilstMapXMLBlob = null;
+        public static XsltTransformSplitupList XsltTransformSplitupList = null;
     }
 }

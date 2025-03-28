@@ -6385,6 +6385,49 @@ namespace Acurus.Capella.UI
             }
         }
 
+        public string SplitSummaryXsltTransform(StringBuilder sb,string strTransformSource, bool bIsSummary)
+        {
+            IList<XsltTransformSplitup> ilstxsltTransform = ApplicationObject.XsltTransformSplitupList.XsltTransformSplitup;
+            string sTransformedData = string.Empty;
+            string[] aryTagName = null;
+            string sTransformedValue = string.Empty;
+            StringBuilder sbSplitUp = new StringBuilder();
+            XmlDocument xmlDoc = new XmlDocument();
+            string sHumanAndEncounterXml = sb.ToString();
+            xmlDoc.LoadXml(sHumanAndEncounterXml);
+            string sXmlHeader = sHumanAndEncounterXml.Substring(0, sHumanAndEncounterXml.LastIndexOf("?>") + 2);
+            for (int iCount = 0; iCount < ilstxsltTransform.Count; iCount++)
+            {
+                aryTagName = ilstxsltTransform[iCount].TagNames.Split(',');
+                sbSplitUp.Clear();
+                sbSplitUp.Append(sXmlHeader + "<notes><Modules>");
+                for (int iYCount = 0; iYCount < aryTagName.Count(); iYCount++)
+                {
+                    foreach(XmlNode xmlNode in xmlDoc.GetElementsByTagName(aryTagName[iYCount]))
+                    {
+                        sbSplitUp.Append(xmlNode.OuterXml);
+                    }
+                    
+                }
+                sbSplitUp.Append("</Modules></notes>");
+                XmlReader xmlr = XmlReader.Create(new StringReader(sbSplitUp.ToString()));
+                if (bIsSummary)
+                {
+                    sTransformedValue = UtilityManager.PrintSummaryUsingXSLT(strTransformSource, xmlr).ToString();
+                    if (sTransformedData != string.Empty)
+                    {
+                        sTransformedValue = sTransformedValue.Replace(sTransformedValue.Substring(0, sTransformedValue.IndexOf("</div><br><br>") + 14),"");
+                    }
+
+                    sTransformedData = sTransformedData + sTransformedValue;
+                }
+                else
+                {
+
+                }
+            }
+            return sTransformedData;
+        }
         public Boolean LoadBlobHumanXML(ulong ulHumanID, ulong ulEncounterID, IList<Encounter_Blob> ilstEncounterBlob, string sTabMode, out string sXMLHumanDoc, string sIsPhone_Encounter = "N")
         {
             Boolean bAlert = false;
