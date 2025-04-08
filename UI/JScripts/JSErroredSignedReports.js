@@ -129,9 +129,9 @@ function OnLoadGrid(sortOrder) {
                     firstFilePath = objdata[i].Item1;
                     firstFilePath = firstFilePath.split("\\").join("/");
 
-                    vdelete = `<td title='Delete' style='width: 3%;'><img style='width: 12px;' src='Resources/Delete-Blue.png' onclick="deletefiles('${firstFilePath}');" /></td>`;
-                    createdDate = `<td title='Created Date and Time' style='width: 30%;'>${objdata[i].Item2}</td>`;
-                    tabContents = tabContents + `<tr style='cursor: pointer;'>${vdelete}<td style='width: 67%' onclick="GridOpenFile('${firstFileName}','${firstFilePath}',this);">${firstFileName}</td><td style='display:none'>${firstFilePath}</td>${createdDate}</tr>`;
+                    vdelete = `<td title='Delete' style='width: 41px;'><img style='width: 12px;' src='Resources/Delete-Blue.png' onclick="deletefiles('${firstFilePath}');" /></td>`;
+                    createdDate = `<td title='Created Date and Time' style='width: 160px;'>${objdata[i].Item2}</td>`;
+                    tabContents = tabContents + `<tr style='cursor: pointer;'>${vdelete}<td onclick="GridOpenFile('${firstFileName}','${firstFilePath}',this);">${firstFileName}</td><td style='display:none'>${firstFilePath}</td>${createdDate}</tr>`;
                 }
             }
             if (tabContents == "") {

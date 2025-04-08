@@ -8,7 +8,7 @@
     <title>View Errored Signed Reports</title>
     <base target="_self" />
     <link href="CSS/ScanningAndIndexing.css" rel="stylesheet" />
-    <link href="CSS/CommonStyle.css" rel="stylesheet" type="text/css" />
+    <link href="CSS/CommonStyle.css?version=<%=ConfigurationManager.AppSettings["VersionConfiguration"].ToString().Replace("Capella - ","") %>" rel="stylesheet" type="text/css" />
     <link href="CSS/font-awesome.4.4.0.css" rel="stylesheet" />
 
     <style>
@@ -118,7 +118,7 @@
                                         <tr>
                                             <th class="table-th-style">Del.</th>
                                             <th class="table-th-style">File Name</th>
-                                            <th class="table-th-style" id="divCreatedDateAndTime" data-sort-order="DESC" style="cursor: pointer;">Created Date and Time</th>
+                                            <th class="table-th-style" id="divCreatedDateAndTime" data-sort-order="DESC" style="cursor: pointer;">Created Date & Time</th>
                                         </tr>
                                         <tbody id="tbFilesBody" class="Gridbodystyle">
                                         </tbody>
