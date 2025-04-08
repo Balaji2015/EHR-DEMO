@@ -588,7 +588,7 @@ button.close {
                                                     </td>
                                                     <td style="width: 5%;">
                                                         <telerik:RadButton ID="btnPrint" runat="server" Text="Print" OnClick="btnPrint_Click"
-                                                            OnClientClicked="btnPrint_Clicked" AccessKey="P" Style="text-align: center; position: static; -moz-border-radius: 3px; -webkit-border-radius: 3px; position: relative; margin-top: 10px;" ButtonType="LinkButton" CssClass="bluebutton"
+                                                            OnClientClicked="StartLoadFromPatChart" AccessKey="P" Style="text-align: center; position: static; -moz-border-radius: 3px; -webkit-border-radius: 3px; position: relative; margin-top: 10px;" ButtonType="LinkButton" CssClass="bluebutton"
                                                             Width="67px">
                                                             <ContentTemplate>
                                                                 <span>P</span>rint
