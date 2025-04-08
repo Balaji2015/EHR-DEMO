@@ -1597,3 +1597,13 @@ input#btnSaveForNonRecur_input {
     color: aliceblue; 
     border-radius:42%;
 }
+
+.table-th-style {
+    color: black;
+    background-color: #bfdbff;
+    font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
+    font-weight: bold;
+    border-width: 1px;
+    border-color: #bfdbff;
+    border: 1px solid #c5c5c5 !important;
+}
