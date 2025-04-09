@@ -6329,72 +6329,129 @@ namespace Acurus.Capella.UI
         }
         //Jira #CAP-344
         //public static void PrintPDFUsingXSLT(string sXMLEncounterDoc, string sXMLHumanDoc, string xsltFile, string outputDocument, string sGroup_ID_Log)
+        //public static string PrintPDFUsingXSLT(string sXMLEncounterDoc, string sXMLHumanDoc, string xsltFile, string outputDocument, string sGroup_ID_Log, string sNotesType = "")
+        //{
+        //    if (File.Exists(outputDocument))
+        //    {
+        //        File.Delete(outputDocument);
+        //    }
+        //    using (XmlTextWriter writer = new XmlTextWriter(outputDocument, System.Text.Encoding.UTF8))
+        //    {
+        //        XslCompiledTransform objXSLTransform = new XslCompiledTransform();
+        //        DataSet ds;
+        //        XmlDataDocument xmlDoc;
+        //        XslCompiledTransform xslTran;
+        //        XmlElement root;
+        //        XPathNavigator nav;
+        //        //XmlTextWriter writer;
+        //        XsltSettings settings = new XsltSettings(true, false);
+        //        string sTransformedData = string.Empty;
+
+        //        ds = new DataSet();
+        //        //ds.ReadXml(xmlDataFile);
+        //        //ds.ReadXml(new XmlTextReader(new StringReader(sXMLEncounterDoc)));
+        //        StringBuilder sb = new StringBuilder();
+        //        sb.Append(sXMLEncounterDoc.ToString().Replace("</notes>", "").Replace("</Modules>", ""));
+        //        if (sXMLHumanDoc != "" && sXMLHumanDoc != string.Empty)
+        //        {
+        //            string SUB = sXMLHumanDoc.ToString().Substring(0, sXMLHumanDoc.LastIndexOf("?>") + 2);
+
+        //            sb.Append(sXMLHumanDoc.ToString().Replace(SUB, "").Replace("<notes>", "").Replace("<Modules>", ""));
+        //        }
+        //        ds.ReadXml(new XmlTextReader(new StringReader(sb.ToString())));
+
+        //        xmlDoc = new XmlDataDocument(ds);
+        //        // xslTran.Load(xsltFile);
+        //        if (sGroup_ID_Log != null && sGroup_ID_Log != string.Empty)
+        //        {
+        //            UtilityManager.inserttologgingtable(ClientSession.EncounterId.ToString(), ClientSession.HumanId.ToString(), ClientSession.UserName, ClientSession.PhysicianId.ToString(), "Summary Consultation PDF XSLT Load : Start", DateTime.Now, sGroup_ID_Log, "frmSummaryNew");
+
+        //        }
+        //        objXSLTransform.Load(xsltFile, settings, new XmlUrlResolver());
+        //        if (sGroup_ID_Log != null && sGroup_ID_Log != string.Empty)
+        //        {
+        //            UtilityManager.inserttologgingtable(ClientSession.EncounterId.ToString(), ClientSession.HumanId.ToString(), ClientSession.UserName, ClientSession.PhysicianId.ToString(), "Summary Consultation PDF XSLT Load : End", DateTime.Now, sGroup_ID_Log, "frmSummaryNew");
+        //        }
+        //        root = xmlDoc.DocumentElement;
+
+
+        //        nav = root.CreateNavigator();
+        //        //writer = new XmlTextWriter(outputDocument, System.Text.Encoding.UTF8);
+        //        //objXSLTransform.Transform(nav, writer);
+        //        if (System.Configuration.ConfigurationSettings.AppSettings["XsltTransformVersion"] != null && System.Configuration.ConfigurationSettings.AppSettings["XsltTransformVersion"].ToString().ToUpper() == "V1")
+        //        {
+        //            objXSLTransform.Transform(nav, writer);
+        //        }
+        //        else if (System.Configuration.ConfigurationSettings.AppSettings["XsltTransformVersion"] != null && System.Configuration.ConfigurationSettings.AppSettings["XsltTransformVersion"].ToString().ToUpper() == "V2")
+        //        {
+        //            UtilityManager UtlityMngr = new UtilityManager();
+        //            sTransformedData = UtlityMngr.SplitXsltTransform(sb, xsltFile, false, sNotesType);
+        //        }
+        //        writer.Close();
+        //        //writer = null;
+        //        nav = null;
+        //        root = null;
+        //        xmlDoc = null;
+        //        ds = null;
+        //        return sTransformedData;
+        //    }
+        //}
+
+        //CAP-3008, CAP-3077, CAP-3126
         public static string PrintPDFUsingXSLT(string sXMLEncounterDoc, string sXMLHumanDoc, string xsltFile, string outputDocument, string sGroup_ID_Log, string sNotesType = "")
         {
             if (File.Exists(outputDocument))
             {
                 File.Delete(outputDocument);
             }
-            using (XmlTextWriter writer = new XmlTextWriter(outputDocument, System.Text.Encoding.UTF8))
+
+            StringBuilder sb = new StringBuilder();
+            sb.Append(sXMLEncounterDoc.Replace("</notes>", "").Replace("</Modules>", ""));
+            if (sXMLHumanDoc != "" && sXMLHumanDoc != string.Empty)
             {
-                XslCompiledTransform objXSLTransform = new XslCompiledTransform();
-                DataSet ds;
-                XmlDataDocument xmlDoc;
-                XslCompiledTransform xslTran;
-                XmlElement root;
-                XPathNavigator nav;
-                //XmlTextWriter writer;
-                XsltSettings settings = new XsltSettings(true, false);
-                string sTransformedData = string.Empty;
-
-                ds = new DataSet();
-                //ds.ReadXml(xmlDataFile);
-                //ds.ReadXml(new XmlTextReader(new StringReader(sXMLEncounterDoc)));
-                StringBuilder sb = new StringBuilder();
-                sb.Append(sXMLEncounterDoc.ToString().Replace("</notes>", "").Replace("</Modules>", ""));
-                if (sXMLHumanDoc != "" && sXMLHumanDoc != string.Empty)
-                {
-                    string SUB = sXMLHumanDoc.ToString().Substring(0, sXMLHumanDoc.LastIndexOf("?>") + 2);
-
-                    sb.Append(sXMLHumanDoc.ToString().Replace(SUB, "").Replace("<notes>", "").Replace("<Modules>", ""));
-                }
-                ds.ReadXml(new XmlTextReader(new StringReader(sb.ToString())));
-
-                xmlDoc = new XmlDataDocument(ds);
-                // xslTran.Load(xsltFile);
-                if (sGroup_ID_Log != null && sGroup_ID_Log != string.Empty)
-                {
-                    UtilityManager.inserttologgingtable(ClientSession.EncounterId.ToString(), ClientSession.HumanId.ToString(), ClientSession.UserName, ClientSession.PhysicianId.ToString(), "Summary Consultation PDF XSLT Load : Start", DateTime.Now, sGroup_ID_Log, "frmSummaryNew");
-
-                }
-                objXSLTransform.Load(xsltFile, settings, new XmlUrlResolver());
-                if (sGroup_ID_Log != null && sGroup_ID_Log != string.Empty)
-                {
-                    UtilityManager.inserttologgingtable(ClientSession.EncounterId.ToString(), ClientSession.HumanId.ToString(), ClientSession.UserName, ClientSession.PhysicianId.ToString(), "Summary Consultation PDF XSLT Load : End", DateTime.Now, sGroup_ID_Log, "frmSummaryNew");
-                }
-                root = xmlDoc.DocumentElement;
-
-
-                nav = root.CreateNavigator();
-                //writer = new XmlTextWriter(outputDocument, System.Text.Encoding.UTF8);
-                //objXSLTransform.Transform(nav, writer);
-                if (System.Configuration.ConfigurationSettings.AppSettings["XsltTransformVersion"] != null && System.Configuration.ConfigurationSettings.AppSettings["XsltTransformVersion"].ToString().ToUpper() == "V1")
-                {
-                    objXSLTransform.Transform(nav, writer);
-                }
-                else if (System.Configuration.ConfigurationSettings.AppSettings["XsltTransformVersion"] != null && System.Configuration.ConfigurationSettings.AppSettings["XsltTransformVersion"].ToString().ToUpper() == "V2")
-                {
-                    UtilityManager UtlityMngr = new UtilityManager();
-                    sTransformedData = UtlityMngr.SplitXsltTransform(sb, xsltFile, false, sNotesType);
-                }
-                writer.Close();
-                //writer = null;
-                nav = null;
-                root = null;
-                xmlDoc = null;
-                ds = null;
-                return sTransformedData;
+                string SUB = sXMLHumanDoc.Substring(0, sXMLHumanDoc.LastIndexOf("?>") + 2);
+                sb.Append(sXMLHumanDoc.Replace(SUB, "").Replace("<notes>", "").Replace("<Modules>", ""));
             }
+            string combinedXml = sb.ToString();
+
+            var xslTransform = new XslCompiledTransform();
+            var settings = new XsltSettings(enableDocumentFunction: true, enableScript: false);
+
+            if (!string.IsNullOrEmpty(sGroup_ID_Log))
+            {
+                UtilityManager.inserttologgingtable(
+                    ClientSession.EncounterId.ToString(), ClientSession.HumanId.ToString(),
+                    ClientSession.UserName, ClientSession.PhysicianId.ToString(),
+                    "Summary Consultation PDF XSLT Load : Start", DateTime.Now, sGroup_ID_Log, "frmSummaryNew");
+            }
+
+            xslTransform.Load(xsltFile, settings, new XmlUrlResolver());
+
+            if (!string.IsNullOrEmpty(sGroup_ID_Log))
+            {
+                UtilityManager.inserttologgingtable(
+                    ClientSession.EncounterId.ToString(), ClientSession.HumanId.ToString(),
+                    ClientSession.UserName, ClientSession.PhysicianId.ToString(),
+                    "Summary Consultation PDF XSLT Load : End", DateTime.Now, sGroup_ID_Log, "frmSummaryNew");
+            }
+            string sTransformedData = string.Empty;
+
+            if (System.Configuration.ConfigurationSettings.AppSettings["XsltTransformVersion"] != null && System.Configuration.ConfigurationSettings.AppSettings["XsltTransformVersion"].ToString().ToUpper() == "V1")
+            {
+                // Use XPathDocument for performance
+                using (var reader = XmlReader.Create(new StringReader(combinedXml)))
+                using (var writer = XmlWriter.Create(outputDocument, xslTransform.OutputSettings))
+                {
+                    var document = new XPathDocument(reader);
+                    xslTransform.Transform(document, null, writer);
+                }
+            }
+            else if (System.Configuration.ConfigurationSettings.AppSettings["XsltTransformVersion"] != null && System.Configuration.ConfigurationSettings.AppSettings["XsltTransformVersion"].ToString().ToUpper() == "V2")
+            {
+                UtilityManager UtlityMngr = new UtilityManager();
+                sTransformedData = UtlityMngr.SplitXsltTransform(sb, xsltFile, false, sNotesType);
+            }
+            return sTransformedData;
         }
 
         public string SplitXsltTransform(StringBuilder sb,string strTransformSource, bool bIsSummary, string sNotesType = "")
