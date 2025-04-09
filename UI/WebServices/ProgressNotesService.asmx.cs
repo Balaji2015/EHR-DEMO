@@ -226,8 +226,8 @@ namespace Acurus.Capella.UI.WebServices
 
                     string WordOutputName = sHumanID + "_" + DateTime.Now.ToString("yyyyMMddhhmmss") + ".html";
                     string outputDocument = Path.Combine(System.Configuration.ConfigurationSettings.AppSettings["XMLPath"], WordOutputName);
-
-                    UtilityManager.PrintPDFUsingXSLT(sXMLEncounterDoc, sXMLHumanDoc, xsltFile, outputDocument, "");
+                    string htmlString = string.Empty;
+                    htmlString = UtilityManager.PrintPDFUsingXSLT(sXMLEncounterDoc, sXMLHumanDoc, xsltFile, outputDocument, "");
                     System.IO.FileInfo file = new System.IO.FileInfo(outputDocument);
 
 
@@ -313,7 +313,12 @@ namespace Acurus.Capella.UI.WebServices
                     string sUserEmailAddr = (ilstUser.Count > 0) ? ilstUser[0].EMail_Address : "";
 
                     //Generate Json
-                    string htmlString = System.IO.File.ReadAllText(outputDocument);
+                    //string htmlString = System.IO.File.ReadAllText(outputDocument);
+                    if (System.Configuration.ConfigurationSettings.AppSettings["XsltTransformVersion"] != null
+                    && System.Configuration.ConfigurationSettings.AppSettings["XsltTransformVersion"].ToString().ToUpper() == "V1")
+                    {
+                        htmlString = System.IO.File.ReadAllText(outputDocument);
+                    }
                     string xmls = htmlString.Replace("&nbsp;", "").Replace("&bull;", "").Replace("&amp;", "");
                     xmls = "<?xml version=\"1.0\" encoding=\"utf-8\"?> <content>" + xmls + "</content>";
                     htmlString = htmlString.Replace("<subtab>", "").Replace("</subtab>", "").Replace("<plan>", "").Replace("</plan>", "");

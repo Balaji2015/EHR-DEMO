@@ -1266,7 +1266,8 @@ namespace Acurus.Capella.UI
                 //xmlDoc = null;
                 //ds = null;
                 //Jira #CAP-344 - NewCode
-                UtilityManager.PrintPDFUsingXSLT(sXMLEncounterDoc, sXMLHumanDoc, xsltFile, outputDocument, sGroup_ID_Log);
+                string htmlString = string.Empty;
+                htmlString = UtilityManager.PrintPDFUsingXSLT(sXMLEncounterDoc, sXMLHumanDoc, xsltFile, outputDocument, sGroup_ID_Log);
                 System.IO.FileInfo file = new System.IO.FileInfo(outputDocument);
                 //  string htmlString = System.IO.File.ReadAllText(outputDocument);
 
@@ -1385,7 +1386,12 @@ namespace Acurus.Capella.UI
                 if (CommonList.Count > 0)
                     strfooterProviderReviewed = CommonList[0].Value.Replace("<Physician>", Encounter_Reviewed_Name + " at " + Encounter_Reviewed_signedDate).Replace("|", "");
 
-                string htmlString = System.IO.File.ReadAllText(outputDocument);
+                //string htmlString = System.IO.File.ReadAllText(outputDocument);
+                if (System.Configuration.ConfigurationSettings.AppSettings["XsltTransformVersion"] != null
+                    && System.Configuration.ConfigurationSettings.AppSettings["XsltTransformVersion"].ToString().ToUpper() == "V1")
+                {
+                    htmlString = System.IO.File.ReadAllText(outputDocument);
+                }
                 if (file.Exists)
                 {
                     File.Delete(outputDocument);
@@ -2158,13 +2164,18 @@ namespace Acurus.Capella.UI
             //xmlDoc = null;
             //ds = null;
             //Jira #CAP-344 - NewCode
-            UtilityManager.PrintPDFUsingXSLT(sXMLEncounterDoc, sXMLHumanDoc, xsltFile, outputDocument, sGroup_ID_Log);
+            string htmlString = string.Empty;
+            htmlString = UtilityManager.PrintPDFUsingXSLT(sXMLEncounterDoc, sXMLHumanDoc, xsltFile, outputDocument, sGroup_ID_Log);
             System.IO.FileInfo file = new System.IO.FileInfo(outputDocument);
-            string htmlString = System.IO.File.ReadAllText(outputDocument);
-
-            //  IList<PatientPane> lstpane = new List<PatientPane>();
-            //   lstpane = ClientSession.PatientPaneList.ToList<PatientPane>();
-            string Patient_Name = "";
+            //string htmlString = System.IO.File.ReadAllText(outputDocument);
+            if (System.Configuration.ConfigurationSettings.AppSettings["XsltTransformVersion"] != null
+                    && System.Configuration.ConfigurationSettings.AppSettings["XsltTransformVersion"].ToString().ToUpper() == "V1")
+            {
+                htmlString = System.IO.File.ReadAllText(outputDocument);
+            }
+                //  IList<PatientPane> lstpane = new List<PatientPane>();
+                //   lstpane = ClientSession.PatientPaneList.ToList<PatientPane>();
+                string Patient_Name = "";
             // if(lstpane.Count>0)
             // Patient_Name=lstpane[0].Last_Name + "," + "" + lstpane[0].First_Name + " " + lstpane[0].MI;
 
@@ -2798,7 +2809,8 @@ margin:0in 0in 0in 9in;
             //ds = null;
 
             //Jira #CAP-344 - NewCode
-            UtilityManager.PrintPDFUsingXSLT(sXMLEncounterDoc, sXMLHumanDoc, xsltFile, outputDocument, sGroup_ID_Log);
+            string htmlString = string.Empty;
+            htmlString = UtilityManager.PrintPDFUsingXSLT(sXMLEncounterDoc, sXMLHumanDoc, xsltFile, outputDocument, sGroup_ID_Log);
             System.IO.FileInfo file = new System.IO.FileInfo(outputDocument);
             //  string htmlString = System.IO.File.ReadAllText(outputDocument);
 
@@ -2919,8 +2931,13 @@ margin:0in 0in 0in 9in;
                 strfooterProviderReviewed = CommonList[0].Value.Replace("<Physician>", Encounter_Reviewed_Name + " at " + Encounter_Reviewed_signedDate).Replace("|", "");
 
 
-            string htmlString = System.IO.File.ReadAllText(outputDocument);
-            if (file.Exists)
+            //string htmlString = System.IO.File.ReadAllText(outputDocument);
+            if (System.Configuration.ConfigurationSettings.AppSettings["XsltTransformVersion"] != null
+                    && System.Configuration.ConfigurationSettings.AppSettings["XsltTransformVersion"].ToString().ToUpper() == "V1")
+            {
+                htmlString = System.IO.File.ReadAllText(outputDocument);
+            }
+                if (file.Exists)
             {
                 File.Delete(outputDocument);
             }

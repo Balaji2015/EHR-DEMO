@@ -76,10 +76,16 @@ namespace Acurus.Capella.UI
             //ds = null;
 
             //Jira #CAP-344 - NewCode
-            UtilityManager.PrintPDFUsingXSLT(sXMLEncounterDoc, String.Empty, xsltFile, outputDocument, string.Empty);
+            string htmlString = string.Empty;
+            htmlString = UtilityManager.PrintPDFUsingXSLT(sXMLEncounterDoc, String.Empty, xsltFile, outputDocument, string.Empty);
             System.IO.FileInfo file = new System.IO.FileInfo(outputDocument);
-            string htmlString = System.IO.File.ReadAllText(outputDocument);
-            string Patient_Name = "";
+            //string htmlString = System.IO.File.ReadAllText(outputDocument);
+            if (System.Configuration.ConfigurationSettings.AppSettings["XsltTransformVersion"] != null
+                    && System.Configuration.ConfigurationSettings.AppSettings["XsltTransformVersion"].ToString().ToUpper() == "V1")
+            {
+                htmlString = System.IO.File.ReadAllText(outputDocument);
+            }
+                string Patient_Name = "";
             string Encounter_signedDate = "";
             string Encounter_Provider_Name = "";
             string Provider_Speciality = "";

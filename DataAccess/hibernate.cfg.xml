@@ -30,23 +30,23 @@
       -->
 			<!-- This is the System.Data.dll provider for MSSQL Server -->
 
-			<property name="connection.driver_class">NHibernate.Driver.MySqlDataDriver</property>
-			<property name="dialect">NHibernate.Dialect.MySQLDialect</property>
-			<!--New Azure Testing-->
-			<!--<property name="connection.connection_string">Database=capella_cmg_wc_merge;Server=capellapoc2.mysql.database.azure.com; User ID=dbadmin;Password=KoU6Vty25bdufJeTOBVO;Port=3306;SslMode=Required;Connection Timeout=30;</property>-->
-			<!--Azure Testing-->
-			<!--<property name="connection.connection_string">Database=capella_cmg_wc_merge;Server=capellapoc.mysql.database.azure.com; User ID=dbadmin@capellapoc;Password=KoU6Vty25bdufJeTOBVO;Port=3306;SslMode=Required;Connection Timeout=30;</property>-->
-			<!--CMG LOCAL 154 -->
-			<property name="connection.connection_string">Database=capella_cmg_deve;Data Source=172.18.0.11;User Id=root;Password=Capella@20!4;Allow Zero Datetime=True;Connect Timeout=120;Port=3306;</property>
-			<!--CMG LOCAL 11 -->
-			<!--<property name="connection.connection_string">Database=capella_cmg_deve;Data Source=172.18.0.11;User Id=dbdeve;Password=acurus;Allow Zero Datetime=True;Connect Timeout=120;Port=3308;</property>-->
-			<!--CMG TESTING -->
-			<!--<property name="connection.connection_string">Database=capella_cmg_5_8_test;Data Source=192.168.101.5;User Id=dbpro;Password=Cap@curus2;Allow Zero Datetime=True;Connect Timeout=120;Port=3308;</property>-->
-			<!--CMG SANDBOX-->
-			<!--<property name="connection.connection_string">Database=capella_wish;Data Source=192.168.110.5;User Id=dbapp;Password=db@cuPr0d;Allow Zero Datetime=True;Connect Timeout=120;Port=3306;</property>-->
-			<!--CMG CPP DEMO -->
-			<!--<property name="connection.connection_string">Database=capella_cpp_demo;Data Source=64.91.251.230;User Id=capella;Password=Cap@curus1;Allow Zero Datetime=True;Connect Timeout=120;Port=3306;</property>-->
-			<!--<property name="connection.connection_string">Database=capella_cmg;Server=prod-db-1-mysql8.mysql.database.azure.com;User ID=dbapp@prod-db-1-mysql8;Password=fdg0ahgZsFaDlC7xwY59;Port=3306;SslMode=Required;Connection Timeout=30;</property>-->
+      <property name="connection.driver_class">NHibernate.Driver.MySqlDataDriver</property>
+      <property name="dialect">NHibernate.Dialect.MySQLDialect</property>
+		<!--New Azure Testing-->
+		<!--<property name="connection.connection_string">Database=capella_cmg_wc_merge;Server=capellapoc2.mysql.database.azure.com; User ID=dbadmin;Password=KoU6Vty25bdufJeTOBVO;Port=3306;SslMode=Required;Connection Timeout=30;</property>-->
+      <!--Azure Testing-->
+      <property name="connection.connection_string">Database=capella_cmg_wc_merge;Server=capellapoc.mysql.database.azure.com; User ID=dbadmin@capellapoc;Password=KoU6Vty25bdufJeTOBVO;Port=3306;SslMode=Required;Connection Timeout=30;</property>
+      <!--CMG LOCAL 154 -->
+      <!--<property name="connection.connection_string">Database=capella_cmg_deve;Data Source=172.18.0.11;User Id=root;Password=Capella@20!4;Allow Zero Datetime=True;Connect Timeout=120;Port=3306;</property>-->
+      <!--CMG LOCAL 11 -->
+      <!--<property name="connection.connection_string">Database=capella_cmg_deve;Data Source=172.18.0.11;User Id=dbdeve;Password=acurus;Allow Zero Datetime=True;Connect Timeout=120;Port=3308;</property>-->
+      <!--CMG TESTING -->
+      <!--<property name="connection.connection_string">Database=capella_cmg_5_8_test;Data Source=192.168.101.5;User Id=dbpro;Password=Cap@curus2;Allow Zero Datetime=True;Connect Timeout=120;Port=3308;</property>-->
+      <!--CMG SANDBOX-->
+      <!--<property name="connection.connection_string">Database=capella_wish;Data Source=192.168.110.5;User Id=dbapp;Password=db@cuPr0d;Allow Zero Datetime=True;Connect Timeout=120;Port=3306;</property>-->
+      <!--CMG CPP DEMO -->
+      <!--<property name="connection.connection_string">Database=capella_cpp_demo;Data Source=64.91.251.230;User Id=capella;Password=Cap@curus1;Allow Zero Datetime=True;Connect Timeout=120;Port=3306;</property>-->
+	  <!--<property name="connection.connection_string">Database=capella_cmg;Server=prod-db-1-mysql8.mysql.database.azure.com;User ID=dbapp@prod-db-1-mysql8;Password=fdg0ahgZsFaDlC7xwY59;Port=3306;SslMode=Required;Connection Timeout=30;</property>-->
 
 			<property name="command_timeout">10000</property>
 			<property name="show_sql">false</property>

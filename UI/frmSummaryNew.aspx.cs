@@ -988,7 +988,7 @@ namespace Acurus.Capella.UI
                 //StringBuilder htmlOutput = new StringBuilder();
                 //TextWriter htmlWriter = new StringWriter(htmlOutput);
 
-                XmlReader xmlr = XmlReader.Create(new StringReader(sb.ToString()));
+                //XmlReader xmlr = XmlReader.Create(new StringReader(sb.ToString()));
 
                 //XslCompiledTransform objXSLTransform = new XslCompiledTransform();
                 //XsltSettings settingsxsl = new XsltSettings(true, false);
@@ -996,9 +996,21 @@ namespace Acurus.Capella.UI
 
                 //objXSLTransform.Transform(xmlr, null, htmlWriter);
                 //ltlDownloadFrame.Text = htmlWriter.ToString();
-                
-                ltlDownloadFrame.Text = UtilityManager.PrintSummaryUsingXSLT(strTransformSource, xmlr).ToString();
-                
+
+                //Jira CAP-3092
+                if (System.Configuration.ConfigurationSettings.AppSettings["XsltTransformVersion"] != null
+                    && System.Configuration.ConfigurationSettings.AppSettings["XsltTransformVersion"].ToString().ToUpper() == "V1")
+                {
+                    XmlReader xmlr = XmlReader.Create(new StringReader(sb.ToString()));
+                    ltlDownloadFrame.Text = UtilityManager.PrintSummaryUsingXSLT(strTransformSource, xmlr).ToString();
+                }
+                else if (System.Configuration.ConfigurationSettings.AppSettings["XsltTransformVersion"] != null
+                    && System.Configuration.ConfigurationSettings.AppSettings["XsltTransformVersion"].ToString().ToUpper() == "V2")
+                {
+                    UtilityManager utlMngr = new UtilityManager();
+                    ltlDownloadFrame.Text = utlMngr.SplitXsltTransform(sb, strTransformSource, true);
+                }
+                //Jira CAP-3092 - End
                 //
                 string Encounter_signedDate = "";
                 string Encounter_Provider_Name = "";
@@ -1469,7 +1481,8 @@ namespace Acurus.Capella.UI
             //xslTran = null;
 
             //Jira #CAP-344 - NewCode
-            UtilityManager.PrintPDFUsingXSLT(sXMLEncounterDoc, sXMLHumanDoc, xsltFile, outputDocument, sGroup_ID_Log);
+            string htmlString = string.Empty;
+            htmlString = UtilityManager.PrintPDFUsingXSLT(sXMLEncounterDoc, sXMLHumanDoc, xsltFile, outputDocument, sGroup_ID_Log);
             System.IO.FileInfo file = new System.IO.FileInfo(outputDocument);
 
             string Encounter_signedDate = "";
@@ -1529,8 +1542,13 @@ namespace Acurus.Capella.UI
             }
 
 
-            string htmlString = System.IO.File.ReadAllText(outputDocument);
-            htmlString = htmlString.Replace("<subtab>", "").Replace("</subtab>", "").Replace("<plan>", "").Replace("</plan>", "");
+            //string htmlString = System.IO.File.ReadAllText(outputDocument);
+            if (System.Configuration.ConfigurationSettings.AppSettings["XsltTransformVersion"] != null
+                    && System.Configuration.ConfigurationSettings.AppSettings["XsltTransformVersion"].ToString().ToUpper() == "V1")
+            {
+                htmlString = System.IO.File.ReadAllText(outputDocument);
+            }
+                htmlString = htmlString.Replace("<subtab>", "").Replace("</subtab>", "").Replace("<plan>", "").Replace("</plan>", "");
 
             //Cap - 2508
             while (htmlString.Contains("<AddendumProviderID>"))
@@ -2109,7 +2127,8 @@ margin:0in 0in 0in 9in;
             //xslTran = null;
 
             //Jira #CAP-344 - NewCode
-            UtilityManager.PrintPDFUsingXSLT(sXMLEncounterDoc, sXMLHumanDoc, xsltFile, outputDocument, sGroup_ID_Log);
+            string htmlString = string.Empty;
+            htmlString = UtilityManager.PrintPDFUsingXSLT(sXMLEncounterDoc, sXMLHumanDoc, xsltFile, outputDocument, sGroup_ID_Log);
             System.IO.FileInfo file = new System.IO.FileInfo(outputDocument);
 
             string Encounter_signedDate = "";
@@ -2172,8 +2191,13 @@ margin:0in 0in 0in 9in;
             }
 
 
-            string htmlString = System.IO.File.ReadAllText(outputDocument);            
-            htmlString = htmlString.Replace("<subtab>", "").Replace("</subtab>", "").Replace("<plan>", "").Replace("</plan>", "");
+            //string htmlString = System.IO.File.ReadAllText(outputDocument);            
+            if (System.Configuration.ConfigurationSettings.AppSettings["XsltTransformVersion"] != null
+          && System.Configuration.ConfigurationSettings.AppSettings["XsltTransformVersion"].ToString().ToUpper() == "V1")
+            {
+                htmlString = System.IO.File.ReadAllText(outputDocument);
+            }
+                htmlString = htmlString.Replace("<subtab>", "").Replace("</subtab>", "").Replace("<plan>", "").Replace("</plan>", "");
             //Cap - 2508
             while (htmlString.Contains("<AddendumProviderID>"))
             {
@@ -3094,80 +3118,81 @@ margin:0in 0in 0in 9in;
             NotesName = UtilityMngr.ReplaceSpecialCharaterInFileName(NotesName);
             string WordOutputName = NotesName + ".html";
             string outputDocument = Path.Combine(System.Configuration.ConfigurationSettings.AppSettings["XMLPath"], WordOutputName);
-            #region HPvalue
-            ////for hp value
-            //EncounterManager objManager = new EncounterManager();
-            //string[] arry = objManager.GetInusranceDetails(ClientSession.HumanId);
-            //string sPriPlan = string.Empty;
-            //string sPriCarrier = string.Empty;
-            //if (arry[1] != null)
-            //{
-            //    if (arry[0] == "PRIMARY")
-            //    {
-            //        sPriPlan = arry[2].ToString();
-            //        if (File.Exists(xmlDataFile) == true)
-            //        {
-            //            XmlDocument itemDoc = new XmlDocument();
-            //            XmlTextReader XmlText = new XmlTextReader(strXmlFilePath);
-            //            itemDoc.Load(XmlText);
-            //            XmlText.Close();
+                #region HPvalue
+                ////for hp value
+                //EncounterManager objManager = new EncounterManager();
+                //string[] arry = objManager.GetInusranceDetails(ClientSession.HumanId);
+                //string sPriPlan = string.Empty;
+                //string sPriCarrier = string.Empty;
+                //if (arry[1] != null)
+                //{
+                //    if (arry[0] == "PRIMARY")
+                //    {
+                //        sPriPlan = arry[2].ToString();
+                //        if (File.Exists(xmlDataFile) == true)
+                //        {
+                //            XmlDocument itemDoc = new XmlDocument();
+                //            XmlTextReader XmlText = new XmlTextReader(strXmlFilePath);
+                //            itemDoc.Load(XmlText);
+                //            XmlText.Close();
 
-            //            XmlNodeList xmlPatientName = itemDoc.GetElementsByTagName("HP");
-            //            xmlPatientName[0].Attributes[0].Value = sPriPlan;
-            //            itemDoc.Save(strXmlFilePath);
-            //        }
-            //    }
-            //}
-            ////
-            #endregion
+                //            XmlNodeList xmlPatientName = itemDoc.GetElementsByTagName("HP");
+                //            xmlPatientName[0].Attributes[0].Value = sPriPlan;
+                //            itemDoc.Save(strXmlFilePath);
+                //        }
+                //    }
+                //}
+                ////
+                #endregion
 
-            //Jira #CAP-344 - OldCode
-            //DataSet ds;
-            //XmlDataDocument xmlDoc;
-            //XslCompiledTransform xslTran;
-            //XmlElement root;
-            //XPathNavigator nav;
-            //XmlTextWriter writer;
-            //XsltSettings settings = new XsltSettings(true, false);
-            //ds = new DataSet();
-            ////ds.ReadXml(xmlDataFile);
-            //// ds.ReadXml(new XmlTextReader(new StringReader(sXMLEncounterDoc)));
-            //StringBuilder sb = new StringBuilder();
-            //sb.Append(sXMLEncounterDoc.ToString().Replace("</notes>", "").Replace("</Modules>", ""));
+                //Jira #CAP-344 - OldCode
+                //DataSet ds;
+                //XmlDataDocument xmlDoc;
+                //XslCompiledTransform xslTran;
+                //XmlElement root;
+                //XPathNavigator nav;
+                //XmlTextWriter writer;
+                //XsltSettings settings = new XsltSettings(true, false);
+                //ds = new DataSet();
+                ////ds.ReadXml(xmlDataFile);
+                //// ds.ReadXml(new XmlTextReader(new StringReader(sXMLEncounterDoc)));
+                //StringBuilder sb = new StringBuilder();
+                //sb.Append(sXMLEncounterDoc.ToString().Replace("</notes>", "").Replace("</Modules>", ""));
 
-            //string SUB = sXMLHumanDoc.ToString().Substring(0, sXMLHumanDoc.LastIndexOf("?>") + 2);
+                //string SUB = sXMLHumanDoc.ToString().Substring(0, sXMLHumanDoc.LastIndexOf("?>") + 2);
 
-            //sb.Append(sXMLHumanDoc.ToString().Replace(SUB, "").Replace("<notes>", "").Replace("<Modules>", ""));
-            //ds.ReadXml(new XmlTextReader(new StringReader(sb.ToString())));
+                //sb.Append(sXMLHumanDoc.ToString().Replace(SUB, "").Replace("<notes>", "").Replace("<Modules>", ""));
+                //ds.ReadXml(new XmlTextReader(new StringReader(sb.ToString())));
 
-            //xmlDoc = new XmlDataDocument(ds);
-            //xslTran = new XslCompiledTransform();
-            //using (var stream = File.Open(xsltFile, FileMode.Open, FileAccess.Read, FileShare.Read))
-            //{
-            //    // xslTran.Load(xsltFile);
-            //    UtilityManager.inserttologgingtable(ClientSession.EncounterId.ToString(), ClientSession.HumanId.ToString(), ClientSession.UserName, ClientSession.PhysicianId.ToString(), "Summary Send FAX XSLT Load : Start", DateTime.Now, sGroup_ID_Log, "frmSummaryNew");
-            //    xslTran.Load(xsltFile, settings, new XmlUrlResolver());
-            //    UtilityManager.inserttologgingtable(ClientSession.EncounterId.ToString(), ClientSession.HumanId.ToString(), ClientSession.UserName, ClientSession.PhysicianId.ToString(), "Summary Send FAX XSLT Load : End", DateTime.Now, sGroup_ID_Log, "frmSummaryNew");
+                //xmlDoc = new XmlDataDocument(ds);
+                //xslTran = new XslCompiledTransform();
+                //using (var stream = File.Open(xsltFile, FileMode.Open, FileAccess.Read, FileShare.Read))
+                //{
+                //    // xslTran.Load(xsltFile);
+                //    UtilityManager.inserttologgingtable(ClientSession.EncounterId.ToString(), ClientSession.HumanId.ToString(), ClientSession.UserName, ClientSession.PhysicianId.ToString(), "Summary Send FAX XSLT Load : Start", DateTime.Now, sGroup_ID_Log, "frmSummaryNew");
+                //    xslTran.Load(xsltFile, settings, new XmlUrlResolver());
+                //    UtilityManager.inserttologgingtable(ClientSession.EncounterId.ToString(), ClientSession.HumanId.ToString(), ClientSession.UserName, ClientSession.PhysicianId.ToString(), "Summary Send FAX XSLT Load : End", DateTime.Now, sGroup_ID_Log, "frmSummaryNew");
 
-            //}
-            //root = xmlDoc.DocumentElement;
-            //nav = root.CreateNavigator();
-            //if (File.Exists(outputDocument))
-            //{
-            //    File.Delete(outputDocument);
-            //}
-            //writer = new XmlTextWriter(outputDocument, System.Text.Encoding.UTF8);
-            //xslTran.Transform(nav, writer);
-            //writer.Close();
-            //writer = null;
-            //nav = null;
-            //root = null;
-            //xmlDoc = null;
-            //ds = null;
-            //xslTran = null;
+                //}
+                //root = xmlDoc.DocumentElement;
+                //nav = root.CreateNavigator();
+                //if (File.Exists(outputDocument))
+                //{
+                //    File.Delete(outputDocument);
+                //}
+                //writer = new XmlTextWriter(outputDocument, System.Text.Encoding.UTF8);
+                //xslTran.Transform(nav, writer);
+                //writer.Close();
+                //writer = null;
+                //nav = null;
+                //root = null;
+                //xmlDoc = null;
+                //ds = null;
+                //xslTran = null;
 
-            //Jira #CAP-344 - NewCode
-            UtilityManager.PrintPDFUsingXSLT(sXMLEncounterDoc, sXMLHumanDoc, xsltFile, outputDocument, sGroup_ID_Log);
+                //Jira #CAP-344 - NewCode
+                string htmlString = string.Empty;
+                htmlString = UtilityManager.PrintPDFUsingXSLT(sXMLEncounterDoc, sXMLHumanDoc, xsltFile, outputDocument, sGroup_ID_Log);
             System.IO.FileInfo file = new System.IO.FileInfo(outputDocument);
 
             string Encounter_signedDate = "";
@@ -3226,8 +3251,13 @@ margin:0in 0in 0in 9in;
                 }
 
 
-            string htmlString = System.IO.File.ReadAllText(outputDocument);
-                htmlString = htmlString.Replace("<subtab>", "").Replace("</subtab>", "").Replace("<plan>", "").Replace("</plan>", "");
+                //string htmlString = System.IO.File.ReadAllText(outputDocument);
+                if (System.Configuration.ConfigurationSettings.AppSettings["XsltTransformVersion"] != null
+                        && System.Configuration.ConfigurationSettings.AppSettings["XsltTransformVersion"].ToString().ToUpper() == "V1")
+                {
+                    htmlString = System.IO.File.ReadAllText(outputDocument);
+                }
+                    htmlString = htmlString.Replace("<subtab>", "").Replace("</subtab>", "").Replace("<plan>", "").Replace("</plan>", "");
                 //Cap - 2508
                 while (htmlString.Contains("<AddendumProviderID>"))
                 {
@@ -4226,13 +4256,18 @@ margin:0in 0in 0in 9in;
             //ds = null;
 
             //Jira #CAP-344 - NewCode
-            UtilityManager.PrintPDFUsingXSLT(sXMLEncounterDoc, sXMLHumanDoc, xsltFile, outputDocument, sGroup_ID_Log);
+            string htmlString = string.Empty;
+            htmlString = UtilityManager.PrintPDFUsingXSLT(sXMLEncounterDoc, sXMLHumanDoc, xsltFile, outputDocument, sGroup_ID_Log);
             System.IO.FileInfo file = new System.IO.FileInfo(outputDocument);
-            string htmlString = System.IO.File.ReadAllText(outputDocument);
-
-            //  IList<PatientPane> lstpane = new List<PatientPane>();
-            //   lstpane = ClientSession.PatientPaneList.ToList<PatientPane>();
-            string Patient_Name = "";
+            //string htmlString = System.IO.File.ReadAllText(outputDocument);
+            if (System.Configuration.ConfigurationSettings.AppSettings["XsltTransformVersion"] != null
+                    && System.Configuration.ConfigurationSettings.AppSettings["XsltTransformVersion"].ToString().ToUpper() == "V1")
+            {
+                htmlString = System.IO.File.ReadAllText(outputDocument);
+            }
+                //  IList<PatientPane> lstpane = new List<PatientPane>();
+                //   lstpane = ClientSession.PatientPaneList.ToList<PatientPane>();
+                string Patient_Name = "";
             // if(lstpane.Count>0)
             // Patient_Name=lstpane[0].Last_Name + "," + "" + lstpane[0].First_Name + " " + lstpane[0].MI;
 
@@ -4890,7 +4925,8 @@ margin:0in 0in 0in 9in;
             //ds = null;
 
             //Jira #CAP-344 - NewCode
-            UtilityManager.PrintPDFUsingXSLT(sXMLEncounterDoc, sXMLHumanDoc, xsltFile, outputDocument, sGroup_ID_Log);
+            string htmlString = string.Empty;
+            htmlString = UtilityManager.PrintPDFUsingXSLT(sXMLEncounterDoc, sXMLHumanDoc, xsltFile, outputDocument, sGroup_ID_Log);
             System.IO.FileInfo file = new System.IO.FileInfo(outputDocument);
             //  string htmlString = System.IO.File.ReadAllText(outputDocument);
 
@@ -5012,8 +5048,13 @@ margin:0in 0in 0in 9in;
                 strfooterProviderReviewed = CommonList[0].Value.Replace("<Physician>", Encounter_Reviewed_Name + " at " + Encounter_Reviewed_signedDate).Replace("|", "");
 
 
-            string htmlString = System.IO.File.ReadAllText(outputDocument);
-            if (file.Exists)
+            //string htmlString = System.IO.File.ReadAllText(outputDocument);
+            if (System.Configuration.ConfigurationSettings.AppSettings["XsltTransformVersion"] != null
+                    && System.Configuration.ConfigurationSettings.AppSettings["XsltTransformVersion"].ToString().ToUpper() == "V1")
+            {
+                htmlString = System.IO.File.ReadAllText(outputDocument);
+            }
+                if (file.Exists)
             {
                 File.Delete(outputDocument);
             }
@@ -5643,7 +5684,8 @@ margin:0in 0in 0in 9in;
             //xmlDoc = null;
             //ds = null;
             //Jira #CAP-344 - NewCode
-            UtilityManager.PrintPDFUsingXSLT(sXMLEncounterDoc, sXMLHumanDoc, xsltFile, outputDocument, sGroup_ID_Log);
+            string htmlString = string.Empty;
+            htmlString = UtilityManager.PrintPDFUsingXSLT(sXMLEncounterDoc, sXMLHumanDoc, xsltFile, outputDocument, sGroup_ID_Log);
             System.IO.FileInfo file = new System.IO.FileInfo(outputDocument);
             //  string htmlString = System.IO.File.ReadAllText(outputDocument);
 
@@ -5762,7 +5804,12 @@ margin:0in 0in 0in 9in;
             if (CommonList.Count > 0)
                 strfooterProviderReviewed = CommonList[0].Value.Replace("<Physician>", Encounter_Reviewed_Name + " at " + Encounter_Reviewed_signedDate).Replace("|", "");
 
-            string htmlString = System.IO.File.ReadAllText(outputDocument);
+            //string htmlString = System.IO.File.ReadAllText(outputDocument);
+            if (System.Configuration.ConfigurationSettings.AppSettings["XsltTransformVersion"] != null
+                    && System.Configuration.ConfigurationSettings.AppSettings["XsltTransformVersion"].ToString().ToUpper() == "V1")
+            {
+                htmlString = System.IO.File.ReadAllText(outputDocument);
+            }
             if (file.Exists)
             {
                 File.Delete(outputDocument);

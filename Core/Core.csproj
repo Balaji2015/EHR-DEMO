@@ -360,6 +360,7 @@
     <Compile Include="DTOJson\Speciality.cs" />
     <Compile Include="DTOJson\PhysicianFacilityMappingList.cs" />
     <Compile Include="DTOJson\StaticLookupList.cs" />
+    <Compile Include="DTOJson\XsltTransformSplitup.cs" />
     <Compile Include="DTO\ABIResultsDTO.cs" />
     <Compile Include="DTO\AuthorizationDTO.cs" />
     <Compile Include="DTO\CallQcExceptionDto.cs" />

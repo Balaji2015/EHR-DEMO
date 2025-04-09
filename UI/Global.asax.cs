@@ -18,6 +18,7 @@ using System.Diagnostics;
 using System.Text.RegularExpressions;
 using Acurus.Capella.UI.Extensions;
 using System.Web.Http;
+using Acurus.Capella.Core.DTOJson;
 
 [assembly: log4net.Config.XmlConfigurator(Watch = true)]
 
@@ -55,6 +56,7 @@ namespace Acurus.Capella.UI
             MapXMLBlobManager mapXMLBlobManager = new MapXMLBlobManager();
             ApplicationObject.ilstMapXMLBlob = mapXMLBlobManager.GetMapXMLBlobList();
 
+            ApplicationObject.XsltTransformSplitupList = ConfigureBase<XsltTransformSplitupList>.ReadJson("XsltTransformSplitup.json");
             try
             {
                 ProcessMasterManager objProcessMngr = new ProcessMasterManager();

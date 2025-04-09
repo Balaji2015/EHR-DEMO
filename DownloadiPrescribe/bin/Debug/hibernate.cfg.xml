@@ -1,41 +1,41 @@
 ﻿<?xml version="1.0"?>
 <configuration>
 
-  <!--<test></test>-->
-  <configSections>
-    <section name="hibernate-configuration" type="NHibernate.Cfg.ConfigurationSectionHandler, NHibernate" />
-    <!--<section name="log4net" type="log4net.Config.Log4NetConfigurationSectionHandler, log4net" />-->
-  </configSections>
+	<!--<test></test>-->
+	<configSections>
+		<section name="hibernate-configuration" type="NHibernate.Cfg.ConfigurationSectionHandler, NHibernate" />
+		<!--<section name="log4net" type="log4net.Config.Log4NetConfigurationSectionHandler, log4net" />-->
+	</configSections>
 
 
-  <!-- 
+	<!-- 
 		hibernate-configuration section
 
 		You don't need to change this section for your own use.
 		You can write your own hibernate.cfg.xml to override all session-factory configuration.
 		Templates are available in NHibernate.Config.Templates folder.
 	-->
-  <hibernate-configuration xmlns="urn:nhibernate-configuration-2.2">
-    <bytecode-provider type="lcg"/>
-    <reflection-optimizer use="false"/>
-    <session-factory name="NHibernate.Test">
-      <property name="connection.isolation">ReadCommitted</property>
-      <property name="hbm2ddl.keywords">none</property>
-      <property name="format_sql">false</property>
+	<hibernate-configuration xmlns="urn:nhibernate-configuration-2.2">
+		<bytecode-provider type="lcg"/>
+		<reflection-optimizer use="false"/>
+		<session-factory name="NHibernate.Test">
+			<property name="connection.isolation">ReadCommitted</property>
+			<property name="hbm2ddl.keywords">none</property>
+			<property name="format_sql">false</property>
 
-      <!--
+			<!--
       <property name="hibernate.cache.use_query_cache">false</property>
       <property name="hibernate.cache.use_second_level_cache">false</property>
       <property name="hibernate.connection.aggressive_release">false</property>
       -->
-      <!-- This is the System.Data.dll provider for MSSQL Server -->
+			<!-- This is the System.Data.dll provider for MSSQL Server -->
 
       <property name="connection.driver_class">NHibernate.Driver.MySqlDataDriver</property>
       <property name="dialect">NHibernate.Dialect.MySQLDialect</property>
 		<!--New Azure Testing-->
 		<!--<property name="connection.connection_string">Database=capella_cmg_wc_merge;Server=capellapoc2.mysql.database.azure.com; User ID=dbadmin;Password=KoU6Vty25bdufJeTOBVO;Port=3306;SslMode=Required;Connection Timeout=30;</property>-->
       <!--Azure Testing-->
-      <property name="connection.connection_string">Database=capella_cmg_wc_merge;Server=capellapoc.mysql.database.azure.com; User ID=dbadmin@capellapoc;Password=KoU6Vty25bdufJeTOBVO;Port=3306;SslMode=Required;Connection Timeout=30;</property>
+      <!--<property name="connection.connection_string">Database=capella_cmg_wc_merge;Server=capellapoc.mysql.database.azure.com; User ID=dbadmin@capellapoc;Password=KoU6Vty25bdufJeTOBVO;Port=3306;SslMode=Required;Connection Timeout=30;</property>-->
       <!--CMG LOCAL 154 -->
       <!--<property name="connection.connection_string">Database=capella_cmg_deve;Data Source=172.18.0.11;User Id=root;Password=Capella@20!4;Allow Zero Datetime=True;Connect Timeout=120;Port=3306;</property>-->
       <!--CMG LOCAL 11 -->
@@ -46,273 +46,273 @@
       <!--<property name="connection.connection_string">Database=capella_wish;Data Source=192.168.110.5;User Id=dbapp;Password=db@cuPr0d;Allow Zero Datetime=True;Connect Timeout=120;Port=3306;</property>-->
       <!--CMG CPP DEMO -->
       <!--<property name="connection.connection_string">Database=capella_cpp_demo;Data Source=64.91.251.230;User Id=capella;Password=Cap@curus1;Allow Zero Datetime=True;Connect Timeout=120;Port=3306;</property>-->
-	  <!--<property name="connection.connection_string">Database=capella_cmg;Server=prod-db-1-mysql8.mysql.database.azure.com;User ID=dbapp@prod-db-1-mysql8;Password=fdg0ahgZsFaDlC7xwY59;Port=3306;SslMode=Required;Connection Timeout=30;</property>-->
+	  <property name="connection.connection_string">Database=capella_cmg;Server=prod-db-1-mysql8.mysql.database.azure.com;User ID=dbapp@prod-db-1-mysql8;Password=fdg0ahgZsFaDlC7xwY59;Port=3306;SslMode=Required;Connection Timeout=30;</property>
 
-		<property name="command_timeout">10000</property>
-      <property name="show_sql">false</property>
-      <property name="proxyfactory.factory_class">NHibernate.ByteCode.LinFu.ProxyFactoryFactory, NHibernate.ByteCode.LinFu</property>
-      <!-- HBM Mapping Files -->
-      <mapping resource="Acurus.Capella.Core.HbmMaps.ChiefComplaints.hbm.xml" assembly="Acurus.Capella.Core" />
-      <mapping resource="Acurus.Capella.Core.HbmMaps.Examination.hbm.xml" assembly="Acurus.Capella.Core" />
-      <mapping resource="Acurus.Capella.Core.HbmMaps.ROS.hbm.xml" assembly="Acurus.Capella.Core" />
-      <!--<mapping resource="Acurus.Capella.Core.HbmMaps.Vitals.hbm.xml" assembly="Acurus.Capella.Core" />-->
-      <mapping resource="Acurus.Capella.Core.HbmMaps.Assessment.hbm.xml" assembly="Acurus.Capella.Core" />
-      <mapping resource="Acurus.Capella.Core.HbmMaps.Eligibility_Verification.hbm.xml" assembly="Acurus.Capella.Core" />
-      <mapping resource="Acurus.Capella.Core.HbmMaps.Human.hbm.xml" assembly="Acurus.Capella.Core" />
-      <mapping resource="Acurus.Capella.Core.HbmMaps.HqlQueries.hbm.xml" assembly="Acurus.Capella.Core" />
-      <mapping resource="Acurus.Capella.Core.HbmMaps.Encounter.hbm.xml" assembly="Acurus.Capella.Core" />
-      <mapping resource="Acurus.Capella.Core.HbmMaps.FamilyDisease.hbm.xml" assembly="Acurus.Capella.Core" />
-      <mapping resource="Acurus.Capella.Core.HbmMaps.FamilyDiseaseMaster.hbm.xml" assembly="Acurus.Capella.Core" />
-      <mapping resource="Acurus.Capella.Core.HbmMaps.FamilyHistory.hbm.xml" assembly="Acurus.Capella.Core" />
-      <mapping resource="Acurus.Capella.Core.HbmMaps.FamilyHistoryMaster.hbm.xml" assembly="Acurus.Capella.Core" />
-      <mapping resource="Acurus.Capella.Core.HbmMaps.SocialHistory.hbm.xml" assembly="Acurus.Capella.Core" />
-      <mapping resource="Acurus.Capella.Core.HbmMaps.SocialHistoryMaster.hbm.xml" assembly="Acurus.Capella.Core" />
-      <mapping resource="Acurus.Capella.Core.HbmMaps.PatientInsuredPlan.hbm.xml" assembly="Acurus.Capella.Core" />
-      <mapping resource="Acurus.Capella.Core.HbmMaps.InsurancePlan.hbm.xml" assembly="Acurus.Capella.Core" />
-      <mapping resource="Acurus.Capella.Core.HbmMaps.PhysicianLibrary.hbm.xml" assembly="Acurus.Capella.Core" />
-      <mapping resource="Acurus.Capella.Core.HbmMaps.FacilityLibrary.hbm.xml" assembly="Acurus.Capella.Core" />
-      <mapping resource="Acurus.Capella.Core.HbmMaps.User.hbm.xml" assembly="Acurus.Capella.Core" />
-      <mapping resource="Acurus.Capella.Core.HbmMaps.Client.hbm.xml" assembly="Acurus.Capella.Core" />
-      <mapping resource="Acurus.Capella.Core.HbmMaps.user_scn_tab.hbm.xml" assembly="Acurus.Capella.Core" />
-      <mapping resource="Acurus.Capella.Core.HbmMaps.Immunization.hbm.xml" assembly="Acurus.Capella.Core" />
-      <mapping resource="Acurus.Capella.Core.HbmMaps.NonDrugAllergy.hbm.xml" assembly="Acurus.Capella.Core" />
-      <mapping resource="Acurus.Capella.Core.HbmMaps.NonDrugAllergyMaster.hbm.xml" assembly="Acurus.Capella.Core" />
-      <mapping resource="Acurus.Capella.Core.HbmMaps.PastMedicalHistory.hbm.xml" assembly="Acurus.Capella.Core" />
-      <mapping resource="Acurus.Capella.Core.HbmMaps.PastMedicalHistoryMaster.hbm.xml" assembly="Acurus.Capella.Core" />
-      <mapping resource="Acurus.Capella.Core.HbmMaps.SurgicalHistory.hbm.xml" assembly="Acurus.Capella.Core" />
-      <mapping resource="Acurus.Capella.Core.HbmMaps.SurgicalHistoryMaster.hbm.xml" assembly="Acurus.Capella.Core" />
-      <mapping resource="Acurus.Capella.Core.HbmMaps.HospitalizationHistory.hbm.xml" assembly="Acurus.Capella.Core" />
-      <mapping resource="Acurus.Capella.Core.HbmMaps.HospitalizationHistoryMaster.hbm.xml" assembly="Acurus.Capella.Core" />
-      <mapping resource="Acurus.Capella.Core.HbmMaps.Lab.hbm.xml" assembly="Acurus.Capella.Core" />
-      <mapping resource="Acurus.Capella.Core.HbmMaps.LabLocation.hbm.xml" assembly="Acurus.Capella.Core" />
-      <mapping resource="Acurus.Capella.Core.HbmMaps.MapFacilityPhysician.hbm.xml" assembly="Acurus.Capella.Core" />
-      <mapping resource="Acurus.Capella.Core.HbmMaps.MapUserCarrierFacility.hbm.xml" assembly="Acurus.Capella.Core" />
-      <mapping resource="Acurus.Capella.Core.HbmMaps.Blockdays.hbm.xml" assembly="Acurus.Capella.Core" />
-      <mapping resource="Acurus.Capella.Core.HbmMaps.PhysicianPOV.hbm.xml" assembly="Acurus.Capella.Core" />
-      <mapping resource="Acurus.Capella.Core.HbmMaps.WorkFlow.hbm.xml" assembly="Acurus.Capella.Core" />
-      <mapping resource="Acurus.Capella.Core.HbmMaps.ProcessMaster.hbm.xml" assembly="Acurus.Capella.Core" />
-      <mapping resource="Acurus.Capella.Core.HbmMaps.WFObject.hbm.xml" assembly="Acurus.Capella.Core" />
-      <mapping resource="Acurus.Capella.Core.HbmMaps.State.hbm.xml" assembly="Acurus.Capella.Core" />
-      <mapping resource="Acurus.Capella.Core.HbmMaps.Carrier.hbm.xml" assembly="Acurus.Capella.Core" />
-      <mapping resource="Acurus.Capella.Core.HbmMaps.WorkFlowTypeMaster.hbm.xml" assembly="Acurus.Capella.Core" />
-      <!--<mapping resource="Acurus.Capella.Core.HbmMaps.PatientMessage.hbm.xml" assembly="Acurus.Capella.Core" />-->
-      <mapping resource="Acurus.Capella.Core.HbmMaps.DynamicScreen.hbm.xml" assembly="Acurus.Capella.Core" />
-      <mapping resource="Acurus.Capella.Core.HbmMaps.ProcUser.hbm.xml" assembly="Acurus.Capella.Core" />
-      <mapping resource="Acurus.Capella.Core.HbmMaps.ObjectMaster.hbm.xml" assembly="Acurus.Capella.Core" />
-      <mapping resource="Acurus.Capella.Core.HbmMaps.ProblemList.hbm.xml" assembly="Acurus.Capella.Core" />
-      <mapping resource="Acurus.Capella.Core.HbmMaps.ObjectProcessHistory.hbm.xml" assembly="Acurus.Capella.Core" />
-      <!--<mapping resource="Acurus.Capella.Core.HbmMaps.Task.hbm.xml" assembly="Acurus.Capella.Core" />-->
-      <mapping resource="Acurus.Capella.Core.HbmMaps.ScnTab.hbm.xml" assembly="Acurus.Capella.Core" />
-      <mapping resource="Acurus.Capella.Core.HbmMaps.Element.hbm.xml" assembly="Acurus.Capella.Core" />
-      <mapping resource="Acurus.Capella.Core.HbmMaps.CreateException.hbm.xml" assembly="Acurus.Capella.Core" />
-      <mapping resource="Acurus.Capella.Core.HbmMaps.EAndMCoding.hbm.xml" assembly="Acurus.Capella.Core" />
-      <mapping resource="Acurus.Capella.Core.HbmMaps.EandMCodingICD.hbm.xml" assembly="Acurus.Capella.Core" />
-      <!--<mapping resource="Acurus.Capella.Core.HbmMaps.Medication.hbm.xml" assembly="Acurus.Capella.Core" />-->
-      <mapping resource="Acurus.Capella.Core.HbmMaps.PhysicianICD_9.hbm.xml" assembly="Acurus.Capella.Core" />
-      <mapping resource="Acurus.Capella.Core.HbmMaps.AllICD_9.hbm.xml" assembly="Acurus.Capella.Core" />
-      <mapping resource="Acurus.Capella.Core.HbmMaps.AssociatedPrimaryICD.hbm.xml" assembly="Acurus.Capella.Core" />
-      <!--<mapping resource="Acurus.Capella.Core.HbmMaps.PendingDownlaods.hbm.xml" assembly="Acurus.Capella.Core" />-->
-      <mapping resource="Acurus.Capella.Core.HbmMaps.UserSession.hbm.xml" assembly="Acurus.Capella.Core" />
-      <mapping resource="Acurus.Capella.Core.HbmMaps.UserLookup.hbm.xml" assembly="Acurus.Capella.Core" />
-      <mapping resource="Acurus.Capella.Core.HbmMaps.StaticLookup.hbm.xml" assembly="Acurus.Capella.Core" />
-      <mapping resource="Acurus.Capella.Core.HbmMaps.TreatmentPlan.hbm.xml" assembly="Acurus.Capella.Core" />
-      <mapping resource="Acurus.Capella.Core.HbmMaps.All_Drug.hbm.xml" assembly="Acurus.Capella.Core" />
-      <mapping resource="Acurus.Capella.Core.HbmMaps.ProcedureCodeLibrary.hbm.xml" assembly="Acurus.Capella.Core" />
-      <mapping resource="Acurus.Capella.Core.HbmMaps.FinancialClasses.hbm.xml" assembly="Acurus.Capella.Core" />
-      <mapping resource="Acurus.Capella.Core.HbmMaps.Exam_Lookup.hbm.xml" assembly="Acurus.Capella.Core" />
-      <mapping resource="Acurus.Capella.Core.HbmMaps.CorrectedDBEntries.hbm.xml" assembly="Acurus.Capella.Core" />
-      <mapping resource="Acurus.Capella.Core.HbmMaps.GeneralNotes.hbm.xml" assembly="Acurus.Capella.Core" />
-      <mapping resource="Acurus.Capella.Core.HbmMaps.VisitPayment.hbm.xml" assembly="Acurus.Capella.Core" />
-      <mapping resource="Acurus.Capella.Core.HbmMaps.RoomInLookup.hbm.xml" assembly="Acurus.Capella.Core" />
-      <mapping resource="Acurus.Capella.Core.HbmMaps.Batch.hbm.xml" assembly="Acurus.Capella.Core" />
-      <mapping resource="Acurus.Capella.Core.HbmMaps.ChargeHeader.hbm.xml" assembly="Acurus.Capella.Core" />
-      <mapping resource="Acurus.Capella.Core.HbmMaps.ChargeLineItem.hbm.xml" assembly="Acurus.Capella.Core" />
-      <mapping resource="Acurus.Capella.Core.HbmMaps.Message.hbm.xml" assembly="Acurus.Capella.Core" />
-      <mapping resource="Acurus.Capella.Core.HbmMaps.QcErr.hbm.xml" assembly="Acurus.Capella.Core" />
-      <!--<mapping resource="Acurus.Capella.Core.HbmMaps.RAF_Demographic_Lookup.xml" assembly="Acurus.Capella.Core" />
+			<property name="command_timeout">10000</property>
+			<property name="show_sql">false</property>
+			<property name="proxyfactory.factory_class">NHibernate.ByteCode.LinFu.ProxyFactoryFactory, NHibernate.ByteCode.LinFu</property>
+			<!-- HBM Mapping Files -->
+			<mapping resource="Acurus.Capella.Core.HbmMaps.ChiefComplaints.hbm.xml" assembly="Acurus.Capella.Core" />
+			<mapping resource="Acurus.Capella.Core.HbmMaps.Examination.hbm.xml" assembly="Acurus.Capella.Core" />
+			<mapping resource="Acurus.Capella.Core.HbmMaps.ROS.hbm.xml" assembly="Acurus.Capella.Core" />
+			<!--<mapping resource="Acurus.Capella.Core.HbmMaps.Vitals.hbm.xml" assembly="Acurus.Capella.Core" />-->
+			<mapping resource="Acurus.Capella.Core.HbmMaps.Assessment.hbm.xml" assembly="Acurus.Capella.Core" />
+			<mapping resource="Acurus.Capella.Core.HbmMaps.Eligibility_Verification.hbm.xml" assembly="Acurus.Capella.Core" />
+			<mapping resource="Acurus.Capella.Core.HbmMaps.Human.hbm.xml" assembly="Acurus.Capella.Core" />
+			<mapping resource="Acurus.Capella.Core.HbmMaps.HqlQueries.hbm.xml" assembly="Acurus.Capella.Core" />
+			<mapping resource="Acurus.Capella.Core.HbmMaps.Encounter.hbm.xml" assembly="Acurus.Capella.Core" />
+			<mapping resource="Acurus.Capella.Core.HbmMaps.FamilyDisease.hbm.xml" assembly="Acurus.Capella.Core" />
+			<mapping resource="Acurus.Capella.Core.HbmMaps.FamilyDiseaseMaster.hbm.xml" assembly="Acurus.Capella.Core" />
+			<mapping resource="Acurus.Capella.Core.HbmMaps.FamilyHistory.hbm.xml" assembly="Acurus.Capella.Core" />
+			<mapping resource="Acurus.Capella.Core.HbmMaps.FamilyHistoryMaster.hbm.xml" assembly="Acurus.Capella.Core" />
+			<mapping resource="Acurus.Capella.Core.HbmMaps.SocialHistory.hbm.xml" assembly="Acurus.Capella.Core" />
+			<mapping resource="Acurus.Capella.Core.HbmMaps.SocialHistoryMaster.hbm.xml" assembly="Acurus.Capella.Core" />
+			<mapping resource="Acurus.Capella.Core.HbmMaps.PatientInsuredPlan.hbm.xml" assembly="Acurus.Capella.Core" />
+			<mapping resource="Acurus.Capella.Core.HbmMaps.InsurancePlan.hbm.xml" assembly="Acurus.Capella.Core" />
+			<mapping resource="Acurus.Capella.Core.HbmMaps.PhysicianLibrary.hbm.xml" assembly="Acurus.Capella.Core" />
+			<mapping resource="Acurus.Capella.Core.HbmMaps.FacilityLibrary.hbm.xml" assembly="Acurus.Capella.Core" />
+			<mapping resource="Acurus.Capella.Core.HbmMaps.User.hbm.xml" assembly="Acurus.Capella.Core" />
+			<mapping resource="Acurus.Capella.Core.HbmMaps.Client.hbm.xml" assembly="Acurus.Capella.Core" />
+			<mapping resource="Acurus.Capella.Core.HbmMaps.user_scn_tab.hbm.xml" assembly="Acurus.Capella.Core" />
+			<mapping resource="Acurus.Capella.Core.HbmMaps.Immunization.hbm.xml" assembly="Acurus.Capella.Core" />
+			<mapping resource="Acurus.Capella.Core.HbmMaps.NonDrugAllergy.hbm.xml" assembly="Acurus.Capella.Core" />
+			<mapping resource="Acurus.Capella.Core.HbmMaps.NonDrugAllergyMaster.hbm.xml" assembly="Acurus.Capella.Core" />
+			<mapping resource="Acurus.Capella.Core.HbmMaps.PastMedicalHistory.hbm.xml" assembly="Acurus.Capella.Core" />
+			<mapping resource="Acurus.Capella.Core.HbmMaps.PastMedicalHistoryMaster.hbm.xml" assembly="Acurus.Capella.Core" />
+			<mapping resource="Acurus.Capella.Core.HbmMaps.SurgicalHistory.hbm.xml" assembly="Acurus.Capella.Core" />
+			<mapping resource="Acurus.Capella.Core.HbmMaps.SurgicalHistoryMaster.hbm.xml" assembly="Acurus.Capella.Core" />
+			<mapping resource="Acurus.Capella.Core.HbmMaps.HospitalizationHistory.hbm.xml" assembly="Acurus.Capella.Core" />
+			<mapping resource="Acurus.Capella.Core.HbmMaps.HospitalizationHistoryMaster.hbm.xml" assembly="Acurus.Capella.Core" />
+			<mapping resource="Acurus.Capella.Core.HbmMaps.Lab.hbm.xml" assembly="Acurus.Capella.Core" />
+			<mapping resource="Acurus.Capella.Core.HbmMaps.LabLocation.hbm.xml" assembly="Acurus.Capella.Core" />
+			<mapping resource="Acurus.Capella.Core.HbmMaps.MapFacilityPhysician.hbm.xml" assembly="Acurus.Capella.Core" />
+			<mapping resource="Acurus.Capella.Core.HbmMaps.MapUserCarrierFacility.hbm.xml" assembly="Acurus.Capella.Core" />
+			<mapping resource="Acurus.Capella.Core.HbmMaps.Blockdays.hbm.xml" assembly="Acurus.Capella.Core" />
+			<mapping resource="Acurus.Capella.Core.HbmMaps.PhysicianPOV.hbm.xml" assembly="Acurus.Capella.Core" />
+			<mapping resource="Acurus.Capella.Core.HbmMaps.WorkFlow.hbm.xml" assembly="Acurus.Capella.Core" />
+			<mapping resource="Acurus.Capella.Core.HbmMaps.ProcessMaster.hbm.xml" assembly="Acurus.Capella.Core" />
+			<mapping resource="Acurus.Capella.Core.HbmMaps.WFObject.hbm.xml" assembly="Acurus.Capella.Core" />
+			<mapping resource="Acurus.Capella.Core.HbmMaps.State.hbm.xml" assembly="Acurus.Capella.Core" />
+			<mapping resource="Acurus.Capella.Core.HbmMaps.Carrier.hbm.xml" assembly="Acurus.Capella.Core" />
+			<mapping resource="Acurus.Capella.Core.HbmMaps.WorkFlowTypeMaster.hbm.xml" assembly="Acurus.Capella.Core" />
+			<!--<mapping resource="Acurus.Capella.Core.HbmMaps.PatientMessage.hbm.xml" assembly="Acurus.Capella.Core" />-->
+			<mapping resource="Acurus.Capella.Core.HbmMaps.DynamicScreen.hbm.xml" assembly="Acurus.Capella.Core" />
+			<mapping resource="Acurus.Capella.Core.HbmMaps.ProcUser.hbm.xml" assembly="Acurus.Capella.Core" />
+			<mapping resource="Acurus.Capella.Core.HbmMaps.ObjectMaster.hbm.xml" assembly="Acurus.Capella.Core" />
+			<mapping resource="Acurus.Capella.Core.HbmMaps.ProblemList.hbm.xml" assembly="Acurus.Capella.Core" />
+			<mapping resource="Acurus.Capella.Core.HbmMaps.ObjectProcessHistory.hbm.xml" assembly="Acurus.Capella.Core" />
+			<!--<mapping resource="Acurus.Capella.Core.HbmMaps.Task.hbm.xml" assembly="Acurus.Capella.Core" />-->
+			<mapping resource="Acurus.Capella.Core.HbmMaps.ScnTab.hbm.xml" assembly="Acurus.Capella.Core" />
+			<mapping resource="Acurus.Capella.Core.HbmMaps.Element.hbm.xml" assembly="Acurus.Capella.Core" />
+			<mapping resource="Acurus.Capella.Core.HbmMaps.CreateException.hbm.xml" assembly="Acurus.Capella.Core" />
+			<mapping resource="Acurus.Capella.Core.HbmMaps.EAndMCoding.hbm.xml" assembly="Acurus.Capella.Core" />
+			<mapping resource="Acurus.Capella.Core.HbmMaps.EandMCodingICD.hbm.xml" assembly="Acurus.Capella.Core" />
+			<!--<mapping resource="Acurus.Capella.Core.HbmMaps.Medication.hbm.xml" assembly="Acurus.Capella.Core" />-->
+			<mapping resource="Acurus.Capella.Core.HbmMaps.PhysicianICD_9.hbm.xml" assembly="Acurus.Capella.Core" />
+			<mapping resource="Acurus.Capella.Core.HbmMaps.AllICD_9.hbm.xml" assembly="Acurus.Capella.Core" />
+			<mapping resource="Acurus.Capella.Core.HbmMaps.AssociatedPrimaryICD.hbm.xml" assembly="Acurus.Capella.Core" />
+			<!--<mapping resource="Acurus.Capella.Core.HbmMaps.PendingDownlaods.hbm.xml" assembly="Acurus.Capella.Core" />-->
+			<mapping resource="Acurus.Capella.Core.HbmMaps.UserSession.hbm.xml" assembly="Acurus.Capella.Core" />
+			<mapping resource="Acurus.Capella.Core.HbmMaps.UserLookup.hbm.xml" assembly="Acurus.Capella.Core" />
+			<mapping resource="Acurus.Capella.Core.HbmMaps.StaticLookup.hbm.xml" assembly="Acurus.Capella.Core" />
+			<mapping resource="Acurus.Capella.Core.HbmMaps.TreatmentPlan.hbm.xml" assembly="Acurus.Capella.Core" />
+			<mapping resource="Acurus.Capella.Core.HbmMaps.All_Drug.hbm.xml" assembly="Acurus.Capella.Core" />
+			<mapping resource="Acurus.Capella.Core.HbmMaps.ProcedureCodeLibrary.hbm.xml" assembly="Acurus.Capella.Core" />
+			<mapping resource="Acurus.Capella.Core.HbmMaps.FinancialClasses.hbm.xml" assembly="Acurus.Capella.Core" />
+			<mapping resource="Acurus.Capella.Core.HbmMaps.Exam_Lookup.hbm.xml" assembly="Acurus.Capella.Core" />
+			<mapping resource="Acurus.Capella.Core.HbmMaps.CorrectedDBEntries.hbm.xml" assembly="Acurus.Capella.Core" />
+			<mapping resource="Acurus.Capella.Core.HbmMaps.GeneralNotes.hbm.xml" assembly="Acurus.Capella.Core" />
+			<mapping resource="Acurus.Capella.Core.HbmMaps.VisitPayment.hbm.xml" assembly="Acurus.Capella.Core" />
+			<mapping resource="Acurus.Capella.Core.HbmMaps.RoomInLookup.hbm.xml" assembly="Acurus.Capella.Core" />
+			<mapping resource="Acurus.Capella.Core.HbmMaps.Batch.hbm.xml" assembly="Acurus.Capella.Core" />
+			<mapping resource="Acurus.Capella.Core.HbmMaps.ChargeHeader.hbm.xml" assembly="Acurus.Capella.Core" />
+			<mapping resource="Acurus.Capella.Core.HbmMaps.ChargeLineItem.hbm.xml" assembly="Acurus.Capella.Core" />
+			<mapping resource="Acurus.Capella.Core.HbmMaps.Message.hbm.xml" assembly="Acurus.Capella.Core" />
+			<mapping resource="Acurus.Capella.Core.HbmMaps.QcErr.hbm.xml" assembly="Acurus.Capella.Core" />
+			<!--<mapping resource="Acurus.Capella.Core.HbmMaps.RAF_Demographic_Lookup.xml" assembly="Acurus.Capella.Core" />
       <mapping resource="Acurus.Capella.Core.HbmMaps.RAF_Disease_Interaction.xml" assembly="Acurus.Capella.Core" />
       <mapping resource="Acurus.Capella.Core.HbmMaps.RAF_HCC_Code_and_Factors.xml" assembly="Acurus.Capella.Core" />
       <mapping resource="Acurus.Capella.Core.HbmMaps.RAF_Model_Category.xml" assembly="Acurus.Capella.Core" />
       <mapping resource="Acurus.Capella.Core.HbmMaps.RAF_Normalization_Factor.xml" assembly="Acurus.Capella.Core" />
       <mapping resource="Acurus.Capella.Core.HbmMaps.Raf_HCC_Code_Priority.hbm.xml" assembly="Acurus.Capella.Core" />-->
-      <mapping resource="Acurus.Capella.Core.HbmMaps.Orders.hbm.xml" assembly="Acurus.Capella.Core" />
-      <mapping resource="Acurus.Capella.Core.HbmMaps.ReferralOrder.hbm.xml" assembly="Acurus.Capella.Core" />
-      <mapping resource="Acurus.Capella.Core.HbmMaps.PhysicianProcedure.hbm.xml" assembly="Acurus.Capella.Core" />
-      <mapping resource="Acurus.Capella.Core.HbmMaps.ProcedureAuthorization.hbm.xml" assembly="Acurus.Capella.Core" />
-      <mapping resource="Acurus.Capella.Core.HbmMaps.OrdersAssessment.hbm.xml" assembly="Acurus.Capella.Core" />
-      <mapping resource="Acurus.Capella.Core.HbmMaps.LabInsurancePlan.hbm.xml" assembly="Acurus.Capella.Core" />
-      <mapping resource="Acurus.Capella.Core.HbmMaps.ReferralOrdersAssessment.hbm.xml" assembly="Acurus.Capella.Core" />
-      <mapping resource="Acurus.Capella.Core.HbmMaps.Check.hbm.xml" assembly="Acurus.Capella.Core" />
-      <mapping resource="Acurus.Capella.Core.HbmMaps.scan_index.hbm.xml" assembly="Acurus.Capella.Core" />
-      <mapping resource="Acurus.Capella.Core.HbmMaps.GrowthChart_Lookup.hbm.xml" assembly="Acurus.Capella.Core" />
-      <mapping resource="Acurus.Capella.Core.HbmMaps.CallLog.hbm.xml" assembly="Acurus.Capella.Core" />
-      <mapping resource="Acurus.Capella.Core.HbmMaps.workset_proc_alloc.hbm.xml" assembly="Acurus.Capella.Core" />
-      <mapping resource="Acurus.Capella.Core.HbmMaps.FlowSheetTemplate.hbm.xml" assembly="Acurus.Capella.Core" />
-      <!--<mapping resource="Acurus.Capella.Core.HbmMaps.ProgressNotes.hbm.xml" assembly="Acurus.Capella.Core" />-->
-      <mapping resource="Acurus.Capella.Core.HbmMaps.AuditLog.hbm.xml" assembly="Acurus.Capella.Core" />
-      <mapping resource="Acurus.Capella.Core.HbmMaps.MasterTableList.hbm.xml" assembly="Acurus.Capella.Core" />
-      <!--<mapping resource="Acurus.Capella.Core.HbmMaps.WFObjectBilling.hbm.xml" assembly="Acurus.Capella.Core" />-->
+			<mapping resource="Acurus.Capella.Core.HbmMaps.Orders.hbm.xml" assembly="Acurus.Capella.Core" />
+			<mapping resource="Acurus.Capella.Core.HbmMaps.ReferralOrder.hbm.xml" assembly="Acurus.Capella.Core" />
+			<mapping resource="Acurus.Capella.Core.HbmMaps.PhysicianProcedure.hbm.xml" assembly="Acurus.Capella.Core" />
+			<mapping resource="Acurus.Capella.Core.HbmMaps.ProcedureAuthorization.hbm.xml" assembly="Acurus.Capella.Core" />
+			<mapping resource="Acurus.Capella.Core.HbmMaps.OrdersAssessment.hbm.xml" assembly="Acurus.Capella.Core" />
+			<mapping resource="Acurus.Capella.Core.HbmMaps.LabInsurancePlan.hbm.xml" assembly="Acurus.Capella.Core" />
+			<mapping resource="Acurus.Capella.Core.HbmMaps.ReferralOrdersAssessment.hbm.xml" assembly="Acurus.Capella.Core" />
+			<mapping resource="Acurus.Capella.Core.HbmMaps.Check.hbm.xml" assembly="Acurus.Capella.Core" />
+			<mapping resource="Acurus.Capella.Core.HbmMaps.scan_index.hbm.xml" assembly="Acurus.Capella.Core" />
+			<mapping resource="Acurus.Capella.Core.HbmMaps.GrowthChart_Lookup.hbm.xml" assembly="Acurus.Capella.Core" />
+			<mapping resource="Acurus.Capella.Core.HbmMaps.CallLog.hbm.xml" assembly="Acurus.Capella.Core" />
+			<mapping resource="Acurus.Capella.Core.HbmMaps.workset_proc_alloc.hbm.xml" assembly="Acurus.Capella.Core" />
+			<mapping resource="Acurus.Capella.Core.HbmMaps.FlowSheetTemplate.hbm.xml" assembly="Acurus.Capella.Core" />
+			<!--<mapping resource="Acurus.Capella.Core.HbmMaps.ProgressNotes.hbm.xml" assembly="Acurus.Capella.Core" />-->
+			<mapping resource="Acurus.Capella.Core.HbmMaps.AuditLog.hbm.xml" assembly="Acurus.Capella.Core" />
+			<mapping resource="Acurus.Capella.Core.HbmMaps.MasterTableList.hbm.xml" assembly="Acurus.Capella.Core" />
+			<!--<mapping resource="Acurus.Capella.Core.HbmMaps.WFObjectBilling.hbm.xml" assembly="Acurus.Capella.Core" />-->
 
-      <mapping resource="Acurus.Capella.Core.HbmMaps.OrdersProblemList.hbm.xml" assembly="Acurus.Capella.Core" />
-      <mapping resource="Acurus.Capella.Core.HbmMaps.Scan.hbm.xml" assembly="Acurus.Capella.Core" />
-      <mapping resource="Acurus.Capella.Core.HbmMaps.OrderCodeLibrary.hbm.xml" assembly="Acurus.Capella.Core" />
-      <mapping resource="Acurus.Capella.Core.HbmMaps.ObjectProcessHistoryBilling.hbm.xml" assembly="Acurus.Capella.Core" />
-      <mapping resource="Acurus.Capella.Core.HbmMaps.CarePlan.hbm.xml" assembly="Acurus.Capella.Core" />
-      <mapping resource="Acurus.Capella.Core.HbmMaps.CarePlanLookup.hbm.xml" assembly="Acurus.Capella.Core" />
-      <mapping resource="Acurus.Capella.Core.HbmMaps.PreventiveScreenLookup.hbm.xml" assembly="Acurus.Capella.Core" />
-      <mapping resource="Acurus.Capella.Core.HbmMaps.PreventiveScreen.hbm.xml" assembly="Acurus.Capella.Core" />
-      <!--<mapping resource="Acurus.Capella.Core.HbmMaps.NDCCode.hbm.xml" assembly="Acurus.Capella.Core" />-->
-      <mapping resource="Acurus.Capella.Core.HbmMaps.AddException.hbm.xml" assembly="Acurus.Capella.Core" />
-      <mapping resource="Acurus.Capella.Core.HbmMaps.PhysicianSpecialty.hbm.xml" assembly="Acurus.Capella.Core" />
-      <mapping resource="Acurus.Capella.Core.HbmMaps.PhysicianPatient.hbm.xml" assembly="Acurus.Capella.Core" />
-      <mapping resource="Acurus.Capella.Core.HbmMaps.PhysicianPatientMaster.hbm.xml" assembly="Acurus.Capella.Core" />
-      <mapping resource="Acurus.Capella.Core.HbmMaps.AdvanceDirective.hbm.xml" assembly="Acurus.Capella.Core" />
-      <mapping resource="Acurus.Capella.Core.HbmMaps.AdvanceDirectiveMaster.hbm.xml" assembly="Acurus.Capella.Core" />
-      <mapping resource="Acurus.Capella.Core.HbmMaps.AppointmentLookup.hbm.xml" assembly="Acurus.Capella.Core" />
-      <mapping resource="Acurus.Capella.Core.HbmMaps.AssessmentVitalsLookup.hbm.xml" assembly="Acurus.Capella.Core" />
-      <mapping resource="Acurus.Capella.Core.HbmMaps.MapPhysicianPhysicianAssistant.hbm.xml" assembly="Acurus.Capella.Core" />
-      <mapping resource="Acurus.Capella.Core.HbmMaps.OrdersSubmit.hbm.xml" assembly="Acurus.Capella.Core" />
-      <!--<mapping resource="Acurus.Capella.Core.HbmMaps.ProcedureChargeMaster.hbm.xml" assembly="Acurus.Capella.Core" />-->
-      <mapping resource="Acurus.Capella.Core.HbmMaps.PQRI_Data.hbm.xml" assembly="Acurus.Capella.Core" />
-      <mapping resource="Acurus.Capella.Core.HbmMaps.PQRI_Measure.hbm.xml" assembly="Acurus.Capella.Core" />
-      <mapping resource="Acurus.Capella.Core.HbmMaps.PQRI.hbm.xml" assembly="Acurus.Capella.Core" />
-      <mapping resource="Acurus.Capella.Core.HbmMaps.Test.hbm.xml" assembly="Acurus.Capella.Core" />
-      <mapping resource="Acurus.Capella.Core.HbmMaps.Test_Lookup.hbm.xml" assembly="Acurus.Capella.Core" />
-      <mapping resource="Acurus.Capella.Core.HbmMaps.OrdersQuestionSetBloodLead.hbm.xml" assembly="Acurus.Capella.Core" />
-      <mapping resource="Acurus.Capella.Core.HbmMaps.OrdersQuestionSetAfp.hbm.xml" assembly="Acurus.Capella.Core" />
-      <mapping resource="Acurus.Capella.Core.HbmMaps.OrdersQuestionSetCytology.hbm.xml" assembly="Acurus.Capella.Core" />
-      <mapping resource="Acurus.Capella.Core.HbmMaps.ResultMaster.hbm.xml" assembly="Acurus.Capella.Core" />
-      <mapping resource="Acurus.Capella.Core.HbmMaps.ResultLookup.hbm.xml" assembly="Acurus.Capella.Core" />
-      <mapping resource="Acurus.Capella.Core.HbmMaps.ResultNTE.hbm.xml" assembly="Acurus.Capella.Core" />
-      <mapping resource="Acurus.Capella.Core.HbmMaps.ResultOBR.hbm.xml" assembly="Acurus.Capella.Core" />
-      <mapping resource="Acurus.Capella.Core.HbmMaps.ResultOBX.hbm.xml" assembly="Acurus.Capella.Core" />
-      <mapping resource="Acurus.Capella.Core.HbmMaps.ResultORC.hbm.xml" assembly="Acurus.Capella.Core" />
-      <mapping resource="Acurus.Capella.Core.HbmMaps.ResultZEF.hbm.xml" assembly="Acurus.Capella.Core" />
-      <mapping resource="Acurus.Capella.Core.HbmMaps.ResultZPS.hbm.xml" assembly="Acurus.Capella.Core" />
-      <mapping resource="Acurus.Capella.Core.HbmMaps.FileManagementIndex.hbm.xml" assembly="Acurus.Capella.Core" />
-      <mapping resource="Acurus.Capella.Core.HbmMaps.Healthcare_Questionnaire.hbm.xml" assembly="Acurus.Capella.Core" />
-      <mapping resource="Acurus.Capella.Core.HbmMaps.Questionnaire_Lookup.hbm.xml" assembly="Acurus.Capella.Core" />
-      <mapping resource="Acurus.Capella.Core.HbmMaps.ImmunizationHistory.hbm.xml" assembly="Acurus.Capella.Core" />
-      <mapping resource="Acurus.Capella.Core.HbmMaps.ImmunizationMasterHistory.hbm.xml" assembly="Acurus.Capella.Core" />
-      <mapping resource="Acurus.Capella.Core.HbmMaps.Rcopia_Medication.hbm.xml" assembly="Acurus.Capella.Core" />
-      <mapping resource="Acurus.Capella.Core.HbmMaps.Rcopia_Allergy.hbm.xml" assembly="Acurus.Capella.Core" />
-      <mapping resource="Acurus.Capella.Core.HbmMaps.Rcopia_Prescription_List.hbm.xml" assembly="Acurus.Capella.Core" />
-      <mapping resource="Acurus.Capella.Core.HbmMaps.Rcopia_Settings.hbm.xml" assembly="Acurus.Capella.Core" />
-      <mapping resource="Acurus.Capella.Core.HbmMaps.Rcopia_Update_Info.hbm.xml" assembly="Acurus.Capella.Core" />
-      <mapping resource="Acurus.Capella.Core.HbmMaps.VaccineInfoStatement.hbm.xml" assembly="Acurus.Capella.Core" />
-      <mapping resource="Acurus.Capella.Core.HbmMaps.VaccineInfoStatementProcedure.hbm.xml" assembly="Acurus.Capella.Core" />
-      <mapping resource="Acurus.Capella.Core.HbmMaps.LabCarrierLookUp.hbm.xml" assembly="Acurus.Capella.Core" />
-      <mapping resource="Acurus.Capella.Core.HbmMaps.Loinc.hbm.xml" assembly="Acurus.Capella.Core" />
-      <mapping resource="Acurus.Capella.Core.HbmMaps.ProcedureLoincMap.hbm.xml" assembly="Acurus.Capella.Core" />
-      <mapping resource="Acurus.Capella.Core.HbmMaps.Document.hbm.xml" assembly="Acurus.Capella.Core" />
-      <mapping resource="Acurus.Capella.Core.HbmMaps.VaccineManufacturerCodes.hbm.xml" assembly="Acurus.Capella.Core" />
-      <mapping resource="Acurus.Capella.Core.HbmMaps.RuleMedication.hbm.xml" assembly="Acurus.Capella.Core" />
-      <!--<mapping resource="Acurus.Capella.Core.HbmMaps.RuleLabResult.hbm.xml" assembly="Acurus.Capella.Core" />-->
-      <mapping resource="Acurus.Capella.Core.HbmMaps.RuleLabResultReminder.hbm.xml" assembly="Acurus.Capella.Core" />
-      <mapping resource="Acurus.Capella.Core.HbmMaps.RuleMedicationAndAllergy.hbm.xml" assembly="Acurus.Capella.Core" />
-      <mapping resource="Acurus.Capella.Core.HbmMaps.RuleMaster.hbm.xml" assembly="Acurus.Capella.Core" />
-      <mapping resource="Acurus.Capella.Core.HbmMaps.RuleProblem.hbm.xml" assembly="Acurus.Capella.Core" />
-      <mapping resource="Acurus.Capella.Core.HbmMaps.Prescription.hbm.xml" assembly="Acurus.Capella.Core" />
-      <mapping resource="Acurus.Capella.Core.HbmMaps.MapVitalsPhysician.hbm.xml" assembly="Acurus.Capella.Core" />
-      <mapping resource="Acurus.Capella.Core.HbmMaps.MasterVitals.hbm.xml" assembly="Acurus.Capella.Core" />
-      <mapping resource="Acurus.Capella.Core.HbmMaps.PercentileLookUp.hbm.xml" assembly="Acurus.Capella.Core" />
-      <mapping resource="Acurus.Capella.Core.HbmMaps.InHouseProcedure.hbm.xml" assembly="Acurus.Capella.Core" />
-      <mapping resource="Acurus.Capella.Core.HbmMaps.PPHeader.hbm.xml" assembly="Acurus.Capella.Core" />
-      <mapping resource="Acurus.Capella.Core.HbmMaps.PPLineItem.hbm.xml" assembly="Acurus.Capella.Core" />
-      <mapping resource="Acurus.Capella.Core.HbmMaps.AccountTransaction.hbm.xml" assembly="Acurus.Capella.Core" />
-      <mapping resource="Acurus.Capella.Core.HbmMaps.ProcessScnTab.hbm.xml" assembly="Acurus.Capella.Core" />
-      <!--<mapping resource="Acurus.Capella.Core.HbmMaps.UserRelatedModification.hbm.xml" assembly="Acurus.Capella.Core" />-->
-      <mapping resource="Acurus.Capella.Core.HbmMaps.LabSettings.hbm.xml" assembly="Acurus.Capella.Core" />
-      <mapping resource="Acurus.Capella.Core.HbmMaps.Spirometry.hbm.xml" assembly="Acurus.Capella.Core" />
-      <mapping resource="Acurus.Capella.Core.HbmMaps.ABI_Results.hbm.xml" assembly="Acurus.Capella.Core" />
+			<mapping resource="Acurus.Capella.Core.HbmMaps.OrdersProblemList.hbm.xml" assembly="Acurus.Capella.Core" />
+			<mapping resource="Acurus.Capella.Core.HbmMaps.Scan.hbm.xml" assembly="Acurus.Capella.Core" />
+			<mapping resource="Acurus.Capella.Core.HbmMaps.OrderCodeLibrary.hbm.xml" assembly="Acurus.Capella.Core" />
+			<mapping resource="Acurus.Capella.Core.HbmMaps.ObjectProcessHistoryBilling.hbm.xml" assembly="Acurus.Capella.Core" />
+			<mapping resource="Acurus.Capella.Core.HbmMaps.CarePlan.hbm.xml" assembly="Acurus.Capella.Core" />
+			<mapping resource="Acurus.Capella.Core.HbmMaps.CarePlanLookup.hbm.xml" assembly="Acurus.Capella.Core" />
+			<mapping resource="Acurus.Capella.Core.HbmMaps.PreventiveScreenLookup.hbm.xml" assembly="Acurus.Capella.Core" />
+			<mapping resource="Acurus.Capella.Core.HbmMaps.PreventiveScreen.hbm.xml" assembly="Acurus.Capella.Core" />
+			<!--<mapping resource="Acurus.Capella.Core.HbmMaps.NDCCode.hbm.xml" assembly="Acurus.Capella.Core" />-->
+			<mapping resource="Acurus.Capella.Core.HbmMaps.AddException.hbm.xml" assembly="Acurus.Capella.Core" />
+			<mapping resource="Acurus.Capella.Core.HbmMaps.PhysicianSpecialty.hbm.xml" assembly="Acurus.Capella.Core" />
+			<mapping resource="Acurus.Capella.Core.HbmMaps.PhysicianPatient.hbm.xml" assembly="Acurus.Capella.Core" />
+			<mapping resource="Acurus.Capella.Core.HbmMaps.PhysicianPatientMaster.hbm.xml" assembly="Acurus.Capella.Core" />
+			<mapping resource="Acurus.Capella.Core.HbmMaps.AdvanceDirective.hbm.xml" assembly="Acurus.Capella.Core" />
+			<mapping resource="Acurus.Capella.Core.HbmMaps.AdvanceDirectiveMaster.hbm.xml" assembly="Acurus.Capella.Core" />
+			<mapping resource="Acurus.Capella.Core.HbmMaps.AppointmentLookup.hbm.xml" assembly="Acurus.Capella.Core" />
+			<mapping resource="Acurus.Capella.Core.HbmMaps.AssessmentVitalsLookup.hbm.xml" assembly="Acurus.Capella.Core" />
+			<mapping resource="Acurus.Capella.Core.HbmMaps.MapPhysicianPhysicianAssistant.hbm.xml" assembly="Acurus.Capella.Core" />
+			<mapping resource="Acurus.Capella.Core.HbmMaps.OrdersSubmit.hbm.xml" assembly="Acurus.Capella.Core" />
+			<!--<mapping resource="Acurus.Capella.Core.HbmMaps.ProcedureChargeMaster.hbm.xml" assembly="Acurus.Capella.Core" />-->
+			<mapping resource="Acurus.Capella.Core.HbmMaps.PQRI_Data.hbm.xml" assembly="Acurus.Capella.Core" />
+			<mapping resource="Acurus.Capella.Core.HbmMaps.PQRI_Measure.hbm.xml" assembly="Acurus.Capella.Core" />
+			<mapping resource="Acurus.Capella.Core.HbmMaps.PQRI.hbm.xml" assembly="Acurus.Capella.Core" />
+			<mapping resource="Acurus.Capella.Core.HbmMaps.Test.hbm.xml" assembly="Acurus.Capella.Core" />
+			<mapping resource="Acurus.Capella.Core.HbmMaps.Test_Lookup.hbm.xml" assembly="Acurus.Capella.Core" />
+			<mapping resource="Acurus.Capella.Core.HbmMaps.OrdersQuestionSetBloodLead.hbm.xml" assembly="Acurus.Capella.Core" />
+			<mapping resource="Acurus.Capella.Core.HbmMaps.OrdersQuestionSetAfp.hbm.xml" assembly="Acurus.Capella.Core" />
+			<mapping resource="Acurus.Capella.Core.HbmMaps.OrdersQuestionSetCytology.hbm.xml" assembly="Acurus.Capella.Core" />
+			<mapping resource="Acurus.Capella.Core.HbmMaps.ResultMaster.hbm.xml" assembly="Acurus.Capella.Core" />
+			<mapping resource="Acurus.Capella.Core.HbmMaps.ResultLookup.hbm.xml" assembly="Acurus.Capella.Core" />
+			<mapping resource="Acurus.Capella.Core.HbmMaps.ResultNTE.hbm.xml" assembly="Acurus.Capella.Core" />
+			<mapping resource="Acurus.Capella.Core.HbmMaps.ResultOBR.hbm.xml" assembly="Acurus.Capella.Core" />
+			<mapping resource="Acurus.Capella.Core.HbmMaps.ResultOBX.hbm.xml" assembly="Acurus.Capella.Core" />
+			<mapping resource="Acurus.Capella.Core.HbmMaps.ResultORC.hbm.xml" assembly="Acurus.Capella.Core" />
+			<mapping resource="Acurus.Capella.Core.HbmMaps.ResultZEF.hbm.xml" assembly="Acurus.Capella.Core" />
+			<mapping resource="Acurus.Capella.Core.HbmMaps.ResultZPS.hbm.xml" assembly="Acurus.Capella.Core" />
+			<mapping resource="Acurus.Capella.Core.HbmMaps.FileManagementIndex.hbm.xml" assembly="Acurus.Capella.Core" />
+			<mapping resource="Acurus.Capella.Core.HbmMaps.Healthcare_Questionnaire.hbm.xml" assembly="Acurus.Capella.Core" />
+			<mapping resource="Acurus.Capella.Core.HbmMaps.Questionnaire_Lookup.hbm.xml" assembly="Acurus.Capella.Core" />
+			<mapping resource="Acurus.Capella.Core.HbmMaps.ImmunizationHistory.hbm.xml" assembly="Acurus.Capella.Core" />
+			<mapping resource="Acurus.Capella.Core.HbmMaps.ImmunizationMasterHistory.hbm.xml" assembly="Acurus.Capella.Core" />
+			<mapping resource="Acurus.Capella.Core.HbmMaps.Rcopia_Medication.hbm.xml" assembly="Acurus.Capella.Core" />
+			<mapping resource="Acurus.Capella.Core.HbmMaps.Rcopia_Allergy.hbm.xml" assembly="Acurus.Capella.Core" />
+			<mapping resource="Acurus.Capella.Core.HbmMaps.Rcopia_Prescription_List.hbm.xml" assembly="Acurus.Capella.Core" />
+			<mapping resource="Acurus.Capella.Core.HbmMaps.Rcopia_Settings.hbm.xml" assembly="Acurus.Capella.Core" />
+			<mapping resource="Acurus.Capella.Core.HbmMaps.Rcopia_Update_Info.hbm.xml" assembly="Acurus.Capella.Core" />
+			<mapping resource="Acurus.Capella.Core.HbmMaps.VaccineInfoStatement.hbm.xml" assembly="Acurus.Capella.Core" />
+			<mapping resource="Acurus.Capella.Core.HbmMaps.VaccineInfoStatementProcedure.hbm.xml" assembly="Acurus.Capella.Core" />
+			<mapping resource="Acurus.Capella.Core.HbmMaps.LabCarrierLookUp.hbm.xml" assembly="Acurus.Capella.Core" />
+			<mapping resource="Acurus.Capella.Core.HbmMaps.Loinc.hbm.xml" assembly="Acurus.Capella.Core" />
+			<mapping resource="Acurus.Capella.Core.HbmMaps.ProcedureLoincMap.hbm.xml" assembly="Acurus.Capella.Core" />
+			<mapping resource="Acurus.Capella.Core.HbmMaps.Document.hbm.xml" assembly="Acurus.Capella.Core" />
+			<mapping resource="Acurus.Capella.Core.HbmMaps.VaccineManufacturerCodes.hbm.xml" assembly="Acurus.Capella.Core" />
+			<mapping resource="Acurus.Capella.Core.HbmMaps.RuleMedication.hbm.xml" assembly="Acurus.Capella.Core" />
+			<!--<mapping resource="Acurus.Capella.Core.HbmMaps.RuleLabResult.hbm.xml" assembly="Acurus.Capella.Core" />-->
+			<mapping resource="Acurus.Capella.Core.HbmMaps.RuleLabResultReminder.hbm.xml" assembly="Acurus.Capella.Core" />
+			<mapping resource="Acurus.Capella.Core.HbmMaps.RuleMedicationAndAllergy.hbm.xml" assembly="Acurus.Capella.Core" />
+			<mapping resource="Acurus.Capella.Core.HbmMaps.RuleMaster.hbm.xml" assembly="Acurus.Capella.Core" />
+			<mapping resource="Acurus.Capella.Core.HbmMaps.RuleProblem.hbm.xml" assembly="Acurus.Capella.Core" />
+			<mapping resource="Acurus.Capella.Core.HbmMaps.Prescription.hbm.xml" assembly="Acurus.Capella.Core" />
+			<mapping resource="Acurus.Capella.Core.HbmMaps.MapVitalsPhysician.hbm.xml" assembly="Acurus.Capella.Core" />
+			<mapping resource="Acurus.Capella.Core.HbmMaps.MasterVitals.hbm.xml" assembly="Acurus.Capella.Core" />
+			<mapping resource="Acurus.Capella.Core.HbmMaps.PercentileLookUp.hbm.xml" assembly="Acurus.Capella.Core" />
+			<mapping resource="Acurus.Capella.Core.HbmMaps.InHouseProcedure.hbm.xml" assembly="Acurus.Capella.Core" />
+			<mapping resource="Acurus.Capella.Core.HbmMaps.PPHeader.hbm.xml" assembly="Acurus.Capella.Core" />
+			<mapping resource="Acurus.Capella.Core.HbmMaps.PPLineItem.hbm.xml" assembly="Acurus.Capella.Core" />
+			<mapping resource="Acurus.Capella.Core.HbmMaps.AccountTransaction.hbm.xml" assembly="Acurus.Capella.Core" />
+			<mapping resource="Acurus.Capella.Core.HbmMaps.ProcessScnTab.hbm.xml" assembly="Acurus.Capella.Core" />
+			<!--<mapping resource="Acurus.Capella.Core.HbmMaps.UserRelatedModification.hbm.xml" assembly="Acurus.Capella.Core" />-->
+			<mapping resource="Acurus.Capella.Core.HbmMaps.LabSettings.hbm.xml" assembly="Acurus.Capella.Core" />
+			<mapping resource="Acurus.Capella.Core.HbmMaps.Spirometry.hbm.xml" assembly="Acurus.Capella.Core" />
+			<mapping resource="Acurus.Capella.Core.HbmMaps.ABI_Results.hbm.xml" assembly="Acurus.Capella.Core" />
 
-      <mapping resource="Acurus.Capella.Core.HbmMaps.PatientResults.hbm.xml" assembly="Acurus.Capella.Core" />
-
-
-
-      <mapping resource="Acurus.Capella.Core.HbmMaps.ProcedureCodeRuleMaster.hbm.xml" assembly="Acurus.Capella.Core" />
-      <mapping resource="Acurus.Capella.Core.HbmMaps.AOELookUp.hbm.xml" assembly="Acurus.Capella.Core" />
-      <mapping resource="Acurus.Capella.Core.HbmMaps.OrdersQuestionSetAOE.hbm.xml" assembly="Acurus.Capella.Core" />
-      <mapping resource="Acurus.Capella.Core.HbmMaps.OrderComponents.hbm.xml" assembly="Acurus.Capella.Core" />
-      <mapping resource="Acurus.Capella.Core.HbmMaps.AddendumNotes.hbm.xml" assembly="Acurus.Capella.Core" />
+			<mapping resource="Acurus.Capella.Core.HbmMaps.PatientResults.hbm.xml" assembly="Acurus.Capella.Core" />
 
 
-      <mapping resource="Acurus.Capella.Core.HbmMaps.PhysicianResults.hbm.xml" assembly="Acurus.Capella.Core" />
-      <mapping resource="Acurus.Capella.Core.HbmMaps.AcurusResultsMapping.hbm.xml" assembly="Acurus.Capella.Core" />
 
-      <!--<Thiyagarajan>-->
-      <mapping resource="Acurus.Capella.Core.HbmMaps.PlanCPTFormRequired.hbm.xml" assembly="Acurus.Capella.Core" />
-      <mapping resource="Acurus.Capella.Core.HbmMaps.OrdersRequiredForms.hbm.xml" assembly="Acurus.Capella.Core" />
-
-      <mapping resource="Acurus.Capella.Core.HbmMaps.DictationException.hbm.xml" assembly="Acurus.Capella.Core" />
-      <mapping resource="Acurus.Capella.Core.HbmMaps.patient_notes.hbm.xml" assembly="Acurus.Capella.Core" />
-      <mapping resource="Acurus.Capella.Core.HbmMaps.PatGuarantor.hbm.xml" assembly="Acurus.Capella.Core" />
-      <!--<mapping resource="Acurus.Capella.Core.HbmMaps.BatchHumanMap.hbm.xml" assembly="Acurus.Capella.Core" />-->
-
-      <mapping resource="Acurus.Capella.Core.HbmMaps.Authorization.hbm.xml" assembly="Acurus.Capella.Core" />
-      <mapping resource="Acurus.Capella.Core.HbmMaps.AuthorizationEncounter.hbm.xml" assembly="Acurus.Capella.Core" />
-      <mapping resource="Acurus.Capella.Core.HbmMaps.AuthorizationICD.hbm.xml" assembly="Acurus.Capella.Core" />
-      <mapping resource="Acurus.Capella.Core.HbmMaps.AuthorizationProcedure.hbm.xml" assembly="Acurus.Capella.Core" />
-
-      <!--<mapping resource="Acurus.Capella.Core.HbmMaps.Layout.hbm.xml" assembly="Acurus.Capella.Core" />-->
-
-      <mapping resource="Acurus.Capella.Core.HbmMaps.ObjectProcessHistoryBillingTemp.hbm.xml" assembly="Acurus.Capella.Core" />
-      <mapping resource="Acurus.Capella.Core.HbmMaps.ICD9ICD10Mapping.hbm.xml" assembly="Acurus.Capella.Core" />
-      <mapping resource="Acurus.Capella.Core.HbmMaps.ErrorLog.hbm.xml" assembly="Acurus.Capella.Core" />
+			<mapping resource="Acurus.Capella.Core.HbmMaps.ProcedureCodeRuleMaster.hbm.xml" assembly="Acurus.Capella.Core" />
+			<mapping resource="Acurus.Capella.Core.HbmMaps.AOELookUp.hbm.xml" assembly="Acurus.Capella.Core" />
+			<mapping resource="Acurus.Capella.Core.HbmMaps.OrdersQuestionSetAOE.hbm.xml" assembly="Acurus.Capella.Core" />
+			<mapping resource="Acurus.Capella.Core.HbmMaps.OrderComponents.hbm.xml" assembly="Acurus.Capella.Core" />
+			<mapping resource="Acurus.Capella.Core.HbmMaps.AddendumNotes.hbm.xml" assembly="Acurus.Capella.Core" />
 
 
-      <!--<mapping resource="Acurus.Capella.Core.HbmMaps.ErrorReporting.hbm.xml" assembly="Acurus.Capella.Core" />-->
-      <mapping resource="Acurus.Capella.Core.HbmMaps.MeasureRuleMaster.hbm.xml" assembly="Acurus.Capella.Core" />
+			<mapping resource="Acurus.Capella.Core.HbmMaps.PhysicianResults.hbm.xml" assembly="Acurus.Capella.Core" />
+			<mapping resource="Acurus.Capella.Core.HbmMaps.AcurusResultsMapping.hbm.xml" assembly="Acurus.Capella.Core" />
+
+			<!--<Thiyagarajan>-->
+			<mapping resource="Acurus.Capella.Core.HbmMaps.PlanCPTFormRequired.hbm.xml" assembly="Acurus.Capella.Core" />
+			<mapping resource="Acurus.Capella.Core.HbmMaps.OrdersRequiredForms.hbm.xml" assembly="Acurus.Capella.Core" />
+
+			<mapping resource="Acurus.Capella.Core.HbmMaps.DictationException.hbm.xml" assembly="Acurus.Capella.Core" />
+			<mapping resource="Acurus.Capella.Core.HbmMaps.patient_notes.hbm.xml" assembly="Acurus.Capella.Core" />
+			<mapping resource="Acurus.Capella.Core.HbmMaps.PatGuarantor.hbm.xml" assembly="Acurus.Capella.Core" />
+			<!--<mapping resource="Acurus.Capella.Core.HbmMaps.BatchHumanMap.hbm.xml" assembly="Acurus.Capella.Core" />-->
+
+			<mapping resource="Acurus.Capella.Core.HbmMaps.Authorization.hbm.xml" assembly="Acurus.Capella.Core" />
+			<mapping resource="Acurus.Capella.Core.HbmMaps.AuthorizationEncounter.hbm.xml" assembly="Acurus.Capella.Core" />
+			<mapping resource="Acurus.Capella.Core.HbmMaps.AuthorizationICD.hbm.xml" assembly="Acurus.Capella.Core" />
+			<mapping resource="Acurus.Capella.Core.HbmMaps.AuthorizationProcedure.hbm.xml" assembly="Acurus.Capella.Core" />
+
+			<!--<mapping resource="Acurus.Capella.Core.HbmMaps.Layout.hbm.xml" assembly="Acurus.Capella.Core" />-->
+
+			<mapping resource="Acurus.Capella.Core.HbmMaps.ObjectProcessHistoryBillingTemp.hbm.xml" assembly="Acurus.Capella.Core" />
+			<mapping resource="Acurus.Capella.Core.HbmMaps.ICD9ICD10Mapping.hbm.xml" assembly="Acurus.Capella.Core" />
+			<mapping resource="Acurus.Capella.Core.HbmMaps.ErrorLog.hbm.xml" assembly="Acurus.Capella.Core" />
 
 
-      <mapping resource="Acurus.Capella.Core.HbmMaps.ActivityLog.hbm.xml" assembly="Acurus.Capella.Core" />
-      <mapping resource="Acurus.Capella.Core.HbmMaps.ResultSPM.hbm.xml" assembly="Acurus.Capella.Core" />
-      <!--<mapping resource="Acurus.Capella.Core.HbmMaps.PhysicianFacilityCompanyCarrier.hbm.xml" assembly="Acurus.Capella.Core" />-->
+			<!--<mapping resource="Acurus.Capella.Core.HbmMaps.ErrorReporting.hbm.xml" assembly="Acurus.Capella.Core" />-->
+			<mapping resource="Acurus.Capella.Core.HbmMaps.MeasureRuleMaster.hbm.xml" assembly="Acurus.Capella.Core" />
 
-      <mapping resource="Acurus.Capella.Core.HbmMaps.ModifierLibrary.hbm.xml" assembly="Acurus.Capella.Core" />
-      <mapping resource="Acurus.Capella.Core.HbmMaps.ReasonCodeLookup.hbm.xml" assembly="Acurus.Capella.Core" />
-      <mapping resource="Acurus.Capella.Core.HbmMaps.RegisteredNetwork.hbm.xml" assembly="Acurus.Capella.Core" />
-      <mapping resource="Acurus.Capella.Core.HbmMaps.Human_Token.hbm.xml" assembly="Acurus.Capella.Core" />
-      <mapping resource="Acurus.Capella.Core.HbmMaps.BodyImageAnnotations.hbm.xml" assembly="Acurus.Capella.Core" />
-      <mapping resource="Acurus.Capella.Core.HbmMaps.CDSRuleMaster.hbm.xml" assembly="Acurus.Capella.Core" />
-      <mapping resource="Acurus.Capella.Core.HbmMaps.Notification.hbm.xml" assembly="Acurus.Capella.Core" />
-      <mapping resource="Acurus.Capella.Core.HbmMaps.RegistryLog.hbm.xml" assembly="Acurus.Capella.Core" />
-      <mapping resource="Acurus.Capella.Core.HbmMaps.Quest_Lab_Response_Log.hbm.xml" assembly="Acurus.Capella.Core" />
-      <!--<mapping resource="Acurus.Capella.Core.HbmMaps.ApplicationAccessLog.hbm.xml" assembly="Acurus.Capella.Core" />-->
-      <mapping resource="Acurus.Capella.Core.HbmMaps.PotentialDiagnosis.hbm.xml" assembly="Acurus.Capella.Core" />
-      <mapping resource="Acurus.Capella.Core.HbmMaps.ProviderReviewRuleMaster.hbm.xml" assembly="Acurus.Capella.Core" />
-      <mapping resource="Acurus.Capella.Core.HbmMaps.ProviderReviewTracker.hbm.xml" assembly="Acurus.Capella.Core" />
-      <mapping resource="Acurus.Capella.Core.HbmMaps.Request_Sent_Log.hbm.xml" assembly="Acurus.Capella.Core" />
-      <mapping resource="Acurus.Capella.Core.HbmMaps.Response_Received_Log.hbm.xml" assembly="Acurus.Capella.Core" />
-      <!--<mapping resource="Acurus.Capella.Core.HbmMaps.Rcopia_Medication_Temp.hbm.xml" assembly="Acurus.Capella.Core" />
+
+			<mapping resource="Acurus.Capella.Core.HbmMaps.ActivityLog.hbm.xml" assembly="Acurus.Capella.Core" />
+			<mapping resource="Acurus.Capella.Core.HbmMaps.ResultSPM.hbm.xml" assembly="Acurus.Capella.Core" />
+			<!--<mapping resource="Acurus.Capella.Core.HbmMaps.PhysicianFacilityCompanyCarrier.hbm.xml" assembly="Acurus.Capella.Core" />-->
+
+			<mapping resource="Acurus.Capella.Core.HbmMaps.ModifierLibrary.hbm.xml" assembly="Acurus.Capella.Core" />
+			<mapping resource="Acurus.Capella.Core.HbmMaps.ReasonCodeLookup.hbm.xml" assembly="Acurus.Capella.Core" />
+			<mapping resource="Acurus.Capella.Core.HbmMaps.RegisteredNetwork.hbm.xml" assembly="Acurus.Capella.Core" />
+			<mapping resource="Acurus.Capella.Core.HbmMaps.Human_Token.hbm.xml" assembly="Acurus.Capella.Core" />
+			<mapping resource="Acurus.Capella.Core.HbmMaps.BodyImageAnnotations.hbm.xml" assembly="Acurus.Capella.Core" />
+			<mapping resource="Acurus.Capella.Core.HbmMaps.CDSRuleMaster.hbm.xml" assembly="Acurus.Capella.Core" />
+			<mapping resource="Acurus.Capella.Core.HbmMaps.Notification.hbm.xml" assembly="Acurus.Capella.Core" />
+			<mapping resource="Acurus.Capella.Core.HbmMaps.RegistryLog.hbm.xml" assembly="Acurus.Capella.Core" />
+			<mapping resource="Acurus.Capella.Core.HbmMaps.Quest_Lab_Response_Log.hbm.xml" assembly="Acurus.Capella.Core" />
+			<!--<mapping resource="Acurus.Capella.Core.HbmMaps.ApplicationAccessLog.hbm.xml" assembly="Acurus.Capella.Core" />-->
+			<mapping resource="Acurus.Capella.Core.HbmMaps.PotentialDiagnosis.hbm.xml" assembly="Acurus.Capella.Core" />
+			<mapping resource="Acurus.Capella.Core.HbmMaps.ProviderReviewRuleMaster.hbm.xml" assembly="Acurus.Capella.Core" />
+			<mapping resource="Acurus.Capella.Core.HbmMaps.ProviderReviewTracker.hbm.xml" assembly="Acurus.Capella.Core" />
+			<mapping resource="Acurus.Capella.Core.HbmMaps.Request_Sent_Log.hbm.xml" assembly="Acurus.Capella.Core" />
+			<mapping resource="Acurus.Capella.Core.HbmMaps.Response_Received_Log.hbm.xml" assembly="Acurus.Capella.Core" />
+			<!--<mapping resource="Acurus.Capella.Core.HbmMaps.Rcopia_Medication_Temp.hbm.xml" assembly="Acurus.Capella.Core" />
       <mapping resource="Acurus.Capella.Core.HbmMaps.Rcopia_Allergy_Temp.hbm.xml" assembly="Acurus.Capella.Core" />-->
-      <mapping resource="Acurus.Capella.Core.HbmMaps.Context.hbm.xml" assembly="Acurus.Capella.Core" />
-      <mapping resource="Acurus.Capella.Core.HbmMaps.VaccineAdminProcedureMapping.hbm.xml" assembly="Acurus.Capella.Core" />
-      <mapping resource="Acurus.Capella.Core.HbmMaps.AccountTransactionArc.hbm.xml" assembly="Acurus.Capella.Core" />
-      <mapping resource="Acurus.Capella.Core.HbmMaps.PPHeaderArc.hbm.xml" assembly="Acurus.Capella.Core" />
-      <mapping resource="Acurus.Capella.Core.HbmMaps.PPLineItemArc.hbm.xml" assembly="Acurus.Capella.Core" />
-      <mapping resource="Acurus.Capella.Core.HbmMaps.CheckArc.hbm.xml" assembly="Acurus.Capella.Core" />
-      <mapping resource="Acurus.Capella.Core.HbmMaps.VisitPaymentArc.hbm.xml" assembly="Acurus.Capella.Core" />
-      <mapping resource="Acurus.Capella.Core.HbmMaps.VisitPaymentHistory.hbm.xml" assembly="Acurus.Capella.Core" />
-      <mapping resource="Acurus.Capella.Core.HbmMaps.VisitPaymentHistoryArc.hbm.xml" assembly="Acurus.Capella.Core" />
-      <mapping resource="Acurus.Capella.Core.HbmMaps.ImmunizationSubmissionLog.hbm.xml" assembly="Acurus.Capella.Core" />
-		<mapping resource="Acurus.Capella.Core.HbmMaps.CQMSummary.hbm.xml" assembly="Acurus.Capella.Core" />
-		<mapping resource="Acurus.Capella.Core.HbmMaps.CQMDetail.hbm.xml" assembly="Acurus.Capella.Core" />
-		<mapping resource="Acurus.Capella.Core.HbmMaps.ApplicationAccessLog.hbm.xml" assembly="Acurus.Capella.Core" />
-		<mapping resource="Acurus.Capella.Core.HbmMaps.Human_Blob.hbm.xml" assembly="Acurus.Capella.Core" />
-		<mapping resource="Acurus.Capella.Core.HbmMaps.Encounter_Blob.hbm.xml" assembly="Acurus.Capella.Core" />
-		<mapping resource="Acurus.Capella.Core.HbmMaps.MapXMLBlob.hbm.xml" assembly="Acurus.Capella.Core" />
-		<mapping resource="Acurus.Capella.Core.HbmMaps.ProcedureModifierLookup.hbm.xml" assembly="Acurus.Capella.Core" />
-		<mapping resource="Acurus.Capella.Core.HbmMaps.RCopiaDeduplicateLog.hbm.xml" assembly="Acurus.Capella.Core" />
-		<mapping resource="Acurus.Capella.Core.HbmMaps.Blob_Progress_Note.hbm.xml" assembly="Acurus.Capella.Core" />
-		<mapping resource="Acurus.Capella.Core.HbmMaps.CDCEventTracker.hbm.xml" assembly="Acurus.Capella.Core" />
-	</session-factory>
-  </hibernate-configuration>
+			<mapping resource="Acurus.Capella.Core.HbmMaps.Context.hbm.xml" assembly="Acurus.Capella.Core" />
+			<mapping resource="Acurus.Capella.Core.HbmMaps.VaccineAdminProcedureMapping.hbm.xml" assembly="Acurus.Capella.Core" />
+			<mapping resource="Acurus.Capella.Core.HbmMaps.AccountTransactionArc.hbm.xml" assembly="Acurus.Capella.Core" />
+			<mapping resource="Acurus.Capella.Core.HbmMaps.PPHeaderArc.hbm.xml" assembly="Acurus.Capella.Core" />
+			<mapping resource="Acurus.Capella.Core.HbmMaps.PPLineItemArc.hbm.xml" assembly="Acurus.Capella.Core" />
+			<mapping resource="Acurus.Capella.Core.HbmMaps.CheckArc.hbm.xml" assembly="Acurus.Capella.Core" />
+			<mapping resource="Acurus.Capella.Core.HbmMaps.VisitPaymentArc.hbm.xml" assembly="Acurus.Capella.Core" />
+			<mapping resource="Acurus.Capella.Core.HbmMaps.VisitPaymentHistory.hbm.xml" assembly="Acurus.Capella.Core" />
+			<mapping resource="Acurus.Capella.Core.HbmMaps.VisitPaymentHistoryArc.hbm.xml" assembly="Acurus.Capella.Core" />
+			<mapping resource="Acurus.Capella.Core.HbmMaps.ImmunizationSubmissionLog.hbm.xml" assembly="Acurus.Capella.Core" />
+			<mapping resource="Acurus.Capella.Core.HbmMaps.CQMSummary.hbm.xml" assembly="Acurus.Capella.Core" />
+			<mapping resource="Acurus.Capella.Core.HbmMaps.CQMDetail.hbm.xml" assembly="Acurus.Capella.Core" />
+			<mapping resource="Acurus.Capella.Core.HbmMaps.ApplicationAccessLog.hbm.xml" assembly="Acurus.Capella.Core" />
+			<mapping resource="Acurus.Capella.Core.HbmMaps.Human_Blob.hbm.xml" assembly="Acurus.Capella.Core" />
+			<mapping resource="Acurus.Capella.Core.HbmMaps.Encounter_Blob.hbm.xml" assembly="Acurus.Capella.Core" />
+			<mapping resource="Acurus.Capella.Core.HbmMaps.MapXMLBlob.hbm.xml" assembly="Acurus.Capella.Core" />
+			<mapping resource="Acurus.Capella.Core.HbmMaps.ProcedureModifierLookup.hbm.xml" assembly="Acurus.Capella.Core" />
+			<mapping resource="Acurus.Capella.Core.HbmMaps.RCopiaDeduplicateLog.hbm.xml" assembly="Acurus.Capella.Core" />
+			<mapping resource="Acurus.Capella.Core.HbmMaps.Blob_Progress_Note.hbm.xml" assembly="Acurus.Capella.Core" />
+			<mapping resource="Acurus.Capella.Core.HbmMaps.CDCEventTracker.hbm.xml" assembly="Acurus.Capella.Core" />
+		</session-factory>
+	</hibernate-configuration>
 
-  <appSettings>
-    <add key="DeadlockExceptionNumber" value="1213"/>
-    <add key="RCopiaUploadAddress" value="https://updatecert.drfirst.com/servlet/rcopia.servlet.EngineServlet?xml="/>
-  </appSettings>
+	<appSettings>
+		<add key="DeadlockExceptionNumber" value="1213"/>
+		<add key="RCopiaUploadAddress" value="https://updatecert.drfirst.com/servlet/rcopia.servlet.EngineServlet?xml="/>
+	</appSettings>
 
 
 

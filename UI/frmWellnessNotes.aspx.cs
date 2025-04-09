@@ -542,7 +542,8 @@ namespace Acurus.Capella.UI
             //xmlDoc = null;
             //ds = null;
             //Jira #CAP-344 - NewCode
-            UtilityManager.PrintPDFUsingXSLT(sXMLEncounterDoc, sXMLHumanDoc, xsltFile, outputDocument, string.Empty);
+            string htmlString = string.Empty;
+            htmlString = UtilityManager.PrintPDFUsingXSLT(sXMLEncounterDoc, sXMLHumanDoc, xsltFile, outputDocument, string.Empty, "WELLNESSNOTES");
             System.IO.FileInfo file = new System.IO.FileInfo(outputDocument);
 
 
@@ -593,7 +594,12 @@ namespace Acurus.Capella.UI
 
             //    }
             //}
-            string htmlString = System.IO.File.ReadAllText(outputDocument);
+            //string htmlString = System.IO.File.ReadAllText(outputDocument);
+            if (System.Configuration.ConfigurationSettings.AppSettings["XsltTransformVersion"] != null
+                    && System.Configuration.ConfigurationSettings.AppSettings["XsltTransformVersion"].ToString().ToUpper() == "V1")
+            {
+                htmlString = System.IO.File.ReadAllText(outputDocument);
+            }
             //Jira CAP-1015
             htmlString = htmlString.Replace("amp;", "");
 
