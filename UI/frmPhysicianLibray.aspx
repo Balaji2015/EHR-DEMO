@@ -86,7 +86,7 @@
                         <!--<td style="width: 30%; padding-bottom: 0.5%"></td>-->
                         <td style="width: 35%; padding-bottom: 0.5%">
                             <span id="lblLastName" class="MandLabelstyle">Last Name*</span>
-                            <input type="text" id="txtLastName" maxlength="35" style="width: 45%;text-transform: capitalize;" value="" onkeypress="AvoidSpecailCharacter(event)" class="Editabletxtbox" runat="server"/>
+                            <input type="text" id="txtLastName" maxlength="35" style="width: 45%;text-transform: capitalize;" value="" onkeypress="AvoidSpecailCharacter(event)" class="Editabletxtbox" runat="server" oninput="formatName(this)"/>
                             <label class="Editabletxtbox">MI</label>
                             <input type="text" id="txtMI" maxlength="25" style="width: 16%" value="" class="Editabletxtbox" onkeypress="AvoidSpecailCharacter(event)" runat="server"/>
                         </td>
@@ -96,7 +96,7 @@
                         </td>
                         <!--<td style="width: 30%; padding-bottom: 0.5%"></td>-->
                         <td style="width: 35%; padding-bottom: 0.5%">
-                            <input type="text" id="txtFirstName" maxlength="50" style="width: 58%;text-transform: capitalize;" value="" onkeypress="AvoidSpecailCharacter(event)" class="Editabletxtbox" runat="server"/>
+                            <input type="text" id="txtFirstName" maxlength="50" style="width: 58%;text-transform: capitalize;" value="" onkeypress="AvoidSpecailCharacter(event)" class="Editabletxtbox" runat="server" oninput="formatName(this)"/>
                             <label id="lblSuffix" class="Editabletxtbox">Suffix</label>
                             <input type="text" id="txtSuffix" onkeypress="AvoidSpecailCharacterSuffix(event)" style="width: 20%" value="" class="Editabletxtbox" runat="server"/>
                         </td>
@@ -113,7 +113,7 @@
                         <td style="width: 15%; padding-bottom: 0.5%">
                             <label id="lblCompany" class="Editabletxtbox">Company</label></td>
                         <td style="width: 35%; padding-bottom: 0.5%">
-                            <input type="text" id="txtCompany" onkeypress="AvoidSpecailCharacter(event)" style="width: 96%;text-transform: capitalize;" value="" class="Editabletxtbox" runat="server"/></td>
+                            <input type="text" id="txtCompany" onkeypress="AvoidSpecailCharacter(event)" style="width: 96%;text-transform: capitalize;" value="" class="Editabletxtbox" runat="server" oninput="formatName(this)"/></td>
                     </tr>
                     <tr>
                         <td style="width: 15%; padding-bottom: 0.5%">

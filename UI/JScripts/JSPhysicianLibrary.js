@@ -1526,3 +1526,13 @@ function ClearSearch() {
     document.getElementById("txtSearch").value = "";
     SearchByTextandCategory();
 }
+//CAP-3062
+function formatName(input) {
+    let words = input.value.toLowerCase().split(' ');
+    for (let i = 0; i < words.length; i++) {
+        if (words[i]) {
+            words[i] = words[i][0].toUpperCase() + words[i].substring(1);
+        }
+    }
+    input.value = words.join(' ');
+}
