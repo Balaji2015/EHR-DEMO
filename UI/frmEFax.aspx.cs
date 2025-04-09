@@ -106,7 +106,8 @@ namespace Acurus.Capella.UI
 
                     CreateEmptyHeader();
                 hdnGroupID.Value = objActivityMngr.GetGroupID().ToString();
-                hdnfilePath.Value = sFilePath;
+                //CAP-3111
+                hdnfilePath.Value = !string.IsNullOrWhiteSpace(sFilePath) && sFilePath.IndexOf("~") > 0 ? sFilePath.Replace("~", "") : sFilePath;
             }
             //Cap - 1918
             if (Request["Mode"] != null)
