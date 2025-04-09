@@ -263,6 +263,11 @@ myapp.controller('EandMCodingCtrl', function ($scope, $http) {
                         }));
                     }
                 }
+                //Cap - 3086
+                if (jQuery(top.window.parent.parent.parent.parent.parent.parent.document.body).find('#resultLoading').css('display') == 'block') { sessionStorage.setItem('StartLoading', 'false'); StopLoadFromPatChart(); }
+            }
+            else {
+                if (jQuery(top.window.parent.parent.parent.parent.parent.parent.document.body).find('#resultLoading').css('display') == 'block') { sessionStorage.setItem('StartLoading', 'false'); StopLoadFromPatChart(); }
             }
         },
         minlength: 0,
@@ -277,7 +282,10 @@ myapp.controller('EandMCodingCtrl', function ($scope, $http) {
         },
         //CAP-2382
         focus: function (event, ui) {
-            $("#txtCPT").val(ui.item.label);
+            //Cap - 3116
+            //$("#txtCPT").val(ui.item.label);
+            e.preventDefault();
+            e.stopImmediatePropagation();
             return false;
         },
         select: function (event, ui) {
