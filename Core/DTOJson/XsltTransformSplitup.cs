@@ -20,5 +20,6 @@ namespace Acurus.Capella.Core.DTOJson
         public string SplitOrder { get; set; }
         public string TagNames { get; set; }
         public string AddAndModifyTags { get; set; }
+        public string CommanTags { get; set; }
     }
 }

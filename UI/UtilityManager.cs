@@ -6461,6 +6461,7 @@ namespace Acurus.Capella.UI
                 ApplicationObject.XsltTransformSplitupList = ConfigureBase<XsltTransformSplitupList>.ReadJson("XsltTransformSplitup.json");
             }
             IList<XsltTransformSplitup> ilstxsltTransform = ApplicationObject.XsltTransformSplitupList.XsltTransformSplitup;
+            IList<string> ilstOtherxsltTransform = new List<string>();
             string sTransformedData = string.Empty;
             string[] aryTagName = null;
             string sTransformedValue = string.Empty;
@@ -6480,7 +6481,7 @@ namespace Acurus.Capella.UI
 
             for (int iCount = 0; iCount < ilstxsltTransform.Count; iCount++)
             {
-                aryTagName = ilstxsltTransform[iCount].TagNames.Split(',');
+                aryTagName = (ilstxsltTransform[iCount].TagNames + "," + ilstxsltTransform[iCount].CommanTags).Split(',');
                 sbSplitUp.Clear();
                 sbSplitUp.Append(sXmlHeader + "<notes><Modules>");
                 if (ilstxsltTransform[iCount].AddAndModifyTags != "")
@@ -6528,7 +6529,21 @@ namespace Acurus.Capella.UI
                     }
                 }
 
-                sbSplitUp.Append("</Modules></notes>");
+                if (sNotesType.ToUpper() == "WELLNESSNOTES")
+                {
+                    ilstOtherxsltTransform = ilstxsltTransform.Where(x => x.SplitOrder != ilstxsltTransform[iCount].SplitOrder).Select(x => x.TagNames).ToList();
+                    string sDummyTags = string.Join(",", ilstOtherxsltTransform);
+                    string[] aryDummyTags = sDummyTags.Split(',');
+                    StringBuilder sbDummyTag = new StringBuilder();
+                    foreach (string sDummyTag in aryDummyTags)
+                    {
+                        sbDummyTag.Append("<" + sDummyTag + "></" + sDummyTag + ">");
+                    }
+
+                    sbSplitUp.Append(sbDummyTag);
+                }
+
+                    sbSplitUp.Append("</Modules></notes>");
                 XmlReader xmlr = XmlReader.Create(new StringReader(sbSplitUp.ToString()));
                 if (bIsSummary)
                 {
