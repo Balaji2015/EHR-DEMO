@@ -472,8 +472,11 @@ namespace Acurus.Capella.UI.WebServices.API
                     htmlString = htmlString.Replace(NewInput, "").Replace(NewInput2, "");
                 }
                 //Cap - 2508 End
-                //Jira CAP-1015
-                xmls = xmls.Replace("<HPINotes>", "</p><p><b>").Replace("</HPINotes>", "</b><br />");
+
+                //Jira CAP-3134
+                ////Jira CAP-1015
+                //xmls = xmls.Replace("<HPINotes>", "</p><p><b>").Replace("</HPINotes>", "</b><br />");
+                xmls = xmls.Replace("<HPINotes>", "</p><p><b>").Replace("</HPINotes>", "</b><br />").Replace("<br>", "<br/>");
                 htmlString = htmlString.Replace("amp;", "");
                 XmlDocument doc = new XmlDocument();
                 doc.LoadXml(xmls);

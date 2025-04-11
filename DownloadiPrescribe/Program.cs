@@ -367,7 +367,9 @@ namespace DownloadiPrescribe
                     bIsErroredFile = FileValidation(sFile);
                     if (!bIsErroredFile)
                     {
-                        objHuman = MngrHuman.GetHumanFromHumanIDAndLastNameFirstName(Convert.ToUInt64(sFile.ToUpper().Split('_')[0].Replace("ID", "")), sFile.ToUpper().Split('_')[1], sFile.ToUpper().Split('_')[2]);
+                        //objHuman = MngrHuman.GetHumanFromHumanIDAndLastNameFirstName(Convert.ToUInt64(sFile.ToUpper().Split('_')[0].Replace("ID", "")), sFile.ToUpper().Split('_')[1], sFile.ToUpper().Split('_')[2]);
+                        string sDOB = DateTime.ParseExact(sFile.ToUpper().Split('_')[1], "yyyyMMdd", CultureInfo.InvariantCulture).ToString("yyyy-MM-dd");
+                        objHuman = MngrHuman.GetHumanFromHumanIDAndDOB(Convert.ToUInt64(sFile.ToUpper().Split('_')[0].Replace("ID", "")), sDOB);
                         if (objHuman?.Id != null && objHuman.Id > 0)
                         {
                             Console.WriteLine("FTP started");
@@ -409,7 +411,8 @@ namespace DownloadiPrescribe
                                     objOrdersSubmit.Created_By = "ImageResultsAgent";
                                     objOrdersSubmit.Created_Date_And_Time = DateTime.UtcNow;
                                     objOrdersSubmit.Facility_Name = sFacility;
-                                    objOrdersSubmit.Specimen_Collection_Date_And_Time = Convert.ToDateTime(DateTime.ParseExact(sFile.Split('_')[3].ToUpper().Replace(".PDF", ""), "yyyyMMdd", CultureInfo.InvariantCulture).ToString("yyyy-MM-dd"));
+                                    //objOrdersSubmit.Specimen_Collection_Date_And_Time = Convert.ToDateTime(DateTime.ParseExact(sFile.Split('_')[3].ToUpper().Replace(".PDF", ""), "yyyyMMdd", CultureInfo.InvariantCulture).ToString("yyyy-MM-dd"));
+                                    objOrdersSubmit.Specimen_Collection_Date_And_Time = Convert.ToDateTime(DateTime.ParseExact(sFile.Split('_')[2].ToUpper().Replace(".PDF", ""), "yyyyMMdd", CultureInfo.InvariantCulture).ToString("yyyy-MM-dd"));
                                     objOrdersSubmit.Order_Type = "DIAGNOSTIC ORDER";
                                     insertordersubmitList.Add(objOrdersSubmit);
 
@@ -427,7 +430,8 @@ namespace DownloadiPrescribe
 
                                     Scan scan = new Scan();
                                     scan.Scanned_File_Path = sScanned_Location + "\\" + sFile;
-                                    scan.Scanned_Date = Convert.ToDateTime(DateTime.ParseExact(sFile.Split('_')[3].ToUpper().Replace(".PDF", ""), "yyyyMMdd", CultureInfo.InvariantCulture).ToString("yyyy-MM-dd") + " 15:30:00");
+                                    //scan.Scanned_Date = Convert.ToDateTime(DateTime.ParseExact(sFile.Split('_')[3].ToUpper().Replace(".PDF", ""), "yyyyMMdd", CultureInfo.InvariantCulture).ToString("yyyy-MM-dd") + " 15:30:00");
+                                    scan.Scanned_Date = Convert.ToDateTime(DateTime.ParseExact(sFile.Split('_')[2].ToUpper().Replace(".PDF", ""), "yyyyMMdd", CultureInfo.InvariantCulture).ToString("yyyy-MM-dd") + " 15:30:00");
                                     scan.Facility_Name = sFacility;
                                     scan.No_of_Pages = 1;
                                     scan.Scanned_File_Name = sFile;
@@ -440,13 +444,15 @@ namespace DownloadiPrescribe
                                     scan_index scan_Index = new scan_index();
                                     scan_Index.Human_ID = objHuman.Id;
                                     scan_Index.Scan_ID = Convert.ToUInt64(ilstScan.FirstOrDefault().Id);
-                                    scan_Index.Document_Date = Convert.ToDateTime(DateTime.ParseExact(sFile.Split('_')[3].ToUpper().Replace(".PDF", ""), "yyyyMMdd", CultureInfo.InvariantCulture).ToString("yyyy-MM-dd") + " 15:30:00");
+                                    //scan_Index.Document_Date = Convert.ToDateTime(DateTime.ParseExact(sFile.Split('_')[3].ToUpper().Replace(".PDF", ""), "yyyyMMdd", CultureInfo.InvariantCulture).ToString("yyyy-MM-dd") + " 15:30:00");
+                                    scan_Index.Document_Date = Convert.ToDateTime(DateTime.ParseExact(sFile.Split('_')[2].ToUpper().Replace(".PDF", ""), "yyyyMMdd", CultureInfo.InvariantCulture).ToString("yyyy-MM-dd") + " 15:30:00");
                                     scan_Index.Document_Type = "Results";
                                     //Jira CAP-2977
                                     //scan_Index.Document_Sub_Type = dir.Name.ToUpper();
                                     //Jira CAP-3038
                                     //scan_Index.Document_Sub_Type = sFile.Split('_')[4].ToUpper().Replace(".PDF", "").ToUpper();
-                                    scan_Index.Document_Sub_Type = ilstDocument_Sub_type.Document_Sub_Type_Lookup.Where(x => x.File_Report_Type.ToUpper() == sFile.Split('_')[4].ToUpper().Replace(".PDF", "")).FirstOrDefault().Document_Sub_Type;
+                                    //scan_Index.Document_Sub_Type = ilstDocument_Sub_type.Document_Sub_Type_Lookup.Where(x => x.File_Report_Type.ToUpper() == sFile.Split('_')[4].ToUpper().Replace(".PDF", "")).FirstOrDefault().Document_Sub_Type;
+                                    scan_Index.Document_Sub_Type = ilstDocument_Sub_type.Document_Sub_Type_Lookup.Where(x => x.File_Report_Type.ToUpper() == sFile.Split('_')[3].ToUpper().Replace(".PDF", "")).FirstOrDefault().Document_Sub_Type;
                                     scan_Index.Order_ID = ulOrderSubmitId;
                                     //scan_Index.Indexed_File_Path = sImported_StudiesFilePath + "\\" + sFile;
                                     scan_Index.Indexed_File_Path = serverPath.Replace("ftp:", "").Replace(@"//", @"\\").Replace(@"/", @"\"); ;
@@ -461,13 +467,15 @@ namespace DownloadiPrescribe
                                     FileManagementIndex filemanagementIndex = new FileManagementIndex();
                                     filemanagementIndex.Created_By = "ImageResultsAgent";
                                     filemanagementIndex.Created_Date_And_Time = DateTime.UtcNow;
-                                    filemanagementIndex.Document_Date = Convert.ToDateTime(DateTime.ParseExact(sFile.Split('_')[3].ToUpper().Replace(".PDF", ""), "yyyyMMdd", CultureInfo.InvariantCulture).ToString("yyyy-MM-dd") + " 15:30:00");
+                                    //filemanagementIndex.Document_Date = Convert.ToDateTime(DateTime.ParseExact(sFile.Split('_')[3].ToUpper().Replace(".PDF", ""), "yyyyMMdd", CultureInfo.InvariantCulture).ToString("yyyy-MM-dd") + " 15:30:00");
+                                    filemanagementIndex.Document_Date = Convert.ToDateTime(DateTime.ParseExact(sFile.Split('_')[2].ToUpper().Replace(".PDF", ""), "yyyyMMdd", CultureInfo.InvariantCulture).ToString("yyyy-MM-dd") + " 15:30:00");
                                     filemanagementIndex.Document_Type = "Results";
                                     //Jira CAP-2977
                                     //filemanagementIndex.Document_Sub_Type = dir.Name.ToUpper();
                                     //Jira CAP-3038
                                     //filemanagementIndex.Document_Sub_Type = sFile.Split('_')[4].ToUpper().Replace(".PDF", "").ToUpper();
-                                    filemanagementIndex.Document_Sub_Type = ilstDocument_Sub_type.Document_Sub_Type_Lookup.Where(x => x.File_Report_Type.ToUpper() == sFile.Split('_')[4].ToUpper().Replace(".PDF", "")).FirstOrDefault().Document_Sub_Type;
+                                    //filemanagementIndex.Document_Sub_Type = ilstDocument_Sub_type.Document_Sub_Type_Lookup.Where(x => x.File_Report_Type.ToUpper() == sFile.Split('_')[4].ToUpper().Replace(".PDF", "")).FirstOrDefault().Document_Sub_Type;
+                                    filemanagementIndex.Document_Sub_Type = ilstDocument_Sub_type.Document_Sub_Type_Lookup.Where(x => x.File_Report_Type.ToUpper() == sFile.Split('_')[3].ToUpper().Replace(".PDF", "")).FirstOrDefault().Document_Sub_Type;
                                     filemanagementIndex.Source = "SCAN";
                                     filemanagementIndex.Order_ID = ulOrderSubmitId;
                                     filemanagementIndex.Human_ID = objHuman.Id;
@@ -532,24 +540,59 @@ namespace DownloadiPrescribe
             }
             //Jira CAP-2977
             //else if (sFile.Split('_').Length != 4)
-            else if (sFile.Split('_').Length != 5)
+            //else if (sFile.Split('_').Length != 5)
+            //{
+            //    return true;
+            //}
+            else if (sFile.Split('_').Length != 4)
             {
                 return true;
             }
+            //HumanID validation
             //Jira CAP-2977
             //else if (sFile.Split('_').Length == 4 && sFile.Split('_')[0].ToUpper().Replace("ID", "").Any(a => char.IsLetter(a)))
-            else if (sFile.Split('_').Length == 5 && (sFile.Split('_')[0].ToUpper().Replace("ID", "").Any(a => char.IsLetter(a)) || (sFile.Split('_')[0].ToUpper().Replace("ID", "") == "")))
+            //else if (sFile.Split('_').Length == 5 && (sFile.Split('_')[0].ToUpper().Replace("ID", "").Any(a => char.IsLetter(a)) || (sFile.Split('_')[0].ToUpper().Replace("ID", "") == "")))
+            //{
+            //    return true;
+            //}
+            else if (sFile.Split('_').Length == 4 && (sFile.Split('_')[0].ToUpper().Replace("ID", "").Any(a => char.IsLetter(a)) || (sFile.Split('_')[0].ToUpper().Replace("ID", "") == "")))
             {
                 return true;
             }
-            else if (sFile.Split('_')[3].ToUpper().Replace(".PDF", "").Length != 8)
+
+            //Date of study digit validation
+            //else if (sFile.Split('_')[3].ToUpper().Replace(".PDF", "").Length != 8)
+            //{
+            //    return true;
+            //}
+            else if (sFile.Split('_')[2].ToUpper().Replace(".PDF", "").Length != 8)
             {
                 return true;
             }
-            else if (sFile.Split('_')[3].ToUpper().Replace(".PDF", "").Any(a => char.IsLetter(a)) || sFile.Split('_')[3].ToUpper().Replace(".PDF", "") == "")
+
+            //Date of study Alfabetic validation
+            //else if (sFile.Split('_')[3].ToUpper().Replace(".PDF", "").Any(a => char.IsLetter(a)) || sFile.Split('_')[3].ToUpper().Replace(".PDF", "") == "")
+            //{
+            //    return true;
+            //}
+            else if (sFile.Split('_')[2].ToUpper().Replace(".PDF", "").Any(a => char.IsLetter(a)) || sFile.Split('_')[2].ToUpper().Replace(".PDF", "") == "")
             {
                 return true;
             }
+
+            //Patient DOB digit validation
+            else if (sFile.Split('_')[1].ToUpper().Replace(".PDF", "").Length != 8)
+            {
+                return true;
+            }
+
+            //Patient DOB Alfabetic Validation
+            else if (sFile.Split('_')[1].ToUpper().Replace(".PDF", "").Any(a => char.IsLetter(a)) || sFile.Split('_')[1].ToUpper().Replace(".PDF", "") == "")
+            {
+                return true;
+            }
+
+            //Document_Sub_Type validation
             //Jira CAP-3038
             ////Jira CAP-3035
             //////Jira CAP-2977
@@ -557,8 +600,11 @@ namespace DownloadiPrescribe
             //{
             //    return true;
             //}
-
-            else if (ilstDocument_Sub_type != null && ilstDocument_Sub_type.Document_Sub_Type_Lookup.Where(x => x.File_Report_Type.ToUpper() == sFile.Split('_')[4].ToUpper().Replace(".PDF", "")).ToList().Count == 0)
+            //else if (ilstDocument_Sub_type != null && ilstDocument_Sub_type.Document_Sub_Type_Lookup.Where(x => x.File_Report_Type.ToUpper() == sFile.Split('_')[4].ToUpper().Replace(".PDF", "")).ToList().Count == 0)
+            //{
+            //    return true;
+            //}
+            else if (ilstDocument_Sub_type != null && ilstDocument_Sub_type.Document_Sub_Type_Lookup.Where(x => x.File_Report_Type.ToUpper() == sFile.Split('_')[3].ToUpper().Replace(".PDF", "")).ToList().Count == 0)
             {
                 return true;
             }
@@ -566,16 +612,34 @@ namespace DownloadiPrescribe
             {
                 return true;
             }
+
+            //Date of study Datetime formate validation
             //Jira CAP-3035
             ////Jira CAP-2977
             //else if (sFile.Split('_').Length == 4
             //  && sFile.Split('_')[3].ToUpper().Replace(".PDF", "").Length == 8)
-            if (sFile.Split('_').Length == 5
-                && sFile.Split('_')[3].ToUpper().Replace(".PDF", "").Length == 8)
+            //if (sFile.Split('_').Length == 5
+            //    && sFile.Split('_')[3].ToUpper().Replace(".PDF", "").Length == 8)
+            //{
+            //    try
+            //    {
+            //        if (!DateTime.TryParse(DateTime.ParseExact(sFile.Split('_')[3].ToUpper().Replace(".PDF", ""), "yyyyMMdd", CultureInfo.InvariantCulture).ToString("yyyy-MM-dd"), out dateValue))
+            //        {
+            //            return true;
+            //        }
+            //    }
+            //    catch (Exception ex)
+            //    {
+            //        return true;
+
+            //    }
+            //}
+            if (sFile.Split('_').Length == 4
+                && sFile.Split('_')[2].ToUpper().Replace(".PDF", "").Length == 8)
             {
                 try
                 {
-                    if (!DateTime.TryParse(DateTime.ParseExact(sFile.Split('_')[3].ToUpper().Replace(".PDF", ""), "yyyyMMdd", CultureInfo.InvariantCulture).ToString("yyyy-MM-dd"), out dateValue))
+                    if (!DateTime.TryParse(DateTime.ParseExact(sFile.Split('_')[2].ToUpper().Replace(".PDF", ""), "yyyyMMdd", CultureInfo.InvariantCulture).ToString("yyyy-MM-dd"), out dateValue))
                     {
                         return true;
                     }
@@ -586,6 +650,25 @@ namespace DownloadiPrescribe
 
                 }
             }
+
+            //Date of study Datetime formate validation
+            if (sFile.Split('_').Length == 4
+                && sFile.Split('_')[1].ToUpper().Replace(".PDF", "").Length == 8)
+            {
+                try
+                {
+                    if (!DateTime.TryParse(DateTime.ParseExact(sFile.Split('_')[1].ToUpper().Replace(".PDF", ""), "yyyyMMdd", CultureInfo.InvariantCulture).ToString("yyyy-MM-dd"), out dateValue))
+                    {
+                        return true;
+                    }
+                }
+                catch (Exception ex)
+                {
+                    return true;
+
+                }
+            }
+
             //Jira CAP-3035
             ////Jira CAP-2977
             //else if (!sDocument_Sub_Type.Contains(sFile.Split('_')[4].ToUpper()))

@@ -2344,3 +2344,16 @@ ProblemApp.controller('ControllerManageProblem', function ($scope, $http) {
 
     }
 });
+function Decompress(data) {
+    // Decode the Base64 string
+    const binaryString = window.atob(data);
+    // Convert binary string to byte array
+    const len = binaryString.length;
+    const bytes = new Uint8Array(len);
+    for (let i = 0; i < len; i++) {
+        bytes[i] = binaryString.charCodeAt(i);
+    }
+    // Use pako to decompress the byte array
+    const decompressed = pako.inflate(bytes, { to: 'string' });
+    return JSON.parse(decompressed);
+}

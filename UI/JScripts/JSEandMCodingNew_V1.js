@@ -806,7 +806,10 @@ myapp.controller('EandMCodingCtrl', function ($scope, $http) {
         },
         //CAP-2382
         focus: function (event, ui) {
-            $("#txtCPTDescription").val(ui.item.label);
+             //CAP-3139
+            //$("#txtCPTDescription").val(ui.item.label);
+            e.preventDefault();
+            e.stopImmediatePropagation();
             return false;
         },
         select: function (event, ui) {
@@ -1179,7 +1182,10 @@ myapp.controller('EandMCodingCtrl', function ($scope, $http) {
         mustMatch: false,
         //CAP-2382
         focus: function (event, ui) {
-            $("#txtICD10").val(ui.item.label);
+            //CAP-3139
+           // $("#txtICD10").val(ui.item.label);
+            e.preventDefault();
+            e.stopImmediatePropagation();
             return false;
         },
         open: function () {
@@ -1337,7 +1343,10 @@ myapp.controller('EandMCodingCtrl', function ($scope, $http) {
         mustMatch: false,
         //CAP-2382
         focus: function (event, ui) {
-            $("#txtDescription").val(ui.item.label);
+             //CAP-3139
+            //$("#txtDescription").val(ui.item.label);
+            e.preventDefault();
+            e.stopImmediatePropagation();
             return false;
         },
         open: function () {

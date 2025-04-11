@@ -132,6 +132,7 @@
     <Content Include="bin\Debug\log4net.dll" />
     <Content Include="bin\Debug\MySql.Data.dll" />
     <Content Include="bin\Debug\Newtonsoft.Json.dll" />
+    <Content Include="bin\Debug\Newtonsoft.Json.xml" />
     <Content Include="bin\Debug\NHibernate.ByteCode.LinFu.dll" />
     <Content Include="bin\Debug\NHibernate.dll" />
     <Content Include="bin\Debug\System.Buffers.dll" />
