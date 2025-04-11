@@ -130,7 +130,7 @@ function OnLoadGrid(sortOrder) {
                     firstFilePath = firstFilePath.split("\\").join("/");
 
                     vdelete = `<td title='Delete' style='width: 41px;'><img style='width: 12px;' src='Resources/Delete-Blue.png' onclick="deletefiles('${firstFilePath}');" /></td>`;
-                    createdDate = `<td title='Created Date and Time' style='width: 160px;'>${objdata[i].Item2}</td>`;
+                    createdDate = `<td title='Created Date and Time' style='width: 160px;' onclick="GridOpenFile('${firstFileName}','${firstFilePath}',this);">${objdata[i].Item2}</td>`;
                     tabContents = tabContents + `<tr style='cursor: pointer;'>${vdelete}<td onclick="GridOpenFile('${firstFileName}','${firstFilePath}',this);">${firstFileName}</td><td style='display:none'>${firstFilePath}</td>${createdDate}</tr>`;
                 }
             }
