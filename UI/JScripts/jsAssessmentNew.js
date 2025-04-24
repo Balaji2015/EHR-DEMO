@@ -1971,10 +1971,9 @@ myapp.controller('assessmentCtrl', function ($scope, $http) {
                 var cols = [];
                 $(this).find('td').each(function (colIndex, c) {
                     if (c.textContent == "") {
-                        if (c.childNodes[0].checked && rowIndex != index + 1)
+                        if (c?.childNodes?.length > 0 && c.childNodes[0]?.checked && rowIndex != index + 1) {
                             c.childNodes[0].checked = false;
-
-
+                        }
                     }
                     if (colIndex == "4" && c.textContent != "") {
                         ICDCheckNode = ICDCheckNode.replace(c.textContent, "").replace(c.textContent + ",", "");
@@ -2065,7 +2064,7 @@ myapp.controller('assessmentCtrl', function ($scope, $http) {
 
     var iSelectMoreDiagnosis = -1;
     $scope.OpenNextQuestionnaire = function () {
-
+        debugger
         var iCheck = 0;
         var leafNode = 0;
         var iMultiselect = 0;
