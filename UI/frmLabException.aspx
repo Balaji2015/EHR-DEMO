@@ -56,7 +56,7 @@
         }
         #lblLabName{
             padding-left:125px!important;
-        }
+        }       
         #cboLabName{
             padding-left:70px!important;
         }
@@ -131,7 +131,7 @@
                             <telerik:RadComboBox ID="cboLabName" Font-Size="Small" Font-Bold="false" runat="server"
                                 Height="75px" Width="400px" CssClass="Editabletxtbox">
                             </telerik:RadComboBox>
-
+                            <%--<asp:DropDownList ID="DropDownList1" runat="server" style="margin-left: 70px;padding: 4px 8px;font-size: 13px;width: 400px;line-height: 1.2;box-sizing: border-box;height: 25px;"></asp:DropDownList>--%>
 
                             <%-- <asp:RadioButton ID="rbtnAllResults" AutoPostBack="true" runat="server" Text="All Results"
                                 Width="92px" Height="26px" GroupName="Results" Font-Size="Small" OnClick="checkRadioButton();" />

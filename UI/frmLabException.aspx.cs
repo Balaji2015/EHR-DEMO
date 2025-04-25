@@ -155,10 +155,24 @@ namespace Acurus.Capella.UI
                     foreach (Lab objlab in listLabList)
                     {
                         cboLabName.Items.Add(new RadComboBoxItem(objlab.Lab_Name.ToString()));
-                        cboLabName.Items[count].Value = objlab.Lab_ID.ToString();
+                        cboLabName.Items[count].Value = objlab.Id.ToString();
                         count++;
                     }
                 }
+
+                //LabManager objmgr = new LabManager();
+                //var listLab = objmgr.GetlabName();
+
+                //cboLabName.Items.Clear();
+                //cboLabName.Items.Add(new ListItem("", "0"));
+
+                //if (listLab != null && listLab.Any())
+                //{
+                //    foreach (var lab in listLab)
+                //    {
+                //        cboLabName.Items.Add(new ListItem(lab.Lab_Name, lab.Id.ToString()));
+                //    }
+                //}
 
                 StaticLookupManager sm = new StaticLookupManager();
                 IList<StaticLookup> Errorlst = sm.getStaticLookupByFieldName("ERROR_CODE");
@@ -231,6 +245,9 @@ namespace Acurus.Capella.UI
                 FieldName.Add("Lab_Id");
                 if (cboLabName.Items[cboLabName.SelectedIndex].Value != null)
                     FieldValue.Add(cboLabName.Items[cboLabName.SelectedIndex].Value.ToString());
+
+                //if (!string.IsNullOrEmpty(cboLabName.SelectedValue))
+                //    FieldValue.Add(cboLabName.SelectedValue);
             }
             if (frmDate.SelectedDate.ToString() != "" && toDate.SelectedDate.ToString() != "")
             {
