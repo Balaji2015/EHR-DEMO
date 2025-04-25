@@ -44,6 +44,8 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
         IList<User> CheckImpersonateUser(string UserName);
         IList<User> GetUserDetailsByEmailAddressAndLegalOrg(string sEmailAddress, string sLegalOrg);
 
+        IList<User> GetUserbyPhysicianNPI(string sPhysicianNPI);
+
     }
     public partial class UserManager : ManagerBase<User, uint>, ILoginManager
     {
@@ -887,6 +889,19 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
         }
 
         //End
+        public IList<User> GetUserbyPhysicianNPI(string sPhysicianNPI)
+        {
+            IList<User> UserList = new List<User>();
+            //ISession iMySession = NHibernateSessionManager.Instance.CreateISession();
+            using (ISession iMySession = NHibernateSessionManager.Instance.CreateISession())
+            {
+                ISQLQuery sql = iMySession.CreateSQLQuery("Select * from User u, physician_library p where p.Physician_NPI= :PhysicianNPI and u.physician_library_id =p.physician_library_id;").AddEntity("u", typeof(User));
+                sql.SetParameter("PhysicianNPI", sPhysicianNPI);
+                UserList = sql.List<User>();
+                iMySession.Close();
+            }
+            return UserList;
+        }
         #endregion
     }
 }

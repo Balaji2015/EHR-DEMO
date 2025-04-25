@@ -4579,18 +4579,22 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
 
         public void UpdateResultMasterAndWf_Object(ulong ResultMasterID, ulong order_Submit_ID, ulong Human_ID, string NPINumber, string MacAddress)
         {
-            PhysicianManager phyMngr = new PhysicianManager();
-            IList<PhysicianLibrary> Phylst = phyMngr.GetPhysicianByNPI(NPINumber);
+            //CAP-3187
+            //PhysicianManager phyMngr = new PhysicianManager();
+            //IList<PhysicianLibrary> Phylst = phyMngr.GetPhysicianByNPI(NPINumber);
             UserManager userMngr = new UserManager();
-
             string Current_Owner = "";
-
-            if (Phylst.Count > 0)
-            {
-                IList<User> ResultList = userMngr.GetUserbyPhysicianLibraryID(Phylst[0].Id).ToList<User>();
+            
+            //CAP-3187
+            //if (Phylst.Count > 0)
+            //{
+            //IList<User> ResultList = userMngr.GetUserbyPhysicianLibraryID(Phylst[0].Id).ToList<User>();
+            IList<User> ResultList = userMngr.GetUserbyPhysicianNPI(NPINumber);                
+                if (ResultList !=null) { 
                 Current_Owner = ResultList[0].user_name;
+                }
 
-            }
+           // }
 
             ResultMaster objResultMaster = GetById(ResultMasterID);
             if (objResultMaster != null)
