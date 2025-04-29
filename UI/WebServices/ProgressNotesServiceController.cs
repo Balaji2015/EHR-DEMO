@@ -527,9 +527,9 @@ namespace Acurus.Capella.UI.WebServices.API
                             XmlNode AdditionalParentElelemnt = doc.CreateElement("tr");
                             XmlNode AdditionalElement = null;
                             IList<string> AdditionalValues = new List<string>();
-                            AdditionalValues.Add("EncounterID :" + sEncounterIDForPatientDetails);
-                            AdditionalValues.Add("PhysicianID :" + sPhysicianID);
-                            AdditionalValues.Add("Physician EMail Address :" + sUserEmailAddr);
+                            AdditionalValues.Add("EncounterID:" + sEncounterIDForPatientDetails);
+                            AdditionalValues.Add("PhysicianID:" + sPhysicianID);
+                            AdditionalValues.Add("Physician EMail Address:" + sUserEmailAddr);
                             for (int iCount = 0; iCount < AdditionalValues.Count; iCount++)
                             {
                                 AdditionalElement = doc.CreateElement("td");
