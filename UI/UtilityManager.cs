@@ -6507,7 +6507,16 @@ namespace Acurus.Capella.UI
                         {
                             foreach (XmlAttribute removeXMLAttr in RemoveXMLNode[0].Attributes)
                             {
-                                xmlFinalNode.FirstChild.Attributes.GetNamedItem(removeXMLAttr.Name).Value = removeXMLAttr.Value;
+                                if (xmlFinalNode.FirstChild.Attributes.GetNamedItem(removeXMLAttr.Name)?.Value != null)
+                                {
+                                    xmlFinalNode.FirstChild.Attributes.GetNamedItem(removeXMLAttr.Name).Value = removeXMLAttr.Value;
+                                }
+                                else
+                                {
+                                    XmlAttribute xmlatr = xmlDoc.CreateAttribute(removeXMLAttr.Name);
+                                    xmlatr.Value = removeXMLAttr.Value;
+                                    xmlFinalNode.FirstChild.Attributes.Append(xmlatr);
+                                }
                             }
                         }
                         //Appending modified Nodes - End
