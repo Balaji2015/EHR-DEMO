@@ -58,16 +58,16 @@
             padding-left:125px!important;
         }       
         #cboLabName{
-            padding-left:70px!important;
+            /*padding-left:70px!important;*/
         }
         #cboErrorReason{
-            padding-left:30px!important;
+            /*padding-left:30px!important;*/
         }
         #lblCategory{
             padding-left:90px!important;
         }
         #cboCategory{
-            padding-left:20px!important;
+            /*padding-left:20px!important;*/
         }
     </style>
     <link href="~/CSS/CommonStyle.css" rel="Stylesheet" type="text/css" />
@@ -92,8 +92,10 @@
                                         <asp:Label ID="lblSelectProvider" Font-Size="Small" runat="server" Text="Select Provider" CssClass="spanstyle"></asp:Label>
                                     </td>
                                     <td>
-                                        <telerik:RadComboBox ID="cboProviderName" Font-Size="Small" Font-Bold="false" runat="server"
-                                            Height="75px" Width="255px" />
+                                        <%--<telerik:RadComboBox ID="cboProviderName" Font-Size="Small" Font-Bold="false" runat="server"
+                                            Height="75px" Width="255px" />--%>
+                                        <asp:DropDownList ID="cboProviderName" runat="server" style="padding: 4px 8px;font-size: 13px;width: 280px;line-height: 1.2;box-sizing: border-box;height: 25px;">
+                                        </asp:DropDownList>
                                         <asp:CheckBox ID="chkProviderName" Font-Size="Small" runat="server" Font-Bold="false"
                                             Text="Show All Physician" AutoPostBack="true" OnCheckedChanged="chkProviderName_CheckedChanged" />
                                     </td>
@@ -128,9 +130,11 @@
                             <asp:Label ID="lblToDate" Font-Size="Small" runat="server" Text="To" CssClass="spanstyle"></asp:Label>
                             <telerik:RadDatePicker ID="toDate" runat="server"></telerik:RadDatePicker>
                             <asp:Label ID="lblLabName" Font-Size="Small" Text="Lab Name" runat="server" CssClass="spanstyle"></asp:Label>
-                            <telerik:RadComboBox ID="cboLabName" Font-Size="Small" Font-Bold="false" runat="server"
+                            <%--<telerik:RadComboBox ID="cboLabName" Font-Size="Small" Font-Bold="false" runat="server"
                                 Height="75px" Width="400px" CssClass="Editabletxtbox">
-                            </telerik:RadComboBox>
+                            </telerik:RadComboBox>--%>
+                            <asp:DropDownList ID="cboLabName" runat="server" style="margin-left: 70px;padding: 4px 8px;font-size: 13px;width: 400px;line-height: 1.2;box-sizing: border-box;height: 25px;;text-align: left;direction: ltr;">
+                            </asp:DropDownList>
                             <%--<asp:DropDownList ID="DropDownList1" runat="server" style="margin-left: 70px;padding: 4px 8px;font-size: 13px;width: 400px;line-height: 1.2;box-sizing: border-box;height: 25px;"></asp:DropDownList>--%>
 
                             <%-- <asp:RadioButton ID="rbtnAllResults" AutoPostBack="true" runat="server" Text="All Results"
@@ -149,18 +153,27 @@
                     <tr>
                         <td style="width: 100%; height: 36px">
                             <asp:Label ID="lblErrorReason" Font-Size="Small" Text="Error Reason" runat="server" CssClass="spanstyle"></asp:Label>
-                            <telerik:RadComboBox ID="cboErrorReason" Font-Size="Small" Font-Bold="false" runat="server"
+                            <%--<telerik:RadComboBox ID="cboErrorReason" Font-Size="Small" Font-Bold="false" runat="server"
                                 Height="75px" Width="386px"  CssClass="Editabletxtbox">
-                            </telerik:RadComboBox>
+                            </telerik:RadComboBox>--%>
+                            <asp:DropDownList ID="cboErrorReason" runat="server" style="margin-left: 30px;padding: 4px 8px;font-size: 13px;width: 385px;line-height: 1.2;box-sizing: border-box;height: 25px;">
+                            </asp:DropDownList>
                             <asp:Label ID="lblCategory" Font-Size="Small" Text="Matching Category" runat="server" CssClass="spanstyle"></asp:Label>
-                            <telerik:RadComboBox ID="cboCategory" Font-Size="Small" Font-Bold="false" runat="server"
+                            <%--<telerik:RadComboBox ID="cboCategory" Font-Size="Small" Font-Bold="false" runat="server"
                                 Height="75px" Width="400px"  CssClass="Editabletxtbox">
                                 <Items>
                                     <telerik:RadComboBoxItem runat="server" Text="All Results" Font-Size="Small"  CssClass="Editabletxtbox" />
                                     <telerik:RadComboBoxItem runat="server" Text="Result Attached to Patient Chart" Font-Size="Small"  CssClass="Editabletxtbox"/>
                                     <telerik:RadComboBoxItem runat="server" Text="Result Not Attached to Patient Chart" Font-Size="Small"  CssClass="Editabletxtbox"/>
                                 </Items>
-                            </telerik:RadComboBox>
+                            </telerik:RadComboBox>--%>
+                            <asp:DropDownList ID="cboCategory" runat="server" style="margin-left: 21px;padding: 4px 8px;font-size: 13px;width: 400px;line-height: 1.2;box-sizing: border-box;height: 25px;">
+                                <Items>
+                                   <asp:ListItem Text="All Results" Value="All Results" Selected="True"></asp:ListItem>
+                                   <asp:ListItem Text="Result Attached to Patient Chart" Value="Attached"></asp:ListItem>
+                                   <asp:ListItem Text="Result Not Attached to Patient Chart" Value="NotAttached"></asp:ListItem>
+                                </Items>
+                            </asp:DropDownList>
                         </td>
                     </tr>
                     <tr>

@@ -36,7 +36,9 @@ namespace Acurus.Capella.UI
             {
                 cboUnmatchProvider.Items.Add(new RadComboBoxItem(""));
                 cboUnmatchProvider.Items[0].Value = "";
-                cboProviderName.Items.Add(new RadComboBoxItem("ALL"));
+                //CAP-3208
+                //cboProviderName.Items.Add(new RadComboBoxItem("ALL"));
+                cboProviderName.Items.Add(new ListItem("ALL"));
 
                 if (grdUnassignedResults.DataSource == null)
                 {
@@ -74,13 +76,25 @@ namespace Acurus.Capella.UI
 
                 if (PhyUserList.PhyList != null)
                 {
+                    //CAP-3208
+                    //for (int i = 0; i < PhyUserList.PhyList.Count; i++)
+                    //{
+                    //    string sPhyName = PhyUserList.PhyList[i].PhyPrefix + " " + PhyUserList.PhyList[i].PhyFirstName + " " + PhyUserList.PhyList[i].PhyMiddleName + " " + PhyUserList.PhyList[i].PhyLastName + " " + PhyUserList.PhyList[i].PhySuffix;
+                    //    cboProviderName.Items.Add(new RadComboBoxItem(sPhyName.Trim()));
+                    //    cboProviderName.Items[i + 1].Value = PhyUserList.PhyList[i].PhyNPI;
+                    //    if (PhyUserList.UserList[i].user_name.ToString() == ClientSession.UserName)
+                    //        cboProviderName.SelectedIndex = i + 1;
+                    //}
+
                     for (int i = 0; i < PhyUserList.PhyList.Count; i++)
                     {
                         string sPhyName = PhyUserList.PhyList[i].PhyPrefix + " " + PhyUserList.PhyList[i].PhyFirstName + " " + PhyUserList.PhyList[i].PhyMiddleName + " " + PhyUserList.PhyList[i].PhyLastName + " " + PhyUserList.PhyList[i].PhySuffix;
-                        cboProviderName.Items.Add(new RadComboBoxItem(sPhyName.Trim()));
-                        cboProviderName.Items[i + 1].Value = PhyUserList.PhyList[i].PhyNPI;
+                        ListItem listItem = new ListItem(sPhyName.Trim(), PhyUserList.PhyList[i].PhyNPI);
+                        cboProviderName.Items.Add(listItem);
                         if (PhyUserList.UserList[i].user_name.ToString() == ClientSession.UserName)
+                        {
                             cboProviderName.SelectedIndex = i + 1;
+                        }
                     }
                 }
 
@@ -98,7 +112,9 @@ namespace Acurus.Capella.UI
                 pageNavigator1.lbtnNext.Attributes.Add("onclick", "check();");
                 pageNavigator1.lbtnFirst.Attributes.Add("onclick", "check();");
                 pageNavigator1.lbtnPrevious.Attributes.Add("onclick", "check();");
-                cboProviderName.Items.Add(new RadComboBoxItem("PROVIDER NOT ASSIGNED"));
+                //CAP-3208
+                //cboProviderName.Items.Add(new RadComboBoxItem("PROVIDER NOT ASSIGNED"));
+                cboProviderName.Items.Add(new ListItem("PROVIDER NOT ASSIGNED"));
                 pageNavigator1.TotalNoofDBRecords = 0;
                 //rbtnAllResults.Checked = true;
                 cboUnmatchProvider.Enabled = false;
@@ -142,47 +158,60 @@ namespace Acurus.Capella.UI
                 //    }
                 //}
 
+                //CAP-3208
+                //LabManager objmgr = new LabManager();
+                //IList<Lab> listLabList = new List<Lab>();
+                //listLabList = objmgr.GetlabName();
+                //int count = 0;
+                //cboLabName.Items.Add(new RadComboBoxItem(""));
+                //cboLabName.Items[count].Value = "0";
+                ////CAP-2923
+                //count++;
+                //if (listLabList != null && listLabList.Count > 0)
+                //{
+                //    foreach (Lab objlab in listLabList)
+                //    {
+                //        cboLabName.Items.Add(new RadComboBoxItem(objlab.Lab_Name.ToString()));
+                //        cboLabName.Items[count].Value = objlab.Id.ToString();
+                //        count++;
+                //    }
+                //}
+
                 LabManager objmgr = new LabManager();
-                IList<Lab> listLabList = new List<Lab>();
-                listLabList = objmgr.GetlabName();
-                int count = 0;
-                cboLabName.Items.Add(new RadComboBoxItem(""));
-                cboLabName.Items[count].Value = "0";
-                //CAP-2923
-                count++;
-                if (listLabList != null && listLabList.Count > 0)
+                var listLabList = objmgr.GetlabName();
+
+                cboLabName.Items.Clear();
+                cboLabName.Items.Add(new ListItem("", "0"));
+
+                if (listLabList != null && listLabList.Any())
                 {
-                    foreach (Lab objlab in listLabList)
+                    foreach (var lab in listLabList)
                     {
-                        cboLabName.Items.Add(new RadComboBoxItem(objlab.Lab_Name.ToString()));
-                        cboLabName.Items[count].Value = objlab.Id.ToString();
-                        count++;
+                        cboLabName.Items.Add(new ListItem(lab.Lab_Name, lab.Id.ToString()));
                     }
                 }
 
-                //LabManager objmgr = new LabManager();
-                //var listLab = objmgr.GetlabName();
-
-                //cboLabName.Items.Clear();
-                //cboLabName.Items.Add(new ListItem("", "0"));
-
-                //if (listLab != null && listLab.Any())
+                //CAP-3208
+                //StaticLookupManager sm = new StaticLookupManager();
+                //IList<StaticLookup> Errorlst = sm.getStaticLookupByFieldName("ERROR_CODE");
+                //cboErrorReason.Items.Add(new RadComboBoxItem(""));
+                //foreach (StaticLookup sl in Errorlst)
                 //{
-                //    foreach (var lab in listLab)
-                //    {
-                //        cboLabName.Items.Add(new ListItem(lab.Lab_Name, lab.Id.ToString()));
-                //    }
+                //    // if (sl.Value != "ACUR_LAB_03" && sl.Value != "ACUR_LAB_04") //For Bug Id : 68705
+                //   if (sl.Value != "ACUR_LAB_04")
+                //        cboErrorReason.Items.Add(new RadComboBoxItem(sl.Value + "-" + sl.Description));
                 //}
 
                 StaticLookupManager sm = new StaticLookupManager();
                 IList<StaticLookup> Errorlst = sm.getStaticLookupByFieldName("ERROR_CODE");
-                cboErrorReason.Items.Add(new RadComboBoxItem(""));
+                cboErrorReason.Items.Add(new ListItem(""));
+
                 foreach (StaticLookup sl in Errorlst)
                 {
-                    // if (sl.Value != "ACUR_LAB_03" && sl.Value != "ACUR_LAB_04") //For Bug Id : 68705
-                   if (sl.Value != "ACUR_LAB_04")
-                        cboErrorReason.Items.Add(new RadComboBoxItem(sl.Value + "-" + sl.Description));
+                    if (sl.Value != "ACUR_LAB_04")
+                        cboErrorReason.Items.Add(new ListItem(sl.Value + "-" + sl.Description));
                 }
+
             }
             else
             {
@@ -225,30 +254,58 @@ namespace Acurus.Capella.UI
             grdUnassignedResults.DataSource = null;
             chkNoOrders.Checked = false;
             Clear();
-            if (cboProviderName.SelectedIndex != null)
+            //CAP-3208
+            //if (cboProviderName.SelectedIndex != null)
+            //{
+            //    if (cboProviderName.Items[cboProviderName.SelectedIndex].Value != null)
+            //        NPINumbers = cboProviderName.Items[cboProviderName.SelectedIndex].Value.ToString();
+            //    else
+            //        NPINumbers = "";
+            //}
+            if (cboProviderName.SelectedIndex >= 0)
             {
-                if (cboProviderName.Items[cboProviderName.SelectedIndex].Value != null)
-                    NPINumbers = cboProviderName.Items[cboProviderName.SelectedIndex].Value.ToString();
+                if (!string.IsNullOrEmpty(cboProviderName.SelectedValue))
+                    NPINumbers = cboProviderName.SelectedValue.ToString();
                 else
                     NPINumbers = "";
             }
-            if (cboCategory.Items[cboCategory.SelectedIndex].Value != null)
-                sCriteria = cboCategory.Items[cboCategory.SelectedIndex].Text.ToString();
+            //CAP-3208
+            //if (cboCategory.Items[cboCategory.SelectedIndex].Value != null)
+            //    sCriteria = cboCategory.Items[cboCategory.SelectedIndex].Text.ToString();
+
+            if (!string.IsNullOrEmpty(cboCategory.SelectedValue))
+                sCriteria = cboCategory.SelectedItem.Text;
+
+            //CAP-3208
+            //if (cboErrorReason.SelectedIndex != 0)
+            //{
+            //    FieldName.Add("Reason_Code");
+            //    if (cboErrorReason.Items[cboErrorReason.SelectedIndex].Value != null)
+            //        FieldValue.Add(cboErrorReason.Items[cboErrorReason.SelectedIndex].Text.ToString());
+            //}
+
             if (cboErrorReason.SelectedIndex != 0)
             {
                 FieldName.Add("Reason_Code");
-                if (cboErrorReason.Items[cboErrorReason.SelectedIndex].Value != null)
-                    FieldValue.Add(cboErrorReason.Items[cboErrorReason.SelectedIndex].Text.ToString());
+                if (!string.IsNullOrEmpty(cboErrorReason.SelectedValue))
+                    FieldValue.Add(cboErrorReason.SelectedItem.Text);
             }
+
+            //CAP-3208
+            //if (cboLabName.SelectedIndex != 0)
+            //{
+            //    FieldName.Add("Lab_Id");
+            //    if (cboLabName.Items[cboLabName.SelectedIndex].Value != null)
+            //        FieldValue.Add(cboLabName.Items[cboLabName.SelectedIndex].Value.ToString());               
+            //}
+
             if (cboLabName.SelectedIndex != 0)
             {
                 FieldName.Add("Lab_Id");
-                if (cboLabName.Items[cboLabName.SelectedIndex].Value != null)
-                    FieldValue.Add(cboLabName.Items[cboLabName.SelectedIndex].Value.ToString());
-
-                //if (!string.IsNullOrEmpty(cboLabName.SelectedValue))
-                //    FieldValue.Add(cboLabName.SelectedValue);
+                if (!string.IsNullOrEmpty(cboLabName.SelectedValue))
+                    FieldValue.Add(cboLabName.SelectedValue);
             }
+
             if (frmDate.SelectedDate.ToString() != "" && toDate.SelectedDate.ToString() != "")
             {
                 FieldName.Add("MSH_Date_And_Time_Of_Message");
@@ -264,25 +321,46 @@ namespace Acurus.Capella.UI
             //    sCriteria = rbtnResultAttachedtoPatientChart.Text;
             //else if (rbtnResultNottoPatientChart.Checked)
             //    sCriteria = rbtnResultNottoPatientChart.Text;
-            if (cboProviderName.Text.ToUpper() == "ALL")
+
+            //CAP - 3208
+            //if (cboProviderName.Text.ToUpper() == "ALL")
+            //{
+            //    sCriteria = cboProviderName.Text.ToUpper();
+            //}
+            //else if (cboProviderName.Text.ToUpper() == "PROVIDER NOT ASSIGNED")
+            //{
+            //    sCriteria = cboProviderName.Text.ToUpper();
+            //}
+            //else if (cboProviderName.SelectedIndex == null)
+            //{
+            //    // ScriptManager.RegisterStartupScript(this, this.GetType(), string.Empty, "DisplayErrorMessage('7100011');", true);
+            //    return;
+            //}
+            //else if (cboProviderName.Items[cboProviderName.SelectedIndex].Value.ToString() == null)
+            //{
+            //    ScriptManager.RegisterStartupScript(this, this.GetType(), string.Empty, " {sessionStorage.setItem('StartLoading', 'false');StopLoadFromPatChart();}DisplayErrorMessage('7100011');", true);
+            //    return;
+            //}
+            //else if (cboProviderName.Items[cboProviderName.SelectedIndex].Value.ToString() == "")
+            //{
+            //    ScriptManager.RegisterStartupScript(this, this.GetType(), string.Empty, " {sessionStorage.setItem('StartLoading', 'false');StopLoadFromPatChart();}DisplayErrorMessage('7100011');", true);
+            //    return;
+            //}
+
+            if (cboProviderName.SelectedItem.Text.ToUpper() == "ALL")
             {
-                sCriteria = cboProviderName.Text.ToUpper();
+                sCriteria = cboProviderName.SelectedItem.Text.ToUpper();
             }
-            else if (cboProviderName.Text.ToUpper() == "PROVIDER NOT ASSIGNED")
+            else if (cboProviderName.SelectedItem.Text.ToUpper() == "PROVIDER NOT ASSIGNED")
             {
-                sCriteria = cboProviderName.Text.ToUpper();
+                sCriteria = cboProviderName.SelectedItem.Text.ToUpper();
             }
-            else if (cboProviderName.SelectedIndex == null)
+            else if (cboProviderName.SelectedIndex == null && cboProviderName.SelectedIndex < 0)
             {
                 // ScriptManager.RegisterStartupScript(this, this.GetType(), string.Empty, "DisplayErrorMessage('7100011');", true);
                 return;
             }
-            else if (cboProviderName.Items[cboProviderName.SelectedIndex].Value.ToString() == null)
-            {
-                ScriptManager.RegisterStartupScript(this, this.GetType(), string.Empty, " {sessionStorage.setItem('StartLoading', 'false');StopLoadFromPatChart();}DisplayErrorMessage('7100011');", true);
-                return;
-            }
-            else if (cboProviderName.Items[cboProviderName.SelectedIndex].Value.ToString() == "")
+            else if (string.IsNullOrEmpty(cboProviderName.SelectedValue))
             {
                 ScriptManager.RegisterStartupScript(this, this.GetType(), string.Empty, " {sessionStorage.setItem('StartLoading', 'false');StopLoadFromPatChart();}DisplayErrorMessage('7100011');", true);
                 return;
@@ -500,6 +578,7 @@ namespace Acurus.Capella.UI
                             {
                                 if (ResultLabExecptionList[0].Reason_Code != "ACUR_LAB_05" || ResultLabExecptionList[0].Reason_Code != "ACUR_LAB_06")
                                 {
+                                    //CAP-3208
                                     if (cboProviderName.Text.ToUpper() == "ALL")
                                     {
 
@@ -619,40 +698,86 @@ namespace Acurus.Capella.UI
 
         protected void chkProviderName_CheckedChanged(object sender, EventArgs e)
         {
+            //CAP-3208
+            //cboProviderName.Items.Clear();
+            //if (chkProviderName.Checked == true)
+            //{
+            //    PhyUserList = objPhysicianManager.GetPhysicianandUser(false, string.Empty, ClientSession.LegalOrg);
+            //    cboProviderName.Items.Add(new RadComboBoxItem("ALL"));
+            //    if (PhyUserList.PhyList != null)
+            //    {
+            //        for (int i = 0; i < PhyUserList.PhyList.Count; i++)
+            //        {
+            //            string sPhyName = PhyUserList.PhyList[i].PhyPrefix + " " + PhyUserList.PhyList[i].PhyFirstName + " " + PhyUserList.PhyList[i].PhyMiddleName + " " + PhyUserList.PhyList[i].PhyLastName + " " + PhyUserList.PhyList[i].PhySuffix;
+            //            cboProviderName.Items.Add(new RadComboBoxItem(sPhyName));
+            //            cboProviderName.Items[i + 1].Value = PhyUserList.PhyList[i].PhyNPI;
+            //        }
+            //    }
+            //    cboProviderName.Items.Add(new RadComboBoxItem("PROVIDER NOT ASSIGNED"));
+            //}
+            //else
+            //{
+            //    PhyUserList = objPhysicianManager.GetPhysicianandUser(true, ClientSession.FacilityName, ClientSession.LegalOrg);
+            //    cboProviderName.Items.Add(new RadComboBoxItem("ALL"));
+            //    if (PhyUserList.PhyList != null)
+            //    {
+            //        for (int i = 0; i < PhyUserList.PhyList.Count; i++)
+            //        {
+            //            string sPhyName = PhyUserList.PhyList[i].PhyPrefix + " " + PhyUserList.PhyList[i].PhyFirstName + " " + PhyUserList.PhyList[i].PhyMiddleName + " " + PhyUserList.PhyList[i].PhyLastName + " " + PhyUserList.PhyList[i].PhySuffix;
+            //            cboProviderName.Items.Add(new RadComboBoxItem(sPhyName));
+            //            cboProviderName.Items[i + 1].Value = PhyUserList.PhyList[i].PhyNPI;
+            //            if (PhyUserList.UserList[i].user_name.ToString() == ClientSession.UserName)
+            //            {
+            //                cboProviderName.SelectedIndex = i + 1;
+            //            }
+            //        }
+            //    }
+            //    cboProviderName.Items.Add(new RadComboBoxItem("PROVIDER NOT ASSIGNED"));
+            //}
+
             cboProviderName.Items.Clear();
-            if (chkProviderName.Checked == true)
+
+            if (chkProviderName.Checked)
             {
                 PhyUserList = objPhysicianManager.GetPhysicianandUser(false, string.Empty, ClientSession.LegalOrg);
-                cboProviderName.Items.Add(new RadComboBoxItem("ALL"));
+
+                cboProviderName.Items.Add(new ListItem("ALL"));
+
                 if (PhyUserList.PhyList != null)
                 {
                     for (int i = 0; i < PhyUserList.PhyList.Count; i++)
                     {
-                        string sPhyName = PhyUserList.PhyList[i].PhyPrefix + " " + PhyUserList.PhyList[i].PhyFirstName + " " + PhyUserList.PhyList[i].PhyMiddleName + " " + PhyUserList.PhyList[i].PhyLastName + " " + PhyUserList.PhyList[i].PhySuffix;
-                        cboProviderName.Items.Add(new RadComboBoxItem(sPhyName));
-                        cboProviderName.Items[i + 1].Value = PhyUserList.PhyList[i].PhyNPI;
+                        var phy = PhyUserList.PhyList[i];
+                        string sPhyName = $"{phy.PhyPrefix} {phy.PhyFirstName} {phy.PhyMiddleName} {phy.PhyLastName} {phy.PhySuffix}".Trim();
+                        cboProviderName.Items.Add(new ListItem(sPhyName, phy.PhyNPI));
                     }
                 }
-                cboProviderName.Items.Add(new RadComboBoxItem("PROVIDER NOT ASSIGNED"));
+
+                cboProviderName.Items.Add(new ListItem("PROVIDER NOT ASSIGNED"));
             }
             else
             {
                 PhyUserList = objPhysicianManager.GetPhysicianandUser(true, ClientSession.FacilityName, ClientSession.LegalOrg);
-                cboProviderName.Items.Add(new RadComboBoxItem("ALL"));
+
+                cboProviderName.Items.Add(new ListItem("ALL"));
+
                 if (PhyUserList.PhyList != null)
                 {
                     for (int i = 0; i < PhyUserList.PhyList.Count; i++)
                     {
-                        string sPhyName = PhyUserList.PhyList[i].PhyPrefix + " " + PhyUserList.PhyList[i].PhyFirstName + " " + PhyUserList.PhyList[i].PhyMiddleName + " " + PhyUserList.PhyList[i].PhyLastName + " " + PhyUserList.PhyList[i].PhySuffix;
-                        cboProviderName.Items.Add(new RadComboBoxItem(sPhyName));
-                        cboProviderName.Items[i + 1].Value = PhyUserList.PhyList[i].PhyNPI;
-                        if (PhyUserList.UserList[i].user_name.ToString() == ClientSession.UserName)
+                        var phy = PhyUserList.PhyList[i];
+                        string sPhyName = $"{phy.PhyPrefix} {phy.PhyFirstName} {phy.PhyMiddleName} {phy.PhyLastName} {phy.PhySuffix}".Trim();
+                        var item = new ListItem(sPhyName, phy.PhyNPI);
+                        cboProviderName.Items.Add(item);
+
+                        if (PhyUserList.UserList[i].user_name.Equals(ClientSession.UserName, StringComparison.OrdinalIgnoreCase))
                         {
-                            cboProviderName.SelectedIndex = i + 1;
+                            item.Selected = true;
                         }
                     }
                 }
-                cboProviderName.Items.Add(new RadComboBoxItem("PROVIDER NOT ASSIGNED"));
+
+                cboProviderName.Items.Add(new ListItem("PROVIDER NOT ASSIGNED", "PROVIDER NOT ASSIGNED"));
             }
         }
 

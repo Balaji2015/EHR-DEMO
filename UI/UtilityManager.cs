@@ -6600,7 +6600,7 @@ namespace Acurus.Capella.UI
                         }
                         else if (sNotesType.ToUpper() == "CONSULTATION NOTE")
                         {
-                            string sRemoveheader = "CONSULTATION NOTE</b></p>";
+                            string sRemoveheader = "</SecondSection></p>";
                             sTransformedValue = sTransformedValue.Replace(sTransformedValue.Substring(0, sTransformedValue.IndexOf(sRemoveheader) + sRemoveheader.Length), "");
                         }
 
@@ -6623,7 +6623,7 @@ namespace Acurus.Capella.UI
             {
                 sTransformedData = SortingSections(sTransformedData, "//div[@class='grid-container']", "sortorder", true, (sNotesType == "WELLNESS NOTES"));
             }
-
+            sTransformedData = sTransformedData.Replace("<SecondSection>", "").Replace("</SecondSection>", "");
             return sTransformedData;
         }
 

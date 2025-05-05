@@ -997,7 +997,9 @@ namespace Acurus.Capella.UI
                 return "Session Expired";
             }
             string strPath, strFooterText = string.Empty;
-            string strType = strCategory.Replace("%20", " ");
+            //CAP-3203
+            //string strType = strCategory.Replace("%20", " ");
+            string strType = strCategory.Replace("%20", " ").Replace("+", " ");
             string strEncounterId = ClientSession.EncounterId.ToString();
             IList<PatientPane> PatientPaneList = ClientSession.PatientPaneList.Where(a => a.Encounter_ID == ClientSession.EncounterId).ToList<PatientPane>();
             string strDemographics = PatientPaneList[0].Last_Name + ", " + PatientPaneList[0].First_Name + " " + PatientPaneList[0].MI + " " + PatientPaneList[0].Suffix + " | " + Convert.ToDateTime(PatientPaneList[0].Birth_Date).ToString("dd-MMM-yyyy") + " | " + PatientPaneList[0].Sex + " | Acc #:" + PatientPaneList[0].Human_Id + " | " + PatientPaneList[0].Patient_Type + " | " + strDos + " | " + strProvider;

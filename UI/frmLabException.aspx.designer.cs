@@ -66,7 +66,7 @@ namespace Acurus.Capella.UI
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::Telerik.Web.UI.RadComboBox cboProviderName;
+        protected global::System.Web.UI.WebControls.DropDownList cboProviderName;
 
         /// <summary>
         /// chkProviderName control.
@@ -147,7 +147,7 @@ namespace Acurus.Capella.UI
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::Telerik.Web.UI.RadComboBox cboLabName;
+        protected global::System.Web.UI.WebControls.DropDownList cboLabName;
 
         /// <summary>
         /// lblErrorReason control.
@@ -165,7 +165,7 @@ namespace Acurus.Capella.UI
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::Telerik.Web.UI.RadComboBox cboErrorReason;
+        protected global::System.Web.UI.WebControls.DropDownList cboErrorReason;
 
         /// <summary>
         /// lblCategory control.
@@ -183,7 +183,7 @@ namespace Acurus.Capella.UI
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::Telerik.Web.UI.RadComboBox cboCategory;
+        protected global::System.Web.UI.WebControls.DropDownList cboCategory;
 
         /// <summary>
         /// lblSearch control.
