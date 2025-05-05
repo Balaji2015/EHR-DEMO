@@ -605,6 +605,11 @@ function SelectOrders() {
         var c = l.split("|");
         // n.value = c[0], n.disabled = !0, a.value = c[1], a.disabled = !0;
         orp.value = c[0], orp.disabled = !0, a.value = c[1], a.disabled = !0;
+        //CAP-2832
+        if ((orp.value == "" || orp.value == "0") && orp.disabled == true) {
+            $('select[name="cboOrderPhysician"]').find('option[value="4387"]').attr("selected", "selected");
+            orp.value = 4387;
+        }
         //if (n.value == "") {
         //    $('select[name="cboPhysician"]').find('option[value="4387"]').attr("selected", "selected");
         //    n.value = 4387;
