@@ -1619,7 +1619,27 @@ namespace Acurus.Capella.UI
                 //CAP-790
                 if (Session["human_id"] != null)
                 {
-                    PageViewScan.ContentUrl = "frmImageViewer.aspx?FilePath=" + TargetValue.ToString().Replace("#", "HASHSYMBOL") + "&Source=RESULT" + "&HumanId=" + Session["human_id"].ToString();
+                    //CAP-3151
+                    string showDocumentVersion = System.Configuration.ConfigurationSettings.AppSettings["ShowDocumentVersion"];
+                    if (TargetValue.ToUpper().Contains(".PDF") && showDocumentVersion == "V2")
+                    {
+                        string targetValue = TargetValue.ToString().Replace("#", "HASHSYMBOL");
+                        targetValue = targetValue.Replace("/", "\\");
+                        
+                        string capellaDocumentUrl = ConfigurationSettings.AppSettings["CapellaDocumentUrl"];
+                        string folderName = capellaDocumentUrl.Substring(capellaDocumentUrl.LastIndexOf('\\'));
+
+                        string[] parts = targetValue.Split(new string[] { folderName }, StringSplitOptions.None);
+                        if (parts.Length > 1)
+                        {
+                            targetValue = capellaDocumentUrl + parts[1];
+                        }
+                        PageViewScan.ContentUrl = targetValue;
+                    }
+                    else
+                    {
+                        PageViewScan.ContentUrl = "frmImageViewer.aspx?FilePath=" + TargetValue.ToString().Replace("#", "HASHSYMBOL") + "&Source=RESULT" + "&HumanId=" + Session["human_id"].ToString();
+                    }
                 }
                 PageViewScan.Selected = true;
                 if (OrderSubID != null && IDName != string.Empty)// IDName=="ResultMasterID")//added  for BugID:66433
