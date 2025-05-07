@@ -101,6 +101,7 @@ namespace Acurus.Capella.Core.DomainObjects
         private string _MA_Notes = string.Empty;
         private string _File_Name = string.Empty;
         private ulong _Matching_Patient_Id = 0;
+        private ulong _Matching_Physician_Id = 0;
         //vince  Dec-29-2012 for patient chart//////
         #endregion
 
@@ -201,6 +202,7 @@ namespace Acurus.Capella.Core.DomainObjects
             sb.Append(_MA_Notes);
             sb.Append(_File_Name);
             sb.Append(_Matching_Patient_Id);
+            sb.Append(_Matching_Physician_Id);
             return sb.ToString().GetHashCode();
         }
 
@@ -613,6 +615,12 @@ namespace Acurus.Capella.Core.DomainObjects
         {
             get { return _Matching_Patient_Id; }
             set { _Matching_Patient_Id = value; }
+        }
+        [DataMember]
+        public virtual ulong Matching_Physician_Id
+        {
+            get { return _Matching_Physician_Id; }
+            set { _Matching_Physician_Id = value; }
         }
         #endregion
 

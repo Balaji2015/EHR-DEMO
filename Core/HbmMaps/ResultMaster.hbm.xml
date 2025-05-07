@@ -66,6 +66,7 @@
     <property name="MA_Notes" column="MA_Notes" />
     <property name="File_Name" column="File_Name" />
     <property name="Matching_Patient_Id" column="Matching_Patient_Id" />
+    <property name="Matching_Physician_Id" column="Matching_Physician_Id" />
   </class>
 </hibernate-mapping>
 
