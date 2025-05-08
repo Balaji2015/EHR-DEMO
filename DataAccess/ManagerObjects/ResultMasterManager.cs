@@ -3488,20 +3488,24 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
             //iMySession.Close();
 
 
-            IList<Human> objHuman = new List<Human>();
+                //IList<Human> objHuman = new List<Human>();
                 //ISQLQuery sql = iMySession.CreateSQLQuery("select h.*  from Human h  where h.First_Name ='" + sFirstname + "' and h.Last_Name='" + sLastname + "' and h.Birth_Date='" + sDob + "' and h.Sex like '" + sSex + "%' and h.account_status='active';").AddEntity("h", typeof(Human));
                 //For bug Id: 71296
                 //CAP-3071
-                ISQLQuery sql = MySession.CreateSQLQuery("select h.Human_Id, version from Human h  where h.First_Name =:Firstname and h.Last_Name=:Lastname and h.Birth_Date=:Dob and h.Sex like '" + sSex + "%' and h.account_status='active';").AddEntity("h", typeof(Human));
+                ISQLQuery sql = MySession.CreateSQLQuery("select h.Human_Id from Human h  where h.First_Name =:Firstname and h.Last_Name=:Lastname and h.Birth_Date=:Dob and h.Sex like '" + sSex + "%' and h.account_status='active';");
                 sql.SetParameter("Firstname", sFirstname.Replace("'", "''"));
                 sql.SetParameter("Lastname", sLastname.Replace("'", "''"));
                 sql.SetParameter("Dob", sDob);
                 // sql.SetParameter("Sex", sSex);
 
-                if (sql.List<Human>().Count != 0)
+                //CAP-2901
+                if (sql.List<object>().Count != 0)
                 {
-                    objHuman = sql.List<Human>();
-                    ulHumanId = objHuman[0].Id;
+                    var objHuman = sql.List<object>().FirstOrDefault();
+                    if (objHuman != null)
+                {
+                        ulong.TryParse(objHuman.ToString(), out ulHumanId);
+                    }
                     //if (objHuman.Count > 1)
                     //{
                     //    objHuman = objHuman.Where(a => a.Account_Status.ToUpper() == "ACTIVE").ToList<Human>();
