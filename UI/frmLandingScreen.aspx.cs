@@ -41,7 +41,10 @@ namespace Acurus.Capella.UI
             string localdate = null;
             string universaloffset = null;
             string localDateAndTime = null;
+            //CAP-3247
             string bDayLightSavings = null;
+            string stateEmail = string.Empty;
+            string stateAccountType = string.Empty;
             //CAP-2019
             try
             {
@@ -78,6 +81,18 @@ namespace Acurus.Capella.UI
                 {
                     bDayLightSavings = parts[6];
                 }
+
+                //CAP-3247
+                if (parts.Length > 7)
+                {
+                    stateEmail = parts[7];
+                }
+
+                if (parts.Length > 8)
+                {
+                    stateAccountType = parts[8];
+                }
+
                 #endregion
             }
             catch (Exception ex)
@@ -273,8 +288,19 @@ namespace Acurus.Capella.UI
                 if (string.IsNullOrWhiteSpace(sUserName))
                 {
                     //CAP-2389 & CAP-2379
-                    var unauthorizedUserMessage = GenerateUnAuthorizedUserMessage(sUserName, sUserAccountType);
-                    this.Page.ClientScript.RegisterStartupScript(this.Page.GetType(), "invalidrequest", $"ScriptErrorLogEntry('User not permitted', '0', '0', 'frmLandingScreen.aspx', '{unauthorizedUserMessage.Item1}', 'false');DisplayErrorMessage('000009', '', '{string.Join("-", unauthorizedUserMessage.Item2)}');", true);
+                    //CAP-3247
+                    if (!string.IsNullOrWhiteSpace(stateEmail))
+                    {
+                        var unauthorizedUserMessage = GenerateUnAuthorizedUserMessage(stateEmail, stateAccountType ?? "");
+                        this.Page.ClientScript.RegisterStartupScript(this.Page.GetType(), "invalidusername", $"ScriptErrorLogEntry('User not permitted', '0', '0', 'frmLandingScreen.aspx', '{unauthorizedUserMessage.Item1}', 'false');DisplayErrorMessage('000009', '', '{string.Join("-", unauthorizedUserMessage.Item2)}');", true);
+                        return;
+                    }
+                    else
+                    {
+                        var unauthorizedUserMessage = GenerateUnAuthorizedUserMessage("", "");
+                        this.Page.ClientScript.RegisterStartupScript(this.Page.GetType(), "invalidusername", $";DisplayErrorMessage('000009', '', '{string.Join("-", unauthorizedUserMessage.Item2)}');", true);
+                        return;
+                    }        
                 }
                 else
                 {
@@ -290,9 +316,19 @@ namespace Acurus.Capella.UI
             if (string.IsNullOrWhiteSpace(sUserName))
             {
                 //CAP-2389 & CAP-2379
-                var unauthorizedUserMessage = GenerateUnAuthorizedUserMessage(sUserName, sUserAccountType);
-                this.Page.ClientScript.RegisterStartupScript(this.Page.GetType(), "invalidusername", $"ScriptErrorLogEntry('User not permitted', '0', '0', 'frmLandingScreen.aspx', '{unauthorizedUserMessage.Item1}', 'false');DisplayErrorMessage('000009', '', '{string.Join("-", unauthorizedUserMessage.Item2)}');", true);
-                return;
+                //CAP-3247
+                if (!string.IsNullOrWhiteSpace(stateEmail)) 
+                {
+                    var unauthorizedUserMessage = GenerateUnAuthorizedUserMessage(stateEmail, sUserAccountType ?? stateAccountType ?? "");
+                    this.Page.ClientScript.RegisterStartupScript(this.Page.GetType(), "invalidusername", $"ScriptErrorLogEntry('User not permitted', '0', '0', 'frmLandingScreen.aspx', '{unauthorizedUserMessage.Item1}', 'false');DisplayErrorMessage('000009', '', '{string.Join("-", unauthorizedUserMessage.Item2)}');", true);
+                    return;
+                }
+                else
+                {
+                    var unauthorizedUserMessage = GenerateUnAuthorizedUserMessage("", "");
+                    this.Page.ClientScript.RegisterStartupScript(this.Page.GetType(), "invalidusername", $";DisplayErrorMessage('000009', '', '{string.Join("-", unauthorizedUserMessage.Item2)}');", true);
+                    return;
+                }
             }
 
             if (Request.Form["EHRUserName"] != null) //Load Balancer - Automatic Single Sign On
@@ -641,7 +677,8 @@ namespace Acurus.Capella.UI
                 else
                 {
                     //CAP-2389 & CAP-2379
-                    var unauthorizedUserMessage = GenerateUnAuthorizedUserMessage(sUserName, sUserAccountType);
+                    //CAP-3247
+                    var unauthorizedUserMessage = GenerateUnAuthorizedUserMessage(sUserName ?? stateEmail, sUserAccountType ?? stateAccountType);
                     // ScriptErrorLogEntry(evt.message, evt.lineno, evt.colno, evt.filename, evt?.error?.stack, true);
                     this.Page.ClientScript.RegisterStartupScript(this.Page.GetType(), string.Empty, $"ScriptErrorLogEntry('User not permitted', '0', '0', 'frmLandingScreen.aspx', '{unauthorizedUserMessage.Item1}', 'false');DisplayErrorMessage('000009', '', '{string.Join("-", unauthorizedUserMessage.Item2)}');", true);
                     return;
@@ -650,7 +687,8 @@ namespace Acurus.Capella.UI
             else
             {
                 //CAP-2389 & CAP-2379
-                var unauthorizedUserMessage = GenerateUnAuthorizedUserMessage(sUserName, sUserAccountType);
+                //CAP-3247
+                var unauthorizedUserMessage = GenerateUnAuthorizedUserMessage(sUserName ?? stateEmail, sUserAccountType ?? stateAccountType);
                 this.Page.ClientScript.RegisterStartupScript(this.Page.GetType(), string.Empty, $"ScriptErrorLogEntry('User not permitted', '0', '0', 'frmLandingScreen.aspx', '{unauthorizedUserMessage.Item1}', 'false');DisplayErrorMessage('000009', '', '{string.Join("-", unauthorizedUserMessage.Item2)}');", true);
                 //Response.Redirect("/frmLoginNew.aspx");
                 //this.Page.ClientScript.RegisterStartupScript(this.Page.GetType(), string.Empty, "DisplayErrorMessage('010001');", true);

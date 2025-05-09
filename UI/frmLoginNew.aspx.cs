@@ -335,7 +335,8 @@ namespace Acurus.Capella.UI
             var bDayLightSavings = (hdnFollowsDayLightSavings?.Value ?? "").Equals("true", StringComparison.InvariantCultureIgnoreCase);
 
             //CAP-2019
-            var state = Convert.ToBase64String(Encoding.UTF8.GetBytes(Guid.NewGuid().ToString() + "|" + (HttpUtility.UrlEncode(Request.QueryString["redirecturl"]) ?? "") + "|" + hdnLocalTime.Value + "|" + hdnLocalDate.Value + "|" + hdnUniversaloffset.Value + "|" + hdnLocalDateAndTime.Value + "|" + bDayLightSavings));
+            //CAP-3247
+            var state = Convert.ToBase64String(Encoding.UTF8.GetBytes(Guid.NewGuid().ToString() + "|" + (HttpUtility.UrlEncode(Request.QueryString["redirecturl"]) ?? "") + "|" + hdnLocalTime.Value + "|" + hdnLocalDate.Value + "|" + hdnUniversaloffset.Value + "|" + hdnLocalDateAndTime.Value + "|" + bDayLightSavings + "|" + email + "|Microsoft"));
             return $"{oktaAuthorizeEndpoint}?client_id={clientId}&response_type=code&redirect_uri={HttpUtility.UrlEncode(redirectUri)}&scope=openid+profile+email&state={state}&login_hint={HttpUtility.UrlEncode(email)}";
         }
 
