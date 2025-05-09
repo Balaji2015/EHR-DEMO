@@ -46,6 +46,7 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
         ulong SaveResultMasterforSummary(IList<ResultMaster> lstresultmaster);
         ResultMaster SaveResultMasterItem(ResultMaster objResultMaster, ulong ulFileManagementIndexID);
         void SaveResultMasterforDeleteFiles(IList<ResultMaster> lstResMasterUpdate);
+        IList<ResultMaster> GetResultMasterByFileName(string fileName);
     }
 
     public partial class ResultMasterManager : ManagerBase<ResultMaster, ulong>, IResultMasterManager
@@ -3488,27 +3489,32 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
             //iMySession.Close();
 
 
-            IList<Human> objHuman = new List<Human>();
+                //IList<Human> objHuman = new List<Human>();
                 //ISQLQuery sql = iMySession.CreateSQLQuery("select h.*  from Human h  where h.First_Name ='" + sFirstname + "' and h.Last_Name='" + sLastname + "' and h.Birth_Date='" + sDob + "' and h.Sex like '" + sSex + "%' and h.account_status='active';").AddEntity("h", typeof(Human));
                 //For bug Id: 71296
                 //CAP-3071
-                ISQLQuery sql = MySession.CreateSQLQuery("select h.Human_Id, version from Human h  where h.First_Name =:Firstname and h.Last_Name=:Lastname and h.Birth_Date=:Dob and h.Sex like '" + sSex + "%' and h.account_status='active';").AddEntity("h", typeof(Human));
+                ISQLQuery sql = MySession.CreateSQLQuery("select h.Human_Id from Human h  where h.First_Name =:Firstname and h.Last_Name=:Lastname and h.Birth_Date=:Dob and h.Sex like '" + sSex + "%' and h.account_status='active';");
                 sql.SetParameter("Firstname", sFirstname.Replace("'", "''"));
                 sql.SetParameter("Lastname", sLastname.Replace("'", "''"));
                 sql.SetParameter("Dob", sDob);
-                // sql.SetParameter("Sex", sSex);
+            // sql.SetParameter("Sex", sSex);
 
-                if (sql.List<Human>().Count != 0)
+            //CAP-2901
+            IList<object> ilstHuman = sql.List<object>();
+            if (ilstHuman.Count != 0)
+            {
+                var objHuman = ilstHuman.FirstOrDefault();
+                if (objHuman != null)
                 {
-                    objHuman = sql.List<Human>();
-                    ulHumanId = objHuman[0].Id;
-                    //if (objHuman.Count > 1)
-                    //{
-                    //    objHuman = objHuman.Where(a => a.Account_Status.ToUpper() == "ACTIVE").ToList<Human>();
-                    //    if (objHuman.Count > 0)
-                    //        ulHumanId = objHuman[0].Id;
-                    //}
+                    ulong.TryParse(objHuman.ToString(), out ulHumanId);
                 }
+                //if (objHuman.Count > 1)
+                //{
+                //    objHuman = objHuman.Where(a => a.Account_Status.ToUpper() == "ACTIVE").ToList<Human>();
+                //    if (objHuman.Count > 0)
+                //        ulHumanId = objHuman[0].Id;
+                //}
+            }
             //CAP-2901
             //    iMySession.Close();
             //}
@@ -4673,6 +4679,15 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
         {
             IList<ResultMaster> lstResMasnull = null;
             SaveUpdateDelete_DBAndXML_WithTransaction(ref lstResMasnull, ref lstResMasterUpdate, null, string.Empty, false, false, 0, string.Empty);
+        }
+
+        public IList<ResultMaster> GetResultMasterByFileName(string fileName)
+        {
+            IList<ResultMaster> ilstResultMaster = new List<ResultMaster>();
+            ICriteria crit = session.GetISession().CreateCriteria(typeof(ResultMaster)).Add(Expression.Eq("File_Name", fileName));
+            ilstResultMaster = crit.List<ResultMaster>();
+
+            return ilstResultMaster;
         }
 
     }

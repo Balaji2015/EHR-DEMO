@@ -686,9 +686,12 @@ namespace Acurus.Capella.UI
                 {
                     if (Convert.ToUInt64(grdUnassignedResults.SelectedItems[0].Cells[6].Text.ToString()) != 0)
                         grdOutstandingOrders.ClientSettings.Selecting.AllowRowSelect = false;
+                    //CAP-3225
+                    else
+                        grdOutstandingOrders.ClientSettings.Selecting.AllowRowSelect = true;
                 }
-                else
-                    grdOutstandingOrders.ClientSettings.Selecting.AllowRowSelect = true;
+                //else
+                //    grdOutstandingOrders.ClientSettings.Selecting.AllowRowSelect = true;
             }
         }
 
