@@ -6602,9 +6602,9 @@ namespace Acurus.Capella.UI
                     else
                     {
                         if (sNotesType.ToUpper() == "CONSULTATION NOTE")
-                        {
-                            string sRomoveFooter = sTransformedValue.Substring(sTransformedValue.LastIndexOf("<p"));
-                            sRomoveFooter = sRomoveFooter.Substring(0, sRomoveFooter.IndexOf("</p>") + "</p>".Length);
+                        {   
+                            string sRomoveFooter = sTransformedValue.Substring(sTransformedValue.LastIndexOf("<p sectionName=\"footer\""));
+                            sRomoveFooter = sRomoveFooter.Substring(0, sRomoveFooter.IndexOf("</HeaderSection></p>") + "</HeaderSection></p>".Length);
 
                             sTransformedValue = sTransformedValue.Replace(sRomoveFooter, "");
                         }
