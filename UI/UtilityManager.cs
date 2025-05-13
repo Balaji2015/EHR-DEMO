@@ -6582,12 +6582,6 @@ namespace Acurus.Capella.UI
                         sTransformedValue = htmlWriter.ToString();
                     }
 
-
-                    //if (sNotesType.ToUpper() == "CONSULTATION NOTE")
-                    //{
-                    //    sTransformedValue = sTransformedValue.Replace(sTransformedValue.Substring(0, sTransformedValue.LastIndexOf("</p>") + 4), "");
-                    //}
-
                     if (sTransformedData != string.Empty)
                     {
                         if (sNotesType == "")
@@ -6607,7 +6601,14 @@ namespace Acurus.Capella.UI
                     }
                     else
                     {
-                        sTransformedValue = sTransformedValue.Replace("</div>\r\n</html>", "").Replace("</div></html>","");
+                        if (sNotesType.ToUpper() == "CONSULTATION NOTE")
+                        {   
+                            string sRomoveFooter = sTransformedValue.Substring(sTransformedValue.LastIndexOf("<p sectionName=\"footer\""));
+                            sRomoveFooter = sRomoveFooter.Substring(0, sRomoveFooter.IndexOf("</HeaderSection></p>") + "</HeaderSection></p>".Length);
+
+                            sTransformedValue = sTransformedValue.Replace(sRomoveFooter, "");
+                        }
+                        sTransformedValue = sTransformedValue.Replace("</div>\r\n</html>", "").Replace("</div></html>", "");
                     }
 
                     sTransformedData = sTransformedData + sTransformedValue;
@@ -6622,8 +6623,10 @@ namespace Acurus.Capella.UI
             if (bIsSummary == false)
             {
                 sTransformedData = SortingSections(sTransformedData, "//div[@class='grid-container']", "sortorder", true, (sNotesType == "WELLNESS NOTES"));
+                sTransformedData = sTransformedData.Replace("<SecondSection>", "").Replace("</SecondSection>", "").Replace("<html>", "").Replace("<div class=\"grid-container\">", "")
+                .Replace("</div>\r\n</html>", "").Replace("</div></html>", "").Replace("</html>", "");
             }
-            sTransformedData = sTransformedData.Replace("<SecondSection>", "").Replace("</SecondSection>", "");
+            
             return sTransformedData;
         }
 
@@ -6633,7 +6636,7 @@ namespace Acurus.Capella.UI
             string sSortOrder = string.Empty;
             string sNoSortOrder = string.Empty;
 
-            string sSort = "<?xml version=\"1.0\" encoding=\"utf-8\"?>" + sTransformedData.Replace("<br>", "<br/>").Replace("&nbsp;", "").Replace("&bull;", "").Replace("&amp;", "").Replace("</td colspan=\"5\">", "</td>").Replace("</tr style=\"font-size:9pt\">", "</tr>");
+            string sSort = "<?xml version=\"1.0\" encoding=\"utf-8\"?>" + sTransformedData.Replace("<br>", "<br/>").Replace("&nbsp;", "#nbsp#").Replace("&bull;", "#bull#").Replace("&amp;", "#amp#").Replace("</td colspan=\"5\">", "</td>").Replace("</tr style=\"font-size:9pt\">", "</tr>");
             xmlDoForSort.LoadXml(sSort);
             IList<XmlNode> SortOrderTags = new List<XmlNode>();
             if (IsAssending)
@@ -6657,7 +6660,7 @@ namespace Acurus.Capella.UI
                 sNoSortOrder = string.Join("", NoSortOrderTags.Select(node => node.OuterXml));
             }
             xmlDoForSort.SelectSingleNode(sRootTag).InnerXml = sSortOrder + sNoSortOrder;
-            sTransformedData = xmlDoForSort.LastChild.OuterXml;
+            sTransformedData = xmlDoForSort.LastChild.OuterXml.Replace("#nbsp#", "&nbsp;").Replace("#bull#", "&bull;").Replace("#amp#", "&amp;");
 
             return sTransformedData;
         }
@@ -6853,61 +6856,64 @@ namespace Acurus.Capella.UI
             string bIsAkidoInterpretationNote = "false";
             //Jira CAP-1379
             int iRetryCount = 0;
-
-        retry:
-            try
+            //Jira CAP-3229
+            if (sOrderSubmitID != "0" && sOrderSubmitID != "")
             {
-                iRetryCount = iRetryCount + 1;
 
-                var myUri = new Uri(System.Configuration.ConfigurationSettings.AppSettings["AkidoInterpretationNoteStatusURL"].ToString().Replace("[CapellaResourceID]", sOrderSubmitID).Replace("[CapellaResourceType]", "capella_order_submit_id"));
-                string AccessToken = System.Configuration.ConfigurationSettings.AppSettings["AkidoInterpretationNoteStatusURLToken"].ToString();
-                var myWebRequest = WebRequest.Create(myUri);
-                var myHttpWebRequest = (HttpWebRequest)myWebRequest;
-                myHttpWebRequest.PreAuthenticate = true;
-                myHttpWebRequest.Headers.Add("Authorization", "Bearer " + AccessToken);
-                myHttpWebRequest.Accept = "application/json";
-
-                var myWebResponse = myWebRequest.GetResponse();
-                var responseStream = myWebResponse.GetResponseStream();
-
-                var myStreamReader = new StreamReader(responseStream, Encoding.Default);
-                var json = myStreamReader.ReadToEnd();
-                responseStream.Close();
-                myWebResponse.Close();
-
-                if (json.ToString() != "[]" && json.ToString().ToUpper().Contains("STATUS\":\"SIGNED"))
+            retry:
+                try
                 {
-                    bIsAkidoInterpretationNote = "true";
-                    //Jira CAP-1990
-                    string sPJason = json.Substring(1, json.Length - 2);
-                    var jsonObject = JObject.Parse(sPJason);
-                    sStatus = (string)jsonObject["status"];
+                    iRetryCount = iRetryCount + 1;
+
+                    var myUri = new Uri(System.Configuration.ConfigurationSettings.AppSettings["AkidoInterpretationNoteStatusURL"].ToString().Replace("[CapellaResourceID]", sOrderSubmitID).Replace("[CapellaResourceType]", "capella_order_submit_id"));
+                    string AccessToken = System.Configuration.ConfigurationSettings.AppSettings["AkidoInterpretationNoteStatusURLToken"].ToString();
+                    var myWebRequest = WebRequest.Create(myUri);
+                    var myHttpWebRequest = (HttpWebRequest)myWebRequest;
+                    myHttpWebRequest.PreAuthenticate = true;
+                    myHttpWebRequest.Headers.Add("Authorization", "Bearer " + AccessToken);
+                    myHttpWebRequest.Accept = "application/json";
+
+                    var myWebResponse = myWebRequest.GetResponse();
+                    var responseStream = myWebResponse.GetResponseStream();
+
+                    var myStreamReader = new StreamReader(responseStream, Encoding.Default);
+                    var json = myStreamReader.ReadToEnd();
+                    responseStream.Close();
+                    myWebResponse.Close();
+
+                    if (json.ToString() != "[]" && json.ToString().ToUpper().Contains("STATUS\":\"SIGNED"))
+                    {
+                        bIsAkidoInterpretationNote = "true";
+                        //Jira CAP-1990
+                        string sPJason = json.Substring(1, json.Length - 2);
+                        var jsonObject = JObject.Parse(sPJason);
+                        sStatus = (string)jsonObject["status"];
+
+                    }
+                }
+                catch (Exception ex)
+                {
+                    //Jira CAP-1379
+                    //bIsAkidoEncounter = "Exception";
+                    //sExMessage = ex.Message;
+                    //Console.WriteLine(ex.ToString());
+
+                    //Jira CAP-1379
+                    if (iRetryCount < 3)
+                    {
+                        Console.WriteLine("Retrying Count : " + iRetryCount + " -> " + ex.ToString());
+                        System.Threading.Thread.Sleep(new TimeSpan(0, 0, 2));
+                        goto retry;
+                    }
+                    else
+                    {
+                        bIsAkidoInterpretationNote = "Exception";
+                        sExMessage = ex.Message;
+                        Console.WriteLine(ex.ToString());
+                    }
 
                 }
             }
-            catch (Exception ex)
-            {
-                //Jira CAP-1379
-                //bIsAkidoEncounter = "Exception";
-                //sExMessage = ex.Message;
-                //Console.WriteLine(ex.ToString());
-
-                //Jira CAP-1379
-                if (iRetryCount < 3)
-                {
-                    Console.WriteLine("Retrying Count : " + iRetryCount + " -> " + ex.ToString());
-                    System.Threading.Thread.Sleep(new TimeSpan(0, 0, 2));
-                    goto retry;
-                }
-                else
-                {
-                    bIsAkidoInterpretationNote = "Exception";
-                    sExMessage = ex.Message;
-                    Console.WriteLine(ex.ToString());
-                }
-
-            }
-
             return bIsAkidoInterpretationNote;
         }
         public static void IsAkidoCDC(string sHumanID, string sEncounterID, string sTransactionBy, string sTransactionDateTime)

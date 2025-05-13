@@ -504,6 +504,10 @@ namespace Acurus.Capella.LabAgent
                                 {
                                     bUnimportedFile = resultMasterProxy.ImprotLabResultsForCapellaOrders(resultMasterList.ToArray<ResultMaster>(), resultORCList.ToArray<ResultORC>(), resultOBRList.ToArray<ResultOBR>(), resultOBXList.ToArray<ResultOBX>(), resultNTEList.ToArray<ResultNTE>(), resultZEFList.ToArray<ResultZEF>(), resultZPSList.ToArray<ResultZPS>(), "");
                                 }
+                                //Update Matching_Physician_Id in Result_Master
+                                UpdateMatchingPhysicianIdInResultMaster(fi.Name);
+
+
                                 //                           resultMasterProxy.SaveResultMaster(resultMasterList.ToArray<ResultMaster>(), resultORCList.ToArray<ResultORC>(), resultOBRList.ToArray<ResultOBR>(), resultOBXList.ToArray<ResultOBX>(), resultNTEList.ToArray<ResultNTE>(), resultZEFList.ToArray<ResultZEF>(), resultZPSList.ToArray<ResultZPS>());
                                 resultMasterList.Clear();
                                 resultORCList.Clear();
@@ -627,6 +631,42 @@ namespace Acurus.Capella.LabAgent
                 }
 
             }
+        }
+
+        public void UpdateMatchingPhysicianIdInResultMaster(string sFileName)
+        {
+            try
+            {
+                IList<ResultMaster> ilstInsertResultMasterList = null;
+                IList<ResultMaster> ilstResultMasterList = new List<ResultMaster>();
+                WFObjectManager wFObjectManager = new WFObjectManager();
+                WFObject objWfobject = new WFObject();
+                UserManager userManager = new UserManager();
+                ResultMasterManager resultMasterManager = new ResultMasterManager();
+                IList<User> ilstUser = new List<User>();
+
+                ilstResultMasterList = resultMasterManager.GetResultMasterByFileName(sFileName);
+
+                foreach (ResultMaster objResultMaster in ilstResultMasterList)
+                {
+                    if (objResultMaster.Order_ID != 0)
+                    {
+                        objWfobject = wFObjectManager.GetByObjectSystemId(objResultMaster.Order_ID, "DIAGNOSTIC ORDER");
+                    }
+                    else
+                    {
+                        objWfobject = wFObjectManager.GetByObjectSystemId(objResultMaster.Id, "DIAGNOSTIC_RESULT");
+                    }
+                    if (objWfobject != null && objWfobject.Current_Process == "RESULT_REVIEW" && objResultMaster.Matching_Physician_Id == 0)
+                    {
+                        ilstUser = userManager.GetUser(objWfobject.Current_Owner);
+                        objResultMaster.Matching_Physician_Id = ilstUser.FirstOrDefault().Physician_Library_ID;
+                    }
+                }
+                resultMasterManager.SaveUpdateDeleteWithTransaction(ref ilstInsertResultMasterList, ilstResultMasterList, null, string.Empty);
+
+            }
+            catch (Exception ex) { throw(ex); }
         }
         public static IEnumerable<FileInfo[]> GetFilesFromDirectory()
         {

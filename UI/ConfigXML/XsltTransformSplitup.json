@@ -8,7 +8,7 @@
     {
       "SplitOrder": "2",
       "TagNames": "EncounterList,HumanList,EncounterDetails,PatientInsuredPlanList,Rcopia_AllergyList,ExaminationGeneralList,ExaminationFocusedList,TestList,ProblemListList,AssessmentList,GeneralNotesSelectedAssessmentList,OrdersList,OrdersSubmitList,ReferralOrderList,ReferralOrdersAssessmentList,ImmunizationList,InHouseProcedureList,EAndMCodingList,EandMCodingICDList,TreatmentPlanList,CarePlanList,PreventiveScreenList,AddendumNotesList",
-      "AddAndModifyTags": "<?xml version=\"1.0\"?><AddAndModifyTags> <Rcopia_MedicationList></Rcopia_MedicationList> <EncounterList Is_Medication_Reviewed='' Reason_Not_Performed_Medication_Reviewed='' Is_Hospitalization_Denied='N' Source_Of_Information='' If_Source_Of_Information_Others='' Is_PFSH_Verified=''></EncounterList></AddAndModifyTags>"
+      "AddAndModifyTags": "<?xml version=\"1.0\"?><AddAndModifyTags> <Rcopia_MedicationList></Rcopia_MedicationList> <EncounterList Is_Medication_Reviewed='' Reason_Not_Performed_Medication_Reviewed='' Is_Hospitalization_Denied='N' Source_Of_Information='' If_Source_Of_Information_Others='' Is_PFSH_Verified=''></EncounterList> <SplitLabOrder></SplitLabOrder> <SplitDiagnosticImagingOrders></SplitDiagnosticImagingOrders><EmptySurgicalList></EmptySurgicalList></AddAndModifyTags>"
     }
 
   ] 

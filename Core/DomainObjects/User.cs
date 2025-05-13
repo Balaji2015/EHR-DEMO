@@ -36,6 +36,7 @@ namespace Acurus.Capella.Core.DomainObjects
         private string _admin_password = string.Empty;
         private string _Is_All_Facilities = string.Empty;
         private string _Is_Direct_Login = string.Empty;
+        private string _Is_EMail_Login_Mandatory = string.Empty;
         #endregion
 
         #region constuctors
@@ -73,6 +74,7 @@ namespace Acurus.Capella.Core.DomainObjects
             sb.Append(_admin_password);
             sb.Append(_Is_All_Facilities);
             sb.Append(_Is_Direct_Login);
+            sb.Append(_Is_EMail_Login_Mandatory);
             return sb.ToString().GetHashCode();
         }
 
@@ -324,6 +326,16 @@ namespace Acurus.Capella.Core.DomainObjects
             set
             {
                 _Is_Direct_Login = value;
+            }
+        }
+
+        [DataMember]
+        public virtual string Is_EMail_Login_Mandatory
+        {
+            get { return _Is_EMail_Login_Mandatory; }
+            set
+            {
+                _Is_EMail_Login_Mandatory = value;
             }
         }
         #endregion
