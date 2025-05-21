@@ -57,7 +57,9 @@ namespace Acurus.Capella.UI
                     ViewState["LoadPhyProcedAndVaccAndPhyCodeLib"] = LoadPhyProcedAndVaccAndPhyCodeLib;
                     if (LoadPhyProcedAndVaccAndPhyCodeLib.PhysicianProcedure != null && LoadPhyProcedAndVaccAndPhyCodeLib.PhysicianProcedure.Count > 0)
                     {
-                        IList<PhysicianProcedure> Procedure = (from p in LoadPhyProcedAndVaccAndPhyCodeLib.PhysicianProcedure where p.Physician_Procedure_Code.StartsWith("J") == false select p).ToList<PhysicianProcedure>();
+                        //Cap - 3256
+                        //IList<PhysicianProcedure> Procedure = (from p in LoadPhyProcedAndVaccAndPhyCodeLib.PhysicianProcedure where p.Physician_Procedure_Code.StartsWith("J") == false select p).ToList<PhysicianProcedure>();
+                        IList<PhysicianProcedure> Procedure = (from p in LoadPhyProcedAndVaccAndPhyCodeLib.PhysicianProcedure  select p).ToList<PhysicianProcedure>();
                         fillImmunizationHistory(Procedure);
                     }
 
@@ -1693,7 +1695,9 @@ namespace Acurus.Capella.UI
                 IList<PhysicianProcedure> phyProcedureList = null;
                 PhysicianProcedureManager phyProcedureManager = new PhysicianProcedureManager();
                 phyProcedureList = phyProcedureManager.GetProceduresUsingPhysicianIDAndLabID(ClientSession.PhysicianId, "IMMUNIZATION PROCEDURE", 0, ClientSession.LegalOrg);
-                IList<PhysicianProcedure> Procedure = (from p in phyProcedureList where p.Physician_Procedure_Code.StartsWith("J") == false select p).ToList<PhysicianProcedure>();
+                //Cap - 3256
+                //IList<PhysicianProcedure> Procedure = (from p in phyProcedureList where p.Physician_Procedure_Code.StartsWith("J") == false select p).ToList<PhysicianProcedure>();
+                IList<PhysicianProcedure> Procedure = (from p in phyProcedureList select p).ToList<PhysicianProcedure>();
                 fillImmunizationHistory(Procedure);
             }
             catch (Exception ExInvisible) { ScriptManager.RegisterStartupScript(this, this.GetType(), "Immunization Load", "alert('" + ExInvisible.Message.Replace("'", " ") + "'); {sessionStorage.setItem('StartLoading', 'false');StopLoadFromPatChart();}", true); }

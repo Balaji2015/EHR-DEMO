@@ -99,7 +99,9 @@ namespace Acurus.Capella.UI
                 phyProcedureslist = objEAndMCodingManager.GetPhysicianProcedure(ClientSession.PhysicianId, procedureType.ToUpper(), Convert.ToUInt32(SelectedLabID), ClientSession.LegalOrg);
                 if (procedureType.ToUpper() == "IMMUNIZATION PROCEDURE" && IsImmunizationHistory == "Y")
                 {
-                    IList<PhysicianProcedure> Procedure = (from p in phyProcedureslist where p.Physician_Procedure_Code.StartsWith("J") == false select p).ToList<PhysicianProcedure>();
+                    //Cap - 3256
+                    //IList<PhysicianProcedure> Procedure = (from p in phyProcedureslist where p.Physician_Procedure_Code.StartsWith("J") == false select p).ToList<PhysicianProcedure>();
+                    IList<PhysicianProcedure> Procedure = (from p in phyProcedureslist select p).ToList<PhysicianProcedure>();
                     FillPhysicianLabProcedure(Procedure, string.Empty);
                 }
                 else
