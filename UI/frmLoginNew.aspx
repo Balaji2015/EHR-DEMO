@@ -243,7 +243,7 @@
                                     </div>
                                     <hr size="16">
                                     <form class="form-signin">
-                                        <input type="text" id="txtUserName" runat="server" class="form-control Editabletxtbox" placeholder="User Name" autofocus="autofocus" maxlength="50" />
+                                        <input type="text" id="txtUserName" runat="server" class="form-control Editabletxtbox" placeholder="User Name" autofocus="autofocus" maxlength="100" />
                                         <br />
                                         <input type="password" id="txtPassword" runat="server" class="form-control Editabletxtbox" placeholder="Password" autofocus="autofocus" maxlength="50" visible="false" />
                                         <br />

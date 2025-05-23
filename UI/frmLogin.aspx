@@ -359,7 +359,7 @@
                                     </div>
                                     <hr size="16">
                                     <form class="form-signin">
-                                        <input type="text" id="txtUserName" runat="server" class="form-control Editabletxtbox" placeholder="UserName" autofocus="autofocus" maxlength="50" /><br />
+                                        <input type="text" id="txtUserName" runat="server" class="form-control Editabletxtbox" placeholder="UserName" autofocus="autofocus" maxlength="100" /><br />
                                         <%--<input type="text" id="txtUserName" class="form-control" placeholder="UserName" autofocus="autofocus" runat="server" />--%>
                                         <input type="password" id="txtPassword" class="form-control Editabletxtbox" placeholder="Password" runat="server" maxlength="50" /><br />
                                         <select id="ddlFacility" runat="server" class="form-control Editabletxtbox">
