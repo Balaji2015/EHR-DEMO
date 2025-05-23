@@ -87,8 +87,8 @@
 
         .patient-input {
             flex: 1; /* Takes up remaining space */
-            padding: 8px;
-            font-size: 14px;
+            padding: 6px;
+            font-size: 13px;
             border: 1px solid #ccc;
             border-radius: 4px;
         }

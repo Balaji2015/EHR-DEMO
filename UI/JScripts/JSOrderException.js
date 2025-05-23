@@ -183,7 +183,7 @@ function btnMatchOrders_Clicked(sender,args)
 	}
 
 Sys.WebForms.PageRequestManager.getInstance().add_endRequest(function (sender, args) {
-    initializeAutocomplete();
+    initializeAutocomplete();   
 });
 
 $(document).ready(function () {
@@ -194,12 +194,13 @@ var intPatientlen = -1;
 function initializeAutocomplete() {
     var curleft = curtop = 0;
     var current_element = document.getElementById('txtPatientSearch');
+   
     if (current_element == null) {
         current_element = document.getElementById('txtProviderSearch');
         curtop = 5;
     }
     window.setTimeout(function () {
-        $('#txtPatientSearch').focus();
+        $('#txtPatientSearch').focus()[0].setSelectionRange(0, 0);
     }, 50);
 
     if (current_element && current_element.offsetParent) {
@@ -214,6 +215,7 @@ function initializeAutocomplete() {
         "height": "20px"
     }).on("click", function () {
         $('#txtPatientSearch').val('').focus();
+        $('#txtPatientSearch')[0].setSelectionRange(0, 0);
         $("#txtPatientSearch").css("color", "black").attr({ "data-human-id": "0", "data-human-details": "" });
         intPatientlen = -1;
         arrPatient = [];
@@ -325,7 +327,7 @@ function initializeAutocomplete() {
             open: function () {
                 $('.ui-autocomplete.ui-menu.ui-widget').width($('#txtPatientSearch').width());
                 $('.ui-autocomplete.ui-menu.ui-widget').find('li:last').css("border-bottom", "0px");
-                $('#txtPatientSearch').focus();
+                $('#txtPatientSearch').focus()[0].setSelectionRange(0, 0);
             },
             focus: function () {
                 return false;
@@ -424,7 +426,7 @@ function PatientSelected(event, ui) {
     txtPatientSearch.value = ui.item.label;
     txtPatientSearch.attributes['data-human-id'].value = ui.item.value;//HumanDetails.HumanId;
     document.getElementById('hdnHumanID').value = ui.item.value;
-
+    $('#txtPatientSearch').focus()[0].setSelectionRange(0, 0);
     debugger;
     //document.getElementById('hdnpatientsearch').value = ui.item.label;
     //document.getElementById('InvisibleButton').click();   
@@ -444,6 +446,10 @@ function setpatientsearch(sAutosearch) {
             $('#txtPatientSearch').prop('disabled', false);
             //$('#imgClearPatientText').prop('disabled', false);
             $("#imgClearPatientText").removeClass("disabled");
+            //txtPatientSearch.focus();
+            //txtPatientSearch.setSelectionRange(0, 0);
+            $('#txtPatientSearch').focus()[0].setSelectionRange(0, 0);
+            $('#txtPatientSearch').focus()[0].scrollLeft = 0;
         }
     }
     else {
@@ -460,7 +466,7 @@ function FindPatientenabled(val, sPatientname) {
         $("#imgClearPatientText").addClass("disabled");
         txtPatientSearch.value = sPatientname;
         txtPatientSearch.attributes['data-human-id'].value = sPatientname;
-        $('#txtPatientSearch').focus();
+        $('#txtPatientSearch').focus()[0].setSelectionRange(0, 0);
         sessionStorage.setItem("valuepatientsearch", sPatientname);
         sessionStorage.setItem("labelpatientsearch", sPatientname);
     }
