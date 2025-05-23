@@ -914,28 +914,51 @@ namespace Acurus.Capella.UI
                 bAcoUpdate = true;
             string sRole = "";
             string sFacilityName = "";
-            XmlDocument xmldocUser = new XmlDocument();
-            if (File.Exists(System.Web.Hosting.HostingEnvironment.ApplicationPhysicalPath + "ConfigXML\\" + "User" + ".xml"))
-                xmldocUser.Load(System.Web.Hosting.HostingEnvironment.ApplicationPhysicalPath + "ConfigXML\\" + "User" + ".xml");
-            XmlNodeList xmlUserList = xmldocUser.GetElementsByTagName("User");
 
-            if (xmlUserList != null)
+            //Cap - 3276
+            //XmlDocument xmldocUser = new XmlDocument();
+            //if (File.Exists(System.Web.Hosting.HostingEnvironment.ApplicationPhysicalPath + "ConfigXML\\" + "User" + ".xml"))
+            //    xmldocUser.Load(System.Web.Hosting.HostingEnvironment.ApplicationPhysicalPath + "ConfigXML\\" + "User" + ".xml");
+            //XmlNodeList xmlUserList = xmldocUser.GetElementsByTagName("User");
+
+            //if (xmlUserList != null)
+            //{
+            //    foreach (XmlNode item in xmlUserList)
+            //        if (ClientSession.PhysicianUserName.ToString().Trim().ToUpper() == item.Attributes.GetNamedItem("User_Name").Value.ToUpper().Trim())
+            //        {
+            //            if (ClientSession.PhysicianUserName.ToString() == item.Attributes[0].Value.ToUpper())
+            //            {
+            //                //sFacilityName = item.Attributes[1].Value;
+            //                //sRole = item.Attributes[3].Value;
+            //                if (item.Attributes.GetNamedItem("Default_Facility").Value != null)
+            //                    sFacilityName = item.Attributes.GetNamedItem("Default_Facility").Value;
+            //                if (item.Attributes.GetNamedItem("Role").Value != null)
+            //                    sRole = item.Attributes.GetNamedItem("Role").Value;
+            //                break;
+            //            }
+            //        }
+            //}
+
+            UserList NewobjUser = new UserList();
+            var NewilstUserList = ConfigureBase<UserList>.ReadJson("User.json");
+            if (NewilstUserList?.User != null)
             {
-                foreach (XmlNode item in xmlUserList)
-                    if (ClientSession.PhysicianUserName.ToString().Trim().ToUpper() == item.Attributes.GetNamedItem("User_Name").Value.ToUpper().Trim())
+                NewobjUser.User = NewilstUserList.User;
+
+                if (NewobjUser.User != null && NewobjUser.User.Count() > 0)
+                {
+                    var vuser = NewobjUser.User.Where(a => a.User_Name == ClientSession.PhysicianUserName.ToString()).ToList();
+
+                    if (vuser != null && vuser.Count > 0)
                     {
-                        if (ClientSession.PhysicianUserName.ToString() == item.Attributes[0].Value.ToUpper())
-                        {
-                            //sFacilityName = item.Attributes[1].Value;
-                            //sRole = item.Attributes[3].Value;
-                            if (item.Attributes.GetNamedItem("Default_Facility").Value != null)
-                                sFacilityName = item.Attributes.GetNamedItem("Default_Facility").Value;
-                            if (item.Attributes.GetNamedItem("Role").Value != null)
-                                sRole = item.Attributes.GetNamedItem("Role").Value;
-                            break;
-                        }
+                        sFacilityName = vuser[0].Default_Facility;
+                        sRole = vuser[0].Role;
                     }
+                }
             }
+
+
+
             if (ClientSession.FillEncounterandWFObject != null)
             {
                 objMoveVerifyDTO = objEncounterManager.PerformMovetoProvider(ClientSession.EncounterId, EncProviderID, ClientSession.HumanId, UtilityManager.ConvertToLocal(dtLocalTime), ClientSession.FacilityName, ClientSession.UserName, VerifyPFSH, Source, If_Source_Of_Information_Others, ClientSession.UserCurrentProcess, string.Empty, btnMove.Value, bDuplicateCheck, ClientSession.UserRole, "btnMove", bMovetoReview, hdnACOValidated.Value, ClientSession.FillEncounterandWFObject.EncounterWFRecord, ClientSession.FillEncounterandWFObject.EncRecord, IsPatientDiscussed, IsDiscussedBy, bAcoUpdate, sRole, ClientSession.PhysicianUserName, "SCRIBE");
@@ -1523,6 +1546,7 @@ namespace Acurus.Capella.UI
                             if(vuser != null && vuser.Count > 0)
                             {
                                 sPhysicianUserName = vuser[0].User_Name;
+                                ClientSession.PhysicianUserName = vuser[0].User_Name;
                             }
                         }
                     }
@@ -1627,29 +1651,51 @@ namespace Acurus.Capella.UI
             if (chkACOValidation.Visible == true)
                 bAcoUpdate = true;
 
-            XmlDocument xmldocUser = new XmlDocument();
-            if (File.Exists(System.Web.Hosting.HostingEnvironment.ApplicationPhysicalPath + "ConfigXML\\" + "User" + ".xml"))
-                xmldocUser.Load(System.Web.Hosting.HostingEnvironment.ApplicationPhysicalPath + "ConfigXML\\" + "User" + ".xml");
-            XmlNodeList xmlUserList = xmldocUser.GetElementsByTagName("User");
+            //Cap - 3276
+            //XmlDocument xmldocUser = new XmlDocument();
+            //if (File.Exists(System.Web.Hosting.HostingEnvironment.ApplicationPhysicalPath + "ConfigXML\\" + "User" + ".xml"))
+            //    xmldocUser.Load(System.Web.Hosting.HostingEnvironment.ApplicationPhysicalPath + "ConfigXML\\" + "User" + ".xml");
+            //XmlNodeList xmlUserList = xmldocUser.GetElementsByTagName("User");
             string sFacilityName = string.Empty;
             string sRole = "";
-            if (xmlUserList != null)
+            //if (xmlUserList != null)
+            //{
+            //    foreach (XmlNode item in xmlUserList)
+            //        if (ClientSession.PhysicianUserName.ToString().Trim().ToUpper() == item.Attributes.GetNamedItem("User_Name").Value.ToUpper().Trim())
+            //        {
+            //            //if (ClientSession.PhysicianUserName.ToString().ToUpper() == item.Attributes[0].Value.ToUpper())
+            //            //{
+            //            //sFacilityName = item.Attributes[1].Value;
+            //            //sRole = item.Attributes[3].Value;
+            //            if (item.Attributes.GetNamedItem("Default_Facility").Value != null)
+            //                sFacilityName = item.Attributes.GetNamedItem("Default_Facility").Value;
+            //            if (item.Attributes.GetNamedItem("Role").Value != null)
+            //                sRole = item.Attributes.GetNamedItem("Role").Value;
+            //            break;
+            //            //}
+            //        }
+            //}
+
+            UserList NewobjUser = new UserList();
+            var NewilstUserList = ConfigureBase<UserList>.ReadJson("User.json");
+            if (NewilstUserList?.User != null)
             {
-                foreach (XmlNode item in xmlUserList)
-                    if (ClientSession.PhysicianUserName.ToString().Trim().ToUpper() == item.Attributes.GetNamedItem("User_Name").Value.ToUpper().Trim())
+                NewobjUser.User = NewilstUserList.User;
+
+                if (NewobjUser.User != null && NewobjUser.User.Count() > 0)
+                {
+                    var vuser = NewobjUser.User.Where(a => a.User_Name == ClientSession.PhysicianUserName.ToString()).ToList();
+
+                    if (vuser != null && vuser.Count > 0)
                     {
-                        //if (ClientSession.PhysicianUserName.ToString().ToUpper() == item.Attributes[0].Value.ToUpper())
-                        //{
-                        //sFacilityName = item.Attributes[1].Value;
-                        //sRole = item.Attributes[3].Value;
-                        if (item.Attributes.GetNamedItem("Default_Facility").Value != null)
-                            sFacilityName = item.Attributes.GetNamedItem("Default_Facility").Value;
-                        if (item.Attributes.GetNamedItem("Role").Value != null)
-                            sRole = item.Attributes.GetNamedItem("Role").Value;
-                        break;
-                        //}
+                        sFacilityName = vuser[0].Default_Facility;
+                        sRole = vuser[0].Role;
                     }
+                }
             }
+
+
+
             if (ClientSession.EncounterId != null)
                 ClientSession.FillEncounterandWFObject.EncounterWFRecord = objWFObjectManager.GetByObjectSystemId(ClientSession.EncounterId, "ENCOUNTER");
             DateTime dtLocalTime;
