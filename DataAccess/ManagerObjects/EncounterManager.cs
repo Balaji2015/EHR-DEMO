@@ -8815,7 +8815,9 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
                                     sRole = criteria1.List<User>()[0].role;
                                     sOwner = criteria1.List<User>()[0].user_name;
                                 }
-                                if (objDocWfObject.Current_Process == "REVIEW_CODING")
+                                //Cap - 3223
+                                //if (objDocWfObject.Current_Process == "REVIEW_CODING")
+                                if (objDocWfObject.Current_Process == "REVIEW_CODING" || objDocWfObject.Current_Process == "AKIDO_REVIEW_CODING" || objDocWfObject.Current_Process == "AKIDO_REVIEW_CODING_QC")
                                 {
                                     ICriteria criteriaPlan = iMySession.CreateCriteria(typeof(TreatmentPlan)).Add(Expression.Eq("Encounter_Id", EncRecord.Id)).Add(Expression.Eq("Amendment_Type", "Corrections to be Made")); //selectedPhyID
                                     if (EncRecord.Encounter_Provider_Review_ID == 0)
