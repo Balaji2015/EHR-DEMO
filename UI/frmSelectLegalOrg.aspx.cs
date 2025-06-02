@@ -964,6 +964,7 @@ namespace Acurus.Capella.UI
                 ClientSession.LegalOrg = login[0].Legal_Org;
                 ClientSession.UserCarrier = sUserCarrier;
                 ClientSession.Is_All_Facilities = login[0].Is_All_Facilities;
+                ClientSession.EmailAddress = login.FirstOrDefault().EMail_Address;
 
                 ScnTabManager objScnTabmngr = new ScnTabManager();
                 ClientSession.UserPermissionDTO = objLoginDTO.UserPermissionDTO;
