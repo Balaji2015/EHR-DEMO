@@ -3545,7 +3545,9 @@ namespace Acurus.Capella.UI
                     scan_index_lst = (IList<scan_index>)Session["IndexList"];
                     //CAP-3286
                     if (scan_index_lst != null && scan_index_lst.Count > 0)
-                    { scan_index_lst = scan_index_lst.Where(a => a.Human_ID == ClientSession.HumanId).ToList(); }
+                    {
+                        scan_index_lst = scan_index_lst.Where(a => a.Human_ID == ClientSession.HumanId).ToList();
+                    }
 
                     if (scan_index_lst != null && scan_index_lst.Count > 0)
                     {
