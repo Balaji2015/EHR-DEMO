@@ -488,3 +488,63 @@ function FindPatientenabled(val, sPatientname) {
     }
 
 }
+
+//Cap - 3217
+function btnClose_Clicked() {
+
+    
+    if (document.getElementById("btnMatchOrders") != undefined && document.getElementById("btnMatchOrders").hasAttribute("disabled") == false) {
+            localStorage.setItem("bSave", "false");
+        }
+        else
+            localStorage.setItem("bSave", "true");
+        if (window.GetRadWindow() != null)
+            var winName = window.GetRadWindow()._name;
+        localStorage.setItem("bSaveSuccess", "");
+    if (localStorage.getItem("bSave") == "false") {
+        $("body").append("<div id='dvdialogMenu' style='min-height: 65px !important; width: auto; max-height: none; height: auto; display: none;'>" +
+            "<p style='font-family: Verdana,Arial,sans-serif; font-size: 12.5px;'>There are unsaved changes.Do you want to save them?</p></div>")
+        dvdialog = $('#dvdialogMenu');
+
+        myPos = "center center";
+        atPos = 'center center';
+        $(dvdialog).dialog({
+            modal: true,
+            title: "Capella -EHR",
+            position: {
+                my: myPos,
+                at: atPos
+            },
+            buttons: {
+                "Yes": function () {
+
+                    localStorage.setItem("bSaveSuccess", "true");
+                    document.getElementById(GetClientId("btnMatchOrders")).click();
+                    { sessionStorage.setItem('StartLoading', 'false'); StopLoadFromPatChart(); }
+                    localStorage.setItem("bSave", "true");
+                    $(dvdialog).dialog("close");
+                    return false;
+                },
+                "No": function () {
+                    localStorage.setItem("bSave", "true");
+                    localStorage.setItem("bSaveSuccess", "");
+                    $(dvdialog).dialog("close");
+                    window.close();
+                    return false;
+                },
+                "Cancel": function () {
+                    localStorage.setItem("bSaveSuccess", "");
+                    $(dvdialog).dialog("close");
+                    localStorage.setItem("bSave", "false");
+                    //localStorage.setItem("bSave", "true");
+                    return false;
+                }
+            }
+        });
+        return false;
+    }
+    else {
+        window.close();
+    }
+
+}
