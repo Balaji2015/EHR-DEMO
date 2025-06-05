@@ -433,7 +433,26 @@ function PatientSelected(event, ui) {
     __doPostBack('ctl00$ContentPlaceHolder1$InvisibleButton', '');
     return false;
 }
-
+function Filter(array, terms) {
+    arrayOfTerms = terms.split(" ");
+    if (arrayOfTerms.length > 1 && arrayOfTerms[1].trim() != "") {
+        var first_resultant = array;
+        var resultant;
+        for (var i = 1; i < arrayOfTerms.length; i++) {
+            resultant = $.grep(first_resultant, function (item) {
+                if (item.label != undefined)
+                    return item.label.toUpperCase().indexOf(arrayOfTerms[i].toString().toUpperCase()) > -1;
+                else if (item != undefined)
+                    return item.toUpperCase().indexOf(arrayOfTerms[i].toString().toUpperCase()) > -1;
+            });
+            first_resultant = resultant;
+        }
+        return first_resultant;
+    }
+    else {
+        return array;
+    }
+}
 function setpatientsearch(sAutosearch) {
     var txtPatientSearch = document.getElementById('txtPatientSearch');
     debugger;
