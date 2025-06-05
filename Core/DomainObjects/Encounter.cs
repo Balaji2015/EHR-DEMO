@@ -126,7 +126,6 @@ namespace Acurus.Capella.Core.DomainObjects
         private string _Assigned_Scribe_User_Name = string.Empty;
         private DateTime _E_M_Submitted_Date_And_Time = DateTime.MinValue;
         private string _Is_Signed_in_Akido_Note = "N";
-        private string _Is_Auth_Verified = "N";
         #endregion
 
         #region Constructors
@@ -245,7 +244,6 @@ namespace Acurus.Capella.Core.DomainObjects
             sb.Append(_Assigned_Scribe_User_Name);
             sb.Append(_E_M_Submitted_Date_And_Time);
             sb.Append(_Is_Signed_in_Akido_Note);
-            sb.Append(_Is_Auth_Verified);
             return sb.ToString().GetHashCode();
         }
 
@@ -1381,18 +1379,6 @@ namespace Acurus.Capella.Core.DomainObjects
                 _Is_Signed_in_Akido_Note = value;
             }
         }
-
-        [DataMember]
-        public virtual string Is_Auth_Verified
-        {
-            get { return _Is_Auth_Verified; }
-            set
-            {
-                _Is_Auth_Verified = value;
-            }
-        }
-
-
     }
 
 
