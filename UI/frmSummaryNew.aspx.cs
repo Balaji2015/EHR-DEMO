@@ -998,8 +998,8 @@ namespace Acurus.Capella.UI
                 //ltlDownloadFrame.Text = htmlWriter.ToString();
 
                 //Jira CAP-3092
-                if (System.Configuration.ConfigurationSettings.AppSettings["XsltTransformVersionForSummary"] != null
-                    && System.Configuration.ConfigurationSettings.AppSettings["XsltTransformVersionForSummary"].ToString().ToUpper() == "V1")
+                if ((System.Configuration.ConfigurationSettings.AppSettings["XsltTransformVersionForSummary"] != null
+                    && System.Configuration.ConfigurationSettings.AppSettings["XsltTransformVersionForSummary"].ToString().ToUpper() == "V1") || strTransformSource.Contains("Phone_Encounter"))
                 {
                     XmlReader xmlr = XmlReader.Create(new StringReader(sb.ToString()));
                     ltlDownloadFrame.Text = UtilityManager.PrintSummaryUsingXSLT(strTransformSource, xmlr).ToString();
@@ -1482,7 +1482,7 @@ namespace Acurus.Capella.UI
 
             //Jira #CAP-344 - NewCode
             string htmlString = string.Empty;
-            htmlString = UtilityManager.PrintPDFUsingXSLT(sXMLEncounterDoc, sXMLHumanDoc, xsltFile, outputDocument, sGroup_ID_Log);
+            htmlString = UtilityManager.PrintPDFUsingXSLT(sXMLEncounterDoc, sXMLHumanDoc, xsltFile, outputDocument, sGroup_ID_Log, xsltFile.Contains("Phone_Encounter") ? "Phone_Encounter" : "");
             System.IO.FileInfo file = new System.IO.FileInfo(outputDocument);
 
             string Encounter_signedDate = "";
@@ -1543,8 +1543,8 @@ namespace Acurus.Capella.UI
 
 
             //string htmlString = System.IO.File.ReadAllText(outputDocument);
-            if (System.Configuration.ConfigurationSettings.AppSettings["XsltTransformVersion"] != null
-                    && System.Configuration.ConfigurationSettings.AppSettings["XsltTransformVersion"].ToString().ToUpper() == "V1")
+            if ((System.Configuration.ConfigurationSettings.AppSettings["XsltTransformVersion"] != null
+                    && System.Configuration.ConfigurationSettings.AppSettings["XsltTransformVersion"].ToString().ToUpper() == "V1") || xsltFile.Contains("Phone_Encounter"))
             {
                 htmlString = System.IO.File.ReadAllText(outputDocument);
             }
@@ -2128,7 +2128,7 @@ margin:0in 0in 0in 9in;
 
             //Jira #CAP-344 - NewCode
             string htmlString = string.Empty;
-            htmlString = UtilityManager.PrintPDFUsingXSLT(sXMLEncounterDoc, sXMLHumanDoc, xsltFile, outputDocument, sGroup_ID_Log);
+            htmlString = UtilityManager.PrintPDFUsingXSLT(sXMLEncounterDoc, sXMLHumanDoc, xsltFile, outputDocument, sGroup_ID_Log, xsltFile.Contains("Phone_Encounter")? "Phone_Encounter" : "");
             System.IO.FileInfo file = new System.IO.FileInfo(outputDocument);
 
             string Encounter_signedDate = "";
@@ -2192,8 +2192,8 @@ margin:0in 0in 0in 9in;
 
 
             //string htmlString = System.IO.File.ReadAllText(outputDocument);            
-            if (System.Configuration.ConfigurationSettings.AppSettings["XsltTransformVersion"] != null
-          && System.Configuration.ConfigurationSettings.AppSettings["XsltTransformVersion"].ToString().ToUpper() == "V1")
+            if ((System.Configuration.ConfigurationSettings.AppSettings["XsltTransformVersion"] != null
+          && System.Configuration.ConfigurationSettings.AppSettings["XsltTransformVersion"].ToString().ToUpper() == "V1")|| xsltFile.Contains("Phone_Encounter"))
             {
                 htmlString = System.IO.File.ReadAllText(outputDocument);
             }
@@ -3192,7 +3192,7 @@ margin:0in 0in 0in 9in;
 
                 //Jira #CAP-344 - NewCode
                 string htmlString = string.Empty;
-                htmlString = UtilityManager.PrintPDFUsingXSLT(sXMLEncounterDoc, sXMLHumanDoc, xsltFile, outputDocument, sGroup_ID_Log);
+                htmlString = UtilityManager.PrintPDFUsingXSLT(sXMLEncounterDoc, sXMLHumanDoc, xsltFile, outputDocument, sGroup_ID_Log, xsltFile.Contains("Phone_Encounter") ? "Phone_Encounter" : "");
             System.IO.FileInfo file = new System.IO.FileInfo(outputDocument);
 
             string Encounter_signedDate = "";
@@ -3252,8 +3252,8 @@ margin:0in 0in 0in 9in;
 
 
                 //string htmlString = System.IO.File.ReadAllText(outputDocument);
-                if (System.Configuration.ConfigurationSettings.AppSettings["XsltTransformVersion"] != null
-                        && System.Configuration.ConfigurationSettings.AppSettings["XsltTransformVersion"].ToString().ToUpper() == "V1")
+                if ((System.Configuration.ConfigurationSettings.AppSettings["XsltTransformVersion"] != null
+                    && System.Configuration.ConfigurationSettings.AppSettings["XsltTransformVersion"].ToString().ToUpper() == "V1") || xsltFile.Contains("Phone_Encounter"))
                 {
                     htmlString = System.IO.File.ReadAllText(outputDocument);
                 }
