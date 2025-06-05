@@ -708,8 +708,12 @@
                                             Rows="5" Width="164px"></asp:TextBox>
                                     </td>
                                     <td class="style25" colspan="2">
-                                        <asp:Label ID="Label1" runat="server" Text="Min" CssClass="Editabletxtbox"></asp:Label>
+                                        <asp:Label ID="Label1" runat="server" Text="Min" CssClass="Editabletxtbox"></asp:Label>&nbsp;
+                                        <asp:CheckBox ID="IsAuthVerified" runat="server" onchange="EnableSaveButton(this);"
+                                            Text="Auth Verified" CssClass="Editabletxtbox"
+                                            Width="130px" />
                                     </td>
+                                   
                                 </tr>
                                 <tr>
                                     <td class="style21">

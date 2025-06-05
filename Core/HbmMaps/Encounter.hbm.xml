@@ -117,5 +117,6 @@
 
 	<property name="E_M_Submitted_Date_And_Time" column="E_M_Submitted_Date_And_Time" />
 	  <property name="Is_Signed_in_Akido_Note" column="Is_Signed_in_Akido_Note" />
+	  <property name="Is_Auth_Verified" column="Is_Auth_Verified" />
   </class>
 </hibernate-mapping>
