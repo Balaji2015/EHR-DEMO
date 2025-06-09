@@ -283,6 +283,15 @@ namespace Acurus.Capella.UI
                     ddlVisitType.Items.FindItemByText(EncRecord.Visit_Type.ToUpper()).Selected = true;
                     //}
                     ddlDuration.Text = EncRecord.Duration_Minutes.ToString();
+                    //Cap - 3217
+                    if (EncRecord.Is_Auth_Verified == "Y")
+                    {
+                        IsAuthVerified.Checked = true;  
+                    }
+                    else
+                    {
+                        IsAuthVerified.Checked = false;
+                    }
                     //logger.Debug("EncRecord.Visit_Type=" + EncRecord.Visit_Type);
 
                     // commented by valli
@@ -1840,6 +1849,15 @@ namespace Acurus.Capella.UI
                 try
                 {
                     EncRecord.Duration_Minutes = Convert.ToInt32(ddlDuration.Text);
+                    //Cap - 3217
+                    if (IsAuthVerified.Checked == true)
+                    {
+                        EncRecord.Is_Auth_Verified = "Y";
+                    }
+                    else
+                    {
+                        EncRecord.Is_Auth_Verified = "N";
+                    }
                 }
                 catch (Exception exp)
                 {
@@ -2281,6 +2299,15 @@ namespace Acurus.Capella.UI
                 try
                 {
                     NewEnc.Duration_Minutes = Convert.ToInt32(ddlDuration.Text);
+                    //Cap - 3217
+                    if (IsAuthVerified.Checked == true)
+                    {
+                        NewEnc.Is_Auth_Verified = "Y";
+                    }
+                    else
+                    {
+                        NewEnc.Is_Auth_Verified = "N";
+                    }
                 }
                 catch (Exception exp)
                 {
@@ -2599,6 +2626,15 @@ namespace Acurus.Capella.UI
                 try
                 {
                     EncRecord.Duration_Minutes = Convert.ToInt32(ddlDuration.Text);
+                    //Cap - 3217
+                    if (IsAuthVerified.Checked == true)
+                    {
+                        EncRecord.Is_Auth_Verified = "Y";
+                    }
+                    else
+                    {
+                        EncRecord.Is_Auth_Verified = "N";
+                    }
                 }
                 catch (Exception exp)
                 {
@@ -5917,6 +5953,16 @@ namespace Acurus.Capella.UI
                 try
                 {
                     EncRecord.Duration_Minutes = Convert.ToInt32(ddlDuration.Text);
+                    //Cap - 3217
+                    if(IsAuthVerified.Checked == true)
+                    {
+                        EncRecord.Is_Auth_Verified = "Y";
+                    }
+                    else
+                    {
+                        EncRecord.Is_Auth_Verified = "N";
+                    }
+                    
                 }
                 catch (Exception exp)
                 {
@@ -6393,6 +6439,15 @@ namespace Acurus.Capella.UI
                 try
                 {
                     NewEnc.Duration_Minutes = Convert.ToInt32(ddlDuration.Text);
+                    //Cap - 3217
+                    if (IsAuthVerified.Checked == true)
+                    {
+                        NewEnc.Is_Auth_Verified = "Y";
+                    }
+                    else
+                    {
+                        NewEnc.Is_Auth_Verified = "N";
+                    }
                 }
                 catch (Exception exp)
                 {
@@ -6773,6 +6828,15 @@ namespace Acurus.Capella.UI
                 try
                 {
                     EncRecord.Duration_Minutes = Convert.ToInt32(ddlDuration.Text);
+                    //Cap - 3217
+                    if (IsAuthVerified.Checked == true)
+                    {
+                        EncRecord.Is_Auth_Verified = "Y";
+                    }
+                    else
+                    {
+                        EncRecord.Is_Auth_Verified = "N";
+                    }
                 }
                 catch (Exception exp)
                 {

@@ -433,7 +433,26 @@ function PatientSelected(event, ui) {
     __doPostBack('ctl00$ContentPlaceHolder1$InvisibleButton', '');
     return false;
 }
-
+function Filter(array, terms) {
+    arrayOfTerms = terms.split(" ");
+    if (arrayOfTerms.length > 1 && arrayOfTerms[1].trim() != "") {
+        var first_resultant = array;
+        var resultant;
+        for (var i = 1; i < arrayOfTerms.length; i++) {
+            resultant = $.grep(first_resultant, function (item) {
+                if (item.label != undefined)
+                    return item.label.toUpperCase().indexOf(arrayOfTerms[i].toString().toUpperCase()) > -1;
+                else if (item != undefined)
+                    return item.toUpperCase().indexOf(arrayOfTerms[i].toString().toUpperCase()) > -1;
+            });
+            first_resultant = resultant;
+        }
+        return first_resultant;
+    }
+    else {
+        return array;
+    }
+}
 function setpatientsearch(sAutosearch) {
     var txtPatientSearch = document.getElementById('txtPatientSearch');
     debugger;
@@ -485,6 +504,66 @@ function FindPatientenabled(val, sPatientname) {
         sessionStorage.setItem("labelpatientsearch", "");
         txtPatientSearch.value = sPatientname;
         txtPatientSearch.attributes['data-human-id'].value = sPatientname;
+    }
+
+}
+
+//Cap - 3217
+function btnClose_Clicked() {
+
+    
+    if (document.getElementById("btnMatchOrders") != undefined && document.getElementById("btnMatchOrders").hasAttribute("disabled") == false) {
+            localStorage.setItem("bSave", "false");
+        }
+        else
+            localStorage.setItem("bSave", "true");
+        if (window.GetRadWindow() != null)
+            var winName = window.GetRadWindow()._name;
+        localStorage.setItem("bSaveSuccess", "");
+    if (localStorage.getItem("bSave") == "false") {
+        $("body").append("<div id='dvdialogMenu' style='min-height: 65px !important; width: auto; max-height: none; height: auto; display: none;'>" +
+            "<p style='font-family: Verdana,Arial,sans-serif; font-size: 12.5px;'>There are unsaved changes.Do you want to save them?</p></div>")
+        dvdialog = $('#dvdialogMenu');
+
+        myPos = "center center";
+        atPos = 'center center';
+        $(dvdialog).dialog({
+            modal: true,
+            title: "Capella -EHR",
+            position: {
+                my: myPos,
+                at: atPos
+            },
+            buttons: {
+                "Yes": function () {
+
+                    localStorage.setItem("bSaveSuccess", "true");
+                    document.getElementById(GetClientId("btnMatchOrders")).click();
+                    { sessionStorage.setItem('StartLoading', 'false'); StopLoadFromPatChart(); }
+                    localStorage.setItem("bSave", "true");
+                    $(dvdialog).dialog("close");
+                    return false;
+                },
+                "No": function () {
+                    localStorage.setItem("bSave", "true");
+                    localStorage.setItem("bSaveSuccess", "");
+                    $(dvdialog).dialog("close");
+                    window.close();
+                    return false;
+                },
+                "Cancel": function () {
+                    localStorage.setItem("bSaveSuccess", "");
+                    $(dvdialog).dialog("close");
+                    localStorage.setItem("bSave", "false");
+                    //localStorage.setItem("bSave", "true");
+                    return false;
+                }
+            }
+        });
+        return false;
+    }
+    else {
+        window.close();
     }
 
 }

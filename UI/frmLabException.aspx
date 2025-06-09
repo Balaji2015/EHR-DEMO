@@ -543,10 +543,13 @@
                                     </td>
                                     <td style="width: 50%" align="right">
                                         <telerik:RadButton ID="btnMatchOrders" runat="server" AutoPostBack="true" EnableViewState="false"
-                                            Text="Match" Width="77px" AccessKey="l" Style="position: static; height: 35px !important; text-align: center; -moz-border-radius: 3px; -webkit-border-radius: 3px; position: relative;"
+                                            Text="Match" Width="77px" AccessKey="l" Style="position: static; height: 30px !important; text-align: center; -moz-border-radius: 3px; -webkit-border-radius: 3px; position: relative;"
                                             OnClick="btnMatchOrders_Click"
                                             OnClientClicked="btnMatchOrders_Clicked"  ButtonType="LinkButton" CssClass="bluebutton teleriknormalbuttonstyle">
                                         </telerik:RadButton>
+                                        <telerik:RadButton ID="btnClose" runat="server" AutoPostBack="false" Text="Close" Width="77px" Style="position: static; height: 30px !important; text-align: center; -moz-border-radius: 3px; -webkit-border-radius: 3px; position: relative;"
+                            OnClientClicking="btnClose_Clicked" ButtonType="LinkButton" CssClass="redbutton teleriknormalbuttonstyle" Font-Size="13px">
+                        </telerik:RadButton>
                                     </td>
                                 </tr>
                             </table>

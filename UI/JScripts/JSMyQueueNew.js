@@ -1213,7 +1213,7 @@ function LoadMyEncounter(ajaxUrl) {
                 type: 'date',
                 sWidth: '8%'
             },
-            { data: 'Type_Of_Visit', sClass: (Ancillary == 'false' ? '' : 'hide_column'), searchable: false, sWidth: '8%' },
+            { data: 'Type_Of_Visit', sClass: (Ancillary == 'false' ? '' : 'hide_column') +' word-break-all', searchable: false, sWidth: '8%' },
             { data: 'Current_Process', searchable: false, sWidth: '12%', sClass: 'process-word-wrap' },
             { data: 'Test_Details', visible: (Ancillary == 'true'), searchable: false, sWidth: '12%' },
             { data: 'Ordering_Physician', visible: (Ancillary == 'true'), searchable: false, sWidth: '12%' },
@@ -2837,7 +2837,7 @@ function LoadGeneralEncounter(ajaxUrl) {
                 type: 'date',
                 sWidth: '6.7%'
             },
-            { data: 'Type_Of_Visit', searchable: false, sWidth: '8%' },
+            { data: 'Type_Of_Visit', searchable: false, sWidth: '8%', sClass: ' word-break-all' },
             { data: 'Current_Process', searchable: false, sWidth: '11%', sClass: 'process-word-wrap' },
             {
                 data: 'Facility_Name', searchable: false, sWidth: '8%'

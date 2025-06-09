@@ -6584,7 +6584,8 @@ namespace Acurus.Capella.UI
             }
             string sTransformedData = string.Empty;
 
-            if (System.Configuration.ConfigurationSettings.AppSettings["XsltTransformVersion"] != null && System.Configuration.ConfigurationSettings.AppSettings["XsltTransformVersion"].ToString().ToUpper() == "V1")
+            if ((System.Configuration.ConfigurationSettings.AppSettings["XsltTransformVersion"] != null
+                && System.Configuration.ConfigurationSettings.AppSettings["XsltTransformVersion"].ToString().ToUpper() == "V1") || sNotesType == "Phone_Encounter")
             {
                 // Use XPathDocument for performance
                 using (var reader = XmlReader.Create(new StringReader(combinedXml)))
@@ -6711,8 +6712,8 @@ namespace Acurus.Capella.UI
                     sTransformedValue = UtilityManager.PrintSummaryUsingXSLT(strTransformSource, xmlr).ToString();
                     if (sTransformedData != string.Empty)
                     {
-                        sTransformedValue = sTransformedValue.Replace(sTransformedValue.Substring(0, sTransformedValue.IndexOf("</style>") + "</style>".Length), "");
-                    }
+                            sTransformedValue = sTransformedValue.Replace(sTransformedValue.Substring(0, sTransformedValue.IndexOf("</style>") + "</style>".Length), "");
+                        }
                     else
                     {
                         sTransformedValue = sTransformedValue.Replace("</div>\r\n</html>", "").Replace("</div></html>", "");

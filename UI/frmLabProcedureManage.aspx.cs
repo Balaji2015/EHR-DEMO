@@ -273,11 +273,12 @@ namespace Acurus.Capella.UI
                         if (IsImmunizationHistory == "Y")
                         {
                             bool IsInjection = false;
-                            if (listPro[i].Procedure_Code.ToUpper().StartsWith("J"))
-                            {
-                                IsInjection = true;
-                                break;
-                            }
+                            //Cap - 3302
+                            ////if (listPro[i].Procedure_Code.ToUpper().StartsWith("J"))
+                            //{
+                            //    IsInjection = true;
+                            //    break;
+                            //}
                             if (IsInjection == false)
                             {
                                 lstLabProcedureAll.Items.Add((listPro[i].Procedure_Code + "-" + listPro[i].Procedure_Description).ToString());
