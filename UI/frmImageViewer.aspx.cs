@@ -1800,60 +1800,61 @@ namespace Acurus.Capella.UI
                     }
                     else
                     {
-                        //CAP-3151
-                        string showDocumentVersion = System.Configuration.ConfigurationSettings.AppSettings["ShowDocumentVersion"];
-                        if(showDocumentVersion != "V2")
-                        {
-                            //Open Patient chart view
-                            string uri = FilePath;//Request.QueryString["FilePath"];
-                            string UNCAuthPath = System.Configuration.ConfigurationSettings.AppSettings["UNCAuthPath"];
-                            string UNCPath = System.Configuration.ConfigurationSettings.AppSettings["UNCPath"];
-                            string ftpIP = System.Configuration.ConfigurationSettings.AppSettings["ftpServerIP"];
-                            string userName = System.Configuration.ConfigurationSettings.AppSettings["UserName"];
-                            string password = System.Configuration.ConfigurationSettings.AppSettings["Password"];
-                            string domain = System.Configuration.ConfigurationSettings.AppSettings["Domain"];
-                            //Jira #CAP-67 
-                            int iTryCount = 1;
-                        TryAgain:
-                            try
-                            {
-                                using (UNCAccessWithCredentials unc = new UNCAccessWithCredentials())
-                                {
-                                    if (unc.NetUseWithCredentials(UNCAuthPath, userName, domain, password))
-                                    {
-                                        var bytes = System.IO.File.ReadAllBytes(uri.Replace(ftpIP, UNCPath));
-                                        Response.ContentType = "application/pdf";
-                                        Response.AddHeader("Content-disposition", "filename=" + Path.GetFileName(uri.Replace(ftpIP, UNCPath)));
-                                        Response.BinaryWrite(bytes.ToArray());
-                                        bigImgPDF.Attributes.Add("src", bytes.ToString());
-                                    }
-                                }
-                            }
-                            catch (Exception ex)
-                            {
-                                string sErrorMessage = "";
-                                if (UtilityManager.CheckFileNotFoundException(ex, out sErrorMessage))
-                                {
-                                    ScriptManager.RegisterStartupScript(this, this.GetType(), "Key", "alert(\" " + sErrorMessage + "\");", true);
-                                }
-                                else
-                                {
-                                    //Jira #CAP-67 
-                                    if (iTryCount <= 3)
-                                    {
-                                        iTryCount = iTryCount + 1;
-                                        Thread.Sleep(1500);
-                                        goto TryAgain;
-                                    }
-                                    else
-                                    {
-                                        UtilityManager.RetryExecptionLog(ex, iTryCount);
-                                        UtilityManager.inserttologgingtable(ClientSession.EncounterId.ToString(), ClientSession.HumanId.ToString(), ClientSession.UserName, ClientSession.PhysicianId.ToString(), "FrmImagviewer Line No - 1490 - " + ex.Message + " - Username is " + userName + " -  Password " + password + " - UNCAuthPath " + UNCAuthPath + " - UNCPAth" + UNCPath + "-URI " + uri.Replace(ftpIP, UNCPath), DateTime.Now, "0", "frmimageviewer");
-                                        throw (ex);
-                                    }
-                                }
-                            }
-                        }
+                        //CAP-3291
+                        ////CAP-3151
+                        //string showDocumentVersion = System.Configuration.ConfigurationSettings.AppSettings["ShowDocumentVersion"];
+                        //if(showDocumentVersion != "V2")
+                        //{
+                        //    //Open Patient chart view
+                        //    string uri = FilePath;//Request.QueryString["FilePath"];
+                        //    string UNCAuthPath = System.Configuration.ConfigurationSettings.AppSettings["UNCAuthPath"];
+                        //    string UNCPath = System.Configuration.ConfigurationSettings.AppSettings["UNCPath"];
+                        //    string ftpIP = System.Configuration.ConfigurationSettings.AppSettings["ftpServerIP"];
+                        //    string userName = System.Configuration.ConfigurationSettings.AppSettings["UserName"];
+                        //    string password = System.Configuration.ConfigurationSettings.AppSettings["Password"];
+                        //    string domain = System.Configuration.ConfigurationSettings.AppSettings["Domain"];
+                        //    //Jira #CAP-67 
+                        //    int iTryCount = 1;
+                        //TryAgain:
+                        //    try
+                        //    {
+                        //        using (UNCAccessWithCredentials unc = new UNCAccessWithCredentials())
+                        //        {
+                        //            if (unc.NetUseWithCredentials(UNCAuthPath, userName, domain, password))
+                        //            {
+                        //                var bytes = System.IO.File.ReadAllBytes(uri.Replace(ftpIP, UNCPath));
+                        //                Response.ContentType = "application/pdf";
+                        //                Response.AddHeader("Content-disposition", "filename=" + Path.GetFileName(uri.Replace(ftpIP, UNCPath)));
+                        //                Response.BinaryWrite(bytes.ToArray());
+                        //                bigImgPDF.Attributes.Add("src", bytes.ToString());
+                        //            }
+                        //        }
+                        //    }
+                        //    catch (Exception ex)
+                        //    {
+                        //        string sErrorMessage = "";
+                        //        if (UtilityManager.CheckFileNotFoundException(ex, out sErrorMessage))
+                        //        {
+                        //            ScriptManager.RegisterStartupScript(this, this.GetType(), "Key", "alert(\" " + sErrorMessage + "\");", true);
+                        //        }
+                        //        else
+                        //        {
+                        //            //Jira #CAP-67 
+                        //            if (iTryCount <= 3)
+                        //            {
+                        //                iTryCount = iTryCount + 1;
+                        //                Thread.Sleep(1500);
+                        //                goto TryAgain;
+                        //            }
+                        //            else
+                        //            {
+                        //                UtilityManager.RetryExecptionLog(ex, iTryCount);
+                        //                UtilityManager.inserttologgingtable(ClientSession.EncounterId.ToString(), ClientSession.HumanId.ToString(), ClientSession.UserName, ClientSession.PhysicianId.ToString(), "FrmImagviewer Line No - 1490 - " + ex.Message + " - Username is " + userName + " -  Password " + password + " - UNCAuthPath " + UNCAuthPath + " - UNCPAth" + UNCPath + "-URI " + uri.Replace(ftpIP, UNCPath), DateTime.Now, "0", "frmimageviewer");
+                        //                throw (ex);
+                        //            }
+                        //        }
+                        //    }
+                        //}
 
                         bigImgPDF.Attributes.Add("src", FilePath);
                     }

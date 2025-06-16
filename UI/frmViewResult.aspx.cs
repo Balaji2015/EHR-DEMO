@@ -1619,9 +1619,10 @@ namespace Acurus.Capella.UI
                 //CAP-790
                 if (Session["human_id"] != null)
                 {
+                    //CAP-3291
                     //CAP-3151
-                    string showDocumentVersion = System.Configuration.ConfigurationSettings.AppSettings["ShowDocumentVersion"];
-                    if (TargetValue.ToUpper().Contains(".PDF") && showDocumentVersion == "V2")
+                    //string showDocumentVersion = System.Configuration.ConfigurationSettings.AppSettings["ShowDocumentVersion"];
+                    if (TargetValue.ToUpper().Contains(".PDF"))
                     {
                         string targetValue = TargetValue.ToString().Replace("#", "HASHSYMBOL");
                         targetValue = targetValue.Replace("/", "\\");
