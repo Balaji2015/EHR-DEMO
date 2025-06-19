@@ -1529,6 +1529,17 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
                         objPatPane.Assigned_Physician_User_Name = physicanList.username;
                         objPatPane.Assigned_Physician = physicanList.prefix + " " + physicanList.firstname + " " + physicanList.middlename + " " + physicanList.lastname + " " + physicanList.suffix;
                     }
+                    //CAP-3343
+                    else
+                    {
+                        PhysicianManager physicianManager = new PhysicianManager();
+                        IList<PhysicianLibrary> lstPhysicianLibrary = physicianManager.GetInActivePhysicianById(EncProviderId);
+                        if (lstPhysicianLibrary != null && lstPhysicianLibrary.Any())
+                        {
+                            objPatPane.Assigned_Physician_User_Name = lstPhysicianLibrary[0].PhyUserName;
+                            objPatPane.Assigned_Physician = lstPhysicianLibrary[0].PhyPrefix + " " + lstPhysicianLibrary[0].PhyFirstName + " " + lstPhysicianLibrary[0].PhyMiddleName + " " + lstPhysicianLibrary[0].PhyLastName + " " + lstPhysicianLibrary[0].PhySuffix;
+                        }
+                    }
                 }
             }
             #endregion

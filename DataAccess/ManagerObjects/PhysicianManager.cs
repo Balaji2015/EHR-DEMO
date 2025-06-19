@@ -22,6 +22,7 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
         IList<PhysicianLibrary> GetPhysicianListbyFacilityForRCM(string FacName, string sActive);
         ulong SavePhysicians(PhysicianLibrary libraries, string sMacAddress);//vinoth 15/04/2010
         IList<PhysicianLibrary> GetPhysicianListbyFacility(string FacName, string sActive);
+        IList<PhysicianLibrary> GetInActivePhysicianById(ulong physician_id);
         IList<PhysicianLibrary> GetDTOLibraryList(ulong PhyID, int Pagenumber, int MaxResults);
         //IList<PhysicianPOV> GetDTOInterMediateList(ulong PhyID, int Pagenumber, int MaxResults);
         //FillPhysicianManager DTOPhysicianFill(ulong PhyID, int Pagenumber, int MaxResults);
@@ -269,6 +270,30 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
             return PhyList;
         }
         //Added by Gopal for Load Physician List
+        //CAP-3343
+        public IList<PhysicianLibrary> GetInActivePhysicianById(ulong physician_id)
+        {
+            IList<PhysicianLibrary> PhyList = new List<PhysicianLibrary>();
+            using (ISession iMySession = NHibernateSessionManager.Instance.CreateISession())
+            {
+                ISQLQuery sq = iMySession.CreateSQLQuery("select p.Physician_Prefix,p.Physician_First_Name,p.Physician_Middle_Name,p.Physician_Last_Name,p.Physician_Suffix,u.user_name from physician_library p JOIN user u ON u.physician_library_id = p.physician_library_id where p.physician_library_id = " + physician_id + ";");
+
+                foreach (IList<Object> l in sq.List())
+                {
+                    PhyList.Add(new PhysicianLibrary()
+                    {
+                        PhyPrefix = Convert.ToString(l[0]),
+                        PhyFirstName = Convert.ToString(l[1]),
+                        PhyMiddleName = Convert.ToString(l[2]),
+                        PhyLastName = Convert.ToString(l[3]),
+                        PhySuffix = Convert.ToString(l[4]),
+                        PhyUserName = Convert.ToString(l[5]),
+                    });
+                }
+                iMySession.Close();
+            }
+            return PhyList;
+        }
 
         public IList<PhysicianLibrary> GetPhysicianListbyFacilityForRCM(string FacName, string sActive)
         {
