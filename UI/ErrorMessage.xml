@@ -3008,6 +3008,7 @@
 	<Message number="1011185" Type="OK" Text="Please Enter FAX"></Message>
 	<Message number="1011186" Type="OKCANCEL" Text="This Fax# is already registered. Do you want to Add?"></Message>
 	<Message number="1011187" Type="OK" Text="There is no Data to export"></Message>
+	<Message number="1011188" Type="OKCANCEL" Text="The Physician details are different from the search, Please check and update." />
 	
 	<!--Find Patient-->
 	<Message number="1011189" Type="OK" Text="Kindly enter the Quick patient search value in the format YYYYLNM (Patient's birth year and atleast first 3 characters of Last Name)"></Message>

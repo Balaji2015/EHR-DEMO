@@ -310,6 +310,10 @@
         <input type="hidden" style="display: none;" id="hdnPhysicanCategory" value="" runat="server"/>
         <input type="hidden" id="hdnShowSearchNPI" runat="server"/>
         <input type="hidden" id="hdnSpecialty" runat="server"/>
+        <input type="hidden" id="hdnFirstName" runat="server"/>
+        <input type="hidden" id="hdnMI" runat="server"/>
+        <input type="hidden" id="hdnLastName" runat="server"/>
+        <input type="hidden" id="hdnNPI" runat="server"/>
          <button type="button" id="btnClose" style="display: none;" class="btn btn-default" onclick="closewindow();" data-dismiss="modal"></button>
         <script type="text/javascript">
             var JSFiles = ["JScripts/JSErrorMessage.js", "JScripts/JSMask.Min.js", "JScripts/JSPhysicianLibrary.js", "JScripts/JSAvoidRightClick.js", "JScripts/JSCustomDLC.js"];

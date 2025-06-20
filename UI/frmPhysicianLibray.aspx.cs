@@ -79,6 +79,11 @@ namespace Acurus.Capella.UI
                         txtEmail.Value = ilstPhysicianLibrary[0].PhyEMail;
                         btnSave.InnerText = "Update";
                         btnClearAll.InnerText = "Cancel";
+                        //CAP-3337
+                        hdnLastName.Value = ilstPhysicianLibrary[0].PhyLastName;
+                        hdnMI.Value = ilstPhysicianLibrary[0].PhyMiddleName;
+                        hdnFirstName.Value = ilstPhysicianLibrary[0].PhyFirstName;
+                        hdnNPI.Value = ilstPhysicianLibrary[0].PhyNPI;
                     }
                     else
                     {

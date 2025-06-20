@@ -708,8 +708,21 @@ function AddProvider() {
             return false;
         }
     }
-   
-            var vgrd = $('#divgrd').css('display');
+    //CAP-3337
+    //if ($('#btnSave').text() == 'Update') {
+    //    if ($('#txtFirstName').val() != $('#hdnFirstName').val()
+    //        || $('#txtMI').val() != $('#hdnMI').val()
+    //        || $('#txtLastName').val() != $('#hdnLastName').val()
+    //        || $('#txtNPI').val() != $('#hdnNPI').val()) {
+    //        var msgRes = DisplayErrorMessage('1011188');
+    //        if (msgRes == undefined || msgRes == false) {
+    //            { sessionStorage.setItem('StartLoading', 'false'); StopLoadFromPatChart(); }
+    //            return false;
+    //        }
+    //    }
+    //}
+
+    var vgrd = $('#divgrd').css('display');
         
     var vFax = '';
     var WSData = JSON.stringify({
@@ -1637,7 +1650,7 @@ $("#btnSearchNpi").click(function () {
                                     <td style="text-align: center; padding: 5px;">${result[i].telephone_number}</td>
                                     <td style="text-align: center; padding: 5px;">${result[i].specialty}</td>
                                     <td style="text-align: center; padding: 5px;">${result[i].number}</td>
-                                    <td style="text-align: center; padding: 5px;"><a style="text-decoration: none;cursor: pointer;" onclick="SelectNpi('${searchFirstName}', '${searchLastName}','${result[i].number}','${result[i].address_1}','${result[i].city}','${result[i].state}','${result[i].postal_code}','${result[i].telephone_number}','${result[i].middle_name}','${result[i].specialty}')">Select</a></td>
+                                    <td style="text-align: center; padding: 5px;"><a id="linkSelectNpi_${i}" style="text-decoration: none;cursor: pointer;" data-firstName="${searchFirstName}" data-lastName="${searchLastName}" data-number="${result[i].number}" data-address_1="${result[i].address_1}" data-city="${result[i].city}" data-state="${result[i].state}" data-postal_code="${result[i].postal_code}" data-telephone_number="${result[i].telephone_number}" data-middle_name="${result[i].middle_name}" data-specialty="${result[i].specialty}" onclick="SelectNpi('linkSelectNpi_${i}')">Select</a></td>
                                 </tr>`;
                 }
             } else {
@@ -1659,8 +1672,38 @@ $("#btnSearchNpi").click(function () {
         }
     });
 });
+
+var selectedNpiId = "";
 //CAP-3233
-function SelectNpi(firstName, lastName, number, address_1, city, state, postal_code, telephone_number, middle_name, specialty) {
+function SelectNpi(selectedId) {
+    //CAP-3337
+    if (selectedId != undefined) {
+        selectedNpiId = selectedId;
+    }
+    var firstName = $('#' + selectedNpiId).attr('data-firstName');
+    var middle_name = $('#' + selectedNpiId).attr('data-middle_name');
+    var lastName = $('#' + selectedNpiId).attr('data-lastName');
+    var number = $('#' + selectedNpiId).attr('data-number');
+    var address_1 = $('#' + selectedNpiId).attr('data-address_1');
+    var city = $('#' + selectedNpiId).attr('data-city');
+    var state = $('#' + selectedNpiId).attr('data-state');
+    var postal_code = $('#' + selectedNpiId).attr('data-postal_code');
+    var telephone_number = $('#' + selectedNpiId).attr('data-telephone_number');
+    var specialty = $('#' + selectedNpiId).attr('data-specialty');
+
+    if ($('#btnSave').text() == 'Update') {
+        if ($('#hdnFirstName').val() != firstName
+            || $('#hdnMI').val() != middle_name
+            || $('#hdnLastName').val() != lastName
+            || $('#hdnNPI').val() != number) {
+            var msgRes = DisplayErrorMessage('1011188');
+            if (msgRes == undefined || msgRes == false) {
+                { sessionStorage.setItem('StartLoading', 'false'); StopLoadFromPatChart(); }
+                return false;
+            }
+        }
+    }
+    
     $('#txtFirstName').val(firstName);
     $('#txtMI').val(middle_name);
     $('#txtLastName').val(lastName);
