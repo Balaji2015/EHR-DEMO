@@ -2548,8 +2548,13 @@ namespace Acurus.Capella.UI
             HeaderList.Clear();
             ValueList.Clear();
             HeaderList.Add("Account Name");
-            if (CliAdd != null)
-                ValueList.Add(CliAdd);
+            //CAP-3308
+            //if (CliAdd != null)
+            //    ValueList.Add(CliAdd);
+            //else
+            //    ValueList.Add("");
+            if (ilstFacility[0]?.Lab_Client_Information != null)
+                ValueList.Add(ilstFacility[0].Lab_Client_Information);
             else
                 ValueList.Add("");
 
@@ -3617,8 +3622,9 @@ namespace Acurus.Capella.UI
             if (objOrdDTO == null || (objOrdDTO != null && objOrdDTO.ilstOrderLabDetailsDTO.Count == 0) || objOrdDTO.objHuman == null)
                 return string.Empty;
             //IList<Specimen> specList = objOrdDTO.ilstOrderLabDetailsDTO.Select(a=>a.objSpecimen).ToList<Specimen>();
-            if (ilstLabcorpSettings != null && ilstLabcorpSettings.Count > 0)
-                clientAddress = ilstLabcorpSettings[0].Client_Information;
+            //CAP-3308
+            //if (ilstLabcorpSettings != null && ilstLabcorpSettings.Count > 0)
+            //    clientAddress = ilstLabcorpSettings[0].Client_Information;
 
             string specDate = string.Empty;
             string specTime = string.Empty;
@@ -3766,7 +3772,8 @@ namespace Acurus.Capella.UI
             IList<FacilityLibrary> tempFacilityLibrary = objFacilityManager.GetFacilityByFacilityname(objOrdersSubmit.Facility_Name);
             if (tempFacilityLibrary.Count > 0)
             {
-                clientAddress += "\n" + tempFacilityLibrary[0].Fac_Address1 + "\n" + tempFacilityLibrary[0].Fac_City + "," + tempFacilityLibrary[0].Fac_State + "," + tempFacilityLibrary[0].Fac_Zip + "\n" + tempFacilityLibrary[0].Fac_Telephone;
+                //CAP-3308
+                clientAddress = tempFacilityLibrary[0].Lab_Client_Information + "\n" + tempFacilityLibrary[0].Fac_Address1 + "\n" + tempFacilityLibrary[0].Fac_City + "," + tempFacilityLibrary[0].Fac_State + "," + tempFacilityLibrary[0].Fac_Zip + "\n" + tempFacilityLibrary[0].Fac_Telephone;
             }
             if (ilstFacility.Count > 0)
             {
@@ -4539,7 +4546,8 @@ namespace Acurus.Capella.UI
             IList<LabSettings> ilstLabcorpSettings = (from lst in ilstLabSettingsLibrary where lst.Lab_ID == objOrdDTO.ilstOrderLabDetailsDTO[0].OrdersSubmit.Lab_ID select lst).ToList<LabSettings>();
             if (ilstLabcorpSettings != null && ilstLabcorpSettings.Count > 0)
             {
-                clientaddress = ilstLabcorpSettings[0].Client_Information;
+                //CAP-3308
+                //clientaddress = ilstLabcorpSettings[0].Client_Information;
                 ReceivingFacility = ilstLabcorpSettings[0].Receiving_Facility;
                 UserName = ilstLabcorpSettings[0].User_Name;
                 Password = ilstLabcorpSettings[0].Password;
@@ -4763,7 +4771,8 @@ namespace Acurus.Capella.UI
             IList<FacilityLibrary> tempFacilityLibrary = objFacilityManager.GetFacilityByFacilityname(objOrdersSubmit.Facility_Name);
             if (tempFacilityLibrary.Count > 0)
             {
-                clientaddress += "\n" + tempFacilityLibrary[0].Fac_Address1 + "\n" + tempFacilityLibrary[0].Fac_City + "," + tempFacilityLibrary[0].Fac_State + "," + tempFacilityLibrary[0].Fac_Zip + "\n" + tempFacilityLibrary[0].Fac_Telephone;
+                //CAP-3308
+                clientaddress = tempFacilityLibrary[0].Lab_Client_Information + "\n" + tempFacilityLibrary[0].Fac_Address1 + "\n" + tempFacilityLibrary[0].Fac_City + "," + tempFacilityLibrary[0].Fac_State + "," + tempFacilityLibrary[0].Fac_Zip + "\n" + tempFacilityLibrary[0].Fac_Telephone;
             }
             doc.Open();
 

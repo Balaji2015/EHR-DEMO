@@ -1134,7 +1134,9 @@ function schAppoinmentScheduler_DoubleClick(sender, args) {
 
 
             var WindowName = $find('ctl00_ModalWindow');
-            WindowName.add_close(TimeSlotEditAppointment2Click);
+
+            //CAP-3318 - Applying null safety check
+            WindowName?.add_close(TimeSlotEditAppointment2Click);
         }
     }
 }

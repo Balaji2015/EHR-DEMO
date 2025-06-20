@@ -41,22 +41,22 @@ namespace Acurus.Capella.UI.WebServices.API
                     return Json(new { HumanID = sHumanID, status = "ValidationError", ErrorDescription = "Category is not valid. Cannot load Capella history data." });
                 }
                 //CAP-3112
-                if (!CapellaTaskManager.TryStartTask(sHumanID, ""))
-                {
-                    return Json(new { HumanID = sHumanID, status = "InProgress", ErrorDescription = "Request is already InProgress." });
-                }
+                //if (!CapellaTaskManager.TryStartTask(sHumanID, ""))
+                //{
+                //    return Json(new { HumanID = sHumanID, status = "InProgress", ErrorDescription = "Request is already InProgress." });
+                //}
 
                 Task.Run(() =>
                 {
-                    try
-                    {
+                    //try
+                    //{
                         //GenerateCapellaHistoryData(sHumanID,sCategory);
                         GenerateCapellaHistoryData(sHumanID, bIsForce, sCategory);
-                    }
-                    finally
-                    {
-                        CapellaTaskManager.EndTask(sHumanID, "");
-                    }
+                    //}
+                    //finally
+                    //{
+                        //CapellaTaskManager.EndTask(sHumanID, "");
+                    //}
                 });
             }
             catch (Exception ex)
@@ -73,40 +73,42 @@ namespace Acurus.Capella.UI.WebServices.API
                 var releaseDate = ConfigurationSettings.AppSettings["ReleaseDate"] ?? "";
                 var TriggerReleaseDate = ConfigurationSettings.AppSettings["TriggerReleaseDate"] ?? "";
                 var thresholdDate = ConfigurationSettings.AppSettings["ThresholdDate"] ?? "";
-                if (string.IsNullOrEmpty(sCategory) || sCategory.ToUpper() == "ENCOUNTERS")
-                {
-                    string encounterByHumanIDQury = "SELECT enc.Encounter_ID FROM encounter enc JOIN wf_object wf ON enc.Encounter_ID = wf.Obj_System_Id  WHERE enc.Human_ID = {0} AND  DATE(enc.Date_of_Service) >= '{1}' AND DATE(enc.Date_of_Service) <= '{2}' and wf.Obj_Type = 'DOCUMENTATION' and wf.Current_Process = 'DOCUMENT_COMPLETE' and date(enc.Encounter_Provider_Signed_Date) <> '0001-01-01' UNION ALL SELECT enc.Encounter_ID FROM encounter_arc enc JOIN wf_object_arc wf ON enc.Encounter_ID = wf.Obj_System_Id WHERE enc.Human_ID = {0} AND  DATE(enc.Date_of_Service) >= '{1}' AND DATE(enc.Date_of_Service) <= '{2}' and wf.Obj_Type = 'DOCUMENTATION' and wf.Current_Process = 'DOCUMENT_COMPLETE' and date(enc.Encounter_Provider_Signed_Date) <> '0001-01-01';";
 
-                    DataSet result = DBConnector.ReadData(string.Format(encounterByHumanIDQury, sHumanID, thresholdDate, releaseDate));
+                //Jira CAP-3112 - Start
+                //if (string.IsNullOrEmpty(sCategory) || sCategory.ToUpper() == "ENCOUNTERS")
+                //{
+                //    string encounterByHumanIDQury = "SELECT enc.Encounter_ID FROM encounter enc JOIN wf_object wf ON enc.Encounter_ID = wf.Obj_System_Id  WHERE enc.Human_ID = {0} AND  DATE(enc.Date_of_Service) >= '{1}' AND DATE(enc.Date_of_Service) <= '{2}' and wf.Obj_Type = 'DOCUMENTATION' and wf.Current_Process = 'DOCUMENT_COMPLETE' and date(enc.Encounter_Provider_Signed_Date) <> '0001-01-01' UNION ALL SELECT enc.Encounter_ID FROM encounter_arc enc JOIN wf_object_arc wf ON enc.Encounter_ID = wf.Obj_System_Id WHERE enc.Human_ID = {0} AND  DATE(enc.Date_of_Service) >= '{1}' AND DATE(enc.Date_of_Service) <= '{2}' and wf.Obj_Type = 'DOCUMENTATION' and wf.Current_Process = 'DOCUMENT_COMPLETE' and date(enc.Encounter_Provider_Signed_Date) <> '0001-01-01';";
 
-                    if (result.Tables.Count > 0 && result.Tables[0].Rows.Count > 0)
-                    {
-                        IList<string> lstEncounterIDs = new List<string>();
-                        if (bIsForce == false)
-                        {
-                            string CheckCDCTabel = "select group_concat(Encounter_id) as Encounter_IDs from cdc_progress_note where Human_id = {0};";
-                            DataSet Checkresult = DBConnector.ReadData(string.Format(CheckCDCTabel, sHumanID));
-                            string sEncounterIDs = (Checkresult.Tables[0].Rows.Count > 0) ? Checkresult.Tables[0].Rows[0]["Encounter_IDs"].ToString() : "";
-                            lstEncounterIDs = sEncounterIDs.Split(',').ToList();
-                        }
+                //    DataSet result = DBConnector.ReadData(string.Format(encounterByHumanIDQury, sHumanID, thresholdDate, releaseDate));
 
-                        foreach (DataRow row in result.Tables[0].Rows)
-                        {
-                            string encounter_ID = row["Encounter_ID"].ToString();
-                            if (lstEncounterIDs.Contains(encounter_ID))
-                            {
-                                continue;
-                            }
-                            Task.Run(() => { GenerateJsonNotes(sHumanID, encounter_ID, "Acurus", DateTime.UtcNow); });
-                            //GenerateJsonNotes(sHumanID, encounter_ID, "Acurus", DateTime.UtcNow);
-                        }
-                    }
-                    //else
-                    //{
-                    //    return Json(new { HumanID = sHumanID, status = "ValidationError", ErrorDescription = "Encounter is not present in DB. Cannot generate progress note." });
-                    //}
-                }
+                //    if (result.Tables.Count > 0 && result.Tables[0].Rows.Count > 0)
+                //    {
+                //        IList<string> lstEncounterIDs = new List<string>();
+                //        if (bIsForce == false)
+                //        {
+                //            string CheckCDCTabel = "select group_concat(Encounter_id) as Encounter_IDs from cdc_progress_note where Human_id = {0};";
+                //            DataSet Checkresult = DBConnector.ReadData(string.Format(CheckCDCTabel, sHumanID));
+                //            string sEncounterIDs = (Checkresult.Tables[0].Rows.Count > 0) ? Checkresult.Tables[0].Rows[0]["Encounter_IDs"].ToString() : "";
+                //            lstEncounterIDs = sEncounterIDs.Split(',').ToList();
+                //        }
 
+                //        foreach (DataRow row in result.Tables[0].Rows)
+                //        {
+                //            string encounter_ID = row["Encounter_ID"].ToString();
+                //            if (lstEncounterIDs.Contains(encounter_ID))
+                //            {
+                //                continue;
+                //            }
+                //            Task.Run(() => { GenerateJsonNotes(sHumanID, encounter_ID, "Acurus", DateTime.UtcNow); });
+                //            //GenerateJsonNotes(sHumanID, encounter_ID, "Acurus", DateTime.UtcNow);
+                //        }
+                //    }
+                //    //else
+                //    //{
+                //    //    return Json(new { HumanID = sHumanID, status = "ValidationError", ErrorDescription = "Encounter is not present in DB. Cannot generate progress note." });
+                //    //}
+                //}
+                //Jira CAP-3112 - End
                 if (string.IsNullOrEmpty(sCategory) || sCategory.ToUpper() == "FILES")
                 {
                     //Jira CAP-3057
@@ -196,6 +198,41 @@ namespace Acurus.Capella.UI.WebServices.API
                     //    return Json(new { HumanID = sHumanID, status = "ValidationError", ErrorDescription = "Lab result is not present in DB. Cannot generate progress note." });
                     //}
                 }
+
+                //Jira CAP-3112
+                if (string.IsNullOrEmpty(sCategory) || sCategory.ToUpper() == "ENCOUNTERS")
+                {
+                    string encounterByHumanIDQury = "SELECT enc.Encounter_ID FROM encounter enc JOIN wf_object wf ON enc.Encounter_ID = wf.Obj_System_Id  WHERE enc.Human_ID = {0} AND  DATE(enc.Date_of_Service) >= '{1}' AND DATE(enc.Date_of_Service) <= '{2}' and wf.Obj_Type = 'DOCUMENTATION' and wf.Current_Process = 'DOCUMENT_COMPLETE' and date(enc.Encounter_Provider_Signed_Date) <> '0001-01-01' UNION ALL SELECT enc.Encounter_ID FROM encounter_arc enc JOIN wf_object_arc wf ON enc.Encounter_ID = wf.Obj_System_Id WHERE enc.Human_ID = {0} AND  DATE(enc.Date_of_Service) >= '{1}' AND DATE(enc.Date_of_Service) <= '{2}' and wf.Obj_Type = 'DOCUMENTATION' and wf.Current_Process = 'DOCUMENT_COMPLETE' and date(enc.Encounter_Provider_Signed_Date) <> '0001-01-01';";
+
+                    DataSet result = DBConnector.ReadData(string.Format(encounterByHumanIDQury, sHumanID, thresholdDate, releaseDate));
+
+                    if (result.Tables.Count > 0 && result.Tables[0].Rows.Count > 0)
+                    {
+                        IList<string> lstEncounterIDs = new List<string>();
+                        if (bIsForce == false)
+                        {
+                            string CheckCDCTabel = "select group_concat(Encounter_id) as Encounter_IDs from cdc_progress_note where Human_id = {0};";
+                            DataSet Checkresult = DBConnector.ReadData(string.Format(CheckCDCTabel, sHumanID));
+                            string sEncounterIDs = (Checkresult.Tables[0].Rows.Count > 0) ? Checkresult.Tables[0].Rows[0]["Encounter_IDs"].ToString() : "";
+                            lstEncounterIDs = sEncounterIDs.Split(',').ToList();
+                        }
+
+                        foreach (DataRow row in result.Tables[0].Rows)
+                        {
+                            string encounter_ID = row["Encounter_ID"].ToString();
+                            if (lstEncounterIDs.Contains(encounter_ID))
+                            {
+                                continue;
+                            }
+                            Task.Run(() => { GenerateJsonNotes(sHumanID, encounter_ID, "Acurus", DateTime.UtcNow); });
+                            //GenerateJsonNotes(sHumanID, encounter_ID, "Acurus", DateTime.UtcNow);
+                        }
+                    }
+                    //else
+                    //{
+                    //    return Json(new { HumanID = sHumanID, status = "ValidationError", ErrorDescription = "Encounter is not present in DB. Cannot generate progress note." });
+                    //}
+                }
             }
             catch (Exception ex)
             {
@@ -218,10 +255,10 @@ namespace Acurus.Capella.UI.WebServices.API
                 }
 
                 //CAP-3112
-                if (!CapellaTaskManager.TryStartTask("", sEncounterID))
-                {
-                    return Json(new { HumanID = sHumanID, EncounterID = sEncounterID, status = "InProgress", ErrorDescription = "Request is already InProgress." });
-                }
+                //if (!CapellaTaskManager.TryStartTask("", sEncounterID))
+                //{
+                //    return Json(new { HumanID = sHumanID, EncounterID = sEncounterID, status = "InProgress", ErrorDescription = "Request is already InProgress." });
+                //}
 
                 //string encounterByHumanIDQury = "SELECT enc.Encounter_ID, wf.Current_Process FROM encounter enc JOIN wf_object wf ON enc.Encounter_ID = wf.Obj_System_Id WHERE enc.Encounter_ID = " + sEncounterID + " AND wf.Obj_Type = 'DOCUMENTATION' UNION ALL SELECT enc.Encounter_ID, wf.Current_Process FROM encounter_arc enc JOIN wf_object_arc wf ON enc.Encounter_ID = wf.Obj_System_Id WHERE enc.Encounter_ID = " + sEncounterID + " AND wf.Obj_Type = 'DOCUMENTATION';";
 
@@ -256,14 +293,14 @@ namespace Acurus.Capella.UI.WebServices.API
                 //CAP-3112
                 Task.Run(() =>
                 {
-                    try
-                    {
+                    //try
+                    //{
                         GenerateJsonNotes(sHumanID, sEncounterID, transactionBy, transactionDateTime);
-                    }
-                    finally
-                    {
-                        CapellaTaskManager.EndTask("", sEncounterID);
-                    }
+                    //}
+                    //finally
+                    //{
+                        //CapellaTaskManager.EndTask("", sEncounterID);
+                    //}
                 });
             }
             catch (Exception ex)
@@ -1415,34 +1452,34 @@ namespace Acurus.Capella.UI.WebServices.API
         }
     }
     //CAP-3112
-    public static class CapellaTaskManager
-    {
-        private static readonly ConcurrentDictionary<string, object> _runningTasks = new ConcurrentDictionary<string, object>();
-        private static readonly ConcurrentDictionary<string, object> _runningTasksForEncounter = new ConcurrentDictionary<string, object>();
+    //public static class CapellaTaskManager
+    //{
+    //    private static readonly ConcurrentDictionary<string, object> _runningTasks = new ConcurrentDictionary<string, object>();
+    //    private static readonly ConcurrentDictionary<string, object> _runningTasksForEncounter = new ConcurrentDictionary<string, object>();
 
-        public static bool TryStartTask(string humanId, string encounterId)
-        {
-            if (!string.IsNullOrEmpty(humanId))
-            {
-                return _runningTasks.TryAdd(humanId, null);
-            }
-            else if (!string.IsNullOrEmpty(encounterId))
-            {
-                return _runningTasksForEncounter.TryAdd(encounterId, null);
-            }
-            return true;
-        }
+    //    public static bool TryStartTask(string humanId, string encounterId)
+    //    {
+    //        if (!string.IsNullOrEmpty(humanId))
+    //        {
+    //            return _runningTasks.TryAdd(humanId, null);
+    //        }
+    //        else if (!string.IsNullOrEmpty(encounterId))
+    //        {
+    //            return _runningTasksForEncounter.TryAdd(encounterId, null);
+    //        }
+    //        return true;
+    //    }
 
-        public static void EndTask(string humanId, string encounterId)
-        {
-            if (!string.IsNullOrEmpty(humanId))
-            {
-                _runningTasks.TryRemove(humanId, out _);
-            }
-            else if (!string.IsNullOrEmpty(encounterId))
-            {
-                _runningTasksForEncounter.TryRemove(encounterId, out _);
-            }
-        }
-    }
+    //    public static void EndTask(string humanId, string encounterId)
+    //    {
+    //        if (!string.IsNullOrEmpty(humanId))
+    //        {
+    //            _runningTasks.TryRemove(humanId, out _);
+    //        }
+    //        else if (!string.IsNullOrEmpty(encounterId))
+    //        {
+    //            _runningTasksForEncounter.TryRemove(encounterId, out _);
+    //        }
+    //    }
+    //}
 }

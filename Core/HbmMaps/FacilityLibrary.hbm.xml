@@ -45,6 +45,7 @@
     <property name="Healthcare_Service_Location_Code" column="Healthcare_Service_Location_Code"></property>
     <property name="Is_Ancillary" column="Is_Ancillary"></property>
     <property name="Legal_Org" column="Legal_Org"></property>
+    <property name="Lab_Client_Information" column="Lab_Client_Information"></property>
   </class>
 </hibernate-mapping>
 

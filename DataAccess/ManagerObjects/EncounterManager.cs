@@ -1529,6 +1529,17 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
                         objPatPane.Assigned_Physician_User_Name = physicanList.username;
                         objPatPane.Assigned_Physician = physicanList.prefix + " " + physicanList.firstname + " " + physicanList.middlename + " " + physicanList.lastname + " " + physicanList.suffix;
                     }
+                    //CAP-3343
+                    else
+                    {
+                        PhysicianManager physicianManager = new PhysicianManager();
+                        IList<PhysicianLibrary> lstPhysicianLibrary = physicianManager.GetInActivePhysicianById(EncProviderId);
+                        if (lstPhysicianLibrary != null && lstPhysicianLibrary.Any())
+                        {
+                            objPatPane.Assigned_Physician_User_Name = lstPhysicianLibrary[0].PhyUserName;
+                            objPatPane.Assigned_Physician = lstPhysicianLibrary[0].PhyPrefix + " " + lstPhysicianLibrary[0].PhyFirstName + " " + lstPhysicianLibrary[0].PhyMiddleName + " " + lstPhysicianLibrary[0].PhyLastName + " " + lstPhysicianLibrary[0].PhySuffix;
+                        }
+                    }
                 }
             }
             #endregion
@@ -17393,7 +17404,9 @@ AND E.ENCOUNTER_PROVIDER_SIGNED_DATE<>'0001-01-01 00:00:00'
                             //FillApptList.Document_Type.Add(oj[22].ToString());
                             if (oj[27] != null)
                                 FillApptList.Is_General_Queue_Appoinment.Add(oj[27].ToString());
-
+                            //CAP-3272
+                            if (oj[28] != null)
+                                FillApptList.Is_Auth_Verified.Add(oj[28].ToString());
                         }
                     }
 

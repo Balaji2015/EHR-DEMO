@@ -367,9 +367,13 @@ function reloadSummary() {
                     }
                     //Jira CAP-1587
                     else {
-                        if (xhr.responseText.indexOf("Human XML is invalid") == -1 && xhr.responseText.indexOf("Human XML is not found") == -1 && xhr.responseText.indexOf("Encounter XML is invalid") == -1 && xhr.responseText.indexOf("Encounter XML is not found") == -1) {
-                            alert("USER MESSAGE:\n" +
-                                ". Cannot process request. Please Login again and retry.");
+
+                        //CAP-3319 - Applying null safety check
+                        if (xhr.responseText?.indexOf("Human XML is invalid") == -1 && xhr.responseText?.indexOf("Human XML is not found") == -1 && xhr.responseText?.indexOf("Encounter XML is invalid") == -1 && xhr.responseText?.indexOf("Encounter XML is not found") == -1) {
+                            alert("USER MESSAGE:\n" + ". Cannot process request. Please Login again and retry.");
+                        }
+                        else if (xhr.responseText == null) {
+                            alert("USER MESSAGE:\n" + ". Cannot process request. Please Login again and retry.");
                         }
                     }
                 }

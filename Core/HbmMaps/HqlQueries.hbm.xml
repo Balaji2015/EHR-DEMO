@@ -13934,7 +13934,7 @@ and w.Current_Process<>'CANCELLED' and h.Human_ID is not NULL) as main left join
 (SELECT a.Encounter_ID,a.Appointment_Provider_ID,a.Human_ID,cast(a.Appointment_Date as char(100)) as Appointment_Date,
 a.Duration_Minutes,w.Current_Process,h.Last_Name,h.First_Name,h.MI,h.Prefix,h.Suffix,p.Physician_Prefix,p.Physician_First_Name,p.
 Physician_Middle_Name,p.Physician_Last_Name,p.Physician_Suffix, a.Facility_Name ,p.Encounter_Mode,
-cast(h.Birth_Date as char(100)) as Birth_Date,h.Human_Type,w.Obj_Type,a.Is_batch_created,a.Order_Submit_ID,a.visit_type, h.ACO_Is_Eligible_Patient ,h.Preferred_Language, h.Is_Translator_Required
+cast(h.Birth_Date as char(100)) as Birth_Date,h.Human_Type,w.Obj_Type,a.Is_batch_created,a.Order_Submit_ID,a.visit_type, h.ACO_Is_Eligible_Patient ,h.Preferred_Language, h.Is_Translator_Required,a.Is_Auth_Verified
 from encounter a
 left join wf_object w on (a.Encounter_ID = w.Obj_System_Id and w.Obj_Type = 'ENCOUNTER' and a.human_id<>0)
 left join human h on (a.human_id=h.human_id)
@@ -13947,7 +13947,7 @@ select main.*, if(c.Encounter_ID = main.encounter_id,"Y","N") as Payment_Paid fr
 (SELECT a.Encounter_ID,a.Appointment_Provider_ID,a.Human_ID,cast(a.Appointment_Date as char(100)) as Appointment_Date,
 a.Duration_Minutes,w.Current_Process,h.Last_Name,h.First_Name,h.MI,h.Prefix,h.Suffix,p.Physician_Prefix,p.Physician_First_Name,p.
 Physician_Middle_Name,p.Physician_Last_Name,p.Physician_Suffix, a.Facility_Name ,p.Encounter_Mode,
-cast(h.Birth_Date as char(100)) as Birth_Date,h.Human_Type,w.Obj_Type,a.Is_batch_created,a.Order_Submit_ID,a.visit_type,h.ACO_Is_Eligible_Patient ,h.Preferred_Language, h.Is_Translator_Required 
+cast(h.Birth_Date as char(100)) as Birth_Date,h.Human_Type,w.Obj_Type,a.Is_batch_created,a.Order_Submit_ID,a.visit_type,h.ACO_Is_Eligible_Patient ,h.Preferred_Language, h.Is_Translator_Required,a.Is_Auth_Verified
 from encounter_arc a
 left join wf_object_arc w on (a.Encounter_ID = w.Obj_System_Id and w.Obj_Type = 'ENCOUNTER' and a.human_id<>0)
 left join human h on (a.human_id=h.human_id)

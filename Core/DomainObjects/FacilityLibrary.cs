@@ -51,6 +51,7 @@ namespace Acurus.Capella.Core.DomainObjects
         private string _Healthcare_Service_Location_Code = string.Empty;
         private string _Is_Ancillary = string.Empty;
         private string _Legal_Org = string.Empty;
+        private string _Lab_Client_Information = string.Empty;
         #endregion
 
         #region Constructors
@@ -465,6 +466,16 @@ namespace Acurus.Capella.Core.DomainObjects
              set
              {
                  _Legal_Org = value;
+             }
+         }
+         //CAP-3308
+         [DataMember]
+         public virtual string Lab_Client_Information
+         {
+             get { return _Lab_Client_Information; }
+             set
+             {
+                _Lab_Client_Information = value;
              }
          }
         #endregion

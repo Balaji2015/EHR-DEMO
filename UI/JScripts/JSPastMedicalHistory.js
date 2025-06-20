@@ -352,7 +352,7 @@ function GeneralNotesClear() {
 function btnClearAll_Clicked(sender, args) {
     var IsClearAll = DisplayErrorMessage('200005');
     if (IsClearAll == true) {
-        
+
         if (window.parent.theForm.hdnMenuLevelAutoSave.value != "Menu" && window.parent.parent.parent.parent.theForm.ctl00_C5POBody_hdnIsSaveEnable != null && window.parent.parent.parent.parent.theForm.ctl00_C5POBody_hdnIsSaveEnable != undefined)
             window.parent.parent.parent.parent.theForm.ctl00_C5POBody_hdnIsSaveEnable.value = false;
         else
@@ -408,7 +408,7 @@ function hourglass() {
 }
 
 function EnableSave() {
-    
+
     if (window.parent.parent.parent.parent.theForm.ctl00_C5POBody_hdnIsSaveEnable != null && window.parent.parent.parent.parent.theForm.ctl00_C5POBody_hdnIsSaveEnable != undefined)
 
         window.parent.parent.parent.parent.theForm.ctl00_C5POBody_hdnIsSaveEnable.value = true;
@@ -421,17 +421,19 @@ function SaveEnabled() {
     EnableSave();
 }
 function EnablePFSH(val) {
-    
+
     if ($(window.parent.document).find('#btnPFSHVerified') != null)
         $(window.parent.document).find('#btnPFSHVerified')[0].disabled = false;
-    
+
     if (window.parent.parent.parent.parent.theForm.ctl00_C5POBody_hdnIsSaveEnable != null && window.parent.parent.parent.parent.theForm.ctl00_C5POBody_hdnIsSaveEnable != undefined)
         window.parent.parent.parent.parent.theForm.ctl00_C5POBody_hdnIsSaveEnable.value = false;
     else
         window.parent.theForm.hdnSaveEnable.value = false;
     var bValue = true;
     var PFSHVerified = localStorage.getItem("PFSHVerified");
-    if (PFSHVerified != "") {
+
+    // CAP-3316 - Applying null safety check
+    if (PFSHVerified) {
         var PFSH = PFSHVerified.split('|');
         for (var i = 0; i < PFSH.length; i++) {
             if (PFSH[i].split('-')[0] == val) {
@@ -765,7 +767,7 @@ function MaskDateEnable(ctrl, Value, ctrlName) {
     var chkValue = Value;
 
     var DateControl = pcontrol.id.replace(chkValue, name);
-   
+
     var txtMaskDate = $(DateControl);
     if (txtMaskDate != 'undefined') {
         document.getElementById(DateControl).disabled = false;
@@ -777,7 +779,7 @@ function MaskDateDisable(ctrl, Value, ctrlName) {
     var name = ctrlName;
     var chkValue = Value;
     var DateControl = pcontrol.id.replace(chkValue, name);
-    
+
     var txtMaskDate = $(DateControl);
     if (txtMaskDate != 'undefined') {
         document.getElementById(DateControl).disabled = true;
@@ -824,7 +826,7 @@ function LoadTest() {
 function HistoryProblem_Load() {
     window.parent.parent.theForm.hdnSaveButtonID.value = "btnSave,RadMultiPage1";
     top.window.document.getElementById('ctl00_Loading').style.display = "none";
-    
+
 }
 
 function TextBoxFocus(va) {
@@ -841,7 +843,7 @@ function SetProblemList(ProbLstText, SummaryToolTip) {
     ProbLstText = ProbLstText.replace(regex, "");
     top.window.document.getElementById("ProblemList_tooltp").innerText = ProbLstText + "\n";
     RefreshOverallSummaryTooltip();
-   
+
 }
 
 function SuccessFn(data) {
@@ -919,7 +921,7 @@ function SuccessFn(data) {
                         var tareaNotes = lbl.parentNode.nextElementSibling.nextElementSibling.nextElementSibling.nextElementSibling.nextElementSibling.nextElementSibling.children[0].children[0].children[0].children[0].children[0];
                         tareaNotes.value = jsonData[i].notes;
                         $(tareaNotes).removeProp("disabled");
-                       
+
                     }
                     $(lbl).parent().parent().find("td:last").find('label')[0].textContent = jsonData[i].version + '-' + jsonData[i].Id;
 
@@ -961,7 +963,7 @@ function SuccessFn(data) {
                 $(rows[i]).removeClass('displayNone');
         }
 
-    }    
+    }
     if (currentprocess != "SCRIBE_PROCESS" && currentprocess != "AKIDO_SCRIBE_PROCESS" && currentprocess.toUpperCase() != "SCRIBE_CORRECTION" && currentprocess.toUpperCase() != "SCRIBE_REVIEW_CORRECTION" && currentprocess != "DICTATION_REVIEW" && currentprocess != "CODER_REVIEW_CORRECTION" && currentprocess != "PROVIDER_PROCESS" && currentprocess != "MA_REVIEW" && currentprocess != "MA_PROCESS" && currentprocess != "PROVIDER_REVIEW_CORRECTION" && currentprocess != "TRANSCRIPT_PROCESS" && currentprocess != "TRANSCRIPT_QC_PROCESS" && currentprocess != "AKIDO_SCRIBE_QC_PROCESS" && currentprocess != "") {
         $('#btnSave')[0].disabled = true;
         $('#btnClearAll')[0].disabled = true;
@@ -1056,7 +1058,7 @@ function StopLoadFromPatChart() {
     jQuery(top.window.parent.parent.parent.parent.parent.parent.document.body).find('#resultLoading .bg').height('100%');
     jQuery(top.window.parent.parent.parent.parent.parent.parent.document.body).find('#resultLoading').fadeOut(300);
     jQuery(top.window.parent.parent.parent.parent.document.body).css('cursor', 'default');
-    
+
 }
 function SetPhysicianSpecificVisibility() {
     var rows = $("#tblPastMedical tbody tr");
@@ -1120,7 +1122,7 @@ function SetPhysicianSpecificVisibility() {
                 //                   "Message: " + log.Message);
             }
             { sessionStorage.setItem('StartLoading', 'false'); StopLoadFromPatChart(); }
-       
+
 
         }
     });
@@ -1141,7 +1143,7 @@ function SetPhysicianSpecificVisibility() {
         EnableSave();
         Addto_ModifiedControls(e);
     });
-    
+
     $("#chkShowAll").click(function () {
         if (this.checked == true) {
             var rows = $("#tblPastMedical > tbody > tr");
@@ -1318,7 +1320,7 @@ function SetPhysicianSpecificVisibility() {
             if ($($(this).parent().siblings()[5]).find('a')[0].className.indexOf('minus') > -1) {
                 $($(this).parent().siblings()[5]).find('a').click();
             }
-           
+
             $($(this).parent().siblings()[5]).find('a').attr("disabled", true);
             $($(this).parent().siblings()[5]).find('a').attr("onclick", "return false;");
             $($(this).parent().siblings()[5]).find('a').removeClass('pbDropdownBackground');
@@ -1550,7 +1552,7 @@ function SaveProblemHistory() {
         async: true,
         success: function (data) {
             //$('#chkShowAll').removeProp("disabled"); //Commented By Manimaran (18-11-2015 12:43:58 PM) for after saved data show all is enabled. 
-            if (data == "") { 
+            if (data == "") {
                 $('#btnSave')[0].disabled = true;
                 if (window.parent.parent.parent.parent.theForm.ctl00_C5POBody_hdnIsSaveEnable != null && window.parent.parent.parent.parent.theForm.ctl00_C5POBody_hdnIsSaveEnable != undefined)
 
@@ -1626,7 +1628,7 @@ function validate(frmDT, toDT, dob, utc) {
 }
 
 function SavedSuccessfully() {
-   
+
     DisplayErrorMessage('180602');
     if (window.parent.parent.parent.parent.theForm.ctl00_C5POBody_hdnIsSaveEnable != null && window.parent.parent.parent.parent.theForm.ctl00_C5POBody_hdnIsSaveEnable != undefined)
         window.parent.parent.parent.parent.theForm.ctl00_C5POBody_hdnIsSaveEnable.value = false;
@@ -1662,10 +1664,10 @@ $(document).ready(function () {
             winName = "ctl00_PFSHWindow";
         if ($($(top.window.parent.document).find("iframe[name='" + winName + "']")[0].contentDocument).find('body').find("#Modal").length == 0) {
             $("<div id='Modal' class='modal fade' style='background-color: transparent'><div class='modal-dialog' style='margin-top: 7%;'>" +
-            "<div class='modal-content' style='width:90%;'><div class='modal-header' style='padding-top: 0px; padding-bottom: 0px;'>" +
-            "<button type='button' id='btnClosewindow' class='close' data-dismiss='modal' aria-hidden='true'>&times;</button>" +
-            "<h5 id='ModalTtle' style='font-weight:bold;'></h5></div><div class='modal-body' style='height:560px;'>" +
-            "<iframe style='width: 100%; height: 100%; border: none' id='ProcessiFrame'></iframe></div></div></div></div>").insertAfter($($(top.window.parent.document).find("iframe[name='" + winName + "']")[0].contentDocument).find('body div:last'));
+                "<div class='modal-content' style='width:90%;'><div class='modal-header' style='padding-top: 0px; padding-bottom: 0px;'>" +
+                "<button type='button' id='btnClosewindow' class='close' data-dismiss='modal' aria-hidden='true'>&times;</button>" +
+                "<h5 id='ModalTtle' style='font-weight:bold;'></h5></div><div class='modal-body' style='height:560px;'>" +
+                "<iframe style='width: 100%; height: 100%; border: none' id='ProcessiFrame'></iframe></div></div></div></div>").insertAfter($($(top.window.parent.document).find("iframe[name='" + winName + "']")[0].contentDocument).find('body div:last'));
         }
     }
 
@@ -1832,7 +1834,7 @@ function ValidateMonth(sender, args) {
 }
 var hdnFieldName = null;
 function NotesChanged(icon, List, id) {
-    
+
     if (icon.className.indexOf("plus") > -1) {
         $(icon).removeClass("fa fa-plus").addClass("fa fa-minus");
         var ListValue = List;
@@ -1878,33 +1880,33 @@ function NotesChanged(icon, List, id) {
                         }
                     }
                     $("<div id='" + "sg" + targetControlValue + "'tabindex='0'/>").html(innerdiv)
-                      .css({
-                          top: pos.top + 37,
-                          left: pos.left,
-                          width: $("#" + targetControlValue).width() + 5 + "px",
-                          height: Height,
-                          overflow: 'scroll',
-                          position: 'absolute',
-                          background: 'white',
-                          bottom: '0',
-                          floating: 'top',
-                          border: '1px solid #8e8e8e',
-                          background: '#FFF',
-                          fontFamily: 'Segoe UI",Arial,sans-serif',
-                          fontSize: '12px',
-                          zIndex: '17',
-                          overflowX: 'auto'
+                        .css({
+                            top: pos.top + 37,
+                            left: pos.left,
+                            width: $("#" + targetControlValue).width() + 5 + "px",
+                            height: Height,
+                            overflow: 'scroll',
+                            position: 'absolute',
+                            background: 'white',
+                            bottom: '0',
+                            floating: 'top',
+                            border: '1px solid #8e8e8e',
+                            background: '#FFF',
+                            fontFamily: 'Segoe UI",Arial,sans-serif',
+                            fontSize: '12px',
+                            zIndex: '17',
+                            overflowX: 'auto'
 
-                      })
+                        })
                         .focusout(function () {
 
 
                             $(this).css("display", "none");
                         })
-                         //CAP-804 Syntax error, unrecognized expression
+                        //CAP-804 Syntax error, unrecognized expression
                         .insertAfter($("#" + targetControlValue?.trim() + ".actcmpt"));
                 }
-               // EnableSave();
+                // EnableSave();
 
             },
             failure: function (response) {
@@ -1934,8 +1936,8 @@ function SelectedNotes(agrulist) {
     $('#btnSave')[0].disabled = false;
     EnableSave();
     var value = agrulist.split(",");
-     //CAP-804 Syntax error, unrecognized expression
-     //CAP-1471
+    //CAP-804 Syntax error, unrecognized expression
+    //CAP-1471
     var sugglistval = $("#" + value[1]?.trim() + ".actcmpt")?.val()?.trim()??"";
 
     if (sugglistval != " " && sugglistval != "") {

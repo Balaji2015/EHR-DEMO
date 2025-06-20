@@ -3108,7 +3108,9 @@ namespace Acurus.Capella.UI
                             IsACOEligible = "  - " + LoadApptList.Is_ACO_Eligible[i];
 
                         appt = new Telerik.Web.UI.Appointment(LoadApptList.Human_ID[i].ToString() + "-", UtilityManager.ConvertToLocal(LoadApptList.Appointment_Date[i]), UtilityManager.ConvertToLocal(LoadApptList.Appointment_Date[i].AddHours(ts.Hours).AddMinutes(ts.Minutes).AddSeconds(ts.Seconds)), " - " + LoadApptList.PatientName[i].ToString() + " - " + LoadApptList.ApptStatus[i].ToString() + IsACOEligible);//EvStatus + IsACOEligible);
-                        appt.ToolTip = LoadApptList.Human_ID[i].ToString() + " - " + LoadApptList.PatientName[i].ToString() + " - " + LoadApptList.TypeofVisit[i].ToString();
+                        //CAP-3272
+                        string is_Auth_Verified = LoadApptList.Is_Auth_Verified[i].ToString();
+                        appt.ToolTip = LoadApptList.Human_ID[i].ToString() + " - " + LoadApptList.PatientName[i].ToString() + " - " + LoadApptList.TypeofVisit[i].ToString() + " - Auth Verified: " + (is_Auth_Verified == "Y" ? "Yes" : "No");
                         appt.Subject = UtilityManager.ConvertToLocal(LoadApptList.Appointment_Date[i]).ToString("hh:mm:ss tt") + "-" + UtilityManager.ConvertToLocal(LoadApptList.Appointment_Date[i].AddHours(ts.Hours).AddMinutes(ts.Minutes).AddSeconds(ts.Seconds)).ToString("hh:mm:ss tt") + " - " + LoadApptList.PatientName[i].ToString() + " - " + LoadApptList.ApptStatus[i].ToString() + IsACOEligible; //EvStatus + IsACOEligible;
                         if (LoadApptList.Preferred_Language[i].ToString() != null && LoadApptList.Preferred_Language[i].ToString() != string.Empty)
                         {
@@ -3348,13 +3350,15 @@ namespace Acurus.Capella.UI
 
                         TimeSpan ts = new TimeSpan(0, LoadApptList.Duration_Minutes[i], 0);
                         appt = new Telerik.Web.UI.Appointment(LoadApptList.Human_ID[i].ToString() + "-", UtilityManager.ConvertToLocal(LoadApptList.Appointment_Date[i]), UtilityManager.ConvertToLocal(LoadApptList.Appointment_Date[i].AddHours(ts.Hours).AddMinutes(ts.Minutes).AddSeconds(ts.Seconds)), " - " + LoadApptList.PatientName[i].ToString() + " - " + LoadApptList.ApptStatus[i] + IsACOEligible);// EvStatus + IsACOEligible);
+                        //CAP-3272
+                        string is_Auth_Verified = LoadApptList.Is_Auth_Verified[i].ToString();
                         if (LoadApptList.Is_Medicare_Plan[i].ToString() == "Y")
                         {
-                            appt.ToolTip = LoadApptList.Human_ID[i].ToString() + " - " + LoadApptList.PatientName[i].ToString() + " - " + LoadApptList.TypeofVisit[i].ToString() + "(MEDICARE)" + " ; " + "\n" + LoadApptList.Outstanding_Orders[i].ToString();
+                            appt.ToolTip = LoadApptList.Human_ID[i].ToString() + " - " + LoadApptList.PatientName[i].ToString() + " - " + LoadApptList.TypeofVisit[i].ToString() + "(MEDICARE)" + " - Auth Verified: " + (is_Auth_Verified == "Y" ? "Yes ; " : "No ; ") + "\n" + LoadApptList.Outstanding_Orders[i].ToString();
                         }
                         else
                         {
-                            appt.ToolTip = LoadApptList.Human_ID[i].ToString() + " - " + LoadApptList.PatientName[i].ToString() + " - " + LoadApptList.TypeofVisit[i].ToString() + " ; " + "\n" + LoadApptList.Outstanding_Orders[i].ToString();
+                            appt.ToolTip = LoadApptList.Human_ID[i].ToString() + " - " + LoadApptList.PatientName[i].ToString() + " - " + LoadApptList.TypeofVisit[i].ToString() + " - Auth Verified: " + (is_Auth_Verified == "Y" ? "Yes ; " : "No ; ") + "\n" + LoadApptList.Outstanding_Orders[i].ToString();
                         }
                         appt.Subject = UtilityManager.ConvertToLocal(LoadApptList.Appointment_Date[i]).ToString("hh:mm:ss tt") + "-" + UtilityManager.ConvertToLocal(LoadApptList.Appointment_Date[i].AddHours(ts.Hours).AddMinutes(ts.Minutes).AddSeconds(ts.Seconds)).ToString("hh:mm:ss tt") + " - " + LoadApptList.PatientName[i].ToString() + " - " + LoadApptList.ApptStatus[i].ToString() + "\n" + LoadApptList.Outstanding_Orders[i].ToString() + IsACOEligible;// EvStatus + IsACOEligible;
                         if (LoadApptList.Preferred_Language[i].ToString() != null && LoadApptList.Preferred_Language[i].ToString() != string.Empty)
