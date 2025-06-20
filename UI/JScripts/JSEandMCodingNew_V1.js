@@ -284,8 +284,8 @@ myapp.controller('EandMCodingCtrl', function ($scope, $http) {
         focus: function (event, ui) {
             //Cap - 3116
             //$("#txtCPT").val(ui.item.label);
-            e.preventDefault();
-            e.stopImmediatePropagation();
+            event.preventDefault();
+            event.stopImmediatePropagation();
             return false;
         },
         select: function (event, ui) {
@@ -557,7 +557,9 @@ myapp.controller('EandMCodingCtrl', function ($scope, $http) {
     }).on("keydown", function (e) {
         if (e.which == 8) {
             if (jQuery(top.window.parent.parent.parent.parent.parent.parent.document.body).find('#resultLoading').css('display') == 'block') { sessionStorage.setItem('StartLoading', 'false'); StopLoadFromPatChart(); }
-            if ($("#txtCPT").val().length <= 1)
+            //Cap - 3132
+            //if ($("#txtCPT").val().length <= 1)
+            if ($("#txtCPT").val().length <= 2)
                 bBool = false;
             else
                 bBool = true;
@@ -576,8 +578,9 @@ myapp.controller('EandMCodingCtrl', function ($scope, $http) {
     }).on("input", function (e) {
         document.getElementById('txtCPTDescription').value = "";
         if (jQuery(top.window.parent.parent.parent.parent.parent.parent.document.body).find('#resultLoading').css('display') != "undefined" && jQuery(top.window.parent.parent.parent.parent.parent.parent.document.body).find('#resultLoading').css('display') == 'block') { { sessionStorage.setItem('StartLoading', 'false'); StopLoadFromPatChart(); } }
-
-        if ($("#txtCPT").val().length >= 1) {
+        //Cap - 3132
+        //if ($("#txtCPT").val().length >= 1) {
+        if ($("#txtCPT").val().length >= 2) {
             if (jQuery(top.window.parent.parent.parent.parent.parent.parent.document.body).find('#resultLoading').css('display') != "undefined" && jQuery(top.window.parent.parent.parent.parent.parent.parent.document.body).find('#resultLoading').css('display') == 'block') { { sessionStorage.setItem('StartLoading', 'false'); StopLoadFromPatChart(); } }
 
             if (!bBool) { sessionStorage.setItem('StartLoading', 'true'); StartLoadFromPatChart(); }
@@ -808,8 +811,8 @@ myapp.controller('EandMCodingCtrl', function ($scope, $http) {
         focus: function (event, ui) {
              //CAP-3139
             //$("#txtCPTDescription").val(ui.item.label);
-            e.preventDefault();
-            e.stopImmediatePropagation();
+            event.preventDefault();
+            event.stopImmediatePropagation();
             return false;
         },
         select: function (event, ui) {
@@ -1184,8 +1187,8 @@ myapp.controller('EandMCodingCtrl', function ($scope, $http) {
         focus: function (event, ui) {
             //CAP-3139
            // $("#txtICD10").val(ui.item.label);
-            e.preventDefault();
-            e.stopImmediatePropagation();
+            event.preventDefault();
+            event.stopImmediatePropagation();
             return false;
         },
         open: function () {
@@ -1345,8 +1348,8 @@ myapp.controller('EandMCodingCtrl', function ($scope, $http) {
         focus: function (event, ui) {
              //CAP-3139
             //$("#txtDescription").val(ui.item.label);
-            e.preventDefault();
-            e.stopImmediatePropagation();
+            event.preventDefault();
+            event.stopImmediatePropagation();
             return false;
         },
         open: function () {
