@@ -3109,7 +3109,11 @@ namespace Acurus.Capella.UI
 
                         appt = new Telerik.Web.UI.Appointment(LoadApptList.Human_ID[i].ToString() + "-", UtilityManager.ConvertToLocal(LoadApptList.Appointment_Date[i]), UtilityManager.ConvertToLocal(LoadApptList.Appointment_Date[i].AddHours(ts.Hours).AddMinutes(ts.Minutes).AddSeconds(ts.Seconds)), " - " + LoadApptList.PatientName[i].ToString() + " - " + LoadApptList.ApptStatus[i].ToString() + IsACOEligible);//EvStatus + IsACOEligible);
                         //CAP-3272
-                        string is_Auth_Verified = LoadApptList.Is_Auth_Verified[i].ToString();
+                        string is_Auth_Verified = "";
+                        if (LoadApptList.Is_Auth_Verified != null)
+                        {
+                            is_Auth_Verified = LoadApptList.Is_Auth_Verified[i].ToString();
+                        }
                         appt.ToolTip = LoadApptList.Human_ID[i].ToString() + " - " + LoadApptList.PatientName[i].ToString() + " - " + LoadApptList.TypeofVisit[i].ToString() + " - " + (is_Auth_Verified == "Y" ? "Auth is Verified" : "Auth is Not Verified");
                         appt.Subject = UtilityManager.ConvertToLocal(LoadApptList.Appointment_Date[i]).ToString("hh:mm:ss tt") + "-" + UtilityManager.ConvertToLocal(LoadApptList.Appointment_Date[i].AddHours(ts.Hours).AddMinutes(ts.Minutes).AddSeconds(ts.Seconds)).ToString("hh:mm:ss tt") + " - " + LoadApptList.PatientName[i].ToString() + " - " + LoadApptList.ApptStatus[i].ToString() + IsACOEligible; //EvStatus + IsACOEligible;
                         if (LoadApptList.Preferred_Language[i].ToString() != null && LoadApptList.Preferred_Language[i].ToString() != string.Empty)
@@ -3351,7 +3355,11 @@ namespace Acurus.Capella.UI
                         TimeSpan ts = new TimeSpan(0, LoadApptList.Duration_Minutes[i], 0);
                         appt = new Telerik.Web.UI.Appointment(LoadApptList.Human_ID[i].ToString() + "-", UtilityManager.ConvertToLocal(LoadApptList.Appointment_Date[i]), UtilityManager.ConvertToLocal(LoadApptList.Appointment_Date[i].AddHours(ts.Hours).AddMinutes(ts.Minutes).AddSeconds(ts.Seconds)), " - " + LoadApptList.PatientName[i].ToString() + " - " + LoadApptList.ApptStatus[i] + IsACOEligible);// EvStatus + IsACOEligible);
                         //CAP-3272
-                        string is_Auth_Verified = LoadApptList.Is_Auth_Verified[i].ToString();
+                        string is_Auth_Verified = "";
+                        if(LoadApptList.Is_Auth_Verified != null)
+                        {
+                            is_Auth_Verified = LoadApptList.Is_Auth_Verified[i].ToString();
+                        }
                         if (LoadApptList.Is_Medicare_Plan[i].ToString() == "Y")
                         {
                             appt.ToolTip = LoadApptList.Human_ID[i].ToString() + " - " + LoadApptList.PatientName[i].ToString() + " - " + LoadApptList.TypeofVisit[i].ToString() + "(MEDICARE)" + " - " + (is_Auth_Verified == "Y" ? "Auth is Verified ; " : "Auth is Not Verified ; ") + "\n" + LoadApptList.Outstanding_Orders[i].ToString();
