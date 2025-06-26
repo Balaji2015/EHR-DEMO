@@ -35,7 +35,7 @@
 		<!--New Azure Testing-->
 		<!--<property name="connection.connection_string">Database=capella_cmg_wc_merge;Server=capellapoc2.mysql.database.azure.com; User ID=dbadmin;Password=KoU6Vty25bdufJeTOBVO;Port=3306;SslMode=Required;Connection Timeout=30;</property>-->
       <!--Azure Testing-->
-      <property name="connection.connection_string">Database=capella_cmg_wc_merge;Server=capellapoc.mysql.database.azure.com; User ID=dbadmin@capellapoc;Password=KoU6Vty25bdufJeTOBVO;Port=3306;SslMode=Required;Connection Timeout=30;</property>
+			<property name="connection.connection_string">Database=capella_cmg_wc_merge;Server=10.1.0.9; User ID=dbadmin@capellapoc;Password=KoU6Vty25bdufJeTOBVO;Port=3306;SslMode=Required;Connection Timeout=30;</property>
       <!--CMG LOCAL 154 -->
       <!--<property name="connection.connection_string">Database=capella_cmg_deve;Data Source=172.18.0.11;User Id=root;Password=Capella@20!4;Allow Zero Datetime=True;Connect Timeout=120;Port=3306;</property>-->
       <!--CMG LOCAL 11 -->

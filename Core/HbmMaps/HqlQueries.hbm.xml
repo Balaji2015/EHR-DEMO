@@ -12561,7 +12561,7 @@ where  c.orc_ordering_provider_id=? and (r.Matching_Patient_ID=0 or Order_ID=0) 
 from error_log e left join result_master r on e.result_master_id=r.result_master_id
 left join result_obr x on x.result_master_id=r.result_master_id
 left join result_orc c on r.result_master_id=c.result_master_id
-where  c.orc_ordering_provider_id=? and (r.Matching_Patient_ID=0 or Order_ID=0) and Is_Deleted='N'  and e.result_master_id<>0  group by x.result_master_id  order by r.MSH_Date_And_Time_Of_Message desc limit ?,?;
+where  c.orc_ordering_provider_id=? and (r.Matching_Patient_ID=0 or Order_ID=0) and Is_Deleted='N'  and e.result_master_id<>0  group by x.result_master_id  order by r.MSH_Date_And_Time_Of_Message desc;
 ]]>
 	</sql-query>
 	<sql-query name="OrderException.WithMatchingPatient.Criteria.Count">
@@ -12580,7 +12580,7 @@ where  c.orc_ordering_provider_id=? and r.Order_Id=0 and r.Matching_Patient_ID<>
 from error_log e left join result_master r on e.result_master_id=r.result_master_id
 left join result_obr x on x.result_master_id=r.result_master_id
 left join result_orc c on r.result_master_id=c.result_master_id
-where  c.orc_ordering_provider_id=? and r.Order_Id=0 and r.Matching_Patient_ID<>0 and Is_Deleted='N' and e.result_master_id<>0  group by x.result_master_id  order by r.MSH_Date_And_Time_Of_Message desc limit ?,?;
+where  c.orc_ordering_provider_id=? and r.Order_Id=0 and r.Matching_Patient_ID<>0 and Is_Deleted='N' and e.result_master_id<>0  group by x.result_master_id  order by r.MSH_Date_And_Time_Of_Message desc;
 ]]>
 	</sql-query>
 
@@ -12600,7 +12600,7 @@ where  c.orc_ordering_provider_id=? and r.Matching_Patient_ID=0 and Is_Deleted='
 from error_log e left join result_master r on e.result_master_id=r.result_master_id
 left join result_obr x on x.result_master_id=r.result_master_id
 left join result_orc c on r.result_master_id=c.result_master_id
-where  c.orc_ordering_provider_id=?  and r.Matching_Patient_ID=0 and Is_Deleted='N' and e.result_master_id<>0  group by x.result_master_id  order by r.MSH_Date_And_Time_Of_Message desc limit ?,?;
+where  c.orc_ordering_provider_id=?  and r.Matching_Patient_ID=0 and Is_Deleted='N' and e.result_master_id<>0  group by x.result_master_id  order by r.MSH_Date_And_Time_Of_Message desc;
 ]]>
 	</sql-query>
 
@@ -12621,7 +12621,7 @@ where Is_Deleted='N' and e.result_master_id<>0  group by x.result_master_id  ord
 from error_log e left join result_master r on e.result_master_id=r.result_master_id
 left join result_obr x on x.result_master_id=r.result_master_id
 left join result_orc c on r.result_master_id=c.result_master_id
-where Is_Deleted='N' and e.result_master_id<>0  group by x.result_master_id  order by r.MSH_Date_And_Time_Of_Message desc limit ?,?;
+where Is_Deleted='N' and e.result_master_id<>0  group by x.result_master_id  order by r.MSH_Date_And_Time_Of_Message desc;
 ]]>
 	</sql-query>
 
@@ -12641,7 +12641,7 @@ where Is_Deleted='N' and e.result_master_id<>0 and Reason_Code in('ACUR_LAB_05',
 from error_log e left join result_master r on e.result_master_id=r.result_master_id
 left join result_obr x on x.result_master_id=r.result_master_id
 left join result_orc c on r.result_master_id=c.result_master_id
-where Is_Deleted='N' and e.result_master_id<>0 and Reason_Code in('ACUR_LAB_05','ACUR_LAB_06') group by x.result_master_id  order by r.MSH_Date_And_Time_Of_Message desc limit ?,?;
+where Is_Deleted='N' and e.result_master_id<>0 and Reason_Code in('ACUR_LAB_05','ACUR_LAB_06') group by x.result_master_id  order by r.MSH_Date_And_Time_Of_Message desc ;
 ]]>
 	</sql-query>
 

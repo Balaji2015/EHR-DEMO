@@ -84,7 +84,7 @@ namespace Acurus.Capella.UI
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::Telerik.Web.UI.RadButton btnSearch;
+        protected global::System.Web.UI.WebControls.Button btnSearch;
 
         /// <summary>
         /// btnViewPendingOrder control.
@@ -204,24 +204,6 @@ namespace Acurus.Capella.UI
         protected global::System.Web.UI.WebControls.Panel pnlGrid;
 
         /// <summary>
-        /// grdUnassignedResults control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::Telerik.Web.UI.RadGrid grdUnassignedResults;
-
-        /// <summary>
-        /// pageNavigator1 control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::Acurus.Capella.UI.PageNavigator pageNavigator1;
-
-        /// <summary>
         /// Panel1 control.
         /// </summary>
         /// <remarks>
@@ -285,22 +267,13 @@ namespace Acurus.Capella.UI
         protected global::System.Web.UI.WebControls.Panel Panel3;
 
         /// <summary>
-        /// Label5 control.
+        /// grdPanel control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Label Label5;
-
-        /// <summary>
-        /// grdOutstandingOrders control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::Telerik.Web.UI.RadGrid grdOutstandingOrders;
+        protected global::System.Web.UI.WebControls.Panel grdPanel;
 
         /// <summary>
         /// chkNoOrders control.

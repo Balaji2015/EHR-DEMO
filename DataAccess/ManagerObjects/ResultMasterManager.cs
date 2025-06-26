@@ -40,7 +40,7 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
         void UpdateResultMasterForOutsideOrdersForMRE(ulong resultMasterID, string sIsFilled, string sMacAddress);
         IList<ResultMaster> GetResultMasterListByResultmasterIDForMRE(ulong ulResultMasterID);
         FillResultMasterAndEntry GetResultUsingHumanId(ulong human_id);
-        IList<FillOrderException> GetOrderExceptionItems(int PageNumber, int MaxResultsPerPage, string SearchCriteria, string NPINumbers, IList<string> FieldName, IList<string> Value);
+        IList<FillOrderException> GetOrderExceptionItems(string SearchCriteria, string NPINumbers, IList<string> FieldName, IList<string> Value);
         IList<FillOrderException> GetOrderDetails(int PageNumber, int MaxResultsPerPage, ulong OrderID, ulong Result_Master_ID, bool Is_Showall, bool Is_Patient_Matched, ulong Human_ID, ulong Lab_ID);
         void UpdateResultMaster(ulong ResultMasterID, ulong OrderSubmitID, string MacAddress);
         ulong SaveResultMasterforSummary(IList<ResultMaster> lstresultmaster);
@@ -1168,30 +1168,30 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
                     //        ilisPatientResults.Add(objPatientResults);
                     //    }
                     //}
-                   // VitalsManager objVitalsManager = new VitalsManager();
-                   //// iResult = objVitalsManager.SaveUpdateDeleteWithoutTransaction(ref ilisPatientResults, null, null, MySession, macAddress);
-                   // IList<PatientResults> ilisPatientResultsnull = null;
-                   // iResult = objVitalsManager.SaveUpdateDelete_DBAndXML_WithoutTransaction(ref ilisPatientResults, ref ilisPatientResultsnull, null, MySession, macAddress, false, true, 0, string.Empty, ref XMLObj);
-                   // if (iResult == 2)
-                   // {
-                   //     if (iTryCount < 5)
-                   //     {
-                   //         iTryCount++;
-                   //         goto TryAgain;
-                   //     }
-                   //     else
-                   //     {
-                   //         trans.Rollback();
-                   //         // MySession.Close();
-                   //         throw new Exception("Deadlock occurred. Transaction failed.");
-                   //     }
-                   // }
-                   // else if (iResult == 1)
-                   // {
-                   //     trans.Rollback();
-                   //     // MySession.Close();
-                   //     throw new Exception("Exception occurred. Transaction failed.");
-                   // }
+                    // VitalsManager objVitalsManager = new VitalsManager();
+                    //// iResult = objVitalsManager.SaveUpdateDeleteWithoutTransaction(ref ilisPatientResults, null, null, MySession, macAddress);
+                    // IList<PatientResults> ilisPatientResultsnull = null;
+                    // iResult = objVitalsManager.SaveUpdateDelete_DBAndXML_WithoutTransaction(ref ilisPatientResults, ref ilisPatientResultsnull, null, MySession, macAddress, false, true, 0, string.Empty, ref XMLObj);
+                    // if (iResult == 2)
+                    // {
+                    //     if (iTryCount < 5)
+                    //     {
+                    //         iTryCount++;
+                    //         goto TryAgain;
+                    //     }
+                    //     else
+                    //     {
+                    //         trans.Rollback();
+                    //         // MySession.Close();
+                    //         throw new Exception("Deadlock occurred. Transaction failed.");
+                    //     }
+                    // }
+                    // else if (iResult == 1)
+                    // {
+                    //     trans.Rollback();
+                    //     // MySession.Close();
+                    //     throw new Exception("Exception occurred. Transaction failed.");
+                    // }
                 }
 
                 IList<ResultNTE> nteInsertList = new List<ResultNTE>();
@@ -1656,7 +1656,7 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
                                 objErrorLog.Is_Deleted = "N";
                                 ilstErrorLog.Add(objErrorLog);
 
-                               // objErrorLogManager.SaveUpdateDeleteWithoutTransaction(ref ilstErrorLog, null, null, MySession, macAddress);
+                                // objErrorLogManager.SaveUpdateDeleteWithoutTransaction(ref ilstErrorLog, null, null, MySession, macAddress);
                                 IList<ErrorLog> ilstErrorLognull = null;
                                 objErrorLogManager.SaveUpdateDelete_DBAndXML_WithoutTransaction(ref ilstErrorLog, ref ilstErrorLognull, null, MySession, macAddress, false, true, 0, string.Empty, ref XMLObj);
 
@@ -1730,12 +1730,12 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
                     }
                 }
                 objErrorLog.Modified_By = sModifiedby;
-                
+
                 ilstErrorLog.Add(objErrorLog);
                 ErrorLogManager objErrorLogManager = new ErrorLogManager();
                 //Commented for bug id=45811
                 //objErrorLogManager.SaveUpdateDeleteWithoutTransaction(ref ilstErrorLog, null, null, MySession, macAddress);
-               // objErrorLogManager.SaveUpdateDeleteWithTransaction(ref ilstErrorLog, null, null, macAddress);
+                // objErrorLogManager.SaveUpdateDeleteWithTransaction(ref ilstErrorLog, null, null, macAddress);
                 IList<ErrorLog> ilstErrorLognull = null;
                 objErrorLogManager.SaveUpdateDelete_DBAndXML_WithTransaction(ref ilstErrorLog, ref ilstErrorLognull, null, macAddress, false, false, 0, string.Empty);
                 bUnimportedFile = true;
@@ -3489,14 +3489,14 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
             //iMySession.Close();
 
 
-                //IList<Human> objHuman = new List<Human>();
-                //ISQLQuery sql = iMySession.CreateSQLQuery("select h.*  from Human h  where h.First_Name ='" + sFirstname + "' and h.Last_Name='" + sLastname + "' and h.Birth_Date='" + sDob + "' and h.Sex like '" + sSex + "%' and h.account_status='active';").AddEntity("h", typeof(Human));
-                //For bug Id: 71296
-                //CAP-3071
-                ISQLQuery sql = MySession.CreateSQLQuery("select h.Human_Id from Human h  where h.First_Name =:Firstname and h.Last_Name=:Lastname and h.Birth_Date=:Dob and h.Sex like '" + sSex + "%' and h.account_status='active';");
-                sql.SetParameter("Firstname", sFirstname.Replace("'", "''"));
-                sql.SetParameter("Lastname", sLastname.Replace("'", "''"));
-                sql.SetParameter("Dob", sDob);
+            //IList<Human> objHuman = new List<Human>();
+            //ISQLQuery sql = iMySession.CreateSQLQuery("select h.*  from Human h  where h.First_Name ='" + sFirstname + "' and h.Last_Name='" + sLastname + "' and h.Birth_Date='" + sDob + "' and h.Sex like '" + sSex + "%' and h.account_status='active';").AddEntity("h", typeof(Human));
+            //For bug Id: 71296
+            //CAP-3071
+            ISQLQuery sql = MySession.CreateSQLQuery("select h.Human_Id from Human h  where h.First_Name =:Firstname and h.Last_Name=:Lastname and h.Birth_Date=:Dob and h.Sex like '" + sSex + "%' and h.account_status='active';");
+            sql.SetParameter("Firstname", sFirstname.Replace("'", "''"));
+            sql.SetParameter("Lastname", sLastname.Replace("'", "''"));
+            sql.SetParameter("Dob", sDob);
             // sql.SetParameter("Sex", sSex);
 
             //CAP-2901
@@ -4245,11 +4245,13 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
         }
 
         //Muthusamy Changes made for Lab exception
-        public IList<FillOrderException> GetOrderExceptionItems(int PageNumber, int MaxResultsPerPage, string SearchCriteria, string NPINumbers, IList<string> FieldName, IList<string> Value)
+        // public IList<FillOrderException> GetOrderExceptionItems(int PageNumber, int MaxResultsPerPage, string SearchCriteria, string NPINumbers, IList<string> FieldName, IList<string> Value)
+        public IList<FillOrderException> GetOrderExceptionItems(string SearchCriteria, string NPINumbers, IList<string> FieldName, IList<string> Value)
         {
             IList<FillOrderException> resturnList = new List<FillOrderException>();
             IQuery query = null;
-            IQuery queryCount = null;
+            //Jira Cap - 3206
+            //IQuery queryCount = null;
             int TotalNumberOfRecords = 0;
             bool bCheck = true;
             ArrayList arrData = new ArrayList();
@@ -4257,35 +4259,42 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
             {
                 if (SearchCriteria.ToUpper().Trim() == "ALL RESULTS")
                 {
-                    queryCount = iMySession.GetNamedQuery("OrderException.WithNPI.Criteria.Count");
+                    //Jira Cap - 3206
+                    //queryCount = iMySession.GetNamedQuery("OrderException.WithNPI.Criteria.Count");
                     query = iMySession.GetNamedQuery("OrderException.WithNPI.Criteria");
                 }
                 else if (SearchCriteria.ToUpper().Trim() == "RESULT ATTACHED TO PATIENT CHART")
                 {
-                    queryCount = iMySession.GetNamedQuery("OrderException.WithMatchingPatient.Criteria.Count");
+                    //Jira Cap - 3206
+                    //queryCount = iMySession.GetNamedQuery("OrderException.WithMatchingPatient.Criteria.Count");
                     query = iMySession.GetNamedQuery("OrderException.WithMatchingPatient.Criteria");
                 }
                 else if (SearchCriteria.ToUpper().Trim() == "RESULT NOT ATTACHED TO PATIENT CHART")
                 {
-                    queryCount = iMySession.GetNamedQuery("OrderException.WithNotMatchingPatient.Criteria.Count");
+                    //Jira Cap - 3206
+                    //queryCount = iMySession.GetNamedQuery("OrderException.WithNotMatchingPatient.Criteria.Count");
                     query = iMySession.GetNamedQuery("OrderException.WithNotMatchingPatient.Criteria");
                 }
                 else if (SearchCriteria.ToUpper().Trim() == "ALL")
                 {
-                    queryCount = iMySession.GetNamedQuery("OrderException.WithALL.Criteria.Count");
+                    //Jira Cap - 3206
+                    //queryCount = iMySession.GetNamedQuery("OrderException.WithALL.Criteria.Count");
                     query = iMySession.GetNamedQuery("OrderException.WithALL.Criteria");
                     bCheck = false;
 
                 }
                 else if (SearchCriteria.ToUpper().Trim() == "PROVIDER NOT ASSIGNED")
                 {
-                    queryCount = iMySession.GetNamedQuery("OrderException.WithProviderNotAssigned.Criteria.Count");
+                    //Jira Cap - 3206
+                    //queryCount = iMySession.GetNamedQuery("OrderException.WithProviderNotAssigned.Criteria.Count");
                     query = iMySession.GetNamedQuery("OrderException.WithProviderNotAssigned.Criteria");
                     bCheck = false;
                 }
 
                 //BugID:46054
-                if (query != null && queryCount != null)
+                //Jira Cap - 3206
+                //if (query != null && queryCount != null)
+                if (query != null)
                 {
                     string subQuery = string.Empty;
                     if (FieldName != null && FieldName.Count > 0)
@@ -4313,28 +4322,34 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
                     }
                     if (subQuery != string.Empty)
                     {
-                        string QueryCnt = queryCount.ToString();
-                        QueryCnt = QueryCnt.Insert(QueryCnt.IndexOf("group by"), subQuery);
+                        //Jira Cap - 3206
+                        //string QueryCnt = queryCount.ToString();
+                        //QueryCnt = QueryCnt.Insert(QueryCnt.IndexOf("group by"), subQuery);
                         string Querydata = query.ToString();
                         Querydata = Querydata.Insert(Querydata.IndexOf("group by"), subQuery);
-                        ISQLQuery sqlqryCnt = iMySession.CreateSQLQuery(QueryCnt);
+                        //Jira Cap - 3206
+                        //ISQLQuery sqlqryCnt = iMySession.CreateSQLQuery(QueryCnt);
                         ISQLQuery sqlqry = iMySession.CreateSQLQuery(Querydata);
-                        queryCount = sqlqryCnt;
+                        //Jira Cap - 3206
+                        //queryCount = sqlqryCnt;
                         query = sqlqry;
                     }
                     if (bCheck)
                     {
-                        queryCount.SetString(0, NPINumbers);
-                        TotalNumberOfRecords = queryCount.List().Count;
+                        //Jira Cap - 3206
+                        //queryCount.SetString(0, NPINumbers);
+                        //TotalNumberOfRecords = queryCount.List().Count;
                         query.SetString(0, NPINumbers);
-                        query.SetInt32(1, (PageNumber - 1) * MaxResultsPerPage);
-                        query.SetInt32(2, MaxResultsPerPage);
+                        //Jira Cap - 3206
+                        //query.SetInt32(1, (PageNumber - 1) * MaxResultsPerPage);
+                        //query.SetInt32(2, MaxResultsPerPage);
                     }
                     else
                     {
-                        TotalNumberOfRecords = queryCount.List().Count;
-                        query.SetInt32(0, (PageNumber - 1) * MaxResultsPerPage);
-                        query.SetInt32(1, MaxResultsPerPage);
+                        //Jira Cap - 3206
+                        // TotalNumberOfRecords = queryCount.List().Count;
+                        //query.SetInt32(0, (PageNumber - 1) * MaxResultsPerPage);
+                        //query.SetInt32(1, MaxResultsPerPage);
                     }
                     arrData = new ArrayList(query.List());
 
@@ -4532,67 +4547,67 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
 
             //if (Matching_Patient_ID == 0 || bCheck)
             //{
-                iTryCount = 0;
-            TryAgain:
-                int iResult = 0;
-                ISession MySession = Session.GetISession();
-                ITransaction trans = null;
-                try
-                {
-                    trans = MySession.BeginTransaction();
-                    WFObjectManager objWFObjectManager = new WFObjectManager();
-                    WFObject objWFObject = new WFObject();
-                    objWFObject.Obj_System_Id = ResultMasterID;
-                    objWFObject.Obj_Type = "DIAGNOSTIC_RESULT";
-                    objWFObject.Current_Arrival_Time = System.TimeZoneInfo.ConvertTimeToUtc(DateTime.Now);
-                    objWFObject.Current_Process = "START";
-                    objWFObject.Current_Owner = Current_Owner;
-                    objWFObject.Fac_Name = "ALL";
-                    iResult = objWFObjectManager.InsertToWorkFlowObject(objWFObject, 1, string.Empty, MySession);
+            iTryCount = 0;
+        TryAgain:
+            int iResult = 0;
+            ISession MySession = Session.GetISession();
+            ITransaction trans = null;
+            try
+            {
+                trans = MySession.BeginTransaction();
+                WFObjectManager objWFObjectManager = new WFObjectManager();
+                WFObject objWFObject = new WFObject();
+                objWFObject.Obj_System_Id = ResultMasterID;
+                objWFObject.Obj_Type = "DIAGNOSTIC_RESULT";
+                objWFObject.Current_Arrival_Time = System.TimeZoneInfo.ConvertTimeToUtc(DateTime.Now);
+                objWFObject.Current_Process = "START";
+                objWFObject.Current_Owner = Current_Owner;
+                objWFObject.Fac_Name = "ALL";
+                iResult = objWFObjectManager.InsertToWorkFlowObject(objWFObject, 1, string.Empty, MySession);
 
-                    if (iResult == 2)
+                if (iResult == 2)
+                {
+                    if (iTryCount < 5)
                     {
-                        if (iTryCount < 5)
-                        {
-                            iTryCount++;
-                            goto TryAgain;
-                        }
-                        else
-                        {
-                            trans.Rollback();
-                            throw new Exception("Deadlock occurred. Transaction failed.");
-                        }
+                        iTryCount++;
+                        goto TryAgain;
                     }
-                    else if (iResult == 1)
+                    else
                     {
                         trans.Rollback();
-                        throw new Exception("Exception occurred. Transaction failed.");
-
+                        throw new Exception("Deadlock occurred. Transaction failed.");
                     }
-
-                    MySession.Flush();
-                    trans.Commit();
-
                 }
-                catch (NHibernate.Exceptions.GenericADOException ex)
+                else if (iResult == 1)
                 {
                     trans.Rollback();
+                    throw new Exception("Exception occurred. Transaction failed.");
+
+                }
+
+                MySession.Flush();
+                trans.Commit();
+
+            }
+            catch (NHibernate.Exceptions.GenericADOException ex)
+            {
+                trans.Rollback();
                 //CAP-1942
                 throw new Exception(ex.Message,ex);
-                }
-                catch (Exception e)
-                {
-                    trans.Rollback();
+            }
+            catch (Exception e)
+            {
+                trans.Rollback();
                 //CAP-1942
                 throw new Exception(e.Message,e);
-                }
-                finally
-                {
-                    MySession.Close();
-                }
+            }
+            finally
+            {
+                MySession.Close();
+            }
 
-                ErrorLogManager objErrorLogManager = new ErrorLogManager();
-                objErrorLogManager.UpdateErrorLogByResultMasterID(ResultMasterID, Current_Owner, MacAddress);
+            ErrorLogManager objErrorLogManager = new ErrorLogManager();
+            objErrorLogManager.UpdateErrorLogByResultMasterID(ResultMasterID, Current_Owner, MacAddress);
             //}
 
 
@@ -4606,17 +4621,17 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
             //IList<PhysicianLibrary> Phylst = phyMngr.GetPhysicianByNPI(NPINumber);
             UserManager userMngr = new UserManager();
             string Current_Owner = "";
-            
+
             //CAP-3187
             //if (Phylst.Count > 0)
             //{
             //IList<User> ResultList = userMngr.GetUserbyPhysicianLibraryID(Phylst[0].Id).ToList<User>();
-            IList<User> ResultList = userMngr.GetUserbyPhysicianNPI(NPINumber);                
+            IList<User> ResultList = userMngr.GetUserbyPhysicianNPI(NPINumber);
                 if (ResultList !=null) { 
                 Current_Owner = ResultList[0].user_name;
-                }
+            }
 
-           // }
+            // }
 
             ResultMaster objResultMaster = GetById(ResultMasterID);
             if (objResultMaster != null)
@@ -4681,7 +4696,7 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
                 objResultMaster = saveList[0];
             else
                 if (updateList != null && updateList.Count > 0)
-                    objResultMaster = updateList[0];
+                objResultMaster = updateList[0];
 
             if (ulFileManagementIndexID != 0)
             {

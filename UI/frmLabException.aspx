@@ -108,10 +108,67 @@
             overflow-y: auto;
             overflow-x: hidden;
             z-index: 1000 !important;
+        }  table.dataTable thead>tr>th.sorting:before,table.dataTable thead>tr>th.sorting:after{
+            width: 0% !important;
         }
+
+table.dataTable > thead > tr > th,
+table.dataTable > thead > tr > td {
+    padding-right: 10px !important;
+    }
+
+.text-align-center{
+    text-align:center;
+}
+
+.word-break-all{
+    word-break: break-all;
+}
+.dataTables_empty {
+    display: none;
+}
+.dataTables_filter input {
+    width: 330px !important;
+}
+.dataTables_wrapper th {
+    padding: 8px !important;
+}
+.process-word-wrap {
+    word-wrap: break-word;
+}
+.searchicon {
+        background-image: url(../Resources/SearchIcon.png);
+    background-repeat: no-repeat;
+        padding-left: 26px !important;
+}.TableCellBorder {
+            border: 1px solid #9090904d;
+ }
+ .dataTables_scrollBody>table > thead > tr {
+     visibility: collapse;
+ }
+ table.dataTable tbody td {
+    font-weight: normal;
+}
+        
+        #EncounterTable thead {
+            visibility:collapse;
+        }
+   .hide_column{
+    display:none;
+}
+
+   #OutstandingTable .dataTables_length,
+#OutstandingTable .dataTables_filter,
+#OutstandingTable .dataTables_info,
+#OutstandingTable .dataTables_paginate {
+    display: none !important;
+}
+
     </style>
-    <link href="CSS/jquery-ui.css" rel="stylesheet" />
-    <link href="~/CSS/CommonStyle.css" rel="Stylesheet" type="text/css" />
+    <link href="CSS/jquery.dataTables.min.css" rel="stylesheet" />
+    <link href="CSS/fontawesomenew.css" rel="stylesheet" />
+    <link href="CSS/fontawesome.min.css" rel="stylesheet" type="text/css" />
+    <link href="CSS/CommonStyle.css" rel="stylesheet" type="text/css" />
 </head>
 <body onload="LabExcepLoad();">
     <form id="form1" runat="server">
@@ -135,13 +192,14 @@
                                     <td>
                                         <%--<telerik:RadComboBox ID="cboProviderName" Font-Size="Small" Font-Bold="false" runat="server"
                                             Height="75px" Width="255px" />--%>
-                                        <asp:DropDownList ID="cboProviderName" runat="server" style="padding: 4px 8px;font-size: 13px;width: 280px;line-height: 1.2;box-sizing: border-box;height: 25px;">
+                                        <asp:DropDownList ID="cboProviderName" runat="server" AutoPostBack="false"
+                                            style="padding: 4px 8px;font-size: 13px;width: 280px;line-height: 1.2;box-sizing: border-box;height: 25px;">
                                         </asp:DropDownList>
                                         <asp:CheckBox ID="chkProviderName" Font-Size="Small" runat="server" Font-Bold="false"
-                                            Text="Show All Physician" AutoPostBack="true" OnCheckedChanged="chkProviderName_CheckedChanged" />
+                                            Text="Show All Physician" AutoPostBack="false" onclick="chkProviderNameChecked(this);" />
                                     </td>
                                     <td>
-                                        <telerik:RadButton ID="btnSearch" runat="server" Text="Search" Width="250px" AccessKey="A"
+                                        <%--<telerik:RadButton ID="btnSearch" runat="server" Text="Search" Width="250px" AccessKey="A"
                                             Style="margin-left: 0px; top: 0px; left: 0px; font-size: 13px !important; height: 28px !important; position: static; text-align: center; -moz-border-radius: 3px; -webkit-border-radius: 3px; position: relative;" 
                                             OnClick="btnSearch_Click"
                                             OnClientClicked="btnSearch_Clicked" ButtonType="LinkButton" CssClass="bluebutton teleriknormalbuttonstyle">
@@ -149,8 +207,10 @@
                                                 <span id="SpanAdd" runat="server" >S</span><span id="SpanAdditionalword"
                                                     runat="server">earch</span>
                                             </ContentTemplate>
-                                        </telerik:RadButton>
-                                        &nbsp;&nbsp;&nbsp;
+                                        </telerik:RadButton>--%>
+                                         <asp:Button ID="btnSearch" runat="server" OnClientClick="return btnSearch_Clicked();" Style="margin-left: 0px; top: 0px; left: 0px; font-size: 13px !important; height: 28px !important; position: static; text-align: center; -moz-border-radius: 3px; -webkit-border-radius: 3px; position: relative;" 
+                                                            Text="Search" Width="250px" CssClass="aspresizedbluebutton" AutoPostBack="True" />
+                                       &nbsp;&nbsp;&nbsp;
                                     <telerik:RadButton ID="btnViewPendingOrder" runat="server" AutoPostBack="false" EnableViewState="false"
                                         Text="View Pending Order For provider" Width="250px" AccessKey="l" Style="position: static; height: 28px !important; text-align: center; font-size: 13px !important; -moz-border-radius: 3px; -webkit-border-radius: 3px; position: relative;"
                                         OnClientClicked="btnViewPendingOrder_Clicked" ButtonType="LinkButton" CssClass="bluebutton teleriknormalbuttonstyle" >
@@ -226,7 +286,12 @@
                         <td style="width: 100%; height: 280px" valign="top">
                             <asp:Panel ID="pnlGrid" runat="server" Font-Names="Times New Roman" Font-Size="Small"
                                 GroupingText="Unassigned Result" Font-Bold="true" CssClass="LabelStyleBold">
-                                <telerik:RadGrid ID="grdUnassignedResults" runat="server" Height="260px" AutoGenerateColumns="False"
+                               <div class="col-md-12 rowspace" style="height: 85%; width: 100%; padding: 0px;" id="scrollID">
+                                              <div class="table-responsive" style="width: 100%;height: 300px;"
+                                                  id="UnassignedResults">
+                                              </div>
+                                                </div>
+                                <%--<telerik:RadGrid ID="grdUnassignedResults" runat="server" Height="260px" AutoGenerateColumns="False"
                                     CellSpacing="0" Width="1180px" OnItemCommand="grdUnassignedResults_ItemCommand" OnItemDataBound="grdUnassignedResults_ItemDataBound" CssClass="Gridbodystyle">
                                     <HeaderStyle Font-Bold="true" />
                                     <ClientSettings Selecting-AllowRowSelect="true" Scrolling-UseStaticHeaders="true"
@@ -239,7 +304,7 @@
                                     <Selecting AllowRowSelect="true" />
                                     <ClientEvents OnRowClick="grdUnassignedResults_OnRowClick" />
                                     <Scrolling AllowScroll="True" ScrollHeight="270px" UseStaticHeaders="True" />
-                                </ClientSettings>--%>
+                                </ClientSettings>
                                     <MasterTableView>
                                         <Columns>
                                             <telerik:GridBoundColumn DataField="Patient Acc # in Result" FilterControlAltText="Filter UnassignedResults column"
@@ -345,18 +410,18 @@
                                             
                                         </Columns>
                                     </MasterTableView>
-                                </telerik:RadGrid>
+                                </telerik:RadGrid>--%>
                                 <%--      <Grid>--%>
                             </asp:Panel>
                         </td>
                     </tr>
-                    <tr>
+                    <%--<tr>
                         <td style="width: 100%; font-size: small;">
                             <%--//Navigater--%>
-                            <PageNavigator:PageNavigator ID="pageNavigator1" OnFirst="FirstPageNavigator" Visible="true"
+                            <%--<PageNavigator:PageNavigator ID="pageNavigator1" OnFirst="FirstPageNavigator" Visible="true"
                                 runat="server" />
                         </td>
-                    </tr>
+                    </tr>--%>
                     <tr>
                         <td style="width: 100%;" valign="top">
                             <asp:Panel ID="Panel1" runat="server" Font-Names="Times New Roman" Font-Size="Small"
@@ -369,9 +434,9 @@
                                                     <td>
                                                         <asp:Label ID="Label1" Font-Bold="false" Width="150px" runat="server" Text="Map to Physician" CssClass="spanstyle"></asp:Label>
                                                         <telerik:RadComboBox ID="cboUnmatchProvider" Font-Bold="false" runat="server" Height="75px"
-                                                            Width="190px" CssClass="Editabletxtbox"  />
+                                                            Width="190px" CssClass="Editabletxtbox" AutoPostBack="false"  />
                                                         <asp:CheckBox ID="chkUnmatchedProvider" runat="server" Font-Bold="false" Text="Show All Physician"
-                                                            AutoPostBack="true" Checked="True" OnCheckedChanged="chkUnmatchedProvider_CheckedChanged" CssClass="Editabletxtbox" />
+                                                            AutoPostBack="false" Checked="True" onclick="chkUnmatchedProvider_CheckedChanged(this);" CssClass="Editabletxtbox" />
                                                     </td>
                                                 </tr>
                                             </table>
@@ -444,7 +509,7 @@
                                         <td style="width: 100%;">
                                            <%-- <asp:ScriptManager ID="ScriptManager1" runat="server" />--%>
 
-                                           <telerik:RadAjaxPanel ID="RadAjaxPanel1" runat="server">
+                                           <telerik:RadAjaxPanel ID="RadAjaxPanel1" runat="server" AutoPostBack="false">
                                                     <asp:Panel ID="Panel2" runat="server" Font-Names="Times New Roman" Font-Size="Small"
                                                         Font-Bold="true" GroupingText="Patient Information" CssClass="LabelStyleBold">
 
@@ -477,13 +542,24 @@
                                             <asp:Panel ID="Panel3" runat="server" Font-Names="Times New Roman" Font-Size="Small"
                                                 GroupingText="Order Details" CssClass="LabelStyleBold">
                                                 <table style="width: 100%; height: 230px">
-                                                    <tr>
+                                                    <%--<tr>
                                                         <td valign="top" style="width: 100%; height: 30px">
                                                             <asp:Label ID="Label5" runat="server" Text="Outstanding Order(s)" CssClass="Editabletxtbox"></asp:Label>
                                                         </td>
-                                                    </tr>
+                                                    </tr>--%>
+                                                   
                                                     <tr>
-                                                        <td valign="top" style="width: 100%; height: 200px">
+                                                        <td> 
+                                                            <asp:Panel ID="grdPanel" runat="server" Font-Names="Times New Roman" Font-Size="Small"
+                                GroupingText="Outstanding Order(s)" Font-Bold="true" CssClass="LabelStyleBold">
+                                 <div class="col-md-12 rowspace" style="height: 85%; width: 100%; padding: 0px;" id="scrollID">
+                                              <div class="table-responsive" style="width: 100%;height: 174px;"
+                                                  id="OutstandingOrders">
+                                              </div>
+                                                </div>
+                                </asp:Panel>
+                                                            </td></tr>
+                                                       <%-- <td valign="top" style="width: 100%; height: 200px">
                                                             <telerik:RadGrid ID="grdOutstandingOrders" runat="server" Height="200px" AutoGenerateColumns="False"
                                                                 CellSpacing="0" Width="1150px" CssClass="Gridbodystyle">
                                                                 <FilterMenu EnableImageSprites="False">
@@ -522,7 +598,7 @@
                                                                     </Columns>
                                                                 </MasterTableView>
                                                             </telerik:RadGrid>
-                                                            <%-- <grid></grid>--%>
+                                                            <grid></grid>--%>
                                                         </td>
                                                     </tr>
                                                 </table>
@@ -539,12 +615,11 @@
                                 <tr>
                                     <td style="width: 50%">
                                         <asp:CheckBox ID="chkNoOrders" runat="server" Font-Bold="false" Font-Size="Small"
-                                            OnClick="checkOnclcik();" AutoPostBack="false" Text="No Order In Capella" CssClass="Editabletxtbox" />
+                                            OnClick="checkOnclcik();" AutoPostBack="false"  Text="No Order In Capella" CssClass="Editabletxtbox" />
                                     </td>
                                     <td style="width: 50%" align="right">
-                                        <telerik:RadButton ID="btnMatchOrders" runat="server" AutoPostBack="true" EnableViewState="false"
+                                        <telerik:RadButton ID="btnMatchOrders" AutoPostBack="false" EnableViewState="false" runat="server"
                                             Text="Match" Width="77px" AccessKey="l" Style="position: static; height: 30px !important; text-align: center; -moz-border-radius: 3px; -webkit-border-radius: 3px; position: relative;"
-                                            OnClick="btnMatchOrders_Click"
                                             OnClientClicked="btnMatchOrders_Clicked"  ButtonType="LinkButton" CssClass="bluebutton teleriknormalbuttonstyle">
                                         </telerik:RadButton>
                                         <telerik:RadButton ID="btnClose" runat="server" AutoPostBack="false" Text="Close" Width="77px" Style="position: static; height: 30px !important; text-align: center; -moz-border-radius: 3px; -webkit-border-radius: 3px; position: relative;"
@@ -582,6 +657,15 @@
         <asp:Button ID="InvisibleButton" runat="server" CssClass="displayNone" OnClick="InvisibleButton_Click" />
         <asp:Button ID="SearchClick" runat="server" CssClass="displayNone" OnClick="SearchClick_Click" />
         <asp:PlaceHolder ID="PlaceHolder1" runat="server">
+             <link href="CSS/jquery-ui.css" rel="stylesheet" />
+             <script src="JScripts/jquery-1.11.3.min.js"></script>
+             <script src="JScripts/jquery-ui.js?version=<%=ConfigurationManager.AppSettings["VersionConfiguration"].ToString().Replace("Capella - ","") %>"></script>
+            <script src="JScripts/bootstrap.min.js"></script>
+
+            <script src="JScripts/pako.min.js"></script>
+
+            <script src="JScripts/jquery.dataTables.min.js"></script>
+
             <script src="JScripts/jquery-2.1.3.js" type="text/javascript"></script>
 
             <script src="JScripts/jquery-ui.min1.11.4.js" type="text/javascript"></script>

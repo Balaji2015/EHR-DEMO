@@ -19,6 +19,12 @@ using Acurus.Capella.UI;
 using System.Xml;
 using Telerik.Web.UI;
 using Acurus.Capella.Core.DTOJson;
+using Newtonsoft.Json;
+using System.Web.Script.Services;
+using System.Web.Services;
+using System.IO.Compression;
+using Newtonsoft.Json.Linq;
+using DocumentFormat.OpenXml.Vml;
 
 namespace Acurus.Capella.UI
 {
@@ -34,24 +40,26 @@ namespace Acurus.Capella.UI
         {
             if (!IsPostBack)
             {
-                cboUnmatchProvider.Items.Add(new RadComboBoxItem(""));
-                cboUnmatchProvider.Items[0].Value = "";
+                //Jira Cap - 3206
+                //cboUnmatchProvider.Items.Add(new RadComboBoxItem(""));
+                //cboUnmatchProvider.Items[0].Value = "";
                 //CAP-3208
                 //cboProviderName.Items.Add(new RadComboBoxItem("ALL"));
                 cboProviderName.Items.Add(new ListItem("ALL"));
 
-                if (grdUnassignedResults.DataSource == null)
-                {
-                    grdUnassignedResults.DataSource = new string[] { };
-                    grdUnassignedResults.DataBind();
+                //Jira Cap - 3206
+                //if (grdUnassignedResults.DataSource == null)
+                //{
+                //    grdUnassignedResults.DataSource = new string[] { };
+                //    grdUnassignedResults.DataBind();
 
-                }
-                if (grdOutstandingOrders.DataSource == null)
-                {
-                    grdOutstandingOrders.DataSource = new string[] { };
-                    grdOutstandingOrders.DataBind();
+                //}
+                //if (grdOutstandingOrders.DataSource == null)
+                //{
+                //    grdOutstandingOrders.DataSource = new string[] { };
+                //    grdOutstandingOrders.DataBind();
 
-                }
+                //}
                 PhyUserList = objPhysicianManager.GetPhysicianandUser(true, ClientSession.FacilityName, ClientSession.LegalOrg);
 
                 phyUnmatchedList = objPhysicianManager.GetPhysicianandUser(false, string.Empty, ClientSession.LegalOrg);
@@ -98,30 +106,33 @@ namespace Acurus.Capella.UI
                     }
                 }
 
-                if (phyUnmatchedList.PhyList != null)
-                {
-                    for (int i = 0; i < phyUnmatchedList.PhyList.Count; i++)
-                    {
-                        string sPhyName = phyUnmatchedList.PhyList[i].PhyPrefix + " " + phyUnmatchedList.PhyList[i].PhyFirstName + " " + phyUnmatchedList.PhyList[i].PhyMiddleName + " " + phyUnmatchedList.PhyList[i].PhyLastName + " " + phyUnmatchedList.PhyList[i].PhySuffix;
-                        cboUnmatchProvider.Items.Add(new RadComboBoxItem(sPhyName.Trim()));
-                        cboUnmatchProvider.Items[i + 1].Value = phyUnmatchedList.PhyList[i].PhyNPI;
-                    }
-                }
+                //Jira Cap - 3206
+                //if (phyUnmatchedList.PhyList != null)
+                //{
+                //    for (int i = 0; i < phyUnmatchedList.PhyList.Count; i++)
+                //    {
+                //        string sPhyName = phyUnmatchedList.PhyList[i].PhyPrefix + " " + phyUnmatchedList.PhyList[i].PhyFirstName + " " + phyUnmatchedList.PhyList[i].PhyMiddleName + " " + phyUnmatchedList.PhyList[i].PhyLastName + " " + phyUnmatchedList.PhyList[i].PhySuffix;
+                //        cboUnmatchProvider.Items.Add(new RadComboBoxItem(sPhyName.Trim()));
+                //        cboUnmatchProvider.Items[i + 1].Value = phyUnmatchedList.PhyList[i].PhyNPI;
+                //    }
+                //}
 
-                pageNavigator1.lbtnLast.Attributes.Add("onclick", "check();");
-                pageNavigator1.lbtnNext.Attributes.Add("onclick", "check();");
-                pageNavigator1.lbtnFirst.Attributes.Add("onclick", "check();");
-                pageNavigator1.lbtnPrevious.Attributes.Add("onclick", "check();");
+                //pageNavigator1.lbtnLast.Attributes.Add("onclick", "check();");
+                //pageNavigator1.lbtnNext.Attributes.Add("onclick", "check();");
+                //pageNavigator1.lbtnFirst.Attributes.Add("onclick", "check();");
+                //pageNavigator1.lbtnPrevious.Attributes.Add("onclick", "check();");
                 //CAP-3208
                 //cboProviderName.Items.Add(new RadComboBoxItem("PROVIDER NOT ASSIGNED"));
                 cboProviderName.Items.Add(new ListItem("PROVIDER NOT ASSIGNED"));
-                pageNavigator1.TotalNoofDBRecords = 0;
+                //pageNavigator1.TotalNoofDBRecords = 0;
                 //rbtnAllResults.Checked = true;
-                cboUnmatchProvider.Enabled = false;
-                chkUnmatchedProvider.Enabled = false;
+                //Jira Cap - 3206
+                //cboUnmatchProvider.Enabled = false;
+                //chkUnmatchedProvider.Enabled = false;
                 //CAP - 3207
                 //btnFindPatient.Enabled = false;
-                btnMatchOrders.Enabled = false;
+                //Jira Cap - 3206
+                //btnMatchOrders.Enabled = false;
                 string labIdList = string.Empty;
 
                 //BugID:46054
@@ -236,37 +247,37 @@ namespace Acurus.Capella.UI
                 //    }
                 //}
 
+                //Jira Cap - 3206
+                //if (Request.Form["__EVENTTARGET"] != null)
+                //{
+                //    string sAutosearch = string.Empty;
+                //    //if (Request.Form["__EVENTTARGET"] == "grdUnassignedResults")
+                //    //{
+                //    //    FillPatientandOutstandingorders();
+                //    //}
+                //    //else if (Request.Form["__EVENTTARGET"].Contains("chk"))
+                //    //{
+                //    //    //CAP - 3207
+                //    //    //btnFindPatient.Enabled = false;
+                //    //    btnMatchOrders.Enabled = false;
+                //    //    if (cboUnmatchProvider.Enabled == false)
+                //    //    {
+                //    //        cboUnmatchProvider.Enabled = false;
+                //    //        chkUnmatchedProvider.Enabled = false;
+                //    //        cboUnmatchProvider.SelectedIndex = 0;
+                //    //    }
+                //    //    grdUnassignedResults.DataSource = null;
+                //    //    chkNoOrders.Checked = false;
+                //    //}
 
-                if (Request.Form["__EVENTTARGET"] != null)
-                {
-                    string sAutosearch = string.Empty;
-                    if (Request.Form["__EVENTTARGET"] == "grdUnassignedResults")
-                    {
-                        FillPatientandOutstandingorders();
-                    }
-                    else if (Request.Form["__EVENTTARGET"].Contains("chk"))
-                    {
-                        //CAP - 3207
-                        //btnFindPatient.Enabled = false;
-                        btnMatchOrders.Enabled = false;
-                        if (cboUnmatchProvider.Enabled == false)
-                        {
-                            cboUnmatchProvider.Enabled = false;
-                            chkUnmatchedProvider.Enabled = false;
-                            cboUnmatchProvider.SelectedIndex = 0;
-                        }
-                        grdUnassignedResults.DataSource = null;
-                        chkNoOrders.Checked = false;
-                    }
-
-                    string eventTarget = Request["__EVENTTARGET"];
-                    if (eventTarget == "ctl00$ContentPlaceHolder1$InvisibleButton")
-                    {
-                        sAutosearch = "Y";
-                        InvisibleButton_Click(this, EventArgs.Empty);
-                    }
-                    ScriptManager.RegisterStartupScript(this, this.GetType(), "labpatientsearch", "setpatientsearch('" + sAutosearch + "');", true);
-                }
+                //    //string eventTarget = Request["__EVENTTARGET"];
+                //    //if (eventTarget == "ctl00$ContentPlaceHolder1$InvisibleButton")
+                //    //{
+                //    //    sAutosearch = "Y";
+                //    //   // InvisibleButton_Click(this, EventArgs.Empty);
+                //    //}
+                //    //ScriptManager.RegisterStartupScript(this, this.GetType(), "labpatientsearch", "setpatientsearch('" + sAutosearch + "');", true);
+                //}
             }
 
 
@@ -282,12 +293,13 @@ namespace Acurus.Capella.UI
             string NPINumbers = string.Empty;
             //CAP - 3207
             //btnFindPatient.Enabled = false;
-            btnMatchOrders.Enabled = false;
-            cboUnmatchProvider.Enabled = false;
-            chkUnmatchedProvider.Enabled = false;
-            cboUnmatchProvider.SelectedIndex = 0;
-            grdUnassignedResults.DataSource = null;
-            chkNoOrders.Checked = false;
+            //Jira Cap - 3206
+            //btnMatchOrders.Enabled = false;
+            // cboUnmatchProvider.Enabled = false;
+            //chkUnmatchedProvider.Enabled = false;
+            // cboUnmatchProvider.SelectedIndex = 0;
+            //grdUnassignedResults.DataSource = null;
+            //chkNoOrders.Checked = false;
             Clear();
             //CAP-3208
             //if (cboProviderName.SelectedIndex != null)
@@ -433,31 +445,37 @@ namespace Acurus.Capella.UI
             //    FieldValue.Add(labIdList);
             //    FieldName.Add("Lab_Id");
             //}
-            ilstFillOrderException = objresultMasterMngr.GetOrderExceptionItems(pageNavigator1.PageNumber, pageNavigator1.MaxResultPerPage, sCriteria, NPINumbers, FieldName, FieldValue);
+            //Jira Cap - 3206
+            //ilstFillOrderException = objresultMasterMngr.GetOrderExceptionItems(pageNavigator1.PageNumber, pageNavigator1.MaxResultPerPage, sCriteria, NPINumbers, FieldName, FieldValue);
+            ilstFillOrderException = objresultMasterMngr.GetOrderExceptionItems(sCriteria, NPINumbers, FieldName, FieldValue);
             Session["FillOrderException"] = ilstFillOrderException;
             if (ilstFillOrderException != null)
             {
                 if (ilstFillOrderException.Count > 0)
                 {
-                    pageNavigator1.TotalNoofDBRecords = ilstFillOrderException[0].TotalCount;
-                    lblSearch.Text = pageNavigator1.TotalNoofDBRecords.ToString() + " Result(s) Found ";
+                    //Jira Cap - 3206
+                    //pageNavigator1.TotalNoofDBRecords = ilstFillOrderException[0].TotalCount;
+                    //lblSearch.Text = pageNavigator1.TotalNoofDBRecords.ToString() + " Result(s) Found ";
                 }
             }
             else
             {
-                pageNavigator1.TotalNoofDBRecords = 0;
-                lblSearch.Text = "No Result Found ";
+                //Jira Cap - 3206
+                //pageNavigator1.TotalNoofDBRecords = 0;
+                //lblSearch.Text = "No Result Found ";
             }
             if (ilstFillOrderException != null)
-                FillOrderExceptionGrid(ilstFillOrderException);
-            ScriptManager.RegisterStartupScript(this, this.GetType(), "SearchLab", " {sessionStorage.setItem('StartLoading', 'false');StopLoadFromPatChart();}", true);
+                //Jira Cap - 3206
+                //FillOrderExceptionGrid(ilstFillOrderException);
+                ScriptManager.RegisterStartupScript(this, this.GetType(), "SearchLab", " {sessionStorage.setItem('StartLoading', 'false');StopLoadFromPatChart();}", true);
 
         }
         private void Clear()
         {
-            DataTable dtClear = new DataTable();
-            grdOutstandingOrders.DataSource = dtClear;
-            grdOutstandingOrders.DataBind();
+            //Jira Cap - 3206
+            //DataTable dtClear = new DataTable();
+            //grdOutstandingOrders.DataSource = dtClear;
+            //grdOutstandingOrders.DataBind();
             //CAP - 3207
             //txtPatientName.Text = string.Empty;
             //txtAccountNumber.Text = string.Empty;
@@ -515,74 +533,76 @@ namespace Acurus.Capella.UI
                     colAdded = false;
                 }
             }
-            grdOutstandingOrders.DataSource = dt;
-            grdOutstandingOrders.DataBind();
+            //Jira Cap - 3206
+            //grdOutstandingOrders.DataSource = dt;
+            //grdOutstandingOrders.DataBind();
 
         }
-        private void FillOrderExceptionGrid(IList<FillOrderException> FillOrderException)
-        {
+        //Jira Cap - 3206
+        //private void FillOrderExceptionGrid(IList<FillOrderException> FillOrderException)
+        //{
 
-            grdUnassignedResults.DataSource = null;
-            DataTable dt = new DataTable();
-            dt.Columns.Add("Patient Acc # in Result", typeof(string));
-            dt.Columns.Add("Patient Name in Result", typeof(string));
-            dt.Columns.Add("Patient DOB In Result", typeof(string));
-            dt.Columns.Add("Patient Gender In Result", typeof(string));
-            dt.Columns.Add("Order ID", typeof(string));
-            dt.Columns.Add("Specimen", typeof(string));
-            dt.Columns.Add("Lab Procedure", typeof(string));
-            dt.Columns.Add("Reason for not matching", typeof(string));
-            dt.Columns.Add("Result Message Date And Time", typeof(string));
-            dt.Columns.Add("Provider Name", typeof(string));
-            dt.Columns.Add("Lab Name", typeof(string));
+        //    grdUnassignedResults.DataSource = null;
+        //    DataTable dt = new DataTable();
+        //    dt.Columns.Add("Patient Acc # in Result", typeof(string));
+        //    dt.Columns.Add("Patient Name in Result", typeof(string));
+        //    dt.Columns.Add("Patient DOB In Result", typeof(string));
+        //    dt.Columns.Add("Patient Gender In Result", typeof(string));
+        //    dt.Columns.Add("Order ID", typeof(string));
+        //    dt.Columns.Add("Specimen", typeof(string));
+        //    dt.Columns.Add("Lab Procedure", typeof(string));
+        //    dt.Columns.Add("Reason for not matching", typeof(string));
+        //    dt.Columns.Add("Result Message Date And Time", typeof(string));
+        //    dt.Columns.Add("Provider Name", typeof(string));
+        //    dt.Columns.Add("Lab Name", typeof(string));
 
-            dt.Columns.Add("Order Type", typeof(string));
-            dt.Columns.Add("OrderID", typeof(string));
-            dt.Columns.Add("Lab ID", typeof(string));
-            dt.Columns.Add("Matching Patient ID", typeof(string));
-            dt.Columns.Add("Reason Code", typeof(string));
-            dt.Columns.Add("OrderingNPI", typeof(string));
-            dt.Columns.Add("ResultMasterID", typeof(string));
-            dt.Columns.Add("Abnormal", typeof(string));
+        //    dt.Columns.Add("Order Type", typeof(string));
+        //    dt.Columns.Add("OrderID", typeof(string));
+        //    dt.Columns.Add("Lab ID", typeof(string));
+        //    dt.Columns.Add("Matching Patient ID", typeof(string));
+        //    dt.Columns.Add("Reason Code", typeof(string));
+        //    dt.Columns.Add("OrderingNPI", typeof(string));
+        //    dt.Columns.Add("ResultMasterID", typeof(string));
+        //    dt.Columns.Add("Abnormal", typeof(string));
 
-            if (FillOrderException != null)
-            {
-                FillOrderException = FillOrderException.OrderByDescending(x => x.Is_Abnormal).ToList<FillOrderException>(); ;
-                foreach (FillOrderException obj in FillOrderException)
-                {
-                    DataRow dr = dt.NewRow();
-                    if (obj.HumanId != 0)
-                        dr["Patient Acc # in Result"] = obj.HumanId.ToString();
-                    dr["Patient Name in Result"] = obj.Last_Name_In_Result + " " + obj.First_Name_In_Result + " " + obj.MI_In_Result;
-                    if (obj.DOB_In_Result!=null)
-                     dr["Patient DOB In Result"] = obj.DOB_In_Result.ToString("dd-MMM-yyyy");
-                    else
-                     dr["Patient DOB In Result"] ="";
+        //    if (FillOrderException != null)
+        //    {
+        //        FillOrderException = FillOrderException.OrderByDescending(x => x.Is_Abnormal).ToList<FillOrderException>(); ;
+        //        foreach (FillOrderException obj in FillOrderException)
+        //        {
+        //            DataRow dr = dt.NewRow();
+        //            if (obj.HumanId != 0)
+        //                dr["Patient Acc # in Result"] = obj.HumanId.ToString();
+        //            dr["Patient Name in Result"] = obj.Last_Name_In_Result + " " + obj.First_Name_In_Result + " " + obj.MI_In_Result;
+        //            if (obj.DOB_In_Result!=null)
+        //             dr["Patient DOB In Result"] = obj.DOB_In_Result.ToString("dd-MMM-yyyy");
+        //            else
+        //             dr["Patient DOB In Result"] ="";
 
-                    dr["Patient Gender In Result"] = obj.Sex_In_Result;
-                    dr["Order ID"] = obj.Order_ID.ToString();
-                    dr["Specimen"] = obj.Specimen;
-                    dr["Lab Procedure"] = obj.Lab_Procedure;
-                    dr["Reason for not matching"] = obj.Reason_Code + "-" + obj.Reason_Description;
-                    if (obj.Result_Received_Date_And_Time.Trim() != "")
-                        dr["Result Message Date And Time"] = DateTime.ParseExact(obj.Result_Received_Date_And_Time.Substring(0, 12), "yyyyMMddHHmm", null).ToString("yyyy-MM-dd hh:mm tt");
-                    else
-                        dr["Result Message Date And Time"] = "";
-                    dr["Provider Name"] = obj.Provider_Name;
-                    dr["Lab Name"] = obj.Lab_Name;
-                    dr["OrderID"] = obj.Order_ID.ToString();
-                    dr["Lab ID"] = obj.Lab_ID;
-                    dr["Matching Patient ID"] = obj.Matching_Patient_ID;
-                    dr["Reason Code"] = obj.Reason_Code;
-                    dr["OrderingNPI"] = obj.OrderingProviderNPI;
-                    dr["ResultMasterID"] = obj.Result_Master_ID;
-                    dr["Abnormal"] = obj.Is_Abnormal; //For bug ID 45804
-                    dt.Rows.Add(dr);
-                }
-            }
-            grdUnassignedResults.DataSource = dt;
-            grdUnassignedResults.DataBind();
-        }
+        //            dr["Patient Gender In Result"] = obj.Sex_In_Result;
+        //            dr["Order ID"] = obj.Order_ID.ToString();
+        //            dr["Specimen"] = obj.Specimen;
+        //            dr["Lab Procedure"] = obj.Lab_Procedure;
+        //            dr["Reason for not matching"] = obj.Reason_Code + "-" + obj.Reason_Description;
+        //            if (obj.Result_Received_Date_And_Time.Trim() != "")
+        //                dr["Result Message Date And Time"] = DateTime.ParseExact(obj.Result_Received_Date_And_Time.Substring(0, 12), "yyyyMMddHHmm", null).ToString("yyyy-MM-dd hh:mm tt");
+        //            else
+        //                dr["Result Message Date And Time"] = "";
+        //            dr["Provider Name"] = obj.Provider_Name;
+        //            dr["Lab Name"] = obj.Lab_Name;
+        //            dr["OrderID"] = obj.Order_ID.ToString();
+        //            dr["Lab ID"] = obj.Lab_ID;
+        //            dr["Matching Patient ID"] = obj.Matching_Patient_ID;
+        //            dr["Reason Code"] = obj.Reason_Code;
+        //            dr["OrderingNPI"] = obj.OrderingProviderNPI;
+        //            dr["ResultMasterID"] = obj.Result_Master_ID;
+        //            dr["Abnormal"] = obj.Is_Abnormal; //For bug ID 45804
+        //            dt.Rows.Add(dr);
+        //        }
+        //    }
+        //    grdUnassignedResults.DataSource = dt;
+        //    grdUnassignedResults.DataBind();
+        //}
         public void FirstPageNavigator(object sender, EventArgs e)
         {
             btnSearch_Click(new object(), new EventArgs());
@@ -593,115 +613,115 @@ namespace Acurus.Capella.UI
 
 
 
+        //Jira Cap - 3206
+        //public void FillPatientandOutstandingorders()
+        //{
+        //    bool cboCheck = false;
+        //    //CAP - 3207
+        //    //btnFindPatient.Enabled = true;
+        //    bool vFindPatientenabled =true;
+        //    string sPatientname = string.Empty;
+        //    //vFindPatientenabled = true;
+        //    btnMatchOrders.Enabled = true;
+        //    if (Session["FillOrderException"] != null)
+        //    {
+        //        IList<FillOrderException> FillOrderExceptionList = (IList<FillOrderException>)Session["FillOrderException"];
+        //        IList<FillOrderException> ResultLabExecptionList = new List<FillOrderException>();
+        //        if (grdUnassignedResults.SelectedItems.Count > 0)
+        //        {
+        //            if (FillOrderExceptionList != null)
+        //            {
+        //                ResultLabExecptionList = FillOrderExceptionList.Where(a => a.Result_Master_ID == Convert.ToUInt64(grdUnassignedResults.SelectedItems[0].Cells[21].Text)).ToList<FillOrderException>();
+        //                if (ResultLabExecptionList != null)
+        //                {
+        //                    if (ResultLabExecptionList.Count > 0)
+        //                    {
+        //                        if (ResultLabExecptionList[0].Reason_Code != "ACUR_LAB_05" || ResultLabExecptionList[0].Reason_Code != "ACUR_LAB_06")
+        //                        {
+        //                            //CAP-3208
+        //                            if (cboProviderName.Text.ToUpper() == "ALL")
+        //                            {
 
-        public void FillPatientandOutstandingorders()
-        {
-            bool cboCheck = false;
-            //CAP - 3207
-            //btnFindPatient.Enabled = true;
-            bool vFindPatientenabled =true;
-            string sPatientname = string.Empty;
-            //vFindPatientenabled = true;
-            btnMatchOrders.Enabled = true;
-            if (Session["FillOrderException"] != null)
-            {
-                IList<FillOrderException> FillOrderExceptionList = (IList<FillOrderException>)Session["FillOrderException"];
-                IList<FillOrderException> ResultLabExecptionList = new List<FillOrderException>();
-                if (grdUnassignedResults.SelectedItems.Count > 0)
-                {
-                    if (FillOrderExceptionList != null)
-                    {
-                        ResultLabExecptionList = FillOrderExceptionList.Where(a => a.Result_Master_ID == Convert.ToUInt64(grdUnassignedResults.SelectedItems[0].Cells[21].Text)).ToList<FillOrderException>();
-                        if (ResultLabExecptionList != null)
-                        {
-                            if (ResultLabExecptionList.Count > 0)
-                            {
-                                if (ResultLabExecptionList[0].Reason_Code != "ACUR_LAB_05" || ResultLabExecptionList[0].Reason_Code != "ACUR_LAB_06")
-                                {
-                                    //CAP-3208
-                                    if (cboProviderName.Text.ToUpper() == "ALL")
-                                    {
+        //                                for (int i = 0; i < cboUnmatchProvider.Items.Count; i++)
+        //                                {
+        //                                    if (grdUnassignedResults.SelectedItems[0].Cells[20].Text.ToString().Trim() == "")
+        //                                    {
+        //                                        break;
+        //                                    }
+        //                                    if (cboUnmatchProvider.Items[i].Value.ToString() == grdUnassignedResults.SelectedItems[0].Cells[20].Text.ToString())
+        //                                    {
+        //                                        cboUnmatchProvider.Enabled = false;
+        //                                        chkUnmatchedProvider.Enabled = false;
+        //                                        cboUnmatchProvider.SelectedIndex = i;
+        //                                        cboCheck = true;
+        //                                        break;
+        //                                    }
+        //                                }
+        //                                if (!cboCheck)
+        //                                {
+        //                                    cboUnmatchProvider.SelectedIndex = 0;
+        //                                    cboUnmatchProvider.Enabled = true;
+        //                                    chkUnmatchedProvider.Enabled = true;
 
-                                        for (int i = 0; i < cboUnmatchProvider.Items.Count; i++)
-                                        {
-                                            if (grdUnassignedResults.SelectedItems[0].Cells[20].Text.ToString().Trim() == "")
-                                            {
-                                                break;
-                                            }
-                                            if (cboUnmatchProvider.Items[i].Value.ToString() == grdUnassignedResults.SelectedItems[0].Cells[20].Text.ToString())
-                                            {
-                                                cboUnmatchProvider.Enabled = false;
-                                                chkUnmatchedProvider.Enabled = false;
-                                                cboUnmatchProvider.SelectedIndex = i;
-                                                cboCheck = true;
-                                                break;
-                                            }
-                                        }
-                                        if (!cboCheck)
-                                        {
-                                            cboUnmatchProvider.SelectedIndex = 0;
-                                            cboUnmatchProvider.Enabled = true;
-                                            chkUnmatchedProvider.Enabled = true;
+        //                                }
 
-                                        }
+        //                            }
+        //                            else if (ResultLabExecptionList[0].Reason_Code == "ACUR_LAB_05" || ResultLabExecptionList[0].Reason_Code == "ACUR_LAB_06")
+        //                            {
+        //                                cboUnmatchProvider.Enabled = true;
+        //                                chkUnmatchedProvider.Enabled = true;
+        //                            }
+        //                            else
+        //                            {
+        //                                cboUnmatchProvider.Enabled = false;
+        //                                chkUnmatchedProvider.Enabled = false;
 
-                                    }
-                                    else if (ResultLabExecptionList[0].Reason_Code == "ACUR_LAB_05" || ResultLabExecptionList[0].Reason_Code == "ACUR_LAB_06")
-                                    {
-                                        cboUnmatchProvider.Enabled = true;
-                                        chkUnmatchedProvider.Enabled = true;
-                                    }
-                                    else
-                                    {
-                                        cboUnmatchProvider.Enabled = false;
-                                        chkUnmatchedProvider.Enabled = false;
+        //                            }
+        //                        }
+        //                    }
+        //                }
+        //            }
+        //            if (Convert.ToUInt32(grdUnassignedResults.SelectedItems[0].Cells[18].Text.ToString()) != 0)
+        //            {
+        //                Clear();
+        //                if (ResultLabExecptionList != null)
+        //                {
+        //                    if (ResultLabExecptionList.Count > 0)
+        //                    {
+        //                        //CAP - 3207
+        //                        //txtPatientName.Text = ResultLabExecptionList[0].Last_Name_In_Capella + " " + ResultLabExecptionList[0].First_Name_In_Capella + " " + ResultLabExecptionList[0].MI_In_Capella;
+        //                        //txtAccountNumber.Text = ResultLabExecptionList[0].Human_Id_In_Capella.ToString();
+        //                        //txtDOB.Text = ResultLabExecptionList[0].DOB_In_Capella.ToString("dd-MMM-yyyy");
+        //                        //txtGender.Text = ResultLabExecptionList[0].Sex_In_Capella;
+        //                        //sPatientname = (ResultLabExecptionList[0].Last_Name_In_Capella + " " + ResultLabExecptionList[0].First_Name_In_Capella + " " + ResultLabExecptionList[0].MI_In_Capella + " | "+ ResultLabExecptionList[0].Human_Id_In_Capella.ToString() + " | " + ResultLabExecptionList[0].DOB_In_Capella.ToString("dd-MMM-yyyy") + " | "+ ResultLabExecptionList[0].Sex_In_Capella);
+        //                        sPatientname = (ResultLabExecptionList[0].Last_Name_In_Capella + "," + ResultLabExecptionList[0].First_Name_In_Capella + " " + ResultLabExecptionList[0].MI_In_Capella + " | DOB: " + ResultLabExecptionList[0].DOB_In_Capella.ToString("dd-MMM-yyyy") + " | " + ResultLabExecptionList[0].Sex_In_Capella + " | ACC#: " + ResultLabExecptionList[0].Human_Id_In_Capella.ToString() + " | EX.ACC#: " + ResultLabExecptionList[0].Patient_Account_External.ToString() + " | ADDR: " + ResultLabExecptionList[0].Street_Address1.ToString() + " | Ph: " + ResultLabExecptionList[0].Home_Phone_No.ToString() + " | PATIENT TYPE: " + ResultLabExecptionList[0].Human_Type.ToString());
+        //                        FillOutstandingOrdersGrid(ResultLabExecptionList[0].OrdersList);
+        //                        if (Convert.ToUInt64(grdUnassignedResults.SelectedItems[0].Cells[6].Text.ToString()) != 0)
+        //                        {
+        //                            grdOutstandingOrders.ClientSettings.Selecting.AllowRowSelect = false;
+        //                        }
+        //                        else
+        //                        {
+        //                            grdOutstandingOrders.ClientSettings.Selecting.AllowRowSelect = true;
+        //                        }
+        //                        //CAP - 3207
+        //                        //btnFindPatient.Enabled = false;
+        //                    }
+        //                }
 
-                                    }
-                                }
-                            }
-                        }
-                    }
-                    if (Convert.ToUInt32(grdUnassignedResults.SelectedItems[0].Cells[18].Text.ToString()) != 0)
-                    {
-                        Clear();
-                        if (ResultLabExecptionList != null)
-                        {
-                            if (ResultLabExecptionList.Count > 0)
-                            {
-                                //CAP - 3207
-                                //txtPatientName.Text = ResultLabExecptionList[0].Last_Name_In_Capella + " " + ResultLabExecptionList[0].First_Name_In_Capella + " " + ResultLabExecptionList[0].MI_In_Capella;
-                                //txtAccountNumber.Text = ResultLabExecptionList[0].Human_Id_In_Capella.ToString();
-                                //txtDOB.Text = ResultLabExecptionList[0].DOB_In_Capella.ToString("dd-MMM-yyyy");
-                                //txtGender.Text = ResultLabExecptionList[0].Sex_In_Capella;
-                                //sPatientname = (ResultLabExecptionList[0].Last_Name_In_Capella + " " + ResultLabExecptionList[0].First_Name_In_Capella + " " + ResultLabExecptionList[0].MI_In_Capella + " | "+ ResultLabExecptionList[0].Human_Id_In_Capella.ToString() + " | " + ResultLabExecptionList[0].DOB_In_Capella.ToString("dd-MMM-yyyy") + " | "+ ResultLabExecptionList[0].Sex_In_Capella);
-                                sPatientname = (ResultLabExecptionList[0].Last_Name_In_Capella + "," + ResultLabExecptionList[0].First_Name_In_Capella + " " + ResultLabExecptionList[0].MI_In_Capella + " | DOB: " + ResultLabExecptionList[0].DOB_In_Capella.ToString("dd-MMM-yyyy") + " | " + ResultLabExecptionList[0].Sex_In_Capella + " | ACC#: " + ResultLabExecptionList[0].Human_Id_In_Capella.ToString() + " | EX.ACC#: " + ResultLabExecptionList[0].Patient_Account_External.ToString() + " | ADDR: " + ResultLabExecptionList[0].Street_Address1.ToString() + " | Ph: " + ResultLabExecptionList[0].Home_Phone_No.ToString() + " | PATIENT TYPE: " + ResultLabExecptionList[0].Human_Type.ToString());
-                                FillOutstandingOrdersGrid(ResultLabExecptionList[0].OrdersList);
-                                if (Convert.ToUInt64(grdUnassignedResults.SelectedItems[0].Cells[6].Text.ToString()) != 0)
-                                {
-                                    grdOutstandingOrders.ClientSettings.Selecting.AllowRowSelect = false;
-                                }
-                                else
-                                {
-                                    grdOutstandingOrders.ClientSettings.Selecting.AllowRowSelect = true;
-                                }
-                                //CAP - 3207
-                                //btnFindPatient.Enabled = false;
-                            }
-                        }
+        //            }
+        //            else
+        //            {
+        //                Clear();
+        //                vFindPatientenabled = false;
+        //            }
+        //        }
+        //    }
+        //    //CAP - 3207
+        //    //ScriptManager.RegisterStartupScript(this, this.GetType(), "SearchLab", " {sessionStorage.setItem('StartLoading', 'false');StopLoadFromPatChart();}", true);
+        //    ScriptManager.RegisterStartupScript(this, this.GetType(), "SearchLab", " {sessionStorage.setItem('StartLoading', 'false');StopLoadFromPatChart();}FindPatientenabled('" + vFindPatientenabled + "','" + sPatientname + "')", true);
 
-                    }
-                    else
-                    {
-                        Clear();
-                        vFindPatientenabled = false;
-                    }
-                }
-            }
-            //CAP - 3207
-            //ScriptManager.RegisterStartupScript(this, this.GetType(), "SearchLab", " {sessionStorage.setItem('StartLoading', 'false');StopLoadFromPatChart();}", true);
-            ScriptManager.RegisterStartupScript(this, this.GetType(), "SearchLab", " {sessionStorage.setItem('StartLoading', 'false');StopLoadFromPatChart();}FindPatientenabled('" + vFindPatientenabled + "','" + sPatientname + "')", true);
-
-        }
+        //}
         protected void SearchClick_Click(object sender, EventArgs e)
         {
             btnSearch_Click(new Object(), new EventArgs());
@@ -731,14 +751,15 @@ namespace Acurus.Capella.UI
                 IList<Orders> listOrders = orderProxy.GetLabProcedureBy_ObjectType_And_CurrentProcess_And_HumanId("DIAGNOSTIC ORDER", "RESULT_PROCESS", Convert.ToUInt64(HumanID));
                 if (listOrders != null)
                     FillOutstandingOrdersGrid(listOrders);
-                if (grdUnassignedResults.SelectedItems.Count > 0)
-                {
-                    if (Convert.ToUInt64(grdUnassignedResults.SelectedItems[0].Cells[6].Text.ToString()) != 0)
-                        grdOutstandingOrders.ClientSettings.Selecting.AllowRowSelect = false;
-                    //CAP-3225
-                    else
-                        grdOutstandingOrders.ClientSettings.Selecting.AllowRowSelect = true;
-                }
+                //Jira Cap - 3206
+                //if (grdUnassignedResults.SelectedItems.Count > 0)
+                //{
+                //    if (Convert.ToUInt64(grdUnassignedResults.SelectedItems[0].Cells[6].Text.ToString()) != 0)
+                //        grdOutstandingOrders.ClientSettings.Selecting.AllowRowSelect = false;
+                //    //CAP-3225
+                //    else
+                //        grdOutstandingOrders.ClientSettings.Selecting.AllowRowSelect = true;
+                //}
                 //else
                 //    grdOutstandingOrders.ClientSettings.Selecting.AllowRowSelect = true;
             }
@@ -832,187 +853,187 @@ namespace Acurus.Capella.UI
                 cboProviderName.Items.Add(new ListItem("PROVIDER NOT ASSIGNED", "PROVIDER NOT ASSIGNED"));
             }
         }
+        //Jira Cap - 3206
+        //protected void btnMatchOrders_Click(object sender, EventArgs e)
+        //{
+        //    ulong HumanID = 0;
+        //    if (hdnHumanID.Value != null && hdnHumanID.Value != string.Empty)
+        //        HumanID = Convert.ToUInt64(hdnHumanID.Value);
+        //    bool bCheck = false;
+        //    string NPINumbers = string.Empty;
 
-        protected void btnMatchOrders_Click(object sender, EventArgs e)
-        {
-            ulong HumanID = 0;
-            if (hdnHumanID.Value != null && hdnHumanID.Value != string.Empty)
-                HumanID = Convert.ToUInt64(hdnHumanID.Value);
-            bool bCheck = false;
-            string NPINumbers = string.Empty;
+        //    ulong ulAutoPhysID = Convert.ToUInt64(System.Configuration.ConfigurationManager.AppSettings["DefaultPhysicianIDIndexing"]);
+        //    //CAP - 3207
+        //    //if (txtPatientName.Text == "" && txtAccountNumber.Text == "")
+        //    //{
+        //    //    ScriptManager.RegisterStartupScript(this, this.GetType(), string.Empty, " {sessionStorage.setItem('StartLoading', 'false');StopLoadFromPatChart();}DisplayErrorMessage('7100013');", true);
+        //    //    return;
 
-            ulong ulAutoPhysID = Convert.ToUInt64(System.Configuration.ConfigurationManager.AppSettings["DefaultPhysicianIDIndexing"]);
-            //CAP - 3207
-            //if (txtPatientName.Text == "" && txtAccountNumber.Text == "")
-            //{
-            //    ScriptManager.RegisterStartupScript(this, this.GetType(), string.Empty, " {sessionStorage.setItem('StartLoading', 'false');StopLoadFromPatChart();}DisplayErrorMessage('7100013');", true);
-            //    return;
+        //    //}
+        //    if (grdUnassignedResults.SelectedItems.Count > 0)
+        //    {
+        //        if (cboUnmatchProvider.Text != "")
+        //        {
 
-            //}
-            if (grdUnassignedResults.SelectedItems.Count > 0)
-            {
-                if (cboUnmatchProvider.Text != "")
-                {
+        //            if (grdUnassignedResults.SelectedItems[0].Cells[19].Text.ToString() == "ACUR_LAB_05" || grdUnassignedResults.SelectedItems[0].Cells[19].Text.ToString() == "ACUR_LAB_06")
+        //                bCheck = true;
+        //            //}
+        //            if (cboUnmatchProvider.SelectedIndex != null)
+        //                NPINumbers = cboUnmatchProvider.Items[cboUnmatchProvider.SelectedIndex].Value.ToString();
+        //            if (NPINumbers == "")
+        //            {
+        //                ScriptManager.RegisterStartupScript(this, this.GetType(), string.Empty, " {sessionStorage.setItem('StartLoading', 'false');StopLoadFromPatChart();}DisplayErrorMessage('7100011');", true);
+        //                return;
 
-                    if (grdUnassignedResults.SelectedItems[0].Cells[19].Text.ToString() == "ACUR_LAB_05" || grdUnassignedResults.SelectedItems[0].Cells[19].Text.ToString() == "ACUR_LAB_06")
-                        bCheck = true;
-                    //}
-                    if (cboUnmatchProvider.SelectedIndex != null)
-                        NPINumbers = cboUnmatchProvider.Items[cboUnmatchProvider.SelectedIndex].Value.ToString();
-                    if (NPINumbers == "")
-                    {
-                        ScriptManager.RegisterStartupScript(this, this.GetType(), string.Empty, " {sessionStorage.setItem('StartLoading', 'false');StopLoadFromPatChart();}DisplayErrorMessage('7100011');", true);
-                        return;
+        //            }
+        //        }
+        //        else if (cboUnmatchProvider.Enabled == true && (grdUnassignedResults.SelectedItems[0].Cells[19].Text.ToString() == "ACUR_LAB_05" || grdUnassignedResults.SelectedItems[0].Cells[19].Text.ToString() == "ACUR_LAB_06"))
+        //        {
+        //            if (cboUnmatchProvider.Text == "")
+        //            {
+        //                ScriptManager.RegisterStartupScript(this, this.GetType(), string.Empty, " {sessionStorage.setItem('StartLoading', 'false');StopLoadFromPatChart();}DisplayErrorMessage('7100012');", true);
+        //                return;
 
-                    }
-                }
-                else if (cboUnmatchProvider.Enabled == true && (grdUnassignedResults.SelectedItems[0].Cells[19].Text.ToString() == "ACUR_LAB_05" || grdUnassignedResults.SelectedItems[0].Cells[19].Text.ToString() == "ACUR_LAB_06"))
-                {
-                    if (cboUnmatchProvider.Text == "")
-                    {
-                        ScriptManager.RegisterStartupScript(this, this.GetType(), string.Empty, " {sessionStorage.setItem('StartLoading', 'false');StopLoadFromPatChart();}DisplayErrorMessage('7100012');", true);
-                        return;
+        //            }
+        //            if (cboUnmatchProvider.SelectedIndex != null)
+        //            {
+        //                ScriptManager.RegisterStartupScript(this, this.GetType(), string.Empty, " {sessionStorage.setItem('StartLoading', 'false');StopLoadFromPatChart();}DisplayErrorMessage('7100011');", true);
+        //                return;
+        //            }
+        //            if (cboUnmatchProvider.Items[cboUnmatchProvider.SelectedIndex].Value.ToString() == "")
+        //            {
+        //                ScriptManager.RegisterStartupScript(this, this.GetType(), string.Empty, " {sessionStorage.setItem('StartLoading', 'false');StopLoadFromPatChart();}DisplayErrorMessage('7100011');", true);
+        //                return;
+        //            }
+        //            NPINumbers = cboUnmatchProvider.Items[cboUnmatchProvider.SelectedIndex].Value.ToString();
+        //            bCheck = true;
+        //        }
+        //    }
 
-                    }
-                    if (cboUnmatchProvider.SelectedIndex != null)
-                    {
-                        ScriptManager.RegisterStartupScript(this, this.GetType(), string.Empty, " {sessionStorage.setItem('StartLoading', 'false');StopLoadFromPatChart();}DisplayErrorMessage('7100011');", true);
-                        return;
-                    }
-                    if (cboUnmatchProvider.Items[cboUnmatchProvider.SelectedIndex].Value.ToString() == "")
-                    {
-                        ScriptManager.RegisterStartupScript(this, this.GetType(), string.Empty, " {sessionStorage.setItem('StartLoading', 'false');StopLoadFromPatChart();}DisplayErrorMessage('7100011');", true);
-                        return;
-                    }
-                    NPINumbers = cboUnmatchProvider.Items[cboUnmatchProvider.SelectedIndex].Value.ToString();
-                    bCheck = true;
-                }
-            }
+        //    else
+        //    {
+        //        ScriptManager.RegisterStartupScript(this, this.GetType(), string.Empty, " {sessionStorage.setItem('StartLoading', 'false');StopLoadFromPatChart();}DisplayErrorMessage('7100001');", true);
+        //        return;
+        //    }
 
-            else
-            {
-                ScriptManager.RegisterStartupScript(this, this.GetType(), string.Empty, " {sessionStorage.setItem('StartLoading', 'false');StopLoadFromPatChart();}DisplayErrorMessage('7100001');", true);
-                return;
-            }
+        //    if (NPINumbers.Trim() == "")
+        //    {
+        //        NPINumbers = cboProviderName.SelectedValue;
+        //    }
 
-            if (NPINumbers.Trim() == "")
-            {
-                NPINumbers = cboProviderName.SelectedValue;
-            }
-
-            //if (!chkNoOrders.Checked && grdOutstandingOrders.SelectedItems.Count > 0 || grdOutstandingOrders.ClientSettings.Selecting.AllowRowSelect == false)
-            //{
-            //    ulong Order_Submit_ID = 0;
-            //    if (grdOutstandingOrders.Items.Count > 0 && grdOutstandingOrders.ClientSettings.Selecting.AllowRowSelect == false)
-            //        Order_Submit_ID = Convert.ToUInt64(grdUnassignedResults.SelectedItems[0].Cells[6].Text.ToString());
-            //    else if (grdOutstandingOrders.Items.Count == 0 && (grdUnassignedResults.SelectedItems.Count > 0 && grdUnassignedResults.SelectedItems[0].Cells[6].Text.ToString() != "0"))
-            //        Order_Submit_ID = Convert.ToUInt64(grdUnassignedResults.SelectedItems[0].Cells[6].Text.ToString());
-            //    else
-            //        Order_Submit_ID = Convert.ToUInt64(grdOutstandingOrders.SelectedItems[0].Cells[6].Text.ToString());
-
-
-            //    resultmasterMngr.UpdateResultMasterAndWf_Object(Convert.ToUInt64(grdUnassignedResults.SelectedItems[0].Cells[21].Text.ToString()), Order_Submit_ID, Convert.ToUInt64(txtAccountNumber.Text), NPINumbers, string.Empty);
-            //    btnSearch_Click(new object(), new EventArgs());
-            //    ScriptManager.RegisterStartupScript(this, this.GetType(), string.Empty, "DisplayErrorMessage('7100010');", true);
-
-            //}
-            //else if (chkNoOrders.Checked && grdOutstandingOrders.SelectedItems.Count == 0 || !chkNoOrders.Checked && grdOutstandingOrders.SelectedItems.Count == 0)
-            //{
-            //    if (grdUnassignedResults.SelectedItems.Count > 0)
-            //    {
-            //        resultmasterMngr.UpdateResultMasterListForLab(Convert.ToUInt64(grdUnassignedResults.SelectedItems[0].Cells[21].Text.ToString()), Convert.ToUInt64(txtAccountNumber.Text), Convert.ToUInt64(grdUnassignedResults.SelectedItems[0].Cells[16].Text.ToString()), Convert.ToUInt32(grdUnassignedResults.SelectedItems[0].Cells[18].Text.ToString()), NPINumbers, bCheck, string.Empty);
-            //        btnSearch_Click(new object(), new EventArgs());
-            //        ScriptManager.RegisterStartupScript(this, this.GetType(), string.Empty, "DisplayErrorMessage('7100010');", true);
-            //    }
-
-            //}
-
-            if (!chkNoOrders.Checked)
-            {
-                if (grdOutstandingOrders.SelectedItems.Count > 0 || grdOutstandingOrders.ClientSettings.Selecting.AllowRowSelect == false)
-                {
-                    ulong Order_Submit_ID = 0;
-                    if (grdOutstandingOrders.Items.Count > 0 && grdOutstandingOrders.ClientSettings.Selecting.AllowRowSelect == false)
-                        Order_Submit_ID = Convert.ToUInt64(grdUnassignedResults.SelectedItems[0].Cells[6].Text.ToString());
-                    else if (grdOutstandingOrders.Items.Count == 0 && (grdUnassignedResults.SelectedItems.Count > 0 && grdUnassignedResults.SelectedItems[0].Cells[6].Text.ToString() != "0"))
-                        Order_Submit_ID = Convert.ToUInt64(grdUnassignedResults.SelectedItems[0].Cells[6].Text.ToString());
-                    else
-                        Order_Submit_ID = Convert.ToUInt64(grdOutstandingOrders.SelectedItems[0].Cells[6].Text.ToString());
-
-                    //CAP-3207
-                    //resultmasterMngr.UpdateResultMasterAndWf_Object(Convert.ToUInt64(grdUnassignedResults.SelectedItems[0].Cells[21].Text.ToString()), Order_Submit_ID, Convert.ToUInt64(txtAccountNumber.Text), NPINumbers, string.Empty);
-                    resultmasterMngr.UpdateResultMasterAndWf_Object(Convert.ToUInt64(grdUnassignedResults.SelectedItems[0].Cells[21].Text.ToString()), Order_Submit_ID, Convert.ToUInt64(HumanID), NPINumbers, string.Empty);
-                    btnSearch_Click(new object(), new EventArgs());
-                    //ScriptManager.RegisterStartupScript(this, this.GetType(), string.Empty, "DisplayErrorMessage('7100010');", true);                    
-                    ScriptManager.RegisterStartupScript(this, this.GetType(), string.Empty, "DisplayErrorMessage('7100010'); FindPatientenabled('Success','');", true);                   
-                }
-                else
-                {
-                    //ScriptManager.RegisterStartupScript(this, this.GetType(), string.Empty, " {sessionStorage.setItem('StartLoading', 'false');StopLoadFromPatChart();}DisplayErrorMessage('7100016');", true);
-                    ScriptManager.RegisterStartupScript(this, this.GetType(), string.Empty, "{sessionStorage.setItem('StartLoading', 'false');StopLoadFromPatChart();DisplayErrorMessage('7100016');} ", true);
-
-                    return;
-                }
-            }
-            else if (chkNoOrders.Checked)
-            {
-                //if (grdOutstandingOrders.SelectedItems.Count == 0 || !chkNoOrders.Checked && grdOutstandingOrders.SelectedItems.Count == 0)
-                //{
-                //if (grdUnassignedResults.SelectedItems.Count > 0)
-                //{
-                //CAP-3207
-                //resultmasterMngr.UpdateResultMasterListForLab(Convert.ToUInt64(grdUnassignedResults.SelectedItems[0].Cells[21].Text.ToString()), Convert.ToUInt64(txtAccountNumber.Text), Convert.ToUInt64(grdUnassignedResults.SelectedItems[0].Cells[16].Text.ToString()), Convert.ToUInt32(grdUnassignedResults.SelectedItems[0].Cells[18].Text.ToString()), NPINumbers, bCheck, string.Empty, ulAutoPhysID);
-                resultmasterMngr.UpdateResultMasterListForLab(Convert.ToUInt64(grdUnassignedResults.SelectedItems[0].Cells[21].Text.ToString()), Convert.ToUInt64(HumanID), Convert.ToUInt64(grdUnassignedResults.SelectedItems[0].Cells[16].Text.ToString()), Convert.ToUInt32(grdUnassignedResults.SelectedItems[0].Cells[18].Text.ToString()), NPINumbers, bCheck, string.Empty, ulAutoPhysID);
-                btnSearch_Click(new object(), new EventArgs());
-                //ScriptManager.RegisterStartupScript(this, this.GetType(), string.Empty, "DisplayErrorMessage('7100010');", true);
-                ScriptManager.RegisterStartupScript(this, this.GetType(), string.Empty, "DisplayErrorMessage('7100010'); FindPatientenabled('Success','');", true);               
-                //}
-                //}
-            }
-
-            ScriptManager.RegisterStartupScript(this, this.GetType(), "MatchOrder", " {sessionStorage.setItem('StartLoading', 'false');StopLoadFromPatChart();}", true);
-        }
-
-        protected void chkUnmatchedProvider_CheckedChanged(object sender, EventArgs e)
-        {
-            cboUnmatchProvider.Items.Clear();
-            cboUnmatchProvider.Items.Add(new RadComboBoxItem(""));
-            cboUnmatchProvider.Items[0].Value = "";
-            if (chkUnmatchedProvider.Checked == true)
-            {
-                phyUnmatchedList = objPhysicianManager.GetPhysicianandUser(false, string.Empty, ClientSession.LegalOrg);
-
-                if (phyUnmatchedList.PhyList != null)
-                {
-                    for (int i = 0; i < phyUnmatchedList.PhyList.Count; i++)
-                    {
-                        string sPhyName = phyUnmatchedList.PhyList[i].PhyPrefix + " " + phyUnmatchedList.PhyList[i].PhyFirstName + " " + phyUnmatchedList.PhyList[i].PhyMiddleName + " " + phyUnmatchedList.PhyList[i].PhyLastName + " " + phyUnmatchedList.PhyList[i].PhySuffix;
-                        cboUnmatchProvider.Items.Add(new RadComboBoxItem(sPhyName.Trim()));
-                        cboUnmatchProvider.Items[i + 1].Value = phyUnmatchedList.PhyList[i].PhyNPI;
+        //    //if (!chkNoOrders.Checked && grdOutstandingOrders.SelectedItems.Count > 0 || grdOutstandingOrders.ClientSettings.Selecting.AllowRowSelect == false)
+        //    //{
+        //    //    ulong Order_Submit_ID = 0;
+        //    //    if (grdOutstandingOrders.Items.Count > 0 && grdOutstandingOrders.ClientSettings.Selecting.AllowRowSelect == false)
+        //    //        Order_Submit_ID = Convert.ToUInt64(grdUnassignedResults.SelectedItems[0].Cells[6].Text.ToString());
+        //    //    else if (grdOutstandingOrders.Items.Count == 0 && (grdUnassignedResults.SelectedItems.Count > 0 && grdUnassignedResults.SelectedItems[0].Cells[6].Text.ToString() != "0"))
+        //    //        Order_Submit_ID = Convert.ToUInt64(grdUnassignedResults.SelectedItems[0].Cells[6].Text.ToString());
+        //    //    else
+        //    //        Order_Submit_ID = Convert.ToUInt64(grdOutstandingOrders.SelectedItems[0].Cells[6].Text.ToString());
 
 
-                    }
-                }
-            }
-            else
-            {
-                phyUnmatchedList = objPhysicianManager.GetPhysicianandUser(true, ClientSession.FacilityName, ClientSession.LegalOrg);
+        //    //    resultmasterMngr.UpdateResultMasterAndWf_Object(Convert.ToUInt64(grdUnassignedResults.SelectedItems[0].Cells[21].Text.ToString()), Order_Submit_ID, Convert.ToUInt64(txtAccountNumber.Text), NPINumbers, string.Empty);
+        //    //    btnSearch_Click(new object(), new EventArgs());
+        //    //    ScriptManager.RegisterStartupScript(this, this.GetType(), string.Empty, "DisplayErrorMessage('7100010');", true);
 
-                if (phyUnmatchedList.PhyList != null)
-                {
-                    for (int i = 0; i < phyUnmatchedList.PhyList.Count; i++)
-                    {
-                        string sPhyName = phyUnmatchedList.PhyList[i].PhyPrefix + " " + phyUnmatchedList.PhyList[i].PhyFirstName + " " + phyUnmatchedList.PhyList[i].PhyMiddleName + " " + phyUnmatchedList.PhyList[i].PhyLastName + " " + phyUnmatchedList.PhyList[i].PhySuffix;
-                        cboUnmatchProvider.Items.Add(new RadComboBoxItem(sPhyName.Trim()));
-                        cboUnmatchProvider.Items[i + 1].Value = phyUnmatchedList.PhyList[i].PhyNPI;
+        //    //}
+        //    //else if (chkNoOrders.Checked && grdOutstandingOrders.SelectedItems.Count == 0 || !chkNoOrders.Checked && grdOutstandingOrders.SelectedItems.Count == 0)
+        //    //{
+        //    //    if (grdUnassignedResults.SelectedItems.Count > 0)
+        //    //    {
+        //    //        resultmasterMngr.UpdateResultMasterListForLab(Convert.ToUInt64(grdUnassignedResults.SelectedItems[0].Cells[21].Text.ToString()), Convert.ToUInt64(txtAccountNumber.Text), Convert.ToUInt64(grdUnassignedResults.SelectedItems[0].Cells[16].Text.ToString()), Convert.ToUInt32(grdUnassignedResults.SelectedItems[0].Cells[18].Text.ToString()), NPINumbers, bCheck, string.Empty);
+        //    //        btnSearch_Click(new object(), new EventArgs());
+        //    //        ScriptManager.RegisterStartupScript(this, this.GetType(), string.Empty, "DisplayErrorMessage('7100010');", true);
+        //    //    }
+
+        //    //}
+
+        //    if (!chkNoOrders.Checked)
+        //    {
+        //        if (grdOutstandingOrders.SelectedItems.Count > 0 || grdOutstandingOrders.ClientSettings.Selecting.AllowRowSelect == false)
+        //        {
+        //            ulong Order_Submit_ID = 0;
+        //            if (grdOutstandingOrders.Items.Count > 0 && grdOutstandingOrders.ClientSettings.Selecting.AllowRowSelect == false)
+        //                Order_Submit_ID = Convert.ToUInt64(grdUnassignedResults.SelectedItems[0].Cells[6].Text.ToString());
+        //            else if (grdOutstandingOrders.Items.Count == 0 && (grdUnassignedResults.SelectedItems.Count > 0 && grdUnassignedResults.SelectedItems[0].Cells[6].Text.ToString() != "0"))
+        //                Order_Submit_ID = Convert.ToUInt64(grdUnassignedResults.SelectedItems[0].Cells[6].Text.ToString());
+        //            else
+        //                Order_Submit_ID = Convert.ToUInt64(grdOutstandingOrders.SelectedItems[0].Cells[6].Text.ToString());
+
+        //            //CAP-3207
+        //            //resultmasterMngr.UpdateResultMasterAndWf_Object(Convert.ToUInt64(grdUnassignedResults.SelectedItems[0].Cells[21].Text.ToString()), Order_Submit_ID, Convert.ToUInt64(txtAccountNumber.Text), NPINumbers, string.Empty);
+        //            resultmasterMngr.UpdateResultMasterAndWf_Object(Convert.ToUInt64(grdUnassignedResults.SelectedItems[0].Cells[21].Text.ToString()), Order_Submit_ID, Convert.ToUInt64(HumanID), NPINumbers, string.Empty);
+        //            btnSearch_Click(new object(), new EventArgs());
+        //            //ScriptManager.RegisterStartupScript(this, this.GetType(), string.Empty, "DisplayErrorMessage('7100010');", true);                    
+        //            ScriptManager.RegisterStartupScript(this, this.GetType(), string.Empty, "DisplayErrorMessage('7100010'); FindPatientenabled('Success','');", true);
+        //        }
+        //        else
+        //        {
+        //            //ScriptManager.RegisterStartupScript(this, this.GetType(), string.Empty, " {sessionStorage.setItem('StartLoading', 'false');StopLoadFromPatChart();}DisplayErrorMessage('7100016');", true);
+        //            ScriptManager.RegisterStartupScript(this, this.GetType(), string.Empty, "{sessionStorage.setItem('StartLoading', 'false');StopLoadFromPatChart();DisplayErrorMessage('7100016');} ", true);
+
+        //            return;
+        //        }
+        //    }
+        //    else if (chkNoOrders.Checked)
+        //    {
+        //        //if (grdOutstandingOrders.SelectedItems.Count == 0 || !chkNoOrders.Checked && grdOutstandingOrders.SelectedItems.Count == 0)
+        //        //{
+        //        //if (grdUnassignedResults.SelectedItems.Count > 0)
+        //        //{
+        //        //CAP-3207
+        //        //resultmasterMngr.UpdateResultMasterListForLab(Convert.ToUInt64(grdUnassignedResults.SelectedItems[0].Cells[21].Text.ToString()), Convert.ToUInt64(txtAccountNumber.Text), Convert.ToUInt64(grdUnassignedResults.SelectedItems[0].Cells[16].Text.ToString()), Convert.ToUInt32(grdUnassignedResults.SelectedItems[0].Cells[18].Text.ToString()), NPINumbers, bCheck, string.Empty, ulAutoPhysID);
+        //        resultmasterMngr.UpdateResultMasterListForLab(Convert.ToUInt64(grdUnassignedResults.SelectedItems[0].Cells[21].Text.ToString()), Convert.ToUInt64(HumanID), Convert.ToUInt64(grdUnassignedResults.SelectedItems[0].Cells[16].Text.ToString()), Convert.ToUInt32(grdUnassignedResults.SelectedItems[0].Cells[18].Text.ToString()), NPINumbers, bCheck, string.Empty, ulAutoPhysID);
+        //        btnSearch_Click(new object(), new EventArgs());
+        //        //ScriptManager.RegisterStartupScript(this, this.GetType(), string.Empty, "DisplayErrorMessage('7100010');", true);
+        //        ScriptManager.RegisterStartupScript(this, this.GetType(), string.Empty, "DisplayErrorMessage('7100010'); FindPatientenabled('Success','');", true);
+        //        //}
+        //        //}
+        //    }
+
+        //    ScriptManager.RegisterStartupScript(this, this.GetType(), "MatchOrder", " {sessionStorage.setItem('StartLoading', 'false');StopLoadFromPatChart();}", true);
+        //}
+
+        //Jira Cap - 3206
+        //protected void chkUnmatchedProvider_CheckedChanged(object sender, EventArgs e)
+        //{
+        //    cboUnmatchProvider.Items.Clear();
+        //    cboUnmatchProvider.Items.Add(new RadComboBoxItem(""));
+        //    cboUnmatchProvider.Items[0].Value = "";
+        //    if (chkUnmatchedProvider.Checked == true)
+        //    {
+        //        phyUnmatchedList = objPhysicianManager.GetPhysicianandUser(false, string.Empty, ClientSession.LegalOrg);
+
+        //        if (phyUnmatchedList.PhyList != null)
+        //        {
+        //            for (int i = 0; i < phyUnmatchedList.PhyList.Count; i++)
+        //            {
+        //                string sPhyName = phyUnmatchedList.PhyList[i].PhyPrefix + " " + phyUnmatchedList.PhyList[i].PhyFirstName + " " + phyUnmatchedList.PhyList[i].PhyMiddleName + " " + phyUnmatchedList.PhyList[i].PhyLastName + " " + phyUnmatchedList.PhyList[i].PhySuffix;
+        //                cboUnmatchProvider.Items.Add(new RadComboBoxItem(sPhyName.Trim()));
+        //                cboUnmatchProvider.Items[i + 1].Value = phyUnmatchedList.PhyList[i].PhyNPI;
 
 
-                    }
-                }
+        //            }
+        //        }
+        //    }
+        //    else
+        //    {
+        //        phyUnmatchedList = objPhysicianManager.GetPhysicianandUser(true, ClientSession.FacilityName, ClientSession.LegalOrg);
 
-            }
-        }
+        //        if (phyUnmatchedList.PhyList != null)
+        //        {
+        //            for (int i = 0; i < phyUnmatchedList.PhyList.Count; i++)
+        //            {
+        //                string sPhyName = phyUnmatchedList.PhyList[i].PhyPrefix + " " + phyUnmatchedList.PhyList[i].PhyFirstName + " " + phyUnmatchedList.PhyList[i].PhyMiddleName + " " + phyUnmatchedList.PhyList[i].PhyLastName + " " + phyUnmatchedList.PhyList[i].PhySuffix;
+        //                cboUnmatchProvider.Items.Add(new RadComboBoxItem(sPhyName.Trim()));
+        //                cboUnmatchProvider.Items[i + 1].Value = phyUnmatchedList.PhyList[i].PhyNPI;
 
+
+        //            }
+        //        }
+
+        //    }
+        //}
         protected void grdUnassignedResults_ItemDataBound(object sender, GridItemEventArgs e)
         {
             if (e.Item is GridDataItem)
@@ -1030,17 +1051,218 @@ namespace Acurus.Capella.UI
         {
             if (e.CommandName == "View")
             {
-                if (grdUnassignedResults.SelectedItems.Count == 0)
-                {
-                    //CAP-3207
-                    //btnFindPatient.Enabled = false;
-                    btnMatchOrders.Enabled = false;
-                }
+
+                //Jira Cap - 3206
+                // if (grdUnassignedResults.SelectedItems.Count == 0)
+                //{
+                // btnFindPatient.Enabled = false;
+                //btnMatchOrders.Enabled = false;
+                //}
                 ulong resultID = Convert.ToUInt64(e.Item.Cells[21].Text);
                 ScriptManager.RegisterStartupScript(this, this.GetType(), "Open", "Result('" + resultID + "');", true);
             }
         }
 
+
+        //Jira Cap - 3206
+        private static string Compress(string input)
+        {
+            if (string.IsNullOrEmpty(input))
+            {
+                return string.Empty;
+            }
+
+            byte[] inputBytes = Encoding.UTF8.GetBytes(input);
+            using (var outputStream = new MemoryStream())
+            {
+                using (var gzipStream = new GZipStream(outputStream, CompressionMode.Compress))
+                {
+                    gzipStream.Write(inputBytes, 0, inputBytes.Length);
+                }
+                return Convert.ToBase64String(outputStream.ToArray());
+            }
+        }
+
+        [WebMethod(EnableSession = true)]
+        [ScriptMethod(ResponseFormat = ResponseFormat.Json, UseHttpGet = true)]
+        public static object LoadResults()
+        {
+            if (ClientSession.UserName == string.Empty)
+            {
+                HttpContext.Current.Response.StatusCode = 999;
+                HttpContext.Current.Response.Status = "999 Session Expired";
+                HttpContext.Current.Response.StatusDescription = "frmSessionExpired.aspx";
+                return "Session Expired";
+            }
+            HttpContext.Current.Session.Remove("SearchOrder");
+
+            string extra_search = HttpContext.Current.Request.Params["extra_search"];
+            var searchData = JsonConvert.DeserializeObject<Dictionary<string, string>>(extra_search);
+            string sCriteria = searchData["sCriteria"];
+            string NPINumbers = searchData["NPINumbers"];
+
+
+            IList<string> FieldName = new List<string>();
+            IList<string> FieldValue = new List<string>();
+            for (int i = 0; i < searchData["FieldName"].Split(',').Length; i++)
+            {
+                FieldName.Add(searchData["FieldName"].Split(',')[i]);
+            }
+
+            for (int j = 0; j < searchData["FieldValue"].Split(',').Length; j++)
+            {
+                FieldValue.Add(searchData["FieldValue"].Split(',')[j]);
+            }
+
+
+
+            IList<FillOrderException> ilstFillOrderException = new List<FillOrderException>();
+            ResultMasterManager objresultMasterMngr = new ResultMasterManager();
+            ilstFillOrderException = objresultMasterMngr.GetOrderExceptionItems(sCriteria, NPINumbers, FieldName, FieldValue);
+            HttpContext.Current.Session["FillOrderException"] = ilstFillOrderException;
+            if (ilstFillOrderException != null)
+            {
+                ilstFillOrderException = ilstFillOrderException.OrderByDescending(a => a.Is_Abnormal).ToList();
+            }
+            var resultNew = new
+            {
+                data = Compress(JsonConvert.SerializeObject(ilstFillOrderException.ToList<FillOrderException>())),
+            };
+            return resultNew;
+        }
+
+
+
+        [WebMethod(EnableSession = true)]
+        [ScriptMethod(ResponseFormat = ResponseFormat.Json, UseHttpGet = true)]
+        public static string FillOutstandingorders(string ResultMasterID)
+        {
+
+            if (ClientSession.UserName == string.Empty)
+            {
+                HttpContext.Current.Response.StatusCode = 999;
+                HttpContext.Current.Response.Status = "999 Session Expired";
+                HttpContext.Current.Response.StatusDescription = "frmSessionExpired.aspx";
+                return "Session Expired";
+            }
+            //string extra_search = HttpContext.Current.Request.Params["extra_search"];
+            //var searchData = JsonConvert.DeserializeObject<Dictionary<string, string>>(extra_search);
+            //string Result_Master_ID = searchData["Result_Master_ID"];
+
+
+            IList<FillOrderException> ResultLabExecptionList = new List<FillOrderException>();
+            if (HttpContext.Current.Session["FillOrderException"] != null)
+            {
+                IList<FillOrderException> FillOrderExceptionList = (IList<FillOrderException>)HttpContext.Current.Session["FillOrderException"];
+
+
+                if (FillOrderExceptionList != null)
+                {
+                    ResultLabExecptionList = FillOrderExceptionList.Where(a => a.Result_Master_ID == Convert.ToUInt64(ResultMasterID)).ToList<FillOrderException>();
+                }
+            }
+
+            return JsonConvert.SerializeObject(ResultLabExecptionList);
+        }
+
+        [WebMethod(EnableSession = true)]
+        [ScriptMethod(ResponseFormat = ResponseFormat.Json, UseHttpGet = true)]
+        public static object GetOutstandingOrdersList()
+        {
+
+            if (ClientSession.UserName == string.Empty)
+            {
+                HttpContext.Current.Response.StatusCode = 999;
+                HttpContext.Current.Response.Status = "999 Session Expired";
+                HttpContext.Current.Response.StatusDescription = "frmSessionExpired.aspx";
+                return "Session Expired";
+            }
+            string extra_search = HttpContext.Current.Request.Params["extra_search"];
+            var searchData = JsonConvert.DeserializeObject<Dictionary<string, JToken>>(extra_search);
+            IList<Orders> FillOutstandingOrders = searchData["FillOutstandingOrders"].ToObject<List<Orders>>();
+
+            if (FillOutstandingOrders != null)
+                FillOutstandingOrders = FillOutstandingOrders.OrderByDescending(a => a.Order_Submit_ID).ToList<Orders>();
+
+            var resultNew = new
+            {
+                data = Compress(JsonConvert.SerializeObject(FillOutstandingOrders)),
+            };
+            return resultNew;
+        }
+
+
+        [WebMethod(EnableSession = true)]
+        public static string MatchButtonClick(string Result_Master_ID, string Order_Submit_ID, bool chkNoOrders, string HumanID, string NPINumbers, string Matching_Patient_ID)
+        {
+
+            if (ClientSession.UserName == string.Empty)
+            {
+                HttpContext.Current.Response.StatusCode = 999;
+                HttpContext.Current.Response.Status = "999 Session Expired";
+                HttpContext.Current.Response.StatusDescription = "frmSessionExpired.aspx";
+                return "Session Expired";
+            }
+            if (HumanID == "")
+            {
+                HumanID = "0";
+            }
+
+            bool bCheck = true;
+            ulong ulAutoPhysID = Convert.ToUInt64(System.Configuration.ConfigurationManager.AppSettings["DefaultPhysicianIDIndexing"]);
+            ResultMasterManager resultmasterMngr = new ResultMasterManager();
+
+            string Val = string.Empty;
+            if (!chkNoOrders)
+            {
+                resultmasterMngr.UpdateResultMasterAndWf_Object(Convert.ToUInt64(Result_Master_ID), Convert.ToUInt64(Order_Submit_ID), Convert.ToUInt64(HumanID), NPINumbers, string.Empty);
+                Val = "7100010";
+            }
+            else if (chkNoOrders)
+            {
+                resultmasterMngr.UpdateResultMasterListForLab(Convert.ToUInt64(Result_Master_ID), Convert.ToUInt64(HumanID), Convert.ToUInt64(Order_Submit_ID), Convert.ToUInt32(Matching_Patient_ID), NPINumbers, bCheck, string.Empty, ulAutoPhysID);
+                Val = "7100010";
+            }
+            return JsonConvert.SerializeObject(Val);
+        }
+        [WebMethod(EnableSession = true)]
+        public static string chkUnmatchedProvidercheck(bool check)
+        {
+            FillPhysicianUser phyUnmatchedList;
+            PhysicianManager objPhysicianManager = new PhysicianManager();
+            if (check == true)
+            {
+                phyUnmatchedList = objPhysicianManager.GetPhysicianandUser(false, string.Empty, ClientSession.LegalOrg);
+            }
+            else
+            {
+                phyUnmatchedList = objPhysicianManager.GetPhysicianandUser(true, ClientSession.FacilityName, ClientSession.LegalOrg);
+
+            }
+
+            return JsonConvert.SerializeObject(phyUnmatchedList);
+        }
+
+
+        [WebMethod(EnableSession = true)]
+        public static string chkProviderNameCheckedChanged(bool check)
+        {
+
+            FillPhysicianUser PhyUserList;
+            PhysicianManager objPhysicianManager = new PhysicianManager();
+
+            if (check)
+            {
+                PhyUserList = objPhysicianManager.GetPhysicianandUser(false, string.Empty, ClientSession.LegalOrg);
+
+            }
+            else
+            {
+                PhyUserList = objPhysicianManager.GetPhysicianandUser(true, ClientSession.FacilityName, ClientSession.LegalOrg);
+
+            }
+            return JsonConvert.SerializeObject(PhyUserList);
+        }
 
 
     }
