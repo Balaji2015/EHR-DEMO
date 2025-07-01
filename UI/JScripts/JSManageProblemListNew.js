@@ -1339,6 +1339,19 @@ ProblemApp.controller('ControllerManageProblem', function ($scope, $http) {
                         }
                         //Cap - 2436
                         $("#chkNoKnownActiveProblem")[0].checked = false;
+                        //Cap - 3184
+                        var table = $('#tblProblemList');
+                        table.find('tr').each(function (rowIndex, r) {
+                            if (rowIndex != 0) {
+                                var IcdVal = $(r).find('td').eq(2).text().trim();
+                                if (IcdVal == "0000") {
+                                    $scope.DeleteCheck(rowIndex);
+                                }
+                            }
+                        })
+
+
+
                         $('#txtICD10').val("");
                     }, error: function OnError(xhr) {
                         { sessionStorage.setItem('StartLoading', 'false'); StopLoadFromPatChart(); }
@@ -1653,6 +1666,61 @@ ProblemApp.controller('ControllerManageProblem', function ($scope, $http) {
         }
         { sessionStorage.setItem('StartLoading', 'false'); StopLoadFromPatChart(); }
     }
+    //Cap - 3184
+    $scope.DeleteCheck = function (index) {
+        { sessionStorage.setItem('StartLoading', 'true'); StartLoadFromPatChart(); }
+        if (index != undefined)
+            iIndex = index;
+            var DelList = [];
+            var table = $('#tblProblemList');
+            var iCheck = iIndex ;
+            table.find('tr').each(function (rowIndex, r) {
+                if (rowIndex == iCheck) {
+                    var colsDel = [];
+                    $(this).find('td').each(function (colIndex, c) {
+                        if (colIndex == 0) {
+                            colsDel.push("Del");
+                        }
+                        else if (c.textContent == "" && colIndex == "1") {
+                            colsDel.push(c.childNodes[0].checked);
+                        }
+                        else if (colIndex == 4 || colIndex == 5 || colIndex == 6 || colIndex == 7 || colIndex == 8 || colIndex == 9 || colIndex == 10) {
+                            var select = c.childNodes;
+
+                            for (var i = 0; i < select.length; i++) {
+                                if ($(select)[i].value != undefined)
+                                    colsDel.push($(select)[i].value);
+                            }
+
+                        }
+                        else {
+                            colsDel.push(c.textContent);
+                        }
+                    });
+                    DeleteArray.push(colsDel);
+                    DelList.push(colsDel);
+                }
+            });
+
+            for (var i = 0; i < $scope.ProblemListTable.length; i++) {
+                if (DelList[0][2] == $scope.ProblemListTable[i].ICDCode) {
+                    $scope.ProblemListTable.splice(i, 1);
+                }
+            }
+
+            //Cap - 2436
+            if ($scope.ProblemListTable.length == 1) {
+                if ($scope.ProblemListTable[0].ICDCode == "0000") {
+                    $("#chkNoKnownActiveProblem")[0].checked = true;
+                }
+            }
+
+            $scope.SaveEnableDisable(false);
+            $scope.ColorCoding();
+        
+        { sessionStorage.setItem('StartLoading', 'false'); StopLoadFromPatChart(); }
+    }
+
     $scope.OpenQuestionnaire = function () {
 
         var dataChecked = "";
