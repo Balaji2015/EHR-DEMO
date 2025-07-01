@@ -129,10 +129,11 @@ function check() {
 }
 
 function checkOnclcik() {
-    var table = new DataTable('#OutstandingTable');
-    table.$('tr.highlight').removeClass('highlight');
-    $('#OutstandingTable_filter').hide();    
-    $('#OutstandingTable_paginate').hide(); 
+    $('#OutstandingTable tbody tr').removeClass('highlight');
+    //var table = new DataTable('#OutstandingTable');
+    //table.$('tr.highlight').removeClass('highlight');
+    //$('#OutstandingTable_filter').hide();    
+    //$('#OutstandingTable_paginate').hide(); 
     GridOutstandingSelect = true;
 
 }
